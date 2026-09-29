@@ -143,6 +143,7 @@ function normalize(s){
   if(!f.ach||typeof f.ach!=='object')f.ach={};
   if(Array.isArray(f.langs)&&f.langs.length>1)f.langs=[f.langs[0]];
   if(!Array.isArray(f.recent))f.recent=[];
+  if(f.subV!==2){f.subStyle='box';f.subV=2;}
   if(!['learn','spy','arena','profile'].includes(f.tab))f.tab='learn';
   if(![10,20,30].includes(f.goal))f.goal=20;
   return f;
@@ -978,7 +979,7 @@ function startSession(type,mode){
 function exitQuiz(){stopTimer();clearTimeout(S&&S.autoT);sfx('tap');if(!store.onboarded){startOnboarding();return;}backToWorld();}
 
 function renderQ(){
-  {const q0=S.qs[S.i];if(q0&&store.intro!==false&&S.type!=='duel'&&!q0.introDone&&!q0.noM&&q0.mode!=='lore'&&q0.mode!=='phrases'&&M[mkey(q0.mode,q0.cid,q0.lang)]===undefined){q0.introDone=true;if(introCard(q0)){renderIntro(q0);return;}}}
+  {const q0=S.qs[S.i];if(q0&&store.intro!==false&&S.type!=='duel'&&!q0.introDone&&!q0.noM&&q0.mode!=='lore'&&q0.mode!=='phrases'&&M[mkey(q0.mode,q0.cid,q0.lang)]===undefined&&!(store.recent||[]).includes(mkey(q0.mode,q0.cid,q0.lang))&&!(S.seenIntro=S.seenIntro||new Set()).has(mkey(q0.mode,q0.cid,q0.lang))){q0.introDone=true;S.seenIntro.add(mkey(q0.mode,q0.cid,q0.lang));if(introCard(q0)){renderIntro(q0);return;}}}
   const q=S.qs[S.i];
   S.answered=false;S.low=false;S.lastTick=0;S.t0=performance.now();
   backBtn(true);
@@ -1252,7 +1253,7 @@ function renderEnd(){
   sfx(win?'win':'lose');haptic(win?'ok':'warn');
   countUp($('#eK'),0,k);countUp($('#eG'),0,S.gold,900);
   if(win)setTimeout(()=>{burstAt($('.result h1'),36);if(k===n)announce('Godlike');},250);
-  $('#again').onclick=()=>startSession(S.type,S.mode);
+  $('#again').onclick=()=>(S.lesson?startLesson():startSession(S.type,S.mode));
   $('#homeBtn').onclick=()=>{sfx('tap');backToWorld();};
   if($('#rkInfo'))$('#rkInfo').onclick=showRanks;
 }
@@ -1444,11 +1445,12 @@ function renderSettings(){
 /* ================= вкладки, заставка, профиль ================= */
 const TABS=[
  {id:'learn',name:'Учить',ico:'<path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5A2.5 2.5 0 0 0 4 21.5"/><path d="M8 7h8M8 11h6"/>'},
- {id:'kino',name:'Сцены',ico:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/>'},
- {id:'spy',name:'Шпион',ico:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>'},
- {id:'arena',name:'Арена',ico:'<path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M9.5 6.5 14 2h3v3l-4.5 4.5M5 14l4 4M7 17l-3 3M3 19l2 2"/>'},
+ {id:'kino',name:'Кинозал',ico:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 3l3 3M14 3l-3 3"/><path d="M10 10.5v5l4-2.5z"/>'},
+ {id:'games',name:'Игры',ico:'<path d="M7 8h10a4 4 0 0 1 4 4v3a3 3 0 0 1-5.4 1.8L14 15h-4l-1.6 1.8A3 3 0 0 1 3 15v-3a4 4 0 0 1 4-4z"/><path d="M7.5 11v3M6 12.5h3"/><circle cx="16" cy="11.5" r=".8"/><circle cx="17.5" cy="13.5" r=".8"/>'},
  {id:'profile',name:'Профиль',ico:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'}
 ];
+// «Шпион» и «Арена» — разделы внутри «Игр»
+const TAB_PARENT={spy:'games',arena:'games'};
 let lastTabIdx=0;
 function ensureTabbar(){
   if($('#tabbar'))return;
@@ -1468,15 +1470,21 @@ function paintTabbar(id){
 }
 function renderTab(id){
   id=id||store.tab||'learn';
-  const idx=TABS.findIndex(t=>t.id===id),dir=idx>lastTabIdx?'fr':idx<lastTabIdx?'fl':'';lastTabIdx=idx;
-  if(store.tab!==id){store.tab=id;save();}
+  if(!['learn','kino','games','profile','spy','arena'].includes(id))id='learn';
+  const vis=TAB_PARENT[id]||id,sub=!!TAB_PARENT[id];
+  const idx=TABS.findIndex(t=>t.id===vis),dir=idx>lastTabIdx?'fr':idx<lastTabIdx?'fl':'';lastTabIdx=idx;
+  if(store.tab!==vis){store.tab=vis;save();}
   stopSpyAll();if(typeof stopTourTimer==='function')stopTourTimer();scStop();
   try{if(TG&&TG.disableClosingConfirmation)TG.disableClosingConfirmation();}catch(e){}
-  screen='home';backBtn(false);applyFx();ensureTabbar();
-  const html=id==='learn'?learnTabHTML():id==='kino'?kinoTabHTML():id==='spy'?spyTabHTML():id==='arena'?arenaTabHTML():profileTabHTML();
+  screen=sub?'subtab':'home';backBtn(sub);applyFx();ensureTabbar();delete document.body.dataset.world;
+  const gated=(vis==='kino'||vis==='games')&&flagOf(vis)!=='on'||(TAB_PARENT[id]&&flagOf(id)!=='on');
+  let html=gated?`<h1 class="title anim">${TABS.find(t=>t.id===vis).name}</h1>`+gateHTML(TAB_PARENT[id]?id:vis):id==='learn'?learnTabHTML():id==='kino'?kinoTabHTML():id==='games'?gamesTabHTML():id==='spy'?spyTabHTML():id==='arena'?arenaTabHTML():profileTabHTML();
+  if(sub)html=`<button class="crumb anim" id="crumb">${ui('back')}<span>Игры</span></button>`+html;
   mount(html,'tabscr '+dir);
-  paintTabbar(id);
-  (id==='learn'?bindLearn:id==='kino'?bindKino:id==='spy'?bindSpyTab:id==='arena'?bindArena:bindProfile)();
+  paintTabbar(vis);
+  if(!gated)(id==='learn'?bindLearn:id==='kino'?bindKino:id==='games'?bindGames:id==='spy'?bindSpyTab:id==='arena'?bindArena:bindProfile)();
+  applyFlagsUI();
+  if(sub)$('#crumb').onclick=()=>{sfx('tap');renderTab('games');};
   $$('.tabscr .anim').forEach((el,i)=>el.style.animationDelay=Math.min(i,10)*55+'ms');
   if(id==='learn'||id==='profile')setTimeout(checkAch,400);
 }
@@ -1607,6 +1615,7 @@ function profileTabHTML(){
   const got=ACH.filter(a=>store.ach[a.id]).length,due=dueList().length;
   const mis=store.mistakes.filter(x=>store.langs.includes(x.split('|')[2])).length;
   const cell=(v,l)=>`<div><b>${v}</b><span>${l}</span></div>`;
+  const adm=FLAG_ADMIN?`<button class="rowcard card anim" id="admBtn">${iconHTML({svg:'shield'})}<span><b>Админ-панель</b><small>Какие разделы видят игроки, тех. работы и тестеры</small></span><span class="go">›</span></button>`:'';
   return `<section class="phead card anim"><div class="pava" style="background-image:url('${esc(photo||portrait(heroFor().hero))}')"></div>
       <b class="pn">${esc(name)}</b><button class="rankchip" id="rankBtn">${rk.r.n} <i>?</i></button>
       <span class="pbar"><i style="--w:${rk.pct}%"></i></span><small>${rk.nx?`До ранга ${rk.nx.n}: ${rk.n} из ${rk.nx.at} выученных слов`:'Высший ранг'}${rk.r.m>1?`. Золото x${rk.r.m}`:''}</small></section>
@@ -1619,9 +1628,11 @@ function profileTabHTML(){
       <button class="lrow2" id="redo2" ${mis?'':'disabled'}>${iconHTML({svg:'flag'},'sm')}<span><b>Ошибки</b><small>${mis?`${mis} на разбор`:'пока нет'}</small></span><span class="go">›</span></button>
       <button class="lrow2" id="setBtn">${iconHTML({svg:'shield'},'sm')}<span><b>Настройки</b><small>язык, роли, оформление, звук</small></span><span class="go">›</span></button>
     </div>
-    <p class="foot">Версия 4.2</p>`;
+    ${adm}
+    <p class="foot">Версия 4.6</p>`;
 }
-function bindProfile(){
+function bindProfileAdmin(){const b=$('#admBtn');if(b)b.onclick=()=>{sfx('tap');renderAdmin();};}
+function bindProfile(){bindProfileAdmin();
   bindHead();
   $('#dict').onclick=()=>{sfx('tap');renderDict('going');};
   if(dueList().length)$('#rev2').onclick=()=>{haptic('medium');startSession('review');};
@@ -2147,13 +2158,13 @@ const SUB_NAMES={en:'English',de:'Deutsch',ru:'Русские',off:'Без су�
 
 function kinoTabHTML(){
   const de=store.langs[0]==='de';
-  return `<h1 class="title anim">Фильмы и сериалы</h1>
-    <p class="lead anim" style="margin:6px 0 14px">Сцены из сериалов и фильмов: смотришь с субтитрами, разбираешь живые фразы, проверяешь себя.${de?' Сцены пока только на английском.':''}</p>
-    ${SCENES.map(s=>{const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
-      return `<button class="kcard ${s.theme} anim" data-sc="${s.id}"><span class="kpic" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span>
-        <span class="kt"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${esc(s.sub)}</small>
-        <span class="kbar"><i style="width:${Math.round(L/T*100)}%"></i></span><small>${d?`эпизодов ${d} из ${s.parts.length} · `:''}фраз ${L} из ${T}</small></span></button>`;}).join('')}
-    <p class="foot">Новые сцены будут добавляться. Прогресс сохраняется.</p>`;
+  return `<h1 class="title anim">Кинозал</h1>
+    <p class="lead anim" style="margin:4px 0 14px">Сцены из сериалов, фильмов и клипов: смотришь с субтитрами, разбираешь живые фразы, проверяешь себя.${de?' Видео на английском, субтитры и задания — по-немецки.':''}</p>
+    <div class="kgrid">${SCENES.map(s=>{const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
+      return `<button class="kposter ${s.theme} anim" data-sc="${s.id}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="kp-grad"></span>
+        <span class="kp-t"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${s.parts.length} ${plural(s.parts.length,['эпизод','эпизода','эпизодов'])}${d?` · пройдено ${d}`:''}</small>
+        <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%"></i></span></span></button>`;}).join('')}
+      <div class="kposter soon anim"><span class="kp-t"><em>Скоро</em><b>Новые сцены и клипы</b><small>Сериалы, фильмы и музыкальные клипы</small></span></div></div>`;
 }
 function bindKino(){$$('[data-sc]').forEach(b=>b.onclick=()=>{haptic('medium');sfx('tap');renderScene(b.dataset.sc);});}
 
@@ -2180,7 +2191,7 @@ function renderScene(id){
   $$('.sc-ep').forEach(b=>b.onclick=()=>renderScEp(id,+b.dataset.i));
 }
 function scVideo(el,s,p,noSubs){
-  SSUBON=!noSubs;SW=el;el.dataset.ss=store.subStyle||'cinema';SV=document.createElement('video');
+  SSUBON=!noSubs;SW=el;el.dataset.ss=store.subStyle||'box';SV=document.createElement('video');
   const pi=s.parts.indexOf(p);SV.src=assetUrl(scEpKey(s,pi,'mp4'));SV.playsInline=true;SV.setAttribute('playsinline','');SV.preload='auto';SV.poster=assetUrl(scEpKey(s,pi,'jpg'));SV.playbackRate=SRATE;
   SV.volume=store.scVol==null?1:store.scVol;SV.muted=!!store.scMute;
   const loc=s.subs.filter(r=>r[1]>p.a&&r[0]<p.b).map(r=>[Math.max(0,r[0]-p.a),r[1]-p.a,r[2],r[3],r[4]]);
@@ -2221,7 +2232,7 @@ function scVideo(el,s,p,noSubs){
 function scTick(){
   const box=SW&&SW.querySelector('.sc-subs');if(!SV||!box){SRAF=0;return;}
   const t=SV.currentTime,m=scSub(),r=SSUBON&&m!=='off'?SV._loc.find(x=>t>=x[0]&&t<=x[1]+0.25):null,id=r?r[0]+m:'';
-  if(box.dataset.id!==id){box.dataset.id=id;box.innerHTML=r?`<div class="en">${esc(r[{en:2,ru:3,de:4}[m]]).replace(/\n/g,' ')}</div>`:'';SW.classList.toggle('has-sub',!!r);}
+  if(box.dataset.id!==id){box.dataset.id=id;box.innerHTML=r?`<div class="sline"><span class="en">${esc(r[{en:2,ru:3,de:4}[m]]).replace(/\n/g,' ')}</span></div>`:'';SW.classList.toggle('has-sub',!!r);}
   SRAF=SV.paused?0:requestAnimationFrame(scTick);
 }
 function scPlay(a,b,cb){if(!SV)return;SSTOP={a,b,cb};SV.playbackRate=SRATE;try{SV.currentTime=a;}catch(e){}const pr=SV.play();if(pr&&pr.catch)pr.catch(()=>toast('Нажми ещё раз, чтобы запустить видео'));}
@@ -2248,7 +2259,7 @@ function scSubSheet(first){
   w.innerHTML=`<div class="sc-sheet"><b>${first?'Какие субтитры включить?':'Субтитры'}</b>
     <div class="sc-opts2">${langs.map(k=>`<button data-sl="${k}" class="${scSub()===k?'on':''}"><span>${SUB_NAMES[k]}</span><small>${SUB_NOTE[k]}</small></button>`).join('')}</div>
     <b class="sc-st">Вид субтитров</b>
-    <div class="sc-chips">${[['cinema','Кино'],['box','Плашка'],['yellow','Жёлтые'],['big','Крупные']].map(([k,l])=>`<button data-st="${k}" class="${(store.subStyle||'cinema')===k?'on':''}">${l}</button>`).join('')}</div>
+    <div class="sc-chips">${[['box','Как на YouTube'],['cinema','Кино'],['yellow','Жёлтые'],['big','Крупные']].map(([k,l])=>`<button data-st="${k}" class="${(store.subStyle||'box')===k?'on':''}">${l}</button>`).join('')}</div>
     <button class="sc-btn" data-close>Готово</button></div>`;
   (SW&&SW.classList.contains('sc-pfs')?SW:(document.querySelector('.scn')||document.body)).appendChild(w);
   w.onclick=e=>{const b=e.target.closest('button');if(e.target===w||(b&&b.hasAttribute('data-close'))){store.scSubChosen=true;save();scCloseSheet();return;}
@@ -2341,6 +2352,97 @@ function renderScQuiz(id,i){
 /* ================= «как запомнить»: созвучие + картинка, отдельно для английского и немецкого ================= */
 const MEM=window.__DATA.MEM;
 function memOf(mode,cid,L,t){const m=MEM[mode]&&MEM[mode][cid];return m?m[L==='de'?1:0]:(t?t[0]:'');}
+Object.assign(MEM,{items:{
+bottle:['Bottle ≈ «ботл»: боттл — бутылка, в Доте мидер носит её с руной.','die Flasche ≈ «фляшка»: фляжка — бутылка.'],
+cheese:['Cheese ≈ «чиз»: чизбургер — с сыром.','der Käse ≈ «кезе»: как «кейс» с сыром.'],
+crown:['Crown ≈ «краун»: корона, крона дерева — макушка.','die Krone ≈ «кроне»: крона и корона — на макушке.'],
+cloak:['Cloak ≈ «клоук»: плащ — клоак, как у фокусника.','der Umhang ≈ «умханг»: um (вокруг) + hängen (висеть) — висит вокруг плеч.'],
+heart:['Heart ≈ «харт»: хартия — от сердца.','das Herz ≈ «херц»: пульс в герцах — сердце.'],
+eye:['Eye ≈ «ай»: «ай!» — в глаз попало.','das Auge ≈ «ауге»: «ау!» — глаз видит, кто зовёт.'],
+fire:['Fire ≈ «файэ»: файер-шоу — огонь.','das Feuer ≈ «фойер»: фейерверк — огонь.'],
+smoke:['Smoke ≈ «смоук»: смокинг курили — дым.','der Rauch ≈ «раух»: раухтопф — копчёный дымом.'],
+mango:['Mango — манго, одинаково.','die Mango — манго, женский род.'],
+branch:['Branch ≈ «бранч»: ветка — и ветка компании (филиал).','der Zweig ≈ «цвайг»: две (zwei) ветки.'],
+dagger:['Dagger ≈ «дэггер»: даггер — кинжал, Blink Dagger телепортирует.','der Dolch ≈ «дольх»: долго точили кинжал.'],
+king:['King ≈ «кинг»: Кинг-Конг — король.','der König ≈ «кёниг»: Кёнигсберг — «королевская гора».'],
+sblade:['Blade ≈ «блейд»: Блейд — охотник с клинком.','die Klinge ≈ «клинге»: клинок.'],
+fly:['Butterfly: butter (масло) + fly (муха) — бабочка.','der Schmetterling ≈ «шметтерлинг»: шмат-шмат крыльями — бабочка.'],
+force:['Staff ≈ «стафф»: посох; а ещё staff — персонал.','der Stab ≈ «штаб»: посох, штаб держит палку.'],
+fury:['Fury ≈ «фьюри»: фурия — в ярости.','die Wut ≈ «вут»: «ву-ух!» — ярость.'],
+lens:['Lens ≈ «ленс»: линза, объектив камеры.','die Linse ≈ «линзе»: линза и чечевица.'],
+drum:['Drum ≈ «драм»: драм-машина — барабан.','die Trommel ≈ «троммель»: тромбон рядом с барабаном.'],
+pipe:['Pipe ≈ «пайп»: пайплайн — труба, трубка.','die Pfeife ≈ «пфайфе»: пфф — дым из трубки; ещё и свисток.'],
+midas:['Hand ≈ «хэнд»: хенд-мейд — сделано рукой.','die Hand — рука, почти как в английском.'],
+mom:['Mask ≈ «маск» — маска.','die Maske — маска.'],
+vessel:['Vessel ≈ «вессел»: сосуд и судно — везёт жидкость.','das Gefäß ≈ «гефэс»: фасуют в сосуд.'],
+soulring:['Ring ≈ «ринг»: кольцо и ринг для бокса — круглые.','der Ring — кольцо, как в английском.'],
+ghost:['Ghost ≈ «гоуст»: гость-призрак.','der Geist ≈ «гайст»: дух, как Zeitgeist — дух времени.']
+},heroes:{
+witch:['Witch ≈ «уич»: Witch Doctor — ведьма-доктор.','die Hexe ≈ «хексе»: хэкс-заклятие ведьмы.'],
+doctor:['Doctor — доктор, врач.','der Arzt ≈ «арцт»: арцт лечит от «ой, ай».'],
+knight:['Knight ≈ «найт» (k молчит): рыцарь ночью (night).','der Ritter ≈ «риттер»: рыцарь.'],
+king:['King ≈ «кинг»: Wraith King — король.','der König ≈ «кёниг»: король.'],
+queen:['Queen ≈ «куин»: группа Queen — королева.','die Königin: König + in — королева.'],
+pain:['Pain ≈ «пейн»: Queen of Pain — королева боли.','der Schmerz ≈ «шмерц»: шмяк — и боль.'],
+night:['Night ≈ «найт»: Night Stalker охотится ночью.','die Nacht ≈ «нахт»: Gute Nacht — спокойной ночи.'],
+light:['Light ≈ «лайт»: Keeper of the Light — свет.','das Licht ≈ «лихт»: лихо светит.'],
+keeper:['Keeper ≈ «кипер»: голкипер хранит ворота.','der Hüter ≈ «хютер»: хуторянин хранит дом.'],
+winter:['Winter — зима, как по-английски, так и по-немецки.','der Winter — зима.'],
+sand:['Sand ≈ «сэнд»: Sand King — король песка.','der Sand — песок.'],
+hunter:['Hunter ≈ «хантер»: хантер — охотник.','der Jäger ≈ «егер»: егерь — охотник.'],
+bounty:['Bounty ≈ «баунти»: награда за голову (и шоколадка «рай»).','das Kopfgeld: Kopf (голова) + Geld (деньги).'],
+beast:['Beast ≈ «бист»: бестия — зверь.','die Bestie ≈ «бестие»: бестия.'],
+master:['Master ≈ «мастер» — хозяин, мастер.','der Meister ≈ «майстер»: мастер.'],
+nature:['Nature ≈ «нейче»: натура — природа.','die Natur — природа.'],
+prophet:['Prophet ≈ «профит»: пророк предсказал профит.','der Prophet — пророк.'],
+dark:['Dark ≈ «дарк»: Dark Seer — тёмный.','dunkel ≈ «дункель»: тёмное пиво Dunkel.'],
+seer:['Seer ≈ «сиа»: see — видеть, провидец видит.','der Seher: sehen (видеть) — провидец.'],
+ancient:['Ancient ≈ «эйншент»: Древний — главное здание в Доте.','uralt: ur (пра-) + alt (старый) — древний.'],
+elder:['Elder ≈ «элдер»: старше (older) — старейшина.','der Älteste: alt (старый) — самый старый.'],
+tide:['Tide ≈ «тайд»: Tidehunter — охотник за приливами.','die Flut ≈ «флут»: флюид прибывает — прилив.'],
+ranger:['Ranger ≈ «рейнджер»: Power Rangers — следопыты.','der Waldläufer: Wald (лес) + Läufer (бегун) — следопыт.'],
+monkey:['Monkey ≈ «манки»: Monkey King — обезьяна.','der Affe ≈ «аффе»: обезьяна аффектирует.'],
+lone:['Lone ≈ «лоун»: Lone Druid — одинокий.','einsam: ein (один) + sam — одинокий.'],
+brew:['Brew ≈ «бру»: Brewmaster — мастер варева.','das Gebräu: brauen (варить) — варево.'],
+vengeful:['Vengeful ≈ «венджфул»: вендетта — мстительный.','rachsüchtig: Rache (месть) + süchtig (зависимый).'],
+spirit:['Spirit ≈ «спирит»: спиритизм — духи.','der Geist ≈ «гайст»: дух, как Zeitgeist.'],
+dawn:['Dawn ≈ «дон»: Dawnbreaker — рассвет.','die Morgendämmerung: Morgen (утро) + Dämmerung (сумерки).'],
+protector:['Protector ≈ «протектор» — защитник.','der Beschützer: schützen — защищать.'],
+faceless:['Faceless: face (лицо) + less (без) — безликий.','gesichtslos: Gesicht (лицо) + los (без).'],
+commander:['Commander ≈ «коммандер» — командир.','der Kommandant — командир.'],
+assassin:['Assassin ≈ «ассасин» — наёмный убийца, как в Assassin\'s Creed.','der Attentäter: Attentat — покушение.'],
+maiden:['Maiden ≈ «мейден»: Crystal Maiden — дева.','das Mädchen ≈ «медхен» — девушка.'],
+ember:['Ember ≈ «эмбер»: янтарный уголёк — тлеет.','die Glut ≈ «глют»: глоток жара — угли.'],
+storm:['Storm ≈ «шторм» — буря.','der Sturm ≈ «штурм»: штурм — буря.'],
+silence:['Silence ≈ «сайленс»: сайленсер — глушитель, тишина.','die Stille ≈ «штилле»: штиль — тишина.'],
+stealer:['Stealer: steal (красть) — вор.','der Dieb ≈ «диб»: вор утащил.'],
+seeker:['Seeker: seek (искать) — искатель; hide and seek — прятки.','der Sucher: suchen (искать) — искатель.'],
+clock:['Clock ≈ «клок»: Clockwerk — часы.','die Uhr ≈ «ур»: «у-у-р» — часы тикают.'],
+saw:['Saw ≈ «со»: Пила (фильм Saw) — пила.','die Säge ≈ «зеге»: зигзаг зубьев пилы.'],
+timber:['Timber ≈ «тимбер»: Timbersaw пилит древесину.','das Holz ≈ «хольц»: холст из дерева.'],
+tiny:['Tiny ≈ «тайни»: крошечный великан Тайни.','winzig ≈ «винциг»: винтик — крошечный.'],
+warlock:['Warlock ≈ «уорлок»: колдун.','der Hexenmeister: Hexe (ведьма) + Meister (мастер).'],
+enchantress:['Enchantress ≈ «энчантресс»: очаровывает — чародейка.','die Zauberin: Zauber (волшебство) — чародейка.'],
+bat:['Bat ≈ «бэт»: Бэтмен — летучая мышь.','die Fledermaus: flattern (порхать) + Maus (мышь).'],
+rider:['Rider ≈ «райдер»: райдер — всадник.','der Reiter ≈ «райтер»: всадник.'],
+venom:['Venom ≈ «веном» — яд, как у Венома.','das Gift ≈ «гифт» — яд (не подарок!).'],
+razor:['Razor ≈ «рейзор»: бритва.','das Rasiermesser: rasieren (брить) + Messer (нож).'],
+weaver:['Weaver ≈ «уивер»: weave — ткать, ткач.','der Weber ≈ «вебер»: ткач (Weber — частая фамилия).'],
+primal:['Primal ≈ «праймал»: прайм — первичный.','urzeitlich: Urzeit — первобытное время.'],
+undying:['Undying: un (не) + dying (умирающий) — бессмертный.','unsterblich: un + sterben (умирать).'],
+grim:['Grim ≈ «грим»: мрачный грим.','finster ≈ «финстер»: финиш в темноте — мрачно.'],
+hoodwink:['Hoodwink: hood (капюшон) на глаза — обмануть.','täuschen ≈ «тойшен»: тушить свет и обманывать.'],
+spectre:['Spectre ≈ «спектр»: призрак из спектра.','das Gespenst ≈ «гешпенст»: привидение.'],
+warlord:['Warlord: war (война) + lord (лорд) — военачальник.','der Kriegsherr: Krieg (война) + Herr (господин).'],
+fiend:['Fiend ≈ «финд»: изверг.','der Unhold: un + hold (милый) — немилый, изверг.'],
+warden:['Warden ≈ «уорден»: надзиратель в тюрьме.','der Wärter ≈ «вертер»: надзиратель.'],
+devourer:['Devourer: devour — пожирать, пожиратель.','der Verschlinger: schlingen — глотать.'],
+willow:['Willow ≈ «уиллоу»: ива.','die Weide ≈ «вайде»: ива и пастбище.'],
+tusk:['Tusk ≈ «таск»: бивень.','der Stoßzahn: stoßen (толкать) + Zahn (зуб).'],
+tinker:['Tinker ≈ «тинкер»: тинкерить — возиться, мастерить.','der Bastler: basteln — мастерить.'],
+earth:['Earth ≈ «ёрс»: Earthshaker трясёт землю.','die Erde ≈ «эрде»: земля.'],
+disruptor:['Disruptor: disrupt — нарушать, нарушитель.','der Störer: stören — мешать.']
+}});
 /* ================= CS 2: полезные слова из игры (часть «полезных слов» с меткой мира g:'cs2') ================= */
 const CS2_WORDS=[
 {id:'cs_defuse',pos:'v',en:'to defuse',de:'entschärfen',ru:'обезвредить',hint:'Defuse the bomb — разминировать бомбу, главная задача спецназа.',icon:{svg:'target'}},
@@ -2445,7 +2547,7 @@ function learnTabHTML(){
   const d=dayStat(),goal=store.goal||20,gp=Math.min(100,Math.round(d.n/goal*100)),due=dueList().length,w=wordOfDay(),bp=bestProgress();
   const mis=store.mistakes.filter(x=>store.langs.includes(x.split('|')[2])).length;
   const games=`<h2 class="sec2 anim">Игры <span>Dota 2 и CS 2</span></h2>${worldCardsHTML()}`;
-  const kino=`<h2 class="sec2 anim">Кино и сериалы <span>сцены с разбором</span></h2>${kinoCardsHTML()}`;
+  const kino=`<h2 class="sec2 anim">Кинозал <span>сцены с разбором</span></h2>${kinoCardsHTML()}`;
   return `${headHTML()}
     <section class="goal card anim">
       <div class="gring"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/><circle class="gv" cx="22" cy="22" r="19" style="--gp:${gp}"/></svg><b>${Math.min(d.n,goal)}</b></div>
@@ -2453,6 +2555,7 @@ function learnTabHTML(){
       <div class="gstreak"><b>${store.streak}</b><small>${plural(store.streak,['день','дня','дней'])} подряд</small></div>
     </section>
     <section class="hero2 anim" id="best"><span class="h2glow"></span><span class="h2t"><em>Солянка</em><b>Лучшие слова из игр</b><small>Dota 2 и CS 2: только то, что пригодится и в жизни. 10 вопросов.</small></span><span class="h2p"><span class="h2bar"><i style="width:${Math.round(bp.learned/bp.total*100)}%"></i></span><small>${bp.learned} из ${bp.total}</small><span class="h2go">Играть →</span></span></section>
+    ${store.path!=='kino'?`<button class="lesson card anim" id="lesson"><span class="lsn-steps"><i>1</i><i>2</i><i>3</i></span><span><b>Урок: 5 новых слов</b><small>Слово → узнай → вспомни → напиши</small></span><span class="go">›</span></button>`:''}
     ${due?`<button class="rowcard card anim" id="review">${iconHTML({svg:'star'})}<span><b>Повторение</b><small>${due} ${plural(due,['слово пора','слова пора','слов пора'])} повторить</small></span><span class="go">›</span></button>`:''}
     ${store.path==='kino'?kino+games:games+kino}
     <div class="duo2">
@@ -2463,6 +2566,7 @@ function learnTabHTML(){
 function bindLearn(){
   bindHead();
   $('#best').onclick=()=>{haptic('medium');play('best','mode','words');};
+  if($('#lesson'))$('#lesson').onclick=()=>{haptic('medium');startLesson();};
   if($('#review'))$('#review').onclick=()=>{haptic('medium');startSession('review');};
   $('#wDota').onclick=()=>{sfx('tap');renderDotaWorld();};
   $('#wCS').onclick=()=>{sfx('tap');renderCSWorld();};
@@ -2480,12 +2584,15 @@ function renderDotaWorld(){
     <section class="play card anim"><div class="pic" style="background-image:url('${portrait(h.hero)}')"></div>
       <div class="pinfo"><span class="ptag">${store.roles==='all'?'Все роли':store.roles.map(r=>cap(ROLE_NAME[r])).join(', ')} ${store.langs.map(langBadge).join('')}</span>
       <h2>Быстрая игра</h2><p>10 вопросов из всех режимов, в конце Рошан</p><button class="btn" id="quick">Играть</button></div></section>
+    <button class="lesson card anim" id="lesson"><span class="lsn-steps"><i>1</i><i>2</i><i>3</i></span><span><b>Урок: 5 новых слов</b><small>Карточка слова → узнай → вспомни сам → напиши. Так слова реально запоминаются.</small></span><span class="go">›</span></button>
     <h2 class="sec2 anim">Режимы <span>выучено ${t.learned}</span></h2>
     <div class="mgrid">${modes}</div>
     <button class="rowcard card anim" id="wiki">${iconHTML({svg:'book'})}<span><b>Словарь</b><small>Все слова Доты: перевод, как запомнить, примеры</small></span><span class="go">›</span></button>
     <button class="rowcard card anim ultra" id="lore">${iconHTML({img:'items/ultimate_scepter',svg:'scroll'})}<span><b>Лор Доты</b><small>Хай тир: настоящие тексты из игры${LORE_STATE==='ok'?`, ${lp.learned} из ${lp.total}`:''}</small></span><span class="go">›</span></button>`,'dotascr');
   $('#bBtn').onclick=()=>{sfx('tap');renderHome();};
   $('#quick').onclick=()=>{haptic('medium');play('dota','quick');};
+  $('#lesson').onclick=()=>{haptic('medium');startLesson();};
+  applyFlagsUI();
   $('#wiki').onclick=()=>{sfx('tap');renderWiki();};
   $('#lore').onclick=()=>{haptic('medium');if(LORE_STATE==='fail'){LORE_STATE='idle';loadLore();}play('dota','mode','lore');};
   $$('.mcard').forEach(b=>b.onclick=()=>{haptic('medium');play('dota','mode',b.dataset.m);});
@@ -2553,10 +2660,562 @@ function wikiBody(mode,r,L){
   if(r.c.hint)h+=`<p class="wh">${esc(r.c.hint)}</p>`;
   return `<div class="wb">${h}<button class="speak" data-w="${esc(r.w)}" aria-label="Послушать">${ui('sound')}</button></div>`;
 }
+
+/* ---- вкладка «Игры» ---- */
+function gamesTabHTML(){
+  const st=store.cg||{games:0,wins:0};
+  const I=p=>`<svg viewBox="0 0 24 24">${p}</svg>`;
+  return `<h1 class="title anim">Игры</h1>
+    <p class="lead anim" style="margin:4px 0 14px">Играй сам или с друзьями — и по ходу учи слова.</p>
+    <button class="gcard anim" id="gCards"><span class="gc-shine"></span>
+      <span class="gc-vs"><span class="cg-mono bm">PB</span><i>VS</i><span class="cg-mono dm">TD</span></span>
+      <span class="gc-t"><em>Новое · карточная игра</em><b>Карточная дуэль</b><small>Бейтман против Дёрдена. Колоды, мана, существа. Переводи слова с карт — они становятся сильнее.</small></span>
+      <span class="gc-go">Играть →</span></button>
+    <div class="ggrid">
+      <button class="gtile anim" id="gSpy"><span class="gi">${I('<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>')}</span><b>Шпион</b><small>Компанией: один не знает, что загадано</small></button>
+      <button class="gtile anim" id="gArena"><span class="gi">${I('<path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M9.5 6.5 14 2h3v3l-4.5 4.5M5 14l4 4M7 17l-3 3"/>')}</span><b>Дуэль и турнир</b><small>1 на 1 по ссылке и турнир недели с призом</small></button>
+    </div>
+    ${st.games?`<p class="foot anim">Карточная дуэль: сыграно ${st.games}, побед ${st.wins}</p>`:''}`;
+}
+function bindGames(){
+  $('#gCards').onclick=()=>{haptic('medium');sfx('whoosh');cgPick();};
+  $('#gSpy').onclick=()=>{sfx('tap');renderTab('spy');};
+  $('#gArena').onclick=()=>{sfx('tap');renderTab('arena');};
+}
+
+/* ---- урок: 5 новых слов — карточка, узнать, вспомнить, написать ---- */
+function lessonMode(){
+  const ms=['words','terms','heroes','items'].map(m=>{const p=modeProgress(m);return {m,left:p.total-p.learned};}).filter(x=>x.left>0);
+  if(!ms.length)return 'words';
+  ms.sort((a,b)=>b.left-a.left);return ms[(store.lessonN||0)%Math.min(2,ms.length)].m;
+}
+function startLesson(){
+  CURW='dota';setWorld('dota');
+  const L=store.langs[0],mode=lessonMode(),used=new Set();
+  const pool=basePool(mode,L).filter(c=>!c.parts);
+  const cards=[];for(let i=0;i<5&&pool.length;i++){const c=pickCard(mode,L,pool,used);if(!c)break;used.add(mode+':'+cidOf(mode,c));cards.push(c);}
+  if(cards.length<3){toast('Здесь почти всё выучено — попробуй «Быструю игру»');return;}
+  const ks=c=>kindsOf(mode,L,c);
+  const recog=c=>{const k=ks(c);return k.find(x=>/x2ru|mean|de2ru/.test(x))||k[0];};
+  const recall=c=>{const k=ks(c),r=recog(c);return k.find(x=>x!==r&&/ru2|name|^h_de$|word|wde/.test(x))||k.find(x=>x!==r)||k[0];};
+  const safe=(c,k)=>{try{return buildAny(mode,c,L,k);}catch(e){return null;}};
+  const qs=[...cards.map(c=>safe(c,recog(c))),...shuffle(cards).map(c=>safe(c,recall(c)))].filter(Boolean);
+  shuffle(cards).slice(0,3).forEach(c=>{const q=safe(c,'type');if(q)qs.push(q);});
+  qs.forEach(q=>{q.chip=(q.chip||'')+' <span class="lchip">Урок</span>';});
+  qs[qs.length-1].roshan=true;
+  store.lessonN=(store.lessonN||0)+1;save();
+  S={type:'mode',mode,lesson:true,qs,i:0,correct:0,streak:0,bestStreak:0,gold:0,first:false,answered:false,wrong:[],learned:[],tInt:null,reask:0};
+  screen='quiz';sfx('whoosh');renderQ();
+}
+/* ================= карточная дуэль: Бейтман против Дёрдена (прототип) ================= */
+// Колода, мана до 10, стол до 5 существ, заклинания с целями, соперник-компьютер.
+// Учебная фишка: при розыгрыше карты переводишь слово с неё; верно — карта сильнее.
+const CG_ICONS={
+  card:'<rect x="4" y="7" width="16" height="10" rx="1.5"/><path d="M7 11h6M7 14h4"/>',
+  book:'<path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M5 17a2 2 0 0 1 2-2h11"/>',
+  mirror:'<ellipse cx="12" cy="9.5" rx="5" ry="6.5"/><path d="M12 16v5M9 21h6"/>',
+  phone:'<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/>',
+  chart:'<path d="M4 20h16"/><path d="M6 16l4-5 3 3 5-7"/><path d="M15 7h3v3"/>',
+  case:'<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/>',
+  tie:'<path d="M10 3h4l-1 3 2 11-3 4-3-4 2-11z"/>',
+  crown:'<path d="M4 17l2-9 4 4 2-6 2 6 4-4 2 9z"/><path d="M4 20h16"/>',
+  suit:'<path d="M8 3l4 4 4-4 4 3-2 5v10H6V11L4 6z"/><path d="M12 7v14"/>',
+  handshake:'<path d="M3 11l4-4 4 2 2-1 4 3 4 0"/><path d="M7 7l-2 6 5 5 3-2 3 2 3-4"/>',
+  soap:'<rect x="4" y="8" width="16" height="10" rx="4"/><circle cx="17" cy="5" r="1.5"/><circle cx="20" cy="7" r="1"/>',
+  fist:'<path d="M7 11V7a1.5 1.5 0 0 1 3 0v3M10 10V6a1.5 1.5 0 0 1 3 0v4M13 10V7a1.5 1.5 0 0 1 3 0v4M16 11V9a1.5 1.5 0 0 1 3 0v4a7 7 0 0 1-7 7h-1a6 6 0 0 1-6-6v-2a2 2 0 0 1 2-2h3"/>',
+  rule:'<path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 12h6M9 15h4"/>',
+  boot:'<path d="M8 3h5v8l6 3v4H5v-3l3-2z"/><path d="M5 18h14"/>',
+  bulb:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5V16h8v-2.5A6 6 0 0 0 12 3z"/>',
+  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5z"/>',
+  wrench:'<path d="M14.5 6.5a4 4 0 0 0-5.3 5L4 16.7 7.3 20l5.2-5.2a4 4 0 0 0 5-5.3l-2.4 2.4-2.6-.6-.6-2.6z"/>',
+  swirl:'<path d="M12 12a2 2 0 1 1 2-2 4 4 0 1 1-4-4 6 6 0 1 1-6 6 8 8 0 0 1 8-8"/>',
+  megaphone:'<path d="M3 10v4h3l7 4V6L6 10z"/><path d="M17 9a4 4 0 0 1 0 6"/>',
+  house:'<path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/>',
+  axe:'<path d="M14 4l6 6-3 3-6-6z"/><path d="M11 7L4 20"/><path d="M17 13c1 2 1 4-1 6"/>'
+};
+// cost, тип m — существо, s — заклинание; kw: taunt — провокация, charge — рывок
+const CG_CARDS={
+  // ---- Бейтман ----
+  b_card:{side:'bateman',name:'Визитка',en:'business card',de:'die Visitenkarte',ru:'визитка',ico:'card',cost:1,type:'s',fx:{k:'dmg',n:2,t:'any'},text:'2 урона любой цели'},
+  b_res:{side:'bateman',name:'Бронь',en:'reservation',de:'die Reservierung',ru:'бронь',ico:'book',cost:2,type:'s',fx:{k:'draw',n:2},text:'Возьми 2 карты'},
+  b_mirror:{side:'bateman',name:'Зеркало',en:'mirror',de:'der Spiegel',ru:'зеркало',ico:'mirror',cost:1,type:'s',fx:{k:'buff',a:1,h:2,t:'ally'},text:'Своему существу +1/+2'},
+  b_secr:{side:'bateman',name:'Секретарша',en:'secretary',de:'die Sekretärin',ru:'секретарша',ico:'phone',cost:2,type:'m',atk:1,hp:4,kw:['taunt'],text:'Провокация'},
+  b_analyst:{side:'bateman',name:'Аналитик',en:'analyst',de:'der Analyst',ru:'аналитик',ico:'chart',cost:3,type:'m',atk:2,hp:3,bc:{k:'draw',n:1},text:'При розыгрыше: возьми карту'},
+  b_broker:{side:'bateman',name:'Брокер',en:'broker',de:'der Makler',ru:'брокер',ico:'case',cost:3,type:'m',atk:3,hp:3,text:''},
+  b_rival:{side:'bateman',name:'Соперник',en:'rival',de:'der Rivale',ru:'соперник',ico:'tie',cost:4,type:'m',atk:4,hp:5,text:''},
+  b_suit:{side:'bateman',name:'Костюм',en:'suit',de:'der Anzug',ru:'костюм',ico:'suit',cost:2,type:'s',fx:{k:'buff',a:2,h:2,t:'ally'},text:'Своему существу +2/+2'},
+  b_deal:{side:'bateman',name:'Сделка',en:'deal',de:'das Geschäft',ru:'сделка',ico:'handshake',cost:4,type:'s',fx:{k:'aoe',n:2,t:'enemies'},text:'2 урона всем вражеским существам'},
+  b_patrick:{side:'bateman',name:'Патрик Бейтман',en:'businessman',de:'der Geschäftsmann',ru:'бизнесмен',ico:'case',cost:5,type:'m',atk:4,hp:5,legend:true,evo:{need:2,into:'b_axe'},text:'Легендарная. После 2 убийств — эволюция'},
+  b_axe:{side:'bateman',name:'Бейтман с топором',en:'axe',de:'die Axt',ru:'топор',ico:'axe',cost:5,type:'m',atk:6,hp:7,legend:true,token:true,text:'Раскопка: 3 верхние карты врага — 1 себе, 2 уничтожить'},
+  b_vp:{side:'bateman',name:'Вице-президент',en:'vice president',de:'der Vizepräsident',ru:'вице-президент',ico:'crown',cost:6,type:'m',atk:4,hp:6,kw:['taunt'],text:'Провокация'},
+  // ---- Дёрден ----
+  d_soap:{side:'durden',name:'Мыло',en:'soap',de:'die Seife',ru:'мыло',ico:'soap',cost:1,type:'s',fx:{k:'heal',n:4,t:'friend'},text:'Вылечи 4 здоровья'},
+  d_punch:{side:'durden',name:'Удар',en:'punch',de:'der Schlag',ru:'удар',ico:'fist',cost:1,type:'s',fx:{k:'dmg',n:2,t:'any'},text:'2 урона любой цели'},
+  d_rule:{side:'durden',name:'Правило',en:'rule',de:'die Regel',ru:'правило',ico:'rule',cost:2,type:'s',fx:{k:'team',a:1},text:'Всем своим существам +1 к атаке'},
+  d_recruit:{side:'durden',name:'Новобранец',en:'recruit',de:'der Rekrut',ru:'новобранец',ico:'boot',cost:1,type:'m',atk:1,hp:2,kw:['charge'],text:'Рывок'},
+  d_fighter:{side:'durden',name:'Боец',en:'fighter',de:'der Kämpfer',ru:'боец',ico:'fist',cost:2,type:'m',atk:3,hp:2,text:''},
+  d_base:{side:'durden',name:'Подвал',en:'basement',de:'der Keller',ru:'подвал',ico:'bulb',cost:3,type:'s',fx:{k:'summon',n:2,tok:'d_tok'},text:'Призови двух бойцов 2/1'},
+  d_insom:{side:'durden',name:'Бессонница',en:'insomnia',de:'die Schlaflosigkeit',ru:'бессонница',ico:'moon',cost:2,type:'s',fx:{k:'draw',n:2,self:2},text:'Возьми 2 карты, твой герой получает 2 урона'},
+  d_mech:{side:'durden',name:'Механик',en:'mechanic',de:'der Mechaniker',ru:'механик',ico:'wrench',cost:3,type:'m',atk:3,hp:5,text:''},
+  d_mayhem:{side:'durden',name:'Хаос',en:'mayhem',de:'das Chaos',ru:'хаос',ico:'swirl',cost:4,type:'s',fx:{k:'aoe',n:2,t:'enemies',face:2},text:'2 урона всем вражеским существам и герою'},
+  d_leader:{side:'durden',name:'Лидер',en:'leader',de:'der Anführer',ru:'лидер',ico:'megaphone',cost:6,type:'m',atk:6,hp:5,kw:['charge'],text:'Рывок'},
+  d_tok:{side:'durden',name:'Боец клуба',en:'member',de:'das Mitglied',ru:'участник',ico:'house',cost:1,type:'m',atk:2,hp:1,token:true,text:''}
+};
+const CG_HEROES={
+  bateman:{name:'Патрик Бейтман',short:'Бейтман',sub:'Уолл-стрит',mono:'PB',power:{name:'Уход за собой',text:'Вылечи своему герою 3 здоровья',k:'selfheal',n:3}},
+  durden:{name:'Тайлер Дёрден',short:'Дёрден',sub:'Бумажная улица',mono:'TD',power:{name:'Удар с правой',text:'1 урон любой цели',k:'dmg',n:1}}
+};
+const CG_DECKS={bateman:['b_card','b_res','b_mirror','b_secr','b_analyst','b_broker','b_rival','b_suit','b_deal','b_vp'],durden:['d_soap','d_punch','d_rule','d_recruit','d_fighter','d_base','d_insom','d_mech','d_mayhem','d_leader']};
+const CG_LEGENDS={bateman:['b_patrick']};
+// реплики Бейтмана из сцены (лежат в репозитории scenes рядом с видео)
+const CG_VOICE={b_patrick:{play:['1'],attack:['2','3']},b_axe:{play:['4'],attack:['2','3']}};
+function cgVoice(id,ev){
+  const v=CG_VOICE[id];if(!v||!v[ev]||!store.snd)return;
+  try{const a=new Audio(assetUrl('scenes/american-psycho/vo/'+rnd(v[ev])+'.mp3'));a.volume=.9;const p=a.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}
+}
+let CG=null,CG_UID=1;
+const cgSleep=ms=>new Promise(r=>setTimeout(r,window.CG_FAST?0:ms));
+const cgWord=c=>store.langs[0]==='de'?c.de:c.en;
+function cgNewSide(hero){
+  const deck=shuffle([...CG_DECKS[hero].flatMap(id=>[id,id]),...(CG_LEGENDS[hero]||[])]);
+  return {hero,hp:30,max:30,mana:0,maxMana:0,deck,hand:[],board:[],powerUsed:false,fatigue:0};
+}
+function cgStart(hero){
+  CG_UID=1;const foe=hero==='bateman'?'durden':'bateman';
+  CG={me:cgNewSide(hero),ai:cgNewSide(foe),turn:'me',over:null,sel:null,target:null,busy:false,words:store.cgWords!==false,learned:[],turnNo:0,fx:[]};
+  for(let i=0;i<3;i++){cgDraw(CG.me,true);cgDraw(CG.ai,true);}cgDraw(CG.ai,true);
+  screen='cards';backBtn(true);scStop();document.body.dataset.world='cards';
+  cgRender();cgBanner(`Ты играешь за ${CG_HEROES[hero].short}`,()=>cgTurnStart('me'));
+}
+function cgDraw(side,quiet){
+  if(!side.deck.length){side.fatigue++;cgHit(side,null,side.fatigue);cgToast(`${side===CG.me?'Колода кончилась':'У соперника кончилась колода'}: ${side.fatigue} урона`);return;}
+  const id=side.deck.pop();
+  if(side.hand.length>=9){cgToast('Рука полная, карта сгорела');return;}
+  side.hand.push({uid:CG_UID++,id,fresh:!quiet});
+}
+function cgTurnStart(who){
+  if(CG.over)return;
+  CG.turn=who;const s=CG[who];CG.turnNo++;
+  s.maxMana=Math.min(10,s.maxMana+1);s.mana=s.maxMana;s.powerUsed=false;
+  s.board.forEach(m=>{m.ready=true;m.sick=false;});
+  cgDraw(s);cgCheck();cgRender();
+  if(who==='ai'&&!CG.over)cgBanner('Ход соперника',()=>cgAiTurn());
+  else if(!CG.over)cgBanner('Твой ход');
+}
+function cgEnemy(side){return side===CG.me?CG.ai:CG.me;}
+function cgSideOf(uid){if(uid==='me'||uid==='ai')return CG[uid];return CG.me.board.some(m=>m.uid===uid)?CG.me:CG.ai;}
+function cgMinion(uid){return CG.me.board.find(m=>m.uid===uid)||CG.ai.board.find(m=>m.uid===uid);}
+// урон и лечение: цель — существо (uid) или герой ('me'/'ai')
+function cgHit(side,uid,n){
+  if(n<=0)return;
+  if(uid==null||uid==='me'||uid==='ai'){side=uid?CG[uid]:side;side.hp-=n;CG.fx.push({t:side===CG.me?'me':'ai',v:-n});}
+  else{const m=cgMinion(uid);if(!m)return;m.hp-=n;CG.fx.push({t:uid,v:-n});}
+}
+function cgHeal(uid,n){
+  if(uid==='me'||uid==='ai'){const s=CG[uid],was=s.hp;s.hp=Math.min(s.max,s.hp+n);if(s.hp>was)CG.fx.push({t:uid,v:s.hp-was});return;}
+  const m=cgMinion(uid);if(!m)return;const was=m.hp;m.hp=Math.min(m.maxHp,m.hp+n);if(m.hp>was)CG.fx.push({t:uid,v:m.hp-was});
+}
+function cgCleanup(){
+  const dead=[];[CG.me,CG.ai].forEach(s=>{s.board.forEach(m=>{if(m.hp<=0)dead.push(m.uid);});});
+  return dead;
+}
+async function cgRemoveDead(){
+  const dead=cgCleanup();if(!dead.length)return;
+  dead.forEach(u=>{const el=document.querySelector(`[data-u="${u}"]`);if(el)el.classList.add('die');});
+  sfx('bad');await cgSleep(420);
+  [CG.me,CG.ai].forEach(s=>{s.board=s.board.filter(m=>m.hp>0);});
+}
+function cgCheck(){
+  if(CG.over)return true;
+  const a=CG.me.hp<=0,b=CG.ai.hp<=0;
+  if(a||b){CG.over=a&&b?'draw':a?'lose':'win';setTimeout(cgEnd,700);return true;}
+  return false;
+}
+function cgNeedsTarget(c){
+  if(c.type!=='s'||!c.fx)return null;
+  if(['dmg','heal','buff'].includes(c.fx.k))return c.fx.t;
+  return null;
+}
+function cgValidTarget(kind,uid,side){
+  const enemy=cgEnemy(side);
+  if(kind==='any')return true;
+  if(kind==='ally')return side.board.some(m=>m.uid===uid);
+  if(kind==='friend')return uid===(side===CG.me?'me':'ai')||side.board.some(m=>m.uid===uid);
+  if(kind==='enemy')return uid===(enemy===CG.me?'me':'ai')||enemy.board.some(m=>m.uid===uid);
+  return false;
+}
+// розыгрыш карты: сначала цель (если нужна), потом слово, потом эффект
+async function cgPlay(side,handUid,target,bonus){
+  const i=side.hand.findIndex(h=>h.uid===handUid);if(i<0)return false;
+  const h=side.hand[i],c=CG_CARDS[h.id];if(c.cost>side.mana)return false;
+  if(c.type==='m'&&side.board.length>=5){if(side===CG.me)cgToast('На столе максимум 5 существ');return false;}
+  side.mana-=c.cost;side.hand.splice(i,1);
+  const plus=bonus?1:0;
+  if(side===CG.me)CG.lastPlayed=h.uid;
+  if(c.type==='m'){
+    const m={uid:CG_UID++,id:h.id,atk:c.atk+plus,hp:c.hp+plus,maxHp:c.hp+plus,taunt:(c.kw||[]).includes('taunt'),charge:(c.kw||[]).includes('charge'),ready:(c.kw||[]).includes('charge'),sick:!(c.kw||[]).includes('charge'),fresh:true,bonus:!!bonus};
+    if(c.legend){m.legend=true;m.kills=0;}
+    side.board.push(m);sfx('sel');if(c.legend){cgVoice(h.id,'play');CG.legendIn=m.uid;}
+    if(c.bc&&c.bc.k==='draw')for(let k=0;k<c.bc.n;k++)cgDraw(side);
+  }else{
+    const f=c.fx,n=(f.n||0)+(['dmg','heal','aoe'].includes(f.k)?plus:0);sfx('whoosh');
+    if(f.k==='dmg')cgHit(side,target,n);
+    if(f.k==='heal')cgHeal(target,n);
+    if(f.k==='buff'){const m=cgMinion(target);if(m){m.atk+=f.a+plus;m.hp+=f.h;m.maxHp+=f.h;CG.fx.push({t:target,v:'+'+(f.a+plus)+'/+'+f.h,buff:true});}}
+    if(f.k==='draw'){for(let k=0;k<f.n+(bonus&&f.n<3?0:0);k++)cgDraw(side);if(f.self)cgHit(side,side===CG.me?'me':'ai',Math.max(0,f.self-plus));}
+    if(f.k==='aoe'){const tg=f.t==='all'?[...CG.me.board,...CG.ai.board]:cgEnemy(side).board;tg.forEach(m=>cgHit(side,m.uid,n));if(f.face)cgHit(side,side===CG.me?'ai':'me',f.face+plus);}
+    if(f.k==='team'){side.board.forEach(m=>{m.atk+=f.a+plus;CG.fx.push({t:m.uid,v:'+'+(f.a+plus),buff:true});});}
+    if(f.k==='summon'){for(let k=0;k<f.n&&side.board.length<5;k++){const t=CG_CARDS[f.tok];side.board.push({uid:CG_UID++,id:f.tok,atk:t.atk+plus,hp:t.hp,maxHp:t.hp,taunt:false,charge:false,ready:false,sick:true,fresh:true});}}
+  }
+  cgRender();await cgSleep(350);await cgRemoveDead();cgCheck();cgRender();return true;
+}
+async function cgPower(side,target){
+  const p=CG_HEROES[side.hero].power;if(side.powerUsed||side.mana<2)return false;
+  side.mana-=2;side.powerUsed=true;sfx('sel');
+  if(p.k==='selfheal')cgHeal(side===CG.me?'me':'ai',p.n);
+  if(p.k==='dmg')cgHit(side,target,p.n);
+  cgRender();await cgSleep(300);await cgRemoveDead();cgCheck();cgRender();return true;
+}
+function cgCanAttack(side,m){return m.ready&&!m.sick&&m.atk>0;}
+function cgTauntOK(side,target){const en=cgEnemy(side),t=en.board.filter(m=>m.taunt);if(!t.length)return true;return t.some(m=>m.uid===target);}
+async function cgAttack(side,uid,target){
+  const m=side.board.find(x=>x.uid===uid);if(!m||!cgCanAttack(side,m))return false;
+  if(!cgTauntOK(side,target)){if(side===CG.me)cgToast('Сначала существо с провокацией');return false;}
+  await cgLunge(uid,target);
+  if(target==='me'||target==='ai'){cgHit(side,target,m.atk);}
+  else{const t=cgMinion(target);if(!t)return false;cgHit(side,target,m.atk);cgHit(side,uid,t.atk);}
+  m.ready=false;sfx('good');cgVoice(m.id,'attack');
+  const killed=typeof target==='number'&&(cgMinion(target)||{hp:1}).hp<=0;
+  cgRender();await cgSleep(300);await cgRemoveDead();
+  const me2=side.board.find(x=>x.uid===uid);
+  if(me2&&killed&&CG_CARDS[me2.id].evo){me2.kills=(me2.kills||0)+1;if(me2.kills>=CG_CARDS[me2.id].evo.need)await cgEvolve(side,me2);else{CG.fx.push({t:uid,v:'убийство '+me2.kills+'/'+CG_CARDS[me2.id].evo.need,buff:true});}}
+  cgCheck();cgRender();return true;
+}
+// эволюция: вспышка, новая карта, раскопка колоды соперника
+async function cgEvolve(side,m){
+  const into=CG_CARDS[m.id].evo.into,c=CG_CARDS[into];
+  const el=document.querySelector(`[data-u="${m.uid}"]`);if(el)el.classList.add('evolving');
+  cgBanner('Эволюция!');haptic('heavy');await cgSleep(900);
+  m.id=into;m.atk=c.atk;m.hp=c.hp;m.maxHp=c.hp;m.kills=0;m.evolved=true;CG.evolvedIn=m.uid;cgVoice(into,'play');
+  cgRender();await cgSleep(700);
+  await cgDiscover(side);
+}
+async function cgDiscover(side){
+  const en=cgEnemy(side);const top=en.deck.splice(-3).reverse();
+  if(!top.length){cgToast('Колода соперника пуста');return;}
+  let pick=0;
+  if(side===CG.me){pick=await new Promise(res=>{
+    const w=document.createElement('div');w.className='cg-disc';
+    w.innerHTML=`<div class="cg-dbox"><small>Раскопка: верхние карты соперника</small><b>Возьми одну. Остальные сгорят.</b>
+      <div class="cg-dcards">${top.map((id,i)=>`<button class="cg-dpick" data-i="${i}" style="--d:${i*120}ms">${cgCardHTML({uid:-1-i,id},false)}</button>`).join('')}</div></div>`;
+    document.querySelector('.cg').appendChild(w);
+    w.querySelectorAll('.cg-dpick').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;w.querySelectorAll('.cg-dpick').forEach((x,j)=>x.classList.add(j===i?'take':'burn'));sfx('good');setTimeout(()=>{w.remove();res(i);},900);});
+  });}
+  else{pick=top.reduce((b,id,i)=>CG_CARDS[id].cost>CG_CARDS[top[b]].cost?i:b,0);
+    const w=document.createElement('div');w.className='cg-disc';
+    w.innerHTML=`<div class="cg-dbox"><small>Соперник раскопал твою колоду</small><b>Одну карту забрал, две сжёг</b><div class="cg-dcards">${top.map((id,i)=>`<div class="cg-dpick ${i===pick?'take':'burn'}" style="--d:${i*120}ms">${cgCardHTML({uid:-1-i,id},false)}</div>`).join('')}</div></div>`;
+    const root=document.querySelector('.cg');if(root){root.appendChild(w);await cgSleep(1600);w.remove();}}
+  if(side.hand.length<9)side.hand.push({uid:CG_UID++,id:top[pick],fresh:true});
+  cgRender();
+}
+/* ---- соперник-компьютер ---- */
+async function cgAiTurn(){
+  const s=CG.ai,e=CG.me;CG.busy=true;cgRender();
+  await cgSleep(500);
+  // карты: сначала дорогие, пока хватает маны
+  for(let loop=0;loop<10&&!CG.over;loop++){
+    const playable=s.hand.map(h=>({h,c:CG_CARDS[h.id]})).filter(x=>x.c.cost<=s.mana&&!(x.c.type==='m'&&s.board.length>=5)).sort((a,b)=>b.c.cost-a.c.cost);
+    let done=false;
+    for(const {h,c} of playable){
+      const need=cgNeedsTarget(c);let tg=null;
+      if(c.type==='s'){
+        const f=c.fx;
+        if(f.k==='dmg'){const kill=e.board.filter(m=>m.hp<=f.n).sort((a,b)=>b.atk-a.atk)[0];tg=kill?kill.uid:'me';}
+        if(f.k==='heal'){if(s.hp<=s.max-3)tg='ai';else{const hurt=s.board.find(m=>m.hp<m.maxHp);if(!hurt)continue;tg=hurt.uid;}}
+        if(f.k==='buff'){const best=[...s.board].sort((a,b)=>b.atk+b.hp-a.atk-a.hp)[0];if(!best)continue;tg=best.uid;}
+        if(f.k==='aoe'&&(f.t==='all'?e.board.length<=s.board.length:e.board.length<2))continue;
+        if(f.k==='team'&&s.board.length<2)continue;
+        if(f.k==='draw'&&f.self&&s.hp<=6)continue;
+      }
+      await cgAiShow(h.uid,c);
+      if(await cgPlay(s,h.uid,tg,Math.random()<.4)){done=true;await cgSleep(450);break;}
+    }
+    if(!done)break;
+  }
+  // атаки: смертельный удар в лицо, иначе выгодные размены, иначе в героя
+  for(const m of [...s.board]){
+    if(CG.over)break;const mm=s.board.find(x=>x.uid===m.uid);if(!mm||!cgCanAttack(s,mm))continue;
+    const taunts=e.board.filter(x=>x.taunt);let tg=null;
+    const lethal=!taunts.length&&s.board.filter(x=>cgCanAttack(s,x)).reduce((a,x)=>a+x.atk,0)>=e.hp;
+    if(taunts.length)tg=taunts.sort((a,b)=>a.hp-b.hp)[0].uid;
+    else if(lethal)tg='me';
+    else{const good=e.board.filter(x=>x.hp<=mm.atk&&x.atk<mm.hp).sort((a,b)=>b.atk-a.atk)[0];tg=good?good.uid:'me';}
+    await cgAttack(s,mm.uid,tg);await cgSleep(350);
+  }
+  if(!CG.over&&!s.powerUsed&&s.mana>=2){const p=CG_HEROES[s.hero].power;
+    if(p.k==='selfheal'&&s.hp<s.max)await cgPower(s,null);
+    else if(p.k==='dmg'){const kill=e.board.find(m=>m.hp<=1);await cgPower(s,kill?kill.uid:'me');}}
+  CG.busy=false;
+  if(!CG.over){await cgSleep(400);cgTurnStart('me');}
+}
+async function cgAiShow(uid,c){
+  const el=document.createElement('div');el.className='cg-reveal';el.innerHTML=cgCardHTML({uid,id:Object.keys(CG_CARDS).find(k=>CG_CARDS[k]===c)},true);
+  const root=document.querySelector('.cg');if(!root)return;root.appendChild(el);
+  await cgSleep(900);el.remove();
+}
+/* ---- ход игрока ---- */
+function cgCancel(){CG.sel=null;CG.target=null;cgRender();}
+async function cgTapHand(uid){
+  if(CG.turn!=='me'||CG.busy||CG.over)return;
+  const h=CG.me.hand.find(x=>x.uid===uid);const c=CG_CARDS[h.id];
+  if(c.cost>CG.me.mana){cgToast('Не хватает маны');cgShake(`[data-h="${uid}"]`);return;}
+  if(c.type==='m'&&CG.me.board.length>=5){cgToast('На столе максимум 5 существ');return;}
+  const need=cgNeedsTarget(c);
+  if(need){CG.target={mode:'card',uid,kind:need};CG.sel=null;cgRender();cgToast('Выбери цель');return;}
+  await cgPlayWithWord(uid,null);
+}
+async function cgPlayWithWord(uid,target){
+  const h=CG.me.hand.find(x=>x.uid===uid);if(!h)return;const c=CG_CARDS[h.id];
+  CG.busy=true;CG.target=null;cgRender();
+  let bonus=false;
+  if(CG.words)bonus=await cgQuiz(c);
+  CG.busy=false;await cgPlay(CG.me,uid,target,bonus);
+}
+async function cgTapTarget(t){
+  if(CG.turn!=='me'||CG.busy||CG.over)return;
+  if(CG.target){
+    const T=CG.target;
+    if(!cgValidTarget(T.kind,t,CG.me)){cgToast(T.kind==='ally'?'Выбери своё существо':'Эта цель не подходит');return;}
+    if(T.mode==='card')return cgPlayWithWord(T.uid,t);
+    if(T.mode==='power'){CG.target=null;return cgPower(CG.me,t);}
+  }
+  if(CG.sel){
+    if(t==='me'||CG.me.board.some(m=>m.uid===t)){if(CG.me.board.some(m=>m.uid===t))return cgTapMine(t);return;}
+    const a=CG.sel;CG.sel=null;CG.busy=true;await cgAttack(CG.me,a,t);CG.busy=false;cgRender();return;
+  }
+}
+function cgTapMine(uid){
+  if(CG.turn!=='me'||CG.busy||CG.over)return;
+  if(CG.target)return cgTapTarget(uid);
+  const m=CG.me.board.find(x=>x.uid===uid);
+  if(!cgCanAttack(CG.me,m)){cgToast(m.sick?'Существо только пришло: атакует со следующего хода':'Уже атаковало в этом ходу');return;}
+  CG.sel=CG.sel===uid?null:uid;sfx('tap');cgRender();
+}
+function cgTapPower(){
+  if(CG.turn!=='me'||CG.busy||CG.over)return;
+  const s=CG.me;if(s.powerUsed){cgToast('Способность уже использована');return;}if(s.mana<2){cgToast('Нужно 2 маны');return;}
+  const p=CG_HEROES[s.hero].power;
+  if(p.k==='dmg'){CG.target={mode:'power',kind:'any'};CG.sel=null;cgRender();cgToast('Выбери цель');return;}
+  cgPower(s,null);
+}
+function cgEndTurn(){if(CG.turn!=='me'||CG.busy||CG.over)return;CG.sel=null;CG.target=null;haptic('medium');cgTurnStart('ai');}
+/* ---- слово с карты ---- */
+function cgQuiz(c){
+  return new Promise(res=>{
+    const pool=Object.values(CG_CARDS).filter(x=>x!==c&&x.ru!==c.ru&&!x.token);
+    const opts=shuffle([c.ru,...shuffle(pool).slice(0,2).map(x=>x.ru)]);
+    const w=document.createElement('div');w.className='cg-quiz';
+    w.innerHTML=`<div class="cg-qbox"><small>Переведи слово с карты — карта станет сильнее</small><b>${esc(cgWord(c))}</b>
+      <div class="cg-qopts">${opts.map(o=>`<button data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div><button class="cg-qskip">Сыграть без бонуса</button></div>`;
+    document.querySelector('.cg').appendChild(w);
+    const done=ok=>{
+      w.querySelectorAll('[data-o]').forEach(b=>{b.disabled=true;if(b.dataset.o===c.ru)b.classList.add('right');});
+      const known=CG.learned.find(x=>x.en===c.en);if(!known)CG.learned.push({en:c.en,de:c.de,ru:c.ru,ok});else if(!ok)known.ok=false;
+      setTimeout(()=>{w.classList.add('out');setTimeout(()=>{w.remove();res(ok);},220);},ok?500:1100);
+    };
+    w.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{const ok=b.dataset.o===c.ru;if(!ok)b.classList.add('wrong');sfx(ok?'good':'bad');haptic(ok?'ok':'err');
+      if(ok){const t=document.createElement('div');t.className='cg-bonus';t.textContent='Бонус +1';w.querySelector('.cg-qbox').appendChild(t);}done(ok);});
+    w.querySelector('.cg-qskip').onclick=()=>{w.remove();res(false);};
+  });
+}
+/* ---- отрисовка ---- */
+function cgIcon(k){return `<svg viewBox="0 0 24 24" aria-hidden="true">${CG_ICONS[k]||CG_ICONS.card}</svg>`;}
+function cgCardHTML(h,big){
+  const c=CG_CARDS[h.id];const side=c.side;
+  const cost=CG.me&&CG.me.hand.includes(h)&&c.cost<=CG.me.mana&&CG.turn==='me'&&!CG.busy;
+  const tg=CG.target&&CG.target.mode==='card'&&CG.target.uid===h.uid;
+  return `<div class="cg-card ${side}${c.legend?' legend':''}${big?' big':''}${cost?' can':''}${tg?' aim':''}${h.fresh?' draw':''}" data-h="${h.uid}">
+    <span class="cg-cost">${c.cost}</span><span class="cg-art">${cgIcon(c.ico)}</span>
+    <b class="cg-nm">${esc(c.name)}</b><span class="cg-word">${esc(cgWord(c))}</span>
+    <span class="cg-tx">${esc(c.text)}</span>
+    ${c.type==='m'?`<span class="cg-atk">${c.atk}</span><span class="cg-hp">${c.hp}</span>`:''}</div>`;
+}
+function cgMinionHTML(m,mine){
+  const c=CG_CARDS[m.id];const can=mine&&CG.turn==='me'&&!CG.busy&&cgCanAttack(CG.me,m);
+  const sel=CG.sel===m.uid;const targetable=(CG.target&&cgValidTarget(CG.target.kind,m.uid,CG.me))||(!mine&&CG.sel&&cgTauntOK(CG.me,m.uid));
+  const fxc=(CG.legendIn===m.uid?' legend-in':'')+(CG.evolvedIn===m.uid?' evolved':'');if(CG.legendIn===m.uid)CG.legendIn=null;if(CG.evolvedIn===m.uid)CG.evolvedIn=null;
+  return `<button class="cg-min ${c.side}${c.legend?' legend':''}${fxc}${m.taunt?' taunt':''}${can?' can':''}${sel?' sel':''}${targetable?' tg':''}${m.fresh?' summon':''}${m.hp<m.maxHp?' hurt':''}" data-u="${m.uid}" data-mine="${mine?1:0}">
+    <span class="cg-art">${cgIcon(c.ico)}</span><span class="cg-mn">${esc(c.name)}</span>
+    <span class="cg-atk">${m.atk}</span><span class="cg-hp">${m.hp}</span>${m.sick&&mine?'<i class="zz">z</i>':''}${c.evo?`<i class="cg-evo">${m.kills||0}/${c.evo.need}</i>`:''}</button>`;
+}
+function cgHeroHTML(s,who){
+  const H=CG_HEROES[s.hero];const mine=who==='me';
+  const targetable=(CG.target&&cgValidTarget(CG.target.kind,who,CG.me))||(!mine&&CG.sel&&cgTauntOK(CG.me,who));
+  return `<div class="cg-hero ${s.hero}${targetable?' tg':''}" data-hero="${who}"><span class="cg-mono">${H.mono}</span>
+    <span class="cg-hn"><b>${H.short}</b><small>${H.sub}</small></span><span class="cg-hhp">${Math.max(0,s.hp)}</span></div>`;
+}
+function cgRender(){
+  if(screen!=='cards'||!CG)return;
+  const me=CG.me,ai=CG.ai,P=CG_HEROES[me.hero].power;
+  const crystals=s=>`<span class="cg-mana"><b>${s.mana}/${s.maxMana}</b>${[...Array(10)].map((_,i)=>`<i class="${i<s.mana?'on':i<s.maxMana?'used':''}"></i>`).join('')}</span>`;
+  mount(`<div class="cg ${me.hero}-side">
+    <div class="cg-top"><button class="icon-btn" id="cgx" aria-label="Выйти">${ui('close')}</button>
+      <span class="cg-aihand">${ai.hand.map(()=>'<i></i>').join('')}</span>${crystals(ai)}<span class="cg-deck" title="Колода соперника">${ai.deck.length}</span></div>
+    ${cgHeroHTML(ai,'ai')}
+    <div class="cg-row ai">${ai.board.map(m=>cgMinionHTML(m,false)).join('')||'<span class="cg-empty">пусто</span>'}</div>
+    <div class="cg-mid"><span class="cg-turn">${CG.turn==='me'?'Твой ход':'Ход соперника'}</span>
+      <button class="cg-end${CG.turn==='me'&&!CG.busy&&!me.hand.some(h=>CG_CARDS[h.id].cost<=me.mana)&&!me.board.some(m=>cgCanAttack(me,m))?' glow':''}" id="cgend" ${CG.turn!=='me'||CG.busy?'disabled':''}>Конец хода</button></div>
+    <div class="cg-row me">${me.board.map(m=>cgMinionHTML(m,true)).join('')||'<span class="cg-empty">сыграй существо из руки</span>'}</div>
+    <div class="cg-bot">${cgHeroHTML(me,'me')}
+      <button class="cg-power${me.powerUsed||me.mana<2||CG.turn!=='me'?' off':''}" id="cgpow"><b>2</b><span>${esc(P.name)}</span><small>${esc(P.text)}</small></button>
+      <div class="cg-side">${crystals(me)}<span class="cg-deck">${me.deck.length}</span></div></div>
+    <div class="cg-hand" style="--n:${me.hand.length}">${me.hand.map((h,i)=>`<div class="cg-slot" style="--i:${i}">${cgCardHTML(h)}</div>`).join('')}</div>
+    ${CG.target?'<button class="cg-cancel" id="cgcancel">Отмена</button>':''}
+  </div>`,'cgscr');
+  me.hand.forEach(h=>h.fresh=false);[me,ai].forEach(s=>s.board.forEach(m=>m.fresh=false));
+  $('#cgx').onclick=cgExitAsk;$('#cgend').onclick=cgEndTurn;$('#cgpow').onclick=cgTapPower;
+  if($('#cgcancel'))$('#cgcancel').onclick=cgCancel;
+  $$('.cg-hand .cg-card').forEach(el=>el.onclick=()=>cgTapHand(+el.dataset.h));
+  $$('.cg-min').forEach(el=>el.onclick=()=>{const u=+el.dataset.u;if(el.dataset.mine==='1')cgTapMine(u);else cgTapTarget(u);});
+  $$('.cg-hero').forEach(el=>el.onclick=()=>cgTapTarget(el.dataset.hero));
+  cgFloat();
+}
+function cgFloat(){
+  const fx=CG.fx.splice(0);
+  fx.forEach((f,i)=>{
+    const el=typeof f.t==='number'?document.querySelector(`[data-u="${f.t}"]`):document.querySelector(`[data-hero="${f.t}"]`);if(!el)return;
+    const n=document.createElement('span');n.className='cg-num '+(f.buff?'buff':f.v>0?'heal':'dmg');n.textContent=f.buff?f.v:(f.v>0?'+'+f.v:f.v);
+    n.style.animationDelay=i*60+'ms';el.appendChild(n);
+    if(!f.buff&&f.v<0){el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit');}
+  });
+}
+async function cgLunge(uid,target){
+  const a=document.querySelector(`[data-u="${uid}"]`),b=typeof target==='number'?document.querySelector(`[data-u="${target}"]`):document.querySelector(`[data-hero="${target}"]`);
+  if(!a||!b||!a.animate)return cgSleep(120);
+  const ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect();
+  const dx=(rb.left+rb.width/2)-(ra.left+ra.width/2),dy=(rb.top+rb.height/2)-(ra.top+ra.height/2);
+  a.style.zIndex=5;
+  const an=a.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${dx*.85}px,${dy*.85}px) scale(1.08)`,offset:.55},{transform:'translate(0,0) scale(1)'}],{duration:window.CG_FAST?1:520,easing:'cubic-bezier(.3,.7,.3,1)'});
+  await cgSleep(290);haptic('medium');
+  await new Promise(r=>{an.onfinish=r;setTimeout(r,600);});a.style.zIndex='';
+}
+function cgShake(sel){const el=document.querySelector(sel);if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');}
+function cgToast(t){const r=document.querySelector('.cg');if(!r)return;const d=document.createElement('div');d.className='cg-toast';d.textContent=t;r.appendChild(d);setTimeout(()=>d.remove(),1800);}
+function cgBanner(t,cb){
+  const r=document.querySelector('.cg');if(!r){if(cb)cb();return;}
+  const d=document.createElement('div');d.className='cg-banner';d.innerHTML=`<b>${esc(t)}</b>`;r.appendChild(d);
+  setTimeout(()=>{d.remove();if(cb)cb();},window.CG_FAST?0:1100);
+}
+function cgExitAsk(){
+  const leave=()=>{CG=null;delete document.body.dataset.world;renderTab('games');};
+  if(!CG||CG.over)return leave();
+  if(typeof tgConfirm==='function')tgConfirm('Выйти из партии? Прогресс этой игры пропадёт.',ok=>{if(ok)leave();});else leave();
+}
+function cgEnd(){
+  if(!CG)return;const res=CG.over;const st=store.cg=store.cg||{games:0,wins:0};st.games++;if(res==='win'){st.wins++;store.gold+=100;}save();
+  sfx(res==='win'?'win':'lose');
+  const words=CG.learned;
+  const r=document.querySelector('.cg');if(!r)return;
+  const d=document.createElement('div');d.className='cg-over '+res;
+  d.innerHTML=`<div class="cg-obox"><small>${CG_HEROES[CG.me.hero].name} против ${CG_HEROES[CG.ai.hero].name}</small><h2>${res==='win'?'Победа':res==='lose'?'Поражение':'Ничья'}</h2>
+    ${res==='win'?'<p class="cg-gold">+100 золота</p>':''}
+    ${words.length?`<div class="cg-words"><b>Слова этой партии</b>${words.map(w=>`<span class="${w.ok?'ok':'bad'}">${esc(store.langs[0]==='de'?w.de:w.en)} — ${esc(w.ru)}</span>`).join('')}</div>`:''}
+    <div class="cg-obtns"><button class="btn" id="cgagain">Ещё партия</button><button class="btn ghost" id="cgback">К играм</button></div></div>`;
+  r.appendChild(d);
+  $('#cgagain').onclick=()=>cgPick();$('#cgback').onclick=()=>{CG=null;delete document.body.dataset.world;renderTab('games');};
+}
+/* ---- выбор героя ---- */
+function cgPick(){
+  CG=null;screen='cgpick';backBtn(true);scStop();document.body.dataset.world='cards';
+  const st=store.cg||{games:0,wins:0};
+  mount(`<div class="cgp"><div class="page-head"><button class="icon-btn" id="cgpb" aria-label="Назад">${ui('back')}</button><h1 class="title">Карточная дуэль</h1></div>
+    <p class="lead">Колоды, мана и существа, как в Hearthstone. Разыгрываешь карту — переводишь слово с неё. Верно — карта получает +1.</p>
+    <div class="cgp-vs">
+      <button class="cgp-hero bateman" data-pick="bateman"><span class="cg-mono">PB</span><b>Патрик Бейтман</b><small>Уолл-стрит. Контроль: провокация, усиления, «Сделка» по всему столу.</small><em>Способность: вылечить 3</em></button>
+      <span class="cgp-x">VS</span>
+      <button class="cgp-hero durden" data-pick="durden"><span class="cg-mono">TD</span><b>Тайлер Дёрден</b><small>Бумажная улица. Агрессия: рывок, бойцы из подвала, «Хаос».</small><em>Способность: 1 урон</em></button>
+    </div>
+    <label class="cgp-opt"><input type="checkbox" id="cgw" ${store.cgWords!==false?'checked':''}> Переводить слова с карт</label>
+    <details class="cgp-how"><summary>Как играть</summary><p>У каждого 30 здоровья. Каждый ход мана растёт на 1 (до 10). Нажми карту в руке, чтобы разыграть. Существо атакует со следующего хода (кроме «Рывка»): нажми своё существо, потом цель. Существа с «Провокацией» надо убить первыми. Способность героя стоит 2 маны, раз в ход. Побеждает тот, кто первым обнулит здоровье соперника.</p></details>
+    ${st.games?`<p class="foot">Сыграно ${st.games}, побед ${st.wins}</p>`:''}</div>`,'cgscr');
+  $('#cgpb').onclick=()=>{delete document.body.dataset.world;renderTab('games');};
+  $('#cgw').onchange=e=>{store.cgWords=e.target.checked;save();};
+  $$('[data-pick]').forEach(b=>b.onclick=()=>{haptic('medium');sfx('whoosh');cgStart(b.dataset.pick);});
+}
+/* ================= разделы: включение и выключение (админ-панель) ================= */
+// Состояние берётся с сервера (/api/flags) и кэшируется. Менять может только организатор — проверяет сервер.
+const FLAG_SECTIONS=[
+  ['kino','Кинозал','вкладка со сценами'],['games','Игры','вкладка игр целиком'],['cards','Карточная дуэль',''],['spy','Шпион',''],['arena','Дуэль и турнир',''],
+  ['dota','Мир Доты',''],['cs2','Мир CS 2',''],['best','Солянка',''],['lesson','Урок: 5 новых слов','']];
+const FKEY='dota_flags_v1';
+let FLAGS={},FLAG_ADMIN=false,FLAG_RAW=null,FLAG_ME=null;
+try{const c=JSON.parse(localStorage.getItem(FKEY)||'{}');FLAGS=c.flags||{};FLAG_ADMIN=!!c.admin;}catch(e){}
+const flagOf=k=>FLAG_ADMIN?'on':(FLAGS[k]||'on');
+const FLAG_TXT={maint:'Технические работы',dev:'В разработке'};
+async function flagsCall(body){
+  if(!TG||!TG.initData)return null;
+  const r=await fetch(API+'/api/flags',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify(body)});
+  return r.json();
+}
+async function flagsRefresh(){
+  try{const r=await flagsCall({a:'get'});if(!r||!r.ok)return;
+    const changed=JSON.stringify(r.v.flags)!==JSON.stringify(FLAGS)||!!r.v.admin!==FLAG_ADMIN;
+    FLAGS=r.v.flags||{};FLAG_ADMIN=!!r.v.admin;FLAG_RAW=r.v.raw||null;FLAG_ME=r.v.me;
+    try{localStorage.setItem(FKEY,JSON.stringify({flags:FLAGS,admin:FLAG_ADMIN}));}catch(e){}
+    if(changed&&screen==='home'&&typeof renderHome==='function')renderHome();
+  }catch(e){}
+}
+// экран закрытого раздела
+function gateHTML(k,title){
+  const st=flagOf(k),dev=st==='dev';
+  return `<div class="gate anim"><div class="gate-ico ${dev?'dev':'maint'}">${dev?'<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L5 18a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/><path d="M7.5 14h9"/></svg>':'<svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0-5.3 5L4 16.7 7.3 20l5.2-5.2a4 4 0 0 0 5-5.3l-2.4 2.4-2.6-.6-.6-2.6z"/></svg>'}</div>
+    <em>${esc(title||'')}</em><h2>${FLAG_TXT[st]}</h2><p>${dev?'Раздел ещё делается. Скоро откроем — следи за ботом.':'Раздел временно закрыт: чиним и улучшаем. Скоро вернётся.'}</p></div>`;
+}
+function showGate(k,title){
+  sfx('bad');haptic('err');
+  const w=document.createElement('div');w.className='gatewrap';w.innerHTML=`<div class="gatebox">${gateHTML(k,title)}<button class="btn" data-close>Понятно</button></div>`;
+  document.body.appendChild(w);w.onclick=e=>{if(e.target===w||e.target.closest('[data-close]'))w.remove();};
+}
+// пометить закрытые кнопки и перехватить нажатия (вызывается после каждой отрисовки вкладки)
+const FLAG_BTNS={'#best':'best','#lesson':'lesson','#wDota':'dota','#wCS':'cs2','#gCards':'cards','#gSpy':'spy','#gArena':'arena'};
+function applyFlagsUI(){
+  const mark=(el,k,title)=>{const st=flagOf(k);const raw=FLAG_ADMIN&&FLAG_RAW&&FLAG_RAW[k]&&FLAG_RAW[k].st!=='on'?FLAG_RAW[k].st:null;
+    el.querySelectorAll(':scope > .fbadge').forEach(x=>x.remove());el.classList.remove('flagged');
+    if(st!=='on'){el.classList.add('flagged');el.insertAdjacentHTML('beforeend',`<span class="fbadge ${st}">${FLAG_TXT[st]}</span>`);el.onclick=e=>{e.stopPropagation();showGate(k,title);};}
+    else if(raw)el.insertAdjacentHTML('beforeend',`<span class="fbadge admin">для всех: ${FLAG_TXT[raw]}</span>`);};
+  for(const sel in FLAG_BTNS){const el=$(sel);if(el){const t=(el.querySelector('b')||{}).textContent||'';mark(el,FLAG_BTNS[sel],t);}}
+  $$('[data-sc]').forEach(el=>{const id=el.dataset.sc,k=flagOf('kino')!=='on'?'kino':'scene-'+id;const t=(el.querySelector('b')||{}).textContent||'';mark(el,k,t);});
+}
+/* ---- админ-панель ---- */
+function renderAdmin(){
+  screen='admin';backBtn(true);
+  const raw=FLAG_RAW||{};
+  const secs=[...FLAG_SECTIONS,...SCENES.map(s=>['scene-'+s.id,'Сцена: '+s.title,s.ep])];
+  mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Админ-панель</h1></div>
+    <p class="lead" style="margin:4px 0 12px">Что видят игроки. Закрытый раздел показывает «${FLAG_TXT.maint}» или «${FLAG_TXT.dev}». В поле ниже — ID тех, кому раздел открыт всегда (тестеры). ID человек узнаёт командой /myid в боте. Тебе всё открыто всегда.${FLAG_ME?` Твой ID: <b>${FLAG_ME}</b>.`:''}</p>
+    ${secs.map(([k,n,d])=>{const f=raw[k]||{st:'on',allow:[]};return `<section class="adm card" data-k="${k}"><div class="adm-h"><b>${esc(n)}</b>${d?`<small>${esc(d)}</small>`:''}</div>
+      <div class="adm-seg">${[['on','Открыт'],['maint','Тех. работы'],['dev','В разработке']].map(([v,l])=>`<button data-st="${v}" class="${f.st===v?'on':''}">${l}</button>`).join('')}</div>
+      <input class="adm-allow" placeholder="ID через запятую — кому открыт всегда" value="${esc((f.allow||[]).join(', '))}"></section>`;}).join('')}
+    <div class="cta"><button class="btn" id="admSave">Сохранить</button></div>`,'admscr');
+  $('#bBtn').onclick=()=>{sfx('tap');renderTab('profile');};
+  $$('.adm-seg button').forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));sfx('sel');});
+  $('#admSave').onclick=async()=>{
+    const flags={};$$('.adm').forEach(s=>{const st=s.querySelector('.adm-seg .on').dataset.st;const allow=s.querySelector('.adm-allow').value.split(/[\s,;]+/).map(x=>x.trim()).filter(Boolean);flags[s.dataset.k]={st,allow};});
+    const b=$('#admSave');b.disabled=true;b.textContent='Сохраняю…';
+    try{const r=await flagsCall({a:'set',flags});if(r&&r.ok){FLAG_RAW=r.v.raw;toast('Сохранено. Игроки увидят изменения при следующем открытии.');haptic('ok');}else toast((r&&r.msg)||'Не получилось сохранить');}
+    catch(e){toast('Нет связи с сервером');}
+    b.disabled=false;b.textContent='Сохранить';
+  };
+}
+
+setTimeout(flagsRefresh,400);
 function onBack(){
   if(screen==='quiz'){exitQuiz();return;}
   if(screen==='ob'){if(OB&&OB.i>0){OB.i--;renderOB();}return;}
   if(screen==='dota'||screen==='cs'){sfx('tap');renderHome();return;}
+  if(screen==='subtab'||screen==='cgpick'){sfx('tap');renderTab('games');return;}
+  if(screen==='admin'){sfx('tap');renderTab('profile');return;}
+  if(screen==='cards'){cgExitAsk();return;}
   if(screen==='wiki'){sfx('tap');renderDotaWorld();return;}
   if((screen==='duel'||screen==='duelres')&&!store.onboarded){startOnboarding();return;}
   if(screen==='spyo'){spyLeaveTo('hub');return;}
