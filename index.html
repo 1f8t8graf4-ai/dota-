@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0C0E0F">
+<title>Дота: языки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500;700;800&family=Golos+Text:wght@400;500;600;700;800&family=Playfair+Display:wght@700&family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="styles/main.css?v=4.4.1">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="topfade"></div>
+<div id="app"></div>
+<script>
+/* Где лежат видео и картинки сцен. Ключи начинаются с scenes/ — это имя репозитория на GitHub Pages, поэтому база — сам адрес Pages.
+   После переезда в Cloudflare R2 впиши сюда публичный адрес бакета (см. docs/object-storage.md). */
+window.ASSET_BASE='https://1f8t8graf4-ai.github.io';
+</script>
+<script>
+/* Загрузка данных: сначала JSON из папки data, потом код js/app.js */
+(function(){var V='4.4.1',files=["icons","dota","words","lore-vocab","tips","spy","scenes"];window.__DATA={};
+Promise.all(files.map(function(f){return fetch('data/'+f+'.json?v='+V).then(function(r){if(!r.ok)throw new Error('data/'+f+'.json');return r.json();}).then(function(j){Object.assign(window.__DATA,j);});}))
+.then(function(){var s=document.createElement('script');s.src='js/app.js?v='+V;document.body.appendChild(s);})
+.catch(function(e){var a=document.getElementById('app');if(a)a.innerHTML='<p style="padding:40px 16px;color:#ccc;font:16px system-ui">Не загрузились данные ('+e.message+'). Проверь интернет и открой ещё раз.</p>';});})();
+</script>
+</body>
+</html>
