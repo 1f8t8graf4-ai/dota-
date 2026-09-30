@@ -1809,11 +1809,162 @@ body.nofx .scn.wolf .sc-top::before{animation:none;padding-left:12px}
 .adm.l3{margin-left:28px;padding:10px 12px}
 .adm.l3 .adm-h b{font-size:14px;font-weight:600}
 .adm.l3 .adm-seg{margin:8px 0 4px}
-.adm-tst summary,.adm-eps>summary{cursor:pointer;list-style:none;font:600 12.5px var(--body);color:var(--muted);padding:4px 0}
-.adm-tst summary::-webkit-details-marker,.adm-eps>summary::-webkit-details-marker{display:none}
-.adm-tst summary::before,.adm-eps>summary::before{content:"▸ ";display:inline-block;transition:transform .2s}
-.adm-tst[open] summary::before,.adm-eps[open]>summary::before{transform:rotate(90deg)}
-.adm-tst .adm-allow{margin-top:6px}
+.adm-tg{display:block;padding:6px 0;font:600 12.5px var(--body);color:var(--muted);background:none;text-align:left}
+.adm-tg::before{content:"▸ ";display:inline-block;transition:transform .2s}
+.adm-tg.open::before{transform:rotate(90deg)}
+.adm-fold[hidden]{display:none}
+.adm .adm-fold .adm-allow{margin-top:4px}
 .adm-eps{margin:-4px 0 12px 28px}
-.adm-eps>summary{margin-bottom:6px}
 .adm-eps .adm.l3{margin-left:0}
+
+/* админ-панель: карточки не вылезают за экран, кнопка «Сохранить» не закрывает последние пункты */
+.adm{box-sizing:border-box;width:auto;max-width:none}
+.admscr{padding-bottom:calc(var(--sb,0px) + 130px)}
+.adm-seg button{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm.l3 .adm-seg button{font-size:11.5px}
+/* длинные названия сцен не вылезают за карточку на узких экранах */
+.kposter .kp-t b,.hposter .kp-t b{overflow-wrap:anywhere}
+.kposter.bone .kp-t b,.hposter.bone .kp-t b{font-size:clamp(14px,4.4vw,19px)}
+
+/* ================= 5.6: обучение в кино ================= */
+/* фраза под видео в момент, когда её говорят */
+.sc-live{display:grid;grid-template-rows:0fr;opacity:0;margin:0;transition:grid-template-rows .35s ease,opacity .3s,margin .35s}
+.sc-live.on{grid-template-rows:1fr;opacity:1;margin:10px 0 2px}
+.sc-live>*{min-height:0;overflow:hidden}
+.sc-live{position:relative;padding:0 14px;border-radius:var(--r,12px);background:var(--card,#141417);box-shadow:inset 3px 0 0 var(--acc,#fff),inset 0 0 0 1px var(--line,rgba(255,255,255,.08))}
+.sc-live.on{padding:12px 14px}
+.sc-live .lv-tag{display:block;font:700 10.5px var(--scb,system-ui);letter-spacing:.16em;text-transform:uppercase;color:var(--hi,var(--acc))}
+.sc-live b{display:block;margin-top:4px;font:700 17px/1.3 var(--scd,system-ui);color:var(--ink,#fff)}
+.sc-live .lv-ru{display:block;margin-top:2px;font-size:14px;color:var(--ink,#fff);opacity:.85}
+.sc-live .lv-n{display:block;margin-top:6px;font-size:13px;line-height:1.45;color:var(--muted,#aaa)}
+body.nofx .sc-live{transition:none}
+/* собрать фразу из слов */
+.sc-bans{display:flex;flex-wrap:wrap;gap:6px;min-height:52px;margin:14px 0 10px;padding:8px;border-radius:10px;border:1px dashed var(--line,rgba(255,255,255,.2));align-items:center}
+.sc-bans.right{border:1px solid var(--ok,#3ddc84);background:var(--okbg,rgba(61,220,132,.1))}
+.sc-bans.wrong{border:1px solid var(--bad,#ff5a5f);background:var(--badbg,rgba(255,90,95,.1))}
+.sc-bph{font-size:13px;color:var(--muted)}
+.sc-bpool{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.sc-tile{padding:8px 12px;border-radius:9px;font:600 15px var(--scb,system-ui);color:var(--ink);background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px var(--line,rgba(255,255,255,.12));transition:transform .12s}
+.sc-tile:active{transform:scale(.95)}
+.sc-tile.used{opacity:.25}
+.sc-q h2 .qsm,.sc-q h2 small.qsm{display:block;margin-top:8px;font-size:14px;font-weight:500;opacity:.75}
+.sc-fb .note{margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+/* разбор после теста */
+.sc-use{position:relative}
+.sc-use.miss{box-shadow:inset 3px 0 0 var(--bad,#ff5a5f)}
+.sc-miss{position:absolute;top:10px;right:12px;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--bad,#ff5a5f)}
+.sc-more{margin-top:10px;padding-top:10px;border-top:1px solid var(--line,rgba(255,255,255,.08))}
+.sc-more b{display:block;font:700 11px var(--scb,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--hi,var(--acc));margin:6px 0 4px}
+.sc-more p{margin:0;font-size:14px;line-height:1.5;color:var(--ink)}
+.sc-ex{list-style:none;margin:0;padding:0}
+.sc-ex li{padding:6px 0 6px 12px;border-left:2px solid var(--line,rgba(255,255,255,.15));margin:4px 0}
+.sc-ex li b{display:block;font:600 14.5px/1.35 var(--scb,system-ui);letter-spacing:0;text-transform:none;color:var(--ink);margin:0}
+.sc-ex li span{display:block;font-size:13px;color:var(--muted)}
+/* громкость пластинки */
+.vp-vol{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;opacity:.9}
+.vp-vol input{flex:1;accent-color:var(--acc);height:18px}
+/* субтитры «По центру»: оригинал крупно в центре кадра, перевод внизу */
+.sc-v[data-ss="center"] .sc-subs{top:0;bottom:6%;justify-content:flex-end}
+.sc-v[data-ss="center"] .sc-subs .sline:first-child{position:absolute;left:5%;right:5%;top:50%;transform:translateY(-50%)}
+.sc-v[data-ss="center"] .sc-subs .sline:first-child .en{font:800 clamp(18px,6.4cqw,52px)/1.18 'Golos Text','Inter',system-ui,sans-serif!important;color:#fff!important;background:none!important;letter-spacing:-.01em;
+  text-shadow:0 2px 18px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9)!important;font-style:normal!important}
+.sc-v[data-ss="center"] .sc-subs .s2 .en{font:500 clamp(12px,3.9cqw,28px)/1.35 'Golos Text',system-ui,sans-serif!important;color:#F3E9D2!important;background:rgba(0,0,0,.45)!important;padding:3px 10px;border-radius:6px;font-style:normal!important;text-shadow:none!important}
+.sc-v[data-ss="center"].has-sub::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 40% at 50% 50%,rgba(0,0,0,.35),transparent 70%);pointer-events:none;z-index:1}
+
+/* ================= 5.6: главная ================= */
+html,body{overflow-x:hidden}
+body.t-clean{--bg:#0D0E12;background-color:#0D0E12}
+.hsec{padding-right:4px}
+/* главный урок — главная кнопка экрана */
+.hlesson.hero{display:block;position:relative;width:100%;text-align:left;padding:16px 16px 14px;border-radius:18px;color:#fff;
+  background:radial-gradient(120% 140% at 100% 0%,rgba(255,255,255,.18),transparent 55%),linear-gradient(135deg,#0A84FF,#5E5CE6);box-shadow:0 18px 34px -18px rgba(10,132,255,.8)}
+.hlesson.hero .hl-top{display:flex;align-items:center;justify-content:space-between}
+.hlesson.hero em{opacity:.9}
+.hlesson.hero .hl-min{font-size:12px;opacity:.8}
+.hlesson.hero b{margin-top:6px;font:800 20px/1.2 var(--body)}
+.hlesson.hero small{margin-top:3px;font-size:13px}
+.hlesson.hero .hl-go{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:9px 16px;border-radius:99px;background:#fff;color:#0A0B10;font:700 14.5px var(--body)}
+.hlesson.hero .hl-go svg{width:14px;height:14px}
+/* цель дня — полоска, читается за секунду */
+.hgoal2{padding:12px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.hg2-h{display:flex;align-items:baseline;justify-content:space-between}
+.hg2-h b{font:700 15px var(--body)}
+.hg2-h span{font:600 13px 'PT Mono',monospace;color:var(--muted)}
+.hg2-bar{display:block;height:8px;margin:9px 0 7px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.hg2-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#30D158,#A4F07A);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.hg2-f{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}
+/* «Продолжить» в стиле сцены */
+.hcont.taxi .hc-t em,.hcont.taxi .hc-t b{color:#F2C200}
+.hcont.taxi .hc-bar i{background:#F2C200}
+.hcont.taxi::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;z-index:3;background:repeating-linear-gradient(90deg,#F2C200 0 10px,#111 10px 20px),repeating-linear-gradient(90deg,#111 0 10px,#F2C200 10px 20px);background-size:100% 5px;background-repeat:no-repeat;background-position:0 0,0 5px}
+.hcont.bone .hc-t b{font-family:'Playfair Display',Georgia,serif;letter-spacing:.06em;text-transform:uppercase;color:#EDE6D6}
+.hcont.bone .hc-t em{color:#C9B99A}
+.hcont.bone .hc-bar i{background:#EDE6D6}
+.hcont.bone{box-shadow:inset 0 0 0 1px rgba(237,230,214,.35)}
+.hcont.noir .hc-t b{font-family:'Playfair Display',Georgia,serif;font-style:italic}
+.hcont.noir .hc-t em{color:#D8B25A}
+.hcont.noir .hc-bar i{background:#B3261E}
+.hcont.wolf .hc-t b{font-family:'Playfair Display',Georgia,serif;color:#E9CB62}
+.hcont.wolf .hc-t em{color:#3ddc84;font-family:'PT Mono',monospace}
+.hcont.wolf .hc-bar i{background:#D4AF37}
+.hcont.wolf{box-shadow:inset 0 0 0 1px rgba(212,175,55,.35)}
+.cardsico{background:linear-gradient(135deg,#FF375F,#BF5AF2)!important}
+.hgame.cards .cardsico svg{fill:rgba(255,255,255,.15)}
+
+/* ================= 5.6: кинозал — разделы, сложность, баннер сцены ================= */
+.kcats{display:flex;gap:6px;margin:0 0 12px;overflow-x:auto;scrollbar-width:none}
+.kcats::-webkit-scrollbar{display:none}
+.kcats button{flex:none;padding:8px 14px;border-radius:99px;font:600 13.5px var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line)}
+.kcats button.on{background:#fff;color:#0A0B10;border-color:#fff}
+.ksoon{margin:14px 2px 4px;padding:12px 14px;border-radius:14px;border:1px dashed var(--line);font-size:13px;color:var(--muted)}
+.ksoon b{color:var(--ink);margin-right:4px}
+.kgrid .kposter.soon{display:none}
+.sc-dots{display:inline-flex;gap:3px;vertical-align:middle}
+.sc-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)}
+.sc-dots i.on{background:currentColor}
+.kp-rate{display:flex;flex-wrap:wrap;gap:4px 10px;margin:6px 0 2px;font-size:10.5px;letter-spacing:.02em;color:rgba(255,255,255,.75)}
+.kp-rate i{font-style:normal;display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.8)}
+.kp-rate .sc-dots i{width:5px;height:5px}
+/* сложность и польза на странице сцены */
+.sc-rate{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+.sc-rate>div{padding:10px 11px;border-radius:calc(var(--r,12px) - 2px);background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px var(--line,rgba(255,255,255,.08));color:var(--hi,var(--acc))}
+.sc-rate span{display:block;font:700 10px var(--scb,system-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.sc-rate small{display:block;margin-top:6px;font-size:12px;line-height:1.35;color:var(--ink);opacity:.8}
+/* баннер сцены: кадр, «дорисованный» под стиль сцены */
+.sc-ban{position:relative;height:clamp(150px,46vw,230px);margin:0 0 12px;border-radius:var(--r,14px);overflow:hidden;background:#000}
+.sc-ban::before{content:"";position:absolute;inset:0;background:var(--ban) center 30%/cover no-repeat;transform:scale(1.04);animation:banzoom 18s ease-in-out infinite alternate}
+.sc-ban::after{content:"";position:absolute;inset:0;background:
+  radial-gradient(120% 90% at 50% 30%,transparent 45%,rgba(0,0,0,.65)),
+  linear-gradient(180deg,transparent 55%,var(--bg,#000) 100%),
+  repeating-radial-gradient(circle at 17% 23%,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
+@keyframes banzoom{to{transform:scale(1.12) translateY(-2%)}}
+body.nofx .sc-ban::before{animation:none}
+.sc-ban-k{position:absolute;left:12px;top:12px;z-index:2;padding:4px 9px;border-radius:99px;font:700 10.5px var(--scb,system-ui);letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* у каждой сцены свой характер кадра */
+.scn.taxi .sc-ban{border-radius:4px;box-shadow:0 0 0 2px #F2C200}
+.scn.taxi .sc-ban::before{filter:sepia(.55) saturate(1.5) contrast(1.15) hue-rotate(-12deg)}
+.scn.taxi .sc-ban::after{background:radial-gradient(120% 90% at 50% 30%,transparent 40%,rgba(0,0,0,.7)),linear-gradient(180deg,transparent 50%,#0b0b0b 100%),repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px)}
+.scn.taxi .sc-ban-k{background:#F2C200;color:#111;border-radius:2px}
+.scn.bone .sc-ban::before{filter:grayscale(1) contrast(1.25) brightness(1.05)}
+.scn.bone .sc-ban::after{background:linear-gradient(180deg,rgba(237,230,214,.12),transparent 40%),radial-gradient(120% 90% at 50% 30%,transparent 45%,rgba(0,0,0,.6)),linear-gradient(180deg,transparent 55%,var(--bg,#000) 100%)}
+.scn.bone .sc-ban-k{background:#EDE6D6;color:#111;font-family:'Playfair Display',Georgia,serif;letter-spacing:.2em}
+.scn.noir .sc-ban::before{filter:grayscale(.85) contrast(1.2) sepia(.2)}
+.scn.noir .sc-ban-k{background:#B3261E}
+.scn.wolf .sc-ban{box-shadow:0 0 0 1px rgba(212,175,55,.5)}
+.scn.wolf .sc-ban::before{filter:saturate(1.2) sepia(.25) contrast(1.08)}
+.scn.wolf .sc-ban-k{background:#D4AF37;color:#111}
+.sc-rate .sc-dots{display:inline-flex;margin:0}
+.sc-rate .sc-dots i{width:8px;height:8px}
+.kposter .kp-t b,.hposter .kp-t b{overflow-wrap:normal;word-break:normal}
+.kposter.bone .kp-t b,.hposter.bone .kp-t b{letter-spacing:.02em;font-size:clamp(12.5px,3.7vw,17px)}
+.hrow{margin-left:-14px!important;margin-right:-14px!important;padding-left:14px!important;padding-right:14px!important;scroll-padding-left:14px}
+body.t-clean .hlesson.hero,.hlesson.hero{background:radial-gradient(120% 140% at 100% 0%,rgba(255,255,255,.18),transparent 55%),linear-gradient(135deg,#0A84FF,#5E5CE6)!important;color:#fff!important;border:0!important}
+body.t-clean .hlesson.hero em,body.t-clean .hlesson.hero small,body.t-clean .hlesson.hero b{color:#fff!important}
+
+.hlesson .hl-sc{display:block;margin:2px 0 4px;font-weight:700;font-size:15px;opacity:.95}
+
+/* 5.6: озвучка в разборе фраз */
+.sc-say{display:inline-grid;place-items:center;width:28px;height:28px;margin-left:8px;vertical-align:middle;border-radius:50%;
+  background:rgba(255,255,255,.08);color:var(--acc,#fff);font-size:14px;line-height:1}
+.sc-say svg{width:15px;height:15px}
+.sc-say:active{transform:scale(.9)}
