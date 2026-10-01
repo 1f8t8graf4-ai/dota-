@@ -1,10 +1,10 @@
 :root{
-  --bg:#0C0E0F; --stone:#1A1E20; --stone2:#22272A; --stone3:#2B3134; --black:#040505; --rim:#343B3F;
-  --ink:#EEE9DD; --muted:#A39F94; --dim:#6E6B63;
-  --gold:#F2C35B; --gold2:#B98A34; --goldtxt:#FFD66E;
+  --bg:#0A0A0B; --stone:#161618; --stone2:#1D1D21; --stone3:#26262B; --black:#050506; --rim:#303036;
+  --ink:#F3F0E8; --muted:#A3A09A; --dim:#6E6C68;
+  --gold:#F5C451; --gold2:#C28F2C; --goldtxt:#FFD978;
   --hp:#52BD43; --hp2:#246B1D; --mp:#4185E0; --mp2:#1D4A93;
   --radiant:#6FC24D; --dire:#DC4B34;
-  --display:'Alegreya SC',Georgia,'Times New Roman',serif;
+  --display:'Playfair Display',Georgia,'Times New Roman',serif;
   --body:'Golos Text',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --st:calc(max(env(safe-area-inset-top,0px),var(--tg-safe-area-inset-top,0px)) + var(--tg-content-safe-area-inset-top,0px));
   --sb:max(env(safe-area-inset-bottom,0px),var(--tg-safe-area-inset-bottom,0px));
@@ -14,7 +14,7 @@
 html,body{height:100%;margin:0;}
 body{background:var(--bg);color:var(--ink);font:15.5px/1.45 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden;overscroll-behavior:none;font-variant-numeric:tabular-nums;}
 body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background:radial-gradient(120% 60% at 50% -10%,rgba(120,92,52,.20),transparent 65%),radial-gradient(90% 50% at 50% 115%,rgba(20,40,50,.55),transparent 70%),linear-gradient(180deg,#121517,#0A0B0C);}
+  background:radial-gradient(110% 55% at 50% -12%,rgba(245,196,81,.10),transparent 65%),radial-gradient(90% 50% at 50% 118%,rgba(60,70,110,.28),transparent 70%),linear-gradient(180deg,#0F0F11,#09090A);}
 body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.18;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
 #app{max-width:520px;margin:0 auto;min-height:100%;padding:calc(var(--st) + 10px) 12px calc(var(--sb) + 18px);display:flex;flex-direction:column;}
@@ -2078,3 +2078,96 @@ body{padding-top:calc(var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-
 .mp-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
 .mp-go{padding:7px 11px;border-radius:10px;background:rgba(255,255,255,.07);color:var(--ink,#fff);font:600 12.5px 'Golos Text',sans-serif}
 .mp-empty{padding:24px 16px;border-radius:16px;background:var(--stone,#1C1C1E);color:var(--muted,#999);text-align:center;line-height:1.45}
+
+/* ================= 6.0: «Бункер» — немецкий оригинал: бетон, полевой серо-зелёный, печатная машинка, красный штамп ================= */
+body[data-scn="bunker"]{--scbg:#0b0c0b}
+.scn.bunker{--bg:#0b0c0b;--card:#151714;--line:#2a2e28;--ink:#E6E3D8;--muted:#959689;--acc:#B3261E;--acc-ink:#fff;--hi:#C9B98A;--track:#262924;
+  --ok:#6fae7a;--okbg:rgba(111,174,122,.1);--bad:#d9534a;--badbg:rgba(217,83,74,.1);--scd:'PT Mono','Courier New',monospace;--scb:'Inter','Golos Text',system-ui,sans-serif;--r:4px}
+.scn.bunker .sc-top{background:repeating-linear-gradient(0deg,#141613 0 2px,#161814 2px 4px)!important;box-shadow:inset 0 0 0 1px #2f342d!important;border-radius:4px}
+.scn.bunker .sc-top h1{font:700 34px/1.05 'PT Mono','Courier New',monospace;letter-spacing:.04em;text-transform:uppercase;color:#E6E3D8}
+.scn.bunker .sc-top .sc-meta{color:#C9B98A;letter-spacing:.2em}
+.scn.bunker .sc-top::after{content:"STRENG GEHEIM";position:absolute;right:14px;top:14px;padding:3px 8px;border:2px solid #B3261E;color:#B3261E;
+  font:700 11px 'PT Mono',monospace;letter-spacing:.12em;transform:rotate(6deg);opacity:.85}
+.scn.bunker .sc-top{position:relative}
+.scn.bunker .sc-btn{background:#B3261E;color:#fff;border-radius:3px;letter-spacing:.08em;text-transform:uppercase;font-family:'PT Mono',monospace}
+.scn.bunker .sc-btn.ghost{background:transparent;color:#E6E3D8;box-shadow:inset 0 0 0 1px #3a3f37}
+.scn.bunker .sc-ep,.scn.bunker .sc-ph,.scn.bunker .sc-use,.scn.bunker .sc-q,.scn.bunker .sc-lines{border-radius:4px!important;border:1px solid #2a2e28}
+.scn.bunker .sc-ep .t b,.scn.bunker .sc-ph .en,.scn.bunker .sc-use .en,.scn.bunker .sc-q h2{font-family:'PT Mono','Courier New',monospace!important}
+.kposter.bunker .kp-t b,.hposter.bunker .kp-t b{font-family:'PT Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
+.kposter.bunker .kp-t em{color:#C9B98A}
+.kposter.bunker{box-shadow:inset 0 0 0 1px #2f342d}
+.scn.bunker .sc-top .sc-meta{padding-right:118px}
+.scn.bunker .sc-top::after{top:12px;right:12px;font-size:10px}
+
+/* ================= 6.0: ПК и широкие экраны (полный экран в Telegram Desktop) — приложение колонкой по центру ================= */
+@media (min-width:700px){
+  html,body{background:#060607}
+  #app{max-width:520px;margin:0 auto;min-height:100vh;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,.05),0 0 80px rgba(0,0,0,.6)}
+  .topfade{left:calc(50% - 260px);right:calc(50% - 260px)}
+  .gatebox,.modal>*{max-width:480px;margin-left:auto;margin-right:auto}
+  /* видео на весь экран в плеере — на ПК без ограничений ширины */
+  .sc-v.sc-pfs{max-width:none!important}
+}
+/* на ПК курсор и наведение — как в нормальном приложении */
+html.tg-desk button,html.tg-desk [data-sc],html.tg-desk [data-show]{cursor:pointer}
+@media (hover:hover){.sc-ep:hover,.kposter:hover,.hposter:hover,.mp-it:hover{filter:brightness(1.08)}}
+
+/* ================= 6.0: общий редизайн «кино» — аватар-буква, мягкие карточки, аккуратные заголовки ================= */
+.tava.mono,.pava.mono{display:grid;place-items:center;background:linear-gradient(135deg,#F5C451,#C2552C)!important;color:#141414;font:800 20px/1 'Golos Text',system-ui,sans-serif}
+.pava.mono{font-size:34px}
+.card,.hgoal,.hg2,.hlesson,.kposter,.hposter{border-radius:18px}
+.thead .gold{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:99px;background:rgba(245,196,81,.1);color:var(--goldtxt);font-weight:700}
+.thead .gold svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+.rankchip{background:rgba(245,196,81,.12)!important;color:var(--goldtxt)!important;border-radius:99px!important}
+h1.title,.page-head .title{font-family:'Golos Text',system-ui,sans-serif;font-weight:800;letter-spacing:-.02em}
+.hsec h2,.hrowh h2,.sec-h h2{font-family:'Golos Text',system-ui,sans-serif;font-weight:800;letter-spacing:-.01em}
+.tabbar{border-radius:22px 22px 0 0;background:rgba(14,14,16,.86)!important;box-shadow:0 -1px 0 rgba(255,255,255,.06)}
+.tabbar button[aria-current="page"],.tabbar button.on{color:var(--gold)!important}
+
+/* ================= 6.0: страница сериала / фильма ================= */
+.sh-hero{display:flex;gap:14px;align-items:stretch;padding:12px;margin:4px 0 16px;border-radius:18px;background:var(--stone,#161618);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+.sh-poster{flex:none;width:96px;aspect-ratio:2/3;border-radius:12px;background:#000 var(--shp) center top/cover no-repeat;box-shadow:0 10px 24px -12px #000}
+.sh-info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.sh-info em{font-style:normal;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.sh-info b{font:800 18px/1.2 'Golos Text',system-ui,sans-serif}
+.sh-bar{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}.sh-bar i{display:block;height:100%;background:var(--gold)}
+.sh-go{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:9px 14px;border-radius:12px;background:var(--gold);color:#141414;font:700 14px 'Golos Text',sans-serif}
+.sh-go svg{width:14px;height:14px}
+.sh-info small{font-size:12px;color:var(--muted)}
+.sh-season{margin:18px 2px 10px;font:800 19px 'Golos Text',system-ui,sans-serif}
+
+/* ================= 7.0: поиск ================= */
+.srscr{padding-bottom:110px}
+.srch-pill{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 14px;padding:12px 14px;border-radius:14px;background:var(--stone,#161618);color:var(--muted);font:500 15px 'Golos Text',sans-serif;text-align:left;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+.srch-pill svg,.sr-box svg{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.sr-box{display:flex;align-items:center;gap:10px;padding:0 6px 0 14px;margin:6px 0 10px;border-radius:14px;background:var(--stone,#161618);color:var(--muted);box-shadow:inset 0 0 0 1px rgba(245,196,81,.25)}
+.sr-box input{flex:1;min-width:0;padding:13px 0;border:0;outline:none;background:none;color:var(--ink);font:500 16px 'Golos Text',sans-serif;-webkit-appearance:none}
+.sr-box input::-webkit-search-cancel-button{display:none}
+.sr-box button{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.07);color:var(--muted);font-size:20px;line-height:1}
+.sr-cats{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}
+.sr-cats button{flex:none;padding:7px 13px;border-radius:99px;background:var(--stone,#161618);color:var(--muted);font:600 13px 'Golos Text',sans-serif}
+.sr-cats button.on{background:var(--ink);color:#111}
+.sr-n{margin:0 2px 8px;font-size:12.5px;color:var(--muted)}
+.sr-it{display:block;width:100%;margin-bottom:8px;padding:12px 14px;border-radius:14px;background:var(--stone,#161618);color:var(--ink);text-align:left}
+.sr-it b{display:block;margin-top:4px;font:600 15px/1.35 'Golos Text',sans-serif}
+.sr-it small{display:block;margin-top:3px;color:#F3DA8C;font-size:13.5px;line-height:1.35}
+.sr-it em{display:block;margin-top:7px;font-style:normal;font-size:12px;color:var(--muted)}
+.sr-it.sc small{color:var(--muted)}
+.sr-k{display:inline-block;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.07);color:var(--muted);font:700 10px 'Golos Text',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.sr-k.ph{background:rgba(245,196,81,.14);color:var(--goldtxt)}
+.sr-it mark{background:rgba(245,196,81,.28);color:inherit;border-radius:3px;padding:0 1px}
+.sr-hint{padding:6px 2px;color:var(--muted);font-size:13.5px;line-height:1.45}
+.sr-hint b{display:block;margin:6px 0 8px;color:var(--ink);font:700 14px 'Golos Text',sans-serif}
+.sr-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.sr-chips button{padding:7px 11px;border-radius:99px;background:var(--stone,#161618);color:var(--ink);font:500 13px 'Golos Text',sans-serif}
+
+/* ================= 7.0: неделя в профиле ================= */
+.wk{padding:14px;margin:12px 0}
+.wk-h{display:flex;justify-content:space-between;align-items:baseline}.wk-h b{font:800 17px 'Golos Text',sans-serif}.wk-h span{color:var(--muted);font-size:13px}
+.wk-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:96px;margin:12px 0 10px;align-items:end}
+.wk-c{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px}
+.wk-c i{display:block;width:100%;min-height:3px;border-radius:6px 6px 3px 3px;background:rgba(245,196,81,.35)}
+.wk-c.today i{background:var(--gold)}
+.wk-c span{font-size:11px;color:var(--muted)}.wk-c.today span{color:var(--ink);font-weight:700}
+.wk-f{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;text-align:center}
+.wk-f b{display:block;font:800 18px 'Golos Text',sans-serif}.wk-f span{font-size:11.5px;color:var(--muted)}
