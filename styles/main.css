@@ -1968,3 +1968,113 @@ body.t-clean .hlesson.hero em,body.t-clean .hlesson.hero small,body.t-clean .hle
   background:rgba(255,255,255,.08);color:var(--acc,#fff);font-size:14px;line-height:1}
 .sc-say svg{width:15px;height:15px}
 .sc-say:active{transform:scale(.9)}
+
+/* ================= 5.8: субтитры — чёткие и аккуратные, перевод меньше и другим цветом ================= */
+.sc-subs{bottom:5%;gap:2px;padding:0 5%}
+.sc-subs .en{font:600 clamp(13px,3.6vw,18px)/1.3 'Inter','Golos Text',system-ui,sans-serif!important;letter-spacing:0!important;
+  text-shadow:0 0 1px #000,0 1px 2px rgba(0,0,0,.95),0 0 7px rgba(0,0,0,.55)!important;-webkit-font-smoothing:antialiased}
+.sc-subs .tr{display:inline-block;font:500 clamp(11.5px,3.1vw,15px)/1.3 'Inter','Golos Text',system-ui,sans-serif;color:#F3DA8C;
+  text-shadow:0 0 1px #000,0 1px 2px rgba(0,0,0,.95),0 0 6px rgba(0,0,0,.5);-webkit-font-smoothing:antialiased}
+.sc-v[data-ss="glass"] .sc-subs .en,.sc-v[data-ss="glass"] .sc-subs .tr{background:rgba(8,8,10,.52);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  padding:1px 8px!important;border-radius:6px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.sc-v[data-ss="box"] .sc-subs .tr{background:rgba(0,0,0,.78);padding:1px 8px;border-radius:4px}
+.sc-v[data-ss="big"] .sc-subs .en{font-size:clamp(15px,4.4vw,23px)!important}.sc-v[data-ss="big"] .sc-subs .tr{font-size:clamp(13px,3.7vw,19px)}
+.sc-v[data-ss="center"] .sc-subs .tr{font-size:clamp(12px,3.2vw,16px)}
+.sc-v.sc-pfs .sc-subs .en,.sc-v:fullscreen .sc-subs .en{font-size:clamp(16px,2.3vw,27px)!important}
+.sc-v.sc-pfs .sc-subs .tr,.sc-v:fullscreen .sc-subs .tr{font-size:clamp(13px,1.8vw,21px)}
+/* подсказка на паузе прямо в видео */
+.sc-hint{position:absolute;left:50%;top:50%;z-index:6;transform:translate(-50%,-50%);width:min(88%,440px);padding:12px 14px;border-radius:14px;color:#fff;text-align:left;
+  background:rgba(12,12,14,.84);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 16px 40px -16px #000,inset 0 0 0 1px rgba(255,255,255,.1);animation:mudockin .3s ease}
+.sc-hint .hn-k{display:block;font:700 10px 'Inter',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--acc,#F2C200)}
+.sc-hint b{display:block;margin-top:4px;font:700 clamp(15px,4vw,19px)/1.25 'Inter',sans-serif}
+.sc-hint small{display:block;color:rgba(255,255,255,.55);font-size:12px}
+.sc-hint .hn-ru{display:block;margin-top:2px;color:#F3DA8C;font-size:14px}
+.sc-hint .hn-n{display:block;margin-top:6px;font-size:12.5px;line-height:1.35;color:rgba(255,255,255,.72)}
+.sc-hint .hn-b{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.sc-hint .hn-b button{padding:7px 10px;border-radius:9px;background:rgba(255,255,255,.1);color:#fff;font:600 12.5px 'Inter',sans-serif;display:inline-flex;align-items:center;gap:4px}
+.sc-hint .hn-b button[data-h=go]{background:var(--acc,#F2C200);color:var(--acc-ink,#111)}
+.sc-hint .hn-b button svg{width:13px;height:13px}
+.sc-hint .hn-b button[data-h=off]{background:none;color:rgba(255,255,255,.5);margin-left:auto}
+/* карточки фраз — короткое пояснение; разбор — «Подробнее» */
+.sc-ph .nt{margin-top:6px;font-size:12.5px;line-height:1.4;color:var(--muted)}
+.sc-mbtn{margin-top:8px;padding:6px 0;background:none;color:var(--hi,var(--acc));font:600 13px var(--scb,'Inter',sans-serif)}
+.sc-mfold[hidden]{display:none}
+/* в маленьком плеере подсказка компактная и не вылезает за видео; полное пояснение — в карточке под видео */
+.sc-v:not(.sc-pfs):not(:fullscreen) .sc-hint{top:auto;bottom:6px;transform:translateX(-50%);width:calc(100% - 12px);padding:8px 10px;border-radius:10px}
+.sc-v:not(.sc-pfs):not(:fullscreen) .sc-hint .hn-n,.sc-v:not(.sc-pfs):not(:fullscreen) .sc-hint small,.sc-v:not(.sc-pfs):not(:fullscreen) .sc-hint .hn-k{display:none}
+.sc-v:not(.sc-pfs):not(:fullscreen) .sc-hint b{margin-top:0;font-size:14px}
+.sc-v:not(.sc-pfs):not(:fullscreen) .sc-hint .hn-ru{font-size:12.5px}
+.sc-v:not(.sc-pfs):not(:fullscreen) .sc-hint .hn-b{margin-top:6px}
+.sc-v:not(.sc-pfs):not(:fullscreen) .sc-hint .hn-b button{padding:5px 9px;font-size:12px}
+
+/* ================= 5.8: «Американский психопат» — тёмная версия: визитка на чёрном, без слепящих светлых карточек ================= */
+body[data-scn="bone"]{--scbg:#0d0c0b}
+.scn.bone{--bg:#0d0c0b;--card:#171614;--line:#2c2924;--ink:#EEE8DB;--muted:#9a9387;--acc:#EEE8DB;--acc-ink:#141312;--hi:#D0473D;--track:#2a2723;
+  --ok:#5fbf7a;--okbg:rgba(95,191,122,.1);--bad:#e0584c;--badbg:rgba(224,88,76,.1)}
+.scn.bone .sc-card,.scn.bone .sc-ph,.scn.bone .sc-lines,.scn.bone .sc-live,.scn.bone .sc-q,.scn.bone .sc-use,.scn.bone .sc-intro,.scn.bone .sc-lock,
+.scn.bone .sc-ep,.scn.bone .sc-ctrl button,.scn.bone .sc-mom,.scn.bone .vp{background:var(--card)!important;color:var(--ink)!important;border-color:var(--line)!important}
+.scn.bone .sc-top{background:#171614!important;color:var(--ink)!important;box-shadow:inset 0 0 0 1px rgba(238,232,219,.22)!important}
+.scn.bone .sc-top h1,.scn.bone .sc-ph .en,.scn.bone .sc-use .en,.scn.bone .sc-q h2,.scn.bone .ln b,.scn.bone .sc-ep .t b{color:#F3EDE0!important}
+.scn.bone .sc-ph .ru,.scn.bone .ln span,.scn.bone .sc-ep .t small,.scn.bone .sc-sub{color:#a9a195!important}
+.scn.bone .sc-opt{background:#1d1b19!important;color:var(--ink)!important;border-color:var(--line)!important}
+.scn.bone .sc-btn{background:#EEE8DB!important;color:#141312!important}
+.scn.bone .sc-btn.ghost{background:transparent!important;color:#EEE8DB!important;box-shadow:inset 0 0 0 1px rgba(238,232,219,.45)!important}
+.scn.bone .vp::before{opacity:.22}
+
+/* ================= 5.8: заставка «кино» вместо дотерской ================= */
+.splash2{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+  background:radial-gradient(70% 55% at 50% 45%,#16181b,#050506);transition:opacity .55s,transform .55s cubic-bezier(.5,0,.2,1)}
+.splash2.out{opacity:0;transform:scale(1.06);pointer-events:none}
+.s2-frame{position:relative;width:min(78vw,340px);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;animation:s2in .7s cubic-bezier(.2,.9,.2,1) backwards}
+.s2-frame>i{position:absolute;width:22px;height:22px;border:2px solid rgba(255,255,255,.85)}
+.s2-frame>i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}.s2-frame>i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
+.s2-frame>i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}.s2-frame>i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
+.s2-rec{position:absolute;left:14px;top:12px;display:flex;align-items:center;gap:6px;font:600 10px 'PT Mono',monospace;letter-spacing:.14em;color:rgba(255,255,255,.75)}
+.s2-rec b{width:7px;height:7px;border-radius:50%;background:#ff3b30;animation:s2blink 1s steps(2) infinite}
+.s2-t{font:700 clamp(22px,7vw,30px)/1 'Playfair Display',Georgia,serif;letter-spacing:.06em;color:#F5EFE2;white-space:nowrap}
+.s2-t span{display:inline-block;animation:s2ch .5s cubic-bezier(.2,.9,.2,1) backwards}
+.s2-sub{display:flex;flex-direction:column;align-items:center;gap:2px;animation:s2sub .45s ease 1s backwards}
+.s2-sub span{font:600 13px 'Inter',sans-serif;color:#fff;background:rgba(0,0,0,.5);padding:1px 7px;border-radius:5px}
+.s2-sub em{font:500 11.5px 'Inter',sans-serif;font-style:normal;color:#F3DA8C}
+.s2-bar{width:120px;height:2px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.s2-bar i{display:block;height:100%;background:#F3DA8C;animation:s2load 1.6s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes s2in{from{opacity:0;transform:scale(.92)}}
+@keyframes s2ch{from{opacity:0;transform:translateY(10px);filter:blur(4px)}}
+@keyframes s2sub{from{opacity:0;transform:translateY(4px)}}
+@keyframes s2load{from{width:0}to{width:100%}}
+@keyframes s2blink{50%{opacity:0}}
+/* обложка-постер у сериала или фильма с несколькими сценами */
+.kposter.show.poster .kp-img{filter:none!important;background-position:center top!important;background-size:cover!important}
+.kposter.show.poster .kp-t b{display:none}
+.kposter.show.poster .kp-grad{background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.85))!important}
+
+/* ================= 5.8: полный экран на телефоне — контент не заезжает под кнопки Telegram ================= */
+body{padding-top:calc(var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px))}
+/* панель управления видео: легче и дороже на вид — без толстых рамок, мягкие плашки */
+.scn .sc-ctrl{gap:6px!important}
+.scn .sc-ctrl button{height:40px!important;min-height:0!important;border:0!important;border-radius:11px!important;background:rgba(255,255,255,.06)!important;
+  box-shadow:none!important;color:var(--ink)!important;font-size:13px!important;transition:background .15s,transform .1s}
+.scn .sc-ctrl button:active{background:rgba(255,255,255,.14)!important;transform:scale(.96)}
+.scn .sc-ctrl button svg{width:17px;height:17px}
+.scn.bone .sc-ctrl button{background:#1f1d1b!important}
+.sc-use.miss .en{padding-right:86px}
+.hlesson.hero.rev{filter:hue-rotate(-75deg) saturate(.85)}
+/* ================= 5.9: «Мои фразы» ================= */
+.hlesson.hero.mine{filter:hue-rotate(40deg) saturate(.9)}
+.mpscr{padding-bottom:110px}
+.mp-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 12px}
+.mp-sum div{padding:12px;border-radius:14px;background:var(--stone,#1C1C1E);text-align:center}
+.mp-sum b{display:block;font:700 22px 'Golos Text',system-ui,sans-serif;color:var(--ink,#fff)}
+.mp-sum span{font-size:12px;color:var(--muted,#999)}
+.mp-q{width:100%;box-sizing:border-box;padding:12px 14px;margin-bottom:12px;border:0;border-radius:12px;background:var(--stone,#1C1C1E);color:var(--ink,#fff);font:500 15px 'Golos Text',system-ui,sans-serif;outline:none}
+.mp-list{display:flex;flex-direction:column;gap:8px}
+.mp-it{padding:14px;border-radius:16px;background:var(--stone,#1C1C1E)}
+.mp-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.mp-top b{font:700 16px/1.3 'Golos Text',system-ui,sans-serif;color:var(--ink,#fff)}
+.mp-st{flex:none;padding:3px 8px;border-radius:99px;font:700 10.5px 'Golos Text',sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.mp-st.new{background:rgba(10,132,255,.16);color:#64a8ff}.mp-st.mid{background:rgba(255,159,10,.16);color:#ffb340}.mp-st.ok{background:rgba(52,199,89,.16);color:#4cd97b}
+.mp-ru{margin-top:3px;color:#F3DA8C;font-size:14px}
+.mp-n{margin-top:6px;font-size:12.5px;line-height:1.4;color:var(--muted,#999)}
+.mp-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.mp-go{padding:7px 11px;border-radius:10px;background:rgba(255,255,255,.07);color:var(--ink,#fff);font:600 12.5px 'Golos Text',sans-serif}
+.mp-empty{padding:24px 16px;border-radius:16px;background:var(--stone,#1C1C1E);color:var(--muted,#999);text-align:center;line-height:1.45}
