@@ -2171,3 +2171,89 @@ h1.title,.page-head .title{font-family:'Golos Text',system-ui,sans-serif;font-we
 .wk-c span{font-size:11px;color:var(--muted)}.wk-c.today span{color:var(--ink);font-weight:700}
 .wk-f{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;text-align:center}
 .wk-f b{display:block;font:800 18px 'Golos Text',sans-serif}.wk-f span{font-size:11.5px;color:var(--muted)}
+
+/* ================= 7.0: субтитры — три варианта, язык, переключатель остановок ================= */
+.sc-lang{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 12px;padding:4px;border-radius:12px;background:rgba(255,255,255,.06)}
+.sc-lang button{padding:9px;border-radius:9px;background:none;color:var(--muted);font:600 14px 'Golos Text',sans-serif}
+.sc-lang button.on{background:var(--ink,#fff);color:#111}
+.sc-opts3{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.sc-opts3 button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:13px 14px;border-radius:12px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:var(--ink);text-align:left}
+.sc-opts3 button span{font:700 15.5px 'Golos Text',sans-serif}.sc-opts3 button small{font-size:12.5px;color:var(--muted)}
+.sc-opts3 button.on{box-shadow:inset 0 0 0 2px var(--acc,#F5C451);background:rgba(245,196,81,.08)}
+.sc-stop{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:14px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);color:var(--ink);text-align:left}
+.sc-stop i{flex:none;width:40px;height:24px;border-radius:12px;background:rgba(255,255,255,.18);position:relative;transition:background .2s}
+.sc-stop i::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s}
+.sc-stop.on i{background:#34c759}.sc-stop.on i::after{transform:translateX(16px)}
+.sc-stop span{font:600 14px 'Golos Text',sans-serif}.sc-stop small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+/* о чём эпизод — шаг урока */
+.sc-about{margin:0 0 10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.sc-about .sa-k{display:block;font:700 10.5px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--hi,var(--acc,#F5C451))}
+.sc-about b{display:block;margin-top:3px;font:700 15px 'Golos Text',sans-serif;color:var(--ink)}
+.sc-about small{display:block;margin-top:3px;font-size:12.5px;line-height:1.4;color:var(--muted)}
+.sc-say.on{background:var(--acc,#F5C451)!important;color:#111!important;animation:pulseSay 1s ease-in-out infinite}
+@keyframes pulseSay{50%{transform:scale(1.08)}}
+/* полный экран в портрете — видео поворачивается на весь экран */
+.sc-v.sc-pfs.rot{position:fixed!important;top:0!important;left:0!important;right:auto!important;bottom:auto!important;
+  width:100vh!important;height:100vw!important;max-width:none!important;transform:rotate(90deg) translateY(-100%);transform-origin:top left;z-index:300}
+.sc-v.sc-pfs.rot video{width:100%!important;height:100%!important;object-fit:contain}
+@media (orientation:landscape){.sc-v.sc-pfs.rot{width:100vw!important;height:100vh!important;transform:none}}
+/* экран «закрыто»: телевизионные полосы или хлопушка */
+.g2{position:relative;margin:8px 0;padding:22px 18px 20px;border-radius:20px;text-align:center;background:var(--stone,#161618);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.g2 em{display:block;margin-top:14px;font-style:normal;font:700 11px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold,#F5C451)}
+.g2 h2{margin:6px 0 6px;font:800 24px 'Golos Text',sans-serif}
+.g2 p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.45}
+.g2-bars{position:relative;display:flex;height:110px;border-radius:12px;overflow:hidden}
+.g2-bars i{flex:1;opacity:.85;animation:g2flick 2.4s steps(2) infinite}
+.g2-bars i:nth-child(odd){animation-delay:-1.2s}
+.g2-bars span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:5px 12px;border-radius:6px;background:#111;color:#fff;font:700 13px 'PT Mono',monospace;letter-spacing:.14em}
+.g2-bars::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px);animation:g2scan 3s linear infinite}
+@keyframes g2flick{50%{opacity:.7}}@keyframes g2scan{to{background-position:0 40px}}
+.g2-clap{position:relative;width:120px;height:96px;margin:4px auto 0}
+.g2-base{position:absolute;left:0;right:0;bottom:0;height:62px;border-radius:6px;background:#1e1e22;box-shadow:inset 0 0 0 2px #3a3a40}
+.g2-top{position:absolute;left:0;right:0;top:14px;height:22px;border-radius:4px;transform-origin:4px 100%;animation:g2clap 1.6s ease-in-out infinite;
+  background:repeating-linear-gradient(115deg,#f2f2f2 0 14px,#1b1b1b 14px 28px)}
+@keyframes g2clap{0%,60%,100%{transform:rotate(-22deg)}70%{transform:rotate(0)}}
+body.nofx .g2-top,body.nofx .g2-bars i,body.nofx .g2-bars::after{animation:none}
+
+/* ================= 7.0: лаборатория оформления ================= */
+.lab-note{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.lab{margin-bottom:14px;padding:12px;border-radius:14px;background:var(--stone,#161618)}
+.lab>b{display:block;margin-bottom:8px;font:700 14px 'Golos Text',sans-serif}
+.lab-chips{display:flex;flex-wrap:wrap;gap:6px}
+.lab-chips button{padding:7px 11px;border-radius:99px;background:rgba(255,255,255,.07);color:var(--ink);font:600 12.5px 'Golos Text',sans-serif}
+.lab-chips button.on{background:var(--gold,#F5C451);color:#111}
+.lab-prev{position:relative;height:120px;margin-bottom:10px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#3a4a5a,#1a2026 55%,#3b2a1c)}
+.lab-prev .sc-subs{position:absolute;left:0;right:0;bottom:10px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 5%;text-align:center}
+/* --- варианты субтитров (работают и в плеере, и в превью) --- */
+[data-ss="netflix"] .sc-subs .en{font:700 clamp(14px,3.8vw,19px)/1.25 'Inter',system-ui,sans-serif!important;background:none!important;color:#fff;text-shadow:0 0 2px #000,0 0 2px #000,0 2px 3px #000!important}
+[data-ss="netflix"] .sc-subs .tr{background:none;color:#ffd64d;font-weight:600;text-shadow:0 0 2px #000,0 0 2px #000,0 2px 3px #000}
+[data-ss="criterion"] .sc-subs .en{font:500 clamp(14px,3.9vw,19px)/1.3 Georgia,'Times New Roman',serif!important;color:#f6f1e3;background:none!important;text-shadow:0 1px 3px #000,0 0 1px #000!important}
+[data-ss="criterion"] .sc-subs .tr{font:italic 400 clamp(12px,3.3vw,16px) Georgia,serif;color:#d9cfb8;text-shadow:0 1px 3px #000}
+[data-ss="bateman"] .sc-subs .en{font:700 clamp(14px,3.8vw,18px)/1.3 'Playfair Display',Georgia,serif!important;color:#1c1a17;background:#EEE8DB!important;padding:2px 10px!important;border-radius:2px;letter-spacing:.02em;text-shadow:none!important}
+[data-ss="bateman"] .sc-subs .tr{color:#EEE8DB;background:rgba(20,18,16,.75);padding:1px 8px;border-radius:2px;font-family:'Playfair Display',Georgia,serif;font-style:italic}
+[data-ss="soprano"] .sc-subs .en{font:700 clamp(14px,3.8vw,19px)/1.3 'Playfair Display',Georgia,serif!important;color:#fff;background:none!important;text-shadow:0 0 3px #000,0 2px 4px #000!important}
+[data-ss="soprano"] .sc-subs .tr{color:#ff4a4a;font-weight:700;text-shadow:0 0 3px #000,0 1px 3px #000}
+[data-ss="taxi"] .sc-subs .en{font:700 clamp(13px,3.6vw,18px)/1.3 'PT Mono','Courier New',monospace!important;color:#F2C200;background:rgba(0,0,0,.72)!important;padding:2px 8px!important;text-shadow:none!important}
+[data-ss="taxi"] .sc-subs .tr{font-family:'PT Mono',monospace;color:#fff;background:rgba(0,0,0,.6);padding:1px 8px}
+[data-ss="wolf"] .sc-subs .en{font:700 clamp(14px,3.8vw,19px)/1.3 'Playfair Display',Georgia,serif!important;color:#F6E7A8;background:none!important;text-shadow:0 0 3px #000,0 2px 4px #000!important}
+[data-ss="wolf"] .sc-subs .tr{font-family:'PT Mono',monospace;color:#3ddc84;text-shadow:0 0 3px #000}
+[data-ss="bunker"] .sc-subs .en{font:700 clamp(13px,3.6vw,18px)/1.3 'PT Mono','Courier New',monospace!important;color:#E6E3D8;background:#0b0c0b!important;padding:2px 8px!important;letter-spacing:.02em;text-shadow:none!important;border-left:3px solid #B3261E}
+[data-ss="bunker"] .sc-subs .tr{font-family:'PT Mono',monospace;color:#C9B98A;background:rgba(11,12,11,.8);padding:1px 8px}
+[data-ss="karaoke"] .sc-subs .en{font:800 clamp(16px,4.6vw,23px)/1.25 'Golos Text',system-ui,sans-serif!important;color:#111;background:#fff!important;padding:4px 12px!important;border-radius:10px;text-shadow:none!important}
+[data-ss="karaoke"] .sc-subs .tr{font-weight:700;color:#fff;background:rgba(0,0,0,.65);padding:2px 10px;border-radius:8px;margin-top:3px}
+[data-ss="minimal"] .sc-subs .en{font:500 clamp(12px,3.2vw,15px)/1.3 'Inter',sans-serif!important;color:rgba(255,255,255,.95);background:none!important;text-shadow:0 1px 2px rgba(0,0,0,.9)!important}
+[data-ss="minimal"] .sc-subs .tr{font-size:clamp(11px,2.9vw,13px);color:rgba(255,255,255,.7);text-shadow:0 1px 2px rgba(0,0,0,.9)}
+/* --- варианты интерфейса (общие экраны; сцены сохраняют свой стиль) --- */
+body[data-ui="noir"]{--bg:#070707;--stone:#141414;--stone2:#1b1b1b;--stone3:#232323;--rim:#2e2e2e;--ink:#F4F1EA;--muted:#9c9890;--gold:#C8102E;--gold2:#8b0a1f;--goldtxt:#ff5a6e}
+body[data-ui="noir"] h1.title,body[data-ui="noir"] .sh-season{font-family:'Playfair Display',Georgia,serif!important;font-style:italic}
+body[data-ui="bone"]{--bg:#0e0d0c;--stone:#181715;--stone2:#1f1d1a;--stone3:#282521;--rim:#34302a;--ink:#EEE8DB;--muted:#a39b8e;--gold:#EEE8DB;--gold2:#bdb3a0;--goldtxt:#EEE8DB}
+body[data-ui="bone"] h1.title{font-family:'Playfair Display',Georgia,serif!important;letter-spacing:.06em;text-transform:uppercase;font-size:28px}
+body[data-ui="taxi"]{--bg:#0a0a08;--stone:#16150f;--stone2:#1d1c14;--stone3:#26241a;--rim:#3a361f;--ink:#F4EFD8;--muted:#a8a28a;--gold:#F2C200;--gold2:#b38f00;--goldtxt:#FFD84D}
+body[data-ui="taxi"] .tabbar{box-shadow:0 -4px 0 -1px #F2C200,0 -1px 0 rgba(255,255,255,.06)!important}
+body[data-ui="taxi"] h1.title{font-family:'PT Mono',monospace!important;text-transform:uppercase}
+body[data-ui="wolf"]{--bg:#060b09;--stone:#0f1714;--stone2:#14201b;--stone3:#1b2a23;--rim:#2a3a32;--ink:#EFE9DA;--muted:#9aa395;--gold:#D4AF37;--gold2:#9C7A1E;--goldtxt:#F6E7A8}
+body[data-ui="wolf"] h1.title{font-family:'Playfair Display',Georgia,serif!important}
+body[data-ui="bunker"]{--bg:#0b0c0b;--stone:#151714;--stone2:#1b1d1a;--stone3:#232621;--rim:#30342d;--ink:#E6E3D8;--muted:#959689;--gold:#B3261E;--gold2:#7d1a15;--goldtxt:#e2574e}
+body[data-ui="bunker"] h1.title{font-family:'PT Mono',monospace!important;text-transform:uppercase;letter-spacing:.04em}
+body[data-ui="neon"]{--bg:#07060c;--stone:#13111c;--stone2:#1a1726;--stone3:#221e31;--rim:#322c47;--ink:#F2EEFF;--muted:#a39cc0;--gold:#ff3d9a;--gold2:#b3216b;--goldtxt:#7af0ff}
+body[data-ui="neon"] h1.title{text-shadow:0 0 18px rgba(255,61,154,.55)}
