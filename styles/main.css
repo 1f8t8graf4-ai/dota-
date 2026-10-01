@@ -1982,6 +1982,22 @@ body.t-clean .hlesson.hero em,body.t-clean .hlesson.hero small,body.t-clean .hle
 .sc-v[data-ss="center"] .sc-subs .tr{font-size:clamp(12px,3.2vw,16px)}
 .sc-v.sc-pfs .sc-subs .en,.sc-v:fullscreen .sc-subs .en{font-size:clamp(16px,2.3vw,27px)!important}
 .sc-v.sc-pfs .sc-subs .tr,.sc-v:fullscreen .sc-subs .tr{font-size:clamp(13px,1.8vw,21px)}
+/* 7.2 rethink: подсказка одинаково читается в маленьком и полном плеере */
+.sc-v.sc-pfs .sc-hint{z-index:20;width:min(72vw,620px);max-height:70%;overflow:auto;padding:18px 20px;border-radius:18px}
+.sc-v.sc-pfs .sc-hint b{font-size:clamp(20px,3vw,32px)}
+.sc-v.sc-pfs .sc-hint .hn-ru{font-size:clamp(15px,2vw,20px)}
+.sc-v.sc-pfs .sc-hint .hn-n{font-size:clamp(13px,1.6vw,17px);max-width:58ch}
+.sc-v.sc-pfs .sc-hint .hn-b{margin-top:14px}
+.sc-v.sc-pfs .sc-hint .hn-b button{padding:9px 13px;font-size:13px}
+.life-label{display:inline-block;margin-bottom:7px;padding:4px 8px;border-radius:999px;background:rgba(245,196,81,.12);color:var(--gold,#F5C451);font:700 10px var(--body);letter-spacing:.12em;text-transform:uppercase}
+.sc-explain{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding:9px 10px;border-left:2px solid var(--acc,#F5C451);background:rgba(255,255,255,.035);border-radius:0 8px 8px 0}
+.sc-explain b{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--acc,#F5C451)}
+.sc-explain span{font-size:12.5px;line-height:1.35;color:var(--muted,#aaa)}
+.sc-exact{margin-top:8px;font-size:12px;color:var(--muted,#aaa)}
+.sc-reflect{margin-top:8px}
+.sc-reflect small{display:block;margin:4px 0 9px;color:var(--muted,#aaa);line-height:1.35}
+.sc-reflect textarea{display:block;width:100%;resize:vertical;min-height:92px;margin-bottom:8px;padding:10px 11px;border-radius:11px;border:1px solid var(--line,rgba(255,255,255,.12));background:rgba(0,0,0,.16);color:var(--ink);font:14px/1.4 var(--body)}
+.sc-result-rule{max-width:520px;margin:12px auto;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);color:var(--muted);font-size:13px;line-height:1.4}
 /* подсказка на паузе прямо в видео */
 .sc-hint{position:absolute;left:50%;top:50%;z-index:6;transform:translate(-50%,-50%);width:min(88%,440px);padding:12px 14px;border-radius:14px;color:#fff;text-align:left;
   background:rgba(12,12,14,.84);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 16px 40px -16px #000,inset 0 0 0 1px rgba(255,255,255,.1);animation:mudockin .3s ease}
@@ -2257,3 +2273,103 @@ body[data-ui="bunker"]{--bg:#0b0c0b;--stone:#151714;--stone2:#1b1d1a;--stone3:#2
 body[data-ui="bunker"] h1.title{font-family:'PT Mono',monospace!important;text-transform:uppercase;letter-spacing:.04em}
 body[data-ui="neon"]{--bg:#07060c;--stone:#13111c;--stone2:#1a1726;--stone3:#221e31;--rim:#322c47;--ink:#F2EEFF;--muted:#a39cc0;--gold:#ff3d9a;--gold2:#b3216b;--goldtxt:#7af0ff}
 body[data-ui="neon"] h1.title{text-shadow:0 0 18px rgba(255,61,154,.55)}
+
+/* ================= 7.1: урок — на слух, шаблон, теги ================= */
+.sc-hearbtn{display:inline-flex;align-items:center;gap:8px;margin:2px 0 6px;padding:12px 16px;border-radius:14px;background:var(--acc,#F5C451);color:var(--acc-ink,#111);font:700 15px 'Golos Text',sans-serif}
+.sc-hearbtn svg{width:18px;height:18px}
+.sc-hearbtn.on{animation:pulseSay 1s ease-in-out infinite}
+.sc-pat,.hn-pat{display:block;margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(245,196,81,.1);box-shadow:inset 0 0 0 1px rgba(245,196,81,.25);font-size:13.5px;line-height:1.4;color:var(--ink,#fff)}
+.sc-pat span{display:block;font:700 10px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--hi,var(--acc,#F5C451));margin-bottom:2px}
+.hn-pat{margin-top:6px;font-size:12.5px;color:#fff}
+.sc-tag{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:99px;font:700 10.5px 'Golos Text',sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.sc-tag.rude{background:rgba(255,69,58,.15);color:#ff6a60}.sc-tag.casual{background:rgba(10,132,255,.15);color:#64a8ff}
+.sc-tag.formal{background:rgba(191,90,242,.15);color:#d08cff}.sc-tag.neutral{background:rgba(255,255,255,.08);color:var(--muted,#aaa)}
+.sc-ph .sc-tag{margin:6px 0 0}
+.sc-trapwhy{margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(255,69,58,.1);color:#ffb3ad;font-size:13px;line-height:1.4}
+.sc-hint .sc-tag{margin-top:6px}
+.sc-ph.passive{opacity:.72}
+.sc-pas{display:inline-block;margin-bottom:6px;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.07);color:var(--muted,#999);font:700 10px 'Golos Text',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.sc-ph.passive .sc-dots{display:none}
+
+/* ================= 7.2: Гаврик ================= */
+.gv{position:fixed;right:12px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:70;width:64px;height:68px;pointer-events:auto;transition:opacity .3s,transform .3s}
+.gv .gv-svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}
+.gv.gv-hide{opacity:0;transform:translateY(20px);pointer-events:none}
+.gv .gv-top{transform-origin:10px 24px;transition:transform .12s}
+.gv.idle{animation:gvBob 2.6s ease-in-out infinite}
+.gv.idle .gv-eyes{animation:gvBlink 4s infinite;transform-origin:40px 44px}
+.gv.correct{animation:gvHop .5s cubic-bezier(.3,1.6,.5,1)}
+.gv.correct .gv-top{animation:gvClap .35s ease 2}
+.gv.wrong{animation:gvShrug .7s ease}
+.gv.wrong .gv-mouth{d:path("M33 59q7 -4 14 0")}
+.gv.wrong .gv-p{transform:translateY(2px)}
+.gv.streak{animation:gvSpin .8s cubic-bezier(.3,1.3,.5,1)}
+.gv.streak::after{content:"🔥";position:absolute;right:-6px;top:-10px;font-size:20px;animation:gvPop .8s ease}
+@keyframes gvBob{50%{transform:translateY(-4px)}}
+@keyframes gvBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes gvHop{40%{transform:translateY(-18px) scale(1.06)}}
+@keyframes gvClap{50%{transform:rotate(-24deg)}}
+@keyframes gvShrug{20%,60%{transform:rotate(-8deg)}40%,80%{transform:rotate(8deg)}}
+@keyframes gvSpin{to{transform:rotate(360deg)}}
+@keyframes gvPop{from{transform:scale(0)}}
+/* «фраза выучена»: удар хлопушкой — карточка раскалывается */
+.gv-stage{position:fixed;inset:0;z-index:250;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);animation:gvFade 1.6s ease forwards}
+@keyframes gvFade{0%{opacity:0}10%,85%{opacity:1}100%{opacity:0}}
+.gv-card{position:relative;max-width:78vw;padding:14px 18px;border-radius:14px;background:#F3EFE6;color:#111;font:800 18px/1.25 'Golos Text',sans-serif;text-align:center}
+.gv-card span{display:block}
+.gv-card .r{position:absolute;inset:0;padding:14px 18px;clip-path:polygon(55% 0,100% 0,100% 100%,40% 100%);background:#F3EFE6;border-radius:14px}
+.gv-card .l{clip-path:polygon(0 0,55% 0,40% 100%,0 100%)}
+.gv-stage .gv-card .l{animation:gvSplitL 1.4s ease forwards}.gv-stage .gv-card .r{animation:gvSplitR 1.4s ease forwards}
+@keyframes gvSplitL{0%,45%{transform:none;opacity:1}100%{transform:translate(-40px,120px) rotate(-18deg);opacity:0}}
+@keyframes gvSplitR{0%,45%{transform:none;opacity:1}100%{transform:translate(40px,140px) rotate(16deg);opacity:0}}
+.gv-hero{position:absolute;width:90px;height:96px;left:calc(50% - 45px);top:calc(50% - 150px);animation:gvStrike 1.4s ease forwards}
+.gv-hero .gv-svg{width:100%;height:100%}
+.gv-hero .gv-top{transform-origin:10px 24px;animation:gvClap .3s ease .45s 2}
+@keyframes gvStrike{0%{transform:translateY(-60px);opacity:0}25%{transform:none;opacity:1}40%{transform:translateY(40px) scale(1.1)}55%,100%{transform:translateY(0)}}
+.gv-cap{position:absolute;top:calc(50% + 50px);left:0;right:0;text-align:center;color:#F5C451;font:800 14px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;animation:gvPop .5s ease .6s backwards}
+/* эпизод пройден: «Снято!», мешок или огонь */
+.gv-ep{position:relative;padding:18px 22px;border-radius:16px;background:#1b1b1f;color:#F3EFE6;text-align:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.12);font-family:'Golos Text',sans-serif}
+.gv-ep b{display:block;font-size:20px}.gv-ep small{color:#a3a09a}
+.gv-stamp{position:absolute;padding:6px 16px;border:4px solid #e0413a;border-radius:8px;color:#e0413a;font:900 34px 'PT Mono',monospace;letter-spacing:.1em;transform:rotate(-12deg);animation:gvStamp .5s cubic-bezier(.2,1.6,.4,1) .35s backwards}
+@keyframes gvStamp{from{transform:rotate(-12deg) scale(2.4);opacity:0}}
+.gv-stage.bag .gv-ep{animation:gvToBag 1.3s ease .3s forwards}
+@keyframes gvToBag{to{transform:translateY(120px) scale(.1);opacity:0}}
+.gv-bag{position:absolute;top:calc(50% + 70px);font-size:56px;animation:gvWiggle .4s ease 1.1s 3}
+@keyframes gvWiggle{25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.gv-stage.burn .gv-ep{animation:gvBurn 1.4s ease .3s forwards}
+@keyframes gvBurn{50%{filter:sepia(1) saturate(4) hue-rotate(-30deg) brightness(1.2)}100%{filter:brightness(.2);transform:scale(.95);opacity:0}}
+.gv-fire{position:absolute;width:140px;height:80px;top:calc(50% - 10px);background:radial-gradient(50% 80% at 50% 100%,#ffcf4a,#ff6a1a 45%,transparent 70%);filter:blur(4px);animation:gvFlame .25s ease-in-out infinite alternate,gvPop .3s ease .3s backwards;mix-blend-mode:screen}
+@keyframes gvFlame{to{transform:scaleY(1.2) translateY(-6px)}}
+.gv-stage.ep .gv-hero{top:calc(50% - 170px)}
+.lab-gav{width:72px;height:76px;margin:0 0 8px}.lab-gav .gv-svg{width:100%;height:100%}
+body.nofx .gv,body.nofx .gv-stage{display:none}
+@media (prefers-reduced-motion:reduce){.gv,.gv-stage{animation:none!important}}
+/* Гаврик в шапке проверки, справа от полоски прогресса */
+.sc-head .gv{position:relative;right:auto;bottom:auto;flex:none;width:40px;height:42px;margin-left:8px;z-index:2}
+.sc-head{display:flex;align-items:center}
+.sc-head .sc-segs{flex:1;min-width:0}
+
+/* ================= 7.2: маскот-картинка (img/bateman.png) ================= */
+.gv-img{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 10px rgba(0,0,0,.55));user-select:none;-webkit-user-drag:none;pointer-events:none}
+.sc-head .gv{width:46px;height:52px}
+.gv.correct{animation:gvJump .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes gvJump{35%{transform:translateY(-16px) scale(1.08)}70%{transform:translateY(0) scale(.96,1.04)}}
+.gv.wrong{animation:gvShake .55s ease}
+@keyframes gvShake{15%,55%{transform:translateX(-5px) rotate(-6deg)}35%,75%{transform:translateX(5px) rotate(6deg)}}
+.gv.streak{animation:gvJump .45s cubic-bezier(.3,1.6,.5,1) 2}
+.gv-hero .gv-img{filter:drop-shadow(0 10px 18px rgba(0,0,0,.6))}
+.gv-hero{width:120px;height:140px;left:calc(50% - 60px);top:calc(50% - 190px)}
+.gv-stage.ep .gv-hero{top:calc(50% - 200px)}
+/* «рубит» фразу: вспышка по диагонали перед тем, как карточка раскалывается */
+.gv-slash{position:absolute;left:-10%;top:50%;width:120%;height:4px;background:#fff;box-shadow:0 0 18px 4px rgba(255,255,255,.85);transform:rotate(-22deg) scaleX(0);transform-origin:left center;animation:gvSlash .35s ease .5s forwards;border-radius:2px}
+@keyframes gvSlash{70%{transform:rotate(-22deg) scaleX(1);opacity:1}100%{transform:rotate(-22deg) scaleX(1);opacity:0}}
+.lab-gav{width:80px;height:92px}
+/* ================= 7.2: освоение сцены и золотая рамка ================= */
+.sc-mast{margin-top:10px}
+.sc-mbar i{background:linear-gradient(90deg,#C28F2C,#FFD978)!important}
+.sc-mhint{display:block;margin:6px 0 12px;font-size:11.5px;line-height:1.35;color:var(--muted,#999)}
+.kposter.mastered,.hposter.mastered{box-shadow:0 0 0 2px #E8B84A,0 0 22px -4px rgba(232,184,74,.75)!important}
+.kposter.mastered::after,.hposter.mastered::after{content:"🏆 Освоено";position:absolute;left:10px;top:10px;z-index:4;padding:3px 8px;border-radius:99px;background:linear-gradient(135deg,#FFD978,#C28F2C);color:#1a1405;font:800 10.5px 'Golos Text',sans-serif;letter-spacing:.04em}
+.kposter.mastered .kp-mus{display:none}
+.kposter.mastered .kp-img,.hposter.mastered .kp-img{animation:gvGold 4s ease-in-out infinite}
+@keyframes gvGold{50%{filter:brightness(1.08) saturate(1.1)}}

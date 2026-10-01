@@ -314,6 +314,8 @@ const SFXP={cs:{...SFX},
 function sfx(n,arg){if(!store.snd||store.labSnd==='off')return;try{SFX[n](arg);}catch(e){}}
 /* ================= 7.0: лаборатория оформления (видит только админ) ================= */
 // Варианты субтитров, звуков и интерфейса — переключаются в админ-панели, применяются только на этом устройстве.
+// В админской лаборатории оставлены ровно 3 варианта каждого слоя.
+// Много вариантов только мешает выбрать и раздувает CSS.
 const LAB_SUB=[['glass','Стильные (сейчас)'],['netflix','Стриминг'],['criterion','Артхаус'],['bateman','Бейтман'],['soprano','Сопрано'],['taxi','Таксист'],['wolf','Уолл-стрит'],['bunker','Бункер'],['karaoke','Крупные плашки'],['minimal','Минимум']];
 const LAB_SND=[['cs','CS (сейчас)'],['soft','Мягкие'],['typewriter','Печатная машинка'],['projector','Кинопроектор'],['arcade','8-бит'],['off','Без звуков']];
 const LAB_UI=[['grafit','Графит (сейчас)'],['noir','Нуар · Сопрано'],['bone','Визитка · Психопат'],['taxi','Такси'],['wolf','Уолл-стрит'],['bunker','Бункер'],['neon','Неон · кинотеатр']];
@@ -334,7 +336,7 @@ const joinTok=list=>list.reduce((s,t)=>t.g?s+t.t:(s?s+' '+t.t:t.t),'');
 const toks=arr=>arr.map(p=>({t:p[0],g:!!p[1]}));
 const accuracy=()=>store.answered?Math.round(store.correct/store.answered*100):null;
 function underline(name,focus){return focus&&name.includes(focus)&&focus!==name?esc(name).replace(esc(focus),`<u>${esc(focus)}</u>`):esc(name);}
-function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}document.body.classList.toggle('tabs-on',tab);if(!tab)paintTabbar(null);app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);}
+function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);if(!tab)paintTabbar(null);app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);}
 function applyFx(){
   document.body.classList.toggle('nofx',!store.fx);
   if(!document.body.dataset.world)setWorld('neutral');
@@ -1461,7 +1463,7 @@ function renderOB(){
 
 /* ================= настройки ================= */
 function renderSettings(){
-  screen='settings';backBtn(true);applyFx();
+  screen='settings';backBtn(true);applyFx();if(store.gav===undefined)store.gav=true;
   let roles=store.roles==='all'?'all':store.roles.slice();
   const row=(k,n,d)=>`<button class="checkrow frame" data-t="${k}" aria-pressed="${!!store[k]}">${BOX}<span class="ct"><span class="cn">${n}</span>${d?`<span class="cd">${d}</span>`:''}</span></button>`;
   mount(`
@@ -1477,7 +1479,7 @@ function renderSettings(){
     <section class="set-sec"><h2>Язык</h2>${langChoiceHTML(langsToChoice(store.langs))}</section>
     <section class="set-sec"><h2>Роли</h2>${rolesHTML(roles)}<p class="hint-line" id="roleHint">${roleHintText(roles)}</p></section>
     <section class="set-sec"><h2>Приложение</h2>
-      <div class="stack">${row('snd','Звук','')}${row('fx','Анимации и эффекты','')}${canFull()?row('full','Полный экран',''):''}${row('remind','Напоминания о повторении','Бот напишет днём, когда фразы из сцен пора повторить. Не чаще раза в день.')}</div>
+      <div class="stack">${row('snd','Звук','')}${row('fx','Анимации и эффекты','')}${canFull()?row('full','Полный экран',''):''}${row('remind','Напоминания о повторении','Бот напишет днём, когда фразы из сцен пора повторить. Не чаще раза в день.')}${row('gav','Маскот в проверке','Радуется верным ответам, «рубит» выученные фразы, ставит «Снято!» после эпизода.')}</div>
     </section>
     <section class="set-sec"><button class="btn dark" id="reset" style="color:#F4907A">Сбросить прогресс</button></section>`,'settings');
   $('#bBtn').onclick=()=>{sfx('tap');renderHome();};
@@ -1529,7 +1531,7 @@ function renderTab(id){
   const vis=TAB_PARENT[id]||id,sub=!!TAB_PARENT[id];
   const idx=TABS.findIndex(t=>t.id===vis),dir=idx>lastTabIdx?'fr':idx<lastTabIdx?'fl':'';lastTabIdx=idx;
   if(store.tab!==vis){store.tab=vis;save();}
-  stopSpyAll();if(typeof stopTourTimer==='function')stopTourTimer();musStop();MUSOFF=null;REVCHAIN=false;if(typeof SCUR!=='undefined')SCUR.id=null;scStop();
+  stopSpyAll();if(typeof stopTourTimer==='function')stopTourTimer();musStop();MUSOFF=null;REVCHAIN=false;{const g=document.getElementById('gav');if(g)g.remove();}if(typeof SCUR!=='undefined')SCUR.id=null;scStop();
   try{if(TG&&TG.disableClosingConfirmation)TG.disableClosingConfirmation();}catch(e){}
   screen=sub?'subtab':'home';backBtn(sub);applyFx();ensureTabbar();delete document.body.dataset.world;
   const gated=(vis==='kino'||vis==='games')&&flagOf(vis)!=='on'||(TAB_PARENT[id]&&flagOf(id)!=='on');
@@ -2197,7 +2199,7 @@ const SC_DAYS=[1,3,7,21,60];
 const scDueAll=()=>SCENES.map(s=>({s,n:scDue(s).length})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
 let REVCHAIN=false;
 function startRevChain(){const L=scDueAll();if(!L.length){toast('Сегодня повторять нечего');return;}sfx('tap');REVCHAIN=true;renderScQuiz(L[0].s.id,'rev');}
-const scMine=()=>SCENES.flatMap(s=>{const P=scP(s.id);return s.parts.flatMap(p=>p.ph).filter(f=>(P.m[f.id]||0)>0||P.r[f.id]).map(f=>({s,f,st:P.r[f.id]?P.r[f.id][0]:-1,m:P.m[f.id]||0}));});
+const scMine=()=>SCENES.flatMap(s=>{const P=scP(s.id);return s.parts.flatMap(p=>p.ph).filter(f=>!f.passive&&(P.m[f.id]||0)>0||P.r[f.id]).map(f=>({s,f,st:P.r[f.id]?P.r[f.id][0]:-1,m:P.m[f.id]||0}));});
 const scStLabel=x=>x.st>=3?['надолго','ok']:x.st>=1?['закрепляю','mid']:['учу','new'];
 function renderMyPhrases(){screen='mine';backBtn(true);const L=scMine(),de=scL()==='de';
   const card=x=>{const [l,c]=scStLabel(x);return `<div class="mp-it" data-q="${esc((x.f.en+' '+x.f.ru+' '+(x.f.de||'')).toLowerCase())}">
@@ -2232,6 +2234,14 @@ function scClip(id,fid,btn){const s=scOf(id);if(!s)return;let pi=-1,f=null;s.par
     SCLIP._t=setInterval(()=>{if(SCLIP.currentTime>=en||SCLIP.ended){SCLIP.pause();clearInterval(SCLIP._t);if(btn)btn.classList.remove('on');}},40);};
   if(SCLIP.readyState>=1)go();else{SCLIP.addEventListener('loadedmetadata',go,{once:true});SCLIP.load();}
   haptic('sel');}
+// «Шаблон» — рабочая конструкция без сюжета фильма (берётся из начала пояснения: «X — «Y»»)
+function scPattern(f){if(scL()==='de'&&!scIsDe())return null;const m=/^(.+?) — «(.+?)»/.exec(f.note||'');if(!m)return null;return [m[1].replace(/\.$/,''),m[2]];}
+// где так можно говорить: грубо / разговорное / официально / нейтрально
+function scTag(f){const x=(f.en||'')+' '+(f.de||'');
+  if(/\b(fuck\w*|shit\w*|ass(hole)?|bitch|dick(head)?|pussy|goddamn|motherfuck\w*|puke)\b|Schei(ß|ss)|verdammt|Arsch|Schlampe|kotzen/i.test(x))return ['грубо','rude'];
+  if(/\b(sufficient|circumstances|acquaintance|obligated|standpoint|assuming|indistinguishable|regularity|congratulations|impressive|reservation)\b|Umständen|erfolgt/i.test(x))return ['официально','formal'];
+  if(/\b(gonna|wanna|gotta|dunno|ain't|yeah|kidding|guys?|okay|hey)\b|in'\b|'cause/i.test(x))return ['разговорное','casual'];
+  return ['нейтрально','neutral'];}
 const scRevNext=id=>{if(!REVCHAIN)return '';const L=scDueAll().filter(x=>x.s.id!==id);return L.length?`<button class="sc-btn" id="scnrev">Дальше: ${esc(L[0].s.title)} · ${L[0].n} →</button>`:'<p class="sc-sub" style="margin-top:8px">На сегодня всё повторено 👌</p>';};
 const scDue=s=>{const r=scP(s.id).r||{},now=Date.now();return s.parts.flatMap(p=>p.ph).filter(f=>r[f.id]&&r[f.id][1]<=now);};
 const SCK='dota_sc_v1';
@@ -2241,10 +2251,15 @@ function scSave(){const s=JSON.stringify(SC);try{localStorage.setItem(SCK,s);}ca
 (function scCloud(){try{if(!TG||!TG.CloudStorage)return;TG.CloudStorage.getItem(SCK+'_n',(e,n)=>{n=+n;if(e||!n)return;const ks=[...Array(n).keys()].map(i=>SCK+'_'+i);
   TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2||!v)return;try{const c=JSON.parse(ks.map(k=>v[k]||'').join(''));for(const id in c){const a=scP(id),b=c[id];a.done=[...new Set([...a.done,...(b.done||[])])];for(const k in b.m||{})a.m[k]=Math.max(a.m[k]||0,b.m[k]);Object.assign(a.w,b.w||{});}try{localStorage.setItem(SCK,JSON.stringify(SC));}catch(x){}}catch(x){}});});}catch(e){}})();
 const scFmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
-const scLearned=s=>s.parts.flatMap(p=>p.ph).filter(f=>(scP(s.id).m[f.id]||0)>=3).length;
-const scTotal=s=>s.parts.reduce((a,p)=>a+p.ph.length,0);
+// пассивные фразы (passive:true) — только для понимания: в тесты, повторение и счёт «выучено» не идут
+const scAct=ph=>{const a=ph.filter(f=>!f.passive);return a.length>=2?a:ph;};
+const scLearned=s=>s.parts.flatMap(p=>scAct(p.ph)).filter(f=>(scP(s.id).m[f.id]||0)>=3).length;
+const scTotal=s=>s.parts.reduce((a,p)=>a+scAct(p.ph).length,0);
+// «держится надолго»: прошла 3 шага повторения (7+ дней) или весь круг до конца
+const scMastered=s=>{const P=scP(s.id);return s.parts.flatMap(p=>scAct(p.ph)).filter(f=>{const r=P.r[f.id];return r?r[0]>=3:(P.m[f.id]||0)>=3&&!!P.rDone&&P.rDone[f.id];}).length;};
+const scMasterPct=s=>{const T=scTotal(s);return T?Math.round(scMastered(s)/T*100):0;};
 let SCUR={id:null,i:0},SV=null,SW=null,SSTOP=null,SRATE=1,SSUBON=true,SRAF=0;
-function scStop(){if(SV){try{SV.pause();}catch(e){}}SV=null;SW=null;SSTOP=null;delete document.body.dataset.scn;scExitFull();scCloseSheet();}
+function scStop(){if(SV){try{SV.pause();SV.removeAttribute('src');SV.load();}catch(e){}}SV=null;SW=null;SSTOP=null;delete document.body.dataset.scn;scExitFull();scCloseSheet();}
 // язык заданий в кино: из выбранных субтитров (есть Deutsch — задания по-немецки), иначе английский
 const scIsDe=()=>{try{const s=SCUR&&SCUR.id&&scOf(SCUR.id);return !!(s&&s.lang==='de');}catch(e){return false;}};
 // в немецкой сцене первая строка субтитров всегда немецкий оригинал, вторая — выбранный перевод
@@ -2269,7 +2284,7 @@ const scDots=n=>`<span class="sc-dots">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'o
 function scRateHTML(s){if(!s.lvl&&!s.use)return '';
   return `<div class="sc-rate">${s.lvl?`<div><span>Сложность на слух</span>${scDots(s.lvl)}<small>${esc(s.lvlWhy||'')}</small></div>`:''}${s.use?`<div><span>Польза в жизни</span>${scDots(s.use)}<small>${esc(s.useWhy||'')}</small></div>`:''}</div>`;}
 function kinoCard(s){const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
-  return `<button class="kposter ${s.theme} anim" data-sc="${s.id}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
+  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}" data-sc="${s.id}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
     <span class="kp-t"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${s.parts.length} ${plural(s.parts.length,['эпизод','эпизода','эпизодов'])}${d?` · пройдено ${d}`:''}</small>
     ${s.lvl?`<span class="kp-rate"><i>сложность ${scDots(s.lvl)}</i><i>польза ${scDots(s.use||0)}</i></span>`:''}
     <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%\"></i></span></span></button>`;}
@@ -2281,7 +2296,7 @@ function kinoTabHTML(){
   const shows={},cards=[];
   for(const s of list){if(s.show){if(!shows[s.show]){shows[s.show]=[];cards.push({show:s.show});}shows[s.show].push(s);}else cards.push({s});}
   const html=cards.map(c=>{if(c.s)return kinoCard(c.s);const L=shows[c.show];if(L.length===1)return kinoCard(L[0]);const s=L[0];
-    return `<button class="kposter ${s.theme} show poster anim" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(s,'poster.jpg'))}'),url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
+    return `<button class="kposter ${s.theme} show poster anim${L.every(x=>scMasterPct(x)===100)?' mastered':''}" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(s,'poster.jpg'))}'),url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
   return `<h1 class="title anim">Кинозал</h1>
     <p class="lead anim" style="margin:4px 0 12px">Смотришь сцену с субтитрами, разбираешь живые фразы, проверяешь себя.${de?' Задания — по-немецки.':''}</p>
     <button class="srch-pill anim" onclick="renderSearch()">${ui('search')}<span>Найти фразу, сцену или слово</span></button>
@@ -2316,7 +2331,7 @@ function renderShow(name){
 
 /* ---- экраны сцены ---- */
 const scOf=id=>SCENES.find(s=>s.id===id);
-function scMount(s,html,scr){scStop();screen=scr;backBtn(true);document.body.dataset.scn=s.theme;mount(`<div class="scn ${s.theme}">${html}</div>`,'scnscr');musUI();}
+function scMount(s,html,scr){scStop();gavGone();screen=scr;backBtn(true);document.body.dataset.scn=s.theme;mount(`<div class="scn ${s.theme}">${html}</div>`,'scnscr');musUI();}
 function renderScene(id){
   if(scGate(id))return;
   const s=scOf(id),P=scP(id);SCUR={id,i:0};
@@ -2329,6 +2344,7 @@ function renderScene(id){
       <div class="sc-meta">${esc(s.ep)}</div><h1>${esc(s.title)}</h1><div class="sc-sub">${esc(s.sub)}</div>
       ${scRateHTML(s)}
       <div class="sc-prog"><span>Выучено фраз</span><b>${L} / ${T}</b></div><div class="sc-bar"><i style="width:${Math.round(L/T*100)}%"></i></div>
+      <div class="sc-prog sc-mast"><span>Освоение сцены${scMasterPct(s)===100?' · 🏆':''}</span><b>${scMastered(s)} / ${T}</b></div><div class="sc-bar sc-mbar"><i style="width:${scMasterPct(s)}%"></i></div><small class="sc-mhint">Фраза засчитывается, когда держится в памяти надолго — после повторений через 1, 3 и 7 дней.</small>
       ${scDue(s).length?`<button class="sc-btn ghost" id="screv" style="margin-bottom:8px">Повторить фразы: ${scDue(s).length} →</button>`:''}
       <button class="sc-btn" id="scgo">${d===0?'Начать':next<0?'Повторить сцену':'Продолжить: эпизод '+String(next+1).padStart(2,'0')} →</button>
     </section>
@@ -2407,9 +2423,11 @@ function scSecondPass(id,i){if(!SW||SW._guided)return;SW._guided=true;const o=SW
     const ov=$('#scvo');if(ov)ov.style.display='none';SV.currentTime=0;const p=SV.play();if(p&&p.catch)p.catch(()=>{});};
   SW.appendChild(w);}
 function scHint(h){if(!SW)return;const f=h.f,o=SW.querySelector('.sc-hint');if(o)o.remove();const w=document.createElement('div');w.className='sc-hint';
-  w.innerHTML=`<span class="hn-k">Фраза эпизода</span><b>${esc(scT(f))}</b>${scL()==='de'?`<small>${esc(f.en)}</small>`:''}<span class="hn-ru">${esc(f.ru)}</span><span class="hn-n">${esc(scNoteS(f))}</span>
-    <div class="hn-b"><button data-h="go">Дальше ${SI.play}</button><button data-h="re">Повторить</button><button data-h="off">Не останавливать</button></div>`;
+  w.innerHTML=`<span class="hn-k">Ключевая фраза</span><b>${esc(scT(f))}</b><span class="hn-ru">${esc(f.ru)}</span>
+    ${scShort(scNoteS(f))?`<span class="hn-n">${esc(scShort(scNoteS(f)))}</span>`:''}
+    <div class="hn-b"><button data-h="go">Дальше ${SI.play}</button><button data-h="sh">🔁 Повторить</button><button data-h="re">Ещё раз</button><button data-h="off">Без остановок</button></div>`;
   w.onclick=e=>{const b=e.target.closest('[data-h]');if(!b)return;e.stopPropagation();sfx('tap');const v=b.dataset.h;w.remove();
+    if(v==='sh'){let k=0;const one=()=>{if(!SW||k>=3){SW&&SW.appendChild(w);return;}k++;scPlay(h.a-0.1,h.b+0.1,()=>setTimeout(one,Math.max(1500,(h.b-h.a)*1000+600)));};w.remove();toast('Слушай и повторяй вслух — 3 раза');one();return;}
     if(v==='off'){store.scStopPh=false;save();SW._stopPh=false;}
     if(v==='re'){SV.currentTime=Math.max(0,h.a-0.2);h.shown=false;}
     const p=SV.play();if(p&&p.catch)p.catch(()=>{});};
@@ -2434,15 +2452,22 @@ function scMute(){if(!SV)return;SV.muted=!SV.muted;if(!SV.muted&&SV.volume===0)S
 function scSyncVol(){const ic=SV&&SV.muted?SI.mute:SI.vol;const a=$('#scmu');if(a)a.innerHTML=ic;const f=SW&&SW.querySelector('[data-f=mu]');if(f)f.innerHTML=ic;const v=SW&&SW.querySelector('.sc-vol');if(v&&SV)v.value=SV.muted?0:SV.volume;}
 function scSync(){const on=SV&&!SV.paused;const p=$('#scpp');if(p)p.innerHTML=on?SI.pause:SI.play;const f=SW&&SW.querySelector('[data-f=pp]');if(f)f.innerHTML=on?SI.pause:SI.play;}
 // свой полноэкранный режим: видео на весь экран Telegram, кнопки всегда можно вызвать касанием
-function scFull(){if(!SW)return;if(SW.classList.contains('sc-pfs')){scExitFull();return;}
+async function scFull(){if(!SW)return;if(SW.classList.contains('sc-pfs')){scExitFull();return;}
   SW.classList.add('sc-pfs');document.body.classList.add('sc-pfs-on');
-  try{if(TG&&TG.requestFullscreen&&TG.isVersionAtLeast&&TG.isVersionAtLeast('8.0'))TG.requestFullscreen();}catch(e){}
-  try{if(screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{});}catch(e){}
+  // Telegram 8+ — основной путь на iOS/Android. В обычном браузере/на ПК — нативный fullscreen как fallback.
+  try{
+    if(TG&&TG.requestFullscreen&&TG.isVersionAtLeast&&TG.isVersionAtLeast('8.0')) await TG.requestFullscreen();
+    else if(SW.requestFullscreen) await SW.requestFullscreen();
+  }catch(e){}
+  try{if(screen.orientation&&screen.orientation.lock&&matchMedia('(orientation:portrait)').matches)screen.orientation.lock('landscape').catch(()=>{});}catch(e){}
   if(window.innerHeight>window.innerWidth&&matchMedia('(pointer:coarse)').matches)SW.classList.add('rot');
   if(SW._wake)SW._wake();haptic('sel');}
-function scExitFull(){const w=document.querySelector('.sc-pfs');if(w)w.classList.remove('sc-pfs','idle','rot');document.body.classList.remove('sc-pfs-on');
+function scExitFull(){
+  const w=document.querySelector('.sc-pfs');if(w)w.classList.remove('sc-pfs','idle','rot');document.body.classList.remove('sc-pfs-on');
   try{if(TG&&TG.exitFullscreen&&TG.isFullscreen)TG.exitFullscreen();}catch(e){}
-  try{if(screen.orientation&&screen.orientation.unlock)screen.orientation.unlock();}catch(e){}}
+  try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});}catch(e){}
+  try{if(screen.orientation&&screen.orientation.unlock)screen.orientation.unlock();}catch(e){}
+}
 // выбор субтитров: один язык и стиль, при первом входе в сцену открывается сам
 function scCloseSheet(){const x=document.querySelector('.sc-sheetwrap');if(x)x.remove();}
 function scSubSheet(first){
@@ -2473,32 +2498,98 @@ function scBindSeek(){const r=$('#scsk');if(!r||!SV)return;
   r.oninput=()=>{if(!SV)return;SV.currentTime=+r.value;if(SSTOP&&+r.value>SSTOP.b)SSTOP.b=SV.duration||SSTOP.b;$('#sct0').textContent=scFmt(+r.value);scTick();};
   SV.addEventListener('timeupdate',()=>{if(document.activeElement!==r){r.value=SV.currentTime;}const t=$('#sct0');if(t)t.textContent=scFmt(SV.currentTime);});}
 const scPips=n=>`<span class="sc-pips">${[0,1,2].map(i=>`<i class="${i<n?'on':''}"></i>`).join('')}</span>`;
-const scCard=(f,P)=>`<div class="sc-ph sc-card"><div class="en">${esc(scT(f))}</div>${scL()==='de'?`<div class="orig">${scIsDe()?'по-английски':'в оригинале'}: ${esc(f.en)}</div>`:''}<div class="ru">${esc(f.ru)}</div>${scNoteS(f)?`<div class="nt">${esc(scNoteS(f))}</div>`:''}<div class="row"><button class="sc-mom" data-id="${f.id}">▶ Момент</button>${scPips(Math.min(3,P.m[f.id]||0))}</div></div>`;
-function renderScEp(id,i){
+const scCard=(f,P)=>`<div class="sc-ph sc-card${f.passive?' passive':''}">${f.passive?'<span class="sc-pas">для понимания · без теста</span>':''}<div class="en">${esc(scT(f))}</div><div class="ru">${esc(f.ru)}</div><span class="sc-tag ${scTag(f)[1]}">${scTag(f)[0]}</span>${scNoteS(f)?`<div class="nt">${esc(scShort(scNoteS(f)))}</div>`:''}<div class="row"><button class="sc-mom" data-id="${f.id}">▶ Момент</button>${scPips(Math.min(3,P.m[f.id]||0))}</div></div>`;
+function renderScEp(id,i,opts){
+  opts=opts||{};
   if(scGate(id,i))return;
-  const s=scOf(id),p=s.parts[i],P=scP(id),watched=P.done.includes(i)||P.w[i];SCUR={id,i};store.scLast={id,i};save();
+  const s=scOf(id),p=s.parts[i],P=scP(id),watched=P.done.includes(i)||P.w[i];
+  const focus=Array.isArray(opts.lessonList)&&opts.lessonList.length
+    ? opts.lessonList.filter(f=>f&&!f.passive&&f.pi===i).slice(0,5)
+    : scAct(p.ph);
+  const lesson=!!opts.lessonList;
+  SCUR={id,i};store.scLast={id,i};save();
+
+  const listen=focus.slice(0,3).map(f=>'«'+esc(scT(f))+'»').join(' · ');
   scMount(s,`
     <div class="sc-head"><button class="sc-back" id="scb">‹</button><div><span class="sc-meta">${esc(s.title)} · эпизод ${String(i+1).padStart(2,'0')}</span><h1>${esc(p.t)}</h1></div></div>
-    <div class="sc-about"><span class="sa-k">${watched?'Шаг 2 из 3 · смотри с разбором':'Шаг 1 из 3 · посмотри целиком'}</span><b>${esc(s.sub||s.title)}</b><small>Слушай: ${p.ph.slice(0,3).map(f=>'«'+esc(scT(f))+'»').join(' · ')}</small></div>
+    <div class="sc-about">
+      <span class="sa-k">${watched?'Шаг 2 из 3 · разбор':'Шаг 1 из 3 · сначала смотри без теста'}</span>
+      <b>${esc(s.sub||s.title)}</b>
+      <small>${lesson?'Сегодня разбираем '+focus.length+' ключевых фраз. Остальное можно посмотреть без теста.':'Слушай, смотри и запоминай. Тест появляется после просмотра.'}</small>
+      ${listen?`<div class="sc-about-phrases">${listen}</div>`:''}
+    </div>
     <div class="sc-v" id="scvw"><div class="sc-over" id="scvo"><button id="scplay" aria-label="Смотреть">▶</button></div></div>
     <div class="sc-live" id="sclive"></div>
     ${scSeek()}
     ${scCtrl()}
-    <div class="sc-sec"><h2>Фразы эпизода</h2><span>${p.ph.length}</span></div>
-    <div id="scphs">${watched?p.ph.map(f=>scCard(f,P)).join(''):'<div class="sc-lock sc-card">Сначала посмотри эпизод. Фразы откроются после просмотра.</div>'}</div>
-    <button class="sc-btn" id="scq" ${watched?'':'disabled'} style="margin-top:12px">Проверить себя →</button>
-    <div class="sc-sec"><h2>Все реплики</h2><span>с переводом</span></div>
-    <div class="sc-lines sc-card">${s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b).map(r=>`<div class="ln"><b>${esc(scRowT(r))}</b><span>${esc(r[3]).replace(/\n/g,' ')}</span></div>`).join('')}</div>`,'scep');
-  scVideo($('#scvw'),s,p);$('#scvw').appendChild($('#scvo'));
-  SW._ph=p.ph.map(f=>({f,a:f.a-p.a,b:f.b-p.a}));SW._watched=!!watched;SW._stopPh=!!watched&&store.scStopPh!==false;
-  const opened=()=>{P.w[i]=1;scSave();$('#scphs').innerHTML=p.ph.map(f=>scCard(f,P)).join('');bindMom();$('#scq').disabled=false;};
-  const run=()=>{$('#scvo').style.display='none';scPlay(0,p.b-p.a+1,()=>{$('#scvo').style.display='';opened();});};
-  $('#scplay').onclick=run;scBindCtrl(run);scBindSeek();
+    <div class="sc-sec"><h2>${lesson?'Ключевые фразы':'Фразы эпизода'}</h2><span>${focus.length}</span></div>
+    <div id="scphs">${watched?focus.map(f=>scCard(f,P)).join(''):'<div class="sc-lock sc-card">Сначала посмотри эпизод целиком. Потом начнётся второй просмотр с остановками и объяснениями.</div>'}</div>
+    <button class="sc-btn" id="scq" ${watched?'':'disabled'} style="margin-top:12px">Перейти к короткой проверке →</button>
+    ${!lesson?`<div class="sc-sec"><h2>Все реплики</h2><span>с переводом</span></div>
+      <div class="sc-lines sc-card">${s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b).map(r=>`<div class="ln"><b>${esc(scRowT(r))}</b><span>${esc(r[3]).replace(/\\n/g,' ')}</span></div>`).join('')}</div>`:''}
+    <button class="sc-btn ghost" id="scReflect" style="margin-top:10px">✍️ Что ты увидел в сцене?</button>
+    <div id="scReflectBox" hidden></div>`,'scep');
+
+  scVideo($('#scvw'),s,p);
+  $('#scvw').appendChild($('#scvo'));
+  SW._ph=focus.map(f=>({f,a:f.a-p.a,b:f.b-p.a,shown:false}));
+  SW._watched=!!watched;
+  SW._stopPh=!!watched&&store.scStopPh!==false;
+
+  const opened=()=>{
+    P.w[i]=1;scSave();
+    $('#scphs').innerHTML=focus.map(f=>scCard(f,P)).join('');
+    bindMom();
+    $('#scq').disabled=false;
+    if(lesson && !SW._guided) scSecondPass(id,i,focus);
+  };
+  const run=()=>{
+    $('#scvo').style.display='none';
+    // Первый просмотр всегда идёт непрерывно. Никаких остановок до конца.
+    scPlay(0,p.b-p.a+1,()=>{
+      $('#scvo').style.display='';
+      opened();
+    });
+  };
+  $('#scplay').onclick=run;
+  scBindCtrl(run);scBindSeek();
+
   if(!store.scSubChosen)setTimeout(()=>scSubSheet(true),250);
-  SV.addEventListener('ended',()=>{$('#scvo').style.display='';opened();scSecondPass(id,i);});
-  $('#scb').onclick=()=>{sfx('tap');renderScene(id);};$('#scq').onclick=()=>renderScQuiz(id,i);
-  function bindMom(){$$('.sc-mom').forEach(b=>b.onclick=()=>{const f=p.ph.find(x=>x.id===b.dataset.id);$('#scvo').style.display='none';window.scrollTo({top:0,behavior:'smooth'});scPlay(f.a-p.a,f.b-p.a,()=>{$('#scvo').style.display='';});});}
+
+  const ended=()=>{
+    $('#scvo').style.display='';
+    opened();
+    if(!lesson)scSecondPass(id,i,focus);
+  };
+  SV.addEventListener('ended',ended,{once:true});
+
+  $('#scb').onclick=()=>{sfx('tap');renderScene(id);};
+  $('#scq').onclick=()=>renderScQuiz(id,lesson?{list:focus,lesson:true}:i);
+
+  function bindMom(){
+    $$('.sc-mom').forEach(b=>b.onclick=()=>{
+      const f=focus.find(x=>x.id===b.dataset.id);if(!f)return;
+      $('#scvo').style.display='none';window.scrollTo({top:0,behavior:'smooth'});
+      scPlay(f.a-p.a,f.b-p.a,()=>{$('#scvo').style.display='';});
+    });
+  }
   bindMom();
+
+  // Саморефлексия пока без фальшивого «ИИ»: сохраняем ответ локально и показываем его как заметку.
+  // Настоящая проверка через модель вынесена в тикет T-7.2-REFLECT, чтобы не подделывать оценку.
+  $('#scReflect').onclick=()=>{
+    const box=$('#scReflectBox');
+    box.hidden=!box.hidden;
+    if(!box.innerHTML)box.innerHTML=`<div class="sc-reflect sc-card">
+      <b>Что ты понял из сцены?</b><small>Напиши своими словами 1–3 предложения. Сейчас это твоя заметка; проверку смысла подключим отдельно.</small>
+      <textarea id="scReflectText" rows="4" placeholder="Например: он пытается объяснить, почему..."></textarea>
+      <button class="sc-btn" id="scReflectSave">Сохранить заметку</button>
+    </div>`;
+    $('#scReflectSave').onclick=()=>{
+      const v=($('#scReflectText').value||'').trim();
+      if(v){store.scNotes=store.scNotes||{};store.scNotes[id+'_'+i]=v;save();toast('Заметка сохранена');}
+    };
+  };
 }
 // похожие варианты ответа: близкие по длине, числу слов и знаку в конце — чтобы правильный не бросался в глаза
 function scSim(f,pool,get,n){const c=get(f),wc=x=>String(x).split(/\s+/).length,end=x=>/[?]$/.test(x)?'?':/!$/.test(x)?'!':'.';
@@ -2539,84 +2630,228 @@ function scListenOpts(f,all){const src=f.en,re=new RegExp('\\b'+f.gap.replace(/[
 const scToks=s=>String(s).split(/\s+/).filter(Boolean);
 const scNorm=s=>String(s).toLowerCase().replace(/[^a-zäöüß'\s]/g,'').replace(/\s+/g,' ').trim();
 function renderScQuiz(id,i){
-  const s=scOf(id),les=!!i&&typeof i==='object',rev=i==='rev',P=scP(id),all=s.parts.flatMap(x=>x.ph),de=scL()==='de';
-  const list=les?i.list:rev?shuffle(scDue(s)).slice(0,10):s.parts[i].ph;
-  // порядок заданий: сначала узнать (послушать, понять), потом вспомнить (пропуск, собрать фразу)
-  const canBuild=f=>{const n=scToks(scT(f)).length;return n>=2&&n<=10;};
-  // 7.0: урок по ступеням — услышать → понять → узнать в ситуации → вспомнить → собрать → применить в жизни
-  const exT=f=>{const x=(f.ex||[])[0];return x?(de?x[2]||'':x[0]):'';};
-  const canSit=f=>{const v=exT(f);const n=v?scToks(v).length:0;return n>=2&&n<=11;};
-  const TYPES=de?['listen','mean','pick','sit','build']:['listen','mean','pick','sit','gap','build'];
-  const fix=q=>{let t=q.type,f=q.f;
-    if(t==='sit'&&!canSit(f))t='build';if(t==='build'&&!canBuild(f))t=de?'pick':'gap';
-    if(t==='mean'&&!(f.trap&&f.trap.length>=3))t='pick';if(t==='gap'&&(de||!f.gap))t='pick';return {...q,type:t};};
-  const L0=shuffle(list);const Q=L0.map((f,k)=>fix({f,type:TYPES[k%TYPES.length]}));
-  // если фраз мало — добавляем «применить в жизни» ещё к паре фраз, чтобы урок кончался практикой
-  L0.filter(canSit).slice(0,Math.max(0,4-Q.filter(q=>q.type==='sit').length)).forEach(f=>{if(!Q.some(q=>q.f===f&&q.type==='sit'))Q.push({f,type:'sit'});});
-  const need=Math.ceil(list.length*0.7);let n=0,ok=0;
+  const s=scOf(id),les=!!i&&typeof i==='object'&&Array.isArray(i.list),rev=i==='rev',P=scP(id),de=scL()==='de';
+  const all=s.parts.flatMap(x=>x.ph);
+  const normalList=()=>scAct(s.parts[i].ph).slice().sort((a,b)=>a.a-b.a).slice(0,5);
+  const list=les?i.list.filter(f=>!f.passive).slice(0,5):rev?shuffle(scDue(s)).slice(0,8):normalList();
+  if(!list.length){toast('Здесь пока нет фраз для проверки');return;}
+
+  // Вопрос больше не «угадай, что имел в виду генератор».
+  // Каждый экран проверяет ровно один объект:
+  // LISTEN = что реально прозвучало, BUILD = точная реплика, LIFE = та же выученная реплика в новой ситуации, GAP = одно слово.
+  const target=f=>scT(f);
+  const lifeOf=f=>{
+    if(de&&!scIsDe()&&f.exDe&&f.exDe[0])return {situation:f.exDe[0][1],target:f.exDe[0][0]};
+    const x=f.ex&&f.ex[0];if(!x)return null;
+    const tg=de?(x[2]||''):x[0];return tg?{situation:x[1],target:tg}:null;
+  };
+  const canLife=f=>{const l=lifeOf(f);const n=l?scToks(l.target).length:0;return n>=2&&n<=12;};
+  const canBuild=f=>scToks(target(f)).length>=2&&scToks(target(f)).length<=12;
+  const canGap=f=>!!f.gap&&new RegExp('\\b'+String(f.gap).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(target(f));
+
+  function taskFor(f,k,retry){
+    if(retry){
+      if(canLife(f)&&k%2===0)return 'life';if(canBuild(f))return 'build';
+      return 'listen';
+    }
+    if(rev){
+      if(k%3===0&&canLife(f))return 'life';
+      if(k%3===1&&canGap(f))return 'gap';
+      return canBuild(f)?'build':'listen';
+    }
+    const seq=['listen','mean','life','build','gap'];
+    let t=seq[k%seq.length];
+    if(t==='mean'&&!(f.trap&&f.trap.length>=3))t=canLife(f)?'life':'listen';
+    if(t==='build'&&!canBuild(f))t=canGap(f)?'gap':'listen';
+    if(t==='life'&&!canLife(f))t=canBuild(f)?'build':(canGap(f)?'gap':'listen');
+    if(t==='gap'&&!canGap(f))t=canBuild(f)?'build':'listen';
+    return t;
+  }
+
+  const Q=list.map((f,k)=>({f,type:taskFor(f,k,false)}));
+  const need=Q.length;let n=0,ok=0,wrong=0;
+
   function show(){
-    const q=Q[n],{f,type}=q;let title='',ask='',opts=[],correct='',build=null;
-    if(type==='listen'){ask='Послушай момент';title=de&&!scIsDe()?'Как это сказать по-немецки?':'Что здесь сказали?';correct=scT(f);const lo=!de&&scListenOpts(f,all);opts=shuffle([correct,...(lo&&lo.length===3?lo:scSim(f,shuffle(all),scT,3))]);}
-    if(type==='en2de'){ask='В оригинале';title=esc(f.en)+'<br><small class="qsm">Как это по-немецки?</small>';correct=f.de;opts=shuffle([correct,...scSim(f,shuffle(all),x=>x.de,3)]);}
-    if(type==='mean'){ask='Что это значит?';title=esc(scT(f));correct=f.ru;opts=shuffle([correct,...(f.trap&&f.trap.length>=3?f.trap.slice(0,3):scSim(f,shuffle(all),x=>x.ru,3))]);}
-    if(type==='gap'){ask='Какое слово пропущено?';title=esc(f.en).replace(new RegExp('\\b'+f.gap.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b'),'<span class="gap">&nbsp;</span>')+`<br><small class="qsm">${esc(f.ru)}</small>`;correct=f.gap;opts=shuffle([f.gap,...scGapOpts(f,all)]);}
-    if(type==='pick'){ask='Ситуация';const ex=(f.ex||[])[0];title=`${esc(ex?ex[1]:f.ru)}<br><small class="qsm">Какая фраза из сцены подходит?</small>`;correct=scT(f);opts=shuffle([correct,...scSim(f,shuffle(all),scT,3)]);}
-    if(type==='sit'){ask='В жизни · собери сам';const ex=f.ex[0],tgt=de?ex[2]:ex[0];title=`${esc(ex[1])}<br><small class="qsm">Скажи это ${de?'по-немецки':'по-английски'} — фразой из сцены</small>`;const tk=scToks(tgt);
-      const pool2=all.flatMap(x=>(x.ex||[]).map(e=>de?e[2]||'':e[0])).filter(v=>v&&v!==tgt);
-      const extra=shuffle(scToks(shuffle(pool2)[0]||'').filter(w=>!tk.map(scNorm).includes(scNorm(w)))).slice(0,3);
-      build={tk,pool:shuffle([...tk,...extra].map((w,k)=>({w,k}))),got:[]};correct=tgt;}
-    if(type==='build'){ask=de?'Собери по-немецки':'Собери фразу';title=esc(f.ru);const tk=scToks(scT(f));
-      const extra=shuffle(scToks(scSim(f,shuffle(all),scT,1)[0]||'').filter(w=>!tk.map(scNorm).includes(scNorm(w)))).slice(0,2);
-      build={tk,pool:shuffle([...tk,...extra].map((w,k)=>({w,k}))),got:[]};correct=scT(f);}
+    const q=Q[n],f=q.f,type=q.type;setTimeout(gavIdle,0);
+    let title='',ask='',opts=[],correct='',build=null,video=false;
+
+    if(type==='listen'){
+      ask='Услышь точную реплику';
+      title='Какая фраза прозвучала?';
+      const heard=scIsDe()?x=>x.de:x=>x.en;correct=heard(f);
+      const variants=scIsDe()?scSim(f,shuffle(all),heard,3):(scListenOpts(f,all)||scSim(f,shuffle(all),heard,3));
+      opts=shuffle([correct,...(variants||[]).slice(0,3)]);
+      while(opts.length<4){
+        const v=scSim(f,shuffle(all),heard,4).find(x=>!opts.includes(x));
+        if(!v)break;opts.push(v);
+      }
+      video=true;
+    }
+
+    if(type==='build'){
+      ask='Вспомни дословно';
+      title=`${esc(f.ru)}<br><small class="qsm">Собери именно фразу из сцены — не синоним и не свой вариант</small>`;
+      correct=target(f);
+      build=makeBuild(correct,f,all);
+    }
+
+    if(type==='life'){
+      const life=lifeOf(f);
+      ask='В жизни';
+      title=`<span class="life-label">В ЖИЗНИ</span><br>${esc(life.situation)}<br><small class="qsm">Собери это ${de?'по-немецки':'по-английски'} — по шаблону фразы из сцены</small>`;
+      correct=life.target;
+      build=makeBuild(correct,f,all);
+      q.life=life;
+    }
+
+    if(type==='mean'){
+      ask='Что это значит?';title=esc(target(f));correct=f.ru;opts=shuffle([correct,...f.trap.slice(0,3)]);
+    }
+
+    if(type==='gap'){
+      ask='Закрепи ключевое слово';
+      title=esc(target(f)).replace(new RegExp('\\b'+String(f.gap).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i'),'<span class="gap">&nbsp;</span>')
+        +`<br><small class="qsm">${esc(f.ru)}</small>`;
+      correct=f.gap;
+      opts=shuffle([correct,...scGapOpts(f,all)]).slice(0,4);
+    }
+
     const p=s.parts[f.pi];
     scMount(s,`
-      <div class="sc-head"><button class="sc-back" id="scb">×</button><div class="sc-segs">${Q.map((x,k)=>`<i class="${k<n?(x.res?'ok':'bad'):k===n?'cur':''}"></i>`).join('')}</div></div>
-      ${type==='listen'?`<div class="sc-v" id="scvw"><div class="sc-over" id="scvo"><button id="scplay">▶</button></div></div>${scCtrl()}`:''}
-      <div class="sc-q sc-card"><div class="sc-meta">${ask}${q.re?' · ещё раз':''}</div><h2>${title}</h2>
-        ${build?`<div class="sc-bans" id="scbans"></div><div class="sc-bpool" id="scbpool"></div><button class="sc-btn" id="scbchk" disabled>Проверить</button>`
-          :`<div class="sc-opts">${opts.map(o=>`<button class="sc-opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`}<div id="scfb"></div></div>`,'scq');
+      <div class="sc-head"><button class="sc-back" id="scb">×</button>
+        <div class="sc-segs">${Q.map((x,k)=>`<i class="${k<n?(x.res?'ok':'bad'):k===n?'cur':''}"></i>`).join('')}</div>
+      </div>
+      ${video?`<div class="sc-v sc-qvideo" id="scvw"><div class="sc-over" id="scvo"><button id="scplay" aria-label="Послушать">▶</button></div></div>${scCtrl()}`:''}
+      <div class="sc-q sc-card">
+        <div class="sc-meta">${ask}${q.re?' · повтор этой фразы':''}</div>
+        <h2>${title}</h2>
+        ${build
+          ?`<div class="sc-bans" id="scbans"></div><div class="sc-bpool" id="scbpool"></div><button class="sc-btn" id="scbchk" disabled>Проверить точную фразу</button>`
+          :`<div class="sc-opts">${opts.map(o=>`<button class="sc-opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`}
+        <div id="scfb"></div>
+      </div>`,'scq');
+
     $('#scb').onclick=()=>les||(rev&&REVCHAIN)?renderTab('learn'):rev?renderScene(id):renderScEp(id,i);
-    if(type==='listen'){scVideo($('#scvw'),s,p,true);$('#scvw').appendChild($('#scvo'));
-      const run=()=>{$('#scvo').style.display='none';scPlay(f.a-p.a,f.b-p.a,()=>{$('#scvo').style.display='';});};$('#scplay').onclick=run;scBindCtrl(run);}
+
+    if(video){
+      scVideo($('#scvw'),s,p,true);$('#scvw').appendChild($('#scvo'));
+      const run=()=>{$('#scvo').style.display='none';scPlay(f.a-p.a,f.b-p.a,()=>{$('#scvo').style.display='';});};
+      $('#scplay').onclick=run;scBindCtrl(run);
+      setTimeout(run,250);
+    }
+
     const answer=(right,el)=>{
-      if(q.res!==undefined)return;q.res=right;if(right)ok++;
-      // ошибся — эта фраза вернётся через пару вопросов другим заданием
-      if(!right&&!q.re){const alt={listen:'pick',mean:'pick',pick:'build',gap:'listen',build:'pick',sit:'pick',en2de:'pick'}[type]||'pick';Q.splice(Math.min(Q.length,n+3),0,fix({f,type:alt,re:true}));}
-      const before=P.m[f.id]||0;P.m[f.id]=Math.max(0,Math.min(3,before+(right?1:-1)));
-      if(rev){if(right){const st=((P.r[f.id]||[0])[0])+1;if(st>=SC_DAYS.length)delete P.r[f.id];else P.r[f.id]=[st,Date.now()+SC_DAYS[st]*864e5];}else{delete P.r[f.id];P.m[f.id]=2;}}
-      else if(P.m[f.id]>=3&&before<3&&!P.r[f.id])P.r[f.id]=[0,Date.now()+SC_DAYS[0]*864e5];
-      scSave();sfx(right?'good':'bad');haptic(right?'ok':'err');
-      if(!build)$$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===correct)x.classList.add('right');else if(x===el)x.classList.add('wrong');else x.classList.add('dim');});
-      weekAdd();$('#scfb').innerHTML=`<div class="sc-fb ${right?'ok':'bad'}"><div class="t">${right?'Верно':'Неверно'}</div><div class="en">${esc(scT(f))}</div>${de?`<div class="orig">${scIsDe()?'по-английски':'в оригинале'}: ${esc(f.en)}</div>`:''}<div class="ru">${esc(f.ru)}</div><div class="note">${esc(scNoteS(f))}</div><button class="sc-btn" id="scnx" style="margin-top:12px">${n===Q.length-1?'Итоги':'Дальше'} →</button></div>`;
+      if(q.res!==undefined)return;
+      q.res=right;if(right)ok++;else wrong++;
+
+      // Ошибка не стирает выученное. Она только снимает «надолго» и возвращает точечный повтор.
+      const before=P.m[f.id]||0;
+      if(right){
+        P.m[f.id]=Math.min(3,before+1);
+      }else{
+        if(before>=3)P.m[f.id]=2;
+        delete P.r[f.id];
+        if(!q.re){
+          const retryType=type==='life'?(canBuild(f)?'build':'listen'):(canLife(f)?'life':(canBuild(f)?'build':'listen'));
+          Q.splice(Math.min(Q.length,n+3),0,{f,type:retryType,re:true});
+        }
+      }
+      if(P.m[f.id]>=3&&!P.r[f.id])P.r[f.id]=[0,Date.now()+SC_DAYS[0]*864e5];
+
+      if(rev){
+        if(right){
+          const prev=P.r[f.id]||[0,0],st=prev[0]+1;
+          if(st>=SC_DAYS.length){delete P.r[f.id];P.rDone=P.rDone||{};P.rDone[f.id]=1;}
+          else P.r[f.id]=[st,Date.now()+SC_DAYS[st]*864e5];
+        }else delete P.r[f.id];
+      }
+      scSave();sfx(right?'good':'bad');haptic(right?'ok':'err');weekAdd();
+      gavReact(right);if(right&&before<3&&P.m[f.id]>=3)setTimeout(()=>gavKill(target(f)),350);
+
+      if(!build)$$('.sc-opt').forEach(x=>{
+        x.disabled=true;
+        if(x.dataset.v===correct)x.classList.add('right');
+        else if(x===el)x.classList.add('wrong');
+        else x.classList.add('dim');
+      });
+
+      const note=scShort(scNoteS(f));
+      const life=q.life;
+      $('#scfb').innerHTML=`<div class="sc-fb ${right?'ok':'bad'}">
+        <div class="t">${right?'Верно':'Вот точная формулировка'}</div>
+        ${life
+          ?`<div class="en">${esc(correct)}</div><div class="ru">${esc(life.situation)}</div><div class="orig">Шаблон из сцены: ${esc(target(f))} — ${esc(f.ru)}</div>`
+          :(type==='listen'&&de&&!scIsDe()?`<div class="en">${esc(f.en)}</div><div class="orig">по-немецки: ${esc(f.de)}</div><div class="ru">${esc(f.ru)}</div>`:`<div class="en">${esc(target(f))}</div><div class="ru">${esc(f.ru)}</div>`)}
+        ${note?`<div class="sc-explain"><b>Зачем запоминать</b><span>${esc(note)}</span></div>`:''}
+        ${!right&&type==='mean'&&el&&f.trap.includes(el.dataset.v)?`<div class="sc-trapwhy">Это ловушка: дословный перевод или похожие слова, но смысл другой.</div>`:''}
+        ${!right&&type!=='mean'?`<div class="sc-exact">Не придумывай другой вариант: сейчас тренируем именно эту формулировку.</div>`:''}
+        <button class="sc-btn" id="scnx" style="margin-top:12px">${n===Q.length-1?'Закончить':'Дальше'} →</button>
+      </div>`;
       $('#scnx').onclick=()=>{n++;if(n<Q.length)show();else end();};
     };
-    if(build){const draw=()=>{$('#scbans').innerHTML=build.got.map(x=>`<button class="sc-tile" data-k="${x.k}">${esc(x.w)}</button>`).join('')||'<span class="sc-bph">Нажимай на слова по порядку</span>';
+
+    if(build){
+      const draw=()=>{
+        $('#scbans').innerHTML=build.got.map(x=>`<button class="sc-tile" data-k="${x.k}">${esc(x.w)}</button>`).join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
         $('#scbpool').innerHTML=build.pool.map(x=>`<button class="sc-tile${build.got.includes(x)?' used':''}" data-k="${x.k}" ${build.got.includes(x)?'disabled':''}>${esc(x.w)}</button>`).join('');
         $('#scbchk').disabled=!build.got.length||q.res!==undefined;
-        $$('#scbpool .sc-tile').forEach(b=>b.onclick=()=>{if(q.res!==undefined)return;sfx('tap');build.got.push(build.pool.find(x=>x.k===+b.dataset.k));draw();});
-        $$('#scbans .sc-tile').forEach(b=>b.onclick=()=>{if(q.res!==undefined)return;build.got=build.got.filter(x=>x.k!==+b.dataset.k);draw();});};
-      draw();$('#scbchk').onclick=()=>{const right=scNorm(build.got.map(x=>x.w).join(' '))===scNorm(correct);$('#scbans').classList.add(right?'right':'wrong');$('#scbchk').disabled=true;answer(right);};}
-    else $$('.sc-opt').forEach(b=>b.onclick=()=>answer(b.dataset.v===correct,b));
+        $$('#scbpool .sc-tile').forEach(b=>b.onclick=()=>{
+          if(q.res!==undefined)return;sfx('tap');
+          const x=build.pool.find(x=>x.k===+b.dataset.k);if(x)build.got.push(x);draw();
+        });
+        $$('#scbans .sc-tile').forEach(b=>b.onclick=()=>{
+          if(q.res!==undefined)return;build.got=build.got.filter(x=>x.k!==+b.dataset.k);draw();
+        });
+      };
+      draw();
+      $('#scbchk').onclick=()=>{
+        const got=scNorm(build.got.map(x=>x.w).join(' '));
+        const right=got===scNorm(correct);
+        answer(right);
+        $('#scbans').classList.add(right?'right':'wrong');
+        $('#scbchk').disabled=true;
+      };
+    }else{
+      $$('.sc-opt').forEach(b=>b.onclick=()=>answer(b.dataset.v===correct,b));
+    }
   }
+
+  function makeBuild(text,f,allPhrases){
+    const tk=scToks(text);
+    const used=new Set(tk.map(scNorm));
+    const pool=[];
+    // Берём несколько слов из других реплик только как отвлекающие плитки.
+    for(const x of shuffle(allPhrases)){
+      if(x===f)continue;
+      const words=scToks(target(x));
+      for(const w of words){
+        if(pool.length>=Math.min(4,Math.max(2,Math.floor(tk.length/3))))break;
+        if(!used.has(scNorm(w))&&w.length>1)pool.push(w);
+      }
+      if(pool.length>=Math.min(4,Math.max(2,Math.floor(tk.length/3))))break;
+    }
+    return {tk,pool:shuffle([...tk,...pool]).map((w,k)=>({w,k})),got:[]};
+  }
+
   function end(){
-    const pass=ok>=need;if(!rev&&!les&&pass&&!P.done.includes(i)){P.done.push(i);scSave();}
-    const nx=!rev&&!les&&i+1<s.parts.length?i+1:null;
-    const say=v=>`<button class="sc-say" data-say="${esc(v)}" aria-label="Послушать">${SI.vol||'🔊'}</button>`;
-    const exOf=f=>(f.ex||[]).map(x=>{const v=de?x[2]||x[0]:x[0];return `<li><b>${esc(v)}</b><span>${esc(x[1])}</span></li>`;}).join('');
-    scMount(s,`<div class="sc-q sc-card" style="text-align:center"><div class="sc-meta">${les?'Фразы из кино':rev?'Повторение':'Эпизод '+String(i+1).padStart(2,'0')}</div><div class="sc-big">${ok} из ${Q.length}</div>
-      <p class="sc-sub">${pass?'Эпизод пройден, прогресс сохранён.':'Нужно хотя бы '+need+' из '+list.length+'. Пересмотри эпизод и попробуй ещё раз.'}</p>
-      <div class="sc-btns">${pass&&nx!==null?'<button class="sc-btn" id="scnp">Следующий эпизод →</button>':''}${les?'<button class="sc-btn" id="scmore">Ещё 5 фраз →</button>':rev?scRevNext(id):`<button class="sc-btn ghost" id="scrp">${pass?'Пересмотреть':'Смотреть ещё раз'}</button>`}</div></div>
-      <div class="sc-sec"><h2>Разбор фраз</h2><span>${list.length}</span></div>
-      ${list.map(f=>{const miss=Q.some(x=>x.f===f&&x.res===false);return `<div class="sc-use sc-card${miss?' miss':''}">${miss?'<span class="sc-miss">была ошибка</span>':''}<div class="en">${esc(scT(f))}<button class="sc-say" data-clip="${f.id}" aria-label="Послушать из фильма">${SI.vol||'🔊'}</button></div>${de?`<div class="orig">${scIsDe()?'по-английски':'в оригинале'}: ${esc(f.en)}</div>`:''}<div class="ru">${esc(f.ru)}</div>
-        <div class="sc-more">${scL()==='de'&&!scIsDe()?'':`<p>${esc(f.note||'')}</p>`}${f.ex&&f.ex.length?`<ul class="sc-ex">${exOf({ex:f.ex.slice(0,1)})}</ul>`:''}${f.more||(f.ex||[]).length>1?`<button class="sc-mbtn" type="button">Подробнее</button><div class="sc-mfold" hidden>${f.more&&!(scL()==='de'&&!scIsDe())?`<p>${esc(f.more)}</p>`:''}${(f.ex||[]).length>1?`<ul class="sc-ex">${exOf({ex:f.ex.slice(1)})}</ul>`:''}</div>`:''}</div></div>`;}).join('')}
-      <button class="sc-btn ghost" id="schm" style="margin-top:6px">Ко всем эпизодам</button>`,'scend');
-    sfx(pass?'win':'lose');
-    // озвучка фраз и примеров в разборе: по кнопке — всегда, даже если общая озвучка выключена
-    remindSync();
-    $$('.sc-mbtn').forEach(b=>b.onclick=()=>{const f=b.nextElementSibling;f.hidden=!f.hidden;b.textContent=f.hidden?'Подробнее':'Свернуть';sfx('tap');});
-    $$('.sc-say[data-clip]').forEach(b=>b.onclick=e=>{e.stopPropagation();scClip(id,b.dataset.clip,b);});
+    const firsts=Q.filter(x=>!x.re),okF=firsts.filter(x=>x.res).length,passed=okF===firsts.length;
+    if(!rev&&!les&&!P.done.includes(i)){P.done.push(i);scSave();}
+    if(!rev&&les&&!P.done.includes(Q[0].f.pi)){P.done.push(Q[0].f.pi);scSave();}
+
+    scMount(s,`<div class="sc-q sc-card sc-result" style="text-align:center">
+      <div class="sc-meta">${rev?'Повторение':les?'Урок фраз из кино':'Проверка эпизода'}</div>
+      <div class="sc-big">${okF} / ${firsts.length}</div>
+      <h2>${passed?'Фразы проверены.':'Нормально — ошибки как раз показывают, что повторить.'}</h2>
+      <p class="sc-sub">${wrong?`Ошибок: ${wrong}. Они не удалили прогресс — эти фразы вернутся точечно.`:'Без ошибок. Следующая встреча с фразами будет позже.'}</p>
+      <div class="sc-result-rule">Главное: ты не угадывал синоним. Ты несколько раз восстановил конкретную фразу и увидел, где её применять.</div>
+      <div class="sc-btns">${rev?scRevNext(id):`<button class="sc-btn" id="scrp">Вернуться к эпизоду</button>`}</div>
+    </div>
+    <div class="sc-sec"><h2>Что закрепили</h2><span>${Q.filter(x=>x.res).length}</span></div>
+    ${Q.filter((x,j,a)=>a.findIndex(y=>y.f===x.f)===j).map(x=>`<div class="sc-use sc-card${x.res?'':' miss'}"><div class="en">${esc(target(x.f))}</div><div class="ru">${esc(x.f.ru)}</div><div class="sc-more"><p>${esc(scShort(scNoteS(x.f)))}</p></div></div>`).join('')}`,'scend');
+    sfx(passed?'win':'learn');remindSync();
+    {const g=document.getElementById('gav');if(g)g.remove();}if(!rev)setTimeout(()=>gavEpisode(les?'Урок':s.parts[i]?s.parts[i].t:s.title),300);
+    if($('#scrp'))$('#scrp').onclick=()=>renderScEp(id,i);
     if($('#scnrev'))$('#scnrev').onclick=()=>{const L=scDueAll().filter(x=>x.s.id!==id);if(L.length)renderScQuiz(L[0].s.id,'rev');};
-    if($('#scnp'))$('#scnp').onclick=()=>renderScEp(id,nx);if($('#scrp'))$('#scrp').onclick=()=>renderScEp(id,i);if($('#scmore'))$('#scmore').onclick=()=>startScLesson();$('#schm').onclick=()=>renderScene(id);
   }
   show();
 }
@@ -3679,12 +3914,18 @@ function renderAdmin(){
       <div class="lab"><b>Субтитры</b><div class="lab-prev" data-ss="${labSub()}"><div class="sc-subs"><div class="sline"><span class="en">I'm in it for the long run, you know?</span></div><div class="sline s2"><span class="tr">Я тут надолго, понимаете?</span></div></div></div>
         <div class="lab-chips">${LAB_SUB.map(([k,l])=>`<button data-lab="labSub" data-v="${k}" class="${labSub()===k?'on':''}">${l}</button>`).join('')}</div></div>
       <div class="lab"><b>Звуки</b><div class="lab-chips">${LAB_SND.map(([k,l])=>`<button data-lab="labSnd" data-v="${k}" class="${(store.labSnd||'cs')===k?'on':''}">${l}</button>`).join('')}</div></div>
+      <div class="lab"><b>Маскот</b><small class="lab-note">Картинка: img/bateman.png (без фона). Нет файла — показывается хлопушка.</small><div class="lab-gav">${gavArt()}</div>
+        <div class="lab-chips"><button data-gv="tog" class="${store.gav!==false?'on':''}">${store.gav!==false?'Включён':'Выключен'}</button><button data-gv="correct">Верно</button><button data-gv="wrong">Ошибка</button><button data-gv="streak">Серия</button><button data-gv="kill">Фраза выучена</button><button data-gv="stamp">Эпизод: «Снято!»</button><button data-gv="bag">Эпизод: в мешок</button><button data-gv="burn">Эпизод: сжечь</button></div></div>
       <div class="lab"><b>Интерфейс</b><div class="lab-chips">${LAB_UI.map(([k,l])=>`<button data-lab="labUi" data-v="${k}" class="${(store.labUi||'grafit')===k?'on':''}">${l}</button>`).join('')}</div></div>`)}
     ${grp('Кинозал',sec('kino')+scenes)}
     ${grp('Игры',sec('games')+['cards','spy','arena'].map(k=>row(k,F[k][1],F[k][2],2)).join(''))}
     ${grp('Главная',['kinolesson','lesson','best','dota','cs2'].map(sec).join(''))}
     <div class="cta"><button class="btn" id="admSave">Сохранить</button></div>`,'admscr');
   $('#bBtn').onclick=()=>{sfx('tap');renderTab('profile');};
+  $$('[data-gv]').forEach(b=>b.onclick=()=>{const v=b.dataset.gv;sfx('tap');
+    if(v==='tog'){store.gav=store.gav===false;save();b.classList.toggle('on',store.gav!==false);b.textContent=store.gav!==false?'Включён':'Выключен';return;}
+    if(!gavOn()){toast('Сначала включи Гаврика (и анимации в настройках)');return;}
+    if(v==='kill')gavKill("I'm in it for the long run");else if(['stamp','bag','burn'].includes(v))gavEpisode('Первый день',v);else{gavIdle();gavSay(v);}});
   $$('[data-lab]').forEach(b=>b.onclick=()=>{store[b.dataset.lab]=b.dataset.v;save();labApply();
     b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
     if(b.dataset.lab==='labSub'){const pv=$('.lab-prev');if(pv)pv.dataset.ss=b.dataset.v;}
@@ -3713,32 +3954,18 @@ function continueScene(){
 // сцена для урока: где больше всего невыученных фраз из просмотренных эпизодов
 function scLessonScene(){
   let best=null;
-  for(const s of SCENES){const P=scP(s.id);const cand=s.parts.flatMap((p,i)=>(P.w[i]||P.done.includes(i))?p.ph:[]).filter(f=>(P.m[f.id]||0)<3&&!P.r[f.id]);
+  for(const s of SCENES){const P=scP(s.id);const cand=s.parts.flatMap((p,i)=>(P.w[i]||P.done.includes(i))?p.ph:[]).filter(f=>!f.passive&&(P.m[f.id]||0)<3&&!P.r[f.id]);
     if(cand.length&&(!best||cand.length>best.cand.length))best={s,cand};}
-  if(!best){const s=continueScene().s,P=scP(s.id);const cand=s.parts.flatMap(p=>p.ph).filter(f=>(P.m[f.id]||0)<3&&!P.r[f.id]);if(cand.length)best={s,cand,fresh:true};}
+  if(!best){const s=continueScene().s,P=scP(s.id);const cand=s.parts.flatMap(p=>p.ph).filter(f=>!f.passive&&(P.m[f.id]||0)<3&&!P.r[f.id]);if(cand.length)best={s,cand,fresh:true};}
   return best;
 }
 function startScLesson(){
-  const b=scLessonScene();if(!b){toast('Все фразы выучены — скоро будут новые сцены');return;}
-  // по порядку сцены, чтобы шло как в фильме
+  const b=scLessonScene();
+  if(!b){toast('Все фразы выучены — скоро будут новые сцены');return;}
+  // Урок начинается с эпизода, а не с пяти разрозненных карточек.
+  // Берём максимум 5 активных фраз из одного эпизода — их и разбираем на втором просмотре.
   const list=b.cand.slice().sort((x,y)=>x.a-y.a).slice(0,5);
-  scIntro(b.s.id,list,0);
-}
-function scIntro(id,list,k){
-  const s=scOf(id),f=list[k],p=s.parts[f.pi];SCUR={id,i:f.pi};
-  scMount(s,`<div class="sc-head"><button class="sc-back" id="scb" aria-label="Выйти">×</button><div class="sc-segs">${list.map((x,j)=>`<i class="${j<k?'ok':j===k?'cur':''}"></i>`).join('')}</div></div>
-    <div class="sc-meta" style="margin:2px 2px 8px">Фразы из кино · ${esc(s.title)} · ${k+1} из ${list.length}</div>
-    <div class="sc-v" id="scvw"><div class="sc-over" id="scvo"><button id="scplay" aria-label="Послушать">${SI.play}</button></div></div>
-    <div class="sc-intro sc-card anim"><small>Послушай, как это говорят</small><div class="en">${esc(scT(f))}</div>${scL()==='de'?`<div class="orig">${scIsDe()?'по-английски':'в оригинале'}: ${esc(f.en)}</div>`:''}<div class="ru">${esc(f.ru)}</div>
-      <button class="sc-mom" id="screp">${SI.again} Ещё раз</button></div>
-    <button class="sc-btn" id="scnx" style="margin-top:12px">${k<list.length-1?'Следующая фраза →':'Проверить себя →'}</button>
-    <p class="sc-foot">Объяснение, когда и зачем это говорить, — после проверки.</p>`,'scintro');
-  scVideo($('#scvw'),s,p,false);$('#scvw').appendChild($('#scvo'));
-  const run=auto=>{if(!SV)return;$('#scvo').style.display='none';SSTOP={a:f.a-p.a,b:f.b-p.a+0.2,cb:()=>{const o=$('#scvo');if(o)o.style.display='';}};
-    try{SV.currentTime=f.a-p.a;}catch(e){}const pr=SV.play();if(pr&&pr.catch)pr.catch(()=>{const o=$('#scvo');if(o)o.style.display='';});};
-  $('#scplay').onclick=()=>run();$('#screp').onclick=()=>run();setTimeout(()=>run(true),300);
-  $('#scb').onclick=()=>{sfx('tap');renderTab('learn');};
-  $('#scnx').onclick=()=>{haptic('sel');if(k<list.length-1)scIntro(id,list,k+1);else renderScQuiz(id,{list});};
+  renderScEp(b.s.id,list[0].pi,{lessonList:list});
 }
 function learnTabHTML(){
   setWorld('neutral');CURW='dota';
@@ -3761,7 +3988,7 @@ function learnTabHTML(){
     <section class="hgoal2 anim"><div class="hg2-h"><b>${d.done?'Цель дня выполнена':'Сегодня'}</b><span>${Math.min(d.n,goal)} / ${goal} ответов</span></div><span class="hg2-bar"><i style="width:${gp}%"></i></span><div class="hg2-f"><small>${d.done?'бонус +200 билетов получен':'ещё '+(goal-d.n)+' до бонуса +200 билетов'}</small><small>🔥 ${store.streak} ${plural(store.streak,['день','дня','дней'])} подряд</small></div></section>
     ${dueSc+dueW?`<button class="rowcard card anim" id="hReview">${iconHTML({svg:'star'})}<span><b>Повторение</b><small>${dueSc?dueSc+' '+plural(dueSc,['фраза','фразы','фраз'])+' из кино':''}${dueSc&&dueW?' и ':''}${dueW?dueW+' '+plural(dueW,['слово','слова','слов']):''} пора повторить</small></span><span class="go">›</span></button>`:''}
     <div class="hsec anim"><h2>Кинозал</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
-    <div class="hrow">${SCENES.map(x=>{const l=scLearned(x),t=scTotal(x);return `<button class="hposter ${x.theme} anim" data-sc="${x.id}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(x.title)}</b><small>${x.parts.length} ${plural(x.parts.length,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${Math.round(l/t*100)}%"></i></span></span></button>`;}).join('')}<div class="hposter soon"><span class="kp-t"><b>Скоро</b><small>новые сцены и клипы</small></span></div></div>
+    <div class="hrow">${SCENES.map(x=>{const l=scLearned(x),t=scTotal(x);return `<button class="hposter ${x.theme} anim${scMasterPct(x)===100?' mastered':''}" data-sc="${x.id}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(x.title)}</b><small>${x.parts.length} ${plural(x.parts.length,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${Math.round(l/t*100)}%"></i></span></span></button>`;}).join('')}<div class="hposter soon"><span class="kp-t"><b>Скоро</b><small>новые сцены и клипы</small></span></div></div>
     ${store.path==='games'?words+games:games+words}`;
 }
 function bindLearn(){
@@ -3815,9 +4042,9 @@ const musOf=s=>s&&Array.isArray(s.music)?s.music:[];
 const musArt=(s,m)=>assetUrl(scKey(s,(m&&m.img)||'cover.jpg'));
 const musVol=()=>store.musVol==null?.35:store.musVol;
 const MUSIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||!!(TG&&TG.platform==='ios');
-let MUSCTX=null,MUSG=null;
+let MUSCTX=null,MUSG=null,MUSSRC=null;
 function musGainInit(){if(!MUSIOS||MUSG||!MUS)return;try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
-  MUSCTX=new C();const src=MUSCTX.createMediaElementSource(MUS);MUSG=MUSCTX.createGain();src.connect(MUSG);MUSG.connect(MUSCTX.destination);}catch(e){MUSG=null;}}
+  MUSCTX=new C();MUSSRC=MUSCTX.createMediaElementSource(MUS);MUSG=MUSCTX.createGain();MUSSRC.connect(MUSG);MUSG.connect(MUSCTX.destination);}catch(e){MUSG=null;MUSSRC=null;}}
 function musSetVol(v){if(!MUS)return;if(MUSG){MUSG.gain.value=v;}else MUS.volume=v;}
 const musGetVol=()=>MUSG?MUSG.gain.value:(MUS?MUS.volume:0);
 const MI={prev:'<svg viewBox="0 0 24 24"><path d="M7 5v14" stroke-width="2.4"/><path d="M19 5.5v13L9 12z" fill="currentColor" stroke="none"/></svg>',
@@ -3866,7 +4093,13 @@ function musNext(){if(!MUS||!MUSC)return;const L=musOf(scOf(MUSC.id));musPlay(MU
 function musPrev(){if(!MUS||!MUSC)return;const L=musOf(scOf(MUSC.id));musPlay(MUSC.id,(MUSC.k-1+L.length)%L.length);}
 function musToggle(){if(!MUS)return;clearTimeout(MUSWAIT);clearInterval(MUSFADE);MUSAUTO=false;
   if(MUS.paused){if(MUSCTX&&MUSCTX.state==='suspended')MUSCTX.resume();musSetVol(musVol());const p=MUS.play();if(p&&p.catch)p.catch(()=>{});}else MUS.pause();musUI();}
-function musStop(){if(MUSCTX){try{MUSCTX.close();}catch(e){}}MUSCTX=null;MUSG=null;clearInterval(MUSFADE);clearTimeout(MUSWAIT);clearInterval(MUSTICK);MUSTICK=0;MUSAUTO=false;
+// Уборка: отцепить узлы, усыпить и закрыть контекст — иначе на iPhone при переходах между сценами звук хрипит или пропадает.
+function audioFree(){
+  try{if(MUSSRC)MUSSRC.disconnect();}catch(e){}try{if(MUSG)MUSG.disconnect();}catch(e){}
+  const c=MUSCTX;MUSCTX=null;MUSG=null;MUSSRC=null;
+  if(c){try{const p=c.suspend();(p&&p.then?p:Promise.resolve()).then(()=>c.close&&c.close()).catch(()=>{try{c.close();}catch(e){}});}catch(e){try{c.close();}catch(x){}}}
+  if(SCLIP){try{clearInterval(SCLIP._t);SCLIP.pause();SCLIP.removeAttribute('src');SCLIP.load();SCLIP.remove();}catch(e){}SCLIP=null;}}
+function musStop(){audioFree();clearInterval(MUSFADE);clearTimeout(MUSWAIT);clearInterval(MUSTICK);MUSTICK=0;MUSAUTO=false;
   if(MUS){const a=MUS;MUS=null;try{a.pause();a.removeAttribute('src');a.load();}catch(e){}}MUSC=null;musUI();musTick();}
 function musResume(){if(!MUS)return;MUSAUTO=false;const to=musVol();musSetVol(0);const p=MUS.play();if(p&&p.catch)p.catch(()=>{});
   clearInterval(MUSFADE);MUSFADE=setInterval(()=>{if(!MUS){clearInterval(MUSFADE);return;}musSetVol(Math.min(to,musGetVol()+to/12));if(musGetVol()>=to-0.001)clearInterval(MUSFADE);},80);}
@@ -3965,6 +4198,35 @@ function srSave(v){v=String(v||'').trim();if(v.length<2)return;store.srRecent=[v
 function srOpen(id,i,t){renderScEp(id,i);const s=scOf(id);if(!s||!s.parts[i])return;const off=Math.max(0,t-s.parts[i].a-0.4);
   let n=0;const go=()=>{if(SV&&SCUR.id===id){const set=()=>{try{SV.currentTime=off;scTick&&scTick();}catch(e){}};if(SV.readyState>=1)set();else SV.addEventListener('loadedmetadata',set,{once:true});return;}if(++n<20)setTimeout(go,100);};setTimeout(go,150);}
 
+document.addEventListener('visibilitychange',()=>{try{if(document.hidden){if(typeof AC!=='undefined'&&AC&&AC.suspend)AC.suspend();}else if(typeof AC!=='undefined'&&AC&&AC.resume)AC.resume();}catch(e){}});
+/* ================= 7.2: Гаврик — маскот-хлопушка (пока виден только админу, для выбора) ================= */
+// Свой персонаж (не чужой IP): киношная хлопушка с глазами. Не учит и не мешает: сидит в углу проверки,
+// радуется верному ответу, пожимает плечами на ошибку (без насмешек), «рубит» выученную фразу,
+// а законченный эпизод — «Снято!» штампом, в мешок или сжигает. Любая анимация ≤ 1,5 с и пропускается тапом.
+const GAV_SVG=`<svg viewBox="0 0 80 84" class="gv-svg"><g class="gv-top"><rect x="8" y="10" width="64" height="14" rx="3" fill="#1b1b1f" stroke="#f3efe6" stroke-width="2"/>
+  <path d="M14 10l8 14M28 10l8 14M42 10l8 14M56 10l8 14" stroke="#f3efe6" stroke-width="4"/></g>
+  <rect x="8" y="26" width="64" height="40" rx="6" fill="#1b1b1f" stroke="#f3efe6" stroke-width="2"/>
+  <g class="gv-eyes"><circle cx="30" cy="44" r="8" fill="#fff"/><circle cx="50" cy="44" r="8" fill="#fff"/><circle class="gv-p" cx="31" cy="45" r="3.6" fill="#111"/><circle class="gv-p" cx="51" cy="45" r="3.6" fill="#111"/></g>
+  <path class="gv-mouth" d="M33 57q7 5 14 0" stroke="#F5C451" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M26 66v10M54 66v10" stroke="#f3efe6" stroke-width="4" stroke-linecap="round"/><path d="M20 77h12M48 77h12" stroke="#f3efe6" stroke-width="4" stroke-linecap="round"/></svg>`;
+// Картинка маскота — img/bateman.png (без фона). Нет файла — подставляется хлопушка Гаврик.
+const GAV_IMG='img/bateman.png';
+const gavArt=()=>`<img class="gv-img" src="${GAV_IMG}" alt="" draggable="false" onerror="this.outerHTML=GAV_SVG">`;
+const gavOn=()=>store.gav!==false&&store.fx!==false;
+let GAVSTREAK=0;
+function gavEl(){let g=document.getElementById('gav');const head=document.querySelector('.scn .sc-head');if(!g){g=document.createElement('div');g.id='gav';g.innerHTML=gavArt();}if(head&&g.parentNode!==head)head.appendChild(g);else if(!head&&!g.parentNode)document.body.appendChild(g);return g;}
+function gavIdle(){if(!gavOn()){const g=document.getElementById('gav');if(g)g.remove();return;}const g=gavEl();g.className='gv idle';}
+function gavGone(){const g=document.getElementById('gav');if(g)g.remove();}
+function gavSay(state){if(!gavOn())return;const g=gavEl();g.className='gv '+state;clearTimeout(g._t);g._t=setTimeout(()=>{g.className='gv idle';},1400);}
+function gavReact(right){if(!gavOn())return;GAVSTREAK=right?GAVSTREAK+1:0;gavSay(!right?'wrong':GAVSTREAK>=3&&GAVSTREAK%3===0?'streak':'correct');}
+// «убить слово»: карточка фразы раскалывается после удара хлопушкой
+function gavKill(text){if(!gavOn())return;const w=document.createElement('div');w.className='gv-stage';
+  w.innerHTML=`<div class="gv-card"><span class="l">${esc(text)}</span><span class="r">${esc(text)}</span><i class="gv-slash"></i></div><div class="gv-hero">${gavArt()}</div><div class="gv-cap">Фраза выучена</div>`;
+  w.onclick=()=>w.remove();document.body.appendChild(w);setTimeout(()=>w.remove(),1600);}
+// эпизод закончен: случайно — штамп «Снято!», в мешок или сгорает
+function gavEpisode(title,kind){if(!gavOn())return;const k=kind||'stamp';const w=document.createElement('div');w.className='gv-stage ep '+k;
+  w.innerHTML=`<div class="gv-ep"><b>${esc(title||'Эпизод')}</b><small>пройден</small></div>${k==='stamp'?'<div class="gv-stamp">СНЯТО!</div>':k==='bag'?'<div class="gv-bag">🎒</div>':'<div class="gv-fire"></div>'}<div class="gv-hero">${gavArt()}</div>`;
+  w.onclick=()=>w.remove();document.body.appendChild(w);setTimeout(()=>w.remove(),1700);}
 /* ================= старт ================= */
 let START='';
 try{
