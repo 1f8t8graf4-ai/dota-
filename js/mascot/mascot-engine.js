@@ -71,6 +71,22 @@
     return new Promise(resolve=>setTimeout(()=>{ if(stage.dataset.token==token) stage.remove(); resolve(true); },duration));
   }
 
+
+  function mountPersistent(){
+    if(document.getElementById('mascot-dock')) return;
+    const c=chars.get(current)||{};
+    const dock=document.createElement('div');
+    dock.id='mascot-dock';
+    dock.innerHTML=`<div class="mascot-dock-art"><model-viewer class="mascot-dock-model" src="${esc(c.model||'')}" camera-controls="false" disable-zoom interaction-prompt="none" shadow-intensity="1" exposure="1.05"></model-viewer><img class="mascot-dock-fallback" src="${esc(c.image||'')}" alt="" draggable="false"></div>`;
+    document.body.appendChild(dock);
+    const mv=dock.querySelector('model-viewer'), img=dock.querySelector('.mascot-dock-fallback');
+    if(mv){
+      mv.addEventListener('error',()=>{dock.classList.add('mascot-dock-failed');},{once:true});
+      mv.addEventListener('load',()=>{dock.classList.add('mascot-dock-ready');},{once:true});
+    }
+    dock.addEventListener('click',()=>play('idle'));
+  }
+
   registerCharacter({
     id:'bateman',
     name:'Patrick',
@@ -97,9 +113,10 @@
   registerEvent('correct',{duration:950});
   registerEvent('wrong',{duration:850});
   registerEvent('streak',{duration:1100});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mountPersistent,{once:true}); else mountPersistent();
 
   window.MASCOT={
-    registerCharacter, registerEvent, setCharacter, play, remove,
+    registerCharacter, mountPersistent, registerEvent, setCharacter, play, remove,
     enable(){active=true}, disable(){active=false;remove()}, isEnabled,
     characters:chars, events
   };

@@ -4214,7 +4214,7 @@ const GAV_SVG=`<svg viewBox="0 0 80 84" class="gv-svg"><g class="gv-top"><rect x
 // Картинка маскота — img/bateman.png (без фона). Нет файла — подставляется хлопушка Гаврик.
 const GAV_IMG='img/bateman.png';
 const gavArt=()=>`<img class="gv-img" src="${GAV_IMG}" alt="" draggable="false" onerror="this.outerHTML=GAV_SVG">`;
-const gavOn=()=>store.gav!==false&&store.fx!==false;
+const gavOn=()=>store.fx!==false;
 let GAVSTREAK=0;
 function gavEl(){let g=document.getElementById('gav');const head=document.querySelector('.scn .sc-head');if(!g){g=document.createElement('div');g.id='gav';g.innerHTML=gavArt();}if(head&&g.parentNode!==head)head.appendChild(g);else if(!head&&!g.parentNode)document.body.appendChild(g);return g;}
 function gavIdle(){if(!gavOn()){MASCOT&&MASCOT.remove();return;} MASCOT&&MASCOT.play('idle');}
