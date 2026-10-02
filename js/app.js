@@ -2189,7 +2189,8 @@ function renderTourDone(r){
 // Видео и картинки сцен лежат в хранилище по ключам scenes/<сцена>/<NN>.mp4|jpg и scenes/<сцена>/cover.jpg.
 // Базовый адрес задаётся в index.html (window.ASSET_BASE): GitHub Pages сейчас, Cloudflare R2 или любое S3 потом.
 const ASSET_BASE=(window.ASSET_BASE||window.SC_MEDIA||'https://1f8t8graf4-ai.github.io/scenes').replace(/\/$/,'');
-function assetUrl(key){return ASSET_BASE+'/'+key;}
+function assetUrl(key){const k=String(key||'');return /^https?:\/\//i.test(k)?k:ASSET_BASE+'/'+k;}
+const scCover=(s,file='cover.jpg')=>s&&s.coverUrl?assetUrl(s.coverUrl):assetUrl(scKey(s,file));
 const scKey=(s,file)=>`scenes/${s.id}/${file}`;
 const scEpKey=(s,i,ext)=>scKey(s,String(i+1).padStart(2,'0')+'.'+ext);
 const SCENES=window.__DATA.SCENES;
@@ -2284,7 +2285,7 @@ const scDots=n=>`<span class="sc-dots">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'o
 function scRateHTML(s){if(!s.lvl&&!s.use)return '';
   return `<div class="sc-rate">${s.lvl?`<div><span>Сложность на слух</span>${scDots(s.lvl)}<small>${esc(s.lvlWhy||'')}</small></div>`:''}${s.use?`<div><span>Польза в жизни</span>${scDots(s.use)}<small>${esc(s.useWhy||'')}</small></div>`:''}</div>`;}
 function kinoCard(s){const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
-  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}" data-sc="${s.id}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
+  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}" data-sc="${s.id}"><span class="kp-img" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
     <span class="kp-t"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${s.parts.length} ${plural(s.parts.length,['эпизод','эпизода','эпизодов'])}${d?` · пройдено ${d}`:''}</small>
     ${s.lvl?`<span class="kp-rate"><i>сложность ${scDots(s.lvl)}</i><i>польза ${scDots(s.use||0)}</i></span>`:''}
     <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%\"></i></span></span></button>`;}
@@ -2296,7 +2297,7 @@ function kinoTabHTML(){
   const shows={},cards=[];
   for(const s of list){if(s.show){if(!shows[s.show]){shows[s.show]=[];cards.push({show:s.show});}shows[s.show].push(s);}else cards.push({s});}
   const html=cards.map(c=>{if(c.s)return kinoCard(c.s);const L=shows[c.show];if(L.length===1)return kinoCard(L[0]);const s=L[0];
-    return `<button class="kposter ${s.theme} show poster anim${L.every(x=>scMasterPct(x)===100)?' mastered':''}" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(s,'poster.jpg'))}'),url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
+    return `<button class="kposter ${s.theme} show poster anim${L.every(x=>scMasterPct(x)===100)?' mastered':''}" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${scCover(s,'poster.jpg')}'),url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span><span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
   return `<h1 class="title anim">Кинозал</h1>
     <p class="lead anim" style="margin:4px 0 12px">Смотришь сцену с субтитрами, разбираешь живые фразы, проверяешь себя.${de?' Задания — по-немецки.':''}</p>
     <button class="srch-pill anim" onclick="renderSearch()">${ui('search')}<span>Найти фразу, сцену или слово</span></button>
@@ -2338,8 +2339,9 @@ function renderScene(id){
   const n=s.parts.length,d=P.done.length,L=scLearned(s),T=scTotal(s),next=s.parts.findIndex((p,i)=>!P.done.includes(i));
   scMount(s,`
     <div class="sc-head"><button class="sc-back" id="scb">‹</button><span class="sc-meta">Сцены</span></div>
-    <div class="sc-ban" style="--ban:url('${assetUrl(scKey(s,'cover.jpg'))}')"><span class="sc-ban-k">${SC_KIND[s.kind]||'Сцена'}</span></div>
+    <div class="sc-ban" style="--ban:url('${scCover(s,'cover.jpg')}')"><span class="sc-ban-k">${SC_KIND[s.kind]||'Сцена'}</span></div>
     ${musHTML(s)}
+    ${s.videoUrl?`<div class="clip-links sc-card"><a class="sc-btn" href="${esc(s.videoUrl)}" target="_blank" rel="noopener">▶ Смотреть официальный клип</a>${s.credit?`<small>${esc(s.credit)}</small>`:''}</div>`:''}
     <section class="sc-top sc-card">
       <div class="sc-meta">${esc(s.ep)}</div><h1>${esc(s.title)}</h1><div class="sc-sub">${esc(s.sub)}</div>
       ${scRateHTML(s)}
@@ -3126,7 +3128,7 @@ function worldCardsHTML(){
 }
 function kinoCardsHTML(){
   return SCENES.map(s=>{const L=scLearned(s),T=scTotal(s);
-    return `<button class="kcard ${s.theme} anim" data-sc="${s.id}"><span class="kpic" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span>
+    return `<button class="kcard ${s.theme} anim" data-sc="${s.id}"><span class="kpic" style="background-image:url('${scCover(s,'cover.jpg')}')"></span>
       <span class="kt"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${esc(s.sub)}</small><span class="kbar"><i style="width:${Math.round(L/T*100)}%"></i></span><small>фраз ${L} из ${T}</small></span></button>`;}).join('');
 }
 function learnTabHTML(){
@@ -4039,7 +4041,7 @@ function onBack(){
 // Видео эпизода играет — музыка на паузе. Нажал «стоп» — в этой сцене больше не включается сама. Вышел из сцены — выключается.
 let MUS=null,MUSC=null,MUSAUTO=false,MUSFADE=0,MUSWAIT=0,MUSTICK=0,MUSOFF=null,MUSOV=false;
 const musOf=s=>s&&Array.isArray(s.music)?s.music:[];
-const musArt=(s,m)=>assetUrl(scKey(s,(m&&m.img)||'cover.jpg'));
+const musArt=(s,m)=>s&&s.coverUrl?assetUrl(s.coverUrl):assetUrl(scKey(s,(m&&m.img)||'cover.jpg'));
 const musVol=()=>store.musVol==null?.35:store.musVol;
 const MUSIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||!!(TG&&TG.platform==='ios');
 let MUSCTX=null,MUSG=null,MUSSRC=null;
@@ -4215,18 +4217,15 @@ const gavArt=()=>`<img class="gv-img" src="${GAV_IMG}" alt="" draggable="false" 
 const gavOn=()=>store.gav!==false&&store.fx!==false;
 let GAVSTREAK=0;
 function gavEl(){let g=document.getElementById('gav');const head=document.querySelector('.scn .sc-head');if(!g){g=document.createElement('div');g.id='gav';g.innerHTML=gavArt();}if(head&&g.parentNode!==head)head.appendChild(g);else if(!head&&!g.parentNode)document.body.appendChild(g);return g;}
-function gavIdle(){if(!gavOn()){const g=document.getElementById('gav');if(g)g.remove();return;}const g=gavEl();g.className='gv idle';}
-function gavGone(){const g=document.getElementById('gav');if(g)g.remove();}
-function gavSay(state){if(!gavOn())return;const g=gavEl();g.className='gv '+state;clearTimeout(g._t);g._t=setTimeout(()=>{g.className='gv idle';},1400);}
+function gavIdle(){if(!gavOn()){MASCOT&&MASCOT.remove();return;} MASCOT&&MASCOT.play('idle');}
+function gavSceneOpen(title){if(!gavOn())return; if(window.MASCOT)window.MASCOT.play('sceneOpen',{title:title||'Сцена',text:'Начинаем'});}
+function gavGone(){if(window.MASCOT)window.MASCOT.remove();}
+function gavSay(state){if(!gavOn())return; const map={correct:'correct',wrong:'wrong',streak:'streak'}; if(window.MASCOT)window.MASCOT.play(map[state]||state);}
 function gavReact(right){if(!gavOn())return;GAVSTREAK=right?GAVSTREAK+1:0;gavSay(!right?'wrong':GAVSTREAK>=3&&GAVSTREAK%3===0?'streak':'correct');}
-// «убить слово»: карточка фразы раскалывается после удара хлопушкой
-function gavKill(text){if(!gavOn())return;const w=document.createElement('div');w.className='gv-stage';
-  w.innerHTML=`<div class="gv-card"><span class="l">${esc(text)}</span><span class="r">${esc(text)}</span><i class="gv-slash"></i></div><div class="gv-hero">${gavArt()}</div><div class="gv-cap">Фраза выучена</div>`;
-  w.onclick=()=>w.remove();document.body.appendChild(w);setTimeout(()=>w.remove(),1600);}
-// эпизод закончен: случайно — штамп «Снято!», в мешок или сгорает
-function gavEpisode(title,kind){if(!gavOn())return;const k=kind||'stamp';const w=document.createElement('div');w.className='gv-stage ep '+k;
-  w.innerHTML=`<div class="gv-ep"><b>${esc(title||'Эпизод')}</b><small>пройден</small></div>${k==='stamp'?'<div class="gv-stamp">СНЯТО!</div>':k==='bag'?'<div class="gv-bag">🎒</div>':'<div class="gv-fire"></div>'}<div class="gv-hero">${gavArt()}</div>`;
-  w.onclick=()=>w.remove();document.body.appendChild(w);setTimeout(()=>w.remove(),1700);}
+// Постановочная реакция на выученную фразу: отдельное событие, а не просто UI-эффект.
+function gavKill(text){if(!gavOn())return; if(window.MASCOT)window.MASCOT.play('learned',{text:text||''});}
+// Финал эпизода: разные постановки. В будущем можно добавлять новые события/персонажей без переписывания app.js.
+function gavEpisode(title,kind){if(!gavOn())return; const ev=kind==='bag'?'episodeBag':kind==='burn'?'episodeBurn':'sceneComplete'; if(window.MASCOT)window.MASCOT.play(ev,{title:title||'Эпизод',text:kind||''});}
 /* ================= старт ================= */
 let START='';
 try{
