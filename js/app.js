@@ -181,7 +181,7 @@ function saveM(){
 /* ================= Telegram ================= */
 const TG=(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.platform&&window.Telegram.WebApp.platform!=='unknown')?window.Telegram.WebApp:null;
 let screen='home',PARAM_LANG='';
-const canFull=()=>!!(TG&&typeof TG.requestFullscreen==='function'&&TG.isVersionAtLeast&&TG.isVersionAtLeast('8.0')&&TG.platform&&TG.platform!=='unknown');
+const canFull=()=>!!(TG&&typeof TG.requestFullscreen==='function'&&TG.isVersionAtLeast&&TG.isVersionAtLeast('8.0')&&TG.platform&&/^(android|ios)/.test(TG.platform));
 if(TG&&TG.platform&&!/^(android|ios)/.test(TG.platform))document.documentElement.classList.add('tg-desk');
 function setInsets(){
   if(!TG)return;
@@ -2456,7 +2456,7 @@ async function scFull(){if(!SW)return;if(SW.classList.contains('sc-pfs')){scExit
   SW.classList.add('sc-pfs');document.body.classList.add('sc-pfs-on');
   // Telegram 8+ — основной путь на iOS/Android. В обычном браузере/на ПК — нативный fullscreen как fallback.
   try{
-    if(TG&&TG.requestFullscreen&&TG.isVersionAtLeast&&TG.isVersionAtLeast('8.0')) await TG.requestFullscreen();
+    if(TG&&TG.requestFullscreen&&TG.isVersionAtLeast&&TG.isVersionAtLeast('8.0')&&/^(android|ios)/.test(TG.platform)) await TG.requestFullscreen();
     else if(SW.requestFullscreen) await SW.requestFullscreen();
   }catch(e){}
   try{if(screen.orientation&&screen.orientation.lock&&matchMedia('(orientation:portrait)').matches)screen.orientation.lock('landscape').catch(()=>{});}catch(e){}

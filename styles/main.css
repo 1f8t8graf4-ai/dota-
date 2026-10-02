@@ -2373,3 +2373,12 @@ body.nofx .gv,body.nofx .gv-stage{display:none}
 .kposter.mastered .kp-mus{display:none}
 .kposter.mastered .kp-img,.hposter.mastered .kp-img{animation:gvGold 4s ease-in-out infinite}
 @keyframes gvGold{50%{filter:brightness(1.08) saturate(1.1)}}
+
+/* Фикс для ПК-версии Telegram */
+html.tg-desk body {
+  max-width: 500px;
+  margin: 0 auto;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
