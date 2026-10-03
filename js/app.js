@@ -2244,7 +2244,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='7.9.3';
+const APP_V='7.9.4';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2319,7 +2319,7 @@ function renderWordQuiz(id,pi){const s=scOf(id),p=s.parts[pi],d=swData(id,pi);if
       $$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===(q.t==='mean'?q.k.ru:q.k.w))x.classList.add('ok');});if(!good)b.classList.add('bad');
       $('#swfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}"><div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(q.k.w)} — ${esc(q.k.ru)}</div><div class="orig">${esc(q.k.row?q.k.row[2]:'')}</div><button class="sc-btn" id="swn">Дальше →</button></div>`;
       $('#swn').onclick=()=>{sfx('tap');next();};});}
-  function end(){const L=K.filter(k=>k.w in res);const good=L.filter(k=>res[k.w]).length;sfx(good===L.length?'win':'learn');
+  function end(){ev('word_quiz',id);const L=K.filter(k=>k.w in res);const good=L.filter(k=>res[k.w]).length;sfx(good===L.length?'win':'learn');
     scMount(s,`<div class="sc-q sc-card" style="text-align:center"><div class="sc-meta">Слова эпизода</div><div class="sc-big">${good} / ${L.length}</div><p class="sc-sub">${good===L.length?'Все слова верно. Они вернутся в повторении.':'Ошибки — не страшно: эти слова вернутся ещё раз.'}</p>
       <div class="sw-res">${L.map(k=>`<div class="${res[k.w]?'ok':'bad'}"><b>${esc(k.w)}</b><span>${esc(k.ru)}</span></div>`).join('')}</div>
       <button class="sc-btn" id="swa">Ещё раз</button><button class="sc-btn ghost" id="swb">К эпизоду</button></div>`,'scnscr');
@@ -2343,7 +2343,7 @@ function dictAll(){return SCENES.filter(s=>s.kind!=='clip').flatMap(s=>{const P=
   return {s,f,st:r?r[0]:(P.rDone&&P.rDone[f.id]?9:-1),seen:(P.m[f.id]||0)>0||!!r||!!(P.rDone&&P.rDone[f.id])};});});}
 const dictSt=x=>x.st>=3?['надолго','ok']:x.st>=1?['закрепляю','mid']:x.seen?['учу','new']:['новая','none'];
 function renderMyPhrases(){renderPhraseDict();}
-function renderPhraseDict(){screen='dict';backBtn(true);const V=store.dictV||(store.dictV={mine:false,topic:'',reg:''});const de=scL()==='de';
+function renderPhraseDict(){if(screen!=='dict')ev('dict');screen='dict';backBtn(true);const V=store.dictV||(store.dictV={mine:false,topic:'',reg:''});const de=scL()==='de';
   const ALL=dictAll(),L0=V.mine?ALL.filter(x=>x.seen):ALL;
   const L=L0.filter(x=>(!V.topic||fTopics(x.f).includes(V.topic))&&(!V.reg||scTag(x.f)[1]===V.reg));
   const cntT=k=>L0.filter(x=>fTopics(x.f).includes(k)).length,ok=ALL.filter(x=>x.st>=3).length,mine=ALL.filter(x=>x.seen).length;
@@ -2368,6 +2368,9 @@ function renderPhraseDict(){screen='dict';backBtn(true);const V=store.dictV||(st
   $$('.mp-go').forEach(b=>b.onclick=()=>{sfx('tap');renderScEp(b.dataset.s,+b.dataset.i);});
   $$('.mp-it .sc-say').forEach(b=>b.onclick=e=>{e.stopPropagation();scClip(b.dataset.s,b.dataset.clip,b);});}
 
+// статистика: что делают в приложении (уходит в бота, ничего не ждёт и не мешает)
+function ev(e,sid){try{if(!TG||!TG.initData)return;const src=typeof START==='string'&&/^src_/.test(START)?START:'';
+  fetch(API+'/api/ev',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify({e,sid:sid||'',src}),keepalive:true}).catch(()=>{});}catch(x){}}
 async function remindSync(force){
   try{if(!TG||!TG.initData)return;if(store.remind===undefined){store.remind=true;save();}
     const now=Date.now(),all=SCENES.flatMap(s=>Object.values(scP(s.id).r||{}).map(x=>x[1])).filter(Boolean);
@@ -2710,7 +2713,7 @@ function renderScEp(id,i,opts){
     opened();
     if(!lesson)scSecondPass(id,i,focus);
   };
-  SV.addEventListener('ended',ended,{once:true});
+  SV.addEventListener('ended',ended,{once:true});SV.addEventListener('ended',()=>ev('ep_watch',id),{once:true});
 
   $('#scb').onclick=()=>{sfx('tap');renderScene(id);};
   $('#scq').onclick=()=>renderScQuiz(id,lesson?{list:focus,lesson:true}:i);
@@ -3001,7 +3004,7 @@ function renderScQuiz(id,i){
     </div>
     <div class="sc-sec"><h2>Что закрепили</h2><span>${Q.filter(x=>x.res).length}</span></div>
     ${Q.filter((x,j,a)=>a.findIndex(y=>y.f===x.f)===j).map(x=>`<div class="sc-use sc-card${x.res?'':' miss'}"><div class="en">${esc(target(x.f))}</div><div class="ru">${esc(x.f.ru)}</div><div class="sc-more"><p>${esc(scShort(scNoteS(x.f)))}</p></div></div>`).join('')}`,'scend');
-    sfx(passed?'win':'learn');remindSync();
+    sfx(passed?'win':'learn');remindSync();ev(rev?'review':'ep_quiz',id);
     {const g=document.getElementById('gav');if(g)g.remove();}if(!rev)setTimeout(()=>gavEpisode(les?'Урок':s.parts[i]?s.parts[i].t:s.title),300);
     if($('#scrp'))$('#scrp').onclick=()=>renderScEp(id,i);
     if($('#scnrev'))$('#scnrev').onclick=()=>{const L=scDueAll().filter(x=>x.s.id!==id);if(L.length)renderScQuiz(L[0].s.id,'rev');};
@@ -4403,4 +4406,4 @@ else if(START==='cards'){if(!gateLink('cards','Карточная дуэль'))c
 else if(START==='rev'&&store.onboarded){renderHome();setTimeout(startRevChain,600);}
 else if(START==='kino'&&store.onboarded){if(!gateLink('kino','Кинозал'))renderTab('kino');}
 else if(store.onboarded)renderHome();else startOnboarding();
-setTimeout(remindSync,3000);setTimeout(labApply,1500);setTimeout(labApply,4000);
+setTimeout(remindSync,3000);setTimeout(()=>ev('open'),1200);setTimeout(labApply,1500);setTimeout(labApply,4000);
