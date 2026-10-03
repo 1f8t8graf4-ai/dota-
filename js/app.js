@@ -192,6 +192,7 @@ function setInsets(){
   });
 }
 if(TG&&TG.onEvent)['safeAreaChanged','contentSafeAreaChanged','fullscreenChanged'].forEach(e=>{try{TG.onEvent(e,setInsets);}catch(x){}});
+if(TG&&TG.onEvent){try{TG.onEvent('fullscreenChanged',()=>{if(!TG.isFullscreen&&document.querySelector('.sc-pfs'))scExitFull();});}catch(e){}}
 function applyFullscreen(){
   if(store.fullV!==1){store.full=true;store.fullV=1;try{save();}catch(e){}}
   if(!canFull())return;try{TG.expand();}catch(e){}
@@ -1524,6 +1525,7 @@ function paintTabbar(id){
   nav.querySelectorAll('button').forEach((b,k)=>b.classList.toggle('on',k===i));
   const ind=$('#tabind');if(ind&&i>=0)ind.style.transform=`translateX(${i*100}%)`;
 }
+function noCloseAsk(){try{if(TG&&TG.disableClosingConfirmation)TG.disableClosingConfirmation();}catch(e){}}
 function renderTab(id){
   id=id||store.tab||'learn';
   if(!['learn','kino','games','profile','spy','arena'].includes(id))id='learn';
@@ -1531,7 +1533,7 @@ function renderTab(id){
   const vis=TAB_PARENT[id]||id,sub=!!TAB_PARENT[id];
   const idx=TABS.findIndex(t=>t.id===vis),dir=idx>lastTabIdx?'fr':idx<lastTabIdx?'fl':'';lastTabIdx=idx;
   if(store.tab!==vis){store.tab=vis;save();}
-  stopSpyAll();if(typeof stopTourTimer==='function')stopTourTimer();musStop();MUSOFF=null;REVCHAIN=false;{const g=document.getElementById('gav');if(g)g.remove();}if(typeof SCUR!=='undefined')SCUR.id=null;scStop();
+  stopSpyAll();if(typeof stopTourTimer==='function')stopTourTimer();noCloseAsk();musStop();MUSOFF=null;REVCHAIN=false;{const g=document.getElementById('gav');if(g)g.remove();}if(typeof SCUR!=='undefined')SCUR.id=null;scStop();
   try{if(TG&&TG.disableClosingConfirmation)TG.disableClosingConfirmation();}catch(e){}
   screen=sub?'subtab':'home';backBtn(sub);applyFx();ensureTabbar();delete document.body.dataset.world;
   const gated=(vis==='kino'||vis==='games')&&flagOf(vis)!=='on'||(TAB_PARENT[id]&&flagOf(id)!=='on');
@@ -2244,7 +2246,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='7.9.4';
+const APP_V='7.9.6';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2272,15 +2274,36 @@ function swFind(sid,pi,tok){const d=swData(sid,pi);if(!d)return null;const n=swN
 const swKeysIn=(sid,pi,text)=>{const d=swData(sid,pi);if(!d)return [];const toks=String(text||'').split(/\s+/).map(swNorm);return d.key.filter(k=>k[3].some(f=>toks.includes(f)));};
 // субтитры: оригинальная строка — словами, на которые можно нажать
 const swWrap=txt=>esc(txt).replace(/[A-Za-zÄÖÜäöüß'’]+(?:\.(?=\s|$))?/g,m=>`<i class="sw">${m}</i>`);
-function swPop(word,row){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=SCUR.i||0,hit=swFind(s.id,pi,word);
+function swPop(word,row,inPh){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=SCUR.i||0,hit=swFind(s.id,pi,word),pf=inPh?SW._rowPh:null;
   if(SV&&!SV.paused)SV.pause();const o=SW.querySelector('.sc-wpop');if(o)o.remove();
   const w=document.createElement('div');w.className='sc-wpop';
   w.innerHTML=hit?`${hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`
-    :`<b>${esc(swNorm(word))}</b><small>Этого слова нет в словарике. Вся реплика:</small><span class="t">${esc(row&&row[3]||'')}</span>`;
+    :`<b>${esc(swNorm(word))}</b>${pf?'':`<small>Этого слова нет в словарике. Вся реплика:</small><span class="t">${esc(row&&row[3]||'')}</span>`}`;
+  if(pf)w.innerHTML+=phBlock(pf);
   w.innerHTML+=`<div class="hn-b"><button data-x="go">Дальше ${SI.play}</button>${row?'<button data-x="re">Ещё раз реплику</button>':''}</div>`;
   w.onclick=e=>{e.stopPropagation();const b=e.target.closest('[data-x]');if(!b)return;w.remove();sfx('tap');
     if(b.dataset.x==='re'&&row&&SV){SV.currentTime=Math.max(0,row[0]-0.1);}if(SV){const p=SV.play();if(p&&p.catch)p.catch(()=>{});}};
   SW.appendChild(w);haptic('sel');}
+// 7.9.6: выражения внутри реплики. Слово «clients» — «клиенты», а «Fuck the clients» — «да похуй на клиентов»:
+// если в реплике есть учебная фраза, её слова подчёркнуты, и при нажатии/наведении показывается и слово, и смысл всего выражения.
+const phNorm=x=>String(x||'').toLowerCase().replace(/[’`]/g,"'").replace(/[^a-zäöüß0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+function scRowPhrase(row){if(!row||!SCUR)return null;const s=scOf(SCUR.id);if(!s)return null;const de=s.lang==='de';
+  const line=phNorm(de?row[4]:row[2]);if(!line)return null;let best=null;
+  for(const p of s.parts)for(const f of p.ph){const t=phNorm(de?f.de:f.en);if(!t)continue;
+    if(line.includes(t)||(t.includes(line)&&line.split(' ').length>=2)){if(!best||t.length>phNorm(de?best.de:best.en).length)best=f;}}
+  return best;}
+// оригинал реплики словами; слова выражения — с пометкой in-ph
+function swWrapPh(txt,f){const de=SCUR&&scOf(SCUR.id)&&scOf(SCUR.id).lang==='de';const ph=f?String(de?f.de:f.en).replace(/[.!?…,]+$/,''):'';
+  if(!ph)return swWrap(txt);const i=txt.toLowerCase().indexOf(ph.toLowerCase());
+  const mark=s=>swWrap(s).replace(/<i class="sw">/g,'<i class="sw in-ph">');
+  if(i<0)return phNorm(ph).includes(phNorm(txt))?mark(txt):swWrap(txt);
+  return swWrap(txt.slice(0,i))+mark(txt.slice(i,i+ph.length))+swWrap(txt.slice(i+ph.length));}
+function phBlock(f){if(!f)return '';return `<div class="wp-ph"><span class="k">Выражение</span><b>${esc(scT(f))}</b><span class="t">${esc(f.ru)}</span>${scNoteS(f)?`<small>${esc(scShort(scNoteS(f)))}</small>`:''}</div>`;}
+// подсказка при наведении мышкой (ПК): без паузы, рядом со словом
+function swTip(el){if(!SW)return;let tip=SW.querySelector('.sc-wtip');if(!tip){tip=document.createElement('div');tip.className='sc-wtip';SW.appendChild(tip);}
+  const s=scOf(SCUR.id),hit=swFind(s.id,SCUR.i||0,el.textContent),f=el.classList.contains('in-ph')?SW._rowPh:null;
+  tip.innerHTML=`<b>${esc(swNorm(el.textContent))}</b>${hit?` — ${esc(hit.ru)}`:''}${f?`<span>выражение: ${esc(f.ru)}</span>`:(!hit?'<span>нажми — перевод реплики</span>':'')}`;
+  const r=el.getBoundingClientRect(),w=SW.getBoundingClientRect();tip.style.left=Math.max(6,Math.min(w.width-220,r.left-w.left-20))+'px';tip.style.top=Math.max(6,r.top-w.top-tip.offsetHeight-8)+'px';tip.classList.add('on');}
 // блок «Слова эпизода» на экране эпизода
 function swBlock(s,pi,p){const d=swData(s.id,pi);if(!d)return '';const rows=s.subs.filter(r=>r[0]>=p.a-0.2&&r[0]<p.b);const st=(store.scw&&store.scw[s.id])||{};
   const card=k=>{const r=rows.find(x=>k[3].some(f=>x[2].toLowerCase().split(/[^a-z']+/).includes(f)));
@@ -2546,7 +2569,7 @@ function scTick(){
   const box=SW&&SW.querySelector('.sc-subs');if(!SV||!box){SRAF=0;return;}
   const t=SV.currentTime,m=scDeMode(scSub()),r=SSUBON&&m!=='off'?SV._loc.find(x=>t>=x[0]&&t<=x[1]+0.25):null,id=r?r[0]+m:'';
   if(box.dataset.id!==id){box.dataset.id=id;const [a,b]=m.split('+');
-    SW._row=r;box.innerHTML=r?`<div class="sline"><span class="en">${swWrap(String(r[SUB_COL[a]]).replace(/\n/g,' '))}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);}
+    SW._row=r;SW._rowPh=scRowPhrase(r);box.innerHTML=r?`<div class="sline"><span class="en">${swWrapPh(String(r[SUB_COL[a]]).replace(/\n/g,' '),SW._rowPh)}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);}
   if(SW._ph){const lv=document.getElementById('sclive');if(lv){const h=SW._ph.find(x=>t>=x.a-0.15&&t<=x.b+3);const k=h?h.f.id:'';
     if(lv.dataset.k!==k){lv.dataset.k=k;if(h)lv.innerHTML=scLiveHTML(h.f);lv.classList.toggle('on',!!h);}}}
   scChip(t);
@@ -2615,7 +2638,6 @@ async function scFull(){if(!SW)return;if(SW.classList.contains('sc-pfs')){scExit
   if(SW._wake)SW._wake();haptic('sel');}
 function scExitFull(){
   const w=document.querySelector('.sc-pfs');if(w)w.classList.remove('sc-pfs','idle','rot');document.body.classList.remove('sc-pfs-on');
-  try{if(TG&&TG.exitFullscreen&&TG.isFullscreen)TG.exitFullscreen();}catch(e){}
   try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});}catch(e){}
   try{if(screen.orientation&&screen.orientation.unlock)screen.orientation.unlock();}catch(e){}
 }
@@ -2720,7 +2742,9 @@ function renderScEp(id,i,opts){
   if($('#swq'))$('#swq').onclick=()=>{sfx('tap');renderWordQuiz(id,i);};
   $$('.sw-play').forEach(b=>b.onclick=()=>{$('#scvo').style.display='none';window.scrollTo({top:0,behavior:'smooth'});scPlay(+b.dataset.a-0.1,+b.dataset.b+0.2,()=>{$('#scvo').style.display='';});});
   // нажатие на слово в субтитрах
-  SW.addEventListener('click',e=>{const w=e.target.closest('.sw');if(!w)return;e.stopPropagation();e.preventDefault();swPop(w.textContent,SW._row);},true);
+  SW.addEventListener('click',e=>{const w=e.target.closest('.sw');if(!w)return;e.stopPropagation();e.preventDefault();const tp=SW.querySelector('.sc-wtip');if(tp)tp.classList.remove('on');swPop(w.textContent,SW._row,w.classList.contains('in-ph'));},true);
+  if(matchMedia('(hover:hover)').matches){SW.addEventListener('mouseover',e=>{const w=e.target.closest('.sw');if(w)swTip(w);});
+    SW.addEventListener('mouseout',e=>{if(e.target.closest('.sw')){const tp=SW.querySelector('.sc-wtip');if(tp)tp.classList.remove('on');}});}
 
   function bindMom(){
     $$('.sc-mom').forEach(b=>b.onclick=()=>{
