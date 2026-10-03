@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500;700;800&family=Golos+Text:wght@400;500;600;700;800&family=Playfair+Display:wght@700&family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&family=Oswald:wght@500;600;700&family=PT+Mono&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link rel="stylesheet" href="styles/main.css?v=7.9.1">
+<link rel="stylesheet" href="styles/main.css?v=7.9.3">
 </head>
 <body>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -29,13 +29,13 @@ window.ASSET_BASE='https://1f8t8graf4-ai.github.io';
   if(desk){document.documentElement.classList.add('lite');return;}
   var s=document.createElement('script');s.type='module';s.src='https://unpkg.com/@google/model-viewer@4.0.0/dist/model-viewer.min.js';document.head.appendChild(s);})();
 </script>
-<script src="js/mascot/mascot-engine.js?v=7.9.1"></script>
+<script src="js/mascot/mascot-engine.js?v=7.9.3"></script>
 <script>
 /* Загрузка данных: сначала JSON из папки data, потом код js/app.js.
    Если index.html открыт двойным кликом (file://) и браузер не даёт читать JSON — берём data/all-data.js (те же данные одним файлом). */
-(function(){var V='7.9.1',files=["icons","dota","words","lore-vocab","tips","spy","scenes","topics"];window.__DATA={};
+(function(){var V='7.9.3',files=["icons","dota","words","lore-vocab","tips","spy","scenes","topics","scenewords"];window.__DATA={};
 function go(){var s=document.createElement('script');s.src='js/app.js?v='+V;document.body.appendChild(s);}
-function local(){var s=document.createElement('script');s.src='data/all-data.js?v='+V;s.onload=function(){window.__DATA=window.__DATA_ALL||{};var t=document.createElement('script');t.src='data/topics.js?v='+V;t.onload=t.onerror=function(){if(window.__TOPICS)window.__DATA.TOPICS=window.__TOPICS;go();};document.body.appendChild(t);};
+function local(){var s=document.createElement('script');s.src='data/all-data.js?v='+V;s.onload=function(){window.__DATA=window.__DATA_ALL||{};var t=document.createElement('script');t.src='data/topics.js?v='+V;t.onload=t.onerror=function(){if(window.__TOPICS)window.__DATA.TOPICS=window.__TOPICS;var w=document.createElement('script');w.src='data/scenewords.js?v='+V;w.onload=w.onerror=function(){if(window.__SCENEWORDS)window.__DATA.SCENEWORDS=window.__SCENEWORDS;go();};document.body.appendChild(w);};document.body.appendChild(t);};
   s.onerror=function(){var a=document.getElementById('app');if(a)a.innerHTML='<p style="padding:40px 16px;color:#ccc;font:16px system-ui">Не загрузились данные. Проверь интернет и открой ещё раз.</p>';};document.body.appendChild(s);}
 if(location.protocol==='file:'){local();return;}
 Promise.all(files.map(function(f){return fetch('data/'+f+'.json?v='+V).then(function(r){if(!r.ok)throw new Error('data/'+f+'.json');return r.json();}).then(function(j){Object.assign(window.__DATA,j);});}))

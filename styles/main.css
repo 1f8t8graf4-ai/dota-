@@ -2497,3 +2497,89 @@ body.nofx .mascot-event{display:none}
 @media(prefers-reduced-motion:reduce){#mascot-dock{display:none;}}
 .mascot-model-failed .mascot-model{display:none;}
 .mascot-model-failed .mascot-fallback{opacity:1!important;position:relative!important;}
+
+/* ================= 7.9: словарь фраз — темы и тон ================= */
+.dc-mode{margin:2px 0 10px}
+.dc-chips{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px;scrollbar-width:none}
+.dc-chips button{flex:none;padding:7px 11px;border-radius:99px;background:var(--stone,#161618);color:var(--ink);font:600 12.5px 'Golos Text',sans-serif;white-space:nowrap}
+.dc-chips button i{font-style:normal;opacity:.55;margin-left:2px}
+.dc-chips button.on{background:var(--gold,#F5C451);color:#111}
+.dc-chips.reg button{font-size:12px;padding:6px 10px}
+.dc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.dc-tags .sc-tag{margin-top:0}
+.dc-t{display:inline-block;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.07);color:var(--ink,#eee);font:600 11px 'Golos Text',sans-serif}
+.mp-st.none{background:rgba(255,255,255,.06);color:var(--muted,#999)}
+/* ================= 7.9: ПК и слабые устройства — без тяжёлых эффектов (класс lite ставится в index.html) ================= */
+html.lite *,html.lite *::before,html.lite *::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.lite .aurora{display:none!important}
+html.lite .mascot-fallback,html.lite .kp-img,html.lite .hposter .kp-img,html.lite .gv.idle,html.lite .gv.idle .gv-eyes,html.lite .sc-say.on,html.lite .g2-bars i,html.lite .g2-bars::after{animation:none!important}
+html.lite .kposter,html.lite .hposter,html.lite .card{box-shadow:none!important}
+html.lite .sc-hint,html.lite .sc-sheet,html.lite .mascot-backdrop{background:rgba(12,12,14,.96)!important}
+/* ================= 7.9: «О треке» у клипа ================= */
+.clip-notes{padding:14px;margin:10px 0}
+.clip-notes>b{display:block;font:800 16px 'Golos Text',sans-serif;margin-bottom:6px}
+.clip-notes p{margin:0 0 10px;font-size:14px;line-height:1.45;color:var(--ink)}
+.cn-sl{display:grid;gap:6px}
+.cn-sl div{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05)}
+.cn-sl b{display:block;font:700 14px 'Golos Text',sans-serif;color:var(--gold,#F5C451)}
+.cn-sl span{font-size:13px;color:var(--muted)}
+/* ================= 7.9: подсказка в плеере во время просмотра ================= */
+.sc-chip{position:absolute;left:50%;top:10px;z-index:5;transform:translate(-50%,-8px);max-width:min(86%,460px);padding:6px 12px;border-radius:12px;
+  background:rgba(10,10,12,.78);box-shadow:inset 0 0 0 1px rgba(245,196,81,.35);color:#fff;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.sc-chip.on{opacity:1;transform:translate(-50%,0)}
+.sc-chip .k{display:block;font:800 9.5px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#F5C451}
+.sc-chip b{display:block;font:700 13.5px/1.25 'Golos Text',sans-serif}
+.sc-chip span:last-child{display:block;font-size:12px;line-height:1.3;color:#F3DA8C}
+.sc-v.sc-pfs .sc-chip{top:calc(14px + env(safe-area-inset-top,0px));max-width:min(70%,560px)}
+.sc-v.sc-pfs .sc-chip b{font-size:16px}.sc-v.sc-pfs .sc-chip span:last-child{font-size:14px}
+/* в маленьком плеере подсказка — одна аккуратная строка, полностью — в полном экране */
+.sc-v:not(.sc-pfs) .sc-chip{top:8px;width:auto;max-width:92%;padding:5px 10px;text-align:left}
+.sc-v:not(.sc-pfs) .sc-chip b{display:none}
+.sc-v:not(.sc-pfs) .sc-chip .k{display:inline;margin-right:6px}
+.sc-v:not(.sc-pfs) .sc-chip span:last-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11.5px}
+/* ================= 7.9.2: проверка установки ================= */
+.dk{margin-top:10px;display:grid;gap:6px}
+.dk-sum{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.06);font:700 13.5px 'Golos Text',sans-serif}
+.dk-sum.ok{background:rgba(52,199,89,.14);color:#6fe08f}.dk-sum.bad{background:rgba(255,69,58,.14);color:#ff8a80}
+.dk-r{display:flex;gap:8px;align-items:flex-start;padding:7px 10px;border-radius:10px;background:var(--stone,#161618);font-size:13px;line-height:1.35}
+.dk-r small{display:block;margin-top:2px;color:#ff9f95;font-size:12px}
+
+/* ================= 7.9.3: слова ================= */
+.sc-subs .sw{font-style:normal;pointer-events:auto;cursor:pointer;border-radius:3px;transition:background .15s}
+.sc-subs .sw:active,.sc-subs .sw:hover{background:rgba(245,196,81,.35)}
+.sc-subs{pointer-events:none}
+.sc-wpop{position:absolute;left:50%;top:50%;z-index:8;transform:translate(-50%,-50%);width:min(84%,380px);padding:12px 14px;border-radius:14px;background:rgba(12,12,14,.94);color:#fff;
+  box-shadow:0 16px 40px -16px #000,inset 0 0 0 1px rgba(245,196,81,.3);text-align:left}
+.sc-wpop .k{display:block;font:800 10px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#F5C451}
+.sc-wpop b{display:block;margin-top:3px;font:800 20px 'Golos Text',sans-serif}
+.sc-wpop .t{display:block;margin-top:2px;color:#F3DA8C;font-size:15px;line-height:1.35}
+.sc-wpop small{display:block;margin-top:4px;color:rgba(255,255,255,.6);font-size:12px}
+.sc-wpop .hn-b{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.sc-wpop .hn-b button{padding:7px 10px;border-radius:9px;background:rgba(255,255,255,.1);color:#fff;font:600 12.5px 'Golos Text',sans-serif;display:inline-flex;align-items:center;gap:4px}
+.sc-wpop .hn-b button[data-x=go]{background:#F5C451;color:#111}.sc-wpop .hn-b svg{width:13px;height:13px}
+.sw-tip{margin:-4px 2px 10px;font-size:12.5px;color:var(--muted,#999)}
+.sw-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sw-card{padding:10px 11px;border-radius:12px;background:var(--card,#161618);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.sw-card.ok{box-shadow:inset 0 0 0 1px rgba(52,199,89,.5)}
+.sw-h b{display:block;font:800 16px 'Golos Text',sans-serif;color:var(--ink,#fff)}
+.sw-h span{display:block;font-size:13px;color:#F3DA8C;line-height:1.3}
+.sw-h em{float:right;margin-top:-34px;font-style:normal;color:#4cd97b;font-weight:800}
+.sw-de{display:block;margin-top:3px;font-size:11.5px;color:var(--muted,#999)}
+.sw-line{margin-top:6px;font-size:12px;line-height:1.35;color:var(--muted,#aaa)}
+.sw-line mark,.sc-q h2 mark{background:rgba(245,196,81,.3);color:inherit;border-radius:3px;padding:0 2px}
+.sw-play{margin-top:6px;padding:4px 8px;border-radius:8px;background:rgba(255,255,255,.07);color:var(--ink,#fff);font:600 11.5px 'Golos Text',sans-serif}
+.sw-pairs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sw-pairs>div{display:flex;flex-direction:column;gap:8px}
+.sw-pairs button{padding:12px 10px;border-radius:12px;background:var(--stone,#1b1b1f);color:var(--ink,#fff);font:600 14px 'Golos Text',sans-serif;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.sw-pairs button.sel{box-shadow:inset 0 0 0 2px #F5C451}.sw-pairs button.ok{opacity:.35;box-shadow:inset 0 0 0 2px #34c759}
+.sw-pairs button.bad{box-shadow:inset 0 0 0 2px #ff453a;animation:gvShake .35s}
+.sw-gap{display:inline-block;min-width:60px;border-bottom:2px solid #F5C451;color:transparent}
+.sw-res{display:grid;gap:6px;margin:12px 0;text-align:left}
+.sw-res div{display:flex;justify-content:space-between;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05)}
+.sw-res div.ok b{color:#4cd97b}.sw-res div.bad b{color:#ff7a70}.sw-res span{color:var(--muted,#aaa);font-size:13px}
+.sc-chip.words .wl{display:block;font-size:12.5px;line-height:1.35;color:#fff}.sc-chip.words .wl b{display:inline;color:#F5C451;font-size:inherit}
+.sc-v:not(.sc-pfs) .sc-chip.words .wl{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sc-v.sc-pfs .sc-chip.words .wl{font-size:15px}
+.sc-about-phrases b{color:var(--hi,#F5C451)}
+.sw-intro{margin-top:6px;font-size:13px;line-height:1.5;color:var(--muted,#aaa)}.sw-intro b{color:var(--hi,#F5C451);font-weight:700}
+.sc-about .sw-intro b{display:inline!important;margin:0!important;font:700 13px/1.5 "Golos Text",sans-serif!important;color:var(--hi,#F5C451)!important}
