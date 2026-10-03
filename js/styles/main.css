@@ -2497,3 +2497,43 @@ body.nofx .mascot-event{display:none}
 @media(prefers-reduced-motion:reduce){#mascot-dock{display:none;}}
 .mascot-model-failed .mascot-model{display:none;}
 .mascot-model-failed .mascot-fallback{opacity:1!important;position:relative!important;}
+
+/* ================= 7.9: словарь фраз — темы и тон ================= */
+.dc-mode{margin:2px 0 10px}
+.dc-chips{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px;scrollbar-width:none}
+.dc-chips button{flex:none;padding:7px 11px;border-radius:99px;background:var(--stone,#161618);color:var(--ink);font:600 12.5px 'Golos Text',sans-serif;white-space:nowrap}
+.dc-chips button i{font-style:normal;opacity:.55;margin-left:2px}
+.dc-chips button.on{background:var(--gold,#F5C451);color:#111}
+.dc-chips.reg button{font-size:12px;padding:6px 10px}
+.dc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.dc-tags .sc-tag{margin-top:0}
+.dc-t{display:inline-block;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.07);color:var(--ink,#eee);font:600 11px 'Golos Text',sans-serif}
+.mp-st.none{background:rgba(255,255,255,.06);color:var(--muted,#999)}
+/* ================= 7.9: ПК и слабые устройства — без тяжёлых эффектов (класс lite ставится в index.html) ================= */
+html.lite *,html.lite *::before,html.lite *::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.lite .aurora{display:none!important}
+html.lite .mascot-fallback,html.lite .kp-img,html.lite .hposter .kp-img,html.lite .gv.idle,html.lite .gv.idle .gv-eyes,html.lite .sc-say.on,html.lite .g2-bars i,html.lite .g2-bars::after{animation:none!important}
+html.lite .kposter,html.lite .hposter,html.lite .card{box-shadow:none!important}
+html.lite .sc-hint,html.lite .sc-sheet,html.lite .mascot-backdrop{background:rgba(12,12,14,.96)!important}
+/* ================= 7.9: «О треке» у клипа ================= */
+.clip-notes{padding:14px;margin:10px 0}
+.clip-notes>b{display:block;font:800 16px 'Golos Text',sans-serif;margin-bottom:6px}
+.clip-notes p{margin:0 0 10px;font-size:14px;line-height:1.45;color:var(--ink)}
+.cn-sl{display:grid;gap:6px}
+.cn-sl div{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05)}
+.cn-sl b{display:block;font:700 14px 'Golos Text',sans-serif;color:var(--gold,#F5C451)}
+.cn-sl span{font-size:13px;color:var(--muted)}
+/* ================= 7.9: подсказка в плеере во время просмотра ================= */
+.sc-chip{position:absolute;left:50%;top:10px;z-index:5;transform:translate(-50%,-8px);max-width:min(86%,460px);padding:6px 12px;border-radius:12px;
+  background:rgba(10,10,12,.78);box-shadow:inset 0 0 0 1px rgba(245,196,81,.35);color:#fff;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.sc-chip.on{opacity:1;transform:translate(-50%,0)}
+.sc-chip .k{display:block;font:800 9.5px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#F5C451}
+.sc-chip b{display:block;font:700 13.5px/1.25 'Golos Text',sans-serif}
+.sc-chip span:last-child{display:block;font-size:12px;line-height:1.3;color:#F3DA8C}
+.sc-v.sc-pfs .sc-chip{top:calc(14px + env(safe-area-inset-top,0px));max-width:min(70%,560px)}
+.sc-v.sc-pfs .sc-chip b{font-size:16px}.sc-v.sc-pfs .sc-chip span:last-child{font-size:14px}
+/* в маленьком плеере подсказка — одна аккуратная строка, полностью — в полном экране */
+.sc-v:not(.sc-pfs) .sc-chip{top:8px;width:auto;max-width:92%;padding:5px 10px;text-align:left}
+.sc-v:not(.sc-pfs) .sc-chip b{display:none}
+.sc-v:not(.sc-pfs) .sc-chip .k{display:inline;margin-right:6px}
+.sc-v:not(.sc-pfs) .sc-chip span:last-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11.5px}
