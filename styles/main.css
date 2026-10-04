@@ -2597,3 +2597,16 @@ html.lite .sc-hint,html.lite .sc-sheet,html.lite .mascot-backdrop{background:rgb
 .sc-wtip{position:absolute;z-index:9;max-width:240px;padding:6px 9px;border-radius:9px;background:rgba(10,10,12,.95);color:#fff;font:500 13px/1.35 'Golos Text',sans-serif;
   box-shadow:0 8px 20px -8px #000,inset 0 0 0 1px rgba(245,196,81,.3);pointer-events:none;opacity:0;transition:opacity .12s}
 .sc-wtip.on{opacity:1}.sc-wtip b{color:#F5C451}.sc-wtip span{display:block;color:#F3DA8C;font-size:12px}
+/* ================= 7.9.7: iPhone — слова нажимаются, повёрнутое видео на весь экран ================= */
+/* субтитры выше прозрачных слоёв плеера: иначе тап по слову ловил слой управления */
+.sc-v .sc-subs{z-index:7!important}
+.sc-v .sc-subs .sw{pointer-events:auto!important;-webkit-tap-highlight-color:rgba(245,196,81,.35);padding:2px 1px}
+.sc-v .sc-wpop{z-index:9}
+/* повёрнутый полный экран: шапка Telegram сверху телефона — это ЛЕВЫЙ край повёрнутого видео; отступ слева, не сверху,
+   иначе видео сжималось вдвое */
+.sc-v.sc-pfs.rot{padding-top:0!important;padding-left:calc(var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px))!important}
+.sc-v.sc-pfs.rot video{width:100%!important;height:100%!important;object-fit:contain!important;max-height:none!important}
+.sc-v.sc-pfs.rot .sc-chip{top:12px}
+/* ================= 7.9.9: при видео на весь экран — никаких чужих плашек сверху/снизу ================= */
+/* «полоска сверху» на ПК — это была верхняя затемняющая плашка приложения (topfade), она висела над видео */
+body.sc-pfs-on .topfade,body.sc-pfs-on .tabbar,body.sc-pfs-on #mudock,body.sc-pfs-on #gav,body.sc-pfs-on .announce{display:none!important}

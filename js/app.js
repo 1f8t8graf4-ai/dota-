@@ -211,7 +211,7 @@ async function cloudLoadM(){
 function initTG(){
   if(!TG)return;
   try{TG.ready();TG.expand();}catch(e){}
-  try{if(TG.disableVerticalSwipes)TG.disableVerticalSwipes();}catch(e){}
+  try{if(TG.enableVerticalSwipes)TG.enableVerticalSwipes();}catch(e){}
   try{TG.setHeaderColor('#0E1318');TG.setBackgroundColor('#0E1318');if(TG.setBottomBarColor)TG.setBottomBarColor('#0E1318');}catch(e){}
   setInsets();
   ['safeAreaChanged','contentSafeAreaChanged','fullscreenChanged','viewportChanged'].forEach(ev=>{try{TG.onEvent(ev,setInsets);}catch(e){}});
@@ -2246,7 +2246,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='7.9.6';
+const APP_V='7.9.9';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2560,11 +2560,12 @@ function scVideo(el,s,p,noSubs){
   SV.addEventListener('play',()=>{musDuck(true);scSync();wake();if(!SRAF)SRAF=requestAnimationFrame(scTick);});
   SV.addEventListener('pause',()=>{musDuck(false);scSync();el.classList.remove('idle');});
   SV.addEventListener('seeked',scTick);
-  SV.addEventListener('webkitbeginfullscreen',()=>{for(const t of SV.textTracks)t.mode=(SSUBON&&t.label===scSub())?'showing':'hidden';});
+  SV.addEventListener('webkitbeginfullscreen',()=>{const m=scDeMode(scSub());for(const t of SV.textTracks)t.mode=(SSUBON&&m!=='off'&&t.label===m)?'showing':'hidden';});
   SV.addEventListener('webkitendfullscreen',()=>{for(const t of SV.textTracks)t.mode='hidden';});
   setTimeout(()=>{if(SV)for(const t of SV.textTracks)t.mode='hidden';},0);
   SV._loc=loc;
 }
+
 function scTick(){
   const box=SW&&SW.querySelector('.sc-subs');if(!SV||!box){SRAF=0;return;}
   const t=SV.currentTime,m=scDeMode(scSub()),r=SSUBON&&m!=='off'?SV._loc.find(x=>t>=x[0]&&t<=x[1]+0.25):null,id=r?r[0]+m:'';
@@ -2627,6 +2628,8 @@ function scSyncVol(){const ic=SV&&SV.muted?SI.mute:SI.vol;const a=$('#scmu');if(
 function scSync(){const on=SV&&!SV.paused;const p=$('#scpp');if(p)p.innerHTML=on?SI.pause:SI.play;const f=SW&&SW.querySelector('[data-f=pp]');if(f)f.innerHTML=on?SI.pause:SI.play;}
 // свой полноэкранный режим: видео на весь экран Telegram, кнопки всегда можно вызвать касанием
 async function scFull(){if(!SW)return;if(SW.classList.contains('sc-pfs')){scExitFull();return;}
+  const ios=(TG&&TG.platform==='ios')||/iPhone|iPad|iPod/.test(navigator.userAgent);
+  if(ios&&SV&&typeof SV.webkitEnterFullscreen==='function'&&SV.readyState>=1){try{SV.webkitEnterFullscreen();haptic('sel');return;}catch(e){}}
   SW.classList.add('sc-pfs');document.body.classList.add('sc-pfs-on');
   // Telegram 8+ — основной путь на iOS/Android. В обычном браузере/на ПК — нативный fullscreen как fallback.
   try{
@@ -2635,8 +2638,10 @@ async function scFull(){if(!SW)return;if(SW.classList.contains('sc-pfs')){scExit
   }catch(e){}
   try{if(screen.orientation&&screen.orientation.lock&&matchMedia('(orientation:portrait)').matches)screen.orientation.lock('landscape').catch(()=>{});}catch(e){}
   if(window.innerHeight>window.innerWidth&&matchMedia('(pointer:coarse)').matches)SW.classList.add('rot');
+  try{if(TG&&TG.disableVerticalSwipes)TG.disableVerticalSwipes();}catch(e){}
   if(SW._wake)SW._wake();haptic('sel');}
 function scExitFull(){
+  try{if(TG&&TG.enableVerticalSwipes)TG.enableVerticalSwipes();}catch(e){}
   const w=document.querySelector('.sc-pfs');if(w)w.classList.remove('sc-pfs','idle','rot');document.body.classList.remove('sc-pfs-on');
   try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});}catch(e){}
   try{if(screen.orientation&&screen.orientation.unlock)screen.orientation.unlock();}catch(e){}
