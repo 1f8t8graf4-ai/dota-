@@ -2780,3 +2780,72 @@ body .screen .hlesson,body.t-clean .screen .hlesson,body .screen .hlesson.hero,b
 .myw-go{margin-top:8px;padding:6px 10px;border-radius:9px;background:rgba(255,255,255,.07);color:var(--ink,#fff);font:600 12.5px 'Golos Text',sans-serif}
 .thead .streak{display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:99px;background:rgba(255,140,40,.12);color:#ffb35c;font:800 13px 'Golos Text',sans-serif;margin-left:auto}
 .thead .streak+.gold{margin-left:6px}
+
+/* =====================================================================================
+   8.4 — ЭПИЗОД ПО ШАГАМ: на экране только текущий шаг
+   ===================================================================================== */
+.mascot-event,.mascot-stage,#mascot-dock{display:none!important}   /* никаких заставок маскота на весь экран */
+.sc-chip{display:none!important}
+.ep-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 12px;padding:4px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07)}
+.ep-tabs button{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px 6px;border-radius:12px;background:none;color:var(--muted,#9a9a9a);font:700 14px 'Golos Text',sans-serif;transition:background-color .25s var(--ease,ease),color .25s}
+.ep-tabs button i{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.1);font-style:normal;font-size:11px}
+.ep-tabs button.on{background:var(--ink,#fff);color:#111}.ep-tabs button.on i{background:#111;color:#fff}
+.ep-tabs button.done:not(.on) i{background:rgba(52,199,89,.25);color:#7be39a}
+.ep-tabs button.done:not(.on) i::before{content:"✓"}.ep-tabs button.done:not(.on) i{font-size:0}.ep-tabs button.done:not(.on) i::before{font-size:11px}
+.ep-pane{margin-top:12px;animation:fbIn .3s var(--ease-out,ease) both}
+.ep-hint{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.ep-hint b{display:block;font:800 16px 'Golos Text',sans-serif;color:var(--ink,#fff)}
+.ep-hint span{display:block;margin-top:3px;font-size:13.5px;line-height:1.45;color:var(--muted,#aaa)}
+.ep-go{width:100%;margin-top:10px}
+.ep-go.pulse{animation:goPulse 1.6s ease-in-out 3}
+@keyframes goPulse{50%{box-shadow:0 0 0 8px rgba(245,196,81,.18)}}
+.ep-lines,.ep-words{margin-top:12px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);overflow:hidden}
+.ep-lines summary,.ep-words summary{display:flex;align-items:center;gap:8px;padding:13px 14px;cursor:pointer;list-style:none;font:700 14.5px 'Golos Text',sans-serif;color:var(--ink,#fff)}
+.ep-lines summary::-webkit-details-marker,.ep-words summary::-webkit-details-marker{display:none}
+.ep-lines summary i,.ep-words summary i{font-style:normal;padding:1px 8px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--muted,#aaa);font-size:12px}
+.ep-lines summary::after,.ep-words summary::after{content:"›";margin-left:auto;color:var(--muted,#999);font-size:20px;transition:transform .25s}
+.ep-lines[open] summary::after,.ep-words[open] summary::after{transform:rotate(90deg)}
+.ep-lines .sc-lines{margin:0;border-radius:0;border:0;box-shadow:none}
+.ep-words>*:not(summary){margin-left:12px;margin-right:12px}
+.ep-words .sc-sec{display:none}
+/* карточка фразы в разборе */
+.ep-card{min-height:220px;padding:16px;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),#141417;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 40px -24px #000;animation:cardIn .32s var(--ease-out,ease) both}
+@keyframes cardIn{from{opacity:0;transform:translateX(14px)}}
+.ep-c-top{display:flex;justify-content:space-between;align-items:center}
+.ep-c-n{font:800 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--hi,#F5C451)}
+.ep-c-top .sc-tag{margin-top:0}
+.ep-c-en{display:block;margin-top:10px;font:800 21px/1.3 'Golos Text',sans-serif!important;color:#fff}
+.ep-c-en .sw{font-style:normal;cursor:pointer;border-radius:4px;transition:background .15s}.ep-c-en .sw:active,.ep-c-en .sw:hover{background:rgba(245,196,81,.25)}
+.ep-c-ru{display:block;margin-top:4px;font-size:16px;color:#F3DA8C}
+.ep-c-note{margin:10px 0 0;font-size:14px;line-height:1.45;color:var(--muted,#bbb)}
+.ep-c-words{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ep-c-words span{padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.07);font-size:12.5px;color:var(--ink,#eee)}.ep-c-words b{color:#FFD978}
+.ep-c-ex{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);font-size:14px;line-height:1.4;color:#fff}
+.ep-c-ex span{display:block;font:800 10px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9ad1ff;margin-bottom:3px}
+.ep-c-ex small{display:block;margin-top:2px;color:var(--muted,#aaa);font-size:12.5px}
+.ep-c-b{display:flex;gap:8px;margin-top:14px}.ep-c-b .sc-btn{flex:1;margin:0;font-size:13.5px;padding-left:8px;padding-right:8px}
+.ep-nav{display:flex;align-items:center;gap:10px;margin-top:12px}
+.ep-nav button{flex:none;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:22px}
+.ep-nav button:disabled{opacity:.3}
+.ep-dots{flex:1;display:flex;justify-content:center;gap:6px}
+.ep-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .3s var(--ease,ease)}
+.ep-dots i.done{background:rgba(52,199,89,.6)}.ep-dots i.on{width:22px;border-radius:4px;background:var(--hi,#F5C451)}
+.ep-dots i.fin{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3)}.ep-dots i.fin.on{background:var(--hi,#F5C451);box-shadow:none}
+.ep-done{text-align:center;padding:14px 4px}.ep-done-ic{font-size:44px}.ep-done b{display:block;margin-top:6px;font:800 19px 'Golos Text',sans-serif;color:#fff}
+.ep-done span{display:block;margin:4px 0 14px;color:var(--muted,#aaa);font-size:14px}.ep-done .sc-btn{width:100%;margin-top:8px}
+.ep-empty{color:var(--muted,#aaa);font-size:14px;line-height:1.45}
+/* ================= 8.5: ежедневное повторение и диктант ================= */
+.dl-q h2 .sc-hearbtn{margin-right:6px}
+.sc-hearbtn.ghost{background:rgba(255,255,255,.08);color:var(--ink,#fff)}
+.dl-q textarea{width:100%;box-sizing:border-box;margin-top:12px;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;
+  font:500 17px/1.4 'Golos Text',sans-serif;resize:none;outline:none;transition:border-color .2s,box-shadow .2s}
+.dl-q textarea:focus{border-color:rgba(245,196,81,.6);box-shadow:0 0 0 3px rgba(245,196,81,.15)}
+.dl-b{display:flex;gap:8px;margin-top:10px}.dl-b .sc-btn{flex:1;margin:0}
+.dl-hide{margin:12px 0;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.15);filter:blur(7px);opacity:.5;user-select:none;transition:filter .35s var(--ease,ease),opacity .35s}
+.dl-hide.on{filter:none;opacity:1;border-style:solid}
+.dl-hide b{display:block;font:800 19px/1.3 'Golos Text',sans-serif;color:#fff}.dl-hide small{display:block;margin-top:4px;color:var(--muted,#aaa);font-size:13px}
+.d-diff .d-ok{color:#7be39a}.d-diff .d-miss{color:#ff8a80;text-decoration:underline wavy rgba(255,138,128,.6);text-underline-offset:4px}
+.dl-mom{margin-top:10px;padding:7px 11px;border-radius:10px;background:rgba(255,255,255,.07);color:var(--ink,#fff);font:600 12.5px 'Golos Text',sans-serif}
+.dl-empty{text-align:center;padding:24px 18px}.dl-empty .dl-ic{font-size:46px}.dl-empty b{display:block;margin-top:8px;font:800 20px 'Golos Text',sans-serif}
+.dl-empty span{display:block;margin:6px 0 16px;color:var(--muted,#aaa);font-size:14px;line-height:1.45}.dl-empty .btn{width:100%}
+.ep-c-b .sc-btn{font-size:13px}
