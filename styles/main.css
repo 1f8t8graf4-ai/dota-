@@ -2065,7 +2065,7 @@ body[data-scn="bone"]{--scbg:#0d0c0b}
 .kposter.show.poster .kp-grad{background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.85))!important}
 
 /* ================= 5.8: полный экран на телефоне — контент не заезжает под кнопки Telegram ================= */
-body{padding-top:calc(var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px))}
+/* 8.7: убрано — отступ уже есть у #app (иначе сверху была двойная пустота) */
 /* панель управления видео: легче и дороже на вид — без толстых рамок, мягкие плашки */
 .scn .sc-ctrl{gap:6px!important}
 .scn .sc-ctrl button{height:40px!important;min-height:0!important;border:0!important;border-radius:11px!important;background:rgba(255,255,255,.06)!important;
@@ -2849,3 +2849,37 @@ body .screen .hlesson,body.t-clean .screen .hlesson,body .screen .hlesson.hero,b
 .dl-empty{text-align:center;padding:24px 18px}.dl-empty .dl-ic{font-size:46px}.dl-empty b{display:block;margin-top:8px;font:800 20px 'Golos Text',sans-serif}
 .dl-empty span{display:block;margin:6px 0 16px;color:var(--muted,#aaa);font-size:14px;line-height:1.45}.dl-empty .btn{width:100%}
 .ep-c-b .sc-btn{font-size:13px}
+
+/* =====================================================================================
+   8.7 — ПРОЩЕ И ПОНЯТНЕЕ
+   ===================================================================================== */
+/* нижняя панель: сколько вкладок видно — столько и колонок (раньше при 3 вкладках справа была дыра) */
+.tabbar{display:flex!important;grid-template-columns:none!important}
+.tabbar>button{flex:1 1 0;min-width:0}
+.tabbar>button[hidden],.tabbar>button.hide,.tabbar>button[style*="display: none"]{display:none!important}
+/* главная: «Сегодня» — одно главное действие */
+.htoday{margin-top:12px;padding:14px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),#141417;border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 40px -22px #000}
+.ht-h{display:flex;justify-content:space-between;align-items:baseline}.ht-h b{font:800 18px 'Golos Text',sans-serif;color:#fff}.ht-h span{color:var(--muted,#aaa);font-size:13px}
+.ht-bar{display:block;height:6px;margin:10px 0 12px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}.ht-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#F5C451,#FFD978);transition:width .7s var(--ease-out,ease)}
+.ht-main{display:flex;align-items:center;gap:12px;width:100%;padding:14px 14px 14px 16px;border-radius:16px;background:#F3F0E8;color:#111;text-align:left}
+.ht-main span{flex:1;min-width:0}.ht-main em{display:block;font:800 11px 'Golos Text',sans-serif;letter-spacing:.1em;text-transform:uppercase;font-style:normal;color:#8a6a1f}
+.ht-main b{display:block;margin-top:2px;font:800 17px 'Golos Text',sans-serif}.ht-main small{display:block;margin-top:2px;font-size:13px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ht-main i{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;background:#111;color:#fff}.ht-main i svg{width:18px;height:18px}
+.ht-alt{display:block;width:100%;margin-top:8px;padding:10px;border-radius:12px;background:rgba(255,255,255,.05);color:var(--muted,#bbb);font:600 13px 'Golos Text',sans-serif;text-align:center}
+.htiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.htile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02)),#141417;border:1px solid rgba(255,255,255,.08);color:#fff;text-align:left}
+.htile span{font-size:22px;margin-bottom:4px}.htile b{font:800 15px 'Golos Text',sans-serif}.htile small{color:var(--muted,#aaa);font-size:12.5px}
+/* фраза дня на главной — компактнее */
+.screen .pod .pod-ex{display:none}.screen .pod{padding:13px 14px}.screen .pod .pod-en{font-size:17px}
+/* кнопки в карточке разбора — всегда в одну строку, без «капслока» темы */
+.scn .ep-c-b .sc-btn{letter-spacing:normal!important;text-transform:none!important;white-space:nowrap;font:700 13.5px 'Golos Text',sans-serif!important;padding:11px 4px!important;min-width:0}
+/* всплывашка слова в плеере — компактная, сверху кадра, не закрывает всё видео */
+.sc-v .sc-wpop{top:8px!important;bottom:auto;transform:translateX(-50%)!important;width:min(86%,360px);padding:10px 12px;animation:popTop .22s var(--ease-out,ease) both!important}
+@keyframes popTop{from{opacity:0;transform:translate(-50%,-8px)}}
+.sc-v .sc-wpop b{font-size:18px}.sc-v .sc-wpop .t{font-size:14.5px}.sc-v .sc-wpop .wp-ph{margin-top:8px;padding:7px 9px}.sc-v .sc-wpop .wp-ph small{display:none}
+.sc-v .sc-wpop .hn-b{margin-top:8px}
+/* панель управления плеером: всегда одна ровная строка равных кнопок (на ПК ползунок громкости — одна из ячеек) */
+.scn .sc-ctrl{display:grid!important;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;flex-wrap:nowrap}
+.scn .sc-ctrl>*{min-width:0;margin:0!important}
+.scn .sc-ctrl .sc-vl{width:100%!important}
+.scn .sc-ctrl button{padding-left:0!important;padding-right:0!important;white-space:nowrap;overflow:hidden}
