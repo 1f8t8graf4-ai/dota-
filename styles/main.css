@@ -2921,3 +2921,10 @@ body .screen .hlesson,body.t-clean .screen .hlesson,body .screen .hlesson.hero,b
 
 .sc-more #scag::after{content:"Сначала"}.sc-more #scsp::after{content:"Скорость"}.sc-more #sccc::after{content:"Субтитры"}.sc-more #scmu::after{content:"Звук"}
 .sc-more button::after{display:block;font:600 10px 'Golos Text',sans-serif;opacity:.65}
+/* ================= 8.9: фразы сцены, главная по фильмам ================= */
+.sc-allph{display:flex;align-items:center;gap:8px;width:100%;margin:6px 0 12px;padding:13px 14px;border-radius:14px;background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.09)!important;color:#fff!important;
+  font:700 15px 'Golos Text',sans-serif!important;letter-spacing:0!important;text-transform:none!important;text-align:left;box-shadow:none!important}
+.sc-allph i{font-style:normal;padding:1px 8px;border-radius:99px;background:rgba(255,255,255,.1);font-size:12px;color:rgba(255,255,255,.75)}
+.sc-allph span{margin-left:auto;font-size:20px;opacity:.6}
+.htiles{grid-template-columns:1fr}
+.htile{flex-direction:row;align-items:center;gap:12px}.htile span{margin:0}.htile b{flex:none}.htile small{margin-left:auto}

@@ -2209,12 +2209,13 @@ const scStLabel=x=>x.st>=3?['надолго','ok']:x.st>=1?['закрепляю'
 // звук фразы прямо из фильма: берём кусок эпизода (тот же mp4) с её начала до конца
 let SCLIP=null;
 function scClip(id,fid,btn){const s=scOf(id);if(!s)return;let pi=-1,f=null;s.parts.forEach((p,i)=>p.ph.forEach(x=>{if(x.id===fid){pi=i;f=x;}}));if(!f)return;
-  const p=s.parts[pi],src=assetUrl(scEpKey(s,pi,'mp4')),st=Math.max(0,f.a-p.a-0.12),en=f.b-p.a+0.25;
+  const p=s.parts[pi],src=assetUrl(scEpKey(s,pi,'mp4')),st=Math.max(0,f.a-p.a-0.08),en=f.b-p.a+0.12;
   if(!SCLIP){SCLIP=document.createElement('video');SCLIP.playsInline=true;SCLIP.setAttribute('playsinline','');SCLIP.preload='auto';SCLIP.style.display='none';document.body.appendChild(SCLIP);}
   clearInterval(SCLIP._t);$$('.sc-say.on').forEach(x=>x.classList.remove('on'));if(btn)btn.classList.add('on');
   if(SCLIP.dataset.src!==src){SCLIP.src=src;SCLIP.dataset.src=src;}
-  const go=()=>{try{SCLIP.currentTime=st;}catch(e){}const pr=SCLIP.play();if(pr&&pr.catch)pr.catch(()=>{});
-    SCLIP._t=setInterval(()=>{if(SCLIP.currentTime>=en||SCLIP.ended){SCLIP.pause();clearInterval(SCLIP._t);if(btn)btn.classList.remove('on');}},40);};
+  const go=()=>{const start=()=>{const pr=SCLIP.play();if(pr&&pr.catch)pr.catch(()=>{});
+      SCLIP._t=setInterval(()=>{if(SCLIP.currentTime>=en||SCLIP.ended){SCLIP.pause();clearInterval(SCLIP._t);if(btn)btn.classList.remove('on');}},30);};
+    SCLIP.pause();if(Math.abs(SCLIP.currentTime-st)<0.03){start();return;}SCLIP.addEventListener('seeked',start,{once:true});try{SCLIP.currentTime=st;}catch(e){start();}};
   if(SCLIP.readyState>=1)go();else{SCLIP.addEventListener('loadedmetadata',go,{once:true});SCLIP.load();}
   haptic('sel');}
 // «Шаблон» — рабочая конструкция без сюжета фильма (берётся из начала пояснения: «X — «Y»»)
@@ -2248,7 +2249,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='8.8';
+const APP_V='8.9.1';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2548,8 +2549,9 @@ function dictAll(){return SCENES.filter(s=>s.kind!=='clip').flatMap(s=>{const P=
   return {s,f,st:r?r[0]:(P.rDone&&P.rDone[f.id]?9:-1),seen:(P.m[f.id]||0)>0||!!r||!!(P.rDone&&P.rDone[f.id])};});});}
 const dictSt=x=>x.st>=3?['надолго','ok']:x.st>=1?['закрепляю','mid']:x.seen?['учу','new']:['новая','none'];
 function renderMyPhrases(){renderPhraseDict();}
-function renderPhraseDict(){if(screen!=='dict')ev('dict');screen='dict';backBtn(true);const V=store.dictV||(store.dictV={mine:false,topic:'',reg:''});const de=scL()==='de';
-  const ALL=dictAll(),L0=V.mine?ALL.filter(x=>x.seen):ALL;
+function renderPhraseDict(opt){opt=opt||{};if(screen!=='dict')ev('dict');screen='dict';backBtn(true);const V=opt.scene?(store.dictVS||(store.dictVS={mine:false,topic:'',reg:''})):(store.dictV||(store.dictV={mine:false,topic:'',reg:''}));const de=scL()==='de';
+  const ALL=dictAll().filter(x=>!opt.scene||x.s.id===opt.scene),L0=V.mine?ALL.filter(x=>x.seen):ALL;
+  if(V.topic&&!L0.some(x=>fTopics(x.f).includes(V.topic)))V.topic='';if(V.reg&&!L0.some(x=>scTag(x.f)[1]===V.reg))V.reg='';
   const L=L0.filter(x=>(!V.topic||fTopics(x.f).includes(V.topic))&&(!V.reg||scTag(x.f)[1]===V.reg));
   const cntT=k=>L0.filter(x=>fTopics(x.f).includes(k)).length,ok=ALL.filter(x=>x.st>=3).length,mine=ALL.filter(x=>x.seen).length;
   const txt=x=>x.s.lang==='de'?x.f.de:scT(x.f);
@@ -2558,17 +2560,19 @@ function renderPhraseDict(){if(screen!=='dict')ev('dict');screen='dict';backBtn(
     <div class="dc-tags">${fTopics(x.f).map(k=>`<span class="dc-t">${TOPIC_ICO[k]||''} ${k}</span>`).join('')}<span class="sc-tag ${tg[1]}">${tg[0]}</span></div>
     ${scNoteS(x.f)?`<div class="mp-n">${esc(scNoteS(x.f))}</div>`:''}
     <div class="mp-row"><button class="mp-go" data-s="${x.s.id}" data-i="${x.f.pi}">▶ ${esc(x.s.title)} · эп. ${x.f.pi+1}</button><button class="sc-say" data-s="${x.s.id}" data-clip="${x.f.id}" aria-label="Послушать из фильма">${SI.vol||'🔊'}</button></div></div>`;};
-  mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Словарь фраз</h1></div>
-    <div class="mp-sum"><div><b>${ALL.length}</b><span>всего</span></div><div><b>${mine}</b><span>мои</span></div><div><b>${ok}</b><span>надолго</span></div></div>
+  const sc=opt.scene?scOf(opt.scene):null;
+  mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">${sc?'Фразы сцены':'Словарь фраз'}</h1></div>
+    ${sc?`<p class="lead" style="margin:0 0 12px">${esc(sc.title)}${sc.sub?' · '+esc(sc.sub):''} — ${ALL.length} ${plural(ALL.length,['фраза','фразы','фраз'])}${L.length!==ALL.length?`, показано ${L.length}`:''}. ▶ — открыть момент, 🔊 — услышать.</p>`:''}
+    ${sc?'':`<div class="mp-sum"><div><b>${ALL.length}</b><span>всего</span></div><div><b>${mine}</b><span>мои</span></div><div><b>${ok}</b><span>надолго</span></div></div>`}
     <div class="sc-lang dc-mode"><button data-dm="0" class="${V.mine?'':'on'}">Все фразы</button><button data-dm="1" class="${V.mine?'on':''}">Только мои</button></div>
     <div class="dc-chips"><button data-tp="" class="${V.topic?'':'on'}">Все темы</button>${TOPICS_ALL.filter(k=>cntT(k)).map(k=>`<button data-tp="${k}" class="${V.topic===k?'on':''}">${TOPIC_ICO[k]} ${k} <i>${cntT(k)}</i></button>`).join('')}</div>
-    <div class="dc-chips reg"><button data-rg="" class="${V.reg?'':'on'}">Любой тон</button>${Object.entries(REG_NAME).map(([k,n])=>`<button data-rg="${k}" class="${V.reg===k?'on':''}">${n}</button>`).join('')}</div>
+    <div class="dc-chips reg"><button data-rg="" class="${V.reg?'':'on'}">Любой тон</button>${Object.entries(REG_NAME).filter(([k])=>L0.some(x=>scTag(x.f)[1]===k)).map(([k,n])=>`<button data-rg="${k}" class="${V.reg===k?'on':''}">${n} <i>${L0.filter(x=>scTag(x.f)[1]===k).length}</i></button>`).join('')}</div>
     <input class="mp-q" id="mpq" placeholder="Поиск: слово или перевод">
     <div class="mp-list">${L.length?L.map(card).join(''):'<div class="mp-empty">Тут пусто. Сними фильтр или пройди пару эпизодов в Кинозале.</div>'}</div>`,'mpscr');
-  $('#bBtn').onclick=()=>{sfx('tap');renderTab('learn');};
-  $$('[data-dm]').forEach(b=>b.onclick=()=>{V.mine=b.dataset.dm==='1';save();sfx('sel');renderPhraseDict();});
-  $$('[data-tp]').forEach(b=>b.onclick=()=>{V.topic=b.dataset.tp;save();sfx('sel');renderPhraseDict();});
-  $$('[data-rg]').forEach(b=>b.onclick=()=>{V.reg=b.dataset.rg;save();sfx('sel');renderPhraseDict();});
+  $('#bBtn').onclick=()=>{sfx('tap');sc?renderScene(sc.id):renderTab('learn');};
+  $$('[data-dm]').forEach(b=>b.onclick=()=>{V.mine=b.dataset.dm==='1';save();sfx('sel');renderPhraseDict(opt);});
+  $$('[data-tp]').forEach(b=>b.onclick=()=>{V.topic=b.dataset.tp;save();sfx('sel');renderPhraseDict(opt);});
+  $$('[data-rg]').forEach(b=>b.onclick=()=>{V.reg=b.dataset.rg;save();sfx('sel');renderPhraseDict(opt);});
   const q=$('#mpq');q.oninput=()=>{const v=q.value.trim().toLowerCase();$$('.mp-it').forEach(e=>e.style.display=!v||e.dataset.q.includes(v)?'':'none');};
   $$('.mp-go').forEach(b=>b.onclick=()=>{sfx('tap');renderScEp(b.dataset.s,+b.dataset.i);});
   $$('.mp-it .sc-say').forEach(b=>b.onclick=e=>{e.stopPropagation();scClip(b.dataset.s,b.dataset.clip,b);});}
@@ -2694,6 +2698,7 @@ function renderScene(id){
       ${scRateHTML(s)}
       <div class="sc-prog"><span>Выучено фраз</span><b>${L} / ${T}</b></div><div class="sc-bar"><i style="width:${Math.round(L/T*100)}%"></i></div>
       <div class="sc-prog sc-mast"><span>Освоение сцены${scMasterPct(s)===100?' · 🏆':''}</span><b>${scMastered(s)} / ${T}</b></div><div class="sc-bar sc-mbar"><i style="width:${scMasterPct(s)}%"></i></div><small class="sc-mhint">Фраза засчитывается, когда держится в памяти надолго — после повторений через 1, 3 и 7 дней.</small>
+      <button class="sc-allph" id="scAllPh">📚 Все фразы сцены <i>${scTotal(s)}</i><span>›</span></button>
       ${scDue(s).length?`<button class="sc-btn ghost" id="screv" style="margin-bottom:8px">Повторить фразы: ${scDue(s).length} →</button>`:''}
       <button class="sc-btn" id="scgo">${d===0?'Начать':next<0?'Повторить сцену':'Продолжить: эпизод '+String(next+1).padStart(2,'0')} →</button>
     </section>
@@ -2703,6 +2708,7 @@ function renderScene(id){
   $('#scb').onclick=()=>{sfx('tap');renderTab('kino');};
   $('#scgo').onclick=()=>renderScEp(id,next<0?0:next);
   if($('#screv'))$('#screv').onclick=()=>renderScQuiz(id,'rev');
+  if($('#scAllPh'))$('#scAllPh').onclick=()=>{sfx('tap');renderPhraseDict({scene:id});};
   $$('.sc-ep').forEach(b=>b.onclick=()=>renderScEp(id,+b.dataset.i));
   musBind(s);
   $$('.sc-ep').forEach(b=>flagMark(b,flagEpKey(id,+b.dataset.i),p0t(s,+b.dataset.i)));
@@ -4347,7 +4353,7 @@ function learnTabHTML(){
     :les?{id:'hLesson',k:'Урок на сегодня',b:`5 фраз · ≈ 3 мин`,s:`из «${esc(les.s.title)}»`}
     :{id:'hNext',k:'Дальше',b:`Эпизод ${c.i+1} · ${esc(p.t)}`,s:esc(s.title)};
   return `${headHTML()}
-    <button class="hcont ${s.theme} anim" id="hCont" data-sc="${s.id}"><span class="hc-img" style="background-image:url('${assetUrl(scEpKey(s,c.i,'jpg'))}')"></span><span class="hc-grad"></span>
+    <button class="hcont ${s.theme} anim" id="hCont" data-sc="${s.id}"><span class="hc-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="hc-grad"></span>
       <span class="hc-t"><em>${c.fresh?'Начни отсюда':'Продолжить смотреть'}</em><b>${esc(s.title)}</b><small>Эпизод ${c.i+1} · ${esc(p.t)}</small>
         <span class="hc-bar"><i style="width:${Math.round(L/T*100)}%"></i></span><small class="hc-prog">выучено фраз ${L} из ${T}</small></span>
       <span class="hc-play">${SI.play}</span></button>
@@ -4359,11 +4365,12 @@ function learnTabHTML(){
     </section>
     <div class="htiles anim">
       <button class="htile" onclick="renderMyWords()"><span>⭐</span><b>Мои слова</b><small>${mw?mw+' '+plural(mw,['слово','слова','слов']):'сохраняй из субтитров'}</small></button>
-      <button class="htile" onclick="renderPhraseDict()"><span>📚</span><b>Словарь фраз</b><small>${A} фраз по темам</small></button>
     </div>
     ${phraseOfDayHTML()}
     <div class="hsec anim"><h2>Кинозал</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
-    <div class="hrow">${SCENES.filter(x=>flagOf('scene-'+x.id)!=='hidden').map(x=>{const l=scLearned(x),t=scTotal(x);return `<button class="hposter ${x.theme} anim${scMasterPct(x)===100?' mastered':''}" data-sc="${x.id}"><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(x.title)}</b><small>${x.parts.length} ${plural(x.parts.length,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('')}</div>`;
+    <div class="hrow">${(()=>{const G=[],by={};for(const x of SCENES.filter(x=>flagOf('scene-'+x.id)!=='hidden')){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
+      return G.map(k=>{const L=by[k],x=L[0],l=L.reduce((a,y)=>a+scLearned(y),0),t=L.reduce((a,y)=>a+scTotal(y),0),eps=L.reduce((a,y)=>a+y.parts.length,0);
+        return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div>`;
 }
 function bindLearn(){
   bindHead();
@@ -4375,6 +4382,7 @@ function bindLearn(){
   if($('#hReview'))$('#hReview').onclick=()=>{haptic('medium');const sc=SCENES.find(x=>scDue(x).length);if(sc)renderScQuiz(sc.id,'rev');else startSession('review');};
   if($('#hAllKino'))$('#hAllKino').onclick=()=>{sfx('tap');renderTab('kino');};
   if($('#hAllGames'))$('#hAllGames').onclick=()=>{sfx('tap');renderTab('games');};
+  $$('.hrow [data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});
   $$('.hrow [data-sc]').forEach(b=>b.onclick=()=>{haptic('medium');renderScene(b.dataset.sc);});
   if($('#gCards'))$('#gCards').onclick=()=>{haptic('medium');cgPick();};
   if($('#gSpy'))$('#gSpy').onclick=()=>{sfx('tap');renderTab('spy');};
