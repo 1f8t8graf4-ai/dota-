@@ -2249,7 +2249,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='8.9.1';
+const APP_V='9.0';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2897,10 +2897,10 @@ function renderScEp(id,i,opts){
   // 8.4: эпизод по шагам — на экране только текущий шаг. ① Смотри → ② Разбор (фразы по одной) → ③ Проверка.
   scMount(s,`
     <div class="sc-head"><button class="sc-back" id="scb">‹</button><div><span class="sc-meta">${esc(s.title)} · эпизод ${String(i+1).padStart(2,'0')}</span><h1>${esc(p.t)}</h1></div></div>
-    <div class="ep-tabs" role="tablist"><button data-tab="watch"><i>1</i>Смотри</button><button data-tab="learn"><i>2</i>Разбор</button><button data-tab="test"><i>3</i>Проверка</button></div>
-    <div class="sc-v" id="scvw"><div class="sc-over" id="scvo"><button id="scplay" aria-label="Смотреть">▶</button></div></div>
+    <div class="ep-main"><div class="sc-v" id="scvw"><div class="sc-over" id="scvo"><button id="scplay" aria-label="Смотреть">▶</button></div></div>
     ${scSeek()}
-    ${scCtrl()}
+    ${scCtrl()}</div>
+    <div class="ep-side"><div class="ep-tabs" role="tablist"><button data-tab="watch"><i>1</i>Смотри</button><button data-tab="learn"><i>2</i>Разбор</button><button data-tab="test"><i>3</i>Проверка</button></div>
     <section class="ep-pane" data-pane="watch">
       <div class="ep-hint"><b>Просто посмотри эпизод</b><span>Субтитры — оригинал и перевод. Незнакомое слово — нажми на него в списке реплик ниже${matchMedia('(hover:hover)').matches?' или наведи мышкой':''}.</span></div>
       <button class="sc-btn ep-go" id="epToLearn">${watched?'Дальше: разбор фраз →':'Смотреть эпизод ▶'}</button>
@@ -2912,8 +2912,9 @@ function renderScEp(id,i,opts){
       <div class="ep-nav"><button id="epPrev" aria-label="Назад">‹</button><div class="ep-dots" id="epDots"></div><button id="epNext" aria-label="Дальше">›</button></div>
       ${swd?`<details class="ep-words"><summary>Все слова эпизода <i>${swd.key.length}</i></summary>${swBlock(s,i,p)}</details>`:''}
 
-    </section>`,'scep');
+    </section></div>`,'scep');
 
+  {const sn=document.querySelector('.scn');if(sn)sn.classList.add('scep');}
   scVideo($('#scvw'),s,p);
   $('#scvw').appendChild($('#scvo'));
   SW._ph=[];SW._watched=watched;SW._stopPh=false;   // без остановок и всплывашек во время просмотра — только чистые субтитры
@@ -3005,6 +3006,14 @@ function scListenOpts(f,all){const src=f.en,re=new RegExp('\\b'+f.gap.replace(/[
   if(!re.test(src))return null;return scGapOpts(f,all).map(w=>src.replace(re,w));}
 const scToks=s=>String(s).split(/\s+/).filter(Boolean);
 const scNorm=s=>String(s).toLowerCase().replace(/[^a-zäöüß'\s]/g,'').replace(/\s+/g,' ').trim();
+const W_IRR={come:['came','coming'],came:['come'],go:['went','going'],went:['go'],is:['are','was'],are:['is','were'],was:['were','is'],were:['was'],have:['has','had'],has:['have'],had:['have'],
+  do:['does','did'],does:['do'],did:['do','does'],can:['could'],could:['can'],would:['will'],will:['would'],been:['being','be'],be:['been','being'],my:['me'],me:['my'],by:['to','at'],to:['for','at'],for:['to'],
+  at:['in','on'],in:['on','at'],on:['in'],a:['the'],the:['a'],you:['your'],your:['you'],get:['got'],got:['get'],make:['made'],made:['make'],take:['took'],took:['take'],think:['thought'],know:['knew'],
+  see:['saw'],say:['said'],tell:['told'],this:['that'],that:['this'],some:['any'],any:['some']};
+function wForms(w,de){const r=wForms0(w,de);return r.filter(v=>W_IRR[String(w).toLowerCase()]||(typeof GLOSS!=='undefined'&&GLOSS[v]));}   // только настоящие слова (есть в словаре сцен)
+function wForms0(w,de){const l=String(w).toLowerCase();if(de)return [];if(W_IRR[l])return W_IRR[l];
+  if(/ing$/.test(l)&&l.length>5)return [l.replace(/ing$/,''),l.replace(/ing$/,'ed')];if(/ed$/.test(l)&&l.length>4)return [l.replace(/ed$/,''),l.replace(/ed$/,'ing')];
+  if(/s$/.test(l)&&l.length>3)return [l.replace(/s$/,'')];if(l.length>2&&/^[a-z]+$/.test(l))return [l+'s',l+'ing'];return [];}
 function renderScQuiz(id,i){
   const s=scOf(id),les=!!i&&typeof i==='object'&&Array.isArray(i.list),rev=i==='rev',P=scP(id),de=scL()==='de';
   const all=s.parts.flatMap(x=>x.ph);
@@ -3045,11 +3054,11 @@ function renderScQuiz(id,i){
   }
 
   const Q=list.map((f,k)=>({f,type:taskFor(f,k,false)}));
-  const need=Q.length;let n=0,ok=0,wrong=0;
+  const need=Q.length;let n=0,ok=0,wrong=0,combo=0;
 
   function show(){
     const q=Q[n],f=q.f,type=q.type;setTimeout(gavIdle,0);
-    let title='',ask='',opts=[],correct='',build=null,video=false;
+    let title='',ask='',opts=[],correct='',build=null,video=false,typed=false;
 
     if(type==='listen'){
       ask='Послушай и собери';
@@ -3083,8 +3092,8 @@ function renderScQuiz(id,i){
       ask='Закрепи ключевое слово';
       title=esc(target(f)).replace(new RegExp('\\b'+String(f.gap).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i'),'<span class="gap">&nbsp;</span>')
         +`<br><small class="qsm">${esc(f.ru)}</small>`;
-      correct=f.gap;
-      opts=shuffle([correct,...scGapOpts(f,all)]).slice(0,4);
+      correct=f.gap;opts=null;typed=true;
+      ask='Впиши пропущенное слово';
     }
 
     const p=s.parts[f.pi];
@@ -3097,7 +3106,10 @@ function renderScQuiz(id,i){
         <div class="sc-meta">${ask}${q.re?' · повтор этой фразы':''}</div>
         <h2>${title}</h2>
         ${build
-          ?`<div class="sc-bans" id="scbans"></div><div class="sc-bpool" id="scbpool"></div><button class="sc-btn" id="scbchk" disabled>Проверить точную фразу</button>`
+          ?`<div class="sc-bans" id="scbans"></div>${type!=='listen'?`<button class="sc-reveal" id="scbrev">Сначала вспомни сам → показать слова</button>`:''}<div class="sc-bpool" id="scbpool"${type!=='listen'?' hidden':''}></div>
+            <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div>`
+          :typed?`<input class="sc-gapin" id="scgap" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="впиши слово и нажми «Готово»">
+            <div class="sc-bact"><button class="sc-btn ghost" id="scgno">Не помню</button><button class="sc-btn" id="scgok">Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div>`
           :`<div class="sc-opts">${opts.map(o=>`<button class="sc-opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`}
         <div id="scfb"></div>
       </div>`,'scq');
@@ -3114,6 +3126,7 @@ function renderScQuiz(id,i){
     const answer=(right,el)=>{
       if(q.res!==undefined)return;
       q.res=right;if(right)ok++;else wrong++;
+      if(right){combo++;if(combo>=3&&combo%3===0)toast(`🔥 ${combo} подряд без ошибок`);}else combo=0;
 
       // Ошибка не стирает выученное. Она только снимает «надолго» и возвращает точечный повтор.
       const before=P.m[f.id]||0;
@@ -3149,23 +3162,38 @@ function renderScQuiz(id,i){
       const note=scShort(scNoteS(f));
       const life=q.life;
       $('#scfb').innerHTML=`<div class="sc-fb ${right?'ok':'bad'}">
-        <div class="t">${right?'Верно':'Вот точная формулировка'}</div>
+        <div class="t">${right?(q.typo?'Верно — только опечатка':'Верно'):q.soft?`Собрал с ${q.tries+1}-й попытки — фраза вернётся ещё раз`:'Вот как правильно'}</div>
         ${life
           ?`<div class="en">${esc(correct)}</div><div class="ru">${esc(life.situation)}</div><div class="orig">Шаблон из сцены: ${esc(target(f))} — ${esc(f.ru)}</div>`
           :(type==='listen'&&de&&!scIsDe()?`<div class="en">${esc(f.en)}</div><div class="orig">по-немецки: ${esc(f.de)}</div><div class="ru">${esc(f.ru)}</div>`:`<div class="en">${esc(target(f))}</div><div class="ru">${esc(f.ru)}</div>`)}
         ${note&&note.length>20&&!phNorm(target(f)).includes(phNorm(note.split(' — ')[0]))?`<div class="sc-explain"><b>Зачем запоминать</b><span>${esc(note)}</span></div>`:''}
         ${!right&&type==='mean'&&el&&f.trap.includes(el.dataset.v)?`<div class="sc-trapwhy">Это ловушка: дословный перевод или похожие слова, но смысл другой.</div>`:''}
-        ${!right&&type!=='mean'?`<div class="sc-exact">Не придумывай другой вариант: сейчас тренируем именно эту формулировку.</div>`:''}
         <button class="sc-btn" id="scnx" style="margin-top:12px">${n===Q.length-1?'Закончить':'Дальше'} →</button>
       </div>`;
       $('#scnx').onclick=()=>{n++;if(n<Q.length)show();else end();};
     };
 
-    if(build){
-      const draw=()=>{
-        $('#scbans').innerHTML=build.got.map(x=>`<button class="sc-tile" data-k="${x.k}">${esc(x.w)}</button>`).join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
+    if(typed){
+      const inp=$('#scgap'),msg=$('#scbmsg');q.tries=0;
+      const norm=x=>scNorm(x).replace(/'/g,'');
+      const check=final=>{if(q.res!==undefined)return;const v=norm(inp.value),c=norm(correct);if(!v){inp.focus();return;}
+        if(v===c){inp.classList.add('ok');answer(true);return;}
+        if(c.length>=4&&lev(v,c)<=1){q.typo=true;inp.classList.add('typo');answer(true);return;}
+        if(!final)return;q.tries++;inp.classList.add('bad');setTimeout(()=>inp.classList.remove('bad'),450);haptic('err');
+        if(q.tries>=2){answer(false);inp.disabled=true;return;}
+        msg.textContent=`Не то. Подсказка: ${c.length} ${plural(c.length,['буква','буквы','букв'])}, начинается на «${correct.charAt(0)}».`;};
+      inp.oninput=()=>check(false);inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check(true);}};
+      inp.onpaste=e=>e.preventDefault();
+      $('#scgok').onclick=()=>check(true);$('#scgno').onclick=()=>{if(q.res===undefined){answer(false);inp.disabled=true;}};
+      setTimeout(()=>{try{inp.focus();}catch(e){}},300);
+    }else if(build){
+      q.tries=0;const pool=$('#scbpool');
+      const rv=$('#scbrev');if(rv){const open=()=>{if(!pool.hidden)return;pool.hidden=false;rv.remove();sfx('tap');};rv.onclick=open;setTimeout(()=>{if(document.body.contains(rv))open();},3500);}
+      const draw=(marks)=>{
+        $('#scbans').innerHTML=build.got.map((x,j)=>`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}">${esc(x.w)}</button>`).join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
         $('#scbpool').innerHTML=build.pool.map(x=>`<button class="sc-tile${build.got.includes(x)?' used':''}" data-k="${x.k}" ${build.got.includes(x)?'disabled':''}>${esc(x.w)}</button>`).join('');
-        $('#scbchk').disabled=!build.got.length||q.res!==undefined;
+        const done=q.res!==undefined;$('#scbchk').hidden=!build.got.length||done;$('#scbrst').hidden=!build.got.length||done;
+        $('#scbrst').onclick=()=>{build.got=[];$('#scbmsg').textContent='';sfx('tap');draw();};
         $$('#scbpool .sc-tile').forEach(b=>b.onclick=()=>{
           if(q.res!==undefined)return;sfx('tap');
           const x=build.pool.find(x=>x.k===+b.dataset.k);if(x)build.got.push(x);draw();
@@ -3176,11 +3204,12 @@ function renderScQuiz(id,i){
       };
       draw();
       $('#scbchk').onclick=()=>{
-        const got=scNorm(build.got.map(x=>x.w).join(' '));
-        const right=got===scNorm(correct);
-        answer(right);
-        $('#scbans').classList.add(right?'right':'wrong');
-        $('#scbchk').disabled=true;
+        const got=scNorm(build.got.map(x=>x.w).join(' ')),right=got===scNorm(correct);
+        if(right){q.soft=q.tries>0;answer(q.tries===0);$('#scbans').classList.add('right');draw();return;}
+        q.tries++;haptic('err');sfx('bad');
+        const want=build.tk.map(scNorm),marks=build.got.map((x,j)=>scNorm(x.w)===want[j]),okN=marks.filter(Boolean).length;
+        if(q.tries>=3){answer(false);$('#scbans').classList.add('wrong');draw(marks);return;}
+        draw(marks);$('#scbmsg').textContent=`На месте ${okN} из ${want.length}. Зелёные — правильно стоят, красные убери или переставь. Попытка ${q.tries+1} из 3.`;
       };
     }else{
       $$('.sc-opt').forEach(b=>b.onclick=()=>answer(b.dataset.v===correct,b));
@@ -3188,21 +3217,21 @@ function renderScQuiz(id,i){
   }
 
   function makeBuild(text,f,allPhrases){
-    const tk=scToks(text);
-    const used=new Set(tk.map(scNorm));
-    const pool=[];
-    // Берём несколько слов из других реплик только как отвлекающие плитки.
-    for(const x of shuffle(allPhrases)){
-      if(x===f)continue;
-      const words=scToks(target(x));
-      for(const w of words){
-        if(pool.length>=Math.min(4,Math.max(2,Math.floor(tk.length/3))))break;
-        if(!used.has(scNorm(w))&&w.length>1)pool.push(w);
-      }
-      if(pool.length>=Math.min(4,Math.max(2,Math.floor(tk.length/3))))break;
+    const deS=scIsDe()||(scL()==='de'&&/[äöüß]|\b(ich|du|der|die|das|und|nicht)\b/i.test(text));
+    // без точек, запятых и заглавных: порядок слов надо помнить, а не угадывать по знакам
+    const clean=w=>{let x=String(w).replace(/[.,!?;:…"«»()]+/g,'');if(!deS&&!/^I('|$)/.test(x))x=x.toLowerCase();return x;};
+    let tk=scToks(text).map(clean).filter(Boolean);
+    if(tk.length>9){const ch=[];for(let k=0;k<tk.length;k+=2)ch.push(tk.slice(k,k+2).join(' '));tk=ch;}   // длинная фраза — смысловыми кусками
+    const fresh=!rev&&!(P.m[f.id]>0)&&!q0re(f);
+    const pool=[],used=new Set(tk.map(x=>x.toLowerCase()));
+    if(!fresh){
+      // ловушки: другие формы тех же слов (work → worked, come → came, by → to)
+      for(const w of shuffle(tk.filter(x=>!x.includes(' ')))){for(const v of wForms(w,deS)){if(pool.length>=2)break;if(!used.has(v.toLowerCase())){pool.push(v);used.add(v.toLowerCase());}}if(pool.length>=2)break;}
+      for(const x of shuffle(allPhrases)){if(x===f)continue;const w=scToks(target(x)).map(clean).find(y=>y&&y.length>2&&!used.has(y.toLowerCase()));if(w){pool.push(w);break;}}
     }
     return {tk,pool:shuffle([...tk,...pool]).map((w,k)=>({w,k})),got:[]};
   }
+  function q0re(f){return Q.some(x=>x.f===f&&x.re);}
 
   function end(){
     const firsts=Q.filter(x=>!x.re),okF=firsts.filter(x=>x.res).length,passed=okF===firsts.length;
@@ -3211,7 +3240,7 @@ function renderScQuiz(id,i){
 
     scMount(s,`<div class="sc-q sc-card sc-result" style="text-align:center">
       <div class="sc-meta">${rev?'Повторение':les?'Урок фраз из кино':'Проверка эпизода'}</div>
-      <div class="sc-big">${okF} / ${firsts.length}</div>
+      <div class="sc-big">${okF} / ${firsts.length}</div><div class="sc-acc">точность ${firsts.length?Math.round(okF/firsts.length*100):0}% · ${firsts.length} ${plural(firsts.length,['фраза','фразы','фраз'])}${wrong?' · ошибки вернутся завтра':''}</div>
       <h2>${passed?'Фразы проверены.':'Нормально — ошибки как раз показывают, что повторить.'}</h2>
       <p class="sc-sub">${wrong?`Ошибок: ${wrong}. Они не удалили прогресс — эти фразы вернутся точечно.`:'Без ошибок. Следующая встреча с фразами будет позже.'}</p>
       <div class="sc-result-rule">Главное: ты не угадывал синоним. Ты несколько раз восстановил конкретную фразу и увидел, где её применять.</div>
@@ -4352,7 +4381,7 @@ function learnTabHTML(){
   const main=n?{id:'hRev',k:'Повторение',b:`${n} ${plural(n,['задание','задания','заданий'])} · ≈ ${Math.max(2,Math.round(n*0.4))} мин`,s:'фразы и твои слова, которые пора вспомнить'}
     :les?{id:'hLesson',k:'Урок на сегодня',b:`5 фраз · ≈ 3 мин`,s:`из «${esc(les.s.title)}»`}
     :{id:'hNext',k:'Дальше',b:`Эпизод ${c.i+1} · ${esc(p.t)}`,s:esc(s.title)};
-  return `${headHTML()}
+  return `<div class="home">${headHTML()}
     <button class="hcont ${s.theme} anim" id="hCont" data-sc="${s.id}"><span class="hc-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="hc-grad"></span>
       <span class="hc-t"><em>${c.fresh?'Начни отсюда':'Продолжить смотреть'}</em><b>${esc(s.title)}</b><small>Эпизод ${c.i+1} · ${esc(p.t)}</small>
         <span class="hc-bar"><i style="width:${Math.round(L/T*100)}%"></i></span><small class="hc-prog">выучено фраз ${L} из ${T}</small></span>
@@ -4370,7 +4399,7 @@ function learnTabHTML(){
     <div class="hsec anim"><h2>Кинозал</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
     <div class="hrow">${(()=>{const G=[],by={};for(const x of SCENES.filter(x=>flagOf('scene-'+x.id)!=='hidden')){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
       return G.map(k=>{const L=by[k],x=L[0],l=L.reduce((a,y)=>a+scLearned(y),0),t=L.reduce((a,y)=>a+scTotal(y),0),eps=L.reduce((a,y)=>a+y.parts.length,0);
-        return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div>`;
+        return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div></div>`;
 }
 function bindLearn(){
   bindHead();
