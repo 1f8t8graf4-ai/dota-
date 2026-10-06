@@ -2976,3 +2976,193 @@ body .screen .hlesson,body.t-clean .screen .hlesson,body .screen .hlesson.hero,b
   .kgrid,.kinogrid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))!important}
   .tabbar{width:min(560px,calc(100% - 40px))!important}
 }
+
+/* =====================================================================================
+   9.1 — АТМОСФЕРА И ГЛУБИНА: не плоская чернота, у каждого фильма свой цвет и свой фон
+   ===================================================================================== */
+/* общий фон — глубокий графит с мягким светом сверху, а не #000; карточки светлее фона */
+:root{--bg:#101113;--c1:#17181c;--c2:#1d1f24;--hair:rgba(255,255,255,.075);--hair2:rgba(255,255,255,.13);--sa:#F5C451;--sa2:#F5C451;--sat:rgba(245,196,81,.22)}
+body{background:radial-gradient(1100px 520px at 50% -8%,rgba(255,255,255,.05),transparent 70%),#101113}
+body .aurora{opacity:.55}
+/* цвет каждого фильма: --sa — главный акцент, --sa2 — второй, --sat — подсветка */
+body[data-scn="wolf"]{--scbg:#0b100e;--sa:#E0B54E;--sa2:#7FB58F;--sat:rgba(224,181,78,.24)}
+body[data-scn="noir"]{--scbg:#100d0c;--sa:#D9534F;--sa2:#D6B06A;--sat:rgba(217,83,79,.24)}
+body[data-scn="bone"]{--scbg:#100f0d;--sa:#E8DCC4;--sa2:#D0473D;--sat:rgba(232,220,196,.2)}
+body[data-scn="taxi"]{--scbg:#0c0b10;--sa:#F2C200;--sa2:#E8508A;--sat:rgba(242,194,0,.22)}
+body[data-scn="bunker"]{--scbg:#0e0f0d;--sa:#C9B98A;--sa2:#B3261E;--sat:rgba(201,185,138,.22)}
+body[data-scn="pump"]{--scbg:#0d0a10;--sa:#FF6FA8;--sa2:#F4C542;--sat:rgba(255,111,168,.24)}
+
+/* фон сцены: размытый кадр из этой сцены + затемнение — у каждого фильма своя атмосфера */
+#amb{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s ease;overflow:hidden}
+body[data-scn] #amb{opacity:1}
+#amb i{position:absolute;inset:-12%;background:center 30%/cover no-repeat;filter:blur(46px) saturate(1.35);opacity:.5;transform:translateZ(0)}
+#amb b{position:absolute;inset:0;background:
+  radial-gradient(900px 480px at 15% -5%,var(--sat),transparent 70%),
+  linear-gradient(180deg,rgba(0,0,0,.25) 0%,color-mix(in srgb,var(--scbg,#101113) 82%,transparent) 45%,var(--scbg,#101113) 88%)}
+body[data-scn]::after{z-index:0!important;opacity:.05!important}
+body[data-scn] #app{position:relative;z-index:1}
+html.lite #amb i{filter:blur(36px) saturate(1.25)}
+
+/* карточки в сценах — полупрозрачные, чуть светлее фона, с тонкой гранью и тенью: появляется глубина */
+.scn .sc-card,.scn .ep-card,.scn .ep-tabs,.scn .ep-lines,.scn .ep-words,.scn .ep-hint{
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.015)),color-mix(in srgb,var(--c1) 86%,transparent)!important;
+  border:1px solid var(--hair)!important;box-shadow:0 24px 48px -30px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.04)!important}
+.scn .ep-card{border-radius:22px!important}
+
+/* шаги эпизода и метки — в цвет фильма */
+.scn .ep-tabs button.on{background:var(--sa)!important;color:#111!important}
+.scn .ep-tabs button.on i{background:#111!important;color:var(--sa)!important}
+.scn .ep-c-n,.scn .sc-q .sc-meta{color:var(--sa)!important}
+.scn .ep-dots i.on,.scn .ep-dots i.fin.on{background:var(--sa)!important}
+.scn .sc-segs i.cur{background:var(--sa)!important}
+.scn .sc-q.sc-card{border-left:3px solid var(--sa)!important}
+.scn .sc-btn:not(.ghost){background:linear-gradient(180deg,color-mix(in srgb,var(--sa) 92%,#fff),var(--sa))!important;color:#141414!important;border:0!important}
+.scn .sc-btn.ghost{background:rgba(255,255,255,.04)!important;color:var(--sa)!important;border:1px solid color-mix(in srgb,var(--sa) 45%,transparent)!important}
+.scn .ep-go.pulse{animation:goPulse2 1.6s ease-in-out 3}
+@keyframes goPulse2{50%{box-shadow:0 0 0 8px var(--sat)}}
+
+/* ---------- карточка фразы в разборе ---------- */
+.scn .ep-c-en{font-size:22px!important;line-height:1.32!important;margin-top:12px}
+.scn .ep-c-ru{color:color-mix(in srgb,var(--sa) 70%,#fff)!important;font-size:16.5px}
+.ep-c-hear{display:flex;gap:8px;margin-top:14px}
+.ep-c-hear button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 14px;border-radius:14px;font:700 14px 'Golos Text',system-ui,sans-serif;letter-spacing:0;text-transform:none;cursor:pointer;transition:transform .15s,background .2s}
+.ep-c-hear button:active{transform:scale(.96)}
+.ep-c-hear .ep-hear{flex:1;background:rgba(255,255,255,.92);color:#121212}
+.ep-c-hear .ep-hear svg{width:16px;height:16px}
+.ep-c-hear .ep-slow{flex:none;background:rgba(255,255,255,.07);color:#fff;border:1px solid var(--hair2)}
+@media (hover:hover){.ep-c-hear .ep-hear:hover{background:#fff}.ep-c-hear .ep-slow:hover{background:rgba(255,255,255,.12)}}
+.ep-c-kwh{margin:12px 0 0;font-size:12.5px;color:rgba(255,255,255,.55)}
+.ep-c-kwh .kw.demo{pointer-events:none}
+
+/* важные слова: подсвечены цветом фильма, наведи/нажми — карточка */
+.kw{font-style:normal;cursor:pointer;border-radius:5px;padding:0 2px;margin:0 -2px;
+  background:color-mix(in srgb,var(--sa) 14%,transparent);box-shadow:inset 0 -2px 0 color-mix(in srgb,var(--sa) 75%,transparent);transition:background .18s,color .18s;outline:none}
+.kw:hover,.kw.on,.kw:focus-visible{background:color-mix(in srgb,var(--sa) 30%,transparent);color:#fff}
+.sc-fb .en .kw,.sc-use .en .kw{color:inherit}
+
+/* «Когда применяется» и «Интересный факт» */
+.ph-blk{margin-top:12px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--hair);text-align:left}
+.ph-blk em{display:flex;align-items:center;gap:7px;font:800 10.5px 'Golos Text',system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;font-style:normal;color:var(--sa)}
+.ph-blk p{margin:6px 0 0;font:500 15px/1.5 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.88)}
+.ph-use{border-left:3px solid var(--sa)}
+.ph-use em::before{content:"";width:14px;height:14px;flex:none;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E") center/contain no-repeat}
+.ph-ex{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.22)}
+.ph-ex span{display:block;font:700 11px 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.5);margin-bottom:2px}
+.ph-ex b{display:block;font:700 15px/1.35 'Golos Text',system-ui,sans-serif;color:#fff}
+.ph-ex small{display:block;margin-top:2px;font-size:13.5px;color:rgba(255,255,255,.62)}
+.ph-fact{background:linear-gradient(135deg,color-mix(in srgb,var(--sa2) 14%,transparent),rgba(255,255,255,.02));border-color:color-mix(in srgb,var(--sa2) 28%,transparent)}
+.ph-fact em{color:color-mix(in srgb,var(--sa2) 80%,#fff)}
+.ph-fact em::before{content:"✦";font-size:12px}
+.ph-fact p{color:rgba(255,255,255,.8);font-size:14.5px}
+
+/* карточка важного слова */
+.kw-pop{position:fixed;z-index:3000;left:12px;top:12px;width:340px;max-width:calc(100vw - 24px);padding:14px 16px 12px;border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,0)),#1b1d21;border:1px solid var(--hair2);color:#fff;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.4);opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .16s,transform .16s,visibility 0s .16s;font-family:'Golos Text',system-ui,sans-serif}
+.kw-pop.on{opacity:1;visibility:visible;transform:none;transition:opacity .16s,transform .16s}
+.kw-pop .kwp-k{display:block;font:800 10px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--sa)}
+.kw-pop .kwp-w{display:block;margin-top:4px;font:800 21px/1.2 'Golos Text',sans-serif}
+.kw-pop .kwp-t{display:block;margin-top:2px;font-size:15.5px;color:color-mix(in srgb,var(--sa) 70%,#fff)}
+.kw-pop .kwp-use,.kw-pop .kwp-ex{margin-top:10px;padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.05);font-size:14px;line-height:1.45;color:rgba(255,255,255,.86)}
+.kw-pop .kwp-use em,.kw-pop .kwp-ex em{display:block;font:700 11px 'Golos Text',sans-serif;font-style:normal;color:rgba(255,255,255,.5);margin-bottom:2px}
+.kw-pop .kwp-ex b{display:block;font-weight:700;color:#fff}.kw-pop .kwp-ex small{display:block;margin-top:1px;color:rgba(255,255,255,.6);font-size:13px}
+.kw-pop .kwp-b{display:flex;gap:8px;margin-top:12px}
+.kw-pop .kwp-b button{flex:1;min-height:40px;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font:700 13.5px 'Golos Text',sans-serif}
+.kw-pop .kwp-b .myw-save.on{background:color-mix(in srgb,var(--sa) 25%,transparent);color:var(--sa)}
+.kw-pop:not(.pin) .kwp-b{display:none}
+.kw-pop.sheet{left:0!important;right:0;top:auto!important;bottom:0;width:auto!important;max-width:none;border-radius:22px 22px 0 0;padding:18px 18px calc(16px + var(--sb,0px));transform:translateY(24px);
+  box-shadow:0 -20px 50px -10px rgba(0,0,0,.8),0 0 0 100vmax rgba(0,0,0,.55)}
+.kw-pop.sheet.on{transform:none}
+.kw-pop.sheet .kwp-w{font-size:24px}
+
+/* ---------- проверка: «примени в жизни» — понятно, что от тебя хотят ---------- */
+.life-src{display:block;margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px dashed var(--hair2)}
+.life-src b{display:block;font:700 16px/1.35 'Golos Text',system-ui,sans-serif!important;color:#fff;letter-spacing:0;text-transform:none}
+.life-src small{display:block;margin-top:2px;font:500 13px 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.6)}
+.sc-fb .fb-info:empty{display:none}
+.sc-fb .fb-info .ph-blk:first-child{margin-top:14px}
+.sc-explain{display:none!important}
+
+/* итоги: «Что закрепили» — карточки нормальной ширины (раньше текст сжимался в узкую колонку) */
+.sc-use .ph-blk{margin-top:10px}
+.sc-use .en{font:800 18px/1.3 'Golos Text',system-ui,sans-serif!important}
+.sc-use .ru{margin-top:3px;color:rgba(255,255,255,.7)}
+
+/* ---------- полный экран ---------- */
+/* липкая колонка с видео создавала свой слой — карточка разбора вылезала поверх полноэкранного видео */
+body.sc-pfs-on .scn.scep .ep-main{position:static!important;transform:none!important}
+body.sc-pfs-on .scn .ep-side,body.sc-pfs-on .scn>.sc-head,body.sc-pfs-on .kw-pop{visibility:hidden!important}
+body.sc-pfs-on #amb{display:none}
+/* субтитры в полный экран — крупные, как в кинотеатре */
+body .scn .sc-v.sc-pfs .sc-subs .sline .en,body .scn .sc-v.sc-pfs .sc-subs .sline:first-child .en,
+body .scn .sc-v:fullscreen .sc-subs .sline .en,body .scn .sc-v:fullscreen .sc-subs .sline:first-child .en{font-size:clamp(22px,min(3.3vw,6.2vh),52px)!important;line-height:1.22!important}
+body .scn .sc-v.sc-pfs .sc-subs .sline .tr,body .scn .sc-v:fullscreen .sc-subs .sline .tr{font-size:clamp(16px,min(2.3vw,4.3vh),34px)!important}
+body .scn .sc-v.sc-pfs .sc-subs{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;padding:0 6%!important}
+body .scn .sc-v.sc-pfs.idle .sc-subs{bottom:calc(38px + env(safe-area-inset-bottom,0px))!important}
+body .scn .sc-v.sc-pfs::after{height:42%}
+/* обычный просмотр на ПК — субтитры тоже крупнее */
+@media (min-width:1000px){body .scn .sc-v:not(.sc-pfs) .sc-subs .sline .en,body .scn .sc-v:not(.sc-pfs) .sc-subs .sline:first-child .en{font-size:clamp(18px,1.75vw,28px)!important}
+  body .scn .sc-v:not(.sc-pfs) .sc-subs .sline .tr{font-size:clamp(14px,1.25vw,19px)!important}}
+
+/* ---------- музыка: на ПК — компактная плашка в шапке, рядом с заданием ---------- */
+#mudock.inhead{position:static!important;left:auto;right:auto;bottom:auto;margin-left:auto;flex:none;width:260px;padding:6px 6px 6px 8px!important;border-radius:16px;
+  background:rgba(255,255,255,.05)!important;border:1px solid var(--hair)!important;box-shadow:none!important;transform:none!important}
+#mudock.inhead .mu-art{width:32px;height:32px}
+#mudock.inhead button{width:32px;height:32px}
+#mudock.inhead .mu-t b{font-size:13px}#mudock.inhead .mu-t small{font-size:11px}
+#mudock .mu-bar i{background:var(--sa)!important}
+.scn>.sc-head{display:flex;align-items:center;gap:12px}
+.scn>.sc-head .sc-segs{flex:1}
+
+/* ---------- ПК: эпизод и проверка — по центру, без мёртвых зон ---------- */
+@media (min-width:1000px){
+  #app{max-width:min(1320px,100%)!important}
+  .scn.scep{grid-template-columns:minmax(0,1.62fr) minmax(360px,1fr)!important;column-gap:30px!important;row-gap:0;align-content:start}
+  .scn.scep>.sc-head{margin-bottom:18px!important;min-height:0!important}
+  .scn.scep .ep-main{top:calc(var(--st,0px) + 16px)!important}
+  .scn.scep .ep-side .ep-tabs{margin-top:0!important}
+  .scn .ep-card{padding:20px 22px!important}
+  /* проверка: задание по центру экрана, видео и плеер — одним блоком с ним */
+  .scn.scr-scq{display:flex!important;flex-direction:column;max-width:760px!important;min-height:calc(100vh - var(--st,0px) - 40px)}
+  .scn.scr-scq>.sc-head+*{margin-top:auto!important}
+  .scn.scr-scq>:last-child{margin-bottom:auto!important}
+  .scn.scr-scq .sc-q{padding:22px 24px!important}
+  .scn.scr-scq .sc-qvideo{max-height:none}
+  /* итоги — две колонки карточек */
+  .scn.scr-scend{max-width:980px!important;display:grid!important;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+  .scn.scr-scend>.sc-result,.scn.scr-scend>.sc-sec{grid-column:1/-1}
+  .scn.scr-scend>.sc-use{margin:0!important}
+}
+/* 9.1: колонка сцены не сжимается до ширины содержимого */
+.scnscr .scn:not(.scep){width:100%}
+.scn>.sc-head>div:not(.sc-segs){flex:1 1 auto;min-width:0}
+.scn>.sc-head>#mudock.inhead{order:5;margin-left:auto}
+.scn>.sc-head>.sc-help{order:6;flex:none}
+.scn>.sc-head>#gav,.scn>.sc-head>.gav{order:7}
+.kw-dim{position:fixed;inset:0;z-index:2999;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s}
+body.kw-open .kw-dim{opacity:1;pointer-events:auto}
+.kw-pop.sheet{box-shadow:0 -20px 50px -10px rgba(0,0,0,.8)!important}
+.kw-pop .kwp-b button{display:flex;align-items:center;justify-content:center;text-align:center;gap:6px}
+/* полный экран вертикально (телефон без поворота) — видео целиком, иначе обрезается пол-кадра */
+@media (max-aspect-ratio:1/1){.sc-v.sc-pfs.fill:not(.rot) video{object-fit:contain!important}}
+
+/* ---------- страница сцены: сначала фильм и кнопка, потом эпизоды, музыка — сбоку/ниже ---------- */
+.scn.scr-scene{display:flex;flex-direction:column}
+.scn.scr-scene>.sc-head{order:0}.scn.scr-scene>.sc-ban{order:1}.scn.scr-scene>.clip-notes,.scn.scr-scene>.clip-links{order:2}
+.scn.scr-scene>.sc-top{order:3}.scn.scr-scene>.sc-sec{order:4}.scn.scr-scene>.sc-ep{order:5}.scn.scr-scene>.vp{order:6;margin-top:14px}.scn.scr-scene>.sc-foot{order:7}
+.scn.scr-scene>.sc-ban{border-radius:20px!important;overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,.9)}
+.scn .sc-ep.cur{box-shadow:inset 0 0 0 1.5px var(--sa),0 20px 40px -28px rgba(0,0,0,.9)!important}
+@media (min-width:1000px){
+  .scn.scr-scene{display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(340px,1fr);grid-auto-flow:row dense;gap:14px 22px;max-width:1180px!important;align-items:start}
+  .scn.scr-scene>.sc-head,.scn.scr-scene>.sc-ban,.scn.scr-scene>.sc-sec,.scn.scr-scene>.sc-foot,.scn.scr-scene>.clip-notes,.scn.scr-scene>.clip-links{grid-column:1/-1}
+  .scn.scr-scene>.sc-ban{height:clamp(220px,30vh,340px)!important;margin:0!important}
+  .scn.scr-scene>.sc-top{grid-column:1;margin:0!important}
+  .scn.scr-scene>.vp{grid-column:2;margin:0!important}
+  .scn.scr-scene>.sc-ep{margin:0!important}
+  .scn.scr-scene>.sc-sec{margin-top:10px!important}
+}
+@media (min-width:1000px){.scn.scr-scene>.vp{order:3}}
+.scn .sc-ep{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015)),color-mix(in srgb,var(--c1) 86%,transparent)!important;border:1px solid var(--hair)!important;color:var(--ink,#eee)!important}
+.scn .sc-ep .t b{color:var(--ink,#eee)!important}
+html body:not([data-scn]){background:radial-gradient(1100px 520px at 50% -8%,rgba(255,255,255,.055),transparent 70%),#101113!important}
+.ep-c-hear button{white-space:nowrap}
