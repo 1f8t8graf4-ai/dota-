@@ -2248,7 +2248,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='8.7';
+const APP_V='8.8';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2520,7 +2520,7 @@ function phraseOfDayHTML(){const x=phraseOfDay();if(!x)return '';const {s,f}=x,d
 /* ================= 8.1: «Как пользоваться» ================= */
 const HELP=[
  ['🎬','Кинозал','Сцены из фильмов и сериалов, разбитые на короткие эпизоды. Выбираешь сцену → эпизод → смотришь. У каждой сцены своя музыка (пластинка на странице сцены).'],
- ['👆','Слова в субтитрах','Нажми на любое слово в субтитрах — видео встанет на паузу и покажет перевод. На компьютере достаточно навести мышкой. То же работает в списке «Все реплики» под видео.'],
+ ['👆','Слова под видео','Под видео — «Все реплики» эпизода. Нажми на любое слово — перевод слова, выражение (если оно есть) и «☆ В мои слова». То же в карточках разбора. На компьютере достаточно навести мышкой.'],
  ['〰️','Выражения','Слова, подчёркнутые пунктиром, — это выражение: вместе они значат не то, что по отдельности («Fuck the clients» — не про клиентов, а «да похуй на клиентов»).'],
  ['⏸','Урок по шагам','1 — посмотри эпизод целиком. 2 — второй просмотр: видео встаёт на учебных фразах и объясняет их, «🔁 Повтори вслух» — повторяй за актёром. 3 — короткая проверка.'],
  ['✅','Проверка','До 5 заданий: «какая фраза прозвучала», «что это значит» (с ловушками), «вставь слово», «собери по-английски», «в жизни». Ошибся — фраза вернётся позже, выученное не стирается.'],
@@ -2760,7 +2760,7 @@ function scTick(){
   const box=SW&&SW.querySelector('.sc-subs');if(!SV||!box){SRAF=0;return;}
   const t=SV.currentTime,m=scDeMode(scSub()),r=SSUBON&&m!=='off'?SV._loc.find(x=>t>=x[0]+SUB_LAG&&t<=x[1]+0.25):null,id=r?r[0]+m:'';
   if(box.dataset.id!==id){box.dataset.id=id;const [a,b]=m.split('+');
-    SW._row=r;SW._rowPh=scRowPhrase(r);box.innerHTML=r?`<div class="sline"><span class="en">${swWrapPh(String(r[SUB_COL[a]]).replace(/\n/g,' '),SW._rowPh)}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);}
+    SW._row=r;SW._rowPh=null;box.innerHTML=r?`<div class="sline"><span class="en">${esc(String(r[SUB_COL[a]]).replace(/\n/g,' '))}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);}
   if(SW._ph){const lv=document.getElementById('sclive');if(lv){const h=SW._ph.find(x=>t>=x.a-0.15&&t<=x.b+3);const k=h?h.f.id:'';
     if(lv.dataset.k!==k){lv.dataset.k=k;if(h)lv.innerHTML=scLiveHTML(h.f);lv.classList.toggle('on',!!h);}}}
   scChip(t);
@@ -2778,7 +2778,7 @@ function scSecondPass(id,i){if(!SW||SW._guided)return;SW._guided=true;const o=SW
     const ov=$('#scvo');if(ov)ov.style.display='none';SV.currentTime=0;const p=SV.play();if(p&&p.catch)p.catch(()=>{});};
   SW.appendChild(w);}
 const SCTOUR=[['🎬','Сначала просто смотри','Эпизод идёт целиком с субтитрами: оригинал и перевод. Ничего не надо нажимать — лови смысл и интонацию.'],
-  ['👆','Нажимай на любое слово','Тап по слову в субтитрах — видео встанет на паузу и покажет перевод слова. На компьютере достаточно навести мышкой. Так же работают слова в списке «Все реплики» внизу.'],
+  ['👆','Слова — под видео','Под видео — все реплики эпизода с переводом. Нажми на любое слово — увидишь его перевод и сможешь сохранить в «Мои слова». На компьютере достаточно навести мышкой. Видео при этом ничто не закрывает.'],
   ['〰️','Пунктир — выражение','Подчёркнутые пунктиром слова работают вместе: у выражения свой смысл, не такой, как у слов по отдельности. Нажми — покажу, что оно значит.'],
   ['⏸','Второй просмотр — с остановками','После первого просмотра видео можно запустить ещё раз: оно встанет на каждой учебной фразе и объяснит её. Кнопка «🔁 Повтори вслух» — повторяй за актёром.'],
   ['✅','Короткая проверка и повторение','Потом — 5 коротких заданий. Выученное вернётся через 1, 3 и 7 дней (бот напомнит). Все фразы по темам — в «Словаре фраз» на главной.']];
@@ -2870,8 +2870,9 @@ function scSubSheet(first){
 }
 const SI={play:'<svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></svg>',pause:'<svg viewBox="0 0 24 24"><rect x="6.5" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="13.5" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none"/></svg>',again:'<svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v5h5"/></svg>',back:'<svg viewBox="0 0 24 24"><path d="M11 7 6 12l5 5"/><path d="M18 7l-5 5 5 5"/></svg>',full:'<svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',exit:'<svg viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>',
   vol:'<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',mute:'<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none"/><path d="M17 9l5 6M22 9l-5 6"/></svg>'};
-const scCtrl=()=>`<div class="sc-ctrl"><button id="scpp" aria-label="Пауза">${SI.play}</button><button id="scag" aria-label="Сначала">${SI.again}</button><button id="scb5" aria-label="Назад 5 секунд">${SI.back}<small>5 с</small></button><button id="scsp"${SRATE!==1?' class="on"':''}>${SRATE}x</button><button id="scmu" aria-label="Звук">${store.scMute?SI.mute:SI.vol}</button><input type="range" id="scvl" class="sc-vl" min="0" max="1" step="0.05" value="${store.scVol==null?1:store.scVol}" aria-label="Громкость"><button id="sccc" aria-label="Субтитры">${(SUB_SHORT[scDeMode(scSub())]||'DE·EN')}</button><button id="scfu" aria-label="На весь экран">${SI.full}</button></div>`;
-function scBindCtrl(run){$('#scpp').onclick=scPP;$('#scag').onclick=run;$('#scb5').onclick=scB5;$('#scsp').onclick=scSpeed;$('#scmu').onclick=scMute;$('#sccc').onclick=()=>scSubSheet(false);$('#scfu').onclick=scFull;const vl=$('#scvl');if(vl)vl.oninput=()=>{store.scVol=+vl.value;save();if(SV){SV.volume=+vl.value;if(SV.muted&&+vl.value>0){SV.muted=false;store.scMute=false;}}const fv=document.querySelector('.sc-fs .sc-vol');if(fv)fv.value=vl.value;};}
+const scCtrl=()=>`<div class="sc-ctrl2"><button id="scb5" class="c-side" aria-label="Назад 5 секунд">${SI.back}<small>5 с</small></button><button id="scpp" class="c-main" aria-label="Пауза">${SI.play}</button><button id="scfu" class="c-side" aria-label="На весь экран">${SI.full}</button><button id="scmore" class="c-side" aria-label="Ещё">⋯</button></div>
+  <div class="sc-more" id="scMore" hidden><button id="scag" aria-label="Сначала">${SI.again}</button><button id="scsp"${SRATE!==1?' class="on"':''}>${SRATE}x</button><button id="sccc" aria-label="Субтитры">${(SUB_SHORT[scDeMode(scSub())]||'DE·EN')}</button><button id="scmu" aria-label="Звук">${store.scMute?SI.mute:SI.vol}</button><input type="range" id="scvl" class="sc-vl" min="0" max="1" step="0.05" value="${store.scVol==null?1:store.scVol}" aria-label="Громкость"></div>`;
+function scBindCtrl(run){const mb=$('#scmore');if(mb)mb.onclick=()=>{const m=$('#scMore');m.hidden=!m.hidden;mb.classList.toggle('on',!m.hidden);sfx('tap');};$('#scpp').onclick=scPP;$('#scag').onclick=run;$('#scb5').onclick=scB5;$('#scsp').onclick=scSpeed;$('#scmu').onclick=scMute;$('#sccc').onclick=()=>scSubSheet(false);$('#scfu').onclick=scFull;const vl=$('#scvl');if(vl)vl.oninput=()=>{store.scVol=+vl.value;save();if(SV){SV.volume=+vl.value;if(SV.muted&&+vl.value>0){SV.muted=false;store.scMute=false;}}const fv=document.querySelector('.sc-fs .sc-vol');if(fv)fv.value=vl.value;};}
 const scSeek=()=>`<div class="sc-seek"><span id="sct0">0:00</span><input type="range" id="scsk" min="0" max="100" step="0.1" value="0" aria-label="Перемотка"><span id="sct1">0:00</span></div>`;
 function scBindSeek(){const r=$('#scsk');if(!r||!SV)return;
   const setMax=()=>{if(SV&&isFinite(SV.duration)){r.max=SV.duration;$('#sct1').textContent=scFmt(SV.duration);}};SV.addEventListener('loadedmetadata',setMax);setMax();
@@ -2895,7 +2896,7 @@ function renderScEp(id,i,opts){
     ${scSeek()}
     ${scCtrl()}
     <section class="ep-pane" data-pane="watch">
-      <div class="ep-hint"><b>Просто посмотри эпизод</b><span>Субтитры — оригинал и перевод. Незнакомое слово — нажми на него в субтитрах${matchMedia('(hover:hover)').matches?' или наведи мышкой':''}.</span></div>
+      <div class="ep-hint"><b>Просто посмотри эпизод</b><span>Субтитры — оригинал и перевод. Незнакомое слово — нажми на него в списке реплик ниже${matchMedia('(hover:hover)').matches?' или наведи мышкой':''}.</span></div>
       <button class="sc-btn ep-go" id="epToLearn">${watched?'Дальше: разбор фраз →':'Смотреть эпизод ▶'}</button>
       ${!lesson?`<details class="ep-lines" open><summary>Все реплики · нажми на любое слово <i>${rows.length}</i></summary>
         <div class="sc-lines sc-card">${rows.map((r,k)=>`<div class="ln" data-k="${k}"><b>${swWrap(scRowT(r))}</b><span>${esc(r[3]).replace(/\\n/g,' ')}</span></div>`).join('')}</div></details>`:''}
