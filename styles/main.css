@@ -3443,3 +3443,8 @@ body[data-scn="bone"]{--hl:#F5C451}   /* у «Психопата» акцент 
 .k10-ti p{margin:6px 0 0;color:rgba(255,255,255,.7);font-size:13.5px;line-height:1.45}
 .k10-rev{margin:6px 0 12px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);font-size:13.5px;line-height:1.45}
 .k10-take .sc-btn{width:100%;margin-top:8px}
+
+/* ==== 10.1.1 — полный экран на больших мониторах ==== */
+/* body{zoom} (≥1700px) в Telegram Desktop (старый Chromium) раздувал 100vw/100vh полноэкранного видео в 1.22–1.5 раза:
+   картинка вылезала за экран, ▶ уезжала вправо-вниз, панель управления — за край. На время полного экрана zoom выключаем. */
+body.sc-pfs-on{zoom:1!important}
