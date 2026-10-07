@@ -3448,3 +3448,63 @@ body[data-scn="bone"]{--hl:#F5C451}   /* у «Психопата» акцент 
 /* body{zoom} (≥1700px) в Telegram Desktop (старый Chromium) раздувал 100vw/100vh полноэкранного видео в 1.22–1.5 раза:
    картинка вылезала за экран, ▶ уезжала вправо-вниз, панель управления — за край. На время полного экрана zoom выключаем. */
 body.sc-pfs-on{zoom:1!important}
+
+/* ==== 10.2 — задания по ходу фильма (hero / dict / mix) ==== */
+/* эпизод в одну колонку: видео по центру, задание под ним; правой панели нет */
+.scn.scr-sctask .tk-main{max-width:min(980px,100%);margin:0 auto}
+@media (min-width:1000px){.scn.scr-sctask .sc-v{max-height:62vh;width:min(100%,calc(62vh*16/9));margin:0 auto}}
+.tk-box{margin-top:12px}
+.tk{padding:16px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),rgba(20,20,23,.94);border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 40px -24px #000;animation:k10in .35s ease both}
+.tk+.tk{margin-top:10px}
+.tk-intro b{display:block;font:800 19px 'Golos Text',system-ui,sans-serif;color:#fff}
+.tk-intro p{margin:6px 0 12px;color:rgba(255,255,255,.72);font-size:14.5px;line-height:1.5}
+.tk .sc-btn{width:100%}
+.tk-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tk-k{font:800 11px 'Golos Text',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--hl,var(--sa,#F5C451))}
+.tk-segs{display:flex;gap:4px}.tk-segs i{width:20px;height:5px;border-radius:3px;background:rgba(255,255,255,.15)}
+.tk-segs i.cur{background:#fff}.tk-segs i.ok{background:#34c759}.tk-segs i.bad{background:#ff5a4f}
+.tk-ctx{margin-top:10px;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.05);border-left:3px solid rgba(255,255,255,.2)}
+.tk-ctx em{display:block;font-style:normal;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.tk-ctx b{display:block;margin-top:2px;color:#fff;font:600 15px/1.35 'Golos Text',system-ui,sans-serif}
+.tk-ctx small{display:block;color:rgba(255,255,255,.6);font-size:13px}
+.tk-q{display:block;margin-top:12px;font:700 15px/1.4 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.8)}
+.tk-q span{display:block;margin-top:3px;font:800 19px/1.35 'Golos Text',system-ui,sans-serif;color:#fff}
+.tk-hear{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tk-hear button{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 13px;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font:700 13.5px 'Golos Text',sans-serif}
+.tk-hear button svg{width:13px;height:13px}
+.tk-ru{align-self:center;color:color-mix(in srgb,var(--hl,var(--sa,#F5C451)) 70%,#fff);font-size:14px}
+.tk-ans{display:flex;flex-wrap:wrap;gap:6px;min-height:46px;margin-top:12px;padding:6px;border-radius:14px;border:1.5px dashed rgba(255,255,255,.18)}
+.tk-ph{align-self:center;padding:0 6px;color:rgba(255,255,255,.4);font-size:13.5px}
+.tk-pool{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tk .sc-tile{min-height:40px;font-size:16px}
+.tk-ans .sc-tile.good{box-shadow:inset 0 0 0 2px #34c759!important;background:rgba(52,199,89,.14)!important}
+.tk-ans .sc-tile.bad{box-shadow:inset 0 0 0 2px #ff5a4f!important;background:rgba(255,90,79,.14)!important}
+.tk-msg{min-height:0;margin-top:8px;color:#ffb4a9;font-size:13.5px;line-height:1.4}
+.tk-msg:empty{display:none}
+.tk-act{display:flex;gap:8px;align-items:center;margin-top:12px}
+.tk-act .sc-btn{flex:1;width:auto;margin:0}
+.tk-skip{flex:none;padding:10px 6px;background:none;color:rgba(255,255,255,.5);font:600 13px 'Golos Text',sans-serif;text-decoration:underline;text-underline-offset:3px}
+.tk-res .ep-c-en{display:block;margin-top:8px;font:800 20px/1.35 'Golos Text',system-ui,sans-serif;color:#fff}
+.tk-res .ep-c-ru{display:block;margin-top:3px;font-size:15px;color:color-mix(in srgb,var(--hl,var(--sa,#F5C451)) 65%,#fff)}
+.tk-res.ok .tk-k{color:#7be39a}.tk-res.bad .tk-k{color:#ff8a80}
+.tk-res .ph-blk{margin-top:12px}
+.tk-res .sc-btn{margin-top:12px}
+/* полный экран: задание поверх видео */
+.sc-v .tk.over{position:absolute;left:50%;bottom:16px;z-index:30;width:min(640px,calc(100% - 24px));max-height:calc(100% - 32px);overflow:auto;transform:translateX(-50%);animation:none}
+.sc-v.tk-on .sc-fs,.sc-v.tk-on .sc-subs,.sc-v.tk-on .sc-over{display:none!important}
+.sc-v .tk.over{z-index:60}
+/* итог эпизода */
+.tk-end{text-align:center}
+.tk-big{margin-top:2px;font:800 28px 'Golos Text',system-ui,sans-serif;color:#fff}
+.tk-sub{margin:4px 0 12px;color:rgba(255,255,255,.7);font-size:14px;line-height:1.45}
+.tk-li{display:flex;gap:10px;text-align:left;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)}
+.tk-li>i{flex:none;display:grid;place-items:center;width:24px;height:24px;margin-top:2px;border-radius:50%;font-style:normal;font-weight:800;font-size:12px}
+.tk-li.ok>i{background:rgba(52,199,89,.22);color:#7be39a}.tk-li.bad>i{background:rgba(255,90,79,.2);color:#ff8a80}
+.tk-li b{display:block;color:#fff;font:700 16px/1.35 'Golos Text',system-ui,sans-serif}
+.tk-li span{display:block;color:rgba(255,255,255,.65);font-size:13.5px}
+.tk-li small{display:block;margin-top:4px;color:rgba(255,255,255,.55);font-size:12.5px;line-height:1.45}
+.tk-end .sc-btn{margin-top:8px}
+.tk-end .tk-skip{display:block;margin:6px auto 0}
+/* mix: задание в 9.2-эпизоде встаёт под видео (#vqSlot) */
+#vqSlot .tk{margin-top:12px}
+.tk-act .sc-btn[hidden]{display:none!important}
