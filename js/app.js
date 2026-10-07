@@ -2257,7 +2257,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='11.0';
+const APP_V='11.1';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2883,6 +2883,8 @@ function renderSceneSum(id){const s=scOf(id);if(!s)return;SCUR={id,i:0};const al
 
 /* ---- экраны сцены ---- */
 const scOf=id=>SCENES.find(s=>s.id===id);
+// 11.1: у сцен с skipIntro — если до первой реплики больше 3 с тишины, эпизод стартует за секунду до неё (без перенарезки видео)
+const scStartAt=(s,p)=>{if(!s.skipIntro)return 0;const r=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b).sort((x,y)=>x[0]-y[0])[0];const t=r?r[0]-p.a:0;return t>3?Math.max(0,t-1):0;};
 // 9.1: у каждой сцены своя атмосфера — размытый кадр сцены фоном и цвет фильма (а не одинаковая чёрная пустота)
 function scAmb(s){let a=document.getElementById('amb');if(!a){a=document.createElement('div');a.id='amb';a.setAttribute('aria-hidden','true');a.innerHTML='<i></i><b></b>';document.body.prepend(a);}
   // 9.2.1: настоящее фото фоном — bg.jpg из папки сцены (если залит), иначе обложка сцены
@@ -3180,7 +3182,7 @@ function renderScEp(id,i,opts){
     c.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;if(dx<0&&k<focus.length){k++;card();}else if(dx>0&&k>0){k--;card();}},{passive:true});}
 
   const opened=()=>{P.w[i]=1;scSave();const b=$('#epToLearn');if(b){b.textContent='Дальше: разбор фраз →';b.classList.add('pulse');}tabs();};
-  const run=()=>{$('#scvo').style.display='none';(SW._ph||[]).forEach(x=>x.shown=false);scPlay(0,p.b-p.a+1,()=>{$('#scvo').style.display='';opened();});if(SSTOP)SSTOP.full=true;};
+  const run=()=>{$('#scvo').style.display='none';(SW._ph||[]).forEach(x=>x.shown=false);scPlay(scStartAt(s,p),p.b-p.a+1,()=>{$('#scvo').style.display='';opened();});if(SSTOP)SSTOP.full=true;};
   if($('#epVt'))$('#epVt').onchange=e=>{store.vtask=e.target.checked;save();if(SW)SW._stopPh=s.mode==='mix'?false:store.vtask;toast(store.vtask?'Задания в видео включены':'Задания в видео выключены');};
   $('#scplay').onclick=run;
   scBindCtrl(run);scBindSeek();
@@ -3302,7 +3304,7 @@ function renderScEpTask(id,i){
   SW._ph=null;SW._stopPh=false;SW._vq=false;
   const E=scTaskAttach(s,p,FX,kind,$('#tkBox'));
   const ov=on=>{const o=$('#scvo');if(o)o.style.display=on?'':'none';};
-  const run=()=>{E.reset();ov(false);scPlay(0,p.b-p.a+1,()=>ov(true));if(SSTOP)SSTOP.full=true;};
+  const run=()=>{E.reset();ov(false);scPlay(scStartAt(s,p),p.b-p.a+1,()=>ov(true));if(SSTOP)SSTOP.full=true;};
   const intro=()=>{$('#tkBox').innerHTML=`<div class="tk tk-intro">${kind==='hero'
       ?`<b>🎬 Повтори за героем</b><p>После полезных реплик видео встанет: вспомни и напиши, что он сказал. Не выходит — первые буквы, потом собрать из слов. Верные фразы — в твой словарь.</p>`
       :`<b>🎧 Диктант по ходу фильма</b><p>Главные реплики идут без субтитров. Сразу после каждой — пауза: напиши, что услышал. Можно переслушать, замедлить, взять подсказку или собрать из слов.</p>`}
