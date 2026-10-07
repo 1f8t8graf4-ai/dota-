@@ -2256,7 +2256,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='10.0.1';
+const APP_V='10.1';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2359,7 +2359,11 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;
   if(!sheet){const r=el.getBoundingClientRect(),W=Math.min(340,window.innerWidth-24);P.style.width=W+'px';
     P.classList.add('on');const h=P.offsetHeight,below=r.bottom+10+h<window.innerHeight;
     P.style.left=Math.max(12,Math.min(window.innerWidth-W-12,r.left+r.width/2-W/2))+'px';
-    P.style.top=(below?r.bottom+10:Math.max(12,r.top-h-10))+'px';}
+    P.style.top=(below?r.bottom+10:Math.max(12,r.top-h-10))+'px';
+    // 10.1: на широких экранах у body есть zoom — сверяем с реальным положением и возвращаем в экран
+    const b=P.getBoundingClientRect(),k=b.width/W||1;if(Math.abs(k-1)>0.01||b.right>window.innerWidth-8||b.bottom>window.innerHeight-8){
+      const L=r.left+r.width/2-b.width/2,X=Math.max(12,Math.min(window.innerWidth-b.width-12,L)),Y=below?r.bottom+10:Math.max(12,r.top-b.height-10);
+      P.style.left=(X/k)+'px';P.style.top=(Math.min(Y,window.innerHeight-b.height-12)/k)+'px';}}
   else{P.classList.add('on');document.body.classList.add('kw-open');}
   haptic('sel');}
 function kwShow(el,f,pin){const k=kwOf(f)[+el.dataset.kw];if(!k)return;popAt(el,kwCardHTML(k),{sid:f.sid||(SCUR&&SCUR.id),f,word:k[1]||k[0],ru:k[2]},pin);}
@@ -3107,7 +3111,7 @@ function renderScEp(id,i,opts){
   opts=opts||{};
   if(scGate(id,i))return;
   if(!scOpen(scOf(id))){scBuy(scOf(id));return;}
-  if(scV10(scOf(id))&&!opts.lessonList){renderScEp10(id,i,opts.step);return;}   // 10.0: пилот нового эпизода
+  if(scV10(scOf(id))&&!opts.lessonList){renderScEp10(id,i);return;}   // 10.0: пилот нового эпизода
   if(!store.lvl&&!opts.lessonList){renderLevelTest(()=>renderScEp(id,i,opts));return;}
   const s=scOf(id),p=s.parts[i],P=scP(id),watched=!!(P.done.includes(i)||P.w[i]);
   if(!opts.lessonList&&!opts.free&&!scEpOpen(s,i)){toast(`Сначала пройди эпизод ${String(i).padStart(2,'0')}`);renderScene(id);return;}
@@ -3191,113 +3195,84 @@ function renderScEp(id,i,opts){
 }
 /* =====================================================================================
    10.0 — ПИЛОТ НОВОГО ЭПИЗОДА (сцены с "v10": true в scenes.json, сейчас — «Визитки»)
-   ① Смотри (с субтитрами) → ② 3–4 фишки, по одной → ③ быстрая игра → ④ на слух: пересмотр без субтитров.
-   Без монет, замков, теста уровня и заданий в видео. Фишки — активные фразы эпизода (остальные passive).
+   10.1: эпизод — «кино с подсказками» (renderScEp10 ниже). Без монет, замков, теста уровня, заданий в видео и игр.
+   Фразы эпизода — активные (остальные passive), после эпизода уходят в повторение.
    ===================================================================================== */
 const scV10=s=>!!(s&&s.v10);
-const V10_STEPS=['Смотри','Фишки','Игра','На слух'];
 const v10Chunk=f=>{const k=kwOf(f)[0];return k?String(k[1]||k[0]):scT(f);};
-function renderScEp10(id,i,step){
-  const s=scOf(id),p=s.parts[i],P=scP(id),FX=scAct(p.ph).slice().sort((a,b)=>a.a-b.a).slice(0,4),all=s.parts.flatMap(x=>x.ph);
+// 10.1: «кино с подсказками». Эпизод идёт без остановок; когда звучит ключевая фраза — рядом (ПК) / под видео (телефон)
+// сама появляется карточка: перевод, «Когда применяется» + пример, «Интересный факт». Под ней — лента фраз эпизода (тап — к моменту).
+// В конце — «Забираешь с собой»: фразы списком, они уходят в повторение (проверка — там, не в эпизоде).
+function renderScEp10(id,i){
+  const s=scOf(id),p=s.parts[i],P=scP(id),FX=scAct(p.ph).slice().sort((a,b)=>a.a-b.a).slice(0,4);
   SCUR={id,i};store.scLast={id,i};save();
-  let cur=step!=null?step:(P.w[i]&&!P.done.includes(i)?1:0),reach=P.done.includes(i)?3:P.w[i]?2:0,k=0;
+  let cur=-1,ear=false,fin=false;   // ear — пересмотр без субтитров
   scMount(s,`
-    <div class="sc-head"><button class="sc-back" id="scb">‹</button><div><span class="sc-meta">${esc(s.title)} · эпизод ${String(i+1).padStart(2,'0')}</span><h1>${esc(p.t)}</h1></div></div>
+    <div class="sc-head"><button class="sc-back" id="scb">‹</button><div><span class="sc-meta">${esc(s.title)} · эпизод ${String(i+1).padStart(2,'0')} из ${s.parts.length}</span><h1>${esc(p.t)}</h1></div></div>
     <div class="ep-main"><div class="sc-v" id="scvw"><div class="sc-over" id="scvo"><button id="scplay" aria-label="Смотреть">▶</button></div></div>
     ${scSeek()}
     ${scCtrl()}</div>
-    <div class="ep-side"><div class="ep-tabs v10-tabs" id="v10s" role="tablist"></div><section class="ep-pane v10-pane" id="v10p"></section></div>`,'scep');
-  {const sn=document.querySelector('.scn');if(sn)sn.classList.add('scep','v10');}
+    <div class="ep-side"><section class="ep-pane k10" id="k10"><div class="k10-live" id="k10live"></div><div class="k10-list" id="k10list"></div><div id="k10fin"></div></section></div>`,'scep');
+  {const sn=document.querySelector('.scn');if(sn)sn.classList.add('scep','k10scn');}
   scVideo($('#scvw'),s,p);$('#scvw').appendChild($('#scvo'));
   SW._ph=null;SW._stopPh=false;SW._vq=false;   // никаких остановок и заданий в видео
   const ov=on=>{const o=$('#scvo');if(o)o.style.display=on?'':'none';};
   const run=()=>{ov(false);scPlay(0,p.b-p.a+1,()=>ov(true));if(SSTOP)SSTOP.full=true;};
-  const subs=()=>{SSUBON=cur<2;   // в игре субтитры не подсказывают, на слух — их нет
-    if(SW){const bx=SW.querySelector('.sc-subs');if(bx)bx.dataset.id='x';}try{scTick();}catch(e){}};
-  const pane=html=>{const b=$('#v10p');if(!b)return;b.innerHTML=html;b.style.animation='none';void b.offsetWidth;b.style.animation='';};
-  const tabs=()=>{$('#v10s').innerHTML=V10_STEPS.map((l,j)=>`<button data-st="${j}" class="${j===cur?'on':''}${(j<reach||P.done.includes(i))&&j!==cur?' done':''}"${j>reach?' disabled':''}><i>${j+1}</i>${l}</button>`).join('');
-    $$('#v10s button').forEach(b=>b.onclick=()=>{const j=+b.dataset.st;if(j>reach||j===cur)return;sfx('tap');go(j);});};
-  function go(j){cur=j;reach=Math.max(reach,j);if(SV&&!SV.paused)SV.pause();SSTOP=null;ov(true);subs();tabs();
-    [paneWatch,paneFx,paneGame,paneRe][j]();if(window.innerWidth<1000&&j)setTimeout(()=>{const b=$('#v10p');if(b)b.scrollIntoView({behavior:'smooth',block:'start'});},60);}
-  // ① смотри
-  function paneWatch(){const w=!!P.w[i];
-    pane(`<div class="ep-hint v10-hint"><b>Посмотри эпизод целиком</b><span>${scFmt(p.b-p.a)}, с субтитрами. Ничего не учи — просто лови, о чём говорят. Потом — ${FX.length} ${plural(FX.length,['фишка','фишки','фишек'])}, которые пригодятся тебе на этой неделе.</span></div>
-      <button class="sc-btn ep-go" id="v10go">${w?'Дальше: фишки →':'Смотреть эпизод ▶'}</button>${w?'<button class="ht-alt" id="v10again">Посмотреть ещё раз</button>':'<button class="ht-alt" id="v10skip">Пропустить просмотр</button>'}`);
-    $('#v10go').onclick=()=>{sfx('tap');if(!P.w[i]){run();return;}go(1);};
-    if($('#v10again'))$('#v10again').onclick=()=>{sfx('tap');run();};
-    if($('#v10skip'))$('#v10skip').onclick=()=>{sfx('tap');watched();go(1);};}
-  const watched=()=>{if(!P.w[i]){P.w[i]=1;scSave();}};
-  // ② фишки — по одной карточкой
-  function paneFx(){if(!FX.length){go(3);return;}k=Math.min(k,FX.length-1);const f=FX[k],c=kwOf(f)[0],last=k===FX.length-1;
-    pane(`<div class="ep-card v10-fx"><div class="ep-c-top"><span class="ep-c-n">Фишка ${k+1} из ${FX.length}</span><span class="sc-tag ${scTag(f)[1]}">${scTag(f)[0]}</span></div>
-      ${c?`<div class="v10-chunk"><b>${esc(c[1]||c[0])}</b><span>${esc(c[2])}</span></div>`:''}
-      <div class="v10-line"><em>В сцене</em><b class="ep-c-en">${kwWrap(f)}</b><span class="ep-c-ru">${esc(f.ru)}</span></div>
-      <div class="ep-c-hear"><button class="ep-hear" id="epMom" title="Видео сыграет только эту фразу">${SI.play}<span>Послушать в сцене</span></button><button class="ep-slow" id="epSlow" title="То же самое, но в 0.75x">🐢 Медленнее</button></div>
-      ${phInfoHTML(f)}</div>
-      <div class="ep-nav"><button id="epPrev" aria-label="Назад"${k?'':' disabled'}>‹</button><div class="ep-dots">${FX.map((_,j)=>`<i class="${j<k?'done':j===k?'on':''}"></i>`).join('')}</div><button class="sc-btn v10-nx" id="epNext">${last?'К игре ⚡':'Дальше →'}</button></div>`);
-    const hear=slow=>{sfx('tap');ov(false);if(window.innerWidth<1000)window.scrollTo({top:0,behavior:'smooth'});const rt=SV.playbackRate;
-      scPlay(f.a-p.a-0.1,f.b-p.a+0.15,()=>{if(SV)SV.playbackRate=rt;ov(true);});if(slow&&SV)SV.playbackRate=.75;};
-    $('#epMom').onclick=()=>hear(false);$('#epSlow').onclick=()=>hear(true);
-    $('#epPrev').onclick=()=>{if(k>0){k--;sfx('tap');paneFx();}};
-    $('#epNext').onclick=()=>{sfx('tap');if(last){go(2);return;}k++;paneFx();};
-    phBind($('#v10p'),f);
-    let x0=null;const c0=$('#v10p .v10-fx');c0.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
-    c0.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;if(dx<0&&!last){k++;paneFx();}else if(dx>0&&k>0){k--;paneFx();}},{passive:true});}
-  // ③ быстрая игра: по вопросу на фишку — что значит / вставь слово / как сказать; ответ — сразу дальше
-  function paneGame(){if(!FX.length){go(3);return;}
-    const canSit=f=>f.lx&&f.lx[1]&&FX.filter(x=>x!==f&&v10Chunk(x)!==v10Chunk(f)).length>=2;
-    const canGap=f=>!!f.gap&&new RegExp('\\b'+String(f.gap).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(scT(f));
-    const Q=FX.map((f,j)=>{let t=['mean','gap','sit','gap'][j%4];if(t==='sit'&&!canSit(f))t='gap';if(t==='gap'&&!canGap(f))t='mean';if(t==='mean'&&!(f.trap&&f.trap.length>=2))t=canGap(f)?'gap':'sit';return {f,t};});
-    let n=0,okN=0;
-    const one=()=>{if(n>=Q.length){gameEnd();return;}const q=Q[n],f=q.f;let ask,body,right,opts;
-      if(q.t==='gap'){const re=new RegExp('\\b'+String(f.gap).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i');
-        ask='Вставь слово';body=`<b class="v10-q">${esc(scT(f)).replace(re,'<span class="gap">&nbsp;</span>')}</b><small class="v10-qs">${esc(f.ru)}</small>`;
-        right=f.gap;opts=shuffle([f.gap,...(f.gx&&f.gx.length>=2?f.gx:scGapOpts(f,all)).filter(x=>x.toLowerCase()!==f.gap.toLowerCase()).slice(0,2)]);}
-      else if(q.t==='sit'){ask='Как сказать по-английски?';body=`<b class="v10-q v10-ru">${esc(f.lx[1])}</b><small class="v10-qs">Выбери фишку</small>`;
-        right=v10Chunk(f);opts=shuffle([right,...shuffle([...new Set(FX.filter(x=>x!==f).map(v10Chunk))].filter(x=>x!==right)).slice(0,2)]);}
-      else{ask='Что значит?';body=`<b class="v10-q">${esc(scT(f))}</b>`;right=f.ru;opts=shuffle([f.ru,...shuffle(f.trap).slice(0,2)]);}
-      pane(`<div class="ep-card v10-game"><div class="v10-gtop"><span class="v10-gk">⚡ Быстрая игра</span><span class="v10-segs">${Q.map((x,j)=>`<i class="${j<n?(x.res?'ok':'bad'):j===n?'cur':''}"></i>`).join('')}</span></div>
-        <span class="v10-ask">${ask}</span>${body}
-        <div class="v10-o">${opts.map(o=>`<button data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="v10-fb" id="v10fb"></div></div>`);
-      $$('.v10-o button').forEach(b=>b.onclick=()=>{if(q.res!==undefined)return;const r=b.dataset.v===right;q.res=r;
-        $$('.v10-o button').forEach(x=>{x.disabled=true;if(x.dataset.v===right)x.classList.add('ok');});if(!r)b.classList.add('bad');
-        sfx(r?'good':'bad');haptic(r?'ok':'err');weekAdd();save();
-        if(r){okN++;P.m[f.id]=Math.min(3,(P.m[f.id]||0)+1);}scSave();
-        $('#v10fb').innerHTML=`<b class="${r?'ok':'bad'}">${r?'Верно':'Запомни'}</b> ${esc(scT(f))} — ${esc(f.ru)}`;
-        setTimeout(()=>{n++;one();},r?1100:2600);});};
-    function gameEnd(){const st=okN===Q.length?3:okN/Q.length>=.7?2:1,first=!P.done.includes(i);
-      P.st=P.st||{};P.st[i]=Math.max(P.st[i]||0,st);if(first)P.done.push(i);watched();
-      // фишки сразу в повторение: завтра, потом 3, 7, 21, 60 дней (ошибки тоже — их как раз надо повторить)
-      FX.forEach(f=>{if(!P.r[f.id])P.r[f.id]=[0,Date.now()+SC_DAYS[0]*864e5];});scSave();remindSync();ev('ep_quiz',id);
-      reach=3;tabs();sfx(okN===Q.length?'win':'learn');
-      const miss=Q.filter(x=>!x.res);
-      pane(`<div class="ep-card v10-res"><div class="res-stars">${[1,2,3].map(j=>`<i class="${j<=st?'on':''}" style="animation-delay:${.1+j*.15}s">★</i>`).join('')}</div>
-        <div class="v10-big">${okN} из ${Q.length}</div><p>${miss.length?'Ошибки не страшны — эти фишки вернутся завтра в повторении.':'Чисто! Фишки вернутся завтра в повторении — чтобы точно остались.'}</p>
-        ${miss.length?`<div class="v10-miss">${miss.map(x=>`<div><b>${esc(v10Chunk(x.f))}</b><span>${esc(x.f.ru)}</span></div>`).join('')}</div>`:''}
-        <button class="sc-btn" id="v10go">Последний шаг: на слух →</button><button class="ht-alt" id="v10again">Сыграть ещё раз</button></div>`);
-      $('#v10go').onclick=()=>{sfx('tap');go(3);};$('#v10again').onclick=()=>{sfx('tap');paneGame();};}
-    one();}
-  // ④ на слух: тот же эпизод без субтитров — фишки загораются, когда звучат
-  function paneRe(){pane(`<div class="ep-hint v10-hint"><b>Ещё раз — без субтитров</b><span>Теперь только звук. Лови фишки на слух — каждая загорится, когда прозвучит.</span></div>
-      <div class="v10-catch">${FX.map(f=>`<span data-fid="${f.id}"><i></i>${esc(v10Chunk(f))}</span>`).join('')}</div>
-      <button class="sc-btn ep-go" id="v10go">Смотреть без субтитров ▶</button><button class="ht-alt" id="v10skip">Пропустить</button>`);
-    $('#v10go').onclick=()=>{sfx('tap');run();if(window.innerWidth<1000)window.scrollTo({top:0,behavior:'smooth'});};$('#v10skip').onclick=()=>{sfx('tap');paneFin();};}
-  function paneFin(){if(SV&&!SV.paused)SV.pause();const st=scStars(s,i),nx=s.parts[i+1];
-    pane(`<div class="ep-card v10-res"><div class="res-stars">${[1,2,3].map(j=>`<i class="${j<=st?'on':''}" style="animation-delay:${.1+j*.15}s">★</i>`).join('')}</div>
-      <div class="v10-big">Эпизод пройден</div><p>${FX.length} ${plural(FX.length,['фишка','фишки','фишек'])} в повторении. Скажи хоть одну по-настоящему на этой неделе.</p>
-      ${nx?`<button class="sc-btn" id="v10next">Следующий эпизод →</button>`:`<button class="sc-btn" id="v10boss">👑 Финал сцены →</button>`}
-      <button class="sc-btn ghost" id="v10sum">📚 Все фразы сцены</button><button class="ht-alt" id="v10path">К пути сцены</button></div>`);
-    if($('#v10next'))$('#v10next').onclick=()=>{sfx('tap');renderScEp(id,i+1);};
-    if($('#v10boss'))$('#v10boss').onclick=()=>{sfx('tap');scBossStart(id);};
-    $('#v10sum').onclick=()=>{sfx('tap');renderSceneSum(id);};$('#v10path').onclick=()=>{sfx('tap');renderScene(id);};}
-  SV.addEventListener('timeupdate',()=>{if(cur!==3||!SV)return;const t=SV.currentTime;
-    FX.forEach(f=>{const el=document.querySelector(`.v10-catch [data-fid="${f.id}"]`);if(!el)return;const a=f.a-p.a,b=f.b-p.a;
-      el.classList.toggle('now',t>=a-0.1&&t<=b+0.3);if(t>b&&!el.classList.contains('got')){el.classList.add('got');haptic('sel');}});});
-  SV.addEventListener('ended',()=>{ov(true);if(cur===0){watched();ev('ep_watch',id);go(1);}else if(cur===3)paneFin();});
+  const at=f=>[f.a-p.a,f.b-p.a];
+  const intro=()=>{$('#k10live').innerHTML=ear
+      ?`<div class="k10-card k10-intro"><b>Теперь без субтитров</b><p>Только звук. Фразы в списке ниже загораются, когда их говорят — попробуй поймать на слух.</p></div>`
+      :`<div class="k10-card k10-intro"><b>Просто смотри</b><p>Видео не будет останавливаться. Когда прозвучит полезная фраза, здесь появится, что она значит и когда её говорить.</p>
+        <button class="sc-btn" id="k10go">${P.w[i]?'Смотреть ещё раз ▶':'Смотреть эпизод ▶'}</button>${P.w[i]?'<button class="ht-alt" id="k10sum">Сразу к итогу</button>':''}</div>`;
+    if($('#k10go'))$('#k10go').onclick=()=>{sfx('tap');run();};if($('#k10sum'))$('#k10sum').onclick=()=>{sfx('tap');finish();};};
+  // живая карточка фразы
+  function card(j,anim){cur=j;const f=FX[j],tg=scTag(f),box=$('#k10live');if(!box||!f)return;
+    box.innerHTML=`<div class="k10-card${anim?' k10-in':''}"><div class="k10-top"><span class="k10-n">Фраза ${j+1} из ${FX.length}</span><span class="sc-tag ${tg[1]}">${tg[0]}</span></div>
+      <b class="ep-c-en">${kwWrap(f)}</b><span class="ep-c-ru">${esc(f.ru)}</span>
+      ${phInfoHTML(f)}
+      <div class="ep-c-hear"><button class="ep-hear" data-h="0">${SI.play}<span>Ещё раз эту фразу</span></button><button class="ep-slow" data-h="1">🐢 Медленнее</button></div></div>`;
+    box.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{sfx('tap');hear(f,b.dataset.h==='1');});
+    phBind(box,f);list();}
+  function hear(f,slow){ov(false);const [a,b]=at(f),rt=SV.playbackRate;scPlay(a-0.1,b+0.15,()=>{if(SV)SV.playbackRate=rt;ov(true);SSTOP={a:0,b:p.b-p.a+1,full:true};});if(slow&&SV)SV.playbackRate=.75;   // ▶ дальше — с этого места, а не с начала
+    if(window.innerWidth<1000)window.scrollTo({top:0,behavior:'smooth'});}
+  // лента фраз эпизода: всё видно сразу, тап — к моменту
+  function list(){const L=$('#k10list');if(!L)return;
+    if(!L.firstChild){L.innerHTML=`<div class="k10-lh">Фразы эпизода · ${FX.length}</div>`+FX.map((f,j)=>`<button class="k10-row" data-j="${j}"><i>${j+1}</i><span><b>${esc(v10Chunk(f))}</b><small>${esc(scT(f))}</small></span></button>`).join('');
+      L.querySelectorAll('.k10-row').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;sfx('tap');if(!ear)card(j,true);hear(FX[j],false);});}
+    const t=SV?SV.currentTime:0;
+    L.querySelectorAll('.k10-row').forEach(b=>{const j=+b.dataset.j,[a,e]=at(FX[j]),past=t>e;
+      b.classList.toggle('on',j===cur&&!ear);b.classList.toggle('past',past);b.classList.toggle('now',ear&&t>=a-0.1&&t<=e+0.3);b.classList.toggle('hide',ear&&t<a-0.1);
+      b.querySelector('i').textContent=past?'✓':j+1;});}
+  // итог эпизода
+  function finish(){fin=true;if(SV&&!SV.paused)SV.pause();ov(true);const first=!P.done.includes(i);
+    P.w[i]=1;if(first)P.done.push(i);P.st=P.st||{};P.st[i]=3;
+    FX.forEach(f=>{if(!P.r[f.id])P.r[f.id]=[0,Date.now()+SC_DAYS[0]*864e5];});scSave();if(first){remindSync();ev('ep_watch',id);}
+    const nx=s.parts[i+1];$('#k10live').innerHTML='';$('#k10list').hidden=true;
+    $('#k10fin').innerHTML=`<div class="k10-card k10-take"><span class="k10-n">Эпизод ${String(i+1).padStart(2,'0')} · готово</span><b class="k10-h">Забираешь с собой</b>
+      ${FX.map(f=>`<div class="k10-ti" data-fid="${f.id}"><div class="k10-tr"><b class="ep-c-en">${kwWrap(f)}</b><button class="ss-play" data-fid="${f.id}" aria-label="Послушать">${SI.play}</button></div><span class="ep-c-ru">${esc(f.ru)}</span>${scNoteS(f)?`<p>${esc(scNoteS(f))}</p>`:''}</div>`).join('')}
+      <p class="k10-rev">🔁 Эти фразы вернутся в повторении — завтра, через 3 и через 7 дней.</p>
+      ${nx?`<button class="sc-btn" id="k10next">Следующий эпизод →</button>`:`<button class="sc-btn" id="k10sumall">📚 Все фразы сцены</button>`}
+      <button class="sc-btn ghost" id="k10ear">🎧 Пересмотреть без субтитров</button>
+      ${nx?'':`<button class="sc-btn ghost" id="k10boss">👑 Финал сцены — на слух</button>`}<button class="ht-alt" id="k10path">К пути сцены</button></div>`;
+    kwBind($('#k10fin'),el=>{const c=el.closest('[data-fid]');return c?FX.find(f=>f.id===c.dataset.fid):null;});
+    $$('#k10fin .ss-play').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');const f=FX.find(x=>x.id===b.dataset.fid);if(f)hear(f,false);});
+    if($('#k10next'))$('#k10next').onclick=()=>{sfx('tap');renderScEp(id,i+1);};
+    if($('#k10sumall'))$('#k10sumall').onclick=()=>{sfx('tap');renderSceneSum(id);};
+    if($('#k10boss'))$('#k10boss').onclick=()=>{sfx('tap');scBossStart(id);};
+    $('#k10path').onclick=()=>{sfx('tap');renderScene(id);};
+    $('#k10ear').onclick=()=>{sfx('tap');fin=false;ear=true;cur=-1;$('#k10fin').innerHTML='';$('#k10list').hidden=false;SSUBON=false;subsRefresh();intro();list();run();if(window.innerWidth<1000)window.scrollTo({top:0,behavior:'smooth'});};
+    if(window.innerWidth<1000)setTimeout(()=>{const b=$('#k10fin');if(b)b.scrollIntoView({behavior:'smooth',block:'start'});},80);}
+  const subsRefresh=()=>{if(SW){const bx=SW.querySelector('.sc-subs');if(bx)bx.dataset.id='x';}try{scTick();}catch(e){}};
+  // по ходу видео: нужная карточка сама появляется, фраза в субтитрах подсвечена
+  let lastT=-1;
+  SV.addEventListener('timeupdate',()=>{if(!SV||fin)return;const t=SV.currentTime;
+    const hit=FX.some(f=>{const [a,b]=at(f);return t>=a&&t<=b+0.2;});SW.classList.toggle('k10-hit',hit&&!ear);
+    if(!ear&&!(SSTOP&&!SSTOP.full)){let j=-1;FX.forEach((f,k)=>{if(t>=at(f)[0]-0.2)j=k;});if(j>=0&&j!==cur)card(j,true);}
+    if(Math.abs(t-lastT)>0.2){lastT=t;list();}});
+  SV.addEventListener('ended',()=>{ov(true);SW.classList.remove('k10-hit');if(ear){ear=false;SSUBON=true;subsRefresh();}finish();});
   $('#scplay').onclick=run;
   scBindCtrl(run);scBindSeek();
   $('#scb').onclick=()=>{sfx('tap');renderScene(id);};
-  go(cur);
+  intro();list();
 }
 function scSim(f,pool,get,n){const c=get(f),wc=x=>String(x).split(/\s+/).length,end=x=>/[?]$/.test(x)?'?':/!$/.test(x)?'!':'.';
   const seen=new Set([c.toLowerCase()]),cand=[];

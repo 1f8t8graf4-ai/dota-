@@ -3344,3 +3344,102 @@ body.mus-on .scn{padding-bottom:150px!important}
 body:not(.has3d) #amb i{inset:-4%;filter:blur(3px) saturate(1.05) brightness(.62);opacity:.9;animation:kb 40s ease-in-out infinite alternate}
 @keyframes kb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.1) translate(-1.5%,-1%)}}
 body:not(.has3d) #amb b{background:radial-gradient(120% 80% at 50% 10%,rgba(0,0,0,.15),rgba(0,0,0,.6) 70%),linear-gradient(180deg,rgba(0,0,0,.1),var(--scbg,#101113) 96%)!important}
+
+/* ==== 10.0 — видеофон сцены и пилот нового эпизода (Смотри → Фишки → Игра → На слух) ==== */
+/* видеофон: bg.mp4 поверх фото, появляется плавно, когда реально пошёл; не грузится — остаётся фото */
+#amb video{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;opacity:0;transition:opacity 1.4s ease;filter:blur(2px) saturate(1.05) brightness(.62);pointer-events:none}
+#amb video.on{opacity:.9}
+body.has3d #amb video{display:none}
+/* шаги эпизода: 4 вкладки */
+.scn .v10-tabs{grid-template-columns:repeat(4,1fr);gap:4px}
+.scn .v10-tabs button{gap:5px;padding:10px 2px;font-size:13px;white-space:nowrap}
+.scn .v10-tabs button:disabled{opacity:.35;cursor:default}
+.v10-pane .sc-btn.ep-go{width:100%;margin-top:12px}
+/* фишка */
+.v10-chunk{margin:12px 0 2px;padding:12px 14px;border-radius:16px;background:color-mix(in srgb,var(--sa,#F5C451) 14%,transparent);border:1px solid color-mix(in srgb,var(--sa,#F5C451) 35%,transparent)}
+.v10-chunk b{display:block;font:800 22px/1.2 'Golos Text',system-ui,sans-serif;color:#fff}
+.v10-chunk span{display:block;margin-top:3px;font-size:15px;color:color-mix(in srgb,var(--sa,#F5C451) 70%,#fff)}
+.v10-line{margin-top:12px}
+.v10-line em{display:block;font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.v10-line .ep-c-en{display:block;margin-top:3px;font-size:18px;line-height:1.35}
+.v10-line .ep-c-ru{display:block;margin-top:3px}
+.v10-pane .ep-nav .v10-nx{flex:none;width:auto;height:44px;min-height:44px;margin:0;padding:0 18px;border-radius:22px;font-size:15px}
+/* быстрая игра */
+.v10-game{min-height:0}
+.v10-gtop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.v10-gk{font:800 13px 'Golos Text',sans-serif;color:var(--sa,#F5C451)}
+.v10-segs{display:flex;gap:4px}.v10-segs i{width:22px;height:5px;border-radius:3px;background:rgba(255,255,255,.15)}
+.v10-segs i.cur{background:#fff}.v10-segs i.ok{background:#34c759}.v10-segs i.bad{background:#ff5a4f}
+.v10-ask{display:block;margin-top:14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.v10-q{display:block;margin-top:6px;font:800 20px/1.35 'Golos Text',system-ui,sans-serif;color:#fff}
+.v10-q.v10-ru{font-weight:700;font-size:18px}
+.v10-q .gap{display:inline-block;min-width:64px;border-bottom:3px solid var(--sa,#F5C451);margin:0 2px}
+.v10-qs{display:block;margin-top:4px;color:rgba(255,255,255,.6);font-size:14px}
+.v10-o{display:grid;gap:8px;margin-top:14px}
+.v10-o button{min-height:48px;padding:11px 14px;border-radius:14px;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;font:600 15px/1.35 'Golos Text',system-ui,sans-serif;transition:background .2s,transform .15s}
+.v10-o button:active{transform:scale(.98)}
+@media (hover:hover){.v10-o button:not(:disabled):hover{background:rgba(255,255,255,.11)}}
+.v10-o button.ok{background:rgba(52,199,89,.22);border-color:#34c759}.v10-o button.bad{background:rgba(255,90,79,.2);border-color:#ff5a4f}
+.v10-o button:disabled:not(.ok):not(.bad){opacity:.45}
+.v10-fb{min-height:22px;margin-top:12px;font-size:14px;line-height:1.45;color:rgba(255,255,255,.75)}
+.v10-fb b.ok{color:#7be39a}.v10-fb b.bad{color:#ff8a80}
+/* итог */
+.v10-res{text-align:center;min-height:0}
+.v10-big{margin-top:4px;font:800 26px 'Golos Text',system-ui,sans-serif;color:#fff}
+.v10-res p{margin:6px 0 12px;color:rgba(255,255,255,.7);font-size:14px;line-height:1.45}
+.v10-res .sc-btn{width:100%;margin-top:8px}
+.v10-miss{display:grid;gap:6px;margin:0 0 6px;text-align:left}
+.v10-miss div{padding:9px 12px;border-radius:12px;background:rgba(255,90,79,.08);border:1px solid rgba(255,90,79,.25)}
+.v10-miss b{display:block;color:#fff;font-size:15px}.v10-miss span{display:block;color:rgba(255,255,255,.6);font-size:13px}
+/* на слух: фишки загораются, когда звучат */
+.v10-catch{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.v10-catch span{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.75);font:700 14px 'Golos Text',system-ui,sans-serif;transition:all .3s}
+.v10-catch i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .3s}
+.v10-catch span.now{border-color:var(--sa,#F5C451);color:#fff;box-shadow:0 0 0 3px color-mix(in srgb,var(--sa,#F5C451) 30%,transparent)}
+.v10-catch span.now i{background:var(--sa,#F5C451);box-shadow:0 0 10px var(--sa,#F5C451)}
+.v10-catch span.got{color:#fff;border-color:rgba(52,199,89,.6);background:rgba(52,199,89,.12)}
+.v10-catch span.got i{background:#34c759}
+
+/* ==== 10.1 — кино с подсказками: живая карточка фразы, лента фраз, «Забираешь с собой» ==== */
+.k10{margin-top:0}
+.k10-card{padding:16px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),rgba(20,20,23,.92);border:1px solid rgba(255,255,255,.09);box-shadow:0 20px 40px -24px #000}
+.k10-card.k10-in{animation:k10in .45s ease both}
+@keyframes k10in{from{opacity:0}to{opacity:1}}
+.k10-intro b{display:block;font:800 19px 'Golos Text',system-ui,sans-serif;color:#fff}
+.k10-intro p{margin:6px 0 12px;color:rgba(255,255,255,.7);font-size:14.5px;line-height:1.5}
+.k10-intro .sc-btn{width:100%}
+.k10-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.k10-top .sc-tag{margin-top:0}
+.k10-n{font:800 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--sa,#F5C451)}
+.k10-card .ep-c-en{display:block;margin-top:8px;font:800 20px/1.35 'Golos Text',system-ui,sans-serif;color:#fff}
+.k10-card .ep-c-ru{display:block;margin-top:4px;font-size:15.5px;line-height:1.4;color:color-mix(in srgb,var(--sa,#F5C451) 65%,#fff)}
+.k10-card .ph-blk{margin-top:12px}
+/* лента фраз */
+.k10-list{margin-top:12px;padding:6px;border-radius:20px;background:rgba(18,18,22,.82);border:1px solid rgba(255,255,255,.07)}
+.k10-lh{padding:6px 10px 4px;font:700 11px 'Golos Text',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.k10-row{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border-radius:14px;background:none;text-align:left;color:#fff;transition:background .25s}
+.k10-row+.k10-row{margin-top:2px}
+.k10-row i{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);font:800 12px 'Golos Text',sans-serif;font-style:normal;color:rgba(255,255,255,.7);transition:all .25s}
+.k10-row span{min-width:0;transition:filter .3s,opacity .3s}
+.k10-row b{display:block;font:700 15px/1.3 'Golos Text',system-ui,sans-serif}
+.k10-row small{display:block;margin-top:1px;font-size:12.5px;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (hover:hover){.k10-row:hover{background:rgba(255,255,255,.06)}}
+.k10-row.past i{background:rgba(52,199,89,.22);color:#7be39a}
+.k10-row.on{background:color-mix(in srgb,var(--sa,#F5C451) 14%,transparent)}
+.k10-row.on i{background:var(--sa,#F5C451);color:#111}
+.k10-row.now{background:color-mix(in srgb,var(--sa,#F5C451) 18%,transparent)}
+.k10-row.now i{background:var(--sa,#F5C451);color:#111;box-shadow:0 0 12px var(--sa,#F5C451)}
+.k10-row.hide span{filter:blur(6px);opacity:.6}
+/* фраза в субтитрах подсвечена, пока звучит */
+body .scn .sc-v.k10-hit .sc-subs .sline .en,body .scn .sc-v.k10-hit .sc-subs .sline:first-child .en{color:var(--hl,var(--sa,#F5C451))!important;transition:color .25s}
+body[data-scn="bone"]{--hl:#F5C451}   /* у «Психопата» акцент почти белый — для подсветки фразы берём золото */
+/* итог эпизода */
+.k10-take .k10-h{display:block;margin:4px 0 10px;font:800 22px 'Golos Text',system-ui,sans-serif;color:#fff}
+.k10-ti{padding:12px 0;border-top:1px solid rgba(255,255,255,.08)}
+.k10-tr{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.k10-ti .ep-c-en{margin-top:0;font-size:17px}
+.k10-ti .ss-play{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);color:#fff}
+.k10-ti .ss-play svg{width:13px;height:13px}
+.k10-ti p{margin:6px 0 0;color:rgba(255,255,255,.7);font-size:13.5px;line-height:1.45}
+.k10-rev{margin:6px 0 12px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.75);font-size:13.5px;line-height:1.45}
+.k10-take .sc-btn{width:100%;margin-top:8px}
