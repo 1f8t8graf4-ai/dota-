@@ -3344,3 +3344,58 @@ body.mus-on .scn{padding-bottom:150px!important}
 body:not(.has3d) #amb i{inset:-4%;filter:blur(3px) saturate(1.05) brightness(.62);opacity:.9;animation:kb 40s ease-in-out infinite alternate}
 @keyframes kb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.1) translate(-1.5%,-1%)}}
 body:not(.has3d) #amb b{background:radial-gradient(120% 80% at 50% 10%,rgba(0,0,0,.15),rgba(0,0,0,.6) 70%),linear-gradient(180deg,rgba(0,0,0,.1),var(--scbg,#101113) 96%)!important}
+
+/* ==== 10.0 — видеофон сцены и пилот нового эпизода (Смотри → Фишки → Игра → На слух) ==== */
+/* видеофон: bg.mp4 поверх фото, появляется плавно, когда реально пошёл; не грузится — остаётся фото */
+#amb video{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;opacity:0;transition:opacity 1.4s ease;filter:blur(2px) saturate(1.05) brightness(.62);pointer-events:none}
+#amb video.on{opacity:.9}
+body.has3d #amb video{display:none}
+/* шаги эпизода: 4 вкладки */
+.scn .v10-tabs{grid-template-columns:repeat(4,1fr);gap:4px}
+.scn .v10-tabs button{gap:5px;padding:10px 2px;font-size:13px;white-space:nowrap}
+.scn .v10-tabs button:disabled{opacity:.35;cursor:default}
+.v10-pane .sc-btn.ep-go{width:100%;margin-top:12px}
+/* фишка */
+.v10-chunk{margin:12px 0 2px;padding:12px 14px;border-radius:16px;background:color-mix(in srgb,var(--sa,#F5C451) 14%,transparent);border:1px solid color-mix(in srgb,var(--sa,#F5C451) 35%,transparent)}
+.v10-chunk b{display:block;font:800 22px/1.2 'Golos Text',system-ui,sans-serif;color:#fff}
+.v10-chunk span{display:block;margin-top:3px;font-size:15px;color:color-mix(in srgb,var(--sa,#F5C451) 70%,#fff)}
+.v10-line{margin-top:12px}
+.v10-line em{display:block;font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.v10-line .ep-c-en{display:block;margin-top:3px;font-size:18px;line-height:1.35}
+.v10-line .ep-c-ru{display:block;margin-top:3px}
+.v10-pane .ep-nav .v10-nx{flex:none;width:auto;height:44px;min-height:44px;margin:0;padding:0 18px;border-radius:22px;font-size:15px}
+/* быстрая игра */
+.v10-game{min-height:0}
+.v10-gtop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.v10-gk{font:800 13px 'Golos Text',sans-serif;color:var(--sa,#F5C451)}
+.v10-segs{display:flex;gap:4px}.v10-segs i{width:22px;height:5px;border-radius:3px;background:rgba(255,255,255,.15)}
+.v10-segs i.cur{background:#fff}.v10-segs i.ok{background:#34c759}.v10-segs i.bad{background:#ff5a4f}
+.v10-ask{display:block;margin-top:14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.v10-q{display:block;margin-top:6px;font:800 20px/1.35 'Golos Text',system-ui,sans-serif;color:#fff}
+.v10-q.v10-ru{font-weight:700;font-size:18px}
+.v10-q .gap{display:inline-block;min-width:64px;border-bottom:3px solid var(--sa,#F5C451);margin:0 2px}
+.v10-qs{display:block;margin-top:4px;color:rgba(255,255,255,.6);font-size:14px}
+.v10-o{display:grid;gap:8px;margin-top:14px}
+.v10-o button{min-height:48px;padding:11px 14px;border-radius:14px;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;font:600 15px/1.35 'Golos Text',system-ui,sans-serif;transition:background .2s,transform .15s}
+.v10-o button:active{transform:scale(.98)}
+@media (hover:hover){.v10-o button:not(:disabled):hover{background:rgba(255,255,255,.11)}}
+.v10-o button.ok{background:rgba(52,199,89,.22);border-color:#34c759}.v10-o button.bad{background:rgba(255,90,79,.2);border-color:#ff5a4f}
+.v10-o button:disabled:not(.ok):not(.bad){opacity:.45}
+.v10-fb{min-height:22px;margin-top:12px;font-size:14px;line-height:1.45;color:rgba(255,255,255,.75)}
+.v10-fb b.ok{color:#7be39a}.v10-fb b.bad{color:#ff8a80}
+/* итог */
+.v10-res{text-align:center;min-height:0}
+.v10-big{margin-top:4px;font:800 26px 'Golos Text',system-ui,sans-serif;color:#fff}
+.v10-res p{margin:6px 0 12px;color:rgba(255,255,255,.7);font-size:14px;line-height:1.45}
+.v10-res .sc-btn{width:100%;margin-top:8px}
+.v10-miss{display:grid;gap:6px;margin:0 0 6px;text-align:left}
+.v10-miss div{padding:9px 12px;border-radius:12px;background:rgba(255,90,79,.08);border:1px solid rgba(255,90,79,.25)}
+.v10-miss b{display:block;color:#fff;font-size:15px}.v10-miss span{display:block;color:rgba(255,255,255,.6);font-size:13px}
+/* на слух: фишки загораются, когда звучат */
+.v10-catch{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.v10-catch span{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.75);font:700 14px 'Golos Text',system-ui,sans-serif;transition:all .3s}
+.v10-catch i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25);transition:all .3s}
+.v10-catch span.now{border-color:var(--sa,#F5C451);color:#fff;box-shadow:0 0 0 3px color-mix(in srgb,var(--sa,#F5C451) 30%,transparent)}
+.v10-catch span.now i{background:var(--sa,#F5C451);box-shadow:0 0 10px var(--sa,#F5C451)}
+.v10-catch span.got{color:#fff;border-color:rgba(52,199,89,.6);background:rgba(52,199,89,.12)}
+.v10-catch span.got i{background:#34c759}
