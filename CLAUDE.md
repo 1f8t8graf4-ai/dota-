@@ -1,30 +1,88 @@
-# CLAUDE.md
+# CLAUDE.md — «Языки по кино» (@languagegamesbot)
 
-Telegram mini app + bot for learning **English or German** through games (Dota 2, CS 2), films and series, plus party games. UI and all user-facing text are in **Russian**. Full history, rules and roadmap: `README.md` (read it before big changes).
+Ты продолжаешь проект, который до этого вёлся в чатах Claude (Cowork). Текущая версия — **9.2.1**.
+Подробная история и все детали — в `README-HANDOFF-9.2.md` (прочитай, если нужен контекст по конкретной фиче).
 
-## The author
-Not a programmer. Answer in Russian, short and direct. Give **whole files**, never snippets to paste. Put the version in file names when a file is copied by hand (e.g. `worker-4.6.js`). Explain uploads click by click.
+## Кто автор и как с ним общаться
+- Андрей, **не программист**. Пишет по-русски, неформально, с опечатками и матом — отвечай **по-русски, коротко, прямо**, без воды и морализаторства.
+- Тестирует на **iPhone (Telegram)** и **ПК (Telegram Desktop)**, присылает скрины.
+- «Не начинай, пока не скажу» — слушаться. «Го» / «давай» = начинать.
+- Не любит перегруз интерфейса: на экране — только текущий шаг. Ненавидит заставки маскота на весь экран (они выключены — не возвращать).
+- Админ в боте — Telegram ID `876754050`.
 
-## Layout (no build step — the files in this repo are the source of truth)
-- `index.html` — markup + loader. Sets `window.ASSET_BASE` (where scene videos live), fetches `data/*.json` into `window.__DATA`, then loads `js/app.js?v=<V>`. **Bump `V` on every release** or Telegram serves cached JS.
-- `js/app.js` — all logic (~210 KB), sections separated by `/* ================= name ================= */`. Order: icons → modes/roles/ranks → storage → Telegram → sound → question builders (`BUILD`) → session (`startSession`, `finish` = one answer, `renderEnd` = end of game) → tips/new question kinds/spaced review → tabs (`renderTab`: learn = «Главная», kino, games, profile; `spy`/`arena` are sub-pages of games) → dictionary → onboarding quiz → settings → spy → tournament → scenes (`renderScene`, `renderScEp`, `renderScQuiz`, player `scVideo`) → memory tips (`MEM`, `memOf`) → CS 2 words → worlds (`setWorld`, `renderDotaWorld`, `renderCSWorld`, `renderWiki`, `startLesson`) → card duel (`cg*`, `cgPick`, `cgStart`, `cgAiTurn`, online rooms `cgCreateRoom`/`cgJoin`/`cgPush`/`cgApplyRemote` via `POST /api/cg` + D1 `cgroom`, evolution `cgEvolve`, dig `cgDiscover`, voice `cgVoice`) → film-first home (`learnTabHTML`, `continueScene`, film phrase lesson `startScLesson`/`scIntro`) → section flags / admin panel (`flagOf`, `applyFlagsUI`, `renderAdmin`, server `POST /api/flags`, D1 table `appflags`).
-- `styles/main.css` — all styles. Themes by world: `t-clean` neutral (default), `t-hud` Dota, `t-cs` CS 2, scenes `.scn.noir` / `.scn.bone`, card duel `body[data-world=cards]`.
-- `data/*.json` — **data only, no functions**: `icons`, `dota` (TERMS, ITEMS, BUILDS, SKILLS, HEROES, HERO_POS), `words` (WORDS, PHRASES), `lore-vocab`, `tips` (TIPS, MEM), `spy`, `scenes` (SCENES: parts, subtitle rows `[start, end, en, ru, de]`, study phrases, optional `music` soundtrack list — files next to the videos).
-- `lore.json` — official item/skill lore, rebuilt weekly by `.github/workflows/main.yml` → `tools/build-lore.mjs`.
-- `bot/worker-*.js` — Cloudflare Worker (bot webhook + API `/api/spy`, `/api/tour`, `/api/flags`, `/api/cg`), D1 database `DB`. Pasted into Cloudflare by hand. Secrets only in Cloudflare variables (`BOT_TOKEN`, `WEBHOOK_SECRET`, `ADMIN_ID`) — **never commit tokens**.
-- Scene videos live in a separate repo `scenes` (GitHub Pages): keys `scenes/<scene-id>/<NN>.mp4|jpg`, `scenes/<scene-id>/cover.jpg`, soundtracks `scenes/<scene-id>/m1.m4a`. Bot welcome picture: `img/welcome.jpg` in this repo. Code builds URLs only via `assetUrl(key)`.
+## Что это
+Telegram Mini App + бот для изучения **английского (и немецкого)** по сценам из фильмов/сериалов: смотришь эпизод → разбор фраз → проверка → интервальное повторение. Есть вкладка игр (Дота, CS, «Шпион», карточная дуэль) — их почти не трогаем.
 
-## Rules
-- Never rewrite from scratch; make targeted edits. A past rewrite broke everything.
-- Do not change storage keys (`dota_quiz_v4`, `dota_m_v1`, `dota_r_v1`, `dota_sc_v1`) or word/scene ids without a migration — players lose progress.
-- One learning language at a time (`store.langs[0]` is `en` or `de`).
-- Worker API: every request carries `x-init-data` (Telegram initData), verified with HMAC before use.
-- Content: useful words, no gamer slang in learning material; German nouns with article. Film lines keep the original swearing (author's choice); the note explains it.
-- Card duel characters are shown with names and monograms only — no character or actor artwork.
+## Архитектура — НЕ МЕНЯТЬ
+- **Без сборщиков, без npm, без ES-модулей.** Статический сайт: `index.html`, один большой `js/app.js` (~4900 строк), `styles/main.css` (~3300 строк), `js/bg3d.js` (3D-фон), `js/vendor/three.min.js`, `js/mascot/mascot-engine.js`.
+- Андрей открывает `index.html` двойным кликом (`file://`) → для этого есть `data/all-data.js` (все JSON одним скриптом).
+  **После ЛЮБОЙ правки `data/*.json` запускай `python3 tools/rebuild_all_data.py`.**
+- `index.html` грузит обязательные JSON (`icons, dota, words, lore-vocab, tips, spy, scenes`) и необязательные (`topics, scenewords, glossary`).
+- Версия: `const APP_V` в `js/app.js` + `var V='…'` в `index.html` (сбивает кэш через `?v=`). **Поднимай обе при каждом релизе.**
+- CSS пишется **слоями в конце файла** (`/* ==== 9.2 — … ==== */`). Новые правки — новым слоем внизу, старое не переписывать.
+- Правки — **точечные** (поиск/замена конкретных мест), не переписывать файлы целиком.
+- Ключи хранилища **не менять**: `dota_quiz_v4` (store), `dota_m_v1`, `dota_r_v1`, `dota_sc_v1` (прогресс сцен), `dota_flags_v1`. Прогресс: localStorage + Telegram CloudStorage.
+- `.screen` — без `transform` (ломает полноэкранное видео).
 
-## Run and check locally
-- `python3 -m http.server 8765` in the repo root → open `http://localhost:8765/` (fetching `data/*.json` needs a server, not `file://`).
-- Before shipping, check: every question has 4 distinct options and a correct one, no `undefined` in UI, a session reaches the end screen, spy online works with 2+ players, card duel games finish, no console errors. The author's previous test harness used jsdom and Playwright; there is no test suite in this repo yet (see README → «План на 5.0»).
+## Где что лежит и деплой
+| Что | Где | Как обновлять |
+|---|---|---|
+| Код | GitHub `1f8t8graf4-ai/dota-` → GitHub Pages `https://1f8t8graf4-ai.github.io/dota-/` | файлы в **корень** репо с заменой |
+| Видео/обложки/музыка | GitHub `1f8t8graf4-ai/scenes` → `https://1f8t8graf4-ai.github.io/scenes/<id>/01.mp4` | папки сцен в корне репо |
+| Бот | Cloudflare Worker `bot/worker-6.0.js` + D1 (`users`, `events`, `reminders`), cron `0 * * * *` | Dashboard → Workers → Edit code → Deploy |
 
-## Claude Code tips
-Use `/opusplan` (Opus plans, Sonnet edits). For big features: plan first, then small commits.
+- `window.ASSET_BASE='https://1f8t8graf4-ai.github.io'` в `index.html`. Код просит `ASSET_BASE + '/scenes/<id>/<файл>'`. **Не дописывать `/scenes` в ASSET_BASE.**
+- План: медиа переехать на Cloudflare R2 (лимиты GitHub) — меняется только `ASSET_BASE`.
+- Проверка после деплоя: в приложении «Профиль → Админ-панель → Проверить установку».
+
+## Данные сцен (`data/scenes.json`)
+`SCENES[]`: `id, title, sub, ep, show` (группа = фильм/сериал), `kind` (`film|series|clip`), `lang` (`de` у Бункера), `theme` (`wolf|noir|bone|taxi|bunker|pump`), `lvl/use` (сложность/польза 1–5, `lvlWhy/useWhy`), `music[]` (`{f,t,by}`), `parts[]` (эпизоды: `t, a, b` — секунды в исходнике), `subs[]` = `[начало, конец, en, ru, de]`.
+Фраза в `parts[i].ph[]`:
+- `en, ru, de, a, b` (тайминг в исходнике), `gap` (слово для пропуска), `trap[]` (ложные переводы для «что значит»), `ex[]/exDe[]`, `passive` (только для понимания, без теста)
+- `note` — старое пояснение, **не показывается**, но нужно для подчёркивания выражений в субтитрах (`phIdiom`)
+- **9.1:** `use` — «Когда применяется» (1–2 предложения, живой русский), `fact` — интересный факт (только проверяемый! лучше без факта, чем выдуманный), `lx` — пример из жизни `[en, ru]`, `kw` — важные слова `[[как во фразе, словарная форма, перевод, пример, перевод примера, когда применяется], …]`
+- Файлы медиа сцены: `01.mp4…` (эпизоды), `01.jpg…` (превью), `cover.jpg`, `poster.jpg`, `bg.jpg` (фон, необязательно), `m1.m4a…` (музыка).
+Прочее: `data/scenewords.json` (слова эпизодов), `data/glossary.json` (`GLOSS_EN`/`GLOSS_DE` — перевод любого слова), `data/topics.json`.
+
+## Как устроено обучение (9.2) — ключевые функции в `js/app.js`
+- **Кинозал:** сцены по сложности — `lvl<=2` бесплатно, `lvl 3` = 400 монет, `lvl 4+` = 800 (`SC_PRICE`, `scOpen`, `scBuy`, `store.scOwn`). Админ (`FLAG_ADMIN`) видит всё.
+- **Страница сцены** `renderScene`: баннер, описание, пластинка-плеер (`musHTML`), **путь эпизодов как в Duolingo** (`scPathHTML`): эпизод открывается после проверки предыдущего (`scEpOpen`), 1–3 звезды (`P.st[i]`), в конце **«Финал сцены»** — 8 фраз на слух без субтитров (`scBossStart`, `P.boss`).
+- **Эпизод** `renderScEp`: вкладки ① Смотри ② Разбор ③ Проверка. Видео слева (ПК) / сверху (телефон).
+  - **Задания прямо в видео** `scVQ`: при просмотре целиком видео встаёт после ключевой фразы. Субтитры с оригиналом → «когда так говорят?»; без субтитров → «что он сказал?» (одно слово подменено). 12 с, потом дальше. +5 монет (один раз на фразу). Выкл: `store.vtask`.
+  - **Разбор:** фраза (каждое слово нажимается — `phBind`; подсвеченные `kw` — карточка с примером), перевод, «▶ Послушать в сцене» / «🐢 Медленнее», блоки `phInfoHTML` («Когда применяется» + пример, «Интересный факт» — один раз за заход).
+- **Проверка** `renderScQuiz`: типы `listen / mean / build / life / gap`. Кубики без знаков и заглавных, «сначала вспомни сам», ловушки-формы тех же слов (`wForms`), 3 попытки, ввод слова с прощением опечатки.
+  - **Тест уровня** `renderLevelTest` перед первым эпизодом → `store.lvl` (`a` новичок / `b`). Новичку: выбор перевода, сборка без лишних слов с первым словом, слово из вариантов, без «примени в жизни».
+  - Итог: звёзды, монеты (`addGold`), «Следующий эпизод» / «Финал сцены», «Что закрепили».
+- **«Все фразы сцены»** `renderSceneSum` — столбики «Можно везде / Среди своих / Грубо» + «Важные слова».
+- **Повторение** (`renderDaily`): интервалы 1-3-7-21-60 дней (`SC_DAYS`, `P.r[id]=[шаг, когда]`), диктант, «Мои слова».
+- **Музыка:** тихо (0.18), случайный трек, плавное появление; тап по плашке → плеер `musSheet`.
+- **Фон:** в сценах — реальный кадр (`bg.jpg` или `cover.jpg`) с медленным Ken Burns (`scAmb`). 3D-сцены (`js/bg3d.js`, `BG3D.set(theme)`) выключены по умолчанию — Андрею не понравились «3D-игрушки»; включаются в настройках (`store.bg3d`).
+
+## ЖЁСТКИЕ ПРАВИЛА
+1. **Тексты песен не воспроизводить, не переводить, не проверять** (клип Lil Pump: Андрей сам кладёт `orig.srt/ru.srt/de.srt` в папку клипа, приложение их подтягивает — `clipLoad`). Отдельные слова/сленг объяснять можно.
+2. **Мат в репликах и переводах оставлять как есть.**
+3. Не делать фальшивых «проверок ИИ». Свободный ответ с проверкой нейросетью — только через сервер с API-ключом (не сделано).
+4. Факты в `fact` — только проверяемые. Не выдумывать закулисье.
+5. Фразы для обучения — **полезные в жизни**, не узко-сюжетные («She cuts hair» — плохой пример, такое → `passive`).
+6. После каждой новой/изменённой сцены — **выгрузить файл переводов** `переводы-<версия>.md` (оригинал, перевод, когда применяется, пример, факт, важные слова) — Андрей отдаёт его другим нейросетям на проверку.
+
+## Видео
+- Исходники раньше были слабые (резалки) → мыло. Сейчас Андрей ищет **4K/Blu-ray** (American Psycho 2160p ~12.6 ГБ, англ. звук).
+- Нарезка: `tools/cut_episode.sh <исходник> <начало> <конец> <выход.mp4> [hdr]` — 1080p H.264 CRF 19, мягкий «тикток-лук», loudnorm, превью-кадр.
+- **Не повторять ошибки:** резкость без меры и шумодав `hqdn3d`/`nlmeans` на пережатом исходнике дают «акварельные кляксы»; кадры, смазанные движением камеры, фильтром не спасти. Фильм — 24 fps, не конвертировать в 30.
+- Если исходник 4K HDR (картинка бледная) — 5-й аргумент `hdr` (тонмаппинг zscale+hable).
+- Тайминги `parts[i].a/b` и фраз `a/b` — секунды в исходнике; при новом исходнике **всё пересчитать** (сдвиг между релизами бывает разный).
+
+## Проверка перед сдачей
+- Синтаксис: `node -e "new Function(require('fs').readFileSync('js/app.js','utf8'))"`.
+- Локально: `python3 -m http.server 8080` в корне и открыть `http://localhost:8080`. Видео тянутся с GitHub Pages; для офлайн-теста подменить `ASSET_BASE` или замокать маршруты (Playwright `page.route`).
+- Прогнать на размере **iPhone 13** и **ПК 1280–1600 px**: главная, кинозал, страница сцены, эпизод (все 3 вкладки, задание в видео, полный экран), проверка до итога, «Все фразы сцены», плеер музыки, настройки. Консоль без ошибок.
+- Сдавать Андрею: **архив с изменёнными файлами для заливки в корень** + 2–4 строки, что сделано.
+
+## Что сейчас открыто (на 9.2.1)
+- Андрей ещё **не подтвердил на устройствах** 9.2/9.2.1: путь сцены, покупка за монеты, задания в видео, тест уровня, нажатие любого слова, «Все фразы сцены», плеер музыки, фон-фото.
+- **Пересобрать сцены из 4K-исходников** (начинаем с American Psycho: первые ~25 минут; Андрей режет на куски ≤400 МБ). Заново: тайминги, эпизоды, фразы (полезные!), `use/fact/lx/kw`, файл переводов.
+- В «Волке», эпизод «Фугази»: в начале видео пропадают ~3 с — проблема нарезки файла, решится пересборкой.
+- Два непроверенных факта у «Волка»: «fuck больше 500 раз» и мем «pump those numbers up».
+- Фоны: Андрей может прислать реальные фото (Unsplash/Pexels) → `bg.jpg` в папку сцены; можно «оживить» (параллакс слоями, свеча, дым, дождь, неон).
+- Идеи: проверка свободного ответа нейросетью (нужен ключ на сервере), прогресс на сервере, PWA/магазины (вопрос прав на кадры из фильмов).
