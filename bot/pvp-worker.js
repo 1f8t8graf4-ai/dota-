@@ -18,11 +18,14 @@
      a=ans    {code,k,ok,ms}               → ответ на вопрос k (гонка — свой; вместе — общий, первый ответ засчитывается)
      a=help   {code,k}                     → «помоги»: вопрос k открывается у друга (режим «вместе»)
      a=leave  {code}                       → вышел
+     a=rget                                → {t}: когда админ велел сбросить прогресс этому игроку (11.2)
+     a=rset   {target:'tg<ID>'}            → сбросить игроку прогресс (только админ, нужен BOT_TOKEN)
    ===================================================================================== */
 const CORS={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, x-init-data','access-control-max-age':'86400'};
 const J=(o,st)=>new Response(JSON.stringify(o),{status:st||200,headers:{...CORS,'content-type':'application/json; charset=utf-8'}});
 let READY=false;
-async function ensure(db){if(READY)return;await db.prepare('CREATE TABLE IF NOT EXISTS pvp_rooms (code TEXT PRIMARY KEY, data TEXT NOT NULL, ver INTEGER NOT NULL, upd INTEGER NOT NULL)').run();READY=true;}
+async function ensure(db){if(READY)return;await db.prepare('CREATE TABLE IF NOT EXISTS pvp_rooms (code TEXT PRIMARY KEY, data TEXT NOT NULL, ver INTEGER NOT NULL, upd INTEGER NOT NULL)').run();
+  await db.prepare('CREATE TABLE IF NOT EXISTS kino_reset (uid TEXT PRIMARY KEY, t INTEGER NOT NULL)').run();READY=true;}
 const ABC='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const newCode=()=>{let s='';const b=crypto.getRandomValues(new Uint8Array(5));for(const x of b)s+=ABC[x%ABC.length];return s;};
 // проверка Telegram initData (если задан BOT_TOKEN)
@@ -49,6 +52,11 @@ export default{async fetch(req,env){
   if(env.BOT_TOKEN){const u=await tgUser(req.headers.get('x-init-data')||'',env.BOT_TOKEN);if(!u)return J({ok:false,msg:'Открой дуэль внутри Telegram'});uid=u.uid;name=u.name;}
   if(!uid)return J({ok:false,msg:'нет игрока'});
   const code=String(b.code||'').toUpperCase().slice(0,8),now=Date.now();
+  if(b.a==='rget'){const r=await db.prepare('SELECT t FROM kino_reset WHERE uid=?').bind(uid).first();return J({ok:true,v:{t:r?r.t:0}});}
+  if(b.a==='rset'){if(!env.BOT_TOKEN)return J({ok:false,msg:'Добавь воркеру секрет BOT_TOKEN — без него сброс по ID не включается'});
+    if(uid!=='tg'+(env.ADMIN_ID||'876754050'))return J({ok:false,msg:'Только для админа'});
+    const t=String(b.target||'');if(!/^tg\d{3,15}$/.test(t))return J({ok:false,msg:'Неверный ID'});
+    await db.prepare('INSERT INTO kino_reset (uid,t) VALUES (?,?) ON CONFLICT(uid) DO UPDATE SET t=excluded.t').bind(t,now).run();return J({ok:true,v:{t:now}});}
   if(b.a==='create'){const R=b.room||{};if(!R.sid||!Array.isArray(R.qs)||!R.qs.length||R.qs.length>12)return J({ok:false,msg:'bad room'});
     await db.prepare('DELETE FROM pvp_rooms WHERE upd<?').bind(now-36*3600e3).run();
     const room={sid:String(R.sid).slice(0,60),ep:R.ep|0,mode:R.mode==='coop'?'coop':'race',bet:Math.max(0,Math.min(1000,R.bet|0)),qs:R.qs,

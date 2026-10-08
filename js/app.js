@@ -1712,13 +1712,16 @@ function bindProfile(){bindProfileAdmin();
 
 /* ---- заставка и отсчёт ---- */
 function splash(){
+  // 11.2: «кинопроектор» — отсчёт плёнки 3-2-1, вспышка, шторки-letterbox раскрываются, проявляется название. Тап — пропустить.
   if(!store.fx)return;
-  const d=document.createElement('div');d.className='splash2';
-  const title='ЯЗЫКИ ПО КИНО'.split('').map((ch,i)=>`<span style="animation-delay:${380+i*38}ms">${ch===' '?'&nbsp;':ch}</span>`).join('');
-  d.innerHTML=`<div class="s2-frame"><i></i><i></i><i></i><i></i><div class="s2-rec"><b></b>REC</div>
-    <div class="s2-t">${title}</div><div class="s2-sub"><span>Name of the game.</span><em>Вот в чём суть.</em></div></div><div class="s2-bar"><i></i></div>`;
+  const d=document.createElement('div');d.className='splash3';
+  const title='ЯЗЫКИ ПО КИНО'.split('').map((ch,i)=>`<span style="--i:${i}">${ch===' '?'&nbsp;':ch}</span>`).join('');
+  d.innerHTML=`<div class="s3-beam"></div><div class="s3-lead"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><circle class="sw" cx="50" cy="50" r="22"/><path d="M50 2v96M2 50h96"/></svg><b><i>3</i><i>2</i><i>1</i></b></div>
+    <div class="s3-flash"></div><div class="s3-bar t"></div><div class="s3-bar b"></div>
+    <div class="s3-c"><div class="s3-t">${title}</div><div class="s3-line"></div><div class="s3-sub">английский и немецкий по сценам из кино</div></div><div class="s3-grain"></div>`;
   document.body.appendChild(d);
-  setTimeout(()=>d.classList.add('out'),1700);setTimeout(()=>d.remove(),2300);
+  let gone=false;const out=()=>{if(gone)return;gone=true;d.classList.add('out');setTimeout(()=>d.remove(),600);};
+  d.addEventListener('pointerdown',out);setTimeout(out,2300);
 }
 function countdown(cb){
   if(!store.fx){cb();return;}
@@ -2216,13 +2219,13 @@ const scMine=()=>SCENES.flatMap(s=>{const P=scP(s.id);return s.parts.flatMap(p=>
 const scStLabel=x=>x.st>=3?['надолго','ok']:x.st>=1?['закрепляю','mid']:['учу','new'];
 // звук фразы прямо из фильма: берём кусок эпизода (тот же mp4) с её начала до конца
 let SCLIP=null;
-function scClip(id,fid,btn){const s=scOf(id);if(!s)return;let pi=-1,f=null;s.parts.forEach((p,i)=>p.ph.forEach(x=>{if(x.id===fid){pi=i;f=x;}}));if(!f)return;
+function scClip(id,fid,btn,onEnd){const s=scOf(id);if(!s)return;let pi=-1,f=null;s.parts.forEach((p,i)=>p.ph.forEach(x=>{if(x.id===fid){pi=i;f=x;}}));if(!f)return;
   const p=s.parts[pi],src=assetUrl(scEpKey(s,pi,'mp4')),st=Math.max(0,f.a-p.a-0.08),en=f.b-p.a+0.12;
   if(!SCLIP){SCLIP=document.createElement('video');SCLIP.playsInline=true;SCLIP.setAttribute('playsinline','');SCLIP.preload='auto';SCLIP.style.display='none';document.body.appendChild(SCLIP);}
   clearInterval(SCLIP._t);$$('.sc-say.on').forEach(x=>x.classList.remove('on'));if(btn)btn.classList.add('on');
   if(SCLIP.dataset.src!==src){SCLIP.src=src;SCLIP.dataset.src=src;}
   const go=()=>{const start=()=>{const pr=SCLIP.play();if(pr&&pr.catch)pr.catch(()=>{});
-      SCLIP._t=setInterval(()=>{if(SCLIP.currentTime>=en||SCLIP.ended){SCLIP.pause();clearInterval(SCLIP._t);if(btn)btn.classList.remove('on');}},30);};
+      SCLIP._t=setInterval(()=>{if(SCLIP.currentTime>=en||SCLIP.ended){SCLIP.pause();clearInterval(SCLIP._t);if(btn)btn.classList.remove('on');if(onEnd)onEnd();}},30);};
     SCLIP.pause();if(Math.abs(SCLIP.currentTime-st)<0.03){start();return;}SCLIP.addEventListener('seeked',start,{once:true});try{SCLIP.currentTime=st;}catch(e){start();}};
   if(SCLIP.readyState>=1)go();else{SCLIP.addEventListener('loadedmetadata',go,{once:true});SCLIP.load();}
   haptic('sel');}
@@ -2257,7 +2260,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='11.1';
+const APP_V='11.2';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2357,15 +2360,16 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;
   $$('.kw.on,.sw.on').forEach(x=>x.classList.remove('on'));el.classList.add('on');
   const sheet=!matchMedia('(hover:hover)').matches||window.innerWidth<640;
   P.classList.toggle('sheet',sheet);P.classList.toggle('pin',!!pin||sheet);P.style.left=P.style.top='';
-  if(!sheet){const r=el.getBoundingClientRect(),W=Math.min(340,window.innerWidth-24);P.style.width=W+'px';
-    P.classList.add('on');const h=P.offsetHeight,below=r.bottom+10+h<window.innerHeight;
-    P.style.left=Math.max(12,Math.min(window.innerWidth-W-12,r.left+r.width/2-W/2))+'px';
-    P.style.top=(below?r.bottom+10:Math.max(12,r.top-h-10))+'px';
-    // 10.1: на широких экранах у body есть zoom — сверяем с реальным положением и возвращаем в экран
-    const b=P.getBoundingClientRect(),k=b.width/W||1;if(Math.abs(k-1)>0.01||b.right>window.innerWidth-8||b.bottom>window.innerHeight-8){
-      const L=r.left+r.width/2-b.width/2,X=Math.max(12,Math.min(window.innerWidth-b.width-12,L)),Y=below?r.bottom+10:Math.max(12,r.top-b.height-10);
-      P.style.left=(X/k)+'px';P.style.top=(Math.min(Y,window.innerHeight-b.height-12)/k)+'px';}}
-  else{P.classList.add('on');document.body.classList.add('kw-open');}
+  const r=el.getBoundingClientRect();
+  if(!sheet){const W=Math.min(340,window.innerWidth-24);P.style.width=W+'px';P.style.left=P.style.top='0px';P.classList.add('on');
+    // 11.2: меряем реальный размер (у body бывает zoom) и ставим под словом или над ним — так, чтобы карточка не закрывала строку
+    const b0=P.getBoundingClientRect(),k=b0.width/W||1,bw=b0.width,bh=b0.height,vw=window.innerWidth,vh=window.innerHeight;
+    const spB=vh-r.bottom-10,spA=r.top-10,below=spB>=bh+12||spB>=spA;
+    const X=Math.max(12,Math.min(vw-bw-12,r.left+r.width/2-bw/2)),Y=Math.max(12,Math.min(vh-bh-12,below?r.bottom+10:r.top-10-bh));
+    P.style.left=(X/k)+'px';P.style.top=(Y/k)+'px';}
+  else{P.classList.add('on');document.body.classList.add('kw-open');
+    // 11.2: шторка снизу не должна закрывать нажатое слово — подкручиваем страницу
+    const top=window.innerHeight-P.getBoundingClientRect().height;if(r.bottom>top-12&&!el.closest('.sc-pfs'))window.scrollBy({top:r.bottom-top+28,behavior:'smooth'});}
   haptic('sel');}
 function kwShow(el,f,pin){const k=kwOf(f)[+el.dataset.kw];if(!k)return;popAt(el,kwCardHTML(k),{sid:f.sid||(SCUR&&SCUR.id),f,word:k[1]||k[0],ru:k[2]},pin);}
 function wordShow(el,f,pin){const sid=(f&&f.sid)||(SCUR&&SCUR.id);if(!sid)return;const w=el.textContent,hit=swFind(sid,f?f.pi||0:0,w),id=f?phIdiom(f):null,inId=id&&idHit(id,w);
@@ -2764,10 +2768,12 @@ function renderShow(name){
    • В конце пути — «Финал сцены»: фразы всей сцены на слух, без субтитров.
    ===================================================================================== */
 const SC_PRICE=s=>s.mode||s.kind==='clip'||!s.lvl||s.lvl<=2?0:s.lvl===3?400:800;   // 10.2: пилотные режимы — без цены
-const scOpen=s=>!!s&&(FLAG_ADMIN||!SC_PRICE(s)||!!(store.scOwn&&store.scOwn[s.id])||scP(s.id).done.length>0);
+// 11.2: админ видит всё открытым, пока не включит «Смотреть как игрок» (store.admPlayer)
+const ADM_OPEN=()=>FLAG_ADMIN&&!store.admPlayer;
+const scOpen=s=>!!s&&(ADM_OPEN()||!SC_PRICE(s)||!!(store.scOwn&&store.scOwn[s.id])||scP(s.id).done.length>0);
 const scStars=(s,i)=>{const P=scP(s.id);return (P.st&&P.st[i])||(P.done.includes(i)?1:0);};
-const scEpOpen=(s,i)=>FLAG_ADMIN||scPilot(s)||i===0||scP(s.id).done.includes(i-1)||scP(s.id).done.includes(i);
-const scBossOpen=s=>FLAG_ADMIN||scPilot(s)||s.parts.every((p,i)=>scP(s.id).done.includes(i));
+const scEpOpen=(s,i)=>ADM_OPEN()||scPilot(s)||i===0||scP(s.id).done.includes(i-1)||scP(s.id).done.includes(i);
+const scBossOpen=s=>ADM_OPEN()||scPilot(s)||s.parts.every((p,i)=>scP(s.id).done.includes(i));
 const starsHTML=n=>`<span class="stars3">${[1,2,3].map(k=>`<i class="${k<=n?'on':''}">★</i>`).join('')}</span>`;
 function addGold(n){if(!n)return 0;store.gold=(store.gold||0)+n;save();return n;}
 function scBuy(s){const pr=SC_PRICE(s),g=store.gold||0,ok=g>=pr;scCloseSheet();const w=document.createElement('div');w.className='sc-sheetwrap';
@@ -2894,17 +2900,21 @@ function scAmb(s){let a=document.getElementById('amb');if(!a){a=document.createE
 // «меньше движения» / включён 3D-фон — остаётся фото (bg.jpg, иначе обложка).
 const AMB_NOV={};
 function scAmbVid(a,s){let v=a.querySelector('video');
-  // 10.2.1: видеофон только по флагу bgv у сцены — общий bg.mp4 «Психопата» был склейкой из трёх сцен, Андрею не зашёл
-  const no=!s.bgv||AMB_NOV[s.id]||document.body.classList.contains('has3d')||(navigator.connection&&navigator.connection.saveData)||matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(no){if(v){v.pause();v.classList.remove('on');}return;}
+  // 11.1: видеофон подхватывается сам — свой bg.mp4 сцены, иначе bg.mp4 соседней сцены того же фильма, иначе фото
+  const src=[s,...SCENES.filter(x=>x!==s&&(x.show||x.title)===(s.show||s.title))].map(x=>assetUrl(scKey(x,'bg.mp4'))).filter(u=>!AMB_BAD[u]);
+  const no=!src.length||document.body.classList.contains('has3d')||(navigator.connection&&navigator.connection.saveData)||matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(no){if(v){v.pause();v.classList.remove('on');v.dataset.sid=v.dataset.src='';v.removeAttribute('src');}return;}
   if(!v){v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.preload='auto';v.tabIndex=-1;
     ['muted','playsinline','webkit-playsinline','autoplay','loop','disablepictureinpicture','disableremoteplayback'].forEach(k=>v.setAttribute(k,''));
     v.addEventListener('playing',()=>v.classList.add('on'));
-    v.addEventListener('error',()=>{if(v.dataset.sid)AMB_NOV[v.dataset.sid]=1;v.classList.remove('on');});
+    // файла нет — пробуем следующий источник
+    v.addEventListener('error',()=>{const u=v.dataset.src;if(u)AMB_BAD[u]=1;v.classList.remove('on');const L=(v._src||[]).filter(x=>!AMB_BAD[x]);
+      if(L.length){v.dataset.src=L[0];v.src=L[0];}else{v.dataset.src='';v.removeAttribute('src');try{v.load();}catch(e){}}});
     a.insertBefore(v,a.querySelector('b'));}
-  if(v.dataset.sid!==s.id){v.dataset.sid=s.id;v.classList.remove('on');v.src=assetUrl(scKey(s,'bg.mp4'));}
+  if(v.dataset.sid!==s.id){v.dataset.sid=s.id;v._src=src;if(v.dataset.src!==src[0]){v.classList.remove('on');v.dataset.src=src[0];v.src=src[0];}}   // тот же файл — не перезагружаем и не гасим
   ambPause(false);}
-function ambPause(on){const v=document.querySelector('#amb video');if(!v||!v.dataset.sid||AMB_NOV[v.dataset.sid])return;
+const AMB_BAD={};
+function ambPause(on){const v=document.querySelector('#amb video');if(!v||!v.dataset.sid)return;
   if(on){v.pause();return;}if(v.paused&&document.body.dataset.scn){const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
 function scMount(s,html,scr){scStop();gavGone();screen=scr;backBtn(true);document.body.dataset.scn=s.theme;document.body.dataset.scr=scr;scAmb(s);mount(`<div class="scn ${s.theme} scr-${scr}">${html}</div>`,'scnscr');musUI();}
 function renderScene(id){
@@ -3054,7 +3064,7 @@ document.addEventListener('keydown',e=>{if(!SV||!SW||/INPUT|TEXTAREA/.test((e.ta
   else if(e.key==='f'||e.key==='F'||e.key==='а'||e.key==='А')scFull();
   else if(e.key==='Escape'&&SW.classList.contains('sc-pfs'))scExitFull();
   if(SW._wake)SW._wake();});
-function scPlay(a,b,cb){if(!SV)return;SSTOP={a,b,cb};SV.playbackRate=SRATE;try{SV.currentTime=a;}catch(e){}const pr=SV.play();if(pr&&pr.catch)pr.catch(()=>toast('Нажми ещё раз, чтобы запустить видео'));}
+function scPlay(a,b,cb){if(!SV)return;SSTOP={a,b,cb};SV.playbackRate=SRATE;try{SV.currentTime=a;}catch(e){}const pr=SV.play();if(pr&&pr.catch)pr.catch(()=>toast('Нажми ещё раз, чтобы запустить видео'));return pr;}
 function scPP(){if(!SV)return;if(SSTOP===null&&SV.paused){const g=$('#scag');if(g)g.click();return;}if(SV.paused)SV.play();else SV.pause();}
 function scB5(){if(SV){SV.currentTime=Math.max(0,SV.currentTime-5);scTick();}}
 function scSpeed(){SRATE=SRATE===1?.75:SRATE===.75?.5:1;if(SV)SV.playbackRate=SRATE;const b=$('#scsp');if(b){b.textContent=SRATE+'x';b.classList.toggle('on',SRATE!==1);}const f=SW&&SW.querySelector('[data-f=sp]');if(f)f.textContent=SRATE+'x';}
@@ -3507,9 +3517,9 @@ function kvSheet(sid,ep){const s=scOf(sid);if(!s)return;scCloseSheet();let mode=
   const w=document.createElement('div');w.className='sc-sheetwrap';const g=store.gold||0;
   let drawn=false;const draw=()=>{w.innerHTML=`<div class="sc-sheet kv-sheet${drawn?' noanim':''}"><b>⚔️ Дуэль с другом</b><p class="kv-sub">${esc(s.title)} · ${esc(s.sub||'')}</p>
     <div class="kv-lbl">Эпизод</div><div class="kv-eps">${s.parts.map((p,i)=>`<button data-ep="${i}" class="${i===ep?'on':''}">${i+1}. ${esc(p.t)}</button>`).join('')}</div>
-    <div class="kv-lbl">Режим</div><div class="kv-modes"><button data-m="race" class="${mode==='race'?'on':''}"><span>🏁</span><b>Наперегонки</b><small>Одни и те же 8 вопросов. Больше верных и быстрее — забираешь банк.</small></button>
+    <div class="kv-lbl">Режим</div><div class="kv-modes"><button data-m="race" class="${mode==='race'?'on':''}"><span>🏁</span><b>Наперегонки</b><small>Одни и те же 8 вопросов. Очки: верно — 100 и до 50 за скорость. Больше очков — забираешь банк.</small></button>
       <button data-m="coop" class="${mode==='coop'?'on':''}"><span>🤝</span><b>Вместе</b><small>По очереди, общий счёт. Застрял — «🆘 Помоги», и ответит друг.</small></button></div>
-    ${mode==='race'?`<div class="kv-lbl">Ставка <small>у тебя ${ui('coin')} ${fmt(g)}</small></div><div class="kv-bets">${[0,50,100,200].map(x=>`<button data-b="${x}" class="${x===bet?'on':''}"${x>g?' disabled':''}>${x?`${ui('coin')} ${x}`:'Без ставки'}</button>`).join('')}</div>`:''}
+    ${mode==='race'?`<div class="kv-lbl">Ставка <small>у тебя ${ui('coin')} ${fmt(g)}</small></div><div class="kv-bets">${[0,25,50,100,200].map(x=>`<button data-b="${x}" class="${x===bet?'on':''}"${x>g?' disabled':''}>${x?`${ui('coin')} ${x}`:'Без'}</button>`).join('')}</div>`:''}
     <button class="sc-btn" id="kvGo">Создать и позвать друга →</button><button class="sc-btn ghost" data-close>Отмена</button></div>`;drawn=true;};
   draw();w.onclick=async e=>{const b=e.target.closest('button');if(e.target===w||(b&&b.hasAttribute('data-close'))){w.remove();return;}if(!b)return;sfx('tap');
     if(b.dataset.ep){ep=+b.dataset.ep;draw();return;}if(b.dataset.m){mode=b.dataset.m;if(mode==='coop')bet=0;draw();return;}if(b.dataset.b){bet=+b.dataset.b;draw();return;}
@@ -3535,7 +3545,7 @@ async function kvJoin(code){try{const r=await kvNet({a:'state',code});if(!r.ok){
     kvScreen(`<div class="sc-head"><button class="sc-back" id="kvX">‹</button><div><span class="sc-meta">Тебя зовут на дуэль</span><h1>${esc(s.title)}</h1></div></div>
       <div class="kv-lobby"><div class="kv-pulse">${R.mode==='race'?'🏁':'🤝'}</div><b>${esc(R.A.n)} зовёт ${R.mode==='race'?'наперегонки':'пройти вместе'}</b>
         <p>${esc(s.sub||'')} · эпизод ${R.ep+1} «${esc(s.parts[R.ep].t)}» · ${R.qs.length} вопросов</p>
-        ${R.bet?`<div class="kv-code">Ставка <b>${ui('coin')} ${R.bet}</b> · у тебя ${fmt(g)}</div>`:''}
+        ${R.bet?`<div class="kv-code">Ставка <b>${ui('coin')} ${R.bet}</b> · у тебя ${fmt(g)}</div><p class="kv-rule">Победитель забирает банк ${ui('coin')} ${R.bet*2}. Очки: верно — 100 и до 50 за скорость, сначала решает точность.</p>`:''}
         ${poor?`<p class="kv-poor">Не хватает монет на ставку. Пройди эпизод или поиграй — и возвращайся по ссылке.</p>`:`<button class="sc-btn" id="kvIn">Принять ${R.mode==='race'?'вызов':'приглашение'} →</button>`}</div>`);
     $('#kvX').onclick=()=>{KV=null;renderHome();};
     if($('#kvIn'))$('#kvIn').onclick=async()=>{sfx('tap');$('#kvIn').disabled=true;try{const j=await kvNet({a:'join',code});if(!j.ok){kvErr(j);$('#kvIn').disabled=false;return;}kvApply(j.v);kvPoll();}catch(e){kvErr();}};
@@ -3544,6 +3554,9 @@ function kvPoll(){if(!KV)return;clearTimeout(KV.timer);KV.timer=setTimeout(async
     try{const r=await kvNet({a:'state',code:KV.code});if(r.ok)kvApply(r.v);}catch(e){}kvPoll();},KV.room&&KV.room.st==='go'&&KV.started?900:1300);}
 function kvStop(){if(KV){clearTimeout(KV.timer);clearInterval(KV.cd);}}
 const kvFoe=()=>KV.role==='A'?'B':'A';
+// 11.2: очки наперегонки — верно 100 + до 50 за скорость (полный бонус за мгновенный ответ, ноль после 20 с); ошибка 0.
+// Одна лишняя верная (+100) всегда сильнее любой скорости — сначала точность, потом время.
+const KV_FAST=20000,kvPts=a=>a&&a.ok?100+Math.round(50*Math.max(0,1-a.ms/KV_FAST)):0,kvSum=p=>Object.values((p&&p.ans)||{}).reduce((t,a)=>t+kvPts(a),0);
 function kvApply(R){if(!KV)return;const prev=KV.room;KV.room=R;
   if(R.st==='wait'){if(!document.querySelector('.kv-lobby'))kvLobby();return;}
   if((R.st==='left'||R.st==='closed')&&R[kvFoe()]&&R[kvFoe()].left&&!KV.over){KV.over=true;kvEnd(true);return;}
@@ -3560,7 +3573,7 @@ function kvCountdown(){const R=KV.room,s=scOf(R.sid);let n=3;
 // верх экрана: я и соперник/друг
 function kvTop(){const R=KV.room,me=R[KV.role],fo=R[kvFoe()]||{n:'…',ans:{}},n=R.qs.length;
   if(R.mode==='race'){const sc=p=>Object.values(p.ans||{}).filter(a=>a.ok).length,pr=p=>Object.keys(p.ans||{}).length;
-    return `<div class="kv-top"><div class="kv-pl me"><b>Ты</b><span>${sc(me)} ✓</span><i style="--p:${pr(me)/n*100}%"></i></div><div class="kv-vs">vs</div><div class="kv-pl fo"><b>${esc(fo.n)}</b><span>${sc(fo)} ✓</span><i style="--p:${pr(fo)/n*100}%"></i></div></div>`;}
+    return `<div class="kv-top"><div class="kv-pl me"><b>Ты</b><span>${kvSum(me)} <em>очк.</em> · ${sc(me)} ✓</span><i style="--p:${pr(me)/n*100}%"></i></div><div class="kv-vs">${R.bet?`<small>банк</small>${ui('coin')} ${R.bet*2}`:'vs'}</div><div class="kv-pl fo"><b>${esc(fo.n)}</b><span>${kvSum(fo)} <em>очк.</em> · ${sc(fo)} ✓</span><i style="--p:${pr(fo)/n*100}%"></i></div></div>`;}
   const ok=Object.values(R.co).filter(a=>a.ok).length;
   return `<div class="kv-top coop"><div class="kv-team">🤝 Общий счёт <b>${ok}</b> из ${n}</div><div class="kv-segs">${R.qs.map((q,i)=>`<i class="${R.co[i]?(R.co[i].ok?'ok':'bad'):i===R.turn?'cur':''}"></i>`).join('')}</div></div>`;}
 function kvBars(){const t=document.querySelector('.kv-topw');if(t)t.innerHTML=kvTop();}
@@ -3568,7 +3581,9 @@ function kvQHTML(q,f,lead){const s=scOf(KV.room.sid);
   const ask=q.t==='listen'?'🎧 Что он сказал?':q.t==='gap'?'Вставь слово':'Что это значит?';
   const body=q.t==='listen'?`<button class="kv-hear" id="kvHear">${SI.play} Послушать</button>`:q.t==='gap'?`<b class="kv-qt">${esc(f.en).replace(new RegExp('\\b'+String(f.gap).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i'),'<span class="gap">&nbsp;</span>')}</b><small class="kv-qs">${esc(f.ru)}</small>`:`<b class="kv-qt">${esc(f.en)}</b>`;
   return `<div class="kv-q">${lead||''}<span class="kv-ask">${ask}</span>${body}<div class="kv-o">${q.opts.map(o=>`<button data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="kv-fb" id="kvFb"></div></div>`;}
-function kvBindQ(q,f,onAns){const s=scOf(KV.room.sid);if($('#kvHear')){const h=()=>scClip(s.id,f.id,$('#kvHear'));$('#kvHear').onclick=()=>{sfx('tap');h();};setTimeout(h,250);}
+function kvBindQ(q,f,onAns){const s=scOf(KV.room.sid);if($('#kvHear')){let heard=false;
+    // 11.2: на слух время идёт с конца первого прослушивания — загрузка видео не съедает очки
+    const h=()=>scClip(s.id,f.id,$('#kvHear'),()=>{if(!heard&&KV&&!document.querySelector('.kv-o button[disabled]')){heard=true;KV.qt=Date.now();}});$('#kvHear').onclick=()=>{sfx('tap');h();};setTimeout(h,250);}
   $$('.kv-o button').forEach(b=>b.onclick=()=>{if(b.disabled)return;const r=b.dataset.v===q.right;$$('.kv-o button').forEach(x=>{x.disabled=true;if(x.dataset.v===q.right)x.classList.add('ok');});if(!r)b.classList.add('bad');
     sfx(r?'good':'bad');haptic(r?'ok':'err');if(r)scGot(s,f);$('#kvFb').innerHTML=`<b class="${r?'ok':'bad'}">${r?'Верно':'Мимо'}</b> ${esc(f.en)} — ${esc(f.ru)}`;onAns(r);});}
 // наперегонки: у каждого свой темп
@@ -3588,14 +3603,18 @@ function kvCoopShow(){const R=KV.room,s=scOf(R.sid),k=R.turn;if(k>=R.qs.length)r
 // итог
 function kvEnd(foeLeft){kvStop();const R=KV.room,s=scOf(R.sid),me=R[KV.role],fo=R[kvFoe()]||{n:'друг',ans:{}};store.kvDone=store.kvDone||{};const first=!store.kvDone[KV.code];store.kvDone[KV.code]=1;
   let title,sub,gain=0,win=null;
-  if(R.mode==='race'){const sc=p=>Object.values(p.ans||{}).filter(a=>a.ok).length,tm=p=>Object.values(p.ans||{}).reduce((a,x)=>a+x.ms,0);
-    const a=sc(me),b=sc(fo);win=foeLeft?true:a!==b?a>b:tm(me)===tm(fo)?null:tm(me)<tm(fo);
-    title=foeLeft?`${esc(fo.n)} сдался — победа!`:win===true?'Победа! 🏆':win===false?`${esc(fo.n)} оказался быстрее`:'Ничья';
-    sub=`Ты ${a} из ${R.qs.length}${foeLeft?'':` · ${esc(fo.n)} ${b} из ${R.qs.length}`}`;
+  let tbl='';
+  if(R.mode==='race'){const sc=p=>Object.values(p.ans||{}).filter(a=>a.ok).length;
+    const a=kvSum(me),b=kvSum(fo);win=foeLeft?true:a===b?null:a>b;
+    title=foeLeft?`${esc(fo.n)} сдался — победа!`:win===true?'Победа! 🏆':win===false?(sc(fo)>sc(me)?`${esc(fo.n)} ответил точнее`:`${esc(fo.n)} оказался быстрее`):'Ничья';
+    sub=`Ты ${a} очк. (${sc(me)} из ${R.qs.length} верно)${foeLeft?'':` · ${esc(fo.n)} ${b} очк. (${sc(fo)} верно)`}`;
+    const cell=x=>x?`<td class="${x.ok?'ok':'bad'}">${x.ok?'✓':'✗'}<small>${(x.ms/1000).toFixed(1)} с</small><em>${kvPts(x)}</em></td>`:'<td>—</td>';
+    if(!foeLeft)tbl=`<table class="kv-tbl"><thead><tr><th>#</th><th>Ты</th><th>${esc(fo.n)}</th></tr></thead><tbody>${R.qs.map((q,i)=>`<tr><td>${i+1}</td>${cell((me.ans||{})[i])}${cell((fo.ans||{})[i])}</tr>`).join('')}</tbody>
+      <tfoot><tr><td>Σ</td><td>${a}</td><td>${b}</td></tr></tfoot></table><p class="kv-rule">Верно — 100 очков и до 50 за скорость. Сначала решает точность, потом время.</p>`;
     if(R.bet&&first){gain=win===true?R.bet*2:win===null?R.bet:0;addGold(gain);}}
   else{const ok=Object.values(R.co).filter(a=>a.ok).length;title=ok===R.qs.length?'Идеально вместе! 🤝':'Пройдено вместе';sub=`Общий счёт: ${ok} из ${R.qs.length}`;if(first){gain=ok*5;addGold(gain);}}
   save();scSave();sfx(win===false?'learn':'win');ev('pvp_end',R.sid);
-  kvScreen(`<div class="kv-end"><div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div><b>${title}</b><p>${sub}</p>${gain?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}
+  kvScreen(`<div class="kv-end"><div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div><b>${title}</b><p>${sub}</p>${R.mode==='race'&&R.bet?`<p class="kv-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Ставка ${ui('coin')} ${R.bet} ушла к ${esc(fo.n)}`}</p>`:''}${gain&&!(R.mode==='race'&&R.bet)?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}${tbl}
     <button class="sc-btn" id="kvAgain">⚔️ Реванш</button><button class="sc-btn ghost" id="kvScene">К сцене</button><button class="sc-btn ghost" id="kvDict">📖 Словарь</button></div>`);
   $('#kvAgain').onclick=()=>{sfx('tap');const sid=R.sid,ep=R.ep;KV=null;renderScene(sid);setTimeout(()=>kvSheet(sid,ep),300);};
   $('#kvScene').onclick=()=>{sfx('tap');const sid=R.sid;KV=null;renderScene(sid);};
@@ -3759,7 +3778,9 @@ function renderScQuiz(id,i){
 
     if(video){
       scVideo($('#scvw'),s,p,true);$('#scvw').appendChild($('#scvo'));
-      const run=()=>{$('#scvo').style.display='none';scPlay(f.a-p.a,f.b-p.a,()=>{$('#scvo').style.display='';});};
+      // 11.2: большая ▶ не мелькает перед стартом — видна, только если автозапуск не прошёл или клип закончился
+      const ov=$('#scvo');ov.style.display='none';
+      const run=()=>{ov.style.display='none';const pr=scPlay(f.a-p.a,f.b-p.a,()=>{ov.style.display='';});if(pr&&pr.catch)pr.catch(()=>{ov.style.display='';});};
       $('#scplay').onclick=run;scBindCtrl(run);
       setTimeout(run,250);
     }
@@ -4951,6 +4972,37 @@ function applyFlagsUI(){
   ['kino','games'].forEach(k=>$$(`[data-tab="${k}"],[data-nav="${k}"]`).forEach(el=>el.style.display=flagOf(k)==='hide'?'none':''));
 }
 /* ---- админ-панель: дерево «вкладка → раздел → сцена → эпизод» ---- */
+/* ---- 11.2 админ → «Игрок»: пройти всё, сбросить прогресс (себе и по ID), режим игрока ---- */
+function admPass(s){const P=scP(s.id);P.done=s.parts.map((p,i)=>i);P.w=P.w||{};P.st=P.st||{};P.got=P.got||{};
+  s.parts.forEach((p,i)=>{P.w[i]=1;P.st[i]=3;scAct(p.ph).forEach(f=>{P.m[f.id]=Math.max(P.m[f.id]||0,3);if(!P.got[f.id])P.got[f.id]=Date.now();});});P.boss=3;
+  store.scOwn=store.scOwn||{};store.scOwn[s.id]=1;}
+const ADM_KEEP=['onboarded','langs','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','gav','bg3d','labSub','labSnd','labUi','goal','games','roles','path','kvUid','admPlayer','remind'];
+function admResetMe(){const keep={};ADM_KEEP.forEach(k=>{if(store[k]!==undefined)keep[k]=store[k];});
+  SC={};scSave();M={};saveM();RV={};saveRV();
+  store=normalize(Object.assign(fresh(),keep));store.resetAt=Date.now();save();}
+// сброс по ID: команда лежит на сервере дуэлей (bot/pvp-worker.js), игрок забирает её при запуске
+async function admResetPull(){if(!TG||!TG.initData)return;try{const r=await kvNet({a:'rget'});
+  if(r&&r.ok&&r.v&&r.v.t&&r.v.t>(store.resetAt||0)){admResetMe();store.resetAt=r.v.t;save();toast('Прогресс сброшен администратором');renderHome();}}catch(e){}}
+setTimeout(admResetPull,2500);
+function admPlHTML(){const ch=(id,t,d)=>`<button class="adp-b" id="${id}"><b>${t}</b><small>${d}</small></button>`;
+  return `<p class="lab-note">Для проверки. Всё меняется только у тебя на этом аккаунте (кроме сброса по ID).</p>
+    <div class="adp">
+      ${ch('adpPl',store.admPlayer?'👤 Смотрю как игрок':'👑 Смотрю как админ',store.admPlayer?'Замки и цены — как у всех. Нажми, чтобы снова открыть всё.':'Тебе открыто всё. Нажми, чтобы увидеть замки как у игрока.')}
+      ${ch('adpAll','✅ Пройти всё','Все сцены: эпизоды на 3 ★, финалы, все фразы в словаре')}
+      ${ch('adpGold','🪙 +1000 монет','Для проверки покупок и ставок в дуэли')}
+      ${ch('adpReset','🗑 Сбросить мой прогресс','Как новый игрок: сцены, монеты, серия, словарь, мои слова. Настройки останутся')}
+    </div>
+    <button class="adm-tg" type="button">Пройти одну сцену</button><div class="adm-fold" hidden><div class="adp-sc">${SCENES.map(s=>{const P=scP(s.id);return `<button data-pass="${s.id}">${P.done.length>=s.parts.length?'✓ ':''}${esc(s.title)}<small>${esc(s.sub||s.ep||'')}</small></button>`;}).join('')}</div></div>
+    <button class="adm-tg" type="button">Сбросить игроку по ID</button><div class="adm-fold" hidden><div class="adp-id"><input id="adpId" inputmode="numeric" placeholder="Telegram ID игрока"><button class="sc-btn" id="adpIdGo">Сбросить</button></div>
+      <p class="lab-note">Прогресс обнулится, когда игрок в следующий раз откроет приложение. Работает через сервер дуэлей (bot/pvp-worker.js) — его нужно поставить, и в нём должен быть BOT_TOKEN.</p></div>`;}
+function admPlBind(){const re=()=>{const y=document.querySelector('.admscr')?window.scrollY:0;renderAdmin();window.scrollTo(0,y);};
+  $('#adpPl').onclick=()=>{sfx('tap');store.admPlayer=!store.admPlayer;save();toast(store.admPlayer?'Теперь всё как у игрока':'Тебе снова открыто всё');re();};
+  $('#adpAll').onclick=()=>tgConfirm('Отметить все сцены пройденными на 3 звезды?',()=>{SCENES.forEach(admPass);scSave();save();sfx('win');haptic('ok');toast('Готово: всё пройдено');re();});
+  $('#adpGold').onclick=()=>{store.gold=(store.gold||0)+1000;save();sfx('coin');toast('+1000 монет · всего '+fmt(store.gold));};
+  $('#adpReset').onclick=()=>tgConfirm('Сбросить весь твой прогресс? Это не отменить.',()=>{admResetMe();sfx('tap');haptic('warn');toast('Прогресс сброшен');re();});
+  $$('[data-pass]').forEach(b=>b.onclick=()=>{const s=scOf(b.dataset.pass);admPass(s);scSave();save();sfx('good');toast('Пройдено: '+s.title);if(!/^✓/.test(b.firstChild.textContent))b.firstChild.textContent='✓ '+b.firstChild.textContent;});
+  $('#adpIdGo').onclick=async()=>{const id=String($('#adpId').value||'').replace(/\D/g,'');if(!id){toast('Впиши Telegram ID');return;}
+    tgConfirm(`Сбросить весь прогресс игроку ${id}?`,async()=>{try{const r=await kvNet({a:'rset',target:'tg'+id});toast(r&&r.ok?`Готово: сбросится у ${id} при следующем запуске`:(r&&r.msg)||'Не получилось');}catch(e){toast('Сервер дуэлей не отвечает — поставь bot/pvp-worker.js');}});};}
 function renderAdmin(){
   screen='admin';backBtn(true);
   const raw=FLAG_RAW||{},F=Object.fromEntries(FLAG_SECTIONS.map(x=>[x[0],x]));
@@ -4967,6 +5019,7 @@ function renderAdmin(){
   const grp=(title,html)=>`<div class="adm-grp"><h3>${title}</h3>${html}</div>`;
   mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Админ-панель</h1></div>
     <p class="lead" style="margin:4px 0 12px">«Скрыт» — у игроков этого нет вообще: ни названия, ни иконки, ни кнопки в боте. Закрой любой раздел, сцену или отдельный эпизод и выбери, что увидят игроки: «${FLAG_TXT.maint}» или «${FLAG_TXT.dev}». Закрытая вкладка закрывает всё внутри. «Тестеры» — ID тех, кому открыто всегда (ID даёт команда /myid). Тебе открыто всё.${FLAG_ME?` Твой ID: <b>${FLAG_ME}</b>.`:''}</p>
+    ${grp('Игрок',admPlHTML())}
     ${grp('Проверка установки',`<p class="lab-note">Проверяет, что в репозиториях лежит всё нужное: свежий код, маскот, видео и обложки каждой сцены.</p><button class="sc-btn" id="dkGo">Проверить установку</button><div id="dkBox" class="dk"></div>`)}
     ${grp('Оформление — лаборатория',`<p class="lab-note">Видишь только ты, на этом устройстве. Пощёлкай, выбери лучшее и напиши мне — сделаю по умолчанию для всех.</p>
       <div class="lab"><b>Субтитры</b><div class="lab-prev" data-ss="${labSub()}"><div class="sc-subs"><div class="sline"><span class="en">I'm in it for the long run, you know?</span></div><div class="sline s2"><span class="tr">Я тут надолго, понимаете?</span></div></div></div>
@@ -4981,6 +5034,7 @@ function renderAdmin(){
     <div class="cta"><button class="btn" id="admSave">Сохранить</button></div>`,'admscr');
   $('#bBtn').onclick=()=>{sfx('tap');renderTab('profile');};
   if($('#dkGo'))$('#dkGo').onclick=()=>{sfx('tap');deployCheck($('#dkBox'));};
+  admPlBind();
   $$('[data-gv]').forEach(b=>b.onclick=()=>{const v=b.dataset.gv;sfx('tap');
     if(v==='tog'){store.gav=store.gav===false;save();b.classList.toggle('on',store.gav!==false);b.textContent=store.gav!==false?'Включён':'Выключен';return;}
     if(!gavOn()){toast('Сначала включи Гаврика (и анимации в настройках)');return;}
