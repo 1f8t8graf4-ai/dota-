@@ -1,5 +1,5 @@
 # Выгрузка всех текстов приложения в Excel-листы для проверки нейросетями.
-# Запуск из корня dota-:  python3 tools/export_sheets.py 12.8   → папка переводы-12.8/ (Excel по фильмам + всё сразу + текстом/). Промт для проверки — переводы-<версия>/00 ПРОМТ — как проверять.md (пишется руками, копировать из прошлой версии).
+# Запуск из корня dota-:  python3 tools/export_sheets.py 12.8 [id сцены …]   → папка переводы-12.8/ (Excel по фильмам + всё сразу + текстом/). Промт для проверки — переводы-<версия>/00 ПРОМТ — как проверять.md (пишется руками, копировать из прошлой версии).
 import json,sys,os,re
 from openpyxl import Workbook
 from openpyxl.styles import Font,Alignment,PatternFill
@@ -175,6 +175,10 @@ def md(path,L,title):
             o.append('')
     open(path,'w').write('\n'.join(o))
 
+ONLY=sys.argv[2:]   # 12.9: только новые сцены — python3 tools/export_sheets.py 12.9 sopranos-ralph → переводы-12.9/ с одним файлом
+if ONLY:
+    L=[s for s in S if s['id'] in ONLY];os.makedirs(OUT,exist_ok=True);name='Новое '+V
+    print(name,book(f'{OUT}/{name}.xlsx',L,False));md(f'{OUT}/{name}.md',L,'Новое в '+V);sys.exit()
 os.makedirs(f'{OUT}/текстом',exist_ok=True)
 for old in os.listdir(OUT):
     if old.endswith('.xlsx'):os.remove(f'{OUT}/{old}')

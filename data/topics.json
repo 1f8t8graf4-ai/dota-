@@ -994,6 +994,89 @@
 "clavicular-impaulsive|Make sure your lawyers review it.": [
 "деньги",
 "работа"
+],
+"sopranos-ralph|Ton, can I come in?": [
+"общение",
+"быт"
+],
+"sopranos-ralph|It's too soon to tell.": [
+"общение",
+"здоровье"
+],
+"sopranos-ralph|All right. Well, sit down. Come on.": [
+"общение",
+"эмоции"
+],
+"sopranos-ralph|You want something to eat?": [
+"быт",
+"кафе и магазин"
+],
+"sopranos-ralph|I just came by to give you...": [
+"общение",
+"телефон и планы"
+],
+"sopranos-ralph|It could have waited.": [
+"общение",
+"работа"
+],
+"sopranos-ralph|Least I'm good for something.": [
+"эмоции"
+],
+"sopranos-ralph|How could I let something like this happen?": [
+"эмоции"
+],
+"sopranos-ralph|It could happen to anybody, Ralph.": [
+"эмоции",
+"общение"
+],
+"sopranos-ralph|You know where I was on his seventh birthday?": [
+"общение",
+"эмоции"
+],
+"sopranos-ralph|Then I thought I did.": [
+"общение",
+"быт"
+],
+"sopranos-ralph|Well, you cut back on that shit, right?": [
+"здоровье",
+"ссоры"
+],
+"sopranos-ralph|I'm a different man.": [
+"эмоции"
+],
+"sopranos-ralph|He's covered on her husband's insurance, as far as that goes.": [
+"здоровье",
+"деньги"
+],
+"sopranos-ralph|You know, I'll take care of the rest, whatever it takes.": [
+"деньги",
+"эмоции"
+],
+"sopranos-ralph|I don't care if it breaks me.": [
+"деньги",
+"эмоции"
+],
+"sopranos-ralph|He's gonna get the best care there is.": [
+"здоровье"
+],
+"sopranos-ralph|Look, I don't want you to hear it through the grapevine. Especially now.": [
+"общение",
+"свидание"
+],
+"sopranos-ralph|I'm seeing that girl you used to date.": [
+"свидание"
+],
+"sopranos-ralph|I gotta go to the hospital.": [
+"здоровье",
+"телефон и планы"
+],
+"sopranos-ralph|Hang in there.": [
+"эмоции",
+"общение"
+],
+"sopranos-ralph|Well, maybe you should go see Pie. Take your mind off.": [
+"эмоции",
+"телефон и планы"
 ]
 }
 }
