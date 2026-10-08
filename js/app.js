@@ -246,7 +246,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang'];
+const LOCAL_ONLY=['snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab'];
 function storeMerge(c){storeRelay(c);const L=store,cNew=(c.sv||0)>SV0,o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -390,7 +390,7 @@ function underline(name,focus){return focus&&name.includes(focus)&&focus!==name?
 // 12.1: при любом переходе — убрать всё, что висит поверх экрана (карта словаря с видео, мини-плеер, поповеры слов),
 // и остановить видео эпизода, если уходим со сцены. Раньше карта/видео могли остаться висеть над новым экраном.
 function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
-  document.querySelectorAll('.dxo,.rwo').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
+  document.querySelectorAll('.dxo,.rwo,.bgvw').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
   document.body.classList.remove('dx-open');try{kwHide(0);}catch(e){}try{musDuck(false);}catch(e){}
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
   if(!scn)try{if(SV)scStop();}catch(e){}}
@@ -1750,7 +1750,6 @@ function profileTabHTML(){
       <span class="pbar"><i style="--w:${rk.pct}%"></i></span><small>${rk.nx?`До ранга ${rk.nx.n}: ${rk.n} из ${rk.nx.at} выученных слов`:'Высший ранг'}${rk.r.m>1?`. Билеты x${rk.r.m}`:''}</small></section>
     <div class="stats card anim">${cell(t.learned,'выучено слов')}${cell(acc===null?'—':acc+'%','точность')}${cell(store.streak,'дней подряд')}${cell(fmt(store.gold),'билетов')}${cell(store.answered,'ответов')}${cell(s.bestStreak,'лучшая серия')}</div>
     ${weekHTML()}
-    ${rwProfileHTML()}
     <h2 class="sec2 anim">Достижения <span>${got} из ${ACH.length}</span></h2>
     <div class="achs anim">${ACH.map(a=>`<button class="ach${store.ach[a.id]?' got':''}" data-a="${a.id}">${iconHTML({img:a.ic,svg:'trophy'})}<span>${esc(a.n)}</span></button>`).join('')}</div>
     <div class="links card anim">
@@ -1765,7 +1764,6 @@ function profileTabHTML(){
 }
 function bindProfileAdmin(){const b=$('#admBtn');if(b)b.onclick=()=>{sfx('tap');renderAdmin();};}
 function bindProfile(){bindProfileAdmin();
-  $$('[data-rw]').forEach(b=>b.onclick=()=>{sfx('tap');rwOpen(b.dataset.rw);});$$('[data-seg]').forEach(b=>b.onclick=()=>{sfx('tap');segOpen(b.dataset.seg);});$$('[data-bgp]').forEach(b=>b.onclick=()=>{const k=b.dataset.bgp;store.appBg=store.appBg===k?'':k;save();sfx('good');haptic('sel');toast(store.appBg?'🖼 Фон поставлен':'Фон убран');appBgApply();$$('[data-bgp]').forEach(x=>x.classList.toggle('on',x.dataset.bgp===store.appBg));});
   bindHead();
   $('#dict').onclick=()=>{sfx('tap');renderDict('going');};
   if(dueList().length)$('#rev2').onclick=()=>{haptic('medium');startSession('review');};
@@ -2323,7 +2321,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='12.9';
+const APP_V='13.0';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2337,6 +2335,7 @@ async function deployCheck(box){
     const miss=[];for(let i=0;i<s.parts.length;i++){const nn=String(i+1).padStart(2,'0'),x=await head(assetUrl(scEpKey(s,i,'mp4')));if(!x.ok)miss.push(nn+'.mp4');const k=await head(assetUrl(scKey(s,nn+'-k.jpg')));if(!k.ok)miss.push(nn+'-k.jpg (кадр-награда)');}
     const cv=await head(assetUrl(scKey(s,'cover.jpg')));if(!cv.ok)miss.push('cover.jpg');
     const m=(s.music||[])[0];if(m){const x=await head(assetUrl(scKey(s,m.f)));if(!x.ok)miss.push(m.f);}
+    for(const [on,L,t] of [[s.bgv,['bg.mp4','bgp.jpg'],'фон сцены'],[s.filmbg,['film-bg.mp4','film-bgp.jpg'],'главный фон']])if(on)for(const f of L){const x=await head(assetUrl(scKey(s,f)));if(!x.ok)miss.push(`${f} (${t})`);}   // 13.0: фоны-награды
     add(!miss.length,`Сцена «${s.title}» · ${s.sub||s.id}`,miss.length?`Нет в репо scenes, папка ${s.id}/: ${miss.join(', ')}`:'');}
 }
 /* ================= 7.9.3: слова вместо зубрёжки фраз (пилот: Волк, эпизод 1) ================= */
@@ -2970,26 +2969,8 @@ const scStartAt=(s,p)=>{if(!s.skipIntro)return 0;const r=s.subs.filter(r=>r[0]>=
 function scAmb(s){let a=document.getElementById('amb');if(!a){a=document.createElement('div');a.id='amb';a.setAttribute('aria-hidden','true');a.innerHTML='<i></i><b></b>';document.body.prepend(a);}
   // 9.2.1: настоящее фото фоном — bg.jpg из папки сцены (если залит), иначе обложка сцены
   const u=scCover(s,'cover.jpg'),bg=assetUrl(scKey(s,'bg.jpg'));if(a.dataset.u!==u){a.dataset.u=u;a.firstChild.style.backgroundImage=`url('${bg}'),url('${u}')`;}
-  scAmbVid(a,s);}
-// 10.0: видеофон — bg.mp4 из папки сцены: без звука, по кругу, плавно поверх фото. Нет файла / экономия трафика /
-// «меньше движения» / включён 3D-фон — остаётся фото (bg.jpg, иначе обложка).
-const AMB_NOV={};
-// 12.7: общий видеофон раздела — для сцен, у которых нет ни своего фона, ни фона «фильма» (у интервью — студия)
-const SC_KIND_BG={interview:'scenes/_interview/bg.mp4'};
-function scAmbVid(a,s){let v=a.querySelector('video');
-  // 11.1: видеофон подхватывается сам — свой bg.mp4 сцены, иначе bg.mp4 соседней сцены того же фильма, иначе фото
-  const src=[s].filter(x=>x.bgv).map(x=>assetUrl(scKey(x,'bg.mp4'))).concat(SCENES.filter(x=>x.filmbg&&(x.show||x.title)===(s.show||s.title)).map(x=>assetUrl(scKey(x,'film-bg.mp4')))).concat(SC_KIND_BG[s.kind]?[assetUrl(SC_KIND_BG[s.kind])]:[]).filter(u=>!AMB_BAD[u]);   // 12.5.1: свой bg.mp4, иначе главный фон фильма film-bg.mp4; 12.7: иначе общий фон раздела (интервью)
-  const no=!src.length||document.body.classList.contains('has3d')||(navigator.connection&&navigator.connection.saveData)||matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(no){if(v){v.pause();v.classList.remove('on');v.dataset.sid=v.dataset.src='';v.removeAttribute('src');}return;}
-  if(!v){v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.preload='auto';v.tabIndex=-1;
-    ['muted','playsinline','webkit-playsinline','autoplay','loop','disablepictureinpicture','disableremoteplayback'].forEach(k=>v.setAttribute(k,''));
-    v.addEventListener('playing',()=>v.classList.add('on'));bgLoop(v);   // 12.4: бесшовная петля
-    // файла нет — пробуем следующий источник
-    v.addEventListener('error',()=>{const u=v.dataset.src;if(u)AMB_BAD[u]=1;v.classList.remove('on');const L=(v._src||[]).filter(x=>!AMB_BAD[x]);
-      if(L.length){v.dataset.src=L[0];v.src=L[0];}else{v.dataset.src='';v.removeAttribute('src');try{v.load();}catch(e){}}});
-    a.insertBefore(v,a.querySelector('b'));}
-  if(v.dataset.sid!==s.id){v.dataset.sid=s.id;v._src=src;if(v.dataset.src!==src[0]){v.classList.remove('on');v.dataset.src=src[0];v.src=src[0];}}   // тот же файл — не перезагружаем и не гасим
-  ambPause(false);}
+  }   // 13.0: видеофона в сценах нет — фоны-награды смотрят в «Коллекции» на Главной
+// фоны-видео, которые не загрузились (404) — больше не просим
 const AMB_BAD={};
 function ambPause(on){const v=document.querySelector('#amb video');if(!v||!v.dataset.sid)return;
   if(on){v.pause();return;}if(v.paused&&document.body.dataset.scn){const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
@@ -4230,19 +4211,19 @@ const showScenes=h=>SCENES.filter(x=>x.kind!=='clip'&&showOf(x)===h&&flagOf('sce
 const showDone=h=>{const L=showScenes(h);return L.length>0&&L.every(x=>segDone(x));};
 const showHas=h=>!!(store.showRw&&store.showRw[h]);
 function showGive(s){const h=showOf(s);if(!showDone(h)||showHas(h))return false;store.showRw=store.showRw||{};store.showRw[h]={t:Date.now()};save();return true;}
-function bgInfo(k){if(!k)return null;
-  if(k.startsWith('e:')){const [sid,ii]=k.slice(2).split('|'),s=scOf(sid),i=+ii;if(!s||!s.parts[i])return null;const nn=String(i+1).padStart(2,'0');
-    return {k,got:rwHas(s,i),img:[assetUrl(scKey(s,nn+'-bg.jpg')),rwKadr(s,i)],vid:[],name:s.parts[i].t,sub:dictFilm(s)+' · эпизод '+(i+1)};}
-  if(k.startsWith('h:')){const h=k.slice(2),L=showScenes(h);if(!L.length)return null;
-    return {k,got:showHas(h),img:[assetUrl(scKey(L[0],'bg.jpg')),scCover(L[0],'cover.jpg')],vid:[...L.filter(x=>x.filmbg).map(x=>assetUrl(scKey(x,'film-bg.mp4'))),...L.filter(x=>x.bgv).map(x=>assetUrl(scKey(x,'bg.mp4')))],name:h,sub:'Главный фон · весь фильм',live:L.some(x=>x.bgv||x.filmbg)};}
-  const s=scOf(k);if(s&&s.parts)return {k,got:segHas(s),img:segBgUrls(s),vid:s.bgv?[assetUrl(scKey(s,'bg.mp4'))]:[],name:s.sub||s.title,sub:dictFilm(s),live:!!s.bgv};   // 12.5: фон сцены — за всю сцену
-  return null;}
-function bgRowHTML(k,label){const b=bgInfo(k);if(!b)return '';const on=store.appBg===k;
-  return `<div class="seg-bg" data-bgrow="${esc(k)}"><span class="seg-bgi${b.live?' live':''}" style="background-image:${b.img.map(u=>`url('${u}')`).join(',')}">${b.live?'<i>▶ живой</i>':''}</span><span class="seg-bgt"><em>${label}</em><b>${on?'Стоит фоном главной':'Поставь фоном главной'}</b></span>
-    <button class="seg-set${on?' on':''}" data-bg="${esc(k)}">${on?'Убрать':'Поставить'}</button></div>`;}
-function bgBind(box){box.querySelectorAll('.seg-set[data-bg]').forEach(b=>b.onclick=()=>{const k=b.dataset.bg;store.appBg=store.appBg===k?'':k;save();sfx(store.appBg?'good':'tap');haptic('sel');
-  toast(store.appBg?'🖼 Фон поставлен — увидишь на главной':'Фон убран');
-  box.querySelectorAll('.seg-set[data-bg]').forEach(x=>{const on=store.appBg===x.dataset.bg;x.classList.toggle('on',on);x.textContent=on?'Убрать':'Поставить';const t=x.closest('.seg-bg');if(t){const bb=t.querySelector('.seg-bgt b');if(bb)bb.textContent=on?'Стоит фоном главной':'Поставь фоном главной';}});appBgApply();});}
+function bgInfo(k){if(!k)return null;const adm=ADM_OPEN();   // 13.0: админ видит все фоны
+  if(k.startsWith('h:')){const h=k.slice(2),L=showScenes(h);if(!L.length)return null;const F=L.filter(x=>x.filmbg),d=L.filter(segDone).length;
+    return {k,film:true,got:showHas(h)||adm,img:[...F.map(x=>assetUrl(scKey(x,'film-bgp.jpg'))),assetUrl(scKey(L[0],'poster.jpg')),scCover(L[0],'cover.jpg')],vid:F.map(x=>assetUrl(scKey(x,'film-bg.mp4'))),
+      name:h,sub:'Главный фон · '+(L[0].kind==='interview'?'всё интервью':L[0].kind==='series'?'весь сериал':'весь фильм'),live:F.length>0,
+      how:L.length>1?`Пройди все сцены «${h}» — пройдено ${d} из ${L.length}`:`Пройди сцену «${L[0].sub||L[0].title}» целиком`};}
+  const s=scOf(k);if(!s||!s.parts||s.kind==='clip')return null;
+  return {k,got:segHas(s)||adm,img:[...(s.bgv?[assetUrl(scKey(s,'bgp.jpg'))]:[]),assetUrl(scKey(s,'bg.jpg')),scCover(s,'cover.jpg')],vid:s.bgv?[assetUrl(scKey(s,'bg.mp4'))]:[],
+    name:s.sub||s.title,sub:'Фон сцены · '+dictFilm(s),live:!!s.bgv,how:`Пройди все эпизоды сцены «${s.sub||s.title}»`};}
+// 13.0: в награде фон только анонсируется — смотреть его в «Коллекции»
+function bgNewHTML(k,label){const b=bgInfo(k);if(!b)return '';
+  return `<div class="seg-bg bg-new"><span class="seg-bgi${b.live?' live':''}" style="background-image:${b.img.map(u=>`url('${u}')`).join(',')}">${b.live?'<i>▶</i>':''}</span><span class="seg-bgt"><em>${label}</em><b>${esc(b.name)}</b><small>Лежит в «Коллекции» на Главной</small></span>
+    <button class="seg-set" data-bgc="${esc(k)}">Смотреть</button></div>`;}
+function bgBind(box){box.querySelectorAll('[data-bgc]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');renderCollection('bg',b.dataset.bgc);});}
 /* ===== 12.3: награда за весь сегмент (сцену): карточка сегмента (золотая — если во всех эпизодах 3★) + фон сцены ===== */
 const segDone=s=>!!s&&s.parts.every((_,j)=>scP(s.id).done.includes(j));
 const segGold=s=>!!s&&s.parts.every((_,j)=>((scP(s.id).st||{})[j]||0)>=3);
@@ -4261,59 +4242,100 @@ function segCardHTML(s){const o=(store.seg||{})[s.id],g=!!(o&&o.gold),S=segStats
     <div class="rw-b"><span class="rw-pr">${g?'🏆':'🎬'}</span><em>Карточка сегмента</em><b>${esc(s.sub||s.title)}</b><small>${esc(dictFilm(s))}</small>
       <div class="seg-st"><span><b>${S.ph}</b>фраз</span><span><b>${S.w}</b>слов</span><span><b>${S.ep}</b>${plural(S.ep,['эпизод','эпизода','эпизодов'])}</span><span><b>${S.st}/${S.stMax}</b>★</span></div>
       ${o?`<small class="rw-dt">получена ${new Date(o.t).toLocaleDateString('ru-RU')}</small>`:''}</div></div></div>`;}
-function segBgHTML(s){const [b,c]=segBgUrls(s),on=store.appBg===s.id;
-  return `<div class="seg-bg"><span class="seg-bgi" style="background-image:url('${b}'),url('${c}')"></span><span class="seg-bgt"><em>🖼 Фон сцены</em><b>${on?'Стоит фоном главной':'Поставь фоном главной'}</b></span>
-    <button class="seg-set${on?' on':''}" data-bg="${s.id}">${on?'Убрать':'Поставить'}</button></div>`;}
 function segHTML(s,kind){const g=segGold(s),S=segStats(s);
   return `<section class="rw sgw${kind?' fresh':''}"><div class="rw-h"><b>${kind==='gold'?'★ Золотая карточка':'🏆 Сегмент завершён'}</b><i>${kind?'новое':'в коллекции'}</i></div>
     <p class="seg-t">🎬 ${esc(dictFilm(s))} — ${esc(s.sub||s.title)}</p><p class="seg-y">Ты получил:</p>
     ${segCardHTML(s)}<small class="rw-hint">Потяни карточку — вертится. Нажми — перевернётся.</small>
-    ${bgRowHTML(s.id,'🖼 Фон сцены')}
+    ${bgNewHTML(s.id,'🎞 Фон сцены')}
     <p class="seg-n"><b>${S.ph}</b> ${plural(S.ph,['фраза изучена','фразы изучены','фраз изучено'])}${g?'':' · пройди все эпизоды на 3★ — карточка станет золотой'}</p></section>`;}
 function segBind(box,s){const c=box.querySelector('.seg-card');if(c){rwTilt(c);if(box.querySelector('.sgw.fresh')){sfx('reward');haptic('ok');c.querySelector('.rw-in').animate([{transform:'rotateY(-200deg) scale(.5)',opacity:0},{transform:'rotateY(12deg) scale(1.04)',opacity:1,offset:.7},{transform:'none',opacity:1}],{duration:1200,delay:300,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'});
     const b=box.querySelector('.seg-bg');if(b)b.animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:500,delay:1300,easing:'ease-out',fill:'backwards'});}}
   bgBind(box);}
-// 12.3: фон сцены — фоном главной и вкладок (не в самих сценах: там свой фон)
-function appBgApply(){const b=bgInfo(store.appBg);let a=document.getElementById('appbg');
-  if(!b||!b.got){document.body.classList.remove('appbg');if(a){const v=a.querySelector('video');if(v)v.pause();}return;}
+// 13.0: фон-награда, поставленный «на главную», виден только на Главной (вкладка learn); в сценах и на других вкладках его нет
+function appBgApply(){const b=bgInfo(store.appBg),home=screen==='home'&&store.tab==='learn'&&!document.body.dataset.scn;let a=document.getElementById('appbg');
+  if(!b||!b.got||!home){document.body.classList.remove('appbg');if(a){const v=a.querySelector('video');if(v)v.pause();}return;}
   if(!a){a=document.createElement('div');a.id='appbg';a.setAttribute('aria-hidden','true');document.body.prepend(a);}
   if(a.dataset.k!==b.k){a.dataset.k=b.k;a.style.backgroundImage=b.img.map(u=>`url('${u}')`).join(',');const o=a.querySelector('video');if(o){o.pause();o.remove();}
     const lite=(navigator.connection&&navigator.connection.saveData)||matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(b.vid.length&&!lite){const L=b.vid.filter(u=>!AMB_BAD[u]);if(L.length){const v=document.createElement('video');['muted','playsinline','webkit-playsinline','autoplay','disablepictureinpicture'].forEach(x=>v.setAttribute(x,''));v.muted=true;v.playsInline=true;v.preload='auto';
-      v.addEventListener('playing',()=>v.classList.add('on'));let n=0;v.addEventListener('error',()=>{AMB_BAD[L[n]]=1;n++;if(L[n])v.src=L[n];else v.remove();});v.src=L[0];bgLoop(v);a.prepend(v);}}}
-  document.body.classList.add('appbg');const v=a.querySelector('video');if(v){if(document.body.dataset.scn)v.pause();else if(v.paused){const p=v.play();if(p&&p.catch)p.catch(()=>{});}}}
-// 12.4: бесшовная петля видеофона — у конца мягко гаснет и начинается заново (без рывка «склейки»)
-function bgLoop(v){v.loop=false;v.addEventListener('timeupdate',()=>{const d=v.duration;if(!d||!isFinite(d))return;const t=v.currentTime;v.style.opacity=t>d-0.7?Math.max(0,(d-t)/0.7):t<0.7?Math.min(1,t/0.7):'';});
-  v.addEventListener('ended',()=>{try{v.currentTime=0;}catch(e){}const p=v.play();if(p&&p.catch)p.catch(()=>{});});}
+    if(b.vid.length&&!lite){const v=bgVid(b.vid);if(v)a.prepend(v);}}
+  document.body.classList.add('appbg');const v=a.querySelector('video');if(v&&v.paused){const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
+// видео фона: без звука, по кругу (файлы — бесшовные петли из tools/loop_bg.py); нет файла — следующий источник, иначе остаётся картинка
+function bgVid(L){L=L.filter(u=>!AMB_BAD[u]);if(!L.length)return null;const v=document.createElement('video');
+  ['muted','playsinline','webkit-playsinline','autoplay','loop','disablepictureinpicture','disableremoteplayback'].forEach(x=>v.setAttribute(x,''));
+  v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.preload='auto';v.tabIndex=-1;v.addEventListener('playing',()=>v.classList.add('on'));
+  let n=0;v.addEventListener('error',()=>{AMB_BAD[L[n]]=1;n++;if(L[n])v.src=L[n];else v.remove();});v.src=L[0];return v;}
 // итог эпизода: если этим эпизодом закончен сегмент — большая награда, иначе — кадр и факт
 function rwEndHTML(s,i,rwNew){const g=segGive(s),h=showGive(s);return rwHTML(s,i,rwNew)+(g?segHTML(s,g):'')+(h?showHTML(s):'');}
 function showHTML(s){const h=showOf(s);return `<section class="rw sgw shw fresh"><div class="rw-h"><b>🏆 ${esc(h)} — пройден целиком</b><i>главная награда</i></div>
-  <p class="seg-y">Все сцены фильма пройдены. Тебе — главный живой фон: кусок фильма по кругу, на главной.</p>${bgRowHTML('h:'+h,'🎬 Главный фон')}</section>`;}
+  <p class="seg-y">Все сцены пройдены. Тебе — главный фон «${esc(h)}»: смотри его в «Коллекции» на Главной.</p>${bgNewHTML('h:'+h,'🏆 Главный фон')}</section>`;}
 function rwEndBind(box,s,i){rwBind(box,s,i);segBind(box,s);bgBind(box);}
-// коллекция в профиле: значки и кадры; кадр открывается и вертится
+// кадры эпизодов (смотрят в «Коллекции» на Главной): кадр открывается и вертится
 function rwAll(){const L=[];SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)!=='hide').forEach(s=>s.parts.forEach((p,i)=>L.push({s,i,got:rwHas(s,i)})));return L;}
-function rwProfileHTML(){const L=rwAll(),g=L.filter(x=>x.got),SG=SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)!=='hide'),sg=SG.filter(segHas);
-  return `<h2 class="sec2 anim">Карточки сегментов <span>${sg.length} из ${SG.length}</span></h2>
-    <div class="rwc anim"><div class="rwc-k seg-k">${[...SG.filter(segHas),...SG.filter(x=>!segHas(x))].map(s=>segHas(s)?`<button class="rwc-kd seg-kd${(store.seg[s.id]||{}).gold?' gold':''}" data-seg="${s.id}" style="background-image:url('${assetUrl(scKey(s,'poster.jpg'))}'),url('${scCover(s,'cover.jpg')}')"><span>${(store.seg[s.id]||{}).gold?'★':'🎬'}</span></button>`:`<span class="rwc-kd seg-lock" title="${esc(dictFilm(s))} — ${esc(s.sub||'')}">🔒</span>`).join('')}</div>
-      <small class="rwc-n">${sg.length?'Нажми на карточку — откроется. Там же фон сцены: его можно поставить фоном приложения.':'Пройди все эпизоды одной сцены — получишь карточку сегмента и фон сцены.'}</small></div>
-    ${bgGalleryHTML()}
-    <h2 class="sec2 anim">Кадры эпизодов <span>${g.length} из ${L.length}</span></h2>
-    <div class="rwc anim">${g.length?`<div class="rwc-k">${g.map(x=>`<button class="rwc-kd" data-rw="${rwKey(x.s,x.i)}" style="background-image:url('${rwKadr(x.s,x.i)}'),url('${assetUrl(scEpKey(x.s,x.i,'jpg'))}')"></button>`).join('')}</div>`:''}
-      <div class="rwc-m" hidden>${L.map(x=>`<span class="rwc-md${x.got?' on':''}" title="${x.got?esc(rwPrize(x.s,x.i)[1]):'Пройди эпизод «'+esc(x.s.parts[x.i].t)+'»'}">${x.got?rwPrize(x.s,x.i)[0]:'?'}</span>`).join('')}</div>
-      <small class="rwc-n">${g.length?'Кадр — за каждый пройденный эпизод. Нажми — откроется с интересным фактом.':'Пройди проверку любого эпизода — получишь кадр и интересный факт.'}</small></div>`;}
 function rwOpen(k){const [sid,ii]=k.split('|'),s=scOf(sid),i=+ii;if(!s)return;const o=document.createElement('div');o.className='rwo';
   o.innerHTML=`<div class="rwo-dim"></div><div class="rwo-box">${rwCardHTML(s,i)}<small class="rw-hint">Потяни — вертится, нажми — перевернётся</small>${epFact(s,i)?`<div class="rwo-fact"><em>✦ Интересный факт</em><p>${esc(epFact(s,i))}</p></div>`:''}<button class="sc-btn ghost" id="rwoX">Закрыть</button></div>`;
   document.body.appendChild(o);rwTilt(o.querySelector('.rw-card'));o.querySelector('.rw-in').animate([{transform:'rotateY(-90deg) scale(.7)',opacity:0},{transform:'none',opacity:1}],{duration:500,easing:'cubic-bezier(.2,1,.3,1)'});
   const close=()=>{o.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>o.remove();};o.querySelector('.rwo-dim').onclick=close;o.querySelector('#rwoX').onclick=()=>{sfx('tap');close();};}
-// 12.4: фоны в профиле — полученные (эпизоды и главные фоны фильмов); нажал — стоит фоном главной, ещё раз — убран
-function bgGalleryHTML(){const L=[];SCENES.filter(x=>x.kind!=='clip'&&flagOf('scene-'+x.id)!=='hide').forEach(x=>{const h='h:'+showOf(x);if(!L.includes(h))L.push(h);L.push(x.id);});
-  const B=L.map(bgInfo).filter(Boolean),G=B.filter(b=>b.got).sort((a,b)=>(b.live?1:0)-(a.live?1:0)),all=B.length;
-  return `<h2 class="sec2 anim">Фоны <span>${G.length} из ${all}</span></h2><div class="rwc anim">${G.length?`<div class="rwc-k bgp">${G.map(b=>`<button class="bgp-i${b.live?' live':''}${store.appBg===b.k?' on':''}" data-bgp="${esc(b.k)}" style="background-image:${b.img.map(u=>`url('${u}')`).join(',')}"><span>${b.live?'▶ ':''}${esc(b.name)}</span></button>`).join('')}</div>`:''}
-    <small class="rwc-n">${G.length?'Нажми — фон встанет на главную. Сцена даёт свой фон, весь фильм — главный.':'Пройди сцену целиком — получишь её фон. Весь фильм — главный фон.'}</small></div>`;}
 function segOpen(sid){const s=scOf(sid);if(!s||!segHas(s))return;const o=document.createElement('div');o.className='rwo';
   o.innerHTML=`<div class="rwo-dim"></div><div class="rwo-box">${segCardHTML(s)}<small class="rw-hint">Потяни — вертится, нажми — перевернётся</small><button class="sc-btn ghost" id="rwoX">Закрыть</button></div>`;
   document.body.appendChild(o);segBind(o,s);o.querySelector('.rw-in').animate([{transform:'rotateY(-90deg) scale(.7)',opacity:0},{transform:'none',opacity:1}],{duration:500,easing:'cubic-bezier(.2,1,.3,1)'});
   const close=()=>{o.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>o.remove();};o.querySelector('.rwo-dim').onclick=close;o.querySelector('#rwoX').onclick=()=>{sfx('tap');close();};}
+/* ===== 13.0: «Коллекция» — все награды в одном месте, вход с Главной (не путать со словарём): фоны, карточки сцен, кадры эпизодов.
+   Будущие награды — новыми вкладками сюда же. Фоны: главный — за весь фильм / сериал / интервью, фон сцены — за всю сцену (на эпизоды фонов нет). ===== */
+const showList=()=>[...new Set(SCENES.filter(x=>x.kind!=='clip'&&flagOf('scene-'+x.id)!=='hide').map(showOf))];
+const bgKeys=()=>showList().flatMap(h=>['h:'+h,...showScenes(h).map(x=>x.id)]);
+const collScenes=()=>SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)!=='hide');
+function collStat(){const B=bgKeys().map(bgInfo).filter(Boolean),SG=collScenes(),K=rwAll();
+  return {bg:B.filter(b=>b.got).length,bgAll:B.length,cards:SG.filter(segHas).length,cardsAll:SG.length,kadr:K.filter(x=>x.got).length,kadrAll:K.length};}
+function renderCollection(tab,open){tab=tab||store.collTab||'bg';if(!['bg','cards','kadr'].includes(tab))tab='bg';if(store.collTab!==tab){store.collTab=tab;save();}
+  screen='coll';backBtn(true);applyFx();const C=collStat();
+  const T=[['bg','🎞','Фоны',C.bg,C.bgAll],['cards','🎬','Карточки',C.cards,C.cardsAll],['kadr','🖼','Кадры',C.kadr,C.kadrAll]];
+  mount(`<div class="coll"><div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Коллекция</h1></div>
+    <p class="coll-sub">Награды за пройденные сцены. Это не словарь — тут то, что ты заработал.</p>
+    <div class="coll-tabs" role="tablist">${T.map(([k,i,n,g,a])=>`<button data-ct="${k}" class="${k===tab?'on':''}" role="tab" aria-selected="${k===tab}"><span>${i}</span><b>${n}</b><small>${g} из ${a}</small></button>`).join('')}</div>
+    <div class="coll-pane">${tab==='bg'?collBgHTML():tab==='cards'?collCardsHTML():collKadrHTML()}</div>
+    <p class="coll-soon">🎁 Скоро здесь появятся новые награды</p></div>`,'collscr');
+  $('#bBtn').onclick=()=>{sfx('tap');renderTab('learn');};
+  $$('.coll-tabs [data-ct]').forEach(b=>b.onclick=()=>{if(b.dataset.ct===tab)return;sfx('tap');haptic('sel');renderCollection(b.dataset.ct);});
+  $$('.coll [data-bgk]').forEach(b=>b.onclick=()=>{const i=bgInfo(b.dataset.bgk);if(!i)return;if(!i.got){sfx('bad');haptic('err');toast('🔒 '+i.how);return;}sfx('tap');haptic('sel');bgView(i.k);});
+  $$('.coll [data-rw]').forEach(b=>b.onclick=()=>{sfx('tap');rwOpen(b.dataset.rw);});
+  $$('.coll [data-seg]').forEach(b=>b.onclick=()=>{sfx('tap');segOpen(b.dataset.seg);});
+  if(open&&tab==='bg'){const t=document.querySelector(`.coll [data-bgk="${CSS.escape(open)}"]`);if(t)t.scrollIntoView({block:'center',inline:'center'});setTimeout(()=>bgView(open),150);}}
+function collBgHTML(){
+  const G=showList().map(h=>{const B=['h:'+h,...showScenes(h).map(x=>x.id)].map(bgInfo).filter(Boolean);return {h,B,g:B.filter(b=>b.got).length};});
+  return (ADM_OPEN()?'<p class="coll-adm">Ты админ — видишь все фоны, даже не полученные.</p>':'')+[...G.filter(x=>x.g),...G.filter(x=>!x.g)].map(({h,B,g})=>{   // где есть полученные — выше
+    return `<h3 class="coll-h">${esc(h)} <span>${g} из ${B.length}</span></h3><div class="bgw">${B.map(b=>`<button class="bgw-i${b.film?' film':''}${b.got?'':' lock'}${b.got&&store.appBg===b.k?' on':''}" data-bgk="${esc(b.k)}" aria-label="${esc((b.film?'Главный фон ':'Фон сцены ')+b.name)}">
+      <span class="bgw-img" style="background-image:${b.img.map(u=>`url('${u}')`).join(',')}"></span>${b.got?(b.live?'<i class="bgw-live">▶ живой</i>':''):'<i class="bgw-lk">🔒</i>'}
+      <span class="bgw-t"><em>${b.film?'Главный фон':'Сцена'}</em><b>${esc(b.film?b.sub.replace('Главный фон · ',''):b.name)}</b></span></button>`).join('')}</div>`;}).join('')+
+    `<small class="rwc-n">Сцена целиком — её фон. Весь фильм, сериал или интервью — главный фон. Нажми на полученный — смотри на весь экран.</small>`;}
+function collCardsHTML(){const SG=collScenes(),sg=SG.filter(segHas);
+  return `<div class="rwc"><div class="rwc-k seg-k">${[...sg,...SG.filter(x=>!segHas(x))].map(s=>segHas(s)?`<button class="rwc-kd seg-kd${(store.seg[s.id]||{}).gold?' gold':''}" data-seg="${s.id}" style="background-image:url('${assetUrl(scKey(s,'poster.jpg'))}'),url('${scCover(s,'cover.jpg')}')"><span>${(store.seg[s.id]||{}).gold?'★':'🎬'}</span></button>`:`<span class="rwc-kd seg-lock" title="${esc(dictFilm(s))} — ${esc(s.sub||'')}">🔒</span>`).join('')}</div>
+    <small class="rwc-n">${sg.length?'Нажми на карточку — откроется. Все эпизоды сцены на 3★ — карточка станет золотой.':'Пройди все эпизоды одной сцены — получишь карточку сцены и её фон.'}</small></div>`;}
+function collKadrHTML(){const L=rwAll(),g=L.filter(x=>x.got);
+  return `<div class="rwc">${g.length?`<div class="rwc-k">${g.map(x=>`<button class="rwc-kd" data-rw="${rwKey(x.s,x.i)}" style="background-image:url('${rwKadr(x.s,x.i)}'),url('${assetUrl(scEpKey(x.s,x.i,'jpg'))}')"></button>`).join('')}</div>`:''}
+    <small class="rwc-n">${g.length?'Кадр — за каждый пройденный эпизод. Нажми — откроется с интересным фактом.':'Пройди проверку любого эпизода — получишь кадр и интересный факт.'}</small></div>`;}
+// смотреть фон на весь экран: по кругу, тап — спрятать кнопки, ‹ › и свайп — соседние полученные, «Поставить на главную»
+function bgView(k){const L=bgKeys().map(bgInfo).filter(b=>b&&b.got);let i=L.findIndex(b=>b.k===k);if(i<0)return;
+  document.querySelectorAll('.bgvw').forEach(o=>o.remove());
+  const o=document.createElement('div');o.className='bgvw';
+  o.innerHTML=`<div class="bgvw-m"></div><div class="bgvw-ui"><div class="bgvw-top"><button class="bgvw-x" aria-label="Закрыть">${ui('close')}</button><span class="bgvw-t"><b></b><small></small></span></div>
+    ${L.length>1?`<button class="bgvw-nav prev" aria-label="Предыдущий фон">${ui('back')}</button><button class="bgvw-nav next" aria-label="Следующий фон">${ui('fwd')}</button>`:''}
+    <div class="bgvw-bot"><button class="sc-btn bgvw-set"></button><small>Нажми на фон — кнопки спрячутся</small></div></div>`;
+  document.body.appendChild(o);const m=o.querySelector('.bgvw-m');let swiped=false;
+  const kill=()=>o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});
+  const show=()=>{const b=L[i];kill();m.innerHTML='';m.className='bgvw-m'+(b.vid.length?'':' still');m.style.backgroundImage=b.img.map(u=>`url('${u}')`).join(',');
+    if(b.vid.length){const v=bgVid(b.vid);if(v){v.addEventListener('loadedmetadata',()=>{m.classList.toggle('fit',(v.videoWidth>v.videoHeight)!==(innerWidth>innerHeight));});m.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
+    o.querySelector('.bgvw-t b').textContent=b.name;o.querySelector('.bgvw-t small').textContent=b.sub;
+    const on=store.appBg===b.k,st=o.querySelector('.bgvw-set');st.textContent=on?'✓ Стоит на Главной · убрать':'Поставить на Главную';st.classList.toggle('ghost',on);};
+  const mark=()=>document.querySelectorAll('.coll [data-bgk]').forEach(x=>x.classList.toggle('on',x.dataset.bgk===store.appBg&&!x.classList.contains('lock')));
+  const close=()=>{if(o._c)return;o._c=true;kill();o.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>o.remove();mark();};
+  o._close=close;o.querySelector('.bgvw-x').onclick=()=>{sfx('tap');close();};
+  m.onclick=()=>{if(swiped){swiped=false;return;}o.classList.toggle('bare');};
+  o.querySelector('.bgvw-set').onclick=()=>{const b=L[i];store.appBg=store.appBg===b.k?'':b.k;save();sfx(store.appBg?'good':'tap');haptic('sel');toast(store.appBg?'🖼 Фон стоит на Главной':'Фон убран с Главной');show();mark();};
+  const go=d=>{i=(i+d+L.length)%L.length;sfx('page');show();};
+  if(L.length>1){o.querySelector('.bgvw-nav.prev').onclick=()=>go(-1);o.querySelector('.bgvw-nav.next').onclick=()=>go(1);
+    let x0=null;m.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
+    m.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>50){swiped=true;setTimeout(()=>swiped=false,400);go(dx<0?1:-1);}},{passive:true});}
+  show();o.animate([{opacity:0},{opacity:1}],{duration:250});}
 /* ================= «как запомнить»: созвучие + картинка, отдельно для английского и немецкого ================= */
 const MEM=window.__DATA.MEM;
 function memOf(mode,cid,L,t){const m=MEM[mode]&&MEM[mode][cid];return m?m[L==='de'?1:0]:(t?t[0]:'');}
@@ -5493,10 +5515,11 @@ function learnTabHTML(){
     </section>
     <div class="htiles anim">
       <button class="htile" onclick="renderMyWords()"><span>⭐</span><b>Мои слова</b><small>${mw?mw+' '+plural(mw,['слово','слова','слов']):'сохраняй из субтитров'}</small></button>
+      <button class="htile" id="hColl"><span>🏆</span><b>Коллекция</b><small>${(C=>C.bg+C.cards?`${C.bg} ${plural(C.bg,['фон','фона','фонов'])} · ${C.cards} ${plural(C.cards,['карточка','карточки','карточек'])}`:'фоны и карточки за сцены')(collStat())}</small></button>
     </div>
     ${phraseOfDayHTML()}
     <div class="hsec anim"><h2>Кинозал</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
-    ${[['kino',x=>x.kind!=='interview'],['iv',x=>x.kind==='interview']].map(([hk,hf])=>{const HS=SCENES.filter(x=>flagOf('scene-'+x.id)!=='hidden'&&hf(x));if(!HS.length)return '';
+    ${[['kino',x=>x.kind!=='interview'],['iv',x=>x.kind==='interview']].map(([hk,hf])=>{const HS=SCENES.filter(x=>flagOf('scene-'+x.id)!=='hide'&&hf(x));if(!HS.length)return '';
     return (hk==='iv'?`<div class="hsec anim"><h2>Интервью</h2><button class="hlink" id="hAllIv">Все интервью →</button></div>`:'')+`<div class="hrow">${(()=>{const G=[],by={};for(const x of HS){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
       return G.map(k=>{const L=by[k],x=L[0],l=L.reduce((a,y)=>a+scLearned(y),0),t=L.reduce((a,y)=>a+scTotal(y),0),eps=L.reduce((a,y)=>a+y.parts.length,0);
         return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div>`;}).join('')}</div>`;
@@ -5510,6 +5533,7 @@ function bindLearn(){
   if($('#hNext'))$('#hNext').onclick=()=>{haptic('medium');renderScEp(c.s.id,c.i);};
   if($('#hReview'))$('#hReview').onclick=()=>{haptic('medium');const sc=SCENES.find(x=>scDue(x).length);if(sc)renderScQuiz(sc.id,'rev');else startSession('review');};
   if($('#hAllKino'))$('#hAllKino').onclick=()=>{sfx('tap');renderTab('kino');};
+  if($('#hColl'))$('#hColl').onclick=()=>{haptic('medium');sfx('tap');renderCollection();};
   if($('#hAllIv'))$('#hAllIv').onclick=()=>{sfx('tap');store.kinoCat='interview';save();renderTab('kino');};
   if($('#hAllGames'))$('#hAllGames').onclick=()=>{sfx('tap');renderTab('games');};
   $$('.hrow [data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});
@@ -5524,6 +5548,8 @@ function onBack(){
   if(document.querySelector('.dxo')){const d=document.querySelector('.dxo-dim');if(d)d.click();return;}   // 11.0: открытая карта словаря
   if(document.querySelector('.dfly')){document.querySelector('.dfly').click();return;}
   if(document.querySelector('.rwo')){document.querySelector('.rwo-dim').click();return;}   // 12.0: открытый кадр коллекции
+  {const o=document.querySelector('.bgvw');if(o&&o._close){o._close();return;}}   // 13.0: фон на весь экран
+  if(screen==='coll'){sfx('tap');renderTab('learn');return;}
   if(document.querySelector('.dx')&&!document.querySelector('.scn')&&dxUp())return;   // 11.5: словарь — уровень вверх
   if(screen==='pvp'){if(KV&&KV.over){const sid=KV.room.sid;KV=null;renderScene(sid);}else kvLeave();return;}
   if(screen==='sctask'){if(document.querySelector('.sc-pfs')){scExitFull();return;}renderScene(SCUR.id);return;}

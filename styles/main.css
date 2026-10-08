@@ -4129,3 +4129,66 @@ body[data-scn="studio"]{--scbg:#0b0a0b;--sa:#FF5A4E;--sa2:#F3EBDD;--sat:rgba(255
 .kcard.studio em{color:#FF5A4E}.kcard.studio .kbar i{background:#FF5A4E}
 /* 12.7: длинные названия сцен в «meth» — без капса, иначе карточка превращается в стену букв */
 .kposter.meth .kp-t b,.hposter.meth .kp-t b,.kcard.meth b{text-transform:none;letter-spacing:.01em;font-weight:600}
+
+/* ==== 13.0 — «Коллекция» (вход с Главной): фоны, карточки сцен, кадры; фон на весь экран; фон-награда только на Главной ==== */
+.coll{padding-bottom:40px}
+.coll-sub{margin:-4px 0 14px;color:rgba(255,255,255,.6);font-size:14px;line-height:1.4}
+.coll-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.coll-tabs button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:10px 4px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#fff;transition:background .2s,border-color .2s}
+.coll-tabs button span{font-size:20px;line-height:1.2}
+.coll-tabs button b{font:800 14px 'Golos Text',sans-serif}
+.coll-tabs button small{font:600 11.5px 'Golos Text',sans-serif;color:rgba(255,255,255,.5)}
+.coll-tabs button.on{background:rgba(233,196,106,.14);border-color:rgba(233,196,106,.65)}
+.coll-tabs button.on small{color:#F3DA8C}
+.coll-h{display:flex;align-items:baseline;gap:8px;margin:18px 0 8px;font:700 17px 'Playfair Display',serif;color:#fff}
+.coll-h span{font:600 12px 'Golos Text',sans-serif;color:rgba(255,255,255,.45)}
+.coll-adm{margin:0 0 4px;font:600 12.5px 'Golos Text',sans-serif;color:#F3DA8C}
+.coll-soon{margin-top:24px;text-align:center;color:rgba(255,255,255,.38);font-size:13px}
+.coll .rwc-n{display:block;margin-top:12px}
+.bgw{display:flex;gap:10px;overflow-x:auto;padding:3px 3px 8px;margin:0 -3px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.bgw::-webkit-scrollbar{display:none}
+.bgw-i{position:relative;flex:none;width:100px;height:168px;border-radius:14px;overflow:hidden;background:#141417;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);scroll-snap-align:start;text-align:left;padding:0}
+.bgw-i.film{width:116px;box-shadow:inset 0 0 0 1.5px rgba(233,196,106,.85)}
+.bgw-img{position:absolute;inset:0;background:#141417 center/cover no-repeat}
+.bgw-i.lock .bgw-img{filter:blur(7px) grayscale(.6) brightness(.3);transform:scale(1.2)}
+.bgw-t{position:absolute;left:0;right:0;bottom:0;padding:26px 8px 8px;background:linear-gradient(transparent,rgba(0,0,0,.88))}
+.bgw-t em{display:block;font:800 9.5px 'Golos Text',sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:#F3DA8C}
+.bgw-t b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font:700 11.5px/1.22 'Golos Text',sans-serif;color:#fff}
+.bgw-i.lock .bgw-t em{color:rgba(255,255,255,.45)}.bgw-i.lock .bgw-t b{color:rgba(255,255,255,.6)}
+.bgw-lk{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);font-size:22px;font-style:normal;opacity:.8}
+.bgw-live{position:absolute;top:6px;left:6px;padding:2px 7px;border-radius:99px;background:rgba(0,0,0,.6);color:#F3DA8C;font:800 9.5px 'Golos Text',sans-serif;font-style:normal}
+.bgw-i.on{box-shadow:0 0 0 2.5px #F5C451,0 0 16px -4px rgba(245,196,81,.8)}
+.bgw-i.on::after{content:"✓ на Главной";position:absolute;top:6px;right:6px;padding:2px 6px;border-radius:99px;background:#F5C451;color:#1a1408;font:800 9px 'Golos Text',sans-serif}
+.bgw-i.on .bgw-live{display:none}
+/* фон на весь экран */
+.bgvw{position:fixed;inset:0;z-index:400;background:#000;overflow:hidden}
+.bgvw-m{position:absolute;inset:0;background:#000 center/cover no-repeat}
+.bgvw-m.still{animation:kb 30s ease-in-out infinite alternate}
+.bgvw-m.fit::before{content:"";position:absolute;inset:-6%;background:inherit;background-size:cover;filter:blur(26px) brightness(.45);z-index:0}
+.bgvw-m video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease;z-index:1}
+.bgvw-m.fit video{object-fit:contain}
+.bgvw-m video.on{opacity:1}
+.bgvw-ui{position:absolute;inset:0;pointer-events:none;transition:opacity .3s ease}
+.bgvw.bare .bgvw-ui{opacity:0}
+.bgvw:not(.bare) .bgvw-top,.bgvw:not(.bare) .bgvw-bot,.bgvw:not(.bare) .bgvw-nav{pointer-events:auto}
+.bgvw-top{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) 14px 34px;background:linear-gradient(rgba(0,0,0,.7),transparent)}
+.bgvw-x{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff}
+.bgvw-x svg{width:20px;height:20px}
+.bgvw-t{min-width:0}
+.bgvw-t b{display:block;font:700 17px/1.2 'Playfair Display',serif;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bgvw-t small{display:block;font:600 12px 'Golos Text',sans-serif;color:rgba(255,255,255,.7)}
+.bgvw-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.4);color:#fff}
+.bgvw-nav svg{width:22px;height:22px}
+.bgvw-nav.prev{left:10px}.bgvw-nav.next{right:10px}
+.bgvw-bot{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding:44px 16px calc(env(safe-area-inset-bottom,0px) + 18px);background:linear-gradient(transparent,rgba(0,0,0,.75))}
+.bgvw-set{min-width:250px}
+.bgvw-bot small{color:rgba(255,255,255,.55);font-size:12px}
+/* в награде — анонс фона: смотреть в Коллекции */
+.bg-new .seg-bgt small{display:block;margin-top:1px;font:600 11.5px 'Golos Text',sans-serif;color:rgba(255,255,255,.6)}
+.bg-new .seg-bgi.live i{left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%)}
+/* фон-награда на Главной — виднее, чем раньше (это награда), но текст читается */
+#appbg::after{background:linear-gradient(180deg,rgba(10,10,12,.38),rgba(10,10,12,.7) 38%,rgba(10,10,12,.9) 68%,rgba(10,10,12,.96))}
+.bgvw-m{z-index:0}.bgvw-ui{z-index:2}   /* видео фона не перекрывает кнопки */
+.bgvw-set{min-width:250px;padding:14px 22px;border:0;border-radius:99px;background:#E9C46A;color:#1a1408;font:800 15px 'Golos Text',sans-serif;box-shadow:0 8px 24px -8px rgba(0,0,0,.6)}
+.bgvw-set.ghost{background:rgba(255,255,255,.16);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.bgvw-set{width:auto;max-width:360px}
