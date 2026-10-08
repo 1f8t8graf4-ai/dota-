@@ -6,6 +6,7 @@
 # 5-й аргумент "hdr" — если исходник 4K HDR (картинка бледная): переводит цвет в обычный SDR.
 # Веб-исходник (YouTube и т.п., уже пережат): CRF=23 MAXRATE=3500k GRAIN=0 — файл в 3–4 раза легче, зерно на нём только мылит.
 # PRE="фильтры," — что сделать до «лука», например убрать логотип: PRE="delogo=x=26:y=656:w=236:h=36,"
+# AFX="фильтры," — звук до loudnorm, например мягко погасить обрыв в конце клипа: AFX="afade=t=out:st=83.9:d=0.5,"
 set -e
 IN="$1"; A="$2"; B="$3"; OUT="$4"; HDR="$5"
 DUR=$(python3 -c "print(round($B-$A,3))")
@@ -16,7 +17,7 @@ LOOK="scale=1920:-2:flags=lanczos,deband=1thr=0.02:2thr=0.02:3thr=0.02:range=16:
 mkdir -p "$(dirname "$OUT")"
 ffmpeg -y -ss "$A" -t "$DUR" -i "$IN" -map 0:v:0 -map "${AUDIO:-0:a:m:language:eng}" \
   -vf "${PRE}${TONE}${LOOK}" -c:v libx264 -preset slow -crf ${CRF:-19} -maxrate ${MAXRATE:-8M} -bufsize 16M -profile:v high -pix_fmt yuv420p \
-  -af "loudnorm=I=-16:TP=-1.5:LRA=11" -c:a aac -b:a 160k -ac 2 -movflags +faststart "$OUT"
+  -af "${AFX}loudnorm=I=-16:TP=-1.5:LRA=11" -c:a aac -b:a 160k -ac 2 -movflags +faststart "$OUT"
 # превью эпизода (кадр на 1-й секунде)
 ffmpeg -y -loglevel error -ss 1 -i "$OUT" -frames:v 1 -q:v 3 "${OUT%.mp4}.jpg"
 echo "готово: $OUT"

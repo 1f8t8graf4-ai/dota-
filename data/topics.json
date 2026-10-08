@@ -142,10 +142,6 @@
 "wolf-swiss-bank|Was that yodeling I just heard or did you just say what I thought you said?": [
 "общение"
 ],
-"sopranos-s01e01|I dunno. Stress, maybe.": [
-"эмоции",
-"здоровье"
-],
 "sopranos-s01e01|It's good to be in something from the ground floor.": [
 "работа"
 ],
@@ -364,6 +360,292 @@
 ],
 "downfall-bunker|Do what you want.": [
 "ссоры"
+],
+"sopranos-s01e01|Have a seat.": [
+"знакомство",
+"работа"
+],
+"sopranos-s01e01|My understanding from Dr. Cusamano, your family physician, is that you collapsed.": [
+"здоровье",
+"работа"
+],
+"sopranos-s01e01|You were unable to breathe.": [
+"здоровье"
+],
+"sopranos-s01e01|'Cause all the blood work and neurological work came back negative.": [
+"здоровье"
+],
+"sopranos-s01e01|You don't agree that you had a panic attack.": [
+"общение",
+"ссоры"
+],
+"sopranos-s01e01|How are you feeling now?": [
+"здоровье",
+"общение"
+],
+"sopranos-s01e01|Good. Fine. Back at work.": [
+"работа",
+"здоровье"
+],
+"sopranos-s01e01|What line of work are you in?": [
+"знакомство",
+"работа"
+],
+"sopranos-s01e01|Look, it's impossible for me to talk to a psychiatrist.": [
+"эмоции",
+"здоровье"
+],
+"sopranos-s01e01|Any thoughts at all on why you blacked out?": [
+"здоровье",
+"общение"
+],
+"sopranos-s01e01|Stress, maybe.": [
+"эмоции",
+"здоровье"
+],
+"sopranos-s01e01|About what?": [
+"общение"
+],
+"sopranos-s01e01|Many Americans, I think, feel that way.": [
+"эмоции",
+"общение"
+],
+"sopranos-s01e01|The whole yard smells like duck poop. It's embarrassing.": [
+"быт",
+"эмоции"
+],
+"sopranos-s01e01|Girls, you gotta have more than just cranberry juice for breakfast.": [
+"быт"
+],
+"sopranos-s01e01|You need brain food for school.": [
+"быт",
+"учёба"
+],
+"sopranos-s01e01|Thirteen. He doesn't act it.": [
+"быт",
+"общение"
+],
+"sopranos-s01e01|Get outta here with that fat.": [
+"быт",
+"ссоры"
+],
+"sopranos-s01e01|How do you stay so skinny?": [
+"здоровье",
+"общение"
+],
+"sopranos-s01e01|Hey, kids, come here! They're trying to fly!": [
+"быт",
+"эмоции"
+],
+"sopranos-s01e01|You showed us yesterday. It's great!": [
+"быт",
+"общение"
+],
+"sopranos-s01e01|Now, my wife feels this friend is a bad influence.": [
+"быт",
+"общение"
+],
+"sopranos-s01e01|That's so cool you're gonna be able to come to Aspen with my family at Christmas.": [
+"эмоции",
+"телефон и планы"
+],
+"sopranos-s01e01|Miss Meadow, we made a deal.": [
+"быт",
+"учёба"
+],
+"sopranos-arc|You ever feel like nothin' good was ever gonna happen to you?": [
+"эмоции"
+],
+"sopranos-arc|Yeah. And nothin' did. So what?": [
+"эмоции",
+"ссоры"
+],
+"sopranos-arc|That's it. I don't wanna just survive.": [
+"эмоции"
+],
+"sopranos-arc|That's called their arc. Where's my arc?": [
+"учёба",
+"эмоции"
+],
+"sopranos-arc|Do you feel depressed?": [
+"здоровье",
+"эмоции"
+],
+"sopranos-arc|Do you have any qualms about how you actually make a living?": [
+"работа",
+"эмоции"
+],
+"sopranos-arc|I find I have to be the sad clown.": [
+"эмоции"
+],
+"sopranos-arc|Laughing on the outside, crying on the inside.": [
+"эмоции"
+],
+"sopranos-arc|I don't know who the fuck I'm angry at.": [
+"эмоции",
+"ссоры"
+],
+"sopranos-arc|I can't stop feeling like I'm a fucking loser.": [
+"эмоции"
+],
+"sopranos-arc|Where's my happiness then?": [
+"эмоции"
+],
+"sopranos-arc|Always a fucking loophole, right?": [
+"деньги",
+"ссоры"
+],
+"sopranos-arc|Do you know why a shark keeps moving?": [
+"общение"
+],
+"sopranos-arc|They have time to think about their behavior.": [
+"общение",
+"эмоции"
+],
+"sopranos-arc|How what they do affects other people.": [
+"общение"
+],
+"sopranos-arc|And they crash.": [
+"эмоции"
+],
+"american-psycho-cards|Thanks so much for looking after Courtney.": [
+"общение"
+],
+"american-psycho-cards|What do you think?": [
+"общение",
+"работа"
+],
+"american-psycho-cards|I can't believe that Bryce prefers Van Patten's card to mine.": [
+"работа",
+"эмоции"
+],
+"american-psycho-cards|Let's see Paul Allen's card.": [
+"работа"
+],
+"american-psycho-cards|Oh, my God. It even has a watermark.": [
+"эмоции",
+"работа"
+],
+"taxi-driver-betsy|I'd like to volunteer.": [
+"работа",
+"знакомство"
+],
+"taxi-driver-betsy|I'd rather volunteer to her, if you don't mind.": [
+"знакомство",
+"свидание"
+],
+"taxi-driver-betsy|Because you are the most beautiful woman I have ever seen.": [
+"свидание",
+"знакомство"
+],
+"taxi-driver-betsy|But what do you think of Palantine?": [
+"общение"
+],
+"taxi-driver-betsy|I don't know what his policies are, but I'm sure he'll make a good one.": [
+"общение"
+],
+"taxi-driver-betsy|How do you feel about his stand on welfare?": [
+"общение"
+],
+"taxi-driver-betsy|You're sure of that?": [
+"общение"
+],
+"taxi-driver-betsy|The thing is, I drive a taxi at night, so it's kind of hard for me...": [
+"работа",
+"телефон и планы"
+],
+"taxi-driver-betsy|Then what exactly do you want?": [
+"общение",
+"ссоры"
+],
+"taxi-driver-betsy|Would you like to have coffee and pie with me?": [
+"свидание",
+"кафе и магазин"
+],
+"taxi-driver-betsy|Why? I'll tell you why.": [
+"общение"
+],
+"taxi-driver-betsy|I think you're a lonely person.": [
+"свидание",
+"эмоции"
+],
+"taxi-driver-betsy|I drive by a lot, and I see you here.": [
+"свидание"
+],
+"taxi-driver-betsy|If you wanna call it a friend, you can call it that.": [
+"общение",
+"свидание"
+],
+"taxi-driver-betsy|You're gonna be my friend?": [
+"свидание",
+"общение"
+],
+"taxi-driver-betsy|What do you say?": [
+"телефон и планы",
+"свидание"
+],
+"titanic-boat|I'm not going without you.": [
+"эмоции",
+"свидание"
+],
+"titanic-boat|Get in the boat, Rose.": [
+"быт"
+],
+"titanic-boat|Oh my God, look at you.": [
+"эмоции"
+],
+"titanic-boat|Put this on. Come.": [
+"быт"
+],
+"titanic-boat|Go on. I'll get the next one.": [
+"телефон и планы"
+],
+"titanic-boat|I'll be all right. Listen, I'll be fine.": [
+"эмоции"
+],
+"titanic-boat|I'm a survivor, all right? Don't worry about me.": [
+"эмоции"
+],
+"titanic-boat|I got my own boat to catch.": [
+"телефон и планы"
+],
+"titanic-boat|Go on, hurry.": [
+"быт"
+],
+"titanic-boat|They're almost full.": [
+"кафе и магазин",
+"быт"
+],
+"titanic-boat|You're a good liar.": [
+"ссоры"
+],
+"titanic-boat|Almost as good as you.": [
+"ссоры"
+],
+"titanic-boat|There's no arrangement, is there?": [
+"ссоры",
+"телефон и планы"
+],
+"titanic-boat|I always win, Jack.": [
+"ссоры"
+],
+"titanic-boat|One way or another.": [
+"общение"
+],
+"titanic-boat|Rose, what are you doing?!": [
+"эмоции"
+],
+"titanic-boat|Why did you do that? Why?!": [
+"ссоры",
+"эмоции"
+],
+"titanic-boat|You jump, I jump, right?": [
+"свидание",
+"эмоции"
+],
+"titanic-boat|Oh God. I couldn't go.": [
+"эмоции",
+"свидание"
 ]
 }
 }
