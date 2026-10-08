@@ -35,7 +35,7 @@ window.ASSET_BASE='https://1f8t8graf4-ai.github.io';
 <script>
 /* Загрузка данных: сначала JSON из папки data, потом код js/app.js.
    Если index.html открыт двойным кликом (file://) и браузер не даёт читать JSON — берём data/all-data.js (те же данные одним файлом). */
-(function(){var V='12.1',need=["icons","dota","words","lore-vocab","tips","spy","scenes"],opt=["topics","scenewords","glossary"];window.__DATA={};
+(function(){var V='12.2',need=["icons","dota","words","lore-vocab","tips","spy","scenes"],opt=["topics","scenewords","glossary"];window.__DATA={};
 function go(){var s=document.createElement('script');s.src='js/app.js?v='+V;document.body.appendChild(s);}
 function fail(miss){var a=document.getElementById('app');if(a)a.innerHTML='<p style="padding:40px 16px;color:#ccc;font:16px/1.5 system-ui">Не загрузились данные'+(miss?': <b>'+miss+'</b>. Проверь, что этот файл лежит в папке data в корне репозитория.':'. Проверь интернет и открой ещё раз.')+'</p>';}
 function local(miss){var s=document.createElement('script');s.src='data/all-data.js?v='+V;s.onload=function(){window.__DATA=window.__DATA_ALL||{};if(!window.__DATA.SCENES)return fail(miss||'data/scenes.json');go();};s.onerror=function(){fail(miss);};document.body.appendChild(s);}

@@ -3994,3 +3994,46 @@ html.ios .sc-vol,html.ios .sc-vl{display:none!important}
 .sc-nosub{position:absolute;left:50%;bottom:14%;transform:translateX(-50%);z-index:3;padding:6px 12px;border-radius:99px;background:rgba(0,0,0,.6);color:rgba(255,255,255,.7);font:600 12.5px 'Golos Text',sans-serif;pointer-events:none;white-space:nowrap}
 .rwo-dim{background:rgba(8,8,10,.93)}
 .rwo .rw-fact{background:linear-gradient(135deg,#2a2416,#1a1712)}
+
+/* ==== 12.2 — смотреть как кино: выбор пауз, плашки-объяснения, итог эпизода, «послушай и восстанови» ==== */
+.ep-pz{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.ep-pz button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#F3EBDD;font:800 14px 'Golos Text',sans-serif;text-align:left}
+.ep-pz button small{font:500 11.5px/1.3 'Golos Text',sans-serif;color:rgba(255,255,255,.55)}
+.ep-pz button.on{background:rgba(233,196,106,.14);border-color:rgba(233,196,106,.7);color:#F3DA8C}
+.tk-watch .tkp-en .kw,.tk-watch .tkp-en .sw{cursor:pointer}
+.tk-watch .tkp-use{margin-top:8px;padding:8px 10px;border-radius:12px;background:rgba(233,196,106,.08);color:rgba(255,255,255,.85)}
+.tkp-h{display:block;margin-top:6px;font-size:11.5px;color:rgba(255,255,255,.4)}
+.tk-watch{animation:tkIn .28s cubic-bezier(.2,.9,.3,1) both}
+.tk-watch.out{opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+.tk-watch.over.out{transform:translate(-50%,8px)}
+@keyframes tkIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.tk-watch.over{animation:none}
+.tk-watch.flow.over{bottom:auto;top:calc(12px + var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px));background:rgba(14,14,17,.78)}
+.ep-phs{margin-top:10px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.ep-phs summary{padding:12px 14px;font:700 14px 'Golos Text',sans-serif;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+.ep-phs summary::-webkit-details-marker{display:none}
+.ep-phs summary i{font-style:normal;font-size:12px;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)}
+.ep-phl{padding:0 12px 12px;display:flex;flex-direction:column;gap:8px}
+.ep-phe{margin:0;font-size:13px;color:rgba(255,255,255,.5)}
+.ep-phi{padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.25)}
+.ep-phi b{display:block;font:700 15.5px/1.35 'Golos Text',sans-serif;color:#fff}
+.ep-phi span{display:block;margin-top:2px;font-size:13.5px;color:#F3DA8C}
+.ep-phi small{display:block;margin-top:4px;font-size:12.5px;line-height:1.4;color:rgba(255,255,255,.65)}
+.ep-php{margin-top:8px;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:99px;background:rgba(255,255,255,.08);color:#fff;font:700 12.5px 'Golos Text',sans-serif}
+.ep-php svg{width:14px;height:14px}
+.ep-end{margin-bottom:10px}
+.ep-end-in{padding:16px;border-radius:20px;text-align:center;background:radial-gradient(120% 90% at 50% 0%,rgba(233,196,106,.18),transparent 60%),rgba(255,255,255,.04);border:1px solid rgba(233,196,106,.3)}
+.ep-end-k{display:block;font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#F3DA8C}
+.ep-end-in b{display:block;margin:6px 0 4px;font:700 21px/1.25 'Playfair Display',Georgia,serif;color:#fff}
+.ep-end-in>span{display:block;font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.65)}
+.ep-end-b{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.sc-pzb{font:700 12px 'Golos Text',sans-serif;white-space:nowrap}
+.sc-lt{display:flex;gap:8px;margin:6px 0}
+.sc-lt .sc-gapin{flex:1;margin:0}
+.sc-lmask{margin:4px 0 8px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.05);font:700 16px/1.5 ui-monospace,Menlo,monospace;letter-spacing:.06em;color:#F3DA8C}
+.sc-lh{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+@media (max-width:430px){.sc-lt{flex-direction:column}}
+.ep-end-b .ep-go{margin:0;width:100%}
+.ep-see{padding:10px;border-radius:12px;background:transparent;color:#F3DA8C;font:700 14px 'Golos Text',sans-serif;text-decoration:underline;text-underline-offset:3px}
+.ep-hint[hidden],.ep-end[hidden]{display:none!important}
+.sc-lt[hidden],.sc-lh[hidden],.sc-bans[hidden],.sc-lmask[hidden],.sc-bpool[hidden]{display:none!important}
