@@ -3752,3 +3752,14 @@ body.dx-open #tabbar{opacity:0;pointer-events:none}
 .kv-rule{font-size:11.5px;opacity:.55;margin:0 0 10px}
 .kv-bets{display:grid!important;grid-template-columns:repeat(5,1fr);gap:6px}
 .kv-bets button{min-width:0;padding-left:4px!important;padding-right:4px!important;white-space:nowrap;justify-content:center;font-size:13px}
+
+/* ==== 11.3 — тема «ocean» (Титаник): ночь над Атлантикой, латунь и слоновая кость ==== */
+body[data-scn="ocean"]{--scbg:#060d14;--sa:#D9B26F;--sa2:#7FA7C9;--sat:rgba(217,178,111,.22)}
+.scn.ocean{--bg:#070e15;--card:#0f1922;--line:rgba(217,178,111,.22);--ink:#EEE7D8;--muted:#8fa0ad;--acc:#D9B26F;--acc-ink:#0b1219;--hi:#D9B26F;--track:#1a2631;--ok:#7fc79b;--okbg:rgba(127,199,155,.12);--bad:#e0675a;--badbg:rgba(224,103,90,.12);--scd:'Playfair Display',Georgia,serif;--scb:'Golos Text',system-ui,sans-serif}
+.kposter.ocean .kp-t b,.hposter.ocean .kp-t b{font-family:'Playfair Display',Georgia,serif;letter-spacing:.02em;color:#F1E6CC}
+.kposter.ocean .kp-t em{color:#D9B26F}
+.kposter.ocean,.hposter.ocean{box-shadow:inset 0 0 0 1px rgba(217,178,111,.25)}
+.hcont.ocean .hc-t em{color:#D9B26F}.hcont.ocean .hc-bar i{background:#D9B26F}
+.kcard.ocean{background:#0d1720;color:#EEE7D8;box-shadow:inset 0 0 0 1px rgba(217,178,111,.3)}
+.kcard.ocean b{font-family:'Playfair Display',Georgia,serif}
+.kcard.ocean em{color:#D9B26F}.kcard.ocean .kbar i{background:#D9B26F}

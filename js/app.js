@@ -2260,7 +2260,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='11.2';
+const APP_V='11.3';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -3364,7 +3364,7 @@ const dictFilm=s=>s.show||s.title;
 function dictTags(s,f){const P=scP(s.id),T=[scTag(f)[0],...fTopics(f)],got=(P.got||{})[f.id],r=P.r[f.id];
   if(got&&Date.now()-got<3*864e5)T.push('новые');if(r&&r[1]<=Date.now())T.push('повторить');if((P.m[f.id]||0)>=3)T.push('выучено');return T;}
 const DX={seg:'ph',film:'all',tag:'',q:'',page:0,mytag:''};
-const DX_TH={wolf:'#D4AF37',noir:'#c8323a',bone:'#E8DCC4',taxi:'#F2C200',bunker:'#C9B98A',pump:'#ff4fa0'};
+const DX_TH={wolf:'#D4AF37',noir:'#c8323a',bone:'#E8DCC4',taxi:'#F2C200',bunker:'#C9B98A',pump:'#ff4fa0',ocean:'#D9B26F'};
 function dcHTML(c,i){const {s,f,pi,p}=c;
   if(!dictHas(s,f))return `<button class="dc lock" data-sid="${s.id}" data-fid="${f.id}" style="--c:${DX_TH[s.theme]||'#F5C451'};--d:${i}"><span class="dc-ep">эп. ${pi+1}</span><span class="dc-q">?</span><small>Пройди «${esc(p.t)}»</small></button>`;
   const P=scP(s.id),r=P.r[f.id],due=r&&r[1]<=Date.now();
