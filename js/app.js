@@ -13,6 +13,9 @@ const UI={
  speaker:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>'
 };
 const ui=n=>`<svg class="ui" viewBox="0 0 24 24" aria-hidden="true">${UI[n]}</svg>`;
+// 12.0: флажки картинкой — эмодзи-флаги на Windows (Telegram Desktop) превращаются в буквы «GB»/«DE»
+const FLAG={en:'<svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="fgb"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="fgt"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#fgb)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#fgt)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>',
+  de:'<svg class="flag" viewBox="0 0 5 3" aria-hidden="true"><path d="M0 0h5v3H0z" fill="#000"/><path d="M0 1h5v2H0z" fill="#DD0000"/><path d="M0 2h5v1H0z" fill="#FFCE00"/></svg>'};
 const BOX=`<span class="box"><svg viewBox="0 0 24 24">${UI.check}</svg></span>`;
 
 /* ================= основы ================= */
@@ -1690,6 +1693,7 @@ function profileTabHTML(){
       <span class="pbar"><i style="--w:${rk.pct}%"></i></span><small>${rk.nx?`До ранга ${rk.nx.n}: ${rk.n} из ${rk.nx.at} выученных слов`:'Высший ранг'}${rk.r.m>1?`. Билеты x${rk.r.m}`:''}</small></section>
     <div class="stats card anim">${cell(t.learned,'выучено слов')}${cell(acc===null?'—':acc+'%','точность')}${cell(store.streak,'дней подряд')}${cell(fmt(store.gold),'билетов')}${cell(store.answered,'ответов')}${cell(s.bestStreak,'лучшая серия')}</div>
     ${weekHTML()}
+    ${rwProfileHTML()}
     <h2 class="sec2 anim">Достижения <span>${got} из ${ACH.length}</span></h2>
     <div class="achs anim">${ACH.map(a=>`<button class="ach${store.ach[a.id]?' got':''}" data-a="${a.id}">${iconHTML({img:a.ic,svg:'trophy'})}<span>${esc(a.n)}</span></button>`).join('')}</div>
     <div class="links card anim">
@@ -1704,6 +1708,7 @@ function profileTabHTML(){
 }
 function bindProfileAdmin(){const b=$('#admBtn');if(b)b.onclick=()=>{sfx('tap');renderAdmin();};}
 function bindProfile(){bindProfileAdmin();
+  $$('[data-rw]').forEach(b=>b.onclick=()=>{sfx('tap');rwOpen(b.dataset.rw);});
   bindHead();
   $('#dict').onclick=()=>{sfx('tap');renderDict('going');};
   if(dueList().length)$('#rev2').onclick=()=>{haptic('medium');startSession('review');};
@@ -2261,7 +2266,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='11.6';
+const APP_V='12.0';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2391,7 +2396,7 @@ const kwBind=phBind;
 const FSEEN=new Set();
 function phInfoHTML(f,o){o=o||{};const use=scNoteS(f),de=scL()==='de'&&!scIsDe();
   const ex=de?(f.exDe&&f.exDe[0]?[f.exDe[0][0],f.exDe[0][1]]:null):(f.lx&&f.lx[0]?f.lx:(f.ex&&f.ex[0]?[f.ex[0][0],f.ex[0][1]]:null));
-  const fact=f.fact&&!de&&!o.noFact&&!(o.once&&FSEEN.has(f.id));if(f.fact&&!o.noFact)FSEEN.add(f.id);
+  const fact=o.fact&&f.fact&&!de;   // 12.0: факты — награда за финал эпизода, по ходу не показываем
   return `${use?`<div class="ph-blk ph-use"><em>Когда применяется</em><p>${esc(use)}</p>${o.noEx||!ex?'':`<div class="ph-ex"><span>Например</span><b>${esc(ex[0])}</b><small>${esc(ex[1]||'')}</small></div>`}</div>`:''}
     ${fact?`<div class="ph-blk ph-fact"><em>Интересный факт</em><p>${esc(f.fact)}</p></div>`:''}`;}
 // подсказка при наведении мышкой (ПК): без паузы, рядом со словом
@@ -2718,7 +2723,7 @@ function scRateHTML(s){if(!s.lvl&&!s.use)return '';
   return `<div class="sc-rate">${s.lvl?`<div><span>Сложность на слух</span>${scDots(s.lvl)}<small>${esc(s.lvlWhy||'')}</small></div>`:''}${s.use?`<div><span>Польза в жизни</span>${scDots(s.use)}<small>${esc(s.useWhy||'')}</small></div>`:''}</div>`;}
 function kinoCard(s){const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
   const lk=!scOpen(s);
-  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}${lk?' locked':''}" data-sc="${s.id}">${lk?`<span class="kp-lock">🔒 ${ui('coin')} ${fmt(SC_PRICE(s))}</span>`:''}${s.lang==='de'?'<span class="kp-lang">🇩🇪 на немецком</span>':''}<span class="kp-img" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
+  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}${lk?' locked':''}" data-sc="${s.id}">${lk?`<span class="kp-lock">🔒 ${ui('coin')} ${fmt(SC_PRICE(s))}</span>`:''}${s.lang==='de'?`<span class="kp-lang">${FLAG.de} на немецком</span>`:''}<span class="kp-img" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
     <span class="kp-t"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${s.parts.length} ${plural(s.parts.length,['эпизод','эпизода','эпизодов'])}${d?` · пройдено ${d}`:''}</small>
     ${s.lvl?`<span class="kp-rate"><i>сложность ${scDots(s.lvl)}</i><i>польза ${scDots(s.use||0)}</i></span>`:''}
     <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%\"></i></span></span></button>`;}
@@ -3109,7 +3114,7 @@ function scSubSheet(first){
   O.unshift(['auto','Авто — рекомендую','первый просмотр с переводом, повторный — без него']);
   const cur=(!store.scSubChosen||store.scSub==='auto'||!store.scSub)?'auto':scSub();const w=document.createElement('div');w.className='sc-sheetwrap';
   w.innerHTML=`<div class="sc-sheet"><b>${first?'Как смотреть?':'Субтитры'}</b>
-    ${scIsDe()?`<p class="sc-denote">🇩🇪 Этот фильм на немецком — оригинал немецкий, перевод русский. Английских субтитров тут нет.</p>`:''}${scIsDe()?'':`<div class="sc-lang"><button data-lg="en" class="${de?'':'on'}">Учу English</button><button data-lg="de" class="${de?'on':''}">Учу Deutsch</button></div>`}
+    ${scIsDe()?`<p class="sc-denote">${FLAG.de} Этот фильм на немецком — оригинал немецкий, перевод русский. Английских субтитров тут нет.</p>`:''}${scIsDe()?'':`<div class="sc-lang"><button data-lg="en" class="${de?'':'on'}">Учу English</button><button data-lg="de" class="${de?'on':''}">Учу Deutsch</button></div>`}
     <div class="sc-opts3">${O.map(([k,n,d])=>`<button data-sl="${k}" class="${cur===k?'on':''}"><span>${n}</span><small>${d}</small></button>`).join('')}</div>
     <button class="sc-stop ${store.scStopPh!==false?'on':''}" data-stop="1"><i></i><span>Останавливать на фразах и объяснять<small>со второго просмотра эпизода</small></span></button>
     <button class="sc-btn" data-close>Готово</button></div>`;
@@ -3368,13 +3373,14 @@ function renderScEpTask(id,i){
   function finish(){if(SV&&!SV.paused)SV.pause();ov(true);E.close();const ok=E.T.filter(x=>x.res).length,n=E.T.length,acc=n?ok/n:1,st=acc>=1?3:acc>=.7?2:1,first=!P.done.includes(i);
     P.w[i]=1;if(first)P.done.push(i);P.st=P.st||{};P.st[i]=Math.max(P.st[i]||0,st);
     FX.forEach(f=>{if(!P.r[f.id])P.r[f.id]=[0,Date.now()+SC_DAYS[0]*864e5];});scSave();remindSync();ev('ep_quiz',id);sfx(ok===n?'win':'learn');setTimeout(dictFly,700);
-    const nx=s.parts[i+1];
+    const nx=s.parts[i+1],rwNew=rwGive(s,i);
     $('#tkBox').innerHTML=`<div class="tk tk-end"><div class="res-stars">${[1,2,3].map(j=>`<i class="${j<=st?'on':''}" style="animation-delay:${.1+j*.15}s">★</i>`).join('')}</div>
       <div class="tk-big">${ok} из ${n}</div><p class="tk-sub">${ok===n?'Чисто. Эти фразы вернутся в повторении — завтра, через 3 и 7 дней.':'Ошибки не страшны — эти фразы вернутся в повторении завтра.'}</p>
       ${E.T.map(x=>`<div class="tk-li ${x.res?'ok':'bad'}" data-fid="${x.f.id}"><i>${x.res?'✓':'✗'}</i><div><b>${kwWrap(x.f)}</b><span>${esc(x.f.ru)}</span>${scNoteS(x.f)?`<small>${esc(scNoteS(x.f))}</small>`:''}</div></div>`).join('')}
+      ${rwHTML(s,i,rwNew)}
       ${nx?`<button class="sc-btn" id="tkNext">Следующий эпизод →</button>`:`<button class="sc-btn" id="tkBoss">👑 Финал сцены — на слух</button>`}
       <button class="sc-btn ghost" id="tkKv">⚔️ Дуэль с другом по эпизоду</button><button class="sc-btn ghost" id="tkAgain">Пройти ещё раз</button><button class="tk-skip" id="tkPath">К пути сцены</button></div>`;
-    kwBind($('#tkBox'),el=>{const c=el.closest('[data-fid]');return c?FX.find(f=>f.id===c.dataset.fid):null;});
+    kwBind($('#tkBox'),el=>{const c=el.closest('[data-fid]');return c?FX.find(f=>f.id===c.dataset.fid):null;});rwBind($('#tkBox'),s,i);
     if($('#tkNext'))$('#tkNext').onclick=()=>{sfx('tap');renderScEp(id,i+1);};
     if($('#tkBoss'))$('#tkBoss').onclick=()=>{sfx('tap');scBossStart(id);};
     $('#tkKv').onclick=()=>{sfx('tap');kvSheet(id,i);};
@@ -3429,7 +3435,7 @@ function dxUp(){if(DX.seg==='my'){return false;}if(DX.sid){const sh=dxShows().fi
   if(DX.show){DX.show=null;dxBody(-1);return true;}if(DX.q||DX.tag){DX.q='';DX.tag='';dxBody(-1);return true;}return false;}
 function dxBody(dir){const box=$('#dxBody');if(!box)return;if(DX.seg==='my'){backBtn(false);dxMy(box);return;}
   const deep=!!(DX.sid||DX.show||DX.q||DX.tag);try{backBtn(deep);}catch(e){}
-  const lang=`<div class="dx-lang"><button data-dl="en" class="${DX.lang!=='de'?'on':''}">🇬🇧 English</button><button data-dl="de" class="${DX.lang==='de'?'on':''}">🇩🇪 Deutsch</button></div>`;
+  const lang=`<div class="dx-lang"><button data-dl="en" class="${DX.lang!=='de'?'on':''}">${FLAG.en} English</button><button data-dl="de" class="${DX.lang==='de'?'on':''}">${FLAG.de} Deutsch</button></div>`;
   let html='';
   if(DX.sid){const s=scOf(DX.sid),sh=dxShows().find(x=>x.k===dictFilm(s)),L=sh?sh.L:[s],n=L.indexOf(s);
     html=`<div class="dx-crumb"><button class="dx-up" id="dxUp">${ui('back')}</button><span><em>${esc(dictFilm(s))}${L.length>1?` · сцена ${n+1} из ${L.length}`:''}</em><b>${esc(s.sub||s.title)}</b></span></div>${lang}
@@ -3489,7 +3495,7 @@ function dxOpen(btn,c){const {s,f,p,pi}=c,r0=btn.getBoundingClientRect();
     <div class="dxc-b"><div class="dxc-top"><span class="dxc-src">${esc(dictFilm(s))} · ${esc(s.sub||'')} · эп. ${pi+1}</span><button class="dxc-x" aria-label="Закрыть">${ui('close')}</button></div>
       <b class="ep-c-en">${DX.lang==='de'?esc(f.de||f.en):kwWrap(f)}</b>${DX.lang==='de'?`<span class="dxc-alt">${esc(f.en)}</span>`:''}<span class="ep-c-ru">${esc(f.ru)}</span>
       <div class="dxc-tags">${dictTags(s,f).map(t=>`<i>#${esc(t)}</i>`).join('')}</div>
-      ${phInfoHTML(f)}
+      ${phInfoHTML(f,{fact:scP(s.id).done.includes(pi)})}
       <div class="dxc-acts"><button data-v="re">${SI.play} Ещё раз</button><button data-v="slow">🐢 Медленнее</button><button data-v="ep">Открыть эпизод →</button></div></div></div>`;
   document.body.appendChild(o);document.body.classList.add('dx-open');
   const card=o.querySelector('.dxc'),R=card.getBoundingClientRect(),k=R.width/card.offsetWidth||1;
@@ -3567,11 +3573,12 @@ function dictFly(){const L=DICT_NEW.splice(0);if(!L.length)return;
    • Вместе: по очереди, общий счёт; тот, чей ход, может нажать «🆘 Помоги» — вопрос откроется у друга.
    • Сервер — отдельный воркер bot/pvp-worker.js (D1). Ссылка: APP_LINK?startapp=kv_CODE. Верные ответы → карты в словарь.
    ===================================================================================== */
-const PVP_API=(window.PVP_API||'https://kino-pvp.1f8t8graf4.workers.dev').replace(/\/$/,'');
+// 12.0: дуэли и сброс прогресса — в том же воркере, что и бот (bot/worker.js → /api/pvp)
+const PVP_API=(window.PVP_API||API+'/api/pvp').replace(/\/$/,'');
 let KV=null;
 const kvUid=()=>{try{const u=TG&&TG.initDataUnsafe&&TG.initDataUnsafe.user;if(u&&u.id)return 'tg'+u.id;}catch(e){}if(!store.kvUid){store.kvUid='u'+Math.random().toString(36).slice(2,10);save();}return store.kvUid;};
 const kvName=()=>{try{const u=TG&&TG.initDataUnsafe&&TG.initDataUnsafe.user;if(u)return (u.first_name||u.username||'Игрок').slice(0,20);}catch(e){}return 'Игрок';};
-async function kvNet(body){const r=await fetch(PVP_API,{method:'POST',headers:{'content-type':'application/json','x-init-data':(TG&&TG.initData)||''},body:JSON.stringify(Object.assign({uid:kvUid(),name:kvName()},body))});return r.json();}
+async function kvNet(body){const r=await fetch(PVP_API,{method:'POST',headers:{'content-type':'application/json','x-init-data':(TG&&TG.initData)||window.__INIT||''},body:JSON.stringify(Object.assign({uid:kvUid(),name:kvName()},body))});return r.json();}
 const kvErr=e=>toast(e&&e.msg?e.msg:'Дуэли пока недоступны: сервер не отвечает');
 // вопросы генерит хозяин — у обоих одинаковые: «что значит», «вставь слово», «что он сказал» (на слух)
 function kvMakeQs(s,ep){const all=s.parts.flatMap(p=>p.ph);let L=scAct(s.parts[ep].ph).filter(f=>f.b>f.a);
@@ -3992,6 +3999,7 @@ function renderScQuiz(id,i){
     else if(!rev&&!les){P.st=P.st||{};prevSt=P.st[i]||0;gain=firstTime?20+okF*8:Math.max(0,stars-prevSt)*20+okF*2;P.st[i]=Math.max(prevSt,stars);}
     else gain=okF*(rev?4:5);
     if(scPilot(s))gain=0;   // 10.2: в пилотных режимах монет нет
+    const epRw=!rev&&!les&&!boss&&typeof i==='number'&&s.parts[i],rwNew=epRw?rwGive(s,i):false;
     scSave();addGold(gain);const lastEp=!rev&&!les&&!s.parts[i+1];
 
     scMount(s,`<div class="sc-q sc-card sc-result" style="text-align:center">
@@ -4003,9 +4011,11 @@ function renderScQuiz(id,i){
       <div class="sc-result-rule">Главное: ты не угадывал синоним. Ты несколько раз восстановил конкретную фразу и увидел, где её применять.</div>
       <div class="sc-btns">${rev?scRevNext(id):boss?`<button class="sc-btn" id="scsum">📚 Все фразы сцены</button><button class="sc-btn ghost" id="scpath">К пути сцены</button>`:`${!les&&s.parts[i+1]?`<button class="sc-btn" id="scnext">Следующий эпизод →</button>`:''}${lastEp?`<button class="sc-btn" id="scbossgo">👑 Финал сцены →</button><button class="sc-btn ghost" id="scsum">📚 Все фразы сцены</button>`:''}<button class="sc-btn ghost" id="scrp">Вернуться к эпизоду</button>`}<button class="sc-btn ghost" id="scshare">📤 Позвать друга учиться</button></div>
     </div>
+    ${epRw?rwHTML(s,i,rwNew):''}
     <div class="sc-sec"><h2>Что закрепили</h2><span>${Q.filter(x=>x.res).length}</span></div>
     ${Q.filter((x,j,a)=>a.findIndex(y=>y.f===x.f)===j).map(x=>`<div class="sc-use sc-card${x.res?'':' miss'}" data-fid="${x.f.id}"><div class="en">${kwWrap(x.f,target(x.f))}</div><div class="ru">${esc(x.f.ru)}</div>${phInfoHTML(x.f,{noEx:true})}</div>`).join('')}`,'scend');
     kwBind(document.querySelector('.scn'),el=>{const c=el.closest('[data-fid]');return c?all.find(y=>y.id===c.dataset.fid):null;});
+    if(epRw)rwBind(document.querySelector('.scn'),s,i);
     sfx(passed?'win':'learn');remindSync();ev(rev?'review':'ep_quiz',id);setTimeout(dictFly,700);   // 11.0: новые карты летят в словарь
     {const g=document.getElementById('gav');if(g)g.remove();}if(!rev)setTimeout(()=>gavEpisode(boss?'Финал':les?'Урок':s.parts[i]?s.parts[i].t:s.title),300);
     if($('#scrp'))$('#scrp').onclick=()=>renderScEp(id,i);
@@ -4017,6 +4027,55 @@ function renderScQuiz(id,i){
   }
   show();
 }
+/* =====================================================================================
+   12.0 — НАГРАДА ЗА ФИНАЛ ЭПИЗОДА: кадр (вертится пальцем, переворачивается), интересный факт в конверте,
+   значок в коллекцию профиля. Факты больше не показываются по ходу эпизода — только здесь (и в словаре после эпизода).
+   Данные: parts[i].fact (факт про момент/фильм; нет — берётся факт фразы), parts[i].prize=[эмодзи, название], файл NN-k.jpg.
+   Хранится в store.rw[sid|i]={t}. В будущем значок можно будет поставить в профиль.
+   ===================================================================================== */
+const rwKey=(s,i)=>s.id+'|'+i;
+const rwHas=(s,i)=>!!(store.rw&&store.rw[rwKey(s,i)]);
+const epFact=(s,i)=>{const p=s.parts[i];if(!p)return '';if(p.fact)return p.fact;const f=p.ph.find(x=>x.fact);return f?f.fact:'';};
+const rwKadr=(s,i)=>assetUrl(scKey(s,String(i+1).padStart(2,'0')+'-k.jpg'));
+const rwPrize=(s,i)=>(s.parts[i]&&s.parts[i].prize)||['🎬',s.parts[i]?s.parts[i].t:s.title];
+const rwPh=(s,i)=>{const L=scAct(s.parts[i].ph);return L.find(x=>x.fact)||L[Math.floor(L.length/2)]||null;};
+function rwGive(s,i){store.rw=store.rw||{};const k=rwKey(s,i);if(store.rw[k])return false;store.rw[k]={t:Date.now()};save();return true;}
+function rwCardHTML(s,i){const p=s.parts[i],pr=rwPrize(s,i),f=rwPh(s,i),n=SCENES.flatMap(x=>x.parts.map((q,j)=>x.id+'|'+j)).indexOf(rwKey(s,i))+1,r=store.rw&&store.rw[rwKey(s,i)];
+  return `<div class="rw-card" style="--c:${DX_TH[s.theme]||'#E9C46A'}"><div class="rw-in">
+    <div class="rw-f"><span class="rw-img" style="background-image:url('${rwKadr(s,i)}'),url('${assetUrl(scEpKey(s,i,'jpg'))}')"></span><span class="rw-sh"></span>
+      <span class="rw-no">№ ${n}</span><span class="rw-cap"><em>${esc(dictFilm(s))} · эпизод ${i+1}</em><b>${esc(p.t)}</b></span></div>
+    <div class="rw-b"><span class="rw-pr">${pr[0]}</span><em>Кадр № ${n}</em><b>${esc(p.t)}</b><small>${esc(s.sub||s.title)}</small>
+      ${f?`<p class="rw-q">«${esc(f.en)}»<span>${esc(f.ru)}</span></p>`:''}${r?`<small class="rw-dt">получен ${new Date(r.t).toLocaleDateString('ru-RU')}</small>`:''}</div></div></div>`;}
+// кадр: мышью — наклон за курсором, пальцем — тянешь и он вертится, тап — переворот на обратную сторону
+function rwTilt(card){if(!card||card._tilt)return;card._tilt=1;const inn=card.querySelector('.rw-in');let ry=0,rx=0,flip=0,drag=null,moved=false;
+  const set=t=>{inn.style.transition=t||'none';inn.style.transform=`rotateX(${rx}deg) rotateY(${ry+flip}deg)`;card.style.setProperty('--gx',(50+ry*1.4)+'%');card.style.setProperty('--gy',(50-rx*2)+'%');};
+  card.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,ry,rx};moved=false;try{card.setPointerCapture(e.pointerId);}catch(x){}});
+  card.addEventListener('pointermove',e=>{if(!drag){if(e.pointerType==='mouse'){const r=card.getBoundingClientRect();ry=((e.clientX-r.left)/r.width-.5)*26;rx=-((e.clientY-r.top)/r.height-.5)*20;set('transform .12s');}return;}
+    const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>6)moved=true;ry=drag.ry+dx*.7;rx=Math.max(-30,Math.min(30,drag.rx-dy*.35));set();});
+  const up=()=>{if(!drag)return;drag=null;if(!moved){flip+=180;sfx('tap');}else{flip=Math.round((ry+flip)/180)*180;}ry=0;rx=0;set('transform .75s cubic-bezier(.2,1.25,.3,1)');haptic('sel');};
+  card.addEventListener('pointerup',up);card.addEventListener('pointercancel',up);
+  card.addEventListener('pointerleave',e=>{if(!drag&&e.pointerType==='mouse'){ry=0;rx=0;set('transform .5s ease');}});}
+function rwHTML(s,i,fresh){const pr=rwPrize(s,i),fact=epFact(s,i);
+  return `<section class="rw${fresh?' fresh':''}"><div class="rw-h"><b>🎁 Награда за эпизод</b><i>${fresh?'новое':'уже в коллекции'}</i></div>
+    ${rwCardHTML(s,i)}<small class="rw-hint">Потяни кадр — он вертится. Нажми — перевернётся.</small>
+    ${fact?`<button class="rw-fact" id="rwFact"><span class="rw-env">✉️</span><span><em>Интересный факт</em><b>Нажми, чтобы открыть</b></span></button>`:''}
+    <div class="rw-prize"><span class="rw-med">${pr[0]}</span><span><em>${fresh?'Новый значок':'Значок'}</em><b>${esc(pr[1])}</b><small>Лежит в коллекции профиля</small></span></div></section>`;}
+function rwBind(box,s,i){const c=box.querySelector('.rw-card');rwTilt(c);
+  if(c&&box.querySelector('.rw.fresh'))c.querySelector('.rw-in').animate([{transform:'rotateY(-200deg) scale(.55)',opacity:0},{transform:'rotateY(12deg) scale(1.03)',opacity:1,offset:.7},{transform:'none',opacity:1}],{duration:1100,delay:350,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'});
+  const fb=box.querySelector('#rwFact');if(fb)fb.onclick=()=>{if(fb.classList.contains('open'))return;sfx('good');haptic('ok');fb.classList.add('open');
+    fb.innerHTML=`<span class="rw-env">✦</span><span><em>Интересный факт</em><p>${esc(epFact(s,i))}</p></span>`;fb.animate([{transform:'rotateX(80deg)',opacity:.2},{transform:'none',opacity:1}],{duration:420,easing:'cubic-bezier(.2,1,.3,1)'});};
+  const m=box.querySelector('.rw.fresh .rw-med');if(m)m.animate([{transform:'scale(0) rotate(-40deg)'},{transform:'scale(1.25) rotate(8deg)',offset:.7},{transform:'none'}],{duration:700,delay:900,easing:'cubic-bezier(.3,1.5,.5,1)',fill:'backwards'});}
+// коллекция в профиле: значки и кадры; кадр открывается и вертится
+function rwAll(){const L=[];SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)!=='hide').forEach(s=>s.parts.forEach((p,i)=>L.push({s,i,got:rwHas(s,i)})));return L;}
+function rwProfileHTML(){const L=rwAll(),g=L.filter(x=>x.got);
+  return `<h2 class="sec2 anim">Коллекция <span>${g.length} из ${L.length}</span></h2>
+    <div class="rwc anim">${g.length?`<div class="rwc-k">${g.map(x=>`<button class="rwc-kd" data-rw="${rwKey(x.s,x.i)}" style="background-image:url('${rwKadr(x.s,x.i)}'),url('${assetUrl(scEpKey(x.s,x.i,'jpg'))}')"><span>${rwPrize(x.s,x.i)[0]}</span></button>`).join('')}</div>`:''}
+      <div class="rwc-m">${L.map(x=>`<span class="rwc-md${x.got?' on':''}" title="${x.got?esc(rwPrize(x.s,x.i)[1]):'Пройди эпизод «'+esc(x.s.parts[x.i].t)+'»'}">${x.got?rwPrize(x.s,x.i)[0]:'?'}</span>`).join('')}</div>
+      <small class="rwc-n">${g.length?'Кадры и значки — за финал эпизодов. Скоро значок можно будет поставить в профиль.':'Пройди проверку любого эпизода — получишь кадр, интересный факт и значок.'}</small></div>`;}
+function rwOpen(k){const [sid,ii]=k.split('|'),s=scOf(sid),i=+ii;if(!s)return;const o=document.createElement('div');o.className='rwo';
+  o.innerHTML=`<div class="rwo-dim"></div><div class="rwo-box">${rwCardHTML(s,i)}<small class="rw-hint">Потяни — вертится, нажми — перевернётся</small>${epFact(s,i)?`<div class="rwo-fact"><em>✦ Интересный факт</em><p>${esc(epFact(s,i))}</p></div>`:''}<button class="sc-btn ghost" id="rwoX">Закрыть</button></div>`;
+  document.body.appendChild(o);rwTilt(o.querySelector('.rw-card'));o.querySelector('.rw-in').animate([{transform:'rotateY(-90deg) scale(.7)',opacity:0},{transform:'none',opacity:1}],{duration:500,easing:'cubic-bezier(.2,1,.3,1)'});
+  const close=()=>{o.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>o.remove();};o.querySelector('.rwo-dim').onclick=close;o.querySelector('#rwoX').onclick=()=>{sfx('tap');close();};}
 /* ================= «как запомнить»: созвучие + картинка, отдельно для английского и немецкого ================= */
 const MEM=window.__DATA.MEM;
 function memOf(mode,cid,L,t){const m=MEM[mode]&&MEM[mode][cid];return m?m[L==='de'?1:0]:(t?t[0]:'');}
@@ -5059,19 +5118,20 @@ function applyFlagsUI(){
 /* ---- 11.2 админ → «Игрок»: пройти всё, сбросить прогресс (себе и по ID), режим игрока ---- */
 function admPass(s){const P=scP(s.id);P.done=s.parts.map((p,i)=>i);P.w=P.w||{};P.st=P.st||{};P.got=P.got||{};
   s.parts.forEach((p,i)=>{P.w[i]=1;P.st[i]=3;scAct(p.ph).forEach(f=>{P.m[f.id]=Math.max(P.m[f.id]||0,3);if(!P.got[f.id])P.got[f.id]=Date.now();});});P.boss=3;
-  store.scOwn=store.scOwn||{};store.scOwn[s.id]=1;}
+  store.scOwn=store.scOwn||{};store.scOwn[s.id]=1;s.parts.forEach((p,i)=>rwGive(s,i));}
 const ADM_KEEP=['onboarded','langs','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','gav','bg3d','labSub','labSnd','labUi','goal','games','roles','path','kvUid','admPlayer','remind'];
 function admResetMe(){const keep={};ADM_KEEP.forEach(k=>{if(store[k]!==undefined)keep[k]=store[k];});
   SC={};scSave();M={};saveM();RV={};saveRV();
   store=normalize(Object.assign(fresh(),keep));store.resetAt=Date.now();save();}
 // сброс по ID: команда лежит на сервере дуэлей (bot/pvp-worker.js), игрок забирает её при запуске
-async function admResetPull(){if(!TG||!TG.initData)return;try{const r=await kvNet({a:'rget'});
+async function admResetPull(){if(!(TG&&TG.initData)&&!window.__INIT)return;try{const r=await kvNet({a:'rget'});
   if(r&&r.ok&&r.v&&r.v.t&&r.v.t>(store.resetAt||0)){admResetMe();store.resetAt=r.v.t;save();toast('Прогресс сброшен администратором');renderHome();}}catch(e){}}
 setTimeout(admResetPull,2500);
 const ADM_ANIMS=[
   {id:'splash',n:'Заставка «кинопроектор»',d:'Отсчёт плёнки, шторки, название. При запуске приложения.',run:()=>splash()},
   {id:'gold',n:'Монеты в счётчик',d:'Когда что-то заработал: «+N» летит в счётчик.',run:()=>{renderHome();setTimeout(()=>{const w=store.fx;store.fx=true;goldFX(25);store.fx=w;},500);}},
   {id:'fly',n:'Карты летят в словарь',d:'После эпизода и проверки: новые фразы-карты падают в «Словарь».',run:()=>{const s=SCENES.find(x=>x.kind!=='clip'),L=dictCards(s).slice(0,4);L.forEach(c=>DICT_NEW.push({sid:s.id,fid:c.f.id}));dictFly();}},
+  {id:'rw',n:'Награда за эпизод',d:'Кадр, который вертится и переворачивается, факт в конверте, значок.',run:()=>{const s=SCENES.find(x=>x.id==='american-psycho')||SCENES[0];rwOpen(rwKey(s,0));}},
   {id:'cd',n:'Отсчёт 3-2-1',d:'Перед дуэлью и играми.',run:()=>countdown(()=>{})},
   {id:'gvok',n:'Гаврик: верно',d:'Маленькая реакция в углу на верный ответ.',run:()=>{gavIdle();gavSay('correct');}},
   {id:'gvbad',n:'Гаврик: ошибка',d:'Реакция на неверный ответ.',run:()=>{gavIdle();gavSay('wrong');}},
@@ -5088,7 +5148,7 @@ function admPlHTML(){const ch=(id,t,d)=>`<button class="adp-b" id="${id}"><b>${t
     </div>
     <button class="adm-tg" type="button">Пройти одну сцену</button><div class="adm-fold" hidden><div class="adp-sc">${SCENES.map(s=>{const P=scP(s.id);return `<button data-pass="${s.id}">${P.done.length>=s.parts.length?'✓ ':''}${esc(s.title)}<small>${esc(s.sub||s.ep||'')}</small></button>`;}).join('')}</div></div>
     <button class="adm-tg" type="button">Сбросить игроку по ID</button><div class="adm-fold" hidden><div class="adp-id"><input id="adpId" inputmode="numeric" placeholder="Telegram ID игрока"><button class="sc-btn" id="adpIdGo">Сбросить</button></div>
-      <p class="lab-note">Прогресс обнулится, когда игрок в следующий раз откроет приложение. Работает через сервер дуэлей (bot/pvp-worker.js) — его нужно поставить, и в нём должен быть BOT_TOKEN.</p></div>`;}
+      <p class="lab-note">Прогресс обнулится, когда игрок в следующий раз откроет приложение. Работает через воркер бота (bot/worker.js 12.0).</p></div>`;}
 function admPlBind(){const re=()=>{const y=document.querySelector('.admscr')?window.scrollY:0;renderAdmin();window.scrollTo(0,y);};
   $('#adpPl').onclick=()=>{sfx('tap');store.admPlayer=!store.admPlayer;save();toast(store.admPlayer?'Теперь всё как у игрока':'Тебе снова открыто всё');re();};
   $('#adpAll').onclick=()=>tgConfirm('Отметить все сцены пройденными на 3 звезды?',()=>{SCENES.forEach(admPass);scSave();save();sfx('win');haptic('ok');toast('Готово: всё пройдено');re();});
@@ -5096,7 +5156,7 @@ function admPlBind(){const re=()=>{const y=document.querySelector('.admscr')?win
   $('#adpReset').onclick=()=>tgConfirm('Сбросить весь твой прогресс? Это не отменить.',()=>{admResetMe();sfx('tap');haptic('warn');toast('Прогресс сброшен');re();});
   $$('[data-pass]').forEach(b=>b.onclick=()=>{const s=scOf(b.dataset.pass);admPass(s);scSave();save();sfx('good');toast('Пройдено: '+s.title);if(!/^✓/.test(b.firstChild.textContent))b.firstChild.textContent='✓ '+b.firstChild.textContent;});
   $('#adpIdGo').onclick=async()=>{const id=String($('#adpId').value||'').replace(/\D/g,'');if(!id){toast('Впиши Telegram ID');return;}
-    tgConfirm(`Сбросить весь прогресс игроку ${id}?`,async()=>{try{const r=await kvNet({a:'rset',target:'tg'+id});toast(r&&r.ok?`Готово: сбросится у ${id} при следующем запуске`:(r&&r.msg)||'Не получилось');}catch(e){toast('Сервер дуэлей не отвечает — поставь bot/pvp-worker.js');}});};}
+    tgConfirm(`Сбросить весь прогресс игроку ${id}?`,async()=>{try{const r=await kvNet({a:'rset',target:'tg'+id});toast(r&&r.ok?`Готово: сбросится у ${id} при следующем запуске`:(r&&r.msg)||'Не получилось');}catch(e){toast('Сервер не отвечает — обнови воркер бота (bot/worker.js)');}});};}
 function renderAdmin(){
   screen='admin';backBtn(true);
   const raw=FLAG_RAW||{},F=Object.fromEntries(FLAG_SECTIONS.map(x=>[x[0],x]));
@@ -5227,6 +5287,7 @@ function bindLearn(){
 function onBack(){
   if(document.querySelector('.dxo')){const d=document.querySelector('.dxo-dim');if(d)d.click();return;}   // 11.0: открытая карта словаря
   if(document.querySelector('.dfly')){document.querySelector('.dfly').click();return;}
+  if(document.querySelector('.rwo')){document.querySelector('.rwo-dim').click();return;}   // 12.0: открытый кадр коллекции
   if(document.querySelector('.dx')&&!document.querySelector('.scn')&&dxUp())return;   // 11.5: словарь — уровень вверх
   if(screen==='pvp'){if(KV&&KV.over){const sid=KV.room.sid;KV=null;renderScene(sid);}else kvLeave();return;}
   if(screen==='sctask'){if(document.querySelector('.sc-pfs')){scExitFull();return;}renderScene(SCUR.id);return;}
