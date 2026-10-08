@@ -2266,7 +2266,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='12.0';
+const APP_V='12.0.1';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2491,7 +2491,7 @@ function renderMyWordsOld(){screen='myw';backBtn(true);const L=mywAll(),ok=L.fil
   $('#bBtn').onclick=()=>{sfx('tap');renderTab('learn');};
   if($('#mwT'))$('#mwT').onclick=()=>{sfx('tap');renderMyWordsQuiz();};
   $$('.myw-del').forEach(b=>b.onclick=()=>{delete store.myw[b.dataset.k];save();sfx('tap');renderMyWords();});
-  $$('.myw-go').forEach(b=>b.onclick=()=>{sfx('tap');srOpen(b.dataset.s,+b.dataset.i,+b.dataset.a);});}
+  $$('.myw-go').forEach(b=>b.onclick=()=>{sfx('tap');const x=store.myw[b.closest('.myw-it').querySelector('.myw-del').dataset.k];momOpen(b.dataset.s,+b.dataset.i,+b.dataset.a,x&&x.w);});}
 function renderMyWordsQuiz(list){const K=shuffle((list||mywAll()).filter(x=>x.ru)).slice(0,8);if(!K.length){toast('Нет слов с переводом');renderMyWords();return;}
   const Q=[...(K.length>=4?[{t:'pairs',set:K.slice(0,4)}]:[]),...K.map(k=>({t:'mean',k})),...(K.length>=8?[{t:'pairs',set:K.slice(4,8)}]:[])];let n=0,ok=0;
   // 11.5: ложные варианты — из моих слов, а если их мало — из общего словаря
@@ -2592,7 +2592,7 @@ function renderDaily(){const L=dailyItems();
     $('#dlshow').onclick=()=>{$('#dlans').classList.add('on');$('#dlshow').hidden=true;$('#dlgr').hidden=false;sfx('tap');};
     $('#dlyes').onclick=()=>{$('#dlgr').hidden=true;grade(q,true,`<div class="t">Отлично</div><div class="en">${esc(it.w)} — ${esc(it.ru)}</div>`);};
     $('#dlno').onclick=()=>{$('#dlgr').hidden=true;grade(q,false,`<div class="t">Вернётся ещё раз</div><div class="en">${esc(it.w)} — ${esc(it.ru)}</div>`);};
-    if($('#dlmom'))$('#dlmom').onclick=()=>{sfx('tap');srOpen(it.sid,it.pi,it.a||0);};}
+    if($('#dlmom'))$('#dlmom').onclick=()=>{sfx('tap');momOpen(it.sid,it.pi,it.a||0,it.w);};}
   function end(){remindSync(true);ev('review','daily');const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
     mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">Повторение на сегодня</div><div class="sc-big">${good} / ${res.length}</div>
       <p class="sc-sub">${good===res.length?'Всё вспомнил. Следующая встреча — через несколько дней.':'Что не вспомнилось — вернётся завтра. Так и запоминается.'}</p>
@@ -2605,7 +2605,7 @@ function phraseOfDayHTML(){const x=phraseOfDay();if(!x)return '';const {s,f}=x,d
   return `<div class="pod card anim"><div class="pod-top"><span class="pod-k">✦ Фраза дня</span><span class="sc-tag ${tg[1]}">${tg[0]}</span></div>
     <b class="pod-en">${esc(s.lang==='de'?f.de:scT(f))}</b><span class="pod-ru">${esc(f.ru)}</span>
     ${f.ex&&f.ex[0]?`<small class="pod-ex">Пример: ${esc(de&&f.exDe?f.exDe[0][0]:de?f.ex[0][2]||f.ex[0][0]:f.ex[0][0])} — ${esc(de&&f.exDe?f.exDe[0][1]:f.ex[0][1])}</small>`:''}
-    <div class="pod-b"><button class="pod-go" onclick="srOpen('${s.id}',${f.pi},${f.a})">▶ Момент из «${esc(s.title)}»</button><button class="sc-say pod-say" data-s="${s.id}" data-clip="${f.id}" onclick="scClip(this.dataset.s,this.dataset.clip,this)" aria-label="Послушать из фильма">${SI.vol||'🔊'}</button></div></div>`;}
+    <div class="pod-b"><button class="pod-go" onclick="momOpen('${s.id}',${f.pi},${f.a})">▶ Момент из «${esc(s.title)}»</button><button class="sc-say pod-say" data-s="${s.id}" data-clip="${f.id}" onclick="scClip(this.dataset.s,this.dataset.clip,this)" aria-label="Послушать из фильма">${SI.vol||'🔊'}</button></div></div>`;}
 /* ================= 8.1: «Как пользоваться» ================= */
 const HELP=[
  ['🎬','Кинозал','Сцены из фильмов и сериалов, разбитые на короткие эпизоды. Выбираешь сцену → эпизод → смотришь. У каждой сцены своя музыка (пластинка на странице сцены).'],
@@ -3546,7 +3546,7 @@ function dxMy(box){const L=mywAll(),tagsOf=x=>[...(x.tags||[]),x.own?'добав
   if($('#dxTrain'))$('#dxTrain').onclick=()=>{sfx('tap');renderMyWordsQuiz(V);};
   box.querySelectorAll('.dm-del').forEach(b=>b.onclick=()=>{delete store.myw[b.dataset.k];save();sfx('tap');re();});
   box.querySelectorAll('.dm-rev').forEach(b=>b.onclick=()=>{const it=store.myw[b.dataset.k];if(!it)return;it.due=Date.now()-1;save();sfx('good');haptic('ok');toast('🔁 Слово в сегодняшнем повторении');re();});
-  box.querySelectorAll('.dm-go').forEach(b=>b.onclick=()=>{sfx('tap');srOpen(b.dataset.s,+b.dataset.i,+b.dataset.a);});
+  box.querySelectorAll('.dm-go').forEach(b=>b.onclick=()=>{sfx('tap');const x=store.myw[b.closest('.dm').querySelector('.dm-del').dataset.k];momOpen(b.dataset.s,+b.dataset.i,+b.dataset.a,x&&x.w);});
   box.querySelectorAll('.dm').forEach((b,i)=>b.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:280,delay:Math.min(i,12)*30,fill:'backwards'}));}
 function renderMyWords(){DX.seg='my';renderTab('dict');}
 // новые карты после эпизода: вылетают, переворачиваются и с ускорением падают в словарь
@@ -5482,6 +5482,32 @@ function renderSearch(q0){screen='search';backBtn(true);
   run();setTimeout(()=>{try{inp.focus();}catch(e){}},250);}
 function srSave(v){v=String(v||'').trim();if(v.length<2)return;store.srRecent=[v,...(store.srRecent||[]).filter(x=>x!==v)].slice(0,8);save();}
 // открыть эпизод сразу на нужной секунде
+// 12.1: момент из сцены — поверх текущего экрана, без перехода: мини-плеер играет ровно эту реплику, слово подсвечено.
+// «Открыть эпизод» — отдельно, если хочется смотреть дальше.
+function momOpen(sid,pi,t,word){const s=scOf(sid),p=s&&s.parts[pi];if(!p){toast('Сцена не найдена');return;}
+  const rows=s.subs.filter(r=>r[1]>p.a&&r[0]<p.b);let r=rows.reduce((m,x)=>!m||Math.abs(x[0]-t)<Math.abs(m[0]-t)?x:m,null)||[t,t+3,'',''];
+  const a=Math.max(0,r[0]-p.a-0.15),b=r[1]-p.a+0.25,de=s.lang==='de';
+  const hl=x=>{let h=esc(x||'');if(word){const w=String(word).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');h=h.replace(new RegExp('(^|[^\\p{L}])('+w+')(?=[^\\p{L}]|$)','iu'),'$1<mark>$2</mark>');}return h;};
+  const o=document.createElement('div');o.className='dxo momo';
+  o.innerHTML=`<div class="dxo-dim"></div><div class="dxc" style="--c:${DX_TH[s.theme]||'#F5C451'}">
+    <div class="dxv-w"><video class="dxv" playsinline webkit-playsinline preload="auto" poster="${assetUrl(scEpKey(s,pi,'jpg'))}"></video><button class="dxv-p" aria-label="Играть">${SI.play}</button></div>
+    <div class="dxc-b"><div class="dxc-top"><span class="dxc-src">${esc(dictFilm(s))} · ${esc(s.sub||'')} · эп. ${pi+1}</span><button class="dxc-x" aria-label="Закрыть">${ui('close')}</button></div>
+      <b class="ep-c-en mom-en">${hl(r[2])}</b><span class="ep-c-ru">${esc(String(r[3]||'').replace(/\n/g,' '))}</span>
+      <div class="dxc-acts"><button data-v="re">${SI.play} Ещё раз</button><button data-v="slow">🐢 Медленнее</button><button data-v="ep">Открыть эпизод →</button></div></div></div>`;
+  document.body.appendChild(o);
+  const card=o.querySelector('.dxc');card.animate([{transform:'translateY(18px) scale(.97)',opacity:0},{transform:'none',opacity:1}],{duration:260,easing:'cubic-bezier(.2,.9,.3,1)'});
+  o.querySelector('.dxo-dim').animate([{opacity:0},{opacity:1}],{duration:220});
+  const v=o.querySelector('.dxv'),pb=o.querySelector('.dxv-p');
+  const play=slow=>{v.playbackRate=slow?.75:1;try{if(Math.abs(v.currentTime-a)>0.05)v.currentTime=a;}catch(e){}const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{pb.hidden=false;});pb.hidden=true;};
+  v.src=assetUrl(scEpKey(s,pi,'mp4'))+'#t='+a.toFixed(2);v.volume=store.scVol==null?1:store.scVol;try{musDuck(true);}catch(e){}
+  v.addEventListener('timeupdate',()=>{if(v.currentTime>=b){v.pause();pb.hidden=false;}});
+  v.addEventListener('loadedmetadata',()=>{if(v.currentTime<a-0.1||v.currentTime>b)v.currentTime=a;},{once:true});
+  play(false);pb.onclick=()=>{sfx('tap');play(false);};
+  const close=()=>{if(o._c)return;o._c=true;v.pause();v.removeAttribute('src');try{v.load();}catch(e){}try{musDuck(false);}catch(e){}document.removeEventListener('keydown',k);
+    card.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:160,fill:'forwards'});o.querySelector('.dxo-dim').animate([{opacity:1},{opacity:0}],{duration:180,fill:'forwards'}).onfinish=()=>o.remove();};
+  const k=e=>{if(e.key==='Escape')close();};document.addEventListener('keydown',k);
+  o.querySelector('.dxo-dim').onclick=close;o.querySelector('.dxc-x').onclick=()=>{sfx('tap');close();};
+  o.querySelectorAll('[data-v]').forEach(x=>x.onclick=()=>{sfx('tap');if(x.dataset.v==='ep'){close();setTimeout(()=>srOpen(sid,pi,t),200);return;}play(x.dataset.v==='slow');});}
 function srOpen(id,i,t){renderScEp(id,i,{free:true});const s=scOf(id);if(!s||!s.parts[i])return;const off=Math.max(0,t-s.parts[i].a-0.4);
   let n=0;const go=()=>{if(SV&&SCUR.id===id){const set=()=>{try{SV.currentTime=off;scTick&&scTick();}catch(e){}};if(SV.readyState>=1)set();else SV.addEventListener('loadedmetadata',set,{once:true});return;}if(++n<20)setTimeout(go,100);};setTimeout(go,150);}
 
