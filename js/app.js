@@ -2324,7 +2324,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='12.6';
+const APP_V='12.7';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2777,8 +2777,9 @@ const SUB_SHORT={'en+ru':'EN·RU','en+de':'EN·DE','de+ru':'DE·RU',en:'EN',de:'
 const SUB_COL={en:2,ru:3,de:4};
 
 // разделы кинозала: фильмы, сериалы, клипы. Сцены одного сериала (поле show) собираются в одну карточку.
-const SC_KIND={film:'Фильм',series:'Сериал',clip:'Клип'};
-const SC_CATS=[['all','Все'],['film','Фильмы'],['series','Сериалы'],['clip','Клипы']];
+const SC_KIND={film:'Фильм',series:'Сериал',clip:'Клип',interview:'Интервью'};
+// 12.7: интервью — как фильмы: человек = «фильм» (поле show), куски интервью = сцены
+const SC_CATS=[['all','Все'],['film','Фильмы'],['series','Сериалы'],['interview','Интервью'],['clip','Клипы']];
 const scDots=n=>`<span class="sc-dots">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</span>`;
 function scRateHTML(s){if(!s.lvl&&!s.use)return '';
   return `<div class="sc-rate">${s.lvl?`<div><span>Сложность на слух</span>${scDots(s.lvl)}<small>${esc(s.lvlWhy||'')}</small></div>`:''}${s.use?`<div><span>Польза в жизни</span>${scDots(s.use)}<small>${esc(s.useWhy||'')}</small></div>`:''}</div>`;}
@@ -2974,9 +2975,11 @@ function scAmb(s){let a=document.getElementById('amb');if(!a){a=document.createE
 // 10.0: видеофон — bg.mp4 из папки сцены: без звука, по кругу, плавно поверх фото. Нет файла / экономия трафика /
 // «меньше движения» / включён 3D-фон — остаётся фото (bg.jpg, иначе обложка).
 const AMB_NOV={};
+// 12.7: общий видеофон раздела — для сцен, у которых нет ни своего фона, ни фона «фильма» (у интервью — студия)
+const SC_KIND_BG={interview:'scenes/_interview/bg.mp4'};
 function scAmbVid(a,s){let v=a.querySelector('video');
   // 11.1: видеофон подхватывается сам — свой bg.mp4 сцены, иначе bg.mp4 соседней сцены того же фильма, иначе фото
-  const src=[s].filter(x=>x.bgv).map(x=>assetUrl(scKey(x,'bg.mp4'))).concat(SCENES.filter(x=>x.filmbg&&(x.show||x.title)===(s.show||s.title)).map(x=>assetUrl(scKey(x,'film-bg.mp4')))).filter(u=>!AMB_BAD[u]);   // 12.5.1: свой bg.mp4, иначе главный фон фильма film-bg.mp4
+  const src=[s].filter(x=>x.bgv).map(x=>assetUrl(scKey(x,'bg.mp4'))).concat(SCENES.filter(x=>x.filmbg&&(x.show||x.title)===(s.show||s.title)).map(x=>assetUrl(scKey(x,'film-bg.mp4')))).concat(SC_KIND_BG[s.kind]?[assetUrl(SC_KIND_BG[s.kind])]:[]).filter(u=>!AMB_BAD[u]);   // 12.5.1: свой bg.mp4, иначе главный фон фильма film-bg.mp4; 12.7: иначе общий фон раздела (интервью)
   const no=!src.length||document.body.classList.contains('has3d')||(navigator.connection&&navigator.connection.saveData)||matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(no){if(v){v.pause();v.classList.remove('on');v.dataset.sid=v.dataset.src='';v.removeAttribute('src');}return;}
   if(!v){v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.preload='auto';v.tabIndex=-1;
@@ -3556,7 +3559,7 @@ const dictFilm=s=>s.show||s.title;
 function dictTags(s,f){const P=scP(s.id),T=[scTag(f)[0],...fTopics(f)],got=(P.got||{})[f.id],r=P.r[f.id];
   if(got&&Date.now()-got<3*864e5)T.push('новые');if(r&&r[1]<=Date.now())T.push('повторить');if((P.m[f.id]||0)>=3)T.push('выучено');return T;}
 const DX={seg:'ph',lang:'en',show:null,sid:null,tag:'',q:'',mytag:'',mytab:'rep'};
-const DX_TH={wolf:'#D4AF37',noir:'#c8323a',bone:'#E8DCC4',taxi:'#F2C200',bunker:'#C9B98A',pump:'#ff4fa0',ocean:'#D9B26F'};
+const DX_TH={wolf:'#D4AF37',noir:'#c8323a',bone:'#E8DCC4',taxi:'#F2C200',bunker:'#C9B98A',pump:'#ff4fa0',ocean:'#D9B26F',meth:'#9FD356',studio:'#FF5A4E'};
 function dcHTML(c,i){const {s,f,pi,p}=c;
   if(!dictHas(s,f))return `<button class="dc lock" data-sid="${s.id}" data-fid="${f.id}" style="--c:${DX_TH[s.theme]||'#F5C451'};--d:${i}"><span class="dc-ep">эп. ${pi+1}</span><span class="dc-q">?</span><small>Пройди «${esc(p.t)}»</small></button>`;
   const P=scP(s.id),r=P.r[f.id],due=r&&r[1]<=Date.now();
@@ -3564,7 +3567,7 @@ function dcHTML(c,i){const {s,f,pi,p}=c;
 // 11.5: словарь — иерархия как в Hearthstone: Фильмы / Сериалы → название → сцена → карты эпизодов. На экране один уровень.
 // 🇬🇧/🇩🇪 — тот же словарь 1:1 (те же фильмы и тот же прогресс P.got), карты на немецком.
 const dxT=f=>DX.lang==='de'?(f.de||f.en):f.en;
-const dxShows=()=>{const G=[],by={};for(const s of dictScenes()){const k=dictFilm(s);if(!by[k]){by[k]=[];G.push(k);}by[k].push(s);}return G.map(k=>({k,L:by[k],kind:by[k][0].kind==='series'?'series':'film'}));};
+const dxShows=()=>{const G=[],by={};for(const s of dictScenes()){const k=dictFilm(s);if(!by[k]){by[k]=[];G.push(k);}by[k].push(s);}return G.map(k=>({k,L:by[k],kind:['series','interview'].includes(by[k][0].kind)?by[k][0].kind:'film'}));};
 function dictTabHTML(){const [g,t]=dictCount(),my=mywAll().length;
   return `<div class="dx anim"><div class="dx-head"><h1 class="title">Словарь</h1><div class="dx-count"><b>${g}</b><span> / ${t}</span></div></div>
     <div class="dx-bar"><i style="width:${t?Math.round(g/t*100):0}%"></i></div>
@@ -3583,7 +3586,7 @@ function dxBody(dir){const box=$('#dxBody');if(!box)return;if(DX.seg==='my'){bac
       <div class="dx-book" id="dxBook"><div class="dx-page" id="dxPage">${dxScene(s)}</div></div>
       ${L.length>1?`<div class="dx-nav"><button id="dxPrev"${n?'':' disabled'}>${ui('back')}</button><span>сцена ${n+1} из ${L.length}</span><button id="dxNext"${n<L.length-1?'':' disabled'}>${ui('fwd')}</button></div>`:''}`;}
   else if(DX.show){const sh=dxShows().find(x=>x.k===DX.show);if(!sh){DX.show=null;return dxBody();}const [g,t]=dictCount(sh.L),s0=sh.L[0];
-    html=`<div class="dx-crumb"><button class="dx-up" id="dxUp">${ui('back')}</button><span><em>${sh.kind==='series'?'Сериал':'Фильм'}</em><b>${esc(sh.k)}</b></span></div>${lang}
+    html=`<div class="dx-crumb"><button class="dx-up" id="dxUp">${ui('back')}</button><span><em>${SC_KIND[sh.kind]||'Фильм'}</em><b>${esc(sh.k)}</b></span></div>${lang}
       <div class="dx-showh"><span class="dx-pst" style="background-image:url('${scCover(s0,'poster.jpg')}'),url('${scCover(s0,'cover.jpg')}')"></span><span><b>${g}</b> из ${t} карт<small>${sh.L.length} ${plural(sh.L.length,['сцена','сцены','сцен'])}</small><i class="dx-mb"><i style="width:${t?g/t*100:0}%"></i></i></span></div>
       <div class="dx-scl">${sh.L.map(s=>{const [a,b]=dictCount([s]);return `<button class="dx-sci" data-sid="${s.id}" style="--ban:url('${scCover(s,'cover.jpg')}')"><span><em>${esc(s.ep||'')}</em><b>${esc(s.sub||s.title)}</b><small>${s.parts.length} ${plural(s.parts.length,['эпизод','эпизода','эпизодов'])}</small></span><span class="dx-got"><b>${a}</b>/${b}<i style="--p:${b?a/b*100:0}%"></i></span></button>`;}).join('')}</div>`;}
   else if(DX.q||DX.tag){html=`<div class="dx-crumb"><button class="dx-up" id="dxUp">${ui('back')}</button><span><em>Поиск</em><b>${DX.tag?'#'+esc(DX.tag):'«'+esc(DX.q)+'»'}</b></span></div>
@@ -3591,7 +3594,7 @@ function dxBody(dir){const box=$('#dxBody');if(!box)return;if(DX.seg==='my'){bac
   else{const SH=dxShows(),row=(title,L)=>L.length?`<div class="dx-shelf"><h3>${title}</h3><div class="dx-shows">${L.map(sh=>{const [g,t]=dictCount(sh.L),s0=sh.L[0];
       return `<button class="dx-show" data-show="${esc(sh.k)}" style="--c:${DX_TH[s0.theme]||'#F5C451'}"><span class="dx-pst" style="background-image:url('${scCover(s0,'poster.jpg')}'),url('${scCover(s0,'cover.jpg')}')"></span><b>${esc(sh.k)}</b><small>${g} / ${t}</small><i class="dx-mb"><i style="width:${t?g/t*100:0}%"></i></i></button>`;}).join('')}</div></div>`:'';
     html=`${lang}<div class="dx-tools"><input class="dx-q" id="dxQ" placeholder="🔍 Найти фразу или перевод" value="" autocomplete="off"></div>${dxTagsHTML()}
-      ${row('Фильмы',SH.filter(x=>x.kind==='film'))}${row('Сериалы',SH.filter(x=>x.kind==='series'))}`;}
+      ${row('Фильмы',SH.filter(x=>x.kind==='film'))}${row('Сериалы',SH.filter(x=>x.kind==='series'))}${row('Интервью',SH.filter(x=>x.kind==='interview'))}`;}
   box.innerHTML=`<div class="dx-lvl">${html}</div>`;
   if(dir)box.firstChild.animate([{opacity:0,transform:`translateX(${dir>0?28:-28}px)`},{opacity:1,transform:'none'}],{duration:260,easing:'cubic-bezier(.2,.9,.3,1)'});
   box.querySelectorAll('[data-dl]').forEach(b=>b.onclick=()=>{if(DX.lang===b.dataset.dl)return;sfx('tap');DX.lang=b.dataset.dl;dxBody();});
@@ -5494,9 +5497,10 @@ function learnTabHTML(){
     </div>
     ${phraseOfDayHTML()}
     <div class="hsec anim"><h2>Кинозал</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
-    <div class="hrow">${(()=>{const G=[],by={};for(const x of SCENES.filter(x=>flagOf('scene-'+x.id)!=='hidden')){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
+    ${[['kino',x=>x.kind!=='interview'],['iv',x=>x.kind==='interview']].map(([hk,hf])=>{const HS=SCENES.filter(x=>flagOf('scene-'+x.id)!=='hidden'&&hf(x));if(!HS.length)return '';
+    return (hk==='iv'?`<div class="hsec anim"><h2>Интервью</h2><button class="hlink" id="hAllIv">Все интервью →</button></div>`:'')+`<div class="hrow">${(()=>{const G=[],by={};for(const x of HS){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
       return G.map(k=>{const L=by[k],x=L[0],l=L.reduce((a,y)=>a+scLearned(y),0),t=L.reduce((a,y)=>a+scTotal(y),0),eps=L.reduce((a,y)=>a+y.parts.length,0);
-        return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div></div>`;
+        return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div>`;}).join('')}</div>`;
 }
 function bindLearn(){
   bindHead();
@@ -5507,6 +5511,7 @@ function bindLearn(){
   if($('#hNext'))$('#hNext').onclick=()=>{haptic('medium');renderScEp(c.s.id,c.i);};
   if($('#hReview'))$('#hReview').onclick=()=>{haptic('medium');const sc=SCENES.find(x=>scDue(x).length);if(sc)renderScQuiz(sc.id,'rev');else startSession('review');};
   if($('#hAllKino'))$('#hAllKino').onclick=()=>{sfx('tap');renderTab('kino');};
+  if($('#hAllIv'))$('#hAllIv').onclick=()=>{sfx('tap');store.kinoCat='interview';save();renderTab('kino');};
   if($('#hAllGames'))$('#hAllGames').onclick=()=>{sfx('tap');renderTab('games');};
   $$('.hrow [data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});
   $$('.hrow [data-sc]').forEach(b=>b.onclick=()=>{haptic('medium');renderScene(b.dataset.sc);});

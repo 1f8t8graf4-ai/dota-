@@ -4105,3 +4105,27 @@ body.appbg:not([data-scn]) #appbg{opacity:1}
 
 /* ==== 12.6 — проверка: после ответа «Не знаю» и подсказка про кубики прячутся ==== */
 .tk-skip[hidden],.tk-tip[hidden]{display:none!important}
+
+/* ==== 12.7 — тема «meth» («Во все тяжкие»): пустыня Альбукерке, зелёный «химический» акцент ==== */
+body[data-scn="meth"]{--scbg:#080b07;--sa:#9FD356;--sa2:#E8C547;--sat:rgba(159,211,86,.22)}
+.scn.meth{--bg:#090c08;--card:#121810;--line:rgba(159,211,86,.22);--ink:#EEF1E6;--muted:#97a38c;--acc:#9FD356;--acc-ink:#0c1209;--hi:#9FD356;--track:#1b2418;--ok:#9FD356;--okbg:rgba(159,211,86,.12);--bad:#e0675a;--badbg:rgba(224,103,90,.12);--scd:'Oswald','Golos Text',sans-serif;--scb:'Golos Text',system-ui,sans-serif}
+.kposter.meth .kp-t b,.hposter.meth .kp-t b{font-family:'Oswald','Golos Text',sans-serif;letter-spacing:.03em;text-transform:uppercase;color:#EEF1E6}
+.kposter.meth .kp-t em{color:#9FD356}
+.kposter.meth,.hposter.meth{box-shadow:inset 0 0 0 1px rgba(159,211,86,.25)}
+.hcont.meth .hc-t em{color:#9FD356}.hcont.meth .hc-bar i{background:#9FD356}
+.kcard.meth{background:#111710;color:#EEF1E6;box-shadow:inset 0 0 0 1px rgba(159,211,86,.3)}
+.kcard.meth b{font-family:'Oswald','Golos Text',sans-serif;text-transform:uppercase}
+.kcard.meth em{color:#9FD356}.kcard.meth .kbar i{background:#9FD356}
+
+/* ==== 12.7 — тема «studio» (интервью): тёмная студия подкаста, красная лампа «в эфире» ==== */
+body[data-scn="studio"]{--scbg:#0b0a0b;--sa:#FF5A4E;--sa2:#F3EBDD;--sat:rgba(255,90,78,.2)}
+.scn.studio{--bg:#0c0b0c;--card:#171516;--line:rgba(255,90,78,.2);--ink:#F3EBDD;--muted:#a39a92;--acc:#FF5A4E;--acc-ink:#140707;--hi:#FF5A4E;--track:#241f20;--ok:#7fc79b;--okbg:rgba(127,199,155,.12);--bad:#ff7a6e;--badbg:rgba(255,122,110,.12);--scd:'Inter','Golos Text',sans-serif;--scb:'Golos Text',system-ui,sans-serif}
+.kposter.studio .kp-t b,.hposter.studio .kp-t b{font-family:'Inter','Golos Text',sans-serif;font-weight:600;color:#F3EBDD}
+.kposter.studio .kp-t em{color:#FF5A4E}
+.kposter.studio .kp-t em::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:#FF5A4E;margin-right:6px;vertical-align:1px;box-shadow:0 0 8px #FF5A4E}
+.kposter.studio,.hposter.studio{box-shadow:inset 0 0 0 1px rgba(255,90,78,.25)}
+.hcont.studio .hc-t em{color:#FF5A4E}.hcont.studio .hc-bar i{background:#FF5A4E}
+.kcard.studio{background:#161415;color:#F3EBDD;box-shadow:inset 0 0 0 1px rgba(255,90,78,.3)}
+.kcard.studio em{color:#FF5A4E}.kcard.studio .kbar i{background:#FF5A4E}
+/* 12.7: длинные названия сцен в «meth» — без капса, иначе карточка превращается в стену букв */
+.kposter.meth .kp-t b,.hposter.meth .kp-t b,.kcard.meth b{text-transform:none;letter-spacing:.01em;font-weight:600}

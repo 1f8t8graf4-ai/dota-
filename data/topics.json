@@ -646,6 +646,354 @@
 "titanic-boat|Oh God. I couldn't go.": [
 "эмоции",
 "свидание"
+],
+"breaking-bad-pilot|It's the last house on the right, see it?": [
+"общение"
+],
+"breaking-bad-pilot|Not the two-story one, the one next to it.": [
+"общение"
+],
+"breaking-bad-pilot|I don't know, what do you call that?": [
+"общение"
+],
+"breaking-bad-pilot|Sage. That's the word for it.": [
+"общение"
+],
+"breaking-bad-pilot|So what tells you it's a meth lab?": [
+"общение"
+],
+"breaking-bad-pilot|Lives up to his name in there.": [
+"общение"
+],
+"breaking-bad-pilot|All right. You're on.": [
+"общение"
+],
+"breaking-bad-pilot|Copy that.": [
+"общение"
+],
+"breaking-bad-pilot|Meth labs are nasty on a good day.": [
+"здоровье"
+],
+"breaking-bad-pilot|One whiff will kill you.": [
+"ссоры",
+"здоровье"
+],
+"breaking-bad-pilot|Pay up, sucker.": [
+"деньги"
+],
+"breaking-bad-pilot|Tell you what. I'll let you off for a ten.": [
+"общение"
+],
+"breaking-bad-pilot|Hank, do you think I might get to go inside, see the actual lab?": [
+"общение"
+],
+"breaking-bad-pilot|Stay here a minute.": [
+"телефон и планы"
+],
+"breaking-bad-pilot|This is all the money I have in the world.": [
+"деньги"
+],
+"breaking-bad-pilot|You are not how I remember you from class.": [
+"быт"
+],
+"breaking-bad-pilot|I gotta go.": [
+"быт"
+],
+"breaking-bad-pilot|Wait, wait. Hold on.": [
+"быт"
+],
+"breaking-bad-pilot|Tell me why you're doing this.": [
+"общение"
+],
+"breaking-bad-pilot|Money, mainly.": [
+"деньги"
+],
+"breaking-bad-pilot|There you go.": [
+"общение"
+],
+"breaking-bad-pilot|He's just gonna break bad?": [
+"общение"
+],
+"breaking-bad-pilot|It doesn't compute.": [
+"общение"
+],
+"breaking-bad-pilot|That's something I need to know about, okay?": [
+"общение"
+],
+"breaking-bad-pilot|I mean, that affects me.": [
+"общение"
+],
+"breaking-bad-pilot|Buy the RV. We start tomorrow.": [
+"телефон и планы"
+],
+"breaking-bad-gus|Can I help you, sir?": [
+"кафе и магазин"
+],
+"breaking-bad-gus|Diet Coke, please.": [
+"кафе и магазин"
+],
+"breaking-bad-gus|And five minutes of your time.": [
+"работа",
+"телефон и планы"
+],
+"breaking-bad-gus|What can I do for you?": [
+"кафе и магазин"
+],
+"breaking-bad-gus|Sorry, I'm not following.": [
+"общение"
+],
+"breaking-bad-gus|I think that you're confusing me for someone else.": [
+"общение"
+],
+"breaking-bad-gus|I don't think I am.": [
+"общение"
+],
+"breaking-bad-gus|Sir, if you have a complaint, I suggest you submit it to our email system.": [
+"работа"
+],
+"breaking-bad-gus|I believe we're alike in that way.": [
+"общение"
+],
+"breaking-bad-gus|You should give me another chance.": [
+"общение"
+],
+"breaking-bad-gus|Your partner was late, and he was high.": [
+"работа",
+"здоровье"
+],
+"breaking-bad-gus|You have poor judgment.": [
+"общение"
+],
+"breaking-bad-gus|Are you familiar with my product?": [
+"работа"
+],
+"breaking-bad-gus|I've been told it's excellent.": [
+"общение"
+],
+"breaking-bad-gus|That is not the only factor.": [
+"работа"
+],
+"breaking-bad-gus|Hands down.": [
+"общение"
+],
+"breaking-bad-gus|Who I choose to do business with on my end is not your problem.": [
+"деньги",
+"работа"
+],
+"breaking-bad-gus|Forget he exists.": [
+"общение"
+],
+"breaking-bad-gus|I have to ask, why? Why him?": [
+"общение"
+],
+"breaking-bad-gus|Because I can trust him.": [
+"общение"
+],
+"breaking-bad-gus|Ready to go at a moment's notice.": [
+"телефон и планы"
+],
+"breaking-bad-gus|Will I hear from you?": [
+"телефон и планы"
+],
+"breaking-bad-knocks|If you are in danger, we go to the police.": [
+"ссоры"
+],
+"breaking-bad-knocks|I don't want to hear about the police.": [
+"ссоры"
+],
+"breaking-bad-knocks|I do not say that lightly.": [
+"общение"
+],
+"breaking-bad-knocks|You are in over your head.": [
+"общение"
+],
+"breaking-bad-knocks|Of course it is.": [
+"общение"
+],
+"breaking-bad-knocks|Okay, we're done here.": [
+"ссоры",
+"общение"
+],
+"breaking-bad-knocks|Jesus, what was I thinking?": [
+"эмоции"
+],
+"breaking-bad-knocks|Let's both of us stop trying to justify this whole thing.": [
+"ссоры"
+],
+"breaking-bad-knocks|Who are you talking to right now?": [
+"общение"
+],
+"breaking-bad-knocks|Do you know how much I make a year?": [
+"общение"
+],
+"breaking-bad-knocks|I mean, even if I told you, you wouldn't believe it.": [
+"общение"
+],
+"breaking-bad-knocks|A business big enough that it could be listed on the NASDAQ goes belly-up.": [
+"деньги",
+"работа"
+],
+"breaking-bad-knocks|You clearly don't know who you're talking to, so let me clue you in.": [
+"ссоры",
+"общение"
+],
+"breaking-bad-knocks|I am not in danger, Skyler. I am the danger.": [
+"ссоры"
+],
+"breaking-bad-knocks|No. I am the one who knocks.": [
+"ссоры"
+],
+"breaking-bad-knocks|Where's the rest?": [
+"общение"
+],
+"breaking-bad-knocks|Skyler, where is the money?": [
+"деньги"
+],
+"breaking-bad-knocks|I gave it to Ted.": [
+"общение"
+],
+"breaking-bad-knocks|You did what?": [
+"общение"
+],
+"breaking-bad-knocks|Walt, I had to.": [
+"общение"
+],
+"breaking-bad-knocks|For us, for the family.": [
+"быт"
+],
+"breaking-bad-knocks|Please just hear me out.": [
+"общение"
+],
+"durov-tucker|Thank you for having me.": [
+"общение"
+],
+"durov-tucker|So I confess, I've used Telegram.": [
+"общение"
+],
+"durov-tucker|I was just kind of amazed by your story.": [
+"эмоции"
+],
+"durov-tucker|Where are you from?": [
+"общение"
+],
+"durov-tucker|That will be a long story.": [
+"общение"
+],
+"durov-tucker|That's okay.": [
+"общение"
+],
+"durov-tucker|I'm really hopeful that the past is behind us.": [
+"эмоции"
+],
+"durov-tucker|I want to be optimistic.": [
+"эмоции"
+],
+"durov-tucker|So I don't necessarily believe that things are going to get worse.": [
+"общение"
+],
+"durov-tucker|There's a pattern here.": [
+"общение"
+],
+"durov-tucker|For us, we apply the rules equally to all sides.": [
+"общение"
+],
+"durov-tucker|It's not that we don't care.": [
+"эмоции"
+],
+"durov-tucker|What do you think of that?": [
+"общение"
+],
+"durov-tucker|We ended up here in the UAE out of all places.": [
+"телефон и планы"
+],
+"durov-tucker|Can you explain to viewers who aren't familiar with them what a Telegram channel is?": [
+"работа",
+"общение"
+],
+"durov-tucker|So there's a channel, people subscribe to it.": [
+"работа"
+],
+"durov-tucker|So you receive it like a text.": [
+"общение"
+],
+"durov-tucker|It's a very familiar form for a lot of people.": [
+"общение"
+],
+"durov-tucker|A few other apps followed in our footsteps and copied that feature as well.": [
+"работа"
+],
+"durov-tucker|I think it's interesting.": [
+"общение"
+],
+"clavicular-impaulsive|Would you say you're afraid of rejection?": [
+"эмоции"
+],
+"clavicular-impaulsive|No. Don't care.": [
+"эмоции"
+],
+"clavicular-impaulsive|How come?": [
+"общение"
+],
+"clavicular-impaulsive|I've gotten rejected probably live on stream like at least 5,000 times at this point.": [
+"общение"
+],
+"clavicular-impaulsive|But that's totally fine with me.": [
+"эмоции"
+],
+"clavicular-impaulsive|It almost keeps you in check.": [
+"эмоции"
+],
+"clavicular-impaulsive|But I think that kind of gets your head too big and doesn't keep you in reality.": [
+"эмоции"
+],
+"clavicular-impaulsive|So it gives you a good idea of where you are.": [
+"общение"
+],
+"clavicular-impaulsive|It's just a wild sentence.": [
+"эмоции"
+],
+"clavicular-impaulsive|Bro, I'm so entertained.": [
+"эмоции"
+],
+"clavicular-impaulsive|Okay, I can see how that would be, yeah.": [
+"общение"
+],
+"clavicular-impaulsive|They work for some people.": [
+"работа"
+],
+"clavicular-impaulsive|It's an automatic problem.": [
+"общение"
+],
+"clavicular-impaulsive|Are you like your siblings?": [
+"быт"
+],
+"clavicular-impaulsive|Well, my sister's a fair bit younger than me.": [
+"быт"
+],
+"clavicular-impaulsive|So it's just hard to say.": [
+"общение"
+],
+"clavicular-impaulsive|Is the relationship between you and your parents solid at the moment?": [
+"быт"
+],
+"clavicular-impaulsive|What's the core obstacle?": [
+"общение"
+],
+"clavicular-impaulsive|But you're an adult now, technically.": [
+"быт"
+],
+"clavicular-impaulsive|Well, they still don't want to really accept that.": [
+"общение"
+],
+"clavicular-impaulsive|He's doing his own thing.": [
+"быт"
+],
+"clavicular-impaulsive|It's not even about the money.": [
+"деньги"
+],
+"clavicular-impaulsive|Make sure your lawyers review it.": [
+"деньги",
+"работа"
 ]
 }
 }
