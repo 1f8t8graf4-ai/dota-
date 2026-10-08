@@ -166,20 +166,19 @@ function load(){
 }
 let store=load();
 let M={};try{M=JSON.parse(localStorage.getItem(MKEY))||{};}catch(e){M={};}
+// 12.1: облако Telegram держит ≤4096 символов на ключ — store пишем кусками (KEY_0…, KEY_n), с задержкой,
+// и только после первой синхронизации (иначе телефон затёр бы свежий прогресс с ПК до того, как его прочитал)
+const SV0=store.sv||0;let CLOUD_OK=false,CLOUD_T=0;
 function save(){
-  const s=JSON.stringify(store);
+  store.sv=Date.now();const s=JSON.stringify(store);
   try{localStorage.setItem(KEY,s);}catch(e){}
-  try{if(TG&&TG.CloudStorage)TG.CloudStorage.setItem(KEY,s,()=>{});}catch(e){}
+  if(!CLOUD_OK||!TG||!TG.CloudStorage)return;
+  clearTimeout(CLOUD_T);CLOUD_T=setTimeout(()=>{const v=JSON.stringify(store);cloudSaveChunked(KEY,v);try{if(v.length<4000)TG.CloudStorage.setItem(KEY,v,()=>{});}catch(e){}},1200);
 }
 function saveM(){
   const s=JSON.stringify(M);
   try{localStorage.setItem(MKEY,s);}catch(e){}
-  if(!TG||!TG.CloudStorage)return;
-  try{
-    const parts=[];for(let i=0;i<s.length;i+=3800)parts.push(s.slice(i,i+3800));
-    parts.forEach((p,i)=>TG.CloudStorage.setItem(MKEY+'_'+i,p,()=>{}));
-    TG.CloudStorage.setItem(MKEY+'_n',String(parts.length),()=>{});
-  }catch(e){}
+  if(CLOUD_OK)cloudSaveChunked(MKEY,s);
 }
 
 /* ================= Telegram ================= */
@@ -187,6 +186,8 @@ const TG=(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.platfo
 let screen='home',PARAM_LANG='';
 const canFull=()=>!!(TG&&typeof TG.requestFullscreen==='function'&&TG.isVersionAtLeast&&TG.isVersionAtLeast('8.0')&&TG.platform&&TG.platform!=='unknown');
 if(TG&&TG.platform&&!/^(android|ios)/.test(TG.platform))document.documentElement.classList.add('tg-desk');
+// 12.1: на iPhone громкость видео задаётся только кнопками телефона — ползунок прячем, остаётся «звук вкл/выкл»
+if((TG&&TG.platform==='ios')||/iPhone|iPad|iPod/.test(navigator.userAgent))document.documentElement.classList.add('ios');
 function setInsets(){
   if(!TG)return;
   const r=document.documentElement.style,sa=TG.safeAreaInset||{},ca=TG.contentSafeAreaInset||{};
@@ -222,20 +223,44 @@ function initTG(){
   try{TG.BackButton.onClick(onBack);}catch(e){}
   applyFullscreen();setTimeout(applyFullscreen,500);
   document.addEventListener('pointerdown',function once(){document.removeEventListener('pointerdown',once,true);if(store.full!==false&&canFull()&&!TG.isFullscreen)applyFullscreen();},true);
-  cloudGet(KEY).then(v=>{
-    let r=null;try{r=v&&JSON.parse(v);}catch(e){}
-    if(r&&(r.answered||0)>(store.answered||0)){
-      store=normalize(r);try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}
-      if(screen==='home'||(screen==='ob'&&store.onboarded&&OB&&OB.i===0))renderHome();
-    }else if(!r&&!store.answered){
-      cloudGet(OLD_KEY).then(o=>{try{o=o&&JSON.parse(o);}catch(e){o=null;}if(o&&(o.answered||0)>0&&!store.onboarded){store=migrate(o);save();}});
-    }
-  });
-  cloudLoadM().then(c=>{
-    if(!c)return;let changed=false;
-    for(const k in c){if((c[k]||0)>(M[k]||0)){M[k]=c[k];changed=true;}}
-    if(changed){try{localStorage.setItem(MKEY,JSON.stringify(M));}catch(e){}if(screen==='home')renderHome();}
-  });
+  cloudSync();
+}
+function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)return res(null);
+  TG.CloudStorage.getItem(key+'_n',(e,n)=>{n=+n;if(e||!n)return res(null);const ks=[...Array(n).keys()].map(i=>key+'_'+i);
+    TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){res(null);}});}
+// 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
+// покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
+const LOCAL_ONLY=['snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang'];
+function storeMerge(c){const L=store,cNew=(c.sv||0)>SV0,o=Object.assign({},cNew?L:c,cNew?c:L);
+  const uni=k=>Object.assign({},c[k]||{},L[k]||{});
+  o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
+  for(const k in o.mywDel)if(o.myw[k]&&(o.myw[k].at||0)<o.mywDel[k])delete o.myw[k];
+  o.rw=uni('rw');for(const k in c.rw||{})if(L.rw&&L.rw[k]&&c.rw[k].t<L.rw[k].t)o.rw[k]=c.rw[k];
+  ['scOwn','kvPaid','kvDone','ach','duels','goalsDone'].forEach(k=>{if((c[k]&&typeof c[k]==='object'&&!Array.isArray(c[k]))||(L[k]&&typeof L[k]==='object'&&!Array.isArray(L[k])))o[k]=uni(k);});
+  o.best=uni('best');for(const k in c.best||{})o.best[k]=Math.max(+c.best[k]||0,+(L.best||{})[k]||0);
+  ['answered','correct','bestStreak'].forEach(k=>o[k]=Math.max(+c[k]||0,+L[k]||0));
+  LOCAL_ONLY.forEach(k=>{if(k in L)o[k]=L[k];else delete o[k];});
+  return normalize(o);}
+function scMergeIn(c){for(const id in c){const a=scP(id),b=c[id]||{};
+  a.done=[...new Set([...a.done,...(b.done||[])])];for(const k in b.m||{})a.m[k]=Math.max(a.m[k]||0,b.m[k]);Object.assign(a.w,b.w||{});
+  a.got=Object.assign({},b.got||{},a.got||{});a.vq=Object.assign({},b.vq||{},a.vq||{});a.rDone=Object.assign({},b.rDone||{},a.rDone||{});
+  if(b.st){a.st=a.st||{};for(const k in b.st)a.st[k]=Math.max(a.st[k]||0,b.st[k]);}
+  if(b.boss)a.boss=Math.max(a.boss||0,b.boss);
+  for(const k in b.r||{}){const x=a.r[k],y=b.r[k];if(!x||y[0]>x[0]||(y[0]===x[0]&&y[1]>x[1]))a.r[k]=y;}}}
+async function cloudSync(){
+  try{let c=await cloudLoad(KEY);if(!c){const v=await cloudGet(KEY);try{c=v&&JSON.parse(v);}catch(e){c=null;}}
+    let more=true;
+    if(c&&typeof c==='object'){
+      if((store.resetAt||0)>(c.sv||0))more=false;   // в облаке — прогресс до сброса: не возвращаем его
+      else if((c.resetAt||0)>(store.resetAt||0)&&(c.resetAt||0)>SV0){const keep={};LOCAL_ONLY.forEach(k=>{if(k in store)keep[k]=store[k];});store=normalize(Object.assign(c,keep));SC={};M={};RV={};}   // сброс был на другом устройстве
+      else store=storeMerge(c);
+    }else if(!store.answered){const o0=await cloudGet(OLD_KEY);let o=null;try{o=o0&&JSON.parse(o0);}catch(e){}if(o&&(o.answered||0)>0&&!store.onboarded)store=migrate(o);}
+    if(more){const sc=await cloudLoad(SCK);if(sc)scMergeIn(sc);
+      const cm=await cloudLoadM();if(cm)for(const k in cm)if((cm[k]||0)>(M[k]||0))M[k]=cm[k];
+      const cr=await cloudLoad(RKEY);if(cr)for(const k in cr){const x=RV[k],y=cr[k];if(Array.isArray(y)&&(!x||y[0]>x[0]))RV[k]=y;}}
+  }catch(e){}
+  CLOUD_OK=true;save();scSave();saveM();saveRV();
+  if(screen==='home'&&!document.querySelector('.dxo,.rwo,.dfly,.sc-sheetwrap')&&!document.body.classList.contains('kw-open'))try{renderHome();}catch(e){}
 }
 function backBtn(show){if(!TG)return;try{show?TG.BackButton.show():TG.BackButton.hide();}catch(e){}}
 function haptic(t){
@@ -341,7 +366,14 @@ const joinTok=list=>list.reduce((s,t)=>t.g?s+t.t:(s?s+' '+t.t:t.t),'');
 const toks=arr=>arr.map(p=>({t:p[0],g:!!p[1]}));
 const accuracy=()=>store.answered?Math.round(store.correct/store.answered*100):null;
 function underline(name,focus){return focus&&name.includes(focus)&&focus!==name?esc(name).replace(esc(focus),`<u>${esc(focus)}</u>`):esc(name);}
-function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);if(!tab)paintTabbar(null);app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());}
+// 12.1: при любом переходе — убрать всё, что висит поверх экрана (карта словаря с видео, мини-плеер, поповеры слов),
+// и остановить видео эпизода, если уходим со сцены. Раньше карта/видео могли остаться висеть над новым экраном.
+function uiClean(cls){const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
+  document.querySelectorAll('.dxo,.rwo').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
+  document.body.classList.remove('dx-open');try{kwHide(0);}catch(e){}try{musDuck(false);}catch(e){}
+  try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
+  if(!scn)try{if(SV)scStop();}catch(e){}}
+function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);if(!tab)paintTabbar(null);app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());}
 function applyFx(){
   document.body.classList.toggle('nofx',!store.fx);
   if(!document.body.dataset.world)setWorld('neutral');
@@ -965,7 +997,7 @@ function buildAny(mode,c,L,kind){
 /* ---- повторение выученного (интервалы 3, 7, 21, 60 дней) ---- */
 const RKEY='dota_r_v1',R_DAYS=[3,7,21,60];
 let RV={};try{RV=JSON.parse(localStorage.getItem(RKEY))||{};}catch(e){RV={};}
-function saveRV(){const s=JSON.stringify(RV);try{localStorage.setItem(RKEY,s);}catch(e){}cloudSaveChunked(RKEY,s);}
+function saveRV(){const s=JSON.stringify(RV);try{localStorage.setItem(RKEY,s);}catch(e){}if(CLOUD_OK)cloudSaveChunked(RKEY,s);}
 function cloudSaveChunked(key,s){
   if(!TG||!TG.CloudStorage)return;
   try{const parts=[];for(let i=0;i<s.length;i+=3800)parts.push(s.slice(i,i+3800));
@@ -2266,7 +2298,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='12.0.1';
+const APP_V='12.1';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2473,10 +2505,12 @@ function playSeg(src,a,b,btn){if(!SCLIP){SCLIP=document.createElement('video');S
 /* ================= 8.3: «Мои слова» — сохраняй незнакомые слова прямо из субтитров ================= */
 // Нажал на слово → «⭐ В мои слова». Потом — список с контекстом (реплика, момент в фильме) и тренировка «пары / что значит».
 const mywKey=(sid,w)=>sid+'|'+w;
+// 12.1: удалённое слово помечаем, чтобы синк с другим устройством его не вернул
+function mywDel(k){if(!store.myw)return;delete store.myw[k];store.mywDel=store.mywDel||{};store.mywDel[k]=Date.now();}
 const mywAll=()=>Object.values(store.myw||{}).sort((a,b)=>b.at-a.at);
 const mywHas=(sid,w)=>!!(store.myw&&store.myw[mywKey(sid,swNorm(w))]);
 function mywToggle(sid,pi,word,row,hit){store.myw=store.myw||{};const w=swNorm(word),k=mywKey(sid,w);
-  if(store.myw[k]){delete store.myw[k];save();toast('Убрал из «Моих слов»');return false;}
+  if(store.myw[k]){mywDel(k);save();toast('Убрал из «Моих слов»');return false;}
   const s=scOf(sid),p=s&&s.parts[pi];store.myw[k]={k,w,ru:hit?hit.ru:'',de:hit&&hit.de||'',sid,pi,line:row?row[2]:'',lineRu:row?row[3]:'',a:row&&p?row[0]:0,at:Date.now(),lvl:0,st:0,due:Date.now()+36e5};
   save();toast('⭐ Сохранил в «Мои слова»');haptic('ok');return true;}
 const mywBtn=(sid,w)=>`<button data-x="save" class="myw-save${mywHas(sid,w)?' on':''}">${mywHas(sid,w)?'★ В моих словах':'☆ В мои слова'}</button>`;
@@ -2490,7 +2524,7 @@ function renderMyWordsOld(){screen='myw';backBtn(true);const L=mywAll(),ok=L.fil
       ${s?`<button class="myw-go" data-s="${x.sid}" data-i="${x.pi}" data-a="${x.a}">▶ ${esc(s.title)} · эп. ${x.pi+1}</button>`:''}</div>`;}).join('')}</div>`,'mywscr');
   $('#bBtn').onclick=()=>{sfx('tap');renderTab('learn');};
   if($('#mwT'))$('#mwT').onclick=()=>{sfx('tap');renderMyWordsQuiz();};
-  $$('.myw-del').forEach(b=>b.onclick=()=>{delete store.myw[b.dataset.k];save();sfx('tap');renderMyWords();});
+  $$('.myw-del').forEach(b=>b.onclick=()=>{mywDel(b.dataset.k);save();sfx('tap');renderMyWords();});
   $$('.myw-go').forEach(b=>b.onclick=()=>{sfx('tap');const x=store.myw[b.closest('.myw-it').querySelector('.myw-del').dataset.k];momOpen(b.dataset.s,+b.dataset.i,+b.dataset.a,x&&x.w);});}
 function renderMyWordsQuiz(list){const K=shuffle((list||mywAll()).filter(x=>x.ru)).slice(0,8);if(!K.length){toast('Нет слов с переводом');renderMyWords();return;}
   const Q=[...(K.length>=4?[{t:'pairs',set:K.slice(0,4)}]:[]),...K.map(k=>({t:'mean',k})),...(K.length>=8?[{t:'pairs',set:K.slice(4,8)}]:[])];let n=0,ok=0;
@@ -2684,9 +2718,8 @@ const scDue=s=>{const r=scP(s.id).r||{},now=Date.now();return s.parts.flatMap(p=
 const SCK='dota_sc_v1';
 let SC={};try{SC=JSON.parse(localStorage.getItem(SCK))||{};}catch(e){SC={};}
 const scP=id=>{const p=SC[id]=SC[id]||{done:[],m:{},w:{}};p.r=p.r||{};return p;};
-function scSave(){const s=JSON.stringify(SC);try{localStorage.setItem(SCK,s);}catch(e){}cloudSaveChunked(SCK,s);}
-(function scCloud(){try{if(!TG||!TG.CloudStorage)return;TG.CloudStorage.getItem(SCK+'_n',(e,n)=>{n=+n;if(e||!n)return;const ks=[...Array(n).keys()].map(i=>SCK+'_'+i);
-  TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2||!v)return;try{const c=JSON.parse(ks.map(k=>v[k]||'').join(''));for(const id in c){const a=scP(id),b=c[id];a.done=[...new Set([...a.done,...(b.done||[])])];for(const k in b.m||{})a.m[k]=Math.max(a.m[k]||0,b.m[k]);Object.assign(a.w,b.w||{});a.got=Object.assign({},b.got||{},a.got||{});}try{localStorage.setItem(SCK,JSON.stringify(SC));}catch(x){}}catch(x){}});});}catch(e){}})();
+function scSave(){const s=JSON.stringify(SC);try{localStorage.setItem(SCK,s);}catch(e){}if(CLOUD_OK)cloudSaveChunked(SCK,s);}
+// 12.1: облачный прогресс сцен сливается в cloudSync() (вместе с store, M, RV)
 const scFmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
 // пассивные фразы (passive:true) — только для понимания: в тесты, повторение и счёт «выучено» не идут
 const scAct=ph=>{const a=ph.filter(f=>!f.passive);return a.length>=2?a:ph;};
@@ -2899,7 +2932,7 @@ function renderSceneSum(id){const s=scOf(id);if(!s)return;SCUR={id,i:0};const al
     ${kws.length?`<section class="ss-col ss-words"><header><b>Важные слова</b><small>${kws.length}</small></header><div class="ss-wl">${kws.map(x=>`<span class="ss-w" data-fid="${x.f.id}"><i class="kw" data-kw="${x.j}" tabindex="0" role="button">${esc(x.k[1]||x.k[0])}</i><small>${esc(x.k[2])}</small></span>`).join('')}</div></section>`:''}</div>`,'scsum');
   phBind(document.querySelector('.scn'),el=>{const c=el.closest('[data-fid]');return c?all.find(f=>f.id===c.dataset.fid):null;});
   $$('.ss-play').forEach(b=>b.onclick=e=>{e.stopPropagation();scClip(id,b.dataset.fid,b);});
-  $('#scb').onclick=()=>{sfx('tap');renderScene(id);};}
+  $('#scb').onclick=()=>{if(navBack())return;sfx('tap');renderScene(id);};}
 
 /* ---- экраны сцены ---- */
 const scOf=id=>SCENES.find(s=>s.id===id);
@@ -2994,7 +3027,7 @@ function scVideo(el,s,p,noSubs){
   [fr,vr].forEach(x=>x.onclick=e=>e.stopPropagation());
   // касание по видео: во весь экран сначала показывает панель, потом ставит на паузу
   // касание в любом месте видео: во весь экран сначала показывает панель, потом ставит на паузу
-  el.addEventListener('click',e=>{if(e.target.closest('.sc-fs,.sc-sheet,.sc-over button'))return;
+  el.addEventListener('click',e=>{if(e.target.closest('.sc-fs,.sc-sheetwrap,.sc-over button,.tk,.tk-plate,.sc-wpop'))return;
     if(el.classList.contains('sc-pfs')&&el.classList.contains('idle')){wake();return;}
     const ov=el.querySelector('.sc-over');if(ov&&ov.style.display!=='none'){const pb=ov.querySelector('button');if(pb)pb.click();return;}
     wake();scPP();scFlash();});
@@ -3085,6 +3118,9 @@ function scSpeed(){SRATE=SRATE===1?.75:SRATE===.75?.5:1;if(SV)SV.playbackRate=SR
 function scMute(){if(!SV)return;SV.muted=!SV.muted;if(!SV.muted&&SV.volume===0)SV.volume=.8;store.scMute=SV.muted;store.scVol=SV.volume;save();scSyncVol();}
 function scSyncVol(){const ic=SV&&SV.muted?SI.mute:SI.vol;const a=$('#scmu');if(a)a.innerHTML=ic;const f=SW&&SW.querySelector('[data-f=mu]');if(f)f.innerHTML=ic;const v=SW&&SW.querySelector('.sc-vol');if(v&&SV)v.value=SV.muted?0:SV.volume;}
 function scSync(){const on=SV&&!SV.paused;const p=$('#scpp');if(p)p.innerHTML=on?SI.pause:SI.play;const f=SW&&SW.querySelector('[data-f=pp]');if(f)f.innerHTML=on?SI.pause:SI.play;}
+// 12.1: размер полного экрана — по реальному окну (на iPhone 100vh/100vw в Telegram врут → чёрные поля вокруг видео)
+function scFsSize(){const r=document.documentElement.style;r.setProperty('--fw',window.innerWidth+'px');r.setProperty('--fh',window.innerHeight+'px');}
+window.addEventListener('resize',()=>{if(document.body.classList.contains('sc-pfs-on'))scFsSize();});
 // свой полноэкранный режим: видео на весь экран Telegram, кнопки всегда можно вызвать касанием
 async function scFull(){if(!SW)return;if(SW.classList.contains('sc-pfs')){scExitFull();return;}
   const ios=(TG&&TG.platform==='ios')||/iPhone|iPad|iPod/.test(navigator.userAgent);
@@ -3097,6 +3133,7 @@ async function scFull(){if(!SW)return;if(SW.classList.contains('sc-pfs')){scExit
   }catch(e){}
   try{if(screen.orientation&&screen.orientation.lock&&matchMedia('(orientation:portrait)').matches)screen.orientation.lock('landscape').catch(()=>{});}catch(e){}
   if(window.innerHeight>window.innerWidth&&matchMedia('(pointer:coarse)').matches)SW.classList.add('rot');
+  scFsSize();
   try{if(TG&&TG.disableVerticalSwipes)TG.disableVerticalSwipes();}catch(e){}
   if(SW._wake)SW._wake();haptic('sel');}
 function scExitFull(){
@@ -3207,15 +3244,17 @@ function renderScEp(id,i,opts){
     c.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;if(dx<0&&k<focus.length){k++;card();}else if(dx>0&&k>0){k--;card();}},{passive:true});}
 
   const opened=()=>{P.w[i]=1;scSave();const b=$('#epToLearn');if(b){b.textContent=mx?'К проверке →':'Дальше: разбор фраз →';b.classList.add('pulse');}tabs();};
-  const run=()=>{$('#scvo').style.display='none';(SW._ph||[]).forEach(x=>x.shown=false);scPlay(scStartAt(s,p),p.b-p.a+1,()=>{$('#scvo').style.display='';opened();});if(SSTOP)SSTOP.full=true;};
+  let at0=opts.at;   // 12.1: открыли из словаря/поиска — первый ▶ играет с нужного места
+  const run=()=>{$('#scvo').style.display='none';(SW._ph||[]).forEach(x=>x.shown=false);const from=at0!=null?at0:scStartAt(s,p);at0=null;scPlay(from,p.b-p.a+1,()=>{$('#scvo').style.display='';opened();});if(SSTOP)SSTOP.full=true;};
   if($('#epVt'))$('#epVt').onchange=e=>{store.vtask=e.target.checked;save();if(SW)SW._stopPh=s.mode==='mix'?false:store.vtask;toast(store.vtask?'Задания в видео включены':'Задания в видео выключены');};
   $('#scplay').onclick=run;
   scBindCtrl(run);scBindSeek();
+  if(opts.at!=null){const set=()=>{try{SV.currentTime=opts.at;scTick&&scTick();}catch(e){}};if(SV.readyState>=1)set();else SV.addEventListener('loadedmetadata',set,{once:true});run();if(SV.paused)setTimeout(()=>{if(SV&&SV.paused)$('#scvo').style.display='';},600);}
   if(!store.scSubChosen)setTimeout(()=>scSubSheet(true),250);
   SV.addEventListener('ended',()=>{$('#scvo').style.display='';opened();},{once:true});SV.addEventListener('ended',()=>ev('ep_watch',id),{once:true});
   $('#epToLearn').onclick=()=>{sfx('tap');if(!(P.w[i]||P.done.includes(i))&&SV&&SV.paused&&SV.currentTime<1){run();return;}if(mx){renderScQuiz(id,i);return;}show('learn');window.scrollTo({top:0,behavior:'smooth'});};
   $$('.ep-tabs button').forEach(b=>b.onclick=()=>{sfx('tap');const t=b.dataset.tab;if(t==='test'){renderScQuiz(id,lesson?{list:focus,lesson:true}:i);return;}show(t);});
-  $('#scb').onclick=()=>{sfx('tap');renderScene(id);};
+  $('#scb').onclick=()=>{if(navBack())return;sfx('tap');renderScene(id);};
   if($('#swq'))$('#swq').onclick=()=>{sfx('tap');renderWordQuiz(id,i);};
   $$('.sw-play').forEach(b=>b.onclick=()=>{$('#scvo').style.display='none';window.scrollTo({top:0,behavior:'smooth'});scPlay(+b.dataset.a-0.1,+b.dataset.b+0.2,()=>{$('#scvo').style.display='';});});
   lineWords(s,p);
@@ -3268,6 +3307,17 @@ function scCtxRow(s,f){const fe=phNorm(f.en);let best=null;for(const r of s.subs
 function scLcsMarks(got,want){const n=got.length,m=want.length,D=[...Array(n+1)].map(()=>Array(m+1).fill(0));
   for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)D[i][j]=got[i]===want[j]?D[i+1][j+1]+1:Math.max(D[i+1][j],D[i][j+1]);
   const mk=Array(n).fill(false);let i=0,j=0;while(i<n&&j<m){if(got[i]===want[j]){mk[i]=true;i++;j++;}else if(D[i+1][j]>=D[i][j+1])i++;else j++;}return mk;}
+// 12.1: зелёный — только слово на своём месте; под ответом — разбор: пропущенное [a…], лишнее зачёркнуто
+const scPosMarks=(got,want)=>got.map((g,i)=>!!g&&g===want[i]);
+function scDiffHTML(got,want,full){got=got.filter(Boolean);const n=got.length,m=want.length,D=[...Array(n+1)].map(()=>Array(m+1).fill(0));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)D[i][j]=got[i]===want[j]?D[i+1][j+1]+1:Math.max(D[i+1][j],D[i][j+1]);
+  const out=[];let i=0,j=0;while(i<n||j<m){if(i<n&&j<m&&got[i]===want[j]){out.push(`<span>${esc(got[i])}</span>`);i++;j++;}
+    else if(j<m&&(i>=n||D[i][j+1]>=D[i+1][j]))out.push(`<b class="miss">[${esc(full?want[j]:want[j].charAt(0)+'…')}]</b>`),j++;
+    else out.push(`<s>${esc(got[i])}</s>`),i++;}
+  return `<div class="sc-diff">${out.join(' ')}</div>`;}
+// кубик в первую дырку; убранный из середины оставляет дырку
+function scSlotPut(arr,y,max){const h=arr.findIndex(z=>!z);if(h>=0&&h<max)arr[h]=y;else if(arr.length<max)arr.push(y);}
+function scSlotTake(arr,i){arr[i]=null;while(arr.length&&!arr[arr.length-1])arr.pop();}
 // движок пауз: реплика прозвучала → видео встаёт → вспомни и напиши сам → первые буквы → собери из слов → ответ.
 // В полном экране видео на время задания выходит из него, потом возвращается.
 function scTaskAttach(s,p,FX,kind,box,o){o=o||{};const P=scP(s.id),all=s.parts.flatMap(x=>x.ph),ru0=kind!=='dict';
@@ -3311,7 +3361,7 @@ function scTaskAttach(s,p,FX,kind,box,o){o=o||{};const P=scP(s.id),all=s.parts.f
       <div class="tk-mask" id="tkMask"></div>
       <div class="tk-type" id="tkType"><input id="tkIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Напиши, что услышал"><button class="sc-btn" id="tkTypeOk">Проверить</button></div>
       <div class="tk-pool" id="tkPool" hidden></div><p class="tk-tip" id="tkTip" hidden>Зажми слово — покажу перевод</p>
-      <div class="tk-msg" id="tkMsg"></div>
+      <div class="tk-msg" id="tkMsg"></div><div id="tkDiff"></div>
       <div class="tk-act" id="tkAct"><button class="tk-help" id="tkLet">💡 Первые буквы</button><button class="tk-help" id="tkTiles">🧩 Собрать из слов</button></div>
       <div class="tk-act" id="tkAct2" hidden><button class="sc-btn ghost" id="tkRst">Сбросить</button><button class="sc-btn" id="tkChk">Проверить</button></div>
       <button class="tk-skip" id="tkSkip">Не знаю — показать ответ</button>`;
@@ -3319,15 +3369,15 @@ function scTaskAttach(s,p,FX,kind,box,o){o=o||{};const P=scP(s.id),all=s.parts.f
     // маска реплики: клетки по словам; первые буквы — со 2-й ступени; кубики ложатся в клетки
     const mask=marks=>{q('#tkMask').innerHTML=B.tk.map((t,i)=>{const g=B.got[i];
         return `<span class="tk-w${g?' fill':''}${marks&&g?(marks[i]?' good':' bad'):''}" data-i="${i}" style="--n:${Math.min(12,t.replace(/\s/g,'').length)}">${g?esc(g.w):step>=1?`<i>${esc(t.split(' ').map(x=>x[0]+'·'.repeat(Math.max(0,x.length-1))).join(' '))}</i>`:''}</span>`;}).join('');
-      q('#tkMask').querySelectorAll('.tk-w.fill').forEach(el=>el.onclick=()=>{if(x.res!==undefined)return;B.got.splice(+el.dataset.i,1);draw();});};
+      q('#tkMask').querySelectorAll('.tk-w.fill').forEach(el=>el.onclick=()=>{if(x.res!==undefined)return;scSlotTake(B.got,+el.dataset.i);q('#tkDiff').innerHTML='';draw();});};
     const draw=marks=>{mask(marks);q('#tkPool').innerHTML=B.pool.map(y=>`<button class="sc-tile${B.got.includes(y)?' used':''}" data-k="${y.k}"${B.got.includes(y)?' disabled':''}>${esc(y.w)}</button>`).join('');
-      q('#tkPool').querySelectorAll('.sc-tile').forEach(b=>b.onclick=()=>{if(x.res!==undefined)return;sfx('tap');const y=B.pool.find(z=>z.k===+b.dataset.k);if(y&&!B.got.includes(y)&&B.got.length<B.tk.length)B.got.push(y);draw();});};
+      q('#tkPool').querySelectorAll('.sc-tile').forEach(b=>b.onclick=()=>{if(x.res!==undefined)return;sfx('tap');const y=B.pool.find(z=>z.k===+b.dataset.k);if(y&&!B.got.includes(y))scSlotPut(B.got,y,B.tk.length);draw();});};
     const toLetters=()=>{if(step>=1)return;step=1;q('#tkLet').remove();draw();msg('');};
     const toTiles=()=>{if(step>=2)return;if(step<1)step=1;step=2;q('#tkType').hidden=true;q('#tkAct').hidden=true;q('#tkPool').hidden=false;q('#tkTip').hidden=false;q('#tkAct2').hidden=false;draw();msg('');};
     draw();
     q('#tkLet').onclick=()=>{sfx('tap');toLetters();};q('#tkTiles').onclick=()=>{sfx('tap');toTiles();};
     q('#tkSkip').onclick=()=>{sfx('tap');done(false);};
-    q('#tkRst').onclick=()=>{B.got=[];msg('');sfx('tap');draw();};
+    q('#tkRst').onclick=()=>{B.got=[];msg('');q('#tkDiff').innerHTML='';sfx('tap');draw();};
     w.querySelectorAll('.tk-hear [data-h]').forEach(b=>b.onclick=()=>{sfx('tap');const h=b.dataset.h;if(h==='ru'){b.outerHTML=`<span class="tk-ru">«${esc(f.ru)}»</span>`;return;}
       const rt=SV.playbackRate;scPlay(x.a-0.1,x.b+0.15,()=>{if(SV)SV.playbackRate=rt;});if(h==='1'&&SV)SV.playbackRate=.75;});
     // своими словами: прощаем регистр, знаки и мелкие опечатки
@@ -3336,10 +3386,10 @@ function scTaskAttach(s,p,FX,kind,box,o){o=o||{};const P=scP(s.id),all=s.parts.f
       tries++;haptic('err');sfx('bad');inp.classList.add('bad');setTimeout(()=>inp.classList.remove('bad'),450);
       if(tries===1){toLetters();msg('Не то. Вот первые буквы — попробуй ещё раз или собери из слов.');}else{toTiles();msg('Собери из слов.');}};
     q('#tkTypeOk').onclick=checkTyped;inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();checkTyped();}};
-    let tt=0;q('#tkChk').onclick=()=>{if(!B.got.length)return;const got=B.got.map(y=>scNorm(y.w));if(got.join(' ')===want.join(' ')){done(true,'tiles');return;}
-      tt++;haptic('err');sfx('bad');const marks=scLcsMarks(got,want);
-      if(tt>=2){draw(marks);setTimeout(()=>done(false),700);return;}
-      draw(marks);msg(`Правильно стоят ${marks.filter(Boolean).length} из ${want.length} (зелёные). Красные убери. Ещё попытка.`);};
+    let tt=0;q('#tkChk').onclick=()=>{if(!B.got.some(Boolean))return;const got=B.tk.map((_,i)=>B.got[i]?scNorm(B.got[i].w):'');if(got.join(' ')===want.join(' ')){done(true,'tiles');return;}
+      tt++;haptic('err');sfx('bad');const marks=scPosMarks(got,want);q('#tkDiff').innerHTML=scDiffHTML(got,want,tt>=2);
+      if(tt>=2){draw(marks);setTimeout(()=>done(false),1400);return;}
+      draw(marks);msg(`На своём месте ${marks.filter(Boolean).length} из ${want.length} (зелёные). Ниже — чего не хватает [ ] и что лишнее. Ещё попытка.`);};
     function done(right,how){x.res=right;x.how=how;sfx(right?(how==='clean'?'win':'good'):'bad');haptic(right?'ok':'err');weekAdd();save();
       if(right&&how!=='tiles')P.m[f.id]=Math.min(3,(P.m[f.id]||0)+1);if(right)scGot(s,f);scSave();
       w.innerHTML=`<div class="tk-res ${right?'ok':'bad'}"><span class="tk-k">${!right?'Вот что он сказал':how==='clean'?'🔥 Сам, без подсказок':how==='hint'?'✓ Сам, с подсказкой':'✓ Собрал из слов'}</span>
@@ -3390,7 +3440,7 @@ function renderScEpTask(id,i){
   SV.addEventListener('ended',()=>{ov(true);finish();});
   $('#scplay').onclick=()=>{if(!$('#tkBox .tk:not(.tk-intro):not(.tk-end)'))$('#tkBox').innerHTML='';run();};
   scBindCtrl(()=>{$('#tkBox').innerHTML='';run();});scBindSeek();
-  $('#scb').onclick=()=>{sfx('tap');renderScene(id);};
+  $('#scb').onclick=()=>{if(navBack())return;sfx('tap');renderScene(id);};
   intro();
 }
 /* =====================================================================================
@@ -3544,7 +3594,7 @@ function dxMy(box){const L=mywAll(),tagsOf=x=>[...(x.tags||[]),x.own?'добав
   let qt=0;$('#dxQ').oninput=e=>{clearTimeout(qt);qt=setTimeout(()=>{DX.q=e.target.value.trim();const p=e.target.selectionStart;dxMy(box);const n=$('#dxQ');if(n){n.focus();try{n.setSelectionRange(p,p);}catch(x){}}},220);};
   box.querySelectorAll('[data-mtag]').forEach(b=>b.onclick=()=>{sfx('tap');DX.mytag=DX.mytag===b.dataset.mtag?'':b.dataset.mtag;re();});
   if($('#dxTrain'))$('#dxTrain').onclick=()=>{sfx('tap');renderMyWordsQuiz(V);};
-  box.querySelectorAll('.dm-del').forEach(b=>b.onclick=()=>{delete store.myw[b.dataset.k];save();sfx('tap');re();});
+  box.querySelectorAll('.dm-del').forEach(b=>b.onclick=()=>{mywDel(b.dataset.k);save();sfx('tap');re();});
   box.querySelectorAll('.dm-rev').forEach(b=>b.onclick=()=>{const it=store.myw[b.dataset.k];if(!it)return;it.due=Date.now()-1;save();sfx('good');haptic('ok');toast('🔁 Слово в сегодняшнем повторении');re();});
   box.querySelectorAll('.dm-go').forEach(b=>b.onclick=()=>{sfx('tap');const x=store.myw[b.closest('.dm').querySelector('.dm-del').dataset.k];momOpen(b.dataset.s,+b.dataset.i,+b.dataset.a,x&&x.w);});
   box.querySelectorAll('.dm').forEach((b,i)=>b.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:280,delay:Math.min(i,12)*30,fill:'backwards'}));}
@@ -3858,7 +3908,7 @@ function renderScQuiz(id,i){
         <h2>${title}</h2>
         ${build
           ?`<div class="sc-bans" id="scbans"></div>${type!=='listen'&&!beg?`<button class="sc-reveal" id="scbrev">Сначала вспомни сам → показать слова</button>`:''}<div class="sc-bpool" id="scbpool"${type!=='listen'&&!beg?' hidden':''}></div>${beg&&build.tk.length>2?'<p class="sc-bhint">Первое слово уже стоит — продолжи</p>':''}<p class="tk-tip">Зажми слово — покажу перевод</p>
-            <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div>`
+            <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div><div id="scbdiff"></div>`
           :typed?`<input class="sc-gapin" id="scgap" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="впиши слово и нажми «Готово»">
             <div class="sc-bact"><button class="sc-btn ghost" id="scgno">Не помню</button><button class="sc-btn" id="scgok">Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div>`
           :`<div class="sc-opts">${opts.map(o=>`<button class="sc-opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`}
@@ -3943,26 +3993,26 @@ function renderScQuiz(id,i){
       q.tries=0;const pool=$('#scbpool');
       const rv=$('#scbrev');if(rv){const open=()=>{if(!pool.hidden)return;pool.hidden=false;rv.remove();sfx('tap');};rv.onclick=open;setTimeout(()=>{if(document.body.contains(rv))open();},3500);}
       const draw=(marks)=>{
-        $('#scbans').innerHTML=build.got.map((x,j)=>`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}">${esc(x.w)}</button>`).join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
+        $('#scbans').innerHTML=build.got.map((x,j)=>x?`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}" data-j="${j}">${esc(x.w)}</button>`:`<span class="sc-hole" aria-hidden="true"></span>`).join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
         $('#scbpool').innerHTML=build.pool.map(x=>`<button class="sc-tile${build.got.includes(x)?' used':''}" data-k="${x.k}" ${build.got.includes(x)?'disabled':''}>${esc(x.w)}</button>`).join('');
-        const done=q.res!==undefined;$('#scbchk').hidden=!build.got.length||done;$('#scbrst').hidden=!build.got.length||done;
-        $('#scbrst').onclick=()=>{build.got=[];$('#scbmsg').textContent='';sfx('tap');draw();};
+        const done=q.res!==undefined;$('#scbchk').hidden=!build.got.some(Boolean)||done;$('#scbrst').hidden=!build.got.length||done;
+        $('#scbrst').onclick=()=>{build.got=[];$('#scbmsg').textContent='';$('#scbdiff').innerHTML='';sfx('tap');draw();};
         $$('#scbpool .sc-tile').forEach(b=>b.onclick=()=>{
           if(q.res!==undefined)return;sfx('tap');
-          const x=build.pool.find(x=>x.k===+b.dataset.k);if(x)build.got.push(x);draw();
+          const x=build.pool.find(x=>x.k===+b.dataset.k);if(x&&!build.got.includes(x))scSlotPut(build.got,x,99);draw();
         });
         $$('#scbans .sc-tile').forEach(b=>b.onclick=()=>{
-          if(q.res!==undefined)return;build.got=build.got.filter(x=>x.k!==+b.dataset.k);draw();
+          if(q.res!==undefined)return;scSlotTake(build.got,+b.dataset.j);$('#scbdiff').innerHTML='';draw();
         });
       };
       draw();
       $('#scbchk').onclick=()=>{
-        const got=scNorm(build.got.map(x=>x.w).join(' ')),right=got===scNorm(correct);
+        const got=scNorm(build.got.filter(Boolean).map(x=>x.w).join(' ')),right=got===scNorm(correct)&&build.got.every(Boolean);
         if(right){q.soft=q.tries>0;answer(q.tries===0);$('#scbans').classList.add('right');draw();return;}
         q.tries++;haptic('err');sfx('bad');
-        const want=build.tk.map(scNorm),marks=scLcsMarks(build.got.map(x=>scNorm(x.w)),want),okN=marks.filter(Boolean).length;   // 11.0: по последовательности
+        const want=build.tk.map(scNorm),gw=build.got.map(x=>x?scNorm(x.w):''),marks=scPosMarks(gw,want),okN=marks.filter(Boolean).length;$('#scbdiff').innerHTML=scDiffHTML(gw,want,q.tries>=3);   // 12.1: зелёный — только на своём месте
         if(q.tries>=3){answer(false);$('#scbans').classList.add('wrong');draw(marks);return;}
-        draw(marks);$('#scbmsg').textContent=`Правильно стоят ${okN} из ${want.length} (зелёные). Красные убери или переставь. Попытка ${q.tries+1} из 3.`;
+        draw(marks);$('#scbmsg').textContent=`На своём месте ${okN} из ${want.length} (зелёные). Ниже — чего не хватает [ ] и что лишнее. Попытка ${q.tries+1} из 3.`;
       };
     }else{
       $$('.sc-opt').forEach(b=>b.onclick=()=>answer(b.dataset.v===correct,b));
@@ -5308,6 +5358,7 @@ function onBack(){
   if(screen==='scene'){sfx('tap');renderTab('kino');return;}
   if(document.querySelector('.sc-sheetwrap')){scCloseSheet();return;}
   if(document.querySelector('.sc-pfs')){scExitFull();return;}
+  if(screen==='scep'&&navBack())return;
   if(screen==='scep'||screen==='scend'){renderScene(SCUR.id);return;}
   if(screen==='scq'){renderScEp(SCUR.id,SCUR.i);return;}
   if(screen==='tour'||screen==='tourdone'){tourExit();return;}
@@ -5494,7 +5545,7 @@ function momOpen(sid,pi,t,word){const s=scOf(sid),p=s&&s.parts[pi];if(!p){toast(
     <div class="dxc-b"><div class="dxc-top"><span class="dxc-src">${esc(dictFilm(s))} · ${esc(s.sub||'')} · эп. ${pi+1}</span><button class="dxc-x" aria-label="Закрыть">${ui('close')}</button></div>
       <b class="ep-c-en mom-en">${hl(r[2])}</b><span class="ep-c-ru">${esc(String(r[3]||'').replace(/\n/g,' '))}</span>
       <div class="dxc-acts"><button data-v="re">${SI.play} Ещё раз</button><button data-v="slow">🐢 Медленнее</button><button data-v="ep">Открыть эпизод →</button></div></div></div>`;
-  document.body.appendChild(o);
+  document.body.appendChild(o);document.body.classList.add('dx-open');
   const card=o.querySelector('.dxc');card.animate([{transform:'translateY(18px) scale(.97)',opacity:0},{transform:'none',opacity:1}],{duration:260,easing:'cubic-bezier(.2,.9,.3,1)'});
   o.querySelector('.dxo-dim').animate([{opacity:0},{opacity:1}],{duration:220});
   const v=o.querySelector('.dxv'),pb=o.querySelector('.dxv-p');
@@ -5503,13 +5554,22 @@ function momOpen(sid,pi,t,word){const s=scOf(sid),p=s&&s.parts[pi];if(!p){toast(
   v.addEventListener('timeupdate',()=>{if(v.currentTime>=b){v.pause();pb.hidden=false;}});
   v.addEventListener('loadedmetadata',()=>{if(v.currentTime<a-0.1||v.currentTime>b)v.currentTime=a;},{once:true});
   play(false);pb.onclick=()=>{sfx('tap');play(false);};
-  const close=()=>{if(o._c)return;o._c=true;v.pause();v.removeAttribute('src');try{v.load();}catch(e){}try{musDuck(false);}catch(e){}document.removeEventListener('keydown',k);
+  const close=()=>{if(o._c)return;o._c=true;v.pause();v.removeAttribute('src');try{v.load();}catch(e){}try{musDuck(false);}catch(e){}document.body.classList.remove('dx-open');kwHide(0);document.removeEventListener('keydown',k);
     card.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:160,fill:'forwards'});o.querySelector('.dxo-dim').animate([{opacity:1},{opacity:0}],{duration:180,fill:'forwards'}).onfinish=()=>o.remove();};
   const k=e=>{if(e.key==='Escape')close();};document.addEventListener('keydown',k);
   o.querySelector('.dxo-dim').onclick=close;o.querySelector('.dxc-x').onclick=()=>{sfx('tap');close();};
   o.querySelectorAll('[data-v]').forEach(x=>x.onclick=()=>{sfx('tap');if(x.dataset.v==='ep'){close();setTimeout(()=>srOpen(sid,pi,t),200);return;}play(x.dataset.v==='slow');});}
-function srOpen(id,i,t){renderScEp(id,i,{free:true});const s=scOf(id);if(!s||!s.parts[i])return;const off=Math.max(0,t-s.parts[i].a-0.4);
-  let n=0;const go=()=>{if(SV&&SCUR.id===id){const set=()=>{try{SV.currentTime=off;scTick&&scTick();}catch(e){}};if(SV.readyState>=1)set();else SV.addEventListener('loadedmetadata',set,{once:true});return;}if(++n<20)setTimeout(go,100);};setTimeout(go,150);}
+// 12.1: откуда пришли в эпизод (словарь на своём уровне / поиск / вкладка) — «‹» и системная «назад» вернут туда же
+let NAV_BACK=null;
+function navHere(){if(document.querySelector('.dx')){const d=Object.assign({},DX),y=window.scrollY;return ()=>{Object.assign(DX,d);renderTab('dict');setTimeout(()=>window.scrollTo(0,y),30);};}
+  if(screen==='search'){const q=($('#srq')||{}).value||'';return ()=>renderSearch(q);}
+  if(screen==='home'){const t=store.tab;return ()=>renderTab(t);}return null;}
+function navBack(){const f=NAV_BACK;NAV_BACK=null;if(!f)return false;sfx('tap');f();return true;}
+// 12.1: слово/фраза → момент в эпизоде. Тот же эпизод уже открыт — только перемотка (без нового <video> и мигания);
+// иначе эпизод открывается сразу с нужного места
+function srOpen(id,i,t){const s=scOf(id);if(!s||!s.parts[i])return;const off=Math.max(0,t-s.parts[i].a-0.4);
+  if(SV&&SCUR&&SCUR.id===id&&SCUR.i===i&&document.querySelector('.scn.scep')){try{SV.currentTime=off;scTick&&scTick();}catch(e){}const o=$('#scvo');if(o)o.style.display='none';const pr=SV.play();if(pr&&pr.catch)pr.catch(()=>{if(o)o.style.display='';});window.scrollTo({top:0,behavior:'smooth'});return;}
+  const back=navHere();renderScEp(id,i,{free:true,at:off});if(!SV||SCUR.id!==id)return;NAV_BACK=back;}
 
 document.addEventListener('visibilitychange',()=>{try{if(document.hidden){if(typeof AC!=='undefined'&&AC&&AC.suspend)AC.suspend();}else if(typeof AC!=='undefined'&&AC&&AC.resume)AC.resume();}catch(e){}});
 /* ================= 7.2: Гаврик — маскот-хлопушка (пока виден только админу, для выбора) ================= */
