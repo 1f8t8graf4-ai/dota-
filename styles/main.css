@@ -3843,3 +3843,64 @@ body[data-scn="ocean"]{--scbg:#060d14;--sa:#D9B26F;--sa2:#7FA7C9;--sat:rgba(217,
 .dm-acts .dm-go{margin:0}
 .dx-lvl>.dx-lang{display:flex;width:max-content}
 .dm-book .dx-train,.dx .dx-train{display:block;width:100%;min-height:48px;border-radius:14px;background:var(--ink,#F5EFE2);color:#111;font:800 15px 'Golos Text',sans-serif}
+
+/* ==== 11.6 — единый стиль: тёплое кино. Золото и слоновая кость вместо синего iOS, ровные иконки, плотный таббар ==== */
+html body.t-clean:not(.t-cs){--accent:#E9C46A;--accent2:#E9C46A;--accent-ink:#151310;--gold:#E9C46A;--cream:#F3EBDD;--line:rgba(255,255,255,.08)}
+html body.t-clean:not(.t-cs){background:radial-gradient(1100px 560px at 50% -12%,rgba(233,196,106,.075),transparent 62%),radial-gradient(900px 600px at 50% 120%,rgba(120,40,30,.10),transparent 60%),#0b0b0d!important}
+body.t-clean:not(.t-cs) .title{font:700 32px/1.1 'Playfair Display',Georgia,serif!important;letter-spacing:.005em!important}
+body.t-clean:not(.t-cs) .btn{background:var(--cream)!important;color:#151310!important;font:700 16px 'Golos Text',system-ui,sans-serif!important;letter-spacing:0!important;border-radius:14px!important;box-shadow:0 14px 30px -18px rgba(233,196,106,.55)!important;transition:transform .15s,opacity .15s}
+body.t-clean:not(.t-cs) .btn:active{transform:scale(.97)!important;opacity:.9}
+body.t-clean:not(.t-cs) .btn.ghost{background:rgba(255,255,255,.07)!important;color:var(--cream)!important;box-shadow:none!important}
+body.t-clean:not(.t-cs) .btn:disabled{background:rgba(255,255,255,.07)!important;color:rgba(255,255,255,.3)!important;box-shadow:none!important}
+body.t-clean:not(.t-cs) .tabbar{background:rgba(14,14,16,.9)!important;-webkit-backdrop-filter:saturate(160%) blur(22px);backdrop-filter:saturate(160%) blur(22px);border:1px solid rgba(255,255,255,.07)!important;box-shadow:0 18px 40px -16px rgba(0,0,0,.9)!important}
+body.t-clean:not(.t-cs) .tabbar button.on,body.t-clean:not(.t-cs) .tabbar button[aria-current="page"]{color:var(--gold)!important;background:rgba(233,196,106,.12)}
+body.t-clean:not(.t-cs) .hlink,body.t-clean:not(.t-cs) .crumb{color:var(--gold)!important}
+body.t-clean:not(.t-cs) .hg-ring{background:conic-gradient(var(--gold) calc(var(--gp)*1%),rgba(255,255,255,.12) 0)}
+body.t-clean:not(.t-cs) .hlesson .hl-ico,body.t-clean:not(.t-cs) .hg-ico,body.t-clean:not(.t-cs) .gtile .gi{background:linear-gradient(135deg,#F1D58C,#C99A3E)!important;color:#1a1408!important}
+body.t-clean:not(.t-cs) .hlesson em{color:var(--gold)}
+body.t-clean:not(.t-cs) .choice.frame[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--gold)!important}
+body.t-clean:not(.t-cs) .hlesson.hero,body.t-clean:not(.t-cs) .hlesson.hero{background:radial-gradient(120% 140% at 100% 0%,rgba(233,196,106,.22),transparent 55%),linear-gradient(135deg,#2c2414,#14110c)!important;box-shadow:inset 0 0 0 1px rgba(233,196,106,.28),0 18px 34px -20px #000!important}
+body.t-clean:not(.t-cs) .hlesson.hero::before{background:linear-gradient(180deg,#F1D58C,#C99A3E)}
+/* шапка: имя не наезжает на серию и монеты */
+.thead .twho{flex:1;min-width:0}
+.thead .twho b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thead .streak{margin-left:0!important;flex:none}
+.thead .gold{flex:none}
+/* кнопки-иконки: одинаковые 40×40, иконка ровно по центру (раньше символы ‹ × съезжали по базовой линии) */
+.icon-btn,.sc-back,.dx-up,.dxc-x,.ep-nav button,.dx-nav button{display:grid!important;place-items:center!important;padding:0!important;line-height:0!important}
+.sc-back,.dx-up{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.06);box-shadow:none}
+.icon-btn svg.ui,.sc-back svg.ui,.dx-up svg.ui,.dxc-x svg.ui,.ep-nav svg.ui,.dx-nav svg.ui{width:20px;height:20px;stroke-width:2.2}
+.dm-del svg.ui,.dxc-x svg.ui{width:16px;height:16px}
+.dm-del{display:grid;place-items:center;padding:0;line-height:0}
+/* мягкая анимация нажатия на карточках и кнопках сцены */
+.sc-btn,.rowcard,.hposter,.kposter,.htile,.gtile{transition:transform .16s cubic-bezier(.2,.8,.2,1)}
+.sc-btn:active,.rowcard:active,.hposter:active,.kposter:active,.htile:active,.gtile:active{transform:scale(.97)}
+/* монеты: летят к счётчику */
+.gfx{position:fixed;z-index:4000;pointer-events:none;display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:99px;background:linear-gradient(135deg,#F6DE97,#D4A64A);color:#1a1408;font:800 14px 'Golos Text',sans-serif;box-shadow:0 10px 24px -8px rgba(233,196,106,.7)}
+.gfx svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+.thead .gold.bump{animation:gbump .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes gbump{40%{transform:scale(1.18)}}
+/* админка в стиле приложения: группы-карточки, раскрывашки строками, анимации списком */
+.admscr .adm-lead{margin:2px 0 6px!important;font-size:14px;color:var(--muted)}
+.admscr .adm-grp{margin:16px 0 0;padding:14px;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.07)}
+.admscr .adm-grp h3{margin:0 0 6px;font:800 12px 'Golos Text',sans-serif;letter-spacing:.14em;color:var(--gold,#E9C46A)}
+.admscr .adm{border-radius:14px!important;background:rgba(255,255,255,.04)!important}
+.admscr .adm-tg{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:8px;padding:11px 12px;border-radius:12px;background:rgba(255,255,255,.05);color:#fff;font:700 13.5px 'Golos Text',sans-serif;text-align:left}
+.admscr .adm-tg::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.6;transition:transform .2s}
+.admscr .adm-tg.open::after{transform:rotate(225deg) translate(-2px,0)}
+.admscr .adm-seg button.on{background:rgba(233,196,106,.2)!important;color:#F3DA8C!important}
+.admscr .adm-seg button.on[data-st="maint"]{background:rgba(214,138,43,.25)!important;color:#ffc27a!important}
+.admscr .adm-seg button.on[data-st="dev"]{background:rgba(123,108,255,.25)!important;color:#cfc8ff!important}
+.admscr .adm-seg button.on[data-st="hide"]{background:rgba(255,69,58,.2)!important;color:#ff9a92!important}
+.adp-anl{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.adp-an{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04)}
+.adp-an span{flex:1;min-width:0;display:flex;flex-direction:column}
+.adp-an b{font:700 14px 'Golos Text',sans-serif;color:#fff}.adp-an small{font-size:12px;color:var(--muted);line-height:1.35}
+.adp-an button{flex:none;width:42px;height:42px;border-radius:50%;background:var(--cream,#F3EBDD);color:#151310;font:800 14px system-ui;display:grid;place-items:center;padding-left:2px;transition:transform .15s}
+.adp-an button:active{transform:scale(.92)}
+.admscr .cta{position:sticky;bottom:calc(10px + var(--sb,0px));z-index:5}
+@media (max-width:440px){.thead .streak{display:none}}
+.admscr .adm-tg::before{display:none!important;content:none!important}
+.admscr .adm-tg{justify-content:space-between!important;text-align:left!important}
+.tabbar button:focus{outline:none}
+.tabbar button:not(.on){box-shadow:none!important;border-color:transparent!important}
