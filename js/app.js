@@ -3571,7 +3571,7 @@ function dictFly(){const L=DICT_NEW.splice(0);if(!L.length)return;
    11.0 — ДУЭЛЬ ПО СЦЕНЕ (PvP с другом по ссылке)
    • Наперегонки: 8 одинаковых вопросов у обоих, живая полоска соперника; больше верных (при равенстве — быстрее) — забирает банк.
    • Вместе: по очереди, общий счёт; тот, чей ход, может нажать «🆘 Помоги» — вопрос откроется у друга.
-   • Сервер — отдельный воркер bot/pvp-worker.js (D1). Ссылка: APP_LINK?startapp=kv_CODE. Верные ответы → карты в словарь.
+   • Сервер — воркер бота bot/worker.js, маршрут /api/pvp (D1). Ссылка: APP_LINK?startapp=kv_CODE. Верные ответы → карты в словарь.
    ===================================================================================== */
 // 12.0: дуэли и сброс прогресса — в том же воркере, что и бот (bot/worker.js → /api/pvp)
 const PVP_API=(window.PVP_API||API+'/api/pvp').replace(/\/$/,'');
@@ -5123,7 +5123,7 @@ const ADM_KEEP=['onboarded','langs','snd','fx','full','fullV','theme','tab','sub
 function admResetMe(){const keep={};ADM_KEEP.forEach(k=>{if(store[k]!==undefined)keep[k]=store[k];});
   SC={};scSave();M={};saveM();RV={};saveRV();
   store=normalize(Object.assign(fresh(),keep));store.resetAt=Date.now();save();}
-// сброс по ID: команда лежит на сервере дуэлей (bot/pvp-worker.js), игрок забирает её при запуске
+// сброс по ID: команда лежит в воркере бота (bot/worker.js, /api/pvp), игрок забирает её при запуске
 async function admResetPull(){if(!(TG&&TG.initData)&&!window.__INIT)return;try{const r=await kvNet({a:'rget'});
   if(r&&r.ok&&r.v&&r.v.t&&r.v.t>(store.resetAt||0)){admResetMe();store.resetAt=r.v.t;save();toast('Прогресс сброшен администратором');renderHome();}}catch(e){}}
 setTimeout(admResetPull,2500);
