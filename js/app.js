@@ -2443,6 +2443,14 @@ function wordShow(el,f,pin){const sid=(f&&f.sid)||(SCUR&&SCUR.id);if(!sid)return
 function phBind(root,getF){if(!root)return;const fOf=el=>typeof getF==='function'?getF(el):getF,hov=matchMedia('(hover:hover)').matches;
   const open=(el,pin)=>{const f=fOf(el);if(!f)return;if(el.classList.contains('kw'))kwShow(el,f,pin);else wordShow(el,f,pin);};
   root.querySelectorAll('.kw,.sw').forEach(el=>{if(el._ph)return;el._ph=1;if(el.classList.contains('demo'))return;
+    // 13.6: удержание пальцем — тоже открывает (на iPhone удержание раньше включало выделение текста, и ничего не происходило)
+    let lp=0,lx=0,ly=0,held=false;el.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;lx=e.clientX;ly=e.clientY;clearTimeout(lp);held=false;
+      lp=setTimeout(()=>{lp=0;held=true;haptic('light');open(el,true);},420);});
+    el.addEventListener('pointermove',e=>{if(lp&&Math.hypot(e.clientX-lx,e.clientY-ly)>14){clearTimeout(lp);lp=0;}});
+    el.addEventListener('pointerup',()=>{clearTimeout(lp);lp=0;if(held){held=false;   // клик после удержания попал бы в затемнение и закрыл карточку
+      const k=ev=>{ev.stopPropagation();ev.preventDefault();};window.addEventListener('click',k,{capture:true,once:true});setTimeout(()=>window.removeEventListener('click',k,true),500);}});
+    el.addEventListener('pointercancel',()=>{clearTimeout(lp);lp=0;held=false;});
+    el.addEventListener('contextmenu',e=>e.preventDefault());
     el.addEventListener('click',e=>{e.stopPropagation();e.preventDefault();open(el,true);});
     el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(el,true);}});
     if(hov){el.addEventListener('mouseenter',()=>{if(!(KWP&&KWP.classList.contains('pin')&&KWP.classList.contains('on')))open(el,false);});
@@ -2455,6 +2463,26 @@ function phInfoHTML(f,o){o=o||{};const use=scNoteS(f),de=scL()==='de'&&!scIsDe()
   const fact=o.fact&&f.fact&&!de;   // 12.0: факты — награда за финал эпизода, по ходу не показываем
   return `${use?`<div class="ph-blk ph-use"><em>Когда применяется</em><p>${esc(use)}</p>${o.noEx||!ex?'':`<div class="ph-ex"><span>Например</span><b>${esc(ex[0])}</b><small>${esc(ex[1]||'')}</small></div>`}</div>`:''}
     ${fact?`<div class="ph-blk ph-fact"><em>Интересный факт</em><p>${esc(f.fact)}</p></div>`:''}`;}
+// 13.6: слова в субтитрах на iPhone — нажатие И удержание. Было: удержание включало выделение текста iOS (клика нет),
+// строка субтитров менялась под пальцем (клик терялся или ставил видео на паузу), мелкие слова («I», «a») — мимо пальца.
+// Теперь слово запоминаем при касании, строка на это время не меняется, открываем при отпускании или через 0.4 с удержания;
+// касание по строке мимо слова — ближайшее слово. Мышь (ПК) — обычный клик и наведение, как было.
+function swTouch(SW){let T=null;
+  const near=(ln,x,y)=>{let best=null,bd=1e9;ln.querySelectorAll('.sw').forEach(w=>{const r=w.getBoundingClientRect(),dx=Math.max(r.left-x,0,x-r.right),dy=Math.max(r.top-y,0,y-r.bottom),d=dx*dx+dy*dy*3;if(d<bd){bd=d;best=w;}});return bd<=30*30?best:null;};
+  const pick=e=>{const t=e.target;if(!t||!t.closest)return null;const w=t.closest('.sc-subs .sw');if(w)return w;const ln=t.closest('.sc-subs .sline');return ln&&!ln.classList.contains('s2')?near(ln,e.clientX,e.clientY):null;};
+  const end=()=>{if(T){clearTimeout(T.h);T=null;}SW._subHold=false;};
+  const open=(w,word,row,inPh)=>{const tp=SW.querySelector('.sc-wtip');if(tp)tp.classList.remove('on');
+    swPop(word,row,inPh,w&&w.isConnected?w:(SW.querySelector('.sc-subs .sline')||SW));};
+  // клик, который браузер пришлёт после отпускания пальца, попал бы уже в открытую карточку/затемнение и закрыл её — съедаем
+  const eatClick=()=>{const k=e=>{e.stopPropagation();e.preventDefault();};window.addEventListener('click',k,{capture:true,once:true});setTimeout(()=>window.removeEventListener('click',k,true),500);};
+  SW.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;const w=pick(e);if(!w)return;end();
+    T={w,word:w.textContent,row:SW._row,inPh:w.classList.contains('in-ph'),x:e.clientX,y:e.clientY,on:false};SW._subHold=true;w.classList.add('on');
+    T.h=setTimeout(()=>{if(T&&!T.on){T.on=true;haptic('light');open(T.w,T.word,T.row,T.inPh);}},400);},true);   // удержание
+  SW.addEventListener('pointermove',e=>{if(T&&!T.on&&Math.hypot(e.clientX-T.x,e.clientY-T.y)>16){T.w.classList.remove('on');end();}},true);
+  SW.addEventListener('pointerup',e=>{if(!T)return;e.stopPropagation();eatClick();const x=T;end();if(!x.on)open(x.w,x.word,x.row,x.inPh);},true);   // нажатие
+  SW.addEventListener('pointercancel',()=>{if(T){if(!T.on)T.w.classList.remove('on');end();}},true);
+  SW.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('.sc-subs'))e.preventDefault();},true);
+  SW.addEventListener('click',e=>{const w=pick(e);if(!w)return;e.stopPropagation();e.preventDefault();open(w,w.textContent,SW._row,w.classList.contains('in-ph'));},true);}   // мышь, клавиатура
 // подсказка при наведении мышкой (ПК): без паузы, рядом со словом
 function swTip(el){if(!SW)return;let tip=SW.querySelector('.sc-wtip');if(!tip){tip=document.createElement('div');tip.className='sc-wtip';SW.appendChild(tip);}
   const s=scOf(SCUR.id),hit=swFind(s.id,SCUR.i||0,el.textContent),f=el.classList.contains('in-ph')?SW._rowPh:null;
@@ -3089,7 +3117,7 @@ const SUB_LAG=0.18; // реплика в srt часто начинается ч�
 function scTick(){
   const box=SW&&SW.querySelector('.sc-subs');if(!SV||!box){SRAF=0;return;}
   const t=SV.currentTime,m=scDeMode(scSub()),r=SSUBON&&m!=='off'?SV._loc.find(x=>t>=x[0]+SUB_LAG&&t<=x[1]+0.25&&!(SW._hideRow&&SW._hideRow(x))):null,id=r?r[0]+m:'';
-  if(box.dataset.id!==id){box.dataset.id=id;const [a,b]=m.split('+');
+  if(box.dataset.id!==id&&!SW._subHold){box.dataset.id=id;const [a,b]=m.split('+');
     // 13.3: оригинал — словами: нажал (телефон) / навёл (ПК) — перевод слова; слова учебного выражения подчёркнуты
     const s0=SCUR&&scOf(SCUR.id),orig=s0&&s0.lang==='de'?'de':'en',t1=r?String(r[SUB_COL[a]]).replace(/\n/g,' '):'',ph=r&&a===orig?scRowPhrase(r):null;
     SW._row=r;SW._rowPh=ph;box.innerHTML=r?`<div class="sline"><span class="en">${a===orig?swWrapPh(t1,ph):esc(t1)}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);}
@@ -3324,7 +3352,7 @@ function renderScEp(id,i,opts){
    if(store.tourV!==1)setTimeout(()=>{if(document.querySelector('.ep-tabs')&&!document.querySelector('.sctour'))scTour(sub);else sub();},500);else setTimeout(sub,250);}
   {const hb=document.createElement('button');hb.className='sc-help';hb.setAttribute('aria-label','Как тут учиться');hb.textContent='?';hb.onclick=()=>scTour();const hd=document.querySelector('.scn .sc-head');if(hd)hd.appendChild(hb);}
   // слова в субтитрах: нажатие — перевод, наведение (ПК) — подсказка
-  SW.addEventListener('click',e=>{const w=e.target.closest('.sw');if(!w)return;e.stopPropagation();e.preventDefault();const tp=SW.querySelector('.sc-wtip');if(tp)tp.classList.remove('on');swPop(w.textContent,SW._row,w.classList.contains('in-ph'),w);},true);
+  swTouch(SW);
   if(matchMedia('(hover:hover)').matches){SW.addEventListener('mouseover',e=>{const w=e.target.closest('.sw');if(w)swTip(w);});
     SW.addEventListener('mouseout',e=>{if(e.target.closest('.sw')){const tp=SW.querySelector('.sc-wtip');if(tp)tp.classList.remove('on');}});}
   show(pane);
@@ -4364,8 +4392,9 @@ function bgView(k){const L=bgKeys().map(bgInfo).filter(b=>b&&b.got);let i=L.find
   document.body.appendChild(o);const m=o.querySelector('.bgvw-m');let swiped=false;
   const kill=()=>o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});
   const show=()=>{const b=L[i];kill();m.innerHTML='';m.className='bgvw-m'+(b.vid.length?'':' still');m.style.backgroundImage=b.img.map(u=>`url('${u}')`).join(',');
-    if(!b.vid.length&&b.img[0]){const im=new Image();im.onload=()=>m.classList.toggle('fit',(im.naturalWidth>im.naturalHeight)!==(innerWidth>innerHeight));im.src=b.img[0];}   // 13.0.2: вертикальный постер на ПК — целиком на размытой подложке
-    if(b.vid.length){const v=bgVid(b.vid);if(v){v.addEventListener('loadedmetadata',()=>{m.classList.toggle('fit',(v.videoWidth>v.videoHeight)!==(innerWidth>innerHeight));});m.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
+    const fit=(w,h)=>{const r=(w/h)/(innerWidth/innerHeight);return r>1.5||r<1/1.5;};   // 13.5: по пропорциям, а не «верт./гориз.» — квадратный фон (Таксист) на телефоне целиком, а не центр
+    if(!b.vid.length&&b.img[0]){const im=new Image();im.onload=()=>m.classList.toggle('fit',fit(im.naturalWidth,im.naturalHeight));im.src=b.img[0];}   // 13.0.2: вертикальный постер на ПК — целиком на размытой подложке
+    if(b.vid.length){const v=bgVid(b.vid);if(v){v.addEventListener('loadedmetadata',()=>{m.classList.toggle('fit',fit(v.videoWidth,v.videoHeight));});m.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
     o.querySelector('.bgvw-t b').textContent=b.name;o.querySelector('.bgvw-t small').textContent=b.sub;
     const on=store.appBg===b.k,st=o.querySelector('.bgvw-set');st.textContent=on?'✓ Стоит на Главной · убрать':'Поставить на Главную';st.classList.toggle('ghost',on);};
   const mark=()=>document.querySelectorAll('.coll [data-bgk]').forEach(x=>x.classList.toggle('on',x.dataset.bgk===store.appBg&&!x.classList.contains('lock')));

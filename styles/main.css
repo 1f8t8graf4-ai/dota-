@@ -4585,3 +4585,10 @@ body.sc-pfs-on .kw-pop.on.in-v{visibility:visible!important}
 /* ==== 13.5 — Кинозал English / Deutsch ==== */
 .klang{margin:0 0 12px}
 .k-de .kp-lang{display:none}
+
+/* ==== 13.6 — слова в субтитрах: нажатие и удержание на iPhone ==== */
+/* удержание на iOS включало выделение текста и лупу — клика не было; строка мимо слова пропускала касание в видео (пауза) */
+.sc-v .sc-subs,.sc-v .sc-subs *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.sc-v .sc-subs .sline:not(.s2){pointer-events:auto;touch-action:none}
+.sc-v .sc-subs .sw{touch-action:none}
+.kw,.sw{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
