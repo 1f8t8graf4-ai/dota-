@@ -2312,7 +2312,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.3.0';
+const APP_V='13.4.0';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -5451,74 +5451,117 @@ function admPlHTML(){const ch=(id,t,d)=>`<button class="adp-b" id="${id}"><b>${t
     <div class="adp">
       ${ch('adpPl',store.admPlayer?'👤 Смотрю как игрок':'👑 Смотрю как админ',store.admPlayer?'Замки и цены — как у всех. Нажми, чтобы снова открыть всё.':'Тебе открыто всё. Нажми, чтобы увидеть замки как у игрока.')}
       ${ch('adpAll','✅ Пройти всё','Все сцены: эпизоды на 3 ★, финалы, все фразы в словаре')}
-      ${ch('adpGold','🪙 +1000 монет','Для проверки покупок и ставок в дуэли')}
+      ${ch('adpGold','🎟 +1000 билетов','Для магазина и ставок в дуэли')}
       ${ch('adpReset','🗑 Сбросить мой прогресс','Как новый игрок: сцены, монеты, серия, словарь, мои слова. Настройки останутся')}
     </div>
     <button class="adm-tg" type="button">Пройти одну сцену</button><div class="adm-fold" hidden><div class="adp-sc">${SCENES.map(s=>{const P=scP(s.id);return `<button data-pass="${s.id}">${P.done.length>=s.parts.length?'✓ ':''}${esc(s.title)}<small>${esc(s.sub||s.ep||'')}</small></button>`;}).join('')}</div></div>
     <button class="adm-tg" type="button">Сбросить игроку по ID</button><div class="adm-fold" hidden><div class="adp-id"><input id="adpId" inputmode="numeric" placeholder="Telegram ID игрока"><button class="sc-btn" id="adpIdGo">Сбросить</button></div>
       <p class="lab-note">Прогресс обнулится, когда игрок в следующий раз откроет приложение. Работает через воркер бота (bot/worker.js 12.0).</p></div>`;}
-function admPlBind(){const re=()=>{const y=document.querySelector('.admscr')?window.scrollY:0;renderAdmin();window.scrollTo(0,y);};
+function admPlBind(){const re=()=>{const se=document.scrollingElement,y=Math.max(window.scrollY||0,document.body.scrollTop||0);renderAdmin(ADM_SEC);try{window.scrollTo(0,y);document.body.scrollTop=y;}catch(e){}};
   $('#adpPl').onclick=()=>{sfx('tap');store.admPlayer=!store.admPlayer;save();toast(store.admPlayer?'Теперь всё как у игрока':'Тебе снова открыто всё');re();};
   $('#adpAll').onclick=()=>tgConfirm('Отметить все сцены пройденными на 3 звезды?',()=>{SCENES.forEach(admPass);scSave();save();sfx('win');haptic('ok');toast('Готово: всё пройдено');re();});
-  $('#adpGold').onclick=()=>{store.gold=(store.gold||0)+1000;save();sfx('coin');toast('+1000 монет · всего '+fmt(store.gold));};
+  $('#adpGold').onclick=()=>{store.gold=(store.gold||0)+1000;save();sfx('coin');toast('+1000 билетов · всего '+fmt(store.gold));};
   $('#adpReset').onclick=()=>tgConfirm('Сбросить весь твой прогресс? Это не отменить.',()=>{admResetMe();sfx('tap');haptic('warn');toast('Прогресс сброшен');re();});
   $$('[data-pass]').forEach(b=>b.onclick=()=>{const s=scOf(b.dataset.pass);admPass(s);scSave();save();sfx('good');toast('Пройдено: '+s.title);if(!/^✓/.test(b.firstChild.textContent))b.firstChild.textContent='✓ '+b.firstChild.textContent;});
   $('#adpIdGo').onclick=async()=>{const id=String($('#adpId').value||'').replace(/\D/g,'');if(!id){toast('Впиши Telegram ID');return;}
     tgConfirm(`Сбросить весь прогресс игроку ${id}?`,async()=>{try{const r=await kvNet({a:'rset',target:'tg'+id});toast(r&&r.ok?`Готово: сбросится у ${id} при следующем запуске`:(r&&r.msg)||'Не получилось');}catch(e){toast('Сервер не отвечает — обнови воркер бота (bot/worker.js)');}});};}
-function renderAdmin(){
-  screen='admin';backBtn(true);
-  const raw=FLAG_RAW||{},F=Object.fromEntries(FLAG_SECTIONS.map(x=>[x[0],x]));
-  const stOf=k=>(raw[k]&&raw[k].st)||'on',allowOf=k=>(raw[k]&&raw[k].allow)||[];
-  const ST=[['on','Открыт'],['maint','Тех. работы'],['dev','В разработке'],['hide','Скрыт']];
-  const row=(k,n,d,lvl)=>{const st=stOf(k),al=allowOf(k);return `<section class="adm l${lvl||1}" data-k="${k}" data-st="${st}">
-    <div class="adm-h"><b>${esc(n)}</b>${d?`<small>${esc(d)}</small>`:''}<span class="adm-dot"></span></div>
-    <div class="adm-seg">${ST.map(([v,l])=>`<button data-st="${v}" class="${st===v?'on':''}">${l}</button>`).join('')}</div>
-    <button class="adm-tg${al.length?' open':''}" type="button">Тестеры${al.length?` · ${al.length}`:''}</button><div class="adm-fold"${al.length?'':' hidden'}><input class="adm-allow" placeholder="ID через запятую — кому открыт всегда" value="${esc(al.join(', '))}"></div></section>`;};
-  const sec=k=>row(k,F[k][1],F[k][2],1);
-  const locked=k=>stOf(k)!=='on';
-  const scenes=SCENES.map(s=>{const eps=s.parts.map((p,i)=>flagEpKey(s.id,i)),n=eps.filter(locked).length;
-    return row('scene-'+s.id,s.title,s.ep,2)+`<div class="adm-eps"><button class="adm-tg${n?' open':''}" type="button">Эпизоды · ${s.parts.length}${n?` · закрыто ${n}`:''}</button><div class="adm-fold"${n?'':' hidden'}>${s.parts.map((p,i)=>row(flagEpKey(s.id,i),String(i+1).padStart(2,'0')+' · '+p.t,'',3)).join('')}</div></div>`;}).join('');
-  const grp=(title,html)=>`<div class="adm-grp"><h3>${title}</h3>${html}</div>`;
-  mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Админ-панель</h1></div>
-    <p class="lead adm-lead">Тебе открыто всё.${FLAG_ME?` Твой ID: <b>${FLAG_ME}</b>.`:''} Ниже — проверка, анимации и что видят игроки.</p>
-    ${grp('Игрок',admPlHTML())}
-    ${grp('Анимации',`<p class="lab-note">Все анимации приложения — нажми «▶», посмотри, она закроется сама.</p><div class="adp-anl">${ADM_ANIMS.map(a=>`<div class="adp-an"><span><b>${a.n}</b><small>${a.d}</small></span><button data-an="${a.id}">▶</button></div>`).join('')}</div>`)}
-    ${grp('Проверка установки',`<p class="lab-note">Проверяет, что в репозиториях лежит всё нужное: свежий код, маскот, видео и обложки каждой сцены.</p><button class="sc-btn" id="dkGo">Проверить установку</button><div id="dkBox" class="dk"></div>`)}
-    ${grp('Оформление — лаборатория',`<p class="lab-note">Видишь только ты, на этом устройстве. Пощёлкай, выбери лучшее и напиши мне — сделаю по умолчанию для всех.</p>
+/* ---- 13.4: админка — меню разделов, на экране один раздел (раньше была простыня на 9000px) ---- */
+let ADM_SEC=null,ADM_DR=null,ADM_U=null;
+const ADM_ST=[['on','Открыт'],['maint','Тех. работы'],['dev','В разработке'],['hide','Скрыт']];
+function admDraft(){if(!ADM_DR){ADM_DR={};const raw=FLAG_RAW||{};for(const k in raw)ADM_DR[k]={st:raw[k].st||'on',allow:[...(raw[k].allow||[])]};}return ADM_DR;}
+const admSt=k=>(admDraft()[k]&&admDraft()[k].st)||'on';
+const admAl=k=>(admDraft()[k]&&admDraft()[k].allow)||[];
+function admDirty(){const raw=FLAG_RAW||{},D=admDraft(),keys=new Set([...Object.keys(raw),...Object.keys(D)]);let n=0;
+  keys.forEach(k=>{const a=raw[k]||{},b=D[k]||{};if((a.st||'on')!==(b.st||'on')||(a.allow||[]).join(',')!==(b.allow||[]).join(','))n++;});return n;}
+const admClosed=()=>Object.values(admDraft()).filter(x=>x.st&&x.st!=='on').length;
+const admAgo=t=>{if(!t)return '—';const s=(Date.now()-t)/1000;return s<90?'только что':s<3600?Math.round(s/60)+' мин назад':s<86400?Math.round(s/3600)+' ч назад':s<86400*30?Math.round(s/86400)+' дн. назад':new Date(t).toLocaleDateString('ru-RU');};
+function admCopy(t){const ok=()=>{toast('Скопировано: '+t);haptic('ok');};
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,()=>fb());return;}}catch(e){}fb();
+  function fb(){try{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();ok();}catch(e){toast(t);}}}
+async function admUsersCall(body){if(!TG||!TG.initData)return null;
+  const r=await fetch(window.EV_API||API+'/api/ev',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify(Object.assign({a:'users'},body||{}))});return r.json();}
+function admPill(k){const st=admSt(k),al=admAl(k).length;return `<span class="ad2-pill st-${st}">${ADM_ST.find(x=>x[0]===st)[1]}${al?` · 👤 ${al}`:''}</span>`;}
+function admSaveBar(){const n=admDirty(),bar=$('.ad2-save'),b=$('#admSave');if(!bar||!b)return;bar.classList.toggle('on',n>0);b.textContent=n?`Сохранить · ${n}`:'Сохранить';}
+function admFlagSheet(k,name){scCloseSheet();const D=admDraft(),cur=D[k]||{st:'on',allow:[]};let st=cur.st||'on';
+  const w=document.createElement('div');w.className='sc-sheetwrap';
+  w.innerHTML=`<div class="sc-sheet ad2-sh"><b>${esc(name)}</b><div class="ad2-opts">${ADM_ST.map(([v,l])=>`<button data-v="${v}" class="${st===v?'on':''}"><i class="ad2-pd st-${v}"></i>${l}</button>`).join('')}</div>
+    <label class="ad2-lbl" for="adAl">Тестеры — кому открыто всегда</label><input class="ad2-in" id="adAl" placeholder="Telegram ID через запятую" value="${esc((cur.allow||[]).join(', '))}" inputmode="numeric" autocomplete="off">
+    <button class="sc-btn" id="adOk">Готово</button></div>`;
+  document.body.appendChild(w);
+  w.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{st=b.dataset.v;w.querySelectorAll('[data-v]').forEach(x=>x.classList.toggle('on',x===b));sfx('sel');haptic('sel');});
+  const done=()=>{const allow=w.querySelector('#adAl').value.split(/[\s,;]+/).map(x=>x.replace(/\D/g,'')).filter(Boolean);D[k]={st,allow};w.remove();
+    const p=document.querySelector(`[data-fk="${k}"] .ad2-pill`);if(p)p.outerHTML=admPill(k);admSaveBar();sfx('tap');};
+  w.querySelector('#adOk').onclick=done;w.onclick=e=>{if(e.target===w)done();};}
+async function admFlagsSave(){const D=admDraft(),flags={};for(const k in D){const x=D[k];if((x.st&&x.st!=='on')||(x.allow&&x.allow.length))flags[k]={st:x.st||'on',allow:x.allow||[]};}
+  const b=$('#admSave');b.disabled=true;b.textContent='Сохраняю…';
+  try{const r=await flagsCall({a:'set',flags});if(r&&r.ok){FLAG_RAW=r.v.raw;ADM_DR=null;toast('Сохранено. Игроки увидят при следующем открытии.');haptic('ok');b.disabled=false;admSaveBar();return;}
+    toast((r&&r.msg)||'Не получилось сохранить — открой в Telegram');}catch(e){toast('Нет связи с сервером');}
+  b.disabled=false;admSaveBar();}
+function admUserSheet(u){if(!u)return;scCloseSheet();const nm=u.n||'Без имени';const w=document.createElement('div');w.className='sc-sheetwrap';
+  w.innerHTML=`<div class="sc-sheet ad2-sh"><div class="ad2-uh"><i class="ad2-av lg">${esc((nm.trim()[0]||'?').toUpperCase())}</i><span><b>${esc(nm)}</b>${u.un?`<small>@${esc(u.un)}</small>`:''}</span></div>
+    <div class="ad2-kv"><span>ID</span><b>${u.uid}</b><span>Пришёл</span><b>${u.first?new Date(u.first).toLocaleString('ru-RU'):'—'}</b><span>Был</span><b>${admAgo(u.last)}</b>
+      <span>Откуда</span><b>${esc(u.src||'без метки')}</b><span>Язык Telegram</span><b>${esc(u.lang||'—')}</b><span>Действий</span><b>${u.ev||0}</b></div>
+    <button class="sc-btn" data-a="copy">Скопировать ID</button>${u.un?`<button class="sc-btn ghost" data-a="tg">Написать @${esc(u.un)}</button>`:''}<button class="sc-btn ghost ad2-red" data-a="reset">Сбросить прогресс</button></div>`;
+  document.body.appendChild(w);w.onclick=e=>{if(e.target===w){w.remove();return;}const b=e.target.closest('[data-a]');if(!b)return;sfx('tap');
+    if(b.dataset.a==='copy')admCopy(String(u.uid));
+    if(b.dataset.a==='tg'){try{TG.openTelegramLink('https://t.me/'+u.un);}catch(x){window.open('https://t.me/'+u.un);}}
+    if(b.dataset.a==='reset')tgConfirm(`Сбросить весь прогресс игроку ${nm} (${u.uid})?`,async()=>{try{const r=await kvNet({a:'rset',target:'tg'+u.uid});toast(r&&r.ok?'Готово: сбросится при следующем запуске':(r&&r.msg)||'Не получилось');}catch(x){toast('Сервер не отвечает');}});};}
+function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
+  const head=(t,x)=>`<div class="page-head ad2-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">${t}</h1>${x||''}</div>`;
+  const mnt=h=>{mount(h,'admscr ad2');$('#bBtn').onclick=()=>{sfx('tap');if(ADM_SEC)renderAdmin();else renderTab('profile');};};
+  if(!sec){
+    const dirty=admDirty(),closed=admClosed();
+    const it=(k,ic,t,d,x)=>`<button class="ad2-it" data-sec="${k}"><i class="ad2-ic">${ic}</i><span><b>${t}</b><small>${d}</small></span>${x||''}<i class="ad2-chev">${ui('fwd')}</i></button>`;
+    mnt(`${head('Админка',FLAG_ME?`<button class="ad2-me" id="adMe" aria-label="Скопировать мой ID">ID ${FLAG_ME}</button>`:'')}
+      <div class="ad2-stats" id="adStats"><div><b>—</b><small>игроков</small></div><div><b>—</b><small>новых за сутки</small></div><div><b>—</b><small>заходили за сутки</small></div></div>
+      ${admSt('all')!=='on'?`<button class="ad2-warn" data-sec="flags">🛠 Включены технические работы — игроки видят заглушку</button>`:''}
+      <div class="ad2-list">${it('users','👥','Игроки','кто заходил и их ID')}${it('flags','🔒','Доступ',closed?`закрыто: ${closed}`:'всё открыто',dirty?'<em class="ad2-dot">не сохранено</em>':'')}${it('player','🧪','Я как игрок',store.admPlayer?'сейчас — как игрок':'пройти, сбросить, билеты')}</div>
+      <div class="ad2-list">${it('anim','✨','Анимации','посмотреть все')}${it('check','🔧','Проверка установки','код, видео, кадры')}${it('lab','🎨','Лаборатория','субтитры, звуки, интерфейс')}</div>`);
+    $$('[data-sec]').forEach(b=>b.onclick=()=>{sfx('tap');renderAdmin(b.dataset.sec);});
+    if($('#adMe'))$('#adMe').onclick=()=>admCopy(String(FLAG_ME));
+    admUsersCall({}).then(r=>{if(!r||!r.ok)return;const b=$$('#adStats b');if(b.length===3){b[0].textContent=fmt(r.v.total);b[1].textContent=fmt(r.v.new1);b[2].textContent=fmt(r.v.dau);}}).catch(()=>{});
+    return;}
+  if(sec==='users'){const st=ADM_U||{q:''};ADM_U=st;st.L=[];st.off=0;
+    mnt(`${head('Игроки')}<div class="ad2-sw"><input id="adQ" placeholder="Поиск: ID, имя или @ник" value="${esc(st.q)}" autocomplete="off" inputmode="search"></div>
+      <p class="ad2-note" id="adUn">Каждый, кто открыл мини-апп, попадает сюда сам. Ты в списке не показываешься.</p><div class="ad2-users" id="adUl"><div class="ad2-empty">Загружаю…</div></div><button class="ad2-more" id="adMore" hidden>Показать ещё</button>`);
+    const row=u=>{const nm=u.n||'Без имени';return `<div class="ad2-u" data-id="${u.uid}" role="button"><i class="ad2-av">${esc((nm.trim()[0]||'?').toUpperCase())}</i><span class="ad2-ut"><b>${esc(nm)}${u.un?` <em>@${esc(u.un)}</em>`:''}</b><small>${admAgo(u.last)}${u.src?` · ${esc(u.src)}`:''}${u.ev?` · ${u.ev} ${plural(u.ev,['действие','действия','действий'])}`:''}</small></span><button class="ad2-id" data-copy="${u.uid}" aria-label="Скопировать ID">${u.uid}</button></div>`;};
+    const bind=()=>{$$('#adUl [data-copy]').forEach(b=>b.onclick=e=>{e.stopPropagation();admCopy(b.dataset.copy);});$$('#adUl .ad2-u').forEach(r=>r.onclick=()=>{sfx('tap');admUserSheet(st.L.find(u=>String(u.uid)===r.dataset.id));});};
+    const load=async more=>{const box=$('#adUl');if(!box)return;try{const r=await admUsersCall({q:st.q,off:more?st.off:0});if(!$('#adUl'))return;
+        if(!r||!r.ok){box.innerHTML=`<div class="ad2-empty">${esc((r&&r.msg)||'Нет связи с сервером — открой приложение в Telegram.')}</div>`;return;}
+        if(!more)st.L=[];st.L.push(...r.v.list);st.off=st.L.length;
+        $('#adUn').innerHTML=`Всего <b>${fmt(r.v.total)}</b> · новых за сутки <b>${fmt(r.v.new1)}</b> · заходили за сутки <b>${fmt(r.v.dau)}</b>. Ты в списке не показываешься.`;
+        box.innerHTML=st.L.length?st.L.map(row).join(''):`<div class="ad2-empty">${st.q?'Никого не нашёл':'Пока никто не заходил. Игрок появится здесь, как только откроет мини-апп.'}</div>`;
+        $('#adMore').hidden=!r.v.more;bind();}catch(e){box.innerHTML='<div class="ad2-empty">Нет связи с сервером</div>';}};
+    let qt=0;$('#adQ').oninput=e=>{clearTimeout(qt);qt=setTimeout(()=>{st.q=e.target.value.trim();load(false);},300);};
+    $('#adMore').onclick=()=>{sfx('tap');load(true);};load(false);return;}
+  if(sec==='flags'){const F=Object.fromEntries(FLAG_SECTIONS.map(x=>[x[0],x]));
+    const fr=(k,n,d,cls)=>`<button class="ad2-fr ${cls||''}" data-fk="${k}"><span><b>${esc(n)}</b>${d?`<small>${esc(d)}</small>`:''}</span>${admPill(k)}</button>`;
+    const grp=(t,h)=>`<h3 class="ad2-h">${t}</h3><div class="ad2-list">${h}</div>`;
+    const scenes=SCENES.map(s=>{const n=s.parts.filter((p,i)=>admSt(flagEpKey(s.id,i))!=='on').length;
+      return `<div class="ad2-sc">${fr('scene-'+s.id,s.sub||s.title,(s.show||s.title)+' · '+(s.ep||''))}<button class="ad2-eps" data-eps="${s.id}"><span>Эпизоды · ${s.parts.length}${n?` · закрыто ${n}`:''}</span><i>${ui('fwd')}</i></button><div class="ad2-epl" hidden>${s.parts.map((p,i)=>fr(flagEpKey(s.id,i),String(i+1).padStart(2,'0')+' · '+p.t,'','ep')).join('')}</div></div>`;}).join('');
+    mnt(`${head('Доступ')}<p class="ad2-note">Нажми на строку и выбери, что видят игроки. «Скрыт» — этого у них нет. «${FLAG_TXT.maint}» и «${FLAG_TXT.dev}» — видно, но закрыто. Тебе всегда открыто всё.</p>
+      ${grp('Приложение',fr('all','Технические работы','игроки видят заглушку «Кинотеатр обновляется»'))}${grp('Вкладки',fr('kino',F.kino[1],F.kino[2])+fr('games',F.games[1],F.games[2]))}
+      ${grp('Игры',['cards','spy','arena'].map(k=>fr(k,F[k][1],F[k][2])).join(''))}${grp('Главная',['kinolesson','lesson','best','dota','cs2'].map(k=>fr(k,F[k][1],F[k][2])).join(''))}
+      ${grp('Сцены',scenes)}<div class="ad2-save"><button class="btn" id="admSave">Сохранить</button></div>`);
+    $$('[data-fk]').forEach(b=>b.onclick=()=>{sfx('tap');admFlagSheet(b.dataset.fk,b.querySelector('b').textContent);});
+    $$('[data-eps]').forEach(b=>b.onclick=()=>{const l=b.nextElementSibling;l.hidden=!l.hidden;b.classList.toggle('open',!l.hidden);sfx('tap');});
+    $('#admSave').onclick=admFlagsSave;admSaveBar();return;}
+  if(sec==='player'){mnt(`${head('Я как игрок')}${admPlHTML()}`);admPlBind();
+    $$('.adm-tg').forEach(b=>b.onclick=e=>{e.stopPropagation();const f=b.nextElementSibling;const open=f.hidden;f.hidden=!open;b.classList.toggle('open',open);sfx('tap');});return;}
+  if(sec==='anim'){mnt(`${head('Анимации')}<p class="ad2-note">Нажми «▶» — анимация проиграется и закроется сама.</p><div class="ad2-list">${ADM_ANIMS.map(a=>`<button class="ad2-it" data-an="${a.id}"><span><b>${a.n}</b><small>${a.d}</small></span><i class="ad2-play">${SI.play}</i></button>`).join('')}</div>`);
+    $$('[data-an]').forEach(b=>b.onclick=()=>{const a=ADM_ANIMS.find(x=>x.id===b.dataset.an);if(!a)return;sfx('tap');const was=store.fx;store.fx=true;try{a.run();}catch(e){toast('Не получилось: '+e.message);}store.fx=was;});return;}
+  if(sec==='check'){mnt(`${head('Проверка установки')}<p class="ad2-note">Проверяет, что в репозиториях лежит всё нужное: свежий код, видео, обложки и кадры каждой сцены.</p><button class="sc-btn" id="dkGo">Проверить</button><div id="dkBox" class="dk"></div>`);
+    $('#dkGo').onclick=()=>{sfx('tap');deployCheck($('#dkBox'));};return;}
+  if(sec==='lab'){mnt(`${head('Лаборатория')}<p class="ad2-note">Видишь только ты, на этом устройстве. Выбери лучшее и напиши мне — сделаю по умолчанию для всех.</p>
       <div class="lab"><b>Субтитры</b><div class="lab-prev" data-ss="${labSub()}"><div class="sc-subs"><div class="sline"><span class="en">I'm in it for the long run, you know?</span></div><div class="sline s2"><span class="tr">Я тут надолго, понимаете?</span></div></div></div>
         <div class="lab-chips">${LAB_SUB.map(([k,l])=>`<button data-lab="labSub" data-v="${k}" class="${labSub()===k?'on':''}">${l}</button>`).join('')}</div></div>
       <div class="lab"><b>Звуки</b><div class="lab-chips">${LAB_SND.map(([k,l])=>`<button data-lab="labSnd" data-v="${k}" class="${(store.labSnd||'cs')===k?'on':''}">${l}</button>`).join('')}</div></div>
-      <div class="lab"><b>Интерфейс</b><div class="lab-chips">${LAB_UI.map(([k,l])=>`<button data-lab="labUi" data-v="${k}" class="${(store.labUi||'grafit')===k?'on':''}">${l}</button>`).join('')}</div></div>`)}
-    ${grp('Всё приложение',sec('all'))}
-    ${grp('Кинозал',`<p class="lab-note">«Скрыт» — у игроков этого нет вообще. «${FLAG_TXT.maint}» / «${FLAG_TXT.dev}» — видно, но закрыто. Закрытая вкладка закрывает всё внутри. «Тестеры» — ID тех, кому открыто всегда (/myid).</p>`+sec('kino')+scenes)}
-    ${grp('Игры',sec('games')+['cards','spy','arena'].map(k=>row(k,F[k][1],F[k][2],2)).join(''))}
-    ${grp('Главная',['kinolesson','lesson','best','dota','cs2'].map(sec).join(''))}
-    <div class="cta"><button class="btn" id="admSave">Сохранить</button></div>`,'admscr');
-  $('#bBtn').onclick=()=>{sfx('tap');renderTab('profile');};
-  if($('#dkGo'))$('#dkGo').onclick=()=>{sfx('tap');deployCheck($('#dkBox'));};
-  admPlBind();
-  $$('[data-an]').forEach(b=>b.onclick=()=>{const a=ADM_ANIMS.find(x=>x.id===b.dataset.an);if(!a)return;sfx('tap');const was=store.fx;store.fx=true;try{a.run();}catch(e){toast('Не получилось: '+e.message);}store.fx=was;});
-  $$('[data-gv]').forEach(b=>b.onclick=()=>{const v=b.dataset.gv;sfx('tap');
-    if(v==='tog'){store.gav=store.gav===false;save();b.classList.toggle('on',store.gav!==false);b.textContent=store.gav!==false?'Включён':'Выключен';return;}
-    if(!gavOn()){toast('Сначала включи Гаврика (и анимации в настройках)');return;}
-    if(v==='kill')gavKill("I'm in it for the long run");else if(['stamp','bag','burn'].includes(v))gavEpisode('Первый день',v);else{gavIdle();gavSay(v);}});
-  $$('[data-lab]').forEach(b=>b.onclick=()=>{store[b.dataset.lab]=b.dataset.v;save();labApply();
-    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
-    if(b.dataset.lab==='labSub'){const pv=$('.lab-prev');if(pv)pv.dataset.ss=b.dataset.v;}
-    if(b.dataset.lab==='labSnd'&&b.dataset.v!=='off'){const was=store.snd;store.snd=true;sfx('tap');setTimeout(()=>sfx('good'),250);setTimeout(()=>sfx('nope'),700);setTimeout(()=>sfx('win'),1150);store.snd=was;}
-    if(b.dataset.lab==='labUi')haptic('sel');});
-  $$('.adm-seg button').forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));b.closest('.adm').dataset.st=b.dataset.st;sfx('sel');});
-  // раскрыть «Тестеры» / «Эпизоды» — обычные кнопки, без <details> (в части вебвью Telegram они не раскрываются)
-  $$('.adm-tg').forEach(b=>b.onclick=e=>{e.stopPropagation();const f=b.nextElementSibling;const open=f.hidden;f.hidden=!open;b.classList.toggle('open',open);sfx('tap');});
-  $('#admSave').onclick=async()=>{
-    const flags={};$$('.adm').forEach(s=>{const st=s.querySelector('.adm-seg .on').dataset.st;const allow=s.querySelector('.adm-allow').value.split(/[\s,;]+/).map(x=>x.trim()).filter(Boolean);
-      if(st!=='on'||allow.length)flags[s.dataset.k]={st,allow};});
-    const b=$('#admSave');b.disabled=true;b.textContent='Сохраняю…';
-    try{const r=await flagsCall({a:'set',flags});if(r&&r.ok){FLAG_RAW=r.v.raw;toast('Сохранено. Игроки увидят при следующем открытии.');haptic('ok');}else toast((r&&r.msg)||'Не получилось сохранить');}
-    catch(e){toast('Нет связи с сервером');}
-    b.disabled=false;b.textContent='Сохранить';
-  };
-}
+      <div class="lab"><b>Интерфейс</b><div class="lab-chips">${LAB_UI.map(([k,l])=>`<button data-lab="labUi" data-v="${k}" class="${(store.labUi||'grafit')===k?'on':''}">${l}</button>`).join('')}</div></div>`);
+    $$('[data-lab]').forEach(b=>b.onclick=()=>{store[b.dataset.lab]=b.dataset.v;save();labApply();b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+      if(b.dataset.lab==='labSub'){const pv=$('.lab-prev');if(pv)pv.dataset.ss=b.dataset.v;}
+      if(b.dataset.lab==='labSnd'&&b.dataset.v!=='off'){const was=store.snd;store.snd=true;sfx('tap');setTimeout(()=>sfx('good'),250);setTimeout(()=>sfx('nope'),700);setTimeout(()=>sfx('win'),1150);store.snd=was;}
+      if(b.dataset.lab==='labUi')haptic('sel');});return;}
+  renderAdmin();}
 
 setTimeout(flagsRefresh,400);
 /* ================= главная: кино в центре, игры ниже ================= */
@@ -5615,7 +5658,7 @@ function onBack(){
   if(screen==='ob'){if(OB&&OB.i>0){OB.i--;renderOB();}return;}
   if(screen==='dota'||screen==='cs'){sfx('tap');renderHome();return;}
   if(screen==='subtab'||screen==='cgpick'){sfx('tap');renderTab('games');return;}
-  if(screen==='admin'){sfx('tap');renderTab('profile');return;}
+  if(screen==='admin'){sfx('tap');scCloseSheet();if(ADM_SEC)renderAdmin();else renderTab('profile');return;}
   if(screen==='show'){sfx('tap');renderTab('kino');return;}
   if(screen==='scintro'){sfx('tap');renderTab('learn');return;}
   if(screen==='cards'){cgExitAsk();return;}

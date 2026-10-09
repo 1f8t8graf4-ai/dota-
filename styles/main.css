@@ -4505,3 +4505,79 @@ body.sc-pfs-on .kw-pop.on.in-v{visibility:visible!important}
 .dc.dc-on .dc-ep{position:absolute}
 .dc-pl{top:7px;right:7px;width:28px;height:28px}
 .dc .dc-due{right:42px}
+/* ==== 13.4 — админка: меню разделов, минимализм ==== */
+.ad2 .ad2-head{display:flex;align-items:center;gap:10px}
+.ad2 .ad2-head .title{flex:1;min-width:0;margin:0}
+.ad2-me{flex:none;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.65);font:600 12px 'Golos Text',sans-serif;font-variant-numeric:tabular-nums}
+.ad2-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 6px}
+.ad2-stats>div{padding:12px 10px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.ad2-stats b{display:block;font:800 22px/1.1 'Golos Text',sans-serif;color:#fff;font-variant-numeric:tabular-nums}
+.ad2-stats small{display:block;margin-top:3px;font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.25}
+.ad2-warn{display:block;width:100%;margin:10px 0 0;padding:11px 14px;border-radius:14px;background:rgba(230,57,70,.14);border:1px solid rgba(230,57,70,.35);color:#ffb3b8;font:700 13px/1.35 'Golos Text',sans-serif;text-align:left}
+.ad2-list{margin-top:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);overflow:hidden}
+.ad2-it,.ad2-fr{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;text-align:left;background:none;color:#fff;border-top:1px solid rgba(255,255,255,.06);-webkit-tap-highlight-color:transparent;transition:background .15s}
+.ad2-list>.ad2-it:first-child,.ad2-list>.ad2-fr:first-child,.ad2-list>.ad2-sc:first-child>.ad2-fr{border-top:0}
+.ad2-it:active,.ad2-fr:active{background:rgba(255,255,255,.05)}
+.ad2-it>span,.ad2-fr>span{flex:1;min-width:0}
+.ad2-it b,.ad2-fr b{display:block;font:700 15px/1.3 'Golos Text',sans-serif}
+.ad2-it small,.ad2-fr small{display:block;margin-top:2px;font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.35}
+.ad2-ic{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-style:normal;font-size:17px;background:rgba(255,255,255,.07)}
+.ad2-chev,.ad2-play{flex:none;display:grid;place-items:center;color:rgba(255,255,255,.35);font-style:normal}
+.ad2-chev svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2}
+.ad2-play{width:34px;height:34px;border-radius:50%;background:rgba(245,196,81,.14);color:#FFD978}.ad2-play svg{width:14px;height:14px;margin-left:2px}
+.ad2-dot{flex:none;font-style:normal;font-size:11px;font-weight:700;color:#FFD978;padding:3px 8px;border-radius:999px;background:rgba(245,196,81,.12)}
+.ad2-note{margin:12px 2px 0;font-size:13px;line-height:1.45;color:rgba(255,255,255,.55)}.ad2-note b{color:#fff}
+.ad2-h{margin:20px 4px -6px;font:800 11px 'Golos Text',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42)}
+.ad2-pill{flex:none;padding:4px 9px;border-radius:999px;font:700 11.5px 'Golos Text',sans-serif;white-space:nowrap}
+.ad2-pill.st-on{background:rgba(111,194,77,.14);color:#9fe07f}
+.ad2-pill.st-maint{background:rgba(245,196,81,.16);color:#FFD978}
+.ad2-pill.st-dev{background:rgba(110,160,255,.16);color:#a9c4ff}
+.ad2-pill.st-hide{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55)}
+.ad2-sc{border-top:1px solid rgba(255,255,255,.06)}.ad2-list>.ad2-sc:first-child{border-top:0}
+.ad2-sc>.ad2-fr{border-top:0}
+.ad2-eps{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 14px 11px;background:none;color:rgba(255,255,255,.45);font:600 12px 'Golos Text',sans-serif}
+.ad2-eps i{display:grid;place-items:center;transition:transform .25s}.ad2-eps svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2}
+.ad2-eps.open i{transform:rotate(90deg)}
+.ad2-epl{margin:0 10px 10px;border-radius:12px;background:rgba(0,0,0,.25);overflow:hidden}
+.ad2-fr.ep{padding:10px 12px}.ad2-fr.ep b{font-size:13.5px;font-weight:600}
+.ad2-save{position:sticky;bottom:calc(var(--sb,0px) + 12px);margin-top:16px;opacity:.45;pointer-events:none;transition:opacity .2s}
+.ad2-save.on{opacity:1;pointer-events:auto}
+.ad2-save .btn{width:100%;box-shadow:0 12px 30px -8px rgba(0,0,0,.8)}
+.ad2-sh>b{display:block;font:800 18px/1.3 'Golos Text',sans-serif;margin-bottom:12px}
+.ad2-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ad2-opts button{display:flex;align-items:center;gap:8px;padding:12px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#fff;font:700 14px 'Golos Text',sans-serif;text-align:left}
+.ad2-opts button.on{background:rgba(245,196,81,.14);border-color:rgba(245,196,81,.6)}
+.ad2-pd{flex:none;width:10px;height:10px;border-radius:50%;font-style:normal}
+.ad2-pd.st-on{background:#6FC24D}.ad2-pd.st-maint{background:#F5C451}.ad2-pd.st-dev{background:#6ea0ff}.ad2-pd.st-hide{background:#777}
+.ad2-lbl{display:block;margin:16px 2px 6px;font-size:12.5px;color:rgba(255,255,255,.55)}
+.ad2-in,.ad2-sw input{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;font:500 15px 'Golos Text',sans-serif;outline:none}
+.ad2-in:focus,.ad2-sw input:focus{border-color:rgba(245,196,81,.6)}
+.ad2-sh .sc-btn{margin-top:14px;width:100%}
+.ad2-sw{margin-top:14px}
+.ad2-users{margin-top:12px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);overflow:hidden}
+.ad2-u{display:flex;align-items:center;gap:12px;padding:11px 12px;border-top:1px solid rgba(255,255,255,.06);cursor:pointer}
+.ad2-u:first-child{border-top:0}.ad2-u:active{background:rgba(255,255,255,.05)}
+.ad2-av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:800 16px 'Golos Text',sans-serif;font-style:normal;color:#fff;background:linear-gradient(135deg,#454b58,#1d2028)}
+.ad2-av.lg{width:52px;height:52px;font-size:22px}
+.ad2-ut{flex:1;min-width:0}
+.ad2-ut b{display:block;font:700 14.5px/1.3 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ad2-ut b em{font-style:normal;font-weight:500;color:rgba(255,255,255,.45)}
+.ad2-ut small{display:block;margin-top:2px;font-size:12px;color:rgba(255,255,255,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ad2-id{flex:none;padding:6px 9px;border-radius:10px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);font:600 12px ui-monospace,SFMono-Regular,Menlo,monospace}
+.ad2-id:active{background:rgba(245,196,81,.2);color:#FFD978}
+.ad2-empty{padding:26px 16px;text-align:center;color:rgba(255,255,255,.5);font-size:13.5px;line-height:1.45}
+.ad2-more{display:block;width:100%;margin-top:10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font:700 14px 'Golos Text',sans-serif}
+.ad2-uh{display:flex;align-items:center;gap:12px;margin-bottom:14px}.ad2-uh b{display:block;font:800 18px 'Golos Text',sans-serif}.ad2-uh small{color:rgba(255,255,255,.5);font-size:13px}
+.ad2-kv{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);font-size:13.5px}
+.ad2-kv span{color:rgba(255,255,255,.5)}.ad2-kv b{font-weight:600;color:#fff;text-align:right;overflow-wrap:anywhere}
+.ad2-red{color:#ff8a8a!important}
+.ad2 .adp,.ad2 .adm-tg{margin-top:12px}
+.ad2 .dk{margin-top:12px}
+.ad2-fr>span.ad2-pill,.ad2-it>.ad2-dot{flex:none}
+.ad2-save{display:none;opacity:1;pointer-events:auto}.ad2-save.on{display:block}
+.ad2-sh .sc-btn{background:#F3EBDD;color:#15130f;border-radius:14px;font-weight:800}
+.ad2-sh .sc-btn.ghost{background:rgba(255,255,255,.07);color:#fff;margin-top:8px}
+.ad2-sh .sc-btn.ad2-red{color:#ff8a8a!important}
+.ad2 .sc-btn{background:#F3EBDD;color:#15130f}
+.ad2 #dkGo{display:block;width:100%;margin-top:14px;border-radius:14px}
+.screen.ad2{max-width:640px;margin-left:auto;margin-right:auto}

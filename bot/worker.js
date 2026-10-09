@@ -263,7 +263,7 @@ async function verifyInitData(raw, token) {
     const authDate = +params.get('auth_date') || 0;
     if (Date.now() / 1000 - authDate > 86400) return null;
     const user = JSON.parse(params.get('user') || 'null');
-    return user && user.id ? { id: user.id, n: spyName(user) } : null;
+    return user && user.id ? { id: user.id, n: spyName(user), un: String(user.username || '').slice(0, 40), lang: String(user.language_code || '').slice(0, 5) } : null;
   } catch (e) {
     return null;
   }
@@ -1178,6 +1178,9 @@ async function statsDb(env) {
     await env.DB.prepare('CREATE TABLE IF NOT EXISTS users (uid INTEGER PRIMARY KEY, first INTEGER, last INTEGER, src TEXT, lang TEXT)').run();
     await env.DB.prepare('CREATE TABLE IF NOT EXISTS events (uid INTEGER, e TEXT, sid TEXT, ts INTEGER)').run();
     await env.DB.prepare('CREATE INDEX IF NOT EXISTS events_ts ON events (ts)').run();
+    await env.DB.prepare('CREATE INDEX IF NOT EXISTS events_uid ON events (uid)').run();
+    // 13.4: имя и @username — чтобы админ видел, кто заходил (колонки добавляются к старой таблице)
+    for (const c of ['n TEXT', 'un TEXT']) { try { await env.DB.prepare('ALTER TABLE users ADD COLUMN ' + c).run(); } catch (e) {} }
     statsReady = true;
   }
   return env.DB;
@@ -1187,8 +1190,8 @@ async function statsTouch(env, user, src) {
   try {
     const db = await statsDb(env); if (!db || !user || !user.id || isAdminId(env, user.id)) return;
     const now = Date.now();
-    await db.prepare('INSERT INTO users (uid, first, last, src, lang) VALUES (?, ?, ?, ?, ?) ON CONFLICT(uid) DO UPDATE SET last = excluded.last, src = COALESCE(users.src, excluded.src)')
-      .bind(user.id, now, now, cleanSrc(src) || null, String(user.language_code || '').slice(0, 5)).run();
+    await db.prepare('INSERT INTO users (uid, first, last, src, lang, n, un) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(uid) DO UPDATE SET last = excluded.last, src = COALESCE(users.src, excluded.src), lang = COALESCE(NULLIF(excluded.lang, \'\'), users.lang), n = COALESCE(excluded.n, users.n), un = COALESCE(NULLIF(excluded.un, \'\'), users.un)')
+      .bind(user.id, now, now, cleanSrc(src) || null, String(user.lang || user.language_code || '').slice(0, 5), (user.n || (user.first_name ? spyName(user) : '')) ? String(user.n || spyName(user)).slice(0, 40) : null, String(user.un || user.username || '').slice(0, 40)).run();
   } catch (e) {}
 }
 const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end'];
@@ -1199,7 +1202,25 @@ async function statsEvent(env, user, e, sid) {
     await db.prepare('INSERT INTO events (uid, e, sid, ts) VALUES (?, ?, ?, ?)').bind(user.id, e, String(sid || '').slice(0, 48), Date.now()).run();
   } catch (x) {}
 }
+// 13.4: админ-панель → «Игроки»: кто заходил в мини-апп (ID, имя, @username, когда пришёл/был, откуда, сколько действий)
+async function usersApi(env, b) {
+  const db = await statsDb(env); if (!db) return { ok: false, msg: 'База D1 не подключена' };
+  const D = 864e5, now = Date.now(), lim = 50, off = Math.max(0, b.off | 0);
+  const one = async (q, ...a) => (await db.prepare(q).bind(...a).first()) || {};
+  const q = String(b.q || '').trim().replace(/^@/, '').slice(0, 40);
+  let where = '', args = [];
+  if (q) { if (/^\d+$/.test(q)) { where = 'WHERE CAST(uid AS TEXT) LIKE ?'; args = [q + '%']; } else {   // LOWER/LIKE в SQLite понимают регистр только латиницы — ищем «вас», «Вас», «ВАС»
+      const V = [...new Set([q, q.toLowerCase(), q[0].toUpperCase() + q.slice(1).toLowerCase(), q.toUpperCase()])].map((x) => '%' + x + '%');
+      where = 'WHERE ' + V.map(() => '(n LIKE ? OR un LIKE ?)').join(' OR '); args = V.flatMap((x) => [x, x]); } }
+  const list = (await db.prepare(`SELECT uid, n, un, first, last, src, lang, (SELECT COUNT(*) FROM events e WHERE e.uid = users.uid) ev FROM users ${where} ORDER BY last DESC LIMIT ? OFFSET ?`).bind(...args, lim + 1, off).all()).results || [];
+  return { ok: true, v: {
+    total: (await one('SELECT COUNT(*) n FROM users')).n || 0,
+    new1: (await one('SELECT COUNT(*) n FROM users WHERE first > ?', now - D)).n || 0,
+    dau: (await one('SELECT COUNT(*) n FROM users WHERE last > ?', now - D)).n || 0,
+    list: list.slice(0, lim), more: list.length > lim, now } };
+}
 async function evApi(env, user, b) {
+  if (b.a === 'users') return isAdminId(env, user.id) ? usersApi(env, b) : { ok: false, msg: 'Только для админа' };
   await statsTouch(env, user, b.src);
   await statsEvent(env, user, String(b.e || ''), b.sid);
   return { ok: true };
