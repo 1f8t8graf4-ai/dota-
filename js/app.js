@@ -1482,7 +1482,7 @@ const roleHintText=r=>r==='all'?'Будут вопросы про всех ге�
 
 /* ================= онбординг ================= */
 let OB=null;
-function startOnboarding(){stopSpyAll();OB={i:0,path:null,lang:PARAM_LANG||null,games:[],roles:[]};renderOB();}
+function startOnboarding(){stopSpyAll();renderIntro(0);}   // 13.6: вместо старого (путь / игры / роли) — приветственное обучение
 function obSteps(){const st=['intro','path','lang'];if(OB.path&&OB.path!=='kino')st.push('games');if(OB.games.includes('dota'))st.push('roles');st.push('done');return st;}
 function renderOB(){
   setWorld('neutral');screen='ob';const st=obSteps(),cur=st[OB.i];backBtn(OB.i>0&&cur!=='done');
@@ -1554,6 +1554,7 @@ function renderSettings(){
       <p class="hint-line" style="margin-top:12px">Уровень английского в кино</p>
       ${segCtl('lvl',[['a','Новичок'],['b','Знаю базу']],store.lvl||'a')}
       <button class="ht-alt" id="lvlTest" style="margin-top:8px">Пройти тест уровня ещё раз</button>
+      <button class="ht-alt" id="introAgain" style="margin-top:8px">🎬 Как тут всё устроено — обучение</button>
       <p class="hint-line" style="margin-top:12px">Цель дня: сколько ответов в день</p>
       ${segCtl('goal',[['10','10'],['20','20'],['30','30']],String(store.goal||20))}
     </section>
@@ -1575,6 +1576,7 @@ function renderSettings(){
   });
   bindSeg('lvl',v=>{store.lvl=v;save();toast(v==='a'?'Режим новичка: задания с подсказками':'Обычная сложность');});
   if($('#lvlTest'))$('#lvlTest').onclick=()=>{sfx('tap');renderLevelTest(()=>renderSettings());};
+  if($('#introAgain'))$('#introAgain').onclick=()=>{sfx('tap');INTRO=null;renderIntro(0);};
   $('#reset').onclick=()=>{
     const doReset=()=>{const keep={snd:store.snd,fx:store.fx,full:store.full};store=Object.assign(fresh(),keep);M={};save();saveM();startOnboarding();};
     const txt='Сбросить билеты, словарь и ошибки? Язык и роли тоже придётся выбрать заново.';
@@ -5778,6 +5780,7 @@ function onBack(){
   if(screen==='sctask'){if(document.querySelector('.sc-pfs')){scExitFull();return;}renderScene(SCUR.id);return;}
   if(screen==='quiz'){exitQuiz();return;}
   if(screen==='ob'){if(OB&&OB.i>0){OB.i--;renderOB();}return;}
+  if(screen==='intro'){if(INTRO&&INTRO.i>0){INTRO.i--;renderIntro();}return;}   // 13.6
   if(screen==='dota'||screen==='cs'){sfx('tap');renderHome();return;}
   if(screen==='subtab'||screen==='cgpick'){sfx('tap');renderTab('games');return;}
   if(screen==='admin'){sfx('tap');scCloseSheet();if(ADM_SEC)renderAdmin();else renderTab('profile');return;}
@@ -6449,6 +6452,75 @@ function kvSteal(o){o=o||{};return new Promise(done=>{
       pop(tA,`+${fmt(N)}`,'gold');},t0+(imm?430:390));}
 });}
 
+/* =====================================================================================
+   13.6 — ПРИВЕТСТВЕННОЕ ОБУЧЕНИЕ: что это, как проходит сцена (живой пример), что получаешь, настройка под себя, первая сцена.
+   Новичкам — вместо старого онбординга (путь/игры/роли), остальным — один раз после обновления (store.introV), повтор — из настроек.
+   ===================================================================================== */
+let INTRO=null;
+const INTRO_N=5;
+function introScenes(lang){const seen=new Set(),out=[];
+  SCENES.filter(s=>(s.lang==='de'?'de':'en')===lang&&!ageLock(s)&&flagOf('scene-'+s.id)==='on'&&s.kind!=='clip')
+    .sort((a,b)=>(a.lvl||3)-(b.lvl||3)||(b.use||3)-(a.use||3)).forEach(s=>{const h=s.show||s.title;if(seen.has(h)||out.length>=3)return;seen.add(h);out.push(s);});return out;}
+function renderIntro(step){
+  if(!INTRO)INTRO={i:0,lang:kinoLang(),lvl:store.lvl||'a',demo:0,t:0};
+  if(step!=null)INTRO.i=step;clearInterval(INTRO.t);
+  screen='intro';backBtn(INTRO.i>0);applySubPrefs();
+  const I=INTRO,dots=`<div class="it-dots">${Array.from({length:INTRO_N},(_,k)=>`<i class="${k===I.i?'on':k<I.i?'done':''}"></i>`).join('')}</div>`;
+  const top=`<div class="it-top">${dots}<button class="it-skip" id="itSkip">Пропустить</button></div>`;
+  const posters=[...new Map(SCENES.filter(x=>!ageLock(x)&&x.kind!=='clip').map(x=>[x.show||x.title,x])).values()].slice(0,12).map(x=>assetUrl(scKey(x,'poster.jpg')));
+  const wolf=scOf('wolf-of-wall-street');
+  let html='';
+  if(I.i===0)html=`<div class="it it0"><div class="it-wall">${[0,1,2].map(c=>`<div class="it-col c${c}">${[...posters,...posters].filter((_,k)=>k%3===c).map(u=>`<i style="background-image:url('${u}')"></i>`).join('')}</div>`).join('')}</div>
+      <div class="it-shade"></div>
+      <div class="it-body">${top}<div class="it-hero"><span class="it-k">Языки по кино</span><h1>Учи английский<br>по сценам из фильмов</h1>
+        <p>Смотришь кусок настоящего кино — приложение объясняет живые фразы, которые реально говорят. Потом короткие задания — и фраза твоя.</p></div>
+        <button class="btn it-next" id="itNext">Как это работает →</button></div></div>`;
+  else if(I.i===1)html=`<div class="it it1">${top}<h2 class="it-h">Как проходит сцена</h2>
+      <div class="it-demo"><div class="it-v" style="background-image:url('${wolf?scCover(wolf):''}')"><div class="it-vsh"></div>
+        <div class="it-st st0"><div class="it-sub"><span>Fuck the </span><b class="it-w">clients</b><span>.</span><small>Да похуй на клиентов.</small></div><div class="it-tip"><b>clients</b> — клиенты<small>★ В мои слова</small></div><i class="it-finger"></i></div>
+        <div class="it-st st1"><div class="it-plate"><em>💬 Фраза из сцены</em><b>Fuck the clients.</b><span>Да похуй на клиентов.</span><small>💡 Когда пригодится: грубо отмахнуться от чужих проблем — только среди своих</small><i class="it-bar"></i></div></div>
+        <div class="it-st st2"><div class="it-task"><em>👂 Послушай и напиши</em><div class="it-mask"><i>F···</i><i class="ok">the</i><i>c······</i></div><div class="it-inp"><span>fuck the cli</span><i></i></div></div></div>
+        <div class="it-st st3"><div class="it-rep"><em>🔁 Повторение</em><div class="it-days"><i>1</i><i>3</i><i>7</i><i>21</i><i>60</i></div><span>дней — фраза вернётся, пока не запомнится навсегда</span></div></div>
+      </div></div>
+      <div class="it-steps">${[['🎬','Смотри','Эпизод — 30–60 секунд с субтитрами. Нажми на любое слово — переведу. Удержание тоже работает.'],
+        ['💡','Пойми','На полезных фразах кино встаёт само: перевод и «когда пригодится». Прочитал — едет дальше.'],
+        ['✍️','Проверь','После эпизода — все реплики, ★ отмечены фразы для заданий. Послушай и напиши: ошибёшься — подскажу буквы.'],
+        ['🔁','Повторяй','Фраза вернётся через 1, 3, 7, 21 и 60 дней — так она остаётся в голове.']].map(([e,t,d],k)=>`<button class="it-s${k===I.demo?' on':''}" data-d="${k}"><i>${e}</i><span><b>${t}</b><small>${d}</small></span></button>`).join('')}</div>
+      <button class="btn it-next" id="itNext">Дальше</button></div>`;
+  else if(I.i===2)html=`<div class="it it2">${top}<h2 class="it-h">Что ты получаешь</h2><p class="it-p">Учёба — это не только задания. За каждую сцену что-то остаётся у тебя.</p>
+      <div class="it-grid">${[['🃏','Карты фраз','Каждая выученная фраза — карта в Словаре. Собирай сцены целиком.'],
+        ['🎞','Кадры и фоны','Эпизод — кадр-награда. Сцена — карточка и живой фон. Весь фильм — главный фон.'],
+        ['🎟','Билеты','За эпизоды и финалы сцен. Тратишь в Магазине: эффекты, карты, заставки, музыка.'],
+        ['⚔️','Дуэли с другом','Отправь ссылку: наперегонки на билеты или проходите вместе.'],
+        ['🔥','Серия дней','Заходи каждый день — цель дня видно на главной.'],
+        ['🎮','Игры','Дота, CS 2, «Шпион» — тоже с английским, во вкладке «Игры».']].map(([e,t,d])=>`<div class="it-g"><i>${e}</i><b>${t}</b><span>${d}</span></div>`).join('')}</div>
+      <button class="btn it-next" id="itNext">Дальше</button></div>`;
+  else if(I.i===3)html=`<div class="it it3">${top}<h2 class="it-h">Настрой под себя</h2><p class="it-p">Всё это можно поменять потом в настройках.</p>
+      <div class="it-set"><span class="it-l">Язык фильмов</span><div class="it-seg" data-k="lang"><button data-v="en" class="${I.lang==='en'?'on':''}">${FLAG.en} English</button><button data-v="de" class="${I.lang==='de'?'on':''}">${FLAG.de} Deutsch</button></div></div>
+      <div class="it-set"><span class="it-l">Твой уровень</span><div class="it-seg two" data-k="lvl"><button data-v="a" class="${I.lvl!=='b'?'on':''}">Новичок<small>собираю фразы из кубиков</small></button><button data-v="b" class="${I.lvl==='b'?'on':''}">Знаю базу<small>пишу на слух сам</small></button></div></div>
+      <div class="it-set"><span class="it-l">Субтитры</span><div class="it-seg" data-k="sz">${SUB_SZ.map(([k,l])=>`<button data-v="${k}" class="${(store.subSz||'m')===k?'on':''}">${l}</button>`).join('')}</div>
+        <div class="sub-prev" aria-hidden="true"><div class="sc-v" data-ss="glass" style="background-image:url('${wolf?scCover(wolf):''}')"><div class="sc-subs"><div class="sline"><span class="en">Fuck the clients.</span></div><div class="sline s2"><span class="tr">Да похуй на клиентов.</span></div></div></div></div>
+        <button class="it-tg${store.subSame!==false?' on':''}" data-t="subSame"><i></i>Перевод того же размера, что оригинал</button></div>
+      <div class="it-set"><span class="it-l">Как смотреть</span><div class="it-seg two" data-k="pz"><button data-v="on" class="${scPauseOn()?'on':''}">⏸ С паузами<small>кино ждёт на фразах</small></button><button data-v="off" class="${scPauseOn()?'':'on'}">▶ Без пауз<small>объяснение поверх</small></button></div></div>
+      <div class="it-set it-tgs"><button class="it-tg${store.fx!==false?' on':''}" data-t="fx"><i></i>Анимации</button><button class="it-tg${store.snd!==false?' on':''}" data-t="snd"><i></i>Звуки</button></div>
+      <button class="btn it-next" id="itNext">Готово</button></div>`;
+  else{const L=introScenes(I.lang);html=`<div class="it it4">${top}<h2 class="it-h">С чего начнём?</h2><p class="it-p">Первая сцена — короткая и понятная. Остальные — в Кинозале.</p>
+      <div class="it-sc">${L.map(x=>`<button class="it-c" data-id="${x.id}"><i style="background-image:url('${scCover(x)}')"></i><span><small>${esc(dictFilm(x))}</small><b>${esc(x.sub||x.title)}</b><em>${'★'.repeat(Math.min(5,x.lvl||2))}<u>${'★'.repeat(5-Math.min(5,x.lvl||2))}</u> сложность · ${x.parts.length} ${plural(x.parts.length,['эпизод','эпизода','эпизодов'])}</em></span></button>`).join('')}</div>
+      <button class="btn ghost it-next" id="itNext">На главную</button></div>`;}
+  mount(html,'introscr');
+  const done=go=>{store.onboarded=true;store.introV=1;store.langs=[I.lang];store.kinoLang=I.lang;store.lvl=I.lvl;if(!store.path)store.path='mix';save();INTRO=null;sfx('whoosh');haptic('medium');go();};
+  $('#itSkip').onclick=()=>{sfx('tap');done(()=>renderHome());};
+  $('#itNext').onclick=()=>{sfx('tap');haptic('light');if(I.i<INTRO_N-1){I.i++;renderIntro();}else done(()=>renderHome());};
+  if(I.i===1){const set=k=>{I.demo=k;const v=$('.it-v');if(!v)return;v.dataset.st=k;$$('.it-s').forEach((x,j)=>x.classList.toggle('on',j===k));};
+    set(I.demo);I.t=setInterval(()=>{if(!document.querySelector('.it1')){clearInterval(I.t);return;}set((I.demo+1)%4);},3600);
+    $$('.it-s').forEach(b=>b.onclick=()=>{sfx('tap');clearInterval(I.t);set(+b.dataset.d);});}
+  if(I.i===3){$$('.it-seg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.onclick=()=>{g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));sfx('sel');haptic('sel');const v=b.dataset.v,k=g.dataset.k;
+      if(k==='lang')I.lang=v;if(k==='lvl')I.lvl=v;if(k==='sz'){store.subSz=v;applySubPrefs();}if(k==='pz')store.scPause=v;save();}));
+    $$('.it-tg').forEach(b=>b.onclick=()=>{const k=b.dataset.t;store[k]=store[k]===false;b.classList.toggle('on',store[k]!==false);if(k==='fx'||k==='subSame')applyFx();save();sfx('sel');haptic('sel');});}
+  if(I.i===4)$$('.it-c').forEach(b=>b.onclick=()=>{const id=b.dataset.id;done(()=>renderScene(id));});
+  if(store.fx!==false){const el=document.querySelector('.it');if(el)el.querySelectorAll('.it-hero,.it-h,.it-p,.it-demo,.it-s,.it-g,.it-set,.it-c,.it-next').forEach((x,k)=>x.animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:480,delay:80+Math.min(k,10)*55,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'}));}
+}
+
 /* ================= старт ================= */
 let START='';
 try{
@@ -6475,5 +6547,5 @@ else if(/^cg_[A-Za-z0-9]{5}$/.test(START)){if(!gateLink('cards','Карточн�
 else if(START==='cards'){if(!gateLink('cards','Карточная дуэль'))cgPick();}
 else if(START==='rev'&&store.onboarded){renderHome();setTimeout(startRevChain,600);}
 else if(START==='kino'&&store.onboarded){if(!gateLink('kino','Кинозал'))renderTab('kino');}
-else if(store.onboarded)renderHome();else startOnboarding();
+else if(store.onboarded&&store.introV===1)renderHome();else renderIntro();   // 13.6: приветственное обучение
 setTimeout(remindSync,3000);setTimeout(()=>ev('open'),1200);setTimeout(labApply,1500);setTimeout(labApply,4000);
