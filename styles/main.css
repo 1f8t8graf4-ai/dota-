@@ -4592,3 +4592,27 @@ body.sc-pfs-on .kw-pop.on.in-v{visibility:visible!important}
 .sc-v .sc-subs .sline:not(.s2){pointer-events:auto;touch-action:none}
 .sc-v .sc-subs .sw{touch-action:none}
 .kw,.sw{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+
+/* ==== 13.6 — размер субтитров: S–XL (настройки и «CC» в плеере), перевод того же размера, на ПК крупнее ==== */
+/* раньше: 13–18 px на любом экране (на мониторе не прочесть), перевод мельче оригинала; теперь — от ширины видео */
+.sc-v{--subk:1;--subt:1}
+body[data-subsz="s"] .sc-v{--subk:.84}
+body[data-subsz="l"] .sc-v{--subk:1.2}
+body[data-subsz="xl"] .sc-v{--subk:1.45}
+body[data-subsame="0"] .sc-v{--subt:.84}
+/* специфичность выше старых слоёв (в т.ч. «ПК ≥1000px: 18–28px») — размер теперь один источник правды */
+/* на ПК (мышь) смотрят издалека — +25 %, кроме полного экрана (там видео и так огромное) */
+.sc-v{--subd:1}
+@media (hover:hover) and (pointer:fine){.sc-v{--subd:1.25}.sc-v.sc-pfs,.sc-v:fullscreen{--subd:1}}
+html body .sc-v.sc-v.sc-v .sc-subs .sline:not(.s2) .en{font-size:calc(var(--subk)*var(--subd)*clamp(16px,2.9cqw,46px))!important;line-height:1.28!important}
+html body .sc-v.sc-v.sc-v .sc-subs .sline.s2 .en,html body .sc-v.sc-v.sc-v .sc-subs .sline .tr{font-size:calc(var(--subk)*var(--subd)*var(--subt)*clamp(16px,2.9cqw,46px))!important;line-height:1.3!important}
+/* выбор размера в шторке «Субтитры» */
+.sc-szw{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 6px}
+.sc-szw>span{font:600 14px 'Golos Text',system-ui,sans-serif;color:var(--ink,#fff)}
+.sc-sz{display:flex;gap:6px}
+.sc-sz button{min-width:46px;height:38px;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);color:var(--ink,#fff);font:700 14px 'Golos Text',system-ui,sans-serif}
+.sc-sz button.on{background:var(--gold,#E9C46A);color:#1a1408;box-shadow:none}
+/* превью в настройках */
+.sub-prev{margin:10px 0 2px;max-width:640px}
+.sub-prev .sc-v{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,#4a3a2a,#14100c 70%)}
+.sub-prev .sc-subs{pointer-events:none}
