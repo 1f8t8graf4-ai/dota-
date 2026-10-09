@@ -200,6 +200,20 @@ P=[
  "the disco ball turns slowly, small light spots glide across the walls; chat bubbles float up the phone screen; a thin haze drifts.",
  "pink and red neon, the green phone glow, spots from the disco ball",
  "hot pink, red and neon green in darkness; the after-party, no-filter talk about sex, pills, dopamine and money."),
+('Сцена «Clavicular · Бургер без сыра» (13.6)','clavicular-burger',
+ "the low wooden coffee table of a podcast studio right after recording, empty, no people.",
+ "close-up at table height, 50mm lens, shallow focus, the burger in the center",
+ "a plain hamburger on an open paper wrapper — only bun, beef patty and bun, no cheese, no lettuce; one slice of yellow cheese lying apart on the wrapper, pushed aside; a small paper cup of ketchup; a plain paper fast-food bag with no logo and a paper cup with a straw; a smartphone face up showing a map with small orange food pins and no text; behind, out of focus: cream couches and black podcast microphones.",
+ "thin steam rises from the hot patty; a drop of condensation slides down the paper cup.",
+ "warm studio lights",
+ "warm brown, ketchup red and cream; a looksmaxxer who refuses cheese — \"bun, patty, bun, that's it\"."),
+('Сцена «Clavicular · Ставки» (13.6)','clavicular-bets',
+ "the dark coffee table of a podcast studio late at night, empty, no people.",
+ "eye level from the table edge, 35mm lens, the laptop in the center",
+ "an open laptop whose screen shows one glowing line chart that drops and then rises, with no numbers and no text; next to it a small wooden judge's gavel lying on its side; a short stack of red and green poker chips; a glossy magazine with a blank cover showing only a small golden crown; a smartphone face up glowing with a green upward arrow; behind, out of focus: cream couches and black podcast microphones.",
+ "the chart line on the laptop slowly redraws itself; a soft glint slides across the poker chips.",
+ "the cool glow of the laptop screen and warm studio lights",
+ "market green and red in a dark studio; the internet betting on one guy's life — prison 13 percent, \"no comment\"."),
 
 ]
 # 13.1: главные фоны — ВЕСЬ фильм / сериал целиком (главные символы в одном логичном месте), у интервью — сам человек. Старые варианты остаются ниже.
