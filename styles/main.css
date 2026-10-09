@@ -4790,3 +4790,73 @@ body.nofx .it-inp span{width:auto}
 .it0 .it-body{text-align:center}
 .it-seg button{text-align:center}
 .it-seg button.on small{color:#1a1408;opacity:.72}
+
+/* ==== 13.6 — словарь «дорого»: золотое тиснение, медальон, позолоченные рамки, редкость карт ==== */
+/* отзыв Андрея: «словарь не ощущается словарём, нет чувства дороговизны» — делаем как коллекционный альбом */
+body .dx{--g1:#FFF3D1;--g2:#E9C46A;--g3:#9C7A2E;--lea:#1a120b}
+body .dx .dx-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px;padding:18px 18px 16px;border-radius:22px;overflow:hidden;
+  background:radial-gradient(120% 140% at 0% 0%,rgba(233,196,106,.2),transparent 55%),radial-gradient(90% 120% at 100% 100%,rgba(120,30,30,.35),transparent 60%),linear-gradient(160deg,#2a1d12,#150f0a 60%,#0d0a07);
+  box-shadow:inset 0 0 0 1px rgba(233,196,106,.42),inset 0 0 0 5px rgba(0,0,0,.35),inset 0 0 0 6px rgba(233,196,106,.16),0 18px 40px rgba(0,0,0,.5)}
+body .dx .dx-head::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.018) 0 2px,transparent 2px 5px);pointer-events:none}
+body .dx .dx-head::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-50%;background:linear-gradient(100deg,transparent,rgba(255,240,200,.14),transparent);transform:skewX(-18deg);animation:dxSheen 7s ease-in-out infinite;pointer-events:none}
+@keyframes dxSheen{0%,70%{left:-50%}100%{left:120%}}
+body .dx .dx-ttl{position:relative;z-index:1;display:flex;flex-direction:column;gap:2px}
+body .dx .dx-head .title{margin:0;font:700 clamp(34px,9vw,44px)/1 'Playfair Display',Georgia,serif;letter-spacing:-.01em;background:linear-gradient(180deg,var(--g1) 0%,var(--g2) 48%,var(--g3) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 0 rgba(0,0,0,.6))}
+body .dx .dx-sub{font:700 10.5px 'Golos Text',system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:rgba(233,196,106,.7)}
+body .dx .dx-count{position:relative;z-index:1;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;width:84px;height:84px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#3a2a17,#120c07 70%);box-shadow:inset 0 0 0 2px var(--g2),inset 0 0 0 5px rgba(0,0,0,.5),inset 0 0 0 6px rgba(233,196,106,.35),0 8px 20px rgba(0,0,0,.5)}
+body .dx .dx-count b{font:800 26px/1 'Golos Text',system-ui,sans-serif;background:linear-gradient(180deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+body .dx .dx-count span{font:600 11.5px 'Golos Text',system-ui,sans-serif;color:rgba(243,235,221,.55);letter-spacing:.04em}
+body .dx .dx-bar{height:6px;border-radius:6px;margin:0 2px 14px;background:rgba(255,255,255,.06);box-shadow:inset 0 1px 2px rgba(0,0,0,.6);overflow:hidden}
+body .dx .dx-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--g3),var(--g2) 40%,var(--g1) 50%,var(--g2) 60%,var(--g3));background-size:300% 100%;animation:dxThread 4s linear infinite;box-shadow:0 0 12px rgba(233,196,106,.55)}
+@keyframes dxThread{to{background-position:-300% 0}}
+/* вкладки — тиснёная кожа, активная — золотая фольга */
+body .dx .dx-seg{padding:4px;border-radius:16px;background:linear-gradient(180deg,#120d09,#0b0806);box-shadow:inset 0 0 0 1px rgba(233,196,106,.22),inset 0 2px 6px rgba(0,0,0,.6)}
+body .dx .dx-seg button{border-radius:12px;color:rgba(243,235,221,.7);font-weight:700;background:none;box-shadow:none}
+body .dx .dx-seg button.on{background:linear-gradient(180deg,#F6DE97,#E0B654 55%,#B8913E);color:#1d1407;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 4px 14px rgba(233,196,106,.35)}
+body .dx .dx-lang{background:linear-gradient(180deg,#120d09,#0b0806);box-shadow:inset 0 0 0 1px rgba(233,196,106,.18)}
+body .dx .dx-lang button.on{background:rgba(233,196,106,.16);box-shadow:inset 0 0 0 1px rgba(233,196,106,.5);color:#FFF3D1}
+/* полки — заголовок с орнаментом */
+body .dx .dx-shelf h3{display:flex;align-items:center;gap:10px;margin:18px 2px 12px;font:700 11.5px 'Golos Text',system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--g2)}
+body .dx .dx-shelf h3::before,body .dx .dx-shelf h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(233,196,106,.55),transparent)}
+body .dx .dx-shelf h3::before{flex:0 0 18px}
+/* постеры — в позолоченной раме, с бликом */
+body .dx .dx-show .dx-pst{position:relative;padding:0;border-radius:10px;box-shadow:0 0 0 2px #0c0907,0 0 0 4px #B8913E,0 0 0 5px #F6DE97,0 0 0 7px #6e5422,0 18px 30px -12px #000}
+body .dx .dx-show .dx-pst::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(105deg,transparent 30%,rgba(255,244,214,.38) 48%,transparent 62%);background-size:250% 100%;background-position:150% 0;animation:dxGlint 6s ease-in-out infinite;pointer-events:none;mix-blend-mode:screen}
+body .dx .dx-show:nth-child(2n) .dx-pst::after{animation-delay:1.6s}body .dx .dx-show:nth-child(3n) .dx-pst::after{animation-delay:3.1s}
+@keyframes dxGlint{0%,62%{background-position:150% 0}100%{background-position:-60% 0}}
+body .dx .dx-show{transition:transform .35s var(--spring,cubic-bezier(.2,.9,.3,1))}
+body .dx .dx-show:active{transform:scale(.97)}
+@media (hover:hover){body .dx .dx-show:hover{transform:translateY(-4px) rotate(-.6deg)}}
+body .dx .dx-show>b{margin-top:12px;font:700 15.5px/1.2 'Playfair Display',Georgia,serif;color:#FFF3D1}
+body .dx .dx-show>small{font:700 12.5px 'Golos Text',system-ui,sans-serif;color:var(--g2)}
+body .dx .dx-mb{background:rgba(255,255,255,.07)}
+body .dx .dx-mb>i{background:linear-gradient(90deg,var(--g3),var(--g1),var(--g2))}
+/* эпизоды — страницы альбома: кадр в золотой рамке, уголки */
+body .dx .dx-epd{position:relative;border-radius:18px;background:linear-gradient(160deg,#1c140d,#100b08);box-shadow:inset 0 0 0 1px rgba(233,196,106,.22),0 12px 26px -16px #000}
+body .dx .dx-epd::before,body .dx .dx-epd::after{content:"";position:absolute;width:16px;height:16px;border:2px solid rgba(233,196,106,.6);pointer-events:none}
+body .dx .dx-epd::before{top:7px;left:7px;border-right:0;border-bottom:0;border-radius:6px 0 0 0}
+body .dx .dx-epd::after{bottom:7px;right:7px;border-left:0;border-top:0;border-radius:0 0 6px 0}
+body .dx .dx-eth{box-shadow:0 0 0 2px #0c0907,0 0 0 3px #B8913E,0 8px 16px -8px #000}
+body .dx .dx-ett em{color:var(--g2);letter-spacing:.16em}
+body .dx .dx-ett b{font-family:'Playfair Display',Georgia,serif;color:#FFF3D1}
+body .dx .dx-epn b{color:var(--g1)}
+/* карты: редкость — камень в углу и рамка */
+.dc .dc-gem{position:absolute;top:8px;right:8px;z-index:4;width:12px;height:12px;transform:rotate(45deg);border-radius:2px;background:linear-gradient(135deg,#fff,#9aa3ad 60%,#5d646c);box-shadow:0 0 0 1.5px rgba(0,0,0,.6),0 0 8px rgba(255,255,255,.2)}
+.dc.rr-rare .dc-gem{background:linear-gradient(135deg,#d6f0ff,#3b9bff 55%,#1450a8);box-shadow:0 0 0 1.5px rgba(0,0,0,.6),0 0 10px rgba(59,155,255,.7)}
+.dc.rr-epic .dc-gem{background:linear-gradient(135deg,#f3dcff,#b155ff 55%,#5d1a9c);box-shadow:0 0 0 1.5px rgba(0,0,0,.6),0 0 12px rgba(177,85,255,.8)}
+.dc.rr-leg .dc-gem{background:linear-gradient(135deg,#fff3c4,#ffad2e 55%,#a35a00);box-shadow:0 0 0 1.5px rgba(0,0,0,.6),0 0 14px rgba(255,173,46,.9);animation:gemPulse 2.2s ease-in-out infinite}
+@keyframes gemPulse{50%{box-shadow:0 0 0 1.5px rgba(0,0,0,.6),0 0 22px rgba(255,190,80,1)}}
+.dc.rr-rare:not(.lock){border-color:rgba(59,155,255,.55)!important}
+.dc.rr-epic:not(.lock){border-color:rgba(177,85,255,.6)!important;box-shadow:0 16px 30px -18px #000,0 0 18px -6px rgba(177,85,255,.55)}
+.dc.rr-leg:not(.lock){border-color:transparent!important;background:linear-gradient(#131316,#131316) padding-box,conic-gradient(from var(--ang,0deg),#ffad2e,#fff3c4,#ff6b3d,#ffd36e,#ffad2e) border-box!important;border:2px solid transparent!important;animation:legSpin 4s linear infinite;box-shadow:0 16px 30px -18px #000,0 0 22px -6px rgba(255,173,46,.7)}
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes legSpin{to{--ang:360deg}}
+body.nofx .dc.rr-leg,body.nofx .dc.rr-leg .dc-gem,body.nofx .dx .dx-head::after,body.nofx .dx .dx-show .dx-pst::after,body.nofx .dx .dx-bar i{animation:none}
+body .dx .dx-show .dx-pst{box-shadow:0 0 0 1.5px #0c0907,0 0 0 3.5px #C9A04A,0 0 0 4.5px #F6DE97,0 0 0 6px #5e4719,0 16px 28px -12px #000}
+body .dx .dx-shows{padding:6px 6px 0}
+body .dx .dx-q,body .dx .dx-tools input{background:linear-gradient(180deg,#120d09,#0d0a07)!important;box-shadow:inset 0 0 0 1px rgba(233,196,106,.2),inset 0 2px 6px rgba(0,0,0,.5)!important;border:0!important}
+body .dx .dx-flt{background:linear-gradient(180deg,#17110b,#0d0a07);box-shadow:inset 0 0 0 1px rgba(233,196,106,.22);color:#F3E3B8}
+body .dx .dx-crumb small,body .dx .dx-crumb em{color:var(--g2)}
+body .dx .dx-crumb b{font-family:'Playfair Display',Georgia,serif;color:#FFF3D1}
+.dc .dc-gem{top:auto;right:12px;bottom:12px;width:13px;height:13px}

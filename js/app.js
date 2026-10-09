@@ -3653,11 +3653,16 @@ function dictTags(s,f){const P=scP(s.id),T=[scTag(f)[0],...fTopics(f)],got=(P.go
   if(got&&Date.now()-got<3*864e5)T.push('новые');if(r&&r[1]<=Date.now())T.push('повторить');if((P.m[f.id]||0)>=3)T.push('выучено');return T;}
 const DX={seg:'ph',lang:'en',show:null,sid:null,tag:'',q:'',mytag:'',mytab:'rep'};
 const DX_TH={wolf:'#D4AF37',noir:'#c8323a',bone:'#E8DCC4',taxi:'#F2C200',bunker:'#C9B98A',pump:'#ff4fa0',ocean:'#D9B26F',meth:'#9FD356',studio:'#FF5A4E'};
+// 13.6: редкость карты — чтобы коллекция ощущалась ценной (как в HS). Легендарная — у фразы есть интересный факт и сцена сложная
+// (~2 %), эпическая — факт (~8 %), редкая — выражение из нескольких слов в сложной сцене (~24 %), остальные — обычные.
+const DC_RAR=[null,['common','Обычная'],['rare','Редкая'],['epic','Эпическая'],['leg','Легендарная']];
+function dcRar(s,f){const lv=s.lvl||3,mw=(f.kw||[]).some(k=>isPhr(k[1]||k[0]));return f.fact?(lv>=4?4:3):(mw&&lv>=4?2:1);}
 function dcHTML(c,i){const {s,f,pi,p}=c;
   if(!dictHas(s,f))return `<button class="dc lock" data-sid="${s.id}" data-fid="${f.id}" style="--c:${DX_TH[s.theme]||'#F5C451'};--d:${i}"><span class="dc-ep">эп. ${pi+1}</span><span class="dc-q">?</span><small>Пройди «${esc(p.t)}»</small></button>`;
   const P=scP(s.id),r=P.r[f.id],due=r&&r[1]<=Date.now();
   const m=Math.min(3,P.m[f.id]||0);   // 13.2: кадр эпизода сверху, фольга у выученных; вид — из магазина (data-cs)
-  return `<button class="dc t-${scTag(f)[1]}${m>=3?' lrn':''}" data-sid="${s.id}" data-fid="${f.id}" style="--c:${DX_TH[s.theme]||'#F5C451'};--d:${i}">${dcFace(c)}<i class="dc-pl" role="button" aria-label="Посмотреть момент">${SI.play}</i>${due?'<i class="dc-due" title="Пора повторить">🔁</i>':''}<span class="dc-st">${[0,1,2].map(k=>`<i class="${k<m?'on':''}"></i>`).join('')}</span></button>`;}
+  const rr=dcRar(s,f);
+  return `<button class="dc t-${scTag(f)[1]}${m>=3?' lrn':''} rr-${DC_RAR[rr][0]}" data-sid="${s.id}" data-fid="${f.id}" style="--c:${DX_TH[s.theme]||'#F5C451'};--d:${i}">${dcFace(c)}<i class="dc-gem" title="${DC_RAR[rr][1]}"></i><i class="dc-pl" role="button" aria-label="Посмотреть момент">${SI.play}</i>${due?'<i class="dc-due" title="Пора повторить">🔁</i>':''}<span class="dc-st">${[0,1,2].map(k=>`<i class="${k<m?'on':''}"></i>`).join('')}</span></button>`;}
 // 11.5: словарь — иерархия как в Hearthstone: Фильмы / Сериалы → название → сцена → карты эпизодов. На экране один уровень.
 // 🇬🇧/🇩🇪 — тот же словарь 1:1 (те же фильмы и тот же прогресс P.got), карты на немецком.
 const dxL=s=>s&&s.lang==='de'?'de':'en';   // 13.3: язык словаря = язык фильма (английские фильмы — English, «Бункер» — Deutsch)
@@ -3667,7 +3672,7 @@ const DXOPEN={};   // раскрытые эпизоды в словаре (sid|�
 const dxEpOpen=(sid,pi)=>DXOPEN[sid+'|'+pi]!=null?DXOPEN[sid+'|'+pi]:innerWidth>=640;
 const dxShows=()=>{const G=[],by={};for(const s of dxScenes()){const k=dictFilm(s);if(!by[k]){by[k]=[];G.push(k);}by[k].push(s);}return G.map(k=>({k,L:by[k],kind:['series','interview'].includes(by[k][0].kind)?by[k][0].kind:'film'}));};
 function dictTabHTML(){const [g,t]=dictCount(dxScenes()),my=mywAll().length;
-  return `<div class="dx anim"><div class="dx-head"><h1 class="title">Словарь</h1><div class="dx-count"><b>${g}</b><span> / ${t}</span></div></div>
+  return `<div class="dx anim"><div class="dx-head"><div class="dx-ttl"><h1 class="title">Словарь</h1><small class="dx-sub">Коллекция фраз из кино</small></div><div class="dx-count"><b>${g}</b><span> / ${t}</span></div></div>
     <div class="dx-bar"><i style="width:${t?Math.round(g/t*100):0}%"></i></div>
     <div class="dx-seg"><button data-dseg="ph" class="${DX.seg==='ph'?'on':''}">🎬 Фразы из кино</button><button data-dseg="my" class="${DX.seg==='my'?'on':''}">⭐ Мои слова${my?` <i>${my}</i>`:''}</button></div>
     <div id="dxBody"></div></div>`;}
