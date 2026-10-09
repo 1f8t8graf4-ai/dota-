@@ -2323,7 +2323,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.6.0';
+const APP_V='13.6.1';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -3032,12 +3032,16 @@ function musSheet(){if(!MUSC)return;const s=scOf(MUSC.id),L=musOf(s);scCloseShee
 function musFadeIn(){if(!MUS)return;const to=musVol();musSetVol(0);clearInterval(MUSFADE);MUSFADE=setInterval(()=>{if(!MUS){clearInterval(MUSFADE);return;}musSetVol(Math.min(to,musGetVol()+to/30));if(musGetVol()>=to-0.001)clearInterval(MUSFADE);},100);}
 
 /* ---------- все фразы сцены — столбиками: где так можно говорить ---------- */
-function renderSceneSum(id){const s=scOf(id);if(!s)return;SCUR={id,i:0};const all=s.parts.flatMap(p=>scAct(p.ph));
+// 13.6.1: фразы и реплики эпизода открываются только после его первого просмотра (Андрей: иначе всё сразу уходит в словарь)
+const epSeen=(s,i)=>{if(ADM_OPEN())return true;const P=scP(s.id);return !!(P.w[i]||P.done.includes(i));};
+const scSeenN=s=>s.parts.reduce((a,p,i)=>a+(epSeen(s,i)?scAct(p.ph).length:0),0);
+function renderSceneSum(id){const s=scOf(id);if(!s)return;SCUR={id,i:0};const all=s.parts.flatMap((p,i)=>epSeen(s,i)?scAct(p.ph):[]),shut=s.parts.map((p,i)=>({p,i})).filter(x=>!epSeen(s,x.i));
   const G=[['all','Можно везде','нейтрально и вежливо',f=>['neutral','formal'].includes(scTag(f)[1])],['casual','Среди своих','разговорное',f=>scTag(f)[1]==='casual'],['rude','Грубо','только с друзьями',f=>scTag(f)[1]==='rude']];
   const kws=[],seen=new Set();all.forEach(f=>kwOf(f).forEach((k,j)=>{const key=String(k[1]||k[0]).toLowerCase();if(!seen.has(key)){seen.add(key);kws.push({f,j,k});}}));
   const de=scL()==='de'&&!scIsDe();
   scMount(s,`<div class="sc-head"><button class="sc-back" id="scb">${ui('back')}</button><div><span class="sc-meta">${esc(s.title)}</span><h1>Все фразы сцены</h1></div></div>
-    <p class="ss-lead">${all.length} ${plural(all.length,['фраза','фразы','фраз'])}. Нажми на любое слово — перевод и пример. <i class="kw demo">Подсвеченные</i> — самые полезные.</p>
+    <p class="ss-lead">${all.length?`${all.length} ${plural(all.length,['фраза','фразы','фраз'])} из ${scTotal(s)}. Нажми на любое слово — перевод и пример. <i class="kw demo">Подсвеченные</i> — самые полезные.`:'Фразы появятся здесь, когда посмотришь эпизод.'}</p>
+    ${shut.length?`<div class="ss-shut">${shut.map(x=>`<div class="ss-lk"><b>🔒 Эпизод ${x.i+1} · ${esc(x.p.t)}</b><span>${scAct(x.p.ph).length} ${plural(scAct(x.p.ph).length,['фраза','фразы','фраз'])} — откроются после просмотра</span></div>`).join('')}</div>`:''}
     <div class="ss-cols">${G.map(([k,h,sub,fn])=>{const L=all.filter(fn);if(!L.length)return '';
       return `<section class="ss-col ss-${k}"><header><b>${h}</b><small>${sub} · ${L.length}</small></header>${L.map(f=>`<article class="ss-it" data-fid="${f.id}">
         <div class="ss-row"><div class="ss-en">${kwWrap(f)}</div><button class="ss-play" data-fid="${f.id}" aria-label="Послушать">${SI.play}</button></div><div class="ss-ru">${esc(f.ru)}</div>
@@ -3078,7 +3082,7 @@ function renderScene(id){
       ${scRateHTML(s)}
       <div class="sc-prog"><span>Выучено фраз</span><b>${L} / ${T}</b></div><div class="sc-bar"><i style="width:${Math.round(L/T*100)}%"></i></div>
       <div class="sc-prog sc-mast"><span>Освоение сцены${scMasterPct(s)===100?' · 🏆':''}</span><b>${scMastered(s)} / ${T}</b></div><div class="sc-bar sc-mbar"><i style="width:${scMasterPct(s)}%"></i></div><small class="sc-mhint">Фраза засчитывается, когда держится в памяти надолго — после повторений через 1, 3 и 7 дней.</small>
-      <button class="sc-allph" id="scAllPh">📚 Все фразы сцены <i>${scTotal(s)}</i><span>›</span></button>
+      <button class="sc-allph${scSeenN(s)?'':' shut'}" id="scAllPh">📚 Все фразы сцены <i>${scSeenN(s)}/${scTotal(s)}</i><span>${scSeenN(s)?'›':'🔒'}</span></button>
       ${scDue(s).length?`<button class="sc-btn ghost" id="screv" style="margin-bottom:8px">Повторить фразы: ${scDue(s).length} →</button>`:''}
       <button class="sc-btn ghost kv-open" id="scKv">⚔️ Дуэль с другом по этой сцене</button>
       <button class="sc-btn" id="scgo">${d===0?'Начать':next<0?(P.boss?'Повторить сцену':'👑 Финал сцены'):'Продолжить: эпизод '+String(next+1).padStart(2,'0')} →</button>
@@ -3089,7 +3093,7 @@ function renderScene(id){
   $('#scgo').onclick=()=>{if(next<0&&scBossOpen(s)&&!P.boss){scBossStart(id);return;}renderScEp(id,next<0?0:next);};
   if(P.boss&&$('#scgo')){$('#scgo').insertAdjacentHTML('afterend',`<button class="sc-btn ghost" id="scdir">🎬 Режиссёрская версия${store.dirCut&&store.dirCut[id]?' ✓':''}</button>`);$('#scdir').onclick=()=>{sfx('reel');renderDirCut(id);};}
   if($('#screv'))$('#screv').onclick=()=>renderScQuiz(id,'rev');
-  if($('#scAllPh'))$('#scAllPh').onclick=()=>{sfx('tap');renderSceneSum(id);};
+  if($('#scAllPh'))$('#scAllPh').onclick=()=>{sfx('tap');if(!scSeenN(scOf(id))){toast('Сначала посмотри эпизод — его фразы откроются здесь');return;}renderSceneSum(id);};
   if($('#scKv'))$('#scKv').onclick=()=>{sfx('tap');kvSheet(id);};
   scPathBind(s);
   musBind(s);
@@ -3343,7 +3347,7 @@ function renderScEp(id,i,opts){
         <label class="ep-vt"><input type="checkbox" id="epVt" ${store.vtask===false?'':'checked'}><span>Задания прямо в видео</span></label></div>
       <button class="sc-btn ep-go" id="epToLearn">${watched?(mx?'Проверить, что запомнил →':'Дальше: разбор фраз →'):(mx?'🎬 Смотреть сцену':'Смотреть эпизод ▶')}</button>
       ${mx?`<details class="ep-phs" id="epPhs"><summary>Фразы эпизода <i id="epPhN">0 из ${scWatchFX(p).length}</i></summary><div class="ep-phl" id="epPhL"><p class="ep-phe">Появятся здесь, когда встретишь их в сцене.</p></div></details>`:''}
-      ${!lesson?`<details class="ep-lines"${s.mode==='mix'?'':' open'}><summary>Все реплики · нажми на любое слово <i>${rows.length}</i></summary>
+      ${!lesson&&epSeen(s,i)?`<details class="ep-lines"${s.mode==='mix'?'':' open'}><summary>Все реплики · нажми на любое слово <i>${rows.length}</i></summary>
         <div class="sc-lines sc-card">${rows.map((r,k)=>`<div class="ln" data-k="${k}"><b>${swWrap(scRowT(r))}</b><span>${esc(r[3]).replace(/\\n/g,' ')}</span></div>`).join('')}</div></details>`:''}
     </section>
     <section class="ep-pane" data-pane="learn" hidden>
