@@ -4432,3 +4432,76 @@ body.nofx .tour-card{animation:none}
 /* 13.2 — магазин у админа: цена мелко под «Выбрать» */
 .shp-b.use small,.shp-b.on small{display:block;font-size:10px;font-weight:600;opacity:.7;line-height:1.1}
 .shp-b.use,.shp-b.on{flex-direction:column;gap:1px;line-height:1.15}
+/* ==== 13.3 — кража билетов (дуэль со ставкой), раздел «Кража» в магазине ==== */
+.pk[data-cs]{display:block;padding:0;border-radius:0;background:none;box-shadow:none;gap:0;text-align:left}   /* старый .pk (строка 110) не должен влиять на пак карт */
+.stl{position:fixed;inset:0;z-index:8600;font-family:'Golos Text',system-ui,sans-serif;color:#fff;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;overflow:hidden;opacity:0}
+.stl-bg{position:absolute;inset:-24px;background:radial-gradient(60% 45% at 50% 50%,rgba(46,34,12,.93),rgba(4,4,6,.985));-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.stl[data-st=jinadaI] .stl-bg{background:radial-gradient(60% 45% at 50% 50%,rgba(56,22,78,.94),rgba(5,3,9,.985))}
+.stl[data-st=magnet] .stl-bg{background:radial-gradient(60% 45% at 50% 50%,rgba(70,16,22,.92),rgba(5,4,6,.985))}
+.stl-p{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:14px;z-index:1}
+.stl-p.top{top:20%}.stl-p.bot{top:63%}
+.stl-av{flex:none;width:66px;height:66px;border-radius:50%;display:grid;place-items:center;font:800 28px/1 'Golos Text',sans-serif;font-style:normal;color:#fff;background:linear-gradient(135deg,#454b58,#1d2028);box-shadow:0 0 0 2px rgba(255,255,255,.14),0 12px 30px rgba(0,0,0,.6)}
+.stl-av.me{background:linear-gradient(135deg,#FFE7A8,#F5C451 45%,#A8741A);color:#1a1206;box-shadow:0 0 0 2px rgba(255,231,168,.5),0 0 26px rgba(245,196,81,.35),0 12px 30px rgba(0,0,0,.6)}
+.stl-n b{display:block;font-size:18px;font-weight:800;max-width:52vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stl-pile{display:inline-flex;align-items:center;gap:5px;margin-top:5px;padding:4px 11px;border-radius:999px;background:rgba(245,196,81,.12);border:1px solid rgba(245,196,81,.38);color:#FFD978;font-weight:800;font-size:16px;font-variant-numeric:tabular-nums}
+.stl-pile em{font-style:normal;min-width:2ch}
+.stl-pile svg,.stl-cap svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8}
+.stl-tag{position:absolute;left:50%;top:calc(var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px) + 16px);transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px 13px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:12.5px;font-weight:700;white-space:nowrap;z-index:1}
+.stl-cap{position:absolute;left:16px;right:16px;top:43%;text-align:center;font:800 21px/1.3 'Golos Text',sans-serif;opacity:0;z-index:1}
+.stl-cap svg{width:19px;height:19px;vertical-align:-3px;color:#FFD978}
+.stl-skip{position:absolute;left:0;right:0;bottom:calc(var(--sb,0px) + 22px);text-align:center;color:rgba(255,255,255,.4);font-size:12px;z-index:1}
+.stl-pop{position:fixed;left:0;top:0;z-index:4;pointer-events:none;font:900 30px/1 'Golos Text',sans-serif;white-space:nowrap;text-shadow:0 2px 0 rgba(0,0,0,.5),0 0 18px rgba(0,0,0,.6)}
+.stl-pop.minus{color:#ff7a7a;font-size:24px}
+.stl-pop.gold{color:#FFD978;font-size:24px}
+.stl-pop.crit{color:#ff3b2f;font-size:42px;text-shadow:0 0 22px rgba(255,59,47,.75),0 3px 0 #5a0c06}
+.stl-pop.crit.imm{font-size:50px;color:#ffd65c;background:linear-gradient(180deg,#fffbe8,#ffd65c 45%,#c58cff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;filter:drop-shadow(0 0 14px rgba(197,140,255,.75)) drop-shadow(0 3px 0 rgba(40,10,60,.8))}
+.stl-dash{position:fixed;height:6px;margin-top:-3px;transform-origin:0 50%;border-radius:6px;background:linear-gradient(90deg,rgba(255,214,92,0),#ffd65c 60%,#fff);box-shadow:0 0 18px rgba(255,196,77,.85);pointer-events:none;z-index:2}
+.stl-dash.imm{height:9px;margin-top:-4px;background:linear-gradient(90deg,rgba(197,140,255,0),#c58cff 50%,#ffd65c 85%,#fff);box-shadow:0 0 26px rgba(197,140,255,.9)}
+.stl-slw{position:fixed;width:150px;height:150px;transform:translate(-50%,-50%);z-index:3;pointer-events:none}
+.stl-sl{width:100%;height:100%;overflow:visible}
+.stl-sl path{fill:none;stroke:url(#stg1);stroke-width:7;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(255,170,60,.95))}
+.stl-slw.imm .stl-sl path{stroke:url(#stg2);stroke-width:9;filter:drop-shadow(0 0 9px rgba(197,140,255,.95))}
+.stl-flash{position:fixed;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#fff 0,rgba(255,214,92,.8) 30%,rgba(255,120,40,0) 70%);z-index:2;pointer-events:none;mix-blend-mode:screen}
+.stl-flash.imm{background:radial-gradient(circle,#fff 0,rgba(231,182,255,.85) 30%,rgba(255,214,92,0) 70%)}
+.stl-track{position:fixed;width:84px;height:84px;z-index:3;pointer-events:none;filter:drop-shadow(0 0 10px rgba(255,214,92,.75))}
+.stl-track svg{width:100%;height:100%}
+.stl-mag{position:fixed;width:76px;height:76px;z-index:2;pointer-events:none;transform:translate(-50%,-50%) rotate(var(--r,0deg));filter:drop-shadow(0 6px 16px rgba(0,0,0,.6))}
+.stl-mag svg,.stl-bag svg{width:100%;height:100%;display:block}
+.stl-bag{position:fixed;width:72px;height:72px;z-index:2;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 8px 18px rgba(0,0,0,.6))}
+.pv-st{position:relative;width:100%;height:100%;display:grid;place-items:center;background:radial-gradient(circle at 50% 55%,rgba(245,196,81,.22),transparent 62%)}
+.pv-st span{font-size:44px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.6))}
+.pv-st.st-jinadaI{background:radial-gradient(circle at 50% 55%,rgba(197,140,255,.35),transparent 62%)}
+.pv-st.st-jinadaI span{filter:drop-shadow(0 0 16px rgba(197,140,255,.9))}
+.pv-st.st-magnet{background:radial-gradient(circle at 50% 55%,rgba(230,57,70,.28),transparent 62%)}
+/* 13.3 — слова в субтитрах на видео нажимаются (телефон) и подсвечиваются при наведении (ПК); карточка слова видна и в полном экране */
+.sc-subs .sw{pointer-events:auto;cursor:pointer;border-radius:5px;padding:1px 1px;margin:0 -1px;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.sc-subs .sw.on,.sc-subs .sw:active{background:rgba(245,196,81,.38)}
+@media (hover:hover){.sc-subs .sw:hover{background:rgba(245,196,81,.24)}}
+body.sc-pfs-on .kw-pop.on.in-v{visibility:visible!important}
+/* ==== 13.3 — словарь: язык = язык фильма, эпизоды-раскрывашки, момент прямо на карте ==== */
+.dx-lang button i{font-style:normal;font-size:11px;font-weight:700;opacity:.55;margin-left:3px}
+.dx-epd{margin-top:10px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);overflow:hidden}
+.dx-epd>summary{list-style:none;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.dx-epd>summary::-webkit-details-marker{display:none}
+.dx-eph2{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 10px;transition:background .2s}
+.dx-eph2:active{background:rgba(255,255,255,.05)}
+.dx-eth{flex:none;width:66px;height:44px;border-radius:10px;background:#222 center/cover no-repeat;box-shadow:0 4px 12px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.08)}
+.dx-ett{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.dx-ett em{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.dx-ett b{font-size:15px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dx-ett .dx-mb{margin-top:5px;max-width:160px}
+.dx-epn{flex:none;font-size:12.5px;color:rgba(255,255,255,.5);font-variant-numeric:tabular-nums}.dx-epn b{color:#FFD978;font-size:15px}
+.dx-chev{flex:none;width:24px;height:24px;display:grid;place-items:center;color:rgba(255,255,255,.5);font-style:normal;transition:transform .35s var(--spring)}
+.dx-chev svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2}
+.dx-epd[open] .dx-chev{transform:rotate(90deg)}
+.dx-epd>.dx-grid{padding:4px 10px 12px;perspective:900px}
+.dc-pl{position:absolute;top:50px;right:8px;z-index:4;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.28);color:#fff;font-style:normal;cursor:pointer;transition:transform .2s var(--spring),background .2s,color .2s}
+.dc-pl svg{width:13px;height:13px;margin-left:2px}
+.dc-pl:active{transform:scale(.86)}
+.dc.dc-on .dc-pl{background:var(--c,#F5C451);color:#111;border-color:transparent;animation:dcPulse 1s ease-in-out infinite}
+@keyframes dcPulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--c,#F5C451) 30%,transparent)}}
+.dc-vid{position:absolute;left:0;top:0;width:100%;height:86px;object-fit:cover;z-index:1;border-radius:14px 14px 0 0;background:#000;-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent);pointer-events:none}
+.dc.dc-on .dc-en,.dc.dc-on .dc-ru,.dc.dc-on .dc-st,.dc.dc-on .dc-ep{position:relative;z-index:2}
+.dc.dc-on .dc-ep{position:absolute}
+.dc-pl{top:7px;right:7px;width:28px;height:28px}
+.dc .dc-due{right:42px}

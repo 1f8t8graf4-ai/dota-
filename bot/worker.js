@@ -866,6 +866,7 @@ const pvpRole = (room, uid) => (room.A && room.A.id === uid ? 'A' : room.B && ro
 async function pvpApi(env, user, b) {
   const db = await pvpDb(env);
   const uid = 'tg' + user.id, name = String(user.n || 'Игрок').slice(0, 20), now = Date.now();
+  const fx = /^[A-Za-z0-9-]{1,16}$/.test(String(b.fx || '')) ? String(b.fx) : '';   // 13.3: стиль «кражи билетов» — друг увидит его при проигрыше
   if (b.a === 'rget') {
     const r = await db.prepare('SELECT t FROM kino_reset WHERE uid = ?').bind(uid).first();
     return { ok: true, v: { t: r ? r.t : 0 } };
@@ -882,7 +883,7 @@ async function pvpApi(env, user, b) {
     if (!R.sid || !Array.isArray(R.qs) || !R.qs.length || R.qs.length > 12) return { ok: false, msg: 'bad room' };
     await db.prepare('DELETE FROM pvp_rooms WHERE upd < ?').bind(now - 36 * 3600e3).run();
     const room = { sid: String(R.sid).slice(0, 60), ep: R.ep | 0, mode: R.mode === 'coop' ? 'coop' : 'race', bet: Math.max(0, Math.min(1000, R.bet | 0)), qs: R.qs,
-      A: { id: uid, n: name, ans: {}, done: false }, B: null, st: 'wait', go: 0, turn: 0, co: {}, help: -1, created: now };
+      A: { id: uid, n: name, fx, ans: {}, done: false }, B: null, st: 'wait', go: 0, turn: 0, co: {}, help: -1, created: now };
     for (let i = 0; i < 5; i++) {
       const c = newCode();
       room.code = c; room.ver = 1; room.upd = now;
@@ -901,7 +902,7 @@ async function pvpApi(env, user, b) {
   if (b.a === 'join') out = await pvpMutate(db, code, (room) => {
     if (pvpRole(room, uid)) return;
     if (room.B) return { err: 'В комнате уже двое' };
-    room.B = { id: uid, n: name, ans: {}, done: false }; room.st = 'go'; room.go = Date.now() + 3500;
+    room.B = { id: uid, n: name, fx, ans: {}, done: false }; room.st = 'go'; room.go = Date.now() + 3500;
   });
   else if (b.a === 'ans') out = await pvpMutate(db, code, (room) => {
     const me = pvpRole(room, uid);
