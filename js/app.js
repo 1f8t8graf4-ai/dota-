@@ -252,13 +252,14 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab'];
+const LOCAL_ONLY=['shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab'];
 function storeMerge(c){storeRelay(c);const L=store,cNew=(c.sv||0)>SV0,o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
   for(const k in o.mywDel)if(o.myw[k]&&(o.myw[k].at||0)<o.mywDel[k])delete o.myw[k];
   o.rw=uni('rw');for(const k in c.rw||{})if(L.rw&&L.rw[k]&&c.rw[k].t<L.rw[k].t)o.rw[k]=c.rw[k];
   ['scOwn','kvPaid','kvDone','ach','duels','goalsDone','seg','showRw','dirCut'].forEach(k=>{if((c[k]&&typeof c[k]==='object'&&!Array.isArray(c[k]))||(L[k]&&typeof L[k]==='object'&&!Array.isArray(L[k])))o[k]=uni(k);});
+  if(c.shop||L.shop){const a=c.shop||{},b=L.shop||{};o.shop={own:Object.assign({},a.own||{},b.own||{}),use:Object.assign({},(cNew?b:a).use||{},(cNew?a:b).use||{})};}   // 13.2: покупки — объединение
   o.best=uni('best');for(const k in c.best||{})o.best[k]=Math.max(+c.best[k]||0,+(L.best||{})[k]||0);
   ['answered','correct','bestStreak'].forEach(k=>o[k]=Math.max(+c[k]||0,+L[k]||0));
   LOCAL_ONLY.forEach(k=>{if(k in L)o[k]=L[k];else delete o[k];});
@@ -377,7 +378,7 @@ const LAB_SUB=[['glass','Стильные (сейчас)'],['netflix','Стри�
 const LAB_SND=[['cs','CS (сейчас)'],['soft','Мягкие'],['typewriter','Печатная машинка'],['projector','Кинопроектор'],['arcade','8-бит'],['off','Без звуков']];
 const LAB_UI=[['grafit','Графит (сейчас)'],['noir','Нуар · Сопрано'],['bone','Визитка · Психопат'],['taxi','Такси'],['wolf','Уолл-стрит'],['bunker','Бункер'],['neon','Неон · кинотеатр']];
 const labSub=()=>FLAG_ADMIN&&store.labSub?store.labSub:'glass';
-function labApply(){try{document.body.dataset.ui=FLAG_ADMIN&&store.labUi&&store.labUi!=='grafit'?store.labUi:'';const k=FLAG_ADMIN&&store.labSnd?store.labSnd:'cs';Object.assign(SFX,SFXP[k]||SFXP.cs);}catch(e){}}
+function labApply(){try{document.body.dataset.ui=FLAG_ADMIN&&store.labUi&&store.labUi!=='grafit'?store.labUi:'';const k=FLAG_ADMIN&&store.labSnd?store.labSnd:(typeof shopUse==='function'?shopUse('snd'):'cs');Object.assign(SFX,SFXP[k]||SFXP.cs);}catch(e){}}
 
 
 /* ================= утилиты ================= */
@@ -396,11 +397,13 @@ function underline(name,focus){return focus&&name.includes(focus)&&focus!==name?
 // 12.1: при любом переходе — убрать всё, что висит поверх экрана (карта словаря с видео, мини-плеер, поповеры слов),
 // и остановить видео эпизода, если уходим со сцены. Раньше карта/видео могли остаться висеть над новым экраном.
 function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
+  document.querySelectorAll('.pk,.dx-turn,.dx-shade').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном
   document.querySelectorAll('.dxo,.rwo,.bgvw').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
   document.body.classList.remove('dx-open');try{kwHide(0);}catch(e){}try{musDuck(false);}catch(e){}
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
   if(!scn)try{if(SV)scStop();}catch(e){}}
-function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);if(!tab)paintTabbar(null);app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}}
+function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);if(!tab)paintTabbar(null);app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}
+  try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}}
 function applyFx(){
   document.body.classList.toggle('nofx',!store.fx);
   if(!document.body.dataset.world)setWorld('neutral');
@@ -1635,6 +1638,7 @@ function headHTML(){
 function bindHead(){
   if($('#setBtn'))$('#setBtn').onclick=()=>{sfx('tap');renderSettings();};
   $$('#rankBtn,#rankBtn2').forEach(b=>b.onclick=showRanks);
+  $$('.thead .gold').forEach(g=>{g.setAttribute('role','button');g.onclick=()=>{sfx('tap');haptic('sel');renderShop();};});
 }
 
 /* ---- Учить ---- */
@@ -1779,26 +1783,6 @@ function bindProfile(){bindProfileAdmin();
 }
 
 /* ---- заставка и отсчёт ---- */
-function splash(){
-  // 11.2: «кинопроектор» — отсчёт плёнки 3-2-1, вспышка, шторки-letterbox раскрываются, проявляется название. Тап — пропустить.
-  if(!store.fx)return;
-  const d=document.createElement('div');d.className='splash3';
-  const title='ЯЗЫКИ ПО КИНО'.split('').map((ch,i)=>`<span style="--i:${i}">${ch===' '?'&nbsp;':ch}</span>`).join('');
-  d.innerHTML=`<div class="s3-beam"></div><div class="s3-lead"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><circle class="sw" cx="50" cy="50" r="22"/><path d="M50 2v96M2 50h96"/></svg><b><i>3</i><i>2</i><i>1</i></b></div>
-    <div class="s3-flash"></div><div class="s3-bar t"></div><div class="s3-bar b"></div>
-    <div class="s3-c"><div class="s3-t">${title}</div><div class="s3-line"></div><div class="s3-sub">английский и немецкий по сценам из кино</div></div><div class="s3-grain"></div>`;
-  document.body.appendChild(d);
-  let gone=false;const out=()=>{if(gone)return;gone=true;d.classList.add('out');setTimeout(()=>d.remove(),600);};
-  d.addEventListener('pointerdown',out);setTimeout(out,2300);
-}
-function countdown(cb){
-  if(!store.fx){cb();return;}
-  const d=document.createElement('div');d.className='cdown';document.body.appendChild(d);
-  let n=3;
-  const step=()=>{if(n===0){d.innerHTML='<b class="go">В бой!</b>';sfx('announce',3);setTimeout(()=>{d.remove();cb();},450);return;}
-    d.innerHTML=`<b>${n}</b>`;sfx('tick');haptic('light');n--;setTimeout(step,620);};
-  step();
-}
 const SPY_HEROES=window.__DATA.SPY_HEROES;
 const SPY_ITEMS=window.__DATA.SPY_ITEMS;
 
@@ -2328,7 +2312,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.1.0';
+const APP_V='13.2.0';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2849,14 +2833,8 @@ const scStars=(s,i)=>{const P=scP(s.id);return (P.st&&P.st[i])||(P.done.includes
 const scEpOpen=(s,i)=>ADM_OPEN()||scPilot(s)||i===0||scP(s.id).done.includes(i-1)||scP(s.id).done.includes(i);
 const scBossOpen=s=>ADM_OPEN()||scPilot(s)||s.parts.every((p,i)=>scP(s.id).done.includes(i));
 const starsHTML=n=>`<span class="stars3">${[1,2,3].map(k=>`<i class="${k<=n?'on':''}">★</i>`).join('')}</span>`;
-function addGold(n){if(!n)return 0;store.gold=(store.gold||0)+n;save();if(n>0)setTimeout(()=>goldFX(n),350);return n;}
+function addGold(n,from){if(!n)return 0;store.gold=(store.gold||0)+n;save();if(n>0)setTimeout(()=>goldFX(n,from),350);return n;}
 // 11.6: монеты — золотая плашка «+N» взлетает и улетает в счётчик в шапке (если он на экране), счётчик подпрыгивает
-function goldFX(n){try{if(store.fx===false||!(n>0))return;const g=document.createElement('div');g.className='gfx';g.innerHTML=`+${fmt(n)} ${ui('coin')}`;document.body.appendChild(g);
-  const W=innerWidth,H=innerHeight,x0=W/2-g.offsetWidth/2,y0=H*0.42;g.style.left=x0+'px';g.style.top=y0+'px';
-  const t=document.querySelector('.thead .gold'),r=t&&t.getBoundingClientRect(),vis=!!(r&&r.width&&r.top>=0&&r.bottom<=H);
-  const dx=vis?r.left+r.width/2-(x0+g.offsetWidth/2):0,dy=vis?r.top+r.height/2-(y0+g.offsetHeight/2):-140;
-  g.animate([{transform:'translateY(14px) scale(.6)',opacity:0},{transform:'none',opacity:1,offset:.22},{transform:'translateY(-8px)',opacity:1,offset:.55},{transform:`translate(${dx}px,${dy}px) scale(.45)`,opacity:vis?.85:0}],{duration:1150,easing:'cubic-bezier(.5,0,.25,1)'}).onfinish=()=>{g.remove();
-    if(vis){t.innerHTML=`${ui('coin')}${fmt(store.gold)}`;t.classList.remove('bump');void t.offsetWidth;t.classList.add('bump');}};}catch(e){}}
 function scBuy(s){const pr=SC_PRICE(s),g=store.gold||0,ok=g>=pr;scCloseSheet();const w=document.createElement('div');w.className='sc-sheetwrap';
   w.innerHTML=`<div class="sc-sheet buy-sheet"><div class="bs-img" style="background-image:url('${scCover(s,'cover.jpg')}')"><span>🔒</span></div>
     <em>${SC_KIND[s.kind]||'Сцена'} · сложность ${scDots(s.lvl||1)}</em><b>${esc(s.title)}</b><small>${esc(s.sub||'')}</small>
@@ -3550,7 +3528,8 @@ const DX_TH={wolf:'#D4AF37',noir:'#c8323a',bone:'#E8DCC4',taxi:'#F2C200',bunker:
 function dcHTML(c,i){const {s,f,pi,p}=c;
   if(!dictHas(s,f))return `<button class="dc lock" data-sid="${s.id}" data-fid="${f.id}" style="--c:${DX_TH[s.theme]||'#F5C451'};--d:${i}"><span class="dc-ep">эп. ${pi+1}</span><span class="dc-q">?</span><small>Пройди «${esc(p.t)}»</small></button>`;
   const P=scP(s.id),r=P.r[f.id],due=r&&r[1]<=Date.now();
-  return `<button class="dc t-${scTag(f)[1]}" data-sid="${s.id}" data-fid="${f.id}" style="--c:${DX_TH[s.theme]||'#F5C451'};--d:${i}"><span class="dc-ep">эп. ${pi+1}</span>${due?'<i class="dc-due" title="Пора повторить">🔁</i>':''}<b class="dc-en">${esc(dxT(f))}</b><span class="dc-ru">${esc(f.ru)}</span><span class="dc-st">${'●'.repeat(Math.min(3,P.m[f.id]||0))}${'○'.repeat(3-Math.min(3,P.m[f.id]||0))}</span></button>`;}
+  const m=Math.min(3,P.m[f.id]||0);   // 13.2: кадр эпизода сверху, фольга у выученных; вид — из магазина (data-cs)
+  return `<button class="dc t-${scTag(f)[1]}${m>=3?' lrn':''}" data-sid="${s.id}" data-fid="${f.id}" style="--c:${DX_TH[s.theme]||'#F5C451'};--d:${i}">${dcFace(c)}${due?'<i class="dc-due" title="Пора повторить">🔁</i>':''}<span class="dc-st">${[0,1,2].map(k=>`<i class="${k<m?'on':''}"></i>`).join('')}</span></button>`;}
 // 11.5: словарь — иерархия как в Hearthstone: Фильмы / Сериалы → название → сцена → карты эпизодов. На экране один уровень.
 // 🇬🇧/🇩🇪 — тот же словарь 1:1 (те же фильмы и тот же прогресс P.got), карты на немецком.
 const dxT=f=>DX.lang==='de'?(f.de||f.en):f.en;
@@ -3584,6 +3563,7 @@ function dxBody(dir){const box=$('#dxBody');if(!box)return;if(DX.seg==='my'){bac
       ${row('Фильмы',SH.filter(x=>x.kind==='film'))}${row('Сериалы',SH.filter(x=>x.kind==='series'))}${row('Интервью',SH.filter(x=>x.kind==='interview'))}`;}
   box.innerHTML=`<div class="dx-lvl">${html}</div>`;
   if(dir)box.firstChild.animate([{opacity:0,transform:`translateX(${dir>0?28:-28}px)`},{opacity:1,transform:'none'}],{duration:260,easing:'cubic-bezier(.2,.9,.3,1)'});
+  if(dir&&fxOK())box.querySelectorAll('.dx-grid .dc,.dx-show,.dx-sci').forEach((c,i)=>{if(i<14)c.animate([{opacity:0,transform:'translateY(16px) scale(.95)'},{opacity:1,transform:'none'}],{duration:440,delay:60+i*34,easing:EZ.out,fill:'backwards'});});   // 13.2: карты и постеры ложатся каскадом
   box.querySelectorAll('[data-dl]').forEach(b=>b.onclick=()=>{if(DX.lang===b.dataset.dl)return;sfx('tap');DX.lang=b.dataset.dl;dxBody();});
   if($('#dxUp'))$('#dxUp').onclick=()=>{sfx('tap');dxUp();};
   box.querySelectorAll('[data-show]').forEach(b=>b.onclick=()=>{sfx('tap');const sh=dxShows().find(x=>x.k===b.dataset.show);DX.show=sh.k;DX.sid=sh.L.length===1?sh.L[0].id:null;dxBody(1);});
@@ -3614,10 +3594,6 @@ function dxBindCards(){const box=$('#dxPage');if(!box)return;
     sfx('tap');dxOpen(b,c);});
   box.querySelectorAll('.dc').forEach((b,i)=>b.animate([{opacity:0,transform:'translateY(14px) scale(.96)'},{opacity:1,transform:'none'}],{duration:320,delay:Math.min(i,16)*28,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'}));}
 // перелистывание сцен одного фильма как страниц книги
-function dxFlip(d){const s=scOf(DX.sid);if(!s)return;sfx('page');const sh=dxShows().find(x=>x.k===dictFilm(s)),L=sh?sh.L:[s],n=L.indexOf(s)+d;if(n<0||n>=L.length){haptic('err');return;}
-  const pg=$('#dxPage');if(!pg||pg._busy)return;pg._busy=true;sfx('tap');haptic('sel');pg.style.transformOrigin=d>0?'left center':'right center';
-  pg.animate([{transform:'none',opacity:1},{transform:`rotateY(${d>0?-70:70}deg)`,opacity:0}],{duration:230,easing:'cubic-bezier(.5,0,.9,.6)'}).onfinish=()=>{DX.sid=L[n].id;dxBody();const p2=$('#dxPage');if(!p2)return;
-    p2.style.transformOrigin=d>0?'right center':'left center';p2.animate([{transform:`rotateY(${d>0?70:-70}deg)`,opacity:0},{transform:'none',opacity:1}],{duration:300,easing:'cubic-bezier(.15,.7,.3,1)'});};}
 // открыть карту: вылетает из сетки в центр, внутри — кусок сцены с этой фразой
 function dxOpen(btn,c){const {s,f,p,pi}=c,r0=btn.getBoundingClientRect();
   const o=document.createElement('div');o.className='dxo';
@@ -3630,8 +3606,10 @@ function dxOpen(btn,c){const {s,f,p,pi}=c,r0=btn.getBoundingClientRect();
       <div class="dxc-acts"><button data-v="re">${SI.play} Ещё раз</button><button data-v="slow">🐢 Медленнее</button><button data-v="ep">Открыть эпизод →</button></div></div></div>`;
   document.body.appendChild(o);document.body.classList.add('dx-open');
   const card=o.querySelector('.dxc'),R=card.getBoundingClientRect(),k=R.width/card.offsetWidth||1;
-  const dx=(r0.left+r0.width/2-(R.left+R.width/2))/k,dy=(r0.top+r0.height/2-(R.top+R.height/2))/k,sc=Math.max(.15,r0.width/R.width);
-  card.animate([{transform:`translate(${dx}px,${dy}px) scale(${sc}) rotateY(-35deg)`,opacity:.5},{transform:'none',opacity:1}],{duration:460,easing:'cubic-bezier(.2,.9,.25,1)'});
+  // 13.2: карта раскрывается из своей клетки — рамка растёт пружиной, содержимое проявляется следом (без мутного наложения)
+  const grow=(r,back)=>{const sx=Math.max(.05,r.width/R.width),sy=Math.max(.05,r.height/R.height),tx=(r.left-R.left)/k,ty=(r.top-R.top)/k,f=[{transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`,borderRadius:'18px'},{transform:'none',borderRadius:'24px'}];
+    card.style.transformOrigin='0 0';return card.animate(back?f.reverse():f,{duration:back?340:640,easing:back?EZ.in:SPRING,fill:back?'forwards':'none'});};
+  if(fxOK()){grow(r0);[...card.children].forEach((ch,i)=>ch.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:360,delay:200+i*80,easing:EZ.out,fill:'backwards'}));btn.style.visibility='hidden';}
   o.querySelector('.dxo-dim').animate([{opacity:0},{opacity:1}],{duration:300});
   const v=o.querySelector('.dxv'),a=Math.max(0,f.a-p.a-0.15),b=f.b-p.a+0.2,pb=o.querySelector('.dxv-p');
   const play=slow=>{v.playbackRate=slow?.75:1;try{if(Math.abs(v.currentTime-a)>0.05)v.currentTime=a;}catch(e){}const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{pb.hidden=false;});pb.hidden=true;};
@@ -3642,8 +3620,10 @@ function dxOpen(btn,c){const {s,f,p,pi}=c,r0=btn.getBoundingClientRect();
   pb.onclick=()=>{sfx('tap');play(false);};
   phBind(card,f);
   const close=()=>{if(o._c)return;o._c=true;v.pause();try{musDuck(false);}catch(e){}kwHide(0);document.removeEventListener('keydown',esc_);document.body.classList.remove('dx-open');
-    card.animate([{transform:'none',opacity:1},{transform:'scale(.9)',opacity:0}],{duration:200,easing:'ease-in',fill:'forwards'});
-    o.querySelector('.dxo-dim').animate([{opacity:1},{opacity:0}],{duration:220,fill:'forwards'}).onfinish=()=>o.remove();};
+    const r1=btn.isConnected?btn.getBoundingClientRect():null,back=fxOK()&&r1&&r1.width&&r1.bottom>0&&r1.top<innerHeight;
+    if(back){[...card.children].forEach(ch=>ch.animate([{opacity:1},{opacity:0}],{duration:140,fill:'forwards'}));grow(r1,true);}
+    else card.animate([{transform:'none',opacity:1},{transform:'scale(.92)',opacity:0}],{duration:200,easing:'ease-in',fill:'forwards'});
+    o.querySelector('.dxo-dim').animate([{opacity:1},{opacity:0}],{duration:back?340:220,fill:'forwards'}).onfinish=()=>{o.remove();btn.style.visibility='';};};
   const esc_=e=>{if(e.key==='Escape')close();};document.addEventListener('keydown',esc_);
   o.querySelector('.dxo-dim').onclick=close;o.querySelector('.dxc-x').onclick=close;
   o.querySelectorAll('[data-v]').forEach(x=>x.onclick=()=>{sfx('tap');const t=x.dataset.v;if(t==='ep'){close();setTimeout(()=>srOpen(s.id,pi,f.a),220);return;}play(t==='slow');});
@@ -3681,23 +3661,6 @@ function dxMy(box){const L=mywAll(),tagsOf=x=>[...(x.tags||[]),x.own?'добав
   box.querySelectorAll('.dm').forEach((b,i)=>b.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:280,delay:Math.min(i,12)*30,fill:'backwards'}));}
 function renderMyWords(){DX.seg='my';renderTab('dict');}
 // новые карты после эпизода: вылетают, переворачиваются и с ускорением падают в словарь
-function dictFly(){const L=DICT_NEW.splice(0);if(!L.length)return;
-  const cards=L.map(x=>{const s=scOf(x.sid);let f=null;if(s)s.parts.forEach(p=>p.ph.forEach(y=>{if(y.id===x.fid)f=y;}));return f?{s,f}:null;}).filter(Boolean);if(!cards.length)return;
-  const show=cards.slice(0,6),o=document.createElement('div');o.className='dfly';
-  o.innerHTML=`<div class="dfly-h"><b>+${cards.length} ${plural(cards.length,['карта','карты','карт'])} в словарь</b><span>Ты заработал эти фразы</span></div>
-    <div class="dfly-row">${show.map(c=>`<div class="dc t-${scTag(c.f)[1]}" style="--c:${DX_TH[c.s.theme]||'#F5C451'}"><span class="dc-ep">новая</span><b class="dc-en">${esc(scT(c.f))}</b><span class="dc-ru">${esc(c.f.ru)}</span></div>`).join('')}</div>
-    <div class="dfly-book"><span>📖</span><b>Словарь</b><i id="dflyN">${Math.max(0,dictCount()[0]-cards.length)}</i></div><small class="dfly-skip">нажми, чтобы пропустить</small>`;
-  document.body.appendChild(o);sfx('learn');haptic('ok');
-  const els=[...o.querySelectorAll('.dfly-row .dc')],book=o.querySelector('.dfly-book'),nEl=o.querySelector('#dflyN');
-  o.animate([{opacity:0},{opacity:1}],{duration:260,fill:'forwards'});
-  els.forEach((e,i)=>e.animate([{transform:'translateY(70px) rotateY(180deg) scale(.55)',opacity:0},{transform:'none',opacity:1}],{duration:560,delay:180+i*140,easing:'cubic-bezier(.2,1.25,.4,1)',fill:'backwards'}));
-  let gone=false;const fly=()=>{if(gone)return;gone=true;const B=book.getBoundingClientRect();let landed=0;
-    els.forEach((e,i)=>{const r=e.getBoundingClientRect(),k=r.width/e.offsetWidth||1,dx=(B.left+B.width/2-(r.left+r.width/2))/k,dy=(B.top+B.height/2-(r.top+r.height/2))/k;
-      e.animate([{transform:'none',opacity:1},{transform:`translate(${dx}px,${dy}px) scale(.14) rotate(${i%2?18:-18}deg)`,opacity:.35}],{duration:640,delay:i*95,easing:'cubic-bezier(.6,0,1,.4)',fill:'forwards'}).onfinish=()=>{
-        landed++;nEl.textContent=+nEl.textContent+(landed===els.length?cards.length-els.length+1:1);book.animate([{transform:'scale(1)'},{transform:'scale(1.18)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});sfx('tap');
-        if(landed===els.length){haptic('ok');setTimeout(()=>{o.animate([{opacity:1},{opacity:0}],{duration:260,fill:'forwards'}).onfinish=()=>o.remove();},650);}};});
-    o.querySelector('.dfly-h').animate([{opacity:1},{opacity:0}],{duration:250,fill:'forwards'});o.querySelector('.dfly-skip').remove();};
-  o.onclick=fly;setTimeout(fly,1500+els.length*140);}
 /* =====================================================================================
    11.0 — ДУЭЛЬ ПО СЦЕНЕ (PvP с другом по ссылке)
    • Наперегонки: 8 одинаковых вопросов у обоих, живая полоска соперника; больше верных (при равенстве — быстрее) — забирает банк.
@@ -3722,14 +3685,15 @@ function kvMakeQs(s,ep){const all=s.parts.flatMap(p=>p.ph);let L=scAct(s.parts[e
     const tr=(f.trap||[]).slice(0,2);return {fid:f.id,t:'mean',right:f.ru,opts:shuffle([f.ru,...tr])};});}
 const kvF=(s,fid)=>{let f=null;s.parts.forEach(p=>p.ph.forEach(x=>{if(x.id===fid)f=x;}));return f;};
 // лист «Дуэль с другом»: эпизод, режим, ставка
-function kvSheet(sid,ep){const s=scOf(sid);if(!s)return;scCloseSheet();let mode='race',bet=0;ep=ep==null?Math.max(0,s.parts.findIndex((p,i)=>!scP(sid).done.includes(i))):ep;if(ep<0)ep=0;
+function kvSheet(sid,ep){const s=scOf(sid);if(!s)return;scCloseSheet();let mode='race',bet=(store.gold||0)>=25?25:0;/* 13.2: ставка была внизу и «Без» по умолчанию — её не замечали */ep=ep==null?Math.max(0,s.parts.findIndex((p,i)=>!scP(sid).done.includes(i))):ep;if(ep<0)ep=0;
   const w=document.createElement('div');w.className='sc-sheetwrap';const g=store.gold||0;
   let drawn=false;const draw=()=>{w.innerHTML=`<div class="sc-sheet kv-sheet${drawn?' noanim':''}"><b>⚔️ Дуэль с другом</b><p class="kv-sub">${esc(s.title)} · ${esc(s.sub||'')}</p>
-    <div class="kv-lbl">Эпизод</div><div class="kv-eps">${s.parts.map((p,i)=>`<button data-ep="${i}" class="${i===ep?'on':''}">${i+1}. ${esc(p.t)}</button>`).join('')}</div>
-    <div class="kv-lbl">Режим</div><div class="kv-modes"><button data-m="race" class="${mode==='race'?'on':''}"><span>🏁</span><b>Наперегонки</b><small>Одни и те же 8 вопросов. Очки: верно — 100 и до 50 за скорость. Больше очков — забираешь банк.</small></button>
+    <div class="kv-lbl">Режим</div><div class="kv-modes"><button data-m="race" class="${mode==='race'?'on':''}"><span>🏁</span><b>Наперегонки</b><small>Одни и те же вопросы у обоих. Верно — 100 очков и до 50 за скорость. Больше очков — забираешь банк.</small></button>
       <button data-m="coop" class="${mode==='coop'?'on':''}"><span>🤝</span><b>Вместе</b><small>По очереди, общий счёт. Застрял — «🆘 Помоги», и ответит друг.</small></button></div>
-    ${mode==='race'?`<div class="kv-lbl">Ставка <small>у тебя ${ui('coin')} ${fmt(g)}</small></div><div class="kv-bets">${[0,25,50,100,200].map(x=>`<button data-b="${x}" class="${x===bet?'on':''}"${x>g?' disabled':''}>${x?`${ui('coin')} ${x}`:'Без'}</button>`).join('')}</div>`:''}
-    <button class="sc-btn" id="kvGo">Создать и позвать друга →</button><button class="sc-btn ghost" data-close>Отмена</button></div>`;drawn=true;};
+    ${mode==='race'?`<div class="kv-lbl">Ставка <small>у тебя ${ui('coin')} ${fmt(g)}</small></div>${g<25?`<p class="kv-poor">Ставки — от ${ui('coin')} 25. Пройди эпизод или финал сцены — дадут билеты.</p>`:''}<div class="kv-bets">${[0,25,50,100,200].filter(x=>!x||x<=g||x===25).map(x=>`<button data-b="${x}" class="${x===bet?'on':''}"${x>g?' disabled':''}>${x?`${ui('coin')} ${x}`:'Без ставки'}</button>`).join('')}</div>
+      ${bet?`<p class="kv-bank-note">Банк ${ui('coin')} <b>${bet*2}</b> — ставка списывается у обоих на старте, победитель забирает всё. Ничья — вернём.</p>`:''}`:''}
+    <div class="kv-lbl">Эпизод</div><div class="kv-eps">${s.parts.map((p,i)=>`<button data-ep="${i}" class="${i===ep?'on':''}">${i+1}. ${esc(p.t)}</button>`).join('')}</div>
+    <button class="sc-btn" id="kvGo">${mode==='race'&&bet?`Создать — ставка ${ui('coin')} ${bet} →`:'Создать и позвать друга →'}</button><button class="sc-btn ghost" data-close>Отмена</button></div>`;drawn=true;};
   draw();w.onclick=async e=>{const b=e.target.closest('button');if(e.target===w||(b&&b.hasAttribute('data-close'))){w.remove();return;}if(!b)return;sfx('tap');
     if(b.dataset.ep){ep=+b.dataset.ep;draw();return;}if(b.dataset.m){mode=b.dataset.m;if(mode==='coop')bet=0;draw();return;}if(b.dataset.b){bet=+b.dataset.b;draw();return;}
     if(b.id==='kvGo'){b.disabled=true;b.textContent='Создаю комнату…';
@@ -3776,10 +3740,22 @@ function kvApply(R){if(!KV)return;const prev=KV.room;KV.room=R;
   else{if(R.st==='end'||R.turn>=R.qs.length){KV.over=true;kvEnd();return;}if(!prev||prev.turn!==R.turn||prev.help!==R.help||!document.querySelector('.kv-q'))kvCoopShow();else kvBars();}}
 // ставка списывается один раз, когда оба в игре
 function kvPay(){const R=KV.room;store.kvPaid=store.kvPaid||{};if(R.mode==='race'&&R.bet&&!store.kvPaid[KV.code]){store.gold=Math.max(0,(store.gold||0)-R.bet);store.kvPaid[KV.code]=1;save();}}
-function kvCountdown(){const R=KV.room,s=scOf(R.sid);let n=3;
-  kvScreen(`<div class="kv-cd"><span>${esc(R.A.n)} <i>vs</i> ${esc(R.B?R.B.n:'…')}</span><b id="kvN">3</b><small>${R.mode==='race'?'Наперегонки — отвечай быстро и точно':'Вместе — по очереди, начинает '+esc(R.A.n)}</small></div>`);
-  sfx('tap');KV.cd=setInterval(()=>{n--;const el=$('#kvN');if(n<=0){clearInterval(KV.cd);sfx('win');KV.ready=true;KV.t0=Date.now();KV.qt=Date.now();if(R.mode==='race')kvRaceShow();else kvCoopShow();return;}
-    if(el){el.textContent=n;el.animate([{transform:'scale(1.6)',opacity:0},{transform:'none',opacity:1}],{duration:400,easing:'cubic-bezier(.2,1.4,.4,1)'});}sfx('tap');haptic('sel');},900);}
+function kvCountdown(){const R=KV.room;let n=3;const bank=R.mode==='race'&&R.bet>0;
+  kvScreen(`<div class="kv-cd"><div class="kv-cdn"><span class="a">${esc(R.A.n)}</span><i>vs</i><span class="b">${esc(R.B?R.B.n:'…')}</span></div>
+    ${bank?`<div class="kv-pot" id="kvPot">${ui('coin')}<b id="kvPotN">0</b><small>банк · по ${R.bet} с каждого</small></div>`:''}
+    <div class="kv-numw"><i class="cd2-ring" id="kvRing"></i><b id="kvN">3</b></div><small>${R.mode==='race'?'Наперегонки — отвечай быстро и точно':'Вместе — по очереди, начинает '+esc(R.A.n)}</small></div>`);
+  if(bank)kvPotFX(R.bet);
+  const pop=()=>{const el=$('#kvN'),rg=$('#kvRing');if(!el||!fxOK())return;el.animate([{transform:'scale(1.9)',opacity:0,filter:'blur(12px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:480,easing:SPRING});
+    if(rg)rg.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:.9},{transform:'translate(-50%,-50%) scale(2.4)',opacity:0}],{duration:640,easing:EZ.out});fxAt(el,{n:14,v:5.5,sh:'spark',life:34});};
+  sfx('tap');pop();KV.cd=setInterval(()=>{n--;const el=$('#kvN');if(n<=0){clearInterval(KV.cd);sfx('win');KV.ready=true;KV.t0=Date.now();KV.qt=Date.now();if(R.mode==='race')kvRaceShow();else kvCoopShow();return;}
+    if(el)el.textContent=n;pop();sfx('tap');haptic('sel');},900);}
+function kvPotFX(bet){const pot=$('#kvPot'),nb=$('#kvPotN');if(!pot||!nb)return;
+  if(!fxOK()){nb.textContent=bet*2;return;}
+  const pr=pot.getBoundingClientRect(),px=pr.left+pr.width/2,py=pr.top+pr.height/2,K=6;let got=0;
+  [...document.querySelectorAll('.kv-cdn .a,.kv-cdn .b')].forEach((src,side)=>{const r=src.getBoundingClientRect(),x0=r.left+r.width/2,y0=r.top+r.height/2;
+    for(let i=0;i<K/2;i++){const t=document.createElement('div');t.className='gtk';t.innerHTML=ui('coin');t.style.transform=`translate(${x0}px,${y0}px) translate(-50%,-50%) scale(0)`;FXROOT().appendChild(t);
+      fxArc(t,x0,y0,px,py,{d:640,delay:250+i*120+side*60,s0:.9,s1:.6,rot:(side?-1:1)*120,lift:-50}).onfinish=()=>{t.remove();got++;nb.textContent=fmt(Math.round(bet*2*got/K));
+        pot.animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:240,easing:EZ.out});fxEmit(px,py,{n:6,v:3,life:30});sfx('tick');if(got===K)nb.textContent=fmt(bet*2);};}});}
 // верх экрана: я и соперник/друг
 function kvTop(){const R=KV.room,me=R[KV.role],fo=R[kvFoe()]||{n:'…',ans:{}},n=R.qs.length;
   if(R.mode==='race'){const sc=p=>Object.values(p.ans||{}).filter(a=>a.ok).length,pr=p=>Object.keys(p.ans||{}).length;
@@ -3821,7 +3797,7 @@ function kvEnd(foeLeft){kvStop();const R=KV.room,s=scOf(R.sid),me=R[KV.role],fo=
     const cell=x=>x?`<td class="${x.ok?'ok':'bad'}">${x.ok?'✓':'✗'}<small>${(x.ms/1000).toFixed(1)} с</small><em>${kvPts(x)}</em></td>`:'<td>—</td>';
     if(!foeLeft)tbl=`<table class="kv-tbl"><thead><tr><th>#</th><th>Ты</th><th>${esc(fo.n)}</th></tr></thead><tbody>${R.qs.map((q,i)=>`<tr><td>${i+1}</td>${cell((me.ans||{})[i])}${cell((fo.ans||{})[i])}</tr>`).join('')}</tbody>
       <tfoot><tr><td>Σ</td><td>${a}</td><td>${b}</td></tr></tfoot></table><p class="kv-rule">Верно — 100 очков и до 50 за скорость. Сначала решает точность, потом время.</p>`;
-    if(R.bet&&first){gain=win===true?R.bet*2:win===null?R.bet:0;addGold(gain);}}
+    if(R.bet&&first){gain=win===true?R.bet*2:win===null?R.bet:0;setTimeout(()=>addGold(gain,$('.kv-bank')),50);}}
   else{const ok=Object.values(R.co).filter(a=>a.ok).length;title=ok===R.qs.length?'Идеально вместе! 🤝':'Пройдено вместе';sub=`Общий счёт: ${ok} из ${R.qs.length}`;if(first){gain=ok*5;addGold(gain);}}
   save();scSave();sfx(win===false?'learn':'win');ev('pvp_end',R.sid);
   kvScreen(`<div class="kv-end"><div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div><b>${title}</b><p>${sub}</p>${R.mode==='race'&&R.bet?`<p class="kv-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Ставка ${ui('coin')} ${R.bet} ушла к ${esc(fo.n)}`}</p>`:''}${gain&&!(R.mode==='race'&&R.bet)?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}${tbl}
@@ -4037,7 +4013,7 @@ function renderScQuiz(id,i){
           else P.r[f.id]=[st,Date.now()+SC_DAYS[st]*864e5];
         }else delete P.r[f.id];
       }
-      scSave();sfx(right?'good':'bad');haptic(right?'ok':'err');weekAdd();
+      scSave();sfx(right?'good':'bad');haptic(right?'ok':'err');weekAdd();if(right)fxGood(el||$('#scbmsg'));
       gavReact(right);if(right&&before<3&&P.m[f.id]>=3)setTimeout(()=>gavKill(target(f)),350);
 
       if(!build)$$('.sc-opt').forEach(x=>{
@@ -4208,7 +4184,7 @@ function rwHTML(s,i,fresh){const p=s.parts[i],F=epFacts(s,i),left=s.parts.filter
     ${rwCardHTML(s,i)}<small class="rw-hint">Потяни кадр — вертится. Нажми — перевернётся.</small>
     ${F.length?`<div class="rwf"><em class="rwf-h">✦ ${F.length>1?'Интересные факты':'Интересный факт'} — открой</em>${F.map((x,k)=>`<button class="rw-fact" data-fk="${k}"><span class="rw-env">✉️</span><span><em>${x.f?'Факт к фразе':'Факт о сцене'}</em><b>${x.f?'«'+esc(scT(x.f))+'»':'Нажми, чтобы открыть'}</b></span></button>`).join('')}</div>`:''}
     <p class="seg-n">${left?`Ещё ${left} ${plural(left,['эпизод','эпизода','эпизодов'])} — и <b>карточка + фон сцены</b>. Весь фильм — <b>главный живой фон</b>.`:''}</p></section>`;}
-function rwBind(box,s,i){const c=box.querySelector('.rw:not(.sgw) .rw-card');if(c){rwTilt(c);if(box.querySelector('.rw.fresh:not(.sgw)')){sfx('reward');}if(box.querySelector('.rw.fresh:not(.sgw)'))c.querySelector('.rw-in').animate([{transform:'rotateY(-200deg) scale(.55)',opacity:0},{transform:'rotateY(12deg) scale(1.03)',opacity:1,offset:.7},{transform:'none',opacity:1}],{duration:1100,delay:350,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'});}
+function rwBind(box,s,i){const c=box.querySelector('.rw:not(.sgw) .rw-card');if(c){rwTilt(c);if(box.querySelector('.rw.fresh:not(.sgw)')){sfx('reward');}if(box.querySelector('.rw.fresh:not(.sgw)'))fxCardIn(c.querySelector('.rw-in'),350);}
   const F=epFacts(s,i);
   box.querySelectorAll('.rwf .rw-fact').forEach(fb=>fb.onclick=()=>{if(fb.classList.contains('open'))return;const x=F[+fb.dataset.fk];if(!x)return;sfx('unlock');haptic('ok');fb.classList.add('open');
     fb.innerHTML=`<span class="rw-env">✦</span><span><em>${x.f?'«'+esc(scT(x.f))+'»':'Факт о сцене'}</em><p>${esc(x.t)}</p></span>`;fb.animate([{transform:'rotateX(80deg)',opacity:.2},{transform:'none',opacity:1}],{duration:420,easing:'cubic-bezier(.2,1,.3,1)'});});
@@ -4281,11 +4257,11 @@ function rwEndBind(box,s,i){rwBind(box,s,i);segBind(box,s);bgBind(box);}
 function rwAll(){const L=[];SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)!=='hide').forEach(s=>s.parts.forEach((p,i)=>L.push({s,i,got:rwHas(s,i)})));return L;}
 function rwOpen(k){const [sid,ii]=k.split('|'),s=scOf(sid),i=+ii;if(!s)return;const o=document.createElement('div');o.className='rwo';
   o.innerHTML=`<div class="rwo-dim"></div><div class="rwo-box">${rwCardHTML(s,i)}<small class="rw-hint">Потяни — вертится, нажми — перевернётся</small>${epFact(s,i)?`<div class="rwo-fact"><em>✦ Интересный факт</em><p>${esc(epFact(s,i))}</p></div>`:''}<button class="sc-btn ghost" id="rwoX">Закрыть</button></div>`;
-  document.body.appendChild(o);rwTilt(o.querySelector('.rw-card'));o.querySelector('.rw-in').animate([{transform:'rotateY(-90deg) scale(.7)',opacity:0},{transform:'none',opacity:1}],{duration:500,easing:'cubic-bezier(.2,1,.3,1)'});
+  document.body.appendChild(o);rwTilt(o.querySelector('.rw-card'));fxCardIn(o.querySelector('.rw-in'),0);
   const close=()=>{o.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>o.remove();};o.querySelector('.rwo-dim').onclick=close;o.querySelector('#rwoX').onclick=()=>{sfx('tap');close();};}
 function segOpen(sid){const s=scOf(sid);if(!s||!segHas(s))return;const o=document.createElement('div');o.className='rwo';
   o.innerHTML=`<div class="rwo-dim"></div><div class="rwo-box">${segCardHTML(s)}<small class="rw-hint">Потяни — вертится, нажми — перевернётся</small><button class="sc-btn ghost" id="rwoX">Закрыть</button></div>`;
-  document.body.appendChild(o);segBind(o,s);o.querySelector('.rw-in').animate([{transform:'rotateY(-90deg) scale(.7)',opacity:0},{transform:'none',opacity:1}],{duration:500,easing:'cubic-bezier(.2,1,.3,1)'});
+  document.body.appendChild(o);segBind(o,s);fxCardIn(o.querySelector('.rw-in'),0);
   const close=()=>{o.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>o.remove();};o.querySelector('.rwo-dim').onclick=close;o.querySelector('#rwoX').onclick=()=>{sfx('tap');close();};}
 /* ===== 13.0: «Коллекция» — все награды в одном месте, вход с Главной (не путать со словарём): фоны, карточки сцен, кадры эпизодов.
    Будущие награды — новыми вкладками сюда же. Фоны: главный — за весь фильм / сериал / интервью, фон сцены — за всю сцену (на эпизоды фонов нет). ===== */
@@ -5409,12 +5385,14 @@ async function admResetPull(){if(!(TG&&TG.initData)&&!window.__INIT)return;try{c
   if(r&&r.ok&&r.v&&r.v.t&&r.v.t>(store.resetAt||0)){admResetMe();store.resetAt=r.v.t;save();toast('Прогресс сброшен администратором');renderHome();}}catch(e){}}
 setTimeout(admResetPull,2500);
 const ADM_ANIMS=[
-  {id:'splash',n:'Заставка «кинопроектор»',d:'Отсчёт плёнки, шторки, название. При запуске приложения.',run:()=>splash()},
-  {id:'gold',n:'Монеты в счётчик',d:'Когда что-то заработал: «+N» летит в счётчик.',run:()=>{renderHome();setTimeout(()=>{const w=store.fx;store.fx=true;goldFX(25);store.fx=w;},500);}},
-  {id:'fly',n:'Карты летят в словарь',d:'После эпизода и проверки: новые фразы-карты падают в «Словарь».',run:()=>{const s=SCENES.find(x=>x.kind!=='clip'),L=dictCards(s).slice(0,4);L.forEach(c=>DICT_NEW.push({sid:s.id,fid:c.f.id}));dictFly();}},
-  {id:'rw',n:'Награда за эпизод',d:'Кадр, который вертится и переворачивается, факт в конверте, значок.',run:()=>{const s=SCENES.find(x=>x.id==='american-psycho')||SCENES[0];rwOpen(rwKey(s,0));}},
-  {id:'cd',n:'Отсчёт 3-2-1',d:'Перед дуэлью и играми.',run:()=>countdown(()=>{})},
-  {id:'flip',n:'Перелистывание словаря',d:'Страница сцены поворачивается, как в книге.',run:()=>{DX.seg='ph';DX.show=null;DX.sid=null;const sh=dxShows().find(x=>x.L.length>1)||dxShows()[0];DX.show=sh.k;DX.sid=sh.L[0].id;renderTab('dict');setTimeout(()=>dxFlip(1),600);}},
+  {id:'splash',n:'Заставка',d:'Та, что выбрана в магазине (по умолчанию «Кинолента»).',run:()=>splash()},
+  {id:'gold',n:'Билеты в счётчик',d:'«+N», билетики разлетаются и по дуге летят в счётчик, он пересчитывается.',run:()=>{renderHome();setTimeout(()=>goldFX(25),500);}},
+  {id:'fly',n:'Пак новых карт',d:'После эпизода, проверки и дуэли: пак рвётся, карты переворачиваются и улетают в «Словарь».',run:()=>{const s=SCENES.find(x=>x.kind!=='clip'&&!x.age),L=dictCards(s).slice(0,4);L.forEach(c=>DICT_NEW.push({sid:s.id,fid:c.f.id}));dictFly();}},
+  {id:'rw',n:'Награда за эпизод',d:'Кадр вылетает из глубины, вспышка и полоса света.',run:()=>{const s=SCENES.find(x=>x.id==='american-psycho')||SCENES[0];rwOpen(rwKey(s,0));}},
+  {id:'cd',n:'Отсчёт 3-2-1',d:'Перед играми: цифра с размытием, кольцо-волна, «В бой!» с толчком.',run:()=>countdown(()=>{})},
+  {id:'flip',n:'Перелистывание словаря',d:'Страница переворачивается, как лист книги.',run:()=>{DX.seg='ph';DX.show=null;DX.sid=null;const sh=dxShows().find(x=>x.L.length>1)||dxShows()[0];DX.show=sh.k;DX.sid=sh.L[0].id;renderTab('dict');setTimeout(()=>dxFlip(1),700);}},
+  {id:'open',n:'Открытие карты',d:'Карта раскрывается из своей клетки, сцена играет внутри.',run:()=>{DX.seg='ph';const sh=dxShows()[0];DX.show=sh.k;DX.sid=sh.L[0].id;renderTab('dict');setTimeout(()=>{const b=document.querySelector('#dxPage .dc:not(.lock)');if(b)b.click();else toast('Нет открытых карт');},700);}},
+  {id:'shop',n:'Магазин',d:'Эффекты, вид карт, заставки, звуки, музыка на Главной.',run:()=>renderShop()},
 ];
 function admPlHTML(){const ch=(id,t,d)=>`<button class="adp-b" id="${id}"><b>${t}</b><small>${d}</small></button>`;
   return `<p class="lab-note">Для проверки. Всё меняется только у тебя на этом аккаунте (кроме сброса по ID).</p>
@@ -5527,7 +5505,7 @@ function learnTabHTML(){
   const main=n?{id:'hRev',k:'Повторение',b:`${n} ${plural(n,['задание','задания','заданий'])} · ≈ ${Math.max(2,Math.round(n*0.4))} мин`,s:'фразы и твои слова, которые пора вспомнить'}
     :les?{id:'hLesson',k:'Урок на сегодня',b:`5 фраз · ≈ 3 мин`,s:`из «${esc(les.s.title)}»`}
     :{id:'hNext',k:'Дальше',b:`Эпизод ${c.i+1} · ${esc(p.t)}`,s:esc(s.title)};
-  return `<div class="home">${headHTML()}
+  return `<div class="home">${headHTML()}${hmChipHTML()}
     <button class="hcont ${s.theme} anim" id="hCont" data-sc="${s.id}"><span class="hc-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="hc-grad"></span>
       <span class="hc-t"><em>${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'Продолжить смотреть'}</em><b>${esc(s.title)}</b><small>Эпизод ${c.i+1} · ${esc(p.t)}</small>
         <span class="hc-bar"><i style="width:${Math.round(L/T*100)}%"></i></span><small class="hc-prog">выучено фраз ${L} из ${T}</small></span>
@@ -5540,6 +5518,7 @@ function learnTabHTML(){
     </section>
     <div class="htiles anim">
       <button class="htile" onclick="renderMyWords()"><span>⭐</span><b>Мои слова</b><small>${mw?mw+' '+plural(mw,['слово','слова','слов']):'сохраняй из субтитров'}</small></button>
+      <button class="htile" id="hShop"><span>🛍</span><b>Магазин</b><small>эффекты, карты, заставки, музыка</small></button>
       <button class="htile" id="hColl"><span>🏆</span><b>Коллекция</b><small>${(C=>C.bg+C.cards?`${C.bg} ${plural(C.bg,['фон','фона','фонов'])} · ${C.cards} ${plural(C.cards,['карточка','карточки','карточек'])}`:'фоны и карточки за сцены')(collStat())}</small></button>
     </div>
     ${phraseOfDayHTML()}
@@ -5559,6 +5538,7 @@ function bindLearn(){
   if($('#hReview'))$('#hReview').onclick=()=>{haptic('medium');const sc=SCENES.find(x=>scDue(x).length);if(sc)renderScQuiz(sc.id,'rev');else startSession('review');};
   if($('#hAllKino'))$('#hAllKino').onclick=()=>{sfx('tap');renderTab('kino');};
   if($('#hColl'))$('#hColl').onclick=()=>{haptic('medium');sfx('tap');renderCollection();};
+  if($('#hShop'))$('#hShop').onclick=()=>{haptic('medium');sfx('tap');renderShop();};hmBind();
   if($('#hAllIv'))$('#hAllIv').onclick=()=>{sfx('tap');store.kinoCat='interview';save();renderTab('kino');};
   if($('#hAllGames'))$('#hAllGames').onclick=()=>{sfx('tap');renderTab('games');};
   $$('.hrow [data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});
@@ -5575,6 +5555,7 @@ function onBack(){
   if(document.querySelector('.rwo')){document.querySelector('.rwo-dim').click();return;}   // 12.0: открытый кадр коллекции
   {const o=document.querySelector('.bgvw');if(o&&o._close){o._close();return;}}   // 13.0: фон на весь экран
   if(screen==='coll'){sfx('tap');renderTab('learn');return;}
+  if(screen==='shop'){shopBack();return;}
   if(document.querySelector('.dx')&&!document.querySelector('.scn')&&dxUp())return;   // 11.5: словарь — уровень вверх
   if(screen==='pvp'){if(KV&&KV.over){const sid=KV.room.sid;KV=null;renderScene(sid);}else kvLeave();return;}
   if(screen==='sctask'){if(document.querySelector('.sc-pfs')){scExitFull();return;}renderScene(SCUR.id);return;}
@@ -5836,6 +5817,303 @@ function gavReact(right){if(!gavOn())return;GAVSTREAK=right?GAVSTREAK+1:0;gavSay
 function gavKill(text){return;if(!gavOn())return; if(window.MASCOT)window.MASCOT.play('learned',{text:text||''});}
 // Финал эпизода: разные постановки. В будущем можно добавлять новые события/персонажей без переписывания app.js.
 function gavEpisode(title,kind){return;if(!gavOn())return; const ev=kind==='bag'?'episodeBag':kind==='burn'?'episodeBurn':'sceneComplete'; if(window.MASCOT)window.MASCOT.play(ev,{title:title||'Эпизод',text:kind||''});}
+/* =====================================================================================
+   13.2 — ЭФФЕКТЫ И МАГАЗИН
+   • Частицы — на одном canvas поверх всего (fxEmit / fxAt / fxRain). Canvas и летящие билеты/карты живут в <html>, а не в
+     <body>: у body на больших мониторах бывает zoom, и координаты уезжали бы.
+   • Пружины — SPRING: настоящая кривая linear() (iOS 17.2+, Chrome 113+), иначе cubic-bezier с перелётом.
+   • Полёт по дуге — fxArc (кадры по параболе). Всё на transform/opacity — без дёрганий на iPhone.
+   • «Магазин» (renderShop): стиль эффектов, вид карт словаря, заставка, звуки, музыка на Главной — за билеты (store.gold).
+     store.shop={own:{'fx:neon':время,…},use:{fx,cs,sp,snd,hm}}; own сливается между устройствами (storeMerge).
+   ===================================================================================== */
+const EZ={out:'cubic-bezier(.16,1,.3,1)',in:'cubic-bezier(.7,0,.84,0)',io:'cubic-bezier(.65,0,.35,1)',back:'cubic-bezier(.34,1.56,.64,1)'};
+const SPRING=(()=>{try{if(window.CSS&&CSS.supports&&CSS.supports('animation-timing-function','linear(0, 1)')){const p=[];for(let i=0;i<=48;i++){const t=i/48;p.push((1-Math.exp(-5.2*t)*Math.cos(9.5*t)).toFixed(4));}p[p.length-1]='1';return 'linear('+p.join(',')+')';}}catch(e){}return EZ.back;})();
+const fxOK=()=>store.fx!==false;
+const FXROOT=()=>document.documentElement;
+// стили частиц (покупаются в магазине, «Кино» — бесплатно)
+const FX_PACKS={
+  cine:{c:['#FFE7A8','#F5C451','#E9C46A','#FFF6DC'],sh:['spark','frame','dot'],e:'🎞'},
+  noir:{c:['#FFFFFF','#D6D6D6','#9A9A9A','#E63946'],sh:['dot','spark','dust'],e:'🌫'},
+  neon:{c:['#FF3DA5','#2DE2E6','#B4FF39','#FFD1F0'],sh:['spark','dot','ring'],e:'💡'},
+  fire:{c:['#FF7A1A','#FFB347','#FFE08A','#FF3B2F'],sh:['ember','spark','ember'],e:'🔥'},
+  money:{c:['#7BD88F','#3FAE5A','#A8E6A1','#F5C451'],sh:['bill','bill','dot'],e:'💵'},
+  holo:{c:['#FF7AD9','#7AF0FF','#B8A6FF','#FFF27A','#7DFFB0'],sh:['shard','star','dot'],e:'💎'}
+};
+const fxPack=()=>FX_PACKS[shopUse('fx')]||FX_PACKS.cine;
+const FX={cv:null,cx:null,ps:[],on:false,dpr:1,spr:{},last:0};
+function fxCv(){if(FX.cv&&FX.cv.isConnected)return FX.cx;const c=document.createElement('canvas');c.className='fxcv';c.setAttribute('aria-hidden','true');FXROOT().appendChild(c);FX.cv=c;FX.cx=c.getContext('2d');fxFit();return FX.cx;}
+function fxFit(){const c=FX.cv;if(!c)return;FX.dpr=Math.min(2,window.devicePixelRatio||1);c.width=Math.round(innerWidth*FX.dpr);c.height=Math.round(innerHeight*FX.dpr);}
+window.addEventListener('resize',fxFit);
+// светящаяся точка — заранее нарисованный спрайт: рисовать его в сто раз дешевле, чем shadowBlur
+function fxSpr(col){if(FX.spr[col])return FX.spr[col];const s=document.createElement('canvas');s.width=s.height=64;const g=s.getContext('2d'),r=g.createRadialGradient(32,32,0,32,32,32);
+  r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.2,col);r.addColorStop(.55,col+'44');r.addColorStop(1,col+'00');g.fillStyle=r;g.fillRect(0,0,64,64);return FX.spr[col]=s;}
+// o: n — сколько, v — скорость, a/spread — направление и разброс (радианы), g — тяжесть, life — кадров жизни, s — размер, sh — форма, pack — стиль, jx/jy — разброс точки старта
+function fxEmit(x,y,o){if(!fxOK())return;o=o||{};const P=(o.pack&&FX_PACKS[o.pack])||fxPack(),n=Math.max(1,Math.round((o.n||16)*(innerWidth<500?.8:1)));fxCv();
+  for(let i=0;i<n;i++){const a=(o.a!=null?o.a:-Math.PI/2)+(Math.random()-.5)*(o.spread!=null?o.spread:Math.PI*2),v=(o.v!=null?o.v:5)*(.4+Math.random()*.85),sh=o.sh||P.sh[Math.floor(Math.random()*P.sh.length)];
+    FX.ps.push({x:x+(o.jx||0)*(Math.random()-.5),y:y+(o.jy||0)*(Math.random()-.5),vx:Math.cos(a)*v,vy:Math.sin(a)*v,
+      g:o.g!=null?o.g:(sh==='ember'||sh==='dust'?-.035:sh==='bill'?.05:.13),dr:o.dr||(sh==='bill'?.97:.982),r:Math.random()*6.28,vr:(Math.random()-.5)*(sh==='bill'?.12:.3),
+      s:(o.s||1)*(.65+Math.random()*.7),t:0,max:(o.life||(sh==='bill'?110:sh==='dust'?90:58))*(.7+Math.random()*.6),sh,col:P.c[Math.floor(Math.random()*P.c.length)],h:Math.random()*360,w:Math.random()*6.28});}
+  if(FX.ps.length>260)FX.ps.splice(0,FX.ps.length-260);
+  if(!FX.on){FX.on=true;FX.last=performance.now();requestAnimationFrame(fxTick);}}
+function fxTick(now){const c=FX.cx;if(!c||!FX.cv.isConnected){FX.on=false;FX.ps.length=0;return;}
+  const k=Math.max(.25,Math.min(3,(now-FX.last)/16.67||1)),d=FX.dpr;FX.last=now;   // 120 Гц на iPhone — та же скорость, что и 60
+  c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,FX.cv.width,FX.cv.height);c.setTransform(d,0,0,d,0,0);
+  for(let i=FX.ps.length-1;i>=0;i--){const p=FX.ps[i];p.t+=k;if(p.t>=p.max){FX.ps.splice(i,1);continue;}
+    const dr=Math.pow(p.dr,k);p.vx*=dr;p.vy=p.vy*dr+p.g*k;if(p.sh==='bill'||p.sh==='dust')p.vx+=Math.sin(p.t*.07+p.w)*.06*k;
+    p.x+=p.vx*k;p.y+=p.vy*k;p.r+=p.vr*k;const q=p.t/p.max;fxDraw(c,p,q<.12?q/.12:q>.6?1-(q-.6)/.4:1);}
+  if(FX.ps.length)requestAnimationFrame(fxTick);else{c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,FX.cv.width,FX.cv.height);FX.on=false;}}
+function fxDraw(c,p,al){c.save();c.globalAlpha=Math.max(0,Math.min(1,al));c.translate(p.x,p.y);const s=p.s;
+  switch(p.sh){
+    case 'dot':case 'ember':case 'dust':{c.globalCompositeOperation=p.sh==='dust'?'source-over':'lighter';const z=(p.sh==='dust'?7:p.sh==='ember'?8:10)*s*(p.sh==='ember'?.75+.25*Math.sin(p.t*.6+p.w):1);c.drawImage(fxSpr(p.col),-z,-z,z*2,z*2);break;}
+    case 'spark':{c.globalCompositeOperation='lighter';c.rotate(Math.atan2(p.vy,p.vx));const L=Math.min(26,3+Math.hypot(p.vx,p.vy)*3.2)*s,gr=c.createLinearGradient(-L,0,0,0);
+      gr.addColorStop(0,'rgba(255,255,255,0)');gr.addColorStop(1,p.col);c.strokeStyle=gr;c.lineWidth=2.2*s;c.lineCap='round';c.beginPath();c.moveTo(-L,0);c.lineTo(0,0);c.stroke();break;}
+    case 'star':{c.globalCompositeOperation='lighter';c.rotate(p.r);c.fillStyle=p.col;const z=5*s;c.beginPath();for(let j=0;j<4;j++){c.lineTo(0,-z*2.2);c.rotate(Math.PI/4);c.lineTo(0,-z*.5);c.rotate(Math.PI/4);}c.closePath();c.fill();break;}
+    case 'shard':{c.rotate(p.r);c.fillStyle=`hsl(${(p.h+p.t*5)%360},95%,74%)`;c.beginPath();c.moveTo(0,-7*s);c.lineTo(5*s,5*s);c.lineTo(-5*s,4*s);c.closePath();c.fill();break;}
+    case 'frame':{c.rotate(p.r);c.scale(1,Math.cos(p.t*.14+p.w));c.strokeStyle=p.col;c.lineWidth=1.5;c.strokeRect(-7*s,-5*s,14*s,10*s);c.fillStyle=p.col;for(let j=-1;j<=1;j++){c.fillRect(-10*s,j*3.2*s-1,2,2);c.fillRect(8*s,j*3.2*s-1,2,2);}break;}
+    case 'bill':{c.rotate(p.r);c.scale(Math.cos(p.t*.1+p.w),1);c.fillStyle=p.col;c.fillRect(-10*s,-5*s,20*s,10*s);c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=1;c.strokeRect(-8*s,-3.5*s,16*s,7*s);c.beginPath();c.arc(0,0,2.4*s,0,6.29);c.stroke();break;}
+    case 'ring':{c.globalCompositeOperation='lighter';c.strokeStyle=p.col;c.lineWidth=2*s;c.beginPath();c.arc(0,0,(2+p.t*.9)*s,0,6.29);c.stroke();break;}
+  }c.restore();}
+function fxAt(el,o){if(!el||!fxOK())return;const r=el.getBoundingClientRect();if(!r.width&&!r.height)return;fxEmit(r.left+r.width/2,r.top+r.height/2,o);}
+function fxRain(n,o){if(!fxOK())return;o=o||{};for(let i=0;i<(n||40);i++)setTimeout(()=>fxEmit(Math.random()*innerWidth,-12,{n:1,a:Math.PI/2,spread:.7,v:2+Math.random()*3,g:.05,life:170,s:1.15,pack:o.pack}),i*30);}
+// полёт DOM-элемента по дуге: элемент position:fixed, left/top 0 — всё в transform
+function fxArc(el,x0,y0,x1,y1,o){o=o||{};const N=16,kf=[],lift=o.lift!=null?o.lift:-Math.min(160,Math.abs(x1-x0)*.4+60),s0=o.s0!=null?o.s0:1,s1=o.s1!=null?o.s1:.4;
+  for(let i=0;i<=N;i++){const t=i/N,x=x0+(x1-x0)*t,y=y0+(y1-y0)*t+lift*4*t*(1-t);kf.push({transform:`translate(${x}px,${y}px) translate(-50%,-50%) scale(${s0+(s1-s0)*t}) rotate(${(o.rot||0)*t}deg)`,opacity:o.fade&&t>.8?1-(t-.8)/.2:1});}
+  return el.animate(kf,{duration:o.d||720,delay:o.delay||0,easing:o.ez||'cubic-bezier(.5,0,.3,1)',fill:'forwards'});}
+// верный ответ: искры + мягкое кольцо вокруг кнопки
+function fxGood(el){if(!el||!fxOK())return;fxAt(el,{n:16,v:4.6,life:42});try{el.animate([{boxShadow:'0 0 0 0 rgba(245,196,81,.55)'},{boxShadow:'0 0 0 14px rgba(245,196,81,0)'}],{duration:620,easing:EZ.out});}catch(e){}}
+// карта-награда вылетает из глубины, вспышка и полоса света по фольге
+function fxCardIn(inn,delay){if(!inn||!fxOK())return;delay=delay||0;
+  inn.animate([{transform:'translateY(80px) rotateY(-220deg) scale(.5)',opacity:0},{transform:'translateY(-6px) rotateY(12deg) scale(1.04)',opacity:1,offset:.66},{transform:'none',opacity:1}],{duration:1150,delay,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'});
+  setTimeout(()=>{fxAt(inn,{n:34,v:7.5});const sw=document.createElement('i');sw.className='fx-sweep';inn.appendChild(sw);sw.animate([{transform:'translateX(-130%) skewX(-18deg)'},{transform:'translateX(230%) skewX(-18deg)'}],{duration:950,easing:EZ.io}).onfinish=()=>sw.remove();},delay+760);}
+
+/* ---- билеты: «+N» и билетики летят в счётчик, счётчик пересчитывается по мере прилёта ---- */
+function fxCounter(){const H=innerHeight;let el=[...document.querySelectorAll('.thead .gold,#goldHud,#shopBal')].find(e=>{const r=e.getBoundingClientRect();return r.width&&r.top>=0&&r.bottom<=H;});let tmp=null;
+  if(!el){tmp=document.createElement('div');tmp.className='gpill';tmp.innerHTML=`${ui('coin')}<b></b>`;FXROOT().appendChild(tmp);el=tmp;if(fxOK())tmp.animate([{transform:'translateY(-24px)',opacity:0},{transform:'none',opacity:1}],{duration:320,easing:EZ.out});}
+  const r=el.getBoundingClientRect(),hasB=!!el.querySelector('b');
+  return {el,x:r.left+r.width/2,y:r.top+r.height/2,
+    set(v){if(hasB)el.querySelector('b').textContent=fmt(v);else el.innerHTML=`${ui('coin')}${fmt(v)}`;},
+    bump(){el.animate([{transform:'scale(1)'},{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:260,easing:EZ.out});},
+    done(){if(tmp)setTimeout(()=>{tmp.animate([{opacity:1},{opacity:0,transform:'translateY(-12px)'}],{duration:320,fill:'forwards'}).onfinish=()=>tmp.remove();},900);}};}
+function goldFX(n,from){try{if(!(n>0))return;const C=fxCounter(),end=store.gold||0,st=Math.max(0,end-n);
+  if(!fxOK()){C.set(end);C.done();return;}
+  C.set(st);let ox=innerWidth/2,oy=innerHeight*.46;
+  if(from&&from.getBoundingClientRect){const r=from.getBoundingClientRect();if(r.width&&r.top>0&&r.bottom<innerHeight){ox=r.left+r.width/2;oy=r.top+r.height/2;}}
+  const lab=document.createElement('div');lab.className='gfx2';lab.innerHTML=`<b>+${fmt(n)}</b>${ui('coin')}`;FXROOT().appendChild(lab);lab.style.left=ox+'px';lab.style.top=oy+'px';
+  lab.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:0},{transform:'translate(-50%,-50%) scale(1.15)',opacity:1,offset:.2},{transform:'translate(-50%,-62%) scale(1)',opacity:1,offset:.62},{transform:'translate(-50%,-115%) scale(.94)',opacity:0}],{duration:1550,easing:EZ.out}).onfinish=()=>lab.remove();
+  fxEmit(ox,oy,{n:24,v:6.5});
+  const k=Math.min(10,3+Math.floor(Math.log2(n+1)));let got=0;
+  for(let i=0;i<k;i++){const t=document.createElement('div');t.className='gtk';t.innerHTML=ui('coin');FXROOT().appendChild(t);
+    const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.6,rr=36+Math.random()*58,sx=ox+Math.cos(a)*rr,sy=oy+Math.sin(a)*rr,rot=(Math.random()-.5)*60;
+    t.animate([{transform:`translate(${ox}px,${oy}px) translate(-50%,-50%) scale(.2)`,opacity:0},{transform:`translate(${sx}px,${sy}px) translate(-50%,-50%) scale(1.05) rotate(${rot}deg)`,opacity:1}],{duration:380,delay:i*28,easing:EZ.out,fill:'forwards'}).onfinish=()=>{
+      fxArc(t,sx,sy,C.x,C.y,{d:620+Math.random()*160,delay:120+i*55,s0:1.05,s1:.42,rot:rot+(Math.random()-.5)*240,lift:-60-Math.random()*80}).onfinish=()=>{
+        t.remove();got++;C.set(Math.round(st+(end-st)*got/k));C.bump();fxEmit(C.x,C.y,{n:5,v:2.6,life:34});sfx('tick');if(got===k){C.set(end);C.done();haptic('ok');}};};}
+}catch(e){}}
+
+/* ---- карты словаря: кадр эпизода сверху, фраза, перевод; оформление — из магазина (data-cs) ---- */
+const dcArt=(s,pi)=>assetUrl(scEpKey(s,pi,'jpg'));
+function dcFace(c,isNew){const {s,f,pi}=c;return `<span class="dc-art" style="background-image:url('${dcArt(s,pi)}')"></span><span class="dc-ep">${isNew?'новая':'эп. '+(pi+1)}</span><b class="dc-en">${esc(dxT(f))}</b><span class="dc-ru">${esc(f.ru)}</span><i class="dc-foil"></i>`;}
+// новые карты после эпизода/проверки/дуэли: пак падает, рвётся, карты вылетают рубашкой вверх, переворачиваются и улетают в «Словарь»
+function dictFly(opt){opt=opt||{};const L=DICT_NEW.splice(0);if(!L.length)return;
+  const cards=L.map(x=>{const s=scOf(x.sid);if(!s)return null;let f=null,pi=0;s.parts.forEach((p,i)=>p.ph.forEach(y=>{if(y.id===x.fid){f=y;pi=i;}}));return f?{s,f,pi,p:s.parts[pi]}:null;}).filter(Boolean);if(!cards.length)return;
+  const N=cards.length,word=plural(N,['карта','карты','карт']);
+  if(!fxOK()){toast(`📖 +${N} ${word} в словарь`);return;}
+  document.querySelectorAll('.pk').forEach(x=>x.remove());
+  const show=cards.slice(0,6),s0=show[0].s,o=document.createElement('div');o.className='pk';o.dataset.cs=opt.cs||shopUse('cs');
+  o.innerHTML=`<div class="pk-bg"></div><div class="pk-rays"></div>
+    <div class="pk-h"><b>${opt.demo?'Так выглядят карты':'Новые карты'}</b><span>+${N} ${word} в словарь</span></div>
+    <div class="pk-pack" style="--art:url('${scCover(s0,'cover.jpg')}')"><i class="pk-top"></i><div class="pk-body"><em>${esc(dictFilm(s0))}</em><b>${N}</b><small>${word}</small></div><i class="pk-foil"></i></div>
+    ${show.map((c,i)=>`<div class="pk-c"><div class="pk-in"><div class="pk-back">${N>6&&i===5?`<b>+${N-5}</b>`:''}</div><div class="dc pk-face t-${scTag(c.f)[1]}" style="--c:${DX_TH[c.s.theme]||'#F5C451'}">${dcFace(c,true)}</div></div></div>`).join('')}
+    <small class="pk-tip">Нажми, чтобы открыть</small>`;
+  FXROOT().appendChild(o);
+  const W=innerWidth,H=innerHeight,n=show.length,cols=n<=3?n:(n===4?2:3),rows=Math.ceil(n/cols),cw=Math.min(150,(W-40-(cols-1)*10)/cols),ch=cw*1.4,gx=10,gy=12,totH=rows*ch+(rows-1)*gy,top=Math.max(96,(H-totH)/2+14);
+  const pos=show.map((_,i)=>{const r=Math.floor(i/cols),c=i%cols,inRow=Math.min(cols,n-r*cols),rowW=inRow*cw+(inRow-1)*gx;return {x:(W-rowW)/2+c*(cw+gx)+cw/2,y:top+r*(ch+gy)+ch/2};});
+  const els=[...o.querySelectorAll('.pk-c')],pack=o.querySelector('.pk-pack'),tip=o.querySelector('.pk-tip'),px=W/2,py=H*.5;
+  els.forEach(e=>{e.style.width=cw+'px';e.style.height=ch+'px';});
+  const T=[],later=(f,ms)=>T.push(setTimeout(()=>{if(o.isConnected)f();},ms));let st=0;
+  o.animate([{opacity:0},{opacity:1}],{duration:260,fill:'forwards'});
+  pack.animate([{transform:'translate(-50%,-170%) scale(.6) rotate(-14deg)',opacity:0},{transform:'translate(-50%,-50%) scale(1) rotate(0deg)',opacity:1}],{duration:850,easing:SPRING,fill:'both'});
+  later(()=>{if(!st)pack.animate([{transform:'translate(-50%,-50%) rotate(0deg)'},{transform:'translate(-50%,-50%) rotate(-3deg)'},{transform:'translate(-50%,-50%) rotate(3deg)'},{transform:'translate(-50%,-50%) rotate(0deg)'}],{duration:380,iterations:2,easing:'ease-in-out'});},760);
+  sfx('whoosh');haptic('light');
+  const open=()=>{if(st)return;st=1;tip.textContent='';sfx('reward');haptic('medium');
+    const fl=document.createElement('i');fl.className='pk-flash';o.appendChild(fl);fl.animate([{opacity:0},{opacity:.9,offset:.14},{opacity:0}],{duration:620,fill:'forwards'});
+    fxEmit(px,py,{n:50,v:9.5,life:70});
+    pack.querySelector('.pk-top').animate([{transform:'none',opacity:1},{transform:'translate(40px,-170px) rotate(38deg)',opacity:0}],{duration:620,easing:EZ.out,fill:'forwards'});
+    pack.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:'translate(-50%,-38%) scale(.86)',opacity:0}],{duration:460,delay:110,easing:EZ.in,fill:'forwards'});
+    els.forEach((e,i)=>{const p=pos[i];e.style.opacity='1';
+      e.animate([{transform:`translate(${px}px,${py}px) translate(-50%,-50%) scale(.3) rotate(${(i-n/2)*9}deg)`},{transform:`translate(${p.x}px,${p.y}px) translate(-50%,-50%) scale(1) rotate(0deg)`}],{duration:780,delay:150+i*70,easing:SPRING,fill:'both'});});
+    later(flip,150+n*70+560);};
+  const flip=()=>{if(st>1)return;st=2;tip.textContent=opt.demo?'':'Нажми, чтобы собрать в словарь';
+    els.forEach((e,i)=>later(()=>{e.querySelector('.pk-in').animate([{transform:'rotateY(180deg)'},{transform:'rotateY(-14deg)',offset:.7},{transform:'rotateY(0deg)'}],{duration:640,easing:EZ.out,fill:'forwards'});
+      later(()=>{const r=e.getBoundingClientRect();fxEmit(r.left+r.width/2,r.top+r.height/2,{n:12,v:4.5,life:40});sfx('tap');e.querySelector('.pk-face').classList.add('shine');},240);},i*170));
+    later(collect,n*170+(opt.demo?2600:1900));};
+  const collect=()=>{if(st>2)return;st=3;tip.remove();o.querySelector('.pk-h').animate([{opacity:1},{opacity:0}],{duration:250,fill:'forwards'});
+    const tb=document.querySelector('#tabbar [data-nav="dict"]'),bar=document.getElementById('tabbar'),tr=tb&&tb.getBoundingClientRect(),vis=!!(tr&&tr.width&&tr.top<H&&bar&&getComputedStyle(bar).opacity!=='0'&&getComputedStyle(bar).display!=='none');
+    const tx=vis?tr.left+tr.width/2:W/2,ty=vis?tr.top+tr.height/2:H-56;let land=0;
+    els.forEach((e,i)=>{const r=e.getBoundingClientRect(),x0=r.left+r.width/2,y0=r.top+r.height/2;e.getAnimations().forEach(a=>a.cancel());e.style.transform=`translate(${x0}px,${y0}px) translate(-50%,-50%)`;
+      fxArc(e,x0,y0,tx,ty,{d:720,delay:i*80,s0:1,s1:.1,rot:(i%2?1:-1)*(22+i*6),lift:-90-i*12,ez:'cubic-bezier(.55,0,.35,1)'}).onfinish=()=>{e.remove();land++;fxEmit(tx,ty,{n:9,v:3,life:32});sfx('tick');
+        if(tb&&vis)tb.animate([{transform:'scale(1)'},{transform:'scale(1.28)'},{transform:'scale(1)'}],{duration:300,easing:EZ.out});
+        if(land===els.length){haptic('ok');later(()=>{o.animate([{opacity:1},{opacity:0}],{duration:300,fill:'forwards'}).onfinish=()=>{T.forEach(clearTimeout);o.remove();};},260);}};});};
+  o.onclick=()=>{if(st===0)open();else if(st===1)flip();else if(st===2)collect();};
+  later(open,1450);}
+
+/* ---- заставки: «Кинолента» (по умолчанию), «Отсчёт 3-2-1» (старая), «Неоновая вывеска»; выбор — в магазине ---- */
+function splash(v){v=v||shopUse('sp');if(!store.fx||v==='off')return;if(v==='leader')return splashLeader();if(v==='neon')return splashNeon();return splashReel();}
+function splashOut(d,ms){let gone=false;const out=()=>{if(gone)return;gone=true;d.classList.add('out');setTimeout(()=>d.remove(),650);};d.addEventListener('pointerdown',out);setTimeout(out,ms);}
+function splashReel(){const S=SCENES.filter(x=>x.kind!=='clip'&&!x.age),im=S.map(s=>assetUrl(scEpKey(s,0,'jpg')));if(!im.length)return;
+  const A=im.slice(0,7),B=(im.length>7?im.slice(7,14):im.slice().reverse()).slice(0,7);
+  const row=(L,cls)=>`<div class="spr-row ${cls}"><div class="spr-strip">${[...L,...L].map(u=>`<i style="background-image:url('${u}')"></i>`).join('')}</div></div>`;
+  const title='ЯЗЫКИ ПО КИНО'.split('').map((ch,i)=>`<span style="--i:${i}">${ch===' '?'&nbsp;':ch}</span>`).join('');
+  const d=document.createElement('div');d.className='spr';
+  d.innerHTML=`<div class="spr-film">${row(A,'a')}${row(B,'b')}</div><div class="spr-beam"></div><div class="spr-vig"></div>
+    <div class="spr-c"><div class="spr-t">${title}</div><div class="spr-line"></div><div class="spr-sub">английский и немецкий по сценам из кино</div></div>`;
+  document.body.appendChild(d);
+  setTimeout(()=>fxEmit(innerWidth/2,innerHeight*.42,{n:26,sh:'dust',v:.5,g:-.008,life:150,jx:innerWidth*.7,jy:innerHeight*.6,pack:'noir',s:.8}),200);
+  splashOut(d,2500);}
+function splashNeon(){const d=document.createElement('div');d.className='spn';
+  d.innerHTML=`<div class="spn-wall"></div><div class="spn-t"><span class="a">ЯЗЫКИ</span><span class="b">по</span><span class="c">КИНО</span></div><div class="spn-sub">английский и немецкий по сценам из кино</div>`;
+  document.body.appendChild(d);try{if(store.snd)[0,.18,.42].forEach(t=>osc('sawtooth',110,t,.12,.008,{lp:700}));}catch(e){}
+  splashOut(d,2400);}
+function splashLeader(){
+  // 11.2: «кинопроектор» — отсчёт плёнки 3-2-1, вспышка, шторки-letterbox раскрываются, проявляется название. Тап — пропустить.
+  const d=document.createElement('div');d.className='splash3';
+  const title='ЯЗЫКИ ПО КИНО'.split('').map((ch,i)=>`<span style="--i:${i}">${ch===' '?'&nbsp;':ch}</span>`).join('');
+  d.innerHTML=`<div class="s3-beam"></div><div class="s3-lead"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><circle class="sw" cx="50" cy="50" r="22"/><path d="M50 2v96M2 50h96"/></svg><b><i>3</i><i>2</i><i>1</i></b></div>
+    <div class="s3-flash"></div><div class="s3-bar t"></div><div class="s3-bar b"></div>
+    <div class="s3-c"><div class="s3-t">${title}</div><div class="s3-line"></div><div class="s3-sub">английский и немецкий по сценам из кино</div></div><div class="s3-grain"></div>`;
+  document.body.appendChild(d);splashOut(d,2300);}
+/* ---- отсчёт 3-2-1 (игры, дуэль): цифра влетает с размытием, кольцо-волна, искры, «В бой!» с толчком ---- */
+function countdown(cb){if(!fxOK()){cb();return;}
+  const d=document.createElement('div');d.className='cd2';d.innerHTML='<i class="cd2-ring"></i><b></b>';document.body.appendChild(d);
+  const b=d.querySelector('b'),ring=d.querySelector('.cd2-ring');let n=3;d.animate([{opacity:0},{opacity:1}],{duration:200});
+  const step=()=>{if(n===0){b.textContent='В бой!';b.className='cd2-go';b.animate([{transform:'scale(2.2)',opacity:0,filter:'blur(10px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:440,easing:SPRING});
+      d.animate([{transform:'none'},{transform:'translate(-7px,3px)'},{transform:'translate(6px,-4px)'},{transform:'translate(-3px,2px)'},{transform:'none'}],{duration:300,delay:110});
+      fxEmit(innerWidth/2,innerHeight/2,{n:44,v:9.5});sfx('announce',3);haptic('medium');
+      setTimeout(()=>{d.animate([{opacity:1},{opacity:0}],{duration:260,fill:'forwards'}).onfinish=()=>{d.remove();cb();};},560);return;}
+    b.textContent=n;b.className='';b.animate([{transform:'scale(1.9)',opacity:0,filter:'blur(12px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:480,easing:SPRING});
+    ring.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:.9},{transform:'translate(-50%,-50%) scale(2.5)',opacity:0}],{duration:640,easing:EZ.out});
+    fxEmit(innerWidth/2,innerHeight/2,{n:16,v:6,sh:'spark',life:36});sfx('tick');haptic('light');n--;setTimeout(step,660);};
+  step();}
+
+/* ===================================== МАГАЗИН ===================================== */
+const SHOP_DEF={fx:'cine',cs:'classic',sp:'reel',snd:'cs',hm:''};
+const SHOP={
+  fx:{n:'Эффекты',i:'✨',d:'Искры, полёт билетов и карт, вспышки наград — во всём приложении.',L:[
+    {id:'cine',n:'Кино',p:0,d:'Золотые искры и кадры плёнки'},
+    {id:'noir',n:'Нуар',p:250,d:'Серебро, пепел и красный акцент'},
+    {id:'neon',n:'Неон',p:400,d:'Розовый и бирюзовый неон ночного города'},
+    {id:'fire',n:'Огонь',p:400,d:'Угли и искры, как от костра'},
+    {id:'money',n:'Бабки',p:600,d:'Дождь из купюр — как на Уолл-стрит'},
+    {id:'holo',n:'Голограмма',p:800,d:'Радужные осколки, как у редкой карты'}]},
+  cs:{n:'Карты',i:'🃏',d:'Как выглядят карты в словаре и в паке новых карт.',L:[
+    {id:'classic',n:'Классика',p:0,d:'Кадр из сцены и тонкая рамка цвета фильма'},
+    {id:'noir',n:'Нуар',p:300,d:'Чёрно-белый кадр и серебро'},
+    {id:'neon',n:'Неон',p:450,d:'Светящаяся рамка и рубашка'},
+    {id:'gold',n:'Золото',p:600,d:'Тиснёная золотая рамка'},
+    {id:'holo',n:'Голограмма',p:900,d:'Переливающаяся фольга, как у редкой карты'}]},
+  sp:{n:'Заставка',i:'🎬',d:'Что показывается, когда открываешь приложение.',L:[
+    {id:'reel',n:'Кинолента',p:0,d:'Кадры твоих сцен и золотое название'},
+    {id:'leader',n:'Отсчёт 3-2-1',p:0,d:'Старая плёнка: отсчёт, вспышка, шторки'},
+    {id:'neon',n:'Неоновая вывеска',p:350,d:'Название вспыхивает неоном, с треском'},
+    {id:'off',n:'Без заставки',p:0,d:'Сразу на Главную'}]},
+  snd:{n:'Звуки',i:'🔊',d:'Щелчки, верные ответы, награды.',L:[
+    {id:'cs',n:'Стандарт',p:0,d:'Чёткие щелчки и звон'},
+    {id:'soft',n:'Мягкие',p:200,d:'Тихо и бархатно'},
+    {id:'projector',n:'Кинопроектор',p:300,d:'Треск плёнки'},
+    {id:'typewriter',n:'Печатная машинка',p:300,d:'Клавиши и звоночек'},
+    {id:'arcade',n:'8-бит',p:300,d:'Как в старых приставках'}]},
+  hm:{n:'Музыка',i:'🎵',d:'Саундтреки из сцен. Выбранный трек тихо играет на Главной.',L:null}
+};
+const SHOP_E={snd:{cs:'🎯',soft:'🪶',projector:'📽',typewriter:'⌨️',arcade:'👾'}};
+function musTracks(){const seen={},L=[];SCENES.forEach(s=>musOf(s).forEach(m=>{const k=(m.t+'|'+m.by).toLowerCase();if(seen[k])return;seen[k]=1;L.push({id:s.id+'|'+m.f,n:m.t,d:m.by,p:150,s,m});}));return L;}
+function shopList(cat){return cat==='hm'?[{id:'',n:'Без музыки',p:0,d:'На Главной тихо'},...musTracks()]:(SHOP[cat]?SHOP[cat].L:[]);}
+function shopS(){if(!store.shop||typeof store.shop!=='object')store.shop={};store.shop.own=store.shop.own||{};store.shop.use=store.shop.use||{};return store.shop;}
+const shopItem=(cat,id)=>shopList(cat).find(x=>x.id===id);
+const shopHas=(cat,id)=>{const it=shopItem(cat,id);return !!it&&(it.p===0||ADM_OPEN()||!!(store.shop&&store.shop.own&&store.shop.own[cat+':'+id]));};
+function shopUse(cat){const u=store.shop&&store.shop.use?store.shop.use[cat]:undefined;return u!=null&&shopHas(cat,u)?u:SHOP_DEF[cat];}
+function shopApply(){try{document.body.dataset.cs=shopUse('cs');}catch(e){}try{labApply();}catch(e){}}
+function shopPv(cat,it){
+  if(cat==='fx'){const P=FX_PACKS[it.id];return `<div class="pv-fx" style="--a:${P.c[0]};--b:${P.c[1]};--c:${P.c[2]}"><span>${P.e}</span>${P.c.slice(0,4).map((c,i)=>`<i style="--k:${c};--i:${i}"></i>`).join('')}</div>`;}
+  if(cat==='cs'){const s=SCENES.find(x=>x.kind!=='clip'&&!x.age&&scAct(x.parts[0].ph).length)||SCENES[0],pi=0,f=scAct(s.parts[0].ph)[0]||s.parts[0].ph[0];return `<div class="pv-cs" data-cs="${it.id}"><div class="dc" style="--c:${DX_TH[s.theme]||'#F5C451'}">${dcFace({s,f,pi})}</div><div class="pv-back"></div></div>`;}
+  if(cat==='sp')return `<div class="pv-sp sp-${it.id}"><b>ЯЗЫКИ ПО КИНО</b></div>`;
+  if(cat==='snd')return `<div class="pv-snd"><span>${SHOP_E.snd[it.id]||'🔊'}</span></div>`;
+  if(cat==='hm')return it.s?`<div class="pv-hm" style="background-image:url('${musArt(it.s,it.m)}')"><span>♪</span></div>`:`<div class="pv-hm off"><span>🔇</span></div>`;
+  return '';}
+function shopTile(cat,it,use){const own=shopHas(cat,it.id),on=use===it.id,g=store.gold||0,poor=!own&&g<it.p;
+  const adm=own&&it.p>0&&!(store.shop&&store.shop.own&&store.shop.own[cat+':'+it.id]);   // админ: всё открыто, цену видно
+  const btn=on?`<button class="shp-b on" disabled>✓ Выбрано${adm?`<small>${ui('coin')} ${it.p} · админу даром</small>`:''}</button>`:own?`<button class="shp-b use" data-use="${esc(it.id)}">Выбрать${adm?`<small>${ui('coin')} ${it.p} · админу даром</small>`:''}</button>`
+    :poor?`<button class="shp-b poor" disabled>${ui('coin')} ${it.p}<small>не хватает ${it.p-g}</small></button>`:`<button class="shp-b buy" data-buy="${esc(it.id)}">${ui('coin')} ${it.p}</button>`;
+  const tr=(cat==='hm'&&!it.id)||(cat==='sp'&&it.id==='off')?'':`<button class="shp-try" data-try="${esc(it.id)}" aria-label="Посмотреть">${SI.play}</button>`;
+  return `<div class="shp${on?' on':''}${own?' own':''}" data-id="${esc(it.id)}"><div class="shp-pv">${shopPv(cat,it)}${on?'<i class="shp-on">✓</i>':''}</div><div class="shp-i"><b>${esc(it.n)}</b><small>${esc(it.d)}</small></div><div class="shp-a">${tr}${btn}</div></div>`;}
+let SHPV=null,SHOP_BACK='learn';   // предпрослушка трека в магазине; вкладка, с которой пришли
+function shopBack(){sfx('tap');shopPvStop();renderTab(SHOP_BACK||'learn');}
+function shopPvStop(){if(SHPV){try{SHPV.pause();}catch(e){}SHPV=null;}}
+function renderShop(cat){cat=SHOP[cat]?cat:(SHOP[store.shopTab]?store.shopTab:'fx');if(store.shopTab!==cat){store.shopTab=cat;save();}
+  if(screen!=='shop')SHOP_BACK=(screen==='home'||screen==='subtab')?(store.tab||'learn'):'learn';screen='shop';backBtn(true);setWorld('neutral');shopPvStop();
+  mount(`<div class="shop"><div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Магазин</h1><span class="gold shop-bal" id="shopBal">${ui('coin')}<b>${fmt(store.gold||0)}</b></span></div>
+    <p class="shop-lead">Билеты дают за эпизоды, финалы сцен, цель дня и дуэли. Здесь их можно потратить на оформление.</p>
+    <div class="shop-tabs" role="tablist">${Object.keys(SHOP).map(k=>`<button data-st="${k}" class="${k===cat?'on':''}" role="tab"><span>${SHOP[k].i}</span><b>${SHOP[k].n}</b></button>`).join('')}</div>
+    <p class="shop-cd">${SHOP[cat].d}</p><div class="shop-grid g-${cat}" id="shopGrid"></div></div>`,'shopscr');
+  $('#bBtn').onclick=shopBack;
+  $$('.shop-tabs [data-st]').forEach(b=>b.onclick=()=>{if(b.dataset.st===cat)return;sfx('tap');haptic('sel');renderShop(b.dataset.st);});
+  shopGrid(cat);}
+function shopGrid(cat){const box=$('#shopGrid');if(!box)return;const use=shopUse(cat);box.innerHTML=shopList(cat).map(it=>shopTile(cat,it,use)).join('');
+  box.querySelectorAll('[data-try]').forEach(b=>b.onclick=()=>{sfx('tap');shopTry(cat,b.dataset.try,b.closest('.shp'));});
+  box.querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>{shopS().use[cat]=b.dataset.use;save();shopApply();sfx('good');haptic('sel');shopGrid(cat);
+    if(cat==='hm'){const it=shopItem('hm',b.dataset.use);toast(it&&it.id?`🎵 «${it.n}» — на Главной`:'Музыка на Главной выключена');}});
+  box.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{const it=shopItem(cat,b.dataset.buy);if(!it)return;
+    if(!b.classList.contains('sure')){sfx('tap');b.classList.add('sure');b.innerHTML=`Купить за ${ui('coin')} ${it.p}?`;clearTimeout(b._t);b._t=setTimeout(()=>{if(b.isConnected){b.classList.remove('sure');b.innerHTML=`${ui('coin')} ${it.p}`;}},3500);return;}
+    shopBuy(cat,it,b);});
+  if(fxOK())box.querySelectorAll('.shp').forEach((e,i)=>e.animate([{opacity:0,transform:'translateY(14px) scale(.97)'},{opacity:1,transform:'none'}],{duration:420,delay:i*45,easing:EZ.out,fill:'backwards'}));}
+function shopBuy(cat,it,btn){if(shopHas(cat,it.id))return;const g=store.gold||0;if(g<it.p){toast('Не хватает билетов');return;}
+  store.gold=g-it.p;shopS().own[cat+':'+it.id]=Date.now();shopS().use[cat]=it.id;save();shopApply();sfx('reward');haptic('ok');
+  const bal=$('#shopBal');if(bal){const nb=bal.querySelector('b'),t0=performance.now(),dur=600;const tick=t=>{const k=Math.min(1,(t-t0)/dur);nb.textContent=fmt(Math.round(g-it.p*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);
+    bal.animate([{transform:'scale(1)'},{transform:'scale(.9)'},{transform:'scale(1)'}],{duration:300,easing:EZ.out});}
+  const tile=btn.closest('.shp');fxAt(tile&&tile.querySelector('.shp-pv'),{n:46,v:8,pack:cat==='fx'?it.id:undefined});
+  toast(`Куплено: ${it.n}`);setTimeout(()=>shopGrid(cat),700);}
+function shopTry(cat,id,tile){const pv=tile&&tile.querySelector('.shp-pv');
+  if(cat==='fx'){fxAt(pv,{n:54,v:8.5,pack:id});setTimeout(()=>fxAt(pv,{n:20,v:4,pack:id,life:70}),260);return;}
+  if(cat==='cs'){const s=SCENES.find(x=>x.kind!=='clip'&&!x.age&&scAct(x.parts[0].ph).length>=3)||SCENES[0];scAct(s.parts[0].ph).slice(0,3).forEach(f=>DICT_NEW.push({sid:s.id,fid:f.id}));dictFly({cs:id,demo:true});return;}
+  if(cat==='sp'){if(!fxOK()){toast('Включи анимации в настройках');return;}const was=store.fx;store.fx=true;splash(id);store.fx=was;return;}
+  if(cat==='snd'){if(!store.snd){toast('Включи звук в настройках');return;}const keep=Object.assign({},SFX);Object.assign(SFX,SFXP[id]||SFXP.cs);
+    ['tap','good','learn','reward'].forEach((n,i)=>setTimeout(()=>{try{SFX[n]();}catch(e){}},i*420));setTimeout(()=>{Object.keys(SFX).forEach(k=>delete SFX[k]);Object.assign(SFX,keep);},1800);return;}
+  if(cat==='hm'){const it=shopItem('hm',id);if(!it||!it.s)return;if(SHPV&&SHPV._k===id){shopPvStop();return;}shopPvStop();try{if(MUS&&!MUS.paused)MUS.pause();}catch(e){}
+    SHPV=new Audio(assetUrl(scKey(it.s,it.m.f)));SHPV._k=id;SHPV.volume=.5;SHPV.addEventListener('loadedmetadata',()=>{try{if(isFinite(SHPV.duration)&&SHPV.duration>40)SHPV.currentTime=SHPV.duration*.3;}catch(e){}},{once:true});
+    const p=SHPV.play();if(p&&p.catch)p.catch(()=>toast('Трек не загрузился'));const me=SHPV;setTimeout(()=>{if(SHPV===me)shopPvStop();},20000);toast(`▶ «${it.n}» — 20 секунд`);}}
+/* ---- музыка на Главной: выбранный в магазине трек тихо играет по кругу, только на вкладке «Главная» ---- */
+let HM=null,HMF=0;
+function hmFade(to,cb){if(!HM)return;clearInterval(HMF);const from=HM.volume,t0=Date.now(),d=700;HMF=setInterval(()=>{const k=Math.min(1,(Date.now()-t0)/d);try{HM.volume=from+(to-from)*k;}catch(e){}if(k>=1){clearInterval(HMF);if(cb)cb();}},40);}
+function hmSync(){const id=shopUse('hm'),here=screen==='home'&&store.tab==='learn'&&!document.body.dataset.scn;
+  if(!id||!here||store.hmOff){if(HM&&!HM.paused)hmFade(0,()=>{try{HM.pause();}catch(e){}});hmChip();return;}
+  const it=shopItem('hm',id);if(!it||!it.s)return;
+  if(!HM){HM=new Audio();HM.loop=true;HM.preload='auto';HM.addEventListener('play',hmChip);HM.addEventListener('pause',hmChip);}
+  if(HM._k!==id){HM._k=id;HM.src=assetUrl(scKey(it.s,it.m.f));HM.volume=0;}
+  if(HM.paused){try{HM.volume=0;}catch(e){}const p=HM.play();if(p&&p.then)p.then(()=>hmFade(.22),()=>hmChip());else hmFade(.22);}
+  hmChip();}
+function hmChip(){const c=$('#hmChip');if(!c)return;const on=!!(HM&&!HM.paused);c.classList.toggle('on',on);const i=c.querySelector('i');if(i)i.innerHTML=on?SI.pause:SI.play;}
+function hmChipHTML(){const id=shopUse('hm'),it=id&&shopItem('hm',id);return it&&it.s?`<button class="hm-chip anim" id="hmChip"><span class="hm-eq"><b></b><b></b><b></b></span><span class="hm-t"><b>${esc(it.n)}</b><small>${esc(it.d)}</small></span><i>${SI.play}</i></button>`:'';}
+function hmBind(){const c=$('#hmChip');if(!c)return;c.onclick=()=>{sfx('tap');if(HM&&!HM.paused){store.hmOff=true;save();hmFade(0,()=>{try{HM.pause();}catch(e){}});}else{store.hmOff=false;save();hmSync();}};hmChip();}
+
+// перелистывание сцен одного фильма: старая страница переворачивается, как лист книги, новая уже лежит под ней
+function dxFlip(d){const s=scOf(DX.sid);if(!s)return;const sh=dxShows().find(x=>x.k===dictFilm(s)),L=sh?sh.L:[s],n=L.indexOf(s)+d;if(n<0||n>=L.length){haptic('err');return;}
+  const pg=$('#dxPage');if(!pg||pg._busy)return;pg._busy=true;sfx('page');haptic('sel');
+  const up=()=>{const cr=$('.dx-crumb');if(cr&&cr.getBoundingClientRect().top<0)try{cr.scrollIntoView({block:'start'});}catch(e){}};   // новая страница — с начала
+  if(!fxOK()){DX.sid=L[n].id;dxBody();up();return;}
+  const Z=parseFloat(getComputedStyle(document.body).zoom)||1,r=pg.getBoundingClientRect(),tb=$('#tabbar'),tr=tb&&getComputedStyle(tb).opacity!=='0'?tb.getBoundingClientRect():null;
+  const top=Math.max(0,r.top),bot=Math.min(tr?tr.top+8:innerHeight,innerHeight,r.bottom),H=Math.max(40,bot-top),box=`left:${r.left/Z}px;top:${top/Z}px;width:${r.width/Z}px;height:${H/Z}px`;
+  const g=document.createElement('div');g.className='dx-turn';g.style.cssText=box+`;transform-origin:${d>0?'left':'right'} center`;
+  const cl=pg.cloneNode(true);cl.removeAttribute('id');cl.style.margin='0';
+  g.innerHTML='<div class="dx-tf"><i class="dx-tl" style="--dir:'+(d>0?90:270)+'deg"></i></div>';g.firstChild.insertBefore(cl,g.firstChild.firstChild);
+  const sd=document.createElement('div');sd.className='dx-shade';sd.style.cssText=box+`;--dir:${d>0?90:270}deg`;
+  document.body.append(sd,g);
+  // клон в коробке с overflow:hidden теряет схлопнутые отступы — выравниваем по первому ребёнку
+  const o1=pg.firstElementChild,o2=cl.firstElementChild;cl.style.marginTop=(((o1&&o2)?o1.getBoundingClientRect().top-o2.getBoundingClientRect().top:r.top-top)/Z)+'px';
+  DX.sid=L[n].id;dxBody();up();
+  const T=640,ez='cubic-bezier(.42,0,.3,1)',ang=d>0?-94:94;
+  g.animate([{transform:'perspective(1600px) rotateY(0deg)'},{transform:`perspective(1600px) rotateY(${ang*.18}deg)`,offset:.3},{transform:`perspective(1600px) rotateY(${ang}deg)`}],{duration:T,easing:ez,fill:'forwards'}).onfinish=()=>{g.remove();sd.remove();};
+  g.querySelector('.dx-tl').animate([{opacity:0},{opacity:.85}],{duration:T,easing:'ease-in',fill:'forwards'});
+  sd.animate([{opacity:1},{opacity:.9,offset:.5},{opacity:0}],{duration:T+80,easing:'ease-out',fill:'forwards'});
+  $$('#dxPage .dc').slice(0,14).forEach((c,i)=>c.animate([{opacity:0,transform:`translateX(${d*16}px) scale(.97)`},{opacity:1,transform:'none'}],{duration:420,delay:160+i*26,easing:EZ.out,fill:'backwards'}));}
+
 /* ================= старт ================= */
 let START='';
 try{
@@ -5847,7 +6125,7 @@ try{
 // 12.3: кто прошёл сцену до 12.3 — карточка сегмента и фон выдаются молча
 try{SCENES.forEach(x=>{if(segDone(x)&&!segHas(x))segGive(x);showGive(x);});}catch(e){}
 initTG();
-applyFx();
+applyFx();shopApply();
 loadLore();
 const START_DUEL=parseDuel(START);
 ensureTabbar();splash();
