@@ -36,11 +36,6 @@
 ## Присланные моменты, которых в приложении ещё нет
 | Что | Язык | Ссылка | Канал |
 |---|---|---|---|
-| Сопрано: переговоры с хасидами + первый визит в отель (S01E03) | 🇩🇪 | https://youtu.be/fQqMI6EJNgQ | перезалив (Sopranos Fan) |
-| Во все тяжкие: Майк в пустыне, «надо было нажать на курок» | 🇩🇪 | https://youtu.be/AkUYhX_DD74 | Boxoffice · Die besten Filmmomente |
-| Сопрано: Тони и Крис выбивают долг | 🇩🇪 | https://youtu.be/UXnIUVzvDmU | перезалив (Sopranos Fan) |
-| Сопрано: Фил заказывает Тони | 🇩🇪 | https://youtu.be/8AaLcfnlHtA | перезалив (Sopranos Fan) |
-| Во все тяжкие: «Я — опасность» (это наша сцена, немецкий дубляж) | 🇩🇪 | https://youtu.be/IBBgeKG9V1c | перезалив |
 | Трамп в Axios Show, полное интервью | 🇬🇧 | https://youtu.be/daA22MxJhi0 | **офиц. Axios** |
 | Клавикуляр у DJ Vlad: цели, карьера, лукмаксинг | 🇬🇧 | https://youtu.be/HatW3h3bTOc | **офиц. djvlad** |
 | Сопрано: Тони собирает своих после войны с Нью-Йорком (Тони Би) | 🇬🇧 | https://youtu.be/ZswHwUetp8k | перезалив 4K (FriendsOfOurs) |
@@ -50,6 +45,19 @@
 | Психопат: утренняя рутина (была сцена «Утро», убрали в 11.1) | 🇬🇧 | https://youtu.be/-Gpsset9RV4 | перезалив 4K |
 | Таксист: звонок Бетси, извиняется (была сцена, убрали в 11.1) | 🇬🇧 | https://youtu.be/d9iLQ7g_jDk | перезалив |
 | Таксист: «Visuals» — нарезка картинки, без диалогов (для учёбы не годится, разве что фон) | — | https://youtu.be/a9r0cSZgpeo | перезалив |
+
+## Немецкие сцены (13.5) — дубляж, одна сцена = один клип
+| Сцена (id) | Что за момент | Ссылка | Канал |
+|---|---|---|---|
+| sopranos-hasid-de | Die Sopranos S01E03: хасиды нанимают Тони, мотель | https://youtu.be/fQqMI6EJNgQ | перезалив (Sopranos Fan) |
+| sopranos-phil-de | Die Sopranos S06E20: Фил решает «обезглавить» Сопрано | https://youtu.be/8AaLcfnlHtA | перезалив (Sopranos Fan) |
+| sopranos-mahaffey-de | Die Sopranos S01E01: Тони, Мелфи и должник Махаффи | https://youtu.be/UXnIUVzvDmU | перезалив (Sopranos Fan) |
+| bb-mike-de | Breaking Bad S05E01: Майк в пустыне, ноутбук Гаса | https://youtu.be/AkUYhX_DD74 | Boxoffice · Die besten Filmmomente |
+| bb-knocks-de | Breaking Bad S04E06: «Ich bin die Gefahr» | https://youtu.be/IBBgeKG9V1c | перезалив |
+| wolf-lunch-de | The Wolf of Wall Street: ланч с Марком Ханной | **дай ссылку** | — |
+| wolf-naomi-de | The Wolf of Wall Street: первое свидание с Наоми («Das wird keine Freundschaft!») | **дай ссылку** | — |
+| titanic-andrews-de | Titanic: Эндрюс — «корабль утонет» | **дай ссылку** | — |
+| titanic-mother-de | Titanic: мать затягивает Роуз корсет | **дай ссылку** | — |
 
 ## Все сцены: English и Deutsch (для поиска ссылок)
 Deutsch — чтобы найти **немецкий дубляж тех же сцен** (в Германии полный дубляж — английского не слышно). Ссылки на дубляж — в отдельную колонку, не путать с английскими.

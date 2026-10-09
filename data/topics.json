@@ -1208,6 +1208,538 @@
 "clavicular-18|Oh, whoa, hold on.": [
 "эмоции",
 "общение"
+],
+"wolf-lunch-de|Oh, no. Thank you, though.": [
+"ссоры",
+"кафе и магазин"
+],
+"wolf-lunch-de|what can I bring for you": [
+"кафе и магазин"
+],
+"wolf-lunch-de|Well, Hector, here's the game plan.": [
+"телефон и планы"
+],
+"wolf-lunch-de|You know how I like them.": [
+"знакомство",
+"кафе и магазин"
+],
+"wolf-lunch-de|until one of us passes the fuck out": [
+"общение"
+],
+"wolf-lunch-de|I'm good with water for now.": [
+"ссоры"
+],
+"wolf-lunch-de|Give him time.": [
+"эмоции"
+],
+"wolf-lunch-de|How the fuck else would you do this job?": [
+"общение"
+],
+"wolf-lunch-de|I'm incredibly excited": [
+"работа",
+"эмоции"
+],
+"wolf-lunch-de|Fuck the clients.": [
+"работа",
+"ссоры"
+],
+"wolf-lunch-de|to put meat on the table": [
+"деньги",
+"работа"
+],
+"wolf-lunch-de|I'm married. I have a wife.": [
+"знакомство"
+],
+"wolf-lunch-de|Name of the game.": [
+"учёба"
+],
+"wolf-lunch-de|it's advantageous to everyone": [
+"работа"
+],
+"wolf-lunch-de|Number one rule of Wall Street.": [
+"телефон и планы",
+"учёба"
+],
+"wolf-lunch-de|Nobody knows if a stock is gonna go up, down": [
+"общение"
+],
+"wolf-lunch-de|Least of all stockbrokers, right?": [
+"общение"
+],
+"wolf-lunch-de|It's a fake.": [
+"общение"
+],
+"wolf-lunch-de|It's not fucking real.": [
+"общение"
+],
+"wolf-lunch-de|We don't build anything.": [
+"работа"
+],
+"wolf-lunch-de|You don't let him do that.": [
+"общение"
+],
+"wolf-lunch-de|You get another brilliant idea.": [
+"общение"
+],
+"wolf-lunch-de|And he will, every single time.": [
+"общение"
+],
+"wolf-lunch-de|Again and again and again.": [
+"общение"
+],
+"wolf-lunch-de|which he is, on paper": [
+"деньги"
+],
+"wolf-lunch-de|Motherfucker.": [
+"общение"
+],
+"wolf-lunch-de|I can't tell you how excited I am.": [
+"эмоции"
+],
+"wolf-lunch-de|There's two keys to success": [
+"учёба",
+"быт"
+],
+"wolf-lunch-de|You gotta stay relaxed.": [
+"работа"
+],
+"wolf-lunch-de|How many times a week?": [
+"общение"
+],
+"wolf-lunch-de|Think about it. You're dealing with numbers.": [
+"работа"
+],
+"wolf-lunch-de|It kind of wigs some people out.": [
+"деньги"
+],
+"wolf-lunch-de|This is not a tip, this is a prescription.": [
+"общение"
+],
+"wolf-lunch-de|If you don't, you will fall out of balance": [
+"общение"
+],
+"wolf-lunch-de|I've seen this happen": [
+"общение"
+],
+"wolf-lunch-de|I'm in it for the long run, you know?": [
+"деньги"
+],
+"wolf-lunch-de|And guess what? That's good for me.": [
+"общение"
+],
+"wolf-lunch-de|Revolutions. You follow?": [
+"общение"
+],
+"wolf-lunch-de|Keep the clients on the Ferris wheel.": [
+"работа",
+"учёба"
+],
+"wolf-lunch-de|open 24/7": [
+"работа",
+"кафе и магазин"
+],
+"wolf-lunch-de|That's it.": [
+"общение"
+],
+"wolf-lunch-de|We're the common denominator.": [
+"общение"
+],
+"wolf-naomi-de|that's near Staten Island, right?": [
+"быт"
+],
+"wolf-naomi-de|So I presume you're Italian?": [
+"знакомство",
+"быт"
+],
+"wolf-naomi-de|I'm a mutt.": [
+"общение"
+],
+"wolf-naomi-de|I still have family over there, in London.": [
+"знакомство"
+],
+"wolf-naomi-de|She's the best.": [
+"общение"
+],
+"wolf-naomi-de|Very British, you know.": [
+"общение"
+],
+"wolf-naomi-de|That explains it then.": [
+"эмоции"
+],
+"wolf-naomi-de|Could I get a straw, please?": [
+"кафе и магазин"
+],
+"wolf-naomi-de|I was a little surprised": [
+"эмоции"
+],
+"wolf-naomi-de|Aren't you married?": [
+"знакомство",
+"свидание"
+],
+"wolf-naomi-de|Married people can't have friends?": [
+"знакомство",
+"свидание"
+],
+"wolf-naomi-de|We're gonna be friends?": [
+"свидание"
+],
+"wolf-naomi-de|You don't want to be my friend?": [
+"общение"
+],
+"wolf-naomi-de|We're not gonna be friends.": [
+"свидание",
+"учёба"
+],
+"sopranos-mahaffey-de|He's learning the business.": [
+"работа",
+"знакомство"
+],
+"sopranos-mahaffey-de|He's an example of what I was talking about before.": [
+"общение"
+],
+"sopranos-mahaffey-de|what's-his-name": [
+"знакомство"
+],
+"sopranos-mahaffey-de|I didn't want to wake the man up.": [
+"телефон и планы",
+"учёба"
+],
+"sopranos-mahaffey-de|I was nauseous this morning.": [
+"здоровье",
+"быт"
+],
+"sopranos-mahaffey-de|My mother told me I shouldn't even come in.": [
+"деньги",
+"работа"
+],
+"sopranos-mahaffey-de|Get out.": [
+"общение"
+],
+"sopranos-mahaffey-de|Can I stop you for a second?": [
+"деньги",
+"телефон и планы"
+],
+"sopranos-mahaffey-de|I don't know where this story is going.": [
+"общение"
+],
+"sopranos-mahaffey-de|Not that I'm saying it would, but if--": [
+"общение"
+],
+"sopranos-mahaffey-de|I'm supposed to go to the authorities.": [
+"общение"
+],
+"sopranos-mahaffey-de|besides being your family physician": [
+"знакомство",
+"здоровье"
+],
+"sopranos-mahaffey-de|See what I'm saying?": [
+"общение"
+],
+"sopranos-mahaffey-de|We had coffee.": [
+"телефон и планы"
+],
+"sopranos-mahaffey-de|You all right?": [
+"общение"
+],
+"sopranos-mahaffey-de|My leg is broken!": [
+"здоровье"
+],
+"sopranos-mahaffey-de|Let me see.": [
+"общение"
+],
+"sopranos-mahaffey-de|Where's my fuckin' money?": [
+"деньги",
+"ссоры"
+],
+"sopranos-mahaffey-de|I'll get the money.": [
+"деньги"
+],
+"sopranos-mahaffey-de|That's $3,000.": [
+"деньги"
+],
+"sopranos-hasid-de|My pleasure.": [
+"работа",
+"знакомство"
+],
+"sopranos-hasid-de|Please, have a seat.": [
+"общение"
+],
+"sopranos-hasid-de|Does he have a name, or do we have to give him one?": [
+"знакомство"
+],
+"sopranos-hasid-de|Call me Tony.": [
+"общение"
+],
+"sopranos-hasid-de|let's understand each other from the get-go here": [
+"работа",
+"учёба"
+],
+"sopranos-hasid-de|that I can help you with": [
+"общение"
+],
+"sopranos-hasid-de|that'll make me happy": [
+"эмоции",
+"учёба"
+],
+"sopranos-hasid-de|What's your fuckin' problem, pal?": [
+"ссоры"
+],
+"sopranos-hasid-de|Please finish.": [
+"общение"
+],
+"sopranos-hasid-de|You're being shaken down for 50 percent of your motel.": [
+"деньги"
+],
+"sopranos-hasid-de|I don't understand.": [
+"общение"
+],
+"sopranos-hasid-de|That's 'cause I'm not talking to you.": [
+"ссоры"
+],
+"sopranos-hasid-de|and you have a deal.": [
+"работа"
+],
+"sopranos-hasid-de|you'll never get them out": [
+"общение"
+],
+"sopranos-hasid-de|May I help you?": [
+"кафе и магазин"
+],
+"sopranos-hasid-de|That depends.": [
+"общение"
+],
+"sopranos-hasid-de|I'm sorry, he's not here.": [
+"общение"
+],
+"sopranos-hasid-de|is none of your matter": [
+"работа"
+],
+"sopranos-hasid-de|You couldn't possibly understand what's going on here.": [
+"общение"
+],
+"sopranos-hasid-de|I intend to get what's mine.": [
+"деньги",
+"ссоры"
+],
+"sopranos-hasid-de|don't embarrass yourself any further": [
+"эмоции"
+],
+"sopranos-phil-de|Listen, I've made a decision.": [
+"деньги",
+"быт"
+],
+"sopranos-phil-de|Get lost.": [
+"ссоры"
+],
+"sopranos-phil-de|Historically": [
+"учёба",
+"быт"
+],
+"sopranos-phil-de|Plain and simple": [
+"общение"
+],
+"sopranos-phil-de|I agree in spirit": [
+"общение"
+],
+"sopranos-phil-de|This thing should have been done during John's era.": [
+"общение"
+],
+"sopranos-phil-de|bleeds off half the kick": [
+"деньги"
+],
+"sopranos-phil-de|that's not what I'm saying at all": [
+"учёба"
+],
+"sopranos-phil-de|has no respect for this thing": [
+"работа"
+],
+"sopranos-phil-de|I'm embarrassed.": [
+"эмоции"
+],
+"sopranos-phil-de|is all fucked up": [
+"ссоры"
+],
+"sopranos-phil-de|Either it has meaning or no meaning.": [
+"ссоры",
+"эмоции"
+],
+"sopranos-phil-de|There's no scraps in my scrapbook.": [
+"общение"
+],
+"sopranos-phil-de|Make it happen.": [
+"работа"
+],
+"bb-knocks-de|If you are in danger": [
+"эмоции"
+],
+"bb-knocks-de|I don't wanna hear about the police.": [
+"ссоры"
+],
+"bb-knocks-de|I do not say that lightly.": [
+"общение"
+],
+"bb-knocks-de|if it's the only real choice we have": [
+"общение"
+],
+"bb-knocks-de|You are in over your head.": [
+"общение"
+],
+"bb-knocks-de|Jesus, what was I thinking?": [
+"эмоции"
+],
+"bb-knocks-de|Let's both of us stop trying to justify this whole thing": [
+"общение"
+],
+"bb-knocks-de|Who are you talking to right now?": [
+"общение"
+],
+"bb-knocks-de|Do you know how much I make a year?": [
+"работа",
+"быт"
+],
+"bb-knocks-de|Even if I told you, you wouldn't believe it.": [
+"общение"
+],
+"bb-knocks-de|You clearly don't know who you're talking to": [
+"работа"
+],
+"bb-knocks-de|So let me clue you in.": [
+"общение"
+],
+"bb-knocks-de|I am the danger.": [
+"общение"
+],
+"bb-knocks-de|I am the one who knocks.": [
+"учёба"
+],
+"bb-mike-de|Get out of my way, kid.": [
+"деньги",
+"ссоры"
+],
+"bb-mike-de|Let him talk.": [
+"общение"
+],
+"bb-mike-de|I am done listening to this asshole talk.": [
+"ссоры"
+],
+"bb-mike-de|He's got something you need to hear": [
+"общение"
+],
+"bb-mike-de|Do you even know what you've done?": [
+"ссоры"
+],
+"bb-mike-de|One more word.": [
+"ссоры"
+],
+"bb-mike-de|Right now we've got bigger fish to fry.": [
+"общение"
+],
+"bb-mike-de|God only knows where else.": [
+"быт"
+],
+"bb-mike-de|When I say \"us,\" I'm including you.": [
+"общение"
+],
+"bb-mike-de|and the police get to it": [
+"эмоции"
+],
+"bb-mike-de|Keys, scumbag.": [
+"ссоры",
+"быт"
+],
+"bb-mike-de|It's the universal symbol for keys.": [
+"учёба",
+"быт"
+],
+"bb-mike-de|that the USPS takes that very seriously": [
+"общение"
+],
+"bb-mike-de|Do you think we could work together on this thing?": [
+"работа"
+],
+"bb-mike-de|Could you tell me that, at least?": [
+"общение"
+],
+"bb-mike-de|Well, thanks for your help.": [
+"общение"
+],
+"bb-mike-de|Before your time.": [
+"общение"
+],
+"bb-mike-de|Well, you feel free to call me day or night at this number.": [
+"телефон и планы"
+],
+"bb-mike-de|We're boned.": [
+"ссоры"
+],
+"bb-mike-de|how they say": [
+"общение"
+],
+"bb-mike-de|I'm getting the hell out": [
+"телефон и планы"
+],
+"bb-mike-de|It's just a matter of time.": [
+"учёба"
+],
+"bb-mike-de|What the hell difference does it make?": [
+"общение"
+],
+"bb-mike-de|I am doing something.": [
+"общение"
+],
+"bb-mike-de|Just give him a chance.": [
+"общение"
+],
+"bb-mike-de|That laptop might as well be on the moon.": [
+"быт"
+],
+"titanic-andrews-de|That's right.": [
+"общение"
+],
+"titanic-andrews-de|When can we get underway?": [
+"деньги"
+],
+"titanic-andrews-de|There's no stopping it.": [
+"общение"
+],
+"titanic-andrews-de|The pumps buy you time, but minutes only.": [
+"общение"
+],
+"titanic-andrews-de|As of now, no matter what we do...": [
+"общение"
+],
+"titanic-andrews-de|I assure you": [
+"работа",
+"знакомство"
+],
+"titanic-andrews-de|It's a mathematical certainty.": [
+"учёба"
+],
+"titanic-mother-de|You understand?": [
+"работа",
+"ссоры"
+],
+"titanic-mother-de|Rose, I forbid it.": [
+"учёба"
+],
+"titanic-mother-de|Stop it, Mother.": [
+"быт"
+],
+"titanic-mother-de|This is not a game.": [
+"общение"
+],
+"titanic-mother-de|Our situation is precarious.": [
+"деньги",
+"работа"
+],
+"titanic-mother-de|You remind me every day.": [
+"ссоры"
+],
+"titanic-mother-de|I don't understand you.": [
+"эмоции"
+],
+"titanic-mother-de|Why are you being so selfish?": [
+"ссоры"
 ]
 }
 }

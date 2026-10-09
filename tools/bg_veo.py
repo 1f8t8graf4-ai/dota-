@@ -8,7 +8,7 @@ HEAD="Vertical 9:16 full-frame phone video; the picture fills the whole frame fr
 TAIL=("Keep the main objects in the center of the frame. Objects never grow, change shape, appear or disappear; "
       "the last frame looks the same as the first. Photorealistic live-action footage with natural textures, not CGI, not a 3D render. "
       "Avoid: black bars, letterbox, frame borders, film strip, sprocket holes, split screen, text, letters, numbers, logos, watermarks, "
-      "posters, signs, people, faces, hands, extra objects, extra smoke, camera movement, zoom, cuts.")
+      "brand names, labels on bottles, posters, signs, people, faces, hands, extra objects, extra smoke, camera movement, zoom, cuts.")
 # (заголовок, файл, место, камера, только эти предметы, движение, свет, настроение)
 P=[
 ('ГЛАВНЫЙ «Волк с Уолл-стрит» · старый вариант','film-wolf',
@@ -189,17 +189,17 @@ P=[
 ('Сцена «Подкаст Impaulsive» (студия)','clavicular-impaulsive',
  "a big podcast studio right after recording, empty.",
  "wide shot from a high corner, 24mm lens",
- "two large cream-colored couches facing each other; between them a low wooden coffee table with paper snack trays, sports-drink bottles and a smartphone lying face up with green message bubbles on its screen; a wall of warm wooden planks with shelves of small trophies and boxes; a grey concrete wall with red, white and blue boxing-ring ropes; black podcast microphones on boom arms in front of the couches; a video camera on a tripod at the edge of the frame; studio spotlights on the ceiling. No logos, no text.",
+ "two large cream-colored couches facing each other; between them a low wooden coffee table with paper snack trays, two plain unlabeled plastic bottles of blue sports drink and a smartphone lying face up with green message bubbles on its screen; behind, a wall of warm wooden planks with shelves of small gold trophies; black podcast microphones on boom arms in front of the couches; a video camera on a tripod at the edge of the frame; studio spotlights on the ceiling. No boxing ring, no ropes, no logos, no text.",
  "condensation drops slide down the cold bottles on the table; a tiny red recording light blinks on a camera at the edge of the frame.",
  "warm studio lights",
  "warm wood, cream and red-white-blue; loud, confident, a little bit show-off."),
-('Сцена «Clavicular · 18+» (та же студия Impaulsive, ночь после эфира)','clavicular-18',
- "the same big podcast studio late at night after an uncensored episode, empty, lit only in deep red.",
- "eye level from the coffee table, 28mm lens",
- "two cream-colored couches facing each other; black podcast microphones on boom arms; a grey concrete wall with red, white and blue boxing-ring ropes; on the low wooden coffee table: an open orange pharmacy pill bottle with a few small blue diamond-shaped pills spilled out, a box of tissues, a pocket calculator with a dark blank display, a smartphone lying face down and a light-blue sports-drink bottle; on the wall, a round red studio warning lamp glowing; through a half-open door at the back, a small bathroom sink lit pink.",
- "the red on-air light pulses slowly; condensation drops slide down the cold bottle.",
- "deep red studio light, pink glow from the bathroom door, everything else in shadow",
- "deep red and pink in darkness; the late-night, no-filter part of the podcast — sex, pills and money talk."),
+('Сцена «Clavicular · 18+» (VIP-ложа клуба в Майами после закрытия)','clavicular-18',
+ "a VIP booth of a Miami nightclub at 4 a.m. after closing, empty, no people.",
+ "eye level from the low table, 28mm lens, the booth fills the center",
+ "a curved black velvet booth; on the low black table in front of it: a silver ice bucket with a dark unlabeled champagne bottle, two half-empty champagne glasses, an open orange pharmacy pill bottle with a few small blue diamond-shaped pills spilled out, and a smartphone lying face up, its screen glowing neon green with chat bubbles and no letters; behind the booth, a dark wall with thin pink and red neon light strips (no words) and a mirrored disco ball hanging from the ceiling; light haze in the air.",
+ "the disco ball turns slowly, small light spots glide across the walls; chat bubbles float up the phone screen; a thin haze drifts.",
+ "pink and red neon, the green phone glow, spots from the disco ball",
+ "hot pink, red and neon green in darkness; the after-party, no-filter talk about sex, pills, dopamine and money."),
 
 ]
 # 13.1: главные фоны — ВЕСЬ фильм / сериал целиком (главные символы в одном логичном месте), у интервью — сам человек. Старые варианты остаются ниже.
@@ -207,21 +207,21 @@ PH=[
 ('ГЛАВНЫЙ «Волк с Уолл-стрит» — весь фильм','film-wolf-b',
  "the trading floor of a 1990s Long Island brokerage firm at night, the morning after a wild office party, nobody left.",
  "low angle across the nearest desk, 28mm lens, a long aisle of desks behind",
- "on the nearest desk, in the center, piles of hundred-dollar bills in paper bands, a gold Rolex, a beige office telephone with the handset off the hook, a tipped-over orange pharmacy pill bottle with a few white pills spilled out, one hundred-dollar bill rolled into a tube, a half-empty bottle of champagne with a half-full champagne glass, a roll of silver duct tape lying on top of cash bricks, a small white model of a 1980s Lamborghini Countach and a round fishbowl with one orange goldfish. Behind: rows of empty desks with boxy beige monitors glowing green, confetti and loose bills on the carpet.",
+ "on the nearest desk, in the center: thick bricks of hundred-dollar bills in paper bands, a beige office telephone with the handset off the hook, a tipped-over pharmacy pill bottle with a few round white pills spilled out, an unlabeled champagne bottle with a half-full champagne glass, a small white toy model of a 1980s Lamborghini Countach and a round fishbowl with one orange goldfish. Behind: rows of empty desks with boxy beige monitors glowing green, confetti and loose bills on the carpet.",
  "the goldfish hovers in place waving its fins; bubbles rise in a glass of champagne.",
  "one warm brass desk lamp and cold green monitor glow",
  "gold and money-green; greed, excess, drugs and endless partying on other people's money."),
 ('ГЛАВНЫЙ «Клан Сопрано» — весь сериал','film-sopranos-b',
  "the big kitchen of a New Jersey mob boss's suburban house at 3 a.m., empty.",
  "eye level from the kitchen island, 35mm lens",
- "the door of a large refrigerator stands open, its light the main light in the dark kitchen; on the island in front of it, a white plate with thin slices of capicola, a glass of whiskey, a cigar resting in a heavy glass ashtray, a thick envelope of cash, an orange pill bottle and a foil tray of baked ziti; a rolled newspaper in a plastic bag on the counter; a white terry bathrobe hangs over a bar stool; through the sliding glass door, a backyard swimming pool lit from below with two wild ducks floating on it.",
+ "the door of a large refrigerator stands open, its light the main light in the dark kitchen; on the island in front of it: a white plate with thin slices of capicola, a glass of whiskey, a cigar resting in a heavy glass ashtray and a foil tray of baked ziti; a rolled newspaper in a plastic bag on the counter; a white terry bathrobe hangs over a bar stool; through the sliding glass door, a backyard swimming pool lit from below with two wild ducks floating on it.",
  "one thin thread of smoke rises only from the tip of the cigar; the ducks float almost in place, leaving small ripples on the lit pool.",
  "cold white light from the open refrigerator and the turquoise glow of the pool",
  "cold fridge light and darkness; family, money, food, guilt and panic attacks — a mob boss who can't sleep."),
 ('ГЛАВНЫЙ «Американский психопат» — весь фильм','film-psycho-b',
  "a minimalist white 1987 Manhattan luxury apartment at night, empty.",
  "symmetrical wide shot, 28mm lens",
- "the white floor covered with neatly spread newspapers with blurred unreadable print; in the center, a transparent plastic raincoat hanging on a chrome coat stand; a fire axe leaning against a white leather sofa; on a glass coffee table, a row of bone-white business cards, an open jar of white face-mask cream and a neatly squared pile of CDs; a high-end silver stereo system with glowing level meters; a big window onto the Manhattan skyline at night.",
+ "the white floor covered with neatly spread newspapers with blurred unreadable print; in the center, a transparent plastic raincoat hanging on a chrome coat stand; a fire axe leaning against a white leather sofa; on a glass coffee table, a row of bone-white business cards, an open jar of white face-mask cream; a high-end silver stereo system with glowing level meters; a big window onto the Manhattan skyline at night.",
  "the green level meters on the stereo bounce to music; a corner of a newspaper flutters slightly in the air from a vent.",
  "cold white ceiling light and the blue night city",
  "sterile white perfection with something horribly wrong; a polite yuppie who is a monster inside."),
@@ -269,6 +269,67 @@ PH=[
  "clinical white, neon green and hot pink; extreme self-improvement, obsession with the mirror, always on stream."),
 ]
 
+# 13.5: немецкие сцены (дубляж). У «Ланча» и «Я — опасность» сцена та же, что у английских, — фон общий (скопирую файл).
+# Главные фоны немецких фильмов — те же, что у английских (Волк, Сопрано, Во все тяжкие, Титаник), отдельно генерить не надо.
+PDE=[
+('DE «Первое свидание с Наоми» (Волк)','wolf-naomi-de',
+ "a dim, cozy Italian restaurant in early 1990s New York at night, the table for two empty.",
+ "eye level across the table, 50mm lens, shallow focus",
+ "a small round table with a white tablecloth; a short table lamp with a cream fabric shade glowing warm; a low vase of pink roses; one cocktail glass with a white bendy straw in it and a glass of red wine; a folded white napkin. Behind, out of focus: dark red brick walls, more little glowing table lamps and dark wooden chairs.",
+ "the little lamps glow steadily while candle-like reflections shimmer softly in the glasses; a thin ribbon of condensation slides down the cocktail glass.",
+ "the warm table lamps, everything else in soft darkness",
+ "warm amber and dark red; a married man on a first date that is obviously not \"just friends\"."),
+('DE «Тони, Мелфи и Махаффи» (Сопрано S01E01)','sopranos-mahaffey-de',
+ "the grass lawn of a quiet New Jersey corporate office park on a grey morning, empty.",
+ "low angle from the grass, 28mm lens",
+ "a black 1999 luxury sedan stopped crooked on the lawn with the driver's door open; on the asphalt path in front of it, two spilled paper coffee cups and a crushed cardboard cup tray in a small puddle of coffee; one brown leather office shoe lying alone on the grass. Behind: a low office building with dark glass and big weeping willow trees.",
+ "thin steam rises from the spilled coffee; the long willow branches sway gently in the wind.",
+ "flat grey overcast morning light",
+ "muted green and grey; a pleasant suburban morning that just turned into a beating."),
+('DE «Хасиды нанимают Тони» (Сопрано S01E03)','sopranos-hasid-de',
+ "the sidewalk in front of a small Italian pork store in New Jersey on a sunny summer day, empty.",
+ "eye level from the curb, 35mm lens",
+ "two small café tables with red-and-white checkered tablecloths; on one, two white espresso cups on saucers and a sugar dispenser; a black wide-brimmed felt hat left on one chair; behind, the shop window with hanging salamis and a cartoon pig figure in the window with no letters; a striped awning above. No text, no signs with words.",
+ "the edge of a checkered tablecloth flutters in the breeze; a thin wisp of steam rises from one espresso cup.",
+ "bright summer daylight",
+ "warm red-white checks and sunlight; a polite business deal between very different men."),
+('DE «Фил решает» (Сопрано S06E20)','sopranos-phil-de',
+ "a small old Brooklyn café on a winter afternoon, empty.",
+ "eye level, 50mm lens, shallow focus on the front table",
+ "a small round marble table with a white espresso cup on a saucer and a little spoon resting in it, a glass of water and a folded white pocket square; behind, dark wooden walls with old framed photos, bentwood chairs and big windows with glowing lace curtains.",
+ "a thin wisp of steam rises from the espresso; the lace curtains sway very slightly.",
+ "pale wintry daylight through the lace curtains, dark interior",
+ "brown and pale cream; quiet coffee, cold decision — the end of a war is ordered here."),
+('DE «Ich bin die Gefahr» (Во все тяжкие S04E06)','bb-knocks-de',
+ "the dark front hallway of a suburban Albuquerque house at night, seen from inside, empty.",
+ "eye level facing the front door, 35mm lens",
+ "a closed wooden front door with a small frosted glass window glowing yellow from the porch light outside; a brass door chain hanging loose; on a small side table by the door, a black pork-pie hat and a pair of glasses; a family photo frame turned face down.",
+ "the porch light behind the frosted glass flickers slightly; a moth's shadow flutters on the glass.",
+ "only the yellow porch light through the frosted glass",
+ "black and sickly yellow; the knock at the door — and the one who knocks is him."),
+('DE «Майк и ноутбук Гаса» (Во все тяжкие S05E01)','bb-mike-de',
+ "the empty New Mexico desert at golden hour, nobody around.",
+ "low angle from the dirt road, 28mm lens",
+ "a dusty silver 1990s sedan parked on a dirt track with the driver's door open; on its hood: a ring of car keys and a black revolver; a closed black laptop lying in the dust in front of the car. Behind, flat desert with dry grass and blue mountains under a huge sky.",
+ "dry grass sways in the hot wind; heat haze shimmers above the road; thin dust blows low across the ground.",
+ "low warm golden sun",
+ "dusty gold and black; an old fixer who is done with these amateurs — and evidence that can sink them all."),
+('DE «Эндрюс: корабль утонет» (Титаник)','titanic-andrews-de',
+ "the chart room of a 1912 ocean liner at night, empty.",
+ "high angle over the table, 35mm lens",
+ "a large wooden table covered with a big blue ship blueprint of the liner seen from the side, its compartments drawn in white lines; a brass desk lamp; a gold pocket watch lying open on the blueprint; a pencil and a brass ruler; behind, dark wood paneling and a round porthole showing black night sea.",
+ "the brass lamp sways very slightly back and forth as the ship lists, its pool of light sliding over the blueprint and back; the pocket watch's second hand ticks.",
+ "only the warm brass lamp",
+ "deep blue and warm brass; calm numbers that mean death — a mathematical certainty."),
+('DE «Мать и корсет» (Титаник)','titanic-mother-de',
+ "a luxurious first-class stateroom of a 1912 ocean liner in the evening, empty.",
+ "eye level, 50mm lens, shallow focus",
+ "a dressing table with a big oval mirror reflecting only the room; on it, a pearl necklace, a silver hairbrush and a vase of yellow lilies; a white corset with long loose laces hanging over a carved wooden screen; heavy dark-red velvet curtains; warm wall sconces with small shades.",
+ "the loose corset laces sway slightly; the velvet curtain moves very gently.",
+ "warm golden wall sconces",
+ "gold, cream and blood red; luxury that feels like a cage."),
+]
+
 def prompt(pl,cam,obj,mv,li,look):
     return (f"{HEAD} Place: {pl} Camera: {cam}, locked-off, does not move. Only these objects: {obj} "
             f"Moves (only this): {mv} Everything else stays perfectly still. Light: {li}, constant the whole time. "
@@ -277,16 +338,22 @@ if __name__=='__main__':
     o=['ФОНЫ — ПРОМТЫ ДЛЯ VEO / GEMINI','',
        'Настройки: 9:16, 8 с. Каждый блок — один промт, копируй целиком.',
        'Если всё равно вышла горизонталь — не страшно: всё важное в промтах по центру, я подрежу под телефон.',
-       'Если «I can\'t generate that video» — убери из промта одну «острую» деталь (шприцы, молоток, топор, револьвер, таблетки, свёрнутую купюру, сигарету) и прогони ещё раз.','','']
+       'Если «I can\'t generate that video» — убери из промта одну «острую» деталь (шприцы, молоток, топор, револьвер, таблетки, свёрнутую купюру, сигарету) и прогони ещё раз.',
+       'Вертикаль: в приложении Gemini видео почти всегда горизонтальное — вертикаль 9:16 выбирается в Google Flow (labs.google/flow) или AI Studio. Горизонталь тоже годится: в «Коллекции» она показывается целиком.',
+       'Если модель добавила лишнее (ринг, логотип на бутылке, людей) — перегенерируй тот же промт, не дописывай; чем короче список предметов, тем точнее.','','']
     o+=['##### НОВЫЕ ГЛАВНЫЕ ФОНЫ — ВЕСЬ ФИЛЬМ / СЕРИАЛ, У ИНТЕРВЬЮ — САМ ЧЕЛОВЕК (13.1) #####','','']
     for h,f,*x in PH:o+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'','']
     o+=['##### ФОНЫ СЦЕН и прежние варианты главных #####','','']
     for h,f,*x in P:o+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'','']
+    o+=['##### НЕМЕЦКИЕ СЦЕНЫ (13.5) — «Ланч» и «Я — опасность» берут фон английских сцен #####','','']
+    for h,f,*x in PDE:o+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'','']
     open('фоны-промты-veo.txt','w').write('\n'.join(o));print(len(P))
     # чистый файл: только актуальное — новые главные (весь фильм / человек) + фоны сцен, без старых главных
-    c=['ФОНЫ — АКТУАЛЬНЫЕ ПРОМТЫ (без старых вариантов)','',o[2],o[3],o[4],'','','##### ГЛАВНЫЕ ФОНЫ — ВЕСЬ ФИЛЬМ / СЕРИАЛ, У ИНТЕРВЬЮ — САМ ЧЕЛОВЕК #####','','']
+    c=['ФОНЫ — АКТУАЛЬНЫЕ ПРОМТЫ (без старых вариантов)','',o[2],o[3],o[4],o[5],o[6],'','','##### ГЛАВНЫЕ ФОНЫ — ВЕСЬ ФИЛЬМ / СЕРИАЛ, У ИНТЕРВЬЮ — САМ ЧЕЛОВЕК #####','','']
     for h,f,*x in PH:c+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'','']
     c+=['##### ФОНЫ СЦЕН #####','','']
     for h,f,*x in P:
         if not f.startswith('film-'):c+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'','']
+    c+=['##### НЕМЕЦКИЕ СЦЕНЫ (13.5) #####','','']
+    for h,f,*x in PDE:c+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'','']
     open('фоны-промты-АКТУАЛЬНЫЕ.txt','w').write('\n'.join(c))

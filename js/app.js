@@ -252,7 +252,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab'];
+const LOCAL_ONLY=['shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab'];
 function storeMerge(c){storeRelay(c);const L=store,cNew=(c.sv||0)>SV0,o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -2312,7 +2312,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.4.0';
+const APP_V='13.5.0';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2791,6 +2791,9 @@ const SUB_COL={en:2,ru:3,de:4};
 const SC_KIND={film:'Фильм',series:'Сериал',clip:'Клип',interview:'Интервью'};
 // 12.7: интервью — как фильмы: человек = «фильм» (поле show), куски интервью = сцены
 const SC_CATS=[['all','Все'],['film','Фильмы'],['series','Сериалы'],['interview','Интервью'],['clip','Клипы']];
+// 13.5: язык Кинозала = язык фильма (English / Deutsch — немецкий дубляж и «Бункер»), как в словаре
+const scLang=s=>s&&s.lang==='de'?'de':'en';
+const kinoLang=()=>store.kinoLang||(store.langs&&store.langs[0]==='de'?'de':'en');
 const scDots=n=>`<span class="sc-dots">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</span>`;
 function scRateHTML(s){if(!s.lvl&&!s.use)return '';
   return `<div class="sc-rate">${s.lvl?`<div><span>Сложность на слух</span>${scDots(s.lvl)}<small>${esc(s.lvlWhy||'')}</small></div>`:''}${s.use?`<div><span>Польза в жизни</span>${scDots(s.use)}<small>${esc(s.useWhy||'')}</small></div>`:''}</div>`;}
@@ -2801,23 +2804,26 @@ function kinoCard(s){const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
     ${s.lvl?`<span class="kp-rate"><i>сложность ${scDots(s.lvl)}</i><i>польза ${scDots(s.use||0)}</i></span>`:''}
     <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%\"></i></span></span></button>`;}
 function kinoTabHTML(){
-  const de=scL()==='de',cat=store.kinoCat||'all';
-  const cats=SC_CATS.filter(([k])=>k==='all'||SCENES.some(s=>(s.kind||'film')===k));
-  const list=SCENES.filter(s=>cat==='all'||(s.kind||'film')===cat);
+  const kl=kinoLang(),inL=s=>scLang(s)===kl,nL=l=>SCENES.filter(s=>scLang(s)===l&&flagOf('scene-'+s.id)!=='hide').length;
+  const cats=SC_CATS.filter(([k])=>k==='all'||SCENES.some(s=>inL(s)&&(s.kind||'film')===k));
+  const cat=cats.some(([k])=>k===store.kinoCat)?store.kinoCat:'all';
+  const list=SCENES.filter(s=>inL(s)&&(cat==='all'||(s.kind||'film')===cat));
   // сериал с несколькими сценами — одна карточка, внутри список его сцен
   const shows={},cards=[];
   for(const s of list){if(s.show){if(!shows[s.show]){shows[s.show]=[];cards.push({show:s.show});}shows[s.show].push(s);}else cards.push({s});}
   const html=cards.map(c=>{if(c.s)return kinoCard(c.s);const L=shows[c.show];if(L.length===1)return kinoCard(L[0]);const s=L[0];
     return `<button class="kposter ${s.theme} show poster anim${L.every(x=>scMasterPct(x)===100)?' mastered':''}" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${scCover(s,'poster.jpg')}'),url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span><span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
   return `<h1 class="title anim">Кинозал</h1>
-    <p class="lead anim" style="margin:4px 0 12px">Смотришь сцену с субтитрами, разбираешь живые фразы, проверяешь себя.${de?' Задания — по-немецки.':''}</p>
+    <p class="lead anim" style="margin:4px 0 12px">${kl==='de'?'Сцены на немецком: дубляж и немецкое кино. Учишь немецкий по живой речи.':'Смотришь сцену с субтитрами, разбираешь живые фразы, проверяешь себя.'}</p>
+    ${nL('de')?`<div class="dx-lang klang anim"><button data-kl="en" class="${kl==='en'?'on':''}">${FLAG.en} English <i>${nL('en')}</i></button><button data-kl="de" class="${kl==='de'?'on':''}">${FLAG.de} Deutsch <i>${nL('de')}</i></button></div>`:''}
     <button class="srch-pill anim" onclick="renderSearch()">${ui('search')}<span>Найти фразу, сцену или слово</span></button>
     ${cats.length>2?`<div class="kcats anim">${cats.map(([k,l])=>`<button data-cat="${k}" class="${cat===k?'on':''}">${l}</button>`).join('')}</div>`:''}
-    <div class="kgrid">${html}</div>
+    <div class="kgrid${kl==='de'?' k-de':''}">${html}</div>
     <div class="ksoon anim"><b>Скоро</b> новые сцены, серии и клипы</div>`;
 }
 function bindKino(){$$('[data-sc]').forEach(b=>b.onclick=()=>{haptic('medium');sfx('tap');renderScene(b.dataset.sc);});
   $$('[data-cat]').forEach(b=>b.onclick=()=>{sfx('sel');store.kinoCat=b.dataset.cat;save();renderTab('kino');});
+  $$('[data-kl]').forEach(b=>b.onclick=()=>{if(b.dataset.kl===kinoLang())return;sfx('page');haptic('light');store.kinoLang=b.dataset.kl;save();renderTab('kino');});
   $$('[data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});}
 // страница сериала: все его сцены
 function renderShow(name){
@@ -2835,7 +2841,7 @@ function renderShow(name){
       <div class="sh-info"><em>${SC_KIND[S[0].kind]||'Сцены'} · ${S.length} ${plural(S.length,['сцена','сцены','сцен'])}</em>
         <b>${lr} из ${tt} фраз</b><span class="sh-bar"><i style="width:${pc}%"></i></span>
         ${nx?`<button class="sh-go" id="shGo">${scP(nx.id).done.length?'Продолжить':'Смотреть по порядку'} ${SI.play}</button><small>${esc(lab(nx))}</small>`:''}</div></section>
-    ${groups.map(([h,G])=>`<h2 class="sh-season">${h}</h2><div class="kgrid">${G.map(s=>kinoCard({...s,title:lab(s)})).join('')}</div>`).join('')}`,'tabscr showscr');
+    ${groups.map(([h,G])=>`<h2 class="sh-season">${h}</h2><div class="kgrid${S.every(x=>x.lang==='de')?' k-de':''}">${G.map(s=>kinoCard({...s,title:lab(s)})).join('')}</div>`).join('')}`,'tabscr showscr');
   $('#bBtn').onclick=()=>{sfx('tap');renderTab('kino');};
   try{paintTabbar('kino');}catch(e){}
   if($('#shGo'))$('#shGo').onclick=()=>{haptic('medium');renderScene(nx.id);};
@@ -2986,7 +2992,7 @@ function renderScene(id){
   if(scGate(id))return;
   if(!scOpen(scOf(id))){scBuy(scOf(id));return;}
   {const s0=scOf(id);if(s0&&s0.kind==='clip'&&!s0._srtTry){s0._srtTry=true;clipLoad(s0).then(ok=>{if((ok||(CLIPNOTES&&CLIPNOTES[id]))&&SCUR&&SCUR.id===id&&document.querySelector('.scn .sc-top')&&!document.querySelector('.scn .sc-q,.scn #scvw'))renderScene(id);});}}
-  const s=scOf(id),P=scP(id);SCUR={id,i:0};
+  const s=scOf(id),P=scP(id);SCUR={id,i:0};store.kinoLang=scLang(s);   // 13.5: «назад» из сцены — в Кинозал на языке этой сцены
   const n=s.parts.length,d=P.done.length,L=scLearned(s),T=scTotal(s),next=s.parts.findIndex((p,i)=>!P.done.includes(i));
   scMount(s,`
     <div class="sc-head"><button class="sc-back" id="scb">${ui('back')}</button><span class="sc-meta">Сцены</span></div>
@@ -5618,8 +5624,8 @@ function learnTabHTML(){
     </div>
     ${phraseOfDayHTML()}
     <div class="hsec anim"><h2>Кинозал</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
-    ${[['kino',x=>x.kind!=='interview'],['iv',x=>x.kind==='interview']].map(([hk,hf])=>{const HS=SCENES.filter(x=>flagOf('scene-'+x.id)!=='hide'&&hf(x));if(!HS.length)return '';
-    return (hk==='iv'?`<div class="hsec anim"><h2>Интервью</h2><button class="hlink" id="hAllIv">Все интервью →</button></div>`:'')+`<div class="hrow">${(()=>{const G=[],by={};for(const x of HS){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
+    ${[['kino',x=>x.kind!=='interview'&&x.lang!=='de'],['iv',x=>x.kind==='interview'&&x.lang!=='de'],['de',x=>x.lang==='de']].map(([hk,hf])=>{const HS=SCENES.filter(x=>flagOf('scene-'+x.id)!=='hide'&&hf(x));if(!HS.length)return '';
+    return (hk==='iv'?`<div class="hsec anim"><h2>Интервью</h2><button class="hlink" id="hAllIv">Все интервью →</button></div>`:hk==='de'?`<div class="hsec anim"><h2>${FLAG.de} Auf Deutsch</h2><button class="hlink" id="hAllDe">Все на немецком →</button></div>`:'')+`<div class="hrow">${(()=>{const G=[],by={};for(const x of HS){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
       return G.map(k=>{const L=by[k],x=L[0],l=L.reduce((a,y)=>a+scLearned(y),0),t=L.reduce((a,y)=>a+scTotal(y),0),eps=L.reduce((a,y)=>a+y.parts.length,0);
         return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div>`;}).join('')}</div>`;
 }
@@ -5631,10 +5637,11 @@ function bindLearn(){
   if($('#hRev'))$('#hRev').onclick=()=>{haptic('medium');renderDaily();};
   if($('#hNext'))$('#hNext').onclick=()=>{haptic('medium');renderScEp(c.s.id,c.i);};
   if($('#hReview'))$('#hReview').onclick=()=>{haptic('medium');const sc=SCENES.find(x=>scDue(x).length);if(sc)renderScQuiz(sc.id,'rev');else startSession('review');};
-  if($('#hAllKino'))$('#hAllKino').onclick=()=>{sfx('tap');renderTab('kino');};
+  if($('#hAllKino'))$('#hAllKino').onclick=()=>{sfx('tap');store.kinoLang='en';renderTab('kino');};
+  if($('#hAllDe'))$('#hAllDe').onclick=()=>{sfx('tap');store.kinoLang='de';store.kinoCat='all';save();renderTab('kino');};
   if($('#hColl'))$('#hColl').onclick=()=>{haptic('medium');sfx('tap');renderCollection();};
   if($('#hShop'))$('#hShop').onclick=()=>{haptic('medium');sfx('tap');renderShop();};hmBind();
-  if($('#hAllIv'))$('#hAllIv').onclick=()=>{sfx('tap');store.kinoCat='interview';save();renderTab('kino');};
+  if($('#hAllIv'))$('#hAllIv').onclick=()=>{sfx('tap');store.kinoLang='en';store.kinoCat='interview';save();renderTab('kino');};
   if($('#hAllGames'))$('#hAllGames').onclick=()=>{sfx('tap');renderTab('games');};
   $$('.hrow [data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});
   $$('.hrow [data-sc]').forEach(b=>b.onclick=()=>{haptic('medium');renderScene(b.dataset.sc);});

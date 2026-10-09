@@ -4581,3 +4581,7 @@ body.sc-pfs-on .kw-pop.on.in-v{visibility:visible!important}
 .ad2 .sc-btn{background:#F3EBDD;color:#15130f}
 .ad2 #dkGo{display:block;width:100%;margin-top:14px;border-radius:14px}
 .screen.ad2{max-width:640px;margin-left:auto;margin-right:auto}
+
+/* ==== 13.5 — Кинозал English / Deutsch ==== */
+.klang{margin:0 0 12px}
+.k-de .kp-lang{display:none}
