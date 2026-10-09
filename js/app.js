@@ -252,7 +252,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab'];
+const LOCAL_ONLY=['ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab'];
 function storeMerge(c){storeRelay(c);const L=store,cNew=(c.sv||0)>SV0,o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -2323,7 +2323,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.6.1';
+const APP_V='13.6.2';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -3035,13 +3035,18 @@ function musFadeIn(){if(!MUS)return;const to=musVol();musSetVol(0);clearInterval
 // 13.6.1: фразы и реплики эпизода открываются только после его первого просмотра (Андрей: иначе всё сразу уходит в словарь)
 const epSeen=(s,i)=>{if(ADM_OPEN())return true;const P=scP(s.id);return !!(P.w[i]||P.done.includes(i));};
 const scSeenN=s=>s.parts.reduce((a,p,i)=>a+(epSeen(s,i)?scAct(p.ph).length:0),0);
+const fogTxt=t=>String(t||'').replace(/[A-Za-z]/g,c=>{const a=c<='Z'?'ABCDEFGHIJKLMNOPRSTUVW':'abcdefghiklmnoprstuvwy';return a[Math.floor(Math.random()*a.length)];}).replace(/[А-Яа-яЁё]/g,c=>{const a=c===c.toUpperCase()?'АБВГДЕЖЗИКЛМНОПРСТУ':'абвгдежзиклмнопрстуя';return a[Math.floor(Math.random()*a.length)];}).replace(/[ÄÖÜäöüß]/g,'e');
 function renderSceneSum(id){const s=scOf(id);if(!s)return;SCUR={id,i:0};const all=s.parts.flatMap((p,i)=>epSeen(s,i)?scAct(p.ph):[]),shut=s.parts.map((p,i)=>({p,i})).filter(x=>!epSeen(s,x.i));
   const G=[['all','Можно везде','нейтрально и вежливо',f=>['neutral','formal'].includes(scTag(f)[1])],['casual','Среди своих','разговорное',f=>scTag(f)[1]==='casual'],['rude','Грубо','только с друзьями',f=>scTag(f)[1]==='rude']];
   const kws=[],seen=new Set();all.forEach(f=>kwOf(f).forEach((k,j)=>{const key=String(k[1]||k[0]).toLowerCase();if(!seen.has(key)){seen.add(key);kws.push({f,j,k});}}));
   const de=scL()==='de'&&!scIsDe();
   scMount(s,`<div class="sc-head"><button class="sc-back" id="scb">${ui('back')}</button><div><span class="sc-meta">${esc(s.title)}</span><h1>Все фразы сцены</h1></div></div>
     <p class="ss-lead">${all.length?`${all.length} ${plural(all.length,['фраза','фразы','фраз'])} из ${scTotal(s)}. Нажми на любое слово — перевод и пример. <i class="kw demo">Подсвеченные</i> — самые полезные.`:'Фразы появятся здесь, когда посмотришь эпизод.'}</p>
-    ${shut.length?`<div class="ss-shut">${shut.map(x=>`<div class="ss-lk"><b>🔒 Эпизод ${x.i+1} · ${esc(x.p.t)}</b><span>${scAct(x.p.ph).length} ${plural(scAct(x.p.ph).length,['фраза','фразы','фраз'])} — откроются после просмотра</span></div>`).join('')}</div>`:''}
+    ${shut.length?`<div class="ss-shut">${shut.map(x=>{const L=scAct(x.p.ph),can=scEpOpen(s,x.i);
+      return `<section class="ss-fog" data-i="${x.i}"><header><b>Эпизод ${x.i+1} · ${esc(x.p.t)}</b><small>${L.length} ${plural(L.length,['фраза','фразы','фраз'])}</small></header>
+        <div class="ss-fogc" aria-hidden="true">${L.slice(0,4).map(f=>`<div class="ss-it"><div class="ss-en">${esc(fogTxt(scT(f)))}</div><div class="ss-ru">${esc(fogTxt(f.ru))}</div></div>`).join('')}</div>
+        <i class="ss-mist m1"></i><i class="ss-mist m2"></i>
+        <div class="ss-fogl"><b>🎬 Посмотри эпизод — фразы проявятся</b>${can?`<button class="sc-btn" data-ep="${x.i}">Смотреть эпизод ${x.i+1} →</button>`:`<span>Сначала эпизод ${x.i}</span>`}</div></section>`;}).join('')}</div>`:''}
     <div class="ss-cols">${G.map(([k,h,sub,fn])=>{const L=all.filter(fn);if(!L.length)return '';
       return `<section class="ss-col ss-${k}"><header><b>${h}</b><small>${sub} · ${L.length}</small></header>${L.map(f=>`<article class="ss-it" data-fid="${f.id}">
         <div class="ss-row"><div class="ss-en">${kwWrap(f)}</div><button class="ss-play" data-fid="${f.id}" aria-label="Послушать">${SI.play}</button></div><div class="ss-ru">${esc(f.ru)}</div>
@@ -3049,6 +3054,13 @@ function renderSceneSum(id){const s=scOf(id);if(!s)return;SCUR={id,i:0};const al
     ${kws.length?`<section class="ss-col ss-words"><header><b>Важные слова</b><small>${kws.length}</small></header><div class="ss-wl">${kws.map(x=>`<span class="ss-w" data-fid="${x.f.id}"><i class="kw" data-kw="${x.j}" tabindex="0" role="button">${esc(x.k[1]||x.k[0])}</i><small>${esc(x.k[2])}</small></span>`).join('')}</div></section>`:''}</div>`,'scsum');
   phBind(document.querySelector('.scn'),el=>{const c=el.closest('[data-fid]');return c?all.find(f=>f.id===c.dataset.fid):null;});
   $$('.ss-play').forEach(b=>b.onclick=e=>{e.stopPropagation();scClip(id,b.dataset.fid,b);});
+  $$('.ss-fog [data-ep]').forEach(b=>b.onclick=()=>{sfx('tap');renderScEp(id,+b.dataset.ep);});
+  // эпизод досмотрен с прошлого захода — дымка рассеивается над его фразами
+  {store.ssRev=store.ssRev||{};const was=store.ssRev[id]||[],now=s.parts.map((_,i)=>i).filter(i=>epSeen(s,i)),fresh=now.filter(i=>!was.includes(i));
+   if(fresh.length&&was.length+now.length&&fxOK()){const fids=new Set(s.parts.flatMap((p,i)=>fresh.includes(i)?scAct(p.ph).map(f=>f.id):[]));
+     document.querySelectorAll('.ss-it[data-fid]').forEach((el,k)=>{if(!fids.has(el.dataset.fid))return;el.classList.add('ss-reveal');el.style.setProperty('--d',(Math.min(k,12)*70)+'ms');});
+     setTimeout(()=>{sfx('unlock');haptic('light');},250);}
+   store.ssRev[id]=now;save();}
   $('#scb').onclick=()=>{if(navBack())return;sfx('tap');renderScene(id);};}
 
 /* ---- экраны сцены ---- */
@@ -3093,7 +3105,7 @@ function renderScene(id){
   $('#scgo').onclick=()=>{if(next<0&&scBossOpen(s)&&!P.boss){scBossStart(id);return;}renderScEp(id,next<0?0:next);};
   if(P.boss&&$('#scgo')){$('#scgo').insertAdjacentHTML('afterend',`<button class="sc-btn ghost" id="scdir">🎬 Режиссёрская версия${store.dirCut&&store.dirCut[id]?' ✓':''}</button>`);$('#scdir').onclick=()=>{sfx('reel');renderDirCut(id);};}
   if($('#screv'))$('#screv').onclick=()=>renderScQuiz(id,'rev');
-  if($('#scAllPh'))$('#scAllPh').onclick=()=>{sfx('tap');if(!scSeenN(scOf(id))){toast('Сначала посмотри эпизод — его фразы откроются здесь');return;}renderSceneSum(id);};
+  if($('#scAllPh'))$('#scAllPh').onclick=()=>{sfx('tap');renderSceneSum(id);};
   if($('#scKv'))$('#scKv').onclick=()=>{sfx('tap');kvSheet(id);};
   scPathBind(s);
   musBind(s);
