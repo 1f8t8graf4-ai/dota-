@@ -4673,3 +4673,7 @@ body.nofx .sc-btn.auto::before{animation-duration:var(--ms,3s)}
 .rv-go .sc-btn small{font:600 11.5px 'Golos Text',system-ui,sans-serif;opacity:.7}
 .rv-ph.same{padding:7px 10px}
 .rv-ph.same small{margin-top:3px}
+
+/* ==== 13.6 — «🔊 Слово»: играет само слово из фильма ==== */
+.kwp-b [data-x="word"].on,.hn-b [data-x="word"].on,.dm-say.on{background:var(--gold,#E9C46A)!important;color:#1a1408!important}
+.dm-say{min-width:38px;height:34px;padding:0 10px;border-radius:10px;background:rgba(255,255,255,.08);color:var(--cream,#F3EBDD);font-size:15px}

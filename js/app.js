@@ -2365,9 +2365,10 @@ function swPop(word,row,inPh,el){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=S
   w.innerHTML=hit?`${hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`
     :`<b>${esc(swNorm(word))}</b>${pf?'':`<small>Этого слова нет в словарике. Вся реплика:</small><span class="t">${esc(row&&row[3]||'')}</span>`}`;
   if(pf)w.innerHTML+=phBlock(pf);
-  w.innerHTML+=`<div class="hn-b"><button data-x="go">Дальше ${SI.play}</button>${mywBtn(s.id,word)}</div>`;
+  w.innerHTML+=`<div class="hn-b"><button data-x="go">Дальше ${SI.play}</button>${row?'<button data-x="word">🔊 Слово</button>':''}${mywBtn(s.id,word)}</div>`;
   w.onclick=e=>{e.stopPropagation();const b=e.target.closest('[data-x]');if(!b)return;
     if(b.dataset.x==='save'){const on=mywToggle(s.id,pi,word,row,hit);b.classList.toggle('on',on);b.textContent=on?'★ В моих словах':'☆ В мои слова';return;}
+    if(b.dataset.x==='word'&&row){wordPlay(s.id,word,row[0],row[1],b);return;}
     w.remove();sfx('tap');
     if(b.dataset.x==='slow'&&row&&SV){const rt=SV.playbackRate,p=scOf(SCUR.id).parts[SCUR.i||0];SV.playbackRate=.75;scPlay(row[0]-0.1,row[1]+0.1,()=>{if(SV)SV.playbackRate=rt;});return;}
     if(b.dataset.x==='re'&&row&&SV){SV.currentTime=Math.max(0,row[0]-0.1);}if(SV){const p=SV.play();if(p&&p.catch)p.catch(()=>{});}};
@@ -2417,6 +2418,7 @@ function kwPop(){if(KWP)return KWP;const dim=document.createElement('div');dim.c
       const row=v.row||(s0&&p0?(s0.subs.find(r=>r[0]>=p0.a-0.3&&r[0]<p0.b&&phNorm(r[s0.lang==='de'?4:2]).includes(phNorm(v.word)))||[f0.a,f0.b,f0.en,f0.ru,f0.de]):null);
       const on=mywToggle(v.sid,f0?f0.pi||0:(v.pi||0),v.word,row,{ru:v.ru});b.classList.toggle('on',on);b.textContent=on?'★ В моих словах':'☆ В мои слова';return;}
     if(b.dataset.x==='hear'&&KWP._sv&&KWP._sv.f){const v=KWP._sv;scClip(v.sid,v.f.id,b);return;}
+    if(b.dataset.x==='word'&&KWP._sv){const v=KWP._sv,r=v.row||(v.f?[v.f.a,v.f.b]:null);if(r){sfx('tap');wordPlay(v.sid,v.say||v.word,r[0],r[1],b);}return;}
     if(b.dataset.x==='ok')kwHide(0);});
   document.addEventListener('click',e=>{if(KWP&&KWP.classList.contains('on')&&!e.target.closest('.kw-pop,.kw,.sw'))kwHide(0);});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&KWP&&KWP.classList.contains('on'))kwHide(0);});
@@ -2426,7 +2428,8 @@ function kwPop(){if(KWP)return KWP;const dim=document.createElement('div');dim.c
 function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._resume=null;P.classList.toggle('in-v',!!(el&&el.closest&&el.closest('.sc-v')));
   // настоящий полный экран (браузер на ПК): поверх него видно только то, что внутри — переносим карточку туда
   {const fse=document.fullscreenElement||document.webkitFullscreenElement,host=fse&&el&&fse.contains(el)?fse:document.body;if(P.parentNode!==host){host.appendChild(P._dim);host.appendChild(P);}}
-  P.innerHTML=html+`<div class="kwp-b">${sv&&sv.sid&&sv.ru?mywBtn(sv.sid,sv.word):''}${sv&&sv.f?`<button data-x="hear">▶ Фраза</button>`:''}<button data-x="ok">Понятно</button></div>`;
+  const canW=sv&&sv.sid&&(sv.row||sv.f);
+  P.innerHTML=html+`<div class="kwp-b">${sv&&sv.sid&&sv.ru?mywBtn(sv.sid,sv.word):''}${canW?`<button data-x="word">🔊 ${isPhr(sv.say||sv.word)?'Выражение':'Слово'}</button>`:''}${sv&&sv.f?`<button data-x="hear">▶ Фраза</button>`:''}<button data-x="ok">Понятно</button></div>`;
   $$('.kw.on,.sw.on').forEach(x=>x.classList.remove('on'));el.classList.add('on');
   const sheet=!matchMedia('(hover:hover)').matches||window.innerWidth<640;
   P.classList.toggle('sheet',sheet);P.classList.toggle('pin',!!pin||sheet);P.style.left=P.style.top='';
@@ -2441,7 +2444,7 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._res
     // 11.2: шторка снизу не должна закрывать нажатое слово — подкручиваем страницу
     const top=window.innerHeight-P.getBoundingClientRect().height;if(r.bottom>top-12&&!el.closest('.sc-pfs'))window.scrollBy({top:r.bottom-top+28,behavior:'smooth'});}
   haptic('sel');}
-function kwShow(el,f,pin){const k=kwOf(f)[+el.dataset.kw];if(!k)return;popAt(el,kwCardHTML(k),{sid:f.sid||(SCUR&&SCUR.id),f,word:k[1]||k[0],ru:k[2]},pin);}
+function kwShow(el,f,pin){const k=kwOf(f)[+el.dataset.kw];if(!k)return;popAt(el,kwCardHTML(k),{sid:f.sid||(SCUR&&SCUR.id),f,word:k[1]||k[0],say:el.textContent||k[0],ru:k[2]},pin);}
 function wordShow(el,f,pin){const sid=(f&&f.sid)||(SCUR&&SCUR.id);if(!sid)return;const w=el.textContent,hit=swFind(sid,f?f.pi||0:0,w),id=f?phIdiom(f):null,inId=id&&idHit(id,w);
   const html=`<span class="kwp-k">Слово</span><b class="kwp-w">${esc(swNorm(w))}</b><span class="kwp-t">${hit?esc(hit.ru):'перевода нет в словарике'}</span>
     ${inId?`<div class="kwp-use"><em>Тут это часть выражения</em><span><b>${esc(id.head)}</b> — ${esc(id.mean)}</span></div>`:''}
@@ -2501,9 +2504,10 @@ function linePop(el,row){const s=scOf(SCUR.id),pi=SCUR.i||0,word=el.textContent,
   let f=null;for(const p of s.parts)for(const x of p.ph){const id=phIdiom(x);if(id&&phNorm(row[2]).includes(phNorm(x.en))&&idHit(id,word))f=x;}
   const o=document.querySelector('.ln-pop');if(o)o.remove();const w=document.createElement('div');w.className='ln-pop';
   w.innerHTML=`<div class="lp-card">${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b>${hit?`<span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`:(f?'':`<small>Этого слова нет в словарике. Вся реплика: ${esc(row[3])}</small>`)}${f?phBlock(f):''}
-    <div class="hn-b"><button data-x="hear">▶ Услышать</button>${mywBtn(s.id,word)}<button data-x="ok">Понятно</button></div></div>`;
+    <div class="hn-b"><button data-x="word">🔊 Слово</button><button data-x="hear">▶ Реплика</button>${mywBtn(s.id,word)}<button data-x="ok">Понятно</button></div></div>`;
   w.onclick=e=>{const b=e.target.closest('[data-x]');if(e.target===w||(b&&b.dataset.x==='ok')){w.remove();return;}
     if(b&&b.dataset.x==='save'){const on=mywToggle(s.id,pi,word,row,hit);b.classList.toggle('on',on);b.textContent=on?'★ В моих словах':'☆ В мои слова';return;}
+    if(b&&b.dataset.x==='word'){sfx('tap');wordPlay(s.id,word,row[0],row[1],b);return;}
     if(b&&b.dataset.x==='hear'){const p=s.parts[pi];w.remove();window.scrollTo({top:0,behavior:'smooth'});const ov=$('#scvo');if(ov)ov.style.display='none';scPlay(row[0]-p.a-0.1,row[1]-p.a+0.2,()=>{if(ov)ov.style.display='';});}};
   document.body.appendChild(w);haptic('sel');}
 function lineWords(s,p){const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b);
@@ -2558,6 +2562,22 @@ function renderWordQuiz(id,pi){const s=scOf(id),p=s.parts[pi],d=swData(id,pi);if
     $('#swa').onclick=()=>renderWordQuiz(id,pi);$('#swb').onclick=()=>renderScEp(id,pi);}
   show();}
 // кусок эпизода звуком (для «какое слово прозвучало»)
+// 13.6: «🔊 Слово» — играет само слово, а не всю реплику. Время каждого слова — scenes/<id>/wt.json (распознано по эпизодам);
+// выражение из нескольких слов — от первого до последнего. Нет файла или слово не нашлось — голос устройства.
+const WT={};
+function wtLoad(sid){if(!WT[sid]){const s=scOf(sid);WT[sid]=s?fetch(assetUrl(scKey(s,'wt.json'))).then(r=>r.ok?r.json():null).then(d=>d&&d.w||null).catch(()=>null):Promise.resolve(null);}return WT[sid];}
+const wtN=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/[^a-zà-öø-ÿ0-9']/g,'');
+const wtEq=(x,y)=>x===y||x.replace(/'s$/,'')===y.replace(/'s$/,'')||(Math.min(x.length,y.length)>=4&&(x.startsWith(y)||y.startsWith(x))&&Math.abs(x.length-y.length)<=3);
+async function wordPlay(sid,say,a,b,btn){const s=scOf(sid);if(!s)return false;const T=String(say||'').split(/\s+/).map(wtN).filter(Boolean);if(!T.length)return false;
+  if(btn)btn.classList.add('on');const W=await wtLoad(sid);let hit=null;
+  if(W){const C=W.filter(w=>w[0]>=a-0.8&&w[0]<=b+0.8);
+    for(let k=0;k<C.length&&!hit;k++){if(!wtEq(C[k][2],T[0]))continue;if(T.length===1){hit=[C[k][0],C[k][1]];break;}
+      for(let j=k+1;j<Math.min(C.length,k+T.length+3);j++)if(wtEq(C[j][2],T[T.length-1])){hit=[C[k][0],C[j][1]];break;}}}
+  if(hit){const pi=s.parts.findIndex(p=>hit[0]>=p.a-0.05&&hit[0]<p.b+0.05);
+    if(pi>=0){const p=s.parts[pi];playSeg(assetUrl(scEpKey(s,pi,'mp4')),Math.max(0,hit[0]-p.a-0.07),hit[1]-p.a+0.12,btn);return true;}}
+  if(btn)setTimeout(()=>btn.classList.remove('on'),900);
+  try{const u=new SpeechSynthesisUtterance(say);u.lang=s.lang==='de'?'de-DE':'en-US';u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}
+  return false;}
 function playSeg(src,a,b,btn){if(!SCLIP){SCLIP=document.createElement('video');SCLIP.playsInline=true;SCLIP.setAttribute('playsinline','');SCLIP.preload='auto';SCLIP.style.display='none';document.body.appendChild(SCLIP);}
   clearInterval(SCLIP._t);if(btn)btn.classList.add('on');if(SCLIP.dataset.src!==src){SCLIP.src=src;SCLIP.dataset.src=src;}
   const go=()=>{try{SCLIP.currentTime=Math.max(0,a);}catch(e){}const pr=SCLIP.play();if(pr&&pr.catch)pr.catch(()=>{});SCLIP._t=setInterval(()=>{if(SCLIP.currentTime>=b||SCLIP.ended){SCLIP.pause();clearInterval(SCLIP._t);if(btn)btn.classList.remove('on');}},40);};
@@ -3769,7 +3789,7 @@ function dxMy(box){const L=mywAll(),tagsOf=x=>[...(x.tags||[]),x.own?'добав
   const card=(x,i)=>{const s=scOf(x.sid),soon=x.due&&x.due>Date.now();
     return `<div class="dm" style="--d:${i}"><div class="dm-h"><b>${esc(x.w)}</b><span class="dm-st">${'●'.repeat(Math.min(5,x.st||0))}${'○'.repeat(Math.max(0,5-(x.st||0)))}</span><button class="dm-del" data-k="${esc(x.k)}" aria-label="Убрать">${ui('close')}</button></div>${x.ru?`<span class="dm-ru">${esc(x.ru)}</span>`:''}
       ${x.line?`<div class="dm-line">${esc(x.line)}</div>`:''}${(x.tags||[]).length?`<div class="dm-tags">${x.tags.map(t=>`<i>#${esc(t)}</i>`).join('')}</div>`:''}
-      <div class="dm-acts">${s?`<button class="dm-go" data-s="${x.sid}" data-i="${x.pi}" data-a="${x.a}">${SI.play} В сцене</button>`:''}${x.ru&&soon?`<button class="dm-rev" data-k="${esc(x.k)}">🔁 В проверку</button>`:x.ru?'<span class="dm-due">в проверке</span>':''}</div></div>`;};
+      <div class="dm-acts">${s&&x.a?`<button class="dm-say" data-s="${x.sid}" data-a="${x.a}" data-w="${esc(x.w)}" aria-label="Послушать слово">🔊</button>`:''}${s?`<button class="dm-go" data-s="${x.sid}" data-i="${x.pi}" data-a="${x.a}">${SI.play} В сцене</button>`:''}${x.ru&&soon?`<button class="dm-rev" data-k="${esc(x.k)}">🔁 В проверку</button>`:x.ru?'<span class="dm-due">в проверке</span>':''}</div></div>`;};
   box.innerHTML=`<div class="dm-book"><div class="dm-tabs"><button data-mt="rep" class="${DX.mytab!=='lrn'?'on':''}">Повторить <i>${rep.length}</i></button><button data-mt="lrn" class="${DX.mytab==='lrn'?'on':''}">Выучено <i>${lrn.length}</i></button></div>
       <div class="dm-tools"><input class="dx-q" id="dxQ" placeholder="🔍 Найти в моих словах" value="${esc(DX.q)}" autocomplete="off"><button class="dm-addb" id="dmAddB">＋ Своё</button></div>
       <form class="dx-add" id="dxAdd" autocomplete="off" hidden><div class="dx-addr"><input name="w" placeholder="Слово или фраза (англ.)" required maxlength="60"><input name="ru" placeholder="Перевод" maxlength="80"></div>
@@ -3789,6 +3809,7 @@ function dxMy(box){const L=mywAll(),tagsOf=x=>[...(x.tags||[]),x.own?'добав
   if($('#dxTrain'))$('#dxTrain').onclick=()=>{sfx('tap');renderMyWordsQuiz(V);};
   box.querySelectorAll('.dm-del').forEach(b=>b.onclick=()=>{mywDel(b.dataset.k);save();sfx('tap');re();});
   box.querySelectorAll('.dm-rev').forEach(b=>b.onclick=()=>{const it=store.myw[b.dataset.k];if(!it)return;it.due=Date.now()-1;save();sfx('good');haptic('ok');toast('🔁 Слово в сегодняшнем повторении');re();});
+  box.querySelectorAll('.dm-say').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');const s0=scOf(b.dataset.s),a=+b.dataset.a,r=s0&&s0.subs.find(z=>Math.abs(z[0]-a)<0.05);wordPlay(b.dataset.s,b.dataset.w,a,r?r[1]:a+6,b);});
   box.querySelectorAll('.dm-go').forEach(b=>b.onclick=()=>{sfx('tap');const x=store.myw[b.closest('.dm').querySelector('.dm-del').dataset.k];momOpen(b.dataset.s,+b.dataset.i,+b.dataset.a,x&&x.w);});
   box.querySelectorAll('.dm').forEach((b,i)=>b.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:280,delay:Math.min(i,12)*30,fill:'backwards'}));}
 function renderMyWords(){DX.seg='my';renderTab('dict');}
