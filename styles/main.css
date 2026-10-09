@@ -4196,3 +4196,13 @@ body[data-scn="studio"]{--scbg:#0b0a0b;--sa:#FF5A4E;--sa2:#F3EBDD;--sat:rgba(255
 /* ==== 13.0.2 — просмотр фона: картинка не той ориентации (вертикальный постер на ПК) — целиком на размытой подложке ==== */
 .bgvw-m.still.fit{animation:none}
 .bgvw-m.still.fit::after{content:"";position:absolute;inset:0;background:inherit;background-size:contain;background-position:center;z-index:1}
+
+/* ==== 13.1 — сцены 18+: плашка на карточке и вопрос о возрасте ==== */
+.kp-age{position:absolute;left:10px;top:10px;z-index:4;padding:3px 8px;border-radius:99px;background:#C8102E;color:#fff;font:800 11px 'Golos Text',sans-serif;letter-spacing:.02em;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.gatebox.age{background:var(--surface,#15171d)!important;box-shadow:0 30px 60px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.08)!important;padding:22px 18px 16px!important;border-radius:22px;text-align:center;display:flex;flex-direction:column;gap:10px}
+.gatebox.age .age-b{align-self:center;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:#C8102E;color:#fff;font:800 20px 'Golos Text',sans-serif;font-style:normal;box-shadow:0 0 0 4px rgba(200,16,46,.25)}
+.gatebox.age b{font:700 19px 'Playfair Display',Georgia,serif;color:#F3EBDD}
+.gatebox.age p{margin:0 0 4px;color:rgba(243,235,221,.72);font:400 14px/1.45 'Golos Text',sans-serif}
+.gatebox.age .sc-btn{width:100%;margin:0}
+.gatebox.age [data-y]{background:var(--gold,#E9C46A)!important;color:#15120c!important;font-weight:800}
+.gatebox.age [data-close]{background:transparent!important;color:rgba(243,235,221,.7)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)!important}

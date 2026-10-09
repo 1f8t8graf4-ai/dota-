@@ -1537,7 +1537,8 @@ function renderSettings(){
       <div class="stack">${row('hideLearned','Убирать выученные слова',`Слово, на которое ты ${LEARN_AT} раза ответил правильно, больше не попадается в обычных играх. Оно вернётся в «Повторение» через 3, 7, 21 и 60 дней.`)}
       ${row('tts','Озвучка слов','Голос устройства читает слова и фразы. На некоторых телефонах звучит как робот, поэтому по умолчанию выключено.')}
       ${row('auto','Автопереход после верного ответа','Выключено: ты спокойно читаешь сноску и сам жмёшь «Дальше».')}
-      ${row('bg3d','3D-фон вместо фото','По умолчанию фоном — кадр из фильма. Можно включить нарисованную 3D-сцену.')}</div>
+      ${row('bg3d','3D-фон вместо фото','По умолчанию фоном — кадр из фильма. Можно включить нарисованную 3D-сцену.')}
+      ${row('age18','Показывать сцены 18+','Откровенные интервью: секс, порно, таблетки. Включая, подтверждаешь, что тебе есть 18.')}</div>
       <p class="hint-line" style="margin-top:12px">Как смотреть сцены</p>
       ${segCtl('scPause',[['on','⏸ С паузами'],['off','▶ Без пауз']],scPauseOn()?'on':'off')}
       <p class="hint-line" style="margin-top:12px">Уровень английского в кино</p>
@@ -2327,7 +2328,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.0.2';
+const APP_V='13.1.0';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2789,7 +2790,7 @@ function scRateHTML(s){if(!s.lvl&&!s.use)return '';
   return `<div class="sc-rate">${s.lvl?`<div><span>Сложность на слух</span>${scDots(s.lvl)}<small>${esc(s.lvlWhy||'')}</small></div>`:''}${s.use?`<div><span>Польза в жизни</span>${scDots(s.use)}<small>${esc(s.useWhy||'')}</small></div>`:''}</div>`;}
 function kinoCard(s){const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
   const lk=!scOpen(s);
-  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}${lk?' locked':''}" data-sc="${s.id}">${lk?`<span class="kp-lock">🔒 ${ui('coin')} ${fmt(SC_PRICE(s))}</span>`:''}${s.lang==='de'?`<span class="kp-lang">${FLAG.de} на немецком</span>`:''}<span class="kp-img" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
+  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}${lk?' locked':''}" data-sc="${s.id}">${lk?`<span class="kp-lock">🔒 ${ui('coin')} ${fmt(SC_PRICE(s))}</span>`:''}${s.lang==='de'?`<span class="kp-lang">${FLAG.de} на немецком</span>`:''}${s.age?`<span class="kp-age">18+</span>`:''}<span class="kp-img" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
     <span class="kp-t"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${s.parts.length} ${plural(s.parts.length,['эпизод','эпизода','эпизодов'])}${d?` · пройдено ${d}`:''}</small>
     ${s.lvl?`<span class="kp-rate"><i>сложность ${scDots(s.lvl)}</i><i>польза ${scDots(s.use||0)}</i></span>`:''}
     <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%\"></i></span></span></button>`;}
@@ -3746,6 +3747,7 @@ function kvLobby(){const R=KV.room,s=scOf(R.sid);
   $('#kvX').onclick=()=>kvLeave();}
 async function kvJoin(code){try{const r=await kvNet({a:'state',code});if(!r.ok){kvErr(r);renderHome();return;}
     const R=r.v,s=scOf(R.sid);if(!s){toast('Этой сцены нет в твоей версии приложения');renderHome();return;}
+    if(ageLock(s)){renderHome();ageAsk(()=>kvJoin(code));return;}
     const me=R.A&&R.A.id===kvUid()?'A':R.B&&R.B.id===kvUid()?'B':null;
     if(me){KV={code,role:me,room:R,k:0,t0:0};kvApply(R);kvPoll();return;}
     if(R.B){toast('В этой комнате уже двое');renderHome();return;}
@@ -5329,7 +5331,16 @@ const FLAG_SECTIONS=[
 const FKEY='dota_flags_v1';
 let FLAGS={},FLAG_ADMIN=false,FLAG_RAW=null,FLAG_ME=null;
 try{const c=JSON.parse(localStorage.getItem(FKEY)||'{}');FLAGS=c.flags||{};FLAG_ADMIN=!!c.admin;}catch(e){}
-const flagOf=k=>FLAG_ADMIN?'on':(FLAGS[k]||'on');
+const flagRaw=k=>FLAG_ADMIN?'on':(FLAGS[k]||'on');
+// 13.1: сцены 18+ (поле age у сцены). Пока игрок не подтвердил возраст — для всего приложения они «скрыты» (словарь, поиск,
+// «Фраза дня», уроки, коллекция, полки Главной), а в Кинозале и на странице фильма видна карточка с плашкой «18+» и вопросом о возрасте.
+const ageLock=s=>!!(s&&s.age)&&!store.age18&&!FLAG_ADMIN;
+const flagOf=k=>{const f=flagRaw(k);return f!=='hide'&&k.startsWith('scene-')&&ageLock(scOf(k.slice(6)))?'hide':f;};
+function ageAsk(ok){sfx('tap');haptic('medium');document.querySelectorAll('.gatewrap.agew').forEach(x=>x.remove());
+  const w=document.createElement('div');w.className='gatewrap agew';
+  w.innerHTML=`<div class="gatebox age"><i class="age-b">18+</i><b>Только для взрослых</b><p>Тут откровенный разговор: секс, порно, таблетки. Фразы живые и полезные, но тема — строго 18+.</p><button class="sc-btn" data-y>Мне есть 18</button><button class="sc-btn ghost" data-close>Нет, назад</button></div>`;
+  document.body.appendChild(w);const close=()=>{w.classList.add('out');setTimeout(()=>w.remove(),220);};
+  w.onclick=e=>{if(e.target.closest('[data-y]')){store.age18=true;save();sfx('good');close();if(ok)ok();return;}if(e.target===w||e.target.closest('[data-close]'))close();};}
 const FLAG_TXT={maint:'Технические работы',dev:'В разработке',hide:'Скрыт'};
 async function flagsCall(body){
   if(!TG||!TG.initData)return null;
@@ -5370,15 +5381,18 @@ function flagMark(el,k,title){const st=flagOf(k);if(st==='hide'){el.style.displa
 const flagEpKey=(id,i)=>'ep-'+id+'-'+i;
 // проверка перед входом в сцену или эпизод (ловит и кнопки «Продолжить», и ссылки с главной)
 function scGate(id,i){const s=scOf(id);if(!s)return true;
+  if(ageLock(s)){ageAsk(()=>renderScene(id));return true;}
   const ks=['all','kino','scene-'+id].concat(i==null?[]:[flagEpKey(id,i)]);
   for(const k of ks)if(flagOf(k)!=='on'){if(flagOf(k)==='hide'){toast('Недоступно');return true;}showGate(k,k.startsWith('ep-')?s.title+' · '+s.parts[i].t:s.title);return true;}
   return false;}
 function applyFlagsUI(){
   const mark=flagMark;
   for(const sel in FLAG_BTNS){const el=$(sel);if(el){const t=(el.querySelector('b')||{}).textContent||'';mark(el,FLAG_BTNS[sel],t);}}
-  $$('[data-sc]').forEach(el=>{const id=el.dataset.sc,k=flagOf('kino')!=='on'?'kino':'scene-'+id;const t=(el.querySelector('b')||{}).textContent||'';mark(el,k,t);});
+  $$('[data-sc]').forEach(el=>{const id=el.dataset.sc,k=flagOf('kino')!=='on'?'kino':'scene-'+id;const t=(el.querySelector('b')||{}).textContent||'';
+    if(k!=='kino'&&flagRaw(k)==='on'&&ageLock(scOf(id))){el.style.display='';return;}   // 18+: карточка видна, вход — через вопрос о возрасте
+    mark(el,k,t);});
   // сериал/фильм целиком прячется, если скрыты все его сцены; скрытые вкладки — без кнопки внизу
-  $$('[data-show]').forEach(el=>{const L=SCENES.filter(s=>s.show===el.dataset.show);el.style.display=L.length&&L.every(s=>flagOf('scene-'+s.id)==='hide')?'none':'';});
+  $$('[data-show]').forEach(el=>{const L=SCENES.filter(s=>s.show===el.dataset.show);el.style.display=L.length&&L.every(s=>flagRaw('scene-'+s.id)==='hide')?'none':'';});
   ['kino','games'].forEach(k=>$$(`[data-tab="${k}"],[data-nav="${k}"]`).forEach(el=>el.style.display=flagOf(k)==='hide'?'none':''));
 }
 /* ---- админ-панель: дерево «вкладка → раздел → сцена → эпизод» ---- */
