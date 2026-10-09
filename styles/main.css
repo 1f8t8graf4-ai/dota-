@@ -4192,3 +4192,7 @@ body[data-scn="studio"]{--scbg:#0b0a0b;--sa:#FF5A4E;--sa2:#F3EBDD;--sat:rgba(255
 .bgvw-set{min-width:250px;padding:14px 22px;border:0;border-radius:99px;background:#E9C46A;color:#1a1408;font:800 15px 'Golos Text',sans-serif;box-shadow:0 8px 24px -8px rgba(0,0,0,.6)}
 .bgvw-set.ghost{background:rgba(255,255,255,.16);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .bgvw-set{width:auto;max-width:360px}
+
+/* ==== 13.0.2 — просмотр фона: картинка не той ориентации (вертикальный постер на ПК) — целиком на размытой подложке ==== */
+.bgvw-m.still.fit{animation:none}
+.bgvw-m.still.fit::after{content:"";position:absolute;inset:0;background:inherit;background-size:contain;background-position:center;z-index:1}

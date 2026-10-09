@@ -238,6 +238,12 @@ function initTG(){
   ['safeAreaChanged','contentSafeAreaChanged','fullscreenChanged','viewportChanged'].forEach(ev=>{try{TG.onEvent(ev,setInsets);}catch(e){}});
   try{TG.BackButton.onClick(onBack);}catch(e){}
   applyFullscreen();setTimeout(applyFullscreen,500);
+  // 13.0.2: по ссылке (дуэль, шпион, турнир) Telegram открывает приложение на полэкрана, а ранний expand() iOS может
+  // проглотить, пока шторка выезжает. Первые 5 с дожимаем: повторы + если окно встало не развёрнутым — разворачиваем.
+  const T0=Date.now(),exp=()=>{try{if(!TG.isExpanded)TG.expand();}catch(e){}};
+  [150,400,900,1600,2600].forEach(t=>setTimeout(exp,t));
+  try{TG.onEvent('viewportChanged',e=>{if(Date.now()-T0<5000&&(!e||e.isStateStable))exp();});}catch(e){}
+  try{TG.onEvent('activated',exp);}catch(e){}
   document.addEventListener('pointerdown',function once(){document.removeEventListener('pointerdown',once,true);if(store.full!==false&&canFull()&&!TG.isFullscreen)applyFullscreen();},true);
   cloudSync();
 }
@@ -2321,7 +2327,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.0.1';
+const APP_V='13.0.2';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2747,7 +2753,7 @@ function scSave(){const s=JSON.stringify(SC);try{localStorage.setItem(SCK,s);}ca
 // 12.1: облачный прогресс сцен сливается в cloudSync() (вместе с store, M, RV)
 const scFmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
 // пассивные фразы (passive:true) — только для понимания: в тесты, повторение и счёт «выучено» не идут
-const scAct=ph=>{const a=ph.filter(f=>!f.passive);return a.length>=2?a:ph;};
+const scAct=ph=>{const a=ph.filter(f=>!f.passive);return a.length?a:ph;};   // 13.0.2: «только понять» не идут в проверку, даже если активная фраза в эпизоде одна (Бункер, эп. 1)
 const scLearned=s=>s.parts.flatMap(p=>scAct(p.ph)).filter(f=>(scP(s.id).m[f.id]||0)>=3).length;
 const scTotal=s=>s.parts.reduce((a,p)=>a+scAct(p.ph).length,0);
 // «держится надолго»: прошла 3 шага повторения (7+ дней) или весь круг до конца
@@ -4323,6 +4329,7 @@ function bgView(k){const L=bgKeys().map(bgInfo).filter(b=>b&&b.got);let i=L.find
   document.body.appendChild(o);const m=o.querySelector('.bgvw-m');let swiped=false;
   const kill=()=>o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});
   const show=()=>{const b=L[i];kill();m.innerHTML='';m.className='bgvw-m'+(b.vid.length?'':' still');m.style.backgroundImage=b.img.map(u=>`url('${u}')`).join(',');
+    if(!b.vid.length&&b.img[0]){const im=new Image();im.onload=()=>m.classList.toggle('fit',(im.naturalWidth>im.naturalHeight)!==(innerWidth>innerHeight));im.src=b.img[0];}   // 13.0.2: вертикальный постер на ПК — целиком на размытой подложке
     if(b.vid.length){const v=bgVid(b.vid);if(v){v.addEventListener('loadedmetadata',()=>{m.classList.toggle('fit',(v.videoWidth>v.videoHeight)!==(innerWidth>innerHeight));});m.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
     o.querySelector('.bgvw-t b').textContent=b.name;o.querySelector('.bgvw-t small').textContent=b.sub;
     const on=store.appBg===b.k,st=o.querySelector('.bgvw-set');st.textContent=on?'✓ Стоит на Главной · убрать':'Поставить на Главную';st.classList.toggle('ghost',on);};
@@ -5472,10 +5479,14 @@ function renderAdmin(){
 setTimeout(flagsRefresh,400);
 /* ================= главная: кино в центре, игры ниже ================= */
 function continueScene(){
+  // 13.0.2: сцена пройдена целиком — предлагаем следующую непройденную, а не «Продолжить» уже пройденное
+  const ok=x=>x.kind!=='clip'&&flagOf('scene-'+x.id)==='on'&&(scL()==='de'?true:x.lang!=='de');
+  const todo=x=>{const P=scP(x.id);return x.parts.findIndex((p,k)=>!P.done.includes(k));};
+  const list=SCENES.filter(ok).sort((a,b)=>(a.lvl||3)-(b.lvl||3)),nxt=()=>list.find(x=>todo(x)>=0);
   const L=store.scLast,s=L&&scOf(L.id);
-  if(s){const P=scP(s.id);let i=Math.min(L.i,s.parts.length-1);if(P.done.includes(i)){const nx=s.parts.findIndex((p,k)=>!P.done.includes(k));if(nx>=0)i=nx;}return {s,i,fresh:false};}
-  const easy=SCENES.filter(x=>x.kind!=='clip'&&flagOf('scene-'+x.id)==='on'&&(scL()==='de'?true:x.lang!=='de')).sort((a,b)=>(a.lvl||3)-(b.lvl||3))[0]||SCENES[0];
-  return {s:easy,i:0,fresh:true};
+  if(s){const P=scP(s.id);let i=Math.min(L.i,s.parts.length-1);if(P.done.includes(i)){const k=todo(s);if(k>=0)i=k;else{const n=nxt();if(n)return {s:n,i:todo(n),next:true};}}return {s,i,fresh:false};}
+  const easy=nxt()||list[0]||SCENES[0];
+  return {s:easy,i:Math.max(0,todo(easy)),fresh:!scP(easy.id).done.length};
 }
 // сцена для урока: где больше всего невыученных фраз из просмотренных эпизодов
 function scLessonScene(){
@@ -5504,7 +5515,7 @@ function learnTabHTML(){
     :{id:'hNext',k:'Дальше',b:`Эпизод ${c.i+1} · ${esc(p.t)}`,s:esc(s.title)};
   return `<div class="home">${headHTML()}
     <button class="hcont ${s.theme} anim" id="hCont" data-sc="${s.id}"><span class="hc-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="hc-grad"></span>
-      <span class="hc-t"><em>${c.fresh?'Начни отсюда':'Продолжить смотреть'}</em><b>${esc(s.title)}</b><small>Эпизод ${c.i+1} · ${esc(p.t)}</small>
+      <span class="hc-t"><em>${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'Продолжить смотреть'}</em><b>${esc(s.title)}</b><small>Эпизод ${c.i+1} · ${esc(p.t)}</small>
         <span class="hc-bar"><i style="width:${Math.round(L/T*100)}%"></i></span><small class="hc-prog">выучено фраз ${L} из ${T}</small></span>
       <span class="hc-play">${SI.play}</span></button>
     <section class="htoday anim">
