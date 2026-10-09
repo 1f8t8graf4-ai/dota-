@@ -2,7 +2,7 @@
 import os,json
 OUT='фоны-промты.md'   # запуск из корня dota-: python3 tools/bg_prompts.py
 R='../scenes'   # клон репо scenes рядом — для отметок ✅/❌
-IMG="Vertical 9:16, photorealistic cinematic film still, shot on 35mm film, subtle film grain, low-key moody lighting, deep shadows, the main subject in the center of the frame, calm darker areas at the top and bottom, no people, no faces, no hands, no text, no letters, no numbers, no logos, no watermark."
+IMG="Vertical 9:16, photorealistic cinematic still, full-bleed image edge to edge with no borders, no film frame, no sprocket holes, no timecode, natural subtle grain, low-key moody lighting, deep shadows, the main subject in the center of the frame, calm darker areas at the top and bottom, no people, no faces, no hands, no text, no letters, no numbers, no logos, no watermark."
 EDIT="Edit this exact image. Keep the camera angle, framing, composition, every object and its position, the colors and the lighting exactly the same. Change only this: "
 MOVE="Locked-off static camera: no camera movement, no zoom, no pan. Only this gentle natural motion, slow and realistic. Nothing enters or leaves the frame, no new objects, no people, no cuts. Start and end exactly on the given first and last frames."
 
