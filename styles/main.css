@@ -4860,3 +4860,44 @@ body .dx .dx-flt{background:linear-gradient(180deg,#17110b,#0d0a07);box-shadow:i
 body .dx .dx-crumb small,body .dx .dx-crumb em{color:var(--g2)}
 body .dx .dx-crumb b{font-family:'Playfair Display',Georgia,serif;color:#FFF3D1}
 .dc .dc-gem{top:auto;right:12px;bottom:12px;width:13px;height:13px}
+
+/* ==== 13.6 — магазин: редкость товара (плитки) и открытие покупки как карта в HS ==== */
+.shp .shp-tier{position:absolute;left:8px;top:8px;z-index:3;padding:3px 8px;border-radius:99px;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:700 9.5px 'Golos Text',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--tc);font-style:normal;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tc) 55%,transparent)}
+.shp .shp-pv{position:relative}
+.shp.tr-rare{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tc) 40%,transparent)}
+.shp.tr-epic{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tc) 55%,transparent),0 0 24px -10px var(--tc)}
+.shp.tr-leg{border:1.5px solid transparent;background:linear-gradient(#141210,#141210) padding-box,conic-gradient(from var(--ang,0deg),#ffad2e,#fff3c4,#ff6b3d,#ffd36e,#ffad2e) border-box;animation:legSpin 5s linear infinite;box-shadow:0 0 30px -12px #ffad2e}
+body.nofx .shp.tr-leg{animation:none}
+/* открытие */
+.srv{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;opacity:0;cursor:pointer;-webkit-tap-highlight-color:transparent;perspective:1100px;overflow:hidden;font-family:'Golos Text',system-ui,sans-serif}
+.srv-bg{position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 45%,color-mix(in srgb,var(--tc) 22%,#0b0a0c),#050506 75%)}
+.srv-rays{position:absolute;left:50%;top:45%;width:220vmax;height:220vmax;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--tc) 30%,transparent) 0deg 6deg,transparent 6deg 22deg);mask:radial-gradient(circle,#000 0,rgba(0,0,0,.6) 18%,transparent 48%);-webkit-mask:radial-gradient(circle,#000 0,rgba(0,0,0,.6) 18%,transparent 48%);animation:srvSpin 26s linear infinite;opacity:.55}
+.t-common .srv-rays{opacity:.18}.t-rare .srv-rays{opacity:.35}
+.t-leg .srv-rays{opacity:.8;animation-duration:14s}
+@keyframes srvSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.srv-fog{position:absolute;width:120vmax;height:60vmax;border-radius:50%;filter:blur(60px);opacity:.35;background:radial-gradient(circle,color-mix(in srgb,var(--tc) 60%,transparent),transparent 65%)}
+.srv-fog.f1{left:-40vmax;top:10%;animation:srvFog 9s ease-in-out infinite alternate}
+.srv-fog.f2{right:-40vmax;bottom:0;animation:srvFog 11s ease-in-out infinite alternate-reverse}
+@keyframes srvFog{to{transform:translate(28vmax,-6vmax) scale(1.15)}}
+.srv-glow{position:absolute;left:50%;top:45%;width:62vmin;height:62vmin;margin:-31vmin 0 0 -31vmin;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--tc) 75%,transparent),transparent 62%);opacity:.3;filter:blur(8px)}
+.srv-stage{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px;transform-style:preserve-3d}
+.srv-card{position:relative;width:min(62vw,250px);aspect-ratio:5/7;transform-style:preserve-3d;transform:translateY(70vh)}
+.srv-back,.srv-face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.srv-back{display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#2b2117,#0e0b08 70%);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--tc) 85%,#fff),inset 0 0 0 8px #0b0907,inset 0 0 0 9px color-mix(in srgb,var(--tc) 45%,transparent),0 30px 60px rgba(0,0,0,.6),0 0 40px -6px var(--tc)}
+.srv-back i{position:absolute;inset:14px;border-radius:12px;background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--tc) 18%,transparent) 0 2px,transparent 2px 10px)}
+.srv-back span{position:relative;font-size:64px;color:var(--tc);text-shadow:0 0 24px var(--tc)}
+.srv.charging .srv-back{animation:srvCharge .35s ease-in-out infinite alternate}
+@keyframes srvCharge{from{box-shadow:inset 0 0 0 2px var(--tc),inset 0 0 0 8px #0b0907,0 30px 60px rgba(0,0,0,.6),0 0 40px -6px var(--tc)}to{box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 8px #0b0907,0 30px 60px rgba(0,0,0,.6),0 0 90px 6px var(--tc)}}
+.srv-face{transform:rotateY(180deg);display:flex;flex-direction:column;background:linear-gradient(180deg,#1b1713,#0d0b09);box-shadow:inset 0 0 0 2px var(--tc),0 30px 60px rgba(0,0,0,.6),0 0 60px -8px var(--tc)}
+.t-leg .srv-face{border:3px solid transparent;background:linear-gradient(#1b1713,#0d0b09) padding-box,conic-gradient(from var(--ang,0deg),#ffad2e,#fff3c4,#ff6b3d,#ffd36e,#ffad2e) border-box;animation:legSpin 3s linear infinite}
+.srv-pv{flex:1;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--tc) 25%,transparent),transparent 70%)}
+.srv-pv>*{transform:scale(1.25)}
+.srv-face b{padding:10px 12px 0;font:800 18px/1.2 'Playfair Display',Georgia,serif;color:#fff;text-align:center}
+.srv-face small{padding:4px 14px 14px;font-size:12px;line-height:1.35;color:rgba(255,255,255,.7);text-align:center}
+.srv-ttl{text-align:center;opacity:0}
+.srv-ttl em{display:inline-block;padding:5px 14px;border-radius:99px;font:800 11.5px 'Golos Text',system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;font-style:normal;color:#14100a;background:linear-gradient(180deg,#fff,color-mix(in srgb,var(--tc) 85%,#fff));box-shadow:0 0 24px -2px var(--tc)}
+.srv-ttl b{display:block;margin-top:10px;font:800 26px/1.15 'Playfair Display',Georgia,serif;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.srv-ttl span{display:block;margin-top:4px;font-size:13px;color:rgba(255,255,255,.6)}
+.srv-ring{position:absolute;left:50%;top:45%;z-index:1;width:160px;height:160px;border-radius:50%;border:3px solid var(--tc);box-shadow:0 0 30px var(--tc),inset 0 0 30px var(--tc);opacity:0;transform:translate(-50%,-50%) scale(.2);pointer-events:none}
+.srv-flash{position:absolute;inset:0;z-index:3;background:radial-gradient(circle at 50% 45%,#fff,color-mix(in srgb,var(--tc) 60%,transparent) 40%,transparent 70%);opacity:0;pointer-events:none}
+.srv-hint{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom,0px));left:0;right:0;z-index:4;text-align:center;font-size:12.5px;color:#fff;opacity:0}

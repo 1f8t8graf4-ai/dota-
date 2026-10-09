@@ -398,6 +398,7 @@ function underline(name,focus){return focus&&name.includes(focus)&&focus!==name?
 // и остановить видео эпизода, если уходим со сцены. Раньше карта/видео могли остаться висеть над новым экраном.
 function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
   document.querySelectorAll('.pk,.dx-turn,.dx-shade').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном
+  document.querySelectorAll('.srv').forEach(o=>o.remove());   // 13.6: открытие покупки
   document.querySelectorAll('.dxo,.rwo,.bgvw').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
   document.body.classList.remove('dx-open');try{if(KWP)KWP._resume=null;kwHide(0);}catch(e){}try{musDuck(false);}catch(e){}
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
@@ -6270,12 +6271,16 @@ function shopPv(cat,it){
   if(cat==='st')return `<div class="pv-st st-${it.id}"><span>${ST_ICO[it.id]||'🗡'}</span></div>`;
   if(cat==='hm')return it.s?`<div class="pv-hm" style="background-image:url('${musArt(it.s,it.m)}')"><span>♪</span></div>`:`<div class="pv-hm off"><span>🔇</span></div>`;
   return '';}
+// 13.6: редкость товара по цене — как в HS: обычное / редкое / эпическое / легендарное. Плитка и открытие покупки — по редкости.
+const SHOP_TIER=p=>p>=800?4:p>=400?3:p>0?2:1;
+const TIER_N=[null,['common','Обычное','#c9ced6'],['rare','Редкое','#3b9bff'],['epic','Эпическое','#b155ff'],['leg','Легендарное','#ffad2e']];
 function shopTile(cat,it,use){const own=shopHas(cat,it.id),on=use===it.id,g=store.gold||0,poor=!own&&g<it.p;
   const adm=own&&it.p>0&&!(store.shop&&store.shop.own&&store.shop.own[cat+':'+it.id]);   // админ: всё открыто, цену видно
   const btn=on?`<button class="shp-b on" disabled>✓ Выбрано${adm?`<small>${ui('coin')} ${it.p} · админу даром</small>`:''}</button>`:own?`<button class="shp-b use" data-use="${esc(it.id)}">Выбрать${adm?`<small>${ui('coin')} ${it.p} · админу даром</small>`:''}</button>`
     :poor?`<button class="shp-b poor" disabled>${ui('coin')} ${it.p}<small>не хватает ${it.p-g}</small></button>`:`<button class="shp-b buy" data-buy="${esc(it.id)}">${ui('coin')} ${it.p}</button>`;
   const tr=(cat==='hm'&&!it.id)||(cat==='sp'&&it.id==='off')?'':`<button class="shp-try" data-try="${esc(it.id)}" aria-label="Посмотреть">${SI.play}</button>`;
-  return `<div class="shp${on?' on':''}${own?' own':''}" data-id="${esc(it.id)}"><div class="shp-pv">${shopPv(cat,it)}${on?'<i class="shp-on">✓</i>':''}</div><div class="shp-i"><b>${esc(it.n)}</b><small>${esc(it.d)}</small></div><div class="shp-a">${tr}${btn}</div></div>`;}
+  const T=TIER_N[SHOP_TIER(it.p)];
+  return `<div class="shp${on?' on':''}${own?' own':''} tr-${T[0]}" data-id="${esc(it.id)}" style="--tc:${T[2]}"><div class="shp-pv">${shopPv(cat,it)}${on?'<i class="shp-on">✓</i>':''}${it.p?`<i class="shp-tier">${T[1]}</i>`:''}</div><div class="shp-i"><b>${esc(it.n)}</b><small>${esc(it.d)}</small></div><div class="shp-a">${tr}${btn}</div></div>`;}
 let SHPV=null,SHOP_BACK='learn';   // предпрослушка трека в магазине; вкладка, с которой пришли
 function shopBack(){sfx('tap');shopPvStop();renderTab(SHOP_BACK||'learn');}
 function shopPvStop(){if(SHPV){try{SHPV.pause();}catch(e){}SHPV=null;}}
@@ -6300,8 +6305,37 @@ function shopBuy(cat,it,btn){if(shopHas(cat,it.id))return;const g=store.gold||0;
   store.gold=g-it.p;shopS().own[cat+':'+it.id]=Date.now();shopS().use[cat]=it.id;save();shopApply();sfx('reward');haptic('ok');
   const bal=$('#shopBal');if(bal){const nb=bal.querySelector('b'),t0=performance.now(),dur=600;const tick=t=>{const k=Math.min(1,(t-t0)/dur);nb.textContent=fmt(Math.round(g-it.p*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);
     bal.animate([{transform:'scale(1)'},{transform:'scale(.9)'},{transform:'scale(1)'}],{duration:300,easing:EZ.out});}
-  const tile=btn.closest('.shp');fxAt(tile&&tile.querySelector('.shp-pv'),{n:46,v:8,pack:cat==='fx'?it.id:undefined});
-  toast(`Куплено: ${it.n}`);setTimeout(()=>shopGrid(cat),700);}
+  shopReveal(cat,it);setTimeout(()=>shopGrid(cat),700);}
+// открытие покупки: фон из лучей и тумана движется, карта рубашкой вверх вылетает снизу, зависает (у эпиков и легендарок — заряжается),
+// переворачивается со вспышкой и ударной волной, искры по редкости; тап — закрыть
+function shopReveal(cat,it){const t=SHOP_TIER(it.p),[k,name,col]=TIER_N[t];
+  if(!fxOK()){toast(`Куплено: ${it.n}`);return;}
+  document.querySelectorAll('.srv').forEach(x=>x.remove());
+  const o=document.createElement('div');o.className='srv t-'+k;o.style.setProperty('--tc',col);
+  o.innerHTML=`<div class="srv-bg"><i class="srv-rays"></i><i class="srv-fog f1"></i><i class="srv-fog f2"></i><i class="srv-glow"></i></div>
+    <div class="srv-stage"><div class="srv-card"><div class="srv-back"><i></i><span>◆</span></div><div class="srv-face"><div class="srv-pv">${shopPv(cat,it)}</div><b>${esc(it.n)}</b><small>${esc(it.d)}</small></div></div>
+      <div class="srv-ttl"><em>${name}</em><b>${esc(it.n)}</b><span>${esc(SHOP[cat]?SHOP[cat].n:'')} · уже стоит у тебя</span></div></div>
+    <i class="srv-ring"></i><i class="srv-flash"></i><div class="srv-hint">Нажми, чтобы закрыть</div>`;
+  FXROOT().appendChild(o);
+  const card=o.querySelector('.srv-card'),ttl=o.querySelector('.srv-ttl'),ring=o.querySelector('.srv-ring'),flash=o.querySelector('.srv-flash'),hint=o.querySelector('.srv-hint');
+  const charge=t>=3?(t===4?1300:800):t===2?350:0,T0=420,tFlip=T0+charge;
+  o.animate([{opacity:0},{opacity:1}],{duration:320,fill:'forwards'});
+  card.animate([{transform:'translateY(70vh) rotateX(35deg) rotateZ(-12deg) scale(.55)'},{transform:'translateY(-14px) rotateX(0) rotateZ(2deg) scale(1.02)',offset:.8},{transform:'translateY(0) rotateY(0) scale(1)'}],{duration:T0,easing:EZ.out,fill:'forwards'});
+  if(charge){sfx('tap');card.animate([{transform:'translateY(0) rotateY(0) scale(1)'},{transform:'translateY(-6px) rotateY(0) scale(1.04)',offset:.5},{transform:'translateY(0) rotateY(0) scale(1)'}],{duration:Math.min(700,charge),delay:T0,iterations:Math.max(1,Math.round(charge/700)),easing:'ease-in-out'});
+    o.querySelector('.srv-glow').animate([{opacity:.3,transform:'scale(.8)'},{opacity:1,transform:'scale(1.25)'}],{duration:charge,delay:T0,fill:'forwards',easing:'ease-in'});
+    if(t===4){o.classList.add('charging');haptic('light');setTimeout(()=>haptic('light'),T0+charge*.5);}}
+  setTimeout(()=>{if(!o.isConnected)return;o.classList.remove('charging');o.classList.add('open');sfx('reward');haptic(t>=3?'heavy':'ok');
+    card.animate([{transform:'rotateY(0) scale(1)'},{transform:'rotateY(100deg) scale(1.12)',offset:.45},{transform:'rotateY(180deg) scale(1)'}],{duration:t>=3?620:480,easing:'cubic-bezier(.3,.7,.2,1)',fill:'forwards'});
+    flash.animate([{opacity:0},{opacity:t===4?.95:t===3?.7:.45,offset:.2},{opacity:0}],{duration:t>=3?700:450,easing:'ease-out'});
+    ring.animate([{transform:'translate(-50%,-50%) scale(.2)',opacity:.95},{transform:'translate(-50%,-50%) scale(t4)'.replace('t4',t===4?'7':t===3?'5':'3.5'),opacity:0}],{duration:t>=3?900:650,easing:'cubic-bezier(.1,.7,.2,1)'});
+    if(t===4)o.animate([{transform:'translate(0,0)'},{transform:'translate(-6px,4px)'},{transform:'translate(5px,-3px)'},{transform:'translate(-3px,2px)'},{transform:'translate(0,0)'}],{duration:420,easing:'linear'});
+    const r=card.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,pack=cat==='fx'?it.id:t===4?'fire':t===3?'holo':t===2?'neon':'cine';
+    fxEmit(cx,cy,{n:t===4?90:t===3?64:t===2?40:24,v:t>=3?11:8,pack});if(t>=3)setTimeout(()=>fxEmit(cx,cy,{n:30,v:5,pack,life:90}),240);if(t===4)fxRain(46,{pack:'cine'});
+    ttl.animate([{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:500,delay:260,easing:EZ.out,fill:'forwards'});
+    hint.animate([{opacity:0},{opacity:.7}],{duration:400,delay:900,fill:'forwards'});},tFlip);
+  let gone=false;const close=()=>{if(gone)return;gone=true;o.animate([{opacity:1},{opacity:0}],{duration:260,fill:'forwards'}).onfinish=()=>o.remove();};
+  o.addEventListener('click',()=>{if(performance.now()-st<tFlip+300)return;sfx('tap');close();});const st=performance.now();
+  o._close=close;}
 function shopTry(cat,id,tile){const pv=tile&&tile.querySelector('.shp-pv');
   if(cat==='fx'){fxAt(pv,{n:54,v:8.5,pack:id});setTimeout(()=>fxAt(pv,{n:20,v:4,pack:id,life:70}),260);return;}
   if(cat==='cs'){const s=SCENES.find(x=>x.kind!=='clip'&&!x.age&&scAct(x.parts[0].ph).length>=3)||SCENES[0];scAct(s.parts[0].ph).slice(0,3).forEach(f=>DICT_NEW.push({sid:s.id,fid:f.id}));dictFly({cs:id,demo:true});return;}
