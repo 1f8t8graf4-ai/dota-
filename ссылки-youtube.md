@@ -10,24 +10,25 @@
 4. Интервью и подкасты: годится ссылка на **полный выпуск** с официального канала — плеер играет только наш кусок (с секунды по секунду).
 5. Нет официального клипа — можно взять перезалив, но пометить «перезалив»: он может исчезнуть в любой день. Брать тот, что висит давно (год+) и без зеркала, зума и рамок — такие специально прячут от Content ID, их сносят первыми.
 6. Если ничего нет — сцена остаётся только в Телеге.
+7. **Одна сцена = один клип** (решение Андрея): если наша сцена собрана из нескольких кусков, в версии для сторов играет только то, что есть в найденном клипе, — лишние эпизоды там просто не показываем. Искать по 2–4 ссылки на сцену не надо.
 
 | Сцена (id) | Что за момент | Где искать | Ссылка | Официальный или перезалив? |
 |---|---|---|---|---|
 | wolf-of-wall-street | Волк: Ханна объясняет новичку правила (ланч) | Movieclips / Paramount | https://youtu.be/Y4iBdIq0aaY | JoBlo Movie Clips — клип-канал киносайта |
-| wolf-swiss-bank | Волк: швейцарский банк, «Ça dépend» | Movieclips / Paramount | **нет ссылки** | |
+| wolf-swiss-bank | Волк: швейцарский банк, «Ça dépend» | Movieclips / Paramount | https://youtu.be/ndTbiDQjbiE | перезалив (Adam) |
 | sopranos-s01e01 | Сопрано S01E01: Тони у Мелфи, утки, кухня | HBO | https://youtu.be/DRtmyQQaVLQ | перезалив; только сеанс у Мелфи (утки и кухня — нет) |
 | sopranos-s06e09 | Сопрано S06E09: аттракционы и скука | HBO | https://youtu.be/NmWcbuM6csA | перезалив (CapoTube) |
-| sopranos-arc | Сопрано: нарезка S01E08, S01E01, S02E06, S02E11 | HBO — нужны 4 отдельные ссылки | **нет ссылки** | |
+| sopranos-arc | Сопрано: нарезка S01E08, S01E01, S02E06, S02E11 | HBO — один клип, где есть хоть часть нарезки (правило 7) | **нет ссылки** | может быть в 4K-нарезке Phased (ниже) |
 | sopranos-ralph | Сопрано S04E09: Ральф приходит к Тони | HBO — английская версия (если только перезалив 360p — сцена только для Телеги) | https://youtu.be/z9pklact4h4 | перезалив (Duke Loves Sopranos), английский |
 | american-psycho | Психопат: Бейтман приходит в офис | Movieclips / Lionsgate | https://youtu.be/lHJCBuRq7To | перезалив |
 | american-psycho-cards | Психопат: визитки | Movieclips / Lionsgate | https://youtu.be/6hShPRFSEpM | перезалив, 4K |
-| taxi-driver-lonely | Таксист: «одинокий человек Бога» | Movieclips / Sony | **нет ссылки** | |
+| taxi-driver-lonely | Таксист: «одинокий человек Бога» | Movieclips / Sony | https://youtu.be/TUi7RXsF1cQ | перезалив (Best of WC) |
 | taxi-driver-betsy | Таксист: Трэвис в штабе, Бетси | Movieclips (клип был оттуда) | https://youtu.be/VKE_B4jMF5Q (+ кофе: https://youtu.be/Wx8r57xCIYw) | **офиц. Movieclips**; кофе — перезалив |
 | downfall-bunker | Бункер: приказ Штайнера | Constantin Film | https://youtu.be/jjPexSrg9Y8 | перезалив; «Actual Translation» — вероятно, вшитые англ. субтитры |
 | titanic-boat | Титаник: шлюпка, Роуз прыгает обратно | 20th Century / Disney (клип был с Disney+) | https://youtu.be/d4w1JtcA48Q | **офиц. Disney+ UK**; похоже, тот же клип, что у нас |
 | breaking-bad-pilot | Во все тяжкие S01E01: рейд, «Buy the RV» | Breaking Bad (AMC / Sony) | https://youtu.be/fbOkAUnjqWA | перезалив 4K; рейд (эп. 1–2), «Buy the RV» — нет |
 | breaking-bad-gus | Во все тяжкие S02E11: Уолт у Гаса | Breaking Bad (AMC / Sony) | https://youtu.be/L6G0VxscwqE | **офиц. Breaking Bad & Better Call Saul** |
-| breaking-bad-knocks | Во все тяжкие: «I am the one who knocks» + «Where is the money?» | Breaking Bad (AMC / Sony) — 2 ссылки | https://youtu.be/hbsTkPKLwFM | перезалив; только «Where is the money?» (эп. 3) |
+| breaking-bad-knocks | Во все тяжкие: «I am the one who knocks» + «Where is the money?» | Breaking Bad (AMC / Sony) | https://youtu.be/hbsTkPKLwFM | перезалив; только «Where is the money?» (эп. 3) |
 | durov-tucker | Дуров у Такера Карлсона, 2024 | Tucker Carlson — ссылка на полный выпуск | https://youtu.be/1Ut6RouSs0w | **офиц. Tucker Carlson** |
 | clavicular-impaulsive | Клавикуляр в Impaulsive | Impaulsive — ссылка на полный выпуск | https://youtu.be/zHStoIheM7M | **офиц. IMPAULSIVE** |
 | clavicular-18 | Клавикуляр 18+ (4 куска) | Impaulsive — ссылка на выпуск, куски найду по времени | https://youtu.be/zHStoIheM7M | **офиц. IMPAULSIVE** — тот же выпуск, куски найду по времени |
@@ -56,14 +57,14 @@ Deutsch — чтобы найти **немецкий дубляж тех же с
 | Сцена | English | Искать (EN) | Deutsch | Искать (DE) | Ссылка EN | Ссылка DE |
 |---|---|---|---|---|---|---|
 | Волк — Ханна объясняет правила (ланч) (`wolf-of-wall-street`) | The Wolf of Wall Street — Mark Hanna lunch scene | wolf of wall street mcconaughey lunch scene | The Wolf of Wall Street — Mittagessen mit Mark Hanna | wolf of wall street mark hanna szene deutsch | https://youtu.be/Y4iBdIq0aaY | |
-| Волк — швейцарский банк (`wolf-swiss-bank`) | The Wolf of Wall Street — Swiss bank scene | wolf of wall street swiss bank scene | The Wolf of Wall Street — Schweizer Bank | wolf of wall street schweizer bank szene deutsch | | |
+| Волк — швейцарский банк (`wolf-swiss-bank`) | The Wolf of Wall Street — Swiss bank scene | wolf of wall street swiss bank scene | The Wolf of Wall Street — Schweizer Bank | wolf of wall street schweizer bank szene deutsch | https://youtu.be/ndTbiDQjbiE | |
 | Сопрано S01E01 — Тони у Мелфи (`sopranos-s01e01`) | The Sopranos S01E01 — Tony's first session with Dr. Melfi | sopranos pilot tony melfi first session | Die Sopranos S01E01 — Tony bei Dr. Melfi | die sopranos tony dr melfi erste sitzung deutsch | https://youtu.be/DRtmyQQaVLQ | |
 | Сопрано S06E09 — «каждый день — подарок» (`sopranos-s06e09`) | The Sopranos S06E09 «The Ride» — every day is a gift | sopranos every day is a gift melfi | Die Sopranos S06E09 — „Jeder Tag ist ein Geschenk“ | die sopranos jeder tag ist ein geschenk deutsch | https://youtu.be/NmWcbuM6csA | |
 | Сопрано — нарезка «Где моя арка?» (`sopranos-arc`) | The Sopranos — «Where's my arc?» (Christopher) | sopranos where's my arc christopher | Die Sopranos — Christopher und sein „Arc“ | die sopranos christopher arc szene deutsch | | |
 | Сопрано S04E09 — Ральф у Тони (`sopranos-ralph`) | The Sopranos S04E09 — Ralph visits Tony after his son's accident | sopranos ralph son accident tony visit | Die Sopranos S04E09 — Ralph besucht Tony nach dem Unfall seines Sohnes | die sopranos ralph tony sohn unfall deutsch | https://youtu.be/z9pklact4h4 | |
 | Психопат — Бейтман в офисе (`american-psycho`) | American Psycho — Bateman arrives at the office | american psycho bateman office morning scene | American Psycho — Bateman kommt ins Büro | american psycho büro szene deutsch | https://youtu.be/lHJCBuRq7To | |
 | Психопат — визитки (`american-psycho-cards`) | American Psycho — business card scene | american psycho business card scene | American Psycho — Visitenkarten-Szene | american psycho visitenkarten szene deutsch | https://youtu.be/6hShPRFSEpM | |
-| Таксист — «одинокий человек Бога» (`taxi-driver-lonely`) | Taxi Driver — «God's lonely man» | taxi driver god's lonely man | Taxi Driver — „Gottes einsamer Mann“ | taxi driver einsamer mann szene deutsch | | |
+| Таксист — «одинокий человек Бога» (`taxi-driver-lonely`) | Taxi Driver — «God's lonely man» | taxi driver god's lonely man | Taxi Driver — „Gottes einsamer Mann“ | taxi driver einsamer mann szene deutsch | https://youtu.be/TUi7RXsF1cQ | |
 | Таксист — Бетси, кофе и пирог (`taxi-driver-betsy`) | Taxi Driver — Travis asks Betsy out (campaign office) | taxi driver travis betsy campaign office coffee | Taxi Driver — Travis lädt Betsy zum Kaffee ein | taxi driver travis betsy kaffee szene deutsch | https://youtu.be/VKE_B4jMF5Q | |
 | Бункер — приказ Штайнера (`downfall-bunker`) | Downfall — Hitler's bunker meltdown (Steiner) | downfall bunker scene steiner | Der Untergang — Bunkerszene, Steiners Angriff (Original!) | der untergang bunker szene steiner | https://youtu.be/jjPexSrg9Y8 | |
 | Титаник — шлюпка, Роуз прыгает назад (`titanic-boat`) | Titanic — Rose jumps back from the lifeboat | titanic rose jumps back lifeboat scene | Titanic — Rose springt aus dem Rettungsboot | titanic rose springt aus dem rettungsboot deutsch | https://youtu.be/d4w1JtcA48Q | |
