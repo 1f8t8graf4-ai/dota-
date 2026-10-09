@@ -262,8 +262,8 @@ PH=[
 ('ГЛАВНЫЙ «Clavicular» — сам человек (лукмаксинг)','film-clavicular-b',
  "the bathroom of a Miami high-rise apartment at night, turned into a looksmaxxing station, empty.",
  "eye level facing the vanity, 35mm lens",
- "a big mirror with bright bulbs around it, reflecting only the dark room; on the white marble counter: a small steel hammer, a microneedling derma roller, a metal tray with a few small glass vials and capped syringes, a roll of mouth tape, a silicone jaw exerciser, a bowl of ice water, a row of skincare bottles, and a smartphone on a tripod with a ring light, its screen glowing neon green with chat bubbles and no letters; a black knit polo shirt with black sunglasses hooked on its collar hangs on a hook; a small window shows Miami towers, palm trees and pink-purple neon.",
- "chat bubbles float up the phone screen; tiny ripples move on the ice water in the bowl.",
+ "a big mirror with bright bulbs around it, reflecting only the dark room; on the white marble counter: a small steel hammer, a microneedling derma roller, a metal tray with a few small glass vials and capped syringes, a roll of mouth tape, a silicone jaw exerciser, a glass bowl filled with ice cubes resting still on the counter, a row of skincare bottles, and a smartphone on a tripod with a ring light, its screen glowing neon green with chat bubbles and no letters; a black knit polo shirt with black sunglasses hooked on its collar hangs on a hook; a small window shows Miami towers, palm trees and pink-purple neon.",
+ "chat bubbles float up the phone screen; the palm trees outside the small window sway slightly. The bowl of ice stands perfectly still: no dripping, no falling water, no rain anywhere.",
  "bright vanity bulbs, the neon-green phone glow and pink city neon",
  "clinical white, neon green and hot pink; extreme self-improvement, obsession with the mirror, always on stream."),
 ]
