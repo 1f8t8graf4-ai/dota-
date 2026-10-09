@@ -1313,12 +1313,12 @@ function finish(ok,el,reason){
       ${tipHTML(q)}
       ${mline}
       <button class="btn" id="next">${last?'Итоги':'Дальше'}</button>
-      ${ok&&store.auto?'<i class="autobar" id="autobar"></i>':''}
+      ${ok&&autoOn()?'<i class="autobar" id="autobar"></i>':''}
     </div>`;
   const go=()=>{clearTimeout(S.autoT);if(S.gone===S.i)return;S.gone=S.i;sfx('whoosh');S.i++;if(S.i>=S.qs.length)renderEnd();else renderQ();};
   $('#next').onclick=go;
   if($('#say'))$('#say').onclick=()=>{clearTimeout(S.autoT);const ab=$('#autobar');if(ab)ab.remove();speak(q.say||q.aw,q.lang);};
-  if(ok&&store.auto){
+  if(ok&&autoOn()){
     const ms=4200,bar=$('#autobar');
     if(bar&&Element.prototype.animate)bar.animate([{transform:'scaleX(1)'},{transform:'scaleX(0)'}],{duration:ms,easing:'linear',fill:'forwards'});
     S.autoT=setTimeout(go,ms);
@@ -1533,7 +1533,7 @@ function renderOB(){
 
 /* ================= настройки ================= */
 function renderSettings(){
-  screen='settings';backBtn(true);applyFx();if(store.gav===undefined)store.gav=true;if(store.subSame===undefined)store.subSame=true;if(store.bg3d===undefined)store.bg3d=false;if(store.vtask===undefined)store.vtask=true;
+  screen='settings';backBtn(true);applyFx();if(store.gav===undefined)store.gav=true;if(store.subSame===undefined)store.subSame=true;if(store.autoSc===undefined)store.autoSc=true;if(store.bg3d===undefined)store.bg3d=false;if(store.vtask===undefined)store.vtask=true;
   let roles=store.roles==='all'?'all':store.roles.slice();
   const row=(k,n,d)=>`<button class="checkrow frame" data-t="${k}" aria-pressed="${!!store[k]}">${BOX}<span class="ct"><span class="cn">${n}</span>${d?`<span class="cd">${d}</span>`:''}</span></button>`;
   mount(`
@@ -1542,7 +1542,7 @@ function renderSettings(){
     <section class="set-sec"><h2>Обучение</h2>
       <div class="stack">${row('hideLearned','Убирать выученные слова',`Слово, на которое ты ${LEARN_AT} раза ответил правильно, больше не попадается в обычных играх. Оно вернётся в «Повторение» через 3, 7, 21 и 60 дней.`)}
       ${row('tts','Озвучка слов','Голос устройства читает слова и фразы. На некоторых телефонах звучит как робот, поэтому по умолчанию выключено.')}
-      ${row('auto','Автопереход после верного ответа','Выключено: ты спокойно читаешь сноску и сам жмёшь «Дальше».')}
+      ${row('autoSc','Само дальше','После верного ответа и на паузах в фильме — переход сам, кнопка заполняется. Тронул карточку или слово — ждёт тебя.')}
       ${row('bg3d','3D-фон вместо фото','По умолчанию фоном — кадр из фильма. Можно включить нарисованную 3D-сцену.')}
       ${row('age18','Показывать сцены 18+','Откровенные интервью: секс, порно, таблетки. Включая, подтверждаешь, что тебе есть 18.')}</div>
       <p class="hint-line" style="margin-top:12px">Как смотреть сцены</p>
@@ -2550,7 +2550,7 @@ function renderWordQuiz(id,pi){const s=scOf(id),p=s.parts[pi],d=swData(id,pi);if
     else $$('.sc-opt').forEach(b=>b.onclick=()=>{const good=b.dataset.v===(q.t==='mean'?q.k.ru:q.k.w);mark(q.k,good);if(good)ok++;sfx(good?'good':'bad');try{gavReact(good);}catch(e){}
       $$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===(q.t==='mean'?q.k.ru:q.k.w))x.classList.add('ok');});if(!good)b.classList.add('bad');
       $('#swfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}"><div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(q.k.w)} — ${esc(q.k.ru)}</div><div class="orig">${esc(q.k.row?q.k.row[2]:'')}</div><button class="sc-btn" id="swn">Дальше →</button></div>`;
-      $('#swn').onclick=()=>{sfx('tap');next();};});}
+      $('#swn').onclick=()=>{sfx('tap');next();};if(good)autoNext($('#swn'),$('#swfb'),2600);});}
   function end(){ev('word_quiz',id);const L=K.filter(k=>k.w in res);const good=L.filter(k=>res[k.w]).length;sfx(good===L.length?'win':'learn');
     scMount(s,`<div class="sc-q sc-card" style="text-align:center"><div class="sc-meta">Слова эпизода</div><div class="sc-big">${good} / ${L.length}</div><p class="sc-sub">${good===L.length?'Все слова верно. Они вернутся в повторении.':'Ошибки — не страшно: эти слова вернутся ещё раз.'}</p>
       <div class="sw-res">${L.map(k=>`<div class="${res[k.w]?'ok':'bad'}"><b>${esc(k.w)}</b><span>${esc(k.ru)}</span></div>`).join('')}</div>
@@ -2596,6 +2596,12 @@ function distLike(right,pools,n){const R=String(right||''),rs=ruShape(R),rl=R.le
     const cl=x=>x.replace(/\(.*?\)/g,'').trim(),sh=ruShape(v),ratio=cl(v).length/Math.max(1,cl(R).length);if(cl(v).length<3&&cl(R).length>=4)return;const e1=lv.slice(-1)===rl0.slice(-1),e2=lv.slice(-2)===rl0.slice(-2);
     C.push({v,sc:(sh===rs?4:sh[0]===rs[0]?1.5:0)+(e2?1:e1?.5:0)+(ratio>.55&&ratio<1.8?1:ratio<.4||ratio>2.5?-2:0)+(pools.length-k)*0.8+Math.random()*1.2});}));
   return C.sort((a,b)=>b.sc-a.sc).slice(0,n).map(x=>x.v);}
+// 13.6: после верного ответа — само дальше: полоска заполняет кнопку; тронул карточку или слово — ждёт, пока сам нажмёшь
+const autoOn=()=>store.autoSc!==false;   // 13.6: «само дальше» по умолчанию включено (старый store.auto был выключен у всех)
+function autoNext(btn,root,ms){if(!btn||!autoOn())return null;let t=0;const stop=()=>{clearTimeout(t);btn.classList.remove('auto');};
+  btn.style.setProperty('--ms',ms+'ms');btn.classList.add('auto');t=setTimeout(()=>{if(btn.isConnected&&btn.classList.contains('auto'))btn.click();},ms);
+  (root||btn.parentNode).addEventListener('pointerdown',e=>{if(!btn.contains(e.target))stop();},{capture:true});return stop;}
+const SC_HINT=5;   // 13.6: «💡 Подсказка» в задании на слух — 5 билетов (ошибка даёт подсказку бесплатно)
 // 13.6: слово или выражение — по пробелу («any messages», «hit a nerve» — выражения, а не слова)
 const isPhr=w=>/\s/.test(String(w||'').trim());
 // ложные варианты к выражению — только выражения (переводы фраз и многословных важных слов), без перевода самой реплики
@@ -2622,7 +2628,7 @@ function renderMyWordsQuiz(list){const K=shuffle((list||mywAll()).filter(x=>x.ru
         if(good){sfx('good');sel.classList.add('ok');b.classList.add('ok');sel.disabled=b.disabled=true;sel=null;if(--left===0){ok++;setTimeout(next,450);}}else{sfx('bad');b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),400);}});}
     else $$('.sc-opt').forEach(b=>b.onclick=()=>{const good=b.dataset.v===q.k.ru;if(good)ok++;sfx(good?'good':'bad');const it=store.myw[q.k.k];if(it){wSRS(it,good);save();}
       $$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===q.k.ru)x.classList.add('ok');});if(!good)b.classList.add('bad');
-      $('#mqfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}"><div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(q.k.w)} — ${esc(q.k.ru)}</div>${q.k.lineRu?`<div class="orig">${esc(q.k.lineRu)}</div>`:''}<button class="sc-btn" id="mqn">Дальше →</button></div>`;$('#mqn').onclick=()=>{sfx('tap');next();};});}
+      $('#mqfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}"><div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(q.k.w)} — ${esc(q.k.ru)}</div>${q.k.lineRu?`<div class="orig">${esc(q.k.lineRu)}</div>`:''}<button class="sc-btn" id="mqn">Дальше →</button></div>`;$('#mqn').onclick=()=>{sfx('tap');next();};if(good)autoNext($('#mqn'),$('#mqfb'),2600);});}
   function end(){sfx(ok===Q.length?'win':'learn');mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">Мои слова</div><div class="sc-big">${ok} / ${Q.length}</div>
       <p class="sc-sub">${ok===Q.length?'Все верно. Сохраняй новые слова прямо из фильмов.':'Ошибки — нормально: повтори ещё раз через пару часов.'}</p><div class="sc-btns"><button class="sc-btn" id="mqa">Ещё раз</button><button class="sc-btn ghost" id="mqb">К моим словам</button></div></div></div>`,'scnscr');
     $('#mqa').onclick=()=>renderMyWordsQuiz(list);$('#mqb').onclick=()=>renderMyWords();}
@@ -3263,6 +3269,29 @@ function scBindSeek(){const r=$('#scsk');if(!r||!SV)return;
   SV.addEventListener('timeupdate',()=>{if(!SV)return;if(document.activeElement!==r){r.value=SV.currentTime;}const t=$('#sct0');if(t)t.textContent=scFmt(SV.currentTime);});}
 const scPips=n=>`<span class="sc-pips">${[0,1,2].map(i=>`<i class="${i<n?'on':''}"></i>`).join('')}</span>`;
 const scCard=(f,P)=>`<div class="sc-ph sc-card${f.passive?' passive':''}">${f.passive?'<span class="sc-pas">для понимания · без теста</span>':''}<div class="en">${esc(scT(f))}</div><div class="ru">${esc(f.ru)}</div><div class="dc-tags">${f.passive?'':fTopics(f).map(k=>`<span class="dc-t">${TOPIC_ICO[k]||''} ${k}</span>`).join('')}<span class="sc-tag ${scTag(f)[1]}">${scTag(f)[0]}</span></div>${scNoteS(f)?`<div class="nt">${esc(scShort(scNoteS(f)))}</div>`:''}<div class="row"><button class="sc-mom" data-id="${f.id}">▶ Момент</button>${scPips(Math.min(3,P.m[f.id]||0))}</div></div>`;
+// 13.6: после эпизода — все реплики с переводом: ★ — фразы, по которым будут задания, ▶ — переслушать, слова нажимаются.
+// Человек сам выбирает, что пересмотреть, и сам идёт «К заданиям» (раньше — только «Ты встретил N фраз» и сразу проверка).
+function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b),act=scAct(p.ph),test=act.slice().sort((a,b)=>a.a-b.a).slice(0,5),used=new Set();
+  const phOf=r=>{const L=phNorm(scRowT(r));return act.find(f=>!used.has(f)&&f.a<r[1]+0.3&&f.b>r[0]-0.3&&(L.includes(phNorm(scT(f)))||phNorm(scT(f)).includes(L)||(f.a>=r[0]-0.3&&f.a<r[1])));};
+  const items=rows.map((r,k)=>{const f=phOf(r);if(f)used.add(f);return {r,k,f,t:!!f&&test.includes(f),same:!!f&&phNorm(scRowT(r))===phNorm(scT(f))};});   // фраза = вся реплика — не повторяем её второй раз
+  const seen=new Set(),cnt=()=>{const c=box.querySelector('#rvCnt');if(c)c.textContent=`★ ${test.filter(f=>seen.has(f.id)).length} из ${test.length} посмотрел`;};
+  box.innerHTML=`<div class="rv"><div class="rv-head"><span class="ep-end-k">🎬 Эпизод досмотрен</span><b>Пробеги реплики — сам выбери, что переслушать</b>
+      <span><i class="rv-st">★</i> — фразы, по которым будут задания. Нажми на слово — объясню, ${SI.play} — послушать ещё раз.</span>
+      <div class="rv-top"><button class="rv-again" id="rvAgain">${SI.again} Смотреть ещё раз</button><span class="rv-cnt" id="rvCnt"></span></div></div>
+    <div class="rv-list">${items.map(x=>`<div class="rv-ln${x.t?' star':x.f?' use':''}" data-k="${x.k}">
+      <button class="rv-play" aria-label="Послушать реплику">${SI.play}</button>
+      <div class="rv-t"><b>${x.t?'<i class="rv-st">★</i>':''}${x.same?kwWrap(x.f,scRowT(x.r)):swWrap(scRowT(x.r))}</b><span>${esc(String(x.r[3]||'').replace(/\n/g,' '))}</span>
+      ${x.f?`<div class="rv-ph${x.same?' same':''}"><em>${x.t?'★ Будет в заданиях':'Полезная фраза'}</em>${x.same?'':`<b>${kwWrap(x.f)}</b><span>${esc(x.f.ru)}</span>`}${scNoteS(x.f)?`<small>💡 ${esc(scShort(scNoteS(x.f)))}</small>`:''}</div>`:''}</div></div>`).join('')}</div>
+    <div class="rv-go"><button class="sc-btn ep-go" id="epGoQ">К заданиям →<small>★ ${test.length} ${plural(test.length,['фраза','фразы','фраз'])}</small></button></div></div>`;
+  box.hidden=false;cnt();
+  ['.ep-watch','#epToLearn','#epPhs','.ep-lines'].forEach(q=>{const x=document.querySelector(q);if(x){if(q==='#epToLearn')x.style.display='none';else x.hidden=true;}});
+  box.querySelectorAll('.rv-ln').forEach(ln=>{const x=items[+ln.dataset.k],look=()=>{if(x.f){seen.add(x.f.id);ln.classList.add('seen');cnt();}};
+    ln.querySelector('.rv-play').onclick=e=>{e.stopPropagation();sfx('tap');playSeg(assetUrl(scEpKey(s,i,'mp4')),x.r[0]-p.a-0.12,x.r[1]-p.a+0.25,e.currentTarget);look();};
+    if(x.same)kwBind(ln.querySelector('.rv-t>b'),x.f);else ln.querySelector('.rv-t>b').addEventListener('click',e=>{const w=e.target.closest('.sw');if(w){linePop(w,x.r);look();}});
+    const ph=ln.querySelector('.rv-ph');if(ph){kwBind(ph,x.f);ph.addEventListener('pointerdown',look);}});
+  box.querySelector('#epGoQ').onclick=()=>{sfx('tap');renderScQuiz(s.id,i);};
+  box.querySelector('#rvAgain').onclick=()=>{sfx('tap');window.scrollTo({top:0,behavior:'smooth'});if(o.again)o.again();};
+  if(o.first&&store.fx!==false)box.querySelectorAll('.rv-head,.rv-ln').forEach((el,k)=>el.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:380,delay:Math.min(k,14)*45,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'}));}
 function renderScEp(id,i,opts){
   opts=opts||{};
   if(scGate(id,i))return;
@@ -3345,19 +3374,14 @@ function renderScEp(id,i,opts){
     c.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;if(dx<0&&k<focus.length){k++;card();}else if(dx>0&&k>0){k--;card();}},{passive:true});}
 
   const opened=()=>{const first=!P.w[i];P.w[i]=1;scSave();const b=$('#epToLearn');if(b){b.textContent=mx?'Проверить, что запомнил →':'Дальше: разбор фраз →';b.classList.add('pulse');}tabs();
-    if(mx){if(SW&&SW._watchKill)SW._watchKill();phList(true);const e=$('#epEnd');if(e){const n=WX?WX.list.length:0;
-      e.innerHTML=`<div class="ep-end-in"><span class="ep-end-k">🎬 Эпизод досмотрен</span><b>Ты встретил ${n} ${plural(n,['полезную фразу','полезные фразы','полезных фраз'])}</b><span>Теперь проверим, что запомнилось: послушай → вспомни → собери → примени.</span>
-        <div class="ep-end-b"><button class="sc-btn ep-go" id="epGoQ">Проверить, что запомнил →</button><button class="ep-see" id="epSeePh">Посмотреть фразы</button></div></div>`;
-      e.hidden=false;const h=document.querySelector('.ep-watch');if(h)h.hidden=true;if(b)b.style.display='none';
-      $('#epSeePh').onclick=()=>{sfx('tap');const d=$('#epPhs');d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'});};
-      $('#epGoQ').onclick=()=>{sfx('tap');renderScQuiz(id,i);};
-      if(first){sfx('reel');}if(first)e.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:420,easing:'cubic-bezier(.2,.9,.3,1)'});
-      if(window.innerWidth<1000)setTimeout(()=>e.scrollIntoView({behavior:'smooth',block:'center'}),120);}}};
+    if(mx){if(SW&&SW._watchKill)SW._watchKill();phList(true);const e=$('#epEnd');if(e){epReview(e,s,i,p,{again:()=>{run();},first});
+      if(first)sfx('reel');if(window.innerWidth<1000)setTimeout(()=>e.scrollIntoView({behavior:'smooth',block:'start'}),150);}}};
   let at0=opts.at;   // 12.1: открыли из словаря/поиска — первый ▶ играет с нужного места
   const run=()=>{$('#scvo').style.display='none';(SW._ph||[]).forEach(x=>x.shown=false);const from=at0!=null?at0:scStartAt(s,p);at0=null;scPlay(from,p.b-p.a+1,()=>{$('#scvo').style.display='';opened();});if(SSTOP)SSTOP.full=true;};
   if($('#epVt'))$('#epVt').onchange=e=>{store.vtask=e.target.checked;save();if(SW)SW._stopPh=s.mode==='mix'?false:store.vtask;toast(store.vtask?'Задания в видео включены':'Задания в видео выключены');};
   $('#scplay').onclick=run;
   scBindCtrl(run);scBindSeek();
+  if(mx&&watched&&!opts.at){const e=$('#epEnd');if(e)epReview(e,s,i,p,{again:()=>{run();}});}
   if(opts.at!=null){const set=()=>{try{SV.currentTime=opts.at;scTick&&scTick();}catch(e){}};if(SV.readyState>=1)set();else SV.addEventListener('loadedmetadata',set,{once:true});run();if(SV.paused)setTimeout(()=>{if(SV&&SV.paused)$('#scvo').style.display='';},600);}
   SV.addEventListener('ended',()=>{$('#scvo').style.display='';opened();},{once:true});SV.addEventListener('ended',()=>ev('ep_watch',id),{once:true});
   $('#epToLearn').onclick=()=>{sfx('tap');if(!(P.w[i]||P.done.includes(i))&&SV&&SV.paused&&SV.currentTime<1){run();return;}if(mx){renderScQuiz(id,i);return;}show('learn');window.scrollTo({top:0,behavior:'smooth'});};
@@ -3450,9 +3474,14 @@ function scWatchAttach(s,p,box,o){o=o||{};const L=scWatchFX(p).map(f=>({f,a:f.a-
     if(!fs&&window.innerWidth<1000&&stop)setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
     if(!stop){const ms=Math.max(6000,Math.min(11000,(f.en.length+f.ru.length+use.length)*45)),bar=w.querySelector('.vq-bar i');
       requestAnimationFrame(()=>{bar.style.transition=`width ${ms}ms linear`;bar.style.width='0%';});w._t=setTimeout(()=>{if(cur===w)kill();},ms);}
-    // нажал на слово в режиме без пауз — фильм ждёт, пока читаешь
+    // 13.6: «С паузами» — тоже уходит само, когда прочитал (кнопка «Дальше ▶» заполняется); нажал на слово — ждёт тебя
+    else if(autoOn()){const ms=Math.max(8000,Math.min(15000,(f.en.length+f.ru.length+use.length)*55)),x=w.querySelector('.tkp-x');
+      x.classList.add('auto');x.style.setProperty('--ms',ms+'ms');
+      w._t=setTimeout(()=>{if(cur!==w)return;kill();if(SV&&SV.isConnected){const r=SV.play();if(r&&r.catch)r.catch(()=>{});}},ms);}
+    // нажал на слово — фильм ждёт, пока читаешь (слова сами глушат click, поэтому ловим касание заранее)
+    w.addEventListener('pointerdown',e=>{if(!e.target.closest('.kw,.sw'))return;clearTimeout(w._t);const x=w.querySelector('.tkp-x');x.classList.remove('auto');
+      if(SV&&!SV.paused){SV.pause();x.textContent='Дальше ▶';w._resume=true;const bar=w.querySelector('.vq-bar');if(bar)bar.remove();}},true);
     w.addEventListener('click',e=>{e.stopPropagation();const b=e.target.closest('[data-x]');
-      if(e.target.closest('.kw,.sw')&&SV&&!SV.paused){SV.pause();clearTimeout(w._t);const x=w.querySelector('.tkp-x');x.textContent='Дальше ▶';w._resume=true;const bar=w.querySelector('.vq-bar');if(bar)bar.remove();return;}
       if(!b||b.dataset.x!=='go')return;sfx('tap');const res=stop||w._resume;kill();if(res&&SV){const r=SV.play();if(r&&r.catch)r.catch(()=>{});}});}
   SW._watchKill=kill;
   return {list:L.map(y=>y.f)};}
@@ -4016,10 +4045,12 @@ function renderScQuiz(id,i){
     const q=Q[n],f=q.f,type=q.type;setTimeout(gavIdle,0);
     let title='',ask='',opts=[],correct='',build=null,video=false,typed=false;
 
-    const ladder=type==='listen'&&!beg&&!boss;   // 12.2: вспомни сам → первые буквы → кубики → не знаю
+    // 13.6: выбора «кубики или напиши сам» больше нет — решает приложение: знающий базу пишет сам (фраза до 9 слов),
+    // новичок и длинные фразы — собирают из кубиков. Ошибся — подсказка по буквам: у случайного слова → у другого → у всех
+    const ladder=type==='listen'&&!beg&&!boss&&scToks(scIsDe()?f.de:f.en).length<=9;
     if(type==='listen'){
-      ask=ladder?'👂 Послушай и восстанови':'Послушай и собери';
-      title=ladder?'Что прозвучало?<br><small class="qsm">Без перевода. Напиши сам — опечатки прощаю. Не выходит — подсказки ниже</small>':'Собери, что услышал<br><small class="qsm">Видео покажет момент — собери реплику из слов</small>';
+      ask=ladder?'👂 Послушай и напиши':'Послушай и собери';
+      title=ladder?'Что прозвучало?<br><small class="qsm">Напиши сам — опечатки прощаю. Ошибёшься — подскажу первые буквы</small>':'Собери, что услышал<br><small class="qsm">Видео покажет момент — собери реплику из слов</small>';
       const heard=scIsDe()?x=>x.de:x=>x.en;correct=heard(f);
       build=makeBuild(correct,f,all);opts=null;
       video=true;
@@ -4070,9 +4101,9 @@ function renderScQuiz(id,i){
         <div class="sc-meta">${ask}${q.re?' · повтор этой фразы':''}</div>
         <h2>${title}</h2>
         ${build
-          ?`${ladder?`<div class="sc-lt" id="scLt"><input class="sc-gapin" id="scLin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Напиши, что услышал"><button class="sc-btn" id="scLok">Проверить</button></div>
-            <div class="sc-lmask" id="scLm" hidden></div><div class="sc-lh" id="scLh"><button class="tk-help" id="scLlet">💡 Первые буквы</button><button class="tk-help" id="scLtil">🧩 Собрать из слов</button></div>`:''}<div class="sc-bans" id="scbans"${ladder?' hidden':''}></div>${type!=='listen'&&!beg?`<button class="sc-reveal" id="scbrev">Сначала вспомни сам → показать слова</button>`:''}<div class="sc-bpool" id="scbpool"${(type!=='listen'&&!beg)||ladder?' hidden':''}></div>${beg&&build.tk.length>2?'<p class="sc-bhint">Первое слово уже стоит — продолжи</p>':''}<p class="tk-tip" id="scTip"${ladder?' hidden':''}>Зажми слово — покажу перевод</p>
-            <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div><div id="scbdiff"></div>${ladder?'<button class="tk-skip" id="scLno">Не знаю — показать ответ</button>':''}`
+          ?`${ladder?`<div class="sc-lmask lm2" id="scLm"></div><div class="sc-lt" id="scLt"><input class="sc-gapin" id="scLin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Напиши, что услышал"><button class="sc-btn" id="scLok">Проверить</button></div>
+            <div class="sc-lh lh2" id="scLh"><button class="tk-help" id="scLhint">💡 Подсказка <small>${ADM_OPEN()?'':`🎟 ${SC_HINT}`}</small></button><button class="tk-help ghost" id="scLno">Не знаю</button></div>`:''}<div class="sc-bans" id="scbans"${ladder?' hidden':''}></div>${type!=='listen'&&!beg?`<button class="sc-reveal" id="scbrev">Сначала вспомни сам → показать слова</button>`:''}<div class="sc-bpool" id="scbpool"${(type!=='listen'&&!beg)||ladder?' hidden':''}></div>${beg&&build.tk.length>2?'<p class="sc-bhint">Первое слово уже стоит — продолжи</p>':''}<p class="tk-tip" id="scTip"${ladder?' hidden':''}>Зажми слово — покажу перевод</p>
+            <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div><div id="scbdiff"></div>`
           :typed?`<input class="sc-gapin" id="scgap" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="впиши слово и нажми «Готово»">
             <div class="sc-bact"><button class="sc-btn ghost" id="scgno">Не помню</button><button class="sc-btn" id="scgok">Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div>`
           :`<div class="sc-opts">${opts.map(o=>`<button class="sc-opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`}
@@ -4092,7 +4123,7 @@ function renderScQuiz(id,i){
 
     const answer=(right,el)=>{
       if(q.res!==undefined)return;
-      q.res=right;{const ln=$('#scLno'),tp=$('#scTip');if(ln)ln.hidden=true;if(tp)tp.hidden=true;}   // 12.6: «Не знаю» и подсказка про кубики висели после ответа
+      q.res=right;{const ln=$('#scLh'),tp=$('#scTip');if(ln)ln.hidden=true;if(tp)tp.hidden=true;}   // 12.6: «Не знаю» и подсказка про кубики висели после ответа
       if(right)ok++;else wrong++;
       if(right){combo++;if(combo>=3&&combo%3===0)toast(`🔥 ${combo} подряд без ошибок`);}else combo=0;
 
@@ -4108,6 +4139,7 @@ function renderScQuiz(id,i){
           Q.splice(Math.min(Q.length,n+3),0,{f,type:retryType,re:true});
         }
       }
+      if(right&&q.soft&&!q.re&&!rev){const rt=canBuild(f)&&type!=='build'?'build':'listen';Q.splice(Math.min(Q.length,n+3),0,{f,type:rt,re:true});}   // 13.6: с подсказкой — ещё раз попозже
       if(P.m[f.id]>=3&&!P.r[f.id])P.r[f.id]=[0,Date.now()+SC_DAYS[0]*864e5];
 
       if(rev){
@@ -4129,7 +4161,7 @@ function renderScQuiz(id,i){
 
       const life=q.life;
       $('#scfb').innerHTML=`<div class="sc-fb ${right?'ok':'bad'}">
-        <div class="t">${right?(q.typo?'Верно — только опечатка':q.soft?'Верно — с подсказкой':'Верно'):q.soft?`Собрал с ${q.tries+1}-й попытки — фраза вернётся ещё раз`:'Вот как правильно'}</div>
+        <div class="t">${right?(q.typo?'Верно — только опечатка':q.soft?'Верно — с подсказкой, фраза вернётся ещё раз':'Верно'):q.soft?`Собрал с ${q.tries+1}-й попытки — фраза вернётся ещё раз`:'Вот как правильно'}</div>
         ${life
           ?`<div class="en">${kwWrap(f,correct)}</div><div class="ru">${esc(life.situation)}</div><div class="orig">В сцене было: ${esc(target(f))} — ${esc(f.ru)}</div>`
           :(type==='listen'&&de&&!scIsDe()?`<div class="en">${esc(f.en)}</div><div class="orig">по-немецки: ${esc(f.de)}</div><div class="ru">${esc(f.ru)}</div>`:`<div class="en">${kwWrap(f)}</div><div class="ru">${esc(f.ru)}</div>`)}
@@ -4139,6 +4171,7 @@ function renderScQuiz(id,i){
       </div>`;
       kwBind($('#scfb'),f);
       $('#scnx').onclick=()=>{kwHide(0);n++;if(n<Q.length)show();else end();};
+      if(right)autoNext($('#scnx'),$('#scfb'),Math.max(3200,Math.min(8000,2400+($('#scfb').textContent||'').length*24)));   // 13.6: само дальше
     };
 
     if(typed){
@@ -4156,16 +4189,29 @@ function renderScQuiz(id,i){
       setTimeout(()=>{try{inp.focus();}catch(e){}},300);
     }else if(build){
       q.tries=0;const pool=$('#scbpool');
-      if(ladder){let st=0,tr=0;const inp=$('#scLin'),msg=$('#scbmsg'),words=scToks(correct).map(w=>w.replace(/[.,!?;:…"«»()]+/g,'')).filter(Boolean);
-        const letters=()=>{if(st>=1)return;st=1;const m=$('#scLm');m.hidden=false;m.textContent=words.map(w=>w[0]+'·'.repeat(Math.max(0,w.length-1))).join(' ');const b=$('#scLlet');if(b)b.remove();};
-        const tiles=()=>{if(st>=2)return;st=2;$('#scLt').hidden=true;$('#scLh').hidden=true;$('#scbans').hidden=false;pool.hidden=false;{const tp=$('#scTip');if(tp)tp.hidden=false;}msg.textContent='';draw();};
-        const chk=()=>{const v=scNorm(inp.value).replace(/'/g,''),c=scNorm(correct).replace(/'/g,'');if(!v){inp.focus();return;}
-          if(v===c||(c.length>=6&&lev(v,c)<=Math.max(1,Math.floor(c.length/14)))){$('#scLt').hidden=true;$('#scLh').hidden=true;q.soft=st>0;answer(true);return;}
-          tr++;haptic('err');sfx('bad');inp.classList.add('bad');setTimeout(()=>inp.classList.remove('bad'),450);
-          if(tr===1){letters();msg.textContent='Не то. Вот первые буквы — попробуй ещё раз.';}else{tiles();msg.textContent='Собери из слов.';}};
+      if(ladder){const inp=$('#scLin'),msg=$('#scbmsg'),W=scToks(correct).map(w=>w.replace(/[.,!?;:…"«»()]+/g,'')).filter(Boolean),nW=W.map(w=>scNorm(w).replace(/'/g,''));
+        // 0 — скрыто · 1 — первая буква · 2 — слово открыто подсказкой · 3 — слово сам написал верно
+        const rv=W.map(()=>0);let lvl=0,tr=0;
+        const paint=()=>{$('#scLm').innerHTML=W.map((w,k)=>{const r=rv[k],L=[...w];const body=r>=2?esc(w):(r===1?esc(L[0]):'')+'<i>'+'·'.repeat(Math.max(0,L.length-(r===1?1:0)))+'</i>';
+          return `<span class="lm-w${r===3?' ok':r===2?' hint':r===1?' l1':''}">${body}</span>`;}).join('');};
+        const pick=lim=>{const c=W.map((_,k)=>k).filter(k=>rv[k]<lim);return c.length?c[Math.floor(Math.random()*c.length)]:-1;};
+        const step=()=>{lvl++;if(lvl<=2){const k=pick(1);if(k>=0)rv[k]=1;else lvl=3;}   // буква у случайного слова → у другого → у всех → дальше целым словом
+          if(lvl===3)W.forEach((_,k)=>{if(rv[k]<1)rv[k]=1;});
+          if(lvl>3){const k=pick(2);if(k>=0)rv[k]=2;}
+          q.soft=true;paint();$('#scLm').animate([{transform:'scale(1.03)'},{transform:'none'}],{duration:260,easing:'ease-out'});};
+        const chk=()=>{if(q.res!==undefined)return;const v=scNorm(inp.value).replace(/'/g,''),c=scNorm(correct).replace(/'/g,'');if(!v){inp.focus();return;}
+          if(v===c||(c.length>=6&&lev(v,c)<=Math.max(1,Math.floor(c.length/14)))){rv.forEach((r,k)=>{if(r<2)rv[k]=3;});paint();$('#scLt').hidden=true;$('#scLh').hidden=true;msg.textContent='';answer(true);return;}
+          scLcsMarks(nW,v.split(/\s+/).filter(Boolean)).forEach((m,k)=>{if(m)rv[k]=3;});   // что написал верно — остаётся зелёным
+          tr++;q.tries=tr;q.soft=true;haptic('err');sfx('bad');inp.classList.add('bad');setTimeout(()=>inp.classList.remove('bad'),450);
+          if(rv.every(r=>r>=2)){paint();msg.textContent='Все слова уже видно — допиши фразу целиком.';return;}
+          step();msg.textContent=lvl<=2?'Не то. Подсказал первую букву у одного слова — попробуй ещё.':lvl===3?'Вот первые буквы всех слов — ещё попытка.':'Открыл ещё одно слово целиком.';};
         $('#scLok').onclick=chk;inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();chk();}};
-        $('#scLlet').onclick=()=>{sfx('tap');letters();};$('#scLtil').onclick=()=>{sfx('tap');if(st<1)letters();tiles();};
-        $('#scLno').onclick=()=>{if(q.res!==undefined)return;sfx('tap');$('#scLt').hidden=true;$('#scLh').hidden=true;answer(false);};}
+        $('#scLhint').onclick=()=>{if(q.res!==undefined)return;const free=ADM_OPEN();
+          if(!free&&(store.gold||0)<SC_HINT){toast(`Нужно 🎟 ${SC_HINT} — или ошибись, и подскажу бесплатно`);haptic('err');return;}
+          if(rv.every(r=>r>=2)){toast('Все слова уже открыты');return;}
+          if(!free){store.gold-=SC_HINT;save();}sfx('tap');haptic('sel');step();msg.textContent=free?'Подсказка':`Подсказка · −${SC_HINT} 🎟`;};
+        $('#scLno').onclick=()=>{if(q.res!==undefined)return;sfx('tap');rv.forEach((r,k)=>{if(r<2)rv[k]=2;});paint();$('#scLt').hidden=true;$('#scLh').hidden=true;answer(false);};
+        paint();if(matchMedia('(hover:hover)').matches)setTimeout(()=>{try{inp.focus({preventScroll:true});}catch(e){}},700);}
       const rv=$('#scbrev');if(rv){const open=()=>{if(!pool.hidden)return;pool.hidden=false;rv.remove();sfx('tap');};rv.onclick=open;setTimeout(()=>{if(document.body.contains(rv))open();},3500);}
       const draw=(marks)=>{
         $('#scbans').innerHTML=build.got.map((x,j)=>x?`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}" data-j="${j}">${esc(x.w)}</button>`:`<span class="sc-hole" aria-hidden="true"></span>`).join('')||'<span class="sc-bph">Собери фразу слева направо</span>';

@@ -4616,3 +4616,60 @@ html body .sc-v.sc-v.sc-v .sc-subs .sline.s2 .en,html body .sc-v.sc-v.sc-v .sc-s
 .sub-prev{margin:10px 0 2px;max-width:640px}
 .sub-prev .sc-v{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,#4a3a2a,#14100c 70%)}
 .sub-prev .sc-subs{pointer-events:none}
+
+/* ==== 13.6 — «на слух»: слова-ячейки, подсказки по буквам, «💡 Подсказка» за билеты, «Не знаю»; автопереход ==== */
+.sc-lmask.lm2{display:flex;flex-wrap:wrap;gap:6px 8px;padding:10px 12px;letter-spacing:0;font:700 17px/1.2 'Golos Text',system-ui,sans-serif;color:var(--cream,#F3EBDD);min-height:46px;align-items:center}
+.lm2 .lm-w{display:inline-flex;align-items:baseline;padding:5px 8px 4px;border-radius:9px;background:rgba(255,255,255,.06);box-shadow:inset 0 -2px 0 rgba(255,255,255,.14);transition:background .25s,box-shadow .25s,color .25s}
+.lm2 .lm-w i{font-style:normal;letter-spacing:.14em;color:rgba(255,255,255,.32)}
+.lm2 .lm-w.l1{box-shadow:inset 0 -2px 0 var(--gold,#E9C46A)}
+.lm2 .lm-w.l1>:first-child,.lm2 .lm-w.l1{color:var(--gold,#E9C46A)}
+.lm2 .lm-w.hint{background:rgba(233,196,106,.16);color:var(--gold,#E9C46A);box-shadow:inset 0 0 0 1px rgba(233,196,106,.45)}
+.lm2 .lm-w.ok{background:rgba(52,199,89,.16);color:#7EE29A;box-shadow:inset 0 0 0 1px rgba(52,199,89,.5)}
+.sc-lh.lh2{display:flex;gap:8px;margin:8px 0 2px}
+.sc-lh.lh2 .tk-help{flex:1}
+.sc-lh.lh2 .tk-help small{margin-left:6px;opacity:.75;font-weight:600}
+.sc-lh.lh2 .tk-help.ghost{flex:0 0 auto;background:none;border-color:rgba(255,255,255,.14);color:rgba(255,255,255,.75)}
+/* кнопка «Дальше» сама заполняется — по заполнению переход; тронул карточку — остановилась */
+.sc-btn.auto{position:relative;overflow:hidden;isolation:isolate}
+.sc-btn.auto::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(255,255,255,.34);transform-origin:left center;transform:scaleX(0);animation:autoFill var(--ms,3s) linear forwards}
+@keyframes autoFill{to{transform:scaleX(1)}}
+body.nofx .sc-btn.auto::before{animation-duration:var(--ms,3s)}
+.tk-plate .tkp-x.auto{position:relative;overflow:hidden;isolation:isolate}
+.tk-plate .tkp-x.auto::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(233,196,106,.35);transform-origin:left center;transform:scaleX(0);animation:autoFill var(--ms,8s) linear forwards}
+
+/* ==== 13.6 — после эпизода: все реплики, ★ — фразы для заданий, ▶ — переслушать ==== */
+.rv{display:flex;flex-direction:column;gap:10px}
+.rv-head{padding:16px;border-radius:18px;background:linear-gradient(160deg,rgba(233,196,106,.16),rgba(233,196,106,.04) 60%),rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(233,196,106,.28)}
+.rv-head b{display:block;margin:6px 0 4px;font:700 18px/1.25 'Playfair Display',Georgia,serif;color:var(--cream,#F3EBDD)}
+.rv-head>span{display:block;font-size:13.5px;line-height:1.45;color:rgba(243,235,221,.72)}
+.rv-head>span svg{width:12px;height:12px;vertical-align:-1px}
+.rv-st{font-style:normal;color:var(--gold,#E9C46A);margin-right:6px;text-shadow:0 0 10px rgba(233,196,106,.55)}
+.rv-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.rv-again{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.07);color:var(--cream,#F3EBDD);font:600 13px 'Golos Text',system-ui,sans-serif}
+.rv-again svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+.rv-cnt{font:600 12.5px 'Golos Text',system-ui,sans-serif;color:var(--gold,#E9C46A)}
+.rv-list{display:flex;flex-direction:column;gap:6px}
+.rv-ln{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.035);transition:background .25s,box-shadow .25s}
+.rv-ln.use{background:rgba(255,255,255,.05)}
+.rv-ln.star{background:linear-gradient(135deg,rgba(233,196,106,.13),rgba(233,196,106,.03));box-shadow:inset 3px 0 0 var(--gold,#E9C46A)}
+.rv-ln.star.seen{box-shadow:inset 3px 0 0 #7EE29A}
+.rv-play{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);color:var(--cream,#F3EBDD)}
+.rv-play svg{width:14px;height:14px}
+.rv-play.on{background:var(--gold,#E9C46A);color:#1a1408}
+.rv-t{flex:1;min-width:0}
+.rv-t>b{display:block;font:600 15.5px/1.35 'Golos Text',system-ui,sans-serif;color:#fff}
+.rv-t>b .sw{font-style:normal;border-radius:4px;cursor:pointer}
+.rv-t>b .sw:active{background:rgba(245,196,81,.3)}
+@media (hover:hover){.rv-t>b .sw:hover{background:rgba(245,196,81,.22)}}
+.rv-t>span{display:block;margin-top:2px;font-size:13.5px;line-height:1.35;color:rgba(243,235,221,.62)}
+.rv-ph{margin-top:8px;padding:9px 11px;border-radius:12px;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.rv-ph em{display:block;font:700 10.5px 'Golos Text',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gold,#E9C46A);font-style:normal}
+.rv-ln.use .rv-ph em{color:rgba(243,235,221,.55)}
+.rv-ph>b{display:block;margin-top:4px;font:700 15px/1.35 'Golos Text',system-ui,sans-serif;color:#fff}
+.rv-ph>span{display:block;font-size:13.5px;color:#F3DA8C}
+.rv-ph small{display:block;margin-top:4px;font-size:12.5px;line-height:1.4;color:rgba(243,235,221,.7)}
+.rv-go{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:5;padding-top:6px}
+.rv-go .sc-btn{width:100%;display:flex;flex-direction:column;align-items:center;gap:1px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.rv-go .sc-btn small{font:600 11.5px 'Golos Text',system-ui,sans-serif;opacity:.7}
+.rv-ph.same{padding:7px 10px}
+.rv-ph.same small{margin-top:3px}
