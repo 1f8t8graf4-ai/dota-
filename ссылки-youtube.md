@@ -32,6 +32,30 @@
 | clavicular-impaulsive | Клавикуляр в Impaulsive | Impaulsive — ссылка на полный выпуск | | |
 | clavicular-18 | Клавикуляр 18+ (4 куска) | Impaulsive — ссылка на выпуск, куски найду по времени | | |
 
+## Все сцены: English и Deutsch (для поиска ссылок)
+Deutsch — чтобы найти **немецкий дубляж тех же сцен** (в Германии полный дубляж — английского не слышно). Ссылки на дубляж — в отдельную колонку, не путать с английскими.
+
+| Сцена | English | Искать (EN) | Deutsch | Искать (DE) | Ссылка EN | Ссылка DE |
+|---|---|---|---|---|---|---|
+| Волк — Ханна объясняет правила (ланч) (`wolf-of-wall-street`) | The Wolf of Wall Street — Mark Hanna lunch scene | wolf of wall street mcconaughey lunch scene | The Wolf of Wall Street — Mittagessen mit Mark Hanna | wolf of wall street mark hanna szene deutsch | | |
+| Волк — швейцарский банк (`wolf-swiss-bank`) | The Wolf of Wall Street — Swiss bank scene | wolf of wall street swiss bank scene | The Wolf of Wall Street — Schweizer Bank | wolf of wall street schweizer bank szene deutsch | | |
+| Сопрано S01E01 — Тони у Мелфи (`sopranos-s01e01`) | The Sopranos S01E01 — Tony's first session with Dr. Melfi | sopranos pilot tony melfi first session | Die Sopranos S01E01 — Tony bei Dr. Melfi | die sopranos tony dr melfi erste sitzung deutsch | | |
+| Сопрано S06E09 — «каждый день — подарок» (`sopranos-s06e09`) | The Sopranos S06E09 «The Ride» — every day is a gift | sopranos every day is a gift melfi | Die Sopranos S06E09 — „Jeder Tag ist ein Geschenk“ | die sopranos jeder tag ist ein geschenk deutsch | | |
+| Сопрано — нарезка «Где моя арка?» (`sopranos-arc`) | The Sopranos — «Where's my arc?» (Christopher) | sopranos where's my arc christopher | Die Sopranos — Christopher und sein „Arc“ | die sopranos christopher arc szene deutsch | | |
+| Сопрано S04E09 — Ральф у Тони (`sopranos-ralph`) | The Sopranos S04E09 — Ralph visits Tony after his son's accident | sopranos ralph son accident tony visit | Die Sopranos S04E09 — Ralph besucht Tony nach dem Unfall seines Sohnes | die sopranos ralph tony sohn unfall deutsch | | |
+| Психопат — Бейтман в офисе (`american-psycho`) | American Psycho — Bateman arrives at the office | american psycho bateman office morning scene | American Psycho — Bateman kommt ins Büro | american psycho büro szene deutsch | | |
+| Психопат — визитки (`american-psycho-cards`) | American Psycho — business card scene | american psycho business card scene | American Psycho — Visitenkarten-Szene | american psycho visitenkarten szene deutsch | | |
+| Таксист — «одинокий человек Бога» (`taxi-driver-lonely`) | Taxi Driver — «God's lonely man» | taxi driver god's lonely man | Taxi Driver — „Gottes einsamer Mann“ | taxi driver einsamer mann szene deutsch | | |
+| Таксист — Бетси, кофе и пирог (`taxi-driver-betsy`) | Taxi Driver — Travis asks Betsy out (campaign office) | taxi driver travis betsy campaign office coffee | Taxi Driver — Travis lädt Betsy zum Kaffee ein | taxi driver travis betsy kaffee szene deutsch | | |
+| Бункер — приказ Штайнера (`downfall-bunker`) | Downfall — Hitler's bunker meltdown (Steiner) | downfall bunker scene steiner | Der Untergang — Bunkerszene, Steiners Angriff (Original!) | der untergang bunker szene steiner | | |
+| Титаник — шлюпка, Роуз прыгает назад (`titanic-boat`) | Titanic — Rose jumps back from the lifeboat | titanic rose jumps back lifeboat scene | Titanic — Rose springt aus dem Rettungsboot | titanic rose springt aus dem rettungsboot deutsch | | |
+| Во все тяжкие S01E01 — рейд, Уолт видит Джесси (`breaking-bad-pilot`) | Breaking Bad S01E01 — meth lab bust, Walt spots Jesse | breaking bad pilot walt sees jesse bust | Breaking Bad S01E01 — Razzia, Walt erkennt Jesse | breaking bad pilot razzia jesse deutsch | | |
+| Во все тяжкие S02E11 — Уолт у Гаса (`breaking-bad-gus`) | Breaking Bad S02E11 — Walt meets Gus at Los Pollos | breaking bad walt meets gus los pollos | Breaking Bad S02E11 — Walt trifft Gus im Los Pollos | breaking bad walt trifft gus deutsch | | |
+| Во все тяжкие — «Я тот, кто стучит» + «Где деньги?» (`breaking-bad-knocks`) | Breaking Bad — «I am the one who knocks» + «Where's the money?» | breaking bad i am the one who knocks / where is the money skyler | Breaking Bad — „Ich bin derjenige, der anklopft“ + „Wo ist das Geld?“ | breaking bad ich bin der der anklopft deutsch / wo ist das geld skyler deutsch | | |
+| Дуров у Такера (`durov-tucker`) | Tucker Carlson × Pavel Durov interview (2024) | tucker carlson pavel durov interview | — (немецкой версии нет) | — | | |
+| Клавикуляр в Impaulsive (`clavicular-impaulsive`) | Clavicular on Impaulsive | impaulsive clavicular | — (немецкой версии нет) | — | | |
+| Клавикуляр 18+ (`clavicular-18`) | Clavicular on Impaulsive (18+) | impaulsive clavicular | — (немецкой версии нет) | — | | |
+
 ## Все сцены и эпизоды — что искать (по-английски)
 Ищи на YouTube по строке «Искать» или по фразе из эпизода. Время в скобках — длина нашего эпизода.
 
