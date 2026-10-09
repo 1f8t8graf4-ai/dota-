@@ -1340,6 +1340,6 @@ export default {
       return new Response('ok');
     }
 
-    return new Response('Бот работает 👍 Версия 12.0', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response('Бот работает 👍 Версия 13.5', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   },
 };
