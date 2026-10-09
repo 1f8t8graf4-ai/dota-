@@ -6,7 +6,7 @@
 # (дым из одной точки, пар, рябь, мерцание, покачивание туда-обратно), свет постоянный, список «только эти предметы».
 HEAD="Vertical 9:16 full-frame phone video; the picture fills the whole frame from edge to edge."
 TAIL=("Keep the main objects in the center of the frame. Objects never grow, change shape, appear or disappear; "
-      "the last frame looks the same as the first. Photorealistic live-action footage with natural textures, not CGI, not a 3D render. "
+      "the last frame looks the same as the first. Every object is at its real-life size and scale — nothing oversized. Photorealistic live-action footage with natural textures, not CGI, not a 3D render. "
       "Avoid: black bars, letterbox, frame borders, film strip, sprocket holes, split screen, text, letters, numbers, logos, watermarks, "
       "brand names, labels on bottles, posters, signs, people, faces, hands, extra objects, extra smoke, camera movement, zoom, cuts.")
 # (заголовок, файл, место, камера, только эти предметы, движение, свет, настроение)
@@ -228,7 +228,7 @@ PH=[
 ('ГЛАВНЫЙ «Таксист» — весь фильм','film-taxi-b',
  "a tiny cheap rented room in 1970s New York at night, empty.",
  "eye level, 28mm lens",
- "a small cracked mirror on a dingy yellow wall above an old dresser; on the dresser, a big black revolver on a homemade sliding metal rail, aviator sunglasses, an open diary with blurred handwriting, a saucer with a slice of white bread soaked in brandy and sprinkled with sugar, a round red-white-and-blue campaign button with no text and a bottle of peach brandy; an olive-green army field jacket hangs beside the mirror; an old portable TV with grey static on the floor; through the window, a wet street with red neon and a yellow taxi parked below in a cloud of steam.",
+ "a small cracked mirror on a dingy yellow wall above an old dresser; on the dresser, all at real size: a black revolver lying flat, only as long as the open diary next to it, aviator sunglasses, an open diary with blurred handwriting, a saucer with a slice of white bread, a small round red-white-and-blue button with no text, and a bottle of brandy with no label; an olive-green army field jacket hangs beside the mirror; an old portable TV with grey static on the floor; through the window, a wet street with red neon and a yellow taxi parked below in a cloud of steam.",
  "the TV static flickers; steam drifts past the taxi outside the window.",
  "one bare bulb, the TV glow and red neon from the street",
  "dirty yellow and red; a lonely insomniac talking to his mirror, violence brewing."),
@@ -240,12 +240,12 @@ PH=[
  "red-orange fire glow under a dark smoky sky",
  "red, black and ash grey; the end of an empire, everything is lost."),
 ('ГЛАВНЫЙ «Титаник» — весь фильм','film-titanic-b',
- "the bow of a huge 1912 ocean liner at dusk on a calm sea, empty deck.",
- "low angle looking forward to the tip of the bow, 24mm lens",
- "white railings converging to the point of the bow; a necklace with a large heart-shaped blue diamond lying on the deck planks at the very tip of the bow, as if just dropped; a white canvas life jacket lying beside the railing; far ahead on the horizon, a tall pale iceberg in thin mist under a sky that is gold at the horizon and deep blue above.",
- "the diamond sparkles softly in the last light; the sea slides past the bow; thin mist drifts around the distant iceberg.",
- "the last warm glow of sunset and the first cold blue of night",
- "golden romance turning into icy blue doom; love and catastrophe."),
+ "the bow of a huge 1912 ocean liner at dusk on a calm sea, empty deck. The sun has just set: the sky is deep orange and pink at the horizon and dark blue above; it is NOT daytime.",
+ "chest height, about four meters behind the tip of the bow, 35mm lens, looking forward to the tip of the bow",
+ "white railings converging to the point of the bow; old wooden deck planks; at the very tip of the bow, lying on the planks, a small delicate necklace with a heart-shaped blue gemstone pendant at real jewelry size — the heart is no bigger than a walnut and the chain is thin, so from this distance it is a small sparkle on the deck, not a big object; a white canvas life jacket lying beside the railing; far ahead on the horizon, a tall pale iceberg in thin mist.",
+ "the small blue gem catches the last light and sparkles softly; the sea slides past the bow; thin mist drifts around the distant iceberg.",
+ "the last warm orange glow of the sunset and the first cold blue of night",
+ "golden-orange romance turning into icy blue doom; love and catastrophe."),
 ('ГЛАВНЫЙ «Во все тяжкие» — весь сериал','film-bb-b',
  "the New Mexico desert at golden hour, nobody around.",
  "low wide angle, 24mm lens",
