@@ -566,7 +566,7 @@ function weekKey(ts) {
   const day = t.getUTCDay() || 7;
   t.setUTCDate(t.getUTCDate() + 4 - day);
   const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
-  const w = Math.ceil(((t - y0) / 864e5 + 1) / 7);
+  const w = Math.ceil(((t.getTime() - y0.getTime()) / 864e5 + 1) / 7);
   return `${t.getUTCFullYear()}-W${String(w).padStart(2, '0')}`;
 }
 function weekEnd(ts) {
