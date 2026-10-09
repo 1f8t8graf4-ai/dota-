@@ -215,7 +215,7 @@
 - Пропуск (в английском варианте): «Gefahr»
 
 **Ich bin derjenige, der bei ihm klopft.**  (ID `bb-knocks-de|2|8`)
-- Перевод: Я тот, кто к нему стучит.
+- Перевод: Я тот, кто стучится к нему в дверь.
 - EN: I am the one who knocks.
 - Когда применяется: Когда подчёркиваешь, что именно ты — тот самый человек, который это делает.
 - Пример из жизни: Ich bin derjenige, der hier die Entscheidungen trifft. — Решения здесь принимаю я.
@@ -242,7 +242,7 @@
 | 88.7 | Einer öffnet die Haustür und wird erschossen. | Кто-то открывает дверь — и его застрелили. | A guy opens his door and gets shot, |
 | 90.6 | Und du meinst, das wäre ich? | И ты думаешь, это буду я? | and you think that of me? |
 | 91.9 | Nein. | Нет. | No. |
-| 93.0 | Ich bin derjenige, der bei ihm klopft. | Я тот, кто к нему стучит. | I am the one who knocks. |
+| 93.0 | Ich bin derjenige, der bei ihm klopft. | Я тот, кто стучится к нему в дверь. | I am the one who knocks. |
 
 ## Breaking Bad — Майк чуть не стреляет в Уолта, ноутбук Гаса и звонок «почтового инспектора» (S05E01 · немецкий дубляж)
 Сложность 3: Крик в начале, потом спокойный, но быстрый разговор; телефонный монолог Майка  
@@ -279,7 +279,7 @@
 - Пропуск (в английском варианте): «reden»
 
 **Ich hab es satt, diesem Arschloch zuzuhören.**  (ID `bb-mike-de|1|3`)
-- Перевод: Меня тошнит слушать этого мудака.
+- Перевод: Меня уже тошнит слушать этого мудака.
 - EN: I am done listening to this asshole talk.
 - Когда применяется: Когда тебе осточертело что-то терпеть — грубо и в сердцах.
 - Пример из жизни: Ich hab es satt, immer zu warten. — Мне надоело вечно ждать.
@@ -314,7 +314,7 @@
 - Ложные переводы: Ты хоть помнишь, где ты это сделал? / Тебе вообще нравится то, что ты сделал? / Тебе ясно, что надо сделать?
 - Пропуск (в английском варианте): «klar»
 
-**Noch ein Wort!**  (ID `bb-mike-de|1|6`)
+**Noch ein Wort!**  (ID `bb-mike-de|1|6`) — _пассивная, только понять_
 - Перевод: Ещё одно слово!
 - EN: One more word.
 - Когда применяется: Когда угрожаешь: ещё что-нибудь скажешь — пожалеешь.
@@ -357,7 +357,7 @@
 | 0.0 | Halt, halt, halt! Warte, langsam! | Стой, стой, стой! Подожди, тихо! | Hold up! Hold up! |
 | 1.7 | Geh aus dem Weg, Junge! | Уйди с дороги, парень! | Get out of my way, kid. |
 | 3.1 | Mike, warte mal, lass ihn reden, ja? | Майк, подожди, дай ему сказать, а? | Wait a minute, all right? Let him talk. |
-| 4.1 | Ich soll ihn reden lassen? Ich hab es satt, diesem Arschloch zuzuhören. | Дать ему сказать? Меня тошнит слушать этого мудака. | I am done listening to this asshole talk. |
+| 4.1 | Ich soll ihn reden lassen? Ich hab es satt, diesem Arschloch zuzuhören. | Дать ему сказать? Меня уже тошнит слушать этого мудака. | I am done listening to this asshole talk. |
 | 7.8 | Und jetzt geh mir aus dem Weg! | А теперь уйди с дороги! | Now get out of my way. |
 | 9.7 | Er muss dir was sagen, was du wissen musst. | Он должен сказать тебе то, что тебе нужно знать. | He's got something you need to hear, all right? |
 | 11.6 | Was hast du getan, Jesse? Weißt du das überhaupt? | Что ты наделал, Джесси? Ты вообще понимаешь? | What'd you do, Jesse? Do you even know? |
@@ -580,7 +580,7 @@
 | 181.5 | War vor Ihrer Zeit. | Это было до вас. | Before your time. |
 | 183.3 | Sie dürfen mich jederzeit Tag und Nacht unter dieser Nummer anrufen. | Можете звонить мне по этому номеру в любое время дня и ночи. | Well, you feel free to call me day or night at this number. |
 | 186.8 | Ja, Sir. | Да, сэр. | Yes, sir. |
-| 187.7 | Ja. Ihnen auch. | Да. И вам того же. | No, you as well. |
+| 187.7 | Ja. Ihnen noch. | Да. И вам того же. | No, you as well. |
 | 190.4 | Danke. | Спасибо. | Thank you. |
 | 194.1 | Oh, ja. | О да. | Oh, yeah. |
 | 196.0 | Wir sind im Arsch. | Нам крышка. | We're boned. |

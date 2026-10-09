@@ -341,7 +341,7 @@
 | 203.3 | Ist alles okay? | Всё в порядке? | You all right? |
 | 204.3 | Mein Bein ist gebrochen, der Knochen kommt durch. | У меня сломана нога, кость торчит! | My leg is broken! The bone's coming through. |
 | 206.4 | Oh, lass mal sehen, lass sehen, lass sehen. | О, дай-ка посмотрю, дай посмотрю. | Oh, let me see. |
-| 208.5 | Ich brech dir deine scheiß Knochen, du Pisser! | Я тебе все твои сраные кости переломаю, сопляк! | I'll give you a fuckin' bone, you prick! |
+| 208.5 | Ich brech dir deine scheiß Knochen, du Pisser! | Я тебе все твои сраные кости переломаю, засранец! | I'll give you a fuckin' bone, you prick! |
 | 211.2 | Wo ist mein verfluchtes Geld? | Где мои грёбаные деньги? | Where's my fuckin' money? |
 | 213.0 | Und Sie haben Kaffee getrunken. | И вы выпили кофе. | So you had coffee. |
 | 214.9 | Genau. | Именно. | Right. |
@@ -772,17 +772,17 @@
 | 200.6 | Und ich will das kriegen, was mir zusteht. | И я хочу получить то, что мне положено. | and I intend to get what's mine. |
 | 203.2 | Also bitte, machen Sie die Sache nicht noch peinlicher. Gehen Sie einfach. | Так что, пожалуйста, не позорьтесь ещё больше. Просто уходите. | So please, don't embarrass yourself any further. Just leave. |
 | 207.1 | Mir ist das nicht peinlich. Findest du es peinlich? | Мне не стыдно. Тебе стыдно? | I'm not embarrassed. You embarrassed? |
-| 209.6 | Hör mal, du kranker Wichser! | Слушай сюда, больной ты дрочила! | Listen to me, you weirdo fuck. |
+| 209.6 | Hör mal, du kranker Wichser! | Слушай сюда, урод больной! | Listen to me, you weirdo fuck. |
 | 212.7 | Du gibst Schlomo auf jeden Fall das, was er will, und vergisst diese 50%-Scheiße! | Ты в любом случае даёшь Шломо то, что он хочет, и забываешь эту херню про 50 процентов! | You give Shlomo whatever he wants, and you forget this 50 percent shit. |
 | 217.5 | Du hast nichts zu erwarten! Gar nichts! Verstehst du mich? Gar nichts! | Тебе ничего не светит! Вообще ничего! Понял меня? Ни-че-го! | You got nothin' comin' to ya. You understand me? Nothin'! |
-| 221.3 | Leck mich doch. | Да пошёл ты. | Fuck you! |
+| 221.2 | Lass mich doch! | Да отстань ты! | Fuck you! |
 | 222.1 | Bupkes. Sag Bupkes, Paulie. | Бупкес. Скажи «бупкес», Поли. | Bupkes. Say "bupkes," Paulie. |
 | 224.3 | Was? | Чего? | What? |
 | 224.8 | Das sagen die für „Vergiss es“. | Так они говорят «ни шиша». | That's how they say "nothin'." |
 | 228.1 | Kacke, so sage ich „Vergiss es“. | Херня. Вот как я говорю «ни шиша». | Fuck that. This is how I say "nothin'." |
 | 232.2 | Gefällt dir das „Vergiss es“? | Как тебе такое «ни шиша»? | How's that for nothin'? |
 | 236.7 | Weißt du was? | Знаешь что? | You know what? |
-| 237.9 | Wahrscheinlich nicht. | Наверное, нет. | Probably not. |
+| 237.9 | Wahrscheinlich... | Наверное… | Probably not. |
 
 ## Die Sopranos — Фил Леотардо решает «обезглавить» семью Сопрано (S06E20 · немецкий дубляж)
 Сложность 4: Быстрая злая речь, мат и бандитский сленг, перебивают друг друга  
@@ -900,7 +900,7 @@
 | 18.1 | Historisch gesehen hat Carmine immer gesagt, dass die Sopranos nur eine überschätzte Crew sind. | Кармайн всегда говорил, что Сопрано — просто переоценённая бригада. | Historically, Carmine always said the Sopranos are nothing more than a glorified crew. |
 | 23.3 | Mit einfachen Worten, wir schlagen ihr den Kopf ab und machen Geschäfte mit denen, die übrig bleiben. | Проще говоря: рубим им голову и ведём дела с теми, кто останется. | Plain and simple, we decapitate and we do business with whatever's left. |
 | 30.4 | Was ist? | Что такое? | What? |
-| 31.5 | Nichts. In der Sache stimme ich dir zu, aber ich muss den Rat erteilen. | Ничего. По сути я с тобой согласен, но должен дать совет. | Nothing. I agree in spirit, but I gotta counsel. |
+| 31.5 | Nichts. In der Sache stimme ich dir zu, aber ich muss dir einen Rat erteilen. | Ничего. По сути я с тобой согласен, но должен дать тебе совет. | Nothing. I agree in spirit, but I gotta counsel. |
 | 35.0 | Das hätte schon in Johns Ära erledigt werden sollen. | Это надо было сделать ещё при Джоне. | This thing should have been done during John's era. |
 | 37.2 | Sie haben zu viele Typen an der Spitze, die unnötig viel Geld kosten. | У них слишком много людей наверху, которые жрут кучу лишних денег. | They got redundant upper management, bleeds off half the kick. |
 | 41.3 | Wir erledigen sie und schlucken den ganzen Scheißladen. | Мы их убираем и забираем себе всю эту хренову лавочку. | We take them out, absorb the whole fucking thing. |
@@ -913,16 +913,16 @@
 
 Значок: 🗡️ Меч и ствол
 
-**das wollte ich nun wirklich nicht sagen**  (ID `sopranos-phil-de|2|1`)
-- Перевод: я вовсе не это хотел сказать
+**das will ich nun wirklich nicht sagen**  (ID `sopranos-phil-de|2|1`)
+- Перевод: я вовсе не это хочу сказать
 - EN: that's not what I'm saying at all
 - Когда применяется: Когда тебя неправильно поняли и ты срочно поправляешь собеседника.
-- Пример из жизни: Nein, das wollte ich nun wirklich nicht sagen – das Essen ist super! — Нет, я вовсе не это хотел сказать — еда супер!
+- Пример из жизни: Nein, das will ich nun wirklich nicht sagen – das Essen ist super! — Нет, я вовсе не это хочу сказать — еда супер!
 - Подробнее: Когда тебя неправильно поняли и ты срочно поправляешь собеседника.
-- Ещё пример: No, that's not what I meant at all – the food is great! — Нет, я вовсе не это хотел сказать — еда супер! — Nein, das wollte ich nun wirklich nicht sagen – das Essen ist super!
-- Пример (DE): Nein, das wollte ich nun wirklich nicht sagen – das Essen ist super! — Нет, я вовсе не это хотел сказать — еда супер!
-- Слово: **nun wirklich** — ну правда, вовсе | пример: Das ist nun wirklich zu viel. — Ну это уж правда слишком. | когда: nun wirklich nicht — сильное «вовсе не». wollte — Präteritum от wollen.
-- Ложные переводы: я ничего не хотел сказать / я правда хотел это сказать / я так и сказал
+- Ещё пример: No, that's not what I'm saying at all – the food is great! — Нет, я вовсе не это хочу сказать — еда супер! — Nein, das will ich nun wirklich nicht sagen – das Essen ist super!
+- Пример (DE): Nein, das will ich nun wirklich nicht sagen – das Essen ist super! — Нет, я вовсе не это хочу сказать — еда супер!
+- Слово: **nun wirklich** — ну правда, вовсе | пример: Das ist nun wirklich zu viel. — Ну это уж правда слишком. | когда: nun wirklich nicht — сильное «вовсе не». will — от wollen («хотеть»).
+- Ложные переводы: я ничего не хочу сказать / я правда хочу это сказать / я так и сказал
 - Пропуск (в английском варианте): «sagen»
 
 **hat keinen Respekt vor unserer Sache**  (ID `sopranos-phil-de|2|2`)
@@ -1016,7 +1016,7 @@
 |---|---|---|---|
 | 48.9 | Vergessen wir Coco, vergessen wir Fat Dom, der nach Jersey gefahren ist und nie wiederkam. | Забудем Коко, забудем Толстого Дома, который уехал в Джерси и не вернулся. | Forget Coco. Forget Fat Dom, who goes over to Jersey and never comes back. |
 | 54.8 | Vergessen wir meinen Bruder Billy. | Забудем моего брата Билли. | Forget my brother, Billy. |
-| 56.8 | Phil, Phil, das wollte ich nun wirklich nicht sagen. | Фил, Фил, я вовсе не это хотел сказать. | Phil, Phil, that's not what I'm saying at all. |
+| 56.8 | Phil, Phil, das will ich nun wirklich nicht sagen. | Фил, Фил, я вовсе не это хочу сказать. | Phil, Phil, that's not what I'm saying at all. |
 | 59.4 | Anthony Soprano hat keinen Respekt vor unserer Sache. | Энтони Сопрано не уважает наше дело. | Anthony Soprano has no respect for this thing. |
 | 62.4 | Er ist nie im Knast gewesen, nie so richtig. | Он никогда не сидел. По-настоящему — никогда. | He's never been in the can, not really. |
 | 64.7 | Und seinen eigenen Onkel hat er beiseite gedrängt, um auf dem Chefsessel zu landen. | Он отодвинул собственного дядю, чтобы сесть в кресло босса. | He's a guy who stepped over his own uncle to grab the big seat. |
@@ -1026,7 +1026,7 @@
 | 73.1 | Letzte Weihnachten ließ ich ihn zu mir ins Krankenhaus kommen. | Прошлым Рождеством я пустил его к себе в больницу. | I let him come to the hospital last Christmas. |
 | 75.7 | Und ich schüttelte seine fette Scheißhand in Freundschaft. | И пожал его жирную, блядь, руку по-дружески. | And I took his fat fucking hand in friendship. |
 | 78.5 | Philly, du hattest einen Herzinfarkt. | Филли, у тебя был инфаркт. | Philly, you had a heart attack. |
-| 80.2 | Jetzt hör mal, die nehmen da jeden Scheißblödmann und Pisser in Jersey auf. | Слушай сюда: в Джерси принимают любого долбаного придурка и сопляка. | Listen to me. They make anybody and everybody over there. |
+| 80.2 | Jetzt hör mal, die nehmen da jeden Scheißblödmann und Pisser in Jersey auf. | Слушай сюда: в Джерси принимают любого долбаного придурка и засранца. | Listen to me. They make anybody and everybody over there. |
 | 83.7 | Und die Art und Weise, wie sie es tun, ist völlig für den Arsch. | И то, как они это делают, — полная херня. | And the way that they do it is all fucked up. |
 | 86.4 | Stiche in den Finger gibt's nicht mehr. | Палец больше никто не колет. | Guys don't get their finger pricked. |
 | 88.2 | Es liegt kein Schwert und keine Kanone auf dem Tisch. | На столе ни меча, ни ствола. | There's no sword and gun on the table. |

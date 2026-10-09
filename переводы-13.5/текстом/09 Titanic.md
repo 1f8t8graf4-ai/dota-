@@ -255,7 +255,7 @@
 |---|---|---|---|
 | 1.1 | Du wirst diesen Jungen nicht wiedersehen. Hast du mich verstanden? | Ты больше не увидишься с этим парнем. Ты меня поняла? | You're not to see that boy again. You understand? |
 | 6.5 | Rose, ich verbiete es. | Роуз, я запрещаю. | Rose, I forbid it. |
-| 8.9 | Ach, hör bitte auf, Mutter. Du bekommst nur wieder Nasenbluten. | Ой, перестань, мама. У тебя опять пойдёт кровь носом. | Stop it, Mother. You'll give yourself a nosebleed. |
+| 8.9 | Ach, hör bitte auf, Mutter. Du bekommst nur wieder Nasenbluten. | Ой, перестань, мама. У тебя опять пойдёт кровь из носа. | Stop it, Mother. You'll give yourself a nosebleed. |
 | 12.2 | Das hier ist kein Spiel. | Это не игра. | This is not a game. |
 | 14.3 | Du weißt ganz genau, wir haben kein Geld mehr. Wir sind in einer prekären Lage. | Ты прекрасно знаешь: денег у нас больше нет. Мы в шатком положении. | Our situation is precarious. You know the money's gone. |
 | 18.3 | Ich weiß, dass unser Geld weg ist. | Я знаю, что наших денег больше нет. | Of course I know. |
@@ -263,7 +263,7 @@
 | 24.0 | Dein Vater hat uns nichts außer einem Schuldenberg hinterlassen, der sich hinter einem guten Namen versteckt. | Твой отец оставил нам только гору долгов, спрятанную за хорошей фамилией. | Your father left us nothing but a legacy of bad debts hidden by a good name. |
 | 28.9 | Dieser Name ist die einzige Karte, die wir noch ausspielen können. | Эта фамилия — единственная карта, которую мы ещё можем разыграть. | That name is the only card we have to play. |
 | 32.1 | Ich verstehe dich einfach nicht. | Я тебя просто не понимаю. | I don't understand you. |
-| 34.6 | Die Verbindung mit Hockley ist tadellos. Sie wird unser Überleben sichern. | Союз с Хокли — безупречная партия. Он обеспечит нам выживание. | It is a fine match with Hockley. It will ensure our survival. |
+| 34.6 | Die Verbindung mit Hockley ist tadellos. Sie wird unser Überleben sichern. | Брак с Хокли — блестящая партия. Он обеспечит нам выживание. | It is a fine match with Hockley. It will ensure our survival. |
 | 39.7 | Wie kannst du mir bloß diese Last aufbürden? | Как ты можешь взваливать это на меня? | How can you put this on me? |
 | 41.9 | Wieso bist du nur so selbstsüchtig? | Почему ты такая эгоистка? | Why are you being so selfish? |
 | 43.9 | Ich bin selbstsüchtig? | Это я эгоистка? | I'm being selfish? |

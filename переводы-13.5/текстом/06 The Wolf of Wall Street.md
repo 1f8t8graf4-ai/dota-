@@ -428,17 +428,17 @@
 - Ложные переводы: и он это записал на бумаге / но у него нет бумаг / и он платит наличными
 - Пропуск (в английском варианте): «Papier»
 
-**Darauf kannst du dich verlassen.**  (ID `wolf-lunch-de|4|5`)
-- Перевод: Уж будь уверен.
+**Darauf kannst du einen lassen.**  (ID `wolf-lunch-de|4|5`)
+- Перевод: Отвечаю.
 - EN: Motherfucker.
-- Когда применяется: Когда твёрдо обещаешь или уверяешь: можешь на это рассчитывать.
-- Пример из жизни: Ich bin um acht da, darauf kannst du dich verlassen. — Буду в восемь, можешь на меня рассчитывать.
-- Подробнее: Когда твёрдо обещаешь или уверяешь: можешь на это рассчитывать.
-- Ещё пример: I'll be there at eight, you can count on it. — Буду в восемь, можешь на меня рассчитывать. — Ich bin um acht da, darauf kannst du dich verlassen.
-- Пример (DE): Ich bin um acht da, darauf kannst du dich verlassen. — Буду в восемь, можешь на меня рассчитывать.
-- Слово: **sich auf etwas verlassen** — полагаться на что-то | пример: Auf ihn kann man sich verlassen. — На него можно положиться. | когда: sich verlassen auf + Akk. Без sich: verlassen — «покидать».
-- Ложные переводы: Отсюда ты можешь уйти. / На это ты можешь не рассчитывать. / Это ты можешь оставить.
-- Пропуск (в английском варианте): «verlassen»
+- Когда применяется: Когда грубовато и уверенно обещаешь: сто процентов так и будет.
+- Пример из жизни: Morgen gewinnen wir, darauf kannst du einen lassen! — Завтра мы выиграем — отвечаю!
+- Подробнее: Когда грубовато и уверенно обещаешь: сто процентов так и будет.
+- Ещё пример: We'll win tomorrow, you can bet on it! — Завтра мы выиграем — отвечаю! — Morgen gewinnen wir, darauf kannst du einen lassen!
+- Пример (DE): Morgen gewinnen wir, darauf kannst du einen lassen! — Завтра мы выиграем — отвечаю!
+- Слово: **Darauf kannst du einen lassen.** — (груб.) отвечаю, зуб даю | пример: Der kommt zu spät, darauf kannst du einen lassen. — Он опоздает, зуб даю. | когда: Грубая идиома, дословно «на это можно пукнуть». Вежливо то же самое — Darauf kannst du dich verlassen.
+- Ложные переводы: На это можешь не рассчитывать. / Можешь это отпустить. / Это можешь оставить себе.
+- Пропуск (в английском варианте): «lassen»
 
 **Ich kann Ihnen gar nicht sagen, wie aufregend das ist.**  (ID `wolf-lunch-de|4|6`)
 - Перевод: Не передать, как это захватывает.
@@ -489,7 +489,7 @@
 | 171.7 | Und das machen wir dann immer wieder. Und wieder und wieder und wieder. | И мы делаем это снова и снова. И снова, и снова, и снова. | And you just keep doing this, again and again and again. |
 | 175.0 | Er glaubt, er könnte so stinkreich werden, was er auch ist, auf dem Papier. | Он думает, что станет богатым до неприличия — и он богат. На бумаге. | Meanwhile, he thinks he's getting shit rich, which he is, on paper. |
 | 179.8 | Aber du und ich, die Broker, wir bringen klingende Münze nach Hause. | А мы с тобой, брокеры, несём домой живые деньги. | But you and me, the brokers, we're taking home cold hard cash |
-| 183.7 | Wir kassieren die Provisionen. Darauf kannst du dich verlassen. | Мы получаем комиссионные. Уж будь уверен. | via commission, motherfucker. |
+| 183.7 | Wir kassieren die Provisionen. Darauf kannst du einen lassen. | Мы получаем комиссионные. Отвечаю. | via commission, motherfucker. |
 | 186.5 | Ja. Das ist ganz unglaublich, Sir. Ich kann Ihnen gar nicht sagen, wie aufregend das ist. | Да. Это просто невероятно, сэр. Не передать, как это захватывает. | Right. That's incredible, sir. I can't tell you how excited I am. |
 | 193.0 | Verstehe ich. Es gibt zwei Schlüssel zum Erfolg in unserem Business. | Понимаю. В нашем бизнесе два ключа к успеху. | You should be. There's two keys to success in the broker business. |
 | 197.7 | Erst einmal: die Sache entspannt angehen. | Во-первых: относиться ко всему расслабленно. | First of all... You gotta stay relaxed. |
@@ -618,7 +618,7 @@
 | 241.9 | Verfickte Ziffern. Gick, gick, gick, gick, gick, gick. | Грёбаные цифры. Тик-тик-тик-тик. | Fucking digits. |
 | 243.9 | Nichts als senffarbene, gut gequirlte Hirnkacke, oder? | Сплошное горчичного цвета, хорошо взбитое мозговое дерьмо, да? | All very acidic above-the-shoulders mustard shit. All right? |
 | 247.9 | Da tickt man leicht mal aus. | Тут легко слететь с катушек. | It kind of wigs some people out. |
-| 249.9 | Okay, schön die Schlange würgen, da bleibt das Blut in Wallung. | Так что душишь змея — и кровь не застаивается. | You got to feed the geese to keep the blood flowing. |
+| 249.9 | Okay, schön die Schlange würgen, da bleibt das Blut in Wallung. | Так что душишь удава — и кровь не застаивается. | You got to feed the geese to keep the blood flowing. |
 | 252.6 | Der Unterleib bleibt im Rhythmus. | Всё, что ниже пояса, — в ритме. | I keep the rhythm below the belt. |
 | 254.7 | Geht klar. | Без проблем. | Done. |
 | 255.3 | Ja. | Ага. | Yeah. |
