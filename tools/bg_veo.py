@@ -193,13 +193,14 @@ P=[
  "condensation drops slide down the cold bottles on the table; a tiny red recording light blinks on a camera at the edge of the frame.",
  "warm studio lights",
  "warm wood, cream and red-white-blue; loud, confident, a little bit show-off."),
-('Сцена «Clavicular · 18+» (откровенно: подкат, порно, bird bath)','clavicular-18',
- "a VIP restroom of a Miami nightclub after hours, empty.",
- "eye level, 35mm lens",
- "in the center, a black marble sink with a gold faucet; above it a large mirror framed with a glowing pink neon tube, reflecting only the dark empty room; on the counter, a champagne bottle in a silver ice bucket, a folded black towel and a smartphone lying face down. Black glossy tiles, a small potted palm in the corner.",
- "a thin stream of water runs from the gold faucet into the sink; the pink neon flickers very slightly.",
- "pink neon from the mirror frame, everything else in shadow",
- "hot pink and black; after-hours honesty — too much, too fast, no filter."),
+('Сцена «Clavicular · 18+» (та же студия Impaulsive, ночь после эфира)','clavicular-18',
+ "the same big podcast studio late at night after an uncensored episode, empty, lit only in deep red.",
+ "eye level from the coffee table, 28mm lens",
+ "two cream-colored couches facing each other; black podcast microphones on boom arms; a grey concrete wall with red, white and blue boxing-ring ropes; on the low wooden coffee table: an open orange pharmacy pill bottle with a few small blue diamond-shaped pills spilled out, a box of tissues, a pocket calculator, a smartphone lying face down and a light-blue sports-drink bottle; on the wall, a round red studio light glowing like an on-air sign with no text; through a half-open door at the back, a small bathroom sink lit pink.",
+ "the red on-air light pulses slowly; condensation drops slide down the cold bottle.",
+ "deep red studio light, pink glow from the bathroom door, everything else in shadow",
+ "deep red and pink in darkness; the late-night, no-filter part of the podcast — sex, pills and money talk."),
+
 ]
 # 13.1: главные фоны — ВЕСЬ фильм / сериал целиком (главные символы в одном логичном месте), у интервью — сам человек. Старые варианты остаются ниже.
 PH=[
