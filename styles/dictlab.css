@@ -1168,3 +1168,212 @@
 .dla-demo .dla-sg button{white-space:nowrap}
 /* 13.7.2: заголовок над списком вариантов не прячется под первой строкой */
 #dlAdm .ad2-h{margin:20px 4px 8px}
+
+/* =====================================================================================
+   13.8 — НОВЫЙ СЛОВАРЬ (v-kino): Кинотека + текущий словарь, без золота
+   ===================================================================================== */
+.dl-root.v-kino{--kt:#F3EBDD;--km:rgba(243,235,221,.6);--kl:rgba(255,255,255,.08);width:100%;max-width:1120px;margin-inline:auto;color:var(--kt);font-family:'Golos Text',system-ui,sans-serif}
+.v-kino .kn-bg{position:absolute;inset:0;background:#0b0b0d}
+.v-kino .kn-bg::before{content:'';position:absolute;inset:-60px -60px 40% -60px;background:var(--bg) center/cover no-repeat;filter:blur(40px) saturate(1.2);opacity:.22;transition:background-image .4s}
+.v-kino .kn-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 0,transparent,#0b0b0d 70%)}
+.v-kino .dl-ttl h1{display:flex;align-items:center;gap:10px;font-size:30px}
+.kn-help{width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:var(--kt,#F3EBDD);font:700 14px 'Golos Text',sans-serif;cursor:pointer;display:grid;place-items:center;padding:0}
+.v-kino .dl-cnt b{color:var(--kt)}
+.kn-q svg,.kn-fbt svg,.kn-fq svg,.kn-chev svg,.kn-nav svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.kn-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:0 0 12px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--kl)}
+.kn-seg button{height:38px;border:0;border-radius:10px;background:transparent;color:var(--km);font:700 13.5px 'Golos Text',sans-serif;cursor:pointer}
+.kn-seg button.on{background:var(--kt);color:#141210}
+.kn-seg i{font-style:normal;opacity:.55;font-weight:600}
+.kn-srch{display:flex;gap:8px;margin:0 0 10px}
+.kn-q,.kn-fbt,.kn-fq{display:flex;align-items:center;gap:9px;height:46px;border-radius:14px;border:1px solid var(--kl);background:rgba(255,255,255,.06);color:var(--km);font:500 14.5px 'Golos Text',sans-serif;cursor:pointer;padding:0 14px}
+.kn-q{flex:1;min-width:0;text-align:left}.kn-q span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kn-fbt{flex:none;color:var(--kt);font-weight:700}
+.kn-q svg,.kn-fbt svg,.kn-fq svg{width:19px;height:19px;flex:none}
+.kn-tps{display:flex;gap:6px;overflow-x:auto;margin:0 0 12px;padding:2px 0;scrollbar-width:none}
+.kn-tps::-webkit-scrollbar,.kn-row::-webkit-scrollbar,.kn-chips::-webkit-scrollbar{display:none}
+.kn-tps button,.kn-chips button{flex:none;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 13px;border-radius:99px;border:1px solid var(--kl);background:rgba(255,255,255,.05);color:var(--kt);font:600 13px 'Golos Text',sans-serif;white-space:nowrap;cursor:pointer}
+.kn-tps i,.kn-chips i{font-style:normal;opacity:.5;font-size:12px;font-weight:500}
+.kn-chips button.on{background:var(--kt);color:#141210;border-color:var(--kt)}.kn-chips button.on i{opacity:.6}
+.kn-lang{display:inline-flex;gap:2px;padding:3px;margin:0 0 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--kl)}
+.kn-lang button{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:0;border-radius:9px;background:transparent;color:var(--km);font:600 12.5px 'Golos Text',sans-serif;cursor:pointer}
+.kn-lang button .flag{width:18px;height:auto;border-radius:3px}
+.kn-lang button.on{background:rgba(255,255,255,.14);color:var(--kt)}
+/* прогресс */
+.kn-bar{display:block;height:4px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden}
+.kn-bar>i{display:block;height:100%;border-radius:inherit;background:var(--c,#F3EBDD);min-width:0}
+/* шапки: размытый фон + чёткий постер (кадр не растягивается — нет «шакала») */
+.kn-hero,.kn-fh,.kn-sh{position:relative;display:flex;align-items:flex-end;gap:16px;width:100%;padding:16px;margin:0 0 6px;border-radius:20px;overflow:hidden;border:1px solid var(--kl);background:#111114;color:var(--kt);text-align:left;isolation:isolate}
+.kn-hero{cursor:pointer;min-height:200px}
+.kn-hbg{position:absolute;inset:-30px;z-index:-1;background:var(--bg) center/cover no-repeat;filter:blur(18px) brightness(.5) saturate(1.15);transform:scale(1.08)}
+.kn-hero::after,.kn-fh::after,.kn-sh::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(11,11,13,.82),rgba(11,11,13,.25) 70%),linear-gradient(0deg,rgba(11,11,13,.6),transparent 60%)}
+.kn-hp{flex:none;width:112px;aspect-ratio:2/3;border-radius:12px;background-size:cover;background-position:center;box-shadow:0 12px 30px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.12)}
+.kn-hp.wide{width:168px;aspect-ratio:16/9;border-radius:10px}
+.kn-ht{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.kn-ht em{font-style:normal;font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
+.kn-ht b{font:800 24px/1.1 'Golos Text',sans-serif;letter-spacing:-.02em}
+.kn-ht small{font-size:13px;color:var(--km)}
+.kn-ht .kn-bar{max-width:320px}
+.kn-go{align-self:flex-start;margin-top:6px;padding:9px 16px;border-radius:99px;background:var(--kt);color:#141210;font:700 13.5px 'Golos Text',sans-serif}
+.kn-hero:active,.kn-p:active,.kn-sc:active{transform:scale(.985)}
+@media (hover:hover){.kn-hero:hover .kn-hbg{filter:blur(16px) brightness(.58) saturate(1.2)}}
+/* полки постеров */
+.kn-h{display:flex;align-items:baseline;gap:8px;margin:20px 2px 10px;font:800 17px 'Golos Text',sans-serif;letter-spacing:-.01em}
+.kn-h small{font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
+.kn-row{display:flex;gap:12px;overflow-x:auto;margin:0;padding:2px 0 6px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.kn-p{flex:none;width:128px;scroll-snap-align:start;display:flex;flex-direction:column;gap:6px;padding:0;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer;transition:transform .2s}
+.kn-pi{position:relative;display:block;width:100%;aspect-ratio:2/3;border-radius:12px;background-size:cover;background-position:center;box-shadow:0 10px 24px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08);transition:transform .25s,box-shadow .25s}
+.kn-p b{font:700 13.5px/1.2 'Golos Text',sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.kn-p small{font-size:12px;color:var(--km)}
+.kn-done{position:absolute;right:6px;top:6px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#6DD58C;color:#0d1a10;font:900 13px sans-serif;font-style:normal}
+@media (hover:hover){.kn-p:hover .kn-pi{transform:translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.2)}}
+@media (min-width:760px){.kn-row{flex-wrap:wrap;overflow:visible;margin:0;padding:2px 0 6px}.kn-p{width:150px}.kn-hp{width:140px}.kn-ht b{font-size:32px}.kn-hero{min-height:240px;padding:22px}.kn-tps{flex-wrap:wrap;margin:0 0 12px;padding:0}}
+/* сцены фильма */
+.kn-scl{display:flex;flex-direction:column;gap:10px}
+.kn-sc{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);text-align:left;cursor:pointer}
+.kn-sct{flex:none;width:132px;aspect-ratio:16/9;border-radius:10px;background-size:cover;background-position:center}
+.kn-scx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.kn-scx em{font-style:normal;font-size:11.5px;color:var(--km)}
+.kn-scx b{font:700 15px/1.25 'Golos Text',sans-serif}
+.kn-scx small{font-size:12.5px;color:var(--km)}
+.kn-chev{flex:none;width:22px;height:22px;opacity:.5;transition:transform .25s}.kn-chev svg{width:100%;height:100%}
+@media (max-width:420px){.kn-sct{width:104px}}
+/* эпизоды сцены */
+.kn-ep{margin:10px 0;border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.03)}
+.kn-ep summary{list-style:none;display:flex;align-items:center;gap:12px;padding:10px;cursor:pointer}
+.kn-ep summary::-webkit-details-marker{display:none}
+.kn-et{flex:none;width:76px;aspect-ratio:16/9;border-radius:8px;background-size:cover;background-position:center}
+.kn-ex{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.kn-ex em{font-style:normal;font-size:11.5px;color:var(--km)}
+.kn-ex b{font:700 14.5px/1.2 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kn-en{flex:none;font-size:13px;color:var(--km)}.kn-en b{color:var(--kt);font-size:16px}
+.kn-ep[open] .kn-chev{transform:rotate(90deg)}
+.kn-ep .kn-grid{padding:2px 10px 12px}
+.kn-nav{display:flex;justify-content:space-between;gap:10px;margin:16px 0 4px}
+.kn-nav button{display:flex;align-items:center;gap:8px;max-width:48%;padding:10px 12px;border-radius:14px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);text-align:left;cursor:pointer}
+.kn-nav button.nx{text-align:right;margin-left:auto}
+.kn-nav svg{width:18px;height:18px;flex:none}
+.kn-nav span{min-width:0;display:flex;flex-direction:column}.kn-nav em{font-style:normal;font-size:11px;color:var(--km)}.kn-nav b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* карты */
+.kn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:12px}
+@media (max-width:440px){.kn-grid{grid-template-columns:1fr 1fr;gap:10px}}
+.kc{position:relative;display:flex;flex-direction:column;width:100%;padding:0;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;background:#17171b;color:var(--kt,#F3EBDD);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.kc::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;z-index:3;background:transparent}
+.kc.r-rare::before{background:#4DA8FF}.kc.r-epic::before{background:linear-gradient(90deg,#B57CFF,#FF7AD9)}.kc.r-leg::before{background:linear-gradient(90deg,#FF9A2E,#FFD27A,#FF9A2E)}
+.kc-art{position:relative;display:block;width:100%;aspect-ratio:16/9;background-size:auto calc(var(--bz,1)*100%);background-position:var(--bx,50%) var(--by,50%);background-repeat:no-repeat;background-color:#222}
+.kc-pl{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.55);color:#fff;z-index:2;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.kc-pl svg{width:15px;height:15px;margin-left:2px;fill:currentColor;stroke:none}
+.kc-rr{position:absolute;left:8px;top:10px;z-index:2;padding:3px 7px;border-radius:6px;font:800 9.5px 'Golos Text',sans-serif;letter-spacing:.06em;text-transform:uppercase;font-style:normal;background:rgba(0,0,0,.6);color:#fff}
+.kc.r-rare .kc-rr{color:#9ED0FF}.kc.r-epic .kc-rr{color:#E2C4FF}.kc.r-leg .kc-rr{color:#FFD27A}
+.kc-b{flex:1;display:flex;flex-direction:column;gap:4px;padding:10px 11px 11px}
+.kc-en{font:800 14.5px/1.25 'Golos Text',sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.kc-ru{font-size:12.5px;line-height:1.3;color:rgba(243,235,221,.66);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.kc-ft{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;padding-top:6px}
+.kc-st{display:inline-flex;align-items:center;padding:3px 8px;border-radius:99px;font:700 11px/1.3 'Golos Text',sans-serif;font-style:normal;white-space:nowrap;background:rgba(255,255,255,.08);color:rgba(243,235,221,.85)}
+.kc-st.st-new,.st-new .kc-st{background:rgba(111,183,255,.16);color:#9ccfff}
+.kc-st.st-due,.st-due .kc-st{background:rgba(255,181,71,.16);color:#ffc46b}
+.kc-st.st-ok,.st-ok .kc-st{background:rgba(109,213,140,.16);color:#8fe0a6}
+.kc-st.st-lock{background:rgba(255,255,255,.06);color:rgba(255,255,255,.55)}
+.kc-mp{display:flex;gap:3px}.kc-mp i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18)}.kc-mp i.on{background:var(--kt,#F3EBDD)}
+.st-ok .kc-mp i.on{background:#8fe0a6}
+.kc.st-due{border-color:rgba(255,181,71,.35)}
+@media (hover:hover){.kc:not(.lock):hover{transform:translateY(-3px);border-color:rgba(255,255,255,.2);box-shadow:0 14px 28px rgba(0,0,0,.5)}}
+.kc:active{transform:scale(.97)}
+/* закрытая карта — под туманом */
+.kc.lock{cursor:pointer;background:#121215}
+.kc.lock .kc-art{filter:blur(7px) brightness(.45) saturate(.6);transform:scale(1.1)}
+.kc.lock .kc-b{filter:blur(6px);opacity:.45;user-select:none;-webkit-user-select:none}
+.kc-fog{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.kc-fog i{position:absolute;inset:-40%;background:radial-gradient(closest-side,rgba(200,205,215,.16),transparent 70%) 0 0/60% 60%,radial-gradient(closest-side,rgba(200,205,215,.12),transparent 70%) 40% 60%/70% 50%;animation:knFog 14s linear infinite}
+.kc-fog i+i{animation-duration:22s;animation-direction:reverse;opacity:.8}
+@keyframes knFog{to{transform:translate(18%,8%)}}
+.kc-lk{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px;text-align:center}
+.kc-lk b{font:700 13.5px 'Golos Text',sans-serif;color:rgba(255,255,255,.9)}
+.kc-lk small{font-size:11.5px;color:rgba(255,255,255,.55);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* поиск и фильтры */
+.kn-fq{cursor:text;margin:0 0 12px}
+.kn-fq input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--kt);font:500 15px 'Golos Text',sans-serif}
+.kn-fq input::placeholder{color:var(--km)}
+.kn-fgs{display:flex;flex-direction:column;gap:10px;margin:0 0 16px}
+.kn-fg{display:flex;flex-direction:column;gap:6px}
+.kn-fg>b{font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km);margin-left:2px}
+.kn-chips{display:flex;gap:6px;overflow-x:auto;margin:0;padding:2px 0;scrollbar-width:none}
+@media (min-width:760px){.kn-chips{flex-wrap:wrap;margin:0;padding:0}}
+.kn-rh{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:6px 2px 8px}
+.kn-rh span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.kn-rh>span>b{font:800 20px 'Golos Text',sans-serif}
+.kn-rh small{font-size:13px;color:var(--km)}.kn-rh small b{color:var(--kt)}
+.kn-reset{flex:none;height:32px;padding:0 12px;border-radius:99px;border:1px solid var(--kl);background:transparent;color:var(--km);font:600 12.5px 'Golos Text',sans-serif;cursor:pointer}
+.kn-rf{display:flex;align-items:center;gap:10px;margin:18px 2px 10px;font:700 15px 'Golos Text',sans-serif}
+.kn-rf small{margin-left:auto;font-size:12.5px;color:var(--km);font-weight:500}
+.kn-rfp{width:24px;aspect-ratio:2/3;border-radius:4px;background-size:cover;background-position:center;flex:none}
+.kn-tt{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.kn-tt button{display:flex;flex-direction:column;gap:5px;padding:12px;border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);text-align:left;cursor:pointer}
+.kn-tti{font-size:24px;line-height:1}
+.kn-tt b{display:block;font:700 15px 'Golos Text',sans-serif}.kn-tt b::first-letter{text-transform:uppercase}
+.kn-tt small{font-size:12px;color:var(--km)}
+.kn-empty{padding:40px 16px;text-align:center;font:700 16px 'Golos Text',sans-serif;display:flex;flex-direction:column;align-items:center;gap:8px}
+.kn-empty small{font-weight:400;font-size:13.5px;color:var(--km)}
+.kn-my{background:none!important;padding:0!important}
+/* шторка (подсказка, закрытая карта) */
+.kn-sheet{position:fixed;inset:0;z-index:92;display:flex;align-items:flex-end;justify-content:center}
+.kn-sd{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.kn-sb{position:relative;width:min(100%,480px);max-height:86vh;overflow:auto;padding:20px 18px calc(18px + var(--sb,0px));border-radius:22px 22px 0 0;background:#16161a;border:1px solid rgba(255,255,255,.08);color:#F3EBDD;display:flex;flex-direction:column;gap:10px;font-family:'Golos Text',system-ui,sans-serif}
+@media (min-width:760px){.kn-sheet{align-items:center}.kn-sb{border-radius:22px}}
+.kn-sh2{font:800 19px 'Golos Text',sans-serif}
+.kn-sic{font-size:30px}
+.kn-sm{margin:0;font-size:14px;line-height:1.45;color:rgba(243,235,221,.72)}.kn-sm b{color:#F3EBDD}
+.kn-lg{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.04)}
+.kn-lg>div{display:grid;grid-template-columns:118px 1fr;gap:10px;align-items:start}
+.kn-lg p{margin:0;font-size:13px;line-height:1.4;color:rgba(243,235,221,.72)}
+.kn-lg .kc-st{justify-self:start}
+.kn-rd{display:inline-block;width:18px;height:4px;border-radius:2px;margin:0 6px 2px 4px;vertical-align:middle}
+.kn-rd.r-rare{background:#4DA8FF}.kn-rd.r-epic{background:linear-gradient(90deg,#B57CFF,#FF7AD9)}.kn-rd.r-leg{background:linear-gradient(90deg,#FF9A2E,#FFD27A)}
+.kn-btn,.kn-btn2{height:48px;border-radius:14px;border:0;font:700 15px 'Golos Text',sans-serif;cursor:pointer}
+.kn-btn{background:#F3EBDD;color:#141210}
+.kn-btn2{background:rgba(255,255,255,.07);color:#F3EBDD;padding:0 18px}
+/* открытая карта */
+.kno{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:12px}
+.kno-dim{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.knc{position:relative;width:min(100%,560px);max-height:calc(100vh - 24px - var(--sb,0px));overflow:auto;border-radius:22px;background:#141417;border:1px solid rgba(255,255,255,.09);color:#F3EBDD;box-shadow:0 30px 80px rgba(0,0,0,.6);font-family:'Golos Text',system-ui,sans-serif;overscroll-behavior:contain}
+.knc::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;z-index:4}
+.knc.r-rare::before{background:#4DA8FF}.knc.r-epic::before{background:linear-gradient(90deg,#B57CFF,#FF7AD9)}.knc.r-leg::before{background:linear-gradient(90deg,#FF9A2E,#FFD27A,#FF9A2E)}
+.knv{position:relative;aspect-ratio:16/9;background:#000}
+.knv video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+.knv-p{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:0;display:grid;place-items:center;background:rgba(255,255,255,.92);color:#111;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.knv-p svg{width:28px;height:28px;margin-left:4px;fill:currentColor;stroke:none}
+.knc-x{position:absolute;right:10px;top:10px;width:38px;height:38px;border-radius:50%;border:0;display:grid;place-items:center;background:rgba(0,0,0,.55);color:#fff;cursor:pointer;z-index:2}
+.knc-x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4}
+.knc-b{display:flex;flex-direction:column;gap:10px;padding:14px 16px 18px}
+.knc-src{font-size:12.5px;color:rgba(243,235,221,.55)}
+.knc-en{font:800 22px/1.25 'Golos Text',sans-serif;letter-spacing:-.01em}
+.knc-ru{font-size:15.5px;line-height:1.4;color:rgba(243,235,221,.78)}
+.knc-acts{display:flex;gap:6px;flex-wrap:wrap}
+.knc-acts button{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 13px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#F3EBDD;font:600 13.5px 'Golos Text',sans-serif;cursor:pointer}
+.knc-acts button svg{width:14px;height:14px;fill:currentColor;stroke:none}
+.knc-acts [data-v="ep"]{margin-left:auto}
+.knc-st{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.knc-st>div{display:flex;align-items:center;justify-content:space-between}
+.knc-st p{margin:0;font-size:13.5px;line-height:1.45;color:rgba(243,235,221,.75)}
+.knc-st.st-due{border-color:rgba(255,181,71,.3)}.knc-st.st-ok{border-color:rgba(109,213,140,.3)}
+.knc-rr{display:flex;align-items:center;font-size:13px;color:rgba(243,235,221,.72)}
+.knc-b .ph-info,.knc-b .phi{margin:0}
+@media (max-width:520px){.kno{align-items:flex-end;padding:0}.knc{width:100%;max-height:calc(100vh - 40px);border-radius:22px 22px 0 0;padding-bottom:var(--sb,0px)}.knc-en{font-size:20px}}
+/* «Момент» в карте у вариантов без окна арта (раньше играл только звук) */
+.dli-mv{position:absolute;left:50%;top:calc(var(--st,0px) + 14px);transform:translateX(-50%);z-index:6;width:min(92vw,520px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 16px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.15)}
+.dli-mv .dli-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:1;background:#000}
+
+/* 13.8: фильтры компактно — темы чипами, статус/тон/фильм — кнопками со списком */
+.v-kino .kn-chips[data-g="tp"]{margin-bottom:10px}
+.kn-dd{display:flex;gap:6px;margin:0 0 16px;overflow-x:auto;scrollbar-width:none}.kn-dd::-webkit-scrollbar{display:none}
+.kn-ddb{flex:none;display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 12px;border-radius:10px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--km);font:500 13px 'Golos Text',sans-serif;cursor:pointer;max-width:100%}
+.kn-ddb b{color:var(--kt);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.kn-ddb i{font-style:normal;opacity:.6;font-size:11px}
+.kn-ddb.on{border-color:rgba(243,235,221,.5);background:rgba(243,235,221,.1)}
+.kn-ddl{display:flex;flex-direction:column;gap:4px}
+.kn-ddl button{height:46px;padding:0 14px;border-radius:12px;border:0;background:rgba(255,255,255,.05);color:#F3EBDD;font:600 15px 'Golos Text',sans-serif;text-align:left;cursor:pointer}
+.kn-ddl button.on{background:#F3EBDD;color:#141210}
+.kn-btn,.kn-btn2{display:flex;align-items:center;justify-content:center;text-align:center;width:100%}
+/* шапка сцены на телефоне: кадр сверху во всю ширину (на телефоне он чёткий), текст под ним */
+@media (max-width:560px){.kn-sh{flex-direction:column;align-items:stretch;gap:12px}.kn-sh .kn-hp.wide{width:100%;border-radius:12px}.kn-sh .kn-ht b{font-size:21px}}
+@media (min-width:760px){.kn-hp.wide{width:250px}}
+.dli-x{z-index:7}
