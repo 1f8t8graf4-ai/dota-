@@ -297,7 +297,7 @@ async function cloudSync(){
   CLOUD_BUSY=false;
   if(CLOUD_ERR){if(first&&++CLOUD_TRY<=2)setTimeout(cloudSync,CLOUD_TRY*20000);return;}   // не прочиталось — поверх облака ничего не пишем; повтор (и при возврате в приложение)
   CLOUD_OK=true;CLOUD_AT=Date.now();save();scSave();saveM();saveRV();
-  if((first||snap()!==h0)&&screen==='home'&&!document.querySelector('.dxo,.rwo,.dfly,.sc-sheetwrap,.bgvw,.pk,.srv,.stl')&&!document.body.classList.contains('kw-open'))try{renderHome();}catch(e){}
+  if((first||snap()!==h0)&&screen==='home'&&!document.querySelector('.dxo,.rwo,.dfly,.sc-sheetwrap,.bgvw,.pk,.srv,.stl,.kno,.kn-sheet,.dli,.dlp')&&!document.body.classList.contains('kw-open'))try{renderHome();}catch(e){}
 }
 // вернулся в приложение (телефон и ПК открыты оба): подтянуть сделанное на другом устройстве — только на вкладках, не посреди сцены
 function cloudResync(){if(!TG||!TG.CloudStorage||CLOUD_BUSY)return;if(CLOUD_OK&&Date.now()-CLOUD_AT<60000)return;if(screen!=='home'&&screen!=='subtab')return;cloudSync();}
@@ -2304,7 +2304,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.7.2';
+const APP_V='13.8.1';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -3695,7 +3695,7 @@ function dictTabHTML(){if(dlOn())return `<div class="dl-root" id="dlRoot"><div c
   const [g,t]=dictCount(dxScenes()),my=mywAll().length;
   return `<div class="dx anim"><div class="dx-head"><div class="dx-ttl"><h1 class="title">Словарь</h1><small class="dx-sub">Коллекция фраз из кино</small></div><div class="dx-count"><b>${g}</b><span> / ${t}</span></div></div>
     <div class="dx-bar"><i style="width:${t?Math.round(g/t*100):0}%"></i></div>
-    ${dlAllowed()&&!FLAG_ADMIN?`<button class="dl-try" id="dlTry"><i>🧪</i><span><b>Варианты словаря</b><small>Тест: 17 стилей — полистай, какой лучше</small></span><em>${ui('fwd')}</em></button>`:''}
+    ${dlAllowed()&&!FLAG_ADMIN?`<button class="dl-try" id="dlTry"><i>🧪</i><span><b>Варианты словаря</b><small>Тест: новый словарь и ещё 17 стилей</small></span><em>${ui('fwd')}</em></button>`:''}
     <div class="dx-seg"><button data-dseg="ph" class="${DX.seg==='ph'?'on':''}">🎬 Фразы из кино</button><button data-dseg="my" class="${DX.seg==='my'?'on':''}">⭐ Мои слова${my?` <i>${my}</i>`:''}</button></div>
     <div id="dxBody"></div></div>`;}
 function bindDict(){if(dlOn()){dlLoad().then(()=>{const r=$('#dlRoot');if(r)DL.mount(r);}).catch(()=>{const r=$('#dlRoot');if(r)r.innerHTML='<div class="dl-wait">Не загрузилось — проверь связь</div>';});return;}
