@@ -582,7 +582,7 @@ function loadLore(){
   LORE_STATE='loading';
   fetch('lore.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(d=>{
     if(d&&d.entries&&Object.keys(d.entries).length){LORE=d.entries;LORE_STATE='ok';}else LORE_STATE='fail';
-  }).catch(()=>{LORE_STATE='fail';}).then(()=>{if(screen==='home')renderHome();});
+  }).catch(()=>{LORE_STATE='fail';}).then(()=>{if(screen==='home')renderHome();else if(screen==='dota')renderDotaWorld();});
 }
 const POSNAME={n:'существительное',a:'прилагательное',v:'глагол',d:'наречие'};
 function loreDistr(v,L,need){
@@ -2324,7 +2324,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.7.0';
+const APP_V='13.7.1';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -3967,18 +3967,18 @@ function kvRaceShow(){const R=KV.room,s=scOf(R.sid);if(KV.k>=R.qs.length){kvWait
 function kvWait(){if(document.querySelector('.kv-waitb'))return kvBars();kvScreen(`<div class="kv-topw">${kvTop()}</div><div class="kv-lobby kv-waitb"><div class="kv-pulse">⏳</div><b>Ты всё! Ждём ${esc((KV.room[kvFoe()]||{}).n||'друга')}…</b><p>Как только он ответит на всё — покажу итог.</p></div>`);}
 // вместе: ходы по очереди, «помоги»
 function kvCoopShow(){const R=KV.room,s=scOf(R.sid),k=R.turn;if(k>=R.qs.length)return;const q=R.qs[k],f=kvF(s,q.fid),who=k%2===0?'A':'B',mine=who===KV.role,helping=!mine&&R.help===k;KV.qt=Date.now();
-  const lead=mine?`<div class="kv-turn me">Твой ход${R.help===k?' · друг уже видит вопрос':''}</div>`:helping?`<div class="kv-turn help">🆘 ${esc(R[who].n)} просит помочь — ответь за него!</div>`:`<div class="kv-turn">Ход: ${esc(R[who].n)}…</div>`;
+  const lead=mine?`<div class="kv-turn me">Твой ход${R.help===k?' · друг уже видит вопрос':''}</div>`:helping?`<div class="kv-turn help">🆘 ${esc(R[who].n)} просит помочь — подскажи ответ!</div>`:`<div class="kv-turn">Ход: ${esc(R[who].n)}…</div>`;
   kvScreen(`<div class="kv-topw">${kvTop()}</div><div class="kv-n">Вопрос ${k+1} из ${R.qs.length}</div>${kvQHTML(q,f,lead)}${mine&&R.help!==k?`<button class="kv-helpb" id="kvHelp">🆘 Помоги — пусть ответит ${esc((R[kvFoe()]||{}).n||'друг')}</button>`:''}`);
   if(!mine&&!helping)$$('.kv-o button').forEach(b=>b.disabled=true);
-  if($('#kvHelp'))$('#kvHelp').onclick=async()=>{sfx('tap');$('#kvHelp').disabled=true;$('#kvHelp').textContent='Позвал друга…';try{const j=await kvNet({a:'help',code:KV.code,k});if(j.ok)KV.room=j.v;}catch(e){}};
-  kvBindQ(q,f,async r=>{try{const j=await kvNet({a:'ans',code:KV.code,k,ok:r,ms:Date.now()-KV.qt});if(j.ok){setTimeout(()=>kvApply(j.v),r?800:1500);}else toast(j.msg||'Друг уже ответил');}catch(e){kvErr();}});}
+  if($('#kvHelp'))$('#kvHelp').onclick=async()=>{sfx('tap');$('#kvHelp').disabled=true;$('#kvHelp').textContent='Зову на помощь…';try{const j=await kvNet({a:'help',code:KV.code,k});if(j.ok)KV.room=j.v;}catch(e){}};
+  kvBindQ(q,f,async r=>{try{const j=await kvNet({a:'ans',code:KV.code,k,ok:r,ms:Date.now()-KV.qt});if(j.ok){setTimeout(()=>kvApply(j.v),r?800:1500);}else toast(j.msg||'Ответ на этот вопрос уже засчитан');}catch(e){kvErr();}});}
 // итог
 function kvEnd(foeLeft){kvStop();const R=KV.room,s=scOf(R.sid),me=R[KV.role],fo=R[kvFoe()]||{n:'друг',ans:{}};store.kvDone=store.kvDone||{};const first=!store.kvDone[KV.code];store.kvDone[KV.code]=1;
   let title,sub,gain=0,win=null,steal=null;
   let tbl='';
   if(R.mode==='race'){const sc=p=>Object.values(p.ans||{}).filter(a=>a.ok).length;
     const a=kvSum(me),b=kvSum(fo);win=foeLeft?true:a===b?null:a>b;
-    title=foeLeft?`${esc(fo.n)} сдался — победа!`:win===true?'Победа! 🏆':win===false?(sc(fo)>sc(me)?`${esc(fo.n)} ответил точнее`:`${esc(fo.n)} оказался быстрее`):'Ничья';
+    title=foeLeft?`Победа! ${esc(fo.n)} больше нет в дуэли`:win===true?'Победа! 🏆':win===false?(sc(fo)>sc(me)?`Побеждает ${esc(fo.n)} — больше верных ответов`:`Побеждает ${esc(fo.n)} — быстрее при равном счёте`):'Ничья';   // 13.7: без угадывания рода
     sub=`Ты ${a} очк. (${sc(me)} из ${R.qs.length} верно)${foeLeft?'':` · ${esc(fo.n)} ${b} очк. (${sc(fo)} верно)`}`;
     const cell=x=>x?`<td class="${x.ok?'ok':'bad'}">${x.ok?'✓':'✗'}<small>${(x.ms/1000).toFixed(1)} с</small><em>${kvPts(x)}</em></td>`:'<td>—</td>';
     if(!foeLeft)tbl=`<table class="kv-tbl"><thead><tr><th>#</th><th>Ты</th><th>${esc(fo.n)}</th></tr></thead><tbody>${R.qs.map((q,i)=>`<tr><td>${i+1}</td>${cell((me.ans||{})[i])}${cell((fo.ans||{})[i])}</tr>`).join('')}</tbody>
@@ -3986,7 +3986,7 @@ function kvEnd(foeLeft){kvStop();const R=KV.room,s=scOf(R.sid),me=R[KV.role],fo=
     if(R.bet&&first){gain=win===true?R.bet*2:win===null?R.bet:0;if(win===null)setTimeout(()=>addGold(gain,$('.kv-bank')),50);else steal={win,bet:R.bet,me:{n:me.n},foe:{n:fo.n},style:win?shopUse('st'):stOf(fo.fx)};}}
   else{const ok=Object.values(R.co).filter(a=>a.ok).length;title=ok===R.qs.length?'Идеально вместе! 🤝':'Пройдено вместе';sub=`Общий счёт: ${ok} из ${R.qs.length}`;if(first){gain=ok*5;addGold(gain);}}
   save();scSave();sfx(win===false?'learn':'win');ev('pvp_end',R.sid);
-  kvScreen(`<div class="kv-end"><div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div><b>${title}</b><p>${sub}</p>${R.mode==='race'&&R.bet?`<p class="kv-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Банк забрал ${esc(fo.n)}: ${ui('coin')} ${R.bet*2}`}</p>`:''}${gain&&!(R.mode==='race'&&R.bet)?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}${tbl}
+  kvScreen(`<div class="kv-end"><div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div><b>${title}</b><p>${sub}</p>${R.mode==='race'&&R.bet?`<p class="kv-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Банк забирает ${esc(fo.n)}: ${ui('coin')} ${R.bet*2}`}</p>`:''}${gain&&!(R.mode==='race'&&R.bet)?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}${tbl}
     <button class="sc-btn" id="kvAgain">⚔️ Реванш</button><button class="sc-btn ghost" id="kvScene">К сцене</button><button class="sc-btn ghost" id="kvDict">📖 Словарь</button></div>`);
   $('#kvAgain').onclick=()=>{sfx('tap');const sid=R.sid,ep=R.ep;KV=null;renderScene(sid);setTimeout(()=>kvSheet(sid,ep),300);};
   $('#kvScene').onclick=()=>{sfx('tap');const sid=R.sid;KV=null;renderScene(sid);};
@@ -4834,6 +4834,7 @@ function bindLearn(){
 }
 /* ---- мир Доты: прежний экран обучения в дотерском стиле ---- */
 function renderDotaWorld(){
+  loadLore();   // 13.7: лор Доты (~390 КБ) грузится при входе в Доту, а не при каждом запуске
   scStop();CURW='dota';setWorld('dota');screen='dota';backBtn(true);
   const t=totals(),h=heroFor(),lp=modeProgress('lore');
   const modes=MODES.filter(m=>!m.tier).map(m=>{const p=modeProgress(m.id),pct=p.total?Math.round(p.learned/p.total*100):0;
@@ -5731,21 +5732,24 @@ function continueScene(){
   const easy=nxt()||list[0]||SCENES[0];
   return {s:easy,i:Math.max(0,todo(easy)),fresh:!scP(easy.id).done.length};
 }
-// сцена для урока: где больше всего невыученных фраз из просмотренных эпизодов
+// сцена для урока: эпизод (просмотренный), где больше всего невыученных фраз. 13.7: урок — фразы ОДНОГО эпизода
+// (renderScEp берёт только фразы своего эпизода — раньше набор из разных эпизодов давал «5 фраз», а в уроке было 2–3)
 function scLessonScene(){
-  let best=null;
-  for(const s of SCENES){const P=scP(s.id);const cand=s.parts.flatMap((p,i)=>(P.w[i]||P.done.includes(i))?p.ph:[]).filter(f=>!f.passive&&(P.m[f.id]||0)<3&&!P.r[f.id]);
-    if(cand.length&&(!best||cand.length>best.cand.length))best={s,cand};}
-  if(!best){const s=continueScene().s,P=scP(s.id);const cand=s.parts.flatMap(p=>p.ph).filter(f=>!f.passive&&(P.m[f.id]||0)<3&&!P.r[f.id]);if(cand.length)best={s,cand,fresh:true};}
+  const un=(P,f)=>!f.passive&&(P.m[f.id]||0)<3&&!P.r[f.id];let best=null;
+  for(const s of SCENES){if(flagOf('scene-'+s.id)==='hide')continue;const P=scP(s.id);
+    s.parts.forEach((p,i)=>{if(!(P.w[i]||P.done.includes(i)))return;const cand=p.ph.filter(f=>un(P,f));
+      if(cand.length&&(!best||cand.length>best.cand.length))best={s,i,cand};});}
+  if(!best){const c=continueScene(),s=c.s,P=scP(s.id);
+    for(let k=0;k<s.parts.length&&!best;k++){const i=(c.i+k)%s.parts.length,cand=s.parts[i].ph.filter(f=>un(P,f));if(cand.length)best={s,i,cand,fresh:true};}}
+  if(best)best.n=Math.min(5,best.cand.length);
   return best;
 }
 function startScLesson(){
   const b=scLessonScene();
   if(!b){toast('Все фразы выучены — скоро будут новые сцены');return;}
-  // Урок начинается с эпизода, а не с пяти разрозненных карточек.
-  // Берём максимум 5 активных фраз из одного эпизода — их и разбираем на втором просмотре.
+  // Урок начинается с эпизода, а не с разрозненных карточек: до 5 активных фраз одного эпизода — их и разбираем на втором просмотре.
   const list=b.cand.slice().sort((x,y)=>x.a-y.a).slice(0,5);
-  renderScEp(b.s.id,list[0].pi,{lessonList:list});
+  renderScEp(b.s.id,b.i,{lessonList:list});
 }
 function learnTabHTML(){
   setWorld('neutral');CURW='dota';
@@ -5754,7 +5758,7 @@ function learnTabHTML(){
   const d=dayStat(),goal=store.goal||20,gp=Math.min(100,Math.round(d.n/goal*100)),les=scLessonScene();
   const Q=dailyItems(),n=Q.length,mw=mywAll().length,A=dictAll().length;
   const main=n?{id:'hRev',k:'Повторение',b:`${n} ${plural(n,['задание','задания','заданий'])} · ≈ ${Math.max(2,Math.round(n*0.4))} мин`,s:'фразы и твои слова, которые пора вспомнить'}
-    :les?{id:'hLesson',k:'Урок на сегодня',b:`5 фраз · ≈ 3 мин`,s:`из «${esc(les.s.title)}»`}
+    :les?{id:'hLesson',k:'Урок на сегодня',b:`${les.n} ${plural(les.n,['фраза','фразы','фраз'])} · ≈ ${Math.max(1,Math.round(les.n*.6))} мин`,s:`из «${esc(les.s.title)}» · эпизод ${les.i+1}`}
     :{id:'hNext',k:'Дальше',b:`Эпизод ${c.i+1} · ${esc(p.t)}`,s:esc(s.title)};
   return `<div class="home">${headHTML()}${hmChipHTML()}
     <button class="hcont ${s.theme} anim" id="hCont" data-sc="${s.id}"><span class="hc-img" style="background-image:url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="hc-grad"></span>
@@ -6461,7 +6465,7 @@ function kvSteal(o){o=o||{};return new Promise(done=>{
     p.animate([{transform:'translate(-50%,-50%) scale(2.1)',opacity:0},{transform:'translate(-50%,-50%) scale(1)',opacity:1,offset:.22},{transform:'translate(-50%,-90%) scale(1)',opacity:1,offset:.75},{transform:'translate(-50%,-130%) scale(.96)',opacity:0}],{duration:1500,easing:EZ.out,fill:'forwards'});return p;};
   const shake=(el,amp)=>el.animate([0,1,2,3,4,5].map(i=>({transform:`translate(${i===5?0:(i%2?-1:1)*amp*(1-i/6)}px,${i===5?0:(i%2?1:-1)*amp*.4}px)`})),{duration:300,easing:'linear'});
   const stream=o2=>{const a=ctr(vP),b=ctr(tP);for(let i=0;i<K;i++)ticket({x:a.x+(Math.random()-.5)*26,y:a.y+(Math.random()-.5)*14},b,{...o2,delay:(o2.delay||0)+i*(o2.gap||70),cb:tick});};
-  const end=()=>{cap.innerHTML=win?`${ui('coin')} ${fmt(N)} — теперь твои`:`${esc(foe.n)} забрал твои ${ui('coin')} ${fmt(N)}`;
+  const end=()=>{cap.innerHTML=win?`${ui('coin')} ${fmt(N)} — теперь твои`:`${esc(foe.n)} забирает твои ${ui('coin')} ${fmt(N)}`;
     cap.animate([{transform:'translateY(14px)',opacity:0},{transform:'none',opacity:1}],{duration:420,easing:SPRING,fill:'forwards'});
     if(win){fxAt(tP,{n:26,v:6.5});sfx('reward');haptic('ok');}else{sfx('lose');haptic('err');}
     later(finish,o.demo?1500:1300);};
@@ -6600,7 +6604,7 @@ try{
 try{SCENES.forEach(x=>{if(segDone(x)&&!segHas(x))segGive(x);showGive(x);});}catch(e){}
 initTG();
 applyFx();shopApply();
-loadLore();
+// 13.7: loadLore() — теперь в renderDotaWorld (лор нужен только в Доте)
 const START_DUEL=parseDuel(START);
 ensureTabbar();splash();
 const START_SPY=/^spy_[A-Za-z0-9]{5}$/.test(START)?START.slice(4).toUpperCase():null;
