@@ -32,6 +32,8 @@
 | durov-tucker | Дуров у Такера Карлсона, 2024 | Tucker Carlson — ссылка на полный выпуск | https://youtu.be/1Ut6RouSs0w | **офиц. Tucker Carlson** |
 | clavicular-impaulsive | Клавикуляр в Impaulsive | Impaulsive — ссылка на полный выпуск | https://youtu.be/zHStoIheM7M | **офиц. IMPAULSIVE** |
 | clavicular-18 | Клавикуляр 18+ (4 куска) | Impaulsive — ссылка на выпуск, куски найду по времени | https://youtu.be/zHStoIheM7M | **офиц. IMPAULSIVE** — тот же выпуск, куски найду по времени |
+| clavicular-burger | Клавикуляр: бургер без сыра, «Бургер Кинг» | Impaulsive — тот же выпуск (Андрей) | https://youtu.be/zHStoIheM7M | **офиц. IMPAULSIVE** — тот же выпуск, кусок найду по времени |
+| clavicular-bets | Клавикуляр: ставки Polymarket (тюрьма, отцовство, «самый сексуальный») | Impaulsive — тот же выпуск (Андрей) | https://youtu.be/zHStoIheM7M | **офиц. IMPAULSIVE** — тот же выпуск, кусок найду по времени |
 
 ## Присланные моменты, которых в приложении ещё нет
 | Что | Язык | Ссылка | Канал |
@@ -45,6 +47,7 @@
 | Психопат: утренняя рутина (была сцена «Утро», убрали в 11.1) | 🇬🇧 | https://youtu.be/-Gpsset9RV4 | перезалив 4K |
 | Таксист: звонок Бетси, извиняется (была сцена, убрали в 11.1) | 🇬🇧 | https://youtu.be/d9iLQ7g_jDk | перезалив |
 | Таксист: «Visuals» — нарезка картинки, без диалогов (для учёбы не годится, разве что фон) | — | https://youtu.be/a9r0cSZgpeo | перезалив |
+| Die Sopranos: Кристофер и выпечка (простреленная нога) — **немецкий дубляж** | 🇩🇪 | https://youtu.be/qkx20sHs62U | перезалив (Sopranos Fan) · «Christopher Moltisanti hat Ärger in einer Bäckerei» |
 
 ## Немецкие сцены (13.5) — дубляж, одна сцена = один клип
 | Сцена (id) | Что за момент | Ссылка | Канал |
@@ -54,17 +57,17 @@
 | sopranos-mahaffey-de | Die Sopranos S01E01: Тони, Мелфи и должник Махаффи | https://youtu.be/UXnIUVzvDmU | перезалив (Sopranos Fan) |
 | bb-mike-de | Breaking Bad S05E01: Майк в пустыне, ноутбук Гаса | https://youtu.be/AkUYhX_DD74 | Boxoffice · Die besten Filmmomente |
 | bb-knocks-de | Breaking Bad S04E06: «Ich bin die Gefahr» | https://youtu.be/IBBgeKG9V1c | перезалив |
-| wolf-lunch-de | The Wolf of Wall Street: ланч с Марком Ханной | **дай ссылку** | — |
-| wolf-naomi-de | The Wolf of Wall Street: первое свидание с Наоми («Das wird keine Freundschaft!») | **дай ссылку** | — |
-| titanic-andrews-de | Titanic: Эндрюс — «корабль утонет» | **дай ссылку** | — |
-| titanic-mother-de | Titanic: мать затягивает Роуз корсет | **дай ссылку** | — |
+| wolf-lunch-de | The Wolf of Wall Street: ланч с Марком Ханной | https://youtu.be/GzyX-REqpFI | перезалив (Screen Schnipsel) — «Willkommen an der Wall Street / Das Summen» |
+| wolf-naomi-de | The Wolf of Wall Street: первое свидание с Наоми («Das wird keine Freundschaft!») | https://youtu.be/BRj3F2UVJms | перезалив (MovieFlair · Filmszenen Deutsch) — похоже, тот же клип, что у нас |
+| titanic-andrews-de | Titanic: Эндрюс — «корабль утонет» | https://youtu.be/wNPNMS_41y8 | **офиц. 20th Century Studios Deutschland** — «Es ist eine mathematische Gewissheit» |
+| titanic-mother-de | Titanic: мать затягивает Роуз корсет | https://youtu.be/p3lp13tmf0E | **офиц. 20th Century Studios Deutschland** — «Du wirst dich nicht wieder mit dem Jungen treffen» |
 
 ## Все сцены: English и Deutsch (для поиска ссылок)
 Deutsch — чтобы найти **немецкий дубляж тех же сцен** (в Германии полный дубляж — английского не слышно). Ссылки на дубляж — в отдельную колонку, не путать с английскими.
 
 | Сцена | English | Искать (EN) | Deutsch | Искать (DE) | Ссылка EN | Ссылка DE |
 |---|---|---|---|---|---|---|
-| Волк — Ханна объясняет правила (ланч) (`wolf-of-wall-street`) | The Wolf of Wall Street — Mark Hanna lunch scene | wolf of wall street mcconaughey lunch scene | The Wolf of Wall Street — Mittagessen mit Mark Hanna | wolf of wall street mark hanna szene deutsch | https://youtu.be/Y4iBdIq0aaY | |
+| Волк — Ханна объясняет правила (ланч) (`wolf-of-wall-street`) | The Wolf of Wall Street — Mark Hanna lunch scene | wolf of wall street mcconaughey lunch scene | The Wolf of Wall Street — Mittagessen mit Mark Hanna | wolf of wall street mark hanna szene deutsch | https://youtu.be/Y4iBdIq0aaY | https://youtu.be/GzyX-REqpFI |
 | Волк — швейцарский банк (`wolf-swiss-bank`) | The Wolf of Wall Street — Swiss bank scene | wolf of wall street swiss bank scene | The Wolf of Wall Street — Schweizer Bank | wolf of wall street schweizer bank szene deutsch | https://youtu.be/ndTbiDQjbiE | |
 | Сопрано S01E01 — Тони у Мелфи (`sopranos-s01e01`) | The Sopranos S01E01 — Tony's first session with Dr. Melfi | sopranos pilot tony melfi first session | Die Sopranos S01E01 — Tony bei Dr. Melfi | die sopranos tony dr melfi erste sitzung deutsch | https://youtu.be/DRtmyQQaVLQ | |
 | Сопрано S06E09 — «каждый день — подарок» (`sopranos-s06e09`) | The Sopranos S06E09 «The Ride» — every day is a gift | sopranos every day is a gift melfi | Die Sopranos S06E09 — „Jeder Tag ist ein Geschenk“ | die sopranos jeder tag ist ein geschenk deutsch | https://youtu.be/NmWcbuM6csA | |

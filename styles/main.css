@@ -4931,3 +4931,19 @@ body.nofx .shp.tr-leg{animation:none}
 .ss-it.ss-reveal{animation:ssReveal 1.1s cubic-bezier(.2,.8,.2,1) var(--d,0ms) both}
 @keyframes ssReveal{from{filter:blur(9px);opacity:.25;transform:translateY(6px) scale(.98)}60%{filter:blur(1px);opacity:1}to{filter:none;opacity:1;transform:none}}
 body.nofx .ss-mist{animation:none}
+
+/* ==== 13.7.2 — варианты словаря тестерам: кнопка в Словаре, «Кому видно» в админке ==== */
+.dl-try{display:flex;align-items:center;gap:12px;width:100%;margin:12px 0 4px;padding:12px 14px;border-radius:16px;border:1px solid rgba(233,196,106,.35);background:linear-gradient(135deg,rgba(233,196,106,.16),rgba(233,196,106,.04));color:inherit;text-align:left;font:inherit;cursor:pointer}
+.dl-try>i{font-style:normal;font-size:22px;line-height:1}
+.dl-try span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.dl-try b{font-size:15px}
+.dl-try small{font-size:12.5px;opacity:.7}
+.dl-try em{display:grid;place-items:center;width:22px;height:22px;opacity:.6}
+.dl-try em svg{width:18px;height:18px}
+.dla-acc{display:flex;flex-direction:column;gap:10px;margin:4px 0 18px;padding:14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.dla-acc>b{font-size:15px}
+.dla-acc>small{font-size:12.5px;opacity:.65;line-height:1.4}
+.dla-acc .dla-sg{display:flex;gap:4px;padding:3px;border-radius:12px;background:rgba(255,255,255,.06)}
+.dla-acc .dla-sg button{flex:1;border:0;background:transparent;color:rgba(255,255,255,.6);font:600 13px 'Golos Text',sans-serif;padding:9px 6px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.dla-acc .dla-sg button.on{background:#F3EBDD;color:#15130f;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.dla-acc:not([data-am="test"]) #dlAl{display:none}
