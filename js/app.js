@@ -2225,7 +2225,7 @@ async function tourAnswer(p,btn){
   $$('.tile').forEach(t=>{const i=+t.dataset.i;if(i===r.c)t.classList.add('right');else if(t===btn)t.classList.add('wrong');else t.classList.add('dim');});
   if(r.right){sfx('good');haptic('ok');burstAt($('#slotWrap .slot'),12);}else{sfx('bad');haptic('err');if(btn)restart(btn,'shake');}
   if(r.late)toast('Время вышло');
-  setTimeout(()=>{if(r.done)renderTourDone(r);else{TOUR.q=r.next;renderTourQ();}},r.right?800:1400);
+  setTimeout(()=>{if(screen!=='tourq')return;if(r.done)renderTourDone(r);else{TOUR.q=r.next;renderTourQ();}},r.right?800:1400);   // аудит: вышел из турнира — вопрос не всплывает поверх другого экрана
 }
 function renderTourDone(r){
   screen='tourdone';backBtn(true);stopTourTimer();
@@ -2717,7 +2717,7 @@ function phraseOfDay(){const A=SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'
 function phraseOfDayHTML(){const x=phraseOfDay();if(!x)return '';const {s,f}=x,de=scL()==='de'&&!scIsDe(),tg=scTag(f);
   return `<div class="pod card anim"><div class="pod-top"><span class="pod-k">✦ Фраза дня</span><span class="sc-tag ${tg[1]}">${tg[0]}</span></div>
     <b class="pod-en">${esc(s.lang==='de'?f.de:scT(f))}</b><span class="pod-ru">${esc(f.ru)}</span>
-    ${f.ex&&f.ex[0]?`<small class="pod-ex">Пример: ${esc(de&&f.exDe?f.exDe[0][0]:de?f.ex[0][2]||f.ex[0][0]:f.ex[0][0])} — ${esc(de&&f.exDe?f.exDe[0][1]:f.ex[0][1])}</small>`:''}
+    ${f.ex&&f.ex[0]?(dx=>`<small class="pod-ex">Пример: ${esc(dx&&f.exDe?f.exDe[0][0]:dx?f.ex[0][2]||f.ex[0][0]:f.ex[0][0])} — ${esc(dx&&f.exDe?f.exDe[0][1]:f.ex[0][1])}</small>`)(de||s.lang==='de'):''}
     <div class="pod-b"><button class="pod-go" onclick="momOpen('${s.id}',${f.pi},${f.a})">▶ Момент из «${esc(s.title)}»</button><button class="sc-say pod-say" data-s="${s.id}" data-clip="${f.id}" onclick="scClip(this.dataset.s,this.dataset.clip,this)" aria-label="Послушать из фильма">${SI.vol||'🔊'}</button></div></div>`;}
 /* ================= 8.1: «Как пользоваться» ================= */
 const HELP=[
@@ -2810,8 +2810,7 @@ const scMastered=s=>{const P=scP(s.id);return s.parts.flatMap(p=>scAct(p.ph)).fi
 const scMasterPct=s=>{const T=scTotal(s);return T?Math.round(scMastered(s)/T*100):0;};
 let SCUR={id:null,i:0},SV=null,SW=null,SSTOP=null,SRATE=1,SSUBON=true,SRAF=0;
 function scStop(){if(SV){try{SV.pause();SV.removeAttribute('src');SV.load();}catch(e){}}SV=null;SW=null;SSTOP=null;try{BG3D.pause(false);}catch(e){}delete document.body.dataset.scn;delete document.body.dataset.scr;try{kwHide(0);}catch(e){}scExitFull();scCloseSheet();}
-// язык заданий в кино: язык фильма. В английском фильме немецкие задания — только если сам выбрал в плеере «Учу Deutsch» (субтитры с de).
-// 13.6.3: раньше запасным был store.langs — после обучения 13.6 с «Deutsch» английские фильмы давали немецкий перевод при английском звуке
+// язык заданий в кино: из выбранных субтитров (есть Deutsch — задания по-немецки), иначе английский
 const scIsDe=()=>{try{const s=SCUR&&SCUR.id&&scOf(SCUR.id);return !!(s&&s.lang==='de');}catch(e){return false;}};
 // в немецкой сцене первая строка субтитров всегда немецкий оригинал, вторая — выбранный перевод
 const scDeMode=m=>!scIsDe()||m==='off'||m==='ru'?m:(/ru/.test(m)?'de+ru':m==='en+de'?'de+en':'de');
@@ -4390,7 +4389,7 @@ function rwCardHTML(s,i){const p=s.parts[i],pr=rwPrize(s,i),f=rwPh(s,i),n=SCENES
     <div class="rw-f"><span class="rw-img" style="background-image:url('${rwKadr(s,i)}'),url('${assetUrl(scEpKey(s,i,'jpg'))}')"></span><span class="rw-sh"></span>
       <span class="rw-no">№ ${n}</span><span class="rw-cap"><em>${esc(dictFilm(s))} · эпизод ${i+1}</em><b>${esc(p.t)}</b></span></div>
     <div class="rw-b"><span class="rw-pr">${pr[0]}</span><em>Кадр № ${n}</em><b>${esc(p.t)}</b><small>${esc(s.sub||s.title)}</small>
-      ${f?`<p class="rw-q">«${esc(f.en)}»<span>${esc(f.ru)}</span></p>`:''}${r?`<small class="rw-dt">получен ${new Date(r.t).toLocaleDateString('ru-RU')}</small>`:''}</div></div></div>`;}
+      ${f?`<p class="rw-q">«${esc(s.lang==='de'?(f.de||f.en):f.en)}»<span>${esc(f.ru)}</span></p>`:''}${r?`<small class="rw-dt">получен ${new Date(r.t).toLocaleDateString('ru-RU')}</small>`:''}</div></div></div>`;}
 // кадр: мышью — наклон за курсором, пальцем — тянешь и он вертится, тап — переворот на обратную сторону
 function rwTilt(card){if(!card||card._tilt)return;card._tilt=1;const inn=card.querySelector('.rw-in');let ry=0,rx=0,flip=0,drag=null,moved=false;
   const set=t=>{inn.style.transition=t||'none';inn.style.transform=`rotateX(${rx}deg) rotateY(${ry+flip}deg)`;card.style.setProperty('--gx',(50+ry*1.4)+'%');card.style.setProperty('--gy',(50-rx*2)+'%');};
@@ -5816,7 +5815,7 @@ function onBack(){
   if(document.querySelector('.sc-pfs')){scExitFull();return;}
   if(screen==='scep'&&navBack())return;
   if(screen==='scep'||screen==='scend'){renderScene(SCUR.id);return;}
-  if(screen==='scq'){renderScEp(SCUR.id,SCUR.i);return;}
+  if(screen==='scq'){const b=document.querySelector('#scb');if(b){b.click();return;}renderScEp(SCUR.id,SCUR.i);return;}   // аудит: как ✕ на экране (урок/повторение → Главная, финал → сцена), а не всегда эпизод 1
   if(screen==='tour'||screen==='tourdone'){tourExit();return;}
   if(!store.onboarded){startOnboarding();return;}
   sfx('tap');renderHome();
