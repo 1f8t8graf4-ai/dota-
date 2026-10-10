@@ -378,3 +378,28 @@ if __name__=='__main__':
     c+=['##### НЕМЕЦКИЕ СЦЕНЫ (13.5) #####','','']
     for h,f,*x in PDE:c+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'','']
     open('фоны-промты-АКТУАЛЬНЫЕ.txt','w').write('\n'.join(c))
+    # 13.8.2: только то, чего ещё нет: главные фоны без film-bg.mp4 и все фоны сцен (bg.mp4 пока ни у одной сцены)
+    import json
+    S=json.load(open('data/scenes.json',encoding='utf-8'))['SCENES']
+    done=set();KEY={'wolf':'wolf','american-psycho':'psycho','taxi-driver':'taxi','downfall':'bunker','titanic':'titanic','sopranos':'sopranos','breaking-bad':'bb','bb-':'bb','durov':'durov','clavicular':'clavicular'}
+    for x in S:
+        if x.get('filmbg'):done|={v for k,v in KEY.items() if x['id'].startswith(k)}
+    bgv={x['id'] for x in S if x.get('bgv')};ids={x['id'] for x in S}
+    r=['ФОНЫ — ЧТО ЕЩЁ НЕ СДЕЛАНО (только недостающие)','',o[2],o[3],o[4],o[5],o[6],'',
+       'Готовые ролики клади в репо scenes → claude/фоны/<имя файла>.mp4 (имя — после «→ файл»). Дальше я сам: петля, сжатие, в приложение.',
+       'Уже есть главные фоны: '+', '.join(sorted(done))+'. Немецкие группы берут главный фон английских — отдельно делать не надо.','','',
+       '##### 1. ГЛАВНЫЕ ФОНЫ — ВЕСЬ ФИЛЬМ / СЕРИАЛ, У ИНТЕРВЬЮ — САМ ЧЕЛОВЕК #####','','']
+    n=0
+    for h,f,*x in PH:
+        k=f.replace('film-','').split('-')[0]
+        if k in done:continue
+        r+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'',''];n+=1
+    r+=['##### 2. ФОНЫ СЦЕН (награда за всю сцену) #####','','']
+    for h,f,*x in P:
+        if f.startswith('film-') or f in bgv or f not in ids:continue
+        r+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'',''];n+=1
+    r+=['##### 3. НЕМЕЦКИЕ СЦЕНЫ («Ланч» — тот же фон, что у английского «Волка», отдельно не нужен) #####','','']
+    for h,f,*x in PDE:
+        if f in bgv or f not in ids:continue
+        r+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'',''];n+=1
+    open('фоны-промты-ОСТАЛОСЬ.txt','w').write('\n'.join(r));print('осталось',n)
