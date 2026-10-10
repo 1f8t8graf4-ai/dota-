@@ -415,7 +415,7 @@ function underline(name,focus){return focus&&name.includes(focus)&&focus!==name?
 // 12.1: при любом переходе — убрать всё, что висит поверх экрана (карта словаря с видео, мини-плеер, поповеры слов),
 // и остановить видео эпизода, если уходим со сцены. Раньше карта/видео могли остаться висеть над новым экраном.
 function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
-  document.querySelectorAll('.pk,.dx-turn,.dx-shade,.cd2').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном; 13.6.3: и отсчёт 3-2-1
+  document.querySelectorAll('.pk,.dx-turn,.dx-shade,.cd2,.gatewrap').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном; 13.6.3: и отсчёт 3-2-1
   document.querySelectorAll('.srv').forEach(o=>o.remove());   // 13.6: открытие покупки
   try{if(window.DL)DL.clean();}catch(e){}   // 13.7: варианты словаря — карта в руке, демо-пак
   document.querySelectorAll('.dxo,.rwo,.bgvw').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
@@ -5783,6 +5783,7 @@ function bindLearn(){
   if($('#best'))$('#best').onclick=()=>{haptic('medium');play('best','mode','words');};
 }
 function onBack(){
+  {const g=document.querySelector('.gatewrap');if(g){g.click();return;}}   // аудит: окно «Технический перерыв / Скоро» закрывается «назад»
   if(window.DL&&document.querySelector('#dlRoot,.dli,.dlp')){const o=document.querySelector('.dlp');if(o&&o._close){o._close();return;}if(DL.back())return;}   // 13.7: варианты словаря
   if(document.querySelector('.dxo')){const d=document.querySelector('.dxo-dim');if(d)d.click();return;}   // 11.0: открытая карта словаря
   if(document.querySelector('.dfly')){document.querySelector('.dfly').click();return;}
