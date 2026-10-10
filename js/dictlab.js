@@ -72,7 +72,7 @@ DL.mount=root=>{const v=DL.cur();if(!v){root.innerHTML='';return;}DL.root=root;
     <div class="dl-stage" id="dlStage"></div>`;
   root.querySelectorAll('[data-dv]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');const n=(V.indexOf(DL.cur())+ +b.dataset.dv+V.length)%V.length;store.dictVar=V[n].id;save();DL.clean();DL.mount(root);});
   $('#dlDemo').onclick=()=>{sfx('tap');store.dlDemo=!demo();save();DL.mount(root);};
-  $('#dlSet').onclick=()=>{sfx('tap');renderAdmin('dict');};
+  $('#dlSet').onclick=()=>{sfx('tap');dlMenu();};
   if(v.enter&&!DL.seen[v.id]){DL.seen[v.id]=1;try{v.enter(root);}catch(e){}}
   DL.render(0);};
 DL.lang=()=>{const nL=l=>dictScenes().filter(s=>dxL(s)===l).reduce((a,s)=>a+dictCards(s).length,0);
@@ -197,8 +197,8 @@ DL.stopVids=el=>{(el||document).querySelectorAll('video.dl-lv').forEach(v=>{try{
 
 /* ---------- раздел в админке ---------- */
 DL.admin=box=>{const cur=store.dictVar||'cur';
-  box.innerHTML=`<p class="ad2-note">Нажми вариант — словарь сразу откроется в нём. Видишь только ты, на этом устройстве. В самом словаре сверху ‹ › — листать варианты, ☰ — вернуться сюда.</p>
-    <div class="dla-demo"><span>Карты в вариантах</span><div class="seg"><button data-dm="1" class="${demo()?'on':''}">Демо</button><button data-dm="0" class="${demo()?'':'on'}">Мой прогресс</button></div></div>
+  box.innerHTML=`<p class="ad2-note">${FLAG_ADMIN?'Нажми вариант — словарь сразу откроется в нём. Выбор — только на этом устройстве. В самом словаре сверху ‹ › — листать варианты, ☰ — вернуться сюда.':'Это тест: так может выглядеть Словарь. Нажми вариант — Словарь откроется в нём. Сверху ‹ › — листать, ☰ — назад к списку. «Демо» — карты как будто уже собраны. Скажи, какой зашёл больше всего.'}</p>
+    <div class="dla-demo"><span>Карты в вариантах</span><div class="dla-sg"><button data-dm="1" class="${demo()?'on':''}">Демо</button><button data-dm="0" class="${demo()?'':'on'}">Мой прогресс</button></div></div>
     <h3 class="ad2-h">Экран словаря</h3>
     <div class="dla-list"><button class="dla-it${cur==='cur'?' on':''}" data-dv="cur"><i class="dla-sw" style="background:linear-gradient(135deg,#1b1e28,#2c2f3a)">📖</i><span><b>Текущий (как у игроков)</b><small>Словарь 13.6 — без изменений</small></span></button>
       ${V.map((v,i)=>`<button class="dla-it${cur===v.id?' on':''}" data-dv="${v.id}"><i class="dla-sw" style="background:${v.sw}">${v.ic||''}</i><span><b>${i+1}. ${esc(v.n)}</b><small><em>${esc(v.from)}</em> — ${esc(v.d)}</small></span></button>`).join('')}</div>

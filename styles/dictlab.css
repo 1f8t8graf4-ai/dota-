@@ -125,9 +125,9 @@
 /* ---------- раздел в админке ---------- */
 .dla-demo{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 4px;flex-wrap:wrap}
 .dla-demo span{font-size:13px;color:var(--muted)}
-.dla-demo .seg{display:flex;gap:4px;padding:3px;border-radius:12px;background:var(--surface2)}
-.dla-demo .seg button{border:0;background:transparent;color:var(--muted);font:600 12.5px 'Golos Text',sans-serif;padding:7px 10px;border-radius:9px;cursor:pointer}
-.dla-demo .seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.dla-demo .dla-sg{display:flex;gap:4px;padding:3px;border-radius:12px;background:var(--surface2)}
+.dla-demo .dla-sg button{border:0;background:transparent;color:var(--muted);font:600 12.5px 'Golos Text',sans-serif;padding:7px 10px;border-radius:9px;cursor:pointer}
+.dla-demo .dla-sg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .dla-list{display:flex;flex-direction:column;gap:8px}
 .dla-it{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
 .dla-it.on{border-color:var(--gold,#FFC857);box-shadow:0 0 0 1px var(--gold,#FFC857)}
@@ -1165,4 +1165,6 @@
 .ms-lamp::after{width:160px;margin-left:-80px;height:200px}
 .pc.r-leg .dli-holo,.pc.mx .dli-holo{opacity:.16}
 .pk-cut .pc .dli-holo{opacity:.1}
-.dla-demo .seg button{white-space:nowrap}
+.dla-demo .dla-sg button{white-space:nowrap}
+/* 13.7.2: заголовок над списком вариантов не прячется под первой строкой */
+#dlAdm .ad2-h{margin:20px 4px 8px}

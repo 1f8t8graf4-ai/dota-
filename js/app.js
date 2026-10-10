@@ -2324,7 +2324,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.7.1';
+const APP_V='13.7.2';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -3691,7 +3691,35 @@ const DXOPEN={};   // раскрытые эпизоды в словаре (sid|�
 const dxEpOpen=(sid,pi)=>DXOPEN[sid+'|'+pi]!=null?DXOPEN[sid+'|'+pi]:innerWidth>=640;
 const dxShows=()=>{const G=[],by={};for(const s of dxScenes()){const k=dictFilm(s);if(!by[k]){by[k]=[];G.push(k);}by[k].push(s);}return G.map(k=>({k,L:by[k],kind:['series','interview'].includes(by[k][0].kind)?by[k][0].kind:'film'}));};
 // 13.7: варианты словаря — только админ; код и стили грузятся по требованию (js/dictlab.js, styles/dictlab.css)
-const dlOn=()=>!!(FLAG_ADMIN&&store.dictVar);
+// 13.7.2: варианты словаря можно открыть тестерам. Флаг 'dictlab': нет — только админ; st:'hide'+allow — тестерам по ID;
+// st:'on'+allow — всем (воркер хранит 'on' только с непустым allow, поэтому для «всем» в allow лежит хотя бы '0').
+const dlAllowed=()=>FLAG_ADMIN||FLAGS.dictlab==='on';
+const dlOn=()=>!!(dlAllowed()&&store.dictVar);
+function dlAcc(){const f=(FLAG_RAW||{}).dictlab;if(!f)return {mode:'me',allow:[]};const al=(f.allow||[]).map(String).filter(x=>x!=='0');return {mode:f.st==='on'?'all':al.length?'test':'me',allow:al};}
+async function dlAccSet(mode,allow){const raw=JSON.parse(JSON.stringify(FLAG_RAW||{}));allow=[...new Set((allow||[]).map(x=>String(x).replace(/\D/g,'')).filter(x=>x&&x!=='0'))];
+  if(mode==='all')raw.dictlab={st:'on',allow:allow.length?allow:['0']};else if(mode==='test'&&allow.length)raw.dictlab={st:'hide',allow};else delete raw.dictlab;
+  try{const r=await flagsCall({a:'set',flags:raw});
+    if(r&&r.ok){FLAG_RAW=r.v.raw||{};if(ADM_DR){if(FLAG_RAW.dictlab)ADM_DR.dictlab={st:FLAG_RAW.dictlab.st,allow:[...FLAG_RAW.dictlab.allow]};else delete ADM_DR.dictlab;}haptic('ok');return true;}
+    toast((r&&r.msg)||'Не получилось — открой в Telegram');}catch(e){toast('Нет связи с сервером');}
+  return false;}
+// ☰ в варианте словаря: админу — раздел админки, тестеру — свой экран со списком
+function dlMenu(){if(FLAG_ADMIN)renderAdmin('dict');else renderDlPick();}
+function renderDlPick(){try{scStop();}catch(e){}screen='dlpick';backBtn(true);
+  mount(`<div class="page-head ad2-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Варианты словаря</h1></div><div id="dlAdm"><div class="ad2-empty">Загружаю…</div></div>`,'admscr ad2');
+  $('#bBtn').onclick=()=>{sfx('tap');renderTab('dict');};
+  dlLoad().then(()=>{const b=$('#dlAdm');if(b)DL.admin(b);}).catch(()=>{const b=$('#dlAdm');if(b)b.innerHTML='<div class="ad2-empty">Не загрузилось — проверь связь</div>';});}
+// блок «Кому видно» в админке (раздел «Словарь — варианты»)
+function dlAccHTML(){const A=dlAcc();
+  return `<div class="dla-acc" data-am="${A.mode}"><b>Кому видно</b>
+    <div class="dla-sg dla-am">${[['me','Только мне'],['test','Тестерам'],['all','Всем']].map(([v,l])=>`<button data-am="${v}" class="${A.mode===v?'on':''}">${l}</button>`).join('')}</div>
+    <input class="ad2-in" id="dlAl" placeholder="Telegram ID тестеров через запятую" value="${esc(A.allow.join(', '))}" inputmode="numeric" autocomplete="off">
+    <small>Тестер увидит в Словаре кнопку «🧪 Варианты словаря» при следующем запуске. Проще: «Игроки» → тап по человеку → «Открыть варианты словаря».</small>
+    <button class="sc-btn" id="dlAccOk">Сохранить</button></div>`;}
+function dlAccBind(box){const w=box.querySelector('.dla-acc');if(!w)return;let mode=w.dataset.am;
+  w.querySelectorAll('[data-am]').forEach(b=>{if(b===w)return;b.onclick=()=>{mode=b.dataset.am;w.dataset.am=mode;w.querySelectorAll('.dla-am [data-am]').forEach(x=>x.classList.toggle('on',x===b));sfx('sel');haptic('sel');};});
+  w.querySelector('#dlAccOk').onclick=async e=>{const b=e.currentTarget;b.disabled=true;b.textContent='Сохраняю…';
+    const ok=await dlAccSet(mode,w.querySelector('#dlAl').value.split(/[\s,;]+/));b.disabled=false;b.textContent='Сохранить';
+    if(ok){toast(mode==='me'?'Варианты словаря видишь только ты':mode==='all'?'Варианты словаря открыты всем':'Открыто тестерам. Увидят при следующем запуске');const n=document.createElement('div');n.innerHTML=dlAccHTML();w.replaceWith(n.firstChild);dlAccBind(box);}};}
 function dlLoad(){if(window.DL&&DL.V&&DL.V.length)return Promise.resolve();if(dlLoad.p)return dlLoad.p;
   dlLoad.p=new Promise((ok,no)=>{const l=document.createElement('link');l.rel='stylesheet';l.href='styles/dictlab.css?v='+APP_V;document.head.appendChild(l);
     const s=document.createElement('script');s.src='js/dictlab.js?v='+APP_V;s.onload=()=>ok();s.onerror=()=>{dlLoad.p=null;l.remove();no(new Error('dictlab'));};document.body.appendChild(s);});return dlLoad.p;}
@@ -3699,9 +3727,11 @@ function dictTabHTML(){if(dlOn())return `<div class="dl-root" id="dlRoot"><div c
   const [g,t]=dictCount(dxScenes()),my=mywAll().length;
   return `<div class="dx anim"><div class="dx-head"><div class="dx-ttl"><h1 class="title">Словарь</h1><small class="dx-sub">Коллекция фраз из кино</small></div><div class="dx-count"><b>${g}</b><span> / ${t}</span></div></div>
     <div class="dx-bar"><i style="width:${t?Math.round(g/t*100):0}%"></i></div>
+    ${dlAllowed()&&!FLAG_ADMIN?`<button class="dl-try" id="dlTry"><i>🧪</i><span><b>Варианты словаря</b><small>Тест: 17 стилей — полистай, какой лучше</small></span><em>${ui('fwd')}</em></button>`:''}
     <div class="dx-seg"><button data-dseg="ph" class="${DX.seg==='ph'?'on':''}">🎬 Фразы из кино</button><button data-dseg="my" class="${DX.seg==='my'?'on':''}">⭐ Мои слова${my?` <i>${my}</i>`:''}</button></div>
     <div id="dxBody"></div></div>`;}
 function bindDict(){if(dlOn()){dlLoad().then(()=>{const r=$('#dlRoot');if(r)DL.mount(r);}).catch(()=>{const r=$('#dlRoot');if(r)r.innerHTML='<div class="dl-wait">Не загрузилось — проверь связь</div>';});return;}
+  {const t=$('#dlTry');if(t)t.onclick=()=>{sfx('tap');haptic('sel');renderDlPick();};}
   $$('[data-dseg]').forEach(b=>b.onclick=()=>{if(DX.seg===b.dataset.dseg)return;sfx('tap');DX.seg=b.dataset.dseg;$$('[data-dseg]').forEach(x=>x.classList.toggle('on',x===b));dxBody();});dxBody();}
 // уровень вверх (кнопка «‹» и системная «назад»)
 function dxUp(){if(DX.seg==='my'){return false;}if(DX.sid){const sh=dxShows().find(x=>x.k===DX.show);DX.sid=null;if(!sh||sh.L.length<2)DX.show=null;dxBody(-1);return true;}
@@ -5628,7 +5658,7 @@ const admSt=k=>(admDraft()[k]&&admDraft()[k].st)||'on';
 const admAl=k=>(admDraft()[k]&&admDraft()[k].allow)||[];
 function admDirty(){const raw=FLAG_RAW||{},D=admDraft(),keys=new Set([...Object.keys(raw),...Object.keys(D)]);let n=0;
   keys.forEach(k=>{const a=raw[k]||{},b=D[k]||{};if((a.st||'on')!==(b.st||'on')||(a.allow||[]).join(',')!==(b.allow||[]).join(','))n++;});return n;}
-const admClosed=()=>Object.values(admDraft()).filter(x=>x.st&&x.st!=='on').length;
+const admClosed=()=>Object.entries(admDraft()).filter(([k,x])=>k!=='dictlab'&&x.st&&x.st!=='on').length;
 const admAgo=t=>{if(!t)return '—';const s=(Date.now()-t)/1000;return s<90?'только что':s<3600?Math.round(s/60)+' мин назад':s<86400?Math.round(s/3600)+' ч назад':s<86400*30?Math.round(s/86400)+' дн. назад':new Date(t).toLocaleDateString('ru-RU');};
 function admCopy(t){const ok=()=>{toast('Скопировано: '+t);haptic('ok');};
   try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,()=>fb());return;}}catch(e){}fb();
@@ -5656,9 +5686,12 @@ function admUserSheet(u){if(!u)return;scCloseSheet();const nm=u.n||'Без им�
   w.innerHTML=`<div class="sc-sheet ad2-sh"><div class="ad2-uh"><i class="ad2-av lg">${esc((nm.trim()[0]||'?').toUpperCase())}</i><span><b>${esc(nm)}</b>${u.un?`<small>@${esc(u.un)}</small>`:''}</span></div>
     <div class="ad2-kv"><span>ID</span><b>${u.uid}</b><span>Пришёл</span><b>${u.first?new Date(u.first).toLocaleString('ru-RU'):'—'}</b><span>Был</span><b>${admAgo(u.last)}</b>
       <span>Откуда</span><b>${esc(u.src||'без метки')}</b><span>Язык Telegram</span><b>${esc(u.lang||'—')}</b><span>Действий</span><b>${u.ev||0}</b></div>
-    <button class="sc-btn" data-a="copy">Скопировать ID</button>${u.un?`<button class="sc-btn ghost" data-a="tg">Написать @${esc(u.un)}</button>`:''}<button class="sc-btn ghost ad2-red" data-a="reset">Сбросить прогресс</button></div>`;
+    <button class="sc-btn" data-a="copy">Скопировать ID</button><button class="sc-btn ghost" data-a="dl">${dlAcc().allow.includes(String(u.uid))?'🧪 Закрыть варианты словаря':'🧪 Открыть варианты словаря'}</button>${u.un?`<button class="sc-btn ghost" data-a="tg">Написать @${esc(u.un)}</button>`:''}<button class="sc-btn ghost ad2-red" data-a="reset">Сбросить прогресс</button></div>`;
   document.body.appendChild(w);w.onclick=e=>{if(e.target===w){w.remove();return;}const b=e.target.closest('[data-a]');if(!b)return;sfx('tap');
     if(b.dataset.a==='copy')admCopy(String(u.uid));
+    if(b.dataset.a==='dl'){const A=dlAcc(),id=String(u.uid),has=A.allow.includes(id),al=has?A.allow.filter(x=>x!==id):[...A.allow,id];b.disabled=true;
+      dlAccSet(A.mode==='all'?'all':'test',al).then(ok=>{b.disabled=false;if(!ok)return;b.textContent=has?'🧪 Открыть варианты словаря':'🧪 Закрыть варианты словаря';
+        toast(has?`${nm}: варианты словаря закрыты`:`${nm} увидит «🧪 Варианты словаря» в Словаре при следующем запуске`);});}
     if(b.dataset.a==='tg'){try{TG.openTelegramLink('https://t.me/'+u.un);}catch(x){window.open('https://t.me/'+u.un);}}
     if(b.dataset.a==='reset')tgConfirm(`Сбросить весь прогресс игроку ${nm} (${u.uid})?`,async()=>{try{const r=await kvNet({a:'rset',target:'tg'+u.uid});toast(r&&r.ok?'Готово: сбросится при следующем запуске':(r&&r.msg)||'Не получилось');}catch(x){toast('Сервер не отвечает');}});};}
 function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
@@ -5707,7 +5740,7 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
     $$('[data-an]').forEach(b=>b.onclick=()=>{const a=ADM_ANIMS.find(x=>x.id===b.dataset.an);if(!a)return;sfx('tap');const was=store.fx;store.fx=true;try{a.run();}catch(e){toast('Не получилось: '+e.message);}store.fx=was;});return;}
   if(sec==='check'){mnt(`${head('Проверка установки')}<p class="ad2-note">Проверяет, что в репозиториях лежит всё нужное: свежий код, видео, обложки и кадры каждой сцены.</p><button class="sc-btn" id="dkGo">Проверить</button><div id="dkBox" class="dk"></div>`);
     $('#dkGo').onclick=()=>{sfx('tap');deployCheck($('#dkBox'));};return;}
-  if(sec==='dict'){mnt(`${head('Словарь — варианты')}<div id="dlAdm"><div class="ad2-empty">Загружаю…</div></div>`);
+  if(sec==='dict'){mnt(`${head('Словарь — варианты')}${dlAccHTML()}<div id="dlAdm"><div class="ad2-empty">Загружаю…</div></div>`);dlAccBind(document);
     dlLoad().then(()=>{const b=$('#dlAdm');if(b)DL.admin(b);}).catch(()=>{const b=$('#dlAdm');if(b)b.innerHTML='<div class="ad2-empty">Не загрузилось — проверь связь</div>';});return;}
   if(sec==='lab'){mnt(`${head('Лаборатория')}<p class="ad2-note">Видишь только ты, на этом устройстве. Выбери лучшее и напиши мне — сделаю по умолчанию для всех.</p>
       <div class="lab"><b>Субтитры</b><div class="lab-prev" data-ss="${labSub()}"><div class="sc-subs"><div class="sline"><span class="en">I'm in it for the long run, you know?</span></div><div class="sline s2"><span class="tr">Я тут надолго, понимаете?</span></div></div></div>
@@ -5822,6 +5855,7 @@ function onBack(){
   if(screen==='dota'||screen==='cs'){sfx('tap');renderHome();return;}
   if(screen==='subtab'||screen==='cgpick'){sfx('tap');renderTab('games');return;}
   if(screen==='admin'){sfx('tap');scCloseSheet();if(ADM_SEC)renderAdmin();else renderTab('profile');return;}
+  if(screen==='dlpick'){sfx('tap');renderTab('dict');return;}
   if(screen==='show'){sfx('tap');renderTab('kino');return;}
   if(screen==='scintro'){sfx('tap');renderTab('learn');return;}
   if(screen==='cards'){cgExitAsk();return;}
