@@ -311,7 +311,7 @@ PDE=[
  "the small front office of a cheap 1990s New Jersey roadside motel on a bright afternoon, empty.",
  "eye level across the front desk, 35mm lens",
  "in the center, a worn front desk counter with a silver service bell and one old room key on a plastic tag; a black wide-brimmed felt hat left lying on the counter; behind the desk, light blue walls, a board with key hooks and tall vertical blinds glowing with daylight. No text, no signs.",
- "the vertical blinds sway very slightly in the air from a fan; a fluorescent ceiling light flickers once in a while.",
+ "the vertical blinds sway very slightly in the air from a fan; fine dust floats in the daylight.",
  "flat bright daylight through the blinds and a cold fluorescent ceiling light",
  "pale blue and cold white; a polite business deal that ends with a man's head pressed to the counter."),
 ('DE «Фил решает» (Сопрано S06E20)','sopranos-phil-de',
