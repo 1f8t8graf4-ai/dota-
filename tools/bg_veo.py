@@ -60,13 +60,8 @@ P=[
  "the small shark keeps swimming slowly back and forth in the aquarium; one thin thread of smoke rises only from the tip of the cigarette.",
  "the cold blue glow of the aquarium, everything else in darkness",
  "blue glow in the dark; a small-time gangster who wants his life to have a movie arc."),
-('Сцена «Ральф приходит к Тони» (S04E09)','sopranos-ralph',
- "the cramped back office of a New Jersey strip club at night, empty.",
- "slightly high angle over the desk, 28mm lens",
- "in the foreground, a cluttered desk with an old black office telephone, an old adding machine whose short paper tape lies still, a thick envelope stuffed with cash, loose papers, a glass of whiskey and a glass ashtray with one lit cigarette. Behind: dark green walls with small pink diamond-shaped lights, a pool table with green felt under a glowing stained-glass window made of amber, green and red squares, and steel beer kegs stacked in the corner. No posters.",
- "one thin thread of smoke rises only from the tip of the cigarette; the pink diamond lights pulse slowly.",
- "the glowing stained glass, the pink lights and one desk lamp",
- "sickly green and amber with pink spill; grief, guilt and dirty money."),
+('Сцена «Ральф приходит к Тони» (S04E09) — 13.8.2: вернул первый промт (по нему вышел лучший ролик): одна зелёная лампа, скачки по телевизору (Пай-О-Май)','sopranos-ralph',
+ "Vertical 9:16 video, full frame, no black bars. The back office of a New Jersey strip club late at night. Over-the-desk shot, 28mm lens, slightly high angle. Center under a single green-shaded desk lamp: a thick plain brown envelope stuffed with cash, an old adding machine with a short paper tape, a racing form newspaper, a glass of whiskey, an ashtray with one lit cigarette. Behind: dark green wood paneling with three small pink diamond-shaped lamps, stacked steel beer kegs, and a small old TV on a shelf silently showing a blurry horse race. Through the half-open door, a stained-glass light panel glows over a pool table. Look: sickly green and tungsten with hot pink neon spill, heavy and sad. Motion: the TV flickers with the silent race, pink light pulses through the doorway, a thread of smoke rises only from the cigarette in the ashtray. No people, no text, no logos; the camera does not move."),
 ('ГЛАВНЫЙ «Американский психопат» · старый вариант','film-psycho',
  "a white marble bathroom in a 1987 Manhattan luxury apartment, early morning, empty.",
  "symmetrical frontal shot, 50mm lens",
@@ -351,7 +346,8 @@ PDE=[
  "gold, cream and blood red; luxury that feels like a cage."),
 ]
 
-def prompt(pl,cam,obj,mv,li,look):
+def prompt(pl,cam=None,obj=None,mv=None,li=None,look=None):
+    if cam is None:return pl  # готовый промт целиком (13.8.2: Ральф — первый вариант)
     return (f"{HEAD} Place: {pl} Camera: {cam}, locked-off, does not move. Only these objects: {obj} "
             f"Moves (only this): {mv} Everything else stays perfectly still. Light: {li}, constant the whole time. "
             f"Mood: {look} {TAIL}")
