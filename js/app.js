@@ -2313,7 +2313,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.4';
+const APP_V='13.9.5';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2618,11 +2618,13 @@ function phDist(right,sid,excl,n){const ex=(excl||[]).map(x=>String(x||'').toLow
   return distLike(right,[P0.filter(ok),P1.filter(ok),mywAll().map(x=>x.ru).filter(ok)],n);}
 const swPool=(sid,pi)=>{const d=swData(sid,pi);if(!d)return [];return [...d.key.map(k=>k[1]),...Object.values(d.gloss||{})];};
 const scPoolW=sid=>{const s=scOf(sid);return s?s.parts.flatMap((_,i)=>swPool(sid,i)):[];};
+// 13.9.5: 4 варианта перевода к моему слову — выражение среди выражений, слово среди похожих слов той же сцены
+// (общий для «Проверить себя» и для повторения: там вместо самопроверки «Знал / Не знал» теперь выбор)
+function mywOpts(k){return shuffle([k.ru,...(isPhr(k.w)?phDist(k.ru,k.sid,[k.lineRu],3):distLike(k.ru,[swPool(k.sid,k.pi),scPoolW(k.sid),mywAll().map(x=>x.ru),shuffle(Object.values(GLOSS)).slice(0,400)],3))]);}
 function renderMyWordsQuiz(list,back){const bk=back||renderMyWords,K=shuffle((list||mywAll()).filter(x=>x.ru)).slice(0,8);if(!K.length){toast('Нет слов с переводом');bk();return;}   // 13.8.7: back — куда вернуться (новый словарь — в ту же подборку)
   const Q=[...(K.length>=4?[{t:'pairs',set:K.slice(0,4)}]:[]),...K.map(k=>({t:'mean',k})),...(K.length>=8?[{t:'pairs',set:K.slice(4,8)}]:[])];let n=0,ok=0;
   // 11.5: ложные варианты — из моих слов, а если их мало — из общего словаря
-  const GV=Object.values(GLOSS);
-  const opts=k=>shuffle([k.ru,...(isPhr(k.w)?phDist(k.ru,k.sid,[k.lineRu],3):distLike(k.ru,[swPool(k.sid,k.pi),scPoolW(k.sid),mywAll().map(x=>x.ru),shuffle(GV).slice(0,400)],3))]);
+  const opts=mywOpts;
   const next=()=>{n++;n>=Q.length?end():show();};
   function show(){const q=Q[n],seg=Q.map((_,j)=>`<i class="${j<n?'done':j===n?'cur':''}"></i>`).join('');let body='';
     if(q.t==='pairs')body=`<div class="sc-meta">Соедини пары</div><h2>${q.set.some(k=>isPhr(k.w))?'Слово или фраза → перевод':'Слово → перевод'}</h2><div class="sw-pairs"><div>${shuffle(q.set).map(k=>`<button data-l="${esc(k.k)}">${esc(k.w)}</button>`).join('')}</div><div>${shuffle(q.set).map(k=>`<button data-r="${esc(k.k)}">${esc(k.ru)}</button>`).join('')}</div></div>`;
@@ -2642,7 +2644,8 @@ function renderMyWordsQuiz(list,back){const bk=back||renderMyWords,K=shuffle((li
 /* =====================================================================================
    8.5 — ЯДРО ОБУЧЕНИЯ: одна ежедневная очередь + диктант по репликам из фильма
    Всё, что пора повторить (фразы из сцен и «Мои слова»), — в одном месте, по 10 минут в день.
-   Главное задание — ВСПОМНИТЬ, а не узнать: диктант (послушай и напиши), «вспомни по-английски», карточка слова.
+   Главное задание — ВСПОМНИТЬ, а не узнать: диктант (послушай и напиши), кубики (собери фразу по переводу), слово — выбор из 4.
+   13.9.5: самопроверок «Вспомнил / Не вспомнил» и «Знал / Не знал» больше нет (Андрей: «конченое задание, замени на привычные кубики»).
    ===================================================================================== */
 const MYW_DAYS=[1,3,7,21,60];
 const dayMs=864e5;
@@ -2686,14 +2689,16 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
     <div class="dl-empty card anim"><div class="dl-ic">✅</div><b>На сегодня всё повторено</b><span>Фразы из сцен и твои слова вернутся, когда придёт их время. Можно посмотреть новый эпизод или сохранить новые слова.</span>
     <button class="btn" id="dlGo">Новый эпизод →</button></div>`,'dlscr');$('#bBtn').onclick=()=>{sfx('tap');back();};
     $('#dlGo').onclick=()=>{const c=continueScene();renderScEp(c.s.id,c.i);};return;}
-  const Q=L.map((x,j)=>({...x,t:x.k==='w'?'card':(j%2===0&&dNorm(scT(x.f)).split(' ').length<=12?'dict':'recall')}));let n=0,ok=0;const res=[];
+  const tgtOf=q=>q.s.lang==='de'?q.f.de:scT(q.f),nW=q=>dNorm(tgtOf(q)).split(' ').filter(Boolean).length;
+  const phT=(q,j)=>nW(q)<2||(j%2===0&&nW(q)<=12)?'dict':'build';   // фраза из одного слова — только диктант
+  const Q=L.map((x,j)=>({...x,t:x.k==='w'?'mean':phT(x,j)}));let n=0,ok=0;const res=[];
   const next=()=>{n++;n>=Q.length?end():show();};
   function frame(meta,body){const seg=Q.map((_,j)=>`<i class="${j<n?'done':j===n?'cur':''}"></i>`).join('');
     mount(`<div class="scn noir"><div class="sc-head"><button class="icon-btn" id="dlx" aria-label="Закрыть">${ui('close')}</button><div class="sc-segs">${seg}</div></div>
       <div class="sc-q sc-card dl-q"><div class="sc-meta">${meta}</div>${body}<div id="dlfb"></div></div></div>`,'scnscr');
     $('#dlx').onclick=()=>{sfx('tap');back();};}
   function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!o.nosrs&&!(good&&early)){if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);}res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
-    if(!good&&!q.re)Q.splice(Math.min(Q.length,n+4),0,{...q,re:true,t:q.k==='w'?'card':'recall'});
+    if(!good&&!q.re)Q.splice(Math.min(Q.length,n+4),0,{...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?'dict':'build')});
     sfx(good?'good':'bad');haptic(good?'ok':'err');
     $('#dlfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}">${html}<button class="sc-btn" id="dln">Дальше →</button></div>`;$('#dln').onclick=()=>{sfx('tap');next();};}
   function show(){const q=Q[n];
@@ -2706,21 +2711,32 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
       $('#dlchk').onclick=()=>{const v=$('#dlin').value;if(!v.trim()){$('#dlin').focus();return;}const r=dCheck(v,tgt),good=r.score>=.85&&!hint;$('#dlchk').disabled=true;
         grade(q,good,`<div class="t">${good?'Верно — услышал':r.score>=.6?'Почти':'Послушай ещё раз'} · ${Math.round(r.score*100)}%</div><div class="en d-diff">${dDiffHTML(tgt,r.okB)}</div><div class="ru">${esc(f.ru)}</div>`);};
       setTimeout(()=>{const i=$('#dlin');if(i)i.focus();},400);return;}
-    if(q.t==='recall'){const f=q.f,tgt=q.s.lang==='de'?f.de:scT(f);
-      frame('Вспомни по-'+(q.s.lang==='de'||scL()==='de'?'немецки':'английски'),`<h2>${esc(f.ru)}<br><small class="qsm">Скажи вслух или про себя, потом проверь. Из «${esc(q.s.title)}».</small></h2>
-        <div class="dl-hide" id="dlans"><b>${esc(tgt)}</b>${scNoteS(f)?`<small>${esc(scShort(scNoteS(f)))}</small>`:''}</div>
-        <button class="sc-btn" id="dlshow">Показать ответ</button><div class="dl-b" id="dlgr" hidden><button class="sc-btn ghost" id="dlno">Не вспомнил</button><button class="sc-btn" id="dlyes">Вспомнил</button></div>`);
-      $('#dlshow').onclick=()=>{$('#dlans').classList.add('on');$('#dlshow').hidden=true;$('#dlgr').hidden=false;scClip(q.s.id,f.id,null);sfx('tap');};
-      $('#dlyes').onclick=()=>{$('#dlgr').hidden=true;grade(q,true,`<div class="t">Отлично</div><div class="en">${esc(tgt)}</div><div class="ru">${esc(f.ru)}</div>`);};
-      $('#dlno').onclick=()=>{$('#dlgr').hidden=true;grade(q,false,`<div class="t">Ничего — вернётся через пару заданий</div><div class="en">${esc(tgt)}</div><div class="ru">${esc(f.ru)}</div>`);};return;}
+    if(q.t==='build'){const f=q.f,tgt=tgtOf(q),de=q.s.lang==='de',B=scBuildTiles(tgt,f,q.s.parts.flatMap(p=>p.ph),de),want=B.tk.map(scNorm);let tries=0,done=false;
+      // 13.9.5: вместо «Вспомни по-английски» — привычные кубики, как в проверке эпизода (3 попытки, разбор, что не на месте)
+      frame('Собери фразу',`<h2>${esc(f.ru)}<br><small class="qsm">Из «${esc(q.s.title)}». Собери, как сказали в сцене.</small></h2>
+        <div class="sc-bans" id="scbans"></div><div class="sc-bpool" id="scbpool"></div>
+        <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div><div id="scbdiff"></div>`);
+      const draw=marks=>{$('#scbans').innerHTML=B.got.map((x,j)=>x?`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}" data-j="${j}">${esc(x.w)}</button>`:'<span class="sc-hole" aria-hidden="true"></span>').join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
+        $('#scbpool').innerHTML=B.pool.map(x=>`<button class="sc-tile${B.got.includes(x)?' used':''}" data-k="${x.k}"${B.got.includes(x)?' disabled':''}>${esc(x.w)}</button>`).join('');
+        $('#scbchk').hidden=done||!B.got.some(Boolean);$('#scbrst').hidden=done||!B.got.length;
+        $$('#scbpool .sc-tile').forEach(b=>b.onclick=()=>{if(done)return;sfx('tap');const x=B.pool.find(y=>y.k===+b.dataset.k);if(x&&!B.got.includes(x))scSlotPut(B.got,x,99);draw();});
+        $$('#scbans .sc-tile').forEach(b=>b.onclick=()=>{if(done)return;scSlotTake(B.got,+b.dataset.j);$('#scbdiff').innerHTML='';draw();});};
+      $('#scbrst').onclick=()=>{if(done)return;B.got=[];$('#scbmsg').textContent='';$('#scbdiff').innerHTML='';sfx('tap');draw();};
+      $('#scbchk').onclick=()=>{if(done)return;const gw=B.got.map(x=>x?scNorm(x.w):''),right=B.got.every(Boolean)&&scNorm(B.got.map(x=>x.w).join(' '))===scNorm(tgt);
+        if(right||tries>=2){done=true;$('#scbmsg').textContent='';const good=right&&!tries;
+          if(right){$('#scbans').classList.add('right');draw();}else{$('#scbans').classList.add('wrong');draw(scPosMarks(gw,want));$('#scbdiff').innerHTML=scDiffHTML(gw,want,true);}
+          scClip(q.s.id,f.id,null);   // фраза звучит из фильма
+          grade(q,good,`<div class="t">${good?'Верно':right?`Собрал с ${tries+1}-й попытки — повторим ещё раз`:'Вот как в сцене'}</div><div class="en">${esc(tgt)}</div><div class="ru">${esc(f.ru)}</div>`);return;}
+        tries++;haptic('err');sfx('bad');const marks=scPosMarks(gw,want);$('#scbdiff').innerHTML=scDiffHTML(gw,want,false);draw(marks);
+        $('#scbmsg').textContent=`На своём месте ${marks.filter(Boolean).length} из ${want.length} (зелёные). Ниже — чего не хватает [ ] и что лишнее. Попытка ${tries+1} из 3.`;};
+      draw();return;}
+    // 13.9.5: моё слово — выбор перевода из 4 (было «Показать перевод → Знал / Не знал»)
     const it=q.it,s=scOf(it.sid),hl=it.line?markWord(it.line,it.w,'<mark>','</mark>'):'';
-    frame('Моё слово · вспомни перевод',`<h2>${esc(it.w)}${hl?`<br><small class="qsm">${hl}</small>`:''}</h2>
-      <div class="dl-hide" id="dlans"><b>${esc(it.ru)}</b>${it.de?`<small>по-немецки: ${esc(it.de)}</small>`:''}${it.lineRu?`<small>${esc(it.lineRu)}</small>`:''}</div>
-      <button class="sc-btn" id="dlshow">Показать перевод</button><div class="dl-b" id="dlgr" hidden><button class="sc-btn ghost" id="dlno">Не знал</button><button class="sc-btn" id="dlyes">Знал</button></div>
+    frame(isPhr(it.w)?'Моё выражение · что значит?':'Моё слово · что значит?',`<h2>${esc(it.w)}${hl?`<br><small class="qsm">${hl}</small>`:''}</h2>
+      <div class="sc-opts">${mywOpts(it).map(v=>`<button class="sc-opt" data-v="${esc(v)}">${esc(v)}</button>`).join('')}</div>
       ${s?`<button class="dl-mom" id="dlmom">▶ ${esc(s.title)} · эп. ${it.pi+1}</button>`:''}`);
-    $('#dlshow').onclick=()=>{$('#dlans').classList.add('on');$('#dlshow').hidden=true;$('#dlgr').hidden=false;sfx('tap');};
-    $('#dlyes').onclick=()=>{$('#dlgr').hidden=true;grade(q,true,`<div class="t">Отлично</div><div class="en">${esc(it.w)} — ${esc(it.ru)}</div>`);};
-    $('#dlno').onclick=()=>{$('#dlgr').hidden=true;grade(q,false,`<div class="t">Вернётся ещё раз</div><div class="en">${esc(it.w)} — ${esc(it.ru)}</div>`);};
+    $$('.sc-opt').forEach(b=>b.onclick=()=>{if(b.disabled)return;const good=b.dataset.v===it.ru;$$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===it.ru)x.classList.add('ok');});if(!good)b.classList.add('bad');
+      grade(q,good,`<div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(it.w)} — ${esc(it.ru)}</div>${it.lineRu?`<div class="ru">${esc(it.lineRu)}</div>`:''}`);});
     if($('#dlmom'))$('#dlmom').onclick=()=>{sfx('tap');momOpen(it.sid,it.pi,it.a||0,it.w);};}
   function end(){remindSync(true);if(!o.train)ev('review','daily');const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
     mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">${esc(o.title||'Повторение на сегодня')}</div><div class="sc-big">${good} / ${res.length}</div>
@@ -3444,7 +3460,7 @@ function scTaskFX(s,p){const L=scAct(p.ph).filter(f=>f.b>f.a&&!f.passive).slice(
 // 11.4: до 12 слов — по слову; длиннее — кусками по 2 (по 3), но так, чтобы куски не повторялись («and again» ×2 — нельзя)
 function scChunk(tk){if(tk.length<=12)return tk;for(const n of [2,3]){const ch=[];for(let k=0;k<tk.length;k+=n)ch.push(tk.slice(k,k+n).join(' '));if(new Set(ch.map(x=>x.toLowerCase())).size===ch.length)return ch;}return tk;}
 // кубики: без знаков и заглавных, длинное — кусками, ловушки — другие формы тех же слов и gx
-function scBuildTiles(text,f,all){const clean=w=>{let x=String(w).replace(/[.,!?;:…"«»()]+/g,'');if(!/^I('|$)/.test(x))x=x.toLowerCase();return x;};
+function scBuildTiles(text,f,all,keep){const clean=w=>{let x=String(w).replace(/[.,!?;:…"«»()]+/g,'');if(!keep&&!/^I('|$)/.test(x))x=x.toLowerCase();return x;};   // keep — немецкий: существительные с заглавной
   let tk=scToks(text).map(clean).filter(Boolean);
   tk=scChunk(tk);
   const pool=[],used=new Set(tk.map(x=>x.toLowerCase()));const add=v=>{v=clean(v);if(v&&!used.has(v.toLowerCase())&&pool.length<3){pool.push(v);used.add(v.toLowerCase());}};

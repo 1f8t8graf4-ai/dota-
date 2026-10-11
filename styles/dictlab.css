@@ -2003,8 +2003,8 @@ body .v-kino .kn-my .dx-q{background:rgba(255,255,255,.045)!important;box-shadow
 body.nofx .knf-live .dl-lv{transition:none}
 
 /* =====================================================================================
-   13.9.2 — «Мои фразы и слова»: варианты вида. Шапка: «Фразы | Слова», 🔍, пилюля вида; у слов — круглая «＋».
-   «Разговорник» (.kmb) — главы по ситуациям, указатель. (13.9.4: «Лента» .kmf и «Переписка» .kmc убраны — Андрей оставил Альбомы и Разговорник.)
+   13.9.2 — «Мои фразы и слова»: шапка «Фразы | Слова», 🔍; у слов — круглая «＋».
+   (13.9.4–13.9.5: виды Лента / Переписка / Разговорник / Альбомы убраны — один экран, слой 13.9.5.)
    ===================================================================================== */
 .km-top2{display:flex;align-items:center;gap:8px;margin:0 0 12px}
 .km-top2 .km-sw button{padding:0 11px;font-size:14px}
@@ -2012,113 +2012,64 @@ body.nofx .knf-live .dl-lv{transition:none}
 .km-ib{flex:none;width:36px;height:36px;border-radius:11px;border:1px solid var(--kl);background:rgba(255,255,255,.05);color:var(--kt);display:grid;place-items:center;cursor:pointer}
 .km-ib svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
 .km-ib.on{background:var(--kt);border-color:var(--kt);color:#141210}
-.km-vp{flex:none;height:36px;padding:0 11px;border-radius:11px;border:1px solid rgba(243,235,221,.28);background:rgba(255,255,255,.06);color:var(--kt);font:700 13px 'Golos Text',sans-serif;white-space:nowrap;cursor:pointer}
-.km-vp i{font-style:normal;font-size:9.5px;opacity:.7}
-.km-vl{display:flex;flex-direction:column;gap:8px}
-.km-vl button{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#F3EBDD;text-align:left;cursor:pointer}
-.km-vl button b{font:700 15.5px 'Golos Text',sans-serif}
-.km-vl button small{font:400 13px/1.4 'Golos Text',sans-serif;color:rgba(243,235,221,.6)}
-.km-vl button.on{border-color:rgba(243,235,221,.55);background:rgba(255,255,255,.09)}
 .km-fab{position:fixed;right:16px;bottom:calc(var(--sb,0px) + 92px);z-index:30;width:54px;height:54px;border-radius:50%;border:0;background:var(--kt);color:#141210;font:400 30px/1 'Golos Text',sans-serif;box-shadow:0 12px 34px rgba(0,0,0,.55);cursor:pointer;display:grid;place-items:center;padding-bottom:3px}
 .km-fab:active{transform:scale(.92)}
 @media (min-width:760px){.km-fab{right:max(24px,calc(50% - 540px))}}
 body.dx-open .km-fab{opacity:0;pointer-events:none}
 
-/* ---------- Разговорник ---------- */
+/* ---------- строка «Повторить сегодня» (сам Разговорник убран в 13.9.5) ---------- */
 .kmb-due{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin:0 0 14px;padding:13px 16px;border-radius:14px;border:1px solid rgba(255,181,71,.32);background:rgba(255,181,71,.07);color:var(--kt);text-align:left;cursor:pointer}
 .kmb-due b{display:block;font:700 15.5px 'Golos Text',sans-serif}
 .kmb-due small{font:500 12.5px 'Golos Text',sans-serif;color:#FFCF8A}
 .kmb-due i{flex:none;display:inline-flex;align-items:center;gap:4px;font-style:normal;font:700 13px 'Golos Text',sans-serif;color:#FFB547}
 .kmb-due i svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4}
-.kmb{position:relative}
-.kmb-toc{display:none}
-.kmb-c{margin:0 0 14px;scroll-margin-top:8px}
-.kmb-c:last-child{min-height:calc(100vh - 160px)}   /* последняя глава тоже встаёт к верху по указателю */
-.kmb-h{position:sticky;top:var(--st,0px);z-index:5;display:flex;align-items:center;gap:10px;margin:0 -16px;padding:12px 40px 10px 16px;background:rgba(11,11,13,.93);border-bottom:1px solid var(--kl);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.kmb-ht{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.kmb-ht b{font:600 22px/1.15 'Playfair Display',Georgia,serif;color:var(--kt)}
-.kmb-ht small{font:500 12px 'Golos Text',sans-serif;color:var(--km);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kmb-ha{flex:none;display:flex;gap:6px}
-.kmb-ha button{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 12px;border-radius:99px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--kt);font:700 12.5px 'Golos Text',sans-serif;cursor:pointer}
-.kmb-ha [data-bp]{width:32px;padding:0}
-.kmb-ha svg{width:12px;height:12px;margin-left:1px;fill:currentColor;stroke:none}
-.kmb-ch .kq-l{padding-right:22px}
-.kmb-rail{position:fixed;right:3px;top:50%;z-index:30;transform:translateY(-50%);display:flex;flex-direction:column;gap:1px;padding:6px 2px;border-radius:99px;background:rgba(18,18,22,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);max-height:70vh;overflow:hidden;touch-action:none}
-.kmb-rail button{width:28px;height:24px;padding:0;border:0;border-radius:8px;background:none;color:var(--km);font:700 10.5px 'Golos Text',sans-serif;cursor:pointer}
-.kmb-rail button.on{background:var(--kt);color:#141210}
-.kmb.az .kmb-rail button{height:19px;font-size:11px}
-body.dx-open .kmb-rail{opacity:0;pointer-events:none}
-@media (min-width:900px){.kmb{display:grid;grid-template-columns:230px minmax(0,1fr);gap:34px}
-  .kmb-rail{display:none}
-  .kmb-toc{position:sticky;top:16px;align-self:start;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 40px);overflow:auto;padding-right:4px}
-  .kmb-toc button{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:9px 12px;border:0;border-radius:10px;background:none;color:var(--km);font:500 16px 'Playfair Display',Georgia,serif;text-align:left;cursor:pointer}
-  .kmb-toc button i{font-style:normal;font:500 12px 'Golos Text',sans-serif;color:rgba(243,235,221,.4)}
-  .kmb-toc button.on,.kmb-toc button:hover{background:rgba(255,255,255,.07);color:var(--kt)}
-  .kmb-h{margin:0;padding:12px 0 10px}
-  .kmb-ch .kq-l{padding-right:0}}
 
 /* =====================================================================================
-   13.9.3 — «Альбомы» (.kma, как Apple Music); аудиоплеер — скрытое видео .ka-v, мини-плеер #kaBar.
+   13.9.5 — «Мои фразы и слова» одним экраном (.km5): «Повторить сегодня», темы-раскрывашки, внизу все; у строки — #фильм.
+   Окно фразы: подробности под «Подробнее» (.kn5-*). Тихо, без коробок — как строки .kq.
    ===================================================================================== */
-.ka-v{position:fixed;left:-10px;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
-/* ---------- Альбомы ---------- */
-.km-b.v-album{padding-bottom:90px}
-.kma-row{display:flex;gap:12px;margin:0 -16px;padding:0 16px 4px;overflow-x:auto;scrollbar-width:none}
-.kma-row::-webkit-scrollbar{display:none}
-.kma-row .kma-c{flex:0 0 138px}
-.kma-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 12px}
-@media (min-width:760px){.kma-grid{grid-template-columns:repeat(4,1fr)}.kma-row .kma-c{flex-basis:170px}}
-@media (min-width:1080px){.kma-grid{grid-template-columns:repeat(5,1fr)}}
-.kma-c{display:flex;flex-direction:column;gap:2px;min-width:0;padding:0;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer}
-.kma-c>b{margin-top:7px;font:700 14px/1.25 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kma-c>small{font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
-.kma-c.hot>small{color:#FFB547}
-.kma-cv{display:grid;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#1b1b20 center 20%/cover no-repeat;box-shadow:0 14px 30px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.07);transition:transform .15s}
-.kma-cv.n0{place-items:center;font-size:40px;background:linear-gradient(150deg,#3a3a46,#15151a)}
-.kma-cv.n0 i{font-style:normal}
-.kma-c.hot .kma-cv{box-shadow:0 14px 30px rgba(0,0,0,.5),0 0 0 2px rgba(255,181,71,.75)}
-.kma-c:active .kma-cv{transform:scale(.97)}
-.kma-hd{position:relative;display:flex;align-items:flex-end;gap:16px;margin:0 -16px 6px;padding:56px 16px 18px;overflow:hidden;isolation:isolate}
-.kma-hbg{position:absolute;inset:-40px;z-index:-2;background:var(--bg) center/cover no-repeat;filter:blur(30px) brightness(.45) saturate(1.2)}
-.kma-hd::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,11,13,.05),#0b0b0d)}
-.kma-hd .dl-up{position:absolute;left:16px;top:10px}
-.kma-cv.big{flex:none;width:132px;border-radius:12px;box-shadow:0 24px 50px rgba(0,0,0,.6)}
-.kma-ht{min-width:0;display:flex;flex-direction:column;gap:4px}
-.kma-ht em{font-style:normal;font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
-.kma-ht>b{font:800 26px/1.12 'Golos Text',sans-serif;letter-spacing:-.02em;color:#fff}
-.kma-ht>small{font:500 13px 'Golos Text',sans-serif;color:var(--km)}
-.kma-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.kma-b2{height:44px;padding:0 16px;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:var(--kt);font:700 14px 'Golos Text',sans-serif;cursor:pointer}
-.kma-b2:active,.kma-acts .kf-go:active{transform:scale(.96)}
-@media (max-width:560px){.kma-hd{flex-direction:column;align-items:center;text-align:center}.kma-cv.big{width:180px}.kma-ht{align-items:center}.kma-acts{justify-content:center}}
-@media (min-width:760px){.kma-hd{margin:0 0 6px;padding:62px 28px 24px;border-radius:20px}.kma-cv.big{width:200px}.kma-ht>b{font-size:40px}}
-.kma-tl{list-style:none;margin:0;padding:0}
-.kma-tl li{display:flex;align-items:center;border-bottom:1px solid var(--kl)}
-.kma-t{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:11px 4px;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer}
-.kma-n{flex:none;width:24px;text-align:center;font:500 14px 'Golos Text',sans-serif;color:var(--km);font-variant-numeric:tabular-nums}
-.kma-n i{font-style:normal}
-.kma-n svg{display:none;width:13px;height:13px;fill:#FFE29A}
-.kma-t.on .kma-n i{display:none}
-.kma-t.on .kma-n svg{display:inline-block}
-@media (hover:hover){.kma-t:hover .kma-n i{display:none}.kma-t:hover .kma-n svg{display:inline-block}}
-.kma-x{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.kma-x b{font:600 15.5px/1.35 'Golos Text',sans-serif;color:var(--kt)}
-.kma-x small{font:400 13px/1.35 'Golos Text',sans-serif;color:var(--km);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kma-t.on .kma-x b{color:#FFE29A}
-.kma-d{flex:none;font-style:normal;font:500 12.5px 'Golos Text',sans-serif;color:var(--km);font-variant-numeric:tabular-nums}
-.kma-o{flex:none;width:34px;height:34px;border:0;border-radius:50%;display:grid;place-items:center;background:none;color:var(--km);cursor:pointer}
-.kma-o svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4}
-/* мини-плеер */
-.kma-mp{position:fixed;left:50%;bottom:calc(var(--sb,0px) + 82px);z-index:40;transform:translateX(-50%);width:min(520px,calc(100% - 20px));display:flex;align-items:center;gap:10px;padding:8px 8px 10px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(30,30,36,.95);box-shadow:0 18px 50px rgba(0,0,0,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#F3EBDD;font-family:'Golos Text',sans-serif;cursor:pointer}
-.kma-mc{flex:none;width:44px;height:44px;border-radius:8px;background:#222 center/cover no-repeat}
-.kma-mx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.kma-mt{font:700 14px/1.3 'Golos Text',sans-serif;color:rgba(255,255,255,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kma-mt span{transition:color .12s}
-.kma-mt span.on{color:#fff}
-.kma-ms{font:400 12px 'Golos Text',sans-serif;color:rgba(243,235,221,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kma-mb{flex:none;width:38px;height:38px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff;cursor:pointer}
-.kma-mb svg{width:16px;height:16px}
-.kma-mb[data-kn] svg{fill:none;stroke:currentColor;stroke-width:2.4}
-.kma-mpr{position:absolute;left:12px;right:12px;bottom:4px;height:2px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
-.kma-mpr i{display:block;height:100%;background:#FFE29A;transform:scaleX(0);transform-origin:0 50%}
-body.dx-open .kma-mp{opacity:0;pointer-events:none}
+.km-b.km5{padding-bottom:24px}
+.km5-h{display:flex;align-items:baseline;gap:8px;margin:22px 0 4px;font:700 11.5px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
+.km5-h small{font:500 12px 'Golos Text',sans-serif;letter-spacing:0;text-transform:none;opacity:.8}
+.km5-tl{display:flex;flex-direction:column;border-top:1px solid var(--kl)}
+.km5-t{border-bottom:1px solid var(--kl)}
+.km5-th{display:flex;align-items:center;gap:12px;width:100%;padding:13px 2px;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.km5-ic{flex:none;width:30px;font-style:normal;font-size:20px;line-height:1;text-align:center}
+.km5-th b{flex:1;min-width:0;font:600 16.5px/1.3 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.km5-th small{flex:none;font:500 13px 'Golos Text',sans-serif;color:var(--km);font-variant-numeric:tabular-nums}
+.km5-chev{flex:none;display:grid;place-items:center;width:18px;font-style:normal;color:var(--km);transition:transform .25s}
+.km5-chev svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4}
+.km5-t.on .km5-chev{transform:rotate(90deg)}
+.km5-t.on .km5-th b{color:#fff}
+.km5-tb{padding:0 0 12px 42px}
+.km5-ta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px}
+.km5-tr,.km5-pl{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:99px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--kt);font:600 13.5px 'Golos Text',sans-serif;cursor:pointer}
+.km5-tr{background:var(--kt);border-color:var(--kt);color:#141210}
+.km5-tr small{font:700 12px 'Golos Text',sans-serif;opacity:.55}
+.km5-pl svg{width:11px;height:11px;fill:currentColor;stroke:none}
+.km5-tr:active,.km5-pl:active{transform:scale(.96)}
+.km5-q .km5-tg{align-self:flex-start}
+.km5-tg{display:inline-block;margin-top:3px;font:500 12px 'Golos Text',sans-serif;color:rgba(243,235,221,.42)}
+.km5-tg[data-tg]{cursor:pointer}
+@media (hover:hover){.km5-tg[data-tg]:hover{color:var(--kt);text-decoration:underline;text-underline-offset:3px}}
+.km5-fh{display:flex;align-items:center;gap:12px;margin:0 0 6px}
+.km5-fh b{display:block;font:700 22px 'Golos Text',sans-serif;color:var(--kt)}
+.km5-fh small{font:500 13px 'Golos Text',sans-serif;color:var(--km)}
+.km5-fp{border:0}
+.km5-fp .km5-tb{padding-left:0}
+.km5-fp .km5-tg{display:none}   /* на странице фильма приписка #фильм не нужна */
+@media (min-width:760px){.km5-tb{padding-left:46px}}
+/* окно фразы: сразу — момент, фраза, перевод и одна строка действий; остальное — под «Подробнее» */
+.kn5-acts{align-items:center}
+.kn5-acts [data-v="slow"]{padding:0 13px;font-size:16px}
+.kn5-mb{margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 4px 0 10px;border:0;background:none;color:rgba(246,241,232,.62);font:600 14px 'Golos Text',sans-serif;cursor:pointer}
+.kn5-mb i{font-style:normal;font-size:11px;transition:transform .25s}
+.kn5-mb[aria-expanded="true"]{color:var(--kt,#F3EBDD)}
+.kn5-mb[aria-expanded="true"] i{transform:rotate(180deg)}
+@media (hover:hover){.kn5-mb:hover{color:#fff}}
+.kn5-more{display:flex;flex-direction:column;gap:12px;margin-top:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+.kn5-more[hidden]{display:none}
+.kno2 .kn5-more .ph-blk:first-of-type{border-top:0;padding-top:0}
+.kn5-ep{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:99px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:var(--kt,#F3EBDD);font:600 13.5px 'Golos Text',sans-serif;cursor:pointer}
+.kn5-ep svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.4}
+.kn5-more .kn2-del{align-self:flex-start;margin:0}

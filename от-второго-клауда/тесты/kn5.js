@@ -1,5 +1,5 @@
 // 13.9.3: скрины «как у Андрея» (реальный прогресс, ~14 фраз и 5 слов) или демо: Кинотека на весь экран, фильм, сцена,
-// «Мои фразы и слова» в 2 видах (13.9.4: Альбомы, Разговорник), альбом с плеером, слова; телефон и ПК
+// «Мои фразы и слова» (13.9.5 — один экран: темы, «Все», #фильм), раскрытая тема, страница фильма, слова; телефон и ПК
 const {open}=require('./st');const {chromium}=require('playwright');
 const seed=([st])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:true,flags:{}}));};
 const dev=process.argv[2]||'ph',mode=process.argv[3]||'real';
@@ -20,10 +20,10 @@ const base={onboarded:true,introV:1,gold:900,lvl:'b',fx:true,tourV:1,scSubChosen
   await ev(()=>{const pg=document.querySelector('.knf-pg');pg.scrollTo({left:pg.clientWidth,behavior:'instant'});});await page.waitForTimeout(1500);await shot('03-full-next');
   await click('.knf-x');await page.waitForTimeout(600);
   await ev(()=>DL.open({show:'Американский психопат',sid:null}));await page.waitForTimeout(1500);await shot('04-film');
-  for(const [v,n] of [['book','06-book'],['album','09-album']]){await ev(v=>{DL.S.sid=null;DL.S.show=null;DX.seg='my';store.knMyKind='ph';store.knMyV=v;DL.KN.my.tag=null;renderTab('dict');},v);await page.waitForTimeout(1300);await shot(n);
-    if(v==='album'){await ev(()=>{const b=[...document.querySelectorAll('.kma-c')].find(x=>/Волк/.test(x.textContent));b&&b.click();});await page.waitForTimeout(1000);await click('[data-aplay]');await page.waitForTimeout(1500);await shot('10-album-page');}}
-  await ev(()=>{store.knMyKind='w';store.knMyV='album';DL.KN.my.tag=null;DL.render(0);});await page.waitForTimeout(1000);await shot('11-words-album');
-  await ev(()=>{store.knMyKind='w';store.knMyV='book';DL.KN.my.tag=null;DL.render(0);});await page.waitForTimeout(1000);await shot('12-words-book');
+  await ev(()=>{DL.S.sid=null;DL.S.show=null;DX.seg='my';store.knMyKind='ph';DL.KN.my.tag=null;renderTab('dict');});await page.waitForTimeout(1300);await shot('06-my');
+  await click('.km5-th');await page.waitForTimeout(700);await shot('07-my-topic');
+  await ev(()=>{const t=document.querySelector('.km5-all .km5-tg[data-tg]');t&&t.click();});await page.waitForTimeout(1000);await shot('08-my-film');
+  await ev(()=>{store.knMyKind='w';DL.KN.my.tag=null;DL.render(0);});await page.waitForTimeout(1000);await shot('11-words');
   const r=await ev(()=>({sw:document.documentElement.scrollWidth}));
   console.log(dev,mode,JSON.stringify(r),'ошибки:',errs.join(' | ')||'нет');
   await b.close();})();
