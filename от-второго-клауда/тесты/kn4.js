@@ -47,26 +47,26 @@ const dev=process.argv[2]||'ph';
   await click('.kf-go[data-watch]');await page.waitForTimeout(1500);st=await ev(()=>({dict:!!document.querySelector('#dlRoot'),screen}));ok('«Смотреть дальше» → страница сцены',!st.dict,JSON.stringify(st));
   await ev(()=>renderTab('dict'));await page.waitForTimeout(1200);await ev(()=>DL.open({sid:'wolf-of-wall-street'}));await page.waitForTimeout(1200);
   await click('.kn-ew');await page.waitForTimeout(1800);st=await ev(()=>({ep:SCUR&&SCUR.i,id:SCUR&&SCUR.id}));ok('▶ на эпизоде → эпизод',st.id==='wolf-of-wall-street'&&st.ep===0,JSON.stringify(st));
-  // ---------- «Мои фразы и слова» (демо): 13.9.5 — один экран (подробно — km.js) ----------
+  // ---------- «Мои фразы и слова» (демо): 13.9.7 — два вида, карточки / постеры (подробно — km.js) ----------
   await ev(()=>{DL.S.sid=null;DL.S.show=null;DX.seg='my';store.knMyKind='ph';store.knMyV='feed';renderTab('dict');});await page.waitForTimeout(1500);   // старый выбор вида ни на что не влияет
-  st=await ev(()=>({lvl:$('#dlStage').dataset.lvl,sw:[...document.querySelectorAll('.km-sw button')].map(b=>b.textContent.replace(/\s+/g,' ').trim()+(b.classList.contains('on')?'*':'')),pill:!!document.querySelector('[data-mvp]'),topics:document.querySelectorAll('.km5-th').length,all:document.querySelectorAll('.km5-all .km5-q').length}));
-  ok('«Мои»: переключатель «Фразы / Слова», без пилюли вида; темы и «Все»',st.lvl==='my'&&/^Фразы \d+\*$/.test(st.sw[0])&&/^Слова/.test(st.sw[1])&&!st.pill&&st.topics>2&&st.all>5,JSON.stringify(st));
+  st=await ev(()=>({lvl:$('#dlStage').dataset.lvl,sw:[...document.querySelectorAll('.km-sw button')].map(b=>b.textContent.replace(/\s+/g,' ').trim()+(b.classList.contains('on')?'*':'')),pill:!!document.querySelector('[data-mvp]'),vw:(document.querySelector('.km6-vw .on')||{dataset:{}}).dataset.mv,q:!!document.querySelector('#kmQ'),cards:document.querySelectorAll('.km6-c').length}));
+  ok('«Мои»: «Фразы / Слова», вид ☰ карточки (старое «feed» → карточки), поиск виден, карточки фильмов',st.lvl==='my'&&/^Фразы \d+\*$/.test(st.sw[0])&&/^Слова/.test(st.sw[1])&&!st.pill&&st.vw==='cards'&&st.q&&st.cards>2,JSON.stringify(st));
   await shot('5-my');
   // тренировка темы и возврат
-  await click('.km5-th');await page.waitForTimeout(600);await click('.km5-t.on [data-mtr]');await page.waitForTimeout(1200);
-  st=await ev(()=>({q:!!document.querySelector('.dl-q'),n:document.querySelectorAll('.sc-segs i').length}));ok('«Тренировать» тему — повторение по ней',st.q&&st.n>0&&st.n<=10,JSON.stringify(st));
-  await click('#dlx');await page.waitForTimeout(1500);st=await ev(()=>!!document.querySelector('.km5-tl'));ok('✕ в тренировке → обратно в «Мои»',st);
+  await click('.km6-c summary');await page.waitForTimeout(600);await click('.km6-c[open] [data-mtr]');await page.waitForTimeout(1200);
+  st=await ev(()=>({q:!!document.querySelector('.dl-q'),n:document.querySelectorAll('.sc-segs i').length}));ok('«Тренировать» карточку фильма — повторение по ней',st.q&&st.n>0&&st.n<=10,JSON.stringify(st));
+  await click('#dlx');await page.waitForTimeout(1500);st=await ev(()=>!!document.querySelector('.km6-c'));ok('✕ в тренировке → обратно в «Мои»',st);
   // слова: окно со словом
   await ev(()=>{const now=Date.now(),s=scOf('wolf-of-wall-street'),r=s.subs.find(z=>z[0]>=21&&z[0]<22);store.myw={'wolf-of-wall-street|clients':{k:'wolf-of-wall-street|clients',w:'clients',ru:'клиенты',de:'',sid:'wolf-of-wall-street',pi:0,line:r[2],lineRu:r[3],a:r[0],at:now,lvl:0,st:1,due:now-1000,tags:['работа']}};save();});
   await click('[data-mk="w"]');await page.waitForTimeout(1200);
   st=await ev(()=>({on:(document.querySelector('.km-sw .on')||{}).textContent,rows:document.querySelectorAll('.kqw').length,fab:!!document.querySelector('.km-fab')}));ok('«Слова»: строки слов, кнопка «＋»',/Слова/.test(st.on)&&st.rows===1&&st.fab,JSON.stringify(st));
   await shot('8-words');
-  await click('.kqw');await page.waitForTimeout(1600);
+  await click('.km6-c summary');await page.waitForTimeout(500);await click('.km6-c[open] .kqw');await page.waitForTimeout(1600);
   st=await ev(()=>({w:(document.querySelector('.kn2-word')||{}).textContent,mark:(document.querySelector('.kn2-line mark')||{}).textContent,v:!!document.querySelector('.kno2 video')}));ok('слово открылось: момент, реплика, слово подсвечено',st.w==='clients'&&/clients/i.test(st.mark||'')&&st.v,JSON.stringify(st));
   await shot('9-word');await ev(()=>DL.back());await page.waitForTimeout(600);
   // новичок: пусто — понятные подсказки
   await ev(()=>{store.dlDemo=false;store.myw={};save();DL.KN.my.tag=null;store.knMyKind='ph';DL.render(0);});await page.waitForTimeout(1000);
-  st=await ev(()=>({e:(document.querySelector('.km-empty b')||{}).textContent,k:!!document.querySelector('.km-empty [data-kseg="kino"]')}));ok('пустые «Мои фразы» — подсказка и кнопка в Кинотеку',st.e==='Пока нет фраз'&&st.k,JSON.stringify(st));
+  st=await ev(()=>({e:(document.querySelector('.km-empty b')||{}).textContent,k:!!document.querySelector('.km-empty [data-mkino]')}));ok('пустые «Мои фразы» — подсказка и кнопка в Кинотеку',st.e==='Пока нет фраз'&&st.k,JSON.stringify(st));
   await click('[data-mk="w"]');await page.waitForTimeout(800);st=await ev(()=>({e:(document.querySelector('.km-empty b')||{}).textContent,a:!!document.querySelector('.km-empty [data-madd]')}));ok('пустые «Мои слова» — «Добавить своё слово»',st.e==='Пока нет слов'&&st.a,JSON.stringify(st));
   await shot('10-empty');
   ok('консоль чистая',!errs.length,errs.slice(0,6).join('\n'));
