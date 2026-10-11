@@ -261,7 +261,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2)CLOUD_ERR=true;if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){CLOUD_ERR=true;res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['dictVar','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards'];
+const LOCAL_ONLY=['dictVar','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind'];
 function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==null?SV0:base),o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -2313,7 +2313,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.8.6';
+const APP_V='13.8.7';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2613,7 +2613,7 @@ function phDist(right,sid,excl,n){const ex=(excl||[]).map(x=>String(x||'').toLow
   return distLike(right,[P0.filter(ok),P1.filter(ok),mywAll().map(x=>x.ru).filter(ok)],n);}
 const swPool=(sid,pi)=>{const d=swData(sid,pi);if(!d)return [];return [...d.key.map(k=>k[1]),...Object.values(d.gloss||{})];};
 const scPoolW=sid=>{const s=scOf(sid);return s?s.parts.flatMap((_,i)=>swPool(sid,i)):[];};
-function renderMyWordsQuiz(list){const K=shuffle((list||mywAll()).filter(x=>x.ru)).slice(0,8);if(!K.length){toast('Нет слов с переводом');renderMyWords();return;}
+function renderMyWordsQuiz(list,back){const bk=back||renderMyWords,K=shuffle((list||mywAll()).filter(x=>x.ru)).slice(0,8);if(!K.length){toast('Нет слов с переводом');bk();return;}   // 13.8.7: back — куда вернуться (новый словарь — в ту же подборку)
   const Q=[...(K.length>=4?[{t:'pairs',set:K.slice(0,4)}]:[]),...K.map(k=>({t:'mean',k})),...(K.length>=8?[{t:'pairs',set:K.slice(4,8)}]:[])];let n=0,ok=0;
   // 11.5: ложные варианты — из моих слов, а если их мало — из общего словаря
   const GV=Object.values(GLOSS);
@@ -2623,7 +2623,7 @@ function renderMyWordsQuiz(list){const K=shuffle((list||mywAll()).filter(x=>x.ru
     if(q.t==='pairs')body=`<div class="sc-meta">Соедини пары</div><h2>${q.set.some(k=>isPhr(k.w))?'Слово или фраза → перевод':'Слово → перевод'}</h2><div class="sw-pairs"><div>${shuffle(q.set).map(k=>`<button data-l="${esc(k.k)}">${esc(k.w)}</button>`).join('')}</div><div>${shuffle(q.set).map(k=>`<button data-r="${esc(k.k)}">${esc(k.ru)}</button>`).join('')}</div></div>`;
     else body=`<div class="sc-meta">${isPhr(q.k.w)?'Что значит фраза?':'Что значит слово?'}</div><h2>${esc(q.k.w)}${q.k.line?`<br><small class="qsm">${esc(q.k.line)}</small>`:''}</h2><div class="sc-opts">${opts(q.k).map(v=>`<button class="sc-opt" data-v="${esc(v)}">${esc(v)}</button>`).join('')}</div>`;
     mount(`<div class="scn noir"><div class="sc-head"><button class="icon-btn" id="mqx" aria-label="Закрыть">${ui('close')}</button><div class="sc-segs">${seg}</div></div><div class="sc-q sc-card">${body}<div id="mqfb"></div></div></div>`,'scnscr');
-    $('#mqx').onclick=()=>{sfx('tap');renderMyWords();};
+    $('#mqx').onclick=()=>{sfx('tap');bk();};
     if(q.t==='pairs'){let sel=null,left=q.set.length;$$('.sw-pairs [data-l]').forEach(b=>b.onclick=()=>{$$('.sw-pairs [data-l]').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');sel=b;sfx('tap');});
       $$('.sw-pairs [data-r]').forEach(b=>b.onclick=()=>{if(!sel)return;const good=b.dataset.r===sel.dataset.l;
         if(good){sfx('good');sel.classList.add('ok');b.classList.add('ok');sel.disabled=b.disabled=true;sel=null;if(--left===0){ok++;setTimeout(next,450);}}else{sfx('bad');b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),400);}});}
@@ -2632,7 +2632,7 @@ function renderMyWordsQuiz(list){const K=shuffle((list||mywAll()).filter(x=>x.ru
       $('#mqfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}"><div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(q.k.w)} — ${esc(q.k.ru)}</div>${q.k.lineRu?`<div class="orig">${esc(q.k.lineRu)}</div>`:''}<button class="sc-btn" id="mqn">Дальше →</button></div>`;$('#mqn').onclick=()=>{sfx('tap');next();};if(good)autoNext($('#mqn'),$('#mqfb'),2600);});}
   function end(){sfx(ok===Q.length?'win':'learn');mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">Мои слова</div><div class="sc-big">${ok} / ${Q.length}</div>
       <p class="sc-sub">${ok===Q.length?'Все верно. Сохраняй новые слова прямо из фильмов.':'Ошибки — нормально: повтори ещё раз через пару часов.'}</p><div class="sc-btns"><button class="sc-btn" id="mqa">Ещё раз</button><button class="sc-btn ghost" id="mqb">К моим словам</button></div></div></div>`,'scnscr');
-    $('#mqa').onclick=()=>renderMyWordsQuiz(list);$('#mqb').onclick=()=>renderMyWords();}
+    $('#mqa').onclick=()=>renderMyWordsQuiz(list,back);$('#mqb').onclick=()=>bk();}
   show();}
 /* =====================================================================================
    8.5 — ЯДРО ОБУЧЕНИЯ: одна ежедневная очередь + диктант по репликам из фильма
@@ -2674,18 +2674,20 @@ function phSRS(s,f,good){const P=scP(s.id),now=Date.now(),prev=P.r[f.id]||[0,0];
   else P.r[f.id]=[Math.max(0,prev[0]-1),now+dayMs];scSave();}
 function wSRS(it,good){const now=Date.now();it.st=it.st||0;if(good){it.st=Math.min(MYW_DAYS.length,it.st+1);it.due=now+MYW_DAYS[Math.min(it.st,MYW_DAYS.length)-1]*dayMs;it.lvl=Math.min(5,(it.lvl||0)+1);}
   else{it.st=0;it.due=now+dayMs;it.lvl=0;}save();}
-function renderDaily(){const L=dailyItems();
+// 13.8.7: renderDaily(list,o) — тренировка по подборке нового словаря: свой список, o.back — куда вернуться, o.title — подпись итога,
+// o.train — фраза, которую ещё рано повторять, при верном ответе расписание не сдвигает (ошибка — вернётся завтра), o.nosrs — демо, прогресс не трогаем
+function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()=>renderTab('learn'));
   if(!L.length){mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Повторение</h1></div>
     <div class="dl-empty card anim"><div class="dl-ic">✅</div><b>На сегодня всё повторено</b><span>Фразы из сцен и твои слова вернутся, когда придёт их время. Можно посмотреть новый эпизод или сохранить новые слова.</span>
-    <button class="btn" id="dlGo">Новый эпизод →</button></div>`,'dlscr');$('#bBtn').onclick=()=>{sfx('tap');renderTab('learn');};
+    <button class="btn" id="dlGo">Новый эпизод →</button></div>`,'dlscr');$('#bBtn').onclick=()=>{sfx('tap');back();};
     $('#dlGo').onclick=()=>{const c=continueScene();renderScEp(c.s.id,c.i);};return;}
   const Q=L.map((x,j)=>({...x,t:x.k==='w'?'card':(j%2===0&&dNorm(scT(x.f)).split(' ').length<=12?'dict':'recall')}));let n=0,ok=0;const res=[];
   const next=()=>{n++;n>=Q.length?end():show();};
   function frame(meta,body){const seg=Q.map((_,j)=>`<i class="${j<n?'done':j===n?'cur':''}"></i>`).join('');
     mount(`<div class="scn noir"><div class="sc-head"><button class="icon-btn" id="dlx" aria-label="Закрыть">${ui('close')}</button><div class="sc-segs">${seg}</div></div>
       <div class="sc-q sc-card dl-q"><div class="sc-meta">${meta}</div>${body}<div id="dlfb"></div></div></div>`,'scnscr');
-    $('#dlx').onclick=()=>{sfx('tap');renderTab('learn');};}
-  function grade(q,good,html){if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
+    $('#dlx').onclick=()=>{sfx('tap');back();};}
+  function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!o.nosrs&&!(good&&early)){if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);}res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
     if(!good&&!q.re)Q.splice(Math.min(Q.length,n+4),0,{...q,re:true,t:q.k==='w'?'card':'recall'});
     sfx(good?'good':'bad');haptic(good?'ok':'err');
     $('#dlfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}">${html}<button class="sc-btn" id="dln">Дальше →</button></div>`;$('#dln').onclick=()=>{sfx('tap');next();};}
@@ -2715,10 +2717,11 @@ function renderDaily(){const L=dailyItems();
     $('#dlyes').onclick=()=>{$('#dlgr').hidden=true;grade(q,true,`<div class="t">Отлично</div><div class="en">${esc(it.w)} — ${esc(it.ru)}</div>`);};
     $('#dlno').onclick=()=>{$('#dlgr').hidden=true;grade(q,false,`<div class="t">Вернётся ещё раз</div><div class="en">${esc(it.w)} — ${esc(it.ru)}</div>`);};
     if($('#dlmom'))$('#dlmom').onclick=()=>{sfx('tap');momOpen(it.sid,it.pi,it.a||0,it.w);};}
-  function end(){remindSync(true);ev('review','daily');const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
-    mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">Повторение на сегодня</div><div class="sc-big">${good} / ${res.length}</div>
-      <p class="sc-sub">${good===res.length?'Всё вспомнил. Следующая встреча — через несколько дней.':'Что не вспомнилось — вернётся завтра. Так и запоминается.'}</p>
-      <div class="sc-btns"><button class="sc-btn" id="dlh2">На главную</button></div></div></div>`,'scnscr');$('#dlh2').onclick=()=>renderTab('learn');}
+  function end(){remindSync(true);if(!o.train)ev('review','daily');const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
+    mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">${esc(o.title||'Повторение на сегодня')}</div><div class="sc-big">${good} / ${res.length}</div>
+      <p class="sc-sub">${good===res.length?(o.train?'Всё вспомнил.':'Всё вспомнил. Следующая встреча — через несколько дней.'):'Что не вспомнилось — вернётся завтра. Так и запоминается.'}</p>
+      <div class="sc-btns">${o.train?`<button class="sc-btn" id="dlh3">Ещё раз</button>`:''}<button class="sc-btn${o.train?' ghost':''}" id="dlh2">${o.back?'Назад в словарь':'На главную'}</button></div></div></div>`,'scnscr');$('#dlh2').onclick=()=>back();
+    if($('#dlh3'))$('#dlh3').onclick=()=>{sfx('tap');renderDaily(shuffle(L.slice()).map(x=>x.k==='ph'?{...x,due:((scP(x.s.id).r||{})[x.f.id]||[0,0])[1]}:{...x}),o);};}
   show();}
 /* ================= 8.2: фраза дня ================= */
 function phraseOfDay(){const A=SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)==='on').flatMap(s=>s.parts.flatMap(p=>p.ph).filter(f=>!f.passive&&f.ex&&f.ex.length).map(f=>({s,f})));
@@ -3862,7 +3865,7 @@ function dxMy(box){const L=mywAll(),tagsOf=x=>[...(x.tags||[]),x.own?'добав
   box.querySelectorAll('.dm-say').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');const s0=scOf(b.dataset.s),a=+b.dataset.a,r=s0&&s0.subs.find(z=>Math.abs(z[0]-a)<0.05);wordPlay(b.dataset.s,b.dataset.w,a,r?r[1]:a+6,b);});
   box.querySelectorAll('.dm-go').forEach(b=>b.onclick=()=>{sfx('tap');const x=store.myw[b.closest('.dm').querySelector('.dm-del').dataset.k];momOpen(b.dataset.s,+b.dataset.i,+b.dataset.a,x&&x.w);});
   box.querySelectorAll('.dm').forEach((b,i)=>b.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:280,delay:Math.min(i,12)*30,fill:'backwards'}));}
-function renderMyWords(){DX.seg='my';renderTab('dict');}
+function renderMyWords(){DX.seg='my';store.knMyKind='w';try{if(window.DL&&DL.KN&&DL.KN.my)DL.KN.my.tag=null;}catch(e){}renderTab('dict');}   // 13.8.7: в новом словаре — сразу «Слова», меню подборок
 const mywWhen=t=>{const h=(t-Date.now())/36e5;return h<12?'через пару часов':h<36?'завтра':`через ${Math.round(h/24)} ${plural(Math.round(h/24),['день','дня','дней'])}`;};
 // новые карты после эпизода: вылетают, переворачиваются и с ускорением падают в словарь
 /* =====================================================================================
