@@ -1210,7 +1210,7 @@
 .kn-hp.wide{width:168px;aspect-ratio:16/9;border-radius:10px}
 .kn-ht{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .kn-ht em{font-style:normal;font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
-.kn-ht b{font:800 24px/1.1 'Golos Text',sans-serif;letter-spacing:-.02em}
+.kn-ht>b{font:800 24px/1.1 'Golos Text',sans-serif;letter-spacing:-.02em}.kn-ht small b{color:var(--kt);font-weight:800}
 .kn-ht small{font-size:13px;color:var(--km)}
 .kn-ht .kn-bar{max-width:320px}
 .kn-go{align-self:flex-start;margin-top:6px;padding:9px 16px;border-radius:99px;background:var(--kt);color:#141210;font:700 13.5px 'Golos Text',sans-serif}
@@ -1226,7 +1226,7 @@
 .kn-p small{font-size:12px;color:var(--km)}
 .kn-done{position:absolute;right:6px;top:6px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#6DD58C;color:#0d1a10;font:900 13px sans-serif;font-style:normal}
 @media (hover:hover){.kn-p:hover .kn-pi{transform:translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.2)}}
-@media (min-width:760px){.kn-row{flex-wrap:wrap;overflow:visible;margin:0;padding:2px 0 6px}.kn-p{width:150px}.kn-hp{width:140px}.kn-ht b{font-size:32px}.kn-hero{min-height:240px;padding:22px}.kn-tps{flex-wrap:wrap;margin:0 0 12px;padding:0}}
+@media (min-width:760px){.kn-row{flex-wrap:wrap;overflow:visible;margin:0;padding:2px 0 6px}.kn-p{width:150px}.kn-hp{width:140px}.kn-ht>b{font-size:32px}.kn-hero{min-height:240px;padding:22px}.kn-tps{flex-wrap:wrap;margin:0 0 12px;padding:0}}
 /* сцены фильма */
 .kn-scl{display:flex;flex-direction:column;gap:10px}
 .kn-sc{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);text-align:left;cursor:pointer}
@@ -1377,3 +1377,84 @@
 @media (max-width:560px){.kn-sh{flex-direction:column;align-items:stretch;gap:12px}.kn-sh .kn-hp.wide{width:100%;border-radius:12px}.kn-sh .kn-ht b{font-size:21px}}
 @media (min-width:760px){.kn-hp.wide{width:250px}}
 .dli-x{z-index:7}
+/* =====================================================================================
+   13.8.2 — новый словарь: фильм как в Кинотеке (фон 4K, живой момент, цитата, ряды кино-карт), анимации
+   ===================================================================================== */
+.kn-hero.bd .kn-hbg{inset:0;filter:brightness(.6) saturate(1.08);transform:none;animation:knKB 20s ease-in-out infinite alternate}
+@keyframes knKB{from{transform:scale(1.02)}to{transform:scale(1.13) translate(-1.5%,-1%)}}
+.kn-shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.12) 50%,transparent 62%);transform:translateX(-130%);animation:knShine 6s ease-in-out 1.4s infinite}
+@keyframes knShine{0%{transform:translateX(-130%)}32%,100%{transform:translateX(130%)}}
+.kn-pi{overflow:hidden}
+.kn-gl{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.4),transparent 55%);opacity:0;transition:opacity .25s;mix-blend-mode:soft-light}
+.v-kino .dlt{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .35s cubic-bezier(.2,.9,.3,1)}
+.v-kino .dlt.hov{transition:transform .08s linear}
+.v-kino .kn-p.hov .kn-gl{opacity:1}
+.v-kino .kn-p.hov .kn-pi{box-shadow:0 22px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.25)}
+.kn-fly{position:fixed;z-index:85;background:center/cover no-repeat;border-radius:12px;pointer-events:none;will-change:transform}
+.v-kino .kn-bar>i{transform-origin:left center;animation:knFill 1.1s cubic-bezier(.2,.8,.2,1) .15s both}
+@keyframes knFill{from{transform:scaleX(0)}}
+/* шапка фильма */
+.kf{position:relative;display:flex;align-items:flex-end;min-height:min(80vw,540px);margin:0 0 12px;border-radius:22px;overflow:hidden;isolation:isolate;border:1px solid var(--kl);background:#0d0d10;color:var(--kt)}
+.kf-bd{position:absolute;inset:0;z-index:-3;background:var(--bg) center 22%/cover no-repeat;transform:scale(1.04);will-change:transform}
+.kf:not(.bd) .kf-bd{inset:-30px;filter:blur(18px) brightness(.55) saturate(1.1)}
+.kf-live{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.kf-live .dl-lv{transition:opacity 1.4s}
+.kf-live .dl-lv.on{opacity:.85}
+.kf-gr{position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#0b0b0d 0%,rgba(11,11,13,.82) 34%,rgba(11,11,13,.18) 72%,rgba(11,11,13,.35)),linear-gradient(90deg,rgba(11,11,13,.75),transparent 70%)}
+.kf-in{display:flex;align-items:flex-end;gap:16px;width:100%;padding:16px}
+.kf-p{flex:none;width:92px;aspect-ratio:2/3;border-radius:12px;background-size:cover;background-position:center;box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.16)}
+.kf-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.kf-t>em{font-style:normal;font:700 11px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--km)}
+.kf-t h2{margin:0;font:800 30px/1.04 'Playfair Display',Georgia,serif;letter-spacing:-.01em;text-shadow:0 4px 30px rgba(0,0,0,.7);perspective:600px}
+.kf-t h2 span{display:inline-block;transform-origin:50% 100%}
+.kf-q{margin:0;max-width:600px;font:italic 600 15px/1.35 'Golos Text',sans-serif;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.7)}
+.kf-q small{display:block;margin-top:3px;font-style:normal;font-weight:400;font-size:13px;color:var(--km)}
+.kf-q.dim{font-style:normal;font-weight:400;font-size:13.5px;color:var(--km)}
+.kf-st{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--km)}.kf-st b{color:var(--kt);font-size:15px}
+.kf-t>.kn-bar{max-width:380px}
+.kf-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.kf-go,.kf-all{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;font:800 14.5px 'Golos Text',sans-serif;cursor:pointer}
+.kf-go{border:0;background:var(--kt);color:#141210;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.kf-go svg{width:15px;height:15px;fill:currentColor;stroke:none}
+.kf-all{border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.35);color:var(--kt);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.kf-go:active,.kf-all:active,.kcc:active,.kf-more:active{transform:scale(.96)}
+@media (min-width:760px){.kf{min-height:470px}.kf-in{padding:28px;gap:26px}.kf-p{width:176px}.kf-t h2{font-size:54px}.kf-q{font-size:17.5px}}
+.kf-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 4px}
+.kf-info>div{display:flex;flex-direction:column;gap:5px;padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--kl)}
+.kf-info span{font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
+.kf-dots{display:flex;gap:4px}.kf-dots b{width:18px;height:5px;border-radius:3px;background:rgba(255,255,255,.14)}.kf-dots b.on{background:var(--c,#F3EBDD)}
+.kf-info small{font-size:12.5px;line-height:1.35;color:var(--km)}
+.kf-sc{margin:20px 0 0}
+.kf-sh{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 10px;padding:0;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer}
+.kf-sht{flex:none;width:96px;aspect-ratio:16/9;border-radius:10px;background-size:cover;background-position:center;box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+.kf-shx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.kf-shx em{font-style:normal;font-size:11.5px;color:var(--km)}.kf-shx b{font:800 16px/1.2 'Golos Text',sans-serif}.kf-shx small{font-size:12px;color:var(--km)}
+.kf-shx .kn-bar{max-width:260px}
+.kf-row{display:flex;gap:10px;overflow-x:auto;padding:2px 0 10px;scroll-snap-type:x mandatory;scrollbar-width:none;perspective:900px}
+.kf-row::-webkit-scrollbar{display:none}
+.kcc{position:relative;flex:none;width:236px;aspect-ratio:16/10;scroll-snap-align:start;padding:0;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;background:#111;color:#fff;text-align:left;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.4)}
+.kcc .kc-art{position:absolute;inset:0;height:100%;aspect-ratio:auto}
+.kcc-v{position:absolute;inset:0;z-index:1}
+.kcc::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(0,0,0,.88),rgba(0,0,0,.2) 55%,transparent);pointer-events:none}
+.kcc::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;z-index:3}
+.kcc.r-rare::before{background:#4DA8FF}.kcc.r-epic::before{background:linear-gradient(90deg,#B57CFF,#FF7AD9)}.kcc.r-leg::before{background:linear-gradient(90deg,#FF9A2E,#FFD27A,#FF9A2E)}
+.kcc-sub{position:absolute;left:10px;right:10px;bottom:9px;z-index:2;display:flex;flex-direction:column;gap:2px}
+.kcc-sub b{font:700 14px/1.25 'Golos Text',sans-serif;text-shadow:0 1px 4px #000;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.kcc-sub small{font-size:11.5px;color:rgba(255,255,255,.78);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.kcc .kc-st{position:absolute;left:8px;top:9px;z-index:2;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.kcc .kc-pl{z-index:2}
+.kcc.lock .kc-art{filter:blur(8px) brightness(.4) saturate(.6);transform:scale(1.1)}
+.kcc-lk{position:absolute;inset:0;z-index:3;display:grid;place-items:center;padding:10px;text-align:center;font:700 13.5px 'Golos Text',sans-serif;color:rgba(255,255,255,.88)}
+.kcc.hov{box-shadow:0 22px 40px rgba(0,0,0,.6);border-color:rgba(255,255,255,.22)}
+.kf-more{flex:none;width:116px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:14px;border:1px dashed rgba(255,255,255,.22);background:rgba(255,255,255,.03);color:var(--kt);cursor:pointer;font:700 13px 'Golos Text',sans-serif}
+.kf-more small{color:var(--km);font-weight:500}.kf-more svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+@media (min-width:760px){.kcc{width:262px}.kf-sht{width:132px}}
+/* открытая карта: лучи по редкости и блик */
+.kno .knc.r-epic,.kno .knc.r-leg{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.12),0 0 60px -10px var(--rc,#B57CFF)}
+.knc.r-leg{--rc:#FF9A2E}.knc.r-epic{--rc:#B57CFF}
+.kno-rays{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;margin:-80vmax 0 0 -80vmax;pointer-events:none;background:repeating-conic-gradient(from 0deg,rgba(255,200,120,.10) 0 6deg,transparent 6deg 18deg);animation:knRays 30s linear infinite;mask:radial-gradient(circle,#000 0,transparent 45%);-webkit-mask:radial-gradient(circle,#000 0,transparent 45%)}
+.kno-rays.r-epic{background:repeating-conic-gradient(from 0deg,rgba(181,124,255,.11) 0 6deg,transparent 6deg 18deg)}
+@keyframes knRays{to{transform:rotate(360deg)}}
+
+.kcc .kc-st{background:rgba(0,0,0,.6)!important}
+.kcc.st-new .kc-st{color:#9ccfff}.kcc.st-due .kc-st{color:#ffc46b}.kcc.st-ok .kc-st{color:#8fe0a6}.kcc.st-go .kc-st{color:rgba(243,235,221,.92)}
