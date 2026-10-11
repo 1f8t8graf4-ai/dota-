@@ -249,7 +249,7 @@ if __name__=='__main__':
     c+=['##### НЕМЕЦКИЕ СЦЕНЫ (13.5) #####','','']
     for h,f,*x in PDE:c+=[f'=== {h} → файл {f}.mp4 ===','',prompt(*x),'','']
     open('фоны-промты-АКТУАЛЬНЫЕ.txt','w').write('\n'.join(c))
-    # 13.8.2: только то, чего ещё нет: главные фоны без film-bg.mp4 и все фоны сцен (bg.mp4 пока ни у одной сцены)
+    # 13.8.2: только то, чего ещё нет: главные фоны без film-bg.mp4 и фоны сцен без bgv
     import json
     S=json.load(open('data/scenes.json',encoding='utf-8'))['SCENES']
     done=set();KEY={'wolf':'wolf','american-psycho':'psycho','taxi-driver':'taxi','downfall':'bunker','titanic':'titanic','sopranos':'sopranos','breaking-bad':'bb','bb-':'bb','durov':'durov','clavicular':'clavicular'}
