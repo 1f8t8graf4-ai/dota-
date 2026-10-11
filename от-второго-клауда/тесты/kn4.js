@@ -1,5 +1,5 @@
 // 13.9.3: новый словарь — «Кинотека» (фильм → сцены строками → эпизод раскрывается → фразы строками; раздел на весь экран — kf.js)
-// и «Мои фразы и слова» (переключатель «Фразы / Слова», 4 варианта: Лента, Разговорник, Переписка, Альбомы — подробно в km.js); ph|pc
+// и «Мои фразы и слова» (переключатель «Фразы / Слова», 2 вида (13.9.4): Альбомы, Разговорник — подробно в km.js); ph|pc
 const {open}=require('./st');const {chromium}=require('playwright');
 let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d||'');};
 const seed=([st])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:true,flags:{}}));};
@@ -47,13 +47,13 @@ const dev=process.argv[2]||'ph';
   await click('.kf-go[data-watch]');await page.waitForTimeout(1500);st=await ev(()=>({dict:!!document.querySelector('#dlRoot'),screen}));ok('«Смотреть дальше» → страница сцены',!st.dict,JSON.stringify(st));
   await ev(()=>renderTab('dict'));await page.waitForTimeout(1200);await ev(()=>DL.open({sid:'wolf-of-wall-street'}));await page.waitForTimeout(1200);
   await click('.kn-ew');await page.waitForTimeout(1800);st=await ev(()=>({ep:SCUR&&SCUR.i,id:SCUR&&SCUR.id}));ok('▶ на эпизоде → эпизод',st.id==='wolf-of-wall-street'&&st.ep===0,JSON.stringify(st));
-  // ---------- «Мои фразы и слова» (демо): 4 варианта (подробно — km.js) ----------
-  await ev(()=>{DL.S.sid=null;DL.S.show=null;DX.seg='my';store.knMyKind='ph';store.knMyV='feed';renderTab('dict');});await page.waitForTimeout(1500);
+  // ---------- «Мои фразы и слова» (демо): 2 вида — Альбомы, Разговорник (подробно — km.js) ----------
+  await ev(()=>{DL.S.sid=null;DL.S.show=null;DX.seg='my';store.knMyKind='ph';store.knMyV='feed';renderTab('dict');});await page.waitForTimeout(1500);   // старая «Лента» → Альбомы
   st=await ev(()=>({lvl:$('#dlStage').dataset.lvl,sw:[...document.querySelectorAll('.km-sw button')].map(b=>b.textContent.replace(/\s+/g,' ').trim()+(b.classList.contains('on')?'*':'')),vp:(document.querySelector('[data-mvp]')||{}).textContent}));
-  ok('«Мои»: переключатель «Фразы / Слова», вариант «Лента»',st.lvl==='my'&&/^Фразы \d+\*$/.test(st.sw[0])&&/^Слова/.test(st.sw[1])&&/Лента/.test(st.vp),JSON.stringify(st));
-  await click('[data-mvp]');await page.waitForTimeout(600);st=await ev(()=>[...document.querySelectorAll('.km-vl [data-vv]')].map(b=>b.dataset.vv).join());ok('шторка: 4 варианта',st==='feed,book,chat,album',st);
+  ok('«Мои»: переключатель «Фразы / Слова», вид «Альбомы» (старая «Лента» → Альбомы)',st.lvl==='my'&&/^Фразы \d+\*$/.test(st.sw[0])&&/^Слова/.test(st.sw[1])&&/Альбомы/.test(st.vp),JSON.stringify(st));
+  await click('[data-mvp]');await page.waitForTimeout(600);st=await ev(()=>[...document.querySelectorAll('.km-vl [data-vv]')].map(b=>b.dataset.vv).join());ok('шторка: 2 вида',st==='album,book',st);
   await ev(()=>{const w=document.querySelector('.kn-sheet');w&&w._close&&w._close();});await page.waitForTimeout(400);
-  for(const [v,sel] of [['feed','.kmf-s[data-i]'],['book','.kmb-c'],['chat','.kmc-r'],['album','.kma-c']]){await ev(v=>{store.knMyV=v;DL.KN.my.tag=null;DL.render(0);},v);await page.waitForTimeout(1200);
+  for(const [v,sel] of [['album','.kma-c'],['book','.kmb-c']]){await ev(v=>{store.knMyV=v;DL.KN.my.tag=null;DL.render(0);},v);await page.waitForTimeout(1200);
     st=await ev(s=>document.querySelectorAll(s).length,sel);ok('вариант «'+v+'»',st>2,String(st));await shot('5-my-'+v);}
   // тренировка из Разговорника и возврат
   await ev(()=>{store.knMyV='book';DL.render(0);});await page.waitForTimeout(1000);await click('[data-btr]');await page.waitForTimeout(1200);
