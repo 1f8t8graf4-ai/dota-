@@ -12,7 +12,7 @@
 <script>/* 13.0.2: по ссылке-приглашению Telegram открывает мини-апп на полэкрана — разворачиваем сразу, ещё до загрузки данных */
 try{Telegram.WebApp.expand();}catch(e){}</script>
 <script>/* Версия релиза — одна на всё: сбивает кэш у стилей, скриптов и данных (?v=). Поднимай вместе с APP_V в js/app.js. */
-var V='13.8.7';document.write('<link rel="stylesheet" href="styles/main.css?v='+V+'">');</script>
+var V='13.9';document.write('<link rel="stylesheet" href="styles/main.css?v='+V+'">');</script>
 </head>
 <body>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -20,11 +20,11 @@ var V='13.8.7';document.write('<link rel="stylesheet" href="styles/main.css?v='+
 <div class="topfade"></div>
 <div id="app"></div>
 <script>
-/* Где лежат видео и картинки сцен. После переезда в Cloudflare R2 впиши сюда публичный адрес бакета (см. docs/object-storage.md в репозитории scenes). */
-/* Репозиторий scenes публикуется как https://1f8t8graf4-ai.github.io/scenes/, а папки сцен лежат в его корне.
-   Код просит адрес вида ASSET_BASE + '/scenes/<сцена>/<файл>', поэтому база — без «/scenes» на конце
-   (с ним получалось .../scenes/scenes/... — и ни одно видео не находилось). */
-window.ASSET_BASE='https://1f8t8graf4-ai.github.io';
+/* Где лежат видео и картинки сцен. 13.9: в Cloudflare R2, раздаёт воркер бота (bot/worker.js, адрес /m/…).
+   Код просит адрес вида ASSET_BASE + '/scenes/<сцена>/<файл>', поэтому база — без «/scenes» на конце.
+   Новые файлы сцен: пуш в репо scenes + python3 tools/r2_up.py <папка> (без заливки в R2 приложение их не увидит).
+   Было до 13.9: https://1f8t8graf4-ai.github.io (GitHub Pages репо scenes). */
+window.ASSET_BASE='https://dota.1f8t8graf4.workers.dev/m';
 </script>
 <script>
 /* На ПК тяжёлые эффекты (размытие, бесконечные анимации) выключены — класс lite.

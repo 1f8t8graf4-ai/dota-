@@ -19,13 +19,15 @@ function fakeTG(o){return `(()=>{const ev={};window.__cloud=${JSON.stringify(o.c
 async function open(o={}){const b=o.browser||await chromium.launch();
   const ctx=await b.newContext(Object.assign({viewport:{width:390,height:844},deviceScaleFactor:1,hasTouch:!!o.touch,isMobile:!!o.touch},o.ctx||{}));
   await ctx.route('https://telegram.org/**',r=>r.fulfill({status:200,contentType:'application/javascript',body:''}));
-  await ctx.route('https://1f8t8graf4-ai.github.io/scenes/**',async r=>{const u=new URL(r.request().url());const rel=decodeURIComponent(u.pathname.replace(/^\/scenes\//,''));
+  // 13.9: медиа сцен — из R2 через воркер (https://dota.1f8t8graf4.workers.dev/m/scenes/…); старый адрес GitHub Pages тоже мокается
+  const media=async r=>{const u=new URL(r.request().url());const rel=decodeURIComponent(u.pathname.replace(/^\/(m\/)?scenes\//,''));
     const f=path.join(C,rel.replace(/\//g,'__'));if(!fs.existsSync(f))return r.fulfill({status:404,body:'nf'});const buf=fs.readFileSync(f),ext=rel.split('.').pop(),ct=types[ext]||'application/octet-stream';
     const rg=r.request().headers()['range'];if(rg){const m=/bytes=(\d+)-(\d*)/.exec(rg);const a=+m[1],e=m[2]?Math.min(+m[2],buf.length-1):buf.length-1;
       return r.fulfill({status:206,headers:{'content-type':ct,'accept-ranges':'bytes','content-range':`bytes ${a}-${e}/${buf.length}`},body:buf.subarray(a,e+1)});}
-    r.fulfill({status:200,headers:{'content-type':ct,'accept-ranges':'bytes'},body:buf});});
+    r.fulfill({status:200,headers:{'content-type':ct,'accept-ranges':'bytes'},body:buf});};
+  await ctx.route('https://1f8t8graf4-ai.github.io/scenes/**',r=>o.realMedia?r.continue():media(r));   // realMedia — брать файлы из настоящего R2
   await ctx.route(/https:\/\/(cdn\.cloudflare\.steamstatic\.com|unpkg\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)\//,r=>r.fulfill({status:404,body:''}));
-  await ctx.route('https://dota.1f8t8graf4.workers.dev/**',async r=>{if(!o.worker)return r.fulfill({status:503,body:''});const u=new URL(r.request().url());
+  await ctx.route('https://dota.1f8t8graf4.workers.dev/**',async r=>{const u=new URL(r.request().url());if(u.pathname.startsWith('/m/'))return o.realMedia?r.continue():media(r);if(!o.worker)return r.fulfill({status:503,body:''});
     try{const res=await fetch('http://127.0.0.1:8788'+u.pathname+u.search,{method:r.request().method(),headers:r.request().headers(),body:r.request().method()==='POST'?r.request().postData():undefined});
       r.fulfill({status:res.status,headers:{'content-type':res.headers.get('content-type')||'application/json','access-control-allow-origin':'*'},body:await res.text()});}catch(e){r.fulfill({status:502,body:''});}});
   if(o.tg!==false)await ctx.addInitScript(fakeTG(o));

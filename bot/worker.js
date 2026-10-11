@@ -1361,7 +1361,7 @@ async function mediaGet(req, env, key, again) {
   if (req.method === 'HEAD') return new Response(null, { headers: { ...hd, 'content-length': String(meta.size) } });
   const ir = req.headers.get('if-range');
   let r = ir && !etagHit(ir, meta.etag) ? null : mediaRange(req.headers.get('range'), meta.size);
-  if (r === 'bad') return mediaText(416, 'Range вне файла', { 'content-range': `bytes */${meta.size}` });
+  if (typeof r === 'string') return mediaText(416, 'Range вне файла', { 'content-range': `bytes */${meta.size}` });
   let o;
   try { o = r ? await mediaR2(env).get(key, { range: r }) : await mediaR2(env).get(key); }
   catch (e) { if (again) throw e; return mediaGet(req, env, key, true); }   // кусок вне файла: размер в памяти устарел
