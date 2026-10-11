@@ -2073,3 +2073,72 @@ body.dx-open .km-fab{opacity:0;pointer-events:none}
 .kn5-ep{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:99px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:var(--kt,#F3EBDD);font:600 13.5px 'Golos Text',sans-serif;cursor:pointer}
 .kn5-ep svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.4}
 .kn5-more .kn2-del{align-self:flex-start;margin:0}
+
+/* =====================================================================================
+   13.9.7 — «Мои фразы и слова»: два вида на пробу (.km6). Общее: переключатель вида .km6-vw, поиск всегда виден .km6-q, итог .km6-sum.
+   А «Карточки» — .km6-c поверх карточки эпизода Кинотеки .kn-ep; Б «Постеры» — сетка .km6-g, страница фильма .km6-sh + .km6-e.
+   ===================================================================================== */
+.km-b.km6{padding-bottom:24px}
+/* переключатель вида — две иконки справа в строке «Фразы | Слова» */
+.km6-vw{margin-left:auto;display:flex;padding:3px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--kl)}
+.km6-vw button{width:40px;height:36px;display:grid;place-items:center;padding:0;border:0;border-radius:9px;background:none;color:var(--km);cursor:pointer;transition:background .2s,color .2s}
+.km6-vw button svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+.km6-vw button.on{background:var(--kt);color:#141210}
+.km6-vw button:active{transform:scale(.94)}
+/* поиск — всегда виден; ✕ очищает (свой крестик браузера прячем) */
+.km6-q{margin:0 0 6px}
+.km6-q input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;display:none}
+.km6-qx{flex:none;width:26px;height:26px;margin-right:-6px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:var(--kt);cursor:pointer}
+.km6-qx svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.8}
+.km6-qx[hidden]{display:none}
+.km6-sum{margin:0 2px 12px;font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
+/* А: «По фильмам · По темам» — текст, черта под выбранным */
+.km6-by{display:flex;gap:20px;margin:6px 2px 4px;border-bottom:1px solid var(--kl)}
+.km6-by button{position:relative;padding:8px 0 10px;border:0;background:none;color:var(--km);font:700 14.5px 'Golos Text',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.km6-by button.on{color:var(--kt)}
+.km6-by button.on::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px;background:var(--kt)}
+/* карточка = эпизод Кинотеки; у своих слов вместо кадра — тёплая подложка с иконкой */
+.km6-due{font-style:normal;color:#FFB547}
+.kn-et.km6-ic{display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#5a4a32,#1a1612 70%)}
+.kn-et.km6-ic>i{font-style:normal;font-size:22px;line-height:1}
+.km6-in{padding:0 14px 10px;border-top:1px solid rgba(255,255,255,.06)}
+.km6-in .km6-ta{margin:12px 0 0}
+.kn-ep .km6-in .kq-l{padding:0;border-top:0}
+.km6-sub{display:flex;align-items:baseline;gap:8px;min-width:0;margin:16px 0 0;font:600 13px 'Golos Text',sans-serif}
+.km6-sub em{flex:none;font-style:normal;font:700 10.5px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
+.km6-sub span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:rgba(243,235,221,.72)}
+.km6-sr .km6-sub{margin-top:10px}
+/* Б: чипы тем — в ряд со сдвигом (телефон), переносом (ПК) */
+.km6-tps{display:flex;gap:6px;overflow-x:auto;margin:4px 0 2px;padding:2px 0;scrollbar-width:none}
+.km6-tps::-webkit-scrollbar{display:none}
+.km6-tps button{flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px;border-radius:99px;border:1px solid var(--kl);background:rgba(255,255,255,.05);color:var(--kt);font:600 13px 'Golos Text',sans-serif;white-space:nowrap;cursor:pointer}
+.km6-tps button i{font-style:normal;font-weight:500;font-size:12px;color:var(--km)}
+.km6-tps button.on{background:var(--kt);border-color:var(--kt);color:#141210}
+.km6-tps button.on i{color:rgba(20,18,16,.6)}
+@media (min-width:760px){.km6-tps{flex-wrap:wrap;overflow:visible}}
+/* сетка постеров: телефон — 3 в ряд, шире — сколько влезет */
+.km6-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px}
+.km6-g .kn-p{width:auto}
+.km6-g .kn-p b{font-size:13px}
+@media (min-width:560px){.km6-g{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (min-width:760px){.km6-g{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:20px 14px}}
+.km6-pd{position:absolute;right:7px;top:7px;width:10px;height:10px;border-radius:50%;background:#FFB547;box-shadow:0 0 0 3px rgba(255,181,71,.25),0 2px 6px rgba(0,0,0,.5)}
+.km6-own .kn-pi{display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#5a4a32,#1a1612 70%)}
+.km6-oi{font-style:normal;font-size:34px;line-height:1}
+/* Б: страница фильма — шапка как у сцены Кинотеки, тема-фильтр снимается крестиком */
+.km6-sh .kn-ht .km6-ta{margin-top:6px}
+.km6-tpx{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px 0 12px;border-radius:99px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:var(--kt);font:600 12.5px 'Golos Text',sans-serif;cursor:pointer}
+.km6-tpx i{display:grid;place-items:center;width:14px;height:14px}
+.km6-tpx svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.8}
+.kn-hp.wide.km6-ic{display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#5a4a32,#1a1612 70%)}
+.kn-hp.km6-ic>i{font-style:normal;font-size:40px;line-height:1}
+/* сцена внутри карточки / на странице фильма — строка «Сцена N» + название (у фильма бывает несколько сцен) */
+.km6-scn{display:flex;flex-direction:column;gap:2px;min-width:0;margin:18px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)}
+.km6-ta+.km6-scn{margin-top:14px;padding-top:0;border-top:0}
+.km6-scn em{font-style:normal;font:700 10.5px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
+.km6-scn span{font:700 14.5px/1.25 'Golos Text',sans-serif;color:var(--kt);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.km6-scn+.km6-sub{margin-top:10px}
+.km6-scn.big{margin:24px 2px 10px;padding-top:0;border-top:0}
+.km6-scn.big span{font:800 17px/1.25 'Golos Text',sans-serif;letter-spacing:-.01em}
+/* число на «Тренировать» в шапке страницы (.kn-ht small красит его серым) */
+.km6-sh .km5-tr small{font:700 12px 'Golos Text',sans-serif;color:inherit;opacity:.55}
