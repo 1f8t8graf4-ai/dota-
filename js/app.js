@@ -418,7 +418,7 @@ function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){
   document.querySelectorAll('.pk,.dx-turn,.dx-shade,.cd2,.gatewrap').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном; 13.6.3: и отсчёт 3-2-1
   document.querySelectorAll('.srv').forEach(o=>o.remove());   // 13.6: открытие покупки
   try{if(window.DL)DL.clean();}catch(e){}   // 13.7: варианты словаря — карта в руке, демо-пак
-  document.querySelectorAll('.dxo,.rwo,.bgvw').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
+  document.querySelectorAll('.dxo,.rwo,.bgvw,.pfv').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
   document.querySelectorAll('.pc-bg video,.kvp-bg video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});   // 13.9.6: живой фон профиля / дуэли
   document.body.classList.remove('dx-open');try{if(KWP)KWP._resume=null;kwHide(0);}catch(e){}try{musDuck(false);}catch(e){}
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
@@ -1750,7 +1750,7 @@ function profileTabHTML(){
   const cell=(v,l)=>`<div><b>${v}</b><span>${l}</span></div>`;
   const adm=FLAG_ADMIN?`<button class="rowcard card anim" id="admBtn">${iconHTML({svg:'shield'})}<span><b>Админ-панель</b><small>Какие разделы видят игроки, тех. работы и тестеры</small></span><span class="go">›</span></button>`:'';
   const pb=profBg();   // 13.9.6: профиль — карточка игрока на своём фоне
-  return `<section class="phead card anim${pb?' pbg'+(pb.film?' film':''):''}">${pb?`<div class="pc-bg" data-bgl="${esc(pb.k)}" aria-hidden="true"></div><i class="pc-sh" aria-hidden="true"></i><div class="pc-top">${bgTagHTML(pb)}<button class="pc-chg" id="pcChg">Сменить фон</button></div>`:''}<div class="pava${photo?'':' mono'}"${photo?` style="background-image:url('${esc(photo)}')"`:''}>${photo?'':esc((name||'И').trim().charAt(0).toUpperCase())}</div>
+  return `<section class="phead card anim${pb?' pbg'+(pb.film?' film':''):''}">${pb?`<div class="pc-bg" data-bgl="${esc(pb.k)}" data-lead="2.5" aria-hidden="true"></div><i class="pc-sh" aria-hidden="true"></i><div class="pc-top">${bgTagHTML(pb)}<button class="pc-chg" id="pcChg">Сменить фон</button></div>`:''}<div class="pava${photo?'':' mono'}"${photo?` style="background-image:url('${esc(photo)}')"`:''}>${photo?'':esc((name||'И').trim().charAt(0).toUpperCase())}</div>
       <b class="pn">${esc(name)}</b><button class="rankchip" id="rankBtn">${rk.r.n} <i>?</i></button>
       <span class="pbar"><i style="--w:${rk.pct}%"></i></span><small>${rk.nx?`До ранга ${rk.nx.n}: ${rk.n} из ${rk.nx.at} выученных слов`:'Высший ранг'}${rk.r.m>1?`. Билеты x${rk.r.m}`:''}</small>${pb?'':profBgAskHTML()}</section>
     <div class="stats card anim">${cell(t.learned,'выучено слов')}${cell(acc===null?'—':acc+'%','точность')}${cell(streakNow(),'дней подряд')}${cell(fmt(store.gold),'билетов')}${cell(store.answered,'ответов')}${cell(s.bestStreak,'лучшая серия')}</div>
@@ -1769,7 +1769,8 @@ function profileTabHTML(){
 }
 function bindProfileAdmin(){const b=$('#admBtn');if(b)b.onclick=()=>{sfx('tap');renderAdmin();};}
 function bindProfile(){bindProfileAdmin();
-  bindHead();bgFill($('.phead'));$$('#pcChg,#pcSet').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');renderCollection('bg');});
+  bindHead();bgFill($('.phead'));$$('#pcChg,#pcSet').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');haptic('sel');renderCollection('bg');});
+  {const c=$('.phead.pbg');if(c)c.onclick=e=>{if(e.target.closest('button'))return;pfView(meCard(),true);};}
   $('#dict').onclick=()=>{sfx('tap');renderDict('going');};
   if(dueList().length)$('#rev2').onclick=()=>{haptic('medium');startSession('review');};
   if(!$('#redo2').disabled)$('#redo2').onclick=()=>{haptic('medium');startSession('mistakes');};
@@ -3928,7 +3929,7 @@ function kvSheet(sid,ep){const s=scOf(sid);if(!s)return;scCloseSheet();let mode=
   draw();w.onclick=async e=>{const b=e.target.closest('button');if(e.target===w||(b&&b.hasAttribute('data-close'))){w.remove();return;}if(!b)return;sfx('tap');
     if(b.dataset.ep){ep=+b.dataset.ep;draw();return;}if(b.dataset.m){mode=b.dataset.m;if(mode==='coop')bet=0;draw();return;}if(b.dataset.b){bet=+b.dataset.b;draw();return;}
     if(b.id==='kvGo'){b.disabled=true;b.textContent='Создаю комнату…';
-      try{const r=await kvNet({a:'create',fx:shopUse('st'),bg:profBgKey(),room:{sid,ep,mode,bet,qs:kvMakeQs(s,ep)}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
+      try{const r=await kvNet({a:'create',fx:shopUse('st'),bg:profBgKey(),pf:myPub(),room:{sid,ep,mode,bet,qs:kvMakeQs(s,ep)}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
         w.remove();KV={code:r.v.code,role:'A',room:r.v,k:0,t0:0};kvShare();kvLobby();kvPoll();}catch(x){kvErr();b.disabled=false;draw();}}};
   document.body.appendChild(w);}
 const kvLink=()=>`${APP_LINK}?startapp=kv_${KV.code}`;
@@ -3936,8 +3937,8 @@ function kvShare(){const R=KV.room,s=scOf(R.sid);shareLink(kvLink(),`${R.mode===
 function kvScreen(html){const s=scOf(KV.room.sid);scMount(s,`<div class="kv">${html}</div>`,'pvp');}
 function kvLobby(){const R=KV.room,s=scOf(R.sid);
   kvScreen(`<div class="sc-head"><button class="sc-back" id="kvX">${ui('back')}</button><div><span class="sc-meta">Дуэль · ${R.mode==='race'?'наперегонки':'вместе'}</span><h1>${esc(s.title)}</h1></div></div>
-    <div class="kv-lobby">${profBg()?kvPlHTML({n:kvName(),bg:profBgKey()},'inv',true,s)+'<small class="kvp-cap">Так тебя увидит друг</small>':'<div class="kv-pulse">⚔️</div>'}<b>Ждём друга…</b><p>${esc(s.sub||'')} · эпизод ${R.ep+1} «${esc(s.parts[R.ep].t)}»${R.bet?` · ставка ${ui('coin')} ${R.bet}`:''}</p>
-      <div class="kv-code">Комната <b>${KV.code}</b></div><button class="sc-btn" id="kvSh">📤 Отправить ссылку ещё раз</button><button class="sc-btn ghost" id="kvCp">Скопировать ссылку</button>${!profBg()&&bgAnyGot()?'<p class="kv-tip">🖼 Поставь фон в профиль (Коллекция) — друг увидит тебя на нём</p>':''}</div>`);bgFill($('.kv'));
+    <div class="kv-lobby">${profBg()?kvPlHTML({n:kvName(),bg:profBgKey()},'inv',true,s,null,2.5,'me')+'<small class="kvp-cap">Так тебя увидит друг</small>':'<div class="kv-pulse">⚔️</div>'}<b>Ждём друга…</b><p>${esc(s.sub||'')} · эпизод ${R.ep+1} «${esc(s.parts[R.ep].t)}»${R.bet?` · ставка ${ui('coin')} ${R.bet}`:''}</p>
+      <div class="kv-code">Комната <b>${KV.code}</b></div><button class="sc-btn" id="kvSh">📤 Отправить ссылку ещё раз</button><button class="sc-btn ghost" id="kvCp">Скопировать ссылку</button>${!profBg()&&bgAnyGot()?'<p class="kv-tip">🖼 Поставь фон в профиль (Коллекция) — друг увидит тебя на нём</p>':''}</div>`);bgFill($('.kv'));kvPvBind($('.kv'));
   $('#kvSh').onclick=()=>{sfx('tap');kvShare();};$('#kvCp').onclick=()=>{sfx('tap');try{navigator.clipboard.writeText(kvLink()).then(()=>toast('Ссылка скопирована'),()=>toast(kvLink()));}catch(e){toast(kvLink());}};
   $('#kvX').onclick=()=>kvLeave();}
 async function kvJoin(code){try{const r=await kvNet({a:'state',code});if(!r.ok){kvErr(r);renderHome();return;}
@@ -3948,12 +3949,12 @@ async function kvJoin(code){try{const r=await kvNet({a:'state',code});if(!r.ok){
     if(R.B){toast('В этой комнате уже двое');renderHome();return;}
     KV={code,role:'B',room:R,k:0,t0:0,guest:true};const g=store.gold||0,poor=R.bet>g;
     kvScreen(`<div class="sc-head"><button class="sc-back" id="kvX">${ui('back')}</button><div><span class="sc-meta">Тебя зовут на дуэль</span><h1>${esc(s.title)}</h1></div></div>
-      <div class="kv-lobby">${bgInfo(R.A.bg)?kvPlHTML(R.A,'inv',false,s):`<div class="kv-pulse">${R.mode==='race'?'🏁':'🤝'}</div>`}<b>${esc(R.A.n)} зовёт ${R.mode==='race'?'наперегонки':'пройти вместе'}</b>
+      <div class="kv-lobby">${bgInfo(R.A.bg)?kvPlHTML(R.A,'inv',false,s,null,1.5,'A'):`<div class="kv-pulse">${R.mode==='race'?'🏁':'🤝'}</div>`}<b>${esc(R.A.n)} зовёт ${R.mode==='race'?'наперегонки':'пройти вместе'}</b>
         <p>${esc(s.sub||'')} · эпизод ${R.ep+1} «${esc(s.parts[R.ep].t)}» · ${R.qs.length} вопросов</p>
         ${R.bet?`<div class="kv-code">Ставка <b>${ui('coin')} ${R.bet}</b> · у тебя ${fmt(g)}</div><p class="kv-rule">Победитель забирает банк ${ui('coin')} ${R.bet*2}. Очки: верно — 100 и до 50 за скорость, сначала решает точность.</p>`:''}
         ${poor?`<p class="kv-poor">Не хватает монет на ставку. Пройди эпизод или поиграй — и возвращайся по ссылке.</p>`:`<button class="sc-btn" id="kvIn">Принять ${R.mode==='race'?'вызов':'приглашение'} →</button>`}</div>`);
-    bgFill($('.kv'));$('#kvX').onclick=()=>{KV=null;renderHome();};
-    if($('#kvIn'))$('#kvIn').onclick=async()=>{sfx('tap');$('#kvIn').disabled=true;try{const j=await kvNet({a:'join',code,fx:shopUse('st'),bg:profBgKey()});if(!j.ok){kvErr(j);$('#kvIn').disabled=false;return;}kvApply(j.v);kvPoll();}catch(e){kvErr();}};
+    bgFill($('.kv'));kvPvBind($('.kv'));$('#kvX').onclick=()=>{KV=null;renderHome();};
+    if($('#kvIn'))$('#kvIn').onclick=async()=>{sfx('tap');$('#kvIn').disabled=true;try{const j=await kvNet({a:'join',code,fx:shopUse('st'),bg:profBgKey(),pf:myPub()});if(!j.ok){kvErr(j);$('#kvIn').disabled=false;return;}kvApply(j.v);kvPoll();}catch(e){kvErr();}};
   }catch(e){kvErr();renderHome();}}
 function kvPoll(){if(!KV)return;clearTimeout(KV.timer);KV.timer=setTimeout(async()=>{if(!KV)return;if(!document.querySelector('.kv')){kvStop();return;}
     try{const r=await kvNet({a:'state',code:KV.code});if(r.ok)kvApply(r.v);}catch(e){}kvPoll();},KV.room&&KV.room.st==='go'&&KV.started?900:1300);}
@@ -3973,7 +3974,7 @@ function kvApply(R){if(!KV)return;const prev=KV.room;KV.room=R;
 function kvPay(){const R=KV.room;store.kvPaid=store.kvPaid||{};if(R.mode==='race'&&R.bet&&!store.kvPaid[KV.code]){store.gold=Math.max(0,(store.gold||0)-R.bet);store.kvPaid[KV.code]=1;save();}}
 function kvCountdown(){const R=KV.room,s=scOf(R.sid);let n=3;const bank=R.mode==='race'&&R.bet>0;
   const me=Object.assign({},R[KV.role],{bg:profBgKey()||(R[KV.role]||{}).bg});   // 13.9.6: каждый на своём фоне — ты снизу, друг сверху (как в краже билетов)
-  kvScreen(`<div class="kv-vs${fxOK()?' in':''}">${kvPlHTML(R[kvFoe()]||{n:'…'},'top',false,s,rwKadr(s,R.ep))}${kvPlHTML(me,'bot',true,s)}
+  kvScreen(`<div class="kv-vs${fxOK()?' in':''}">${kvPlHTML(R[kvFoe()]||{n:'…'},'top',false,s,rwKadr(s,R.ep),1.1)}${kvPlHTML(me,'bot',true,s,null,2)}
     <svg class="kvs-seam p" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="54" x2="100" y2="46"/></svg><svg class="kvs-seam l" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="54" y1="0" x2="46" y2="100"/></svg>
     <div class="kvs-mid">${bank?`<div class="kv-pot" id="kvPot">${ui('coin')}<b id="kvPotN">0</b><small>банк · по ${R.bet} с каждого</small></div>`:''}
     <div class="kv-numw"><i class="cd2-ring" id="kvRing"></i><b id="kvN">3</b></div><small class="kvs-sub">${R.mode==='race'?'Наперегонки — отвечай быстро и точно':'Вместе — по очереди, начинает '+esc(R.A.n)}</small></div></div>`);
@@ -4040,9 +4041,9 @@ function kvEnd(foeLeft){kvStop();const R=KV.room,s=scOf(R.sid),me=R[KV.role],fo=
   else{const ok=Object.values(R.co).filter(a=>a.ok).length;title=ok===R.qs.length?'Идеально вместе! 🤝':'Пройдено вместе';sub=`Общий счёт: ${ok} из ${R.qs.length}`;if(first){gain=ok*5;addGold(gain);}}
   save();scSave();sfx(win===false?'learn':'win');ev('pvp_end',R.sid);
   const wp=R.mode==='race'&&win!=null?(win?Object.assign({},me,{bg:profBgKey()||me.bg}):fo):null;   // 13.9.6: победитель — на своём фоне
-  kvScreen(`<div class="kv-end">${wp&&bgInfo(wp.bg)?kvPlHTML(wp,'win',win===true,s):`<div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div>`}<b>${title}</b><p>${sub}</p>${R.mode==='race'&&R.bet?`<p class="kv-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Банк забирает ${esc(fo.n)}: ${ui('coin')} ${R.bet*2}`}</p>`:''}${gain&&!(R.mode==='race'&&R.bet)?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}${tbl}
-    <button class="sc-btn" id="kvAgain">⚔️ Реванш</button><button class="sc-btn ghost" id="kvScene">К сцене</button><button class="sc-btn ghost" id="kvDict">📖 Словарь</button></div>`);
-  bgFill($('.kv'));$('#kvAgain').onclick=()=>{sfx('tap');const sid=R.sid,ep=R.ep;KV=null;renderScene(sid);setTimeout(()=>kvSheet(sid,ep),300);};
+  kvScreen(`<div class="kv-end">${wp&&bgInfo(wp.bg)?kvPlHTML(wp,'win',win===true,s,null,1,win===true?'me':kvFoe()):`<div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div>`}<b>${title}</b><p>${sub}</p>${R.mode==='race'&&R.bet?`<p class="kv-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Банк забирает ${esc(fo.n)}: ${ui('coin')} ${R.bet*2}`}</p>`:''}${gain&&!(R.mode==='race'&&R.bet)?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}${tbl}
+    ${(fo.pf||fo.bg)&&!(wp&&win===false&&bgInfo(wp.bg))?`<button class="kv-pfb" data-pv="${kvFoe()}">👤 ${esc(fo.n)} · профиль ›</button>`:''}<button class="sc-btn" id="kvAgain">⚔️ Реванш</button><button class="sc-btn ghost" id="kvScene">К сцене</button><button class="sc-btn ghost" id="kvDict">📖 Словарь</button></div>`);
+  bgFill($('.kv'));kvPvBind($('.kv'));$('#kvAgain').onclick=()=>{sfx('tap');const sid=R.sid,ep=R.ep;KV=null;renderScene(sid);setTimeout(()=>kvSheet(sid,ep),300);};
   $('#kvScene').onclick=()=>{sfx('tap');const sid=R.sid;KV=null;renderScene(sid);};
   $('#kvDict').onclick=()=>{sfx('tap');KV=null;DX.seg='ph';renderTab('dict');};
   if(steal)setTimeout(()=>kvSteal(steal).then(()=>{if(gain)goldFX(gain,$('.kv-bank'));setTimeout(dictFly,gain?1500:200);}),350);   // 13.3: кража билетов, потом выплата и карты
@@ -4470,11 +4471,11 @@ function showGive(s){const h=showOf(s);if(!showDone(h)||showHas(h))return false;
 function bgInfo(k){if(!k)return null;const adm=ADM_OPEN();   // 13.0: админ видит все фоны
   if(k.startsWith('h:')){const h=k.slice(2),L=showScenes(h);if(!L.length)return null;const F=L.filter(x=>x.filmbg),d=L.filter(segDone).length;
     return {k,film:true,got:showHas(h)||adm,img:[...F.map(x=>assetUrl(scKey(x,'film-bgp.jpg'))),assetUrl(scKey(L[0],'poster.jpg')),scCover(L[0],'cover.jpg')],vid:F.map(x=>assetUrl(scKey(x,'film-bg.mp4'))),
-      name:h,sub:'Главный фон · '+(L[0].kind==='interview'?'всё интервью':L[0].kind==='series'?'весь сериал':'весь фильм'),live:F.length>0,
+      name:h,sub:'Главный фон · '+(L[0].kind==='interview'?'всё интервью':L[0].kind==='series'?'весь сериал':'весь фильм'),live:F.length>0,ev:F.length&&F[0].filmbgev!=null?+F[0].filmbgev:null,
       how:L.length>1?`Пройди все сцены «${h}» — пройдено ${d} из ${L.length}`:`Пройди сцену «${L[0].sub||L[0].title}» целиком`};}
   const s=scOf(k);if(!s||!s.parts||s.kind==='clip')return null;
   return {k,got:segHas(s)||adm,img:[...(s.bgv?[assetUrl(scKey(s,'bgp.jpg'))]:[]),assetUrl(scKey(s,'bg.jpg')),scCover(s,'cover.jpg')],vid:s.bgv?[assetUrl(scKey(s,'bg.mp4'))]:[],
-    name:s.sub||s.title,sub:'Фон сцены · '+dictFilm(s),live:!!s.bgv,how:`Пройди все эпизоды сцены «${s.sub||s.title}»`};}
+    name:s.sub||s.title,sub:'Фон сцены · '+dictFilm(s),live:!!s.bgv,ev:s.bgv&&s.bgev!=null?+s.bgev:null,how:`Пройди все эпизоды сцены «${s.sub||s.title}»`};}
 // 13.0: в награде фон только анонсируется — смотреть его в «Коллекции»
 function bgNewHTML(k,label){const b=bgInfo(k);if(!b)return '';
   return `<div class="seg-bg bg-new"><span class="seg-bgi${b.live?' live':''}" style="background-image:${b.img.map(u=>`url('${u}')`).join(',')}">${b.live?'<i>▶</i>':''}</span><span class="seg-bgt"><em>${label}</em><b>${esc(b.name)}</b><small>Лежит в «Коллекции» на Главной</small></span>
@@ -4489,17 +4490,47 @@ const bgAnyGot=()=>bgKeys().some(k=>{const b=bgInfo(k);return !!(b&&b.got);});
 // подпись фона: главный — «🏆 Весь фильм» + фильм, фон сцены — «🎞 Сцена · фильм» + сцена
 function bgTagHTML(b){const s=b.film?null:scOf(b.k);
   return `<span class="pbg-tag${b.film?' film':''}"><em>${b.film?'🏆 '+esc(cap(b.sub.replace('Главный фон · ',''))):'🎞 Сцена'+(s?' · '+esc(dictFilm(s)):'')}</em><b>${esc(b.name)}</b></span>`;}
-// слой фона: картинка сразу, видео поверх, когда пойдёт (экономия трафика / «меньше движения» — без видео)
+// фон с событием («4 с спокойно → событие → после»): ролик стартует так, чтобы событие случилось через lead секунд после
+// появления — в профиле, приглашении и дуэли его видно сразу (отсчёт в дуэли короче 3 с, а событие в файле на 6–8-й секунде).
+// Время события в файле — b.ev (scenes.json: bgev / filmbgev, считает tools/loop_bg.py); нет — с начала, как на Главной.
+function bgSeek(v,b,lead){if(!v||!b||b.ev==null||lead==null)return;const t0=performance.now();
+  const go=()=>{const d=v.duration||0,left=Math.max(.25,lead-(performance.now()-t0)/1000);let t=b.ev-left;if(d&&t>d-.5)t=d-.5;try{v.currentTime=Math.max(0,t);}catch(e){}};
+  if(v.readyState>=1)go();else v.addEventListener('loadedmetadata',go,{once:true});}
+// слой фона: картинка сразу, видео поверх, когда пойдёт (экономия трафика / «меньше движения» — без видео); data-lead — см. bgSeek
 function bgLayer(el,b){if(!el||!b||el._bg===b.k)return;el._bg=b.k;el.style.backgroundImage=b.img.map(u=>`url('${u}')`).join(',');
   el.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}v.remove();});
   const lite=(navigator.connection&&navigator.connection.saveData)||matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(b.vid.length&&!lite){const v=bgVid(b.vid);if(v){el.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}}
+  if(b.vid.length&&!lite){const v=bgVid(b.vid);if(v){el.appendChild(v);if(el.dataset.lead)bgSeek(v,b,+el.dataset.lead);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}}
 const bgFill=root=>{if(root)root.querySelectorAll('[data-bgl]').forEach(el=>bgLayer(el,bgInfo(el.dataset.bgl)));};
 // в профиле фона нет: позвать в «Коллекцию» (или сказать, как его получить)
 const profBgAskHTML=()=>`<button class="pc-set" id="pcSet"><i>🖼</i><span>${bgAnyGot()?'Поставь фон из «Коллекции» — друзья увидят тебя на нём в дуэли':'Пройди сцену целиком — получишь фон для профиля. Его увидят друзья в дуэли'}</span><b>›</b></button>`;
-// игрок дуэли на своём фоне (фон приходит из комнаты: R.A.bg / R.B.bg); нет фона — притемнённый кадр сцены (fb) или обложка, без подписи
-function kvPlHTML(p,cls,me,s,fb){const b=bgInfo(p&&p.bg);
-  return `<div class="kvp ${cls||''}${b?' has'+(b.film?' film':''):''}"><div class="kvp-bg"${b?` data-bgl="${esc(b.k)}"`:` style="background-image:url('${fb||scCover(s,'cover.jpg')}'),url('${scCover(s,'cover.jpg')}')"`} aria-hidden="true"></div><i class="kvp-sh" aria-hidden="true"></i>
+// публичный профиль — что видит друг, нажав на тебя (уходит в комнату дуэли вместе с фоном): сцены, фразы, фоны, серия, аватарка Telegram
+const avaOk=u=>typeof u==='string'&&u.length<300&&/^https:\/\/t\.me\/i\/userpic\/\d+\/[A-Za-z0-9_.=%-]+$/.test(u);
+function myPub(){const sg=Object.keys(store.seg||{}).filter(id=>scOf(id)).length,sh=Object.keys(store.showRw||{}).length,a=tgPhoto();
+  return {sc:sg,ph:dictCount()[0],bg:sg+sh,st:streakNow(),ava:avaOk(a)?a:''};}
+const meCard=()=>({n:userName()||kvName()||'Игрок',bg:profBgKey(),pf:myPub()});
+// окно «профиль игрока»: карточка на его фоне (событие — через 1.5 с), аватарка, имя, цифры. me — свой (как тебя видят друзья)
+function pfView(p,me){if(!p)return;document.querySelectorAll('.pfv').forEach(o=>o.remove());const b=bgInfo(p.bg),P=p.pf,ava=me?tgPhoto():(P&&avaOk(P.ava)?P.ava:''),nm=String(p.n||'Игрок');
+  const cell=(i,v,l)=>`<div><i>${i}</i><b>${fmt(v||0)}</b><span>${l}</span></div>`;
+  const o=document.createElement('div');o.className='pfv';
+  o.innerHTML=`<div class="pfv-dim"></div><div class="pfv-box" role="dialog" aria-label="Профиль игрока">
+    <div class="pfv-card${b?' has'+(b.film?' film':''):''}">${b?`<div class="pc-bg" data-bgl="${esc(b.k)}" data-lead="1.5" aria-hidden="true"></div>`:''}<i class="pc-sh" aria-hidden="true"></i>
+      <div class="pfv-top">${b?bgTagHTML(b):'<span></span>'}<button class="pfv-x" aria-label="Закрыть">${ui('close')}</button></div>
+      <div class="pfv-who"><div class="pava${ava?'':' mono'}"${ava?` style="background-image:url('${esc(ava)}')"`:''}>${ava?'':esc(nm.trim().charAt(0).toUpperCase()||'И')}</div><b>${esc(nm)}</b>${me?'<small>Так тебя видят друзья в дуэли</small>':''}</div></div>
+    ${P?`<div class="pfv-st">${cell('🎬',P.sc,plural(P.sc||0,['сцена пройдена','сцены пройдены','сцен пройдено']))}${cell('💬',P.ph,plural(P.ph||0,['фраза собрана','фразы собраны','фраз собрано']))}${cell('🖼',P.bg,plural(P.bg||0,['фон получен','фона получено','фонов получено']))}${cell('🔥',P.st,plural(P.st||0,['день подряд','дня подряд','дней подряд']))}</div>`:'<p class="pfv-old">Цифры появятся, когда у друга обновится приложение</p>'}
+    ${me&&!b?`<button class="pc-set pfv-set">${bgAnyGot()?'🖼 Поставь фон из «Коллекции» — карточка станет живой':'🖼 Пройди сцену целиком — получишь фон для карточки'}</button>`:''}</div>`;
+  document.body.appendChild(o);bgFill(o);
+  const kd=e=>{if(e.key==='Escape')close();};document.addEventListener('keydown',kd);
+  const close=()=>{if(o._c)return;o._c=true;document.removeEventListener('keydown',kd);o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});
+    o.animate([{opacity:1},{opacity:0}],{duration:180}).onfinish=()=>o.remove();};
+  o._close=close;o.querySelector('.pfv-dim').onclick=close;o.querySelector('.pfv-x').onclick=()=>{sfx('tap');close();};
+  const st=o.querySelector('.pfv-set');if(st)st.onclick=()=>{sfx('tap');close();renderCollection('bg');};
+  sfx('tap');haptic('sel');if(fxOK())o.querySelector('.pfv-box').animate([{transform:'translateY(48px) scale(.97)',opacity:0},{transform:'none',opacity:1}],{duration:440,easing:SPRING});}
+// нажал на игрока в дуэли — его профиль (pv: 'A' / 'B' — из комнаты, 'me' — свой)
+function kvPvBind(root){if(root)root.querySelectorAll('[data-pv]').forEach(el=>el.onclick=e=>{e.stopPropagation();const r=el.dataset.pv;pfView(r==='me'?meCard():KV&&KV.room&&KV.room[r],r==='me');});}
+// игрок дуэли на своём фоне (фон приходит из комнаты: R.A.bg / R.B.bg); нет фона — притемнённый кадр сцены (fb) или обложка, без подписи; pv — нажал → профиль
+function kvPlHTML(p,cls,me,s,fb,lead,pv){const b=bgInfo(p&&p.bg);
+  return `<div class="kvp ${cls||''}${b?' has'+(b.film?' film':''):''}"${pv?` data-pv="${pv}" role="button" aria-label="Профиль игрока"`:''}>${pv?'<span class="kvp-pv">Профиль ›</span>':''}<div class="kvp-bg"${b?` data-bgl="${esc(b.k)}"${lead!=null?` data-lead="${lead}"`:''}`:` style="background-image:url('${fb||scCover(s,'cover.jpg')}'),url('${scCover(s,'cover.jpg')}')"`} aria-hidden="true"></div><i class="kvp-sh" aria-hidden="true"></i>
     <div class="kvp-who"><b>${me?'Ты':esc((p&&p.n)||'…')}</b>${b?bgTagHTML(b):''}</div></div>`;}
 /* ===== 12.3: награда за весь сегмент (сцену): карточка сегмента (золотая — если во всех эпизодах 3★) + фон сцены ===== */
 const segDone=s=>!!s&&s.parts.every((_,j)=>scP(s.id).done.includes(j));
@@ -4603,7 +4634,7 @@ function bgView(k){const L=bgKeys().map(bgInfo).filter(b=>b&&b.got);let i=L.find
   const show=()=>{const b=L[i];kill();m.innerHTML='';m.className='bgvw-m'+(b.vid.length?'':' still');m.style.backgroundImage=b.img.map(u=>`url('${u}')`).join(',');
     const fit=(w,h)=>{const r=(w/h)/(innerWidth/innerHeight);return r>1.5||r<1/1.5;};   // 13.5: по пропорциям, а не «верт./гориз.» — квадратный фон (Таксист) на телефоне целиком, а не центр
     if(!b.vid.length&&b.img[0]){const im=new Image();im.onload=()=>m.classList.toggle('fit',fit(im.naturalWidth,im.naturalHeight));im.src=b.img[0];}   // 13.0.2: вертикальный постер на ПК — целиком на размытой подложке
-    if(b.vid.length){const v=bgVid(b.vid);if(v){v.addEventListener('loadedmetadata',()=>{m.classList.toggle('fit',fit(v.videoWidth,v.videoHeight));});m.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
+    if(b.vid.length){const v=bgVid(b.vid);if(v){v.addEventListener('loadedmetadata',()=>{m.classList.toggle('fit',fit(v.videoWidth,v.videoHeight));});bgSeek(v,b,2.5);m.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
     o.querySelector('.bgvw-t b').textContent=b.name;o.querySelector('.bgvw-t small').textContent=b.sub;
     o.querySelectorAll('.bgvw-set').forEach(st=>{const on=store[st.dataset.to]===b.k;st.textContent=st.dataset.to==='appBg'?(on?'✓ На Главной':'На Главную'):(on?'✓ В профиле':'В профиль');st.classList.toggle('ghost',on);});};
   const mark=()=>document.querySelectorAll('.coll [data-bgk]').forEach(x=>{const g=!x.classList.contains('lock');x.classList.toggle('on',g&&x.dataset.bgk===store.appBg);x.classList.toggle('pf',g&&x.dataset.bgk===store.profBg);});
@@ -5860,6 +5891,7 @@ function onBack(){
   if(document.querySelector('.dxo')){const d=document.querySelector('.dxo-dim');if(d)d.click();return;}   // 11.0: открытая карта словаря
   if(document.querySelector('.dfly')){document.querySelector('.dfly').click();return;}
   if(document.querySelector('.rwo')){document.querySelector('.rwo-dim').click();return;}   // 12.0: открытый кадр коллекции
+  {const o=document.querySelector('.pfv');if(o&&o._close){o._close();return;}}   // 13.9.6: профиль игрока
   {const o=document.querySelector('.bgvw');if(o&&o._close){o._close();return;}}   // 13.0: фон на весь экран
   if(screen==='coll'){sfx('tap');renderTab(COLL_BACK||'learn');return;}
   if(screen==='shop'){shopBack();return;}

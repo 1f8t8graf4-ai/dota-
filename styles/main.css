@@ -5060,3 +5060,32 @@ body.nofx .ss-mist{animation:none}
 /* имя в профиле: класс .pn занят узлами пути сцены (слой 9.x) — там он слева и с пунктиром; в профиле — по центру под аватаркой */
 .phead .pn{display:block;width:auto;max-width:100%;margin:0;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .phead .pn::before{display:none}
+/* профиль игрока: нажал на игрока в дуэли (или на свою карточку) — его карточка на фоне и цифры */
+.pfv{position:fixed;inset:0;z-index:420;display:flex;align-items:flex-end;justify-content:center}
+.pfv-dim{position:absolute;inset:0;background:rgba(0,0,0,.62);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.pfv-box{position:relative;width:100%;max-width:440px;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;background:#121215;border:1px solid rgba(255,255,255,.08);padding-bottom:calc(var(--sb,0px) + 16px);box-shadow:0 -20px 60px -20px rgba(0,0,0,.85)}
+@media (min-width:700px){.pfv{align-items:center}.pfv-box{border-radius:24px;padding-bottom:16px}}
+.pfv-card{position:relative;overflow:hidden;isolation:isolate;height:min(52vh,380px);background:radial-gradient(120% 80% at 50% 0%,rgba(242,195,91,.16),transparent 65%),#16161a}
+.pfv-card>.pc-bg{z-index:0}
+.pfv-card>.pc-sh{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,8,10,.45),rgba(8,8,10,0) 26%,rgba(8,8,10,.14) 50%,rgba(8,8,10,.9))}
+.pfv-card:not(.has)>.pc-sh{display:none}
+.pfv-card.film{box-shadow:inset 0 0 0 1.5px rgba(233,196,106,.92)}
+.pfv-top{position:absolute;z-index:2;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.pfv-x{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(10,10,12,.58);color:#fff;border:1px solid rgba(255,255,255,.16)}
+.pfv-x svg{width:18px;height:18px}
+.pfv-who{position:absolute;z-index:2;left:0;right:0;bottom:16px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.pfv-who .pava{width:76px;height:76px;margin:0}
+.pfv-who b{max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 22px/1.2 'Golos Text',system-ui,sans-serif;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.75)}
+.pfv-who small{color:rgba(255,255,255,.75);font-size:12.5px}
+.pfv-st{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 14px 4px}
+.pfv-st div{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07)}
+.pfv-st i{font-style:normal;font-size:18px}
+.pfv-st b{font:800 22px/1.1 'Golos Text',system-ui,sans-serif;color:#fff}
+.pfv-st span{font-size:12px;color:rgba(255,255,255,.6)}
+.pfv-old{margin:14px 16px 0;color:rgba(255,255,255,.55);font-size:13px;text-align:center}
+.pfv-set{width:calc(100% - 28px);margin:10px 14px 0;color:rgba(255,255,255,.85)}
+.kvp[data-pv]{cursor:pointer}
+.kvp-pv{position:absolute;z-index:3;top:10px;right:10px;padding:5px 10px;border-radius:99px;background:rgba(10,10,12,.58);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);color:#fff;font:700 11.5px 'Golos Text',system-ui,sans-serif}
+.kv-pfb{display:block;margin:12px auto 0;padding:8px 14px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85);font:700 13px 'Golos Text',system-ui,sans-serif}
+.phead.pbg{cursor:pointer}
+.pfv-card:not(.has){height:220px}
