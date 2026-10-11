@@ -68,7 +68,7 @@ def main(out,clips,X=None,seam='xfade',calm='auto',event='auto'):
     port=r<.77
     norm=(f"crop={cb[0]}:{cb[1]}:{cb[2]}:{cb[3]}," if cb else '')+f"scale={size}:force_original_aspect_ratio=increase,crop={size},setsar=1,fps={fps},format=yuv420p"
     D=[probe(c)[3] for c in clips]
-    fc=[];inp=[];note=''
+    fc=[];inp=[];note='';Eo=None
     for i,c in enumerate(clips):inp+=['-i',c];fc.append(f"[{i}:v]{norm},trim=0:{D[i]:.3f},setpts=PTS-STARTPTS[c{i}]")
     if len(clips)==2:   # А+Б со стыком-наплывом 0.3 с
         y=0.3;fc.append(f"[c0][c1]xfade=transition=fade:duration={y}:offset={D[0]-y:.3f}[ab]");L=D[0]+D[1]-y;X=X or y;src='ab'
@@ -77,12 +77,13 @@ def main(out,clips,X=None,seam='xfade',calm='auto',event='auto'):
         E=None if event=='off' else event_at(clips[0]) if event=='auto' else float(event)
         k=0 if not E else (1 if E>=2.5 else 0) if calm=='auto' else int(calm)
         if E:note=f', событие на {E:.1f} с'
+        Eo=E   # 13.9.6: где событие окажется в готовом файле
         if E and k:   # спокойная часть ещё k раз перед событием, стыки — наплыв 0.4 с: …спокойно → спокойно → событие → после…
             Lc=E-0.3;d=0.4;fc.append(f"[c0]split={k+1}"+''.join(f'[s{j}]' for j in range(k+1)))
             for j in range(k):fc.append(f"[s{j}]trim=0:{Lc:.3f},setpts=PTS-STARTPTS[q{j}]")
             seq=[(f'q{j}',Lc) for j in range(k)]+[(f's{k}',L)];cur,cl=seq[0]
             for j,(lab,ln) in enumerate(seq[1:]):fc.append(f"[{cur}][{lab}]xfade=transition=fade:duration={d}:offset={cl-d:.3f}[x{j}]");cur,cl=f'x{j}',cl+ln-d
-            src,L=cur,cl;note+=f', спокойная часть ×{k+1}'
+            src,L=cur,cl;note+=f', спокойная часть ×{k+1}';Eo=E+k*(Lc-d)
         X=X or min(1.0,L*0.2)
     if seam=='xfade' or len(clips)==2:
         # хвост (последние X с) наплывом поверх головы (первых X с): …середина → [хвост→голова] → (по кругу) середина…
@@ -101,6 +102,7 @@ def main(out,clips,X=None,seam='xfade',calm='auto',event='auto'):
         fc.append(f"color=c=black:s={w_}x{h_}:r={fps}:d={b},format=yuv420p,setsar=1[blk]")
         fc.append(f"[{src}]fade=t=in:st=0:d=0.4[sf];[sf][blk]concat=n=2:v=1:a=0[v]")
     else:sys.exit('--seam: xfade | dip | cut | black[=сек]')
+    if len(clips)==1 and Eo and (seam=='xfade'):Eo-=X   # при наплыве файл начинается с X-й секунды
     per=L-X if seam=='xfade' or len(clips)==2 else L+(float(seam.split('=')[1]) if '=' in seam else 1.2) if seam.startswith('black') else L
     note+=f', шов: {seam}'+(f' — событие раз в {per:.1f} с' if 'событие' in note else '')
     subprocess.run(['ffmpeg','-v','error','-y',*inp,'-filter_complex',';'.join(fc),'-map','[v]','-an','-c:v','libx264','-preset','slow','-crf','27',
@@ -108,6 +110,9 @@ def main(out,clips,X=None,seam='xfade',calm='auto',event='auto'):
     d=probe(out)[3];poster=out[:-4]+'p.jpg'
     subprocess.run(['ffmpeg','-v','error','-y','-ss',f'{d/3:.2f}','-i',out,'-frames:v','1','-q:v','4',poster],check=True)
     print(f'{out}: {d:.1f} с, {os.path.getsize(out)//1024} КБ, {"вертикаль" if port else "горизонталь" if r>1.3 else "почти квадрат"} {size.replace(":","×")}{" (полосы срезаны)" if cb else ""}, {fps} к/с{note}; превью {os.path.basename(poster)}')
+    if Eo:   # 13.9.6: в профиле, приглашении и дуэли ролик стартует прямо перед событием — для этого время события в data/scenes.json
+        k='filmbgev' if os.path.basename(out).startswith('film-') else 'bgev'
+        print(f'  событие в файле на {Eo:.1f} с → в data/scenes.json у сцены: "{k}":{Eo:.1f} (и python3 tools/rebuild_all_data.py)')
 if __name__=='__main__':
     a=sys.argv[1:];o={'seam':'xfade','calm':'auto','event':'auto'};pos=[]
     while a:
