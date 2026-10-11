@@ -2313,7 +2313,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.8.5';
+const APP_V='13.8.6';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -3824,24 +3824,30 @@ function dxOpen(btn,c){dcStop();const {s,f,p,pi}=c,r0=btn.getBoundingClientRect(
   o.querySelector('.dxo-dim').onclick=close;o.querySelector('.dxc-x').onclick=close;
   o.querySelectorAll('[data-v]').forEach(x=>x.onclick=()=>{sfx('tap');const t=x.dataset.v;if(t==='ep'){close();setTimeout(()=>srOpen(s.id,pi,f.a),220);return;}play(t==='slow');});
   let y0=null;card.addEventListener('touchstart',e=>{y0=e.touches[0].clientY;},{passive:true});card.addEventListener('touchend',e=>{if(y0!=null&&e.changedTouches[0].clientY-y0>110&&card.scrollTop<=0)close();y0=null;},{passive:true});}
-// 11.5: «Мои слова» — книга: вкладки «Повторить» / «Выучено», слова по эпизодам, «Проверить себя», «В проверку»
+// 11.5: «Мои слова» — книга: вкладки «Учу» / «Выучено», слова по эпизодам, «Проверить себя»
+// 13.8.6 (Андрей: «не понимаю, что значат „Мои слова“ — на повторение или что?»): сверху одной строкой — что это за слова и куда
+// они идут; у слова один статус («повторить сегодня» / «повтор через 3 дня» / «выучено»); одна главная кнопка —
+// «Повторить сейчас · N» (есть слова на сегодня), иначе «Проверить себя». Кнопки «Повторить сегодня» у каждого слова больше нет.
 const mywLearned=x=>(x.st||0)>=3&&!(x.due&&x.due<=Date.now());
 function dxMy(box){const L=mywAll(),tagsOf=x=>[...(x.tags||[]),x.own?'добавлено мной':(scOf(x.sid)?dictFilm(scOf(x.sid)):'')].filter(Boolean);
   const tags=[...new Set(L.flatMap(tagsOf))],q=DX.q.toLowerCase(),rep=L.filter(x=>!mywLearned(x)),lrn=L.filter(mywLearned);
   const T=DX.mytab==='lrn'?lrn:rep,V=T.filter(x=>(!DX.mytag||tagsOf(x).includes(DX.mytag))&&(!q||(x.w+' '+(x.ru||'')).toLowerCase().includes(q)));
   const grp={},G=[];V.forEach(x=>{const s=scOf(x.sid),k=s?x.sid+'|'+x.pi:'own';if(!grp[k]){grp[k]={s,pi:x.pi,L:[]};G.push(k);}grp[k].L.push(x);});
-  const card=(x,i)=>{const s=scOf(x.sid),soon=x.due&&x.due>Date.now();
+  const now=Date.now(),due=L.filter(x=>x.ru&&(!x.due||x.due<=now));
+  const card=(x,i)=>{const s=scOf(x.sid),soon=x.due&&x.due>now,st=!x.ru?'':mywLearned(x)?'<span class="dm-due ok">выучено</span>':soon?`<span class="dm-due">повтор ${mywWhen(x.due)}</span>`:'<span class="dm-due on">повторить сегодня</span>';
     return `<div class="dm" style="--d:${i}"><div class="dm-h"><b>${esc(x.w)}</b><span class="dm-st" title="Выучено на ${Math.min(5,x.st||0)} из 5">${'●'.repeat(Math.min(5,x.st||0))}${'○'.repeat(Math.max(0,5-(x.st||0)))}</span><button class="dm-del" data-k="${esc(x.k)}" aria-label="Убрать">${ui('close')}</button></div>${x.ru?`<span class="dm-ru">${esc(x.ru)}</span>`:''}
       ${x.line?`<div class="dm-line">${esc(x.line)}</div>`:''}${(x.tags||[]).length?`<div class="dm-tags">${x.tags.map(t=>`<i>#${esc(t)}</i>`).join('')}</div>`:''}
-      <div class="dm-acts">${s&&x.a?`<button class="dm-say" data-s="${x.sid}" data-a="${x.a}" data-w="${esc(x.w)}" aria-label="Послушать слово">🔊</button>`:''}${s?`<button class="dm-go" data-s="${x.sid}" data-i="${x.pi}" data-a="${x.a}">${SI.play} В сцене</button>`:''}${x.ru?(soon?`<span class="dm-due">Повторение ${mywWhen(x.due)}</span><button class="dm-rev" data-k="${esc(x.k)}">🔁 Повторить сегодня</button>`:'<span class="dm-due on">🔁 Сегодня в повторении</span>'):''}</div></div>`;};   // 13.8.2: было «В проверку» / «в проверке» — непонятно
-  box.innerHTML=`<div class="dm-book"><div class="dm-tabs"><button data-mt="rep" class="${DX.mytab!=='lrn'?'on':''}">Повторить <i>${rep.length}</i></button><button data-mt="lrn" class="${DX.mytab==='lrn'?'on':''}">Выучено <i>${lrn.length}</i></button></div>
+      <div class="dm-acts">${s&&x.a?`<button class="dm-say" data-s="${x.sid}" data-a="${x.a}" data-w="${esc(x.w)}" aria-label="Послушать слово">🔊</button>`:''}${s?`<button class="dm-go" data-s="${x.sid}" data-i="${x.pi}" data-a="${x.a}">${SI.play} В сцене</button>`:''}${st}</div></div>`;};
+  const nW=n=>`${n} ${plural(n,['слово','слова','слов'])}`,trN=Math.min(8,V.filter(x=>x.ru).length);
+  box.innerHTML=`<div class="dm-book"><p class="dm-what">Слова, которые ты сохранил сам: нажми на слово в субтитрах → <b>☆ В мои слова</b>. Они приходят в повторение — завтра, через 3 дня, через неделю… пока не выучишь.</p>
+      ${due.length?`<button class="sc-btn dx-train dm-now" id="dmNow">Повторить сейчас · ${nW(Math.min(8,due.length))} →</button>`:trN?`<button class="sc-btn dx-train" id="dxTrain">Проверить себя · ${nW(trN)} →</button>`:''}
+      <div class="dm-tabs"><button data-mt="rep" class="${DX.mytab!=='lrn'?'on':''}">Учу <i>${rep.length}</i></button><button data-mt="lrn" class="${DX.mytab==='lrn'?'on':''}">Выучено <i>${lrn.length}</i></button></div>
       <div class="dm-tools"><input class="dx-q" id="dxQ" placeholder="🔍 Найти в моих словах" value="${esc(DX.q)}" autocomplete="off"><button class="dm-addb" id="dmAddB">＋ Своё</button></div>
       <form class="dx-add" id="dxAdd" autocomplete="off" hidden><div class="dx-addr"><input name="w" placeholder="Слово или фраза (англ.)" required maxlength="60"><input name="ru" placeholder="Перевод" maxlength="80"></div>
         <div class="dx-addr"><input name="tag" placeholder="#тег — например работа" maxlength="24" list="dxTagL"><datalist id="dxTagL">${tags.map(t=>`<option value="${esc(t)}">`).join('')}</datalist><button class="sc-btn" type="submit">＋ В словарь</button></div></form>
       ${tags.length?`<div class="dx-tags">${tags.map(t=>`<button data-mtag="${esc(t)}" class="${DX.mytag===t?'on':''}">#${esc(t)}</button>`).join('')}</div>`:''}
-      ${V.filter(x=>x.ru).length?`<button class="sc-btn dx-train" id="dxTrain">Проверить себя · ${Math.min(8,V.filter(x=>x.ru).length)} ${plural(Math.min(8,V.filter(x=>x.ru).length),['слово','слова','слов'])} →</button>`:''}
       <div class="dx-my">${G.length?G.map(k=>{const g=grp[k];return `<div class="dm-grp"><div class="dm-gh">${g.s?`<span class="dm-gi" style="background-image:url('${scCover(g.s,'cover.jpg')}')"></span><b>${esc(dictFilm(g.s))} · эп. ${g.pi+1}</b><small>${esc((g.s.parts[g.pi]||{}).t||'')}</small>`:'<b>Добавлено мной</b>'}</div>${g.L.map(card).join('')}</div>`;}).join('')
-        :`<div class="dx-empty">${L.length?(DX.mytab==='lrn'?'Пока ничего не выучено — проверяй себя, и слова переедут сюда.':'Всё выучено 👏'):'Тут будут твои слова.'}<small>Сохраняй незнакомые слова прямо из сцен (нажми на слово → «☆ В мои слова») или добавь своё.</small></div>`}</div></div>`;
+        :`<div class="dx-empty">${L.length?(DX.mytab==='lrn'?'Пока ничего не выучено — повторяй, и слова переедут сюда.':'Всё выучено 👏'):'Пока пусто.'}${L.length?'':'<small>Смотри эпизод и нажми на незнакомое слово в субтитрах → «☆ В мои слова». Или добавь своё кнопкой «＋ Своё».</small>'}</div>`}</div></div>`;
   const re=()=>{const y=window.scrollY;dxMy(box);window.scrollTo(0,y);};
   box.querySelectorAll('[data-mt]').forEach(b=>b.onclick=()=>{if(DX.mytab===b.dataset.mt)return;sfx('tap');DX.mytab=b.dataset.mt;const pg=box.querySelector('.dx-my');dxMy(box);const n=box.querySelector('.dx-my');if(n)n.animate([{opacity:0,transform:`rotateY(${DX.mytab==='lrn'?-25:25}deg)`},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.2,.9,.3,1)'});});
   $('#dmAddB').onclick=()=>{sfx('tap');const f=$('#dxAdd');f.hidden=!f.hidden;if(!f.hidden)f.w.focus();};
@@ -3851,8 +3857,8 @@ function dxMy(box){const L=mywAll(),tagsOf=x=>[...(x.tags||[]),x.own?'добав
   let qt=0;$('#dxQ').oninput=e=>{clearTimeout(qt);qt=setTimeout(()=>{DX.q=e.target.value.trim();const p=e.target.selectionStart;dxMy(box);const n=$('#dxQ');if(n){n.focus();try{n.setSelectionRange(p,p);}catch(x){}}},220);};
   box.querySelectorAll('[data-mtag]').forEach(b=>b.onclick=()=>{sfx('tap');DX.mytag=DX.mytag===b.dataset.mtag?'':b.dataset.mtag;re();});
   if($('#dxTrain'))$('#dxTrain').onclick=()=>{sfx('tap');renderMyWordsQuiz(V);};
+  if($('#dmNow'))$('#dmNow').onclick=()=>{sfx('tap');renderMyWordsQuiz(due);};
   box.querySelectorAll('.dm-del').forEach(b=>b.onclick=()=>{mywDel(b.dataset.k);save();sfx('tap');re();});
-  box.querySelectorAll('.dm-rev').forEach(b=>b.onclick=()=>{const it=store.myw[b.dataset.k];if(!it)return;it.due=Date.now()-1;save();sfx('good');haptic('ok');toast('🔁 Слово в сегодняшнем повторении');re();});
   box.querySelectorAll('.dm-say').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');const s0=scOf(b.dataset.s),a=+b.dataset.a,r=s0&&s0.subs.find(z=>Math.abs(z[0]-a)<0.05);wordPlay(b.dataset.s,b.dataset.w,a,r?r[1]:a+6,b);});
   box.querySelectorAll('.dm-go').forEach(b=>b.onclick=()=>{sfx('tap');const x=store.myw[b.closest('.dm').querySelector('.dm-del').dataset.k];momOpen(b.dataset.s,+b.dataset.i,+b.dataset.a,x&&x.w);});
   box.querySelectorAll('.dm').forEach((b,i)=>b.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:280,delay:Math.min(i,12)*30,fill:'backwards'}));}

@@ -762,14 +762,15 @@ const knView=()=>store.knView||(gotN()?'list':'kino');   // «📖 Фразы» 
 const curSeg=()=>DX.seg==='my'?'my':knView();
 const cardsOn=()=>!!store.knCards;                     // в сцене и поиске: список (по умолчанию) или карточки
 KN.lst='';KN.exp={};
-// 13.8.5 (Андрей: «это просто плохо выглядит»): строка = цитата из фильма — кавычка цветом редкости, фраза крупно, перевод,
-// статус словами и «эп. 1 · 0:12» одной тихой строкой, ▶ справа. Без мутных миниатюр и без трёх значков подряд.
-const tcode=(f,p)=>{const x=Math.max(0,Math.round((f.a||0)-(p.a||0)));return `${Math.floor(x/60)}:${String(x%60).padStart(2,'0')}`;};
-const knRow=c=>{const {s,f,p,pi}=c,[k,lab]=knSt(c),mk=`<i class="kq-m" aria-hidden="true">“</i>`;
-  if(!c.got)return `<button class="kq lock" data-own data-c="${c.k}">${mk}<span class="kq-x"><b class="kq-en">${E(fogTxt(D.T(f)))}</b><span class="kq-ru">${E(fogTxt(f.ru))}</span></span><em class="kq-lk">🔒 ${seen(s,pi)?'Ответь в проверке':'Эпизод '+(pi+1)}</em></button>`;
-  return `<button class="kq st-${k} r-${RN[c.rar]}" data-own data-c="${c.k}" style="--c:${th(s)}" title="${c.rar>1?RT[RN[c.rar]]+' карта':''}">${mk}<span class="kq-x"><b class="kq-en">${E(D.T(f))}</b><span class="kq-ru">${E(f.ru)}</span>
-    <span class="kq-s"><span class="kq-st">${k==='ok'?'✓ ':''}${lab}</span><span class="kq-ep">эп. ${pi+1} · ${tcode(f,p)}</span></span></span><i class="kq-p" aria-hidden="true">${SI.play}</i></button>`;};
-const rows=C=>cardsOn()?`<div class="kn-grid">${C.map(knCard).join('')}</div>`:`<div class="kq-l">${C.map(knRow).join('')}</div>`;
+// 13.8.6 (Андрей: «опять колхоз — хочу в первую очередь просто фразы, а зашёл внутрь — супер красиво»): строка = фраза + перевод.
+// Без кавычек цветом редкости, без статуса словами, «эп. 1 · 0:12» и кружка ▶ — всё это внутри, в открытой фразе.
+// Единственный знак в списке — точка у фраз, которые пора повторить.
+const LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+const knRow=c=>{const {s,f,pi}=c,[k]=knSt(c);
+  if(!c.got)return `<button class="kq kq2 lock" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${E(fogTxt(D.T(f)))}</b><span class="kq-ru">${E(fogTxt(f.ru))}</span></span><em class="kq-lk">${LOCK}${seen(s,pi)?'ответь в проверке':'эпизод '+(pi+1)}</em></button>`;
+  return `<button class="kq kq2 st-${k}" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${E(D.T(f))}</b><span class="kq-ru">${E(f.ru)}</span></span>${k==='due'?'<i class="kq-due" title="Пора повторить"></i>':''}</button>`;};
+const rowsL=C=>`<div class="kq-l">${C.map(knRow).join('')}</div>`;   // список фраз — всегда строками (карточки — только в сцене)
+const rows=C=>cardsOn()?`<div class="kn-grid">${C.map(knCard).join('')}</div>`:rowsL(C);
 const IC2={list:'<svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>',grid:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>'};
 const vsw=()=>`<div class="kn-vsw2" role="group" aria-label="Вид"><button data-kv="list" class="${cardsOn()?'':'on'}" aria-label="Списком" title="Списком">${IC2.list}</button><button data-kv="cards" class="${cardsOn()?'on':''}" aria-label="Карточками" title="Карточками">${IC2.grid}</button></div>`;
 
@@ -786,15 +787,16 @@ function knSheet(html){document.querySelectorAll('.kn-sheet').forEach(x=>x.remov
   const close=w._close=()=>{if(w._c)return;w._c=1;const fin=()=>w.remove();if(!fxOK())return fin();w.querySelector('.kn-sd').animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'});
     w.querySelector('.kn-sb').animate([{transform:'none',opacity:1},{transform:'translateY(30px)',opacity:0}],{duration:200,easing:EZ.in,fill:'forwards'}).onfinish=fin;};
   w.querySelector('.kn-sd').onclick=close;w.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{sfx('tap');close();});return w;}
-function knHelp(){sfx('tap');knSheet(`<b class="kn-sh2">Как устроены карты</b>
-  <p class="kn-sm">Каждая карта — фраза из фильма. Собираешь их, пока смотришь эпизоды и отвечаешь в проверке.</p>
-  <div class="kn-lg"><div><em class="kc-st st-lock">🔒 Закрыта</em><p>Фраза из эпизода, который ты ещё не посмотрел, или ты ещё не ответил на неё в проверке.</p></div>
-    <div><em class="kc-st st-new">Новая</em><p>Ты верно ответил на фразу в проверке — карта твоя.</p></div>
-    <div><em class="kc-st st-go">Учу · 1 из 3</em><p>Сколько раз ты верно ответил на неё. Три раза — выучено.</p></div>
-    <div><em class="kc-st st-due">Повторить</em><p>Пора освежить: фраза ждёт в «Повторении» на Главной.</p></div>
-    <div><em class="kc-st st-ok">✓ Выучено</em><p>Помнишь надолго. Иногда всплывёт в повторении, чтобы не забылось.</p></div></div>
-  <p class="kn-sm"><b>Цвет кавычки в списке и полоски сверху у карточки — редкость:</b> <i class="kn-rd r-rare"></i>редкая — устойчивое выражение, <i class="kn-rd r-epic"></i>эпическая — есть интересный факт, <i class="kn-rd r-leg"></i>легендарная — факт и сложная сцена.</p>
-  <p class="kn-sm"><b>▶ на карте</b> — посмотреть этот момент из фильма.</p><button class="kn-btn" data-x>Понятно</button>`);}
+function knHelp(){sfx('tap');knSheet(`<b class="kn-sh2">Как устроен словарь</b>
+  <p class="kn-sm">Каждая фраза — из фильма. Она ложится сюда, когда ты верно ответил на неё в проверке после эпизода.</p>
+  <div class="kn-lg"><div><em class="kc-st st-new">Новая</em><p>Только что собрал. Ответь на неё верно в повторении три раза — и она выучена.</p></div>
+    <div><em class="kc-st st-go">Учу · 1 из 3</em><p>Сколько раз ты уже ответил верно.</p></div>
+    <div><em class="kc-st st-due">Повторить</em><p>В списке у такой фразы оранжевая точка — она ждёт в «Повторении» на Главной.</p></div>
+    <div><em class="kc-st st-ok">✓ Выучено</em><p>Помнишь надолго. Иногда всплывёт в повторении, чтобы не забылось.</p></div>
+    <div><em class="kc-st st-lock">Закрыта</em><p>Фраза из эпизода, который ты ещё не посмотрел, — в поиске она под туманом.</p></div></div>
+  <p class="kn-sm"><b>Нажми на фразу</b> — откроется момент из фильма, перевод и когда она пригодится. Листай вбок — следующая фраза.</p>
+  <p class="kn-sm"><b>Редкость</b> видно в открытой фразе по свечению вокруг момента: <i class="kn-rd r-rare"></i>синее — редкая (устойчивое выражение), <i class="kn-rd r-epic"></i>фиолетовое — эпическая (есть интересный факт), <i class="kn-rd r-leg"></i>золотое — легендарная.</p>
+  <p class="kn-sm"><b>«Мои слова»</b> — отдельные слова, которые ты сохранил сам: нажми на слово в субтитрах → ☆.</p><button class="kn-btn" data-x>Понятно</button>`);}
 function knLock(b,c){const {s,p,pi}=c,can=scEpOpen(s,pi),sn=seen(s,pi);haptic('err');sfx('nope');
   if(fxOK())b.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'none'}],{duration:280});
   const w=knSheet(`<span class="kn-sic">🔒</span><b class="kn-sh2">Фраза из эпизода ${pi+1}</b><p class="kn-sm">«${E(p.t)}» · ${E(dictFilm(s))}${s.sub?' · '+E(s.sub):''}</p>
@@ -804,49 +806,87 @@ function knLock(b,c){const {s,p,pi}=c,can=scEpOpen(s,pi),sn=seen(s,pi);haptic('e
   if(go)go.onclick=()=>{sfx('tap');w._close();if(scGate(s.id,pi))return;renderScEp(s.id,pi);};
   if(sc)sc.onclick=()=>{sfx('tap');w._close();if(scGate(s.id))return;renderScene(s.id);};}
 
-/* ---------- открытая карта: момент из фильма крупно + всё про фразу ---------- */
-function knOpen(btn,c){DL.clean();const {s,f,p,pi}=c,[k,lab]=knSt(c),P=scP(s.id),r=P.r[f.id];
-  const nx=r&&r[1]?(r[1]<=Date.now()?'':` Следующее повторение — ${inDays(r[1])}.`):'';
-  const txt={new:'Карта твоя. Ответь на неё верно ещё в повторениях — после трёх верных ответов будет «Выучено».',go:`Верных ответов: ${c.m} из 3.${nx}`,due:'Пора повторить — фраза ждёт в «Повторении» на Главной.',ok:'Выучено. Иногда всплывёт в повторении, чтобы не забылось.'}[k]||'';
-  const why={2:'Редкая — устойчивое выражение из нескольких слов',3:'Эпическая — у фразы есть интересный факт',4:'Легендарная — интересный факт и сложная сцена'}[c.rar]||'';
-  const o=document.createElement('div');o.className='kno';
-  o.innerHTML=`<div class="kno-dim"></div>${c.rar>=3&&fxOK()?`<i class="kno-rays r-${RN[c.rar]}"></i>`:''}<div class="knc r-${RN[c.rar]}" style="--c:${th(s)}">
-    <div class="knv"><video playsinline webkit-playsinline preload="auto" poster="${assetUrl(scEpKey(s,pi,'jpg'))}"></video><button class="knv-p" aria-label="Смотреть момент">${SI.play}</button><button class="knc-x" aria-label="Закрыть">${ui('close')}</button></div>
-    <div class="knc-b"><span class="knc-src">${E(dictFilm(s))}${s.sub?' · '+E(s.sub):''} · эпизод ${pi+1}</span>
-      <b class="knc-en">${s.lang==='de'?E(f.de||f.en):kwWrap(f,D.T(f))}</b><span class="knc-ru">${E(f.ru)}</span>
-      <div class="knc-acts"><button data-v="re">${SI.play} Ещё раз</button><button data-v="slow">🐢 Медленнее</button><button data-v="ep">Эпизод →</button></div>
-      <div class="knc-st st-${k}"><div><em class="kc-st st-${k}">${k==='ok'?'✓ ':''}${lab}</em><span class="kc-mp">${D.mp(c.m)}</span></div><p>${E(txt)}</p></div>
-      ${why?`<div class="knc-rr"><i class="kn-rd r-${RN[c.rar]}"></i>${E(why)}</div>`:''}
-      ${phInfoHTML(f,{fact:D.demo()||ADM_OPEN()||P.done.includes(pi)})}</div></div>`;
-  document.body.appendChild(o);document.body.classList.add('dx-open');
-  const card=o.querySelector('.knc'),R=card.getBoundingClientRect(),zk=R.width/card.offsetWidth||1,r0=btn.getBoundingClientRect();
-  const grow=(rr,back)=>{const sx=Math.max(.05,rr.width/R.width),sy=Math.max(.05,rr.height/R.height),tx=(rr.left-R.left)/zk,ty=(rr.top-R.top)/zk,fr=[{transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`,borderRadius:'14px'},{transform:'none',borderRadius:'22px'}];
-    card.style.transformOrigin='0 0';return card.animate(back?fr.reverse():fr,{duration:back?320:600,easing:back?EZ.in:SPRING,fill:back?'forwards':'none'});};
-  if(fxOK()){grow(r0);[...card.children].forEach((ch,i)=>ch.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:340,delay:180+i*90,easing:EZ.out,fill:'backwards'}));btn.style.visibility='hidden';
-    o.querySelector('.kno-dim').animate([{opacity:0},{opacity:1}],{duration:280});setTimeout(()=>DL.burst(card,c.rar,.7),260);}
-  const v=o.querySelector('video'),a=Math.max(0,f.a-p.a-0.15),b=f.b-p.a+0.25,pb=o.querySelector('.knv-p');
-  const play=slow=>{v.playbackRate=slow?.75:1;try{if(Math.abs(v.currentTime-a)>0.05)v.currentTime=a;}catch(e){}const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{pb.hidden=false;});pb.hidden=true;};
-  v.src=assetUrl(scEpKey(s,pi,'mp4'))+'#t='+a.toFixed(2);v.volume=store.scVol==null?1:store.scVol;try{musDuck(true);}catch(e){}
-  v.addEventListener('timeupdate',()=>{if(v.currentTime>=b){v.pause();pb.hidden=false;}});
-  v.addEventListener('loadedmetadata',()=>{if(v.currentTime<a-0.1||v.currentTime>b)try{v.currentTime=a;}catch(e){}},{once:true});
-  v.addEventListener('error',()=>{pb.hidden=false;toast('Видео не загрузилось');});
-  play(false);pb.onclick=()=>{sfx('tap');play(false);};v.onclick=()=>{if(v.paused)play(false);else{v.pause();pb.hidden=false;}};
-  try{phBind(card,f);}catch(e){}
-  const close=o._close=()=>{if(o._c)return;o._c=true;try{v.pause();}catch(e){}try{musDuck(false);}catch(e){}try{kwHide(0);}catch(e){}document.removeEventListener('keydown',ek);document.body.classList.remove('dx-open');
-    const r1=btn.isConnected?btn.getBoundingClientRect():null,back=fxOK()&&r1&&r1.width&&r1.bottom>0&&r1.top<innerHeight;
-    if(back){[...card.children].forEach(ch=>ch.animate([{opacity:1},{opacity:0}],{duration:130,fill:'forwards'}));grow(r1,true);}
-    else card.animate([{opacity:1},{opacity:0,transform:'scale(.94)'}],{duration:200,easing:'ease-in',fill:'forwards'});
-    o.querySelector('.kno-dim').animate([{opacity:1},{opacity:0}],{duration:back?320:200,fill:'forwards'}).onfinish=()=>{o.remove();btn.style.visibility='';};};
-  const ek=e=>{if(e.key==='Escape')close();};document.addEventListener('keydown',ek);
-  o.querySelector('.kno-dim').onclick=close;o.querySelector('.knc-x').onclick=()=>{sfx('tap');close();};
-  o.querySelectorAll('[data-v]').forEach(x=>x.onclick=()=>{sfx('tap');const t=x.dataset.v;if(t==='ep'){close();setTimeout(()=>srOpen(s.id,pi,f.a),220);return;}play(t==='slow');});
-  let y0=null;card.addEventListener('touchstart',e=>{y0=e.touches[0].clientY;},{passive:true});card.addEventListener('touchend',e=>{if(y0!=null&&e.changedTouches[0].clientY-y0>110&&card.scrollTop<=0)close();y0=null;},{passive:true});
+/* ---------- 13.8.6: открытая фраза — «внутри красиво». Фон — кадр фильма (4K, размыт, медленно «дышит»), сверху момент
+   из фильма крупно, фраза субтитром на видео — слова загораются в такт речи (время слов — wt.json сцены; нет файла — равномерно),
+   ниже фраза крупно (слова нажимаются), перевод, статус одной фразой, «Когда пригодится». Свайп вбок / ‹ › / ← → — соседняя
+   фраза того же списка; свайп вниз, ×, Esc, «назад» — закрыть (сворачивается обратно в строку). ---------- */
+const kSt=(c,r)=>{const k=knSt(c)[0],nx=r&&r[1]&&r[1]>Date.now()?` Повторим ${inDays(r[1])}.`:'';
+  return {new:'Новая фраза. Ответь на неё верно в повторении три раза — и она выучена.',go:`Учишь: ${c.m} из 3 верных ответов.${nx}`,due:'Пора повторить — фраза ждёт в «Повторении» на Главной.',ok:'Выучено. Иногда всплывёт в повторении, чтобы не забылось.'}[k]||'';};
+const kLin=(f,W)=>{const tot=W.reduce((a,w)=>a+w.length+1,0)||1;let t=f.a;return W.map(w=>{const d=Math.max(.12,(f.b-f.a)*(w.length+1)/tot),x=[t,t+d];t+=d;return x;});};
+// время каждого слова фразы по распознанным словам сцены; нашлось меньше половины — равномерно (kLin)
+const kFit=(f,W,T)=>{if(!T)return null;const C=T.filter(w=>w[0]>=f.a-0.8&&w[0]<=f.b+0.8);let q=0,hit=0;
+  const R=W.map(w=>{const n=wtN(w);if(!n)return null;for(let j=q;j<Math.min(C.length,q+4);j++)if(wtEq(C[j][2],n)){q=j+1;hit++;return [C[j][0],C[j][1]];}return null;});
+  if(hit<Math.ceil(W.length/2))return null;
+  for(let j=0;j<R.length;j++)if(!R[j]){const a=R.slice(0,j).reverse().find(Boolean),b=R.slice(j+1).find(Boolean),t0=a?a[1]:b?b[0]-.3:f.a;R[j]=[t0,b?Math.max(t0+.05,b[0]):t0+.3];}
+  return R;};
+function knOpen(btn,c){DL.clean();
+  const box=btn.closest('#knRes,.dl-stage')||document,seenK={},L=[];
+  box.querySelectorAll('[data-c]').forEach(b=>{const x=D.find(b.dataset.c);if(x&&x.got&&!seenK[x.k]){seenK[x.k]=1;L.push(x);}});
+  if(!seenK[c.k])L.unshift(c);let ix=Math.max(0,L.findIndex(x=>x.k===c.k)),cur=null,v=null,raf=0,TT=[],SP=[],sub=null,hideT=0;
+  const o=document.createElement('div');o.className='kno kno2';
+  o.innerHTML=`<div class="kn2-bg"></div><div class="kno-dim"></div><div class="kn2" role="dialog" aria-label="Фраза из фильма"><button class="kn2-x" aria-label="Закрыть">${ui('close')}</button><div class="kn2-in"></div></div>
+    ${L.length>1?`<button class="kn2-nv pv" aria-label="Предыдущая фраза">${ui('back')}</button><button class="kn2-nv nx" aria-label="Следующая фраза">${ui('fwd')}</button>`:''}`;
+  document.body.appendChild(o);document.body.classList.add('dx-open');try{musDuck(true);}catch(e){}
+  const card=o.querySelector('.kn2'),inn=o.querySelector('.kn2-in'),bgl=o.querySelector('.kn2-bg');
+  const setBg=s=>{const u=filmImg(s,innerWidth>=760?'bd.jpg':'bdm.jpg'),url=u?`url('${u}')`:D.cover(s),old=bgl.lastElementChild;if(old&&old.dataset.u===url)return;
+    const i=document.createElement('i');i.dataset.u=url;i.style.backgroundImage=url;bgl.appendChild(i);const rm=()=>[...bgl.children].forEach(x=>{if(x!==i)x.remove();});
+    if(old&&fxOK())i.animate([{opacity:0},{opacity:1}],{duration:520,easing:'ease-out'}).onfinish=rm;else rm();};
+  const stopV=()=>{cancelAnimationFrame(raf);raf=0;clearTimeout(hideT);if(v){try{v.pause();v.removeAttribute('src');v.load();}catch(e){}}};
+  const fill=(c,dir)=>{stopV();cur=c;const {s,f,p,pi}=c,[k]=knSt(c),P=scP(s.id),rn=RN[c.rar],T=D.T(f),W=T.split(/\s+/).filter(Boolean);
+    setBg(s);o.style.setProperty('--c',th(s));card.className='kn2 r-'+rn;
+    inn.innerHTML=`<div class="kn2-v"><video playsinline webkit-playsinline preload="auto" poster="${assetUrl(scEpKey(s,pi,'jpg'))}"></video>
+        <div class="kn2-sub" aria-hidden="true">${W.map(w=>`<span>${E(w)}</span>`).join(' ')}</div><button class="knv-p kn2-p" aria-label="Смотреть момент" hidden>${SI.play}</button></div>
+      <div class="kn2-b"><span class="kn2-src">${E(dictFilm(s))}${s.sub?' · '+E(s.sub):''} · эпизод ${pi+1}${c.rar>1?` · <i class="kn2-rr">${RT[rn].toLowerCase()} карта</i>`:''}</span>
+        <b class="kn2-en">${s.lang==='de'?E(f.de||f.en):kwWrap(f,T)}</b><span class="kn2-ru">${E(f.ru)}</span>
+        <div class="kn2-acts"><button data-v="re">${SI.play} Ещё раз</button><button data-v="slow">Медленнее</button><button data-v="ep">Эпизод ${ui('fwd')}</button></div>
+        <p class="kn2-st st-${k}"><i class="kn2-dots" aria-hidden="true">${[1,2,3].map(n=>`<b class="${n<=Math.min(3,c.m)?'on':''}"></b>`).join('')}</i><span>${E(kSt(c,P.r[f.id]))}</span></p>
+        ${phInfoHTML(f,{fact:D.demo()||ADM_OPEN()||P.done.includes(pi)})}
+        ${L.length>1?`<span class="kn2-pg">${ix+1} из ${L.length}${matchMedia('(hover:hover)').matches?' · ← →':' · листай вбок'}</span>`:''}</div>`;
+    card.scrollTop=0;
+    v=inn.querySelector('video');sub=inn.querySelector('.kn2-sub');SP=[...sub.children];const pb=inn.querySelector('.kn2-p'),vv=v;
+    const a=Math.max(0,f.a-p.a-0.15),b=f.b-p.a+0.25;TT=kLin(f,W);
+    wtLoad(s.id).then(R=>{if(cur!==c)return;const X=kFit(f,W,R);if(X)TT=X;});
+    const paint=()=>{const t=vv.currentTime+p.a;SP.forEach((sp,j)=>{const x=TT[j]||[f.a,f.b];sp.classList.toggle('on',t>=x[0]-0.04);sp.classList.toggle('now',t>=x[0]-0.04&&t<x[1]+0.04);});};
+    const loop=()=>{raf=0;if(!o.isConnected||cur!==c)return;paint();if(!vv.paused)raf=requestAnimationFrame(loop);};
+    const play=slow=>{clearTimeout(hideT);vv.playbackRate=slow?.75:1;try{if(Math.abs(vv.currentTime-a)>0.05)vv.currentTime=a;}catch(e){}SP.forEach(x=>x.classList.remove('on','now'));sub.classList.add('show');
+      const pr=vv.play();if(pr&&pr.catch)pr.catch(()=>{pb.hidden=false;});pb.hidden=true;};
+    vv.src=assetUrl(scEpKey(s,pi,'mp4'))+'#t='+a.toFixed(2);vv.volume=store.scVol==null?1:store.scVol;
+    vv.addEventListener('play',()=>{if(!raf)raf=requestAnimationFrame(loop);});
+    vv.addEventListener('timeupdate',()=>{if(vv.currentTime>=b&&!vv.paused){vv.pause();pb.hidden=false;SP.forEach(x=>{x.classList.add('on');x.classList.remove('now');});
+      hideT=setTimeout(()=>{if(cur===c&&vv.paused)sub.classList.remove('show');},1100);}});
+    vv.addEventListener('loadedmetadata',()=>{if(vv.currentTime<a-0.1||vv.currentTime>b)try{vv.currentTime=a;}catch(e){}},{once:true});
+    vv.addEventListener('error',()=>{pb.hidden=false;});
+    pb.onclick=e=>{e.stopPropagation();sfx('tap');play(false);};vv.onclick=()=>{if(vv.paused)play(false);else{vv.pause();pb.hidden=false;}};
+    inn.querySelectorAll('[data-v]').forEach(x=>x.onclick=()=>{sfx('tap');const t=x.dataset.v;if(t==='ep'){close();setTimeout(()=>srOpen(s.id,pi,f.a),220);return;}play(t==='slow');});
+    try{phBind(inn,f);}catch(e){}
+    if(dir&&fxOK())inn.animate([{opacity:0,transform:`translateX(${dir*46}px)`},{opacity:1,transform:'none'}],{duration:340,easing:EZ.out});
+    play(false);};
+  const go=d=>{if(L.length<2)return;ix=(ix+d+L.length)%L.length;sfx('page');haptic('sel');try{kwHide(0);}catch(e){}
+    if(!fxOK())return fill(L[ix],0);const an=inn.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-d*46}px)`}],{duration:150,easing:EZ.in,fill:'forwards'});an.onfinish=()=>{fill(L[ix],d);an.cancel();};};
+  fill(c,0);
+  // открытие: окно растёт из строки списка, фон проявляется
+  const R=card.getBoundingClientRect(),zk=R.width/card.offsetWidth||1;
+  const grow=(rr,back)=>{const sx=Math.max(.05,rr.width/R.width),sy=Math.max(.05,rr.height/R.height),tx=(rr.left-R.left)/zk,ty=(rr.top-R.top)/zk,fr=[{transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`,opacity:.4},{transform:'none',opacity:1}];
+    card.style.transformOrigin='0 0';return card.animate(back?fr.reverse():fr,{duration:back?300:560,easing:back?EZ.in:SPRING,fill:back?'forwards':'none'});};
+  if(fxOK()){grow(btn.getBoundingClientRect());[...inn.children].forEach((ch,i)=>ch.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:420,delay:160+i*110,easing:EZ.out,fill:'backwards'}));
+    btn.style.visibility='hidden';o.querySelectorAll('.kn2-bg,.kno-dim').forEach(x=>x.animate([{opacity:0},{opacity:1}],{duration:420}));setTimeout(()=>DL.burst(inn.querySelector('.kn2-v'),c.rar,.6),300);}
+  const close=o._close=()=>{if(o._c)return;o._c=true;stopV();cur=null;try{musDuck(false);}catch(e){}try{kwHide(0);}catch(e){}document.removeEventListener('keydown',ek);document.body.classList.remove('dx-open');
+    const row=L[ix]&&box.querySelector(`[data-c="${L[ix].k}"]`),r1=row&&row.isConnected?row.getBoundingClientRect():null,back=fxOK()&&r1&&r1.width&&r1.bottom>0&&r1.top<innerHeight;
+    if(back){inn.animate([{opacity:1},{opacity:0}],{duration:120,fill:'forwards'});grow(r1,true);}else card.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:200,easing:'ease-in',fill:'forwards'});
+    o.querySelectorAll('.kn2-bg,.kno-dim,.kn2-nv').forEach(x=>x.animate([{opacity:1},{opacity:0}],{duration:back?300:200,fill:'forwards'}));
+    setTimeout(()=>{o.remove();btn.style.visibility='';},back?310:210);};
+  const ek=e=>{if(e.key==='Escape')close();else if(e.key==='ArrowRight')go(1);else if(e.key==='ArrowLeft')go(-1);};document.addEventListener('keydown',ek);
+  o.querySelector('.kno-dim').onclick=close;o.querySelector('.kn2-x').onclick=()=>{sfx('tap');close();};
+  o.querySelectorAll('.kn2-nv').forEach(b=>b.onclick=()=>go(b.classList.contains('nx')?1:-1));
+  let x0=null,y0=null;card.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
+  card.addEventListener('touchend',e=>{if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.4){go(dx<0?1:-1);return;}
+    if(dy>110&&Math.abs(dy)>Math.abs(dx)*1.4&&card.scrollTop<=0)close();},{passive:true});
   return o;}
 
 /* ---------- куски экранов ---------- */
-const seg=()=>{const my=mywAll().length,g=gotN(),cs=curSeg(),b=(k,t,n)=>`<button data-kseg="${k}" class="${cs===k?'on':''}">${t}${n?` <i>${n}</i>`:''}</button>`;
-  return `<div class="kn-seg n3">${b('list','📖 Фразы',g)}${b('kino','🎬 Кинотека')}${b('my','⭐ Мои слова',my)}</div>`;};
-const lang=()=>`<div class="kn-lang"><button data-dl="en" class="${DX.lang!=='de'?'on':''}">${FLAG.en} English</button><button data-dl="de" class="${DX.lang==='de'?'on':''}">${FLAG.de} Deutsch</button></div>`;
+const seg=()=>{const cs=curSeg(),b=(k,t)=>`<button data-kseg="${k}" class="${cs===k?'on':''}">${t}</button>`;   // 13.8.6: просто текст, без эмодзи и счётчиков
+  return `<div class="kn-seg n3 kn-tabs" role="tablist">${b('list','Фразы')}${b('kino','Кинотека')}${b('my','Мои слова')}</div>`;};
 function knHit(c){const f=c.f,q=KN.q.toLowerCase();
   if(KN.tp&&!fTopics(f).includes(KN.tp))return false;
   if(KN.tone&&scTag(f)[1]!==KN.tone)return false;
@@ -860,8 +900,8 @@ function knRes(){const any=!!(KN.q||KN.tp||KN.st||KN.tone||KN.film);
   const title=KN.tp?`${TOPIC_ICO[KN.tp]||''} ${E(KN.tp)}`:KN.q?`«${E(KN.q)}»`:'Найдено';
   if(!L.length)return `<div class="kn-empty">Ничего не нашлось<small>Попробуй другое слово или сбрось фильтры.</small><button class="kn-btn2" data-reset>Сбросить фильтры</button></div>`;
   const by=[],m={};L.forEach(c=>{const k=dictFilm(c.s);if(!m[k]){m[k]=[];by.push(k);}m[k].push(c);});
-  return `<div class="kn-rh"><span><b>${title}</b><small>у тебя <b>${g}</b> из ${L.length}${L.length-g?` · ещё ${L.length-g} — под туманом, в непройденных эпизодах`:''}</small></span><button class="kn-reset" data-reset>Сбросить</button></div>${bar(g,L.length)}<div class="kn-vt">${vsw()}</div>
-    ${by.map(k=>{const C=m[k].map((c,i)=>[c,i]).sort((x,y)=>(y[0].got-x[0].got)||(x[1]-y[1])).map(x=>x[0]);return `<section class="kn-lg3"><button class="kn-gh" data-show="${E(k)}"><span class="kn-ghp" style="background-image:${D.poster(C[0].s)}"></span><span class="kn-ght"><b>${E(k)}</b><small>${C.filter(c=>c.got).length} из ${C.length}</small></span><i class="kn-chev">${ui('fwd')}</i></button>${rows(C)}</section>`;}).join('')}`;}
+  return `<div class="kn-rh"><span><b>${title}</b><small>у тебя <b>${g}</b> из ${L.length}${L.length-g?` · ещё ${L.length-g} — под туманом, в непройденных эпизодах`:''}</small></span><button class="kn-reset" data-reset>Сбросить</button></div>${bar(g,L.length)}
+    ${by.map(k=>{const C=m[k].map((c,i)=>[c,i]).sort((x,y)=>(y[0].got-x[0].got)||(x[1]-y[1])).map(x=>x[0]);return `<section class="kn-lg3"><button class="kn-gh kn-gh2" data-show="${E(k)}"><span class="kn-ght"><b>${E(k)}</b><small>${C.filter(c=>c.got).length} из ${C.length}</small></span><i class="kn-chev">${ui('fwd')}</i></button>${rowsL(C)}</section>`;}).join('')}`;}
 // 13.8.4: тема — такой же кнопкой со списком, как статус/тон/фильм (было: ряд чипов сверху + те же темы плитками ниже)
 const DD=[['tp','Тема','Все'],['st','Статус','Все'],['tone','Тон','Любой'],['film','Фильм','Все']];
 const ddOpts=(k,F)=>k==='tp'?tpCnt(allCards()).map(x=>[x.k,`${x.ico} ${E(cap(x.k))} · ${x.g}/${x.t}`]):k==='st'?STF:k==='tone'?TONE:(F||DL.films()).map(sh=>[sh.k,E(sh.k)]);
@@ -925,14 +965,17 @@ function knMotion(st,lvl){const go=fxOK(),A=(el,kf,o)=>{if(go&&el)el.animate(kf,
   if(matchMedia('(hover:hover)').matches)st.querySelectorAll('.kcc:not(.lock)').forEach(el=>{let t=0;el.addEventListener('pointerenter',()=>{t=setTimeout(()=>{const c=D.find(el.dataset.c);if(c)D.loopVid(el.querySelector('.kcc-v'),c.s,c.pi,c.f,c.p);},550);});el.addEventListener('pointerleave',()=>{clearTimeout(t);D.stopVids(el);});});}
 
 /* ---------- 13.8.4: «📖 Фразы» — собранные фразы списком, как в словаре: по фильмам, статус словами, ▶ — момент ---------- */
-const srch=()=>`<div class="kn-tb"><div class="kn-sp"><button class="kn-sq" data-flt="q">${IC.q}<span>Найти фразу или слово</span></button><button class="kn-sf" data-flt="" aria-label="Фильтры" title="Фильтры">${IC.flt}</button></div>
-  <div class="kn-fl" role="group" aria-label="Язык фильмов"><button data-dl="en" class="${DX.lang!=='de'?'on':''}" aria-label="English" title="English">${FLAG.en}</button><button data-dl="de" class="${DX.lang==='de'?'on':''}" aria-label="Deutsch" title="Deutsch">${FLAG.de}</button></div></div>`;
+const srch=()=>`<div class="kn-tb"><div class="kn-sp"><button class="kn-sq" data-flt="q">${IC.q}<span>Найти фразу или слово</span></button><button class="kn-sf" data-flt="" aria-label="Фильтры" title="Фильтры">${IC.flt}</button></div></div>`;
+// 13.8.6: язык фильмов — тихая кнопка в шапке справа («English ▾»), список — в шторке
+const knLangN=l=>dictScenes().filter(s=>dxL(s)===l).reduce((a,s)=>{const C=D.cards(s);return [a[0]+C.filter(c=>c.got).length,a[1]+C.length];},[0,0]);
+function knLgDD(){sfx('tap');const w=knSheet(`<b class="kn-sh2">Язык фильмов</b><p class="kn-sm">Словарь показывает фразы из фильмов на этом языке.</p><div class="kn-ddl">${[['en','English'],['de','Deutsch']].map(([l,t])=>{const [g,n]=knLangN(l);return `<button data-lgv="${l}" class="${(DX.lang==='de'?'de':'en')===l?'on':''}">${t} <i>${g} из ${n}</i></button>`;}).join('')}</div>`);
+  w.querySelectorAll('[data-lgv]').forEach(b=>b.onclick=()=>{const l=b.dataset.lgv;w._close();if((DX.lang==='de'?'de':'en')===l)return;sfx('sel');haptic('sel');DX.lang=l;S.show=null;S.sid=null;S.flt=false;DL.render(l==='de'?1:-1);});}
 const LST=[['','Все'],['due','Повторить'],['go','Учу'],['new','Новые'],['ok','Выучено']];
 function knLsDD(G){const n={};G.forEach(c=>{const k=knSt(c)[0];n[k]=(n[k]||0)+1;});sfx('tap');
   const w=knSheet(`<b class="kn-sh2">Показать</b><div class="kn-ddl">${LST.filter(([k])=>!k||n[k]).map(([k,l])=>`<button data-lsv="${k}" class="${KN.lst===k?'on':''}">${l} <i>${k?n[k]:G.length}</i></button>`).join('')}</div>`);
   w.querySelectorAll('[data-lsv]').forEach(b=>b.onclick=()=>{sfx('sel');haptic('sel');KN.lst=b.dataset.lsv;w._close();DL.render(0);});}
 function knList(F){const all=allCards(),G=all.filter(c=>c.got);
-  if(!G.length)return `${seg()}${lang()}<div class="kn-lempty"><span class="kn-sic">📖</span><b>Тут будут твои фразы</b><p>Смотри эпизоды и отвечай в проверке — каждая фраза, на которую ответил верно, ляжет сюда: с переводом, моментом из фильма и тем, когда она пригодится.</p><button class="kn-btn" data-kseg="kino">🎬 Открыть Кинотеку</button></div>`;
+  if(!G.length)return `${seg()}<div class="kn-lempty"><b>Тут будут твои фразы</b><p>Смотри эпизоды и отвечай в проверке — каждая фраза, на которую ответил верно, ляжет сюда: с переводом, моментом из фильма и тем, когда она пригодится.</p><button class="kn-btn" data-kseg="kino">Открыть Кинотеку</button></div>`;
   const n={};G.forEach(c=>{const k=knSt(c)[0];n[k]=(n[k]||0)+1;});if(KN.lst&&!n[KN.lst])KN.lst='';
   const L=KN.lst?G.filter(c=>knSt(c)[0]===KN.lst):G;
   const by=[],m={};L.forEach(c=>{const k=dictFilm(c.s);if(!m[k]){m[k]={k,C:[],t:0};by.push(m[k]);}m[k].C.push(c);m[k].t=Math.max(m[k].t,lastGot(c.s));});
@@ -940,18 +983,18 @@ function knList(F){const all=allCards(),G=all.filter(c=>c.got);
   const rest=all.length-G.length;
   const nn=KN.lst?n[KN.lst]:G.length;
   return `${seg()}${srch()}
-    <div class="kn-lh2"><button class="kn-lsb2" data-lsdd><b>${nn} ${plural(nn,['фраза','фразы','фраз'])}</b><span>${KN.lst?LST.find(x=>x[0]===KN.lst)[1].toLowerCase():'все'}</span><i>▾</i></button>${vsw()}</div>
+    <div class="kn-lh2"><button class="kn-lsb2" data-lsdd><b>${nn} ${plural(nn,['фраза','фразы','фраз'])}</b><span>${KN.lst?LST.find(x=>x[0]===KN.lst)[1].toLowerCase():'все'}</span><i>▾</i></button></div>
     ${by.map(x=>{const open=KN.exp[x.k]||x.C.length<=8,C=open?x.C:x.C.slice(0,6),sh=F.find(f=>f.k===x.k),s0=x.C[0].s;
-      return `<section class="kn-lg3" style="--c:${th(s0)}"><button class="kn-gh" data-show="${E(x.k)}"><span class="kn-ghp" style="background-image:${D.poster(s0)}"></span><span class="kn-ght"><b>${E(x.k)}</b><small>${x.C.length}${sh?` из ${sh.t}`:''} · ${({film:'фильм',series:'сериал',interview:'интервью'})[sh?sh.kind:'film']||''}</small></span><i class="kn-chev">${ui('fwd')}</i></button>
-        ${rows(C)}${open?'':`<button class="kn-lmore2" data-exp="${E(x.k)}">Ещё ${x.C.length-6} ${plural(x.C.length-6,['фраза','фразы','фраз'])}</button>`}</section>`;}).join('')}
-    ${rest?`<button class="kn-lnext" data-kseg="kino"><span><b>Ещё ${rest} ${plural(rest,['фраза ждёт','фразы ждут','фраз ждут'])} в фильмах</b><small>Смотри эпизоды и отвечай в проверке — они лягут сюда</small></span><em>🎬 Кинотека ${ui('fwd')}</em></button>`:''}`;}
+      return `<section class="kn-lg3"><button class="kn-gh kn-gh2" data-show="${E(x.k)}"><span class="kn-ght"><b>${E(x.k)}</b><small>${x.C.length}${sh?` из ${sh.t}`:''}</small></span><i class="kn-chev">${ui('fwd')}</i></button>
+        ${rowsL(C)}${open?'':`<button class="kn-lmore2" data-exp="${E(x.k)}">Ещё ${x.C.length-6} ${plural(x.C.length-6,['фраза','фразы','фраз'])}</button>`}</section>`;}).join('')}
+    ${rest?`<button class="kn-lnext2" data-kseg="kino">Ещё <b>${rest}</b> ${plural(rest,['фраза ждёт','фразы ждут','фраз ждут'])} в фильмах — смотри эпизоды в Кинотеке ${ui('fwd')}</button>`:''}`;}
 
 D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + текущий словарь, без золота',ic:'🎞',sw:'linear-gradient(160deg,#2b2d33,#0b0b0d)',noAnim:true,my:true,flt:true,skip1:false,
-  d:'«📖 Фразы» — твои фразы списком, как в словаре (перевод, статус, ▶ — момент), или карточками. «🎬 Кинотека» — витрина фильмов: фильм открывается кинематографичной страницей (фон 4K, живой момент, цитата, сцены — нажал и смотришь). Поиск — отдельный экран: тема, статус, тон, фильм; несобранные фразы видны под туманом.',
-  bg:`<div class="kn-bg" id="knBg"></div>`,titleHTML:`<h1>Словарь <button class="kn-help" data-help aria-label="Как устроены карты">?</button></h1>`,sub:'Фразы из фильмов, которые ты собрал',
-  home(F){if(!F.length)return seg()+lang();if(knView()==='list')return knList(F);let h=F[0],best=0;F.forEach(sh=>{const t=Math.max(0,...sh.L.map(lastGot));if(t>best){best=t;h=sh;}});
+  d:'«Фразы» — просто твои фразы с переводом, как в словаре. Нажал на фразу — открывается красиво: момент из фильма крупно, фраза субтитром загорается в такт речи, фон — кадр фильма, листаешь вбок. «Кинотека» — витрина фильмов (фон 4K, живой момент, сцены — нажал и смотришь). «Мои слова» — слова, которые сохранил сам. Поиск — тема, статус, тон, фильм; несобранные фразы видны под туманом.',
+  bg:`<div class="kn-bg" id="knBg"></div>`,titleHTML:`<h1>Словарь <button class="kn-help" data-help aria-label="Как устроен словарь">?</button></h1>`,sub:'Фразы из фильмов',
+  home(F){if(!F.length)return seg();if(knView()==='list')return knList(F);let h=F[0],best=0;F.forEach(sh=>{const t=Math.max(0,...sh.L.map(lastGot));if(t>best){best=t;h=sh;}});
     const s0=h.L.slice().sort((a,b)=>lastGot(b)-lastGot(a))[0]||h.s0,bd=knBd(h.s0);
-    return `${seg()}<div class="kn-srch"><button class="kn-q" data-flt="q">${IC.q}<span>Найти фразу, слово или перевод</span></button><button class="kn-fbt" data-flt="">${IC.flt}<span>Фильтры</span></button></div>${lang()}
+    return `${seg()}${srch()}
       <button class="kn-hero${bd?' bd':''}" data-show="${E(h.k)}" style="--c:${th(s0)};--bg:${bd||D.cover(s0)}"><span class="kn-hbg"></span><span class="kn-hp" style="background-image:${knPoster(h.s0)}"></span><span class="kn-ht"><em>${best?'Продолжить':D.kindName(h.kind)}</em><b>${E(h.k)}</b><small>Собрано <b class="kn-cnt" data-n="${h.g}">${h.g}</b> из ${h.t} ${plural(h.t,['фразы','фраз','фраз'])} · ${D.sc(h.L.length)}</small>${bar(h.g,h.t)}<span class="kn-go">Открыть →</span></span><i class="kn-shine"></i></button>
       ${D.groups(F).map(g=>`<h3 class="kn-h">${D.kindName(g.k)}<small>${g.L.length}</small></h3><div class="kn-row">${g.L.map(sh=>`<button class="kn-p dlt" data-show="${E(sh.k)}" style="--c:${th(sh.s0)}"><span class="kn-pi" style="background-image:${knPoster(sh.s0)}">${sh.full?'<i class="kn-done">✓</i>':''}<i class="kn-gl"></i></span><b>${E(sh.k)}</b><small>${sh.g} / ${sh.t}</small>${bar(sh.g,sh.t)}</button>`).join('')}</div>`).join('')}`;},
   film(sh){const s0=sh.s0,L=sh.L,bd=knBd(s0),meta=sh.kind==='film'&&s0.ep?E(s0.ep):D.kindName(sh.kind),eps=L.reduce((a,s)=>a+s.parts.length,0);
@@ -991,6 +1034,10 @@ D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + теку
   after(st,lvl){const root=DL.root,bg=$('#knBg'),hero=st.querySelector('.kn-hero'),fk=S.show||(hero&&hero.dataset.show),sh=fk?DL.films().find(x=>x.k===fk):null,s0=S.sid?scOf(S.sid):sh?sh.s0:null;
     if(bg)bg.style.setProperty('--bg',s0?D.cover(s0):'none');
     const hp=root.querySelector('[data-help]');if(hp)hp.onclick=e=>{e.stopPropagation();knHelp();};
+    // 13.8.6: шапка — «Словарь», под ним «Собрано N из M фраз», справа — язык фильмов тихой кнопкой (вместо флажков)
+    {const [g,t]=D.cnt(dxScenes()),cn=$('#dlCnt'),sb=root.querySelector('.dl-ttl small');
+      if(sb)sb.textContent=`Собрано ${g} из ${t} ${plural(t,['фразы','фраз','фраз'])}`;
+      if(cn){cn.innerHTML=`<button class="kn-lgb" data-lgdd aria-label="Язык фильмов">${DX.lang==='de'?'Deutsch':'English'} <i>▾</i></button>`;cn.querySelector('[data-lgdd]').onclick=knLgDD;}}
     const SO={list:0,kino:1,my:2};
     st.querySelectorAll('[data-kseg]').forEach(b=>b.onclick=()=>{const k=b.dataset.kseg,was=curSeg();if(was===k)return;sfx('tap');haptic('sel');
       if(k==='my')DX.seg='my';else{DX.seg='ph';store.knView=k;save();}S.flt=false;S.show=null;S.sid=null;DL.render(SO[k]>SO[was]?1:-1);});

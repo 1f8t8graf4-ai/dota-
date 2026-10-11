@@ -4958,3 +4958,11 @@ body.nofx .ss-mist{animation:none}
 .momo .mom-en .sw.my{text-decoration:underline dotted rgba(243,235,221,.6);text-underline-offset:4px}
 .momo .mom-en .sw.my::after{content:'★';font-size:.55em;vertical-align:super;margin-left:1px;color:#F2C35B}
 .momo .mom-en{-webkit-user-select:none;user-select:none}
+
+/* ==== 13.8.6 — «Мои слова» понятно: что это за слова (одной строкой сверху), один статус у слова, одна главная кнопка ==== */
+.dm-what{margin:0 0 12px;font:400 14px/1.5 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.62)}
+.dm-what b{color:rgba(255,255,255,.88);font-weight:600;white-space:nowrap}
+.dm-book>.dx-train{margin:0 0 14px}
+.dm-due,.dm-due.on,.dm-due.ok{padding:0;border-radius:0;background:none;font:500 12.5px 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.45)}
+.dm-due.on{color:#FFB547}
+.dm-due.ok{color:#7DD99A}

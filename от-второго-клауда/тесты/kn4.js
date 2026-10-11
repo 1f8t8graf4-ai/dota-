@@ -60,10 +60,9 @@ const dev=process.argv[2]||'ph';
   ok('поиск: чипов тем нет, «Тема» — кнопкой, плитки на месте',!st.chips&&/Тема/.test(st.dd[0])&&st.tiles>5,JSON.stringify(st));
   await shot('7-flt');
   await page.click('.kn-tt button');await page.waitForTimeout(1200);
-  st=await ev(()=>({rows:document.querySelectorAll('#knRes .kq').length,dd:document.querySelector('.kn-ddb').textContent.trim(),vsw:!!document.querySelector('#knRes [data-kv]')}));ok('тема выбрана: список, на кнопке — тема',st.rows>3&&st.vsw&&!/^Тема/.test(st.dd),JSON.stringify(st));
+  st=await ev(()=>({rows:document.querySelectorAll('#knRes .kq').length,dd:document.querySelector('.kn-ddb').textContent.trim(),vsw:!!document.querySelector('#knRes [data-kv]')}));ok('тема выбрана: список (13.8.6 — без переключателя вида), на кнопке — тема',st.rows>3&&!st.vsw&&!/^Тема/.test(st.dd),JSON.stringify(st));
   await shot('8-flt-topic');
-  await page.click('#knRes [data-kv="cards"]');await page.waitForTimeout(800);st=await ev(()=>({kc:document.querySelectorAll('#knRes .kc').length}));ok('карточками в поиске',st.kc>3,JSON.stringify(st));
-  await page.click('#knRes [data-kv="list"]');await page.waitForTimeout(500);
+  st=await ev(()=>({kc:document.querySelectorAll('#knRes .kc').length,kq:document.querySelectorAll('#knRes .kq').length}));ok('в поиске — только строки фраз (13.8.6)',!st.kc&&st.kq>3,JSON.stringify(st));
   await page.click('.kn-ddb[data-dd="tp"]');await page.waitForTimeout(700);st=await ev(()=>document.querySelectorAll('.kn-ddl button').length);ok('шторка тем',st>5,String(st));await shot('9-tp-sheet');
   await ev(()=>{const w=document.querySelector('.kn-sheet');w&&w._close&&w._close();});await page.waitForTimeout(400);
   // смотреть: сцена из фильма, эпизод из сцены
