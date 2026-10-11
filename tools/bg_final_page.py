@@ -1,4 +1,5 @@
-# Страница «Фоны: финал» (11.10): моё видение всех 37 фонов — 12 уже стоят (оставить), 25 сделать.
+# Страница «Фоны: финал» (11.10): моё видение всех 37 фонов. Решение Андрея: все — одного типа (вертикаль 9:16, 4 с спокойно + событие),
+# поэтому 12 стоящих делаем заново по их же удачным промтам + событие, 25 фонов сцен — новые.
 # Берёт промты из фоны-промты-СРАВНЕНИЕ.json (tools/bg_cmp.py), кадры — из клона ../scenes.
 # Запуск из корня dota-: python3 tools/bg_final_page.py <выход.html>
 import base64,html,io,json,os,sys
@@ -7,12 +8,11 @@ from PIL import Image
 SC='../scenes'
 R={r['n']:r for r in json.load(open('фоны-промты-СРАВНЕНИЕ.json',encoding='utf-8'))}
 
-# стоят и хороши — оставить (кадр из превью фона)
+# сейчас стоят — переделать в тот же тип по их же промтам (кадр — превью стоящего фона)
 KEEP={
 1:dict(img='wolf-of-wall-street/film-bgp.jpg',name='«Волк с Уолл-стрит» — главный',
-  inn='Торговый зал после вечеринки: золотая рыбка, белая Lamborghini Countach (модель), рассыпанные таблетки, шампанское, пачки денег, снятая трубка.',
-  why='Каждый предмет — из фильма: на Countach Джордан едет под кваалюдами, рыбку на вечеринке глотает Донни, трубка — холодные звонки.',
-  note='Событие можно добавить потом: тот же кадр + бегущая строка акций, на 4-й секунде всё из зелёного в красное (крах в конце). Скажи — напишу.'),
+  inn='Тот же торговый зал после вечеринки: золотая рыбка, белая Lamborghini Countach (модель), рассыпанные таблетки, шампанское, пачки денег, снятая трубка — плюс котировки на экранах и бегущая строка на стене.',
+  why='Каждый предмет — из фильма: на Countach Джордан едет под кваалюдами, рыбку на вечеринке глотает Донни, трубка — холодные звонки. Промт — слово в слово тот, по которому вышел стоящий фон.'),
 2:dict(img='wolf-of-wall-street/bgp.jpg',name='«Волк» — обед с Ханной',
   inn='Столик над Манхэттеном: мартини, шейкер, жёлтые цветы, счёт с сотней, пейджер, газета с котировками.',
   why='Тот самый обед, где Ханна учит Джордана «фугази». Ты его похвалил.'),
@@ -20,14 +20,14 @@ KEEP={
   inn='Кабинет банкира: стена-аквариум, флажок Швейцарии, кофе; за окном — фонтан Же-До.',
   why='Джордан прячет деньги в Женеве, а Женева узнаётся по фонтану.'),
 5:dict(img='sopranos-s01e01/film-bgp.jpg',name='«Клан Сопрано» — главный',
-  inn='Кухня Тони ночью: открытый холодильник, халат на стуле, капиколла и зити, виски, сигара; за стеклом — бассейн с утками.',
-  why='Тони в халате у холодильника — это весь сериал. С уток в бассейне начинаются его панические атаки.',
-  note='Ты хотел лавку Сатриале со всей бандой. По-моему, кухня сильнее: узнаётся мгновенно. Промт Сатриале лежит в файле — решай.'),
+  inn='Тротуар у мясной лавки Сатриале на рассвете: столик в клетку, складные стулья, эспрессо, сигара, газета; в витрине колбасы и сыры, неоновая свинья.',
+  why='Лавка Сатриале — штаб всей банды, а не только Тони (твоё решение). Свинья гаснет, и кадр резко уходит в чёрное — как финал сериала.',
+  note='Сейчас стоит кухня Тони — она останется, пока не сделаешь Сатриале.'),
 6:dict(img='sopranos-s01e01/bgp.jpg',name='«Сопрано» — первый приём у Мелфи',
   inn='Кабинет Мелфи: два кресла друг напротив друга, салфетки, чай, лампа, книги; в приёмной — бронзовая статуя.',
   why='Первый приём Тони. Статую он разглядывает в самом первом кадре сериала.'),
 13:dict(img='american-psycho/film-bgp.jpg',name='«Американский психопат» — главный',
-  inn='Белая квартира над ночным Манхэттеном: прозрачный плащ на вешалке, топор, газеты на полу, стереосистема.',
+  inn='Та же белая квартира над ночным Манхэттеном: прозрачный плащ на вешалке, топор, газеты на полу, стереосистема.',
   why='Сцена с Полом Алленом: Патрик стелет газеты, надевает плащ, ставит Huey Lewis и берёт топор.'),
 16:dict(img='taxi-driver-lonely/film-bgp.jpg',name='«Таксист» — главный',
   inn='Комната Трэвиса: армейская куртка, треснувшее зеркало, револьверы, дневник, телевизор с рябью; за окном неон и жёлтое такси.',
@@ -144,28 +144,23 @@ def film(r):
         if k in r['grp']:return v
     return r['grp']
 
-keep_html=[]
-for n,k in KEEP.items():
-    r=R[n];big=('главный' in k['name'])
-    keep_html.append(f'''<article class="kp"><img class="kp-im" src="{thumb(k['img'])}" alt="Кадр: {e(k['name'])}" loading="lazy">
-<div class="kp-b"><span class="tag">{'главный фон' if big else 'фон сцены'} · стоит</span><h3>{e(k['name'])}</h3>
-<p><b>В кадре.</b> {e(k['inn'])}</p><p class="mute"><b>Почему работает.</b> {e(k['why'])}</p>{f'<p class="note">{e(k["note"])}</p>' if k.get('note') else ''}</div></article>''')
-
 films=[]
-make_html=[]
-for n,m in MAKE.items():
-    r=R[n];f=film(r);sid=r['where'].split('/')[0]
+def card(n,m,img,redo):
+    r=R[n];f=film(r)
     if f not in films:films.append(f)
     de=' · DE' if r['title'].startswith('DE') else ''
-    make_html.append(f'''<article class="mk" data-film="{e(f)}" data-n="{n}" id="f{n}">
-<div class="mk-top"><img class="mk-im" src="{thumb(sid+'/cover.jpg',320)}" alt="Кадр из сцены «{e(m['name'])}»" loading="lazy">
-<div class="mk-h"><span class="tag">{e(f)}{de}</span><h3>{e(m['name'])}</h3><span class="fn">{e(r['file'])}.mp4</span></div></div>
-<dl><dt>Место</dt><dd>{e(m['place'])}</dd><dt>В кадре</dt><dd>{e(m['inn'])}</dd><dt>Почему</dt><dd>{e(m['why'])}</dd>
-<dt>Событие</dt><dd class="ev">{e(r['ev'])}</dd></dl>
+    kind=('главный фон' if 'главный' in m['name'] else 'фон сцены')+(' · заменить' if redo else '')
+    rows=(f"<dt>Место</dt><dd>{e(m['place'])}</dd>" if m.get('place') else '')+f"<dt>В кадре</dt><dd>{e(m['inn'])}</dd><dt>Почему</dt><dd>{e(m['why'])}</dd>"
+    return f'''<article class="mk{' redo' if redo else ''}" data-film="{e(f)}" data-kind="{'redo' if redo else 'new'}" data-n="{n}" id="f{n}">
+<div class="mk-top"><figure class="mk-fig"><img class="mk-im{' tall' if redo else ''}" src="{img}" alt="Кадр: {e(m['name'])}" loading="lazy">{'<figcaption>сейчас стоит</figcaption>' if redo else ''}</figure>
+<div class="mk-h"><span class="tag">{e(f)}{de} · {kind}</span><h3>{e(m['name'])}</h3><span class="fn">{e(r['file'])}.mp4</span></div></div>
+<dl>{rows}<dt>Событие</dt><dd class="ev">{e(r['ev'])}</dd></dl>{f'<p class="note">{e(m["note"])}</p>' if m.get('note') else ''}
 <div class="mk-act"><button type="button" class="b cp">Скопировать промт</button><button type="button" class="b ghost sh" aria-expanded="false">Показать промт</button>
 <label class="done"><input type="checkbox" id="d{n}"> Готово</label></div>
-<pre class="pr" hidden>{e(r['prompt'])}</pre></article>''')
+<pre class="pr" hidden>{e(r['prompt'])}</pre></article>'''
 
+make_html=[card(n,m,thumb(R[n]['where'].split('/')[0]+'/cover.jpg',320),False) for n,m in MAKE.items()]
+redo_html=[card(n,k,thumb(k['img']),True) for n,k in KEEP.items()]
 chips=''.join(f'<button type="button" class="chip" data-f="{e(f)}">{e(f)}</button>' for f in films)
 
 PAGE=f'''<title>Фоны: финал</title>
@@ -208,6 +203,9 @@ padding-block:10px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:8px;align-
 .mk.is-done{{border-color:color-mix(in srgb,var(--ok) 45%,var(--line));background:linear-gradient(var(--okbg),var(--panel) 60%)}}
 .mk-top{{display:flex;gap:12px;align-items:flex-start}} .mk-im{{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;flex:none;background:#000;max-width:40%}}
 .mk-h{{min-width:0;display:flex;flex-direction:column;gap:3px}}
+.mk-fig{{margin:0;flex:none;display:flex;flex-direction:column;gap:3px;max-width:40%}} .mk-fig .mk-im{{max-width:100%}}
+.mk-im.tall{{width:96px;aspect-ratio:9/13}} .mk-fig figcaption{{font-size:11px;color:var(--mute);text-align:center}}
+.mk .note{{margin:0;font-size:13.5px}}
 dl{{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}} dt{{color:var(--mute);font-size:12.5px;padding-top:2px}} dd{{margin:0;min-width:0}}
 dd.ev{{color:var(--fg);background:var(--gold2);border-radius:8px;padding:6px 9px}}
 .mk-act{{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:auto}}
@@ -224,12 +222,13 @@ button:focus-visible,input:focus-visible{{outline:2px solid var(--gold);outline-
 </style>
 <div class="w">
 <header><div class="eye">«Языки по кино» · фоны-награды</div><h1>Фоны: финал</h1>
-<p class="lede">Как я вижу фоны и почему. Ниже — 12 фонов, которые уже стоят и хороши (оставляем), и 25 фонов сцен, которых ещё нет: по каждому место, что в кадре, почему так, событие и готовый промт.</p>
-<div class="stats"><span class="st"><b>12</b> стоят — оставить</span><span class="st"><b>25</b> сделать</span><span class="st" id="stDone">готово <b>0</b> из 25</span></div></header>
+<p class="lede">Как я вижу фоны и почему. Все 37 — одного типа: вертикаль, 4 секунды спокойно, потом событие из сцены. 25 фонов сцен делаем с нуля, 12 стоящих — заново по их же промтам, только с событием. По каждому: что в кадре, почему так, событие и готовый промт.</p>
+<div class="stats"><span class="st"><b>25</b> новых</span><span class="st"><b>12</b> заменить</span><span class="st" id="stDone">готово <b>0</b> из 37</span></div></header>
 
 <section><h2>Как я вижу фоны</h2><p class="sub">Фон — награда за сцену или весь фильм. Его смотрят на Главной по кругу, на телефоне, за кнопками. Отсюда правила:</p>
 <ul class="pr-list">
-<li><b>Узнаётся с первого взгляда</b><span>Место из сцены и 3–5 предметов, по которым фанат узнаёт фильм. Все 12 удачных фонов держатся на таких предметах (Ламба у Волка, утки у Тони, топор и плащ у Бейтмана). Неудачные — те, где я их убрал.</span></li>
+<li><b>Один тип для всех</b><span>Вертикаль 9:16, 4 секунды спокойно, потом одно событие. Сейчас стоящие — вперемешку (8 горизонтальных, без событий), рядом с новыми это бросится в глаза, а в профиле и в дуэли — тем более.</span></li>
+<li><b>Узнаётся с первого взгляда</b><span>Место из сцены и 3–5 предметов, по которым фанат узнаёт фильм. Все 12 стоящих фонов держатся на таких предметах (Ламба у Волка, топор и плащ у Бейтмана), поэтому их переделываем по тем же промтам. Неудачные — те, где я предметы убирал.</span></li>
 <li><b>Без людей</b><span>Лица актёров нейронка рисует непохоже, а чужие лица — лишний юридический риск.</span></li>
 <li><b>Камера стоит, движение мягкое</b><span>Фон живёт за кнопками и не должен дёргать глаз.</span></li>
 <li><b>Одно событие на 4-й секунде</b><span>Светом, экраном, водой или дымом — это нейронка делает чисто. Брак — когда что-то катится или падает само, бьётся, летит роем или трясётся кадр (сыр у Клава).</span></li>
@@ -246,15 +245,12 @@ button:focus-visible,input:focus-visible{{outline:2px solid var(--gold);outline-
 <li>Нажми «Скопировать промт» в карточке.</li>
 <li>Google Flow → Veo 3.1, вертикаль 9:16, 8 секунд, промт целиком.</li>
 <li>Вышло криво — тот же промт ещё раз. Лишний предмет или склейка — тоже.</li>
-<li>Назови файл как в карточке и положи в <code>scenes/claude/субтитры/фоны/</code>. Петлю и установку сделаю я.</li>
+<li>Назови файл как в карточке и положи в <code>scenes/claude/субтитры/фоны/</code>. Петлю и установку сделаю я. Пока новый не готов — в приложении стоит старый.</li>
 </ol></section>
 
-<section><h2>Уже стоят — оставить</h2><p class="sub">Посмотрел каждый по кадрам: все 12 хорошие. Перегенерировать их — риск сделать хуже, а выиграешь только событие.</p>
-<div class="grid">{''.join(keep_html)}</div></section>
-
-<section id="make"><h2>Сделать — 25 фонов сцен</h2><p class="sub">Порядок любой. Отметка «Готово» хранится только в этом браузере.</p>
-<div class="bar" role="toolbar" aria-label="Фильтр по фильму"><button type="button" class="chip" data-f="" aria-pressed="true">Все</button>{chips}<span class="prog" id="prog">готово <b>0</b> из 25</span></div>
-<div class="grid" id="mkGrid">{''.join(make_html)}</div></section>
+<section id="make"><h2>Сделать — 37 фонов</h2><p class="sub">Сначала 25 новых (у этих сцен фона нет совсем), потом 12 замен. Порядок внутри — любой. Отметка «Готово» хранится только в этом браузере.</p>
+<div class="bar" role="toolbar" aria-label="Фильтр по фильму"><button type="button" class="chip" data-f="" aria-pressed="true">Все</button><button type="button" class="chip" data-f="@new">Новые</button><button type="button" class="chip" data-f="@redo">Заменить</button>{chips}<span class="prog" id="prog">готово <b>0</b> из 37</span></div>
+<div class="grid" id="mkGrid">{''.join(make_html+redo_html)}</div></section>
 
 <p class="foot">Кидаешь ролики в папку — я делаю бесшовную петлю (событие раз в 10–12 секунд), проверяю шов по кадрам и ставлю в «Коллекцию». Промты — те же, что в <code>фоны-промты-СРАВНЕНИЕ.txt</code>.</p>
 </div>
@@ -282,7 +278,7 @@ cards.forEach(function(c){{
 var chips=[].slice.call(document.querySelectorAll('.chip'));
 chips.forEach(function(ch){{ch.addEventListener('click',function(){{
  chips.forEach(function(x){{x.setAttribute('aria-pressed',String(x===ch))}});
- var f=ch.dataset.f;cards.forEach(function(c){{c.hidden=!!f&&c.dataset.film!==f}});
+ var f=ch.dataset.f;cards.forEach(function(c){{c.hidden=!!f&&(f.charAt(0)==='@'?c.dataset.kind!==f.slice(1):c.dataset.film!==f)}});
 }})}});
 prog();
 }})();
