@@ -26,10 +26,13 @@ const dev=process.argv[2]||'ph';
   await click('.kn-ep summary .kn-ex');await page.waitForTimeout(900);
   st=await ev(()=>({open:document.querySelectorAll('.kn-ep[open]').length,rows:document.querySelectorAll('.kn-ep[open] .kq').length}));ok('нажал на эпизод — фразы строками',st.open===1&&st.rows>0,JSON.stringify(st));
   await shot('3-scene');
-  // фраза: окно, ▶ не висит, слова загораются
+  // фраза (13.9.8): окно открылось — само ничего не играет, видео свёрнуто; «Послушать» — звук, слова фразы загораются
   await click('.kn-ep[open] .kq:not(.lock)');await page.waitForTimeout(1800);
-  st=await ev(()=>{const p=document.querySelector('.knv-p'),v=document.querySelector('.kno video');return {open:!!document.querySelector('.kno2'),pDisp:p&&getComputedStyle(p).display,playing:v&&!v.paused,on:document.querySelectorAll('.kn2-sub span.on').length};});
-  ok('фраза открылась, ▶ спрятана, пока играет',st.open&&(!st.playing||st.pDisp==='none'),JSON.stringify(st));
+  st=await ev(()=>{const v=document.querySelector('.kno video'),w=document.querySelector('.kn6-vw');return {open:!!document.querySelector('.kno2'),playing:!!(v&&!v.paused),vw:!!(w&&w.classList.contains('on'))};});
+  ok('фраза открылась — само не играет, видео свёрнуто',st.open&&!st.playing&&!st.vw,JSON.stringify(st));
+  await click('.kn6-acts [data-v="hear"]');await page.waitForTimeout(2000);
+  st=await ev(()=>{const v=document.querySelector('.kno video');return {playing:!!(v&&!v.paused),on:document.querySelectorAll('.kn2-en .kk-on').length};});
+  ok('«Послушать» — играет, слова фразы загораются',st.playing&&st.on>0,JSON.stringify(st));
   await ev(()=>DL.back());await page.waitForTimeout(600);
   await click('.kn-hf');await page.waitForTimeout(1300);st=await ev(()=>$('#dlStage').dataset.lvl);ok('название фильма → фильм',st==='film',st);
   // фильм из одной сцены — своя страница; назад из сцены → фильм → главная
