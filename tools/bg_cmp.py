@@ -21,9 +21,9 @@ def his_body(e):
     body=e['body'] if 'body' in e else f"Setting: {e['set']} Camera: {e['cam']} Objects: {e['obj']} Light: {e['light']}"
     return body,e['grade']
 
-def tail3(body,txt=None):
+def tail3(body,txt=None,ev=True):
     money=any(w in body for w in ('bill','banknote','cash'))
-    return ("Rules: the camera is locked off and never moves, no cuts, no zoom; apart from the event, the light stays the same. "
+    return ("Rules: the camera is locked off and never moves, no cuts, no zoom; "+("apart from the event, the light stays the same. " if ev else "the light stays the same. ")+
             "Photorealistic live-action footage with real materials and real-world sizes"+(" (banknotes look like real worn paper money)" if money else "")+
             "; every object stands or lies naturally where it belongs, no extra objects; "+(txt or "no people, no faces, no hands, no text, letters or logos anywhere.")+" "
             "Vertical 9:16, full-bleed, no black bars, borders or film frame.")
@@ -282,8 +282,10 @@ def build():
             why+=f" Строка цвета почищена — было «{grade}»: предметы, людей и цитаты из этой строки нейронка рисует буквально.";grade=G[n];take+=' · строка цвета почищена'
         tl=' '.join(f'[{a}] {b}' for a,b in seg)
         p=f"{body} Grade: {grade} Timeline — one continuous shot, the same framing for all 8 seconds: {tl} {tail3(body,v.get('txt'))}"
+        # 13.9.6: запасной — тот же фон без события (событие не вышло за 2 попытки): спокойная часть на все 8 секунд
+        pc=f"{body} Grade: {grade} Timeline — one continuous shot, the same framing for all 8 seconds: [00:00-00:08] {seg[0][1].strip()} This calm motion simply continues for all 8 seconds; nothing sudden happens and nothing new appears. {tail3(body,v.get('txt'),ev=False)}"
         out.append(dict(n=n,grp=e['grp'],kind=e['kind'],title=e['title'],file=e['file'],where=e['where'],take=take,why=why,ev=ev_ru,loop=loop,
-                        seam=be.LOOP_SEAM[loop],prompt=p))
+                        seam=be.LOOP_SEAM[loop],prompt=p,calm=pc))
     return out,cnt
 
 if __name__=='__main__':

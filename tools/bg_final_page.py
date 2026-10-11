@@ -155,9 +155,10 @@ def card(n,m,img,redo):
 <div class="mk-top"><figure class="mk-fig"><img class="mk-im{' tall' if redo else ''}" src="{img}" alt="Кадр: {e(m['name'])}" loading="lazy">{'<figcaption>сейчас стоит</figcaption>' if redo else ''}</figure>
 <div class="mk-h"><span class="tag">{e(f)}{de} · {kind}</span><h3>{e(m['name'])}</h3><span class="fn">{e(r['file'])}.mp4</span></div></div>
 <dl>{rows}<dt>Событие</dt><dd class="ev">{e(r['ev'])}</dd></dl>{f'<p class="note">{e(m["note"])}</p>' if m.get('note') else ''}
-<div class="mk-act"><button type="button" class="b cp">Скопировать промт</button><button type="button" class="b ghost sh" aria-expanded="false">Показать промт</button>
+<div class="mk-act"><button type="button" class="b cp" data-t="pr" data-l="Скопировать промт">Скопировать промт</button><button type="button" class="b ghost sh" aria-expanded="false">Показать промт</button>
+<button type="button" class="b ghost cp cpc" data-t="pc" data-l="Спокойный — если не вышло">Спокойный — если не вышло</button>
 <label class="done"><input type="checkbox" id="d{n}"> Готово</label></div>
-<pre class="pr" hidden>{e(r['prompt'])}</pre></article>'''
+<pre class="pr" hidden>{e(r['prompt'])}</pre><pre class="pc" hidden>{e(r['calm'])}</pre></article>'''
 
 make_html=[card(n,m,thumb(R[n]['where'].split('/')[0]+'/cover.jpg',320),False) for n,m in MAKE.items()]
 redo_html=[card(n,k,thumb(k['img']),True) for n,k in KEEP.items()]
@@ -237,15 +238,15 @@ button:focus-visible,input:focus-visible{{outline:2px solid var(--gold);outline-
 <li><b>Строка цвета — только цвет и настроение</b><span>Слова-предметы оттуда рисуются буквально: из «money-green» у Волка выросла пачка денег на кирпиче.</span></li>
 <li><b>Богато — дорого и чисто</b><span>Потёртости и «зерно» — только где бедно по сюжету: мотель, квартира Трэвиса, подпол. У Волка они сделали офис нищим.</span></li>
 </ul>
-<p class="honest">Честно: генерация — лотерея. Правила снижают брак, но не убирают его. Если ролик вышел криво, перегенерируй тот же промт 2–3 раза, а не дописывай: дописки и сломали Волка.</p>
+<p class="honest">Честно: генерация — лотерея, а событие — вторая лотерея сверху. Поэтому правило простое: <b>две попытки с событием, не вышло — спокойный промт</b> (кнопка в карточке): тот же фон без события, он выходит почти всегда. Мне писать и промт дописывать не надо — дописки и сломали Волка с Ланчем.</p>
 </section>
 
 <section><h2>Как делать</h2>
 <ol class="steps">
-<li>Нажми «Скопировать промт» в карточке.</li>
-<li>Google Flow → Veo 3.1, вертикаль 9:16, 8 секунд, промт целиком.</li>
-<li>Вышло криво — тот же промт ещё раз. Лишний предмет или склейка — тоже.</li>
-<li>Назови файл как в карточке и положи в <code>scenes/claude/субтитры/фоны/</code>. Петлю и установку сделаю я. Пока новый не готов — в приложении стоит старый.</li>
+<li>Нажми «Скопировать промт» → Google Flow → Veo 3.1, вертикаль 9:16, 8 секунд.</li>
+<li>Событие вышло — готово. Не вышло — тот же промт ещё раз. <b>Максимум 2 попытки.</b></li>
+<li>Не вышло и со второй — жми «Спокойный — если не вышло» и делай его. Без вопросов ко мне.</li>
+<li>Назови файл как в карточке и положи в <code>scenes/claude/субтитры/фоны/</code>. Петлю, установку и заливку делаю я. Пока новый не готов — в приложении стоит старый.</li>
 </ol></section>
 
 <section id="make"><h2>Сделать — 37 фонов</h2><p class="sub">Сначала 25 новых (у этих сцен фона нет совсем), потом 12 замен. Порядок внутри — любой. Отметка «Готово» хранится только в этом браузере.</p>
@@ -260,20 +261,18 @@ var KEY='bgfin-done-v1',done={{}};
 try{{done=JSON.parse(localStorage.getItem(KEY)||'{{}}')||{{}}}}catch(_){{done={{}}}}
 function save(){{try{{localStorage.setItem(KEY,JSON.stringify(done))}}catch(_){{}}}}
 var cards=[].slice.call(document.querySelectorAll('.mk'));
+function cpy(btn,pre,sh){{var lbl=btn.dataset.l;
+  function ok(){{btn.textContent='Скопировано ✓';btn.classList.add('ok');setTimeout(function(){{btn.textContent=lbl;btn.classList.remove('ok')}},1800);}}
+  function fallback(){{pre.hidden=false;if(sh&&pre.classList.contains('pr'))sh.textContent='Скрыть промт';var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Выделил — скопируй вручную';}}
+  try{{navigator.clipboard.writeText(pre.textContent).then(ok,fallback)}}catch(_){{fallback()}}}}
 function prog(){{var n=cards.filter(function(c){{return done[c.dataset.n]}}).length;
  document.querySelector('#prog b').textContent=n;document.querySelector('#stDone b').textContent=n;}}
 cards.forEach(function(c){{
- var n=c.dataset.n,cb=c.querySelector('.done input'),pre=c.querySelector('.pr'),cp=c.querySelector('.cp'),sh=c.querySelector('.sh');
+ var n=c.dataset.n,cb=c.querySelector('.done input'),pre=c.querySelector('.pr'),sh=c.querySelector('.sh');
  cb.checked=!!done[n];c.classList.toggle('is-done',cb.checked);
  cb.addEventListener('change',function(){{if(cb.checked)done[n]=1;else delete done[n];c.classList.toggle('is-done',cb.checked);save();prog();}});
  sh.addEventListener('click',function(){{pre.hidden=!pre.hidden;sh.textContent=pre.hidden?'Показать промт':'Скрыть промт';sh.setAttribute('aria-expanded',String(!pre.hidden));}});
- cp.addEventListener('click',function(){{
-  var t=pre.textContent;
-  function ok(){{cp.textContent='Скопировано ✓';cp.classList.add('ok');setTimeout(function(){{cp.textContent='Скопировать промт';cp.classList.remove('ok')}},1800);}}
-  function fallback(){{pre.hidden=false;sh.textContent='Скрыть промт';var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);
-   cp.textContent='Выделил — скопируй вручную';}}
-  try{{navigator.clipboard.writeText(t).then(ok,fallback)}}catch(_){{fallback()}}
- }});
+ [].forEach.call(c.querySelectorAll('.cp'),function(b){{b.addEventListener('click',function(){{cpy(b,c.querySelector('.'+b.dataset.t),sh);}});}});
 }});
 var chips=[].slice.call(document.querySelectorAll('.chip'));
 chips.forEach(function(ch){{ch.addEventListener('click',function(){{
