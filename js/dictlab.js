@@ -778,7 +778,7 @@ function knSheet(html){document.querySelectorAll('.kn-sheet').forEach(x=>x.remov
   w.querySelector('.kn-sd').onclick=close;w.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{sfx('tap');close();});return w;}
 function knHelp(){sfx('tap');knSheet(`<b class="kn-sh2">Как устроен словарь</b>
   <p class="kn-sm"><b>«Кинотека»</b> — фильмы и сколько фраз из них ты собрал. Фильм → сцена → эпизод: нажми — увидишь фразы.</p>
-  <p class="kn-sm"><b>«Мои фразы и слова»</b> — всё твоё: фразы, которые ты собрал (верно ответил в проверке после эпизода), и слова, которые сохранил сам. Подборки по темам и фильмам — внутри можно смотреть подряд и тренироваться.</p>
+  <p class="kn-sm"><b>«Мои фразы и слова»</b> — всё твоё: фразы, которые ты собрал (верно ответил в проверке после эпизода), и слова, которые сохранил сам. Сверху — темы: нажми, раскроются фразы и «Тренировать». Внизу — все. Приписка <b>#фильм</b> у строки — нажми, останутся фразы этого фильма.</p>
   <div class="kn-lg"><div><em class="kc-st st-new">Новая</em><p>Только что собрал. Ответь на неё верно в повторении три раза — и она выучена.</p></div>
     <div><em class="kc-st st-go">Учу · 1 из 3</em><p>Сколько раз ты уже ответил верно.</p></div>
     <div><em class="kc-st st-due">Повторить</em><p>В списке у такой фразы оранжевая точка — она ждёт в «Повторении» на Главной.</p></div>
@@ -817,7 +817,7 @@ const wStTxt=x=>mywLearned(x)?'Выучено. Иногда всплывёт в 
 function knOpen(btn,c,o){o=o||{};DL.clean();
   const box=btn&&btn.closest('#knRes,.dl-stage')||document,L=[],AU=!!o.auto;
   if(o.L)L.push(...o.L);else{const seenK={};box.querySelectorAll('[data-c]').forEach(b=>{const x=D.find(b.dataset.c);if(x&&x.got&&!seenK[x.k]){seenK[x.k]=1;L.push(x);}});if(!seenK[c.k])L.unshift(c);}
-  let ix=Math.max(0,L.findIndex(x=>x.k===c.k)),cur=null,v=null,raf=0,TT=[],SP=[],sub=null,hideT=0,autoT=0,held=false,dirty=false;
+  let ix=Math.max(0,L.findIndex(x=>x.k===c.k)),cur=null,v=null,raf=0,TT=[],SP=[],sub=null,hideT=0,autoT=0,held=false,dirty=false,MORE=false;   // 13.9.5: MORE — открыто «Подробнее» (держится при листании)
   const ov=document.createElement('div');ov.className='kno kno2'+(AU?' auto':'');
   ov.innerHTML=`<div class="kn2-bg"></div><div class="kno-dim"></div><div class="kn2" role="dialog" aria-label="${c.w?'Слово из фильма':'Фраза из фильма'}">${AU?`<div class="kn2-seg${L.length>30?' one':''}">${L.length>30?'<i><b></b></i>':L.map(()=>'<i><b></b></i>').join('')}</div>${o.title?`<span class="kn2-at">${E(o.title)}</span>`:''}`:''}<button class="kn2-x" aria-label="Закрыть">${ui('close')}</button><div class="kn2-in"></div></div>
     ${L.length>1?`<button class="kn2-nv pv" aria-label="Предыдущая">${ui('back')}</button><button class="kn2-nv nx" aria-label="Следующая">${ui('fwd')}</button>`:''}`;
@@ -829,7 +829,13 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
     if(old&&fxOK())i.animate([{opacity:0},{opacity:1}],{duration:520,easing:'ease-out'}).onfinish=rm;else rm();};
   const mkV=()=>{if(!v){v=document.createElement('video');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.playsInline=true;v.preload='auto';}return v;};
   const stopV=()=>{cancelAnimationFrame(raf);raf=0;clearTimeout(hideT);clearTimeout(autoT);if(v){try{v.pause();}catch(e){}v.onplay=v.ontimeupdate=v.onloadedmetadata=v.onerror=v.onclick=null;}};
-  const pgHTML=()=>L.length>1?`<span class="kn2-pg">${ix+1} из ${L.length}${AU?'':matchMedia('(hover:hover)').matches?' · ← →':' · листай вбок'}</span>`:'';
+  const pgHTML=()=>{if(L.length<2)return '';const h=!AU&&!KN.pgSeen;KN.pgSeen=true;   // 13.9.5: «листай вбок» — только первый раз за заход
+    return `<span class="kn2-pg">${ix+1} / ${L.length}${h?(matchMedia('(hover:hover)').matches?' · ← →':' · листай вбок'):''}</span>`;};
+  // 13.9.5 (Андрей: «не минималистично, всё должно появляться по мере необходимости»): сразу — момент, фраза, перевод; остальное — под «Подробнее»
+  const moreBtn=()=>`<button class="kn5-mb" data-v="more" aria-expanded="${MORE}">Подробнее <i>▾</i></button>`;
+  const moreBind=()=>{const b=inn.querySelector('[data-v="more"]'),m=inn.querySelector('.kn5-more');if(!b||!m)return;
+    b.onclick=e=>{e.stopPropagation();sfx('tap');MORE=!MORE;b.setAttribute('aria-expanded',MORE);m.hidden=!MORE;
+      if(MORE&&fxOK())m.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:260,easing:EZ.out});};};
   const vBox=(W,hw)=>`<div class="kn2-v"><div class="kn2-sub" aria-hidden="true">${W.map((w,j)=>`<span${hw&&hw.has(j)?' class="kn2-hw"':''}>${E(w)}</span>`).join(' ')}</div><button class="knv-p kn2-p" aria-label="Смотреть момент" hidden>${SI.play}</button></div>`;
   const endAuto=()=>{const vb=inn.querySelector('.kn2-v')||inn,e=document.createElement('div');e.className='kn2-end';
     e.innerHTML=`<b>${o.title?E(o.title)+' — ':''}всё</b><span><button data-e="again">↺ Сначала</button><button data-e="x">Закрыть</button></span>`;vb.appendChild(e);
@@ -856,29 +862,29 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
   const fillPh=c=>{const {s,f,p,pi}=c,[k]=knSt(c),P=scP(s.id),rn=RN[c.rar],T=D.T(f),W=T.split(/\s+/).filter(Boolean);
     card.className='kn2 r-'+rn;
     inn.innerHTML=`${vBox(W)}
-      <div class="kn2-b"><span class="kn2-src">${E(dictFilm(s))}${s.sub?' · '+E(s.sub):''} · эпизод ${pi+1}${c.rar>1?` · <i class="kn2-rr">${RT[rn].toLowerCase()} карта</i>`:''}</span>
-        <b class="kn2-en">${s.lang==='de'?E(f.de||f.en):kwWrap(f,T)}</b><span class="kn2-ru">${E(f.ru)}</span>
-        <div class="kn2-acts"><button data-v="re">${SI.play} Ещё раз</button><button data-v="slow">Медленнее</button><button data-v="ep">Эпизод ${ui('fwd')}</button></div>
-        <p class="kn2-st st-${k}"><i class="kn2-dots" aria-hidden="true">${[1,2,3].map(n=>`<b class="${n<=Math.min(3,c.m)?'on':''}"></b>`).join('')}</i><span>${E(kSt(c,P.r[f.id]))}</span></p>
-        ${phInfoHTML(f,{fact:D.demo()||ADM_OPEN()||P.done.includes(pi)})}${pgHTML()}</div>`;
+      <div class="kn2-b"><b class="kn2-en">${s.lang==='de'?E(f.de||f.en):kwWrap(f,T)}</b><span class="kn2-ru">${E(f.ru)}</span>
+        <div class="kn2-acts kn5-acts"><button data-v="re">${SI.play} Ещё раз</button><button data-v="slow" aria-label="Медленнее" title="Медленнее">🐢</button>${moreBtn()}</div>
+        <div class="kn5-more"${MORE?'':' hidden'}><span class="kn2-src">${E(dictFilm(s))}${s.sub?' · '+E(s.sub):''} · эпизод ${pi+1}${c.rar>1?` · <i class="kn2-rr">${RT[rn].toLowerCase()} карта</i>`:''}</span>
+          <p class="kn2-st st-${k}"><i class="kn2-dots" aria-hidden="true">${[1,2,3].map(n=>`<b class="${n<=Math.min(3,c.m)?'on':''}"></b>`).join('')}</i><span>${E(kSt(c,P.r[f.id]))}</span></p>
+          ${phInfoHTML(f,{fact:D.demo()||ADM_OPEN()||P.done.includes(pi)})}<button class="kn5-ep" data-v="ep">Эпизод в фильме ${ui('fwd')}</button></div>${pgHTML()}</div>`;
     const play=vSetup(c,f,W);
-    inn.querySelectorAll('[data-v]').forEach(x=>x.onclick=()=>{sfx('tap');const t=x.dataset.v;if(t==='ep'){close();setTimeout(()=>srOpen(s.id,pi,f.a),220);return;}held=false;play(t==='slow');});
-    try{phBind(inn,f);}catch(e){}
+    inn.querySelectorAll('[data-v]:not([data-v="more"])').forEach(x=>x.onclick=()=>{sfx('tap');const t=x.dataset.v;if(t==='ep'){close();setTimeout(()=>srOpen(s.id,pi,f.a),220);return;}held=false;play(t==='slow');});
+    moreBind();try{phBind(inn,f);}catch(e){}
     return play;};
   const fillW=c=>{const x=c.w,s=c.s,f=c.f,tg=x.tags||[],st=mywLearned(x)?'ok':!x.due||x.due<=Date.now()?'due':'go';
     let W=[],hw=null;if(f){W=String(f.en||'').split(/\s+/).filter(Boolean);const q=String(x.w).split(/\s+/).map(wtN).filter(Boolean);hw=new Set();
       for(let j=0;j<W.length&&q.length&&!hw.size;j++)if(q.every((w,i)=>W[j+i]&&wtEq(wtN(W[j+i]),w)))q.forEach((w,i)=>hw.add(j+i));}
     card.className='kn2 r-com kn2w'+(f?'':' nov');
     inn.innerHTML=`${f?vBox(W,hw):''}
-      <div class="kn2-b"><span class="kn2-src">${s?`${E(dictFilm(s))}${s.sub?' · '+E(s.sub):''} · эпизод ${c.pi+1}`:'Своё слово — добавлено тобой'}</span>
-        <b class="kn2-word">${E(x.w)}</b><span class="kn2-ru">${x.ru?E(x.ru):'<i class="kn2-no">перевод не добавлен</i>'}</span>
+      <div class="kn2-b"><b class="kn2-word">${E(x.w)}</b><span class="kn2-ru">${x.ru?E(x.ru):'<i class="kn2-no">перевод не добавлен</i>'}</span>
         ${c.line?`<p class="kn2-line">${markWord(c.line,x.w,'<mark>','</mark>')}${c.lineRu?`<small>${E(c.lineRu)}</small>`:''}</p>`:''}
-        ${f?`<div class="kn2-acts"><button data-v="word">${SI.vol} Слово</button><button data-v="re">${SI.play} Реплика</button><button data-v="ep">Эпизод ${ui('fwd')}</button></div>`:''}
-        ${x.ru?`<p class="kn2-st st-${st}"><i class="kn2-dots" aria-hidden="true">${[1,2,3].map(n=>`<b class="${n<=Math.min(3,x.st||0)?'on':''}"></b>`).join('')}</i><span>${E(wStTxt(x))}</span></p>`:''}
-        ${tg.length?`<div class="kn2-tags">${tg.map(t=>`<i>#${E(t)}</i>`).join('')}</div>`:''}
-        <button class="kn2-del" data-v="del">Убрать из моих слов</button>${pgHTML()}</div>`;
+        <div class="kn2-acts kn5-acts">${f?`<button data-v="word">${SI.vol} Слово</button><button data-v="re">${SI.play} Реплика</button>`:''}${moreBtn()}</div>
+        <div class="kn5-more"${MORE?'':' hidden'}><span class="kn2-src">${s?`${E(dictFilm(s))}${s.sub?' · '+E(s.sub):''} · эпизод ${c.pi+1}`:'Своё слово — добавлено тобой'}</span>
+          ${x.ru?`<p class="kn2-st st-${st}"><i class="kn2-dots" aria-hidden="true">${[1,2,3].map(n=>`<b class="${n<=Math.min(3,x.st||0)?'on':''}"></b>`).join('')}</i><span>${E(wStTxt(x))}</span></p>`:''}
+          ${tg.length?`<div class="kn2-tags">${tg.map(t=>`<i>#${E(t)}</i>`).join('')}</div>`:''}
+          ${f?`<button class="kn5-ep" data-v="ep">Эпизод в фильме ${ui('fwd')}</button>`:''}<button class="kn2-del" data-v="del">Убрать из моих слов</button></div>${pgHTML()}</div>`;
     const play=f?vSetup(c,f,W):null;
-    inn.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{const t=b.dataset.v;sfx('tap');
+    moreBind();inn.querySelectorAll('[data-v]:not([data-v="more"])').forEach(b=>b.onclick=()=>{const t=b.dataset.v;sfx('tap');
       if(t==='ep'){close();setTimeout(()=>srOpen(s.id,c.pi,f.a),220);return;}
       if(t==='word'){held=true;clearTimeout(autoT);if(v)v.pause();wordPlay(s.id,x.w,f.a,f.b,b);return;}
       if(t==='del'){mywDel(x.k);save();toast('Убрал из «Моих слов»');haptic('ok');dirty=true;L.splice(ix,1);if(!L.length){close();return;}ix=ix%L.length;fill(L[ix],1);return;}
@@ -1042,63 +1048,63 @@ const srch=()=>`<div class="kn-tb"><div class="kn-sp"><button class="kn-sq" data
 const knLangN=l=>dictScenes().filter(s=>dxL(s)===l).reduce((a,s)=>{const C=D.cards(s);return [a[0]+C.filter(c=>c.got).length,a[1]+C.length];},[0,0]);
 function knLgDD(){sfx('tap');const w=knSheet(`<b class="kn-sh2">Язык фильмов</b><p class="kn-sm">Словарь показывает фразы из фильмов на этом языке.</p><div class="kn-ddl">${[['en','English'],['de','Deutsch']].map(([l,t])=>{const [g,n]=knLangN(l);return `<button data-lgv="${l}" class="${(DX.lang==='de'?'de':'en')===l?'on':''}">${t} <i>${g} из ${n}</i></button>`;}).join('')}</div>`);
   w.querySelectorAll('[data-lgv]').forEach(b=>b.onclick=()=>{const l=b.dataset.lgv;w._close();if((DX.lang==='de'?'de':'en')===l)return;sfx('sel');haptic('sel');DX.lang=l;S.show=null;S.sid=null;S.flt=false;DL.render(l==='de'?1:-1);});}
-/* ---------- 13.9.2: «Мои фразы и слова» — варианты вида (Андрей на 13.8.7: «словарь опять не нравится — сделай 3–4 варианта, почекаю»).
-   13.9.4: на 13.9.3 Андрей: «лучше всего Альбом и Разговорник, трудно выбрать; Ленту и что там ещё было — убери» → остались 2 вида.
-   Шапка у всех одна: «Фразы | Слова», ＋ (своё слово), 🔍, пилюля вида → шторка.
-   Вид = MV[id]={n,d,html(kind,T),bind(st,kind),page?(kind,t,T)} (page — своя страница подборки: KN.my.tag, «‹»/«назад» — в список). ---------- */
+/* ---------- 13.9.5: «Мои фразы и слова» — один экран (Андрей на 13.9.4: «изначально разбиты по темам, внизу — все, приписка вроде #clavicular»;
+   «мы не музыку слушаем, а слова учим»). Сверху «Повторить сегодня», дальше темы — свёрнуты, нажал — раскрылись фразы, «Тренировать» и «▶ подряд»;
+   в самом низу — все. У каждой строки #фильм: нажал — страница фильма (KN.my.tag='f:<фильм>', «‹» и «назад» — обратно на экран).
+   Было (13.9.2–13.9.4): виды Лента / Разговорник / Переписка / Альбомы на выбор — убраны. ---------- */
 const myKind=()=>store.knMyKind==='w'?'w':'ph';
-KN.my={tag:null,q:'',srch:false,all:0};
-const MV={album:null,book:null};   // порядок в шторке вида
-const myV=()=>MV[store.knMyV]?store.knMyV:'album';   // старые «Лента»/«Переписка» (13.9.2–13.9.3) → Альбомы
+KN.my={tag:null,q:'',srch:false,all:0,open:{}};
 const wDue=x=>!!x.ru&&(!x.due||x.due<=Date.now());
 const wFilm=x=>{const s=!x.own&&scOf(x.sid);return s?dictFilm(s):'';};
 const myPh=()=>allCards().filter(c=>c.got);
 const nPh=n=>`${n} ${plural(n,['фраза','фразы','фраз'])}`,nWd=n=>`${n} ${plural(n,['слово','слова','слов'])}`;
-// кадр к фразе или слову: [сцена, эпизод]
-const xSP=x=>x.f&&x.s?[x.s,x.pi]:x.own?null:(s=>s?[s,x.pi||0]:null)(scOf(x.sid));
-const myCov=(t,n)=>{n=n||4;const out=[],seenF={},L=t.L,off=L.length?D.hs(t.k)%L.length:0;
-  for(let pass=0;pass<2&&out.length<n;pass++)for(let j=0;j<L.length&&out.length<n;j++){const x=L[(j+off)%L.length],sp=xSP(x);if(!sp)continue;const k=sp[0].id+'|'+sp[1]+'|'+pass;if(seenF[k])continue;seenF[k]=1;
-    out.push({u:(pass?D.art2:D.art)(sp[0],sp[1]),st:D.crop({k:(x.k||sp[0].id)+'|'+pass})});}
-  return out;};
-const mosaic=(f,cls)=>`<span class="kml-cv n${Math.min(4,f.length)}${cls?' '+cls:''}">${f.slice(0,4).map(c=>`<i style="background-image:${c.u};${c.st}"></i>`).join('')}</span>`;
-function myTags(kind){const T=[],add=(k,n,ico,L,sec,o)=>{if(L.length)T.push(Object.assign({k,n,ico,L,sec},o||{}));};
-  if(kind==='w'){const L=mywAll();
-    add('★due','Повторить сегодня','⏰',L.filter(wDue),'pick',{hot:1,sub:'пора повторить'});
-    add('★all','Все слова','⭐',L,'pick');
-    add('★ok','Выучено','✓',L.filter(mywLearned),'pick');
-    const tg={};L.forEach(x=>(x.tags||[]).forEach(t=>{(tg[t]=tg[t]||[]).push(x);}));
-    Object.keys(tg).sort((a,b)=>tg[b].length-tg[a].length).forEach(t=>add('t:'+t,'#'+t,'🏷',tg[t],'tag'));
-    add('★own','Добавлено мной','✍️',L.filter(x=>x.own),'tag');
-    const fm={},fo=[];L.forEach(x=>{const k=wFilm(x);if(!k)return;if(!fm[k]){fm[k]=[];fo.push(k);}fm[k].push(x);});
-    fo.forEach(k=>add('f:'+k,k,'🎬',fm[k],'film',{s:scOf(fm[k][0].sid)}));
-    return T;}
-  const L=myPh();
-  add('★due','Повторить сегодня','⏰',L.filter(c=>c.due),'pick',{hot:1,sub:'пора повторить'});
-  const nw=L.filter(c=>c.nw&&!c.due);if(nw.length<L.length)add('★new','Новые','✨',nw,'pick',{sub:'за 3 дня'});
-  add('★all','Все фразы','🎞',L,'pick');
-  add('★ok','Выучено','✓',L.filter(c=>c.m>=3&&!c.due),'pick');
-  TOPICS_ALL.map(t=>[t,L.filter(c=>fTopics(c.f).includes(t))]).sort((a,b)=>b[1].length-a[1].length).forEach(([t,C])=>add('t:'+t,cap(t),TOPIC_ICO[t]||'💬',C,'topic'));
-  const fm={},fo=[];L.slice().sort((a,b)=>lastGot(b.s)-lastGot(a.s)).forEach(c=>{const k=dictFilm(c.s);if(!fm[k]){fm[k]=[];fo.push(k);}});
-  L.forEach(c=>fm[dictFilm(c.s)].push(c));fo.forEach(k=>add('f:'+k,k,'🎬',fm[k],'film',{s:fm[k][0].s}));
-  return T;}
-// строка-слово: слово и перевод, справа тихо — когда повторим
+const gotAt=c=>((scP(c.s.id).got||{})[c.f.id])||0;   // когда собрал фразу (в демо — 0)
+// короткий тег фильма — приписка у каждой строки: #волк, #психопат, #clavicular…
+const FTAG={'Волк с Уолл-стрит':'волк','Клан Сопрано':'сопрано','Американский психопат':'психопат','Таксист':'таксист','Бункер':'бункер','Титаник':'титаник',
+  'Во все тяжкие':'вовсетяжкие','Павел Дуров':'дуров','Clavicular':'clavicular','The Wolf of Wall Street':'wolf','Die Sopranos':'sopranos','Breaking Bad':'breakingbad','Titanic':'titanic'};
+const ftag=film=>'#'+(FTAG[film]||String(film||'').toLowerCase().replace(/[^a-zа-яёäöüß0-9]+/g,''));
+// тема слова — от фразы эпизода, в чей момент оно прозвучало; иначе «разное». Своё слово — по своему #тегу
+const wTopic=x=>{if(x.own){const t=(x.tags||[])[0];return t?(TOPIC_ICO[t]?t:'#'+t):'добавлено мной';}   // свой тег «работа» = тема «Работа»
+  const s=scOf(x.sid),p=s&&s.parts[x.pi];if(!p||!x.a)return 'разное';
+  const f=p.ph.find(f=>x.a>=f.a-0.4&&x.a<=f.b+0.4);return f?fTopics(f)[0]:'разное';};
+// темы экрана: фраза — в первой своей теме; темы с большим числом — выше, «разное» и свои — в конце
+function myGroups(kind){const W=kind==='w',L=W?mywAll():myPh(),m={},o=[];
+  L.forEach(x=>{const k=W?wTopic(x):fTopics(x.f)[0];if(!m[k]){m[k]=[];o.push(k);}m[k].push(x);});
+  const tail=k=>k==='разное'||k==='добавлено мной'||k[0]==='#';
+  return o.sort((a,b)=>tail(a)-tail(b)||m[b].length-m[a].length).map(k=>({k,n:k[0]==='#'?k:cap(k),ico:TOPIC_ICO[k]||(k[0]==='#'?'🏷':k==='добавлено мной'?'✍️':'💬'),L:m[k]}));}
+// строки: фраза / слово + перевод, ниже тихо #фильм (нажал — страница фильма)
+const myTag=(film,txt)=>`<span class="km5-tg"${film?` data-tg="${E(film)}" role="link"`:''}>${E(txt)}</span>`;
+const myRow=c=>{const [k]=knSt(c),film=dictFilm(c.s);
+  return `<button class="kq kq2 km5-q st-${k}" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${E(D.T(c.f))}</b><span class="kq-ru">${E(c.f.ru)}</span>${myTag(film,ftag(film))}</span>${k==='due'?'<i class="kq-due" title="Пора повторить"></i>':''}</button>`;};
 const wRow=x=>{const st=!x.ru?'':mywLearned(x)?'<em class="kw-st ok">выучено</em>':wDue(x)?'<em class="kw-st due">сегодня</em>':x.due?`<em class="kw-st">${E(mywWhen(x.due))}</em>`:'';
-  return `<button class="kq kq2 kqw" data-own data-w="${E(x.k)}"><span class="kq-x"><b class="kq-en">${E(x.w)}</b><span class="kq-ru">${x.ru?E(x.ru):'<i>без перевода</i>'}</span></span>${st}</button>`;};
-function myList(kind,L,lim){const W=kind==='w',by=[],m={};
-  L.forEach(x=>{const k=W?(wFilm(x)||'Добавлено мной'):dictFilm(x.s);if(!m[k]){m[k]=[];by.push(k);}m[k].push(x);});
-  let n=0;const out=[];
-  for(const k of by){if(lim&&n>=lim)break;let C=m[k];if(lim&&n+C.length>lim)C=C.slice(0,lim-n);n+=C.length;
-    out.push(`<section class="kn-lg3"><div class="kn-gh kn-gh2"><span class="kn-ght"><b>${E(k)}</b><small>${m[k].length}</small></span></div>${W?`<div class="kq-l">${C.map(wRow).join('')}</div>`:rowsL(C)}</section>`);}
-  return out.join('')+(lim&&L.length>lim?`<button class="km-more" data-mall>Показать все · ${L.length}</button>`:'');}
+  const film=wFilm(x),tg=x.own?((x.tags||[]).map(t=>'#'+t).join(' ')||'#своё'):ftag(film);
+  return `<button class="kq kq2 kqw km5-q" data-own data-w="${E(x.k)}"><span class="kq-x"><b class="kq-en">${E(x.w)}</b><span class="kq-ru">${x.ru?E(x.ru):'<i>без перевода</i>'}</span>${myTag(x.own?'':film,tg)}</span>${st}</button>`;};
+const myRows=(kind,L)=>`<div class="kq-l">${L.map(kind==='w'?wRow:myRow).join('')}</div>`;
+let SEC={};   // списки разделов текущего экрана: id → {n,L} (для «Тренировать», «▶ подряд», листания в окне)
+const myOpenHTML=(kind,id,L)=>`<div class="km5-tb"><div class="km5-ta"><button class="km5-tr" data-mtr="${id}">Тренировать <small>${Math.min(kind==='w'?8:10,kind==='w'?L.filter(x=>x.ru).length:L.length)}</small></button>${L.some(x=>kind==='w'?!x.own:true)?`<button class="km5-pl" data-mpl="${id}">${SI.play} подряд</button>`:''}</div>${myRows(kind,L)}</div>`;
+function myMainHTML(kind){const W=kind==='w',G=myGroups(kind),all=W?mywAll().slice().sort((a,b)=>String(a.w).localeCompare(String(b.w))):myPh().slice().sort((a,b)=>gotAt(b)-gotAt(a)),due=all.filter(x=>W?wDue(x):x.due);
+  SEC={due:{n:'Повторить сегодня',L:due},all:{n:W?'Все слова':'Все фразы',L:all}};const lim=KN.my.all?0:40,AL=lim?all.slice(0,lim):all;
+  return `${due.length?`<button class="kmb-due km-in" data-mtr="due"><span><b>Повторить сегодня</b><small>${W?nWd(due.length):nPh(due.length)} ждут тебя</small></span><i>Начать ${ui('fwd')}</i></button>`:''}
+    <h3 class="km5-h">Темы</h3>
+    <div class="km5-tl">${G.map((g,i)=>{const id='t'+i,op=!!KN.my.open[kind+'|'+g.k];SEC[id]={n:g.n,L:g.L};
+      return `<section class="km5-t km-in${op?' on':''}" data-sec="${id}"><button class="km5-th" data-mtop="${E(g.k)}" aria-expanded="${op}"><i class="km5-ic">${g.ico}</i><b>${E(g.n)}</b><small>${g.L.length}</small><i class="km5-chev">${ui('fwd')}</i></button>${op?myOpenHTML(kind,id,g.L):''}</section>`;}).join('')}</div>
+    <h3 class="km5-h">${W?'Все слова':'Все фразы'}<small>${all.length}</small></h3>
+    <div class="km5-all" data-sec="all">${myRows(kind,AL)}</div>${lim&&all.length>lim?`<button class="km-more" data-mall>Показать все · ${all.length}</button>`:''}`;}
+// страница фильма — нажал на #тег
+function myFilmHTML(kind,film){const W=kind==='w',L=W?mywAll().filter(x=>wFilm(x)===film):myPh().filter(c=>dictFilm(c.s)===film).sort((a,b)=>gotAt(b)-gotAt(a));
+  if(!L.length)return null;SEC={f:{n:ftag(film),L}};
+  return `<div class="km5-fh km-in"><button class="dl-up" data-mup aria-label="Назад">${ui('back')}</button><span><b>${E(ftag(film))}</b><small>${E(film)} · ${W?nWd(L.length):nPh(L.length)}</small></span></div>
+    <section class="km5-t on km5-fp" data-sec="f">${myOpenHTML(kind,'f',L)}</section>`;}
 function mySearch(kind){const q=KN.my.q.toLowerCase(),W=kind==='w';if(!q)return `<p class="km-tip">Начни писать — найду среди ${W?'твоих слов':'твоих фраз'}.</p>`;
   const L=W?mywAll().filter(x=>(x.w+' '+(x.ru||'')+' '+(x.tags||[]).join(' ')).toLowerCase().includes(q)):myPh().filter(c=>(c.f.en+' '+(c.f.de||'')+' '+c.f.ru).toLowerCase().includes(q));
-  return L.length?`<h3 class="km-h">Нашлось<small>${W?nWd(L.length):nPh(L.length)}</small></h3>${myList(kind,L)}`:`<div class="kn-empty">Ничего не нашлось<small>Попробуй другое слово.</small></div>`;}
+  SEC={q:{n:'Поиск',L}};
+  return L.length?`<h3 class="km5-h">Нашлось<small>${W?nWd(L.length):nPh(L.length)}</small></h3><div data-sec="q">${myRows(kind,L)}</div>`:`<div class="kn-empty">Ничего не нашлось<small>Попробуй другое слово.</small></div>`;}
 // слово → «карта» для открытого окна: момент — реплика, где оно прозвучало
 function wCard(x){const s=!x.own&&scOf(x.sid)||null,p=s&&s.parts[x.pi]||null,r=s&&x.a?(s.subs||[]).find(z=>Math.abs(z[0]-x.a)<0.06):null,de=s&&s.lang==='de';
   const line=r?(de?(r[4]||r[2]):r[2]):x.line,lineRu=r?r[3]:x.lineRu;
   return {w:x,k:'w|'+x.k,sel:`[data-w="${CSS.escape(x.k)}"]`,got:true,s,p,pi:x.pi||0,rar:1,m:Math.min(3,x.st||0),line,lineRu,
     f:s&&p&&x.a?{id:'w|'+x.k,en:line||'',de:line||'',ru:lineRu||'',a:r?r[0]:x.a,b:r?r[1]:x.a+4}:null};}
-function myPlay(b,t){const W=myKind()==='w',L=W?t.L.map(wCard):t.L.slice();if(!L.length)return;sfx('tap');haptic('light');knOpen(b,L[0],{L,auto:true,title:t.n});}
+function myPlay(b,t){const W=myKind()==='w',L=W?t.L.filter(x=>!x.own).map(wCard):t.L.slice();if(!L.length)return;sfx('tap');haptic('light');knOpen(b,L[0],{L,auto:true,title:t.n});}
 function myTrain(t){if(myKind()==='w'){renderMyWordsQuiz(t.L.filter(x=>x.ru),()=>renderTab('dict'));return;}
   const L=shuffle(t.L.slice()).slice(0,10).map(c=>{const r=scP(c.s.id).r[c.f.id];return {k:'ph',s:c.s,f:c.f,due:r?r[1]:0};});
   renderDaily(L,{train:true,nosrs:D.demo(),title:'Тренировка · '+t.n,back:()=>renderTab('dict')});}
@@ -1111,142 +1117,44 @@ function myAdd(){sfx('tap');const tags=[...new Set(mywAll().flatMap(x=>x.tags||[
   F.onsubmit=e=>{e.preventDefault();const v=F.w.value.trim(),ru=F.ru.value.trim(),tg=F.tag.value.trim().replace(/^#/,'').toLowerCase();if(!v)return;
     store.myw=store.myw||{};const k=mywKey('own',v.toLowerCase());store.myw[k]={k,w:v,ru,de:'',sid:'own',pi:0,line:'',lineRu:'',a:0,at:Date.now(),lvl:0,st:0,due:Date.now()+36e5,own:true,tags:tg?[tg]:[]};
     save();sfx('good');haptic('ok');toast('⭐ Добавил в «Мои слова»');w._close();store.knMyKind='w';KN.my.q='';DL.render(0);};}
-function myVSheet(){sfx('tap');const w=knSheet(`<b class="kn-sh2">Как показать «Мои фразы и слова»</b><p class="kn-sm">Два вида — выбери, какой удобнее. Поменять можно в любой момент.</p>
-    <div class="km-vl">${Object.keys(MV).map(k=>`<button data-vv="${k}" class="${myV()===k?'on':''}"><b>${E(MV[k].n)}</b><small>${E(MV[k].d)}</small></button>`).join('')}</div><button class="kn-btn2" data-x>Закрыть</button>`);
-  w.querySelectorAll('[data-vv]').forEach(b=>b.onclick=()=>{const k=b.dataset.vv;w._close();if(k===myV())return;sfx('sel');haptic('sel');store.knMyV=k;save();KN.my.tag=null;DL.render(0);});}
-function myHTML(){const kind=myKind(),W=kind==='w',nP=myPh().length,nW=mywAll().length,vid=myV(),v=MV[vid],sr=KN.my.srch||!!KN.my.q;
+function myHTML(){const kind=myKind(),W=kind==='w',nP=myPh().length,nW=mywAll().length,sr=KN.my.srch||!!KN.my.q;
   const top=`${seg()}<div class="km-top2"><div class="km-sw" role="tablist"><button data-mk="ph" class="${W?'':'on'}">Фразы <i>${nP}</i></button><button data-mk="w" class="${W?'on':''}">Слова <i>${nW}</i></button></div>
-    <span class="km-tb"><button class="km-ib${sr?' on':''}" data-msr aria-label="Поиск">${IC.q}</button><button class="km-vp" data-mvp aria-label="Вариант вида">${E(v.n)} <i>▾</i></button></span></div>
+    <span class="km-tb"><button class="km-ib${sr?' on':''}" data-msr aria-label="Поиск">${IC.q}</button></span></div>
     ${sr?`<label class="km-q">${IC.q}<input id="kmQ" type="search" placeholder="${W?'Найти слово':'Найти фразу'}" value="${E(KN.my.q)}" autocomplete="off" enterkeyhint="search"></label>`:''}`;
   if(W?!nW:!nP)return top+(W?`<div class="km-empty"><b>Пока нет слов</b><span>Смотри эпизод и нажми на незнакомое слово в субтитрах → «☆ В мои слова». Или добавь своё — оно тоже придёт в повторение.</span><button class="kn-btn" data-madd>＋ Добавить своё слово</button></div>`
     :`<div class="km-empty"><b>Пока нет фраз</b><span>Фраза ложится сюда, когда ты верно ответил на неё в проверке после эпизода.</span><button class="kn-btn" data-kseg="kino">Открыть Кинотеку</button></div>`);
-  return top+`<div id="kmBody" class="km-b v-${vid}">${myBodyHTML(kind)}</div>${W?'<button class="km-fab" data-madd aria-label="Своё слово">＋</button>':''}`;}
-function myBodyHTML(kind){const vid=myV(),v=MV[vid];if(KN.my.q)return mySearch(kind);const T=myTags(kind);
-  if(KN.my.tag&&v.page){const t=T.find(x=>x.k===KN.my.tag);if(t)return v.page(kind,t,T);KN.my.tag=null;}
-  return v.html(kind,T);}
+  return top+`<div id="kmBody" class="km-b km5">${myBodyHTML(kind)}</div>${W?'<button class="km-fab" data-madd aria-label="Своё слово">＋</button>':''}`;}
+function myBodyHTML(kind){if(KN.my.q)return mySearch(kind);
+  if(KN.my.tag&&KN.my.tag.startsWith('f:')){const h=myFilmHTML(kind,KN.my.tag.slice(2));if(h)return h;KN.my.tag=null;}
+  return myMainHTML(kind);}
 // появление — каскадом (у каждого варианта свои элементы, класс .km-in)
 function myIn(el){if(!fxOK())return;let i=0;el.querySelectorAll('.km-in').forEach(x=>{if(i<24)x.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:380,delay:i*32,easing:EZ.out,fill:'backwards'});i++;});}
-function myBindBody(st){const kind=myKind(),bd=st.querySelector('#kmBody');if(!bd)return;
-  bd.querySelectorAll('[data-mup]').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');DL.back();});   // 13.9.4: «‹» на странице подборки (в 13.9.2–13.9.3 не был привязан)
-  const rows=[...bd.querySelectorAll('.kqw[data-w]')];
-  rows.forEach(b=>b.onclick=()=>{const L=rows.map(r=>store.myw&&store.myw[r.dataset.w]).filter(Boolean).map(wCard),c=L.find(x=>x.w.k===b.dataset.w);if(!c)return;sfx('tap');haptic('light');knOpen(b,c,{L});});
-  bd.querySelectorAll('[data-mall]').forEach(b=>b.onclick=()=>{sfx('page');KN.my.all=1;const y=scrollY;bd.innerHTML=myBodyHTML(kind);myBindBody(st);scrollTo(0,y);});
-  bindCards(bd);
-  if(!KN.my.q){const v=MV[myV()];try{v.bind(bd,kind,st);}catch(e){console.error(e);}}
+function myBindBody(st){const kind=myKind(),W=kind==='w',bd=st.querySelector('#kmBody');if(!bd)return;
+  // один обработчик на всё тело (тело перерисовывается при поиске и «Показать все» — onclick не задваивается)
+  bd.onclick=e=>{const t=e.target,secL=el=>{const sc=el.closest('[data-sec]');return sc&&SEC[sc.dataset.sec]?SEC[sc.dataset.sec].L:null;};
+    const tg=t.closest('[data-tg]');if(tg){e.stopPropagation();e.preventDefault();sfx('tap');haptic('sel');KN.my.tag='f:'+tg.dataset.tg;KN.my.q='';KN.my.srch=false;DL.render(1);return;}
+    const up=t.closest('[data-mup]');if(up){e.stopPropagation();sfx('tap');DL.back();return;}   // 13.9.4: «‹» — настоящая кнопка
+    const th=t.closest('[data-mtop]');if(th){const sc=th.closest('.km5-t'),key=kind+'|'+th.dataset.mtop,id=sc.dataset.sec,on=!sc.classList.contains('on');KN.my.open[key]=on;sfx(on?'page':'tap');haptic('sel');
+      sc.classList.toggle('on',on);th.setAttribute('aria-expanded',on);const old=sc.querySelector('.km5-tb');if(old)old.remove();
+      if(on){sc.insertAdjacentHTML('beforeend',myOpenHTML(kind,id,SEC[id].L));if(fxOK())sc.querySelectorAll('.km5-ta,.km5-q').forEach((x,i)=>{if(i<14)x.animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:280,delay:i*26,easing:EZ.out,fill:'backwards'});});}
+      return;}
+    const tr=t.closest('[data-mtr]');if(tr){const S0=SEC[tr.dataset.mtr];if(!S0||!S0.L.length)return;sfx('tap');haptic('medium');myTrain(S0);return;}
+    const pl=t.closest('[data-mpl]');if(pl){const S0=SEC[pl.dataset.mpl];if(S0)myPlay(pl,S0);return;}
+    if(t.closest('[data-mall]')){sfx('page');KN.my.all=1;const y=scrollY;bd.innerHTML=myBodyHTML(kind);myBindBody(st);scrollTo(0,y);return;}
+    const q=t.closest('.kq[data-c]');if(q){const c=D.find(q.dataset.c),L=(secL(q)||[c]).filter(Boolean);if(!c)return;sfx('tap');haptic('light');knOpen(q,c,{L});return;}
+    const w=t.closest('.kqw[data-w]');if(w){const L=(secL(w)||[]).filter(x=>x&&x.k).map(wCard),c=L.find(x=>x.w.k===w.dataset.w)||(store.myw&&store.myw[w.dataset.w]?wCard(store.myw[w.dataset.w]):null);if(!c)return;sfx('tap');haptic('light');knOpen(w,c,{L:L.length?L:[c]});return;}};
   myIn(bd);}
 function myBind(st){const kind=myKind();
   st.querySelectorAll('[data-mk]').forEach(b=>b.onclick=()=>{const k=b.dataset.mk;if(myKind()===k)return;sfx('tap');haptic('sel');store.knMyKind=k;KN.my.tag=null;KN.my.q='';KN.my.all=0;save();DL.render(k==='w'?1:-1);});
   st.querySelectorAll('[data-madd]').forEach(b=>b.onclick=myAdd);
-  st.querySelectorAll('[data-mvp]').forEach(b=>b.onclick=myVSheet);
   st.querySelectorAll('[data-msr]').forEach(b=>b.onclick=()=>{sfx('tap');if(KN.my.srch||KN.my.q){KN.my.srch=false;KN.my.q='';}else KN.my.srch=true;DL.render(0);if(KN.my.srch)setTimeout(()=>{const i=$('#kmQ');if(i)i.focus();},60);});
-  const q=st.querySelector('#kmQ');if(q){let tm=0;q.oninput=()=>{clearTimeout(tm);tm=setTimeout(()=>{KN.my.q=q.value.trim();const bd=st.querySelector('#kmBody');if(bd){bd.className='km-b v-'+myV();bd.innerHTML=myBodyHTML(kind);myBindBody(st);}},220);};q.onkeydown=e=>{if(e.key==='Enter')q.blur();};}
+  const q=st.querySelector('#kmQ');if(q){let tm=0;q.oninput=()=>{clearTimeout(tm);tm=setTimeout(()=>{KN.my.q=q.value.trim();const bd=st.querySelector('#kmBody');if(bd){bd.innerHTML=myBodyHTML(kind);myBindBody(st);}},220);};q.onkeydown=e=>{if(e.key==='Enter')q.blur();};}
   myBindBody(st);}
-// звук глушится при любом уходе (DL.clean) и перерисовке словаря; плеер «Альбомов» (KA) играет дальше,
-// пока ходишь внутри «Мои» этого вида (как музыка в Apple Music)
-let KA={stop(){},keep:()=>false};
-KN.stop=(why,lvl)=>{if(!(why==='render'&&lvl==='my'&&KA.keep()))try{KA.stop();}catch(e){}};
+KN.stop=()=>{};   // 13.9.5: звука вне окна фразы в «Мои» больше нет (плеер «Альбомов» убран)
 D.onStop=KN.stop;
 
-/* ---------- Вид «Разговорник»: главы по ситуациям — как в книжном разговорнике; заголовок главы липнет сверху,
-   справа указатель глав (на ПК — оглавление слева). Слова — по алфавиту, указатель A–Z, как в контактах. ---------- */
-const bkChap=L=>{const m={},o=[];L.forEach(c=>{const t=fTopics(c.f)[0]||'разное';if(!m[t]){m[t]=[];o.push(t);}m[t].push(c);});
-  return o.sort((a,b)=>(a==='разное')-(b==='разное')||m[b].length-m[a].length).map(t=>({t,L:m[t]}));};
-const bkLet=L=>{const m={};L.forEach(x=>{const ch=(String(x.w).trim()[0]||'#').toUpperCase(),k=/[A-ZÄÖÜ]/.test(ch)?ch.replace('Ä','A').replace('Ö','O').replace('Ü','U'):'#';(m[k]=m[k]||[]).push(x);});
-  return Object.keys(m).sort((a,b)=>(a==='#')-(b==='#')||a.localeCompare(b)).map(k=>({t:k,L:m[k].sort((a,b)=>String(a.w).localeCompare(String(b.w)))}));};
-MV.book={n:'Разговорник',d:'Как книжный разговорник: главы по ситуациям («Работа», «Знакомство», «Ссора»…), сбоку указатель. Слова — по алфавиту.',
-  html(kind,T){const W=kind==='w',all=(T.find(x=>x.k==='★all')||{L:[]}).L,due=(T.find(x=>x.k==='★due')||{L:[]}).L,C=W?bkLet(all):bkChap(all);
-    const films=L=>[...new Set(L.map(c=>dictFilm(c.s)))].slice(0,3).join(' · ');
-    return `${due.length?`<button class="kmb-due km-in" data-bdue><span><b>Повторить сегодня</b><small>${W?nWd(due.length):nPh(due.length)} ждут тебя</small></span><i>Начать ${ui('fwd')}</i></button>`:''}
-      <div class="kmb${W?' az':''}"><nav class="kmb-toc">${C.map((c,i)=>`<button data-bj="${i}"><span>${W?E(c.t):E(cap(c.t))}</span><i>${c.L.length}</i></button>`).join('')}</nav>
-      <div class="kmb-ch">${C.map((c,i)=>`<section class="kmb-c" id="kmbc-${i}"><h3 class="kmb-h km-in"><span class="kmb-ht"><b>${W?E(c.t):E(cap(c.t))}</b><small>${W?nWd(c.L.length):`${nPh(c.L.length)} · ${E(films(c.L))}`}</small></span>
-          <span class="kmb-ha"><button data-bp="${i}" aria-label="Смотреть подряд">${SI.play}</button><button data-btr="${i}">Тренировать</button></span></h3>
-        ${W?`<div class="kq-l">${c.L.map(wRow).join('')}</div>`:rowsL(c.L)}</section>`).join('')}</div>
-      <nav class="kmb-rail" aria-label="Указатель">${C.map((c,i)=>`<button data-bj="${i}">${W?E(c.t):E(cap(c.t).slice(0,2))}</button>`).join('')}</nav></div>`;},
-  bind(bd,kind){const W=kind==='w',T=myTags(kind),all=(T.find(x=>x.k==='★all')||{L:[]}).L,due=(T.find(x=>x.k==='★due')||{L:[]}).L,C=W?bkLet(all):bkChap(all);
-    const jump=(i,sm)=>{const el=bd.querySelector('#kmbc-'+i);if(!el)return;const y=el.getBoundingClientRect().top+scrollY-8;scrollTo({top:y,behavior:sm&&fxOK()?'smooth':'auto'});
-      bd.querySelectorAll('.kmb-rail [data-bj],.kmb-toc [data-bj]').forEach(b=>b.classList.toggle('on',+b.dataset.bj===i));};
-    bd.querySelectorAll('[data-bj]').forEach(b=>b.onclick=()=>{sfx('tick');haptic('sel');jump(+b.dataset.bj,true);});
-    // указатель можно вести пальцем, как в контактах
-    const rail=bd.querySelector('.kmb-rail');if(rail){let last=-1;rail.addEventListener('touchmove',e=>{const t=e.touches[0],el=document.elementFromPoint(t.clientX,t.clientY);const i=el&&el.dataset&&el.dataset.bj!=null?+el.dataset.bj:-1;if(i>=0&&i!==last){last=i;haptic('sel');jump(i,false);}},{passive:true});}
-    bd.querySelectorAll('[data-bp]').forEach(b=>b.onclick=()=>{const c=C[+b.dataset.bp];if(c)myPlay(b,{n:W?c.t:cap(c.t),L:c.L});});
-    bd.querySelectorAll('[data-btr]').forEach(b=>b.onclick=()=>{const c=C[+b.dataset.btr];if(!c)return;sfx('tap');haptic('medium');myTrain({n:W?c.t:cap(c.t),L:c.L});});
-    bd.querySelectorAll('[data-bdue]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');myTrain({n:'Повторить сегодня',L:due});});
-    // текущая глава подсвечена в указателе
-    const secs=[...bd.querySelectorAll('.kmb-c')];if(secs.length){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=+e.target.id.split('-')[1];bd.querySelectorAll('.kmb-rail [data-bj],.kmb-toc [data-bj]').forEach(b=>b.classList.toggle('on',+b.dataset.bj===i));}});},{rootMargin:'-20% 0px -70% 0px'});secs.forEach(s=>io.observe(s));}}};
-/* ---------- аудиоплеер «Альбомов» (KA): один скрытый <video> (на iPhone звук разрешён элементу после первого
-   нажатия), играет отрезок фразы (у слова — реплику, где оно прозвучало), конец → следующая из очереди. Интерфейс — колбэк ui(c,событие,доля,время).
-   Играет дальше, пока ходишь внутри «Мои» того же варианта (KA.keep), глушится при уходе (DL.onStop). ---------- */
-KA=(()=>{let v=null,Q=[],i=-1,raf=0,cb=null,nx=0,owner='';
-  const mk=()=>{if(!v){v=document.createElement('video');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.playsInline=true;v.preload='auto';v.className='ka-v';document.body.appendChild(v);}return v;};
-  const ok=c=>!!(c&&c.s&&c.p&&c.f);
-  const seg=c=>[Math.max(0,c.f.a-c.p.a-0.12),c.f.b-c.p.a+0.3];
-  const emit=(c,ev,k,t)=>{if(cb&&c)try{cb(c,ev,k,t);}catch(e){console.error(e);}};
-  const tick=()=>{raf=0;const c=Q[i];if(!ok(c)||!v||v.paused)return;const [a,b]=seg(c);
-    if(v.currentTime>=b){v.pause();emit(c,'t',1,c.f.b);emit(c,'end');nx=setTimeout(()=>play(i+1),650);return;}
-    emit(c,'t',Math.max(0,Math.min(1,(v.currentTime-a)/Math.max(.2,b-a))),v.currentTime+c.p.a);raf=requestAnimationFrame(tick);};
-  const play=k=>{clearTimeout(nx);cancelAnimationFrame(raf);raf=0;const was=Q[i];
-    while(k<Q.length&&!ok(Q[k]))k++;   // своё слово без сцены — играть нечем, дальше
-    if(k>=Q.length){i=-1;if(v)try{v.pause();}catch(e){}emit(was,'stop');return;}
-    if(was&&was!==Q[k])emit(was,'stop1');
-    i=k;const c=Q[k],[a]=seg(c),vv=mk(),src=assetUrl(scEpKey(c.s,c.pi,'mp4'));vv.volume=store.scVol==null?1:store.scVol;vv.muted=false;
-    if(vv.dataset.src!==src){vv.dataset.src=src;vv.src=src+'#t='+a.toFixed(2);vv.onloadedmetadata=()=>{if(Q[i]===c)try{vv.currentTime=a;}catch(e){}};}else try{vv.currentTime=a;}catch(e){}
-    vv.onplay=()=>{if(!raf)raf=requestAnimationFrame(tick);};vv.onerror=()=>{emit(c,'err');nx=setTimeout(()=>play(i+1),800);};
-    const pr=vv.play();if(pr&&pr.catch)pr.catch(()=>emit(c,'pause'));emit(c,'play');};
-  return {start(L,k,ui,own){if(cb&&cb!==ui&&Q[i])emit(Q[i],'stop');Q=L;cb=ui;owner=own||'';play(k||0);},
-    toggle(){const c=Q[i];if(!c||!v)return;if(v.paused){const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{});emit(c,'play');if(!raf)raf=requestAnimationFrame(tick);}else{v.pause();emit(c,'pause');}},
-    next(){if(i>=0)play(i+1);},
-    stop(){clearTimeout(nx);cancelAnimationFrame(raf);raf=0;const c=Q[i];i=-1;if(v)try{v.pause();}catch(e){}emit(c,'stop');},
-    keep(){return i>=0&&owner===myV();},cur(){return i>=0?Q[i]:null;},list(){return Q;},paused(){return !v||v.paused;}};})();
-const mmss=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
-const durOf=c=>c&&c.f?Math.max(1,c.f.b-c.f.a):0;
-
-/* ---------- Вид «Альбомы» (как Apple Music): фильм = альбом, фразы = треки. «▶ Слушать» — фразы идут подряд звуком,
-   снизу мини-плеер с фразой в такт речи; нажал на плеер — то же окно фразы. Подборки и темы — обложки-мозаики. ---------- */
-let KTT=null;   // время слов текущего трека — подсветка в мини-плеере
-function kaBar(){let b=$('#kaBar');const root=DL.root;if(!b&&root&&root.isConnected){b=document.createElement('div');b.id='kaBar';b.className='kma-mp';   // в body: у корня словаря бывает transform (анимации) — fixed внутри него уезжал
-    b.innerHTML=`<span class="kma-mc"></span><span class="kma-mx"><b class="kma-mt"></b><small class="kma-ms"></small></span><button class="kma-mb" data-kp aria-label="Пауза">${SI.pause}</button><button class="kma-mb" data-kn aria-label="Следующая">${ui('fwd')}</button><i class="kma-mpr"><i></i></i>`;
-    document.body.appendChild(b);b.querySelector('[data-kp]').onclick=e=>{e.stopPropagation();haptic('light');KA.toggle();};b.querySelector('[data-kn]').onclick=e=>{e.stopPropagation();haptic('light');KA.next();};
-    b.onclick=()=>{const c=KA.cur(),L=KA.list();if(!c)return;sfx('tap');knOpen(b,c,{L:L.filter(x=>x.s)});};   // нажал на плеер — то же окно фразы
-    if(fxOK())b.animate([{transform:'translateY(24px)',opacity:0},{transform:'none',opacity:1}],{duration:380,easing:SPRING});}
-  return b;}
-function kaAlbumUI(c,ev,k,t){
-  if(ev==='stop'){document.querySelectorAll('.kma-t.on').forEach(x=>x.classList.remove('on'));const b=$('#kaBar');if(b)b.remove();KTT=null;return;}
-  const row=document.querySelector(`.kma-t[data-tk="${CSS.escape(c.k)}"]`);
-  if(ev==='stop1'){if(row)row.classList.remove('on');return;}
-  const b=kaBar();if(!b)return;
-  if(ev==='play'){const T=c.w?String(c.f.en||''):D.T(c.f),W=T.split(/\s+/).filter(Boolean);
-    b.querySelector('.kma-mc').style.backgroundImage=`url('${assetUrl(scEpKey(c.s,c.pi,'jpg'))}')`;b.querySelector('.kma-mt').innerHTML=W.map(w=>`<span>${E(w)}</span>`).join(' ');
-    b.querySelector('.kma-ms').textContent=c.w?`${c.w.w} — ${c.w.ru||''}`:c.f.ru;KTT={c,TT:kLin(c.f,W)};wtLoad(c.s.id).then(R=>{if(KTT&&KTT.c===c){const X=kFit(c.f,W,R);if(X)KTT.TT=X;}});
-    b.classList.remove('pa');b.querySelector('[data-kp]').innerHTML=SI.pause;document.querySelectorAll('.kma-t.on').forEach(x=>{if(x!==row)x.classList.remove('on');});if(row)row.classList.add('on');}
-  else if(ev==='t'){b.querySelector('.kma-mpr i').style.transform=`scaleX(${k.toFixed(3)})`;if(KTT&&KTT.c===c)b.querySelectorAll('.kma-mt span').forEach((sp,j)=>{const x=KTT.TT[j]||[c.f.a,c.f.b];sp.classList.toggle('on',t>=x[0]-0.04);});}
-  else if(ev==='pause'){b.classList.add('pa');b.querySelector('[data-kp]').innerHTML=SI.play;}}
-const alItems=(kind,t)=>kind==='w'?t.L.map(wCard):t.L;
-const alCov=(t,big)=>{if(t.sec==='film'&&t.s)return `<span class="kma-cv po${big?' big':''}" style="background-image:${D.poster(t.s)}"></span>`;const f=myCov(t,4);
-  return f.length?mosaic(f,'kma-cv'+(big?' big':'')):`<span class="kma-cv n0${big?' big':''}"><i>${t.ico||'⭐'}</i></span>`;};
-MV.album={n:'Альбомы',d:'Как Apple Music: фильм — альбом, фразы — треки. «▶ Слушать» — фразы идут подряд звуком, внизу плеер, фраза загорается в такт.',
-  html(kind,T){const W=kind==='w',pick=T.filter(t=>t.sec==='pick'),films=T.filter(t=>t.sec==='film'),tops=T.filter(t=>t.sec==='topic'||t.sec==='tag');
-    const card=t=>`<button class="kma-c km-in${t.hot?' hot':''}" data-at="${E(t.k)}">${alCov(t)}<b>${E(t.n)}</b><small>${W?nWd(t.L.length):nPh(t.L.length)}</small></button>`;
-    return `${pick.length?`<h3 class="km-h">Подборки</h3><div class="kma-row">${pick.map(card).join('')}</div>`:''}
-      ${films.length?`<h3 class="km-h">${W?'Из фильмов':'Фильмы'}</h3><div class="kma-grid">${films.map(card).join('')}</div>`:''}
-      ${tops.length?`<h3 class="km-h">${W?'Твои теги':'Темы'}</h3><div class="kma-row">${tops.map(card).join('')}</div>`:''}`;},
-  page(kind,t){const W=kind==='w',items=alItems(kind,t),dur=items.reduce((a,c)=>a+durOf(c),0),bg=t.s?(knBd(t.s)||D.cover(t.s)):(myCov(t,1)[0]||{}).u||'none';
-    return `<div class="kma-hd km-in" style="--bg:${bg}"><span class="kma-hbg"></span><button class="dl-up" data-mup aria-label="Назад">${ui('back')}</button>${alCov(t,true)}
-        <div class="kma-ht"><em>${W?'Мои слова':'Мои фразы'}${t.sec==='film'&&t.s?' · '+E(KS[t.s.kind]||''):''}</em><b>${E(t.n)}</b><small>${W?nWd(items.length):nPh(items.length)} · ${mmss(dur)}</small>
-        <div class="kma-acts">${items.some(c=>c.s&&c.f)?`<button class="kf-go" data-aplay>${SI.play} Слушать</button><button class="kma-b2" data-ashuf>Перемешать</button>`:''}<button class="kma-b2" data-atr>Тренировать</button></div></div></div>
-      <ol class="kma-tl">${items.map((c,i)=>`<li><button class="kma-t km-in" data-tk="${E(c.k)}" data-ti="${i}"><span class="kma-n"><i>${i+1}</i>${SI.play}</span><span class="kma-x"><b>${E(c.w?c.w.w:D.T(c.f))}</b><small>${E(c.w?(c.w.ru||''):c.f.ru)}</small></span><em class="kma-d">${c.f&&c.s?mmss(durOf(c)):'—'}</em></button><button class="kma-o" data-to="${i}" aria-label="Открыть">${ui('fwd')}</button></li>`).join('')}</ol>`;},
-  bind(bd,kind){const T=myTags(kind);
-    bd.querySelectorAll('[data-at]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');KN.my.tag=b.dataset.at;DL.render(1);});
-    const t=KN.my.tag&&T.find(x=>x.k===KN.my.tag);
-    if(t){const items=alItems(kind,t);
-      bd.querySelectorAll('[data-ti]').forEach(b=>b.onclick=()=>{const i=+b.dataset.ti,c=items[i];haptic('light');if(!c||!c.s||!c.f){knOpen(b,c,{L:items});return;}
-        const cur=KA.cur();if(cur&&cur.k===c.k){KA.toggle();return;}KA.start(items,i,kaAlbumUI,'album');});
-      bd.querySelectorAll('[data-to]').forEach(b=>b.onclick=e=>{e.stopPropagation();const c=items[+b.dataset.to];if(!c)return;sfx('tap');knOpen(b,c,{L:items});});
-      bd.querySelectorAll('[data-aplay]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');KA.start(items,0,kaAlbumUI,'album');});
-      bd.querySelectorAll('[data-ashuf]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');KA.start(shuffle(items.slice()),0,kaAlbumUI,'album');});
-      bd.querySelectorAll('[data-atr]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');KA.stop();myTrain(t);});}
-    const c=KA.cur();if(c&&KA.keep())kaAlbumUI(c,'play');}};
 D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + «Мои фразы и слова»',ic:'🎞',sw:'linear-gradient(160deg,#2b2d33,#0b0b0d)',noAnim:true,my:true,flt:true,skip1:false,
-  d:'«Кинотека» — фильмы и сколько фраз собрано; нажал на «Фильмы / Сериалы / Интервью» — раздел на весь экран, листаешь вбок; фильм → сцены строками → эпизод раскрывается → фразы строками; нажал на фразу — открывается красиво: момент крупно, фраза субтитром в такт речи. «Мои фразы и слова» — «Фразы / Слова» и 2 вида на выбор: Альбомы (фильм — альбом, фразы — треки, «Слушать» подряд) и Разговорник (главы по ситуациям).',
+  d:'«Кинотека» — фильмы и сколько фраз собрано; нажал на «Фильмы / Сериалы / Интервью» — раздел на весь экран, листаешь вбок; фильм → сцены строками → эпизод раскрывается → фразы строками; нажал на фразу — открывается красиво: момент крупно, фраза субтитром в такт речи. «Мои фразы и слова» — «Фразы / Слова», один экран: «Повторить сегодня», темы (нажал — фразы и «Тренировать»), внизу все; у каждой строки #фильм — нажал, фразы этого фильма.',
   bg:`<div class="kn-bg" id="knBg"></div>`,titleHTML:`<h1>Словарь <button class="kn-help" data-help aria-label="Как устроен словарь">?</button></h1>`,sub:'Фразы из фильмов',
   home(F){if(!F.length)return seg();let h=F[0],best=0;F.forEach(sh=>{const t=Math.max(0,...sh.L.map(lastGot));if(t>best){best=t;h=sh;}});
     const s0=h.L.slice().sort((a,b)=>lastGot(b)-lastGot(a))[0]||h.s0,bd=knBd(h.s0);
@@ -1280,7 +1188,7 @@ D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + «Мои
       <div id="knRes">${knRes()}</div>`;},
   my(){return myHTML();},
   myBack(){if(KN.my.tag){KN.my.tag=null;DL.render(-1);return true;}if(KN.my.q||KN.my.srch){KN.my.q='';KN.my.srch=false;DL.render(0);return true;}return false;},
-  myDeep(){return !!(KN.my.tag&&MV[myV()].page);},
+  myDeep(){return !!KN.my.tag;},
   trans(st,dir,go){const was=st.dataset.lvl;
     // назад из фильма: шапка «садится» обратно в постер на полке
     if(dir<0&&was==='film'){const p=st.querySelector('.kf-p'),k=S._fk;const r=p&&p.getBoundingClientRect(),bg=p&&p.style.backgroundImage;go();
