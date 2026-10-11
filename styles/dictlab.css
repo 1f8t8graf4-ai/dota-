@@ -1949,3 +1949,55 @@ body .v-kino .kn-my .dx-q{background:rgba(255,255,255,.045)!important;box-shadow
 .kn2-del{align-self:flex-start;margin-top:2px;padding:8px 0;border:0;background:none;color:rgba(255,150,130,.85);font:600 13.5px 'Golos Text',sans-serif;cursor:pointer}
 .kn2.nov .kn2-b{padding-top:min(18vh,140px)}
 .kn2w.nov .kn2-word{font:700 clamp(40px,12vw,60px)/1.05 'Playfair Display',Georgia,serif;letter-spacing:0}
+
+/* =====================================================================================
+   13.9.1 — Кинотека на весь экран (Андрей: «нажал на „Фильмы / Сериалы / Интервью“ — открываются на весь экран, листаешь, есть выход»).
+   Заголовки полок — кнопки; окно .kno.knf: слайд = фильм (фон 4K, живой момент, постер, название), свайп вбок, точки, ✕.
+   ===================================================================================== */
+.kn-hb{display:inline-flex;align-items:baseline;gap:8px;padding:2px 0;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;cursor:pointer}
+.kn-hb small{font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
+.kn-hbi{display:inline-grid;place-items:center;width:20px;height:20px;align-self:center;border-radius:50%;background:rgba(255,255,255,.08);color:var(--km);transition:transform .2s,background .2s,color .2s}
+.kn-hbi svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4}
+.kn-hb:active .kn-hbi{transform:scale(.9)}
+@media (hover:hover){.kn-hb:hover{color:#fff}.kn-hb:hover .kn-hbi{background:rgba(255,255,255,.16);color:#fff;transform:translateX(2px)}}
+
+.kno.knf{--kt:#F3EBDD;--km:rgba(243,235,221,.6);--kl:rgba(255,255,255,.08);z-index:95;display:block;padding:0;background:#07070a;color:#F6F1E8;font-family:'Golos Text',system-ui,sans-serif;overflow:hidden}   /* окно вне .v-kino — свои цвета */
+.knf-pg{position:absolute;inset:0;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior:contain;touch-action:pan-x;-webkit-overflow-scrolling:touch}
+.knf-pg::-webkit-scrollbar{display:none}
+.knf-s{position:relative;flex:0 0 100%;height:100%;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;scroll-snap-align:center;scroll-snap-stop:always}
+.knf-bd{position:absolute;inset:0 -12%;z-index:-3;background:var(--bg) center 24%/cover no-repeat;will-change:transform}
+.knf-s:not(.bd) .knf-bd{inset:-40px -12%;filter:blur(24px) brightness(.55) saturate(1.1)}
+.knf-live{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.knf-live .dl-lv{transition:opacity 1.4s}
+.knf-live .dl-lv.on{opacity:.75}
+.knf-gr{position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#07070a 2%,rgba(7,7,10,.86) 30%,rgba(7,7,10,.18) 64%,rgba(7,7,10,.5)),linear-gradient(90deg,rgba(7,7,10,.7),transparent 62%)}
+.knf-in{display:flex;align-items:flex-end;gap:16px;width:100%;max-width:1180px;margin:0 auto;padding:0 20px calc(var(--sb,0px) + 70px)}
+.knf-p{flex:none;width:96px;aspect-ratio:2/3;border-radius:12px;background-size:cover;background-position:center;box-shadow:0 22px 50px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.16)}
+.knf-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:9px}
+.knf-t>em{font-style:normal;font:700 11px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,241,232,.7)}
+.knf-t h2{margin:0;font:800 34px/1.04 'Playfair Display',Georgia,serif;letter-spacing:-.01em;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.7);text-wrap:balance}
+.knf-t h2 span{display:inline-block}
+.knf-c{font:500 13px/1.4 'Golos Text',sans-serif;color:rgba(246,241,232,.72)}
+.knf-c b{color:#fff;font-size:15px}
+.knf-t>.kn-bar{max-width:380px}
+.knf-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.knf-op{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.35);color:#fff;font:800 14.5px 'Golos Text',sans-serif;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.knf-op svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4}
+.knf-op:active,.knf .kf-go:active{transform:scale(.96)}
+.knf-top{position:absolute;left:0;right:0;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(var(--st,0px) + 14px) 16px 40px;background:linear-gradient(rgba(0,0,0,.6),transparent);pointer-events:none}
+.knf-ttl{display:flex;align-items:baseline;gap:10px;min-width:0}
+.knf-ttl b{font:800 19px 'Golos Text',sans-serif;color:#fff}
+.knf-num{font-style:normal;font:600 13px 'Golos Text',sans-serif;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums}
+.knf-x{pointer-events:auto;flex:none;width:40px;height:40px;border-radius:50%;border:0;display:grid;place-items:center;background:rgba(255,255,255,.14);color:#fff;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.knf-x svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.4}
+.knf-dots{position:absolute;left:0;right:0;bottom:calc(var(--sb,0px) + 24px);z-index:3;display:flex;justify-content:center;gap:8px;pointer-events:none}
+.knf-dots button{pointer-events:auto;width:8px;height:8px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.32);cursor:pointer;transition:width .3s,background .3s}
+.knf-dots button.on{width:22px;background:#fff}
+.knf-nv{display:none}
+@media (hover:hover) and (min-width:760px){.knf-nv{position:absolute;top:50%;z-index:3;display:grid;place-items:center;width:50px;height:50px;margin-top:-25px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.35);color:#fff;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:opacity .2s,background .2s}
+  .knf-nv.pv{left:20px}.knf-nv.nx{right:20px}
+  .knf-nv svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2}
+  .knf-nv:hover{background:rgba(255,255,255,.16)}
+  .knf-nv:disabled{opacity:0;pointer-events:none}}
+@media (min-width:760px){.knf-in{padding:0 90px 96px;gap:30px}.knf-p{width:190px;border-radius:16px}.knf-t h2{font-size:64px}.knf-t>em{font-size:12px}.knf-c{font-size:15px}.knf-top{padding:22px 28px 50px}.knf-ttl b{font-size:22px}.knf-dots{bottom:34px}}
+body.nofx .knf-live .dl-lv{transition:none}

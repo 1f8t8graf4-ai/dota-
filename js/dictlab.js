@@ -81,6 +81,8 @@ DL.crumb=(em,b)=>`<div class="dl-crumb"><button class="dl-up" data-up aria-label
 // 13.8.4: прокрутить ряд так, чтобы элемент был по центру — только вбок; scrollIntoView({block:'nearest'}) уводил и всю страницу вниз
 DL.hcenter=(el,smooth)=>{const row=el&&el.parentElement&&el.closest('.kn-row,.bk-tabs,.sn-fcs')||(el&&el.parentElement);if(!row)return;const er=el.getBoundingClientRect(),rr=row.getBoundingClientRect(),x=row.scrollLeft+(er.left-rr.left)-(rr.width-er.width)/2;try{row.scrollTo({left:Math.max(0,x),behavior:smooth?'smooth':'auto'});}catch(e){row.scrollLeft=Math.max(0,x);}};
 DL.bar=(g,t)=>`<i class="dl-pb"><i style="width:${t?g/t*100:0}%"></i></i>`;
+// 13.9.1: кнопка «назад» Телеграма по текущему уровню — после окон поверх словаря (Кинотека на весь экран, фраза) вернуть как было
+DL.bb=()=>{if(!$('#dlRoot'))return;const v=DL.cur(),lvl=DL.lvl();try{backBtn(lvl!=='home'&&(lvl!=='my'||!!(v.myDeep&&v.myDeep())));}catch(e){}};
 DL.lvl=()=>{const v=DL.cur();if(v.my&&DX.seg==='my')return 'my';if(v.flt&&S.flt)return 'flt';return S.sid?'scene':S.show?'film':'home';};   // 13.8: «Мои слова» и экран поиска — у вариантов, которые их умеют
 DL.render=dir=>{const st=$('#dlStage');if(!st)return;const v=DL.cur();
   {const s0=S.sid?scOf(S.sid):S.show?dictScenes().find(x=>dictFilm(x)===S.show):null;if(s0)DX.lang=dxL(s0);}
@@ -90,7 +92,7 @@ DL.render=dir=>{const st=$('#dlStage');if(!st)return;const v=DL.cur();
   try{if(lvl==='my')html=v.my(F);else if(lvl==='flt')html=v.flt(F);else if(lvl==='scene'){const s=scOf(S.sid);html=v.scene(s,F.find(x=>x.k===dictFilm(s)));}
     else if(lvl==='film'){html=v.film(F.find(x=>x.k===S.show),F);}
     else html=v.home(F);}catch(e){html=`<div class="dl-err">Ошибка варианта: ${esc(e.message)}</div>`;console.error(e);}
-  const go=()=>{DL.stopVids&&DL.stopVids(st);st.innerHTML=html;st.dataset.lvl=lvl;DL.bind(st,lvl);try{backBtn(lvl!=='home'&&(lvl!=='my'||!!(v.myDeep&&v.myDeep())));}catch(e){}
+  const go=()=>{DL.stopVids&&DL.stopVids(st);st.innerHTML=html;st.dataset.lvl=lvl;DL.bind(st,lvl);DL.bb();
     if(v.after)try{v.after(st,lvl,dir);}catch(e){console.error(e);}
     if(dir&&!v.noAnim&&fxOK())st.querySelectorAll('[data-c],[data-show],[data-sid]').forEach((c,i)=>{if(i<24)c.animate([{opacity:0,transform:'translateY(18px) scale(.94)'},{opacity:1,transform:'none'}],{duration:460,delay:40+i*32,easing:EZ.out,fill:'backwards'});});};
   if(dir&&v.trans&&fxOK())v.trans(st,dir,go);else go();
@@ -819,7 +821,7 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
   const ov=document.createElement('div');ov.className='kno kno2'+(AU?' auto':'');
   ov.innerHTML=`<div class="kn2-bg"></div><div class="kno-dim"></div><div class="kn2" role="dialog" aria-label="${c.w?'Слово из фильма':'Фраза из фильма'}">${AU?`<div class="kn2-seg${L.length>30?' one':''}">${L.length>30?'<i><b></b></i>':L.map(()=>'<i><b></b></i>').join('')}</div>${o.title?`<span class="kn2-at">${E(o.title)}</span>`:''}`:''}<button class="kn2-x" aria-label="Закрыть">${ui('close')}</button><div class="kn2-in"></div></div>
     ${L.length>1?`<button class="kn2-nv pv" aria-label="Предыдущая">${ui('back')}</button><button class="kn2-nv nx" aria-label="Следующая">${ui('fwd')}</button>`:''}`;
-  document.body.appendChild(ov);document.body.classList.add('dx-open');try{musDuck(true);}catch(e){}
+  document.body.appendChild(ov);document.body.classList.add('dx-open');try{musDuck(true);}catch(e){}try{backBtn(true);}catch(e){}
   const card=ov.querySelector('.kn2'),inn=ov.querySelector('.kn2-in'),bgl=ov.querySelector('.kn2-bg'),segs=[...ov.querySelectorAll('.kn2-seg b')];
   const setSeg=k=>{if(!segs.length)return;if(segs.length===1){segs[0].style.transform=`scaleX(${((ix+k)/L.length).toFixed(4)})`;return;}segs.forEach((b,j)=>{b.style.transform=`scaleX(${j<ix?1:j>ix?0:k.toFixed(3)})`;});};
   const setBg=s=>{const u=s&&filmImg(s,innerWidth>=760?'bd.jpg':'bdm.jpg'),url=u?`url('${u}')`:s?D.cover(s):'radial-gradient(circle at 28% 22%,#5a4a32,#1a1612 55%,#0b0b0d)',old=bgl.lastElementChild;if(old&&old.dataset.u===url)return;
@@ -901,7 +903,7 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
     const it=L[ix],row=!dirty&&it&&box.querySelector(it.sel||`[data-c="${it.k}"]`),r1=row&&row.isConnected?row.getBoundingClientRect():null,back=fxOK()&&r1&&r1.width&&r1.bottom>0&&r1.top<innerHeight;
     if(back){inn.animate([{opacity:1},{opacity:0}],{duration:120,fill:'forwards'});grow(r1,true);}else card.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:200,easing:'ease-in',fill:'forwards'});
     ov.querySelectorAll('.kn2-bg,.kno-dim,.kn2-nv').forEach(x=>x.animate([{opacity:1},{opacity:0}],{duration:back?300:200,fill:'forwards'}));
-    setTimeout(()=>{ov.remove();if(btn)btn.style.visibility='';if(dirty)DL.render(0);},back?310:210);};
+    setTimeout(()=>{ov.remove();if(btn)btn.style.visibility='';if(dirty)DL.render(0);else DL.bb();},back?310:210);};
   const ek=e=>{if(e.key==='Escape')close();else if(e.key==='ArrowRight')go(1);else if(e.key==='ArrowLeft')go(-1);};document.addEventListener('keydown',ek);
   ov.querySelector('.kno-dim').onclick=close;ov.querySelector('.kn2-x').onclick=()=>{sfx('tap');close();};
   ov.querySelectorAll('.kn2-nv').forEach(b=>b.onclick=()=>{held=false;go(b.classList.contains('nx')?1:-1);});
@@ -960,6 +962,57 @@ function knPar(hero){if(PAR){removeEventListener('scroll',PAR);PAR=null;}if(!her
   addEventListener('scroll',PAR,{passive:true});}
 function knCount(el){const n=+el.dataset.n;if(!n||!fxOK())return;const t0=performance.now(),d=900;el.textContent='0';
   const step=t=>{if(!el.isConnected)return;const k=Math.min(1,(t-t0)/d);el.textContent=Math.round(n*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
+/* ---------- 13.9.1: Кинотека на весь экран (Андрей: «нажал на „Фильмы / Сериалы / Интервью“ — как в первой версии на весь экран,
+   листаешь, и дай выйти»). Слайд = фильм раздела: фон 4K, живой момент без звука (только у текущего слайда), постер, название,
+   «Собрано N из M», «▶ Смотреть» / «Открыть ›». Листание — свайп вбок, точки, стрелки на ПК, ← →. Выход — ✕, свайп вниз, Esc, «назад». ---------- */
+const KS={film:'Фильм',series:'Сериал',interview:'Интервью'};
+const knfQ=sh=>sh.L.flatMap(s=>D.cards(s)).filter(c=>c.got).sort((a,b)=>(b.rar-a.rar)||(b.m-a.m))[0]||null;   // живой момент — самая редкая собранная фраза
+const knfNext=sh=>sh.L.find(s=>scP(s.id).done.length<s.parts.length)||sh.L[0];
+function knfSlide(sh,i){const s0=sh.s0,bd=knBd(s0),q=knfQ(sh),nx=knfNext(sh),eps=sh.L.reduce((a,s)=>a+s.parts.length,0);
+  return `<section class="knf-s${bd?' bd':''}" data-i="${i}" style="--c:${th(s0)};--bg:${bd||D.cover(s0)}"><span class="knf-bd"></span>
+    <span class="knf-live" data-ls="${(q?q.s:s0).id}" data-pi="${q?q.pi:0}" data-fid="${q?q.f.id:''}"></span><span class="knf-gr"></span>
+    <div class="knf-in"><span class="knf-p" style="background-image:${D.poster(s0)}"></span><div class="knf-t"><em>${KS[sh.kind]||''}${sh.kind==='film'&&s0.ep?' · '+E(s0.ep):''}</em>
+      <h2>${E(sh.k).split(' ').map(w=>`<span>${w}</span>`).join(' ')}</h2>
+      <small class="knf-c">Собрано <b>${sh.g}</b> из ${sh.t} ${plural(sh.t,['фразы','фраз','фраз'])} · ${D.sc(sh.L.length)} · ${D.ep(eps)}</small>${bar(sh.g,sh.t)}
+      <div class="knf-b"><button class="kf-go" data-fw="${nx.id}">${SI.play} ${sh.g?'Смотреть дальше':'Смотреть'}</button><button class="knf-op" data-fo="${i}">Открыть ${ui('fwd')}</button></div></div></div></section>`;}
+function knFull(kind,btn){DL.clean();const F=DL.films().filter(x=>x.kind===kind),n=F.length;if(!n)return;let cur=-1,vt=0,se=0,closing=false;
+  const ov=document.createElement('div');ov.className='kno knf';
+  ov.innerHTML=`<div class="knf-pg">${F.map(knfSlide).join('')}</div>
+    <div class="knf-top"><span class="knf-ttl"><b>${D.kindName(kind)}</b><i class="knf-num">1 / ${n}</i></span><button class="knf-x" aria-label="Закрыть">${ui('close')}</button></div>
+    ${n>1?`<div class="knf-dots">${F.map((sh,i)=>`<button data-i="${i}" aria-label="${E(sh.k)}"></button>`).join('')}</div><button class="knf-nv pv" aria-label="Предыдущий">${ui('back')}</button><button class="knf-nv nx" aria-label="Следующий">${ui('fwd')}</button>`:''}`;
+  document.body.appendChild(ov);document.body.classList.add('dx-open');try{backBtn(true);}catch(e){}
+  const pg=ov.querySelector('.knf-pg'),SL=[...ov.querySelectorAll('.knf-s')],num=ov.querySelector('.knf-num'),dots=[...ov.querySelectorAll('.knf-dots button')],W=()=>pg.clientWidth||innerWidth;
+  const live=i=>{clearTimeout(vt);SL.forEach((s,j)=>{if(j!==i)D.stopVids(s);});
+    vt=setTimeout(()=>{const lv=SL[i]&&SL[i].querySelector('.knf-live'),s=lv&&scOf(lv.dataset.ls),pi=lv?+lv.dataset.pi||0:0,p=s&&s.parts[pi],f=p&&(p.ph.find(x=>x.id===lv.dataset.fid)||scAct(p.ph)[0]);
+      if(s&&p&&ov.isConnected&&!closing)D.loopVid(lv,s,pi,f,p);},fxOK()?600:200);};
+  const setCur=(i,quiet)=>{if(i===cur)return;cur=i;num.textContent=`${i+1} / ${n}`;dots.forEach((d,j)=>d.classList.toggle('on',j===i));
+    ov.querySelectorAll('.knf-nv').forEach(b=>b.disabled=b.classList.contains('pv')?i<=0:i>=n-1);
+    if(!quiet){sfx('tick');haptic('sel');}live(i);
+    if(fxOK())SL[i].querySelectorAll('.knf-p,.knf-t>*').forEach((x,k)=>x.animate([{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:520,delay:60+k*70,easing:EZ.out,fill:'backwards'}));};
+  // фон слегка отстаёт от слайда, пока листаешь
+  const par=()=>{const x=pg.scrollLeft,w=W();SL.forEach(s=>{const d=s.offsetLeft-x;if(Math.abs(d)>w*1.3)return;const bd=s.querySelector('.knf-bd');if(bd)bd.style.transform=`translateX(${(-d*.3).toFixed(1)}px)`;});};
+  pg.addEventListener('scroll',()=>{if(fxOK())par();clearTimeout(se);se=setTimeout(()=>setCur(Math.max(0,Math.min(n-1,Math.round(pg.scrollLeft/W())))),120);},{passive:true});
+  const go=i=>{i=Math.max(0,Math.min(n-1,i));if(i===cur){if(fxOK())pg.animate([{transform:'none'},{transform:`translateX(${i<=0?14:-14}px)`},{transform:'none'}],{duration:260});return;}pg.scrollTo({left:i*W(),behavior:fxOK()?'smooth':'auto'});};
+  // уйти из окна сразу (переход на другой экран): без анимации, кнопку «назад» выставит новый экран
+  const kill=()=>{closing=true;clearTimeout(vt);document.removeEventListener('keydown',ek);D.stopVids(ov);ov.remove();document.body.classList.remove('dx-open');};
+  const close=ov._close=()=>{if(closing)return;closing=true;clearTimeout(vt);document.removeEventListener('keydown',ek);document.body.classList.remove('dx-open');
+    const fin=()=>{D.stopVids(ov);ov.remove();DL.bb();};if(!fxOK())return fin();
+    ov.animate([{opacity:1,transform:'none'},{opacity:0,transform:'scale(.97)'}],{duration:240,easing:EZ.in,fill:'forwards'}).onfinish=fin;};
+  const ek=e=>{if(e.key==='Escape')close();else if(e.key==='ArrowRight')go(cur+1);else if(e.key==='ArrowLeft')go(cur-1);};document.addEventListener('keydown',ek);
+  ov.querySelector('.knf-x').onclick=()=>{sfx('tap');close();};
+  ov.querySelectorAll('.knf-nv').forEach(b=>b.onclick=()=>go(cur+(b.classList.contains('nx')?1:-1)));
+  dots.forEach(d=>d.onclick=()=>go(+d.dataset.i));
+  ov.querySelectorAll('[data-fw]').forEach(b=>b.onclick=()=>{const id=b.dataset.fw;sfx('tap');haptic('medium');kill();if(scGate(id))return;renderScene(id);});
+  ov.querySelectorAll('[data-fo]').forEach(b=>b.onclick=()=>{const sh=F[+b.dataset.fo],p=SL[+b.dataset.fo].querySelector('.knf-p');sfx('tap');haptic('sel');
+    if(p)S._from={r:p.getBoundingClientRect(),bg:p.style.backgroundImage};kill();DL.open({show:sh.k,sid:null});});
+  // свайп вниз — выйти (окно едет за пальцем)
+  let x0=null,y0=null;ov.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
+  ov.addEventListener('touchmove',e=>{if(y0==null||!fxOK())return;const t=e.touches[0],dy=t.clientY-y0,dx=t.clientX-x0;if(dy>0&&dy>Math.abs(dx)*1.3){pg.style.transform=`translateY(${(dy*.45).toFixed(1)}px) scale(${(1-Math.min(dy,300)/2400).toFixed(3)})`;pg.style.opacity=String((1-Math.min(dy,400)/900).toFixed(3));}},{passive:true});
+  ov.addEventListener('touchend',e=>{if(y0==null)return;const t=e.changedTouches[0],dy=t.clientY-y0,dx=t.clientX-x0;y0=null;
+    if(dy>110&&dy>Math.abs(dx)*1.3){close();return;}if(pg.style.transform){pg.animate([{transform:pg.style.transform,opacity:+pg.style.opacity||1},{transform:'none',opacity:1}],{duration:260,easing:EZ.out});pg.style.transform='';pg.style.opacity='';}},{passive:true});
+  // появление: окно раскрывается из заголовка раздела
+  if(fxOK()){const r=btn&&btn.getBoundingClientRect();ov.animate(r&&r.width?[{clipPath:`inset(${r.top.toFixed(0)}px ${(innerWidth-r.right).toFixed(0)}px ${(innerHeight-r.bottom).toFixed(0)}px ${r.left.toFixed(0)}px round 14px)`,opacity:.5},{clipPath:'inset(0px 0px 0px 0px round 0px)',opacity:1}]:[{opacity:0},{opacity:1}],{duration:560,easing:EZ.out});}
+  setCur(0,true);return ov;}
 function knMotion(st,lvl){const go=fxOK(),A=(el,kf,o)=>{if(go&&el)el.animate(kf,Object.assign({fill:'backwards',easing:EZ.out},o));};
   st.querySelectorAll('.kn-cnt[data-n]').forEach(knCount);
   if(lvl!=='film')knPar(null);
@@ -1129,7 +1182,7 @@ D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + «Мои
     const s0=h.L.slice().sort((a,b)=>lastGot(b)-lastGot(a))[0]||h.s0,bd=knBd(h.s0);
     return `${seg()}${srch()}
       <button class="kn-hero${bd?' bd':''}" data-show="${E(h.k)}" style="--c:${th(s0)};--bg:${bd||D.cover(s0)}"><span class="kn-hbg"></span><span class="kn-hp" style="background-image:${knPoster(h.s0)}"></span><span class="kn-ht"><em>${best?'Продолжить':D.kindName(h.kind)}</em><b>${E(h.k)}</b><small>Собрано <b class="kn-cnt" data-n="${h.g}">${h.g}</b> из ${h.t} ${plural(h.t,['фразы','фраз','фраз'])} · ${D.sc(h.L.length)}</small>${bar(h.g,h.t)}<span class="kn-go">Открыть →</span></span><i class="kn-shine"></i></button>
-      ${D.groups(F).map(g=>`<h3 class="kn-h">${D.kindName(g.k)}<small>${g.L.length}</small></h3><div class="kn-row">${g.L.map(sh=>`<button class="kn-p dlt" data-show="${E(sh.k)}" style="--c:${th(sh.s0)}"><span class="kn-pi" style="background-image:${knPoster(sh.s0)}">${sh.full?'<i class="kn-done">✓</i>':''}<i class="kn-gl"></i></span><b>${E(sh.k)}</b><small>${sh.g} / ${sh.t}</small>${bar(sh.g,sh.t)}</button>`).join('')}</div>`).join('')}`;},
+      ${D.groups(F).map(g=>`<h3 class="kn-h"><button class="kn-hb" data-kfs="${g.k}">${D.kindName(g.k)}<small>${g.L.length}</small><i class="kn-hbi">${ui('fwd')}</i></button></h3><div class="kn-row">${g.L.map(sh=>`<button class="kn-p dlt" data-show="${E(sh.k)}" style="--c:${th(sh.s0)}"><span class="kn-pi" style="background-image:${knPoster(sh.s0)}">${sh.full?'<i class="kn-done">✓</i>':''}<i class="kn-gl"></i></span><b>${E(sh.k)}</b><small>${sh.g} / ${sh.t}</small>${bar(sh.g,sh.t)}</button>`).join('')}</div>`).join('')}`;},
   // 13.8.7 (Андрей: «страница фильма чуть перегружена; в старом словаре разбивка лучше — нажал, чтобы увидеть»): шапка + сцены строками.
   // Убраны: цитата, «Все фразы», «Сложность / Польза», ряды кино-карт («квадраты»).
   film(sh){const s0=sh.s0,L=sh.L,bd=knBd(s0),meta=sh.kind==='film'&&s0.ep?E(s0.ep):D.kindName(sh.kind);
@@ -1178,6 +1231,7 @@ D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + «Мои
     st.querySelectorAll('[data-flt]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');S.flt=true;const q=b.dataset.flt==='q';DL.render(1);if(q)setTimeout(()=>{const i=$('#knQ');if(i)i.focus();},60);});
     st.querySelectorAll('[data-ffilm]').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');haptic('sel');Object.assign(KN,{q:'',tp:'',st:'',tone:'',film:b.dataset.ffilm});S.flt=true;DL.render(1);});
     st.querySelectorAll('[data-watch]').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');haptic('medium');const id=b.dataset.watch;if(scGate(id))return;renderScene(id);});
+    st.querySelectorAll('[data-kfs]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');knFull(b.dataset.kfs,b);});   // 13.9.1: раздел на весь экран
     knMotion(st,lvl);
     st.querySelectorAll('.kn-tps [data-tp]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');Object.assign(KN,{q:'',st:'',tone:'',film:''});KN.tp=b.dataset.tp;S.flt=true;DL.render(1);});
     st.querySelectorAll('.kn-ep').forEach(d=>d.addEventListener('toggle',()=>{DXOPEN[d.dataset.k]=d.open;if(!d.open)return;sfx('page');
