@@ -10,18 +10,18 @@ const dev=process.argv[2]||'ph';
   const shot=async n=>{await page.waitForTimeout(900);await page.screenshot({path:`kn4-${dev}-${n}.png`});};
   const ev=f=>page.evaluate(f);
   await ev(()=>renderTab('dict'));await page.waitForTimeout(1800);
-  let st=await ev(()=>({lvl:$('#dlStage').dataset.lvl,seg:[...document.querySelectorAll('.kn-seg button')].map(b=>b.textContent.trim()+(b.classList.contains('on')?'*':'')),rows:document.querySelectorAll('.kr').length,cards:document.querySelectorAll('.kc').length,lst:(document.querySelector('[data-lsdd]')||{}).textContent}));
+  let st=await ev(()=>({lvl:$('#dlStage').dataset.lvl,seg:[...document.querySelectorAll('.kn-seg button')].map(b=>b.textContent.trim()+(b.classList.contains('on')?'*':'')),rows:document.querySelectorAll('.kq').length,cards:document.querySelectorAll('.kc').length,lst:(document.querySelector('[data-lsdd]')||{}).textContent}));
   ok('главная словаря = список фраз',st.lvl==='home'&&st.rows>10&&!st.cards&&st.seg[0].endsWith('*'),JSON.stringify(st));
   await shot('1-list');
   await page.evaluate(()=>{document.body.scrollTop=900;});await shot('1b-list-scroll');await page.evaluate(()=>{document.body.scrollTop=0;});
   // фильтр статуса
   await page.click('[data-lsdd]');await page.waitForTimeout(600);await shot('1c-show-sheet');await page.click('[data-lsv="due"]');await page.waitForTimeout(700);
-  st=await ev(()=>({rows:[...document.querySelectorAll('.kr')].map(r=>r.className)}));ok('чип «Повторить» — только повторить',st.rows.length>0&&st.rows.every(c=>/st-due/.test(c)),st.rows.length+'');
+  st=await ev(()=>({rows:[...document.querySelectorAll('.kq')].map(r=>r.className)}));ok('чип «Повторить» — только повторить',st.rows.length>0&&st.rows.every(c=>/st-due/.test(c)),st.rows.length+'');
   await page.click('[data-lsdd]');await page.waitForTimeout(600);await page.click('[data-lsv=""]');await page.waitForTimeout(700);
   // «Ещё N фраз»
-  const more=await ev(()=>!!document.querySelector('[data-exp]'));if(more){const n0=await ev(()=>document.querySelectorAll('.kr').length);await page.click('[data-exp]');await page.waitForTimeout(500);const n1=await ev(()=>document.querySelectorAll('.kr').length);ok('«Ещё N фраз» раскрывает',n1>n0,n0+'→'+n1);}
+  const more=await ev(()=>!!document.querySelector('[data-exp]'));if(more){const n0=await ev(()=>document.querySelectorAll('.kq').length);await page.click('[data-exp]');await page.waitForTimeout(500);const n1=await ev(()=>document.querySelectorAll('.kq').length);ok('«Ещё N фраз» раскрывает',n1>n0,n0+'→'+n1);}
   // открыть фразу из списка → окно, ▶ спрятана, когда играет
-  await page.click('.kr:not(.lock)');await page.waitForTimeout(1600);
+  await page.click('.kq:not(.lock)');await page.waitForTimeout(1600);
   st=await ev(()=>{const p=document.querySelector('.knv-p'),v=document.querySelector('.kno video');return {open:!!document.querySelector('.kno'),pHidden:p&&p.hidden,pDisp:p&&getComputedStyle(p).display,playing:v&&!v.paused,t:v&&v.currentTime};});
   ok('карта из списка открылась, ▶ не висит',st.open&&(!st.playing||st.pDisp==='none'),JSON.stringify(st));
   await shot('2-open');
@@ -37,11 +37,11 @@ const dev=process.argv[2]||'ph';
   await shot('4-film');await page.evaluate(()=>{document.body.scrollTop=700;});await shot('4b-film-scroll');
   // «Фразы · N из M» → сцена списком
   await page.click('.kf-c[data-sid="wolf-swiss-bank"]');await page.waitForTimeout(1500);
-  st=await ev(()=>({lvl:$('#dlStage').dataset.lvl,sid:DL.S.sid,rows:document.querySelectorAll('.kn-ep .kr').length,lock:document.querySelectorAll('.kn-ep .kr.lock').length,ew:document.querySelectorAll('.kn-ew').length,watch:!!document.querySelector('.kn-shw'),hf:!!document.querySelector('.kn-hf[data-show]')}));
+  st=await ev(()=>({lvl:$('#dlStage').dataset.lvl,sid:DL.S.sid,rows:document.querySelectorAll('.kn-ep .kq').length,lock:document.querySelectorAll('.kn-ep .kq.lock').length,ew:document.querySelectorAll('.kn-ew').length,watch:!!document.querySelector('.kn-shw'),hf:!!document.querySelector('.kn-hf[data-show]')}));
   ok('сцена: фразы списком, ▶ у эпизодов, «Смотреть», ссылка на фильм',st.lvl==='scene'&&st.rows>5&&st.ew>=3&&st.watch&&st.hf,JSON.stringify(st));
   await shot('5-scene-list');
   await page.click('[data-kv="cards"]');await page.waitForTimeout(1200);
-  st=await ev(()=>({kc:document.querySelectorAll('.kn-ep .kc').length,kr:document.querySelectorAll('.kn-ep .kr').length,on:store.knCards}));ok('«Карточки»',st.kc>5&&!st.kr&&st.on===true,JSON.stringify(st));
+  st=await ev(()=>({kc:document.querySelectorAll('.kn-ep .kc').length,kr:document.querySelectorAll('.kn-ep .kq').length,on:store.knCards}));ok('«Карточки»',st.kc>5&&!st.kr&&st.on===true,JSON.stringify(st));
   await shot('6-scene-cards');
   await page.click('[data-kv="list"]');await page.waitForTimeout(800);
   // название фильма → страница фильма
@@ -55,12 +55,12 @@ const dev=process.argv[2]||'ph';
   await ev(()=>DL.back());await page.waitForTimeout(1200);st=await ev(()=>({lvl:$('#dlStage').dataset.lvl}));ok('назад из фильма → главная',st.lvl==='home',JSON.stringify(st));
   // поиск: без ряда чипов, тема — кнопкой
   await ev(()=>{store.knView='list';});await ev(()=>DL.render(0));await page.waitForTimeout(800);
-  await page.click('.kn-fbt');await page.waitForTimeout(1200);
+  await page.click('.kn-sf');await page.waitForTimeout(1200);
   st=await ev(()=>({chips:document.querySelectorAll('.kn-chips').length,dd:[...document.querySelectorAll('.kn-ddb')].map(b=>b.textContent.trim()),tiles:document.querySelectorAll('.kn-tt button').length}));
   ok('поиск: чипов тем нет, «Тема» — кнопкой, плитки на месте',!st.chips&&/Тема/.test(st.dd[0])&&st.tiles>5,JSON.stringify(st));
   await shot('7-flt');
   await page.click('.kn-tt button');await page.waitForTimeout(1200);
-  st=await ev(()=>({rows:document.querySelectorAll('#knRes .kr').length,dd:document.querySelector('.kn-ddb').textContent.trim(),vsw:!!document.querySelector('#knRes [data-kv]')}));ok('тема выбрана: список, на кнопке — тема',st.rows>3&&st.vsw&&!/^Тема/.test(st.dd),JSON.stringify(st));
+  st=await ev(()=>({rows:document.querySelectorAll('#knRes .kq').length,dd:document.querySelector('.kn-ddb').textContent.trim(),vsw:!!document.querySelector('#knRes [data-kv]')}));ok('тема выбрана: список, на кнопке — тема',st.rows>3&&st.vsw&&!/^Тема/.test(st.dd),JSON.stringify(st));
   await shot('8-flt-topic');
   await page.click('#knRes [data-kv="cards"]');await page.waitForTimeout(800);st=await ev(()=>({kc:document.querySelectorAll('#knRes .kc').length}));ok('карточками в поиске',st.kc>3,JSON.stringify(st));
   await page.click('#knRes [data-kv="list"]');await page.waitForTimeout(500);

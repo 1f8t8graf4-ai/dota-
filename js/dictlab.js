@@ -762,11 +762,16 @@ const knView=()=>store.knView||(gotN()?'list':'kino');   // «📖 Фразы» 
 const curSeg=()=>DX.seg==='my'?'my':knView();
 const cardsOn=()=>!!store.knCards;                     // в сцене и поиске: список (по умолчанию) или карточки
 KN.lst='';KN.exp={};
-const knRow=c=>{const {s,f,pi}=c,[k,lab]=knSt(c),t=`<span class="kr-t" style="background-image:${D.art2(s,pi)}">${c.got?`<i>${SI.play}</i>`:''}</span>`;
-  if(!c.got)return `<button class="kr lock" data-own data-c="${c.k}">${t}<span class="kr-x"><b>${E(fogTxt(D.T(f)))}</b><small>${E(fogTxt(f.ru))}</small></span><em class="kr-lk">🔒 ${seen(s,pi)?'Ответь в проверке':'Эпизод '+(pi+1)}</em></button>`;
-  return `<button class="kr st-${k}" data-own data-c="${c.k}" style="--c:${th(s)}">${t}<span class="kr-x"><b>${E(D.T(f))}</b><small>${E(f.ru)}</small><span class="kr-m"><em class="kc-st">${k==='ok'?'✓ ':''}${lab}</em><span class="kc-mp">${D.mp(c.m)}</span>${c.rar>1?`<i class="kn-rd r-${RN[c.rar]}" title="${RT[RN[c.rar]]}"></i>`:''}</span></span></button>`;};
-const rows=C=>cardsOn()?`<div class="kn-grid">${C.map(knCard).join('')}</div>`:`<div class="kr-l">${C.map(knRow).join('')}</div>`;
-const vsw=()=>`<div class="kn-vsw" role="group" aria-label="Вид"><button data-kv="list" class="${cardsOn()?'':'on'}">☰ Список</button><button data-kv="cards" class="${cardsOn()?'on':''}">▦ Карточки</button></div>`;
+// 13.8.5 (Андрей: «это просто плохо выглядит»): строка = цитата из фильма — кавычка цветом редкости, фраза крупно, перевод,
+// статус словами и «эп. 1 · 0:12» одной тихой строкой, ▶ справа. Без мутных миниатюр и без трёх значков подряд.
+const tcode=(f,p)=>{const x=Math.max(0,Math.round((f.a||0)-(p.a||0)));return `${Math.floor(x/60)}:${String(x%60).padStart(2,'0')}`;};
+const knRow=c=>{const {s,f,p,pi}=c,[k,lab]=knSt(c),mk=`<i class="kq-m" aria-hidden="true">“</i>`;
+  if(!c.got)return `<button class="kq lock" data-own data-c="${c.k}">${mk}<span class="kq-x"><b class="kq-en">${E(fogTxt(D.T(f)))}</b><span class="kq-ru">${E(fogTxt(f.ru))}</span></span><em class="kq-lk">🔒 ${seen(s,pi)?'Ответь в проверке':'Эпизод '+(pi+1)}</em></button>`;
+  return `<button class="kq st-${k} r-${RN[c.rar]}" data-own data-c="${c.k}" style="--c:${th(s)}" title="${c.rar>1?RT[RN[c.rar]]+' карта':''}">${mk}<span class="kq-x"><b class="kq-en">${E(D.T(f))}</b><span class="kq-ru">${E(f.ru)}</span>
+    <span class="kq-s"><span class="kq-st">${k==='ok'?'✓ ':''}${lab}</span><span class="kq-ep">эп. ${pi+1} · ${tcode(f,p)}</span></span></span><i class="kq-p" aria-hidden="true">${SI.play}</i></button>`;};
+const rows=C=>cardsOn()?`<div class="kn-grid">${C.map(knCard).join('')}</div>`:`<div class="kq-l">${C.map(knRow).join('')}</div>`;
+const IC2={list:'<svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>',grid:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>'};
+const vsw=()=>`<div class="kn-vsw2" role="group" aria-label="Вид"><button data-kv="list" class="${cardsOn()?'':'on'}" aria-label="Списком" title="Списком">${IC2.list}</button><button data-kv="cards" class="${cardsOn()?'on':''}" aria-label="Карточками" title="Карточками">${IC2.grid}</button></div>`;
 
 /* ---------- карта ---------- */
 const knCard=c=>{const {s,f,p,pi}=c,[k,lab]=knSt(c),art=`<span class="kc-art" style="background-image:${(c.n%2?D.art:D.art2)(s,pi)};${D.crop(c)}"></span>`;   // у каждой карты свой вырез кадра
@@ -788,7 +793,7 @@ function knHelp(){sfx('tap');knSheet(`<b class="kn-sh2">Как устроены 
     <div><em class="kc-st st-go">Учу · 1 из 3</em><p>Сколько раз ты верно ответил на неё. Три раза — выучено.</p></div>
     <div><em class="kc-st st-due">Повторить</em><p>Пора освежить: фраза ждёт в «Повторении» на Главной.</p></div>
     <div><em class="kc-st st-ok">✓ Выучено</em><p>Помнишь надолго. Иногда всплывёт в повторении, чтобы не забылось.</p></div></div>
-  <p class="kn-sm"><b>Цвет полоски сверху — редкость:</b> <i class="kn-rd r-rare"></i>редкая — устойчивое выражение, <i class="kn-rd r-epic"></i>эпическая — есть интересный факт, <i class="kn-rd r-leg"></i>легендарная — факт и сложная сцена.</p>
+  <p class="kn-sm"><b>Цвет кавычки в списке и полоски сверху у карточки — редкость:</b> <i class="kn-rd r-rare"></i>редкая — устойчивое выражение, <i class="kn-rd r-epic"></i>эпическая — есть интересный факт, <i class="kn-rd r-leg"></i>легендарная — факт и сложная сцена.</p>
   <p class="kn-sm"><b>▶ на карте</b> — посмотреть этот момент из фильма.</p><button class="kn-btn" data-x>Понятно</button>`);}
 function knLock(b,c){const {s,p,pi}=c,can=scEpOpen(s,pi),sn=seen(s,pi);haptic('err');sfx('nope');
   if(fxOK())b.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'none'}],{duration:280});
@@ -856,19 +861,19 @@ function knRes(){const any=!!(KN.q||KN.tp||KN.st||KN.tone||KN.film);
   if(!L.length)return `<div class="kn-empty">Ничего не нашлось<small>Попробуй другое слово или сбрось фильтры.</small><button class="kn-btn2" data-reset>Сбросить фильтры</button></div>`;
   const by=[],m={};L.forEach(c=>{const k=dictFilm(c.s);if(!m[k]){m[k]=[];by.push(k);}m[k].push(c);});
   return `<div class="kn-rh"><span><b>${title}</b><small>у тебя <b>${g}</b> из ${L.length}${L.length-g?` · ещё ${L.length-g} — под туманом, в непройденных эпизодах`:''}</small></span><button class="kn-reset" data-reset>Сбросить</button></div>${bar(g,L.length)}<div class="kn-vt">${vsw()}</div>
-    ${by.map(k=>{const C=m[k].map((c,i)=>[c,i]).sort((x,y)=>(y[0].got-x[0].got)||(x[1]-y[1])).map(x=>x[0]);return `<h4 class="kn-rf"><span class="kn-rfp" style="background-image:${D.poster(C[0].s)}"></span><span>${E(k)}</span><small>${C.filter(c=>c.got).length} / ${C.length}</small></h4>${rows(C)}`;}).join('')}`;}
+    ${by.map(k=>{const C=m[k].map((c,i)=>[c,i]).sort((x,y)=>(y[0].got-x[0].got)||(x[1]-y[1])).map(x=>x[0]);return `<section class="kn-lg3"><button class="kn-gh" data-show="${E(k)}"><span class="kn-ghp" style="background-image:${D.poster(C[0].s)}"></span><span class="kn-ght"><b>${E(k)}</b><small>${C.filter(c=>c.got).length} из ${C.length}</small></span><i class="kn-chev">${ui('fwd')}</i></button>${rows(C)}</section>`;}).join('')}`;}
 // 13.8.4: тема — такой же кнопкой со списком, как статус/тон/фильм (было: ряд чипов сверху + те же темы плитками ниже)
 const DD=[['tp','Тема','Все'],['st','Статус','Все'],['tone','Тон','Любой'],['film','Фильм','Все']];
 const ddOpts=(k,F)=>k==='tp'?tpCnt(allCards()).map(x=>[x.k,`${x.ico} ${E(cap(x.k))} · ${x.g}/${x.t}`]):k==='st'?STF:k==='tone'?TONE:(F||DL.films()).map(sh=>[sh.k,E(sh.k)]);
 function knDD(k){const d=DD.find(x=>x[0]===k),O=ddOpts(k);sfx('tap');
   const w=knSheet(`<b class="kn-sh2">${d[1]}</b><div class="kn-ddl"><button data-ddv="" class="${KN[k]?'':'on'}">${d[2]}</button>${O.map(([v,l])=>`<button data-ddv="${E(v)}" class="${KN[k]===v?'on':''}">${l}</button>`).join('')}</div>`);
   w.querySelectorAll('[data-ddv]').forEach(b=>b.onclick=()=>{sfx('sel');haptic('sel');KN[k]=b.dataset.ddv;w._close();DL.render(0);});}
-function bindCards(st){st.querySelectorAll('.kc[data-c],.kcc[data-c],.kr[data-c]').forEach(b=>b.onclick=()=>{const c=D.find(b.dataset.c);if(!c)return;if(!c.got){knLock(b,c);return;}sfx('tap');haptic('light');knOpen(b,c);});}
+function bindCards(st){st.querySelectorAll('.kc[data-c],.kcc[data-c],.kr[data-c],.kq[data-c]').forEach(b=>b.onclick=()=>{const c=D.find(b.dataset.c);if(!c)return;if(!c.got){knLock(b,c);return;}sfx('tap');haptic('light');knOpen(b,c);});}
 function bindRes(st){const box=st.querySelector('#knRes');if(!box)return;bindCards(box);
   box.querySelectorAll('[data-kv]').forEach(b=>b.onclick=()=>{const on=b.dataset.kv==='cards';if(cardsOn()===on)return;sfx('tap');haptic('sel');store.knCards=on;save();box.innerHTML=knRes();bindRes(st);});
   box.querySelectorAll('[data-tpk]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');KN.tp=b.dataset.tpk;DL.render(0);});
   box.querySelectorAll('[data-reset]').forEach(b=>b.onclick=()=>{sfx('tap');Object.assign(KN,{q:'',tp:'',st:'',tone:'',film:''});DL.render(0);});
-  if(fxOK())box.querySelectorAll('.kc,.kr,.kn-tt button').forEach((c,i)=>{if(i<18)c.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:320,delay:i*24,easing:EZ.out,fill:'backwards'});});}
+  if(fxOK())box.querySelectorAll('.kc,.kq,.kn-tt button').forEach((c,i)=>{if(i<18)c.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:320,delay:i*24,easing:EZ.out,fill:'backwards'});});}
 
 /* ---------- 13.8.2: фильм как в Кинотеке — картинки высокого разрешения, кино-карты, движение ---------- */
 const knBd=s=>{const u=filmImg(s,innerWidth>=760?'bd.jpg':'bdm.jpg');return u?`url('${u}')`:'';};
@@ -900,7 +905,7 @@ function knMotion(st,lvl){const go=fxOK(),A=(el,kf,o)=>{if(go&&el)el.animate(kf,
     A(st.querySelector('.kn-hero .kn-hp'),[{opacity:0,transform:'translateY(30px) rotate(-6deg) scale(.9)'},{opacity:1,transform:'none'}],{duration:820,delay:180,easing:SPRING});
     st.querySelectorAll('.kn-row').forEach((row,ri)=>row.querySelectorAll('.kn-p').forEach((p,i)=>{if(i<8)A(p,[{opacity:0,transform:'perspective(800px) rotateY(-32deg) translateX(46px) scale(.92)'},{opacity:1,transform:'none'}],{duration:700,delay:200+ri*100+i*60,easing:SPRING});}));
     st.querySelectorAll('.kn-srch,.kn-seg,.kn-lang').forEach((x,i)=>A(x,[{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'none'}],{duration:420,delay:i*50}));
-    st.querySelectorAll('.kr-l .kr,.kn-lg2 .kc').forEach((r,i)=>{if(i<14)A(r,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:380,delay:100+i*28});});}
+    st.querySelectorAll('.kq-l .kq,.kn-lg3 .kc').forEach((r,i)=>{if(i<14)A(r,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:380,delay:100+i*28});});}
   if(lvl==='film'){const hero=st.querySelector('.kf'),kp=st.querySelector('.kf-p');
     if(S._from&&kp){scrollTo(0,0);knFly(S._from.r,kp,S._from.bg,{d:680});}S._from=null;S._fk=S.show;
     if(hero){A(hero.querySelector('.kf-bd'),[{opacity:0,transform:'scale(1.14)'},{opacity:1,transform:'scale(1.04)'}],{duration:1300});
@@ -913,14 +918,15 @@ function knMotion(st,lvl){const go=fxOK(),A=(el,kf,o)=>{if(go&&el)el.animate(kf,
     st.querySelectorAll('.kf-row').forEach((row,ri)=>row.querySelectorAll('.kcc,.kf-more').forEach((c,i)=>{if(i<6)A(c,[{opacity:0,transform:'translateX(70px) rotateY(-18deg) scale(.92)'},{opacity:1,transform:'none'}],{duration:640,delay:720+ri*120+i*70,easing:SPRING});}));}
   if(lvl==='scene'){A(st.querySelector('.kn-sh'),[{opacity:0,transform:'translateY(-12px) scale(.98)'},{opacity:1,transform:'none'}],{duration:520});
     st.querySelectorAll('.kn-ep').forEach((e,i)=>A(e,[{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'none'}],{duration:500,delay:140+i*70}));
-    st.querySelectorAll('.kn-ep[open] .kr').forEach((r,i)=>{if(i<16)A(r,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:380,delay:180+i*26});});
+    st.querySelectorAll('.kn-ep[open] .kq').forEach((r,i)=>{if(i<16)A(r,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:380,delay:180+i*26});});
     st.querySelectorAll('.kn-ep[open] .kc').forEach((c,i)=>{if(i<14)A(c,[{opacity:0,transform:'perspective(700px) translateY(30px) rotateX(28deg) scale(.9)'},{opacity:1,transform:'none'}],{duration:680,delay:260+i*50,easing:SPRING});});}
   if(lvl==='flt')st.querySelectorAll('.kn-fq,.kn-chips,.kn-dd').forEach((x,i)=>A(x,[{opacity:0,transform:'translateY(-10px)'},{opacity:1,transform:'none'}],{duration:420,delay:i*60}));
   // ПК: кино-карта оживает при наведении (момент без звука)
   if(matchMedia('(hover:hover)').matches)st.querySelectorAll('.kcc:not(.lock)').forEach(el=>{let t=0;el.addEventListener('pointerenter',()=>{t=setTimeout(()=>{const c=D.find(el.dataset.c);if(c)D.loopVid(el.querySelector('.kcc-v'),c.s,c.pi,c.f,c.p);},550);});el.addEventListener('pointerleave',()=>{clearTimeout(t);D.stopVids(el);});});}
 
 /* ---------- 13.8.4: «📖 Фразы» — собранные фразы списком, как в словаре: по фильмам, статус словами, ▶ — момент ---------- */
-const srch=()=>`<div class="kn-srch"><button class="kn-q" data-flt="q">${IC.q}<span>Найти фразу, слово или перевод</span></button><button class="kn-fbt" data-flt="">${IC.flt}<span>Фильтры</span></button></div>`;
+const srch=()=>`<div class="kn-tb"><div class="kn-sp"><button class="kn-sq" data-flt="q">${IC.q}<span>Найти фразу или слово</span></button><button class="kn-sf" data-flt="" aria-label="Фильтры" title="Фильтры">${IC.flt}</button></div>
+  <div class="kn-fl" role="group" aria-label="Язык фильмов"><button data-dl="en" class="${DX.lang!=='de'?'on':''}" aria-label="English" title="English">${FLAG.en}</button><button data-dl="de" class="${DX.lang==='de'?'on':''}" aria-label="Deutsch" title="Deutsch">${FLAG.de}</button></div></div>`;
 const LST=[['','Все'],['due','Повторить'],['go','Учу'],['new','Новые'],['ok','Выучено']];
 function knLsDD(G){const n={};G.forEach(c=>{const k=knSt(c)[0];n[k]=(n[k]||0)+1;});sfx('tap');
   const w=knSheet(`<b class="kn-sh2">Показать</b><div class="kn-ddl">${LST.filter(([k])=>!k||n[k]).map(([k,l])=>`<button data-lsv="${k}" class="${KN.lst===k?'on':''}">${l} <i>${k?n[k]:G.length}</i></button>`).join('')}</div>`);
@@ -932,10 +938,12 @@ function knList(F){const all=allCards(),G=all.filter(c=>c.got);
   const by=[],m={};L.forEach(c=>{const k=dictFilm(c.s);if(!m[k]){m[k]={k,C:[],t:0};by.push(m[k]);}m[k].C.push(c);m[k].t=Math.max(m[k].t,lastGot(c.s));});
   by.sort((a,b)=>b.t-a.t);   // фильм, где собирал последним, — сверху
   const rest=all.length-G.length;
-  return `${seg()}${srch()}${lang()}
-    <div class="kn-lh"><button class="kn-ddb kn-lsb${KN.lst?' on':''}" data-lsdd><span>Показать:</span><b>${LST.find(x=>x[0]===KN.lst)[1]} · ${KN.lst?n[KN.lst]:G.length}</b><i>▾</i></button>${vsw()}</div>
-    ${by.map(x=>{const open=KN.exp[x.k]||x.C.length<=8,C=open?x.C:x.C.slice(0,6),sh=F.find(f=>f.k===x.k);
-      return `<section class="kn-lg2"><button class="kn-rf kn-lf" data-show="${E(x.k)}"><span class="kn-rfp" style="background-image:${D.poster(x.C[0].s)}"></span><span>${E(x.k)}</span><small>${x.C.length}${sh?` из ${sh.t}`:''} ${ui('fwd')}</small></button>${rows(C)}${open?'':`<button class="kn-lmore" data-exp="${E(x.k)}">Ещё ${x.C.length-6} ${plural(x.C.length-6,['фраза','фразы','фраз'])}</button>`}</section>`;}).join('')}
+  const nn=KN.lst?n[KN.lst]:G.length;
+  return `${seg()}${srch()}
+    <div class="kn-lh2"><button class="kn-lsb2" data-lsdd><b>${nn} ${plural(nn,['фраза','фразы','фраз'])}</b><span>${KN.lst?LST.find(x=>x[0]===KN.lst)[1].toLowerCase():'все'}</span><i>▾</i></button>${vsw()}</div>
+    ${by.map(x=>{const open=KN.exp[x.k]||x.C.length<=8,C=open?x.C:x.C.slice(0,6),sh=F.find(f=>f.k===x.k),s0=x.C[0].s;
+      return `<section class="kn-lg3" style="--c:${th(s0)}"><button class="kn-gh" data-show="${E(x.k)}"><span class="kn-ghp" style="background-image:${D.poster(s0)}"></span><span class="kn-ght"><b>${E(x.k)}</b><small>${x.C.length}${sh?` из ${sh.t}`:''} · ${({film:'фильм',series:'сериал',interview:'интервью'})[sh?sh.kind:'film']||''}</small></span><i class="kn-chev">${ui('fwd')}</i></button>
+        ${rows(C)}${open?'':`<button class="kn-lmore2" data-exp="${E(x.k)}">Ещё ${x.C.length-6} ${plural(x.C.length-6,['фраза','фразы','фраз'])}</button>`}</section>`;}).join('')}
     ${rest?`<button class="kn-lnext" data-kseg="kino"><span><b>Ещё ${rest} ${plural(rest,['фраза ждёт','фразы ждут','фраз ждут'])} в фильмах</b><small>Смотри эпизоды и отвечай в проверке — они лягут сюда</small></span><em>🎬 Кинотека ${ui('fwd')}</em></button>`:''}`;}
 
 D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + текущий словарь, без золота',ic:'🎞',sw:'linear-gradient(160deg,#2b2d33,#0b0b0d)',noAnim:true,my:true,flt:true,skip1:false,
@@ -999,7 +1007,7 @@ D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + теку
     st.querySelectorAll('.kn-tps [data-tp]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');Object.assign(KN,{q:'',st:'',tone:'',film:''});KN.tp=b.dataset.tp;S.flt=true;DL.render(1);});
     bindCards(st);
     st.querySelectorAll('.kn-ep').forEach(d=>d.addEventListener('toggle',()=>{DXOPEN[d.dataset.k]=d.open;if(!d.open)return;sfx('page');
-      if(fxOK())d.querySelectorAll('.kc,.kr').forEach((c,i)=>c.animate([{opacity:0,transform:'translateY(14px) scale(.96)'},{opacity:1,transform:'none'}],{duration:380,delay:Math.min(i,12)*36,easing:EZ.out,fill:'backwards'}));}));
+      if(fxOK())d.querySelectorAll('.kc,.kq').forEach((c,i)=>c.animate([{opacity:0,transform:'translateY(14px) scale(.96)'},{opacity:1,transform:'none'}],{duration:380,delay:Math.min(i,12)*36,easing:EZ.out,fill:'backwards'}));}));
     if(lvl==='flt'){bindRes(st);st.querySelectorAll('[data-dd]').forEach(b=>b.onclick=()=>knDD(b.dataset.dd));
       const q=st.querySelector('#knQ');if(q){let t=0;q.oninput=()=>{clearTimeout(t);t=setTimeout(()=>{KN.q=q.value.trim();const r=st.querySelector('#knRes');if(r){r.innerHTML=knRes();bindRes(st);}},200);};
         q.onkeydown=e=>{if(e.key==='Enter')q.blur();};}}
