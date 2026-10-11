@@ -2246,8 +2246,8 @@ function renderTourDone(r){
 
 /* ================= кино: сцены из сериалов и фильмов ================= */
 // Видео и картинки сцен лежат в хранилище по ключам scenes/<сцена>/<NN>.mp4|jpg и scenes/<сцена>/cover.jpg.
-// Базовый адрес задаётся в index.html (window.ASSET_BASE): GitHub Pages сейчас, Cloudflare R2 или любое S3 потом.
-const ASSET_BASE=(window.ASSET_BASE||window.SC_MEDIA||'https://1f8t8graf4-ai.github.io/scenes').replace(/\/$/,'');
+// Базовый адрес задаётся в index.html (window.ASSET_BASE): с 13.9 — Cloudflare R2 через воркер бота (/m/scenes/…).
+const ASSET_BASE=(window.ASSET_BASE||window.SC_MEDIA||'https://dota.1f8t8graf4.workers.dev/m').replace(/\/$/,'');
 // 13.8.2: страницу прокручивает body, а не окно (html,body{height:100%;overflow-x:hidden} — так по стандарту, и в Telegram тоже):
 // window.scrollTo/scrollBy/scrollY ничего не делали — новые экраны открывались прокрученными, «наверх» не работало. Теперь они двигают и body.
 (function(){try{const B=()=>document.body,ws=window.scrollTo.bind(window),wb=window.scrollBy.bind(window),o=(a,b)=>typeof a==='object'&&a?a:{left:a||0,top:b||0};
@@ -2313,7 +2313,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.8.7';
+const APP_V='13.9';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2328,7 +2328,7 @@ async function deployCheck(box){
     const cv=await head(assetUrl(scKey(s,'cover.jpg')));if(!cv.ok)miss.push('cover.jpg');
     const m=(s.music||[])[0];if(m){const x=await head(assetUrl(scKey(s,m.f)));if(!x.ok)miss.push(m.f);}
     for(const [on,L,t] of [[s.bgv,['bg.mp4','bgp.jpg'],'фон сцены'],[s.filmbg,['film-bg.mp4','film-bgp.jpg'],'главный фон']])if(on)for(const f of L){const x=await head(assetUrl(scKey(s,f)));if(!x.ok)miss.push(`${f} (${t})`);}   // 13.0: фоны-награды
-    add(!miss.length,`Сцена «${s.title}» · ${s.sub||s.id}`,miss.length?`Нет в репо scenes, папка ${s.id}/: ${miss.join(', ')}`:'');}
+    add(!miss.length,`Сцена «${s.title}» · ${s.sub||s.id}`,miss.length?`Нет в хранилище R2, папка ${s.id}/: ${miss.join(', ')} — залей: python3 tools/r2_up.py ${s.id}`:'');}
 }
 /* ================= 7.9.3: слова вместо зубрёжки фраз (пилот: Волк, эпизод 1) ================= */
 // Данные — data/scenewords.json: по сцене и эпизоду ключевые слова [слово, перевод, по-немецки, формы] и словарик остальных слов.
