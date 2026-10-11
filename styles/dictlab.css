@@ -2114,3 +2114,130 @@ body.dx-open .kmb-rail{opacity:0;pointer-events:none}
   .kmb-toc button.on,.kmb-toc button:hover{background:rgba(255,255,255,.07);color:var(--kt)}
   .kmb-h{margin:0;padding:12px 0 10px}
   .kmb-ch .kq-l{padding-right:0}}
+
+/* =====================================================================================
+   13.9.3 — «Переписка» (.kmc, как Telegram) и «Альбомы» (.kma, как Apple Music); общий аудиоплеер — скрытое видео .ka-v, мини-плеер #kaBar.
+   ===================================================================================== */
+.ka-v{position:fixed;left:-10px;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
+/* ---------- 3. Переписка: список чатов ---------- */
+.kmc-fold{display:flex;gap:2px;margin:0 -16px 6px;padding:0 12px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--kl)}
+.kmc-fold::-webkit-scrollbar{display:none}
+.kmc-fold button{flex:none;position:relative;height:40px;padding:0 10px;border:0;background:none;color:var(--km);font:600 14px 'Golos Text',sans-serif;white-space:nowrap;cursor:pointer}
+.kmc-fold button i{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:3px;padding:0 5px;border-radius:99px;background:#FFB547;color:#141210;font:700 11px 'Golos Text',sans-serif;font-style:normal}
+.kmc-fold button.on{color:var(--kt)}
+.kmc-fold button.on::after{content:'';position:absolute;left:8px;right:8px;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--kt)}
+.kmc-list{display:flex;flex-direction:column}
+.kmc-r{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:9px 6px;border:0;border-radius:12px;background:none;color:var(--kt);text-align:left;cursor:pointer}
+.kmc-r::after{content:'';position:absolute;left:72px;right:6px;bottom:0;height:1px;background:var(--kl)}
+.kmc-r:active{background:rgba(255,255,255,.05)}
+@media (hover:hover){.kmc-r:hover{background:rgba(255,255,255,.04)}}
+.kmc-av{flex:none;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:#26262c center 18%/cover no-repeat;font-size:22px;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.kmc-av.own{background:linear-gradient(135deg,#5b86e5,#2c4a9a)}
+.kmc-av.sm{width:40px;height:40px;font-size:17px}
+.kmc-m{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.kmc-m>b{font:700 16px 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kmc-m small{font:400 14px/1.35 'Golos Text',sans-serif;color:var(--km);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kmc-m small b{color:var(--kt);font-weight:600}
+.kmc-meta{flex:none;align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:7px}
+.kmc-meta em{font-style:normal;font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
+.kmc-bd{display:grid;place-items:center;min-width:22px;height:22px;padding:0 7px;border-radius:99px;background:rgba(255,255,255,.13);color:var(--kt);font:700 12px 'Golos Text',sans-serif;font-style:normal}
+.kmc-bd.due{background:#FFB547;color:#141210}
+@media (min-width:760px){.kmc-list,.kmc-fold{max-width:760px}}
+/* ---------- чат ---------- */
+.kmc-hd{position:sticky;top:var(--st,0px);z-index:6;display:flex;align-items:center;gap:10px;margin:0 -16px;padding:8px 16px;background:rgba(14,14,17,.93);border-bottom:1px solid var(--kl);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.kmc-ht{min-width:0;display:flex;flex-direction:column;gap:1px}
+.kmc-ht b{font:700 16.5px 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kmc-ht small{font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
+.kmc-chat{position:relative;display:flex;flex-direction:column;gap:8px;min-height:62vh;margin:0 -16px;padding:12px 12px 18px;isolation:isolate;overflow:hidden}
+.kmc-chat::before{content:'';position:absolute;inset:-30px;z-index:-2;background:var(--bg,none) center/cover no-repeat;filter:blur(20px) brightness(.3) saturate(1.1)}
+.kmc-chat::after{content:'';position:absolute;inset:0;z-index:-1;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:18px 18px}
+.kmc-day{align-self:center;max-width:88%;margin:8px 0 2px;text-align:center}
+.kmc-day span{display:inline-block;padding:4px 12px;border-radius:99px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.88);font:600 12.5px 'Golos Text',sans-serif;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.kmc-msg{display:flex;max-width:88%}
+.kmc-msg.out{align-self:flex-end}
+.kmc-b{display:flex;flex-direction:column;gap:6px;padding:9px 12px 7px;border-radius:16px 16px 16px 6px;background:rgba(38,38,46,.93);color:#F3EBDD;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:box-shadow .2s}
+.kmc-msg.out .kmc-b{border-radius:16px 16px 6px 16px;background:linear-gradient(135deg,#3f63b3,#2c4a8e)}
+.kmc-msg.pl .kmc-b{box-shadow:0 0 0 1.5px rgba(255,226,154,.65),0 6px 22px rgba(0,0,0,.4)}
+.kmc-voice{display:flex;align-items:center;gap:10px;min-width:210px}
+.kmc-pl{flex:none;width:40px;height:40px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--kt);color:#141210;cursor:pointer}
+.kmc-pl svg{width:15px;height:15px;margin-left:1px}
+.kmc-pl:active{transform:scale(.92)}
+.kmc-wave{flex:1;display:flex;align-items:center;gap:2px;height:28px}
+.kmc-wave i{flex:1;min-width:2px;max-width:4px;border-radius:2px;background:rgba(243,235,221,.32);transition:background .1s}
+.kmc-wave i.on{background:#FFE29A}
+.kmc-voice em{font-style:normal;font:500 12px 'Golos Text',sans-serif;color:rgba(243,235,221,.6);font-variant-numeric:tabular-nums}
+.kmc-en{margin:0;font:600 16px/1.38 'Golos Text',sans-serif;color:#fff;cursor:pointer}
+.kmc-ru{margin:0;font:400 14px/1.4 'Golos Text',sans-serif;color:rgba(243,235,221,.72)}
+.kmc-ru i{color:rgba(243,235,221,.45)}
+.kmc-tg{margin:0;font:500 12.5px 'Golos Text',sans-serif;color:#a9c6ff}
+.kmc-ft{align-self:flex-end;font:500 11.5px 'Golos Text',sans-serif;color:rgba(243,235,221,.5)}
+.kmc-msg.due .kmc-ft{color:#FFB547}
+.kmc-q{display:flex;flex-direction:column;gap:2px;padding:4px 8px 5px 10px;border-left:3px solid #8fb3ff;border-radius:4px;background:rgba(143,179,255,.1)}
+.kmc-q b{font:700 12.5px 'Golos Text',sans-serif;color:#8fb3ff}
+.kmc-q span{font:400 13.5px/1.4 'Golos Text',sans-serif;color:rgba(243,235,221,.85)}
+.kmc-q mark{background:none;color:#FFE29A;font-weight:700}
+.kmc-bar{position:sticky;bottom:calc(var(--sb,0px) + 84px);z-index:6;display:flex;justify-content:center;gap:8px;padding:10px 0}
+.kmc-bar .kf-go,.kmc-bar .kmp-tr{box-shadow:0 10px 30px rgba(0,0,0,.55)}
+.kmc-bar .kmp-tr{background:rgba(30,30,36,.95)}
+@media (min-width:760px){.kmc-hd{margin:0;border-radius:14px}.kmc-chat{margin:6px 0 0;padding:16px 22px;border-radius:18px}.kmc-msg{max-width:560px}}
+/* ---------- 4. Альбомы ---------- */
+.km-b.v-album{padding-bottom:90px}
+.kma-row{display:flex;gap:12px;margin:0 -16px;padding:0 16px 4px;overflow-x:auto;scrollbar-width:none}
+.kma-row::-webkit-scrollbar{display:none}
+.kma-row .kma-c{flex:0 0 138px}
+.kma-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 12px}
+@media (min-width:760px){.kma-grid{grid-template-columns:repeat(4,1fr)}.kma-row .kma-c{flex-basis:170px}}
+@media (min-width:1080px){.kma-grid{grid-template-columns:repeat(5,1fr)}}
+.kma-c{display:flex;flex-direction:column;gap:2px;min-width:0;padding:0;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer}
+.kma-c>b{margin-top:7px;font:700 14px/1.25 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kma-c>small{font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
+.kma-c.hot>small{color:#FFB547}
+.kma-cv{display:grid;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#1b1b20 center 20%/cover no-repeat;box-shadow:0 14px 30px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.07);transition:transform .15s}
+.kma-cv.n0{place-items:center;font-size:40px;background:linear-gradient(150deg,#3a3a46,#15151a)}
+.kma-cv.n0 i{font-style:normal}
+.kma-c.hot .kma-cv{box-shadow:0 14px 30px rgba(0,0,0,.5),0 0 0 2px rgba(255,181,71,.75)}
+.kma-c:active .kma-cv{transform:scale(.97)}
+.kma-hd{position:relative;display:flex;align-items:flex-end;gap:16px;margin:0 -16px 6px;padding:56px 16px 18px;overflow:hidden;isolation:isolate}
+.kma-hbg{position:absolute;inset:-40px;z-index:-2;background:var(--bg) center/cover no-repeat;filter:blur(30px) brightness(.45) saturate(1.2)}
+.kma-hd::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,11,13,.05),#0b0b0d)}
+.kma-hd .dl-up{position:absolute;left:16px;top:10px}
+.kma-cv.big{flex:none;width:132px;border-radius:12px;box-shadow:0 24px 50px rgba(0,0,0,.6)}
+.kma-ht{min-width:0;display:flex;flex-direction:column;gap:4px}
+.kma-ht em{font-style:normal;font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
+.kma-ht>b{font:800 26px/1.12 'Golos Text',sans-serif;letter-spacing:-.02em;color:#fff}
+.kma-ht>small{font:500 13px 'Golos Text',sans-serif;color:var(--km)}
+.kma-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.kma-b2{height:44px;padding:0 16px;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:var(--kt);font:700 14px 'Golos Text',sans-serif;cursor:pointer}
+.kma-b2:active,.kma-acts .kf-go:active{transform:scale(.96)}
+@media (max-width:560px){.kma-hd{flex-direction:column;align-items:center;text-align:center}.kma-cv.big{width:180px}.kma-ht{align-items:center}.kma-acts{justify-content:center}}
+@media (min-width:760px){.kma-hd{margin:0 0 6px;padding:62px 28px 24px;border-radius:20px}.kma-cv.big{width:200px}.kma-ht>b{font-size:40px}}
+.kma-tl{list-style:none;margin:0;padding:0}
+.kma-tl li{display:flex;align-items:center;border-bottom:1px solid var(--kl)}
+.kma-t{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:11px 4px;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer}
+.kma-n{flex:none;width:24px;text-align:center;font:500 14px 'Golos Text',sans-serif;color:var(--km);font-variant-numeric:tabular-nums}
+.kma-n i{font-style:normal}
+.kma-n svg{display:none;width:13px;height:13px;fill:#FFE29A}
+.kma-t.on .kma-n i{display:none}
+.kma-t.on .kma-n svg{display:inline-block}
+@media (hover:hover){.kma-t:hover .kma-n i{display:none}.kma-t:hover .kma-n svg{display:inline-block}}
+.kma-x{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.kma-x b{font:600 15.5px/1.35 'Golos Text',sans-serif;color:var(--kt)}
+.kma-x small{font:400 13px/1.35 'Golos Text',sans-serif;color:var(--km);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kma-t.on .kma-x b{color:#FFE29A}
+.kma-d{flex:none;font-style:normal;font:500 12.5px 'Golos Text',sans-serif;color:var(--km);font-variant-numeric:tabular-nums}
+.kma-o{flex:none;width:34px;height:34px;border:0;border-radius:50%;display:grid;place-items:center;background:none;color:var(--km);cursor:pointer}
+.kma-o svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4}
+/* мини-плеер */
+.kma-mp{position:fixed;left:50%;bottom:calc(var(--sb,0px) + 82px);z-index:40;transform:translateX(-50%);width:min(520px,calc(100% - 20px));display:flex;align-items:center;gap:10px;padding:8px 8px 10px;border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(30,30,36,.95);box-shadow:0 18px 50px rgba(0,0,0,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#F3EBDD;font-family:'Golos Text',sans-serif;cursor:pointer}
+.kma-mc{flex:none;width:44px;height:44px;border-radius:8px;background:#222 center/cover no-repeat}
+.kma-mx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.kma-mt{font:700 14px/1.3 'Golos Text',sans-serif;color:rgba(255,255,255,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kma-mt span{transition:color .12s}
+.kma-mt span.on{color:#fff}
+.kma-ms{font:400 12px 'Golos Text',sans-serif;color:rgba(243,235,221,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kma-mb{flex:none;width:38px;height:38px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff;cursor:pointer}
+.kma-mb svg{width:16px;height:16px}
+.kma-mb[data-kn] svg{fill:none;stroke:currentColor;stroke-width:2.4}
+.kma-mpr{position:absolute;left:12px;right:12px;bottom:4px;height:2px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.kma-mpr i{display:block;height:100%;background:#FFE29A;transform:scaleX(0);transform-origin:0 50%}
+body.dx-open .kma-mp{opacity:0;pointer-events:none}

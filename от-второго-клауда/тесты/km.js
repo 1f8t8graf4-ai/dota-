@@ -1,7 +1,7 @@
 // 13.9.2+: «Мои фразы и слова» — шапка, варианты (Лента, Разговорник, …), фразы и слова, тренировка, поиск; ph|pc
 const {open}=require('./st');const {chromium}=require('playwright');
 const seed=([st])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:true,flags:{}}));};
-const dev=process.argv[2]||'ph',only=(process.argv[3]||'feed,book').split(',');
+const dev=process.argv[2]||'ph',only=(process.argv[3]||'feed,book,chat,album').split(',');
 const base={onboarded:true,introV:1,gold:900,lvl:'b',fx:true,tourV:1,scSubChosen:1,autoSc:false,age18:true,dictVar:'kino',dlDemo:false,snd:false};
 const shot=(p,n)=>p.screenshot({path:`${__dirname}/km-${dev}-${n}.png`});
 let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===undefined?'':typeof d==='string'?d:JSON.stringify(d));};
@@ -19,7 +19,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   let r=await ev(()=>({lvl:$('#dlStage').dataset.lvl,sw:[...document.querySelectorAll('.km-sw button')].map(b=>b.textContent.replace(/\s+/g,' ').trim()),vp:(document.querySelector('[data-mvp]')||{}).textContent,sw2:document.documentElement.scrollWidth,iw:innerWidth}));
   ok('шапка: «Фразы | Слова», пилюля варианта, без лишнего',r.lvl==='my'&&r.sw.length===2&&/Лента/.test(r.vp)&&r.sw2<=r.iw,r);
   // шторка вариантов
-  await click('[data-mvp]');await page.waitForTimeout(600);r=await ev(()=>[...document.querySelectorAll('.km-vl [data-vv]')].map(b=>b.dataset.vv));ok('шторка вариантов',r.length>=2,r);await shot(page,'0-sheet');
+  await click('[data-mvp]');await page.waitForTimeout(600);r=await ev(()=>[...document.querySelectorAll('.km-vl [data-vv]')].map(b=>b.dataset.vv));ok('шторка вариантов',r.length===4,r);await shot(page,'0-sheet');
   await ev(()=>{const w=document.querySelector('.kn-sheet');w&&w._close&&w._close();});await page.waitForTimeout(400);
   if(only.includes('feed')){
     await page.waitForTimeout(1200);await shot(page,'1-feed');
@@ -58,6 +58,38 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
     await click('[data-mk="w"]');await page.waitForTimeout(1200);r=await ev(()=>({ch:[...document.querySelectorAll('.kmb-h .kmb-ht b')].map(x=>x.textContent),rows:document.querySelectorAll('.kqw').length}));ok('слова по алфавиту',r.ch.join()===[...r.ch].sort().join()&&r.rows===5,r);await shot(page,'6-book-words');
     await click('.kqw');await page.waitForTimeout(1300);r=await ev(()=>(document.querySelector('.kn2-word')||{}).textContent);ok('слово → окно',!!r,r);await page.keyboard.press('Escape');await page.waitForTimeout(600);
     await click('[data-mk="ph"]');await page.waitForTimeout(800);}
+  if(only.includes('chat')){
+    await ev(()=>{store.knMyV='chat';DL.KN.my.tag=null;DL.render(0);});await page.waitForTimeout(1300);await shot(page,'7-chat');
+    r=await ev(()=>({fold:document.querySelectorAll('.kmc-fold button').length,chats:[...document.querySelectorAll('.kmc-r .kmc-m>b')].map(x=>x.textContent),due:document.querySelectorAll('.kmc-bd.due').length}));
+    ok('Переписка: папки и чаты-фильмы',r.fold>3&&r.chats.length>=3,r);
+    await click('.kmc-r');await page.waitForTimeout(1300);
+    r=await ev(()=>({hd:(document.querySelector('.kmc-ht b')||{}).textContent,msg:document.querySelectorAll('.kmc-msg').length,vp:document.querySelectorAll('[data-vp]').length,day:document.querySelectorAll('.kmc-day').length,bar:!!document.querySelector('[data-call]')}));
+    ok('чат: голосовые, разделители эпизодов, «Слушать всё»',r.msg>0&&r.vp===r.msg&&r.day>0&&r.bar,r);
+    await click('[data-vp]');await page.waitForTimeout(1600);
+    r=await ev(()=>{const v=document.querySelector('video.ka-v');return {p:v&&!v.paused,t:v&&+v.currentTime.toFixed(2),on:document.querySelectorAll('.kmc-msg.pl .kmc-wave i.on').length};});ok('▶ — голосовое играет, волна идёт',r.p&&r.on>0,r);
+    await shot(page,'8-chat-page');
+    await click('[data-vp]');await page.waitForTimeout(300);r=await ev(()=>document.querySelector('video.ka-v').paused);ok('второй тап — пауза',r);
+    await click('.kmc-en');await page.waitForTimeout(1300);r=await ev(()=>!!document.querySelector('.kno2'));ok('текст → окно фразы',r);await page.keyboard.press('Escape');await page.waitForTimeout(700);
+    await click('[data-ctr]');await page.waitForTimeout(1200);r=await ev(()=>!!document.querySelector('.dl-q'));ok('«Тренировать» из чата',r);await click('#dlx');await page.waitForTimeout(1500);
+    r=await ev(()=>!!document.querySelector('.kmc-chat'));ok('после тренировки — снова чат',r);
+    await ev(()=>DL.back());await page.waitForTimeout(900);r=await ev(()=>document.querySelectorAll('.kmc-r').length);ok('«назад» — список чатов',r>0,String(r));
+    await click('[data-mk="w"]');await page.waitForTimeout(1200);r=await ev(()=>[...document.querySelectorAll('.kmc-r .kmc-m>b')].map(x=>x.textContent));ok('слова: «Мои заметки» сверху',r[0]==='Мои заметки',r);
+    await click('.kmc-r');await page.waitForTimeout(1000);r=await ev(()=>({out:document.querySelectorAll('.kmc-msg.out').length}));ok('свои слова — исходящие',r.out>0,r);await shot(page,'8b-chat-own');
+    await ev(()=>DL.back());await page.waitForTimeout(700);await ev(()=>{const b=[...document.querySelectorAll('.kmc-r')].find(x=>!/Мои заметки/.test(x.textContent));b&&b.click();});await page.waitForTimeout(1000);
+    r=await ev(()=>({q:document.querySelectorAll('.kmc-q mark').length}));ok('слово — ответом на реплику, слово подсвечено',r.q>0,r);await shot(page,'8c-chat-words');
+    await ev(()=>DL.back());await page.waitForTimeout(500);await click('[data-mk="ph"]');await page.waitForTimeout(900);}
+  if(only.includes('album')){
+    await ev(()=>{store.knMyV='album';DL.KN.my.tag=null;DL.render(0);});await page.waitForTimeout(1300);await shot(page,'9-album');
+    r=await ev(()=>({h:[...document.querySelectorAll('.km-h')].map(x=>x.textContent),c:document.querySelectorAll('.kma-c').length}));ok('Альбомы: подборки, фильмы, темы',r.c>5&&r.h.length>=2,r);
+    await ev(()=>{const b=[...document.querySelectorAll('.kma-c')].find(x=>/Волк/.test(x.textContent));b.click();});await page.waitForTimeout(1300);
+    r=await ev(()=>({t:document.querySelectorAll('.kma-t').length,b:(document.querySelector('.kma-ht>b')||{}).textContent,d:(document.querySelector('.kma-ht>small')||{}).textContent}));ok('альбом фильма: треки, длительность',r.t>3&&/:/.test(r.d),r);
+    await click('[data-aplay]');await page.waitForTimeout(1500);
+    r=await ev(()=>{const v=document.querySelector('video.ka-v');return {bar:!!document.querySelector('#kaBar'),on:(document.querySelector('.kma-t.on')||{dataset:{}}).dataset.ti,p:v&&!v.paused,words:document.querySelectorAll('#kaBar .kma-mt span.on').length};});r.vis=await ev(()=>{const b=document.querySelector('#kaBar').getBoundingClientRect();return b.top>0&&b.bottom<=innerHeight;});ok('«Слушать»: мини-плеер на экране, первый трек играет',r.bar&&r.vis&&r.on==='0'&&r.p,r);
+    await shot(page,'10-album-page');
+    let nx='0';for(let k=0;k<24&&nx==='0';k++){await page.waitForTimeout(500);nx=await ev(()=>(document.querySelector('.kma-t.on')||{dataset:{}}).dataset.ti);}ok('сам перешёл к следующему треку',nx==='1',nx);
+    await ev(()=>DL.back());await page.waitForTimeout(900);r=await ev(()=>({bar:!!document.querySelector('#kaBar'),p:!document.querySelector('video.ka-v').paused}));ok('ушёл в список альбомов — музыка играет дальше',r.bar&&r.p,r);await shot(page,'11-album-list-playing');
+    await ev(()=>document.querySelector('#kaBar [data-kp]').click());await page.waitForTimeout(300);r=await ev(()=>document.querySelector('video.ka-v').paused);ok('⏯ — пауза',r);
+    await ev(()=>{store.knMyV='feed';DL.render(0);});await page.waitForTimeout(900);r=await ev(()=>({bar:!!document.querySelector('#kaBar')}));ok('сменил вариант — плеер убран',!r.bar,r);}
   // поиск
   await click('[data-msr]');await page.waitForTimeout(700);await page.fill('#kmQ','client');await page.waitForTimeout(800);
   r=await ev(()=>document.querySelectorAll('#kmBody .kq').length);ok('поиск',r>0,String(r));await ev(()=>DL.back());await page.waitForTimeout(700);r=await ev(()=>!document.querySelector('#kmQ'));ok('«назад» закрывает поиск',r);
