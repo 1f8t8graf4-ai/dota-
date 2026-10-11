@@ -23,10 +23,79 @@ def his_body(e):
 
 def tail3(body,txt=None,ev=True):
     money=any(w in body for w in ('bill','banknote','cash'))
-    return ("Rules: the camera is locked off and never moves, no cuts, no zoom; "+("apart from the event, the light stays the same. " if ev else "the light stays the same. ")+
+    return ("Rules: the camera is locked off and never moves, no cuts, no zoom; "+("apart from the event, the light stays the same. " if ev else "no sudden changes of light. ")+
             "Photorealistic live-action footage with real materials and real-world sizes"+(" (banknotes look like real worn paper money)" if money else "")+
             "; every object stands or lies naturally where it belongs, no extra objects; "+(txt or "no people, no faces, no hands, no text, letters or logos anywhere.")+" "
             "Vertical 9:16, full-bleed, no black bars, borders or film frame.")
+
+# 11.10 (решение Андрея): событие — только у главных фонов (за весь фильм). Фоны сцен — просто живые, без события:
+# одно главное движение крупно и близко (как рыбка у Волка) + 1–2 фоновых, у каждого видна причина. Текст: (движение, по-русски).
+LIVE={
+2:("A long ribbon of blue-grey smoke rises from the cigarette and curls slowly through the soft daylight; thin streams of tiny bubbles rise steadily in the glass of sparkling water; drops of condensation slide down the silver shaker.",
+   "Дым от сигареты вьётся лентой, в газированной воде бегут пузырьки, по шейкеру сползают капли."),
+3:("Colorful tropical fish swim slowly back and forth across the glowing aquarium and tiny bubbles stream upward; outside the window, the white plume of the lake fountain sways and sprays in the wind; a thin wisp of steam rises from the espresso.",
+   "В аквариуме плавают рыбы и бегут пузырьки, за окном качается струя фонтана, над эспрессо пар."),
+4:("The small candle flame flickers and its warm light dances softly on the wine glass, the roses and the gold ring; tiny bubbles rise in the cocktail; far behind, the little table lamps glow and shimmer.",
+   "Пламя свечи дрожит, свет бегает по бокалу, розам и кольцу; в коктейле пузырьки."),
+6:("Outside the half-closed blinds the green trees sway in the breeze, and soft leaf shadows move across the armchairs and the floor; fine dust specks drift slowly through the warm lamp light.",
+   "За жалюзи качаются деревья, по креслам и полу бегут тени листвы, в свете лампы плывут пылинки."),
+7:("The long white ribbons on the statue flutter gently in the evening breeze; the strings of colored bulbs above the street twinkle; in the background the lit Ferris wheel turns slowly.",
+   "Ленты на статуе колышутся на ветру, гирлянды мерцают, вдали медленно крутится колесо обозрения."),
+8:("The tropical fish and the small grey shark swim slowly back and forth in the glowing aquarium and bubbles stream up from the filter; a ribbon of smoke rises from the cigarette; raindrops run down the window glass.",
+   "В аквариуме плавают рыбы и маленькая акула, бегут пузырьки; дымит сигарета; по окну текут капли дождя."),
+9:("On the small old TV, blurry horses gallop around the track; the pink neon light through the half-open door pulses slowly; a ribbon of smoke rises from the cigarette in the ashtray.",
+   "На телике скачут лошади, розовый неон из клуба пульсирует, дымит сигарета."),
+10:("One of the lawn sprinklers sweeps a slow arc of water back and forth across the grass, the drops glittering; the long willow branches sway in the wind; thin steam rises from the spilled coffee.",
+   "Поливалка водит струёй по газону, качаются ветки ивы, от пролитого кофе пар."),
+11:("The blades of the small desk fan spin and its breeze makes the tall vertical blinds sway gently, slices of daylight shifting between them; a thin wisp of steam rises from the coffee.",
+   "Крутится настольный вентилятор, от него покачиваются жалюзи и бегут полосы света; от кофе пар."),
+12:("The white lace curtains billow softly in the draft from the slightly open window, their floral pattern drifting in the pale light; a slow curl of steam rises from the espresso.",
+   "Кружевные занавески колышутся от сквозняка, над эспрессо вьётся пар."),
+14:("Behind the little window of the silver cassette player the tape reels turn steadily; thin streams of bubbles rise in the sparkling water; the small TV on the credenza flickers with a soft, blurry picture.",
+   "В плеере крутятся катушки кассеты, в воде бегут пузырьки, на телевизоре мелькает картинка."),
+15:("Fine dust drifts through the thin stripes of daylight from the blinds; the stripes gently brighten and soften as thin clouds pass the sun outside, making the thick paper of the cards glow; drops of condensation slide down the glass of ice water.",
+   "В полосах света из жалюзи плывут пылинки, свет то ярче, то мягче — бумага визиток светится; по стакану сползают капли."),
+17:("The windshield wipers sweep back and forth in a slow, steady rhythm; raindrops trickle down the glass between the strokes; white steam drifts up from the manhole in the neon street.",
+   "Дворники ходят туда-сюда, по стеклу текут капли, из люка валит пар."),
+18:("The small desk fan spins and the red-white-and-blue bunting ripples in its breeze; steam rises from the paper cup of coffee; outside the big windows, the green trees sway.",
+   "Крутится вентилятор, от него трепещут бумажные гирлянды; над кофе пар; за окном качаются деревья."),
+20:("The hanging lamp sways slowly on its cord, its pool of light drifting back and forth over the maps; fine dust trickles down from the concrete ceiling as the bunker trembles from distant shelling.",
+   "Висящая лампа медленно качается, свет ползает по картам; с потолка сыплется пыль от далёких разрывов."),
+22:("The empty lifeboat swings gently on its ropes as the ship slowly tilts; thin freezing mist drifts across the deck and over the black water far below; the round deck lamps flicker faintly.",
+   "Пустая шлюпка покачивается на канатах, по палубе тянется морозный туман, лампы чуть мигают."),
+23:("The brass lamp sways slowly on its short chain as the ship tilts, its warm light sliding back and forth across the blueprint; the water in the glass leans at an angle; the second hand of the pocket watch ticks on.",
+   "Лампа медленно качается на цепочке — корабль кренится, свет ползает по чертежу; вода в стакане стоит наклонно; тикают часы."),
+24:("Rippling reflections of the sunlit sea dance softly across the ceiling and the velvet curtains; the curtains sway gently in the sea breeze from the open porthole; the loose corset laces swing slowly.",
+   "По потолку бегут блики от моря за иллюминатором, бархатные шторы колышутся, шнурки корсета качаются."),
+26:("The curtain hanging out of the open upstairs window flaps and billows in the hot wind; heat haze shimmers above the asphalt; the small red light on the police radio blinks.",
+   "Занавеска из окна второго этажа (откуда удрал Джесси) полощется на ветру, над асфальтом марево, мигает огонёк рации."),
+27:("The ceiling fans turn steadily; bubbles rise through the diet cola and condensation drops slide down the cup; the red pendant lamps sway very slightly in the fans' breeze.",
+   "Крутятся потолочные вентиляторы, в коле бегут пузырьки, лампы чуть покачиваются."),
+28:("The bare bulb sways slowly on its cord and the shadows of the joists swing back and forth across the dirt; dust floats in the light.",
+   "Голая лампочка медленно качается, тени балок ходят по земле, в свете плывёт пыль."),
+29:("The sheer curtains billow slowly in the warm night breeze from the window; a thin curl of steam rises from the coffee mug; the lamp light glows steadily.",
+   "Тюль колышется от ночного ветерка, над кружкой вьётся пар."),
+30:("The dry grass bends and waves in the hot wind; thin dust blows low across the ground and swirls around the tires; heat haze shimmers above the dirt track.",
+   "Сухая трава гнётся на горячем ветру, по земле метёт пыль, над дорогой марево."),
+32:("A soft stream of air from the air conditioning gently sways the closed wooden blinds and the leaves of the big green plant; thin slices of daylight flicker between the slats onto the black table; tiny ripples tremble in the glasses of water.",
+   "От кондиционера покачиваются жалюзи и листья большого растения, между ламелями мигают полоски света, в стаканах дрожит вода."),
+34:("The smartphone on the table keeps lighting up: green message bubbles with no letters pop up on its screen one after another and fade; condensation drops slide down the cold colored bottles.",
+   "Телефон на столе всё время загорается — сыплются зелёные сообщения; по холодным бутылкам ползут капли."),
+35:("The mirrored disco ball turns slowly and its light spots glide across the walls and the velvet booth; thin haze drifts through the pink neon; bubbles rise in the champagne glasses; the phone screen glows green.",
+   "Крутится диско-шар, по стенам ползут зайчики, плывёт дымка, в бокалах пузырьки."),
+36:("Thin steam rises from the hot beef patty and its juices glisten; condensation drops slide down the paper cup; the warm studio lights shimmer softly in the background.",
+   "От горячей котлеты идёт пар, сок блестит, по стаканчику сползают капли."),
+37:("On the laptop screen the glowing line chart keeps moving, dipping and climbing again in a loop; the cool screen light flickers softly over the gavel and the poker chips.",
+   "На ноутбуке без остановки ползёт график — вниз и снова вверх, свет экрана бегает по молотку и фишкам."),
+}
+# предметы, без которых живому фону сцены нечему двигаться (только в живом промте, событийный не трогаю)
+LIVE_EDITS={
+4:[("a short table lamp with a cream fabric shade glowing warm;","a short table lamp with a cream fabric shade glowing warm; a small white candle burning in a low glass holder;")],
+11:[("a paper cup of black coffee;","a paper cup of black coffee; a small electric desk fan on the counter;")],
+12:[("a big window with glowing white lace curtains with a floral pattern","a big window, slightly open, with glowing white lace curtains with a floral pattern")],
+24:[("in the evening, empty","on a bright morning, empty"),("heavy dark-red velvet curtains;","heavy dark-red velvet curtains framing an open round porthole with the sunlit sea outside;"),
+    ("Light: warm golden wall sconces.","Light: warm golden wall sconces and soft daylight from the porthole; rippling reflections of the sea play across the ceiling.")],
+}
 
 # take='his' — его промт как есть; take='mix' — текст (base: mine/his, ключ mk) + правки + новое событие (ev: [время, текст])
 V={
@@ -282,16 +351,27 @@ def build():
             why+=f" Строка цвета почищена — было «{grade}»: предметы, людей и цитаты из этой строки нейронка рисует буквально.";grade=G[n];take+=' · строка цвета почищена'
         tl=' '.join(f'[{a}] {b}' for a,b in seg)
         p=f"{body} Grade: {grade} Timeline — one continuous shot, the same framing for all 8 seconds: {tl} {tail3(body,v.get('txt'))}"
-        # 13.9.6: запасной — тот же фон без события (событие не вышло за 2 попытки): спокойная часть на все 8 секунд
-        pc=f"{body} Grade: {grade} Timeline — one continuous shot, the same framing for all 8 seconds: [00:00-00:08] {seg[0][1].strip()} This calm motion simply continues for all 8 seconds; nothing sudden happens and nothing new appears. {tail3(body,v.get('txt'),ev=False)}"
+        # спокойный вариант (без события): у фонов сцен — живой (LIVE: главное движение крупно), у главных — спокойная часть их промта
+        lru=''
+        if e['kind']=='scene':
+            lb=body
+            for a,b in LIVE_EDITS.get(n,[]):
+                assert a in lb,(n,a);lb=lb.replace(a,b)
+            lt,lru=LIVE[n]
+        else:lb,lt=body,seg[0][1].strip()
+        pc=f"{lb} Grade: {grade} Timeline — one continuous shot, the same framing for all 8 seconds: [00:00-00:08] {lt} This motion continues smoothly for all 8 seconds; nothing sudden happens and nothing new appears. {tail3(lb,v.get('txt'),ev=False)}"
         out.append(dict(n=n,grp=e['grp'],kind=e['kind'],title=e['title'],file=e['file'],where=e['where'],take=take,why=why,ev=ev_ru,loop=loop,
-                        seam=be.LOOP_SEAM[loop],prompt=p,calm=pc))
+                        seam=be.LOOP_SEAM[loop],prompt=p,calm=pc,live=lru))
     return out,cnt
 
 if __name__=='__main__':
     R,cnt=build()
     L=['СРАВНЕНИЕ ПРОМТОВ ФОНОВ — мои и второго Claude (v2 «с событием»), 11.10','',
-       'КОРОТКО',
+       'РЕШЕНИЕ АНДРЕЯ (11.10, последнее — главнее всего ниже)',
+       '• Кардинальное событие на 4-й секунде — только у 9 ГЛАВНЫХ фонов (награда за весь фильм / сериал / интервью). У них ниже — промт с событием.',
+       '• 28 фонов СЦЕН — просто живые, без события: одно главное движение крупно и близко (рыбы, дым, пар, вода, вентилятор, неон, шторы, дворники) и 1–2 фоновых. У них ниже — живой промт; строка «Событие» — только для истории, его не делать.',
+       '• Все — вертикаль 9:16, 8 с. Стоящие фоны остаются, пока не готов новый.','',
+       'КОРОТКО (сравнение с промтами второго Claude, до решения)',
        '• Его промты — почти дословно мои тексты (место, предметы, свет, цвет) + событие на 4-й секунде. Хуже стало из-за событий.',
        '• Где событие — свет, экран, вода, дым, дрожь — всё нормально. Где летит куча мелочи (деньги, листовки, фишки, лёд), что-то двигается «само» (шнурки, магнит, сыр), кадр трясётся или что-то ломается — нейронка рисует фальшь. Так и вышли пластиковые деньги у «Волка».',
        '• В нескольких местах он поменял само место — где-то по делу (по реальным кадрам: стол Бейтмана, спальня «Я тот, кто стучит», переговорная с визитками), где-то зря (главный «Сопрано»: ты просил всю банду, а он вернул кухню; убрал аквариум из Женевы).',
@@ -313,8 +393,12 @@ if __name__=='__main__':
     g=None
     for r in R:
         if r['grp']!=g:g=r['grp'];L+=['',f'############ {g.upper()} ############','']
-        L+=[f"=== {r['n']}. {r['title']} → назови: {r['file']}.mp4 ===",
-            f"Брать: {r['take']}.",f"Почему: {r['why']}",f"Событие: {r['ev']}",f"Петля: {be.LOOP_RU[r['loop']]}.",'',r['prompt'],'','']
+        if r['kind']=='scene':   # фон сцены — живой, без события (решение Андрея 11.10)
+            L+=[f"=== {r['n']}. {r['title']} → назови: {r['file']}.mp4 · ЖИВОЙ, без события ===",
+                f"Движение: {r['live']}",f"Почему место и предметы такие: {r['why']}",f"(Событие было бы: {r['ev']} — не делать.)",'',r['calm'],'','']
+        else:
+            L+=[f"=== {r['n']}. {r['title']} → назови: {r['file']}.mp4 · ГЛАВНЫЙ, с событием ===",
+                f"Брать: {r['take']}.",f"Почему: {r['why']}",f"Событие: {r['ev']}",f"Петля: {be.LOOP_RU[r['loop']]}.",'',r['prompt'],'','']
     open('фоны-промты-СРАВНЕНИЕ.txt','w',encoding='utf-8').write('\n'.join(L))
     json.dump(R,open('фоны-промты-СРАВНЕНИЕ.json','w',encoding='utf-8'),ensure_ascii=False,indent=1)
     print('готово:',cnt,'промтов',len(R))
