@@ -1046,7 +1046,7 @@ function knLgDD(){sfx('tap');const w=knSheet(`<b class="kn-sh2">Язык фил�
    выбрал все: Лента, Разговорник, Переписка, Альбомы). Шапка у всех одна: «Фразы | Слова», ＋ (своё слово), 🔍, пилюля варианта → шторка.
    Вариант = MV[id]={n,d,html(kind,T),bind(st,kind),page?(kind,t,T)} (page — своя страница подборки: KN.my.tag, «назад» — в список). ---------- */
 const myKind=()=>store.knMyKind==='w'?'w':'ph';
-KN.my={tag:null,q:'',srch:false,ft:'★all',all:0,snd:false};
+KN.my={tag:null,q:'',srch:false,ft:'★all',cf:'★all',all:0,snd:false};
 const MV={};
 const myV=()=>MV[store.knMyV]?store.knMyV:'feed';
 const wDue=x=>!!x.ru&&(!x.due||x.due<=Date.now());
@@ -1240,6 +1240,125 @@ MV.book={n:'Разговорник',d:'Как книжный разговорн�
     bd.querySelectorAll('[data-bdue]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');myTrain({n:'Повторить сегодня',L:due});});
     // текущая глава подсвечена в указателе
     const secs=[...bd.querySelectorAll('.kmb-c')];if(secs.length){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=+e.target.id.split('-')[1];bd.querySelectorAll('.kmb-rail [data-bj],.kmb-toc [data-bj]').forEach(b=>b.classList.toggle('on',+b.dataset.bj===i));}});},{rootMargin:'-20% 0px -70% 0px'});secs.forEach(s=>io.observe(s));}}};
+/* ---------- общий аудиоплеер «Переписки» и «Альбомов» (KA): один скрытый <video> (на iPhone звук разрешён элементу после первого
+   нажатия), играет отрезок фразы (у слова — реплику, где оно прозвучало), конец → следующая из очереди. Интерфейс — колбэк ui(c,событие,доля,время).
+   Играет дальше, пока ходишь внутри «Мои» того же варианта (KA.keep), глушится при уходе (DL.onStop). ---------- */
+KA=(()=>{let v=null,Q=[],i=-1,raf=0,cb=null,nx=0,owner='';
+  const mk=()=>{if(!v){v=document.createElement('video');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.playsInline=true;v.preload='auto';v.className='ka-v';document.body.appendChild(v);}return v;};
+  const ok=c=>!!(c&&c.s&&c.p&&c.f);
+  const seg=c=>[Math.max(0,c.f.a-c.p.a-0.12),c.f.b-c.p.a+0.3];
+  const emit=(c,ev,k,t)=>{if(cb&&c)try{cb(c,ev,k,t);}catch(e){console.error(e);}};
+  const tick=()=>{raf=0;const c=Q[i];if(!ok(c)||!v||v.paused)return;const [a,b]=seg(c);
+    if(v.currentTime>=b){v.pause();emit(c,'t',1,c.f.b);emit(c,'end');nx=setTimeout(()=>play(i+1),650);return;}
+    emit(c,'t',Math.max(0,Math.min(1,(v.currentTime-a)/Math.max(.2,b-a))),v.currentTime+c.p.a);raf=requestAnimationFrame(tick);};
+  const play=k=>{clearTimeout(nx);cancelAnimationFrame(raf);raf=0;const was=Q[i];
+    while(k<Q.length&&!ok(Q[k]))k++;   // своё слово без сцены — играть нечем, дальше
+    if(k>=Q.length){i=-1;if(v)try{v.pause();}catch(e){}emit(was,'stop');return;}
+    if(was&&was!==Q[k])emit(was,'stop1');
+    i=k;const c=Q[k],[a]=seg(c),vv=mk(),src=assetUrl(scEpKey(c.s,c.pi,'mp4'));vv.volume=store.scVol==null?1:store.scVol;vv.muted=false;
+    if(vv.dataset.src!==src){vv.dataset.src=src;vv.src=src+'#t='+a.toFixed(2);vv.onloadedmetadata=()=>{if(Q[i]===c)try{vv.currentTime=a;}catch(e){}};}else try{vv.currentTime=a;}catch(e){}
+    vv.onplay=()=>{if(!raf)raf=requestAnimationFrame(tick);};vv.onerror=()=>{emit(c,'err');nx=setTimeout(()=>play(i+1),800);};
+    const pr=vv.play();if(pr&&pr.catch)pr.catch(()=>emit(c,'pause'));emit(c,'play');};
+  return {start(L,k,ui,own){if(cb&&cb!==ui&&Q[i])emit(Q[i],'stop');Q=L;cb=ui;owner=own||'';play(k||0);},
+    toggle(){const c=Q[i];if(!c||!v)return;if(v.paused){const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{});emit(c,'play');if(!raf)raf=requestAnimationFrame(tick);}else{v.pause();emit(c,'pause');}},
+    next(){if(i>=0)play(i+1);},
+    stop(){clearTimeout(nx);cancelAnimationFrame(raf);raf=0;const c=Q[i];i=-1;if(v)try{v.pause();}catch(e){}emit(c,'stop');},
+    keep(){return i>=0&&owner===myV();},cur(){return i>=0?Q[i]:null;},list(){return Q;},paused(){return !v||v.paused;}};})();
+const mmss=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
+const durOf=c=>c&&c.f?Math.max(1,c.f.b-c.f.a):0;
+
+/* ---------- Вариант 3. «Переписка» (как Telegram): фильм = чат, фразы = голосовые героев (▶, волна, длительность) с текстом и переводом,
+   эпизоды — как даты. Сверху папки = теги. Слова — ответом на реплику из фильма; свои слова — чат «Мои заметки». ---------- */
+const MON=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+const tTime=ts=>{if(!ts)return '';const d=new Date(ts),n=new Date();if(d.toDateString()===n.toDateString())return d.toTimeString().slice(0,5);if(d.toDateString()===new Date(n-864e5).toDateString())return 'вчера';return d.getDate()+' '+MON[d.getMonth()];};
+const wave=k=>Array.from({length:28},(_,j)=>`<i style="height:${(16+D.hs(k+'|'+j)%76)}%"></i>`).join('');
+// чаты папки: фразы/слова, сгруппированные по фильму; «Мои заметки» (свои слова) — сверху, как «Избранное»
+function chChats(kind,L){const W=kind==='w',m={},o=[];
+  L.forEach(x=>{const k=W?(x.own?'★own':wFilm(x)?'f:'+wFilm(x):''):'f:'+dictFilm(x.s);if(!k)return;if(!m[k]){m[k]=[];o.push(k);}m[k].push(x);});
+  const last=x=>W?(x.at||0):gotT(x);
+  return o.map(k=>({k,L:m[k],t:Math.max(0,...m[k].map(last)),last:m[k].slice().sort((a,b)=>last(b)-last(a))[0]})).sort((a,b)=>(b.k==='★own')-(a.k==='★own')||b.t-a.t);}
+const chDue=(kind,L)=>kind==='w'?L.filter(wDue).length:L.filter(c=>c.due).length;
+MV.chat={n:'Переписка',d:'Как Telegram: фильм — чат, фразы — голосовые героев с текстом и переводом, эпизоды — как даты. Сверху папки — теги.',
+  html(kind,T){const W=kind==='w',FF=DL.films(),fold=T.filter(t=>t.sec!=='film'&&t.k!=='★own'),cf=fold.find(t=>t.k===KN.my.cf)||fold.find(t=>t.k==='★all')||fold[0],C=chChats(kind,cf?cf.L:[]);
+    return `<div class="kmc-fold">${fold.map(t=>`<button data-cf="${E(t.k)}" class="${t===cf?'on':''}${t.hot?' hot':''}">${E(t.k==='★all'?'Все':t.n)}${t.hot?` <i>${t.L.length}</i>`:''}</button>`).join('')}</div>
+      <div class="kmc-list">${C.map(ch=>{const own=ch.k==='★own',sh=own?null:FF.find(x=>'f:'+x.k===ch.k),s0=sh?sh.s0:ch.L[0].s||scOf(ch.L[0].sid),due=chDue(kind,ch.L),lt=ch.last;
+        const prev=W?(own?`${E(lt.w)} — ${E(lt.ru||'')}`:`<b>${E(lt.w)}</b> · ${E(lt.ru||'')}`):E(D.T(lt.f));
+        return `<button class="kmc-r km-in" data-ct="${E(ch.k)}"><span class="kmc-av${own?' own':''}"${own||!s0?'':` style="background-image:${D.poster(s0)}"`}>${own?'🔖':''}</span>
+          <span class="kmc-m"><b>${own?'Мои заметки':E(ch.k.slice(2))}</b><small>${prev}</small></span><span class="kmc-meta"><em>${tTime(ch.t)}</em>${due?`<i class="kmc-bd due">${due}</i>`:`<i class="kmc-bd">${ch.L.length}</i>`}</span></button>`;}).join('')||'<div class="kn-empty">В этой папке пусто</div>'}</div>`;},
+  page(kind,t){const W=kind==='w',own=t.k==='★own',sh=own?null:DL.films().find(x=>'f:'+x.k===t.k),s0=sh?sh.s0:null,items=W?t.L.map(wCard):t.L,due=chDue(kind,t.L);
+    let last='',msgs='';items.forEach((c,i)=>{const day=c.s?`${c.s.sub||c.s.title} · эпизод ${c.pi+1}`:'';if(day&&day!==last){last=day;msgs+=`<div class="kmc-day"><span>${E(day)}</span></div>`;}
+      const st=W?(!c.w.ru?'':mywLearned(c.w)?'выучено ✓✓':wDue(c.w)?'пора повторить':`повтор ${mywWhen(c.w.due)}`):(c.due?'пора повторить':c.m>=3?'выучено ✓✓':`учишь · ✓ ${c.m}/3`);
+      const voice=c.f&&c.s?`<div class="kmc-voice"><button class="kmc-pl" data-vp="${E(c.k)}" aria-label="Слушать">${SI.play}</button><span class="kmc-wave" data-vk="${E(c.k)}">${wave(c.k)}</span><em>${mmss(durOf(c))}</em></div>`:'';
+      if(W)msgs+=`<div class="kmc-msg${c.s?'':' out'} km-in" data-ci="${i}"><div class="kmc-b">${c.line?`<div class="kmc-q"><b>${E(c.s?dictFilm(c.s):'')}</b><span>${markWord(c.line,c.w.w,'<mark>','</mark>')}</span></div>`:''}${voice}
+        <p class="kmc-en" data-co="${i}">${E(c.w.w)}</p><p class="kmc-ru">${c.w.ru?E(c.w.ru):'<i>без перевода</i>'}</p>${(c.w.tags||[]).length?`<p class="kmc-tg">${c.w.tags.map(x=>'#'+E(x)).join(' ')}</p>`:''}<span class="kmc-ft">${E(st)}</span></div></div>`;
+      else msgs+=`<div class="kmc-msg km-in${c.due?' due':''}" data-ci="${i}"><div class="kmc-b">${voice}<p class="kmc-en" data-co="${i}">${E(D.T(c.f))}</p><p class="kmc-ru">${E(c.f.ru)}</p><span class="kmc-ft">${E(st)}</span></div></div>`;});
+    return `<div class="kmc-hd"><button class="dl-up" data-mup aria-label="Назад">${ui('back')}</button><span class="kmc-av sm${own?' own':''}"${s0?` style="background-image:${D.poster(s0)}"`:''}>${own?'🔖':''}</span>
+        <span class="kmc-ht"><b>${own?'Мои заметки':E(t.n)}</b><small>${W?nWd(items.length):nPh(items.length)}${due?` · ${due} пора повторить`:''}</small></span></div>
+      <div class="kmc-chat"${s0?` style="--bg:${knBd(s0)||D.cover(s0)}"`:''}>${msgs}</div>
+      <div class="kmc-bar">${items.some(c=>c.f&&c.s)?`<button class="kf-go" data-call>${SI.play} Слушать всё</button>`:''}<button class="kmp-tr" data-ctr>Тренировать <small>${Math.min(W?8:10,W?t.L.filter(x=>x.ru).length:items.length)}</small></button></div>`;},
+  bind(bd,kind){const W=kind==='w',T=myTags(kind);
+    bd.querySelectorAll('[data-cf]').forEach(b=>b.onclick=()=>{if(b.classList.contains('on'))return;sfx('tap');haptic('sel');KN.my.cf=b.dataset.cf;bd.innerHTML=myBodyHTML(kind);myBindBody(DL.root.querySelector('#dlStage'));});
+    {const on=bd.querySelector('.kmc-fold .on'),row=on&&on.parentNode;if(on&&on.offsetLeft+on.offsetWidth>row.clientWidth-8)DL.hcenter(on);}
+    bd.querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');KN.my.tag=b.dataset.ct;DL.render(1);});
+    const t=KN.my.tag&&T.find(x=>x.k===KN.my.tag);if(!t)return;const items=W?t.L.map(wCard):t.L;
+    bd.querySelectorAll('[data-vp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const k=b.dataset.vp,i=items.findIndex(c=>c.k===k);if(i<0)return;haptic('light');
+      const cur=KA.cur();if(cur&&cur.k===k){KA.toggle();return;}KA.start(items,i,kaChatUI,'chat');});
+    bd.querySelectorAll('[data-co]').forEach(b=>b.onclick=()=>{const c=items[+b.dataset.co];if(!c)return;sfx('tap');knOpen(b,c,{L:items.filter(x=>x.s||x.w)});});
+    bd.querySelectorAll('[data-call]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');KA.start(items,0,kaChatUI,'chat');});
+    bd.querySelectorAll('[data-ctr]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');KA.stop();myTrain(t);});
+    // если голосовое уже играет (вернулся в чат) — показать
+    const c=KA.cur();if(c&&KA.keep())kaChatUI(c,'play');}};
+function kaChatUI(c,ev,k){const q=CSS.escape(c.k),w=document.querySelector(`.kmc-wave[data-vk="${q}"]`),pb=document.querySelector(`[data-vp="${q}"]`),msg=w&&w.closest('.kmc-msg');
+  if(ev==='play'){document.querySelectorAll('.kmc-msg.pl').forEach(x=>{if(x!==msg)x.classList.remove('pl');});if(msg){msg.classList.add('pl');const r=msg.getBoundingClientRect();if(r.top<60||r.bottom>innerHeight-150)msg.scrollIntoView({block:'center',behavior:fxOK()?'smooth':'auto'});}if(pb)pb.innerHTML=SI.pause;}
+  else if(ev==='t'){if(w){const B=w.children,n=Math.round(k*B.length);for(let j=0;j<B.length;j++)B[j].classList.toggle('on',j<n);}}
+  else if(ev==='pause'){if(pb)pb.innerHTML=SI.play;}
+  else{if(pb)pb.innerHTML=SI.play;if(msg)msg.classList.remove('pl');if(w&&ev!=='end')[...w.children].forEach(x=>x.classList.remove('on'));}}
+
+/* ---------- Вариант 4. «Альбомы» (как Apple Music): фильм = альбом, фразы = треки. «▶ Слушать» — фразы идут подряд звуком,
+   снизу мини-плеер с фразой в такт речи; нажал на плеер — то же окно фразы. Подборки и темы — обложки-мозаики. ---------- */
+let KTT=null;   // время слов текущего трека — подсветка в мини-плеере
+function kaBar(){let b=$('#kaBar');const root=DL.root;if(!b&&root&&root.isConnected){b=document.createElement('div');b.id='kaBar';b.className='kma-mp';   // в body: у корня словаря бывает transform (анимации) — fixed внутри него уезжал
+    b.innerHTML=`<span class="kma-mc"></span><span class="kma-mx"><b class="kma-mt"></b><small class="kma-ms"></small></span><button class="kma-mb" data-kp aria-label="Пауза">${SI.pause}</button><button class="kma-mb" data-kn aria-label="Следующая">${ui('fwd')}</button><i class="kma-mpr"><i></i></i>`;
+    document.body.appendChild(b);b.querySelector('[data-kp]').onclick=e=>{e.stopPropagation();haptic('light');KA.toggle();};b.querySelector('[data-kn]').onclick=e=>{e.stopPropagation();haptic('light');KA.next();};
+    b.onclick=()=>{const c=KA.cur(),L=KA.list();if(!c)return;sfx('tap');knOpen(b,c,{L:L.filter(x=>x.s)});};   // нажал на плеер — то же окно фразы
+    if(fxOK())b.animate([{transform:'translateY(24px)',opacity:0},{transform:'none',opacity:1}],{duration:380,easing:SPRING});}
+  return b;}
+function kaAlbumUI(c,ev,k,t){
+  if(ev==='stop'){document.querySelectorAll('.kma-t.on').forEach(x=>x.classList.remove('on'));const b=$('#kaBar');if(b)b.remove();KTT=null;return;}
+  const row=document.querySelector(`.kma-t[data-tk="${CSS.escape(c.k)}"]`);
+  if(ev==='stop1'){if(row)row.classList.remove('on');return;}
+  const b=kaBar();if(!b)return;
+  if(ev==='play'){const T=c.w?String(c.f.en||''):D.T(c.f),W=T.split(/\s+/).filter(Boolean);
+    b.querySelector('.kma-mc').style.backgroundImage=`url('${assetUrl(scEpKey(c.s,c.pi,'jpg'))}')`;b.querySelector('.kma-mt').innerHTML=W.map(w=>`<span>${E(w)}</span>`).join(' ');
+    b.querySelector('.kma-ms').textContent=c.w?`${c.w.w} — ${c.w.ru||''}`:c.f.ru;KTT={c,TT:kLin(c.f,W)};wtLoad(c.s.id).then(R=>{if(KTT&&KTT.c===c){const X=kFit(c.f,W,R);if(X)KTT.TT=X;}});
+    b.classList.remove('pa');b.querySelector('[data-kp]').innerHTML=SI.pause;document.querySelectorAll('.kma-t.on').forEach(x=>{if(x!==row)x.classList.remove('on');});if(row)row.classList.add('on');}
+  else if(ev==='t'){b.querySelector('.kma-mpr i').style.transform=`scaleX(${k.toFixed(3)})`;if(KTT&&KTT.c===c)b.querySelectorAll('.kma-mt span').forEach((sp,j)=>{const x=KTT.TT[j]||[c.f.a,c.f.b];sp.classList.toggle('on',t>=x[0]-0.04);});}
+  else if(ev==='pause'){b.classList.add('pa');b.querySelector('[data-kp]').innerHTML=SI.play;}}
+const alItems=(kind,t)=>kind==='w'?t.L.map(wCard):t.L;
+const alCov=(t,big)=>{if(t.sec==='film'&&t.s)return `<span class="kma-cv po${big?' big':''}" style="background-image:${D.poster(t.s)}"></span>`;const f=myCov(t,4);
+  return f.length?mosaic(f,'kma-cv'+(big?' big':'')):`<span class="kma-cv n0${big?' big':''}"><i>${t.ico||'⭐'}</i></span>`;};
+MV.album={n:'Альбомы',d:'Как Apple Music: фильм — альбом, фразы — треки. «▶ Слушать» — фразы идут подряд звуком, внизу плеер, фраза загорается в такт.',
+  html(kind,T){const W=kind==='w',pick=T.filter(t=>t.sec==='pick'),films=T.filter(t=>t.sec==='film'),tops=T.filter(t=>t.sec==='topic'||t.sec==='tag');
+    const card=t=>`<button class="kma-c km-in${t.hot?' hot':''}" data-at="${E(t.k)}">${alCov(t)}<b>${E(t.n)}</b><small>${W?nWd(t.L.length):nPh(t.L.length)}</small></button>`;
+    return `${pick.length?`<h3 class="km-h">Подборки</h3><div class="kma-row">${pick.map(card).join('')}</div>`:''}
+      ${films.length?`<h3 class="km-h">${W?'Из фильмов':'Фильмы'}</h3><div class="kma-grid">${films.map(card).join('')}</div>`:''}
+      ${tops.length?`<h3 class="km-h">${W?'Твои теги':'Темы'}</h3><div class="kma-row">${tops.map(card).join('')}</div>`:''}`;},
+  page(kind,t){const W=kind==='w',items=alItems(kind,t),dur=items.reduce((a,c)=>a+durOf(c),0),bg=t.s?(knBd(t.s)||D.cover(t.s)):(myCov(t,1)[0]||{}).u||'none';
+    return `<div class="kma-hd km-in" style="--bg:${bg}"><span class="kma-hbg"></span><button class="dl-up" data-mup aria-label="Назад">${ui('back')}</button>${alCov(t,true)}
+        <div class="kma-ht"><em>${W?'Мои слова':'Мои фразы'}${t.sec==='film'&&t.s?' · '+E(KS[t.s.kind]||''):''}</em><b>${E(t.n)}</b><small>${W?nWd(items.length):nPh(items.length)} · ${mmss(dur)}</small>
+        <div class="kma-acts">${items.some(c=>c.s&&c.f)?`<button class="kf-go" data-aplay>${SI.play} Слушать</button><button class="kma-b2" data-ashuf>Перемешать</button>`:''}<button class="kma-b2" data-atr>Тренировать</button></div></div></div>
+      <ol class="kma-tl">${items.map((c,i)=>`<li><button class="kma-t km-in" data-tk="${E(c.k)}" data-ti="${i}"><span class="kma-n"><i>${i+1}</i>${SI.play}</span><span class="kma-x"><b>${E(c.w?c.w.w:D.T(c.f))}</b><small>${E(c.w?(c.w.ru||''):c.f.ru)}</small></span><em class="kma-d">${c.f&&c.s?mmss(durOf(c)):'—'}</em></button><button class="kma-o" data-to="${i}" aria-label="Открыть">${ui('fwd')}</button></li>`).join('')}</ol>`;},
+  bind(bd,kind){const T=myTags(kind);
+    bd.querySelectorAll('[data-at]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');KN.my.tag=b.dataset.at;DL.render(1);});
+    const t=KN.my.tag&&T.find(x=>x.k===KN.my.tag);
+    if(t){const items=alItems(kind,t);
+      bd.querySelectorAll('[data-ti]').forEach(b=>b.onclick=()=>{const i=+b.dataset.ti,c=items[i];haptic('light');if(!c||!c.s||!c.f){knOpen(b,c,{L:items});return;}
+        const cur=KA.cur();if(cur&&cur.k===c.k){KA.toggle();return;}KA.start(items,i,kaAlbumUI,'album');});
+      bd.querySelectorAll('[data-to]').forEach(b=>b.onclick=e=>{e.stopPropagation();const c=items[+b.dataset.to];if(!c)return;sfx('tap');knOpen(b,c,{L:items});});
+      bd.querySelectorAll('[data-aplay]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');KA.start(items,0,kaAlbumUI,'album');});
+      bd.querySelectorAll('[data-ashuf]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');KA.start(shuffle(items.slice()),0,kaAlbumUI,'album');});
+      bd.querySelectorAll('[data-atr]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');KA.stop();myTrain(t);});}
+    const c=KA.cur();if(c&&KA.keep())kaAlbumUI(c,'play');}};
 D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + «Мои фразы и слова»',ic:'🎞',sw:'linear-gradient(160deg,#2b2d33,#0b0b0d)',noAnim:true,my:true,flt:true,skip1:false,
   d:'«Кинотека» — фильмы и сколько фраз собрано; нажал на «Фильмы / Сериалы / Интервью» — раздел на весь экран, листаешь вбок; фильм → сцены строками → эпизод раскрывается → фразы строками; нажал на фразу — открывается красиво: момент крупно, фраза субтитром в такт речи. «Мои фразы и слова» — «Фразы / Слова» и 4 варианта на пробу: Лента, Разговорник, Переписка, Альбомы.',
   bg:`<div class="kn-bg" id="knBg"></div>`,titleHTML:`<h1>Словарь <button class="kn-help" data-help aria-label="Как устроен словарь">?</button></h1>`,sub:'Фразы из фильмов',
