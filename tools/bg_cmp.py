@@ -21,23 +21,24 @@ def his_body(e):
     body=e['body'] if 'body' in e else f"Setting: {e['set']} Camera: {e['cam']} Objects: {e['obj']} Light: {e['light']}"
     return body,e['grade']
 
-def tail3(body):
+def tail3(body,txt=None):
     money=any(w in body for w in ('bill','banknote','cash'))
     return ("Rules: the camera is locked off and never moves, no cuts, no zoom; apart from the event, the light stays the same. "
             "Photorealistic live-action footage with real materials and real-world sizes"+(" (banknotes look like real worn paper money)" if money else "")+
-            "; every object stands or lies naturally where it belongs, no extra objects; no people, no faces, no hands, no text, letters or logos anywhere. "
+            "; every object stands or lies naturally where it belongs, no extra objects; "+(txt or "no people, no faces, no hands, no text, letters or logos anywhere.")+" "
             "Vertical 9:16, full-bleed, no black bars, borders or film frame.")
 
 # take='his' — его промт как есть; take='mix' — текст (base: mine/his, ключ mk) + правки + новое событие (ev: [время, текст])
 V={
 1:dict(take='mix',base='own',
-  body="Setting: the trading floor of a 1990s Long Island brokerage firm late at night, after a wild office party, nobody left. Camera: low angle just above the nearest desk, 28mm lens, the fishbowl in the center and a long aisle of desks behind it. Objects: on the nearest desk, in the center: a round glass fishbowl with one orange goldfish; next to it, a heavy black-and-gold fountain pen lying on a yellow legal pad, and a beige office telephone with the handset off the hook; a brass desk lamp. Behind: rows of empty desks with boxy beige computer monitors, their screens dim; confetti on the carpet. Light: the warm brass desk lamp and the faint glow of the dim monitors.",
-  grade="gold and money-green; greed and excess — \"sell me this pen\".",
-  calm="Calm: the goldfish hovers in place, waving its fins; a thin haze hangs in the lamp light; the monitors glow faintly.",
-  ev=('00:04-00:05',"All the monitors across the whole trading floor light up bright green at once, row after row, with rising green bars and no numbers and no text — the market just went up; the whole floor glows green."),
-  after="The monitors stay bright green; the goldfish keeps hovering in the green light.",loop='тьма',
-  why="Деньги убрал совсем: крупные купюры у видео-нейронок выходят фальшивыми (у тебя это и видно). Ручка, которая сама катится, была только в первой версии файла — после сыра я её уже заменил. В центре теперь рыбка (она вышла лучше всего), рядом ручка на жёлтом блокноте («Продай мне эту ручку») и снятая трубка. Событие с логикой: тёмные мониторы разом вспыхивают зелёным — рынок пошёл вверх.",
-  ru="Тёмные мониторы по всему залу разом вспыхивают зелёным — рынок пошёл вверх; рыбка в зелёном свете."),
+  body="Setting: the trading floor of a 1990s Long Island brokerage firm late at night, after everyone has gone home. Camera: at desk height, 50mm lens, shallow depth of field: the fishbowl on the nearest desk in the center is sharp, the long aisle of desks behind it falls softly out of focus. Objects: the nearest desk is worn, scuffed dark wood with a faint coffee ring; in its center, a round glass fishbowl with one orange goldfish; next to it, a heavy black fountain pen lying on a yellow lined writing pad, a beige office telephone with the handset off the hook and a brass desk lamp. Behind: rows of desks with boxy 1990s computer monitors; every screen is black with columns of small glowing red numbers and down arrows — stock prices; high on the far wall, a long electronic stock ticker band with glowing red numbers scrolling from right to left. Light: the overhead ceiling lights are switched off; the floor is dark, lit only by the warm brass desk lamp and the red glow of the screens and the ticker.",
+  grade="realistic and moody, like a real night photograph: natural, slightly muted colors, deep shadows and fine grain; warm lamp light against the glow of the screens.",
+  txt="no people, no faces, no hands; no words, letters or logos anywhere — only small blurred numbers and arrows on the screens.",
+  calm="Calm: the goldfish hovers in place, waving its fins; the red numbers on the screens flicker as the prices tick down; the red numbers on the wall ticker scroll slowly.",
+  ev=('00:04-00:05',"Every screen across the trading floor and the wall ticker flip from red to bright green at once, all the arrows turn up — the market just shot up; green light washes over the dark floor."),
+  after="The screens stay bright green, the green numbers keep ticking up and the ticker scrolls faster; the goldfish hovers in the green glow.",loop='тьма',
+  why="Ролик по прошлой версии (11.10): «игрушечное, на мониках зелёное — есть варик акции вывести?». Откуда деньги: в строке цвета было «money-green; greed» — нейронка нарисовала это буквально: жёлтый блокнот стал пачкой денег на кирпиче, конфетти — купюрами по полу. Теперь слов про деньги нет вообще. На экранах — котировки: столбики красных цифр со стрелками вниз, на стене — бегущая строка акций; на 4-й секунде всё разом становится зелёным, стрелки вверх — рынок взлетел. Против «игрушечности»: верхний свет выключен (в прошлый раз нейронка зажгла весь потолок и картинка стала плоской), объектив 50 мм с размытым фоном вместо широкого угла вплотную к предметам, потёртый стол, приглушённые цвета и зерно. Дальние экраны размыты — каракули вместо цифр не будут видны.",
+  ru="Котировки на всех экранах и бегущая строка на стене разом из красных становятся зелёными, стрелки вверх — рынок взлетел; рыбка в зелёном свете."),
 2:dict(take='mix',base='his',
   calm="Calm: a thin thread of smoke rises only from the cigarette, one drop of condensation slides down the shaker, faint haze drifts between the skyscrapers.",
   ev=('00:04-00:06',"A helicopter flies past close outside the window, crossing the hazy skyline from left to right; the empty martini glasses on the table tremble and clink softly from the thump of its rotor."),
@@ -211,6 +212,39 @@ V={
   ru="Линия на графике взлетает в самый верх, экран вспыхивает зелёным."),
 }
 
+
+# Grade — только цвет, свет и настроение прилагательными. Предметы, люди, цитаты, насилие в Grade нейронка рисует буквально
+# (у «Волка» из «money-green; greed» жёлтый блокнот стал пачкой денег на кирпиче). Похваленные (2, 7, 9) не трогаю.
+G={
+3:"warm brown, brass and turquoise; discreet, expensive and quietly dangerous.",
+4:"warm amber and dark red; intimate, flirty and a little guilty.",
+5:"cold blue-grey street against warm pink and yellow; familiar, loyal and quietly dangerous.",
+6:"walnut brown and olive green; heavy silence, private and tense.",
+8:"cold blue and warm amber; restless late-night dreaming.",
+10:"muted green and grey; a pleasant suburban morning with a sudden edge.",
+11:"pale blue and cold white; polite on the surface, tense underneath.",
+12:"dark brown and cold white; quiet, cold and final.",
+13:"sterile white perfection with something horribly wrong underneath.",
+14:"steel grey, mahogany and white; sterile, arrogant 1980s perfection with something wrong underneath.",
+15:"dark mahogany with creamy whites; petty envy and status games.",
+16:"dirty yellow and red; lonely, sleepless and tense.",
+17:"red and green neon in darkness; insomnia and loneliness.",
+18:"warm red, white and blue; bright 1970s optimism, awkward and hopeful.",
+19:"red, black and ash grey; ruin and defeat, everything is lost.",
+23:"deep blue and warm brass; calm, precise and doomed.",
+24:"gold, cream and deep red; luxurious, tight and suffocating.",
+25:"sun-baked yellow and crystal blue; ordinary on the surface, dangerous underneath.",
+26:"bleached sun with a yellow-green tint; dull and hot, right before everything changes.",
+28:"harsh yellow and deep black; empty, hopeless and unhinged.",
+29:"warm beige turning into black and sickly yellow; calm turning into menace.",
+30:"dusty yellow and black; tired, tough and dangerous.",
+31:"pale blue, white and soft orange; young, free and defiant.",
+32:"dark wood, black and white marble, then blinding desert sunlight; calm, careful and serious.",
+35:"hot pink and red in darkness, then harsh flat white; hedonistic and empty — the party is over.",
+36:"warm brown, ketchup red and cream; strict and simple, a little absurd.",
+37:"green and red glow in a dark studio; tense and risky.",
+}
+
 def build():
     assert len(V)==len(be.EV)==37
     out=[];cnt={'his':0,'mix':0}
@@ -228,9 +262,13 @@ def build():
             seg=[('00:00-00:04',v['calm']),(t0,t1),(t2,v['after'])]
             take={'mine':'мой текст','his':'его текст','own':'новый текст'}[v['base']]+' + другое событие';ev_ru=v['ru'];loop=v['loop']
             if n in (3,25):take='мой текст + его событие'
+        why=v['why']
+        if n in G:
+            assert n not in (2,7,9),n
+            why+=f" Строка цвета почищена — было «{grade}»: предметы, людей и цитаты из этой строки нейронка рисует буквально.";grade=G[n];take+=' · строка цвета почищена'
         tl=' '.join(f'[{a}] {b}' for a,b in seg)
-        p=f"{body} Grade: {grade} Timeline — one continuous shot, the same framing for all 8 seconds: {tl} {tail3(body)}"
-        out.append(dict(n=n,grp=e['grp'],kind=e['kind'],title=e['title'],file=e['file'],where=e['where'],take=take,why=v['why'],ev=ev_ru,loop=loop,
+        p=f"{body} Grade: {grade} Timeline — one continuous shot, the same framing for all 8 seconds: {tl} {tail3(body,v.get('txt'))}"
+        out.append(dict(n=n,grp=e['grp'],kind=e['kind'],title=e['title'],file=e['file'],where=e['where'],take=take,why=why,ev=ev_ru,loop=loop,
                         seam=be.LOOP_SEAM[loop],prompt=p))
     return out,cnt
 
@@ -249,9 +287,10 @@ if __name__=='__main__':
        '2) Нет роя мелочи в воздухе (деньги, бумага, фишки, лёд), нет тряски кадра и эффектов камеры, ничего не ломается и не бьётся.',
        '3) Всё, что участвует в событии, есть в списке предметов с первой секунды (лампы, окно, вентилятор, поливалки) — иначе модель дорисует новое.',
        '4) Нет слов, которые тянут в мультик или игрушку: toy, cartoon, model, miniature; нет «someone» и прочих намёков на людей.',
-       '5) Всё, где бывают буквы (газета, карта, чертёж, экран, вывеска), — с пометкой «без текста».',
+       '5) Всё, где бывают буквы (газета, карта, чертёж, экран, вывеска), — с пометкой «без текста». Котировки на экранах — только мелкие размытые цифры и стрелки, без букв.',
        '6) «Петля сама» — к концу как в начале; «тьма» — новое состояние держится до конца.',
-       '7) Купюры — только мелко, сложенными или в тени. Крупно в кадре — никогда: у видео-нейронок крупные купюры выходят фальшивыми (так вышел «Волк»).','',
+       '7) Купюры — только мелко, сложенными или в тени. Крупно в кадре — никогда: у видео-нейронок крупные купюры выходят фальшивыми (так вышел «Волк»).',
+       '8) Строка цвета (Grade) — только цвет, свет и настроение прилагательными. Предметы, люди, цитаты, насилие оттуда рисуются буквально: у «Волка» из «money-green; greed» жёлтый блокнот стал пачкой денег на кирпиче, конфетти — купюрами. Почищено в 28 промтах, кроме трёх похваленных (Ханна, праздник, Ральф).','',
        'КАК ПРОГОНЯТЬ — как раньше: Google Flow → Veo 3.1, 9:16, 8 с, каждый английский блок — один промт целиком. Событие не ровно на 4-й секунде — не страшно, найду сам. Склейка или лишний предмет — перегенерь тот же промт, не дописывай.',
        'КУДА КЛАСТЬ: репо scenes → claude/субтитры/фоны/, имя — после «назови:» (те же, что в его файле). Дальше я: петля, событие реже, в приложение.','']
     g=None
