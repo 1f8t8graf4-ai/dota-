@@ -14,7 +14,7 @@ KEEP={
   inn='Тот же торговый зал после вечеринки: золотая рыбка, белая Lamborghini Countach (модель), рассыпанные таблетки, шампанское, пачки денег, снятая трубка — плюс котировки на экранах и бегущая строка на стене.',
   why='Каждый предмет — из фильма: на Countach Джордан едет под кваалюдами, рыбку на вечеринке глотает Донни, трубка — холодные звонки. Промт — слово в слово тот, по которому вышел стоящий фон.'),
 2:dict(img='wolf-of-wall-street/bgp.jpg',name='«Волк» — обед с Ханной',
-  inn='Столик над Манхэттеном: мартини, шейкер, жёлтые цветы, пепельница, газированная вода, счёт с сотней, пейджер, газета с котировками; за окном — дымчатый город. Ролик с вертолётом у Андрея уже есть.',
+  inn='Столик над Манхэттеном: мартини, шейкер, жёлтые цветы, пепельница, газированная вода, счёт с сотней, пейджер, газета с котировками; за окном — дымчатый город.',
   why='Тот самый обед, где Ханна учит Джордана «фугази». Ты его похвалил.'),
 3:dict(img='wolf-swiss-bank/bgp.jpg',name='«Волк» — швейцарский банк',
   inn='Кабинет банкира: стена-аквариум, флажок Швейцарии, кофе; за окном — фонтан Же-До.',
@@ -149,18 +149,19 @@ def card(n,m,img,redo):
     r=R[n];f=film(r)
     if f not in films:films.append(f)
     de=' · DE' if r['title'].startswith('DE') else ''
-    kind=('главный фон' if 'главный' in m['name'] else 'фон сцены')+(' · заменить' if redo else '')
+    main=r['kind']=='main'
+    kind=('главный фон · с событием' if main else 'фон сцены · живой')+(' · заменить' if redo else '')
     rows=(f"<dt>Место</dt><dd>{e(m['place'])}</dd>" if m.get('place') else '')+f"<dt>В кадре</dt><dd>{e(m['inn'])}</dd><dt>Почему</dt><dd>{e(m['why'])}</dd>"
-    return f'''<article class="mk{' redo' if redo else ''}" data-film="{e(f)}" data-kind="{'redo' if redo else 'new'}" data-n="{n}" id="f{n}">
+    return f'''<article class="mk{' redo' if redo else ''}" data-film="{e(f)}" data-kind="{'main' if main else 'scene'}" data-n="{n}" id="f{n}">
 <div class="mk-top"><figure class="mk-fig"><img class="mk-im{' tall' if redo else ''}" src="{img}" alt="Кадр: {e(m['name'])}" loading="lazy">{'<figcaption>сейчас стоит</figcaption>' if redo else ''}</figure>
 <div class="mk-h"><span class="tag">{e(f)}{de} · {kind}</span><h3>{e(m['name'])}</h3><span class="fn">{e(r['file'])}.mp4</span></div></div>
-<dl>{rows}<dt>Событие</dt><dd class="ev">{e(r['ev'])}</dd></dl>{f'<p class="note">{e(m["note"])}</p>' if m.get('note') else ''}
-<div class="mk-act"><button type="button" class="b cp">Скопировать промт</button><button type="button" class="b ghost sh" aria-expanded="false">Показать промт</button>
+<dl>{rows}<dt>{'Событие' if main else 'Движение'}</dt><dd class="ev">{e(r['ev'] if main else r['live'])}</dd></dl>{f'<p class="note">{e(m["note"])}</p>' if m.get('note') else ''}
+<div class="mk-act"><button type="button" class="b cp" data-t="pr" data-l="Скопировать промт">Скопировать промт</button><button type="button" class="b ghost sh" aria-expanded="false">Показать промт</button>
 <label class="done"><input type="checkbox" id="d{n}"> Готово</label></div>
-<pre class="pr" hidden>{e(r['prompt'])}</pre></article>'''
+<pre class="pr" hidden>{e(r['prompt'] if main else r['calm'])}</pre></article>'''
 
-make_html=[card(n,m,thumb(R[n]['where'].split('/')[0]+'/cover.jpg',320),False) for n,m in MAKE.items()]
-redo_html=[card(n,k,thumb(k['img']),True) for n,k in KEEP.items()]
+main_html=[card(n,k,thumb(k['img']),True) for n,k in KEEP.items() if R[n]['kind']=='main']
+scene_html=[card(n,k,thumb(k['img']),True) for n,k in KEEP.items() if R[n]['kind']=='scene']+[card(n,m,thumb(R[n]['where'].split('/')[0]+'/cover.jpg',320),False) for n,m in MAKE.items()]
 chips=''.join(f'<button type="button" class="chip" data-f="{e(f)}">{e(f)}</button>' for f in films)
 
 PAGE=f'''<title>Фоны: финал</title>
@@ -184,6 +185,7 @@ section{{margin-top:44px}} .sub{{color:var(--mute);margin:0 0 16px;max-width:66c
 .pr-list li{{border-top:1px solid var(--line);padding-top:10px;min-width:0}}
 .pr-list b{{display:block;font-weight:600}} .pr-list span{{color:var(--mute);font-size:14px}}
 .honest{{margin-top:18px;border-left:2px solid var(--gold);padding:4px 0 4px 14px;color:var(--fg);max-width:70ch}}
+.grp{{margin:22px 0 10px;font-family:var(--disp);font-size:20px;color:var(--gold)}}
 .steps{{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px;margin:0;padding:0;list-style:none;counter-reset:s}}
 .steps li{{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;counter-increment:s;min-width:0}}
 .steps li::before{{content:counter(s);font-family:var(--disp);color:var(--gold);font-size:22px;display:block;line-height:1}}
@@ -222,37 +224,38 @@ button:focus-visible,input:focus-visible{{outline:2px solid var(--gold);outline-
 </style>
 <div class="w">
 <header><div class="eye">«Языки по кино» · фоны-награды</div><h1>Фоны: финал</h1>
-<p class="lede">Как я вижу фоны и почему. Все 37 — одного типа: вертикаль, 4 секунды спокойно, потом событие из сцены. 25 фонов сцен делаем с нуля, 12 стоящих — заново по их же промтам, только с событием. По каждому: что в кадре, почему так, событие и готовый промт.</p>
-<div class="stats"><span class="st"><b>25</b> новых</span><span class="st"><b>12</b> заменить</span><span class="st" id="stDone">готово <b>0</b> из 37</span></div></header>
+<p class="lede">Решение: <b>событие — только у главных фонов</b> (награда за весь фильм — 4 секунды спокойно, потом момент из фильма). <b>Фоны сцен — просто живые</b>: одно главное движение крупно, как рыбка у Волка, без события. Все — вертикаль 9:16, 8 секунд. По каждому: что в кадре, почему так, событие или движение и готовый промт.</p>
+<div class="stats"><span class="st"><b>9</b> главных</span><span class="st"><b>28</b> сцен</span><span class="st" id="stDone">готово <b>0</b> из 37</span></div></header>
 
 <section><h2>Как я вижу фоны</h2><p class="sub">Фон — награда за сцену или весь фильм. Его смотрят на Главной по кругу, на телефоне, за кнопками. Отсюда правила:</p>
 <ul class="pr-list">
-<li><b>Один тип для всех</b><span>Вертикаль 9:16, 4 секунды спокойно, потом одно событие. Сейчас стоящие — вперемешку (8 горизонтальных, без событий), рядом с новыми это бросится в глаза, а в профиле и в дуэли — тем более.</span></li>
+<li><b>Два вида — по ценности награды</b><span>Главный фон — редкий, за весь фильм: в нём случается момент. Фон сцены — живой, без события: одно крупное движение. Все вертикальные 9:16 — стоящие горизонтальные переделываем по их же промтам.</span></li>
+<li><b>Живое — крупно и близко</b><span>Рыбка, дым, пар, вода, вентилятор, неон, шторы на ветру — у каждого видна причина. Далёкое (облака у горизонта, город) за 8 секунд не двигается — выходит картинка.</span></li>
 <li><b>Узнаётся с первого взгляда</b><span>Место из сцены и 3–5 предметов, по которым фанат узнаёт фильм. Все 12 стоящих фонов держатся на таких предметах (Ламба у Волка, топор и плащ у Бейтмана), поэтому их переделываем по тем же промтам. Неудачные — те, где я предметы убирал.</span></li>
 <li><b>Без людей</b><span>Лица актёров нейронка рисует непохоже, а чужие лица — лишний юридический риск.</span></li>
 <li><b>Камера стоит, движение мягкое</b><span>Фон живёт за кнопками и не должен дёргать глаз.</span></li>
-<li><b>Одно событие на 4-й секунде</b><span>Светом, экраном, водой или дымом — это нейронка делает чисто. Брак — когда что-то катится или падает само, бьётся, летит роем или трясётся кадр (сыр у Клава).</span></li>
+<li><b>Событие — только у главных, на 4-й секунде</b><span>Светом, экраном, водой или дымом — это нейронка делает чисто. Брак — когда что-то катится или падает само, бьётся, летит роем или трясётся кадр (сыр у Клава).</span></li>
 <li><b>Событие — пасхалка сцены</b><span>На петле его ждёшь, и оно напоминает момент из фильма: огонь на телике у Ральфа — сгоревшая конюшня, гаснет бра у Фила — «выключают» семью.</span></li>
 <li><b>Деньги — мелко или в тени</b><span>Крупные купюры у видео-нейронок выходят фальшивыми.</span></li>
 <li><b>Строка цвета — только цвет и настроение</b><span>Слова-предметы оттуда рисуются буквально: из «money-green» у Волка выросла пачка денег на кирпиче.</span></li>
 <li><b>Богато — дорого и чисто</b><span>Потёртости и «зерно» — только где бедно по сюжету: мотель, квартира Трэвиса, подпол. У Волка они сделали офис нищим.</span></li>
 </ul>
-<p class="honest">Честно: генерация — лотерея. Правила снижают брак, но не убирают его. Если ролик вышел криво, перегенерируй тот же промт 2–3 раза, а не дописывай: дописки и сломали Волка.</p>
+<p class="honest">Честно: генерация — лотерея, а событие — вторая лотерея сверху. Поэтому событие только у 9 главных, а 28 сцен — живые без события: такие выходят почти всегда (все 12 стоящих — такие). Вышло криво — тот же промт ещё раз, не дописывай: дописки и сломали Волка с Ланчем.</p>
 </section>
 
 <section><h2>Как делать</h2>
 <ol class="steps">
-<li>Нажми «Скопировать промт» в карточке.</li>
-<li>Google Flow → Veo 3.1, вертикаль 9:16, 8 секунд, промт целиком.</li>
-<li>Вышло криво — тот же промт ещё раз. Лишний предмет или склейка — тоже.</li>
-<li>Назови файл как в карточке и положи в <code>scenes/claude/субтитры/фоны/</code>. Петлю и установку сделаю я. Пока новый не готов — в приложении стоит старый.</li>
+<li>Нажми «Скопировать промт» → Google Flow → Veo 3.1, вертикаль 9:16, 8 секунд.</li>
+<li>Вышло криво — тот же промт ещё раз. Не дописывай: дописки ломают.</li>
+<li>Назови файл как в карточке и положи в <code>scenes/claude/субтитры/фоны/</code>. Петлю, установку и заливку делаю я. Пока новый не готов — в приложении стоит старый.</li>
 </ol></section>
 
-<section id="make"><h2>Сделать — 37 фонов</h2><p class="sub">Сначала 25 новых (у этих сцен фона нет совсем), потом 12 замен. Порядок внутри — любой. Отметка «Готово» хранится только в этом браузере.</p>
-<div class="bar" role="toolbar" aria-label="Фильтр по фильму"><button type="button" class="chip" data-f="" aria-pressed="true">Все</button><button type="button" class="chip" data-f="@new">Новые</button><button type="button" class="chip" data-f="@redo">Заменить</button>{chips}<span class="prog" id="prog">готово <b>0</b> из 37</span></div>
-<div class="grid" id="mkGrid">{''.join(make_html+redo_html)}</div></section>
+<section id="make"><h2>Сделать — 37 фонов</h2><p class="sub">9 главных — с событием, 28 сцен — живые. Порядок любой: пока нового нет, в приложении стоит старый фон или обложка. Отметка «Готово» хранится только в этом браузере.</p>
+<div class="bar" role="toolbar" aria-label="Фильтр"><button type="button" class="chip" data-f="" aria-pressed="true">Все</button><button type="button" class="chip" data-f="@main">Главные</button><button type="button" class="chip" data-f="@scene">Сцены</button>{chips}<span class="prog" id="prog">готово <b>0</b> из 37</span></div>
+<h3 class="grp" data-g="main">Главные фоны — с событием · 9</h3><div class="grid">{''.join(main_html)}</div>
+<h3 class="grp" data-g="scene">Фоны сцен — живые, без события · 28</h3><div class="grid">{''.join(scene_html)}</div></section>
 
-<p class="foot">Кидаешь ролики в папку — я делаю бесшовную петлю (событие раз в 10–12 секунд), проверяю шов по кадрам и ставлю в «Коллекцию». Промты — те же, что в <code>фоны-промты-СРАВНЕНИЕ.txt</code>.</p>
+<p class="foot">Кидаешь ролики в папку — я делаю бесшовную петлю (у главных событие раз в 10–12 секунд), проверяю шов по кадрам и ставлю в «Коллекцию». Промты — те же, что в <code>фоны-промты-СРАВНЕНИЕ.txt</code>.</p>
 </div>
 <script>
 (function(){{
@@ -260,25 +263,24 @@ var KEY='bgfin-done-v1',done={{}};
 try{{done=JSON.parse(localStorage.getItem(KEY)||'{{}}')||{{}}}}catch(_){{done={{}}}}
 function save(){{try{{localStorage.setItem(KEY,JSON.stringify(done))}}catch(_){{}}}}
 var cards=[].slice.call(document.querySelectorAll('.mk'));
+function cpy(btn,pre,sh){{var lbl=btn.dataset.l;
+  function ok(){{btn.textContent='Скопировано ✓';btn.classList.add('ok');setTimeout(function(){{btn.textContent=lbl;btn.classList.remove('ok')}},1800);}}
+  function fallback(){{pre.hidden=false;if(sh&&pre.classList.contains('pr'))sh.textContent='Скрыть промт';var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Выделил — скопируй вручную';}}
+  try{{navigator.clipboard.writeText(pre.textContent).then(ok,fallback)}}catch(_){{fallback()}}}}
 function prog(){{var n=cards.filter(function(c){{return done[c.dataset.n]}}).length;
  document.querySelector('#prog b').textContent=n;document.querySelector('#stDone b').textContent=n;}}
 cards.forEach(function(c){{
- var n=c.dataset.n,cb=c.querySelector('.done input'),pre=c.querySelector('.pr'),cp=c.querySelector('.cp'),sh=c.querySelector('.sh');
+ var n=c.dataset.n,cb=c.querySelector('.done input'),pre=c.querySelector('.pr'),sh=c.querySelector('.sh');
  cb.checked=!!done[n];c.classList.toggle('is-done',cb.checked);
  cb.addEventListener('change',function(){{if(cb.checked)done[n]=1;else delete done[n];c.classList.toggle('is-done',cb.checked);save();prog();}});
  sh.addEventListener('click',function(){{pre.hidden=!pre.hidden;sh.textContent=pre.hidden?'Показать промт':'Скрыть промт';sh.setAttribute('aria-expanded',String(!pre.hidden));}});
- cp.addEventListener('click',function(){{
-  var t=pre.textContent;
-  function ok(){{cp.textContent='Скопировано ✓';cp.classList.add('ok');setTimeout(function(){{cp.textContent='Скопировать промт';cp.classList.remove('ok')}},1800);}}
-  function fallback(){{pre.hidden=false;sh.textContent='Скрыть промт';var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);
-   cp.textContent='Выделил — скопируй вручную';}}
-  try{{navigator.clipboard.writeText(t).then(ok,fallback)}}catch(_){{fallback()}}
- }});
+ [].forEach.call(c.querySelectorAll('.cp'),function(b){{b.addEventListener('click',function(){{cpy(b,c.querySelector('.'+b.dataset.t),sh);}});}});
 }});
 var chips=[].slice.call(document.querySelectorAll('.chip'));
 chips.forEach(function(ch){{ch.addEventListener('click',function(){{
  chips.forEach(function(x){{x.setAttribute('aria-pressed',String(x===ch))}});
  var f=ch.dataset.f;cards.forEach(function(c){{c.hidden=!!f&&(f.charAt(0)==='@'?c.dataset.kind!==f.slice(1):c.dataset.film!==f)}});
+ [].forEach.call(document.querySelectorAll('.grp'),function(g){{var any=cards.some(function(c){{return !c.hidden&&c.dataset.kind===g.dataset.g}});g.hidden=!any;g.nextElementSibling.hidden=!any;}});
 }})}});
 prog();
 }})();

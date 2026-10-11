@@ -18,6 +18,8 @@
 #   и из чёрного (финал «Сопрано»). По картинке это не определить: у Veo весь ролик медленно «ползёт» (свет, масштаб),
 #   поэтому тип шва берётся из списка фонов (tools/bg_event.py, поле loop: сама → xfade, тьма → dip, чёрный → black).
 # Ролик без события работает как раньше.
+# • --calm-only — событие не вышло: беру только спокойную часть до него (≈3.7 с) и делаю из неё петлю наплывом.
+#   Так любая попытка годится в дело: 2 попытки максимум, дальше — спокойная часть лучшей.
 import sys,subprocess,json,os,statistics
 def probe(p):
     j=json.loads(subprocess.run(['ffprobe','-v','error','-select_streams','v:0','-show_entries','stream=width,height,r_frame_rate:format=duration','-of','json',p],capture_output=True,text=True).stdout)
@@ -60,7 +62,7 @@ def event_at(p,fps=12,w=96):
     for i in range(int(1.2*fps),len(F)-int(0.6*fps)):
         if S[i]>thr:return i/fps
     return None
-def main(out,clips,X=None,seam='xfade',calm='auto',event='auto'):
+def main(out,clips,X=None,seam='xfade',calm='auto',event='auto',calm_only=False):
     W,H,fps,_=probe(clips[0]);cb=bars(clips[0],W,H)
     if cb:W,H=cb[0],cb[1]
     r=W/H;fps=min(30,round(fps)) or 24
@@ -75,6 +77,10 @@ def main(out,clips,X=None,seam='xfade',calm='auto',event='auto'):
     else:
         L=D[0];src='c0'
         E=None if event=='off' else event_at(clips[0]) if event=='auto' else float(event)
+        if calm_only:   # 13.9.6: событие не вышло — берём только спокойную часть до него, петля наплывом (любая попытка даёт фон)
+            if E:L=max(1.5,E-0.3);fc.append(f"[c0]trim=0:{L:.3f},setpts=PTS-STARTPTS[cc]");src='cc';note=f', только спокойная часть до события ({E:.1f} с)'
+            else:note=', события не нашёл — весь ролик'
+            E=None;seam='xfade'
         k=0 if not E else (1 if E>=2.5 else 0) if calm=='auto' else int(calm)
         if E:note=f', событие на {E:.1f} с'
         Eo=E   # 13.9.6: где событие окажется в готовом файле
@@ -114,10 +120,11 @@ def main(out,clips,X=None,seam='xfade',calm='auto',event='auto'):
         k='filmbgev' if os.path.basename(out).startswith('film-') else 'bgev'
         print(f'  событие в файле на {Eo:.1f} с → в data/scenes.json у сцены: "{k}":{Eo:.1f} (и python3 tools/rebuild_all_data.py)')
 if __name__=='__main__':
-    a=sys.argv[1:];o={'seam':'xfade','calm':'auto','event':'auto'};pos=[]
+    a=sys.argv[1:];o={'seam':'xfade','calm':'auto','event':'auto'};pos=[];co=False
     while a:
         x=a.pop(0);k,eq,v=x[2:].partition('=')
+        if x=='--calm-only':co=True;continue
         if x.startswith('--') and k in o:o[k]=v if eq else a.pop(0)   # --seam dip и --seam=dip; --seam=black=1.5
         else:pos.append(x)
     if len(pos) not in (2,3):sys.exit('loop_bg.py <выход.mp4> <ролик А> [ролик Б] [--seam xfade|dip|cut|black[=сек]] [--calm auto|N] [--event auto|off|<сек>]')
-    main(pos[0],pos[1:],seam=o['seam'],calm=o['calm'],event=o['event'])
+    main(pos[0],pos[1:],seam=o['seam'],calm=o['calm'],event=o['event'],calm_only=co)
