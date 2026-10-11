@@ -1,5 +1,5 @@
 # Страница «Фоны с событием» (Artifact на claude.ai, Андрей копирует промты с телефона): python3 tools/bg_event_page.py фоны-промты-СОБЫТИЕ.json <выход.html>
-# Данные — из tools/bg_event.py (сначала python3 tools/bg_event.py). Опубликовано: https://claude.ai/artifact/UPEaiK2PJzF9crBfGQeK13 — обновлять публикацией того же файла / этого url.
+# Данные — из tools/bg_event.py (сначала python3 tools/bg_event.py). Версия 2: строка «Что поменял» (поле why), отметки «Готово» — ключ bgev-done-v2. Опубликовано: https://claude.ai/artifact/UPEaiK2PJzF9crBfGQeK13 — обновлять публикацией того же файла / этого url.
 import json,sys,os
 src=sys.argv[1];out=sys.argv[2]
 d=json.load(open(src,encoding='utf-8'))
@@ -62,6 +62,7 @@ dt{font:600 12px var(--f-body);color:var(--mute);padding-top:2px;white-space:now
 dd{margin:0;max-width:70ch}
 dd.ev{font-weight:600}
 .loop{font-size:13px;color:var(--mute)}
+dd.why{font-size:14px;color:var(--ink);border-left:3px solid var(--accent);padding-left:9px}
 .acts{display:flex;gap:8px;flex-wrap:wrap}
 .btn{border:0;border-radius:10px;padding:11px 16px;font:700 14.5px var(--f-body);cursor:pointer;background:var(--accent);color:var(--card)}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
@@ -79,7 +80,7 @@ dd.ev{font-weight:600}
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:8px">
     <h1>Фоны с событием</h1>
-    <p class="lead">37 роликов для Veo: 4 секунды спокойно, на 4-й — одно резкое событие из сюжета, дальше «после». Скопируй промт, вставь во Flow, отметь «Готово».</p>
+    <p class="lead">37 роликов для Veo: 4 секунды спокойно, на 4-й — одно резкое событие из сюжета, дальше «после». <b>Версия 2:</b> все 37 переписаны заново по кадрам сцен — в каждой карточке «Что поменял». Скопируй промт, вставь во Flow, отметь «Готово».</p>
   </header>
   <details class="how" id="how" open>
     <summary>Как прогонять</summary>
@@ -90,6 +91,7 @@ dd.ev{font-weight:600}
       <li>Вышла склейка (сменился кадр, камера поехала) — перегенерируй тот же промт, не дописывай.</li>
       <li>«I can't generate that video» — убери одну «острую» деталь (револьвер, таблетки, топор, сигарету) и прогони ещё раз.</li>
       <li>Для тех, где «петля сама»: можно сделать картинку по первой части промта (до слова Timeline), потом Frames to Video — эту картинку и в начало, и в конец. Тогда ролик точно вернётся к началу.</li>
+      <li>Два файла переименованы (поменялось место): «сопрано мотель» → <code>сопрано хасиды.mp4</code>, «бб дверь» → <code>бб спальня.mp4</code>.</li>
       <li>Готовое клади в репо scenes → <code>claude/субтитры/фоны/</code> под именем из карточки. Дальше я сам: петля, событие реже (на Главной раз в ~12 с), в приложение.</li>
     </ul>
   </details>
@@ -106,7 +108,7 @@ dd.ev{font-weight:600}
 <script>
 (function(){
   const ITEMS=JSON.parse(document.getElementById('data').textContent);
-  const KEY='bgev-done-v1',KH='bgev-how';
+  const KEY='bgev-done-v2',KH='bgev-how';
   const load=k=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}};
   const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
   const done=new Set(load(KEY)||[]);let grp='Все',hideDone=false;
@@ -127,7 +129,7 @@ dd.ev{font-weight:600}
       <div class="top"><span class="no">${x.n}</span><div class="ttl"><span class="grp">${esc(x.grp)}</span><h2>${esc(x.title)}<span class="kind">${x.kind==='main'?'главный фон':'фон сцены'}</span></h2></div></div>
       <div class="fn">Назови файл: <code>${esc(x.file)}</code><button class="btn ghost small" data-cpn="${x.n}">Скопировать имя</button></div>
       ${timeline(x.prompt)}
-      <dl><dt>В кадре</dt><dd>${esc(x.ru)}</dd><dt>Событие</dt><dd class="ev">${esc(x.ev)}</dd><dt>Петля</dt><dd class="loop">${esc(x.loopRu)}</dd></dl>
+      <dl><dt>В кадре</dt><dd>${esc(x.ru)}</dd><dt>Событие</dt><dd class="ev">${esc(x.ev)}</dd>${x.why?`<dt>Что поменял</dt><dd class="why">${esc(x.why)}</dd>`:''}<dt>Петля</dt><dd class="loop">${esc(x.loopRu)}</dd></dl>
       <div class="acts"><button class="btn" data-cp="${x.n}">Скопировать промт</button><button class="btn ghost" data-sh="${x.n}">Текст промта</button><button class="btn ghost okb" data-ok="${x.n}" aria-pressed="${done.has(x.n)}">${done.has(x.n)?'✓ Готово':'Готово'}</button></div>
       <textarea class="pr" id="p${x.n}" readonly aria-label="Промт ${x.n}">${esc(x.prompt)}</textarea></article>`).join('');
     document.getElementById('empty').hidden=L.length>0;
