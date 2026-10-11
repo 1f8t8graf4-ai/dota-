@@ -1296,6 +1296,8 @@ const MEDIA_CORS = {
   'Access-Control-Expose-Headers': 'content-length, content-range, accept-ranges, etag, last-modified',
   'Access-Control-Max-Age': '86400',
 };
+// привязка бакета: MEDIA (так в инструкции), но в панели легко написать Media — подходит любое
+const mediaR2 = (env) => env.MEDIA || env.Media || env.media || null;
 const MEDIA_META = new Map();   // ключ → {size, etag, lm, t}: размер файла на минуту, чтобы перемотка видео не спрашивала R2 дважды
 const mediaType = (k) => MEDIA_TYPES[(k.split('.').pop() || '').toLowerCase()] || 'application/octet-stream';
 const mediaText = (status, msg, extra) => new Response(msg, { status, headers: { ...MEDIA_CORS, 'content-type': 'text/plain; charset=utf-8', ...(extra || {}) } });
@@ -1339,7 +1341,7 @@ function mediaRange(h, size) {
 async function mediaMeta(env, key, fresh) {
   const c = MEDIA_META.get(key);
   if (!fresh && c && Date.now() - c.t < 60000) return c;
-  const o = await env.MEDIA.head(key);
+  const o = await mediaR2(env).head(key);
   if (!o) { MEDIA_META.delete(key); return null; }
   if (MEDIA_META.size > 3000) MEDIA_META.clear();
   const m = { size: o.size, etag: o.httpEtag, lm: o.uploaded ? new Date(o.uploaded).toUTCString() : '', t: Date.now() };
@@ -1361,7 +1363,7 @@ async function mediaGet(req, env, key, again) {
   let r = ir && !etagHit(ir, meta.etag) ? null : mediaRange(req.headers.get('range'), meta.size);
   if (r === 'bad') return mediaText(416, 'Range вне файла', { 'content-range': `bytes */${meta.size}` });
   let o;
-  try { o = r ? await env.MEDIA.get(key, { range: r }) : await env.MEDIA.get(key); }
+  try { o = r ? await mediaR2(env).get(key, { range: r }) : await mediaR2(env).get(key); }
   catch (e) { if (again) throw e; return mediaGet(req, env, key, true); }   // кусок вне файла: размер в памяти устарел
   if (!o) { MEDIA_META.delete(key); return mediaText(404, 'Нет такого файла'); }
   if (o.size !== meta.size) {   // файл только что перезалили — узнать новый размер и ответить заново
@@ -1374,10 +1376,10 @@ async function mediaGet(req, env, key, again) {
 
 async function mediaApi(req, env, url) {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: MEDIA_CORS });
-  if (!env.MEDIA) return mediaText(503, 'R2 не подключён: привяжи бакет kino-media к воркеру под именем MEDIA (Settings → Bindings)');
+  if (!mediaR2(env)) return mediaText(503, 'R2 не подключён: привяжи бакет kino-media к воркеру под именем MEDIA (Settings → Bindings)');
   if (url.pathname === '/m-ls') {
     if (!(await mediaAuth(req, env))) return json({ ok: false, err: 'auth' }, 403);
-    const r = await env.MEDIA.list({ prefix: url.searchParams.get('prefix') || 'scenes/', cursor: url.searchParams.get('cursor') || undefined, limit: 1000 });
+    const r = await mediaR2(env).list({ prefix: url.searchParams.get('prefix') || 'scenes/', cursor: url.searchParams.get('cursor') || undefined, limit: 1000 });
     return json({ ok: true, files: r.objects.map((o) => [o.key, o.size, o.etag]), cursor: r.truncated ? r.cursor : null });
   }
   const key = mediaKey(url.pathname);
@@ -1387,9 +1389,9 @@ async function mediaApi(req, env, url) {
     if (req.method !== 'PUT' && req.method !== 'DELETE') return mediaText(405, 'Можно только GET и HEAD');
     if (!(await mediaAuth(req, env))) return json({ ok: false, err: 'auth' }, 403);
     MEDIA_META.delete(key);
-    if (req.method === 'DELETE') { await env.MEDIA.delete(key); return json({ ok: true, key }); }
+    if (req.method === 'DELETE') { await mediaR2(env).delete(key); return json({ ok: true, key }); }
     const md5 = (req.headers.get('x-md5') || '').toLowerCase();   // R2 сам сверит: битый файл не ляжет
-    const o = await env.MEDIA.put(key, req.body, { httpMetadata: { contentType: mediaType(key) }, ...(/^[0-9a-f]{32}$/.test(md5) ? { md5 } : {}) });
+    const o = await mediaR2(env).put(key, req.body, { httpMetadata: { contentType: mediaType(key) }, ...(/^[0-9a-f]{32}$/.test(md5) ? { md5 } : {}) });
     return json({ ok: true, key, size: o.size, etag: o.etag });
   } catch (e) {
     console.log('media error', key, e);
@@ -1464,6 +1466,6 @@ export default {
       return new Response('ok');
     }
 
-    return new Response('Бот работает 👍 Версия 13.9\nВидео из R2: ' + (env.MEDIA ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response('Бот работает 👍 Версия 13.9\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   },
 };
