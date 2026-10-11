@@ -419,6 +419,7 @@ function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){
   document.querySelectorAll('.srv').forEach(o=>o.remove());   // 13.6: открытие покупки
   try{if(window.DL)DL.clean();}catch(e){}   // 13.7: варианты словаря — карта в руке, демо-пак
   document.querySelectorAll('.dxo,.rwo,.bgvw').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
+  document.querySelectorAll('.pc-bg video,.kvp-bg video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});   // 13.9.6: живой фон профиля / дуэли
   document.body.classList.remove('dx-open');try{if(KWP)KWP._resume=null;kwHide(0);}catch(e){}try{musDuck(false);}catch(e){}
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
   if(!scn)try{if(SV)scStop();}catch(e){}}
@@ -1748,9 +1749,10 @@ function profileTabHTML(){
   const mis=store.mistakes.filter(x=>store.langs.includes(x.split('|')[2])).length;
   const cell=(v,l)=>`<div><b>${v}</b><span>${l}</span></div>`;
   const adm=FLAG_ADMIN?`<button class="rowcard card anim" id="admBtn">${iconHTML({svg:'shield'})}<span><b>Админ-панель</b><small>Какие разделы видят игроки, тех. работы и тестеры</small></span><span class="go">›</span></button>`:'';
-  return `<section class="phead card anim"><div class="pava${photo?'':' mono'}"${photo?` style="background-image:url('${esc(photo)}')"`:''}>${photo?'':esc((name||'И').trim().charAt(0).toUpperCase())}</div>
+  const pb=profBg();   // 13.9.6: профиль — карточка игрока на своём фоне
+  return `<section class="phead card anim${pb?' pbg'+(pb.film?' film':''):''}">${pb?`<div class="pc-bg" data-bgl="${esc(pb.k)}" aria-hidden="true"></div><i class="pc-sh" aria-hidden="true"></i><div class="pc-top">${bgTagHTML(pb)}<button class="pc-chg" id="pcChg">Сменить фон</button></div>`:''}<div class="pava${photo?'':' mono'}"${photo?` style="background-image:url('${esc(photo)}')"`:''}>${photo?'':esc((name||'И').trim().charAt(0).toUpperCase())}</div>
       <b class="pn">${esc(name)}</b><button class="rankchip" id="rankBtn">${rk.r.n} <i>?</i></button>
-      <span class="pbar"><i style="--w:${rk.pct}%"></i></span><small>${rk.nx?`До ранга ${rk.nx.n}: ${rk.n} из ${rk.nx.at} выученных слов`:'Высший ранг'}${rk.r.m>1?`. Билеты x${rk.r.m}`:''}</small></section>
+      <span class="pbar"><i style="--w:${rk.pct}%"></i></span><small>${rk.nx?`До ранга ${rk.nx.n}: ${rk.n} из ${rk.nx.at} выученных слов`:'Высший ранг'}${rk.r.m>1?`. Билеты x${rk.r.m}`:''}</small>${pb?'':profBgAskHTML()}</section>
     <div class="stats card anim">${cell(t.learned,'выучено слов')}${cell(acc===null?'—':acc+'%','точность')}${cell(streakNow(),'дней подряд')}${cell(fmt(store.gold),'билетов')}${cell(store.answered,'ответов')}${cell(s.bestStreak,'лучшая серия')}</div>
     ${weekHTML()}
     <h2 class="sec2 anim">Достижения <span>${got} из ${ACH.length}</span></h2>
@@ -1767,7 +1769,7 @@ function profileTabHTML(){
 }
 function bindProfileAdmin(){const b=$('#admBtn');if(b)b.onclick=()=>{sfx('tap');renderAdmin();};}
 function bindProfile(){bindProfileAdmin();
-  bindHead();
+  bindHead();bgFill($('.phead'));$$('#pcChg,#pcSet').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');renderCollection('bg');});
   $('#dict').onclick=()=>{sfx('tap');renderDict('going');};
   if(dueList().length)$('#rev2').onclick=()=>{haptic('medium');startSession('review');};
   if(!$('#redo2').disabled)$('#redo2').onclick=()=>{haptic('medium');startSession('mistakes');};
@@ -2313,7 +2315,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.5';
+const APP_V='13.9.6';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -3926,7 +3928,7 @@ function kvSheet(sid,ep){const s=scOf(sid);if(!s)return;scCloseSheet();let mode=
   draw();w.onclick=async e=>{const b=e.target.closest('button');if(e.target===w||(b&&b.hasAttribute('data-close'))){w.remove();return;}if(!b)return;sfx('tap');
     if(b.dataset.ep){ep=+b.dataset.ep;draw();return;}if(b.dataset.m){mode=b.dataset.m;if(mode==='coop')bet=0;draw();return;}if(b.dataset.b){bet=+b.dataset.b;draw();return;}
     if(b.id==='kvGo'){b.disabled=true;b.textContent='Создаю комнату…';
-      try{const r=await kvNet({a:'create',fx:shopUse('st'),room:{sid,ep,mode,bet,qs:kvMakeQs(s,ep)}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
+      try{const r=await kvNet({a:'create',fx:shopUse('st'),bg:profBgKey(),room:{sid,ep,mode,bet,qs:kvMakeQs(s,ep)}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
         w.remove();KV={code:r.v.code,role:'A',room:r.v,k:0,t0:0};kvShare();kvLobby();kvPoll();}catch(x){kvErr();b.disabled=false;draw();}}};
   document.body.appendChild(w);}
 const kvLink=()=>`${APP_LINK}?startapp=kv_${KV.code}`;
@@ -3934,8 +3936,8 @@ function kvShare(){const R=KV.room,s=scOf(R.sid);shareLink(kvLink(),`${R.mode===
 function kvScreen(html){const s=scOf(KV.room.sid);scMount(s,`<div class="kv">${html}</div>`,'pvp');}
 function kvLobby(){const R=KV.room,s=scOf(R.sid);
   kvScreen(`<div class="sc-head"><button class="sc-back" id="kvX">${ui('back')}</button><div><span class="sc-meta">Дуэль · ${R.mode==='race'?'наперегонки':'вместе'}</span><h1>${esc(s.title)}</h1></div></div>
-    <div class="kv-lobby"><div class="kv-pulse">⚔️</div><b>Ждём друга…</b><p>${esc(s.sub||'')} · эпизод ${R.ep+1} «${esc(s.parts[R.ep].t)}»${R.bet?` · ставка ${ui('coin')} ${R.bet}`:''}</p>
-      <div class="kv-code">Комната <b>${KV.code}</b></div><button class="sc-btn" id="kvSh">📤 Отправить ссылку ещё раз</button><button class="sc-btn ghost" id="kvCp">Скопировать ссылку</button></div>`);
+    <div class="kv-lobby">${profBg()?kvPlHTML({n:kvName(),bg:profBgKey()},'inv',true,s)+'<small class="kvp-cap">Так тебя увидит друг</small>':'<div class="kv-pulse">⚔️</div>'}<b>Ждём друга…</b><p>${esc(s.sub||'')} · эпизод ${R.ep+1} «${esc(s.parts[R.ep].t)}»${R.bet?` · ставка ${ui('coin')} ${R.bet}`:''}</p>
+      <div class="kv-code">Комната <b>${KV.code}</b></div><button class="sc-btn" id="kvSh">📤 Отправить ссылку ещё раз</button><button class="sc-btn ghost" id="kvCp">Скопировать ссылку</button>${!profBg()&&bgAnyGot()?'<p class="kv-tip">🖼 Поставь фон в профиль (Коллекция) — друг увидит тебя на нём</p>':''}</div>`);bgFill($('.kv'));
   $('#kvSh').onclick=()=>{sfx('tap');kvShare();};$('#kvCp').onclick=()=>{sfx('tap');try{navigator.clipboard.writeText(kvLink()).then(()=>toast('Ссылка скопирована'),()=>toast(kvLink()));}catch(e){toast(kvLink());}};
   $('#kvX').onclick=()=>kvLeave();}
 async function kvJoin(code){try{const r=await kvNet({a:'state',code});if(!r.ok){kvErr(r);renderHome();return;}
@@ -3946,12 +3948,12 @@ async function kvJoin(code){try{const r=await kvNet({a:'state',code});if(!r.ok){
     if(R.B){toast('В этой комнате уже двое');renderHome();return;}
     KV={code,role:'B',room:R,k:0,t0:0,guest:true};const g=store.gold||0,poor=R.bet>g;
     kvScreen(`<div class="sc-head"><button class="sc-back" id="kvX">${ui('back')}</button><div><span class="sc-meta">Тебя зовут на дуэль</span><h1>${esc(s.title)}</h1></div></div>
-      <div class="kv-lobby"><div class="kv-pulse">${R.mode==='race'?'🏁':'🤝'}</div><b>${esc(R.A.n)} зовёт ${R.mode==='race'?'наперегонки':'пройти вместе'}</b>
+      <div class="kv-lobby">${bgInfo(R.A.bg)?kvPlHTML(R.A,'inv',false,s):`<div class="kv-pulse">${R.mode==='race'?'🏁':'🤝'}</div>`}<b>${esc(R.A.n)} зовёт ${R.mode==='race'?'наперегонки':'пройти вместе'}</b>
         <p>${esc(s.sub||'')} · эпизод ${R.ep+1} «${esc(s.parts[R.ep].t)}» · ${R.qs.length} вопросов</p>
         ${R.bet?`<div class="kv-code">Ставка <b>${ui('coin')} ${R.bet}</b> · у тебя ${fmt(g)}</div><p class="kv-rule">Победитель забирает банк ${ui('coin')} ${R.bet*2}. Очки: верно — 100 и до 50 за скорость, сначала решает точность.</p>`:''}
         ${poor?`<p class="kv-poor">Не хватает монет на ставку. Пройди эпизод или поиграй — и возвращайся по ссылке.</p>`:`<button class="sc-btn" id="kvIn">Принять ${R.mode==='race'?'вызов':'приглашение'} →</button>`}</div>`);
-    $('#kvX').onclick=()=>{KV=null;renderHome();};
-    if($('#kvIn'))$('#kvIn').onclick=async()=>{sfx('tap');$('#kvIn').disabled=true;try{const j=await kvNet({a:'join',code,fx:shopUse('st')});if(!j.ok){kvErr(j);$('#kvIn').disabled=false;return;}kvApply(j.v);kvPoll();}catch(e){kvErr();}};
+    bgFill($('.kv'));$('#kvX').onclick=()=>{KV=null;renderHome();};
+    if($('#kvIn'))$('#kvIn').onclick=async()=>{sfx('tap');$('#kvIn').disabled=true;try{const j=await kvNet({a:'join',code,fx:shopUse('st'),bg:profBgKey()});if(!j.ok){kvErr(j);$('#kvIn').disabled=false;return;}kvApply(j.v);kvPoll();}catch(e){kvErr();}};
   }catch(e){kvErr();renderHome();}}
 function kvPoll(){if(!KV)return;clearTimeout(KV.timer);KV.timer=setTimeout(async()=>{if(!KV)return;if(!document.querySelector('.kv')){kvStop();return;}
     try{const r=await kvNet({a:'state',code:KV.code});if(r.ok)kvApply(r.v);}catch(e){}kvPoll();},KV.room&&KV.room.st==='go'&&KV.started?900:1300);}
@@ -3969,11 +3971,13 @@ function kvApply(R){if(!KV)return;const prev=KV.room;KV.room=R;
   else{if(R.st==='end'||R.turn>=R.qs.length){KV.over=true;kvEnd();return;}if(!prev||prev.turn!==R.turn||prev.help!==R.help||!document.querySelector('.kv-q'))kvCoopShow();else kvBars();}}
 // ставка списывается один раз, когда оба в игре
 function kvPay(){const R=KV.room;store.kvPaid=store.kvPaid||{};if(R.mode==='race'&&R.bet&&!store.kvPaid[KV.code]){store.gold=Math.max(0,(store.gold||0)-R.bet);store.kvPaid[KV.code]=1;save();}}
-function kvCountdown(){const R=KV.room;let n=3;const bank=R.mode==='race'&&R.bet>0;
-  kvScreen(`<div class="kv-cd"><div class="kv-cdn"><span class="a">${esc(R.A.n)}</span><i>vs</i><span class="b">${esc(R.B?R.B.n:'…')}</span></div>
-    ${bank?`<div class="kv-pot" id="kvPot">${ui('coin')}<b id="kvPotN">0</b><small>банк · по ${R.bet} с каждого</small></div>`:''}
-    <div class="kv-numw"><i class="cd2-ring" id="kvRing"></i><b id="kvN">3</b></div><small>${R.mode==='race'?'Наперегонки — отвечай быстро и точно':'Вместе — по очереди, начинает '+esc(R.A.n)}</small></div>`);
-  if(bank)kvPotFX(R.bet);
+function kvCountdown(){const R=KV.room,s=scOf(R.sid);let n=3;const bank=R.mode==='race'&&R.bet>0;
+  const me=Object.assign({},R[KV.role],{bg:profBgKey()||(R[KV.role]||{}).bg});   // 13.9.6: каждый на своём фоне — ты снизу, друг сверху (как в краже билетов)
+  kvScreen(`<div class="kv-vs${fxOK()?' in':''}">${kvPlHTML(R[kvFoe()]||{n:'…'},'top',false,s,rwKadr(s,R.ep))}${kvPlHTML(me,'bot',true,s)}
+    <svg class="kvs-seam p" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="54" x2="100" y2="46"/></svg><svg class="kvs-seam l" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="54" y1="0" x2="46" y2="100"/></svg>
+    <div class="kvs-mid">${bank?`<div class="kv-pot" id="kvPot">${ui('coin')}<b id="kvPotN">0</b><small>банк · по ${R.bet} с каждого</small></div>`:''}
+    <div class="kv-numw"><i class="cd2-ring" id="kvRing"></i><b id="kvN">3</b></div><small class="kvs-sub">${R.mode==='race'?'Наперегонки — отвечай быстро и точно':'Вместе — по очереди, начинает '+esc(R.A.n)}</small></div></div>`);
+  bgFill($('.kv-vs'));if(bank)kvPotFX(R.bet);
   const pop=()=>{const el=$('#kvN'),rg=$('#kvRing');if(!el||!fxOK())return;el.animate([{transform:'scale(1.9)',opacity:0,filter:'blur(12px)'},{transform:'scale(1)',opacity:1,filter:'blur(0px)'}],{duration:480,easing:SPRING});
     if(rg)rg.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:.9},{transform:'translate(-50%,-50%) scale(2.4)',opacity:0}],{duration:640,easing:EZ.out});fxAt(el,{n:14,v:5.5,sh:'spark',life:34});};
   sfx('tap');pop();KV.cd=setInterval(()=>{n--;const el=$('#kvN');if(n<=0){clearInterval(KV.cd);sfx('win');KV.ready=true;KV.t0=Date.now();KV.qt=Date.now();if(R.mode==='race')kvRaceShow();else kvCoopShow();return;}
@@ -3981,7 +3985,7 @@ function kvCountdown(){const R=KV.room;let n=3;const bank=R.mode==='race'&&R.bet
 function kvPotFX(bet){const pot=$('#kvPot'),nb=$('#kvPotN');if(!pot||!nb)return;
   if(!fxOK()){nb.textContent=bet*2;return;}
   const pr=pot.getBoundingClientRect(),px=pr.left+pr.width/2,py=pr.top+pr.height/2,K=6;let got=0;
-  [...document.querySelectorAll('.kv-cdn .a,.kv-cdn .b')].forEach((src,side)=>{const r=src.getBoundingClientRect(),x0=r.left+r.width/2,y0=r.top+r.height/2;
+  [...document.querySelectorAll('.kv-vs .kvp-who>b')].forEach((src,side)=>{const r=src.getBoundingClientRect(),x0=r.left+r.width/2,y0=r.top+r.height/2;
     for(let i=0;i<K/2;i++){const t=document.createElement('div');t.className='gtk';t.innerHTML=ui('coin');t.style.transform=`translate(${x0}px,${y0}px) translate(-50%,-50%) scale(0)`;FXROOT().appendChild(t);
       fxArc(t,x0,y0,px,py,{d:640,delay:250+i*120+side*60,s0:.9,s1:.6,rot:(side?-1:1)*120,lift:-50}).onfinish=()=>{t.remove();got++;nb.textContent=fmt(Math.round(bet*2*got/K));
         pot.animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:240,easing:EZ.out});fxEmit(px,py,{n:6,v:3,life:30});sfx('tick');if(got===K)nb.textContent=fmt(bet*2);};}});}
@@ -4035,9 +4039,10 @@ function kvEnd(foeLeft){kvStop();const R=KV.room,s=scOf(R.sid),me=R[KV.role],fo=
       if(win===null)setTimeout(()=>goldFX(gain,$('.kv-bank')),400);else steal={win,bet:R.bet,me:{n:me.n},foe:{n:fo.n},style:win?shopUse('st'):stOf(fo.fx)};}}
   else{const ok=Object.values(R.co).filter(a=>a.ok).length;title=ok===R.qs.length?'Идеально вместе! 🤝':'Пройдено вместе';sub=`Общий счёт: ${ok} из ${R.qs.length}`;if(first){gain=ok*5;addGold(gain);}}
   save();scSave();sfx(win===false?'learn':'win');ev('pvp_end',R.sid);
-  kvScreen(`<div class="kv-end"><div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div><b>${title}</b><p>${sub}</p>${R.mode==='race'&&R.bet?`<p class="kv-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Банк забирает ${esc(fo.n)}: ${ui('coin')} ${R.bet*2}`}</p>`:''}${gain&&!(R.mode==='race'&&R.bet)?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}${tbl}
+  const wp=R.mode==='race'&&win!=null?(win?Object.assign({},me,{bg:profBgKey()||me.bg}):fo):null;   // 13.9.6: победитель — на своём фоне
+  kvScreen(`<div class="kv-end">${wp&&bgInfo(wp.bg)?kvPlHTML(wp,'win',win===true,s):`<div class="kv-pulse">${R.mode==='race'?(win===false?'🥈':'🏆'):'🤝'}</div>`}<b>${title}</b><p>${sub}</p>${R.mode==='race'&&R.bet?`<p class="kv-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Банк забирает ${esc(fo.n)}: ${ui('coin')} ${R.bet*2}`}</p>`:''}${gain&&!(R.mode==='race'&&R.bet)?`<div class="sc-gain">+${gain} ${ui('coin')}</div>`:''}${tbl}
     <button class="sc-btn" id="kvAgain">⚔️ Реванш</button><button class="sc-btn ghost" id="kvScene">К сцене</button><button class="sc-btn ghost" id="kvDict">📖 Словарь</button></div>`);
-  $('#kvAgain').onclick=()=>{sfx('tap');const sid=R.sid,ep=R.ep;KV=null;renderScene(sid);setTimeout(()=>kvSheet(sid,ep),300);};
+  bgFill($('.kv'));$('#kvAgain').onclick=()=>{sfx('tap');const sid=R.sid,ep=R.ep;KV=null;renderScene(sid);setTimeout(()=>kvSheet(sid,ep),300);};
   $('#kvScene').onclick=()=>{sfx('tap');const sid=R.sid;KV=null;renderScene(sid);};
   $('#kvDict').onclick=()=>{sfx('tap');KV=null;DX.seg='ph';renderTab('dict');};
   if(steal)setTimeout(()=>kvSteal(steal).then(()=>{if(gain)goldFX(gain,$('.kv-bank'));setTimeout(dictFly,gain?1500:200);}),350);   // 13.3: кража билетов, потом выплата и карты
@@ -4475,6 +4480,27 @@ function bgNewHTML(k,label){const b=bgInfo(k);if(!b)return '';
   return `<div class="seg-bg bg-new"><span class="seg-bgi${b.live?' live':''}" style="background-image:${b.img.map(u=>`url('${u}')`).join(',')}">${b.live?'<i>▶</i>':''}</span><span class="seg-bgt"><em>${label}</em><b>${esc(b.name)}</b><small>Лежит в «Коллекции» на Главной</small></span>
     <button class="seg-set" data-bgc="${esc(k)}">Смотреть</button></div>`;}
 function bgBind(box){box.querySelectorAll('[data-bgc]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');renderCollection('bg',b.dataset.bgc);});}
+/* ===== 13.9.6: фон в профиле (идея друга Андрея). Фон из «Коллекции» ставится в профиль (store.profBg, синхронизируется):
+   профиль — карточка игрока на этом фоне; в дуэли друг видит тебя на нём (приглашение, экран «ты против друга», победа).
+   Главный фон (весь фильм / сериал / интервью) — с золотой рамкой и меткой «Весь фильм»: он реже и ценнее фона сцены. ===== */
+const profBg=()=>{const b=bgInfo(store.profBg);return b&&b.got?b:null;};
+const profBgKey=()=>{const b=profBg();return b?b.k:'';};
+const bgAnyGot=()=>bgKeys().some(k=>{const b=bgInfo(k);return !!(b&&b.got);});
+// подпись фона: главный — «🏆 Весь фильм» + фильм, фон сцены — «🎞 Сцена · фильм» + сцена
+function bgTagHTML(b){const s=b.film?null:scOf(b.k);
+  return `<span class="pbg-tag${b.film?' film':''}"><em>${b.film?'🏆 '+esc(cap(b.sub.replace('Главный фон · ',''))):'🎞 Сцена'+(s?' · '+esc(dictFilm(s)):'')}</em><b>${esc(b.name)}</b></span>`;}
+// слой фона: картинка сразу, видео поверх, когда пойдёт (экономия трафика / «меньше движения» — без видео)
+function bgLayer(el,b){if(!el||!b||el._bg===b.k)return;el._bg=b.k;el.style.backgroundImage=b.img.map(u=>`url('${u}')`).join(',');
+  el.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}v.remove();});
+  const lite=(navigator.connection&&navigator.connection.saveData)||matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(b.vid.length&&!lite){const v=bgVid(b.vid);if(v){el.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}}
+const bgFill=root=>{if(root)root.querySelectorAll('[data-bgl]').forEach(el=>bgLayer(el,bgInfo(el.dataset.bgl)));};
+// в профиле фона нет: позвать в «Коллекцию» (или сказать, как его получить)
+const profBgAskHTML=()=>`<button class="pc-set" id="pcSet"><i>🖼</i><span>${bgAnyGot()?'Поставь фон из «Коллекции» — друзья увидят тебя на нём в дуэли':'Пройди сцену целиком — получишь фон для профиля. Его увидят друзья в дуэли'}</span><b>›</b></button>`;
+// игрок дуэли на своём фоне (фон приходит из комнаты: R.A.bg / R.B.bg); нет фона — притемнённый кадр сцены (fb) или обложка, без подписи
+function kvPlHTML(p,cls,me,s,fb){const b=bgInfo(p&&p.bg);
+  return `<div class="kvp ${cls||''}${b?' has'+(b.film?' film':''):''}"><div class="kvp-bg"${b?` data-bgl="${esc(b.k)}"`:` style="background-image:url('${fb||scCover(s,'cover.jpg')}'),url('${scCover(s,'cover.jpg')}')"`} aria-hidden="true"></div><i class="kvp-sh" aria-hidden="true"></i>
+    <div class="kvp-who"><b>${me?'Ты':esc((p&&p.n)||'…')}</b>${b?bgTagHTML(b):''}</div></div>`;}
 /* ===== 12.3: награда за весь сегмент (сцену): карточка сегмента (золотая — если во всех эпизодах 3★) + фон сцены ===== */
 const segDone=s=>!!s&&s.parts.every((_,j)=>scP(s.id).done.includes(j));
 const segGold=s=>!!s&&s.parts.every((_,j)=>((scP(s.id).st||{})[j]||0)>=3);
@@ -4537,7 +4563,8 @@ const bgKeys=()=>showList().flatMap(h=>['h:'+h,...showScenes(h).map(x=>x.id)]);
 const collScenes=()=>SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)!=='hide');
 function collStat(){const B=bgKeys().map(bgInfo).filter(Boolean),SG=collScenes(),K=rwAll();
   return {bg:B.filter(b=>b.got).length,bgAll:B.length,cards:SG.filter(segHas).length,cardsAll:SG.length,kadr:K.filter(x=>x.got).length,kadrAll:K.length};}
-function renderCollection(tab,open){tab=tab||store.collTab||'bg';if(!['bg','cards','kadr'].includes(tab))tab='bg';if(store.collTab!==tab){store.collTab=tab;save();}
+let COLL_BACK='learn';   // 13.9.6: «назад» из Коллекции — на вкладку, откуда пришли (Главная или Профиль)
+function renderCollection(tab,open){if(screen!=='coll')COLL_BACK=(screen==='home'||screen==='subtab')?(store.tab||'learn'):'learn';tab=tab||store.collTab||'bg';if(!['bg','cards','kadr'].includes(tab))tab='bg';if(store.collTab!==tab){store.collTab=tab;save();}
   screen='coll';backBtn(true);applyFx();const C=collStat();
   const T=[['bg','🎞','Фоны',C.bg,C.bgAll],['cards','🎬','Карточки',C.cards,C.cardsAll],['kadr','🖼','Кадры',C.kadr,C.kadrAll]];
   mount(`<div class="coll"><div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Коллекция</h1></div>
@@ -4545,7 +4572,7 @@ function renderCollection(tab,open){tab=tab||store.collTab||'bg';if(!['bg','card
     <div class="coll-tabs" role="tablist">${T.map(([k,i,n,g,a])=>`<button data-ct="${k}" class="${k===tab?'on':''}" role="tab" aria-selected="${k===tab}"><span>${i}</span><b>${n}</b><small>${g} из ${a}</small></button>`).join('')}</div>
     <div class="coll-pane">${tab==='bg'?collBgHTML():tab==='cards'?collCardsHTML():collKadrHTML()}</div>
     <p class="coll-soon">🎁 Скоро здесь появятся новые награды</p></div>`,'collscr');
-  $('#bBtn').onclick=()=>{sfx('tap');renderTab('learn');};
+  $('#bBtn').onclick=()=>{sfx('tap');renderTab(COLL_BACK||'learn');};
   $$('.coll-tabs [data-ct]').forEach(b=>b.onclick=()=>{if(b.dataset.ct===tab)return;sfx('tap');haptic('sel');renderCollection(b.dataset.ct);});
   $$('.coll [data-bgk]').forEach(b=>b.onclick=()=>{const i=bgInfo(b.dataset.bgk);if(!i)return;if(!i.got){sfx('bad');haptic('err');toast('🔒 '+i.how);return;}sfx('tap');haptic('sel');bgView(i.k);});
   $$('.coll [data-rw]').forEach(b=>b.onclick=()=>{sfx('tap');rwOpen(b.dataset.rw);});
@@ -4554,7 +4581,7 @@ function renderCollection(tab,open){tab=tab||store.collTab||'bg';if(!['bg','card
 function collBgHTML(){
   const G=showList().map(h=>{const B=['h:'+h,...showScenes(h).map(x=>x.id)].map(bgInfo).filter(Boolean);return {h,B,g:B.filter(b=>b.got).length};});
   return (ADM_OPEN()?'<p class="coll-adm">Ты админ — видишь все фоны, даже не полученные.</p>':'')+[...G.filter(x=>x.g),...G.filter(x=>!x.g)].map(({h,B,g})=>{   // где есть полученные — выше
-    return `<h3 class="coll-h">${esc(h)} <span>${g} из ${B.length}</span></h3><div class="bgw">${B.map(b=>`<button class="bgw-i${b.film?' film':''}${b.got?'':' lock'}${b.got&&store.appBg===b.k?' on':''}" data-bgk="${esc(b.k)}" aria-label="${esc((b.film?'Главный фон ':'Фон сцены ')+b.name)}">
+    return `<h3 class="coll-h">${esc(h)} <span>${g} из ${B.length}</span></h3><div class="bgw">${B.map(b=>`<button class="bgw-i${b.film?' film':''}${b.got?'':' lock'}${b.got&&store.appBg===b.k?' on':''}${b.got&&store.profBg===b.k?' pf':''}" data-bgk="${esc(b.k)}" aria-label="${esc((b.film?'Главный фон ':'Фон сцены ')+b.name)}">
       <span class="bgw-img" style="background-image:${b.img.map(u=>`url('${u}')`).join(',')}"></span>${b.got?(b.live?'<i class="bgw-live">▶ живой</i>':''):'<i class="bgw-lk">🔒</i>'}
       <span class="bgw-t"><em>${b.film?'Главный фон':'Сцена'}</em><b>${esc(b.film?b.sub.replace('Главный фон · ',''):b.name)}</b></span></button>`).join('')}</div>`;}).join('')+
     `<small class="rwc-n">Сцена целиком — её фон. Весь фильм, сериал или интервью — главный фон. Нажми на полученный — смотри на весь экран.</small>`;}
@@ -4570,7 +4597,7 @@ function bgView(k){const L=bgKeys().map(bgInfo).filter(b=>b&&b.got);let i=L.find
   const o=document.createElement('div');o.className='bgvw';
   o.innerHTML=`<div class="bgvw-m"></div><div class="bgvw-ui"><div class="bgvw-top"><button class="bgvw-x" aria-label="Закрыть">${ui('close')}</button><span class="bgvw-t"><b></b><small></small></span></div>
     ${L.length>1?`<button class="bgvw-nav prev" aria-label="Предыдущий фон">${ui('back')}</button><button class="bgvw-nav next" aria-label="Следующий фон">${ui('fwd')}</button>`:''}
-    <div class="bgvw-bot"><button class="sc-btn bgvw-set"></button><small>Нажми на фон — кнопки спрячутся</small></div></div>`;
+    <div class="bgvw-bot"><div class="bgvw-acts"><button class="sc-btn bgvw-set" data-to="appBg"></button><button class="sc-btn bgvw-set" data-to="profBg"></button></div><small>Нажми на фон — кнопки спрячутся</small></div></div>`;
   document.body.appendChild(o);const m=o.querySelector('.bgvw-m');let swiped=false;
   const kill=()=>o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});
   const show=()=>{const b=L[i];kill();m.innerHTML='';m.className='bgvw-m'+(b.vid.length?'':' still');m.style.backgroundImage=b.img.map(u=>`url('${u}')`).join(',');
@@ -4578,12 +4605,13 @@ function bgView(k){const L=bgKeys().map(bgInfo).filter(b=>b&&b.got);let i=L.find
     if(!b.vid.length&&b.img[0]){const im=new Image();im.onload=()=>m.classList.toggle('fit',fit(im.naturalWidth,im.naturalHeight));im.src=b.img[0];}   // 13.0.2: вертикальный постер на ПК — целиком на размытой подложке
     if(b.vid.length){const v=bgVid(b.vid);if(v){v.addEventListener('loadedmetadata',()=>{m.classList.toggle('fit',fit(v.videoWidth,v.videoHeight));});m.appendChild(v);const p=v.play();if(p&&p.catch)p.catch(()=>{});}}
     o.querySelector('.bgvw-t b').textContent=b.name;o.querySelector('.bgvw-t small').textContent=b.sub;
-    const on=store.appBg===b.k,st=o.querySelector('.bgvw-set');st.textContent=on?'✓ Стоит на Главной · убрать':'Поставить на Главную';st.classList.toggle('ghost',on);};
-  const mark=()=>document.querySelectorAll('.coll [data-bgk]').forEach(x=>x.classList.toggle('on',x.dataset.bgk===store.appBg&&!x.classList.contains('lock')));
+    o.querySelectorAll('.bgvw-set').forEach(st=>{const on=store[st.dataset.to]===b.k;st.textContent=st.dataset.to==='appBg'?(on?'✓ На Главной':'На Главную'):(on?'✓ В профиле':'В профиль');st.classList.toggle('ghost',on);});};
+  const mark=()=>document.querySelectorAll('.coll [data-bgk]').forEach(x=>{const g=!x.classList.contains('lock');x.classList.toggle('on',g&&x.dataset.bgk===store.appBg);x.classList.toggle('pf',g&&x.dataset.bgk===store.profBg);});
   const close=()=>{if(o._c)return;o._c=true;kill();o.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>o.remove();mark();};
   o._close=close;o.querySelector('.bgvw-x').onclick=()=>{sfx('tap');close();};
   m.onclick=()=>{if(swiped){swiped=false;return;}o.classList.toggle('bare');};
-  o.querySelector('.bgvw-set').onclick=()=>{const b=L[i];store.appBg=store.appBg===b.k?'':b.k;save();sfx(store.appBg?'good':'tap');haptic('sel');toast(store.appBg?'🖼 Фон стоит на Главной':'Фон убран с Главной');show();mark();};
+  o.querySelectorAll('.bgvw-set').forEach(st=>st.onclick=()=>{const b=L[i],k=st.dataset.to,off=store[k]===b.k;store[k]=off?'':b.k;save();sfx(off?'tap':'good');haptic('sel');
+    toast(k==='appBg'?(off?'Фон убран с Главной':'🖼 Фон стоит на Главной'):(off?'Фон убран из профиля':'👤 Фон в профиле — друзья увидят тебя на нём в дуэли'));show();mark();});
   const go=d=>{i=(i+d+L.length)%L.length;sfx('page');show();};
   if(L.length>1){o.querySelector('.bgvw-nav.prev').onclick=()=>go(-1);o.querySelector('.bgvw-nav.next').onclick=()=>go(1);
     let x0=null;m.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
@@ -5833,7 +5861,7 @@ function onBack(){
   if(document.querySelector('.dfly')){document.querySelector('.dfly').click();return;}
   if(document.querySelector('.rwo')){document.querySelector('.rwo-dim').click();return;}   // 12.0: открытый кадр коллекции
   {const o=document.querySelector('.bgvw');if(o&&o._close){o._close();return;}}   // 13.0: фон на весь экран
-  if(screen==='coll'){sfx('tap');renderTab('learn');return;}
+  if(screen==='coll'){sfx('tap');renderTab(COLL_BACK||'learn');return;}
   if(screen==='shop'){shopBack();return;}
   if(document.querySelector('.dx')&&!document.querySelector('.scn')&&dxUp())return;   // 11.5: словарь — уровень вверх
   if(screen==='pvp'){if(KV&&KV.over){const sid=KV.room.sid;KV=null;renderScene(sid);}else kvLeave();return;}

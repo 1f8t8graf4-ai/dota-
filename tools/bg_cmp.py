@@ -39,12 +39,14 @@ V={
   after="The screens stay red, the red numbers keep falling and the ticker scrolls faster; the goldfish keeps hovering in the red glow.",loop='тьма',
   why="Это слово в слово тот промт, по которому вышел стоящий фон (Ламба, таблетки, шампанское, рыбка, деньги, снятая трубка), — добавлены только котировки на экранах и бегущая строка на стене. Событие, как ты сказал: в начале всё зелёное, на 4-й секунде разом красное, стрелки вниз — в конце всё рушится. Версии v4–v5 (без Ламбы и таблеток) — в мусор.",
   ru="Котировки на всех экранах и бегущая строка разом из зелёных становятся красными, стрелки вниз — крах, как у Белфорта в конце."),
-2:dict(take='mix',base='his',edits=[("the hazy Manhattan skyscrapers far below,","the hazy Manhattan skyscrapers far below with tiny yellow taxis crawling along the avenues between them and slow white clouds drifting above the towers,")],
-  calm="Calm: a slow ribbon of smoke curls up from the cigarette and drifts sideways, drops of condensation slide down the shaker, the clouds drift slowly above the towers and tiny taxis crawl along the avenues far below.",
+2:dict(take='mix',base='his',edits=[("a crystal ashtray with one burning cigarette and beside it a tiny brown glass vial with a tiny silver spoon, no bigger than a lipstick;","a crystal ashtray with one burning cigarette;"),
+    ("the hazy Manhattan skyscrapers far below,","the hazy Manhattan skyscrapers far below with tiny yellow taxis crawling along the avenues between them, thin wisps of low white cloud drifting past just outside the glass,")],
+  grade="white linen, gin and money; smug, seductive and rotten — money is not real (fugazi).",
+  calm="Calm: a slow ribbon of smoke curls up from the cigarette and drifts sideways, drops of condensation slide down the shaker, thin wisps of low cloud drift steadily past outside the windows from left to right, clearly moving, and tiny taxis crawl along the avenues far below.",
   ev=('00:04-00:06',"A dark helicopter flies past close outside the window, crossing the skyline from left to right; its dark reflection glides across the curved silver shaker and the full martini glass. Nothing on the table moves."),
-  after="The helicopter disappears behind the towers; the smoke, the clouds and the taxis carry on, and the table is calm, exactly as at the start.",loop='сама',
-  why="Текст — мой похваленный. Ролик по прошлой версии вышел, но бокалы дёргались: «дрожь от гула винта» нейронка рисует как глюк (и стекло небоскрёба гул так не передаёт), а до события почти ничего не двигалось — выглядело картинкой. Теперь на столе ничего не двигается: вертолёт только отражается в шейкере и бокале. Жизнь — от настоящих источников: дым лентой, капли по шейкеру, облака над небоскрёбами, такси внизу. Вертолёт — пасхалка: Джордан потом под кваалюдами сажает свой вертолёт у дома.",
-  ru="За окном пролетает вертолёт — его отражение скользит по шейкеру и бокалу, на столе ничего не двигается. До и после — дым, облака, такси внизу."),
+  after="The helicopter disappears behind the towers; the smoke, the drifting cloud wisps and the taxis carry on, and the table is calm, exactly as at the start.",loop='сама',
+  why="Текст — мой похваленный. Ролики по прошлым версиям: бокалы дёргались («дрожь от гула винта» нейронка рисует как глюк), облака стояли (далёкие облака за 8 секунд и правда почти не сдвигаются), а пузырёк с ложечкой читался как лекарство (это был кокаин Ханны — без руки не понять). Теперь: на столе ничего не двигается, вертолёт только отражается в шейкере и бокале; облака — низкие клочья прямо за стеклом, они плывут заметно; пузырёк и «cocaine» из строки цвета убраны. Вертолёт — пасхалка: Джордан потом под кваалюдами сажает свой вертолёт у дома.",
+  ru="За окном пролетает вертолёт — его отражение скользит по шейкеру и бокалу, на столе ничего не двигается. До и после — дым, клочья облаков за стеклом, такси внизу."),
 3:dict(take='mix',base='mine',mk='wolf-swiss-bank',edits=[("a small stack of real hundred-dollar bills under a silver money clip","a small brass safe-deposit key lying on the folder")],
   calm="Calm: the tropical fish drift slowly in the aquarium, the fountain plume sways in the wind, a wisp of steam rises from the espresso.",
   ev=('00:04-00:06',"Out in the window the lake fountain surges: its white plume shoots much higher into the sky, a wide veil of spray drifts in the wind and a bright rainbow appears in the mist."),
@@ -268,6 +270,7 @@ def build():
             body,grade=(v['body'],v['grade']) if v['base']=='own' else mine_body(v['mk']) if v['base']=='mine' else his_body(e)
             for a,b in v.get('edits',[]):
                 assert a in body,(n,a);body=body.replace(a,b)
+            if v['base']!='own' and v.get('grade'):grade=v['grade']
             t0,t1=v['ev'];t2='00:05-00:08' if t0.endswith('05') else '00:06-00:08'
             seg=[('00:00-00:04',v['calm']),(t0,t1),(t2,v['after'])]
             take={'mine':'мой текст','his':'его текст','own':'новый текст'}[v['base']]+' + другое событие';ev_ru=v['ru'];loop=v['loop']

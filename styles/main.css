@@ -4966,3 +4966,97 @@ body.nofx .ss-mist{animation:none}
 .dm-due,.dm-due.on,.dm-due.ok{padding:0;border-radius:0;background:none;font:500 12.5px 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.45)}
 .dm-due.on{color:#FFB547}
 .dm-due.ok{color:#7DD99A}
+
+/* ==== 13.9.6 — фон в профиле: карточка игрока на своём фоне, «В профиль» в Коллекции, дуэль на фонах игроков ==== */
+/* слой фона (профиль, дуэль): картинка сразу, видео проявляется, когда пошло */
+.pc-bg,.kvp-bg{position:absolute;inset:0;background:#141417 center/cover no-repeat}
+.pc-bg video,.kvp-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+.pc-bg video.on,.kvp-bg video.on{opacity:1}
+/* подпись фона: главный — золотая «🏆 Весь фильм», фон сцены — простая */
+.pbg-tag{display:inline-flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:0;max-width:100%;padding:5px 10px 6px;border-radius:12px;background:rgba(10,10,12,.58);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.13);text-align:left}
+.pbg-tag em{max-width:100%;overflow:hidden;text-overflow:ellipsis;font:800 9.5px/1.35 'Golos Text',system-ui,sans-serif;font-style:normal;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.72);white-space:nowrap}
+.pbg-tag b{display:block;max-width:100%;margin:0;font:700 12.5px/1.25 'Golos Text',system-ui,sans-serif;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbg-tag.film{border-color:rgba(233,196,106,.7);background:linear-gradient(135deg,rgba(74,54,14,.78),rgba(10,10,12,.62))}
+.pbg-tag.film em{color:#F3DA8C}
+/* профиль: карточка игрока на фоне */
+.phead.pbg{position:relative;overflow:hidden;isolation:isolate;justify-content:flex-end;min-height:340px;padding-top:76px;background:#0d0d10}
+.phead.pbg>*{position:relative;z-index:2}
+.phead.pbg>.pc-bg{position:absolute;z-index:0}
+.phead.pbg>.pc-sh{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,8,10,.42),rgba(8,8,10,0) 24%,rgba(8,8,10,.12) 42%,rgba(8,8,10,.74) 68%,rgba(8,8,10,.95))}
+.phead.pbg>.pc-top{position:absolute;left:12px;right:12px;top:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.pc-chg{flex:none;padding:7px 12px;border-radius:99px;background:rgba(10,10,12,.58);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);color:#fff;font:700 12.5px 'Golos Text',system-ui,sans-serif}
+.pc-chg:active{transform:scale(.95)}
+.phead.pbg .pn{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.75)}
+.phead.pbg small{color:rgba(255,255,255,.8);text-shadow:0 1px 8px rgba(0,0,0,.75)}
+.phead.pbg .pbar{background:rgba(255,255,255,.16);box-shadow:none}
+.phead.pbg.film{box-shadow:inset 0 0 0 1.5px rgba(233,196,106,.92),0 22px 50px -26px rgba(233,196,106,.6)}
+.phead.pbg.film::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;background:linear-gradient(105deg,transparent 42%,rgba(255,236,180,.2) 50%,transparent 58%);background-size:260% 100%;background-position:130% 0;animation:pcGlint 7s ease-in-out 1.2s infinite}
+@keyframes pcGlint{0%{background-position:130% 0}24%,100%{background-position:-30% 0}}
+.pc-set{display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;padding:11px 12px;border-radius:14px;border:1px dashed rgba(233,196,106,.5);background:rgba(233,196,106,.06);color:inherit;font:600 13px/1.35 'Golos Text',system-ui,sans-serif;text-align:left}
+.pc-set i{font-style:normal;font-size:20px}.pc-set span{flex:1;opacity:.85}.pc-set b{font-size:20px;opacity:.5}
+/* Коллекция: плитка «в профиле»; в просмотре фона — две кнопки */
+.bgw-i.pf::before{content:"👤 в профиле";position:absolute;top:6px;left:6px;z-index:2;padding:2px 6px;border-radius:99px;background:rgba(243,235,221,.95);color:#15130f;font:800 9px 'Golos Text',system-ui,sans-serif}
+.bgw-i.on.pf::before{top:26px;left:auto;right:6px}
+.bgw-i.pf .bgw-live{display:none}
+.bgw-i.pf:not(.on){box-shadow:0 0 0 2px rgba(243,235,221,.9),0 0 16px -4px rgba(243,235,221,.6)}
+.bgvw-acts{display:flex;gap:8px;width:100%;max-width:440px}
+.bgvw-acts .bgvw-set{flex:1 1 0;min-width:0;max-width:none;padding:13px 8px;font-size:14.5px;white-space:nowrap}
+/* дуэль: игрок на своём фоне */
+.kvp{position:relative;overflow:hidden;isolation:isolate;background:#0d0d10}
+.kvp>.kvp-bg{z-index:0}
+.kvp:not(.has)>.kvp-bg{filter:blur(2px) brightness(.46) saturate(.7);transform:scale(1.06)}
+.kvp>.kvp-sh{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.06) 34%,rgba(0,0,0,.82))}
+.kvp-who{position:absolute;z-index:2;left:14px;right:14px;bottom:12px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left}
+.kv .kvp .kvp-who>b{display:block;margin:0;max-width:100%;font:800 22px/1.15 'Golos Text',system-ui,sans-serif;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kv .kvp .pbg-tag b{margin:0;font:700 12.5px/1.25 'Golos Text',system-ui,sans-serif;color:#fff}
+.kvp.film{box-shadow:inset 0 0 0 1.5px rgba(233,196,106,.92)}
+.kvp.win .kvp-who>b::after{content:" 🏆"}
+/* приглашение, ожидание, победа: плашка — шапкой карточки */
+.kv-lobby>.kvp,.kv-end>.kvp{margin:-24px -18px 14px;height:210px;border-radius:24px 24px 0 0}
+.kvp-cap{display:block;margin:-6px 0 4px;color:rgba(255,255,255,.5);font-size:12px}
+.kv-lobby p.kv-tip{margin:10px 0 0;font-size:12.5px;color:rgba(255,255,255,.55)}
+/* отсчёт: ты против друга — каждый на своей половине экрана */
+.kv-vs{position:fixed;inset:0;z-index:60;overflow:hidden;background:#060607}
+.kv-vs>.kvp{position:absolute;left:0;right:0;height:56%}
+.kv-vs>.kvp.top{top:0;clip-path:polygon(0 0,100% 0,100% 82.1%,0 96.4%)}
+.kv-vs>.kvp.bot{bottom:0;clip-path:polygon(0 17.9%,100% 3.6%,100% 100%,0 100%)}
+.kv-vs>.kvp.top>.kvp-sh{background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.06) 42%,rgba(0,0,0,.3))}
+.kv-vs>.kvp.bot>.kvp-sh{background:linear-gradient(0deg,rgba(0,0,0,.76),rgba(0,0,0,.06) 42%,rgba(0,0,0,.3))}
+.kv-vs>.kvp.top .kvp-who{top:calc(var(--st,0px) + 18px);bottom:auto;left:18px;right:18px}
+.kv-vs>.kvp.bot .kvp-who{bottom:calc(var(--sb,0px) + 20px);left:18px;right:18px;align-items:flex-end;text-align:right}
+.kv-vs .kvp .kvp-who>b{font-size:26px}
+.kvs-seam{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 6px rgba(245,196,81,.9))}
+.kvs-seam line{stroke:#F5C451;stroke-width:3;vector-effect:non-scaling-stroke}
+.kvs-seam.l{display:none}
+.kvs-mid{position:absolute;left:0;right:0;top:50%;z-index:3;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+.kv-vs .kv-numw{min-width:124px;min-height:124px;border-radius:50%;background:radial-gradient(circle,rgba(10,10,12,.94) 56%,rgba(10,10,12,0) 71%)}
+.kv-vs .kv-numw b{font:900 84px/1 'Golos Text',system-ui,sans-serif;color:#FFD978;text-shadow:0 0 34px rgba(245,196,81,.55)}
+.kv-vs .kv-pot{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:radial-gradient(circle at 30% 30%,rgba(255,231,168,.22),rgba(245,196,81,.06)),rgba(12,12,14,.82);border:1.5px solid rgba(245,196,81,.6);color:#FFD978;box-shadow:0 0 30px -6px rgba(245,196,81,.6)}
+.kv-vs .kv-pot svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8}
+.kv-vs .kv-pot b{font:900 24px 'Golos Text',system-ui,sans-serif;color:#FFD978}
+.kv-vs .kv-pot small{color:rgba(255,255,255,.66);font-size:12px}
+.kvs-sub{padding:5px 12px;border-radius:99px;background:rgba(10,10,12,.62);color:rgba(255,255,255,.8);font-size:12.5px}
+.kv-vs.in>.kvp.top{animation:kvsInT .7s var(--spring,cubic-bezier(.2,1,.3,1)) both}
+.kv-vs.in>.kvp.bot{animation:kvsInB .7s var(--spring,cubic-bezier(.2,1,.3,1)) .06s both}
+.kv-vs.in .kvs-seam{animation:kvsFade .45s ease-out .35s both}
+.kv-vs.in .kvs-mid{animation:kvsFade .35s ease-out .25s both}
+@keyframes kvsInT{from{transform:translateY(-62%)}}
+@keyframes kvsInB{from{transform:translateY(62%)}}
+@keyframes kvsInR{from{transform:translateX(62%)}}
+@keyframes kvsInL{from{transform:translateX(-62%)}}
+@keyframes kvsFade{from{opacity:0}}
+/* широкий экран (ПК): ты слева, друг справа */
+@media (min-aspect-ratio:1/1){
+  .kv-vs>.kvp{top:0;bottom:0;height:auto;width:56%}
+  .kv-vs>.kvp.top{left:auto;right:0;clip-path:polygon(17.9% 0,100% 0,100% 100%,3.6% 100%)}
+  .kv-vs>.kvp.bot{left:0;right:auto;clip-path:polygon(0 0,96.4% 0,82.1% 100%,0 100%)}
+  .kv-vs>.kvp.top>.kvp-sh{background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,.05) 38%,rgba(0,0,0,.05) 70%,rgba(0,0,0,.45))}
+  .kv-vs>.kvp.bot>.kvp-sh{background:linear-gradient(0deg,rgba(0,0,0,.7),rgba(0,0,0,.05) 38%,rgba(0,0,0,.05) 70%,rgba(0,0,0,.45))}
+  .kv-vs>.kvp.top .kvp-who{left:24%;right:28px;align-items:flex-end;text-align:right}
+  .kv-vs>.kvp.bot .kvp-who{left:28px;right:24%;align-items:flex-start;text-align:left}
+  .kvs-seam.p{display:none}.kvs-seam.l{display:block}
+  .kv-vs.in>.kvp.top{animation-name:kvsInR}.kv-vs.in>.kvp.bot{animation-name:kvsInL}
+}
+/* имя в профиле: класс .pn занят узлами пути сцены (слой 9.x) — там он слева и с пунктиром; в профиле — по центру под аватаркой */
+.phead .pn{display:block;width:auto;max-width:100%;margin:0;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.phead .pn::before{display:none}
