@@ -1,4 +1,5 @@
 // 13.9.1: Кинотека на весь экран — заголовок раздела → окно, листание, живой момент только у текущего, выход всеми способами; ph|pc
+// 13.9.4: «‹» на странице фильма и сцены — настоящим кликом
 const {open}=require('./st');const {chromium}=require('playwright');
 const seed=([st])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:true,flags:{}}));};
 const bb=()=>{window.__bb=[];const W=window.Telegram&&Telegram.WebApp;if(W)W.BackButton={show(){window.__bb.push(1);},hide(){window.__bb.push(0);},onClick(){},offClick(){}};};
@@ -33,7 +34,13 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   await ev(()=>{const i=+document.querySelector('.knf-num').textContent.split(' / ')[0]-1;document.querySelectorAll('.knf-s')[i].querySelector('[data-fo]').click();});await page.waitForTimeout(1600);
   r=await ev(()=>({ov:!!document.querySelector('.knf'),lvl:document.querySelector('#dlStage').dataset.lvl,show:DL.S.show,bb:window.__bb.slice(-1)[0]}));ok('«Открыть» → страница фильма, окно закрыто',!r.ov&&r.lvl==='film'&&r.show===name&&r.bb===1,r);
   await shot(page,'4-film');
-  await ev(()=>DL.back());await page.waitForTimeout(1200);
+  // 13.9.4: выход «‹» настоящим кликом (раньше тест жал DL.back() напрямую): сцена → фильм → главная
+  await page.locator('#dlStage .kf-sr[data-sid]').first().click();await page.waitForTimeout(1300);
+  r=await ev(()=>({lvl:document.querySelector('#dlStage').dataset.lvl,bb:window.__bb.slice(-1)[0]}));ok('сцена открылась',r.lvl==='scene'&&r.bb===1,r);
+  await page.click('#dlStage .dl-crumb [data-up]');await page.waitForTimeout(1300);
+  r=await ev(()=>document.querySelector('#dlStage').dataset.lvl);ok('«‹» в сцене → фильм',r==='film',r);
+  await page.click('#dlStage .dl-crumb [data-up]');await page.waitForTimeout(1300);
+  r=await ev(()=>({lvl:document.querySelector('#dlStage').dataset.lvl,bb:window.__bb.slice(-1)[0]}));ok('«‹» в фильме → главная, «назад» Телеграма спрятана',r.lvl==='home'&&r.bb===0,r);
   // выход: ✕
   await page.click('[data-kfs="film"]');await page.waitForTimeout(1000);await page.click('.knf-x');await page.waitForTimeout(700);
   r=await ev(()=>({ov:!!document.querySelector('.knf'),bb:window.__bb.slice(-1)[0],lvl:document.querySelector('#dlStage').dataset.lvl}));ok('✕ закрывает, кнопка «назад» снова спрятана (главная)',!r.ov&&r.bb===0&&r.lvl==='home',r);

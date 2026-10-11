@@ -2313,7 +2313,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.3';
+const APP_V='13.9.4';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2346,7 +2346,7 @@ const swKeysIn=(sid,pi,text)=>{const d=swData(sid,pi);if(!d)return [];const toks
 // субтитры: оригинальная строка — словами, на которые можно нажать
 const swWrap=txt=>String(txt||'').split(/([A-Za-zÀ-ÖØ-öø-ÿ'’]+)/).map((x,k)=>k%2?`<i class="sw">${esc(x)}</i>`:esc(x)).join('');   // 13.6: и буквы с акцентом (Timothée — одно слово)
 function swPop(word,row,inPh,el){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=SCUR.i||0,hit=swFind(s.id,pi,word),pf=inPh&&phIdiom(SW._rowPh)?SW._rowPh:null;
-  if(el&&(!matchMedia('(hover:hover)').matches||innerWidth<640)){const was=SV&&!SV.paused;if(was)SV.pause();const id=pf?phIdiom(pf):null,de=s.lang==='de';
+  if(el&&(!matchMedia('(hover:hover)').matches||innerWidth<640)){const was=SV&&!SV.paused;if(was)SV.pause();const id0=pf?phIdiom(pf):null,id=id0&&!idWhole(id0,pf)?id0:null,de=s.lang==='de';
     const html=`<span class="kwp-k">${hit&&hit.key?'★ Слово эпизода':'Слово'}</span><b class="kwp-w">${esc(swNorm(word))}</b><span class="kwp-t">${hit?esc(hit.ru):'нет в словарике — смотри перевод реплики'}</span>
       ${id?`<div class="kwp-use"><em>Тут это часть выражения</em><span><b>${esc(id.head)}</b> — ${esc(id.mean)}</span></div>`:''}
       ${row?`<div class="kwp-ex"><em>Вся реплика</em><b>${esc(String(row[de?4:2]||'').replace(/\n/g,' '))}</b><small>${esc(String(row[3]||'').replace(/\n/g,' '))}</small></div>`:''}`;
@@ -2384,7 +2384,11 @@ function swWrapPh(txt,f){const de=SCUR&&scOf(SCUR.id)&&scOf(SCUR.id).lang==='de'
 function phIdiom(f){if(!f)return null;const m=/^([^—«]{2,70}?) — «([^»]{2,90})»/.exec(f.note||'');if(!m)return null;
   const words=(m[1].toLowerCase().match(/[a-zäöüß']+/g)||[]).filter(w=>w.length>1);return words.length?{head:m[1].trim(),mean:m[2].trim(),words}:null;}
 const idHit=(id,tok)=>{if(!id)return false;const n=swNorm(tok);return id.words.some(w=>n===w||(n.startsWith(w)&&/^(s|es|ed|d|ing|in'|in|'s|'d|n't)$/.test(n.slice(w.length))));};
-function phBlock(f){const id=phIdiom(f);if(!id)return '';return `<div class="wp-ph"><span class="k">Это слово тут — часть выражения</span><b>${esc(id.head)}</b><span class="t">${esc(id.mean)}</span><small>В реплике: «${esc(scT(f))}» — ${esc(f.ru)}</small></div>`;}
+// 13.9.4: у 444 из 646 фраз пояснение начинается с самой фразы — «выражение» = вся фраза. Тогда «Тут это часть выражения» слово в слово
+// повторяет «Во фразе» (Андрей: «даблится объяснение») — такое «выражение» не показываем. Настоящие выражения внутри фразы («Fuck the clients») — как раньше.
+const idWhole=(id,f)=>!!(id&&f)&&[f.en,f.de].some(x=>{const t=phNorm(x);if(!t)return false;if(t===phNorm(id.head))return true;
+  const tw=t.split(' ').filter(w=>w.length>1);return tw.length>0&&tw.filter(w=>id.words.includes(w)).length/tw.length>=0.8;});
+function phBlock(f){const id=phIdiom(f);if(!id)return '';if(idWhole(id,f))return `<div class="wp-ph"><span class="k">Во фразе</span><b>${esc(scT(f))}</b><span class="t">${esc(f.ru)}</span></div>`;return `<div class="wp-ph"><span class="k">Это слово тут — часть выражения</span><b>${esc(id.head)}</b><span class="t">${esc(id.mean)}</span><small>В реплике: «${esc(scT(f))}» — ${esc(f.ru)}</small></div>`;}
 /* ================= 9.1–9.2: слова фразы — нажимается КАЖДОЕ слово ================= */
 // f.kw = [[как во фразе, словарная форма, перевод, пример, перевод примера, когда применяется], ...] — «важные» слова, подсвечены.
 // Остальные слова тоже нажимаются: перевод из словаря сцены, выражение (если слово — его часть) и вся фраза с переводом.
@@ -2438,10 +2442,11 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._res
     const top=window.innerHeight-P.getBoundingClientRect().height;if(r.bottom>top-12&&!el.closest('.sc-pfs'))window.scrollBy({top:r.bottom-top+28,behavior:'smooth'});}
   haptic('sel');}
 function kwShow(el,f,pin){const k=kwOf(f)[+el.dataset.kw];if(!k)return;popAt(el,kwCardHTML(k),{sid:f.sid||(SCUR&&SCUR.id),f,word:k[1]||k[0],say:el.textContent||k[0],ru:k[2]},pin);}
-function wordShow(el,f,pin){const sid=(f&&f.sid)||(SCUR&&SCUR.id);if(!sid)return;const w=el.textContent,hit=swFind(sid,f?f.pi||0:0,w),id=f?phIdiom(f):null,inId=id&&idHit(id,w);
+function wordShow(el,f,pin){const sid=(f&&f.sid)||(SCUR&&SCUR.id);if(!sid)return;const w=el.textContent,hit=swFind(sid,f?f.pi||0:0,w),id=f?phIdiom(f):null,inId=id&&!idWhole(id,f)&&idHit(id,w);
+  const inWin=!!(el.closest&&el.closest('.kno'));   // 13.9.4: в открытой фразе словаря фраза с переводом и так крупно на экране — «Во фразе» не повторяем
   const html=`<span class="kwp-k">Слово</span><b class="kwp-w">${esc(swNorm(w))}</b><span class="kwp-t">${hit?esc(hit.ru):'перевода нет в словарике'}</span>
     ${inId?`<div class="kwp-use"><em>Тут это часть выражения</em><span><b>${esc(id.head)}</b> — ${esc(id.mean)}</span></div>`:''}
-    ${f?`<div class="kwp-ex"><em>Во фразе</em><b>${esc(scT(f))}</b><small>${esc(f.ru)}</small></div>`:''}`;
+    ${f&&!inWin?`<div class="kwp-ex"><em>Во фразе</em><b>${esc(scT(f))}</b><small>${esc(f.ru)}</small></div>`:''}`;
   popAt(el,html,{sid,f,word:swNorm(w),ru:hit?hit.ru:''},pin);}
 // подключить слова в контейнере: f — фраза или функция (элемент → фраза)
 function phBind(root,getF){if(!root)return;const fOf=el=>typeof getF==='function'?getF(el):getF,hov=matchMedia('(hover:hover)').matches;
@@ -2490,7 +2495,7 @@ function swTouch(SW){let T=null;
 // подсказка при наведении мышкой (ПК): без паузы, рядом со словом
 function swTip(el){if(!SW)return;let tip=SW.querySelector('.sc-wtip');if(!tip){tip=document.createElement('div');tip.className='sc-wtip';SW.appendChild(tip);}
   const s=scOf(SCUR.id),hit=swFind(s.id,SCUR.i||0,el.textContent),f=el.classList.contains('in-ph')?SW._rowPh:null;
-  const id=f?phIdiom(f):null;
+  const id=f&&!idWhole(phIdiom(f),f)?phIdiom(f):null;
   tip.innerHTML=`<b>${esc(swNorm(el.textContent))}</b>${hit?` — ${esc(hit.ru)}`:''}${id?`<span>тут часть выражения «${esc(id.head)}» — ${esc(id.mean)}</span>`:(!hit?'<span>нет в словарике — нажми, покажу перевод реплики</span>':'')}`;
   const r=el.getBoundingClientRect(),w=SW.getBoundingClientRect();tip.style.left=Math.max(6,Math.min(w.width-220,r.left-w.left-20))+'px';tip.style.top=Math.max(6,r.top-w.top-tip.offsetHeight-8)+'px';tip.classList.add('on');}
 function linePop(el,row){const s=scOf(SCUR.id),pi=SCUR.i||0,word=el.textContent,hit=swFind(s.id,pi,word);
