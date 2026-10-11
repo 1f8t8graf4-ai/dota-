@@ -1,5 +1,6 @@
-// Бот «Языки по кино» (@languagegamesbot) — Cloudflare Worker, версия 12.0
-// ОДИН воркер на всё: бот, онлайн-игры, админ-панель, статистика, напоминания и (с 12.0) дуэли по сценам + сброс прогресса.
+// Бот «Языки по кино» (@languagegamesbot) — Cloudflare Worker, версия 13.9
+// ОДИН воркер на всё: бот, онлайн-игры, админ-панель, статистика, напоминания, (с 12.0) дуэли по сценам + сброс прогресса
+// и (с 13.9) раздача видео/картинок/музыки сцен из Cloudflare R2 — адрес /m/scenes/<сцена>/<файл>.
 // Отдельный воркер kino-pvp больше НЕ нужен — если ставил, его можно удалить.
 //
 // Переменные в настройках воркера:
@@ -13,6 +14,7 @@
 //   ADMIN_ID       (текст)  — Telegram ID организатора (узнать: /myid). Если нет — 876754050 (Андрей)
 //   TOUR_PRIZE     (текст)  — приз турнира, например «5 USDT за 1 место»
 // База D1, подключённая к воркеру под именем DB, — для онлайн-игр, турнира, админки, дуэлей, статистики. Таблицы создаются сами.
+// Бакет R2 kino-media, подключённый под именем MEDIA (Settings → Bindings → R2 bucket), — видео и картинки сцен.
 // Cron (Triggers → Cron «0 * * * *») — напоминания о повторении.
 // После каждого обновления кода открой один раз: https://<воркер>/setup?secret=<WEBHOOK_SECRET>
 
@@ -1274,10 +1276,132 @@ const CORS = {
 const json = (obj, status) => new Response(JSON.stringify(obj), { status: status || 200, headers: { ...CORS, 'content-type': 'application/json; charset=utf-8' } });
 const API_ROUTES = { '/api/spy': spyApi, '/api/tour': tourApi, '/api/flags': flagsApi, '/api/cg': cgApi, '/api/remind': remindApi, '/api/ev': evApi, '/api/pvp': pvpApi };
 
+/* ===== 13.9: видео, картинки и музыка сцен — из Cloudflare R2 (бакет kino-media, привязка MEDIA) ===== */
+// Раньше их раздавал GitHub Pages из открытого репо scenes. Теперь файлы лежат в R2 под теми же путями:
+//   GET/HEAD /m/scenes/<сцена>/<файл> — отдать файл (с Range: iPhone без него не крутит видео);
+//   PUT/DELETE /m/scenes/…            — залить/удалить, только с ключом заливки в заголовке x-up (tools/r2_up.py);
+//   GET /m-ls?prefix=…&cursor=…       — список файлов, тоже только с ключом (сверка после заливки).
+// Чужим списка файлов нет. Ключ заливки здесь не хранится — только его SHA-256 (поменять: переменная MEDIA_UP_HASH).
+const MEDIA_UP_HASH = '9785f31a856ea90695df8951e1c2079e4c944f92f703b1bc1359ec64b151c1e1';
+const MEDIA_TYPES = {
+  mp4: 'video/mp4', m4a: 'audio/mp4', mp3: 'audio/mpeg', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp',
+  json: 'application/json; charset=utf-8', srt: 'text/plain; charset=utf-8', vtt: 'text/vtt; charset=utf-8', txt: 'text/plain; charset=utf-8',
+};
+// час — свежий, потом неделю можно показывать старый, пока браузер тихо проверяет (заменённый постер доедет быстро)
+const MEDIA_CC = 'public, max-age=3600, stale-while-revalidate=604800';
+const MEDIA_CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+  'Access-Control-Allow-Headers': 'range, if-none-match, if-modified-since, if-range',
+  'Access-Control-Expose-Headers': 'content-length, content-range, accept-ranges, etag, last-modified',
+  'Access-Control-Max-Age': '86400',
+};
+const MEDIA_META = new Map();   // ключ → {size, etag, lm, t}: размер файла на минуту, чтобы перемотка видео не спрашивала R2 дважды
+const mediaType = (k) => MEDIA_TYPES[(k.split('.').pop() || '').toLowerCase()] || 'application/octet-stream';
+const mediaText = (status, msg, extra) => new Response(msg, { status, headers: { ...MEDIA_CORS, 'content-type': 'text/plain; charset=utf-8', ...(extra || {}) } });
+
+async function mediaAuth(req, env) {
+  const k = req.headers.get('x-up') || '';
+  if (k.length < 20) return false;
+  const d = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(k)));
+  const got = [...d].map((x) => x.toString(16).padStart(2, '0')).join('');
+  const want = String(env.MEDIA_UP_HASH || MEDIA_UP_HASH).trim().toLowerCase();
+  let diff = got.length ^ want.length;
+  for (let i = 0; i < got.length && i < want.length; i++) diff |= got.charCodeAt(i) ^ want.charCodeAt(i);
+  return diff === 0;
+}
+
+function mediaKey(path) {
+  let k = '';
+  try { k = decodeURIComponent(path.slice(3)); } catch (e) { return ''; }
+  if (!k.startsWith('scenes/') || k.length > 400 || k.endsWith('/') || k.includes('..') || k.includes('//') || /[\u0000-\u001f\\]/.test(k)) return '';
+  return k;
+}
+
+// «bytes=a-b», «bytes=a-», «bytes=-n». Несколько кусков или мусор — отдаём файл целиком (так можно по стандарту).
+function mediaRange(h, size) {
+  const m = /^bytes=(\d*)-(\d*)$/.exec(String(h || '').trim());
+  if (!m || (m[1] === '' && m[2] === '')) return null;
+  let a, b;
+  if (m[1] === '') {
+    const n = Number(m[2]);
+    if (!n || !size) return 'bad';
+    a = Math.max(0, size - n); b = size - 1;
+  } else {
+    a = Number(m[1]);
+    if (m[2] !== '' && Number(m[2]) < a) return null;
+    b = m[2] === '' ? size - 1 : Math.min(Number(m[2]), size - 1);
+  }
+  if (a >= size) return 'bad';
+  return { offset: a, length: b - a + 1 };
+}
+
+async function mediaMeta(env, key, fresh) {
+  const c = MEDIA_META.get(key);
+  if (!fresh && c && Date.now() - c.t < 60000) return c;
+  const o = await env.MEDIA.head(key);
+  if (!o) { MEDIA_META.delete(key); return null; }
+  if (MEDIA_META.size > 3000) MEDIA_META.clear();
+  const m = { size: o.size, etag: o.httpEtag, lm: o.uploaded ? new Date(o.uploaded).toUTCString() : '', t: Date.now() };
+  MEDIA_META.set(key, m);
+  return m;
+}
+
+const etagHit = (h, etag) => !!h && (h.trim() === '*' || h.split(',').some((x) => x.trim().replace(/^W\//, '') === etag));
+
+async function mediaGet(req, env, key, again) {
+  const meta = await mediaMeta(env, key, again);
+  if (!meta) return mediaText(404, 'Нет такого файла');
+  const hd = { ...MEDIA_CORS, 'content-type': mediaType(key), 'cache-control': MEDIA_CC, 'accept-ranges': 'bytes', etag: meta.etag };
+  if (meta.lm) hd['last-modified'] = meta.lm;
+  const inm = req.headers.get('if-none-match'), ims = req.headers.get('if-modified-since');
+  if (inm ? etagHit(inm, meta.etag) : ims && meta.lm && Date.parse(meta.lm) <= Date.parse(ims)) return new Response(null, { status: 304, headers: hd });
+  if (req.method === 'HEAD') return new Response(null, { headers: { ...hd, 'content-length': String(meta.size) } });
+  const ir = req.headers.get('if-range');
+  let r = ir && !etagHit(ir, meta.etag) ? null : mediaRange(req.headers.get('range'), meta.size);
+  if (r === 'bad') return mediaText(416, 'Range вне файла', { 'content-range': `bytes */${meta.size}` });
+  let o;
+  try { o = r ? await env.MEDIA.get(key, { range: r }) : await env.MEDIA.get(key); }
+  catch (e) { if (again) throw e; return mediaGet(req, env, key, true); }   // кусок вне файла: размер в памяти устарел
+  if (!o) { MEDIA_META.delete(key); return mediaText(404, 'Нет такого файла'); }
+  if (o.size !== meta.size) {   // файл только что перезалили — узнать новый размер и ответить заново
+    if (o.body) o.body.cancel().catch(() => {});
+    return again ? mediaText(503, 'Файл обновляется, попробуй ещё раз', { 'retry-after': '2' }) : mediaGet(req, env, key, true);
+  }
+  if (!r) return new Response(o.body, { headers: { ...hd, etag: o.httpEtag, 'content-length': String(o.size) } });
+  return new Response(o.body, { status: 206, headers: { ...hd, 'content-length': String(r.length), 'content-range': `bytes ${r.offset}-${r.offset + r.length - 1}/${meta.size}` } });
+}
+
+async function mediaApi(req, env, url) {
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: MEDIA_CORS });
+  if (!env.MEDIA) return mediaText(503, 'R2 не подключён: привяжи бакет kino-media к воркеру под именем MEDIA (Settings → Bindings)');
+  if (url.pathname === '/m-ls') {
+    if (!(await mediaAuth(req, env))) return json({ ok: false, err: 'auth' }, 403);
+    const r = await env.MEDIA.list({ prefix: url.searchParams.get('prefix') || 'scenes/', cursor: url.searchParams.get('cursor') || undefined, limit: 1000 });
+    return json({ ok: true, files: r.objects.map((o) => [o.key, o.size, o.etag]), cursor: r.truncated ? r.cursor : null });
+  }
+  const key = mediaKey(url.pathname);
+  if (!key) return mediaText(404, 'Нет такого файла');
+  try {
+    if (req.method === 'GET' || req.method === 'HEAD') return await mediaGet(req, env, key);
+    if (req.method !== 'PUT' && req.method !== 'DELETE') return mediaText(405, 'Можно только GET и HEAD');
+    if (!(await mediaAuth(req, env))) return json({ ok: false, err: 'auth' }, 403);
+    MEDIA_META.delete(key);
+    if (req.method === 'DELETE') { await env.MEDIA.delete(key); return json({ ok: true, key }); }
+    const md5 = (req.headers.get('x-md5') || '').toLowerCase();   // R2 сам сверит: битый файл не ляжет
+    const o = await env.MEDIA.put(key, req.body, { httpMetadata: { contentType: mediaType(key) }, ...(/^[0-9a-f]{32}$/.test(md5) ? { md5 } : {}) });
+    return json({ ok: true, key, size: o.size, etag: o.etag });
+  } catch (e) {
+    console.log('media error', key, e);
+    return mediaText(500, 'Ошибка хранилища: ' + (e && e.message || e));
+  }
+}
+
 export default {
   async scheduled(event, env, ctx) { ctx.waitUntil(remindTick(env)); },
   async fetch(req, env) {
     const url = new URL(req.url);
+    if (url.pathname.startsWith('/m/') || url.pathname === '/m-ls') return mediaApi(req, env, url);
 
     const api = API_ROUTES[url.pathname];
     if (api) {
@@ -1340,6 +1464,6 @@ export default {
       return new Response('ok');
     }
 
-    return new Response('Бот работает 👍 Версия 13.5', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response('Бот работает 👍 Версия 13.9\nВидео из R2: ' + (env.MEDIA ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   },
 };
