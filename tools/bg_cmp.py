@@ -30,23 +30,25 @@ def tail3(body):
 
 # take='his' — его промт как есть; take='mix' — текст (base: mine/his, ключ mk) + правки + новое событие (ev: [время, текст])
 V={
-1:dict(take='mix',base='his',edits=[("; a small white toy model of a 1980s Lamborghini Countach","")],
-  calm="Calm: the goldfish hovers in place, waving its fins; the rows of monitors glow dim green; a thin haze hangs in the lamp light.",
-  ev=('00:04-00:05',"All the monitors across the whole trading floor flare bright green at once and flicker with rising green bars, with no numbers and no text — the market just went up; the whole floor glows green."),
-  after="The monitors stay bright green across the floor; the goldfish keeps hovering in the green light.",loop='тьма',
-  why="Сотни летящих купюр нейронка не тянет — выходят пластиковые (ты это и увидел). И слово toy («игрушечная Ламборгини») делает игрушечным весь кадр. Беру его стол (он чище: без таблеток и шампанского), машинку убираю. Событие — светом: все мониторы зала разом вспыхивают зелёным, рынок взлетел. (Сначала было «ручка сама катится к краю» — убрал после сыра у Клава: предмет, который двигается без причины, выглядит тупо.)",
-  ru="Все мониторы в зале разом вспыхивают ярко-зелёным — рынок взлетел, весь зал светится зелёным."),
+1:dict(take='mix',base='own',
+  body="Setting: the trading floor of a 1990s Long Island brokerage firm late at night, after a wild office party, nobody left. Camera: low angle just above the nearest desk, 28mm lens, the fishbowl in the center and a long aisle of desks behind it. Objects: on the nearest desk, in the center: a round glass fishbowl with one orange goldfish; next to it, a heavy black-and-gold fountain pen lying on a yellow legal pad, and a beige office telephone with the handset off the hook; a brass desk lamp. Behind: rows of empty desks with boxy beige computer monitors, their screens dim; confetti on the carpet. Light: the warm brass desk lamp and the faint glow of the dim monitors.",
+  grade="gold and money-green; greed and excess — \"sell me this pen\".",
+  calm="Calm: the goldfish hovers in place, waving its fins; a thin haze hangs in the lamp light; the monitors glow faintly.",
+  ev=('00:04-00:05',"All the monitors across the whole trading floor light up bright green at once, row after row, with rising green bars and no numbers and no text — the market just went up; the whole floor glows green."),
+  after="The monitors stay bright green; the goldfish keeps hovering in the green light.",loop='тьма',
+  why="Деньги убрал совсем: крупные купюры у видео-нейронок выходят фальшивыми (у тебя это и видно). Ручка, которая сама катится, была только в первой версии файла — после сыра я её уже заменил. В центре теперь рыбка (она вышла лучше всего), рядом ручка на жёлтом блокноте («Продай мне эту ручку») и снятая трубка. Событие с логикой: тёмные мониторы разом вспыхивают зелёным — рынок пошёл вверх.",
+  ru="Тёмные мониторы по всему залу разом вспыхивают зелёным — рынок пошёл вверх; рыбка в зелёном свете."),
 2:dict(take='mix',base='his',
   calm="Calm: a thin thread of smoke rises only from the cigarette, one drop of condensation slides down the shaker, faint haze drifts between the skyscrapers.",
   ev=('00:04-00:06',"A helicopter flies past close outside the window, crossing the hazy skyline from left to right; the empty martini glasses on the table tremble and clink softly from the thump of its rotor."),
   after="The helicopter disappears behind the towers; the glasses are still and the table is calm again, exactly as at the start.",loop='сама',
   why="Текст — мой похваленный, слово в слово. Но у него стол трясся сам — «в такт ударам в грудь» человека, которого в кадре нет: причины не видно. Теперь причина видна: за окном близко пролетает вертолёт, бокалы звякают от гула винта (а Джордан в фильме потом под кваалюдами сажает свой вертолёт прямо у дома).",
   ru="За окном близко пролетает вертолёт — пустые бокалы на столе тихо звякают от гула."),
-3:dict(take='mix',base='mine',mk='wolf-swiss-bank',
+3:dict(take='mix',base='mine',mk='wolf-swiss-bank',edits=[("a small stack of real hundred-dollar bills under a silver money clip","a small brass safe-deposit key lying on the folder")],
   calm="Calm: the tropical fish drift slowly in the aquarium, the fountain plume sways in the wind, a wisp of steam rises from the espresso.",
   ev=('00:04-00:06',"Out in the window the lake fountain surges: its white plume shoots much higher into the sky, a wide veil of spray drifts in the wind and a bright rainbow appears in the mist."),
   after="The plume slowly sinks back to its usual height and the rainbow fades; the office is calm again, exactly as at the start.",loop='сама',
-  why="Он убрал аквариум и стол банкира — а аквариум реально в сцене, и твой ролик с ним уже вышел хорошо (стоит в приложении). Событие у него хорошее — фонтан и радуга («с финансовой точки зрения вы в раю»): вода и свет. Беру мой кабинет + его событие.",
+  why="Он убрал аквариум и стол банкира — а аквариум реально в сцене, и твой ролик с ним уже вышел хорошо (стоит в приложении). Событие у него хорошее — фонтан и радуга («с финансовой точки зрения вы в раю»): вода и свет. Беру мой кабинет + его событие. Пачку долларов со стола убрал (крупно купюры у нейронок фальшивые) — вместо неё ключик от банковской ячейки.",
   ru="Фонтан за окном бьёт выше, в брызгах встаёт радуга, потом опадает."),
 4:dict(take='mix',base='mine',mk='wolf-naomi-de',edits=[("a folded white napkin.","a folded white napkin and a plain gold wedding band lying flat on the white tablecloth between the glasses."),
   ("dark red brick walls, more little","dark red brick walls with a small window onto the dark night street, more little")],
@@ -67,7 +69,7 @@ V={
   after="The cloud passes and the daylight slowly returns; the room is calm again, exactly as at the start.",loop='сама',
   why="«Картинка темнеет от краёв и плывёт» — эффект камеры, Veo делает его непредсказуемо. Беру мой кабинет (по нему у тебя уже стоит ролик). Обморок Тони — светом, и с понятной причиной: на солнце набегает туча, кабинет тонет в сумраке, светит только торшер, потом солнце возвращается.",
   ru="На солнце набегает туча — кабинет тонет в сумраке (обморок Тони), светит только торшер, потом светлеет."),
-7:dict(take='mix',base='mine',mk='sopranos-s06e09',
+7:dict(take='mix',base='mine',mk='sopranos-s06e09',edits=[("with real US one-dollar bills pinned flat along them with small safety pins — real, worn and creased bills with dull grey-green paper texture, each bill no bigger than the saint's hand","with real US one-dollar bills folded in half lengthwise and pinned along them with small safety pins — worn, creased and faded, small at this distance")],
   calm="Calm: the ribbons with the pinned bills sway only slightly in a light breeze, the bulbs twinkle softly, the distant Ferris wheel turns slowly.",
   ev=('00:04-00:05',"A power glitch: in the far background the carnival ride jolts to a stop, and all the strings of colored bulbs above the street flicker off for a moment."),
   after="The power comes back: the bulbs flicker on again one string after another; everything is calm again, as at the start.",loop='сама',
@@ -168,7 +170,11 @@ V={
   why="Из окна вылетают джинсы, рубашка, кроссовки — а кто их бросает? Летящая одежда без человека выйдет странно. Беру мой кадр + рация вспыхивает, ветер выдувает занавеску из того самого окна, через которое сбежал Джесси.",
   ru="Рация трещит и мигает, ветер выдувает занавеску из того самого окна."),
 27:dict(take='his',why="Мой текст + закрытие: ряды ламп гаснут один за другим, остаётся красная над столом — светом, безопасно."),
-28:dict(take='his',why="Мой текст + лампочка вспыхивает и лопается, подпол уходит в темноту — светом."),
+28:dict(take='mix',base='his',edits=[("only two small bundles of real cash in clear plastic wrap are left in the dirt","only two small bundles of cash wrapped tight in clear plastic, half in shadow, are left in the dirt")],
+  calm="Calm: the bare bulb sways slowly on its cord, the shadows of the joists swing across the dirt, dust floats in the light.",
+  ev=('00:04-00:05',"The bulb flares too bright and bursts with a small flash and a puff of glass dust; the crawl space drops into darkness, lit only by a faint grey light from the open hatch."),
+  after="Darkness; the empty socket swings on its cord, dust drifts in the faint grey light, the torn plastic barely visible.",loop='тьма',ru='Лампочка вспыхивает слишком ярко и лопается — подпол уходит в темноту.',
+  why="Мой текст + лампочка вспыхивает и лопается, подпол уходит в темноту — светом. Две пачки денег — плотно в плёнке и наполовину в тени: крупно купюры у нейронок фальшивые."),
 29:dict(take='his',why="Он прав: «Я тот, кто стучит» говорится в спальне, не в прихожей. Три удара: дверь вздрагивает, кофе кругами, лампа мигает, рамка падает — один предмет, остальное дрожь."),
 30:dict(take='mix',base='mine',mk='bb-mike-de',
   calm="Calm: dry grass sways in the hot wind, heat haze shimmers above the road, thin dust blows low across the ground.",
@@ -215,12 +221,12 @@ def build():
             seg=[(a,b.split(' SFX:')[0].strip()) for a,b in e['t']]   # звук не нужен: фоны без звука, а лишние слова отвлекают модель
             take='его промт (без строк про звук и с коротким хвостом)';ev_ru=e['ev'];loop=e['loop']
         else:
-            body,grade=mine_body(v['mk']) if v['base']=='mine' else his_body(e)
+            body,grade=(v['body'],v['grade']) if v['base']=='own' else mine_body(v['mk']) if v['base']=='mine' else his_body(e)
             for a,b in v.get('edits',[]):
                 assert a in body,(n,a);body=body.replace(a,b)
             t0,t1=v['ev'];t2='00:05-00:08' if t0.endswith('05') else '00:06-00:08'
             seg=[('00:00-00:04',v['calm']),(t0,t1),(t2,v['after'])]
-            take=('мой текст' if v['base']=='mine' else 'его текст')+' + другое событие';ev_ru=v['ru'];loop=v['loop']
+            take={'mine':'мой текст','his':'его текст','own':'новый текст'}[v['base']]+' + другое событие';ev_ru=v['ru'];loop=v['loop']
             if n in (3,25):take='мой текст + его событие'
         tl=' '.join(f'[{a}] {b}' for a,b in seg)
         p=f"{body} Grade: {grade} Timeline — one continuous shot, the same framing for all 8 seconds: {tl} {tail3(body)}"
@@ -244,7 +250,8 @@ if __name__=='__main__':
        '3) Всё, что участвует в событии, есть в списке предметов с первой секунды (лампы, окно, вентилятор, поливалки) — иначе модель дорисует новое.',
        '4) Нет слов, которые тянут в мультик или игрушку: toy, cartoon, model, miniature; нет «someone» и прочих намёков на людей.',
        '5) Всё, где бывают буквы (газета, карта, чертёж, экран, вывеска), — с пометкой «без текста».',
-       '6) «Петля сама» — к концу как в начале; «тьма» — новое состояние держится до конца.','',
+       '6) «Петля сама» — к концу как в начале; «тьма» — новое состояние держится до конца.',
+       '7) Купюры — только мелко, сложенными или в тени. Крупно в кадре — никогда: у видео-нейронок крупные купюры выходят фальшивыми (так вышел «Волк»).','',
        'КАК ПРОГОНЯТЬ — как раньше: Google Flow → Veo 3.1, 9:16, 8 с, каждый английский блок — один промт целиком. Событие не ровно на 4-й секунде — не страшно, найду сам. Склейка или лишний предмет — перегенерь тот же промт, не дописывай.',
        'КУДА КЛАСТЬ: репо scenes → claude/субтитры/фоны/, имя — после «назови:» (те же, что в его файле). Дальше я: петля, событие реже, в приложение.','']
     g=None
