@@ -1,5 +1,6 @@
 // 13.9.1: Кинотека на весь экран — заголовок раздела → окно, листание, живой момент только у текущего, выход всеми способами; ph|pc
 // 13.9.4: «‹» на странице фильма и сцены — настоящим кликом
+// 13.9.10: кадр в карточке как в первой «Кинотеке», чёрные полосы живого момента убраны
 const {open}=require('./st');const {chromium}=require('playwright');
 const seed=([st])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:true,flags:{}}));};
 const bb=()=>{window.__bb=[];const W=window.Telegram&&Telegram.WebApp;if(W)W.BackButton={show(){window.__bb.push(1);},hide(){window.__bb.push(0);},onClick(){},offClick(){}};};
@@ -19,6 +20,13 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   ok('окно раздела открылось, «1 / N», кнопка «назад» показана, таббар спрятан',r.ov&&r.n==='1 / '+r.films&&r.sl===r.films&&r.bb===1&&r.tab==='0',r);
   await page.waitForTimeout(900);
   r=await ev(()=>[...document.querySelectorAll('.knf-s')].map(s=>s.querySelectorAll('video').length));ok('живой момент — только у первого слайда',r[0]===1&&r.slice(1).every(x=>!x),r);
+  // 13.9.10: кадр — в карточке 16:10 (ПК — 16:9) целиком на экране, как в первой «Кинотеке»; у «Волка» (эпизод 16:9 с чёрными
+  // полосами внутри) живой момент увеличен так, что полос нет (DL.unbar); видео не загрузилось на стенде — эту часть пропускаю
+  await page.waitForTimeout(2600);
+  r=await ev(()=>{const s=document.querySelector('.knf-s'),h=s.querySelector('.knf-hero'),v=h&&h.querySelector('.knf-live video'),R=h&&h.getBoundingClientRect(),m=v&&(getComputedStyle(v).transform.match(/matrix\(([^,]+)/)||[])[1];
+    return h?{ar:+(R.width/R.height).toFixed(2),in:R.left>=0&&R.right<=innerWidth+.5&&R.top>=0&&R.bottom<=innerHeight,ttl:!!h.querySelector('.knf-ht b'),q:!!h.querySelector('.knf-ht i'),vw:v?v.videoWidth:0,ub:!!v&&v.classList.contains('ub'),k:m?+(+m).toFixed(3):1}:null;});
+  ok('кадр в карточке (16:10 / 16:9) целиком на экране, название и цитата в карточке',r&&Math.abs(r.ar-(dev==='ph'?1.6:16/9))<.03&&r.in&&r.ttl&&r.q,r);
+  if(r&&r.vw)ok('«Волк»: чёрные полосы живого момента убраны (видео увеличено)',r.ub&&r.k>1.3&&r.k<1.42,r);else console.log('SKIP видео «Волка» не загрузилось — полосы не проверяю');
   await shot(page,'2-full');
   // листнуть
   if(dev==='ph')await ev(()=>{const pg=document.querySelector('.knf-pg');pg.scrollTo({left:pg.clientWidth,behavior:'instant'});});else await page.keyboard.press('ArrowRight');

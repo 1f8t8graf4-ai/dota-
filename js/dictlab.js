@@ -195,11 +195,30 @@ DL.ep=(n)=>`${n} ${plural(n,['эпизод','эпизода','эпизодов']
 DL.sc=(n)=>`${n} ${plural(n,['сцена','сцены','сцен'])}`;
 DL.kart=(n)=>`${n} ${plural(n,['карта','карты','карт'])}`;
 // живое видео-превью (без звука, по кругу): для «галереи» и «кино»
-DL.loopVid=(el,s,pi,f,p)=>{if(!el||el.querySelector('video'))return;const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.loop=false;v.preload='auto';
+DL.loopVid=(el,s,pi,f,p,o)=>{if(!el||el.querySelector('video'))return;const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.loop=false;v.preload='auto';
+  if(o&&o.cors)v.crossOrigin='anonymous';   // 13.9.10: кадр читаю в canvas (DL.unbar) — нужен CORS, воркер отдаёт медиа с Access-Control-Allow-Origin *
   const a=f?Math.max(0,f.a-p.a-.4):1,b=f?f.b-p.a+.6:a+6;v.src=assetUrl(scEpKey(s,pi,'mp4'))+'#t='+a.toFixed(2);v.className='dl-lv';el.appendChild(v);
   v.addEventListener('timeupdate',()=>{if(v.currentTime>=b)try{v.currentTime=a;}catch(e){}});v.addEventListener('playing',()=>v.classList.add('on'));
   v.addEventListener('error',()=>v.remove());const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{});return v;};
 DL.stopVids=el=>{(el||document).querySelectorAll('video.dl-lv').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}v.remove();});};
+// 13.9.10: у широких фильмов эпизод — 16:9 с чёрными полосами внутри кадра («Титаник», «Волк», «Таксист»): в карточке-окне
+// полосы видно. Меряю их по кадру (строки почти чёрные сверху и снизу, беру меньшую сторону) и увеличиваю видео, чтобы их не было.
+// Тёмный кадр (всё чёрное) не считается — жду следующий; кадр прочитать нельзя (нет CORS) — оставляю как есть. Пока не померил,
+// видео прозрачное (класс ub — «готово»), чтобы полосы не мелькнули.
+DL.unbar=v=>{let n=0,best=-1;
+  const apply=t=>{const bx=v.parentElement,bw=bx&&bx.clientWidth,bh=bx&&bx.clientHeight,vw=v.videoWidth,vh=v.videoHeight;let k=1;
+    if(t>.008&&bw&&bh&&vw&&vh){const s=Math.max(bw/vw,bh/vh),rh=vh*s,yc=(bh-rh)/2+Math.min(t+.006,.2)*rh;if(yc>0)k=(bh/2)/(bh/2-yc);}
+    const first=!v.classList.contains('ub');if(first)v.style.transition='none';v.style.transform=k>1.005?`scale(${k.toFixed(3)})`:'';
+    if(first){void v.offsetWidth;v.style.transition='';}v.classList.add('ub');};
+  const meas=()=>{if(!v.isConnected)return;let t=-1;
+    try{const W=24,H=200,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(v,0,0,W,H);const d=x.getImageData(0,0,W,H).data;
+      const dark=y=>{let s=0,m=0;for(let i=0;i<W;i++){const k=(y*W+i)*4,l=.3*d[k]+.59*d[k+1]+.11*d[k+2];s+=l;if(l>m)m=l;}return s/W<14&&m<40;};
+      let a=0;while(a<H&&dark(a))a++;let b=0;while(b<H&&dark(H-1-b))b++;if(a+b<H*.6)t=Math.min(a,b)/H;}
+    catch(e){v.classList.add('ub');return;}
+    if(t>=0&&(best<0||t<best)){best=t;apply(t);}
+    if(++n<3)setTimeout(meas,n===1?900:2200);else v.classList.add('ub');};
+  const go=()=>{if(v.requestVideoFrameCallback)v.requestVideoFrameCallback(()=>meas());else setTimeout(meas,150);};
+  if(v.readyState>=2&&!v.paused)go();else v.addEventListener('playing',go,{once:true});};
 
 /* ---------- раздел в админке ---------- */
 DL.admin=box=>{const cur=store.dictVar||'cur';
@@ -997,13 +1016,16 @@ function knCount(el){const n=+el.dataset.n;if(!n||!fxOK())return;const t0=perfor
 const KS={film:'Фильм',series:'Сериал',interview:'Интервью'};
 const knfQ=sh=>sh.L.flatMap(s=>D.cards(s)).filter(c=>c.got).sort((a,b)=>(b.rar-a.rar)||(b.m-a.m))[0]||null;   // живой момент — самая редкая собранная фраза
 const knfNext=sh=>sh.L.find(s=>scP(s.id).done.length<s.parts.length)||sh.L[0];
-function knfSlide(sh,i){const s0=sh.s0,bd=knBd(s0),q=knfQ(sh),nx=knfNext(sh),eps=sh.L.reduce((a,s)=>a+s.parts.length,0);
-  return `<section class="knf-s${bd?' bd':''}" data-i="${i}" style="--c:${th(s0)};--bg:${bd||D.cover(s0)}"><span class="knf-bd"></span>
-    <span class="knf-live" data-ls="${(q?q.s:s0).id}" data-pi="${q?q.pi:0}" data-fid="${q?q.f.id:''}"></span><span class="knf-gr"></span>
-    <div class="knf-in"><span class="knf-p" style="background-image:${D.poster(s0)}"></span><div class="knf-t"><em>${KS[sh.kind]||''}${sh.kind==='film'&&s0.ep?' · '+E(s0.ep):''}</em>
-      <h2>${E(sh.k).split(' ').map(w=>`<span>${w}</span>`).join(' ')}</h2>
-      <small class="knf-c">Собрано <b>${sh.g}</b> из ${sh.t} ${plural(sh.t,['фразы','фраз','фраз'])} · ${D.sc(sh.L.length)} · ${D.ep(eps)}</small>${bar(sh.g,sh.t)}
-      <div class="knf-b"><button class="kf-go" data-fw="${nx.id}">${SI.play} ${sh.g?'Смотреть дальше':'Смотреть'}</button><button class="knf-op" data-fo="${i}">Открыть ${ui('fwd')}</button></div></div></div></section>`;}
+// 13.9.10 (Андрей: «кинотеку не передала на самый первый вариант — такая проблема и осталась»: кадр 16:9 растянут на весь
+// вертикальный экран — видно одно плечо, мыло). Как в первой «Кинотеке» (вариант cinema): кадр — в карточке 16:9 (не режется),
+// в ней живой момент, название курсивом и цитата; фон — тот же кадр, сильно размыт; ниже постер, «Собрано», кнопки
+function knfSlide(sh,i){const s0=sh.s0,bd=knBd(s0),img=bd||D.cover(s0),q=knfQ(sh),nx=knfNext(sh),eps=sh.L.reduce((a,s)=>a+s.parts.length,0);
+  return `<section class="knf-s knf2${bd?' bd':''}" data-i="${i}" style="--c:${th(s0)};--bg:${img}"><span class="knf-bd"><i></i></span><span class="knf-gr"></span>
+    <div class="knf-in"><div class="knf-hero"><span class="knf-hi"></span><span class="knf-live" data-ls="${(q?q.s:s0).id}" data-pi="${q?q.pi:0}" data-fid="${q?q.f.id:''}"></span><span class="knf-hg"></span>
+      <span class="knf-ht"><em>${KS[sh.kind]||''}${sh.kind==='film'&&s0.ep?' · '+E(s0.ep):''}</em><b>${E(sh.k)}</b>${q?`<i>«${E(D.T(q.f))}»</i>`:''}</span></div>
+      <div class="knf-row"><span class="knf-p" style="background-image:${D.poster(s0)}"></span><div class="knf-t">
+        <small class="knf-c">Собрано <b>${sh.g}</b> из ${sh.t} ${plural(sh.t,['фразы','фраз','фраз'])} · ${D.sc(sh.L.length)} · ${D.ep(eps)}</small>${bar(sh.g,sh.t)}
+        <div class="knf-b"><button class="kf-go" data-fw="${nx.id}">${SI.play} ${sh.g?'Смотреть дальше':'Смотреть'}</button><button class="knf-op" data-fo="${i}">Открыть ${ui('fwd')}</button></div></div></div></div></section>`;}
 function knFull(kind,btn){DL.clean();const F=DL.films().filter(x=>x.kind===kind),n=F.length;if(!n)return;let cur=-1,vt=0,se=0,closing=false;
   const ov=document.createElement('div');ov.className='kno knf';
   ov.innerHTML=`<div class="knf-pg">${F.map(knfSlide).join('')}</div>
@@ -1013,11 +1035,11 @@ function knFull(kind,btn){DL.clean();const F=DL.films().filter(x=>x.kind===kind)
   const pg=ov.querySelector('.knf-pg'),SL=[...ov.querySelectorAll('.knf-s')],num=ov.querySelector('.knf-num'),dots=[...ov.querySelectorAll('.knf-dots button')],W=()=>pg.clientWidth||innerWidth;
   const live=i=>{clearTimeout(vt);SL.forEach((s,j)=>{if(j!==i)D.stopVids(s);});
     vt=setTimeout(()=>{const lv=SL[i]&&SL[i].querySelector('.knf-live'),s=lv&&scOf(lv.dataset.ls),pi=lv?+lv.dataset.pi||0:0,p=s&&s.parts[pi],f=p&&(p.ph.find(x=>x.id===lv.dataset.fid)||scAct(p.ph)[0]);
-      if(s&&p&&ov.isConnected&&!closing)D.loopVid(lv,s,pi,f,p);},fxOK()?600:200);};
+      if(s&&p&&ov.isConnected&&!closing){const v=D.loopVid(lv,s,pi,f,p,{cors:1});if(v)D.unbar(v);}},fxOK()?600:200);};
   const setCur=(i,quiet)=>{if(i===cur)return;cur=i;num.textContent=`${i+1} / ${n}`;dots.forEach((d,j)=>d.classList.toggle('on',j===i));
     ov.querySelectorAll('.knf-nv').forEach(b=>b.disabled=b.classList.contains('pv')?i<=0:i>=n-1);
     if(!quiet){sfx('tick');haptic('sel');}live(i);
-    if(fxOK())SL[i].querySelectorAll('.knf-p,.knf-t>*').forEach((x,k)=>x.animate([{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:520,delay:60+k*70,easing:EZ.out,fill:'backwards'}));};
+    if(fxOK())SL[i].querySelectorAll('.knf-ht>*,.knf-p,.knf-t>*').forEach((x,k)=>x.animate([{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:520,delay:60+k*70,easing:EZ.out,fill:'backwards'}));};
   // фон слегка отстаёт от слайда, пока листаешь
   const par=()=>{const x=pg.scrollLeft,w=W();SL.forEach(s=>{const d=s.offsetLeft-x;if(Math.abs(d)>w*1.3)return;const bd=s.querySelector('.knf-bd');if(bd)bd.style.transform=`translateX(${(-d*.3).toFixed(1)}px)`;});};
   pg.addEventListener('scroll',()=>{if(fxOK())par();clearTimeout(se);se=setTimeout(()=>setCur(Math.max(0,Math.min(n-1,Math.round(pg.scrollLeft/W())))),120);},{passive:true});
@@ -1025,8 +1047,8 @@ function knFull(kind,btn){DL.clean();const F=DL.films().filter(x=>x.kind===kind)
   // уйти из окна сразу (переход на другой экран): без анимации, кнопку «назад» выставит новый экран
   const kill=()=>{closing=true;clearTimeout(vt);document.removeEventListener('keydown',ek);D.stopVids(ov);ov.remove();document.body.classList.remove('dx-open');};
   const close=ov._close=()=>{if(closing)return;closing=true;clearTimeout(vt);document.removeEventListener('keydown',ek);document.body.classList.remove('dx-open');
-    const fin=()=>{D.stopVids(ov);ov.remove();DL.bb();};if(!fxOK())return fin();
-    ov.animate([{opacity:1,transform:'none'},{opacity:0,transform:'scale(.97)'}],{duration:240,easing:EZ.in,fill:'forwards'}).onfinish=fin;};
+    let done=false;const fin=()=>{if(done)return;done=true;D.stopVids(ov);ov.remove();DL.bb();};if(!fxOK())return fin();
+    ov.animate([{opacity:1,transform:'none'},{opacity:0,transform:'scale(.97)'}],{duration:240,easing:EZ.in,fill:'forwards'}).onfinish=fin;setTimeout(fin,420);};   // 13.9.10: страховка — анимация на слабом устройстве может не успеть
   const ek=e=>{if(e.key==='Escape')close();else if(e.key==='ArrowRight')go(cur+1);else if(e.key==='ArrowLeft')go(cur-1);};document.addEventListener('keydown',ek);
   ov.querySelector('.knf-x').onclick=()=>{sfx('tap');close();};
   ov.querySelectorAll('.knf-nv').forEach(b=>b.onclick=()=>go(cur+(b.classList.contains('nx')?1:-1)));
