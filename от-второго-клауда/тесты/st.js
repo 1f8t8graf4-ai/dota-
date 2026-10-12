@@ -19,12 +19,12 @@ function fakeTG(o){return `(()=>{const ev={};window.__cloud=${JSON.stringify(o.c
 async function open(o={}){const b=o.browser||await chromium.launch();
   const ctx=await b.newContext(Object.assign({viewport:{width:390,height:844},deviceScaleFactor:1,hasTouch:!!o.touch,isMobile:!!o.touch},o.ctx||{}));
   await ctx.route('https://telegram.org/**',r=>r.fulfill({status:200,contentType:'application/javascript',body:''}));
-  // 13.9: медиа сцен — из R2 через воркер (https://dota.1f8t8graf4.workers.dev/m/scenes/…); старый адрес GitHub Pages тоже мокается
+  // 13.9: медиа сцен — из R2 через воркер (13.9.10: с CORS, как настоящий воркер — живой момент Кинотеки читает кадр в canvas) (https://dota.1f8t8graf4.workers.dev/m/scenes/…); старый адрес GitHub Pages тоже мокается
   const media=async r=>{const u=new URL(r.request().url());const rel=decodeURIComponent(u.pathname.replace(/^\/(m\/)?scenes\//,''));
-    const f=path.join(C,rel.replace(/\//g,'__'));if(!fs.existsSync(f))return r.fulfill({status:404,body:'nf'});const buf=fs.readFileSync(f),ext=rel.split('.').pop(),ct=types[ext]||'application/octet-stream';
+    const f=path.join(C,rel.replace(/\//g,'__'));if(!fs.existsSync(f))return r.fulfill({status:404,headers:{'access-control-allow-origin':'*'},body:'nf'});const buf=fs.readFileSync(f),ext=rel.split('.').pop(),ct=types[ext]||'application/octet-stream';
     const rg=r.request().headers()['range'];if(rg){const m=/bytes=(\d+)-(\d*)/.exec(rg);const a=+m[1],e=m[2]?Math.min(+m[2],buf.length-1):buf.length-1;
-      return r.fulfill({status:206,headers:{'content-type':ct,'accept-ranges':'bytes','content-range':`bytes ${a}-${e}/${buf.length}`},body:buf.subarray(a,e+1)});}
-    r.fulfill({status:200,headers:{'content-type':ct,'accept-ranges':'bytes'},body:buf});};
+      return r.fulfill({status:206,headers:{'content-type':ct,'accept-ranges':'bytes','content-range':`bytes ${a}-${e}/${buf.length}`,'access-control-allow-origin':'*'},body:buf.subarray(a,e+1)});}
+    r.fulfill({status:200,headers:{'content-type':ct,'accept-ranges':'bytes','access-control-allow-origin':'*'},body:buf});};
   await ctx.route('https://1f8t8graf4-ai.github.io/scenes/**',r=>o.realMedia?r.continue():media(r));   // realMedia — брать файлы из настоящего R2
   await ctx.route(/https:\/\/(cdn\.cloudflare\.steamstatic\.com|unpkg\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)\//,r=>r.fulfill({status:404,body:''}));
   await ctx.route('https://dota.1f8t8graf4.workers.dev/**',async r=>{const u=new URL(r.request().url());if(u.pathname.startsWith('/m/'))return o.realMedia?r.continue():media(r);if(!o.worker)return r.fulfill({status:503,body:''});
