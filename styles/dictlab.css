@@ -2192,3 +2192,32 @@ body.nofx .kn6-vw{transition:none}
 .kno2 .kn2-en.kk-play .sw:not(.kk-on),.kno2 .kn2-en.kk-play .kw:not(.kk-on),.kno2 .kn2-en.kk-play .kk:not(.kk-on){color:rgba(246,241,232,.36)}
 .kno2 .kn2-en.kk-play .kk-now{color:#FFE29A}
 @media (min-width:760px){.kn6 .kn2-b{padding-top:4px}}
+
+/* ==== 13.9.9 — окно фразы не на весь экран (Андрей: «не в фулл скрин открываться должно»): на телефоне — шторка снизу
+   по высоте содержимого, словарь сверху виден под затемнением, тап мимо / свайп вниз / × закрывают; на ПК — карточка по центру.
+   Размытый кадр фильма — фон самой шторки (.kn2-bg внутри .kn2), прокрутка — внутри (.kn2-sc). Класс «sheet» занят в main.css (шторка ответа в квизе) — у нас kn2s ==== */
+.kno.kno2.kn2s{align-items:flex-end;justify-content:center;padding:0}
+.kno2.kn2s .kno-dim{background:rgba(8,8,10,.56);backdrop-filter:none;-webkit-backdrop-filter:none}
+.kno2.kn2s .kn2{display:flex;flex-direction:column;width:100%;max-width:640px;height:auto;max-height:calc(100% - var(--st,env(safe-area-inset-top,0px)) - 56px);overflow:hidden;padding:0;
+  border-radius:24px 24px 0 0;background:#0f0e11;border:0;border-top:1px solid rgba(255,255,255,.1);box-shadow:0 -24px 70px rgba(0,0,0,.55);backdrop-filter:none;-webkit-backdrop-filter:none;touch-action:pan-y}
+.kno2.kn2s .kn2-bg{position:absolute;inset:0;z-index:0;border-radius:inherit;overflow:hidden;pointer-events:none}
+.kno2.kn2s .kn2-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,9,11,.4),rgba(9,9,11,.68) 50%,rgba(9,9,11,.84))}
+.kn2-sc{position:relative;z-index:1;flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding:30px 18px calc(var(--sb,env(safe-area-inset-bottom,0px)) + 20px)}
+.kn2-sc::-webkit-scrollbar{display:none}
+.kn2-grab{position:absolute;top:8px;left:50%;z-index:3;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:rgba(255,255,255,.3)}
+.kno2.kn2s .kn2-x{top:12px;right:12px}
+.kno2.kn2s .kn2-seg{top:24px;left:18px}
+.kno2.kn2s .kn2-at{top:34px;left:18px}
+.kno2.kn2s.auto .kn2-sc{padding-top:56px}
+.kno2.kn2s .kn2 .kn2-b,.kno2.kn2s .kn2.nov .kn2-b{padding-top:6px}
+.kno2.kn2s .kn6-src{padding-right:46px}
+@media (min-width:760px){
+  .kno.kno2.kn2s{align-items:center;padding:28px}
+  .kno2.kn2s .kn2{max-width:560px;max-height:min(86vh,780px);border-radius:26px;border:1px solid rgba(255,255,255,.1);box-shadow:0 50px 140px rgba(0,0,0,.6)}
+  .kn2-grab{display:none}
+  .kn2-sc{padding:38px 26px 26px}
+  .kno2.kn2s .kn2-x{top:14px;right:14px}
+  .kno2.kn2s .kn2-seg{top:22px;left:26px}.kno2.kn2s .kn2-at{top:32px;left:26px}
+  .kno2.kn2s .kn2.nov .kn2-b{padding-top:14px}
+  .kno2.kn2s .kn2-nv.pv{left:max(16px,calc(50% - 346px))}.kno2.kn2s .kn2-nv.nx{right:max(16px,calc(50% - 346px))}}   /* стрелки — вплотную к карточке */
