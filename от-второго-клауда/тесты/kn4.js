@@ -3,13 +3,16 @@
 const {open}=require('./st');const {chromium}=require('playwright');
 let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d||'');};
 const seed=([st])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:true,flags:{}}));};
-const base={onboarded:true,introV:1,gold:900,lvl:'b',fx:true,tourV:1,scSubChosen:1,autoSc:false,age18:true,dictVar:'kino',dlDemo:true,snd:false};
+const base={onboarded:true,introV:1,gold:900,lvl:'b',fx:true,tourV:1,scSubChosen:1,autoSc:false,age18:true,dictVar:'kino',snd:false};
 const dev=process.argv[2]||'ph';
 (async()=>{const b=await chromium.launch({args:['--autoplay-policy=no-user-gesture-required']});
   const [vp,touch]=dev==='ph'?[{width:390,height:844},true]:[{width:1440,height:900},false];
   const {page,errs}=await open({browser:b,touch,uid:876754050,ctx:{viewport:vp},wait:2500,init:seed,initArg:[base]});
   const shot=async n=>{await page.waitForTimeout(700);await page.screenshot({path:`kn4-${dev}-${n}.png`});};
   const ev=(f,a)=>page.evaluate(f,a);const click=async s=>{const l=page.locator(s).first();await l.scrollIntoViewIfNeeded();await l.click();};
+  // 13.9.13: «Демо» в словаре больше нет — собранные фразы настоящие (как было в демо: первые эпизоды почти все, дальше меньше)
+  await ev(()=>{const now=Date.now();let n=0;dictScenes().forEach(s=>{const P=scP(s.id);P.got=P.got||{};s.parts.forEach((p,pi)=>{const A=scAct(p.ph),k=pi===0?A.length:pi===1?Math.ceil(A.length*.7):Math.ceil(A.length*.45);if(!k)return;P.w[pi]=1;
+    A.slice(0,k).forEach(f=>{n++;P.got[f.id]=now-n*6e4;P.m[f.id]=n%4;P.r[f.id]=n%6===0?[1,now-1000]:[1,now+864e5*2];});});});scSave();});
   await ev(()=>renderTab('dict'));await page.waitForFunction(()=>window.DL&&document.querySelector('#dlStage'),null,{timeout:15000});await page.waitForTimeout(1500);
   let st=await ev(()=>({lvl:$('#dlStage').dataset.lvl,tabs:[...document.querySelectorAll('.kn-tabs button')].map(b=>b.textContent.trim()+(b.classList.contains('on')?'*':'')),hero:!!document.querySelector('.kn-hero'),p:document.querySelectorAll('.kn-p').length,rows:document.querySelectorAll('.kq').length}));
   ok('главная — Кинотека, вкладок две, фраз списком нет',st.lvl==='home'&&st.tabs.join()==='Кинотека*,Мои фразы и слова'&&st.hero&&st.p>3&&!st.rows,JSON.stringify(st));
@@ -68,7 +71,7 @@ const dev=process.argv[2]||'ph';
   st=await ev(()=>({w:(document.querySelector('.kn2-word')||{}).textContent,mark:(document.querySelector('.kn2-line mark')||{}).textContent,v:!!document.querySelector('.kno2 video')}));ok('слово открылось: момент, реплика, слово подсвечено',st.w==='clients'&&/clients/i.test(st.mark||'')&&st.v,JSON.stringify(st));
   await shot('9-word');await ev(()=>DL.back());await page.waitForTimeout(600);
   // новичок: пусто — понятные подсказки
-  await ev(()=>{store.dlDemo=false;store.myw={};save();DL.KN.my.tag=null;store.knMyKind='ph';DL.render(0);});await page.waitForTimeout(1000);
+  await ev(()=>{dictScenes().forEach(s=>{const P=scP(s.id);P.got={};});scSave();store.myw={};save();DL.KN.my.tag=null;store.knMyKind='ph';DL.render(0);});await page.waitForTimeout(1000);
   st=await ev(()=>({e:(document.querySelector('.km-empty b')||{}).textContent,k:!!document.querySelector('.km-empty [data-mkino]')}));ok('пустые «Мои фразы» — подсказка и кнопка в Кинотеку',st.e==='Пока нет фраз'&&st.k,JSON.stringify(st));
   await click('[data-mk="w"]');await page.waitForTimeout(800);st=await ev(()=>({e:(document.querySelector('.km-empty b')||{}).textContent,a:!!document.querySelector('.km-empty [data-madd]')}));ok('пустые «Мои слова» — «Добавить своё слово»',st.e==='Пока нет слов'&&st.a,JSON.stringify(st));
   await shot('10-empty');

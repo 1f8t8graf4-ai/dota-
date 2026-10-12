@@ -19,7 +19,7 @@ async function answerAny(page){return page.evaluate(()=>{
     const d=await page.evaluate(()=>({n:store.day&&store.day.n,st:store.streak,ld:store.lastDay===new Date().toDateString(),wk:JSON.stringify(store.week)}));
     ok('ответ в сцене → цель дня +1 и серия 1',d.n===1&&d.st===1&&d.ld,how+' '+JSON.stringify(d));
     await page.evaluate(()=>renderTab('learn'));await page.waitForTimeout(500);
-    const ht=await page.evaluate(()=>(document.querySelector('.ht-h span')||{}).textContent||'');ok('Главная «Сегодня» показывает серию и 1/20',/🔥 1 день · 1\/20/.test(ht),ht);
+    const ht=await page.evaluate(()=>(document.querySelector('.hh-day')||document.querySelector('.ht-h span')||{}).textContent||'');ok('Главная «Сегодня» показывает серию и 1/20',/🔥 1 день подряд · сегодня 1 из 20|🔥 1 день · 1\/20/.test(ht),ht);   // 13.9.13: новая Главная
     // язык: обучение с Deutsch → английский фильм всё равно английский
     const L=await page.evaluate(()=>{store.langs=['de'];store.kinoLang='de';delete store.scSub;SCUR={id:'american-psycho',i:0};return scL()+'/'+scT(scOf('american-psycho').parts[0].ph[0]).slice(0,30);});
     ok('langs=de: английская сцена — английские задания',L.startsWith('en/'),L);
@@ -48,7 +48,7 @@ async function answerAny(page){return page.evaluate(()=>{
     ok('немецкий без клавиатуры (ß=ss, ü=u)',dl[0]&&dl[1]&&dl[2]===1,JSON.stringify(dl));
     // урок: реальное число фраз
     const ls=await page.evaluate(()=>{const b=scLessonScene();if(!b)return null;const n=b.n;renderTab('learn');const t=[...document.querySelectorAll('#hLesson')].map(x=>x.textContent).join(' || ');return {n,t,i:b.i,eps:[...new Set(b.cand.map(f=>f.pi))]};});
-    ok('урок: один эпизод, число фраз на карточке',ls&&ls.eps.length===1&&new RegExp(ls.n+' фраз').test(ls.t)&&!/или урок: 5 фраз/.test(ls.t)||ls&&ls.n===5,JSON.stringify(ls));
+    ok('урок: один эпизод, число фраз на карточке',ls&&ls.eps.length===1&&new RegExp(ls.n+'\\s*фраз').test(ls.t)&&!/или урок: 5 фраз/.test(ls.t)||ls&&ls.n===5,JSON.stringify(ls));
     const bk2=await page.evaluate(async()=>{const P=scP('american-psycho');P.done=[0];P.m={'0_0':3,'0_1':3};P.r={'0_0':[0,Date.now()-1000],'0_1':[0,Date.now()-1000]};renderScQuiz('american-psycho','rev');await new Promise(r=>setTimeout(r,500));const a=screen;onBack();await new Promise(r=>setTimeout(r,500));return a+'→'+screen;});
     ok('«назад» в повторении — как ✕ (не эпизод 1)',/^scq→(scene|home)$/.test(bk2),bk2);
     const rwq=await page.evaluate(()=>{const s=scOf('wolf-lunch-de');return rwCardHTML(s,0).match(/rw-q">«([^»]*)»/)[1];});
