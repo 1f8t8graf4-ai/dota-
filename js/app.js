@@ -261,7 +261,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2)CLOUD_ERR=true;if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){CLOUD_ERR=true;res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['dictVar','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy'];
+const LOCAL_ONLY=['dictVar','knWin','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy'];
 function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==null?SV0:base),o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -1567,6 +1567,7 @@ function renderSettings(){
       ${segCtl('subSz',SUB_SZ,store.subSz||'m')}
       <div class="sub-prev" aria-hidden="true"><div class="sc-v" data-ss="glass"><div class="sc-subs"><div class="sline"><span class="en">I'll make him an offer he can't refuse.</span></div><div class="sline s2"><span class="tr">Я сделаю ему предложение, от которого он не сможет отказаться.</span></div></div></div></div>
       <div class="stack" style="margin-top:8px">${row('subSame','Перевод того же размера','Выключи — перевод будет чуть мельче оригинала.')}</div>
+      ${dlAllowed()?`<p class="hint-line" style="margin-top:12px">Окно фразы в новом словаре</p>${segCtl('knWin',[['full','На весь экран'],['sheet','Полэкрана']],store.knWin==='sheet'?'sheet':'full')}<p class="hint-line" style="margin-top:6px;opacity:.7">Полэкрана — словарь виден сверху, «▶ Смотреть» открывает окошко с моментом над шторкой.</p>`:''}
       <p class="hint-line" style="margin-top:12px">Уровень английского в кино</p>
       ${segCtl('lvl',[['a','Новичок'],['b','Знаю базу']],store.lvl||'a')}
       <button class="ht-alt" id="lvlTest" style="margin-top:8px">Пройти тест уровня ещё раз</button>
@@ -1584,6 +1585,7 @@ function renderSettings(){
   bindSeg('goal',v=>{store.goal=+v;save();sfx('sel');});
   bindSeg('scPause',v=>{store.scPause=v;save();sfx('sel');});
   bindSeg('subSz',v=>{store.subSz=v;save();applySubPrefs();});
+  bindSeg('knWin',v=>{store.knWin=v;save();});   // 13.9.11: окно фразы нового словаря — на весь экран / полэкрана
   bindLangChoice(v=>{store.langs=choiceToLangs(v);save();});
   bindRoles(()=>roles,v=>{roles=v;if(rolesOk(v)){store.roles=v==='all'?'all':v.slice();save();}},()=>{const h=$('#roleHint');h.classList.remove('warn');h.textContent=roleHintText(roles);});
   $$('.checkrow').forEach(b=>b.onclick=()=>{
@@ -2316,7 +2318,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.10';
+const APP_V='13.9.11';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2338,7 +2340,7 @@ async function deployCheck(box){
 // В субтитрах любое слово нажимается: перевод слова (или, если его нет в словарике, перевод всей реплики).
 const SCW=(window.__DATA&&window.__DATA.SCENEWORDS)||{};
 const swData=(sid,pi)=>(SCW[sid]&&SCW[sid][String(pi)])||null;
-const swNorm=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/^[^a-zà-öø-ÿ']+|[^a-zà-öø-ÿ'.]+$/g,'').replace(/\.$/,'');
+const swNorm=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/^[^a-zß-öø-ÿ']+|[^a-zß-öø-ÿ'.]+$/g,'').replace(/\.$/,'');   // 13.9.9: ß-ö (с ß), иначе weiß → wei и перевода нет
 // 8.6: общий словарь всех слов всех сцен (data/glossary.json) — перевод есть у каждого слова в субтитрах
 const GLOSS=(window.__DATA&&window.__DATA.GLOSS_EN)||{},GLOSS_DE=(window.__DATA&&window.__DATA.GLOSS_DE)||{};
 function swFind(sid,pi,tok){const d=swData(sid,pi),n=swNorm(tok),s0=scOf(sid);
@@ -2567,7 +2569,7 @@ function renderWordQuiz(id,pi){const s=scOf(id),p=s.parts[pi],d=swData(id,pi);if
 // выражение из нескольких слов — от первого до последнего. Нет файла или слово не нашлось — голос устройства.
 const WT={};
 function wtLoad(sid){if(!WT[sid]){const s=scOf(sid);WT[sid]=s?fetch(assetUrl(scKey(s,'wt.json'))).then(r=>r.ok?r.json():null).then(d=>d&&d.w||null).catch(()=>null):Promise.resolve(null);}return WT[sid];}
-const wtN=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/[^a-zà-öø-ÿ0-9']/g,'');
+const wtN=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/[^a-zß-öø-ÿ0-9']/g,'');
 const wtEq=(x,y)=>x===y||x.replace(/'s$/,'')===y.replace(/'s$/,'')||(Math.min(x.length,y.length)>=4&&(x.startsWith(y)||y.startsWith(x))&&Math.abs(x.length-y.length)<=3);
 async function wordPlay(sid,say,a,b,btn){const s=scOf(sid);if(!s)return false;const T=String(say||'').split(/\s+/).map(wtN).filter(Boolean);if(!T.length)return false;
   if(btn)btn.classList.add('on');const W=await wtLoad(sid);let hit=null;
@@ -2607,6 +2609,8 @@ function distLike(right,pools,n){const R=String(right||''),rs=ruShape(R),rl=R.le
   return C.sort((a,b)=>b.sc-a.sc).slice(0,n).map(x=>x.v);}
 // 13.6: после верного ответа — само дальше: полоска заполняет кнопку; тронул карточку или слово — ждёт, пока сам нажмёшь
 const autoOn=()=>store.autoSc!==false;   // 13.6: «само дальше» по умолчанию включено (старый store.auto был выключен у всех)
+// 13.9.11: ответ в проверке — докручиваем, чтобы начало ответа было видно; «Дальше» прилипает к низу экрана (sc-nx-stick в CSS)
+function scShowFb(fb){if(!fb)return;requestAnimationFrame(()=>{const r=fb.getBoundingClientRect(),h=innerHeight;if(r.top>h*0.55)window.scrollBy({top:r.top-h*0.3,behavior:fxOK()?'smooth':'auto'});});}
 function autoNext(btn,root,ms){if(!btn||!autoOn())return null;let t=0;const stop=()=>{clearTimeout(t);btn.classList.remove('auto');};
   btn.style.setProperty('--ms',ms+'ms');btn.classList.add('auto');t=setTimeout(()=>{if(btn.isConnected&&btn.classList.contains('auto'))btn.click();},ms);
   (root||btn.parentNode).addEventListener('pointerdown',e=>{if(!btn.contains(e.target))stop();},{capture:true});return stop;}
@@ -3089,27 +3093,31 @@ function renderScene(id){
   {const s0=scOf(id);if(s0&&s0.kind==='clip'&&!s0._srtTry){s0._srtTry=true;clipLoad(s0).then(ok=>{if((ok||(CLIPNOTES&&CLIPNOTES[id]))&&SCUR&&SCUR.id===id&&document.querySelector('.scn .sc-top')&&!document.querySelector('.scn .sc-q,.scn #scvw'))renderScene(id);});}}
   const s=scOf(id),P=scP(id);SCUR={id,i:0};store.kinoLang=scLang(s);   // 13.5: «назад» из сцены — в Кинозал на языке этой сцены
   const n=s.parts.length,d=P.done.length,L=scLearned(s),T=scTotal(s),next=s.parts.findIndex((p,i)=>!P.done.includes(i));
+  // 13.9.11 (Андрей: «кнопка начать где в ебенях, а первым показывается то, что нельзя»): главное — сразу под названием,
+  // потом эпизоды; прогресс — одной строкой и только если есть; «Все фразы» — только когда что-то открыто; остальное — ниже
+  const goTxt=d===0?'▶ Смотреть эпизод 1':next<0?(P.boss?'↺ Повторить сцену':'👑 Финал сцены'):'▶ Продолжить · эпизод '+(next+1),M=scMastered(s);
   scMount(s,`
     <div class="sc-head"><button class="sc-back" id="scb">${ui('back')}</button><span class="sc-meta">Сцены</span></div>
-    <div class="sc-ban" style="--ban:url('${scCover(s,'cover.jpg')}')"><span class="sc-ban-k">${SC_KIND[s.kind]||'Сцена'}</span><span class="sc-ban-deco" aria-hidden="true"></span></div>
-    ${musHTML(s)}
+    <div class="sc-ban sc-ban2" style="--ban:url('${scCover(s,'cover.jpg')}')"><span class="sc-ban-k">${SC_KIND[s.kind]||'Сцена'}</span><span class="sc-ban-deco" aria-hidden="true"></span></div>
     ${s.kind==='clip'?clipNotesHTML(s):''}
     ${s.videoUrl?`<div class="clip-links sc-card"><a class="sc-btn" href="${esc(s.videoUrl)}" target="_blank" rel="noopener">▶ Смотреть официальный клип</a>${s.credit?`<small>${esc(s.credit)}</small>`:''}</div>`:''}
-    <section class="sc-top sc-card">
+    <section class="sc-top sc-card sc-top2">
       <div class="sc-meta">${esc(s.ep)}</div><h1>${esc(s.title)}</h1><div class="sc-sub">${esc(s.sub)}</div>
-      ${scRateHTML(s)}
-      <div class="sc-prog"><span>Выучено фраз</span><b>${L} / ${T}</b></div><div class="sc-bar"><i style="width:${Math.round(L/T*100)}%"></i></div>
-      <div class="sc-prog sc-mast"><span>Освоение сцены${scMasterPct(s)===100?' · 🏆':''}</span><b>${scMastered(s)} / ${T}</b></div><div class="sc-bar sc-mbar"><i style="width:${scMasterPct(s)}%"></i></div><small class="sc-mhint">Фраза засчитывается, когда держится в памяти надолго — после повторений через 1, 3 и 7 дней.</small>
-      <button class="sc-allph${scSeenN(s)?'':' shut'}" id="scAllPh">📚 Все фразы сцены <i>${scSeenN(s)}/${scTotal(s)}</i><span>${scSeenN(s)?'›':'🔒'}</span></button>
-      ${scDue(s).length?`<button class="sc-btn ghost" id="screv" style="margin-bottom:8px">Повторить фразы: ${scDue(s).length} →</button>`:''}
-      <button class="sc-btn ghost kv-open" id="scKv">⚔️ Дуэль с другом по этой сцене</button>
-      <button class="sc-btn" id="scgo">${d===0?'Начать':next<0?(P.boss?'Повторить сцену':'👑 Финал сцены'):'Продолжить: эпизод '+String(next+1).padStart(2,'0')} →</button>
+      <button class="sc-btn sc-go1" id="scgo">${goTxt}</button>
+      ${L||M?`<div class="sc-prog sc-prog1"><span>Выучено ${L} из ${T}${M?` · надолго ${M}`:''}${scMasterPct(s)===100?' · 🏆':''}</span></div><div class="sc-bar"><i style="width:${Math.round(L/T*100)}%"></i></div>`:''}
     </section>
     ${scPathHTML(s)}
+    <section class="sc-more">
+      ${scDue(s).length?`<button class="sc-btn ghost" id="screv">Повторить фразы: ${scDue(s).length} →</button>`:''}
+      ${scSeenN(s)?`<button class="sc-allph" id="scAllPh">📚 Все фразы сцены <i>${scSeenN(s)}/${scTotal(s)}</i><span>›</span></button>`:''}
+      <button class="sc-btn ghost kv-open" id="scKv">⚔️ Дуэль с другом по этой сцене</button>
+      <details class="sc-about"><summary>О сцене · сложность и польза</summary>${scRateHTML(s)}<small class="sc-mhint">«Надолго» — фраза держится в памяти после повторений через 1, 3 и 7 дней.</small></details>
+    </section>
+    ${musHTML(s)}
     <p class="sc-foot">${s.subs.length} реплик с переводом</p>`,'scene');
   $('#scb').onclick=()=>{sfx('tap');renderTab('kino');};
   $('#scgo').onclick=()=>{if(next<0&&scBossOpen(s)&&!P.boss){scBossStart(id);return;}renderScEp(id,next<0?0:next);};
-  if(P.boss&&$('#scgo')){$('#scgo').insertAdjacentHTML('afterend',`<button class="sc-btn ghost" id="scdir">🎬 Режиссёрская версия${store.dirCut&&store.dirCut[id]?' ✓':''}</button>`);$('#scdir').onclick=()=>{sfx('reel');renderDirCut(id);};}
+  if(P.boss&&$('#scKv')){$('#scKv').insertAdjacentHTML('afterend',`<button class="sc-btn ghost" id="scdir">🎬 Режиссёрская версия${store.dirCut&&store.dirCut[id]?' ✓':''}</button>`);$('#scdir').onclick=()=>{sfx('reel');renderDirCut(id);};}
   if($('#screv'))$('#screv').onclick=()=>renderScQuiz(id,'rev');
   if($('#scAllPh'))$('#scAllPh').onclick=()=>{sfx('tap');renderSceneSum(id);};
   if($('#scKv'))$('#scKv').onclick=()=>{sfx('tap');kvSheet(id);};
@@ -3181,9 +3189,11 @@ function scVideo(el,s,p,noSubs){
 }
 
 const SUB_LAG=0.18; // реплика в srt часто начинается чуть раньше голоса
+// 13.9.9: строки иногда наезжают друг на друга (до 0.5 с) — показываем ту, что началась последней, иначе новая реплика опаздывала на время наезда
+const scRowAt=(L,t)=>{let z=null;for(const x of L){if(t<x[0]+SUB_LAG)break;if(t<=x[1]+0.25&&!(SW._hideRow&&SW._hideRow(x)))z=x;}return z;};
 function scTick(){
   const box=SW&&SW.querySelector('.sc-subs');if(!SV||!box){SRAF=0;return;}
-  const t=SV.currentTime,m=scDeMode(scSub()),r=SSUBON&&m!=='off'?SV._loc.find(x=>t>=x[0]+SUB_LAG&&t<=x[1]+0.25&&!(SW._hideRow&&SW._hideRow(x))):null,id=r?r[0]+m:'';
+  const t=SV.currentTime,m=scDeMode(scSub()),r=SSUBON&&m!=='off'?scRowAt(SV._loc,t):null,id=r?r[0]+m:'';
   if(box.dataset.id!==id&&!SW._subHold){box.dataset.id=id;const [a,b]=m.split('+');
     // 13.3: оригинал — словами: нажал (телефон) / навёл (ПК) — перевод слова; слова учебного выражения подчёркнуты
     const s0=SCUR&&scOf(SCUR.id),orig=s0&&s0.lang==='de'?'de':'en',t1=r?String(r[SUB_COL[a]]).replace(/\n/g,' '):'',ph=r&&a===orig?scRowPhrase(r):null;
@@ -4291,7 +4301,7 @@ function renderScQuiz(id,i){
         ${!right&&type==='mean'&&el&&f.trap.includes(el.dataset.v)?`<div class="sc-trapwhy">Это ловушка: дословный перевод или похожие слова, но смысл другой.</div>`:''}
         <button class="sc-btn" id="scnx" style="margin-top:12px">${n===Q.length-1?'Закончить':'Дальше'} →</button>
       </div>`;
-      kwBind($('#scfb'),f);
+      kwBind($('#scfb'),f);scShowFb($('#scfb'));
       $('#scnx').onclick=()=>{kwHide(0);n++;if(n<Q.length)show();else end();};
       if(right)autoNext($('#scnx'),$('#scfb'),Math.max(3200,Math.min(8000,2400+($('#scfb').textContent||'').length*24)));   // 13.6: само дальше
     };
@@ -5852,7 +5862,7 @@ function learnTabHTML(){
       ${n&&les?`<button class="ht-alt" id="hLesson">или урок: ${les.n} ${plural(les.n,['фраза','фразы','фраз'])} из «${esc(les.s.title)}» →</button>`:''}
     </section>
     <div class="htiles anim">
-      <button class="htile" onclick="renderMyWords()"><span>⭐</span><b>Мои слова</b><small>${mw?mw+' '+plural(mw,['слово','слова','слов']):'сохраняй из субтитров'}</small></button>
+      ${mw?`<button class="htile" onclick="renderMyWords()"><span>⭐</span><b>Мои слова</b><small>${mw+' '+plural(mw,['слово','слова','слов'])}</small></button>`:''}
       <button class="htile" id="hShop"><span>🛍</span><b>Магазин</b><small>эффекты, карты, заставки, музыка</small></button>
       <button class="htile" id="hColl"><span>🏆</span><b>Коллекция</b><small>${(C=>C.bg+C.cards?`${C.bg} ${plural(C.bg,['фон','фона','фонов'])} · ${C.cards} ${plural(C.cards,['карточка','карточки','карточек'])}`:'фоны и карточки за сцены')(collStat())}</small></button>
     </div>

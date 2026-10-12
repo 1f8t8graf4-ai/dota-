@@ -846,11 +846,18 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
   const box=btn&&btn.closest('#knRes,.dl-stage')||document,L=[],AU=!!o.auto;
   if(o.L)L.push(...o.L);else{const seenK={};box.querySelectorAll('[data-c]').forEach(b=>{const x=D.find(b.dataset.c);if(x&&x.got&&!seenK[x.k]){seenK[x.k]=1;L.push(x);}});if(!seenK[c.k])L.unshift(c);}
   let ix=Math.max(0,L.findIndex(x=>x.k===c.k)),cur=null,v=null,raf=0,TT=[],sub=null,hideT=0,autoT=0,held=false,dirty=false,MORE=false,VW=AU;   // 13.9.5: MORE — открыто «Подробнее»; 13.9.8: VW — раскрыто видео (оба держатся при листании)
-  const ov=document.createElement('div');ov.className='kno kno2'+(AU?' auto':'');
-  ov.innerHTML=`<div class="kn2-bg"></div><div class="kno-dim"></div><div class="kn2" role="dialog" aria-label="${c.w?'Слово из фильма':'Фраза из фильма'}">${AU?`<div class="kn2-seg${L.length>30?' one':''}">${L.length>30?'<i><b></b></i>':L.map(()=>'<i><b></b></i>').join('')}</div>${o.title?`<span class="kn2-at">${E(o.title)}</span>`:''}`:''}<button class="kn2-x" aria-label="Закрыть">${ui('close')}</button><div class="kn2-in"></div></div>
-    ${L.length>1?`<button class="kn2-nv pv" aria-label="Предыдущая">${ui('back')}</button><button class="kn2-nv nx" aria-label="Следующая">${ui('fwd')}</button>`:''}`;
+  // 13.9.9 (Андрей: «не в фулл скрин»): окно — шторка снизу по высоте содержимого (телефон) / карточка по центру (ПК);
+  // словарь виден под затемнением, кадр фильма — фон самой шторки (.kn2-bg внутри .kn2), прокрутка — внутри (.kn2-sc)
+  // 13.9.11: шторка — настройка (store.knWin='sheet', Настройки → «Окно фразы»); по умолчанию — на весь экран, как в 13.9.8
+  // (Андрей: «оставь пока, не трогай», потом: «или фулл скрин в настройках»). В шторке видео — окошком над ней (.kn2-pip), убирается ×
+  const SM=store.knWin==='sheet',SH=SM&&!matchMedia('(min-width:760px)').matches;
+  const ov=document.createElement('div');ov.className='kno kno2'+(SM?' kn2s':'')+(AU?' auto':'');   // класс .sheet занят в main.css (шторка ответа в квизе) — у нас .kn2s
+  const segH=AU?`<div class="kn2-seg${L.length>30?' one':''}">${L.length>30?'<i><b></b></i>':L.map(()=>'<i><b></b></i>').join('')}</div>${o.title?`<span class="kn2-at">${E(o.title)}</span>`:''}`:'';
+  ov.innerHTML=(SM?`<div class="kno-dim"></div><div class="kn2-pip" aria-hidden="true"><button class="kn2-pipx" aria-label="Убрать видео">${ui('close')}</button></div><div class="kn2" role="dialog" aria-label="${c.w?'Слово из фильма':'Фраза из фильма'}"><div class="kn2-bg"></div><i class="kn2-grab" aria-hidden="true"></i>${segH}<button class="kn2-x" aria-label="Закрыть">${ui('close')}</button><div class="kn2-sc"><div class="kn2-in"></div></div></div>`
+      :`<div class="kn2-bg"></div><div class="kno-dim"></div><div class="kn2" role="dialog" aria-label="${c.w?'Слово из фильма':'Фраза из фильма'}">${segH}<button class="kn2-x" aria-label="Закрыть">${ui('close')}</button><div class="kn2-in"></div></div>`)
+    +`${L.length>1?`<button class="kn2-nv pv" aria-label="Предыдущая">${ui('back')}</button><button class="kn2-nv nx" aria-label="Следующая">${ui('fwd')}</button>`:''}`;
   document.body.appendChild(ov);document.body.classList.add('dx-open');try{musDuck(true);}catch(e){}try{backBtn(true);}catch(e){}
-  const card=ov.querySelector('.kn2'),inn=ov.querySelector('.kn2-in'),bgl=ov.querySelector('.kn2-bg'),segs=[...ov.querySelectorAll('.kn2-seg b')];
+  const card=ov.querySelector('.kn2'),sc=ov.querySelector('.kn2-sc')||card,pip=SH?ov.querySelector('.kn2-pip'):null,inn=ov.querySelector('.kn2-in'),bgl=ov.querySelector('.kn2-bg'),dim=ov.querySelector('.kno-dim'),segs=[...ov.querySelectorAll('.kn2-seg b')];
   const setSeg=k=>{if(!segs.length)return;if(segs.length===1){segs[0].style.transform=`scaleX(${((ix+k)/L.length).toFixed(4)})`;return;}segs.forEach((b,j)=>{b.style.transform=`scaleX(${j<ix?1:j>ix?0:k.toFixed(3)})`;});};
   const setBg=s=>{const u=s&&filmImg(s,innerWidth>=760?'bd.jpg':'bdm.jpg'),url=u?`url('${u}')`:s?D.cover(s):'radial-gradient(circle at 28% 22%,#5a4a32,#1a1612 55%,#0b0b0d)',old=bgl.lastElementChild;if(old&&old.dataset.u===url)return;
     const i=document.createElement('i');i.dataset.u=url;i.style.backgroundImage=url;bgl.appendChild(i);const rm=()=>[...bgl.children].forEach(x=>{if(x!==i)x.remove();});
@@ -866,8 +873,14 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
       if(MORE&&fxOK())m.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:260,easing:EZ.out});};};
   // 13.9.8 (Андрей: «убери плеер, пока юзер не захочет посмотреть; он может и прослушать»; само — ничего): видео — в свёрнутой обёртке
   // под кнопками, не display:none (такое видео iPhone может не перемотать и не заиграть); src — только при первом нажатии
-  const vBox=(W,hw)=>`<div class="kn6-vw${VW?' on full':''}"><div class="kn6-vi"><div class="kn2-v">${W?`<div class="kn2-sub" aria-hidden="true">${W.map((w,j)=>`<span${hw&&hw.has(j)?' class="kn2-hw"':''}>${E(w)}</span>`).join(' ')}</div>`:''}<button class="knv-p kn2-p" aria-label="Смотреть момент" hidden>${SI.play}</button></div></div></div>`;
-  const openVW=()=>{const w=inn.querySelector('.kn6-vw');VW=true;if(!w||w.classList.contains('on'))return;w.classList.add('on');setTimeout(()=>{if(w.isConnected)w.classList.add('full');},fxOK()?460:0);};
+  const vBox=(W,hw)=>`<div class="kn6-vw${VW&&!pip?' on full':''}"><div class="kn6-vi"><div class="kn2-v">${W?`<div class="kn2-sub" aria-hidden="true">${W.map((w,j)=>`<span${hw&&hw.has(j)?' class="kn2-hw"':''}>${E(w)}</span>`).join(' ')}</div>`:''}<button class="knv-p kn2-p" aria-label="Смотреть момент" hidden>${SI.play}</button></div></div></div>`;
+  // 13.9.11: в шторке на телефоне видео — окошком над шторкой (.kn2-pip), шторка становится ниже; × — убрать окошко
+  const pipIn=()=>{if(!pip)return;const vi=inn.querySelector('.kn6-vi');if(!vi)return;[...pip.children].forEach(x=>{if(!x.classList.contains('kn2-pipx'))x.remove();});pip.appendChild(vi);
+    if(!pip.classList.contains('on')){pip.classList.add('on');ov.classList.add('vw');if(fxOK())pip.animate([{opacity:0,transform:'translateY(-16px) scale(.96)'},{opacity:1,transform:'none'}],{duration:320,easing:EZ.out});}};
+  const pipOut=()=>{if(!pip)return;VW=false;try{if(v)v.pause();}catch(e){}pip.classList.remove('on');ov.classList.remove('vw');[...pip.children].forEach(x=>{if(!x.classList.contains('kn2-pipx'))x.remove();});
+    const w=inn.querySelector('.kn6-vw');if(w&&!w.querySelector('.kn6-vi')&&v){/* видео уехало вместе с окошком — следующая фраза соберёт своё */}};
+  if(pip)pip.querySelector('.kn2-pipx').onclick=e=>{e.stopPropagation();sfx('tap');pipOut();};
+  const openVW=()=>{VW=true;if(pip){pipIn();return;}const w=inn.querySelector('.kn6-vw');if(!w||w.classList.contains('on'))return;w.classList.add('on');setTimeout(()=>{if(w.isConnected)w.classList.add('full');},fxOK()?460:0);};
   const ftHTML=(k,m,stt)=>{const pg=pgHTML();if(!stt&&!pg)return '';
     return `<div class="kn6-ft">${stt?`<span class="kn6-st st-${k}"><i class="kn2-dots" aria-hidden="true">${[1,2,3].map(n=>`<b class="${n<=Math.min(3,m)?'on':''}"></b>`).join('')}</i>${E(stt)}</span>`:''}${pg}</div>`;};
   const factToggle=b=>{const p=b.nextElementSibling,on=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',on);p.hidden=!on;sfx(on?'unlock':'tap');
@@ -935,32 +948,44 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
     return play;};
   const fill=(c,dir)=>{stopV();cur=c;held=false;setBg(c.s);ov.style.setProperty('--c',c.s?th(c.s):'#F3EBDD');
     if(v&&v.parentNode)v.remove();
-    const play=c.w?fillW(c):fillPh(c);card.scrollTop=0;setSeg(0);
+    const play=c.w?fillW(c):fillPh(c);sc.scrollTop=0;setSeg(0);if(pip&&VW)pipIn();
     if(dir&&fxOK())inn.animate([{opacity:0,transform:`translateX(${dir*46}px)`},{opacity:1,transform:'none'}],{duration:340,easing:EZ.out});
     if(play&&AU)play(false);};   // 13.9.8: Андрей — «само ничего не играет»; «▶ подряд» — играет, его для этого и нажимают
   const go=d=>{if(L.length<2)return;ix=(ix+d+L.length)%L.length;sfx('page');haptic('sel');try{kwHide(0);}catch(e){}
     if(!fxOK())return fill(L[ix],0);const an=inn.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-d*46}px)`}],{duration:150,easing:EZ.in,fill:'forwards'});an.onfinish=()=>{fill(L[ix],d);an.cancel();};};
   fill(L[ix]||c,0);
-  // открытие: окно растёт из строки (кружка, плитки), фон проявляется
+  // открытие: на телефоне шторка выезжает снизу; на ПК карточка растёт из строки (кружка, плитки); затемнение проявляется
   const R=card.getBoundingClientRect(),zk=R.width/card.offsetWidth||1;
   const grow=(rr,back)=>{const sx=Math.max(.05,rr.width/R.width),sy=Math.max(.05,rr.height/R.height),tx=(rr.left-R.left)/zk,ty=(rr.top-R.top)/zk,fr=[{transform:`translate(${tx}px,${ty}px) scale(${sx},${sy})`,opacity:.4},{transform:'none',opacity:1}];
     card.style.transformOrigin='0 0';return card.animate(back?fr.reverse():fr,{duration:back?300:560,easing:back?EZ.in:SPRING,fill:back?'forwards':'none'});};
-  if(fxOK()&&btn){grow(btn.getBoundingClientRect());[...inn.querySelectorAll('.kn2-b>*')].forEach((ch,i)=>{if(i<9)ch.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:420,delay:160+i*70,easing:EZ.out,fill:'backwards'});});
-    btn.style.visibility='hidden';ov.querySelectorAll('.kn2-bg,.kno-dim').forEach(x=>x.animate([{opacity:0},{opacity:1}],{duration:420}));if(!c.w)setTimeout(()=>DL.burst(inn.querySelector('.kn2-en'),c.rar,.6),300);}
+  if(fxOK()){
+    if(SH)card.animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:480,easing:SPRING});
+    else if(btn){grow(btn.getBoundingClientRect());btn.style.visibility='hidden';}
+    [...inn.querySelectorAll('.kn2-b>*')].forEach((ch,i)=>{if(i<9)ch.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:420,delay:(SH?120:160)+i*60,easing:EZ.out,fill:'backwards'});});
+    dim.animate([{opacity:0},{opacity:1}],{duration:SH?300:420});if(!SM)bgl.animate([{opacity:0},{opacity:1}],{duration:420});if(!c.w)setTimeout(()=>DL.burst(inn.querySelector('.kn2-en'),c.rar,.6),300);}
   const close=ov._close=()=>{if(ov._c)return;ov._c=true;stopV();cur=null;if(v){try{v.removeAttribute('src');v.load();}catch(e){}}try{musDuck(false);}catch(e){}try{kwHide(0);}catch(e){}document.removeEventListener('keydown',ek);document.body.classList.remove('dx-open');
-    const it=L[ix],row=!dirty&&it&&box.querySelector(it.sel||`[data-c="${it.k}"]`),r1=row&&row.isConnected?row.getBoundingClientRect():null,back=fxOK()&&r1&&r1.width&&r1.bottom>0&&r1.top<innerHeight;
-    if(back){inn.animate([{opacity:1},{opacity:0}],{duration:120,fill:'forwards'});grow(r1,true);}else card.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:200,easing:'ease-in',fill:'forwards'});
-    ov.querySelectorAll('.kn2-bg,.kno-dim,.kn2-nv').forEach(x=>x.animate([{opacity:1},{opacity:0}],{duration:back?300:200,fill:'forwards'}));
-    setTimeout(()=>{ov.remove();if(btn)btn.style.visibility='';if(dirty)DL.render(0);else DL.bb();},back?310:210);};
+    const it=L[ix],row=!SH&&!dirty&&it&&box.querySelector(it.sel||`[data-c="${it.k}"]`),r1=row&&row.isConnected?row.getBoundingClientRect():null,back=fxOK()&&r1&&r1.width&&r1.bottom>0&&r1.top<innerHeight;
+    const sl=SH&&fxOK(),t0=sl?getComputedStyle(card).transform:'none';
+    if(sl)card.animate([{transform:t0&&t0!=='none'?t0:'none'},{transform:'translateY(100%)'}],{duration:260,easing:EZ.in,fill:'forwards'});   // шторка уезжает вниз (и с того места, куда её дотянули пальцем)
+    else if(back){inn.animate([{opacity:1},{opacity:0}],{duration:120,fill:'forwards'});grow(r1,true);}else card.animate([{opacity:1},{opacity:0,transform:'scale(.96)'}],{duration:200,easing:'ease-in',fill:'forwards'});
+    ov.querySelectorAll(SM?'.kno-dim,.kn2-nv,.kn2-pip':'.kn2-bg,.kno-dim,.kn2-nv').forEach(x=>x.animate([{opacity:getComputedStyle(x).opacity},{opacity:0}],{duration:sl?260:back?300:200,fill:'forwards'}));
+    setTimeout(()=>{ov.remove();if(btn)btn.style.visibility='';if(dirty)DL.render(0);else DL.bb();},sl?270:back?310:210);};
   const ek=e=>{if(e.key==='Escape')close();else if(e.key==='ArrowRight')go(1);else if(e.key==='ArrowLeft')go(-1);};document.addEventListener('keydown',ek);
-  ov.querySelector('.kno-dim').onclick=close;ov.querySelector('.kn2-x').onclick=()=>{sfx('tap');close();};
+  dim.onclick=close;ov.querySelector('.kn2-x').onclick=()=>{sfx('tap');close();};
   ov.querySelectorAll('.kn2-nv').forEach(b=>b.onclick=()=>{held=false;go(b.classList.contains('nx')?1:-1);});
   // тронул текст (слово, «Когда пригодится») — «подряд» ждёт, пока сам не листнёшь
   card.addEventListener('pointerdown',e=>{if(AU&&e.target.closest('.kn2-b')){held=true;clearTimeout(autoT);}},{capture:true});
-  let x0=null,y0=null;card.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
+  // свайп вбок — соседняя фраза; вниз — шторка едет за пальцем (если прокрутка внутри в самом верху), отпустил ниже 110 px — закрылась
+  let x0=null,y0=null,drag=0,dragOk=false;
+  card.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;drag=0;dragOk=SH&&sc.scrollTop<=0;},{passive:true});
+  card.addEventListener('touchmove',e=>{if(!dragOk||x0==null)return;const t=e.touches[0],dx=t.clientX-x0,dy=t.clientY-y0;
+    if(!drag&&(Math.abs(dx)>Math.abs(dy)||dy<0)){if(Math.abs(dx)>8||dy<-8)dragOk=false;return;}
+    if(dy>0){drag=dy;e.preventDefault();card.style.transform=`translateY(${dy}px)`;dim.style.opacity=String(Math.max(.2,1-dy/420));}},{passive:false});
   card.addEventListener('touchend',e=>{if(x0==null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+    if(drag){const d=drag;drag=0;if(d>110){close();return;}
+      card.style.transform='';dim.style.opacity='';if(fxOK())card.animate([{transform:`translateY(${d}px)`},{transform:'none'}],{duration:260,easing:EZ.out});return;}
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.4){held=false;go(dx<0?1:-1);return;}
-    if(dy>110&&Math.abs(dy)>Math.abs(dx)*1.4&&card.scrollTop<=0)close();},{passive:true});
+    if(!SH&&dy>110&&Math.abs(dy)>Math.abs(dx)*1.4&&sc.scrollTop<=0)close();},{passive:true});
   return ov;}
 
 /* ---------- куски экранов ---------- */

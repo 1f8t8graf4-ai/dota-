@@ -5089,3 +5089,25 @@ body.nofx .ss-mist{animation:none}
 .kv-pfb{display:block;margin:12px auto 0;padding:8px 14px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85);font:700 13px 'Golos Text',system-ui,sans-serif}
 .phead.pbg{cursor:pointer}
 .pfv-card:not(.has){height:220px}
+
+/* ==== 13.9.11 — страница сцены: главное сразу (кнопка под названием, потом эпизоды, остальное ниже) ==== */
+.sc-ban.sc-ban2{height:clamp(120px,34vw,200px)}
+.sc-top.sc-top2 .sc-go1{display:flex;align-items:center;justify-content:center;width:100%;margin:14px 0 0;min-height:52px;font-size:16.5px}
+.sc-top.sc-top2 .sc-prog1{margin:12px 0 6px;font-size:13px;color:var(--muted)}
+.sc-top.sc-top2 .sc-prog1 b{display:none}
+.sc-more{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}
+.sc-more>.sc-btn,.sc-more>.sc-allph{margin:0}
+.sc-more .sc-about{margin-top:4px;border-radius:14px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.sc-more .sc-about>summary{list-style:none;cursor:pointer;padding:12px 14px;font:600 13px 'Golos Text',system-ui,sans-serif;color:var(--muted)}
+.sc-more .sc-about>summary::-webkit-details-marker{display:none}
+.sc-more .sc-about>summary::after{content:' ▾';opacity:.7}
+.sc-more .sc-about[open]>summary::after{content:' ▴'}
+.sc-more .sc-about>.sc-rate,.sc-more .sc-about>.sc-mhint{margin-left:12px;margin-right:12px}
+.scn.scr-scene>.sc-more{order:8}
+.scn.scr-scene>.vp{order:9}
+.sc-more>.sc-allph{display:flex!important;flex-direction:row!important;justify-content:flex-start!important;text-align:left!important}
+.sc-more>.sc-allph i{margin-left:6px}
+@media (min-width:1000px){.scn.scr-scene>.sc-more{grid-column:2;order:3;margin:0;align-self:start}.scn.scr-scene>.vp{order:3}}
+/* 13.9.11 — проверка: «Дальше» всегда видна (прилипает к низу экрана, пока виден ответ) */
+#scfb .sc-fb>#scnx{position:sticky;bottom:calc(var(--sb) + 10px);z-index:3;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+body.tabs-on #scfb .sc-fb>#scnx{bottom:calc(var(--sb) + 84px)}
