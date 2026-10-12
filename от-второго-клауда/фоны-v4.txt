@@ -1,0 +1,547 @@
+ФОНЫ v4 — «КАРТИНКА → ДВИЖЕНИЕ → СКЛЕЙКА» (второй Claude, 12.10). ПРЕДЛОЖЕНИЕ — решает Андрей.
+Тексты (место, предметы, свет, цвет, движение) — основного Claude, слово в слово; поменял только форму. Почему так — от-второго-клауда/ответы-фоны.md.
+
+КАК ДЕЛАТЬ
+① КАРТИНКА (Nano Banana / Imagen, 9:16) — дёшево и сразу видно: деньги, лишние предметы, «игрушечность», буквы. Не нравится — переделать картинку, не видео.
+② У ГЛАВНЫХ — КАРТИНКА «ПОСЛЕ»: загрузить ① и попросить правку (текст ниже). Только то, что меняет событие.
+③ ДВИЖЕНИЕ (Veo «кадр → видео», Fast или Lite): загрузить ① (у главных — ещё раз с ② для ролика Б), промт — только движение.
+④ СКЛЕЙКА — делает Claude (tools/bg_fx.py): событие ровно на нужной секунде, мигание, петля, превью.
+Имена файлов: <имя>-1.png (картинка), <имя>-2.png (после), <имя>-А.mp4, <имя>-Б.mp4 → в scenes/claude/фоны/.
+
+══════════════════════════════════════════════════════════════════════
+1. ГЛАВНЫЙ «Волк с Уолл-стрит» — весь фильм   → wolf-of-wall-street/film-bg.mp4 (+ копия wolf-lunch-de)
+файлы: волк главный-1.png, волк главный-2.png, волк главный-А.mp4, волк главный-Б.mp4
+Событие: Котировки на всех экранах и бегущая строка разом из зелёных становятся красными, стрелки вниз — крах, как у Белфорта в конце.
+Как: Экраны и бегущая строка разом из зелёных в красные — переключение двух картинок (или перекраска одного ролика: демо «Волк — обвал» сделано на стоящем фоне без генерации).
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the trading floor of a 1990s Long Island brokerage firm at night, the morning after a wild office party, nobody left. Camera: low angle across the nearest desk, 28mm lens, a long aisle of desks behind. Objects: on the nearest desk, in the center: a round fishbowl with one orange goldfish, a small white scale model of a 1980s Lamborghini Countach, an unlabeled champagne bottle with a half-full champagne glass, a tipped-over pharmacy pill bottle with a few round white pills spilled out, a beige office telephone with the handset off the hook and, at the edge of the desk, a few thick bricks of hundred-dollar bills in paper bands; one warm brass desk lamp. Behind: rows of empty desks with boxy beige computer monitors; every screen shows columns of small glowing green numbers with up arrows — stock prices; across the far wall, a long electronic stock ticker band with glowing green numbers scrolling from right to left; confetti and loose bills on the carpet. Light: one warm brass desk lamp and the cold green glow of the screens and the ticker. Colors and mood: gold and money-green; greed, excess, drugs and endless partying on other people's money. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos — only small blurred numbers and arrows on the screens. Full-bleed image, no borders or black bars.
+
+② КАРТИНКА «ПОСЛЕ» (правка ①):
+Keep this exact photo — same objects, same positions, same framing and the same camera. Change only the screens: every monitor and the long wall ticker now show small glowing red numbers with down arrows instead of green ones, and a soft red glow from the screens falls on the desk, the champagne glass and the white car. Nothing else changes.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The goldfish hovers in place waving its fins; bubbles rise in the glass of champagne; the green numbers on the screens flicker as the prices tick up; the green numbers on the wall ticker scroll slowly. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③б ДВИЖЕНИЕ для ролика Б (из ②):
+Static locked-off camera, no camera movement, no zoom, no cuts. The goldfish hovers in place waving its fins; bubbles rise in the glass of champagne; the red numbers on the screens flicker as the prices fall; the red numbers on the wall ticker scroll slowly. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/bg_fx.py switch film-bg.mp4 A.mp4 B.mp4 --how flicker --end dip   (один ролик: recolor B.mp4 A.mp4 --hue 100:200 --to 356 --tint ff2a1a:0.10, потом switch … --sync)
+
+══════════════════════════════════════════════════════════════════════
+2. Сцена «Марк Ханна объясняет новичку правила Уолл-стрит» (и немецкий «Ланч»)   → wolf-of-wall-street/bg.mp4 (+ копия wolf-lunch-de)
+файлы: волк ханна-1.png, волк ханна-А.mp4
+Живое, без события. Что движется: Дым от сигареты вьётся лентой, в газированной воде бегут пузырьки, по шейкеру сползают капли.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a table for two by the window of an expensive 1987 Manhattan restaurant high up in a skyscraper, at lunch, both chairs empty — a cynical stockbroker has just taught a rookie how Wall Street really works. Camera: eye level just above the table, 35mm lens, the table in the center, the windows and the skyline behind it. Objects: a starched white tablecloth; a low glass vase of bright yellow flowers in the center; a full classic martini with three green olives on a silver pick, next to it three empty martini glasses pushed aside; on the other side, a tall glass of sparkling mineral water with a lemon slice, thin streams of tiny bubbles rising in it; a silver cocktail shaker beaded with condensation; a crystal ashtray with one burning cigarette; a folded newspaper open to the stock pages with tiny blurred columns; a black 1980s pager; a black leather check folder slightly open with a real hundred-dollar bill sticking out. Behind: floor-to-ceiling windows with thin steel frames, the hazy Manhattan skyscrapers far below under a soft white overcast sky, more empty tables with white cloths and small vases of yellow flowers. Light: bright soft overcast daylight from the big windows, correctly exposed, no blown-out whites. Colors and mood: white linen, gin and money; smug, seductive and rotten — money is not real (fugazi). Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. A long ribbon of blue-grey smoke rises from the cigarette and curls slowly through the soft daylight; thin streams of tiny bubbles rise steadily in the glass of sparkling water; drops of condensation slide down the silver shaker. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+3. Сцена «Швейцарский банк: Ça dépend»   → wolf-swiss-bank/bg.mp4
+файлы: волк банк-1.png, волк банк-А.mp4
+Живое, без события. Что движется: В аквариуме плавают рыбы и бегут пузырьки, за окном качается струя фонтана, над эспрессо пар.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a private banker's office in Geneva on a sunny afternoon, empty — polite, quiet and dangerous. Camera: eye level from the client's armchair, 35mm lens, the desk in the center. Objects: a polished dark wooden desk with a closed black leather folder, a small brass safe-deposit key lying on the folder and a white espresso cup on a saucer; behind the desk, a large backlit wall aquarium glowing turquoise with tropical fish and coral; on the right, a floor-to-ceiling window onto Lake Geneva with the tall lake fountain shooting a white plume of water into the sky. Light: warm afternoon sun from the window and the turquoise glow of the aquarium. Colors and mood: warm brown, brass and turquoise; discreet, expensive and quietly dangerous. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Colorful tropical fish swim slowly back and forth across the glowing aquarium and tiny bubbles stream upward; outside the window, the white plume of the lake fountain sways and sprays in the wind; a thin wisp of steam rises from the espresso. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+4. DE «Первое свидание с Наоми»   → wolf-naomi-de/bg.mp4
+файлы: волк наоми-1.png, волк наоми-А.mp4
+Живое, без события. Что движется: Пламя свечи дрожит, свет бегает по бокалу, розам и кольцу; в коктейле пузырьки.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a dim, cozy Italian restaurant in early 1990s New York at night, the table for two empty. Camera: eye level across the table, 50mm lens, shallow focus. Objects: a small round table with a white tablecloth; a short table lamp with a cream fabric shade glowing warm; a small white candle burning in a low glass holder; a low vase of pink roses; a cocktail glass with a white bendy straw in it and a glass of red wine; a folded white napkin and a plain gold wedding band lying flat on the white tablecloth between the glasses. Behind, out of focus: dark red brick walls with a small window onto the dark night street, more little glowing table lamps and dark wooden chairs. Light: the warm table lamps, everything else in soft darkness. Colors and mood: warm amber and dark red; intimate, flirty and a little guilty. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The small candle flame flickers and its warm light dances softly on the wine glass, the roses and the gold ring; tiny bubbles rise in the cocktail; far behind, the little table lamps glow and shimmer. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+5. ГЛАВНЫЙ «Клан Сопрано» — весь сериал   → sopranos-s01e01/film-bg.mp4 (+ копия sopranos-mahaffey-de)
+файлы: сопрано главный-1.png, сопрано главный-2.png, сопрано главный-А.mp4, сопрано главный-Б.mp4
+Событие: Неоновая свинья в витрине мигает, трещит и гаснет — потом резко чёрный экран.
+Как: Неон-свинья мигает и гаснет, потом резко чёрное (финал «Сопрано») — две картинки, мигание и чёрное делает склейка.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the sidewalk in front of an old Italian pork store in a gritty New Jersey town at dawn, nobody around. Camera: eye level from the curb, 35mm lens, the café table in the center. Objects: a small café table with a red-and-white checkered tablecloth and four mismatched folding chairs around it; on the table, two small espresso cups, a cigar resting in a heavy glass ashtray and a rolled newspaper in a clear plastic bag. Behind: a stone shop front with a red awning; in the big shop window hang salamis and round provolone cheeses, and a pink neon sign shaped like a smiling pig's face, with no letters, glows among them. Light: cold blue dawn on the street, warm yellow light from inside the shop and the pink glow of the pig neon. Colors and mood: cold blue-grey street against warm pink and yellow; familiar, loyal and quietly dangerous. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+② КАРТИНКА «ПОСЛЕ» (правка ①):
+Keep this exact photo — same objects, same positions, same framing and the same camera. Change only one thing: the pink neon pig in the shop window is switched off — its glass tubes are dark and unlit, and the pink glow on the window and on the sidewalk is gone. Nothing else changes.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. A thin thread of smoke rises only from the tip of the cigar, steam rises from one espresso cup, the pink pig neon hums softly. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③б ДВИЖЕНИЕ для ролика Б (из ②):
+Static locked-off camera, no camera movement, no zoom, no cuts. A thin thread of smoke rises only from the tip of the cigar, steam rises from one espresso cup. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/bg_fx.py switch film-bg.mp4 A.mp4 B.mp4 --how flicker --b 2 --end black=1.2
+
+══════════════════════════════════════════════════════════════════════
+6. Сцена «Тони на первом приёме у психотерапевта» (S01E01)   → sopranos-s01e01/bg.mp4
+файлы: сопрано мелфи-1.png, сопрано мелфи-А.mp4
+Живое, без события. Что движется: За жалюзи качаются деревья, по креслам и полу бегут тени листвы, в свете лампы плывут пылинки.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a psychiatrist's office in 1999 on a late afternoon, empty. Camera: eye level, 35mm lens, centered on the two chairs. Objects: dark wood-paneled walls with a bookshelf; two armchairs facing each other with a small low table between them holding a box of tissues and a glass of water; a floor lamp with a fabric shade beside one chair; on the wall, a small framed painting of two wild mallard ducks on a pond; through a wide-open door, the dim waiting room with a bronze sculpture of a reclining female figure on a pedestal. Light: the warm floor lamp and soft daylight through half-closed blinds with green trees behind them. Colors and mood: walnut brown and olive green; heavy silence, private and tense. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Outside the half-closed blinds the green trees sway in the breeze, and soft leaf shadows move across the armchairs and the floor; fine dust specks drift slowly through the warm lamp light. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+7. Сцена «Тони у Мелфи: аттракционы и скука» (S06E09)   → sopranos-s06e09/bg.mp4
+файлы: сопрано праздник-1.png, сопрано праздник-А.mp4
+Живое, без события. Что движется: Ленты на статуе колышутся на ветру, гирлянды мерцают, вдали медленно крутится колесо обозрения.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: an Italian-American church street festival in New Jersey at dusk, the street empty. Camera: slightly low angle, 85mm lens, background in soft bokeh. Objects: in the center, a life-size painted wooden statue of a robed saint standing on a decorated wooden platform; long white satin ribbons hang straight down from the statue's shoulders to the platform, with real US one-dollar bills folded in half lengthwise and pinned along them with small safety pins — worn, creased and faded, small at this distance. Above the street, strings of colored light bulbs. Behind the statue, a big old stone church. At the side, a closed food stand with a plain metal shutter and a tray of powdered-sugar pastries. In the far background, a Ferris wheel and a carnival ride, out of focus. No signs and no writing anywhere. Light: warm bulbs against a deep blue evening sky. Colors and mood: warm festive bokeh, nostalgic. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The long white ribbons on the statue flutter gently in the evening breeze; the strings of colored bulbs above the street twinkle; in the background the lit Ferris wheel turns slowly. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+8. Сцена «Где моя арка?» (S01–S02)   → sopranos-arc/bg.mp4
+файлы: сопрано арка-1.png, сопрано арка-А.mp4
+Живое, без события. Что движется: В аквариуме плавают рыбы и маленькая акула, бегут пузырьки; дымит сигарета; по окну текут капли дождя.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a small New Jersey apartment at night, late 1990s. Camera: table-height medium shot, 35mm lens. Objects: in the center on a wooden table, an electric typewriter with a sheet of paper in it, a short stack of typed pages with blurred unreadable lines beside it, an ashtray with one lit cigarette and an open can of beer; next to them, a stack of unlabeled VHS tapes of old gangster movies. Behind the table, against the wall, a glowing home aquarium with a few tropical fish and one small grey reef shark. A window with rain on the glass. Light: one warm desk lamp and the cold blue light of the aquarium. Colors and mood: cold blue and warm amber; restless late-night dreaming. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The tropical fish and the small grey shark swim slowly back and forth in the glowing aquarium and bubbles stream up from the filter; a ribbon of smoke rises from the cigarette; raindrops run down the window glass. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+9. Сцена «Ральф приходит к Тони» (S04E09)   → sopranos-ralph/bg.mp4
+файлы: сопрано ральф-1.png, сопрано ральф-А.mp4
+Живое, без события. Что движется: На телике скачут лошади, розовый неон из клуба пульсирует, дымит сигарета.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the small back office of a New Jersey strip club at night, empty. Camera: slightly high angle over a desk, 28mm lens. Objects: on a cluttered metal desk in the center, an old adding machine with a short paper tape that does not move, a glass of whiskey, an ashtray with a lit cigarette. Behind: dark green wood-paneled walls, steel beer kegs stacked in the corner, a small old television on a shelf showing a blurry horse race. A half-open door to the dark club, through which a chrome pole on an empty stage glows under pink light. Light: one green-shaded desk lamp, pink neon glow coming through the door gap, the TV glow. Colors and mood: sickly green and tungsten with pink spill; grief, guilt and dirty money. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. On the small old TV, blurry horses gallop around the track; the pink neon light through the half-open door pulses slowly; a ribbon of smoke rises from the cigarette in the ashtray. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+10. DE «Тони, Мелфи и Махаффи» (S01E01)   → sopranos-mahaffey-de/bg.mp4
+файлы: сопрано махаффи-1.png, сопрано махаффи-А.mp4
+Живое, без события. Что движется: Поливалка водит струёй по газону, качаются ветки ивы, от пролитого кофе пар.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the grass lawn of a quiet New Jersey corporate office park on a grey morning, empty. Camera: low angle from the grass, 28mm lens. Objects: a black 1999 luxury sedan stopped crooked on the lawn with the driver's door open; on the path in front of it, two spilled paper coffee cups and a crushed cardboard cup tray in a small puddle of coffee; one brown leather office shoe lying alone on the grass; small pop-up lawn sprinkler heads hidden in the grass. Behind: a low office building with dark glass and big weeping willow trees. Light: flat grey overcast morning light. Colors and mood: muted green and grey; a pleasant suburban morning with a sudden edge. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. One of the lawn sprinklers sweeps a slow arc of water back and forth across the grass, the drops glittering; the long willow branches sway in the wind; thin steam rises from the spilled coffee. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+11. DE «Хасиды нанимают Тони» (S01E03)   → sopranos-hasid-de/bg.mp4
+файлы: сопрано хасиды-1.png, сопрано хасиды-А.mp4
+Живое, без события. Что движется: Крутится настольный вентилятор, от него покачиваются жалюзи и бегут полосы света; от кофе пар.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the small front office of a cheap 1990s New Jersey roadside motel on a bright afternoon, empty. Camera: eye level across the front desk, 35mm lens. Objects: a worn front desk counter with a silver service bell and one old room key on a plastic tag; a black wide-brimmed felt hat left lying on the counter; a paper cup of black coffee; a small electric desk fan on the counter; behind the desk, light blue walls, a board with key hooks and tall vertical blinds glowing with daylight. No text and no signs. Light: flat bright daylight through the blinds and a cold fluorescent ceiling light. Colors and mood: pale blue and cold white; polite on the surface, tense underneath. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The blades of the small desk fan spin and its breeze makes the tall vertical blinds sway gently, slices of daylight shifting between them; a thin wisp of steam rises from the coffee. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+12. DE «Фил решает» (S06E20)   → sopranos-phil-de/bg.mp4
+файлы: сопрано фил-1.png, сопрано фил-А.mp4
+Живое, без события. Что движется: Кружевные занавески колышутся от сквозняка, над эспрессо вьётся пар.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a small old Brooklyn café on a winter afternoon, empty. Camera: eye level close to the table, 50mm lens, shallow focus, the cup in the center. Objects: a small round grey marble table; on it a white espresso cup with a little spoon resting in it, on a white saucer; a glass of water; a neatly folded white silk pocket square lying beside the saucer. Behind, slightly out of focus: dark wooden wainscoting, a brass wall sconce with a frosted glass shade, bentwood chairs and a big window, slightly open, with glowing white lace curtains with a floral pattern. Light: pale wintry daylight through the lace curtains; the dark interior lit only by the sconce. Colors and mood: dark brown and cold white; quiet, cold and final. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The white lace curtains billow softly in the draft from the slightly open window, their floral pattern drifting in the pale light; a slow curl of steam rises from the espresso. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+13. ГЛАВНЫЙ «Американский психопат» — весь фильм   → american-psycho/film-bg.mp4
+файлы: психопат главный-1.png, психопат главный-2.png, психопат главный-А.mp4, психопат главный-Б.mp4
+Событие: Музыка на полную: индикаторы на стерео прыгают до красного — Патрик ставит Huey Lewis перед топором.
+Как: Музыка на полную: индикаторы стерео до красного — две картинки (индикаторы низко / в красной зоне), переключение. Событие мелкое (стерео с краю) — на телефоне почти не видно. Надёжнее и заметнее: свет гаснет, остаётся ночной город за окном (демо «Психопат — свет» сделано на стоящем фоне без генерации).
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a minimalist white 1987 Manhattan luxury apartment at night, empty. Camera: symmetrical wide shot, 28mm lens, the coat stand in the center. Objects: the white floor neatly covered with spread newspapers with blurred unreadable print; in the center, a transparent plastic raincoat hanging on a chrome coat stand; a fire axe with a red head leaning against a white leather sofa; a silver stereo system with glowing green level meters; a big window onto the Manhattan skyline at night. Light: cold white ceiling light and the blue night city. Colors and mood: sterile white perfection with something horribly wrong underneath. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+② КАРТИНКА «ПОСЛЕ» (правка ①):
+Keep this exact photo — same objects, same positions, same framing and the same camera. Change only the stereo: its level meters are lit all the way up into the red zone, glowing bright red and amber. Nothing else changes.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The green level meters on the stereo bounce softly to the music, the city lights twinkle; nothing else moves. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③б ДВИЖЕНИЕ для ролика Б (из ②):
+Static locked-off camera, no camera movement, no zoom, no cuts. The level meters on the stereo jump hard into the red to very loud music, the city lights twinkle. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/bg_fx.py switch film-bg.mp4 A.mp4 B.mp4 --how cut --end dip   (свет гаснет без генерации: dim B.mp4 A.mp4 --room 0.3 --keep <окно> --keep <стерео>; switch … --sync --how fade --dur 0.15)
+
+══════════════════════════════════════════════════════════════════════
+14. Сцена «Патрик Бейтман приходит в офис»   → american-psycho/bg.mp4
+файлы: психопат офис-1.png, психопат офис-А.mp4
+Живое, без события. Что движется: В плеере крутятся катушки кассеты, в воде бегут пузырьки, на телевизоре мелькает картинка.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a 1987 Wall Street corner office on a sunny morning, empty. Camera: three-quarter view from above the desk, 35mm lens, the glass of water in the center. Objects: a polished dark mahogany desk with a black leather executive chair behind it; on the desk, a tall glass of sparkling mineral water with a lime slice, a silver portable cassette player with orange foam headphones, an open black leather planner with a fountain pen laid perfectly parallel to it. Behind: tall windows with horizontal metal venetian blinds half open onto sunlit office towers, grey walls, a small black television on a wooden credenza. Light: cold morning sun through the blinds, laying thin striped shadows across the desk. Colors and mood: steel grey, mahogany and white; sterile, arrogant 1980s perfection with something wrong underneath. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Behind the little window of the silver cassette player the tape reels turn steadily; thin streams of bubbles rise in the sparkling water; the small TV on the credenza flickers with a soft, blurry picture. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+15. Сцена «Визитки: чья круче»   → american-psycho-cards/bg.mp4
+файлы: психопат визитки-1.png, психопат визитки-А.mp4
+Живое, без события. Что движется: В полосах света из жалюзи плывут пылинки, свет то ярче, то мягче — бумага визиток светится; по стакану сползают капли.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a 1987 Wall Street boardroom on a bright afternoon, empty. Camera: low grazing angle across the table, 100mm macro lens, very shallow focus, the cards in the center. Objects: on a glossy dark mahogany table, five white business cards laid in a neat fan, each a slightly different shade of white (bone, eggshell, ivory), with embossed lettering too small and blurred to read; the last card on the right has a faint watermark in its thick paper; beside them, a glass of water with ice beaded with condensation. Behind, out of focus: dark wood paneling, black leather chairs and a window with horizontal venetian blinds. Light: a dim room; thin stripes of daylight from the blinds lie across the table beside the cards. Colors and mood: dark mahogany with creamy whites; petty envy and status games. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Fine dust drifts through the thin stripes of daylight from the blinds; the stripes gently brighten and soften as thin clouds pass the sun outside, making the thick paper of the cards glow; drops of condensation slide down the glass of ice water. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+16. ГЛАВНЫЙ «Таксист» — весь фильм   → taxi-driver-lonely/film-bg.mp4
+файлы: таксист главный-1.png, таксист главный-2.png, таксист главный-А.mp4, таксист главный-Б.mp4
+Событие: В окно обрушивается настоящий ливень — потоки воды по стеклу, неон и такси расплываются. «Однажды придёт настоящий дождь и смоет всю эту мразь с улиц».
+Как: Настоящий ливень по стеклу — две картинки (редкие капли / потоки воды), ролики дождя Veo делает хорошо; переход наплывом 0.6 с.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a tiny cheap rented room in 1970s New York at night, empty. Camera: eye level, 28mm lens, the window in the center. Objects: a small cracked mirror on a dingy yellow wall above an old dresser; on the dresser, all at real size: a black revolver lying flat, an open diary with blurred handwriting, a loaf of white bread and a bottle of brandy with no label; an olive-green army field jacket hangs beside the mirror; an old portable TV with grey static on the floor; the window shows a wet street with red neon and a yellow taxi parked below in a cloud of steam. Light: one bare bulb, the TV glow and red neon from the street. Colors and mood: dirty yellow and red; lonely, sleepless and tense. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+② КАРТИНКА «ПОСЛЕ» (правка ①):
+Keep this exact photo — same objects, same positions, same framing and the same camera. Change only the weather: heavy rain now streams down the window glass in thick running rivulets, and the neon and the taxi outside are blurred behind the water. Nothing else changes.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Calm, humid night: the TV static flickers, steam drifts past the taxi outside the window. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③б ДВИЖЕНИЕ для ролика Б (из ②):
+Static locked-off camera, no camera movement, no zoom, no cuts. Heavy rain streams down the window glass in running rivulets; the neon outside glows through the water. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/bg_fx.py switch film-bg.mp4 A.mp4 B.mp4 --how fade --dur 0.6 --end dip
+
+══════════════════════════════════════════════════════════════════════
+17. Сцена «Одинокий человек Бога»   → taxi-driver-lonely/bg.mp4
+файлы: таксист одинокий-1.png, таксист одинокий-А.mp4
+Живое, без события. Что движется: Дворники ходят туда-сюда, по стеклу текут капли, из люка валит пар.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: inside a 1970s New York yellow Checker cab at night, parked, seen from the empty back seat. Camera: from the back seat, 28mm lens, looking forward through the windshield. Objects: the scratched plexiglass partition, the empty driver's seat, an open diary with blurred handwriting on the front passenger seat, an old mechanical taxi meter with a metal flag on the dashboard, no readable numbers; through the wet windshield, a dark street glowing with soft out-of-focus red, green and yellow neon, and white steam rising from a manhole in the street. Light: only the neon and the street lights from outside. Colors and mood: red and green neon in darkness; insomnia and loneliness. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The windshield wipers sweep back and forth in a slow, steady rhythm; raindrops trickle down the glass between the strokes; white steam drifts up from the manhole in the neon street. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+18. Сцена «Трэвис зовёт Бетси на кофе»   → taxi-driver-betsy/bg.mp4
+файлы: таксист бетси-1.png, таксист бетси-А.mp4
+Живое, без события. Что движется: Крутится вентилятор, от него трепещут бумажные гирлянды; над кофе пар; за окном качаются деревья.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a 1972 presidential campaign headquarters in New York on a sunny afternoon, empty. Camera: eye level, 35mm lens, the front desk in the center. Objects: red-white-and-blue paper bunting along the walls; desks with typewriters, telephones and piles of leaflets; on the front desk, a small vase of yellow flowers, a paper cup of coffee and a slice of pie on a paper plate and a small electric desk fan; a red carpet; big windows with daylight and green trees outside. No posters and no writing. Light: bright warm daylight from the windows. Colors and mood: warm red, white and blue; bright 1970s optimism, awkward and hopeful. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The small desk fan spins and the red-white-and-blue bunting ripples in its breeze; steam rises from the paper cup of coffee; outside the big windows, the green trees sway. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+19. ГЛАВНЫЙ «Бункер» — весь фильм   → downfall-bunker/film-bg.mp4
+файлы: бункер главный-1.png, бункер главный-А.mp4
+Событие: Вдали рвётся снаряд: оранжевая вспышка на всё небо, катится волна пыли, углы карты приподнимает.
+Как: Взрыв вдали: оранжевая вспышка за горизонтом, гаснет за полсекунды — вспышку делает склейка, генерировать не надо (демо «Бункер — взрыв» на стоящем фоне). Волну пыли и приподнятую карту не делать (рой и «само двигается»).
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the ruined center of Berlin at dusk in April 1945, seen from the steps of an underground bunker exit, empty. Camera: low angle from the bunker steps, 24mm lens. Objects: in the foreground on a wooden crate, a paper map of Berlin with red and blue pencil arrows, a pair of round wire-rimmed glasses and a broken pencil; behind, the burned shells of grand buildings, a damaged domed government building and broken stone columns under a red smoky sky. No flags, symbols or insignia, no text. Light: red-orange fire glow under a dark smoky sky. Colors and mood: red, black and ash grey; ruin and defeat, everything is lost. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Thick smoke drifts slowly across the ruins, a few orange embers float in the air. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/bg_fx.py flash film-bg.mp4 A.mp4 --preset blast --at 4
+
+══════════════════════════════════════════════════════════════════════
+20. Сцена «Приказ Штайнера»   → downfall-bunker/bg.mp4
+файлы: бункер приказ-1.png, бункер приказ-А.mp4
+Живое, без события. Что движется: Висящая лампа медленно качается, свет ползает по картам; с потолка сыплется пыль от далёких разрывов.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a small concrete bunker conference room in April 1945, empty. Camera: high angle looking down at the table, 35mm lens; the table and the wall map behind it. Objects: grey-green painted concrete walls with a big colored wall map of Europe; a large wooden table covered with paper military maps of Berlin with red and blue pencil arrows; a pair of round wire-rimmed glasses lying on the map; a long red-and-blue pencil and a few colored pencils; a plain metal lamp hangs low above the table on a cord. No flags, symbols or insignia, no readable text. Light: only the hanging lamp, everything else in grey darkness. Colors and mood: grey concrete and sickly green light; a furious outburst — the war is lost. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The hanging lamp sways slowly on its cord, its pool of light drifting back and forth over the maps; fine dust trickles down from the concrete ceiling as the bunker trembles from distant shelling. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+21. ГЛАВНЫЙ «Титаник» — весь фильм   → titanic-boat/film-bg.mp4 (+ копия titanic-andrews-de)
+файлы: титаник главный-1.png, титаник главный-2.png, титаник главный-А.mp4, титаник главный-Б.mp4
+Событие: Вдоль борта одна за другой зажигаются лампы — в их свете вспыхивает искорка кулона на палубе.
+Как: Вдоль борта одна за другой зажигаются лампы — две картинки (лампы не горят / горят), «одна за другой» делает шторка вдоль борта.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the bow of a huge 1912 ocean liner on a calm sea just after sunset, empty deck. Camera: chest height, about six meters behind the tip of the bow, 35mm lens, looking forward to the tip. Objects: white railings converging to the point of the bow, old wooden deck planks, two black iron mooring bollards near the tip, a white canvas life jacket lying beside the railing; a row of round deck lamps along the railing, still dark; far ahead on the horizon, a tall pale iceberg in thin mist. Almost unnoticeable: a tiny blue sparkle on the deck right next to the left bollard, much smaller than the bollard — a dropped necklace seen from far away. Light: the last deep-orange glow of sunset at the horizon and the first cold blue of night above. Colors and mood: golden-orange romance turning into icy blue doom; love and catastrophe. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+② КАРТИНКА «ПОСЛЕ» (правка ①):
+Keep this exact photo — same objects, same positions, same framing and the same camera. Change only the deck lamps: the row of lamps along the railing is now lit, each with a small warm glow, and warm light falls on the wooden deck under them. Nothing else changes.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The tiny blue sparkle twinkles, the sea slides past the bow, thin mist drifts around the iceberg. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③б ДВИЖЕНИЕ для ролика Б (из ②):
+Static locked-off camera, no camera movement, no zoom, no cuts. The tiny blue sparkle twinkles, the sea slides past the bow, thin mist drifts around the iceberg. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/bg_fx.py switch film-bg.mp4 A.mp4 B.mp4 --how wipe-lr --dur 1.2 --end dip   (направление — по тому, как идёт борт в кадре: wipe-lr / wipe-rl / wipe-tb)
+
+══════════════════════════════════════════════════════════════════════
+22. Сцена «Джек сажает Роуз в шлюпку»   → titanic-boat/bg.mp4
+файлы: титаник шлюпка-1.png, титаник шлюпка-А.mp4
+Живое, без события. Что движется: Пустая шлюпка покачивается на канатах, по палубе тянется морозный туман, лампы чуть мигают.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the boat deck of a huge 1912 ocean liner at night during the sinking, empty. Camera: eye level along the deck, 35mm lens. Objects: white-painted steel walls with round brass deck lamps; in the center, an empty wooden lifeboat hanging from two steel davits by ropes beside the railing, the black ocean far below; a dropped white fur stole on the deck planks; a white canvas life jacket hanging on the railing. Light: the round deck lamps and lit portholes, warm against the black freezing night. Colors and mood: freezing blue night with warm failing lights; a tragic goodbye. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The empty lifeboat swings gently on its ropes as the ship slowly tilts; thin freezing mist drifts across the deck and over the black water far below; the round deck lamps flicker faintly. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+23. DE «Эндрюс: корабль утонет»   → titanic-andrews-de/bg.mp4
+файлы: титаник эндрюс-1.png, титаник эндрюс-А.mp4
+Живое, без события. Что движется: Лампа медленно качается на цепочке — корабль кренится, свет ползает по чертежу; вода в стакане стоит наклонно; тикают часы.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the chart room of a 1912 ocean liner at night, empty. Camera: high angle over the table, 35mm lens. Objects: a large wooden table covered with a big blue blueprint of the liner seen from the side, its compartments drawn in white lines, no readable text; a brass lamp hanging low above the table on a short chain; a gold pocket watch lying open on the blueprint; a pencil, a brass ruler and a glass of water; behind, dark wood paneling and a round porthole showing the black night sea. Light: only the warm brass lamp. Colors and mood: deep blue and warm brass; calm, precise and doomed. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The brass lamp sways slowly on its short chain as the ship tilts, its warm light sliding back and forth across the blueprint; the water in the glass leans at an angle; the second hand of the pocket watch ticks on. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+24. DE «Мать и корсет»   → titanic-mother-de/bg.mp4
+файлы: титаник корсет-1.png, титаник корсет-А.mp4
+Живое, без события. Что движется: По потолку бегут блики от моря за иллюминатором, бархатные шторы колышутся, шнурки корсета качаются.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a luxurious first-class stateroom of a 1912 ocean liner on a bright morning, empty. Camera: eye level, 50mm lens, shallow focus. Objects: a dressing table with a big oval mirror reflecting only the room; on it, a silver hairbrush and a vase of yellow lilies; a white corset with long loose laces hanging over a carved wooden screen; heavy dark-red velvet curtains framing an open round porthole with the sunlit sea outside; warm wall sconces with small shades. Light: warm golden wall sconces and soft daylight from the porthole; rippling reflections of the sea play across the ceiling. Colors and mood: gold, cream and deep red; luxurious, tight and suffocating. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Rippling reflections of the sunlit sea dance softly across the ceiling and the velvet curtains; the curtains sway gently in the sea breeze from the open porthole; the loose corset laces swing slowly. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+25. ГЛАВНЫЙ «Во все тяжкие» — весь сериал   → breaking-bad-pilot/film-bg.mp4 (+ копия bb-knocks-de)
+файлы: бб главный-1.png, бб главный-А.mp4
+Событие: Из двери и люка фургона вырывается густое белое облако и уходит по ветру.
+Как: Из двери и люка фургона вырывается густое белое облако — это движение, его делает Veo («кадр → видео» с разметкой по секундам: дым у Veo выходит хорошо). Если не выйдет со 2-й попытки — проще: в фургоне загорается свет (две картинки, переключение).
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the New Mexico desert at golden hour, nobody around. Camera: low wide angle, 24mm lens, the motorhome in the center. Objects: an old 1980s white motorhome with faded brown stripes, its side door open, a yellow hazmat suit hanging in the doorway; a black pork-pie hat resting on the metal step; a few sky-blue glass-like crystals glinting on the step next to it; a pair of khaki pants caught on a desert shrub in the foreground. Red mesas behind under a huge sky. Light: low warm sun from the side, long shadows. Colors and mood: sun-baked yellow and crystal blue; ordinary on the surface, dangerous underneath. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The khaki pants flap gently on the shrub in the hot wind, heat haze shimmers above the sand. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③в ДВИЖЕНИЕ С СОБЫТИЕМ (Veo из ①, если событие делать генерацией):
+Static locked-off camera, no camera movement, no zoom, no cuts. [00:00-00:04] Calm: the khaki pants flap gently on the shrub in the hot wind, heat haze shimmers above the sand. [00:04-00:05] Inside the motorhome something goes wrong: a thick cloud of white smoke bursts out of the open side door and the roof vent; the yellow suit swings in the doorway. [00:05-00:08] The white smoke rolls out over the sand and drifts away in the wind; the motorhome stands in a thinning haze. Apart from the event, the light stays the same and nothing else appears. No people.
+
+④ СКЛЕЙКА (Claude): ролик из ① по промту ③в, петля: python3 tools/loop_bg.py film-bg.mp4 ролик.mp4 --event auto --calm auto --seam xfade
+
+══════════════════════════════════════════════════════════════════════
+26. Сцена «Учитель химии едет на рейд» (S01E01)   → breaking-bad-pilot/bg.mp4
+файлы: бб засада-1.png, бб засада-А.mp4
+Живое, без события. Что движется: Занавеска из окна второго этажа (откуда удрал Джесси) полощется на ветру, над асфальтом марево, мигает огонёк рации.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: inside a parked car on a DEA stakeout on a sunny Albuquerque suburban street, nobody inside. Camera: from the back seat between the front seats, 28mm lens, looking through the windshield. Objects: on the dashboard, aviator sunglasses and a folded paper map; on the passenger seat, a black tactical vest with a gold badge patch and no text; a police radio with a handset on a coiled cord. Through the windshield: a quiet street of beige stucco houses; the last house on the right is a one-story house painted sage green, and next to it a two-story house with an upstairs window wide open and a curtain hanging out of it; blue mountains far away. Light: harsh midday sun. Colors and mood: bleached sun with a yellow-green tint; dull and hot, right before everything changes. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The curtain hanging out of the open upstairs window flaps and billows in the hot wind; heat haze shimmers above the asphalt; the small red light on the police radio blinks. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+27. Сцена «Уолт приходит к Гасу» (S02E11)   → breaking-bad-gus/bg.mp4
+файлы: бб гас-1.png, бб гас-А.mp4
+Живое, без события. Что движется: Крутятся потолочные вентиляторы, в коле бегут пузырьки, лампы чуть покачиваются.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: an empty fast-food fried chicken restaurant in Albuquerque at closing time, nobody inside. Camera: eye level, 28mm lens, the nearest table in the center. Objects: walls painted blue on the lower half and white above, red vinyl booths, light wooden tables and chairs, white floor tiles with small blue diamond inlays, ceiling fans and red pendant lamps hanging low over the tables; on the nearest table, a red plastic tray with a paper cup of diet cola with a straw and an untouched basket of fried chicken. No logos and no signs. Light: bright flat fluorescent ceiling panels and the warm red pendant lamps. Colors and mood: flat bright fluorescent turning into red darkness; too clean, too polite, quietly menacing. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The ceiling fans turn steadily; bubbles rise through the diet cola and condensation drops slide down the cup; the red pendant lamps sway very slightly in the fans' breeze. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+28. Сцена «Я тот, кто стучит» и «Где деньги?» (S04E06 · S04E11)   → breaking-bad-knocks/bg.mp4
+файлы: бб подпол-1.png, бб подпол-А.mp4
+Живое, без события. Что движется: Голая лампочка медленно качается, тени балок ходят по земле, в свете плывёт пыль.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a crawl space under a suburban Albuquerque house at night. Camera: looking straight down through an open square floor hatch, 24mm lens. Objects: a dirt floor between wooden floor joists and pink insulation, lined with torn clear plastic sheeting and a few empty black plastic bags — where a huge pile of money used to be; only two small bundles of cash wrapped tight in clear plastic, half in shadow, are left in the dirt; one bare light bulb hanging on a cord. Light: only the bare bulb, deep black around. Colors and mood: harsh yellow and deep black; empty, hopeless and unhinged. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The bare bulb sways slowly on its cord and the shadows of the joists swing back and forth across the dirt; dust floats in the light. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+29. DE «Ich bin die Gefahr» (S04E06)   → bb-knocks-de/bg.mp4
+файлы: бб спальня-1.png, бб спальня-А.mp4
+Живое, без события. Что движется: Тюль колышется от ночного ветерка, над кружкой вьётся пар.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a suburban Albuquerque bedroom at night, empty. Camera: eye level from a corner of the room, 35mm lens, the closed bedroom door in the center. Objects: a closed white bedroom door with a brass knob; beside it a wooden chest of drawers with a small standing picture frame turned away from the camera; a bedside table with a lamp with a pleated shade and a white coffee mug; at the side, a bed with a light pine headboard and floral pillows; beige patterned wallpaper; a window with sheer curtains. Light: the warm bedside lamp, everything else in shadow. Colors and mood: warm beige turning into black and sickly yellow; calm turning into menace. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The sheer curtains billow slowly in the warm night breeze from the window; a thin curl of steam rises from the coffee mug; the lamp light glows steadily. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+30. DE «Майк и ноутбук Гаса» (S05E01)   → bb-mike-de/bg.mp4
+файлы: бб майк-1.png, бб майк-А.mp4
+Живое, без события. Что движется: Сухая трава гнётся на горячем ветру, по земле метёт пыль, над дорогой марево.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the empty New Mexico desert at harsh midday, nobody around. Camera: low angle from the dirt road, 28mm lens. Objects: a dusty dark-maroon 1980s sedan parked on a dirt track with the driver's door open; on its hood, a ring of car keys and a black revolver at its real size; a closed black laptop lying in the dust in front of the car. Behind, flat desert with dry grass and blue mountains under a huge hazy sky. Light: harsh yellow midday sun in a hazy white sky. Colors and mood: dusty yellow and black; tired, tough and dangerous. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The dry grass bends and waves in the hot wind; thin dust blows low across the ground and swirls around the tires; heat haze shimmers above the dirt track. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+31. ГЛАВНЫЙ «Павел Дуров» — сам человек   → durov-tucker/film-bg.mp4
+файлы: дуров главный-1.png, дуров главный-2.png, дуров главный-А.mp4, дуров главный-Б.mp4
+Событие: Порыв ветра — улетает только белый самолётик (как логотип Telegram), денежные остаются.
+Как: Порыв ветра — улетает только белый самолётик (ветер виден по шторе). Рискованно: предмет летит. Надёжная замена — переключение: в окне вечереет, загораются фонари и окна площади (две картинки, шторка сверху вниз).
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a tall open window high up in an old Art Nouveau office building in the center of St. Petersburg during the white nights, the room empty. Camera: eye level at the windowsill, 35mm lens, looking out through the open window. Objects: a wide stone windowsill with a neat row of eight paper airplanes folded from real orange-red banknotes, their noses pointing out of the window; one plain white paper airplane in the very center, a little ahead of the others; a folded black T-shirt at the edge of the sill; a sheer white curtain at the side. Far below: a wide old avenue with tiny glowing street lamps and an old cathedral with a long curved stone colonnade, under a pale blue-pink sky that never gets dark. Light: the pale white-night sky and the warm street lamps below. Colors and mood: pale blue, white and soft orange; young, free and defiant. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+② КАРТИНКА «ПОСЛЕ» (правка ①):
+Keep this exact photo — same objects, same positions, same framing and the same camera. Change only the time of evening: it is ten minutes later, the street lamps along the square and many windows across the city are now lit with warm light, the sky is a little deeper blue. Nothing else changes.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The sheer curtain sways slowly in the breeze, the paper wings tremble slightly, the street lamps far below twinkle. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③б ДВИЖЕНИЕ для ролика Б (из ②):
+Static locked-off camera, no camera movement, no zoom, no cuts. The sheer curtain sways slowly in the breeze, the paper wings tremble slightly, the street lamps far below twinkle. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③в ДВИЖЕНИЕ С СОБЫТИЕМ (Veo из ①, если событие делать генерацией):
+Static locked-off camera, no camera movement, no zoom, no cuts. [00:00-00:04] Calm: the sheer curtain sways slowly in the breeze, the paper wings tremble slightly, the street lamps far below twinkle. [00:04-00:06] A gust of wind sweeps in: the curtain billows, and only the single white paper airplane lifts off the sill and glides out of the window into the pale sky; the money airplanes just tremble. [00:06-00:08] The white airplane glides away and grows small over the avenue; the curtain settles. Apart from the event, the light stays the same and nothing else appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/bg_fx.py switch film-bg.mp4 A.mp4 B.mp4 --how wipe-tb --dur 1.4 --end dip   (самолётик — только Veo с разметкой по секундам)
+
+══════════════════════════════════════════════════════════════════════
+32. Сцена «Такер Карлсон · 2024»   → durov-tucker/bg.mp4
+файлы: дуров такер-1.png, дуров такер-А.mp4
+Живое, без события. Что движется: От кондиционера покачиваются жалюзи и листья большого растения, между ламелями мигают полоски света, в стаканах дрожит вода.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: an elegant interview room in a high-rise in Dubai on a bright day, empty — two chairs ready for a big conversation. Camera: wide symmetrical shot, 35mm lens; the two chairs and the window in the center. Objects: two black armchairs facing each other with a small round black table between them holding two glasses of water and a single folded white paper airplane; on one side, a wall of vertical dark wooden slats; on the other, dark marble shelves with a small white classical bust and a few white sculptural objects; a large green plant; behind the chairs, a big window covered with closed light-wooden blinds. Light: soft dim daylight glowing through the closed blinds. Colors and mood: dark wood, black and white marble, then blinding desert sunlight; calm, careful and serious. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. A soft stream of air from the air conditioning gently sways the closed wooden blinds and the leaves of the big green plant; thin slices of daylight flicker between the slats onto the black table; tiny ripples tremble in the glasses of water. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+33. ГЛАВНЫЙ «Clavicular» — сам человек (лукмаксинг)   → clavicular-impaulsive/film-bg.mp4
+файлы: клав главный-1.png, клав главный-2.png, клав главный-А.mp4, клав главный-Б.mp4
+Событие: Выход в эфир: лампы вокруг зеркала включаются по кругу, кольцевая лампа вспыхивает, на телефоне — зелёные сообщения.
+Как: Выход в эфир: лампы вокруг зеркала загораются по кругу — две картинки (лампы не горят / горят), «по кругу» делает склейка (демо «Клав — эфир» на стоящем фоне без генерации).
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the bathroom of a Miami high-rise apartment at night, turned into a looksmaxxing station, empty. Camera: eye level facing the vanity, 35mm lens. Objects: a big mirror framed with round bulbs, reflecting only the dark room; on the white marble counter: a microneedling derma roller, a roll of mouth tape, a silicone jaw exerciser, a glass bowl of ice cubes, a small steel hammer, a row of skincare bottles with no labels, and a smartphone on a small tripod with a ring light; a black knit polo shirt with black sunglasses hooked on its collar hangs on a hook; a small window with Miami towers, palm trees and pink-purple neon. Light: at first only the dim pink glow of the city — the mirror bulbs and the ring light are off. Colors and mood: clinical white, neon green and hot pink; extreme self-improvement, obsession with the mirror, always on stream. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+② КАРТИНКА «ПОСЛЕ» (правка ①):
+Keep this exact photo — same objects, same positions, same framing and the same camera. Change only the mirror lamps: all the round bulbs around the mirror are now switched on and glowing bright white, lighting the room. Nothing else changes.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Calm and dim: the palm trees sway outside the small window, the phone screen is dark. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+③б ДВИЖЕНИЕ для ролика Б (из ②):
+Static locked-off camera, no camera movement, no zoom, no cuts. Calm and dim: the palm trees sway outside the small window, the phone screen is dark. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/bg_fx.py switch film-bg.mp4 A.mp4 B.mp4 --how radial@<центр зеркала x,y>,<радиус> --dur 1.3 --end dip   (без генерации: dim A.mp4 стоящий.mp4 --lampbox <зеркало> --keep <окно> --keep <телефон>; switch … --sync)
+
+══════════════════════════════════════════════════════════════════════
+34. Сцена «Подкаст Impaulsive»   → clavicular-impaulsive/bg.mp4
+файлы: клав подкаст-1.png, клав подкаст-А.mp4
+Живое, без события. Что движется: Телефон на столе всё время загорается — сыплются зелёные сообщения; по холодным бутылкам ползут капли.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a big podcast studio right after recording, empty. Camera: wide shot from a high corner, 24mm lens, the coffee table in the center. Objects: two large cream-colored couches at an angle; in front of them a big square low walnut coffee table with a row of plain unlabeled plastic bottles of brightly colored sports drinks — ice blue, orange, pink and purple — and a smartphone lying face up with a dark screen; behind, a wall of warm reclaimed wooden planks; black podcast microphones on boom arms and black headphones in front of the couches. No boxing ring, no ropes, no logos, no text. Light: warm studio lights. Colors and mood: warm wood and cream; loud, confident, a little bit show-off. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The smartphone on the table keeps lighting up: green message bubbles with no letters pop up on its screen one after another and fade; condensation drops slide down the cold colored bottles. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+35. Сцена «Clavicular · 18+»   → clavicular-18/bg.mp4
+файлы: клав клуб-1.png, клав клуб-А.mp4
+Живое, без события. Что движется: Крутится диско-шар, по стенам ползут зайчики, плывёт дымка, в бокалах пузырьки.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: a VIP booth of a Miami nightclub at 4 a.m. at closing time, empty. Camera: eye level from the low table, 28mm lens, the booth in the center. Objects: a curved black velvet booth; on the low black table in front of it, a silver ice bucket with a dark unlabeled champagne bottle, two half-empty champagne glasses, a smartphone lying face up with its screen glowing neon green with chat bubbles and no letters, scattered confetti and a small spill of champagne; behind the booth, a dark wall with thin pink and red neon light strips with no words, and a mirrored disco ball hanging from the ceiling; light haze in the air. Light: pink and red neon, the green phone glow and slow light spots from the disco ball. Colors and mood: hot pink and red in darkness, then harsh flat white; hedonistic and empty — the party is over. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. The mirrored disco ball turns slowly and its light spots glide across the walls and the velvet booth; thin haze drifts through the pink neon; bubbles rise in the champagne glasses; the phone screen glows green. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+36. Сцена «Clavicular · Бургер без сыра»   → clavicular-burger/bg.mp4
+файлы: клав бургер-1.png, клав бургер-А.mp4
+Живое, без события. Что движется: От горячей котлеты идёт пар, сок блестит, по стаканчику сползают капли.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the low wooden coffee table of a podcast studio right after recording, empty. Camera: close-up at table height, 50mm lens, shallow focus, the burger in the center. Objects: a plain hamburger on an open paper wrapper — only bun, beef patty and bun, no cheese, no lettuce; one slice of yellow cheese lying apart on the wrapper, pushed aside; a small paper cup of ketchup; a plain paper fast-food bag with no logo and a paper cup with a straw. Behind, out of focus: cream couches and black podcast microphones. Light: warm studio lights. Colors and mood: warm brown, ketchup red and cream; strict and simple, a little absurd. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. Thin steam rises from the hot beef patty and its juices glisten; condensation drops slide down the paper cup; the warm studio lights shimmer softly in the background. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
+
+══════════════════════════════════════════════════════════════════════
+37. Сцена «Clavicular · Ставки»   → clavicular-bets/bg.mp4
+файлы: клав ставки-1.png, клав ставки-А.mp4
+Живое, без события. Что движется: На ноутбуке без остановки ползёт график — вниз и снова вверх, свет экрана бегает по молотку и фишкам.
+
+① КАРТИНКА «ДО» (9:16):
+Vertical 9:16 photograph, a still frame from a feature film shot on 35mm, shallow depth of field, rich deep blacks. Setting: the dark coffee table of a podcast studio late at night, empty. Camera: eye level from the table edge, 35mm lens, the laptop in the center. Objects: an open laptop whose screen shows one glowing line chart that drops and then rises, with no numbers and no text; next to it a small wooden judge's gavel lying on its side; a short stack of red and green poker chips. Behind, out of focus: cream couches and black podcast microphones. Light: the cool glow of the laptop screen and dim warm studio lights. Colors and mood: green and red glow in a dark studio; tense and risky. Composition for a phone screen: the main objects sit just above the middle of the frame (about a third of the way down); the top of the frame is the light source, the wall, ceiling or sky; the bottom third is a calm dark surface (floor, desk, ground) with nothing important on it. Real materials and real-world sizes; every object stands or lies naturally where it belongs, nothing else in the frame. No people, no faces, no hands. No readable words, letters or logos anywhere. Full-bleed image, no borders or black bars.
+
+③ ДВИЖЕНИЕ для ролика А (из ①):
+Static locked-off camera, no camera movement, no zoom, no cuts. On the laptop screen the glowing line chart keeps moving, dipping and climbing again in a loop; the cool screen light flickers softly over the gavel and the poker chips. This motion continues smoothly for all 8 seconds; everything else in the frame stays perfectly still, the light stays the same and nothing new appears. No people.
+
+④ СКЛЕЙКА (Claude): python3 tools/loop_bg.py bg.mp4 ролик.mp4   (живой фон: обычная петля; поехал предмет — bg_fx.py freeze --live <зоны, что должны жить>)
