@@ -307,9 +307,9 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
   let ix=Math.max(0,L.findIndex(x=>x.k===c.k)),cur=null,v=null,raf=0,TT=[],sub=null,hideT=0,autoT=0,held=false,dirty=false,MORE=false,VW=AU;   // 13.9.5: MORE — открыто «Подробнее»; 13.9.8: VW — раскрыто видео (оба держатся при листании)
   // 13.9.9 (Андрей: «не в фулл скрин»): окно — шторка снизу по высоте содержимого (телефон) / карточка по центру (ПК);
   // словарь виден под затемнением, кадр фильма — фон самой шторки (.kn2-bg внутри .kn2), прокрутка — внутри (.kn2-sc)
-  // 13.9.11: шторка — настройка (store.knWin='sheet', Настройки → «Окно фразы»); по умолчанию — на весь экран, как в 13.9.8
-  // (Андрей: «оставь пока, не трогай», потом: «или фулл скрин в настройках»). В шторке видео — окошком над ней (.kn2-pip), убирается ×
-  const SM=store.knWin==='sheet',SH=SM&&!matchMedia('(min-width:760px)').matches;
+  // 13.9.11: шторка — настройка (Настройки → «Окно фразы»). 13.9.15 (Андрей: «го»): по умолчанию — полэкрана; на весь экран — store.knWin='full'.
+  // В шторке видео — окошком над ней (.kn2-pip), убирается ×
+  const SM=store.knWin!=='full',SH=SM&&!matchMedia('(min-width:760px)').matches;
   const ov=document.createElement('div');ov.className='kno kno2'+(SM?' kn2s':'')+(AU?' auto':'');   // класс .sheet занят в main.css (шторка ответа в квизе) — у нас .kn2s
   const segH=AU?`<div class="kn2-seg${L.length>30?' one':''}">${L.length>30?'<i><b></b></i>':L.map(()=>'<i><b></b></i>').join('')}</div>${o.title?`<span class="kn2-at">${E(o.title)}</span>`:''}`:'';
   ov.innerHTML=(SM?`<div class="kno-dim"></div><div class="kn2-pip" aria-hidden="true"><button class="kn2-pipx" aria-label="Убрать видео">${ui('close')}</button></div><div class="kn2" role="dialog" aria-label="${c.w?'Слово из фильма':'Фраза из фильма'}"><div class="kn2-bg"></div><i class="kn2-grab" aria-hidden="true"></i>${segH}<button class="kn2-x" aria-label="Закрыть">${ui('close')}</button><div class="kn2-sc"><div class="kn2-in"></div></div></div>`

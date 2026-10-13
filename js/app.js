@@ -1567,7 +1567,7 @@ function renderSettings(){
       ${segCtl('subSz',SUB_SZ,store.subSz||'m')}
       <div class="sub-prev" aria-hidden="true"><div class="sc-v" data-ss="glass"><div class="sc-subs"><div class="sline"><span class="en">I'll make him an offer he can't refuse.</span></div><div class="sline s2"><span class="tr">Я сделаю ему предложение, от которого он не сможет отказаться.</span></div></div></div></div>
       <div class="stack" style="margin-top:8px">${row('subSame','Перевод того же размера','Выключи — перевод будет чуть мельче оригинала.')}</div>
-      ${true?`<p class="hint-line" style="margin-top:12px">Окно фразы в словаре</p>${segCtl('knWin',[['full','На весь экран'],['sheet','Полэкрана']],store.knWin==='sheet'?'sheet':'full')}<p class="hint-line" style="margin-top:6px;opacity:.7">Полэкрана — словарь виден сверху, «▶ Смотреть» открывает окошко с моментом над шторкой.</p>`:''}
+      <p class="hint-line" style="margin-top:12px">Окно фразы в словаре</p>${segCtl('knWin',[['sheet','Полэкрана'],['full','На весь экран']],store.knWin==='full'?'full':'sheet')}<p class="hint-line" style="margin-top:6px;opacity:.7">Полэкрана — словарь виден сверху, «▶ Смотреть» открывает окошко с моментом над шторкой.</p>
       <p class="hint-line" style="margin-top:12px">Уровень английского в кино</p>
       ${segCtl('lvl',[['a','Новичок'],['b','Знаю базу']],store.lvl||'a')}
       <button class="ht-alt" id="lvlTest" style="margin-top:8px">Пройти тест уровня ещё раз</button>
@@ -1585,7 +1585,7 @@ function renderSettings(){
   bindSeg('goal',v=>{store.goal=+v;save();sfx('sel');});
   bindSeg('scPause',v=>{store.scPause=v;save();sfx('sel');});
   bindSeg('subSz',v=>{store.subSz=v;save();applySubPrefs();});
-  bindSeg('knWin',v=>{store.knWin=v;save();});   // 13.9.11: окно фразы нового словаря — на весь экран / полэкрана
+  bindSeg('knWin',v=>{store.knWin=v;save();});   // 13.9.11: окно фразы нового словаря — полэкрана (по умолчанию с 13.9.15) / на весь экран
   bindLangChoice(v=>{store.langs=choiceToLangs(v);save();});
   bindRoles(()=>roles,v=>{roles=v;if(rolesOk(v)){store.roles=v==='all'?'all':v.slice();save();}},()=>{const h=$('#roleHint');h.classList.remove('warn');h.textContent=roleHintText(roles);});
   $$('.checkrow').forEach(b=>b.onclick=()=>{
@@ -2318,7 +2318,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.14';
+const APP_V='13.9.15';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};

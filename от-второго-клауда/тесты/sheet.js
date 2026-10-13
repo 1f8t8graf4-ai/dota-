@@ -1,4 +1,4 @@
-// 13.9.11 — шторка включается настройкой (store.knWin='sheet'); на телефоне «Смотреть» — окошко с моментом над шторкой (×).
+// 13.9.11 — шторка (13.9.15: по умолчанию; store.knWin='full' — на весь экран); на телефоне «Смотреть» — окошко с моментом над шторкой (×).
 // 13.9.9 — окно фразы не на весь экран: телефон — шторка снизу по высоте содержимого (словарь сверху под затемнением),
 // тап мимо / свайп вниз / «назад» закрывают, маленький свайп — шторка возвращается, вбок — листание; ПК — карточка по центру.
 // Запуск: NODE_PATH=/opt/node-tools/node_modules node sheet.js ph|pc   (сайт на 8080; медиа — ./cache)
@@ -52,9 +52,16 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
     await shot(page,'2-watch');
     await page.keyboard.press('Escape');await page.waitForTimeout(700);ok('ПК: Esc — закрылась',!(await geo()));
   }
-  // по умолчанию (настройки нет) — окно на весь экран, как в 13.9.8
-  await ev(()=>{delete store.knWin;});await openRow();const gf=await ev(()=>{const o=document.querySelector('.kno2');return o?{sheet:o.classList.contains('kn2s'),pip:!!o.querySelector('.kn2-pip')}:null;});
-  ok('без настройки — на весь экран (не шторка)',gf&&!gf.sheet&&!gf.pip,gf);await ev(()=>document.querySelector('.kno2 .kn2-x').click());await page.waitForTimeout(500);await ev(()=>{store.knWin='sheet';});
+  // 13.9.15: по умолчанию (настройки нет) — полэкрана; «На весь экран» — store.knWin='full', как в 13.9.8
+  const kind=()=>ev(()=>{const o=document.querySelector('.kno2');return o?{sheet:o.classList.contains('kn2s'),pip:!!o.querySelector('.kn2-pip')}:null;});
+  await ev(()=>{delete store.knWin;});await openRow();const gd=await kind();
+  ok('без настройки — шторка (полэкрана)',gd&&gd.sheet,gd);await ev(()=>document.querySelector('.kno2 .kn2-x').click());await page.waitForTimeout(500);
+  await ev(()=>{store.knWin='full';});await openRow();const gf=await kind();
+  ok('«На весь экран» — не шторка',gf&&!gf.sheet&&!gf.pip,gf);await ev(()=>document.querySelector('.kno2 .kn2-x').click());await page.waitForTimeout(500);await ev(()=>{store.knWin='sheet';});
+  // «▶ подряд» в шторке (телефон): момент сразу в окошке сверху и играет сам
+  if(dev==='ph'){await click('.km6-c [data-mpl]');await page.waitForTimeout(2200);
+    const ga=await ev(()=>{const o=document.querySelector('.kno2'),p=o&&o.querySelector('.kn2-pip'),v=p&&p.querySelector('video');return o?{auto:o.classList.contains('auto'),sheet:o.classList.contains('kn2s'),pip:!!p&&p.classList.contains('on'),play:!!v&&!v.paused}:null;});
+    ok('«▶ подряд» в шторке — момент в окошке сверху и играет сам',ga&&ga.auto&&ga.sheet&&ga.pip&&ga.play,ga);await ev(()=>document.querySelector('.kno2 .kn2-x').click());await page.waitForTimeout(500);}
   // без анимаций — открывается и закрывается так же
   await ev(()=>{store.fx=false;applyFx&&applyFx();});await openRow();g=await geo();ok('без анимаций — окно на месте',g&&(dev!=='ph'||Math.abs(g.bot-g.vh)<=1),g);
   await ev(()=>document.querySelector('.kno2 .kn2-x').click());await page.waitForTimeout(500);ok('× — закрылась',!(await geo()));
