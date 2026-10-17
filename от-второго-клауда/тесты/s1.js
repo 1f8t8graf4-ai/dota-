@@ -1,7 +1,7 @@
 // 13.6.3: сценарии по плану — каждый пункт PASS/FAIL
 const {open}=require('./st');const {chromium}=require('playwright');
 const res=[];const ok=(n,c,d)=>{res.push([c?'PASS':'FAIL',n,d||'']);console.log(c?'PASS':'FAIL',n,d||'');};
-const base={onboarded:true,introV:1,gold:300,lvl:'b',fx:false,tourV:1,scSubChosen:1,autoSc:false};
+const base={onboarded:true,introV:1,gold:300,lvl:'b',fx:false,tourV:1,scSubChosen:1,autoSc:false,typeIn:true};   // 13.9.16: путь «Писать самому» (по умолчанию теперь без печати — scratchpad ui16/notype.js)
 const seed=([st,sc])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));if(sc)localStorage.setItem('dota_sc_v1',JSON.stringify(sc));};
 async function answerAny(page){return page.evaluate(()=>{
   const c=x=>{const e=document.querySelector(x);if(e&&!e.hidden&&!e.disabled){e.click();return true;}return false;};

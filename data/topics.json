@@ -1932,6 +1932,51 @@
 "american-psycho|Be a doll and just get me a mineral water, okay?": [
 "работа",
 "общение"
+],
+"wolf-lunch-de|He wants to cash in": [
+"деньги"
+],
+"bb-mike-de|One more word.": [
+"ссоры"
+],
+"bb-mike-de|And yes, yes, it's a big deal.": [
+"эмоции",
+"работа"
+],
+"bb-mike-de|And why in the hell am I talking to you?": [
+"ссоры"
+],
+"wolf-of-wall-street|Those are rookie numbers in this racket.": [
+"работа"
+],
+"wolf-of-wall-street|It'll keep you sharp between the ears.": [
+"здоровье",
+"работа"
+],
+"sopranos-s01e01|It was amazing. They're from Canada or someplace, and it was matin' season.": [
+"эмоции",
+"общение"
+],
+"american-psycho|Good morning, Hamilton. Nice tan.": [
+"знакомство",
+"общение"
+],
+"breaking-bad-gus|Have a seat, please.": [
+"работа",
+"общение"
+],
+"breaking-bad-knocks|That's not enough.": [
+"деньги",
+"ссоры"
+],
+"clavicular-burger|Whoa, whoa, whoa.": [
+"эмоции"
+],
+"clavicular-burger|Who's that?": [
+"общение"
+],
+"clavicular-bets|Should we buy?": [
+"деньги"
 ]
 }
 }

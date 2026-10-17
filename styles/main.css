@@ -5169,3 +5169,52 @@ body.nofx .hh-img{animation:none}
 }
 .hh-rev b em{font-style:normal;margin-left:4px;padding:1px 7px;border-radius:999px;background:rgba(233,196,106,.2);color:var(--gold,#E9C46A);font-size:12.5px}
 @media (max-width:420px){.hh-b{display:grid;grid-template-columns:1fr 1fr}.hh-go,.hh-rev{width:100%;padding:0 12px}.hh-rev small{display:none}.hh-rev{justify-content:center}}
+
+/* ==== 13.9.16 — две-три фразы подряд одной плашкой (не сбивают друг друга) ==== */
+.tk-watch.multi .tkp-ph+.tkp-ph{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)}
+.tk-watch.multi .tkp-en{font-size:17px}
+.tk-watch.over.multi{max-height:72%;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+/* ==== 13.9.16 — окошко слова: что значит в этой реплике + выражения ==== */
+.kw-pop .kwp-here,.sc-wpop .kwp-here,.lp-card .kwp-here{display:block;margin-top:3px;font:500 11.5px/1.3 'Golos Text',system-ui,sans-serif;letter-spacing:.02em;color:rgba(255,255,255,.42)}
+.kwp-cx small{display:block;margin-top:5px;font:400 12.5px/1.4 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.62)}
+.sc-wpop .kwp-use,.lp-card .kwp-use{display:block;margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(233,196,106,.1);text-align:left}
+.sc-wpop .kwp-use em,.lp-card .kwp-use em{display:block;font-style:normal;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:rgba(233,196,106,.85)}
+.sc-wpop .kwp-use span,.lp-card .kwp-use span{display:block;margin-top:2px;font-size:14px;color:#fff}
+
+/* ==== 13.9.16 — ТЕСТ: сцена с YouTube (только админ) ==== */
+.yt-t{padding-bottom:40px}
+.yt-t .sc-head{display:flex;align-items:center;gap:10px}
+.yt-h{display:flex;flex-direction:column;gap:3px;min-width:0}
+.yt-h b{font:800 17px/1.25 'Golos Text',system-ui,sans-serif;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yt-badge{align-self:flex-start;padding:2px 8px;border-radius:6px;background:#e5484d;color:#fff;font:800 11px/1.4 'Golos Text',system-ui,sans-serif;font-style:normal;letter-spacing:.08em}
+.yt-note{margin:10px 2px 12px;padding:11px 13px;border-radius:14px;background:rgba(229,72,77,.1);box-shadow:inset 0 0 0 1px rgba(229,72,77,.3);font:400 13.5px/1.45 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.85)}
+.yt-eps{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:none}
+.yt-eps::-webkit-scrollbar{display:none}
+.yt-eps button{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.75);font:700 13px 'Golos Text',system-ui,sans-serif}
+.yt-eps button small{font-weight:400;font-size:12px;opacity:.7;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yt-eps button.on{background:#F3EBDD;color:#16130f}
+.yt-v{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000}
+.yt-v iframe,.yt-v #ytPlayer{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-load{position:absolute;inset:0;display:grid;place-items:center;padding:20px;text-align:center;font:500 14px/1.45 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.7)}
+.yt-load small{display:block;margin-top:6px;opacity:.7}
+.yt-sub{min-height:74px;margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.05);display:flex;flex-direction:column;gap:4px}
+.yt-sub .yt-o{font:600 18px/1.4 'Golos Text',system-ui,sans-serif;color:#fff}
+.yt-sub .yt-o .sw{font-style:normal;cursor:pointer;border-radius:4px;-webkit-user-select:none;user-select:none}
+.yt-sub .yt-o .sw.on{background:rgba(243,218,140,.25)}
+.yt-sub .yt-r{font:400 14px/1.4 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.55)}
+#ytPlate .tk-plate{margin-top:12px}
+.yt-off{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;font:400 12.5px 'Golos Text',system-ui,sans-serif;color:rgba(255,255,255,.5)}
+.yt-off button{padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);font:600 12.5px 'Golos Text',system-ui,sans-serif}
+.yt-off b{min-width:52px;text-align:center;color:#fff}
+@media (min-width:900px){.yt-t{max-width:880px;margin:0 auto}}
+.hchips #hYt i{font-style:normal}
+
+/* ==== 13.9.16 — эпизод проще: одна строка вместо карточки «Смотри сцену», без второй кнопки «Смотреть»; кнопка сцены в одну строку ==== */
+.ep-hint.ep-w2{display:flex;flex-direction:column;gap:10px;padding:12px 14px}
+.ep-hint.ep-w2>span{font-size:14px;line-height:1.45;color:rgba(255,255,255,.72)}
+.ep-pz.ep-pz2{display:inline-flex;gap:0;padding:3px;border-radius:999px;background:rgba(255,255,255,.07);align-self:flex-start}
+.ep-pz.ep-pz2 button{padding:7px 13px;border-radius:999px;font-size:13px;font-weight:600;min-height:0;background:none;border:0;box-shadow:none;color:rgba(255,255,255,.65)}
+.ep-pz.ep-pz2 button.on{background:rgba(243,235,221,.92);color:#16130f}
+.sc-btn.ep-go[hidden]{display:none!important}
+.sc-top.sc-top2 .sc-go1{white-space:nowrap;letter-spacing:.03em;font-size:clamp(14px,4.1vw,16.5px)}

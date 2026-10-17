@@ -261,7 +261,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2)CLOUD_ERR=true;if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){CLOUD_ERR=true;res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['dictVar','knWin','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy'];
+const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy'];
 function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==null?SV0:base),o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -417,6 +417,7 @@ function underline(name,focus){return focus&&name.includes(focus)&&focus!==name?
 function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
   document.querySelectorAll('.pk,.dx-turn,.dx-shade,.cd2,.gatewrap').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном; 13.6.3: и отсчёт 3-2-1
   document.querySelectorAll('.srv').forEach(o=>o.remove());   // 13.6: открытие покупки
+  try{ytKill();}catch(e){}   // 13.9.16: плеер YouTube из теста
   try{if(window.DL)DL.clean();}catch(e){}   // 13.7: варианты словаря — карта в руке, демо-пак
   document.querySelectorAll('.dxo,.rwo,.bgvw,.pfv').forEach(o=>{o._c=true;o.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});o.remove();});
   document.querySelectorAll('.pc-bg video,.kvp-bg video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});   // 13.9.6: живой фон профиля / дуэли
@@ -1559,6 +1560,7 @@ function renderSettings(){
       <div class="stack">${row('hideLearned','Убирать выученные слова',`Слово, на которое ты ${LEARN_AT} раза ответил правильно, больше не попадается в обычных играх. Оно вернётся в «Повторение» через 3, 7, 21 и 60 дней.`)}
       ${row('tts','Озвучка слов','Голос устройства читает слова и фразы. На некоторых телефонах звучит как робот, поэтому по умолчанию выключено.')}
       ${row('autoSc','Само дальше','После верного ответа и на паузах в фильме — переход сам, кнопка заполняется. Тронул карточку или слово — ждёт тебя.')}
+      ${row('typeIn','Писать самому','В заданиях печатать слово или фразу с клавиатуры. Выключено — только кнопки и кубики.')}
       ${row('bg3d','3D-фон вместо фото','По умолчанию фоном — кадр из фильма. Можно включить нарисованную 3D-сцену.')}
       ${row('age18','Показывать сцены 18+','Откровенные интервью: секс, порно, таблетки. Включая, подтверждаешь, что тебе есть 18.')}</div>
       <p class="hint-line" style="margin-top:12px">Как смотреть сцены</p>
@@ -2318,7 +2320,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.15';
+const APP_V='13.9.16';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2340,7 +2342,7 @@ async function deployCheck(box){
 // В субтитрах любое слово нажимается: перевод слова (или, если его нет в словарике, перевод всей реплики).
 const SCW=(window.__DATA&&window.__DATA.SCENEWORDS)||{};
 const swData=(sid,pi)=>(SCW[sid]&&SCW[sid][String(pi)])||null;
-const swNorm=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/^[^a-zß-öø-ÿ']+|[^a-zß-öø-ÿ'.]+$/g,'').replace(/\.$/,'');   // 13.9.9: ß-ö (с ß), иначе weiß → wei и перевода нет
+const swNorm=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/^[^a-zß-öø-ÿ']+|[^a-zß-öø-ÿ'.]+$/g,'').replace(/\.+$/,'');   // 13.9.16: все точки в конце (speech... ); 13.9.9: ß-ö (с ß), иначе weiß → wei и перевода нет
 // 8.6: общий словарь всех слов всех сцен (data/glossary.json) — перевод есть у каждого слова в субтитрах
 const GLOSS=(window.__DATA&&window.__DATA.GLOSS_EN)||{},GLOSS_DE=(window.__DATA&&window.__DATA.GLOSS_DE)||{};
 // 13.9.13: подробнее о слове — что значит, какая форма, как употребляют, 1–2 примера (data/winfo-en.json / winfo-de.json, ~0.5 МБ).
@@ -2353,6 +2355,25 @@ const wiLang=sid=>{const s=scOf(sid);return s&&s.lang==='de'?'de':'en';};
 const wiGet=(w,L)=>{const D=WI[L];if(!D||!w)return null;const n=String(w).toLowerCase().replace(/’/g,"'"),b=n.replace(/'s$/,'');return D[n]||D[b]||D[n.replace(/'/g,'')]||null;};
 const wiHTML=(w,L,w2)=>{const x=wiGet(w,L)||(w2?wiGet(w2,L):null);if(!x)return '';const [d,ex]=x;
   return `<div class="kwp-wi"><p>${esc(d)}</p>${(ex||[]).slice(0,2).map(e=>`<span class="kwp-wx"><b>${esc(e[0])}</b><small>${esc(e[1])}</small></span>`).join('')}</div>`;};
+// 13.9.16 (Андрей: «при нажатии на слово пиши, что оно тут значит и какое выражение — over the past»): значение слова В ЭТОЙ РЕПЛИКЕ и выражения.
+// data/ctx-en.json / ctx-de.json: {CTX_EN:{sid:[[реплика, {слово:значение тут}, [[выражение как в реплике, значение, пояснение]]], …]}} — по строкам s.subs
+const CX={en:null,de:null,p:{}};
+function cxLoad(L){if(CX[L])return Promise.resolve(CX[L]);if(CX.p[L])return CX.p[L];const K='CTX_'+L.toUpperCase(),A=window.__DATA_ALL;
+  if(A&&A[K]){CX[L]=A[K];return Promise.resolve(CX[L]);}
+  return CX.p[L]=fetch('data/ctx-'+L+'.json?v='+APP_V).then(r=>r.json()).then(j=>CX[L]=j[K]||{}).catch(()=>{CX.p[L]=null;return null;});}
+const cxOrig=(s,r)=>String((s.lang==='de'?r[4]||r[2]:r[2])||'');
+function cxRows(sid,o){const s=scOf(sid),D=CX[wiLang(sid)],A=D&&D[sid];if(!s||!A)return [];const S=s.subs||[];
+  const at=r=>{let k=S.indexOf(r);if(k<0)k=S.findIndex(z=>Math.abs(z[0]-r[0])<0.05);const e=k>=0?A[k]:null;
+    if(e&&phNorm(e[0])===phNorm(cxOrig(s,S[k])))return e;const t=phNorm(cxOrig(s,r));return t?A.find(z=>z&&phNorm(z[0])===t)||null:null;};
+  if(o.row)return [at(o.row)].filter(Boolean);
+  const f=o.f;if(!f||f.a==null)return [];return S.filter(r=>r[0]<f.b-0.05&&r[1]>f.a+0.05).map(at).filter(Boolean);}
+const cxToks=t=>String(t||'').toLowerCase().replace(/[’`]/g,"'").split(/[^a-zß-öø-ÿ']+/).filter(Boolean);
+function cxHit(sid,o,word){const R=cxRows(sid,o),n=swNorm(word),b=n.replace(/'s$/,'');if(!R.length||!n)return null;let here='';const X=[],seen=new Set();
+  R.forEach(e=>{const w=e[1]||{},LT=cxToks(e[0]);if(!here)here=w[n]||w[b]||'';(e[2]||[]).forEach(x=>{const k=String(x[0]||'');if(seen.has(k))return;const T=cxToks(k);
+    if(T.length>=Math.max(2,LT.length*0.8))return;   // «выражение» = почти вся реплика — её и так видно целиком с переводом (13.9.4: без дублей)
+    if(T.includes(n)||T.includes(b)){seen.add(k);X.push(x);}});});
+  return here||X.length?{here,X}:null;}
+const cxXHTML=X=>X.map(x=>`<div class="kwp-use kwp-cx"><em>Тут это часть выражения</em><span><b>${esc(x[0])}</b> — ${esc(x[1]||'')}</span>${x[2]?`<small>${esc(x[2])}</small>`:''}</div>`).join('');
 function swFind(sid,pi,tok){const d=swData(sid,pi),n=swNorm(tok),s0=scOf(sid);
   if(!d){const G=s0&&s0.lang==='de'?GLOSS_DE:GLOSS,b=n.replace(/'s$/,''),v=G[n]||G[b]||G[n.replace(/'/g,'')];return v?{w:n,ru:v,key:false}:null;}
   for(const k of d.key){if(k[3].includes(n)||k[0]===n)return {w:k[0],ru:k[1],de:k[2],key:true};}
@@ -2370,9 +2391,11 @@ function swPop(word,row,inPh,el){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=S
     return;}
   if(SV&&!SV.paused)SV.pause();const o=SW.querySelector('.sc-wpop');if(o)o.remove();
   const w=document.createElement('div');w.className='sc-wpop';
-  w.innerHTML=hit?`${hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`
+  const cx=row&&CX[wiLang(s.id)]?cxHit(s.id,{row},word):null;if(row&&!CX[wiLang(s.id)])cxLoad(wiLang(s.id));   // 13.9.16: значение в этой реплике
+  w.innerHTML=cx&&cx.here?`${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(cx.here)}</span><small class="kwp-here">так в этой реплике</small>`
+    :hit?`${hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`
     :`<b>${esc(swNorm(word))}</b>${pf?'':`<small>Этого слова нет в словарике. Вся реплика:</small><span class="t">${esc(row&&row[3]||'')}</span>`}`;
-  if(pf)w.innerHTML+=phBlock(pf);
+  if(cx&&cx.X.length)w.innerHTML+=cxXHTML(cx.X);else if(pf)w.innerHTML+=phBlock(pf);
   {const L=wiLang(s.id);if(hit){if(WI[L])w.innerHTML+=wiHTML(swNorm(word),L,hit.w);else wiLoad(L).then(()=>{if(!w.isConnected||w.querySelector('.kwp-wi'))return;const b=w.querySelector('.hn-b');if(b)b.insertAdjacentHTML('beforebegin',wiHTML(swNorm(word),L,hit.w));});}}   // 13.9.13: подробнее о слове — после выражения
   w.innerHTML+=`<div class="hn-b"><button data-x="go">Дальше ${SI.play}</button>${row?'<button data-x="word">🔊 Слово</button>':''}${mywBtn(s.id,word)}</div>`;
   w.onclick=e=>{e.stopPropagation();const b=e.target.closest('[data-x]');if(!b)return;
@@ -2441,10 +2464,16 @@ function kwPop(){if(KWP)return KWP;const dim=document.createElement('div');dim.c
 function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._resume=null;P.classList.toggle('in-v',!!(el&&el.closest&&el.closest('.sc-v')));
   // настоящий полный экран (браузер на ПК): поверх него видно только то, что внутри — переносим карточку туда
   {const fse=document.fullscreenElement||document.webkitFullscreenElement,host=fse&&el&&fse.contains(el)?fse:document.body;if(P.parentNode!==host){host.appendChild(P._dim);host.appendChild(P);}}
-  const canW=sv&&sv.sid&&(sv.row||sv.f);
+  const canW=sv&&sv.sid&&(sv.row||sv.f),html0=html;
   {const L=sv&&sv.wi&&sv.sid&&sv.word&&sv.sid!=='own'?wiLang(sv.sid):null;   // 13.9.13: подробнее о слове
     if(L){const bl=wiHTML(sv.word,L,sv.w2);if(bl)html=/class="kwp-use"/.test(html)?html.replace(/(<div class="kwp-use">[\s\S]*?<\/div>)/,'$1'+bl):html.replace(/(<span class="kwp-t">[\s\S]*?<\/span>)/,'$1'+bl);
-      else if(!WI[L])wiLoad(L).then(()=>{if(KWP&&KWP._sv===sv&&KWP.classList.contains('on')&&wiGet(sv.word,L))popAt(el,html,sv,pin);});}}
+      else if(!WI[L])wiLoad(L).then(()=>{if(KWP&&KWP._sv===sv&&KWP.classList.contains('on')&&wiGet(sv.word,L))popAt(el,html0,sv,pin);});}}
+  // 13.9.16: что слово значит в этой реплике (вместо общего перевода) и выражения, куда оно входит (вместо старого «Тут это часть выражения» из пояснения)
+  {const L=sv&&sv.wi&&sv.sid&&sv.word&&sv.sid!=='own'&&(sv.row||sv.f)?wiLang(sv.sid):null;
+    if(L&&CX[L]){const h=cxHit(sv.sid,sv.row?{row:sv.row}:{f:sv.f},sv.word);
+      if(h){if(h.here)html=html.replace(/<span class="kwp-t">[\s\S]*?<\/span>/,`<span class="kwp-t">${esc(h.here)}</span><span class="kwp-here">так в этой реплике</span>`);
+        if(h.X.length)html=html.replace(/<div class="kwp-use">[\s\S]*?<\/div>/,'').replace(/(<span class="kwp-t">[\s\S]*?<\/span>(?:<span class="kwp-here">[\s\S]*?<\/span>)?)/,'$1'+cxXHTML(h.X));}}
+    else if(L&&CX.p[L]!==null)cxLoad(L).then(d=>{if(d&&KWP&&KWP._sv===sv&&KWP.classList.contains('on'))popAt(el,html0,sv,pin);});}
   P.innerHTML=html+`<div class="kwp-b">${sv&&sv.sid&&sv.word?mywBtn(sv.sid,sv.word):''}${canW?`<button data-x="word">🔊 ${isPhr(sv.say||sv.word)?'Выражение':'Слово'}</button>`:''}${sv&&sv.f?`<button data-x="hear">▶ Фраза</button>`:''}<button data-x="ok">Понятно</button></div>`;
   $$('.kw.on,.sw.on').forEach(x=>x.classList.remove('on'));el.classList.add('on');
   const sheet=!matchMedia('(hover:hover)').matches||window.innerWidth<640;
@@ -2515,12 +2544,15 @@ function swTouch(SW){let T=null;
 function swTip(el){if(!SW)return;let tip=SW.querySelector('.sc-wtip');if(!tip){tip=document.createElement('div');tip.className='sc-wtip';SW.appendChild(tip);}
   const s=scOf(SCUR.id),hit=swFind(s.id,SCUR.i||0,el.textContent),f=el.classList.contains('in-ph')?SW._rowPh:null;
   const id=f&&!idWhole(phIdiom(f),f)?phIdiom(f):null;
-  tip.innerHTML=`<b>${esc(swNorm(el.textContent))}</b>${hit?` — ${esc(hit.ru)}`:''}${id?`<span>тут часть выражения «${esc(id.head)}» — ${esc(id.mean)}</span>`:(!hit?'<span>нет в словарике — нажми, покажу перевод реплики</span>':'')}`;
+  const cx=SW._row&&CX[wiLang(s.id)]?cxHit(s.id,{row:SW._row},el.textContent):null;   // 13.9.16: значение в этой реплике
+  if(cx&&(cx.here||cx.X.length)){tip.innerHTML=`<b>${esc(swNorm(el.textContent))}</b>${cx.here?` — ${esc(cx.here)}`:hit?` — ${esc(hit.ru)}`:''}${cx.X.length?`<span>тут часть выражения «${esc(cx.X[0][0])}» — ${esc(cx.X[0][1])}</span>`:''}`;}
+  else tip.innerHTML=`<b>${esc(swNorm(el.textContent))}</b>${hit?` — ${esc(hit.ru)}`:''}${id?`<span>тут часть выражения «${esc(id.head)}» — ${esc(id.mean)}</span>`:(!hit?'<span>нет в словарике — нажми, покажу перевод реплики</span>':'')}`;
   const r=el.getBoundingClientRect(),w=SW.getBoundingClientRect();tip.style.left=Math.max(6,Math.min(w.width-220,r.left-w.left-20))+'px';tip.style.top=Math.max(6,r.top-w.top-tip.offsetHeight-8)+'px';tip.classList.add('on');}
 function linePop(el,row){const s=scOf(SCUR.id),pi=SCUR.i||0,word=el.textContent,hit=swFind(s.id,pi,word);
   let f=null;for(const p of s.parts)for(const x of p.ph){const id=phIdiom(x);if(id&&phNorm(row[2]).includes(phNorm(x.en))&&idHit(id,word))f=x;}
   const o=document.querySelector('.ln-pop');if(o)o.remove();const w=document.createElement('div');w.className='ln-pop';
-  w.innerHTML=`<div class="lp-card">${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b>${hit?`<span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`:(f?'':`<small>Этого слова нет в словарике. Вся реплика: ${esc(row[3])}</small>`)}${f?phBlock(f):''}
+  const cx=CX[wiLang(s.id)]?cxHit(s.id,{row},word):null;   // 13.9.16
+  w.innerHTML=`<div class="lp-card">${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b>${cx&&cx.here?`<span class="t">${esc(cx.here)}</span><small class="kwp-here">так в этой реплике</small>`:hit?`<span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`:(f?'':`<small>Этого слова нет в словарике. Вся реплика: ${esc(row[3])}</small>`)}${cx&&cx.X.length?cxXHTML(cx.X):f?phBlock(f):''}
     <div class="hn-b"><button data-x="word">🔊 Слово</button><button data-x="hear">▶ Реплика</button>${mywBtn(s.id,word)}<button data-x="ok">Понятно</button></div></div>`;
   w.onclick=e=>{const b=e.target.closest('[data-x]');if(e.target===w||(b&&b.dataset.x==='ok')){w.remove();return;}
     if(b&&b.dataset.x==='save'){const on=mywToggle(s.id,pi,word,row,hit);b.classList.toggle('on',on);b.textContent=on?'★ В моих словах':'☆ В мои слова';return;}
@@ -2622,7 +2654,8 @@ function distLike(right,pools,n){const R=String(right||''),rs=ruShape(R),rl=R.le
     C.push({v,sc:(sh===rs?4:sh[0]===rs[0]?1.5:0)+(e2?1:e1?.5:0)+(ratio>.55&&ratio<1.8?1:ratio<.4||ratio>2.5?-2:0)+(pools.length-k)*0.8+Math.random()*1.2});}));
   return C.sort((a,b)=>b.sc-a.sc).slice(0,n).map(x=>x.v);}
 // 13.6: после верного ответа — само дальше: полоска заполняет кнопку; тронул карточку или слово — ждёт, пока сам нажмёшь
-const autoOn=()=>store.autoSc!==false;   // 13.6: «само дальше» по умолчанию включено (старый store.auto был выключен у всех)
+const autoOn=()=>store.autoSc!==false;
+const typeOn=()=>store.typeIn===true;   // 13.9.16 (Андрей: «убрать задания с письменным»): по умолчанию — только кнопки и кубики; печатать — настройкой «Писать самому»   // 13.6: «само дальше» по умолчанию включено (старый store.auto был выключен у всех)
 // 13.9.11: ответ в проверке — докручиваем, чтобы начало ответа было видно; «Дальше» прилипает к низу экрана (sc-nx-stick в CSS)
 function scShowFb(fb){if(!fb)return;requestAnimationFrame(()=>{const r=fb.getBoundingClientRect(),h=innerHeight;if(r.top>h*0.55)window.scrollBy({top:r.top-h*0.3,behavior:fxOK()?'smooth':'auto'});});}
 function autoNext(btn,root,ms){if(!btn||!autoOn())return null;let t=0;const stop=()=>{clearTimeout(t);btn.classList.remove('auto');};
@@ -2711,7 +2744,7 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
     <button class="btn" id="dlGo">Новый эпизод →</button></div>`,'dlscr');$('#bBtn').onclick=()=>{sfx('tap');back();};
     $('#dlGo').onclick=()=>{const c=continueScene();renderScEp(c.s.id,c.i);};return;}
   const tgtOf=q=>q.s.lang==='de'?q.f.de:scT(q.f),nW=q=>dNorm(tgtOf(q)).split(' ').filter(Boolean).length;
-  const phT=(q,j)=>nW(q)<2||(j%2===0&&nW(q)<=12)?'dict':'build';   // фраза из одного слова — только диктант
+  const phT=(q,j)=>typeOn()?(nW(q)<2||(j%2===0&&nW(q)<=12)?'dict':'build'):nW(q)<2?'pmean':(j%2===0&&nW(q)<=12?'lbuild':'build');   // фраза из одного слова — диктант / «что значит»; 13.9.16: без печати — «послушай и собери»
   const Q=L.map((x,j)=>({...x,t:x.k==='w'?'mean':phT(x,j)}));let n=0,ok=0;const res=[];
   const next=()=>{n++;n>=Q.length?end():show();};
   function frame(meta,body){const seg=Q.map((_,j)=>`<i class="${j<n?'done':j===n?'cur':''}"></i>`).join('');
@@ -2719,7 +2752,7 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
       <div class="sc-q sc-card dl-q"><div class="sc-meta">${meta}</div>${body}<div id="dlfb"></div></div></div>`,'scnscr');
     $('#dlx').onclick=()=>{sfx('tap');back();};}
   function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!o.nosrs&&!(good&&early)){if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);}res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
-    if(!good&&!q.re)Q.splice(Math.min(Q.length,n+4),0,{...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?'dict':'build')});
+    if(!good&&!q.re)Q.splice(Math.min(Q.length,n+4),0,{...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?(typeOn()?'dict':'pmean'):'build')});
     sfx(good?'good':'bad');haptic(good?'ok':'err');
     $('#dlfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}">${html}<button class="sc-btn" id="dln">Дальше →</button></div>`;$('#dln').onclick=()=>{sfx('tap');next();};}
   function show(){const q=Q[n];
@@ -2732,9 +2765,16 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
       $('#dlchk').onclick=()=>{const v=$('#dlin').value;if(!v.trim()){$('#dlin').focus();return;}const r=dCheck(v,tgt),good=r.score>=.85&&!hint;$('#dlchk').disabled=true;
         grade(q,good,`<div class="t">${good?'Верно — услышал':r.score>=.6?'Почти':'Послушай ещё раз'} · ${Math.round(r.score*100)}%</div><div class="en d-diff">${dDiffHTML(tgt,r.okB)}</div><div class="ru">${esc(f.ru)}</div>`);};
       setTimeout(()=>{const i=$('#dlin');if(i)i.focus();},400);return;}
-    if(q.t==='build'){const f=q.f,tgt=tgtOf(q),de=q.s.lang==='de',B=scBuildTiles(tgt,f,q.s.parts.flatMap(p=>p.ph),de),want=B.tk.map(scNorm);let tries=0,done=false;
+    // 13.9.16: фраза из одного слова без печати — «что значит?» (варианты — ложные переводы фразы)
+    if(q.t==='pmean'){const f=q.f,tgt=tgtOf(q),O=shuffle([f.ru,...(f.trap||[]).filter(x=>x&&x!==f.ru).slice(0,3)]);
+      frame('Что значит фраза?',`<h2>${esc(tgt)} <button class="sc-hearbtn ghost" id="dlh">${SI.vol||'🔊'}</button><br><small class="qsm">Из «${esc(q.s.title)}»</small></h2><div class="sc-opts">${O.map(v=>`<button class="sc-opt" data-v="${esc(v)}">${esc(v)}</button>`).join('')}</div>`);
+      const hb=$('#dlh');hb.onclick=()=>scClip(q.s.id,f.id,hb);setTimeout(()=>scClip(q.s.id,f.id,hb),300);
+      $$('.sc-opt').forEach(b=>b.onclick=()=>{if(b.disabled)return;const good=b.dataset.v===f.ru;$$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===f.ru)x.classList.add('ok');});if(!good)b.classList.add('bad');
+        grade(q,good,`<div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(tgt)}</div><div class="ru">${esc(f.ru)}</div>`);});return;}
+    if(q.t==='build'||q.t==='lbuild'){const f=q.f,tgt=tgtOf(q),de=q.s.lang==='de',B=scBuildTiles(tgt,f,q.s.parts.flatMap(p=>p.ph),de),want=B.tk.map(scNorm),lis=q.t==='lbuild';let tries=0,done=false;
       // 13.9.5: вместо «Вспомни по-английски» — привычные кубики, как в проверке эпизода (3 попытки, разбор, что не на месте)
-      frame('Собери фразу',`<h2>${esc(f.ru)}<br><small class="qsm">Из «${esc(q.s.title)}». Собери, как сказали в сцене.</small></h2>
+      // 13.9.16: вместо диктанта (печатать) — «послушай и собери»: перевода нет, фраза звучит из фильма
+      frame(lis?'Послушай и собери':'Собери фразу',(lis?`<h2><button class="sc-hearbtn" id="dlh">${SI.vol||'🔊'} Ещё раз</button><button class="sc-hearbtn ghost" id="dls">🐢 Медленно</button><br><small class="qsm">Из «${esc(q.s.title)}». Собери, что услышал.</small></h2>`:`<h2>${esc(f.ru)}<br><small class="qsm">Из «${esc(q.s.title)}». Собери, как сказали в сцене.</small></h2>`)+`
         <div class="sc-bans" id="scbans"></div><div class="sc-bpool" id="scbpool"></div>
         <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div><div id="scbdiff"></div>`);
       const draw=marks=>{$('#scbans').innerHTML=B.got.map((x,j)=>x?`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}" data-j="${j}">${esc(x.w)}</button>`:'<span class="sc-hole" aria-hidden="true"></span>').join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
@@ -2750,6 +2790,7 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
           grade(q,good,`<div class="t">${good?'Верно':right?`Собрал с ${tries+1}-й попытки — повторим ещё раз`:'Вот как в сцене'}</div><div class="en">${esc(tgt)}</div><div class="ru">${esc(f.ru)}</div>`);return;}
         tries++;haptic('err');sfx('bad');const marks=scPosMarks(gw,want);$('#scbdiff').innerHTML=scDiffHTML(gw,want,false);draw(marks);
         $('#scbmsg').textContent=`На своём месте ${marks.filter(Boolean).length} из ${want.length} (зелёные). Ниже — чего не хватает [ ] и что лишнее. Попытка ${tries+1} из 3.`;};
+      if(lis){const hb=$('#dlh'),play=r=>{scClip(q.s.id,f.id,hb);if(SCLIP)SCLIP.playbackRate=r||1;};hb.onclick=()=>play(1);$('#dls').onclick=()=>play(.75);setTimeout(()=>play(1),300);}
       draw();return;}
     // 13.9.5: моё слово — выбор перевода из 4 (было «Показать перевод → Знал / Не знал»)
     const it=q.it,s=scOf(it.sid),hl=it.line?markWord(it.line,it.w,'<mark>','</mark>'):'';
@@ -3361,7 +3402,7 @@ function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3
   box.querySelector('#epGoQ').onclick=()=>{sfx('tap');renderScQuiz(s.id,i);};
   box.querySelector('#rvAgain').onclick=()=>{sfx('tap');window.scrollTo({top:0,behavior:'smooth'});if(o.again)o.again();};
   if(o.first&&store.fx!==false)box.querySelectorAll('.rv-head,.rv-ln').forEach((el,k)=>el.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:380,delay:Math.min(k,14)*45,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'}));}
-function renderScEp(id,i,opts){setTimeout(()=>wiLoad(wiLang(id)),1500);   // 13.9.13: «подробнее о слове» — заранее, чтобы окошко слова открылось сразу полным
+function renderScEp(id,i,opts){setTimeout(()=>{wiLoad(wiLang(id));cxLoad(wiLang(id));},1500);   // 13.9.13: «подробнее о слове» — заранее, чтобы окошко слова открылось сразу полным
 
   opts=opts||{};
   if(scGate(id,i))return;
@@ -3383,12 +3424,12 @@ function renderScEp(id,i,opts){setTimeout(()=>wiLoad(wiLang(id)),1500);   // 13.
     ${scCtrl()}<div id="vqSlot"></div></div>
     <div class="ep-side"><div class="ep-tabs" role="tablist"><button data-tab="watch"><i>1</i>Смотри</button>${mx?'':'<button data-tab="learn"><i>2</i>Разбор</button>'}<button data-tab="test"><i>${mx?2:3}</i>Проверка</button></div>
     <section class="ep-pane" data-pane="watch">
-      ${mx?`<div class="ep-hint ep-watch"><b>🎬 Смотри сцену</b><span>Просто смотри. На полезных фразах появится короткое объяснение — нажми на любое слово, если непонятно. Проверка — после.</span>
-        <div class="ep-pz" role="radiogroup" aria-label="Как смотреть"><button data-pz="on" class="${scPauseOn()?'on':''}">⏸ С паузами<small>видео ждёт, пока читаешь</small></button><button data-pz="off" class="${scPauseOn()?'':'on'}">▶ Без пауз<small>объяснение поверх, кино идёт</small></button></div></div>
+      ${mx?`<div class="ep-hint ep-watch ep-w2"><span>Просто смотри: на полезных фразах объясню, любое слово — нажми.</span>
+        <div class="ep-pz ep-pz2" role="radiogroup" aria-label="Как смотреть"><button data-pz="on" class="${scPauseOn()?'on':''}">⏸ С паузами</button><button data-pz="off" class="${scPauseOn()?'':'on'}">▶ Без пауз</button></div></div>
       <div class="ep-end" id="epEnd" hidden></div>`:''}
       <div class="ep-hint"${mx?' hidden':''}><b>Посмотри эпизод</b><span>${store.vtask===false?'Субтитры — оригинал и перевод.':s.mode==='mix'?`Видео встанет на полезных фразах: ${Math.min(focus.length,SC_TASK_N.mix)} напишешь сам, остальные — коротко объясню и спрошу «когда пригодится?».`:`Видео встанет ${focus.length} ${plural(focus.length,['раз','раза','раз'])} — на ключевых фразах: короткое задание, за верный ответ +5 монет.`} Незнакомое слово — нажми на него в репликах ниже.</span>
         <label class="ep-vt"><input type="checkbox" id="epVt" ${store.vtask===false?'':'checked'}><span>Задания прямо в видео</span></label></div>
-      <button class="sc-btn ep-go" id="epToLearn">${watched?(mx?'Проверить, что запомнил →':'Дальше: разбор фраз →'):(mx?'🎬 Смотреть сцену':'Смотреть эпизод ▶')}</button>
+      <button class="sc-btn ep-go" id="epToLearn"${mx&&!watched?' hidden':''}>${watched?(mx?'Проверить, что запомнил →':'Дальше: разбор фраз →'):(mx?'🎬 Смотреть сцену':'Смотреть эпизод ▶')}</button>
       ${mx?`<details class="ep-phs" id="epPhs"><summary>Фразы эпизода <i id="epPhN">0 из ${scWatchFX(p).length}</i></summary><div class="ep-phl" id="epPhL"><p class="ep-phe">Появятся здесь, когда встретишь их в сцене.</p></div></details>`:''}
       ${!lesson&&epSeen(s,i)?`<details class="ep-lines"${s.mode==='mix'?'':' open'}><summary>Все реплики · нажми на любое слово <i>${rows.length}</i></summary>
         <div class="sc-lines sc-card">${rows.map((r,k)=>`<div class="ln" data-k="${k}"><b>${swWrap(scRowT(r))}</b><span>${esc(r[3]).replace(/\\n/g,' ')}</span></div>`).join('')}</div></details>`:''}
@@ -3443,7 +3484,7 @@ function renderScEp(id,i,opts){setTimeout(()=>wiLoad(wiLang(id)),1500);   // 13.
   {let x0=null;const c=$('#epCard');c.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
     c.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)<50)return;if(dx<0&&k<focus.length){k++;card();}else if(dx>0&&k>0){k--;card();}},{passive:true});}
 
-  const opened=()=>{const first=!P.w[i];P.w[i]=1;scSave();const b=$('#epToLearn');if(b){b.textContent=mx?'Проверить, что запомнил →':'Дальше: разбор фраз →';b.classList.add('pulse');}tabs();
+  const opened=()=>{const first=!P.w[i];P.w[i]=1;scSave();const b=$('#epToLearn');if(b){b.hidden=false;b.textContent=mx?'Проверить, что запомнил →':'Дальше: разбор фраз →';b.classList.add('pulse');}tabs();
     if(mx){if(SW&&SW._watchKill)SW._watchKill();phList(true);const e=$('#epEnd');if(e){epReview(e,s,i,p,{again:()=>{run();},first});
       if(first)sfx('reel');if(window.innerWidth<1000)setTimeout(()=>e.scrollIntoView({behavior:'smooth',block:'start'}),150);}}};
   let at0=opts.at;   // 12.1: открыли из словаря/поиска — первый ▶ играет с нужного места
@@ -3532,27 +3573,35 @@ const scWatchFX=p=>(L=>L.length<=5?L:[...new Set([0,1,2,3,4].map(k=>L[Math.round
 function scWatchAttach(s,p,box,o){o=o||{};const L=scWatchFX(p).map(f=>({f,a:f.a-p.a,b:f.b-p.a,done:false}));let cur=null,lastT=0;
   SW._hideRow=null;
   const kill=()=>{if(!cur)return;clearTimeout(cur._t);const w=cur;cur=null;kwHide(0);w.classList.add('out');setTimeout(()=>w.remove(),220);};
+  // 13.9.16 (Андрей: «когда идут быстро 2 фразы и не скипаешь — фразы багаются»): фразы, идущие почти подряд (меньше 1.2 с между ними
+  // или внахлёст), — одна плашка после последней: вторая не сбивает первую через секунду и пауза не режет следующую реплику
+  const chain=y=>{const g=[y];let z=y;while(g.length<3){const i=L.indexOf(z),n=L[i+1];if(!n||n.done||n.a>=z.b+1.2)break;g.push(n);z=n;}return g;};
   SW._tick=t=>{if(SSTOP&&!SSTOP.full)return;
     if(t<lastT-0.5)L.forEach(y=>{if(y.a>t)y.done=false;});lastT=t;
-    const y=L.find(y=>!y.done&&t>=y.b+0.1&&t<y.b+1.5);if(!y)return;y.done=true;show(y);};
-  function show(y){kill();const f=y.f,fs=!!(SW&&SW.classList.contains('sc-pfs')),stop=scPauseOn();if(stop&&SV)SV.pause();
-    const use=scShort(scNoteS(f)),w=document.createElement('div');w.className='tk tk-plate tk-watch'+(fs?' over':'')+(stop?'':' flow');
-    w.innerHTML=`<div class="tkp-top"><span class="tk-k">💬 Фраза из сцены</span><button class="tkp-x" data-x="go">${stop?'Дальше ▶':'✕'}</button></div>
-      <b class="tkp-en">${kwWrap(f)}</b><span class="tkp-ru">${esc(f.ru)}</span>${use?`<p class="tkp-use">💡 ${esc(use)}</p>`:''}
+    for(const y of L){if(y.done||t<y.b+0.1)continue;const g=chain(y),end=Math.max(...g.map(q=>q.b));
+      if(t<end+0.1)return;   // следующая фраза ещё звучит — ждём её конца
+      if(t<end+1.5){g.forEach(q=>q.done=true);show(g);return;}}};
+  // продолжить после плашки: если пауза пришлась на начало реплики — с её начала, чтобы не терять слова
+  const resume=()=>{if(!SV||!SV.isConnected)return;try{const t=SV.currentTime,r=(s.subs||[]).find(r=>{const a=r[0]-p.a,b=r[1]-p.a;return a<t&&b>t+0.3&&t-a<0.9;});if(r)SV.currentTime=Math.max(0,r[0]-p.a-0.1);}catch(e){}
+    const pr=SV.play();if(pr&&pr.catch)pr.catch(()=>{});};
+  function show(g){kill();const F=g.map(y=>y.f),f=F[0],fs=!!(SW&&SW.classList.contains('sc-pfs')),stop=scPauseOn();if(stop&&SV)SV.pause();
+    const U=F.map(x=>scShort(scNoteS(x))),use=U.join(' '),len=F.reduce((a,x)=>a+x.en.length+x.ru.length,0)+use.length,w=document.createElement('div');w.className='tk tk-plate tk-watch'+(fs?' over':'')+(stop?'':' flow')+(F.length>1?' multi':'');
+    w.innerHTML=`<div class="tkp-top"><span class="tk-k">💬 ${F.length>1?`${F.length} фразы подряд`:'Фраза из сцены'}</span><button class="tkp-x" data-x="go">${stop?'Дальше ▶':'✕'}</button></div>
+      ${F.map((x,k)=>`<div class="tkp-ph" data-k="${k}"><b class="tkp-en">${kwWrap(x)}</b><span class="tkp-ru">${esc(x.ru)}</span>${U[k]?`<p class="tkp-use">💡 ${esc(U[k])}</p>`:''}</div>`).join('')}
       <small class="tkp-h">Нажми на слово — объясню</small>${stop?'':'<div class="vq-bar"><i></i></div>'}`;
-    (fs?SW:box).appendChild(w);kwBind(w,f);cur=w;if(o.met)o.met(f);
+    (fs?SW:box).appendChild(w);w.querySelectorAll('.tkp-ph').forEach(el=>kwBind(el,F[+el.dataset.k]));cur=w;if(o.met)F.forEach(x=>o.met(x));
     if(!fs&&window.innerWidth<1000&&stop)setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
-    if(!stop){const ms=Math.max(6000,Math.min(11000,(f.en.length+f.ru.length+use.length)*45)),bar=w.querySelector('.vq-bar i');
+    if(!stop){const ms=Math.max(6000,Math.min(F.length>1?18000:11000,len*45)),bar=w.querySelector('.vq-bar i');
       requestAnimationFrame(()=>{bar.style.transition=`width ${ms}ms linear`;bar.style.width='0%';});w._t=setTimeout(()=>{if(cur===w)kill();},ms);}
     // 13.6: «С паузами» — тоже уходит само, когда прочитал (кнопка «Дальше ▶» заполняется); нажал на слово — ждёт тебя
-    else if(autoOn()){const ms=Math.max(8000,Math.min(15000,(f.en.length+f.ru.length+use.length)*55)),x=w.querySelector('.tkp-x');
+    else if(autoOn()){const ms=Math.max(8000,Math.min(F.length>1?24000:15000,len*55)),x=w.querySelector('.tkp-x');
       x.classList.add('auto');x.style.setProperty('--ms',ms+'ms');
-      w._t=setTimeout(()=>{if(cur!==w)return;kill();if(SV&&SV.isConnected){const r=SV.play();if(r&&r.catch)r.catch(()=>{});}},ms);}
+      w._t=setTimeout(()=>{if(cur!==w)return;kill();resume();},ms);}
     // нажал на слово — фильм ждёт, пока читаешь (слова сами глушат click, поэтому ловим касание заранее)
     w.addEventListener('pointerdown',e=>{if(!e.target.closest('.kw,.sw'))return;clearTimeout(w._t);const x=w.querySelector('.tkp-x');x.classList.remove('auto');
       if(SV&&!SV.paused){SV.pause();x.textContent='Дальше ▶';w._resume=true;const bar=w.querySelector('.vq-bar');if(bar)bar.remove();}},true);
     w.addEventListener('click',e=>{e.stopPropagation();const b=e.target.closest('[data-x]');
-      if(!b||b.dataset.x!=='go')return;sfx('tap');const res=stop||w._resume;kill();if(res&&SV){const r=SV.play();if(r&&r.catch)r.catch(()=>{});}});}
+      if(!b||b.dataset.x!=='go')return;sfx('tap');const res=stop||w._resume;kill();if(res)resume();});}
   SW._watchKill=kill;
   return {list:L.map(y=>y.f)};}
 function scTaskAttach(s,p,FX,kind,box,o){o=o||{};const P=scP(s.id),all=s.parts.flatMap(x=>x.ph),ru0=kind!=='dict';
@@ -3722,7 +3771,7 @@ function dlLoad(){if(window.DL&&DL.V&&DL.V.length)return Promise.resolve();if(dl
     const s=document.createElement('script');s.src='js/dictlab.js?v='+APP_V;s.onload=()=>ok();s.onerror=()=>{dlLoad.p=null;l.remove();no(new Error('dictlab'));};document.body.appendChild(s);});return dlLoad.p;}
 // 13.9.13: словарь у всех — новый (бывшая лаборатория, вариант «kino»: Кинотека + «Мои фразы и слова»); код и стили грузятся при первом заходе (dlLoad)
 function dictTabHTML(){return `<div class="dl-root" id="dlRoot"><div class="dl-wait">Загружаю словарь…</div></div>`;}
-function bindDict(){setTimeout(()=>wiLoad(DX.lang==='de'?'de':'en'),1500);dlLoad().then(()=>{const r=$('#dlRoot');if(r)DL.mount(r);}).catch(()=>{const r=$('#dlRoot');if(r)r.innerHTML='<div class="dl-wait">Не загрузилось — проверь связь</div>';});}
+function bindDict(){setTimeout(()=>{const L=DX.lang==='de'?'de':'en';wiLoad(L);cxLoad(L);},1500);dlLoad().then(()=>{const r=$('#dlRoot');if(r)DL.mount(r);}).catch(()=>{const r=$('#dlRoot');if(r)r.innerHTML='<div class="dl-wait">Не загрузилось — проверь связь</div>';});}
 const mywLearned=x=>(x.st||0)>=3&&!(x.due&&x.due<=Date.now());
 function renderMyWords(){DX.seg='my';store.knMyKind='w';try{if(window.DL&&DL.KN&&DL.KN.my)DL.KN.my.tag=null;}catch(e){}renderTab('dict');}   // 13.8.7: в новом словаре — сразу «Слова», меню подборок
 const mywWhen=t=>{const h=(t-Date.now())/36e5;return h<12?'через пару часов':h<36?'завтра':`через ${Math.round(h/24)} ${plural(Math.round(h/24),['день','дня','дней'])}`;};
@@ -4003,7 +4052,7 @@ function renderScQuiz(id,i){
 
     // 13.6: выбора «кубики или напиши сам» больше нет — решает приложение: знающий базу пишет сам (фраза до 9 слов),
     // новичок и длинные фразы — собирают из кубиков. Ошибся — подсказка по буквам: у случайного слова → у другого → у всех
-    const ladder=type==='listen'&&!beg&&!boss&&scToks(scIsDe()?f.de:f.en).length<=9;
+    const ladder=type==='listen'&&!beg&&!boss&&typeOn()&&scToks(scIsDe()?f.de:f.en).length<=9;
     if(type==='listen'){
       ask=ladder?'👂 Послушай и напиши':'Послушай и собери';
       title=ladder?'Что прозвучало?<br><small class="qsm">Напиши сам — опечатки прощаю. Ошибёшься — подскажу первые буквы</small>':'Собери, что услышал<br><small class="qsm">Видео покажет момент — собери реплику из слов</small>';
@@ -4043,7 +4092,7 @@ function renderScQuiz(id,i){
         +`<br><small class="qsm">${esc(f.ru)}</small>`;
       correct=f.gap;opts=null;typed=true;
       ask='Впиши пропущенное слово';
-      if(beg){typed=false;ask='Выбери пропущенное слово';opts=shuffle([f.gap,...(scIsDe()?scGapOptsDe(f,all):scGapOpts(f,all)).filter(x=>x.toLowerCase()!==String(f.gap).toLowerCase()).slice(0,2)]);}
+      if(beg||!typeOn()){typed=false;ask='Выбери пропущенное слово';opts=shuffle([f.gap,...(scIsDe()?scGapOptsDe(f,all):scGapOpts(f,all)).filter(x=>x.toLowerCase()!==String(f.gap).toLowerCase()).slice(0,beg?2:3)]);}
     }
 
     const p=s.parts[f.pi];
@@ -5581,8 +5630,8 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
       <div class="ad2-stats" id="adStats"><div><b>—</b><small>игроков</small></div><div><b>—</b><small>новых за сутки</small></div><div><b>—</b><small>заходили за сутки</small></div></div>
       ${admSt('all')!=='on'?`<button class="ad2-warn" data-sec="flags">🛠 Включены технические работы — игроки видят заглушку</button>`:''}
       <div class="ad2-list">${it('users','👥','Игроки','кто заходил и их ID')}${it('flags','🔒','Доступ',closed?`закрыто: ${closed}`:'всё открыто',dirty?'<em class="ad2-dot">не сохранено</em>':'')}${it('player','🧪','Я как игрок',store.admPlayer?'сейчас — как игрок':'пройти, сбросить, билеты')}</div>
-      <div class="ad2-list">${it('anim','✨','Анимации','посмотреть все')}${it('check','🔧','Проверка установки','код, видео, кадры')}${it('lab','🎨','Лаборатория','субтитры, звуки, интерфейс')}</div>`);
-    $$('[data-sec]').forEach(b=>b.onclick=()=>{sfx('tap');renderAdmin(b.dataset.sec);});
+      <div class="ad2-list">${it('anim','✨','Анимации','посмотреть все')}${it('check','🔧','Проверка установки','код, видео, кадры')}${it('lab','🎨','Лаборатория','субтитры, звуки, интерфейс')}${it('yt','📺','ТЕСТ: сцена с YouTube','как было бы в App Store')}</div>`);
+    $$('[data-sec]').forEach(b=>b.onclick=()=>{sfx('tap');if(b.dataset.sec==='yt'){renderYtTest(0,'admin');return;}renderAdmin(b.dataset.sec);});
     if($('#adMe'))$('#adMe').onclick=()=>admCopy(String(FLAG_ME));
     admUsersCall({}).then(r=>{if(!r||!r.ok)return;const b=$$('#adStats b');if(b.length===3){b[0].textContent=fmt(r.v.total);b[1].textContent=fmt(r.v.new1);b[2].textContent=fmt(r.v.dau);}}).catch(()=>{});
     return;}
@@ -5690,6 +5739,7 @@ function learnTabHTML(){
       ${mw?`<button onclick="renderMyWords()"><i>⭐</i>Мои слова<em>${mw}</em></button>`:''}
       <button id="hColl"><i>🏆</i>Коллекция${coll?`<em>${coll}</em>`:''}</button>
       <button id="hShop"><i>🛍</i>Магазин</button>
+      ${ADM_OPEN()?'<button id="hYt"><i>📺</i>ТЕСТ · YouTube</button>':''}
     </nav>
     <div class="hsec anim"><h2>Кинозал</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
     ${[['kino',x=>x.kind!=='interview'&&x.lang!=='de'],['iv',x=>x.kind==='interview'&&x.lang!=='de'],['de',x=>x.lang==='de']].map(([hk,hf])=>{const HS=SCENES.filter(x=>flagOf('scene-'+x.id)!=='hide'&&hf(x));if(!HS.length)return '';
@@ -5711,6 +5761,7 @@ function bindLearn(){
   if($('#hAllDe'))$('#hAllDe').onclick=()=>{sfx('tap');store.kinoLang='de';store.kinoCat='all';save();renderTab('kino');};
   if($('#hColl'))$('#hColl').onclick=()=>{haptic('medium');sfx('tap');renderCollection();};
   if($('#hShop'))$('#hShop').onclick=()=>{haptic('medium');sfx('tap');renderShop();};hmBind();
+  if($('#hYt'))$('#hYt').onclick=()=>{haptic('medium');sfx('tap');renderYtTest(0,'home');};   // 13.9.16: тест YouTube (только админ)
   if($('#hAllIv'))$('#hAllIv').onclick=()=>{sfx('tap');store.kinoLang='en';store.kinoCat='interview';save();renderTab('kino');};
   if($('#hAllGames'))$('#hAllGames').onclick=()=>{sfx('tap');renderTab('games');};
   $$('.hrow [data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});
@@ -5729,6 +5780,7 @@ function onBack(){
   if(document.querySelector('.rwo')){document.querySelector('.rwo-dim').click();return;}   // 12.0: открытый кадр коллекции
   {const o=document.querySelector('.pfv');if(o&&o._close){o._close();return;}}   // 13.9.6: профиль игрока
   {const o=document.querySelector('.bgvw');if(o&&o._close){o._close();return;}}   // 13.0: фон на весь экран
+  if(screen==='yt'){sfx('tap');ytBack();return;}   // 13.9.16: тест YouTube
   if(screen==='coll'){sfx('tap');renderTab(COLL_BACK||'learn');return;}
   if(screen==='shop'){shopBack();return;}
   if(screen==='pvp'){if(KV&&KV.over){const sid=KV.room.sid;KV=null;renderScene(sid);}else kvLeave();return;}
@@ -5814,8 +5866,9 @@ function musBind(s){const L=musOf(s),box=$('#vp');
   musUI();}
 function musPlay(id,k,rnd){const s=scOf(id),m=musOf(s)[k];if(!m)return;MUSOFF=null;
   if(!MUS){MUS=new Audio();if(MUSIOS)MUS.crossOrigin='anonymous';MUS.preload='auto';MUS.addEventListener('ended',musNext);MUS.addEventListener('play',musUI);MUS.addEventListener('pause',musUI);
-    MUS.addEventListener('loadedmetadata',musTick);MUS.addEventListener('error',()=>{if(!MUS||!MUS.getAttribute('src')||!MUSC)return;const L=musOf(scOf(MUSC.id));MUS._err=(MUS._err||0)+1;if(MUS._err<L.length){toast('Трек не найден — включаю следующий');musNext();}else{toast('Музыка этой сцены пока не загружена');const sid=MUSC.id;musStop();MUSOFF=sid;}});}
-  clearInterval(MUSFADE);clearTimeout(MUSWAIT);MUSAUTO=false;MUSC={id,k};MUS.src=assetUrl(scKey(s,m.f));if(rnd)MUS.addEventListener('loadedmetadata',()=>{try{if(isFinite(MUS.duration)&&MUS.duration>40)MUS.currentTime=MUS.duration*(0.1+Math.random()*0.55);}catch(e){}},{once:true});   // 12.4: автостарт — со случайного места трека
+    MUS.addEventListener('loadedmetadata',musTick);MUS.addEventListener('error',()=>{if(!MUS||!MUS.getAttribute('src')||!MUSC)return;const L=musOf(scOf(MUSC.id));MUS._err=(MUS._err||0)+1;if(MUS._err<L.length){if(!MUS._quiet)toast('Трек не найден — включаю следующий');musNext();}else{if(!MUS._quiet)toast('Музыка этой сцены пока не загружена');const sid=MUSC.id;musStop();MUSOFF=sid;}});}
+  clearInterval(MUSFADE);clearTimeout(MUSWAIT);MUSAUTO=false;MUSC={id,k};MUS._quiet=!!rnd;   // 13.9.16: сама включилась — без тостов «не загружена»
+MUS.src=assetUrl(scKey(s,m.f));if(rnd)MUS.addEventListener('loadedmetadata',()=>{try{if(isFinite(MUS.duration)&&MUS.duration>40)MUS.currentTime=MUS.duration*(0.1+Math.random()*0.55);}catch(e){}},{once:true});   // 12.4: автостарт — со случайного места трека
   musGainInit();if(MUSCTX&&MUSCTX.state==='suspended')MUSCTX.resume();musSetVol(musVol());
   const p=MUS.play();if(p&&p.catch)p.catch(()=>musUI());musMeta(s,m);musUI();
   if(!MUSTICK)MUSTICK=setInterval(musTick,250);}
@@ -6498,6 +6551,52 @@ function renderIntro(step){
   if(I.i===4)$$('.it-c').forEach(b=>b.onclick=()=>{const id=b.dataset.id;done(()=>renderScene(id));});
   if(store.fx!==false){const el=document.querySelector('.it');if(el)el.querySelectorAll('.it-hero,.it-h,.it-p,.it-demo,.it-s,.it-g,.it-set,.it-c,.it-next').forEach((x,k)=>x.animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:480,delay:80+Math.min(k,10)*55,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'}));}
 }
+
+/* ================= 13.9.16 — ТЕСТ: сцена с YouTube (как было бы в App Store / Google Play) =================
+   Андрей: «сделай тестовый видос ссылкой на ютуб, подпиши, что это тест». Только админу: Главная → «📺 ТЕСТ · YouTube» и админка.
+   Видео — официальный клип Disney+ UK на YouTube (наша «Титаник · шлюпка» вырезана из того же клипа), плеер — YouTube IFrame API.
+   По правилам YouTube поверх плеера ничего нельзя: субтитры, слова и плашки фраз — под видео. Пауза на фразе — через API (pauseVideo).
+   Если клип на YouTube сдвинут относительно нашего — «Сдвиг субтитров ±0.5 с» (store.ytOff, только на этом устройстве). */
+const YT_TEST={sid:'titanic-boat',id:'d4w1JtcA48Q'};
+let YTP=null,YTT=0,YT_BACK='admin';
+function ytKill(){clearInterval(YTT);YTT=0;if(YTP){try{YTP.destroy();}catch(e){}YTP=null;}}
+function ytBack(){ytKill();if(YT_BACK==='home')renderTab('learn');else renderAdmin();}
+function ytApi(){if(window.YT&&YT.Player)return Promise.resolve();
+  return new Promise((res,rej)=>{const was=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=()=>{if(was)try{was();}catch(e){}res();};
+    if(!document.querySelector('script[src*="youtube.com/iframe_api"]')){const x=document.createElement('script');x.src='https://www.youtube.com/iframe_api';x.onerror=()=>rej(new Error('net'));document.head.appendChild(x);}
+    setTimeout(()=>rej(new Error('timeout')),15000);});}
+function renderYtTest(pi,from){pi=pi||0;if(from)YT_BACK=from;const s=scOf(YT_TEST.sid);if(!s){toast('Сцена не найдена');return;}const p=s.parts[pi],de=s.lang==='de';
+  const off=()=>+(store.ytOff||0),offTxt=()=>`${off()>0?'+':''}${off().toFixed(1)} с`;
+  mount(`<div class="scn noir yt-t"><div class="sc-head"><button class="sc-back" id="ytb" aria-label="Назад">${ui('back')}</button><div class="yt-h"><em class="yt-badge">ТЕСТ</em><b>${esc(s.title)} · видео с YouTube</b></div></div>
+    <p class="yt-note"><b>Это тест.</b> Видео не с нашего сервера, а встроено с YouTube — официальный канал Disney+. Так сцены могли бы работать в версии для App Store и Google Play. Субтитры и объяснения — под видео: по правилам YouTube поверх его плеера ничего ставить нельзя.</p>
+    <div class="yt-eps">${s.parts.map((x,i)=>`<button data-ep="${i}" class="${i===pi?'on':''}">Эпизод ${i+1}<small>${esc(x.t)}</small></button>`).join('')}</div>
+    <div class="yt-v"><div id="ytPlayer"></div><div class="yt-load" id="ytLoad">Загружаю YouTube…</div></div>
+    <div class="yt-sub" id="ytSub"><b class="yt-o"></b><span class="yt-r">Нажми ▶ в видео — субтитры с переводом появятся здесь, слова можно нажимать.</span></div>
+    <div id="ytPlate"></div>
+    <div class="yt-off"><span>Субтитры не совпадают с речью?</span><button data-o="-0.5">−0.5 с</button><b id="ytOffV">${offTxt()}</b><button data-o="0.5">+0.5 с</button></div>
+  </div>`,'scnscr ytscr');screen='yt';backBtn(true);
+  $('#ytb').onclick=()=>{sfx('tap');ytBack();};
+  $$('.yt-eps [data-ep]').forEach(b=>b.onclick=()=>{sfx('tap');renderYtTest(+b.dataset.ep);});
+  $$('.yt-off [data-o]').forEach(b=>b.onclick=()=>{sfx('tap');store.ytOff=Math.round((off()+ +b.dataset.o)*10)/10;save();$('#ytOffV').textContent=offTxt();});
+  const L=scWatchFX(p).map(f=>({f,done:false})),sub=$('#ytSub'),plate=$('#ytPlate');let rowNow=null,lastT=0;
+  const showRow=r=>{if(r===rowNow)return;rowNow=r;sub.querySelector('.yt-o').innerHTML=r?momLine(s,de?r[4]||r[2]:r[2],''):'';sub.querySelector('.yt-r').textContent=r?String(r[3]||'').replace(/\n/g,' '):'';
+    sub.querySelectorAll('.sw').forEach(el=>el.onclick=e=>{e.stopPropagation();sfx('tap');try{YTP&&YTP.pauseVideo();}catch(x){}momWord(el,s,pi,r);});};
+  const plateShow=f=>{try{YTP.pauseVideo();}catch(e){}const use=scShort(scNoteS(f));
+    plate.innerHTML=`<div class="tk tk-plate tk-watch yt-pl"><div class="tkp-top"><span class="tk-k">💬 Фраза из сцены</span><button class="tkp-x" data-x="go">Дальше ▶</button></div>
+      <b class="tkp-en">${kwWrap(f)}</b><span class="tkp-ru">${esc(f.ru)}</span>${use?`<p class="tkp-use">💡 ${esc(use)}</p>`:''}<small class="tkp-h">Нажми на слово — объясню</small></div>`;
+    kwBind(plate.querySelector('.tk-plate'),Object.assign({sid:s.id,pi},f));
+    plate.querySelector('[data-x="go"]').onclick=()=>{sfx('tap');plate.innerHTML='';try{YTP.playVideo();}catch(e){}};
+    if(innerWidth<1000)setTimeout(()=>plate.scrollIntoView({behavior:'smooth',block:'nearest'}),60);};
+  const tick=()=>{if(!YTP||!YTP.getCurrentTime)return;let t;try{t=YTP.getCurrentTime()-off();}catch(e){return;}
+    if(t<lastT-0.5)L.forEach(y=>{if(y.f.a>t)y.done=false;});lastT=t;
+    let r=null;for(const z of s.subs){if(z[0]<=t&&z[1]>t)r=z;if(z[0]>t)break;}showRow(r);
+    const y=L.find(y=>!y.done&&t>=y.f.b+0.1&&t<y.f.b+1.5);if(y){y.done=true;plateShow(y.f);}};
+  ytApi().then(()=>{if(screen!=='yt')return;
+    YTP=new YT.Player('ytPlayer',{videoId:YT_TEST.id,playerVars:{start:Math.max(0,Math.floor(p.a+off())),end:Math.ceil(p.b+off()+0.5),playsinline:1,rel:0,modestbranding:1,cc_load_policy:0,iv_load_policy:3},
+      events:{onReady:()=>{const l=$('#ytLoad');if(l)l.remove();},
+        onError:e=>{const l=$('#ytLoad');if(l)l.textContent=`YouTube не открылся (код ${e&&e.data}). Встраивание этого клипа может быть запрещено владельцем.`;}}});
+    clearInterval(YTT);YTT=setInterval(tick,150);})
+   .catch(()=>{const l=$('#ytLoad');if(l)l.innerHTML='YouTube не загрузился.<br><small>Без VPN в России YouTube часто не открывается — в версии для России видео остаются с нашего сервера.</small>';});}
 
 /* ================= старт ================= */
 let START='';

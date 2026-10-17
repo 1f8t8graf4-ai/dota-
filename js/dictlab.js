@@ -246,6 +246,27 @@ const knRow=c=>{const {s,f,pi}=c,[k]=knSt(c);
   if(!c.got)return `<button class="kq kq2 lock" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${E(fogTxt(D.T(f)))}</b><span class="kq-ru">${E(fogTxt(f.ru))}</span></span><em class="kq-lk">${LOCK}${seen(s,pi)?'ответь в проверке':'эпизод '+(pi+1)}</em></button>`;
   return `<button class="kq kq2 st-${k}" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${E(D.T(f))}</b><span class="kq-ru">${E(f.ru)}</span></span>${k==='due'?'<i class="kq-due" title="Пора повторить"></i>':''}</button>`;};
 const rowsL=C=>`<div class="kq-l">${C.map(knRow).join('')}</div>`;   // фразы — всегда строками: «квадраты» (карточки) убраны в 13.8.7
+// 13.9.16 (Андрей: «в словаре нет всех реплик — искал „nice tan“ и не нашёл»): все реплики эпизода — строками, слова нажимаются, ▶ — момент
+const LT=()=>store.knLines==='all'?'all':'ph';
+const epRows=(s,p)=>(s.subs||[]).filter(r=>r[0]>=p.a-0.3&&r[0]<p.b);
+const rowT=(s,r)=>String((s.lang==='de'?r[4]||r[2]:r[2])||'').replace(/\n/g,' ');
+const rowPi=(s,r)=>{const i=s.parts.findIndex(p=>r[0]>=p.a-0.3&&r[0]<p.b);return i<0?0:i;};
+const lnSeen=(s,pi)=>ADM_OPEN()||seen(s,pi);
+const lnRow=(s,r,pi)=>lnSeen(s,pi)?`<div class="kl-ln" data-r="${s.id}|${s.subs.indexOf(r)}|${pi}"><button class="kl-p" aria-label="Посмотреть момент">${SI.play}</button><div class="kl-t"><b>${momLine(s,rowT(s,r),'')}</b><span>${E(String(r[3]||'').replace(/\n/g,' '))}</span></div></div>`
+  :`<button class="kl-ln fog" data-wep="${s.id}|${pi}"><span class="kl-t"><b>${E(fogTxt(rowT(s,r)))}</b><span>${E(fogTxt(r[3]))}</span></span><em class="kq-lk">${LOCK}эпизод ${pi+1}</em></button>`;
+function linesL(s,pi){const p=s.parts[pi],R=epRows(s,p);if(!R.length)return '<div class="kl-l"><p class="kl-no">В этом эпизоде нет реплик</p></div>';
+  if(!lnSeen(s,pi))return `<div class="kl-l">${R.slice(0,3).map(r=>lnRow(s,r,pi)).join('')}<button class="kl-unl" data-wep="${s.id}|${pi}">${SI.play} Посмотри эпизод — реплики проявятся</button></div>`;
+  return `<div class="kl-l">${R.map(r=>lnRow(s,r,pi)).join('')}</div>`;}
+// поиск по всем репликам (оригинал и перевод); onlySeen — только из просмотренных эпизодов
+function lnFind(q,onlySeen){q=lo(q).replace(/[’`]/g,"'").trim();if(q.length<2)return [];const out=[];
+  dxScenes().forEach(s=>(s.subs||[]).forEach(r=>{const t=lo(rowT(s,r)+' '+(r[3]||'')).replace(/[’`]/g,"'").replace(/\s+/g,' ');if(!t.includes(q))return;const pi=rowPi(s,r);if(onlySeen&&!lnSeen(s,pi))return;out.push({s,r,pi});}));
+  return out;}
+function lnResHTML(H,max){if(!H.length)return '';const by=[],m={};H.slice(0,max||60).forEach(x=>{const k=dictFilm(x.s);if(!m[k]){m[k]=[];by.push(k);}m[k].push(x);});
+  return `<section class="kl-res"><h3 class="kn-h">Реплики<small>${H.length}${H.length>(max||60)?` · показаны первые ${max||60}`:''}</small></h3>${by.map(k=>`<h4 class="km6-sub"><em>${E(k)}</em></h4><div class="kl-l">${m[k].map(x=>lnRow(x.s,x.r,x.pi)).join('')}</div>`).join('')}</section>`;}
+function lnBind(root){if(!root||root._kl)return;root._kl=1;
+  root.addEventListener('click',e=>{const ln=e.target.closest('.kl-ln[data-r]');if(!ln||!root.contains(ln))return;const [sid,k,pi]=ln.dataset.r.split('|'),s=scOf(sid),r=s&&s.subs[+k];if(!r)return;
+    const w=e.target.closest('.sw');if(w){e.stopPropagation();sfx('tap');momWord(w,s,+pi,r);return;}
+    if(e.target.closest('.kl-p')){e.stopPropagation();sfx('tap');haptic('light');momOpen(sid,+pi,r[0]);}});}
 
 /* ---------- шторка (подсказка, закрытая карта) ---------- */
 function knSheet(html){document.querySelectorAll('.kn-sheet').forEach(x=>x.remove());const w=document.createElement('div');w.className='kn-sheet';
@@ -462,10 +483,12 @@ function knRes(){const any=!!(KN.q||KN.tp||KN.st||KN.tone||KN.film);
   if(!any){const T=tpCnt(allCards());return `<h3 class="kn-h">Темы<small>выбери — увидишь все фразы на неё</small></h3><div class="kn-tt">${T.map(x=>`<button data-tpk="${E(x.k)}"><span class="kn-tti">${x.ico}</span><b>${E(x.k)}</b><small>у тебя ${x.g} из ${x.t}</small>${bar(x.g,x.t)}</button>`).join('')}</div>`;}
   const L=allCards().filter(knHit),g=L.filter(c=>c.got).length;
   const title=KN.tp?`${TOPIC_ICO[KN.tp]||''} ${E(KN.tp)}`:KN.q?`«${E(KN.q)}»`:'Найдено';
-  if(!L.length)return `<div class="kn-empty">Ничего не нашлось<small>Попробуй другое слово или сбрось фильтры.</small><button class="kn-btn2" data-reset>Сбросить фильтры</button></div>`;
+  const LN=KN.q&&!KN.tp&&!KN.st&&!KN.tone?lnFind(KN.q).filter(x=>!KN.film||dictFilm(x.s)===KN.film):[];   // 13.9.16: и по всем репликам
+  if(!L.length&&!LN.length)return `<div class="kn-empty">Ничего не нашлось<small>Попробуй другое слово или сбрось фильтры.</small><button class="kn-btn2" data-reset>Сбросить фильтры</button></div>`;
+  if(!L.length)return `<div class="kn-rh"><span><b>${title}</b><small>фраз нет — зато есть в репликах</small></span><button class="kn-reset" data-reset>Сбросить</button></div>${lnResHTML(LN)}`;
   const by=[],m={};L.forEach(c=>{const k=dictFilm(c.s);if(!m[k]){m[k]=[];by.push(k);}m[k].push(c);});
   return `<div class="kn-rh"><span><b>${title}</b><small>у тебя <b>${g}</b> из ${L.length}${L.length-g?` · ещё ${L.length-g} — под туманом, в непройденных эпизодах`:''}</small></span><button class="kn-reset" data-reset>Сбросить</button></div>${bar(g,L.length)}
-    ${by.map(k=>{const C=m[k].map((c,i)=>[c,i]).sort((x,y)=>(y[0].got-x[0].got)||(x[1]-y[1])).map(x=>x[0]);return `<section class="kn-lg3"><button class="kn-gh kn-gh2" data-show="${E(k)}"><span class="kn-ght"><b>${E(k)}</b><small>${C.filter(c=>c.got).length} из ${C.length}</small></span><i class="kn-chev">${ui('fwd')}</i></button>${rowsL(C)}</section>`;}).join('')}`;}
+    ${by.map(k=>{const C=m[k].map((c,i)=>[c,i]).sort((x,y)=>(y[0].got-x[0].got)||(x[1]-y[1])).map(x=>x[0]);return `<section class="kn-lg3"><button class="kn-gh kn-gh2" data-show="${E(k)}"><span class="kn-ght"><b>${E(k)}</b><small>${C.filter(c=>c.got).length} из ${C.length}</small></span><i class="kn-chev">${ui('fwd')}</i></button>${rowsL(C)}</section>`;}).join('')}${lnResHTML(LN)}`;}
 // 13.8.4: тема — такой же кнопкой со списком, как статус/тон/фильм (было: ряд чипов сверху + те же темы плитками ниже)
 const DD=[['tp','Тема','Все'],['st','Статус','Все'],['tone','Тон','Любой'],['film','Фильм','Все']];
 const ddOpts=(k,F)=>k==='tp'?tpCnt(allCards()).map(x=>[x.k,`${x.ico} ${E(cap(x.k))} · ${x.g}/${x.t}`]):k==='st'?STF:k==='tone'?TONE:(F||DL.films()).map(sh=>[sh.k,E(sh.k)]);
@@ -473,7 +496,7 @@ function knDD(k){const d=DD.find(x=>x[0]===k),O=ddOpts(k);sfx('tap');
   const w=knSheet(`<b class="kn-sh2">${d[1]}</b><div class="kn-ddl"><button data-ddv="" class="${KN[k]?'':'on'}">${d[2]}</button>${O.map(([v,l])=>`<button data-ddv="${E(v)}" class="${KN[k]===v?'on':''}">${l}</button>`).join('')}</div>`);
   w.querySelectorAll('[data-ddv]').forEach(b=>b.onclick=()=>{sfx('sel');haptic('sel');KN[k]=b.dataset.ddv;w._close();DL.render(0);});}
 function bindCards(st){st.querySelectorAll('.kc[data-c],.kcc[data-c],.kr[data-c],.kq[data-c]').forEach(b=>b.onclick=()=>{const c=D.find(b.dataset.c);if(!c)return;if(!c.got){knLock(b,c);return;}sfx('tap');haptic('light');knOpen(b,c);});}
-function bindRes(st){const box=st.querySelector('#knRes');if(!box)return;bindCards(box);
+function bindRes(st){const box=st.querySelector('#knRes');if(!box)return;bindCards(box);lnBind(box);box.querySelectorAll('.kl-ln[data-wep],.kl-unl[data-wep]').forEach(b=>b.onclick=e=>{e.stopPropagation();const [sid,i]=b.dataset.wep.split('|'),s=scOf(sid),pi=+i;if(!s)return;sfx('tap');if(!ADM_OPEN()&&!scEpOpen(s,pi)){haptic('err');toast(`Эпизоды по порядку — сначала эпизод ${pi}`);return;}if(scGate(sid,pi))return;renderScEp(sid,pi);});
   box.querySelectorAll('[data-tpk]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');KN.tp=b.dataset.tpk;DL.render(0);});
   box.querySelectorAll('[data-reset]').forEach(b=>b.onclick=()=>{sfx('tap');Object.assign(KN,{q:'',tp:'',st:'',tone:'',film:''});DL.render(0);});
   if(fxOK())box.querySelectorAll('.kc,.kq,.kn-tt button').forEach((c,i)=>{if(i<18)c.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:320,delay:i*24,easing:EZ.out,fill:'backwards'});});}
@@ -698,10 +721,10 @@ const lo=t=>String(t||'').toLowerCase().replace(/ё/g,'е');
 const phTxt=c=>{const f=c.f,film=dictFilm(c.s);return lo([D.T(f),f.en,f.de,f.ru,f.use,film,ftag(film),fTopics(f).join(' '),(f.kw||[]).map(k=>(k||[]).slice(0,3).join(' ')).join(' ')].join(' '));};
 const wTxt=x=>{const film=wFilm(x);return lo([x.w,x.ru,(x.tags||[]).map(t=>'#'+t).join(' '),film,film&&ftag(film),x.line,x.lineRu,wTopic(x)].join(' '));};
 function mySearch(kind){const q=lo(KN.my.q).trim(),P=myPh().filter(c=>phTxt(c).includes(q)).sort(ordPh),Wd=mywAll().filter(x=>wTxt(x).includes(q)).sort(ordW);
-  if(!P.length&&!Wd.length)return `<div class="kn-empty">Ничего не нашлось<small>Ищу по фразам и словам, переводу, фильму и теме — попробуй по-другому.</small></div>`;
+  if(!P.length&&!Wd.length&&!lnFind(KN.my.q,true).length)return `<div class="kn-empty">Ничего не нашлось<small>Ищу по фразам и словам, переводу, фильму и теме, а ещё по репликам просмотренных эпизодов — попробуй по-другому.</small></div>`;
   const part=(W,L0,id)=>{if(!L0.length)return '';const G=mySubs(W,L0,'topic'),L=G.flatMap(g=>g.L);sec(id,'Поиск',L,W);
     return `<section class="km6-sr" data-sec="${id}"><h3 class="km5-h">${W?'Слова':'Фразы'}<small>${L.length}</small></h3>${G.map(g=>`<h4 class="km6-sub"><em>${E(g.em)}</em></h4>${myRows(W?'w':'ph',g.L)}`).join('')}</section>`;};
-  const a=part(false,P,'qp'),b=part(true,Wd,'qw');return kind==='w'?b+a:a+b;}
+  const a=part(false,P,'qp'),b=part(true,Wd,'qw'),ln=lnResHTML(lnFind(KN.my.q,true),40);return (kind==='w'?b+a:a+b)+ln;}
 // слово → «карта» для открытого окна: момент — реплика, где оно прозвучало
 function wCard(x){const s=!x.own&&scOf(x.sid)||null,p=s&&s.parts[x.pi]||null,r=s&&x.a?(s.subs||[]).find(z=>Math.abs(z[0]-x.a)<0.06):null,de=s&&s.lang==='de';
   const line=r?(de?(r[4]||r[2]):r[2]):x.line,lineRu=r?r[3]:x.lineRu;
@@ -792,9 +815,9 @@ D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + «Мои
       <div class="kn-sh" style="--c:${th(s)};--bg:${D.cover(s)}"><span class="kn-hbg"></span><button class="kn-hp wide kn-hw" data-watch="${s.id}" style="background-image:${D.cover(s)}" aria-label="Смотреть сцену"><i>${SI.play}</i></button>
         <span class="kn-ht"><button class="kn-hf" data-show="${E(dictFilm(s))}">${E(dictFilm(s))}${L.length>1?` · сцена ${n+1} из ${L.length}`:''} ${ui('fwd')}</button><b class="kn-hn" data-watch="${s.id}">${E(s.sub||s.title)}</b><small>Собрано ${g} из ${t} ${plural(t,['фразы','фраз','фраз'])}</small>${bar(g,t)}
           <button class="kf-go kn-shw" ${nx<0?`data-watch="${s.id}">${SI.play} Смотреть сцену`:`data-wep="${s.id}|${nx}">${SI.play} ${nx===0&&!P.w[0]?'Смотреть':`Смотреть дальше · эпизод ${nx+1}`}`}</button></span></div>
-      <h3 class="kn-h kn-h2">Эпизоды<small>нажми, чтобы увидеть фразы</small></h3>
+      <div class="kn-lt"><h3 class="kn-h kn-h2">Эпизоды</h3><div class="kn-ltg" role="tablist" aria-label="Что показать"><button data-klt="ph" class="${LT()==='ph'?'on':''}">Фразы</button><button data-klt="all" class="${LT()==='all'?'on':''}">Все реплики</button></div></div>
       ${D.eps(s).map(e=>{const h=e.c.filter(c=>c.got).length,k=s.id+'|'+e.pi,op=DXOPEN[k]!=null?DXOPEN[k]:s.parts.length===1;
-        return `<details class="kn-ep" data-k="${k}"${op?' open':''}><summary><span class="kn-et" style="background-image:url('${assetUrl(scEpKey(s,e.pi,'jpg'))}')"><button class="kn-ew" data-wep="${k}" aria-label="Смотреть эпизод ${e.pi+1}">${SI.play}</button></span><span class="kn-ex"><em>Эпизод ${e.pi+1}</em><b>${E(e.p.t)}</b>${bar(h,e.c.length)}</span><span class="kn-en"><b>${h}</b>/${e.c.length}</span><i class="kn-chev">${ui('fwd')}</i></summary>${rowsL(e.c)}</details>`;}).join('')}
+        return `<details class="kn-ep" data-k="${k}"${op?' open':''}><summary><span class="kn-et" style="background-image:url('${assetUrl(scEpKey(s,e.pi,'jpg'))}')"><button class="kn-ew" data-wep="${k}" aria-label="Смотреть эпизод ${e.pi+1}">${SI.play}</button></span><span class="kn-ex"><em>Эпизод ${e.pi+1}</em><b>${E(e.p.t)}</b>${bar(h,e.c.length)}</span><span class="kn-en">${LT()==='all'?`<b>${epRows(s,e.p).length}</b> ${plural(epRows(s,e.p).length,['реплика','реплики','реплик'])}`:`<b>${h}</b>/${e.c.length}`}</span><i class="kn-chev">${ui('fwd')}</i></summary>${LT()==='all'?linesL(s,e.pi):rowsL(e.c)}</details>`;}).join('')}
       ${L.length>1?`<div class="kn-nav">${n?`<button data-sid="${L[n-1].id}">${ui('back')}<span><em>Сцена ${n}</em><b>${E(L[n-1].sub||L[n-1].title)}</b></span></button>`:'<i></i>'}${n<L.length-1?`<button class="nx" data-sid="${L[n+1].id}"><span><em>Сцена ${n+2}</em><b>${E(L[n+1].sub||L[n+1].title)}</b></span>${ui('fwd')}</button>`:'<i></i>'}</div>`:''}`;},
   flt(F){
     return `${D.crumb('Словарь','Поиск и фильтры')}<label class="kn-fq">${IC.q}<input id="knQ" type="search" placeholder="Фраза, слово или перевод" value="${E(KN.q)}" autocomplete="off" enterkeyhint="search"></label>
@@ -826,8 +849,10 @@ D.reg({id:'kino',n:'Новый словарь',from:'Кинотека + «Мои
     st.querySelectorAll('[data-kfs]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('medium');knFull(b.dataset.kfs,b);});   // 13.9.1: раздел на весь экран
     knMotion(st,lvl);
     st.querySelectorAll('.kn-tps [data-tp]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');Object.assign(KN,{q:'',st:'',tone:'',film:''});KN.tp=b.dataset.tp;S.flt=true;DL.render(1);});
+    st.querySelectorAll('[data-klt]').forEach(b=>b.onclick=()=>{if(LT()===b.dataset.klt)return;sfx('tap');haptic('sel');store.knLines=b.dataset.klt;save();const y=window.scrollY;DL.render(0);setTimeout(()=>window.scrollTo(0,y),30);});   // 13.9.16
+    lnBind(st);
     st.querySelectorAll('.kn-ep[data-k]').forEach(d=>d.addEventListener('toggle',()=>{DXOPEN[d.dataset.k]=d.open;if(!d.open)return;sfx('page');
-      if(fxOK())d.querySelectorAll('.kq').forEach((c,i)=>c.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:340,delay:Math.min(i,12)*32,easing:EZ.out,fill:'backwards'}));}));
+      if(fxOK())d.querySelectorAll('.kq,.kl-ln').forEach((c,i)=>c.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:340,delay:Math.min(i,12)*32,easing:EZ.out,fill:'backwards'}));}));
     if(lvl==='flt'){bindRes(st);st.querySelectorAll('[data-dd]').forEach(b=>b.onclick=()=>knDD(b.dataset.dd));
       const q=st.querySelector('#knQ');if(q){let t=0;q.oninput=()=>{clearTimeout(t);t=setTimeout(()=>{KN.q=q.value.trim();const r=st.querySelector('#knRes');if(r){r.innerHTML=knRes();bindRes(st);}},200);};
         q.onkeydown=e=>{if(e.key==='Enter')q.blur();};}}
