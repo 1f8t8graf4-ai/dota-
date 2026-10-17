@@ -1550,7 +1550,7 @@ function renderOB(){
 
 /* ================= настройки ================= */
 function renderSettings(){
-  screen='settings';backBtn(true);applyFx();if(store.gav===undefined)store.gav=true;if(store.subSame===undefined)store.subSame=true;if(store.autoSc===undefined)store.autoSc=true;if(store.bg3d===undefined)store.bg3d=false;if(store.vtask===undefined)store.vtask=true;
+  screen='settings';backBtn(true);applyFx();if(store.gav===undefined)store.gav=true;if(store.subSame===undefined)store.subSame=true;if(store.autoSc===undefined)store.autoSc=true;if(store.daily===undefined)store.daily=true;if(store.bg3d===undefined)store.bg3d=false;if(store.vtask===undefined)store.vtask=true;
   let roles=store.roles==='all'?'all':store.roles.slice();
   const row=(k,n,d)=>`<button class="checkrow frame" data-t="${k}" aria-pressed="${!!store[k]}">${BOX}<span class="ct"><span class="cn">${n}</span>${d?`<span class="cd">${d}</span>`:''}</span></button>`;
   mount(`
@@ -1580,7 +1580,7 @@ function renderSettings(){
     <section class="set-sec"><h2>Язык</h2>${langChoiceHTML(langsToChoice(store.langs))}</section>
     <section class="set-sec"><h2>Роли</h2>${rolesHTML(roles)}<p class="hint-line" id="roleHint">${roleHintText(roles)}</p></section>
     <section class="set-sec"><h2>Приложение</h2>
-      <div class="stack">${row('snd','Звук','')}${row('fx','Анимации и эффекты','')}${canFull()?row('full','Полный экран',''):''}${row('remind','Напоминания о повторении','Бот напишет днём, когда фразы из сцен пора повторить. Не чаще раза в день.')}${row('gav','Маскот в проверке','Радуется верным ответам, «рубит» выученные фразы, ставит «Снято!» после эпизода.')}</div>
+      <div class="stack">${row('snd','Звук','')}${row('fx','Анимации и эффекты','')}${canFull()?row('full','Полный экран',''):''}${row('remind','Напоминания о повторении','Бот напишет днём, когда фразы из сцен пора повторить. Не чаще раза в день.')}${row('daily','Фраза дня от бота','Раз в день — короткий момент из фильма с фразой и переводом прямо в чате. Работает, когда включены напоминания.')}${row('gav','Маскот в проверке','Радуется верным ответам, «рубит» выученные фразы, ставит «Снято!» после эпизода.')}</div>
     </section>
     <section class="set-sec"><button class="btn dark" id="reset" style="color:#F4907A">Сбросить прогресс</button></section>`,'settings');
   $('#bBtn').onclick=()=>{sfx('tap');renderHome();};
@@ -1592,7 +1592,7 @@ function renderSettings(){
   bindRoles(()=>roles,v=>{roles=v;if(rolesOk(v)){store.roles=v==='all'?'all':v.slice();save();}},()=>{const h=$('#roleHint');h.classList.remove('warn');h.textContent=roleHintText(roles);});
   $$('.checkrow').forEach(b=>b.onclick=()=>{
     const k=b.dataset.t;store[k]=!store[k];save();b.setAttribute('aria-pressed',String(store[k]));sfx('sel');haptic('sel');
-    if(k==='fx'||k==='subSame')applyFx();if(k==='full')applyFullscreen();if(k==='remind')remindSync(true);if(k==='bg3d'&&window.BG3D)BG3D.enable(store.bg3d);
+    if(k==='fx'||k==='subSame')applyFx();if(k==='full')applyFullscreen();if(k==='remind'||k==='daily')remindSync(true);if(k==='bg3d'&&window.BG3D)BG3D.enable(store.bg3d);
   });
   bindSeg('lvl',v=>{store.lvl=v;save();toast(v==='a'?'Режим новичка: задания с подсказками':'Обычная сложность');});
   if($('#lvlTest'))$('#lvlTest').onclick=()=>{sfx('tap');renderLevelTest(()=>renderSettings());};
@@ -2320,7 +2320,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.16';
+const APP_V='13.9.17';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2880,11 +2880,11 @@ function ev(e,sid){try{if(!TG||!TG.initData)return;const src=typeof START==='str
 function remindTop(){try{const de=scL()==='de';return SCENES.flatMap(s=>{const P=scP(s.id);return s.parts.flatMap(p=>p.ph).filter(f=>P.r[f.id]).map(f=>({t:P.r[f.id][1],x:((s.lang==='de'||de)?f.de:f.en)+' — '+f.ru}));})
   .sort((a,b)=>a.t-b.t).slice(0,3).map(o=>o.x.replace(/\s+/g,' ').slice(0,80));}catch(e){return [];}}
 async function remindSync(force){
-  try{if(!TG||!TG.initData)return;if(store.remind===undefined){store.remind=true;save();}
+  try{if(!TG||!TG.initData)return;if(store.remind===undefined){store.remind=true;save();}if(store.daily===undefined){store.daily=true;save();}
     const now=Date.now(),all=SCENES.flatMap(s=>Object.values(scP(s.id).r||{}).map(x=>x[1])).filter(Boolean);
     const next=all.length?Math.max(now,Math.min(...all)):0,n=all.filter(x=>x<=Math.max(now,next)+12*36e5).length;
-    const key=[store.remind?1:0,Math.round(next/36e5),n].join(':');if(!force&&store.remindLast===key)return;
-    const r=await fetch(API+'/api/remind',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify({next,n,off:!store.remind,top:remindTop()})});
+    const key=[store.remind?1:0,store.daily===false?0:1,Math.round(next/36e5),n].join(':');if(!force&&store.remindLast===key)return;
+    const r=await fetch(API+'/api/remind',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify({next,n,off:!store.remind,doff:store.daily===false,top:remindTop()})});
     const j=await r.json();if(j&&j.ok){store.remindLast=key;save();}
   }catch(e){}}
 const scRevNext=id=>{if(!REVCHAIN)return '';const L=scDueAll().filter(x=>x.s.id!==id);return L.length?`<button class="sc-btn" id="scnrev">Дальше: ${esc(L[0].s.title)} · ${L[0].n} →</button>`:'<p class="sc-sub" style="margin-top:8px">На сегодня всё повторено 👌</p>';};
@@ -6598,6 +6598,12 @@ function renderYtTest(pi,from){pi=pi||0;if(from)YT_BACK=from;const s=scOf(YT_TES
     clearInterval(YTT);YTT=setInterval(tick,150);})
    .catch(()=>{const l=$('#ytLoad');if(l)l.innerHTML='YouTube не загрузился.<br><small>Без VPN в России YouTube часто не открывается — в версии для России видео остаются с нашего сервера.</small>';});}
 
+/* ================= 13.9.17: «Фраза дня» от бота — кнопка «Разобрать сцену» (startapp=dp_<сцена>_<эпизод>_<фраза>) ================= */
+// Открывает Главную (или обучение у новичка) и поверх — этот момент: видео реплики, слова нажимаются, «Открыть эпизод →».
+function dpOpen(p,boot){const m=/^dp_([a-z0-9-]+)_(\d+)_(\d+)$/.exec(p||'');if(!m)return false;const s=scOf(m[1]),pi=+m[2],f=s&&s.parts[pi]&&s.parts[pi].ph[+m[3]];if(!f)return false;
+  if(boot){if(store.onboarded&&store.introV===1)renderHome();else{renderIntro();return true;}}
+  ev('daily_open',s.id);setTimeout(()=>momOpen(s.id,pi,f.a+0.05),boot?700:0);return true;}
+
 /* ================= старт ================= */
 let START='';
 try{
@@ -6623,6 +6629,7 @@ else if(START_DUEL){if(!gateLink('arena','Дуэль'))renderDuelIntro(START_DUE
 else if(/^cg_[A-Za-z0-9]{5}$/.test(START)){if(!gateLink('cards','Карточная дуэль'))cgJoin(START.slice(3).toUpperCase());}
 else if(START==='cards'){if(!gateLink('cards','Карточная дуэль'))cgPick();}
 else if(START==='rev'&&store.onboarded){renderHome();setTimeout(startRevChain,600);}
+else if(/^dp_[a-z0-9-]+_\d+_\d+$/.test(START)&&dpOpen(START,true)){}   // 13.9.17: «Фраза дня» от бота → этот момент из фильма
 else if(START==='kino'&&store.onboarded)renderTab('kino');   // 13.6.3: закрытый Кинозал renderTab покажет сам (gateLink смотрел флаг игр)
 else if(store.onboarded&&store.introV===1)renderHome();else renderIntro();   // 13.6: приветственное обучение
 setTimeout(remindSync,3000);setTimeout(()=>ev('open'),1200);setTimeout(labApply,1500);setTimeout(labApply,4000);
