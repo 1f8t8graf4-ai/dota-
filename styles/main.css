@@ -5404,3 +5404,27 @@ html body.t-clean:not(.t-cs){--top:#0b0b0d;background:linear-gradient(180deg,#0b
 /* на телефоне (уже 700 px) у html нет своего фона — фон body уходит на холст под body::before (#000) и зерно body::after:
    видимый верх страницы — #030303, им и красим шапку и плашку под кнопками Telegram. В сценах ::before снят (слой 830) — там виден фон body */
 @media (max-width:699.98px){html body.t-clean:not(.t-cs):not([data-scn]){--top:#030303}}
+
+/* ==== 13.9.21 — заставка «Кинолента» v2: ≈1,8 с, одна лента (появляется, только если кадры успели загрузиться), один луч, без пылинок.
+   Название — APP_NAME в app.js. Буквы быстрее, золото проходит одной волной, выход — 0,4 с ==== */
+.spr.v2{transition:opacity .4s ease,transform .4s ease}
+.spr.v2.out{transform:scale(1.03)}
+.spr.v2 .spr-film{gap:0;transform:translateY(-50%) rotate(-7deg);animation:sprIn .45s ease forwards}
+.spr.v2 .spr-strip{animation:sprA 30s linear infinite}
+.spr.v2 .spr-strip i{width:min(44vw,240px);filter:grayscale(.15) brightness(.5) contrast(1.08)}
+.spr.v2 .spr-beam{animation:sprBeam .6s ease .05s forwards}
+.spr.v2 .spr-vig{background:radial-gradient(72% 56% at 50% 50%,rgba(5,5,6,.2),rgba(5,5,6,.94))}
+.spr.v2 .spr-t span{animation-duration:.5s,.62s;animation-delay:calc(.05s + var(--i)*24ms),calc(.6s + var(--i)*26ms)}
+.spr.v2 .spr-line{animation:s3line .5s cubic-bezier(.2,.9,.2,1) .5s forwards}
+.spr.v2 .spr-sub{max-width:min(90vw,520px);line-height:1.55;text-wrap:balance;animation:s3sub .4s ease .72s forwards}
+.spr.v2 .spr-strip i{filter:grayscale(.1) brightness(.62) contrast(1.06)}
+@media (prefers-reduced-motion:reduce){.spr.v2 .spr-strip{animation:none}}
+
+/* ==== 13.9.21 — админка → «Анимации» → «Звуки»: ▶ у каждого события, набор — чипами ==== */
+.ad2-sv{margin:10px 2px 0}
+.ad2-sfx{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-top:10px}
+.ad2-sfx button{display:flex;align-items:center;gap:9px;min-width:0;padding:10px 11px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:#fff;font:600 13.5px/1.2 'Golos Text',sans-serif;text-align:left;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s}
+.ad2-sfx button i{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:rgba(245,196,81,.14);color:#FFD978;font-style:normal}
+.ad2-sfx button i svg{width:11px;height:11px;margin-left:2px}
+.ad2-sfx button span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ad2-sfx button.on{background:rgba(245,196,81,.12);border-color:rgba(245,196,81,.45)}
