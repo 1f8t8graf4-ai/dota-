@@ -261,7 +261,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2)CLOUD_ERR=true;if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){CLOUD_ERR=true;res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy'];
+const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','ytCC','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy'];
 function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==null?SV0:base),o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -1560,6 +1560,7 @@ function renderSettings(){
       <div class="stack">${row('hideLearned','Убирать выученные слова',`Слово, на которое ты ${LEARN_AT} раза ответил правильно, больше не попадается в обычных играх. Оно вернётся в «Повторение» через 3, 7, 21 и 60 дней.`)}
       ${row('tts','Озвучка слов','Голос устройства читает слова и фразы. На некоторых телефонах звучит как робот, поэтому по умолчанию выключено.')}
       ${row('autoSc','Само дальше','После верного ответа и на паузах в фильме — переход сам, кнопка заполняется. Тронул карточку или слово — ждёт тебя.')}
+      ${row('wpopFull','Окошко слова — сразу всё','Нажал на слово — сразу объяснение, примеры и вся реплика. Выключено — коротко: что слово значит тут, остальное под «Подробнее».')}
       ${row('typeIn','Писать самому','В заданиях печатать слово или фразу с клавиатуры. Выключено — только кнопки и кубики.')}
       ${row('bg3d','3D-фон вместо фото','По умолчанию фоном — кадр из фильма. Можно включить нарисованную 3D-сцену.')}
       ${row('age18','Показывать сцены 18+','Откровенные интервью: секс, порно, таблетки. Включая, подтверждаешь, что тебе есть 18.')}</div>
@@ -2320,7 +2321,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.17';
+const APP_V='13.9.18';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2394,11 +2395,13 @@ function swPop(word,row,inPh,el){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=S
   const cx=row&&CX[wiLang(s.id)]?cxHit(s.id,{row},word):null;if(row&&!CX[wiLang(s.id)])cxLoad(wiLang(s.id));   // 13.9.16: значение в этой реплике
   w.innerHTML=cx&&cx.here?`${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(cx.here)}</span><small class="kwp-here">так в этой реплике</small>`
     :hit?`${hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`
-    :`<b>${esc(swNorm(word))}</b>${pf?'':`<small>Этого слова нет в словарике. Вся реплика:</small><span class="t">${esc(row&&row[3]||'')}</span>`}`;
+    :`<b>${esc(swNorm(word))}</b>${pf?'':`<small class="wp-keep">нет в словарике — вся реплика:</small><span class="t">${esc(row&&row[3]||'')}</span>`}`;
   if(cx&&cx.X.length)w.innerHTML+=cxXHTML(cx.X);else if(pf)w.innerHTML+=phBlock(pf);
-  {const L=wiLang(s.id);if(hit){if(WI[L])w.innerHTML+=wiHTML(swNorm(word),L,hit.w);else wiLoad(L).then(()=>{if(!w.isConnected||w.querySelector('.kwp-wi'))return;const b=w.querySelector('.hn-b');if(b)b.insertAdjacentHTML('beforebegin',wiHTML(swNorm(word),L,hit.w));});}}   // 13.9.13: подробнее о слове — после выражения
+  {const L=wiLang(s.id);if(hit){if(WI[L])w.innerHTML+=wiHTML(swNorm(word),L,hit.w);else wiLoad(L).then(()=>{if(!w.isConnected||w.querySelector('.kwp-wi'))return;const m=w.querySelector('.kwp-more'),b=w.querySelector('.hn-b'),h=wiHTML(swNorm(word),L,hit.w);if(m)m.insertAdjacentHTML('beforeend',h);else if(b){b.insertAdjacentHTML('beforebegin',h);w._fold=0;w.querySelector('.kwp-x')?.remove();wpFold(w);}});}}   // 13.9.13: подробнее о слове — после выражения
   w.innerHTML+=`<div class="hn-b"><button data-x="go">Дальше ${SI.play}</button>${row?'<button data-x="word">🔊 Слово</button>':''}${mywBtn(s.id,word)}</div>`;
+  wpFold(w);wpEsc();
   w.onclick=e=>{e.stopPropagation();const b=e.target.closest('[data-x]');if(!b)return;
+    if(b.dataset.x==='more'){sfx('tap');wpMore(w,!w.classList.contains('mo'));return;}
     if(b.dataset.x==='save'){const on=mywToggle(s.id,pi,word,row,hit);b.classList.toggle('on',on);b.textContent=on?'★ В моих словах':'☆ В мои слова';return;}
     if(b.dataset.x==='word'&&row){wordPlay(s.id,word,row[0],row[1],b);return;}
     w.remove();sfx('tap');
@@ -2440,6 +2443,21 @@ function kwWrap(f,txt){txt=txt==null?scT(f):String(txt);const K=kwOf(f);if(!K.le
   marks.sort((x,y)=>x[0]-y[0]);let out='',pos=0;
   for(const [a,b,i] of marks){out+=swWrap(txt.slice(pos,a))+`<i class="kw" data-kw="${i}" tabindex="0" role="button">${esc(txt.slice(a,b))}</i>`;pos=b;}
   return out+swWrap(txt.slice(pos));}
+// 13.9.18 (Андрей: «окно огромное, закрывает субтитры, никак не могу закрыть; вся инфа — только по „Подробнее“»): окошко слова коротко —
+// слово, что оно значит тут, одно выражение; остальное (объяснение, примеры, вся реплика, другие выражения) — под «Подробнее ▾». ✕, Esc, тап мимо — закрыть.
+// Настройка «Окошко слова — сразу всё» (store.wpopFull) раскрывает «Подробнее» сразу.
+const wpIsX=c=>c.classList.contains('kwp-cx')||(c.matches('.kwp-use,.wp-ph')&&/выражени/i.test(((c.querySelector('em,.k')||{}).textContent)||''));
+function wpFold(box){if(!box||box._fold)return;box._fold=1;const bt=box.querySelector(':scope>.kwp-b,:scope>.hn-b');let fx=false;const more=document.createElement('div');more.className='kwp-more';
+  [...box.children].forEach(c=>{if(c===bt||c.tagName==='B'||c.matches('.kwp-x,.kwp-k,.kwp-w,.kwp-t,.kwp-here,.wp-keep,.k,.t'))return;
+    if(!fx&&wpIsX(c)){fx=true;c.classList.add('wp-k');return;}more.appendChild(c);});
+  if(box.querySelector('.wp-k small'))more.prepend(Object.assign(document.createElement('div'),{className:'kwp-xn',textContent:box.querySelector('.wp-k small').textContent}));
+  box.insertAdjacentHTML('afterbegin',`<button class="kwp-x" data-x="ok" aria-label="Закрыть">${ui('close')}</button>`);
+  if(!more.children.length)return;const mb=document.createElement('button');mb.className='kwp-mb';mb.dataset.x='more';
+  bt?box.insertBefore(mb,bt):box.appendChild(mb);box.insertBefore(more,mb.nextSibling);wpMore(box,store.wpopFull===true);}
+// Esc и тап по видео мимо окошка — закрыть его и смотреть дальше
+function wpClose(){const w=document.querySelector('.sc-wpop');if(!w)return false;w.remove();if(SV&&SV.isConnected&&SV.paused){const p=SV.play();if(p&&p.catch)p.catch(()=>{});}return true;}
+let WP_ESC=0;function wpEsc(){if(WP_ESC)return;WP_ESC=1;document.addEventListener('keydown',e=>{if(e.key==='Escape'&&wpClose())e.stopPropagation();},true);}
+function wpMore(box,on){box.classList.toggle('mo',on);const mb=box.querySelector('.kwp-mb');if(mb)mb.innerHTML=on?'Свернуть ▴':'Подробнее ▾';}
 const kwCardHTML=k=>`<span class="kwp-k">${isPhr(k[1]||k[0])?'Важное выражение':'Важное слово'}</span><b class="kwp-w">${esc(k[1]||k[0])}</b><span class="kwp-t">${esc(k[2]||'')}</span>
   ${k[5]?`<div class="kwp-use"><em>Когда пригодится</em><span>${esc(k[5])}</span></div>`:''}
   ${k[3]?`<div class="kwp-ex"><em>Пример</em><b>${esc(k[3])}</b>${k[4]?`<small>${esc(k[4])}</small>`:''}</div>`:''}`;
@@ -2455,7 +2473,13 @@ function kwPop(){if(KWP)return KWP;const dim=document.createElement('div');dim.c
       const on=mywToggle(v.sid,f0?f0.pi||0:(v.pi||0),v.word,row,{ru:v.ru});b.classList.toggle('on',on);b.textContent=on?'★ В моих словах':'☆ В мои слова';return;}
     if(b.dataset.x==='hear'&&KWP._sv&&KWP._sv.f){const v=KWP._sv;scClip(v.sid,v.f.id,b);return;}
     if(b.dataset.x==='word'&&KWP._sv){const v=KWP._sv,r=v.row||(v.f?[v.f.a,v.f.b]:null);if(r){sfx('tap');wordPlay(v.sid,v.say||v.word,r[0],r[1],b);}return;}
+    if(b.dataset.x==='more'){sfx('tap');wpMore(KWP,!KWP.classList.contains('mo'));
+      if(!KWP.classList.contains('sheet')){const r=KWP.getBoundingClientRect(),k=r.width/(parseFloat(KWP.style.width)||r.width)||1;if(r.bottom>innerHeight-12)KWP.style.top=(Math.max(12,innerHeight-12-r.height)/k)+'px';}return;}
     if(b.dataset.x==='ok')kwHide(0);});
+  // 13.9.18: шторку на телефоне можно смахнуть вниз
+  {let y0=null,dy=0;KWP.addEventListener('touchstart',e=>{if(!KWP.classList.contains('sheet')||KWP.scrollTop>0)return;y0=e.touches[0].clientY;dy=0;},{passive:true});
+    KWP.addEventListener('touchmove',e=>{if(y0==null)return;dy=e.touches[0].clientY-y0;if(dy>0){KWP.style.transition='none';KWP.style.transform=`translateY(${dy}px)`;}},{passive:true});
+    KWP.addEventListener('touchend',()=>{if(y0==null)return;y0=null;KWP.style.transition='';KWP.style.transform='';if(dy>70)kwHide(0);});}
   document.addEventListener('click',e=>{if(KWP&&KWP.classList.contains('on')&&!e.target.closest('.kw-pop,.kw,.sw'))kwHide(0);});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&KWP&&KWP.classList.contains('on'))kwHide(0);});
   window.addEventListener('scroll',()=>{if(KWP&&KWP.classList.contains('on')&&!KWP.classList.contains('sheet'))kwHide(0);},{passive:true});
@@ -2475,6 +2499,7 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._res
         if(h.X.length)html=html.replace(/<div class="kwp-use">[\s\S]*?<\/div>/,'').replace(/(<span class="kwp-t">[\s\S]*?<\/span>(?:<span class="kwp-here">[\s\S]*?<\/span>)?)/,'$1'+cxXHTML(h.X));}}
     else if(L&&CX.p[L]!==null)cxLoad(L).then(d=>{if(d&&KWP&&KWP._sv===sv&&KWP.classList.contains('on'))popAt(el,html0,sv,pin);});}
   P.innerHTML=html+`<div class="kwp-b">${sv&&sv.sid&&sv.word?mywBtn(sv.sid,sv.word):''}${canW?`<button data-x="word">🔊 ${isPhr(sv.say||sv.word)?'Выражение':'Слово'}</button>`:''}${sv&&sv.f?`<button data-x="hear">▶ Фраза</button>`:''}<button data-x="ok">Понятно</button></div>`;
+  P._fold=0;wpFold(P);
   $$('.kw.on,.sw.on').forEach(x=>x.classList.remove('on'));el.classList.add('on');
   const sheet=!matchMedia('(hover:hover)').matches||window.innerWidth<640;
   P.classList.toggle('sheet',sheet);P.classList.toggle('pin',!!pin||sheet);P.style.left=P.style.top='';
@@ -2552,9 +2577,11 @@ function linePop(el,row){const s=scOf(SCUR.id),pi=SCUR.i||0,word=el.textContent,
   let f=null;for(const p of s.parts)for(const x of p.ph){const id=phIdiom(x);if(id&&phNorm(row[2]).includes(phNorm(x.en))&&idHit(id,word))f=x;}
   const o=document.querySelector('.ln-pop');if(o)o.remove();const w=document.createElement('div');w.className='ln-pop';
   const cx=CX[wiLang(s.id)]?cxHit(s.id,{row},word):null;   // 13.9.16
-  w.innerHTML=`<div class="lp-card">${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b>${cx&&cx.here?`<span class="t">${esc(cx.here)}</span><small class="kwp-here">так в этой реплике</small>`:hit?`<span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`:(f?'':`<small>Этого слова нет в словарике. Вся реплика: ${esc(row[3])}</small>`)}${cx&&cx.X.length?cxXHTML(cx.X):f?phBlock(f):''}
+  w.innerHTML=`<div class="lp-card">${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b>${cx&&cx.here?`<span class="t">${esc(cx.here)}</span><small class="kwp-here">так в этой реплике</small>`:hit?`<span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`:(f?'':`<small class="wp-keep">Нет в словарике. Вся реплика: ${esc(row[3])}</small>`)}${cx&&cx.X.length?cxXHTML(cx.X):f?phBlock(f):''}
     <div class="hn-b"><button data-x="word">🔊 Слово</button><button data-x="hear">▶ Реплика</button>${mywBtn(s.id,word)}<button data-x="ok">Понятно</button></div></div>`;
+  wpFold(w.querySelector('.lp-card'));
   w.onclick=e=>{const b=e.target.closest('[data-x]');if(e.target===w||(b&&b.dataset.x==='ok')){w.remove();return;}
+    if(b&&b.dataset.x==='more'){sfx('tap');const c=w.querySelector('.lp-card');wpMore(c,!c.classList.contains('mo'));return;}
     if(b&&b.dataset.x==='save'){const on=mywToggle(s.id,pi,word,row,hit);b.classList.toggle('on',on);b.textContent=on?'★ В моих словах':'☆ В мои слова';return;}
     if(b&&b.dataset.x==='word'){sfx('tap');wordPlay(s.id,word,row[0],row[1],b);return;}
     if(b&&b.dataset.x==='hear'){const p=s.parts[pi];w.remove();window.scrollTo({top:0,behavior:'smooth'});const ov=$('#scvo');if(ov)ov.style.display='none';scPlay(row[0]-p.a-0.1,row[1]-p.a+0.2,()=>{if(ov)ov.style.display='';});}};
@@ -2807,7 +2834,13 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
     if($('#dlh3'))$('#dlh3').onclick=()=>{sfx('tap');renderDaily(shuffle(L.slice()).map(x=>x.k==='ph'?{...x,due:((scP(x.s.id).r||{})[x.f.id]||[0,0])[1]}:{...x}),o);};}
   show();}
 /* ================= 8.2: фраза дня ================= */
-function phraseOfDay(){const A=SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)==='on').flatMap(s=>s.parts.flatMap(p=>p.ph).filter(f=>!f.passive&&f.ex&&f.ex.length).map(f=>({s,f})));
+// 13.9.18: на Главной — та же «Фраза дня», что бот присылает в чат сегодня (data/daily.json, день по Берлину, как в воркере)
+let DAILY_L=null;
+const berlinDay=()=>{try{const d=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());return Math.floor(Date.parse(d+'T00:00:00Z')/864e5);}catch(e){return Math.floor(Date.now()/864e5);}};
+function dailyLoad(){if(DAILY_L!==null)return;DAILY_L=[];fetch('data/daily.json?v='+APP_V).then(r=>r.json()).then(d=>{DAILY_L=(d&&d.DAILY)||[];const el=document.querySelector('.pod');if(el&&DAILY_L.length){const h=phraseOfDayHTML();if(h)el.outerHTML=h;}}).catch(()=>{});}
+function phraseOfDayBot(){dailyLoad();const L=DAILY_L||[];if(!L.length)return null;const x=L[((berlinDay()%L.length)+L.length)%L.length],s=scOf(x.sid),f=s&&s.parts[x.pi]&&s.parts[x.pi].ph[x.n];
+  return f&&flagOf('scene-'+s.id)==='on'?{s,f}:null;}
+function phraseOfDay(){const b=phraseOfDayBot();if(b)return b;const A=SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)==='on').flatMap(s=>s.parts.flatMap(p=>p.ph).filter(f=>!f.passive&&f.ex&&f.ex.length).map(f=>({s,f})));
   if(!A.length)return null;const day=Math.floor((Date.now()+36e5)/864e5);return A[(day*7919)%A.length];}
 function phraseOfDayHTML(){const x=phraseOfDay();if(!x)return '';const {s,f}=x,de=scL()==='de'&&!scIsDe(),tg=scTag(f);
   return `<div class="pod card anim"><div class="pod-top"><span class="pod-k">✦ Фраза дня</span><span class="sc-tag ${tg[1]}">${tg[0]}</span></div>
@@ -3226,6 +3259,7 @@ function scVideo(el,s,p,noSubs){
   // касание по видео: во весь экран сначала показывает панель, потом ставит на паузу
   // касание в любом месте видео: во весь экран сначала показывает панель, потом ставит на паузу
   el.addEventListener('click',e=>{if(e.target.closest('.sc-fs,.sc-sheetwrap,.sc-over button,.tk,.tk-plate,.sc-wpop'))return;
+    if(!e.target.closest('.sc-subs')&&wpClose())return;   // 13.9.18: окошко слова открыто — тап мимо его закрывает (раньше видео шло, а окошко висело)
     if(el.classList.contains('sc-pfs')&&el.classList.contains('idle')){wake();return;}
     const ov=el.querySelector('.sc-over');if(ov&&ov.style.display!=='none'){const pb=ov.querySelector('button');if(pb)pb.click();return;}
     wake();scPP();scFlash();});
@@ -5780,7 +5814,7 @@ function onBack(){
   if(document.querySelector('.rwo')){document.querySelector('.rwo-dim').click();return;}   // 12.0: открытый кадр коллекции
   {const o=document.querySelector('.pfv');if(o&&o._close){o._close();return;}}   // 13.9.6: профиль игрока
   {const o=document.querySelector('.bgvw');if(o&&o._close){o._close();return;}}   // 13.0: фон на весь экран
-  if(screen==='yt'){sfx('tap');ytBack();return;}   // 13.9.16: тест YouTube
+  if(screen==='yt'){sfx('tap');const v=document.querySelector('.yt-v.pfs');if(v){v.classList.remove('pfs');document.body.classList.remove('yt-pfs-on');return;}ytBack();return;}   // 13.9.16: тест YouTube
   if(screen==='coll'){sfx('tap');renderTab(COLL_BACK||'learn');return;}
   if(screen==='shop'){shopBack();return;}
   if(screen==='pvp'){if(KV&&KV.over){const sid=KV.room.sid;KV=null;renderScene(sid);}else kvLeave();return;}
@@ -6565,37 +6599,80 @@ function ytApi(){if(window.YT&&YT.Player)return Promise.resolve();
   return new Promise((res,rej)=>{const was=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=()=>{if(was)try{was();}catch(e){}res();};
     if(!document.querySelector('script[src*="youtube.com/iframe_api"]')){const x=document.createElement('script');x.src='https://www.youtube.com/iframe_api';x.onerror=()=>rej(new Error('net'));document.head.appendChild(x);}
     setTimeout(()=>rej(new Error('timeout')),15000);});}
-function renderYtTest(pi,from){pi=pi||0;if(from)YT_BACK=from;const s=scOf(YT_TEST.sid);if(!s){toast('Сцена не найдена');return;}const p=s.parts[pi],de=s.lang==='de';
-  const off=()=>+(store.ytOff||0),offTxt=()=>`${off()>0?'+':''}${off().toFixed(1)} с`;
-  mount(`<div class="scn noir yt-t"><div class="sc-head"><button class="sc-back" id="ytb" aria-label="Назад">${ui('back')}</button><div class="yt-h"><em class="yt-badge">ТЕСТ</em><b>${esc(s.title)} · видео с YouTube</b></div></div>
-    <p class="yt-note"><b>Это тест.</b> Видео не с нашего сервера, а встроено с YouTube — официальный канал Disney+. Так сцены могли бы работать в версии для App Store и Google Play. Субтитры и объяснения — под видео: по правилам YouTube поверх его плеера ничего ставить нельзя.</p>
-    <div class="yt-eps">${s.parts.map((x,i)=>`<button data-ep="${i}" class="${i===pi?'on':''}">Эпизод ${i+1}<small>${esc(x.t)}</small></button>`).join('')}</div>
-    <div class="yt-v"><div id="ytPlayer"></div><div class="yt-load" id="ytLoad">Загружаю YouTube…</div></div>
-    <div class="yt-sub" id="ytSub"><b class="yt-o"></b><span class="yt-r">Нажми ▶ в видео — субтитры с переводом появятся здесь, слова можно нажимать.</span></div>
+// 13.9.18 (Андрей: «тест ютуб супер хуево выглядит; наши субтитры — это же наша фишка»): наши субтитры ПОВЕРХ видео (слова нажимаются),
+// свои кнопки (⏯, −5 с, 🐢, прогресс, CC: поверх / под видео / выкл, во весь экран), все реплики эпизода с перемоткой, конец эпизода — своя карточка.
+// ВАЖНО для сторов: правила YouTube API запрещают ставить что-либо поверх плеера — в версии для App Store субтитры поверх нельзя (только «под видео»).
+function renderYtTest(pi,from){pi=pi||0;if(from)YT_BACK=from;const s=scOf(YT_TEST.sid);if(!s){toast('Сцена не найдена');return;}const de=s.lang==='de';
+  const off=()=>+(store.ytOff||0),offTxt=()=>`${off()>0?'+':''}${off().toFixed(1)} с`,cc=()=>store.ytCC||'over';
+  const CC=[['over','Поверх видео'],['under','Под видео'],['off','Выкл.']],mm=x=>{x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+String(x%60).padStart(2,'0');};
+  mount(`<div class="scn noir yt-t yt2"><div class="sc-head"><button class="sc-back" id="ytb" aria-label="Назад">${ui('back')}</button>
+      <div class="yt-h"><em class="yt-badge">ТЕСТ</em><b>${esc(s.title)}</b><small>видео с YouTube · официальный канал</small></div></div>
+    <div class="yt-v cc-${cc()}" id="ytV"><div id="ytPlayer"></div><div class="yt-tap" id="ytTap" hidden></div>
+      <div class="yt-ov" id="ytOv"><div class="yt-ol"><span class="yt-o"></span></div><div class="yt-ol s2"><span class="yt-r"></span></div></div>
+      <div class="yt-fl" id="ytFl"></div><div class="yt-end" id="ytEnd" hidden></div>
+      <div class="yt-load" id="ytLoad"><i class="yt-spin"></i>Загружаю YouTube…</div></div>
+    <div class="yt-bar"><button id="ytPP" aria-label="Играть">${SI.play}</button><button id="ytBk" aria-label="Назад на 5 секунд">−5</button><button id="ytSl" aria-label="Медленнее">🐢</button>
+      <div class="yt-pr" id="ytPr"><i></i></div><span class="yt-tm" id="ytTm">0:00</span><button id="ytCC" class="cc" aria-label="Субтитры">CC</button><button id="ytFs" aria-label="Во весь экран">${SI.full}</button></div>
+    <div class="yt-sub" id="ytSub"><b class="yt-o"></b><span class="yt-r"></span></div>
     <div id="ytPlate"></div>
-    <div class="yt-off"><span>Субтитры не совпадают с речью?</span><button data-o="-0.5">−0.5 с</button><b id="ytOffV">${offTxt()}</b><button data-o="0.5">+0.5 с</button></div>
+    <div class="yt-eps" id="ytEps"></div>
+    <details class="yt-lines" id="ytLn"><summary></summary><div class="yt-ll"></div></details>
+    <details class="yt-about"><summary>Что это за тест</summary><p>Видео не с нашего сервера, а встроено с YouTube (официальный клип). Так сцены могли бы работать в версии для App Store и Google Play — без своих копий фильмов.</p>
+      <p><b>Субтитры поверх видео</b> — наша фишка, но правила YouTube для встраивания запрещают ставить что-то поверх их плеера. Для Telegram-теста — можно, для сторов — только «Под видео».</p>
+      <div class="yt-off"><span>Субтитры не совпадают с речью?</span><button data-o="-0.5">−0.5 с</button><b id="ytOffV">${offTxt()}</b><button data-o="0.5">+0.5 с</button></div></details>
   </div>`,'scnscr ytscr');screen='yt';backBtn(true);
-  $('#ytb').onclick=()=>{sfx('tap');ytBack();};
-  $$('.yt-eps [data-ep]').forEach(b=>b.onclick=()=>{sfx('tap');renderYtTest(+b.dataset.ep);});
-  $$('.yt-off [data-o]').forEach(b=>b.onclick=()=>{sfx('tap');store.ytOff=Math.round((off()+ +b.dataset.o)*10)/10;save();$('#ytOffV').textContent=offTxt();});
-  const L=scWatchFX(p).map(f=>({f,done:false})),sub=$('#ytSub'),plate=$('#ytPlate');let rowNow=null,lastT=0;
-  const showRow=r=>{if(r===rowNow)return;rowNow=r;sub.querySelector('.yt-o').innerHTML=r?momLine(s,de?r[4]||r[2]:r[2],''):'';sub.querySelector('.yt-r').textContent=r?String(r[3]||'').replace(/\n/g,' '):'';
-    sub.querySelectorAll('.sw').forEach(el=>el.onclick=e=>{e.stopPropagation();sfx('tap');try{YTP&&YTP.pauseVideo();}catch(x){}momWord(el,s,pi,r);});};
-  const plateShow=f=>{try{YTP.pauseVideo();}catch(e){}const use=scShort(scNoteS(f));
+  const V=$('#ytV'),ov=$('#ytOv'),sub=$('#ytSub'),plate=$('#ytPlate'),pp=$('#ytPP'),fl=$('#ytFl'),endC=$('#ytEnd');
+  let p=s.parts[pi],L=[],rowNow=-1,lastT=0,started=false,playing=false,slow=false;
+  const yt=(m,...a)=>{try{return YTP&&YTP[m]?YTP[m](...a):undefined;}catch(e){}};
+  const ccApply=()=>{V.className='yt-v cc-'+cc()+(V.classList.contains('pfs')?' pfs':'');sub.hidden=cc()!=='under';$('#ytCC').classList.toggle('off',cc()==='off');};
+  const flash=ic=>{fl.innerHTML=ic;fl.classList.remove('on');void fl.offsetWidth;fl.classList.add('on');};
+  const seek=t=>{yt('seekTo',Math.max(0,t+off()),true);endC.hidden=true;lastT=t;};
+  const play=()=>{endC.hidden=true;plate.innerHTML='';yt('playVideo');},pause=()=>yt('pauseVideo');
+  const rowsOf=q=>s.subs.map((z,k)=>[z,k]).filter(([z])=>z[1]>q.a&&z[0]<q.b);
+  const wordsBind=(box,r)=>box.querySelectorAll('.sw').forEach(el=>el.onclick=e=>{e.stopPropagation();sfx('tap');pause();momWord(el,s,pi,r);});
+  const showRow=k=>{if(k===rowNow)return;rowNow=k;const r=k>=0?s.subs[k]:null,o=r?momLine(s,de?r[4]||r[2]:r[2],''):'',t=r?esc(String(r[3]||'').replace(/\n/g,' ')):'';
+    [ov,sub].forEach(b=>{b.querySelector('.yt-o').innerHTML=o;b.querySelector('.yt-r').innerHTML=t;b.classList.toggle('on',!!r);wordsBind(b,r);});
+    $$('#ytLn .yt-li').forEach(x=>x.classList.toggle('now',+x.dataset.k===k));};
+  const setEp=(i,auto)=>{pi=i;p=s.parts[pi];L=scWatchFX(p).map(f=>({f,done:false}));rowNow=-2;showRow(-1);plate.innerHTML='';endC.hidden=true;
+    $('#ytEps').innerHTML=s.parts.map((x,j)=>`<button data-ep="${j}" class="${j===pi?'on':''}"><b>${j+1}</b><span>${esc(x.t)}</span></button>`).join('');
+    $$('#ytEps [data-ep]').forEach(b=>b.onclick=()=>{sfx('tap');setEp(+b.dataset.ep,true);});
+    const R=rowsOf(p);$('#ytLn summary').textContent=`Все реплики эпизода · ${R.length}`;
+    $('#ytLn .yt-ll').innerHTML=R.map(([z,k])=>`<div class="yt-li" data-k="${k}"><button class="yt-lt" data-t="${z[0]}">${mm(z[0]-p.a)}</button><div><b>${momLine(s,de?z[4]||z[2]:z[2],'')}</b><small>${esc(String(z[3]||'').replace(/\n/g,' '))}</small></div></div>`).join('');
+    $$('#ytLn .yt-li').forEach(x=>{const z=s.subs[+x.dataset.k];wordsBind(x,z);x.onclick=()=>{sfx('tap');seek(z[0]-0.15);play();V.scrollIntoView({behavior:'smooth',block:'nearest'});};});
+    if(auto&&YTP&&YTP.loadVideoById)yt('loadVideoById',{videoId:YT_TEST.id,startSeconds:Math.max(0,p.a+off()),endSeconds:p.b+off()+1});};
+  const plateShow=g=>{pause();const f=g.f,use=scShort(scNoteS(f));
     plate.innerHTML=`<div class="tk tk-plate tk-watch yt-pl"><div class="tkp-top"><span class="tk-k">💬 Фраза из сцены</span><button class="tkp-x" data-x="go">Дальше ▶</button></div>
-      <b class="tkp-en">${kwWrap(f)}</b><span class="tkp-ru">${esc(f.ru)}</span>${use?`<p class="tkp-use">💡 ${esc(use)}</p>`:''}<small class="tkp-h">Нажми на слово — объясню</small></div>`;
+      <b class="tkp-en">${kwWrap(f)}</b><span class="tkp-ru">${esc(f.ru)}</span>${use?`<p class="tkp-use">💡 ${esc(use)}</p>`:''}<div class="yt-pa"><button data-x="re">↺ Ещё раз</button><small>Нажми на слово — объясню</small></div></div>`;
     kwBind(plate.querySelector('.tk-plate'),Object.assign({sid:s.id,pi},f));
-    plate.querySelector('[data-x="go"]').onclick=()=>{sfx('tap');plate.innerHTML='';try{YTP.playVideo();}catch(e){}};
-    if(innerWidth<1000)setTimeout(()=>plate.scrollIntoView({behavior:'smooth',block:'nearest'}),60);};
-  const tick=()=>{if(!YTP||!YTP.getCurrentTime)return;let t;try{t=YTP.getCurrentTime()-off();}catch(e){return;}
+    plate.querySelector('[data-x="go"]').onclick=()=>{sfx('tap');play();};
+    plate.querySelector('[data-x="re"]').onclick=()=>{sfx('tap');g.done=false;seek(f.a-0.3);play();setTimeout(()=>{g.done=true;},400);};
+    if(!V.classList.contains('pfs'))setTimeout(()=>plate.scrollIntoView({behavior:'smooth',block:'nearest'}),60);};
+  const ended=()=>{pause();const nx=pi+1<s.parts.length;endC.innerHTML=`<b>Эпизод ${pi+1} досмотрен</b><div><button data-x="re">↺ Ещё раз</button>${nx?`<button data-x="nx" class="go">Эпизод ${pi+2} →</button>`:''}</div>`;endC.hidden=false;
+    endC.querySelector('[data-x="re"]').onclick=e=>{e.stopPropagation();sfx('tap');L.forEach(y=>y.done=false);seek(p.a);play();};
+    if(nx)endC.querySelector('[data-x="nx"]').onclick=e=>{e.stopPropagation();sfx('tap');setEp(pi+1,true);};};
+  const tick=()=>{if(!YTP||!YTP.getCurrentTime)return;const t=(yt('getCurrentTime')||0)-off();
     if(t<lastT-0.5)L.forEach(y=>{if(y.f.a>t)y.done=false;});lastT=t;
-    let r=null;for(const z of s.subs){if(z[0]<=t&&z[1]>t)r=z;if(z[0]>t)break;}showRow(r);
-    const y=L.find(y=>!y.done&&t>=y.f.b+0.1&&t<y.f.b+1.5);if(y){y.done=true;plateShow(y.f);}};
+    let k=-1;s.subs.forEach((z,j)=>{if(z[0]<=t&&z[1]>t)k=j;});showRow(k);
+    const q=Math.max(0,Math.min(1,(t-p.a)/(p.b-p.a)));$('#ytPr i').style.width=(q*100)+'%';$('#ytTm').textContent=`${mm(t-p.a)} / ${mm(p.b-p.a)}`;
+    if(playing&&scPauseOn()){const y=L.find(y=>!y.done&&t>=y.f.b+0.1&&t<y.f.b+1.5);if(y){y.done=true;plateShow(y);}}
+    if(playing&&t>=p.b+0.2)ended();};
+  $('#ytb').onclick=()=>{sfx('tap');if(V.classList.contains('pfs')){V.classList.remove('pfs');document.body.classList.remove('yt-pfs-on');return;}ytBack();};
+  $$('.yt-off [data-o]').forEach(b=>b.onclick=()=>{sfx('tap');store.ytOff=Math.round((off()+ +b.dataset.o)*10)/10;save();$('#ytOffV').textContent=offTxt();});
+  pp.onclick=()=>{sfx('tap');playing?pause():play();};
+  $('#ytTap').onclick=()=>{if(playing){pause();flash(SI.pause);}else{play();flash(SI.play);}};
+  $('#ytBk').onclick=()=>{sfx('tap');seek(Math.max(p.a,lastT-5));if(!playing)play();};
+  $('#ytSl').onclick=e=>{sfx('tap');slow=!slow;yt('setPlaybackRate',slow?0.75:1);e.currentTarget.classList.toggle('on',slow);toast(slow?'Медленнее: 0.75×':'Обычная скорость');};
+  $('#ytPr').onclick=e=>{const r=e.currentTarget.getBoundingClientRect();seek(p.a+(p.b-p.a)*Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)));};
+  $('#ytCC').onclick=()=>{sfx('tap');const i=CC.findIndex(x=>x[0]===cc());store.ytCC=CC[(i+1)%CC.length][0];save();ccApply();if(!V.classList.contains('pfs'))toast('Субтитры: '+CC.find(x=>x[0]===cc())[1]);};
+  $('#ytFs').onclick=()=>{sfx('tap');const on=!V.classList.contains('pfs');V.classList.toggle('pfs',on);document.body.classList.toggle('yt-pfs-on',on);$('#ytFs').innerHTML=on?SI.exit:SI.full;};   // свой «во весь экран»: так наши субтитры остаются поверх (полный экран YouTube их бы спрятал)
+  ccApply();setEp(pi,false);
   ytApi().then(()=>{if(screen!=='yt')return;
-    YTP=new YT.Player('ytPlayer',{videoId:YT_TEST.id,playerVars:{start:Math.max(0,Math.floor(p.a+off())),end:Math.ceil(p.b+off()+0.5),playsinline:1,rel:0,modestbranding:1,cc_load_policy:0,iv_load_policy:3},
+    YTP=new YT.Player('ytPlayer',{videoId:YT_TEST.id,playerVars:{start:Math.max(0,Math.floor(p.a+off())),end:Math.ceil(p.b+off()+1),playsinline:1,rel:0,modestbranding:1,cc_load_policy:0,iv_load_policy:3,fs:0,disablekb:1},
       events:{onReady:()=>{const l=$('#ytLoad');if(l)l.remove();},
+        onStateChange:e=>{playing=e.data===1;pp.innerHTML=playing?SI.pause:SI.play;
+          if(playing&&!started){started=true;$('#ytTap').hidden=false;}if(playing&&slow)yt('setPlaybackRate',0.75);if(e.data===0)ended();},
         onError:e=>{const l=$('#ytLoad');if(l)l.textContent=`YouTube не открылся (код ${e&&e.data}). Встраивание этого клипа может быть запрещено владельцем.`;}}});
-    clearInterval(YTT);YTT=setInterval(tick,150);})
+    clearInterval(YTT);YTT=setInterval(tick,120);})
    .catch(()=>{const l=$('#ytLoad');if(l)l.innerHTML='YouTube не загрузился.<br><small>Без VPN в России YouTube часто не открывается — в версии для России видео остаются с нашего сервера.</small>';});}
 
 /* ================= 13.9.17: «Фраза дня» от бота — кнопка «Разобрать сцену» (startapp=dp_<сцена>_<эпизод>_<фраза>) ================= */

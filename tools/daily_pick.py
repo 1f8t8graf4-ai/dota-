@@ -35,8 +35,8 @@ while len(out) < N and any(L for _, L in by):
         if L and len(out) < N:
             _, pi, n, f = L.pop(0)
             out.append({'sid': s['id'], 'pi': pi, 'n': n, 'film': s.get('show') or s.get('title'), 'en': f['en'], 'ru': f['ru'],
-                        'use': f['use'], 'clip': 'scenes/_daily/%03d.mp4' % (len(out) + 1)})
+                        'use': f['use'], 'clip': 'scenes/_daily/%s_%d_%d.mp4' % (s['id'], pi, n)})
 json.dump({'DAILY': out}, open(os.path.join(root, 'data', 'daily.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
 print('фраз:', len(out), 'сцен:', len({x['sid'] for x in out}))
 for x in out[:12]:
-    print(x['clip'][-7:], x['sid'], '|', x['en'], '—', x['ru'])
+    print(x['clip'].split('/')[-1], x['sid'], '|', x['en'], '—', x['ru'])

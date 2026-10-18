@@ -8,7 +8,7 @@
 "en": "Spencer wants to meet for drinks.",
 "ru": "Спенсер зовёт выпить.",
 "use": "Когда передаёшь приглашение посидеть где-нибудь после работы. Дружелюбно и вполне по-деловому — так зовут и коллег, и друзей.",
-"clip": "scenes/_daily/001.mp4"
+"clip": "scenes/_daily/american-psycho_0_4.mp4"
 },
 {
 "sid": "sopranos-ralph",
@@ -18,7 +18,7 @@
 "en": "Hang in there.",
 "ru": "Держись.",
 "use": "Когда поддерживаешь человека в трудный момент — болезнь, горе, тяжёлая учёба.",
-"clip": "scenes/_daily/002.mp4"
+"clip": "scenes/_daily/sopranos-ralph_3_4.mp4"
 },
 {
 "sid": "taxi-driver-lonely",
@@ -28,17 +28,17 @@
 "en": "Wanna take a walk?",
 "ru": "Хочешь прогуляться?",
 "use": "Когда по-простому зовёшь прогуляться — друга, девушку, соседа.",
-"clip": "scenes/_daily/003.mp4"
+"clip": "scenes/_daily/taxi-driver-lonely_0_3.mp4"
 },
 {
 "sid": "clavicular-bets",
-"pi": 0,
-"n": 7,
+"pi": 1,
+"n": 6,
 "film": "Clavicular",
-"en": "Traders believe in you, buddy.",
-"ru": "Трейдеры в тебя верят, дружище.",
-"use": "Когда поддерживаешь друга: «в тебя верят».",
-"clip": "scenes/_daily/004.mp4"
+"en": "That's actually sick.",
+"ru": "Это реально круто.",
+"use": "Когда что-то реально впечатляет — молодёжный сленг.",
+"clip": "scenes/_daily/clavicular-bets_1_6.mp4"
 },
 {
 "sid": "breaking-bad-knocks",
@@ -48,17 +48,7 @@
 "en": "Okay, we're done here.",
 "ru": "Всё, разговор окончен.",
 "use": "Когда резко заканчиваешь разговор, который тебе неприятен. Звучит холодно.",
-"clip": "scenes/_daily/005.mp4"
-},
-{
-"sid": "breaking-bad-gus",
-"pi": 0,
-"n": 2,
-"film": "Во все тяжкие",
-"en": "And five minutes of your time.",
-"ru": "И пять минут вашего времени.",
-"use": "Когда вежливо, но настойчиво просишь короткий разговор: начальника, клиента, занятого человека.",
-"clip": "scenes/_daily/006.mp4"
+"clip": "scenes/_daily/breaking-bad-knocks_0_5.mp4"
 },
 {
 "sid": "taxi-driver-betsy",
@@ -68,7 +58,17 @@
 "en": "You're gonna be my friend?",
 "ru": "Вы будете моим другом?",
 "use": "Когда не веришь тому, что тебе предлагают, и переспрашиваешь с усмешкой.",
-"clip": "scenes/_daily/007.mp4"
+"clip": "scenes/_daily/taxi-driver-betsy_1_8.mp4"
+},
+{
+"sid": "breaking-bad-gus",
+"pi": 0,
+"n": 2,
+"film": "Во все тяжкие",
+"en": "And five minutes of your time.",
+"ru": "И пять минут вашего времени.",
+"use": "Когда вежливо, но настойчиво просишь короткий разговор: начальника, клиента, занятого человека.",
+"clip": "scenes/_daily/breaking-bad-gus_0_2.mp4"
 },
 {
 "sid": "titanic-boat",
@@ -78,7 +78,7 @@
 "en": "You jump, I jump, right?",
 "ru": "Ты прыгнешь — я прыгну, помнишь?",
 "use": "Когда напоминаешь близкому, что вы вместе до конца, что бы ни случилось.",
-"clip": "scenes/_daily/008.mp4"
+"clip": "scenes/_daily/titanic-boat_3_3.mp4"
 },
 {
 "sid": "american-psycho-cards",
@@ -88,7 +88,7 @@
 "en": "How on Earth did you get a reservation there?",
 "ru": "Как тебе вообще удалось забронировать там столик?",
 "use": "Когда искренне поражаешься, как у кого-то что-то получилось. Эмоционально, но не грубо — можно кому угодно.",
-"clip": "scenes/_daily/009.mp4"
+"clip": "scenes/_daily/american-psycho-cards_0_0.mp4"
 },
 {
 "sid": "sopranos-arc",
@@ -98,17 +98,7 @@
 "en": "Always a fucking loophole, right?",
 "ru": "Вечно, блядь, какая-то лазейка, да?",
 "use": "Когда ворчишь, что правила и законы устроены хитро и всегда с подвохом.",
-"clip": "scenes/_daily/010.mp4"
-},
-{
-"sid": "sopranos-s01e01",
-"pi": 0,
-"n": 0,
-"film": "Клан Сопрано",
-"en": "Have a seat.",
-"ru": "Присаживайтесь.",
-"use": "Когда приглашаешь человека сесть: гостя, клиента, кандидата на собеседовании. Вежливо и спокойно — теплее, чем Sit down.",
-"clip": "scenes/_daily/011.mp4"
+"clip": "scenes/_daily/sopranos-arc_2_4.mp4"
 },
 {
 "sid": "durov-tucker",
@@ -118,27 +108,37 @@
 "en": "Thank you for having me.",
 "ru": "Спасибо, что пригласили.",
 "use": "Когда тебя поблагодарили за то, что пришёл, — гость отвечает этой фразой: в интервью, на подкасте, в гостях.",
-"clip": "scenes/_daily/012.mp4"
+"clip": "scenes/_daily/durov-tucker_0_0.mp4"
+},
+{
+"sid": "sopranos-s01e01",
+"pi": 0,
+"n": 0,
+"film": "Клан Сопрано",
+"en": "Have a seat.",
+"ru": "Присаживайтесь.",
+"use": "Когда приглашаешь человека сесть: гостя, клиента, кандидата на собеседовании. Вежливо и спокойно — теплее, чем Sit down.",
+"clip": "scenes/_daily/sopranos-s01e01_0_0.mp4"
 },
 {
 "sid": "clavicular-impaulsive",
-"pi": 1,
-"n": 3,
+"pi": 2,
+"n": 8,
 "film": "Clavicular",
-"en": "They work for some people.",
-"ru": "Кому-то с ними норм.",
-"use": "Когда говоришь, что совет, метод или вещь подходит не всем.",
-"clip": "scenes/_daily/013.mp4"
+"en": "It's not even about the money.",
+"ru": "Дело даже не в деньгах.",
+"use": "Когда подчёркиваешь, что спор или проблема — в принципе, а не в сумме.",
+"clip": "scenes/_daily/clavicular-impaulsive_2_8.mp4"
 },
 {
 "sid": "breaking-bad-pilot",
-"pi": 1,
-"n": 1,
+"pi": 0,
+"n": 2,
 "film": "Во все тяжкие",
-"en": "Meth labs are nasty on a good day.",
-"ru": "Нарколаборатории — мерзость даже в хороший день.",
-"use": "Когда жалуешься, что что-то противно или тяжело даже при лучшем раскладе: работа, дорога, погода.",
-"clip": "scenes/_daily/014.mp4"
+"en": "I don't know, what do you call that?",
+"ru": "Не знаю, как это называется?",
+"use": "Когда вылетело слово и просишь собеседника подсказать. Спасает в любом разговоре на чужом языке.",
+"clip": "scenes/_daily/breaking-bad-pilot_0_2.mp4"
 },
 {
 "sid": "sopranos-s06e09",
@@ -148,7 +148,7 @@
 "en": "Were they hurt?",
 "ru": "Они пострадали?",
 "use": "Когда с тревогой спрашиваешь о людях после аварии или происшествия. Нейтрально и участливо, годится для любого разговора.",
-"clip": "scenes/_daily/015.mp4"
+"clip": "scenes/_daily/sopranos-s06e09_0_3.mp4"
 },
 {
 "sid": "wolf-swiss-bank",
@@ -158,7 +158,7 @@
 "en": "Pleasure to make your acquaintance.",
 "ru": "Рад знакомству.",
 "use": "Когда знакомишься на деловой встрече или в официальной обстановке. Очень вежливо и чуть старомодно; с ровесниками проще Nice to meet you.",
-"clip": "scenes/_daily/016.mp4"
+"clip": "scenes/_daily/wolf-swiss-bank_0_0.mp4"
 },
 {
 "sid": "clavicular-burger",
@@ -168,27 +168,27 @@
 "en": "Now you've hit a nerve.",
 "ru": "Вот теперь ты задел за живое.",
 "use": "Когда собеседник задел больную для тебя тему и ты готов спорить.",
-"clip": "scenes/_daily/017.mp4"
+"clip": "scenes/_daily/clavicular-burger_1_6.mp4"
 },
 {
 "sid": "wolf-of-wall-street",
-"pi": 0,
-"n": 0,
+"pi": 3,
+"n": 5,
 "film": "Волк с Уолл-стрит",
-"en": "How the fuck else would you do this job?",
-"ru": "А как, блядь, иначе делать эту работу?",
-"use": "Когда возмущаешься или искренне не понимаешь, как может быть иначе. Грубо и с напором — только среди своих, на работе и с незнакомыми так не говорят.",
-"clip": "scenes/_daily/018.mp4"
+"en": "Those are rookie numbers in this racket.",
+"ru": "В нашем деле это показатели новичка.",
+"use": "Когда с усмешкой говоришь, что результат слабоват и можно гораздо больше. Подкол среди своих — по-дружески или свысока.",
+"clip": "scenes/_daily/wolf-of-wall-street_3_5.mp4"
 },
 {
 "sid": "american-psycho",
-"pi": 0,
+"pi": 2,
 "n": 1,
 "film": "Американский психопат",
-"en": "Aerobics class. Sorry. Any messages?",
-"ru": "Аэробика. Извини. Мне звонили?",
-"use": "Когда возвращаешься на рабочее место и спрашиваешь у коллеги или секретаря, не искал ли тебя кто. Нейтрально, по-деловому.",
-"clip": "scenes/_daily/019.mp4"
+"en": "You look nice today.",
+"ru": "Ты сегодня хорошо выглядишь.",
+"use": "Когда делаешь простой комплимент внешности — другу, коллеге, партнёру. Звучит мило, но от начальника подчинённой может прозвучать неуместно.",
+"clip": "scenes/_daily/american-psycho_2_1.mp4"
 },
 {
 "sid": "sopranos-ralph",
@@ -198,7 +198,7 @@
 "en": "Ton, can I come in?",
 "ru": "Тон, можно войти?",
 "use": "Когда стучишь в дверь кабинета или комнаты и спрашиваешь, можно ли зайти.",
-"clip": "scenes/_daily/020.mp4"
+"clip": "scenes/_daily/sopranos-ralph_0_0.mp4"
 },
 {
 "sid": "taxi-driver-lonely",
@@ -208,17 +208,17 @@
 "en": "There's no escape.",
 "ru": "От него не сбежать.",
 "use": "Когда понимаешь, что от проблемы не отвертеться, как ни старайся. Может звучать мрачно, а может с иронией — про налоги или жару.",
-"clip": "scenes/_daily/021.mp4"
+"clip": "scenes/_daily/taxi-driver-lonely_1_1.mp4"
 },
 {
 "sid": "clavicular-bets",
 "pi": 1,
-"n": 0,
+"n": 2,
 "film": "Clavicular",
-"en": "Isn't that, like, over 90?",
-"ru": "Там же, типа, больше 90?",
-"use": "Когда прикидываешь число и переспрашиваешь: «там же больше…?»",
-"clip": "scenes/_daily/022.mp4"
+"en": "No comment.",
+"ru": "Без комментариев.",
+"use": "Когда не хочешь отвечать на щекотливый вопрос — шутливо, как звезда журналистам.",
+"clip": "scenes/_daily/clavicular-bets_1_2.mp4"
 },
 {
 "sid": "breaking-bad-knocks",
@@ -228,17 +228,7 @@
 "en": "That's not enough.",
 "ru": "Этого мало.",
 "use": "Когда денег, времени или усилий недостаточно. Коротко и разочарованно.",
-"clip": "scenes/_daily/023.mp4"
-},
-{
-"sid": "breaking-bad-gus",
-"pi": 0,
-"n": 4,
-"film": "Во все тяжкие",
-"en": "Have a seat, please.",
-"ru": "Присаживайтесь, пожалуйста.",
-"use": "Когда приглашаешь гостя, клиента или посетителя сесть — вежливо.",
-"clip": "scenes/_daily/024.mp4"
+"clip": "scenes/_daily/breaking-bad-knocks_2_1.mp4"
 },
 {
 "sid": "taxi-driver-betsy",
@@ -247,8 +237,18 @@
 "film": "Таксист",
 "en": "I'd like to volunteer.",
 "ru": "Я хочу записаться волонтёром.",
-"use": "Когда вежливо говоришь, чего хочешь: в офисе, кафе, по телефону, на ресепшене.",
-"clip": "scenes/_daily/025.mp4"
+"use": "Когда вызываешься помочь бесплатно: в штабе, приюте, на мероприятии — или сам берёшься за общее дело.",
+"clip": "scenes/_daily/taxi-driver-betsy_0_0.mp4"
+},
+{
+"sid": "breaking-bad-gus",
+"pi": 0,
+"n": 5,
+"film": "Во все тяжкие",
+"en": "Sorry, I'm not following.",
+"ru": "Простите, я не понимаю.",
+"use": "Когда не понимаешь, о чём речь, и просишь пояснить. Вежливо — и на работе, и в споре.",
+"clip": "scenes/_daily/breaking-bad-gus_0_5.mp4"
 },
 {
 "sid": "titanic-boat",
@@ -258,37 +258,27 @@
 "en": "I'm not going without you.",
 "ru": "Я без тебя не поеду.",
 "use": "Когда отказываешься уходить или ехать, пока с тобой не пойдёт близкий человек. Твёрдо и со слезами в голосе.",
-"clip": "scenes/_daily/026.mp4"
+"clip": "scenes/_daily/titanic-boat_0_0.mp4"
 },
 {
 "sid": "american-psycho-cards",
-"pi": 1,
-"n": 6,
+"pi": 0,
+"n": 1,
 "film": "Американский психопат",
-"en": "No can do. I got an 8:30 res at Dorsia.",
-"ru": "Не выйдет. У меня бронь в «Дорсии» на 8:30.",
-"use": "Когда легко и без извинений отказываешь. Среди друзей нормально, начальнику лучше сказать I'm afraid I can't.",
-"clip": "scenes/_daily/027.mp4"
+"en": "Lucky, I guess.",
+"ru": "Повезло, наверное.",
+"use": "Когда скромно отмахиваешься от похвалы или не хочешь объяснять, как всё вышло. Звучит небрежно и чуть уклончиво.",
+"clip": "scenes/_daily/american-psycho-cards_0_1.mp4"
 },
 {
 "sid": "sopranos-arc",
-"pi": 0,
-"n": 1,
+"pi": 1,
+"n": 4,
 "film": "Клан Сопрано",
-"en": "Yeah. And nothin' did. So what?",
-"ru": "Ага. И ничего не случилось. И что?",
-"use": "Когда показываешь, что тебя это не задевает: «ну и что?»",
-"clip": "scenes/_daily/028.mp4"
-},
-{
-"sid": "sopranos-s01e01",
-"pi": 0,
-"n": 7,
-"film": "Клан Сопрано",
-"en": "What line of work are you in?",
-"ru": "Чем вы занимаетесь?",
-"use": "Когда вежливо спрашиваешь, кем человек работает, — при знакомстве, в гостях, в поезде. Чуть формальнее, чем What do you do?",
-"clip": "scenes/_daily/029.mp4"
+"en": "Laughing on the outside, crying on the inside.",
+"ru": "Снаружи смеюсь, а внутри плачу.",
+"use": "Когда говоришь про того, кто улыбается на людях, а на самом деле ему плохо.",
+"clip": "scenes/_daily/sopranos-arc_1_4.mp4"
 },
 {
 "sid": "durov-tucker",
@@ -298,7 +288,17 @@
 "en": "I want to be optimistic.",
 "ru": "Хочу быть оптимистом.",
 "use": "Когда сознательно держишься за хороший сценарий, хотя есть поводы волноваться.",
-"clip": "scenes/_daily/030.mp4"
+"clip": "scenes/_daily/durov-tucker_1_1.mp4"
+},
+{
+"sid": "sopranos-s01e01",
+"pi": 0,
+"n": 7,
+"film": "Клан Сопрано",
+"en": "What line of work are you in?",
+"ru": "Чем вы занимаетесь?",
+"use": "Когда вежливо спрашиваешь, кем человек работает, — при знакомстве, в гостях, в поезде. Чуть формальнее, чем What do you do?",
+"clip": "scenes/_daily/sopranos-s01e01_0_7.mp4"
 },
 {
 "sid": "clavicular-impaulsive",
@@ -308,7 +308,7 @@
 "en": "Make sure your lawyers review it.",
 "ru": "Смотри, чтобы юристы всё проверили.",
 "use": "Когда даёшь совет или напоминание перед важным шагом: «проследи, чтобы…».",
-"clip": "scenes/_daily/031.mp4"
+"clip": "scenes/_daily/clavicular-impaulsive_2_9.mp4"
 },
 {
 "sid": "breaking-bad-pilot",
@@ -318,27 +318,27 @@
 "en": "He's just gonna break bad?",
 "ru": "…возьмёт и пустится во все тяжкие?",
 "use": "Когда не веришь, что тихий правильный человек вдруг сорвался и пустился во все тяжкие.",
-"clip": "scenes/_daily/032.mp4"
+"clip": "scenes/_daily/breaking-bad-pilot_2_7.mp4"
 },
 {
 "sid": "sopranos-s06e09",
-"pi": 1,
-"n": 6,
+"pi": 0,
+"n": 5,
 "film": "Клан Сопрано",
-"en": "I'm calling for the result of my biopsy again.",
-"ru": "Снова звоню узнать результат биопсии.",
-"use": "Когда звонишь куда-то по делу: к врачу, в банк, в ведомство. Вежливо и по-деловому, а again добавляет нотку «звоню уже не в первый раз».",
-"clip": "scenes/_daily/033.mp4"
+"en": "Why do you think that is?",
+"ru": "Как вы думаете, почему так?",
+"use": "Когда мягко подталкиваешь человека самому найти причину. Так часто спрашивают психологи и учителя — вежливо, без давления.",
+"clip": "scenes/_daily/sopranos-s06e09_0_5.mp4"
 },
 {
 "sid": "wolf-swiss-bank",
-"pi": 0,
-"n": 2,
+"pi": 2,
+"n": 1,
 "film": "Волк с Уолл-стрит",
-"en": "I'm curious about your bank secrecy laws here.",
-"ru": "Мне интересно, как у вас тут с банковской тайной.",
-"use": "Когда аккуратно заходишь с вопросом на щекотливую тему. Вежливо и дипломатично — мягче, чем спросить в лоб.",
-"clip": "scenes/_daily/034.mp4"
+"en": "See, I told you he was fantastic, right?",
+"ru": "Ну, говорил же, он потрясающий, да?",
+"use": "Когда радуешься, что оказался прав, и ждёшь, чтобы с тобой согласились. По-дружески, немного хвастливо.",
+"clip": "scenes/_daily/wolf-swiss-bank_2_1.mp4"
 },
 {
 "sid": "clavicular-burger",
@@ -348,7 +348,7 @@
 "en": "This is a good question.",
 "ru": "Хороший вопрос.",
 "use": "Когда хочешь выиграть секунду на раздумье или похвалить вопрос.",
-"clip": "scenes/_daily/035.mp4"
+"clip": "scenes/_daily/clavicular-burger_2_1.mp4"
 },
 {
 "sid": "wolf-of-wall-street",
@@ -358,7 +358,7 @@
 "en": "This is not a tip, this is a prescription.",
 "ru": "Это не совет, это рецепт врача.",
 "use": "Когда твой совет надо воспринимать как обязательное правило, а не рекомендацию. Звучит настойчиво, с юмором.",
-"clip": "scenes/_daily/036.mp4"
+"clip": "scenes/_daily/wolf-of-wall-street_4_2.mp4"
 },
 {
 "sid": "american-psycho",
@@ -368,7 +368,7 @@
 "en": "Negative. Cancel it.",
 "ru": "Нет. Отмени.",
 "use": "Когда коротко и холодно отказываешь, как начальник подчинённому. С друзьями звучит как шутка под военного, с коллегами — высокомерно.",
-"clip": "scenes/_daily/037.mp4"
+"clip": "scenes/_daily/american-psycho_0_5.mp4"
 },
 {
 "sid": "sopranos-ralph",
@@ -378,27 +378,27 @@
 "en": "It's too soon to tell.",
 "ru": "Пока рано что-то говорить.",
 "use": "Когда тебя спрашивают о результате, а он ещё непонятен: про здоровье, экзамен, новую работу, отношения.",
-"clip": "scenes/_daily/038.mp4"
+"clip": "scenes/_daily/sopranos-ralph_0_2.mp4"
 },
 {
-"sid": "taxi-driver-lonely",
-"pi": 1,
-"n": 0,
+"sid": "taxi-driver-betsy",
+"pi": 0,
+"n": 6,
 "film": "Таксист",
-"en": "Loneliness has followed me my whole life, everywhere.",
-"ru": "Одиночество преследовало меня всю жизнь, повсюду.",
-"use": "Когда с горечью говоришь о том, что тебя всю жизнь преследует одно и то же. Звучит драматично и исповедально.",
-"clip": "scenes/_daily/039.mp4"
+"en": "You're sure of that?",
+"ru": "Вы в этом уверены?",
+"use": "Когда сомневаешься в словах собеседника и переспрашиваешь с иронией.",
+"clip": "scenes/_daily/taxi-driver-betsy_0_6.mp4"
 },
 {
 "sid": "clavicular-bets",
 "pi": 1,
-"n": 8,
+"n": 4,
 "film": "Clavicular",
-"en": "But keep in mind",
-"ru": "Но учти",
-"use": "Когда добавляешь важную оговорку: «но учти…»",
-"clip": "scenes/_daily/040.mp4"
+"en": "That's insane, dude.",
+"ru": "Это безумие, чувак.",
+"use": "Когда тебя поражает цифра или новость.",
+"clip": "scenes/_daily/clavicular-bets_1_4.mp4"
 },
 {
 "sid": "breaking-bad-knocks",
@@ -408,17 +408,7 @@
 "en": "Jesus, what was I thinking?",
 "ru": "Господи, о чём я только думала?",
 "use": "Когда ругаешь себя за глупое решение: «чем я думал(а)?».",
-"clip": "scenes/_daily/041.mp4"
-},
-{
-"sid": "breaking-bad-gus",
-"pi": 1,
-"n": 0,
-"film": "Во все тяжкие",
-"en": "Your partner was late, and he was high.",
-"ru": "Ваш партнёр опоздал, и он был под кайфом.",
-"use": "Когда сухо перечисляешь чужие косяки — по пунктам, без эмоций.",
-"clip": "scenes/_daily/042.mp4"
+"clip": "scenes/_daily/breaking-bad-knocks_0_6.mp4"
 },
 {
 "sid": "taxi-driver-betsy",
@@ -428,17 +418,27 @@
 "en": "Then what exactly do you want?",
 "ru": "Тогда чего именно вы хотите?",
 "use": "Когда человек ходит вокруг да около и пора спросить прямо.",
-"clip": "scenes/_daily/043.mp4"
+"clip": "scenes/_daily/taxi-driver-betsy_1_1.mp4"
+},
+{
+"sid": "breaking-bad-gus",
+"pi": 0,
+"n": 6,
+"film": "Во все тяжкие",
+"en": "I think that you're confusing me for someone else.",
+"ru": "Мне кажется, вы меня с кем-то путаете.",
+"use": "Когда тебя принимают за другого — или ты делаешь вид, что тебя приняли за другого.",
+"clip": "scenes/_daily/breaking-bad-gus_0_6.mp4"
 },
 {
 "sid": "titanic-boat",
 "pi": 2,
-"n": 2,
+"n": 0,
 "film": "Титаник",
-"en": "There's no arrangement, is there?",
-"ru": "Никакой договорённости нет, да?",
-"use": "Когда проверяешь подозрение вслух: «ведь ничего такого нет, да?»",
-"clip": "scenes/_daily/044.mp4"
+"en": "You're a good liar.",
+"ru": "А ты хорошо врёшь.",
+"use": "Когда раскусил чужую ложь — с насмешкой или даже с уважением.",
+"clip": "scenes/_daily/titanic-boat_2_0.mp4"
 },
 {
 "sid": "american-psycho-cards",
@@ -448,7 +448,7 @@
 "en": "What do you think?",
 "ru": "Что скажете?",
 "use": "Когда показываешь что-то своё — вещь, фото, план, идею — и просишь оценить. В английском нет разницы между «ты» и «вы»: это и «как тебе?» другу, и «что скажете?» коллегам.",
-"clip": "scenes/_daily/045.mp4"
+"clip": "scenes/_daily/american-psycho-cards_2_5.mp4"
 },
 {
 "sid": "sopranos-arc",
@@ -458,7 +458,17 @@
 "en": "Do you feel depressed?",
 "ru": "Вы чувствуете себя подавленным?",
 "use": "Когда прямо и бережно спрашиваешь о состоянии человека — как врач или близкий друг.",
-"clip": "scenes/_daily/046.mp4"
+"clip": "scenes/_daily/sopranos-arc_1_0.mp4"
+},
+{
+"sid": "durov-tucker",
+"pi": 0,
+"n": 3,
+"film": "Павел Дуров",
+"en": "Where are you from?",
+"ru": "Откуда вы родом?",
+"use": "Когда знакомишься — в гостях, в поездке, в чате — и спрашиваешь, откуда человек.",
+"clip": "scenes/_daily/durov-tucker_0_3.mp4"
 },
 {
 "sid": "sopranos-s01e01",
@@ -468,37 +478,27 @@
 "en": "How are you feeling now?",
 "ru": "Как вы себя сейчас чувствуете?",
 "use": "Когда спрашиваешь о самочувствии всерьёз — после болезни, травмы или тяжёлого дня. Заботливо, подходит и врачу, и другу.",
-"clip": "scenes/_daily/047.mp4"
-},
-{
-"sid": "durov-tucker",
-"pi": 0,
-"n": 1,
-"film": "Павел Дуров",
-"en": "So I confess, I've used Telegram.",
-"ru": "Признаюсь, я пользовался Telegram.",
-"use": "Когда признаёшься в чём-то личном или неожиданном — часто в шутку, чтобы разрядить обстановку.",
-"clip": "scenes/_daily/048.mp4"
+"clip": "scenes/_daily/sopranos-s01e01_0_5.mp4"
 },
 {
 "sid": "clavicular-impaulsive",
-"pi": 1,
-"n": 4,
+"pi": 0,
+"n": 2,
 "film": "Clavicular",
-"en": "It's an automatic problem.",
-"ru": "Это автоматически проблема.",
-"use": "Когда что-то сразу и без вариантов становится минусом.",
-"clip": "scenes/_daily/049.mp4"
+"en": "How come?",
+"ru": "Как так?",
+"use": "Когда удивлён и спрашиваешь «а почему?» — живее и мягче, чем просто Why.",
+"clip": "scenes/_daily/clavicular-impaulsive_0_2.mp4"
 },
 {
 "sid": "breaking-bad-pilot",
-"pi": 2,
-"n": 11,
+"pi": 1,
+"n": 0,
 "film": "Во все тяжкие",
-"en": "Buy the RV. We start tomorrow.",
-"ru": "Покупай фургон. Начинаем завтра.",
-"use": "Когда решение принято и пора действовать: коротко, без лишних слов.",
-"clip": "scenes/_daily/050.mp4"
+"en": "Copy that.",
+"ru": "Принято.",
+"use": "Когда коротко подтверждаешь, что понял приказ или информацию: рация, работа, игра в команде. В обычном чате звучит по-военному смешно.",
+"clip": "scenes/_daily/breaking-bad-pilot_1_0.mp4"
 },
 {
 "sid": "sopranos-s06e09",
@@ -508,17 +508,17 @@
 "en": "You know my feelings. Every day is a gift.",
 "ru": "Вы знаете, что я чувствую. Каждый день — подарок.",
 "use": "Когда говоришь о благодарности за жизнь — обычно после болезни, аварии или тяжёлого периода. Звучит искренне, иногда чуть пафосно.",
-"clip": "scenes/_daily/051.mp4"
+"clip": "scenes/_daily/sopranos-s06e09_1_2.mp4"
 },
 {
 "sid": "wolf-swiss-bank",
-"pi": 3,
-"n": 0,
+"pi": 2,
+"n": 3,
 "film": "Волк с Уолл-стрит",
-"en": "If it were another name,",
-"ru": "Если бы счёт был на другое имя,",
-"use": "Когда рассуждаешь о гипотетической ситуации — а если бы всё было иначе. Нейтрально, в любой обстановке.",
-"clip": "scenes/_daily/052.mp4"
+"en": "If I'm not mistaken.",
+"ru": "Если я не ошибаюсь.",
+"use": "Когда говоришь что-то с лёгким сомнением, чтобы не звучать слишком категорично. Вежливо — подходит и для работы, и для разговора с незнакомыми.",
+"clip": "scenes/_daily/wolf-swiss-bank_2_3.mp4"
 },
 {
 "sid": "clavicular-burger",
@@ -527,8 +527,8 @@
 "film": "Clavicular",
 "en": "I don't dislike her, but…",
 "ru": "Против неё я ничего не имею, но…",
-"use": "Когда осторожно говоришь, что к человеку или вещи равнодушен: «ничего против не имею, но…»",
-"clip": "scenes/_daily/053.mp4"
+"use": "Когда осторожно говоришь, что к человеку равнодушен, — и дальше будет оговорка.",
+"clip": "scenes/_daily/clavicular-burger_5_8.mp4"
 },
 {
 "sid": "wolf-of-wall-street",
@@ -538,7 +538,7 @@
 "en": "Name of the game.",
 "ru": "Вот в чём суть.",
 "use": "Когда объясняешь главное правило в каком-то деле — работе, спорте, игре. Звучит уверенно, слегка поучительно.",
-"clip": "scenes/_daily/054.mp4"
+"clip": "scenes/_daily/wolf-of-wall-street_0_5.mp4"
 },
 {
 "sid": "american-psycho",
@@ -548,7 +548,7 @@
 "en": "Just say \"no.\"",
 "ru": "Просто скажи «нет».",
 "use": "Когда советуешь человеку не оправдываться и просто отказать. Звучит по-дружески, но в лоб.",
-"clip": "scenes/_daily/055.mp4"
+"clip": "scenes/_daily/american-psycho_1_0.mp4"
 },
 {
 "sid": "sopranos-ralph",
@@ -558,27 +558,17 @@
 "en": "You want something to eat?",
 "ru": "Хочешь чего-нибудь поесть?",
 "use": "Когда к тебе пришёл гость или друг, и ты по-простому предлагаешь его накормить.",
-"clip": "scenes/_daily/056.mp4"
+"clip": "scenes/_daily/sopranos-ralph_0_4.mp4"
 },
 {
-"sid": "taxi-driver-lonely",
+"sid": "taxi-driver-betsy",
 "pi": 1,
-"n": 6,
+"n": 3,
 "film": "Таксист",
-"en": "And then suddenly... there is change.",
-"ru": "И вдруг… всё меняется.",
-"use": "Когда в рассказе подводишь к резкому повороту событий. Драматичная пауза, как у рассказчика в кино.",
-"clip": "scenes/_daily/057.mp4"
-},
-{
-"sid": "clavicular-bets",
-"pi": 1,
-"n": 10,
-"film": "Clavicular",
-"en": "They're not that far behind.",
-"ru": "Не так уж сильно они и отстают.",
-"use": "Когда говоришь, что отставание небольшое — в гонке, рейтинге, учёбе.",
-"clip": "scenes/_daily/058.mp4"
+"en": "Why? I'll tell you why.",
+"ru": "Зачем? Я скажу вам зачем.",
+"use": "Когда перехватываешь разговор и собираешься объяснить по-своему.",
+"clip": "scenes/_daily/taxi-driver-betsy_1_3.mp4"
 },
 {
 "sid": "breaking-bad-knocks",
@@ -588,7 +578,17 @@
 "en": "Please just hear me out.",
 "ru": "Просто выслушай меня.",
 "use": "Когда просишь дослушать до конца, прежде чем злиться или решать.",
-"clip": "scenes/_daily/059.mp4"
+"clip": "scenes/_daily/breaking-bad-knocks_2_7.mp4"
+},
+{
+"sid": "clavicular-bets",
+"pi": 1,
+"n": 10,
+"film": "Clavicular",
+"en": "They're not that far behind.",
+"ru": "Не так уж сильно они и отстают.",
+"use": "Когда говоришь, что отставание небольшое — в гонке, рейтинге, учёбе.",
+"clip": "scenes/_daily/clavicular-bets_1_10.mp4"
 },
 {
 "sid": "breaking-bad-gus",
@@ -598,7 +598,7 @@
 "en": "Will I hear from you?",
 "ru": "Вы мне позвоните?",
 "use": "Когда в конце встречи вежливо выясняешь, будет ли продолжение: собеседование, сделка, свидание.",
-"clip": "scenes/_daily/060.mp4"
+"clip": "scenes/_daily/breaking-bad-gus_1_11.mp4"
 }
 ]
 }

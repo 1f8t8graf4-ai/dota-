@@ -133,7 +133,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   // логика idWhole на всех фразах (настоящее выражение внутри фразы — как раньше)
   r=await ev(()=>{const all=[];SCENES.forEach(s=>s.parts.forEach(p=>p.ph.forEach(f=>{const id=phIdiom(f);if(id)all.push([f,id]);})));
     const whole=all.filter(([f,id])=>idWhole(id,f)),part=all.filter(([f,id])=>!idWhole(id,f));
-    const pop=(f,w)=>{const host=document.createElement('div'),el=document.createElement('i');el.className='sw';el.textContent=w;host.appendChild(el);document.body.appendChild(host);wordShow(el,f,true);const t=KWP.innerText;kwHide(0);host.remove();return t;};
+    const pop=(f,w)=>{const host=document.createElement('div'),el=document.createElement('i');el.className='sw';el.textContent=w;host.appendChild(el);document.body.appendChild(host);wordShow(el,f,true);const t=KWP.textContent;kwHide(0);host.remove();return t;};
     const [fw,iw]=whole[0],[fp,ip]=part.find(([f,id])=>id.words.some(w=>phNorm(f.en).split(' ').includes(w)))||[];
     const tw=pop(fw,iw.words[0]),tp=fp?pop(fp,ip.words.find(w=>phNorm(fp.en).split(' ').includes(w))):'';
     return {whole:whole.length,part:part.length,wDup:/Тут это часть выражения/i.test(tw),wIn:/Во фразе/i.test(tw),pDup:/Тут это часть выражения/i.test(tp),pIn:/Во фразе/i.test(tp)};});
