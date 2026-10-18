@@ -1257,7 +1257,7 @@ async function statsTouch(env, user, src) {
       .bind(user.id, now, now, cleanSrc(src) || null, String(user.lang || user.language_code || '').slice(0, 5), (user.n || (user.first_name ? spyName(user) : '')) ? String(user.n || spyName(user)).slice(0, 40) : null, String(user.un || user.username || '').slice(0, 40)).run();
   } catch (e) {}
 }
-const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end', 'daily_open'];
+const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end', 'daily_open', 'start_pick', 'poll'];
 async function statsEvent(env, user, e, sid) {
   try {
     if (!EV_OK.includes(e) || isAdminId(env, user.id)) return;
@@ -1282,8 +1282,60 @@ async function usersApi(env, b) {
     dau: (await one('SELECT COUNT(*) n FROM users WHERE last > ?', now - D)).n || 0,
     list: list.slice(0, lim), more: list.length > lim, now } };
 }
+// 13.9.19: ошибки из приложения (одинаковые склеиваются, у каждой — сколько раз и у скольких) и воронка новичков для админки
+let errReady = false;
+async function errDb(env) {
+  const db = await statsDb(env); if (!db) return null;
+  if (!errReady) { await db.prepare('CREATE TABLE IF NOT EXISTS app_errs (k TEXT PRIMARY KEY, msg TEXT, at TEXT, v TEXT, scr TEXT, ua TEXT, n INTEGER, users TEXT, first INTEGER, last INTEGER)').run(); errReady = true; }
+  return db;
+}
+async function errSave(env, user, b) {
+  try {
+    const db = await errDb(env); if (!db) return;
+    const msg = String(b.msg || '').slice(0, 300), at = String(b.at || '').slice(0, 160), now = Date.now();
+    if (!msg) return;
+    const k = (msg + '|' + at).slice(0, 400), uid = String(user.id);
+    const row = await db.prepare('SELECT users, n FROM app_errs WHERE k = ?').bind(k).first();
+    if (row) {
+      const U = String(row.users || '').split(',').filter(Boolean); if (!U.includes(uid) && U.length < 50) U.push(uid);
+      await db.prepare('UPDATE app_errs SET n = n + 1, users = ?, last = ?, v = ?, scr = ?, ua = ? WHERE k = ?').bind(U.join(','), now, String(b.v || '').slice(0, 16), String(b.scr || '').slice(0, 24), String(b.ua || '').slice(0, 120), k).run();
+    } else {
+      const cnt = (await db.prepare('SELECT COUNT(*) n FROM app_errs').first() || {}).n || 0;
+      if (cnt >= 300) await db.prepare('DELETE FROM app_errs WHERE k IN (SELECT k FROM app_errs ORDER BY last ASC LIMIT 50)').run();
+      await db.prepare('INSERT INTO app_errs (k, msg, at, v, scr, ua, n, users, first, last) VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?, ?)').bind(k, msg, at, String(b.v || '').slice(0, 16), String(b.scr || '').slice(0, 24), String(b.ua || '').slice(0, 120), uid, now, now).run();
+    }
+  } catch (e) {}
+}
+async function errsApi(env, b) {
+  const db = await errDb(env); if (!db) return { ok: false, msg: 'База D1 не подключена' };
+  if (b.clear) { await db.prepare('DELETE FROM app_errs').run(); return { ok: true, v: { list: [] } }; }
+  const list = ((await db.prepare('SELECT msg, at, v, scr, ua, n, users, first, last FROM app_errs ORDER BY last DESC LIMIT 60').all()).results || [])
+    .map((r) => ({ msg: r.msg, at: r.at, v: r.v, scr: r.scr, ua: r.ua, n: r.n, u: String(r.users || '').split(',').filter(Boolean).length, first: r.first, last: r.last }));
+  return { ok: true, v: { list, now: Date.now() } };
+}
+async function funnelApi(env, b) {
+  const db = await statsDb(env); if (!db) return { ok: false, msg: 'База D1 не подключена' };
+  const D = 864e5, now = Date.now(), days = Math.max(1, Math.min(90, b.days | 0 || 30)), t0 = now - days * D;
+  const one = async (q, ...a) => ((await db.prepare(q).bind(...a).first()) || {}).n || 0;
+  const all = async (q, ...a) => ((await db.prepare(q).bind(...a).all()).results) || [];
+  const did = (e) => one('SELECT COUNT(DISTINCT e.uid) n FROM events e JOIN users u ON u.uid = e.uid WHERE u.first > ? AND e.e = ?', t0, e);
+  const ret = async (from, to, minAge) => ({
+    base: await one('SELECT COUNT(*) n FROM users WHERE first > ? AND first < ?', t0, now - minAge * D),
+    back: await one('SELECT COUNT(DISTINCT u.uid) n FROM users u JOIN events e ON e.uid = u.uid WHERE u.first > ? AND u.first < ? AND e.ts > u.first + ? AND e.ts < u.first + ?', t0, now - minAge * D, from * D, to * D) });
+  return { ok: true, v: {
+    days,
+    users: await one('SELECT COUNT(*) n FROM users WHERE first > ?', t0),
+    picked: await did('start_pick'), watched: await did('ep_watch'), quiz: await did('ep_quiz'), review: await did('review'), daily: await did('daily_open'),
+    d1: await ret(0.75, 2, 2), d7: await ret(6, 8, 8),
+    picks: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'start_pick' AND ts > ? GROUP BY sid ORDER BY n DESC", t0),
+    poll: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'poll' GROUP BY sid ORDER BY n DESC"),
+    src: await all("SELECT COALESCE(src,'без метки') s, COUNT(*) n FROM users WHERE first > ? GROUP BY s ORDER BY n DESC LIMIT 8", t0) } };
+}
 async function evApi(env, user, b) {
   if (b.a === 'users') return isAdminId(env, user.id) ? usersApi(env, b) : { ok: false, msg: 'Только для админа' };
+  if (b.a === 'errs') return isAdminId(env, user.id) ? errsApi(env, b) : { ok: false, msg: 'Только для админа' };
+  if (b.a === 'funnel') return isAdminId(env, user.id) ? funnelApi(env, b) : { ok: false, msg: 'Только для админа' };
+  if (b.a === 'err') { await errSave(env, user, b); return { ok: true }; }
   await statsTouch(env, user, b.src);
   await statsEvent(env, user, String(b.e || ''), b.sid);
   return { ok: true };
@@ -1310,7 +1362,7 @@ async function statsReport(env) {
   const ev = await all('SELECT e, COUNT(*) n, COUNT(DISTINCT uid) u FROM events WHERE ts > ? GROUP BY e ORDER BY n DESC', week0);
   const top = await all("SELECT sid, COUNT(*) n FROM events WHERE ts > ? AND e IN ('ep_quiz','word_quiz') AND sid <> '' GROUP BY sid ORDER BY n DESC LIMIT 5", week0);
   const pct = (a, b) => (b ? Math.round((a / b) * 100) + '%' : '—');
-  const EVN = { open: 'открыли приложение', ep_watch: 'досмотрели эпизод', ep_quiz: 'прошли проверку эпизода', word_quiz: 'прошли тест слов', review: 'повторение', dict: 'открыли словарь', search: 'поиск', bot_start: '/start в боте', sc_buy: 'купили сцену', pvp_end: 'сыграли дуэль по сцене' };
+  const EVN = { open: 'открыли приложение', ep_watch: 'досмотрели эпизод', ep_quiz: 'прошли проверку эпизода', word_quiz: 'прошли тест слов', review: 'повторение', dict: 'открыли словарь', search: 'поиск', bot_start: '/start в боте', sc_buy: 'купили сцену', pvp_end: 'сыграли дуэль по сцене', start_pick: 'выбрали первую сцену', poll: 'ответили на опрос', daily_open: 'открыли «Фразу дня»' };
   return [
     '📊 <b>Статистика</b>',
     `Всего людей: <b>${total}</b> · новых за сутки: <b>${new1}</b> · за неделю: <b>${new7}</b>`,
@@ -1527,6 +1579,6 @@ export default {
       return new Response('ok');
     }
 
-    return new Response('Бот работает 👍 Версия 13.9.17\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response('Бот работает 👍 Версия 13.9.19\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   },
 };

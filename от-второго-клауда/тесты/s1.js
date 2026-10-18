@@ -19,7 +19,7 @@ async function answerAny(page){return page.evaluate(()=>{
     const d=await page.evaluate(()=>({n:store.day&&store.day.n,st:store.streak,ld:store.lastDay===new Date().toDateString(),wk:JSON.stringify(store.week)}));
     ok('ответ в сцене → цель дня +1 и серия 1',d.n===1&&d.st===1&&d.ld,how+' '+JSON.stringify(d));
     await page.evaluate(()=>renderTab('learn'));await page.waitForTimeout(500);
-    const ht=await page.evaluate(()=>(document.querySelector('.hh-day')||document.querySelector('.ht-h span')||{}).textContent||'');ok('Главная «Сегодня» показывает серию и 1/20',/🔥 1 день подряд · сегодня 1 из 20|🔥 1 день · 1\/20/.test(ht),ht);   // 13.9.13: новая Главная
+    const ht=await page.evaluate(()=>(document.querySelector('#hDay')||document.querySelector('.hh-day')||{}).innerText||'');ok('Главная «Сегодня» показывает серию и 1/20',/^1\s+из 20[\s\S]*🔥 1 день/.test(ht),ht);   // 13.9.13: новая Главная
     // язык: обучение с Deutsch → английский фильм всё равно английский
     const L=await page.evaluate(()=>{store.langs=['de'];store.kinoLang='de';delete store.scSub;SCUR={id:'american-psycho',i:0};return scL()+'/'+scT(scOf('american-psycho').parts[0].ph[0]).slice(0,30);});
     ok('langs=de: английская сцена — английские задания',L.startsWith('en/'),L);
