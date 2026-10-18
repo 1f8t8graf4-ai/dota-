@@ -78,7 +78,7 @@ NOSMOKE={
 }
 for k,v in NOSMOKE.items():FIX.setdefault(k,[]).extend(v)
 LIVE_MAIN.update({
- 2:'Весь стол и окно; по скатерти и городу плывут тени облаков, свет то ярче, то тусклее; в газировке пузырьки, по шейкеру капли.',
+ 2:'За окном плывут облака, их тени скользят по небоскрёбам, внизу едут машины; солнечные пятна на скатерти гаснут и возвращаются; в газировке пузырьки.',
  5:'Над эспрессо пар, розовая неоновая свинья в витрине тихо гудит, красный навес чуть колышется от утреннего ветра.',
  8:'В аквариуме плавают рыбки и бегут пузырьки, по окну текут капли дождя.',
  9:'На телике скачут лошади, розовый неон из клуба пульсирует, в виски тает лёд.',
@@ -90,7 +90,7 @@ LIVE_MAIN.update({
 })
 # Короткий промт целиком (Андрей: длинный с кучей «неподвижно» Гемини делает статикой) — движение в первой строке, крупно и близко
 SHORT={
- 2:"A living, moving shot of a whole lunch table by a big window of an expensive 1980s restaurant high above Manhattan. The full table is in frame, seen from a normal seated distance, with the window and the city behind it.\n\nWhat moves: big soft shadows of passing clouds slide slowly across the white tablecloth, the glasses and the city outside, the daylight gently brightens and dims; in the tall glass of sparkling water, clearly visible streams of bubbles rise; cold drops slide down the silver cocktail shaker.\n\nOn the table: a martini with green olives, a tall glass of sparkling water with a lemon slice on the rim, a small vase of yellow flowers, a silver cocktail shaker. Behind the window: the Manhattan skyline under a bright overcast sky with moving clouds.\n\nStatic camera on a tripod, the framing does not change, nothing fills the frame up close. Vertical 9:16, 8 seconds, photorealistic. No people, no hands, no text, no money, no smoke.",
+ 2:"Static tripod shot: the frame stays fixed while everything inside it is alive. An empty table for two by a floor-to-ceiling window in an elegant 1980s restaurant on the 60th floor of a Manhattan skyscraper, at lunchtime; the room is quiet and the chairs are empty.\n\nThe window fills the upper two thirds of the frame: the Manhattan skyline stretches to the horizon under a bright blue sky full of big white clouds. The clouds drift steadily across the sky and their shadows glide over the skyscrapers. Far below, tiny yellow taxis and cars flow along the avenues.\n\nSunlight breaks through the clouds and falls through the window onto the table: when a cloud passes, the bright patches of sun on the white tablecloth fade and then come back. In a tall glass of sparkling water, lines of bubbles rise all the time and sparkle in the sun.\n\nOn the table: a classic martini with green olives, the tall glass of sparkling water, a small vase of yellow flowers and a silver cocktail shaker with cold drops running down it.\n\nRealistic 35mm film look, natural colors, rich detail, balanced exposure. Sound: quiet restaurant ambience and the soft fizz of the water.",
 }
 BAN=['Lamborghini','Countach','Checker','Telegram','Gatorade','Huey','Pollos','Impaulsive','Satriale','Bada','shark']
 
