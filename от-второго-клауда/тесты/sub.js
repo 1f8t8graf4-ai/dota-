@@ -11,7 +11,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   // время, когда на экране именно эта строка субтитров (строки перекрываются — берём первую подходящую, как scTick)
   const at=async txt=>{await ev(txt=>{const L=SV._loc,x=L.find(r=>r[2].includes(txt));let t=x[0]+0.2;for(;t<x[1]+0.25;t+=0.05)if(L.find(r=>t>=r[0]+SUB_LAG&&t<=r[1]+0.25)===x)break;SV.pause();SV.currentTime=t;},txt);await page.waitForTimeout(700);await ev(()=>{try{scTick();}catch(e){}});await page.waitForTimeout(300);};
   const pop=async word=>{const l=page.locator('.sc-subs .sw.in-ph',{hasText:word}).first();if(dev==='ph')await l.tap();else await l.click();await page.waitForTimeout(700);
-    return ev(()=>{const p=document.querySelector('.kw-pop.on')||document.querySelector('.sc-wpop');return p?p.innerText.replace(/\s+/g,' ').slice(0,220):null;});};
+    return ev(()=>{const p0=document.querySelector('.kw-pop.on')||document.querySelector('.sc-wpop');if(!p0)return null;const p=p0.cloneNode(true);p.classList.add('mo');p.querySelectorAll('.kwp-wi').forEach(x=>x.remove());document.body.appendChild(p);const s=p.innerText.replace(/\s+/g,' ').slice(0,900);p.remove();return s;});};   // 13.9.13: «подробнее о слове» (.kwp-wi) — не считаем
   // «Name of the game.» — «выражение» почти вся фраза (The name of the game)
   await at('Name of the game');let r=await ev(()=>[...document.querySelectorAll('.sc-subs .sw.in-ph')].map(x=>x.textContent));ok('строка «Name of the game» — слова подчёркнуты',r.length>=3,r);
   let t=await pop('game');ok('«game»: без «часть выражения», фраза один раз',!!t&&!/часть выражения/i.test(t)&&(t.match(/Name of the game/gi)||[]).length<=1&&/(Во фразе|Вся реплика)/i.test(t),t);

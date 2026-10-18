@@ -1,4 +1,4 @@
-// Бот «Языки по кино» (@languagegamesbot) — Cloudflare Worker, версия 13.9.6
+// Бот «Языки по кино» (@languagegamesbot) — Cloudflare Worker, версия 13.9.17
 // ОДИН воркер на всё: бот, онлайн-игры, админ-панель, статистика, напоминания, (с 12.0) дуэли по сценам + сброс прогресса
 // и (с 13.9) раздача видео/картинок/музыки сцен из Cloudflare R2 — адрес /m/scenes/<сцена>/<файл>.
 // Отдельный воркер kino-pvp больше НЕ нужен — если ставил, его можно удалить.
@@ -1114,6 +1114,9 @@ async function onUpdate(upd, env) {
     const name = (msg.from && msg.from.first_name) || '';
     if (!isGroup && msg.from) { await statsTouch(env, msg.from, cmdRaw === '/start' ? parts[1] : ''); if (cmdRaw === '/start') await statsEvent(env, msg.from, 'bot_start', parts[1] || ''); }
     if (cmdRaw === '/stats') { if (!isAdminId(env, msg.from.id)) return; return tg(env, 'sendMessage', { chat_id: chat.id, text: await statsReport(env), parse_mode: 'HTML', disable_web_page_preview: true }); }
+    if (cmdRaw === '/daily') { if (!isAdminId(env, msg.from.id) || isGroup) return; const db = await remindDb(env); const x = db && await dailyPick(env, args[0] ? +args[0] || null : null);   // 13.9.17: проверить «Фразу дня»
+      if (!x) return tg(env, 'sendMessage', { chat_id: chat.id, text: 'Список «Фразы дня» не загрузился (data/daily.json на сайте) или нет базы.' });
+      const res = await dailySend(env, db, chat.id, x, 0); if (res && res.ok === false) return tg(env, 'sendMessage', { chat_id: chat.id, text: 'Не отправилось: ' + (res.description || '?') }); return; }
     if (cmdRaw === '/quiz') return sendQuiz(env, chat, args[0]);
     if (cmdRaw === '/duel') return (await botGate(env, chat, msg.from.id, ['games', 'arena'], '⚔️ Дуэль')) || chatDuelStart(env, chat, args[0]);
     if (cmdRaw === '/spy') return (await botGate(env, chat, msg.from.id, ['games', 'spy'], '🕵️ «Шпион»')) || sendSpyRoom(env, chat, msg.from, args);
@@ -1150,26 +1153,80 @@ async function onUpdate(upd, env) {
 let remindReady = false;
 async function remindDb(env) {
   if (!env.DB) return null;
-  if (!remindReady) { await env.DB.prepare('CREATE TABLE IF NOT EXISTS reminders (uid INTEGER PRIMARY KEY, next INTEGER, n INTEGER, off INTEGER, sent INTEGER)').run(); try { await env.DB.prepare('ALTER TABLE reminders ADD COLUMN top TEXT').run(); } catch (e) {} remindReady = true; }
+  if (!remindReady) { await env.DB.prepare('CREATE TABLE IF NOT EXISTS reminders (uid INTEGER PRIMARY KEY, next INTEGER, n INTEGER, off INTEGER, sent INTEGER)').run(); try { await env.DB.prepare('ALTER TABLE reminders ADD COLUMN top TEXT').run(); } catch (e) {}
+    // 13.9.17: «Фраза дня» — dday (день по Берлину, когда уже прислали), doff (выключена в приложении); file_id роликов
+    for (const c of ['dday INTEGER', 'doff INTEGER']) { try { await env.DB.prepare('ALTER TABLE reminders ADD COLUMN ' + c).run(); } catch (e) {} }
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS daily_files (k TEXT PRIMARY KEY, fid TEXT)').run();
+    remindReady = true; }
   return env.DB;
 }
 async function remindApi(env, user, b) {
   const db = await remindDb(env);
-  const next = Math.max(0, Math.floor(+b.next || 0)), n = Math.max(0, Math.min(999, Math.floor(+b.n || 0))), off = b.off ? 1 : 0;
+  const next = Math.max(0, Math.floor(+b.next || 0)), n = Math.max(0, Math.min(999, Math.floor(+b.n || 0))), off = b.off ? 1 : 0, doff = b.doff ? 1 : 0;
   const top = JSON.stringify((Array.isArray(b.top) ? b.top : []).slice(0, 3).map((x) => String(x).slice(0, 90)));
-  await db.prepare('INSERT INTO reminders (uid, next, n, off, sent, top) VALUES (?, ?, ?, ?, 0, ?) ON CONFLICT(uid) DO UPDATE SET next = excluded.next, n = excluded.n, off = excluded.off, top = excluded.top').bind(user.id, next, n, off, top).run();
+  await db.prepare('INSERT INTO reminders (uid, next, n, off, sent, top, doff) VALUES (?, ?, ?, ?, 0, ?, ?) ON CONFLICT(uid) DO UPDATE SET next = excluded.next, n = excluded.n, off = excluded.off, top = excluded.top, doff = excluded.doff').bind(user.id, next, n, off, top, doff).run();
   return { ok: true };
 }
 async function remindTick(env) {
   const db = await remindDb(env);
   if (!db) return;
   const hour = +new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Berlin', hour: 'numeric', hour12: false }).format(new Date());
-  if (hour < 10 || hour >= 21) return;
+  if (hour < 12 || hour >= 21) return;   // 13.9.17: с 12 — вместе с «Фразой дня» (одно сообщение: ролик + «Повторить N»)
+  try { await dailyTick(env, db); } catch (e) { console.log('daily', e); }
   const now = Date.now();
   const rows = (await db.prepare('SELECT uid, n, top FROM reminders WHERE off = 0 AND next > 0 AND next <= ? AND n > 0 AND (sent IS NULL OR sent < next) AND (sent IS NULL OR sent < ?) LIMIT 200').bind(now, now - 20 * 36e5).all()).results || [];
   for (const r of rows) {
     const res = await tg(env, 'sendMessage', { chat_id: r.uid, text: `🎬 Пора повторить: ${r.n} ${r.n % 10 === 1 && r.n % 100 !== 11 ? 'фраза' : r.n % 10 >= 2 && r.n % 10 <= 4 && (r.n % 100 < 12 || r.n % 100 > 14) ? 'фразы' : 'фраз'} из сцен.${(() => { try { const L = JSON.parse(r.top || '[]'); return L.length ? '\n\n' + L.map((x) => '• ' + x).join('\n') : ''; } catch (e) { return ''; } })()}\n\nПара минут — и они останутся надолго.`, reply_markup: { inline_keyboard: [[openBtn(env, false, '▶️  Повторить', 'rev')]] } });
     await db.prepare('UPDATE reminders SET sent = ?, off = ? WHERE uid = ?').bind(now, res && res.ok === false && /blocked|deactivated|not found/i.test(res.description || '') ? 1 : 0, r.uid).run();
+  }
+}
+
+/* ================= 13.9.17: «Фраза дня» — короткий ролик из сцены раз в день ================= */
+// Список — data/daily.json на сайте (APP_URL), ролики — R2 scenes/_daily/NNN.mp4 (tools/daily_pick.py + tools/daily_cut.py):
+// кусок сцены с вшитыми субтитрами (оригинал + перевод) — понятно и без звука. Один ролик на всех в день (по дню по Берлину).
+// Кому: у кого в приложении включены напоминания и «Фраза дня» (reminders.off = 0, doff = 0), раз в день с 12:00 по Берлину
+// (больше 200 человек — дальше в следующие часы). Если пора повторять — в том же сообщении кнопка «Повторить N».
+// Первый раз видео уходит по ссылке на /m/…, дальше — по file_id (таблица daily_files): Telegram не качает заново.
+// Админ: /daily — прислать сегодняшнюю себе, /daily 7 — седьмую из списка.
+const SELF_URL = 'https://dota.1f8t8graf4.workers.dev';
+let dailyCache = null;
+async function dailyList(env) {
+  if (dailyCache && Date.now() - dailyCache.t < 36e5) return dailyCache.L;
+  try {
+    const r = await fetch(String(env.APP_URL || '').replace(/\/?$/, '/') + 'data/daily.json?d=' + Math.floor(Date.now() / 36e5), { cf: { cacheTtl: 600 } });
+    const j = await r.json(); const L = (j && Array.isArray(j.DAILY)) ? j.DAILY : []; dailyCache = { t: Date.now(), L }; return L;
+  } catch (e) { return dailyCache ? dailyCache.L : []; }
+}
+const berlinDay = () => { const d = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); return Math.floor(Date.parse(d + 'T00:00:00Z') / 864e5); };
+const hEsc = (t) => String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const phrasesWord = (n) => n % 10 === 1 && n % 100 !== 11 ? 'фразу' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'фразы' : 'фраз';
+async function dailySend(env, db, uid, x, revN) {
+  const row = await db.prepare('SELECT fid FROM daily_files WHERE k = ?').bind(x.clip).first();
+  const kb = [[openBtn(env, false, '▶️  Разобрать сцену', `dp_${x.sid}_${x.pi}_${x.n}`)]];
+  if (revN) kb.push([openBtn(env, false, `🔁  Повторить ${revN} ${phrasesWord(revN)}`, 'rev')]);
+  const body = { chat_id: uid, caption: `🎬 <b>Фраза дня</b> · ${hEsc(x.film)}\n\n<b>${hEsc(x.en)}</b>\n<i>${hEsc(x.ru)}</i>${x.use ? '\n\n💡 ' + hEsc(x.use) : ''}`, parse_mode: 'HTML', supports_streaming: true, reply_markup: { inline_keyboard: kb } };
+  const url = SELF_URL + '/m/' + x.clip;
+  let res = await tg(env, 'sendVideo', { ...body, video: row ? row.fid : url });
+  if (row && res && res.ok === false && !/blocked|deactivated|not found|initiate/i.test(res.description || '')) res = await tg(env, 'sendVideo', { ...body, video: url });   // file_id протух — по ссылке
+  const fid = res && res.ok && res.result && res.result.video && res.result.video.file_id;
+  if (fid && (!row || row.fid !== fid)) await db.prepare('INSERT INTO daily_files (k, fid) VALUES (?, ?) ON CONFLICT(k) DO UPDATE SET fid = excluded.fid').bind(x.clip, fid).run();
+  return res;
+}
+async function dailyPick(env, k) {
+  const L = await dailyList(env); if (!L.length) return null;
+  const i = k != null ? Math.max(0, Math.min(L.length - 1, k - 1)) : ((berlinDay() % L.length) + L.length) % L.length;
+  return L[i];
+}
+async function dailyTick(env, db) {
+  const x = await dailyPick(env); if (!x) return;
+  const day = berlinDay(), now = Date.now();
+  const rows = (await db.prepare('SELECT uid, n, next, sent FROM reminders WHERE off = 0 AND (doff IS NULL OR doff = 0) AND (dday IS NULL OR dday < ?) LIMIT 200').bind(day).all()).results || [];
+  for (const r of rows) {
+    const due = r.n > 0 && r.next > 0 && r.next <= now && (r.sent == null || r.sent < r.next);
+    const res = await dailySend(env, db, r.uid, x, due ? r.n : 0);
+    const dead = res && res.ok === false && /blocked|deactivated|not found|initiate/i.test(res.description || '') ? 1 : 0;
+    if (due) await db.prepare('UPDATE reminders SET dday = ?, off = ?, sent = ? WHERE uid = ?').bind(day, dead, now, r.uid).run();
+    else await db.prepare('UPDATE reminders SET dday = ?, off = ? WHERE uid = ?').bind(day, dead, r.uid).run();
   }
 }
 
@@ -1200,7 +1257,7 @@ async function statsTouch(env, user, src) {
       .bind(user.id, now, now, cleanSrc(src) || null, String(user.lang || user.language_code || '').slice(0, 5), (user.n || (user.first_name ? spyName(user) : '')) ? String(user.n || spyName(user)).slice(0, 40) : null, String(user.un || user.username || '').slice(0, 40)).run();
   } catch (e) {}
 }
-const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end'];
+const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end', 'daily_open', 'start_pick', 'poll'];
 async function statsEvent(env, user, e, sid) {
   try {
     if (!EV_OK.includes(e) || isAdminId(env, user.id)) return;
@@ -1225,8 +1282,60 @@ async function usersApi(env, b) {
     dau: (await one('SELECT COUNT(*) n FROM users WHERE last > ?', now - D)).n || 0,
     list: list.slice(0, lim), more: list.length > lim, now } };
 }
+// 13.9.19: ошибки из приложения (одинаковые склеиваются, у каждой — сколько раз и у скольких) и воронка новичков для админки
+let errReady = false;
+async function errDb(env) {
+  const db = await statsDb(env); if (!db) return null;
+  if (!errReady) { await db.prepare('CREATE TABLE IF NOT EXISTS app_errs (k TEXT PRIMARY KEY, msg TEXT, at TEXT, v TEXT, scr TEXT, ua TEXT, n INTEGER, users TEXT, first INTEGER, last INTEGER)').run(); errReady = true; }
+  return db;
+}
+async function errSave(env, user, b) {
+  try {
+    const db = await errDb(env); if (!db) return;
+    const msg = String(b.msg || '').slice(0, 300), at = String(b.at || '').slice(0, 160), now = Date.now();
+    if (!msg) return;
+    const k = (msg + '|' + at).slice(0, 400), uid = String(user.id);
+    const row = await db.prepare('SELECT users, n FROM app_errs WHERE k = ?').bind(k).first();
+    if (row) {
+      const U = String(row.users || '').split(',').filter(Boolean); if (!U.includes(uid) && U.length < 50) U.push(uid);
+      await db.prepare('UPDATE app_errs SET n = n + 1, users = ?, last = ?, v = ?, scr = ?, ua = ? WHERE k = ?').bind(U.join(','), now, String(b.v || '').slice(0, 16), String(b.scr || '').slice(0, 24), String(b.ua || '').slice(0, 120), k).run();
+    } else {
+      const cnt = (await db.prepare('SELECT COUNT(*) n FROM app_errs').first() || {}).n || 0;
+      if (cnt >= 300) await db.prepare('DELETE FROM app_errs WHERE k IN (SELECT k FROM app_errs ORDER BY last ASC LIMIT 50)').run();
+      await db.prepare('INSERT INTO app_errs (k, msg, at, v, scr, ua, n, users, first, last) VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?, ?)').bind(k, msg, at, String(b.v || '').slice(0, 16), String(b.scr || '').slice(0, 24), String(b.ua || '').slice(0, 120), uid, now, now).run();
+    }
+  } catch (e) {}
+}
+async function errsApi(env, b) {
+  const db = await errDb(env); if (!db) return { ok: false, msg: 'База D1 не подключена' };
+  if (b.clear) { await db.prepare('DELETE FROM app_errs').run(); return { ok: true, v: { list: [] } }; }
+  const list = ((await db.prepare('SELECT msg, at, v, scr, ua, n, users, first, last FROM app_errs ORDER BY last DESC LIMIT 60').all()).results || [])
+    .map((r) => ({ msg: r.msg, at: r.at, v: r.v, scr: r.scr, ua: r.ua, n: r.n, u: String(r.users || '').split(',').filter(Boolean).length, first: r.first, last: r.last }));
+  return { ok: true, v: { list, now: Date.now() } };
+}
+async function funnelApi(env, b) {
+  const db = await statsDb(env); if (!db) return { ok: false, msg: 'База D1 не подключена' };
+  const D = 864e5, now = Date.now(), days = Math.max(1, Math.min(90, b.days | 0 || 30)), t0 = now - days * D;
+  const one = async (q, ...a) => ((await db.prepare(q).bind(...a).first()) || {}).n || 0;
+  const all = async (q, ...a) => ((await db.prepare(q).bind(...a).all()).results) || [];
+  const did = (e) => one('SELECT COUNT(DISTINCT e.uid) n FROM events e JOIN users u ON u.uid = e.uid WHERE u.first > ? AND e.e = ?', t0, e);
+  const ret = async (from, to, minAge) => ({
+    base: await one('SELECT COUNT(*) n FROM users WHERE first > ? AND first < ?', t0, now - minAge * D),
+    back: await one('SELECT COUNT(DISTINCT u.uid) n FROM users u JOIN events e ON e.uid = u.uid WHERE u.first > ? AND u.first < ? AND e.ts > u.first + ? AND e.ts < u.first + ?', t0, now - minAge * D, from * D, to * D) });
+  return { ok: true, v: {
+    days,
+    users: await one('SELECT COUNT(*) n FROM users WHERE first > ?', t0),
+    picked: await did('start_pick'), watched: await did('ep_watch'), quiz: await did('ep_quiz'), review: await did('review'), daily: await did('daily_open'),
+    d1: await ret(0.75, 2, 2), d7: await ret(6, 8, 8),
+    picks: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'start_pick' AND ts > ? GROUP BY sid ORDER BY n DESC", t0),
+    poll: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'poll' GROUP BY sid ORDER BY n DESC"),
+    src: await all("SELECT COALESCE(src,'без метки') s, COUNT(*) n FROM users WHERE first > ? GROUP BY s ORDER BY n DESC LIMIT 8", t0) } };
+}
 async function evApi(env, user, b) {
   if (b.a === 'users') return isAdminId(env, user.id) ? usersApi(env, b) : { ok: false, msg: 'Только для админа' };
+  if (b.a === 'errs') return isAdminId(env, user.id) ? errsApi(env, b) : { ok: false, msg: 'Только для админа' };
+  if (b.a === 'funnel') return isAdminId(env, user.id) ? funnelApi(env, b) : { ok: false, msg: 'Только для админа' };
+  if (b.a === 'err') { await errSave(env, user, b); return { ok: true }; }
   await statsTouch(env, user, b.src);
   await statsEvent(env, user, String(b.e || ''), b.sid);
   return { ok: true };
@@ -1253,7 +1362,7 @@ async function statsReport(env) {
   const ev = await all('SELECT e, COUNT(*) n, COUNT(DISTINCT uid) u FROM events WHERE ts > ? GROUP BY e ORDER BY n DESC', week0);
   const top = await all("SELECT sid, COUNT(*) n FROM events WHERE ts > ? AND e IN ('ep_quiz','word_quiz') AND sid <> '' GROUP BY sid ORDER BY n DESC LIMIT 5", week0);
   const pct = (a, b) => (b ? Math.round((a / b) * 100) + '%' : '—');
-  const EVN = { open: 'открыли приложение', ep_watch: 'досмотрели эпизод', ep_quiz: 'прошли проверку эпизода', word_quiz: 'прошли тест слов', review: 'повторение', dict: 'открыли словарь', search: 'поиск', bot_start: '/start в боте', sc_buy: 'купили сцену', pvp_end: 'сыграли дуэль по сцене' };
+  const EVN = { open: 'открыли приложение', ep_watch: 'досмотрели эпизод', ep_quiz: 'прошли проверку эпизода', word_quiz: 'прошли тест слов', review: 'повторение', dict: 'открыли словарь', search: 'поиск', bot_start: '/start в боте', sc_buy: 'купили сцену', pvp_end: 'сыграли дуэль по сцене', start_pick: 'выбрали первую сцену', poll: 'ответили на опрос', daily_open: 'открыли «Фразу дня»' };
   return [
     '📊 <b>Статистика</b>',
     `Всего людей: <b>${total}</b> · новых за сутки: <b>${new1}</b> · за неделю: <b>${new7}</b>`,
@@ -1470,6 +1579,6 @@ export default {
       return new Response('ok');
     }
 
-    return new Response('Бот работает 👍 Версия 13.9.6\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response('Бот работает 👍 Версия 13.9.19\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   },
 };

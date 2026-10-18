@@ -19,7 +19,8 @@
 "знакомство"
 ],
 "wolf-of-wall-street|Name of the game.": [
-"знакомство"
+"работа",
+"общение"
 ],
 "wolf-of-wall-street|Move the money from your client's pocket into your pocket.": [
 "работа",
@@ -34,7 +35,7 @@
 "быт"
 ],
 "wolf-of-wall-street|We don't create shit. We don't build anything.": [
-"ссоры"
+"работа"
 ],
 "wolf-of-wall-street|You don't let him do that.": [
 "ссоры"
@@ -75,7 +76,8 @@
 "учёба"
 ],
 "wolf-of-wall-street|This is not a tip, this is a prescription.": [
-"учёба"
+"общение",
+"здоровье"
 ],
 "wolf-of-wall-street|Trust me.": [
 "общение"
@@ -133,11 +135,12 @@
 "работа"
 ],
 "wolf-swiss-bank|Assuming the account is under your name.": [
-"знакомство",
+"деньги",
 "работа"
 ],
 "wolf-swiss-bank|If it were another name,": [
-"знакомство"
+"деньги",
+"общение"
 ],
 "wolf-swiss-bank|Was that yodeling I just heard or did you just say what I thought you said?": [
 "общение"
@@ -200,7 +203,7 @@
 "телефон и планы"
 ],
 "american-psycho|Spencer wants to meet for drinks.": [
-"знакомство",
+"общение",
 "кафе и магазин",
 "телефон и планы"
 ],
@@ -212,17 +215,11 @@
 "общение",
 "телефон и планы"
 ],
-"american-psycho|I need reservations for three at 12:30,": [
-"работа"
-],
 "american-psycho|Something romantic?": [
 "свидание"
 ],
 "american-psycho|Forget it. I'll make them.": [
 "телефон и планы"
-],
-"american-psycho|Be a doll and get me a mineral water, okay?": [
-"кафе и магазин"
 ],
 "american-psycho|You look nice today.": [
 "свидание"
@@ -300,7 +297,7 @@
 "здоровье"
 ],
 "taxi-driver-lonely|That guy keeps following us. Don't look at him.": [
-"ссоры"
+"общение"
 ],
 "taxi-driver-lonely|Wanna take a walk?": [
 "свидание",
@@ -672,10 +669,10 @@
 "общение"
 ],
 "breaking-bad-pilot|Meth labs are nasty on a good day.": [
-"здоровье"
+"эмоции",
+"быт"
 ],
 "breaking-bad-pilot|One whiff will kill you.": [
-"ссоры",
 "здоровье"
 ],
 "breaking-bad-pilot|Pay up, sucker.": [
@@ -959,7 +956,8 @@
 "общение"
 ],
 "clavicular-impaulsive|They work for some people.": [
-"работа"
+"общение",
+"быт"
 ],
 "clavicular-impaulsive|It's an automatic problem.": [
 "общение"
@@ -1210,8 +1208,8 @@
 "общение"
 ],
 "wolf-lunch-de|Oh, no. Thank you, though.": [
-"ссоры",
-"кафе и магазин"
+"кафе и магазин",
+"общение"
 ],
 "wolf-lunch-de|what can I bring for you": [
 "кафе и магазин"
@@ -1220,14 +1218,13 @@
 "телефон и планы"
 ],
 "wolf-lunch-de|You know how I like them.": [
-"знакомство",
 "кафе и магазин"
 ],
 "wolf-lunch-de|until one of us passes the fuck out": [
 "общение"
 ],
 "wolf-lunch-de|I'm good with water for now.": [
-"ссоры"
+"кафе и магазин"
 ],
 "wolf-lunch-de|Give him time.": [
 "эмоции"
@@ -1257,7 +1254,7 @@
 "работа"
 ],
 "wolf-lunch-de|Number one rule of Wall Street.": [
-"телефон и планы",
+"работа",
 "учёба"
 ],
 "wolf-lunch-de|Nobody knows if a stock is gonna go up, down": [
@@ -1291,14 +1288,14 @@
 "деньги"
 ],
 "wolf-lunch-de|Motherfucker.": [
-"ссоры"
+"общение"
 ],
 "wolf-lunch-de|I can't tell you how excited I am.": [
 "эмоции"
 ],
 "wolf-lunch-de|There's two keys to success": [
-"учёба",
-"быт"
+"работа",
+"учёба"
 ],
 "wolf-lunch-de|You gotta stay relaxed.": [
 "работа"
@@ -1310,7 +1307,8 @@
 "работа"
 ],
 "wolf-lunch-de|It kind of wigs some people out.": [
-"деньги"
+"эмоции",
+"работа"
 ],
 "wolf-lunch-de|This is not a tip, this is a prescription.": [
 "общение"
@@ -1331,8 +1329,7 @@
 "общение"
 ],
 "wolf-lunch-de|Keep the clients on the Ferris wheel.": [
-"работа",
-"учёба"
+"работа"
 ],
 "wolf-lunch-de|open 24/7": [
 "работа",
@@ -1388,7 +1385,7 @@
 ],
 "wolf-naomi-de|We're not gonna be friends.": [
 "свидание",
-"учёба"
+"общение"
 ],
 "sopranos-mahaffey-de|He's learning the business.": [
 "работа",
@@ -1402,22 +1399,22 @@
 ],
 "sopranos-mahaffey-de|I didn't want to wake the man up.": [
 "телефон и планы",
-"учёба"
+"быт"
 ],
 "sopranos-mahaffey-de|I was nauseous this morning.": [
 "здоровье",
 "быт"
 ],
 "sopranos-mahaffey-de|My mother told me I shouldn't even come in.": [
-"деньги",
-"работа"
+"работа",
+"здоровье"
 ],
 "sopranos-mahaffey-de|Get out.": [
 "общение"
 ],
 "sopranos-mahaffey-de|Can I stop you for a second?": [
-"деньги",
-"телефон и планы"
+"общение",
+"работа"
 ],
 "sopranos-mahaffey-de|I don't know where this story is going.": [
 "общение"
@@ -1436,7 +1433,8 @@
 "общение"
 ],
 "sopranos-mahaffey-de|We had coffee.": [
-"телефон и планы"
+"кафе и магазин",
+"общение"
 ],
 "sopranos-mahaffey-de|You all right?": [
 "общение"
@@ -1472,14 +1470,14 @@
 ],
 "sopranos-hasid-de|let's understand each other from the get-go here": [
 "работа",
-"учёба"
+"общение"
 ],
 "sopranos-hasid-de|that I can help you with": [
 "общение"
 ],
 "sopranos-hasid-de|that'll make me happy": [
 "эмоции",
-"учёба"
+"общение"
 ],
 "sopranos-hasid-de|What's your fuckin' problem, pal?": [
 "ссоры"
@@ -1512,7 +1510,8 @@
 "общение"
 ],
 "sopranos-hasid-de|is none of your matter": [
-"работа"
+"ссоры",
+"общение"
 ],
 "sopranos-hasid-de|You couldn't possibly understand what's going on here.": [
 "общение"
@@ -1525,7 +1524,7 @@
 "эмоции"
 ],
 "sopranos-phil-de|Listen, I've made a decision.": [
-"деньги",
+"общение",
 "быт"
 ],
 "sopranos-phil-de|Get lost.": [
@@ -1548,7 +1547,7 @@
 "деньги"
 ],
 "sopranos-phil-de|that's not what I'm saying at all": [
-"учёба"
+"общение"
 ],
 "sopranos-phil-de|has no respect for this thing": [
 "работа"
@@ -1564,7 +1563,7 @@
 "эмоции"
 ],
 "sopranos-phil-de|There's no scraps in my scrapbook.": [
-"общение"
+"эмоции"
 ],
 "sopranos-phil-de|Make it happen.": [
 "работа"
@@ -1594,14 +1593,14 @@
 "общение"
 ],
 "bb-knocks-de|Do you know how much I make a year?": [
-"работа",
-"быт"
+"деньги",
+"работа"
 ],
 "bb-knocks-de|Even if I told you, you wouldn't believe it.": [
 "общение"
 ],
 "bb-knocks-de|You clearly don't know who you're talking to": [
-"работа"
+"ссоры"
 ],
 "bb-knocks-de|So let me clue you in.": [
 "общение"
@@ -1610,10 +1609,9 @@
 "общение"
 ],
 "bb-knocks-de|I am the one who knocks.": [
-"учёба"
+"общение"
 ],
 "bb-mike-de|Get out of my way, kid.": [
-"деньги",
 "ссоры"
 ],
 "bb-mike-de|Let him talk.": [
@@ -1645,7 +1643,7 @@
 "быт"
 ],
 "bb-mike-de|It's the universal symbol for keys.": [
-"учёба",
+"общение",
 "быт"
 ],
 "bb-mike-de|that the USPS takes that very seriously": [
@@ -1667,7 +1665,7 @@
 "телефон и планы"
 ],
 "bb-mike-de|We're boned.": [
-"ссоры"
+"эмоции"
 ],
 "bb-mike-de|how they say": [
 "общение"
@@ -1676,7 +1674,7 @@
 "телефон и планы"
 ],
 "bb-mike-de|It's just a matter of time.": [
-"учёба"
+"общение"
 ],
 "bb-mike-de|What the hell difference does it make?": [
 "общение"
@@ -1694,7 +1692,7 @@
 "общение"
 ],
 "titanic-andrews-de|When can we get underway?": [
-"деньги"
+"телефон и планы"
 ],
 "titanic-andrews-de|There's no stopping it.": [
 "общение"
@@ -1707,7 +1705,7 @@
 ],
 "titanic-andrews-de|I assure you": [
 "работа",
-"знакомство"
+"общение"
 ],
 "titanic-andrews-de|It's a mathematical certainty.": [
 "учёба"
@@ -1717,7 +1715,7 @@
 "ссоры"
 ],
 "titanic-mother-de|Rose, I forbid it.": [
-"учёба"
+"ссоры"
 ],
 "titanic-mother-de|Stop it, Mother.": [
 "быт"
@@ -1926,6 +1924,59 @@
 ],
 "clavicular-18|I've been doing PE for a while.": [
 "здоровье"
+],
+"american-psycho|I need reservations for three at Camols at 12:30,": [
+"кафе и магазин",
+"работа"
+],
+"american-psycho|Be a doll and just get me a mineral water, okay?": [
+"работа",
+"общение"
+],
+"wolf-lunch-de|He wants to cash in": [
+"деньги"
+],
+"bb-mike-de|One more word.": [
+"ссоры"
+],
+"bb-mike-de|And yes, yes, it's a big deal.": [
+"эмоции",
+"работа"
+],
+"bb-mike-de|And why in the hell am I talking to you?": [
+"ссоры"
+],
+"wolf-of-wall-street|Those are rookie numbers in this racket.": [
+"работа"
+],
+"wolf-of-wall-street|It'll keep you sharp between the ears.": [
+"здоровье",
+"работа"
+],
+"sopranos-s01e01|It was amazing. They're from Canada or someplace, and it was matin' season.": [
+"эмоции",
+"общение"
+],
+"american-psycho|Good morning, Hamilton. Nice tan.": [
+"знакомство",
+"общение"
+],
+"breaking-bad-gus|Have a seat, please.": [
+"работа",
+"общение"
+],
+"breaking-bad-knocks|That's not enough.": [
+"деньги",
+"ссоры"
+],
+"clavicular-burger|Whoa, whoa, whoa.": [
+"эмоции"
+],
+"clavicular-burger|Who's that?": [
+"общение"
+],
+"clavicular-bets|Should we buy?": [
+"деньги"
 ]
 }
 }

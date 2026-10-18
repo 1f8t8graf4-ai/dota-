@@ -1,7 +1,7 @@
 // 13.6.3: сценарии по плану — каждый пункт PASS/FAIL
 const {open}=require('./st');const {chromium}=require('playwright');
 const res=[];const ok=(n,c,d)=>{res.push([c?'PASS':'FAIL',n,d||'']);console.log(c?'PASS':'FAIL',n,d||'');};
-const base={onboarded:true,introV:1,gold:300,lvl:'b',fx:false,tourV:1,scSubChosen:1,autoSc:false};
+const base={onboarded:true,introV:1,gold:300,lvl:'b',fx:false,tourV:1,scSubChosen:1,autoSc:false,typeIn:true};   // 13.9.16: путь «Писать самому» (по умолчанию теперь без печати — scratchpad ui16/notype.js)
 const seed=([st,sc])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));if(sc)localStorage.setItem('dota_sc_v1',JSON.stringify(sc));};
 async function answerAny(page){return page.evaluate(()=>{
   const c=x=>{const e=document.querySelector(x);if(e&&!e.hidden&&!e.disabled){e.click();return true;}return false;};
@@ -19,7 +19,7 @@ async function answerAny(page){return page.evaluate(()=>{
     const d=await page.evaluate(()=>({n:store.day&&store.day.n,st:store.streak,ld:store.lastDay===new Date().toDateString(),wk:JSON.stringify(store.week)}));
     ok('ответ в сцене → цель дня +1 и серия 1',d.n===1&&d.st===1&&d.ld,how+' '+JSON.stringify(d));
     await page.evaluate(()=>renderTab('learn'));await page.waitForTimeout(500);
-    const ht=await page.evaluate(()=>(document.querySelector('.ht-h span')||{}).textContent||'');ok('Главная «Сегодня» показывает серию и 1/20',/🔥 1 день · 1\/20/.test(ht),ht);
+    const ht=await page.evaluate(()=>(document.querySelector('#hDay')||document.querySelector('.hh-day')||{}).innerText||'');ok('Главная «Сегодня» показывает серию и 1/20',/^1\s+из 20[\s\S]*🔥 1 день/.test(ht),ht);   // 13.9.13: новая Главная
     // язык: обучение с Deutsch → английский фильм всё равно английский
     const L=await page.evaluate(()=>{store.langs=['de'];store.kinoLang='de';delete store.scSub;SCUR={id:'american-psycho',i:0};return scL()+'/'+scT(scOf('american-psycho').parts[0].ph[0]).slice(0,30);});
     ok('langs=de: английская сцена — английские задания',L.startsWith('en/'),L);
@@ -48,7 +48,7 @@ async function answerAny(page){return page.evaluate(()=>{
     ok('немецкий без клавиатуры (ß=ss, ü=u)',dl[0]&&dl[1]&&dl[2]===1,JSON.stringify(dl));
     // урок: реальное число фраз
     const ls=await page.evaluate(()=>{const b=scLessonScene();if(!b)return null;const n=b.n;renderTab('learn');const t=[...document.querySelectorAll('#hLesson')].map(x=>x.textContent).join(' || ');return {n,t,i:b.i,eps:[...new Set(b.cand.map(f=>f.pi))]};});
-    ok('урок: один эпизод, число фраз на карточке',ls&&ls.eps.length===1&&new RegExp(ls.n+' фраз').test(ls.t)&&!/или урок: 5 фраз/.test(ls.t)||ls&&ls.n===5,JSON.stringify(ls));
+    ok('урок: один эпизод, число фраз на карточке',ls&&ls.eps.length===1&&new RegExp(ls.n+'\\s*фраз').test(ls.t)&&!/или урок: 5 фраз/.test(ls.t)||ls&&ls.n===5,JSON.stringify(ls));
     const bk2=await page.evaluate(async()=>{const P=scP('american-psycho');P.done=[0];P.m={'0_0':3,'0_1':3};P.r={'0_0':[0,Date.now()-1000],'0_1':[0,Date.now()-1000]};renderScQuiz('american-psycho','rev');await new Promise(r=>setTimeout(r,500));const a=screen;onBack();await new Promise(r=>setTimeout(r,500));return a+'→'+screen;});
     ok('«назад» в повторении — как ✕ (не эпизод 1)',/^scq→(scene|home)$/.test(bk2),bk2);
     const rwq=await page.evaluate(()=>{const s=scOf('wolf-lunch-de');return rwCardHTML(s,0).match(/rw-q">«([^»]*)»/)[1];});
