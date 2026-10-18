@@ -62,7 +62,11 @@ FIX={
 NOSMOKE={
  2:[('; a crystal ashtray with one burning cigarette',''),('the hazy Manhattan skyscrapers','the pale Manhattan skyscrapers'),
     ('A long ribbon of blue-grey smoke rises from the cigarette and curls slowly through the soft daylight; thin streams','Thin streams'),
-    ('drops of condensation slide down the silver shaker.','drops of condensation slide slowly down the silver shaker and the cold martini glass.')],
+    ('drops of condensation slide down the silver shaker.','drops of condensation slide slowly down the silver shaker and the cold martini glass.'),
+    ('; a black 1980s pager; a black leather check folder slightly open with a real hundred-dollar bill sticking out',''),
+    ('Grade: white linen, gin and money; smug, seductive and rotten — money is not real (fugazi).','Grade: crisp white linen, cool silver and pale daylight with warm yellow accents; smug, seductive and cold.'),
+    ('sparkling mineral water with a lemon slice,','sparkling mineral water with a lemon slice resting still on the rim,'),
+    ('real-world sizes (banknotes look like real worn paper money)','real-world sizes; no money or banknotes anywhere')],
  5:[(', a cigar resting in a heavy glass ashtray and',' and'),(' a thin thread of smoke rises only from the tip of the cigar, steam rises from one espresso cup,',' thin steam rises from one espresso cup,')],
  8:[('an ashtray with one lit cigarette and an open can of beer','an open can of beer'),('; a ribbon of smoke rises from the cigarette','')],
  9:[(', an ashtray with a lit cigarette',' with slowly melting ice cubes'),('; a ribbon of smoke rises from the cigarette in the ashtray','; the ice cubes in the whiskey glass slowly melt and glint')],
