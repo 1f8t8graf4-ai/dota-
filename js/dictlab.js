@@ -70,7 +70,7 @@ DL.mount=root=>{const v=DL.cur();if(!v){root.innerHTML='';return;}DL.root=root;
     <div class="dl-top"><div class="dl-ttl">${v.titleHTML||`<h1>${esc(v.title||'Словарь')}</h1>`}<small>${esc(v.sub||'Коллекция фраз из кино')}</small></div><div class="dl-cnt" id="dlCnt"></div></div>
     <div class="dl-stage" id="dlStage"></div>`;
   if(v.enter&&!DL.seen[v.id]){DL.seen[v.id]=1;try{v.enter(root);}catch(e){}}
-  DL.render(0);};
+  DL.render(0);if(DL.whWatch)DL.whWatch(root);};
 DL.lang=()=>{const nL=l=>dictScenes().filter(s=>dxL(s)===l).reduce((a,s)=>a+dictCards(s).length,0);
   return `<div class="dl-lang"><button data-dl="en" class="${DX.lang!=='de'?'on':''}">${FLAG.en} English <i>${nL('en')}</i></button><button data-dl="de" class="${DX.lang==='de'?'on':''}">${FLAG.de} Deutsch <i>${nL('de')}</i></button></div>`;};
 DL.crumb=(em,b)=>`<div class="dl-crumb"><button class="dl-up" data-up aria-label="Назад">${ui('back')}</button><span><em>${esc(em)}</em><b>${esc(b)}</b></span></div>`;
@@ -244,7 +244,12 @@ const curSeg=()=>DX.seg==='my'?'my':'kino';
 const LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const knRow=c=>{const {s,f,pi}=c,[k]=knSt(c);
   if(!c.got)return `<button class="kq kq2 lock" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${E(fogTxt(D.T(f)))}</b><span class="kq-ru">${E(fogTxt(f.ru))}</span></span><em class="kq-lk">${LOCK}${seen(s,pi)?'ответь в проверке':'эпизод '+(pi+1)}</em></button>`;
-  return `<button class="kq kq2 st-${k}" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${E(D.T(f))}</b><span class="kq-ru">${E(f.ru)}</span></span>${k==='due'?'<i class="kq-due" title="Пора повторить"></i>':''}</button>`;};
+  return `<button class="kq kq2 st-${k}" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${kqWrap(f,D.T(f))}</b><span class="kq-ru">${E(f.ru)}</span></span>${k==='due'?'<i class="kq-due" title="Пора повторить"></i>':''}</button>`;};
+// 13.9.20 (Андрей: «в словаре слова не нажимаются, и не видно, что их можно нажать»): оригинал — словами, как субтитры в видео.
+// Пунктир — как в видео (.in-ph): только у слов учебного выражения (~10 % слов); важные слова kw — без пунктира, их ~40 % — был бы перегруз.
+const IDW=new WeakMap();
+const idOf=f=>{if(IDW.has(f))return IDW.get(f);const id=phIdiom(f),r=id&&!idWhole(id,f)?id:null;IDW.set(f,r);return r;};
+const kqWrap=(f,T)=>{const id=idOf(f);return id?swWrap(T).replace(/<i class="sw">([^<]+)<\/i>/g,(m,w)=>idHit(id,w.replace(/&#39;/g,"'"))?`<i class="sw u">${w}</i>`:m):swWrap(T);};
 const rowsL=C=>`<div class="kq-l">${C.map(knRow).join('')}</div>`;   // фразы — всегда строками: «квадраты» (карточки) убраны в 13.8.7
 // 13.9.16 (Андрей: «в словаре нет всех реплик — искал „nice tan“ и не нашёл»): все реплики эпизода — строками, слова нажимаются, ▶ — момент
 const LT=()=>store.knLines==='all'?'all':'ph';
@@ -252,7 +257,15 @@ const epRows=(s,p)=>(s.subs||[]).filter(r=>r[0]>=p.a-0.3&&r[0]<p.b);
 const rowT=(s,r)=>String((s.lang==='de'?r[4]||r[2]:r[2])||'').replace(/\n/g,' ');
 const rowPi=(s,r)=>{const i=s.parts.findIndex(p=>r[0]>=p.a-0.3&&r[0]<p.b);return i<0?0:i;};
 const lnSeen=(s,pi)=>ADM_OPEN()||seen(s,pi);
-const lnRow=(s,r,pi)=>lnSeen(s,pi)?`<div class="kl-ln" data-r="${s.id}|${s.subs.indexOf(r)}|${pi}"><button class="kl-p" aria-label="Посмотреть момент">${SI.play}</button><div class="kl-t"><b>${momLine(s,rowT(s,r),'')}</b><span>${E(String(r[3]||'').replace(/\n/g,' '))}</span></div></div>`
+// 13.9.20: реплика словами (как momLine: сохранённые — со звёздочкой); пунктир — у слов выражения фразы, которая звучит в этой реплике,
+// и только там, где она звучит (как swWrapPh в видео)
+const SWR=/([A-Za-zÀ-ÖØ-öø-ÿ'’]+)/;
+const lnLine=(s,r,pi)=>{const T=rowT(s,r),low=T.toLowerCase(),p=s.parts[pi],sp=[];
+  if(p)p.ph.forEach(f=>{const id=f.a<r[1]+0.15&&f.b>r[0]-0.15&&idOf(f);if(!id)return;const ph=String(D.T(f)||'').replace(/[.!?…,]+$/,'').toLowerCase(),i=ph?low.indexOf(ph):-1;
+    if(i>=0)sp.push([i,i+ph.length,id]);else if(ph&&phNorm(ph).includes(phNorm(T)))sp.push([0,T.length,id]);});
+  let at=0;return T.split(SWR).map((x,k)=>{const a=at;at+=x.length;if(!(k%2))return E(x);const n=swNorm(x),u=sp.some(([b,e,id])=>a>=b&&a<e&&idHit(id,n));
+    return `<i class="sw${u?' u':''}${mywHas(s.id,n)?' my':''}">${E(x)}</i>`;}).join('');};
+const lnRow=(s,r,pi)=>lnSeen(s,pi)?`<div class="kl-ln" data-r="${s.id}|${s.subs.indexOf(r)}|${pi}"><button class="kl-p" aria-label="Посмотреть момент">${SI.play}</button><div class="kl-t"><b>${lnLine(s,r,pi)}</b><span>${E(String(r[3]||'').replace(/\n/g,' '))}</span></div></div>`
   :`<button class="kl-ln fog" data-wep="${s.id}|${pi}"><span class="kl-t"><b>${E(fogTxt(rowT(s,r)))}</b><span>${E(fogTxt(r[3]))}</span></span><em class="kq-lk">${LOCK}эпизод ${pi+1}</em></button>`;
 function linesL(s,pi){const p=s.parts[pi],R=epRows(s,p);if(!R.length)return '<div class="kl-l"><p class="kl-no">В этом эпизоде нет реплик</p></div>';
   if(!lnSeen(s,pi))return `<div class="kl-l">${R.slice(0,3).map(r=>lnRow(s,r,pi)).join('')}<button class="kl-unl" data-wep="${s.id}|${pi}">${SI.play} Посмотри эпизод — реплики проявятся</button></div>`;
@@ -267,6 +280,22 @@ function lnBind(root){if(!root||root._kl)return;root._kl=1;
   root.addEventListener('click',e=>{const ln=e.target.closest('.kl-ln[data-r]');if(!ln||!root.contains(ln))return;const [sid,k,pi]=ln.dataset.r.split('|'),s=scOf(sid),r=s&&s.subs[+k];if(!r)return;
     const w=e.target.closest('.sw');if(w){e.stopPropagation();sfx('tap');momWord(w,s,+pi,r);return;}
     if(e.target.closest('.kl-p')){e.stopPropagation();sfx('tap');haptic('light');momOpen(sid,+pi,r[0]);}});}
+// 13.9.20: слово в строке фразы — то же окошко, что в видео (что значит тут, выражение, «Подробнее»); мимо слов — окно фразы, как было.
+// Строка — <button> с onclick, поэтому перехват в фазе захвата: до строки событие не доходит.
+document.addEventListener('click',e=>{const w=e.target.closest&&e.target.closest('.kq .sw');if(!w)return;const q=w.closest('.kq[data-c]');
+  if(!q||q.classList.contains('lock')||!q.closest('#dlRoot'))return;const c=D.find(q.dataset.c);if(!c||!c.got)return;
+  e.stopPropagation();e.preventDefault();sfx('tap');wtDone();wordShow(w,c.f,true);},true);
+document.addEventListener('click',e=>{if(!store.wtapHint&&e.target.closest&&e.target.closest('#dlRoot .kl-ln[data-r] .sw'))wtDone();},true);
+// один раз за всё время — подсказка над первым списком со словами; ✕ или первое нажатие на слово — больше не показываем
+const WH_Q='.kq[data-c]:not(.lock),.kl-ln[data-r]';
+function wtDone(){if(store.wtapHint)return;store.wtapHint=Date.now();save();document.querySelectorAll('.kn-wh').forEach(x=>x.remove());if(D._who){D._who.disconnect();D._who=null;}}
+function whPlace(root){if(store.wtapHint||!root||!root.isConnected)return;const old=root.querySelector('.kn-wh');
+  const row=[...root.querySelectorAll(WH_Q)].find(x=>x.querySelector('.sw')&&!x.closest('details:not([open])')&&x.getClientRects().length),box=row&&row.closest('.kq-l,.kl-l');   // закрытый <details>: у новых Chromium содержимое всё равно меряется
+  if(!box){if(old)old.remove();return;}if(old&&old.nextElementSibling===box)return;if(old)old.remove();
+  const h=document.createElement('div');h.className='kn-wh';h.innerHTML=`<span>Нажми на слово — покажу, что оно значит тут</span><button aria-label="Понятно">${ui('close')}</button>`;
+  h.querySelector('button').onclick=e=>{e.stopPropagation();sfx('tap');wtDone();};box.parentNode.insertBefore(h,box);}
+D.whWatch=root=>{if(store.wtapHint||!root)return;if(D._who)D._who.disconnect();let q=0;const go=()=>{q=0;whPlace(root);};
+  D._who=new MutationObserver(()=>{if(!q)q=requestAnimationFrame(go);});D._who.observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['open']});go();};
 
 /* ---------- шторка (подсказка, закрытая карта) ---------- */
 function knSheet(html){document.querySelectorAll('.kn-sheet').forEach(x=>x.remove());const w=document.createElement('div');w.className='kn-sheet';
@@ -314,14 +343,13 @@ const kFit=(f,W,T)=>{if(!T)return null;const C=T.filter(w=>w[0]>=f.a-0.8&&w[0]<=
 // Видео — один и тот же элемент на всё окно: на iPhone звук разрешён элементу после первого нажатия, новый элемент
 // при листании играть сам уже не смог бы.
 const wSt2=x=>!x.ru?'':mywLearned(x)?'выучено':!x.due||x.due<=Date.now()?'пора повторить':`учишь · ${Math.min(3,x.st||0)} из 3 · повтор ${mywWhen(x.due)}`;
-// 13.9.8: «караоке» на самой фразе — слова W ↔ её кусочки на экране (.sw / .kw, у немецкой — .kk) по смещению в тексте
+// 13.9.8: «караоке» на самой фразе — слова W ↔ её кусочки на экране (.sw / .kw; 13.9.20: у немецкой тоже — слова нажимаются) по смещению в тексте
 const kkMap=(el,T,W)=>{const off=[];let pos=0;W.forEach(w=>{const i=T.indexOf(w,pos);if(i<0){off.push([-1,-1]);return;}off.push([i,i+w.length]);pos=i+w.length;});
   const items=[];let at=0;
   const walk=n=>{if(n.nodeType===3){at+=n.nodeValue.length;return;}if(n.nodeType!==1)return;
     if(n.matches('.sw,.kw,.kk')){const s=at,e=s+n.textContent.length,js=[];off.forEach(([x,y],j)=>{if(x<e&&y>s)js.push(j);});if(js.length)items.push({el:n,js});at=e;return;}
     n.childNodes.forEach(walk);};
   el.childNodes.forEach(walk);return {el,items};};
-const kkWrap=T=>T.split(/(\s+)/).map((x,k)=>k%2||!x?E(x):`<i class="kk">${E(x)}</i>`).join('');
 function knOpen(btn,c,o){o=o||{};DL.clean();
   const box=btn&&btn.closest('#knRes,.dl-stage')||document,L=[],AU=!!o.auto;
   if(o.L)L.push(...o.L);else{const seenK={};box.querySelectorAll('[data-c]').forEach(b=>{const x=D.find(b.dataset.c);if(x&&x.got&&!seenK[x.k]){seenK[x.k]=1;L.push(x);}});if(!seenK[c.k])L.unshift(c);}
@@ -392,11 +420,11 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
     return play;};
   // 13.9.8: сразу — «фильм · эп. N», фраза, перевод, «🔊 Послушать · ▶ Смотреть · 🐢»; под «Подробнее» — «Когда пригодится» и факт
   // (свёрнут, Андрей: «спрячь под скобкой»); статус — тихой строкой внизу рядом с «1 / 3». Само ничего не играет (кроме «▶ подряд»)
-  const fillPh=c=>{const {s,f,pi}=c,[k]=knSt(c),P=scP(s.id),rn=RN[c.rar],T=D.T(f),W=T.split(/\s+/).filter(Boolean),de=s.lang==='de';
+  const fillPh=c=>{const {s,f,pi}=c,[k]=knSt(c),P=scP(s.id),rn=RN[c.rar],T=D.T(f),W=T.split(/\s+/).filter(Boolean);
     const factOk=!!(f.fact&&(D.demo()||ADM_OPEN()||P.done.includes(pi))&&!(scL()==='de'&&!scIsDe()));
     card.className='kn2 kn6 r-'+rn;
     inn.innerHTML=`<div class="kn2-b"><span class="kn6-src">${E(dictFilm(s))} · эп. ${pi+1}${c.rar>1?` · <i class="kn6-rr" data-r="${rn}">${RT[rn].toLowerCase()}</i>`:''}</span>
-        <b class="kn2-en">${de?kkWrap(T):kwWrap(f,T)}</b><span class="kn2-ru">${E(f.ru)}</span>
+        <b class="kn2-en">${kwWrap(f,T)}</b><span class="kn2-ru">${E(f.ru)}</span>
         <div class="kn2-acts kn5-acts kn6-acts"><button data-v="hear">${SI.vol} Послушать</button><button data-v="watch">${SI.play} Смотреть</button><button data-v="slow" aria-label="Медленнее" title="Медленнее">🐢</button></div>
         ${vBox(null)}${moreBtn()}
         <div class="kn5-more"${MORE?'':' hidden'}>${phInfoHTML(f,{})}${factOk?`<div class="kn6-fact"><button data-v="fact" aria-expanded="false">✦ Интересный факт <i>▾</i></button><p hidden>${E(f.fact)}</p></div>`:''}<button class="kn5-ep" data-v="ep">Эпизод в фильме ${ui('fwd')}</button></div>

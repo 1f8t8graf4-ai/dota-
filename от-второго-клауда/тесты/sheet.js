@@ -15,7 +15,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
     for(const [id,pi,k] of [['wolf-of-wall-street',0,6],['wolf-swiss-bank',0,3],['american-psycho',0,4]]){const s=scOf(id),P=scP(id);P.got=P.got||{};P.w[pi]=1;
       scAct(s.parts[pi].ph).slice(0,k).forEach(f=>{n++;P.got[f.id]=now-n*6e4;P.m[f.id]=1;P.r[f.id]=[1,now+864e5];});}scSave();save();});
   await ev(()=>{DX.seg='my';store.knMyKind='ph';store.knMyV='cards';store.knMyBy='film';renderTab('dict');});await page.waitForFunction(()=>window.DL&&document.querySelector('#dlStage'),null,{timeout:15000});await page.waitForTimeout(1500);
-  const openRow=async()=>{if(!await ev(()=>!!document.querySelector('.km6-c[open]')))await click('.km6-c summary');await page.waitForTimeout(500);await click('.km6-c[open] .kq[data-c]');await page.waitForTimeout(1200);};
+  const openRow=async()=>{if(!await ev(()=>!!document.querySelector('.km6-c[open]')))await click('.km6-c summary');await page.waitForTimeout(500);await click('.km6-c[open] .kq[data-c] .kq-ru');await page.waitForTimeout(1200);};
   const geo=()=>ev(()=>{const o=document.querySelector('.kno2'),k=o&&o.querySelector('.kn2'),r=k&&k.getBoundingClientRect(),x=o&&o.querySelector('.kn2-x').getBoundingClientRect(),bg=o&&o.querySelector('.kn2 .kn2-bg');
     const dim=o&&o.querySelector('.kno-dim').getBoundingClientRect();
     return o?{sheet:o.classList.contains('kn2s'),top:Math.round(r.top),bot:Math.round(r.bottom),h:Math.round(r.height),w:Math.round(r.width),cx:Math.round(r.left+r.width/2),cy:Math.round(r.top+r.height/2),

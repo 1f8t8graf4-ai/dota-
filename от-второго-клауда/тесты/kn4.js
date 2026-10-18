@@ -30,7 +30,7 @@ const dev=process.argv[2]||'ph';
   st=await ev(()=>({open:document.querySelectorAll('.kn-ep[open]').length,rows:document.querySelectorAll('.kn-ep[open] .kq').length}));ok('нажал на эпизод — фразы строками',st.open===1&&st.rows>0,JSON.stringify(st));
   await shot('3-scene');
   // фраза (13.9.8): окно открылось — само ничего не играет, видео свёрнуто; «Послушать» — звук, слова фразы загораются
-  await click('.kn-ep[open] .kq:not(.lock)');await page.waitForTimeout(1800);
+  await click('.kn-ep[open] .kq:not(.lock) .kq-ru');await page.waitForTimeout(1800);
   st=await ev(()=>{const v=document.querySelector('.kno video'),w=document.querySelector('.kn6-vw');return {open:!!document.querySelector('.kno2'),playing:!!(v&&!v.paused),vw:!!(w&&w.classList.contains('on'))};});
   ok('фраза открылась — само не играет, видео свёрнуто',st.open&&!st.playing&&!st.vw,JSON.stringify(st));
   await click('.kn6-acts [data-v="hear"]');await page.waitForTimeout(2000);
