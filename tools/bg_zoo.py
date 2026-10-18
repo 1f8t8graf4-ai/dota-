@@ -16,7 +16,10 @@ import html,json,sys
 
 RULES=[
  ('Сцена живёт, а не «происходит»','Как меню Planet Zoo: ничего не взрывается, не гаснет, не падает. Петля сходится — смотреть можно бесконечно.'),
- ('Два слоя движения','Спереди — главное движение крупно и близко (дым, пар, пузырьки, рыбка, свеча); сзади — второй слой мягко (дождь, город, деревья, неон, море).'),
+ ('Два слоя движения','Спереди — главное движение (пар над кофе, пузырьки, рыбка, свеча); сзади — второй слой мягко (дождь по стеклу, деревья, неон, море).'),
+ ('Свет и облака не трогаем','Проверено на «Ханне»: облака нейронка делает таймлапсом и они появляются из ниоткуда, а «тень от облака» — свет щёлкает, как выключатель. Свет весь ролик один и тот же.'),
+ ('Живое — только то, что нейронки рисуют гладко','Вода, дождь по стеклу, огонь и свеча, рыбы, ткань и листва на ветру, пузырьки, пар над кофе. Стол с бокалами — это фото: нейронка его либо замораживает, либо начинает наезжать камерой.'),
+ ('Без списка запретов','«No money» нейронка читает как «money» и рисует деньги. Пишем, как должно быть: «ресторан пустой», «свет ровный».'),
  ('Двигается только то, у чего есть причина','Огонь, вода, ветер, экраны, живые рыбы. Предметы сами не катятся и не падают.'),
  ('Место и предметы — из сцены','3–6 предметов, по которым фанат узнаёт фильм. Животных нет, если их нет в самом фильме.'),
  ('Камера стоит','Без наездов и проездов: фон за кнопками не должен качать глаз.'),
@@ -78,7 +81,7 @@ NOSMOKE={
 }
 for k,v in NOSMOKE.items():FIX.setdefault(k,[]).extend(v)
 LIVE_MAIN.update({
- 2:'За окном плывут облака, их тени скользят по небоскрёбам, внизу едут машины; солнечные пятна на скатерти гаснут и возвращаются; в газировке пузырьки.',
+ 2:'По окну во всю стену бегут струйки дождя, за ними размытый серый Манхэттен; в газировке пузырьки. Свет ровный.',
  5:'Над эспрессо пар, розовая неоновая свинья в витрине тихо гудит, красный навес чуть колышется от утреннего ветра.',
  8:'В аквариуме плавают рыбки и бегут пузырьки, по окну текут капли дождя.',
  9:'На телике скачут лошади, розовый неон из клуба пульсирует, в виски тает лёд.',
@@ -90,7 +93,7 @@ LIVE_MAIN.update({
 })
 # Короткий промт целиком (Андрей: длинный с кучей «неподвижно» Гемини делает статикой) — движение в первой строке, крупно и близко
 SHORT={
- 2:"Static tripod shot: the frame stays fixed while everything inside it is alive. An empty table for two by a floor-to-ceiling window in an elegant 1980s restaurant on the 60th floor of a Manhattan skyscraper, at lunchtime; the room is quiet and the chairs are empty.\n\nThe window fills the upper two thirds of the frame: the Manhattan skyline stretches to the horizon under a bright blue sky full of big white clouds. The clouds drift steadily across the sky and their shadows glide over the skyscrapers. Far below, tiny yellow taxis and cars flow along the avenues.\n\nSunlight breaks through the clouds and falls through the window onto the table: when a cloud passes, the bright patches of sun on the white tablecloth fade and then come back. In a tall glass of sparkling water, lines of bubbles rise all the time and sparkle in the sun.\n\nOn the table: a classic martini with green olives, the tall glass of sparkling water, a small vase of yellow flowers and a silver cocktail shaker with cold drops running down it.\n\nRealistic 35mm film look, natural colors, rich detail, balanced exposure. Sound: quiet restaurant ambience and the soft fizz of the water.",
+ 2:"Vertical 9:16 video. Static tripod shot: the frame stays fixed, only the rain and the bubbles move.\n\nA table for two by a floor-to-ceiling window in an elegant 1980s restaurant on a high floor of a Manhattan skyscraper, at lunchtime. The restaurant is empty and quiet, the chairs are empty.\n\nOutside, a steady light rain is falling. The window fills the upper two thirds of the frame: raindrops land on the outside of the glass and run down it in slow, winding streams, and behind them the grey Manhattan skyline looks soft and blurred through the wet glass.\n\nInside, everything is dry and calm. On the white tablecloth: a classic martini with green olives, a tall glass of sparkling water with tiny bubbles rising in it, a small vase of yellow flowers and a silver cocktail shaker.\n\nLight: soft, even grey daylight from the window and warm light from the restaurant inside; the light stays the same for the whole shot.\n\nRealistic 35mm film look, natural colors, rich detail. Sound: rain tapping on the glass and the quiet hum of an empty restaurant.",
 }
 BAN=['Lamborghini','Countach','Checker','Telegram','Gatorade','Huey','Pollos','Impaulsive','Satriale','Bada','shark']
 
