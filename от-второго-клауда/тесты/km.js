@@ -39,7 +39,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   r=await ev(()=>{const d=document.querySelector('.km6-c[open]');return d?{tr:!!d.querySelector('[data-mtr]'),pl:!!d.querySelector('.km6-ta [data-mpl]'),scn:[...d.querySelectorAll('.km6-scn em')].map(x=>x.textContent),sub:[...d.querySelectorAll('.km6-sub')].map(x=>x.innerText.replace(/\s+/g,' ')),rows:d.querySelectorAll('.kq[data-c]').length,n:+d.querySelector('.kn-en b').textContent}:null;});
   ok('карточка раскрылась: «Тренировать», «▶ подряд», «Сцена 1 / Сцена 2», эпизоды, все фразы',r&&r.tr&&r.pl&&r.scn.join()==='Сцена 1,Сцена 2'&&r.sub.length===3&&/Эпизод 1/i.test(r.sub[0])&&r.rows===r.n&&r.n===12,r);await shot(page,'2-card-open');
   // строка → окно (13.9.8): листание по фразам карточки; само ничего не играет, видео свёрнуто
-  await click('.km6-c[open] .kq[data-c]');await page.waitForTimeout(1500);
+  await click('.km6-c[open] .kq[data-c] .kq-ru');await page.waitForTimeout(1500);
   const wst=()=>ev(()=>{const v=document.querySelector('.kno2 video'),w=document.querySelector('.kn6-vw');return {play:!!(v&&!v.paused),vsrc:v&&v.getAttribute('src'),vw:!!(w&&w.classList.contains('on')),
     kp:!!document.querySelector('.kn2-en.kk-play'),on:document.querySelectorAll('.kn2-en .kk-on').length,wh:w?Math.round(w.getBoundingClientRect().height):0,pg:(document.querySelector('.kn2-pg')||{}).textContent};});
   r=await ev(()=>({o:!!document.querySelector('.kno2'),more:document.querySelector('.kn5-more').hidden,acts:[...document.querySelectorAll('.kn6-acts button')].map(b=>b.dataset.v),mb:!!document.querySelector('.kn2-b>.kn6-mb'),
@@ -91,7 +91,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   r=await ev(()=>({h:(document.querySelector('.km6-sh .kn-hn')||{}).textContent,scn:document.querySelectorAll('.km6-scn.big').length,eps:[...document.querySelectorAll('.km6-e')].map(d=>[+d.querySelector('.kn-en b').textContent,d.open]),tr:!!document.querySelector('.km6-sh [data-mtr]'),pl:!!document.querySelector('.km6-sh .kn-hw[data-mpl]')}));
   ok('страница Волка: шапка (кадр ▶, «Тренировать»), 2 сцены, 3 эпизода 6/3/3, все свёрнуты',r.h==='Волк с Уолл-стрит'&&r.scn===2&&r.eps.map(x=>x[0]).join()==='6,3,3'&&r.eps.every(x=>!x[1])&&r.tr&&r.pl,r);await shot(page,'7-film');
   await click('.km6-e summary');await page.waitForTimeout(700);r=await ev(()=>{const d=document.querySelector('.km6-e[open]');return d?d.querySelectorAll('.kq[data-c]').length:0;});ok('эпизод раскрылся — 6 своих фраз',r===6,String(r));await shot(page,'8-film-ep');
-  await click('.km6-e[open] .kq[data-c]');await page.waitForTimeout(1400);r=await ev(()=>(document.querySelector('.kn2-pg')||{}).textContent);ok('окно с страницы фильма листает весь фильм: «1 / 12»',/^1 \/ 12/.test(r||''),r);
+  await click('.km6-e[open] .kq[data-c] .kq-ru');await page.waitForTimeout(1400);r=await ev(()=>(document.querySelector('.kn2-pg')||{}).textContent);ok('окно с страницы фильма листает весь фильм: «1 / 12»',/^1 \/ 12/.test(r||''),r);
   await page.keyboard.press('Escape');await page.waitForTimeout(800);
   await ev(()=>onBack());await page.waitForTimeout(900);r=await ev(()=>({g:!!document.querySelector('.km6-g'),sh:!!document.querySelector('.km6-sh')}));ok('«назад» Телеграма со страницы → сетка',r.g&&!r.sh,r);
   // поиск — фразы и слова вместе
@@ -115,7 +115,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   await click('[data-mk="ph"]');await page.waitForTimeout(800);
   // «✦ Интересный факт» — свёрнут, нажал — виден (фраза с фактом; админ видит факты)
   const fx=await ev(()=>{const c=dxScenes().flatMap(s=>DL.cards(s)).find(c=>c.got&&c.f.fact);return c&&c.k;});
-  if(fx){await ev(k=>{const q=document.querySelector(`.kq[data-c="${k}"]`);q.closest('details').open=true;},fx);await page.waitForTimeout(400);await click(`.kq[data-c="${fx}"]`);await page.waitForTimeout(1300);
+  if(fx){await ev(k=>{const q=document.querySelector(`.kq[data-c="${k}"]`);q.closest('details').open=true;},fx);await page.waitForTimeout(400);await click(`.kq[data-c="${fx}"] .kq-ru`);await page.waitForTimeout(1300);
     if(await ev(()=>document.querySelector('.kn5-more').hidden))await page.click('.kn6-mb');await page.waitForTimeout(400);
     const f0=await ev(()=>({b:!!document.querySelector('.kn6-fact button'),h:(document.querySelector('.kn6-fact p')||{}).hidden}));await page.click('.kn6-fact button');await page.waitForTimeout(400);
     r=await ev(()=>({h:document.querySelector('.kn6-fact p').hidden,ex:document.querySelector('.kn6-fact button').getAttribute('aria-expanded'),t:document.querySelector('.kn6-fact p').textContent.length}));
@@ -125,7 +125,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   const fk=await ev(()=>{for(const s of SCENES){const P=scP(s.id);for(const p of s.parts)for(const f of p.ph)if((P.got||{})[f.id]&&idWhole(phIdiom(f),f)&&kwWrap(f,scT(f)).includes('class="sw"'))return s.id+'|'+f.id;}return null;});
   ok('есть собранная фраза, где «выражение» = вся фраза',!!fk,fk);
   await ev(()=>{document.querySelectorAll('.km6-c').forEach(d=>d.open=true);});await page.waitForTimeout(400);
-  await click(`.km6-c .kq[data-c="${fk}"]`);await page.waitForTimeout(1500);
+  await click(`.km6-c .kq[data-c="${fk}"] .kq-ru`);await page.waitForTimeout(1500);
   await page.locator('.kno2 .kn2-en .sw').first().click();await page.waitForTimeout(700);
   r=await ev(()=>{const p=document.querySelector('.kw-pop.on');return p?{dup:/Тут это часть выражения/i.test(p.innerText),inph:/Во фразе/i.test(p.innerText)}:null;});
   ok('слово в открытой фразе: без «Тут это часть выражения» и без «Во фразе»',r&&!r.dup&&!r.inph,r);

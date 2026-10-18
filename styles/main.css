@@ -5394,3 +5394,13 @@ body.newb #hColl,body.newb #hShop,body.newb .kv-open,body.newb #tkKv{display:non
 body.nofx .hh-dg.risk .hh-dt b{animation:none}
 .hh-dg:active{transform:scale(.97)}
 @media (max-width:420px){.hh-dg{top:10px;right:10px;padding:5px 12px 5px 5px;gap:8px}.hh-ring{width:44px;height:44px}.hh-ring b{font-size:15px}.hh-dt small{max-width:140px}}
+
+/* ==== 13.9.20 — верх страницы одного цвета с шапкой Telegram (на ПК шапку «← ⋮ ×» не убрать — пусть сливается со страницей).
+   tgHead() красит шапку в --top. Верх ровный: свечение 11.6 начинается ниже, плашка под кнопками Telegram (.topfade) — того же цвета,
+   картинки-фоны (сцена, Главная, словарь) у верхнего края растворяются в этот цвет ==== */
+html body.t-clean:not(.t-cs){--top:#0b0b0d;background:linear-gradient(180deg,#0b0b0d 0,#0b0b0d 64px,rgba(11,11,13,0) 200px),radial-gradient(1100px 560px at 50% -12%,rgba(233,196,106,.075),transparent 62%),radial-gradient(900px 600px at 50% 120%,rgba(120,40,30,.10),transparent 60%),#0b0b0d!important}
+.topfade{background:linear-gradient(180deg,var(--top,var(--bg)) 0%,var(--top,var(--bg)) 75%,transparent)!important}
+#amb,#appbg,.dl-bgl{-webkit-mask-image:linear-gradient(180deg,transparent 0,transparent calc(var(--st,0px) + 12px),#000 calc(var(--st,0px) + 140px));mask-image:linear-gradient(180deg,transparent 0,transparent calc(var(--st,0px) + 12px),#000 calc(var(--st,0px) + 140px))}
+/* на телефоне (уже 700 px) у html нет своего фона — фон body уходит на холст под body::before (#000) и зерно body::after:
+   видимый верх страницы — #030303, им и красим шапку и плашку под кнопками Telegram. В сценах ::before снят (слой 830) — там виден фон body */
+@media (max-width:699.98px){html body.t-clean:not(.t-cs):not([data-scn]){--top:#030303}}

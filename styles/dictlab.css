@@ -1251,3 +1251,17 @@ body.nofx .kn6-vw{transition:none}
 .kl-res{margin-top:6px}
 .kl-res .kl-l{padding:0 2px}
 @media (min-width:900px){.kn-ep .kl-l{display:grid;grid-template-columns:1fr 1fr;column-gap:36px}.kn-ep .kl-ln:nth-last-child(2):nth-child(odd){border-bottom:0}}
+
+/* ==== 13.9.20 — слова в строках словаря нажимаются, как в видео: пунктир у выражения и важных слов, на ПК — рука и подсветка, разовая подсказка ==== */
+.kq2 .kq-en .sw,.kl-t .sw{font-style:normal;cursor:pointer;border-radius:4px;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:background .15s,color .15s}
+.kq2 .kq-en .sw.u,.kl-t .sw.u{text-decoration:underline dotted rgba(245,196,81,.75);text-decoration-thickness:1.5px;text-underline-offset:4px;text-decoration-skip-ink:none}
+.kq2 .kq-en .sw.on,.kl-t .sw.on{background:rgba(243,218,140,.22);color:#fff}
+@media (hover:hover){.kq2:not(.lock) .kq-en .sw:hover,.kl-t .sw:hover{background:rgba(255,255,255,.12);color:#fff}}
+.kq2:has(.sw:active):active{background:none}
+.kn-wh{display:flex;align-items:center;gap:10px;margin:8px 0 4px;padding:8px 4px 8px 12px;border-radius:12px;background:rgba(243,218,140,.07);border:1px solid rgba(243,218,140,.16);color:rgba(243,235,221,.85);font:500 13.5px/1.35 'Golos Text',sans-serif}
+.kn-wh span{flex:1;min-width:0}
+.kn-wh button{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;color:rgba(243,235,221,.55)}
+.kn-wh button svg{width:14px;height:14px}
+@media (hover:hover){.kn-wh button:hover{background:rgba(255,255,255,.08);color:#fff}}
+.kn-ep .kn-wh{margin:8px 14px 4px}
+.kn-ep .km6-in .kn-wh{margin:8px 0 4px}

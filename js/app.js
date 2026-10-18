@@ -237,11 +237,18 @@ async function cloudLoadM(){
   let s='';for(let i=0;i<n;i++){const p=await cloudGet(MKEY+'_'+i);if(p===null)return null;s+=p;}
   try{return JSON.parse(s);}catch(e){return null;}
 }
+// 13.9.20 (Андрей: «тёмная полоса сверху на ПК»): шапку Telegram (на ПК — с «← ⋮ ×») убрать нельзя — красим её в цвет верха страницы.
+// Цвет — --top у body (верх страницы там ровный, без свечения и картинок), иначе фон body. Тот же цвет — фону под страницей и нижней полосе.
+let TGHC='';
+const hexOf=c=>{c=String(c||'').trim();if(/^#[0-9a-f]{6}$/i.test(c))return c.toLowerCase();if(/^#[0-9a-f]{3}$/i.test(c))return '#'+c.slice(1).replace(/./g,x=>x+x).toLowerCase();
+  const m=/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+))?/.exec(c);if(!m||(m[4]!=null&&+m[4]<0.99))return '';return '#'+[m[1],m[2],m[3]].map(x=>(+x).toString(16).padStart(2,'0')).join('');};
+function tgHead(){if(!TG||!document.body)return;let c='';try{const cs=getComputedStyle(document.body);c=hexOf(cs.getPropertyValue('--top'))||hexOf(cs.backgroundColor);}catch(e){}
+  c=c||'#0b0b0d';if(c===TGHC)return;TGHC=c;try{TG.setHeaderColor(c);TG.setBackgroundColor(c);if(TG.setBottomBarColor)TG.setBottomBarColor(c);}catch(e){}}
 function initTG(){
   if(!TG)return;
   try{TG.ready();TG.expand();}catch(e){}
   try{if(TG.enableVerticalSwipes)TG.enableVerticalSwipes();}catch(e){}
-  try{TG.setHeaderColor('#0E1318');TG.setBackgroundColor('#0E1318');if(TG.setBottomBarColor)TG.setBottomBarColor('#0E1318');}catch(e){}
+  tgHead();
   setInsets();
   ['safeAreaChanged','contentSafeAreaChanged','fullscreenChanged','viewportChanged'].forEach(ev=>{try{TG.onEvent(ev,setInsets);}catch(e){}});
   try{TG.BackButton.onClick(onBack);}catch(e){}
@@ -425,11 +432,11 @@ function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
   if(!scn)try{if(SV)scStop();}catch(e){}}
 function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);try{document.body.classList.toggle('newb',newbie());}catch(e){}if(!tab)paintTabbar(null);app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}
-  try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}}
+  try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}tgHead();}
 function applyFx(){
   document.body.classList.toggle('nofx',!store.fx);applySubPrefs();
   if(!document.body.dataset.world)setWorld('neutral');
-  try{if(TG){const c=store.theme==='light'?'#F2EEE6':store.theme==='clean'?'#0F1115':'#0C0E0F';TG.setHeaderColor(c);TG.setBackgroundColor(c);if(TG.setBottomBarColor)TG.setBottomBarColor(c);}}catch(e){}
+  tgHead();
 }
 // 13.6: размер субтитров (S–XL) и «перевод того же размера» — на body, действует в любом плеере и в полном экране
 const SUB_SZ=[['s','S'],['m','M'],['l','L'],['xl','XL']];
@@ -2323,7 +2330,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.19';
+const APP_V='13.9.20';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -2519,9 +2526,10 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._res
 function kwShow(el,f,pin){const k=kwOf(f)[+el.dataset.kw];if(!k)return;popAt(el,kwCardHTML(k),{sid:f.sid||(SCUR&&SCUR.id),f,word:k[1]||k[0],say:el.textContent||k[0],ru:k[2]},pin);}
 function wordShow(el,f,pin){const sid=(f&&f.sid)||(SCUR&&SCUR.id);if(!sid)return;const w=el.textContent,hit=swFind(sid,f?f.pi||0:0,w),id=f?phIdiom(f):null,inId=id&&!idWhole(id,f)&&idHit(id,w);
   const inWin=!!(el.closest&&el.closest('.kno'));   // 13.9.4: в открытой фразе словаря фраза с переводом и так крупно на экране — «Во фразе» не повторяем
+  const ft=f&&f.sid&&!(SCUR&&SCUR.id===f.sid)?dxT(f):f?scT(f):'';   // 13.9.20: из словаря (не из эпизода этой сцены) — фраза на языке фильма
   const html=`<span class="kwp-k">Слово</span><b class="kwp-w">${esc(swNorm(w))}</b><span class="kwp-t">${hit?esc(hit.ru):'перевода нет в словарике'}</span>
     ${inId?`<div class="kwp-use"><em>Тут это часть выражения</em><span><b>${esc(id.head)}</b> — ${esc(id.mean)}</span></div>`:''}
-    ${f&&!inWin?`<div class="kwp-ex"><em>Во фразе</em><b>${esc(scT(f))}</b><small>${esc(f.ru)}</small></div>`:''}`;
+    ${f&&!inWin?`<div class="kwp-ex"><em>Во фразе</em><b>${esc(ft)}</b><small>${esc(f.ru)}</small></div>`:''}`;
   popAt(el,html,{sid,f,word:swNorm(w),w2:hit&&hit.w,ru:hit?hit.ru:'',wi:1},pin);}
 // подключить слова в контейнере: f — фраза или функция (элемент → фраза)
 function phBind(root,getF){if(!root)return;const fOf=el=>typeof getF==='function'?getF(el):getF,hov=matchMedia('(hover:hover)').matches;
@@ -4839,7 +4847,7 @@ function setWorld(w){
   const b=document.body.classList;['hud','clean','light','cs'].forEach(t=>b.remove('t-'+t));
   if(w==='dota')b.add('t-hud');else{b.add('t-clean');if(w==='cs2')b.add('t-cs');}
   document.body.dataset.world=w;
-  try{if(TG){const c=w==='dota'?'#0C0E0F':w==='cs2'?'#0B1016':'#0A0B10';TG.setHeaderColor(c);TG.setBackgroundColor(c);if(TG.setBottomBarColor)TG.setBottomBarColor(c);}}catch(e){}
+  tgHead();
 }
 function cs2Progress(){const L=store.langs[0];let l=0;CS2_WORDS.forEach(w=>{if(isLearned(mkey('words',w.id,L)))l++;});return {learned:l,total:CS2_WORDS.length};}
 function play(world,type,mode){CURW=world==='best'?'best':world;setWorld(world==='best'?'neutral':world);startSession(type,mode);}
