@@ -78,7 +78,7 @@ NOSMOKE={
 }
 for k,v in NOSMOKE.items():FIX.setdefault(k,[]).extend(v)
 LIVE_MAIN.update({
- 2:'В газированной воде бегут пузырьки, по шейкеру и холодному бокалу мартини сползают капли.',
+ 2:'Крупно на переднем плане шипит газировка — пузырьки бегут со дна; по скатерти плывут тени облаков, свет то ярче, то тусклее.',
  5:'Над эспрессо пар, розовая неоновая свинья в витрине тихо гудит, красный навес чуть колышется от утреннего ветра.',
  8:'В аквариуме плавают рыбки и бегут пузырьки, по окну текут капли дождя.',
  9:'На телике скачут лошади, розовый неон из клуба пульсирует, в виски тает лёд.',
@@ -88,6 +88,10 @@ LIVE_MAIN.update({
  36:'Сок на котлете блестит в тёплом свете, по стаканчику сползают капли.',
  35:'Крутится диско-шар, по стенам ползут зайчики, в бокалах пузырьки.',
 })
+# Короткий промт целиком (Андрей: длинный с кучей «неподвижно» Гемини делает статикой) — движение в первой строке, крупно и близко
+SHORT={
+ 2:"A living, moving shot: in the foreground, very close to the camera, a tall glass of sparkling water fizzes hard — big streams of bubbles race up from the bottom and burst at the surface, a lemon slice sits on the rim. Soft cloud shadows slowly slide across the white tablecloth, the daylight gently brightens and dims.\n\nPlace: a lunch table by a big window of an expensive 1980s restaurant high above Manhattan. Behind the water glass, slightly out of focus: a martini with green olives, a small vase of yellow flowers, a silver cocktail shaker covered in cold drops. Far behind the window: the Manhattan skyline under a bright overcast sky.\n\nStatic camera on a tripod, the framing does not change. Vertical 9:16, 8 seconds, photorealistic. No people, no hands, no text, no money, no smoke.",
+}
 BAN=['Lamborghini','Countach','Checker','Telegram','Gatorade','Huey','Pollos','Impaulsive','Satriale','Bada','shark']
 
 def load():
@@ -101,6 +105,7 @@ def load():
         assert not re.search(r'\b(smok\w*|cigar\w*|mist|fog)\b|(?<!heat )\bhaze',p.split('Rules:')[0],re.I),(n,'дым')
         bad=[w for w in BAN if re.search(r'\b'+w+r'\b',p,re.I)]
         assert not bad,(n,bad)
+        if n in SHORT: p=SHORT[n]
         Z.append(dict(n=n,kind=x['kind'],name=NAMES[n],file=x['file'],where=x['where'],hero=LIVE_MAIN.get(n) or x['live'],prompt=p))
     return Z
 Z=load()
