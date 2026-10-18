@@ -20,7 +20,7 @@ RULES=[
  ('Двигается только то, у чего есть причина','Огонь, вода, ветер, экраны, живые рыбы. Предметы сами не катятся и не падают.'),
  ('Место и предметы — из сцены','3–6 предметов, по которым фанат узнаёт фильм. Животных нет, если их нет в самом фильме.'),
  ('Камера стоит','Без наездов и проездов: фон за кнопками не должен качать глаз.'),
- ('Без дыма','Дым, туман и дымка нейронки рисуют криво (дым шёл из бокала мартини). Можно только пар над кофе.'),
+ ('Без дыма','Дым нейронки рисуют криво (шёл из бокала мартини): ни сигарет, ни сигар, ни дымки. Пар, пыль и марево — можно, это не дым.'),
  ('Без людей, текста и марок','Ни лиц, ни рук, ни надписей, ни логотипов, ни названий брендов и фильмов — иначе Gemini отказывает.'),
 ]
 
@@ -41,7 +41,6 @@ LIVE_MAIN={
  16:'Помехи на телевизоре мерцают, по стеклу текут капли, за окном мимо такси тянется пар, красный неон тихо гудит.',
  19:'Дым медленно ползёт над руинами, в воздухе плывут оранжевые искры, уголок карты на ящике дрожит от горячего ветра.',
  21:'Море скользит мимо носа корабля, вокруг айсберга плывёт дымка, у кнехта мерцает синяя искорка — колье.',
- 25:'Брюки на кусте полощутся на горячем ветру, жёлтый защитный костюм в двери чуть качается, над песком дрожит марево.',
  31:'Занавеска качается на ветру, крылья самолётиков дрожат, далеко внизу мерцают фонари проспекта.',
  8:'В аквариуме плавают рыбки и бегут пузырьки, дымит сигарета, по окну текут капли дождя.',
  33:'Лампы вокруг зеркала тепло горят, в миске тает лёд и по стеклу сползают капли, за окном качаются пальмы и мягко пульсирует неон.',
@@ -59,7 +58,7 @@ FIX={
      ('Calm and dim: the palm trees sway outside the small window, the phone screen is dark.','Calm: the ice cubes in the glass bowl slowly melt and droplets slide down the bowl, the palm trees sway outside the small window, the pink-purple neon outside pulses softly.')],
 }
 
-# 13.9.19: дыма нет нигде, кроме пара над кофе (Андрей: «с бокала мартини синий дым идёт», «с дымом ебля, с кофе оставить только можно»)
+# 13.9.19: без дыма (Андрей: «с бокала мартини синий дым идёт», «дым и пар — это разное»): сигарет, сигар, дыма, тумана и дымки нет; пар, пыль, марево — можно
 NOSMOKE={
  2:[('; a crystal ashtray with one burning cigarette',''),('the hazy Manhattan skyscrapers','the pale Manhattan skyscrapers'),
     ('A long ribbon of blue-grey smoke rises from the cigarette and curls slowly through the soft daylight; thin streams','Thin streams'),
@@ -67,14 +66,10 @@ NOSMOKE={
  5:[(', a cigar resting in a heavy glass ashtray and',' and'),(' a thin thread of smoke rises only from the tip of the cigar, steam rises from one espresso cup,',' thin steam rises from one espresso cup,')],
  8:[('an ashtray with one lit cigarette and an open can of beer','an open can of beer'),('; a ribbon of smoke rises from the cigarette','')],
  9:[(', an ashtray with a lit cigarette',' with slowly melting ice cubes'),('; a ribbon of smoke rises from the cigarette in the ashtray','; the ice cubes in the whiskey glass slowly melt and glint')],
- 16:[('parked below in a cloud of steam','parked below on the wet street'),('steam drifts past the taxi outside','the wet street shines under the neon')],
- 17:[(', and white steam rising from a manhole in the street',''),('; white steam drifts up from the manhole in the neon street','; the neon lights blur and shimmer through the wet glass')],
  19:[('under a red smoky sky','under a red evening sky'),('under a dark smoky sky','under a dark sky'),('thick smoke drifts slowly across the ruins','the fire glow flickers softly on the broken walls')],
  21:[(' in thin mist',''),('thin mist drifts around the iceberg','soft light glints on the water around the iceberg')],
  22:[('thin freezing mist drifts across the deck and over the black water far below','the black water far below glints with reflections of the lamps')],
  35:[('; light haze in the air',''),('thin haze drifts through the pink neon; ','')],
- 30:[('; thin dust blows low across the ground and swirls around the tires','')],
- 36:[('Thin steam rises from the hot beef patty and its juices glisten','The juices of the hot beef patty glisten and one drop slowly runs down its side')],
 }
 for k,v in NOSMOKE.items():FIX.setdefault(k,[]).extend(v)
 LIVE_MAIN.update({
@@ -82,16 +77,10 @@ LIVE_MAIN.update({
  5:'Над эспрессо пар, розовая неоновая свинья в витрине тихо гудит, красный навес чуть колышется от утреннего ветра.',
  8:'В аквариуме плавают рыбки и бегут пузырьки, по окну текут капли дождя.',
  9:'На телике скачут лошади, розовый неон из клуба пульсирует, в виски тает лёд.',
- 16:'Помехи на телевизоре мерцают, по стеклу текут капли, мокрая улица блестит под красным неоном.',
- 17:'Дворники ходят туда-сюда, по стеклу текут капли, неон расплывается за мокрым стеклом.',
  19:'Отсветы пожара дрожат на стенах руин, в воздухе плывут оранжевые искры, уголок карты дрожит от горячего ветра.',
  21:'Море скользит мимо носа корабля, у айсберга блестит вода, у кнехта мерцает синяя искорка — колье.',
  22:'Пустая шлюпка покачивается на канатах, внизу блестит чёрная вода, лампы чуть мигают.',
  35:'Крутится диско-шар, по стенам ползут зайчики, в бокалах пузырьки.',
- 25:'Брюки на кусте полощутся на горячем ветру, жёлтый защитный костюм в двери чуть качается.',
- 26:'Занавеска из окна второго этажа (откуда удрал Джесси) полощется на ветру, мигает огонёк рации.',
- 30:'Сухая трава гнётся и волнуется на горячем ветру.',
- 36:'Сок на горячей котлете блестит и стекает каплей, по стаканчику сползают капли.',
 })
 BAN=['Lamborghini','Countach','Checker','Telegram','Gatorade','Huey','Pollos','Impaulsive','Satriale','Bada','shark']
 
@@ -102,10 +91,8 @@ def load():
         for a,b in FIX.get(n,[]):
             assert a in p,(n,a);p=p.replace(a,b)
         p=p.replace('Checker cab','yellow 1970s taxi').replace('yellow yellow','yellow')
-        p=re.sub(r'[,;] heat haze shimmers above the [a-z ]+','',p)
-        cof=re.search(r'coffee(?! table)|espresso',p,re.I)
-        p=p.replace('Rules: ','Rules: no smoke, fog, mist or haze anywhere'+(' — the only steam is the thin steam above the coffee' if cof else '')+'; ',1)
-        assert not re.search(r'\b(smok\w*|cigar\w*|mist|fog)\b|\bhaze',p.split('Rules:')[0],re.I),(n,'дым')
+        p=p.replace('Rules: ','Rules: no smoke, fog or mist anywhere (steam, dust and heat shimmer only where described above); ',1)
+        assert not re.search(r'\b(smok\w*|cigar\w*|mist|fog)\b|(?<!heat )\bhaze',p.split('Rules:')[0],re.I),(n,'дым')
         bad=[w for w in BAN if re.search(r'\b'+w+r'\b',p,re.I)]
         assert not bad,(n,bad)
         Z.append(dict(n=n,kind=x['kind'],name=NAMES[n],file=x['file'],where=x['where'],hero=LIVE_MAIN.get(n) or x['live'],prompt=p))

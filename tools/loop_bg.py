@@ -5,7 +5,8 @@
 # • два ролика (петля на 2 кадрах: А = Кадр 1 → Кадр 2, Б = Кадр 2 → Кадр 1) — склеиваю А+Б, стыки сглаживаю
 #   короткими наплывами (генератор попадает в кадры не пиксель в пиксель);
 # • один ролик — конец плавно перетекает в начало (наплыв хвоста на голову), длина становится на секунду короче.
-# На выходе: H.264 без звука, вертикаль 720×1280 или горизонталь 1280×720 (почти квадрат — 720×720, как есть), ~1–2 МБ,
+# На выходе: H.264 без звука, вертикаль 720×1280 или горизонталь 1280×720 (почти квадрат — 720×720, как есть), CRF 18 (13.9.19:
+# было 27 — Андрей: «хули качество плохое», ролик ужимался в 3–4 раза меньше исходника и мылился), ~2–3 МБ на 10 с,
 # чёрные полосы с двух сторон срезаются сами, + превью <выход>p.jpg
 # (bg.mp4 → bgp.jpg, film-bg.mp4 → film-bgp.jpg) — его показывает «Коллекция», пока видео грузится.
 #
@@ -66,7 +67,9 @@ def main(out,clips,X=None,seam='xfade',calm='auto',event='auto',calm_only=False)
     W,H,fps,_=probe(clips[0]);cb=bars(clips[0],W,H)
     if cb:W,H=cb[0],cb[1]
     r=W/H;fps=min(30,round(fps)) or 24
-    size='720:1280' if r<.77 else '1280:720' if r>1.3 else f'720:{round(720/r/2)*2}'   # почти квадрат — как есть: обрезать в 9:16 или 16:9 — потерять половину кадра
+    sb=max(720,min(1080,min(W,H)//2*2))   # 13.9.19: короткая сторона — как у исходника (720…1080): прислали 1080p — не ужимаем до 720
+    L_=round(sb*16/9/2)*2
+    size=f"{sb}:{L_}" if r<.77 else f"{L_}:{sb}" if r>1.3 else f"{sb}:{round(sb/r/2)*2}"   # почти квадрат — как есть: обрезать в 9:16 или 16:9 — потерять половину кадра
     port=r<.77
     norm=(f"crop={cb[0]}:{cb[1]}:{cb[2]}:{cb[3]}," if cb else '')+f"scale={size}:force_original_aspect_ratio=increase,crop={size},setsar=1,fps={fps},format=yuv420p"
     D=[probe(c)[3] for c in clips]
@@ -111,10 +114,10 @@ def main(out,clips,X=None,seam='xfade',calm='auto',event='auto',calm_only=False)
     if len(clips)==1 and Eo and (seam=='xfade'):Eo-=X   # при наплыве файл начинается с X-й секунды
     per=L-X if seam=='xfade' or len(clips)==2 else L+(float(seam.split('=')[1]) if '=' in seam else 1.2) if seam.startswith('black') else L
     note+=f', шов: {seam}'+(f' — событие раз в {per:.1f} с' if 'событие' in note else '')
-    subprocess.run(['ffmpeg','-v','error','-y',*inp,'-filter_complex',';'.join(fc),'-map','[v]','-an','-c:v','libx264','-preset','slow','-crf','27',
-                    '-maxrate','2M','-bufsize','4M','-profile:v','main','-pix_fmt','yuv420p','-movflags','+faststart',out],check=True)
+    subprocess.run(['ffmpeg','-v','error','-y',*inp,'-filter_complex',';'.join(fc),'-map','[v]','-an','-c:v','libx264','-preset','slow','-crf','18','-tune','film',
+                    '-profile:v','high','-pix_fmt','yuv420p','-movflags','+faststart',out],check=True)
     d=probe(out)[3];poster=out[:-4]+'p.jpg'
-    subprocess.run(['ffmpeg','-v','error','-y','-ss',f'{d/3:.2f}','-i',out,'-frames:v','1','-q:v','4',poster],check=True)
+    subprocess.run(['ffmpeg','-v','error','-y','-ss',f'{d/3:.2f}','-i',out,'-frames:v','1','-q:v','2',poster],check=True)
     print(f'{out}: {d:.1f} с, {os.path.getsize(out)//1024} КБ, {"вертикаль" if port else "горизонталь" if r>1.3 else "почти квадрат"} {size.replace(":","×")}{" (полосы срезаны)" if cb else ""}, {fps} к/с{note}; превью {os.path.basename(poster)}')
     if Eo:   # 13.9.6: в профиле, приглашении и дуэли ролик стартует прямо перед событием — для этого время события в data/scenes.json
         k='filmbgev' if os.path.basename(out).startswith('film-') else 'bgev'
