@@ -69,6 +69,7 @@ NOSMOKE={
  19:[('under a red smoky sky','under a red evening sky'),('under a dark smoky sky','under a dark sky'),('thick smoke drifts slowly across the ruins','the fire glow flickers softly on the broken walls')],
  21:[(' in thin mist',''),('thin mist drifts around the iceberg','soft light glints on the water around the iceberg')],
  22:[('thin freezing mist drifts across the deck and over the black water far below','the black water far below glints with reflections of the lamps')],
+ 36:[('Thin steam rises from the hot beef patty and its juices glisten','The juices of the beef patty glisten in the warm light')],
  35:[('; light haze in the air',''),('thin haze drifts through the pink neon; ','')],
 }
 for k,v in NOSMOKE.items():FIX.setdefault(k,[]).extend(v)
@@ -80,6 +81,7 @@ LIVE_MAIN.update({
  19:'Отсветы пожара дрожат на стенах руин, в воздухе плывут оранжевые искры, уголок карты дрожит от горячего ветра.',
  21:'Море скользит мимо носа корабля, у айсберга блестит вода, у кнехта мерцает синяя искорка — колье.',
  22:'Пустая шлюпка покачивается на канатах, внизу блестит чёрная вода, лампы чуть мигают.',
+ 36:'Сок на котлете блестит в тёплом свете, по стаканчику сползают капли.',
  35:'Крутится диско-шар, по стенам ползут зайчики, в бокалах пузырьки.',
 })
 BAN=['Lamborghini','Countach','Checker','Telegram','Gatorade','Huey','Pollos','Impaulsive','Satriale','Bada','shark']
