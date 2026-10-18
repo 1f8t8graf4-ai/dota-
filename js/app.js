@@ -375,7 +375,9 @@ const SFX={
   reel:()=>{for(let i=0;i<4;i++)noise(i*.05,.014,.035,{type:'highpass',f:2000,q:.8});osc('sine',110,0,.18,.012,{lp:400});},
   unlock:()=>{noise(0,.03,.04,{type:'bandpass',f:3000,q:2});osc('sine',1175,.03,.25,.018,{att:.004,lp:3000});osc('sine',1760,.09,.3,.012,{att:.004,lp:3000});},
   reward:()=>{noise(0,.35,.012,{type:'bandpass',f:800,fTo:4000,q:.5});[659,988,1319].forEach((f,i)=>osc('sine',f,.12+i*.09,.5,.016,{att:.006,lp:3200}));},
-  page:()=>noise(0,.16,.018,{type:'bandpass',f:1800,fTo:900,q:.6})
+  page:()=>noise(0,.16,.018,{type:'bandpass',f:1800,fTo:900,q:.6}),
+  // 13.9.21: звон билетов — вызывался (админ «+1000», билеты в счётчик), а звука не было
+  coin:()=>{_ping(2093,0,.55);_ping(2637,.06,.45);}
 };
 const _soft2=(f,t0,dur,vol,type)=>osc(type||'sine',f,t0,dur,vol,{att:.008,lp:2600});
 const _key=(t0,v)=>{noise(t0,.02,.07*(v||1),{type:'bandpass',f:2400,q:1.2});osc('square',95,t0,.025,.02*(v||1),{lp:900});};
@@ -395,15 +397,42 @@ const SFXP={cs:{...SFX},
     win:()=>{[523,659,784,1047,1319].forEach((f,i)=>_bit(f,i*.07,.07));},lose:()=>{[392,330,262].forEach((f,i)=>_bit(f,i*.11,.12));},firstblood:()=>{_bit(784,0);_bit(1175,.07);},roshan:()=>_bit(110,0,.2)},
   off:{}};
 function sfx(n,arg){if(!store.snd||store.labSnd==='off')return;try{SFX[n](arg);}catch(e){}}
+/* ---- 13.9.21: звуки из файлов — «Кино» (по умолчанию) и «Как в iPhone». Файлы js/sfx-<набор>.js: mp3 в base64 (tools/sfx_make.py, CC0, snd/ЛИЦЕНЗИЯ.md).
+   Грузится только выбранный набор, один раз, на первом касании (оно же разблокирует звук на iOS). Пока не готов — играет старый синтез «cs», тишины нет. ---- */
+const SFX_EV=['tap','sel','whoosh','tick','hint','match','good','learn','nope','bad','win','lose','announce','firstblood','roshan','reel','unlock','reward','page','coin'];
+const SFXF={kino:1,ios:1},SFXB={},SFXL={};
+function sfxLoad(k){if(!SFXF[k])return Promise.resolve(null);if(SFXL[k])return SFXL[k];
+  return SFXL[k]=new Promise(ok=>{
+    const go=()=>{const D=window.SFXD&&window.SFXD[k],a=ac();if(!D||!a){delete SFXL[k];ok(null);return;}const B={};let n=0;
+      const fin=()=>{if(++n<SFX_EV.length)return;SFXB[k]=B;ok(B);};
+      SFX_EV.forEach(e=>{if(!D[e]){fin();return;}let ab;try{const s=atob(D[e]),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);ab=u.buffer;}catch(x){fin();return;}
+        // mp3 начинается с тишины (задержка кодера ~25 мс) — играем с первого не-тихого сэмпла, иначе тап «опаздывает»
+        const got=buf=>{const d=buf.getChannelData(0);let pk=0;for(let i=0;i<d.length;i++){const v=d[i]<0?-d[i]:d[i];if(v>pk)pk=v;}
+          const th=Math.max(1e-4,pk*.002);let i=0;while(i<d.length&&Math.abs(d[i])<th)i++;B[e]={buf,off:Math.max(0,i/buf.sampleRate-.001)};fin();};
+        try{const p=a.decodeAudioData(ab,got,()=>fin());if(p&&p.catch)p.catch(()=>{});}catch(x){fin();}});};
+    if(window.SFXD&&window.SFXD[k]){go();return;}
+    const s=document.createElement('script');s.src='js/sfx-'+k+'.js?v='+APP_V;s.onload=go;s.onerror=()=>{s.remove();delete SFXL[k];ok(null);};document.head.appendChild(s);});}
+// файлы уже выровнены по громкости и без перегруза — идут мимо компрессора синтеза (он давил щелчки и сам добавлял громкость),
+// через свой тихий канал: щелчки ≈ −34 dBFS, ответы ≈ −29, награды ≈ −27 — заметно тише голоса в эпизодах
+let SFXG=null;const sfxBus=a=>{if(!SFXG||SFXG.context!==a){SFXG=a.createGain();SFXG.gain.value=.47;SFXG.connect(a.destination);}return SFXG;};
+// тап, выбор и тик — с разбросом высоты ±3 %, чтобы очередь нажатий не звучала «пулемётом»
+function sfxPlay(k,n){const B=SFXB[k],b=B&&B[n];if(!b)return false;const a=ac();if(!a)return false;
+  try{const s=a.createBufferSource();s.buffer=b.buf;if(n==='tap'||n==='sel'||n==='tick')s.playbackRate.value=1+(Math.random()-.5)*.06;s.connect(sfxBus(a));s.start(0,b.off);return true;}catch(e){return false;}}
+const sfxSet=k=>{const o={};SFX_EV.forEach(n=>{o[n]=x=>{if(sfxPlay(k,n))return;sfxLoad(k);const f=SFXP.cs[n];if(f)f(x);};});return o;};
+SFXP.kino=sfxSet('kino');SFXP.ios=sfxSet('ios');
+const sfxCur=()=>FLAG_ADMIN&&store.labSnd?store.labSnd:(typeof shopUse==='function'?shopUse('snd'):'kino');
+// набор целиком (для ▶ в магазине и админке): недостающее — из «cs»
+const sfxPack=k=>Object.assign({},SFXP.cs,SFXP[k]||{});
+document.addEventListener('pointerdown',function sfxWarm(){document.removeEventListener('pointerdown',sfxWarm,true);try{if(store.snd&&store.labSnd!=='off'){ac();sfxLoad(sfxCur());}}catch(e){}},true);
 /* ================= 7.0: лаборатория оформления (видит только админ) ================= */
 // Варианты субтитров, звуков и интерфейса — переключаются в админ-панели, применяются только на этом устройстве.
 // В админской лаборатории оставлены ровно 3 варианта каждого слоя.
 // Много вариантов только мешает выбрать и раздувает CSS.
 const LAB_SUB=[['glass','Стильные (сейчас)'],['netflix','Стриминг'],['criterion','Артхаус'],['bateman','Бейтман'],['soprano','Сопрано'],['taxi','Таксист'],['wolf','Уолл-стрит'],['bunker','Бункер'],['karaoke','Крупные плашки'],['minimal','Минимум']];
-const LAB_SND=[['cs','CS (сейчас)'],['soft','Мягкие'],['typewriter','Печатная машинка'],['projector','Кинопроектор'],['arcade','8-бит'],['off','Без звуков']];
+const LAB_SND=[['kino','Кино (13.9.21)'],['ios','Как в iPhone'],['cs','Прежние (CS)'],['soft','Мягкие'],['typewriter','Печатная машинка'],['projector','Кинопроектор'],['arcade','8-бит'],['off','Без звуков']];
 const LAB_UI=[['grafit','Графит (сейчас)'],['noir','Нуар · Сопрано'],['bone','Визитка · Психопат'],['taxi','Такси'],['wolf','Уолл-стрит'],['bunker','Бункер'],['neon','Неон · кинотеатр']];
 const labSub=()=>FLAG_ADMIN&&store.labSub?store.labSub:'glass';
-function labApply(){try{document.body.dataset.ui=FLAG_ADMIN&&store.labUi&&store.labUi!=='grafit'?store.labUi:'';const k=FLAG_ADMIN&&store.labSnd?store.labSnd:(typeof shopUse==='function'?shopUse('snd'):'cs');Object.assign(SFX,SFXP[k]||SFXP.cs);}catch(e){}}
+function labApply(){try{document.body.dataset.ui=FLAG_ADMIN&&store.labUi&&store.labUi!=='grafit'?store.labUi:'';const k=sfxCur();Object.assign(SFX,SFXP.cs,SFXP[k]||{});}catch(e){}}
 
 
 /* ================= утилиты ================= */
@@ -2330,7 +2359,9 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.20';
+const APP_V='13.9.21';
+// 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
+const APP_NAME='Языки по кино';
 async function deployCheck(box){
   const head=u=>fetch(u,{method:'HEAD',cache:'no-store'}).then(r=>({ok:r.ok,len:+(r.headers.get('content-length')||0)})).catch(()=>({ok:false,len:0}));
   const rows=[];const add=(ok,name,hint)=>{rows.push({ok,name,hint});draw();};
@@ -5612,6 +5643,9 @@ function admResetMe(){const keep={};ADM_KEEP.forEach(k=>{if(store[k]!==undefined
 async function admResetPull(){if(!(TG&&TG.initData)&&!window.__INIT)return;try{const r=await kvNet({a:'rget'});
   if(r&&r.ok&&r.v&&r.v.t&&r.v.t>(store.resetAt||0)){admResetMe();store.resetAt=r.v.t;save();toast('Прогресс сброшен администратором');renderHome();}}catch(e){}}
 setTimeout(admResetPull,2500);
+// 13.9.21: события звука по-русски — для блока «Звуки» в админке → «Анимации»
+const SFX_N={tap:'Нажатие',sel:'Выбор',whoosh:'Переход',tick:'Тик',page:'Листание',reel:'Эпизод досмотрен',hint:'Подсказка',match:'Пара сошлась',nope:'Не то',
+  good:'Верно',bad:'Ошибка',learn:'Цель дня',coin:'Билеты',reward:'Награда',unlock:'Открыл конверт',win:'Победа',lose:'Проигрыш',announce:'Объявление',firstblood:'First Blood',roshan:'Рошан'};
 const ADM_ANIMS=[
   {id:'splash',n:'Заставка',d:'Та, что выбрана в магазине (по умолчанию «Кинолента»).',run:()=>splash()},
   {id:'gold',n:'Билеты в счётчик',d:'«+N», билетики разлетаются и по дуге летят в счётчик, он пересчитывается.',run:()=>{renderHome();setTimeout(()=>goldFX(25),500);}},
@@ -5641,7 +5675,7 @@ function admPlBind(){const re=()=>{const se=document.scrollingElement,y=Math.max
   $('#adpIdGo').onclick=async()=>{const id=String($('#adpId').value||'').replace(/\D/g,'');if(!id){toast('Впиши Telegram ID');return;}
     tgConfirm(`Сбросить весь прогресс игроку ${id}?`,async()=>{try{const r=await kvNet({a:'rset',target:'tg'+id});toast(r&&r.ok?`Готово: сбросится у ${id} при следующем запуске`:(r&&r.msg)||'Не получилось');}catch(e){toast('Сервер не отвечает — обнови воркер бота (bot/worker.js)');}});};}
 /* ---- 13.4: админка — меню разделов, на экране один раздел (раньше была простыня на 9000px) ---- */
-let ADM_SEC=null,ADM_DR=null,ADM_U=null;
+let ADM_SEC=null,ADM_DR=null,ADM_U=null,ADM_SV=null;
 const ADM_ST=[['on','Открыт'],['maint','Тех. работы'],['dev','В разработке'],['hide','Скрыт']];
 function admDraft(){if(!ADM_DR){ADM_DR={};const raw=FLAG_RAW||{};for(const k in raw)ADM_DR[k]={st:raw[k].st||'on',allow:[...(raw[k].allow||[])]};}return ADM_DR;}
 const admSt=k=>(admDraft()[k]&&admDraft()[k].st)||'on';
@@ -5741,18 +5775,24 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
     $('#erClr').onclick=()=>{sfx('tap');admUsersCall({a:'errs',clear:1}).then(r=>{if(r&&r.ok)draw(r.v);});};return;}
   if(sec==='player'){mnt(`${head('Я как игрок')}${admPlHTML()}`);admPlBind();
     $$('.adm-tg').forEach(b=>b.onclick=e=>{e.stopPropagation();const f=b.nextElementSibling;const open=f.hidden;f.hidden=!open;b.classList.toggle('open',open);sfx('tap');});return;}
-  if(sec==='anim'){mnt(`${head('Анимации')}<p class="ad2-note">Нажми «▶» — анимация проиграется и закроется сама.</p><div class="ad2-list">${ADM_ANIMS.map(a=>`<button class="ad2-it" data-an="${a.id}"><span><b>${a.n}</b><small>${a.d}</small></span><i class="ad2-play">${SI.play}</i></button>`).join('')}</div>`);
-    $$('[data-an]').forEach(b=>b.onclick=()=>{const a=ADM_ANIMS.find(x=>x.id===b.dataset.an);if(!a)return;sfx('tap');const was=store.fx;store.fx=true;try{a.run();}catch(e){toast('Не получилось: '+e.message);}store.fx=was;});return;}
+  if(sec==='anim'){const SV=[['kino','Кино'],['ios','Как в iPhone'],['cs','Прежние']];if(!ADM_SV)ADM_SV=SFXF[sfxCur()]?sfxCur():'kino';
+    mnt(`${head('Анимации')}<p class="ad2-note">Нажми «▶» — анимация проиграется и закроется сама.</p><div class="ad2-list">${ADM_ANIMS.map(a=>`<button class="ad2-it" data-an="${a.id}"><span><b>${a.n}</b><small>${a.d}</small></span><i class="ad2-play">${SI.play}</i></button>`).join('')}</div>
+      <h3 class="ad2-h">Звуки</h3><p class="ad2-note">Набор только для прослушивания — у игроков свой (Магазин → Звуки, по умолчанию «Кино»). Играет, даже если звук в настройках выключен.</p>
+      <div class="lab-chips ad2-sv">${SV.map(([k,l])=>`<button data-sv="${k}" class="${k===ADM_SV?'on':''}">${l}</button>`).join('')}</div>
+      <div class="ad2-sfx">${SFX_EV.map(n=>`<button data-sn="${n}"><i>${SI.play}</i><span>${SFX_N[n]||n}</span></button>`).join('')}</div>`);
+    $$('[data-an]').forEach(b=>b.onclick=()=>{const a=ADM_ANIMS.find(x=>x.id===b.dataset.an);if(!a)return;sfx('tap');const was=store.fx;store.fx=true;try{a.run();}catch(e){toast('Не получилось: '+e.message);}store.fx=was;});
+    $$('[data-sv]').forEach(b=>b.onclick=()=>{ADM_SV=b.dataset.sv;$$('[data-sv]').forEach(x=>x.classList.toggle('on',x===b));ac();sfxLoad(ADM_SV).then(()=>{try{sfxPack(ADM_SV).tap();}catch(e){}});});
+    $$('[data-sn]').forEach(b=>b.onclick=()=>{const k=ADM_SV,n=b.dataset.sn;ac();b.classList.add('on');setTimeout(()=>b.classList.remove('on'),400);sfxLoad(k).then(()=>{try{sfxPack(k)[n]();}catch(e){}});});return;}
   if(sec==='check'){mnt(`${head('Проверка установки')}<p class="ad2-note">Проверяет, что в репозиториях лежит всё нужное: свежий код, видео, обложки и кадры каждой сцены.</p><button class="sc-btn" id="dkGo">Проверить</button><div id="dkBox" class="dk"></div>`);
     $('#dkGo').onclick=()=>{sfx('tap');deployCheck($('#dkBox'));};return;}
   if(sec==='lab'){mnt(`${head('Лаборатория')}<p class="ad2-note">Видишь только ты, на этом устройстве. Выбери лучшее и напиши мне — сделаю по умолчанию для всех.</p>
       <div class="lab"><b>Субтитры</b><div class="lab-prev" data-ss="${labSub()}"><div class="sc-subs"><div class="sline"><span class="en">I'm in it for the long run, you know?</span></div><div class="sline s2"><span class="tr">Я тут надолго, понимаете?</span></div></div></div>
         <div class="lab-chips">${LAB_SUB.map(([k,l])=>`<button data-lab="labSub" data-v="${k}" class="${labSub()===k?'on':''}">${l}</button>`).join('')}</div></div>
-      <div class="lab"><b>Звуки</b><div class="lab-chips">${LAB_SND.map(([k,l])=>`<button data-lab="labSnd" data-v="${k}" class="${(store.labSnd||'cs')===k?'on':''}">${l}</button>`).join('')}</div></div>
+      <div class="lab"><b>Звуки</b><div class="lab-chips">${LAB_SND.map(([k,l])=>`<button data-lab="labSnd" data-v="${k}" class="${(store.labSnd||shopUse('snd'))===k?'on':''}">${l}</button>`).join('')}</div></div>
       <div class="lab"><b>Интерфейс</b><div class="lab-chips">${LAB_UI.map(([k,l])=>`<button data-lab="labUi" data-v="${k}" class="${(store.labUi||'grafit')===k?'on':''}">${l}</button>`).join('')}</div></div>`);
     $$('[data-lab]').forEach(b=>b.onclick=()=>{store[b.dataset.lab]=b.dataset.v;save();labApply();b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
       if(b.dataset.lab==='labSub'){const pv=$('.lab-prev');if(pv)pv.dataset.ss=b.dataset.v;}
-      if(b.dataset.lab==='labSnd'&&b.dataset.v!=='off'){const was=store.snd;store.snd=true;sfx('tap');setTimeout(()=>sfx('good'),250);setTimeout(()=>sfx('nope'),700);setTimeout(()=>sfx('win'),1150);store.snd=was;}
+      if(b.dataset.lab==='labSnd'&&b.dataset.v!=='off'){ac();sfxLoad(b.dataset.v).then(()=>{const P=sfxPack(b.dataset.v);P.tap();setTimeout(()=>P.good(),250);setTimeout(()=>P.nope(),700);setTimeout(()=>P.win(),1150);});}
       if(b.dataset.lab==='labUi')haptic('sel');});return;}
   renderAdmin();}
 
@@ -6217,7 +6257,7 @@ function fxCounter(){const H=innerHeight;let el=[...document.querySelectorAll('.
     bump(){el.animate([{transform:'scale(1)'},{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:260,easing:EZ.out});},
     done(){if(tmp)setTimeout(()=>{tmp.animate([{opacity:1},{opacity:0,transform:'translateY(-12px)'}],{duration:320,fill:'forwards'}).onfinish=()=>tmp.remove();},900);}};}
 function goldFX(n,from){try{if(!(n>0))return;const C=fxCounter(),end=store.gold||0,st=Math.max(0,end-n);
-  if(!fxOK()){C.set(end);C.done();return;}
+  if(!fxOK()){C.set(end);C.done();sfx('coin');return;}
   C.set(st);let ox=innerWidth/2,oy=innerHeight*.46;
   if(from&&from.getBoundingClientRect){const r=from.getBoundingClientRect();if(r.width&&r.top>0&&r.bottom<innerHeight){ox=r.left+r.width/2;oy=r.top+r.height/2;}}
   const lab=document.createElement('div');lab.className='gfx2';lab.innerHTML=`<b>+${fmt(n)}</b>${ui('coin')}`;FXROOT().appendChild(lab);lab.style.left=ox+'px';lab.style.top=oy+'px';
@@ -6228,7 +6268,7 @@ function goldFX(n,from){try{if(!(n>0))return;const C=fxCounter(),end=store.gold|
     const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.6,rr=36+Math.random()*58,sx=ox+Math.cos(a)*rr,sy=oy+Math.sin(a)*rr,rot=(Math.random()-.5)*60;
     t.animate([{transform:`translate(${ox}px,${oy}px) translate(-50%,-50%) scale(.2)`,opacity:0},{transform:`translate(${sx}px,${sy}px) translate(-50%,-50%) scale(1.05) rotate(${rot}deg)`,opacity:1}],{duration:380,delay:i*28,easing:EZ.out,fill:'forwards'}).onfinish=()=>{
       fxArc(t,sx,sy,C.x,C.y,{d:620+Math.random()*160,delay:120+i*55,s0:1.05,s1:.42,rot:rot+(Math.random()-.5)*240,lift:-60-Math.random()*80}).onfinish=()=>{
-        t.remove();got++;C.set(Math.round(st+(end-st)*got/k));C.bump();fxEmit(C.x,C.y,{n:5,v:2.6,life:34});sfx('tick');if(got===k){C.set(end);C.done();haptic('ok');}};};}
+        t.remove();got++;C.set(Math.round(st+(end-st)*got/k));C.bump();fxEmit(C.x,C.y,{n:5,v:2.6,life:34});sfx(got===k?'coin':'tick');if(got===k){C.set(end);C.done();haptic('ok');}};};}
 }catch(e){}}
 
 /* ---- карты словаря: кадр эпизода сверху, фраза, перевод; оформление — из магазина (data-cs) ---- */
@@ -6280,25 +6320,32 @@ function dictFly(opt){opt=opt||{};const L=DICT_NEW.splice(0);if(!L.length)return
 
 /* ---- заставки: «Кинолента» (по умолчанию), «Отсчёт 3-2-1» (старая), «Неоновая вывеска»; выбор — в магазине ---- */
 function splash(v){v=v||shopUse('sp');if(!store.fx||v==='off')return;if(v==='leader')return splashLeader();if(v==='neon')return splashNeon();return splashReel();}
-function splashOut(d,ms){let gone=false;const out=()=>{if(gone)return;gone=true;d.classList.add('out');setTimeout(()=>d.remove(),650);};d.addEventListener('pointerdown',out);setTimeout(out,ms);}
-function splashReel(){const S=SCENES.filter(x=>x.kind!=='clip'&&!x.age),im=S.map(s=>assetUrl(scEpKey(s,0,'jpg')));if(!im.length)return;
-  const A=im.slice(0,7),B=(im.length>7?im.slice(7,14):im.slice().reverse()).slice(0,7);
-  const row=(L,cls)=>`<div class="spr-row ${cls}"><div class="spr-strip">${[...L,...L].map(u=>`<i style="background-image:url('${u}')"></i>`).join('')}</div></div>`;
-  const title='ЯЗЫКИ ПО КИНО'.split('').map((ch,i)=>`<span style="--i:${i}">${ch===' '?'&nbsp;':ch}</span>`).join('');
-  const d=document.createElement('div');d.className='spr';
-  d.innerHTML=`<div class="spr-film">${row(A,'a')}${row(B,'b')}</div><div class="spr-beam"></div><div class="spr-vig"></div>
-    <div class="spr-c"><div class="spr-t">${title}</div><div class="spr-line"></div><div class="spr-sub">английский и немецкий по сценам из кино</div></div>`;
+function splashOut(d,ms,rm){let gone=false;const out=()=>{if(gone)return;gone=true;d.classList.add('out');setTimeout(()=>d.remove(),rm||650);};d.addEventListener('pointerdown',out);setTimeout(out,ms);}
+// 13.9.21 «Кинолента» v2: ≈1,8 с (было 2,5 + 0,6), одна лента из 8 кадров (по сцене каждого фильма), один луч, без пылинок, название — APP_NAME.
+// Кадры показываем, только если успели загрузиться за 0,3 с — иначе одно название, без серых пустых рамок (первый запуск, медленная сеть)
+const spTitle=t=>t.toUpperCase().split('').map((ch,i)=>`<span style="--i:${i}">${ch===' '?'&nbsp;':esc(ch)}</span>`).join('');
+function splashReel(){const seen={},S=SCENES.filter(x=>x.kind!=='clip'&&!x.age&&flagOf('scene-'+x.id)!=='hide').filter(x=>{const h=showOf(x);if(seen[h])return false;seen[h]=1;return true;}).slice(0,8);
+  const d=document.createElement('div');d.className='spr v2';
+  d.innerHTML=`<div class="spr-beam"></div><div class="spr-vig"></div>
+    <div class="spr-c"><div class="spr-t">${spTitle(APP_NAME)}</div><div class="spr-line"></div><div class="spr-sub">английский и немецкий по сценам из кино</div></div>`;
   document.body.appendChild(d);
-  setTimeout(()=>fxEmit(innerWidth/2,innerHeight*.42,{n:26,sh:'dust',v:.5,g:-.008,life:150,jx:innerWidth*.7,jy:innerHeight*.6,pack:'noir',s:.8}),200);
-  splashOut(d,2500);}
+  const R=[],P=S.map((s,i)=>{const im=new Image();im.decoding='async';im.src=assetUrl(scEpKey(s,0,'jpg'));
+    return (im.decode?im.decode():new Promise((ok,no)=>{im.onload=ok;im.onerror=no;})).then(()=>{R[i]=im.src;},()=>{});});
+  let shown=false;const film=()=>{if(shown)return;shown=true;const U=R.filter(Boolean);if(U.length<4||!d.isConnected||d.classList.contains('out'))return;
+    const f=document.createElement('div');f.className='spr-film';
+    f.innerHTML=`<div class="spr-row"><div class="spr-strip">${[...U,...U].map(u=>`<i style="background-image:url('${u}')"></i>`).join('')}</div></div>`;
+    d.insertBefore(f,d.firstChild);};
+  Promise.all(P).then(film);setTimeout(film,300);
+  splashOut(d,1400,450);}
 function splashNeon(){const d=document.createElement('div');d.className='spn';
-  d.innerHTML=`<div class="spn-wall"></div><div class="spn-t"><span class="a">ЯЗЫКИ</span><span class="b">по</span><span class="c">КИНО</span></div><div class="spn-sub">английский и немецкий по сценам из кино</div>`;
+  const W=APP_NAME.split(' '),cl=i=>i===0?'a':i===W.length-1?'c':'b';
+  d.innerHTML=`<div class="spn-wall"></div><div class="spn-t">${W.map((w,i)=>`<span class="${cl(i)}">${esc(w.length<=2?w.toLowerCase():w.toUpperCase())}</span>`).join('')}</div><div class="spn-sub">английский и немецкий по сценам из кино</div>`;
   document.body.appendChild(d);try{if(store.snd)[0,.18,.42].forEach(t=>osc('sawtooth',110,t,.12,.008,{lp:700}));}catch(e){}
   splashOut(d,2400);}
 function splashLeader(){
   // 11.2: «кинопроектор» — отсчёт плёнки 3-2-1, вспышка, шторки-letterbox раскрываются, проявляется название. Тап — пропустить.
   const d=document.createElement('div');d.className='splash3';
-  const title='ЯЗЫКИ ПО КИНО'.split('').map((ch,i)=>`<span style="--i:${i}">${ch===' '?'&nbsp;':ch}</span>`).join('');
+  const title=spTitle(APP_NAME);
   d.innerHTML=`<div class="s3-beam"></div><div class="s3-lead"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><circle class="sw" cx="50" cy="50" r="22"/><path d="M50 2v96M2 50h96"/></svg><b><i>3</i><i>2</i><i>1</i></b></div>
     <div class="s3-flash"></div><div class="s3-bar t"></div><div class="s3-bar b"></div>
     <div class="s3-c"><div class="s3-t">${title}</div><div class="s3-line"></div><div class="s3-sub">английский и немецкий по сценам из кино</div></div><div class="s3-grain"></div>`;
@@ -6318,7 +6365,7 @@ function countdown(cb){if(!fxOK()){cb();return;}
   step();}
 
 /* ===================================== МАГАЗИН ===================================== */
-const SHOP_DEF={fx:'cine',cs:'classic',st:'pick',sp:'reel',snd:'cs',hm:''};
+const SHOP_DEF={fx:'cine',cs:'classic',st:'pick',sp:'reel',snd:'kino',hm:''};
 const SHOP={
   fx:{n:'Эффекты',i:'✨',d:'Искры, полёт билетов и карт, вспышки наград — во всём приложении.',L:[
     {id:'cine',n:'Кино',p:0,d:'Золотые искры и кадры плёнки'},
@@ -6345,14 +6392,16 @@ const SHOP={
     {id:'neon',n:'Неоновая вывеска',p:350,d:'Название вспыхивает неоном, с треском'},
     {id:'off',n:'Без заставки',p:0,d:'Сразу на Главную'}]},
   snd:{n:'Звуки',i:'🔊',d:'Щелчки, верные ответы, награды.',L:[
-    {id:'cs',n:'Стандарт',p:0,d:'Чёткие щелчки и звон'},
+    {id:'kino',n:'Кино',p:0,d:'Затвор, плёнка, челеста — по умолчанию'},
+    {id:'ios',n:'Как в iPhone',p:0,d:'Короткий «ток», колёсико, чистый звоночек'},
+    {id:'cs',n:'Прежние',p:0,d:'Чёткие щелчки и звон — как было до 13.9.21'},
     {id:'soft',n:'Мягкие',p:200,d:'Тихо и бархатно'},
     {id:'projector',n:'Кинопроектор',p:300,d:'Треск плёнки'},
     {id:'typewriter',n:'Печатная машинка',p:300,d:'Клавиши и звоночек'},
     {id:'arcade',n:'8-бит',p:300,d:'Как в старых приставках'}]}
   // 13.9.19: раздел «Музыка» (саундтреки фильмов за билеты) убран — самый большой риск по авторским правам. Купленное вернули билетами (hmRefund)
 };
-const SHOP_E={snd:{cs:'🎯',soft:'🪶',projector:'📽',typewriter:'⌨️',arcade:'👾'}};
+const SHOP_E={snd:{kino:'🎞',ios:'📱',cs:'🎯',soft:'🪶',projector:'📽',typewriter:'⌨️',arcade:'👾'}};
 function musTracks(){const seen={},L=[];SCENES.forEach(s=>musOf(s).forEach(m=>{const k=(m.t+'|'+m.by).toLowerCase();if(seen[k])return;seen[k]=1;L.push({id:s.id+'|'+m.f,n:m.t,d:m.by,p:150,s,m});}));return L;}
 function shopList(cat){return cat==='hm'?[{id:'',n:'Без музыки',p:0,d:'На Главной тихо'},...musTracks()]:(SHOP[cat]?SHOP[cat].L:[]);}
 function shopS(){if(!store.shop||typeof store.shop!=='object')store.shop={};store.shop.own=store.shop.own||{};store.shop.use=store.shop.use||{};return store.shop;}
@@ -6363,7 +6412,7 @@ function shopApply(){try{document.body.dataset.cs=shopUse('cs');}catch(e){}try{l
 function shopPv(cat,it){
   if(cat==='fx'){const P=FX_PACKS[it.id];return `<div class="pv-fx" style="--a:${P.c[0]};--b:${P.c[1]};--c:${P.c[2]}"><span>${P.e}</span>${P.c.slice(0,4).map((c,i)=>`<i style="--k:${c};--i:${i}"></i>`).join('')}</div>`;}
   if(cat==='cs'){const s=SCENES.find(x=>x.kind!=='clip'&&!x.age&&scAct(x.parts[0].ph).length)||SCENES[0],pi=0,f=scAct(s.parts[0].ph)[0]||s.parts[0].ph[0];return `<div class="pv-cs" data-cs="${it.id}"><div class="dc" style="--c:${DX_TH[s.theme]||'#F5C451'}">${dcFace({s,f,pi})}</div><div class="pv-back"></div></div>`;}
-  if(cat==='sp')return `<div class="pv-sp sp-${it.id}"><b>ЯЗЫКИ ПО КИНО</b></div>`;
+  if(cat==='sp')return `<div class="pv-sp sp-${it.id}"><b>${esc(APP_NAME.toUpperCase())}</b></div>`;
   if(cat==='snd')return `<div class="pv-snd"><span>${SHOP_E.snd[it.id]||'🔊'}</span></div>`;
   if(cat==='st')return `<div class="pv-st st-${it.id}"><span>${ST_ICO[it.id]||'🗡'}</span></div>`;
   if(cat==='hm')return it.s?`<div class="pv-hm" style="background-image:url('${musArt(it.s,it.m)}')"><span>♪</span></div>`:`<div class="pv-hm off"><span>🔇</span></div>`;
@@ -6438,8 +6487,9 @@ function shopTry(cat,id,tile){const pv=tile&&tile.querySelector('.shp-pv');
   if(cat==='cs'){const s=SCENES.find(x=>x.kind!=='clip'&&!x.age&&scAct(x.parts[0].ph).length>=3)||SCENES[0];scAct(s.parts[0].ph).slice(0,3).forEach(f=>DICT_NEW.push({sid:s.id,fid:f.id}));dictFly({cs:id,demo:true});return;}
   if(cat==='st'){if(!fxOK()){toast('Включи анимации в настройках');return;}kvSteal({win:true,bet:100,me:{n:kvName()},foe:{n:'Друг'},style:id,demo:true});return;}
   if(cat==='sp'){if(!fxOK()){toast('Включи анимации в настройках');return;}const was=store.fx;store.fx=true;splash(id);store.fx=was;return;}
-  if(cat==='snd'){if(!store.snd){toast('Включи звук в настройках');return;}const keep=Object.assign({},SFX);Object.assign(SFX,SFXP[id]||SFXP.cs);
-    ['tap','good','learn','reward'].forEach((n,i)=>setTimeout(()=>{try{SFX[n]();}catch(e){}},i*420));setTimeout(()=>{Object.keys(SFX).forEach(k=>delete SFX[k]);Object.assign(SFX,keep);},1800);return;}
+  // 13.9.21: ▶ играет набор, не трогая выбранный (раньше SFX подменялся на 1,8 с — выбор в это время мог откатиться); «Кино»/«iPhone» — после загрузки файлов
+  if(cat==='snd'){if(!store.snd){toast('Включи звук в настройках');return;}ac();sfxLoad(id).then(()=>{const P=sfxPack(id);
+    ['tap','good','learn','reward'].forEach((n,i)=>setTimeout(()=>{try{P[n]();}catch(e){}},i*420));});return;}
   if(cat==='hm'){const it=shopItem('hm',id);if(!it||!it.s)return;if(SHPV&&SHPV._k===id){shopPvStop();return;}shopPvStop();try{if(MUS&&!MUS.paused)MUS.pause();}catch(e){}
     SHPV=new Audio(assetUrl(scKey(it.s,it.m.f)));SHPV._k=id;SHPV.volume=.5;SHPV.addEventListener('loadedmetadata',()=>{try{if(isFinite(SHPV.duration)&&SHPV.duration>40)SHPV.currentTime=SHPV.duration*.3;}catch(e){}},{once:true});
     const p=SHPV.play();if(p&&p.catch)p.catch(()=>toast('Трек не загрузился'));const me=SHPV;setTimeout(()=>{if(SHPV===me)shopPvStop();},20000);toast(`▶ «${it.n}» — 20 секунд`);}}
