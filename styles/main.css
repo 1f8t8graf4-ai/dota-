@@ -5766,3 +5766,152 @@ body:not([data-scn]) #amb{display:none}
 #amb::after,#appbg::before,.dl-bgl::after{content:"";position:absolute;left:0;right:0;top:0;z-index:2;height:calc(var(--st,0px) + 140px);pointer-events:none;
   background:linear-gradient(180deg,var(--top,#0b0b0d) 0,var(--top,#0b0b0d) calc(var(--st,0px) + 12px),transparent)}
 .pn.cur .pn-c{animation:none!important}
+
+/* ==== 13.9.24 — редизайн «Новый» (рабочее название «Без субтитров», по мотивам Germanize; макеты — артефакт 1fD1mf1wSoDVk4eVYYfdyu).
+   Только админ: Настройки → «Дизайн (на пробу)» → «Новый»; откат — «Сейчас». body[data-look="nd"] + data-ndt="light|dark" — как тема Telegram
+   (themeChanged), body.nd — на всех экранах, пока выбран «Новый» (вкладка «Игры» спрятана, вход — из Профиля). Вид — Главная («Сегодня»),
+   Кино, Словарь, Профиль, сцена, эпизод, проверка; общие правила видов — слой 13.9.22. Без размытий на больших слоях (13.9.23):
+   бесконечные анимации — только transform/opacity. ==== */
+.lvc{display:none}
+body.nd .tabbar button[data-nav="games"]{display:none!important}
+body[data-look="nd"][data-ndt="light"]:not(#_){--lk-bg:#F4F3EF;--lk-card:#FFFFFF;--lk-card2:#ECEBE5;--lk-ink:#161614;--lk-ink2:#5F5E58;--lk-ink3:#8E8D86;--lk-line:rgba(22,22,20,.08);--lk-line2:rgba(22,22,20,.16);
+  --lk-acc:#161614;--lk-acc2:#000;--lk-acc-ink:#fff;--lk-accs:rgba(22,22,20,.06);--lk-ok:#23A15E;--lk-okbg:rgba(35,161,94,.1);--lk-bad:#E0533D;--lk-badbg:rgba(224,83,61,.09);--lk-due:#D9770F;
+  --lk-r:22px;--lk-rs:14px;--lk-pill:999px;--lk-sh:0 1px 2px rgba(22,22,20,.05),0 12px 30px -16px rgba(22,22,20,.24);--lk-glass:#FFFFFF;
+  --lk-f:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;--lk-fh:'Manrope',system-ui,-apple-system,sans-serif;--lk-hw:800;--lk-hls:-.025em;--top:#F4F3EF;color-scheme:light;
+  --gold:#E3A21A;--gold2:#C98A0C;--goldtxt:#A8700A;--nd-sub:#FFD23F;--nd-sub-ink:#161614;--nd-mark:rgba(255,210,63,.62);--nd-ind:#ECEBE5}
+body[data-look="nd"][data-ndt="dark"]:not(#_){--lk-bg:#0F0F11;--lk-card:#1A1A1D;--lk-card2:#242428;--lk-ink:#F2F1EC;--lk-ink2:#A5A49E;--lk-ink3:#6F6E69;--lk-line:rgba(255,255,255,.07);--lk-line2:rgba(255,255,255,.14);
+  --lk-acc:#FFD23F;--lk-acc2:#F5C518;--lk-acc-ink:#161614;--lk-accs:rgba(255,210,63,.13);--lk-ok:#3FCF85;--lk-okbg:rgba(63,207,133,.12);--lk-bad:#FF6B57;--lk-badbg:rgba(255,107,87,.12);--lk-due:#FFB547;
+  --lk-r:22px;--lk-rs:14px;--lk-pill:999px;--lk-sh:0 1px 0 rgba(255,255,255,.03) inset,0 14px 34px -18px rgba(0,0,0,.75);--lk-glass:#1A1A1D;
+  --lk-f:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;--lk-fh:'Manrope',system-ui,-apple-system,sans-serif;--lk-hw:800;--lk-hls:-.025em;--top:#0F0F11;color-scheme:dark;
+  --gold:#FFD23F;--gold2:#F5C518;--goldtxt:#FFD23F;--nd-sub:#FFD23F;--nd-sub-ink:#161614;--nd-mark:rgba(255,210,63,.32);--nd-ind:#2A2A2F}
+body[data-look="nd"]:not(#_){font-size:16px;-webkit-font-smoothing:antialiased}
+
+/* уровни A1…C1 цветом (как у Germanize) */
+body[data-look="nd"]:not(#_) .lvc{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:7px;color:#fff;font:800 11px/1 var(--lk-f);letter-spacing:.03em}
+body[data-look="nd"]:not(#_) .lvc.l-a1{background:#2FA66A}body[data-look="nd"]:not(#_) .lvc.l-a2{background:#1C9AAE}body[data-look="nd"]:not(#_) .lvc.l-b1{background:#E39A2D}
+body[data-look="nd"]:not(#_) .lvc.l-b2{background:#E0533D}body[data-look="nd"]:not(#_) .lvc.l-c1{background:#8A6BE8}
+body[data-look="nd"]:not(#_) :is(.kposter,.hposter) .lvc{position:absolute;top:8px;left:8px;z-index:4;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+body[data-look="nd"]:not(#_) :is(.kposter,.hposter) .kp-mus{display:none}
+body[data-look="nd"]:not(#_) :is(.kposter,.hposter) .kp-age{left:auto;right:8px;top:8px}
+
+/* нижние вкладки: плавающая капсула, плашка едет за выбранной (пружиной) */
+body[data-look="nd"]:not(#_) .tabbar{background:var(--lk-glass)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:0!important;border-radius:24px!important;padding:5px!important;gap:0!important;
+  box-shadow:0 0 0 1px var(--lk-line),0 18px 40px -16px rgba(0,0,0,.38)!important}
+body[data-look="nd"]:not(#_) .tabbar button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 0 7px!important;border-radius:19px;background:none!important;color:var(--lk-ink3)!important;font:700 11px/1 var(--lk-f)!important;letter-spacing:0;transition:color .25s}
+body[data-look="nd"]:not(#_) .tabbar button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;filter:none!important;transform:none!important}
+body[data-look="nd"]:not(#_) .tabbar button.on{color:var(--lk-ink)!important}
+body[data-look="nd"]:not(#_) #tabind{display:block!important;left:5px!important;top:5px!important;bottom:5px!important;height:auto!important;width:calc((100% - 10px)/4)!important;border-radius:19px;background:var(--nd-ind)!important;border:0!important;box-shadow:none!important;
+  transition:transform .55s cubic-bezier(.25,1.35,.4,1)!important}
+body[data-look="nd"]:not(#_) #tabind::before{display:none!important}
+
+/* «Сегодня»: приветствие и кольцо цели дня */
+body[data-look="nd"]:not(#_) .ndhome{padding-top:2px}
+.ndh{display:flex;align-items:center;gap:12px;margin:2px 2px 14px}
+.ndh-a{flex:none;width:44px;height:44px;border-radius:50%;background:#ddd center/cover;box-shadow:0 0 0 2px var(--lk-card,#fff)}
+.ndh-a.mono{display:grid;place-items:center;background:linear-gradient(135deg,#F2B34A,#E0533D);color:#fff;font:800 18px var(--lk-f)}
+.ndh-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.ndh-t b{font:800 19px/1.15 var(--lk-f);letter-spacing:-.02em;color:var(--lk-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ndh-t span{font:600 13.5px/1.25 var(--lk-f);color:var(--lk-ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ndh-t em{font-style:normal;color:var(--lk-due)}
+.ndring{flex:none;position:relative;width:50px;height:50px;padding:0;border:0;border-radius:50%;background:var(--lk-card);box-shadow:0 0 0 1px var(--lk-line);cursor:pointer;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.ndring svg{position:absolute;inset:3px;width:44px;height:44px;transform:rotate(-90deg)}
+.ndring circle{fill:none;stroke-width:4}
+.ndring .bg{stroke:var(--lk-line2)}
+.ndring .fg{stroke:var(--nd-sub);stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--p,0));transition:stroke-dashoffset 1.2s cubic-bezier(.25,.8,.2,1) .25s}
+.ndring.rg0 .fg{stroke-dashoffset:100;transition:none}
+.ndring.ok .fg{stroke:var(--lk-ok)}.ndring.risk .fg{stroke:var(--lk-due)}
+.ndring b{position:absolute;inset:0;display:grid;place-items:center;font:800 14px var(--lk-f);color:var(--lk-ink)}
+.ndring:active{transform:scale(.92)}
+
+/* «Сегодня»: план на кадре фильма */
+.ndp{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;min-height:clamp(330px,58vh,540px);margin:0 0 14px;padding:18px;border-radius:26px;overflow:hidden;color:#fff;cursor:pointer;
+  background:#111;box-shadow:var(--lk-sh)}
+.ndp-img{position:absolute;inset:-3%;z-index:-2;background:#222 center/cover;transform:scale(1.04);animation:ndkb 22s ease-in-out infinite alternate;will-change:transform}
+@keyframes ndkb{from{transform:scale(1.04) translate3d(0,0,0)}to{transform:scale(1.15) translate3d(-2%,-1%,0)}}
+.ndp-gr{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.04) 22%,rgba(0,0,0,.38) 52%,rgba(0,0,0,.86))}
+.ndp-eb{font:800 11.5px/1 var(--lk-f);letter-spacing:.16em;text-transform:uppercase;font-style:normal;color:#FFD23F}
+.ndp-t{margin:8px 0 10px;font:800 clamp(28px,7.6vw,44px)/1.06 var(--lk-f);letter-spacing:-.03em;color:#fff;text-wrap:balance;text-shadow:0 2px 18px rgba(0,0,0,.35)}
+.ndp-t i{font-family:'Lora',Georgia,serif;font-weight:600;font-style:italic;letter-spacing:-.01em}
+.ndp-m{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ndp-m span:not(.lvc){display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:8px;background:rgba(255,255,255,.18);font:700 12.5px/1 var(--lk-f);color:#fff;max-width:60vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ndpull{position:relative;margin-top:16px;height:58px;border-radius:19px;background:rgba(255,255,255,.17);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;--pp:0}
+.ndpull::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.2) 50%,transparent 65%);transform:translateX(-100%);animation:ndsh 3.2s ease-in-out infinite;pointer-events:none}
+@keyframes ndsh{0%,30%{transform:translateX(-100%)}75%,100%{transform:translateX(100%)}}
+.ndpull-f{position:absolute;left:0;top:0;bottom:0;width:100%;transform-origin:0 50%;transform:scaleX(0);background:rgba(255,210,63,.3);pointer-events:none}
+.ndpull-t{position:absolute;inset:0;display:grid;place-items:center;padding-left:46px;font:700 15.5px/1 var(--lk-f);color:#fff;letter-spacing:-.005em;opacity:calc(1 - var(--pp)*1.5);pointer-events:none}
+.ndpull-k{position:absolute;left:5px;top:5px;z-index:1;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:#FFD23F;color:#161614;font-style:normal;box-shadow:0 6px 16px -6px rgba(0,0,0,.5);
+  animation:ndkn 3.6s cubic-bezier(.5,0,.2,1) infinite;will-change:transform}
+.ndpull-k svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.6;fill:none}
+@keyframes ndkn{0%,58%,100%{transform:translateX(0)}74%{transform:translateX(24px)}86%{transform:translateX(-2px)}}
+.ndpull.drag{cursor:grabbing}
+.ndpull.drag .ndpull-k,.ndpull.back .ndpull-k,.ndpull.done .ndpull-k,.ndpull.nudge .ndpull-k{animation:none}
+.ndpull.drag::after,.ndpull.done::after{animation:none;opacity:0}
+.ndpull.back .ndpull-k,.ndpull.back .ndpull-f{transition:transform .5s cubic-bezier(.3,1.4,.45,1)}
+.ndpull.done .ndpull-k{transition:transform .22s ease-out}.ndpull.done .ndpull-f{transition:transform .22s ease-out}
+.ndpull.nudge .ndpull-k{animation:ndnudge .6s cubic-bezier(.3,1.5,.5,1)}
+@keyframes ndnudge{0%{transform:translateX(0)}35%{transform:translateX(34px)}100%{transform:translateX(0)}}
+body.nofx .ndp-img,body.nofx .ndpull-k,body.nofx .ndpull::after{animation:none!important}
+
+/* «Сегодня»: строки под кадром, значки, полки — карточками; входят каскадом пружиной */
+body[data-look="nd"]:not(#_) .hrev2 .hr-i{background:var(--nd-mark);color:var(--lk-ink)}
+body[data-look="nd"]:not(#_) .hrev2 .hr-n{background:var(--lk-acc);color:var(--lk-acc-ink)}
+body[data-look="nd"]:not(#_) .hsec h2{font:800 22px/1.15 var(--lk-f);letter-spacing:-.025em}
+body[data-look="nd"]:not(#_) .hlink{color:var(--lk-ink2)!important;font:700 14px var(--lk-f)}
+body[data-look="nd"]:not(#_) .pod-k{color:var(--lk-ink2)!important}
+body[data-look="nd"]:not(#_) .pod-en{font:800 21px/1.25 var(--lk-f)!important;letter-spacing:-.02em}
+body[data-look="nd"]:not(.nofx):not(#_) .tabscr .anim{animation:ndIn .62s cubic-bezier(.2,.9,.25,1) backwards}
+@keyframes ndIn{from{opacity:0;transform:translateY(18px) scale(.975)}}
+body[data-look="nd"]:not(#_) :is(.hposter,.kposter,.hrev2,.hchips button,.lrow2){transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+body[data-look="nd"]:not(#_) :is(.hposter,.kposter,.hrev2,.hchips button,.lrow2):active{transform:scale(.965)}
+
+/* Профиль: карточка на своём фоне (нет фона — кадр последней сцены), цифры, строки */
+.ndpc{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;margin:0 0 12px;padding:30px 18px 18px;border-radius:26px;background:#141416;color:#fff;box-shadow:var(--lk-sh);cursor:pointer}
+.ndpc .pc-bg,.ndpc-bg{position:absolute;inset:0;z-index:-2;background:#222 center/cover;overflow:hidden}
+.ndpc .pc-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ndpc-bg{transform:scale(1.06);animation:ndkb 24s ease-in-out infinite alternate}
+.ndpc-sh{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.72))}
+.ndpc.film{box-shadow:0 0 0 2px #FFD23F,var(--lk-sh)}
+.ndpc-a{width:76px;height:76px;border-radius:50%;background:#333 center/cover;box-shadow:0 0 0 3px #FFD23F,0 10px 26px -8px rgba(0,0,0,.6)}
+.ndpc-a.mono{display:grid;place-items:center;background:linear-gradient(135deg,#F2B34A,#E0533D);color:#fff;font:800 30px var(--lk-f)}
+.ndpc-n{margin:12px 0 2px;font:800 24px/1.15 var(--lk-f);letter-spacing:-.02em;color:#fff}
+.ndpc-s{margin:0;font:600 13.5px/1.35 var(--lk-f);color:rgba(255,255,255,.82)}
+.ndpc-bgb{margin-top:14px;height:34px;padding:0 14px;border:0;border-radius:999px;background:rgba(255,255,255,.18);color:#fff;font:700 13px var(--lk-f);cursor:pointer}
+.ndst{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
+.ndst div{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 4px;border-radius:16px;background:var(--lk-card);box-shadow:var(--lk-sh),inset 0 0 0 1px var(--lk-line)}
+.ndst b{font:800 22px/1 var(--lk-f);letter-spacing:-.02em;color:var(--lk-ink);font-variant-numeric:tabular-nums}
+.ndst span{font:600 12px/1.2 var(--lk-f);color:var(--lk-ink2)}
+.ndl{display:flex;flex-direction:column;margin:0 0 12px;padding:4px;border-radius:20px;background:var(--lk-card);box-shadow:var(--lk-sh),inset 0 0 0 1px var(--lk-line)}
+.ndl-r{display:flex;align-items:center;gap:12px;width:100%;padding:11px 10px;border:0;border-radius:16px;background:none;color:var(--lk-ink);text-align:left;font:inherit;cursor:pointer;list-style:none}
+.ndl-r::-webkit-details-marker{display:none}
+.ndl-r+.ndl-r{box-shadow:0 -1px 0 var(--lk-line)}
+.ndl-r>i{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--lk-card2);font-style:normal;font-size:19px}
+.ndl-r>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ndl-r b{font:700 16px/1.2 var(--lk-f)}
+.ndl-r small{font:500 13px/1.25 var(--lk-f);color:var(--lk-ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ndl-r>em{flex:none;display:grid;place-items:center;color:var(--lk-ink3);font-style:normal;transition:transform .3s}
+.ndl-r>em svg{width:18px;height:18px}
+.ndl-r:active{background:var(--lk-card2)}
+.ndach[open]>.ndl-r>em{transform:rotate(90deg)}
+.ndach .achs{padding:8px 6px 10px}
+body[data-look="nd"]:not(#_) .ach{color:var(--lk-ink3)}
+body[data-look="nd"]:not(#_) .ach.got{color:var(--lk-ink)}
+body[data-look="nd"]:not(#_) .ach.got .slot{box-shadow:0 0 0 2px var(--nd-sub)}
+body[data-look="nd"]:not(#_) .foot{color:var(--lk-ink3)}
+body[data-look]:not(#_) .ep-hint.ep-w2>span{color:var(--lk-ink2)!important}   /* в светлых видах строка «Просто смотри…» была белой на белом */
+body[data-look="nd"]:not(.tabs-on):not(#_) .tabbar{box-shadow:none!important}   /* спрятанная капсула вкладок не выглядывает тенью снизу */
+/* ПК: «Сегодня» — план слева, «Повторить», значки и «Фраза дня» справа, полки на всю ширину; Профиль — колонкой по центру */
+@media (min-width:1000px){
+  body[data-look="nd"]:not(#_) .ndhome{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr);column-gap:22px;align-items:start;grid-auto-flow:row dense}
+  body[data-look="nd"]:not(#_) .ndhome>.ndh{grid-column:1/-1}
+  body[data-look="nd"]:not(#_) .ndhome>.ndp{grid-column:1;grid-row:2/span 4;min-height:min(64vh,580px);margin:0}
+  body[data-look="nd"]:not(#_) .ndhome>.ndp .ndp-in{max-width:640px;padding:12px 16px 8px}
+  body[data-look="nd"]:not(#_) .ndhome>:is(.hrev2,.hchips,.pod){grid-column:2;margin-top:0}
+  body[data-look="nd"]:not(#_) .ndhome>.hchips{flex-wrap:wrap}
+  body[data-look="nd"]:not(#_) .ndhome>:is(.hsec,.hrow){grid-column:1/-1}
+  body[data-look="nd"]:not(#_) .ndhome>.hrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;overflow:visible}
+  body[data-look="nd"]:not(#_) .ndhome>.hrow .hposter{width:auto!important}
+  body[data-look="nd"]:not(#_) .tabscr>:is(.ndpc,.ndst,.ndl,.foot){width:100%;max-width:720px;margin-left:auto;margin-right:auto}
+  body[data-look="nd"]:not(#_) .ndpc{min-height:280px;justify-content:center}
+}
+body[data-look="nd"]:not(#_) .tabscr>.lead{display:none!important}   /* Кино: без вводного абзаца — заголовок, поиск, фильтры, постеры */
+body[data-look="nd"]:not(#_) .tabscr>.title{font:800 32px/1.1 var(--lk-f)!important;letter-spacing:-.03em!important;margin-bottom:14px!important}

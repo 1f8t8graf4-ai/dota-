@@ -52,7 +52,7 @@ const TOP={svet:'#f4f3f0',noch:'#111215',zhurnal:'#f1ece2'};
   // 3. Настройки → «Дизайн (на пробу)»: переключатель есть у админа, выбор сохраняется и включает вид
   await P.evaluate(()=>renderSettings());await P.waitForTimeout(700);
   r=await P.evaluate(()=>[...document.querySelectorAll('[data-seg="look"] button')].map(x=>x.textContent+(x.getAttribute('aria-pressed')==='true'?'*':'')));
-  ok('Настройки: «Дизайн (на пробу)» — Сейчас / Свет / Ночь / Журнал, выбран «Свет»',r.join('|')==='Сейчас|Свет*|Ночь|Журнал',r);
+  ok('Настройки: «Дизайн (на пробу)» — Сейчас / Новый / Свет / Ночь / Журнал, выбран «Свет»',r.join('|')==='Сейчас|Новый|Свет*|Ночь|Журнал',r);
   await P.click('[data-seg="look"] [data-v="noch"]');await P.evaluate(()=>renderTab('learn'));await P.waitForTimeout(900);
   r=await P.evaluate(()=>({look:document.body.dataset.look,st:store.look,loc:LOCAL_ONLY.includes('look'),font:!!document.getElementById('lkf-noch')}));
   ok('выбрал «Ночь» — вид включился, шрифт подключён, выбор только на этом устройстве',r.look==='noch'&&r.st==='noch'&&r.loc&&r.font,r);

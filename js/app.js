@@ -247,14 +247,43 @@ function tgHead(){if(!TG||!document.body)return;let c='';try{const cs=getCompute
 // 13.9.22 (Андрей: «не нравится дизайн — цвета, шрифты и мелкий текст, тесно, Главная»): три вида на пробу — «Свет», «Ночь», «Журнал».
 // Только админу (Настройки → «Дизайн (на пробу)», store.look) и только на Главной, в Кинозале, Словаре, на странице сцены, в эпизоде и проверке:
 // body[data-look] — стили слоем 13.9.22 в конце main.css и dictlab.css. Шрифт вида грузится при первом включении.
-const LOOKS={svet:{n:'Свет',f:'Onest:wght@400;500;600;700;800'},noch:{n:'Ночь',f:'Manrope:wght@400;500;600;700;800'},zhurnal:{n:'Журнал',f:'PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700'}};
+const LOOKS={nd:{n:'Новый',f:'Manrope:wght@400;500;600;700;800&family=Lora:ital,wght@1,500;1,600&family=Caveat:wght@600;700'},svet:{n:'Свет',f:'Onest:wght@400;500;600;700;800'},noch:{n:'Ночь',f:'Manrope:wght@400;500;600;700;800'},zhurnal:{n:'Журнал',f:'PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700'}};
 function lookFont(k){const id='lkf-'+k;if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+LOOKS[k].f+'&display=swap';document.head.appendChild(l);}
 function lookApply(cls){const b=document.body;if(!b)return;let k='';try{k=FLAG_ADMIN&&LOOKS[store.look]?store.look:'';}catch(e){}
-  const on=k&&(/\btabscr\b/.test(cls||'')&&screen==='home'&&['learn','kino','dict'].includes(store.tab)||/\bscnscr\b/.test(cls||'')&&['scene','scep','scq'].includes(b.dataset.scr));
-  if(on){if(b.dataset.look!==k)b.dataset.look=k;lookFont(k);}else if(b.dataset.look)delete b.dataset.look;}
+  const tabs=k==='nd'?['learn','kino','dict','profile']:['learn','kino','dict'];   // 13.9.24: у «Нового» и Профиль
+  const on=k&&(/\btabscr\b/.test(cls||'')&&screen==='home'&&tabs.includes(store.tab)||/\bscnscr\b/.test(cls||'')&&['scene','scep','scq'].includes(b.dataset.scr));
+  b.classList.toggle('nd',k==='nd');ndTabs(k==='nd');
+  if(on){if(b.dataset.look!==k)b.dataset.look=k;lookFont(k);if(k==='nd')ndTheme();else delete b.dataset.ndt;}else{if(b.dataset.look)delete b.dataset.look;delete b.dataset.ndt;}}
+// 13.9.24 — редизайн «Новый» (рабочее название приложения «Без субтитров», макеты Germanize): светлый или тёмный — как тема Telegram
+// (плеер всегда тёмный), вкладки «Сегодня · Кино · Словарь · Профиль» (игры — из Профиля), «Сегодня» — один план на кадре и «Потяни, чтобы начать».
+// Только админ, Настройки → «Дизайн (на пробу)» → «Новый»; откат — «Сейчас».
+const ndOn=()=>{try{return !!FLAG_ADMIN&&store.look==='nd';}catch(e){return false;}};
+function ndDark(){try{if(TG&&TG.colorScheme)return TG.colorScheme==='dark';}catch(e){}try{return matchMedia('(prefers-color-scheme: dark)').matches;}catch(e){return true;}}
+function ndTheme(){const b=document.body;if(!b||b.dataset.look!=='nd')return;const t=ndDark()?'dark':'light';if(b.dataset.ndt!==t){b.dataset.ndt=t;try{tgHead();}catch(e){}}}
+try{if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>ndTheme());}catch(e){}
+const ND_TABS={learn:['Сегодня','<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M8.5 14.5l2.2 2 4.8-4.8"/>'],kino:['Кино','<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 9.5h18M7.5 5l2 4.5M12.5 5l2 4.5M17.5 5l2 4.5"/>'],
+  dict:['Словарь','<path d="M6.5 4h11a1 1 0 0 1 1 1v15l-6.5-3.4L5.5 20V5a1 1 0 0 1 1-1z"/>'],profile:['Профиль','<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>']};
+let NDT=null;
+function ndTabs(on){const nav=document.getElementById('tabbar');if(!nav||NDT===on)return;NDT=on;
+  nav.querySelectorAll('button').forEach(b=>{const t=TABS.find(x=>x.id===b.dataset.nav);if(!t)return;const n=on&&ND_TABS[t.id];
+    b.querySelector('svg').innerHTML=n?n[1]:t.ico;b.querySelector('span').textContent=n?n[0]:t.name;b.setAttribute('aria-label',n?n[0]:t.name);});}
+// «Потяни, чтобы начать»: тянешь ручку вправо — дальше 70 % ширины и отпустил — старт; просто тап — ручка подпрыгивает (случайно не нажмёшь); Enter/пробел — старт
+function ndPull(el,go){const k=el.querySelector('.ndpull-k'),f=el.querySelector('.ndpull-f');let x0=null,dx=0,max=1,done=false,buzz=false;
+  const set=(v,anim)=>{el.classList.toggle('back',!!anim);k.style.transform=v?`translateX(${v}px)`:'';f.style.transform=`scaleX(${Math.min(1,(v+k.offsetWidth+8)/el.clientWidth)})`;el.style.setProperty('--pp',(v/max).toFixed(3));};
+  const fire=()=>{if(done)return;done=true;el.classList.add('done');set(max);haptic('medium');sfx('whoosh');setTimeout(go,fxOK()?260:0);};
+  el.addEventListener('pointerdown',e=>{if(done)return;x0=e.clientX;dx=0;buzz=false;max=Math.max(1,el.clientWidth-k.offsetWidth-8);el.classList.add('drag');el.classList.remove('nudge');try{el.setPointerCapture(e.pointerId);}catch(_){}});
+  el.addEventListener('pointermove',e=>{if(x0==null)return;dx=Math.max(0,Math.min(max,e.clientX-x0));set(dx);if(!buzz&&dx>=max*.7){buzz=true;haptic('sel');}else if(buzz&&dx<max*.7)buzz=false;});
+  const up=()=>{if(x0==null)return;x0=null;el.classList.remove('drag');if(dx>=max*.7)fire();else{set(0,true);if(dx<8){el.classList.remove('nudge');void el.offsetWidth;el.classList.add('nudge');haptic('light');}}dx=0;};
+  el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('lostpointercapture',up);
+  el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fire();}};}
+// уровень сцены по CEFR (lvl 1–5 → A1…C1) — цветная метка, как у Germanize; видна только в «Новом»
+const CEFR=['A1','A2','B1','B2','C1'];
+const cefrOf=s=>CEFR[Math.max(1,Math.min(5,(s&&s.lvl)||3))-1];
+const lvcHTML=s=>{const c=cefrOf(s);return `<span class="lvc l-${c.toLowerCase()}">${c}</span>`;};
 function initTG(){
   if(!TG)return;
   try{TG.ready();TG.expand();}catch(e){}
+  try{TG.onEvent('themeChanged',()=>ndTheme());}catch(e){}
   try{if(TG.enableVerticalSwipes)TG.enableVerticalSwipes();}catch(e){}
   tgHead();
   setInsets();
@@ -1599,7 +1628,7 @@ function renderSettings(){
   const row=(k,n,d)=>`<button class="checkrow frame" data-t="${k}" aria-pressed="${!!store[k]}">${BOX}<span class="ct"><span class="cn">${n}</span>${d?`<span class="cd">${d}</span>`:''}</span></button>`;
   mount(`
     <div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Настройки</h1></div>
-    ${FLAG_ADMIN?`<section class="set-sec"><h2>Дизайн (на пробу)</h2>${segCtl('look',[['cur','Сейчас'],...Object.keys(LOOKS).map(k=>[k,LOOKS[k].n])],LOOKS[store.look]?store.look:'cur')}<p class="hint-line" style="margin-top:6px;opacity:.7">Видно только тебе, на этом устройстве. Пока — Главная, Кинозал, Словарь, страница сцены, эпизод и проверка.</p></section>`:''}
+    ${FLAG_ADMIN?`<section class="set-sec"><h2>Дизайн (на пробу)</h2>${segCtl('look',[['cur','Сейчас'],...Object.keys(LOOKS).map(k=>[k,LOOKS[k].n])],LOOKS[store.look]?store.look:'cur')}<p class="hint-line" style="margin-top:6px;opacity:.7">Видно только тебе, на этом устройстве. Пока — Главная, Кинозал, Словарь, страница сцены, эпизод и проверка. «Новый» — редизайн («Без субтитров»): светлый или тёмный, как Telegram, вкладки «Сегодня · Кино · Словарь · Профиль», игры — в Профиле. Вернуть как было — «Сейчас».</p></section>`:''}
 
     <section class="set-sec"><h2>Обучение</h2>
       <div class="stack">${row('hideLearned','Убирать выученные слова',`Слово, на которое ты ${LEARN_AT} раза ответил правильно, больше не попадается в обычных играх. Оно вернётся в «Повторение» через 3, 7, 21 и 60 дней.`)}
@@ -1667,7 +1696,7 @@ const TAB_PARENT={spy:'games',arena:'games'};
 let lastTabIdx=0;
 function ensureTabbar(){
   if($('#tabbar'))return;
-  const nav=document.createElement('nav');nav.id='tabbar';nav.className='tabbar';
+  const nav=document.createElement('nav');nav.id='tabbar';nav.className='tabbar';NDT=null;
   nav.innerHTML=`<i class="tabind" id="tabind"></i>`+TABS.map(t=>`<button data-nav="${t.id}" aria-label="${t.name}"><svg viewBox="0 0 24 24">${t.ico}</svg><span>${t.name}</span></button>`).join('');
   document.body.appendChild(nav);
   nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{
@@ -1796,7 +1825,48 @@ function checkAch(){
   d.innerHTML=`${iconHTML({img:a.ic,svg:'trophy'})}<span><small>Достижение</small><b>${esc(a.n)}</b><em>${esc(a.d)}</em></span>`;
   document.body.appendChild(d);sfx('learn');haptic('ok');setTimeout(()=>d.remove(),3400);
 }
+// 13.9.24 «Новый»: Профиль — карточка на своём фоне (нет фона — кадр последней сцены), 4 цифры набегают, дальше строки:
+// Коллекция · Игры (вкладки «Игры» в «Новом» нет) · Мои слова · Билеты · Достижения · Настройки · Как пользоваться · Админ-панель
+function ndProfileHTML(){const name=userName()||'Игрок',photo=tgPhoto(),pb=profBg(),st=streakNow(),got=ACH.filter(a=>store.ach[a.id]).length;
+  const eps=SCENES.reduce((a,x)=>a+(scP(x.id).done||[]).length,0),ph=dictCount()[0],mw=mywAll().length,bgs=(()=>{try{return collStat().bg;}catch(e){return 0;}})();
+  const L=(store.scLast&&scOf(store.scLast.id))||continueScene().s,fi=L&&filmImg(L,innerWidth>=1000?'bd.jpg':'bdm.jpg'),fb=L?(fi?`url('${fi}'),`:'')+`url('${assetUrl(scKey(L,'cover.jpg'))}')`:'';
+  const row=(id,ic,b,sm,x)=>`<button class="ndl-r" id="${id}"${x||''}><i>${ic}</i><span><b>${b}</b>${sm?`<small>${sm}</small>`:''}</span><em>${ui('fwd')}</em></button>`;
+  const cnt=(n,l)=>`<div><b class="ndcnt" data-n="${n}">${n}</b><span>${l}</span></div>`;
+  return `<section class="ndpc anim${pb?' pbg'+(pb.film?' film':''):''}" id="ndPc">${pb?`<div class="pc-bg" data-bgl="${esc(pb.k)}" data-lead="2.5" aria-hidden="true"></div>`:`<div class="ndpc-bg" style="${fb?`background-image:${fb}`:''}"></div>`}<i class="ndpc-sh"></i>
+      <div class="ndpc-a${photo?'':' mono'}"${photo?` style="background-image:url('${esc(photo)}')"`:''}>${photo?'':esc((name||'И').trim().charAt(0).toUpperCase())}</div>
+      <h2 class="ndpc-n">${esc(name)}</h2>
+      <p class="ndpc-s">${st?`🔥 ${st} ${plural(st,['день','дня','дней'])} подряд`:'Серия начнётся с первого ответа'}${pb?` · фон «${esc(pb.name)}»`:''}</p>
+      <button class="ndpc-bgb" id="pcChg">${pb?'Сменить фон':bgAnyGot()?'Поставить фон':'Фон — за пройденную сцену'}</button></section>
+    <div class="ndst anim">${cnt(eps,plural(eps,['эпизод','эпизода','эпизодов']))}${cnt(ph,plural(ph,['фраза','фразы','фраз']))}${cnt(mw,plural(mw,['слово','слова','слов']))}${cnt(bgs,plural(bgs,['фон','фона','фонов']))}</div>
+    <div class="ndl anim">
+      ${row('pfColl','🏆','Коллекция','фоны, карточки, кадры')}
+      ${!newbie()&&flagOf('games')!=='hide'?row('pfGames','🎮','Игры','Дота, CS, «Шпион», карточная дуэль'):''}
+      ${mw?row('pfWords','⭐','Мои слова',`${mw} ${plural(mw,['слово','слова','слов'])}`):''}
+      ${row('pfShop','🎟','Билеты',`${fmt(store.gold)} · магазин`)}
+    </div>
+    <details class="ndl ndach anim"><summary class="ndl-r"><i>🎖</i><span><b>Достижения</b><small>${got} из ${ACH.length}</small></span><em>${ui('fwd')}</em></summary>
+      <div class="achs">${ACH.map(a=>`<button class="ach${store.ach[a.id]?' got':''}" data-a="${a.id}">${iconHTML({img:a.ic,svg:'trophy'})}<span>${esc(a.n)}</span></button>`).join('')}</div></details>
+    <div class="ndl anim">
+      ${row('setBtn','⚙️','Настройки','язык, субтитры, звук, дизайн')}
+      ${row('helpBtn','❓','Как пользоваться','все функции коротко')}
+      ${FLAG_ADMIN?row('admBtn','🛡','Админ-панель','игроки, доступ, проверка'):''}
+    </div>
+    <p class="foot">Версия ${APP_V}</p>`;}
+function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
+  $('#pcChg').onclick=e=>{e.stopPropagation();sfx('tap');haptic('sel');renderCollection('bg');};
+  $('#ndPc').onclick=e=>{if(e.target.closest('button'))return;sfx('tap');pfView(meCard(),true);};
+  $('#pfColl').onclick=()=>{sfx('tap');renderCollection();};
+  if($('#pfGames'))$('#pfGames').onclick=()=>{sfx('tap');haptic('sel');renderTab('games');};
+  if($('#pfWords'))$('#pfWords').onclick=()=>{sfx('tap');renderMyWords();};
+  $('#pfShop').onclick=()=>{sfx('tap');renderShop();};
+  $('#helpBtn').onclick=()=>{sfx('tap');renderHelp();};
+  $$('.ach').forEach(b=>b.onclick=()=>{const a=ACH.find(x=>x.id===b.dataset.a);sfx('sel');toast(`${a.n}: ${a.d}${store.ach[a.id]?'. Получено':''}`);});
+  ndCount($$('.ndcnt'));}
+// цифры набегают от 0 за 0.9 с, один раз (без анимаций — сразу итог)
+function ndCount(els){if(!fxOK())return;els.forEach((el,i)=>{const n=+el.dataset.n||0;if(!n)return;const t0=performance.now()+120+i*90,D=900;el.textContent='0';
+  const step=t=>{if(!el.isConnected)return;const k=Math.max(0,Math.min(1,(t-t0)/D)),e=1-Math.pow(1-k,3);el.textContent=Math.round(n*e);if(k<1)requestAnimationFrame(step);};requestAnimationFrame(step);});}
 function profileTabHTML(){
+  if(ndOn())return ndProfileHTML();
   const t=totals(),rk=rankInfo(t.learned),name=userName()||'Игрок',photo=tgPhoto(),acc=accuracy(),s=achStats();
   const got=ACH.filter(a=>store.ach[a.id]).length,due=dueList().length;
   const mis=store.mistakes.filter(x=>store.langs.includes(x.split('|')[2])).length;
@@ -1821,7 +1891,7 @@ function profileTabHTML(){
     <p class="foot">Версия ${APP_V}</p>`;
 }
 function bindProfileAdmin(){const b=$('#admBtn');if(b)b.onclick=()=>{sfx('tap');renderAdmin();};}
-function bindProfile(){bindProfileAdmin();
+function bindProfile(){if(ndOn()){ndBindProfile();return;}bindProfileAdmin();
   bindHead();bgFill($('.phead'));$$('#pcChg,#pcSet').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');haptic('sel');renderCollection('bg');});
   {const c=$('.phead.pbg');if(c)c.onclick=e=>{if(e.target.closest('button'))return;pfView(meCard(),true);};}
   $('#dict').onclick=()=>{sfx('tap');renderDict('going');};
@@ -2369,7 +2439,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.23';
+const APP_V='13.9.24';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -3038,7 +3108,7 @@ function scRateHTML(s){if(!s.lvl&&!s.use)return '';
   return `<div class="sc-rate">${s.lvl?`<div><span>Сложность на слух</span>${scDots(s.lvl)}<small>${esc(s.lvlWhy||'')}</small></div>`:''}${s.use?`<div><span>Польза в жизни</span>${scDots(s.use)}<small>${esc(s.useWhy||'')}</small></div>`:''}</div>`;}
 function kinoCard(s){const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
   const lk=!scOpen(s);
-  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}${lk?' locked':''}" data-sc="${s.id}">${lk?`<span class="kp-lock">🔒 ${ui('coin')} ${fmt(SC_PRICE(s))}</span>`:''}${s.lang==='de'?`<span class="kp-lang">${FLAG.de} на немецком</span>`:''}${s.age?`<span class="kp-age">18+</span>`:''}<span class="kp-img" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
+  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}${lk?' locked':''}" data-sc="${s.id}">${lk?`<span class="kp-lock">🔒 ${ui('coin')} ${fmt(SC_PRICE(s))}</span>`:''}${s.lang==='de'?`<span class="kp-lang">${FLAG.de} на немецком</span>`:''}${s.age?`<span class="kp-age">18+</span>`:''}<span class="kp-img" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${lvcHTML(s)}${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
     <span class="kp-t"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${s.parts.length} ${plural(s.parts.length,['эпизод','эпизода','эпизодов'])}${d?` · пройдено ${d}`:''}</small>
     ${s.lvl?`<span class="kp-rate"><i>сложность ${scDots(s.lvl)}</i><i>польза ${scDots(s.use||0)}</i></span>`:''}
     <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%\"></i></span></span></button>`;}
@@ -3051,8 +3121,8 @@ function kinoTabHTML(){
   const shows={},cards=[];
   for(const s of list){if(s.show){if(!shows[s.show]){shows[s.show]=[];cards.push({show:s.show});}shows[s.show].push(s);}else cards.push({s});}
   const html=cards.map(c=>{if(c.s)return kinoCard(c.s);const L=shows[c.show];if(L.length===1)return kinoCard(L[0]);const s=L[0];
-    return `<button class="kposter ${s.theme} show poster anim${L.every(x=>scMasterPct(x)===100)?' mastered':''}" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${scCover(s,'poster.jpg')}'),url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span><span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
-  return `<h1 class="title anim">Кинозал</h1>
+    return `<button class="kposter ${s.theme} show poster anim${L.every(x=>scMasterPct(x)===100)?' mastered':''}" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${scCover(s,'poster.jpg')}'),url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${lvcHTML(L.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,L[0]))}<span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
+  return `<h1 class="title anim">${ndOn()?'Кино':'Кинозал'}</h1>
     <p class="lead anim" style="margin:4px 0 12px">${kl==='de'?'Сцены на немецком: дубляж и немецкое кино. Учишь немецкий по живой речи.':'Смотришь сцену с субтитрами, разбираешь живые фразы, проверяешь себя.'}</p>
     ${nL('de')?`<div class="dx-lang klang anim"><button data-kl="en" class="${kl==='en'?'on':''}">${FLAG.en} English <i>${nL('en')}</i></button><button data-kl="de" class="${kl==='de'?'on':''}">${FLAG.de} Deutsch <i>${nL('de')}</i></button></div>`:''}
     <button class="srch-pill anim" onclick="renderSearch()">${ui('search')}<span>Найти фразу, сцену или слово</span></button>
@@ -5861,6 +5931,34 @@ function learnTabHTML(){
   const rev2=n?`<button class="hrev2" data-go="rev"><i class="hr-i">🔁</i><span class="hr-t"><b>Повторить</b><small>фразы и слова · ≈ ${Math.max(2,Math.round(n*0.4))} мин</small></span><em class="hr-n">${n}</em><i class="hr-c">${ui('fwd')}</i></button>`
     :les&&!les.fresh?`<button class="hrev2" data-go="les"><i class="hr-i">📘</i><span class="hr-t"><b>Урок на сегодня</b><small>${les.n} ${plural(les.n,['фраза','фразы','фраз'])} · «${esc(les.s.title)}»</small></span><em class="hr-n">${les.n}</em><i class="hr-c">${ui('fwd')}</i></button>`:'';
   const coll=(()=>{try{const C=collStat();return C.bg+C.cards||'';}catch(e){return '';}})();
+  const chips=`<nav class="hchips anim">
+      ${mw?`<button onclick="renderMyWords()"><i>⭐</i>Мои слова<em>${mw}</em></button>`:''}
+      <button id="hColl"><i>🏆</i>Коллекция${coll?`<em>${coll}</em>`:''}</button>
+      <button id="hShop"><i>🛍</i>Магазин</button>
+      ${ADM_OPEN()?'<button id="hYt"><i>📺</i>ТЕСТ · YouTube</button>':''}
+    </nav>`;
+  const shelves=`<div class="hsec anim"><h2>${ndOn()?'Кино':'Кинозал'}</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
+    ${[['kino',x=>x.kind!=='interview'&&x.lang!=='de'],['iv',x=>x.kind==='interview'&&x.lang!=='de'],['de',x=>x.lang==='de']].map(([hk,hf])=>{const HS=SCENES.filter(x=>flagOf('scene-'+x.id)!=='hide'&&hf(x));if(!HS.length)return '';
+    return (hk==='iv'?`<div class="hsec anim"><h2>Интервью</h2><button class="hlink" id="hAllIv">Все интервью →</button></div>`:hk==='de'?`<div class="hsec anim"><h2>${FLAG.de} Auf Deutsch</h2><button class="hlink" id="hAllDe">Все на немецком →</button></div>`:'')+`<div class="hrow">${(()=>{const G=[],by={};for(const x of HS){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
+      return G.map(k=>{const L=by[k],x=L[0],l=L.reduce((a,y)=>a+scLearned(y),0),t=L.reduce((a,y)=>a+scTotal(y),0),eps=L.reduce((a,y)=>a+y.parts.length,0);
+        return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span>${lvcHTML(L.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,L[0]))}<span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div>`;}).join('')}`;
+  // 13.9.24 «Новый»: приветствие с кольцом цели дня, один план на кадре фильма и «Потяни, чтобы начать» (как у Germanize)
+  if(ndOn()){const hr=new Date().getHours(),hi=hr<5?'Доброй ночи':hr<12?'Доброе утро':hr<18?'Добрый день':'Добрый вечер',nm=(userName()||'').trim().split(/\s+/)[0],photo=tgPhoto();
+    const mins=Math.max(2,Math.round((p.b-p.a)/60+2)),ok=d.n>=goal,risk=st>0&&store.lastDay!==new Date().toDateString();
+    return `<div class="home ndhome">
+    <header class="ndh anim"><div class="ndh-a${photo?'':' mono'}"${photo?` style="background-image:url('${esc(photo)}')"`:''}>${photo?'':esc((nm||'И').charAt(0).toUpperCase())}</div>
+      <div class="ndh-t"><b>${hi}${nm?', '+esc(nm):''}</b><span>${st?`🔥 ${st} ${plural(st,['день','дня','дней'])} подряд`:'Серия начнётся с первого ответа'}${risk?' · <em>сгорит в полночь</em>':''}</span></div>
+      <button class="ndring${ok?' ok':''}${risk?' risk':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 40 40"><circle class="bg" cx="20" cy="20" r="16" pathLength="100"/><circle class="fg" cx="20" cy="20" r="16" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></header>
+    <section class="ndp anim" id="hHero" data-sc="${s.id}">
+      <span class="ndp-img" style="background-image:${bdi?`url('${bdi}'),`:''}url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="ndp-gr"></span>
+      <div class="ndp-in">
+        <em class="ndp-eb">${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'План на сегодня'}</em>
+        <h1 class="ndp-t">Эпизод <i>«${esc(p.t)}»</i></h1>
+        <div class="ndp-m">${lvcHTML(s)}<span>≈ ${mins} мин</span><span>${esc(s.title)}</span></div>
+        <div class="ndpull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k">${ui('fwd')}</i></div>
+      </div>
+    </section>
+    ${rev2}${chips}${shelves}${phraseOfDayHTML()}</div>`;}
   return `<div class="home home2">${headHTML()}${hmChipHTML()}
     <section class="hh ${s.theme} anim" id="hHero" data-sc="${s.id}">
       ${dayGoalHTML(d,goal,gp,st)}
@@ -5874,24 +5972,17 @@ function learnTabHTML(){
       </div>
     </section>
     ${rev2}
-    <nav class="hchips anim">
-      ${mw?`<button onclick="renderMyWords()"><i>⭐</i>Мои слова<em>${mw}</em></button>`:''}
-      <button id="hColl"><i>🏆</i>Коллекция${coll?`<em>${coll}</em>`:''}</button>
-      <button id="hShop"><i>🛍</i>Магазин</button>
-      ${ADM_OPEN()?'<button id="hYt"><i>📺</i>ТЕСТ · YouTube</button>':''}
-    </nav>
-    <div class="hsec anim"><h2>Кинозал</h2><button class="hlink" id="hAllKino">Все сцены →</button></div>
-    ${[['kino',x=>x.kind!=='interview'&&x.lang!=='de'],['iv',x=>x.kind==='interview'&&x.lang!=='de'],['de',x=>x.lang==='de']].map(([hk,hf])=>{const HS=SCENES.filter(x=>flagOf('scene-'+x.id)!=='hide'&&hf(x));if(!HS.length)return '';
-    return (hk==='iv'?`<div class="hsec anim"><h2>Интервью</h2><button class="hlink" id="hAllIv">Все интервью →</button></div>`:hk==='de'?`<div class="hsec anim"><h2>${FLAG.de} Auf Deutsch</h2><button class="hlink" id="hAllDe">Все на немецком →</button></div>`:'')+`<div class="hrow">${(()=>{const G=[],by={};for(const x of HS){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
-      return G.map(k=>{const L=by[k],x=L[0],l=L.reduce((a,y)=>a+scLearned(y),0),t=L.reduce((a,y)=>a+scTotal(y),0),eps=L.reduce((a,y)=>a+y.parts.length,0);
-        return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span><span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div>`;}).join('')}
+    ${chips}
+    ${shelves}
     ${phraseOfDayHTML()}</div>`;
 }
 function bindLearn(){
   bindHead();setTimeout(()=>{unlockSheet();setTimeout(pollMaybe,400);},600);   // 13.9.19: первый пройденный эпизод — «Открылось: …»; после 3-го — опрос
   const c=continueScene();
   if($('#hCont'))$('#hCont').onclick=()=>{haptic('medium');renderScEp(c.s.id,c.i);};
-  {const h=$('#hHero');if(h)h.onclick=e=>{if(e.target.closest('button'))return;sfx('tap');renderScene(c.s.id);};}   // 13.9.13: нажал на кадр — страница сцены
+  {const h=$('#hHero');if(h)h.onclick=e=>{if(e.target.closest('button,.ndpull'))return;sfx('tap');renderScene(c.s.id);};}
+  {const pl=$('#ndPull');if(pl)ndPull(pl,()=>renderScEp(c.s.id,c.i));
+   const r=$('.ndring');if(r&&fxOK()){r.classList.add('rg0');requestAnimationFrame(()=>requestAnimationFrame(()=>r.classList.remove('rg0')));}}   // кольцо заполняется при входе   // 13.9.13: нажал на кадр — страница сцены
   if($('#hLesson'))$('#hLesson').onclick=()=>{haptic('medium');startScLesson();};
   if($('#hRev'))$('#hRev').onclick=()=>{haptic('medium');renderDaily();};
   $$('.hrev2').forEach(b=>b.onclick=()=>{haptic('medium');if(b.dataset.go==='les')startScLesson();else renderDaily();});   // 13.9.22: строка под кадром в видах на пробу
