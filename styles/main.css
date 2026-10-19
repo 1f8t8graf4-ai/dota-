@@ -2743,7 +2743,8 @@ body.tabs-on .tabbar{transform:translate(-50%,0)}
 
 /* --- кто не любит анимации: всё мгновенно --- */
 body.nofx *,body.nofx *::before,body.nofx *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+/* 13.9.33: «меньше движения» больше не гасит всё — большие движения гасит app.js (rmOn: долгие и бесконечные анимации, частицы, полёты) */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important}}
 /* главная: перебиваем старые яркие градиенты (у них была более «сильная» запись) */
 body .screen .hlesson,body.t-clean .screen .hlesson,body .screen .hlesson.hero,body.t-clean .screen .hlesson.hero{
   background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025)),#141417!important;filter:none!important;border:1px solid var(--hairline)!important}
@@ -6260,3 +6261,22 @@ body:has(.pw) .tabbar{display:none!important}
 .pw{padding-bottom:calc(var(--sb,0px) + 28px)}
 .pw-go,.pw-alt,.pw-sm,.pwa-b .pw-go,.pwa-b .pw-alt{display:flex;align-items:center;justify-content:center;text-align:center}
 .pw-holo{inset:auto;left:-100%;top:-190%;width:300%;height:300%;opacity:.34}
+
+/* ==== 13.9.33 — P0: без 3D-зала в «Новом», тест уровня на ПК, «Почему нет анимаций» ==== */
+body.nd #bg3d,body.nd #bgfade{display:none!important}
+body.nd.has3d{background:var(--lk-bg,#F4F3EF)!important}
+body.nd .screen.onbscr{background:var(--lk-bg,#F4F3EF)}
+@media (hover:hover) and (pointer:fine){
+  .onb-card:not(.nx){cursor:grab;user-select:none;-webkit-user-select:none}
+  .onb-card:not(.nx):active{cursor:grabbing}
+  .onb-yn button{height:64px;font-size:18px}
+}
+.ad2-why{margin-top:12px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.ad2-why h3{margin:0 0 8px;font-size:15px;color:#fff}
+.ad2-why p{display:flex;justify-content:space-between;gap:12px;margin:0;padding:7px 0;font-size:14px;color:rgba(255,255,255,.75);border-top:1px solid rgba(255,255,255,.06)}
+.ad2-why p b.y{color:#7EE081}.ad2-why p b.n{color:rgba(255,255,255,.55)}
+.ad2-why small{display:block;margin-top:8px;font-size:12.5px;line-height:1.45;color:rgba(255,255,255,.55)}
+/* движение «Нового» (13.9.33): появление вкладок — 0,4 с (было 0,62); «Анимации» выкл. — капсула вкладок не едет; шторку растит app.js (ndGrow) — своя CSS-анимация не мешает */
+body[data-look="nd"]:not(.nofx):not(#_) .tabscr .anim{animation-duration:.4s}
+body.nofx[data-look]:not(#_) #tabind,body.nofx:not(#_) #tabbar,body.nofx:not(#_) #tabbar *{transition:none!important}
+body.nd:not(.nofx) .sc-sheetwrap>:first-child,body.nd:not(.nofx) .pfv-box{animation:none!important}

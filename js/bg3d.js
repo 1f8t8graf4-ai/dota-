@@ -32,7 +32,8 @@
     if(cur!==built[k]){cur=built[k];startT=performance.now()-Math.random()*20000;R.render(cur.scene,cur.cam);}
     document.body.classList.add('has3d');canvas.style.display='';go();};
   BG.pause=function(p){BG.paused=!!p;if(p)stop();else go();};
-  BG.enable=function(v){BG.on=!!v&&!BG.failed;if(!BG.on){stop();document.body.classList.remove('has3d');if(canvas)canvas.style.display='none';return;}
+  BG.enable=function(v){BG.on=!!v&&!BG.failed&&!BG.block;   // 13.9.33: block — вид «Новый» (3D-зал лез поверх светлой темы)
+    if(!BG.on){stop();document.body.classList.remove('has3d');if(canvas)canvas.style.display='none';return;}
     if(!BG.ready){load();return;}BG.set(BG.want);};
 
   /* ---------- общие заготовки ---------- */
