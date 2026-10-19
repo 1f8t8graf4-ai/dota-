@@ -49,8 +49,8 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:false,wtapHint:1,lvl:'b',
     const ex2=await P.evaluate(()=>[...document.querySelectorAll('#scbpool .sc-tile:not([disabled])')].map(b=>b.textContent));
     for(const w of ex2){await P.evaluate(w=>{const b=[...document.querySelectorAll('#scbpool .sc-tile:not([disabled])')].find(x=>x.textContent===w);if(b)b.click();},w);await P.waitForTimeout(60);}
     await P.click('#scbchk');await P.waitForTimeout(500);
-    r=await P.evaluate(()=>({fb:(document.querySelector('.sc-fb .t')||{}).textContent||'',fix:!!document.querySelector('.sc-fix'),mk:document.querySelectorAll('.sc-fix .mk').length,diff:(document.getElementById('scbdiff')||{}).innerHTML||''}));
-    ok(`${dev}: вторая ошибка — «Вот как правильно», перепутанное маркером, без разбора в скобках`,/Вот как правильно/.test(r.fb)&&r.fix&&r.mk>=1&&!/\[/.test(r.diff),r);
+    r=await P.evaluate(()=>({fb:(document.querySelector('.sc-fb .t')||{}).textContent||'',fix:!!document.querySelector('.sc-fix'),mk:document.querySelectorAll('.sc-fix .mk').length,bad:document.querySelectorAll('#scbans .sc-tile.bad').length,diff:(document.getElementById('scbdiff')||{}).innerHTML||''}));
+    ok(`${dev}: вторая ошибка — «Вот как правильно», перепутанное маркером (или лишние кубики красным), без разбора в скобках`,/Вот как правильно/.test(r.fb)&&r.fix&&(r.mk>=1||r.bad>=1)&&!/\[/.test(r.diff),r);
     await P.screenshot({path:`${__dirname}/shots/qlen-${dev}-3-fix.png`});}
   // 3. «Что прозвучало?» — 3 варианта
   const h=await P.evaluate(()=>{store.lvl='b';for(const s of SCENES)for(let i=0;i<s.parts.length;i++){if(!scAct(s.parts[i].ph).length)continue;const C=scQuizPlan(s.id,i);const k=C.Q.findIndex(q=>q.type==='heard');if(k>=0)return {id:s.id,i,k};}return null;});

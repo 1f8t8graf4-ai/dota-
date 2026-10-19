@@ -6293,3 +6293,8 @@ body.nd:not(.nofx) .sc-sheetwrap>:first-child,body.nd:not(.nofx) .pfv-box{animat
 .fn-r.qt{grid-template-columns:1fr auto}.fn-r.qt.slow em{color:#ff6b5b}
 .sc-q .qsm .mk,.dl-q .qsm .mk{background:rgba(255,210,63,.22);color:#FFD23F;padding:1px 6px;border-radius:5px;animation:none}
 body[data-look="nd"][data-ndt="light"]:not(#_) .sc-q .qsm .mk{background:var(--nd-mark,rgba(255,210,63,.6));color:var(--lk-ink)}
+
+/* ==== 13.9.35 — подсказка слова в видео на ПК: по содержимому до 320 px, внутри видео; грамматика в окошке ==== */
+.sc-wtip{width:max-content;max-width:min(320px,calc(100% - 12px));white-space:normal}
+.sc-wtip span{margin-top:2px}
+.kwp-g span{font-size:13px;line-height:1.4}
