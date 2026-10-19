@@ -15,7 +15,8 @@ const TOP={svet:'#f4f3f0',noch:'#111215',zhurnal:'#f1ece2'};
     if(process.env.FONTS){await A.ctx.route(/https:\/\/(fonts\.googleapis\.com|fonts\.gstatic\.com)\//,r=>r.continue());await A.page.reload();await A.page.waitForTimeout(2600);}
     // прогресс: эпизод 1 «Волка» пройден, его фразы собраны и пора повторить — на Главной есть «Повторить»
     await A.page.evaluate(()=>{const s=scOf('wolf-of-wall-street'),P=scP(s.id);P.got=P.got||{};P.w[0]=1;P.done=[0];P.st=P.st||{};P.st[0]=3;P.r=P.r||{};
-      scAct(s.parts[0].ph).forEach(f=>{P.got[f.id]=Date.now()-864e5;P.m[f.id]=1;P.r[f.id]=[1,Date.now()-1];});scSave();});
+      scAct(s.parts[0].ph).forEach(f=>{P.got[f.id]=Date.now()-864e5;P.m[f.id]=1;P.r[f.id]=[1,Date.now()-1];});scSave();
+      store.scLast={id:s.id,i:1};save();});   // на Главной во всех видах — тот же «Волк», эпизод 2
     return A;};
   const A=await go(base,{admin:true,flags:{}}),P=A.page;
   const st=()=>P.evaluate(()=>({look:document.body.dataset.look||'',hc:(window.__hc||'').toLowerCase(),w:document.documentElement.scrollWidth<=innerWidth+1,
