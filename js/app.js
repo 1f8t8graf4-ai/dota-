@@ -244,6 +244,14 @@ const hexOf=c=>{c=String(c||'').trim();if(/^#[0-9a-f]{6}$/i.test(c))return c.toL
   const m=/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+))?/.exec(c);if(!m||(m[4]!=null&&+m[4]<0.99))return '';return '#'+[m[1],m[2],m[3]].map(x=>(+x).toString(16).padStart(2,'0')).join('');};
 function tgHead(){if(!TG||!document.body)return;let c='';try{const cs=getComputedStyle(document.body);c=hexOf(cs.getPropertyValue('--top'))||hexOf(cs.backgroundColor);}catch(e){}
   c=c||'#0b0b0d';if(c===TGHC)return;TGHC=c;try{TG.setHeaderColor(c);TG.setBackgroundColor(c);if(TG.setBottomBarColor)TG.setBottomBarColor(c);}catch(e){}}
+// 13.9.22 (Андрей: «не нравится дизайн — цвета, шрифты и мелкий текст, тесно, Главная»): три вида на пробу — «Свет», «Ночь», «Журнал».
+// Только админу (Настройки → «Дизайн (на пробу)», store.look) и только на Главной, в Кинозале, Словаре, на странице сцены, в эпизоде и проверке:
+// body[data-look] — стили слоем 13.9.22 в конце main.css и dictlab.css. Шрифт вида грузится при первом включении.
+const LOOKS={svet:{n:'Свет',f:'Onest:wght@400;500;600;700;800'},noch:{n:'Ночь',f:'Manrope:wght@400;500;600;700;800'},zhurnal:{n:'Журнал',f:'PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700'}};
+function lookFont(k){const id='lkf-'+k;if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+LOOKS[k].f+'&display=swap';document.head.appendChild(l);}
+function lookApply(cls){const b=document.body;if(!b)return;let k='';try{k=FLAG_ADMIN&&LOOKS[store.look]?store.look:'';}catch(e){}
+  const on=k&&(/\btabscr\b/.test(cls||'')&&screen==='home'&&['learn','kino','dict'].includes(store.tab)||/\bscnscr\b/.test(cls||'')&&['scene','scep','scq'].includes(b.dataset.scr));
+  if(on){if(b.dataset.look!==k)b.dataset.look=k;lookFont(k);}else if(b.dataset.look)delete b.dataset.look;}
 function initTG(){
   if(!TG)return;
   try{TG.ready();TG.expand();}catch(e){}
@@ -268,7 +276,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2)CLOUD_ERR=true;if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){CLOUD_ERR=true;res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','ytCC','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy'];
+const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','ytCC','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy','look'];
 function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==null?SV0:base),o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -460,7 +468,7 @@ function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){
   document.body.classList.remove('dx-open');try{if(KWP)KWP._resume=null;kwHide(0);}catch(e){}try{musDuck(false);}catch(e){}
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
   if(!scn)try{if(SV)scStop();}catch(e){}}
-function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);try{document.body.classList.toggle('newb',newbie());}catch(e){}if(!tab)paintTabbar(null);app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}
+function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);try{document.body.classList.toggle('newb',newbie());}catch(e){}if(!tab)paintTabbar(null);try{lookApply(cls);}catch(e){}app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}
   try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}tgHead();}
 function applyFx(){
   document.body.classList.toggle('nofx',!store.fx);applySubPrefs();
@@ -1591,6 +1599,7 @@ function renderSettings(){
   const row=(k,n,d)=>`<button class="checkrow frame" data-t="${k}" aria-pressed="${!!store[k]}">${BOX}<span class="ct"><span class="cn">${n}</span>${d?`<span class="cd">${d}</span>`:''}</span></button>`;
   mount(`
     <div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Настройки</h1></div>
+    ${FLAG_ADMIN?`<section class="set-sec"><h2>Дизайн (на пробу)</h2>${segCtl('look',[['cur','Сейчас'],...Object.keys(LOOKS).map(k=>[k,LOOKS[k].n])],LOOKS[store.look]?store.look:'cur')}<p class="hint-line" style="margin-top:6px;opacity:.7">Видно только тебе, на этом устройстве. Пока — Главная, Кинозал, Словарь, страница сцены, эпизод и проверка.</p></section>`:''}
 
     <section class="set-sec"><h2>Обучение</h2>
       <div class="stack">${row('hideLearned','Убирать выученные слова',`Слово, на которое ты ${LEARN_AT} раза ответил правильно, больше не попадается в обычных играх. Оно вернётся в «Повторение» через 3, 7, 21 и 60 дней.`)}
@@ -1624,6 +1633,7 @@ function renderSettings(){
   bindSeg('goal',v=>{store.goal=+v;save();sfx('sel');});
   bindSeg('scPause',v=>{store.scPause=v;save();sfx('sel');});
   bindSeg('subSz',v=>{store.subSz=v;save();applySubPrefs();});
+  bindSeg('look',v=>{store.look=v==='cur'?'':v;save();});   // 13.9.22: дизайн на пробу — включится на Главной, в Кинозале, Словаре и сценах
   bindSeg('knWin',v=>{store.knWin=v;save();});   // 13.9.11: окно фразы нового словаря — полэкрана (по умолчанию с 13.9.15) / на весь экран
   bindLangChoice(v=>{store.langs=choiceToLangs(v);save();});
   bindRoles(()=>roles,v=>{roles=v;if(rolesOk(v)){store.roles=v==='all'?'all':v.slice();save();}},()=>{const h=$('#roleHint');h.classList.remove('warn');h.textContent=roleHintText(roles);});
@@ -1700,10 +1710,10 @@ function renderTab(id){
 }
 function renderHome(){renderTab(store.tab||'learn');}
 function tgPhoto(){try{const u=TG&&TG.initDataUnsafe&&TG.initDataUnsafe.user;return u&&u.photo_url||'';}catch(e){return '';}}
-function headHTML(){
-  const name=userName()||'Игрок',rk=rankInfo(),photo=tgPhoto();
+function headHTML(){   // 13.9.22: плашки звания («Новичок ?») в шапке больше нет — звание в Профиле
+  const name=userName()||'Игрок',photo=tgPhoto();
   return `<header class="thead anim"><div class="tava${photo?'':' mono'}"${photo?` style="background-image:url('${esc(photo)}')"`:''}>${photo?'':esc((name||'И').trim().charAt(0).toUpperCase())}</div>
-    <div class="twho"><b>${esc(name)}</b><button class="rankchip" id="rankBtn">${rk.r.n} <i>?</i></button></div>
+    <div class="twho"><b>${esc(name)}</b></div>
     ${streakNow()?`<span class="streak" title="Дней подряд">🔥 ${streakNow()}</span>`:''}<span class="gold">${ui('coin')}${fmt(store.gold)}</span><button class="icon-btn" id="srchBtn" aria-label="Поиск" onclick="renderSearch()">${ui('search')}</button><button class="icon-btn" id="setBtn" aria-label="Настройки">${ui('gear')}</button></header>`;
 }
 function bindHead(){
@@ -2359,7 +2369,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.21';
+const APP_V='13.9.22';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -5606,7 +5616,7 @@ function showGate(k,title){
   document.body.appendChild(w);w.onclick=e=>{if(e.target===w||e.target.closest('[data-close]')){w.classList.add('out');setTimeout(()=>w.remove(),220);}};
 }
 // пометить закрытые кнопки и перехватить нажатия (вызывается после каждой отрисовки вкладки)
-const FLAG_BTNS={'#hLesson':'kinolesson','#best':'best','#lesson':'lesson','#wDota':'dota','#wCS':'cs2','#gCards':'cards','#gSpy':'spy','#gArena':'arena'};
+const FLAG_BTNS={'#hLesson':'kinolesson','.hrev2[data-go="les"]':'kinolesson','#best':'best','#lesson':'lesson','#wDota':'dota','#wCS':'cs2','#gCards':'cards','#gSpy':'spy','#gArena':'arena'};
 // пометить одну кнопку: закрыта — плашка и экран «тех. работы»/«в разработке»; админу — подсказка, что видят игроки
 function flagMark(el,k,title){const st=flagOf(k);if(st==='hide'){el.style.display='none';el.classList.add('flag-hidden');return;}el.style.display='';const raw=FLAG_ADMIN&&FLAG_RAW&&FLAG_RAW[k]&&FLAG_RAW[k].st!=='on'?FLAG_RAW[k].st:null;
   el.querySelectorAll(':scope > .fbadge').forEach(x=>x.remove());el.classList.remove('flagged');
@@ -5635,7 +5645,7 @@ function applyFlagsUI(){
 function admPass(s){const P=scP(s.id);P.done=s.parts.map((p,i)=>i);P.w=P.w||{};P.st=P.st||{};P.got=P.got||{};
   s.parts.forEach((p,i)=>{P.w[i]=1;P.st[i]=3;scAct(p.ph).forEach(f=>{P.m[f.id]=Math.max(P.m[f.id]||0,3);if(!P.got[f.id])P.got[f.id]=Date.now();});});P.boss=3;
   store.scOwn=store.scOwn||{};store.scOwn[s.id]=1;s.parts.forEach((p,i)=>rwGive(s,i));segGive(s);showGive(s);}
-const ADM_KEEP=['dictVar','dlDemo','onboarded','langs','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','gav','bg3d','labSub','labSnd','labUi','goal','games','roles','path','kvUid','admPlayer','remind'];
+const ADM_KEEP=['dictVar','dlDemo','onboarded','langs','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','gav','bg3d','labSub','labSnd','labUi','look','goal','games','roles','path','kvUid','admPlayer','remind'];
 function admResetMe(){const keep={};ADM_KEEP.forEach(k=>{if(store[k]!==undefined)keep[k]=store[k];});
   SC={};scSave();M={};saveM();RV={};saveRV();
   store=normalize(Object.assign(fresh(),keep));store.resetAt=Date.now();save();}
@@ -5789,7 +5799,8 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
       <div class="lab"><b>Субтитры</b><div class="lab-prev" data-ss="${labSub()}"><div class="sc-subs"><div class="sline"><span class="en">I'm in it for the long run, you know?</span></div><div class="sline s2"><span class="tr">Я тут надолго, понимаете?</span></div></div></div>
         <div class="lab-chips">${LAB_SUB.map(([k,l])=>`<button data-lab="labSub" data-v="${k}" class="${labSub()===k?'on':''}">${l}</button>`).join('')}</div></div>
       <div class="lab"><b>Звуки</b><div class="lab-chips">${LAB_SND.map(([k,l])=>`<button data-lab="labSnd" data-v="${k}" class="${(store.labSnd||shopUse('snd'))===k?'on':''}">${l}</button>`).join('')}</div></div>
-      <div class="lab"><b>Интерфейс</b><div class="lab-chips">${LAB_UI.map(([k,l])=>`<button data-lab="labUi" data-v="${k}" class="${(store.labUi||'grafit')===k?'on':''}">${l}</button>`).join('')}</div></div>`);
+      <div class="lab"><b>Интерфейс</b><div class="lab-chips">${LAB_UI.map(([k,l])=>`<button data-lab="labUi" data-v="${k}" class="${(store.labUi||'grafit')===k?'on':''}">${l}</button>`).join('')}</div></div>
+      <div class="lab"><b>Дизайн (на пробу)</b><div class="lab-chips">${[['','Сейчас'],...Object.keys(LOOKS).map(k=>[k,LOOKS[k].n])].map(([k,l])=>`<button data-lab="look" data-v="${k}" class="${(LOOKS[store.look]?store.look:'')===k?'on':''}">${l}</button>`).join('')}</div><p class="ad2-note">Главная, Кинозал, Словарь, страница сцены, эпизод и проверка. То же — в Настройках.</p></div>`);
     $$('[data-lab]').forEach(b=>b.onclick=()=>{store[b.dataset.lab]=b.dataset.v;save();labApply();b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
       if(b.dataset.lab==='labSub'){const pv=$('.lab-prev');if(pv)pv.dataset.ss=b.dataset.v;}
       if(b.dataset.lab==='labSnd'&&b.dataset.v!=='off'){ac();sfxLoad(b.dataset.v).then(()=>{const P=sfxPack(b.dataset.v);P.tap();setTimeout(()=>P.good(),250);setTimeout(()=>P.nope(),700);setTimeout(()=>P.win(),1150);});}
@@ -5845,6 +5856,10 @@ function learnTabHTML(){
   const big=innerWidth>=1000,bdi=filmImg(s,big?'bd.jpg':'bdm.jpg'),st=streakNow(),lbl=c.fresh?'Начни отсюда':c.next?'Следующая сцена':'Продолжить';
   const rev=n?`<button class="hh-rev" id="hRev"><i>🔁</i><span><b>Повторить <em>${n}</em></b><small>≈ ${Math.max(2,Math.round(n*0.4))} мин · фразы и слова</small></span></button>`
     :les&&!les.fresh?`<button class="hh-rev" id="hLesson"><i>📘</i><span><b>Урок <em>${les.n}</em></b><small>${plural(les.n,['фраза','фразы','фраз'])} · «${esc(les.s.title)}»</small></span></button>`:'';
+  // 13.9.22: в видах на пробу «Повторить» (или «Урок») — строкой под кадром; в обычном виде строка скрыта, кнопка — на кадре.
+  // Мелкой ссылки «или урок: N фраз →» больше нет: урок появляется на кадре, когда повторение сделано.
+  const rev2=n?`<button class="hrev2" data-go="rev"><i class="hr-i">🔁</i><span class="hr-t"><b>Повторить</b><small>фразы и слова · ≈ ${Math.max(2,Math.round(n*0.4))} мин</small></span><em class="hr-n">${n}</em><i class="hr-c">${ui('fwd')}</i></button>`
+    :les&&!les.fresh?`<button class="hrev2" data-go="les"><i class="hr-i">📘</i><span class="hr-t"><b>Урок на сегодня</b><small>${les.n} ${plural(les.n,['фраза','фразы','фраз'])} · «${esc(les.s.title)}»</small></span><em class="hr-n">${les.n}</em><i class="hr-c">${ui('fwd')}</i></button>`:'';
   const coll=(()=>{try{const C=collStat();return C.bg+C.cards||'';}catch(e){return '';}})();
   return `<div class="home home2">${headHTML()}${hmChipHTML()}
     <section class="hh ${s.theme} anim" id="hHero" data-sc="${s.id}">
@@ -5856,9 +5871,9 @@ function learnTabHTML(){
         <p class="hh-e">Эпизод ${c.i+1} · ${esc(p.t)}</p>
         <span class="hh-bar"><i style="width:${Math.round(L/T*100)}%"></i></span>
         <div class="hh-b"><button class="hh-go" id="hCont">${SI.play}<span>${c.fresh?'Смотреть':'Продолжить'}</span></button>${rev}</div>
-        ${n&&les?`<small class="hh-day"><button class="hh-alt" id="hLesson">или урок: ${les.n} ${plural(les.n,['фраза','фразы','фраз'])} →</button></small>`:''}
       </div>
     </section>
+    ${rev2}
     <nav class="hchips anim">
       ${mw?`<button onclick="renderMyWords()"><i>⭐</i>Мои слова<em>${mw}</em></button>`:''}
       <button id="hColl"><i>🏆</i>Коллекция${coll?`<em>${coll}</em>`:''}</button>
@@ -5879,6 +5894,7 @@ function bindLearn(){
   {const h=$('#hHero');if(h)h.onclick=e=>{if(e.target.closest('button'))return;sfx('tap');renderScene(c.s.id);};}   // 13.9.13: нажал на кадр — страница сцены
   if($('#hLesson'))$('#hLesson').onclick=()=>{haptic('medium');startScLesson();};
   if($('#hRev'))$('#hRev').onclick=()=>{haptic('medium');renderDaily();};
+  $$('.hrev2').forEach(b=>b.onclick=()=>{haptic('medium');if(b.dataset.go==='les')startScLesson();else renderDaily();});   // 13.9.22: строка под кадром в видах на пробу
   if($('#hDay'))$('#hDay').onclick=e=>{e.stopPropagation();sfx('tap');const d=dayStat(),g=store.goal||20;toast(`Серия растёт от одного ответа в день. Цель дня — ${g} ответов в сценах и повторении (сегодня ${Math.min(d.n,g)}), за неё 🎟 200.`);};
   if($('#hNext'))$('#hNext').onclick=()=>{haptic('medium');renderScEp(c.s.id,c.i);};
   if($('#hReview'))$('#hReview').onclick=()=>{haptic('medium');const sc=SCENES.find(x=>scDue(x).length);if(sc)renderScQuiz(sc.id,'rev');else startSession('review');};
