@@ -27,6 +27,7 @@ async function open(o={}){const b=o.browser||await chromium.launch();
     r.fulfill({status:200,headers:{'content-type':ct,'accept-ranges':'bytes','access-control-allow-origin':'*'},body:buf});};
   await ctx.route('https://1f8t8graf4-ai.github.io/scenes/**',r=>o.realMedia?r.continue():media(r));   // realMedia — брать файлы из настоящего R2
   await ctx.route(/https:\/\/(cdn\.cloudflare\.steamstatic\.com|unpkg\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)\//,r=>r.fulfill({status:404,body:''}));
+  await ctx.route(/posthog\.com\//,r=>r.fulfill({status:404,body:''}));   // 13.9.32: аналитика в тестах не нужна (ph.js подменяет её сам — его route объявлен позже и главнее)
   await ctx.route('https://dota.1f8t8graf4.workers.dev/**',async r=>{const u=new URL(r.request().url());if(u.pathname.startsWith('/m/'))return o.realMedia?r.continue():media(r);if(!o.worker)return r.fulfill({status:503,body:''});
     try{const res=await fetch('http://127.0.0.1:8788'+u.pathname+u.search,{method:r.request().method(),headers:r.request().headers(),body:r.request().method()==='POST'?r.request().postData():undefined});
       r.fulfill({status:res.status,headers:{'content-type':res.headers.get('content-type')||'application/json','access-control-allow-origin':'*'},body:await res.text()});}catch(e){r.fulfill({status:502,body:''});}});

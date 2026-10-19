@@ -512,7 +512,7 @@ function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
   if(!scn)try{if(SV)scStop();}catch(e){}}
 function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);try{document.body.classList.toggle('newb',newbie());}catch(e){}if(!tab)paintTabbar(null);try{lookApply(cls);}catch(e){}app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}
-  try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}tgHead();}
+  try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}tgHead();try{phScreen();}catch(e){}}
 function applyFx(){
   document.body.classList.toggle('nofx',!store.fx);applySubPrefs();
   if(!document.body.dataset.world)setWorld('neutral');
@@ -2459,7 +2459,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.31';
+const APP_V='13.9.32';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -3062,13 +3062,37 @@ function renderPhraseDict(opt){opt=opt||{};if(screen!=='dict')ev('dict');screen=
   $$('.mp-it .sc-say').forEach(b=>b.onclick=e=>{e.stopPropagation();scClip(b.dataset.s,b.dataset.clip,b);});}
 
 // статистика: что делают в приложении (уходит в бота, ничего не ждёт и не мешает)
-function ev(e,sid){try{if(!TG||!TG.initData)return;const src=typeof START==='string'&&/^src_/.test(START)?START:'';
+// 13.9.32: аналитика PostHog (облако US). Ключ проекта публичный (phc_…) — он и должен лежать в коде.
+// Грузится через 2,5 с после старта, только в Telegram (есть ID игрока) и не из file://. Игрок = Telegram ID; имён и @ника не шлём.
+// tgWebAppData (подпись Telegram с именем и ником) до загрузки убирается из адреса — Telegram уже прочитал её и держит в sessionStorage.
+// До загрузки события копятся в очереди (не больше 100); скрипт не загрузился — очередь выбрасывается. Экраны — $pageview с путём «/экран».
+const PH_KEY='phc_sm8N6AsFNjtWgfeZVXz4oghJ3bVRubhZeoJmY9Qq8EKA',PH_HOST='https://us.i.posthog.com';
+const PH={on:!!PH_KEY&&location.protocol!=='file:',ok:false,go:false,q:[],scr:''};
+function phUid(){try{const u=TG&&TG.initDataUnsafe&&TG.initDataUnsafe.user;return u&&u.id?String(u.id):'';}catch(e){return '';}}
+function ph(fn,...a){if(!PH.on)return;try{if(PH.ok&&window.posthog)window.posthog[fn](...a);else if(PH.q.length<100)PH.q.push([fn,a]);}catch(e){}}
+const phUrl=u=>typeof u==='string'&&/tgWebApp/.test(u)?u.replace(/#.*$/,''):u;
+function phClean(e){try{[e&&e.properties,e&&e.$set,e&&e.$set_once].forEach(p=>{if(p)['$current_url','$referrer','$initial_current_url','$initial_referrer','$referring_domain'].forEach(k=>{if(p[k])p[k]=phUrl(p[k]);});});}catch(x){}return e;}
+function phLoad(){if(!PH.on||PH.go)return;const uid=phUid();if(!uid){PH.on=false;PH.q.length=0;return;}PH.go=true;
+  try{if(/tgWebAppData/.test(location.hash)){const h=new URLSearchParams(location.hash.slice(1));h.delete('tgWebAppData');history.replaceState(history.state,'',location.pathname+location.search+(h.toString()?'#'+h:''));}}catch(e){}
+  const sc=document.createElement('script');sc.async=true;sc.crossOrigin='anonymous';sc.src=PH_HOST.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js';
+  sc.onerror=()=>{PH.on=false;PH.q.length=0;};
+  sc.onload=()=>{try{const P=window.posthog;if(!P||!P.init){PH.on=false;PH.q.length=0;return;}
+    P.init(PH_KEY,{api_host:PH_HOST,person_profiles:'identified_only',capture_pageview:false,capture_pageleave:false,autocapture:true,
+      session_recording:{maskAllInputs:true},before_send:phClean,
+      loaded:p=>{try{const u=TG.initDataUnsafe.user||{};p.identify(uid,{tg_lang:u.language_code||'',platform:(TG&&TG.platform)||'',is_admin:uid==='876754050'});
+        p.register({app_v:APP_V});PH.ok=true;PH.q.splice(0).forEach(([f,a])=>{try{p[f](...a);}catch(x){}});}catch(x){}}});}catch(e){PH.on=false;}};
+  document.head.appendChild(sc);}
+// экран сменился → $pageview «/экран» (вкладки — «/home/<вкладка>»), повтор того же экрана не шлём
+function phScreen(){if(!PH.on)return;const sc=typeof screen==='string'?screen:'',k=sc+(sc==='home'?'/'+(store.tab||''):'');if(!sc||k===PH.scr)return;PH.scr=k;
+  let sid='';try{sid=(typeof SCUR!=='undefined'&&SCUR&&SCUR.id)||'';}catch(e){}
+  ph('register',{app_v:APP_V,look:ndOn()?'nd':'old',cefr:store.cefr||''});ph('capture','$pageview',{$current_url:location.origin+location.pathname+'#/'+k,$pathname:'/'+k,sid});}
+function ev(e,sid){try{ph('capture',e,sid?{sid}:{});if(!TG||!TG.initData)return;const src=typeof START==='string'&&/^src_/.test(START)?START:'';
   fetch(API+'/api/ev',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify({e,sid:sid||'',src}),keepalive:true}).catch(()=>{});}catch(x){}}
 // 13.9.19: ошибки у игроков → бот → админка «Ошибки» (не больше 5 за запуск, одинаковые — один раз; шум плееров и расширений — мимо)
 let ERRN=0;const ERRSEEN=new Set();
 function errSend(msg,at){try{msg=String(msg||'').slice(0,300);at=String(at||'').slice(0,160);
   if(!msg||/NotAllowedError|AbortError|NotSupportedError|ResizeObserver|^Script error|play\(\) request|The operation was aborted|Load failed|Failed to fetch|NetworkError/i.test(msg))return;
-  const k=msg+at;if(ERRN>=5||ERRSEEN.has(k)||!TG||!TG.initData)return;ERRSEEN.add(k);ERRN++;
+  const k=msg+at;if(ERRN>=5||ERRSEEN.has(k)||!TG||!TG.initData)return;ERRSEEN.add(k);ERRN++;ph('captureException',new Error(msg),{at,scr:typeof screen==='string'?screen:''});
   fetch(API+'/api/ev',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify({a:'err',msg,at,v:APP_V,scr:typeof screen==='string'?screen:'',ua:navigator.userAgent.replace(/Mozilla\/5\.0 |\(KHTML, like Gecko\) /g,'').slice(0,120)}),keepalive:true}).catch(()=>{});}catch(x){}}
 window.addEventListener('error',e=>{if(e&&e.message)errSend(e.message,String(e.filename||'').split('/').pop().split('?')[0]+':'+e.lineno+':'+e.colno);});
 window.addEventListener('unhandledrejection',e=>{const r=e&&e.reason;errSend('promise: '+(r&&r.message||r),r&&r.stack?String(r.stack).split('\n')[1]||'':'');});
@@ -7012,9 +7036,9 @@ const premHas=()=>(premC().until||0)>Date.now();
 const premFree=s=>!s||(s.lvl||3)<=2||START_PICK.en.includes(s.id)||START_PICK.de.includes(s.id);
 const premNeed=f=>{const m=premMode();if(m==='off'||premHas()||ADM_OPEN())return false;return f==='scene'?m==='scenes':true;};
 const premDate=t=>{const d=new Date(t);return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear();};
-setTimeout(premLoad,2800);
+setTimeout(premLoad,2800);setTimeout(phLoad,2500);   // 13.9.32: аналитика PostHog
 // экран премиума: что даёт, пробные 7 дней, тарифы, оплата звёздами; у кого есть — статус и продление
-function renderPaywall(why,back){back=back||(()=>renderTab(store.tab||'learn'));screen='prem';backBtn(true);PREM.back=back;
+function renderPaywall(why,back){back=back||(()=>renderTab(store.tab||'learn'));screen='prem';backBtn(true);PREM.back=back;ph('capture','prem_view',{why:why||''});
   const c=premC(),has=premHas(),pr=c.prices||{m:250,y:1500},tr=!c.trialUsed&&!has,pick=PREM.pick||'y',plan=c.plan;
   const ben=[['🔁','Повторение без лимита','бесплатно — один заход в день'],['💡','Подсказки без билетов','в заданиях на слух'],['⭐','«Мои слова» без лимита',`бесплатно — до ${MYW_FREE} слов`],['🎬','Режиссёрская версия','сцена целиком, без пауз и подсказок']];
   const st=has?(plan==='trial'?`Пробные дни до ${premDate(c.until)}`:plan==='gift'?`Подарок до ${premDate(c.until)}`:`Премиум до ${premDate(c.until)}`):'Учи по кино без ограничений';
@@ -7054,7 +7078,7 @@ async function premBuy(plan,btn,why){btn.disabled=true;const r=await premCall({a
 async function premAfterPay(why){const was=premC().until||0;toast('Оплата прошла — включаю премиум…');
   for(let k=0;k<10;k++){await premLoad();if((premC().until||0)>Math.max(was,Date.now()))break;await new Promise(r=>setTimeout(r,1500));}
   if(premHas())premYay(why);else toast('Премиум включится через минуту — бот пришлёт сообщение');}
-function premYay(why){sfx('reward');haptic('ok');if(fxOK())fxRain(60);toast(premC().plan==='trial'?`Пробные дни до ${premDate(premC().until)} ⭐`:`Премиум до ${premDate(premC().until)} ⭐`);
+function premYay(why){ph('capture','prem_on',{why:why||'',plan:premC().plan||''});sfx('reward');haptic('ok');if(fxOK())fxRain(60);toast(premC().plan==='trial'?`Пробные дни до ${premDate(premC().until)} ⭐`:`Премиум до ${premDate(premC().until)} ⭐`);
   if(screen==='prem')renderPaywall(null,PREM.back);}
 const premGate=(f,back)=>{if(!premNeed(f))return false;renderPaywall(f,back);return true;};
 // там, где уходить с экрана нельзя (слово из видео) — шторка «нужен премиум»
