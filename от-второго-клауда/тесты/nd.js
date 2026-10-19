@@ -23,9 +23,9 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   await P.evaluate(()=>renderTab('learn'));await P.waitForTimeout(1200);
   let r=await st(P);
   ok('светлый «Новый»: вид nd, тема light, шапка Telegram #f4f3ef, вкладки «Сегодня · Кино · Словарь · Профиль», ничего не вылезает',r.look==='nd'&&r.ndt==='light'&&r.hc==='#f4f3ef'&&r.tabs.join('|')==='Сегодня|Кино|Словарь|Профиль'&&r.w,r);
-  r=await P.evaluate(()=>({hi:(document.querySelector('.ndh-t b')||{}).textContent||'',ring:!!document.querySelector('#hDay.ndring'),plan:(document.querySelector('.ndp-t')||{}).textContent||'',lvl:(document.querySelector('.ndp .lvc')||{}).textContent||'',
-    pull:!!document.querySelector('#ndPull'),font:!!document.getElementById('lkf-nd'),shelves:document.querySelectorAll('.ndhome .hposter,.ndhome .hchips,.ndhome .hsec').length,pod:!!document.querySelector('.ndhome .ndrow'),rev:!!document.querySelector('.ndhome .hrev2'),old:!!document.querySelector('.hh,#hCont')}));
-  ok('«Сегодня»: приветствие по имени, кольцо цели, «Эпизод «Фугази»», уровень B2, «Потяни», шрифт; ниже только «Повторить» и «Фраза дня» (без полок и значков), старого кадра нет',/Андрей/.test(r.hi)&&r.ring&&/Фугази/.test(r.plan)&&r.lvl==='B2'&&r.pull&&r.font&&!r.shelves&&r.pod&&r.rev&&!r.old,r);
+  r=await P.evaluate(()=>({hi:(document.querySelector('.n-hello b')||{}).textContent||'',ring:!!document.querySelector('#hDay.n-ring'),plan:(document.querySelector('.n-hero h3')||{}).textContent||'',lvl:(document.querySelector('.n-hero .n-chip')||{}).textContent||'',
+    pull:!!document.querySelector('#ndPull'),font:!!document.getElementById('lkf-nd'),css:document.body.classList.contains('ndc'),shelves:document.querySelectorAll('.n-today .hposter,.n-today .hchips,.n-today .hsec').length,pod:!!document.querySelector('.n-today .n-row[data-go="pod"]'),next:!!document.querySelector('.n-today .n-row[data-go="next"]'),old:!!document.querySelector('.hh,#hCont,.ndp')}));
+  ok('«Сегодня» по макету (13.9.37): приветствие по имени, кольцо цели, «Эпизод «Фугази»», уровень B2, «Потяни», шрифт и nd.css; строки «Фраза дня» и «Смотреть дальше»; полок и старого кадра нет',/Андрей/.test(r.hi)&&r.ring&&/Фугази/.test(r.plan)&&r.lvl==='B2'&&r.pull&&r.font&&r.css&&!r.shelves&&r.pod&&r.next&&!r.old,r);
   await shot(P,`light-${dev}-1-today`);
   // «Потяни»: тап — не стартует (ручка подпрыгивает), потянул на 40 % — возвращается, до конца — эпизод
   await P.evaluate(()=>{window.__ep=null;const o=renderScEp;renderScEp=function(id,i){window.__ep=[id,i];return o.apply(this,arguments);};});
@@ -69,14 +69,14 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   r=await P.evaluate(()=>[...document.querySelectorAll('[data-seg="look"] button')].map(x=>x.textContent+(x.getAttribute('aria-pressed')==='true'?'*':'')));
   ok('Настройки: Новый* / Как было',r.join('|')==='Новый*|Как было',r);
   await P.click('[data-seg="look"] [data-v="cur"]');await P.evaluate(()=>renderTab('learn'));await P.waitForTimeout(900);
-  r=await st(P);r.hh=await P.evaluate(()=>!!document.querySelector('.hh #hCont')&&!document.querySelector('.ndp'));
+  r=await st(P);r.hh=await P.evaluate(()=>!!document.querySelector('.hh #hCont')&&!document.querySelector('.n-today'));
   ok('«Как было» — откат: вида нет, вкладки «Главная · Кинозал · Словарь · Игры · Профиль», Главная прежняя',!r.look&&!r.nd&&r.tabs.join('|')==='Главная|Кинозал|Словарь|Игры|Профиль'&&r.hh,r);
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(500);
   ok('«Как было»: Профиль прежний',await P.evaluate(()=>!!document.querySelector('.phead')&&!document.querySelector('.ndpc')));
   // 6. тёмная тема с запуска, скрины; без анимаций
   const D=await go(Object.assign({},base,{fx:false}),{admin:true,flags:{}},'dark'),Q=D.page;
   await Q.evaluate(()=>renderTab('learn'));await Q.waitForTimeout(1200);
-  r=await st(Q);r.anim=await Q.evaluate(()=>getComputedStyle(document.querySelector('.ndp-img')).animationName+'|'+getComputedStyle(document.querySelector('.ndpull-k')).animationName);
+  r=await st(Q);r.anim=await Q.evaluate(()=>getComputedStyle(document.querySelector('.n-bgi')).animationName+'|'+getComputedStyle(document.querySelector('.ndpull-k')).animationName);
   ok('тёмный с запуска; «без анимаций» — кадр и ручка стоят',r.look==='nd'&&r.ndt==='dark'&&r.hc==='#0f0f11'&&r.anim==='none|none',r);
   await Q.evaluate(()=>{store.fx=true;save();applyFx();renderTab('learn');});await Q.waitForTimeout(1200);await shot(Q,`dark-${dev}-1-today`);
   for(const [n,f] of [['2-kino',()=>renderTab('kino')],['4-prof',()=>renderTab('profile')],['6-ep',()=>renderScEp('wolf-of-wall-street',1)]]){await Q.evaluate(f);await Q.waitForTimeout(1400);

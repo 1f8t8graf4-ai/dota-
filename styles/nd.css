@@ -1,0 +1,102 @@
+/* ==== 13.9.37 — «Новый» по макетам (дизайн/макеты-13.9.24.html), P2 из ТЗ-13.9.32. Грузится лениво при ndOn() (ndCss в app.js).
+   Токены и числа — из CSS макета. Телефон макета — 300 px с рамкой 8 px (экран 284 px), это телефон ~390 px в масштабе 0.73:
+   все размеры = число из макета × --nu (px на 1 px макета: 390 / 284 ≈ 1.37; на ПК колонка 480 px — 1.45).
+   Классы — n-*, корень экрана — .n-scr (старые слои main.css его не задевают). Анимации — только transform/opacity (13.9.23). ==== */
+body[data-look="nd"]{--nu:clamp(1.2px,calc(100vw / 284),1.45px);
+  --n-bg:#F4F3EF;--n-card:#FFFFFF;--n-ink:#161614;--n-mute:#6F6E68;--n-line:#E5E4DD;--n-soft:#EEEDE7;
+  --n-sub:#FFD23F;--n-subInk:#1B1600;--n-mark:rgba(255,210,63,.62);--n-pri:#161614;--n-priFg:#FFFFFF;--n-glass:rgba(255,255,255,.94);
+  --n-ok:#23A15E;--n-okbg:rgba(35,161,94,.12);--n-bad:#E0533D;
+  --n-a1:#2FA66A;--n-a2:#1C9AAE;--n-b1:#E39A2D;--n-b2:#E0533D;--n-c1:#8A6BE8;
+  --n-shadow:0 12px 30px rgba(30,28,10,.09);--n-shadow2:0 2px 8px rgba(30,28,10,.06);
+  --n-f-ui:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;--n-f-voice:"Lora",Georgia,"Times New Roman",serif;--n-f-hand:"Caveat","Segoe Print","Comic Sans MS",cursive}
+body[data-look="nd"][data-ndt="dark"]{--n-bg:#0F0F11;--n-card:#1A1A1D;--n-ink:#F2F1EC;--n-mute:#9D9C96;--n-line:#2A2A2E;--n-soft:#232327;
+  --n-mark:rgba(255,210,63,.34);--n-pri:#FFD23F;--n-priFg:#161614;--n-glass:rgba(26,26,29,.94);
+  --n-okbg:rgba(35,161,94,.2);--n-shadow:0 12px 30px rgba(0,0,0,.45);--n-shadow2:0 2px 8px rgba(0,0,0,.35)}
+@media (min-width:700px){body[data-look="nd"]{--nu:1.45px}}
+
+/* общий корень экрана: колонка как экран макета (.ph .scr: отступы 16, промежуток 12) */
+.n-scr{display:flex;flex-direction:column;gap:calc(12*var(--nu));padding:calc(8*var(--nu)) calc(16*var(--nu)) calc(96*var(--nu));color:var(--n-ink);font-family:var(--n-f-ui);font-size:calc(15*var(--nu));line-height:1.5;-webkit-font-smoothing:antialiased;
+  width:100%;max-width:calc(284*var(--nu));margin:0 auto;box-sizing:border-box}
+.n-scr *{box-sizing:border-box}
+.n-scr button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+body:not(.ndc) .n-scr{opacity:0}   /* пока nd.css не загружен (ndCss) — без вспышки голой разметки */
+.n-chip{display:inline-flex;align-items:center;gap:calc(4*var(--nu));font:700 calc(10.5*var(--nu))/1.5 var(--n-f-ui);letter-spacing:.04em;border-radius:calc(7*var(--nu));padding:calc(2*var(--nu)) calc(7*var(--nu));color:#fff}
+.n-chip.a1{background:var(--n-a1)}.n-chip.a2{background:var(--n-a2)}.n-chip.b1{background:var(--n-b1)}.n-chip.b2{background:var(--n-b2)}.n-chip.c1{background:var(--n-c1)}
+.n-chip.n{background:var(--n-soft);color:var(--n-mute)}
+
+/* ===== 6. Сегодня ===== */
+.n-hello{display:flex;align-items:center;gap:calc(10*var(--nu))}
+.n-ava{width:calc(34*var(--nu));height:calc(34*var(--nu));border-radius:50%;background:linear-gradient(135deg,#F2B34A,#E0533D);display:grid;place-items:center;color:#fff;font-weight:800;font-size:calc(14*var(--nu));flex:none}
+.n-hello>div:nth-child(2){min-width:0}
+.n-hello b{font-size:calc(15*var(--nu));display:block;line-height:1.2;text-wrap:balance}
+.n-hello span{font-size:calc(11.5*var(--nu));color:var(--n-mute);display:block;line-height:1.5}
+.n-fire{font:800 calc(12*var(--nu))/1.25 var(--n-f-ui);display:flex;flex-direction:column;align-items:center;margin-left:auto;flex:none;text-align:center}   /* как в макете: 🔥 над числом */
+.n-fire i{font-style:normal;display:block}
+.n-fire.risk{color:var(--n-bad)}
+.n-ring{position:relative;width:calc(38*var(--nu));height:calc(38*var(--nu));flex:none}
+.n-ring svg{width:100%;height:100%;transform:rotate(-90deg);display:block}
+.n-ring circle{fill:none;stroke-width:4}
+.n-ring .bgc{stroke:var(--n-line)}
+.n-ring .fg{stroke:var(--n-sub);stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--p,0));transition:stroke-dashoffset 1.6s cubic-bezier(.3,.7,.2,1) .25s}
+.n-ring.rg0 .fg{stroke-dashoffset:100;transition:none}
+.n-ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(10.5*var(--nu));font-weight:800}
+.n-ring.ok .fg{stroke:var(--n-ok)}
+
+.n-hero{position:relative;border-radius:calc(22*var(--nu));overflow:hidden;min-height:calc(268*var(--nu));display:flex;flex-direction:column;justify-content:flex-end;padding:calc(14*var(--nu));color:#fff;box-shadow:var(--n-shadow);isolation:isolate;cursor:pointer}
+.n-hero .n-bgi{position:absolute;inset:0;background-size:cover;background-position:center;animation:n-kb 14s ease-in-out infinite alternate;will-change:transform}
+@keyframes n-kb{from{transform:scale(1.04)}to{transform:scale(1.14) translateX(-8px)}}
+.n-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1) 20%,rgba(0,0,0,.82));pointer-events:none}
+.n-hero>*:not(.n-bgi){position:relative;z-index:1}
+.n-eb{font:800 calc(10*var(--nu))/1.5 var(--n-f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--n-sub)}
+.n-hero h3{margin:calc(4*var(--nu)) 0 calc(8*var(--nu));font-size:calc(21*var(--nu));line-height:1.15;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+.n-hero h3 em{font-family:var(--n-f-voice);font-style:italic;font-weight:600}
+.n-meta{display:flex;flex-wrap:nowrap;min-width:0;gap:calc(6*var(--nu));align-items:center;font-size:calc(11.5*var(--nu));font-weight:700;line-height:1.5}
+.n-meta>*{flex:none}
+.n-meta .n-t{background:rgba(255,255,255,.2);border-radius:calc(7*var(--nu));padding:calc(2*var(--nu)) calc(7*var(--nu));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.n-meta .n-t:last-child{min-width:0;flex:0 1 auto}
+/* «Потяни, чтобы начать»: ручка тянется вправо (ndPull), в покое — подсказывает движением; блик по дорожке — transform, без перерисовки текста */
+.n-pull{margin-top:calc(12*var(--nu));position:relative;height:calc(50*var(--nu));border-radius:calc(16*var(--nu));background:rgba(255,255,255,.2);display:flex;align-items:center;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;outline:none}
+.n-pull:focus-visible{box-shadow:0 0 0 2px var(--n-sub)}
+.n-pull .ndpull-f{position:absolute;inset:0;transform-origin:left;transform:scaleX(0);background:rgba(255,210,63,.28);border-radius:inherit}
+.n-pull.back .ndpull-f,.n-pull.back .ndpull-k{transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.n-pull::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:translateX(-120%);animation:n-shm 2.4s linear infinite;pointer-events:none}
+@keyframes n-shm{to{transform:translateX(330%)}}
+.n-pull .ndpull-k{position:absolute;left:calc(4*var(--nu));top:calc(4*var(--nu));width:calc(42*var(--nu));height:calc(42*var(--nu));border-radius:calc(13*var(--nu));background:var(--n-sub);display:grid;place-items:center;z-index:2;font-style:normal}
+.n-pull:not(.drag):not(.done):not(.back) .ndpull-k{animation:n-kn 3.5s cubic-bezier(.5,0,.2,1) infinite}
+@keyframes n-kn{0%,55%,100%{transform:none}75%{transform:translateX(calc(22*var(--nu)))}}
+.n-pull .ndpull-k svg{width:calc(18*var(--nu));height:calc(18*var(--nu));stroke:var(--n-subInk);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.n-pull .ndpull-t{position:absolute;inset:0;display:grid;place-items:center;font:700 calc(13.5*var(--nu))/1 var(--n-f-ui);letter-spacing:0;color:#fff;opacity:calc(.92 - var(--pp,0)*1.5);padding-left:calc(30*var(--nu));z-index:1;pointer-events:none}
+.n-pull.done .ndpull-k,.n-pull.done .ndpull-f{transition:transform .22s ease-out}
+.n-pull.drag::after,.n-pull.done::after{animation:none;opacity:0}
+.n-pull .ndpull-k{box-shadow:none}
+.n-pull.nudge .ndpull-k{animation:n-nudge .55s cubic-bezier(.34,1.56,.64,1)}
+@keyframes n-nudge{0%,100%{transform:none}40%{transform:translateX(calc(14*var(--nu)))}}
+
+.n-row{display:flex;align-items:center;gap:calc(10*var(--nu));background:var(--n-card);border-radius:calc(16*var(--nu));padding:calc(9*var(--nu));box-shadow:var(--n-shadow2);width:100%}
+.n-row .n-th{width:calc(46*var(--nu));height:calc(46*var(--nu));border-radius:calc(11*var(--nu));background-size:cover;background-position:center;background-color:var(--n-soft);flex:none}
+.n-row>div:not(.n-th){min-width:0;flex:1}
+.n-row small{display:block;font-size:calc(10*var(--nu));font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--n-mute);line-height:1.5}
+.n-row b{display:block;font-size:calc(13.5*var(--nu));line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.n-row .n-cv{color:var(--n-mute);font-size:calc(18*var(--nu));line-height:1;flex:none;padding-right:calc(2*var(--nu))}
+.n-row .n-cnt{font:800 calc(12*var(--nu)) var(--n-f-ui);background:var(--n-sub);color:var(--n-subInk);border-radius:999px;padding:calc(1*var(--nu)) calc(8*var(--nu));flex:none}
+.n-row:active,.n-hero:active{transform:scale(.985)}
+.n-row,.n-hero{transition:transform .18s cubic-bezier(.2,.9,.3,1.2)}
+
+/* вход: план поднимается (кривая hi из макета), строки — каскадом (ndCascade) */
+.n-today>*{animation:n-in .38s cubic-bezier(.2,.9,.3,1.1) both}
+.n-today>:nth-child(3){animation-delay:.07s}.n-today>:nth-child(4){animation-delay:.14s}.n-today>:nth-child(5){animation-delay:.21s}
+@keyframes n-in{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+.n-today .n-hero{animation:n-hi .9s cubic-bezier(.2,1,.3,1) both}
+@keyframes n-hi{from{transform:translateY(10px) scale(.98);opacity:.6}to{transform:none;opacity:1}}
+body.nofx .n-scr *,body.nofx .n-scr *::before,body.nofx .n-scr *::after{animation:none!important;transition:none!important}
+
+/* вкладки «Нового» — капсула из макета (.tabs): 12 от краёв, высота 58, радиус 22, плашка выбранной — --soft. Без размытия (13.9.23) — фон плотнее */
+body[data-look="nd"].ndc:not(#_) .tabbar{width:min(calc(260*var(--nu)),calc(100% - 24*var(--nu)))!important;bottom:calc(12*var(--nu) + env(safe-area-inset-bottom,0px))!important;height:calc(58*var(--nu))!important;
+  border-radius:calc(22*var(--nu))!important;padding:5px!important;background:var(--n-glass)!important;box-shadow:var(--n-shadow)!important}
+body[data-look="nd"].ndc:not(#_) .tabbar button{font:700 calc(10*var(--nu))/1 var(--n-f-ui)!important;color:var(--n-mute)!important;gap:calc(2*var(--nu))!important;padding:0!important;border-radius:calc(17*var(--nu))!important}
+body[data-look="nd"].ndc:not(#_) .tabbar button.on{color:var(--n-ink)!important;background:none!important}
+body[data-look="nd"].ndc:not(#_) .tabbar button svg{width:calc(19*var(--nu))!important;height:calc(19*var(--nu))!important;stroke-width:1.6!important}
+body[data-look="nd"].ndc:not(#_) #tabind{border-radius:calc(17*var(--nu))!important;background:var(--n-soft)!important}
+
+/* ПК: та же вёрстка колонкой по центру (ТЗ P2 п. 6) */
+@media (min-width:700px){.n-scr{padding-top:calc(20*var(--nu));max-width:520px}}
