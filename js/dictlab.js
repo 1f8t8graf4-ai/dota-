@@ -248,7 +248,7 @@ const knRow=c=>{const {s,f,pi}=c,[k]=knSt(c);
 // 13.9.20 (Андрей: «в словаре слова не нажимаются, и не видно, что их можно нажать»): оригинал — словами, как субтитры в видео.
 // Пунктир — как в видео (.in-ph): только у слов учебного выражения (~10 % слов); важные слова kw — без пунктира, их ~40 % — был бы перегруз.
 const IDW=new WeakMap();
-const idOf=f=>{if(IDW.has(f))return IDW.get(f);const id=phIdiom(f),r=id&&!idWhole(id,f)?id:null;IDW.set(f,r);return r;};
+const idOf=f=>{if(IDW.has(f))return IDW.get(f);let r;if(typeof phIdOf==='function')r=phIdOf(f);else{const id=phIdiom(f);r=id&&!idWhole(id,f)?id:null;}IDW.set(f,r);return r;};
 const kqWrap=(f,T)=>{const id=idOf(f);return id?swWrap(T).replace(/<i class="sw">([^<]+)<\/i>/g,(m,w)=>idHit(id,w.replace(/&#39;/g,"'"))?`<i class="sw u">${w}</i>`:m):swWrap(T);};
 const rowsL=C=>`<div class="kq-l">${C.map(knRow).join('')}</div>`;   // фразы — всегда строками: «квадраты» (карточки) убраны в 13.8.7
 // 13.9.16 (Андрей: «в словаре нет всех реплик — искал „nice tan“ и не нашёл»): все реплики эпизода — строками, слова нажимаются, ▶ — момент

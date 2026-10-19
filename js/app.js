@@ -2461,7 +2461,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.34';
+const APP_V='13.9.35';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -2523,11 +2523,17 @@ function cxRows(sid,o){const s=scOf(sid),D=CX[wiLang(sid)],A=D&&D[sid];if(!s||!A
   if(o.row)return [at(o.row)].filter(Boolean);
   const f=o.f;if(!f||f.a==null)return [];return S.filter(r=>r[0]<f.b-0.05&&r[1]>f.a+0.05).map(at).filter(Boolean);}
 const cxToks=t=>String(t||'').toLowerCase().replace(/[’`]/g,"'").split(/[^a-zß-öø-ÿ']+/).filter(Boolean);
-function cxHit(sid,o,word){const R=cxRows(sid,o),n=swNorm(word),b=n.replace(/'s$/,'');if(!R.length||!n)return null;let here='';const X=[],seen=new Set();
-  R.forEach(e=>{const w=e[1]||{},LT=cxToks(e[0]);if(!here)here=w[n]||w[b]||'';(e[2]||[]).forEach(x=>{const k=String(x[0]||'');if(seen.has(k))return;const T=cxToks(k);
+function cxHit(sid,o,word){const R=cxRows(sid,o),n=swNorm(word),b=n.replace(/'s$/,'');if(!R.length||!n)return null;let here='',has=false,g='';const X=[],seen=new Set();
+  R.forEach(e=>{const w=e[1]||{},G=e[3]||{},LT=cxToks(e[0]);if(!has){const k=n in w?n:b in w?b:null;if(k!==null){has=true;here=String(w[k]||'');g=String(G[k]||'');}}(e[2]||[]).forEach(x=>{const k=String(x[0]||'');if(seen.has(k))return;const T=cxToks(k);
     if(T.length>=Math.max(2,LT.length*0.8))return;   // «выражение» = почти вся реплика — её и так видно целиком с переводом (13.9.4: без дублей)
     if(T.includes(n)||T.includes(b)){seen.add(k);X.push(x);}});});
-  return here||X.length?{here,X}:null;}
+  return here||has||X.length?{here,X,g,has}:null;}
+// 13.9.35: что показать главной строкой: значение тут; «—» — слово не переводится (объяснение из g); пустое — слово внутри выражения (значение выражения)
+function cxMain(h){if(!h)return null;if(h.here==='—')return {t:h.g||'тут не переводится',l:h.g?'тут не переводится':'',k:'dash'};
+  if(h.here)return {t:h.here,l:'так в этой реплике',k:'here'};if(h.X.length)return {t:h.X[0][1]||'',l:`в выражении «${h.X[0][0]}»`,k:'x'};return null;}
+const cxGHTML=h=>h&&h.g&&h.here!=='—'?`<div class="kwp-use kwp-g"><em>Грамматика</em><span>${esc(h.g)}</span></div>`:'';
+// 13.9.35 (ТЗ: пунктир в видео — как в словаре): учебное выражение фразы, если оно не вся фраза; вызывают и dictlab.js (через typeof)
+function phIdOf(f){const id=phIdiom(f);return id&&!idWhole(id,f)?id:null;}
 const cxXHTML=X=>X.map(x=>`<div class="kwp-use kwp-cx"><em>Тут это часть выражения</em><span><b>${esc(x[0])}</b> — ${esc(x[1]||'')}</span>${x[2]?`<small>${esc(x[2])}</small>`:''}</div>`).join('');
 function swFind(sid,pi,tok){const d=swData(sid,pi),n=swNorm(tok),s0=scOf(sid);
   if(!d){const G=s0&&s0.lang==='de'?GLOSS_DE:GLOSS,b=n.replace(/'s$/,''),v=G[n]||G[b]||G[n.replace(/'/g,'')];return v?{w:n,ru:v,key:false}:null;}
@@ -2547,10 +2553,12 @@ function swPop(word,row,inPh,el){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=S
   if(SV&&!SV.paused)SV.pause();const o=SW.querySelector('.sc-wpop');if(o)o.remove();
   const w=document.createElement('div');w.className='sc-wpop';
   const cx=row&&CX[wiLang(s.id)]?cxHit(s.id,{row},word):null;if(row&&!CX[wiLang(s.id)])cxLoad(wiLang(s.id));   // 13.9.16: значение в этой реплике
-  w.innerHTML=cx&&cx.here?`${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(cx.here)}</span><small class="kwp-here">так в этой реплике</small>`
+  const cm=cxMain(cx);
+  w.innerHTML=cm?`${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(cm.t)}</span>${cm.l?`<small class="kwp-here">${esc(cm.l)}</small>`:''}`
     :hit?`${hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b><span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`
     :`<b>${esc(swNorm(word))}</b>${pf?'':`<small class="wp-keep">нет в словарике — вся реплика:</small><span class="t">${esc(row&&row[3]||'')}</span>`}`;
-  if(cx&&cx.X.length)w.innerHTML+=cxXHTML(cx.X);else if(pf)w.innerHTML+=phBlock(pf);
+  if(cx&&cx.X.length)w.innerHTML+=cxXHTML(cm&&cm.k==='x'?cx.X.slice(1):cx.X);else if(pf)w.innerHTML+=phBlock(pf);
+  if(cx)w.innerHTML+=cxGHTML(cx);
   {const L=wiLang(s.id);if(hit){if(WI[L])w.innerHTML+=wiHTML(swNorm(word),L,hit.w);else wiLoad(L).then(()=>{if(!w.isConnected||w.querySelector('.kwp-wi'))return;const m=w.querySelector('.kwp-more'),b=w.querySelector('.hn-b'),h=wiHTML(swNorm(word),L,hit.w);if(m)m.insertAdjacentHTML('beforeend',h);else if(b){b.insertAdjacentHTML('beforebegin',h);w._fold=0;w.querySelector('.kwp-x')?.remove();wpFold(w);}});}}   // 13.9.13: подробнее о слове — после выражения
   w.innerHTML+=`<div class="hn-b"><button data-x="go">Дальше ${SI.play}</button>${row?'<button data-x="word">🔊 Слово</button>':''}${mywBtn(s.id,word)}</div>`;
   wpFold(w);wpEsc();
@@ -2573,7 +2581,9 @@ function scRowPhrase(row){if(!row||!SCUR)return null;const s=scOf(SCUR.id);if(!s
 // оригинал реплики словами; слова выражения — с пометкой in-ph
 function swWrapPh(txt,f){const de=SCUR&&scOf(SCUR.id)&&scOf(SCUR.id).lang==='de';const ph=f?String(de?f.de:f.en).replace(/[.!?…,]+$/,''):'';
   if(!ph)return swWrap(txt);const i=txt.toLowerCase().indexOf(ph.toLowerCase());
-  const id=phIdiom(f);const mark=s=>swWrap(s).replace(/<i class="sw">([^<]+)<\/i>/g,(m,w)=>idHit(id,w)?`<i class="sw in-ph">${w}</i>`:m);
+  // 13.9.35 (ТЗ: пунктир почти под всей строкой): как в словаре — только слова выражения (phIdOf, не вся фраза) и важных выражений из 2+ слов
+  const id=phIdOf(f),KW=new Set((f.kw||[]).filter(k=>scToks(String(k[0]||'')).length>=2).flatMap(k=>cxToks(k[0])));if(!id&&!KW.size)return swWrap(txt);
+  const mark=s=>swWrap(s).replace(/<i class="sw">([^<]+)<\/i>/g,(m,w)=>(id&&idHit(id,w))||KW.has(swNorm(w.replace(/&#39;/g,"'")))?`<i class="sw in-ph">${w}</i>`:m);
   if(i<0)return phNorm(ph).includes(phNorm(txt))?mark(txt):swWrap(txt);
   return swWrap(txt.slice(0,i))+mark(txt.slice(i,i+ph.length))+swWrap(txt.slice(i+ph.length));}
 // идиома фразы — из начала пояснения: «Fuck + кто-то — «похуй на…»» → слова {fuck}, смысл «похуй на…»
@@ -2649,8 +2659,10 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._res
   // 13.9.16: что слово значит в этой реплике (вместо общего перевода) и выражения, куда оно входит (вместо старого «Тут это часть выражения» из пояснения)
   {const L=sv&&sv.wi&&sv.sid&&sv.word&&sv.sid!=='own'&&(sv.row||sv.f)?wiLang(sv.sid):null;
     if(L&&CX[L]){const h=cxHit(sv.sid,sv.row?{row:sv.row}:{f:sv.f},sv.word);
-      if(h){if(h.here)html=html.replace(/<span class="kwp-t">[\s\S]*?<\/span>/,`<span class="kwp-t">${esc(h.here)}</span><span class="kwp-here">так в этой реплике</span>`);
-        if(h.X.length)html=html.replace(/<div class="kwp-use">[\s\S]*?<\/div>/,'').replace(/(<span class="kwp-t">[\s\S]*?<\/span>(?:<span class="kwp-here">[\s\S]*?<\/span>)?)/,'$1'+cxXHTML(h.X));}}
+      if(h){const m=cxMain(h);if(m)html=html.replace(/<span class="kwp-t">[\s\S]*?<\/span>/,`<span class="kwp-t">${esc(m.t)}</span>${m.l?`<span class="kwp-here">${esc(m.l)}</span>`:''}`);
+        const X=m&&m.k==='x'?h.X.slice(1):h.X;
+        if(h.X.length)html=html.replace(/<div class="kwp-use">[\s\S]*?<\/div>/,'');
+        if(X.length||h.g)html=html.replace(/(<span class="kwp-t">[\s\S]*?<\/span>(?:<span class="kwp-here">[\s\S]*?<\/span>)?)/,'$1'+cxXHTML(X)+cxGHTML(h));}}
     else if(L&&CX.p[L]!==null)cxLoad(L).then(d=>{if(d&&KWP&&KWP._sv===sv&&KWP.classList.contains('on'))popAt(el,html0,sv,pin);});}
   P.innerHTML=html+`<div class="kwp-b">${sv&&sv.sid&&sv.word?mywBtn(sv.sid,sv.word):''}${canW?`<button data-x="word">🔊 ${isPhr(sv.say||sv.word)?'Выражение':'Слово'}</button>`:''}${sv&&sv.f?`<button data-x="hear">▶ Фраза</button>`:''}<button data-x="ok">Понятно</button></div>`;
   P._fold=0;wpFold(P);
@@ -2721,18 +2733,25 @@ function swTouch(SW){let T=null;
   SW.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('.sc-subs'))e.preventDefault();},true);
   SW.addEventListener('click',e=>{const w=pick(e);if(!w)return;e.stopPropagation();e.preventDefault();open(w,w.textContent,SW._row,w.classList.contains('in-ph'));},true);}   // мышь, клавиатура
 // подсказка при наведении мышкой (ПК): без паузы, рядом со словом
+function swTipHide(){const tp=SW&&SW.querySelector('.sc-wtip');if(tp){tp.classList.remove('on');tp._el=null;}}
+// 13.9.35 (скрин Андрея: подсказка от прошлой строки висела и вылезала за низ видео): строка 1 — «слово — значение тут», строка 2 — выражение; остальное — по клику
 function swTip(el){if(!SW)return;let tip=SW.querySelector('.sc-wtip');if(!tip){tip=document.createElement('div');tip.className='sc-wtip';SW.appendChild(tip);}
   const s=scOf(SCUR.id),hit=swFind(s.id,SCUR.i||0,el.textContent),f=el.classList.contains('in-ph')?SW._rowPh:null;
-  const id=f&&!idWhole(phIdiom(f),f)?phIdiom(f):null;
-  const cx=SW._row&&CX[wiLang(s.id)]?cxHit(s.id,{row:SW._row},el.textContent):null;   // 13.9.16: значение в этой реплике
-  if(cx&&(cx.here||cx.X.length)){tip.innerHTML=`<b>${esc(swNorm(el.textContent))}</b>${cx.here?` — ${esc(cx.here)}`:hit?` — ${esc(hit.ru)}`:''}${cx.X.length?`<span>тут часть выражения «${esc(cx.X[0][0])}» — ${esc(cx.X[0][1])}</span>`:''}`;}
-  else tip.innerHTML=`<b>${esc(swNorm(el.textContent))}</b>${hit?` — ${esc(hit.ru)}`:''}${id?`<span>тут часть выражения «${esc(id.head)}» — ${esc(id.mean)}</span>`:(!hit?'<span>нет в словарике — нажми, покажу перевод реплики</span>':'')}`;
-  const r=el.getBoundingClientRect(),w=SW.getBoundingClientRect();tip.style.left=Math.max(6,Math.min(w.width-220,r.left-w.left-20))+'px';tip.style.top=Math.max(6,r.top-w.top-tip.offsetHeight-8)+'px';tip.classList.add('on');}
+  const id=f?phIdOf(f):null,w=esc(swNorm(el.textContent));
+  const cx=SW._row&&CX[wiLang(s.id)]?cxHit(s.id,{row:SW._row},el.textContent):null,m=cxMain(cx);   // 13.9.16: значение в этой реплике
+  const x=cx&&cx.X.length?(m&&m.k==='x'?cx.X[1]:cx.X[0]):null;
+  tip.innerHTML=m?`<b>${w}</b> — ${esc(m.t)}${m.k==='x'?`<span>в выражении «${esc(cx.X[0][0])}»</span>`:x?`<span>часть выражения «${esc(x[0])}» — ${esc(x[1])}</span>`:''}`
+    :`<b>${w}</b>${hit?` — ${esc(hit.ru)}`:''}${id?`<span>часть выражения «${esc(id.head)}» — ${esc(id.mean)}</span>`:(!hit?'<span>нажми — покажу перевод реплики</span>':'')}`;
+  tip._el=el;tip.classList.remove('dn');tip.style.left='0px';tip.style.top='0px';   // сначала вписать содержимое, потом мерить
+  const r=el.getBoundingClientRect(),V=SW.getBoundingClientRect(),z=parseFloat(getComputedStyle(document.body).zoom)||1,tw=tip.offsetWidth,th=tip.offsetHeight;
+  const L=(r.left-V.left)/z,T=(r.top-V.top)/z,B=(r.bottom-V.top)/z,W=V.width/z,H=V.height/z;
+  let x0=L+r.width/z/2-tw/2;x0=Math.max(6,Math.min(W-tw-6,x0));let y0=T-th-8;if(y0<6){y0=B+8;tip.classList.add('dn');}y0=Math.max(6,Math.min(H-th-6,y0));
+  tip.style.left=x0+'px';tip.style.top=y0+'px';tip.classList.add('on');}
 function linePop(el,row){const s=scOf(SCUR.id),pi=SCUR.i||0,word=el.textContent,hit=swFind(s.id,pi,word);
   let f=null;for(const p of s.parts)for(const x of p.ph){const id=phIdiom(x);if(id&&phNorm(row[2]).includes(phNorm(x.en))&&idHit(id,word))f=x;}
   const o=document.querySelector('.ln-pop');if(o)o.remove();const w=document.createElement('div');w.className='ln-pop';
   const cx=CX[wiLang(s.id)]?cxHit(s.id,{row},word):null;   // 13.9.16
-  w.innerHTML=`<div class="lp-card">${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b>${cx&&cx.here?`<span class="t">${esc(cx.here)}</span><small class="kwp-here">так в этой реплике</small>`:hit?`<span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`:(f?'':`<small class="wp-keep">Нет в словарике. Вся реплика: ${esc(row[3])}</small>`)}${cx&&cx.X.length?cxXHTML(cx.X):f?phBlock(f):''}
+  w.innerHTML=`<div class="lp-card">${hit&&hit.key?'<span class="k">★ слово эпизода</span>':''}<b>${esc(swNorm(word))}</b>${cxMain(cx)?`<span class="t">${esc(cxMain(cx).t)}</span>${cxMain(cx).l?`<small class="kwp-here">${esc(cxMain(cx).l)}</small>`:''}`:hit?`<span class="t">${esc(hit.ru)}</span>${hit.de?`<small>по-немецки: ${esc(hit.de)}</small>`:''}`:(f?'':`<small class="wp-keep">Нет в словарике. Вся реплика: ${esc(row[3])}</small>`)}${cx&&cx.X.length?cxXHTML(cx.X):f?phBlock(f):''}
     <div class="hn-b"><button data-x="word">🔊 Слово</button><button data-x="hear">▶ Реплика</button>${mywBtn(s.id,word)}<button data-x="ok">Понятно</button></div></div>`;
   wpFold(w.querySelector('.lp-card'));
   w.onclick=e=>{const b=e.target.closest('[data-x]');if(e.target===w||(b&&b.dataset.x==='ok')){w.remove();return;}
@@ -3477,7 +3496,7 @@ function scTick(){
   if(box.dataset.id!==id&&!SW._subHold){box.dataset.id=id;const [a,b]=m.split('+');
     // 13.3: оригинал — словами: нажал (телефон) / навёл (ПК) — перевод слова; слова учебного выражения подчёркнуты
     const s0=SCUR&&scOf(SCUR.id),orig=s0&&s0.lang==='de'?'de':'en',t1=r?String(r[SUB_COL[a]]).replace(/\n/g,' '):'',ph=r&&a===orig?scRowPhrase(r):null;
-    SW._row=r;SW._rowPh=ph;box.innerHTML=r?`<div class="sline"><span class="en">${a===orig?swWrapPh(t1,ph):esc(t1)}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);}
+    swTipHide();SW._row=r;SW._rowPh=ph;box.innerHTML=r?`<div class="sline"><span class="en">${a===orig?swWrapPh(t1,ph):esc(t1)}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);}
   if(SW._ph){const lv=document.getElementById('sclive');if(lv){const h=SW._ph.find(x=>t>=x.a-0.15&&t<=x.b+3);const k=h?h.f.id:'';
     if(lv.dataset.k!==k){lv.dataset.k=k;if(h)lv.innerHTML=scLiveHTML(h.f);lv.classList.toggle('on',!!h);}}}
   scChip(t);
@@ -3733,7 +3752,8 @@ function renderScEp(id,i,opts){setTimeout(()=>{wiLoad(wiLang(id));cxLoad(wiLang(
   // слова в субтитрах: нажатие — перевод, наведение (ПК) — подсказка
   swTouch(SW);
   if(matchMedia('(hover:hover)').matches){SW.addEventListener('mouseover',e=>{const w=e.target.closest('.sw');if(w)swTip(w);});
-    SW.addEventListener('mouseout',e=>{if(e.target.closest('.sw')){const tp=SW.querySelector('.sc-wtip');if(tp)tp.classList.remove('on');}});}
+    SW.addEventListener('mouseout',e=>{if(e.target.closest('.sw')){const tp=SW.querySelector('.sc-wtip');if(tp)tp.classList.remove('on');}});
+    SW.addEventListener('mouseleave',swTipHide);if(SV){SV.addEventListener('seeking',swTipHide);SV.addEventListener('pause',swTipHide);}}   // 13.9.35
   show(pane);
 }
 /* =====================================================================================

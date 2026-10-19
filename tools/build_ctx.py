@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""13.9.16: значение слов в каждой реплике + выражения → data/ctx-en.json, data/ctx-de.json.
+"""13.9.16 (13.9.35 — поле g, грамматика; 4-й элемент строки): значение слов в каждой реплике + выражения → data/ctx-en.json, data/ctx-de.json.
 Вход — папка с <сцена>.jsonl (по строке на реплику s.subs: {"k":индекс,"t":оригинал,"w":{слово:значение},"x":[[выражение,значение,пояснение]]}).
 Запуск из корня репо:  python3 tools/build_ctx.py <папка>   (потом — python3 tools/rebuild_all_data.py)
 Сцены без файла остаются как были (берутся из уже собранного ctx-*.json)."""
@@ -27,9 +27,10 @@ for s in S:
             bad += 1
             arr.append(None)
             continue
-        w = {str(a).lower(): str(b) for a, b in (e.get('w') or {}).items() if a and b}
+        w = {str(a).lower(): str(b) for a, b in (e.get('w') or {}).items() if a}   # 13.9.35: пустое значение — слово внутри выражения
         x = [[str(z[0]), str(z[1] if len(z) > 1 else ''), str(z[2] if len(z) > 2 else '')] for z in (e.get('x') or []) if z and z[0]]
-        arr.append([o, w, x])
+        g = {str(a).lower(): str(b) for a, b in (e.get('g') or {}).items() if a and b}
+        arr.append([o, w, x, g] if g else [o, w, x])
     out[L][s['id']] = arr
 for L in ('en', 'de'):
     json.dump({f'CTX_{L.upper()}': out[L]}, open(os.path.join(root, 'data', f'ctx-{L}.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
