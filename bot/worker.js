@@ -1102,6 +1102,8 @@ async function sendSpyRoom(env, chat, from, args) {
 async function onUpdate(upd, env) {
   if (upd.poll_answer) return chatDuelAnswer(env, upd.poll_answer);
   if (upd.poll) return chatDuelClosed(env, upd.poll);
+  if (upd.pre_checkout_query) return premPreCheckout(env, upd.pre_checkout_query);   // 13.9.30: оплата звёздами
+  if (upd.message && upd.message.successful_payment) return premPaid(env, upd.message);
   const me = (env.BOT_USERNAME || 'languagegamesbot').toLowerCase();
   const msg = upd.message;
   if (msg && msg.chat && msg.text) {
@@ -1388,7 +1390,115 @@ const CORS = {
   'Access-Control-Max-Age': '86400',
 };
 const json = (obj, status) => new Response(JSON.stringify(obj), { status: status || 200, headers: { ...CORS, 'content-type': 'application/json; charset=utf-8' } });
-const API_ROUTES = { '/api/spy': spyApi, '/api/tour': tourApi, '/api/flags': flagsApi, '/api/cg': cgApi, '/api/remind': remindApi, '/api/ev': evApi, '/api/pvp': pvpApi };
+
+/* ===== 13.9.30: премиум за звёзды Telegram (валюта XTR) =====
+   Тарифы: месяц — подписка (Telegram сам продлевает раз в 30 дней, отменить можно в Telegram или в приложении), год — разовая оплата.
+   Пробные 7 дней — своя запись в базе, без оплаты и без автосписания.
+   Режим (админка → «Премиум»): off — всё бесплатно (как раньше), feat — платные функции, scenes — ещё и часть сцен.
+   После деплоя открыть /setup?secret=… — в вебхук добавлен pre_checkout_query (без него оплата не пройдёт). */
+const PREM_PLANS = {
+  m: { stars: 250, days: 30, sub: true, title: 'Премиум · месяц', desc: 'Повторение без лимита, подсказки без билетов, «Мои слова» без лимита, режиссёрская версия. Продлевается раз в 30 дней, отменить можно в любой момент.' },
+  y: { stars: 1500, days: 365, title: 'Премиум · год', desc: 'Всё из премиума на 12 месяцев, одной оплатой. Само не продлевается.' },
+  t: { stars: 1, days: 1, admin: true, title: 'Тест премиума · день', desc: 'Проверка оплаты (видно только админу).' },
+};
+const PREM_TRIAL_DAYS = 7;
+const PREM_MODES = ['off', 'feat', 'scenes'];
+const DAY = 864e5;
+let premReady = false;
+async function premDb(env) {
+  if (!env.DB) return null;
+  if (!premReady) {
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS prem (uid INTEGER PRIMARY KEY, until INTEGER, plan TEXT, charge TEXT, rec INTEGER, trial INTEGER, ts INTEGER)').run();
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS prem_pay (charge TEXT PRIMARY KEY, uid INTEGER, plan TEXT, amount INTEGER, until INTEGER, ts INTEGER)').run();
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS prem_cfg (k TEXT PRIMARY KEY, v TEXT)').run();
+    premReady = true;
+  }
+  return env.DB;
+}
+async function premModeGet(db) { const r = await db.prepare("SELECT v FROM prem_cfg WHERE k = 'mode'").first(); return r && PREM_MODES.includes(r.v) ? r.v : 'off'; }
+const premGet = (db, uid) => db.prepare('SELECT * FROM prem WHERE uid = ?').bind(uid).first();
+async function premPut(db, uid, f) {
+  const r = (await premGet(db, uid)) || { until: 0, plan: '', charge: '', rec: 0, trial: 0 };
+  const x = { ...r, ...f };
+  await db.prepare('INSERT INTO prem (uid, until, plan, charge, rec, trial, ts) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(uid) DO UPDATE SET until = excluded.until, plan = excluded.plan, charge = excluded.charge, rec = excluded.rec, trial = excluded.trial, ts = excluded.ts')
+    .bind(uid, x.until || 0, x.plan || '', x.charge || '', x.rec ? 1 : 0, x.trial ? 1 : 0, Date.now()).run();
+  return x;
+}
+const premView = (r, mode) => ({ ok: true, mode, until: (r && r.until) || 0, plan: (r && r.plan) || '', rec: !!(r && r.rec), trialUsed: !!(r && r.trial),
+  prices: { m: PREM_PLANS.m.stars, y: PREM_PLANS.y.stars }, trialDays: PREM_TRIAL_DAYS });
+const premPayload = (s) => { const m = /^prem:(\d+):([a-z]):\d+$/.exec(s || ''); return m ? { uid: +m[1], plan: m[2] } : null; };
+async function premApi(env, user, b) {
+  const db = await premDb(env);
+  if (!db) return { ok: false, msg: 'Нет базы' };
+  const uid = user.id, adm = isAdminId(env, uid), now = Date.now();
+  if (b.a === 'st') return premView(await premGet(db, uid), await premModeGet(db));
+  if (b.a === 'trial') {
+    const r = await premGet(db, uid);
+    if (r && r.trial) return { ok: false, msg: 'Пробные дни уже были' };
+    const x = await premPut(db, uid, { trial: 1, until: Math.max(now, (r && r.until) || 0) + PREM_TRIAL_DAYS * DAY, plan: r && r.until > now ? r.plan : 'trial' });
+    return premView(x, await premModeGet(db));
+  }
+  if (b.a === 'inv') {
+    const p = PREM_PLANS[b.plan];
+    if (!p || (p.admin && !adm)) return { ok: false, msg: 'Нет такого тарифа' };
+    const body = { title: p.title, description: p.desc, payload: `prem:${uid}:${b.plan}:${now}`, currency: 'XTR', prices: [{ label: p.title, amount: p.stars }] };
+    if (p.sub) body.subscription_period = 2592000;
+    const r = await tg(env, 'createInvoiceLink', body);
+    return r && r.ok ? { ok: true, url: r.result } : { ok: false, msg: (r && r.description) || 'Не получилось создать счёт' };
+  }
+  if (b.a === 'renew') {   // отменить / вернуть продление подписки (сама подписка доживает до конца оплаченного месяца)
+    const r = await premGet(db, uid);
+    if (!r || !r.charge) return { ok: false, msg: 'Подписки нет' };
+    const x = await tg(env, 'editUserStarSubscription', { user_id: uid, telegram_payment_charge_id: r.charge, is_canceled: !b.on });
+    if (!x || !x.ok) return { ok: false, msg: (x && x.description) || 'Telegram не ответил' };
+    return premView(await premPut(db, uid, { rec: b.on ? 1 : 0 }), await premModeGet(db));
+  }
+  if (!adm) return { ok: false, msg: 'Только для админа' };
+  if (b.a === 'mode') {
+    if (!PREM_MODES.includes(b.mode)) return { ok: false, msg: 'Нет такого режима' };
+    await db.prepare("INSERT INTO prem_cfg (k, v) VALUES ('mode', ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v").bind(b.mode).run();
+    return { ok: true, mode: b.mode };
+  }
+  if (b.a === 'stats') {
+    await statsDb(env);   // таблица users — для имён в списке платежей
+    const one = async (q, ...a) => ((await db.prepare(q).bind(...a).first()) || {}).n || 0;
+    return { ok: true, mode: await premModeGet(db),
+      active: await one('SELECT COUNT(*) n FROM prem WHERE until > ?', now),
+      paid: await one("SELECT COUNT(*) n FROM prem WHERE until > ? AND plan IN ('m','y')", now),
+      trials: await one('SELECT COUNT(*) n FROM prem WHERE trial = 1'),
+      stars30: await one('SELECT COALESCE(SUM(amount),0) n FROM prem_pay WHERE ts > ?', now - 30 * DAY),
+      pays: ((await db.prepare('SELECT p.uid, p.plan, p.amount, p.until, p.ts, u.n, u.un FROM prem_pay p LEFT JOIN users u ON u.uid = p.uid ORDER BY p.ts DESC LIMIT 30').all()).results) || [] };
+  }
+  if (b.a === 'give') {   // выдать дни вручную (поддержка, тестеры): b.uid, b.days (0 — забрать)
+    const id = +b.uid, d = Math.max(0, Math.min(3650, +b.days || 0));
+    if (!id) return { ok: false, msg: 'Нужен ID' };
+    const r = await premGet(db, id);
+    const x = await premPut(db, id, { until: d ? Math.max(now, (r && r.until) || 0) + d * DAY : 0, plan: d ? 'gift' : '' });
+    return { ok: true, until: x.until };
+  }
+  return { ok: false, msg: 'Неизвестное действие' };
+}
+// за 10 с до списания Telegram спрашивает: всё ли верно со счётом
+async function premPreCheckout(env, q) {
+  const p = premPayload(q.invoice_payload), plan = p && PREM_PLANS[p.plan];
+  const ok = !!(plan && q.currency === 'XTR' && q.total_amount === plan.stars && q.from && q.from.id === p.uid && (!plan.admin || isAdminId(env, p.uid)));
+  return tg(env, 'answerPreCheckoutQuery', ok ? { pre_checkout_query_id: q.id, ok: true } : { pre_checkout_query_id: q.id, ok: false, error_message: 'Счёт устарел — открой премиум в приложении ещё раз.' });
+}
+// деньги пришли (первая оплата или продление подписки): продлеваем доступ, один платёж — один раз
+async function premPaid(env, msg) {
+  const sp = msg.successful_payment, p = premPayload(sp.invoice_payload), plan = p && PREM_PLANS[p.plan];
+  const db = await premDb(env);
+  if (!db || !plan || !msg.from) return;
+  const uid = msg.from.id, now = Date.now(), r = await premGet(db, uid);
+  const until = sp.subscription_expiration_date ? sp.subscription_expiration_date * 1000 : Math.max(now, (r && r.until) || 0) + plan.days * DAY;
+  const ins = await db.prepare('INSERT OR IGNORE INTO prem_pay (charge, uid, plan, amount, until, ts) VALUES (?, ?, ?, ?, ?, ?)').bind(sp.telegram_payment_charge_id, uid, p.plan, sp.total_amount, until, now).run();
+  if (!ins || !ins.meta || !ins.meta.changes) return;
+  await premPut(db, uid, plan.sub ? { until, plan: p.plan, charge: sp.telegram_payment_charge_id, rec: 1 } : { until, plan: p.plan });
+  const d = new Date(until), dd = String(d.getUTCDate()).padStart(2, '0') + '.' + String(d.getUTCMonth() + 1).padStart(2, '0') + '.' + d.getUTCFullYear();
+  return tg(env, 'sendMessage', { chat_id: msg.chat.id, text: `⭐ Премиум включён до ${dd}. Спасибо, что поддерживаешь «Языки по кино»!` + (plan.sub ? '\n\nПодписка продлится сама через 30 дней. Отменить — в приложении: Профиль → Премиум.' : ''), reply_markup: oneBtn(env, false) });
+}
+
+const API_ROUTES = { '/api/spy': spyApi, '/api/tour': tourApi, '/api/flags': flagsApi, '/api/cg': cgApi, '/api/remind': remindApi, '/api/ev': evApi, '/api/pvp': pvpApi, '/api/prem': premApi };
 
 /* ===== 13.9: видео, картинки и музыка сцен — из Cloudflare R2 (бакет kino-media, привязка MEDIA) ===== */
 // Раньше их раздавал GitHub Pages из открытого репо scenes. Теперь файлы лежат в R2 под теми же путями:
@@ -1542,7 +1652,7 @@ export default {
       }
       const webhook = await tg(env, 'setWebhook', {
         url: url.origin + '/webhook', secret_token: env.WEBHOOK_SECRET,
-        allowed_updates: ['message', 'callback_query', 'poll', 'poll_answer'], drop_pending_updates: true,
+        allowed_updates: ['message', 'callback_query', 'poll', 'poll_answer', 'pre_checkout_query'], drop_pending_updates: true,
       });
       // в личке — только главное; в группах — то, во что играют компанией. /prize, /myid, /tour работают, но в меню не светятся
       const commands = await tg(env, 'setMyCommands', {
@@ -1580,6 +1690,6 @@ export default {
       return new Response('ok');
     }
 
-    return new Response('Бот работает 👍 Версия 13.9.28\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response('Бот работает 👍 Версия 13.9.30\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   },
 };

@@ -769,7 +769,8 @@ function myAdd(){sfx('tap');const tags=[...new Set(mywAll().flatMap(x=>x.tags||[
       <button class="kn-btn" type="submit">＋ В мои слова</button></form><button class="kn-btn2" data-x>Отмена</button>`);
   const F=w.querySelector('form');setTimeout(()=>{try{F.w.focus();}catch(e){}},300);
   F.onsubmit=e=>{e.preventDefault();const v=F.w.value.trim(),ru=F.ru.value.trim(),tg=F.tag.value.trim().replace(/^#/,'').toLowerCase();if(!v)return;
-    store.myw=store.myw||{};const k=mywKey('own',v.toLowerCase());store.myw[k]={k,w:v,ru,de:'',sid:'own',pi:0,line:'',lineRu:'',a:0,at:Date.now(),lvl:0,st:0,due:Date.now()+36e5,own:true,tags:tg?[tg]:[]};
+    store.myw=store.myw||{};if(premNeed('myw')&&Object.keys(store.myw).length>=MYW_FREE){w._close();premAsk('myw');return;}   // 13.9.30
+    const k=mywKey('own',v.toLowerCase());store.myw[k]={k,w:v,ru,de:'',sid:'own',pi:0,line:'',lineRu:'',a:0,at:Date.now(),lvl:0,st:0,due:Date.now()+36e5,own:true,tags:tg?[tg]:[]};
     save();sfx('good');haptic('ok');toast('⭐ Добавил в «Мои слова»');w._close();store.knMyKind='w';KN.my.q='';DL.render(0);};}
 const IV={cards:'<svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="6.5" rx="2"/><rect x="3.5" y="13.5" width="17" height="6.5" rx="2"/></svg>',
   posters:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="10" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="10" rx="1.6"/><path d="M3.5 17.5h7M13.5 17.5h7M3.5 20.5h4.5M13.5 20.5h4.5"/></svg>'};

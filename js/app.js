@@ -259,7 +259,7 @@ function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(FLAG_
 // 13.9.24 — редизайн «Новый» (рабочее название приложения «Без субтитров», макеты Germanize): светлый или тёмный — как тема Telegram
 // (плеер всегда тёмный), вкладки «Сегодня · Кино · Словарь · Профиль» (игры — из Профиля), «Сегодня» — один план на кадре и «Потяни, чтобы начать».
 // Только админ, Настройки → «Дизайн (на пробу)» → «Новый»; откат — «Сейчас».
-const ND_GAME=/\b(spyscr|cgscr|tourscr|duelscr|dotascr|csscr|wikiscr|endscr|gi|minus|gold|quiz|quizscr)\b/,ND_DARK=/\b(admscr|collscr|shopscr|ytscr)\b/;
+const ND_GAME=/\b(spyscr|cgscr|tourscr|duelscr|dotascr|csscr|wikiscr|endscr|gi|minus|gold|quiz|quizscr)\b/,ND_DARK=/\b(admscr|collscr|shopscr|ytscr|premscr)\b/;
 const ndOn=()=>{try{return !!FLAG_ADMIN&&(store.look==='nd'||store.lookV!==2);}catch(e){return false;}};
 function ndDark(){try{if(TG&&TG.colorScheme)return TG.colorScheme==='dark';}catch(e){}try{return matchMedia('(prefers-color-scheme: dark)').matches;}catch(e){return true;}}
 function ndTheme(){const b=document.body;if(!b||b.dataset.look!=='nd')return;const t=ndDark()||b.dataset.ndk==='1'?'dark':'light';/* эпизод с плеером — всегда тёмный */if(b.dataset.ndt!==t){b.dataset.ndt=t;try{tgHead();}catch(e){}}}
@@ -318,7 +318,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2)CLOUD_ERR=true;if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){CLOUD_ERR=true;res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','ytCC','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy','look','lookV'];
+const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','ytCC','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy','look','lookV','premC'];
 function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==null?SV0:base),o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -500,8 +500,9 @@ const accuracy=()=>store.answered?Math.round(store.correct/store.answered*100):n
 function underline(name,focus){return focus&&name.includes(focus)&&focus!==name?esc(name).replace(esc(focus),`<u>${esc(focus)}</u>`):esc(name);}
 // 12.1: при любом переходе — убрать всё, что висит поверх экрана (карта словаря с видео, мини-плеер, поповеры слов),
 // и остановить видео эпизода, если уходим со сцены. Раньше карта/видео могли остаться висеть над новым экраном.
-function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
-  document.querySelectorAll('.pk,.dx-turn,.dx-shade,.cd2,.gatewrap,.sc-sheetwrap.poll,.sc-sheetwrap.unl').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном; 13.6.3: и отсчёт 3-2-1
+function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}if(screen==='prem'&&!/\bpremscr\b/.test(cls||''))screen='home';   // 13.9.30: ушли с экрана премиума на экран, который сам screen не ставит (повторение) — «назад» не должен вести на премиум
+  const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
+  document.querySelectorAll('.pk,.dx-turn,.dx-shade,.cd2,.gatewrap,.sc-sheetwrap.poll,.sc-sheetwrap.unl,.pwa').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном; 13.6.3: и отсчёт 3-2-1
   document.querySelectorAll('.srv').forEach(o=>o.remove());   // 13.6: открытие покупки
   try{ytKill();}catch(e){}   // 13.9.16: плеер YouTube из теста
   try{if(window.DL)DL.clean();}catch(e){}   // 13.7: варианты словаря — карта в руке, демо-пак
@@ -1861,6 +1862,7 @@ function ndProfileHTML(){const name=userName()||'Игрок',photo=tgPhoto(),pb=
     <details class="ndl ndach anim"><summary class="ndl-r"><i>🎖</i><span><b>Достижения</b><small>${got} из ${ACH.length}</small></span><em>${ui('fwd')}</em></summary>
       <div class="achs">${ACH.map(a=>`<button class="ach${store.ach[a.id]?' got':''}" data-a="${a.id}">${iconHTML({img:a.ic,svg:'trophy'})}<span>${esc(a.n)}</span></button>`).join('')}</div></details>
     <div class="ndl anim">
+      ${premMode()!=='off'||FLAG_ADMIN?row('pfPrem','⭐','Премиум',premHas()?`до ${premDate(premC().until)}`:premC().trialUsed?'повторение, подсказки, слова без лимита':'7 дней бесплатно'):''}
       ${row('setBtn','⚙️','Настройки','язык, субтитры, звук, дизайн')}
       ${row('helpBtn','❓','Как пользоваться','все функции коротко')}
       ${FLAG_ADMIN?row('admBtn','🛡','Админ-панель','игроки, доступ, проверка'):''}
@@ -1875,6 +1877,7 @@ function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
   if($('#pfWords'))$('#pfWords').onclick=()=>{sfx('tap');renderMyWords();};
   $('#pfShop').onclick=()=>{sfx('tap');renderShop();};
   $('#helpBtn').onclick=()=>{sfx('tap');renderHelp();};
+  if($('#pfPrem'))$('#pfPrem').onclick=()=>{sfx('tap');haptic('sel');renderPaywall(null,()=>renderTab('profile'));};
   $('#pfLook').onclick=()=>{sfx('tap');haptic('sel');store.look='';save();renderTab('profile');toast('Старый дизайн. «Новый» — Настройки → Дизайн (на пробу)');};   // 13.9.29: откат в одно нажатие
   $$('.ach').forEach(b=>b.onclick=()=>{const a=ACH.find(x=>x.id===b.dataset.a);sfx('sel');toast(`${a.n}: ${a.d}${store.ach[a.id]?'. Получено':''}`);});
   ndCount($$('.ndcnt'));}
@@ -1901,13 +1904,14 @@ function profileTabHTML(){
       <button class="lrow2" id="rev2" ${due?'':'disabled'}>${iconHTML({img:'items/refresher',svg:'star'},'sm')}<span><b>Повторение</b><small>${due?`${due} ${plural(due,['слово ждёт','слова ждут','слов ждут'])}`:'пока нечего повторять'}</small></span><span class="go">›</span></button>
       <button class="lrow2" id="redo2" ${mis?'':'disabled'}>${iconHTML({svg:'flag'},'sm')}<span><b>Ошибки</b><small>${mis?`${mis} на разбор`:'пока нет'}</small></span><span class="go">›</span></button>
       <button class="lrow2" id="helpBtn" onclick="renderHelp()">${iconHTML({svg:'book'},'sm')}<span><b>Как пользоваться</b><small>все функции коротко и по шагам</small></span><span class="go">›</span></button>
+      ${premMode()!=='off'||FLAG_ADMIN?`<button class="lrow2" id="pfPrem">${iconHTML({svg:'star'},'sm')}<span><b>Премиум</b><small>${premHas()?`до ${premDate(premC().until)}`:'повторение, подсказки, слова без лимита'}</small></span><span class="go">›</span></button>`:''}
       <button class="lrow2" id="setBtn">${iconHTML({svg:'shield'},'sm')}<span><b>Настройки</b><small>язык, роли, оформление, звук</small></span><span class="go">›</span></button>
     </div>
     ${adm}
     <p class="foot">Версия ${APP_V}</p>`;
 }
 function bindProfileAdmin(){const b=$('#admBtn');if(b)b.onclick=()=>{sfx('tap');renderAdmin();};}
-function bindProfile(){if(ndOn()){ndBindProfile();return;}bindProfileAdmin();
+function bindProfile(){if(ndOn()){ndBindProfile();return;}bindProfileAdmin();if($('#pfPrem'))$('#pfPrem').onclick=()=>{sfx('tap');renderPaywall(null,()=>renderTab('profile'));};
   bindHead();bgFill($('.phead'));$$('#pcChg,#pcSet').forEach(b=>b.onclick=e=>{e.stopPropagation();sfx('tap');haptic('sel');renderCollection('bg');});
   {const c=$('.phead.pbg');if(c)c.onclick=e=>{if(e.target.closest('button'))return;pfView(meCard(),true);};}
   $('#dict').onclick=()=>{sfx('tap');renderDict('going');};
@@ -2455,7 +2459,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.29';
+const APP_V='13.9.30';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -2816,6 +2820,7 @@ const mywAll=()=>Object.values(store.myw||{}).sort((a,b)=>b.at-a.at);
 const mywHas=(sid,w)=>!!(store.myw&&store.myw[mywKey(sid,swNorm(w))]);
 function mywToggle(sid,pi,word,row,hit){store.myw=store.myw||{};const w=swNorm(word),k=mywKey(sid,w);
   if(store.myw[k]){mywDel(k);save();toast('Убрал из «Моих слов»');return false;}
+  if(premNeed('myw')&&Object.keys(store.myw).length>=MYW_FREE){premAsk('myw');return false;}   // 13.9.30
   const s=scOf(sid),p=s&&s.parts[pi];store.myw[k]={k,w,ru:hit?hit.ru:'',de:hit&&hit.de||'',sid,pi,line:row?row[2]:'',lineRu:row?row[3]:'',a:row&&p?row[0]:0,at:Date.now(),lvl:0,st:0,due:Date.now()+36e5};
   save();toast('⭐ Сохранил в «Мои слова»');haptic('ok');return true;}
 const mywBtn=(sid,w)=>`<button data-x="save" class="myw-save${mywHas(sid,w)?' on':''}">${mywHas(sid,w)?'★ В моих словах':'☆ В мои слова'}</button>`;
@@ -2915,6 +2920,7 @@ function wSRS(it,good){const now=Date.now();it.st=it.st||0;if(good){it.st=Math.m
 // 13.8.7: renderDaily(list,o) — тренировка по подборке нового словаря: свой список, o.back — куда вернуться, o.title — подпись итога,
 // o.train — фраза, которую ещё рано повторять, при верном ответе расписание не сдвигает (ошибка — вернётся завтра), o.nosrs — демо, прогресс не трогаем
 function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()=>renderTab('learn'));
+  if(!list&&L.length&&store.revDone===dayKey(new Date())&&premGate('rev',back))return;   // 13.9.30: без премиума — один заход повторения в день (если включено в админке)
   if(!L.length){mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Повторение</h1></div>
     <div class="dl-empty card anim"><div class="dl-ic">✅</div><b>На сегодня всё повторено</b><span>Фразы из сцен и твои слова вернутся, когда придёт их время. Можно посмотреть новый эпизод или сохранить новые слова.</span>
     <button class="btn" id="dlGo">Новый эпизод →</button></div>`,'dlscr');$('#bBtn').onclick=()=>{sfx('tap');back();};
@@ -2976,7 +2982,7 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
     $$('.sc-opt').forEach(b=>b.onclick=()=>{if(b.disabled)return;const good=b.dataset.v===it.ru;$$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===it.ru)x.classList.add('ok');});if(!good)b.classList.add('bad');
       grade(q,good,`<div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(it.w)} — ${esc(it.ru)}</div>${it.lineRu?`<div class="ru">${esc(it.lineRu)}</div>`:''}`);});
     if($('#dlmom'))$('#dlmom').onclick=()=>{sfx('tap');momOpen(it.sid,it.pi,it.a||0,it.w);};}
-  function end(){remindSync(true);if(!o.train)ev('review','daily');const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
+  function end(){remindSync(true);if(!o.train)ev('review','daily');if(!list&&!o.train){store.revDone=dayKey(new Date());save();}const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
     mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">${esc(o.title||'Повторение на сегодня')}</div><div class="sc-big">${good} / ${res.length}</div>
       <p class="sc-sub">${good===res.length?(o.train?'Всё вспомнил.':'Всё вспомнил. Следующая встреча — через несколько дней.'):'Что не вспомнилось — вернётся завтра. Так и запоминается.'}</p>
       <div class="sc-btns">${o.train?`<button class="sc-btn" id="dlh3">Ещё раз</button>`:''}<button class="sc-btn${o.train?' ghost':''}" id="dlh2">${o.back?'Назад в словарь':'На главную'}</button></div></div></div>`,'scnscr');$('#dlh2').onclick=()=>back();
@@ -3383,7 +3389,7 @@ const p0t=(s,i)=>s.title+' · '+(s.parts[i]?s.parts[i].t:'');
 // 12.5: «Режиссёрская версия» — после финала сцены: все эпизоды подряд, без пауз и объяснений, только оригинальные субтитры.
 // Досмотрел до конца — значок «🎬 Режиссёрская версия» на карточке сцены (store.dirCut[sid]).
 let SC_DIR=false;
-function renderDirCut(id,k){const s=scOf(id);if(!s)return;k=k||0;const p=s.parts[k];SC_DIR=true;SCUR={id,i:k};
+function renderDirCut(id,k){const s=scOf(id);if(!s)return;k=k||0;if(!k&&premGate('dir',()=>renderScene(id)))return;const p=s.parts[k];SC_DIR=true;SCUR={id,i:k};
   scMount(s,`<div class="sc-head"><button class="sc-back" id="scb">${ui('close')}</button><div><span class="sc-meta">🎬 Режиссёрская версия · ${k+1} из ${s.parts.length}</span><h1>${esc(s.sub||s.title)}</h1></div></div>
     <div class="sc-v" id="scvw"><div class="sc-over" id="scvo"><button id="scplay" aria-label="Смотреть">▶</button></div></div>${scSeek()}${scCtrl()}
     <p class="dc-note">Без пауз и подсказок — только оригинал. Сцена целиком, как в кино.</p>`,'dircut');
@@ -4313,7 +4319,7 @@ function renderScQuiz(id,i){
         <h2>${title}</h2>
         ${build
           ?`${ladder?`<div class="sc-lmask lm2" id="scLm"></div><div class="sc-lt" id="scLt"><input class="sc-gapin" id="scLin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Напиши, что услышал"><button class="sc-btn" id="scLok">Проверить</button></div>
-            <div class="sc-lh lh2" id="scLh"><button class="tk-help" id="scLhint">💡 Подсказка <small>${ADM_OPEN()?'':`🎟 ${SC_HINT}`}</small></button><button class="tk-help ghost" id="scLno">Не знаю</button></div>`:''}<div class="sc-bans" id="scbans"${ladder?' hidden':''}></div>${type!=='listen'&&!beg?`<button class="sc-reveal" id="scbrev">Сначала вспомни сам → показать слова</button>`:''}<div class="sc-bpool" id="scbpool"${(type!=='listen'&&!beg)||ladder?' hidden':''}></div>${beg&&build.tk.length>2?'<p class="sc-bhint">Первое слово уже стоит — продолжи</p>':''}<p class="tk-tip" id="scTip"${ladder?' hidden':''}>Зажми слово — покажу перевод</p>
+            <div class="sc-lh lh2" id="scLh"><button class="tk-help" id="scLhint">💡 Подсказка <small>${ADM_OPEN()||premHas()?'':`🎟 ${SC_HINT}`}</small></button><button class="tk-help ghost" id="scLno">Не знаю</button></div>`:''}<div class="sc-bans" id="scbans"${ladder?' hidden':''}></div>${type!=='listen'&&!beg?`<button class="sc-reveal" id="scbrev">Сначала вспомни сам → показать слова</button>`:''}<div class="sc-bpool" id="scbpool"${(type!=='listen'&&!beg)||ladder?' hidden':''}></div>${beg&&build.tk.length>2?'<p class="sc-bhint">Первое слово уже стоит — продолжи</p>':''}<p class="tk-tip" id="scTip"${ladder?' hidden':''}>Зажми слово — покажу перевод</p>
             <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div><div id="scbdiff"></div>`
           :typed?`<input class="sc-gapin" id="scgap" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="впиши слово и нажми «Готово»">
             <div class="sc-bact"><button class="sc-btn ghost" id="scgno">Не помню</button><button class="sc-btn" id="scgok">Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div>`
@@ -4419,7 +4425,7 @@ function renderScQuiz(id,i){
           if(rv.every(r=>r>=2)){paint();msg.textContent='Все слова уже видно — допиши фразу целиком.';return;}
           step();msg.textContent=lvl<=2?'Не то. Подсказал первую букву у одного слова — попробуй ещё.':lvl===3?'Вот первые буквы всех слов — ещё попытка.':'Открыл ещё одно слово целиком.';};
         $('#scLok').onclick=chk;inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();chk();}};
-        $('#scLhint').onclick=()=>{if(q.res!==undefined)return;const free=ADM_OPEN();
+        $('#scLhint').onclick=()=>{if(q.res!==undefined)return;const free=ADM_OPEN()||premHas();
           if(!free&&(store.gold||0)<SC_HINT){toast(`Нужно 🎟 ${SC_HINT} — или ошибись, и подскажу бесплатно`);haptic('err');return;}
           if(rv.every(r=>r>=2)){toast('Все слова уже открыты');return;}
           if(!free){store.gold-=SC_HINT;save();}sfx('tap');haptic('sel');step();msg.textContent=free?'Подсказка':`Подсказка · −${SC_HINT} 🎟`;};
@@ -5732,6 +5738,7 @@ const flagEpKey=(id,i)=>'ep-'+id+'-'+i;
 // проверка перед входом в сцену или эпизод (ловит и кнопки «Продолжить», и ссылки с главной)
 function scGate(id,i){const s=scOf(id);if(!s)return true;
   if(ageLock(s)){ageAsk(()=>renderScene(id));return true;}
+  if(!premFree(s)&&premGate('scene',()=>renderTab(store.tab==='kino'?'kino':'learn')))return true;   // 13.9.30: режим «сцены» в админке
   const ks=['all','kino','scene-'+id].concat(i==null?[]:[flagEpKey(id,i)]);
   for(const k of ks)if(flagOf(k)!=='on'){if(flagOf(k)==='hide'){toast('Недоступно');return true;}showGate(k,k.startsWith('ep-')?s.title+' · '+s.parts[i].t:s.title);return true;}
   return false;}
@@ -5840,7 +5847,7 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
     mnt(`${head('Админка',FLAG_ME?`<button class="ad2-me" id="adMe" aria-label="Скопировать мой ID">ID ${FLAG_ME}</button>`:'')}
       <div class="ad2-stats" id="adStats"><div><b>—</b><small>игроков</small></div><div><b>—</b><small>новых за сутки</small></div><div><b>—</b><small>заходили за сутки</small></div></div>
       ${admSt('all')!=='on'?`<button class="ad2-warn" data-sec="flags">🛠 Включены технические работы — игроки видят заглушку</button>`:''}
-      <div class="ad2-list">${it('users','👥','Игроки','кто заходил и их ID')}${it('funnel','📈','Воронка','новички: досмотрели, вернулись, опрос')}${it('errs','🐞','Ошибки','что ломается у игроков')}${it('flags','🔒','Доступ',closed?`закрыто: ${closed}`:'всё открыто',dirty?'<em class="ad2-dot">не сохранено</em>':'')}${it('player','🧪','Я как игрок',store.admPlayer?'сейчас — как игрок':'пройти, сбросить, билеты')}</div>
+      <div class="ad2-list">${it('users','👥','Игроки','кто заходил и их ID')}${it('funnel','📈','Воронка','новички: досмотрели, вернулись, опрос')}${it('errs','🐞','Ошибки','что ломается у игроков')}${it('flags','🔒','Доступ',closed?`закрыто: ${closed}`:'всё открыто',dirty?'<em class="ad2-dot">не сохранено</em>':'')}${it('player','🧪','Я как игрок',store.admPlayer?'сейчас — как игрок':'пройти, сбросить, билеты')}${it('prem','⭐','Премиум',{off:'выключен — всё бесплатно',feat:'платные функции',scenes:'функции и сцены'}[premMode()])}</div>
       <div class="ad2-list">${it('anim','✨','Анимации','посмотреть все')}${it('check','🔧','Проверка установки','код, видео, кадры')}${it('lab','🎨','Лаборатория','субтитры, звуки, интерфейс')}${it('yt','📺','ТЕСТ: сцена с YouTube','как было бы в App Store')}</div>`);
     $$('[data-sec]').forEach(b=>b.onclick=()=>{sfx('tap');if(b.dataset.sec==='yt'){renderYtTest(0,'admin');return;}renderAdmin(b.dataset.sec);});
     if($('#adMe'))$('#adMe').onclick=()=>admCopy(String(FLAG_ME));
@@ -5872,6 +5879,24 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
     $$('[data-eps]').forEach(b=>b.onclick=()=>{const l=b.nextElementSibling;l.hidden=!l.hidden;b.classList.toggle('open',!l.hidden);sfx('tap');});
     $('#admSave').onclick=admFlagsSave;admSaveBar();return;}
   // 13.9.19: воронка новичков и опрос — из событий бота (/api/ev a:'funnel'); ошибки у игроков — a:'errs'
+  if(sec==='prem'){const M=[['off','Выкл','всё бесплатно, как раньше'],['feat','Функции','повторение больше раза в день, подсказки без билетов, «Мои слова» больше 50, режиссёрская версия'],['scenes','Функции и сцены','плюс сцены сложнее 2-го уровня (кроме сцен первого запуска)']];
+    mnt(`${head('Премиум')}<p class="ad2-note">Звёзды Telegram: месяц — подписка 250 ⭐, год — 1500 ⭐ разово, пробные 7 дней без оплаты. Нужен бот 13.9.30 и один раз открыть /setup.</p>
+      <div class="ad2-pm" id="pmM">${M.map(([k,t,d])=>`<button data-m="${k}" class="${premMode()===k?'on':''}"><b>${t}</b><small>${d}</small></button>`).join('')}</div>
+      <div class="ad2-list"><button class="ad2-it" id="pmView"><i class="ad2-ic">👀</i><span><b>Посмотреть экран премиума</b><small>как его увидит игрок</small></span><i class="ad2-chev">${ui('fwd')}</i></button></div>
+      <div id="pmS"><div class="ad2-empty">Загружаю…</div></div>
+      <h3 class="ad2-h">Выдать дни</h3><div class="ad2-sw ad2-give"><input id="pmU" placeholder="ID игрока" inputmode="numeric"><input id="pmD" placeholder="дней" inputmode="numeric" value="30"><button class="btn" id="pmG">Выдать</button></div><p class="ad2-note">0 дней — забрать премиум.</p>`);
+    const load=async()=>{const box=$('#pmS');const r=await premCall({a:'stats'}).catch(()=>null);if(!$('#pmS'))return;
+      if(!r||!r.ok){box.innerHTML=`<div class="ad2-empty">${esc((r&&r.msg)||'Сервер не ответил — передеплой бота 13.9.30')}</div>`;return;}
+      const PL={m:'месяц',y:'год',t:'тест',trial:'пробные',gift:'подарок'};
+      box.innerHTML=`<div class="ad2-stats"><div><b>${fmt(r.active)}</b><small>с премиумом</small></div><div><b>${fmt(r.paid)}</b><small>платят</small></div><div><b>${fmt(r.stars30)} ⭐</b><small>за 30 дней</small></div></div><p class="ad2-note">Пробные дни брали: ${fmt(r.trials)}.</p>
+        <h3 class="ad2-h">Платежи</h3>${r.pays.length?`<div class="ad2-list">${r.pays.map(x=>`<div class="ad2-it ad2-pay"><i class="ad2-ic">⭐</i><span><b>${esc(x.n||('ID '+x.uid))}${x.un?' · @'+esc(x.un):''}</b><small>${PL[x.plan]||x.plan} · ${fmt(x.amount)} ⭐ · ${premDate(x.ts)} · до ${premDate(x.until)}</small></span></div>`).join('')}</div>`:'<div class="ad2-empty">Пока не было</div>'}`;};
+    load();
+    $$('#pmM [data-m]').forEach(b=>b.onclick=async()=>{const m=b.dataset.m;if(m===premMode())return;b.disabled=true;const r=await premCall({a:'mode',mode:m}).catch(()=>null);b.disabled=false;
+      if(!r||!r.ok){toast((r&&r.msg)||'Не сохранилось — передеплой бота 13.9.30');return;}PREM.st=Object.assign({},premC(),{mode:m});store.premC=Object.assign({},store.premC,{mode:m});save();sfx('sel');toast({off:'Премиум выключен — всё бесплатно',feat:'Включены платные функции',scenes:'Включены платные функции и сцены'}[m]);renderAdmin('prem');});
+    $('#pmView').onclick=()=>{sfx('tap');renderPaywall(null,()=>renderAdmin('prem'));};
+    $('#pmG').onclick=async()=>{const uid=+$('#pmU').value.trim(),days=+$('#pmD').value.trim();if(!uid){toast('Нужен ID');return;}const r=await premCall({a:'give',uid,days}).catch(()=>null);
+      if(!r||!r.ok){toast((r&&r.msg)||'Не получилось');return;}toast(days?`Выдал до ${premDate(r.until)}`:'Забрал премиум');if(String(uid)===String(FLAG_ME))premLoad();load();};
+    return;}
   if(sec==='funnel'){mnt(`${head('Воронка')}<div class="ad2-sg" id="fnD">${[7,30,90].map(d=>`<button data-d="${d}" class="${(ADM_FD||30)===d?'on':''}">${d} дн.</button>`).join('')}</div><div id="fnB"><div class="ad2-empty">Загружаю…</div></div>`);
     const load=async()=>{const box=$('#fnB');try{const r=await admUsersCall({a:'funnel',days:ADM_FD||30});if(!$('#fnB'))return;if(!r||!r.ok){box.innerHTML=`<div class="ad2-empty">${esc((r&&r.msg)||'Нет связи с сервером — открой приложение в Telegram. Если пишет «неизвестно» — передеплой бота 13.9.19.')}</div>`;return;}
         const v=r.v,pc=(a,b)=>b?Math.round(a/b*100)+'%':'—',bar=(t,n,base,hint)=>`<div class="fn-r"><span><b>${t}</b><small>${hint||''}</small></span><em>${fmt(n)}</em><i><u style="width:${base?Math.min(100,Math.round(n/base*100)):0}%"></u></i><strong>${pc(n,base)}</strong></div>`;
@@ -6041,6 +6066,7 @@ function bindLearn(){
 }
 function onBack(){
   if(screen==='onb'){onbBack();return;}   // 13.9.28: первый запуск — шаг назад
+  if(screen==='prem'){(PREM.back||(()=>renderTab('learn')))();return;}   // 13.9.30: экран премиума
   {const g=document.querySelector('.gatewrap');if(g){g.click();return;}}   // аудит: окно «Технический перерыв / Скоро» закрывается «назад»
   if(window.DL&&document.querySelector('#dlRoot,.dli,.dlp')){const o=document.querySelector('.dlp');if(o&&o._close){o._close();return;}if(DL.back())return;}   // 13.7: варианты словаря
   if(document.querySelector('.dxo')){const d=document.querySelector('.dxo-dim');if(d)d.click();return;}   // 11.0: открытая карта словаря
@@ -6974,6 +7000,70 @@ function onbFinish(){const O=ONB;if(!O)return;const c=O.cefr||'A2',ci=CEFR.index
   const L=SCENES.filter(s=>scLang(s)===O.lang&&!s.age&&flagOf('scene-'+s.id)!=='hide'&&s.kind!=='clip'),pick=(START_PICK[O.lang]||[]).map(scOf).filter(Boolean);
   const near=(A)=>A.slice().sort((a,b)=>Math.abs((a.lvl||3)-1-ci)-Math.abs((b.lvl||3)-1-ci))[0];
   const s=near(pick.length?pick:L)||L[0];ONB=null;ev('start_pick',s.id);ev('onb_done',c);sfx('whoosh');renderScEp(s.id,0);}
+// 13.9.30: премиум за звёзды Telegram. Режим задаёт админ (Админка → «Премиум»): off — всё бесплатно, как раньше; feat — платные функции; scenes — ещё и сцены сверх бесплатных.
+// Платное: повторение больше одного раза в день, подсказки без билетов, «Мои слова» больше 50, режиссёрская версия. Оплата и учёт — воркер (/api/prem), тут только показ и проверки.
+const PREM={st:null},MYW_FREE=50,PREM_FEAT={rev:'Повторение на сегодня уже было — с премиумом повторяй сколько хочешь.',myw:`В «Моих словах» уже ${MYW_FREE} слов — с премиумом без лимита.`,dir:'Режиссёрская версия — в премиуме.',scene:'Эта сцена — в премиуме. Бесплатные сцены открыты всем.',hint:'',prof:''};
+async function premCall(body){const id=(TG&&TG.initData)||window.__INIT;if(!id)return null;
+  const r=await fetch(API+'/api/prem',{method:'POST',headers:{'content-type':'application/json','x-init-data':id},body:JSON.stringify(body)});if(!r.ok)return null;try{return await r.json();}catch(e){return null;}}
+async function premLoad(){try{const r=await premCall({a:'st'});if(r&&r.ok){PREM.st=r;store.premC={mode:r.mode,until:r.until,plan:r.plan,rec:r.rec,trialUsed:r.trialUsed,prices:r.prices};save();}}catch(e){}return PREM.st;}
+const premC=()=>PREM.st||store.premC||{};
+const premMode=()=>premC().mode||'off';
+const premHas=()=>(premC().until||0)>Date.now();
+const premFree=s=>!s||(s.lvl||3)<=2||START_PICK.en.includes(s.id)||START_PICK.de.includes(s.id);
+const premNeed=f=>{const m=premMode();if(m==='off'||premHas()||ADM_OPEN())return false;return f==='scene'?m==='scenes':true;};
+const premDate=t=>{const d=new Date(t);return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear();};
+setTimeout(premLoad,2800);
+// экран премиума: что даёт, пробные 7 дней, тарифы, оплата звёздами; у кого есть — статус и продление
+function renderPaywall(why,back){back=back||(()=>renderTab(store.tab||'learn'));screen='prem';backBtn(true);PREM.back=back;
+  const c=premC(),has=premHas(),pr=c.prices||{m:250,y:1500},tr=!c.trialUsed&&!has,pick=PREM.pick||'y',plan=c.plan;
+  const ben=[['🔁','Повторение без лимита','бесплатно — один заход в день'],['💡','Подсказки без билетов','в заданиях на слух'],['⭐','«Мои слова» без лимита',`бесплатно — до ${MYW_FREE} слов`],['🎬','Режиссёрская версия','сцена целиком, без пауз и подсказок']];
+  const st=has?(plan==='trial'?`Пробные дни до ${premDate(c.until)}`:plan==='gift'?`Подарок до ${premDate(c.until)}`:`Премиум до ${premDate(c.until)}`):'Учи по кино без ограничений';
+  mount(`<div class="pw${has?' has':''}">
+    <div class="pw-top"><button class="pw-x" id="pwX" aria-label="Закрыть">${ui('close')}</button></div>
+    <div class="pw-card"><i class="pw-holo"></i><i class="pw-gl"></i><span class="pw-eb">${esc(APP_NAME)}</span><b>Премиум</b><small>${esc(st)}</small><em class="pw-star">★</em></div>
+    ${why&&PREM_FEAT[why]?`<p class="pw-why">${esc(PREM_FEAT[why])}</p>`:''}
+    ${has?`<div class="pw-me">${plan==='m'?`<div class="pw-rec"><span><b>${c.rec?'Продлевается сама':'Продление выключено'}</b><small>${c.rec?`следующее списание — ${premDate(c.until)}, ${pr.m} ⭐`:`премиум работает до ${premDate(c.until)}`}</small></span><button class="pw-sm" id="pwRec">${c.rec?'Отменить':'Включить'}</button></div>`:''}</div>`:''}
+    <h1 class="pw-h">${has?'Продлить':'Что даёт <span class="mk">премиум</span>'}</h1>
+    ${has?'':`<ul class="pw-ben">${ben.map(([i,b,s])=>`<li><i>${i}</i><span><b>${b}</b><small>${s}</small></span></li>`).join('')}</ul>`}
+    ${tr?`<div class="pw-tl"><div><i class="on"></i><span><b>Сегодня</b><small>всё открыто на ${c.trialDays||7} дней</small></span></div><div><i></i><span><b>Через ${c.trialDays||7} дней</b><small>пробные дни закончатся сами — ничего не спишется</small></span></div></div>`:''}
+    <div class="pw-plans">
+      <button class="pw-pl${pick==='y'?' on':''}" data-p="y"><em>Выгоднее · −50 %</em><b>Год</b><span>${pr.y} ⭐</span><small>≈ ${Math.round(pr.y/12)} ⭐ в месяц · одной оплатой</small></button>
+      <button class="pw-pl${pick==='m'?' on':''}" data-p="m"><b>Месяц</b><span>${pr.m} ⭐</span><small>подписка · отменить в любой момент</small></button>
+    </div>
+    <div class="pw-foot">
+      ${tr?`<button class="pw-go" id="pwTrial">Попробовать ${c.trialDays||7} дней бесплатно</button><button class="pw-alt" id="pwBuy">Сразу оформить за ${pick==='y'?pr.y:pr.m} ⭐</button>`:`<button class="pw-go" id="pwBuy">${has?'Продлить':'Оформить'} за ${pick==='y'?pr.y:pr.m} ★</button>`}
+      ${FLAG_ADMIN?`<button class="pw-alt" id="pwTest">Админ: тест оплаты за 1 ⭐ (на день)</button>`:''}
+      <p class="pw-fine">Оплата звёздами Telegram. Месяц продлевается сам раз в 30 дней — отменить можно здесь или в настройках Telegram → «Мои звёзды». Год само не продлевается.</p>
+    </div></div>`,'premscr');
+  $('#pwX').onclick=()=>{sfx('tap');back();};
+  $$('.pw-pl').forEach(b=>b.onclick=()=>{sfx('sel');haptic('sel');PREM.pick=b.dataset.p;$$('.pw-pl').forEach(x=>x.classList.toggle('on',x===b));const k=$('#pwBuy');if(k)k.textContent=k.textContent.replace(/\d+ ([⭐★])/,(m,z)=>`${PREM.pick==='y'?pr.y:pr.m} ${z}`);});
+  if($('#pwTrial'))$('#pwTrial').onclick=async e=>{const b=e.currentTarget;b.disabled=true;const r=await premCall({a:'trial'}).catch(()=>null);b.disabled=false;
+    if(!r||!r.ok){toast((r&&r.msg)||'Нет связи с сервером — попробуй позже');return;}PREM.st=r;store.premC=Object.assign({},store.premC,{mode:r.mode,until:r.until,plan:r.plan,rec:r.rec,trialUsed:true,prices:r.prices});save();premYay(why);};
+  if($('#pwBuy'))$('#pwBuy').onclick=e=>premBuy(PREM.pick||'y',e.currentTarget,why);
+  if($('#pwTest'))$('#pwTest').onclick=e=>premBuy('t',e.currentTarget,why);
+  if($('#pwRec'))$('#pwRec').onclick=async e=>{const b=e.currentTarget;b.disabled=true;const r=await premCall({a:'renew',on:!c.rec}).catch(()=>null);b.disabled=false;
+    if(!r||!r.ok){toast((r&&r.msg)||'Не получилось — попробуй позже');return;}PREM.st=r;store.premC=Object.assign({},store.premC,{rec:r.rec,until:r.until});save();toast(r.rec?'Продление включено':'Продление выключено — премиум работает до конца оплаченного месяца');renderPaywall(why,back);};
+  if(fxOK()){const cd=$('.pw-card');if(cd)cd.animate([{transform:'translateY(30px) rotateX(18deg) scale(.92)',opacity:0},{transform:'none',opacity:1}],{duration:700,easing:SPRING});
+    $$('.pw-ben li,.pw-pl,.pw-tl>div').forEach((x,k)=>x.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:500,delay:160+k*60,easing:'cubic-bezier(.2,.9,.25,1)',fill:'backwards'}));}}
+async function premBuy(plan,btn,why){btn.disabled=true;const r=await premCall({a:'inv',plan}).catch(()=>null);btn.disabled=false;
+  if(!r||!r.ok||!r.url){toast((r&&r.msg)||'Оплата пока недоступна — нужен бот 13.9.30');return;}sfx('tap');
+  const cb=st=>{if(st==='paid')premAfterPay(why);else if(st==='failed')toast('Оплата не прошла');};
+  try{if(TG&&TG.openInvoice){TG.openInvoice(r.url,cb);return;}}catch(e){}
+  try{if(TG&&TG.openTelegramLink){TG.openTelegramLink(r.url);return;}}catch(e){}window.open(r.url,'_blank');}
+// после оплаты бот получает платёж чуть позже — спрашиваем сервер, пока не увидим продление
+async function premAfterPay(why){const was=premC().until||0;toast('Оплата прошла — включаю премиум…');
+  for(let k=0;k<10;k++){await premLoad();if((premC().until||0)>Math.max(was,Date.now()))break;await new Promise(r=>setTimeout(r,1500));}
+  if(premHas())premYay(why);else toast('Премиум включится через минуту — бот пришлёт сообщение');}
+function premYay(why){sfx('reward');haptic('ok');if(fxOK())fxRain(60);toast(premC().plan==='trial'?`Пробные дни до ${premDate(premC().until)} ⭐`:`Премиум до ${premDate(premC().until)} ⭐`);
+  if(screen==='prem')renderPaywall(null,PREM.back);}
+const premGate=(f,back)=>{if(!premNeed(f))return false;renderPaywall(f,back);return true;};
+// там, где уходить с экрана нельзя (слово из видео) — шторка «нужен премиум»
+function premAsk(f){document.querySelectorAll('.pwa').forEach(x=>x.remove());const w=document.createElement('div');w.className='pwa';
+  w.innerHTML=`<div class="pwa-b"><b>⭐ Это в премиуме</b><p>${esc(PREM_FEAT[f]||'')}</p><div><button class="pw-go" data-x="go">Подробнее</button><button class="pw-alt" data-x="no">Не сейчас</button></div></div>`;
+  document.body.appendChild(w);requestAnimationFrame(()=>w.classList.add('on'));sfx('hint');haptic('sel');
+  const close=()=>{w.classList.remove('on');setTimeout(()=>w.remove(),260);};
+  w.onclick=e=>{const x=e.target.closest('[data-x]');if(e.target===w||(x&&x.dataset.x==='no')){close();return;}
+    if(x&&x.dataset.x==='go'){w.remove();renderPaywall(f,()=>renderTab(store.tab||'learn'));}};}
 // новичок = ещё ни одного пройденного эпизода. Первый пройденный → всё открывается, на Главной один раз «Открылось: …»
 function newbie(){if(store.unl||ADM_OPEN())return false;
   for(const k in SC){const P=SC[k];if(P&&P.done&&P.done.length){store.unl=1;if(store.newb){store.unlNew=1;delete store.newb;}save();return false;}}

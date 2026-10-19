@@ -6195,3 +6195,68 @@ body.nd:not(.tabs-on) .tabbar{opacity:0;pointer-events:none}
 /* 13.9.29 — первый запуск: «Пропустить» / «Закрыть» вместо «N из 5» (прогресс и так видно по чёрточкам) */
 .onb-skip{flex:none;height:36px;padding:0 4px;border:0;background:none;color:var(--lk-ink3);font:700 13.5px var(--lk-f);cursor:pointer}
 .onb-skip:active{opacity:.6}
+
+/* ==== 13.9.30 — премиум за звёзды: экран (.pw, всегда тёмный), шторка «это в премиуме» (.pwa), раздел админки ==== */
+.pw{--pk:#FFD23F;--pi:#F5F3EE;--pm:rgba(245,243,238,.62);--pl:rgba(255,255,255,.1);max-width:560px;margin:0 auto;padding:0 0 calc(var(--sb,0px) + 18px);color:var(--pi);font-family:Manrope,'Golos Text',system-ui,sans-serif}
+body:has(.pw){background:#0E0E10}
+.pw-top{display:flex;justify-content:flex-end;height:44px;align-items:center}
+.pw-x{width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:12px;background:rgba(255,255,255,.08);color:var(--pi);cursor:pointer}.pw-x svg{width:18px;height:18px;stroke:currentColor}
+.pw-card{position:relative;overflow:hidden;isolation:isolate;margin:6px auto 18px;width:min(100%,360px);aspect-ratio:1.6;border-radius:24px;padding:20px 22px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;
+  background:linear-gradient(135deg,#1d1a2e,#121216 55%,#2a2010);box-shadow:0 30px 60px -28px rgba(255,210,63,.45),inset 0 0 0 1px rgba(255,255,255,.12);transform-style:preserve-3d}
+.pw-holo{position:absolute;inset:-60%;z-index:-1;background:conic-gradient(from 0deg,#ff6a88,#ffd23f,#5ef2c4,#6aa8ff,#c38cff,#ff6a88);opacity:.42;mix-blend-mode:screen;animation:pwSpin 9s linear infinite}
+.pw-card::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 90% at 20% 10%,transparent,rgba(10,10,14,.72) 70%)}
+.pw-gl{position:absolute;top:-40%;bottom:-40%;width:38%;left:-50%;z-index:1;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:rotate(18deg);animation:pwGl 4.6s cubic-bezier(.5,0,.3,1) 1s infinite;pointer-events:none}
+@keyframes pwSpin{to{transform:rotate(360deg)}}
+@keyframes pwGl{0%{transform:translateX(0) rotate(18deg)}45%,100%{transform:translateX(420%) rotate(18deg)}}
+.pw-eb{font:800 11px/1 Manrope,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.pw-card b{font:800 40px/1.05 Manrope,sans-serif;letter-spacing:-.03em;color:#fff}
+.pw-card small{font:600 14px Manrope,sans-serif;color:rgba(255,255,255,.75)}
+.pw-star{position:absolute;top:16px;right:20px;font:normal 34px/1 serif;color:var(--pk);text-shadow:0 0 24px rgba(255,210,63,.7)}
+.pw-why{margin:0 0 14px;padding:12px 14px;border-radius:14px;background:rgba(255,210,63,.12);box-shadow:inset 0 0 0 1px rgba(255,210,63,.35);font:600 14.5px/1.4 Manrope,sans-serif;color:#FFE8A3}
+.pw-h{margin:6px 0 12px;font:800 clamp(24px,7vw,30px)/1.15 Manrope,sans-serif;letter-spacing:-.02em;color:var(--pi)}
+.pw .mk{background:linear-gradient(rgba(255,210,63,.45),rgba(255,210,63,.45)) no-repeat 0 88%/100% 40%;padding:0 2px}
+.pw-ben{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:10px}
+.pw-ben li{display:flex;align-items:center;gap:12px}
+.pw-ben i{flex:none;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.07);font-style:normal;font-size:19px}
+.pw-ben span{display:flex;flex-direction:column;gap:1px}.pw-ben b{font:700 15.5px Manrope,sans-serif}.pw-ben small{font:500 13px Manrope,sans-serif;color:var(--pm)}
+.pw-tl{position:relative;margin:4px 0 18px;padding-left:4px;display:flex;flex-direction:column;gap:14px}
+.pw-tl::before{content:"";position:absolute;left:13px;top:12px;bottom:12px;width:2px;background:linear-gradient(var(--pk),rgba(255,255,255,.15))}
+.pw-tl>div{display:flex;gap:14px;align-items:flex-start}
+.pw-tl i{flex:none;position:relative;width:20px;height:20px;border-radius:50%;background:#0E0E10;box-shadow:inset 0 0 0 2px rgba(255,255,255,.3)}.pw-tl i.on{background:var(--pk);box-shadow:0 0 0 4px rgba(255,210,63,.18)}
+.pw-tl span{display:flex;flex-direction:column}.pw-tl b{font:700 14.5px Manrope,sans-serif}.pw-tl small{font:500 13px Manrope,sans-serif;color:var(--pm)}
+.pw-plans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.pw-pl{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:18px 14px 14px;border:0;border-radius:18px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1.5px var(--pl);color:var(--pi);text-align:left;cursor:pointer;transition:box-shadow .2s,background .2s,transform .3s cubic-bezier(.3,1.4,.5,1)}
+.pw-pl:active{transform:scale(.97)}
+.pw-pl.on{background:rgba(255,210,63,.1);box-shadow:inset 0 0 0 2px var(--pk)}
+.pw-pl em{position:absolute;top:-9px;left:12px;padding:3px 8px;border-radius:7px;background:var(--pk);color:#161614;font:800 10.5px Manrope,sans-serif;font-style:normal;letter-spacing:.02em}
+.pw-pl b{font:700 14px Manrope,sans-serif;color:var(--pm)}.pw-pl span{font:800 22px Manrope,sans-serif;color:var(--pi)}.pw-pl small{font:500 12px/1.3 Manrope,sans-serif;color:var(--pm)}
+.pw-foot{display:flex;flex-direction:column;gap:8px}
+.pw-go{height:56px;border:0;border-radius:16px;background:var(--pk);color:#161614;font:800 17px Manrope,sans-serif;cursor:pointer;box-shadow:0 14px 30px -14px rgba(255,210,63,.7);transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.pw-go:active{transform:scale(.97)}.pw-go:disabled,.pw-alt:disabled,.pw-sm:disabled{opacity:.5}
+.pw-alt{height:46px;border:0;border-radius:14px;background:rgba(255,255,255,.07);color:var(--pi);font:700 15px Manrope,sans-serif;cursor:pointer}
+.pw-fine{margin:6px 2px 0;font:500 12px/1.45 Manrope,sans-serif;color:rgba(245,243,238,.45);text-align:center}
+.pw-me{margin:-4px 0 14px}.pw-rec{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:rgba(255,255,255,.06)}
+.pw-rec span{flex:1;display:flex;flex-direction:column}.pw-rec b{font:700 15px Manrope,sans-serif}.pw-rec small{font:500 13px Manrope,sans-serif;color:var(--pm)}
+.pw-sm{flex:none;height:36px;padding:0 14px;border:0;border-radius:11px;background:rgba(255,255,255,.1);color:var(--pi);font:700 13.5px Manrope,sans-serif;cursor:pointer}
+@media(min-width:900px){.pw{padding-top:12px}}
+body.nofx .pw-holo,body.nofx .pw-gl{animation:none}
+/* шторка «это в премиуме» — поверх видео и словаря */
+.pwa{position:fixed;inset:0;z-index:9000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0);transition:background .25s}
+.pwa.on{background:rgba(0,0,0,.5)}
+.pwa-b{width:min(520px,100%);padding:20px 18px calc(var(--sb,0px) + 18px);border-radius:24px 24px 0 0;background:#141416;color:#F5F3EE;box-shadow:0 -10px 40px rgba(0,0,0,.5);transform:translateY(100%);transition:transform .38s cubic-bezier(.2,1,.3,1);font-family:Manrope,system-ui,sans-serif}
+.pwa.on .pwa-b{transform:none}
+.pwa-b>b{display:block;font:800 19px Manrope,sans-serif;margin-bottom:6px}.pwa-b p{margin:0 0 14px;font:500 14.5px/1.45 Manrope,sans-serif;color:rgba(245,243,238,.7)}
+.pwa-b>div{display:flex;flex-direction:column;gap:8px}.pwa-b .pw-go{--pk:#FFD23F;background:#FFD23F}.pwa-b .pw-alt{color:#F5F3EE}
+@media(min-width:700px){.pwa{align-items:center}.pwa-b{border-radius:24px}}
+/* админка → «Премиум» */
+.ad2-pm{display:flex;flex-direction:column;gap:8px;margin:6px 0 14px}
+.ad2-pm button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;border:0;border-radius:14px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.08);color:inherit;text-align:left;cursor:pointer}
+.ad2-pm button.on{box-shadow:inset 0 0 0 2px #FFD23F;background:rgba(255,210,63,.08)}
+.ad2-pm b{font:700 15px Manrope,sans-serif}.ad2-pm small{font:500 12.5px/1.35 Manrope,sans-serif;opacity:.65}
+.ad2-give{display:flex;gap:8px}.ad2-give input:first-child{flex:2}.ad2-give input:nth-child(2){flex:1;min-width:0}.ad2-give .btn{flex:none}
+.ad2-pay{cursor:default}
+/* 13.9.30 — правки по скринам: вкладки не перекрывают кнопки, текст кнопок по центру, переливы карточки мягче (центр «колеса» — за верхним краем) */
+body:has(.pw) .tabbar{display:none!important}
+.pw{padding-bottom:calc(var(--sb,0px) + 28px)}
+.pw-go,.pw-alt,.pw-sm,.pwa-b .pw-go,.pwa-b .pw-alt{display:flex;align-items:center;justify-content:center;text-align:center}
+.pw-holo{inset:auto;left:-100%;top:-190%;width:300%;height:300%;opacity:.34}

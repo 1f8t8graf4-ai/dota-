@@ -50,7 +50,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   // 3. Профиль: карточка, 4 цифры, строки; «Игры» → игры; тап по карточке — «как тебя видят друзья»
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(1500);
   r=await P.evaluate(()=>({card:!!document.querySelector('.ndpc'),n:[...document.querySelectorAll('.ndst b')].map(x=>x.textContent),rows:[...document.querySelectorAll('.ndl-r b')].map(x=>x.textContent),old:!!document.querySelector('.phead')}));
-  ok('Профиль: карточка, 4 цифры (эпизоды 1, фразы 6), строки Коллекция · Игры · Билеты · Достижения · Настройки · Как пользоваться · Админ-панель · Вернуть старый дизайн',r.card&&r.n[0]==='1'&&r.n[1]==='6'&&r.rows.join('|')==='Коллекция|Игры|Билеты|Достижения|Настройки|Как пользоваться|Админ-панель|Вернуть старый дизайн'&&!r.old,r);
+  ok('Профиль: карточка, 4 цифры (эпизоды 1, фразы 6), строки Коллекция · Игры · Билеты · Достижения · Премиум · Настройки · Как пользоваться · Админ-панель · Вернуть старый дизайн',r.card&&r.n[0]==='1'&&r.n[1]==='6'&&r.rows.join('|')==='Коллекция|Игры|Билеты|Достижения|Премиум|Настройки|Как пользоваться|Админ-панель|Вернуть старый дизайн'&&!r.old,r);
   await P.click('#ndPc .ndpc-n');await P.waitForTimeout(600);
   ok('тап по карточке — «как тебя видят друзья»',await P.evaluate(()=>!!document.querySelector('.pfv')));
   await P.keyboard.press('Escape');await P.waitForTimeout(500);await P.evaluate(()=>document.querySelectorAll('.pfv').forEach(x=>x.remove()));
@@ -144,7 +144,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   await UP.evaluate(()=>renderTab('profile'));await UP.waitForTimeout(700);await UP.click('#pfLook');await UP.waitForTimeout(700);r=await st(UP);
   ok('Профиль → «Вернуть старый дизайн» — сразу прежний вид',!r.look&&!r.nd&&r.tabs.includes('Игры'),r);
   // словарь: метки уровня у фраз (A1–C1) и артикль цветом у немецких слов
-  await P.evaluate(()=>{store.look='nd';store.myw=(store.myw||[]).concat([{w:'der Kunde',t:'клиент',sid:'wolf-lunch-de',pi:0,st:1,due:Date.now()+864e5,a:0,k:'test-kunde'}]);save();renderTab('dict');});await P.waitForTimeout(2600);
+  await P.evaluate(()=>{store.look='nd';store.myw=Object.assign({},store.myw,{'wolf-lunch-de|der kunde':{k:'wolf-lunch-de|der kunde',w:'der Kunde',ru:'клиент',sid:'wolf-lunch-de',pi:0,st:1,due:Date.now()+864e5,a:0,at:Date.now()}});save();renderTab('dict');});await P.waitForTimeout(2600);
   await P.evaluate(()=>DL.open({sid:'wolf-of-wall-street'}));await P.waitForTimeout(1200);await P.evaluate(()=>{const d=document.querySelector('details.kn-ep');if(d)d.open=true;});await P.waitForTimeout(500);
   r=await P.evaluate(()=>[...document.querySelectorAll('.kq2:not(.lock) .kq-lv')].map(x=>[x.textContent,getComputedStyle(x).display]));
   ok('словарь в «Новом»: у фраз метка уровня A1–C1',r.length>0&&r.every(x=>/^[ABC][12]$/.test(x[0])&&x[1]!=='none'),r.slice(0,4));
