@@ -244,7 +244,7 @@ const curSeg=()=>DX.seg==='my'?'my':'kino';
 const LOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const knRow=c=>{const {s,f,pi}=c,[k]=knSt(c);
   if(!c.got)return `<button class="kq kq2 lock" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${E(fogTxt(D.T(f)))}</b><span class="kq-ru">${E(fogTxt(f.ru))}</span></span><em class="kq-lk">${LOCK}${seen(s,pi)?'ответь в проверке':'эпизод '+(pi+1)}</em></button>`;
-  return `<button class="kq kq2 st-${k}" data-own data-c="${c.k}"><span class="kq-x"><b class="kq-en">${kqWrap(f,D.T(f))}</b><span class="kq-ru">${E(f.ru)}</span></span>${k==='due'?'<i class="kq-due" title="Пора повторить"></i>':''}</button>`;};
+  return `<button class="kq kq2 st-${k}" data-own data-c="${c.k}">${typeof lvTag==='function'?lvTag(D.T(f),s.lang==='de'?'de':'en'):''}<span class="kq-x"><b class="kq-en">${kqWrap(f,D.T(f))}</b><span class="kq-ru">${E(f.ru)}</span></span>${k==='due'?'<i class="kq-due" title="Пора повторить"></i>':''}</button>`;};
 // 13.9.20 (Андрей: «в словаре слова не нажимаются, и не видно, что их можно нажать»): оригинал — словами, как субтитры в видео.
 // Пунктир — как в видео (.in-ph): только у слов учебного выражения (~10 % слов); важные слова kw — без пунктира, их ~40 % — был бы перегруз.
 const IDW=new WeakMap();
@@ -692,7 +692,7 @@ function mySubs(W,L,by){const m={},o=[],multi=by==='film'&&new Set(L.map(x=>{con
   return o;}
 // строки: фраза — как в Кинотеке (фраза, перевод, точка «пора повторить»); слово — ещё и статус словами
 const wRow=x=>{const st=!x.ru?'':mywLearned(x)?'<em class="kw-st ok">выучено</em>':wDue(x)?'<em class="kw-st due">сегодня</em>':x.due?`<em class="kw-st">${E(mywWhen(x.due))}</em>`:'';
-  return `<button class="kq kq2 kqw" data-own data-w="${E(x.k)}"><span class="kq-x"><b class="kq-en">${E(x.w)}</b><span class="kq-ru">${x.ru?E(x.ru):'<i>без перевода</i>'}</span></span>${st}</button>`;};
+  return `<button class="kq kq2 kqw" data-own data-w="${E(x.k)}">${typeof lvTag==='function'?lvTag(x.w,(scOf(x.sid)||{}).lang==='de'?'de':'en'):''}<span class="kq-x"><b class="kq-en">${E(x.w)}</b><span class="kq-ru">${x.ru?E(x.ru):'<i>без перевода</i>'}</span></span>${st}</button>`;};
 const myRows=(kind,L)=>`<div class="kq-l">${L.map(kind==='w'?wRow:knRow).join('')}</div>`;
 const scnHTML=(i,t,cls)=>`<h4 class="km6-scn${cls?' '+cls:''}"><em>Сцена ${i}</em><span>${E(t)}</span></h4>`;
 const subHTML=(W,G)=>G.map(g=>`${g.scn?scnHTML(g.scn.i,g.scn.t):''}${G.length===1&&g.k==='#'?'':`<h4 class="km6-sub"><em>${E(g.em)}</em>${g.h?`<span>${E(g.h)}</span>`:''}</h4>`}${myRows(W?'w':'ph',g.L)}`).join('');
@@ -769,7 +769,8 @@ function myAdd(){sfx('tap');const tags=[...new Set(mywAll().flatMap(x=>x.tags||[
       <button class="kn-btn" type="submit">＋ В мои слова</button></form><button class="kn-btn2" data-x>Отмена</button>`);
   const F=w.querySelector('form');setTimeout(()=>{try{F.w.focus();}catch(e){}},300);
   F.onsubmit=e=>{e.preventDefault();const v=F.w.value.trim(),ru=F.ru.value.trim(),tg=F.tag.value.trim().replace(/^#/,'').toLowerCase();if(!v)return;
-    store.myw=store.myw||{};const k=mywKey('own',v.toLowerCase());store.myw[k]={k,w:v,ru,de:'',sid:'own',pi:0,line:'',lineRu:'',a:0,at:Date.now(),lvl:0,st:0,due:Date.now()+36e5,own:true,tags:tg?[tg]:[]};
+    store.myw=store.myw||{};if(typeof premNeed==='function'&&typeof premAsk==='function'&&premNeed('myw')&&Object.keys(store.myw).length>=(typeof MYW_FREE==='number'?MYW_FREE:50)){w._close();premAsk('myw');return;}   // 13.9.31: typeof — app.js может быть старее   // 13.9.30
+    const k=mywKey('own',v.toLowerCase());store.myw[k]={k,w:v,ru,de:'',sid:'own',pi:0,line:'',lineRu:'',a:0,at:Date.now(),lvl:0,st:0,due:Date.now()+36e5,own:true,tags:tg?[tg]:[]};
     save();sfx('good');haptic('ok');toast('⭐ Добавил в «Мои слова»');w._close();store.knMyKind='w';KN.my.q='';DL.render(0);};}
 const IV={cards:'<svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="6.5" rx="2"/><rect x="3.5" y="13.5" width="17" height="6.5" rx="2"/></svg>',
   posters:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="10" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="10" rx="1.6"/><path d="M3.5 17.5h7M13.5 17.5h7M3.5 20.5h4.5M13.5 20.5h4.5"/></svg>'};

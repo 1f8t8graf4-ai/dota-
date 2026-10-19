@@ -27,11 +27,14 @@ async function open(o={}){const b=o.browser||await chromium.launch();
     r.fulfill({status:200,headers:{'content-type':ct,'accept-ranges':'bytes','access-control-allow-origin':'*'},body:buf});};
   await ctx.route('https://1f8t8graf4-ai.github.io/scenes/**',r=>o.realMedia?r.continue():media(r));   // realMedia — брать файлы из настоящего R2
   await ctx.route(/https:\/\/(cdn\.cloudflare\.steamstatic\.com|unpkg\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)\//,r=>r.fulfill({status:404,body:''}));
+  await ctx.route(/posthog\.com\//,r=>r.fulfill({status:404,body:''}));   // 13.9.32: аналитика в тестах не нужна (ph.js подменяет её сам — его route объявлен позже и главнее)
   await ctx.route('https://dota.1f8t8graf4.workers.dev/**',async r=>{const u=new URL(r.request().url());if(u.pathname.startsWith('/m/'))return o.realMedia?r.continue():media(r);if(!o.worker)return r.fulfill({status:503,body:''});
     try{const res=await fetch('http://127.0.0.1:8788'+u.pathname+u.search,{method:r.request().method(),headers:r.request().headers(),body:r.request().method()==='POST'?r.request().postData():undefined});
       r.fulfill({status:res.status,headers:{'content-type':res.headers.get('content-type')||'application/json','access-control-allow-origin':'*'},body:await res.text()});}catch(e){r.fulfill({status:502,body:''});}});
   if(o.tg!==false)await ctx.addInitScript(fakeTG(o));
   if(o.init)await ctx.addInitScript(o.init,o.initArg);
+  // 13.9.25: админу «Новый» вид включается сам (lookV). Тесты старого вида — без этого: в посеянном store ставим lookV=2 (как будто админ уже выбирал)
+  if(!o.ndDefault)await ctx.addInitScript(()=>{try{const k='dota_quiz_v4',v=JSON.parse(localStorage.getItem(k)||'null');if(v&&v.lookV===undefined){v.lookV=2;localStorage.setItem(k,JSON.stringify(v));}}catch(e){}});
   const page=await ctx.newPage();const errs=[];page.on('dialog',d=>d.accept());page.on('pageerror',e=>errs.push('ERR '+e.message+' @ '+(e.stack||'').split('\n').slice(1,3).join(' | ')));
   page.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|ERR_|net::/.test(m.text()))errs.push('CON '+m.text());});
   await page.goto('http://127.0.0.1:8080/'+(o.q||''));await page.waitForTimeout(o.wait||1500);return {b,ctx,page,errs};}

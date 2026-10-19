@@ -52,12 +52,12 @@ const TOP={svet:'#f4f3f0',noch:'#111215',zhurnal:'#f1ece2'};
   // 3. Настройки → «Дизайн (на пробу)»: переключатель есть у админа, выбор сохраняется и включает вид
   await P.evaluate(()=>renderSettings());await P.waitForTimeout(700);
   r=await P.evaluate(()=>[...document.querySelectorAll('[data-seg="look"] button')].map(x=>x.textContent+(x.getAttribute('aria-pressed')==='true'?'*':'')));
-  ok('Настройки: «Дизайн (на пробу)» — Сейчас / Свет / Ночь / Журнал, выбран «Свет»',r.join('|')==='Сейчас|Свет*|Ночь|Журнал',r);
-  await P.click('[data-seg="look"] [data-v="noch"]');await P.evaluate(()=>renderTab('learn'));await P.waitForTimeout(900);
+  ok('Настройки: «Дизайн (на пробу)» — Новый / Как было (старые пробы — в Лаборатории)',r.join('|')==='Новый|Как было*',r);
+  await P.evaluate(()=>{store.look='noch';save();renderTab('learn');});await P.waitForTimeout(900);
   r=await P.evaluate(()=>({look:document.body.dataset.look,st:store.look,loc:LOCAL_ONLY.includes('look'),font:!!document.getElementById('lkf-noch')}));
   ok('выбрал «Ночь» — вид включился, шрифт подключён, выбор только на этом устройстве',r.look==='noch'&&r.st==='noch'&&r.loc&&r.font,r);
   await P.evaluate(()=>renderSettings());await P.waitForTimeout(500);await P.click('[data-seg="look"] [data-v="cur"]');await P.evaluate(()=>renderTab('learn'));await P.waitForTimeout(900);
-  r=await st();ok('«Сейчас» — обычный вид',!r.look&&r.rev2==='none',r);
+  r=await st();ok('«Как было» — обычный вид',!r.look&&r.rev2==='none',r);
   // 4. обычные экраны в «сейчас» — скрины для сравнения
   for(const [n,f] of IN){await P.evaluate(f);await P.waitForTimeout(n==='3-slovar'?2600:1500);if(n==='5-epizod')await P.evaluate(()=>{const v=document.querySelector('video');if(v){try{v.pause();v.currentTime=21;}catch(e){}}});
     await P.evaluate(()=>{window.scrollTo(0,0);document.querySelectorAll('.toast').forEach(t=>t.remove());});await P.waitForTimeout(250);await P.screenshot({path:`${__dirname}/shots/look-cur-${dev}-${n}.png`});}
