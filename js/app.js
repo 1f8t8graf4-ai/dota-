@@ -2461,7 +2461,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.33';
+const APP_V='13.9.34';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -2928,7 +2928,9 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
     <button class="btn" id="dlGo">Новый эпизод →</button></div>`,'dlscr');$('#bBtn').onclick=()=>{sfx('tap');back();};
     $('#dlGo').onclick=()=>{const c=continueScene();renderScEp(c.s.id,c.i);};return;}
   const tgtOf=q=>q.s.lang==='de'?q.f.de:scT(q.f),nW=q=>dNorm(tgtOf(q)).split(' ').filter(Boolean).length;
-  const phT=(q,j)=>typeOn()?(nW(q)<2||(j%2===0&&nW(q)<=12)?'dict':'build'):nW(q)<2?'pmean':(j%2===0&&nW(q)<=12?'lbuild':'build');   // фраза из одного слова — диктант / «что значит»; 13.9.16: без печати — «послушай и собери»
+  // 13.9.34: собрать целиком — только до 7 слов; длиннее — выражение (dexpr), нет выражения — «что значит?»
+  const exQ=q=>!!scExpr(q.f,tgtOf(q)),longQ=q=>nW(q)>SC_MAXB,fitQ=(q,t)=>!longQ(q)||!['build','lbuild'].includes(t)?t:exQ(q)?'dexpr':(q.f.trap||[]).length>=2?'pmean':t;
+  const phT=(q,j)=>fitQ(q,typeOn()?(nW(q)<2||(j%2===0&&nW(q)<=12)?'dict':'build'):nW(q)<2?'pmean':(j%2===0&&nW(q)<=12?'lbuild':'build'));   // фраза из одного слова — диктант / «что значит»; 13.9.16: без печати — «послушай и собери»
   const Q=L.map((x,j)=>({...x,t:x.k==='w'?'mean':phT(x,j)}));let n=0,ok=0;const res=[];
   const next=()=>{n++;n>=Q.length?end():show();};
   function frame(meta,body){const seg=Q.map((_,j)=>`<i class="${j<n?'done':j===n?'cur':''}"></i>`).join('');
@@ -2936,7 +2938,7 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
       <div class="sc-q sc-card dl-q"><div class="sc-meta">${meta}</div>${body}<div id="dlfb"></div></div></div>`,'scnscr');
     $('#dlx').onclick=()=>{sfx('tap');back();};}
   function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!o.nosrs&&!(good&&early)){if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);}res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
-    if(!good&&!q.re)Q.splice(Math.min(Q.length,n+4),0,{...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?(typeOn()?'dict':'pmean'):'build')});
+    if(!good&&!q.re)Q.splice(Math.min(Q.length,n+4),0,{...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?(typeOn()?'dict':'pmean'):fitQ(q,'build'))});
     sfx(good?'good':'bad');haptic(good?'ok':'err');
     $('#dlfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}">${html}<button class="sc-btn" id="dln">Дальше →</button></div>`;$('#dln').onclick=()=>{sfx('tap');next();};}
   function show(){const q=Q[n];
@@ -2955,27 +2957,18 @@ function renderDaily(list,o){o=o||{};const L=list||dailyItems(),back=o.back||(()
       const hb=$('#dlh');hb.onclick=()=>scClip(q.s.id,f.id,hb);setTimeout(()=>scClip(q.s.id,f.id,hb),300);
       $$('.sc-opt').forEach(b=>b.onclick=()=>{if(b.disabled)return;const good=b.dataset.v===f.ru;$$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===f.ru)x.classList.add('ok');});if(!good)b.classList.add('bad');
         grade(q,good,`<div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(tgt)}</div><div class="ru">${esc(f.ru)}</div>`);});return;}
-    if(q.t==='build'||q.t==='lbuild'){const f=q.f,tgt=tgtOf(q),de=q.s.lang==='de',B=scBuildTiles(tgt,f,q.s.parts.flatMap(p=>p.ph),de),want=B.tk.map(scNorm),lis=q.t==='lbuild';let tries=0,done=false;
-      // 13.9.5: вместо «Вспомни по-английски» — привычные кубики, как в проверке эпизода (3 попытки, разбор, что не на месте)
-      // 13.9.16: вместо диктанта (печатать) — «послушай и собери»: перевода нет, фраза звучит из фильма
-      frame(lis?'Послушай и собери':'Собери фразу',(lis?`<h2><button class="sc-hearbtn" id="dlh">${SI.vol||'🔊'} Ещё раз</button><button class="sc-hearbtn ghost" id="dls">🐢 Медленно</button><br><small class="qsm">Из «${esc(q.s.title)}». Собери, что услышал.</small></h2>`:`<h2>${esc(f.ru)}<br><small class="qsm">Из «${esc(q.s.title)}». Собери, как сказали в сцене.</small></h2>`)+`
-        <div class="sc-bans" id="scbans"></div><div class="sc-bpool" id="scbpool"></div>
-        <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div><div id="scbdiff"></div>`);
-      const draw=marks=>{$('#scbans').innerHTML=B.got.map((x,j)=>x?`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}" data-j="${j}">${esc(x.w)}</button>`:'<span class="sc-hole" aria-hidden="true"></span>').join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
-        $('#scbpool').innerHTML=B.pool.map(x=>`<button class="sc-tile${B.got.includes(x)?' used':''}" data-k="${x.k}"${B.got.includes(x)?' disabled':''}>${esc(x.w)}</button>`).join('');
-        $('#scbchk').hidden=done||!B.got.some(Boolean);$('#scbrst').hidden=done||!B.got.length;
-        $$('#scbpool .sc-tile').forEach(b=>b.onclick=()=>{if(done)return;sfx('tap');const x=B.pool.find(y=>y.k===+b.dataset.k);if(x&&!B.got.includes(x))scSlotPut(B.got,x,99);draw();});
-        $$('#scbans .sc-tile').forEach(b=>b.onclick=()=>{if(done)return;scSlotTake(B.got,+b.dataset.j);$('#scbdiff').innerHTML='';draw();});};
-      $('#scbrst').onclick=()=>{if(done)return;B.got=[];$('#scbmsg').textContent='';$('#scbdiff').innerHTML='';sfx('tap');draw();};
-      $('#scbchk').onclick=()=>{if(done)return;const gw=B.got.map(x=>x?scNorm(x.w):''),right=B.got.every(Boolean)&&scNorm(B.got.map(x=>x.w).join(' '))===scNorm(tgt);
-        if(right||tries>=2){done=true;$('#scbmsg').textContent='';const good=right&&!tries;
-          if(right){$('#scbans').classList.add('right');draw();}else{$('#scbans').classList.add('wrong');draw(scPosMarks(gw,want));$('#scbdiff').innerHTML=scDiffHTML(gw,want,true);}
-          scClip(q.s.id,f.id,null);   // фраза звучит из фильма
-          grade(q,good,`<div class="t">${good?'Верно':right?`Собрал с ${tries+1}-й попытки — повторим ещё раз`:'Вот как в сцене'}</div><div class="en">${esc(tgt)}</div><div class="ru">${esc(f.ru)}</div>`);return;}
-        tries++;haptic('err');sfx('bad');const marks=scPosMarks(gw,want);$('#scbdiff').innerHTML=scDiffHTML(gw,want,false);draw(marks);
-        $('#scbmsg').textContent=`На своём месте ${marks.filter(Boolean).length} из ${want.length} (зелёные). Ниже — чего не хватает [ ] и что лишнее. Попытка ${tries+1} из 3.`;};
+    if(q.t==='build'||q.t==='lbuild'||q.t==='dexpr'){const f=q.f,tgt=tgtOf(q),de=q.s.lang==='de',lis=q.t==='lbuild',E=q.t==='dexpr'?scExpr(f,tgt):null,
+        B=scBuildTiles(E?E.x:tgt,f,q.s.parts.flatMap(p=>p.ph),de);
+      // 13.9.5: кубики, как в проверке эпизода; 13.9.16: «послушай и собери»; 13.9.34: 2 попытки, длинная фраза — только выражение
+      frame(E?'Собери выражение':lis?'Послушай и собери':'Собери фразу',(E?`<h2>${esc(f.ru)}${E.ru?`<br><small class="qsm">Выражение: <span class="mk">${esc(E.ru)}</span></small>`:''}</h2><div class="sc-expr">${esc(E.pre)}<span class="sc-bans in" id="scbans"></span>${esc(E.post)}</div>`
+        :(lis?`<h2><button class="sc-hearbtn" id="dlh">${SI.vol||'🔊'} Ещё раз</button><button class="sc-hearbtn ghost" id="dls">🐢 Медленно</button><br><small class="qsm">Из «${esc(q.s.title)}». Собери, что услышал.</small></h2>`:`<h2>${esc(f.ru)}<br><small class="qsm">Из «${esc(q.s.title)}». Собери, как сказали в сцене.</small></h2>`)+`<div class="sc-bans" id="scbans"></div>`)+`
+        <div class="sc-bpool" id="scbpool"></div>
+        <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div>`);
+      scTilesUI(B,{ans:$('#scbans'),pool:$('#scbpool'),chk:$('#scbchk'),rst:$('#scbrst'),msg:$('#scbmsg'),fix:!!E,done:(right,tries,miss)=>{
+        scClip(q.s.id,f.id,null);   // фраза звучит из фильма
+        const good=right&&!tries;grade(q,good,`<div class="t">${good?'Верно':right?`Собрал со 2-й попытки — повторим ещё раз`:'Вот как в сцене'}</div>${right?'':scFixHTML(B.tk,miss,E)}<div class="en">${esc(tgt)}</div><div class="ru">${esc(f.ru)}</div>`);}});
       if(lis){const hb=$('#dlh'),play=r=>{scClip(q.s.id,f.id,hb);if(SCLIP)SCLIP.playbackRate=r||1;};hb.onclick=()=>play(1);$('#dls').onclick=()=>play(.75);setTimeout(()=>play(1),300);}
-      draw();return;}
+      return;}
     // 13.9.5: моё слово — выбор перевода из 4 (было «Показать перевод → Знал / Не знал»)
     const it=q.it,s=scOf(it.sid),hl=it.line?markWord(it.line,it.w,'<mark>','</mark>'):'';
     frame(isPhr(it.w)?'Моё выражение · что значит?':'Моё слово · что значит?',`<h2>${esc(it.w)}${hl?`<br><small class="qsm">${hl}</small>`:''}</h2>
@@ -3088,7 +3081,7 @@ function phLoad(){if(!PH.on||PH.go)return;const uid=phUid();if(!uid){PH.on=false
 function phScreen(){if(!PH.on)return;const sc=typeof screen==='string'?screen:'',k=sc+(sc==='home'?'/'+(store.tab||''):'');if(!sc||k===PH.scr)return;PH.scr=k;
   let sid='';try{sid=(typeof SCUR!=='undefined'&&SCUR&&SCUR.id)||'';}catch(e){}
   ph('register',{app_v:APP_V,look:ndOn()?'nd':'old',cefr:store.cefr||''});ph('capture','$pageview',{$current_url:location.origin+location.pathname+'#/'+k,$pathname:'/'+k,sid});}
-function ev(e,sid){try{ph('capture',e,sid?{sid}:{});if(!TG||!TG.initData)return;const src=typeof START==='string'&&/^src_/.test(START)?START:'';
+function ev(e,sid,props){try{ph('capture',e,props||(sid?{sid}:{}));if(!TG||!TG.initData)return;const src=typeof START==='string'&&/^src_/.test(START)?START:'';
   fetch(API+'/api/ev',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify({e,sid:sid||'',src}),keepalive:true}).catch(()=>{});}catch(x){}}
 // 13.9.19: ошибки у игроков → бот → админка «Ошибки» (не больше 5 за запуск, одинаковые — один раз; шум плееров и расширений — мимо)
 let ERRN=0;const ERRSEEN=new Set();
@@ -3613,7 +3606,7 @@ const scPips=n=>`<span class="sc-pips">${[0,1,2].map(i=>`<i class="${i<n?'on':''
 const scCard=(f,P)=>`<div class="sc-ph sc-card${f.passive?' passive':''}">${f.passive?'<span class="sc-pas">для понимания · без теста</span>':''}<div class="en">${esc(scT(f))}</div><div class="ru">${esc(f.ru)}</div><div class="dc-tags">${f.passive?'':fTopics(f).map(k=>`<span class="dc-t">${TOPIC_ICO[k]||''} ${k}</span>`).join('')}<span class="sc-tag ${scTag(f)[1]}">${scTag(f)[0]}</span></div>${scNoteS(f)?`<div class="nt">${esc(scShort(scNoteS(f)))}</div>`:''}<div class="row"><button class="sc-mom" data-id="${f.id}">▶ Момент</button>${scPips(Math.min(3,P.m[f.id]||0))}</div></div>`;
 // 13.6: после эпизода — все реплики с переводом: ★ — фразы, по которым будут задания, ▶ — переслушать, слова нажимаются.
 // Человек сам выбирает, что пересмотреть, и сам идёт «К заданиям» (раньше — только «Ты встретил N фраз» и сразу проверка).
-function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b),act=scAct(p.ph),test=act.slice().sort((a,b)=>a.a-b.a).slice(0,5),used=new Set();
+function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b),act=scAct(p.ph),test=act.slice().sort((a,b)=>a.a-b.a).slice(0,4),used=new Set();
   const phOf=r=>{const L=phNorm(scRowT(r));return act.find(f=>!used.has(f)&&f.a<r[1]+0.3&&f.b>r[0]-0.3&&(L.includes(phNorm(scT(f)))||phNorm(scT(f)).includes(L)||(f.a>=r[0]-0.3&&f.a<r[1])));};
   const items=rows.map((r,k)=>{const f=phOf(r);if(f)used.add(f);return {r,k,f,t:!!f&&test.includes(f),same:!!f&&phNorm(scRowT(r))===phNorm(scT(f))};});   // фраза = вся реплика — не повторяем её второй раз
   const seen=new Set(),cnt=()=>{const c=box.querySelector('#rvCnt');if(c)c.textContent=`★ ${test.filter(f=>seen.has(f.id)).length} из ${test.length} посмотрел`;};
@@ -3759,12 +3752,43 @@ const SC_BASIC=new Set("i you he she it we they me him her us them my your his i
 function scTaskFX(s,p){const L=scAct(p.ph).filter(f=>f.b>f.a&&!f.passive).slice().sort((a,b)=>a.a-b.a),n=SC_TASK_N[s.mode]||4;
   if(L.length<=n)return L;return [...new Set([...Array(n).keys()].map(k=>L[Math.round(k*(L.length-1)/(n-1))]))];}
 // 11.4: до 12 слов — по слову; длиннее — кусками по 2 (по 3), но так, чтобы куски не повторялись («and again» ×2 — нельзя)
+// 13.9.34 (P1, Андрей: «задания супер долгие»): всю фразу собираем, только если в ней не больше 7 слов (SC_MAXB);
+// длиннее — «Собери выражение»: фраза видна, на месте выражения — клетки; выражение — самое длинное важное (kw[i][0]) из 2–5 слов, что есть во фразе
+const SC_MAXB=7;
+function scExpr(f,tgt){tgt=String(tgt||'');let best=null;const lw=tgt.toLowerCase(),isL=c=>/[A-Za-zÄÖÜäöüß'’]/.test(c||'');
+  for(const k of (f&&f.kw)||[]){const x=String(k&&k[0]||'').trim(),n=scToks(x).length;if(n<2||n>5||(best&&n<=best.n))continue;
+    let i=lw.indexOf(x.toLowerCase());while(i>=0&&(isL(tgt[i-1])||isL(tgt[i+x.length])))i=lw.indexOf(x.toLowerCase(),i+1);if(i<0)continue;
+    best={n,x:tgt.slice(i,i+x.length),pre:tgt.slice(0,i),post:tgt.slice(i+x.length),ru:String(k[2]||'')};}
+  return best;}
+// кубики с двумя попытками (проверка эпизода и повторение): ошибся — верные кубики остаются на местах зелёными, остальные возвращаются,
+// в следующей пустой клетке — первая буква; вторая ошибка — ответ. o: {ans,pool,chk,rst,msg,fix — клетки сразу по числу слов, done(right,tries,miss)}
+function scTilesUI(B,o){let tries=0,over=false,hint=false;const want=B.tk.map(scNorm);B.keep=B.keep||[];
+  const draw=marks=>{const N=Math.max(B.got.length,o.fix||hint?B.tk.length:0);let h1=-1;const cells=[];
+    for(let j=0;j<N;j++){const x=B.got[j];if(x){cells.push(`<button class="sc-tile${marks?(marks[j]?' good':' bad'):(B.keep[j]?' good keep':'')}" data-k="${x.k}" data-j="${j}">${esc(x.w)}</button>`);continue;}
+      const h=hint&&!over&&h1<0&&j<B.tk.length;if(h)h1=j;cells.push(`<span class="sc-hole${h?' hl':''}" aria-hidden="true">${h?esc([...B.tk[j]][0]||''):''}</span>`);}
+    o.ans.innerHTML=cells.join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
+    o.pool.innerHTML=B.pool.map(x=>`<button class="sc-tile${B.got.includes(x)?' used':''}" data-k="${x.k}"${B.got.includes(x)?' disabled':''}>${esc(x.w)}</button>`).join('');
+    const any=B.got.some((x,j)=>x&&!B.keep[j]);if(o.chk)o.chk.hidden=over||!B.got.some(Boolean);if(o.rst)o.rst.hidden=over||!any;
+    o.pool.querySelectorAll('.sc-tile').forEach(b=>b.onclick=()=>{if(over)return;sfx('tap');const x=B.pool.find(y=>y.k===+b.dataset.k);if(x&&!B.got.includes(x))scSlotPut(B.got,x,B.tk.length+3);draw();});
+    o.ans.querySelectorAll('.sc-tile').forEach(b=>b.onclick=()=>{if(over)return;const j=+b.dataset.j;if(B.keep[j])return;scSlotTake(B.got,j);draw();});};
+  if(o.rst)o.rst.onclick=()=>{if(over)return;B.got=B.got.map((x,j)=>B.keep[j]?x:null);while(B.got.length&&!B.got[B.got.length-1])B.got.pop();if(o.msg&&!hint)o.msg.textContent='';sfx('tap');draw();};
+  if(o.chk)o.chk.onclick=()=>{if(over)return;const N=Math.max(B.got.length,B.tk.length),gw=[];for(let j=0;j<N;j++)gw.push(B.got[j]?scNorm(B.got[j].w):'');
+    const right=B.got.filter(Boolean).length===B.tk.length&&want.every((w,j)=>gw[j]===w);
+    if(right){over=true;o.ans.classList.add('right');draw();o.done(true,tries,[]);return;}
+    tries++;haptic('err');sfx('bad');const marks=scPosMarks(gw,want);
+    if(tries>=2){over=true;o.ans.classList.add('wrong');draw(marks);if(o.msg)o.msg.textContent='';o.done(false,tries,want.map((_,j)=>!marks[j]));return;}
+    B.keep=want.map((_,j)=>!!marks[j]);B.got=want.map((_,j)=>marks[j]?B.got[j]:null);while(B.got.length&&!B.got[B.got.length-1])B.got.pop();hint=true;draw();
+    const okN=B.keep.filter(Boolean).length;if(o.msg)o.msg.textContent=`${okN?`На своих местах ${okN} из ${want.length} — оставил их. `:''}В пустой клетке — первая буква. Последняя попытка.`;};
+  draw();return {draw};}
+// «Вот как правильно»: перепутанные слова — маркером
+function scFixHTML(tk,miss,ex){const body=tk.map((w,j)=>miss&&miss[j]?`<span class="mk">${esc(w)}</span>`:esc(w)).join(' ');
+  return `<div class="sc-fix"><small>Вот как правильно</small>${ex?`${esc(ex.pre)}<b>${body}</b>${esc(ex.post)}`:body}</div>`;}
 function scChunk(tk){if(tk.length<=12)return tk;for(const n of [2,3]){const ch=[];for(let k=0;k<tk.length;k+=n)ch.push(tk.slice(k,k+n).join(' '));if(new Set(ch.map(x=>x.toLowerCase())).size===ch.length)return ch;}return tk;}
 // кубики: без знаков и заглавных, длинное — кусками, ловушки — другие формы тех же слов и gx
 function scBuildTiles(text,f,all,keep){const clean=w=>{let x=String(w).replace(/[.,!?;:…"«»()]+/g,'');if(!keep&&!/^I('|$)/.test(x))x=x.toLowerCase();return x;};   // keep — немецкий: существительные с заглавной
   let tk=scToks(text).map(clean).filter(Boolean);
   tk=scChunk(tk);
-  const pool=[],used=new Set(tk.map(x=>x.toLowerCase()));const add=v=>{v=clean(v);if(v&&!used.has(v.toLowerCase())&&pool.length<3){pool.push(v);used.add(v.toLowerCase());}};
+  const pool=[],used=new Set(tk.map(x=>x.toLowerCase()));const add=v=>{v=clean(v);if(v&&!used.has(v.toLowerCase())&&pool.length<2){pool.push(v);used.add(v.toLowerCase());}};
   (f.gx||[]).forEach(add);
   for(const w of shuffle(tk.filter(x=>!x.includes(' '))))for(const v of wForms(w,false))add(v);
   if(pool.length<2)for(const x of shuffle(all)){if(x===f)continue;const w=scToks(x.en||'').map(clean).find(y=>y&&y.length>2&&!used.has(y.toLowerCase()));if(w){add(w);break;}}
@@ -4228,13 +4252,14 @@ function wForms(w,de){const r=wForms0(w,de);return r.filter(v=>W_IRR[String(w).t
 function wForms0(w,de){const l=String(w).toLowerCase();if(de)return [];if(W_IRR[l])return W_IRR[l];
   if(/ing$/.test(l)&&l.length>5)return [l.replace(/ing$/,''),l.replace(/ing$/,'ed')];if(/ed$/.test(l)&&l.length>4)return [l.replace(/ed$/,''),l.replace(/ed$/,'ing')];
   if(/s$/.test(l)&&l.length>3)return [l.replace(/s$/,'')];if(l.length>2&&/^[a-z]+$/.test(l))return [l+'s',l+'ing'];return [];}
-function renderScQuiz(id,i){
+// 13.9.34: план проверки — отдельно (тест qlen.js проходит им все сцены): 4 задания на эпизод, ни в одном не больше 7 нужных кубиков
+function scQuizPlan(id,i){
   const s=scOf(id),les=!!i&&typeof i==='object'&&Array.isArray(i.list),rev=i==='rev',P=scP(id),de=scL()==='de',boss=les&&!!i.boss,beg=store.lvl!=='b'&&!boss;
-  SCUR={id,i:typeof i==='number'?i:0};
+  SCUR={id,i:typeof i==='number'?i:0};   // язык фразы (scT, scIsDe) — по текущей сцене
   const all=s.parts.flatMap(x=>x.ph);
-  const normalList=()=>scAct(s.parts[i].ph).slice().sort((a,b)=>a.a-b.a).slice(0,5);
+  const normalList=()=>scAct(s.parts[i].ph).slice().sort((a,b)=>a.a-b.a).slice(0,4);
   const list=les?i.list.filter(f=>!f.passive).slice(0,boss?8:5):rev?shuffle(scDue(s)).slice(0,8):normalList();
-  if(!list.length){toast('Здесь пока нет фраз для проверки');return;}
+  if(!list.length)return {s,list,Q:[]};
 
   // Вопрос больше не «угадай, что имел в виду генератор».
   // Каждый экран проверяет ровно один объект:
@@ -4250,38 +4275,51 @@ function renderScQuiz(id,i){
     s.parts.forEach((pp,pi)=>{if(!(P.w[pi]||P.done.includes(pi)||pi===(typeof i==='number'?i:-1)||les||rev))return;pp.ph.forEach(x=>{addT(x.en);(x.kw||[]).forEach(k=>{addT(k[0]);addT(k[1]);});});});
     SCENES.forEach(z=>{if(z===s)return;const Z=scP(z.id);z.parts.forEach(pp=>pp.ph.forEach(x=>{if((Z.m[x.id]||0)>=1||(Z.got&&Z.got[x.id]))addT(x.en);}));});return K;})();
   const isKnown=w=>{w=scNorm(w).replace(/[^a-zäöüß']/g,'');if(!w||known.has(w))return true;const b=[w.replace(/'s$/,''),w.replace(/s$/,''),w.replace(/es$/,''),w.replace(/ed$/,''),w.replace(/d$/,''),w.replace(/ing$/,''),w.replace(/ing$/,'e')];return b.some(x=>known.has(x));};
-  const canLife=f=>{const l=lifeOf(f);const n=l?scToks(l.target).length:0;return n>=2&&n<=12&&(de||scToks(l.target).every(isKnown));};
+  const canLife=f=>{const l=lifeOf(f);const n=l?scToks(l.target).length:0;return n>=2&&n<=SC_MAXB&&(de||scToks(l.target).every(isKnown));};
   const whenOthers=f=>{const pool=all.filter(x=>x!==f&&!x.passive&&x.use&&x.use!==f.use);return pool.length>=2?pool:[...pool,...SCENES.filter(z=>z!==s&&z.lang===s.lang).flatMap(z=>z.parts.flatMap(q=>q.ph)).filter(x=>!x.passive&&x.use&&x.use!==f.use)];};
   const canWhen=f=>!!f.use&&!de&&whenOthers(f).length>=2;
-  const canBuild=f=>scToks(target(f)).length>=2&&scToks(target(f)).length<=12;
+  const canBuild=f=>scToks(target(f)).length>=2&&scToks(target(f)).length<=SC_MAXB;
+  // длинная фраза (> 7 слов): «на слух» → «Что прозвучало?» (3 варианта), «собери» → «Собери выражение», нет выражения — «Какое слово пропущено?» из 4
+  const heardOk=f=>{const o=scListenOpts(f,all,scIsDe());return !!(o&&o.filter(x=>x!==(scIsDe()?f.de:f.en)).length>=2);};
+  const meanOk=f=>!!(f.trap&&f.trap.length>=2);
+  const fitT=(t,f)=>{if(scToks(target(f)).length<=SC_MAXB||!['listen','build'].includes(t))return t;const ex=!!scExpr(f,target(f));
+    const seq=t==='listen'?[heardOk(f)&&'heard',ex&&'expr',canGap(f)&&'gap4',meanOk(f)&&'mean',canWhen(f)&&'when']:[ex&&'expr',canGap(f)&&'gap4',heardOk(f)&&'heard',meanOk(f)&&'mean',canWhen(f)&&'when'];
+    return seq.find(Boolean)||t;};
   const canGap=f=>!!f.gap&&wordRe(f.gap).test(target(f));
 
+  const canB=f=>scToks(target(f)).length>=2;   // 13.9.34: длинную фразу тоже «собираем» — fitT превратит это в «Собери выражение»
   function taskFor(f,k,retry){
     // финал сцены: всё на слух (видео без субтитров) + вписать слово
     if(boss)return k%3===1&&canGap(f)?'gap':'listen';
     // новичок: выбрать перевод, послушать и собрать (без лишних слов), собрать по переводу, слово из вариантов — без «примени в жизни»
-    if(beg&&!retry){let t2=['mean','listen','build','when','gap'][k%5];if(t2==='when'&&!canWhen(f))t2='listen';if(t2==='mean'&&!(f.trap&&f.trap.length>=2))t2='listen';if(t2==='build'&&!canBuild(f))t2='listen';if(t2==='gap'&&!canGap(f))t2=canBuild(f)?'build':'listen';return t2;}
-    if(beg&&retry)return canBuild(f)?'build':'listen';
+    if(beg&&!retry){let t2=['mean','listen','build','when','gap'][k%5];if(t2==='when'&&!canWhen(f))t2='listen';if(t2==='mean'&&!(f.trap&&f.trap.length>=2))t2='listen';if(t2==='build'&&!canB(f))t2='listen';if(t2==='gap'&&!canGap(f))t2=canB(f)?'build':'listen';return t2;}
+    if(beg&&retry)return canB(f)?'build':'listen';
     if(retry){
-      if(canLife(f)&&k%2===0)return 'life';if(canBuild(f))return 'build';
+      if(canLife(f)&&k%2===0)return 'life';if(canB(f))return 'build';
       return 'listen';
     }
     if(rev){
       if(k%3===0&&canLife(f))return 'life';
       if(k%3===1&&canGap(f))return 'gap';
-      return canBuild(f)?'build':'listen';
+      return canB(f)?'build':'listen';
     }
     const seq=['listen','when','build','mean','gap','life'];
     let t=seq[k%seq.length];
-    if(t==='when'&&!canWhen(f))t=canBuild(f)?'build':'listen';
+    if(t==='when'&&!canWhen(f))t=canB(f)?'build':'listen';
     if(t==='mean'&&!(f.trap&&f.trap.length>=3))t=canLife(f)?'life':'listen';
-    if(t==='build'&&!canBuild(f))t=canGap(f)?'gap':'listen';
-    if(t==='life'&&!canLife(f))t=canBuild(f)?'build':(canGap(f)?'gap':'listen');
-    if(t==='gap'&&!canGap(f))t=canBuild(f)?'build':'listen';
+    if(t==='build'&&!canB(f))t=canGap(f)?'gap':'listen';
+    if(t==='life'&&!canLife(f))t=canB(f)?'build':(canGap(f)?'gap':'listen');
+    if(t==='gap'&&!canGap(f))t=canB(f)?'build':'listen';
     return t;
   }
 
-  const Q=list.map((f,k)=>({f,type:taskFor(f,k,false)}));
+  const Q=list.map((f,k)=>({f,type:fitT(taskFor(f,k,false),f)}));
+  return {s,les,rev,P,de,boss,beg,all,list,Q,target,lifeOf,canLife,whenOthers,canWhen,canBuild,canGap,fitT};
+}
+function renderScQuiz(id,i){
+  const C=scQuizPlan(id,i);SCUR={id,i:typeof i==='number'?i:0};
+  if(!C.list.length){toast('Здесь пока нет фраз для проверки');return;}
+  const {s,les,rev,P,de,boss,beg,all,Q,target,lifeOf,canLife,whenOthers,canBuild,fitT}=C,T0=Date.now();
   const need=Q.length;let n=0,ok=0,wrong=0,combo=0;
 
   function show(){
@@ -4297,6 +4335,17 @@ function renderScQuiz(id,i){
       const heard=scIsDe()?x=>x.de:x=>x.en;correct=heard(f);
       build=makeBuild(correct,f,all);opts=null;
       video=true;
+    }
+
+    if(type==='heard'){   // 13.9.34: длинная фраза на слух — выбрать, что прозвучало (в двух вариантах одно слово подменено)
+      ask='Что прозвучало?';title='Послушай и выбери, что сказали<br><small class="qsm">Видео покажет момент. В двух вариантах одно слово другое</small>';
+      const dd=scIsDe();correct=dd?f.de:f.en;opts=shuffle([correct,...shuffle((scListenOpts(f,all,dd)||[]).filter(x=>x!==correct)).slice(0,2)]);video=true;
+    }
+
+    if(type==='expr'){   // 13.9.34: длинная фраза — собрать только выражение
+      const E=scExpr(f,target(f));q.ex=E;ask='Собери выражение';
+      title=`${esc(f.ru)}${E.ru?`<br><small class="qsm">Выражение: <span class="mk">${esc(E.ru)}</span></small>`:''}`;
+      correct=E.x;build=makeBuild(E.x,f,all,true);
     }
 
     if(type==='build'){
@@ -4324,16 +4373,16 @@ function renderScQuiz(id,i){
       ask='Что это значит?';title=esc(target(f));correct=f.ru;opts=shuffle([correct,...f.trap.slice(0,beg?2:3)]);
     }
 
-    if(type==='gap'){
+    if(type==='gap'||type==='gap4'){
       ask='Закрепи ключевое слово';
       title=markWord(target(f),f.gap,'<span class="gap">&nbsp;</span>')
         +`<br><small class="qsm">${esc(f.ru)}</small>`;
       correct=f.gap;opts=null;typed=true;
       ask='Впиши пропущенное слово';
-      if(beg||!typeOn()){typed=false;ask='Выбери пропущенное слово';opts=shuffle([f.gap,...(scIsDe()?scGapOptsDe(f,all):scGapOpts(f,all)).filter(x=>x.toLowerCase()!==String(f.gap).toLowerCase()).slice(0,beg?2:3)]);}
+      if(type==='gap4'||beg||!typeOn()){typed=false;ask=type==='gap4'?'Какое слово пропущено?':'Выбери пропущенное слово';opts=shuffle([f.gap,...(scIsDe()?scGapOptsDe(f,all):scGapOpts(f,all)).filter(x=>x.toLowerCase()!==String(f.gap).toLowerCase()).slice(0,beg&&type!=='gap4'?2:3)]);}
     }
 
-    const p=s.parts[f.pi];
+    const p=s.parts[f.pi];q.t0=Date.now();
     scMount(s,`
       <div class="sc-head"><button class="sc-back" id="scb">${ui('close')}</button>
         <div class="sc-segs">${Q.map((x,k)=>`<i class="${k<n?(x.res?'ok':'bad'):k===n?'cur':''}"></i>`).join('')}</div>
@@ -4345,7 +4394,7 @@ function renderScQuiz(id,i){
         <h2>${title}</h2>
         ${build
           ?`${ladder?`<div class="sc-lmask lm2" id="scLm"></div><div class="sc-lt" id="scLt"><input class="sc-gapin" id="scLin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Напиши, что услышал"><button class="sc-btn" id="scLok">Проверить</button></div>
-            <div class="sc-lh lh2" id="scLh"><button class="tk-help" id="scLhint">💡 Подсказка <small>${ADM_OPEN()||premHas()?'':`🎟 ${SC_HINT}`}</small></button><button class="tk-help ghost" id="scLno">Не знаю</button></div>`:''}<div class="sc-bans" id="scbans"${ladder?' hidden':''}></div>${type!=='listen'&&!beg?`<button class="sc-reveal" id="scbrev">Сначала вспомни сам → показать слова</button>`:''}<div class="sc-bpool" id="scbpool"${(type!=='listen'&&!beg)||ladder?' hidden':''}></div>${beg&&build.tk.length>2?'<p class="sc-bhint">Первое слово уже стоит — продолжи</p>':''}<p class="tk-tip" id="scTip"${ladder?' hidden':''}>Зажми слово — покажу перевод</p>
+            <div class="sc-lh lh2" id="scLh"><button class="tk-help" id="scLhint">💡 Подсказка <small>${ADM_OPEN()||premHas()?'':`🎟 ${SC_HINT}`}</small></button><button class="tk-help ghost" id="scLno">Не знаю</button></div>`:''}${q.ex?`<div class="sc-expr">${esc(q.ex.pre)}<span class="sc-bans in" id="scbans"></span>${esc(q.ex.post)}</div>`:`<div class="sc-bans" id="scbans"${ladder?' hidden':''}></div>`}${type!=='listen'&&!beg?`<button class="sc-reveal" id="scbrev">Сначала вспомни сам → показать слова</button>`:''}<div class="sc-bpool" id="scbpool"${(type!=='listen'&&!beg)||ladder?' hidden':''}></div>${beg&&build.tk.length>2?'<p class="sc-bhint">Первое слово уже стоит — продолжи</p>':''}<p class="tk-tip" id="scTip"${ladder?' hidden':''}>Зажми слово — покажу перевод</p>
             <div class="sc-bact"><button class="sc-btn ghost" id="scbrst" hidden>Сбросить</button><button class="sc-btn" id="scbchk" hidden>Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div><div id="scbdiff"></div>`
           :typed?`<input class="sc-gapin" id="scgap" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="впиши слово и нажми «Готово»">
             <div class="sc-bact"><button class="sc-btn ghost" id="scgno">Не помню</button><button class="sc-btn" id="scgok">Проверить</button></div><div class="sc-bmsg" id="scbmsg"></div>`
@@ -4366,7 +4415,8 @@ function renderScQuiz(id,i){
 
     const answer=(right,el)=>{
       if(q.res!==undefined)return;
-      q.res=right;{const ln=$('#scLh'),tp=$('#scTip');if(ln)ln.hidden=true;if(tp)tp.hidden=true;}   // 12.6: «Не знаю» и подсказка про кубики висели после ответа
+      q.res=right;{const ln=$('#scLh'),tp=$('#scTip');if(ln)ln.hidden=true;if(tp)tp.hidden=true;}
+      try{const ms=Date.now()-(q.t0||Date.now()),nw=build?build.tk.length:scToks(String(correct||'')).length;ev('qtime',type+'|'+ms+'|'+nw,{t:type,ms,n:nw});}catch(e){}   // 13.9.34: время ответа (медиана — в «Воронке»)   // 12.6: «Не знаю» и подсказка про кубики висели после ответа
       if(right)ok++;else wrong++;
       if(right){combo++;if(combo>=3&&combo%3===0)toast(`🔥 ${combo} подряд без ошибок`);}else combo=0;
 
@@ -4378,11 +4428,11 @@ function renderScQuiz(id,i){
         if(before>=3)P.m[f.id]=2;
         delete P.r[f.id];
         if(!q.re){
-          const retryType=type==='life'?(canBuild(f)?'build':'listen'):(canLife(f)?'life':(canBuild(f)?'build':'listen'));
+          const retryType=fitT(type==='life'?(canBuild(f)?'build':'listen'):(canLife(f)?'life':(canBuild(f)?'build':'listen')),f);
           Q.splice(Math.min(Q.length,n+3),0,{f,type:retryType,re:true});
         }
       }
-      if(right&&q.soft&&!q.re&&!rev){const rt=canBuild(f)&&type!=='build'?'build':'listen';Q.splice(Math.min(Q.length,n+3),0,{f,type:rt,re:true});}   // 13.6: с подсказкой — ещё раз попозже
+      if(right&&q.soft&&!q.re&&!rev){const rt=fitT(canBuild(f)&&type!=='build'?'build':'listen',f);Q.splice(Math.min(Q.length,n+3),0,{f,type:rt,re:true});}   // 13.6: с подсказкой — ещё раз попозже
       if(P.m[f.id]>=3&&!P.r[f.id])P.r[f.id]=[0,Date.now()+SC_DAYS[0]*864e5];
 
       if(rev){
@@ -4406,6 +4456,7 @@ function renderScQuiz(id,i){
       const life=q.life;
       $('#scfb').innerHTML=`<div class="sc-fb ${right?'ok':'bad'}">
         <div class="t">${right?(q.typo?'Верно — только опечатка':q.soft?'Верно — с подсказкой, фраза вернётся ещё раз':'Верно'):q.soft?`Собрал с ${q.tries+1}-й попытки — фраза вернётся ещё раз`:'Вот как правильно'}</div>
+        ${!right&&build&&q.miss?scFixHTML(build.tk,q.miss,q.ex):''}
         ${life
           ?`<div class="en">${kwWrap(f,correct)}</div><div class="ru">${esc(life.situation)}</div><div class="orig">В сцене было: ${esc(target(f))} — ${esc(f.ru)}</div>`
           :(type==='listen'&&de&&!scIsDe()?`<div class="en">${esc(f.en)}</div><div class="orig">по-немецки: ${esc(f.de)}</div><div class="ru">${esc(f.ru)}</div>`:`<div class="en">${kwWrap(f)}</div><div class="ru">${esc(f.ru)}</div>`)}
@@ -4458,45 +4509,25 @@ function renderScQuiz(id,i){
         $('#scLno').onclick=()=>{if(q.res!==undefined)return;sfx('tap');rv.forEach((r,k)=>{if(r<2)rv[k]=2;});paint();$('#scLt').hidden=true;$('#scLh').hidden=true;answer(false);};
         paint();if(matchMedia('(hover:hover)').matches)setTimeout(()=>{try{inp.focus({preventScroll:true});}catch(e){}},700);}
       const rv=$('#scbrev');if(rv){const open=()=>{if(!pool.hidden)return;pool.hidden=false;rv.remove();sfx('tap');};rv.onclick=open;setTimeout(()=>{if(document.body.contains(rv))open();},3500);}
-      const draw=(marks)=>{
-        $('#scbans').innerHTML=build.got.map((x,j)=>x?`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}" data-j="${j}">${esc(x.w)}</button>`:`<span class="sc-hole" aria-hidden="true"></span>`).join('')||'<span class="sc-bph">Собери фразу слева направо</span>';
-        $('#scbpool').innerHTML=build.pool.map(x=>`<button class="sc-tile${build.got.includes(x)?' used':''}" data-k="${x.k}" ${build.got.includes(x)?'disabled':''}>${esc(x.w)}</button>`).join('');
-        const done=q.res!==undefined;$('#scbchk').hidden=!build.got.some(Boolean)||done;$('#scbrst').hidden=!build.got.length||done;
-        $('#scbrst').onclick=()=>{build.got=[];$('#scbmsg').textContent='';$('#scbdiff').innerHTML='';sfx('tap');draw();};
-        $$('#scbpool .sc-tile').forEach(b=>b.onclick=()=>{
-          if(q.res!==undefined)return;sfx('tap');
-          const x=build.pool.find(x=>x.k===+b.dataset.k);if(x&&!build.got.includes(x))scSlotPut(build.got,x,99);draw();
-        });
-        $$('#scbans .sc-tile').forEach(b=>b.onclick=()=>{
-          if(q.res!==undefined)return;scSlotTake(build.got,+b.dataset.j);$('#scbdiff').innerHTML='';draw();
-        });
-      };
-      draw();
-      $('#scbchk').onclick=()=>{
-        const got=scNorm(build.got.filter(Boolean).map(x=>x.w).join(' ')),right=got===scNorm(correct)&&build.got.every(Boolean);
-        if(right){q.soft=q.tries>0;answer(q.tries===0);$('#scbans').classList.add('right');draw();return;}
-        q.tries++;haptic('err');sfx('bad');
-        const want=build.tk.map(scNorm),gw=build.got.map(x=>x?scNorm(x.w):''),marks=scPosMarks(gw,want),okN=marks.filter(Boolean).length;$('#scbdiff').innerHTML=scDiffHTML(gw,want,q.tries>=3);   // 12.1: зелёный — только на своём месте
-        if(q.tries>=3){answer(false);$('#scbans').classList.add('wrong');draw(marks);return;}
-        draw(marks);$('#scbmsg').textContent=`На своём месте ${okN} из ${want.length} (зелёные). Ниже — чего не хватает [ ] и что лишнее. Попытка ${q.tries+1} из 3.`;
-      };
+      scTilesUI(build,{ans:$('#scbans'),pool,chk:$('#scbchk'),rst:$('#scbrst'),msg:$('#scbmsg'),fix:!!q.ex,
+        done:(right,tries,miss)=>{q.tries=tries;q.miss=miss;if(right){q.soft=tries>0;answer(tries===0);}else answer(false);}});   // 13.9.34: 2 попытки, верные кубики остаются, первая буква в пустой клетке
     }else{
       $$('.sc-opt').forEach(b=>b.onclick=()=>answer(b.dataset.v===correct,b));
     }
   }
 
-  function makeBuild(text,f,allPhrases){
+  function makeBuild(text,f,allPhrases,force){
     const deS=scIsDe()||(scL()==='de'&&/[äöüß]|\b(ich|du|der|die|das|und|nicht)\b/i.test(text));
     // без точек, запятых и заглавных: порядок слов надо помнить, а не угадывать по знакам
     const clean=w=>{let x=String(w).replace(/[.,!?;:…"«»()]+/g,'');if(!deS&&!/^I('|$)/.test(x))x=x.toLowerCase();return x;};
     let tk=scToks(text).map(clean).filter(Boolean);
     tk=scChunk(tk);   // длинная фраза — кусками, без одинаковых кубиков
-    const fresh=beg||(!rev&&!(P.m[f.id]>0)&&!q0re(f));
+    const fresh=!force&&(beg||(!rev&&!(P.m[f.id]>0)&&!q0re(f)));
     const pool=[],used=new Set(tk.map(x=>x.toLowerCase()));
     if(!fresh){
       // ловушки: другие формы тех же слов (work → worked, come → came, by → to)
       for(const w of shuffle(tk.filter(x=>!x.includes(' ')))){for(const v of wForms(w,deS)){if(pool.length>=2)break;if(!used.has(v.toLowerCase())){pool.push(v);used.add(v.toLowerCase());}}if(pool.length>=2)break;}
-      for(const x of shuffle(allPhrases)){if(x===f)continue;const w=scToks(target(x)).map(clean).find(y=>y&&y.length>2&&!used.has(y.toLowerCase()));if(w){pool.push(w);break;}}
+      for(const x of shuffle(allPhrases)){if(pool.length>=2)break;if(x===f)continue;const w=scToks(target(x)).map(clean).find(y=>y&&y.length>2&&!used.has(y.toLowerCase()));if(w){pool.push(w);used.add(w.toLowerCase());}}   // 13.9.34: лишних кубиков — 2
     }
     const B={tk,pool:shuffle([...tk,...pool]).map((w,k)=>({w,k})),got:[]};
     if(beg&&tk.length>2){const first=B.pool.find(x=>x.w===tk[0]);if(first)B.got=[first];}
@@ -4505,6 +4536,7 @@ function renderScQuiz(id,i){
   function q0re(f){return Q.some(x=>x.f===f&&x.re);}
 
   function end(){
+    try{const ms=Date.now()-T0;ev('qtime','all|'+ms+'|'+Q.length,{t:'all',ms,n:Q.length});}catch(e){}
     const firsts=Q.filter(x=>!x.re),okF=firsts.filter(x=>x.res).length,passed=okF===firsts.length;
     const firstTime=!rev&&!les&&!P.done.includes(i);
     if(!rev&&!les&&!P.done.includes(i)){P.done.push(i);scSave();}
@@ -5923,6 +5955,7 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
     $('#pmG').onclick=async()=>{const uid=+$('#pmU').value.trim(),days=+$('#pmD').value.trim();if(!uid){toast('Нужен ID');return;}const r=await premCall({a:'give',uid,days}).catch(()=>null);
       if(!r||!r.ok){toast((r&&r.msg)||'Не получилось');return;}toast(days?`Выдал до ${premDate(r.until)}`:'Забрал премиум');if(String(uid)===String(FLAG_ME))premLoad();load();};
     return;}
+  const QT_N={all:'Вся проверка',listen:'Послушай и собери',heard:'Что прозвучало?',build:'Собери фразу',expr:'Собери выражение',mean:'Что значит?',when:'Когда пригодится?',gap:'Пропущенное слово',gap4:'Какое слово пропущено?',life:'Примени в жизни'};
   if(sec==='funnel'){mnt(`${head('Воронка')}<div class="ad2-sg" id="fnD">${[7,30,90].map(d=>`<button data-d="${d}" class="${(ADM_FD||30)===d?'on':''}">${d} дн.</button>`).join('')}</div><div id="fnB"><div class="ad2-empty">Загружаю…</div></div>`);
     const load=async()=>{const box=$('#fnB');try{const r=await admUsersCall({a:'funnel',days:ADM_FD||30});if(!$('#fnB'))return;if(!r||!r.ok){box.innerHTML=`<div class="ad2-empty">${esc((r&&r.msg)||'Нет связи с сервером — открой приложение в Telegram. Если пишет «неизвестно» — передеплой бота 13.9.19.')}</div>`;return;}
         const v=r.v,pc=(a,b)=>b?Math.round(a/b*100)+'%':'—',bar=(t,n,base,hint)=>`<div class="fn-r"><span><b>${t}</b><small>${hint||''}</small></span><em>${fmt(n)}</em><i><u style="width:${base?Math.min(100,Math.round(n/base*100)):0}%"></u></i><strong>${pc(n,base)}</strong></div>`;
@@ -5933,6 +5966,7 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
           <h3 class="ad2-h">Вернулись</h3><div class="fn">${bar('На следующий день',v.d1.back,v.d1.base,`из ${v.d1.base}, кто пришёл раньше 2 дней назад`)}${bar('Через неделю',v.d7.back,v.d7.base,`из ${v.d7.base}, кто пришёл раньше 8 дней назад`)}</div>
           <h3 class="ad2-h">Опрос «Что мешает?» · ${pollN}</h3><div class="fn">${v.poll.length?v.poll.map(x=>bar(PQ[String(x.sid).replace(/^q1:/,'')]||x.sid,x.n,pollN)).join(''):'<div class="ad2-empty">Пока никто не ответил. Опрос появляется после 3-го пройденного эпизода.</div>'}</div>
           <h3 class="ad2-h">Первая сцена</h3><div class="fn">${v.picks.length?v.picks.map(x=>{const sc=scOf(x.sid);return bar(sc?dictFilm(sc)+' · '+(sc.sub||sc.title):x.sid,x.n,v.picked);}).join(''):'<div class="ad2-empty">Пока нет</div>'}</div>${v.levels&&v.levels.length?`<h3 class="ad2-h">Уровень на старте</h3><div class="fn">${v.levels.map(x=>bar((x.sid||'?')+' · '+(CEFR_N[x.sid]||''),x.n,v.levels.reduce((a,y)=>a+y.n,0))).join('')}</div>`:''}
+          ${v.qt?`<h3 class="ad2-h">Время на задание · медиана</h3><p class="ad2-note">Цель — до 20 с на задание и до 2 минут на всю проверку. Красным — дольше.</p><div class="fn">${v.qt.length?v.qt.map(x=>{const lim=x.t==='all'?120e3:20e3,sec=Math.round(x.med/1000);return `<div class="fn-r qt${x.med>lim?' slow':''}"><span><b>${esc(QT_N[x.t]||x.t)}</b><small>${x.n} ${plural(x.n,['ответ','ответа','ответов'])}</small></span><em>${sec>=60?Math.floor(sec/60)+' мин '+sec%60:sec} с</em></div>`;}).join(''):'<div class="ad2-empty">Пока нет — появится после передеплоя бота 13.9.34</div>'}</div>`:''}
           <h3 class="ad2-h">Откуда</h3><div class="fn">${v.src.map(x=>bar(x.s,x.n,v.users)).join('')||'<div class="ad2-empty">Пока нет</div>'}</div>`;}catch(e){box.innerHTML='<div class="ad2-empty">Нет связи с сервером</div>';}};
     $$('#fnD [data-d]').forEach(b=>b.onclick=()=>{sfx('tap');ADM_FD=+b.dataset.d;$$('#fnD [data-d]').forEach(x=>x.classList.toggle('on',x===b));load();});load();return;}
   if(sec==='errs'){mnt(`${head('Ошибки')}<p class="ad2-note">Что сломалось у игроков: одинаковые склеены, видно сколько раз и у скольких людей. Пришли скрин мне — починю.</p><div id="erB"><div class="ad2-empty">Загружаю…</div></div><button class="ad2-more" id="erClr">Очистить список</button>`);
