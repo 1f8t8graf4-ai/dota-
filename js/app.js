@@ -283,6 +283,12 @@ function ndPull(el,go){const k=el.querySelector('.ndpull-k'),f=el.querySelector(
 function ndPodHTML(){const x=phraseOfDay();if(!x)return '';const {s,f}=x,en=s.lang==='de'?f.de:scT(f);
   return `<button class="ndrow anim" onclick="momOpen('${s.id}',${f.pi},${f.a})"><i class="ndrow-th" style="background-image:url('${assetUrl(scEpKey(s,f.pi,'jpg'))}'),url('${assetUrl(scKey(s,'cover.jpg'))}')"></i><span><small>Фраза дня · ${esc(dictFilm(s))}</small><b>${esc(en)}</b><em>${esc(f.ru)}</em></span><u>${ui('fwd')}</u></button>`;}
 const ndYear=s=>{const m=String(s.ep||'').match(/(19|20)\d\d/);return m?m[0]:'';};
+// итог эпизода в «Новом»: звёзды по одной со звоном и искрами, при 3★ — дождь конфетти; «8 / 8» набегает
+function ndResultFX(stars){if(!fxOK())return;const S=[...document.querySelectorAll('.res-stars i')];
+  S.forEach((el,k)=>{if(k>=stars)return;setTimeout(()=>{if(!el.isConnected)return;fxAt(el,{n:14,v:4.2,life:40});sfx('tick');haptic(k===stars-1?'ok':'light');},(.15+(k+1)*.18)*1000+260);});
+  if(stars===3)setTimeout(()=>fxRain(46),1000);
+  const big=document.querySelector('.sc-result .sc-big'),m=big&&/^(\d+) \/ (\d+)$/.exec(big.textContent.trim());
+  if(m){const n=+m[1],t0=performance.now()+150;const step=t=>{if(!big.isConnected)return;const k=Math.max(0,Math.min(1,(t-t0)/800));big.textContent=Math.round(n*(1-Math.pow(1-k,3)))+' / '+m[2];if(k<1)requestAnimationFrame(step);};requestAnimationFrame(step);}}
 // уровень сцены по CEFR (lvl 1–5 → A1…C1) — цветная метка, как у Germanize; видна только в «Новом»
 const CEFR=['A1','A2','B1','B2','C1'];
 const cefrOf=s=>CEFR[Math.max(1,Math.min(5,(s&&s.lvl)||3))-1];
@@ -2446,7 +2452,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.26';
+const APP_V='13.9.27';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -3740,6 +3746,12 @@ function scDiffHTML(got,want,full){got=got.filter(Boolean);const n=got.length,m=
     else out.push(`<s>${esc(got[i])}</s>`),i++;}
   return `<div class="sc-diff">${out.join(' ')}</div>`;}
 // кубик в первую дырку; убранный из середины оставляет дырку
+// 13.9.27: кубик летит в клетку и обратно (FLIP): до перерисовки запоминаем, где был кубик, после — тот же кубик (data-k)
+// в другом ряду стартует с прежнего места и пружиной встаёт на новое. Работает в проверке эпизода и в повторении.
+document.addEventListener('click',e=>{const b=e.target&&e.target.closest&&e.target.closest('.sc-tile[data-k]');if(!b||b.disabled||!fxOK())return;
+  const box=b.closest('#scbpool,#scbans');if(!box)return;const r0=b.getBoundingClientRect(),k=b.dataset.k,to=box.id==='scbpool'?'#scbans':'#scbpool';
+  requestAnimationFrame(()=>{const t=document.querySelector(`${to} .sc-tile[data-k="${k}"]`);if(!t)return;const r1=t.getBoundingClientRect(),dx=r0.left-r1.left,dy=r0.top-r1.top;
+    if(Math.abs(dx)+Math.abs(dy)<3)return;try{t.animate([{transform:`translate(${dx}px,${dy}px) scale(1.08)`,zIndex:6},{transform:'none',zIndex:6}],{duration:430,easing:SPRING});}catch(_){}});},true);
 function scSlotPut(arr,y,max){const h=arr.findIndex(z=>!z);if(h>=0&&h<max)arr[h]=y;else if(arr.length<max)arr.push(y);}
 function scSlotTake(arr,i){arr[i]=null;while(arr.length&&!arr[arr.length-1])arr.pop();}
 // движок пауз: реплика прозвучала → видео встаёт → вспомни и напиши сам → первые буквы → собери из слов → ответ.
@@ -4473,7 +4485,8 @@ function renderScQuiz(id,i){
     ${Q.filter((x,j,a)=>a.findIndex(y=>y.f===x.f)===j).map(x=>`<div class="sc-use sc-card${x.res?'':' miss'}" data-fid="${x.f.id}"><div class="en">${kwWrap(x.f,target(x.f))}</div><div class="ru">${esc(x.f.ru)}</div>${phInfoHTML(x.f,{noEx:true})}</div>`).join('')}`,'scend');
     kwBind(document.querySelector('.scn'),el=>{const c=el.closest('[data-fid]');return c?all.find(y=>y.id===c.dataset.fid):null;});
     if(epRw)rwEndBind(document.querySelector('.scn'),s,i);else if(boss){segBind(document.querySelector('.scn'),s);bgBind(document.querySelector('.scn'));}
-    sfx(passed?'win':'learn');remindSync();ev(rev?'review':'ep_quiz',id);setTimeout(dictFly,700);   // 11.0: новые карты летят в словарь
+    sfx(passed?'win':'learn');remindSync();ev(rev?'review':'ep_quiz',id);setTimeout(dictFly,ndOn()?1500:700);   // 11.0: новые карты летят в словарь
+    if(ndOn()&&!rev)ndResultFX(stars);   // 13.9.27: звёзды вспыхивают искрами, 3★ — конфетти, счёт набегает
     {const g=document.getElementById('gav');if(g)g.remove();}if(!rev)setTimeout(()=>gavEpisode(boss?'Финал':les?'Урок':s.parts[i]?s.parts[i].t:s.title),300);
     if($('#scrp'))$('#scrp').onclick=()=>renderScEp(id,i);
     if($('#scsum'))$('#scsum').onclick=()=>{sfx('tap');renderSceneSum(id);};if($('#scdir'))$('#scdir').onclick=()=>{sfx('reel');renderDirCut(id);};if($('#scpath'))$('#scpath').onclick=()=>{sfx('tap');renderScene(id);};

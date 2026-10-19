@@ -6055,3 +6055,26 @@ body[data-look="nd"]:not(#_) :is(.kw:hover,.kw.on,.kw:focus-visible){background:
 body[data-look="nd"]:not(#_) .sh-season{font:800 19px var(--lk-f)!important;font-style:normal!important;color:var(--lk-ink)}
 body[data-look="nd"]:not(#_) .ss-w .kw{background:none!important;color:var(--lk-ink)!important;font-family:var(--lk-f)!important}
 body[data-look="nd"]:not(#_) .ss-w small{color:var(--lk-ink2)!important}
+
+/* ==== 13.9.27 — задания и итог: кубики летят в клетки (FLIP, js — у scSlotPut), итог в «Новом»: звёзды с искрами, 3★ — конфетти,
+   счёт набегает (ndResultFX); награда за эпизод — тёмная «киношная» карточка и в светлом виде ==== */
+body[data-look="nd"]:not(#_) .res-stars i{color:var(--lk-line2);text-shadow:none;font-size:46px}
+body[data-look="nd"]:not(#_) .res-stars i.on{color:#F2A900;text-shadow:0 6px 18px rgba(242,169,0,.35)}
+body[data-look="nd"]:not(#_) .sc-result .sc-big{font:800 56px/1 var(--lk-f)!important;letter-spacing:-.03em;color:var(--lk-ink);font-variant-numeric:tabular-nums}
+body[data-look="nd"]:not(#_) .sc-result .sc-gain{background:var(--lk-card2)!important;color:var(--lk-ink)!important;box-shadow:none!important}
+body[data-look="nd"]:not(#_) .sc-result :is(.sc-sub,.sc-acc){color:var(--lk-ink2)!important}
+body[data-look="nd"]:not(#_) .sc-result h2{font:800 22px/1.25 var(--lk-f)!important;letter-spacing:-.02em;color:var(--lk-ink)!important}
+body[data-look="nd"]:not(#_) .sc-result-rule{display:none!important}
+body[data-look="nd"]:not(#_) .sc-result .sc-btn{height:52px;border-radius:16px!important}
+body[data-look="nd"]:not(#_) .rw{background:#141416!important;box-shadow:var(--lk-sh)!important;border:0!important;color:#fff}
+body[data-look="nd"]:not(#_) .sc-sec h2{font:800 20px var(--lk-f)!important;color:var(--lk-ink)!important}
+body[data-look="nd"]:not(#_) .sc-use{background:var(--lk-card)!important}
+body[data-look="nd"]:not(#_) .sc-use .en{color:var(--lk-ink)!important;font-family:var(--lk-f)!important}
+body[data-look="nd"]:not(#_) .sc-use .ru{color:var(--lk-ink2)!important}
+/* верный ответ: кубики в ответе подпрыгивают зелёной волной */
+body[data-look="nd"]:not(.nofx):not(#_) .sc-bans.right .sc-tile{animation:ndok .55s cubic-bezier(.3,1.6,.5,1) both}
+body[data-look="nd"]:not(.nofx):not(#_) .sc-bans.right .sc-tile:nth-child(2){animation-delay:.04s}body[data-look="nd"]:not(.nofx):not(#_) .sc-bans.right .sc-tile:nth-child(3){animation-delay:.08s}
+body[data-look="nd"]:not(.nofx):not(#_) .sc-bans.right .sc-tile:nth-child(4){animation-delay:.12s}body[data-look="nd"]:not(.nofx):not(#_) .sc-bans.right .sc-tile:nth-child(5){animation-delay:.16s}
+body[data-look="nd"]:not(.nofx):not(#_) .sc-bans.right .sc-tile:nth-child(n+6){animation-delay:.2s}
+@keyframes ndok{0%{transform:none}40%{transform:translateY(-7px) scale(1.06)}100%{transform:none}}
+body[data-look="nd"]:not(#_) .sc-bans.right .sc-tile{background:var(--lk-okbg)!important;color:var(--lk-ok)!important;box-shadow:inset 0 0 0 1.5px var(--lk-ok)!important}
