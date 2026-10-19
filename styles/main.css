@@ -6280,3 +6280,16 @@ body.nd .screen.onbscr{background:var(--lk-bg,#F4F3EF)}
 body[data-look="nd"]:not(.nofx):not(#_) .tabscr .anim{animation-duration:.4s}
 body.nofx[data-look]:not(#_) #tabind,body.nofx:not(#_) #tabbar,body.nofx:not(#_) #tabbar *{transition:none!important}
 body.nd:not(.nofx) .sc-sheetwrap>:first-child,body.nd:not(.nofx) .pfv-box{animation:none!important}
+
+/* ==== 13.9.34 — задания короче: «Собери выражение», подсказка буквой, «Вот как правильно» ==== */
+.sc-expr{margin:14px 0 6px;font-size:19px;line-height:2.1;color:var(--lk-ink,var(--ink,#f3ebdd))}
+.sc-expr .sc-bans.in{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle;min-height:44px;margin:0 4px;padding:4px 6px;border-radius:12px;background:var(--lk-card2,rgba(255,255,255,.06))}
+.sc-expr .sc-bans.in .sc-hole{min-width:54px}
+.sc-hole.hl{display:inline-grid;place-items:center;font-weight:800;color:var(--lk-ink2,var(--muted,#bbb))}
+.sc-tile.keep{pointer-events:none}
+.sc-fix{margin:8px 0 6px;font-size:17px;line-height:1.5}
+.sc-fix small{display:block;margin-bottom:2px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+.sc-fix .mk{background:linear-gradient(var(--nd-mark,rgba(255,210,63,.6)),var(--nd-mark,rgba(255,210,63,.6))) no-repeat 0 88%/100% 42%;padding:0 2px;border-radius:3px}
+.fn-r.qt{grid-template-columns:1fr auto}.fn-r.qt.slow em{color:#ff6b5b}
+.sc-q .qsm .mk,.dl-q .qsm .mk{background:rgba(255,210,63,.22);color:#FFD23F;padding:1px 6px;border-radius:5px;animation:none}
+body[data-look="nd"][data-ndt="light"]:not(#_) .sc-q .qsm .mk{background:var(--nd-mark,rgba(255,210,63,.6));color:var(--lk-ink)}

@@ -20,17 +20,17 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
     if(st.res)break;
     if(st.self){ok('нет самопроверки «Вспомни / Знал»',false,st.m);break;}
     seen[st.m]=(seen[st.m]||0)+1;
-    if(/Собери фразу/.test(st.m)){builds++;
+    if(/Собери (фразу|выражение)/.test(st.m)){builds++;const isE=/выражение/.test(st.m);   // 13.9.34: длинная фраза — «Собери выражение»
       if(builds===1)await shot(page,'1-build');
       // правильный порядок кубиков — те же токены, что у scBuildTiles (без перемешивания)
-      const tk=await ev(()=>{const ru=document.querySelector('.dl-q h2').childNodes[0].textContent.trim();let f=null,s0=null;for(const s of SCENES)for(const p of s.parts)for(const x of p.ph)if(x.ru===ru){f=x;s0=s;}
-        const de=s0.lang==='de',tgt=de?f.de:scT(f);return scBuildTiles(tgt,f,[],de).tk;});
-      if(!wrongDone){   // сначала ошибка: кубики в обратном порядке → разметка и «Попытка 2 из 3», потом сброс
+      const tk=await ev(isE=>{const ru=document.querySelector('.dl-q h2').childNodes[0].textContent.trim();let f=null,s0=null;for(const s of SCENES)for(const p of s.parts)for(const x of p.ph)if(x.ru===ru){f=x;s0=s;}
+        const de=s0.lang==='de',tgt=de?f.de:scT(f),E=isE?scExpr(f,tgt):null;return scBuildTiles(E?E.x:tgt,f,[],de).tk;},isE);
+      if(!wrongDone){   // сначала ошибка: кубики в обратном порядке → 13.9.34: верные остались, в пустой клетке первая буква, «Последняя попытка»; потом сброс
         for(const w of tk.slice().reverse()){await ev(w=>{const b=[...document.querySelectorAll('#scbpool .sc-tile:not(.used)')].find(x=>x.textContent===w);b&&b.click();},w);}
         await page.click('#scbchk');await page.waitForTimeout(400);
-        const r=await ev(()=>({msg:(document.querySelector('#scbmsg')||{}).textContent,diff:!!document.querySelector('#scbdiff .sc-diff'),marks:document.querySelectorAll('#scbans .sc-tile.good,#scbans .sc-tile.bad').length}));
-        ok('кубики: неверно → разметка, разбор, «Попытка 2 из 3»',/Попытка 2 из 3/.test(r.msg)&&r.diff&&r.marks>0,r);await shot(page,'2-build-wrong');
-        await page.click('#scbrst');await page.waitForTimeout(200);wrongDone=true;}
+        const r=await ev(()=>({msg:(document.querySelector('#scbmsg')||{}).textContent,hl:(document.querySelector('#scbans .sc-hole.hl')||{}).textContent||'',fb:!!document.querySelector('#dlfb .sc-fb')}));
+        ok('кубики: неверно → первая буква в пустой клетке, «Последняя попытка», ответа ещё нет',/Последняя попытка/.test(r.msg)&&r.hl.length===1&&!r.fb,r);await shot(page,'2-build-wrong');
+        await ev(()=>{const b=document.getElementById('scbrst');if(b&&!b.hidden)b.click();});await page.waitForTimeout(200);wrongDone=true;}
       for(const w of tk){await ev(w=>{const b=[...document.querySelectorAll('#scbpool .sc-tile:not(.used)')].find(x=>x.textContent===w);b&&b.click();},w);}
       await page.click('#scbchk');await page.waitForTimeout(500);
       const r=await ev(()=>({fb:(document.querySelector('#dlfb .sc-fb .t')||{}).textContent,right:document.querySelector('#scbans').classList.contains('right')}));

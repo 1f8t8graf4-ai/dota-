@@ -1259,7 +1259,7 @@ async function statsTouch(env, user, src) {
       .bind(user.id, now, now, cleanSrc(src) || null, String(user.lang || user.language_code || '').slice(0, 5), (user.n || (user.first_name ? spyName(user) : '')) ? String(user.n || spyName(user)).slice(0, 40) : null, String(user.un || user.username || '').slice(0, 40)).run();
   } catch (e) {}
 }
-const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end', 'daily_open', 'start_pick', 'poll', 'onb_done'];
+const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end', 'daily_open', 'start_pick', 'poll', 'onb_done', 'qtime'];
 async function statsEvent(env, user, e, sid) {
   try {
     if (!EV_OK.includes(e) || isAdminId(env, user.id)) return;
@@ -1332,7 +1332,11 @@ async function funnelApi(env, b) {
     picks: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'start_pick' AND ts > ? GROUP BY sid ORDER BY n DESC", t0),
     poll: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'poll' GROUP BY sid ORDER BY n DESC"),
     levels: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'onb_done' AND ts > ? GROUP BY sid ORDER BY sid", t0),
-    src: await all("SELECT COALESCE(src,'без метки') s, COUNT(*) n FROM users WHERE first > ? GROUP BY s ORDER BY n DESC LIMIT 8", t0) } };
+    src: await all("SELECT COALESCE(src,'без метки') s, COUNT(*) n FROM users WHERE first > ? GROUP BY s ORDER BY n DESC LIMIT 8", t0),
+    // 13.9.34: время ответа — медиана по типам заданий (sid = «тип|мс|слов»), all — вся проверка
+    qt: await (() => { const G = {}; return all("SELECT sid FROM events WHERE e = 'qtime' AND ts > ? ORDER BY ts DESC LIMIT 20000", t0).then((R) => {
+      for (const r of R) { const [t, ms] = String(r.sid || '').split('|'); const v = +ms; if (!t || !(v > 0) || v > 3600e3) continue; (G[t] = G[t] || []).push(v); }
+      return Object.entries(G).map(([t, a]) => { a.sort((x, y) => x - y); return { t, n: a.length, med: a[Math.floor(a.length / 2)] }; }).sort((x, y) => (x.t === 'all' ? -1 : y.t === 'all' ? 1 : y.n - x.n)); }); })() } };
 }
 async function evApi(env, user, b) {
   if (b.a === 'users') return isAdminId(env, user.id) ? usersApi(env, b) : { ok: false, msg: 'Только для админа' };
