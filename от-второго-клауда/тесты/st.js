@@ -37,5 +37,5 @@ async function open(o={}){const b=o.browser||await chromium.launch();
   if(!o.ndDefault)await ctx.addInitScript(()=>{try{const k='dota_quiz_v4',v=JSON.parse(localStorage.getItem(k)||'null');if(v&&v.lookV===undefined){v.lookV=2;localStorage.setItem(k,JSON.stringify(v));}}catch(e){}});
   const page=await ctx.newPage();const errs=[];page.on('dialog',d=>d.accept());page.on('pageerror',e=>errs.push('ERR '+e.message+' @ '+(e.stack||'').split('\n').slice(1,3).join(' | ')));
   page.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|ERR_|net::/.test(m.text()))errs.push('CON '+m.text());});
-  await page.goto('http://127.0.0.1:8080/'+(o.q||''));await page.waitForTimeout(o.wait||1500);return {b,ctx,page,errs};}
+  await page.goto('http://127.0.0.1:'+(process.env.ST_PORT||8080)+'/'+(o.q||''));await page.waitForTimeout(o.wait||1500);return {b,ctx,page,errs};}
 module.exports={open,initData};
