@@ -102,8 +102,34 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   ok('Настройки, Поиск, Повторение, «Все фразы» — в «Новом» (светлом); Коллекция и Магазин — тёмные',!bad2.length,bad2);
   await P.evaluate(()=>renderTab('games'));await P.waitForTimeout(900);r=await st(P);
   ok('игры — без вида',!r.look,r);
+  // 6г. первый запуск «Нового»: 5 экранов; немецкий, тест уровня (выдуманные слова снижают оценку), уровень руками, сразу эпизод
+  const O=await go({snd:false,fx:false,look:'nd',lookV:2},{admin:true,flags:{}},'light');const OP=O.page;
+  await OP.evaluate(()=>{localStorage.removeItem('dota_sc_v1');location.reload();});await OP.waitForTimeout(2600);
+  r=await OP.evaluate(()=>({scr:screen,dots:document.querySelectorAll('.onb-dots i').length,go:document.querySelector('#onbGo').disabled,tab:getComputedStyle(document.querySelector('#tabbar')).opacity}));
+  ok('первый запуск: экран «Зачем тебе …?», 5 точек, «Дальше» неактивна, вкладок не видно',r.scr==='onb'&&r.dots===5&&r.go&&r.tab==='0',r);
+  await OP.click('.onb-lg button[data-l="de"]');await OP.click('.onb-o[data-g="move"]');
+  r=await OP.evaluate(()=>({h:document.querySelector('.onb-h').textContent,go:document.querySelector('#onbGo').disabled}));
+  ok('Deutsch + цель: заголовок «немецкий», «Дальше» активна',/немецк/.test(r.h)&&!r.go,r);
+  await OP.click('#onbGo');await OP.waitForTimeout(300);await OP.click('#onbGo');await OP.waitForTimeout(300);
+  const seen=[];for(let i=0;i<15;i++){const w=await OP.evaluate(()=>{const c=document.querySelector('.onb-card:not(.nx)');return c?[c.querySelector('b').textContent,c.querySelector('.art')?c.querySelector('.art').className:'',ONB.lt.fakeAt.includes(ONB.lt.i)?1:0]:null;});if(!w)break;seen.push(w);
+    await OP.click(w[2]||i%2?'#onbYes':'#onbNo');await OP.waitForTimeout(80);}
+  const fakes=seen.filter(x=>x[2]).length,arts=seen.filter(x=>/a-(der|die|das)/.test(x[1])).length;
+  ok('15 карточек, среди них выдуманные слова, у существительных артикль цветом',seen.length===15&&fakes>=2&&arts>=3,{n:seen.length,fakes,arts});
+  r=await OP.evaluate(()=>({gram:!!document.querySelector('.onb-q'),txt:document.querySelector('.onb-q')&&document.querySelector('.onb-q').textContent}));
+  ok('потом грамматика (немецкая)',r.gram&&/[äöüßA-Za-z]/.test(r.txt),r);
+  for(let i=0;i<4;i++){await OP.click('.onb-opts .onb-o');await OP.waitForTimeout(1100);}
+  r=await OP.evaluate(()=>({c:ONB.cefr,lv:!!document.querySelector('#onbLv'),grid:document.querySelectorAll('.onb-grid button').length,est:CEFR.indexOf(ltEstimate({seq:[[3,1],[4,0],[3,1],[4,1],[4,0],[3,1]],fk:0,gok:[]})),estF:CEFR.indexOf(ltEstimate({seq:[[3,1],[4,0],[3,1],[4,1],[4,0],[3,1]],fk:3,gok:[]}))}));
+  ok('итог: уровень цветом и сетка A1–C1; «знаю» на выдуманные слова снижает оценку',r.lv&&r.grid===5&&/^[ABC][12]$/.test(r.c)&&r.estF<r.est,r);
+  await OP.click('.onb-grid button[data-c="A2"]');r=await OP.evaluate(()=>[ONB.cefr,document.querySelector('#onbLv b').textContent]);
+  ok('уровень можно выбрать руками',r[0]==='A2'&&r[1]==='A2',r);
+  await OP.click('#onbGo');await OP.waitForTimeout(300);await OP.click('[data-m="5"]');await OP.click('#onbGo');await OP.waitForTimeout(400);
+  r=await OP.evaluate(()=>({hw:document.querySelector('.onb-hw')&&document.querySelector('.onb-hw').textContent,bub:!!document.querySelector('.onb-bub')}));
+  ok('«Привет, Андрей!» почерком и фраза дня от бота',/Андрей/.test(r.hw)&&r.bub,r);
+  await OP.click('#onbGo');await OP.waitForTimeout(1500);
+  r=await OP.evaluate(()=>({scr:screen,sid:SCUR&&SCUR.id,lang:SCUR&&scLang(scOf(SCUR.id)),st:[store.onboarded,store.cefr,store.lvl,store.goal,store.goalWhy,store.langs&&store.langs[0],store.kinoLang]}));
+  ok('«Настраиваем» → сразу эпизод немецкой сцены; сохранено: A2, новичок, цель 10, «переезд», Deutsch',r.scr==='scep'&&r.lang==='de'&&r.st[0]&&r.st[1]==='A2'&&r.st[2]==='a'&&r.st[3]===10&&r.st[4]==='move'&&r.st[5]==='de'&&r.st[6]==='de',r);
   // 7. не-админ: вида нет, «Игры» на месте
   const N=await go(base,{admin:false,flags:{}},'light');await N.page.evaluate(()=>renderTab('learn'));await N.page.waitForTimeout(900);
   r=await st(N.page);ok('не-админ: «Новый» не включается, вкладки прежние',!r.look&&!r.nd&&r.tabs.includes('Игры')&&r.tabs[0]==='Главная',r);
-  ok('консоль чистая',![...A.errs,...D.errs,...N.errs,...F.errs].length,[...A.errs,...D.errs,...N.errs,...F.errs].slice(0,5));
+  ok('консоль чистая',![...A.errs,...D.errs,...N.errs,...F.errs,...O.errs].length,[...A.errs,...D.errs,...N.errs,...F.errs,...O.errs].slice(0,5));
   console.log(fails?`ИТОГ ${dev}: FAIL ${fails}`:`ИТОГ ${dev}: всё PASS`);await b.close();process.exit(fails?1:0);})();

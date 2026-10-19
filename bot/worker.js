@@ -1257,7 +1257,7 @@ async function statsTouch(env, user, src) {
       .bind(user.id, now, now, cleanSrc(src) || null, String(user.lang || user.language_code || '').slice(0, 5), (user.n || (user.first_name ? spyName(user) : '')) ? String(user.n || spyName(user)).slice(0, 40) : null, String(user.un || user.username || '').slice(0, 40)).run();
   } catch (e) {}
 }
-const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end', 'daily_open', 'start_pick', 'poll'];
+const EV_OK = ['open', 'ep_watch', 'ep_quiz', 'word_quiz', 'review', 'dict', 'search', 'bot_start', 'sc_buy', 'pvp_end', 'daily_open', 'start_pick', 'poll', 'onb_done'];
 async function statsEvent(env, user, e, sid) {
   try {
     if (!EV_OK.includes(e) || isAdminId(env, user.id)) return;
@@ -1329,6 +1329,7 @@ async function funnelApi(env, b) {
     d1: await ret(0.75, 2, 2), d7: await ret(6, 8, 8),
     picks: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'start_pick' AND ts > ? GROUP BY sid ORDER BY n DESC", t0),
     poll: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'poll' GROUP BY sid ORDER BY n DESC"),
+    levels: await all("SELECT sid, COUNT(*) n FROM events WHERE e = 'onb_done' AND ts > ? GROUP BY sid ORDER BY sid", t0),
     src: await all("SELECT COALESCE(src,'без метки') s, COUNT(*) n FROM users WHERE first > ? GROUP BY s ORDER BY n DESC LIMIT 8", t0) } };
 }
 async function evApi(env, user, b) {
@@ -1362,7 +1363,7 @@ async function statsReport(env) {
   const ev = await all('SELECT e, COUNT(*) n, COUNT(DISTINCT uid) u FROM events WHERE ts > ? GROUP BY e ORDER BY n DESC', week0);
   const top = await all("SELECT sid, COUNT(*) n FROM events WHERE ts > ? AND e IN ('ep_quiz','word_quiz') AND sid <> '' GROUP BY sid ORDER BY n DESC LIMIT 5", week0);
   const pct = (a, b) => (b ? Math.round((a / b) * 100) + '%' : '—');
-  const EVN = { open: 'открыли приложение', ep_watch: 'досмотрели эпизод', ep_quiz: 'прошли проверку эпизода', word_quiz: 'прошли тест слов', review: 'повторение', dict: 'открыли словарь', search: 'поиск', bot_start: '/start в боте', sc_buy: 'купили сцену', pvp_end: 'сыграли дуэль по сцене', start_pick: 'выбрали первую сцену', poll: 'ответили на опрос', daily_open: 'открыли «Фразу дня»' };
+  const EVN = { open: 'открыли приложение', ep_watch: 'досмотрели эпизод', ep_quiz: 'прошли проверку эпизода', word_quiz: 'прошли тест слов', review: 'повторение', dict: 'открыли словарь', search: 'поиск', bot_start: '/start в боте', sc_buy: 'купили сцену', pvp_end: 'сыграли дуэль по сцене', start_pick: 'выбрали первую сцену', poll: 'ответили на опрос', daily_open: 'открыли «Фразу дня»', onb_done: 'прошли первый запуск (тест уровня)' };
   return [
     '📊 <b>Статистика</b>',
     `Всего людей: <b>${total}</b> · новых за сутки: <b>${new1}</b> · за неделю: <b>${new7}</b>`,
@@ -1579,6 +1580,6 @@ export default {
       return new Response('ok');
     }
 
-    return new Response('Бот работает 👍 Версия 13.9.19\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response('Бот работает 👍 Версия 13.9.28\nВидео из R2: ' + (mediaR2(env) ? 'подключено ✅' : 'НЕ подключено — привяжи бакет kino-media под именем MEDIA'), { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   },
 };
