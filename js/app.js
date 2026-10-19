@@ -249,7 +249,7 @@ function tgHead(){if(!TG||!document.body)return;let c='';try{const cs=getCompute
 // body[data-look] — стили слоем 13.9.22 в конце main.css и dictlab.css. Шрифт вида грузится при первом включении.
 const LOOKS={nd:{n:'Новый',f:'Manrope:wght@400;500;600;700;800&family=Lora:ital,wght@1,500;1,600&family=Caveat:wght@600;700'},svet:{n:'Свет',f:'Onest:wght@400;500;600;700;800'},noch:{n:'Ночь',f:'Manrope:wght@400;500;600;700;800'},zhurnal:{n:'Журнал',f:'PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700'}};
 function lookFont(k){const id='lkf-'+k;if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+LOOKS[k].f+'&display=swap';document.head.appendChild(l);}
-function lookApply(cls){const b=document.body;if(!b)return;let k='';try{k=FLAG_ADMIN&&LOOKS[store.look]?store.look:'';}catch(e){}
+function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(FLAG_ADMIN&&store.lookV!==2){store.lookV=2;store.look='nd';save();}k=FLAG_ADMIN&&LOOKS[store.look]?store.look:'';}catch(e){}   // 13.9.25: админу «Новый» включается сам (откат — «Как было»)
   const tabs=k==='nd'?['learn','kino','dict','profile']:['learn','kino','dict'];   // 13.9.24: у «Нового» и Профиль
   const on=k&&(/\btabscr\b/.test(cls||'')&&screen==='home'&&tabs.includes(store.tab)||/\bscnscr\b/.test(cls||'')&&['scene','scep','scq'].includes(b.dataset.scr));
   b.classList.toggle('nd',k==='nd');ndTabs(k==='nd');
@@ -259,7 +259,7 @@ function lookApply(cls){const b=document.body;if(!b)return;let k='';try{k=FLAG_A
 // Только админ, Настройки → «Дизайн (на пробу)» → «Новый»; откат — «Сейчас».
 const ndOn=()=>{try{return !!FLAG_ADMIN&&store.look==='nd';}catch(e){return false;}};
 function ndDark(){try{if(TG&&TG.colorScheme)return TG.colorScheme==='dark';}catch(e){}try{return matchMedia('(prefers-color-scheme: dark)').matches;}catch(e){return true;}}
-function ndTheme(){const b=document.body;if(!b||b.dataset.look!=='nd')return;const t=ndDark()?'dark':'light';if(b.dataset.ndt!==t){b.dataset.ndt=t;try{tgHead();}catch(e){}}}
+function ndTheme(){const b=document.body;if(!b||b.dataset.look!=='nd')return;const t=ndDark()||b.dataset.scr==='scep'?'dark':'light';/* эпизод с плеером — всегда тёмный */if(b.dataset.ndt!==t){b.dataset.ndt=t;try{tgHead();}catch(e){}}}
 try{if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>ndTheme());}catch(e){}
 const ND_TABS={learn:['Сегодня','<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M8.5 14.5l2.2 2 4.8-4.8"/>'],kino:['Кино','<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 9.5h18M7.5 5l2 4.5M12.5 5l2 4.5M17.5 5l2 4.5"/>'],
   dict:['Словарь','<path d="M6.5 4h11a1 1 0 0 1 1 1v15l-6.5-3.4L5.5 20V5a1 1 0 0 1 1-1z"/>'],profile:['Профиль','<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>']};
@@ -276,6 +276,10 @@ function ndPull(el,go){const k=el.querySelector('.ndpull-k'),f=el.querySelector(
   const up=()=>{if(x0==null)return;x0=null;el.classList.remove('drag');if(dx>=max*.7)fire();else{set(0,true);if(dx<8){el.classList.remove('nudge');void el.offsetWidth;el.classList.add('nudge');haptic('light');}}dx=0;};
   el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('lostpointercapture',up);
   el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fire();}};}
+// «Сегодня» в «Новом»: «Фраза дня» — одной строкой (кадр, фраза, перевод), тап — момент из фильма
+function ndPodHTML(){const x=phraseOfDay();if(!x)return '';const {s,f}=x,en=s.lang==='de'?f.de:scT(f);
+  return `<button class="ndrow anim" onclick="momOpen('${s.id}',${f.pi},${f.a})"><i class="ndrow-th" style="background-image:url('${assetUrl(scEpKey(s,f.pi,'jpg'))}'),url('${assetUrl(scKey(s,'cover.jpg'))}')"></i><span><small>Фраза дня · ${esc(dictFilm(s))}</small><b>${esc(en)}</b><em>${esc(f.ru)}</em></span><u>${ui('fwd')}</u></button>`;}
+const ndYear=s=>{const m=String(s.ep||'').match(/(19|20)\d\d/);return m?m[0]:'';};
 // уровень сцены по CEFR (lvl 1–5 → A1…C1) — цветная метка, как у Germanize; видна только в «Новом»
 const CEFR=['A1','A2','B1','B2','C1'];
 const cefrOf=s=>CEFR[Math.max(1,Math.min(5,(s&&s.lvl)||3))-1];
@@ -305,7 +309,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2)CLOUD_ERR=true;if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){CLOUD_ERR=true;res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','ytCC','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy','look'];
+const LOCAL_ONLY=['dictVar','knWin','knLines','ytOff','ytCC','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy','look','lookV'];
 function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==null?SV0:base),o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -1628,7 +1632,7 @@ function renderSettings(){
   const row=(k,n,d)=>`<button class="checkrow frame" data-t="${k}" aria-pressed="${!!store[k]}">${BOX}<span class="ct"><span class="cn">${n}</span>${d?`<span class="cd">${d}</span>`:''}</span></button>`;
   mount(`
     <div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Настройки</h1></div>
-    ${FLAG_ADMIN?`<section class="set-sec"><h2>Дизайн (на пробу)</h2>${segCtl('look',[['cur','Сейчас'],...Object.keys(LOOKS).map(k=>[k,LOOKS[k].n])],LOOKS[store.look]?store.look:'cur')}<p class="hint-line" style="margin-top:6px;opacity:.7">Видно только тебе, на этом устройстве. Пока — Главная, Кинозал, Словарь, страница сцены, эпизод и проверка. «Новый» — редизайн («Без субтитров»): светлый или тёмный, как Telegram, вкладки «Сегодня · Кино · Словарь · Профиль», игры — в Профиле. Вернуть как было — «Сейчас».</p></section>`:''}
+    ${FLAG_ADMIN?`<section class="set-sec"><h2>Дизайн (на пробу)</h2>${segCtl('look',[['nd','Новый'],['cur','Как было']],store.look==='nd'?'nd':'cur')}<p class="hint-line" style="margin-top:6px;opacity:.7">Видно только тебе, на этом устройстве. «Новый» — редизайн: светлый или тёмный, как Telegram, вкладки «Сегодня · Кино · Словарь · Профиль», игры — в Профиле. «Как было» — вернуть старый вид. Старые пробы («Свет», «Ночь», «Журнал») — в админке → «Лаборатория».</p></section>`:''}
 
     <section class="set-sec"><h2>Обучение</h2>
       <div class="stack">${row('hideLearned','Убирать выученные слова',`Слово, на которое ты ${LEARN_AT} раза ответил правильно, больше не попадается в обычных играх. Оно вернётся в «Повторение» через 3, 7, 21 и 60 дней.`)}
@@ -2439,7 +2443,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.24';
+const APP_V='13.9.25';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -3108,7 +3112,7 @@ function scRateHTML(s){if(!s.lvl&&!s.use)return '';
   return `<div class="sc-rate">${s.lvl?`<div><span>Сложность на слух</span>${scDots(s.lvl)}<small>${esc(s.lvlWhy||'')}</small></div>`:''}${s.use?`<div><span>Польза в жизни</span>${scDots(s.use)}<small>${esc(s.useWhy||'')}</small></div>`:''}</div>`;}
 function kinoCard(s){const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
   const lk=!scOpen(s);
-  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}${lk?' locked':''}" data-sc="${s.id}">${lk?`<span class="kp-lock">🔒 ${ui('coin')} ${fmt(SC_PRICE(s))}</span>`:''}${s.lang==='de'?`<span class="kp-lang">${FLAG.de} на немецком</span>`:''}${s.age?`<span class="kp-age">18+</span>`:''}<span class="kp-img" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${lvcHTML(s)}${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
+  return `<button class="kposter ${s.theme} anim${scMasterPct(s)===100?' mastered':''}${lk?' locked':''}" data-sc="${s.id}">${lk?`<span class="kp-lock">🔒 ${ui('coin')} ${fmt(SC_PRICE(s))}</span>`:''}${s.lang==='de'?`<span class="kp-lang">${FLAG.de} на немецком</span>`:''}${s.age?`<span class="kp-age">18+</span>`:''}<span class="kp-img" style="background-image:${ndOn()?`url('${scCover(s,'poster.jpg')}'),`:''}url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${lvcHTML(s)}${musOf(s).length?'<span class="kp-mus" title="Есть саундтрек">♪</span>':''}
     <span class="kp-t"><em>${esc(s.ep)}</em><b>${esc(s.title)}</b><small>${s.parts.length} ${plural(s.parts.length,['эпизод','эпизода','эпизодов'])}${d?` · пройдено ${d}`:''}</small>
     ${s.lvl?`<span class="kp-rate"><i>сложность ${scDots(s.lvl)}</i><i>польза ${scDots(s.use||0)}</i></span>`:''}
     <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%\"></i></span></span></button>`;}
@@ -3328,7 +3332,7 @@ function renderScene(id){
     ${s.kind==='clip'?clipNotesHTML(s):''}
     ${s.videoUrl?`<div class="clip-links sc-card"><a class="sc-btn" href="${esc(s.videoUrl)}" target="_blank" rel="noopener">▶ Смотреть официальный клип</a>${s.credit?`<small>${esc(s.credit)}</small>`:''}</div>`:''}
     <section class="sc-top sc-card sc-top2">
-      <div class="sc-meta">${esc(s.ep)}</div><h1>${esc(s.title)}</h1><div class="sc-sub">${esc(s.sub)}</div>
+      ${ndOn()?`<div class="nd-chips">${lvcHTML(s)}<span>${esc(SC_KIND[s.kind]||'Сцена')}${ndYear(s)?' · '+ndYear(s):''}</span><span>${n} ${plural(n,['эпизод','эпизода','эпизодов'])}</span></div>`:`<div class="sc-meta">${esc(s.ep)}</div>`}<h1>${esc(s.title)}</h1><div class="sc-sub">${esc(s.sub)}</div>
       <button class="sc-btn sc-go1" id="scgo">${goTxt}</button>
       ${L||M?`<div class="sc-prog sc-prog1"><span>Выучено ${L} из ${T}${M?` · надолго ${M}`:''}${scMasterPct(s)===100?' · 🏆':''}</span></div><div class="sc-bar"><i style="width:${Math.round(L/T*100)}%"></i></div>`:''}
     </section>
@@ -5958,7 +5962,7 @@ function learnTabHTML(){
         <div class="ndpull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k">${ui('fwd')}</i></div>
       </div>
     </section>
-    ${rev2}${chips}${shelves}${phraseOfDayHTML()}</div>`;}
+    ${rev2}${ndPodHTML()}</div>`;}
   return `<div class="home home2">${headHTML()}${hmChipHTML()}
     <section class="hh ${s.theme} anim" id="hHero" data-sc="${s.id}">
       ${dayGoalHTML(d,goal,gp,st)}

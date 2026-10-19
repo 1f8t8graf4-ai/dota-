@@ -5915,3 +5915,85 @@ body[data-look="nd"]:not(.tabs-on):not(#_) .tabbar{box-shadow:none!important}   
 }
 body[data-look="nd"]:not(#_) .tabscr>.lead{display:none!important}   /* Кино: без вводного абзаца — заголовок, поиск, фильтры, постеры */
 body[data-look="nd"]:not(#_) .tabscr>.title{font:800 32px/1.1 var(--lk-f)!important;letter-spacing:-.03em!important;margin-bottom:14px!important}
+
+/* ==== 13.9.25 — «Новый» по умолчанию у админа, разгрузка (Андрей: «ничо не поменяно будто, дизайн нагруженный»):
+   «Сегодня» — только приветствие, план, «Повторить» и «Фраза дня» строкой; Кино — сетка постеров 3 в ряд без текста поверх;
+   страница сцены — кадр, метки, название, одна кнопка, эпизоды строками (закрытые — под дымкой); эпизод с плеером — всегда тёмный ==== */
+/* «Сегодня»: строка «Фраза дня» */
+.ndrow{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:10px 14px 10px 10px;border:0;border-radius:20px;background:var(--lk-card);box-shadow:var(--lk-sh),inset 0 0 0 1px var(--lk-line);color:var(--lk-ink);text-align:left;font:inherit;cursor:pointer;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.ndrow:active{transform:scale(.97)}
+.ndrow-th{flex:none;width:54px;height:54px;border-radius:14px;background:#222 center/cover}
+.ndrow>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ndrow small{font:800 10.5px/1 var(--lk-f);letter-spacing:.12em;text-transform:uppercase;color:var(--lk-ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ndrow b{font:700 16px/1.25 var(--lk-f);color:var(--lk-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ndrow em{font:500 14px/1.25 var(--lk-f);font-style:normal;color:var(--lk-ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ndrow>u{flex:none;display:grid;place-items:center;color:var(--lk-ink3);text-decoration:none}.ndrow>u svg{width:18px;height:18px}
+body[data-look="nd"]:not(#_) .ndhome .hrev2{margin-bottom:12px}
+@media (min-width:1000px){body[data-look="nd"]:not(#_) .ndhome>.ndrow{grid-column:2}}
+
+/* Кино: сетка постеров 3 в ряд, на постере — уровень и полоска; название — мелко под градиентом */
+body[data-look="nd"]:not(#_) .kgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (min-width:700px){body[data-look="nd"]:not(#_) .kgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}}
+body[data-look="nd"]:not(#_) .kposter{border-radius:14px!important;aspect-ratio:2/3}
+body[data-look="nd"]:not(#_) .kposter .kp-t{left:8px;right:8px;bottom:8px;gap:0}
+body[data-look="nd"]:not(#_) .kposter .kp-t :is(em,small,.kp-rate){display:none!important}
+body[data-look="nd"]:not(#_) .kposter .kp-t b{font:700 12.5px/1.2 var(--lk-f)!important;text-transform:none!important;letter-spacing:0!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+body[data-look="nd"]:not(#_) .kposter .kp-bar{margin-top:5px;height:3px}
+body[data-look="nd"]:not(#_) .kposter .kp-grad{background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.78))!important}
+body[data-look="nd"]:not(#_) .kposter :is(.kp-lang,.kp-mus){display:none!important}
+body[data-look="nd"]:not(#_) .ksoon{display:none!important}
+body[data-look="nd"]:not(#_) .kcats{display:grid!important;grid-auto-flow:column;grid-auto-columns:1fr;gap:0!important;padding:3px;margin:0 0 14px!important;border-radius:13px;background:var(--lk-card2)!important;overflow:visible}
+body[data-look="nd"]:not(#_) .kcats button{height:34px;padding:0 6px!important;border-radius:10px!important;background:none!important;box-shadow:none!important;color:var(--lk-ink2)!important;font:700 13px var(--lk-f)!important}
+body[data-look="nd"]:not(#_) .kcats button.on{background:var(--lk-card)!important;color:var(--lk-ink)!important;box-shadow:0 1px 2px rgba(0,0,0,.08),0 4px 12px -6px rgba(0,0,0,.2)!important}
+body[data-look="nd"]:not(#_) .srch-pill{height:46px;border-radius:14px!important;margin:0 0 12px!important}
+body[data-look="nd"]:not(#_) .klang{margin:0 0 12px!important}
+
+/* страница сцены */
+body[data-look="nd"]:not(#_) .sc-ban.sc-ban2{height:clamp(200px,56vw,360px)!important;border-radius:24px!important;margin:6px 0 0!important;box-shadow:var(--lk-sh)!important}
+body[data-look="nd"]:not(#_) .sc-ban :is(.sc-ban-k,.sc-ban-deco){display:none!important}
+body[data-look="nd"]:not(#_) .sc-top.sc-top2{background:none!important;box-shadow:none!important;border:0!important;padding:16px 2px 4px!important;margin:0!important}
+.nd-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 8px}
+.nd-chips span:not(.lvc){display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:8px;background:var(--lk-card2);color:var(--lk-ink2);font:700 12px/1 var(--lk-f)}
+body[data-look="nd"]:not(#_) .sc-top2 h1{margin:2px 0 6px!important;font:800 clamp(26px,7vw,40px)/1.08 var(--lk-f)!important;letter-spacing:-.03em!important;color:var(--lk-ink)!important;text-transform:none!important}
+body[data-look="nd"]:not(#_) .sc-top2 .sc-sub{font:500 15.5px/1.45 var(--lk-f)!important;color:var(--lk-ink2)!important}
+body[data-look="nd"]:not(#_) #scgo{width:100%;height:56px;margin:16px 0 4px!important;border-radius:16px!important;font:800 16.5px var(--lk-f)!important;box-shadow:0 12px 26px -14px rgba(0,0,0,.5)!important}
+body[data-look="nd"]:not(#_) .sc-top2 .sc-prog1{margin-top:10px!important;color:var(--lk-ink3)!important;font:600 13px var(--lk-f)!important}
+body[data-look="nd"]:not(#_) .path{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:18px 0 6px!important;display:flex;flex-direction:column;gap:8px}
+body[data-look="nd"]:not(#_) .path-h{margin:0 2px 4px!important}
+body[data-look="nd"]:not(#_) .path-h b{color:var(--lk-ink)!important;font:800 19px var(--lk-f)!important;letter-spacing:-.02em}
+body[data-look="nd"]:not(#_) .path-h span{color:var(--lk-ink3)!important;font:600 13px var(--lk-f)!important}
+body[data-look="nd"]:not(#_) .pn{transform:none!important;width:100%!important;margin:0!important;padding:9px 12px 9px 9px!important;gap:12px;border-radius:18px;background:var(--lk-card)!important;box-shadow:var(--lk-sh),inset 0 0 0 1px var(--lk-line)!important;color:var(--lk-ink);overflow:hidden;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+body[data-look="nd"]:not(#_) .pn:active{transform:scale(.98)!important}
+body[data-look="nd"]:not(#_) .pn::before{display:none!important}
+body[data-look="nd"]:not(#_) .pn-c{width:92px;height:58px;border-radius:12px;box-shadow:none!important;animation:none!important;background-color:#222}
+body[data-look="nd"]:not(#_) .pn-c::after{border-radius:12px;background:rgba(0,0,0,.28)}
+body[data-look="nd"]:not(#_) .pn.done .pn-c::after{background:rgba(0,0,0,.18)}
+body[data-look="nd"]:not(#_) .pn-c i{font:800 15px var(--lk-f)}
+body[data-look="nd"]:not(#_) .pn.done .pn-c i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--lk-ok);color:#fff;text-shadow:none;font-size:14px}
+body[data-look="nd"]:not(#_) .pn-t b{font:700 16px/1.2 var(--lk-f)!important;color:var(--lk-ink)}
+body[data-look="nd"]:not(#_) .pn-t small{color:var(--lk-ink2)!important;font:500 13px/1.3 var(--lk-f)!important}
+body[data-look="nd"]:not(#_) .pn .stars3{margin-top:3px}
+body[data-look="nd"]:not(#_) .stars3 i{color:var(--lk-line2)}body[data-look="nd"]:not(#_) .stars3 i.on{color:#F2A900;text-shadow:none}
+body[data-look="nd"]:not(#_) .pn.cur{box-shadow:var(--lk-sh),inset 0 0 0 2px var(--lk-ink)!important}
+body[data-look="nd"][data-ndt="dark"]:not(#_) .pn.cur{box-shadow:var(--lk-sh),inset 0 0 0 2px var(--nd-sub)!important}
+body[data-look="nd"]:not(#_) .pn-go{position:static!important;flex:none;margin-left:auto;padding:7px 12px!important;border-radius:10px!important;background:var(--lk-acc)!important;color:var(--lk-acc-ink)!important;font:800 12.5px var(--lk-f)!important;animation:none!important}
+body[data-look="nd"]:not(#_) .pn-go::after{display:none!important}
+body[data-look="nd"]:not(#_) .pn.lock{background:var(--lk-card)!important}
+body[data-look="nd"]:not(#_) .pn.lock .pn-c{filter:grayscale(1) brightness(.75)}
+body[data-look="nd"]:not(#_) .pn.lock .pn-c::before{content:"";position:absolute;inset:-30%;z-index:1;background:radial-gradient(closest-side,rgba(255,255,255,.55),transparent 70%) 0 0/60% 60%,radial-gradient(closest-side,rgba(255,255,255,.4),transparent 70%) 50% 50%/50% 50%;opacity:.55;animation:ndfog 9s linear infinite;pointer-events:none}
+@keyframes ndfog{from{transform:translateX(-12%)}to{transform:translateX(12%)}}
+body[data-look="nd"]:not(#_) .pn.lock .pn-t{opacity:.5}
+body[data-look="nd"]:not(#_) .pn.boss .pn-c{background:linear-gradient(135deg,#FFE28A,#E3A21A 55%,#8A5A08)!important}
+body.nofx .pn.lock .pn-c::before{animation:none!important}
+body[data-look="nd"]:not(#_) section.sc-more{background:none!important;box-shadow:none!important;padding:0!important;margin:14px 0 0!important;display:flex;flex-direction:column;gap:8px}
+body[data-look="nd"]:not(#_) section.sc-more>:is(.sc-btn,.sc-allph){width:100%;height:auto;min-height:52px;padding:12px 16px!important;justify-content:flex-start;text-align:left;border-radius:16px!important;background:var(--lk-card)!important;color:var(--lk-ink)!important;box-shadow:var(--lk-sh),inset 0 0 0 1px var(--lk-line)!important;font:700 15px var(--lk-f)!important;border:0!important}
+body[data-look="nd"]:not(#_) section.sc-more .sc-about{border-radius:16px!important;background:var(--lk-card)!important;box-shadow:inset 0 0 0 1px var(--lk-line)!important}
+body[data-look="nd"]:not(#_) section.sc-more .sc-about>summary{color:var(--lk-ink2)!important;font:600 14px var(--lk-f)!important}
+body[data-look="nd"]:not(#_) .sc-foot{color:var(--lk-ink3)!important}
+@media (min-width:1000px){
+  body[data-look="nd"]:not(#_) .scn.scr-scene .path{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px}
+  body[data-look="nd"]:not(#_) .scn.scr-scene .path-h{grid-column:1/-1}
+}
+body[data-look="nd"]:not(#_) :is(.pn.done,.pn.cur,.pn) .pn-c{box-shadow:none!important;overflow:hidden}
+body[data-look="nd"]:not(#_) .pn.lock .pn-c{filter:grayscale(1) brightness(.8)!important}
+#scMore[hidden]{display:none!important}

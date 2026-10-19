@@ -32,6 +32,8 @@ async function open(o={}){const b=o.browser||await chromium.launch();
       r.fulfill({status:res.status,headers:{'content-type':res.headers.get('content-type')||'application/json','access-control-allow-origin':'*'},body:await res.text()});}catch(e){r.fulfill({status:502,body:''});}});
   if(o.tg!==false)await ctx.addInitScript(fakeTG(o));
   if(o.init)await ctx.addInitScript(o.init,o.initArg);
+  // 13.9.25: админу «Новый» вид включается сам (lookV). Тесты старого вида — без этого: в посеянном store ставим lookV=2 (как будто админ уже выбирал)
+  if(!o.ndDefault)await ctx.addInitScript(()=>{try{const k='dota_quiz_v4',v=JSON.parse(localStorage.getItem(k)||'null');if(v&&v.lookV===undefined){v.lookV=2;localStorage.setItem(k,JSON.stringify(v));}}catch(e){}});
   const page=await ctx.newPage();const errs=[];page.on('dialog',d=>d.accept());page.on('pageerror',e=>errs.push('ERR '+e.message+' @ '+(e.stack||'').split('\n').slice(1,3).join(' | ')));
   page.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|ERR_|net::/.test(m.text()))errs.push('CON '+m.text());});
   await page.goto('http://127.0.0.1:8080/'+(o.q||''));await page.waitForTimeout(o.wait||1500);return {b,ctx,page,errs};}
