@@ -50,7 +50,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   // 3. Профиль: карточка, 4 цифры, строки; «Игры» → игры; тап по карточке — «как тебя видят друзья»
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(1500);
   r=await P.evaluate(()=>({card:!!document.querySelector('.ndpc'),n:[...document.querySelectorAll('.ndst b')].map(x=>x.textContent),rows:[...document.querySelectorAll('.ndl-r b')].map(x=>x.textContent),old:!!document.querySelector('.phead')}));
-  ok('Профиль: карточка, 4 цифры (эпизоды 1, фразы 6), строки Коллекция · Игры · Билеты · Достижения · Настройки · Как пользоваться · Админ-панель',r.card&&r.n[0]==='1'&&r.n[1]==='6'&&r.rows.join('|')==='Коллекция|Игры|Билеты|Достижения|Настройки|Как пользоваться|Админ-панель'&&!r.old,r);
+  ok('Профиль: карточка, 4 цифры (эпизоды 1, фразы 6), строки Коллекция · Игры · Билеты · Достижения · Настройки · Как пользоваться · Админ-панель · Вернуть старый дизайн',r.card&&r.n[0]==='1'&&r.n[1]==='6'&&r.rows.join('|')==='Коллекция|Игры|Билеты|Достижения|Настройки|Как пользоваться|Админ-панель|Вернуть старый дизайн'&&!r.old,r);
   await P.click('#ndPc .ndpc-n');await P.waitForTimeout(600);
   ok('тап по карточке — «как тебя видят друзья»',await P.evaluate(()=>!!document.querySelector('.pfv')));
   await P.keyboard.press('Escape');await P.waitForTimeout(500);await P.evaluate(()=>document.querySelectorAll('.pfv').forEach(x=>x.remove()));
@@ -128,8 +128,30 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   await OP.click('#onbGo');await OP.waitForTimeout(1500);
   r=await OP.evaluate(()=>({scr:screen,sid:SCUR&&SCUR.id,lang:SCUR&&scLang(scOf(SCUR.id)),st:[store.onboarded,store.cefr,store.lvl,store.goal,store.goalWhy,store.langs&&store.langs[0],store.kinoLang]}));
   ok('«Настраиваем» → сразу эпизод немецкой сцены; сохранено: A2, новичок, цель 10, «переезд», Deutsch',r.scr==='scep'&&r.lang==='de'&&r.st[0]&&r.st[1]==='A2'&&r.st[2]==='a'&&r.st[3]===10&&r.st[4]==='move'&&r.st[5]==='de'&&r.st[6]==='de',r);
+  // 6д. выйти можно отовсюду: первый запуск — «Пропустить» (новичок → сразу сцена) / «Закрыть» (повтор из Настроек → Настройки); Профиль — «Вернуть старый дизайн»
+  const U=await go({snd:false,fx:false,look:'nd',lookV:2},{admin:true,flags:{}},'light');const UP=U.page;
+  await UP.evaluate(()=>{localStorage.removeItem('dota_sc_v1');location.reload();});await UP.waitForTimeout(2600);
+  r=await UP.evaluate(()=>({scr:screen,sk:(document.querySelector('#onbSkip')||{}).textContent,bk:getComputedStyle(document.querySelector('#onbB')).visibility}));
+  ok('первый запуск: «Пропустить» вверху, «назад» на первом шаге нет',r.scr==='onb'&&r.sk==='Пропустить'&&r.bk==='hidden',r);
+  await UP.click('#onbSkip');await UP.waitForTimeout(1500);r=await UP.evaluate(()=>({scr:screen,on:store.onboarded,c:store.cefr}));
+  ok('«Пропустить» — сразу эпизод, первый запуск засчитан',r.scr==='scep'&&r.on,r);
+  await UP.evaluate(()=>renderSettings());await UP.waitForTimeout(600);await UP.click('#onbAgain');await UP.waitForTimeout(500);
+  r=await UP.evaluate(()=>({sk:(document.querySelector('#onbSkip')||{}).textContent,bk:getComputedStyle(document.querySelector('#onbB')).visibility}));
+  ok('повтор из Настроек: «Закрыть» и «назад» есть с первого шага',r.sk==='Закрыть'&&r.bk==='visible',r);
+  await UP.click('#onbB');await UP.waitForTimeout(500);ok('«назад» на первом шаге → Настройки',await UP.evaluate(()=>screen==='settings'));
+  await UP.click('#onbAgain');await UP.waitForTimeout(400);await UP.click('.onb-o[data-g="travel"]');await UP.click('#onbGo');await UP.waitForTimeout(300);await UP.click('#onbSkip');await UP.waitForTimeout(500);
+  ok('«Закрыть» со второго шага → Настройки',await UP.evaluate(()=>screen==='settings'));
+  await UP.evaluate(()=>renderTab('profile'));await UP.waitForTimeout(700);await UP.click('#pfLook');await UP.waitForTimeout(700);r=await st(UP);
+  ok('Профиль → «Вернуть старый дизайн» — сразу прежний вид',!r.look&&!r.nd&&r.tabs.includes('Игры'),r);
+  // словарь: метки уровня у фраз (A1–C1) и артикль цветом у немецких слов
+  await P.evaluate(()=>{store.look='nd';store.myw=(store.myw||[]).concat([{w:'der Kunde',t:'клиент',sid:'wolf-lunch-de',pi:0,st:1,due:Date.now()+864e5,a:0,k:'test-kunde'}]);save();renderTab('dict');});await P.waitForTimeout(2600);
+  await P.evaluate(()=>DL.open({sid:'wolf-of-wall-street'}));await P.waitForTimeout(1200);await P.evaluate(()=>{const d=document.querySelector('details.kn-ep');if(d)d.open=true;});await P.waitForTimeout(500);
+  r=await P.evaluate(()=>[...document.querySelectorAll('.kq2:not(.lock) .kq-lv')].map(x=>[x.textContent,getComputedStyle(x).display]));
+  ok('словарь в «Новом»: у фраз метка уровня A1–C1',r.length>0&&r.every(x=>/^[ABC][12]$/.test(x[0])&&x[1]!=='none'),r.slice(0,4));
+  r=await P.evaluate(()=>{wlvLoad();return lvTag('der Kunde','de')+'|'+lvTag('How on Earth did you get a reservation there?','en');});
+  ok('у немецкого существительного — артикль цветом, у фразы — уровень по самому редкому слову',/a-der">der</.test(r)&&/>B[12]</.test(r),r);
   // 7. не-админ: вида нет, «Игры» на месте
   const N=await go(base,{admin:false,flags:{}},'light');await N.page.evaluate(()=>renderTab('learn'));await N.page.waitForTimeout(900);
   r=await st(N.page);ok('не-админ: «Новый» не включается, вкладки прежние',!r.look&&!r.nd&&r.tabs.includes('Игры')&&r.tabs[0]==='Главная',r);
-  ok('консоль чистая',![...A.errs,...D.errs,...N.errs,...F.errs,...O.errs].length,[...A.errs,...D.errs,...N.errs,...F.errs,...O.errs].slice(0,5));
+  ok('консоль чистая',![...A.errs,...D.errs,...N.errs,...F.errs,...O.errs,...U.errs].length,[...A.errs,...D.errs,...N.errs,...F.errs,...O.errs,...U.errs].slice(0,5));
   console.log(fails?`ИТОГ ${dev}: FAIL ${fails}`:`ИТОГ ${dev}: всё PASS`);await b.close();process.exit(fails?1:0);})();

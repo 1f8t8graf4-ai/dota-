@@ -1864,6 +1864,7 @@ function ndProfileHTML(){const name=userName()||'Игрок',photo=tgPhoto(),pb=
       ${row('setBtn','⚙️','Настройки','язык, субтитры, звук, дизайн')}
       ${row('helpBtn','❓','Как пользоваться','все функции коротко')}
       ${FLAG_ADMIN?row('admBtn','🛡','Админ-панель','игроки, доступ, проверка'):''}
+      ${row('pfLook','↺','Вернуть старый дизайн','вернуть «Новый» — Настройки → Дизайн')}
     </div>
     <p class="foot">Версия ${APP_V}</p>`;}
 function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
@@ -1874,6 +1875,7 @@ function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
   if($('#pfWords'))$('#pfWords').onclick=()=>{sfx('tap');renderMyWords();};
   $('#pfShop').onclick=()=>{sfx('tap');renderShop();};
   $('#helpBtn').onclick=()=>{sfx('tap');renderHelp();};
+  $('#pfLook').onclick=()=>{sfx('tap');haptic('sel');store.look='';save();renderTab('profile');toast('Старый дизайн. «Новый» — Настройки → Дизайн (на пробу)');};   // 13.9.29: откат в одно нажатие
   $$('.ach').forEach(b=>b.onclick=()=>{const a=ACH.find(x=>x.id===b.dataset.a);sfx('sel');toast(`${a.n}: ${a.d}${store.ach[a.id]?'. Получено':''}`);});
   ndCount($$('.ndcnt'));}
 // цифры набегают от 0 за 0.9 с, один раз (без анимаций — сразу итог)
@@ -2453,7 +2455,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.28';
+const APP_V='13.9.29';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -2487,6 +2489,18 @@ function wiLoad(L){if(WI[L])return Promise.resolve(WI[L]);if(WI.p[L])return WI.p
   if(A&&A[K]){WI[L]=A[K];return Promise.resolve(WI[L]);}
   return WI.p[L]=fetch('data/winfo-'+L+'.json?v='+APP_V).then(r=>r.json()).then(j=>WI[L]=j[K]||{}).catch(()=>{WI.p[L]=null;return null;});}
 const wiLang=sid=>{const s=scOf(sid);return s&&s.lang==='de'?'de':'en';};
+// 13.9.29: уровень слов A1–C1 по частотности (data/wlv.json из tools/word_levels.py) — метки в словаре «Нового»: у фразы — по самому редкому слову
+const WLV={m:null,p:null};
+function wlvLoad(){if(WLV.m)return Promise.resolve(WLV.m);if(WLV.p)return WLV.p;
+  const mk=j=>{const m={en:new Map(),de:new Map()};for(const L of ['en','de']){const o=j['WLV_'+L.toUpperCase()]||{};for(const b in o)o[b].split(' ').forEach(w=>w&&m[L].set(w,+b));}return WLV.m=m;};
+  const A=window.__DATA_ALL;if(A&&A.WLV_EN)return Promise.resolve(mk(A));
+  return WLV.p=fetch('data/wlv.json?v='+APP_V).then(r=>r.json()).then(mk).catch(()=>{WLV.p=null;return null;});}
+const wlvWord=(w,L)=>{if(!WLV.m||!w)return 0;const M=WLV.m[L==='de'?'de':'en'],n=String(w).toLowerCase().replace(/’/g,"'");return M.get(n)||M.get(n.replace(/'s$/,''))||0;};
+const wlvText=(t,L)=>{let b=0;String(t||'').replace(/[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['’][A-Za-zÀ-ÖØ-öø-ÿ]+)*/g,w=>{b=Math.max(b,wlvWord(w,L));return w;});return b;};
+// метка слева у строки словаря: немецкое существительное — артикль цветом, иначе уровень
+const lvTag=(t,L)=>{if(!ndOn()||!WLV.m)return '';const a=L==='de'&&/^(der|die|das)\s/i.exec(String(t||''));
+  if(a){const r=a[1].toLowerCase();return `<em class="kq-lv art a-${r}">${r}</em>`;}
+  const b=wlvText(t,L);return b?`<em class="kq-lv l-${CEFR[b-1].toLowerCase()}" title="Уровень ${CEFR[b-1]}">${CEFR[b-1]}</em>`:'<em class="kq-lv no"></em>';};   // нет уровня (своё слово) — пустое место, чтобы строки стояли ровно
 const wiGet=(w,L)=>{const D=WI[L];if(!D||!w)return null;const n=String(w).toLowerCase().replace(/’/g,"'"),b=n.replace(/'s$/,'');return D[n]||D[b]||D[n.replace(/'/g,'')]||null;};
 const wiHTML=(w,L,w2)=>{const x=wiGet(w,L)||(w2?wiGet(w2,L):null);if(!x)return '';const [d,ex]=x;
   return `<div class="kwp-wi"><p>${esc(d)}</p>${(ex||[]).slice(0,2).map(e=>`<span class="kwp-wx"><b>${esc(e[0])}</b><small>${esc(e[1])}</small></span>`).join('')}</div>`;};
@@ -3963,7 +3977,7 @@ function dlLoad(){if(window.DL&&DL.V&&DL.V.length)return Promise.resolve();if(dl
     const s=document.createElement('script');s.src='js/dictlab.js?v='+APP_V;s.onload=()=>ok();s.onerror=()=>{dlLoad.p=null;l.remove();no(new Error('dictlab'));};document.body.appendChild(s);});return dlLoad.p;}
 // 13.9.13: словарь у всех — новый (бывшая лаборатория, вариант «kino»: Кинотека + «Мои фразы и слова»); код и стили грузятся при первом заходе (dlLoad)
 function dictTabHTML(){return `<div class="dl-root" id="dlRoot"><div class="dl-wait">Загружаю словарь…</div></div>`;}
-function bindDict(){setTimeout(()=>{const L=DX.lang==='de'?'de':'en';wiLoad(L);cxLoad(L);},1500);dlLoad().then(()=>{const r=$('#dlRoot');if(r)DL.mount(r);}).catch(()=>{const r=$('#dlRoot');if(r)r.innerHTML='<div class="dl-wait">Не загрузилось — проверь связь</div>';});}
+function bindDict(){setTimeout(()=>{const L=DX.lang==='de'?'de':'en';wiLoad(L);cxLoad(L);},1500);Promise.all([dlLoad(),ndOn()?wlvLoad():null]).then(()=>{const r=$('#dlRoot');if(r)DL.mount(r);}).catch(()=>{const r=$('#dlRoot');if(r)r.innerHTML='<div class="dl-wait">Не загрузилось — проверь связь</div>';});}
 const mywLearned=x=>(x.st||0)>=3&&!(x.due&&x.due<=Date.now());
 function renderMyWords(){DX.seg='my';store.knMyKind='w';try{if(window.DL&&DL.KN&&DL.KN.my)DL.KN.my.tag=null;}catch(e){}renderTab('dict');}   // 13.8.7: в новом словаре — сразу «Слова», меню подборок
 const mywWhen=t=>{const h=(t-Date.now())/36e5;return h<12?'через пару часов':h<36?'завтра':`через ${Math.round(h/24)} ${plural(Math.round(h/24),['день','дня','дней'])}`;};
@@ -6865,12 +6879,14 @@ const LT_G={en:[[1,'She ___ to work every day.',['goes','go','going']],[1,'Yeste
  de:[[0,'___ Kaffee ist heiß.',['Der','Die','Das']],[1,'Ich ___ gestern ins Kino gegangen.',['bin','habe','werde']],
   [2,'Ich helfe ___ Mann.',['dem','den','der']],[3,'Wenn ich Zeit ___, würde ich kommen.',['hätte','habe','hatte']]]};
 let ONB=null;
-const onbHTML=(n,body,foot)=>`<div class="onb"><div class="onb-top"><button class="onb-b" id="onbB" aria-label="Назад"${n?'':' hidden'}>${ui('back')}</button><div class="onb-dots">${[0,1,2,3,4].map(i=>`<i class="${i<n?'d':i===n?'on':''}"></i>`).join('')}</div><span class="onb-n">${n+1} из 5</span></div>
+const onbHTML=(n,body,foot)=>`<div class="onb"><div class="onb-top"><button class="onb-b" id="onbB" aria-label="Назад"${n||ONB.re?'':' hidden'}>${ui('back')}</button><div class="onb-dots">${[0,1,2,3,4].map(i=>`<i class="${i<n?'d':i===n?'on':''}"></i>`).join('')}</div>${n<4?`<button class="onb-skip" id="onbSkip">${ONB.re?'Закрыть':'Пропустить'}</button>`:`<span class="onb-n">5 из 5</span>`}</div>
   <div class="onb-body">${body}</div>${foot?`<div class="onb-foot">${foot}</div>`:''}</div>`;
-function onbBack(){if(!ONB)return;if(ONB.st===1&&ONB.lt&&ONB.lt.ph!=='intro'){ONB.lt=null;renderOnb(1);return;}if(ONB.st>0)renderOnb(ONB.st-1);}
-function onbMount(n,body,foot){ONB.st=n;screen='onb';backBtn(n>0);mount(onbHTML(n,body,foot),'onbscr');const b=$('#onbB');if(b)b.onclick=()=>{sfx('tap');onbBack();};
+function onbQuit(){if(!ONB)return;if(ONB.re){ONB=null;renderSettings();return;}onbFinish();}   // 13.9.29: повтор из Настроек — закрыть; новичок — пропустить вопросы, сразу сцена
+function onbBack(){if(!ONB)return;if(ONB.st===0&&!ONB.lt){if(ONB.re)onbQuit();return;}if(ONB.st===1&&ONB.lt&&ONB.lt.ph!=='intro'){ONB.lt=null;renderOnb(1);return;}if(ONB.st>0)renderOnb(ONB.st-1);}
+function onbMount(n,body,foot){ONB.st=n;screen='onb';backBtn(n>0||ONB.re);mount(onbHTML(n,body,foot),'onbscr');const b=$('#onbB');if(b)b.onclick=()=>{sfx('tap');onbBack();};
+  const q=$('#onbSkip');if(q)q.onclick=()=>{sfx('tap');onbQuit();};
   if(fxOK())$$('.onb-body>*,.onb-foot').forEach((x,k)=>x.animate([{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:520,delay:40+k*70,easing:'cubic-bezier(.2,.9,.25,1)',fill:'backwards'}));}
-function renderOnb(n){if(!ONB)ONB={st:0,lang:kinoLang(),goal:null,cefr:null,min:10,daily:store.daily!==false};n=n||0;const O=ONB,nm=((userName()||'').trim().split(/\s+/)[0])||'';
+function renderOnb(n){if(!ONB)ONB={st:0,lang:kinoLang(),goal:null,cefr:null,min:10,daily:store.daily!==false,re:!!store.onboarded};n=n||0;const O=ONB,nm=((userName()||'').trim().split(/\s+/)[0])||'';
   if(n===0){
     onbMount(0,`<h1 class="onb-h">Зачем тебе <span class="mk">${O.lang==='de'?'немецкий':'английский'}</span>?</h1>
       <div class="onb-lg">${['en','de'].map(l=>`<button data-l="${l}" class="${O.lang===l?'on':''}">${FLAG[l]} ${l==='en'?'English':'Deutsch'}</button>`).join('')}</div>

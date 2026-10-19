@@ -6192,3 +6192,6 @@ body.nofx :is(.mk,.onb-hw,.onb-bot,.onb-dc.c,.onb-card,.onb-dots i.on::after){an
 .onb-grid button small{font-size:9px;overflow-wrap:anywhere}
 body.nd:not(.tabs-on) .tabbar{opacity:0;pointer-events:none}
 .onb-bot{max-width:440px}
+/* 13.9.29 — первый запуск: «Пропустить» / «Закрыть» вместо «N из 5» (прогресс и так видно по чёрточкам) */
+.onb-skip{flex:none;height:36px;padding:0 4px;border:0;background:none;color:var(--lk-ink3);font:700 13.5px var(--lk-f);cursor:pointer}
+.onb-skip:active{opacity:.6}

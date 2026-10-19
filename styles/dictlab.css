@@ -1425,3 +1425,13 @@ body[data-look="zhurnal"]:not(#_) .kn-ep{box-shadow:inset 0 0 0 1px var(--lk-lin
 body[data-look="zhurnal"]:not(#_) .kq2 .kq-en{font:400 18px/1.4 var(--lk-fh)}
 body[data-look="zhurnal"]:not(#_) .kq2 .kq-en .sw.u,body[data-look="zhurnal"]:not(#_) .kl-t .sw.u{text-decoration-color:var(--lk-red)}
 body[data-look="zhurnal"]:not(#_) .km6-by button.on::after{background:var(--lk-red)}
+
+/* ==== 13.9.29 — «Новый»: метка слева у строки словаря — уровень A1–C1 (по самому редкому слову фразы) или артикль der/die/das цветом у немецкого слова ==== */
+.kq-lv{display:none}
+body[data-look="nd"]:not(#_) .kq2 .kq-lv{display:inline-grid;place-items:center;flex:none;min-width:30px;height:21px;margin-top:1px;padding:0 6px;border-radius:7px;font:800 10.5px/1 var(--lk-f,Manrope,sans-serif);font-style:normal;letter-spacing:.02em;
+  color:var(--lc,#888);background:color-mix(in srgb,var(--lc,#888) 15%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--lc,#888) 30%,transparent)}
+body[data-look="nd"]:not(#_) .kq2 .kq-lv.art{color:#fff;background:var(--ac);box-shadow:none;min-width:34px;font-size:11px;text-transform:lowercase}
+body[data-look="nd"]:not(#_) .kq-lv.a-der{--ac:#2F7DE1}body[data-look="nd"]:not(#_) .kq-lv.a-die{--ac:#E0533D}body[data-look="nd"]:not(#_) .kq-lv.a-das{--ac:#2FA66A}
+body[data-look="nd"]:not(#_) .kq2.lock .kq-lv{display:none}
+body[data-look="nd"]:not(#_) .kq2 .kq-lv.no{visibility:hidden}
+body[data-look="nd"][data-ndt="light"]:not(#_) .kq2 .kq-ru i{color:var(--lk-ink3,#8b877d)}
