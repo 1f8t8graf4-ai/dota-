@@ -253,6 +253,7 @@ function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(FLAG_
   // 13.9.26: «Новый» — на всех экранах, кроме игр (Дота, CS, «Шпион», турнир, карточная дуэль); пробы 13.9.22 — как были
   const c=cls||'',tabG=/\btabscr\b/.test(c)&&(screen==='subtab'||['games','spy','arena'].includes(store.tab));
   const on=k&&(k==='nd'?!ND_GAME.test(c)&&!tabG:/\btabscr\b/.test(c)&&screen==='home'&&['learn','kino','dict'].includes(store.tab)||/\bscnscr\b/.test(c)&&['scene','scep','scq'].includes(b.dataset.scr));
+  if(k==='nd')ndCss();   // 13.9.37: стиль макета — лениво
   b.dataset.ndk=k==='nd'&&(ND_DARK.test(c)||/\bscnscr\b/.test(c)&&['scep','dircut'].includes(b.dataset.scr))?'1':'';   // витрины и плеер — всегда тёмные
   b.classList.toggle('nd',k==='nd');ndTabs(k==='nd');
   // 13.9.33 (P0.1): в «Новом» 3D-зала нет — он закрывал фон светлой темы на ПК; store.bg3d не трогаем, «Как было» — снова как в настройках
@@ -266,8 +267,8 @@ const ndOn=()=>{try{return !!FLAG_ADMIN&&(store.look==='nd'||store.lookV!==2);}c
 function ndDark(){try{if(TG&&TG.colorScheme)return TG.colorScheme==='dark';}catch(e){}try{return matchMedia('(prefers-color-scheme: dark)').matches;}catch(e){return true;}}
 function ndTheme(){const b=document.body;if(!b||b.dataset.look!=='nd')return;const t=ndDark()||b.dataset.ndk==='1'?'dark':'light';/* эпизод с плеером — всегда тёмный */if(b.dataset.ndt!==t){b.dataset.ndt=t;try{tgHead();}catch(e){}}}
 try{if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>ndTheme());}catch(e){}
-const ND_TABS={learn:['Сегодня','<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M8.5 14.5l2.2 2 4.8-4.8"/>'],kino:['Кино','<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 9.5h18M7.5 5l2 4.5M12.5 5l2 4.5M17.5 5l2 4.5"/>'],
-  dict:['Словарь','<path d="M6.5 4h11a1 1 0 0 1 1 1v15l-6.5-3.4L5.5 20V5a1 1 0 0 1 1-1z"/>'],profile:['Профиль','<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>']};
+const ND_TABS={learn:['Сегодня','<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>'],kino:['Кино','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 5l2 4M12 5l2 4M17 5l2 4"/>'],
+  dict:['Словарь','<path d="M6 4h11a1 1 0 0 1 1 1v15l-6-3-6 3V5a1 1 0 0 1 1-1z"/>'],profile:['Профиль','<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>']};   // 13.9.37: значки из макета
 let NDT=null;
 function ndTabs(on){const nav=document.getElementById('tabbar');if(!nav||NDT===on)return;NDT=on;
   nav.querySelectorAll('button').forEach(b=>{const t=TABS.find(x=>x.id===b.dataset.nav);if(!t)return;const n=on&&ND_TABS[t.id];
@@ -281,9 +282,35 @@ function ndPull(el,go){const k=el.querySelector('.ndpull-k'),f=el.querySelector(
   const up=()=>{if(x0==null)return;x0=null;el.classList.remove('drag');if(dx>=max*.7)fire();else{set(0,true);if(dx<8){el.classList.remove('nudge');void el.offsetWidth;el.classList.add('nudge');haptic('light');}}dx=0;};
   el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('lostpointercapture',up);
   el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fire();}};}
-// «Сегодня» в «Новом»: «Фраза дня» — одной строкой (кадр, фраза, перевод), тап — момент из фильма
-function ndPodHTML(){const x=phraseOfDay();if(!x)return '';const {s,f}=x,en=s.lang==='de'?f.de:scT(f);
-  return `<button class="ndrow anim" onclick="momOpen('${s.id}',${f.pi},${f.a})"><i class="ndrow-th" style="background-image:url('${assetUrl(scEpKey(s,f.pi,'jpg'))}'),url('${assetUrl(scKey(s,'cover.jpg'))}')"></i><span><small>Фраза дня · ${esc(dictFilm(s))}</small><b>${esc(en)}</b><em>${esc(f.ru)}</em></span><u>${ui('fwd')}</u></button>`;}
+// 13.9.37 (ТЗ-13.9.32, P2 экран 6): «Сегодня» как в макете (дизайн/макеты-13.9.24.html, .cell 6). Стиль — styles/nd.css (лениво, ndCss), классы n-*.
+// Шапка: буква в круге, «Добрый день, Андрей», «B1 · цель — работа», 🔥 и кольцо цели дня; план на кадре фильма с «Потяни»; строки «Фраза дня» и «Смотреть дальше»
+function ndCss(){if(document.getElementById('ndcss'))return;const l=document.createElement('link');l.id='ndcss';l.rel='stylesheet';l.href='styles/nd.css?v='+APP_V;
+  l.onload=l.onerror=()=>document.body.classList.add('ndc');document.head.appendChild(l);setTimeout(()=>document.body.classList.add('ndc'),3000);}
+const ND_GOAL={work:'работа',travel:'путешествия',films:'кино без перевода',move:'переезд',self:'для себя'};
+function ndNext(c){const sh=x=>x.show||x.title,ok=x=>x.kind!=='clip'&&flagOf('scene-'+x.id)==='on'&&!ageLock(x)&&scLang(x)===scLang(c.s)&&sh(x)!==sh(c.s);
+  const todo=x=>{const P=scP(x.id);return x.parts.findIndex((p,k)=>!P.done.includes(k));},go=x=>{const P=scP(x.id);return P.done.length||Object.keys(P.w||{}).length?1:0;};
+  const lv=CEFR.indexOf(store.cefr||'')+1||(store.lvl==='a'?2:3),L=SCENES.filter(x=>ok(x)&&todo(x)>=0).sort((a,b)=>go(b)-go(a)||Math.abs((a.lvl||3)-lv)-Math.abs((b.lvl||3)-lv));
+  return L.length?{s:L[0],i:todo(L[0])}:null;}
+function ndTodayHTML(){
+  const c=continueScene(),s=c.s,p=s.parts[c.i],d=dayStat(),goal=store.goal||20,gp=Math.min(100,Math.round(d.n/goal*100)),st=streakNow(),n=dailyItems().length;
+  const hr=new Date().getHours(),hi=hr<5?'Доброй ночи':hr<12?'Доброе утро':hr<18?'Добрый день':'Добрый вечер',nm=(userName()||'').trim().split(/\s+/)[0];
+  const lv=store.cefr||(store.lvl==='a'?'A2':store.lvl==='b'?'B1':''),gw=ND_GOAL[store.goalWhy],sub=[lv,gw?'цель — '+gw:''].filter(Boolean).join(' · ')||'План на сегодня готов';
+  const ok=d.n>=goal,risk=st>0&&store.lastDay!==new Date().toDateString(),bdi=filmImg(s,innerWidth>=1000?'bd.jpg':'bdm.jpg'),cf=cefrOf(s),mins=Math.max(2,Math.round((p.b-p.a)/60+2));
+  const th=(x,i)=>`style="background-image:url('${assetUrl(scEpKey(x,i,'jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"`;
+  const pod=phraseOfDay(),nx=ndNext(c);
+  return `<div class="n-scr n-today">
+    <div class="n-hello"><div class="n-ava">${esc((nm||'Я').charAt(0).toUpperCase())}</div><div><b>${hi}${nm?', '+esc(nm):''}</b><span>${esc(sub)}</span></div>
+      <div class="n-fire${risk?' risk':''}"><i>🔥</i><i>${st}</i></div><button class="n-ring${ok?' ok':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 38 38"><circle class="bgc" cx="19" cy="19" r="15.9" pathLength="100"/><circle class="fg" cx="19" cy="19" r="15.9" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></div>
+    <section class="n-hero" id="hHero" data-sc="${s.id}"><div class="n-bgi" style="background-image:${bdi?`url('${bdi}'),`:''}url('${assetUrl(scKey(s,'cover.jpg'))}')"></div>
+      <div class="n-eb">${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'План на сегодня'}</div>
+      <h3>Эпизод <em>«${esc(p.t)}»</em>${n?` и ${n} ${plural(n,['повторение','повторения','повторений'])}`:''}</h3>
+      <div class="n-meta"><span class="n-chip ${cf.toLowerCase()}">${cf}</span><span class="n-t">≈ ${mins} мин</span><span class="n-t">${esc(s.show||s.title)}</span></div>
+      <div class="n-pull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></i></div>
+    </section>
+    ${pod?`<button class="n-row" data-go="pod"><div class="n-th" ${th(pod.s,pod.f.pi)}></div><div><small>Фраза дня</small><b>${esc(pod.s.lang==='de'?pod.f.de:scT(pod.f))} — ${esc(pod.f.ru)}</b></div><span class="n-cv">›</span></button>`:''}
+    ${nx?`<button class="n-row" data-go="next" data-sc="${nx.s.id}" data-i="${nx.i}"><div class="n-th" ${th(nx.s,nx.i)}></div><div><small>Смотреть дальше</small><b>${esc(nx.s.show||nx.s.title)} · ${esc(nx.s.parts[nx.i].t)}</b></div><span class="n-cv">›</span></button>`:''}
+    ${n?`<button class="n-row" data-go="rev"><div class="n-th" ${th(s,c.i)}></div><div><small>Повторить</small><b>Фразы и слова · ≈ ${Math.max(2,Math.round(n*0.4))} мин</b></div><span class="n-cnt">${n}</span></button>`:''}
+  </div>`;}
 const ndYear=s=>{const m=String(s.ep||'').match(/(19|20)\d\d/);return m?m[0]:'';};
 // итог эпизода в «Новом»: звёзды по одной со звоном и искрами, при 3★ — дождь конфетти; «8 / 8» набегает
 function ndResultFX(stars){if(!fxOK())return;const S=[...document.querySelectorAll('.res-stars i')];
@@ -2461,7 +2488,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.36';
+const APP_V='13.9.37';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -6059,6 +6086,7 @@ function dayGoalHTML(d,goal,gp,st){const ok=d.n>=goal,today=store.lastDay===new 
     <span class="hh-dt"><b>${st?`🔥 ${st} ${plural(st,['день','дня','дней'])}`:'🔥 Серия'}</b><small>${ok?'Цель дня выполнена':risk?'Ответь хоть раз — иначе серия сгорит в полночь':st?`подряд · сегодня ещё ${goal-Math.min(d.n,goal)}`:'ответь на любой вопрос — начни серию'}</small></span></button>`;}
 function learnTabHTML(){
   setWorld('neutral');CURW='dota';
+  if(ndOn())return ndTodayHTML();   // 13.9.37: «Новый» — экран 6 макета
   // 8.7: главная — только главное. Продолжить → Сегодня (одно главное действие) → два входа (мои слова, словарь) → фраза дня → кинозал.
   const c=continueScene(),s=c.s,p=s.parts[c.i],L=scLearned(s),T=scTotal(s);
   const d=dayStat(),goal=store.goal||20,gp=Math.min(100,Math.round(d.n/goal*100)),les=scLessonScene();
@@ -6087,23 +6115,6 @@ function learnTabHTML(){
     return (hk==='iv'?`<div class="hsec anim"><h2>Интервью</h2><button class="hlink" id="hAllIv">Все интервью →</button></div>`:hk==='de'?`<div class="hsec anim"><h2>${FLAG.de} Auf Deutsch</h2><button class="hlink" id="hAllDe">Все на немецком →</button></div>`:'')+`<div class="hrow">${(()=>{const G=[],by={};for(const x of HS){const k=x.show||x.title;if(!by[k]){by[k]=[];G.push(k);}by[k].push(x);}
       return G.map(k=>{const L=by[k],x=L[0],l=L.reduce((a,y)=>a+scLearned(y),0),t=L.reduce((a,y)=>a+scTotal(y),0),eps=L.reduce((a,y)=>a+y.parts.length,0);
         return `<button class="hposter ${x.theme} anim${L.every(y=>scMasterPct(y)===100)?' mastered':''}" ${L.length>1?`data-show="${esc(k)}"`:`data-sc="${x.id}"`}><span class="kp-img" style="background-image:url('${assetUrl(scKey(x,'poster.jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"></span><span class="kp-grad"></span>${lvcHTML(L.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,L[0]))}<span class="kp-t"><b>${esc(k)}</b><small>${L.length>1?L.length+' '+plural(L.length,['сцена','сцены','сцен'])+' · ':''}${eps} ${plural(eps,['эпизод','эпизода','эпизодов'])}</small><span class="kp-bar"><i style="width:${t?Math.round(l/t*100):0}%"></i></span></span></button>`;}).join('');})()}</div>`;}).join('')}`;
-  // 13.9.24 «Новый»: приветствие с кольцом цели дня, один план на кадре фильма и «Потяни, чтобы начать» (как у Germanize)
-  if(ndOn()){const hr=new Date().getHours(),hi=hr<5?'Доброй ночи':hr<12?'Доброе утро':hr<18?'Добрый день':'Добрый вечер',nm=(userName()||'').trim().split(/\s+/)[0],photo=tgPhoto();
-    const mins=Math.max(2,Math.round((p.b-p.a)/60+2)),ok=d.n>=goal,risk=st>0&&store.lastDay!==new Date().toDateString();
-    return `<div class="home ndhome">
-    <header class="ndh anim"><div class="ndh-a${photo?'':' mono'}"${photo?` style="background-image:url('${esc(photo)}')"`:''}>${photo?'':esc((nm||'И').charAt(0).toUpperCase())}</div>
-      <div class="ndh-t"><b>${hi}${nm?', '+esc(nm):''}</b><span>${st?`🔥 ${st} ${plural(st,['день','дня','дней'])} подряд`:'Серия начнётся с первого ответа'}${risk?' · <em>сгорит в полночь</em>':''}</span></div>
-      <button class="ndring${ok?' ok':''}${risk?' risk':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 40 40"><circle class="bg" cx="20" cy="20" r="16" pathLength="100"/><circle class="fg" cx="20" cy="20" r="16" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></header>
-    <section class="ndp anim" id="hHero" data-sc="${s.id}">
-      <span class="ndp-img" style="background-image:${bdi?`url('${bdi}'),`:''}url('${assetUrl(scKey(s,'cover.jpg'))}')"></span><span class="ndp-gr"></span>
-      <div class="ndp-in">
-        <em class="ndp-eb">${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'План на сегодня'}</em>
-        <h1 class="ndp-t">Эпизод <i>«${esc(p.t)}»</i></h1>
-        <div class="ndp-m">${lvcHTML(s)}<span>≈ ${mins} мин</span><span>${esc(s.title)}</span></div>
-        <div class="ndpull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k">${ui('fwd')}</i></div>
-      </div>
-    </section>
-    ${rev2}${ndPodHTML()}</div>`;}
   return `<div class="home home2">${headHTML()}${hmChipHTML()}
     <section class="hh ${s.theme} anim" id="hHero" data-sc="${s.id}">
       ${dayGoalHTML(d,goal,gp,st)}
@@ -6125,9 +6136,10 @@ function bindLearn(){
   bindHead();setTimeout(()=>{unlockSheet();setTimeout(pollMaybe,400);},600);   // 13.9.19: первый пройденный эпизод — «Открылось: …»; после 3-го — опрос
   const c=continueScene();
   if($('#hCont'))$('#hCont').onclick=()=>{haptic('medium');renderScEp(c.s.id,c.i);};
-  {const h=$('#hHero');if(h)h.onclick=e=>{if(e.target.closest('button,.ndpull'))return;sfx('tap');renderScene(c.s.id);};}
+  {const h=$('#hHero');if(h)h.onclick=e=>{if(e.target.closest('button,.ndpull,.n-pull'))return;sfx('tap');renderScene(c.s.id);};}
   {const pl=$('#ndPull');if(pl)ndPull(pl,()=>renderScEp(c.s.id,c.i));
-   const r=$('.ndring');if(r&&fxOK()){r.classList.add('rg0');requestAnimationFrame(()=>requestAnimationFrame(()=>r.classList.remove('rg0')));}}   // кольцо заполняется при входе   // 13.9.13: нажал на кадр — страница сцены
+   $$('.n-row[data-go]').forEach(b=>b.onclick=()=>{haptic('light');sfx('tap');const g=b.dataset.go;if(g==='pod'){const x=phraseOfDay();if(x)momOpen(x.s.id,x.f.pi,x.f.a);}else if(g==='next')renderScEp(b.dataset.sc,+b.dataset.i);else renderDaily();});
+   const r=$('.ndring,.n-ring');if(r&&fxOK()){r.classList.add('rg0');requestAnimationFrame(()=>requestAnimationFrame(()=>r.classList.remove('rg0')));}}   // кольцо заполняется при входе   // 13.9.13: нажал на кадр — страница сцены
   if($('#hLesson'))$('#hLesson').onclick=()=>{haptic('medium');startScLesson();};
   if($('#hRev'))$('#hRev').onclick=()=>{haptic('medium');renderDaily();};
   $$('.hrev2').forEach(b=>b.onclick=()=>{haptic('medium');if(b.dataset.go==='les')startScLesson();else renderDaily();});   // 13.9.22: строка под кадром в видах на пробу
@@ -6467,7 +6479,7 @@ function ndGrow(box){if(!box||!box.animate||!ndMo())return;const r=box.getBoundi
 const ND_GROW=[['sc-sheetwrap',w=>w.firstElementChild],['pfv',w=>w.querySelector('.pfv-box')],['pwa',w=>w.firstElementChild],['modal',w=>w.querySelector('.card')||w.firstElementChild]];
 function ndGrowWatch(){try{new MutationObserver(M=>{if(!ndMo())return;for(const m of M)for(const n of m.addedNodes){if(n.nodeType!==1)continue;const g=ND_GROW.find(x=>n.classList.contains(x[0]));if(g)ndGrow(g[1](n));}}).observe(document.body,{childList:true});}catch(e){}}
 if(document.body)ndGrowWatch();else document.addEventListener('DOMContentLoaded',ndGrowWatch);
-const ND_TABI=['learn','kino','dict','profile'],ND_CASC='.kposter,.pn,.ndl,.ndrow,.checkrow,.ad2-it,.ss-card,.kv-row';
+const ND_TABI=['learn','kino','dict','profile'],ND_CASC='.n-row,.kposter,.pn,.ndl,.ndrow,.checkrow,.ad2-it,.ss-card,.kv-row';
 function ndCascade(root){if(!root)return;const L=[...root.querySelectorAll(ND_CASC)].filter(e=>!e.getAnimations().length&&e.getBoundingClientRect().top<innerHeight).slice(0,8),big=!rmOn();
   L.forEach((e,i)=>{try{e.animate([{transform:`translateY(${big?14:6}px)`,opacity:0},{transform:'none',opacity:1}],{duration:big?380:180,delay:i*70,easing:big?SPRING:'ease-out',fill:'backwards'});}catch(_){}});}
 function ndScreenIn(cls){const tab=/\btabscr\b/.test(cls||''),key=(cls||'')+'|'+screen+'|'+(document.body.dataset.scr||'')+'|'+(tab?store.tab:''),cur={tab,t:tab?store.tab:null,key};

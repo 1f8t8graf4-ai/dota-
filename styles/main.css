@@ -6298,3 +6298,6 @@ body[data-look="nd"][data-ndt="light"]:not(#_) .sc-q .qsm .mk{background:var(--n
 .sc-wtip{width:max-content;max-width:min(320px,calc(100% - 12px));white-space:normal}
 .sc-wtip span{margin-top:2px}
 .kwp-g span{font-size:13px;line-height:1.4}
+
+/* ==== 13.9.37 — «Новый» по макетам: стиль экранов n-* — styles/nd.css (лениво, ndCss); пока он не загрузился, их не видно ==== */
+body.nd:not(.ndc) .n-scr{opacity:0}
