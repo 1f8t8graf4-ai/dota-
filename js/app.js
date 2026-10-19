@@ -255,6 +255,8 @@ function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(FLAG_
   const on=k&&(k==='nd'?!ND_GAME.test(c)&&!tabG:/\btabscr\b/.test(c)&&screen==='home'&&['learn','kino','dict'].includes(store.tab)||/\bscnscr\b/.test(c)&&['scene','scep','scq'].includes(b.dataset.scr));
   b.dataset.ndk=k==='nd'&&(ND_DARK.test(c)||/\bscnscr\b/.test(c)&&['scep','dircut'].includes(b.dataset.scr))?'1':'';   // витрины и плеер — всегда тёмные
   b.classList.toggle('nd',k==='nd');ndTabs(k==='nd');
+  // 13.9.33 (P0.1): в «Новом» 3D-зала нет — он закрывал фон светлой темы на ПК; store.bg3d не трогаем, «Как было» — снова как в настройках
+  try{const bl=k==='nd';if(window.BG3D&&BG3D.block!==bl){const was=BG3D.block;BG3D.block=bl;if(bl)BG3D.enable(false);else if(was||BG3D.ready)BG3D.enable(store.bg3d===true);}}catch(e){}
   if(on){if(b.dataset.look!==k)b.dataset.look=k;lookFont(k);if(k==='nd')ndTheme();else delete b.dataset.ndt;}else{if(b.dataset.look)delete b.dataset.look;delete b.dataset.ndt;}}
 // 13.9.24 — редизайн «Новый» (рабочее название приложения «Без субтитров», макеты Germanize): светлый или тёмный — как тема Telegram
 // (плеер всегда тёмный), вкладки «Сегодня · Кино · Словарь · Профиль» (игры — из Профиля), «Сегодня» — один план на кадре и «Потяни, чтобы начать».
@@ -512,7 +514,7 @@ function uiClean(cls){try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
   if(!scn)try{if(SV)scStop();}catch(e){}}
 function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);try{document.body.classList.toggle('newb',newbie());}catch(e){}if(!tab)paintTabbar(null);try{lookApply(cls);}catch(e){}app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}
-  try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}tgHead();try{phScreen();}catch(e){}}
+  try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}tgHead();try{phScreen();}catch(e){}try{ndScreenIn(cls);}catch(e){}}
 function applyFx(){
   document.body.classList.toggle('nofx',!store.fx);applySubPrefs();
   if(!document.body.dataset.world)setWorld('neutral');
@@ -1650,7 +1652,7 @@ function renderSettings(){
       ${row('autoSc','Само дальше','После верного ответа и на паузах в фильме — переход сам, кнопка заполняется. Тронул карточку или слово — ждёт тебя.')}
       ${row('wpopFull','Окошко слова — сразу всё','Нажал на слово — сразу объяснение, примеры и вся реплика. Выключено — коротко: что слово значит тут, остальное под «Подробнее».')}
       ${row('typeIn','Писать самому','В заданиях печатать слово или фразу с клавиатуры. Выключено — только кнопки и кубики.')}
-      ${row('bg3d','3D-фон вместо фото','По умолчанию фоном — кадр из фильма. Можно включить нарисованную 3D-сцену.')}
+      ${ndOn()?'':row('bg3d','3D-фон вместо фото','По умолчанию фоном — кадр из фильма. Можно включить нарисованную 3D-сцену.')}
       ${row('age18','Показывать сцены 18+','Откровенные интервью: секс, порно, таблетки. Включая, подтверждаешь, что тебе есть 18.')}</div>
       <p class="hint-line" style="margin-top:12px">Как смотреть сцены</p>
       ${segCtl('scPause',[['on','⏸ С паузами'],['off','▶ Без пауз']],scPauseOn()?'on':'off')}
@@ -2459,7 +2461,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.32';
+const APP_V='13.9.33';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -5940,7 +5942,12 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
   if(sec==='player'){mnt(`${head('Я как игрок')}${admPlHTML()}`);admPlBind();
     $$('.adm-tg').forEach(b=>b.onclick=e=>{e.stopPropagation();const f=b.nextElementSibling;const open=f.hidden;f.hidden=!open;b.classList.toggle('open',open);sfx('tap');});return;}
   if(sec==='anim'){const SV=[['kino','Кино'],['ios','Как в iPhone'],['cs','Прежние']];if(!ADM_SV)ADM_SV=SFXF[sfxCur()]?sfxCur():'kino';
-    mnt(`${head('Анимации')}<p class="ad2-note">Нажми «▶» — анимация проиграется и закроется сама.</p><div class="ad2-list">${ADM_ANIMS.map(a=>`<button class="ad2-it" data-an="${a.id}"><span><b>${a.n}</b><small>${a.d}</small></span><i class="ad2-play">${SI.play}</i></button>`).join('')}</div>
+    const yn=(v,a,b)=>`<b class="${v?'y':'n'}">${v?a:b}</b>`,lite=document.documentElement.classList.contains('lite');
+    mnt(`${head('Анимации')}<div class="ad2-why" id="admWhy"><h3>Почему может не быть анимаций</h3>
+      <p><span>Система просит меньше движения</span>${yn(rmOn(),'да','нет')}</p><p><span>ПК-облегчённый режим (lite)</span>${yn(lite,'да','нет')}</p>
+      <p><span>Анимации в настройках</span>${yn(store.fx!==false,'вкл','выкл')}</p><p><span>3D-фон</span>${yn(store.bg3d===true,'вкл','выкл')}</p>
+      <small>${rmOn()?'Система просит меньше движения — большие эффекты (наезды, конфетти, полёты) выключены, появление и отклик остаются. Включить всё: Windows — Параметры → Специальные возможности → Визуальные эффекты → «Эффекты анимации»; iPhone — Универсальный доступ → Движение → «Уменьшение движения».':store.fx===false?'Анимации выключены в Настройках.':'Всё включено.'}</small></div>
+      <p class="ad2-note">Нажми «▶» — анимация проиграется и закроется сама.</p><div class="ad2-list">${ADM_ANIMS.map(a=>`<button class="ad2-it" data-an="${a.id}"><span><b>${a.n}</b><small>${a.d}</small></span><i class="ad2-play">${SI.play}</i></button>`).join('')}</div>
       <h3 class="ad2-h">Звуки</h3><p class="ad2-note">Набор только для прослушивания — у игроков свой (Магазин → Звуки, по умолчанию «Кино»). Играет, даже если звук в настройках выключен.</p>
       <div class="lab-chips ad2-sv">${SV.map(([k,l])=>`<button data-sv="${k}" class="${k===ADM_SV?'on':''}">${l}</button>`).join('')}</div>
       <div class="ad2-sfx">${SFX_EV.map(n=>`<button data-sn="${n}"><i>${SI.play}</i><span>${SFX_N[n]||n}</span></button>`).join('')}</div>`);
@@ -6089,6 +6096,7 @@ function bindLearn(){
   if($('#best'))$('#best').onclick=()=>{haptic('medium');play('best','mode','words');};
 }
 function onBack(){
+  ND_BACK=Date.now();   // 13.9.33: экран «назад» приходит слева
   if(screen==='onb'){onbBack();return;}   // 13.9.28: первый запуск — шаг назад
   if(screen==='prem'){(PREM.back||(()=>renderTab('learn')))();return;}   // 13.9.30: экран премиума
   {const g=document.querySelector('.gatewrap');if(g){g.click();return;}}   // аудит: окно «Технический перерыв / Скоро» закрывается «назад»
@@ -6339,7 +6347,7 @@ function navHere(){if(document.querySelector('#dlRoot')&&window.DL){const d=Obje
     return ()=>{Object.assign(DX,d);Object.assign(DL.S,s);if(my&&DL.KN&&DL.KN.my)Object.assign(DL.KN.my,my);renderTab('dict');setTimeout(()=>window.scrollTo(0,y),80);};}
   if(screen==='search'){const q=($('#srq')||{}).value||'';return ()=>renderSearch(q);}
   if(screen==='home'){const t=store.tab;return ()=>renderTab(t);}return null;}
-function navBack(){const f=NAV_BACK;NAV_BACK=null;if(!f)return false;sfx('tap');f();return true;}
+function navBack(){ND_BACK=Date.now();const f=NAV_BACK;NAV_BACK=null;if(!f)return false;sfx('tap');f();return true;}
 // 12.1: слово/фраза → момент в эпизоде. Тот же эпизод уже открыт — только перемотка (без нового <video> и мигания);
 // иначе эпизод открывается сразу с нужного места
 function srOpen(id,i,t){const s=scOf(id);if(!s||!s.parts[i])return;const off=Math.max(0,t-s.parts[i].a-0.4);
@@ -6384,6 +6392,37 @@ function gavEpisode(title,kind){return;if(!gavOn())return; const ev=kind==='bag'
 const EZ={out:'cubic-bezier(.16,1,.3,1)',in:'cubic-bezier(.7,0,.84,0)',io:'cubic-bezier(.65,0,.35,1)',back:'cubic-bezier(.34,1.56,.64,1)'};
 const SPRING=(()=>{try{if(window.CSS&&CSS.supports&&CSS.supports('animation-timing-function','linear(0, 1)')){const p=[];for(let i=0;i<=48;i++){const t=i/48;p.push((1-Math.exp(-5.2*t)*Math.cos(9.5*t)).toFixed(4));}p[p.length-1]='1';return 'linear('+p.join(',')+')';}}catch(e){}return EZ.back;})();
 const fxOK=()=>store.fx!==false;
+// 13.9.33 (P0.2, Андрей: «анимаций нет»): «меньше движения» в системе (Windows — «Эффекты анимации» выкл. или «Наилучшее быстродействие»; iPhone — «Уменьшение движения»)
+// раньше гасило ВСЕ анимации. Теперь гасим только большое движение: долгие (> 0,9 с) и бесконечные CSS-анимации (наезды, плывущий туман…), частицы, конфетти, полёты.
+// Появление, смена цвета и отклик на нажатие остаются. Главный выключатель — «Анимации» в Настройках (body.nofx).
+const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)');}catch(e){return null;}})();
+const rmOn=()=>!!(RMQ&&RMQ.matches);
+const fxBig=()=>fxOK()&&!rmOn();
+document.addEventListener('animationstart',e=>{if(!rmOn())return;const t=e.target;if(!t||!t.getAnimations)return;const pe=e.pseudoElement||'';
+  try{t.getAnimations({subtree:true}).forEach(a=>{const ef=a.effect;if(a.animationName!==e.animationName||!ef||ef.target!==t||(ef.pseudoElement||'')!==pe)return;const tm=ef.getTiming();
+    if(tm.iterations===Infinity||(+tm.duration||0)>900)a.cancel();});}catch(_){}},true);
+// ==== 13.9.33 (P0.2) — движение «Нового» в одном месте (раздел макета «Как всё будет двигаться») ====
+// шторки и окна растут из точки нажатия; экраны: вкладки — вбок по порядку, вглубь — справа, назад — слева; списки — каскадом (≤ 8, шаг 70 мс).
+// Только transform/opacity (правило 13.9.23). «Меньше движения» — короче и без сдвигов больше 8 px; «Анимации» выкл. — ничего.
+const ND_TAP={x:0,y:0,t:0};let ND_PREV=null,ND_BACK=0;
+document.addEventListener('pointerdown',e=>{ND_TAP.x=e.clientX;ND_TAP.y=e.clientY;ND_TAP.t=Date.now();},true);
+const ndMo=()=>fxOK()&&!!document.body&&document.body.classList.contains('nd');
+function ndGrow(box){if(!box||!box.animate||!ndMo())return;const r=box.getBoundingClientRect();if(!r.width)return;
+  const fresh=Date.now()-ND_TAP.t<1500,big=!rmOn(),dx=fresh?(ND_TAP.x-(r.left+r.width/2))*.45:0,dy=fresh?(ND_TAP.y-(r.top+r.height/2))*.45:28;
+  try{box.animate([{transform:big?`translate(${dx}px,${dy}px) scale(.84)`:'translateY(8px)',opacity:0},{transform:'none',opacity:1}],{duration:big?360:180,easing:big?SPRING:'ease-out'});}catch(e){}}
+const ND_GROW=[['sc-sheetwrap',w=>w.firstElementChild],['pfv',w=>w.querySelector('.pfv-box')],['pwa',w=>w.firstElementChild],['modal',w=>w.querySelector('.card')||w.firstElementChild]];
+function ndGrowWatch(){try{new MutationObserver(M=>{if(!ndMo())return;for(const m of M)for(const n of m.addedNodes){if(n.nodeType!==1)continue;const g=ND_GROW.find(x=>n.classList.contains(x[0]));if(g)ndGrow(g[1](n));}}).observe(document.body,{childList:true});}catch(e){}}
+if(document.body)ndGrowWatch();else document.addEventListener('DOMContentLoaded',ndGrowWatch);
+const ND_TABI=['learn','kino','dict','profile'],ND_CASC='.kposter,.pn,.ndl,.ndrow,.checkrow,.ad2-it,.ss-card,.kv-row';
+function ndCascade(root){if(!root)return;const L=[...root.querySelectorAll(ND_CASC)].filter(e=>!e.getAnimations().length&&e.getBoundingClientRect().top<innerHeight).slice(0,8),big=!rmOn();
+  L.forEach((e,i)=>{try{e.animate([{transform:`translateY(${big?14:6}px)`,opacity:0},{transform:'none',opacity:1}],{duration:big?380:180,delay:i*70,easing:big?SPRING:'ease-out',fill:'backwards'});}catch(_){}});}
+function ndScreenIn(cls){const tab=/\btabscr\b/.test(cls||''),key=(cls||'')+'|'+screen+'|'+(document.body.dataset.scr||'')+'|'+(tab?store.tab:''),cur={tab,t:tab?store.tab:null,key};
+  const p=ND_PREV,back=Date.now()-ND_BACK<900;ND_PREV=cur;ND_BACK=0;if(!p||p.key===key||!ndMo())return;const el=app.firstElementChild;if(!el||!el.animate)return;
+  let x;if(tab&&p.tab){const a=ND_TABI.indexOf(p.t),b=ND_TABI.indexOf(cur.t);x=b>=a?28:-28;}else x=back||(tab&&!p.tab)?-28:28;
+  if(rmOn())x=Math.sign(x)*8;
+  const vid=/\bscnscr\b/.test(cls||'')&&['scep','dircut'].includes(document.body.dataset.scr);   // .screen с видео — только прозрачность (transform ломает полный экран)
+  try{el.animate(vid?[{opacity:0},{opacity:1}]:[{transform:`translateX(${x}px)`,opacity:0},{transform:'none',opacity:1}],{duration:240,easing:'cubic-bezier(.2,.8,.2,1)'});}catch(e){}
+  ndCascade(el);}
 const FXROOT=()=>document.documentElement;
 // стили частиц (покупаются в магазине, «Кино» — бесплатно)
 const FX_PACKS={
@@ -6403,7 +6442,7 @@ window.addEventListener('resize',fxFit);
 function fxSpr(col){if(FX.spr[col])return FX.spr[col];const s=document.createElement('canvas');s.width=s.height=64;const g=s.getContext('2d'),r=g.createRadialGradient(32,32,0,32,32,32);
   r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.2,col);r.addColorStop(.55,col+'44');r.addColorStop(1,col+'00');g.fillStyle=r;g.fillRect(0,0,64,64);return FX.spr[col]=s;}
 // o: n — сколько, v — скорость, a/spread — направление и разброс (радианы), g — тяжесть, life — кадров жизни, s — размер, sh — форма, pack — стиль, jx/jy — разброс точки старта
-function fxEmit(x,y,o){if(!fxOK())return;o=o||{};const P=(o.pack&&FX_PACKS[o.pack])||fxPack(),n=Math.max(1,Math.round((o.n||16)*(innerWidth<500?.8:1)));fxCv();
+function fxEmit(x,y,o){if(!fxBig())return;o=o||{};const P=(o.pack&&FX_PACKS[o.pack])||fxPack(),n=Math.max(1,Math.round((o.n||16)*(innerWidth<500?.8:1)));fxCv();
   for(let i=0;i<n;i++){const a=(o.a!=null?o.a:-Math.PI/2)+(Math.random()-.5)*(o.spread!=null?o.spread:Math.PI*2),v=(o.v!=null?o.v:5)*(.4+Math.random()*.85),sh=o.sh||P.sh[Math.floor(Math.random()*P.sh.length)];
     FX.ps.push({x:x+(o.jx||0)*(Math.random()-.5),y:y+(o.jy||0)*(Math.random()-.5),vx:Math.cos(a)*v,vy:Math.sin(a)*v,
       g:o.g!=null?o.g:(sh==='ember'||sh==='dust'?-.035:sh==='bill'?.05:.13),dr:o.dr||(sh==='bill'?.97:.982),r:Math.random()*6.28,vr:(Math.random()-.5)*(sh==='bill'?.12:.3),
@@ -6429,9 +6468,9 @@ function fxDraw(c,p,al){c.save();c.globalAlpha=Math.max(0,Math.min(1,al));c.tran
     case 'ring':{c.globalCompositeOperation='lighter';c.strokeStyle=p.col;c.lineWidth=2*s;c.beginPath();c.arc(0,0,(2+p.t*.9)*s,0,6.29);c.stroke();break;}
   }c.restore();}
 function fxAt(el,o){if(!el||!fxOK())return;const r=el.getBoundingClientRect();if(!r.width&&!r.height)return;fxEmit(r.left+r.width/2,r.top+r.height/2,o);}
-function fxRain(n,o){if(!fxOK())return;o=o||{};for(let i=0;i<(n||40);i++)setTimeout(()=>fxEmit(Math.random()*innerWidth,-12,{n:1,a:Math.PI/2,spread:.7,v:2+Math.random()*3,g:.05,life:170,s:1.15,pack:o.pack}),i*30);}
+function fxRain(n,o){if(!fxBig())return;o=o||{};for(let i=0;i<(n||40);i++)setTimeout(()=>fxEmit(Math.random()*innerWidth,-12,{n:1,a:Math.PI/2,spread:.7,v:2+Math.random()*3,g:.05,life:170,s:1.15,pack:o.pack}),i*30);}
 // полёт DOM-элемента по дуге: элемент position:fixed, left/top 0 — всё в transform
-function fxArc(el,x0,y0,x1,y1,o){o=o||{};const N=16,kf=[],lift=o.lift!=null?o.lift:-Math.min(160,Math.abs(x1-x0)*.4+60),s0=o.s0!=null?o.s0:1,s1=o.s1!=null?o.s1:.4;
+function fxArc(el,x0,y0,x1,y1,o){o=o||{};if(rmOn())o=Object.assign({},o,{d:1,delay:0});const N=16,kf=[],lift=o.lift!=null?o.lift:-Math.min(160,Math.abs(x1-x0)*.4+60),s0=o.s0!=null?o.s0:1,s1=o.s1!=null?o.s1:.4;
   for(let i=0;i<=N;i++){const t=i/N,x=x0+(x1-x0)*t,y=y0+(y1-y0)*t+lift*4*t*(1-t);kf.push({transform:`translate(${x}px,${y}px) translate(-50%,-50%) scale(${s0+(s1-s0)*t}) rotate(${(o.rot||0)*t}deg)`,opacity:o.fade&&t>.8?1-(t-.8)/.2:1});}
   return el.animate(kf,{duration:o.d||720,delay:o.delay||0,easing:o.ez||'cubic-bezier(.5,0,.3,1)',fill:'forwards'});}
 // верный ответ: искры + мягкое кольцо вокруг кнопки
@@ -6972,10 +7011,14 @@ function renderOnb(n){if(!ONB)ONB={st:0,lang:kinoLang(),goal:null,cefr:null,min:
       if(k<1)requestAnimationFrame(tick);else setTimeout(onbFinish,450);};
     requestAnimationFrame(tick);return;}}
 // тест уровня: вводный экран → карточки (свайп или кнопки) → грамматика → итог «Твой уровень»
+// 13.9.33 (P0.1, Андрей с ПК: «как мне смахнуть на пк?»): ПК — мышь; клавиши ← → в карточках, Enter — главная кнопка шага
+const onbPC=()=>{try{return matchMedia('(hover:hover) and (pointer:fine)').matches;}catch(e){return false;}};
+document.addEventListener('keydown',e=>{if(screen!=='onb'||e.metaKey||e.ctrlKey||e.altKey||/INPUT|TEXTAREA|SELECT/.test((e.target||{}).tagName||''))return;
+  const k=e.key;if(k==='Enter'&&(e.target||{}).tagName==='BUTTON')return;const b=k==='ArrowRight'?$('#onbYes'):k==='ArrowLeft'?$('#onbNo'):k==='Enter'?$('#onbGo'):null;if(!b||b.disabled)return;e.preventDefault();b.click();});
 function onbLevel(){const O=ONB,lang=O.lang;
   if(!O.lt)O.lt={ph:'intro'};const T=O.lt;
   if(T.ph==='intro'){
-    onbMount(1,`<h1 class="onb-h">Узнаем твой <span class="mk">уровень</span></h1><p class="onb-p">Слова — из реплик наших фильмов. Знаешь слово — смахни вправо, ещё учишь — влево. Около минуты.</p>
+    onbMount(1,`<h1 class="onb-h">Узнаем твой <span class="mk">уровень</span></h1><p class="onb-p">Слова — из реплик наших фильмов. ${onbPC()?'Знаешь слово — перетащи карточку вправо или нажми →. Ещё учишь — влево или ←.':'Знаешь слово — смахни вправо, ещё учишь — влево.'} Около минуты.</p>
       <div class="onb-demo"><div class="onb-dc l">ещё учу</div><div class="onb-dc c">${lang==='de'?'gestern':'tomorrow'}</div><div class="onb-dc r">знаю</div></div>`,
       `<button class="onb-go" id="onbGo">Начать тест</button><button class="onb-alt" id="onbPick">Знаю свой уровень</button>`);
     $('#onbGo').onclick=()=>{sfx('tap');Object.assign(T,{ph:'w',b:2,i:0,seq:[],used:{},fakeAt:[3,7,11],fk:0});onbLevel();};

@@ -3,13 +3,16 @@
 // ph — телефон без полного экрана (шапка Telegram есть), phfs — телефон в полном экране (сверху плашка под кнопками Telegram), pc — 1440
 const {open}=require('./st');const {chromium}=require('playwright');
 const dev=process.argv[2]||'pc';
+// 13.9.33 (P0.4): «Новый» — node tghead.js pc nd light|dark [3d] — вид «Новый» у админа, тема Telegram, store.bg3d (3D-зал не должен лезть)
+const ND=process.argv[3]==='nd',SCHEME=process.argv[4]||'light',B3D=process.argv[5]==='3d';
 let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===undefined?'':typeof d==='string'?d:JSON.stringify(d));};
-const init=([st,fs])=>{if(!sessionStorage.getItem('__seeded')){sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:false,flags:{}}));}
+const init=([st,fs])=>{if(!sessionStorage.getItem('__seeded')){sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:!!st.look,flags:{}}));}
   const W=window.Telegram&&Telegram.WebApp;if(!W)return;W.setHeaderColor=c=>{window.__hc=c;};W.setBackgroundColor=c=>{window.__bc=c;};W.setBottomBarColor=c=>{window.__bbc=c;};
+  if(st.look)W.colorScheme=st.__scheme;
   if(fs){W.isFullscreen=true;W.safeAreaInset={top:47,bottom:34};W.contentSafeAreaInset={top:46};}};
-const base={onboarded:true,introV:1,unl:1,snd:false,fx:false,knWin:'full'};
-(async()=>{const b=await chromium.launch();const vp=dev==='pc'?{width:1440,height:900}:{width:390,height:844};
-  const {page,errs}=await open({browser:b,uid:111,platform:dev==='pc'?'tdesktop':'ios',touch:dev!=='pc',ctx:{viewport:vp},wait:2500,init,initArg:[base,dev==='phfs']});
+const base=Object.assign({onboarded:true,introV:1,unl:1,snd:false,fx:false,knWin:'full'},ND?{look:'nd',lookV:2,__scheme:SCHEME,bg3d:B3D}:{});
+(async()=>{const b=await chromium.launch(B3D?{args:['--use-gl=swiftshader','--enable-webgl','--ignore-gpu-blocklist']}:{});const vp=dev==='pc'?{width:1440,height:900}:{width:390,height:844};
+  const {page,errs}=await open({browser:b,platform:dev==='pc'?'tdesktop':'ios',touch:dev!=='pc',uid:ND?876754050:111,ctx:{viewport:vp,colorScheme:ND?SCHEME:'dark'},wait:2500,init,initArg:[base,dev==='phfs']});
   await page.evaluate(()=>{const s=scOf('wolf-of-wall-street'),P=scP(s.id);P.got=P.got||{};P.w[0]=1;P.done=[0];scAct(s.parts[0].ph).forEach(f=>{P.got[f.id]=Date.now();P.m[f.id]=1;});scSave();});
   // пиксели верха: скрин полосы 0..14 px, разбор PNG прямо в браузере (canvas) — без лишних модулей
   // шов с шапкой — строки 0 и 3 (ниже уже содержимое: на ПК карточка профиля начинается с 10-й строки); ys/xs — где мерить
@@ -35,4 +38,4 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:false,knWin:'full'};
   const g=await page.evaluate(()=>({hc:window.__hc,body:getComputedStyle(document.body).backgroundColor}));
   ok('Дота: шапка = фон мира',!!g.hc&&('#'+(g.body.match(/\d+/g)||[]).slice(0,3).map(v=>(+v).toString(16).padStart(2,'0')).join(''))===g.hc.toLowerCase(),g);
   ok('консоль чистая',!errs.length,errs.slice(0,5));
-  console.log(fails?`ИТОГ ${dev}: FAIL ${fails}`:`ИТОГ ${dev}: всё PASS`);await b.close();process.exit(fails?1:0);})();
+  console.log(fails?`ИТОГ ${dev}${ND?' nd '+SCHEME+(B3D?' 3d':''):''}: FAIL ${fails}`:`ИТОГ ${dev}${ND?' nd '+SCHEME+(B3D?' 3d':''):''}: всё PASS`);await b.close();process.exit(fails?1:0);})();
