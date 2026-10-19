@@ -2461,7 +2461,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.35';
+const APP_V='13.9.36';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -7297,6 +7297,7 @@ let START='';
 try{
   const u=new URLSearchParams(location.search);
   START=(TG&&TG.initDataUnsafe&&TG.initDataUnsafe.start_param)||u.get('tgWebAppStartParam')||u.get('startapp')||'';
+  try{if(sessionStorage.getItem('__ver_st')){sessionStorage.removeItem('__ver_st');START='';}}catch(e){}   // 13.9.36: перезагрузка на новую версию — ссылку-приглашение второй раз не открываем
   const q=u.get('lang')||START;
   if(q==='de'||q==='en')PARAM_LANG=q;
 }catch(e){}
@@ -7321,4 +7322,18 @@ else if(START==='rev'&&store.onboarded){renderHome();setTimeout(startRevChain,60
 else if(/^dp_[a-z0-9-]+_\d+_\d+$/.test(START)&&dpOpen(START,true)){}   // 13.9.17: «Фраза дня» от бота → этот момент из фильма
 else if(START==='kino'&&store.onboarded)renderTab('kino');   // 13.6.3: закрытый Кинозал renderTab покажет сам (gateLink смотрел флаг игр)
 else if(store.onboarded)renderHome();else renderStart();   // 13.9.19: новичок — сразу выбор сцены (обучение — в настройках)
+/* 13.9.36 (ТЗ P1.3): автообновление. Telegram держит открытое приложение в памяти, а GitHub Pages отдаёт новые файлы при любом ?v= —
+   старый app.js + новый лениво загруженный файл = падение (13.9.31). version.txt ≠ APP_V → одна перезагрузка, только на вкладках и без открытых окон. */
+var VER={at:0,want:null,tm:0};
+function verCheck(){if(location.protocol==='file:'||document.hidden)return;const n=Date.now();if(n-VER.at<60000)return;VER.at=n;
+  fetch('version.txt?'+n,{cache:'no-store'}).then(r=>r.ok?r.text():'').then(t=>{t=String(t||'').trim();if(!/^\d+(\.\d+)+$/.test(t)||t===APP_V)return;VER.want=t;verGo();}).catch(()=>{});}
+const VER_BUSY='.momo,.kno,.pfv,.pwa,.modal,.sc-sheetwrap,.dxo,.bgvw,.stl,.kw-pop.on,.rwo,.pk-wrap,.cd2';
+function verGo(){if(!VER.want)return;
+  let done='';try{done=sessionStorage.getItem('__ver_r')||'';}catch(e){return;}if(done===VER.want){clearInterval(VER.tm);return;}   // уже перезагружались на эту версию — без петли
+  if(document.hidden||!(screen==='home'||screen==='subtab')||document.querySelector(VER_BUSY)){if(!VER.tm)VER.tm=setInterval(verGo,4000);return;}   // эпизод, проверка, дуэль, оплата, окно — ждём
+  clearInterval(VER.tm);try{sessionStorage.setItem('__ver_r',VER.want);sessionStorage.setItem('__ver_st','1');}catch(e){return;}
+  try{cloudFlush();}catch(e){}
+  const u=new URLSearchParams(location.search);u.set('r',Date.now());setTimeout(()=>location.replace(location.pathname+'?'+u+location.hash),250);}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)verCheck();});
+setTimeout(verCheck,2000);
 setTimeout(remindSync,3000);setTimeout(()=>ev('open'),1200);setTimeout(labApply,1500);setTimeout(labApply,4000);
