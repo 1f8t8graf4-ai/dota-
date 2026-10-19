@@ -5748,3 +5748,21 @@ body[data-look="noch"]:not(#_) .tabbar{box-shadow:0 0 0 1px var(--lk-line)!impor
 body[data-look="noch"]:not(#_) .c-main{background:var(--lk-acc)!important;color:#fff!important}
 body[data-look="noch"]:not(#_) .c-main svg{color:#fff}
 body[data-look="noch"]:not(#_) .stars3 i.on{color:#FFC94D!important}
+
+/* ==== 13.9.23 — быстрее (Андрей: «че по фпсу, всё лагает»). Облегчённый режим (lite) был только на ПК, а iPhone получал всё:
+   «стеклянные» панели (backdrop-filter) над прокруткой, над видео (подложка субтитров) и над плывущим кадром Главной — размытие
+   пересчитывалось каждый кадр; размытый фон сцены #amb с вечной анимацией — и после выхода из сцены; маска (13.9.20) на фиксированных
+   фонах; пульс «текущего» эпизода — тенью (перерисовка каждый кадр). Теперь: без размытия-стекла (панели плотнее), фон сцены — только
+   в сцене, неподвижный и без фильтров, верх страницы — накладкой цвета --top вместо маски, пульса нет ==== */
+*,*::before,*::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.tabbar{background:rgba(17,17,20,.96)!important}
+.hh-dg{background:rgba(14,14,18,.76)}
+.hh-rev{background:rgba(18,18,22,.74)}
+.sc-v[data-ss="glass"] .sc-subs .en,.sc-v[data-ss="glass"] .sc-subs .tr{background:rgba(8,8,10,.66)}
+body:not([data-scn]) #amb{display:none}
+#amb i,body:not(.has3d) #amb i,html.lite #amb i{filter:none!important;animation:none!important;transform:none!important;opacity:.52!important}
+#amb video{filter:none!important}
+#amb,#appbg,.dl-bgl{-webkit-mask-image:none!important;mask-image:none!important}
+#amb::after,#appbg::before,.dl-bgl::after{content:"";position:absolute;left:0;right:0;top:0;z-index:2;height:calc(var(--st,0px) + 140px);pointer-events:none;
+  background:linear-gradient(180deg,var(--top,#0b0b0d) 0,var(--top,#0b0b0d) calc(var(--st,0px) + 12px),transparent)}
+.pn.cur .pn-c{animation:none!important}
