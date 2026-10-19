@@ -36,7 +36,7 @@ const TOP={svet:'#f4f3f0',noch:'#111215',zhurnal:'#f1ece2'};
     const bad=[];
     for(const [n,f] of IN){await P.evaluate(f);await P.waitForTimeout(n==='3-slovar'?2600:1500);
       if(n==='5-epizod')await P.evaluate(()=>{const v=document.querySelector('video');if(v){try{v.pause();v.currentTime=21;}catch(e){}}});
-      await P.evaluate(()=>window.scrollTo(0,0));await P.waitForTimeout(250);
+      await P.evaluate(()=>{window.scrollTo(0,0);document.querySelectorAll('.toast').forEach(t=>t.remove());});await P.waitForTimeout(250);   // тосты стенда (нет музыки) — не в скрин
       const s=await st();if(s.look!==L||s.hc!==TOP[L]||!s.w)bad.push(n+' '+JSON.stringify(s));
       if(n==='1-glavnaya'&&!(s.rev2==='flex'&&s.hhrev==='none'))bad.push('Главная: строка «Повторить» '+JSON.stringify(s));
       await P.screenshot({path:`${__dirname}/shots/look-${L}-${dev}-${n}.png`});}
@@ -60,7 +60,7 @@ const TOP={svet:'#f4f3f0',noch:'#111215',zhurnal:'#f1ece2'};
   r=await st();ok('«Сейчас» — обычный вид',!r.look&&r.rev2==='none',r);
   // 4. обычные экраны в «сейчас» — скрины для сравнения
   for(const [n,f] of IN){await P.evaluate(f);await P.waitForTimeout(n==='3-slovar'?2600:1500);if(n==='5-epizod')await P.evaluate(()=>{const v=document.querySelector('video');if(v){try{v.pause();v.currentTime=21;}catch(e){}}});
-    await P.evaluate(()=>window.scrollTo(0,0));await P.waitForTimeout(250);await P.screenshot({path:`${__dirname}/shots/look-cur-${dev}-${n}.png`});}
+    await P.evaluate(()=>{window.scrollTo(0,0);document.querySelectorAll('.toast').forEach(t=>t.remove());});await P.waitForTimeout(250);await P.screenshot({path:`${__dirname}/shots/look-cur-${dev}-${n}.png`});}
   // 5. не-админ: store.look есть, а вида нет и переключателя в Настройках нет
   const B=await go(Object.assign({},base,{look:'svet'}),{admin:false,flags:{}});
   await B.page.evaluate(()=>renderTab('learn'));await B.page.waitForTimeout(900);
