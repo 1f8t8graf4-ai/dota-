@@ -95,6 +95,13 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   await P.evaluate(()=>renderScEp('wolf-of-wall-street',1));await P.waitForTimeout(1300);
   r=await st(P);r.more=await P.evaluate(()=>{const m=document.querySelector('#scMore');return m?getComputedStyle(m).display:'нет';});
   ok('эпизод: тёмный при светлом Telegram, меню «⋯» плеера спрятано',r.look==='nd'&&r.ndt==='dark'&&r.more==='none',r);
+  // 6в. остальные экраны: Настройки, Поиск, Повторение, «Все фразы сцены» — в виде (светлом); Коллекция, Магазин — тёмные витрины; игры — без вида
+  await P.evaluate(()=>{store.look='nd';save();});
+  const SEC=[['Настройки',()=>renderSettings(),'light'],['Поиск',()=>renderSearch(),'light'],['Повторение',()=>renderDaily(),'light'],['Все фразы',()=>renderSceneSum('wolf-of-wall-street'),'light'],['Коллекция',()=>renderCollection('bg'),'dark'],['Магазин',()=>renderShop(),'dark']];
+  const bad2=[];for(const [n,f,t] of SEC){await P.evaluate(f);await P.waitForTimeout(900);const q=await st(P);if(q.look!=='nd'||q.ndt!==t||!q.w)bad2.push(n+' '+JSON.stringify(q));}
+  ok('Настройки, Поиск, Повторение, «Все фразы» — в «Новом» (светлом); Коллекция и Магазин — тёмные',!bad2.length,bad2);
+  await P.evaluate(()=>renderTab('games'));await P.waitForTimeout(900);r=await st(P);
+  ok('игры — без вида',!r.look,r);
   // 7. не-админ: вида нет, «Игры» на месте
   const N=await go(base,{admin:false,flags:{}},'light');await N.page.evaluate(()=>renderTab('learn'));await N.page.waitForTimeout(900);
   r=await st(N.page);ok('не-админ: «Новый» не включается, вкладки прежние',!r.look&&!r.nd&&r.tabs.includes('Игры')&&r.tabs[0]==='Главная',r);
