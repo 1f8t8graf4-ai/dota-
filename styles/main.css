@@ -6310,3 +6310,32 @@ body.nd:not(.ndc) .n-scr{opacity:0}
 .onb-dc.c.drag,.onb-card.drag{animation:none!important;cursor:grabbing}
 .ndpull,.n-pull{touch-action:none}
 body[data-look="nd"]:not(#_) .sc-fb>.sc-btn{text-transform:none!important;letter-spacing:0!important;font:700 16px/1.2 var(--lk-f)!important;border-radius:16px!important;min-height:52px}
+
+/* ==== 13.9.40 — разбор после эпизода двумя частями (Андрей: «раздели»); «Потяни» и карточки теста — без прокрутки страницы ==== */
+.rv2 .rv-head{background:rgba(255,255,255,.04);box-shadow:none}
+.rv2 .rv-head .ep-end-k{font:700 11px var(--lk-f,system-ui);letter-spacing:.08em;text-transform:uppercase;color:rgba(243,235,221,.55)}
+.rv2 .rv-cnt{color:rgba(243,235,221,.6);font-weight:600}
+.rv-cards{display:flex;flex-direction:column;gap:8px}
+.rv-cd{display:flex;gap:12px;align-items:flex-start;padding:12px 14px 12px 12px;border-radius:16px;background:rgba(255,255,255,.05);box-shadow:inset 3px 0 0 var(--gold,#E9C46A);transition:box-shadow .3s}
+.rv-cd.seen{box-shadow:inset 3px 0 0 #6FD08C}
+.rv-cd .rv-t>b{font:600 17px/1.35 'Lora',Georgia,serif;font-style:italic}
+.rv-cd .rv-t>span{font-size:14px;margin-top:4px}
+.rv-cd .rv-t>small{display:block;margin-top:6px;font-size:12.5px;line-height:1.4;color:rgba(243,235,221,.5)}
+.rv-all{border-radius:16px;background:rgba(255,255,255,.03)}
+.rv-all>summary{list-style:none;cursor:pointer;padding:14px 16px;font:600 14px var(--lk-f,system-ui);color:rgba(243,235,221,.75);display:flex;align-items:center;justify-content:space-between}
+.rv-all>summary::-webkit-details-marker{display:none}
+.rv-all>summary::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .25s}
+.rv-all[open]>summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.rv-all .rv-list{gap:0;padding:0 6px 8px}
+.rv-all .rv-ln{background:none;box-shadow:none;border-radius:0;padding:9px 8px;border-top:1px solid rgba(255,255,255,.06)}
+.rv-all .rv-ln.star .rv-t>b::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold,#E9C46A);margin-right:7px;vertical-align:3px}
+.rv-all .rv-play{flex-basis:30px;height:30px}
+body[data-look]:not(#_) .rv2 .rv-head{background:var(--lk-card)!important;box-shadow:none!important}
+body[data-look]:not(#_) .rv-cd{background:var(--lk-card)!important;box-shadow:inset 3px 0 0 var(--lk-acc)!important}
+body[data-look]:not(#_) .rv-cd.seen{box-shadow:inset 3px 0 0 var(--lk-ok,#23A15E)!important}
+body[data-look]:not(#_) .rv-cd .rv-t>b,body[data-look]:not(#_) .rv-ln .rv-t>b{color:var(--lk-ink)!important}
+body[data-look]:not(#_) .rv-cd .rv-t>span,body[data-look]:not(#_) .rv-ln .rv-t>span{color:var(--lk-ink2)!important}
+body[data-look]:not(#_) .rv-cd .rv-t>small,body[data-look]:not(#_) .rv-all>summary,body[data-look]:not(#_) .rv2 .ep-end-k{color:var(--lk-ink3,var(--lk-ink2))!important}
+body[data-look]:not(#_) .rv-all{background:var(--lk-card)!important}
+body[data-look]:not(#_) .rv-all .rv-ln{border-top-color:var(--lk-line)!important}
+.onb-dbg{margin-top:6px;text-align:center;font:500 11px ui-monospace,monospace;color:rgba(128,128,128,.8)}

@@ -55,7 +55,7 @@ body:not(.ndc) .n-scr{opacity:0}   /* пока nd.css не загружен (ndC
 .n-meta .n-t{background:rgba(255,255,255,.2);border-radius:calc(7*var(--nu));padding:calc(2*var(--nu)) calc(7*var(--nu));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .n-meta .n-t:last-child{min-width:0;flex:0 1 auto}
 /* «Потяни, чтобы начать»: ручка тянется вправо (ndPull), в покое — подсказывает движением; блик по дорожке — transform, без перерисовки текста */
-.n-pull{margin-top:calc(12*var(--nu));position:relative;height:calc(50*var(--nu));border-radius:calc(16*var(--nu));background:rgba(255,255,255,.2);display:flex;align-items:center;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;outline:none}
+.n-pull{margin-top:calc(12*var(--nu));position:relative;height:calc(50*var(--nu));border-radius:calc(16*var(--nu));background:rgba(255,255,255,.2);display:flex;align-items:center;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
 .n-pull:focus-visible{box-shadow:0 0 0 2px var(--n-sub)}
 .n-pull .ndpull-f{position:absolute;inset:0;transform-origin:left;transform:scaleX(0);background:rgba(255,210,63,.28);border-radius:inherit}
 .n-pull.back .ndpull-f,.n-pull.back .ndpull-k{transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
@@ -209,7 +209,7 @@ body.ndc[data-scr="scep"]:not(#_) .sc-subs .sw.u,body.ndc[data-scr="scep"]:not(#
 @keyframes n-tapr{from{opacity:.9;transform:scale(.3)}to{opacity:0;transform:scale(1.4)}}
 .n-tlw{position:relative;flex:1;display:flex;align-items:center;min-width:0}
 .n-tlw>input{width:100%;margin:0}
-.n-tlm{position:absolute;top:50%;width:4px;height:10px;margin:-5px 0 0 -2px;border-radius:2px;background:var(--n-sub,#FFD23F);pointer-events:none;z-index:1;opacity:.9}
+.n-tlm{position:absolute;top:50%;width:5px;height:5px;margin:-12px 0 0 -2.5px;border-radius:50%;background:var(--n-sub,#FFD23F);pointer-events:none;z-index:1;opacity:.85}   /* 13.9.40: точка над полосой, а не разрез */
 body.ndc[data-scr="scep"]:not(#_) .sc-seek{gap:calc(10*var(--nu));font:700 calc(11*var(--nu))/1 var(--n-f-ui);color:var(--n-mute)}
 body.ndc[data-scr="scep"]:not(#_) .sc-ctrl2{gap:calc(14*var(--nu));margin:calc(4*var(--nu)) 0 calc(8*var(--nu))}
 body.ndc[data-scr="scep"]:not(#_) .sc-ctrl2 .c-side{width:calc(40*var(--nu));height:calc(40*var(--nu));background:rgba(255,255,255,.08);border:0}

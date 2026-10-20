@@ -273,15 +273,29 @@ let NDT=null;
 function ndTabs(on){const nav=document.getElementById('tabbar');if(!nav||NDT===on)return;NDT=on;
   nav.querySelectorAll('button').forEach(b=>{const t=TABS.find(x=>x.id===b.dataset.nav);if(!t)return;const n=on&&ND_TABS[t.id];
     b.querySelector('svg').innerHTML=n?n[1]:t.ico;b.querySelector('span').textContent=n?n[0]:t.name;b.setAttribute('aria-label',n?n[0]:t.name);});}
+// 13.9.40 (Андрей с iPhone: «свайп пропал, только кнопки», «тяну — уходит вверх»): жест вбок — на телефоне через touch-события
+// (touchmove с preventDefault — страница не прокручивается, Telegram не перехватывает), мышь — pointer. На время жеста свайп Telegram вниз выключен.
+// h = {down(x,y), move(x,y), up()}; счётчики событий — для строки отладки админу (DRAGN)
+const HAS_T=('ontouchstart' in window)||navigator.maxTouchPoints>0,DRAGN={};
+function dragX(el,h){let on=false,x0=0,y0=0,lock=0;const n=k=>{DRAGN[k]=(DRAGN[k]||0)+1;if(h.dbg)h.dbg();};
+  const down=(x,y)=>{on=true;x0=x;y0=y;lock=0;tgVSwipes(true,'drag');h.down(x,y);},
+    move=(x,y,e)=>{if(!on)return;if(!lock&&(Math.abs(x-x0)>6||Math.abs(y-y0)>6))lock=Math.abs(x-x0)>=Math.abs(y-y0)*0.6?1:2;if(e&&e.cancelable)e.preventDefault();h.move(x,y);},
+    up=()=>{if(!on)return;on=false;tgVSwipes(false,'drag');h.up();};
+  el.addEventListener('touchstart',e=>{n('ts');if(e.touches.length>1)return;const t=e.touches[0];down(t.clientX,t.clientY);},{passive:true});
+  el.addEventListener('touchmove',e=>{n('tm');const t=e.touches[0];if(t)move(t.clientX,t.clientY,e);},{passive:false});
+  el.addEventListener('touchend',()=>{n('te');up();});el.addEventListener('touchcancel',()=>{n('tc');up();});
+  el.addEventListener('pointerdown',e=>{n('pd');if(e.pointerType==='touch'&&HAS_T)return;down(e.clientX,e.clientY);try{el.setPointerCapture(e.pointerId);}catch(_){}});
+  el.addEventListener('pointermove',e=>{if(e.pointerType==='touch'&&HAS_T)return;move(e.clientX,e.clientY);});
+  const pu=e=>{if(e.pointerType==='touch'&&HAS_T){if(e.type==='pointercancel')n('pc');return;}up();};
+  el.addEventListener('pointerup',pu);el.addEventListener('pointercancel',pu);el.addEventListener('lostpointercapture',pu);}
 // «Потяни, чтобы начать»: тянешь ручку вправо — дальше 70 % ширины и отпустил — старт; просто тап — ручка подпрыгивает (случайно не нажмёшь); Enter/пробел — старт
 function ndPull(el,go){const k=el.querySelector('.ndpull-k'),f=el.querySelector('.ndpull-f');let x0=null,dx=0,max=1,done=false,buzz=false;
   const set=(v,anim)=>{el.classList.toggle('back',!!anim);k.style.transform=v?`translateX(${v}px)`:'';f.style.transform=`scaleX(${Math.min(1,(v+k.offsetWidth+8)/el.clientWidth)})`;el.style.setProperty('--pp',(v/max).toFixed(3));};
   const fire=()=>{if(done)return;done=true;el.classList.add('done');set(max);haptic('medium');sfx('whoosh');   // 13.9.39: как в Germanize — дотянул: полоса заливается, в ручке ✓, потом переход
     const sv=k.querySelector('svg');if(sv)sv.innerHTML='<path d="M5 12.5l4.5 4.5L19 7.5"/>';setTimeout(go,fxOK()?440:0);};
-  el.addEventListener('pointerdown',e=>{if(done)return;x0=e.clientX;dx=0;buzz=false;max=Math.max(1,el.clientWidth-k.offsetWidth-8);el.classList.add('drag');el.classList.remove('nudge');try{el.setPointerCapture(e.pointerId);}catch(_){}});
-  el.addEventListener('pointermove',e=>{if(x0==null)return;dx=Math.max(0,Math.min(max,e.clientX-x0));set(dx);if(!buzz&&dx>=max*.7){buzz=true;haptic('sel');}else if(buzz&&dx<max*.7)buzz=false;});
-  const up=()=>{if(x0==null)return;x0=null;el.classList.remove('drag');if(dx>=max*.7)fire();else{set(0,true);if(dx<8){el.classList.remove('nudge');void el.offsetWidth;el.classList.add('nudge');haptic('light');}}dx=0;};
-  el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('lostpointercapture',up);
+  dragX(el,{down:x=>{if(done)return;x0=x;dx=0;buzz=false;max=Math.max(1,el.clientWidth-k.offsetWidth-8);el.classList.add('drag');el.classList.remove('nudge');},
+    move:x=>{if(x0==null)return;dx=Math.max(0,Math.min(max,x-x0));set(dx);if(!buzz&&dx>=max*.7){buzz=true;haptic('sel');}else if(buzz&&dx<max*.7)buzz=false;},
+    up:()=>{if(x0==null)return;x0=null;el.classList.remove('drag');if(dx>=max*.7)fire();else{set(0,true);if(dx<8){el.classList.remove('nudge');void el.offsetWidth;el.classList.add('nudge');haptic('light');}}dx=0;}});
   el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fire();}};}
 // 13.9.37 (ТЗ-13.9.32, P2 экран 6): «Сегодня» как в макете (дизайн/макеты-13.9.24.html, .cell 6). Стиль — styles/nd.css (лениво, ndCss), классы n-*.
 // Шапка: буква в круге, «Добрый день, Андрей», «B1 · цель — работа», 🔥 и кольцо цели дня; план на кадре фильма с «Потяни»; строки «Фраза дня» и «Смотреть дальше»
@@ -2505,7 +2519,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.39';
+const APP_V='13.9.40';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -3640,7 +3654,7 @@ function scVideo(el,s,p,noSubs){
   SV._loc=loc;
 }
 
-const SUB_LAG=0.18; // реплика в srt часто начинается чуть раньше голоса
+const SUB_LAG=0.03; // 13.9.40: строки выровнены по голосу (tools/sub_sync.py) — задержка не нужна
 // 13.9.9: строки иногда наезжают друг на друга (до 0.5 с) — показываем ту, что началась последней, иначе новая реплика опаздывала на время наезда
 const scRowAt=(L,t)=>{let z=null;for(const x of L){if(t<x[0]+SUB_LAG)break;if(t<=x[1]+0.25&&!(SW._hideRow&&SW._hideRow(x)))z=x;}return z;};
 // 13.9.40 (ТЗ-13.9.32, P2 экран 9): плеер «Нового» по макету (.cell 9). Караоке: слова строки субтитров загораются в такт речи —
@@ -3652,8 +3666,8 @@ function ndKaraSet(box,r){const s=SCUR&&scOf(SCUR.id),p=s&&s.parts[SCUR.i||0];if
   const a=r[0],b=Math.max(r[0]+0.4,r[1]-0.15),W=WTD[s.id],T=new Array(ws.length).fill(null);let hit=0;
   if(W){const C=W.filter(x=>x[0]>=a+p.a-0.5&&x[0]<=r[1]+p.a+0.3);let k=0;
     ws.forEach((el,j)=>{const n=wtN(el.textContent);if(!n)return;for(let q=k;q<Math.min(C.length,k+4);q++)if(wtN(C[q][2])===n){T[j]=C[q][0]-p.a;k=q+1;hit++;break;}});}
-  if(hit<ws.length/2){const L=ws.map(el=>Math.max(1,el.textContent.length)),S=L.reduce((x,y)=>x+y,0);let acc=0;ws.forEach((el,j)=>{T[j]=a+(b-a)*acc/S;acc+=L[j];});}
-  else{for(let j=0;j<T.length;j++)if(T[j]==null){let q=j;while(q<T.length&&T[q]==null)q++;const t0=j?T[j-1]:a,t1=q<T.length?T[q]:b;for(let z=j;z<q;z++)T[z]=t0+(t1-t0)*(z-j+1)/(q-j+1);j=q;}}
+  if(hit<ws.length/2)return;   // 13.9.40: слов не нашлось — строка горит целиком (равномерная подсветка шла мимо голоса)
+  {for(let j=0;j<T.length;j++)if(T[j]==null){let q=j;while(q<T.length&&T[q]==null)q++;const t0=j?T[j-1]:a,t1=q<T.length?T[q]:b;for(let z=j;z<q;z++)T[z]=t0+(t1-t0)*(z-j+1)/(q-j+1);j=q;}}
   box._kw=ws.map((el,j)=>[el,T[j]-0.06]);box.classList.add('kara');}
 function ndKaraTick(box,t){for(const [el,a] of box._kw)el.classList.toggle('kk-on',t>=a);}
 // окошко слова в «Новом» (шторка .wsh макета): уровень слова чипом, одна строка «почему так» (первое предложение объяснения) — до «Подробнее»
@@ -3664,8 +3678,11 @@ function ndWpDeco(P,sv){const w=P.querySelector('.kwp-w');
   const mb=P.querySelector('.kwp-mb');mb?P.insertBefore(d,mb):P.insertBefore(d,P.querySelector('.kwp-b'));}
 // метки фраз эпизода на шкале перемотки (жёлтые чёрточки, как в макете); тап по слову субтитров — круг от пальца
 function ndEpDeco(s,i){try{wlvLoad();}catch(e){}const p=s.parts[i],sk=$('#scsk');if(!p||!sk||sk.parentNode.classList.contains('n-tlw'))return;
-  const w=document.createElement('span');w.className='n-tlw';sk.parentNode.insertBefore(w,sk);w.appendChild(sk);const d=Math.max(1,p.b-p.a);
-  scAct(p.ph).forEach(f=>{const x=(f.a-p.a)/d;if(x<0||x>1)return;const m=document.createElement('b');m.className='n-tlm';m.style.left=(x*100).toFixed(2)+'%';w.appendChild(m);});}
+  const w=document.createElement('span');w.className='n-tlw';sk.parentNode.insertBefore(w,sk);w.appendChild(sk);
+  // 13.9.40 (Андрей: «отрезки стоят не по таймингам»): доля — от длины самого видео (её же берёт перемотка), метка — точка над полосой
+  const put=()=>{w.querySelectorAll('.n-tlm').forEach(x=>x.remove());const d=SV&&isFinite(SV.duration)&&SV.duration>1?SV.duration:Math.max(1,p.b-p.a);
+    scAct(p.ph).forEach(f=>{const x=(f.a-p.a)/d;if(x<0||x>1)return;const m=document.createElement('b');m.className='n-tlm';m.style.left=(x*100).toFixed(2)+'%';w.appendChild(m);});};
+  put();if(SV&&!(SV.duration>1))SV.addEventListener('loadedmetadata',put,{once:true});}
 document.addEventListener('pointerdown',e=>{if(!ndOn()||!fxOK())return;const w=e.target.closest&&e.target.closest('.sc-subs .sw');if(!w||!SW)return;
   const R=SW.getBoundingClientRect(),z=parseFloat(getComputedStyle(document.body).zoom)||1,c=document.createElement('i');c.className='n-tapr';
   c.style.left=(e.clientX/z-R.left/z)+'px';c.style.top=(e.clientY/z-R.top/z)+'px';SW.appendChild(c);setTimeout(()=>c.remove(),750);},true);
@@ -3806,27 +3823,32 @@ const scPips=n=>`<span class="sc-pips">${[0,1,2].map(i=>`<i class="${i<n?'on':''
 const scCard=(f,P)=>`<div class="sc-ph sc-card${f.passive?' passive':''}">${f.passive?'<span class="sc-pas">для понимания · без теста</span>':''}<div class="en">${esc(scT(f))}</div><div class="ru">${esc(f.ru)}</div><div class="dc-tags">${f.passive?'':fTopics(f).map(k=>`<span class="dc-t">${TOPIC_ICO[k]||''} ${k}</span>`).join('')}<span class="sc-tag ${scTag(f)[1]}">${scTag(f)[0]}</span></div>${scNoteS(f)?`<div class="nt">${esc(scShort(scNoteS(f)))}</div>`:''}<div class="row"><button class="sc-mom" data-id="${f.id}">▶ Момент</button>${scPips(Math.min(3,P.m[f.id]||0))}</div></div>`;
 // 13.6: после эпизода — все реплики с переводом: ★ — фразы, по которым будут задания, ▶ — переслушать, слова нажимаются.
 // Человек сам выбирает, что пересмотреть, и сам идёт «К заданиям» (раньше — только «Ты встретил N фраз» и сразу проверка).
-function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b),act=scAct(p.ph),test=act.slice().sort((a,b)=>a.a-b.a).slice(0,4),used=new Set();
-  const phOf=r=>{const L=phNorm(scRowT(r));return act.find(f=>!used.has(f)&&f.a<r[1]+0.3&&f.b>r[0]-0.3&&(L.includes(phNorm(scT(f)))||phNorm(scT(f)).includes(L)||(f.a>=r[0]-0.3&&f.a<r[1])));};
-  const items=rows.map((r,k)=>{const f=phOf(r);if(f)used.add(f);return {r,k,f,t:!!f&&test.includes(f),same:!!f&&phNorm(scRowT(r))===phNorm(scT(f))};});   // фраза = вся реплика — не повторяем её второй раз
-  const seen=new Set(),cnt=()=>{const c=box.querySelector('#rvCnt');if(c)c.textContent=`★ ${test.filter(f=>seen.has(f.id)).length} из ${test.length} посмотрел`;};
-  box.innerHTML=`<div class="rv"><div class="rv-head"><span class="ep-end-k">🎬 Эпизод досмотрен</span><b>Пробеги реплики — сам выбери, что переслушать</b>
-      <span><i class="rv-st">★</i> — фразы, по которым будут задания. Нажми на слово — объясню, ${SI.play} — послушать ещё раз.</span>
+// 13.9.40 (Андрей: «накидали приколов — раздели»): разбор двумя частями — сверху фразы, по которым будут задания (карточки),
+// ниже все реплики эпизода под раскрывашкой, без рамок внутри строк
+function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b),act=scAct(p.ph),test=act.slice().sort((a,b)=>a.a-b.a).slice(0,4);
+  const seen=new Set(),cnt=()=>{const c=box.querySelector('#rvCnt');if(c)c.textContent=`${test.filter(f=>seen.has(f.id)).length} из ${test.length} послушал`;};
+  const inRow=r=>test.find(f=>f.a<r[1]+0.3&&f.b>r[0]-0.3&&phNorm(scRowT(r)).includes(phNorm(scT(f)).slice(0,12)));
+  box.innerHTML=`<div class="rv rv2"><div class="rv-head"><span class="ep-end-k">Эпизод досмотрен</span><b>${test.length} ${plural(test.length,['фраза','фразы','фраз'])} — по ним будут задания</b>
+      <span>Нажми ${SI.play} — послушать ещё раз, на слово — объясню.</span>
       <div class="rv-top"><button class="rv-again" id="rvAgain">${SI.again} Смотреть ещё раз</button><span class="rv-cnt" id="rvCnt"></span></div></div>
-    <div class="rv-list">${items.map(x=>`<div class="rv-ln${x.t?' star':x.f?' use':''}" data-k="${x.k}">
-      <button class="rv-play" aria-label="Послушать реплику">${SI.play}</button>
-      <div class="rv-t"><b>${x.t?'<i class="rv-st">★</i>':''}${x.same?kwWrap(x.f,scRowT(x.r)):swWrap(scRowT(x.r))}</b><span>${esc(String(x.r[3]||'').replace(/\n/g,' '))}</span>
-      ${x.f?`<div class="rv-ph${x.same?' same':''}"><em>${x.t?'★ Будет в заданиях':'Полезная фраза'}</em>${x.same?'':`<b>${kwWrap(x.f)}</b><span>${esc(x.f.ru)}</span>`}${scNoteS(x.f)?`<small>💡 ${esc(scShort(scNoteS(x.f)))}</small>`:''}</div>`:''}</div></div>`).join('')}</div>
-    <div class="rv-go"><button class="sc-btn ep-go" id="epGoQ">К заданиям →<small>★ ${test.length} ${plural(test.length,['фраза','фразы','фраз'])}</small></button></div></div>`;
+    <div class="rv-cards">${test.map((f,k)=>`<div class="rv-cd" data-k="${k}"><button class="rv-play" aria-label="Послушать">${SI.play}</button>
+      <div class="rv-t"><b>${kwWrap(f)}</b><span>${esc(f.ru)}</span>${scNoteS(f)?`<small>${esc(scShort(scNoteS(f)))}</small>`:''}</div></div>`).join('')}</div>
+    <details class="rv-all"><summary>Все реплики эпизода · ${rows.length}</summary>
+      <div class="rv-list">${rows.map((r,k)=>{const f=inRow(r);return `<div class="rv-ln${f?' star':''}" data-k="${k}"><button class="rv-play" aria-label="Послушать реплику">${SI.play}</button>
+        <div class="rv-t"><b>${swWrap(scRowT(r))}</b><span>${esc(String(r[3]||'').replace(/\n/g,' '))}</span></div></div>`;}).join('')}</div></details>
+    <div class="rv-go"><button class="sc-btn ep-go" id="epGoQ">К заданиям →<small>${test.length} ${plural(test.length,['фраза','фразы','фраз'])}</small></button></div></div>`;
   box.hidden=false;cnt();
   ['.ep-watch','#epToLearn','#epPhs','.ep-lines'].forEach(q=>{const x=document.querySelector(q);if(x){if(q==='#epToLearn')x.style.display='none';else x.hidden=true;}});
-  box.querySelectorAll('.rv-ln').forEach(ln=>{const x=items[+ln.dataset.k],look=()=>{if(x.f){seen.add(x.f.id);ln.classList.add('seen');cnt();}};
-    ln.querySelector('.rv-play').onclick=e=>{e.stopPropagation();sfx('tap');playSeg(assetUrl(scEpKey(s,i,'mp4')),x.r[0]-p.a-0.12,x.r[1]-p.a+0.25,e.currentTarget);look();};
-    if(x.same)kwBind(ln.querySelector('.rv-t>b'),x.f);else ln.querySelector('.rv-t>b').addEventListener('click',e=>{const w=e.target.closest('.sw');if(w){linePop(w,x.r);look();}});
-    const ph=ln.querySelector('.rv-ph');if(ph){kwBind(ph,x.f);ph.addEventListener('pointerdown',look);}});
+  const url=assetUrl(scEpKey(s,i,'mp4'));
+  box.querySelectorAll('.rv-cd').forEach(cd=>{const f=test[+cd.dataset.k],look=()=>{seen.add(f.id);cd.classList.add('seen');cnt();};
+    cd.querySelector('.rv-play').onclick=e=>{e.stopPropagation();sfx('tap');playSeg(url,f.a-p.a-0.08,f.b-p.a+0.2,e.currentTarget);look();};
+    kwBind(cd.querySelector('.rv-t>b'),f);});
+  box.querySelectorAll('.rv-ln').forEach(ln=>{const r=rows[+ln.dataset.k];
+    ln.querySelector('.rv-play').onclick=e=>{e.stopPropagation();sfx('tap');playSeg(url,r[0]-p.a-0.08,r[1]-p.a+0.2,e.currentTarget);};
+    ln.querySelector('.rv-t>b').addEventListener('click',e=>{const w=e.target.closest('.sw');if(w)linePop(w,r);});});
   box.querySelector('#epGoQ').onclick=()=>{sfx('tap');renderScQuiz(s.id,i);};
   box.querySelector('#rvAgain').onclick=()=>{sfx('tap');window.scrollTo({top:0,behavior:'smooth'});if(o.again)o.again();};
-  if(o.first&&store.fx!==false)box.querySelectorAll('.rv-head,.rv-ln').forEach((el,k)=>el.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:380,delay:Math.min(k,14)*45,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'}));}
+  if(o.first&&fxOK())box.querySelectorAll('.rv-head,.rv-cd,.rv-all').forEach((el,k)=>el.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:380,delay:k*70,easing:'cubic-bezier(.2,.9,.3,1)',fill:'backwards'}));}
 function renderScEp(id,i,opts){setTimeout(()=>{wiLoad(wiLang(id));cxLoad(wiLang(id));},1500);   // 13.9.13: «подробнее о слове» — заранее, чтобы окошко слова открылось сразу полным
 
   opts=opts||{};
@@ -4485,7 +4507,7 @@ function scQuizPlan(id,i){
   const heardOk=f=>{const o=scListenOpts(f,all,scIsDe());return !!(o&&o.filter(x=>x!==(scIsDe()?f.de:f.en)).length>=2);};
   const meanOk=f=>!!(f.trap&&f.trap.length>=2);
   const fitT=(t,f)=>{if(scToks(target(f)).length<=SC_MAXB||!['listen','build'].includes(t))return t;const ex=!!scExpr(f,target(f));
-    const seq=t==='listen'?[heardOk(f)&&'heard',ex&&'expr',canGap(f)&&'gap4',meanOk(f)&&'mean',canWhen(f)&&'when']:[ex&&'expr',canGap(f)&&'gap4',heardOk(f)&&'heard',meanOk(f)&&'mean',canWhen(f)&&'when'];
+    const seq=t==='listen'?[heardOk(f)&&'heard',ex&&'expr',canGap(f)&&'gap4',meanOk(f)&&'mean']:[ex&&'expr',canGap(f)&&'gap4',heardOk(f)&&'heard',meanOk(f)&&'mean'];
     return seq.find(Boolean)||t;};
   const canGap=f=>!!f.gap&&wordRe(f.gap).test(target(f));
 
@@ -4494,7 +4516,7 @@ function scQuizPlan(id,i){
     // финал сцены: всё на слух (видео без субтитров) + вписать слово
     if(boss)return k%3===1&&canGap(f)?'gap':'listen';
     // новичок: выбрать перевод, послушать и собрать (без лишних слов), собрать по переводу, слово из вариантов — без «примени в жизни»
-    if(beg&&!retry){let t2=['mean','listen','build','when','gap'][k%5];if(t2==='when'&&!canWhen(f))t2='listen';if(t2==='mean'&&!(f.trap&&f.trap.length>=2))t2='listen';if(t2==='build'&&!canB(f))t2='listen';if(t2==='gap'&&!canGap(f))t2=canB(f)?'build':'listen';return t2;}
+    if(beg&&!retry){let t2=['mean','listen','build','gap'][k%4];if(t2==='mean'&&!(f.trap&&f.trap.length>=2))t2='listen';if(t2==='build'&&!canB(f))t2='listen';if(t2==='gap'&&!canGap(f))t2=canB(f)?'build':'listen';return t2;}
     if(beg&&retry)return canB(f)?'build':'listen';
     if(retry){
       if(canLife(f)&&k%2===0)return 'life';if(canB(f))return 'build';
@@ -4505,9 +4527,8 @@ function scQuizPlan(id,i){
       if(k%3===1&&canGap(f))return 'gap';
       return canB(f)?'build':'listen';
     }
-    const seq=['listen','when','build','mean','gap','life'];
+    const seq=['listen','gap','build','mean','life'];   // 13.9.40: «Когда пригодится?» убрано (Андрей: «конченое задание» — угадывается по переводу)
     let t=seq[k%seq.length];
-    if(t==='when'&&!canWhen(f))t=canB(f)?'build':'listen';
     if(t==='mean'&&!(f.trap&&f.trap.length>=3))t=canLife(f)?'life':'listen';
     if(t==='build'&&!canB(f))t=canGap(f)?'gap':'listen';
     if(t==='life'&&!canLife(f))t=canB(f)?'build':(canGap(f)?'gap':'listen');
@@ -7235,14 +7256,15 @@ function renderOnb(n){if(!ONB)ONB={st:0,lang:kinoLang(),goal:null,cefr:null,min:
     requestAnimationFrame(tick);return;}}
 // 13.9.38 (Андрей с iPhone: «свайпать нельзя»): смах карточки — общий обработчик: touch-action:none (CSS), быстрый короткий смах тоже считается,
 // на время теста Telegram не закрывает приложение свайпом вниз (иначе он перехватывал жест и карточка отскакивала)
-var ONB_VS=false;
-function tgVSwipes(off){if(off===ONB_VS)return;ONB_VS=off;try{if(TG)off?(TG.disableVerticalSwipes&&TG.disableVerticalSwipes()):(TG.enableVerticalSwipes&&TG.enableVerticalSwipes());}catch(e){}}
-function onbSwipe(card,go,o){o=o||{};let x0=null,y0=0,t0=0,dx=0,vx=0,lx=0,lt=0;const k=v=>card.style.setProperty('--k',Math.max(0,Math.min(1,v/90))),u=v=>card.style.setProperty('--u',Math.max(0,Math.min(1,-v/90)));
+var ONB_VS=false,VS_OFF={};
+function tgVSwipes(off,who){who=who||'onb';if(who==='onb')ONB_VS=off;if(off)VS_OFF[who]=1;else delete VS_OFF[who];const any=Object.keys(VS_OFF).length>0;
+  if(tgVSwipes._s===any)return;tgVSwipes._s=any;try{if(TG)any?(TG.disableVerticalSwipes&&TG.disableVerticalSwipes()):(TG.enableVerticalSwipes&&TG.enableVerticalSwipes());}catch(e){}}
+function onbSwipe(card,go,o){o=o||{};let x0=null,dx=0,vx=0,lx=0,lt=0;const k=v=>card.style.setProperty('--k',Math.max(0,Math.min(1,v/90))),u=v=>card.style.setProperty('--u',Math.max(0,Math.min(1,-v/90)));
   const back=()=>{card.style.transition='transform .45s cubic-bezier(.3,1.4,.5,1)';card.style.transform='';k(0);u(0);};
-  card.addEventListener('pointerdown',e=>{if(card._d)return;x0=e.clientX;y0=e.clientY;t0=lt=performance.now();lx=x0;dx=0;vx=0;try{card.setPointerCapture(e.pointerId);}catch(_){}card.style.transition='none';card.getAnimations().forEach(a=>{if(a.effect&&a.effect.target===card)a.cancel();});card.classList.add('drag');});
-  card.addEventListener('pointermove',e=>{if(x0==null)return;dx=e.clientX-x0;const t=performance.now();if(t>lt){vx=(e.clientX-lx)/(t-lt);lx=e.clientX;lt=t;}card.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`;k(dx);u(dx);});
-  const up=e=>{if(x0==null)return;x0=null;card.classList.remove('drag');const fl=Math.abs(dx)>=40&&Math.abs(vx)>0.45&&Math.sign(vx)===Math.sign(dx);if(Math.abs(dx)>90||fl)go(dx>0);else{back();if(Math.abs(dx)<6&&o.tap)o.tap();}};
-  card.addEventListener('pointerup',up);card.addEventListener('pointercancel',up);card.addEventListener('lostpointercapture',up);}
+  const dbg=()=>{const d=document.getElementById('onbDbg');if(d)d.textContent=Object.entries(DRAGN).map(([a,b])=>a+' '+b).join(' · ');};
+  dragX(card,{dbg,down:x=>{if(card._d)return;x0=lx=x;lt=performance.now();dx=0;vx=0;card.style.transition='none';try{card.getAnimations().forEach(a=>{if(a.effect&&a.effect.target===card)a.cancel();});}catch(_){}card.classList.add('drag');},
+    move:x=>{if(x0==null)return;dx=x-x0;const t=performance.now();if(t>lt){vx=(x-lx)/(t-lt);lx=x;lt=t;}card.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`;k(dx);u(dx);},
+    up:()=>{if(x0==null)return;x0=null;card.classList.remove('drag');const fl=Math.abs(dx)>=40&&Math.abs(vx)>0.45&&Math.sign(vx)===Math.sign(dx);if(Math.abs(dx)>90||fl)go(dx>0);else{back();if(Math.abs(dx)<6&&o.tap)o.tap();}}});}
 // тест уровня: вводный экран → карточки (свайп или кнопки) → грамматика → итог «Твой уровень»
 // 13.9.33 (P0.1, Андрей с ПК: «как мне смахнуть на пк?»): ПК — мышь; клавиши ← → в карточках, Enter — главная кнопка шага
 const onbPC=()=>{try{return matchMedia('(hover:hover) and (pointer:fine)').matches;}catch(e){return false;}};
@@ -7266,7 +7288,8 @@ function onbLevel(){const O=ONB,lang=O.lang;
     onbMount(1,`<h1 class="onb-h sm">Знаешь это слово?</h1><div class="onb-bar"><i style="width:${T.i/N*100}%"></i></div>
       <div class="onb-stack"><div class="onb-card nx"></div><div class="onb-card" id="onbCard">${art?`<em class="art a-${art[1]}">${art[1]}</em>`:''}<b>${esc(art?w[0].slice(4):w[0])}</b><small>${lang==='de'?'Deutsch':'English'}</small><span class="stp k">ЗНАЮ</span><span class="stp u">УЧУ</span><i class="onb-bd k" aria-hidden="true">✓</i><i class="onb-bd u" aria-hidden="true">↺</i></div></div>`,
       `<div class="onb-yn"><button class="onb-no" id="onbNo">← Ещё учу</button><button class="onb-yes" id="onbYes">Знаю →</button></div>`);
-    const card=$('#onbCard');
+    const card=$('#onbCard');backBtn(false);
+    if(FLAG_ADMIN){const st=$('.onb-stack');if(st)st.insertAdjacentHTML('afterend',`<div id="onbDbg" class="onb-dbg">${Object.entries(DRAGN).map(([a,b])=>a+' '+b).join(' · ')||'касаний ещё не было'}</div>`);}
     const go=know=>{if(card._d)return;card._d=1;sfx(know?'tick':'tap');haptic('sel');
       if(fake){if(know)T.fk++;}else{T.seq.push([T.b,know]);T.b=Math.max(0,Math.min(4,T.b+(know?1:-1)));}
       T.i++;const fin=()=>onbLevel();

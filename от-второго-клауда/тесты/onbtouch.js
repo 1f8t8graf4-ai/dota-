@@ -3,7 +3,8 @@
 // медленный короткий — отскакивает; Telegram не закрывает свайпом вниз во время теста и снова закрывает после; «Потяни» тянется пальцем.
 const {open}=require('./st');const {chromium}=require('playwright');
 const init=([st])=>{if(!sessionStorage.getItem('__seeded')){sessionStorage.setItem('__seeded','1');localStorage.setItem('dota_quiz_v4',JSON.stringify(st));localStorage.setItem('dota_flags_v1',JSON.stringify({admin:true,flags:{}}));}
-  window.__vs=[];const W=window.Telegram&&Telegram.WebApp;if(W){W.disableVerticalSwipes=()=>__vs.push('off');W.enableVerticalSwipes=()=>__vs.push('on');}};
+  window.__vs=[];window.__bb=[];const W=window.Telegram&&Telegram.WebApp;if(W){W.disableVerticalSwipes=()=>__vs.push('off');W.enableVerticalSwipes=()=>__vs.push('on');
+    W.BackButton={show:()=>__bb.push('show'),hide:()=>__bb.push('hide'),onClick(){},offClick(){}};}};
 const base={onboarded:true,introV:1,gold:900,lvl:'b',fx:true,tourV:1,scSubChosen:1,snd:false,look:'nd',lookV:2,unl:1};
 let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===undefined?'':typeof d==='string'?d:JSON.stringify(d));};
 (async()=>{const b=await chromium.launch();
@@ -21,6 +22,8 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   r=await ev(()=>({ph:ONB.lt.ph,card:!!document.querySelector('#onbCard')}));ok('смах демо-карточки вправо — начался тест',r.ph==='w'&&r.card,r);
   const I=()=>ev(()=>ONB.lt.i);
   [x,y]=await mid('#onbCard');await swipe(x,y,x+170,y,10,12);await page.waitForTimeout(700);ok('длинный смах вправо — следующая карточка',await I()===1,await I());
+  r=await ev(()=>({bb:__bb.slice(-1)[0],dbg:(document.getElementById('onbDbg')||{}).textContent||''}));   // 13.9.40
+  ok('карточки: кнопка Telegram «Назад» скрыта (не перехватывает смах), строка отладки админу считает касания',r.bb==='hide'&&/ts \d/.test(r.dbg)&&/tm \d/.test(r.dbg),r);
   [x,y]=await mid('#onbCard');await swipe(x,y,x-60,y,2,0);await page.waitForTimeout(700);ok('короткий быстрый смах влево (60 px) — засчитан',await I()===2,await I());
   [x,y]=await mid('#onbCard');await swipe(x,y,x+120,y+70,9,14);await page.waitForTimeout(700);ok('кривой смах с уходом вниз (как большим пальцем) — засчитан',await I()===3,await I());
   [x,y]=await mid('#onbCard');await swipe(x,y,x+35,y,7,60);await page.waitForTimeout(800);
@@ -30,7 +33,15 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   r=await ev(()=>({vs:__vs.slice(-1)[0],scr:document.body.dataset.scr||screen}));ok('ушёл из теста — Telegram снова закрывается свайпом',r.vs==='on',r);
   // «Потяни, чтобы начать» пальцем
   await ev(()=>{window.__ep=null;const o=renderScEp;renderScEp=function(id,i){window.__ep=[id,i];return o.apply(this,arguments);};renderTab('learn');});await page.waitForTimeout(1500);
-  const kb=await page.locator('#ndPull .ndpull-k').boundingBox(),pb=await page.locator('#ndPull').boundingBox();
+  let kb=await page.locator('#ndPull .ndpull-k').boundingBox(),pb=await page.locator('#ndPull').boundingBox();
+  // 13.9.40 (Андрей: «тяну — оно уходит вверх»): косой жест вверх по «Потяни» не прокручивает страницу, Telegram на время жеста не закрывается свайпом
+  const sy0=await ev(()=>document.body.scrollTop+document.documentElement.scrollTop);
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:kb.x+kb.width/2,y:kb.y+kb.height/2}]});
+  for(let i=1;i<=8;i++)await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:kb.x+kb.width/2+i*6,y:kb.y+kb.height/2-i*14}]});
+  const mid1=await ev(()=>__vs.slice(-1)[0]);await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await page.waitForTimeout(700);
+  r=await ev(()=>({sy:document.body.scrollTop+document.documentElement.scrollTop,vs:__vs.slice(-1)[0],ta:getComputedStyle(document.querySelector('#ndPull')).touchAction}));
+  ok('«Потяни»: косой жест вверх — страница не уехала, свайп Telegram выключен на время жеста и включён после',r.sy===sy0&&mid1==='off'&&r.vs==='on'&&r.ta==='none',{sy0,mid1,...r});
+  kb=await page.locator('#ndPull .ndpull-k').boundingBox();pb=await page.locator('#ndPull').boundingBox();
   await swipe(kb.x+kb.width/2,kb.y+kb.height/2,pb.x+pb.width-12,kb.y+kb.height/2+8,12,14);await page.waitForTimeout(900);
   ok('«Потяни» пальцем до конца — эпизод',!!(await ev(()=>window.__ep)),await ev(()=>window.__ep));
   ok('консоль чистая',!errs.length,errs.slice(0,5).join(' | '));
