@@ -440,7 +440,7 @@ function knOpen(btn,c,o){o=o||{};DL.clean();
       for(let j=0;j<W.length&&q.length&&!hw.size;j++)if(q.every((w,i)=>W[j+i]&&wtEq(wtN(W[j+i]),w)))q.forEach((w,i)=>hw.add(j+i));}
     card.className='kn2 kn6 r-com kn2w'+(f?'':' nov');
     inn.innerHTML=`<div class="kn2-b"><span class="kn6-src">${s?`${E(dictFilm(s))} · эп. ${c.pi+1}`:'Своё слово'}</span>
-        <b class="kn2-word">${E(x.w)}</b><span class="kn2-ru">${x.ru?E(x.ru):'<i class="kn2-no">перевод не добавлен</i>'}</span>${s?wiHTML(x.w,wiLang(s.id)):''}
+        <b class="kn2-word">${E(x.w)}</b><span class="kn2-ru">${x.ru?E(typeof mywHere==='function'&&!x.own?mywHere(x):x.ru):'<i class="kn2-no">перевод не добавлен</i>'}</span>${s?wiHTML(x.w,wiLang(s.id)):''}
         ${c.line?`<p class="kn2-line">${markWord(c.line,x.w,'<mark>','</mark>')}${c.lineRu?`<small>${E(c.lineRu)}</small>`:''}</p>`:''}
         ${f?`<div class="kn2-acts kn5-acts kn6-acts"><button data-v="word">${SI.vol} Слово</button><button data-v="watch">${SI.play} Смотреть</button></div>${vBox(W,hw)}`:''}${moreBtn()}
         <div class="kn5-more"${MORE?'':' hidden'}>${tg.length?`<div class="kn2-tags">${tg.map(t=>`<i>#${E(t)}</i>`).join('')}</div>`:''}
@@ -692,7 +692,7 @@ function mySubs(W,L,by){const m={},o=[],multi=by==='film'&&new Set(L.map(x=>{con
   return o;}
 // строки: фраза — как в Кинотеке (фраза, перевод, точка «пора повторить»); слово — ещё и статус словами
 const wRow=x=>{const st=!x.ru?'':mywLearned(x)?'<em class="kw-st ok">выучено</em>':wDue(x)?'<em class="kw-st due">сегодня</em>':x.due?`<em class="kw-st">${E(mywWhen(x.due))}</em>`:'';
-  return `<button class="kq kq2 kqw" data-own data-w="${E(x.k)}">${typeof lvTag==='function'?lvTag(x.w,(scOf(x.sid)||{}).lang==='de'?'de':'en'):''}<span class="kq-x"><b class="kq-en">${E(x.w)}</b><span class="kq-ru">${x.ru?E(x.ru):'<i>без перевода</i>'}</span></span>${st}</button>`;};
+  return `<button class="kq kq2 kqw" data-own data-w="${E(x.k)}">${typeof lvTag==='function'?lvTag(x.w,(scOf(x.sid)||{}).lang==='de'?'de':'en'):''}<span class="kq-x"><b class="kq-en">${E(x.w)}</b><span class="kq-ru">${x.ru?E(typeof mywHere==='function'&&!x.own?mywHere(x):x.ru):'<i>без перевода</i>'}</span></span>${st}</button>`;};
 const myRows=(kind,L)=>`<div class="kq-l">${L.map(kind==='w'?wRow:knRow).join('')}</div>`;
 const scnHTML=(i,t,cls)=>`<h4 class="km6-scn${cls?' '+cls:''}"><em>Сцена ${i}</em><span>${E(t)}</span></h4>`;
 const subHTML=(W,G)=>G.map(g=>`${g.scn?scnHTML(g.scn.i,g.scn.t):''}${G.length===1&&g.k==='#'?'':`<h4 class="km6-sub"><em>${E(g.em)}</em>${g.h?`<span>${E(g.h)}</span>`:''}</h4>`}${myRows(W?'w':'ph',g.L)}`).join('');

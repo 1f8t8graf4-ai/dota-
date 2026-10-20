@@ -6301,3 +6301,12 @@ body[data-look="nd"][data-ndt="light"]:not(#_) .sc-q .qsm .mk{background:var(--n
 
 /* ==== 13.9.37 — «Новый» по макетам: стиль экранов n-* — styles/nd.css (лениво, ndCss); пока он не загрузился, их не видно ==== */
 body.nd:not(.ndc) .n-scr{opacity:0}
+
+/* ==== 13.9.38 — задания «Моё слово» (ответ = значение тут, «▶ фильм» после ответа), свайп в тесте уровня на iPhone ==== */
+.dl-q .sc-fb>.sc-btn,#mqfb .sc-fb>.sc-btn{display:block;width:100%;margin-top:14px;position:relative}
+.dl-mom[hidden]{display:none!important}
+.onb-stack,.onb-card,.onb-dc.c{touch-action:none;-webkit-touch-callout:none}
+.onb-dc.c{cursor:grab;user-select:none;-webkit-user-select:none}
+.onb-dc.c.drag,.onb-card.drag{animation:none!important;cursor:grabbing}
+.ndpull,.n-pull{touch-action:none}
+body[data-look="nd"]:not(#_) .sc-fb>.sc-btn{text-transform:none!important;letter-spacing:0!important;font:700 16px/1.2 var(--lk-f)!important;border-radius:16px!important;min-height:52px}
