@@ -3664,6 +3664,7 @@ function ndKaraSet(box,r){const s=SCUR&&scOf(SCUR.id),p=s&&s.parts[SCUR.i||0];if
   if(!(s.id in WTD)){WTD[s.id]=null;wtLoad(s.id).then(d=>{WTD[s.id]=d||0;});}
   const ws=[...box.querySelectorAll('.sline:not(.s2) .sw')];if(ws.length<2)return;
   const a=r[0],b=Math.max(r[0]+0.4,r[1]-0.15),W=WTD[s.id],T=new Array(ws.length).fill(null);let hit=0;
+  if(W===null){box._kwWait=r;return;}   // 13.9.40: время слов ещё грузится — подсветим, когда придёт
   if(W){const C=W.filter(x=>x[0]>=a+p.a-0.5&&x[0]<=r[1]+p.a+0.3);let k=0;
     ws.forEach((el,j)=>{const n=wtN(el.textContent);if(!n)return;for(let q=k;q<Math.min(C.length,k+4);q++)if(wtN(C[q][2])===n){T[j]=C[q][0]-p.a;k=q+1;hit++;break;}});}
   if(hit<ws.length/2)return;   // 13.9.40: слов не нашлось — строка горит целиком (равномерная подсветка шла мимо голоса)
@@ -3693,7 +3694,8 @@ function scTick(){
     // 13.3: оригинал — словами: нажал (телефон) / навёл (ПК) — перевод слова; слова учебного выражения подчёркнуты
     const s0=SCUR&&scOf(SCUR.id),orig=s0&&s0.lang==='de'?'de':'en',t1=r?String(r[SUB_COL[a]]).replace(/\n/g,' '):'',ph=r&&a===orig?scRowPhrase(r):null;
     swTipHide();SW._row=r;SW._rowPh=ph;box.innerHTML=r?`<div class="sline"><span class="en">${a===orig?swWrapPh(t1,ph):esc(t1)}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);
-    box._kw=null;box.classList.remove('kara');if(r&&a===orig&&ndOn())ndKaraSet(box,r);}
+    box._kw=null;box._kwWait=null;box.classList.remove('kara');if(r&&a===orig&&ndOn())ndKaraSet(box,r);}
+  if(box._kwWait&&SCUR&&WTD[SCUR.id]!==null&&box.dataset.id===String(box._kwWait[0])+m){const r0=box._kwWait;box._kwWait=null;ndKaraSet(box,r0);}
   if(box._kw)ndKaraTick(box,t);
   if(SW._ph){const lv=document.getElementById('sclive');if(lv){const h=SW._ph.find(x=>t>=x.a-0.15&&t<=x.b+3);const k=h?h.f.id:'';
     if(lv.dataset.k!==k){lv.dataset.k=k;if(h)lv.innerHTML=scLiveHTML(h.f);lv.classList.toggle('on',!!h);}}}
