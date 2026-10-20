@@ -13,7 +13,8 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:false,wtapHint:1,lvl:'b',
   const R=await P.evaluate(()=>{const bad=[],cnt=[],types={};let n=0;
     for(const lvl of ['a','b'])for(const ty of [false,true]){store.lvl=lvl;store.typeIn=ty;
       for(const s of SCENES)s.parts.forEach((p,i)=>{const act=scAct(p.ph).length;if(!act)return;SCUR={id:s.id,i};const C=scQuizPlan(s.id,i);n++;
-        const want=Math.min(4,act);if(C.Q.length!==want)cnt.push(`${s.id}#${i+1}: ${C.Q.length} из ${want}`);
+        const want=Math.min(4,phPick(scAct(s.parts[i].ph),9).length);   // 13.9.43: только полезные (phPick)
+       if(C.Q.length!==want)cnt.push(`${s.id}#${i+1}: ${C.Q.length} из ${want}`);
         C.Q.forEach(q=>{types[q.type]=(types[q.type]||0)+1;const f=q.f,t=C.target(f);let need=0;
           if(q.type==='listen'||q.type==='build')need=scToks(t).length;
           if(q.type==='life'){const l=C.lifeOf(f);need=l?scToks(l.target).length:0;}
@@ -21,7 +22,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:false,wtapHint:1,lvl:'b',
           if(need>7)bad.push(`${s.id}#${i+1} ${q.type} ${need}: ${t.slice(0,60)}`);});});}
     return {n,bad,cnt,types};});
   ok(`${dev}: план проверки — во всех ${R.n} проверках не больше 7 нужных кубиков`,!R.bad.length,R.bad.slice(0,8));
-  ok(`${dev}: в каждой проверке 4 задания (или сколько активных фраз)`,!R.cnt.length,R.cnt.slice(0,8));
+  ok(`${dev}: в каждой проверке 4 задания (или сколько полезных фраз, phPick)`,!R.cnt.length,R.cnt.slice(0,8));
   ok(`${dev}: «Когда пригодится?» (when) больше не задание (13.9.40)`,!R.types.when,R.types);
   ok(`${dev}: есть новые короткие виды — «Собери выражение», «Что прозвучало?», «Какое слово пропущено?»`,R.types.expr>0&&R.types.heard>0&&(R.types.gap4||0)>=0,R.types);
   // 2. экран: «Собери выражение» — найдём эпизод, где первое задание — expr
