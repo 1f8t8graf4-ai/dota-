@@ -441,7 +441,7 @@ body[data-look="nd"].ndc:not(#_) .ndl .ndl-r>i{color:var(--n-mute);display:grid;
 body[data-look="nd"].ndc:not(#_) .ndl .ndl-r>i .ni{width:calc(19*var(--nu));height:calc(19*var(--nu))}
 body[data-look="nd"].ndc:not(#_) .ndl .ndl-r>i .n-ic{margin:0}
 /* подписи разделов — серые, капсом, разрядкой */
-body[data-look="nd"].ndc:not(#_) .n-eb,body[data-look="nd"].ndc:not(#_) .ndcap,body[data-look="nd"].ndc:not(#_) .rv-head .ep-end-k{font:600 calc(10.5*var(--nu))/1.4 var(--n-f-ui)!important;letter-spacing:.12em;text-transform:uppercase;color:var(--n-mute)!important}
+body[data-look="nd"].ndc:not(#_) .n-eb,body[data-look="nd"].ndc:not(#_) .rv-head .ep-end-k{font:600 calc(10.5*var(--nu))/1.4 var(--n-f-ui)!important;letter-spacing:.12em;text-transform:uppercase;color:var(--n-mute)!important}
 /* реплики из фильмов — с засечками, чтобы цитата отличалась от интерфейса */
 body[data-look="nd"].ndc:not(#_) .rv2 .rv-c .rv-t>b,body[data-look="nd"].ndc:not(#_) .tk-watch .tkp-en,body[data-look="nd"].ndc:not(#_) .n-hero h3 em{font-family:var(--n-f-voice)!important;font-weight:500!important;letter-spacing:0}
 /* разбор после эпизода — спокойно, как карточки Germanize: без золота, тонкая черта слева */

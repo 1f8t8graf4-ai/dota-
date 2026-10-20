@@ -27,9 +27,7 @@
 .dl-crumb b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dl-pb{display:block;height:4px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden}
 .dl-pb>i{display:block;height:100%;background:var(--c,#FFC857);border-radius:inherit}
-.dl-h{margin:18px 2px 10px;font:700 13px 'Golos Text',sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
-.dl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-@media (max-width:420px){.dl-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+
 .dl-lv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
 .dl-lv.on{opacity:1}
 
@@ -127,16 +125,15 @@
 .v-kino .dl-ttl h1{display:flex;align-items:center;gap:10px;font-size:30px}
 .kn-help{width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:var(--kt,#F3EBDD);font:700 14px 'Golos Text',sans-serif;cursor:pointer;display:grid;place-items:center;padding:0}
 .v-kino .dl-cnt b{color:var(--kt)}
-.kn-q svg,.kn-fbt svg,.kn-fq svg,.kn-chev svg,.kn-nav svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.kn-fq svg,.kn-chev svg,.kn-nav svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .kn-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:0 0 12px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--kl)}
 .kn-seg button{height:38px;border:0;border-radius:10px;background:transparent;color:var(--km);font:700 13.5px 'Golos Text',sans-serif;cursor:pointer}
 .kn-seg button.on{background:var(--kt);color:#141210}
 .kn-seg i{font-style:normal;opacity:.55;font-weight:600}
 .kn-srch{display:flex;gap:8px;margin:0 0 10px}
-.kn-q,.kn-fbt,.kn-fq{display:flex;align-items:center;gap:9px;height:46px;border-radius:14px;border:1px solid var(--kl);background:rgba(255,255,255,.06);color:var(--km);font:500 14.5px 'Golos Text',sans-serif;cursor:pointer;padding:0 14px}
-.kn-q{flex:1;min-width:0;text-align:left}.kn-q span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kn-fbt{flex:none;color:var(--kt);font-weight:700}
-.kn-q svg,.kn-fbt svg,.kn-fq svg{width:19px;height:19px;flex:none}
+.kn-fq{display:flex;align-items:center;gap:9px;height:46px;border-radius:14px;border:1px solid var(--kl);background:rgba(255,255,255,.06);color:var(--km);font:500 14.5px 'Golos Text',sans-serif;cursor:pointer;padding:0 14px}
+
+.kn-fq svg{width:19px;height:19px;flex:none}
 .kn-tps{display:flex;gap:6px;overflow-x:auto;margin:0 0 12px;padding:2px 0;scrollbar-width:none}
 .kn-tps::-webkit-scrollbar,.kn-row::-webkit-scrollbar,.kn-chips::-webkit-scrollbar{display:none}
 .kn-tps button,.kn-chips button{flex:none;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 13px;border-radius:99px;border:1px solid var(--kl);background:rgba(255,255,255,.05);color:var(--kt);font:600 13px 'Golos Text',sans-serif;white-space:nowrap;cursor:pointer}
@@ -150,10 +147,10 @@
 .kn-bar{display:block;height:4px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden}
 .kn-bar>i{display:block;height:100%;border-radius:inherit;background:var(--c,#F3EBDD);min-width:0}
 /* шапки: размытый фон + чёткий постер (кадр не растягивается — нет «шакала») */
-.kn-hero,.kn-fh,.kn-sh{position:relative;display:flex;align-items:flex-end;gap:16px;width:100%;padding:16px;margin:0 0 6px;border-radius:20px;overflow:hidden;border:1px solid var(--kl);background:#111114;color:var(--kt);text-align:left;isolation:isolate}
+.kn-hero,.kn-sh{position:relative;display:flex;align-items:flex-end;gap:16px;width:100%;padding:16px;margin:0 0 6px;border-radius:20px;overflow:hidden;border:1px solid var(--kl);background:#111114;color:var(--kt);text-align:left;isolation:isolate}
 .kn-hero{cursor:pointer;min-height:200px}
 .kn-hbg{position:absolute;inset:-30px;z-index:-1;background:var(--bg) center/cover no-repeat;filter:blur(18px) brightness(.5) saturate(1.15);transform:scale(1.08)}
-.kn-hero::after,.kn-fh::after,.kn-sh::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(11,11,13,.82),rgba(11,11,13,.25) 70%),linear-gradient(0deg,rgba(11,11,13,.6),transparent 60%)}
+.kn-hero::after,.kn-sh::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(11,11,13,.82),rgba(11,11,13,.25) 70%),linear-gradient(0deg,rgba(11,11,13,.6),transparent 60%)}
 .kn-hp{flex:none;width:112px;aspect-ratio:2/3;border-radius:12px;background-size:cover;background-position:center;box-shadow:0 12px 30px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.12)}
 .kn-hp.wide{width:168px;aspect-ratio:16/9;border-radius:10px}
 .kn-ht{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
@@ -162,7 +159,7 @@
 .kn-ht small{font-size:13px;color:var(--km)}
 .kn-ht .kn-bar{max-width:320px}
 .kn-go{align-self:flex-start;margin-top:6px;padding:9px 16px;border-radius:99px;background:var(--kt);color:#141210;font:700 13.5px 'Golos Text',sans-serif}
-.kn-hero:active,.kn-p:active,.kn-sc:active{transform:scale(.985)}
+.kn-hero:active,.kn-p:active{transform:scale(.985)}
 @media (hover:hover){.kn-hero:hover .kn-hbg{filter:blur(16px) brightness(.58) saturate(1.2)}}
 /* полки постеров */
 .kn-h{display:flex;align-items:baseline;gap:8px;margin:20px 2px 10px;font:800 17px 'Golos Text',sans-serif;letter-spacing:-.01em}
@@ -176,15 +173,9 @@
 @media (hover:hover){.kn-p:hover .kn-pi{transform:translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.2)}}
 @media (min-width:760px){.kn-row{flex-wrap:wrap;overflow:visible;margin:0;padding:2px 0 6px}.kn-p{width:150px}.kn-hp{width:140px}.kn-ht>b{font-size:32px}.kn-hero{min-height:240px;padding:22px}.kn-tps{flex-wrap:wrap;margin:0 0 12px;padding:0}}
 /* сцены фильма */
-.kn-scl{display:flex;flex-direction:column;gap:10px}
-.kn-sc{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);text-align:left;cursor:pointer}
-.kn-sct{flex:none;width:132px;aspect-ratio:16/9;border-radius:10px;background-size:cover;background-position:center}
-.kn-scx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-.kn-scx em{font-style:normal;font-size:11.5px;color:var(--km)}
-.kn-scx b{font:700 15px/1.25 'Golos Text',sans-serif}
-.kn-scx small{font-size:12.5px;color:var(--km)}
+
 .kn-chev{flex:none;width:22px;height:22px;opacity:.5;transition:transform .25s}.kn-chev svg{width:100%;height:100%}
-@media (max-width:420px){.kn-sct{width:104px}}
+
 /* эпизоды сцены */
 .kn-ep{margin:10px 0;border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.03)}
 .kn-ep summary{list-style:none;display:flex;align-items:center;gap:12px;padding:10px;cursor:pointer}
@@ -195,55 +186,35 @@
 .kn-ex b{font:700 14.5px/1.2 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kn-en{flex:none;font-size:13px;color:var(--km)}.kn-en b{color:var(--kt);font-size:16px}
 .kn-ep[open] .kn-chev{transform:rotate(90deg)}
-.kn-ep .kn-grid{padding:2px 10px 12px}
+
 .kn-nav{display:flex;justify-content:space-between;gap:10px;margin:16px 0 4px}
 .kn-nav button{display:flex;align-items:center;gap:8px;max-width:48%;padding:10px 12px;border-radius:14px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);text-align:left;cursor:pointer}
 .kn-nav button.nx{text-align:right;margin-left:auto}
 .kn-nav svg{width:18px;height:18px;flex:none}
 .kn-nav span{min-width:0;display:flex;flex-direction:column}.kn-nav em{font-style:normal;font-size:11px;color:var(--km)}.kn-nav b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* карты */
-.kn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:12px}
-@media (max-width:440px){.kn-grid{grid-template-columns:1fr 1fr;gap:10px}}
+
 .kc{position:relative;display:flex;flex-direction:column;width:100%;padding:0;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;background:#17171b;color:var(--kt,#F3EBDD);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:0 8px 20px rgba(0,0,0,.35)}
 .kc::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;z-index:3;background:transparent}
 .kc.r-rare::before{background:#4DA8FF}.kc.r-epic::before{background:linear-gradient(90deg,#B57CFF,#FF7AD9)}.kc.r-leg::before{background:linear-gradient(90deg,#FF9A2E,#FFD27A,#FF9A2E)}
-.kc-art{position:relative;display:block;width:100%;aspect-ratio:16/9;background-size:auto calc(var(--bz,1)*100%);background-position:var(--bx,50%) var(--by,50%);background-repeat:no-repeat;background-color:#222}
-.kc-pl{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.55);color:#fff;z-index:2;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-.kc-pl svg{width:15px;height:15px;margin-left:2px;fill:currentColor;stroke:none}
-.kc-rr{position:absolute;left:8px;top:10px;z-index:2;padding:3px 7px;border-radius:6px;font:800 9.5px 'Golos Text',sans-serif;letter-spacing:.06em;text-transform:uppercase;font-style:normal;background:rgba(0,0,0,.6);color:#fff}
-.kc.r-rare .kc-rr{color:#9ED0FF}.kc.r-epic .kc-rr{color:#E2C4FF}.kc.r-leg .kc-rr{color:#FFD27A}
-.kc-b{flex:1;display:flex;flex-direction:column;gap:4px;padding:10px 11px 11px}
-.kc-en{font:800 14.5px/1.25 'Golos Text',sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.kc-ru{font-size:12.5px;line-height:1.3;color:rgba(243,235,221,.66);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.kc-ft{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;padding-top:6px}
+
 .kc-st{display:inline-flex;align-items:center;padding:3px 8px;border-radius:99px;font:700 11px/1.3 'Golos Text',sans-serif;font-style:normal;white-space:nowrap;background:rgba(255,255,255,.08);color:rgba(243,235,221,.85)}
 .kc-st.st-new,.st-new .kc-st{background:rgba(111,183,255,.16);color:#9ccfff}
 .kc-st.st-due,.st-due .kc-st{background:rgba(255,181,71,.16);color:#ffc46b}
 .kc-st.st-ok,.st-ok .kc-st{background:rgba(109,213,140,.16);color:#8fe0a6}
 .kc-st.st-lock{background:rgba(255,255,255,.06);color:rgba(255,255,255,.55)}
-.kc-mp{display:flex;gap:3px}.kc-mp i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18)}.kc-mp i.on{background:var(--kt,#F3EBDD)}
-.st-ok .kc-mp i.on{background:#8fe0a6}
+
 .kc.st-due{border-color:rgba(255,181,71,.35)}
 @media (hover:hover){.kc:not(.lock):hover{transform:translateY(-3px);border-color:rgba(255,255,255,.2);box-shadow:0 14px 28px rgba(0,0,0,.5)}}
 .kc:active{transform:scale(.97)}
 /* закрытая карта — под туманом */
 .kc.lock{cursor:pointer;background:#121215}
-.kc.lock .kc-art{filter:blur(7px) brightness(.45) saturate(.6);transform:scale(1.1)}
-.kc.lock .kc-b{filter:blur(6px);opacity:.45;user-select:none;-webkit-user-select:none}
-.kc-fog{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
-.kc-fog i{position:absolute;inset:-40%;background:radial-gradient(closest-side,rgba(200,205,215,.16),transparent 70%) 0 0/60% 60%,radial-gradient(closest-side,rgba(200,205,215,.12),transparent 70%) 40% 60%/70% 50%;animation:knFog 14s linear infinite}
-.kc-fog i+i{animation-duration:22s;animation-direction:reverse;opacity:.8}
-@keyframes knFog{to{transform:translate(18%,8%)}}
-.kc-lk{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px;text-align:center}
-.kc-lk b{font:700 13.5px 'Golos Text',sans-serif;color:rgba(255,255,255,.9)}
-.kc-lk small{font-size:11.5px;color:rgba(255,255,255,.55);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
 /* поиск и фильтры */
 .kn-fq{cursor:text;margin:0 0 12px}
 .kn-fq input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--kt);font:500 15px 'Golos Text',sans-serif}
 .kn-fq input::placeholder{color:var(--km)}
-.kn-fgs{display:flex;flex-direction:column;gap:10px;margin:0 0 16px}
-.kn-fg{display:flex;flex-direction:column;gap:6px}
-.kn-fg>b{font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km);margin-left:2px}
+
 .kn-chips{display:flex;gap:6px;overflow-x:auto;margin:0;padding:2px 0;scrollbar-width:none}
 @media (min-width:760px){.kn-chips{flex-wrap:wrap;margin:0;padding:0}}
 .kn-rh{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:6px 2px 8px}
@@ -251,9 +222,7 @@
 .kn-rh>span>b{font:800 20px 'Golos Text',sans-serif}
 .kn-rh small{font-size:13px;color:var(--km)}.kn-rh small b{color:var(--kt)}
 .kn-reset{flex:none;height:32px;padding:0 12px;border-radius:99px;border:1px solid var(--kl);background:transparent;color:var(--km);font:600 12.5px 'Golos Text',sans-serif;cursor:pointer}
-.kn-rf{display:flex;align-items:center;gap:10px;margin:18px 2px 10px;font:700 15px 'Golos Text',sans-serif}
-.kn-rf small{margin-left:auto;font-size:12.5px;color:var(--km);font-weight:500}
-.kn-rfp{width:24px;aspect-ratio:2/3;border-radius:4px;background-size:cover;background-position:center;flex:none}
+
 .kn-tt{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .kn-tt button{display:flex;flex-direction:column;gap:5px;padding:12px;border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);text-align:left;cursor:pointer}
 .kn-tti{font-size:24px;line-height:1}
@@ -261,7 +230,7 @@
 .kn-tt small{font-size:12px;color:var(--km)}
 .kn-empty{padding:40px 16px;text-align:center;font:700 16px 'Golos Text',sans-serif;display:flex;flex-direction:column;align-items:center;gap:8px}
 .kn-empty small{font-weight:400;font-size:13.5px;color:var(--km)}
-.kn-my{background:none!important;padding:0!important}
+
 /* шторка (подсказка, закрытая карта) */
 .kn-sheet{position:fixed;inset:0;z-index:92;display:flex;align-items:flex-end;justify-content:center}
 .kn-sd{position:absolute;inset:0;background:rgba(0,0,0,.6)}
@@ -282,30 +251,13 @@
 /* открытая карта */
 .kno{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:12px}
 .kno-dim{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.knc{position:relative;width:min(100%,560px);max-height:calc(100vh - 24px - var(--sb,0px));overflow:auto;border-radius:22px;background:#141417;border:1px solid rgba(255,255,255,.09);color:#F3EBDD;box-shadow:0 30px 80px rgba(0,0,0,.6);font-family:'Golos Text',system-ui,sans-serif;overscroll-behavior:contain}
-.knc::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;z-index:4}
-.knc.r-rare::before{background:#4DA8FF}.knc.r-epic::before{background:linear-gradient(90deg,#B57CFF,#FF7AD9)}.knc.r-leg::before{background:linear-gradient(90deg,#FF9A2E,#FFD27A,#FF9A2E)}
+
 .knv{position:relative;aspect-ratio:16/9;background:#000}
 .knv video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
 .knv-p{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:0;display:grid;place-items:center;background:rgba(255,255,255,.92);color:#111;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.5)}
 .knv-p svg{width:28px;height:28px;margin-left:4px;fill:currentColor;stroke:none}
-.knc-x{position:absolute;right:10px;top:10px;width:38px;height:38px;border-radius:50%;border:0;display:grid;place-items:center;background:rgba(0,0,0,.55);color:#fff;cursor:pointer;z-index:2}
-.knc-x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.4}
-.knc-b{display:flex;flex-direction:column;gap:10px;padding:14px 16px 18px}
-.knc-src{font-size:12.5px;color:rgba(243,235,221,.55)}
-.knc-en{font:800 22px/1.25 'Golos Text',sans-serif;letter-spacing:-.01em}
-.knc-ru{font-size:15.5px;line-height:1.4;color:rgba(243,235,221,.78)}
-.knc-acts{display:flex;gap:6px;flex-wrap:wrap}
-.knc-acts button{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 13px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#F3EBDD;font:600 13.5px 'Golos Text',sans-serif;cursor:pointer}
-.knc-acts button svg{width:14px;height:14px;fill:currentColor;stroke:none}
-.knc-acts [data-v="ep"]{margin-left:auto}
-.knc-st{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
-.knc-st>div{display:flex;align-items:center;justify-content:space-between}
-.knc-st p{margin:0;font-size:13.5px;line-height:1.45;color:rgba(243,235,221,.75)}
-.knc-st.st-due{border-color:rgba(255,181,71,.3)}.knc-st.st-ok{border-color:rgba(109,213,140,.3)}
-.knc-rr{display:flex;align-items:center;font-size:13px;color:rgba(243,235,221,.72)}
-.knc-b .ph-info,.knc-b .phi{margin:0}
-@media (max-width:520px){.kno{align-items:flex-end;padding:0}.knc{width:100%;max-height:calc(100vh - 40px);border-radius:22px 22px 0 0;padding-bottom:var(--sb,0px)}.knc-en{font-size:20px}}
+
+@media (max-width:520px){.kno{align-items:flex-end;padding:0}}
 /* «Момент» в карте у вариантов без окна арта (раньше играл только звук) */
 .dli-mv{position:absolute;left:50%;top:calc(var(--st,0px) + 14px);transform:translateX(-50%);z-index:6;width:min(92vw,520px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 16px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.15)}
 .dli-mv .dli-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:1;background:#000}
@@ -381,28 +333,18 @@
 .kf-row{display:flex;gap:10px;overflow-x:auto;padding:2px 0 10px;scroll-snap-type:x mandatory;scrollbar-width:none;perspective:900px}
 .kf-row::-webkit-scrollbar{display:none}
 .kcc{position:relative;flex:none;width:236px;aspect-ratio:16/10;scroll-snap-align:start;padding:0;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;background:#111;color:#fff;text-align:left;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.4)}
-.kcc .kc-art{position:absolute;inset:0;height:100%;aspect-ratio:auto}
-.kcc-v{position:absolute;inset:0;z-index:1}
+
 .kcc::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(0,0,0,.88),rgba(0,0,0,.2) 55%,transparent);pointer-events:none}
 .kcc::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;z-index:3}
 .kcc.r-rare::before{background:#4DA8FF}.kcc.r-epic::before{background:linear-gradient(90deg,#B57CFF,#FF7AD9)}.kcc.r-leg::before{background:linear-gradient(90deg,#FF9A2E,#FFD27A,#FF9A2E)}
-.kcc-sub{position:absolute;left:10px;right:10px;bottom:9px;z-index:2;display:flex;flex-direction:column;gap:2px}
-.kcc-sub b{font:700 14px/1.25 'Golos Text',sans-serif;text-shadow:0 1px 4px #000;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.kcc-sub small{font-size:11.5px;color:rgba(255,255,255,.78);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+
 .kcc .kc-st{position:absolute;left:8px;top:9px;z-index:2;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.kcc .kc-pl{z-index:2}
-.kcc.lock .kc-art{filter:blur(8px) brightness(.4) saturate(.6);transform:scale(1.1)}
-.kcc-lk{position:absolute;inset:0;z-index:3;display:grid;place-items:center;padding:10px;text-align:center;font:700 13.5px 'Golos Text',sans-serif;color:rgba(255,255,255,.88)}
+
 .kcc.hov{box-shadow:0 22px 40px rgba(0,0,0,.6);border-color:rgba(255,255,255,.22)}
 .kf-more{flex:none;width:116px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:14px;border:1px dashed rgba(255,255,255,.22);background:rgba(255,255,255,.03);color:var(--kt);cursor:pointer;font:700 13px 'Golos Text',sans-serif}
 .kf-more small{color:var(--km);font-weight:500}.kf-more svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
 @media (min-width:760px){.kcc{width:262px}.kf-sht{width:132px}}
 /* открытая карта: лучи по редкости и блик */
-.kno .knc.r-epic,.kno .knc.r-leg{box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.12),0 0 60px -10px var(--rc,#B57CFF)}
-.knc.r-leg{--rc:#FF9A2E}.knc.r-epic{--rc:#B57CFF}
-.kno-rays{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;margin:-80vmax 0 0 -80vmax;pointer-events:none;background:repeating-conic-gradient(from 0deg,rgba(255,200,120,.10) 0 6deg,transparent 6deg 18deg);animation:knRays 30s linear infinite;mask:radial-gradient(circle,#000 0,transparent 45%);-webkit-mask:radial-gradient(circle,#000 0,transparent 45%)}
-.kno-rays.r-epic{background:repeating-conic-gradient(from 0deg,rgba(181,124,255,.11) 0 6deg,transparent 6deg 18deg)}
-@keyframes knRays{to{transform:rotate(360deg)}}
 
 .kcc .kc-st{background:rgba(0,0,0,.6)!important}
 .kcc.st-new .kc-st{color:#9ccfff}.kcc.st-due .kc-st{color:#ffc46b}.kcc.st-ok .kc-st{color:#8fe0a6}.kcc.st-go .kc-st{color:rgba(243,235,221,.92)}
@@ -415,52 +357,19 @@
 .kn-seg.n3{grid-template-columns:1fr 1fr 1fr}
 .kn-seg.n3 button{font-size:12.8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
 /* строки-фразы */
-.kr-l{border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.03);overflow:hidden}
+
 .kr{position:relative;display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:start;width:100%;padding:11px 12px;border:0;border-bottom:1px solid rgba(255,255,255,.06);background:transparent;color:var(--kt,#F3EBDD);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
 .kr:last-child{border-bottom:0}
 .kr:active{background:rgba(255,255,255,.06)}
 @media (hover:hover){.kr:not(.lock):hover{background:rgba(255,255,255,.045)}}
-.kr-t{position:relative;display:block;width:64px;aspect-ratio:16/9;margin-top:2px;border-radius:7px;background-color:#222;background-size:cover;background-position:center;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
-.kr-t i{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.55);color:#fff}
-.kr-t i svg{width:10px;height:10px;margin-left:1px;fill:currentColor;stroke:none}
-.kr-x{display:flex;flex-direction:column;gap:3px;min-width:0}
-.kr-x>b{font:700 15px/1.3 'Golos Text',sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.kr-x>small{font-size:13px;line-height:1.35;color:var(--km,rgba(243,235,221,.6));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.kr-m{display:flex;align-items:center;gap:8px;margin-top:4px}
-.kr-m .kc-st{padding:2px 7px;font-size:10.5px}
-.kr-m .kn-rd{margin:0}
+
 .kr.st-due{background:rgba(255,181,71,.045)}
 .kr.lock{grid-template-columns:64px minmax(0,1fr) auto;align-items:center;cursor:pointer}
-.kr.lock .kr-t{filter:blur(3px) brightness(.4) saturate(.5)}
-.kr.lock .kr-x{filter:blur(5px);opacity:.45;user-select:none;-webkit-user-select:none}
-.kr-lk{font-style:normal;font:600 12px 'Golos Text',sans-serif;color:rgba(255,255,255,.62);white-space:nowrap}
-.kn-ep .kr-l{margin:0 10px 10px}
+
 /* переключатель «Список / Карточки» и строка над списком */
-.kn-vsw{flex:none;display:inline-flex;gap:2px;padding:3px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid var(--kl)}
-.kn-vsw button{height:28px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:var(--km);font:600 12px 'Golos Text',sans-serif;cursor:pointer;white-space:nowrap}
-.kn-vsw button.on{background:rgba(255,255,255,.14);color:var(--kt)}
-.kn-vt{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 2px 6px}
-.kn-vt>span{font:700 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
-#knRes .kn-vt{justify-content:flex-end;margin:10px 0 0}
-.kn-lh{display:flex;align-items:center;gap:8px;margin:2px 0 6px}
-.kn-lst{flex:1;min-width:0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
-.kn-lst::-webkit-scrollbar{display:none}
-.kn-lst button{flex:none;height:32px;padding:0 11px;border-radius:99px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);font:600 12.5px 'Golos Text',sans-serif;cursor:pointer;white-space:nowrap}
-.kn-lst button i{font-style:normal;opacity:.5;font-weight:500}
-.kn-lst button.on{background:var(--kt);color:#141210;border-color:var(--kt)}
+
 .kn-lg2{margin:0 0 4px}
-.kn-lf{width:100%;padding:0;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer}
-.kn-lf small{display:inline-flex;align-items:center;gap:3px}
-.kn-lf svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2}
-.kn-lmore{width:100%;height:40px;margin-top:6px;border-radius:12px;border:1px dashed rgba(255,255,255,.2);background:transparent;color:var(--kt);font:600 13px 'Golos Text',sans-serif;cursor:pointer}
-.kn-lnext{display:flex;align-items:center;gap:12px;width:100%;margin:22px 0 6px;padding:14px;border-radius:16px;border:1px solid var(--kl);background:rgba(255,255,255,.04);color:var(--kt);text-align:left;cursor:pointer}
-.kn-lnext span{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.kn-lnext b{font:700 14.5px 'Golos Text',sans-serif}.kn-lnext small{font-size:12.5px;color:var(--km)}
-.kn-lnext em{flex:none;display:inline-flex;align-items:center;gap:4px;font:700 13px 'Golos Text',sans-serif;font-style:normal}
-.kn-lnext svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2}
-.kn-lempty{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0;padding:30px 18px;border-radius:20px;border:1px solid var(--kl);background:rgba(255,255,255,.03);text-align:center}
-.kn-lempty b{font:800 19px 'Golos Text',sans-serif}
-.kn-lempty p{margin:0 0 6px;max-width:420px;font-size:14px;line-height:1.45;color:var(--km)}
-.kn-lempty .kn-btn{max-width:300px}
+
 /* шапка сцены: кадр с ▶, название фильма — ссылка, «Смотреть» */
 .kn-hw{position:relative;border:0;padding:0;cursor:pointer}
 .kn-hw i{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.5);border:2px solid rgba(255,255,255,.85);color:#fff;transition:transform .2s}
@@ -488,23 +397,19 @@
 .kf-c{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:var(--kt)}
 .kf-c svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.4}
 .kf-w:active,.kf-c:active,.kn-ew:active,.kn-hw:active{transform:scale(.96)}
-.kn-lh{justify-content:space-between}
-.kn-lsb span{color:var(--km)}.kn-lsb b{max-width:170px}
+
 .kn-ddl button i{font-style:normal;opacity:.5;font-weight:500;margin-left:4px}
-.kr-t i{left:4px;top:auto;bottom:4px;width:18px;height:18px;margin:0}
-.kr-t i svg{width:8px;height:8px}
-.kn-ep .kr-l{margin:0;border:0;border-top:1px solid rgba(255,255,255,.06);border-radius:0 0 16px 16px;background:none}
+
 .kn-seg.n3 button{text-align:center}
 /* ПК: список фраз в две колонки — больше слов на экране */
-@media (min-width:900px){.kr-l{display:grid;grid-template-columns:1fr 1fr}.kr:nth-child(odd){border-right:1px solid rgba(255,255,255,.06)}.kr:nth-last-child(2):nth-child(odd){border-bottom:0}}
-.kn-lmore{display:block;text-align:center}
+@media (min-width:900px){.kr:nth-child(odd){border-right:1px solid rgba(255,255,255,.06)}.kr:nth-last-child(2):nth-child(odd){border-bottom:0}}
 
 /* =====================================================================================
    13.8.5 — Андрей: «это просто плохо выглядит». «Фразы» — как цитаты из фильма: кавычка цветом редкости,
    фраза крупно, перевод, статус словами и «эп. 1 · 0:12» одной тихой строкой, ▶ справа. Без мутных миниатюр,
    без плашек и коробок; поиск, фильтры и язык — одна строка; панель вариантов больше не налезает на содержимое
    ===================================================================================== */
-.dl-root.v-kino>.dl-adm{position:relative!important;top:auto!important}
+
 .kn-tb{display:flex;gap:8px;align-items:center;margin:0 0 12px}
 .kn-sp{flex:1;min-width:0;display:flex;align-items:center;height:44px;border-radius:13px;border:1px solid var(--kl);background:rgba(255,255,255,.05)}
 .kn-sq{flex:1;min-width:0;display:flex;align-items:center;gap:9px;height:100%;padding:0 6px 0 13px;border:0;background:none;color:var(--km);font:500 14.5px 'Golos Text',sans-serif;text-align:left;cursor:pointer}
@@ -526,7 +431,7 @@
 /* фильм — заголовок группы */
 .kn-lg3{margin:20px 0 4px}
 .kn-gh{display:flex;align-items:center;gap:12px;width:100%;padding:0 0 11px;border:0;border-bottom:1px solid var(--kl);background:none;color:var(--kt);text-align:left;cursor:pointer}
-.kn-ghp{flex:none;width:34px;aspect-ratio:2/3;border-radius:5px;background-size:cover;background-position:center;box-shadow:0 4px 12px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.1)}
+
 .kn-ght{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .kn-ght b{font:600 21px/1.15 'Playfair Display',Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kn-ght small{font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
@@ -534,21 +439,15 @@
 .kq-l{display:flex;flex-direction:column}
 .kq{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr) 34px;gap:4px 10px;align-items:start;width:100%;padding:14px 0 15px;border:0;border-bottom:1px solid rgba(255,255,255,.06);background:none;color:var(--kt,#F3EBDD);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
 .kq:last-child{border-bottom:0}
-.kq-m{font:700 34px/.9 'Playfair Display',Georgia,serif;font-style:normal;color:rgba(243,235,221,.28);margin-top:1px;user-select:none;-webkit-user-select:none}
-.kq.r-rare .kq-m{color:#6FB7FF}.kq.r-epic .kq-m{color:#C79BFF}.kq.r-leg .kq-m{color:#FFC163}
+
 .kq-x{display:flex;flex-direction:column;gap:4px;min-width:0}
 .kq-en{font:600 16.5px/1.35 'Golos Text',sans-serif;color:var(--kt,#F3EBDD)}
 .kq-ru{font:400 14px/1.4 'Golos Text',sans-serif;color:rgba(243,235,221,.62)}
-.kq-s{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:3px;font:500 12px 'Golos Text',sans-serif;color:rgba(243,235,221,.45)}
-.kq-st{color:rgba(243,235,221,.72)}
-.kq.st-new .kq-st{color:#8EC5FF}.kq.st-due .kq-st{color:#FFB547}.kq.st-ok .kq-st{color:#7DD99A}
-.kq-ep{font-variant-numeric:tabular-nums}
-.kq-p{align-self:center;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.14);color:var(--kt,#F3EBDD);opacity:.7;transition:opacity .15s,background .15s}
-.kq-p svg{width:12px;height:12px;margin-left:2px;fill:currentColor;stroke:none}
+
 .kq:active{background:rgba(255,255,255,.04)}
-@media (hover:hover){.kq:not(.lock):hover .kq-p{opacity:1;background:rgba(255,255,255,.08)}.kq:not(.lock):hover .kq-en{color:#fff}}
+@media (hover:hover){.kq:not(.lock):hover .kq-en{color:#fff}}
 .kq.lock{grid-template-columns:22px minmax(0,1fr) auto;align-items:center}
-.kq.lock .kq-m{opacity:.35}
+
 .kq.lock .kq-x{filter:blur(5px);opacity:.4;user-select:none;-webkit-user-select:none}
 .kq-lk{font:600 12px 'Golos Text',sans-serif;font-style:normal;color:rgba(243,235,221,.6);white-space:nowrap}
 .kn-lmore2{width:100%;padding:11px 0;border:0;border-top:1px solid rgba(255,255,255,.06);background:none;color:var(--km);font:600 13.5px 'Golos Text',sans-serif;text-align:left;cursor:pointer}
@@ -570,10 +469,7 @@
 .kn-lgb i{font-style:normal;font-size:10px}
 @media (hover:hover){.kn-lgb:hover{color:var(--kt)}}
 /* панель вариантов (только админ/тестеры) — тише и ниже ростом */
-.dl-root.v-kino>.dl-adm{padding:3px;gap:4px;border-radius:12px;background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.06);opacity:.7}
-.dl-root.v-kino>.dl-adm .dl-ab{width:28px;height:28px;flex-basis:28px;border-radius:8px}
-.dl-root.v-kino>.dl-adm .dl-demo{height:28px;padding:0 8px;font-size:11px}
-.dl-root.v-kino>.dl-adm .dl-an b{font-size:12px}.dl-root.v-kino>.dl-adm .dl-an small{font-size:10px}
+
 /* вкладки — просто текст, черта под выбранной */
 .kn-seg.kn-tabs{display:flex;gap:24px;padding:0;margin:0 0 14px;border:0;border-bottom:1px solid var(--kl);border-radius:0;background:none}
 .kn-seg.kn-tabs button{position:relative;flex:none;width:auto;height:42px;padding:0;border-radius:0;background:none;color:var(--km);font:600 15px 'Golos Text',sans-serif;overflow:visible}
@@ -612,22 +508,10 @@
 .kn-lnext2{display:flex;align-items:center;gap:6px;width:100%;margin:26px 0 4px;padding:14px 0;border:0;border-top:1px solid var(--kl);background:none;color:var(--km);font:500 13.5px/1.4 'Golos Text',sans-serif;text-align:left;cursor:pointer}
 .kn-lnext2 b{color:var(--kt);font-weight:600}
 .kn-lnext2 svg{flex:none;width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2}
-.kn-lempty{border:0;background:none;padding:34px 10px}
+
 @media (min-width:900px){.kq-l{column-gap:40px}}
 
 /* «Мои слова» в новом словаре — тем же тихим списком */
-.v-kino .kn-my .dm-what{color:var(--km)}
-.v-kino .kn-my .dm-tabs{display:flex;gap:24px;border-bottom:1px solid var(--kl)}
-.v-kino .kn-my .dm-tabs button{flex:none;padding:10px 0;font:600 14.5px 'Golos Text',sans-serif;color:var(--km)}
-.v-kino .kn-my .dm-tabs button.on{color:var(--kt);border-color:var(--kt)}
-.v-kino .kn-my .dx-tags button.on{background:var(--kt);color:#141210}
-.v-kino .kn-my .dm-gh b{font:700 11.5px 'Golos Text',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--km)}
-.v-kino .kn-my .dm-gi{display:none}
-.v-kino .kn-my .dm{padding:12px 0 13px;border:0;border-bottom:1px solid rgba(255,255,255,.06);border-radius:0;background:none;box-shadow:none}
-.v-kino .kn-my .dm-h b{font:500 16.5px 'Golos Text',sans-serif;color:var(--kt)}
-.v-kino .kn-my .dm-ru{color:rgba(243,235,221,.55)}
-.v-kino .kn-my .dm-st{color:rgba(243,235,221,.4)}
-.v-kino .kn-my .dx-train{background:var(--kt);color:#141210}
 
 /* ---------- открытая фраза: красиво ---------- */
 .kno.kno2{padding:0;align-items:stretch;justify-content:center}
@@ -659,9 +543,7 @@ body.nofx .kn2-bg i{animation:none}
 .kn2-p{z-index:2}
 /* текст под моментом */
 .kn2-b{display:flex;flex-direction:column;gap:12px;padding:20px 2px 0}
-.kn2-src{font:500 12.5px/1.4 'Golos Text',sans-serif;color:rgba(246,241,232,.55)}
-.kn2-rr{font-style:normal;font-weight:600}
-.kn2.r-rare .kn2-rr{color:#8EC5FF}.kn2.r-epic .kn2-rr{color:#D2B0FF}.kn2.r-leg .kn2-rr{color:#FFCF7A}
+
 .kn2-en{font:800 clamp(24px,6.6vw,32px)/1.2 'Golos Text',sans-serif;letter-spacing:-.02em;color:#fff;text-wrap:balance}
 .kn2-ru{font:400 17px/1.45 'Golos Text',sans-serif;color:rgba(246,241,232,.78)}
 .kn2-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
@@ -671,11 +553,11 @@ body.nofx .kn2-bg i{animation:none}
 .kn2-acts svg{width:12px;height:12px;fill:currentColor;stroke:none}
 .kn2-acts [data-v="ep"]{margin-left:auto}
 .kn2-acts [data-v="ep"] svg{fill:none;stroke:currentColor;stroke-width:2.4}
-.kn2-st{display:flex;align-items:center;gap:10px;margin:4px 0 0;font:400 14px/1.45 'Golos Text',sans-serif;color:rgba(246,241,232,.7)}
+
 .kn2-dots{flex:none;display:inline-flex;gap:4px}
 .kn2-dots b{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18)}
 .kn2-dots b.on{background:#7DD99A}
-.kn2-st.st-due .kn2-dots b.on{background:#FFB547}
+
 .kno2 .kn2-b .ph-blk{margin:6px 0 0;padding:16px 0 0;border:0;border-top:1px solid rgba(255,255,255,.1);border-radius:0;background:none}
 .kno2 .kn2-b .ph-blk em{color:rgba(246,241,232,.5);font-size:10.5px}
 .kno2 .kn2-b .ph-use em::before{display:none}
@@ -695,15 +577,6 @@ body.nofx .kn2-bg i{animation:none}
 @media (hover:hover){.kno2 .kn2-en .sw:hover,.kno2 .kn2-en .kw:hover{background:rgba(255,255,255,.12)}}
 .kno2 .kn2-en .on{background:rgba(255,255,255,.12)}
 /* «Мои слова» в новом словаре: поиск и кнопки — тихо */
-.v-kino .kn-my .dx-q{border-color:var(--kl);background:rgba(255,255,255,.045);color:var(--kt)}
-.v-kino .kn-my .dx-q:focus{border-color:rgba(255,255,255,.28)}
-.v-kino .kn-my .dm-addb{background:rgba(255,255,255,.06);color:var(--kt)}
-.v-kino .kn-my .dx-tags button{background:rgba(255,255,255,.05);color:var(--km)}
-.v-kino .kn-my .dm-say,.v-kino .kn-my .dm-go{background:none;border:1px solid rgba(255,255,255,.12);color:var(--kt)}
-body .v-kino .kn-my .dx-q{background:rgba(255,255,255,.045)!important;box-shadow:none!important;border:1px solid var(--kl)!important;color:var(--kt)}
-.v-kino .kn-my .dx-my{display:block;perspective:none}
-.v-kino .kn-my .dm-gh{flex-wrap:wrap;row-gap:2px}
-@media (min-width:900px){.v-kino .kn-my .dx-my .dm-grp{max-width:760px}}
 
 /* =====================================================================================
    13.8.7 — Андрей: «фразы убери, оставь только в „Мои фразы“; фильм чуть перегружен — как в старом: нажал, чтобы увидеть;
@@ -744,24 +617,14 @@ body .v-kino .kn-my .dx-q{background:rgba(255,255,255,.045)!important;box-shadow
 .km-sw button i{font-style:normal;font-weight:500;font-size:12.5px;opacity:.7;font-variant-numeric:tabular-nums}
 .km-sw button.on{background:var(--kt);color:#141210}
 .km-sw button.on i{opacity:.6}
-.km-add{margin-left:auto;height:36px;padding:0 14px;border-radius:10px;border:1px solid var(--kl);background:rgba(255,255,255,.05);color:var(--kt);font:600 13.5px 'Golos Text',sans-serif;cursor:pointer}
-.km-exp{margin:0 2px 12px;font:400 13.5px/1.45 'Golos Text',sans-serif;color:var(--km);max-width:640px}
+
 .km-q{display:flex;align-items:center;gap:10px;height:42px;padding:0 14px;margin:0 0 10px;border-radius:12px;background:rgba(255,255,255,.045);border:1px solid var(--kl);color:var(--km)}
 .km-q svg{flex:none;width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
 .km-q input{flex:1;min-width:0;height:100%;border:0;outline:0;background:none;color:var(--kt);font:500 15px 'Golos Text',sans-serif}
 .km-q input::placeholder{color:var(--km)}
 .km-q:focus-within{border-color:rgba(255,255,255,.26)}
 /* выбор вида меню (варианты на сравнение) — тихая строка */
-.km-vv{display:flex;align-items:center;gap:4px;margin:0 0 16px;overflow-x:auto;scrollbar-width:none}
-.km-vv::-webkit-scrollbar{display:none}
-.km-vv span{flex:none;margin-right:4px;font:600 11px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(243,235,221,.4)}
-.km-vv button{flex:none;height:30px;padding:0 12px;border-radius:99px;border:1px solid var(--kl);background:none;color:var(--km);font:600 12.5px 'Golos Text',sans-serif;cursor:pointer}
-.km-vv button.on{border-color:rgba(243,235,221,.5);color:var(--kt);background:rgba(255,255,255,.06)}
-.km-h{display:flex;align-items:baseline;gap:8px;margin:22px 2px 10px;font:700 12px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--km)}
-.km-h small{letter-spacing:0;font-weight:500;color:rgba(243,235,221,.4)}
-.km-b>.km-h:first-child{margin-top:4px}
-.km-tip{margin:0 2px 4px;font:400 12.5px/1.4 'Golos Text',sans-serif;color:rgba(243,235,221,.45)}
-.km-more{display:block;width:100%;margin:14px 0 0;padding:13px;border-radius:12px;border:1px solid var(--kl);background:rgba(255,255,255,.03);color:var(--kt);font:600 14px 'Golos Text',sans-serif;cursor:pointer}
+
 .km-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:44px 18px;text-align:center}
 .km-empty b{font:800 19px 'Golos Text',sans-serif}
 .km-empty span{max-width:420px;font:400 14.5px/1.5 'Golos Text',sans-serif;color:var(--km)}
@@ -771,102 +634,15 @@ body .v-kino .kn-my .dx-q{background:rgba(255,255,255,.045)!important;box-shadow
 .km-form input:focus{border-color:rgba(255,255,255,.3)}
 
 /* 1. Плитки — как жанры в Spotify: цвет подборки, название сверху, кадр наклонён в углу */
-.kmt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (min-width:760px){.kmt-grid{grid-template-columns:repeat(3,1fr);gap:14px}}
-@media (min-width:1080px){.kmt-grid{grid-template-columns:repeat(4,1fr)}}
-.kmt{position:relative;display:block;aspect-ratio:16/10;padding:0;border:0;border-radius:14px;overflow:hidden;isolation:isolate;background:var(--tc,#46506A);color:#fff;text-align:left;cursor:pointer;transition:transform .15s}
-.kmt::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(0,0,0,.28))}
-.kmt-tx{position:absolute;left:13px;right:13px;top:12px;z-index:1;display:flex;flex-direction:column;gap:3px}
-.kmt-tx b{font:800 17px/1.15 'Golos Text',sans-serif;letter-spacing:-.015em}
-.kmt-tx small{font:500 12px 'Golos Text',sans-serif;color:rgba(255,255,255,.72)}
-.kmt-f{position:absolute;right:-12%;bottom:-14%;width:62%;aspect-ratio:16/10;border-radius:8px;background-size:cover;background-position:center;transform:rotate(20deg);box-shadow:0 10px 28px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.2,.9,.3,1)}
-.kmt.hot{grid-column:1/-1;aspect-ratio:auto;height:100px;background:linear-gradient(115deg,#8A5216,#3A2408 80%);box-shadow:inset 0 0 0 1px rgba(255,181,71,.35)}
-.kmt.hot .kmt-tx{top:50%;right:96px;transform:translateY(-50%)}
-.kmt.hot .kmt-tx b{font-size:19px}
-.kmt.hot .kmt-tx small{color:#FFCF8A}
-.kmt-n{position:absolute;right:20px;top:50%;transform:translateY(-50%);font:800 46px/1 'Golos Text',sans-serif;font-style:normal;color:#FFC062;text-shadow:0 4px 24px rgba(255,150,40,.35)}
-.kmt:active{transform:scale(.97)}
-@media (hover:hover){.kmt:hover .kmt-f{transform:rotate(14deg) scale(1.07)}}
-@media (min-width:760px){.kmt-tx{left:16px;top:15px}.kmt-tx b{font-size:19px}.kmt.hot{grid-column:span 2;height:auto}.kmt.hot .kmt-tx b{font-size:22px}.kmt-n{font-size:56px;right:26px}}
 
 /* 2. Плейлисты: мозаика из кадров, подпись под обложкой */
-.kml-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 12px}
-@media (min-width:760px){.kml-grid{grid-template-columns:repeat(4,1fr);gap:22px 16px}}
-@media (min-width:1080px){.kml-grid{grid-template-columns:repeat(5,1fr)}}
-.kml{position:relative;display:flex;flex-direction:column;gap:2px;min-width:0;padding:0;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer}
-.kml-a{position:relative;display:block;margin-bottom:7px}
-.kml-cv{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#1b1b20;box-shadow:0 14px 34px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.07)}
-.kml-cv i{background-size:auto calc(100% * var(--bz,1));background-position:var(--bx,50%) var(--by,50%);background-repeat:no-repeat;background-color:#222}
-.kml-cv.n1 i{grid-area:1/1/3/3}
-.kml-cv.n2 i{grid-row:1/3}
-.kml-cv.n3 i:first-child{grid-row:1/3}
-.kml-cv.n0{display:grid;place-items:center;background:var(--tc,#46506A)}
-.kml-cv.n0 i{grid-area:1/1/3/3;display:grid;place-items:center;font-size:42px;font-style:normal;background:none}
-.kml.hot .kml-cv{box-shadow:0 14px 34px rgba(0,0,0,.5),0 0 0 2px rgba(255,181,71,.75)}
-.kml-pl{position:absolute;right:9px;bottom:9px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--kt);color:#141210;box-shadow:0 8px 22px rgba(0,0,0,.55);transition:opacity .2s,transform .25s cubic-bezier(.2,.9,.3,1)}
-.kml-pl svg{width:17px;height:17px;margin-left:2px}
-@media (hover:hover){.kml-pl{opacity:0;transform:translateY(8px)}.kml:hover .kml-pl{opacity:1;transform:none}.kml-pl:hover{transform:scale(1.07)!important}}
-.kml b{font:700 14.5px/1.25 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kml small{font:500 12.5px 'Golos Text',sans-serif;color:var(--km)}
-.kml.hot small{color:#FFB547}
 
 /* 3. Истории: кружки с кольцом */
-.kms-row{display:flex;gap:12px;margin:0 -16px 6px;padding:4px 16px 10px;overflow-x:auto;scrollbar-width:none}
-.kms-row::-webkit-scrollbar{display:none}
-.kms{flex:none;width:78px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;border:0;background:none;color:var(--kt);cursor:pointer}
-.kms-r{display:block;width:74px;height:74px;padding:3px;border-radius:50%;background:conic-gradient(from 210deg,#F3EBDD,#8E867A 50%,#F3EBDD);transition:transform .2s}
-.kms.hot .kms-r{background:conic-gradient(from 210deg,#FFB547,#FF5E3A 50%,#FFB547)}
-.kms-i{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;border:3px solid #0b0b0d;background:#1b1b20 center/cover no-repeat;font-size:26px;box-sizing:border-box}
-.kms b{max-width:78px;margin-top:3px;font:600 12px/1.2 'Golos Text',sans-serif;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kms small{font:500 11px 'Golos Text',sans-serif;color:var(--km)}
-.kms:active .kms-r{transform:scale(.93)}
-@media (hover:hover){.kms:hover .kms-r{transform:scale(1.05)}}
-@media (min-width:760px){.kms-row{margin:0 0 6px;padding:4px 0 10px;gap:16px}.kms{width:92px}.kms-r{width:88px;height:88px}.kms b{max-width:92px}}
 
 /* 4. Оглавление: как в книге */
-.kmo-toc{max-width:680px;margin:0 auto;padding:4px 4px 8px}
-.kmo-toc h4{display:flex;align-items:baseline;gap:12px;margin:24px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--kl);font:600 11.5px 'Golos Text',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--km)}
-.kmo-toc h4:first-child{margin-top:6px}
-.kmo-toc h4 em{font:italic 700 22px/1 'Playfair Display',Georgia,serif;letter-spacing:0;text-transform:none;color:var(--kt)}
-.kmo{display:flex;align-items:baseline;gap:10px;width:100%;padding:11px 0;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer}
-.kmo-n{flex:none;max-width:72%;font:500 19px/1.3 'Playfair Display',Georgia,serif}
-.kmo-n small{display:block;margin-top:1px;font:400 12px 'Golos Text',sans-serif;color:var(--km)}
-.kmo-ld{flex:1;min-width:16px;border-bottom:2px dotted rgba(243,235,221,.22);transform:translateY(-5px)}
-.kmo-c{flex:none;font:600 15px 'Golos Text',sans-serif;color:var(--km);font-variant-numeric:tabular-nums}
-.kmo.hot .kmo-n,.kmo.hot .kmo-c{color:#FFB547}
-.kmo:active{opacity:.7}
-@media (hover:hover){.kmo:hover .kmo-n{color:#fff}.kmo:hover .kmo-ld{border-color:rgba(243,235,221,.45)}}
 
 /* страница подборки */
-.kmp{position:relative;margin:0 0 8px}
-.kmp-h{display:flex;align-items:center;gap:12px}
-.kmp-h .dl-up{flex:none}
-.kmp-t{min-width:0;display:flex;flex-direction:column;gap:3px}
-.kmp-t em{font-style:normal;font:700 11px 'Golos Text',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--km)}
-.kmp-t b{font:800 26px/1.12 'Golos Text',sans-serif;letter-spacing:-.02em;color:var(--kt)}
-.kmp-t small{font:500 13px 'Golos Text',sans-serif;color:var(--km)}
-.kmp-acts{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 6px}
-.kmp-play,.kmp-tr{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 20px;border-radius:99px;font:800 14.5px 'Golos Text',sans-serif;white-space:nowrap;cursor:pointer;transition:transform .15s}
-.kmp-tr small{font:600 12.5px 'Golos Text',sans-serif;opacity:.65}
-@media (max-width:560px){.kmp-acts{flex-wrap:nowrap}.kmp-play,.kmp-tr{flex:1 1 auto;padding:0 12px;font-size:14px}}
-.kmp-play{border:0;background:var(--kt);color:#141210;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.kmp-play svg{width:15px;height:15px}
-.kmp-tr{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);color:var(--kt);font-weight:700}
-.kmp-play:active,.kmp-tr:active{transform:scale(.96)}
-.kmp.ban{display:flex;flex-direction:column;justify-content:space-between;min-height:184px;padding:14px 16px 16px;border-radius:18px;overflow:hidden;isolation:isolate;background:var(--tc,#46506A)}
-.kmp.ban::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(0,0,0,.38))}
-.kmp-f{position:absolute;right:-8%;top:-6%;z-index:-1;width:52%;aspect-ratio:16/10;border-radius:10px;background-size:cover;background-position:center;transform:rotate(16deg);box-shadow:0 14px 40px rgba(0,0,0,.5)}
-.kmp.ban .kmp-h{flex-direction:column;align-items:flex-start;gap:30px}
-.kmp.ban .dl-up{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.18)}
-.kmp.ban .kmp-t em,.kmp.ban .kmp-t small{color:rgba(255,255,255,.75)}
-.kmp.ban .kmp-t b{font-size:28px;color:#fff}
-.kmp.ban .kmp-acts{margin-bottom:0}
-.kmp.ban .kmp-tr{border-color:rgba(255,255,255,.35);background:rgba(0,0,0,.18);color:#fff}
-.kmp.v-lists .kmp-h{align-items:flex-end}
-.kmp.v-lists .kmp-h .dl-up{align-self:flex-start}
-.kmp-cv{flex:none;width:118px;grid-template-rows:1fr 1fr}
-.kmp.v-toc .kmp-t b{font:600 30px/1.1 'Playfair Display',Georgia,serif;letter-spacing:0}
-@media (min-width:760px){.kmp-cv{width:180px}.kmp-t b{font-size:34px}.kmp.ban{min-height:230px;padding:18px 22px 22px}.kmp.ban .kmp-t b{font-size:38px}.kmp-f{width:34%;right:4%;top:auto;bottom:-18%}}
+
 /* строка-слово: тихий статус справа */
 .kqw .kq-ru i{font-style:italic;color:rgba(243,235,221,.32)}
 .kw-st{flex:none;align-self:center;font:500 12px 'Golos Text',sans-serif;font-style:normal;color:rgba(243,235,221,.42);white-space:nowrap}
@@ -956,10 +732,7 @@ body.nofx .knf-live .dl-lv{transition:none}
    ===================================================================================== */
 .km-top2{display:flex;align-items:center;gap:8px;margin:0 0 12px}
 .km-top2 .km-sw button{padding:0 11px;font-size:14px}
-.km-tb{margin-left:auto;display:flex;align-items:center;gap:6px}
-.km-ib{flex:none;width:36px;height:36px;border-radius:11px;border:1px solid var(--kl);background:rgba(255,255,255,.05);color:var(--kt);display:grid;place-items:center;cursor:pointer}
-.km-ib svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
-.km-ib.on{background:var(--kt);border-color:var(--kt);color:#141210}
+
 .km-fab{position:fixed;right:16px;bottom:calc(var(--sb,0px) + 92px);z-index:30;width:54px;height:54px;border-radius:50%;border:0;background:var(--kt);color:#141210;font:400 30px/1 'Golos Text',sans-serif;box-shadow:0 12px 34px rgba(0,0,0,.55);cursor:pointer;display:grid;place-items:center;padding-bottom:3px}
 .km-fab:active{transform:scale(.92)}
 @media (min-width:760px){.km-fab{right:max(24px,calc(50% - 540px))}}
@@ -979,34 +752,18 @@ body.dx-open .km-fab{opacity:0;pointer-events:none}
 .km-b.km5{padding-bottom:24px}
 .km5-h{display:flex;align-items:baseline;gap:8px;margin:22px 0 4px;font:700 11.5px 'Golos Text',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--km)}
 .km5-h small{font:500 12px 'Golos Text',sans-serif;letter-spacing:0;text-transform:none;opacity:.8}
-.km5-tl{display:flex;flex-direction:column;border-top:1px solid var(--kl)}
+
 .km5-t{border-bottom:1px solid var(--kl)}
-.km5-th{display:flex;align-items:center;gap:12px;width:100%;padding:13px 2px;border:0;background:none;color:var(--kt);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.km5-ic{flex:none;width:30px;font-style:normal;font-size:20px;line-height:1;text-align:center}
-.km5-th b{flex:1;min-width:0;font:600 16.5px/1.3 'Golos Text',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.km5-th small{flex:none;font:500 13px 'Golos Text',sans-serif;color:var(--km);font-variant-numeric:tabular-nums}
-.km5-chev{flex:none;display:grid;place-items:center;width:18px;font-style:normal;color:var(--km);transition:transform .25s}
-.km5-chev svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4}
-.km5-t.on .km5-chev{transform:rotate(90deg)}
-.km5-t.on .km5-th b{color:#fff}
-.km5-tb{padding:0 0 12px 42px}
+
 .km5-ta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px}
 .km5-tr,.km5-pl{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:99px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:var(--kt);font:600 13.5px 'Golos Text',sans-serif;cursor:pointer}
 .km5-tr{background:var(--kt);border-color:var(--kt);color:#141210}
 .km5-tr small{font:700 12px 'Golos Text',sans-serif;opacity:.55}
 .km5-pl svg{width:11px;height:11px;fill:currentColor;stroke:none}
 .km5-tr:active,.km5-pl:active{transform:scale(.96)}
-.km5-q .km5-tg{align-self:flex-start}
-.km5-tg{display:inline-block;margin-top:3px;font:500 12px 'Golos Text',sans-serif;color:rgba(243,235,221,.42)}
-.km5-tg[data-tg]{cursor:pointer}
-@media (hover:hover){.km5-tg[data-tg]:hover{color:var(--kt);text-decoration:underline;text-underline-offset:3px}}
-.km5-fh{display:flex;align-items:center;gap:12px;margin:0 0 6px}
-.km5-fh b{display:block;font:700 22px 'Golos Text',sans-serif;color:var(--kt)}
-.km5-fh small{font:500 13px 'Golos Text',sans-serif;color:var(--km)}
-.km5-fp{border:0}
-.km5-fp .km5-tb{padding-left:0}
-.km5-fp .km5-tg{display:none}   /* на странице фильма приписка #фильм не нужна */
-@media (min-width:760px){.km5-tb{padding-left:46px}}
+
+   /* на странице фильма приписка #фильм не нужна */
+
 /* окно фразы: сразу — момент, фраза, перевод и одна строка действий; остальное — под «Подробнее» */
 .kn5-acts{align-items:center}
 .kn5-acts [data-v="slow"]{padding:0 13px;font-size:16px}
@@ -1272,7 +1029,7 @@ body.nofx .kn6-vw{transition:none}
 body[data-look]:not(#_) .dl-root.v-kino{--kt:var(--lk-ink);--km:var(--lk-ink2);--kl:var(--lk-line);--ink2:var(--lk-ink2);font-family:var(--lk-f)}
 body[data-look]:not(#_) .dl-bgl,body[data-look]:not(#_) .v-kino .kn-bg{display:none!important}
 /* фото-карточки: внутри — прежние светлые на тёмном */
-body[data-look]:not(#_) .kn-hero,body[data-look]:not(#_) .kn-sh,body[data-look]:not(#_) .kn-fh,body[data-look]:not(#_) .kf,body[data-look]:not(#_) .knf{--kt:#F6F2EA;--km:rgba(246,242,234,.72);--kl:rgba(255,255,255,.14)}
+body[data-look]:not(#_) .kn-hero,body[data-look]:not(#_) .kn-sh,body[data-look]:not(#_) .kf,body[data-look]:not(#_) .knf{--kt:#F6F2EA;--km:rgba(246,242,234,.72);--kl:rgba(255,255,255,.14)}
 body[data-look]:not(#_) .kn-hero,body[data-look]:not(#_) .kn-sh{border:0;border-radius:var(--lk-r);box-shadow:var(--lk-sh)}
 /* шапка словаря */
 body[data-look]:not(#_) .v-kino .dl-ttl h1{font:var(--lk-hw) 32px/1.05 var(--lk-fh);letter-spacing:var(--lk-hls);color:var(--lk-ink)}
@@ -1292,8 +1049,8 @@ body[data-look]:not(#_) .kn-seg.kn-tabs button.on::after{background:var(--lk-acc
 body[data-look]:not(#_) .kn-sp{background:var(--lk-card);box-shadow:inset 0 0 0 1px var(--lk-line);border-color:transparent}
 body[data-look]:not(#_) .kn-sq{color:var(--lk-ink3);font-family:var(--lk-f)}
 body[data-look]:not(#_) .kn-sf{color:var(--lk-ink2);border-color:var(--lk-line)}
-body[data-look]:not(#_) .kn-q,body[data-look]:not(#_) .kn-fbt,body[data-look]:not(#_) .kn-fq{background:var(--lk-card);border-color:var(--lk-line);color:var(--lk-ink2);font-family:var(--lk-f)}
-body[data-look]:not(#_) .kn-fbt{color:var(--lk-ink)}
+body[data-look]:not(#_) .kn-fq{background:var(--lk-card);border-color:var(--lk-line);color:var(--lk-ink2);font-family:var(--lk-f)}
+
 body[data-look]:not(#_) .kn-fq input{color:var(--lk-ink);font-family:var(--lk-f)}
 body[data-look]:not(#_) .kn-fq input::placeholder{color:var(--lk-ink3)}
 /* полки и постеры */
@@ -1358,10 +1115,9 @@ body[data-look]:not(#_) .kf-sr b{color:var(--lk-ink)}
 body[data-look]:not(#_) .km-sw{background:var(--lk-card2);border-color:transparent}
 body[data-look]:not(#_) .km-sw button{color:var(--lk-ink2);font-family:var(--lk-f)}
 body[data-look]:not(#_) .km-sw button.on{background:var(--lk-card);color:var(--lk-ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-body[data-look]:not(#_) .km-add{background:var(--lk-card);border-color:var(--lk-line);color:var(--lk-ink)}
-body[data-look]:not(#_) .km-exp{color:var(--lk-ink2)}
-body[data-look]:not(#_) .kn-lst button.on,body[data-look]:not(#_) .kml-pl,body[data-look]:not(#_) .kmp-play,body[data-look]:not(#_) .km-ib.on,body[data-look]:not(#_) .kf-w{color:var(--lk-bg)}
-body[data-look]:not(#_) .kc-mp i.on{background:var(--lk-ink)}
+
+body[data-look]:not(#_) .kf-w{color:var(--lk-bg)}
+
 body[data-look]:not(#_) .km6-vw{background:var(--lk-card2);border-color:transparent}
 body[data-look]:not(#_) .km6-vw button{color:var(--lk-ink3)}
 body[data-look]:not(#_) .km6-vw button.on{background:var(--lk-card);color:var(--lk-ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
@@ -1381,22 +1137,13 @@ body[data-look]:not(#_) .kmb-due{background:var(--lk-card);border-color:var(--lk
 body[data-look]:not(#_) .kmb-due small{color:var(--lk-ink2)}
 body[data-look]:not(#_) .kmb-due i{color:var(--lk-due)}
 body[data-look]:not(#_) .km5-h{color:var(--lk-ink3)}
-body[data-look]:not(#_) .km5-tl,body[data-look]:not(#_) .km5-t{border-color:var(--lk-line)}
-body[data-look]:not(#_) .km5-th{color:var(--lk-ink)}
-body[data-look]:not(#_) .km5-th small,body[data-look]:not(#_) .km5-chev{color:var(--lk-ink3)}
-body[data-look]:not(#_) .km5-t.on .km5-th b{color:var(--lk-ink)}
+body[data-look]:not(#_) .km5-t{border-color:var(--lk-line)}
+
 body[data-look]:not(#_) .km5-tr,body[data-look]:not(#_) .km5-pl{border-color:var(--lk-line2);background:var(--lk-card);color:var(--lk-ink);font-family:var(--lk-f)}
 body[data-look]:not(#_) .km5-tr{background:var(--lk-ink);border-color:var(--lk-ink);color:var(--lk-bg)}
-body[data-look]:not(#_) .km5-tg{color:var(--lk-ink3)}
-body[data-look]:not(#_) .km5-fh b{color:var(--lk-ink);font-family:var(--lk-fh)}
-body[data-look]:not(#_) .km5-fh small{color:var(--lk-ink3)}
+
 body[data-look]:not(#_) .km-fab{background:var(--lk-acc);color:var(--lk-acc-ink)}
-body[data-look]:not(#_) .v-kino .kn-my .dm,body[data-look]:not(#_) .v-kino .kn-my .dm-tabs{border-color:var(--lk-line)}
-body[data-look]:not(#_) .v-kino .kn-my .dm-ru{color:var(--lk-ink2)}
-body[data-look]:not(#_) .v-kino .kn-my .dm-st{color:var(--lk-ink3)}
-body[data-look]:not(#_) .v-kino .kn-my .dx-q{border-color:var(--lk-line);background:var(--lk-card);color:var(--lk-ink)}
-body[data-look]:not(#_) .v-kino .kn-my .dx-tags button{background:var(--lk-card);color:var(--lk-ink2)}
-body[data-look]:not(#_) .v-kino .kn-my .dx-tags button.on,body[data-look]:not(#_) .v-kino .kn-my .dx-train{background:var(--lk-ink);color:var(--lk-bg)}
+
 /* шторки словаря: «?», язык, фильтры */
 body[data-look]:not(#_) .kn-sb{background:var(--lk-card);border-color:var(--lk-line);color:var(--lk-ink);font-family:var(--lk-f)}
 body[data-look]:not(#_) .kn-sm{color:var(--lk-ink2)}
@@ -1408,23 +1155,13 @@ body[data-look]:not(#_) .kn-btn2{background:var(--lk-card2);color:var(--lk-ink)}
 body[data-look]:not(#_) .kn-ddb{background:var(--lk-card);border-color:var(--lk-line);color:var(--lk-ink2)}
 body[data-look]:not(#_) .kn-ddb b{color:var(--lk-ink)}
 body[data-look]:not(#_) .kn-tt button{background:var(--lk-card);border-color:var(--lk-line);color:var(--lk-ink)}
-body[data-look]:not(#_) .kn-tt small,body[data-look]:not(#_) .kn-rh small,body[data-look]:not(#_) .kn-rf small,body[data-look]:not(#_) .kn-empty small,body[data-look]:not(#_) .kn-fg>b{color:var(--lk-ink3)}
+body[data-look]:not(#_) .kn-tt small,body[data-look]:not(#_) .kn-rh small,body[data-look]:not(#_) .kn-empty small{color:var(--lk-ink3)}
 body[data-look]:not(#_) .kn-rh small b{color:var(--lk-ink)}
 body[data-look]:not(#_) .kn-reset{border-color:var(--lk-line2);color:var(--lk-ink2)}
 body[data-look]:not(#_) .kc{background:var(--lk-card);border-color:var(--lk-line);color:var(--lk-ink)}
 body[data-look]:not(#_) .kc.lock{background:var(--lk-card2)}
 
 /* ======== «Журнал» ======== */
-body[data-look="zhurnal"]:not(#_) .v-kino .dl-ttl h1{font-weight:700;font-style:italic}
-body[data-look="zhurnal"]:not(#_) .kn-seg.kn-tabs button.on::after{background:var(--lk-red)}
-body[data-look="zhurnal"]:not(#_) .kn-h:not(.kn-h2){font-weight:700;border-top:1px solid var(--lk-ink);padding-top:10px}
-body[data-look="zhurnal"]:not(#_) .kn-lt{border-top:1px solid var(--lk-ink);padding-top:10px}
-body[data-look="zhurnal"]:not(#_) .kn-h.kn-h2{font-weight:700}
-body[data-look="zhurnal"]:not(#_) .kn-bar>i{background:var(--lk-ink)}
-body[data-look="zhurnal"]:not(#_) .kn-ep{box-shadow:inset 0 0 0 1px var(--lk-line2)}
-body[data-look="zhurnal"]:not(#_) .kq2 .kq-en{font:400 18px/1.4 var(--lk-fh)}
-body[data-look="zhurnal"]:not(#_) .kq2 .kq-en .sw.u,body[data-look="zhurnal"]:not(#_) .kl-t .sw.u{text-decoration-color:var(--lk-red)}
-body[data-look="zhurnal"]:not(#_) .km6-by button.on::after{background:var(--lk-red)}
 
 /* ==== 13.9.29 — «Новый»: метка слева у строки словаря — уровень A1–C1 (по самому редкому слову фразы) или артикль der/die/das цветом у немецкого слова ==== */
 .kq-lv{display:none}

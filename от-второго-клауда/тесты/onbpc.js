@@ -60,13 +60,10 @@ const VPS=[[1280,720],[1440,900],[1920,1080]];
     ok(`${tag}: на всех шагах 3D-зала нет, заголовок читается (≥ 4.5), кнопки в окне`,!bad.length,bad);
     ok(`${tag}: консоль чистая`,!A.errs.length,A.errs.slice(0,4));
     await A.ctx.close();}
-  // «Как было»: 3D-фон снова по настройке
+  // 13.9.42: 3D-фон удалён совсем — ни в «Новом», ни в «Как было», строки в Настройках нет
   const A=await open({browser:b,uid:876754050,name:'Андрей',platform:'tdesktop',touch:false,ctx:{viewport:{width:1440,height:900}},wait:2600,init,initArg:[base,{admin:true,flags:{}}]}),P=A.page;
-  await P.evaluate(()=>{store.look='';save();renderTab('learn');});await P.waitForTimeout(1500);
-  let r=await P.evaluate(()=>({block:window.BG3D&&BG3D.block,on:window.BG3D&&BG3D.on,failed:window.BG3D&&BG3D.failed}));
-  ok('«Как было»: 3D-фон снова по настройке (вкл)',r.block===false&&(r.on||r.failed),r);
-  await P.evaluate(()=>{store.look='nd';save();renderSettings();});await P.waitForTimeout(600);
-  r=await P.evaluate(()=>({row:!!document.querySelector('[data-k="bg3d"],input[name="bg3d"],#bg3d-row')||/3D-фон/.test(document.querySelector('.screen').textContent),on:BG3D.on}));
-  ok('«Новый»: строки «3D-фон» в Настройках нет, 3D выключен',!r.row&&!r.on,r);
+  let r;for(const lk of ['','nd']){await P.evaluate(l=>{store.look=l;save();renderSettings();},lk);await P.waitForTimeout(800);
+    r=await P.evaluate(()=>({g:!!window.BG3D,c:!!document.getElementById('bg3d'),has3d:document.body.classList.contains('has3d'),row:/3D-фон/.test(document.querySelector('.screen').textContent)}));
+    ok(`${lk||'Как было'}: 3D-фона нет совсем, строки «3D-фон» в Настройках нет`,!r.g&&!r.c&&!r.has3d&&!r.row,r);}
   await A.ctx.close();
   console.log(fails?`ИТОГ onbpc: FAIL ${fails}`:'ИТОГ onbpc: всё PASS');await b.close();process.exit(fails?1:0);})();

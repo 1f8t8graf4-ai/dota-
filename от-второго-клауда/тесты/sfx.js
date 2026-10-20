@@ -82,19 +82,7 @@ const base={onboarded:true,introV:1,unl:1,snd:true,fx:false,knWin:'full'};
   const CL={tap:[-42,-28],sel:[-42,-28],tick:[-42,-28],page:[-42,-28],nope:[-42,-28],good:[-35,-24],bad:[-35,-24],coin:[-35,-24],win:[-33,-21],reward:[-33,-21]};
   const bad=[];Object.entries(L).forEach(([n,v])=>['kino','ios'].forEach(k=>{const [lo,hi]=CL[n];if(v[k].rms<lo||v[k].rms>hi||v[k].pk>-5)bad.push(k+':'+n+' '+v[k].rms+'/'+v[k].pk);}));
   ok('громкость новых: щелчки тихие, ответы и награды заметнее, без перегруза',!bad.length,bad);
-  // 10. админка → «Анимации» → «Звуки»
-  const A=await go(base,{admin:true,flags:{}});const Q=A.page;
-  if(dev==='pc')await Q.mouse.click(8,vp.height-8);else await Q.touchscreen.tap(8,vp.height/2);
-  await Q.evaluate(()=>renderAdmin('anim'));await Q.waitForTimeout(600);
-  r=await Q.evaluate(()=>({n:document.querySelectorAll('.ad2-sfx [data-sn]').length,sv:[...document.querySelectorAll('[data-sv]')].map(b=>b.textContent+(b.classList.contains('on')?'*':'')),
-    w:document.documentElement.scrollWidth<=innerWidth+1}));
-  ok('админка → «Анимации»: блок «Звуки» — 3 набора и ▶ у всех 20 событий, ничего не вылезает вбок',r.n===20&&r.sv.length===3&&/Кино\*/.test(r.sv[0])&&r.w,r);
-  await Q.evaluate(()=>{window.__bs.length=0;window.__bb.length=0;store.snd=false;});
-  await Q.click('[data-sv="ios"]');await Q.waitForFunction(()=>SFXB.ios,null,{timeout:6000}).catch(()=>{});await Q.waitForTimeout(200);
-  await Q.click('[data-sn="reward"]');await Q.waitForTimeout(300);
-  r=await Q.evaluate(()=>({rw:window.__bb[window.__bb.length-1]===(SFXB.ios&&SFXB.ios.reward.buf),cur:sfxCur()}));
-  ok('админка: «Как в iPhone» → ▶ «Награда» играет файл iPhone (даже при выключенном звуке), выбор игрока не меняется',r.rw&&r.cur==='kino',r);
-  await Q.screenshot({path:`shots/sfx-admin-${dev}.png`,fullPage:true}).catch(()=>{});
+  // 10. (13.9.42: раздел админки «Анимации» со звуками удалён — наборы слушать в Магазине → Звуки)
   // 11. старый игрок с купленным «8-бит» остаётся на нём
   const O=await go(Object.assign({},base,{shop:{own:{'snd:arcade':Date.now()},use:{snd:'arcade'}},gold:0}));
   r=await O.page.evaluate(()=>sfxCur());ok('игрок, который купил «8-бит», остаётся на нём',r==='arcade',r);

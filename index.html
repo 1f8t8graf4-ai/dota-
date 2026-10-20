@@ -12,11 +12,10 @@
 <script>/* 13.0.2: по ссылке-приглашению Telegram открывает мини-апп на полэкрана — разворачиваем сразу, ещё до загрузки данных */
 try{Telegram.WebApp.expand();}catch(e){}</script>
 <script>/* Версия релиза — одна на всё: сбивает кэш у стилей, скриптов и данных (?v=). Поднимай вместе с APP_V в js/app.js. */
-var V='13.9.41';document.write('<link rel="stylesheet" href="styles/main.css?v='+V+'">');</script>
+var V='13.9.42';document.write('<link rel="stylesheet" href="styles/main.css?v='+V+'">');</script>
 </head>
 <body>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
-<div id="bgfade" aria-hidden="true"></div>
 <div class="topfade"></div>
 <div id="app"></div>
 <script>
@@ -27,11 +26,9 @@ var V='13.9.41';document.write('<link rel="stylesheet" href="styles/main.css?v='
 window.ASSET_BASE='https://dota.1f8t8graf4.workers.dev/m';
 </script>
 <script>
-/* На ПК тяжёлые эффекты (размытие, бесконечные анимации) выключены — класс lite.
-   12.6: 3D-маскот (model-viewer, ~1 МБ с unpkg) больше не грузится на телефонах — Гаврик выключен с 12.5. */
+/* На ПК тяжёлые эффекты (размытие, бесконечные анимации) выключены — класс lite. 13.9.42: 3D-фон и маскот удалены. */
 (function(){var desk=!matchMedia('(pointer:coarse)').matches||/Windows NT|Macintosh|X11; Linux x86/.test(navigator.userAgent);
   if(desk)document.documentElement.classList.add('lite');})();
-document.write('<script src="js/bg3d.js?v='+V+'"><\/script><script src="js/mascot/mascot-engine.js?v='+V+'"><\/script>');
 </script>
 <script>
 /* Загрузка данных: сначала JSON из папки data, потом код js/app.js.
