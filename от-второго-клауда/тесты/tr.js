@@ -47,6 +47,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
     await ev(()=>{const n=document.querySelector('#dln');n&&n.click();});await page.waitForTimeout(700);
   }
   const res=await ev(()=>({res:!!document.querySelector('.sc-result'),big:(document.querySelector('.sc-big')||{}).textContent}));
+  ok('нет задания «Когда пригодится?» (13.9.40)',!Object.keys(seen).some(m=>/Когда пригодится|Когда так говорят/.test(m)),Object.keys(seen));
   ok('кубики были, выбор из 4 был, итог показан',builds>=1&&means>=3&&res.res,{builds,means,dicts,steps,seen,res});
   ok('ошибка в слове — слово вернулось ещё раз',means>=4,String(means));
   await shot(page,'4-end');

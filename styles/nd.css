@@ -419,3 +419,7 @@ body[data-look="nd"].ndc:not(#_) #tabind{border-radius:calc(17*var(--nu))!import
 
 /* ПК: та же вёрстка колонкой по центру (ТЗ P2 п. 6) */
 @media (min-width:700px){.n-scr{padding-top:calc(20*var(--nu));max-width:520px}}
+
+/* ==== 13.9.40 — «Потяни» не отдаёт жест прокрутке/Telegram; метки фраз — точки над шкалой, а не вырез в ней ==== */
+.n-pull{touch-action:none}
+.n-tlm{top:auto;bottom:calc(50% + 7px);width:6px;height:6px;margin:0 0 0 -3px;border-radius:50%;opacity:1;box-shadow:0 0 0 1.5px rgba(0,0,0,.35)}

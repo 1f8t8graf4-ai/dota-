@@ -22,6 +22,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:false,wtapHint:1,lvl:'b',
     return {n,bad,cnt,types};});
   ok(`${dev}: план проверки — во всех ${R.n} проверках не больше 7 нужных кубиков`,!R.bad.length,R.bad.slice(0,8));
   ok(`${dev}: в каждой проверке 4 задания (или сколько активных фраз)`,!R.cnt.length,R.cnt.slice(0,8));
+  ok(`${dev}: «Когда пригодится?» (when) больше не задание (13.9.40)`,!R.types.when,R.types);
   ok(`${dev}: есть новые короткие виды — «Собери выражение», «Что прозвучало?», «Какое слово пропущено?»`,R.types.expr>0&&R.types.heard>0&&(R.types.gap4||0)>=0,R.types);
   // 2. экран: «Собери выражение» — найдём эпизод, где первое задание — expr
   const pick=await P.evaluate(()=>{store.lvl='b';store.typeIn=false;for(const s of SCENES)for(let i=0;i<s.parts.length;i++){if(!scAct(s.parts[i].ph).length)continue;const C=scQuizPlan(s.id,i);const k=C.Q.findIndex(q=>q.type==='expr');if(k>=0)return {id:s.id,i,k};}return null;});
