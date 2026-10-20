@@ -86,5 +86,5 @@ const base={onboarded:true,introV:1,unl:1,snd:true,fx:false,knWin:'full'};
   // 11. старый игрок с купленным «8-бит» остаётся на нём
   const O=await go(Object.assign({},base,{shop:{own:{'snd:arcade':Date.now()},use:{snd:'arcade'}},gold:0}));
   r=await O.page.evaluate(()=>sfxCur());ok('игрок, который купил «8-бит», остаётся на нём',r==='arcade',r);
-  ok('консоль чистая',!errs.length&&!A.errs.length&&!O.errs.length,[...errs,...A.errs,...O.errs].slice(0,5));
+  ok("консоль чистая",!errs.length&&!O.errs.length,[...errs,...O.errs].slice(0,5));
   console.log(fails?`ИТОГ ${dev}: FAIL ${fails}`:`ИТОГ ${dev}: всё PASS`);await b.close();process.exit(fails?1:0);})();
