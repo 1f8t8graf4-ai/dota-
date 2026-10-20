@@ -45,12 +45,48 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   const SCR=[['2-kino',()=>renderTab('kino')],['3-dict',()=>renderTab('dict')],['4-prof',()=>renderTab('profile')],['5-scene',()=>renderScene('wolf-of-wall-street')],['7-quiz',()=>renderScQuiz('wolf-of-wall-street',0)]];
   const bad=[];for(const [n,f] of SCR){await P.evaluate(f);await P.waitForTimeout(n==='3-dict'?2600:1300);r=await st(P);if(r.look!=='nd'||r.ndt!=='light'||!r.w)bad.push(n+' '+JSON.stringify(r));await shot(P,`light-${dev}-${n}`);}
   ok('Кино, Словарь, Профиль, сцена, проверка — в «Новом», ничего не вылезает',!bad.length,bad);
-  r=await P.evaluate(()=>{renderTab('kino');return {k:document.querySelectorAll('.kposter .lvc').length,vis:(()=>{const e=document.querySelector('.kposter .lvc');return e&&getComputedStyle(e).display;})()};});
-  ok('Кино: метки уровня на постерах',r.k>3&&r.vis&&r.vis!=='none',r);
+  // «Кино» по макету (13.9.39): поиск, сегмент разделов с едущей плашкой, уровни, сетка постеров с меткой уровня и полоской
+  await P.evaluate(()=>{store.kinoCat='film';store.kinoLang='en';store.kinoLv='all';renderTab('kino');});await P.waitForTimeout(900);
+  const kq=()=>P.evaluate(()=>({po:document.querySelectorAll('.n-kino .n-po').length,lv:[...document.querySelectorAll('.n-kino .n-po .n-chip')].map(x=>x.textContent),
+    seg:[...document.querySelectorAll('.n-sg button')].map(x=>x.textContent+(x.classList.contains('on')?'*':'')).join('|'),pill:(document.querySelector('.n-sg i')||{}).style?.transform||'',
+    lbl:(document.querySelector('.n-lbl span')||{}).textContent||'',old:document.querySelectorAll('.kposter,.kgrid').length,sr:!!document.querySelector('.n-srch'),kl:document.querySelectorAll('.n-kl button').length}));
+  r=await kq();
+  ok('Кино: поиск, сегмент «Фильмы* | Сериалы | Интервью», постеры с меткой уровня, язык EN/DE, старой сетки нет',r.sr&&/^Фильмы\*\|Сериалы\|Интервью/.test(r.seg)&&r.po>=3&&r.lv.every(x=>/^[ABC][12]$/.test(x))&&r.kl===2&&!r.old,r);
+  const nFilm=r.po;await P.click('.n-sg button[data-cat="series"]');await P.waitForTimeout(700);r=await kq();
+  ok('Кино: «Сериалы» — плашка уехала, сетка сменилась, вкладка не перерисована целиком',/Сериалы\*/.test(r.seg)&&/translateX\(100%\)/.test(r.pill)&&r.po>=2,r);
+  await P.evaluate(()=>{store.cefr='B1';store.kinoLv='';renderTab('kino');});await P.waitForTimeout(700);r=await kq();
+  const meLbl=r.lbl,meN=r.po;await P.evaluate(()=>{const b=[...document.querySelectorAll('.n-lv [data-lv]')].find(x=>x.dataset.lv!=='all');b&&b.click();});await P.waitForTimeout(500);r=await kq();
+  ok('Кино: «Для твоего уровня» → тап по уровню — только этот уровень',/твоего/.test(meLbl)&&/^Уровень [ABC][12]$/.test(r.lbl)&&r.po<=meN,{meLbl,meN,r});
+  await P.click('.n-lv [data-lv="all"]');await P.waitForTimeout(500);r=await kq();ok('Кино: «Все уровни»',r.lbl==='Все уровни'&&r.po>=meN,r);
+  await P.click('.n-sg button[data-cat="film"]');await P.waitForTimeout(500);
+  await P.evaluate(()=>{window.__sc=null;const o=renderScene;renderScene=function(id){window.__sc=id;return o.apply(this,arguments);};});
+  await P.click('.n-kino .n-po[data-sc]');await P.waitForTimeout(900);r=await P.evaluate(()=>({sc:window.__sc,scr:document.body.dataset.scr}));
+  ok('Кино: тап по постеру — страница сцены',!!r.sc&&r.scr==='scene',r);
+  await P.evaluate(()=>renderTab('kino'));await P.waitForTimeout(600);await P.click('.n-kl [data-kl="de"]');await P.waitForTimeout(800);
+  r=await P.evaluate(()=>({kl:store.kinoLang,de:[...document.querySelectorAll('.n-kino .n-po')].every(b=>{const s=b.dataset.sc?scOf(b.dataset.sc):SCENES.find(x=>x.show===b.dataset.show);return s&&s.lang==='de';}),n:document.querySelectorAll('.n-kino .n-po').length}));
+  ok('Кино: DE — только немецкие сцены',r.kl==='de'&&r.de&&r.n>0,r);
+  await P.evaluate(()=>{store.kinoLang='en';store.kinoCat='film';store.kinoLv='';save();});
+  // страница сцены по макету (13.9.39): кадр во всю ширину, «‹», метки, одна кнопка, эпизоды строками; закрытые — под дымкой, не открываются
+  await P.evaluate(()=>{store.admPlayer=true;renderScene('wolf-of-wall-street');});await P.waitForTimeout(1000);
+  r=await P.evaluate(()=>{const h=document.querySelector('.n-shero').getBoundingClientRect();return {hero:h.left<=1&&h.right>=innerWidth-1||innerWidth>=700,
+    btn:(document.querySelector('#scgo')||{}).textContent||'',eps:document.querySelectorAll('.n-ep[data-i]').length,lock:document.querySelectorAll('.n-ep.lock[data-i]').length,cur:document.querySelectorAll('.n-ep.cur').length,
+    boss:!!document.querySelector('#scBoss'),old:document.querySelectorAll('.pn,.sc-ban,.sc-top').length,lst:document.querySelectorAll('.n-lst>button').length};});
+  ok('Сцена: кадр во всю ширину, «▶ Смотреть эпизод 2 · Фугази», 6 эпизодов (текущий обведён, 4 под дымкой), финал, список ниже, старой разметки нет',r.hero&&/Смотреть эпизод 2 · Фугази/.test(r.btn)&&r.eps===6&&r.cur===1&&r.lock===4&&r.boss&&!r.old&&r.lst>=1,r);
+  await P.evaluate(()=>{window.__ep=null;});await P.click('.n-ep.lock[data-i="3"]');await P.waitForTimeout(500);
+  r=await P.evaluate(()=>({ep:window.__ep,shk:document.querySelector('.n-ep[data-i="3"]').classList.contains('shk')}));
+  ok('Сцена: закрытый эпизод не открывается — строка трясётся',!r.ep&&r.shk,r);
+  await P.click('#scgo');await P.waitForTimeout(900);r=await P.evaluate(()=>window.__ep);
+  ok('Сцена: кнопка — эпизод 2',r&&r[1]===1,r);
+  await P.evaluate(()=>renderScene('wolf-of-wall-street'));await P.waitForTimeout(700);await P.click('#scb');await P.waitForTimeout(700);
+  ok('Сцена: «‹» — в «Кино»',await P.evaluate(()=>!!document.querySelector('.n-kino')));
+  await P.evaluate(()=>{store.admPlayer=false;renderShow('Клан Сопрано');});await P.waitForTimeout(900);
+  r=await P.evaluate(()=>({rows:document.querySelectorAll('.n-show .n-ep[data-sc]').length,btn:!!document.querySelector('.n-show #shGo'),old:document.querySelectorAll('.sh-hero,.kposter').length}));
+  ok('Сериал: как сцена — кадр, кнопка, сцены строками',r.rows>=3&&r.btn&&!r.old,r);
+  await P.click('.n-show .n-ep[data-sc]');await P.waitForTimeout(900);ok('Сериал: тап по строке — сцена',await P.evaluate(()=>document.body.dataset.scr==='scene'));
   // 3. Профиль: карточка, 4 цифры, строки; «Игры» → игры; тап по карточке — «как тебя видят друзья»
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(1500);
   r=await P.evaluate(()=>({card:!!document.querySelector('.ndpc'),n:[...document.querySelectorAll('.ndst b')].map(x=>x.textContent),rows:[...document.querySelectorAll('.ndl-r b')].map(x=>x.textContent),old:!!document.querySelector('.phead')}));
-  ok('Профиль: карточка, 4 цифры (эпизоды 1, фразы 6), строки Коллекция · Игры · Билеты · Достижения · Премиум · Настройки · Как пользоваться · Админ-панель · Вернуть старый дизайн',r.card&&r.n[0]==='1'&&r.n[1]==='6'&&r.rows.join('|')==='Коллекция|Игры|Билеты|Достижения|Премиум|Настройки|Как пользоваться|Админ-панель|Вернуть старый дизайн'&&!r.old,r);
+  ok('Профиль: карточка, 4 цифры (эпизоды 1, фразы 6), строки Премиум · Коллекция · Игры · Билеты · Достижения · Настройки · Как пользоваться · Админ-панель · Вернуть старый дизайн',r.card&&r.n[0]==='1'&&r.n[1]==='6'&&r.rows.join('|')==='Премиум|Коллекция|Игры|Билеты|Достижения|Настройки|Как пользоваться|Админ-панель|Вернуть старый дизайн'&&!r.old,r);
   await P.click('#ndPc .ndpc-n');await P.waitForTimeout(600);
   ok('тап по карточке — «как тебя видят друзья»',await P.evaluate(()=>!!document.querySelector('.pfv')));
   await P.keyboard.press('Escape');await P.waitForTimeout(500);await P.evaluate(()=>document.querySelectorAll('.pfv').forEach(x=>x.remove()));
@@ -90,8 +126,8 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   r=await st(F.page);ok('после «Как было» — остаётся старый вид',!r.look,r);
   // сцена: метки, кнопка, эпизоды строками; плеер в эпизоде — тёмный даже при светлом Telegram
   await P.evaluate(()=>{store.look='nd';save();renderScene('wolf-of-wall-street');});await P.waitForTimeout(1200);
-  r=await P.evaluate(()=>({chips:[...document.querySelectorAll('.nd-chips span')].map(x=>x.textContent),rows:[...document.querySelectorAll('.path .pn')].map(x=>Math.round(x.getBoundingClientRect().left)),go:!!document.querySelector('#scgo'),ndt:document.body.dataset.ndt,ctl:(()=>{const m=document.querySelector('#scMore');return m?getComputedStyle(m).display:'нет';})()}));
-  ok('сцена: метки «B2 · Фильм · 2013 · 6 эпизодов», эпизоды строками ровно друг под другом (на ПК — сеткой в 3 колонки)',r.chips[0]==='B2'&&/Фильм · 2013/.test(r.chips[1])&&/6 эпизод/.test(r.chips[2])&&r.go&&new Set(r.rows).size===(dev==='pc'?3:1),r);
+  r=await P.evaluate(()=>({chips:[...document.querySelectorAll('.n-st .n-chip')].map(x=>x.textContent),rows:[...document.querySelectorAll('.n-eps .n-ep[data-i]')].map(x=>Math.round(x.getBoundingClientRect().left)),go:!!document.querySelector('#scgo')}));
+  ok('сцена (13.9.39): метки «B2 · Фильм · 2013 · 6 эпизодов», эпизоды строками ровно друг под другом',r.chips[0]==='B2'&&/Фильм · 2013/.test(r.chips[1])&&/6 эпизод/.test(r.chips[2])&&r.go&&r.rows.length===6&&new Set(r.rows).size===1,r);
   await P.evaluate(()=>renderScEp('wolf-of-wall-street',1));await P.waitForTimeout(1300);
   r=await st(P);r.more=await P.evaluate(()=>{const m=document.querySelector('#scMore');return m?getComputedStyle(m).display:'нет';});
   ok('эпизод: тёмный при светлом Telegram, меню «⋯» плеера спрятано',r.look==='nd'&&r.ndt==='dark'&&r.more==='none',r);

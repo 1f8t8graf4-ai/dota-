@@ -77,10 +77,10 @@ const hook=u=>fetch('http://127.0.0.1:8788/webhook',{method:'POST',headers:{'con
   const O=await go(555,false);const OP=O.page;
   r=await OP.evaluate(()=>{store.revDone=dayKey(new Date());renderDaily();const s1=screen;const s=SCENES.find(x=>!premFree(x)&&!ageLock(x));const g=scGate(s.id);renderTab('profile');return {m:premMode(),s1,g,row:!!document.querySelector('#pfPrem')};});
   ok('«Выкл»: повторение и сцены открыты, строки «Премиум» у игрока нет',r.m==='off'&&r.s1!=='prem'&&r.g===false&&!r.row,r);
-  // 7. в «Новом» экран премиума — тёмный
+  // 7. в «Новом» экран премиума — по макету, тема как у Telegram
   await AP.evaluate(()=>{store.look='nd';save();renderPaywall(null,()=>renderTab('profile'));});await AP.waitForTimeout(700);
-  r=await AP.evaluate(()=>({ndt:document.body.dataset.ndt,w:document.documentElement.scrollWidth<=innerWidth+1,test:!!document.querySelector('#pwTest')}));
-  ok('в «Новом» экран премиума тёмный, ничего не вылезает, у админа — «тест за 1 ⭐»',r.ndt==='dark'&&r.w&&r.test,r);
+  r=await AP.evaluate(()=>({ndt:document.body.dataset.ndt,sys:ndDark()?'dark':'light',nd:!!document.querySelector('.n-pw'),pl:document.querySelectorAll('.n-pw .pw-pl').length,w:document.documentElement.scrollWidth<=innerWidth+1,test:!!document.querySelector('#pwTest')}));
+  ok('в «Новом» экран премиума как в макете (13.9.40): по теме Telegram, тарифы строками, ничего не вылезает, у админа — «тест за 1 ⭐»',r.nd&&r.ndt===r.sys&&r.pl===2&&r.w&&r.test,r);
   await AP.screenshot({path:`${__dirname}/shots/pay-${dev}-nd.png`,fullPage:true});
   const errs=[...A.errs,...P.errs,...Q.errs,...Z.errs,...O.errs];ok('консоль чистая',!errs.length,errs.slice(0,5));
   console.log(fails?`ИТОГ ${dev}: FAIL ${fails}`:`ИТОГ ${dev}: всё PASS`);await b.close();process.exit(fails?1:0);})();

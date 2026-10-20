@@ -8,7 +8,28 @@ const seed=([st])=>{if(sessionStorage.getItem('__seeded'))return;sessionStorage.
 const base={onboarded:true,introV:1,gold:900,lvl:'b',cefr:'B1',goalWhy:'work',goal:20,fx:true,tourV:1,scSubChosen:1,snd:false,look:'nd',lookV:2,
   scLast:{id:'wolf-of-wall-street',i:1},streak:3,lastDay:new Date().toDateString()};
 // как открыть экран N в приложении
-const GO={6:async page=>{await page.evaluate(()=>renderTab('learn'));}};
+const GO={6:async page=>{await page.evaluate(()=>renderTab('learn'));},
+  7:async page=>{await page.evaluate(()=>{store.kinoCat='film';store.kinoLang='en';renderTab('kino');});},
+  8:async page=>{await page.evaluate(()=>{store.admPlayer=true;const P=scP('wolf-of-wall-street');P.done=[0];P.st=P.st||{};P.st[0]=3;scSave();renderScene('wolf-of-wall-street');});},
+  9:async page=>{await page.evaluate(()=>{store.scPause='off';renderScEp('wolf-of-wall-street',0);});await page.waitForTimeout(1500);
+    await page.evaluate(async()=>{SV.muted=true;await SV.play().catch(()=>{});SV.currentTime=22.6;});await page.waitForTimeout(1500);await page.evaluate(()=>SV.pause());
+    const w=page.locator('.sc-subs .sline:not(.s2) .sw').nth(1);if(await w.count())await w.click();},
+  10:async page=>{await page.evaluate(()=>{const P=scP('wolf-of-wall-street');P.w[1]=1;scSave();renderScQuiz('wolf-of-wall-street',1);});await page.waitForTimeout(900);
+    await page.evaluate(()=>{const t=[...document.querySelectorAll('#scbpool .sc-tile')].slice(0,2);t.forEach(x=>x.click());});},
+  11:async page=>{await page.evaluate(()=>{const P=scP('wolf-of-wall-street');P.w[0]=1;scSave();renderScQuiz('wolf-of-wall-street',0);});await page.waitForTimeout(900);
+    for(let k=0;k<30;k++){if(await page.evaluate(()=>!!document.querySelector('.n-done')))break;
+      await page.evaluate(()=>{const ok=x=>x&&x.offsetParent!==null;const opt=[...document.querySelectorAll('.sc-opt')].find(ok);if(opt){opt.click();return;}const no=document.querySelector('#scLno');if(ok(no)){no.click();return;}
+        const T=[...document.querySelectorAll('#scbpool .sc-tile')].filter(x=>ok(x)&&!x.disabled&&!x.classList.contains('used'));T.forEach(x=>x.click());const c=document.querySelector('#scbchk');if(ok(c))c.click();});
+      await page.waitForTimeout(350);await page.evaluate(()=>{const n=document.querySelector('#scnx');if(n&&n.offsetParent!==null)n.click();});await page.waitForTimeout(400);}
+    await page.waitForTimeout(1500);},
+  12:async page=>{await page.evaluate(()=>{const s=scOf('wolf-of-wall-street'),P=scP(s.id);P.r=P.r||{};scAct(s.parts[0].ph).forEach(f=>{P.got=P.got||{};P.got[f.id]=Date.now()-864e5;P.m[f.id]=1;P.r[f.id]=[1,Date.now()-1];});scSave();renderDaily();});},
+  14:async page=>{await page.evaluate(()=>renderTab('profile'));},
+  15:async page=>{await page.evaluate(()=>renderPaywall('rev'));},
+  1:async page=>{await page.evaluate(()=>{ONB=null;renderOnb(0);});},
+  2:async page=>{await page.evaluate(()=>{ONB=null;renderOnb(1);});},
+  3:async page=>{await page.evaluate(()=>{ONB=null;renderOnb(2);});},
+  4:async page=>{await page.evaluate(()=>{ONB=null;renderOnb(3);});},
+  5:async page=>{await page.evaluate(()=>{ONB=null;renderOnb(4);});}};
 fs.mkdirSync(path.join(__dirname,'shots'),{recursive:true});
 (async()=>{const b=await chromium.launch({args:['--autoplay-policy=no-user-gesture-required']});
   const pc=DEV==='pc',vp=pc?{width:1440,height:900}:{width:390,height:844};
