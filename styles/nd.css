@@ -485,3 +485,21 @@ body[data-look="nd"].ndc:not(#_) .rv2 .rv-c .rv-t>b *{font-family:inherit!import
 body[data-look="nd"].ndc:not(#_) .kw:not(.on){background:linear-gradient(transparent 60%,var(--n-mark) 60%)!important;border-radius:0!important;box-shadow:none!important;padding:0!important}
 /* шаг «Привет» на невысоком окне ПК: пузырь бота ниже, чтобы галка «Присылать фразу дня» не уходила под «Дальше» */
 @media (max-height:800px){body[data-look="nd"] .onb-bot .onb-th{max-height:150px}body[data-look="nd"] .onb-wave{font-size:26px}}
+
+/* ==== 13.9.43 — без звёзд: кольцо «сколько верно» в итоге, галочка-кольцо у пройденного эпизода; низ экрана не уходит под вкладки ==== */
+body[data-look="nd"]:not(#_) .n-ring2{position:relative;width:calc(108*var(--nu));height:calc(108*var(--nu));margin:0 auto calc(10*var(--nu))}
+body[data-look="nd"]:not(#_) .n-ring2 svg{width:100%;height:100%;transform:rotate(-90deg)}
+body[data-look="nd"]:not(#_) .n-ring2 circle{fill:none;stroke-width:6;stroke-linecap:round}
+body[data-look="nd"]:not(#_) .n-ring2 .bg{stroke:var(--n-line)}
+body[data-look="nd"]:not(#_) .n-ring2 .fg{stroke:var(--n-ink);stroke-dasharray:var(--c);stroke-dashoffset:var(--o)}
+body[data-look="nd"]:not(#_) .n-ring2.full .fg{stroke:var(--n-ok,#2FA866)}
+body[data-look="nd"]:not(#_) .n-ring2.go .fg{animation:nRing2 1s cubic-bezier(.3,.8,.3,1) .3s both}
+@keyframes nRing2{from{stroke-dashoffset:var(--c)}}
+body[data-look="nd"]:not(#_) .n-ring2>span{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+body[data-look="nd"]:not(#_) .n-ring2 b{font:700 calc(30*var(--nu))/1 var(--n-f-ui);color:var(--n-ink);letter-spacing:-.02em}
+body[data-look="nd"]:not(#_) .n-ring2 b small{font-size:.5em;font-weight:600;color:var(--n-mute)}
+body[data-look="nd"]:not(#_) .n-ring2 em{font:600 calc(8*var(--nu))/1 var(--n-f-ui);font-style:normal;text-transform:uppercase;letter-spacing:.08em;color:var(--n-mute)}
+body[data-look="nd"]:not(#_) .n-sc{flex:none;width:calc(18*var(--nu));height:calc(18*var(--nu));border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--n-line);color:var(--n-mute)}
+body[data-look="nd"]:not(#_) .n-sc.full{background:var(--n-ok,#2FA866);border-color:var(--n-ok,#2FA866);color:#fff}
+body[data-look="nd"]:not(#_) .n-sc .ni{width:72%;height:72%;stroke-width:2.4}
+body[data-look="nd"].tabs-on:not(#_) #app{padding-bottom:calc(var(--sb,0px) + 70*var(--nu) + 28px + env(safe-area-inset-bottom,0px))}

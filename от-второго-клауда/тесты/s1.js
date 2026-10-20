@@ -54,16 +54,6 @@ async function answerAny(page){return page.evaluate(()=>{
     const rwq=await page.evaluate(()=>{const s=scOf('wolf-lunch-de');return rwCardHTML(s,0).match(/rw-q">«([^»]*)»/)[1];});
     ok('карточка-кадр немецкой сцены — по-немецки',!/\b(the|you|and|is)\b/i.test(rwq),rwq);
     ok('ошибок в консоли нет (блок 1)',errs.length===0,errs.slice(0,5).join('\n'));await ctx.close();}
-  // 9–11: Дота
-  {const {page,errs,ctx}=await open({browser:b,wait:2000,init:seed,initArg:[Object.assign({},base,{intro:true})]});
-    await page.evaluate(()=>{M={};store.recent=[];play('dota','mode','words');});await page.waitForTimeout(1200);
-    const t=await page.evaluate(()=>document.body.innerText.slice(0,300));ok('Дота: «Новое слово», а не обучение',/Новое слово/.test(t)&&!/С чего начн/.test(t),t.replace(/\s+/g,' ').slice(0,120));
-    await page.evaluate(()=>{store.fx=true;startDuel({seed:12345,L:'en',opp:null});});await page.waitForTimeout(300);await page.evaluate(()=>exitQuiz());await page.waitForTimeout(4200);
-    const sc=await page.evaluate(()=>({screen,quiz:!!document.querySelector('.quizscr'),cd:!!document.querySelector('.cd2')}));ok('отсчёт отменяется «назад»',sc.screen!=='quiz'&&!sc.quiz&&!sc.cd,JSON.stringify(sc));
-    await page.evaluate(()=>{store.fx=false;store.duels={};for(let i=0;i<31;i++)store.duels[1000+i]={s:1,t:10,L:'en',ts:i+1};});
-    const pr=await page.evaluate(()=>{try{DUEL={seed:5,L:'en',opp:null};S={type:'duel',mode:null,qs:seededQs(5,'en'),i:0,correct:3,streak:0,bestStreak:0,gold:0,tSum:20,wrong:[],learned:[]};renderEnd();return {ok:true,n:Object.keys(store.duels).length,me:!!store.duels[5]};}catch(e){return {ok:false,e:e.message};}});
-    ok('Дота-дуэль: после 31-й не падает',pr.ok&&pr.me&&pr.n===30,JSON.stringify(pr));
-    ok('ошибок в консоли нет (Дота)',errs.length===0,errs.slice(0,5).join('\n'));await ctx.close();}
   // 12: починка store.games
   {const {page,errs,ctx}=await open({browser:b,wait:1500,init:seed,initArg:[Object.assign({},base,{games:'dota,cs211'})]});
     const g=await page.evaluate(()=>({g:store.games,p:store.played}));ok('store.games «dota,cs211» → список + played=2',JSON.stringify(g.g)==='["dota","cs2"]'&&g.p===2,JSON.stringify(g));

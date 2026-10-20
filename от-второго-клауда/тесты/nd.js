@@ -86,13 +86,10 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   // 3. Профиль: карточка, 4 цифры, строки; «Игры» → игры; тап по карточке — «как тебя видят друзья»
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(1500);
   r=await P.evaluate(()=>({card:!!document.querySelector('.ndpc'),n:[...document.querySelectorAll('.ndst b')].map(x=>x.textContent),rows:[...document.querySelectorAll('.ndl-r b')].map(x=>x.textContent),old:!!document.querySelector('.phead')}));
-  ok('Профиль: карточка, 4 цифры (эпизоды 1, фразы 6), строки Премиум · Коллекция · Игры · Билеты · Достижения · Настройки · Как пользоваться · Админ-панель · Вернуть старый дизайн',r.card&&r.n[0]==='1'&&r.n[1]==='6'&&r.rows.join('|')==='Премиум|Коллекция|Игры|Билеты|Достижения|Настройки|Как пользоваться|Админ-панель|Вернуть старый дизайн'&&!r.old,r);
+  ok('Профиль: карточка, 4 цифры (эпизоды 1, фразы 6), строки Премиум · Коллекция · Билеты · Достижения · Настройки · Как пользоваться · Админ-панель · Вернуть старый дизайн',r.card&&r.n[0]==='1'&&r.n[1]==='6'&&r.rows.join('|')==='Премиум|Коллекция|Билеты|Достижения|Настройки|Как пользоваться|Админ-панель|Вернуть старый дизайн'&&!r.old,r);
   await P.click('#ndPc .ndpc-n');await P.waitForTimeout(600);
   ok('тап по карточке — «как тебя видят друзья»',await P.evaluate(()=>!!document.querySelector('.pfv')));
   await P.keyboard.press('Escape');await P.waitForTimeout(500);await P.evaluate(()=>document.querySelectorAll('.pfv').forEach(x=>x.remove()));
-  await P.click('#pfGames');await P.waitForTimeout(1000);
-  r=await st(P);r.tab=await P.evaluate(()=>store.tab);
-  ok('«Игры» из Профиля → вкладка игр (там обычный вид), в капсуле вкладок «Игр» нет',r.tab==='games'&&!r.look&&r.nd&&!r.tabs.includes('Игры'),r);
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(500);
   await P.click('#pfColl');await P.waitForTimeout(800);ok('«Коллекция» из Профиля',await P.evaluate(()=>screen==='coll'));
   // 4. смена темы Telegram на лету → тёмный
@@ -106,7 +103,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   ok('Настройки: Новый* / Как было',r.join('|')==='Новый*|Как было',r);
   await P.click('[data-seg="look"] [data-v="cur"]');await P.evaluate(()=>renderTab('learn'));await P.waitForTimeout(900);
   r=await st(P);r.hh=await P.evaluate(()=>!!document.querySelector('.hh #hCont')&&!document.querySelector('.n-today'));
-  ok('«Как было» — откат: вида нет, вкладки «Главная · Кинозал · Словарь · Игры · Профиль», Главная прежняя',!r.look&&!r.nd&&r.tabs.join('|')==='Главная|Кинозал|Словарь|Игры|Профиль'&&r.hh,r);
+  ok('«Как было» — откат: вида нет, вкладки «Главная · Кинозал · Словарь · Профиль», Главная прежняя',!r.look&&!r.nd&&r.tabs.join('|')==='Главная|Кинозал|Словарь|Профиль'&&r.hh,r);
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(500);
   ok('«Как было»: Профиль прежний',await P.evaluate(()=>!!document.querySelector('.phead')&&!document.querySelector('.ndpc')));
   // 6. тёмная тема с запуска, скрины; без анимаций
@@ -136,8 +133,6 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   const SEC=[['Настройки',()=>renderSettings(),'light'],['Поиск',()=>renderSearch(),'light'],['Повторение',()=>renderDaily(),'light'],['Все фразы',()=>renderSceneSum('wolf-of-wall-street'),'light'],['Коллекция',()=>renderCollection('bg'),'dark'],['Магазин',()=>renderShop(),'dark']];
   const bad2=[];for(const [n,f,t] of SEC){await P.evaluate(f);await P.waitForTimeout(900);const q=await st(P);if(q.look!=='nd'||q.ndt!==t||!q.w)bad2.push(n+' '+JSON.stringify(q));}
   ok('Настройки, Поиск, Повторение, «Все фразы» — в «Новом» (светлом); Коллекция и Магазин — тёмные',!bad2.length,bad2);
-  await P.evaluate(()=>renderTab('games'));await P.waitForTimeout(900);r=await st(P);
-  ok('игры — без вида',!r.look,r);
   // 6г. первый запуск «Нового»: 5 экранов; немецкий, тест уровня (выдуманные слова снижают оценку), уровень руками, сразу эпизод
   const O=await go({snd:false,fx:false,look:'nd',lookV:2},{admin:true,flags:{}},'light');const OP=O.page;
   await OP.evaluate(()=>{localStorage.removeItem('dota_sc_v1');location.reload();});await OP.waitForTimeout(2600);
@@ -178,7 +173,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   await UP.click('#onbAgain');await UP.waitForTimeout(400);await UP.click('.onb-o[data-g="travel"]');await UP.click('#onbGo');await UP.waitForTimeout(300);await UP.click('#onbSkip');await UP.waitForTimeout(500);
   ok('«Закрыть» со второго шага → Настройки',await UP.evaluate(()=>screen==='settings'));
   await UP.evaluate(()=>renderTab('profile'));await UP.waitForTimeout(700);await UP.click('#pfLook');await UP.waitForTimeout(700);r=await st(UP);
-  ok('Профиль → «Вернуть старый дизайн» — сразу прежний вид',!r.look&&!r.nd&&r.tabs.includes('Игры'),r);
+  ok('Профиль → «Вернуть старый дизайн» — сразу прежний вид',!r.look&&!r.nd&&r.tabs.includes('Кинозал'),r);
   // словарь: метки уровня у фраз (A1–C1) и артикль цветом у немецких слов
   await P.evaluate(()=>{store.look='nd';store.myw=Object.assign({},store.myw,{'wolf-lunch-de|der kunde':{k:'wolf-lunch-de|der kunde',w:'der Kunde',ru:'клиент',sid:'wolf-lunch-de',pi:0,st:1,due:Date.now()+864e5,a:0,at:Date.now()}});save();renderTab('dict');});await P.waitForTimeout(2600);
   await P.evaluate(()=>DL.open({sid:'wolf-of-wall-street'}));await P.waitForTimeout(1200);await P.evaluate(()=>{const d=document.querySelector('details.kn-ep');if(d)d.open=true;});await P.waitForTimeout(500);
@@ -186,8 +181,8 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   ok('словарь в «Новом»: у фраз метка уровня A1–C1',r.length>0&&r.every(x=>/^[ABC][12]$/.test(x[0])&&x[1]!=='none'),r.slice(0,4));
   r=await P.evaluate(()=>{wlvLoad();return lvTag('der Kunde','de')+'|'+lvTag('How on Earth did you get a reservation there?','en');});
   ok('у немецкого существительного — артикль цветом, у фразы — уровень по самому редкому слову',/a-der">der</.test(r)&&/>B[12]</.test(r),r);
-  // 7. не-админ: вида нет, «Игры» на месте
+  // 7. не-админ: вида нет, вкладки игр нет (13.9.43)
   const N=await go(base,{admin:false,flags:{}},'light');await N.page.evaluate(()=>renderTab('learn'));await N.page.waitForTimeout(900);
-  r=await st(N.page);ok('не-админ: «Новый» не включается, вкладки прежние',!r.look&&!r.nd&&r.tabs.includes('Игры')&&r.tabs[0]==='Главная',r);
+  r=await st(N.page);ok('не-админ: «Новый» не включается, вкладки прежние',!r.look&&!r.nd&&!r.tabs.includes('Игры')&&r.tabs[0]==='Главная',r);
   ok('консоль чистая',![...A.errs,...D.errs,...N.errs,...F.errs,...O.errs,...U.errs].length,[...A.errs,...D.errs,...N.errs,...F.errs,...O.errs,...U.errs].slice(0,5));
   console.log(fails?`ИТОГ ${dev}: FAIL ${fails}`:`ИТОГ ${dev}: всё PASS`);await b.close();process.exit(fails?1:0);})();
