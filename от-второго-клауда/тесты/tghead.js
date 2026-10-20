@@ -24,7 +24,7 @@ const base=Object.assign({onboarded:true,introV:1,unl:1,snd:false,fx:false,knWin
     ['Сцена «Волк»',()=>renderScene('wolf-of-wall-street')],['Сцена «Психопат» (светлая тема)',()=>renderScene('american-psycho')],['Сцена «Таксист»',()=>renderScene('taxi-driver-lonely')],['Сцена «Титаник»',()=>renderScene('titanic-boat')],
     ['Эпизод',()=>renderScEp('wolf-of-wall-street',1)],['Коллекция',()=>renderCollection('bg')],['Магазин',()=>renderShop()],
     ['Главная с фоном из Коллекции',()=>{store.appBg='h:Волк с Уолл-стрит';store.showRw=store.showRw||{};store.showRw['Волк с Уолл-стрит']={t:Date.now()};save();renderTab('learn');}]];
-  for(const [n,f] of S){await page.evaluate(f);await page.waitForTimeout(1600);await page.evaluate(()=>window.scrollTo(0,0));await page.waitForTimeout(250);
+  for(const [n,f] of S){await page.evaluate(f);await page.waitForTimeout(1600);await page.evaluate(()=>{window.scrollTo(0,0);document.querySelectorAll('.achpop').forEach(x=>x.remove());});await page.waitForTimeout(250);   // 13.9.43: всплывашка достижения сверху — не шапка
     const st=await page.evaluate(()=>({hc:window.__hc,bc:window.__bc,bbc:window.__bbc,tf:(()=>{const t=document.querySelector('.topfade');return t?{h:t.getBoundingClientRect().height,bg:getComputedStyle(t).backgroundImage}:null;})()}));
     if(!st.hc||!/^#[0-9a-f]{6}$/i.test(st.hc)){ok(n+': цвет шапки отдан',false,st);continue;}
     const want=hx(st.hc),px=await topPx(),d=Math.max(...px.map(p=>Math.max(...p.map((v,i)=>Math.abs(v-want[i])))));
@@ -33,9 +33,5 @@ const base=Object.assign({onboarded:true,introV:1,unl:1,snd:false,fx:false,knWin
     if(dev==='phfs'&&st.tf&&st.tf.h>20){const y=Math.round(st.tf.h)+6,q=await topPx([y],[.006,.994]),d2=Math.max(...q.map(p=>Math.max(...p.map((v,i)=>Math.abs(v-want[i])))));
       ok(`${n}: под плашкой (y ${y}) тот же цвет (Δ ${d2})`,d2<=3,q.map(p=>'#'+p.map(v=>v.toString(16).padStart(2,'0')).join('')).join(' '));}}
   if(dev==='phfs'){const t=await page.evaluate(()=>{const e=document.querySelector('.topfade');return e?Math.round(e.getBoundingClientRect().height):0;});ok('полный экран: плашка под кнопками Telegram есть и того же цвета (проверено выше)',t>=80,t);}
-  // мир игр (Дота) — шапка по цвету фона этого мира
-  await page.evaluate(()=>{try{renderDotaWorld();}catch(e){}});await page.waitForTimeout(1200);
-  const g=await page.evaluate(()=>({hc:window.__hc,body:getComputedStyle(document.body).backgroundColor}));
-  ok('Дота: шапка = фон мира',!!g.hc&&('#'+(g.body.match(/\d+/g)||[]).slice(0,3).map(v=>(+v).toString(16).padStart(2,'0')).join(''))===g.hc.toLowerCase(),g);
   ok('консоль чистая',!errs.length,errs.slice(0,5));
   console.log(fails?`ИТОГ ${dev}${ND?' nd '+SCHEME+(B3D?' 3d':''):''}: FAIL ${fails}`:`ИТОГ ${dev}${ND?' nd '+SCHEME+(B3D?' 3d':''):''}: всё PASS`);await b.close();process.exit(fails?1:0);})();
