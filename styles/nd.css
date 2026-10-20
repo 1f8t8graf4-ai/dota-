@@ -423,3 +423,65 @@ body[data-look="nd"].ndc:not(#_) #tabind{border-radius:calc(17*var(--nu))!import
 /* ==== 13.9.40 — «Потяни» не отдаёт жест прокрутке/Telegram; метки фраз — точки над шкалой, а не вырез в ней ==== */
 .n-pull{touch-action:none}
 .n-tlm{top:auto;bottom:calc(50% + 7px);width:6px;height:6px;margin:0 0 0 -3px;border-radius:50%;opacity:1;box-shadow:0 0 0 1.5px rgba(0,0,0,.35)}
+
+/* ==== 13.9.42 — «с душой» (дизайн/вдохновение-2.md): системный шрифт, тёмная тема глубже и холоднее (как у Germanize),
+   тонкие значки вместо эмодзи (.n-ic/.ni — ставит ndDeEmoji), серые подписи капсом, реплики — с засечками, «пыль» на переводах.
+   Вечные анимации — только transform/opacity (правило 13.9.23). ==== */
+body[data-look="nd"]{--n-f-ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--n-dust:rgba(22,22,20,.55)}
+body[data-look="nd"][data-ndt="dark"]{--n-bg:#0D0F14;--n-card:#161920;--n-soft:#1E222A;--n-line:#252A33;--n-mute:#8B919C;--n-ink:#EEF0F3;--n-glass:rgba(22,25,32,.94);--n-dust:rgba(238,240,243,.6)}
+body[data-look="nd"].ndc:not(#_){font-family:var(--n-f-ui)}
+body[data-look="nd"].ndc:not(#_) .n-scr,body[data-look="nd"].ndc:not(#_) .screen{font-family:var(--n-f-ui)}
+/* значки: один вес линии, цвет — как у текста */
+.n-ic{display:inline-flex;align-items:center;justify-content:center;vertical-align:-.16em;line-height:0}
+.ni{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.n-ic[data-n="star"] .ni,.n-ic[data-n="play"] .ni{fill:currentColor;stroke-width:1.2}
+.n-ic[data-n="fire"],.n-ic[data-n="star"]{color:var(--n-sub)}
+body[data-look="nd"][data-ndt="light"] .n-ic[data-n="fire"],body[data-look="nd"][data-ndt="light"] .n-ic[data-n="star"]{color:#E39A2D}
+body[data-look="nd"].ndc:not(#_) .ndl .ndl-r>i{color:var(--n-mute);display:grid;place-items:center;width:calc(22*var(--nu));height:calc(22*var(--nu))}
+body[data-look="nd"].ndc:not(#_) .ndl .ndl-r>i .ni{width:calc(19*var(--nu));height:calc(19*var(--nu))}
+body[data-look="nd"].ndc:not(#_) .ndl .ndl-r>i .n-ic{margin:0}
+/* подписи разделов — серые, капсом, разрядкой */
+body[data-look="nd"].ndc:not(#_) .n-eb,body[data-look="nd"].ndc:not(#_) .ndcap,body[data-look="nd"].ndc:not(#_) .rv-head .ep-end-k{font:600 calc(10.5*var(--nu))/1.4 var(--n-f-ui)!important;letter-spacing:.12em;text-transform:uppercase;color:var(--n-mute)!important}
+/* реплики из фильмов — с засечками, чтобы цитата отличалась от интерфейса */
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-c .rv-t>b,body[data-look="nd"].ndc:not(#_) .tk-watch .tkp-en,body[data-look="nd"].ndc:not(#_) .n-hero h3 em{font-family:var(--n-f-voice)!important;font-weight:500!important;letter-spacing:0}
+/* разбор после эпизода — спокойно, как карточки Germanize: без золота, тонкая черта слева */
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-head{background:none;box-shadow:none;padding:calc(4*var(--nu)) 0}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-head b{font:700 calc(20*var(--nu))/1.25 var(--n-f-ui)!important;color:var(--n-ink)}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-head>span{color:var(--n-mute)}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-c{background:var(--n-card);box-shadow:inset 3px 0 0 var(--n-sub);border-radius:calc(14*var(--nu))}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-c.seen{box-shadow:inset 3px 0 0 var(--n-ok)}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-c .rv-t>b{font-size:calc(17*var(--nu));color:var(--n-ink)}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-t>span{color:var(--n-mute)}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-t>small{color:var(--n-mute)}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-all{background:var(--n-card)}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-play{background:var(--n-soft);color:var(--n-ink)}
+/* «пыль»: текст на месте (держит размер), поверх — мерцающие точки; тап — растворяется */
+.n-sp{position:relative;display:inline-block;max-width:100%;vertical-align:top;border-radius:6px;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.n-sp>.n-spt{transition:opacity .45s ease}
+.n-sp:not(.open)>.n-spt{opacity:0}
+.n-sp::before,.n-sp::after{content:"";position:absolute;inset:-18px;pointer-events:none;background-image:radial-gradient(circle,var(--n-dust,rgba(140,140,140,.7)) .75px,transparent 1.25px);background-size:6px 6px;animation:n-dust1 2.6s linear infinite;transition:opacity .45s ease}
+.n-sp::after{background-size:9px 9px;background-position:3px 5px;opacity:.65;animation:n-dust2 3.4s linear infinite}
+.n-sp.open{cursor:auto;-webkit-user-select:text;user-select:text}
+.n-sp.open::before,.n-sp.open::after{opacity:0;animation:none}
+@keyframes n-dust1{to{transform:translate(12px,-6px)}}
+@keyframes n-dust2{0%{transform:translate(0,0);opacity:.35}50%{opacity:.8}100%{transform:translate(-18px,9px);opacity:.35}}
+body.nofx .n-sp::before,body.nofx .n-sp::after{animation:none}
+/* тест уровня: без больших кнопок — два круглых значка и подсказка между ними */
+body[data-look="nd"]:not(#_) .onb-yn.n-yn{display:flex;align-items:center;justify-content:center;gap:28px}
+body[data-look="nd"]:not(#_) .onb-yn.n-yn button{width:64px;height:64px;border-radius:50%;padding:0;flex-direction:column;gap:2px;background:var(--n-card,#1a1a1d);box-shadow:0 0 0 1px var(--n-line,#2a2a2e);font:600 10px/1 var(--n-f-ui)}
+body[data-look="nd"]:not(#_) .onb-yn.n-yn button .ni{width:24px;height:24px}
+body[data-look="nd"]:not(#_) .onb-yn.n-yn .onb-no{color:var(--n-bad,#E0533D)}
+body[data-look="nd"]:not(#_) .onb-yn.n-yn .onb-yes{color:var(--n-ok,#23A15E)}
+body[data-look="nd"]:not(#_) .onb-yn.n-yn small{font:600 10px/1 var(--n-f-ui);opacity:.85}
+.n-ynh{font:500 12px/1.3 var(--n-f-ui);color:var(--n-mute);text-align:center;min-width:90px}
+/* «Помнишь, ради чего начал?» */
+.n-why{display:flex;gap:calc(12*var(--nu));align-items:center;background:var(--n-card);border-radius:calc(16*var(--nu));padding:calc(14*var(--nu));color:var(--n-mute)}
+.n-why>.ni{width:calc(26*var(--nu));height:calc(26*var(--nu));color:var(--n-sub)}
+body[data-look="nd"][data-ndt="light"] .n-why>.ni{color:#E39A2D}
+.n-why b{display:block;font:600 calc(14*var(--nu))/1.3 var(--n-f-ui);color:var(--n-ink)}
+.n-why small{display:block;margin-top:2px;font:400 calc(12.5*var(--nu))/1.4 var(--n-f-ui)}
+body[data-look="nd"].ndc:not(#_) .rv2 .rv-c .rv-t>b *{font-family:inherit!important}
+/* важные слова — маркер в нижней половине строки (как выделение у Germanize), а не плашкой на всё слово */
+body[data-look="nd"].ndc:not(#_) .kw:not(.on){background:linear-gradient(transparent 60%,var(--n-mark) 60%)!important;border-radius:0!important;box-shadow:none!important;padding:0!important}
+/* шаг «Привет» на невысоком окне ПК: пузырь бота ниже, чтобы галка «Присылать фразу дня» не уходила под «Дальше» */
+@media (max-height:800px){body[data-look="nd"] .onb-bot .onb-th{max-height:150px}body[data-look="nd"] .onb-wave{font-size:26px}}

@@ -249,11 +249,11 @@ function tgHead(){if(!TG||!document.body)return;let c='';try{const cs=getCompute
 // body[data-look] — стили слоем 13.9.22 в конце main.css и dictlab.css. Шрифт вида грузится при первом включении.
 const LOOKS={nd:{n:'Новый',f:'Manrope:wght@400;500;600;700;800&family=Lora:ital,wght@1,500;1,600&family=Caveat:wght@600;700'},svet:{n:'Свет',f:'Onest:wght@400;500;600;700;800'},noch:{n:'Ночь',f:'Manrope:wght@400;500;600;700;800'},zhurnal:{n:'Журнал',f:'PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700'}};
 function lookFont(k){const id='lkf-'+k;if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+LOOKS[k].f+'&display=swap';document.head.appendChild(l);}
-function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(FLAG_ADMIN&&store.lookV!==2){store.lookV=2;store.look='nd';save();}k=FLAG_ADMIN&&LOOKS[store.look]?store.look:'';}catch(e){}   // 13.9.25: админу «Новый» включается сам (откат — «Как было»)
+function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(FLAG_ADMIN&&store.lookV!==2){store.lookV=2;store.look='nd';save();}k=FLAG_ADMIN&&LOOKS[store.look]?store.look:(!FLAG_ADMIN&&ndAll()?'nd':'');}catch(e){}   // 13.9.25: админу «Новый» включается сам (откат — «Как было»)
   // 13.9.26: «Новый» — на всех экранах, кроме игр (Дота, CS, «Шпион», турнир, карточная дуэль); пробы 13.9.22 — как были
   const c=cls||'',tabG=/\btabscr\b/.test(c)&&(screen==='subtab'||['games','spy','arena'].includes(store.tab));
   const on=k&&(k==='nd'?!ND_GAME.test(c)&&!tabG:/\btabscr\b/.test(c)&&screen==='home'&&['learn','kino','dict'].includes(store.tab)||/\bscnscr\b/.test(c)&&['scene','scep','scq'].includes(b.dataset.scr));
-  if(k==='nd')ndCss();   // 13.9.37: стиль макета — лениво
+  if(k==='nd'){ndCss();ndEmoWatch();}   // 13.9.37: стиль макета — лениво; 13.9.42: значки вместо эмодзи
   b.dataset.ndk=k==='nd'&&(ND_DARK.test(c)||/\bscnscr\b/.test(c)&&['scep','dircut'].includes(b.dataset.scr))?'1':'';   // витрины и плеер — всегда тёмные
   b.classList.toggle('nd',k==='nd');ndTabs(k==='nd');
   // 13.9.33 (P0.1): в «Новом» 3D-зала нет — он закрывал фон светлой темы на ПК; store.bg3d не трогаем, «Как было» — снова как в настройках
@@ -263,7 +263,9 @@ function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(FLAG_
 // (плеер всегда тёмный), вкладки «Сегодня · Кино · Словарь · Профиль» (игры — из Профиля), «Сегодня» — один план на кадре и «Потяни, чтобы начать».
 // Только админ, Настройки → «Дизайн (на пробу)» → «Новый»; откат — «Сейчас».
 const ND_GAME=/\b(spyscr|cgscr|tourscr|duelscr|dotascr|csscr|wikiscr|endscr|gi|minus|gold|quiz|quizscr)\b/,ND_DARK=/\b(admscr|collscr|shopscr|ytscr)\b/;   // 13.9.40: премиум — по теме Telegram, как в макете (.cell 15)
-const ndOn=()=>{try{return !!FLAG_ADMIN&&(store.look==='nd'||store.lookV!==2);}catch(e){return false;}};
+// 13.9.42: «Новый» игрокам — флаг ndnew (админка → Лаборатория → «Дизайн «Новый» — всем / тестерам»); у игрока «Как было» нет
+const ndAll=()=>{try{return FLAGS.ndnew==='on';}catch(e){return false;}};
+const ndOn=()=>{try{return FLAG_ADMIN?(store.look==='nd'||store.lookV!==2):ndAll();}catch(e){return false;}};
 function ndDark(){try{if(TG&&TG.colorScheme)return TG.colorScheme==='dark';}catch(e){}try{return matchMedia('(prefers-color-scheme: dark)').matches;}catch(e){return true;}}
 function ndTheme(){const b=document.body;if(!b||b.dataset.look!=='nd')return;const t=ndDark()||b.dataset.ndk==='1'?'dark':'light';/* эпизод с плеером — всегда тёмный */if(b.dataset.ndt!==t){b.dataset.ndt=t;try{tgHead();}catch(e){}}}
 try{if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>ndTheme());}catch(e){}
@@ -274,6 +276,81 @@ function ndTabs(on){const nav=document.getElementById('tabbar');if(!nav||NDT===o
   nav.querySelectorAll('button').forEach(b=>{const t=TABS.find(x=>x.id===b.dataset.nav);if(!t)return;const n=on&&ND_TABS[t.id];
     b.querySelector('svg').innerHTML=n?n[1]:t.ico;b.querySelector('span').textContent=n?n[0]:t.name;b.setAttribute('aria-label',n?n[0]:t.name);});}
 // «Потяни, чтобы начать»: тянешь ручку вправо — дальше 70 % ширины и отпустил — старт; просто тап — ручка подпрыгивает (случайно не нажмёшь); Enter/пробел — старт
+
+// ==== 13.9.42 — «с душой» (дизайн/вдохновение-2.md): ни одного эмодзи в «Новом» — тонкие линейные значки одного веса;
+// перевод и подсказки — под «пылью» (тап — показать). Значки ставит ndDeEmoji: проходит по тексту экрана и шторок (MutationObserver),
+// знакомый эмодзи → <svg class="ni">, незнакомый — убирает (одиночный в своём теге — точка). Словарь (#dlRoot), субтитры, поля ввода и игры не трогает.
+const NI={fire:'<path d="M12 3c1 3.5 5 5.4 5 10a5 5 0 0 1-10 0c0-2.4 1.4-4 2.5-5 .3 1.8 1.2 2.8 2.5 3-.2-3-1-5.5 0-8z"/>',
+  trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6M10 17h4"/>',
+  lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',unlock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/>',
+  bulb:'<path d="M9.5 18h5M10.5 21h3M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>',
+  crown:'<path d="M4 18h16M5 15 4 7l5 4 3-6 3 6 5-4-1 8z"/>',duel:'<path d="M4 4l10 10M20 4 10 14M6 15l3 3M18 15l-3 3M4 20l3-3M20 20l-3-3"/>',
+  ticket:'<path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"/><path d="M14 7v10" stroke-dasharray="2 2"/>',
+  repeat:'<path d="M4 11a7 7 0 0 1 12-4.5L19 9M19 4v5h-5M20 13a7 7 0 0 1-12 4.5L5 15M5 20v-5h5"/>',
+  book:'<path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15H7.5A2.5 2.5 0 0 0 5 20.5zM5 20.5V5.5M9 7h6"/>',
+  slow:'<path d="M4.5 17a8 8 0 1 1 15 0M12 13 8.5 9.5"/><circle cx="12" cy="13" r="1"/>',
+  image:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/>',
+  film:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 5l2 4M12 5l2 4M17 5l2 4"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="M8 12.2l2.8 2.8L16 9.5"/>',chat:'<path d="M4 5h16v11H10l-5 4v-4H4z"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .7 3 2.6 3.5 5"/>',
+  share:'<path d="M12 15V3M8 7l4-4 4 4M5 13v7h14v-7"/>',game:'<path d="M7 8h10a4 4 0 0 1 4 4v2.5a2.5 2.5 0 0 1-4.3 1.7L15.5 15h-7l-1.2 1.2A2.5 2.5 0 0 1 3 14.5V12a4 4 0 0 1 4-4zM8 10.5v3M6.5 12h3"/><circle cx="15.5" cy="11" r=".6"/><circle cx="17.5" cy="13" r=".6"/>',
+  phones:'<path d="M4 15v-3a8 8 0 0 1 16 0v3M4 15h3v5H4zM17 15h3v5h-3z"/>',cards:'<rect x="8" y="3" width="11" height="15" rx="2"/><path d="M5 7v12a2 2 0 0 0 2 2h9"/>',
+  tv:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 21h8M9 3l3 3 3-3"/>',work:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 12.5h18"/>',
+  home:'<path d="M4 11l8-7 8 7M6 9.5V20h12V9.5M10 20v-6h4v6"/>',gift:'<rect x="4" y="10" width="16" height="10" rx="1"/><path d="M3 7h18v3H3zM12 7v13M12 7C10 3 6.5 4 7.5 6.5M12 7c2-4 5.5-3 4.5-.5"/>',
+  ear:'<path d="M7.5 9a4.5 4.5 0 1 1 9 0c0 3-3 4-3 7a3 3 0 0 1-5.5 1.6M10 9.5a2 2 0 0 1 4 0"/>',bag:'<path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/>',
+  spark:'<path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6zM18.5 16l.6 1.9 1.9.6-1.9.6-.6 1.9-.6-1.9-1.9-.6 1.9-.6z"/>',
+  medal:'<circle cx="12" cy="15" r="5"/><path d="M9 3l3 7 3-7M12 13v4"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>',
+  search:'<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/>',speaker:'<path d="M4 9.5v5h3.5L12 18V6L7.5 9.5zM15.5 9.5a3.5 3.5 0 0 1 0 5M18 7a7 7 0 0 1 0 10"/>',
+  mute:'<path d="M4 9.5v5h3.5L12 18V6L7.5 9.5zM16 10l4 4M20 10l-4 4"/>',star:'<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z"/>',
+  coin:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M14.5 9.5h-3.2a1.6 1.6 0 0 0 0 3.2h1.4a1.6 1.6 0 0 1 0 3.2H9.5"/>',
+  music:'<path d="M9 18V5.5l11-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+  target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/>',
+  hand:'<path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V11M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v7.5A7 7 0 0 1 10 20c-2.6 0-4-1.6-5.4-3.7L3 13.8a1.5 1.5 0 0 1 2.5-1.6L8 15"/>',
+  plane:'<path d="M3 13l18-7.5-6.5 15-3.5-5.5zM11 15l4-4.5"/>',pen:'<path d="M4 20l4.5-1L19 8.5 15.5 5 5 15.5zM13.5 7l3.5 3.5"/>',
+  mail:'<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 7l8.5 6.5L20.5 7"/>',smile:'<circle cx="12" cy="12" r="8.5"/><path d="M8.5 14a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/>',
+  heart:'<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/>',bolt:'<path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/>',
+  help:'<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 0 1 4.8 1c0 1.8-2.4 2-2.4 3.6M12 17h.01"/>',shield:'<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8-7.5 9.5-4.3-1.5-7.5-4.9-7.5-9.5V6z"/>',
+  play:'<path d="M8 5.5v13l10.5-6.5z"/>',pause:'<path d="M8.5 5.5v13M15.5 5.5v13"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  wrench:'<path d="M14.5 6.5a4 4 0 0 0-5.3 5.3L4 17l3 3 5.2-5.2a4 4 0 0 0 5.3-5.3l-2.6 2.6-2.6-2.6z"/>',chart:'<path d="M4 20V4M4 20h16M8 16l4-5 3 3 5-7"/>',
+  dot:'<circle cx="12" cy="12" r="2.2"/>',party:'<path d="M4 20l4-12 8 8zM14 4.5v2M19.5 10h-2M17.5 6.5l-1.5 1.5M10 3l.5 1.5"/>',
+  puzzle:'<path d="M5 8h3.5a2 2 0 1 1 4 0H16v3.5a2 2 0 1 1 0 4V19H5z"/>',sos:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/><path d="M6 6l3.5 3.5M14.5 14.5 18 18M18 6l-3.5 3.5M9.5 14.5 6 18"/>',
+  magnet:'<path d="M6 4v7a6 6 0 0 0 12 0V4h-4v7a2 2 0 0 1-4 0V4zM6 7.5h4M14 7.5h4"/>',coffee:'<path d="M5 9h11v5a5 5 0 0 1-10 0zM16 10.5h1.5a2.5 2.5 0 0 1 0 5H15.5M8 3.5v2M11 3.5v2"/>',
+  phone:'<path d="M5 4.5h3.5L10 9l-2 1.5a10.5 10.5 0 0 0 5.5 5.5L15 14l4.5 1.5V19a1.5 1.5 0 0 1-1.6 1.5C10.6 20 4 13.4 3.5 6.1A1.5 1.5 0 0 1 5 4.5z"/>'};
+const niSVG=(n,c)=>`<svg class="ni${c?' '+c:''}" viewBox="0 0 24 24" aria-hidden="true">${NI[n]||NI.dot}</svg>`;
+const NI_EM={'🔥':'fire','🏆':'trophy','🔒':'lock','🔓':'unlock','💡':'bulb','👑':'crown','⚔':'duel','🗡':'duel','🎟':'ticket','🔁':'repeat','📚':'book','📖':'book','📘':'book','🐢':'slow',
+  '🖼':'image','🎞':'film','🎬':'film','📽':'film','✅':'check','💬':'chat','💭':'chat','🗣':'chat','👤':'user','👥':'users','🤝':'users','📤':'share','🎮':'game','👾':'game','🎧':'phones','🃏':'cards',
+  '📺':'tv','💼':'work','🏠':'home','🎁':'gift','👂':'ear','🛍':'bag','✨':'spark','✦':'spark','🎖':'medal','🥈':'medal','⚙':'gear','🔧':'wrench','🛠':'wrench','🔍':'search',
+  '🔊':'speaker','🔈':'speaker','🔇':'mute','⭐':'star','🪙':'coin','💰':'coin','💵':'coin','💎':'coin','♪':'music','🎵':'music','👀':'eye','🎯':'target','👋':'hand','👆':'hand','✈':'plane',
+  '✍':'pen','🪶':'pen','✉':'mail','🙂':'smile','👍':'smile','👌':'smile','💘':'heart','⚡':'bolt','❓':'help','🛡':'shield','📈':'chart','🎉':'party','🧩':'puzzle','🆘':'sos',
+  '🧲':'magnet','☕':'coffee','📞':'phone','📱':'phone','🏁':'target','⏯':'play','🎨':'pen','🧪':'spark','🐞':'help','🩺':'heart','😤':'smile','🌫':'dot','🤏':'hand','🗑':'x','📊':'chart'};
+const NI_RE=/(?:\p{Extended_Pictographic}|[\u{1F1E6}-\u{1F1FF}]|[⭐⚔⚙✅✨✦⚡✈✉✍☕❓❌♪])️?‍?/gu, NI_KEEP=/^[★☆▶⏸↺↻✓✕✗←→↔↑↓©®™•‣]$/;
+const NI_SKIP='#dlRoot,.sc-subs,input,textarea,script,style,svg,.ni,.n-emo,.kq,.fxcv,.kv-steal,.stl';
+function ndEmoOK(){const b=document.body;return !!b&&b.dataset.look==='nd';}   // в играх data-look нет — их не трогаем
+function ndDeEmoji(root){if(!root||!ndEmoOK())return;const tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),L=[];let n;
+  while((n=tw.nextNode())){NI_RE.lastIndex=0;if(!NI_RE.test(n.data))continue;const p=n.parentElement;if(!p||p.closest(NI_SKIP))continue;L.push(n);}
+  for(const t of L){const txt=t.data,p=t.parentElement,frag=document.createDocumentFragment();let last=0,m;NI_RE.lastIndex=0;
+    const solo=txt.trim().replace(NI_RE,'')===''&&p.childNodes.length===1;
+    while((m=NI_RE.exec(txt))){const ch=m[0].replace(/[\uFE0F\u200D]/g,'');if(NI_KEEP.test(ch)){if(ch!==m[0]){const pre=txt.slice(last,m.index);if(pre)frag.appendChild(document.createTextNode(pre));frag.appendChild(document.createTextNode(ch));last=m.index+m[0].length;}continue;}
+      let pre=txt.slice(last,m.index);const name=NI_EM[ch]||(solo?'dot':'');
+      if(pre)frag.appendChild(document.createTextNode(pre));
+      if(name){const sp=document.createElement('span');sp.className='n-ic';sp.dataset.n=name;sp.innerHTML=niSVG(name);frag.appendChild(sp);}
+      last=m.index+m[0].length;if(!name&&txt[last]===' ')last++;}
+    if(!last)continue;frag.appendChild(document.createTextNode(txt.slice(last)));t.replaceWith(frag);}}
+let NDEMO=null;
+function ndEmoWatch(){if(NDEMO||!window.MutationObserver)return;let q=new Set(),raf=0;
+  NDEMO=new MutationObserver(ms=>{if(!ndEmoOK())return;for(const m of ms){if(m.type==='characterData'){if(m.target.parentElement)q.add(m.target.parentElement);}else m.addedNodes.forEach(x=>{if(x.nodeType===1)q.add(x);else if(x.nodeType===3&&x.parentElement)q.add(x.parentElement);});}
+    if(!raf)raf=requestAnimationFrame(()=>{raf=0;const L=[...q];q=new Set();L.forEach(x=>{if(x.isConnected)ndDeEmoji(x);});});});
+  NDEMO.observe(document.body,{childList:true,subtree:true,characterData:true});}
+const ndAccMode=()=>{const f=typeof FLAG_RAW!=='undefined'&&FLAG_RAW&&FLAG_RAW.ndnew;return !f?'me':f.st==='on'?'all':'test';};
+async function ndAccSet(mode,allow){const raw=JSON.parse(JSON.stringify(FLAG_RAW||{}));allow=[...new Set((allow||[]).map(x=>String(x).replace(/\D/g,'')).filter(x=>x&&x!=='0'))];
+  if(mode==='all')raw.ndnew={st:'on',allow:allow.length?allow:['0']};else if(mode==='test'){if(!allow.length){toast('Впиши ID тестеров');return false;}raw.ndnew={st:'hide',allow};}else delete raw.ndnew;
+  try{const r=await flagsCall({a:'set',flags:raw});if(r&&r.ok){FLAG_RAW=r.v.raw||{};if(typeof ADM_DR!=='undefined'&&ADM_DR){if(FLAG_RAW.ndnew)ADM_DR.ndnew={st:FLAG_RAW.ndnew.st,allow:[...FLAG_RAW.ndnew.allow]};else delete ADM_DR.ndnew;}haptic('ok');return true;}
+    toast((r&&r.msg)||'Не получилось — открой в Telegram');}catch(e){toast('Нет связи с сервером');}return false;}
+// «пыль» (как спойлер в Telegram): текст спрятан мерцающими точками, тап — показать. Только в «Новом»; без «Новый» — обычный текст.
+const ndSp=(html,c)=>ndOn()?`<span class="n-sp${c?' '+c:''}" role="button" tabindex="0" aria-label="Показать перевод"><span class="n-spt">${html}</span></span>`:html;
+document.addEventListener('click',e=>{const sp=e.target.closest&&e.target.closest('.n-sp:not(.open)');if(!sp)return;e.preventDefault();e.stopPropagation();sp.classList.add('open');sp.removeAttribute('role');try{sfx('tap');haptic('sel');}catch(_){}},true);
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const sp=e.target.closest&&e.target.closest('.n-sp:not(.open)');if(sp){e.preventDefault();sp.click();}},true);
 function ndPull(el,go){const k=el.querySelector('.ndpull-k'),f=el.querySelector('.ndpull-f');let x0=null,dx=0,max=1,done=false,buzz=false;
   const set=(v,anim)=>{el.classList.toggle('back',!!anim);k.style.transform=v?`translateX(${v}px)`:'';f.style.transform=`scaleX(${Math.min(1,(v+k.offsetWidth+8)/el.clientWidth)})`;el.style.setProperty('--pp',(v/max).toFixed(3));};
   const fire=()=>{if(done)return;done=true;el.classList.add('done');set(max);haptic('medium');sfx('whoosh');   // 13.9.39: как в Germanize — дотянул: полоса заливается, в ручке ✓, потом переход
@@ -557,7 +634,7 @@ try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}if(screen==='prem'&&!
   document.body.classList.remove('dx-open');try{if(KWP)KWP._resume=null;kwHide(0);}catch(e){}try{musDuck(false);}catch(e){}
   try{if(SCLIP&&!SCLIP.paused)SCLIP.pause();}catch(e){}
   if(!scn)try{if(SV)scStop();}catch(e){}}
-function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);try{document.body.classList.toggle('newb',newbie());}catch(e){}if(!tab)paintTabbar(null);try{lookApply(cls);}catch(e){}app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}
+function mount(html,cls){const tab=/\btabscr\b/.test(cls||'');uiClean(cls);try{if(!/\bscnscr\b/.test(cls||'')&&MUS)musStop();}catch(e){}try{gavGone();}catch(e){}document.body.classList.toggle('tabs-on',tab);try{document.body.classList.toggle('newb',newbie());}catch(e){}if(!tab)paintTabbar(null);try{lookApply(cls);}catch(e){}app.innerHTML=`<div class="screen ${cls||''}">${html}</div>`;window.scrollTo(0,0);try{ndDeEmoji(app);}catch(e){}try{if(!/\bscnscr\b/.test(cls||'')){delete document.body.dataset.scn;ambPause(true);}if(window.BG3D)BG3D.set(document.body.dataset.scn||'app');}catch(e){}document.querySelectorAll('.sctour,.ln-pop,.ln-tip').forEach(x=>x.remove());try{appBgApply();}catch(e){}
   try{let i=0;app.querySelectorAll('.anim').forEach(e=>e.style.setProperty('--ai',Math.min(i++,7)));}catch(e){}try{shopPvStop();setTimeout(hmSync,0);}catch(e){}tgHead();try{phScreen();}catch(e){}try{ndScreenIn(cls);}catch(e){}}
 function applyFx(){
   document.body.classList.toggle('nofx',!store.fx);applySubPrefs();
@@ -1899,6 +1976,7 @@ function ndProfileHTML(){const name=userName()||'Игрок',photo=tgPhoto(),pb=
       <p class="ndpc-s">${st?`🔥 ${st} ${plural(st,['день','дня','дней'])} подряд`:'Серия начнётся с первого ответа'}${pb?` · фон «${esc(pb.name)}»`:''}</p>
       <button class="ndpc-bgb" id="pcChg">${pb?'Сменить фон':bgAnyGot()?'Поставить фон':'Фон — за пройденную сцену'}</button></section>
     <div class="ndst anim">${cnt(eps,plural(eps,['эпизод','эпизода','эпизодов']))}${cnt(ph,plural(ph,['фраза','фразы','фраз']))}${cnt(mw,plural(mw,['слово','слова','слов']))}${cnt(bgs,plural(bgs,['фон','фона','фонов']))}</div>
+    ${(()=>{const g=(typeof ONB_GOALS!=='undefined'?ONB_GOALS:[]).find(x=>x[0]===store.goalWhy);return g?`<div class="n-why anim">${niSVG('target')}<span><b>Помнишь, ради чего начал?</b><small>${esc(g[2])}. Каждая сцена — ещё шаг туда.</small></span></div>`:'';})()}
     <div class="ndl anim">
       ${premMode()!=='off'||FLAG_ADMIN?row('pfPrem','✦','Премиум',premHas()?`до ${premDate(premC().until)}`:premC().trialUsed?'повторение, подсказки, слова без лимита':'7 дней бесплатно'):''}
       ${row('pfColl','🏆','Коллекция','фоны, карточки, кадры')}
@@ -1912,7 +1990,7 @@ function ndProfileHTML(){const name=userName()||'Игрок',photo=tgPhoto(),pb=
       ${row('setBtn','⚙️','Настройки','язык, субтитры, звук, дизайн')}
       ${row('helpBtn','❓','Как пользоваться','все функции коротко')}
       ${FLAG_ADMIN?row('admBtn','🛡','Админ-панель','игроки, доступ, проверка'):''}
-      ${row('pfLook','↺','Вернуть старый дизайн','вернуть «Новый» — Настройки → Дизайн')}
+      ${FLAG_ADMIN?row('pfLook','↺','Вернуть старый дизайн','вернуть «Новый» — Настройки → Дизайн'):''}
     </div>
     <p class="foot">Версия ${APP_V}</p>`;}
 function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
@@ -1924,7 +2002,7 @@ function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
   $('#pfShop').onclick=()=>{sfx('tap');renderShop();};
   $('#helpBtn').onclick=()=>{sfx('tap');renderHelp();};
   if($('#pfPrem'))$('#pfPrem').onclick=()=>{sfx('tap');haptic('sel');renderPaywall(null,()=>renderTab('profile'));};
-  $('#pfLook').onclick=()=>{sfx('tap');haptic('sel');store.look='';save();renderTab('profile');toast('Старый дизайн. «Новый» — Настройки → Дизайн (на пробу)');};   // 13.9.29: откат в одно нажатие
+  if($('#pfLook'))$('#pfLook').onclick=()=>{sfx('tap');haptic('sel');store.look='';save();renderTab('profile');toast('Старый дизайн. «Новый» — Настройки → Дизайн (на пробу)');};   // 13.9.29: откат в одно нажатие
   $$('.ach').forEach(b=>b.onclick=()=>{const a=ACH.find(x=>x.id===b.dataset.a);sfx('sel');toast(`${a.n}: ${a.d}${store.ach[a.id]?'. Получено':''}`);});
   ndCount($$('.ndcnt'));}
 // цифры набегают от 0 за 0.9 с, один раз (без анимаций — сразу итог)
@@ -2505,7 +2583,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.40';
+const APP_V='13.9.41';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -3814,13 +3892,13 @@ function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3
   const seen=new Set(),cnt=()=>{const c=box.querySelector('#rvCnt');if(c)c.textContent=`${test.filter(f=>seen.has(f.id)).length} из ${test.length} послушал`;};
   const tip=f=>{const t=scNoteS(f)||f.use||'';return t?esc(scShort(t)):'';};
   box.innerHTML=`<div class="rv rv2"><div class="rv-head"><span class="ep-end-k">🎬 Эпизод досмотрен</span><b>Будут в заданиях · ${test.length}</b>
-      <span>Нажми на слово — объясню, ${SI.play} — послушать ещё раз.</span>
+      <span>${ndOn()?'Сначала вспомни сам, что значит фраза, — потом нажми на перевод. Нажми на слово — объясню.':`Нажми на слово — объясню, ${SI.play} — послушать ещё раз.`}</span>
       <div class="rv-top"><button class="rv-again" id="rvAgain">${SI.again} Смотреть ещё раз</button><span class="rv-cnt" id="rvCnt"></span></div></div>
     <div class="rv-cards">${test.map((f,k)=>`<div class="rv-c" data-k="${k}"><button class="rv-play" aria-label="Послушать фразу">${SI.play}</button>
-      <div class="rv-t"><b>${kwWrap(f)}</b><span>${esc(f.ru||'')}</span>${tip(f)?`<small>💡 ${tip(f)}</small>`:''}</div></div>`).join('')}</div>
+      <div class="rv-t"><b>${kwWrap(f)}</b><span>${ndSp(esc(f.ru||''))}</span>${tip(f)?`<small>💡 ${tip(f)}</small>`:''}</div></div>`).join('')}</div>
     ${rows.length?`<details class="rv-all"><summary>Все реплики эпизода · ${rows.length}</summary><div class="rv-list">${rows.map((r,k)=>`<div class="rv-ln" data-k="${k}">
       <button class="rv-play" aria-label="Послушать реплику">${SI.play}</button>
-      <div class="rv-t"><b>${swWrap(scRowT(r))}</b><span>${esc(String(r[3]||'').replace(/\n/g,' '))}</span></div></div>`).join('')}</div></details>`:''}
+      <div class="rv-t"><b>${swWrap(scRowT(r))}</b><span>${ndSp(esc(String(r[3]||'').replace(/\n/g,' ')))}</span></div></div>`).join('')}</div></details>`:''}
     <div class="rv-go"><button class="sc-btn ep-go" id="epGoQ">К заданиям →<small>${test.length} ${plural(test.length,['фраза','фразы','фраз'])}</small></button></div></div>`;
   box.hidden=false;cnt();
   ['.ep-watch','#epToLearn','#epPhs','.ep-lines'].forEach(q=>{const x=document.querySelector(q);if(x){if(q==='#epToLearn')x.style.display='none';else x.hidden=true;}});
@@ -6205,11 +6283,16 @@ function renderAdmin(sec){ADM_SEC=sec||null;screen='admin';backBtn(true);
         <div class="lab-chips">${LAB_SUB.map(([k,l])=>`<button data-lab="labSub" data-v="${k}" class="${labSub()===k?'on':''}">${l}</button>`).join('')}</div></div>
       <div class="lab"><b>Звуки</b><div class="lab-chips">${LAB_SND.map(([k,l])=>`<button data-lab="labSnd" data-v="${k}" class="${(store.labSnd||shopUse('snd'))===k?'on':''}">${l}</button>`).join('')}</div></div>
       <div class="lab"><b>Интерфейс</b><div class="lab-chips">${LAB_UI.map(([k,l])=>`<button data-lab="labUi" data-v="${k}" class="${(store.labUi||'grafit')===k?'on':''}">${l}</button>`).join('')}</div></div>
+      <div class="lab" id="ndAcc"><b>Дизайн «Новый» — кому</b><div class="lab-chips">${[['me','Только мне'],['test','Тестерам'],['all','Всем']].map(([k,l])=>`<button data-nda="${k}" class="${ndAccMode()===k?'on':''}">${l}</button>`).join('')}</div>
+        <input class="ad2-in" id="ndaIds" placeholder="ID тестеров через запятую" value="${esc(((FLAG_RAW&&FLAG_RAW.ndnew&&FLAG_RAW.ndnew.st==='hide'&&FLAG_RAW.ndnew.allow)||[]).join(', '))}" inputmode="numeric" autocomplete="off" ${ndAccMode()==='test'?'':'hidden'}>
+        <p class="ad2-note">«Всем» — каждый игрок при следующем открытии видит «Новый», без «Как было». Откат — «Только мне».</p></div>
       <div class="lab"><b>Дизайн (на пробу)</b><div class="lab-chips">${[['','Сейчас'],...Object.keys(LOOKS).map(k=>[k,LOOKS[k].n])].map(([k,l])=>`<button data-lab="look" data-v="${k}" class="${(LOOKS[store.look]?store.look:'')===k?'on':''}">${l}</button>`).join('')}</div><p class="ad2-note">Главная, Кинозал, Словарь, страница сцены, эпизод и проверка. То же — в Настройках.</p></div>`);
     $$('[data-lab]').forEach(b=>b.onclick=()=>{store[b.dataset.lab]=b.dataset.v;save();labApply();b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
       if(b.dataset.lab==='labSub'){const pv=$('.lab-prev');if(pv)pv.dataset.ss=b.dataset.v;}
       if(b.dataset.lab==='labSnd'&&b.dataset.v!=='off'){ac();sfxLoad(b.dataset.v).then(()=>{const P=sfxPack(b.dataset.v);P.tap();setTimeout(()=>P.good(),250);setTimeout(()=>P.nope(),700);setTimeout(()=>P.win(),1150);});}
-      if(b.dataset.lab==='labUi')haptic('sel');});return;}
+      if(b.dataset.lab==='labUi')haptic('sel');});$$('[data-nda]').forEach(b=>b.onclick=async()=>{const m=b.dataset.nda,ids=$('#ndaIds');sfx('tap');if(m==='test'&&ids.hidden){ids.hidden=false;ids.focus();return;}
+      const ok=await ndAccSet(m,ids.value.split(/[\s,;]+/));if(ok){$$('[data-nda]').forEach(x=>x.classList.toggle('on',x===b));ids.hidden=m!=='test';toast(m==='all'?'«Новый» — у всех игроков при следующем открытии':m==='test'?'«Новый» — тестерам':'«Новый» — только у тебя');}});
+    return;}
   renderAdmin();}
 
 setTimeout(flagsRefresh,400);
@@ -7225,7 +7308,7 @@ function renderOnb(n){if(!ONB)ONB={st:0,lang:kinoLang(),goal:null,cefr:null,min:
   if(n===3){const x=phraseOfDay(),s=x&&x.s,f=x&&x.f;
     onbMount(3,`<div class="onb-wave" aria-hidden="true">👋</div><h1 class="onb-hw">Привет${nm?', '+esc(nm):''}!</h1><p class="onb-p">Каждый день бот пришлёт в чат <b>фразу дня</b> — короткий момент из фильма с переводом.</p>
       ${f?`<div class="onb-bot"><div class="onb-ava">🎬</div><div class="onb-bub"><i class="onb-th" style="background-image:url('${assetUrl(scEpKey(s,f.pi,'jpg'))}'),url('${assetUrl(scKey(s,'cover.jpg'))}')"><u>▶</u></i>
-        <small>🎬 Фраза дня · ${esc(dictFilm(s))}</small><b>${esc(s.lang==='de'?f.de:scT(f))}</b><span>${esc(f.ru)}</span><em>▶️ Разобрать сцену</em></div></div>`:''}
+        <small>🎬 Фраза дня · ${esc(dictFilm(s))}</small><b>${esc(s.lang==='de'?f.de:scT(f))}</b><span>${esc(f.ru)}</span><em>▶ Разобрать сцену</em></div></div>`:''}
       <button class="checkrow frame onb-dl" id="onbDl" aria-pressed="${O.daily}">${BOX}<span class="ct"><span class="cn">Присылать фразу дня</span><span class="cd">Раз в день, в 12:00. Выключить можно в настройках.</span></span></button>`,
       `<button class="onb-go" id="onbGo">Дальше</button>`);
     $('#onbDl').onclick=e=>{O.daily=!O.daily;e.currentTarget.setAttribute('aria-pressed',O.daily);sfx('sel');haptic('sel');};
@@ -7280,7 +7363,7 @@ function onbLevel(){const O=ONB,lang=O.lang;
     const art=lang==='de'&&/^(der|die|das) /.exec(w[0]);
     onbMount(1,`<h1 class="onb-h sm">Знаешь это слово?</h1><div class="onb-bar"><i style="width:${T.i/N*100}%"></i></div>
       <div class="onb-stack"><div class="onb-card nx"></div><div class="onb-card" id="onbCard">${art?`<em class="art a-${art[1]}">${art[1]}</em>`:''}<b>${esc(art?w[0].slice(4):w[0])}</b><small>${lang==='de'?'Deutsch':'English'}</small><span class="stp k">ЗНАЮ</span><span class="stp u">УЧУ</span><i class="onb-bd k" aria-hidden="true">✓</i><i class="onb-bd u" aria-hidden="true">↺</i></div></div>${FLAG_ADMIN&&!onbPC()?'<div class="onb-dbg" id="onbDbg"></div>':''}`,
-      `<div class="onb-yn"><button class="onb-no" id="onbNo">← Ещё учу</button><button class="onb-yes" id="onbYes">Знаю →</button></div>`);
+      `<div class="onb-yn n-yn"><button class="onb-no" id="onbNo" aria-label="Ещё учу">${niSVG('repeat')}<small>учу</small></button><span class="n-ynh">${onbPC()?'← или →':'смахни карточку'}</span><button class="onb-yes" id="onbYes" aria-label="Знаю">${niSVG('check')}<small>знаю</small></button></div>`);
     const card=$('#onbCard');backBtn(false);onbDbg();   // 13.9.40: «‹ Назад» Telegram на карточках прятать — палец задевал
     const go=know=>{if(card._d)return;card._d=1;sfx(know?'tick':'tap');haptic('sel');
       if(fake){if(know)T.fk++;}else{T.seq.push([T.b,know]);T.b=Math.max(0,Math.min(4,T.b+(know?1:-1)));}
