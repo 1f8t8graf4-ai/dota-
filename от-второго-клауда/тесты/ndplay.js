@@ -17,7 +17,7 @@ const base={onboarded:true,introV:1,look:'nd',lookV:2,unl:1,snd:false,lvl:'b',ce
   const row=await P.evaluate(()=>{const L=SV._loc.filter(x=>String(x[2]).split(/\s+/).length>=5);return L[1]||L[0];});
   await P.evaluate(t=>{SV.currentTime=t+0.05;},row[0]);await P.waitForTimeout(500);
   r=await P.evaluate(()=>{const b=document.querySelector('.sc-subs');return {kara:b.classList.contains('kara'),on:b.querySelectorAll('.sw.kk-on').length,all:b.querySelectorAll('.sline:not(.s2) .sw').length,t:SV.currentTime};});
-  const early=r;await P.evaluate(t=>{SV.currentTime=t;},row[1]-0.1);await P.waitForTimeout(400);
+  const early=r;await P.evaluate(t=>{SV.currentTime=t;},row[1]-0.45);await P.waitForTimeout(300);
   r=await P.evaluate(()=>{const b=document.querySelector('.sc-subs');return {on:b.querySelectorAll('.sw.kk-on').length,all:b.querySelectorAll('.sline:not(.s2) .sw').length,op:getComputedStyle(b.querySelector('.sline:not(.s2) .sw')).opacity};});
   ok('караоке: в начале строки горит часть слов, к концу — все',early.kara&&early.on<early.all&&r.on===r.all&&r.all>=5,{early,r,row:row.slice(0,3)});
   await P.evaluate(()=>SV.pause());await P.waitForTimeout(300);

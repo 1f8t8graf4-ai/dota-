@@ -33,7 +33,7 @@ const dev=process.argv[2]||'ph';
   await click('.kn-ep[open] .kq:not(.lock) .kq-ru');await page.waitForTimeout(1800);
   st=await ev(()=>{const v=document.querySelector('.kno video'),w=document.querySelector('.kn6-vw');return {open:!!document.querySelector('.kno2'),playing:!!(v&&!v.paused),vw:!!(w&&w.classList.contains('on'))};});
   ok('фраза открылась — само не играет, видео свёрнуто',st.open&&!st.playing&&!st.vw,JSON.stringify(st));
-  await click('.kn6-acts [data-v="hear"]');await page.waitForTimeout(2000);
+  await click('.kn6-acts [data-v="hear"]');await page.waitForTimeout(800);   // 13.9.40: фразы встали по голосу — короткая доигрывает за 2 с
   st=await ev(()=>{const v=document.querySelector('.kno video');return {playing:!!(v&&!v.paused),on:document.querySelectorAll('.kn2-en .kk-on').length};});
   ok('«Послушать» — играет, слова фразы загораются',st.playing&&st.on>0,JSON.stringify(st));
   await ev(()=>DL.back());await page.waitForTimeout(600);

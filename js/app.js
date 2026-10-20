@@ -3652,10 +3652,11 @@ function ndKaraSet(box,r){const s=SCUR&&scOf(SCUR.id),p=s&&s.parts[SCUR.i||0];if
   const a=r[0],b=Math.max(r[0]+0.4,r[1]-0.15),W=WTD[s.id],T=new Array(ws.length).fill(null);let hit=0;
   if(W){const C=W.filter(x=>x[0]>=a+p.a-0.5&&x[0]<=r[1]+p.a+0.3);let k=0;
     ws.forEach((el,j)=>{const n=wtN(el.textContent);if(!n)return;for(let q=k;q<Math.min(C.length,k+4);q++)if(wtN(C[q][2])===n){T[j]=C[q][0]-p.a;k=q+1;hit++;break;}});}
+  if(W==null){box._kwWait=r;return;}   // wt.json ещё грузится — ndKaraTick повторит, когда придёт
   if(hit<ws.length/2){box._kw=null;return;} // 13.9.40: голос не нашёлся — строка горит целиком, без угадывания
   else{for(let j=0;j<T.length;j++)if(T[j]==null){let q=j;while(q<T.length&&T[q]==null)q++;const t0=j?T[j-1]:a,t1=q<T.length?T[q]:b;for(let z=j;z<q;z++)T[z]=t0+(t1-t0)*(z-j+1)/(q-j+1);j=q;}}
   box._kw=ws.map((el,j)=>[el,T[j]-0.06]);box.classList.add('kara');}
-function ndKaraTick(box,t){for(const [el,a] of box._kw)el.classList.toggle('kk-on',t>=a);}
+function ndKaraTick(box,t){if(!box._kw)return;for(const [el,a] of box._kw)el.classList.toggle('kk-on',t>=a);}
 // окошко слова в «Новом» (шторка .wsh макета): уровень слова чипом, одна строка «почему так» (первое предложение объяснения) — до «Подробнее»
 function ndWpDeco(P,sv){const w=P.querySelector('.kwp-w');
   if(w&&sv&&sv.word&&!w.querySelector('.n-chip')){const n=wlvWord(swNorm(sv.word),sv.sid?wiLang(sv.sid):'en');if(n)w.insertAdjacentHTML('beforeend',`<span class="n-chip ${CEFR[n-1].toLowerCase()}">${CEFR[n-1]}</span>`);}
@@ -3677,7 +3678,8 @@ function scTick(){
     // 13.3: оригинал — словами: нажал (телефон) / навёл (ПК) — перевод слова; слова учебного выражения подчёркнуты
     const s0=SCUR&&scOf(SCUR.id),orig=s0&&s0.lang==='de'?'de':'en',t1=r?String(r[SUB_COL[a]]).replace(/\n/g,' '):'',ph=r&&a===orig?scRowPhrase(r):null;
     swTipHide();SW._row=r;SW._rowPh=ph;box.innerHTML=r?`<div class="sline"><span class="en">${a===orig?swWrapPh(t1,ph):esc(t1)}</span></div>${b?`<div class="sline s2"><span class="tr">${esc(r[SUB_COL[b]]).replace(/\n/g,' ')}</span></div>`:''}`:'';SW.classList.toggle('has-sub',!!r);
-    box._kw=null;box.classList.remove('kara');if(r&&a===orig&&ndOn())ndKaraSet(box,r);}
+    box._kw=null;box._kwWait=null;box.classList.remove('kara');if(r&&a===orig&&ndOn())ndKaraSet(box,r);}
+  if(box._kwWait&&SCUR&&WTD[SCUR.id]!=null){const r0=box._kwWait;box._kwWait=null;if(SW._row===r0)ndKaraSet(box,r0);}
   if(box._kw)ndKaraTick(box,t);
   if(SW._ph){const lv=document.getElementById('sclive');if(lv){const h=SW._ph.find(x=>t>=x.a-0.15&&t<=x.b+3);const k=h?h.f.id:'';
     if(lv.dataset.k!==k){lv.dataset.k=k;if(h)lv.innerHTML=scLiveHTML(h.f);lv.classList.toggle('on',!!h);}}}
