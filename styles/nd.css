@@ -503,3 +503,22 @@ body[data-look="nd"]:not(#_) .n-sc{flex:none;width:calc(18*var(--nu));height:cal
 body[data-look="nd"]:not(#_) .n-sc.full{background:var(--n-ok,#2FA866);border-color:var(--n-ok,#2FA866);color:#fff}
 body[data-look="nd"]:not(#_) .n-sc .ni{width:72%;height:72%;stroke-width:2.4}
 body[data-look="nd"].tabs-on:not(#_) #app{padding-bottom:calc(var(--sb,0px) + 70*var(--nu) + 28px + env(safe-area-inset-bottom,0px))}
+/* 13.9.43 — повторение по макету 12: стопка карточек, кадр, перевод под пылью, свайп «ещё учу / знаю» */
+body[data-look="nd"]:not(#_) .n-rst{position:relative;margin:calc(10*var(--nu)) auto 0;width:100%;max-width:calc(250*var(--nu));min-height:calc(300*var(--nu))}
+body[data-look="nd"]:not(#_) .n-rst>i{position:absolute;inset:0;border-radius:calc(20*var(--nu));background:var(--n-card);border:1px solid var(--n-line)}
+body[data-look="nd"]:not(#_) .n-rst>i.b1{transform:translateY(calc(8*var(--nu))) scale(.95);opacity:.7}
+body[data-look="nd"]:not(#_) .n-rst>i.b2{transform:translateY(calc(16*var(--nu))) scale(.9);opacity:.4}
+body[data-look="nd"]:not(#_) .n-rcard{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:calc(6*var(--nu));text-align:left;padding:calc(10*var(--nu)) calc(10*var(--nu)) calc(14*var(--nu));
+  border-radius:calc(20*var(--nu));background:var(--n-card);border:1px solid var(--n-line);box-shadow:0 10px 30px rgba(0,0,0,.12);touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;animation:nRcIn .42s cubic-bezier(.2,.9,.3,1.1) both}
+@keyframes nRcIn{from{transform:translateX(calc(60*var(--nu))) rotate(4deg);opacity:0}}
+body[data-look="nd"]:not(#_) .n-rcard.drag{cursor:grabbing}
+body[data-look="nd"]:not(#_) .n-rim{width:100%;aspect-ratio:16/10;border:0;border-radius:calc(14*var(--nu));background:#222 center/cover no-repeat;display:grid;place-items:center;color:#fff;font-size:calc(16*var(--nu));cursor:pointer}
+body[data-look="nd"]:not(#_) .n-rim svg{width:calc(30*var(--nu));height:calc(30*var(--nu));padding:calc(8*var(--nu));border-radius:50%;background:rgba(0,0,0,.45)}
+body[data-look="nd"]:not(#_) .n-rsrc{font:600 calc(8.5*var(--nu))/1.2 var(--n-f-ui);text-transform:uppercase;letter-spacing:.08em;color:var(--n-mute);margin-top:calc(4*var(--nu))}
+body[data-look="nd"]:not(#_) .n-ren{font:500 calc(17*var(--nu))/1.3 var(--n-f-voice);color:var(--n-ink)}
+body[data-look="nd"]:not(#_) .n-rru{font:500 calc(12*var(--nu))/1.35 var(--n-f-ui);color:var(--n-mute)}
+body[data-look="nd"]:not(#_) .n-rstamp{position:absolute;top:calc(18*var(--nu));z-index:2;padding:calc(3*var(--nu)) calc(8*var(--nu));border:2px solid;border-radius:8px;font:800 calc(11*var(--nu))/1 var(--n-f-ui);letter-spacing:.06em;opacity:0;pointer-events:none}
+body[data-look="nd"]:not(#_) .n-rstamp.l{right:calc(16*var(--nu));color:var(--n-bad);transform:rotate(10deg);opacity:var(--u,0)}
+body[data-look="nd"]:not(#_) .n-rstamp.r{left:calc(16*var(--nu));color:var(--n-ok);transform:rotate(-10deg);opacity:var(--k,0)}
+body[data-look="nd"]:not(#_) .n-ryn{display:flex;gap:calc(10*var(--nu));margin-top:calc(26*var(--nu))}
+body[data-look="nd"]:not(#_) .n-ryn .sc-btn{flex:1}
