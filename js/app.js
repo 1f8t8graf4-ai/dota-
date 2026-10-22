@@ -932,7 +932,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.47';
+const APP_V='13.9.48';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -1499,15 +1499,13 @@ const HELP=[
  ['📚','Словарь фраз','Все фразы из кино по темам (знакомство, работа, свидание…) и тону (грубо / разговорное / официально). Фильтры, поиск, звук из фильма, переход к моменту.'],
  ['🔍','Поиск','Лупа на главной: ищет сразу по-русски, по-английски и по-немецки — фразы, реплики, сцены, слова. Нажал на реплику — открывается этот момент в фильме.'],
  ['🗣','Субтитры и язык','Кнопка субтитров под видео: «Оригинал + перевод», «Только оригинал», «Без субтитров». ⤢ в полном экране — растянуть видео без чёрных полос.'],
- ['🇩🇪','Немецкая грамматика','Интерактивный мини-урок: Relativpronomen (der/die/das, den/dem/deren) и конструкции wofür / dafür, worauf / darauf, включая вопросы о людях — für wen, mit wem.'],
  ['🏆','Прогресс','«Освоение сцены» растёт, когда фразы держатся надолго; на 100% сцена получает золотую рамку. В профиле — неделя, серия дней и достижения.']];
 function renderHelp(){screen='help';backBtn(true);
   mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Как пользоваться</h1></div>
     <p class="lead" style="margin:2px 0 14px">Коротко обо всём, что умеет приложение.</p>
     <div class="help-list">${HELP.map(([ic,h,txt],k)=>`<details class="help-it anim"${k<2?' open':''}><summary><span class="hi-ic">${ic}</span><b>${h}</b><i>›</i></summary><p>${txt}</p></details>`).join('')}</div>
-    <button class="help-grammar anim" id="hGrammar"><span>🇩🇪</span><span><b>Открыть мини-урок немецкой грамматики</b><small>Relativpronomen · wofür / dafür · 8 вопросов</small></span><i>→</i></button>
     <button class="btn help-tour" id="hTour">Показать обучение в эпизоде</button>`,'helpscr');
-  $('#bBtn').onclick=()=>{sfx('tap');renderTab('profile');};$('#hGrammar').onclick=()=>{sfx('tap');location.href='grammar.html?v='+APP_V;};$('#hTour').onclick=()=>{sfx('tap');scTour();};}
+  $('#bBtn').onclick=()=>{sfx('tap');renderTab('profile');};$('#hTour').onclick=()=>{sfx('tap');scTour();};}
 /* ================= 7.9: словарь фраз с темами ================= */
 // Все учебные фразы из всех сцен в одном месте: фильтр по темам (знакомство, свидание, работа…),
 // по тону (грубо / разговорное / официально / нейтрально), «все или только мои», поиск, звук из фильма, переход к моменту.
