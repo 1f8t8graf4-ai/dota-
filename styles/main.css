@@ -4690,3 +4690,6 @@ body[data-look="nd"]:not(#_) .sc-fb>.sc-btn{text-transform:none!important;letter
 .rv2 .rv-all .rv-list{padding:0 8px 8px}
 .rv2 .rv-all .rv-ln{background:none;padding:8px 6px;border-radius:0;border-top:1px solid rgba(255,255,255,.06)}
 .rv2 .rv-all .rv-t>b{font-size:14.5px}
+.help-grammar{width:100%;display:flex;align-items:center;gap:12px;text-align:left;margin:14px 0 10px;padding:15px 16px;border:1px solid rgba(245,196,81,.35);border-radius:16px;background:linear-gradient(105deg,rgba(245,196,81,.14),rgba(255,255,255,.04));box-shadow:0 8px 22px rgba(0,0,0,.14);transition:transform .2s ease,box-shadow .2s ease}
+.help-grammar:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.help-grammar>span:first-child{font-size:25px}.help-grammar>span:nth-child(2){display:flex;flex:1;flex-direction:column;gap:3px}.help-grammar b{font-size:14px}.help-grammar small{color:var(--muted);font-size:12px}.help-grammar>i{font-style:normal;font-size:22px;color:var(--goldtxt)}
