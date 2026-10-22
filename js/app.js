@@ -932,7 +932,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.45';
+const APP_V='13.9.46';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -1050,7 +1050,8 @@ function scRowPhrase(row){if(!row||!SCUR)return null;const s=scOf(SCUR.id);if(!s
 function swWrapPh(txt,f){const de=SCUR&&scOf(SCUR.id)&&scOf(SCUR.id).lang==='de';const ph=f?String(de?f.de:f.en).replace(/[.!?…,]+$/,''):'';
   if(!ph)return swWrap(txt);const i=txt.toLowerCase().indexOf(ph.toLowerCase());
   // 13.9.35 (ТЗ: пунктир почти под всей строкой): как в словаре — только слова выражения (phIdOf, не вся фраза) и важных выражений из 2+ слов
-  const id=phIdOf(f),KW=new Set((f.kw||[]).filter(k=>scToks(String(k[0]||'')).length>=2).flatMap(k=>cxToks(k[0])));if(!id&&!KW.size)return swWrap(txt);
+  const id=phIdOf(f),X=String(f&&f.under||'').trim(),KW=new Set((f.kw||[]).filter(k=>scToks(String(k[0]||'')).length>=2).flatMap(k=>cxToks(k[0])));
+  if(X&&scToks(X).length>=2)scToks(X).forEach(w=>KW.add(w));if(!id&&!KW.size)return swWrap(txt);
   const mark=s=>swWrap(s).replace(/<i class="sw">([^<]+)<\/i>/g,(m,w)=>(id&&idHit(id,w))||KW.has(swNorm(w.replace(/&#39;/g,"'")))?`<i class="sw in-ph">${w}</i>`:m);
   if(i<0)return phNorm(ph).includes(phNorm(txt))?mark(txt):swWrap(txt);
   return swWrap(txt.slice(0,i))+mark(txt.slice(i,i+ph.length))+swWrap(txt.slice(i+ph.length));}
