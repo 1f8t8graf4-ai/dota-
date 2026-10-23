@@ -882,7 +882,7 @@ const ASSET_BASE=(window.ASSET_BASE||window.SC_MEDIA||'https://dota.1f8t8graf4.w
   Object.defineProperty(window,'scrollY',{get:y,configurable:true});Object.defineProperty(window,'pageYOffset',{get:y,configurable:true});
   // и событие прокрутки — тем, кто слушает window (поповер слова и др.)
   document.addEventListener('scroll',e=>{if(e.target===document.body)window.dispatchEvent(new Event('scroll'));},{capture:true,passive:true});}catch(e){}})();
-function assetUrl(key){const k=String(key||'');return /^https?:\/\//i.test(k)?k:ASSET_BASE+'/'+k;}
+function assetUrl(key){const k=String(key||'');return /^(https?:\/\/|\.\/|\/)/i.test(k)?k:ASSET_BASE+'/'+k;}   // 13.9.51: «./» и «/» — своя статика приложения (обложки в img/scenes/…), без ASSET_BASE
 const scCover=(s,file='cover.jpg')=>s&&s.coverUrl?assetUrl(s.coverUrl):assetUrl(scKey(s,file));
 const scKey=(s,file)=>`scenes/${s.id}/${file}`;
 const scEpKey=(s,i,ext)=>scKey(s,String(i+1).padStart(2,'0')+'.'+ext);
@@ -935,7 +935,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.50';
+const APP_V='13.9.51';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -982,6 +982,35 @@ const lvTag=(t,L)=>{if(!ndOn()||!WLV.m)return '';const a=L==='de'&&/^(der|die|da
 const wiGet=(w,L)=>{const D=WI[L];if(!D||!w)return null;const n=String(w).toLowerCase().replace(/’/g,"'"),b=n.replace(/'s$/,'');return D[n]||D[b]||D[n.replace(/'/g,'')]||null;};
 const wiHTML=(w,L,w2)=>{const x=wiGet(w,L)||(w2?wiGet(w2,L):null);if(!x)return '';const [d,ex]=x;
   return `<div class="kwp-wi"><p>${esc(d)}</p>${(ex||[]).slice(0,2).map(e=>`<span class="kwp-wx"><b>${esc(e[0])}</b><small>${esc(e[1])}</small></span>`).join('')}</div>`;};
+// 13.9.51 (Андрей: «почему нет вкладки „Подробнее“ для новых слов?»): у слова без winfo «Подробнее» не собиралось —
+// блок оставался пустым. Теперь для таких слов собираем что есть: уровень слова (wlv.json), словарная форма с переводом
+// из глоссария и 1–2 примера этого слова из других сцен (заголовок — фильм). Слово ищем целиком, без угадывания морфологии.
+const NW_RE=w=>new RegExp('\\b'+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i');
+// словарная форма: worried→worry, cared→care, called→call, worrying→worry, making→make, boys→boy — первый кандидат, что есть в глоссарии/уровнях
+function nwBase(n,L){const G=L==='de'?GLOSS_DE:GLOSS,ok=b=>G[b]||wlvWord(b,L)?b:null,cands=[];
+  if(/ied$/.test(n))cands.push(n.slice(0,-3)+'y');
+  else if(/ed$/.test(n))cands.push(n.slice(0,-1),n.slice(0,-2)+'e',n.slice(0,-2));
+  else if(/ing$/.test(n))cands.push(n.slice(0,-3),n.slice(0,-3)+'e');
+  else if(/s$/.test(n))cands.push(n.slice(0,-1));
+  return cands.map(ok).find(Boolean)||n;}
+function nwHTML(word,sid,cur){const n=swNorm(word);if(!n||n.length<2||(typeof SC_BASIC!=='undefined'&&SC_BASIC.has(n)))return '';
+  const L=wiLang(sid),G=L==='de'?GLOSS_DE:GLOSS,lv=wlvWord(n,L),P=[];
+  if(lv)P.push(`слово уровня <b>${CEFR[lv-1]}</b>`);
+  const base=nwBase(n,L);
+  if(base&&base!==n)P.push(`форма от <b>${esc(base)}</b>${G[base]?` — «${esc(String(G[base]).split(';')[0])}»`:''}`);
+  const ex=[];   // примеры: точное слово, если пусто — формы базовой (worrying→worry/worried); до 2 из других сцен, потом — из своей (кроме текущей реплики)
+  for(const w0 of [n,nwBase(n,L)!==n?nwBase(n,L):null]){if(ex.length>=2)break;const w=String(w0||'').toLowerCase();if(!w||w.length<3)continue;
+    const re=NW_RE(w),seen=new Set(),oth=[],own=[];
+    for(const s of SCENES){if(s.lang==='de'||!s.subs)continue;
+      for(const r of s.subs){const t=String(r[2]||'');if(t.length<4||seen.has(t)||(cur&&r[0]===cur[0]&&r[1]===cur[1]))continue;
+        if(!re.test(t))continue;seen.add(t);(s.id===sid?own:oth).push([s,r,t]);if(oth.length>=2)break;}
+      if(oth.length>=2)break;}
+    ex.push(...oth,...own);}
+  if(ex.length>2)ex.length=2;
+  if(!P.length&&!ex.length)return '';
+  const pt=P.join(', ');let h=`<div class="kwp-nw">${pt?`<p>${pt.charAt(0).toUpperCase()+pt.slice(1)}.</p>`:''}`;
+  if(ex.length)h+=`<em>Ещё в кино</em>`+ex.map(([s,r,t])=>`<span class="kwp-wx"><b>${esc(t)}</b><small>${esc(String(r[3]||'').replace(/\n/g,' '))} · ${esc(s.title)}</small></span>`).join('');
+  return h+'</div>';}
 // 13.9.16 (Андрей: «при нажатии на слово пиши, что оно тут значит и какое выражение — over the past»): значение слова В ЭТОЙ РЕПЛИКЕ и выражения.
 // data/ctx-en.json / ctx-de.json: {CTX_EN:{sid:[[реплика, {слово:значение тут}, [[выражение как в реплике, значение, пояснение]]], …]}} — по строкам s.subs
 const CX={en:null,de:null,p:{}};
@@ -1030,7 +1059,8 @@ function swPop(word,row,inPh,el){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=S
     :`<b>${esc(swNorm(word))}</b>${pf?'':`<small class="wp-keep">нет в словарике — вся реплика:</small><span class="t">${esc(row&&row[3]||'')}</span>`}`;
   if(cx&&cx.X.length)w.innerHTML+=cxXHTML(cm&&cm.k==='x'?cx.X.slice(1):cx.X);else if(pf)w.innerHTML+=phBlock(pf);
   if(cx)w.innerHTML+=cxGHTML(cx);
-  {const L=wiLang(s.id);if(hit){if(WI[L])w.innerHTML+=wiHTML(swNorm(word),L,hit.w);else wiLoad(L).then(()=>{if(!w.isConnected||w.querySelector('.kwp-wi'))return;const m=w.querySelector('.kwp-more'),b=w.querySelector('.hn-b'),h=wiHTML(swNorm(word),L,hit.w);if(m)m.insertAdjacentHTML('beforeend',h);else if(b){b.insertAdjacentHTML('beforebegin',h);w._fold=0;w.querySelector('.kwp-x')?.remove();wpFold(w);}});}}   // 13.9.13: подробнее о слове — после выражения
+  {const L=wiLang(s.id);if(hit){if(WI[L]){const wh=wiHTML(swNorm(word),L,hit.w);w.innerHTML+=wh||nwHTML(swNorm(word),s.id,row);}else wiLoad(L).then(()=>{if(!w.isConnected||w.querySelector('.kwp-wi'))return;const m=w.querySelector('.kwp-more'),b=w.querySelector('.hn-b'),h=wiHTML(swNorm(word),L,hit.w);if(m)m.insertAdjacentHTML('beforeend',h);else if(b){b.insertAdjacentHTML('beforebegin',h);w._fold=0;w.querySelector('.kwp-x')?.remove();wpFold(w);}});}
+  else{const nh=nwHTML(swNorm(word),s.id,row);if(nh)w.innerHTML+=nh;}}   // 13.9.13: подробнее о слове — после выражения; 13.9.51: и для новых слов
   w.innerHTML+=`<div class="hn-b"><button data-x="go">Дальше ${SI.play}</button>${row?'<button data-x="word">🔊 Слово</button>':''}${mywBtn(s.id,word)}</div>`;
   wpFold(w);wpEsc();
   w.onclick=e=>{e.stopPropagation();const b=e.target.closest('[data-x]');if(!b)return;
@@ -1126,7 +1156,8 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._res
   const canW=sv&&sv.sid&&(sv.row||sv.f),html0=html;
   {const L=sv&&sv.wi&&sv.sid&&sv.word&&sv.sid!=='own'?wiLang(sv.sid):null;   // 13.9.13: подробнее о слове
     if(L){const bl=wiHTML(sv.word,L,sv.w2);if(bl)html=/class="kwp-use"/.test(html)?html.replace(/(<div class="kwp-use">[\s\S]*?<\/div>)/,'$1'+bl):html.replace(/(<span class="kwp-t">[\s\S]*?<\/span>)/,'$1'+bl);
-      else if(!WI[L])wiLoad(L).then(()=>{if(KWP&&KWP._sv===sv&&KWP.classList.contains('on')&&wiGet(sv.word,L))popAt(el,html0,sv,pin);});}}
+      else html=html.replace(/(<span class="kwp-t">[\s\S]*?<\/span>(?:<span class="kwp-here">[\s\S]*?<\/span>)?)/,'$1'+nwHTML(sv.word,sv.sid,sv.row));   // 13.9.51: новых слов тоже касается — уровень, форма, ещё в кино
+      if(!bl&&!WI[L])wiLoad(L).then(()=>{if(KWP&&KWP._sv===sv&&KWP.classList.contains('on')&&wiGet(sv.word,L))popAt(el,html0,sv,pin);});}}
   // 13.9.16: что слово значит в этой реплике (вместо общего перевода) и выражения, куда оно входит (вместо старого «Тут это часть выражения» из пояснения)
   {const L=sv&&sv.wi&&sv.sid&&sv.word&&sv.sid!=='own'&&(sv.row||sv.f)?wiLang(sv.sid):null;
     if(L&&CX[L]){const h=cxHit(sv.sid,sv.row?{row:sv.row}:{f:sv.f},sv.word);
@@ -1242,7 +1273,9 @@ function lineWords(s,p){const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b);
 // 13.6: «🔊 Слово» — играет само слово, а не всю реплику. Время каждого слова — scenes/<id>/wt.json (распознано по эпизодам);
 // выражение из нескольких слов — от первого до последнего. Нет файла или слово не нашлось — голос устройства.
 const WT={};
-function wtLoad(sid){if(!WT[sid]){const s=scOf(sid);WT[sid]=s?fetch(assetUrl(scKey(s,'wt.json'))).then(r=>r.ok?r.json():null).then(d=>d&&d.w||null).catch(()=>null):Promise.resolve(null);}return WT[sid];}
+const WT_LOCAL=new Set('last-of-us-joel-ellie'.split(' '));   // 13.9.51: wt.json в data/wt/ репо — в R2 лежит старый (не синхронизирован по голосу, sub_sync 13.9.40), карaoke-матчинг ломался
+function wtLoad(sid){if(!WT[sid]){const s=scOf(sid),load=k=>fetch(k).then(r=>r.ok?r.json():null).then(d=>d&&d.w||null).catch(()=>null);
+  WT[sid]=s?load(WT_LOCAL.has(sid)?'data/wt/'+sid+'.json?v='+APP_V:assetUrl(scKey(s,'wt.json'))):Promise.resolve(null);}return WT[sid];}
 const wtN=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/[^a-zß-öø-ÿ0-9']/g,'');
 const wtEq=(x,y)=>x===y||x.replace(/'s$/,'')===y.replace(/'s$/,'')||(Math.min(x.length,y.length)>=4&&(x.startsWith(y)||y.startsWith(x))&&Math.abs(x.length-y.length)<=3);
 async function wordPlay(sid,say,a,b,btn){const s=scOf(sid);if(!s)return false;const T=String(say||'').split(/\s+/).map(wtN).filter(Boolean);if(!T.length)return false;
@@ -1996,7 +2029,8 @@ const scRowAt=(L,t)=>{let z=null;for(const x of L){if(t<x[0]+SUB_LAG)break;if(t<
 // время слов из wt.json сцены (wtLoad, время сцены), строка — время эпизода (+ p.a); не нашлось половины слов — равномерно по длине слов
 const WTD={};
 function ndKaraSet(box,r){const s=SCUR&&scOf(SCUR.id),p=s&&s.parts[SCUR.i||0];if(!p)return;
-  if(!(s.id in WTD)){WTD[s.id]=null;wtLoad(s.id).then(d=>{WTD[s.id]=d||0;});}
+  if(!(s.id in WTD)){WTD[s.id]=null;wtLoad(s.id).then(d=>{WTD[s.id]=d||0;   // 13.9.51: wt пришёл при паузе — тиков нет, ставим карaoke сами, не ждём scTick
+    if(d&&box._kwWait&&box.isConnected&&SW&&SW.isConnected&&SW._row===box._kwWait){const r0=box._kwWait;box._kwWait=null;ndKaraSet(box,r0);if(box._kw&&SV)ndKaraTick(box,SV.currentTime);}});}
   const ws=[...box.querySelectorAll('.sline:not(.s2) .sw')];if(ws.length<2)return;
   const a=r[0],b=Math.max(r[0]+0.4,r[1]-0.15),W=WTD[s.id],T=new Array(ws.length).fill(null);let hit=0;
   if(W){const C=W.filter(x=>x[0]>=a+p.a-0.5&&x[0]<=r[1]+p.a+0.3);let k=0;

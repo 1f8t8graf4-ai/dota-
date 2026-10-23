@@ -3679,6 +3679,14 @@ body.tabs-on #scfb .sc-fb>#scnx{bottom:calc(var(--sb) + 84px)}
 .kw-pop .kwp-wx small,.sc-wpop .kwp-wx small{display:block;margin-top:1px;font-size:13px;line-height:1.35;color:rgba(255,255,255,.6)}
 .sc-wpop .kwp-wi{margin:8px 0 2px;padding:8px 10px}
 .sc-wpop .kwp-wi p{font-size:13.5px}
+/* ==== 13.9.51 — «Подробнее» для новых слов: уровень, словарная форма, примеры из других сцен ==== */
+.kw-pop .kwp-nw,.sc-wpop .kwp-nw{margin-top:9px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.055);text-align:left}
+.kw-pop .kwp-nw p,.sc-wpop .kwp-nw p{margin:0;font:400 14px/1.45 'Golos Text',sans-serif;color:rgba(255,255,255,.88)}
+.kw-pop .kwp-nw p b,.sc-wpop .kwp-nw p b{color:#fff;font-weight:600}
+.kw-pop .kwp-nw em,.sc-wpop .kwp-nw em{display:block;margin:0 0 2px;font:800 10.5px/1.4 var(--n-f-ui,system-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--n-sub,#FFD23F);font-style:normal}
+.kw-pop .kwp-nw .kwp-wx,.sc-wpop .kwp-nw .kwp-wx{display:block;margin-top:8px;padding-left:10px;border-left:2px solid rgba(243,218,140,.55)}
+.kw-pop .kwp-nw .kwp-wx b,.sc-wpop .kwp-nw .kwp-wx b{display:block;font:600 14px/1.35 'Golos Text',sans-serif;color:#fff}
+.kw-pop .kwp-nw .kwp-wx small,.sc-wpop .kwp-nw .kwp-wx small{display:block;margin-top:1px;font-size:13px;line-height:1.35;color:rgba(255,255,255,.6)}
 /* шторка на телефоне: длинное объяснение — шторка не выше 78 % экрана, внутри прокрутка */
 .kw-pop.sheet{max-height:78vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 
