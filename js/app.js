@@ -261,6 +261,9 @@ function ndPull(el,go){const k=el.querySelector('.ndpull-k'),f=el.querySelector(
   const up=()=>{if(x0==null)return;x0=null;el.classList.remove('drag');tgVSwipes(false);if(dx>=max*.7)fire();else{set(0,true);if(dx<8){el.classList.remove('nudge');void el.offsetWidth;el.classList.add('nudge');haptic('light');}}dx=0;};
   el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('lostpointercapture',up);
   el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fire();}};}
+// 13.9.49 (движения Germanize, п.2): главная кнопка — заливка и ✓ при нажатии, как у «Потяни» (движения.md: «кнопка «Смотреть» — заливка и ✓ при нажатии»); переход после вспышки
+function nCta(el,go){if(!el||el._ncta)return;el._ncta=1;
+  el.addEventListener('click',e=>{if(el.classList.contains('go')){e.preventDefault();return;}e.preventDefault();el.classList.add('go');haptic('medium');sfx('whoosh');setTimeout(go,fxOK()?460:0);});}
 // 13.9.37 (ТЗ-13.9.32, P2 экран 6): «Сегодня» как в макете (дизайн/макеты-13.9.24.html, .cell 6). Стиль — styles/nd.css (лениво, ndCss), классы n-*.
 // Шапка: буква в круге, «Добрый день, Андрей», «B1 · цель — работа», 🔥 и кольцо цели дня; план на кадре фильма с «Потяни»; строки «Фраза дня» и «Смотреть дальше»
 function ndCss(){if(document.getElementById('ndcss'))return;const l=document.createElement('link');l.id='ndcss';l.rel='stylesheet';l.href='styles/nd.css?v='+APP_V;
@@ -932,7 +935,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.44';
+const APP_V='13.9.49';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -1094,7 +1097,7 @@ const kwCardHTML=k=>`<span class="kwp-k">${isPhr(k[1]||k[0])?'Важное вы�
   ${k[5]?`<div class="kwp-use"><em>Когда пригодится</em><span>${esc(k[5])}</span></div>`:''}
   ${k[3]?`<div class="kwp-ex"><em>Пример</em><b>${esc(k[3])}</b>${k[4]?`<small>${esc(k[4])}</small>`:''}</div>`:''}`;
 let KWP=null,KWT=0;
-function kwHide(ms){clearTimeout(KWT);KWT=setTimeout(()=>{if(KWP){KWP.classList.remove('on','pin');document.body.classList.remove('kw-open');if(KWP._resume){const f=KWP._resume;KWP._resume=null;f();}}$$('.kw.on,.sw.on').forEach(x=>x.classList.remove('on'));},ms||0);}
+function kwHide(ms){clearTimeout(KWT);KWT=setTimeout(()=>{if(KWP){KWP.classList.remove('on','pin');document.body.classList.remove('kw-open');if(KWP._resume){const f=KWP._resume;KWP._resume=null;f();}}$$('.kw.on,.sw.on').forEach(x=>x.classList.remove('on'));$$('.sc-sheetwrap.under').forEach(x=>x.classList.remove('under'));},ms||0);}
 function kwPop(){if(KWP)return KWP;const dim=document.createElement('div');dim.className='kw-dim';document.body.appendChild(dim);
   KWP=document.createElement('div');KWP.className='kw-pop';KWP.setAttribute('role','dialog');document.body.appendChild(KWP);KWP._dim=dim;
   KWP.addEventListener('mouseenter',()=>clearTimeout(KWT));
@@ -1147,6 +1150,7 @@ function popAt(el,html,sv,pin){const P=kwPop();clearTimeout(KWT);P._sv=sv;P._res
   else{P.classList.add('on');document.body.classList.add('kw-open');
     // 11.2: шторка снизу не должна закрывать нажатое слово — подкручиваем страницу
     const top=window.innerHeight-P.getBoundingClientRect().height;if(r.bottom>top-12&&!el.closest('.sc-pfs'))window.scrollBy({top:r.bottom-top+28,behavior:'smooth'});}
+  if(ndOn()&&el&&el.closest){const sh=el.closest('.sc-sheetwrap');if(sh)sh.classList.add('under');}   // 13.9.49 (движения, п.3): окошко слова поверх окна фразы — «стопкой»: старое окно темнее
   haptic('sel');}
 function kwShow(el,f,pin){const k=kwOf(f)[+el.dataset.kw];if(!k)return;popAt(el,kwCardHTML(k),{sid:f.sid||(SCUR&&SCUR.id),f,word:k[1]||k[0],say:el.textContent||k[0],ru:k[2]},pin);}
 function wordShow(el,f,pin){const sid=(f&&f.sid)||(SCUR&&SCUR.id);if(!sid)return;const w=el.textContent,hit=swFind(sid,f?f.pi||0:0,w),id=f?phIdiom(f):null,inId=id&&!idWhole(id,f)&&idHit(id,w);
@@ -1715,7 +1719,7 @@ function renderShow(name){
     ${groups.map(([h,G])=>`<h2 class="sh-season">${h}</h2><div class="kgrid${S.every(x=>x.lang==='de')?' k-de':''}">${G.map(s=>kinoCard({...s,title:lab(s)})).join('')}</div>`).join('')}`,'tabscr showscr');
   $('#bBtn').onclick=()=>{sfx('tap');renderTab('kino');};
   try{paintTabbar('kino');}catch(e){}
-  if($('#shGo'))$('#shGo').onclick=()=>{haptic('medium');renderScene(nx.id);};
+  if($('#shGo')){if(ndOn())nCta($('#shGo'),()=>renderScene(nx.id));else $('#shGo').onclick=()=>{haptic('medium');renderScene(nx.id);};}   // 13.9.49: в «Новом» — заливка и ✓ перед переходом
   $$('[data-sc]').forEach(b=>b.onclick=()=>{haptic('medium');renderScene(b.dataset.sc);});applyFlagsUI();}
 
 /* =====================================================================================
@@ -4313,7 +4317,10 @@ function renderOnb(n){if(!ONB)ONB={st:0,lang:kinoLang(),goal:null,cefr:null,min:
     $('#onbDl').onclick=e=>{O.daily=!O.daily;e.currentTarget.setAttribute('aria-pressed',O.daily);sfx('sel');haptic('sel');};
     $('#onbGo').onclick=()=>{sfx('tap');renderOnb(4);};return;}
   if(n===4){const c=O.cefr||'A2',g=ONB_GOALS.find(x=>x[0]===O.goal),L=[`Уровень ${c} — подбираем сцены`,`${g?g[2]:'Цель'} — нужные фразы первыми`,`${O.min} минут в день — ${O.min>=15?'эпизод и повторение':O.min>=10?'один эпизод':'пара фраз'}`,O.daily?'Фраза дня — в 12:00 в чате с ботом':'Без фразы дня — включишь в настройках'];
-    onbMount(4,`<h1 class="onb-h">Настраиваем <span class="mk">под тебя</span></h1>
+    // 13.9.49 (движения Germanize, п.7): коллаж постеров «наших фильмов», слегка плавает
+    const cols=SCENES.filter(x=>x.kind!=='clip'),stp=Math.max(1,Math.floor(cols.length/6));
+    const collage=cols.filter((x,i)=>i%stp===0).slice(0,6).map((s,j)=>`<i style="background-image:url('${filmImg(s,'bdm.jpg')||assetUrl(scKey(s,'cover.jpg'))}');--fd:${(j*.35).toFixed(2)}s"></i>`).join('');
+    onbMount(4,`<div class="onb-coll" aria-hidden="true">${collage}</div><h1 class="onb-h">Настраиваем <span class="mk">под тебя</span></h1>
       <div class="onb-ring"><svg viewBox="0 0 40 40"><circle class="bg" cx="20" cy="20" r="17" pathLength="100"/><circle class="fg" cx="20" cy="20" r="17" pathLength="100"/></svg><b id="onbPc">0%</b></div>
       <div class="onb-chk">${L.map(t=>`<div><i>✓</i><span>${esc(t)}</span></div>`).join('')}</div>`,'');
     const D=fxOK()?2600:300,t0=performance.now(),rows=$$('.onb-chk>div'),pc=$('#onbPc'),fg=$('.onb-ring .fg');

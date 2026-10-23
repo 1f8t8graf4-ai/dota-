@@ -522,3 +522,26 @@ body[data-look="nd"]:not(#_) .n-rstamp.l{right:calc(16*var(--nu));color:var(--n-
 body[data-look="nd"]:not(#_) .n-rstamp.r{left:calc(16*var(--nu));color:var(--n-ok);transform:rotate(-10deg);opacity:var(--k,0)}
 body[data-look="nd"]:not(#_) .n-ryn{display:flex;gap:calc(10*var(--nu));margin-top:calc(26*var(--nu))}
 body[data-look="nd"]:not(#_) .n-ryn .sc-btn{flex:1}
+
+/* ===== 13.9.49 — движения Germanize, часть 2 (дизайн/germanize-движения.md): CTA с заливкой и ✓,
+   коллаж постеров на «Настраиваем», окно слова «стопкой» поверх окна фразы. Только transform/opacity/filter,
+   бесконечные анимации — transform (13.9.23 в силе) ===== */
+
+/* Сцена (п.2): кнопка «Смотреть» — заливка зелёным и ✓ при нажатии, как у «Потяни»; nCta в app.js даёт паузу 460 мс */
+body[data-look="nd"] .n-pbtn{position:relative;overflow:hidden}
+body[data-look="nd"] .n-pbtn.go{pointer-events:none;color:transparent!important;text-shadow:none}
+body[data-look="nd"] .n-pbtn.go::before{content:"";position:absolute;inset:0;background:var(--n-ok);transform-origin:left;animation:n-fill .3s cubic-bezier(.3,.7,.2,1) both}
+body[data-look="nd"] .n-pbtn.go::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font:800 calc(17*var(--nu))/1 var(--n-f-ui);animation:n-ck .34s cubic-bezier(.3,1.8,.5,1) .16s both}
+@keyframes n-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* Первый запуск, шаг «Настраиваем» (п.7): коллаж постеров наших фильмов сверху, слегка плавает ±3 px, каждый со своим сдвигом (--fd) и наклоном */
+.onb-coll{display:none}
+body[data-look="nd"] .onb-coll{display:flex;justify-content:center;align-items:center;margin:calc(2*var(--nu)) 0 calc(16*var(--nu))}
+body[data-look="nd"] .onb-coll i{flex:none;width:calc(62*var(--nu));height:calc(86*var(--nu));border-radius:calc(12*var(--nu));background-size:cover;background-position:center;box-shadow:var(--n-shadow2);margin:0 calc(-7*var(--nu));border:1px solid var(--n-line);transform:rotate(var(--tr,0deg));animation:n-fl 3.4s ease-in-out var(--fd,0s) infinite alternate}
+body[data-look="nd"] .onb-coll i:nth-child(1){--tr:-6deg}body[data-look="nd"] .onb-coll i:nth-child(2){--tr:3deg}body[data-look="nd"] .onb-coll i:nth-child(3){--tr:-2deg}
+body[data-look="nd"] .onb-coll i:nth-child(4){--tr:5deg}body[data-look="nd"] .onb-coll i:nth-child(5){--tr:-4deg}body[data-look="nd"] .onb-coll i:nth-child(6){--tr:2deg}
+@keyframes n-fl{from{transform:translateY(-3px) rotate(var(--tr))}to{transform:translateY(3px) rotate(var(--tr))}}
+
+/* Плеер (п.3): окошко слова поверх окна фразы — «стопкой»: окно под шторкой слова темнеет; transform не трогаем (там sheetUp), только filter */
+body[data-look="nd"] .sc-sheetwrap>:first-child{transition:filter .3s var(--ease)}
+body[data-look="nd"] .sc-sheetwrap.under>:first-child{filter:brightness(.64) saturate(.9)}
