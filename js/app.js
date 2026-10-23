@@ -1,3 +1,5 @@
+/* z-ai-version: сборка Z.ai (ветка z-ai-version) — включается до всего остального кода */
+window.ZAI_ON=true;
 /* ================= иконки ================= */
 const ICONS=window.__DATA.ICONS;
 const svg=n=>`<svg viewBox="0 0 48 48" aria-hidden="true">${ICONS[n]||ICONS.scroll}</svg>`;
@@ -152,25 +154,25 @@ function tgHead(){if(!TG||!document.body)return;let c='';try{const cs=getCompute
 // 13.9.42: пробы 13.9.22 «Свет / Ночь / Журнал» удалены.
 const LOOKS={nd:{n:'Новый',f:'Manrope:wght@400;500;600;700;800&family=Lora:ital,wght@1,500;1,600&family=Caveat:wght@600;700'}};
 function lookFont(k){const id='lkf-'+k;if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+LOOKS[k].f+'&display=swap';document.head.appendChild(l);}
-function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(FLAG_ADMIN&&store.lookV!==2){store.lookV=2;store.look='nd';save();}k=FLAG_ADMIN&&LOOKS[store.look]?store.look:(!FLAG_ADMIN&&ndAll()?'nd':'');}catch(e){}   // 13.9.25: админу «Новый» включается сам (откат — «Как было»)
+function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(window.ZAI_ON){k='nd';if(store.lookV!==2||store.look!=='nd'){store.lookV=2;store.look='nd';save();}}else if(FLAG_ADMIN&&store.lookV!==2){store.lookV=2;store.look='nd';save();}k=k||(FLAG_ADMIN&&LOOKS[store.look]?store.look:(!FLAG_ADMIN&&ndAll()?'nd':''));}catch(e){}   // z-ai-version: вид Z.ai всегда
   // 13.9.26: «Новый» — на всех экранах, кроме игр (Дота, CS, «Шпион», турнир, карточная дуэль)
   const c=cls||'';
   const on=k==='nd';
   if(k==='nd'){ndCss();ndEmoWatch();}   // 13.9.37: стиль макета — лениво; 13.9.42: значки вместо эмодзи
   b.dataset.ndk=k==='nd'&&(ND_DARK.test(c)||/\bscnscr\b/.test(c)&&['scep','dircut'].includes(b.dataset.scr))?'1':'';   // витрины и плеер — всегда тёмные
-  b.classList.toggle('nd',k==='nd');ndTabs(k==='nd');
+  b.classList.toggle('nd',k==='nd');b.classList.toggle('zai',!!window.ZAI_ON);ndTabs(k==='nd');
   if(on){if(b.dataset.look!==k)b.dataset.look=k;lookFont(k);ndTheme();}else{if(b.dataset.look)delete b.dataset.look;delete b.dataset.ndt;}}
 // 13.9.24 — редизайн «Новый» (рабочее название приложения «Без субтитров», макеты Germanize): светлый или тёмный — как тема Telegram
 // (плеер всегда тёмный), вкладки «Сегодня · Кино · Словарь · Профиль» (игры — из Профиля), «Сегодня» — один план на кадре и «Потяни, чтобы начать».
 // Только админ, Настройки → «Дизайн (на пробу)» → «Новый»; откат — «Сейчас».
 const ND_DARK=/\b(admscr|collscr|shopscr)\b/;   // 13.9.40: премиум — по теме Telegram, как в макете (.cell 15)
 // 13.9.42: «Новый» игрокам — флаг ndnew (админка → Доступ → «Дизайн «Новый» — кому»); у игрока «Как было» нет
-const ndAll=()=>{try{return FLAGS.ndnew==='on';}catch(e){return false;}};
-const ndOn=()=>{try{return FLAG_ADMIN?(store.look==='nd'||store.lookV!==2):ndAll();}catch(e){return false;}};
+const ndAll=()=>{try{return window.ZAI_ON||FLAGS.ndnew==='on';}catch(e){return window.ZAI_ON||false;}};
+const ndOn=()=>{try{if(window.ZAI_ON)return true;return FLAG_ADMIN?(store.look==='nd'||store.lookV!==2):ndAll();}catch(e){return window.ZAI_ON||false;}};
 function ndDark(){try{if(TG&&TG.colorScheme)return TG.colorScheme==='dark';}catch(e){}try{return matchMedia('(prefers-color-scheme: dark)').matches;}catch(e){return true;}}
 function ndTheme(){const b=document.body;if(!b||b.dataset.look!=='nd')return;const t=ndDark()||b.dataset.ndk==='1'?'dark':'light';/* эпизод с плеером — всегда тёмный */if(b.dataset.ndt!==t){b.dataset.ndt=t;try{tgHead();}catch(e){}}}
 try{if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>ndTheme());}catch(e){}
-const ND_TABS={learn:['Сегодня','<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>'],kino:['Кино','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 5l2 4M12 5l2 4M17 5l2 4"/>'],
+const ND_TABS={learn:['Сегодня','<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>'],kino:[window.ZAI_ON?'Сцены':'Кино','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 5l2 4M12 5l2 4M17 5l2 4"/>'],
   dict:['Словарь','<path d="M6 4h11a1 1 0 0 1 1 1v15l-6-3-6 3V5a1 1 0 0 1 1-1z"/>'],profile:['Профиль','<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>']};   // 13.9.37: значки из макета
 let NDT=null;
 function ndTabs(on){const nav=document.getElementById('tabbar');if(!nav||NDT===on)return;NDT=on;
@@ -267,7 +269,8 @@ function nCta(el,go){if(!el||el._ncta)return;el._ncta=1;
 // 13.9.37 (ТЗ-13.9.32, P2 экран 6): «Сегодня» как в макете (дизайн/макеты-13.9.24.html, .cell 6). Стиль — styles/nd.css (лениво, ndCss), классы n-*.
 // Шапка: буква в круге, «Добрый день, Андрей», «B1 · цель — работа», 🔥 и кольцо цели дня; план на кадре фильма с «Потяни»; строки «Фраза дня» и «Смотреть дальше»
 function ndCss(){if(document.getElementById('ndcss'))return;const l=document.createElement('link');l.id='ndcss';l.rel='stylesheet';l.href='styles/nd.css?v='+APP_V;
-  l.onload=l.onerror=()=>document.body.classList.add('ndc');document.head.appendChild(l);setTimeout(()=>document.body.classList.add('ndc'),3000);}
+  l.onload=l.onerror=()=>document.body.classList.add('ndc');document.head.appendChild(l);setTimeout(()=>document.body.classList.add('ndc'),3000);
+  if(window.ZAI_ON&&!document.getElementById('zaicss')){const z=document.createElement('link');z.id='zaicss';z.rel='stylesheet';z.href='styles/zai.css?v='+APP_V;document.head.appendChild(z);}}
 const ND_GOAL={work:'работа',travel:'путешествия',films:'кино без перевода',move:'переезд',self:'для себя'};
 function ndNext(c){const sh=x=>x.show||x.title,ok=x=>x.kind!=='clip'&&flagOf('scene-'+x.id)==='on'&&!ageLock(x)&&scLang(x)===scLang(c.s)&&sh(x)!==sh(c.s);
   const todo=x=>{const P=scP(x.id);return x.parts.findIndex((p,k)=>!P.done.includes(k));},go=x=>{const P=scP(x.id);return P.done.length||Object.keys(P.w||{}).length?1:0;};
@@ -696,7 +699,11 @@ function renderSettings(){
 }
 
 /* ================= вкладки, заставка, профиль ================= */
-const TABS=[
+const TABS=window.ZAI_ON?[
+ {id:'dict',name:'Словарь',ico:'<path d="M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/><path d="M9 8h5"/>'},
+ {id:'kino',name:'Сцены',ico:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 3l3 3M14 3l-3 3"/><path d="M10 10.5v5l4-2.5z"/>'},
+ {id:'profile',name:'Профиль',ico:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'}
+]:[
  {id:'learn',name:'Главная',ico:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>'},
  {id:'kino',name:'Кинозал',ico:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 3l3 3M14 3l-3 3"/><path d="M10 10.5v5l4-2.5z"/>'},
  {id:'dict',name:'Словарь',ico:'<path d="M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/><path d="M9 8h5"/>'},
@@ -725,9 +732,10 @@ function noCloseAsk(){try{if(TG&&TG.disableClosingConfirmation)TG.disableClosing
 function renderTab(id){
   // 12.5: рубильник «тех. работы» — игрокам заглушка, админу всё как обычно
   if(flagOf('all')!=='on'){screen='home';ensureTabbar();mount(`<div class="mnt"><i>🎬</i><b>Кинотеатр временно обновляется</b><span>Меняем плёнку и чиним проектор. Загляни чуть позже — прогресс никуда не денется.</span></div>`,'tabscr');return;}
-  id=id||store.tab||'learn';
-  if(!['learn','kino','dict','profile'].includes(id))id='learn';   // 13.9.43: игр больше нет
-  try{if(id==='kino'&&flagOf('kino')==='hide')id='learn';}catch(e){}
+  id=id||store.tab||(window.ZAI_ON?'dict':'learn');
+  if(window.ZAI_ON&&id==='learn')id='dict';
+  if(!['learn','kino','dict','profile'].includes(id))id=window.ZAI_ON?'dict':'learn';   // 13.9.43: игр больше нет; z-ai-version: «Словарь» первый
+  try{if(id==='kino'&&flagOf('kino')==='hide')id=window.ZAI_ON?'dict':'learn';}catch(e){}
   const vis=id,sub=false;
   const idx=TABS.findIndex(t=>t.id===vis),dir=idx>lastTabIdx?'fr':idx<lastTabIdx?'fl':'';lastTabIdx=idx;
   if(store.tab!==vis){store.tab=vis;save();}
@@ -885,8 +893,45 @@ const ASSET_BASE=(window.ASSET_BASE||window.SC_MEDIA||'https://dota.1f8t8graf4.w
 function assetUrl(key){const k=String(key||'');return /^(https?:\/\/|\.\/|\/)/i.test(k)?k:ASSET_BASE+'/'+k;}   // 13.9.51: «./» и «/» — своя статика приложения (обложки в img/scenes/…), без ASSET_BASE
 const scCover=(s,file='cover.jpg')=>s&&s.coverUrl?assetUrl(s.coverUrl):assetUrl(scKey(s,file));
 const scKey=(s,file)=>`scenes/${s.id}/${file}`;
-const scEpKey=(s,i,ext)=>scKey(s,String(i+1).padStart(2,'0')+'.'+ext);
+const scEpKey=(s,i,ext)=>{const p=typeof i==='object'?i:s.parts[i];const fi=p&&p.vf!=null?p.vf:(typeof i==='object'?s.parts.indexOf(i):i);return scKey(s,String(fi+1).padStart(2,'0')+'.'+ext);};
 const SCENES=window.__DATA.SCENES;
+/* z-ai-version: короткие эпизоды — части длиннее ~70 с или 10 фраз режутся на куски по репликам; тот же видеофайл (p.vf = исходный индекс файла),
+   фразы-копии; a/b — исходные абсолютные секунды, плеер и субтитры считают относительно них */
+const ZAI_MAX_EP=10, ZAI_MAX_SEC=70, ZAI_MIN_SEC=8, ZAI_GAP=12, ZAI_TAIL=8;
+(function zaiChunk(){
+  for(const s of SCENES){
+    if(s.kind==='clip'||!s.parts||!s.parts.length)continue;
+    if(!s.parts.some(p=>(p.b-p.a)>ZAI_MAX_SEC||(p.ph||[]).length>ZAI_MAX_EP))continue;
+    const np=[];
+    s.parts.forEach((p,fi)=>{
+      const ph=p.ph||[],dur=p.b-p.a;
+      if(!ph.length||ph.length<=ZAI_MAX_EP&&dur<=ZAI_MAX_SEC){np.push(p);return;}
+      const cuts=[];let cs=Math.max(p.a,(ph[0]?ph[0].a:p.a)-0.5),used=0;
+      for(let k=0;k<ph.length;k++){
+        const f=ph[k];
+        if(used>0){
+          const g=ph[k-1];
+          if(f.a-g.b>ZAI_GAP){   // большая монтажная пауза — кусок кончается после прошлой реплики
+            cuts.push({a:cs,b:Math.min(p.b,g.b+ZAI_TAIL)});cs=Math.max(0,f.a-0.6);used=0;
+          }else if(used<ZAI_MAX_EP&&(f.b-cs)>ZAI_MAX_SEC){   // фраза не влезает в лимит — режем до неё
+            cuts.push({a:cs,b:Math.min(p.b,Math.max(cs+ZAI_MIN_SEC,f.a-0.1))});cs=Math.max(0,f.a-0.6);used=0;
+          }
+        }
+        used++;
+        if(used>=ZAI_MAX_EP&&k<ph.length-1){
+          const nxt=ph[k+1];
+          cuts.push({a:cs,b:Math.min(p.b,nxt.a-0.1)});cs=Math.max(0,nxt.a-0.6);used=0;
+        }
+      }
+      const lastB=ph.length?Math.min(p.b,(ph[ph.length-1].b||p.b)+8):p.b;   // без длинных монтажных хвостов
+      cuts.push({a:cs,b:lastB,n:used});
+      if(cuts.length>1&&cuts[cuts.length-1].n<2){const pr=cuts[cuts.length-2];cuts.pop();pr.b=lastB;}
+      const n=cuts.length;
+      cuts.forEach((c,k)=>np.push(Object.assign({},p,{t:p.t+(n>1?` · ч.${k+1}/${n}`:''),a:c.a,b:c.b,ph:ph.filter(f=>f.a>=c.a-0.05&&f.a<c.b).map(f=>Object.assign({},f)),vf:fi,chunk:n>1?`${k+1}/${n}`:null})));
+    });
+    s.parts=np;
+  }
+})();
 SCENES.forEach(s=>s.parts.forEach((p,i)=>p.ph.forEach((f,j)=>{f.id=i+'_'+j;f.pi=i;f.sid=s.id;})));
 const SC_DAYS=[1,3,7,21,60];
 // повторение сразу по всем сценам: сколько фраз пора повторить и где
@@ -935,7 +980,8 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.55';
+const APP_V='13.9.56';
+// z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -946,7 +992,7 @@ async function deployCheck(box){
   add(true,`Код приложения: версия ${APP_V}`,'');
   let r=await head('data/topics.json');add(r.ok,'data/topics.json — темы фраз','Загрузи из архива папку data в корень основного репо');
   for(const s of SCENES.filter(x=>x.kind!=='clip')){
-    const miss=[];for(let i=0;i<s.parts.length;i++){const nn=String(i+1).padStart(2,'0'),x=await head(assetUrl(scEpKey(s,i,'mp4')));if(!x.ok)miss.push(nn+'.mp4');const k=await head(assetUrl(scKey(s,nn+'-k.jpg')));if(!k.ok)miss.push(nn+'-k.jpg (кадр-награда)');}
+    const miss=[];for(let i=0;i<s.parts.length;i++){if(s.parts[i].vf!=null)continue;const nn=String(i+1).padStart(2,'0'),x=await head(assetUrl(scEpKey(s,i,'mp4')));if(!x.ok)miss.push(nn+'.mp4');const k=await head(assetUrl(scKey(s,nn+'-k.jpg')));if(!k.ok)miss.push(nn+'-k.jpg (кадр-награда)');}
     const cv=await head(assetUrl(scKey(s,'cover.jpg')));if(!cv.ok)miss.push('cover.jpg');
     const m=(s.music||[])[0];if(m){const x=await head(assetUrl(scKey(s,m.f)));if(!x.ok)miss.push(m.f);}
     for(const [on,L,t] of [[s.bgv,['bg.mp4','bgp.jpg'],'фон сцены'],[s.filmbg,['film-bg.mp4','film-bgp.jpg'],'главный фон']])if(on)for(const f of L){const x=await head(assetUrl(scKey(s,f)));if(!x.ok)miss.push(`${f} (${t})`);}   // 13.0: фоны-награды
@@ -2620,7 +2666,7 @@ function scQuizPlan(id,i){
   const s=scOf(id),les=!!i&&typeof i==='object'&&Array.isArray(i.list),rev=i==='rev',P=scP(id),de=scL()==='de',boss=les&&!!i.boss,beg=store.lvl!=='b'&&!boss;
   SCUR={id,i:typeof i==='number'?i:0};   // язык фразы (scT, scIsDe) — по текущей сцене
   const all=s.parts.flatMap(x=>x.ph);
-  const normalList=()=>phPick(scAct(s.parts[i].ph),4);
+  const normalList=()=>phPick(scAct(s.parts[i].ph),window.ZAI_ON?3:4);   // z-ai-version: 3 коротких задания вместо 4
   const list=les?i.list.filter(f=>!f.passive).slice(0,boss?8:5):rev?shuffle(scDue(s)).slice(0,8):normalList();
   if(!list.length)return {s,list,Q:[]};
 
@@ -2946,7 +2992,7 @@ function renderScQuiz(id,i){
 const rwKey=(s,i)=>s.id+'|'+i;
 const rwHas=(s,i)=>!!(store.rw&&store.rw[rwKey(s,i)]);
 const epFact=(s,i)=>{const p=s.parts[i];if(!p)return '';if(p.fact)return p.fact;const f=p.ph.find(x=>x.fact);return f?f.fact:'';};
-const rwKadr=(s,i)=>assetUrl(scKey(s,String(i+1).padStart(2,'0')+'-k.jpg'));
+const rwKadr=(s,i)=>{const p=typeof i==='object'?i:s.parts[i];const fi=p&&p.vf!=null?p.vf:(typeof i==='object'?s.parts.indexOf(i):i);return assetUrl(scKey(s,String(fi+1).padStart(2,'0')+'-k.jpg'));};
 const rwPrize=(s,i)=>(s.parts[i]&&s.parts[i].prize)||['🎬',s.parts[i]?s.parts[i].t:s.title];
 const rwPh=(s,i)=>{const L=scAct(s.parts[i].ph);return L.find(x=>x.fact)||L[Math.floor(L.length/2)]||null;};
 function rwGive(s,i){store.rw=store.rw||{};const k=rwKey(s,i);if(store.rw[k])return false;store.rw[k]={t:Date.now()};save();return true;}

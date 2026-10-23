@@ -1,0 +1,33 @@
+/* ==== z-ai-version (ветка z-ai-version) — тема Z.ai поверх вида «Новый».
+   Грузится вместе с nd.css (ndCss в app.js), класс body.zai ставит lookApply.
+   Идея: тёмный «кинозал ночью» — глубокий графит, тёплый янтарь, спокойные поверхности.
+   Палитра всего приложения живёт в --lk-* (main.css, вес :not(#_)) — перебиваем её здесь. ==== */
+
+body.zai[data-look="nd"]:not(#_),
+body.zai[data-look="nd"][data-ndt="light"]:not(#_),
+body.zai[data-look="nd"][data-ndt="dark"]:not(#_){
+  --lk-bg:#0B0D10;--lk-card:#151920;--lk-card2:#1C212A;--lk-ink:#ECEEF2;--lk-ink2:#98A0AC;--lk-ink3:#6A7280;
+  --lk-line:rgba(255,255,255,.06);--lk-line2:rgba(255,255,255,.12);
+  --lk-acc:#F0B44C;--lk-acc2:#E5A638;--lk-acc-ink:#221803;--lk-accs:rgba(240,180,76,.14);
+  --lk-ok:#3DB27C;--lk-okbg:rgba(61,178,124,.13);--lk-bad:#E2604A;--lk-badbg:rgba(226,96,74,.12);--lk-due:#E8A23F;
+  --lk-r:20px;--lk-rs:13px;--lk-pill:999px;--lk-sh:0 1px 0 rgba(255,255,255,.03) inset,0 16px 40px -20px rgba(0,0,0,.8);--lk-glass:#12151A;
+  --lk-f:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;--lk-fh:'Manrope',system-ui,-apple-system,sans-serif;--lk-hw:800;--lk-hls:-.02em;--top:#0B0D10;color-scheme:dark;
+  --gold:#F0B44C;--gold2:#E5A638;--goldtxt:#F0B44C;--nd-sub:#F0B44C;--nd-sub-ink:#221803;--nd-mark:rgba(240,180,76,.30);--nd-ind:#20242B;
+}
+
+/* токены макетных экранов nd.css — та же палитра */
+body.zai, body.zai[data-ndt="light"], body.zai[data-ndt="dark"]{
+  --n-bg:#0B0D10;--n-card:#151920;--n-ink:#ECEEF2;--n-mute:#878E99;--n-line:#22262D;--n-soft:#1A1E24;
+  --n-sub:#F0B44C;--n-subInk:#221803;--n-mark:rgba(240,180,76,.30);--n-pri:#F0B44C;--n-priFg:#221803;--n-glass:rgba(16,19,23,.92);
+  --n-ok:#3DB27C;--n-okbg:rgba(61,178,124,.14);--n-bad:#E2604A;
+  --n-a1:#3DB27C;--n-a2:#2E9BB5;--n-b1:#D99A3B;--n-b2:#E2604A;--n-c1:#9B7DF0;
+  --n-shadow:0 14px 34px rgba(0,0,0,.5);--n-shadow2:0 2px 10px rgba(0,0,0,.4);
+}
+
+body.zai .tabbar{background:linear-gradient(180deg,rgba(11,13,16,.86),rgba(11,13,16,.97));backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.05)}
+body.zai #tabind{background:rgba(240,180,76,.15)}
+body.zai .n-hero{border:1px solid rgba(255,255,255,.055)}
+body.zai .n-hero::after{background:linear-gradient(180deg,rgba(5,7,9,.18) 18%,rgba(5,7,9,.9))}
+body.zai .sc-subs .sline{background:rgba(8,10,13,.55)}
+body.zai .n-tlm{background:var(--n-sub)}
+body.zai ::-webkit-scrollbar{width:0;height:0}
