@@ -935,7 +935,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.52';
+const APP_V='13.9.53';
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
 async function deployCheck(box){
@@ -1061,6 +1061,10 @@ function swPop(word,row,inPh,el){if(!SW||!SCUR)return;const s=scOf(SCUR.id),pi=S
   if(cx)w.innerHTML+=cxGHTML(cx);
   {const L=wiLang(s.id);if(hit){if(WI[L]){const wh=wiHTML(swNorm(word),L,hit.w);w.innerHTML+=wh||nwHTML(swNorm(word),s.id,row);}else wiLoad(L).then(()=>{if(!w.isConnected||w.querySelector('.kwp-wi'))return;const m=w.querySelector('.kwp-more'),b=w.querySelector('.hn-b'),h=wiHTML(swNorm(word),L,hit.w);if(m)m.insertAdjacentHTML('beforeend',h);else if(b){b.insertAdjacentHTML('beforebegin',h);w._fold=0;w.querySelector('.kwp-x')?.remove();wpFold(w);}});}
   else{const nh=nwHTML(swNorm(word),s.id,row);if(nh)w.innerHTML+=nh;}}   // 13.9.13: подробнее о слове — после выражения; 13.9.51: и для новых слов
+  // 13.9.53 (Андрей: «не могу выбрать подробнее»): если у слова нет ни winfo, ни примеров — блок «Подробнее» не собирался,
+  // и кнопки не было вовсе. Теперь «Вся реплика» всегда лежит под «Подробнее» (когда она ещё не видна в шторке) —
+  // кнопка «Подробнее ▾» есть у любого слова сцены.
+  {const de0=s.lang==='de';if(row&&!pf&&!w.querySelector('.kwp-ex')&&!w.querySelector('.wp-keep'))w.innerHTML+=`<div class="kwp-ex"><em>Вся реплика</em><b>${esc(String(row[de0?4:2]||'').replace(/\n/g,' '))}</b><small>${esc(String(row[3]||'').replace(/\n/g,' '))}</small></div>`;}
   w.innerHTML+=`<div class="hn-b"><button data-x="go">Дальше ${SI.play}</button>${row?'<button data-x="word">🔊 Слово</button>':''}${mywBtn(s.id,word)}</div>`;
   wpFold(w);wpEsc();
   w.onclick=e=>{e.stopPropagation();const b=e.target.closest('[data-x]');if(!b)return;
