@@ -31,3 +31,78 @@ body.zai .n-hero::after{background:linear-gradient(180deg,rgba(5,7,9,.18) 18%,rg
 body.zai .sc-subs .sline{background:rgba(8,10,13,.55)}
 body.zai .n-tlm{background:var(--n-sub)}
 body.zai ::-webkit-scrollbar{width:0;height:0}
+
+/* ==== 13.9.57 — вкладка «Игры»: Deadlock ==== */
+body.zai .gm-root{margin-top:6px}
+body.zai .gm-wait{color:var(--n-mute);padding:26px 4px;font-size:14px;line-height:1.6}
+body.zai .gm-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 12px}
+body.zai .gm-game b{display:block;font-size:19px;font-weight:800;letter-spacing:-.02em}
+body.zai .gm-game span{color:var(--n-mute);font-size:12px}
+body.zai .gm-modes{display:flex;gap:6px}
+body.zai .gm-modes button{background:var(--n-card);border:1px solid var(--n-line);color:var(--n-mute);border-radius:999px;padding:7px 12px;font-size:12.5px;font-weight:600}
+body.zai .gm-modes button.on{background:var(--n-sub);border-color:var(--n-sub);color:var(--n-subInk)}
+body.zai .gm-ctl{display:flex;flex-direction:column;gap:8px;background:var(--n-card);border:1px solid var(--n-line);border-radius:var(--lk-rs,13px);padding:10px 12px;margin-bottom:12px}
+body.zai .gm-chips{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+body.zai .gm-chips b,body.zai .gm-sl b{color:var(--n-mute);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-right:2px;font-weight:700}
+body.zai .gm-chips button{background:transparent;border:1px solid var(--n-line);color:var(--n-mute);border-radius:999px;padding:5px 10px;font-size:12px}
+body.zai .gm-chips button.on{border-color:var(--n-sub);color:var(--n-sub);background:rgba(240,180,76,.10)}
+body.zai .gm-sl{display:flex;align-items:center;gap:10px}
+body.zai .gm-sl input[type=range]{flex:1;accent-color:var(--n-sub);height:22px}
+body.zai .gm-grid{display:grid;grid-template-columns:repeat(var(--gmcols,3),1fr);gap:9px}
+body.zai .gm-list{display:flex;flex-direction:column;gap:8px}
+body.zai .gm-card{position:relative;background:var(--n-card);border:1px solid var(--n-line);border-radius:var(--lk-rs,13px);padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-height:0}
+body.zai .gm-card b{font-size:12.5px;font-weight:700}
+body.zai .gm-card span{font-size:11px;color:var(--n-mute)}
+body.zai .gm-card.sel{border-color:var(--n-sub);background:rgba(240,180,76,.08)}
+body.zai .gm-tick{position:absolute;top:6px;right:7px;width:20px;height:20px;border-radius:50%;background:var(--n-sub);color:var(--n-subInk);font-style:normal;font-weight:800;font-size:13px;line-height:20px}
+body.zai .gm-row{display:flex;align-items:center;gap:11px;background:var(--n-card);border:1px solid var(--n-line);border-radius:var(--lk-rs,13px);padding:8px 12px;text-align:left}
+body.zai .gm-rowt{flex:1}
+body.zai .gm-rowt b{display:block;font-size:14px;font-weight:700}
+body.zai .gm-rowt span{font-size:12px;color:var(--n-mute)}
+body.zai .gm-soon{opacity:.45}
+body.zai .gm-face{width:58px;height:58px;border-radius:14px;background-size:cover;background-position:center top;flex:none;box-shadow:0 6px 16px rgba(0,0,0,.45)}
+body.zai .gm-card .gm-face{width:100%;aspect-ratio:1/1.15;height:auto}
+body.zai .gm-ph{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;color:hsl(var(--h),55%,80%);background:linear-gradient(160deg,hsl(var(--h),38%,24%),hsl(var(--h),45%,14%));border:1px solid hsl(var(--h),45%,30%)}
+body.zai .gm-dots{font-style:normal;color:var(--n-sub);font-size:9px;letter-spacing:2px}
+body.zai .gm-herohead{display:flex;align-items:center;gap:12px;margin:4px 0 12px}
+body.zai .gm-herohead .gm-face{width:64px;height:64px}
+body.zai .gm-herohead b{display:block;font-size:17px;font-weight:800}
+body.zai .gm-herohead span{color:var(--n-mute);font-size:12.5px}
+body.zai .gm-dlg{display:block;width:100%;background:var(--n-card);border:1px solid var(--n-line);border-radius:var(--lk-rs,13px);padding:11px 13px;margin-bottom:9px;text-align:left}
+body.zai .gm-ctx{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--n-sub)}
+body.zai .gm-dlg p{margin:5px 0 6px;font-size:14px;line-height:1.45}
+body.zai .gm-dlgm{display:flex;align-items:center;justify-content:space-between;color:var(--n-mute);font-size:11.5px}
+body.zai .gm-back{display:inline-block;background:transparent;border:none;color:var(--n-mute);font-size:13px;padding:4px 2px 10px}
+body.zai .gm-note{color:var(--n-mute);font-size:12.5px;margin:2px 0 10px}
+body.zai .gm-pickbar{position:sticky;bottom:74px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--n-glass);backdrop-filter:blur(12px);border:1px solid var(--n-line);border-radius:999px;padding:9px 10px 9px 16px;margin-top:12px}
+body.zai .gm-pickbar span{font-size:12.5px;color:var(--n-mute)}
+body.zai .gm-pickbar button{background:var(--n-sub);color:var(--n-subInk);border:none;border-radius:999px;padding:9px 18px;font-weight:800;font-size:13px}
+body.zai .gm-pickbar button:disabled{opacity:.4}
+/* экран-дуэль: слева герой, справа герой, реплики пузырями изо рта */
+body.zai .dd-duel{position:relative;background:var(--n-card);border:1px solid var(--n-line);border-radius:var(--lk-r,20px);padding:12px;min-height:300px;max-height:56vh;overflow-y:auto}
+body.zai .dd-sides{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;position:sticky;top:0;z-index:2;background:linear-gradient(180deg,var(--n-card) 70%,transparent);padding-bottom:4px}
+body.zai .dd-side{display:flex;flex-direction:column;align-items:center;gap:4px;width:88px}
+body.zai .dd-side .gm-face{width:72px;height:72px}
+body.zai .dd-side b{font-size:11.5px;font-weight:700;text-align:center}
+body.zai .dd-vs{color:var(--n-mute);font-size:11px;letter-spacing:.2em;margin-top:30px;font-weight:800}
+body.zai .dd-bubwrap{display:flex;flex-direction:column;gap:9px;padding:10px 2px 4px}
+body.zai .dd-bub{position:relative;max-width:86%;background:var(--n-card2,#1C212A);border:1px solid var(--n-line2,rgba(255,255,255,.12));border-radius:16px;padding:9px 13px 10px;animation:ddpop .22s ease}
+body.zai .dd-bub.lf{align-self:flex-start;border-bottom-left-radius:5px}
+body.zai .dd-bub.rt{align-self:flex-end;border-bottom-right-radius:5px}
+body.zai .dd-bub.mid{align-self:center;max-width:100%}
+body.zai .dd-bub.dim{opacity:.42}
+body.zai .dd-bub::before{content:'';position:absolute;top:-6px;border:6px solid transparent}
+body.zai .dd-bub.lf::before{left:14px;border-bottom-color:var(--n-line2,rgba(255,255,255,.12));border-top:0}
+body.zai .dd-bub.rt::before{right:14px;border-bottom-color:var(--n-line2,rgba(255,255,255,.12));border-top:0}
+body.zai .dd-who{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--n-sub);font-weight:700}
+body.zai .dd-en{font-size:15.5px;font-weight:600;line-height:1.4;margin-top:2px}
+body.zai .dd-ru{font-size:12.5px;color:var(--n-mute);margin-top:3px;line-height:1.4}
+body.zai .dd-hint{text-align:center;color:var(--n-mute);font-size:11px;opacity:.55;padding:6px 0 0}
+body.zai .dd-prog{height:3px;background:var(--n-line);border-radius:2px;margin:10px 2px 12px;overflow:hidden;opacity:.5}
+body.zai .dd-prog i{display:block;height:100%;width:0;background:var(--n-sub);transition:width .25s}
+body.zai .dd-vocab{padding-bottom:8px}
+body.zai .dd-vocab b{display:block;color:var(--n-mute);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin:2px 0 7px}
+body.zai .dd-vocab .chip{display:inline-block;background:var(--n-soft);border:1px solid var(--n-line);border-radius:9px;padding:5px 9px;margin:0 5px 5px 0;font-size:12px}
+body.zai .dd-vocab .chip i{font-style:normal;color:var(--n-sub)}
+body.zai .gm-again{display:block;width:100%;margin-top:10px;background:var(--n-sub);color:var(--n-subInk);border:none;border-radius:999px;padding:10px;font-weight:800;font-size:13px}
+@keyframes ddpop{from{transform:translateY(8px) scale(.96);opacity:0}to{transform:none;opacity:1}}
