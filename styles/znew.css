@@ -1,9 +1,10 @@
-/* ==== 13.9.59 — «Кино 2.0» (styles/znew.css) — новый вид поверх zai.css.
+/* ==== 13.9.61 — «Кино 2.0», спокойный режим (styles/znew.css) — вид как у типового приложения.
    Включён по умолчанию (store.znew, LOCAL_ONLY); выключатель — Настройки → «Оформление»
    и строка в Профиле. body.zai.znew — новый вид, body.zai без .znew — старый (zai.css как был).
-   Светлый режим — тёплый крем с янтарём (как в макетах Germanize), тёмный — «бархат и янтарь».
-   Правила 13.9.23 соблюдены: анимации — только transform/opacity; бесконечные гасятся
-   на html.lite (ПК), body.nofx (fx выкл) и prefers-reduced-motion. ==== */
+   Светлый режим — тёплый крем с янтарём, тёмный — «бархат и янтарь».
+   Правила 13.9.23 + разбор Клауда: анимации — только transform/opacity; размытие фона запрещено;
+   никаких бесконечных «живых» эффектов на экранах (Ken Burns, огонь, ореолы, дым — убраны).
+   Осталась типовая механика: короткий вход экрана, нажатие карточек, тост. Гасится на lite/nofx/reduced-motion. ==== */
 
 /* ---- токены: свет ---- */
 body.zai.znew[data-look]:not(#_){
@@ -12,12 +13,13 @@ body.zai.znew[data-look]:not(#_){
   --lk-acc:#FFC83D;--lk-acc2:#F0B44C;--lk-acc-ink:#241A03;--lk-accs:rgba(255,200,61,.22);
   --lk-ok:#1FA05E;--lk-okbg:rgba(31,160,94,.12);--lk-bad:#E0533D;--lk-badbg:rgba(224,83,61,.10);--lk-due:#E8A23F;
   --lk-r:22px;--lk-rs:14px;--lk-pill:999px;
-  --lk-sh:0 1px 2px rgba(60,48,20,.06),0 12px 32px -14px rgba(60,48,20,.22);--lk-glass:rgba(252,250,244,.92);
+  --lk-sh:0 1px 2px rgba(60,48,20,.06),0 12px 32px -14px rgba(60,48,20,.22);
+  --lk-glass:#FDFBF6;   /* 13.9.61: сплошной цвет вместо стекла — blur убран */
   --lk-f:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;--lk-fh:'Manrope',system-ui,-apple-system,sans-serif;--lk-hw:800;--lk-hls:-.02em;
   --top:#F6F3EB;color-scheme:light;
   --gold:#C9932B;--gold2:#B57F1D;--goldtxt:#8A6410;--nd-sub:#FFC83D;--nd-sub-ink:#241A03;--nd-mark:rgba(255,200,61,.45);--nd-ind:rgba(60,48,20,.08);
   --n-bg:#F6F3EB;--n-card:#FFFFFF;--n-ink:#1B1811;--n-mute:#6E675B;--n-line:#EAE4D6;--n-soft:#F1EDE2;
-  --n-sub:#FFC83D;--n-subInk:#241A03;--n-mark:rgba(255,200,61,.45);--n-pri:#1B1811;--n-priFg:#FFFFFF;--n-glass:rgba(252,250,244,.92);
+  --n-sub:#FFC83D;--n-subInk:#241A03;--n-mark:rgba(255,200,61,.45);--n-pri:#1B1811;--n-priFg:#FFFFFF;--n-glass:#FDFBF6;
   --n-ok:#1FA05E;--n-okbg:rgba(31,160,94,.12);--n-bad:#E0533D;
   --n-a1:#2FA66A;--n-a2:#1C9AAE;--n-b1:#E39A2D;--n-b2:#E0533D;--n-c1:#8A6BE8;
   --n-shadow:0 2px 4px rgba(60,48,20,.05),0 14px 34px -14px rgba(60,48,20,.22);--n-shadow2:0 2px 8px rgba(60,48,20,.08);
@@ -29,11 +31,12 @@ body.zai.znew[data-look][data-ndt="dark"]:not(#_){
   --lk-acc:#FFC83D;--lk-acc2:#F0B44C;--lk-acc-ink:#241A03;--lk-accs:rgba(255,200,61,.15);
   --lk-ok:#45C686;--lk-okbg:rgba(69,198,134,.13);--lk-bad:#F0644C;--lk-badbg:rgba(240,100,76,.12);--lk-due:#E8A23F;
   --lk-r:22px;--lk-rs:14px;
-  --lk-sh:0 1px 0 rgba(255,220,150,.04) inset,0 18px 44px -20px rgba(0,0,0,.85);--lk-glass:rgba(19,16,12,.9);
+  --lk-sh:0 1px 0 rgba(255,220,150,.04) inset,0 18px 44px -20px rgba(0,0,0,.85);
+  --lk-glass:#14110C;   /* 13.9.61: сплошной цвет вместо стекла — blur убран */
   --top:#0D0B08;color-scheme:dark;
   --gold:#FFC83D;--gold2:#F0B44C;--goldtxt:#FFC83D;--nd-sub:#FFC83D;--nd-sub-ink:#241A03;--nd-mark:rgba(255,200,61,.32);--nd-ind:#262016;
   --n-bg:#0D0B08;--n-card:#181410;--n-ink:#F5EFE3;--n-mute:#A99C87;--n-line:#2A231A;--n-soft:#211B13;
-  --n-sub:#FFC83D;--n-subInk:#241A03;--n-mark:rgba(255,200,61,.32);--n-pri:#FFC83D;--n-priFg:#241A03;--n-glass:rgba(19,16,12,.9);
+  --n-sub:#FFC83D;--n-subInk:#241A03;--n-mark:rgba(255,200,61,.32);--n-pri:#FFC83D;--n-priFg:#241A03;--n-glass:#14110C;
   --n-ok:#45C686;--n-okbg:rgba(69,198,134,.14);--n-bad:#F0644C;
   --n-shadow:0 16px 40px -14px rgba(0,0,0,.75);--n-shadow2:0 2px 10px rgba(0,0,0,.45);
 }
@@ -45,80 +48,67 @@ body.zai.znew:not(.appbg){
 body.zai.znew .aurora{display:none}
 body.zai.znew ::selection{background:rgba(255,200,61,.35)}
 
-/* ---- вход экрана: каскад «карточки подъезжают» ---- */
-@keyframes znUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-body.zai.znew .n-scr>*{animation:znUp .5s cubic-bezier(.22,.9,.28,1) both}
-body.zai.znew .n-scr>*:nth-child(2){animation-delay:.05s}
-body.zai.znew .n-scr>*:nth-child(3){animation-delay:.09s}
-body.zai.znew .n-scr>*:nth-child(4){animation-delay:.13s}
-body.zai.znew .n-scr>*:nth-child(5){animation-delay:.17s}
-body.zai.znew .n-scr>*:nth-child(6){animation-delay:.21s}
-body.zai.znew .n-scr>*:nth-child(n+7){animation-delay:.25s}
+/* ---- вход экрана: короткий каскад, как в типовых приложениях (0.3s, без «пружин») ---- */
+@keyframes znUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+body.zai.znew .n-scr>*{animation:znUp .3s ease-out both}
+body.zai.znew .n-scr>*:nth-child(2){animation-delay:.04s}
+body.zai.znew .n-scr>*:nth-child(3){animation-delay:.08s}
+body.zai.znew .n-scr>*:nth-child(4){animation-delay:.12s}
+body.zai.znew .n-scr>*:nth-child(5){animation-delay:.16s}
+body.zai.znew .n-scr>*:nth-child(n+6){animation-delay:.2s}
 
-/* ---- шапка «Сегодня»: аватар в янтарном кольце, огонёк серии живёт ---- */
-body.zai.znew .n-ava{box-shadow:0 0 0 2px var(--lk-card),0 0 0 4px var(--lk-acc),0 6px 16px -4px rgba(255,180,40,.5)}
-body.zai.znew .n-hello b{letter-spacing:-.02em}
-body.zai.znew .n-fire>:first-child{display:inline-block;animation:znFlame 2.4s ease-in-out infinite;transform-origin:50% 82%}
-@keyframes znFlame{0%,100%{transform:scale(1) rotate(-2deg)}45%{transform:scale(1.15) rotate(3deg)}70%{transform:scale(.96) rotate(-1deg)}}
-body.zai.znew .n-fire.risk>:first-child{animation:znRisk 1.1s ease-in-out infinite}
-@keyframes znRisk{0%,100%{transform:none}25%{transform:rotate(-6deg) scale(1.05)}75%{transform:rotate(6deg) scale(1.05)}}
-/* кольцо цели: когда день закрыт — янтарный пульс-ореол */
-body.zai.znew .n-ring{position:relative}
-body.zai.znew .n-ring.ok::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--lk-acc);opacity:0;animation:znHalo 2.1s ease-out infinite;pointer-events:none}
-@keyframes znHalo{0%{transform:scale(.88);opacity:.65}70%{transform:scale(1.3);opacity:0}100%{transform:scale(1.3);opacity:0}}
+/* ---- герой-карточка: чистое фото, ничего не «дышит» и не ползёт ---- */
+body.zai.znew .n-hero{border-radius:24px;border:1px solid var(--lk-line2);box-shadow:var(--lk-sh)}
+body.zai.znew .n-hero .n-bgi{animation:none;will-change:auto}   /* Ken Burns убран (13.9.61) */
+body.zai.znew .n-hero .n-eb{background:rgba(10,8,4,.46);border:1px solid rgba(255,235,190,.2);border-radius:999px}
+body.zai.znew .n-hero .n-chip{background:rgba(10,8,4,.46);border:1px solid rgba(255,235,190,.16);border-radius:999px}
+/* «Потяни»: спокойная янтарная ручка — без подмигиваний и бликов (13.9.61) */
+body.zai.znew .n-pull .ndpull-k{background:linear-gradient(135deg,#FFD34E,#F0A93B);color:#241A03;box-shadow:0 4px 12px -2px rgba(255,180,40,.4);animation:none}
+body.zai.znew .n-pull::after{display:none}   /* бегущий блик убран */
+body.zai.znew .n-pull.back .ndpull-f,body.zai.znew .n-pull.back .ndpull-k{transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 
-/* ---- герой-карточка: кино, а не скриншот ---- */
-body.zai.znew .n-hero{border-radius:26px;border:1px solid var(--lk-line2);box-shadow:var(--lk-sh)}
-body.zai.znew .n-hero .n-bgi{animation:znKB 32s ease-in-out infinite alternate;transform-origin:50% 26%;will-change:transform}
-@keyframes znKB{from{transform:scale(1)}to{transform:scale(1.09)}}
-body.zai.znew .n-hero .n-eb{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:rgba(10,8,4,.38);border:1px solid rgba(255,235,190,.22);border-radius:999px}
-body.zai.znew .n-hero .n-chip,body.zai.znew .n-hero .n-t{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-body.zai.znew .n-hero .n-chip{background:rgba(10,8,4,.42);border:1px solid rgba(255,235,190,.18);border-radius:999px}
-/* «Потяни»: ручка-янтарь дышит, намекая потянуть; во время перетаскивания — тишина (JS держит transform) */
-body.zai.znew .n-pull .ndpull-k{background:linear-gradient(135deg,#FFD34E,#F0A93B);color:#241A03;box-shadow:0 6px 18px -2px rgba(255,180,40,.55),0 1px 0 rgba(255,255,255,.4) inset}
-body.zai.znew .n-pull:not(.drag):not(.back):not(.done) .ndpull-k{animation:znHint 3.2s ease-in-out infinite}
-@keyframes znHint{0%,100%{transform:none}10%{transform:translateX(8px)}20%,32%{transform:none}42%{transform:translateX(6px)}52%,100%{transform:none}}
-
-/* ---- строки и ряды: нажатие отзывается ---- */
+/* ---- строки и ряды: нажатие отзывается (типовое поведение) ---- */
 body.zai.znew .n-row{border-radius:18px;transition:transform .16s ease}
 body.zai.znew .n-row:active{transform:scale(.98)}
 body.zai.znew .n-row .n-th{border-radius:13px}
-body.zai.znew .n-row .n-cv{transition:transform .16s ease}
-body.zai.znew .n-row:active .n-cv{transform:translateX(3px)}
 body.zai.znew .n-row .n-cnt{background:var(--lk-acc);color:var(--lk-acc-ink);border-radius:999px}
 
-/* ---- сетка постеров «Сцены»: каскад + нажатие ---- */
-body.zai.znew .n-pg .n-po{animation:znUp .45s cubic-bezier(.22,.9,.28,1) both}
-body.zai.znew .n-pg .n-po:nth-child(3n+2){animation-delay:.05s}
-body.zai.znew .n-pg .n-po:nth-child(3n+3){animation-delay:.1s}
-body.zai.znew .n-pg .n-po:nth-child(n+7){animation-delay:.15s}
-body.zai.znew .n-pg .n-pi{border-radius:16px;transition:transform .22s cubic-bezier(.2,.9,.3,1.2)}
-body.zai.znew .n-pg .n-po:active .n-pi{transform:scale(.95)}
+/* ---- плитки статистики (13.9.61): спокойные, первая — с янтарной цифрой ---- */
+body.zai.znew .n-stats>div{border:1px solid var(--lk-line);border-radius:18px}
+body.zai.znew .n-stats>div:first-child b{color:var(--lk-acc2)}
+
+/* ---- сетка постеров «Сцены»: короткий вход + нажатие ---- */
+body.zai.znew .n-pg .n-po{animation:znUp .3s ease-out both}
+body.zai.znew .n-pg .n-po:nth-child(3n+2){animation-delay:.04s}
+body.zai.znew .n-pg .n-po:nth-child(3n+3){animation-delay:.08s}
+body.zai.znew .n-pg .n-po:nth-child(n+7){animation-delay:.12s}
+body.zai.znew .n-pg .n-pi{border-radius:16px;transition:transform .18s ease}
+body.zai.znew .n-pg .n-po:active .n-pi{transform:scale(.96)}
 body.zai.znew .n-pg .n-pi u{border-radius:0 0 16px 16px}
 
-/* ---- вкладки: стеклянная панель, активный — янтарь, тап отзывается ---- */
-body.zai.znew .tabbar{background:var(--lk-glass)!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--lk-line2);box-shadow:0 14px 36px -12px rgba(20,12,0,.4)}
-body.zai.znew .tabbar button{transition:transform .15s ease}
+/* ---- вкладки: сплошная панель (без blur), активный — янтарь ---- */
+body.zai.znew .tabbar{background:var(--lk-card)!important;border:1px solid var(--lk-line2);box-shadow:0 10px 30px -14px rgba(20,12,0,.45)}
+body.zai.znew .tabbar button{transition:transform .14s ease}
 body.zai.znew .tabbar button:active{transform:scale(.92)}
 body.zai.znew .tabbar button.on{color:var(--lk-acc)}
-body.zai.znew .tabbar button.on svg{animation:znTab .35s cubic-bezier(.34,1.56,.64,1)}
-@keyframes znTab{from{transform:translateY(3px) scale(.85)}to{transform:none}}
+body.zai.znew .tabbar button.on svg{animation:znTab .3s ease-out}
+@keyframes znTab{from{transform:translateY(2px) scale(.9)}to{transform:none}}
 body.zai.znew #tabind{background:var(--lk-accs)}
 
-/* ---- тосты и сегменты: пружина ---- */
-@keyframes znToast{from{transform:translate(-50%,16px) scale(.88);opacity:0}60%{transform:translate(-50%,-2px) scale(1.02);opacity:1}to{transform:translate(-50%,0) scale(1);opacity:1}}
-body.zai.znew .toast{border-radius:16px;background:var(--lk-glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--lk-line2);color:var(--lk-ink);box-shadow:var(--lk-sh);animation:znToast .45s cubic-bezier(.34,1.56,.64,1) both}
+/* ---- тосты и сегменты: простой вход, без пружин ---- */
+@keyframes znToast{from{transform:translate(-50%,12px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+body.zai.znew .toast{border-radius:16px;background:var(--lk-card);border:1px solid var(--lk-line2);color:var(--lk-ink);box-shadow:var(--lk-sh);animation:znToast .26s ease-out both}
 body.zai.znew .segctl{background:var(--n-soft);border:1px solid var(--n-line);border-radius:14px;padding:4px}
-body.zai.znew .segctl button{border-radius:10px;transition:transform .15s ease,background .2s ease,color .2s ease}
-body.zai.znew .segctl button:active{transform:scale(.96)}
-body.zai.znew .segctl button[aria-pressed="true"]{background:var(--lk-acc);color:var(--lk-acc-ink);box-shadow:0 3px 10px -2px rgba(255,180,40,.5)}
+body.zai.znew .segctl button{border-radius:10px;transition:background .2s ease,color .2s ease}
+body.zai.znew .segctl button:active{transform:scale(.97)}
+body.zai.znew .segctl button[aria-pressed="true"]{background:var(--lk-acc);color:var(--lk-acc-ink);box-shadow:0 2px 8px -2px rgba(255,180,40,.4)}
 body.zai.znew .checkrow{transition:transform .16s ease}
 body.zai.znew .checkrow:active{transform:scale(.985)}
 body.zai.znew .checkrow .box{background:var(--lk-acc);border-color:var(--lk-acc)}
 body.zai.znew .checkrow[aria-pressed="false"] .box{background:transparent;border-color:var(--lk-line2)}
 
 /* ---- главная кнопка и кнопки-действия ---- */
-body.zai.znew .n-pbtn{background:linear-gradient(135deg,#FFD34E,#F0A93B);color:#241A03;box-shadow:0 12px 28px -8px rgba(255,180,40,.55)}
+body.zai.znew .n-pbtn{background:linear-gradient(135deg,#FFD34E,#F0A93B);color:#241A03;box-shadow:0 8px 22px -8px rgba(255,180,40,.5)}
 body.zai.znew .n-pbtn:active{transform:scale(.97)}
 body.zai.znew .gm-pickbar button,body.zai.znew .gm-again{background:linear-gradient(135deg,#FFD34E,#F0A93B);color:#241A03}
 body.zai.znew .gm-modes button.on,body.zai.znew .gm-chips button.on{background:rgba(255,200,61,.14);border-color:var(--lk-acc);color:var(--lk-acc)}
@@ -136,16 +126,8 @@ body.zai.znew .ndl-r>i .n-ic{color:var(--lk-acc2)}
 body.zai.znew .ndst b{letter-spacing:-.02em}
 body.zai.znew .n-why{border-left:3px solid var(--lk-acc)}
 
-/* ---- «пыль»-спойлер: дышит ---- */
-body.zai.znew .n-sp:not(.open) .n-spt{animation:znDust 3.4s ease-in-out infinite}
-@keyframes znDust{0%,100%{opacity:.55}50%{opacity:.85}}
-
-/* ---- отключение тяжёлых/бесконечных анимаций ---- */
-body.zai.znew.nofx .n-bgi,body.zai.znew.nofx .n-fire>:first-child,body.zai.znew.nofx .n-pull .ndpull-k,
-body.zai.znew.nofx .n-ring.ok::after,body.zai.znew.nofx .n-sp:not(.open) .n-spt,
-html.lite body.zai.znew .n-bgi,html.lite body.zai.znew .n-fire>:first-child,
-html.lite body.zai.znew .n-pull .ndpull-k,html.lite body.zai.znew .n-ring.ok::after{animation:none}
+/* ---- отключение тяжёлых/бесконечных анимаций (страховка: и от базовых nd.css) ---- */
+body.zai.znew.nofx .n-scr *,body.zai.znew.nofx .n-scr *::before,body.zai.znew.nofx .n-scr *::after{animation:none!important;transition:none!important}
 @media (prefers-reduced-motion:reduce){
-  body.zai.znew .n-bgi,body.zai.znew .n-fire>:first-child,body.zai.znew .n-pull .ndpull-k,
-  body.zai.znew .n-ring.ok::after,body.zai.znew .n-sp:not(.open) .n-spt,
-  body.zai.znew .n-scr>*,body.zai.znew .n-pg .n-po,body.zai.znew .tabbar button.on svg{animation:none}}
+  body.zai.znew .n-scr>*,body.zai.znew .n-pg .n-po,body.zai.znew .tabbar button.on svg,body.zai.znew .toast{animation:none}
+  body.zai.znew .n-row,body.zai.znew .n-hero,body.zai.znew .n-pg .n-pi,body.zai.znew .tabbar button{transition:none}}

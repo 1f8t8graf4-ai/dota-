@@ -288,6 +288,13 @@ function ndTodayHTML(){
   const ok=d.n>=goal,risk=st>0&&store.lastDay!==new Date().toDateString(),bdi=filmImg(s,innerWidth>=1000?'bd.jpg':'bdm.jpg'),cf=cefrOf(s),mins=Math.max(2,Math.round((p.b-p.a)/60+2));
   const th=(x,i)=>`style="background-image:url('${assetUrl(scEpKey(x,i,'jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"`;
   const pod=phraseOfDay(),nx=ndNext(c);
+  // 13.9.61: главный экран не пустует — плитки статистики (серия / фразы / эпизоды) и подпись секции
+  const ph=dictCount()[0],eps=SCENES.reduce((a,x)=>a+((scP(x.id).done||[]).length),0);
+  const rows=[
+    pod?`<button class="n-row" data-go="pod"><div class="n-th" ${th(pod.s,pod.f.pi)}></div><div><small>Фраза дня</small><b>${esc(pod.s.lang==='de'?pod.f.de:scT(pod.f))} — ${esc(pod.f.ru)}</b></div><span class="n-cv">›</span></button>`:'',
+    nx?`<button class="n-row" data-go="next" data-sc="${nx.s.id}" data-i="${nx.i}"><div class="n-th" ${th(nx.s,nx.i)}></div><div><small>Смотреть дальше</small><b>${esc(nx.s.show||nx.s.title)} · ${esc(nx.s.parts[nx.i].t)}</b></div><span class="n-cv">›</span></button>`:'',
+    n?`<button class="n-row" data-go="rev"><div class="n-th" ${th(s,c.i)}></div><div><small>Повторить</small><b>Фразы и слова · ≈ ${Math.max(2,Math.round(n*0.4))} мин</b></div><span class="n-cnt">${n}</span></button>`:''
+  ].filter(Boolean).join('');
   return `<div class="n-scr n-today">
     <div class="n-hello"><div class="n-ava">${esc((nm||'Я').charAt(0).toUpperCase())}</div><div><b>${hi}${nm?', '+esc(nm):''}</b><span>${esc(sub)}</span></div>
       <div class="n-fire${risk?' risk':''}"><i>🔥</i><i>${st}</i></div><button class="n-ring${ok?' ok':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 38 38"><circle class="bgc" cx="19" cy="19" r="15.9" pathLength="100"/><circle class="fg" cx="19" cy="19" r="15.9" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></div>
@@ -297,9 +304,8 @@ function ndTodayHTML(){
       <div class="n-meta"><span class="n-chip ${cf.toLowerCase()}">${cf}</span><span class="n-t">≈ ${mins} мин</span><span class="n-t">${esc(s.show||s.title)}</span></div>
       <div class="n-pull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></i></div>
     </section>
-    ${pod?`<button class="n-row" data-go="pod"><div class="n-th" ${th(pod.s,pod.f.pi)}></div><div><small>Фраза дня</small><b>${esc(pod.s.lang==='de'?pod.f.de:scT(pod.f))} — ${esc(pod.f.ru)}</b></div><span class="n-cv">›</span></button>`:''}
-    ${nx?`<button class="n-row" data-go="next" data-sc="${nx.s.id}" data-i="${nx.i}"><div class="n-th" ${th(nx.s,nx.i)}></div><div><small>Смотреть дальше</small><b>${esc(nx.s.show||nx.s.title)} · ${esc(nx.s.parts[nx.i].t)}</b></div><span class="n-cv">›</span></button>`:''}
-    ${n?`<button class="n-row" data-go="rev"><div class="n-th" ${th(s,c.i)}></div><div><small>Повторить</small><b>Фразы и слова · ≈ ${Math.max(2,Math.round(n*0.4))} мин</b></div><span class="n-cnt">${n}</span></button>`:''}
+    <div class="n-stats" role="group" aria-label="Статистика"><div><b>🔥 ${st}</b><small>серия</small></div><div><b>${ph}</b><small>фраз выучено</small></div><div><b>${eps}</b><small>эпизодов</small></div></div>
+    ${rows?`<div class="n-sechead">План на сегодня</div>${rows}`:''}
   </div>`;}
 const ndYear=s=>{const m=String(s.ep||'').match(/(19|20)\d\d/);return m?m[0]:'';};
 // 13.9.40 (ТЗ-13.9.32, P2 экран 11): итог эпизода как в макете (.cell 11) — звёзды выпрыгивают, «Эпизод пройден» маркером с ручками,
@@ -705,6 +711,7 @@ function renderSettings(){
 
 /* ================= вкладки, заставка, профиль ================= */
 const TABS=window.ZAI_ON?[
+ {id:'learn',name:'Сегодня',ico:'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>'},   // 13.9.61: «Сегодня» вернулась главной — словарь с нуля выглядел пустым
  {id:'dict',name:'Словарь',ico:'<path d="M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/><path d="M9 8h5"/>'},
  {id:'kino',name:'Сцены',ico:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 3l3 3M14 3l-3 3"/><path d="M10 10.5v5l4-2.5z"/>'},
  {id:'games',name:'Игры',ico:'<path d="M6 12h4M8 10v4"/><circle cx="15.5" cy="11" r=".9"/><circle cx="17.5" cy="13" r=".9"/><path d="M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3.4a3 3 0 0 1-5.2 1.4L14.6 16h-5.2l-1.4 1.4a3 3 0 0 1-5.2-1.4l-.7-3.4A5.5 5.5 0 0 1 7.5 6z"/>'},   // 13.9.60: видимость решает ensureTabbar (флаг games/админ)
@@ -739,11 +746,10 @@ function noCloseAsk(){try{if(TG&&TG.disableClosingConfirmation)TG.disableClosing
 function renderTab(id){
   // 12.5: рубильник «тех. работы» — игрокам заглушка, админу всё как обычно
   if(flagOf('all')!=='on'){screen='home';ensureTabbar();mount(`<div class="mnt"><i>🎬</i><b>Кинотеатр временно обновляется</b><span>Меняем плёнку и чиним проектор. Загляни чуть позже — прогресс никуда не денется.</span></div>`,'tabscr');return;}
-  id=id||store.tab||(window.ZAI_ON?'dict':'learn');
-  if(window.ZAI_ON&&id==='learn')id='dict';
+  id=id||store.tab||(window.ZAI_ON?'learn':'learn');
   if(id==='games'&&!FLAG_ADMIN&&FLAGS.games!=='on')id='kino';   // 13.9.60: Игры за флагом games
-  if(!['learn','kino','dict','games','profile'].includes(id))id=window.ZAI_ON?'dict':'learn';   // 13.9.43: игр больше нет; z-ai-version: «Словарь» первый; 13.9.57: вкладка «Игры» вернулась
-  try{if(id==='kino'&&flagOf('kino')==='hide')id=window.ZAI_ON?'dict':'learn';}catch(e){}
+  if(!['learn','kino','dict','games','profile'].includes(id))id='learn';   // 13.9.61: фолбэк — «Сегодня»
+  try{if(id==='kino'&&flagOf('kino')==='hide')id='learn';}catch(e){}
   const vis=id,sub=false;
   const idx=TABS.findIndex(t=>t.id===vis),dir=idx>lastTabIdx?'fr':idx<lastTabIdx?'fl':'';lastTabIdx=idx;
   if(store.tab!==vis){store.tab=vis;save();}
@@ -989,7 +995,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.60';
+const APP_V='13.9.61';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';

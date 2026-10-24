@@ -82,6 +82,15 @@ body:not(.ndc) .n-scr{opacity:0}   /* пока nd.css не загружен (ndC
 .n-row:active,.n-hero:active{transform:scale(.985)}
 .n-row,.n-hero{transition:transform .18s cubic-bezier(.2,.9,.3,1.2)}
 
+/* 13.9.61: плитки статистики на «Сегодня» — главный экран не пустует; и в «Новом», и в «Кино 2.0» */
+.n-stats{display:flex;gap:calc(10*var(--nu))}
+.n-stats>div{flex:1;background:var(--n-card);border-radius:calc(16*var(--nu));padding:calc(10*var(--nu)) calc(6*var(--nu)) calc(8*var(--nu));text-align:center;box-shadow:var(--n-shadow2)}
+.n-stats b{display:block;font-size:calc(17*var(--nu));font-weight:800;line-height:1.15;letter-spacing:-.01em}
+.n-stats small{display:block;font-size:calc(9*var(--nu));font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--n-mute);margin-top:calc(3*var(--nu));line-height:1.35}
+.n-sechead{font:800 calc(10.5*var(--nu))/1.5 var(--n-f-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--n-mute);padding:calc(2*var(--nu)) calc(2*var(--nu)) 0}
+/* 13.9.61: пока обложка героя грузится/нет её — тёплый тёмный градиент вместо серой ямы */
+.n-hero{background:linear-gradient(150deg,#3A3226 0%,#181310 70%)}
+
 /* вход: план поднимается (кривая hi из макета), строки — каскадом (ndCascade) */
 .n-today>*{animation:n-in .38s cubic-bezier(.2,.9,.3,1.1) both}
 .n-today>:nth-child(3){animation-delay:.07s}.n-today>:nth-child(4){animation-delay:.14s}.n-today>:nth-child(5){animation-delay:.21s}
