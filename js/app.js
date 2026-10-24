@@ -714,7 +714,6 @@ const TABS=window.ZAI_ON?[
  {id:'learn',name:'Сегодня',ico:'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>'},   // 13.9.61: «Сегодня» вернулась главной — словарь с нуля выглядел пустым
  {id:'dict',name:'Словарь',ico:'<path d="M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/><path d="M9 8h5"/>'},
  {id:'kino',name:'Сцены',ico:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 3l3 3M14 3l-3 3"/><path d="M10 10.5v5l4-2.5z"/>'},
- {id:'games',name:'Игры',ico:'<path d="M6 12h4M8 10v4"/><circle cx="15.5" cy="11" r=".9"/><circle cx="17.5" cy="13" r=".9"/><path d="M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3.4a3 3 0 0 1-5.2 1.4L14.6 16h-5.2l-1.4 1.4a3 3 0 0 1-5.2-1.4l-.7-3.4A5.5 5.5 0 0 1 7.5 6z"/>'},   // 13.9.60: видимость решает ensureTabbar (флаг games/админ)
  {id:'profile',name:'Профиль',ico:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'}
 ]:[
  {id:'learn',name:'Главная',ico:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>'},
@@ -726,8 +725,8 @@ let lastTabIdx=0;
 function ensureTabbar(){
   if($('#tabbar'))return;
   const nav=document.createElement('nav');nav.id='tabbar';nav.className='tabbar';NDT=null;
-  window.ZAI_TAB_GAMES=FLAG_ADMIN||FLAGS.games==='on';   // 13.9.60: «Игры» только по флагу games или админу (данные ещё сырые)
-  nav.innerHTML=`<i class="tabind" id="tabind"></i>`+TABS.filter(t=>t.id!=='games'||window.ZAI_TAB_GAMES).map(t=>`<button data-nav="${t.id}" aria-label="${t.name}"><svg viewBox="0 0 24 24">${t.ico}</svg><span>${t.name}</span></button>`).join('');
+  // 13.9.62: вкладки «Игры» больше нет — игры живут в «Кино» как раздел (как «Интервью»)
+  nav.innerHTML=`<i class="tabind" id="tabind"></i>`+TABS.map(t=>`<button data-nav="${t.id}" aria-label="${t.name}"><svg viewBox="0 0 24 24">${t.ico}</svg><span>${t.name}</span></button>`).join('');
   document.body.appendChild(nav);
   nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{
     if(store.tab===b.dataset.nav&&screen==='home'){window.scrollTo({top:0,behavior:'smooth'});return;}
@@ -747,7 +746,7 @@ function renderTab(id){
   // 12.5: рубильник «тех. работы» — игрокам заглушка, админу всё как обычно
   if(flagOf('all')!=='on'){screen='home';ensureTabbar();mount(`<div class="mnt"><i>🎬</i><b>Кинотеатр временно обновляется</b><span>Меняем плёнку и чиним проектор. Загляни чуть позже — прогресс никуда не денется.</span></div>`,'tabscr');return;}
   id=id||store.tab||(window.ZAI_ON?'learn':'learn');
-  if(id==='games'&&!FLAG_ADMIN&&FLAGS.games!=='on')id='kino';   // 13.9.60: Игры за флагом games
+  if(id==='games')id='kino';   // 13.9.62: вкладки «Игры» нет — игры в «Кино» разделом (страховка от старого store.tab)
   if(!['learn','kino','dict','games','profile'].includes(id))id='learn';   // 13.9.61: фолбэк — «Сегодня»
   try{if(id==='kino'&&flagOf('kino')==='hide')id='learn';}catch(e){}
   const vis=id,sub=false;
@@ -995,7 +994,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.61';
+const APP_V='13.9.62';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -1715,9 +1714,9 @@ const SUB_SHORT={'en+ru':'EN·RU','en+de':'EN·DE','de+ru':'DE·RU',en:'EN',de:'
 const SUB_COL={en:2,ru:3,de:4};
 
 // разделы кинозала: фильмы, сериалы, клипы. Сцены одного сериала (поле show) собираются в одну карточку.
-const SC_KIND={film:'Фильм',series:'Сериал',clip:'Клип',interview:'Интервью'};
+const SC_KIND={film:'Фильм',series:'Сериал',clip:'Клип',interview:'Интервью',game:'Игра'};   // 13.9.62: игры = раздел в «Кино», как интервью
 // 12.7: интервью — как фильмы: человек = «фильм» (поле show), куски интервью = сцены
-const SC_CATS=[['all','Все'],['film','Фильмы'],['series','Сериалы'],['interview','Интервью'],['clip','Клипы']];
+const SC_CATS=[['all','Все'],['film','Фильмы'],['series','Сериалы'],['interview','Интервью'],['game','Игры'],['clip','Клипы']];
 // 13.5: язык Кинозала = язык фильма (English / Deutsch — немецкий дубляж и «Бункер»), как в словаре
 const scLang=s=>s&&s.lang==='de'?'de':'en';
 const kinoLang=()=>store.kinoLang||(store.langs&&store.langs[0]==='de'?'de':'en');
@@ -1732,9 +1731,11 @@ function kinoCard(s){const L=scLearned(s),T=scTotal(s),d=scP(s.id).done.length;
     <span class="kp-bar"><i style="width:${Math.round(L/T*100)}%\"></i></span></span></button>`;}
 // 13.9.39 (ТЗ-13.9.32, P2 экран 7): «Кино» как в макете (.cell 7) — поиск, сегмент разделов с едущей плашкой, уровни A1–C1 фильтром,
 // сетка постеров 3 в ряд (уровень, полоска прогресса), постеры входят каскадом. Стиль — styles/nd.css (n-*). «Как было» — kinoTabHTML ниже
-const ND_KCAT={film:'Фильмы',series:'Сериалы',interview:'Интервью',clip:'Клипы'};
+const ND_KCAT={film:'Фильмы',series:'Сериалы',interview:'Интервью',game:'Игры',clip:'Клипы'};
 function ndKinoState(){const kl=kinoLang(),inL=s=>scLang(s)===kl&&flagOf('scene-'+s.id)!=='hide';
-  const kinds=['film','series','interview','clip'].filter(k=>SCENES.some(s=>inL(s)&&(s.kind||'film')===k));
+  // 13.9.62: раздел «Игры» встаёт сам — есть сцены с kind game или хотя бы одна игра в GAMES (как «Интервью»)
+  const hasGame=SCENES.some(s=>inL(s)&&(s.kind||'film')==='game')||!!gmData();
+  const kinds=['film','series','interview','game','clip'].filter(k=>k==='game'?hasGame:SCENES.some(s=>inL(s)&&(s.kind||'film')===k));
   const cat=kinds.includes(store.kinoCat)?store.kinoCat:kinds[0]||'film';
   const G={},cards=[];for(const s of SCENES){if(!inL(s)||(s.kind||'film')!==cat)continue;const h=s.show||s.id;if(!G[h]){G[h]=[];cards.push(h);}G[h].push(s);}
   const me=CEFR.indexOf(store.cefr||'');let lv=store.kinoLv||(me>=0?'me':'all');if(lv==='me'&&me<0)lv='all';
@@ -1744,6 +1745,13 @@ function ndKinoState(){const kl=kinoLang(),inL=s=>scLang(s)===kl&&flagOf('scene-
   const have=CEFR.filter(c=>all.some(x=>x.lvs.includes(c)));
   return {kl,kinds,cat,lv,band,have,list:all.filter(x=>x.lvs.some(c=>band.includes(c)))};}
 function ndKinoBody(K){
+  if(K.cat==='game'&&!SCENES.some(s=>(s.kind||'film')==='game')){   // 13.9.62: игр-сцен ещё нет — карточки игр из GAMES («игра как фильм»)
+    const GS=window.__DATA&&window.__DATA.GAMES||{};
+    const gc=Object.keys(GS).map(gid=>{const g=GS[gid],hi=(g.heroes||[]).find(h=>h.img),n=(g.heroes||[]).reduce((a,h)=>a+(h.dialogs||[]).length,0);
+      return `<button class="n-po" data-game="${gid}" aria-label="${esc(g.name)}">
+        <span class="n-pi" style="${hi?`background-image:url('${assetUrl(hi.img)}')`:'background:linear-gradient(150deg,#3A3226,#14100A)'}"><span class="n-chip n">Игра</span><u><i style="width:0%"></i></u></span>
+        <span class="n-pt">${esc(g.name)}</span></button>`;}).join('');
+    return `<div class="n-lbl"><span>Игры</span><span>${Object.keys(GS).length}</span></div>${gc?`<div class="n-pg">${gc}</div>`:'<div class="n-empty">Пока пусто — игры в пути</div>'}`;}
   const lbl=K.lv==='me'?'Для твоего уровня':K.lv==='all'?'Все уровни':'Уровень '+K.lv;
   const po=x=>`<button class="n-po" ${x.L.length===1?`data-sc="${x.s.id}"`:`data-show="${esc(x.h)}"`} aria-label="${esc(x.s.show||x.s.title)}">
       <span class="n-pi" style="background-image:url('${scCover(x.s,'poster.jpg')}'),url('${scCover(x.s,'cover.jpg')}')"><span class="n-chip ${x.lv.toLowerCase()}">${x.lv}</span>${x.age?'<span class="n-po-b">18+</span>':x.lk?'<span class="n-po-b">🔒</span>':x.p===100?'<span class="n-po-b ok">✓</span>':''}<u><i style="width:${x.p}%"></i></u></span>
@@ -1760,7 +1768,7 @@ function ndKinoHTML(){const K=ndKinoState(),nDe=SCENES.some(s=>s.lang==='de'&&fl
   </div>`;}
 function ndBindKino(){const root=$('.n-kino');if(!root)return;
   const body=()=>{const b=$('#nKb');b.innerHTML=ndKinoBody(ndKinoState());bindB();};
-  const bindB=()=>{$$('.n-kino .n-po').forEach(b=>b.onclick=()=>{haptic('medium');sfx('tap');b.dataset.sc?renderScene(b.dataset.sc):renderShow(b.dataset.show);});
+  const bindB=()=>{$$('.n-kino .n-po').forEach(b=>b.onclick=()=>{haptic('medium');sfx('tap');b.dataset.sc?renderScene(b.dataset.sc):b.dataset.game?renderGameScreen(b.dataset.game):renderShow(b.dataset.show);});
     $$('.n-kino [data-lv]').forEach(b=>b.onclick=()=>{const v=b.dataset.lv,K=ndKinoState();sfx('sel');haptic('light');store.kinoLv=K.lv===v&&v!=='all'?'':v;save();body();});};
   root.querySelector('[data-go="search"]').onclick=()=>{sfx('tap');renderSearch();};
   $$('.n-kino [data-kl]').forEach(b=>b.onclick=()=>{if(b.dataset.kl===kinoLang())return;sfx('page');haptic('light');store.kinoLang=b.dataset.kl;save();renderTab('kino');});
@@ -1769,7 +1777,7 @@ function ndBindKino(){const root=$('.n-kino');if(!root)return;
   bindB();}
 function kinoTabHTML(){if(ndOn())return ndKinoHTML();
   const kl=kinoLang(),inL=s=>scLang(s)===kl,nL=l=>SCENES.filter(s=>scLang(s)===l&&flagOf('scene-'+s.id)!=='hide').length;
-  const cats=SC_CATS.filter(([k])=>k==='all'||SCENES.some(s=>inL(s)&&(s.kind||'film')===k));
+  const cats=SC_CATS.filter(([k])=>k==='all'||(k==='game'?!!gmData():SCENES.some(s=>inL(s)&&(s.kind||'film')===k)));   // 13.9.62: «Игры» встаёт сам
   const cat=cats.some(([k])=>k===store.kinoCat)?store.kinoCat:'all';
   const list=SCENES.filter(s=>inL(s)&&(cat==='all'||(s.kind||'film')===cat));
   // сериал с несколькими сценами — одна карточка, внутри список его сцен
@@ -1777,18 +1785,22 @@ function kinoTabHTML(){if(ndOn())return ndKinoHTML();
   for(const s of list){if(s.show){if(!shows[s.show]){shows[s.show]=[];cards.push({show:s.show});}shows[s.show].push(s);}else cards.push({s});}
   const html=cards.map(c=>{if(c.s)return kinoCard(c.s);const L=shows[c.show];if(L.length===1)return kinoCard(L[0]);const s=L[0];
     return `<button class="kposter ${s.theme} show poster anim${L.every(x=>scMasterPct(x)===100)?' mastered':''}" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${scCover(s,'poster.jpg')}'),url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${lvcHTML(L.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,L[0]))}<span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
+  const GS=cat==='game'?(window.__DATA&&window.__DATA.GAMES||{}):{};   // 13.9.62: игр-сцен ещё нет — карточки игр из GAMES
+  const gcards=cat==='game'?Object.keys(GS).map(gid=>{const g=GS[gid],hn=(g.heroes||[]).length;
+    return `<button class="kposter noir show poster anim" data-g="${gid}"><span class="kp-img" style="background:linear-gradient(150deg,#3A3226,#14100A)"></span><span class="kp-grad"></span><span class="kp-t"><em>Игра</em><b>${esc(g.name)}</b><small>${hn} ${plural(hn,['герой','героя','героев'])} · диалоги</small></span></button>`;}).join(''):'';
   return `<h1 class="title anim">${ndOn()?'Кино':'Кинозал'}</h1>
     <p class="lead anim" style="margin:4px 0 12px">${kl==='de'?'Сцены на немецком: дубляж и немецкое кино. Учишь немецкий по живой речи.':'Смотришь сцену с субтитрами, разбираешь живые фразы, проверяешь себя.'}</p>
     ${nL('de')?`<div class="dx-lang klang anim"><button data-kl="en" class="${kl==='en'?'on':''}">${FLAG.en} English <i>${nL('en')}</i></button><button data-kl="de" class="${kl==='de'?'on':''}">${FLAG.de} Deutsch <i>${nL('de')}</i></button></div>`:''}
     <button class="srch-pill anim" onclick="renderSearch()">${ui('search')}<span>Найти фразу, сцену или слово</span></button>
     ${cats.length>2?`<div class="kcats anim">${cats.map(([k,l])=>`<button data-cat="${k}" class="${cat===k?'on':''}">${l}</button>`).join('')}</div>`:''}
-    <div class="kgrid${kl==='de'?' k-de':''}">${html}</div>
+    <div class="kgrid${kl==='de'?' k-de':''}">${cat==='game'?gcards:html}</div>
     <div class="ksoon anim"><b>Скоро</b> новые сцены, серии и клипы</div>`;
 }
 function bindKino(){if($('.n-kino'))return ndBindKino();$$('[data-sc]').forEach(b=>b.onclick=()=>{haptic('medium');sfx('tap');renderScene(b.dataset.sc);});
   $$('[data-cat]').forEach(b=>b.onclick=()=>{sfx('sel');store.kinoCat=b.dataset.cat;save();renderTab('kino');});
   $$('[data-kl]').forEach(b=>b.onclick=()=>{if(b.dataset.kl===kinoLang())return;sfx('page');haptic('light');store.kinoLang=b.dataset.kl;save();renderTab('kino');});
-  $$('[data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});}
+  $$('[data-show]').forEach(b=>b.onclick=()=>{haptic('medium');renderShow(b.dataset.show);});
+  $$('[data-g]').forEach(b=>b.onclick=()=>{haptic('medium');sfx('tap');renderGameScreen(b.dataset.g);});}   // 13.9.62
 // страница сериала: все его сцены
 function renderShow(name){
   const L=SCENES.filter(s=>s.show===name);if(!L.length){renderTab('kino');return;}
@@ -4656,6 +4668,13 @@ function gmFace(h){const in2=(h.name||'?').split(/[\s&]+/).filter(Boolean).map(w
     :`<div class="gm-face" style="background-image:url('${esc(u)}')"></div>`;}
   return `<div class="gm-face gm-ph" style="--h:${hue}">${esc(in2)}</div>`;}
 function gmDots(h){const u=Math.min(5,gmUse(h)||0);return u?`<i class="gm-dots">${'●'.repeat(u)}${'○'.repeat(5-u)}</i>`:'';}   // 13.9.60: clamp — repeat(5-u) падал при use>5
+// 13.9.62: игра как «фильм» — страница игры из «Кино → Игры» (вкладки «Игры» больше нет). Внутри — движок диалогов (герои → диалоги, выборка, рандом)
+function renderGameScreen(gid){const GS=window.__DATA&&window.__DATA.GAMES||{},g=GS[gid];if(!g){renderTab('kino');return;}
+  screen='show';backBtn(true);setWorld('neutral');GM.mode='browse';GM.hero=null;GM.dlg=null;GM.por=null;GM.pick.clear();
+  mount(`<div class="n-scr n-gam"><div class="n-gamtop"><button class="gm-back" id="gmBackB">← Сцены</button></div><div class="gm-root anim" id="gmRoot"><div class="gm-wait">Загружаю…</div></div></div>`,'tabscr showscr');
+  gmMount();
+  const bb=$('#gmBackB');if(bb)bb.onclick=()=>{sfx('tap');haptic('sel');renderTab('kino');};
+}
 function gamesTabHTML(){return `<h1 class="title anim">Игры</h1><div class="gm-root anim" id="gmRoot"><div class="gm-wait">Загружаю…</div></div>`;}
 function bindGames(){setTimeout(gmMount,50);}
 function gmMount(){
