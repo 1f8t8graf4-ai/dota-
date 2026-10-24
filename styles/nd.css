@@ -544,6 +544,8 @@ body[data-look="nd"] .onb-coll i:nth-child(1){--tr:-6deg}body[data-look="nd"] .o
 body[data-look="nd"] .onb-coll i:nth-child(4){--tr:5deg}body[data-look="nd"] .onb-coll i:nth-child(5){--tr:-4deg}body[data-look="nd"] .onb-coll i:nth-child(6){--tr:2deg}
 @keyframes n-fl{from{transform:translateY(-3px) rotate(var(--tr))}to{transform:translateY(3px) rotate(var(--tr))}}
 
-/* Плеер (п.3): окошко слова поверх окна фразы — «стопкой»: окно под шторкой слова темнеет; transform не трогаем (там sheetUp), только filter */
-body[data-look="nd"] .sc-sheetwrap>:first-child{transition:filter .3s var(--ease)}
-body[data-look="nd"] .sc-sheetwrap.under>:first-child{filter:brightness(.64) saturate(.9)}
+/* Плеер (п.3): окошко слова поверх окна фразы — «стопкой»: окно под шторкой затемняется.
+   13.9.60: transition:filter рвётся на iPhone — затемнение через ::after с opacity (анимируется только opacity) */
+body[data-look="nd"] .sc-sheetwrap>:first-child{position:relative}
+body[data-look="nd"] .sc-sheetwrap>:first-child::after{content:'';position:absolute;inset:0;border-radius:inherit;background:#000;opacity:0;transition:opacity .3s var(--ease);pointer-events:none;z-index:2}
+body[data-look="nd"] .sc-sheetwrap.under>:first-child::after{opacity:.36}

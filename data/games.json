@@ -165,13 +165,13 @@
         },
         {
          "s": "Venator",
-         "en": "We're about be shot at, and you're dressed like you just got off a shift at the circus. So yes. I have concerns.",
+         "en": "We're about to be shot at, and you're dressed like you just got off a shift at the circus. So yes. I have concerns.",
          "ru": "Нас сейчас будут расстреливать, а ты одета, как будто только со смены в цирке. Так что да — у меня есть сомнения."
         },
         {
          "s": "Celeste",
          "en": "It's the sideshow, but close enough.",
-         "ru": "Это было парк-шоу аттракционов, но неважно."
+         "ru": "Это балаган, но неважно."
         },
         {
          "s": "Venator",
@@ -250,7 +250,7 @@
         {
          "s": "Silver",
          "en": "Let me guess... \"I'm gonna stab you in the front\"?",
-         "ru": "Дай угадаю… «Я ударю тебя в спину спереди»?"
+         "ru": "Дай угадаю… «Ударю тебя ножом спереди»?"
         },
         {
          "s": "Venator",
@@ -283,7 +283,7 @@
        ]
       }
      ],
-     "img": "https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/venator.mp4"
+     "img": "scenes/games/deadlock/venator.mp4"
     },
     {
      "id": "rem",

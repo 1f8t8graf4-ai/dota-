@@ -707,7 +707,7 @@ function renderSettings(){
 const TABS=window.ZAI_ON?[
  {id:'dict',name:'Словарь',ico:'<path d="M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/><path d="M9 8h5"/>'},
  {id:'kino',name:'Сцены',ico:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 3l3 3M14 3l-3 3"/><path d="M10 10.5v5l4-2.5z"/>'},
- {id:'games',name:'Игры',ico:'<path d="M6 12h4M8 10v4"/><circle cx="15.5" cy="11" r=".9"/><circle cx="17.5" cy="13" r=".9"/><path d="M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3.4a3 3 0 0 1-5.2 1.4L14.6 16h-5.2l-1.4 1.4a3 3 0 0 1-5.2-1.4l-.7-3.4A5.5 5.5 0 0 1 7.5 6z"/>'},
+ {id:'games',name:'Игры',ico:'<path d="M6 12h4M8 10v4"/><circle cx="15.5" cy="11" r=".9"/><circle cx="17.5" cy="13" r=".9"/><path d="M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3.4a3 3 0 0 1-5.2 1.4L14.6 16h-5.2l-1.4 1.4a3 3 0 0 1-5.2-1.4l-.7-3.4A5.5 5.5 0 0 1 7.5 6z"/>'},   // 13.9.60: видимость решает ensureTabbar (флаг games/админ)
  {id:'profile',name:'Профиль',ico:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'}
 ]:[
  {id:'learn',name:'Главная',ico:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>'},
@@ -719,7 +719,8 @@ let lastTabIdx=0;
 function ensureTabbar(){
   if($('#tabbar'))return;
   const nav=document.createElement('nav');nav.id='tabbar';nav.className='tabbar';NDT=null;
-  nav.innerHTML=`<i class="tabind" id="tabind"></i>`+TABS.map(t=>`<button data-nav="${t.id}" aria-label="${t.name}"><svg viewBox="0 0 24 24">${t.ico}</svg><span>${t.name}</span></button>`).join('');
+  window.ZAI_TAB_GAMES=FLAG_ADMIN||FLAGS.games==='on';   // 13.9.60: «Игры» только по флагу games или админу (данные ещё сырые)
+  nav.innerHTML=`<i class="tabind" id="tabind"></i>`+TABS.filter(t=>t.id!=='games'||window.ZAI_TAB_GAMES).map(t=>`<button data-nav="${t.id}" aria-label="${t.name}"><svg viewBox="0 0 24 24">${t.ico}</svg><span>${t.name}</span></button>`).join('');
   document.body.appendChild(nav);
   nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{
     if(store.tab===b.dataset.nav&&screen==='home'){window.scrollTo({top:0,behavior:'smooth'});return;}
@@ -740,6 +741,7 @@ function renderTab(id){
   if(flagOf('all')!=='on'){screen='home';ensureTabbar();mount(`<div class="mnt"><i>🎬</i><b>Кинотеатр временно обновляется</b><span>Меняем плёнку и чиним проектор. Загляни чуть позже — прогресс никуда не денется.</span></div>`,'tabscr');return;}
   id=id||store.tab||(window.ZAI_ON?'dict':'learn');
   if(window.ZAI_ON&&id==='learn')id='dict';
+  if(id==='games'&&!FLAG_ADMIN&&FLAGS.games!=='on')id='kino';   // 13.9.60: Игры за флагом games
   if(!['learn','kino','dict','games','profile'].includes(id))id=window.ZAI_ON?'dict':'learn';   // 13.9.43: игр больше нет; z-ai-version: «Словарь» первый; 13.9.57: вкладка «Игры» вернулась
   try{if(id==='kino'&&flagOf('kino')==='hide')id=window.ZAI_ON?'dict':'learn';}catch(e){}
   const vis=id,sub=false;
@@ -904,7 +906,8 @@ const SCENES=window.__DATA.SCENES;
 /* z-ai-version: короткие эпизоды — части длиннее ~70 с или 10 фраз режутся на куски по репликам; тот же видеофайл (p.vf = исходный индекс файла),
    фразы-копии; a/b — исходные абсолютные секунды, плеер и субтитры считают относительно них */
 const ZAI_MAX_EP=10, ZAI_MAX_SEC=70, ZAI_MIN_SEC=8, ZAI_GAP=12, ZAI_TAIL=8;
-(function zaiChunk(){
+const ZAI_CHUNK=false;   // 13.9.60: резка ВЫКЛЮЧЕНА (Клауд: у кусков 2+ видео/субтитры/паузы съезжали — время считают от p.a куска, а файл играет с начала исходной части; id фраз после резки ломали прогресс, награды и «Фразу дня»). Включать только после правок (а)–(е) из отчёта Клауда.
+if(ZAI_CHUNK)(function zaiChunk(){
   for(const s of SCENES){
     if(s.kind==='clip'||!s.parts||!s.parts.length)continue;
     if(!s.parts.some(p=>(p.b-p.a)>ZAI_MAX_SEC||(p.ph||[]).length>ZAI_MAX_EP))continue;
@@ -986,7 +989,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.59';
+const APP_V='13.9.60';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -1329,9 +1332,8 @@ function lineWords(s,p){const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b);
 // 13.6: «🔊 Слово» — играет само слово, а не всю реплику. Время каждого слова — scenes/<id>/wt.json (распознано по эпизодам);
 // выражение из нескольких слов — от первого до последнего. Нет файла или слово не нашлось — голос устройства.
 const WT={};
-const WT_LOCAL=new Set('last-of-us-joel-ellie'.split(' '));   // 13.9.51: wt.json в data/wt/ репо — в R2 лежит старый (не синхронизирован по голосу, sub_sync 13.9.40), карaoke-матчинг ломался
 function wtLoad(sid){if(!WT[sid]){const s=scOf(sid),load=k=>fetch(k).then(r=>r.ok?r.json():null).then(d=>d&&d.w||null).catch(()=>null);
-  WT[sid]=s?load(WT_LOCAL.has(sid)?'data/wt/'+sid+'.json?v='+APP_V:assetUrl(scKey(s,'wt.json'))):Promise.resolve(null);}return WT[sid];}
+  WT[sid]=s?load(assetUrl(scKey(s,'wt.json'))):Promise.resolve(null);}return WT[sid];}   // 13.9.60: WT_LOCAL убран вместе с хвостами удалённой TLOU (13.9.55)
 const wtN=w=>String(w||'').toLowerCase().replace(/[’`]/g,"'").replace(/[^a-zß-öø-ÿ0-9']/g,'');
 const wtEq=(x,y)=>x===y||x.replace(/'s$/,'')===y.replace(/'s$/,'')||(Math.min(x.length,y.length)>=4&&(x.startsWith(y)||y.startsWith(x))&&Math.abs(x.length-y.length)<=3);
 async function wordPlay(sid,say,a,b,btn){const s=scOf(sid);if(!s)return false;const T=String(say||'').split(/\s+/).map(wtN).filter(Boolean);if(!T.length)return false;
@@ -2211,7 +2213,7 @@ function scBindSeek(){const r=$('#scsk');if(!r||!SV)return;
 // 13.6: после эпизода — все реплики с переводом: ★ — фразы, по которым будут задания, ▶ — переслушать, слова нажимаются.
 // Человек сам выбирает, что пересмотреть, и сам идёт «К заданиям» (раньше — только «Ты встретил N фраз» и сразу проверка).
 // 13.9.40: разбор после эпизода — из двух частей: сверху 4 фразы, по которым будут задания (карточки), ниже свёрнуто «Все реплики эпизода»
-function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b),act=scAct(p.ph),test=phPick(act,4);
+function epReview(box,s,i,p,o){o=o||{};const rows=s.subs.filter(r=>r[0]>=p.a-0.3&&r[0]<p.b),act=scAct(p.ph),test=phPick(act,3);   // 13.9.60: заданий после эпизода 3, брали 4
   const seen=new Set(),cnt=()=>{const c=box.querySelector('#rvCnt');if(c)c.textContent=`${test.filter(f=>seen.has(f.id)).length} из ${test.length} послушал`;};
   const tip=f=>{const t=scNoteS(f)||f.use||'';return t?esc(scShort(t)):'';};
   box.innerHTML=`<div class="rv rv2"><div class="rv-head"><span class="ep-end-k">🎬 Эпизод досмотрен</span><b>Будут в заданиях · ${test.length}</b>
@@ -4408,7 +4410,7 @@ function renderOnb(n){if(!ONB)ONB={st:0,lang:kinoLang(),goal:null,cefr:null,min:
     $('#onbGo').onclick=()=>{sfx('tap');renderOnb(4);};return;}
   if(n===4){const c=O.cefr||'A2',g=ONB_GOALS.find(x=>x[0]===O.goal),L=[`Уровень ${c} — подбираем сцены`,`${g?g[2]:'Цель'} — нужные фразы первыми`,`${O.min} минут в день — ${O.min>=15?'эпизод и повторение':O.min>=10?'один эпизод':'пара фраз'}`,O.daily?'Фраза дня — в 12:00 в чате с ботом':'Без фразы дня — включишь в настройках'];
     // 13.9.49 (движения Germanize, п.7): коллаж постеров «наших фильмов», слегка плавает
-    const cols=SCENES.filter(x=>x.kind!=='clip'),stp=Math.max(1,Math.floor(cols.length/6));
+    const cols=SCENES.filter(x=>x.kind!=='clip'&&!ageLock(x)&&flagOf('scene-'+x.id)==='on'),stp=Math.max(1,Math.floor(cols.length/6));   // 13.9.60: коллаж онбординга без 18+ и скрытых сцен
     const collage=cols.filter((x,i)=>i%stp===0).slice(0,6).map((s,j)=>`<i style="background-image:url('${filmImg(s,'bdm.jpg')||assetUrl(scKey(s,'cover.jpg'))}');--fd:${(j*.35).toFixed(2)}s"></i>`).join('');
     onbMount(4,`<div class="onb-coll" aria-hidden="true">${collage}</div><h1 class="onb-h">Настраиваем <span class="mk">под тебя</span></h1>
       <div class="onb-ring"><svg viewBox="0 0 40 40"><circle class="bg" cx="20" cy="20" r="17" pathLength="100"/><circle class="fg" cx="20" cy="20" r="17" pathLength="100"/></svg><b id="onbPc">0%</b></div>
@@ -4643,11 +4645,11 @@ function gmUse(h){return (h.dialogs||[]).reduce((m,d)=>Math.max(m,d.use||0),0);}
 function gmAllLines(hs){const out=[];(hs||gmHeroes()).forEach(h=>(h.dialogs||[]).forEach(d=>d.lines.forEach(l=>out.push({h,d,l}))));return out;}
 function gmFace(h){const in2=(h.name||'?').split(/[\s&]+/).filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
   const hue=((h.id||'x').split('').reduce((a,c)=>a+c.charCodeAt(0),0)*37)%360;
-  if(h.img)return/\.mp4($|\?)/i.test(h.img)
-    ?`<div class="gm-face gm-vwrap"><video class="gm-vid" src="${esc(h.img)}" autoplay muted loop playsinline preload="metadata"></video></div>`
-    :`<div class="gm-face" style="background-image:url('${esc(h.img)}')"></div>`;
+  if(h.img){const u=assetUrl(h.img);return/\.mp4($|\?)/i.test(u)   // 13.9.60: img — относительный ключ через assetUrl (абсолютный адрес воркера из данных убран)
+    ?`<div class="gm-face gm-vwrap"><video class="gm-vid" src="${esc(u)}" autoplay muted loop playsinline preload="metadata"></video></div>`
+    :`<div class="gm-face" style="background-image:url('${esc(u)}')"></div>`;}
   return `<div class="gm-face gm-ph" style="--h:${hue}">${esc(in2)}</div>`;}
-function gmDots(h){const u=gmUse(h);return u?`<i class="gm-dots">${'●'.repeat(u)}${'○'.repeat(5-u)}</i>`:'';}
+function gmDots(h){const u=Math.min(5,gmUse(h)||0);return u?`<i class="gm-dots">${'●'.repeat(u)}${'○'.repeat(5-u)}</i>`:'';}   // 13.9.60: clamp — repeat(5-u) падал при use>5
 function gamesTabHTML(){return `<h1 class="title anim">Игры</h1><div class="gm-root anim" id="gmRoot"><div class="gm-wait">Загружаю…</div></div>`;}
 function bindGames(){setTimeout(gmMount,50);}
 function gmMount(){
