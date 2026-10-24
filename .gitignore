@@ -15,3 +15,7 @@ __pycache__/
 .r2-key
 **/.cf-token
 **/.r2-key
+
+# собранные макеты 24.10 (исходники — *.tpl.html и assets/)
+дизайн/макеты-24.10/glavnaya-dd.html
+дизайн/макеты-24.10/tri-dizajna.html
