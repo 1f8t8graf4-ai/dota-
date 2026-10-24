@@ -41,7 +41,7 @@ const portrait=k=>`${CDN}heroes/${k}.png`;
 
 /* ================= хранилище ================= */
 const KEY='dota_quiz_v4',OLD_KEY='dota_deutsch_v3',MKEY='dota_m_v1';
-const fresh=()=>({scLv:scLvNow(),v:5,onboarded:false,langs:['en'],roles:'all',gold:0,streak:0,lastDay:null,best:{},answered:0,correct:0,snd:true,fx:true,full:true,hideLearned:true,mistakes:[],duels:{},theme:'hud',tab:'learn',path:'mix',games:['dota','cs2'],auto:false,goal:20,ach:{}});
+const fresh=()=>({scLv:scLvNow(),v:5,onboarded:false,langs:['en'],roles:'all',gold:0,streak:0,lastDay:null,best:{},answered:0,correct:0,snd:true,fx:true,full:true,hideLearned:true,mistakes:[],duels:{},theme:'hud',znew:1,tab:'learn',path:'mix',games:['dota','cs2'],auto:false,goal:20,ach:{}});
 function migrate(o){
   const f=fresh();
   ['gold','streak','lastDay','answered','correct','snd','fx'].forEach(k=>{if(o[k]!==undefined)f[k]=o[k];});
@@ -159,6 +159,7 @@ function lookApply(cls){const b=document.body;if(!b)return;let k='';try{if(windo
   const c=cls||'';
   const on=k==='nd';
   if(k==='nd'){ndCss();ndEmoWatch();}   // 13.9.37: стиль макета — лениво; 13.9.42: значки вместо эмодзи
+  if(window.ZAI_ON)applyZNew();   // 13.9.59: «Кино 2.0» — новый вид (store.znew) поверх zai.css
   b.dataset.ndk=k==='nd'&&(ND_DARK.test(c)||/\bscnscr\b/.test(c)&&['scep','dircut'].includes(b.dataset.scr))?'1':'';   // витрины и плеер — всегда тёмные
   b.classList.toggle('nd',k==='nd');b.classList.toggle('zai',!!window.ZAI_ON);ndTabs(k==='nd');
   if(on){if(b.dataset.look!==k)b.dataset.look=k;lookFont(k);ndTheme();}else{if(b.dataset.look)delete b.dataset.look;delete b.dataset.ndt;}}
@@ -172,6 +173,9 @@ const ndOn=()=>{try{if(window.ZAI_ON)return true;return FLAG_ADMIN?(store.look==
 function ndDark(){try{if(TG&&TG.colorScheme)return TG.colorScheme==='dark';}catch(e){}try{return matchMedia('(prefers-color-scheme: dark)').matches;}catch(e){return true;}}
 function ndTheme(){const b=document.body;if(!b||b.dataset.look!=='nd')return;const t=ndDark()||b.dataset.ndk==='1'?'dark':'light';/* эпизод с плеером — всегда тёмный */if(b.dataset.ndt!==t){b.dataset.ndt=t;try{tgHead();}catch(e){}}}
 try{if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>ndTheme());}catch(e){}
+// 13.9.59 — «Кино 2.0» (styles/znew.css): новый вид поверх zai.css; по умолчанию включён (store.znew),
+// выключатель — Настройки → «Оформление» и строка в Профиле. Без .znew на body — старый вид (zai.css как был).
+function applyZNew(){if(!document.body)return;document.body.classList.toggle('znew',store.znew!==0);try{tgHead();}catch(e){}}
 const ND_TABS={learn:['Сегодня','<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>'],kino:[window.ZAI_ON?'Сцены':'Кино','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 5l2 4M12 5l2 4M17 5l2 4"/>'],
   dict:['Словарь','<path d="M6 4h11a1 1 0 0 1 1 1v15l-6-3-6 3V5a1 1 0 0 1 1-1z"/>'],games:['Игры','<path d="M6 12h4M8 10v4"/><circle cx="15.5" cy="11" r=".9"/><circle cx="17.5" cy="13" r=".9"/><path d="M7.5 6h9a5.5 5.5 0 0 1 5.4 6.6l-.7 3.4a3 3 0 0 1-5.2 1.4L14.6 16h-5.2l-1.4 1.4a3 3 0 0 1-5.2-1.4l-.7-3.4A5.5 5.5 0 0 1 7.5 6z"/>'],profile:['Профиль','<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>']};   // 13.9.37: значки из макета; 13.9.57: + Игры
 let NDT=null;
@@ -270,7 +274,8 @@ function nCta(el,go){if(!el||el._ncta)return;el._ncta=1;
 // Шапка: буква в круге, «Добрый день, Андрей», «B1 · цель — работа», 🔥 и кольцо цели дня; план на кадре фильма с «Потяни»; строки «Фраза дня» и «Смотреть дальше»
 function ndCss(){if(document.getElementById('ndcss'))return;const l=document.createElement('link');l.id='ndcss';l.rel='stylesheet';l.href='styles/nd.css?v='+APP_V;
   l.onload=l.onerror=()=>document.body.classList.add('ndc');document.head.appendChild(l);setTimeout(()=>document.body.classList.add('ndc'),3000);
-  if(window.ZAI_ON&&!document.getElementById('zaicss')){const z=document.createElement('link');z.id='zaicss';z.rel='stylesheet';z.href='styles/zai.css?v='+APP_V;document.head.appendChild(z);}}
+  if(window.ZAI_ON&&!document.getElementById('zaicss')){const z=document.createElement('link');z.id='zaicss';z.rel='stylesheet';z.href='styles/zai.css?v='+APP_V;document.head.appendChild(z);}
+  if(window.ZAI_ON&&!document.getElementById('znewcss')){const w=document.createElement('link');w.id='znewcss';w.rel='stylesheet';w.href='styles/znew.css?v='+APP_V;document.head.appendChild(w);}}
 const ND_GOAL={work:'работа',travel:'путешествия',films:'кино без перевода',move:'переезд',self:'для себя'};
 function ndNext(c){const sh=x=>x.show||x.title,ok=x=>x.kind!=='clip'&&flagOf('scene-'+x.id)==='on'&&!ageLock(x)&&scLang(x)===scLang(c.s)&&sh(x)!==sh(c.s);
   const todo=x=>{const P=scP(x.id);return x.parts.findIndex((p,k)=>!P.done.includes(k));},go=x=>{const P=scP(x.id);return P.done.length||Object.keys(P.w||{}).length?1:0;};
@@ -349,7 +354,7 @@ function cloudLoad(key){return new Promise(res=>{try{if(!TG||!TG.CloudStorage)re
     TG.CloudStorage.getItems(ks,(e2,v)=>{if(e2)CLOUD_ERR=true;if(e2||!v)return res(null);try{res(JSON.parse(ks.map(k=>v[k]||'').join('')));}catch(x){res(null);}});});}catch(e){CLOUD_ERR=true;res(null);}});}
 // 12.1: синк телефон ↔ ПК. Раньше облачная копия бралась целиком, только если в ней больше ответов, — «Мои слова», награды,
 // покупки и звёзды с другого устройства терялись. Теперь — слияние по полям; настройки экрана/звука остаются свои.
-const LOCAL_ONLY=['dictVar','knWin','knLines','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','kinoLv','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scPauseV','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy','look','lookV','premC'];
+const LOCAL_ONLY=['dictVar','knWin','knLines','dlDemo','ssRev','subSz','subSame','introV','shopTab','hmOff','snd','fx','full','fullV','theme','znew','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','scStopPh','bg3d','labSub','labSnd','labUi','tts','autoSpeak','srCat','kinoCat','kinoLang','kinoLv','dictV','dictVS','scLast','srRecent','admPlayer','scPause','scPauseV','scFill','tourV','tourPlayed','tourLang','collTab','knView','knCards','knMyV','knMyKind','knMyBy','look','lookV','premC'];
 function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==null?SV0:base),o=Object.assign({},cNew?L:c,cNew?c:L);
   const uni=k=>Object.assign({},c[k]||{},L[k]||{});
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
@@ -646,7 +651,7 @@ function renderSettings(){
   const row=(k,n,d)=>`<button class="checkrow frame" data-t="${k}" aria-pressed="${!!store[k]}">${BOX}<span class="ct"><span class="cn">${n}</span>${d?`<span class="cd">${d}</span>`:''}</span></button>`;
   mount(`
     <div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Настройки</h1></div>
-    ${FLAG_ADMIN?`<section class="set-sec"><h2>Дизайн</h2>${segCtl('look',[['nd','Новый'],['cur','Как было']],store.look==='nd'?'nd':'cur')}<p class="hint-line" style="margin-top:6px;opacity:.7">Видно только тебе, на этом устройстве. «Новый» — редизайн: светлый или тёмный, как Telegram, вкладки «Сегодня · Кино · Словарь · Профиль», игры — в Профиле. «Как было» — вернуть старый вид. Игрокам — админка → «Доступ» → «Дизайн «Новый» — кому».</p>${ndOn()?'<button class="btn ghost" id="onbAgain" style="margin-top:10px;width:100%">Пройти первый запуск заново</button>':''}</section>`:''}
+    <section class="set-sec"><h2>Оформление</h2>${segCtl('znew',[['1','✨ Новый'],['0','Старый']],store.znew===0?'0':'1')}<p class="hint-line" style="margin-top:6px;opacity:.7">«Новый» — «Кино 2.0»: тёплый янтарь, свет как в Telegram (крем днём, бархат ночью), живые анимации. «Старый» — вид до редизайна. Видно только тебе, на этом устройстве.</p>${FLAG_ADMIN?'<button class="btn ghost" id="onbAgain" style="margin-top:10px;width:100%">Пройти первый запуск заново</button>':''}</section>
 
     <section class="set-sec"><h2>Обучение</h2>
       <div class="stack">${row('tts','Озвучка слов','Голос устройства читает слова и фразы. На некоторых телефонах звучит как робот, поэтому по умолчанию выключено.')}
@@ -677,7 +682,7 @@ function renderSettings(){
   bindSeg('goal',v=>{store.goal=+v;save();sfx('sel');});
   bindSeg('scPause',v=>{store.scPause=v;save();sfx('sel');});
   bindSeg('subSz',v=>{store.subSz=v;save();applySubPrefs();});
-  bindSeg('look',v=>{store.look=v==='cur'?'':v;save();});   // 13.9.22: дизайн на пробу — включится на Главной, в Кинозале, Словаре и сценах
+  bindSeg('znew',v=>{store.znew=+v;save();applyZNew();sfx('sel');haptic('sel');toast(v==='1'?'Новый вид ✨':'Старый вид');});   // 13.9.59: «Кино 2.0» / старый — сразу, без перезагрузки
   if($('#onbAgain'))$('#onbAgain').onclick=()=>{sfx('tap');ONB=null;renderOnb(0);};   // 13.9.28: посмотреть новый первый запуск
   bindSeg('knWin',v=>{store.knWin=v;save();});   // 13.9.11: окно фразы нового словаря — полэкрана (по умолчанию с 13.9.15) / на весь экран
   bindLangChoice(v=>{store.langs=choiceToLangs(v);save();});
@@ -819,7 +824,7 @@ function ndProfileHTML(){const name=userName()||'Игрок',photo=tgPhoto(),pb=
       ${row('setBtn','⚙️','Настройки','язык, субтитры, звук, дизайн')}
       ${row('helpBtn','❓','Как пользоваться','все функции коротко')}
       ${FLAG_ADMIN?row('admBtn','🛡','Админ-панель','игроки, доступ, проверка'):''}
-      ${FLAG_ADMIN?row('pfLook','↺','Вернуть старый дизайн','вернуть «Новый» — Настройки → Дизайн'):''}
+      ${row('pfZnew',store.znew===0?'↺':'✨',store.znew===0?'Оформление: старое':'Оформление: новое ✨','тап — переключить «Новый/Старый»')}
     </div>
     <p class="foot">Версия ${APP_V}</p>`;}
 function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
@@ -830,7 +835,7 @@ function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
   $('#pfShop').onclick=()=>{sfx('tap');renderShop();};
   $('#helpBtn').onclick=()=>{sfx('tap');renderHelp();};
   if($('#pfPrem'))$('#pfPrem').onclick=()=>{sfx('tap');haptic('sel');renderPaywall(null,()=>renderTab('profile'));};
-  if($('#pfLook'))$('#pfLook').onclick=()=>{sfx('tap');haptic('sel');store.look='';save();renderTab('profile');toast('Старый дизайн. «Новый» — Настройки → Дизайн');};   // 13.9.29: откат в одно нажатие
+  if($('#pfZnew'))$('#pfZnew').onclick=()=>{sfx('tap');haptic('sel');store.znew=store.znew===0?1:0;save();applyZNew();renderTab('profile');toast(store.znew?'Новый вид ✨':'Старый вид');};   // 13.9.59: переключение оформления в один тап
   $$('.ach').forEach(b=>b.onclick=()=>{const a=ACH.find(x=>x.id===b.dataset.a);sfx('sel');toast(`${a.n}: ${a.d}${store.ach[a.id]?'. Получено':''}`);});
   ndCount($$('.ndcnt'));}
 // цифры набегают от 0 за 0.9 с, один раз (без анимаций — сразу итог)
@@ -981,7 +986,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.58';
+const APP_V='13.9.59';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
