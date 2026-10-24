@@ -101,7 +101,8 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   await P.evaluate(()=>renderSettings());await P.waitForTimeout(600);
   r=await P.evaluate(()=>[...document.querySelectorAll('[data-seg="look"] button')].map(x=>x.textContent+(x.getAttribute('aria-pressed')==='true'?'*':'')));
   ok('Настройки: Новый* / Как было',r.join('|')==='Новый*|Как было',r);
-  await P.click('[data-seg="look"] [data-v="cur"]');await P.evaluate(()=>renderTab('learn'));await P.waitForTimeout(900);
+  if(await P.$('[data-seg="look"] [data-v="cur"]'))await P.click('[data-seg="look"] [data-v="cur"]');else await P.evaluate(()=>{store.look='';save();});   // 24.10: переключателя в Настройках больше нет (FAIL строкой выше) — откат напрямую, чтобы тест шёл дальше, а не падал
+  await P.evaluate(()=>renderTab('learn'));await P.waitForTimeout(900);
   r=await st(P);r.hh=await P.evaluate(()=>!!document.querySelector('.hh #hCont')&&!document.querySelector('.n-today'));
   ok('«Как было» — откат: вида нет, вкладки «Главная · Кинозал · Словарь · Профиль», Главная прежняя',!r.look&&!r.nd&&r.tabs.join('|')==='Главная|Кинозал|Словарь|Профиль'&&r.hh,r);
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(500);
@@ -142,10 +143,14 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   r=await OP.evaluate(()=>({h:document.querySelector('.onb-h').textContent,go:document.querySelector('#onbGo').disabled}));
   ok('Deutsch + цель: заголовок «немецкий», «Дальше» активна',/немецк/.test(r.h)&&!r.go,r);
   await OP.click('#onbGo');await OP.waitForTimeout(300);await OP.click('#onbGo');await OP.waitForTimeout(300);
-  const seen=[];for(let i=0;i<15;i++){const w=await OP.evaluate(()=>{const c=document.querySelector('.onb-card:not(.nx)');return c?[c.querySelector('b').textContent,c.querySelector('.art')?c.querySelector('.art').className:'',ONB.lt.fakeAt.includes(ONB.lt.i)?1:0]:null;});if(!w)break;seen.push(w);
+  const seen=[];for(let i=0;i<15;i++){const w=await OP.evaluate(()=>{const c=document.querySelector('.onb-card:not(.nx)');return c?[c.querySelector('b').textContent,c.querySelector('.art')?c.querySelector('.art').className:'',ONB.lt.fakeAt.includes(ONB.lt.i)?1:0,c.classList.contains('ch')?1:0]:null;});if(!w)break;seen.push(w);
+    if(w[3]){await OP.click('.onb-chs .onb-o[data-ok="1"]');await OP.waitForTimeout(800);continue;}   // 24.10 (П4): «выбери перевод»
     await OP.click(w[2]||i%2?'#onbYes':'#onbNo');await OP.waitForTimeout(80);}
   const fakes=seen.filter(x=>x[2]).length,arts=seen.filter(x=>/a-(der|die|das)/.test(x[1])).length;
   ok('15 карточек, среди них выдуманные слова, у существительных артикль цветом',seen.length===15&&fakes>=2&&arts>=3,{n:seen.length,fakes,arts});
+  r=await OP.evaluate(()=>({ph:ONB.lt.ph,ch:ONB.lt.seq.filter(x=>x[4]==='c').length,rows:document.querySelectorAll('.onb-cr[data-j]').length,fk:document.querySelectorAll('.onb-cr.fk').length}));
+  ok('24.10 (П4): 2 карточки «выбери перевод»; потом «Проверь себя» — слова «знаю» и строка выдуманных',r.ph==='chk'&&r.ch===2&&r.rows>=1&&r.fk===1,r);
+  for(const x of await OP.$$('.onb-cr[data-j] .onb-cb .y'))await x.click();await OP.click('#onbGo');await OP.waitForTimeout(300);
   r=await OP.evaluate(()=>({gram:!!document.querySelector('.onb-q'),txt:document.querySelector('.onb-q')&&document.querySelector('.onb-q').textContent}));
   ok('потом грамматика (немецкая)',r.gram&&/[äöüßA-Za-z]/.test(r.txt),r);
   for(let i=0;i<4;i++){await OP.click('.onb-opts .onb-o');await OP.waitForTimeout(1100);}
@@ -172,7 +177,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   await UP.click('#onbB');await UP.waitForTimeout(500);ok('«назад» на первом шаге → Настройки',await UP.evaluate(()=>screen==='settings'));
   await UP.click('#onbAgain');await UP.waitForTimeout(400);await UP.click('.onb-o[data-g="travel"]');await UP.click('#onbGo');await UP.waitForTimeout(300);await UP.click('#onbSkip');await UP.waitForTimeout(500);
   ok('«Закрыть» со второго шага → Настройки',await UP.evaluate(()=>screen==='settings'));
-  await UP.evaluate(()=>renderTab('profile'));await UP.waitForTimeout(700);await UP.click('#pfLook');await UP.waitForTimeout(700);r=await st(UP);
+  await UP.evaluate(()=>renderTab('profile'));await UP.waitForTimeout(700);if(await UP.$('#pfLook'))await UP.click('#pfLook');await UP.waitForTimeout(700);r=await st(UP);   // 24.10: кнопки может не быть — тогда FAIL ниже, а не падение всего теста
   ok('Профиль → «Вернуть старый дизайн» — сразу прежний вид',!r.look&&!r.nd&&r.tabs.includes('Кинозал'),r);
   // словарь: метки уровня у фраз (A1–C1) и артикль цветом у немецких слов
   await P.evaluate(()=>{store.look='nd';store.myw=Object.assign({},store.myw,{'wolf-lunch-de|der kunde':{k:'wolf-lunch-de|der kunde',w:'der Kunde',ru:'клиент',sid:'wolf-lunch-de',pi:0,st:1,due:Date.now()+864e5,a:0,at:Date.now()}});save();renderTab('dict');});await P.waitForTimeout(2600);

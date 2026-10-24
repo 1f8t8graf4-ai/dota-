@@ -49,7 +49,11 @@ const VPS=[[1280,720],[1440,900],[1920,1080]];
     await P.mouse.move(cx,cy);await P.mouse.down();await P.mouse.move(cx+150,cy,{steps:10});await P.mouse.up();await P.waitForTimeout(700);
     const after=await P.evaluate(()=>({n:ONB.lt.seq.length,fk:ONB.lt.fk,last:ONB.lt.seq[ONB.lt.seq.length-1],i:ONB.lt.i}));
     if(w===1440)ok(`${tag}: перетащил мышью на 150 px вправо — «знаю»`,after.i===3&&(after.n===before.n+1&&after.last[1]===true||after.fk===before.fk+1),{before,after});
-    while(await P.evaluate(()=>ONB.lt.ph==='w'))await P.evaluate(()=>{const b=document.getElementById('onbYes');if(b)b.click();}),await P.waitForTimeout(380);
+    while(await P.evaluate(()=>ONB.lt.ph==='w'))await P.evaluate(()=>{const b=document.getElementById('onbYes')||document.querySelector('.onb-chs .onb-o[data-ok="1"]');if(b)b.click();}),await P.waitForTimeout(380);   // 24.10 (П4): и «выбери перевод»
+    // 24.10 (П4): «Проверь себя» — кнопки в окне; «Знал» мышью, потом Enter — «Дальше»
+    if(await P.evaluate(()=>ONB.lt.ph==='chk')){await step('2b-check');for(const x of await P.$$('.onb-cr[data-j] .onb-cb .y'))await x.click();await P.keyboard.press('Enter');await P.waitForTimeout(500);
+      if(w===1440)ok(`${tag}: «Проверь себя» — «Знал» мышью, Enter — «Дальше»`,await P.evaluate(()=>ONB.lt.ph==='g'));
+      if(await P.evaluate(()=>ONB.lt.ph==='chk'))await P.evaluate(()=>document.getElementById('onbGo').click()),await P.waitForTimeout(400);}
     await step('3-grammar');
     while(await P.evaluate(()=>ONB.lt.ph==='g'))await P.evaluate(()=>{const b=document.querySelector('.onb-opts .onb-o');if(b)b.click();}),await P.waitForTimeout(1000);
     await step('4-level');

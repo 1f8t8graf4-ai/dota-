@@ -538,6 +538,7 @@ function uiClean(cls){if(ONB_VS&&!/\bonbscr\b/.test(cls||''))tgVSwipes(false);  
 try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}if(screen==='prem'&&!/\bpremscr\b/.test(cls||''))screen='home';   // 13.9.30: ушли с экрана премиума на экран, который сам screen не ставит (повторение) — «назад» не должен вести на премиум
   const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
   try{if(document.getElementById('ddx'))ddxClose(true);}catch(e){}   // 13.9.65: дуэль во весь рост не висит над новым экраном
+  try{if(document.getElementById('dvx'))dvClose();}catch(e){}   // 13.9.67: и бой Versus
   document.querySelectorAll('.pk,.dx-turn,.dx-shade,.cd2,.gatewrap,.sc-sheetwrap.poll,.sc-sheetwrap.unl,.pwa').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном; 13.6.3: и отсчёт 3-2-1
   document.querySelectorAll('.srv').forEach(o=>o.remove());   // 13.6: открытие покупки
   try{if(window.DL)DL.clean();}catch(e){}   // 13.7: варианты словаря — карта в руке, демо-пак
@@ -952,7 +953,7 @@ const SC_DAYS=[1,3,7,21,60];
 // повторение сразу по всем сценам: сколько фраз пора повторить и где
 const scDueAll=()=>SCENES.map(s=>({s,n:scDue(s).length})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
 let REVCHAIN=false;
-let REVC={sid:null,q:[],go:null};   // 13.9.67 (П8): повторение сцены порциями по 3 — ошибки переходят в следующую порцию («Ещё 3»)
+let REVC={sid:null,q:[],go:null};   // 13.9.69 (П8): повторение сцены порциями по 3 — ошибки переходят в следующую порцию («Ещё 3»)
 function startRevChain(){const L=scDueAll();if(!L.length){toast('Сегодня повторять нечего');return;}sfx('tap');REVCHAIN=true;renderScQuiz(L[0].s.id,'rev');}
 const scMine=()=>SCENES.flatMap(s=>{const P=scP(s.id);return s.parts.flatMap(p=>p.ph).filter(f=>!f.passive&&(P.m[f.id]||0)>0||P.r[f.id]).map(f=>({s,f,st:P.r[f.id]?P.r[f.id][0]:-1,m:P.m[f.id]||0}));});
 // звук фразы прямо из фильма: берём кусок эпизода (тот же mp4) с её начала до конца
@@ -962,7 +963,7 @@ function scClip(id,fid,btn,onEnd){const s=scOf(id);if(!s)return;let pi=-1,f=null
   if(!SCLIP){SCLIP=document.createElement('video');SCLIP.playsInline=true;SCLIP.setAttribute('playsinline','');SCLIP.preload='auto';SCLIP.style.display='none';document.body.appendChild(SCLIP);}
   clearInterval(SCLIP._t);$$('.sc-say.on').forEach(x=>x.classList.remove('on'));if(btn)btn.classList.add('on');
   if(SCLIP.dataset.src!==src){SCLIP.src=src;SCLIP.dataset.src=src;}
-  const go=()=>{const el=SCLIP,g=el._g=(el._g||0)+1;   // 13.9.67: два быстрых вызова — играет только последний (раньше лишний таймер жил вечно и после ухода с экрана сыпал ошибками)
+  const go=()=>{const el=SCLIP,g=el._g=(el._g||0)+1;   // 13.9.69: два быстрых вызова — играет только последний (раньше лишний таймер жил вечно и после ухода с экрана сыпал ошибками)
     const start=()=>{if(SCLIP!==el||el._g!==g)return;clearInterval(el._t);const pr=el.play();if(pr&&pr.catch)pr.catch(()=>{});
       const t=el._t=setInterval(()=>{if(SCLIP!==el||el._g!==g){clearInterval(t);return;}if(el.currentTime>=en||el.ended){el.pause();clearInterval(t);if(btn)btn.classList.remove('on');if(onEnd)onEnd();}},30);};
     SCLIP.pause();if(Math.abs(SCLIP.currentTime-st)<0.03){start();return;}SCLIP.addEventListener('seeked',start,{once:true});try{SCLIP.currentTime=st;}catch(e){start();}};
@@ -997,7 +998,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.66';
+const APP_V='13.9.69';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -1428,7 +1429,7 @@ function mywOpts(k){const right=mywHere(k);if(isPhr(k.w))return shuffle([right,.
 // подгрузить значения «тут» до заданий со словами (renderDaily / renderMyWordsQuiz): без них ответ был бы из словарика
 function mywCx(L,go){const need=[...new Set((L||[]).map(x=>x&&x.sid).filter(Boolean).map(wiLang))].filter(l=>!CX[l]);if(!need.length)return false;
   Promise.all(need.map(l=>cxLoad(l).catch(()=>null))).then(go,go);return true;}
-// 13.9.67 (П8, Андрей: «по системе TikTok — заданий не больше трёх»): повторение, «Мои слова», финал сцены и дуэль — по 3 за раз, дальше «Ещё 3?»
+// 13.9.69 (П8, Андрей: «по системе TikTok — заданий не больше трёх»): повторение, «Мои слова», финал сцены и дуэль — по 3 за раз, дальше «Ещё 3?»
 const SC_PORT=3;
 function renderMyWordsQuiz(list,back,pool){const bk=back||renderMyWords,P0=pool||shuffle((list||mywAll()).filter(x=>x.ru)),K=P0.slice(0,SC_PORT),REST=P0.slice(SC_PORT);if(!K.length){toast('Нет слов с переводом');bk();return;}
   if(!renderMyWordsQuiz._cx&&mywCx(K,()=>{renderMyWordsQuiz._cx=1;try{renderMyWordsQuiz(list,back,P0);}finally{renderMyWordsQuiz._cx=0;}}))return;   // 13.9.38
@@ -1496,7 +1497,7 @@ function wSRS(it,good){const now=Date.now();it.st=it.st||0;if(good){it.st=Math.m
 // o.train — фраза, которую ещё рано повторять, при верном ответе расписание не сдвигает (ошибка — вернётся завтра), o.nosrs — демо, прогресс не трогаем
 function renderDaily(list,o){o=o||{};const L0=list||dailyItems(),back=o.back||(()=>renderTab('learn'));
   if(!list&&L0.length&&store.revDone===dayKey(new Date())&&premGate('rev',back))return;   // 13.9.30: без премиума — один заход повторения в день (если включено в админке)
-  // 13.9.67 (П8): за раз — 3 задания, дальше «Ещё 3?». Ошибка — эта фраза в следующей порции (расписание и так вернёт её завтра)
+  // 13.9.69 (П8): за раз — 3 задания, дальше «Ещё 3?». Ошибка — эта фраза в следующей порции (расписание и так вернёт её завтра)
   const L=L0.slice(0,SC_PORT),REST=L0.slice(SC_PORT),CARRY=[];if(!o.all)o={...o,all:L0};
   if(!L0.length){mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Повторение</h1></div>
     <div class="dl-empty card anim"><div class="dl-ic">✅</div><b>На сегодня всё повторено</b><span>Фразы из сцен и твои слова вернутся, когда придёт их время. Можно посмотреть новый эпизод или сохранить новые слова.</span>
@@ -1515,7 +1516,7 @@ function renderDaily(list,o){o=o||{};const L0=list||dailyItems(),back=o.back||((
       <div class="sc-q sc-card dl-q"><div class="sc-meta">${meta}</div>${body}<div id="dlfb"></div></div></div>`,'scnscr');
     $('#dlx').onclick=()=>{sfx('tap');back();};}
   function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!o.nosrs&&!(good&&early)){if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);}res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
-    if(!good&&!q.re)CARRY.push({...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?(typeOn()?'dict':'pmean'):fitQ(q,'build'))});   // 13.9.67: повтор — в следующей порции
+    if(!good&&!q.re)CARRY.push({...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?(typeOn()?'dict':'pmean'):fitQ(q,'build'))});   // 13.9.69: повтор — в следующей порции
     sfx(good?'good':'bad');haptic(good?'ok':'err');
     $('#dlfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}">${html}<button class="sc-btn" id="dln">Дальше →</button></div>`;$('#dln').onclick=()=>{sfx('tap');next();};}
   function show(){const q=Q[n];
@@ -1575,7 +1576,7 @@ function renderDaily(list,o){o=o||{};const L0=list||dailyItems(),back=o.back||((
     onbSwipe(c,go,{tap:()=>{const sp=c.querySelector('.n-sp');if(sp)sp.classList.add('open');}});
     $('#rcNo').onclick=()=>go(false);$('#rcYes').onclick=()=>go(true);}
   function end(){remindSync(true);if(!o.train)ev('review','daily');if(!list&&!o.train){store.revDone=dayKey(new Date());save();}const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
-    const left=[...CARRY,...REST];   // 13.9.67: что осталось — следующими порциями по 3
+    const left=[...CARRY,...REST];   // 13.9.69: что осталось — следующими порциями по 3
     mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">${esc(o.title||'Повторение на сегодня')}</div><div class="sc-big">${good} / ${res.length}</div>
       <p class="sc-sub">${good===res.length?(o.train?'Всё вспомнил.':'Всё вспомнил. Следующая встреча — через несколько дней.'):'Что не вспомнилось — вернётся завтра. Так и запоминается.'}${left.length?` Осталось ещё ${left.length} — по три за раз.`:''}</p>
       <div class="sc-btns">${left.length?`<button class="sc-btn" id="dlmore">Ещё ${Math.min(SC_PORT,left.length)} →</button>`:o.train?`<button class="sc-btn" id="dlh3">Ещё раз</button>`:''}<button class="sc-btn${o.train||left.length?' ghost':''}" id="dlh2">${left.length?'Хватит':o.back?'Назад в словарь':'На главную'}</button></div></div></div>`,'scnscr');$('#dlh2').onclick=()=>back();
@@ -1679,7 +1680,7 @@ async function remindSync(force){
     const r=await fetch(API+'/api/remind',{method:'POST',headers:{'content-type':'application/json','x-init-data':TG.initData},body:JSON.stringify({next,n,off:!store.remind,doff:store.daily===false,top:remindTop()})});
     const j=await r.json();if(j&&j.ok){store.remindLast=key;save();}
   }catch(e){}}
-const scRevLeft=id=>{const s=scOf(id);return s?(REVC.sid===id?REVC.q.length:0)+scDue(s).length:0;};   // 13.9.67: сколько осталось в повторении сцены (ошибки — в следующей порции)
+const scRevLeft=id=>{const s=scOf(id);return s?(REVC.sid===id?REVC.q.length:0)+scDue(s).length:0;};   // 13.9.69: сколько осталось в повторении сцены (ошибки — в следующей порции)
 const scRevMore=id=>{const n=scRevLeft(id);return n?`<button class="sc-btn" id="scmore">Ещё ${Math.min(SC_PORT,n)} · осталось ${n} →</button>`:'';};
 const scRevNext=id=>{if(!REVCHAIN)return '';const L=scDueAll().filter(x=>x.s.id!==id);return L.length?`<button class="sc-btn" id="scnrev">Дальше: ${esc(L[0].s.title)} · ${L[0].n} →</button>`:'<p class="sc-sub" style="margin-top:8px">На сегодня всё повторено 👌</p>';};
 const scDue=s=>{const r=scP(s.id).r||{},now=Date.now();return s.parts.flatMap(p=>p.ph).filter(f=>r[f.id]&&r[f.id][1]<=now);};
@@ -1879,7 +1880,7 @@ function scPathHTML(s){const P=scP(s.id),next=s.parts.findIndex((p,i)=>!P.done.i
       <span class="pn-t"><b>Финал сцены</b><small>${bo?'Фразы всей сцены на слух, без субтитров'+' · +150':'Откроется, когда пройдёшь все эпизоды'}</small>${P.boss?starsHTML(P.boss):''}</span>${next<0&&!P.boss?'<span class="pn-go">Финал</span>':''}</button></div>`;}
 function scPathBind(s){$$('.pn[data-i]').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(!scEpOpen(s,i)){haptic('err');toast(`Сначала пройди эпизод ${String(i).padStart(2,'0')}`);return;}sfx('tap');renderScEp(s.id,i);});
   const bb=$('#scBoss');if(bb)bb.onclick=()=>{if(!scBossOpen(s)){haptic('err');toast('Финал откроется, когда пройдёшь все эпизоды');return;}sfx('tap');scBossStart(s.id);};}
-function scBossStart(id){const s=scOf(id),L=shuffle(s.parts.flatMap(p=>scAct(p.ph)).filter(f=>f.b>f.a)).slice(0,SC_PORT);   // 13.9.67: финал — 3 фразы (было 8)
+function scBossStart(id){const s=scOf(id),L=shuffle(s.parts.flatMap(p=>scAct(p.ph)).filter(f=>f.b>f.a)).slice(0,SC_PORT);   // 13.9.69: финал — 3 фразы (было 8)
   if(!L.length){toast('В этой сцене нет фраз');return;}renderScQuiz(id,{list:L,lesson:true,boss:true});}
 
 /* ---------- тест уровня: 1 минута при первом входе в эпизод ---------- */
@@ -2138,7 +2139,7 @@ function ndWpDeco(P,sv){const w=P.querySelector('.kwp-w');
 function ndEpDeco(s,i){try{wlvLoad();}catch(e){}const p=s.parts[i],sk=$('#scsk');if(!p||!sk||sk.parentNode.classList.contains('n-tlw'))return;
   const w=document.createElement('span');w.className='n-tlw';sk.parentNode.insertBefore(w,sk);w.appendChild(sk);const D=()=>SV&&isFinite(SV.duration)&&SV.duration>1?SV.duration:Math.max(1,p.b-p.a);
   const put=()=>{w.querySelectorAll('.n-tlm,.n-tlc').forEach(m=>m.remove());const d=D();scAct(p.ph).forEach(f=>{const x=(f.a-p.a)/d;if(x<0||x>1)return;const m=document.createElement('b');m.className='n-tlm';m.style.left=(x*100).toFixed(2)+'%';w.appendChild(m);});
-    epCuts(s,i).forEach(c=>{const x=(c-p.a)/d;if(x<=0||x>=1)return;const m=document.createElement('i');m.className='n-tlc';m.style.left=(x*100).toFixed(2)+'%';w.appendChild(m);});};   // 13.9.67: где кончается часть
+    epCuts(s,i).forEach(c=>{const x=(c-p.a)/d;if(x<=0||x>=1)return;const m=document.createElement('i');m.className='n-tlc';m.style.left=(x*100).toFixed(2)+'%';w.appendChild(m);});};   // 13.9.69: где кончается часть
   put();if(SV&&!(isFinite(SV.duration)&&SV.duration>1))SV.addEventListener('loadedmetadata',put,{once:true});}
 document.addEventListener('pointerdown',e=>{if(!ndOn()||!fxOK())return;const w=e.target.closest&&e.target.closest('.sc-subs .sw');if(!w||!SW)return;
   const R=SW.getBoundingClientRect(),z=parseFloat(getComputedStyle(document.body).zoom)||1,c=document.createElement('i');c.className='n-tapr';
@@ -2154,7 +2155,7 @@ function scTick(){
   if(box._kwWait&&SCUR&&WTD[SCUR.id]!=null){const r0=box._kwWait;box._kwWait=null;if(SW._row===r0)ndKaraSet(box,r0);}
   if(box._kw)ndKaraTick(box,t);
   if(SW._tick&&!SV.paused)SW._tick(t);   // 12.2: плашки-объяснения по ходу фильма
-  if(SW._cut&&!SV.paused)SW._cut(t);   // 13.9.67: эпизод длиннее минуты — пауза между частями
+  if(SW._cut&&!SV.paused)SW._cut(t);   // 13.9.69: эпизод длиннее минуты — пауза между частями
   SRAF=SV.paused?0:requestAnimationFrame(scTick);
 }
 const SCTOUR=[['🎬','Сначала просто смотри','Эпизод идёт целиком, с субтитрами. На полезных фразах появится короткое объяснение: что значит и когда пригодится. Никаких заданий во время фильма.'],
@@ -2307,7 +2308,7 @@ function renderScEp(id,i,opts){setTimeout(()=>{wiLoad(wiLang(id));cxLoad(wiLang(
     box.querySelectorAll('.ep-php').forEach(b=>b.onclick=()=>{sfx('tap');$('#scvo').style.display='none';if(window.innerWidth<1000)window.scrollTo({top:0,behavior:'smooth'});scPlay(+b.dataset.a-p.a-0.1,+b.dataset.b-p.a+0.15,()=>{$('#scvo').style.display='';});});
     const n=$('#epPhN');if(n)n.textContent=full?`${WX.list.length}`:`${MET.size} из ${WX.list.length}`;};
   // 12.2: при просмотре — только плашки-объяснения, без заданий (задания — в проверке после фильма)
-  const PT=scPartAttach(s,i,p);   // 13.9.67: части ≤ 1 мин
+  const PT=scPartAttach(s,i,p);   // 13.9.69: части ≤ 1 мин
   {WX=scWatchAttach(s,p,$('#vqSlot'),{met:f=>{MET.add(f.id);phList(false);}});if(watched)phList(true);
     $$('.ep-pz button').forEach(b=>b.onclick=()=>{sfx('sel');store.scPause=b.dataset.pz;save();$$('.ep-pz button').forEach(x=>x.classList.toggle('on',x===b));toast(scPauseOn()?'⏸ Видео будет ждать на фразах':'▶ Объяснения поверх, кино не останавливается');});}
   const tabs=()=>$$('.ep-tabs button').forEach(b=>{const t=b.dataset.tab;b.classList.toggle('on',t==='watch');b.classList.toggle('done',t==='watch'&&(P.w[i]||P.done.includes(i)));});
@@ -2449,7 +2450,7 @@ function scWatchAttach(s,p,box,o){o=o||{};const L=scWatchFX(p).map(f=>({f,a:f.a-
       if(!b||b.dataset.x!=='go')return;sfx('tap');const res=stop||w._resume;kill();if(res)resume();});}
   SW._watchKill=kill;
   return {list:L.map(y=>y.f)};}
-// 13.9.67 (П8, Андрей: «по системе TikTok — кусок не больше минуты»): эпизод длиннее минуты смотрится частями. Видео, id фраз, номера эпизодов
+// 13.9.69 (П8, Андрей: «по системе TikTok — кусок не больше минуты»): эпизод длиннее минуты смотрится частями. Видео, id фраз, номера эпизодов
 // и прогресс — как были (без перерезки файлов): плеер сам встаёт на паузе между репликами — «Часть 1 из 2 · Дальше».
 // Разрез — в паузе между строками субтитров, не внутри фразы и не там, где сейчас всплывёт плашка; части примерно поровну, ≤ ~1 мин.
 // Досмотренная часть — P.pt[i] (только на этом устройстве): вернулся — эпизод идёт со следующей части. Режиссёрская версия — без разрывов.
@@ -2537,7 +2538,7 @@ const mywWhen=t=>{const h=(t-Date.now())/36e5;return h<12?'через пару �
 // новые карты после эпизода: вылетают, переворачиваются и с ускорением падают в словарь
 /* =====================================================================================
    11.0 — ДУЭЛЬ ПО СЦЕНЕ (PvP с другом по ссылке)
-   • Наперегонки: 3 одинаковых вопроса у обоих (до 13.9.67 — 8), живая полоска соперника; больше верных (при равенстве — быстрее) — забирает банк.
+   • Наперегонки: 3 одинаковых вопроса у обоих (до 13.9.69 — 8), живая полоска соперника; больше верных (при равенстве — быстрее) — забирает банк.
    • Вместе: по очереди, общий счёт; тот, чей ход, может нажать «🆘 Помоги» — вопрос откроется у друга.
    • Сервер — воркер бота bot/worker.js, маршрут /api/pvp (D1). Ссылка: APP_LINK?startapp=kv_CODE. Верные ответы → карты в словарь.
    ===================================================================================== */
@@ -2552,7 +2553,7 @@ const kvErr=e=>toast(e&&e.msg?e.msg:'Дуэли пока недоступны: �
 // 13.6.3: в немецкой сцене звучит и пишется f.de (раньше дуэль была на английском: только «что значит», без «на слух» и пропусков)
 function kvMakeQs(s,ep){const all=s.parts.flatMap(p=>p.ph),de=s.lang==='de',T=f=>de?f.de:f.en;let L=scAct(s.parts[ep].ph).filter(f=>f.b>f.a);
   if(L.length<SC_PORT)L=[...L,...shuffle(s.parts.flatMap(p=>scAct(p.ph)).filter(f=>f.b>f.a&&!L.includes(f)))].slice(0,SC_PORT);
-  L=shuffle(L).slice(0,SC_PORT);const types=['listen','mean','gap'];   // 13.9.67 (П8): 3 вопроса — по одному каждого вида (было 8)
+  L=shuffle(L).slice(0,SC_PORT);const types=['listen','mean','gap'];   // 13.9.69 (П8): 3 вопроса — по одному каждого вида (было 8)
   return L.map((f,i)=>{let t=types[i%3];
     if(t==='listen'){const o=scListenOpts(f,all,de);if(o&&o.length>=2)return {fid:f.id,t,right:T(f),opts:shuffle([T(f),...o.slice(0,2)])};t='mean';}
     if(t==='gap'&&f.gap&&wordRe(f.gap).test(T(f))){const g=(!de&&f.gx&&f.gx.length>=2?f.gx:de?scGapOptsDe(f,all):scGapOpts(f,all)).filter(x=>x.toLowerCase()!==f.gap.toLowerCase()).slice(0,2);
@@ -2585,6 +2586,7 @@ function kvLobby(){const R=KV.room,s=scOf(R.sid);
   $('#kvSh').onclick=()=>{sfx('tap');kvShare();};$('#kvCp').onclick=()=>{sfx('tap');try{navigator.clipboard.writeText(kvLink()).then(()=>toast('Ссылка скопирована'),()=>toast(kvLink()));}catch(e){toast(kvLink());}};
   $('#kvX').onclick=()=>kvLeave();}
 async function kvJoin(code){try{const r=await kvNet({a:'state',code});if(!r.ok){kvErr(r);renderHome();return;}
+    if(/^dd:/.test(String(r.v&&r.v.sid||'')))return dvJoin(code,r.v);   // 13.9.67: Versus по Deadlock — свой экран
     const R=r.v,s=scOf(R.sid);if(!s){toast('Этой сцены нет в твоей версии приложения');renderHome();return;}
     if(ageLock(s)){renderHome();ageAsk(()=>kvJoin(code));return;}
     const me=R.A&&R.A.id===kvUid()?'A':R.B&&R.B.id===kvUid()?'B':null;
@@ -2606,7 +2608,8 @@ const kvFoe=()=>KV.role==='A'?'B':'A';
 // 11.2: очки наперегонки — верно 100 + до 50 за скорость (полный бонус за мгновенный ответ, ноль после 20 с); ошибка 0.
 // Одна лишняя верная (+100) всегда сильнее любой скорости — сначала точность, потом время.
 const KV_FAST=20000,kvPts=a=>a&&a.ok?100+Math.round(50*Math.max(0,1-a.ms/KV_FAST)):0,kvSum=p=>Object.values((p&&p.ans)||{}).reduce((t,a)=>t+kvPts(a),0);
-function kvApply(R){if(!KV)return;const prev=KV.room;KV.room=R;
+function kvApply(R){if(KV&&KV.dd)return dvApply(R);   // 13.9.67: Versus по Deadlock
+  if(!KV)return;const prev=KV.room;KV.room=R;
   if(R.st==='wait'){if(!document.querySelector('.kv-lobby'))kvLobby();return;}
   if((R.st==='left'||R.st==='closed')&&R[kvFoe()]&&R[kvFoe()].left&&!KV.over){KV.over=true;kvEnd(true);return;}
   if(!KV.started){KV.started=true;kvPay();kvCountdown();return;}
@@ -2751,7 +2754,7 @@ function scQuizPlan(id,i){
   SCUR={id,i:typeof i==='number'?i:0};   // язык фразы (scT, scIsDe) — по текущей сцене
   const all=s.parts.flatMap(x=>x.ph);
   const normalList=()=>phPick(scAct(s.parts[i].ph),window.ZAI_ON?3:4);   // z-ai-version: 3 коротких задания вместо 4
-  if(rev){if(REVC.go!==id)REVC={sid:id,q:[],go:null};REVC.go=null;}   // 13.9.67: «Ещё 3» продолжает, новый заход — с чистого листа
+  if(rev){if(REVC.go!==id)REVC={sid:id,q:[],go:null};REVC.go=null;}   // 13.9.69: «Ещё 3» продолжает, новый заход — с чистого листа
   const RC=rev?REVC.q.splice(0,SC_PORT):[];   // ошибки прошлой порции — первыми
   const list=les?i.list.filter(f=>!f.passive).slice(0,SC_PORT):rev?[...RC.map(x=>x.f),...shuffle(scDue(s)).filter(f=>!RC.some(x=>x.f===f))].slice(0,SC_PORT):normalList();
   if(!list.length)return {s,list,Q:[]};
@@ -2910,7 +2913,7 @@ function renderScQuiz(id,i){
     const answer=(right,el)=>{
       if(q.res!==undefined)return;
       q.res=right;{const ln=$('#scLh'),tp=$('#scTip');if(ln)ln.hidden=true;if(tp)tp.hidden=true;}
-      const r0=P.r[f.id];   // 13.9.67: шаг повторения до ответа — ошибка в повторении возвращает фразу завтра (раньше выпадала из расписания)
+      const r0=P.r[f.id];   // 13.9.69: шаг повторения до ответа — ошибка в повторении возвращает фразу завтра (раньше выпадала из расписания)
       try{const ms=Date.now()-(q.t0||Date.now()),nw=build?build.tk.length:scToks(String(correct||'')).length;ev('qtime',type+'|'+ms+'|'+nw,{t:type,ms,n:nw});}catch(e){}   // 13.9.34: время ответа (медиана — в «Воронке»)   // 12.6: «Не знаю» и подсказка про кубики висели после ответа
       if(right)ok++;else wrong++;
       if(right){combo++;if(combo>=3&&combo%3===0)toast(`🔥 ${combo} подряд без ошибок`);}else combo=0;
@@ -2924,7 +2927,7 @@ function renderScQuiz(id,i){
         delete P.r[f.id];
         if(!q.re){
           const retryType=fitT(type==='life'?(canBuild(f)?'build':'listen'):(canLife(f)?'life':(canBuild(f)?'build':'listen')),f);
-          if(rev){REVC.sid=id;REVC.q.push({f,type:retryType,re:true});}   // 13.9.67: в повторении — в следующую порцию, в порции не больше трёх
+          if(rev){REVC.sid=id;REVC.q.push({f,type:retryType,re:true});}   // 13.9.69: в повторении — в следующую порцию, в порции не больше трёх
           else Q.splice(Math.min(Q.length,n+3),0,{f,type:retryType,re:true});
         }
       }
@@ -2936,7 +2939,7 @@ function renderScQuiz(id,i){
           const prev=P.r[f.id]||[0,0],st=prev[0]+1;
           if(st>=SC_DAYS.length){delete P.r[f.id];P.rDone=P.rDone||{};P.rDone[f.id]=1;}
           else P.r[f.id]=[st,Date.now()+SC_DAYS[st]*864e5];
-        }else P.r[f.id]=[Math.max(0,((r0||[0,0])[0]||0)-1),Date.now()+864e5];   // 13.9.67: как в повторении на сегодня (phSRS) — вернётся завтра
+        }else P.r[f.id]=[Math.max(0,((r0||[0,0])[0]||0)-1),Date.now()+864e5];   // 13.9.69: как в повторении на сегодня (phSRS) — вернётся завтра
       }
       if(rev&&right)store.reviews=(store.reviews||0)+1;
       scSave();sfx(right?'good':'bad');haptic(right?'ok':'err');countAnswer();save();if(right)fxGood(el||$('#scbmsg'));
@@ -3032,7 +3035,7 @@ function renderScQuiz(id,i){
 
   function end(){
     try{const ms=Date.now()-T0;ev('qtime','all|'+ms+'|'+Q.length,{t:'all',ms,n:Q.length});}catch(e){}
-    const firsts=rev?Q:Q.filter(x=>!x.re),okF=firsts.filter(x=>x.res).length,passed=okF===firsts.length;   // 13.9.67: в повторении повторы ошибок идут следующей порцией — считаем все три
+    const firsts=rev?Q:Q.filter(x=>!x.re),okF=firsts.filter(x=>x.res).length,passed=okF===firsts.length;   // 13.9.69: в повторении повторы ошибок идут следующей порцией — считаем все три
     const firstTime=!rev&&!les&&!P.done.includes(i);
     if(!rev&&!les&&!P.done.includes(i)){P.done.push(i);scSave();}
     if(!rev&&les&&!boss&&!P.done.includes(Q[0].f.pi)){P.done.push(Q[0].f.pi);scSave();}
@@ -3639,6 +3642,7 @@ function bindLearn(){
 function onBack(){
   ND_BACK=Date.now();   // 13.9.33: экран «назад» приходит слева
   if(document.getElementById('ddx')){ddxClose();return;}   // 13.9.65: дуэль во весь рост — «назад» закрывает её
+  if(document.getElementById('dvx')||document.querySelector('.sc-sheetwrap.dvs')){dvBack();return;}   // 13.9.67: Versus — выйти из боя / закрыть шторку
   if(screen==='onb'){onbBack();return;}   // 13.9.28: первый запуск — шаг назад
   if(screen==='prem'){(PREM.back||(()=>renderTab('learn')))();return;}   // 13.9.30: экран премиума
   {const g=document.querySelector('.gatewrap');if(g){g.click();return;}}   // аудит: окно «Технический перерыв / Скоро» закрывается «назад»
@@ -4525,32 +4529,69 @@ function onbSwipe(card,go,o){o=o||{};let x0=null,dx=0,vx=0,lx=0,lt=0;const k=v=>
 // 13.9.33 (P0.1, Андрей с ПК: «как мне смахнуть на пк?»): ПК — мышь; клавиши ← → в карточках, Enter — главная кнопка шага
 const onbPC=()=>{try{return matchMedia('(hover:hover) and (pointer:fine)').matches;}catch(e){return false;}};
 document.addEventListener('keydown',e=>{if(screen!=='onb'||e.metaKey||e.ctrlKey||e.altKey||/INPUT|TEXTAREA|SELECT/.test((e.target||{}).tagName||''))return;
-  const k=e.key;if(k==='Enter'&&(e.target||{}).tagName==='BUTTON')return;const b=k==='ArrowRight'?$('#onbYes'):k==='ArrowLeft'?$('#onbNo'):k==='Enter'?$('#onbGo'):null;if(!b||b.disabled)return;e.preventDefault();b.click();});
+  const k=e.key;if(k==='Enter'&&(e.target||{}).tagName==='BUTTON')return;const b=k==='ArrowRight'?$('#onbYes'):k==='ArrowLeft'?$('#onbNo'):k==='Enter'?$('#onbGo'):/^[0-3]$/.test(k)?$(`.onb-chs [data-n="${k}"]`):null;if(!b||b.disabled)return;e.preventDefault();b.click();});   // 24.10 (П4): 1–3 — вариант перевода, 0 — «Не знаю»
 function onbLevel(){const O=ONB,lang=O.lang;
   if(!O.lt)O.lt={ph:'intro'};const T=O.lt;
   if(T.ph==='intro'){
     onbMount(1,`<h1 class="onb-h">Узнаем твой <span class="mk">уровень</span></h1><p class="onb-p">Слова — из реплик наших фильмов. ${onbPC()?'Знаешь слово — перетащи карточку вправо или нажми →. Ещё учишь — влево или ←.':'Знаешь слово — смахни вправо, ещё учишь — влево.'} Около минуты.</p>
       <div class="onb-demo"><div class="onb-dc l">ещё учу</div><div class="onb-dc c">${lang==='de'?'gestern':'tomorrow'}</div><div class="onb-dc r">знаю</div></div>`,
       `<button class="onb-go" id="onbGo">Начать тест</button><button class="onb-alt" id="onbPick">Знаю свой уровень</button>`);
-    const start=()=>{sfx('tap');Object.assign(T,{ph:'w',b:2,i:0,seq:[],used:{},fakeAt:[3,7,11],fk:0});onbLevel();};$('#onbGo').onclick=start;
+    const start=()=>{sfx('tap');Object.assign(T,{ph:'w',b:2,i:0,seq:[],used:{},fakeAt:[3,7,11],chAt:[5,12],fk:0,fkW:[],ch:[],ck:null,ckA:{}});O.cefr=null;onbLevel();};$('#onbGo').onclick=start;
     {const dc=$('.onb-dc.c');if(dc)onbSwipe(dc,know=>{dc._d=1;sfx(know?'tick':'tap');haptic('sel');if(fxOK())dc.animate([{transform:dc.style.transform||'none'},{transform:`translateX(${know?420:-420}px) rotate(${know?18:-18}deg)`,opacity:0}],{duration:300,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}).onfinish=start;else start();},
       {tap:()=>{dc.animate([{transform:'none'},{transform:'translateX(26px) rotate(1.5deg)'},{transform:'none'}],{duration:520,easing:'cubic-bezier(.3,1.4,.5,1)'});}});}   // 13.9.38
     $('#onbPick').onclick=()=>{sfx('tap');T.ph='res';T.pick=1;onbLevel();};return;}
-  if(T.ph==='w'){const N=15;if(T.i>=N){T.ph='g';T.gi=0;T.gok=[];onbLevel();return;}
-    const fake=T.fakeAt.includes(T.i);let w;
+  if(T.ph==='w'){const N=15;if(T.i>=N){T.gi=0;T.gok=[];T.ck=onbCkList(T);T.ckA={};T.ph=T.ck.length?'chk':'g';onbLevel();return;}
+    // 24.10 (П4, Андрей: «чуть более разнообразно, чем просто свайпы»): на 6-й и 13-й карточке — «выбери перевод из 3» (ответ весит в 1,5 раза больше свайпа)
+    const fake=T.fakeAt.includes(T.i),ch=!fake&&(T.chAt||[]).includes(T.i);let w=null,wb=T.b;
     if(fake)w=[LT_FAKE[lang][T.fakeAt.indexOf(T.i)%LT_FAKE[lang].length],null];
-    else{const pool=LT_W[lang][T.b].filter(x=>!T.used[x[0]]);w=pool[Math.floor(Math.random()*pool.length)]||LT_W[lang][T.b][0];T.used[w[0]]=1;}
-    const art=lang==='de'&&/^(der|die|das) /.exec(w[0]);
+    else{for(const d of [0,-1,1,-2,2]){const bb=T.b+d;if(bb<0||bb>4)continue;const pool=LT_W[lang][bb].filter(x=>!T.used[x[0]]);if(pool.length){w=pool[Math.floor(Math.random()*pool.length)];wb=bb;break;}}   // слова полосы кончились — соседняя, без повторов
+      if(!w)w=LT_W[lang][T.b][0];T.used[w[0]]=1;}
+    const art=lang==='de'&&/^(der|die|das) /.exec(w[0]),wd=`${art?`<em class="art a-${art[1]}">${art[1]}</em>`:''}<b>${esc(art?w[0].slice(4):w[0])}</b>`;
+    if(ch){const opts=onbChOpts(lang,wb,w);
+      onbMount(1,`<h1 class="onb-h sm">Что значит это слово?${onbPC()?'<small>Нажми 1, 2 или 3</small>':''}</h1><div class="onb-bar"><i style="width:${T.i/N*100}%"></i></div>
+        <div class="onb-stack ch"><div class="onb-card nx"></div><div class="onb-card ch" id="onbCard">${wd}<small>выбери перевод</small></div></div>
+        <div class="onb-chs">${opts.map(([t,ok],k)=>`<button class="onb-o" data-ok="${ok?1:0}" data-n="${k+1}"><span>${esc(t)}</span><u></u></button>`).join('')}<button class="onb-o onb-dk" data-ok="0" data-n="0"><span>Не знаю</span></button></div>`,'');
+      const card=$('#onbCard');backBtn(false);
+      $$('.onb-chs .onb-o').forEach(b=>b.onclick=()=>{if(card._d)return;card._d=1;const ok=b.dataset.ok==='1';
+        if(ok)b.classList.add('on','ok');else{if(!b.classList.contains('onb-dk'))b.classList.add('bad');$$('.onb-chs [data-ok="1"]').forEach(x=>x.classList.add('on','ok'));}
+        sfx(ok?'good':'nope');haptic(ok?'ok':'err');
+        T.seq.push([wb,ok,1.5,w,'c']);T.ch.push(ok);T.b=Math.max(0,Math.min(4,T.b+(ok?1:-1)));T.i++;
+        setTimeout(()=>{if(!card.isConnected)return;const fin=()=>onbLevel();
+          if(fxOK())card.animate([{transform:'none'},{transform:'translateY(-36px) scale(.92)',opacity:0}],{duration:260,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}).onfinish=fin;else fin();},ok?650:1150);});
+      return;}
     onbMount(1,`<h1 class="onb-h sm">Знаешь это слово?</h1><div class="onb-bar"><i style="width:${T.i/N*100}%"></i></div>
-      <div class="onb-stack"><div class="onb-card nx"></div><div class="onb-card" id="onbCard">${art?`<em class="art a-${art[1]}">${art[1]}</em>`:''}<b>${esc(art?w[0].slice(4):w[0])}</b><small>${lang==='de'?'Deutsch':'English'}</small><span class="stp k">ЗНАЮ</span><span class="stp u">УЧУ</span><i class="onb-bd k" aria-hidden="true">✓</i><i class="onb-bd u" aria-hidden="true">↺</i></div></div>${FLAG_ADMIN&&!onbPC()?'<div class="onb-dbg" id="onbDbg"></div>':''}`,
+      <div class="onb-stack"><div class="onb-card nx"></div><div class="onb-card" id="onbCard">${wd}<small>${lang==='de'?'Deutsch':'English'}</small><span class="stp k">ЗНАЮ</span><span class="stp u">УЧУ</span><i class="onb-bd k" aria-hidden="true">✓</i><i class="onb-bd u" aria-hidden="true">↺</i></div></div>${FLAG_ADMIN&&!onbPC()?'<div class="onb-dbg" id="onbDbg"></div>':''}`,
       `<div class="onb-yn n-yn"><button class="onb-no" id="onbNo" aria-label="Ещё учу">${niSVG('repeat')}<small>учу</small></button><span class="n-ynh">${onbPC()?'← или →':'смахни карточку'}</span><button class="onb-yes" id="onbYes" aria-label="Знаю">${niSVG('check')}<small>знаю</small></button></div>`);
     const card=$('#onbCard');backBtn(false);onbDbg();   // 13.9.40: «‹ Назад» Telegram на карточках прятать — палец задевал
     const go=know=>{if(card._d)return;card._d=1;sfx(know?'tick':'tap');haptic('sel');
-      if(fake){if(know)T.fk++;}else{T.seq.push([T.b,know]);T.b=Math.max(0,Math.min(4,T.b+(know?1:-1)));}
+      if(fake){if(know){T.fk++;T.fkW.push(w[0]);}}else{T.seq.push([wb,know,1,w,'s']);T.b=Math.max(0,Math.min(4,T.b+(know?1:-1)));}
       T.i++;const fin=()=>onbLevel();
       if(fxOK()){card.animate([{transform:card.style.transform||'none'},{transform:`translateX(${know?420:-420}px) rotate(${know?18:-18}deg)`,opacity:0}],{duration:320,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}).onfinish=fin;}else fin();};
     onbSwipe(card,go);
     $('#onbYes').onclick=()=>go(true);$('#onbNo').onclick=()=>go(false);return;}
+  // 24.10 (П4, Андрей: «добавь перевод слов в конце, чтобы чел понимал, знал или нет, и мог честно сказать «не знал» — тогда лвл понижался бы»):
+  // слова, на которые сказал «знаю» (самые трудные, до 6), перевод под пылью; «Не знал» — запись в seq становится «не знаю», уровень сверху меняется сразу
+  if(T.ph==='chk'){const R=T.ck,A=T.ckA,fk=(T.fkW||[]).slice(0,3),est=()=>ltEstimate({seq:T.seq,fk:T.fk,ckA:A,gok:[]}),c0=est();
+    onbMount(1,`<h1 class="onb-h sm">Проверь себя<small>Ты сказал «знаю». Нажми на перевод — покажу. Честно: знал?</small></h1>
+      <div class="onb-ckl"><span>уровень по словам</span><i id="onbCkL" class="l-${c0.toLowerCase()}">${c0}</i></div>
+      <div class="onb-ck">${R.map(j=>{const [wo,ru]=T.seq[j][3],ar=lang==='de'&&/^(der|die|das) /.exec(wo);
+        return `<div class="onb-cr${j in A?(A[j]?' y':' n'):''}" data-j="${j}"><div class="onb-cw"><b>${ar?`<em class="art a-${ar[1]}">${ar[1]}</em> `:''}${esc(ar?wo.slice(4):wo)}</b>${ndSp(esc(ru),'onb-ct')}</div>
+          <div class="onb-cb"><button class="y${A[j]===true?' on':''}" data-a="1">Знал</button><button class="n${A[j]===false?' on':''}" data-a="0">Не знал</button></div></div>`;}).join('')}${fk.length?`<div class="onb-cr fk"><div class="onb-cw"><b>${fk.map(f=>{const a=/^(der|die|das) /.exec(f);return (a?`<em class="art a-${a[1]}">${a[1]}</em> `:'')+esc(a?f.slice(4):f);}).join(' · ')}</b><small>${fk.length>1?'таких слов нет':'такого слова нет'} — а ты сказал «знаю»</small></div></div>`:''}</div>`,
+      `<button class="onb-go" id="onbGo"${R.every(j=>j in A)?'':' disabled'}>Дальше</button>`);
+    const L=$('#onbCkL'),go=$('#onbGo');let cur=c0;
+    const upd=()=>{go.disabled=!R.every(j=>j in A);const c=est();if(c===cur)return;const dn=CEFR.indexOf(c)<CEFR.indexOf(cur);cur=c;const sw=()=>{L.textContent=c;L.className='l-'+c.toLowerCase();};
+      if(dn){sfx('nope');haptic('err');}
+      if(!fxOK()){sw();return;}
+      L.animate([{transform:'none'},{transform:'rotateX(90deg)'}],{duration:150,easing:'ease-in'}).onfinish=()=>{sw();L.animate([{transform:'rotateX(-90deg)'},{transform:'none'}],{duration:420,easing:SPRING});};};
+    $$('.onb-cr[data-j]').forEach(r=>{const j=+r.dataset.j;r.querySelectorAll('.onb-cb button').forEach(b=>b.onclick=e=>{const v=b.dataset.a==='1';A[j]=v;T.seq[j][1]=v;if(e&&e.detail)b.blur();   // мышью — снять фокус: Enter на ПК жмёт «Дальше»
+      r.classList.toggle('y',v);r.classList.toggle('n',!v);r.querySelectorAll('.onb-cb button').forEach(x=>x.classList.toggle('on',x===b));
+      const sp=r.querySelector('.n-sp:not(.open)');if(sp)sp.classList.add('open');
+      sfx(v?'tick':'tap');haptic('sel');
+      if(fxOK())(v?b:r).animate(v?[{transform:'scale(.88)'},{transform:'none'}]:[{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'none'}],{duration:v?320:340,easing:v?SPRING:'ease-out'});
+      upd();});});
+    go.onclick=()=>{if(go.disabled)return;sfx('tap');T.ph='g';onbLevel();};
+    if(fxOK())$$('.onb-cr').forEach((r,k)=>r.animate([{opacity:0,transform:'translateX(28px)'},{opacity:1,transform:'none'}],{duration:420,delay:140+k*70,easing:'cubic-bezier(.2,.9,.25,1)',fill:'backwards'}));
+    return;}
   if(T.ph==='g'){const G=LT_G[lang];if(T.gi>=G.length){T.ph='res';onbLevel();return;}
     const [lv,qq,opts]=G[T.gi],sh=shuffle(opts.map((o,k)=>[o,k===0]));
     onbMount(1,`<h1 class="onb-h sm">Немного грамматики <small>${T.gi+1} из ${G.length}</small></h1><div class="onb-bar"><i style="width:${(T.gi/G.length)*100}%"></i></div>
@@ -4560,7 +4601,7 @@ function onbLevel(){const O=ONB,lang=O.lang;
       if(!ok)$$('.onb-opts [data-ok="1"]').forEach(x=>x.classList.add('ok'));T.gok.push([lv,ok]);setTimeout(()=>{T._g=0;T.gi++;onbLevel();},ok?520:900);});return;}
   if(T.ph==='res'){if(!T.pick&&!O.cefr)O.cefr=ltEstimate(T);const c=O.cefr||'A2';
     onbMount(1,`<h1 class="onb-h">${T.pick?'Выбери свой уровень':'Твой уровень'}</h1>
-      ${T.pick?'':`<div class="onb-lvl l-${c.toLowerCase()}" id="onbLv"><b>${c}</b><span>${CEFR_N[c]}</span></div><p class="onb-p">${c<'B1'?'Начнём со сцен попроще и с подсказками.':'Сцены — по твоему уровню, задания — обычной сложности.'} Уровень сам подстроится по ответам.</p>`}
+      ${T.pick?'':`<div class="onb-lvl l-${c.toLowerCase()}" id="onbLv"><b>${c}</b><span>${CEFR_N[c]}</span></div>${onbWhyHTML(T)}<p class="onb-p">${c<'B1'?'Начнём со сцен попроще и с подсказками.':'Сцены — по твоему уровню, задания — обычной сложности.'} Уровень сам подстроится по ответам.</p>`}
       <div class="onb-grid">${CEFR.map(k=>`<button data-c="${k}" class="l-${k.toLowerCase()}${O.cefr===k?' on':''}"><b>${k}</b><small>${CEFR_N[k]}</small></button>`).join('')}</div>`,
       `<button class="onb-go" id="onbGo"${O.cefr?'':' disabled'}>Дальше</button>`);
     if(!T.pick&&fxOK()){const lv=$('#onbLv');lv.animate([{transform:'scale(.6) rotate(-6deg)',opacity:0},{transform:'none',opacity:1}],{duration:650,easing:SPRING});setTimeout(()=>{fxAt(lv,{n:18,v:4.5,life:44});sfx('reward');},280);}
@@ -4568,10 +4609,28 @@ function onbLevel(){const O=ONB,lang=O.lang;
       const lv=$('#onbLv');if(lv){lv.className='onb-lvl l-'+O.cefr.toLowerCase();lv.querySelector('b').textContent=O.cefr;lv.querySelector('span').textContent=CEFR_N[O.cefr];}});
     $('#onbGo').onclick=()=>{sfx('tap');renderOnb(2);};}}
 // оценка: где остановилась «лесенка» (среднее по последним 6 словам), минус выдуманные «знаю», поправка грамматикой
-function ltEstimate(T){const S=T.seq.slice(-6);let v=S.length?S.reduce((a,[b,k])=>a+b+(k?.5:-.5),0)/S.length:1;v-=T.fk*.8;
+function ltEstimate(T){const S=T.seq.slice(-6),W=x=>x[2]||1,sw=S.reduce((a,x)=>a+W(x),0);let v=S.length?S.reduce((a,x)=>a+W(x)*(x[0]+(x[1]?.5:-.5)),0)/sw:1;
+  v-=T.fk*.8+Math.min(1.2,onbNk(T)*.25);   // 24.10 (П4): у записи [полоса, знает, вес]; каждое честное «не знал» — ещё −0,25 (переоценил себя и в соседних словах), всего не больше −1,2
   const G=T.gok||[];let g=-1;for(const [lv,ok] of G){if(ok)g=Math.max(g,lv);}const gl=G.length?(G.filter(x=>x[1]).length?g:0):v;
   const r=Math.round((v*2+gl)/3);return CEFR[Math.max(0,Math.min(4,r))];}
-function onbFinish(){const O=ONB;if(!O)return;tgVSwipes(false);const c=O.cefr||'A2',ci=CEFR.indexOf(c);
+// 24.10 (П4): «Проверь себя» — слова со свайпа «знаю», самые трудные (до 6, при равенстве — последние)
+const ONB_CK=6;
+function onbCkList(T){return T.seq.map((x,j)=>[x,j]).filter(([x])=>x[4]==='s'&&x[1]&&x[3]&&x[3][1]).sort((a,b)=>b[0][0]-a[0][0]||b[1]-a[1]).slice(0,ONB_CK).map(x=>x[1]);}
+const onbNk=T=>T.ckA?Object.values(T.ckA).filter(v=>v===false).length:(T.nk||0);
+// варианты к «выбери перевод»: та же полоса (потом соседние), та же часть речи (ruShape), без общего корня с верным
+function onbChOpts(lang,b,w){const L=LT_W[lang],sh=ruShape(w[1]),st=new Set(ruStems(w[1])),fine=x=>x[0]!==w[0]&&x[1]!==w[1]&&!ruStems(x[1]).some(t=>st.has(t));
+  const C=[...shuffle(L[b].filter(fine)),...shuffle([...(L[b-1]||[]),...(L[b+1]||[])].filter(fine))],P=[...C.filter(x=>ruShape(x[1])===sh),...C.filter(x=>ruShape(x[1])!==sh)];
+  const out=[],seen=new Set();for(const x of P){if(seen.has(x[1]))continue;seen.add(x[1]);out.push([x[1],false]);if(out.length===2)break;}
+  return shuffle([[w[1],true],...out]);}
+// итог: за что такой уровень — одной строкой значков
+function onbWhyHTML(T){const S=(T.seq||[]).filter(x=>x[4]==='s');if(!S.length)return '';const nk=onbNk(T),G=T.gok||[],C=T.ch||[],r=[];
+  r.push(`знаю <b>${S.filter(x=>x[1]).length+nk} из ${S.length}</b>`);
+  if(T.ck&&T.ck.length)r.push(`не знал <b${nk?' class="m"':''}>${nk}</b>`);
+  if(C.length)r.push(`перевод <b${C.some(x=>!x)?' class="m"':''}>${C.filter(Boolean).length} из ${C.length}</b>`);
+  r.push(`выдуманные <b${T.fk?' class="m"':''}>${T.fk?'попался '+T.fk:'не попался'}</b>`);
+  if(G.length)r.push(`грамматика <b>${G.filter(x=>x[1]).length} из ${G.length}</b>`);
+  return `<div class="onb-why">${r.map(x=>`<span>${x}</span>`).join('')}</div>`;}
+function onbFinish(){const O=ONB;if(!O)return;tgVSwipes(false);const c=O.cefr||(O.lt&&O.lt.seq&&O.lt.seq.length>=4?ltEstimate(O.lt):'A2'),ci=CEFR.indexOf(c);   // 24.10: «Пропустить» посреди теста — уровень по уже данным ответам
   store.onboarded=true;store.introV=1;store.newb=1;store.langs=[O.lang];store.kinoLang=O.lang;store.cefr=c;store.lvl=ci<=1?'a':'b';store.goalWhy=O.goal;store.goal=O.min*2;store.daily=O.daily;store.scSubChosen=true;if(!store.path)store.path='mix';save();
   try{remindSync();}catch(e){}
   const L=SCENES.filter(s=>scLang(s)===O.lang&&!s.age&&flagOf('scene-'+s.id)!=='hide'&&s.kind!=='clip'),pick=(START_PICK[O.lang]||[]).map(scOf).filter(Boolean);
@@ -4760,6 +4819,7 @@ function gmHTML(){
   const modes=[['browse','Диалоги'],['pick','Выборка'],['rnd','Рандом']];
   return `<div class="gm-head"><div class="gm-game"><b>Deadlock</b><span>диалоги героев · ${(()=>{const n=gmHeroes().length;return n+' '+plural(n,['герой','героя','героев']);})()}</span></div>
     <div class="gm-modes">${modes.map(m=>`<button data-gm="${m[0]}" class="${GM.mode===m[0]?'on':''}">${m[1]}</button>`).join('')}</div></div>
+    ${dvDialogs().length?'<button class="dv-cta" data-dv="1"><b>⚔️ Versus с другом</b><small>Бой героев: 3 раунда, голоса из игры, урон — твои очки</small></button>':''}
     <div id="gmBody">${GM.mode==='browse'?(GM.dlg?gmDuelHTML():GM.hero?gmHeroHTML():gmBrowseHTML()):GM.mode==='pick'?gmPickHTML():gmRndHTML()}</div>`;
 }
 function gmBrowseHTML(){
@@ -4873,6 +4933,210 @@ function ddxEnd(){const d=DDX.d,e=$('#ddxEnd');if(!d||!e)return;
   $('#ddxAgain').onclick=ev=>{ev.stopPropagation();sfx('tap');const h=DDX.h,dd=DDX.d;ddxOpen(h,dd);};
   $('#ddxOut').onclick=ev=>{ev.stopPropagation();sfx('tap');ddxClose();};}
 addEventListener('resize',()=>{if(document.getElementById('ddx'))ddxFit();});
+// 13.9.67 — Versus с другом по Deadlock (П2 в ПЛАН-24.10.md; Андрей: «самое главное — PvP с друзьями: слева и справа герои говорят фразы, игроки собирают кубики, правильный подсчёт очков»).
+// Комната — та же, что у дуэлей по сценам (bot/worker.js /api/pvp, воркер не менялся): room.sid='dd:deadlock:<герой>:<№ диалога у него>', mode 'race', 3 вопроса в room.qs.
+// Вопросы целиком собирает создатель (текст, перевод, войс, кубики, варианты) — у друга ровно те же; qs[0].hs = [герой создателя, герой друга].
+// Очки — kvPts (верно 100 + до 50 за скорость, ошибка 0); полоска здоровья = 3×150 минус очки соперника. Кубики — одна попытка: в PvP вторая нечестна.
+// Окно #dvx — в body и всегда тёмное, как ddx (у .screen при входе бывает transform). Внутри маркер .kv — без него kvPoll останавливается.
+const DV_HP=150,DV_T={build:'Собери',mean:'Что значит',hear:'На слух'};
+const DV_STOP=new Set('them your yours our ours very some any all from into onto over than then there here were been being just only also even still more most such much many like gonna gotta wanna kinda yeah okay ever never tryna dunno lemme ain'.split(' '));   // служебные — не годятся в подмену на слух
+let DVAU=null;   // один <audio> на весь бой: на iPhone звук разрешён элементу после нажатия, а новый элемент без нажатия молчит
+function dvUnlock(){try{if(!DVAU)DVAU=new Audio();if(DVAU._ok)return;DVAU.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';const p=DVAU.play();if(p&&p.then)p.then(()=>{DVAU.pause();DVAU._ok=1;},()=>{});}catch(e){}}
+// войс реплики; end(true) — дослушал, end(false) — не заиграло
+function dvVoice(u,btn,end){try{gmPlay(null);if(!DVAU)DVAU=new Audio();const a=DVAU;a.onended=a.onerror=null;a.pause();$$('#dvx .dvx-say.on').forEach(x=>x.classList.remove('on'));$$('#dvx .dvx-b.play').forEach(x=>x.classList.remove('play'));
+  if(!u){if(end)end(false);return;}let fin=false;const done=ok=>{if(fin)return;fin=true;if(btn){btn.classList.remove('on');const b=btn.closest('.dvx-b');if(b)b.classList.remove('play');}if(end)end(ok);};
+  a.src=assetUrl(u);if(btn){btn.classList.add('on');const b=btn.closest('.dvx-b');if(b)b.classList.add('play');}a.onended=()=>done(true);a.onerror=()=>done(false);const p=a.play();if(p&&p.catch)p.catch(()=>done(false));}catch(e){if(end)end(false);}}
+// живые диалоги на двоих (у Венатора и Крысы одни и те же лежат у обоих — берём один раз)
+function dvDialogs(){const H=gmHeroesAll(),seen=new Set(),out=[];
+  H.forEach(h=>(h.dialogs||[]).forEach((d,i)=>{if(!d||!gmDialogOK(d))return;const k=(d.lines||[]).map(l=>l.en).join('|'),ns=[...new Set((d.lines||[]).map(l=>l.s))];
+    if(seen.has(k)||ns.length!==2)return;const A=H.find(x=>x.name===ns[0]),B=H.find(x=>x.name===ns[1]);if(!A||!B)return;seen.add(k);out.push({h,i,d,A,B});}));
+  return out;}
+function dvParse(R){const m=/^dd:deadlock:([\w-]+):(\d+)/.exec(String(R&&R.sid||'')),h=m&&gmHero(m[1]),d=h&&(h.dialogs||[])[+m[2]]||null,hs=((R&&R.qs&&R.qs[0])||{}).hs||[];
+  const by=n=>gmHeroesAll().find(x=>x.name===n)||{id:String(n||'?'),name:String(n||'?')};return {h,d,A:by(hs[0]),B:by(hs[1])};}
+const dvMe=()=>{const P=dvParse(KV.room);return KV.role==='A'?{me:P.A,fo:P.B,P}:{me:P.B,fo:P.A,P};};
+// 3 вопроса: собери (реплика до 7 слов, иначе выражение из лексики) · что значит (слово из лексики) · что он сказал (на слух, одно слово подменено)
+function dvMakeQs(d,hs){const L=(d.lines||[]).filter(l=>l&&l.en),voc=(d.vocab||[]).filter(v=>v&&v.w&&v.r),seen=new Set(L.map(l=>l.en)),oth=[],used=new Set();
+  gmHeroesAll().forEach(h=>(h.dialogs||[]).forEach(x=>(x.lines||[]).forEach(l=>{if(l&&l.en&&!seen.has(l.en)){seen.add(l.en);oth.push(l);}})));
+  const nW=t=>scToks(String(t).replace(/[.,!?;:…"«»()]+/g,' ')).length;
+  const find=w=>{const x=String(w).replace(/\.\.\.|…/g,'').trim();if(!x)return null;const re=wordRe(x);for(const l of L){const m=re.exec(l.en);if(m){const i=m.index+m[1].length;return {l,i,x:l.en.slice(i,i+m[2].length)};}}return null;};
+  const rs=v=>ruShort(String(v.r).replace(/^\s*(разг|жарг|бран|груб|ирон)\.\s*/i,''))||String(v.r);
+  const lineQ=(t,l,o)=>Object.assign({t,s:l.s||'',a:l.a||'',en:l.en,ru:l.ru||''},o);
+  const voc2=[...new Set([...L,...oth].flatMap(x=>String(x.en).split(/[^A-Za-z']+/)).filter(w=>w.length>=3&&w===w.toLowerCase()&&!/'/.test(w)&&!SC_STOP.has(w)&&!DV_STOP.has(w)))],sfx2=w=>(w.match(/(ing|ed|ly|s)$/i)||[''])[0].toLowerCase();
+  const dvTk=t=>{const B=scBuildTiles(t,{},[],false),inT=new Set(B.tk.map(w=>w.toLowerCase())),pool=B.pool.map(x=>x.w),n=B.tk.length,near=w=>Math.abs(w.length-5);
+    for(const w of shuffle(voc2.filter(w=>!inT.has(w))).sort((a,b)=>near(a)-near(b))){if(pool.length>=n+2)break;if(!pool.includes(w))pool.push(w);}
+    return {tk:B.tk,pool:shuffle(pool.slice(0,n+2))};};   // ровно 2 лишних: форма того же слова (wForms) и слово из реплик героев
+  // 1 — «Собери»: реплика с голосом, лучше 4–7 слов (случайная — в реванше другая)
+  let q1=null;const bl=shuffle(L.filter(l=>l.a&&nW(l.en)>=4&&nW(l.en)<=SC_MAXB))[0]||shuffle(L.filter(l=>l.a&&nW(l.en)>=3&&nW(l.en)<=SC_MAXB))[0];
+  if(bl){q1=lineQ('build',bl,dvTk(bl.en));used.add(bl.en);}
+  else for(const v of shuffle(voc)){const n=scToks(String(v.w)).length;if(n<2||n>5)continue;const f=find(v.w);if(!f)continue;
+    q1=lineQ('build',f.l,Object.assign(dvTk(f.x),{ex:{pre:f.l.en.slice(0,f.i),post:f.l.en.slice(f.i+f.x.length),ru:rs(v)}}));used.add(f.l.en);used.add(String(v.w).toLowerCase());break;}
+  // 2 — «Что значит?»: чужие значения сначала из этого же диалога; значения того же слова из других диалогов — не варианты
+  let q2=null;const lw=v=>String(v.w).toLowerCase().trim();
+  const mv=shuffle(voc.filter(v=>!used.has(lw(v)))).map(v=>({v,f:find(v.w)})).sort((a,b)=>(b.f?1:0)-(a.f?1:0))[0];
+  if(mv){const right=rs(mv.v),st=new Set(ruStems(right)),wr=[],pool=[...shuffle(voc),...shuffle(gmHeroesAll().flatMap(h=>(h.dialogs||[]).flatMap(x=>x.vocab||[])).filter(v=>v&&v.w&&v.r&&!voc.includes(v)))];
+    for(const v of pool){if(wr.length>=2)break;if(lw(v)===lw(mv.v))continue;const r=rs(v);if(!r||r.toLowerCase()===right.toLowerCase()||/[;()\[\]]/.test(r)||ruStems(r).some(s=>st.has(s))||wr.some(x=>x.toLowerCase()===r.toLowerCase()))continue;wr.push(r);}
+    if(wr.length>=2){const f=mv.f;q2=Object.assign(f?lineQ('mean',f.l,{}):{t:'mean',s:'',a:'',en:'',ru:''},{w:String(mv.v.w),right,opts:shuffle([right,...wr])});used.add(lw(mv.v));if(f)used.add(f.l.en);}}
+  // 3 — «Что он сказал?»: варианты — та же реплика, но одно слово подменено похожим словом из реплик героев (та же длина и окончание) — надо расслышать;
+  // не вышло — подмена как в «Что прозвучало?» у сцен, потом другие реплики похожей длины
+  const hearQ=l=>{const ws=String(l.en).split(/[^A-Za-z']+/).filter(Boolean),inL=new Set(ws.map(w=>w.toLowerCase())),re=w=>new RegExp('(^|[^A-Za-z\'])'+w+'(?=[^A-Za-z\']|$)');
+    const cand=ws.map((w,k)=>({w,s:(SC_STOP.has(w.toLowerCase())||w.length<3||/'/.test(w)||(k>0&&/^[A-Z]/.test(w))?-9:0)+Math.min(w.length,8)+(k>0?2:0)})).filter(x=>x.s>=0).sort((a,b)=>b.s-a.s);
+    let opts=null;for(const c of cand){const cw=c.w.toLowerCase(),cap=/^[A-Z]/.test(c.w),sub=shuffle(voc2.filter(w=>!inL.has(w)&&sfx2(w)===sfx2(cw)&&Math.abs(w.length-cw.length)<=2)).slice(0,2);
+      if(sub.length<2)continue;opts=sub.map(w=>l.en.replace(re(c.w),(m,a)=>a+(cap?w[0].toUpperCase()+w.slice(1):w)));if(new Set(opts).size===2&&!opts.includes(l.en))break;opts=null;}
+    if(!opts)for(const c of cand){const u=[...new Set((scListenOpts({en:l.en,gap:c.w},oth,false)||[]).filter(x=>x&&x!==l.en))];if(u.length>=2){opts=u.slice(0,2);break;}}
+    if(!opts){const n=nW(l.en);opts=shuffle([...L,...oth].filter(x=>x.en!==l.en)).sort((a,b)=>Math.abs(nW(a.en)-n)-Math.abs(nW(b.en)-n)).slice(0,2).map(x=>x.en);}
+    return opts.length>=2?lineQ('hear',l,{right:l.en,opts:shuffle([l.en,...opts])}):null;};
+  const hl=shuffle(L.filter(l=>l.a&&!used.has(l.en)&&nW(l.en)>=3&&nW(l.en)<=14))[0]||shuffle(L.filter(l=>l.a&&!used.has(l.en)))[0];
+  const q3=hl?hearQ(hl):null;if(hl)used.add(hl.en);
+  const out=[q1,q2,q3].filter(Boolean);
+  for(const l of shuffle(L.filter(x=>x.a&&!used.has(x.en)))){if(out.length>=3)break;const q=hearQ(l);if(q){out.push(q);used.add(l.en);}}   // запас: всегда 3 вопроса
+  if(out[0])out[0].hs=hs;return out;}
+// шторка: за кого играешь, диалог, ставка — как у дуэли по сцене
+function dvSheet(pre){pre=pre||{};const D=dvDialogs();if(!D.length){toast('Пока нет диалогов, где оба героя живые');return;}scCloseSheet();
+  const g=store.gold||0;let di=Math.max(0,pre.first?D.findIndex(x=>x.d.lines[0].en===pre.first):0),side=0,bet=pre.bet!=null?(pre.bet<=g?pre.bet:0):(g>=25?25:0);if(di<0)di=0;
+  if(pre.me){const k=[D[di].A.name,D[di].B.name].indexOf(pre.me);if(k>=0)side=k;}
+  const w=document.createElement('div');w.className='sc-sheetwrap dvs';let drawn=false;
+  const ic=h=>`<span class="dv-ic"${h.icon?` style="background-image:url('${esc(assetUrl(h.icon))}')"`:''}></span>`;
+  const draw=()=>{const x=D[di],hs=[x.A,x.B];w.innerHTML=`<div class="sc-sheet kv-sheet dv-sheet${drawn?' noanim':''}"><b>⚔️ Versus с другом</b><p class="kv-sub">Deadlock · 3 раунда: собери фразу, что значит, что сказал герой. Урон по сопернику — твои очки.</p>
+    <div class="kv-lbl">Ты за</div><div class="kv-modes dv-sides">${hs.map((h,k)=>`<button data-side="${k}" class="${k===side?'on':''}">${ic(h)}<b>${esc(h.name)}</b><small>${k===side?'это ты':'достанется другу'}</small></button>`).join('')}</div>
+    <div class="kv-lbl">Диалог</div><div class="kv-eps dv-dlgs">${D.map((x,k)=>`<button data-di="${k}" class="${k===di?'on':''}">${esc(String(x.d.ctx||'').split('·').slice(0,2).join('·').trim())}<small>«${esc(x.d.lines[0].en)}»</small></button>`).join('')}</div>
+    <div class="kv-lbl">Ставка <small>у тебя ${ui('coin')} ${fmt(g)}</small></div>${g<25?`<p class="kv-poor">Ставки — от ${ui('coin')} 25. Пройди эпизод — дадут билеты.</p>`:''}<div class="kv-bets">${[0,25,50,100,200].filter(v=>!v||v<=g||v===25).map(v=>`<button data-b="${v}" class="${v===bet?'on':''}"${v>g?' disabled':''}>${v?`${ui('coin')} ${v}`:'Без ставки'}</button>`).join('')}</div>
+    ${bet?`<p class="kv-bank-note">Банк ${ui('coin')} <b>${bet*2}</b> — ставка списывается у обоих на старте, победитель забирает всё. Ничья — вернём.</p>`:''}
+    <button class="sc-btn" id="dvGo">${bet?`Создать — ставка ${ui('coin')} ${bet} →`:'Создать и позвать друга →'}</button><button class="sc-btn ghost" data-close>Отмена</button></div>`;drawn=true;};
+  draw();w.onclick=async e=>{const b=e.target.closest('button');if(e.target===w||(b&&b.hasAttribute('data-close'))){w.remove();return;}if(!b||b.disabled)return;sfx('tap');
+    if(b.dataset.side){side=+b.dataset.side;draw();return;}if(b.dataset.di){const was=[D[di].A.name,D[di].B.name][side];di=+b.dataset.di;const k=[D[di].A.name,D[di].B.name].indexOf(was);side=k>=0?k:0;draw();return;}if(b.dataset.b){bet=+b.dataset.b;draw();return;}
+    if(b.id==='dvGo'){dvUnlock();b.disabled=true;b.textContent='Создаю комнату…';const x=D[di],hs=[x.A,x.B],me=hs[side],fo=hs[1-side];
+      try{const qs=dvMakeQs(x.d,[me.name,fo.name]);const r=await kvNet({a:'create',fx:shopUse('st'),bg:profBgKey(),pf:myPub(),room:{sid:`dd:deadlock:${x.h.id}:${x.i}`,ep:0,mode:'race',bet,qs}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
+        w.remove();KV={code:r.v.code,role:'A',room:r.v,k:0,t0:0,dd:true};ev('dv_new','dd:'+x.h.id);dvShare();dvLobby();kvPoll();}catch(z){kvErr();b.disabled=false;draw();}}};
+  document.body.appendChild(w);}
+function dvShare(){const R=KV.room,{me,fo}=dvMe();shareLink(kvLink(),`Го в Versus по Deadlock: ${me.name} против ${fo.name} — кто лучше понимает английский? «Языки по кино»${R.bet?`, ставка ${R.bet} билетов`:''}. Комната ${KV.code}`);}
+// окно боя
+function dvOpen(){let w=document.getElementById('dvx');if(w)return w;w=document.createElement('div');w.className='dvx';w.id='dvx';
+  w.innerHTML=`<i class="kv" hidden></i><div class="dvx-in"><div class="dvx-top" id="dvxTop"></div><div class="dvx-stage" id="dvxStage"></div><div class="dvx-pan" id="dvxPan"></div></div>`;
+  document.body.appendChild(w);document.body.classList.add('dvx-on');requestAnimationFrame(()=>w.classList.add('in'));return w;}
+function dvClose(){const w=document.getElementById('dvx');try{if(DVAU){DVAU.onended=DVAU.onerror=null;DVAU.pause();}}catch(e){}if(!w)return false;
+  w.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});w.remove();document.body.classList.remove('dvx-on');return true;}
+function dvPort(h,side,who){return `<div class="dvx-p ${side}" data-side="${side}"><div class="dvx-pi"${h.icon?` style="background-image:url('${esc(assetUrl(h.icon))}')"`:''}>${gmAlive(h)?`<video src="${esc(assetUrl(h.img))}" data-fx="${+h.fx||0.75}" autoplay muted loop playsinline preload="auto"></video>`:gmFace(h)}</div><i class="dvx-dim"></i><div class="dvx-nm"><b>${esc(h.name)}</b><small>${esc(who)}</small></div><i class="dvx-ko">K.O.</i></div>`;}
+function dvFit(){$$('#dvxStage .dvx-pi video').forEach(v=>{const r=v.getBoundingClientRect();if(!r.width||!r.height)return;   // как ddxFit: лицо героя (h.fx) — в кадре при любом размере окна
+  const vw=v.videoWidth||1280,vh=v.videoHeight||720,s=Math.max(r.width/vw,r.height/vh),w=Math.min(1,r.width/(vw*s)),f=+v.dataset.fx||0.75;
+  const x=w>=1?50:Math.max(0,Math.min(100,(f-w/2)/(1-w)*100));v.style.objectPosition=x.toFixed(1)+'% 50%';});}
+function dvStage(){const st=$('#dvxStage');if(!st||!KV)return;const {me,fo}=dvMe(),foN=(KV.room[kvFoe()]||{}).n||'Друг',key=me.name+'|'+fo.name+'|'+foN;if(st.dataset.k===key)return;st.dataset.k=key;
+  st.innerHTML=dvPort(me,'lf','Ты')+dvPort(fo,'rt',foN)+'<div class="dvx-bub" id="dvxBub"></div>';
+  st.querySelectorAll('video').forEach(v=>{v.addEventListener('loadedmetadata',dvFit);const p=v.play();if(p&&p.catch)p.catch(()=>{});});dvFit();setTimeout(dvFit,60);}
+function dvTop(){const t=$('#dvxTop');if(!t||!KV)return;const R=KV.room,me=R[KV.role]||{ans:{}},fo=R[kvFoe()]||{n:'Друг',ans:{}},n=R.qs.length,HP=n*DV_HP;
+  if(!t.firstChild){t.innerHTML=`<button class="dvx-x" id="dvxX" aria-label="Выйти">${ui('close')}</button><div class="dvx-hp lf"><b id="dvNmL"></b><i><em id="dvHpL"></em></i><span id="dvHpLn"></span></div><div class="dvx-mid" id="dvxMid"></div><div class="dvx-hp rt"><b id="dvNmR"></b><i><em id="dvHpR"></em></i><span id="dvHpRn"></span></div>`;
+    $('#dvxX').onclick=e=>{e.stopPropagation();sfx('tap');dvBack();};}
+  const hL=Math.max(0,HP-kvSum(fo)),hR=Math.max(0,HP-kvSum(me));
+  $('#dvNmL').textContent='Ты';$('#dvNmR').textContent=fo.n||'Друг';$('#dvHpL').style.transform=`scaleX(${hL/HP})`;$('#dvHpR').style.transform=`scaleX(${hR/HP})`;$('#dvHpLn').textContent=hL;$('#dvHpRn').textContent=hR;
+  $('#dvxMid').innerHTML=KV.over?(R.bet?`${ui('coin')} ${R.bet*2}`:'VS'):KV.ready&&KV.k<n?`Раунд ${KV.k+1}<small>из ${n}</small>`:R.bet?`${ui('coin')} ${R.bet*2}<small>банк</small>`:'VS';}
+// удар: портрет вздрагивает, над полоской — «−N»
+function dvHit(side,pts){const p=$(`#dvxStage .dvx-p.${side}`),hp=$(`#dvxTop .dvx-hp.${side}`);haptic(side==='lf'?'err':'ok');if(!fxOK()||!p)return;
+  p.animate([{translate:'0 0'},{translate:`${side==='lf'?-12:12}px 0`},{translate:`${side==='lf'?5:-5}px 0`},{translate:'0 0'}],{duration:340,easing:'ease-out'});
+  if(hp){const d=document.createElement('b');d.className='dvx-dmg';d.textContent='−'+pts;hp.appendChild(d);
+    d.animate([{transform:'translateY(6px) scale(.6)',opacity:0},{transform:'translateY(-6px) scale(1.15)',opacity:1,offset:.25},{transform:'translateY(-28px) scale(1)',opacity:0}],{duration:1100,easing:'ease-out'}).onfinish=()=>d.remove();}
+  if(side==='rt')sfx('match');}
+function dvPan(html,r){const p=$('#dvxPan');if(!p)return;p.innerHTML=html;p.dataset.r=r==null?'':r;p.scrollTop=0;p.classList.remove('fl');void p.offsetWidth;p.classList.add('fl');}
+function dvSpeak(side){$$('#dvxStage .dvx-p').forEach(p=>{p.classList.toggle('on',!!side&&p.dataset.side===side);p.classList.remove('wait');});}
+function dvLobby(){dvOpen();dvStage();dvTop();dvSpeak('');const fp=$('#dvxStage .dvx-p.rt');if(fp)fp.classList.add('wait');const R=KV.room,{me,fo}=dvMe();
+  dvPan(`<div class="dvx-lob wt"><b>Ждём друга…</b><p>Ты — ${esc(me.name)}, друг — ${esc(fo.name)} · 3 раунда${R.bet?` · ставка ${ui('coin')} ${R.bet}`:''}</p><div class="dvx-code">Комната <b>${KV.code}</b></div>
+    <button class="dvx-go" id="dvSh">Отправить ссылку ещё раз</button><button class="dvx-gh" id="dvCp">Скопировать ссылку</button></div>`);
+  $('#dvSh').onclick=()=>{sfx('tap');dvShare();};$('#dvCp').onclick=()=>{sfx('tap');try{navigator.clipboard.writeText(kvLink()).then(()=>toast('Ссылка скопирована'),()=>toast(kvLink()));}catch(e){toast(kvLink());}};}
+// друг открыл ссылку
+function dvJoin(code,R){if(!gmData()){toast('Обнови приложение: у друга новый бой');renderHome();return;}
+  const me=R.A&&R.A.id===kvUid()?'A':R.B&&R.B.id===kvUid()?'B':null;renderGameScreen('deadlock');
+  if(me){KV={code,role:me,room:R,k:Object.keys((R[me]||{}).ans||{}).length,t0:0,dd:true};dvOpen();kvApply(R);kvPoll();return;}   // сам открыл свою ссылку — продолжаем с того же вопроса
+  if(R.B){toast('В этой комнате уже двое');return;}
+  if(R.A&&R.A.left||R.st==='closed'){toast('Бой отменён: комната закрыта');return;}
+  KV={code,role:'B',room:R,k:0,t0:0,guest:true,dd:true};const g=store.gold||0,poor=R.bet>g,{me:hm,fo:hf}=dvMe();
+  dvOpen();dvStage();dvTop();dvSpeak('rt');
+  dvPan(`<div class="dvx-lob"><b>${esc(R.A.n)} зовёт на Versus</b><p>Ты — ${esc(hm.name)}, ${esc(R.A.n)} — ${esc(hf.name)} · 3 раунда</p>
+    ${R.bet?`<div class="dvx-code">Ставка <b>${ui('coin')} ${R.bet}</b> · у тебя ${fmt(g)}</div><p class="dvx-rule">Победитель забирает банк ${ui('coin')} ${R.bet*2}.</p>`:''}
+    <p class="dvx-rule">Верно — 100 очков и до 50 за скорость, ошибка — 0. Урон по сопернику — твои очки.</p>
+    ${poor?`<p class="kv-poor">Не хватает билетов на ставку. Пройди эпизод — и возвращайся по ссылке.</p>`:`<button class="dvx-go" id="dvIn">Принять вызов →</button>`}<button class="dvx-gh" id="dvNo">Не сейчас</button></div>`);
+  $('#dvNo').onclick=()=>{sfx('tap');KV=null;dvClose();};
+  if($('#dvIn'))$('#dvIn').onclick=async()=>{sfx('tap');dvUnlock();$('#dvIn').disabled=true;try{const j=await kvNet({a:'join',code,fx:shopUse('st'),bg:profBgKey(),pf:myPub()});if(!j.ok){kvErr(j);$('#dvIn').disabled=false;return;}kvApply(j.v);kvPoll();}catch(e){kvErr();}};}
+// состояние комнаты (опрос kvPoll → kvApply → сюда)
+function dvApply(R){if(!KV)return;KV.room=R;
+  if(R.st==='wait'){if(!$('#dvx .dvx-lob.wt'))dvLobby();return;}
+  const fo=R[kvFoe()],me=R[KV.role];
+  if(fo&&fo.left&&!KV.over){KV.over=true;if(!KV.started){dvGone();return;}dvEnd(true);return;}   // вышел до начала — бой отменён, ставку никто не платил
+  if(!KV.started){KV.started=true;kvPay();dvCountdown();return;}
+  if(KV.over||!KV.ready)return;
+  const fp=kvSum(fo);if(KV.fp!=null&&fp>KV.fp)dvHit('lf',fp-KV.fp);KV.fp=fp;dvTop();
+  if(Date.now()<(KV.lock||0))return;   // ещё показываем итог своего ответа — экран сменит таймер раунда
+  if(me&&me.done&&KV.k>=R.qs.length){if(fo&&fo.done||R.st==='end'){KV.over=true;dvEnd();}else dvWait();}}
+function dvGone(){kvStop();dvStage();dvTop();dvSpeak('');dvPan(`<div class="dvx-lob"><b>Бой отменён</b><p>${esc((KV.room[kvFoe()]||{}).n||'Друг')} вышел до начала. Ставка не списана.</p><button class="dvx-go" id="dvOut">К героям</button></div>`);$('#dvOut').onclick=()=>{sfx('tap');KV=null;dvClose();};}
+function dvCountdown(){const R=KV.room;dvOpen();dvStage();KV.fp=kvSum(R[kvFoe()]);dvTop();dvSpeak('');const st=$('#dvxStage');if(st&&fxOK()){st.classList.remove('vs');void st.offsetWidth;st.classList.add('vs');}
+  dvPan(`<div class="dvx-cd"><b id="dvN">3</b><small>${R.bet>0?`банк ${ui('coin')} ${R.bet*2} · `:''}отвечай быстро и точно</small></div>`);
+  let n=3;const pop=()=>{const el=$('#dvN');if(!el||!fxOK())return;el.animate([{transform:'scale(1.9)',opacity:0},{transform:'scale(1)',opacity:1}],{duration:440,easing:SPRING});};
+  sfx('tap');pop();KV.cd=setInterval(()=>{n--;const el=$('#dvN');if(n<=0){clearInterval(KV.cd);sfx('win');KV.ready=true;KV.t0=Date.now();dvRound();return;}if(el)el.textContent=n;pop();sfx('tap');haptic('sel');},900);}
+// раунд
+function dvRound(){if(!KV||KV.over)return;const R=KV.room,n=R.qs.length;if(KV.k>=n){dvApply(KV.room);if(KV&&!KV.over)dvWait();return;}
+  const q=R.qs[KV.k],{me,fo}=dvMe(),side=q.s&&q.s===me.name?'lf':q.s&&q.s===fo.name?'rt':'',who=q.s||'Герой';KV.qt=Date.now();KV.ansd=0;KV.heard=0;
+  dvStage();dvTop();dvSpeak(side);const st=$('#dvxStage');if(st)st.classList.remove('vs');
+  const say=`<button class="dvx-say" id="dvSay" aria-label="Послушать">▶</button>`,mk=q.t==='mean'&&q.en?markWord(q.en,q.w.replace(/\.\.\.|…/g,'').trim(),'<mark>','</mark>'):'';
+  const bub=q.t==='hear'?`<div class="dvx-b ${side||'lf'}">${say}<span class="dvx-wave" aria-hidden="true">${'<i></i>'.repeat(9)}</span></div>`
+    :q.t==='mean'?(q.en?`<div class="dvx-b ${side||'lf'}">${q.a?say:''}<span>${mk}</span></div>`:'')
+    :`<div class="dvx-b ${side||'lf'}">${q.a?say:''}<span>«${esc(q.ru)}»</span></div>`;
+  const b=$('#dvxBub');if(b)b.innerHTML=bub;
+  const opts=()=>`<div class="dvx-o">${q.opts.map(o=>`<button data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
+  dvPan(q.t==='build'?`<div class="dvx-ask">${q.ex?'Собери выражение':`Собери, что сказал ${esc(who)}`}<small>${q.ex?`«${esc(q.ex.ru)}» — внутри фразы`:'Перевод — в пузыре. Порядок слов — как в реплике'}</small></div>
+      ${q.ex?`<div class="sc-expr">${esc(q.ex.pre)}<span class="sc-bans in" id="scbans"></span>${esc(q.ex.post)}</div>`:`<div class="sc-bans" id="scbans"></div>`}<div class="sc-bpool" id="scbpool"></div><button class="dvx-go" id="dvChk" disabled>Проверить</button><div class="dvx-fb" id="dvFb"></div>`
+    :q.t==='mean'?`<div class="dvx-ask">Что значит «${esc(q.w)}»?${q.en?'<small>Слово — в реплике сверху</small>':''}</div>${opts()}<div class="dvx-fb" id="dvFb"></div>`
+    :`<div class="dvx-ask">Что сказал ${esc(who)}?<small>Послушай — варианты почти одинаковые</small></div>${opts()}<div class="dvx-fb" id="dvFb"></div>`,KV.k);
+  const sb=$('#dvSay'),play=auto=>{if(!q.a)return;dvVoice(q.a,sb,ok=>{if(q.t==='hear'&&ok&&!KV.heard&&!KV.ansd&&KV){KV.heard=1;KV.qt=Date.now();}});};   // на слух время идёт с конца первого прослушивания
+  if(sb)sb.onclick=e=>{e.stopPropagation();dvUnlock();haptic('sel');play(false);};
+  if(q.a&&store.snd!==false)setTimeout(()=>{if(KV&&KV.room.qs[KV.k]===q)play(true);},q.t==='hear'?350:500);
+  if(q.t==='build')dvTiles(q,(right,miss)=>{const pts=dvAns(right);$('#dvFb').innerHTML=dvFb(q,right,pts,miss);});
+  else $$('#dvxPan .dvx-o button').forEach(x=>x.onclick=()=>{if(x.disabled||KV.ansd)return;const r=x.dataset.v===q.right;$$('#dvxPan .dvx-o button').forEach(y=>{y.disabled=true;if(y.dataset.v===q.right)y.classList.add('ok');});if(!r)x.classList.add('bad');
+    const pts=dvAns(r);$('#dvFb').innerHTML=dvFb(q,r,pts);});}
+// кубики, одна попытка
+function dvTiles(q,done){const B={tk:q.tk,pool:q.pool.map((w,k)=>({w,k})),got:[]},want=q.tk.map(scNorm),N=q.tk.length,ans=$('#scbans'),pool=$('#scbpool'),chk=$('#dvChk');let over=false;
+  const draw=marks=>{const cells=[];for(let j=0;j<Math.max(N,B.got.length);j++){const x=B.got[j];cells.push(x?`<button class="sc-tile${marks?(marks[j]?' good':' bad'):''}" data-k="${x.k}" data-j="${j}">${esc(x.w)}</button>`:'<span class="sc-hole" aria-hidden="true"></span>');}
+    ans.innerHTML=cells.join('');pool.innerHTML=B.pool.map(x=>`<button class="sc-tile${B.got.includes(x)?' used':''}" data-k="${x.k}"${B.got.includes(x)?' disabled':''}>${esc(x.w)}</button>`).join('');
+    chk.disabled=over||B.got.filter(Boolean).length<N;
+    pool.querySelectorAll('.sc-tile').forEach(b=>b.onclick=()=>{if(over)return;sfx('tap');const x=B.pool.find(y=>y.k===+b.dataset.k);if(x&&!B.got.includes(x))scSlotPut(B.got,x,N);draw();});
+    ans.querySelectorAll('.sc-tile').forEach(b=>b.onclick=()=>{if(over)return;scSlotTake(B.got,+b.dataset.j);draw();});};
+  chk.onclick=()=>{if(over||KV.ansd)return;over=true;const gw=[];for(let j=0;j<N;j++)gw.push(B.got[j]?scNorm(B.got[j].w):'');const right=want.every((w,j)=>gw[j]===w),marks=scPosMarks(gw,want);
+    ans.classList.add(right?'right':'wrong');draw(marks);chk.hidden=true;done(right,want.map((_,j)=>!marks[j]));};
+  draw();}
+function dvFb(q,ok,pts,miss){const head=ok?`<b class="ok">✓ Верно</b> <span class="pts">+${pts}</span>`:'<b class="bad">✗ Мимо</b>';
+  if(q.t==='build')return head+(ok?` · ${esc(q.en)}`:q.ex?scFixHTML(q.tk,miss,q.ex):`<div class="sc-fix"><small>Вот как правильно</small>${esc(q.en)}</div>`);
+  if(q.t==='mean')return `${head} · «${esc(q.w)}» — ${esc(q.right)}`;
+  return `${head} · ${esc(q.en)}<small class="dvx-ru">${esc(q.ru)}</small>`;}
+// ответ: очки локально сразу, на сервер — в фоне; урон по полоске друга
+function dvAns(ok){const R=KV.room,k=KV.k,a={ok:!!ok,ms:Math.max(0,Date.now()-KV.qt)},pts=kvPts(a);KV.ansd=1;KV.k++;
+  if(R[KV.role]){R[KV.role].ans=R[KV.role].ans||{};R[KV.role].ans[k]=a;}sfx(ok?'good':'bad');if(ok)dvHit('rt',pts);else haptic('err');dvTop();
+  const wait=ok?1500:2600;KV.lock=Date.now()+wait;kvNet({a:'ans',code:KV.code,k,ok:a.ok,ms:a.ms}).then(j=>{if(j&&j.ok&&KV&&KV.dd)KV.room=j.v;}).catch(()=>{});
+  setTimeout(()=>{if(!KV||KV.over||!KV.dd)return;KV.lock=0;if(KV.k>=KV.room.qs.length){dvApply(KV.room);if(KV&&!KV.over)dvWait();}else dvRound();},wait);
+  return pts;}
+function dvWait(){if($('#dvx .dvx-lob.wt2'))return dvTop();dvSpeak('');const b=$('#dvxBub');if(b)b.innerHTML='';dvTop();
+  dvPan(`<div class="dvx-lob wt2"><b>Ты всё!</b><p>Ждём, пока ответит ${esc((KV.room[kvFoe()]||{}).n||'друг')}… Итог — как только вы оба закончите.</p></div>`);}
+// итог: K.O. на проигравшем, таблица раундов, банк — как у дуэли по сцене
+function dvEnd(foeLeft){kvStop();try{if(DVAU)DVAU.pause();}catch(e){}const R=KV.room,me=R[KV.role]||{ans:{}},fo=R[kvFoe()]||{n:'друг',ans:{}},n=R.qs.length,{me:hm}=dvMe();
+  store.kvDone=store.kvDone||{};const first=!store.kvDone[KV.code];store.kvDone[KV.code]=1;
+  const a=kvSum(me),b=kvSum(fo),win=foeLeft?true:a===b?null:a>b,sc=p=>Object.values(p.ans||{}).filter(x=>x.ok).length;let gain=0,steal=null;
+  if(first&&win===true)store.kvWins=(store.kvWins||0)+1;
+  if(R.bet&&first){gain=win===true?R.bet*2:win===null?R.bet:0;if(gain)store.gold=(store.gold||0)+gain;   // банк — сразу (как в kvEnd): закрыл приложение во время анимации — билеты не пропадут
+    if(win!==null)steal={win,bet:R.bet,me:{n:me.n},foe:{n:fo.n},style:win?shopUse('st'):stOf(fo.fx)};}
+  save();sfx(win===false?'learn':'win');ev('pvp_end',R.sid);
+  dvStage();dvTop();dvSpeak(win===true?'lf':win===false?'rt':'');const bb=$('#dvxBub');if(bb)bb.innerHTML='';
+  if(win!==null){const lp=$(`#dvxStage .dvx-p.${win?'rt':'lf'}`);if(lp)lp.classList.add('ko');}
+  const title=foeLeft?`Победа! ${esc(fo.n)} больше нет в бою`:win===true?'Победа!':win===false?(sc(fo)>sc(me)?`Побеждает ${esc(fo.n)} — больше верных ответов`:`Побеждает ${esc(fo.n)} — быстрее при равном счёте`):'Ничья';
+  const cell=x=>x?`<td class="${x.ok?'ok':'bad'}">${x.ok?'✓':'✗'}<small>${(x.ms/1000).toFixed(1)} с</small><em>${kvPts(x)}</em></td>`:'<td>—</td>';
+  dvPan(`<div class="dvx-end"><b>${title}</b><p>Ты ${a} очк. (${sc(me)} из ${n} верно)${foeLeft?'':` · ${esc(fo.n)} ${b} очк. (${sc(fo)} верно)`}</p>
+    ${R.bet?`<p class="dvx-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Банк забирает ${esc(fo.n)}: ${ui('coin')} ${R.bet*2}`}</p>`:''}
+    ${foeLeft?'':`<table class="kv-tbl"><thead><tr><th>Раунд</th><th>Ты</th><th>${esc(fo.n)}</th></tr></thead><tbody>${R.qs.map((q,i)=>`<tr><td>${esc(DV_T[q.t]||String(i+1))}</td>${cell((me.ans||{})[i])}${cell((fo.ans||{})[i])}</tr>`).join('')}</tbody><tfoot><tr><td>Σ</td><td>${a}</td><td>${b}</td></tr></tfoot></table>`}
+    <button class="dvx-go" id="dvAgain">⚔️ Реванш</button><button class="dvx-gh" id="dvOut">К героям</button></div>`);
+  const pre={me:hm.name,bet:R.bet,first:((dvParse(R).d||{}).lines||[{}])[0].en};
+  $('#dvAgain').onclick=()=>{sfx('tap');KV=null;dvClose();setTimeout(()=>dvSheet(pre),120);};
+  $('#dvOut').onclick=()=>{sfx('tap');KV=null;dvClose();};
+  if(steal)setTimeout(()=>kvSteal(steal).then(()=>{if(gain)goldFX(gain,$('.dvx-bank'));}),700);   // кража билетов, потом выплата — как в дуэли по сцене
+  else if(gain)setTimeout(()=>goldFX(gain,$('.dvx-bank')),500);}
+// «назад» и ✕: в бою — выйти (засчитаем поражение, как в дуэли по сцене), иначе просто закрыть
+function dvBack(){const s=document.querySelector('.sc-sheetwrap.dvs');if(s){s.remove();return;}
+  if(KV&&KV.dd&&!KV.over&&!(KV.guest&&!KV.started)){kvNet({a:'leave',code:KV.code}).catch(()=>{});kvStop();if(KV.started)toast('Ты вышел из боя');}
+  if(KV&&KV.dd){kvStop();KV=null;}dvClose();}
+addEventListener('resize',()=>{if(document.getElementById('dvx'))dvFit();});
 function gmPickHTML(){
   const hs=gmHeroes();
   const n=gmAllLines(gmHeroes().filter(h=>GM.pick.has(h.id))).length;
@@ -4904,6 +5168,7 @@ function gmRndHTML(){
 }
 function gmBind(){
   const r=$('#gmRoot');if(!r)return;
+  r.querySelectorAll('[data-dv]').forEach(b=>b.onclick=()=>{sfx('tap');haptic('sel');dvSheet();});   // 13.9.67
   r.querySelectorAll('[data-gm]').forEach(b=>b.onclick=()=>{GM.mode=b.dataset.gm;GM.dlg=null;GM.hero=null;haptic('sel');sfx('tap');r.innerHTML=gmHTML();gmBind();});
   r.querySelectorAll('[data-sort]').forEach(b=>b.onclick=()=>{store.gmSort=b.dataset.sort;save();r.innerHTML=gmHTML();gmBind();});
   r.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{store.gmView=b.dataset.view;save();r.innerHTML=gmHTML();gmBind();});

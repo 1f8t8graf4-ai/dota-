@@ -1,6 +1,6 @@
-<title>Главная и ДД: варианты</title>
+<title>Главная и ДД v2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&display=swap">
 <style>
 :root{--bg:#EFEEEA;--fg:#141416;--mut:#6B6964;--line:rgba(20,20,22,.12);--chip:#FFFFFF;--acc:#141416;--acct:#FFFFFF;--note:#FFF2C6;--notefg:#5C4500;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D0D0F;--fg:#EDEDEF;--mut:#97969C;--line:rgba(255,255,255,.12);--chip:#1A1A1E;--acc:#FFD23F;--acct:#141414;--note:#2B2410;--notefg:#F1D88C;color-scheme:dark}}
@@ -644,14 +644,398 @@ canvas.fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .ob-res p{color:#77736b;font-size:14px;max-width:270px}
 .ob-res .go{margin-top:14px;width:100%;height:56px;border-radius:18px;border:0;background:#151515;color:#fff;font:800 15px/1 Inter,sans-serif}
 .ob-res .again{border:0;background:none;color:#8a8780;font:600 13px/1 Inter,sans-serif;text-decoration:underline}
+
+/* ================= v2 по отзыву 24.10 ================= */
+.grp .old{display:inline-flex;align-items:center;gap:2px;margin-left:6px;padding-left:8px;border-left:1px solid var(--line)}
+.grp .old small{font:700 11px/1 Inter,sans-serif;color:var(--mut);margin-right:2px;letter-spacing:.04em}
+.grp .old button{font-size:12.5px;padding:8px 10px;opacity:.8}
+/* шрифт фильма — у каждого свой */
+.ff{display:block}
+.ff.wolf{font:900 30px/1.02 "Playfair Display",Lora,serif;background:linear-gradient(180deg,#F8E3A3,#C8902C 70%,#8C5E14);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.01em}
+.ff.titanic{font:600 italic 31px/1.02 "Cormorant Garamond",Lora,serif;letter-spacing:.01em}
+.ff.psycho{font:600 21px/1.1 "Cormorant Garamond",Lora,serif;text-transform:uppercase;letter-spacing:.28em}
+.ff.taxi{font:700 22px/1.15 "PT Mono",ui-monospace,monospace;letter-spacing:-.01em}
+.ff.sopranos{font:700 italic 27px/1 Oswald,Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+
+/* ===== H1 Главная v2 — что посмотреть ===== */
+.h1{background:#F4EFE6;color:#17150F;--dust:rgba(23,21,15,.55);--dustbg:#E9E2D4}
+.h1-h{position:absolute;top:56px;left:22px;right:22px;z-index:5;display:flex;align-items:flex-end;justify-content:space-between}
+.h1-h small{font:700 11px/1 Inter,sans-serif;letter-spacing:.1em;color:#8A8172}
+.h1-h h2{font:800 25px/1.1 Inter,sans-serif;letter-spacing:-.02em;margin-top:6px}
+.h1-av{width:38px;height:38px;border-radius:50%;background:#E5632A;color:#fff;display:grid;place-items:center;font:800 15px/1 Inter,sans-serif;box-shadow:0 0 0 2px #F4EFE6,0 0 0 4px #FFD23F}
+.h1-st{position:absolute;top:120px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:5}
+.h1-sti{width:76px;display:grid;justify-items:center;gap:6px;border:0;background:none;padding:0;color:inherit}
+.h1-sti .rg{position:relative;width:66px;height:66px;border-radius:50%;padding:3px;background:conic-gradient(from 210deg,#FFD23F,#FF6A3D,#E0338C,#FFD23F)}
+.h1-sti.seen .rg{background:#D9D1C2}
+.h1-sti .in{width:100%;height:100%;border-radius:50%;background:#17150F;border:3px solid #F4EFE6;display:grid;place-items:center;color:#fff;overflow:hidden;position:relative}
+.h1-sti small{font:700 11px/1.1 Inter,sans-serif;color:#5d5648;text-align:center;white-space:nowrap}
+.h1-sti .eqm{display:flex;gap:3px;align-items:center;height:22px}
+.h1-sti .eqm i{width:4px;height:100%;border-radius:2px;background:#FFD23F;animation:eq .8s ease-in-out infinite alternate;animation-delay:var(--d,0s)}
+.h1-sti .flame{width:30px;height:38px}
+.h1-sti .num{font:800 19px/1 Inter,sans-serif;font-variant-numeric:tabular-nums}
+.h1-sti svg.gr{width:46px;height:46px;transform:rotate(-90deg)}
+.h1-sti svg.gr circle{fill:none;stroke-width:6}
+.h1-sti svg.gr .t{stroke:rgba(255,255,255,.18)}
+.h1-sti svg.gr .p{stroke:#36C47A;stroke-linecap:round;stroke-dasharray:113.1;stroke-dashoffset:113.1;transition:stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1) .4s}
+.h1-sti .gn{position:absolute;inset:0;display:grid;place-items:center;font:800 12px/1 Inter,sans-serif}
+.h1-rv{position:absolute;top:214px;left:16px;right:16px;height:44px;border-radius:14px;border:0;background:#fff;color:#17150F;display:flex;align-items:center;gap:10px;padding:0 14px;z-index:5;box-shadow:0 6px 16px -12px rgba(70,50,10,.55);font:700 14px/1 Inter,sans-serif;text-align:left}
+.h1-rv .ic{width:18px;height:18px;color:#22A06B}
+.h1-rv span{flex:1}
+.h1-rv small{font:600 12px/1 Inter,sans-serif;color:#8A8172}
+.h1-rv .ch{width:16px;height:16px;color:#B9B0A0}
+.h1-deck{position:absolute;left:0;right:0;top:270px;height:340px;z-index:4;touch-action:none}
+.h1-c{position:absolute;left:22px;top:0;width:300px;height:330px;border-radius:28px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.04),0 22px 40px -22px rgba(70,50,10,.55);overflow:hidden;transform-origin:50% 70%}
+.h1-c .im{height:150px;position:relative}
+.h1-c .im::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.5))}
+.h1-c .tm{position:absolute;right:12px;top:12px;z-index:2;font:800 11px/1 Inter,sans-serif;color:#fff;background:rgba(0,0,0,.5);padding:6px 9px;border-radius:999px;font-variant-numeric:tabular-nums}
+.h1-c .ffw{position:absolute;left:16px;right:16px;bottom:12px;z-index:2;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+.h1-c .ffw .ff.wolf{text-shadow:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+.h1-c .bd{padding:13px 18px 0}
+.h1-c .mt{font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;color:#8A8172;text-transform:uppercase}
+.h1-c .ab{font:500 14.5px/1.42 Inter,sans-serif;color:#3d382e;margin:7px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.h1-c .chs{position:absolute;left:18px;right:18px;bottom:16px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.h1-c .chs span:not(.lv){font:700 11px/1 Inter,sans-serif;padding:5px 8px;border-radius:999px;background:#F1EBDF;color:#5d5648}
+.h1-c .chs .us{color:#C8902C!important;letter-spacing:.06em}
+.h1-c .stp{position:absolute;top:22px;z-index:6;padding:8px 12px;border-radius:10px;border:3px solid;font:900 17px/1 Inter,sans-serif;letter-spacing:.06em;opacity:0;pointer-events:none;text-transform:uppercase;background:rgba(255,255,255,.9)}
+.h1-c .stp.y{left:16px;color:#16935F;border-color:#16935F;transform:rotate(-12deg)}
+.h1-c .stp.n{right:16px;color:#8A8172;border-color:#8A8172;transform:rotate(12deg)}
+.h1-act{position:absolute;left:22px;right:22px;top:620px;display:flex;gap:10px;z-index:6}
+.h1-act button{flex:1;height:48px;border-radius:16px;border:0;display:flex;align-items:center;justify-content:center;gap:7px;font:800 14px/1 Inter,sans-serif;transition:transform .15s}
+.h1-act button:active{transform:scale(.96)}
+.h1-act .ic{width:18px;height:18px}
+.h1-no{background:#fff;color:#5d5648;box-shadow:0 10px 22px -14px rgba(70,50,10,.6)}
+.h1-yes{background:#17150F;color:#FFD23F}
+.h1-done{position:absolute;left:22px;right:22px;top:300px;display:none;flex-direction:column;align-items:center;text-align:center;gap:8px;z-index:7}
+.h1-done.on{display:flex}
+.h1-done h3{font:800 24px/1.15 Inter,sans-serif}
+.h1-done p{color:#5d5648;font-size:14px;max-width:250px}
+.h1-done button{margin-top:6px;height:50px;padding:0 22px;border-radius:16px;border:0;background:#17150F;color:#FFD23F;font:800 15px/1 Inter,sans-serif}
+.h1 .tst{background:#17150F}
+.h1-tb{--tbb:#fff;--tbm:#9a917f;--tbon:#17150F;--tbsel:#F4EFE6;--tbs:0 10px 30px -12px rgba(70,50,10,.4)}
+/* сторис поверх главной (тап по кружку) */
+.h1-sv{position:absolute;inset:0;z-index:70;background:#000;color:#fff;display:none}
+.h1-sv.on{display:block}
+
+/* ===== истории v2: слайды «Цель дня», «Выучено», «Что посмотреть» ===== */
+.sg{background:radial-gradient(120% 85% at 50% 32%,#0f2c4a 0%,#06101c 72%)}
+.sg .ring{position:absolute;left:50%;top:150px;width:220px;height:220px;margin-left:-110px}
+.sg .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.sg .ring circle{fill:none;stroke-width:18}
+.sg .ring .t{stroke:rgba(255,255,255,.1)}
+.sg .ring .p{stroke:url(#sgg);stroke-linecap:round;stroke-dasharray:597.6;stroke-dashoffset:597.6}
+.sg .ring b{position:absolute;inset:0;display:grid;place-items:center;font:900 54px/1 Unbounded,Inter,sans-serif;font-variant-numeric:tabular-nums}
+.sg .ring b small{font-size:22px;color:rgba(255,255,255,.55)}
+.sg .gl{position:absolute;left:24px;right:24px;top:392px;text-align:center}
+.sg .gl h3{font:800 30px/1.1 Inter,sans-serif;font-style:normal;margin:0}
+.sg .gl p{margin-top:10px;color:rgba(255,255,255,.78);font-size:15px;line-height:1.45}
+.sg .gl p b{color:#FFD23F}
+.sg .tk{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 12px;border-radius:12px;background:rgba(255,210,63,.12);border:1px solid rgba(255,210,63,.35);color:#FFD23F;font:700 13px/1 Inter,sans-serif}
+.sg .tk .ic{width:18px;height:18px}
+.sl{background:radial-gradient(120% 90% at 50% 30%,#123524 0%,#06140d 70%)}
+.sl .pile{position:absolute;left:0;right:0;top:118px;height:250px}
+.sl .pc{position:absolute;left:50%;top:40px;width:220px;padding:12px 14px;border-radius:16px;background:#fff;color:#111;box-shadow:0 10px 24px -8px rgba(0,0,0,.6);display:grid;gap:3px}
+.sl .pc b{font-size:17px;font-weight:500}
+.sl .pc small{font:600 11px/1 Inter,sans-serif;color:#22A06B}
+.sl .lt{position:absolute;left:22px;right:22px;top:380px}
+.sl .lt h3{font:900 52px/1 Unbounded,Inter,sans-serif;font-style:normal;margin:0}
+.sl .lt h3 small{display:block;font:600 16px/1.3 Inter,sans-serif;color:rgba(255,255,255,.8);margin-top:8px}
+.sl .wkb{display:flex;align-items:flex-end;gap:7px;height:76px;margin-top:20px}
+.sl .wkb span{flex:1;display:grid;justify-items:center;gap:5px;font:600 10px/1 Inter,sans-serif;color:rgba(255,255,255,.55)}
+.sl .wkb i{width:100%;border-radius:6px;background:linear-gradient(#5BE08F,#22A06B);transform-origin:bottom;height:var(--h)}
+.sw5{background:#000}
+.sw5 .kb{position:absolute;inset:0}
+.sw5 .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,0) 24%,rgba(0,0,0,.15) 46%,rgba(0,0,0,.92) 100%)}
+.sw5 .c3-tx .ff{margin:12px 0 10px}
+.sw5 .ab{font:500 15px/1.45 Inter,sans-serif;color:rgba(255,255,255,.88)}
+
+/* ===== H3 Профиль-бенто (витрина для друзей) ===== */
+.h3{background:#0B0C0F}
+.h3-in{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 0 110px;scrollbar-width:none}
+.h3-in::-webkit-scrollbar{display:none}
+.h3-hd{position:relative;height:236px;overflow:hidden}
+.h3-hd .vw{position:absolute;inset:0}
+.h3-hd video{width:100%;height:100%;object-fit:cover;display:block}
+.h3-hd .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,12,15,.35) 0%,rgba(11,12,15,0) 35%,rgba(11,12,15,.85) 80%,#0B0C0F 100%)}
+.h3-who{position:absolute;left:18px;right:18px;bottom:14px;display:flex;align-items:flex-end;gap:12px}
+.h3-av{width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,#E5632A,#C93A5A);display:grid;place-items:center;font:800 26px/1 Inter,sans-serif;box-shadow:0 0 0 3px #0B0C0F,0 0 0 5px #FFD23F;flex:none}
+.h3-who b{display:block;font:800 24px/1.05 Inter,sans-serif}
+.h3-who small{display:block;color:rgba(255,255,255,.72);font-size:12.5px;margin-top:4px}
+.h3-see{display:inline-flex;align-items:center;gap:6px;margin:12px 16px 2px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.75);font:600 12px/1 Inter,sans-serif}
+.h3-see i{width:7px;height:7px;border-radius:50%;background:#36C47A;box-shadow:0 0 8px #36C47A}
+.h3-ed{position:absolute;top:58px;right:14px;z-index:60;height:34px;padding:0 14px;border-radius:999px;border:0;background:rgba(0,0,0,.45);color:#fff;font:800 13px/1 Inter,sans-serif;border:1px solid rgba(255,255,255,.22)}
+.h3.jig .h3-ed{background:#FFD23F;color:#111;border-color:transparent}
+.h3-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px 0}
+.h3-w{position:relative;border-radius:22px;background:#16171B;border:1px solid rgba(255,255,255,.06);padding:13px;overflow:hidden}
+.h3-w .lb{font:700 10px/1 Inter,sans-serif;letter-spacing:.1em;color:#8B8B93;position:relative;z-index:2}
+.h3-w .n{display:block;font:800 40px/1 Inter,sans-serif;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:8px}
+.h3-w .sub{color:#8B8B93;font-size:12px}
+.h3-w.full{grid-column:1/-1}
+.h3-w.ph{height:132px}
+.h3-w.ph .ff{margin-top:12px;color:#FFD23F}
+.h3-w.ph small{display:block;color:#8B8B93;font-size:12px;margin-top:6px}
+.h3-w.ph .eq{position:absolute;right:13px;bottom:13px;display:flex;gap:3px;align-items:center;height:30px;width:64px}
+.h3-w.ph .eq i{flex:1;height:100%;border-radius:2px;background:#FFD23F;animation:eq .9s ease-in-out infinite alternate;animation-delay:var(--d,0s)}
+.h3-w.fm{height:196px;padding:0}
+.h3-w.fm .im{position:absolute;inset:0}
+.h3-w.fm .sh{position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.85))}
+.h3-w.fm .lb{position:absolute;left:13px;top:13px;color:rgba(255,255,255,.8)}
+.h3-w.fm .bt{position:absolute;left:13px;right:13px;bottom:12px}
+.h3-w.fm .bt .ff.wolf{font-size:22px}
+.h3-w.fm .bt small{display:block;color:rgba(255,255,255,.7);font-size:11.5px;margin-top:3px}
+.h3-w.hr{height:196px;display:grid;justify-items:center;align-content:center;text-align:center;gap:6px;background:radial-gradient(90% 70% at 50% 35%,#3a0b12,#16171B 70%)}
+.h3-w.hr .lb{position:absolute;left:13px;top:13px}
+.h3-w.hr .emb{width:92px;height:92px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6))}
+.h3-w.hr b{font:900 15px/1 Unbounded,Inter,sans-serif;letter-spacing:.04em}
+.h3-w.hr small{color:#8B8B93;font-size:11.5px}
+.h3-w.st{height:140px}
+.h3-w.st .fr{position:absolute;right:10px;top:10px;width:44px;height:56px}
+.h3-w.st .fr .flame{width:100%;height:100%}
+.h3-w.st .n{margin-top:26px}
+.h3-w.lr{height:140px}
+.h3-w.lr .bars{position:absolute;right:13px;bottom:14px;display:flex;align-items:flex-end;gap:3px;height:44px}
+.h3-w.lr .bars i{width:7px;border-radius:2px;background:#5BE08F;height:var(--h);transform-origin:bottom}
+.h3-w.bg{height:150px;padding:0}
+.h3-w.bg .vw{position:absolute;inset:0}
+.h3-w.bg video{width:100%;height:100%;object-fit:cover;display:block}
+.h3-w.bg .sh{position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.8))}
+.h3-w.bg .lb{position:absolute;left:13px;top:13px;color:rgba(255,255,255,.85)}
+.h3-w.bg .bt{position:absolute;left:13px;bottom:12px;font:700 14px/1.2 Inter,sans-serif}
+.h3-w.vs{height:140px;background:radial-gradient(90% 80% at 80% 20%,#3a2a08,#16171B 70%)}
+.h3-w.vs .n{margin-top:26px;color:#FFD23F}
+.h3-w.wd{height:140px}
+.h3-w.wd .ser{display:block;font-size:26px;margin-top:20px}
+.h3-add{display:none;height:140px;border-radius:22px;border:2px dashed rgba(255,255,255,.22);background:none;color:rgba(255,255,255,.75);font:800 14px/1.3 Inter,sans-serif;align-items:center;justify-content:center;gap:6px;flex-direction:column}
+.h3-add b{font-size:30px;line-height:1}
+.h3.jig .h3-add{display:flex}
+.h3-mn{position:absolute;left:6px;top:6px;width:26px;height:26px;border-radius:50%;border:0;background:#3a3a40;color:#fff;display:grid;place-items:center;font:800 17px/1 Inter;opacity:0;transform:scale(.4);transition:.25s;z-index:6;padding:0}
+.h3.jig .h3-mn{opacity:1;transform:none}
+.h3.jig .h3-w{animation:jig .26s ease-in-out infinite alternate}
+.h3.jig .h3-w:nth-child(even){animation-delay:-.13s}
+.h3-sh{position:absolute;left:8px;right:8px;bottom:-8px;z-index:80;border-radius:26px 26px 0 0;background:#17181D;border:1px solid rgba(255,255,255,.1);padding:10px 16px 40px;transform:translateY(105%);transition:transform .45s cubic-bezier(.3,1.2,.4,1)}
+.h3-sh.on{transform:none}
+.h3-sh .gr{display:block;width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.25);margin:0 auto 12px}
+.h3-sh h4{margin:0 0 10px;font:800 17px/1.2 Inter,sans-serif}
+.h3-sh button{display:flex;align-items:center;gap:12px;width:100%;padding:12px 6px;border:0;border-top:1px solid rgba(255,255,255,.07);background:none;color:#fff;text-align:left;font:700 14px/1.2 Inter,sans-serif}
+.h3-sh button i{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#24252B;font-style:normal;font-size:19px;flex:none}
+.h3-sh button small{display:block;color:#8B8B93;font-weight:500;font-size:12px;margin-top:2px}
+.h3-dim{position:absolute;inset:0;z-index:75;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s}
+.h3-dim.on{opacity:1;pointer-events:auto}
+.h3-tb{--tbb:#16171B;--tbs:0 0 0 1px rgba(255,255,255,.06),0 12px 30px rgba(0,0,0,.6)}
+
+/* ===== E1 Герои: сетка / список ===== */
+.e1{background:radial-gradient(120% 60% at 50% 0%,#1b1426 0%,#08080b 60%)}
+.e1-hd{position:absolute;top:54px;left:16px;right:16px;z-index:10}
+.e1-hd .t{display:flex;align-items:center;justify-content:space-between}
+.e1-hd b{font:400 19px/1 "Poiret One",Inter,sans-serif;letter-spacing:.3em}
+.e1-sg{display:flex;padding:3px;border-radius:12px;background:rgba(255,255,255,.08);position:relative}
+.e1-sg button{position:relative;z-index:2;border:0;background:none;color:rgba(255,255,255,.65);font:700 12px/1 Inter,sans-serif;padding:8px 11px;display:flex;gap:5px;align-items:center}
+.e1-sg button.on{color:#111}
+.e1-sg .ind{position:absolute;top:3px;bottom:3px;left:3px;border-radius:9px;background:#F0C86A;transition:transform .35s cubic-bezier(.3,1.3,.5,1),width .35s;z-index:1}
+.e1-sg svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.e1-se{margin-top:12px;height:38px;border-radius:12px;background:rgba(255,255,255,.07);display:flex;align-items:center;gap:8px;padding:0 12px;color:rgba(255,255,255,.5);font:500 13.5px/1 Inter,sans-serif}
+.e1-se svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+.e1-sum{margin-top:10px;font:600 12px/1 Inter,sans-serif;color:rgba(255,255,255,.55)}
+.e1-sum b{font:800 12px/1 Inter,sans-serif;letter-spacing:0;color:#F0C86A}
+.e1-ls{position:absolute;left:0;right:0;top:186px;bottom:0;overflow-y:auto;padding:0 14px 120px;scrollbar-width:none}
+.e1-ls::-webkit-scrollbar{display:none}
+.e1-it{position:absolute;border:0;background:none;padding:0;color:#fff;text-align:left}
+.e1-it .emw{position:absolute;transition:none}
+.e1-it .emb{width:100%;height:100%}
+.e1-it .cnt{position:absolute;z-index:3;padding:4px 7px;border-radius:999px;background:#F0C86A;color:#1d1400;font:800 10.5px/1 Inter,sans-serif;font-variant-numeric:tabular-nums;box-shadow:0 4px 10px rgba(0,0,0,.4);white-space:nowrap}
+.e1-it .nm{position:absolute;font:800 11px/1.15 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.e1-it .rl{position:absolute;font:500 11.5px/1.2 Inter,sans-serif;color:rgba(255,255,255,.55);white-space:nowrap}
+.e1-it .bar{position:absolute;height:5px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
+.e1-it .bar b{display:block;height:100%;background:var(--hc);transform-origin:left}
+.e1-it .ph{position:absolute;font:600 11px/1 Inter,sans-serif;color:rgba(255,255,255,.7);white-space:nowrap}
+.e1-it .lv{position:absolute}
+.e1-it .fav{position:absolute;width:30px;height:30px;display:grid;place-items:center;color:rgba(255,255,255,.35)}
+.e1-it .fav.on{color:#F0C86A}
+.e1-it .fav svg{width:19px;height:19px;fill:currentColor;stroke:none}
+.e1-it.soon{opacity:.38}
+.e1-it.soon .emw{border-radius:50%;background:radial-gradient(circle,#2a2a33,#15151a);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.18)}
+.e1-it.soon .emw::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font:900 28px/1 Unbounded,Inter,sans-serif;color:rgba(255,255,255,.35)}
+.e1-tb{--tbb:#121216}
+
+/* ===== E2 Монолог на весь экран ===== */
+.e2{background:#0a0507}
+.e2-bg{position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 30%,var(--c1) 0%,var(--c0) 55%,#050304 100%);opacity:.9}
+.e2-rays{position:absolute;left:50%;top:250px;width:640px;height:640px;margin:-320px 0 0 -320px;border-radius:50%;background:conic-gradient(from 0deg,rgba(255,220,150,.0),rgba(255,220,150,.12),rgba(255,220,150,0) 12%,rgba(255,220,150,0) 25%,rgba(255,220,150,.1) 30%,rgba(255,220,150,0) 38%,rgba(255,220,150,0) 60%,rgba(255,220,150,.12) 66%,rgba(255,220,150,0) 74%);animation:spin 40s linear infinite}
+.e2-por{position:absolute;left:50%;top:118px;width:260px;height:260px;margin-left:-130px;animation:float 5s ease-in-out infinite}
+.e2-por .emb{width:260px;height:260px;filter:drop-shadow(0 26px 40px rgba(0,0,0,.65))}
+.e2-note{position:absolute;left:50%;top:388px;transform:translateX(-50%);font:600 10.5px/1 Inter,sans-serif;color:rgba(255,255,255,.4);white-space:nowrap}
+.e2-bars{position:absolute;top:52px;left:12px;right:12px;display:flex;gap:4px;z-index:20}
+.e2-bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.25);overflow:hidden;display:block}
+.e2-bars b{display:block;height:100%;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+.e2-tr{position:absolute;top:66px;left:14px;right:14px;display:flex;align-items:center;gap:8px;z-index:20}
+.e2-tr .chip{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(240,200,106,.45);font:800 10.5px/1 Inter,sans-serif;letter-spacing:.12em;color:#F0C86A}
+.e2-tr .chip i{width:7px;height:7px;border-radius:50%;background:#F0C86A;box-shadow:0 0 8px #F0C86A;animation:bulb 1.2s ease-in-out infinite}
+@keyframes bulb{50%{opacity:.3}}
+.e2-tr small{color:rgba(255,255,255,.7);font:500 12px/1.2 Inter,sans-serif;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.e2-tr .x{margin-left:auto;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.4);display:grid;place-items:center;flex:none}
+.e2-sub{position:absolute;left:16px;right:16px;top:420px;z-index:20;text-align:center}
+.e2-who{font:800 11px/1 Inter,sans-serif;letter-spacing:.14em;color:#F0C86A}
+.e2-ln{margin-top:10px;font:700 25px/1.28 Inter,sans-serif;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+.e2-ln .w{opacity:.32;cursor:pointer;border-radius:6px;padding:0 1px;transition:opacity .25s,background .2s,color .25s}
+.e2-ln .w.on{opacity:1}
+.e2-ln .w.now{color:#FFD23F}
+.e2-ln .w.tp{background:rgba(255,210,63,.25)}
+.e2-ru{margin-top:12px;font:500 15px/1.4 Inter,sans-serif;color:rgba(255,255,255,.72);opacity:0;transition:opacity .4s}
+.e2-ru.on{opacity:1}
+.e2-hint{position:absolute;left:0;right:0;bottom:104px;text-align:center;font:600 12px/1 Inter,sans-serif;color:rgba(255,255,255,.45);z-index:20}
+.e2-pop{position:absolute;left:24px;right:24px;z-index:40;padding:14px 16px;border-radius:18px;background:#14161C;border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 40px rgba(0,0,0,.55);opacity:0;pointer-events:none;transform:translateY(10px) scale(.96);transition:opacity .2s,transform .3s cubic-bezier(.3,1.3,.5,1)}
+.e2-pop.on{opacity:1;pointer-events:auto;transform:none}
+.e2-pop b{font:800 20px/1.1 Inter,sans-serif}
+.e2-pop .tt{display:block;color:#FFD23F;font:700 15px/1.3 Inter,sans-serif;margin-top:6px}
+.e2-pop small{display:block;color:rgba(255,255,255,.6);font-size:12px;margin-top:4px}
+.e2-pop button{margin-top:10px;height:38px;padding:0 14px;border-radius:12px;border:0;background:#FFD23F;color:#111;font:800 13px/1 Inter,sans-serif}
+.e2-end{position:absolute;left:16px;right:16px;bottom:96px;z-index:30;padding:18px;border-radius:22px;background:#14161C;border:1px solid rgba(255,255,255,.12);text-align:center;display:none}
+.e2-end.on{display:block}
+.e2-end h3{font:800 21px/1.2 Inter,sans-serif}
+.e2-end .wd{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.e2-end .wd span{padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.08);font:600 12.5px/1 Inter,sans-serif}
+.e2-end .wd span i{font-style:normal;color:#FFD23F}
+.e2-end .bt{display:flex;gap:8px}
+.e2-end .bt button{flex:1;height:46px;border-radius:14px;border:0;font:800 14px/1 Inter,sans-serif;background:rgba(255,255,255,.1);color:#fff}
+.e2-end .bt .pri{background:#F0C86A;color:#2a1700}
+
+/* ===== E3 Комикс из реплик ===== */
+.e3{background:#EFE7D8;color:#17150F}
+.e3::before{content:"";position:absolute;inset:0;background:radial-gradient(circle,rgba(23,21,15,.09) 1px,transparent 1.4px) 0 0/7px 7px;pointer-events:none}
+.e3-hd{position:absolute;top:56px;left:18px;right:18px;z-index:5}
+.e3-hd small{font:800 10.5px/1 Inter,sans-serif;letter-spacing:.14em;color:#8A7A5C}
+.e3-hd h2{font:400 26px/1.05 Bangers,Inter,sans-serif;letter-spacing:.04em;margin-top:6px}
+.e3-pg{position:absolute;left:14px;right:14px;top:118px;height:520px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1.05fr 1fr .95fr;gap:8px}
+.e3-p{position:relative;border:3px solid #17150F;border-radius:6px;overflow:hidden;background:var(--pb,#fff);box-shadow:4px 4px 0 #17150F}
+.e3-p.a{grid-row:1/3}
+.e3-p.d{grid-column:1/-1}
+.e3-p .bgr{position:absolute;inset:0;background:radial-gradient(circle,rgba(0,0,0,.18) 1.2px,transparent 1.6px) 0 0/6px 6px}
+.e3-p .emb{position:absolute;filter:drop-shadow(3px 3px 0 #17150F)}
+.e3-p.a .emb{width:150px;height:150px;left:50%;margin-left:-75px;bottom:14px}
+.e3-p.b .emb,.e3-p.c .emb{width:96px;height:96px;right:8px;bottom:8px}
+.e3-p.c .emb{left:8px;right:auto}
+.e3-p.d .emb{width:92px;height:92px;bottom:10px}
+.e3-p.d .emb.l{left:16px}.e3-p.d .emb.r{right:16px}
+.e3-bl{position:absolute;z-index:3;max-width:86%;padding:9px 11px;border:2.5px solid #17150F;border-radius:18px;background:#fff;font:700 13px/1.25 Inter,sans-serif;cursor:pointer;box-shadow:2px 2px 0 #17150F}
+.e3-bl::after{content:"";position:absolute;bottom:-11px;width:16px;height:12px;background:#fff;border-right:2.5px solid #17150F;border-bottom:2.5px solid #17150F;transform:skewX(-30deg)}
+.e3-bl.l::after{left:22px}.e3-bl.r::after{right:22px;transform:skewX(30deg);border-right:0;border-left:2.5px solid #17150F}
+.e3-bl .ru{display:none;color:#8A3B12}
+.e3-bl.fl .en{display:none}.e3-bl.fl .ru{display:block}
+.e3-sfx{position:absolute;left:50%;top:22px;transform:translateX(-50%) rotate(-8deg);font:400 46px/1 Bangers,Inter,sans-serif;color:#FFD23F;-webkit-text-stroke:2px #17150F;text-shadow:4px 4px 0 #E5484D;letter-spacing:.04em;z-index:4}
+.e3-cap{position:absolute;left:8px;top:8px;z-index:4;padding:5px 8px;background:#FFD23F;border:2px solid #17150F;font:800 10.5px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.e3-ft{position:absolute;left:18px;right:18px;top:652px;font:600 12px/1.35 Inter,sans-serif;color:#6b5f48;text-align:center}
+.e3-tb{--tbb:#17150F;--tbm:#a69c86;--tbon:#FFD23F;--tbsel:rgba(255,210,63,.12)}
+
+/* ===== E4 Перехват v2 ===== */
+.e4 .d5-map{top:146px;height:380px}
+.e4-fl{position:absolute;top:92px;left:14px;right:14px;display:flex;gap:6px;z-index:10;overflow-x:auto;scrollbar-width:none}
+.e4-fl::-webkit-scrollbar{display:none}
+.e4-fl button{flex:none;height:36px;padding:0 12px;border-radius:999px;border:1px solid rgba(46,230,197,.35);background:rgba(46,230,197,.06);color:#D9FFF6;font:700 12.5px/1 Inter,sans-serif;display:flex;align-items:center;gap:6px;transition:background .25s,color .25s}
+.e4-fl button.on{background:#2EE6C5;color:#04201a;border-color:transparent}
+.e4 .pin{transition:opacity .35s,transform .45s cubic-bezier(.3,1.4,.5,1)}
+.e4 .pin.off{opacity:.12;transform:scale(.5);pointer-events:none}
+.e4-cd{position:absolute;left:8px;right:8px;bottom:-8px;z-index:30;border-radius:26px 26px 0 0;background:#0D171F;border:1px solid rgba(46,230,197,.25);padding:10px 16px 40px;transform:translateY(105%);transition:transform .5s cubic-bezier(.3,1.25,.4,1)}
+.e4-cd.on{transform:none}
+.e4-cd .gr{display:block;width:40px;height:5px;border-radius:3px;background:rgba(217,255,246,.3);margin:0 auto 12px}
+.e4-cd small.h{display:block;font:800 10px/1 Inter,sans-serif;letter-spacing:.14em;color:#FFB547}
+.e4-cd .hd{display:flex;align-items:center;gap:10px;margin-top:8px}
+.e4-cd .hd .av{display:flex}.e4-cd .hd .av .emb{width:40px;height:40px}.e4-cd .hd .av .emb+.emb{margin-left:-12px}
+.e4-cd .hd b{font:700 16px/1.2 Inter,sans-serif}
+.e4-cd .hd p{color:rgba(217,255,246,.65);font-size:12.5px;margin-top:2px}
+.e4-cd .chs{display:flex;gap:6px;margin:12px 0}
+.e4-cd .chs span:not(.lv){font:700 11px/1 Inter,sans-serif;padding:5px 8px;border-radius:999px;background:rgba(46,230,197,.1);color:#9df5e2}
+.e4-cd .q{font:500 italic 15px/1.35 Lora,serif;color:#fff;margin-bottom:12px}
+.e4-cd .bt{display:flex;gap:8px}
+.e4-cd .bt button{flex:1;height:50px;border-radius:15px;border:1px solid rgba(46,230,197,.35);background:rgba(46,230,197,.08);color:#D9FFF6;font:800 14px/1 Inter,sans-serif}
+.e4-cd .bt .pri{background:#2EE6C5;color:#04201a;border-color:transparent}
+.e4-why{position:absolute;left:14px;right:14px;top:536px;font:600 12px/1.4 Inter,sans-serif;color:rgba(217,255,246,.6);z-index:5}
+.e4-why b{color:#2EE6C5}
+
+/* ===== O2 Первый запуск v2 ===== */
+.o2{background:#F5F4F0;color:#151515;--dust:rgba(0,0,0,.5);--dustbg:#ECE8DF}
+.o2-st{position:absolute;inset:0}
+.o2-lvl{position:absolute;top:92px;right:20px;z-index:8;display:flex;align-items:center;gap:6px;font:700 12px/1 Inter,sans-serif;color:#77736b}
+.o2-lvl .lvbx{display:inline-grid;perspective:300px;min-width:34px}
+.o2-lvl .lvbx b{grid-area:1/1;font:800 12px/1 Inter,sans-serif;padding:6px 8px;border-radius:8px;color:#fff;background:var(--lc);text-align:center;backface-visibility:hidden;transition:transform .55s cubic-bezier(.3,1.4,.5,1)}
+.o2-chk{position:absolute;left:18px;right:18px;top:186px;bottom:120px;overflow-y:auto;scrollbar-width:none;display:grid;gap:8px;align-content:start}
+.o2-chk::-webkit-scrollbar{display:none}
+.o2-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:12px 14px;border-radius:18px;background:#fff;box-shadow:0 8px 18px -14px rgba(0,0,0,.35)}
+.o2-row b{display:block;font:600 21px/1.1 Lora,Georgia,serif}
+.o2-row .sp{margin-top:6px;font:600 14px/1.2 Inter,sans-serif;color:#3d3a33}
+.o2-row .bt{display:flex;gap:6px}
+.o2-row .bt button{height:38px;padding:0 11px;border-radius:12px;border:0;font:800 12.5px/1 Inter,sans-serif;background:#F1EEE6;color:#5d5a52;transition:background .2s,color .2s,transform .15s}
+.o2-row .bt button:active{transform:scale(.94)}
+.o2-row .bt .y.on{background:#22A06B;color:#fff}
+.o2-row .bt .n.on{background:#E5484D;color:#fff}
+.o2-row.dim{opacity:.55}
+.o2-go{position:absolute;left:22px;right:22px;top:640px;height:56px;border-radius:18px;border:0;background:#151515;color:#fff;font:800 15px/1 Inter,sans-serif;z-index:6;transition:opacity .25s}
+.o2-go:disabled{opacity:.3}
+.o2-q{position:absolute;left:22px;right:22px;top:200px;display:grid;gap:10px}
+.o2-q .wd{font:600 44px/1.05 Lora,Georgia,serif;margin:4px 0 6px}
+.o2-q .pos{display:inline-block;width:max-content;font:700 11px/1 Inter,sans-serif;padding:5px 9px;border-radius:999px;background:#ECE8DF;color:#77736b}
+.o2-q button{height:56px;border-radius:16px;border:1.5px solid rgba(0,0,0,.08);background:#fff;color:#151515;text-align:left;padding:0 16px;font:700 15px/1 Inter,sans-serif;transition:background .25s,border-color .25s,transform .15s}
+.o2-q button:active{transform:scale(.98)}
+.o2-q button.ok{background:#E6F6EE;border-color:#22A06B;color:#116B46}
+.o2-q button.bad{background:#FCE9E9;border-color:#E5484D;color:#9D1F23}
+.o2-q .why{min-height:40px;font:600 13px/1.4 Inter,sans-serif;color:#77736b}
+.o2-c{position:absolute;left:32px;top:10px;width:280px;height:320px;border-radius:30px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.04),0 24px 40px -22px rgba(0,0,0,.35);display:grid;place-items:center;align-content:center;gap:10px;text-align:center;transform-origin:50% 70%}
+.o2-c .pos{font:700 11px/1 Inter,sans-serif;padding:5px 9px;border-radius:999px;background:#F1EEE6;color:#77736b}
+.o2-c b{font:600 46px/1 Lora,Georgia,serif}
+.o2-c .lbl{position:absolute;top:22px;padding:7px 11px;border-radius:10px;border:3px solid;font:900 16px/1 Inter,sans-serif;letter-spacing:.08em;opacity:0;pointer-events:none}
+.o2-c .lbl.y{left:18px;color:#16935F;border-color:#16935F;transform:rotate(-12deg)}
+.o2-c .lbl.n{right:18px;color:#C76A10;border-color:#C76A10;transform:rotate(12deg)}
+.o2-res{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 28px;gap:10px}
+.o2-res small{font:800 11px/1 Inter,sans-serif;letter-spacing:.14em;color:#8a8780}
+.o2-res .lvb{position:relative;width:150px;height:96px;border-radius:26px;overflow:hidden;background:#EDEAE2;display:grid;place-items:center}
+.o2-res .lvb i{position:absolute;inset:0;background:var(--lc);transform:scaleY(0);transform-origin:bottom}
+.o2-res .lvb b{position:relative;font:900 50px/1 Unbounded,Inter,sans-serif;color:#fff}
+.o2-res .why{display:grid;gap:6px;width:100%;margin:6px 0}
+.o2-res .why span{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:14px;background:#fff;font:600 13px/1.3 Inter,sans-serif;color:#3d3a33;text-align:left}
+.o2-res .why span em{font-style:normal;font-weight:800;white-space:nowrap}
+.o2-res .go{margin-top:8px;width:100%;height:56px;border-radius:18px;border:0;background:#151515;color:#fff;font:800 15px/1 Inter,sans-serif}
+.o2-res .again{border:0;background:none;color:#8a8780;font:600 13px/1 Inter,sans-serif;text-decoration:underline}
+
+/* сетка/список героев: где что лежит в каждом виде */
+.e1-ls[data-m=grid] .e1-it{width:98px;height:140px}
+.e1-ls[data-m=grid] .emw{left:6px;top:6px;width:86px;height:86px}
+.e1-ls[data-m=grid] .cnt{right:-2px;top:0}
+.e1-ls[data-m=grid] .nm{left:0;right:0;top:100px;text-align:center}
+.e1-ls[data-m=grid] .lv{left:50%;top:117px;transform:translateX(-50%)}
+.e1-ls[data-m=grid] .rl,.e1-ls[data-m=grid] .bar,.e1-ls[data-m=grid] .ph,.e1-ls[data-m=grid] .fav{opacity:0;pointer-events:none}
+.e1-ls[data-m=list] .e1-it{width:316px;height:64px}
+.e1-ls[data-m=list] .emw{left:0;top:7px;width:48px;height:48px}
+.e1-ls[data-m=list] .cnt{opacity:0;pointer-events:none}
+.e1-ls[data-m=list] .nm{left:60px;top:11px}
+.e1-ls[data-m=list] .rl{left:60px;top:27px;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.e1-ls[data-m=list] .bar{left:60px;top:47px;width:110px}
+.e1-ls[data-m=list] .ph{left:178px;top:44px}
+.e1-ls[data-m=list] .lv{right:38px;top:11px}
+.e1-ls[data-m=list] .fav{right:0;top:9px}
+.e1-ls[data-m=list] .e1-it::after{content:"";position:absolute;left:60px;right:0;bottom:-3px;height:1px;background:rgba(255,255,255,.07)}
+.e1-it .nm,.e1-it .rl,.e1-it .bar,.e1-it .ph,.e1-it .lv,.e1-it .fav,.e1-it .cnt{transition:opacity .3s}
+.e1-end{position:absolute;left:0;width:1px;height:1px}
+/* сторис: ✕ нажимается (шапка — pointer-events:none), фраза дня шрифтом фильма — крупно */
+.c3-x{pointer-events:auto;cursor:pointer;width:32px;height:32px;display:grid;place-items:center;margin-right:-6px}
+.c3 .ff.taxi.big{font-size:36px;line-height:1.15;margin:10px 0 6px}
+.c3 .ff.taxi.big .w{opacity:.35}.c3 .ff.taxi.big .w.on{opacity:1}
+
+/* v2: правки по скринам */
+.h1-c .ff.wolf{font-size:24px}.h1-c .ff.titanic{font-size:27px}.h1-c .ff.psycho{font-size:15px;letter-spacing:.22em}.h1-c .ff.sopranos{font-size:23px}
+.h3-mn{left:auto;right:8px;top:8px}
+.h3-bf{position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(rgba(11,12,15,0),#0B0C0F 55%);z-index:45;pointer-events:none}
+.e2-tr .chip{white-space:nowrap;flex:none}
+.e3-hd h2{font:500 21px/1.1 Inter,sans-serif;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sg .ring b{display:flex;align-items:baseline;justify-content:center;gap:2px;padding-top:6px}
+.e3-pg{top:120px;height:540px}
+.e3-ft{top:auto;bottom:30px}
+.o2-chk{bottom:132px}
 </style>
 
 <div class="wrap">
  <header>
-  <h1>Главная и ДД — по 5 вариантов</h1>
-  <p class="lead">Всё живое: смахивай, тяни, тапай, зажимай. Справа или ниже — что тут двигается и откуда идея. «↻ Ещё раз» проигрывает анимацию заново.</p>
+  <h1>Главная и ДД — v2 по твоему отзыву</h1>
+  <p class="lead">Справа у каждого экрана — что поменял и твои слова, на которые отвечал. Всё живое: смахивай, тапай, зажимай. «↻ Ещё раз» проигрывает заново. Первые варианты — кнопки «v1».</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
-  <div class="grp" id="grp"><button data-g="home">Главная · 5</button><button data-g="dd">ДД · 5</button><button data-g="ob">Первый запуск</button></div>
+  <div class="grp" id="grp"><button data-g="h2">Главная v2 · 3</button><button data-g="d2">ДД v2 · 4</button><button data-g="o2">Первый запуск v2</button><span class="old"><small>v1:</small><button data-g="home">Главная</button><button data-g="dd">ДД</button><button data-g="ob">Запуск</button></span></div>
   <div class="vars" id="vars"></div>
  </header>
  <div class="stage">
@@ -1158,9 +1542,305 @@ V.push({g:'ob',id:'ob',n:'Свайп слов',
   reset();
  }});
 
+/* ================= v2 по отзыву Андрея 24.10 (ПЛАН-24.10.md, П3) ================= */
+const TB2=(cls,on)=>`<nav class="tb ${cls}">${[['home','Сегодня'],['film','Сцены'],['dict','Словарь'],['user','Профиль']].map(([k,n],i)=>`<a class="${i===on?'on':''}"><svg viewBox="0 0 24 24">${TBI[k]}</svg><span>${n}</span></a>`).join('')}</nav>`;
+const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n);
+// сцены для колоды: «о чём» — кратко, без вырванных фраз; у каждого фильма свой шрифт (.ff.<фильм>)
+const FILMS=[
+ {k:'wolf',t:'Волк с Уолл-стрит',img:'wk4',ep:'Обед с Марком Ханной',ab:'Опытный брокер за обедом объясняет новичку, как на самом деле устроена работа на Уолл-стрит.',lv:'B2',tm:'45 с',use:4},
+ {k:'titanic',t:'Титаник',img:'tk2',ep:'Эпизод 2 · «Я выживу»',ab:'Корабль тонет. Джек уговаривает Роуз сесть в шлюпку — а она не хочет уходить без него.',lv:'A2',tm:'46 с',use:3},
+ {k:'psycho',t:'Американский психопат',img:'ak2',ep:'Визитки',ab:'Бейтман и коллеги меряются визитками. Чья лучше — решает всё.',lv:'B1',tm:'58 с',use:4},
+ {k:'sopranos',t:'Клан Сопрано',img:'bd_sopranos',ep:'Эпизод 2 · «Стресс»',ab:'Тони у психотерапевта пытается объяснить, почему упал в обморок.',lv:'B1',tm:'52 с',use:5}];
+const ffT=f=>`<span class="ff ${f.k}">${f.t}</span>`;
+/* сторис — общий движок: полоски, тап вправо/влево, зажал — пауза, ✕ */
+function stories(host,ctx,SS,i0,o){o=o||{};host.innerHTML=`<div class="c3-st"></div><canvas class="fx"></canvas><div class="c3-bars">${'<i><b></b></i>'.repeat(SS.length)}</div><div class="c3-hd"><span class="c3-av">К</span><b>Языки по кино</b><small>сегодня</small><span class="c3-x" aria-label="Закрыть">${ic('x')}</span></div>${SB(0)}<i class="hb"></i>`;
+ const st=$('.c3-st',host),bars=$$('.c3-bars b',host),fx=FX(ctx,$('.fx',host));let i=0,pa=null,sc=null;
+ function show(k){if(k<0)k=0;if(k>=SS.length){if(o.end)o.end();else show(0);return}i=k;if(sc)sc.kill();sc=sub(ctx);st.innerHTML=SS[i].h;const el=$('.c3-s',st);SS[i].p(el,sc,fx);an(el,[{opacity:0},{opacity:1}],{d:380});
+  bars.forEach((b,j)=>{b.getAnimations().forEach(a=>a.cancel());b.style.transform=j<i?'scaleX(1)':'scaleX(0)'});
+  pa=bars[i].animate([{transform:'scaleX(0)'},{transform:'scaleX(1)'}],{duration:SS[i].d,easing:'linear',fill:'forwards'});pa.onfinish=()=>{if(ctx.alive&&host.isConnected&&!host.hidden)show(i+1)}}
+ let hold=null,held=false;
+ const down=()=>{held=false;hold=ctx.t(()=>{held=true;if(pa)pa.pause();host.classList.add('hold');st.getAnimations({subtree:true}).forEach(a=>a.pause())},230)};
+ const up=(x,t)=>{ctx.ct(hold);if(held){held=false;if(pa)pa.play();host.classList.remove('hold');st.getAnimations({subtree:true}).forEach(a=>a.play());return}if(t&&t.closest&&t.closest('.c3-cta')){toast(o.R||host,t.closest('.c3-cta').dataset.t||'▶ Поехали!');return}const r=host.getBoundingClientRect();show((x-r.left)/r.width<.3?i-1:i+1)};
+ if('ontouchstart' in window){ctx.on(st,'touchstart',()=>down(),{passive:true});ctx.on(st,'touchend',e=>{const t=e.changedTouches[0];up(t.clientX,e.target)})}
+ ctx.on(st,'pointerdown',e=>{if(e.pointerType!=='touch')down()});ctx.on(st,'pointerup',e=>{if(e.pointerType!=='touch')up(e.clientX,e.target)});
+ ctx.on($('.c3-x',host),'click',e=>{e.stopPropagation();if(pa)pa.cancel();if(sc)sc.kill();if(o.x)o.x()});
+ show(i0||0);return {show,stop(){if(pa)pa.cancel();if(sc)sc.kill()}}}
+// слайды дня: цель, фраза дня (послушать), серия, выучено, что посмотреть
+function daySlides(){const RVP=["You should be.","Get in the boat, Rose.","Stress, maybe.","Have a seat, please.","Lucky, I guess.","Trust me.","You're a good liar.","Fuck the clients."];
+ return [
+ {k:'goal',d:6400,h:`<div class="c3-s sg"><svg width="0" height="0" style="position:absolute"><defs><linearGradient id="sgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5BE08F"/><stop offset="1" stop-color="#2EC4FF"/></linearGradient></defs></svg><div class="ring"><svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="95" class="t"/><circle cx="110" cy="110" r="95" class="p"/></svg><b><span class="gn">0</span><small>/20</small></b></div>
+   <div class="gl"><small class="cap">ЦЕЛЬ ДНЯ · ОТВЕТЫ В ЗАДАНИЯХ</small><h3>Ещё 6 ответов</h3><p>и день закрыт: серия станет <b>7 дней</b>, а в банк упадёт <b>+200 билетов</b></p><span class="tk">${ic('ticket')}билеты — на ставки в дуэлях и Versus</span></div><button class="c3-cta" data-t="▶ Три сцены по 2 задания">${ic('play')}Ответить 6 раз · ≈ 2 мин</button></div>`,
+  p(el,c){const pc=$('.ring .p',el);an(pc,[{strokeDashoffset:597.6},{strokeDashoffset:597.6*(1-14/20)}],{d:1500,dl:250,e:EO,f:'forwards'});c.t(()=>countUp(c,$('.gn',el),14,1300),250);$$('.gl>*',el).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{d:500,dl:650+j*140}));an($('.c3-cta',el),[{transform:'translateY(90px)'},{transform:'none'}],{sp:SPs,dl:1100})}},
+ {k:'pod',d:7200,h:`<div class="c3-s s2"><div class="bgf img" style="background-image:url(${IMG.bd_taxi})"></div><i class="grain"></i><div class="c3-tx mid"><small class="cap">ФРАЗА ДНЯ · ПОСЛУШАЙ · ТАКСИСТ, 1976</small><h3 class="kq ff taxi big">${wq("You talkin' to me?")}</h3><canvas class="wave" width="600" height="120"></canvas><p class="tr">Ты мне это говоришь?</p><p class="use">Когда кто-то лезет к тебе — с вызовом: «Ты это мне?»</p></div><button class="c3-cta" data-t="▶ Момент из «Таксиста»">${ic('play')}Посмотреть момент</button></div>`,
+  p(el,c){an($('.bgf',el),[{transform:'scale(1.15)',opacity:0},{transform:'scale(1)',opacity:.34}],{d:2400,f:'forwards'});an($('.c3-cta',el),[{transform:'translateY(90px)'},{transform:'none'}],{sp:SPs,dl:900});
+   let amp=1;kara(c,$('.kq',el),{dl:600,ms:300,cm:70,loop:false,done(){amp=.18;an($('.tr',el),[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{d:500,f:'forwards'});an($('.use',el),[{opacity:0},{opacity:1}],{d:500,dl:250,f:'forwards'})}});
+   const cv=$('.wave',el),g=cv.getContext('2d');c.loop(n=>{g.clearRect(0,0,600,120);const N=46;for(let k=0;k<N;k++){const h=(8+amp*52*Math.abs(Math.sin(n*.0062+k*.55)*Math.sin(n*.0021+k*.21)))*(1-Math.abs(k-N/2)/N*.9);g.fillStyle=k/N<(amp>.5?(n%3000)/3000:1)?'#FFD23F':'rgba(255,255,255,.35)';g.fillRect(k*13,60-h/2,7,h)}})}},
+ {k:'streak',d:5600,h:`<div class="c3-s s3"><i class="glow"></i><div class="c3-fire">${FLAME}</div><div class="c3-num"><span class="flp"><b class="a">5</b><b class="b">6</b></span></div><p class="big">дней подряд</p><div class="c3-wk">${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map((d,j)=>`<span class="${j<5?'f':''} ${j===4?'today':''}"><i></i>${d}</span>`).join('')}</div><p class="use">Ответь хоть раз завтра — будет 7</p></div>`,
+  p(el,c,fx){an($('.c3-fire',el),[{transform:'scale(.2) translateY(60px)',opacity:0},{transform:'none',opacity:1}],{sp:SPb,dl:150});c.t(()=>{$('.flp',el).classList.add('flx');fx.burst(172,330,{n:44,c:['#FFB238','#FF6A1F','#FFE27A'],v:6,g:-.03,dr:.96,t:'d',s:2.4,l:70})},1100);$$('.c3-wk span',el).forEach((s,j)=>an(s,[{transform:'scale(.4)',opacity:0},{transform:'none',opacity:1}],{sp:SPb,dl:600+j*110}));an($('.big',el),[{opacity:0},{opacity:1}],{d:500,dl:900});an($('.use',el),[{opacity:0},{opacity:1}],{d:500,dl:1700})}},
+ {k:'learned',d:6000,h:`<div class="c3-s sl"><div class="pile">${RVP.map((t,j)=>`<div class="pc"><b class="ser">${t}</b><small>выучено · ${['Волк','Титаник','Сопрано','Психопат'][j%4]}</small></div>`).join('')}</div><div class="lt"><small class="cap">ВЫУЧЕНО</small><h3><b class="cnt">0</b><small>фраз выучено · +12 за эту неделю</small></h3><div class="wkb">${[3,1,4,2,0,2,0].map((v,j)=>`<span><i style="--h:${8+v*14}px"></i>${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][j]}</span>`).join('')}</div></div><button class="c3-cta" data-t="📖 Словарь → «Мои фразы и слова»">Открыть словарь</button></div>`,
+  p(el,c){$$('.pc',el).forEach((p,j)=>{const x=Math.round(Math.random()*36-18),r=(Math.random()*18-9).toFixed(1),y=j*-5;const fin=`translate(calc(-50% + ${x}px),${y}px) rotate(${r}deg)`;p.style.transform=fin;an(p,[{transform:`translate(calc(-50% + ${j%2?170:-170}px),-520px) rotate(${j%2?40:-40}deg)`},{transform:fin}],{sp:SPs,dl:150+j*120})});c.t(()=>countUp(c,$('.cnt',el),128,1400),300);an($('.lt',el),[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{d:500,dl:400});$$('.wkb i',el).forEach((b,j)=>an(b,[{transform:'scaleY(0)'},{transform:'scaleY(1)'}],{sp:SPs,dl:900+j*70}));an($('.c3-cta',el),[{transform:'translateY(90px)'},{transform:'none'}],{sp:SPs,dl:1300})}},
+ {k:'watch',d:6400,h:`<div class="c3-s sw5"><div class="kb img" style="background-image:url(${IMG.bd_wolf})"></div><i class="sh"></i><div class="c3-tx"><small class="cap">ЧТО ПОСМОТРЕТЬ · ДЛЯ B1–B2</small>${ffT(FILMS[0])}<p class="ab">${FILMS[0].ab}</p><div class="chs"><span class="lv B2">B2</span><span>${FILMS[0].tm}</span><span>3 задания</span><span>польза ${stars(FILMS[0].use)}</span></div></div><button class="c3-cta" data-t="▶ Открываю сцену">${ic('play')}Смотреть</button></div>`,
+  p(el,c){an($('.kb',el),[{transform:'scale(1.06) translate(0,0)'},{transform:'scale(1.22) translate(-3%,2%)'}],{d:6800,e:'linear',f:'forwards'});an($('.ff',el),[{transform:'translateY(40px)',opacity:0},{transform:'none',opacity:1}],{sp:SP,dl:300});an($('.cap',el),[{opacity:0},{opacity:1}],{d:400,dl:100});$$('.ab,.chs',el).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{d:500,dl:650+j*150}));an($('.c3-cta',el),[{transform:'translateY(90px)'},{transform:'none'}],{sp:SPs,dl:1000})}}];}
+
+/* ===== Главная v2 · 1. Что посмотреть ===== */
+V.push({g:'h2',id:'h1',n:'Что посмотреть',
+ idea:'Главная — это «что сегодня сделать», а не учёба. Сверху кружки-истории (фраза дня, серия, выучено, цель), ниже колода сцен: смахнул вправо — смотрю, влево — не сейчас. Повторение — одной тонкой строкой.',
+ moves:['кружки-истории с цветным кольцом: в «Фразе дня» пляшет эквалайзер, огонь серии мерцает, кольцо цели заполняется; тап — сторис на весь экран','колода раздаётся веером, верхняя карта сама показывает, куда смахивать','при смахе — штамп со словами: «▶ Смотреть» или «Не сейчас», карта улетает, следующая подъезжает пружиной','у каждого фильма свой шрифт: Волк — золотая антиква, Титаник — курсив, Психопат — разрядка капителью, Сопрано — узкий гротеск','колода кончилась — «На сегодня всё» и кнопка повторения'],
+ from:'Твой отзыв: «колода дня — имба идея», «не показывай фразы, вырванные из контекста — кратко о чём», «напоминание о повторении супер полезное — куда-то его надо», «непонятно, что за 200 и что за значок влево». «🎟 200» убран — про билеты сказано словами в цели дня. Кинозал убран, его «шрифт фильма» — здесь.',
+ minus:'Кружков 4 — больше не надо, иначе это лента. Колода — до 5 сцен в день, дальше «завтра новые».',
+ mount(R,ctx){R.className='scr h1';
+  const seen=new Set();
+  const circ=[['goal',`<svg class="gr" viewBox="0 0 46 46"><circle cx="23" cy="23" r="18" class="t"/><circle cx="23" cy="23" r="18" class="p"/></svg><span class="gn">14</span>`,'цель 14/20'],['pod',`<span class="eqm"><i style="--d:-.1s"></i><i style="--d:-.5s"></i><i style="--d:-.3s"></i><i style="--d:-.7s"></i></span>`,'фраза дня'],['streak',FLAME,'6 дней'],['learned','<span class="num">128</span>','выучено']];
+  R.innerHTML=`${SB(1)}<header class="h1-h"><div><small>ПЯТНИЦА · 24 ОКТЯБРЯ</small><h2>Что посмотрим?</h2></div><span class="h1-av">А</span></header>
+  <div class="h1-st">${circ.map((c,j)=>`<button class="h1-sti" data-s="${j}"><span class="rg"><span class="in">${c[1]}</span></span><small>${c[2]}</small></button>`).join('')}</div>
+  <button class="h1-rv">${ic('rep')}<span>Повторить 17 фраз</span><small>≈ 4 мин</small>${ic('chev').replace('class="ic"','class="ic ch"')}</button>
+  <div class="h1-deck">${FILMS.map((f,j)=>`<div class="h1-c" data-j="${j}"><div class="im img" style="background-image:url(${IMG[f.img]})"><span class="tm">${f.tm}</span><div class="ffw">${ffT(f)}</div></div><div class="bd"><small class="mt">${f.ep}</small><p class="ab">${f.ab}</p></div><div class="chs"><span class="lv ${f.lv}">${f.lv}</span><span>3 задания</span><span class="us">польза ${stars(f.use)}</span></div><i class="stp y">▶ Смотреть</i><i class="stp n">Не сейчас</i></div>`).join('')}</div>
+  <div class="h1-done"><h3>На сегодня всё</h3><p>Новые сцены для B1 — завтра. Пока можно повторить то, что уже посмотрел.</p><button class="h1-again">Повторить 17 фраз</button></div>
+  <div class="h1-act"><button class="h1-no">${ic('x')}Не сейчас</button><button class="h1-yes">${ic('play')}Смотреть</button></div>
+  <canvas class="fx"></canvas>${TB2('h1-tb',0)}<i class="hb dk"></i><div class="h1-sv c3" hidden></div>`;
+  const fx=FX(ctx,$('.fx',R)),S=$$('.h1-c',R),done=$('.h1-done',R),act=$('.h1-act',R);let n=0,busy=false;
+  // кружки: кольцо цели, появление по очереди; тап — сторис с этого места
+  $$('.h1-sti',R).forEach((b,j)=>an(b,[{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'none'}],{sp:SPb,dl:150+j*90}));
+  ctx.t(()=>{const p=$('.h1-sti svg.gr .p',R);if(p)p.style.strokeDashoffset=String(113.1*(1-14/20))},300);
+  an($('.h1-rv',R),[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{d:500,dl:520});
+  const sv=$('.h1-sv',R);let SV=null,svc=null;
+  const SL=daySlides();
+  function openStory(j){if(svc)svc.kill();svc=sub(ctx);sv.hidden=false;sv.classList.add('on');an(sv,[{opacity:0,transform:'scale(.92)'},{opacity:1,transform:'none'}],{sp:SPs});
+   SV=stories(sv,svc,SL.slice(0,4),j,{R,end:closeStory,x:closeStory});}
+  function closeStory(){if(!svc)return;const c=svc;svc=null;$$('.h1-sti',R).forEach(b=>b.classList.add('seen'));const a=an(sv,[{opacity:1,transform:'none'},{opacity:0,transform:'scale(.94)'}],{d:260,f:'forwards'});const fin=()=>{c.kill();sv.hidden=true;sv.classList.remove('on');sv.innerHTML='';};if(a)a.onfinish=fin;else fin()}
+  $$('.h1-sti',R).forEach(b=>ctx.on(b,'click',()=>openStory(+b.dataset.s)));
+  ctx.on($('.h1-rv',R),'click',()=>toast(R,'🔁 17 фраз · 3 задания за раз'));
+  // колода «что посмотреть»
+  const pos=i=>`translateY(${Math.min(i,3)*14}px) scale(${(1-Math.min(i,3)*.05).toFixed(2)})`;
+  const stp=(c,p)=>{const y=$('.stp.y',c),no=$('.stp.n',c);y.style.opacity=Math.max(0,p*1.4);no.style.opacity=Math.max(0,-p*1.4)};
+  function lay(tr){S.slice(n).forEach((c,i)=>{c.style.zIndex=20-i;c.style.transition=tr?`transform ${SP.d}ms ${SP.e}, opacity .3s`:'none';c.style.transform=pos(i);c.style.opacity=i>3?'0':'1'})}
+  function hint(){const c=S[n];if(!c||busy||n)return;const y=$('.stp.y',c),no=$('.stp.n',c);
+   an(c,[{transform:pos(0)},{transform:'translate(56px,4px) rotate(6deg)',offset:.22},{transform:'translate(56px,4px) rotate(6deg)',offset:.36},{transform:pos(0),offset:.5},{transform:'translate(-56px,4px) rotate(-6deg)',offset:.72},{transform:'translate(-56px,4px) rotate(-6deg)',offset:.86},{transform:pos(0)}],{d:2800,e:'ease-in-out'});
+   an(y,[{opacity:0},{opacity:1,offset:.22},{opacity:1,offset:.36},{opacity:0,offset:.5},{opacity:0}],{d:2800});an(no,[{opacity:0},{opacity:0,offset:.5},{opacity:1,offset:.72},{opacity:1,offset:.86},{opacity:0}],{d:2800})}
+  function deal(){n=0;busy=false;done.classList.remove('on');act.style.visibility='';S.forEach(c=>{c.style.display='';stp(c,0)});lay(false);
+   S.forEach((c,i)=>an(c,[{transform:`translate(${(i%2?1:-1)*30}px,560px) rotate(${(i%2?1:-1)*(10+i*3)}deg)`},{transform:pos(i)}],{sp:SPs,dl:300+(S.length-1-i)*120}));ctx.t(hint,300+S.length*120+900)}
+  function fly(dir){const c=S[n];if(!c||busy)return;busy=true;c.getAnimations().forEach(a=>a.cancel());stp(c,dir);c.style.transition='transform .45s cubic-bezier(.3,.1,.6,1), opacity .45s';c.style.transform=`translate(${dir*520}px,${-40+Math.random()*80}px) rotate(${dir*30}deg)`;c.style.opacity='0';
+   toast(R,dir>0?`▶ ${FILMS[n].t}: открываю`:'Хорошо, предложу другое');n++;lay(true);
+   ctx.t(()=>{c.style.display='none';busy=false;if(n>=S.length){done.classList.add('on');act.style.visibility='hidden';an(done,[{opacity:0,transform:'scale(.9)'},{opacity:1,transform:'none'}],{sp:SPs});fx.burst(172,300,{n:60,a0:-Math.PI*.95,spread:Math.PI*.9,v:8,g:.25,c:['#FFD23F','#FF6A3D','#22A06B','#3D7BFF'],l:100,s:8})}},440)}
+  drag(ctx,$('.h1-deck',R),{axis:'x',start(){if(busy||!S[n])return false;S[n].getAnimations().forEach(a=>a.cancel());$$('.stp',S[n]).forEach(x=>x.getAnimations().forEach(a=>a.cancel()));S[n].style.transition='none'},
+   move(dx,dy){const c=S[n];c.style.transform=`translate(${dx}px,${dy*.25}px) rotate(${dx/14}deg)`;stp(c,clamp(dx/110,-1,1));const nx=S[n+1];if(nx){const p=Math.min(1,Math.abs(dx)/110);nx.style.transition='none';nx.style.transform=`translateY(${(14-14*p).toFixed(1)}px) scale(${(.95+.05*p).toFixed(3)})`}},
+   end(dx,dy,vx){if(Math.abs(dx)>100||(Math.abs(vx)>.45&&Math.abs(dx)>36))fly(Math.sign(dx));else{stp(S[n],0);lay(true)}},
+   tap(){if(S[n])toast(R,`▶ ${FILMS[n].t}: открываю`)}});
+  ctx.on($('.h1-yes',R),'click',()=>fly(1));ctx.on($('.h1-no',R),'click',()=>fly(-1));ctx.on($('.h1-again',R),'click',()=>toast(R,'🔁 Повторение: 3 задания за раз'));
+  an($('.h1-h',R),[{opacity:0,transform:'translateY(-10px)'},{opacity:1,transform:'none'}],{d:500});deal();
+ }});
+
+/* ===== Главная v2 · 2. Истории ===== */
+V.push({g:'h2',id:'h2',n:'Истории',
+ idea:'День как сторис, но без лишнего: цель дня (что даст и зачем билеты), фраза дня — послушать, серия, сколько выучил, и одна сцена «что посмотреть». Фильм в сторис не выбираешь — только «Смотреть».',
+ moves:['кольцо цели заполняется до 14/20, цифры набегают','фраза дня — шрифтом «Таксиста», слова загораются под звуковую волну, потом перевод','огонь серии вырастает, 5 → 6, дни недели загораются по очереди','карточки выученных фраз сыплются в стопку, 0 → 128, столбики недели растут','сцена дня: кадр плывёт, название — шрифтом фильма, «о чём» без вырванных фраз'],
+ from:'Твой отзыв: «фразы послушать — точно туда, супер ахуенно», «добавь серию, фразы, сколько выучил», «Сегодня продолжаем — лишнее, заменить на цель дня», «не понял, как выбирать в сторис фильм».',
+ minus:'Каждый день один порядок — приедается. Можно открывать с того кружка, что новый (на Главной v2 так и сделано).',
+ mount(R,ctx){R.className='scr c3';stories(R,ctx,daySlides(),0,{R,x:()=>toast(R,'✕ → Главная')})}});
+
+/* ===== Главная v2 · 3. Профиль-бенто — витрина для друзей ===== */
+V.push({g:'h2',id:'h3',n:'Профиль-бенто',
+ idea:'Бенто — это твой профиль: его видят друзья (в дуэли и Versus нажал на игрока). Только то, чем хочется похвастаться: любимая фраза, фильм, герой, серия, выучено, фон из «Коллекции». Без билетов, «повторить» и «нового».',
+ moves:['шапка на твоём живом фоне из «Коллекции», аватар в золотом кольце','виджеты выезжают по очереди пружиной; любимая фраза — шрифтом её фильма и с эквалайзером','«Изменить» — виджеты дрожат, у каждого «−», внизу «＋ Виджет»','«＋ Виджет» — шторка: рекорд Versus, любимое слово, достижение; выбрал — виджет влетает в сетку','«−» — виджет схлопывается, соседние подъезжают'],
+ from:'Твой отзыв: «дай редактировать бенто, добавлять свои виджеты — не фраза дня, а любимая фраза»; «это профиль? другие видят? тогда убрать билеты, повторить, новое для B1».',
+ minus:'Чужой профиль — только просмотр. Виджетов больше 8 — не надо: витрина, а не отчёт.',
+ mount(R,ctx){R.className='scr h3';
+  const W={
+   ph:`<div class="h3-w full ph" data-w="ph"><button class="h3-mn">−</button><small class="lb">ЛЮБИМАЯ ФРАЗА</small><b class="ff taxi kq">${wq("You talkin' to me?")}</b><small>Таксист, 1976 · «Ты мне это говоришь?»</small><span class="eq">${eqBars(8)}</span></div>`,
+   fm:`<div class="h3-w fm" data-w="fm"><button class="h3-mn">−</button><div class="im img" style="background-image:url(${IMG.bd_wolf})"></div><i class="sh"></i><small class="lb">ЛЮБИМЫЙ ФИЛЬМ</small><div class="bt"><span class="ff wolf">Волк с Уолл-стрит</span><small>3 сцены · 41 фраза</small></div></div>`,
+   hr:`<div class="h3-w hr" data-w="hr"><button class="h3-mn">−</button><small class="lb">ГЕРОЙ DEADLOCK</small>${emb('venator',92)}<b>VENATOR</b><small>6 фраз · 3 победы в Versus</small></div>`,
+   st:`<div class="h3-w st" data-w="st"><button class="h3-mn">−</button><small class="lb">СЕРИЯ</small><div class="fr">${FLAME}</div><b class="n">6</b><small class="sub">дней подряд</small></div>`,
+   lr:`<div class="h3-w lr" data-w="lr"><button class="h3-mn">−</button><small class="lb">ВЫУЧЕНО</small><b class="n c1n">0</b><small class="sub">фраз</small><span class="bars">${[2,4,3,6,5,7,4].map(v=>`<i style="--h:${8+v*5}px"></i>`).join('')}</span></div>`,
+   bg:`<div class="h3-w full bg" data-w="bg"><button class="h3-mn">−</button><div class="vw">${vidHTML('titanic')}</div><i class="sh"></i><small class="lb">ФОН ИЗ КОЛЛЕКЦИИ</small><span class="bt">Титаник · весь фильм</span></div>`,
+   vs:`<div class="h3-w vs" data-w="vs"><button class="h3-mn">−</button><small class="lb">VERSUS</small><b class="n">5</b><small class="sub">побед подряд</small></div>`,
+   wd:`<div class="h3-w wd" data-w="wd"><button class="h3-mn">−</button><small class="lb">ЛЮБИМОЕ СЛОВО</small><b class="ser">fugazi</b><small class="sub">фальшивка · Волк</small></div>`};
+  R.innerHTML=`${SB(0)}<div class="h3-in"><div class="h3-hd"><div class="vw">${vidHTML('bank')}</div><i class="sh"></i><div class="h3-who"><span class="h3-av">А</span><div><b>Андрей</b><small>B1 · смотрит кино с 12 октября</small></div></div></div>
+   <span class="h3-see"><i></i>Так тебя видят друзья в дуэли и Versus</span>
+   <div class="h3-g">${['ph','fm','hr','st','lr','bg'].map(k=>W[k]).join('')}<button class="h3-add"><b>＋</b>Виджет</button></div></div>
+   <button class="h3-ed">Изменить</button><i class="h3-dim"></i>
+   <div class="h3-sh"><i class="gr"></i><h4>Добавить на витрину</h4><button data-add="vs"><i>⚔️</i><span>Рекорд в Versus<small>5 побед подряд</small></span></button><button data-add="wd"><i>✍️</i><span>Любимое слово<small>fugazi — фальшивка</small></span></button><button data-add="fm2"><i>🎞</i><span>Любимая сцена<small>Титаник · «Я выживу»</small></span></button></div>
+   <i class="h3-bf"></i>${TB2('h3-tb',3)}<i class="hb"></i>`;
+  vidStart(R);const g=$('.h3-g',R),sh=$('.h3-sh',R),dim=$('.h3-dim',R);let jig=false;
+  const inW=()=>$$('.h3-w',R).forEach((w,j)=>an(w,[{opacity:0,transform:'translateY(26px) scale(.94)'},{opacity:1,transform:'none'}],{sp:SPs,dl:200+j*85}));
+  inW();an($('.h3-who',R),[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{d:520,dl:100});
+  ctx.t(()=>countUp(ctx,$('.c1n',R),128,1200),700);kara(ctx,$('.kq',R),{dl:1300,pause:1800,ms:200});
+  const setJ=v=>{jig=v;R.classList.toggle('jig',v);$('.h3-ed',R).textContent=v?'Готово':'Изменить';if(v)toast(R,'Правка витрины')};
+  ctx.on($('.h3-ed',R),'click',()=>setJ(!jig));
+  ctx.on(g,'click',e=>{const mn=e.target.closest('.h3-mn');if(mn&&jig){const w=mn.closest('.h3-w');const a=an(w,[{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(.3)'}],{d:300,e:EI,f:'forwards'});const fin=()=>w.remove();if(a)a.onfinish=fin;else fin();return}
+   if(e.target.closest('.h3-add')){sh.classList.add('on');dim.classList.add('on')}});
+  const closeSh=()=>{sh.classList.remove('on');dim.classList.remove('on')};ctx.on(dim,'click',closeSh);
+  ctx.on(sh,'click',e=>{const b=e.target.closest('[data-add]');if(!b)return;closeSh();const k=b.dataset.add==='fm2'?'fm':b.dataset.add;const t=document.createElement('div');t.innerHTML=k==='fm'?W.fm.replace('ЛЮБИМЫЙ ФИЛЬМ','ЛЮБИМАЯ СЦЕНА').replace(IMG.bd_wolf,IMG.tk2).replace('<span class="ff wolf">Волк с Уолл-стрит</span><small>3 сцены · 41 фраза</small>','<span class="ff titanic">Я выживу</span><small>Титаник · эпизод 2</small>'):W[k];const w=t.firstElementChild;g.insertBefore(w,$('.h3-add',g));
+   an(w,[{opacity:0,transform:'translateY(260px) scale(.5) rotate(-6deg)'},{opacity:1,transform:'none'}],{sp:SPs});ctx.t(()=>w.scrollIntoView&&w.scrollIntoView({block:'nearest',behavior:'smooth'}),80)});
+ }});
+
+/* ===== ДД v2 · 1. Герои: сетка / список ===== */
+V.push({g:'d2',id:'e1',n:'Герои: сетка / список',
+ idea:'Выбор героя — как был («выглядит супер»), плюс вид списком: быстро найти любимого и видеть, сколько фраз у героя, ещё до нажатия.',
+ moves:['переключатель «Сетка / Список» — плашка едет пружиной','гербы перелетают из сетки в строки и обратно (каждый своим путём), подписи проявляются','на жетоне в сетке — «собрано / всего» фраз; в списке — полоска цвета героя','★ — любимый герой: звезда подпрыгивает, любимые — в начале, по ним «Перехват» подбирает разговоры','герои без живых портретов — «скоро», серые'],
+ from:'Твой отзыв: «добавь просмотр списком — быстро всё прочекать», «скок фраз он получил — вывести до нажатия». В приложении на месте гербов — твои иконки с вики (13.9.64).',
+ minus:'Счётчик фраз имеет смысл, когда фразы героев начнут собираться в словарь (П9 в плане).',
+ mount(R,ctx){R.className='scr e1';
+  const SOON=[['Lash','Лэш'],['Shiv','Шив'],['Wraith','Рейф'],['Bebop','Бибоп']];
+  const fav=new Set(['venator']);
+  const H=HK.map(k=>({k,...HERO[k]})).concat(SOON.map(s=>({k:'',n:s[0],ru:s[1],soon:1})));
+  const svgG='<svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>',svgL='<svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>';
+  const tot=H.filter(h=>!h.soon).reduce((a,h)=>a+h.got,0),all=H.filter(h=>!h.soon).reduce((a,h)=>a+h.ph,0);
+  R.innerHTML=`${SB(0)}<div class="e1-hd"><div class="t"><b>ГЕРОИ</b><div class="e1-sg"><i class="ind"></i><button data-m="grid" class="on">${svgG}Сетка</button><button data-m="list">${svgL}Список</button></div></div>
+   <div class="e1-se"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>Найти героя…</div><div class="e1-sum">Собрано <b>${tot}</b> из ${all} фраз</div></div>
+   <div class="e1-ls" data-m="grid">${H.map((h,j)=>`<button class="e1-it${h.soon?' soon':''}" data-j="${j}" style="--hc:${h.c2||'#888'}"><span class="emw">${h.soon?'':emb(h.k,86)}</span>${h.soon?'':`<span class="cnt">${h.got} / ${h.ph}</span>`}<span class="nm">${h.n}</span><span class="rl">${h.soon?'скоро — нет живого портрета':h.role}</span>${h.soon?'':`<span class="bar"><b style="transform:scaleX(${(h.got/h.ph).toFixed(3)})"></b></span><span class="ph">${h.got} из ${h.ph} фраз</span><span class="lv ${h.lv}">${h.lv}</span><span class="fav${fav.has(h.k)?' on':''}" data-f="${h.k}"><svg viewBox="0 0 24 24"><path d="${ICO.star.match(/d="([^"]+)"/)[1]}"/></svg></span>`}</button>`).join('')}<i class="e1-end"></i></div>
+   ${TB2('e1-tb',1)}<i class="hb"></i>`;
+  const ls=$('.e1-ls',R),its=$$('.e1-it',R),sg=$('.e1-sg',R),ind=$('.ind',sg);let mode='grid';
+  const order=()=>its.slice().sort((a,b)=>{const ha=H[+a.dataset.j],hb=H[+b.dataset.j];return (ha.soon-hb.soon)||((fav.has(hb.k)?1:0)-(fav.has(ha.k)?1:0))||(+a.dataset.j-+b.dataset.j)});
+  function place(){const O=order();O.forEach((it,k)=>{if(mode==='grid'){it.style.left=(14+(k%3)*109)+'px';it.style.top=(Math.floor(k/3)*150)+'px'}else{it.style.left='14px';it.style.top=(k*70)+'px'}});const h=mode==='grid'?Math.ceil(O.length/3)*150:O.length*70;$('.e1-end',ls).style.top=(h+110)+'px'}
+  function moveInd(){const b=$(`button[data-m="${mode}"]`,sg);ind.style.width=b.offsetWidth+'px';ind.style.transform=`translateX(${b.offsetLeft-3}px)`;$$('button',sg).forEach(x=>x.classList.toggle('on',x===b))}
+  function setMode(m,anim){const first=its.map(it=>$('.emw',it).getBoundingClientRect());mode=m;ls.dataset.m=m;place();moveInd();if(!anim)return;
+   its.forEach((it,k)=>{const e=$('.emw',it),last=e.getBoundingClientRect();if(!last.width)return;const dx=(first[k].left-last.left)/SCALE,dy=(first[k].top-last.top)/SCALE,s=first[k].width/last.width;
+    an(e,[{transform:`translate(${dx}px,${dy}px) scale(${s.toFixed(3)})`},{transform:'none'}],{sp:SPs,dl:k*28});
+    $$('.nm,.rl,.bar,.ph,.lv,.fav,.cnt',it).forEach(x=>an(x,[{opacity:0},{opacity:getComputedStyle(x).opacity}],{d:380,dl:180+k*28}))})}
+  setMode('grid',false);its.forEach((it,k)=>an($('.emw',it),[{opacity:0,transform:'scale(.4) rotate(-30deg)'},{opacity:1,transform:'none'}],{sp:SPb,dl:150+k*70}));
+  ctx.on(sg,'click',e=>{const b=e.target.closest('button[data-m]');if(b&&b.dataset.m!==mode)setMode(b.dataset.m,true)});
+  ctx.on(ls,'click',e=>{const f=e.target.closest('.fav');if(f){const k=f.dataset.f;fav.has(k)?fav.delete(k):fav.add(k);f.classList.toggle('on');an(f,[{transform:'scale(1)'},{transform:'scale(1.6)'},{transform:'scale(1)'}],{sp:SPb});const first=its.map(it=>it.getBoundingClientRect());place();its.forEach((it,q)=>{const l=it.getBoundingClientRect();const dy=(first[q].top-l.top)/SCALE,dx=(first[q].left-l.left)/SCALE;if(dx||dy)an(it,[{transform:`translate(${dx}px,${dy}px)`},{transform:'none'}],{sp:SPs})});toast(R,fav.has(k)?'★ Любимый — «Перехват» подбирает его разговоры':'Убрал из любимых');return}
+   const it=e.target.closest('.e1-it');if(!it)return;const h=H[+it.dataset.j];toast(R,h.soon?'Скоро: ждём живой портрет':`${h.n}: ${h.got} из ${h.ph} фраз`)});
+  ctx.t(()=>{if(R.isConnected&&mode==='grid')setMode('list',true)},2600);
+ }});
+
+/* ===== ДД v2 · 2. Монолог на весь экран ===== */
+V.push({g:'d2',id:'e2',n:'Монолог',
+ idea:'Один герой на весь экран — как в кино: говорит, слова загораются, любое слово можно тапнуть. Сверху метка-триггер: «Первая встреча», «Перед боем»… — понятно, в какой момент это говорят.',
+ moves:['метка «ПЕРВАЯ ВСТРЕЧА» с мигающей точкой, полоски — сколько реплик','герой парит, за ним медленно крутятся лучи (в приложении тут живой видео-портрет)','слова реплики загораются по очереди, потом проявляется перевод','тап по слову — карточка: перевод именно тут и «＋ в мои слова»; тап мимо — следующая реплика','конец — «Монолог пройден» и новые слова'],
+ from:'Твой отзыв: «как в фильмах — васяны говорят, можно потыкать на фразы», «метку-триггер — „первая встреча“ — сверху или снизу», «монологи — если один, то на фулл скрин». Реплики — настоящие голосовые линии Венатора.',
+ minus:'Монологов в данных пока нет — собрать из одиночных голосовых реплик героя (они на вики), 3–4 штуки на героя.',
+ mount(R,ctx){R.className='scr e2';const h=HERO.venator;R.style.setProperty('--c0',h.c0);R.style.setProperty('--c1',h.c1);
+  const L=[["Evil stirs in New York... and so the Vatican has called on me.","В Нью-Йорке пробуждается зло… и Ватикан призвал меня."],["You can't hide from a Venator.","От Венатора не спрятаться."],["The Lord is merciful... I am not.","Господь милосерден… я — нет."]];
+  const GL={evil:['зло','тут: «зло пробуждается» — evil stirs'],stirs:['пробуждается','stir — шевелиться, просыпаться'],vatican:['Ватикан',''],called:['призвал','call on smb — призвать кого-то на помощь'],hide:['прятаться','can\'t hide — не спрятаться'],lord:['Господь','the Lord — Бог (в молитвах)'],merciful:['милосердный','mercy — милосердие'],york:['Нью-Йорк',''],new:['Нью-Йорк','New York']};
+  R.innerHTML=`<i class="e2-bg"></i><i class="e2-rays"></i><div class="e2-por">${emb('venator',260)}</div><small class="e2-note">в приложении — живой видео-портрет на весь экран</small>${SB(0)}
+   <div class="e2-bars">${L.map(()=>'<i><b></b></i>').join('')}</div><div class="e2-tr"><span class="chip"><i></i>ПЕРВАЯ ВСТРЕЧА</span><small>Венатор прибыл в Нью-Йорк</small><span class="x">${ic('x')}</span></div>
+   <div class="e2-sub"><div class="e2-who">VENATOR</div><div class="e2-ln"></div><div class="e2-ru"></div></div><div class="e2-hint">тап по слову — перевод · мимо — дальше</div>
+   <div class="e2-pop"><b class="pw"></b><span class="tt"></span><small class="pn"></small><button>＋ в мои слова</button></div>
+   <div class="e2-end"><h3>Монолог пройден</h3><div class="wd"><span><i>evil</i> — зло</span><span><i>hide</i> — прятаться</span><span><i>merciful</i> — милосердный</span></div><div class="bt"><button class="ag">↻ Ещё раз</button><button class="pri">В мои слова</button></div></div><i class="hb"></i>`;
+  const ln=$('.e2-ln',R),ru=$('.e2-ru',R),pop=$('.e2-pop',R),end=$('.e2-end',R),bars=$$('.e2-bars b',R);let k=-1,busy=false,sc=null;
+  an($('.e2-por',R),[{opacity:0,transform:'scale(.7) translateY(40px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:100});an($('.e2-tr',R),[{opacity:0,transform:'translateY(-10px)'},{opacity:1,transform:'none'}],{d:500,dl:300});
+  function next(){if(busy)return;pop.classList.remove('on');k++;if(k>=L.length){end.classList.add('on');an(end,[{opacity:0,transform:'translateY(30px)'},{opacity:1,transform:'none'}],{sp:SPs});return}
+   busy=true;if(sc)sc.kill();sc=sub(ctx);bars.forEach((b,j)=>b.style.transform=j<=k?'scaleX(1)':'scaleX(0)');
+   ln.innerHTML=L[k][0].split(' ').map(w=>`<span class="w" data-w="${w.toLowerCase().replace(/[^a-z']/g,'')}">${w}</span>`).join(' ');ru.classList.remove('on');ru.textContent=L[k][1];
+   an(ln,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{d:380});
+   const W=$$('.w',ln);let i=0;const step=()=>{if(i<W.length){W.forEach((w,j)=>{w.classList.toggle('on',j<=i);w.classList.toggle('now',j===i)});const len=W[i].textContent.length;i++;sc.t(step,150+len*48)}else{W.forEach(w=>w.classList.remove('now'));ru.classList.add('on');busy=false}};sc.t(step,350)}
+  ctx.on(R,'click',e=>{if(e.target.closest('.e2-pop button')){toast(R,'✓ В «Мои слова»');pop.classList.remove('on');return}if(e.target.closest('.e2-end .ag')){end.classList.remove('on');k=-1;busy=false;next();return}if(e.target.closest('.e2-end .pri')){toast(R,'✓ 3 слова — в «Мои слова»');return}if(e.target.closest('.e2-tr .x')){toast(R,'✕ → к героям');return}
+   const w=e.target.closest('.e2-ln .w');if(w){const g=GL[w.dataset.w];$$('.e2-ln .w',R).forEach(x=>x.classList.toggle('tp',x===w));if(!g){pop.classList.remove('on');toast(R,'Служебное слово — без перевода');return}$('.pw',pop).textContent=w.textContent.replace(/[.,!?]/g,'');$('.tt',pop).textContent=g[0];$('.pn',pop).textContent=g[1];const r=rel(w,R);pop.style.top=Math.max(120,r.y-118)+'px';pop.classList.add('on');return}
+   if(pop.classList.contains('on')){pop.classList.remove('on');$$('.e2-ln .w',R).forEach(x=>x.classList.remove('tp'));return}if(!end.classList.contains('on'))next()});
+  ctx.t(next,600);
+ }});
+
+/* ===== ДД v2 · 3. Комикс из реплик ===== */
+V.push({g:'d2',id:'e3',n:'Комикс',
+ idea:'Комикс не рисуем руками: 4 панели собираются кодом из портретов героев и реплик диалога. Под каждый диалог или монолог — сам собой.',
+ moves:['панели выезжают по одной, как перелистываешь стрип','облачка «надуваются» пружиной; тап по облачку — перевод','на последней панели — «BLAM!» с отдачей и подписью-плашкой','фон — точки печати, тени панелей — как в бумажном комиксе'],
+ from:'Твой отзыв: «комикс прикольно, но в ТикТоке набирают персонажи, а не комиксы — скорее для обучения, мб для монологов», «не заёб ли писать для каждого монолога отдельный комикс?» — нет: он собирается из данных.',
+ minus:'Для «залипания» слабее, чем живые герои. Держать как второй вид того же диалога (кнопка «Комикс» в «Перехвате»).',
+ mount(R,ctx){R.className='scr e3';
+  const P=[{c:'a',h:'venator',bl:'l',en:"Evil stirs in New York... and so the Vatican has called on me.",ru:'В Нью-Йорке пробуждается зло… и Ватикан призвал меня.',pb:'#F4D9D2',cap:'НЬЮ-ЙОРК. НОЧЬ.'},{c:'b',h:'rat',bl:'l',en:"What's a priest gonna do to a king?!",ru:'А что поп сделает королю?!',pb:'#DDE9C9'},{c:'c',h:'venator',bl:'r',en:"You can't hide from a Venator.",ru:'От Венатора не спрятаться.',pb:'#F2E6C2'},{c:'d',h:'',bl:'l',en:'I will find you.',ru:'Я тебя найду.',pb:'#FFE37A',cap:'ОХОТА ОБЪЯВЛЕНА'}];
+  R.innerHTML=`${SB(1)}<div class="e3-hd"><small>DEADLOCK · ВСТРЕЧА</small><h2>Венатор и Крысиный король</h2></div>
+   <div class="e3-pg">${P.map(p=>`<div class="e3-p ${p.c}" style="--pb:${p.pb}"><i class="bgr"></i>${p.cap?`<span class="e3-cap">${p.cap}</span>`:''}${p.c==='d'?`${emb('venator',92).replace('class="emb"','class="emb l"')}${emb('rat',92).replace('class="emb"','class="emb r"')}<span class="e3-sfx">BLAM!</span>`:emb(p.h,p.c==='a'?150:96)}<div class="e3-bl ${p.bl}"><span class="en">${p.en}</span><span class="ru">${p.ru}</span></div></div>`).join('')}</div>
+   <p class="e3-ft">Тап по облачку — перевод. Панели собраны из реплик диалога и портретов — рисовать не нужно.</p><i class="hb dk"></i>`;
+  // облачка: позиция по панели
+  const pl=[['a','left:10px;top:44px;right:10px'],['b','left:10px;top:12px'],['c','right:10px;top:12px'],['d','left:118px;top:58px;max-width:120px']];
+  pl.forEach(([c,s])=>{const b=$(`.e3-p.${c} .e3-bl`,R);b.style.cssText+=';'+s});
+  const ps=$$('.e3-p',R);ps.forEach((p,j)=>{an(p,[{opacity:0,transform:`translate(${j%2?40:-40}px,30px) rotate(${j%2?4:-4}deg)`},{opacity:1,transform:'none'}],{sp:SPs,dl:200+j*520});an($('.e3-bl',p),[{opacity:0,transform:'scale(0)'},{opacity:1,transform:'none'}],{sp:SPb,dl:500+j*520})});
+  ctx.t(()=>{const s=$('.e3-sfx',R);an(s,[{transform:'translateX(-50%) rotate(-8deg) scale(2.6)',opacity:0},{transform:'translateX(-50%) rotate(-8deg) scale(1)',opacity:1}],{sp:SPb});shake($('.e3-p.d',R),7,420)},200+3*520+350);
+  ctx.on(R,'click',e=>{const b=e.target.closest('.e3-bl');if(b){b.classList.toggle('fl');an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb})}});
+ }});
+
+/* ===== ДД v2 · 4. Перехват v2 ===== */
+V.push({g:'d2',id:'e4',n:'Перехват',
+ idea:'Вход в разговоры героев: карта города, точки — где они говорят. Сверху фильтр: любимые герои или твой уровень. Нажал на точку — «Диалог» (живые герои) или «Комикс».',
+ moves:['радар крутится, точки пульсируют, по фильтру лишние гаснут и сжимаются','через пару секунд всплывает новый перехват','тап по точке — снизу карточка: кто с кем, о чём, уровень, сколько реплик, есть ли голос','«▶ Диалог» или «📖 Комикс» — один и тот же разговор двумя способами'],
+ from:'Твой отзыв: «перехват — супер прикольная тема, добавь: переходи либо на комиксы, либо на диалог, подбирай по героям, которых выбрал в фавориты, или по уровню».',
+ minus:'Пока живых пар героев мало (Венатор ↔ Крысиный король). Точки без живых портретов — только «Комикс».',
+ mount(R,ctx){R.className='scr d5 e4';
+  const PINS=[{x:238,y:280,t:'ТУННЕЛИ',sp:['rat','venator'],nm:'Встреча · охота объявлена',lv:'B1',n:5,au:1,q:"Evil stirs in New York... and so the Vatican has called on me.",fav:1},
+   {x:96,y:110,t:'ГАРЛЕМ',sp:['rem','talon'],nm:'Недоверие · партнёры по сну',lv:'A2',n:7,au:0,q:'Whose dream did you come from?',fav:0},
+   {x:262,y:86,t:'ЦИРК',sp:['celeste','rem'],nm:'Знакомство · «Рем так Рем»',lv:'A2',n:5,au:0,q:"Hey little guy, what's your name?",fav:0},
+   {x:70,y:300,t:'СКЛАД',sp:['talon','celeste'],nm:'Знакомство · колоритно',lv:'B2',n:3,au:0,q:'You look very... colorful.',fav:0},
+   {x:176,y:196,t:'МИДТАУН',sp:['venator','rat'],nm:'Стычка · проповедь свинца',lv:'B1',n:7,au:1,q:'The Lord is merciful... I am not.',fav:1}];
+  let map='<svg viewBox="0 0 344 390" preserveAspectRatio="xMidYMid slice"><defs><pattern id="gd2" width="19" height="19" patternUnits="userSpaceOnUse"><path d="M19 0H0V19" fill="none" stroke="rgba(46,230,197,.07)"/></pattern></defs><rect width="344" height="390" fill="url(#gd2)"/>';
+  map+='<path d="M-10 250 C60 226 118 274 182 246 S300 196 360 214" fill="none" stroke="#0E2B3A" stroke-width="36"/><g stroke="rgba(46,230,197,.2)" stroke-width="1.2"><line x1="30" y1="0" x2="110" y2="390"/><line x1="90" y1="0" x2="170" y2="390"/><line x1="150" y1="0" x2="230" y2="390"/><line x1="210" y1="0" x2="290" y2="390"/><line x1="0" y1="60" x2="344" y2="20"/><line x1="0" y1="140" x2="344" y2="100"/><line x1="0" y1="330" x2="344" y2="300"/></g></svg>';
+  const pin=(p,j)=>`<div class="pin ${p.au?'am':''}" data-j="${j}" style="left:${p.x}px;top:${p.y}px"><i class="bl5"></i><s></s><i></i><em>${p.t}</em></div>`;
+  R.innerHTML=`${SB(0)}<div class="d5-hd"><span class="rec"><i></i>REC</span><b>ПЕРЕХВАТ</b><span class="cnt">5 разговоров</span></div>
+   <div class="e4-fl"><button data-f="all" class="on">Все</button><button data-f="fav">★ Мои герои</button><button data-f="lv">Мой уровень · B1</button><button data-f="au">С голосом</button></div>
+   <div class="d5-map">${map}<div class="d5-rad"><i class="sw"></i></div>${PINS.map(pin).join('')}</div>
+   <p class="e4-why">Жёлтые точки — <b>живые герои с голосом</b>: там «Диалог» как в Versus. Остальные пока — «Комикс».</p>
+   <div class="e4-cd"><i class="gr"></i><div class="cdi"></div></div><canvas class="fx"></canvas><i class="hb"></i>`;
+  const cd=$('.e4-cd',R),cdi=$('.cdi',R),fx=FX(ctx,$('.fx',R));let F='all';
+  const ok=p=>F==='all'||(F==='fav'&&p.fav)||(F==='lv'&&p.lv==='B1')||(F==='au'&&p.au);
+  function filt(){$$('.pin',R).forEach(el=>el.classList.toggle('off',!ok(PINS[+el.dataset.j])))}
+  ctx.on($('.e4-fl',R),'click',e=>{const b=e.target.closest('button');if(!b)return;F=b.dataset.f;$$('.e4-fl button',R).forEach(x=>x.classList.toggle('on',x===b));filt();cd.classList.remove('on')});
+  function openP(j){const p=PINS[j];cdi.innerHTML=`<small class="h">ПЕРЕХВАЧЕНО · ${p.t}</small><div class="hd"><span class="av">${emb(p.sp[0],40)}${emb(p.sp[1],40)}</span><div><b>${HERO[p.sp[0]].n} ↔ ${HERO[p.sp[1]].n}</b><p>${p.nm}</p></div></div><div class="chs"><span class="lv ${p.lv}">${p.lv}</span><span>${p.n} реплик</span><span>${p.au?'есть голос':'без голоса'}</span>${p.fav?'<span>★ любимый</span>':''}</div><p class="q">«${p.q}»</p><div class="bt">${p.au?'<button class="pri dl">▶ Диалог</button>':''}<button class="cm${p.au?'':' pri'}">📖 Комикс</button></div>`;
+   cd.classList.add('on');const el=$(`.pin[data-j="${j}"]`,R),r=rel(el,R);fx.burst(r.x+7,r.y+7,{n:18,c:['#2EE6C5','#fff'],v:3.5,g:0,t:'d',s:2,l:36})}
+  ctx.on(R,'click',e=>{const t=e.target.closest('.pin');if(t&&!t.classList.contains('off')){openP(+t.dataset.j);return}const b=e.target.closest('.e4-cd button');if(b){toast(R,b.classList.contains('dl')?'▶ Диалог · герои во весь рост':'📖 Комикс из этих реплик');return}if(!e.target.closest('.e4-cd,.e4-fl'))cd.classList.remove('on')});
+  $$('.pin',R).forEach((p,j)=>an(p,[{opacity:0,transform:'scale(0)'},{opacity:1,transform:'none'}],{sp:SPb,dl:300+j*160}));
+  ctx.t(()=>{if(F==='all'){F='fav';$$('.e4-fl button',R).forEach(x=>x.classList.toggle('on',x.dataset.f==='fav'));filt();toast(R,'★ Только разговоры твоих героев')}},2200);ctx.t(()=>{if(!cd.classList.contains('on'))openP(0)},3600);
+ }});
+
+/* ===== Первый запуск v2 ===== */
+V.push({g:'o2',id:'o2',n:'Свайпы → проверь себя',
+ idea:'Свайпы остались, но в конце — честная проверка: слова, на которые сказал «знаю», с переводом. «Не знал» — уровень опускается прямо на глазах. Плюс два вопроса другого вида: выбрать перевод и «есть ли такое слово».',
+ moves:['карточки раздаются, верхняя показывает, куда смахивать; при смахе — штамп «ЗНАЮ» или «УЧУ»','«Проверь себя»: перевод под пылью, тап — проявляется; «знал / не знал»','уровень вверху переворачивается B1 → A2, когда жмёшь «не знал»','вопрос «выбери перевод»: верный зеленеет, неверный трясётся','«есть такое слово?» — выдуманное слово ловит угадывание','итог: уровень заливается цветом, видно, за что его снизили'],
+ from:'Твой отзыв: «добавь перевод слов в конце, чтобы чел понимал, знал или нет, и мог честно сказать „не знал“ — тогда лвл понижался бы», «и чуть более разнообразно, чем просто свайпы».',
+ minus:'Шагов стало 3 вместо 1 — но каждый короткий (≈ 40 секунд всё вместе).',
+ mount(R,ctx){R.className='scr o2';
+  const WD=[['boat','сущ.','лодка, шлюпка',1],['lucky','прил.','везучий',2],['stress','сущ.','стресс',2],['survivor','сущ.','тот, кто выжил',3],['subtle','прил.','едва заметный, тонкий',4],['glorm','сущ.','',0]];
+  const LV=['A1','A2','B1','B2','C1'],LC={A1:'#2BAE66',A2:'#6FB62A',B1:'#E39A16',B2:'#E5632A',C1:'#C93A5A'};
+  let known=[],nk=0,step=0,q1=null,q2=null,base=2,lvl=2,sc=null;const SC=()=>{if(sc)sc.kill();sc=sub(ctx);return sc};
+  R.innerHTML=`${SB(1)}<div class="ob-top"><div class="pg">${[0,1,2,3].map(()=>'<i><b></b></i>').join('')}</div><span>Пропустить</span></div><div class="o2-st"></div><canvas class="fx"></canvas><i class="hb dk"></i>`;
+  const st=$('.o2-st',R),fx=FX(ctx,$('.fx',R)),pg=$$('.ob-top .pg i',R);
+  const prog=n=>pg.forEach((x,j)=>x.classList.toggle('f',j<n));
+  const lvHTML=l=>`<div class="o2-lvl">уровень <span class="lvbx"><b style="--lc:${LC[LV[l]]}">${LV[l]}</b></span></div>`;
+  function setLvl(l){if(l===lvl)return;lvl=l;const bx=$('.o2-lvl .lvbx',R);if(!bx)return;const old=$('b',bx),nb=document.createElement('b');nb.style.setProperty('--lc',LC[LV[l]]);nb.textContent=LV[l];nb.style.transform='rotateX(90deg)';bx.appendChild(nb);requestAnimationFrame(()=>{old.style.transform='rotateX(-90deg)';nb.style.transform='none'});ctx.t(()=>old.remove(),600)}
+  // 1. свайпы
+  function swipes(){const c=SC();step=1;prog(0);known=[];
+   st.innerHTML=`<div class="ob-h"><h2>Знаешь это слово?</h2><p>Вправо — знаю, влево — ещё учу</p></div><div class="ob-deck">${WD.map((w,j)=>`<div class="o2-c" data-j="${j}"><small class="pos">${w[1]}</small><b>${w[0]}</b><i class="lbl y">ЗНАЮ</i><i class="lbl n">УЧУ</i></div>`).join('')}</div><div class="ob-btn"><button class="no">← Ещё учу</button><button class="yes">Знаю →</button></div>`;
+   const C=$$('.o2-c',st);let n=0,busy=false;const pos=i=>`translateY(${Math.min(i,3)*12}px) scale(${(1-Math.min(i,3)*.05).toFixed(2)})`;
+   const lb=(c,p)=>{$('.lbl.y',c).style.opacity=Math.max(0,p*1.4);$('.lbl.n',c).style.opacity=Math.max(0,-p*1.4)};
+   const lay=tr=>C.slice(n).forEach((c,i)=>{c.style.zIndex=20-i;c.style.transition=tr?`transform ${SP.d}ms ${SP.e}, opacity .3s`:'none';c.style.transform=pos(i);c.style.opacity=i>3?'0':'1'});
+   const c2=c,fly=dir=>{const cc=C[n];if(!cc||busy)return;busy=true;cc.getAnimations().forEach(a=>a.cancel());lb(cc,dir);cc.style.transition='transform .42s cubic-bezier(.3,.1,.6,1), opacity .42s';cc.style.transform=`translate(${dir*500}px,${-30+Math.random()*60}px) rotate(${dir*30}deg)`;cc.style.opacity='0';if(dir>0)known.push(n);n++;lay(true);
+    c2.t(()=>{cc.style.display='none';busy=false;if(n>=C.length){prog(1);check()}},430)};
+   lay(false);C.forEach((c,i)=>an(c,[{transform:'translateY(500px) rotate(8deg)'},{transform:pos(i)}],{sp:SPs,dl:150+(C.length-1-i)*90}));
+   c.t(()=>{if(n||busy||!C[0])return;const d0=C[0];an(d0,[{transform:pos(0)},{transform:'translate(60px,4px) rotate(7deg)',offset:.22},{transform:'translate(60px,4px) rotate(7deg)',offset:.36},{transform:pos(0),offset:.5},{transform:'translate(-60px,4px) rotate(-7deg)',offset:.72},{transform:'translate(-60px,4px) rotate(-7deg)',offset:.86},{transform:pos(0)}],{d:2600,e:'ease-in-out'});an($('.lbl.y',d0),[{opacity:0},{opacity:1,offset:.22},{opacity:1,offset:.36},{opacity:0,offset:.5},{opacity:0}],{d:2600});an($('.lbl.n',d0),[{opacity:0},{opacity:0,offset:.5},{opacity:1,offset:.72},{opacity:1,offset:.86},{opacity:0}],{d:2600})},1300);
+   drag(c,$('.ob-deck',st),{axis:'x',start(){if(busy||!C[n])return false;C[n].getAnimations().forEach(a=>a.cancel());$$('.lbl',C[n]).forEach(x=>x.getAnimations().forEach(a=>a.cancel()));C[n].style.transition='none'},
+    move(dx,dy){const cc=C[n];cc.style.transform=`translate(${dx}px,${dy*.2}px) rotate(${dx/16}deg)`;lb(cc,clamp(dx/100,-1,1))},end(dx,dy,vx){if(Math.abs(dx)>90||(Math.abs(vx)>.45&&Math.abs(dx)>36))fly(Math.sign(dx));else{lb(C[n],0);lay(true)}}});
+   c.on($('.yes',st),'click',()=>fly(1));c.on($('.no',st),'click',()=>fly(-1))}
+  // 2. проверь себя
+  function check(){const c=SC();step=2;const K=known.filter(j=>WD[j][3]);const fake=known.includes(5);base=Math.max(0,Math.min(3,K.length-1-(fake?1:0)));lvl=base;nk=0;
+   st.innerHTML=`<div class="ob-h"><h2>Проверь себя</h2><p>Ты сказал «знаю» — тап по слову покажет перевод. Честно: знал?</p></div>${lvHTML(base)}
+    <div class="o2-chk">${K.length?K.map(j=>`<div class="o2-row" data-j="${j}"><div><b>${WD[j][0]}</b><span class="sp"><span>${WD[j][2]}</span></span></div><div class="bt"><button class="y">Знал</button><button class="n">Не знал</button></div></div>`).join(''):'<p style="color:#77736b">Ни одного «знаю» — начнём с A1, проверять нечего.</p>'}${fake?`<div class="o2-row dim"><div><b>glorm</b><small style="color:#E5484D;font-weight:700">такого слова нет — уровень −1</small></div></div>`:''}</div>
+    <button class="o2-go"${K.length?' disabled':''}>Дальше</button>`;
+   const rows=$$('.o2-row:not(.dim)',st),go=$('.o2-go',st);rows.forEach((r,j)=>an(r,[{opacity:0,transform:'translateX(40px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:200+j*110}));
+   const upd=()=>{nk=rows.filter(r=>$('.n.on',r)).length;setLvl(Math.max(0,base-Math.ceil(nk/1.5)));go.disabled=rows.some(r=>!$('.on',r))};
+   c.on(st,'click',e=>{const sp=e.target.closest('.sp');if(sp){sp.classList.add('op');return}const b=e.target.closest('.o2-row .bt button');if(b){const r=b.closest('.o2-row');$$('.bt button',r).forEach(x=>x.classList.toggle('on',x===b));$('.sp',r).classList.add('op');an(b,[{transform:'scale(.85)'},{transform:'none'}],{sp:SPb});if(b.classList.contains('n'))shake(r,4,300);upd();return}
+    if(e.target.closest('.o2-go')&&!go.disabled){prog(2);quiz()}})}
+  // 3. два вопроса другого вида
+  function quiz(){const c=SC();step=3;
+   st.innerHTML=`<div class="ob-h"><h2>Два быстрых вопроса</h2><p>Чтобы точнее понять уровень</p></div>${lvHTML(lvl)}<div class="o2-q"></div>`;
+   const box=$('.o2-q',st);
+   const ask1=()=>{box.innerHTML=`<small class="pos">1 из 2 · выбери перевод</small><b class="wd">subtle</b>${['едва заметный, тонкий','тихий, неслышный','грубый, прямой'].map((o,j)=>`<button data-o="${j}">${o}</button>`).join('')}<p class="why"></p>`;$$('button',box).forEach((b,j)=>an(b,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:100+j*90}))};
+   const ask2=()=>{box.innerHTML=`<small class="pos">2 из 2 · есть такое слово?</small><b class="wd">flurb</b><button data-y="1">Есть, знаю его</button><button data-y="0">Нет такого слова</button><p class="why"></p>`;$$('button',box).forEach((b,j)=>an(b,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:100+j*90}))};
+   ask1();
+   c.on(box,'click',e=>{const b=e.target.closest('button');if(!b||box.dataset.lock)return;
+    if(b.dataset.o!=null){box.dataset.lock=1;q1=b.dataset.o==='0';$$('button',box).forEach(x=>{if(x.dataset.o==='0')x.classList.add('ok')});if(!q1){b.classList.add('bad');shake(b,6,360);setLvl(Math.max(0,lvl-1))}$('.why',box).textContent=q1?'Верно: subtle — едва заметный.':'Верно — «едва заметный». Уровень −1.';c.t(()=>{delete box.dataset.lock;ask2()},1300);return}
+    if(b.dataset.y!=null){box.dataset.lock=1;q2=b.dataset.y==='0';$$('button',box).forEach(x=>{if(x.dataset.y==='0')x.classList.add('ok')});if(!q2){b.classList.add('bad');shake(b,6,360);setLvl(Math.max(0,lvl-1))}$('.why',box).textContent=q2?'Верно: «flurb» — выдуманное.':'«flurb» — выдуманное слово. Так тест ловит угадывание.';c.t(()=>{delete box.dataset.lock;prog(4);result()},1300)}})}
+  // 4. итог
+  function result(){const c=SC();step=4;const L2=LV[lvl],col=LC[L2];
+   st.innerHTML=`<div class="o2-res"><small>ТВОЙ УРОВЕНЬ</small><div class="lvb" style="--lc:${col}"><i></i><b>${L2}</b></div><div class="why"><span>Сказал «знаю»<em>${known.filter(j=>WD[j][3]).length} из 5</em></span><span>Честно «не знал»<em>${nk?'−'+nk:'0'}</em></span><span>Выбор перевода<em>${q1?'✓':'✗'}</em></span><span>Выдуманное слово<em>${q2&&!known.includes(5)?'не попался':'попался'}</em></span></div><button class="go">Начать с ${L2}</button><button class="again">Ещё раз</button></div>`;
+   const res=$('.o2-res',st);an($('.lvb i',res),[{transform:'scaleY(0)'},{transform:'scaleY(1)'}],{d:900,dl:200,e:EO,f:'forwards'});an($('.lvb b',res),[{transform:'scale(.4)',opacity:0},{transform:'none',opacity:1}],{sp:SPb,dl:700});
+   $$('.why span',res).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{d:450,dl:900+j*130}));
+   c.t(()=>fx.burst(172,-10,{n:100,a0:Math.PI*.15,spread:Math.PI*.7,v:6,g:.2,c:[col,'#FFD23F','#151515','#22A06B','#3D7BFF'],l:130,s:8,jx:300}),700);
+   c.on($('.again',res),'click',swipes);c.on($('.go',res),'click',()=>toast(R,`▶ Сцена для ${L2}`))}
+  swipes();
+ }});
+
 /* ================= каркас страницы ================= */
-const GN={home:'Главная',dd:'ДД',ob:'Первый запуск'};
-let CTX=null,curV=null,curG='home';
+const GN={home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2'};
+let CTX=null,curV=null,curG='h2';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -1169,9 +1849,9 @@ function notes(v){const L=V.filter(x=>x.g===v.g),i=L.indexOf(v);
  <div class="nav">${L.length>1?'<button data-n="-1">← Пред.</button>':''}<button class="pri" data-n="0">↻ Ещё раз</button>${L.length>1?'<button data-n="1">След. →</button>':''}</div>`;
  $$('#notes [data-n]').forEach(b=>b.onclick=()=>{const d=+b.dataset.n;if(!d)mount(v);else mount(L[(i+d+L.length)%L.length])})}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd5',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd6',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd5'))}catch(e){}
-mount(start||V[0]);
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd6'))}catch(e){}
+mount(start||V.find(x=>x.g==='h2'));
 </script>

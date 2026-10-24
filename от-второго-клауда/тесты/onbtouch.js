@@ -30,6 +30,14 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   [x,y]=await mid('#onbCard');await swipe(x,y,x+35,y,7,60);await page.waitForTimeout(800);
   r=await ev(()=>({i:ONB.lt.i,tr:document.querySelector('#onbCard').style.transform}));ok('медленный короткий — карточка вернулась, не засчитан',r.i===3&&(!r.tr||r.tr==='none'),r);
   await page.screenshot({path:`${__dirname}/shots/onbtouch-2-card.png`});
+  // 24.10 (П4): 6-я карточка — «выбери перевод»: страница не залипает (pan-y), вариант жмётся пальцем
+  [x,y]=await mid('#onbCard');await swipe(x,y,x+170,y,10,12);await page.waitForTimeout(700);
+  [x,y]=await mid('#onbCard');await swipe(x,y,x+170,y,10,12);await page.waitForTimeout(700);
+  r=await ev(()=>({i:ONB.lt.i,ch:document.querySelector('#onbCard').classList.contains('ch'),ta:getComputedStyle(document.querySelector('.onb-stack.ch')).touchAction}));
+  ok('6-я карточка — «выбери перевод», под пальцем прокрутка не заблокирована (pan-y)',r.i===5&&r.ch&&/pan-y/.test(r.ta),r);
+  {const o=await page.locator('.onb-chs .onb-o[data-ok="1"]').boundingBox();await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:o.x+o.width/2,y:o.y+o.height/2}]});await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});}
+  await page.waitForTimeout(1400);r=await ev(()=>({i:ONB.lt.i,last:ONB.lt.seq[ONB.lt.seq.length-1]}));
+  ok('тап пальцем по верному переводу — засчитан (вес 1,5), дальше следующая карточка',r.i===6&&r.last[1]===true&&r.last[2]===1.5,r);
   await ev(()=>onbQuit());await page.waitForTimeout(900);
   r=await ev(()=>({vs:__vs.slice(-1)[0],scr:document.body.dataset.scr||screen}));ok('ушёл из теста — Telegram снова закрывается свайпом',r.vs==='on',r);
   // «Потяни, чтобы начать» пальцем

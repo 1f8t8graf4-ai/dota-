@@ -4699,7 +4699,38 @@ body[data-look="nd"]:not(#_) .sc-fb>.sc-btn{text-transform:none!important;letter
 .rv2 .rv-all .rv-ln{background:none;padding:8px 6px;border-radius:0;border-top:1px solid rgba(255,255,255,.06)}
 .rv2 .rv-all .rv-t>b{font-size:14.5px}
 
-/* ==== 13.9.67 — П8 «по системе TikTok»: эпизод частями ≤ 1 мин (пауза между частями), деления частей на шкале ==== */
+/* ==== 13.9.68 — П4: тест уровня — «выбери перевод» среди карточек, «Проверь себя» (перевод слов, на которые сказал «знаю»; «не знал» — уровень ниже на глазах), итог с объяснением ==== */
+.onb-stack.ch{height:clamp(150px,27vh,230px)}
+.onb-stack.ch,.onb-card.ch{touch-action:pan-y}
+.onb-card.ch{cursor:default}
+.onb-chs{display:flex;flex-direction:column;gap:8px}
+.onb-chs .onb-o{min-height:52px}
+.onb-chs .onb-dk{min-height:40px}
+/* «Проверь себя»: уровень по словам справа, слова строками, перевод под пылью (.n-sp из nd.css), «Знал / Не знал» */
+.onb-ckl{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:-6px 0 -4px;font:600 12.5px var(--lk-f);color:var(--lk-ink3);perspective:300px}
+.onb-ckl i{min-width:26px;padding:7px 10px;border-radius:9px;background:var(--lc);color:#fff;font:800 14px/1 var(--lk-f);font-style:normal;text-align:center;backface-visibility:hidden}
+.onb-ck{display:flex;flex-direction:column;gap:8px}
+.onb-cr{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:16px;background:var(--lk-card);box-shadow:var(--lk-sh),inset 0 0 0 1px var(--lk-line);transition:box-shadow .25s}
+.onb-cr.y{box-shadow:var(--lk-sh),inset 0 0 0 1.5px var(--lk-ok)}
+.onb-cr.n{box-shadow:var(--lk-sh),inset 0 0 0 1.5px var(--lk-bad)}
+.onb-cr.fk{background:var(--lk-card2);box-shadow:none;opacity:.8}
+.onb-cw{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.onb-cw b{font:600 21px/1.15 'Lora',Georgia,serif;font-style:italic;color:var(--lk-ink);overflow-wrap:anywhere}
+.onb-cw b .art{display:inline-block;padding:2px 6px;border-radius:6px;color:#fff;font:800 11px/1.3 var(--lk-f);font-style:normal;vertical-align:3px}
+.onb-cw .n-sp,.onb-cw .onb-ct{font:600 14.5px/1.3 var(--lk-f);color:var(--lk-ink2)}
+.onb-cw small{font:600 12.5px/1.3 var(--lk-f);color:var(--lk-bad)}
+.onb-cb{flex:none;display:flex;gap:6px}
+.onb-cb button{height:40px;padding:0 12px;border:0;border-radius:12px;background:var(--lk-card2);color:var(--lk-ink2);font:800 13px var(--lk-f);cursor:pointer;transition:background .2s,color .2s}
+.onb-cb .y.on{background:var(--lk-ok);color:#fff}
+.onb-cb .n.on{background:var(--lk-bad);color:#fff}
+/* итог: за что такой уровень — строка значков */
+.onb-why{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:-2px 0 0}
+.onb-why span{padding:7px 11px;border-radius:999px;background:var(--lk-card);box-shadow:inset 0 0 0 1px var(--lk-line);font:600 12.5px/1.2 var(--lk-f);color:var(--lk-ink3)}
+.onb-why b{font-weight:800;color:var(--lk-ink)}.onb-why b.m{color:var(--lk-bad)}
+@media (max-width:370px){.onb-cb button{padding:0 9px;font-size:12px}.onb-cw b{font-size:19px}}
+@media (max-height:760px){.onb-cr{padding:7px 8px 7px 12px}.onb-cw b{font-size:18px}.onb-cb button{height:34px}.onb-ck{gap:6px}}
+
+/* ==== 13.9.69 — П8 «по системе TikTok»: эпизод частями ≤ 1 мин (пауза между частями), деления частей на шкале ==== */
 .sc-part{position:absolute;inset:0;z-index:40;display:grid;place-items:center;padding:14px;background:rgba(6,7,10,.64);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:scPtIn .26s ease-out both}
 .sc-pt-in{display:flex;flex-direction:column;align-items:center;gap:7px;max-width:340px;text-align:center;color:#fff;animation:scPtUp .34s cubic-bezier(.2,.9,.3,1) both}
 .sc-pt-k{font:700 10.5px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.72)}
