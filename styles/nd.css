@@ -558,3 +558,15 @@ body[data-look="nd"] .onb-coll i:nth-child(4){--tr:5deg}body[data-look="nd"] .on
 body[data-look="nd"] .sc-sheetwrap>:first-child{position:relative}
 body[data-look="nd"] .sc-sheetwrap>:first-child::after{content:'';position:absolute;inset:0;border-radius:inherit;background:#000;opacity:0;transition:opacity .3s var(--ease);pointer-events:none;z-index:2}
 body[data-look="nd"] .sc-sheetwrap.under>:first-child::after{opacity:.36}
+
+/* ==== 13.9.71 — П10: уровень словами; уголок постера в «Кино» — белые полоски вместо букв ==== */
+.n-chip.lvbc{align-items:flex-end;gap:calc(1.5*var(--nu));height:calc(18*var(--nu));padding:0 calc(7*var(--nu)) calc(4.5*var(--nu));box-sizing:border-box}
+.n-chip.lvbc>i{display:block;width:calc(3*var(--nu));border-radius:1px;background:#fff;opacity:.35}
+.n-chip.lvbc>i:nth-child(1){height:calc(3.5*var(--nu))}.n-chip.lvbc>i:nth-child(2){height:calc(5.5*var(--nu))}.n-chip.lvbc>i:nth-child(3){height:calc(7.5*var(--nu))}.n-chip.lvbc>i:nth-child(4){height:calc(9.5*var(--nu))}.n-chip.lvbc>i:nth-child(5){height:calc(11.5*var(--nu))}
+.n-chip.lvbc>i.on{opacity:1}
+/* фильтр уровней словами — одной строкой с прокруткой вбок, без полосы прокрутки */
+.n-scr .n-lv{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:2px 2px 4px}
+.n-scr .n-lv::-webkit-scrollbar{display:none}
+.n-scr .n-lv .n-chip{flex:none;white-space:nowrap}
+/* сегмент «Фильмы · Сериалы · Интервью · Игры»: при 4–5 разделах подписи слипались («СериалыИнтервью») — мельче и в одну строку */
+.n-scr .n-sg[style*="--n:4"] button,.n-scr .n-sg[style*="--n:5"] button{min-width:0;font-size:calc(9.8*var(--nu));letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:calc(1*var(--nu));padding-right:calc(1*var(--nu))}

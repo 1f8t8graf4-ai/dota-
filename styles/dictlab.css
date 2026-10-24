@@ -1172,3 +1172,9 @@ body[data-look="nd"]:not(#_) .kq-lv.a-der{--ac:#2F7DE1}body[data-look="nd"]:not(
 body[data-look="nd"]:not(#_) .kq2.lock .kq-lv{display:none}
 body[data-look="nd"]:not(#_) .kq2 .kq-lv.no{visibility:hidden}
 body[data-look="nd"][data-ndt="light"]:not(#_) .kq2 .kq-ru i{color:var(--lk-ink3,#8b877d)}
+
+/* ==== 13.9.71 — П10: метка уровня у строки словаря — полоски цвета уровня (было: буквы A1–C1), слово — в подсказке ==== */
+body[data-look="nd"]:not(#_) .kq2 .kq-lv.lvb{display:inline-flex;align-items:flex-end;justify-content:center;gap:1.5px;min-width:30px;height:21px;padding:0 7px 5px;box-sizing:border-box}
+body[data-look="nd"]:not(#_) .kq2 .kq-lv.lvb>i{display:block;width:3px;border-radius:1px;background:currentColor;opacity:.25}
+body[data-look="nd"]:not(#_) .kq2 .kq-lv.lvb>i:nth-child(1){height:3px}body[data-look="nd"]:not(#_) .kq2 .kq-lv.lvb>i:nth-child(2){height:5px}body[data-look="nd"]:not(#_) .kq2 .kq-lv.lvb>i:nth-child(3){height:7px}body[data-look="nd"]:not(#_) .kq2 .kq-lv.lvb>i:nth-child(4){height:9px}body[data-look="nd"]:not(#_) .kq2 .kq-lv.lvb>i:nth-child(5){height:11px}
+body[data-look="nd"]:not(#_) .kq2 .kq-lv.lvb>i.on{opacity:1}

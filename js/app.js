@@ -284,7 +284,7 @@ function ndNext(c){const sh=x=>x.show||x.title,ok=x=>x.kind!=='clip'&&flagOf('sc
 function ndTodayHTML(){
   const c=continueScene(),s=c.s,p=s.parts[c.i],d=dayStat(),goal=store.goal||20,gp=Math.min(100,Math.round(d.n/goal*100)),st=streakNow(),n=dailyItems().length;
   const hr=new Date().getHours(),hi=hr<5?'Доброй ночи':hr<12?'Доброе утро':hr<18?'Добрый день':'Добрый вечер',nm=(userName()||'').trim().split(/\s+/)[0];
-  const lv=store.cefr||(store.lvl==='a'?'A2':store.lvl==='b'?'B1':''),gw=ND_GOAL[store.goalWhy],sub=[lv,gw?'цель — '+gw:''].filter(Boolean).join(' · ')||'План на сегодня готов';
+  const lv=store.cefr||(store.lvl==='a'?'A2':store.lvl==='b'?'B1':''),gw=ND_GOAL[store.goalWhy],sub=[lvW(lv),gw?'цель — '+gw:''].filter(Boolean).join(' · ')||'План на сегодня готов';
   const ok=d.n>=goal,risk=st>0&&store.lastDay!==new Date().toDateString(),bdi=filmImg(s,innerWidth>=1000?'bd.jpg':'bdm.jpg'),cf=cefrOf(s),mins=Math.max(2,Math.round((p.b-p.a)/60+2));
   const th=(x,i)=>`style="background-image:url('${assetUrl(scEpKey(x,i,'jpg'))}'),url('${assetUrl(scKey(x,'cover.jpg'))}')"`;
   const pod=phraseOfDay(),nx=ndNext(c);
@@ -301,7 +301,7 @@ function ndTodayHTML(){
     <section class="n-hero" id="hHero" data-sc="${s.id}"><div class="n-bgi" style="background-image:${bdi?`url('${bdi}'),`:''}url('${assetUrl(scKey(s,'cover.jpg'))}')"></div>
       <div class="n-eb">${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'План на сегодня'}</div>
       <h3>Эпизод <em>«${esc(p.t)}»</em>${n?` и ${n} ${plural(n,['повторение','повторения','повторений'])}`:''}</h3>
-      <div class="n-meta"><span class="n-chip ${cf.toLowerCase()}">${cf}</span><span class="n-t">≈ ${mins} мин</span><span class="n-t">${esc(s.show||s.title)}</span></div>
+      <div class="n-meta"><span class="n-chip ${cf.toLowerCase()}">${lvW(cf)}</span><span class="n-t">≈ ${mins} мин</span><span class="n-t">${esc(s.show||s.title)}</span></div>
       <div class="n-pull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></i></div>
     </section>
     <div class="n-stats" role="group" aria-label="Статистика"><div><b>🔥 ${st}</b><small>серия</small></div><div><b>${ph}</b><small>фраз выучено</small></div><div><b>${eps}</b><small>эпизодов</small></div></div>
@@ -333,8 +333,15 @@ function ndResultFX(stars){if(!fxOK())return;const R=document.querySelector('.n-
   if(m){const n=+m[1],t0=performance.now()+150;const step=t=>{if(!big.isConnected)return;const k=Math.max(0,Math.min(1,(t-t0)/800));big.textContent=Math.round(n*(1-Math.pow(1-k,3)))+' / '+m[2];if(k<1)requestAnimationFrame(step);};requestAnimationFrame(step);}}
 // уровень сцены по CEFR (lvl 1–5 → A1…C1) — цветная метка, как у Germanize; видна только в «Новом»
 const CEFR=['A1','A2','B1','B2','C1'];
+// 13.9.71 (П10): игроку уровень — словами (Андрей: «буквы — колхоз»); буквы A1–C1 — только внутри (store.cefr, CEFR, цвета .l-a1…c1).
+// Где места нет (строка словаря, уголок постера) — полоски, как сила сигнала: 1–5 полосок цвета уровня, слово — в подсказке
+const LVW={A1:'Начинающий',A2:'Базовый',B1:'Средний',B2:'Выше среднего',C1:'Продвинутый'};
+const lvW=c=>LVW[c]||'';
+const onbLvP=c=>(c<'B1'?'Начнём со сцен попроще и с подсказками.':'Сцены — по твоему уровню, задания — обычной сложности.')+' Уровень дальше сам растёт и падает по твоим ответам.';
+const lvBarsIn=n=>[1,2,3,4,5].map(k=>`<i${k<=n?' class="on"':''}></i>`).join('');
+const lvBars=(c,cls)=>{const n=CEFR.indexOf(c)+1;return n?`<i class="lvb l-${c.toLowerCase()}${cls?' '+cls:''}" title="${LVW[c]}" aria-label="Уровень: ${LVW[c]}">${lvBarsIn(n)}</i>`:'';};
 const cefrOf=s=>CEFR[Math.max(1,Math.min(5,(s&&s.lvl)||3))-1];
-const lvcHTML=s=>{const c=cefrOf(s);return `<span class="lvc l-${c.toLowerCase()}">${c}</span>`;};
+const lvcHTML=(s,word)=>{const c=cefrOf(s);return word?`<span class="lvc l-${c.toLowerCase()}">${LVW[c]}</span>`:`<span class="lvc lvbc l-${c.toLowerCase()}" title="${LVW[c]}">${lvBarsIn(CEFR.indexOf(c)+1)}</span>`;};
 function initTG(){
   if(!TG)return;
   try{TG.ready();TG.expand();}catch(e){}
@@ -998,7 +1005,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.70';
+const APP_V='13.9.71';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -1042,7 +1049,7 @@ const wlvText=(t,L)=>{let b=0;String(t||'').replace(/[A-Za-zÀ-ÖØ-öø-ÿ]+(?:
 // метка слева у строки словаря: немецкое существительное — артикль цветом, иначе уровень
 const lvTag=(t,L)=>{if(!ndOn()||!WLV.m)return '';const a=L==='de'&&/^(der|die|das)\s/i.exec(String(t||''));
   if(a){const r=a[1].toLowerCase();return `<em class="kq-lv art a-${r}">${r}</em>`;}
-  const b=wlvText(t,L);return b?`<em class="kq-lv l-${CEFR[b-1].toLowerCase()}" title="Уровень ${CEFR[b-1]}">${CEFR[b-1]}</em>`:'<em class="kq-lv no"></em>';};   // нет уровня (своё слово) — пустое место, чтобы строки стояли ровно
+  const b=wlvText(t,L);return b?`<em class="kq-lv lvb l-${CEFR[b-1].toLowerCase()}" title="${LVW[CEFR[b-1]]}" aria-label="Уровень: ${LVW[CEFR[b-1]]}">${lvBarsIn(b)}</em>`:'<em class="kq-lv no"></em>';};   // нет уровня (своё слово) — пустое место, чтобы строки стояли ровно
 const wiGet=(w,L)=>{const D=WI[L];if(!D||!w)return null;const n=String(w).toLowerCase().replace(/’/g,"'"),b=n.replace(/'s$/,'');return D[n]||D[b]||D[n.replace(/'/g,'')]||null;};
 const wiHTML=(w,L,w2)=>{const x=wiGet(w,L)||(w2?wiGet(w2,L):null);if(!x)return '';const [d,ex]=x;
   return `<div class="kwp-wi"><p>${esc(d)}</p>${(ex||[]).slice(0,2).map(e=>`<span class="kwp-wx"><b>${esc(e[0])}</b><small>${esc(e[1])}</small></span>`).join('')}</div>`;};
@@ -1059,7 +1066,7 @@ function nwBase(n,L){const G=L==='de'?GLOSS_DE:GLOSS,ok=b=>G[b]||wlvWord(b,L)?b:
   return cands.map(ok).find(Boolean)||n;}
 function nwHTML(word,sid,cur){const n=swNorm(word);if(!n||n.length<2||(typeof SC_BASIC!=='undefined'&&SC_BASIC.has(n)))return '';
   const L=wiLang(sid),G=L==='de'?GLOSS_DE:GLOSS,lv=wlvWord(n,L),P=[];
-  if(lv)P.push(`слово уровня <b>${CEFR[lv-1]}</b>`);
+  if(lv)P.push(`уровень слова — <b>${LVW[CEFR[lv-1]].toLowerCase()}</b>`);
   const base=nwBase(n,L);
   if(base&&base!==n)P.push(`форма от <b>${esc(base)}</b>${G[base]?` — «${esc(String(G[base]).split(';')[0])}»`:''}`);
   const ex=[];   // примеры: точное слово, если пусто — формы базовой (worrying→worry/worried); до 2 из других сцен, потом — из своей (кроме текущей реплики)
@@ -1568,7 +1575,7 @@ function renderDaily(list,o){o=o||{};const L0=list||dailyItems(),back=o.back||((
         <div class="n-rsrc">${esc((s0.show||s0.title).replace(/⁠/g,''))} · ${esc(p.t||'эпизод '+(f.pi+1))}</div>
         <div class="n-ren">${kwWrap(f,tgtOf(q))}</div>
         <div class="n-rru">${ndSp(esc(f.ru))}</div>
-        <span class="n-chip ${lv?CEFR[lv-1].toLowerCase():'b1'}">${lv?CEFR[lv-1]+' · ':''}${m?`учишь ${m} из 3`:'новая'}</span></div></div>
+        <span class="n-chip ${lv?CEFR[lv-1].toLowerCase():'b1'}">${lv?LVW[CEFR[lv-1]]+' · ':''}${m?`учишь ${m} из 3`:'новая'}</span></div></div>
       <div class="yn n-yn n-ryn"><button class="sc-btn ghost" id="rcNo">↺ Ещё учу</button><button class="sc-btn" id="rcYes">✓ Знаю</button></div>`);
     const c=$('#rcard');try{phBind(c.querySelector('.n-ren'),f);}catch(e){}
     $('#rcim').onclick=e=>{e.stopPropagation();scClip(s0.id,f.id,null);};
@@ -1766,13 +1773,13 @@ function ndKinoBody(K){
         <span class="n-pi" style="${g.cover?`background-image:url('${assetUrl(g.cover)}')`:'background:linear-gradient(150deg,#3A3226,#14100A)'}"><span class="n-chip n">Игра</span><u><i style="width:0%"></i></u></span>
         <span class="n-pt">${esc(g.name)}</span></button>`;}).join('');
     return `<div class="n-lbl"><span>Игры</span><span>${Object.keys(GS).length}</span></div>${gc?`<div class="n-pg">${gc}</div>`:'<div class="n-empty">Пока пусто — игры в пути</div>'}`;}
-  const lbl=K.lv==='me'?'Для твоего уровня':K.lv==='all'?'Все уровни':'Уровень '+K.lv;
+  const lbl=K.lv==='me'?'Для твоего уровня':K.lv==='all'?'Все уровни':'Уровень «'+lvW(K.lv)+'»';
   const po=x=>`<button class="n-po" ${x.L.length===1?`data-sc="${x.s.id}"`:`data-show="${esc(x.h)}"`} aria-label="${esc(x.s.show||x.s.title)}">
-      <span class="n-pi" style="background-image:url('${scCover(x.s,'poster.jpg')}'),url('${scCover(x.s,'cover.jpg')}')"><span class="n-chip ${x.lv.toLowerCase()}">${x.lv}</span>${x.age?'<span class="n-po-b">18+</span>':x.lk?'<span class="n-po-b">🔒</span>':x.p===100?'<span class="n-po-b ok">✓</span>':''}<u><i style="width:${x.p}%"></i></u></span>
+      <span class="n-pi" style="background-image:url('${scCover(x.s,'poster.jpg')}'),url('${scCover(x.s,'cover.jpg')}')"><span class="n-chip lvbc ${x.lv.toLowerCase()}" title="${LVW[x.lv]}">${lvBarsIn(CEFR.indexOf(x.lv)+1)}</span>${x.age?'<span class="n-po-b">18+</span>':x.lk?'<span class="n-po-b">🔒</span>':x.p===100?'<span class="n-po-b ok">✓</span>':''}<u><i style="width:${x.p}%"></i></u></span>
       <span class="n-pt">${esc(x.s.show||x.s.title)}</span></button>`;
-  return `<div class="n-lv">${K.have.map(c=>`<button class="n-chip ${K.band.includes(c)?c.toLowerCase():'n'}${K.lv===c?' on':''}" data-lv="${c}">${c}</button>`).join('')}<button class="n-chip n${K.lv==='all'?' on':''}" data-lv="all">Все уровни</button></div>
+  return `<div class="n-lv">${K.have.map(c=>`<button class="n-chip ${K.band.includes(c)?c.toLowerCase():'n'}${K.lv===c?' on':''}" data-lv="${c}">${LVW[c]}</button>`).join('')}<button class="n-chip n${K.lv==='all'?' on':''}" data-lv="all">Все уровни</button></div>
     <div class="n-lbl"><span>${lbl}</span><span>${K.list.length}</span></div>
-    ${K.list.length?`<div class="n-pg">${K.list.map(po).join('')}</div>`:`<div class="n-empty">Для ${K.lv==='me'?'твоего уровня':'уровня '+K.lv} тут пока ничего — <button data-lv="all">смотри все</button></div>`}`;}
+    ${K.list.length?`<div class="n-pg">${K.list.map(po).join('')}</div>`:`<div class="n-empty">Для ${K.lv==='me'?'твоего уровня':'уровня «'+lvW(K.lv)+'»'} тут пока ничего — <button data-lv="all">смотри все</button></div>`}`;}
 function ndKinoHTML(){const K=ndKinoState(),nDe=SCENES.some(s=>s.lang==='de'&&flagOf('scene-'+s.id)!=='hide'),ci=Math.max(0,K.kinds.indexOf(K.cat));
   return `<div class="n-scr n-kino">
     <div class="n-kh"><h3 class="n-h">Кино</h3>${nDe?`<div class="n-kl" role="group" aria-label="Язык фильмов"><button data-kl="en" class="${K.kl==='en'?'on':''}">${FLAG.en}EN</button><button data-kl="de" class="${K.kl==='de'?'on':''}">${FLAG.de}DE</button></div>`:''}</div>
@@ -1830,7 +1837,7 @@ function renderShow(name){
     const row=s=>{const P=scP(s.id),d=P.done.length,n=s.parts.length,e=se(s),lk=premNeed('scene')&&!premFree(s);
       return `<button class="n-ep${s===nx?' cur':''}" data-sc="${s.id}"><span class="n-th" style="background-image:url('${scCover(s,'cover.jpg')}')"></span><span class="n-et"><small>${e?`S${String(e[0]).padStart(2,'0')}E${String(e[1]).padStart(2,'0')} · `:''}${d?`пройдено ${d} из ${n}`:n+' '+plural(n,['эпизод','эпизода','эпизодов'])}</small><b>${esc(s.sub||s.title)}</b></span>${s.age&&!store.age18?'<span class="n-lk">18+</span>':lk?'<span class="n-lk">🔒</span>':d===n?'<span class="n-stars">✓</span>':'<span class="n-cv">›</span>'}${s===nx&&d?`<i class="n-pb" style="--w:${Math.round(d/n*100)}%"></i>`:''}</button>`;};
     mount(`<div class="n-scr n-scene n-show"><div class="n-shero" style="background-image:${bdi?`url('${bdi}'),`:''}url('${scCover(P0,'cover.jpg')}')"><button class="n-back" id="bBtn" aria-label="Назад"><svg class="n-ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button></div>
-      <div class="n-st"><div class="n-chips"><span class="n-chip ${cefrOf(S.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,S[0])).toLowerCase()}">${cefrOf(S.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,S[0]))}</span><span class="n-chip n">${esc(SC_KIND[P0.kind]||'Сцены')}</span><span class="n-chip n">${S.length} ${plural(S.length,['сцена','сцены','сцен'])}</span></div>
+      <div class="n-st"><div class="n-chips"><span class="n-chip ${cefrOf(S.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,S[0])).toLowerCase()}">${lvW(cefrOf(S.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,S[0])))}</span><span class="n-chip n">${esc(SC_KIND[P0.kind]||'Сцены')}</span><span class="n-chip n">${S.length} ${plural(S.length,['сцена','сцены','сцен'])}</span></div>
         <h3 class="n-h">${esc(name)}</h3><p class="n-mute">Собрано ${lr} из ${tt} фраз</p></div>
       ${nx?`<button class="n-pbtn" id="shGo">▶ ${scP(nx.id).done.length?'Продолжить':'Смотреть'} · ${esc(nx.sub||nx.title)}</button>`:''}
       ${groups.map(([h,G])=>`${groups.length>1||h!=='Сцены'?`<div class="n-lbl"><span>${h}</span><span>${G.length}</span></div>`:''}<div class="n-eps">${G.map(row).join('')}</div>`).join('')}</div>`,'tabscr showscr');}
@@ -1993,7 +2000,7 @@ function renderScene(id){
     ${s.kind==='clip'?clipNotesHTML(s):''}
     ${s.videoUrl?`<div class="clip-links sc-card"><a class="sc-btn" href="${esc(s.videoUrl)}" target="_blank" rel="noopener">▶ Смотреть официальный клип</a>${s.credit?`<small>${esc(s.credit)}</small>`:''}</div>`:''}
     <section class="sc-top sc-card sc-top2">
-      ${ndOn()?`<div class="nd-chips">${lvcHTML(s)}<span>${esc(SC_KIND[s.kind]||'Сцена')}${ndYear(s)?' · '+ndYear(s):''}</span><span>${n} ${plural(n,['эпизод','эпизода','эпизодов'])}</span></div>`:`<div class="sc-meta">${esc(s.ep)}</div>`}<h1>${esc(s.title)}</h1><div class="sc-sub">${esc(s.sub)}</div>
+      ${ndOn()?`<div class="nd-chips">${lvcHTML(s,1)}<span>${esc(SC_KIND[s.kind]||'Сцена')}${ndYear(s)?' · '+ndYear(s):''}</span><span>${n} ${plural(n,['эпизод','эпизода','эпизодов'])}</span></div>`:`<div class="sc-meta">${esc(s.ep)}</div>`}<h1>${esc(s.title)}</h1><div class="sc-sub">${esc(s.sub)}</div>
       <button class="sc-btn sc-go1" id="scgo">${goTxt}</button>
       ${L||M?`<div class="sc-prog sc-prog1"><span>Выучено ${L} из ${T}${M?` · надолго ${M}`:''}${scMasterPct(s)===100?' · 🏆':''}</span></div><div class="sc-bar"><i style="width:${Math.round(L/T*100)}%"></i></div>`:''}
     </section>
@@ -2030,7 +2037,7 @@ function ndSceneHTML(s){const P=scP(s.id),n=s.parts.length,next=s.parts.findInde
   const it=(id,ic,t,sm)=>`<button id="${id}"><span class="n-li">${ic}</span><b>${t}</b>${sm!=null?`<small>${sm}</small>`:''}<span class="n-cv">›</span></button>`;
   return `<div class="n-scr n-scene">
     <div class="n-shero" style="background-image:${bdi?`url('${bdi}'),`:''}url('${scCover(s,'cover.jpg')}')"><button class="n-back" id="scb" aria-label="Назад"><svg class="n-ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button></div>
-    <div class="n-st"><div class="n-chips"><span class="n-chip ${cf.toLowerCase()}">${cf}</span><span class="n-chip n">${esc(SC_KIND[s.kind]||'Сцена')}${yr?' · '+yr:''}</span><span class="n-chip n">${n} ${plural(n,['эпизод','эпизода','эпизодов'])}</span>${s.age?'<span class="n-chip n">18+</span>':''}</div>
+    <div class="n-st"><div class="n-chips"><span class="n-chip ${cf.toLowerCase()}">${lvW(cf)}</span><span class="n-chip n">${esc(SC_KIND[s.kind]||'Сцена')}${yr?' · '+yr:''}</span><span class="n-chip n">${n} ${plural(n,['эпизод','эпизода','эпизодов'])}</span>${s.age?'<span class="n-chip n">18+</span>':''}</div>
       <h3 class="n-h">${esc(s.title.replace(/\u2060/g,''))}</h3><p class="n-mute">${esc(s.sub||'')}</p></div>
     <button class="n-pbtn" id="scgo">${esc(go)}</button>
     <div class="n-eps">${s.parts.map(ep).join('')}
@@ -2133,7 +2140,7 @@ function ndKaraSet(box,r){const s=SCUR&&scOf(SCUR.id),p=s&&s.parts[SCUR.i||0];if
 function ndKaraTick(box,t){if(!box._kw)return;for(const [el,a] of box._kw)el.classList.toggle('kk-on',t>=a);}
 // окошко слова в «Новом» (шторка .wsh макета): уровень слова чипом, одна строка «почему так» (первое предложение объяснения) — до «Подробнее»
 function ndWpDeco(P,sv){const w=P.querySelector('.kwp-w');
-  if(w&&sv&&sv.word&&!w.querySelector('.n-chip')){const n=wlvWord(swNorm(sv.word),sv.sid?wiLang(sv.sid):'en');if(n)w.insertAdjacentHTML('beforeend',`<span class="n-chip ${CEFR[n-1].toLowerCase()}">${CEFR[n-1]}</span>`);}
+  if(w&&sv&&sv.word&&!w.querySelector('.n-chip')){const n=wlvWord(swNorm(sv.word),sv.sid?wiLang(sv.sid):'en');if(n)w.insertAdjacentHTML('beforeend',`<span class="n-chip ${CEFR[n-1].toLowerCase()}">${LVW[CEFR[n-1]]}</span>`);}
   if(P.querySelector('.n-wx'))return;const src=P.querySelector('.kwp-more .kwp-xn,.kwp-more .kwp-wi p');if(!src)return;
   const t=src.textContent.trim().split(/(?<=[.!?])\s+/)[0].slice(0,160);if(!t)return;const d=document.createElement('div');d.className='n-wx';d.textContent=t;
   const mb=P.querySelector('.kwp-mb');mb?P.insertBefore(d,mb):P.insertBefore(d,P.querySelector('.kwp-b'));}
@@ -4443,7 +4450,7 @@ function renderStart(){if(ndOn()){renderOnb(0);return;}   // 13.9.28: в «Но�
    → «настраиваем под тебя» → сразу эпизод сцены по уровню. Только в «Новом» (админ); старый первый запуск (renderStart) — у игроков. ===== */
 const ONB_GOALS=[['work','💼','Для работы'],['travel','✈️','Путешествовать'],['films','🎬','Смотреть кино без перевода'],['move','🏠','Переезд'],['self','🙂','Для себя']];
 const ONB_MIN=[[5,'Пара фраз'],[10,'Один эпизод'],[15,'Эпизод и повторение'],[20,'Всерьёз']];
-const CEFR_N={A1:'Начинающий',A2:'Базовый',B1:'Средний',B2:'Выше среднего',C1:'Продвинутый'};
+const CEFR_N=LVW;   // 13.9.71: слова уровней — LVW рядом с CEFR
 // слова по уровням: частотность (первые 500 — A1, 500–1000 — A2, 1000–2000 — B1, 2000–4000 — B2, дальше — C1), все — из реплик наших сцен
 const LT_W={en:[
   [['time','время'],['money','деньги'],['friend','друг'],['today','сегодня'],['happy','счастливый'],['water','вода'],['house','дом'],['work','работа']],
@@ -4497,7 +4504,7 @@ function renderOnb(n){if(!ONB)ONB={st:0,lang:kinoLang(),goal:null,cefr:null,min:
       `<button class="onb-go" id="onbGo">Дальше</button>`);
     $('#onbDl').onclick=e=>{O.daily=!O.daily;e.currentTarget.setAttribute('aria-pressed',O.daily);sfx('sel');haptic('sel');};
     $('#onbGo').onclick=()=>{sfx('tap');renderOnb(4);};return;}
-  if(n===4){const c=O.cefr||'A2',g=ONB_GOALS.find(x=>x[0]===O.goal),L=[`Уровень ${c} — подбираем сцены`,`${g?g[2]:'Цель'} — нужные фразы первыми`,`${O.min} минут в день — ${O.min>=15?'эпизод и повторение':O.min>=10?'один эпизод':'пара фраз'}`,O.daily?'Фраза дня — в 12:00 в чате с ботом':'Без фразы дня — включишь в настройках'];
+  if(n===4){const c=O.cefr||'A2',g=ONB_GOALS.find(x=>x[0]===O.goal),L=[`Уровень «${lvW(c)}» — подбираем сцены`,`${g?g[2]:'Цель'} — нужные фразы первыми`,`${O.min} минут в день — ${O.min>=15?'эпизод и повторение':O.min>=10?'один эпизод':'пара фраз'}`,O.daily?'Фраза дня — в 12:00 в чате с ботом':'Без фразы дня — включишь в настройках'];
     // 13.9.49 (движения Germanize, п.7): коллаж постеров «наших фильмов», слегка плавает
     const cols=SCENES.filter(x=>x.kind!=='clip'&&!ageLock(x)&&flagOf('scene-'+x.id)==='on'),stp=Math.max(1,Math.floor(cols.length/6));   // 13.9.60: коллаж онбординга без 18+ и скрытых сцен
     const collage=cols.filter((x,i)=>i%stp===0).slice(0,6).map((s,j)=>`<i style="background-image:url('${filmImg(s,'bdm.jpg')||assetUrl(scKey(s,'cover.jpg'))}');--fd:${(j*.35).toFixed(2)}s"></i>`).join('');
@@ -4576,13 +4583,13 @@ function onbLevel(){const O=ONB,lang=O.lang;
   // слова, на которые сказал «знаю» (самые трудные, до 6), перевод под пылью; «Не знал» — запись в seq становится «не знаю», уровень сверху меняется сразу
   if(T.ph==='chk'){const R=T.ck,A=T.ckA,fk=(T.fkW||[]).slice(0,3),est=()=>ltEstimate({seq:T.seq,fk:T.fk,ckA:A,gok:[]}),c0=est();
     onbMount(1,`<h1 class="onb-h sm">Проверь себя<small>Ты сказал «знаю». Нажми на перевод — покажу. Честно: знал?</small></h1>
-      <div class="onb-ckl"><span>уровень по словам</span><i id="onbCkL" class="l-${c0.toLowerCase()}">${c0}</i></div>
+      <div class="onb-ckl"><span>уровень по словам</span><i id="onbCkL" class="l-${c0.toLowerCase()}">${lvW(c0)}</i></div>
       <div class="onb-ck">${R.map(j=>{const [wo,ru]=T.seq[j][3],ar=lang==='de'&&/^(der|die|das) /.exec(wo);
         return `<div class="onb-cr${j in A?(A[j]?' y':' n'):''}" data-j="${j}"><div class="onb-cw"><b>${ar?`<em class="art a-${ar[1]}">${ar[1]}</em> `:''}${esc(ar?wo.slice(4):wo)}</b>${ndSp(esc(ru),'onb-ct')}</div>
           <div class="onb-cb"><button class="y${A[j]===true?' on':''}" data-a="1">Знал</button><button class="n${A[j]===false?' on':''}" data-a="0">Не знал</button></div></div>`;}).join('')}${fk.length?`<div class="onb-cr fk"><div class="onb-cw"><b>${fk.map(f=>{const a=/^(der|die|das) /.exec(f);return (a?`<em class="art a-${a[1]}">${a[1]}</em> `:'')+esc(a?f.slice(4):f);}).join(' · ')}</b><small>${fk.length>1?'таких слов нет':'такого слова нет'} — а ты сказал «знаю»</small></div></div>`:''}</div>`,
       `<button class="onb-go" id="onbGo"${R.every(j=>j in A)?'':' disabled'}>Дальше</button>`);
     const L=$('#onbCkL'),go=$('#onbGo');let cur=c0;
-    const upd=()=>{go.disabled=!R.every(j=>j in A);const c=est();if(c===cur)return;const dn=CEFR.indexOf(c)<CEFR.indexOf(cur);cur=c;const sw=()=>{L.textContent=c;L.className='l-'+c.toLowerCase();};
+    const upd=()=>{go.disabled=!R.every(j=>j in A);const c=est();if(c===cur)return;const dn=CEFR.indexOf(c)<CEFR.indexOf(cur);cur=c;const sw=()=>{L.textContent=lvW(c);L.className='l-'+c.toLowerCase();};
       if(dn){sfx('nope');haptic('err');}
       if(!fxOK()){sw();return;}
       L.animate([{transform:'none'},{transform:'rotateX(90deg)'}],{duration:150,easing:'ease-in'}).onfinish=()=>{sw();L.animate([{transform:'rotateX(-90deg)'},{transform:'none'}],{duration:420,easing:SPRING});};};
@@ -4604,12 +4611,12 @@ function onbLevel(){const O=ONB,lang=O.lang;
       if(!ok)$$('.onb-opts [data-ok="1"]').forEach(x=>x.classList.add('ok'));T.gok.push([lv,ok]);setTimeout(()=>{T._g=0;T.gi++;onbLevel();},ok?520:900);});return;}
   if(T.ph==='res'){if(!T.pick&&!O.cefr)O.cefr=ltEstimate(T);const c=O.cefr||'A2';
     onbMount(1,`<h1 class="onb-h">${T.pick?'Выбери свой уровень':'Твой уровень'}</h1>
-      ${T.pick?'':`<div class="onb-lvl l-${c.toLowerCase()}" id="onbLv"><b>${c}</b><span>${CEFR_N[c]}</span></div>${onbWhyHTML(T)}<p class="onb-p">${c<'B1'?'Начнём со сцен попроще и с подсказками.':'Сцены — по твоему уровню, задания — обычной сложности.'} Уровень сам подстроится по ответам.</p>`}
-      <div class="onb-grid">${CEFR.map(k=>`<button data-c="${k}" class="l-${k.toLowerCase()}${O.cefr===k?' on':''}"><b>${k}</b><small>${CEFR_N[k]}</small></button>`).join('')}</div>`,
+      ${T.pick?'':`<div class="onb-lvl l-${c.toLowerCase()}" id="onbLv">${lvBars(c,'big')}<b>${lvW(c)}</b><span>уточним по твоим ответам</span></div>${onbWhyHTML(T)}<p class="onb-p" id="onbLvP">${onbLvP(c)}</p>`}
+      <div class="onb-grid">${CEFR.map(k=>`<button data-c="${k}" class="l-${k.toLowerCase()}${O.cefr===k?' on':''}">${lvBars(k)}<small>${LVW[k]}</small></button>`).join('')}</div>`,
       `<button class="onb-go" id="onbGo"${O.cefr?'':' disabled'}>Дальше</button>`);
     if(!T.pick&&fxOK()){const lv=$('#onbLv');lv.animate([{transform:'scale(.6) rotate(-6deg)',opacity:0},{transform:'none',opacity:1}],{duration:650,easing:SPRING});setTimeout(()=>{fxAt(lv,{n:18,v:4.5,life:44});sfx('reward');},280);}
     $$('.onb-grid [data-c]').forEach(b=>b.onclick=()=>{O.cefr=b.dataset.c;sfx('sel');haptic('sel');$$('.onb-grid [data-c]').forEach(x=>x.classList.toggle('on',x===b));$('#onbGo').disabled=false;
-      const lv=$('#onbLv');if(lv){lv.className='onb-lvl l-'+O.cefr.toLowerCase();lv.querySelector('b').textContent=O.cefr;lv.querySelector('span').textContent=CEFR_N[O.cefr];}});
+      const lv=$('#onbLv');if(lv){lv.className='onb-lvl l-'+O.cefr.toLowerCase();lv.innerHTML=lvBars(O.cefr,'big')+'<b>'+lvW(O.cefr)+'</b><span>выбрал сам</span>';}const lp=$('#onbLvP');if(lp)lp.textContent=onbLvP(O.cefr);});
     $('#onbGo').onclick=()=>{sfx('tap');renderOnb(2);};}}
 // оценка: где остановилась «лесенка» (среднее по последним 6 словам), минус выдуманные «знаю», поправка грамматикой
 function ltEstimate(T){const S=T.seq.slice(-6),W=x=>x[2]||1,sw=S.reduce((a,x)=>a+W(x),0);let v=S.length?S.reduce((a,x)=>a+W(x)*(x[0]+(x[1]?.5:-.5)),0)/sw:1;
