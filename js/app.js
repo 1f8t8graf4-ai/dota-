@@ -996,7 +996,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.67';
+const APP_V='13.9.68';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -4467,32 +4467,69 @@ function onbSwipe(card,go,o){o=o||{};let x0=null,dx=0,vx=0,lx=0,lt=0;const k=v=>
 // 13.9.33 (P0.1, Андрей с ПК: «как мне смахнуть на пк?»): ПК — мышь; клавиши ← → в карточках, Enter — главная кнопка шага
 const onbPC=()=>{try{return matchMedia('(hover:hover) and (pointer:fine)').matches;}catch(e){return false;}};
 document.addEventListener('keydown',e=>{if(screen!=='onb'||e.metaKey||e.ctrlKey||e.altKey||/INPUT|TEXTAREA|SELECT/.test((e.target||{}).tagName||''))return;
-  const k=e.key;if(k==='Enter'&&(e.target||{}).tagName==='BUTTON')return;const b=k==='ArrowRight'?$('#onbYes'):k==='ArrowLeft'?$('#onbNo'):k==='Enter'?$('#onbGo'):null;if(!b||b.disabled)return;e.preventDefault();b.click();});
+  const k=e.key;if(k==='Enter'&&(e.target||{}).tagName==='BUTTON')return;const b=k==='ArrowRight'?$('#onbYes'):k==='ArrowLeft'?$('#onbNo'):k==='Enter'?$('#onbGo'):/^[0-3]$/.test(k)?$(`.onb-chs [data-n="${k}"]`):null;if(!b||b.disabled)return;e.preventDefault();b.click();});   // 24.10 (П4): 1–3 — вариант перевода, 0 — «Не знаю»
 function onbLevel(){const O=ONB,lang=O.lang;
   if(!O.lt)O.lt={ph:'intro'};const T=O.lt;
   if(T.ph==='intro'){
     onbMount(1,`<h1 class="onb-h">Узнаем твой <span class="mk">уровень</span></h1><p class="onb-p">Слова — из реплик наших фильмов. ${onbPC()?'Знаешь слово — перетащи карточку вправо или нажми →. Ещё учишь — влево или ←.':'Знаешь слово — смахни вправо, ещё учишь — влево.'} Около минуты.</p>
       <div class="onb-demo"><div class="onb-dc l">ещё учу</div><div class="onb-dc c">${lang==='de'?'gestern':'tomorrow'}</div><div class="onb-dc r">знаю</div></div>`,
       `<button class="onb-go" id="onbGo">Начать тест</button><button class="onb-alt" id="onbPick">Знаю свой уровень</button>`);
-    const start=()=>{sfx('tap');Object.assign(T,{ph:'w',b:2,i:0,seq:[],used:{},fakeAt:[3,7,11],fk:0});onbLevel();};$('#onbGo').onclick=start;
+    const start=()=>{sfx('tap');Object.assign(T,{ph:'w',b:2,i:0,seq:[],used:{},fakeAt:[3,7,11],chAt:[5,12],fk:0,fkW:[],ch:[],ck:null,ckA:{}});O.cefr=null;onbLevel();};$('#onbGo').onclick=start;
     {const dc=$('.onb-dc.c');if(dc)onbSwipe(dc,know=>{dc._d=1;sfx(know?'tick':'tap');haptic('sel');if(fxOK())dc.animate([{transform:dc.style.transform||'none'},{transform:`translateX(${know?420:-420}px) rotate(${know?18:-18}deg)`,opacity:0}],{duration:300,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}).onfinish=start;else start();},
       {tap:()=>{dc.animate([{transform:'none'},{transform:'translateX(26px) rotate(1.5deg)'},{transform:'none'}],{duration:520,easing:'cubic-bezier(.3,1.4,.5,1)'});}});}   // 13.9.38
     $('#onbPick').onclick=()=>{sfx('tap');T.ph='res';T.pick=1;onbLevel();};return;}
-  if(T.ph==='w'){const N=15;if(T.i>=N){T.ph='g';T.gi=0;T.gok=[];onbLevel();return;}
-    const fake=T.fakeAt.includes(T.i);let w;
+  if(T.ph==='w'){const N=15;if(T.i>=N){T.gi=0;T.gok=[];T.ck=onbCkList(T);T.ckA={};T.ph=T.ck.length?'chk':'g';onbLevel();return;}
+    // 24.10 (П4, Андрей: «чуть более разнообразно, чем просто свайпы»): на 6-й и 13-й карточке — «выбери перевод из 3» (ответ весит в 1,5 раза больше свайпа)
+    const fake=T.fakeAt.includes(T.i),ch=!fake&&(T.chAt||[]).includes(T.i);let w=null,wb=T.b;
     if(fake)w=[LT_FAKE[lang][T.fakeAt.indexOf(T.i)%LT_FAKE[lang].length],null];
-    else{const pool=LT_W[lang][T.b].filter(x=>!T.used[x[0]]);w=pool[Math.floor(Math.random()*pool.length)]||LT_W[lang][T.b][0];T.used[w[0]]=1;}
-    const art=lang==='de'&&/^(der|die|das) /.exec(w[0]);
+    else{for(const d of [0,-1,1,-2,2]){const bb=T.b+d;if(bb<0||bb>4)continue;const pool=LT_W[lang][bb].filter(x=>!T.used[x[0]]);if(pool.length){w=pool[Math.floor(Math.random()*pool.length)];wb=bb;break;}}   // слова полосы кончились — соседняя, без повторов
+      if(!w)w=LT_W[lang][T.b][0];T.used[w[0]]=1;}
+    const art=lang==='de'&&/^(der|die|das) /.exec(w[0]),wd=`${art?`<em class="art a-${art[1]}">${art[1]}</em>`:''}<b>${esc(art?w[0].slice(4):w[0])}</b>`;
+    if(ch){const opts=onbChOpts(lang,wb,w);
+      onbMount(1,`<h1 class="onb-h sm">Что значит это слово?${onbPC()?'<small>Нажми 1, 2 или 3</small>':''}</h1><div class="onb-bar"><i style="width:${T.i/N*100}%"></i></div>
+        <div class="onb-stack ch"><div class="onb-card nx"></div><div class="onb-card ch" id="onbCard">${wd}<small>выбери перевод</small></div></div>
+        <div class="onb-chs">${opts.map(([t,ok],k)=>`<button class="onb-o" data-ok="${ok?1:0}" data-n="${k+1}"><span>${esc(t)}</span><u></u></button>`).join('')}<button class="onb-o onb-dk" data-ok="0" data-n="0"><span>Не знаю</span></button></div>`,'');
+      const card=$('#onbCard');backBtn(false);
+      $$('.onb-chs .onb-o').forEach(b=>b.onclick=()=>{if(card._d)return;card._d=1;const ok=b.dataset.ok==='1';
+        if(ok)b.classList.add('on','ok');else{if(!b.classList.contains('onb-dk'))b.classList.add('bad');$$('.onb-chs [data-ok="1"]').forEach(x=>x.classList.add('on','ok'));}
+        sfx(ok?'good':'nope');haptic(ok?'ok':'err');
+        T.seq.push([wb,ok,1.5,w,'c']);T.ch.push(ok);T.b=Math.max(0,Math.min(4,T.b+(ok?1:-1)));T.i++;
+        setTimeout(()=>{if(!card.isConnected)return;const fin=()=>onbLevel();
+          if(fxOK())card.animate([{transform:'none'},{transform:'translateY(-36px) scale(.92)',opacity:0}],{duration:260,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}).onfinish=fin;else fin();},ok?650:1150);});
+      return;}
     onbMount(1,`<h1 class="onb-h sm">Знаешь это слово?</h1><div class="onb-bar"><i style="width:${T.i/N*100}%"></i></div>
-      <div class="onb-stack"><div class="onb-card nx"></div><div class="onb-card" id="onbCard">${art?`<em class="art a-${art[1]}">${art[1]}</em>`:''}<b>${esc(art?w[0].slice(4):w[0])}</b><small>${lang==='de'?'Deutsch':'English'}</small><span class="stp k">ЗНАЮ</span><span class="stp u">УЧУ</span><i class="onb-bd k" aria-hidden="true">✓</i><i class="onb-bd u" aria-hidden="true">↺</i></div></div>${FLAG_ADMIN&&!onbPC()?'<div class="onb-dbg" id="onbDbg"></div>':''}`,
+      <div class="onb-stack"><div class="onb-card nx"></div><div class="onb-card" id="onbCard">${wd}<small>${lang==='de'?'Deutsch':'English'}</small><span class="stp k">ЗНАЮ</span><span class="stp u">УЧУ</span><i class="onb-bd k" aria-hidden="true">✓</i><i class="onb-bd u" aria-hidden="true">↺</i></div></div>${FLAG_ADMIN&&!onbPC()?'<div class="onb-dbg" id="onbDbg"></div>':''}`,
       `<div class="onb-yn n-yn"><button class="onb-no" id="onbNo" aria-label="Ещё учу">${niSVG('repeat')}<small>учу</small></button><span class="n-ynh">${onbPC()?'← или →':'смахни карточку'}</span><button class="onb-yes" id="onbYes" aria-label="Знаю">${niSVG('check')}<small>знаю</small></button></div>`);
     const card=$('#onbCard');backBtn(false);onbDbg();   // 13.9.40: «‹ Назад» Telegram на карточках прятать — палец задевал
     const go=know=>{if(card._d)return;card._d=1;sfx(know?'tick':'tap');haptic('sel');
-      if(fake){if(know)T.fk++;}else{T.seq.push([T.b,know]);T.b=Math.max(0,Math.min(4,T.b+(know?1:-1)));}
+      if(fake){if(know){T.fk++;T.fkW.push(w[0]);}}else{T.seq.push([wb,know,1,w,'s']);T.b=Math.max(0,Math.min(4,T.b+(know?1:-1)));}
       T.i++;const fin=()=>onbLevel();
       if(fxOK()){card.animate([{transform:card.style.transform||'none'},{transform:`translateX(${know?420:-420}px) rotate(${know?18:-18}deg)`,opacity:0}],{duration:320,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}).onfinish=fin;}else fin();};
     onbSwipe(card,go);
     $('#onbYes').onclick=()=>go(true);$('#onbNo').onclick=()=>go(false);return;}
+  // 24.10 (П4, Андрей: «добавь перевод слов в конце, чтобы чел понимал, знал или нет, и мог честно сказать «не знал» — тогда лвл понижался бы»):
+  // слова, на которые сказал «знаю» (самые трудные, до 6), перевод под пылью; «Не знал» — запись в seq становится «не знаю», уровень сверху меняется сразу
+  if(T.ph==='chk'){const R=T.ck,A=T.ckA,fk=(T.fkW||[]).slice(0,3),est=()=>ltEstimate({seq:T.seq,fk:T.fk,ckA:A,gok:[]}),c0=est();
+    onbMount(1,`<h1 class="onb-h sm">Проверь себя<small>Ты сказал «знаю». Нажми на перевод — покажу. Честно: знал?</small></h1>
+      <div class="onb-ckl"><span>уровень по словам</span><i id="onbCkL" class="l-${c0.toLowerCase()}">${c0}</i></div>
+      <div class="onb-ck">${R.map(j=>{const [wo,ru]=T.seq[j][3],ar=lang==='de'&&/^(der|die|das) /.exec(wo);
+        return `<div class="onb-cr${j in A?(A[j]?' y':' n'):''}" data-j="${j}"><div class="onb-cw"><b>${ar?`<em class="art a-${ar[1]}">${ar[1]}</em> `:''}${esc(ar?wo.slice(4):wo)}</b>${ndSp(esc(ru),'onb-ct')}</div>
+          <div class="onb-cb"><button class="y${A[j]===true?' on':''}" data-a="1">Знал</button><button class="n${A[j]===false?' on':''}" data-a="0">Не знал</button></div></div>`;}).join('')}${fk.length?`<div class="onb-cr fk"><div class="onb-cw"><b>${fk.map(f=>{const a=/^(der|die|das) /.exec(f);return (a?`<em class="art a-${a[1]}">${a[1]}</em> `:'')+esc(a?f.slice(4):f);}).join(' · ')}</b><small>${fk.length>1?'таких слов нет':'такого слова нет'} — а ты сказал «знаю»</small></div></div>`:''}</div>`,
+      `<button class="onb-go" id="onbGo"${R.every(j=>j in A)?'':' disabled'}>Дальше</button>`);
+    const L=$('#onbCkL'),go=$('#onbGo');let cur=c0;
+    const upd=()=>{go.disabled=!R.every(j=>j in A);const c=est();if(c===cur)return;const dn=CEFR.indexOf(c)<CEFR.indexOf(cur);cur=c;const sw=()=>{L.textContent=c;L.className='l-'+c.toLowerCase();};
+      if(dn){sfx('nope');haptic('err');}
+      if(!fxOK()){sw();return;}
+      L.animate([{transform:'none'},{transform:'rotateX(90deg)'}],{duration:150,easing:'ease-in'}).onfinish=()=>{sw();L.animate([{transform:'rotateX(-90deg)'},{transform:'none'}],{duration:420,easing:SPRING});};};
+    $$('.onb-cr[data-j]').forEach(r=>{const j=+r.dataset.j;r.querySelectorAll('.onb-cb button').forEach(b=>b.onclick=e=>{const v=b.dataset.a==='1';A[j]=v;T.seq[j][1]=v;if(e&&e.detail)b.blur();   // мышью — снять фокус: Enter на ПК жмёт «Дальше»
+      r.classList.toggle('y',v);r.classList.toggle('n',!v);r.querySelectorAll('.onb-cb button').forEach(x=>x.classList.toggle('on',x===b));
+      const sp=r.querySelector('.n-sp:not(.open)');if(sp)sp.classList.add('open');
+      sfx(v?'tick':'tap');haptic('sel');
+      if(fxOK())(v?b:r).animate(v?[{transform:'scale(.88)'},{transform:'none'}]:[{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'none'}],{duration:v?320:340,easing:v?SPRING:'ease-out'});
+      upd();});});
+    go.onclick=()=>{if(go.disabled)return;sfx('tap');T.ph='g';onbLevel();};
+    if(fxOK())$$('.onb-cr').forEach((r,k)=>r.animate([{opacity:0,transform:'translateX(28px)'},{opacity:1,transform:'none'}],{duration:420,delay:140+k*70,easing:'cubic-bezier(.2,.9,.25,1)',fill:'backwards'}));
+    return;}
   if(T.ph==='g'){const G=LT_G[lang];if(T.gi>=G.length){T.ph='res';onbLevel();return;}
     const [lv,qq,opts]=G[T.gi],sh=shuffle(opts.map((o,k)=>[o,k===0]));
     onbMount(1,`<h1 class="onb-h sm">Немного грамматики <small>${T.gi+1} из ${G.length}</small></h1><div class="onb-bar"><i style="width:${(T.gi/G.length)*100}%"></i></div>
@@ -4502,7 +4539,7 @@ function onbLevel(){const O=ONB,lang=O.lang;
       if(!ok)$$('.onb-opts [data-ok="1"]').forEach(x=>x.classList.add('ok'));T.gok.push([lv,ok]);setTimeout(()=>{T._g=0;T.gi++;onbLevel();},ok?520:900);});return;}
   if(T.ph==='res'){if(!T.pick&&!O.cefr)O.cefr=ltEstimate(T);const c=O.cefr||'A2';
     onbMount(1,`<h1 class="onb-h">${T.pick?'Выбери свой уровень':'Твой уровень'}</h1>
-      ${T.pick?'':`<div class="onb-lvl l-${c.toLowerCase()}" id="onbLv"><b>${c}</b><span>${CEFR_N[c]}</span></div><p class="onb-p">${c<'B1'?'Начнём со сцен попроще и с подсказками.':'Сцены — по твоему уровню, задания — обычной сложности.'} Уровень сам подстроится по ответам.</p>`}
+      ${T.pick?'':`<div class="onb-lvl l-${c.toLowerCase()}" id="onbLv"><b>${c}</b><span>${CEFR_N[c]}</span></div>${onbWhyHTML(T)}<p class="onb-p">${c<'B1'?'Начнём со сцен попроще и с подсказками.':'Сцены — по твоему уровню, задания — обычной сложности.'} Уровень сам подстроится по ответам.</p>`}
       <div class="onb-grid">${CEFR.map(k=>`<button data-c="${k}" class="l-${k.toLowerCase()}${O.cefr===k?' on':''}"><b>${k}</b><small>${CEFR_N[k]}</small></button>`).join('')}</div>`,
       `<button class="onb-go" id="onbGo"${O.cefr?'':' disabled'}>Дальше</button>`);
     if(!T.pick&&fxOK()){const lv=$('#onbLv');lv.animate([{transform:'scale(.6) rotate(-6deg)',opacity:0},{transform:'none',opacity:1}],{duration:650,easing:SPRING});setTimeout(()=>{fxAt(lv,{n:18,v:4.5,life:44});sfx('reward');},280);}
@@ -4510,10 +4547,28 @@ function onbLevel(){const O=ONB,lang=O.lang;
       const lv=$('#onbLv');if(lv){lv.className='onb-lvl l-'+O.cefr.toLowerCase();lv.querySelector('b').textContent=O.cefr;lv.querySelector('span').textContent=CEFR_N[O.cefr];}});
     $('#onbGo').onclick=()=>{sfx('tap');renderOnb(2);};}}
 // оценка: где остановилась «лесенка» (среднее по последним 6 словам), минус выдуманные «знаю», поправка грамматикой
-function ltEstimate(T){const S=T.seq.slice(-6);let v=S.length?S.reduce((a,[b,k])=>a+b+(k?.5:-.5),0)/S.length:1;v-=T.fk*.8;
+function ltEstimate(T){const S=T.seq.slice(-6),W=x=>x[2]||1,sw=S.reduce((a,x)=>a+W(x),0);let v=S.length?S.reduce((a,x)=>a+W(x)*(x[0]+(x[1]?.5:-.5)),0)/sw:1;
+  v-=T.fk*.8+Math.min(1.2,onbNk(T)*.25);   // 24.10 (П4): у записи [полоса, знает, вес]; каждое честное «не знал» — ещё −0,25 (переоценил себя и в соседних словах), всего не больше −1,2
   const G=T.gok||[];let g=-1;for(const [lv,ok] of G){if(ok)g=Math.max(g,lv);}const gl=G.length?(G.filter(x=>x[1]).length?g:0):v;
   const r=Math.round((v*2+gl)/3);return CEFR[Math.max(0,Math.min(4,r))];}
-function onbFinish(){const O=ONB;if(!O)return;tgVSwipes(false);const c=O.cefr||'A2',ci=CEFR.indexOf(c);
+// 24.10 (П4): «Проверь себя» — слова со свайпа «знаю», самые трудные (до 6, при равенстве — последние)
+const ONB_CK=6;
+function onbCkList(T){return T.seq.map((x,j)=>[x,j]).filter(([x])=>x[4]==='s'&&x[1]&&x[3]&&x[3][1]).sort((a,b)=>b[0][0]-a[0][0]||b[1]-a[1]).slice(0,ONB_CK).map(x=>x[1]);}
+const onbNk=T=>T.ckA?Object.values(T.ckA).filter(v=>v===false).length:(T.nk||0);
+// варианты к «выбери перевод»: та же полоса (потом соседние), та же часть речи (ruShape), без общего корня с верным
+function onbChOpts(lang,b,w){const L=LT_W[lang],sh=ruShape(w[1]),st=new Set(ruStems(w[1])),fine=x=>x[0]!==w[0]&&x[1]!==w[1]&&!ruStems(x[1]).some(t=>st.has(t));
+  const C=[...shuffle(L[b].filter(fine)),...shuffle([...(L[b-1]||[]),...(L[b+1]||[])].filter(fine))],P=[...C.filter(x=>ruShape(x[1])===sh),...C.filter(x=>ruShape(x[1])!==sh)];
+  const out=[],seen=new Set();for(const x of P){if(seen.has(x[1]))continue;seen.add(x[1]);out.push([x[1],false]);if(out.length===2)break;}
+  return shuffle([[w[1],true],...out]);}
+// итог: за что такой уровень — одной строкой значков
+function onbWhyHTML(T){const S=(T.seq||[]).filter(x=>x[4]==='s');if(!S.length)return '';const nk=onbNk(T),G=T.gok||[],C=T.ch||[],r=[];
+  r.push(`знаю <b>${S.filter(x=>x[1]).length+nk} из ${S.length}</b>`);
+  if(T.ck&&T.ck.length)r.push(`не знал <b${nk?' class="m"':''}>${nk}</b>`);
+  if(C.length)r.push(`перевод <b${C.some(x=>!x)?' class="m"':''}>${C.filter(Boolean).length} из ${C.length}</b>`);
+  r.push(`выдуманные <b${T.fk?' class="m"':''}>${T.fk?'попался '+T.fk:'не попался'}</b>`);
+  if(G.length)r.push(`грамматика <b>${G.filter(x=>x[1]).length} из ${G.length}</b>`);
+  return `<div class="onb-why">${r.map(x=>`<span>${x}</span>`).join('')}</div>`;}
+function onbFinish(){const O=ONB;if(!O)return;tgVSwipes(false);const c=O.cefr||(O.lt&&O.lt.seq&&O.lt.seq.length>=4?ltEstimate(O.lt):'A2'),ci=CEFR.indexOf(c);   // 24.10: «Пропустить» посреди теста — уровень по уже данным ответам
   store.onboarded=true;store.introV=1;store.newb=1;store.langs=[O.lang];store.kinoLang=O.lang;store.cefr=c;store.lvl=ci<=1?'a':'b';store.goalWhy=O.goal;store.goal=O.min*2;store.daily=O.daily;store.scSubChosen=true;if(!store.path)store.path='mix';save();
   try{remindSync();}catch(e){}
   const L=SCENES.filter(s=>scLang(s)===O.lang&&!s.age&&flagOf('scene-'+s.id)!=='hide'&&s.kind!=='clip'),pick=(START_PICK[O.lang]||[]).map(scOf).filter(Boolean);
