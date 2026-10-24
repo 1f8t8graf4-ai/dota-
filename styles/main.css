@@ -4698,3 +4698,18 @@ body[data-look="nd"]:not(#_) .sc-fb>.sc-btn{text-transform:none!important;letter
 .rv2 .rv-all .rv-list{padding:0 8px 8px}
 .rv2 .rv-all .rv-ln{background:none;padding:8px 6px;border-radius:0;border-top:1px solid rgba(255,255,255,.06)}
 .rv2 .rv-all .rv-t>b{font-size:14.5px}
+
+/* ==== 13.9.67 — П8 «по системе TikTok»: эпизод частями ≤ 1 мин (пауза между частями), деления частей на шкале ==== */
+.sc-part{position:absolute;inset:0;z-index:40;display:grid;place-items:center;padding:14px;background:rgba(6,7,10,.64);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:scPtIn .26s ease-out both}
+.sc-pt-in{display:flex;flex-direction:column;align-items:center;gap:7px;max-width:340px;text-align:center;color:#fff;animation:scPtUp .34s cubic-bezier(.2,.9,.3,1) both}
+.sc-pt-k{font:700 10.5px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.sc-pt-in b{font:800 clamp(17px,6cqw,26px)/1.15 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sc-pt-go{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:11px 20px;border-radius:999px;background:#FFD23F;color:#151208;font:800 15px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;box-shadow:0 10px 26px rgba(0,0,0,.4)}
+.sc-pt-go svg{width:14px;height:14px}
+.sc-part:active .sc-pt-go{transform:scale(.96)}
+.sc-pt-in small{font-size:12px;line-height:1.35;color:rgba(255,255,255,.62)}
+.sc-pt{font-style:normal;white-space:nowrap}
+.n-tlc{position:absolute;top:50%;width:2px;height:14px;margin:-7px 0 0 -1px;border-radius:1px;background:rgba(255,255,255,.75);box-shadow:0 0 0 1px rgba(0,0,0,.25);pointer-events:none;z-index:1}
+@keyframes scPtIn{from{opacity:0}}
+@keyframes scPtUp{from{opacity:0;transform:translateY(10px) scale(.96)}}
+body.nofx .sc-part,body.nofx .sc-pt-in{animation:none}
