@@ -994,7 +994,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.62';
+const APP_V='13.9.63';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -1747,9 +1747,9 @@ function ndKinoState(){const kl=kinoLang(),inL=s=>scLang(s)===kl&&flagOf('scene-
 function ndKinoBody(K){
   if(K.cat==='game'&&!SCENES.some(s=>(s.kind||'film')==='game')){   // 13.9.62: игр-сцен ещё нет — карточки игр из GAMES («игра как фильм»)
     const GS=window.__DATA&&window.__DATA.GAMES||{};
-    const gc=Object.keys(GS).map(gid=>{const g=GS[gid],hi=(g.heroes||[]).find(h=>h.img),n=(g.heroes||[]).reduce((a,h)=>a+(h.dialogs||[]).length,0);
+    const gc=Object.keys(GS).map(gid=>{const g=GS[gid],n=(g.heroes||[]).reduce((a,h)=>a+(h.dialogs||[]).length,0);
       return `<button class="n-po" data-game="${gid}" aria-label="${esc(g.name)}">
-        <span class="n-pi" style="${hi?`background-image:url('${assetUrl(hi.img)}')`:'background:linear-gradient(150deg,#3A3226,#14100A)'}"><span class="n-chip n">Игра</span><u><i style="width:0%"></i></u></span>
+        <span class="n-pi" style="${g.cover?`background-image:url('${assetUrl(g.cover)}')`:'background:linear-gradient(150deg,#3A3226,#14100A)'}"><span class="n-chip n">Игра</span><u><i style="width:0%"></i></u></span>
         <span class="n-pt">${esc(g.name)}</span></button>`;}).join('');
     return `<div class="n-lbl"><span>Игры</span><span>${Object.keys(GS).length}</span></div>${gc?`<div class="n-pg">${gc}</div>`:'<div class="n-empty">Пока пусто — игры в пути</div>'}`;}
   const lbl=K.lv==='me'?'Для твоего уровня':K.lv==='all'?'Все уровни':'Уровень '+K.lv;
@@ -1786,8 +1786,8 @@ function kinoTabHTML(){if(ndOn())return ndKinoHTML();
   const html=cards.map(c=>{if(c.s)return kinoCard(c.s);const L=shows[c.show];if(L.length===1)return kinoCard(L[0]);const s=L[0];
     return `<button class="kposter ${s.theme} show poster anim${L.every(x=>scMasterPct(x)===100)?' mastered':''}" data-show="${esc(c.show)}"><span class="kp-img" style="background-image:url('${scCover(s,'poster.jpg')}'),url('${scCover(s,'cover.jpg')}')"></span><span class="kp-grad"></span>${lvcHTML(L.reduce((a,y)=>(y.lvl||3)<(a.lvl||3)?y:a,L[0]))}<span class="kp-t"><em>${SC_KIND[s.kind]||'Сцены'}</em><b>${esc(c.show)}</b><small>${L.length} ${plural(L.length,['сцена','сцены','сцен'])}</small></span></button>`;}).join('');
   const GS=cat==='game'?(window.__DATA&&window.__DATA.GAMES||{}):{};   // 13.9.62: игр-сцен ещё нет — карточки игр из GAMES
-  const gcards=cat==='game'?Object.keys(GS).map(gid=>{const g=GS[gid],hn=(g.heroes||[]).length;
-    return `<button class="kposter noir show poster anim" data-g="${gid}"><span class="kp-img" style="background:linear-gradient(150deg,#3A3226,#14100A)"></span><span class="kp-grad"></span><span class="kp-t"><em>Игра</em><b>${esc(g.name)}</b><small>${hn} ${plural(hn,['герой','героя','героев'])} · диалоги</small></span></button>`;}).join(''):'';
+  const gcards=cat==='game'?Object.keys(GS).map(gid=>{const g=GS[gid],hn=gmHeroes().length;   // 13.9.63: считаем героев с живыми диалогами; обложка — key art игры из R2
+    return `<button class="kposter noir show poster anim" data-g="${gid}"><span class="kp-img" style="background-image:${g.cover?`url('${assetUrl(g.cover)}'),`:''}linear-gradient(150deg,#3A3226,#14100A)"></span><span class="kp-grad"></span><span class="kp-t"><em>Игра</em><b>${esc(g.name)}</b><small>${hn} ${plural(hn,['герой','героя','героев'])} · диалоги</small></span></button>`;}).join(''):'';
   return `<h1 class="title anim">${ndOn()?'Кино':'Кинозал'}</h1>
     <p class="lead anim" style="margin:4px 0 12px">${kl==='de'?'Сцены на немецком: дубляж и немецкое кино. Учишь немецкий по живой речи.':'Смотришь сцену с субтитрами, разбираешь живые фразы, проверяешь себя.'}</p>
     ${nL('de')?`<div class="dx-lang klang anim"><button data-kl="en" class="${kl==='en'?'on':''}">${FLAG.en} English <i>${nL('en')}</i></button><button data-kl="de" class="${kl==='de'?'on':''}">${FLAG.de} Deutsch <i>${nL('de')}</i></button></div>`:''}
@@ -4657,15 +4657,20 @@ setTimeout(remindSync,3000);setTimeout(()=>ev('open'),1200);setTimeout(labApply,
    Портреты: h.img (R2) — если нет, плитка-инициалы. Данные: data/games.json → __DATA.GAMES. */
 const GM={pick:new Set(),por:null,dlg:null,hero:null,mode:'browse'};
 function gmData(){const D=window.__DATA&&window.__DATA.GAMES;return D&&D.deadlock||null;}
-function gmHeroes(){const g=gmData();return g?g.heroes||[]:[];}
-function gmHero(id){return gmHeroes().find(h=>h.id===id);}
-function gmUse(h){return (h.dialogs||[]).reduce((m,d)=>Math.max(m,d.use||0),0);}
-function gmAllLines(hs){const out=[];(hs||gmHeroes()).forEach(h=>(h.dialogs||[]).forEach(d=>d.lines.forEach(l=>out.push({h,d,l}))));return out;}
-function gmFace(h){const in2=(h.name||'?').split(/[\s&]+/).filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+function gmHeroesAll(){const g=gmData();return g?g.heroes||[]:[];}   // 13.9.63: все герои, включая ещё без анимированных портретов
+const gmAlive=h=>!!(h&&h.img&&/\.mp4($|\?)/i.test(h.img));   // 13.9.63: у героя есть анимированный портрет (видео в R2)
+const gmDialogOK=d=>(d.lines||[]).every(l=>gmAlive(gmHeroesAll().find(x=>x.name===l.s)));   // 13.9.63 (правило Андрея): фразы только между героями с анимированными портретами
+function gmHeroes(){return gmHeroesAll().filter(h=>(h.dialogs||[]).some(gmDialogOK));}   // 13.9.63: в списках — только герои с живыми диалогами
+function gmHero(id){return gmHeroesAll().find(h=>h.id===id);}
+function gmDlgs(h){return (h.dialogs||[]).filter(gmDialogOK);}   // 13.9.63: живые диалоги героя
+function gmUse(h){return gmDlgs(h).reduce((m,d)=>Math.max(m,d.use||0),0);}
+function gmAllLines(hs){const out=[];(hs||gmHeroes()).forEach(h=>gmDlgs(h).forEach(d=>d.lines.forEach(l=>out.push({h,d,l}))));return out;}
+function gmFace(h,big){const in2=(h.name||'?').split(/[\s&]+/).filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
   const hue=((h.id||'x').split('').reduce((a,c)=>a+c.charCodeAt(0),0)*37)%360;
-  if(h.img){const u=assetUrl(h.img);return/\.mp4($|\?)/i.test(u)   // 13.9.60: img — относительный ключ через assetUrl (абсолютный адрес воркера из данных убран)
-    ?`<div class="gm-face gm-vwrap"><video class="gm-vid" src="${esc(u)}" autoplay muted loop playsinline preload="metadata"></video></div>`
-    :`<div class="gm-face" style="background-image:url('${esc(u)}')"></div>`;}
+  if(big&&gmAlive(h)){const u=assetUrl(h.img);   // 13.9.63: видео-портрет — только крупно (дуэль), в списках — статичные иконки с офиц. артов
+    return `<div class="gm-face gm-vwrap"><video class="gm-vid" src="${esc(u)}" autoplay muted loop playsinline preload="metadata"></video></div>`;}
+  const ic=h.icon?assetUrl(h.icon):(h.img&&!/\.mp4($|\?)/i.test(h.img)?assetUrl(h.img):null);
+  if(ic)return `<div class="gm-face" style="background-image:url('${esc(ic)}')"></div>`;
   return `<div class="gm-face gm-ph" style="--h:${hue}">${esc(in2)}</div>`;}
 function gmDots(h){const u=Math.min(5,gmUse(h)||0);return u?`<i class="gm-dots">${'●'.repeat(u)}${'○'.repeat(5-u)}</i>`:'';}   // 13.9.60: clamp — repeat(5-u) падал при use>5
 // 13.9.62: игра как «фильм» — страница игры из «Кино → Игры» (вкладки «Игры» больше нет). Внутри — движок диалогов (герои → диалоги, выборка, рандом)
@@ -4684,14 +4689,14 @@ function gmMount(){
 }
 function gmHTML(){
   const modes=[['browse','Диалоги'],['pick','Выборка'],['rnd','Рандом']];
-  return `<div class="gm-head"><div class="gm-game"><b>Deadlock</b><span>диалоги героев · ${gmHeroes().filter(h=>(h.dialogs||[]).length).length} героя</span></div>
+  return `<div class="gm-head"><div class="gm-game"><b>Deadlock</b><span>диалоги героев · ${(()=>{const n=gmHeroes().length;return n+' '+plural(n,['герой','героя','героев']);})()}</span></div>
     <div class="gm-modes">${modes.map(m=>`<button data-gm="${m[0]}" class="${GM.mode===m[0]?'on':''}">${m[1]}</button>`).join('')}</div></div>
     <div id="gmBody">${GM.mode==='browse'?(GM.dlg?gmDuelHTML():GM.hero?gmHeroHTML():gmBrowseHTML()):GM.mode==='pick'?gmPickHTML():gmRndHTML()}</div>`;
 }
 function gmBrowseHTML(){
   const hs=gmHeroes(),cols=6-(store.gmCols||3);
   const sorted=[...hs].sort((a,b)=>store.gmSort==='abc'?a.name.localeCompare(b.name):(gmUse(b)-gmUse(a)||a.name.localeCompare(b.name)));
-  const cards=sorted.map(h=>{const n=(h.dialogs||[]).length;
+  const cards=sorted.map(h=>{const n=gmDlgs(h).length;
     return (store.gmView==='list'
       ?`<button class="gm-row${n?'':' gm-soon'}" data-h="${h.id}">${gmFace(h)}<div class="gm-rowt"><b>${esc(h.name)}</b><span>${n?n+' '+(n===1?'диалог':n<5?'диалога':'диалогов'):'скоро'}</span></div>${gmDots(h)}</button>`
       :`<button class="gm-card${n?'':' gm-soon'}" data-h="${h.id}">${gmFace(h)}<b>${esc(h.name)}</b><span>${n?n+' диалога':'скоро'}</span>${gmDots(h)}</button>`);}).join('');
@@ -4705,16 +4710,16 @@ function gmHeroHTML(){
   const h=GM.hero;
   return `<button class="gm-back" data-back="1">← Все герои</button>
   <div class="gm-herohead">${gmFace(h)}<div><b>${esc(h.name)}</b><span>${esc(h.role||'')}</span></div></div>
-  ${(h.dialogs||[]).slice().sort((a,b)=>(b.use||0)-(a.use||0)).map((d,i)=>{
+  ${(gmDlgs(h)||[]).slice().sort((a,b)=>(b.use||0)-(a.use||0)).map((d,i)=>{
     const other=d.lines.map(l=>l.s).find(s=>s!==h.name)||'';
     return `<button class="gm-dlg" data-d="${i}"><span class="gm-ctx">${esc(d.ctx)}</span><p>«${esc(d.lines[0].en)}»</p><div class="gm-dlgm"><span>с ${esc(other)} · ${d.lines.length} реплик</span>${gmDots({dialogs:[d],id:h.id})}</div></button>`;}).join('')}`;
 }
 function gmDuelHTML(){
   const h=GM.hero,d=GM.dlg;const other=d.lines.map(l=>l.s).find(s=>s!==h.name)||'';
-  const hB=gmHeroes().find(x=>x.name===other)||{id:other,name:other};
+  const hB=gmHeroesAll().find(x=>x.name===other)||{id:other,name:other};
   return `<button class="gm-back" data-back="2">← ${esc(h.name)}</button>
   <div class="dd-duel" id="ddStage">
-    <div class="dd-sides"><div class="dd-side">${gmFace(h)}<b>${esc(h.name)}</b></div><div class="dd-vs">VS</div><div class="dd-side">${gmFace(hB)}<b>${esc(other)}</b></div></div>
+    <div class="dd-sides"><div class="dd-side">${gmFace(h,1)}<b>${esc(h.name)}</b></div><div class="dd-vs">VS</div><div class="dd-side">${gmFace(hB,1)}<b>${esc(other)}</b></div></div>
     <div class="dd-bubwrap" id="ddBub"></div>
     <div class="dd-hint">нажми — дальше</div></div>
   <div class="dd-prog"><i id="ddProg"></i></div>
@@ -4737,7 +4742,7 @@ function gmDuelStep(i){
     const hint=$('.dd-hint');if(hint)hint.textContent='диалог пройден';}
 }
 function gmPickHTML(){
-  const hs=gmHeroes().filter(h=>(h.dialogs||[]).length);
+  const hs=gmHeroes();
   const n=gmAllLines(gmHeroes().filter(h=>GM.pick.has(h.id))).length;
   return `<button class="gm-back" data-back="3">← Режимы</button>
   <p class="gm-note">Отметь героев — их реплики придут порциями по 5.</p>
@@ -4755,7 +4760,7 @@ function gmPortHTML(){
   <button id="gmMore" ${p.i+5>=p.lines.length?'disabled':''}>Ещё ▸</button></div>`;
 }
 function gmRndHTML(){
-  const all=gmAllLines(gmHeroes().filter(h=>(h.dialogs||[]).length));
+  const all=gmAllLines();
   if(!all.length)return '';
   const pool=[];all.forEach(x=>{for(let k=0;k<(x.d.use||1);k++)pool.push(x);});
   const x=pool[Math.floor(Math.random()*pool.length)];

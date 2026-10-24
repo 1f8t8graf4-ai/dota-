@@ -10,6 +10,116 @@
      "role": "Крысиный босс мафии",
      "dialogs": [
       {
+       "ctx": "враждебная встреча · Венатор и Крысиный король",
+       "use": 3,
+       "lines": [
+        {
+         "s": "Rat King",
+         "en": "Well, well. A priest with a boomstick. Come to confess, old man?",
+         "ru": "Так-так. Священник со стволом. Исповедаться пришёл, старик?"
+        },
+        {
+         "s": "Venator",
+         "en": "I hunt what crawls out of the abyss. You reek of it, rat.",
+         "ru": "Я охочусь на то, что выползает из бездны. От тебя несёт ею, крыса."
+        },
+        {
+         "s": "Rat King",
+         "en": "Heh. My rats smell better than your heaven does.",
+         "ru": "Хе. Мои крысы пахнут лучше твоего рая."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "boomstick",
+         "r": "ствол, стрелялка (грубо-шутливо о оружии)"
+        },
+        {
+         "w": "reek of",
+         "r": "смердеть, пропахнуть (чем-то плохим)"
+        },
+        {
+         "w": "crawl out",
+         "r": "выползать, вылезать"
+        }
+       ]
+      },
+      {
+       "ctx": "торг в туннелях · Венатор и Крысиный король",
+       "use": 2,
+       "lines": [
+        {
+         "s": "Rat King",
+         "en": "Half the tunnels under this city are mine. I could make you rich, holy man.",
+         "ru": "Половина туннелей под этим городом — мои. Я мог бы тебя обогатить, святой человек."
+        },
+        {
+         "s": "Venator",
+         "en": "The only thing I'd take from your tunnels is vermin. Starting with you.",
+         "ru": "Единственное, что я заберу из твоих туннелей, — гадость. Начиная с тебя."
+        },
+        {
+         "s": "Rat King",
+         "en": "Touchy. Fine — the deal's off, and the rats are on you.",
+         "ru": "Обидчивый. Ладно — сделка отменяется, и крысы идут за тобой."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "vermin",
+         "r": "мерзость, пакостная живность"
+        },
+        {
+         "w": "touchy",
+         "r": "обидчивый, вспыльчивый"
+        },
+        {
+         "w": "the deal's off",
+         "r": "сделка отменяется"
+        }
+       ]
+      },
+      {
+       "ctx": "стыка · Венатор и Крысиный король",
+       "use": 2,
+       "lines": [
+        {
+         "s": "Venator",
+         "en": "Kneel, creature. Last chance before the lead does the baptism.",
+         "ru": "На колени, тварь. Последний шанс, прежде чем свинец проведёт крещение."
+        },
+        {
+         "s": "Rat King",
+         "en": "Kneel? In MY tunnels? Cute sermon, padre.",
+         "ru": "На колени? В МОИХ туннелях? Милая проповедь, падре."
+        },
+        {
+         "s": "Venator",
+         "en": "Your kingdom ends where my bullets start.",
+         "ru": "Твоё царство кончается там, где начинаются мои пули."
+        },
+        {
+         "s": "Rat King",
+         "en": "Big words from a man with one gun and no friends.",
+         "ru": "Громкие слова от человека с одной пушкой и без друзей."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "the lead",
+         "r": "свинец (пули, сленг)"
+        },
+        {
+         "w": "sermon",
+         "r": "проповедь"
+        },
+        {
+         "w": "padre",
+         "r": "падре, батюшка (солдатский сленг)"
+        }
+       ]
+      },
+      {
        "ctx": "враждебная встреча · с Кельвином",
        "use": 3,
        "lines": [
@@ -132,13 +242,125 @@
         }
        ]
       }
-     ]
+     ],
+     "icon": "scenes/games/deadlock/icon-rat-king.jpg",
+     "img": "scenes/games/deadlock/rat-king.mp4"
     },
     {
      "id": "venator",
      "name": "Venator",
      "role": "Священник-охотник Ватикана",
      "dialogs": [
+      {
+       "ctx": "враждебная встреча · Венатор и Крысиный король",
+       "use": 3,
+       "lines": [
+        {
+         "s": "Rat King",
+         "en": "Well, well. A priest with a boomstick. Come to confess, old man?",
+         "ru": "Так-так. Священник со стволом. Исповедаться пришёл, старик?"
+        },
+        {
+         "s": "Venator",
+         "en": "I hunt what crawls out of the abyss. You reek of it, rat.",
+         "ru": "Я охочусь на то, что выползает из бездны. От тебя несёт ею, крыса."
+        },
+        {
+         "s": "Rat King",
+         "en": "Heh. My rats smell better than your heaven does.",
+         "ru": "Хе. Мои крысы пахнут лучше твоего рая."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "boomstick",
+         "r": "ствол, стрелялка (грубо-шутливо о оружии)"
+        },
+        {
+         "w": "reek of",
+         "r": "смердеть, пропахнуть (чем-то плохим)"
+        },
+        {
+         "w": "crawl out",
+         "r": "выползать, вылезать"
+        }
+       ]
+      },
+      {
+       "ctx": "торг в туннелях · Венатор и Крысиный король",
+       "use": 2,
+       "lines": [
+        {
+         "s": "Rat King",
+         "en": "Half the tunnels under this city are mine. I could make you rich, holy man.",
+         "ru": "Половина туннелей под этим городом — мои. Я мог бы тебя обогатить, святой человек."
+        },
+        {
+         "s": "Venator",
+         "en": "The only thing I'd take from your tunnels is vermin. Starting with you.",
+         "ru": "Единственное, что я заберу из твоих туннелей, — гадость. Начиная с тебя."
+        },
+        {
+         "s": "Rat King",
+         "en": "Touchy. Fine — the deal's off, and the rats are on you.",
+         "ru": "Обидчивый. Ладно — сделка отменяется, и крысы идут за тобой."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "vermin",
+         "r": "мерзость, пакостная живность"
+        },
+        {
+         "w": "touchy",
+         "r": "обидчивый, вспыльчивый"
+        },
+        {
+         "w": "the deal's off",
+         "r": "сделка отменяется"
+        }
+       ]
+      },
+      {
+       "ctx": "стыка · Венатор и Крысиный король",
+       "use": 2,
+       "lines": [
+        {
+         "s": "Venator",
+         "en": "Kneel, creature. Last chance before the lead does the baptism.",
+         "ru": "На колени, тварь. Последний шанс, прежде чем свинец проведёт крещение."
+        },
+        {
+         "s": "Rat King",
+         "en": "Kneel? In MY tunnels? Cute sermon, padre.",
+         "ru": "На колени? В МОИХ туннелях? Милая проповедь, падре."
+        },
+        {
+         "s": "Venator",
+         "en": "Your kingdom ends where my bullets start.",
+         "ru": "Твоё царство кончается там, где начинаются мои пули."
+        },
+        {
+         "s": "Rat King",
+         "en": "Big words from a man with one gun and no friends.",
+         "ru": "Громкие слова от человека с одной пушкой и без друзей."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "the lead",
+         "r": "свинец (пули, сленг)"
+        },
+        {
+         "w": "sermon",
+         "r": "проповедь"
+        },
+        {
+         "w": "padre",
+         "r": "падре, батюшка (солдатский сленг)"
+        }
+       ]
+      },
       {
        "ctx": "перед боем · с Селестой",
        "use": 3,
@@ -283,7 +505,8 @@
        ]
       }
      ],
-     "img": "scenes/games/deadlock/venator.mp4"
+     "img": "scenes/games/deadlock/venator.mp4",
+     "icon": "scenes/games/deadlock/icon-venator.jpg"
     },
     {
      "id": "rem",
@@ -685,7 +908,8 @@
       }
      ]
     }
-   ]
+   ],
+   "cover": "scenes/games/deadlock/cover.jpg"
   }
  }
 }
