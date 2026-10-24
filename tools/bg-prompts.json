@@ -1,0 +1,644 @@
+{
+ "v": 1,
+ "updated": "2026-10-24",
+ "how": [
+  "Фото (не для героев): Gemini или Google Flow (labs.google/flow), формат 9:16, 3–4 варианта — выбери один, где всё на месте и нет пластмассы.",
+  "Оживить: Flow → «Кадры в видео»; первый кадр и последний кадр — это же фото (у героя — арт с вики), 8 секунд.",
+  "Нет поля «последний кадр» — только первый; петлю склеит Z.ai или Claude (tools/loop_bg.py).",
+  "Готовый ролик отдай Z.ai: он склеит петлю, зальёт в R2 и отметит «залит». В приложение ставит Claude.",
+  "Плохо вышло — не дописывай промт: скинь кадр Claude, скажи, что не так."
+ ],
+ "rules": [
+  "Фильму — один фон (немецкий дубляж берёт тот же). Сериалу — один фон на сезон. Интервью — один фон на человека. Героям — арт с вики.",
+  "Начни с теста: «простой» (Психопат) и «сложный» (Волк). Выйдут нормально — делай остальные.",
+  "Без людей, рук, лиц, надписей, логотипов и марок; без дыма и тумана; деньги — только мелко."
+ ],
+ "photo_tail": "Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+ "anim_head": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: ",
+ "anim_tail": "Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.",
+ "hero_template": "Animate this exact image of {name}. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. {act} The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text.",
+ "items": [
+  {
+   "key": "film:wolf",
+   "kind": "film",
+   "title": "Волк с Уолл-стрит",
+   "shows": [
+    "Волк с Уолл-стрит",
+    "The Wolf of Wall Street"
+   ],
+   "test": "сложный",
+   "what": "Торговый зал брокерской фирмы ночью после вечеринки: рыбка в аквариуме, шампанское, снятая трубка, модель суперкара; за ними зелёные котировки.",
+   "moves": "Рыбка шевелит плавниками и медленно поворачивается, в шампанском бегут пузырьки, мигают зелёные цифры, по дальней стене ползёт бегущая строка.",
+   "photo": "The trading floor of a 1990s Long Island brokerage firm at night, the morning after a wild office party, nobody left. In the foreground, sharp, on the nearest desk: a round glass fishbowl with one orange goldfish, a half-full champagne glass, a beige office telephone with the handset off the hook and a small white scale model of a wedge-shaped 1980s Italian supercar. Behind, out of focus: long rows of desks with boxy beige computer monitors showing small glowing green digits, a long ticker band glowing green across the far wall, confetti on the carpet. Light: one warm brass desk lamp and the cold green glow of the screens. Mood: gold and money-green; greed and excess after the party. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text or logos; only small blurry green digits on the screens.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the goldfish hovers in place waving its fins and slowly turns around in the bowl; bubbles rise in the champagne glass; the small green digits on the screens flicker; the ticker band on the far wall scrolls slowly from right to left. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "film:psycho",
+   "kind": "film",
+   "title": "Американский психопат",
+   "shows": [
+    "Американский психопат"
+   ],
+   "test": "простой",
+   "what": "Белая стерильная квартира 1987 года ночью: прозрачный дождевик на вешалке, газеты на полу, топор у дивана, стерео, окно на Манхэттен.",
+   "moves": "На стерео прыгают зелёные индикаторы, по окну текут капли дождя, за ним мерцает ночной город.",
+   "photo": "A minimalist white Manhattan luxury apartment in 1987 at night, empty. In the foreground, sharp: a transparent plastic raincoat hanging on a chrome coat stand, the white floor around it neatly covered with spread newspapers with blurry unreadable print. Beside it: a fire axe with a red head leaning against a white leather sofa and a silver hi-fi stereo with glowing green level meters. Behind, out of focus: a big window with rain on the glass and the Manhattan skyline at night. Light: cold white ceiling light and the blue night city. Mood: sterile white perfection with something horribly wrong underneath. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the green level meters on the stereo bounce softly to music; raindrops run slowly down the big window; the city lights twinkle behind the glass. The raincoat, the newspapers and the axe do not move. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "film:taxi",
+   "kind": "film",
+   "title": "Таксист",
+   "shows": [
+    "Таксист"
+   ],
+   "what": "Дешёвая комната в Нью-Йорке 70-х ночью: револьвер, дневник и бутылка на комоде, треснувшее зеркало, армейская куртка; за окном жёлтое такси в пару и красный неон.",
+   "moves": "По стеклу текут капли, мимо такси из люка тянется пар, красный неон мягко светится и чуть пульсирует.",
+   "photo": "A tiny cheap rented room in 1970s New York at night, empty. In the foreground, sharp, on an old wooden dresser: a black revolver lying flat, an open diary with blurry handwriting and a bottle of brandy with no label. Above it, a small cracked mirror on a dingy yellow wall; an olive-green army field jacket hangs on a hook beside it. Behind, out of focus: a window with rain on the glass, a wet street below with red neon and a yellow 1970s taxi parked next to steam rising from a manhole. Light: one bare bulb and red neon from the street. Mood: dirty yellow and red; lonely, sleepless and tense. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: raindrops run down the window glass; steam rises slowly from the manhole past the parked taxi; the red neon outside glows and pulses very softly. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "film:titanic",
+   "kind": "film",
+   "title": "Титаник",
+   "shows": [
+    "Титаник",
+    "Titanic"
+   ],
+   "what": "Нос огромного лайнера 1912 года после заката: белые поручни сходятся к острию, кнехты, спасательный жилет; далеко на горизонте айсберг.",
+   "moves": "Море скользит мимо носа, по воде бегут блики, ремешки жилета чуть треплет морской ветер.",
+   "photo": "The bow of a huge 1912 ocean liner on a calm sea just after sunset, the deck empty. Camera at chest height a few meters behind the tip of the bow, looking forward. In the foreground, sharp: old wooden deck planks, two black iron mooring bollards and a white canvas life jacket lying by the railing; white railings converge to the point of the bow. Far ahead on the horizon, out of focus: a tall pale iceberg. Light: the last deep-orange glow of sunset at the horizon and the first cold blue of night above. Mood: golden romance turning into icy blue doom. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the sea slides past the bow with small waves; soft light glints on the water around the iceberg; the straps of the life jacket flutter slightly in the sea wind. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "film:bunker",
+   "kind": "film",
+   "title": "Бункер",
+   "shows": [
+    "Бункер"
+   ],
+   "what": "Руины Берлина в апреле 1945-го со ступеней бункера: на ящике карта со стрелками, круглые очки, сломанный карандаш; за ними горящие здания.",
+   "moves": "Отсветы пожара дрожат на стенах, вверх летят редкие искры, уголок карты дрожит от горячего ветра.",
+   "photo": "The ruined center of Berlin at dusk in April 1945, seen from the steps of an underground bunker exit, empty. In the foreground, sharp, on a wooden crate: a paper map of the city with red and blue pencil arrows, a pair of round wire-rimmed glasses and a broken pencil. Behind, out of focus: the burned shells of grand stone buildings and broken columns under a red evening sky. No flags, symbols or insignia. Light: red-orange fire glow under a dark sky. Mood: red, black and ash grey; everything is lost. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the fire glow flickers softly on the broken walls; a few orange embers float up from the fires; one corner of the paper map trembles in the hot wind. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "season:sopranos:S01",
+   "kind": "season",
+   "title": "Клан Сопрано",
+   "season": "S01",
+   "shows": [
+    "Клан Сопрано",
+    "Die Sopranos"
+   ],
+   "what": "Бассейн Тони утром: на воде утка с утятами, у края шезлонг с халатом и хлеб на тарелке; за ними большой дом в Нью-Джерси.",
+   "moves": "Утки медленно плавают по кругу, от них расходится рябь, по воде плывут листья, деревья качаются от ветерка.",
+   "note": "Утки — из самой сцены (эпизод «Утки»). Если утята выйдут кривыми — оставь одну утку.",
+   "photo": "The backyard of a big suburban New Jersey house on a fresh spring morning, nobody around. In the foreground, sharp: the edge of a swimming pool with a few floating leaves, and on the water a wild mallard duck with three small ducklings. On the stone edge of the pool: a white lounge chair with a folded bathrobe and a paper plate with a few slices of white bread. Behind, out of focus: a big white house, a hedge and tall trees. Light: soft morning sun. Mood: a calm family morning that feels fragile. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the mallard duck and the ducklings paddle slowly in a small circle and stay on the water; small ripples spread from them; the floating leaves drift; the tall trees behind sway in a light breeze. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "season:sopranos:S04",
+   "kind": "season",
+   "title": "Клан Сопрано",
+   "season": "S04",
+   "shows": [
+    "Клан Сопрано",
+    "Die Sopranos"
+   ],
+   "what": "Задний кабинет стрип-клуба ночью: стол, арифмометр, виски со льдом; на телике скачки; в щель двери — розовый неон пустой сцены.",
+   "moves": "На телике скачут лошади, розовый свет из клуба медленно пульсирует, лёд в виски тает и блестит.",
+   "photo": "The small back office of a New Jersey strip club at night, empty. In the foreground, sharp, on a cluttered metal desk: an old adding machine and a glass of whiskey with ice cubes. Behind, out of focus: dark green wood-paneled walls, steel beer kegs in the corner, a small old television on a shelf showing a blurry horse race, and a half-open door to the dark club with pink light and a chrome pole on an empty stage. Light: one green-shaded desk lamp, pink neon spill through the door gap, the TV glow. Mood: sickly green and pink; grief, guilt and dirty money. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: on the small TV, blurry horses gallop around the track; the pink light through the half-open door pulses slowly; the ice cubes in the whiskey glass slowly melt and glint. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "season:sopranos:S06",
+   "kind": "season",
+   "title": "Клан Сопрано",
+   "season": "S06",
+   "shows": [
+    "Клан Сопрано",
+    "Die Sopranos"
+   ],
+   "what": "Кабинка в маленькой закусочной ночью: луковые кольца, кофе, настольный музыкальный автомат; за ними стойка и стеклянная дверь с колокольчиком.",
+   "moves": "Над кофе вьётся пар, огоньки музыкального автомата мягко мигают, за окном тихо мерцает неон.",
+   "photo": "A booth in a small old New Jersey diner at night, nobody there. In the foreground, sharp, on the table: a basket of onion rings, a white mug of coffee and a small chrome tabletop jukebox selector with glowing song cards that cannot be read. Behind, out of focus: the counter with round stools, a glass entrance door with a small bell above it and a dark parking lot with a red neon glow. Light: warm diner lamps inside, cold night outside. Mood: an ordinary evening that feels like the last one. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: thin steam rises from the coffee; the lights on the tabletop jukebox selector glow and blink softly; the red neon outside shimmers faintly in the dark. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "season:bb:S01",
+   "kind": "season",
+   "title": "Во все тяжкие",
+   "season": "S01",
+   "shows": [
+    "Во все тяжкие",
+    "Breaking Bad"
+   ],
+   "what": "Старый автодом в пустыне на закате: в двери висит жёлтый защитный костюм, на ступеньке шляпа; на кусте в кадре — брюки.",
+   "moves": "Брюки на кусте и костюм в двери чуть треплет горячий ветер, над песком дрожит марево.",
+   "photo": "The New Mexico desert at golden hour, nobody around. In the foreground, sharp: a pair of khaki trousers caught on a dry desert shrub. In the middle: an old 1980s white motorhome with faded brown stripes, its side door open, a yellow hazmat suit hanging in the doorway and a black pork-pie hat resting on the metal step. Behind, out of focus: red mesas under a huge sky. Light: low warm sun from the side, long shadows. Mood: sun-baked yellow; ordinary on the surface, dangerous underneath. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the khaki trousers flap gently on the shrub in the hot wind; the yellow hazmat suit in the doorway sways slightly in the same wind; heat haze shimmers above the sand. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "season:bb:S02",
+   "kind": "season",
+   "title": "Во все тяжкие",
+   "season": "S02",
+   "shows": [
+    "Во все тяжкие",
+    "Breaking Bad"
+   ],
+   "what": "Бассейн на заднем дворе на рассвете: в воде плавает розовый плюшевый медведь, обгоревший, без глаза; у края сачок.",
+   "moves": "Медведь медленно дрейфует по кругу, расходится рябь, по стенкам бассейна бегут блики воды.",
+   "photo": "A suburban backyard swimming pool in Albuquerque at dawn, nobody around. In the foreground, sharp, floating on the water: a pink plush teddy bear, half burned, with one eye missing, floating face up. Around it: clear blue water and the tiled edge of the pool with a pool skimmer net lying on the deck. Behind, out of focus: a beige stucco house with a sliding glass door and desert plants. Light: cold pale dawn, the pool glowing softly. Mood: quiet; something terrible has happened. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the teddy bear drifts very slowly in a small circle on the water; small ripples spread from it; light patterns from the water move across the pool walls. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "season:bb:S04",
+   "kind": "season",
+   "title": "Во все тяжкие",
+   "season": "S04",
+   "shows": [
+    "Во все тяжкие",
+    "Breaking Bad"
+   ],
+   "what": "Подпол под домом ночью: одна голая лампочка, на земле пачки денег в плёнке в тени, фонарик; балки и трубы.",
+   "moves": "В свете лампочки плывут пылинки, с трубы капает вода, от капель расходятся круги в лужице.",
+   "photo": "A low dirt crawlspace under a suburban house at night, lit by one bare light bulb hanging from a cord. In the foreground, sharp: a few bundles of cash wrapped tightly in clear plastic, lying on the dirt half in shadow, and an old flashlight. Behind, out of focus: wooden floor joists, pipes and insulation, a small open hatch above with dim light. Light: one warm bare bulb and deep shadows. Mood: desperate; the money is gone. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: fine dust specks drift slowly through the light of the bare bulb; water drips from a pipe into a small puddle on the dirt and rings spread across it. The bulb hangs still and burns steadily. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "season:bb:S05",
+   "kind": "season",
+   "title": "Во все тяжкие",
+   "season": "S05",
+   "shows": [
+    "Во все тяжкие",
+    "Breaking Bad"
+   ],
+   "what": "Свалка в пустыне в сумерках: на капоте бордового седана ноутбук и ключи; за ними фургон с огромным электромагнитом и сплющенные машины.",
+   "moves": "Сухая трава у края качается на ветру, низко над землёй метёт пыль, над капотом дрожит марево.",
+   "photo": "A junkyard in the New Mexico desert at dusk, nobody around. In the foreground, sharp, on the hood of a dusty dark-maroon 1980s sedan: a closed black laptop and a ring of car keys. Behind, out of focus: an open box truck with a huge round industrial electromagnet inside, rows of crushed cars, a tall work light on a pole and blue mountains under a pink sky. Light: the last pink sunlight and the cold white work light. Mood: tired, tough and dangerous. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: dry grass at the edge of the frame waves in the wind; thin dust blows low across the ground; heat haze shimmers above the hood of the car. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "person:durov",
+   "kind": "person",
+   "title": "Павел Дуров",
+   "shows": [
+    "Павел Дуров"
+   ],
+   "what": "Открытое окно в старом доме Петербурга белой ночью: на подоконнике самолётики из купюр и один белый впереди; внизу проспект и колоннада собора.",
+   "moves": "Занавеска качается на ветру, крылья самолётиков чуть дрожат, далеко внизу мерцают фонари.",
+   "photo": "A tall open window high up in an old building in the center of St. Petersburg during the white nights, the room empty. In the foreground, sharp, on the wide stone windowsill: a row of small paper airplanes folded from worn orange-red banknotes, their noses pointing out of the window, and one plain white paper airplane in the center, a little ahead of the others; a sheer white curtain at the side. Far below, out of focus: a wide old avenue with tiny glowing street lamps and a cathedral with a curved stone colonnade under a pale blue-pink sky. Light: the pale white-night sky and warm lamps below. Mood: young, free and defiant. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the sheer curtain sways slowly in the breeze; the paper wings tremble slightly in the same breeze; the street lamps far below twinkle. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "person:clavicular",
+   "kind": "person",
+   "title": "Clavicular",
+   "shows": [
+    "Clavicular"
+   ],
+   "what": "Ванная в майамской высотке ночью: зеркало с лампами, на мраморе миска со льдом, дермароллер, тренажёр для челюсти, телефон с кольцевой лампой; в окне пальмы и неон.",
+   "moves": "Лёд в миске тает и по стеклу сползают капли, за окном качаются пальмы, неон мягко пульсирует.",
+   "photo": "The bathroom of a Miami high-rise apartment at night, turned into a looksmaxxing station, empty. In the foreground, sharp, on a white marble counter: a glass bowl of ice cubes, a microneedling derma roller, a silicone jaw exerciser and a few skincare bottles with no labels; a smartphone on a small tripod with a glowing ring light. Behind, out of focus: a big mirror framed with round bulbs reflecting only the dark room and a small window with Miami towers, palm trees and pink-purple neon. Light: warm mirror bulbs, the ring light and pink-purple neon. Mood: clinical white and hot pink; obsession with the mirror. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.",
+   "animate": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: the ice cubes slowly melt and droplets slide down the glass bowl; the palm trees outside the small window sway; the pink-purple neon outside pulses softly. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist."
+  },
+  {
+   "key": "hero:deadlock:venator",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "venator",
+   "title": "Venator",
+   "draft": false,
+   "art": "deadlock.wiki → Venator → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Venator. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. He stands in his pose chewing his cigar, thin smoke curling from it. Halfway through he fires the grenade launcher once: a bright muzzle flash and a short puff of smoke from the barrel, his shoulders take the heavy recoil, the rosary swings — then he settles back into exactly the starting pose while thin smoke drifts from the barrel. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:rat-king",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "rat-king",
+   "title": "Rat King",
+   "draft": false,
+   "art": "deadlock.wiki → Rat King → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Rat King. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. He sits on his scrap-metal throne with a smug smirk. The rats around him keep moving the whole time in their places — scurrying, twitching whiskers, lashing tails. He slowly turns his head to look over his rats and back to the camera and taps the armrest with his claws; his crown and gold chains glint, the red moon glows behind him. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:rem",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "rem",
+   "title": "Rem",
+   "draft": false,
+   "art": "deadlock.wiki → Rem → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Rem. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. The sleepy cat spirit floats in place. It slowly lifts the teal candle, the flame flickers and grows brighter, then lowers it back while its heavy eyelids close halfway and open again; stars twinkle and clouds drift slowly across the big moon. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:grey-talon",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "grey-talon",
+   "title": "Grey Talon",
+   "draft": false,
+   "art": "deadlock.wiki → Grey Talon → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Grey Talon. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. The old archer slowly raises his bow and half-draws the string, aims for one breath, then eases the string and lowers the bow back to exactly the starting pose; his braided white hair and beard sway in the breeze, leaves drift behind him. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:celeste",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "celeste",
+   "title": "Celeste",
+   "draft": false,
+   "art": "deadlock.wiki → Celeste → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Celeste. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. She twirls her glowing star-tipped wand in one slow circle, a trail of sparkles follows it and glowing tarot cards drift around her; she gives a slow playful wink, and the wand comes back to exactly the starting position; strands of her purple hair sway. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:abrams",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "abrams",
+   "title": "Abrams",
+   "draft": true,
+   "act_draft": "he cracks his knuckles, cape drifts, ember particles, vampire smirk",
+   "art": "deadlock.wiki → Abrams → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Abrams. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: he cracks his knuckles, cape drifts, ember particles, vampire smirk. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:apollo",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "apollo",
+   "title": "Apollo",
+   "draft": true,
+   "act_draft": "golden light rays behind him, confident grin, laurel dust",
+   "art": "deadlock.wiki → Apollo → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Apollo. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: golden light rays behind him, confident grin, laurel dust. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:baba",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "baba",
+   "title": "Baba",
+   "draft": true,
+   "act_draft": "gentle floating fabric, soft mystic glow, slow hover",
+   "art": "deadlock.wiki → Baba → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Baba. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: gentle floating fabric, soft mystic glow, slow hover. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:bebop",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "bebop",
+   "title": "Bebop",
+   "draft": true,
+   "act_draft": "robotic servos whir, antenna light blinks, hook arm swings, friendly eye glow",
+   "art": "deadlock.wiki → Bebop → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Bebop. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: robotic servos whir, antenna light blinks, hook arm swings, friendly eye glow. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:billy",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "billy",
+   "title": "Billy",
+   "draft": true,
+   "act_draft": "bat shadow flutters behind, fanged grin, dramatic cape flick",
+   "art": "deadlock.wiki → Billy → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Billy. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: bat shadow flutters behind, fanged grin, dramatic cape flick. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:calico",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "calico",
+   "title": "Calico",
+   "draft": true,
+   "act_draft": "cat rubs against her leg, ribbon sways, playful paw sparkle",
+   "art": "deadlock.wiki → Calico → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Calico. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: cat rubs against her leg, ribbon sways, playful paw sparkle. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:doorman",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "doorman",
+   "title": "Doorman",
+   "draft": true,
+   "act_draft": "he slides a golden key across, chandelier light flickers, polished grin",
+   "art": "deadlock.wiki → Doorman → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Doorman. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: he slides a golden key across, chandelier light flickers, polished grin. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:drifter",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "drifter",
+   "title": "Drifter",
+   "draft": true,
+   "act_draft": "cigarette smoke curls, red eyes glow, long coat sways",
+   "art": "deadlock.wiki → Drifter → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Drifter. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: cigarette smoke curls, red eyes glow, long coat sways. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:dynamo",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "dynamo",
+   "title": "Dynamo",
+   "draft": true,
+   "act_draft": "gravity orb hums above his palm, coat flaps, faint equations glow",
+   "art": "deadlock.wiki → Dynamo → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Dynamo. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: gravity orb hums above his palm, coat flaps, faint equations glow. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:graves",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "graves",
+   "title": "Graves",
+   "draft": true,
+   "act_draft": "lich hand glows violet, ghost wisps curl, silver hair drifts",
+   "art": "deadlock.wiki → Graves → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Graves. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: lich hand glows violet, ghost wisps curl, silver hair drifts. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:haze",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "haze",
+   "title": "Haze",
+   "draft": true,
+   "act_draft": "blades glint, eyes shine, coat sways",
+   "art": "deadlock.wiki → Haze → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Haze. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: blades glint, eyes shine, coat sways. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:holliday",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "holliday",
+   "title": "Holliday",
+   "draft": true,
+   "act_draft": "sheriff badge glints, lasso spins at her side, desert dust drifts",
+   "art": "deadlock.wiki → Holliday → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Holliday. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: sheriff badge glints, lasso spins at her side, desert dust drifts. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:infernus",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "infernus",
+   "title": "Infernus",
+   "draft": true,
+   "act_draft": "flames rise from his shoulders, embers swirl, fire crackles",
+   "art": "deadlock.wiki → Infernus → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Infernus. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: flames rise from his shoulders, embers swirl, fire crackles. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:ivy",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "ivy",
+   "title": "Ivy",
+   "draft": true,
+   "act_draft": "stone wings spread slightly, dust falls, kind smile, city lights behind",
+   "art": "deadlock.wiki → Ivy → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Ivy. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: stone wings spread slightly, dust falls, kind smile, city lights behind. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:kelvin",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "kelvin",
+   "title": "Kelvin",
+   "draft": true,
+   "act_draft": "frost sparkles drift, ice crystals grow on his shoulders, frosty breath",
+   "art": "deadlock.wiki → Kelvin → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Kelvin. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: frost sparkles drift, ice crystals grow on his shoulders, frosty breath. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:lady-geist",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "lady-geist",
+   "title": "Lady Geist",
+   "draft": true,
+   "act_draft": "blood-red crystal pulses, surgical glow, elegant gown sways",
+   "art": "deadlock.wiki → Lady Geist → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Lady Geist. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: blood-red crystal pulses, surgical glow, elegant gown sways. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:lash",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "lash",
+   "title": "Lash",
+   "draft": true,
+   "act_draft": "spectral purple energy crackles around his fists, taunting grin",
+   "art": "deadlock.wiki → Lash → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Lash. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: spectral purple energy crackles around his fists, taunting grin. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:mcginnis",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "mcginnis",
+   "title": "McGinnis",
+   "draft": true,
+   "act_draft": "spanner spins in her hand, turret light blinks, sparks fly",
+   "art": "deadlock.wiki → McGinnis → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of McGinnis. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: spanner spins in her hand, turret light blinks, sparks fly. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:mina",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "mina",
+   "title": "Mina",
+   "draft": true,
+   "act_draft": "bat wings flutter behind, candlelight flickers, aristocratic smirk",
+   "art": "deadlock.wiki → Mina → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Mina. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: bat wings flutter behind, candlelight flickers, aristocratic smirk. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:mirage",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "mirage",
+   "title": "Mirage",
+   "draft": true,
+   "act_draft": "sand spirals around him, golden light, jewels glint",
+   "art": "deadlock.wiki → Mirage → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Mirage. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: sand spirals around him, golden light, jewels glint. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:mo-krill",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "mo-krill",
+   "title": "Mo & Krill",
+   "draft": true,
+   "act_draft": "sand puffs as they half-dive underground, helmet light glints",
+   "art": "deadlock.wiki → Mo & Krill → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Mo & Krill. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: sand puffs as they half-dive underground, helmet light glints. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:paige",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "paige",
+   "title": "Paige",
+   "draft": true,
+   "act_draft": "magic runes circle her hand, book pages flutter, warm glow",
+   "art": "deadlock.wiki → Paige → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Paige. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: magic runes circle her hand, book pages flutter, warm glow. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:paradox",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "paradox",
+   "title": "Paradox",
+   "draft": true,
+   "act_draft": "time particles spiral, clock hands blur behind, teal vortex glow",
+   "art": "deadlock.wiki → Paradox → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Paradox. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: time particles spiral, clock hands blur behind, teal vortex glow. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:pocket",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "pocket",
+   "title": "Pocket",
+   "draft": true,
+   "act_draft": "suitcase glows green, a single crow feather drifts, hidden face tilts",
+   "art": "deadlock.wiki → Pocket → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Pocket. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: suitcase glows green, a single crow feather drifts, hidden face tilts. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:seven",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "seven",
+   "title": "Seven",
+   "draft": true,
+   "act_draft": "electric arcs crackle between his fingers, storm glow, hair sparks",
+   "art": "deadlock.wiki → Seven → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Seven. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: electric arcs crackle between his fingers, storm glow, hair sparks. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:shiv",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "shiv",
+   "title": "Shiv",
+   "draft": true,
+   "act_draft": "toxic green drips from his blade, restless fidget",
+   "art": "deadlock.wiki → Shiv → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Shiv. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: toxic green drips from his blade, restless fidget. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:silver",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "silver",
+   "title": "Silver",
+   "draft": true,
+   "act_draft": "silver bullets spin in her palm, moonlight glints on the revolver",
+   "art": "deadlock.wiki → Silver → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Silver. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: silver bullets spin in her palm, moonlight glints on the revolver. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:sinclair",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "sinclair",
+   "title": "Sinclair",
+   "draft": true,
+   "act_draft": "stage-light glow, showman card flourish",
+   "art": "deadlock.wiki → Sinclair → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Sinclair. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: stage-light glow, showman card flourish. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:victor",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "victor",
+   "title": "Victor",
+   "draft": true,
+   "act_draft": "steam hisses from armor vents, iron plating glows",
+   "art": "deadlock.wiki → Victor → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Victor. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: steam hisses from armor vents, iron plating glows. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:vindicta",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "vindicta",
+   "title": "Vindicta",
+   "draft": true,
+   "act_draft": "crows circle behind her, spirit ravens glow blue, hair floats",
+   "art": "deadlock.wiki → Vindicta → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Vindicta. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: crows circle behind her, spirit ravens glow blue, hair floats. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:viscous",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "viscous",
+   "title": "Viscous",
+   "draft": true,
+   "act_draft": "goo body wobbles softly, bubbles pop inside, cheerful bounce",
+   "art": "deadlock.wiki → Viscous → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Viscous. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: goo body wobbles softly, bubbles pop inside, cheerful bounce. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:vyper",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "vyper",
+   "title": "Vyper",
+   "draft": true,
+   "act_draft": "venom drips, snake eyes glow, coils shift",
+   "art": "deadlock.wiki → Vyper → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Vyper. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: venom drips, snake eyes glow, coils shift. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:warden",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "warden",
+   "title": "Warden",
+   "draft": true,
+   "act_draft": "mystic flask glows teal, trench coat sways, cold light",
+   "art": "deadlock.wiki → Warden → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Warden. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: mystic flask glows teal, trench coat sways, cold light. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:wraith",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "wraith",
+   "title": "Wraith",
+   "draft": true,
+   "act_draft": "tarot cards fan out and glow purple",
+   "art": "deadlock.wiki → Wraith → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Wraith. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: tarot cards fan out and glow purple. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  },
+  {
+   "key": "hero:deadlock:yamato",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "yamato",
+   "title": "Yamato",
+   "draft": true,
+   "act_draft": "katana shimmers with power aura, petals drift, sword stance",
+   "art": "deadlock.wiki → Yamato → Gallery: арт в полный рост, без надписей",
+   "animate": "Animate this exact image of Yamato. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: katana shimmers with power aura, petals drift, sword stance. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+  }
+ ]
+}
