@@ -994,7 +994,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.63';
+const APP_V='13.9.64';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -4656,6 +4656,11 @@ setTimeout(remindSync,3000);setTimeout(()=>ev('open'),1200);setTimeout(labApply,
    Вид списка: сетка «как в игре» / списком; сортировка А-Я / по полезности; слайдер размера.
    Портреты: h.img (R2) — если нет, плитка-инициалы. Данные: data/games.json → __DATA.GAMES. */
 const GM={pick:new Set(),por:null,dlg:null,hero:null,mode:'browse'};
+var gmSnd=null;   // 13.9.64: один аудио-плеер — войс реальных реплик ДД (data/games.json, l.a → R2). var (не let) — чтобы был виден как window.gmSnd в тестах/консоли
+function gmPlay(u,btn){try{if(gmSnd){gmSnd.pause();}const pb=document.querySelector('.dd-voice.on');if(pb&&pb!==btn)pb.classList.remove('on');
+  if(!u)return;gmSnd=new Audio(u);if(btn)btn.classList.add('on');
+  gmSnd.onended=gmSnd.onerror=()=>{if(btn)btn.classList.remove('on');gmSnd=null;};
+  gmSnd.play().catch(()=>{if(btn)btn.classList.remove('on');});}catch(e){}}
 function gmData(){const D=window.__DATA&&window.__DATA.GAMES;return D&&D.deadlock||null;}
 function gmHeroesAll(){const g=gmData();return g?g.heroes||[]:[];}   // 13.9.63: все герои, включая ещё без анимированных портретов
 const gmAlive=h=>!!(h&&h.img&&/\.mp4($|\?)/i.test(h.img));   // 13.9.63: у героя есть анимированный портрет (видео в R2)
@@ -4728,14 +4733,17 @@ function gmDuelHTML(){
 function gmBubble(i){
   const d=GM.dlg,h=GM.hero,l=d.lines[i];if(!l)return null;
   const left=l.s===h.name;
-  return `<div class="dd-bub ${left?'lf':'rt'}"><span class="dd-who">${esc(l.s)}</span><div class="dd-en">${esc(l.en)}</div><div class="dd-ru">${esc(l.ru)}</div></div>`;
+  const au=l.a?`<button class="dd-voice" data-au="${esc(assetUrl(l.a))}" aria-label="прослушать реплику">▸</button>`:'';   // 13.9.64: войс реальной игровой реплики
+  return `<div class="dd-bub ${left?'lf':'rt'}"><div class="dd-who-row"><span class="dd-who">${esc(l.s)}</span>${au}</div><div class="dd-en">${esc(l.en)}</div><div class="dd-ru">${esc(l.ru)}</div></div>`;
 }
 function gmDuelStep(i){
   const b=gmBubble(i),box=$('#ddBub');if(!b)return;
   box.insertAdjacentHTML('beforeend',b);
+  box.lastElementChild.querySelectorAll('.dd-voice[data-au]').forEach(btn=>btn.onclick=e=>{e.stopPropagation();haptic('medium');gmPlay(btn.dataset.au,btn);});   // 13.9.64: пузырь добавлен ПОСЛЕ gmBind — вешаем ▸ вручную
   box.querySelectorAll('.dd-bub').forEach((el,k)=>{el.classList.toggle('dim',k<i);});
   const st=$('#ddStage');st.scrollTop=st.scrollHeight;haptic('sel');
   const d=GM.dlg,n=d.lines.length;
+  const l=d.lines[i];if(l&&l.a&&store.snd){const nb=box.lastElementChild;gmPlay(assetUrl(l.a),nb?nb.querySelector('.dd-voice'):null);}   // 13.9.64: автовойс при появлении реплики (звук вкл.)
   const p=$('#ddProg');if(p)p.style.width=Math.round((i+1)/n*100)+'%';
   if(i+1>=n){const v=$('#ddVoc');
     if(v&&d.vocab&&d.vocab.length)v.innerHTML='<b>Лексика</b>'+d.vocab.map(x=>`<span class="chip"><i>${esc(x.w)}</i> — ${esc(x.r)}</span>`).join('')+'<button class="gm-again" data-again="1">Ещё раз</button>';
@@ -4753,7 +4761,7 @@ function gmPickHTML(){
 function gmPortHTML(){
   const p=GM.por;
   return `<div class="dd-duel dd-port" id="ddStage">
-    ${p.lines.slice(p.i,p.i+5).map((x,k)=>`<div class="dd-bub mid${k===0?'':' dim'}"><span class="dd-who">${esc(x.h.name)}</span><div class="dd-en">${esc(x.l.en)}</div><div class="dd-ru">${esc(x.l.ru)}</div></div>`).join('')}
+    ${p.lines.slice(p.i,p.i+5).map((x,k)=>`<div class="dd-bub mid${k===0?'':' dim'}"><div class="dd-who-row"><span class="dd-who">${esc(x.h.name)}</span>${x.l.a?`<button class="dd-voice" data-au="${esc(assetUrl(x.l.a))}" aria-label="прослушать реплику">▸</button>`:''}</div><div class="dd-en">${esc(x.l.en)}</div><div class="dd-ru">${esc(x.l.ru)}</div></div>`).join('')}
   </div>
   <div class="dd-prog"><i style="width:${Math.round(p.i/Math.max(1,p.lines.length)*100)}%"></i></div>
   <div class="gm-pickbar"><span>${p.i+Math.min(5,p.lines.length-p.i)} / ${p.lines.length}</span>
@@ -4766,7 +4774,7 @@ function gmRndHTML(){
   const x=pool[Math.floor(Math.random()*pool.length)];
   return `<button class="gm-back" data-back="3">← Режимы</button>
   <p class="gm-note">Случайная реплика: чем выше полезность, тем чаще выпадает.</p>
-  <div class="dd-duel dd-one" id="ddStage"><div class="dd-bub mid"><span class="dd-who">${esc(x.h.name)} · ${esc(x.d.ctx)}</span><div class="dd-en">${esc(x.l.en)}</div><div class="dd-ru">${esc(x.l.ru)}</div></div></div>
+  <div class="dd-duel dd-one" id="ddStage"><div class="dd-bub mid"><div class="dd-who-row"><span class="dd-who">${esc(x.h.name)} · ${esc(x.d.ctx)}</span>${x.l.a?`<button class="dd-voice" data-au="${esc(assetUrl(x.l.a))}" aria-label="прослушать реплику">▸</button>`:''}</div><div class="dd-en">${esc(x.l.en)}</div><div class="dd-ru">${esc(x.l.ru)}</div></div></div>
   ${x.d.vocab&&x.d.vocab.length?`<div class="dd-vocab on"><b>Лексика</b>${x.d.vocab.slice(0,3).map(v=>`<span class="chip"><i>${esc(v.w)}</i> — ${esc(v.r)}</span>`).join('')}</div>`:''}
   <div class="gm-pickbar"><span>${esc(x.h.name)} · полезность ${'●'.repeat(x.d.use||1)}</span><button id="gmAgain2">Ещё ▸</button></div>`;
 }
@@ -4785,4 +4793,5 @@ function gmBind(){
   const go=$('#gmGo');if(go)go.onclick=()=>{const lines=gmAllLines(gmHeroes().filter(h=>GM.pick.has(h.id))).sort((a,b)=>(b.d.use||0)-(a.d.use||0));GM.por={lines,i:0};haptic('sel');r.innerHTML=gmHTML();gmBind();};
   const more=$('#gmMore');if(more)more.onclick=()=>{if(GM.por){GM.por.i+=5;haptic('sel');r.innerHTML=gmHTML();gmBind();}};
   const ag2=$('#gmAgain2');if(ag2)ag2.onclick=()=>{r.innerHTML=gmHTML();gmBind();haptic('sel');};
+  r.querySelectorAll('[data-au]').forEach(b=>b.onclick=e=>{e.stopPropagation();haptic('medium');gmPlay(b.dataset.au,b);});   // 13.9.64: войс по кнопке ▸
 }

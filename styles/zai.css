@@ -95,6 +95,11 @@ body.zai .dd-bub::before{content:'';position:absolute;top:-6px;border:6px solid 
 body.zai .dd-bub.lf::before{left:14px;border-bottom-color:var(--n-line2,rgba(255,255,255,.12));border-top:0}
 body.zai .dd-bub.rt::before{right:14px;border-bottom-color:var(--n-line2,rgba(255,255,255,.12));border-top:0}
 body.zai .dd-who{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--n-sub);font-weight:700}
+body.zai .dd-who-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+/* 13.9.64: кнопка войса реальной реплики (аудио из R2) — только transform, без transition-фильтров */
+body.zai .dd-voice{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--n-line2,rgba(255,255,255,.2));background:var(--n-soft);color:var(--n-sub);font-size:10px;font-weight:800;line-height:1;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0 0 0 2px}
+body.zai .dd-voice:active{transform:scale(.85)}
+body.zai .dd-voice.on{background:var(--n-sub);border-color:var(--n-sub);color:var(--n-subInk)}
 body.zai .dd-en{font-size:15.5px;font-weight:600;line-height:1.4;margin-top:2px}
 body.zai .dd-ru{font-size:12.5px;color:var(--n-mute);margin-top:3px;line-height:1.4}
 body.zai .dd-hint{text-align:center;color:var(--n-mute);font-size:11px;opacity:.55;padding:6px 0 0}

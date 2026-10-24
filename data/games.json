@@ -10,112 +10,176 @@
      "role": "Крысиный босс мафии",
      "dialogs": [
       {
-       "ctx": "враждебная встреча · Венатор и Крысиный король",
+       "ctx": "встреча · охота объявлена · Венатор и Крысиный король",
        "use": 3,
        "lines": [
         {
+         "s": "Venator",
+         "en": "Evil stirs in New York... and so the Vatican has called on me.",
+         "ru": "В Нью-Йорке пробуждается зло… и Ватикан призвал меня.",
+         "a": "scenes/games/deadlock/v/ven-evil-stirs.mp3"
+        },
+        {
          "s": "Rat King",
-         "en": "Well, well. A priest with a boomstick. Come to confess, old man?",
-         "ru": "Так-так. Священник со стволом. Исповедаться пришёл, старик?"
+         "en": "I thought I said you weren't supposed to show your face in the sewers again?!",
+         "ru": "Кажется, я велел тебе больше не совать морду в канализацию?!",
+         "a": "scenes/games/deadlock/v/rk-sewers.mp3"
         },
         {
          "s": "Venator",
-         "en": "I hunt what crawls out of the abyss. You reek of it, rat.",
-         "ru": "Я охочусь на то, что выползает из бездны. От тебя несёт ею, крыса."
+         "en": "You can't hide from a Venator.",
+         "ru": "От Венатора не спрятаться.",
+         "a": "scenes/games/deadlock/v/ven-no-hide.mp3"
         },
         {
          "s": "Rat King",
-         "en": "Heh. My rats smell better than your heaven does.",
-         "ru": "Хе. Мои крысы пахнут лучше твоего рая."
+         "en": "What's a priest gonna do to a king?!",
+         "ru": "А что поп сделает королю?!",
+         "a": "scenes/games/deadlock/v/rk-priest-vs-king.mp3"
+        },
+        {
+         "s": "Venator",
+         "en": "I will find you.",
+         "ru": "Я тебя найду.",
+         "a": "scenes/games/deadlock/v/ven-will-find.mp3"
         }
        ],
        "vocab": [
         {
-         "w": "boomstick",
-         "r": "ствол, стрелялка (грубо-шутливо о оружии)"
+         "w": "evil stirs",
+         "r": "зло пробуждается, зашевелилось"
         },
         {
-         "w": "reek of",
-         "r": "смердеть, пропахнуть (чем-то плохим)"
+         "w": "call on s.o.",
+         "r": "призвать кого-то, обратиться за помощью"
         },
         {
-         "w": "crawl out",
-         "r": "выползать, вылезать"
+         "w": "show your face",
+         "r": "показываться, соваться (куда-либо)"
+        },
+        {
+         "w": "be supposed to",
+         "r": "полагаться по уговору («не следовало…»)"
         }
        ]
       },
       {
-       "ctx": "торг в туннелях · Венатор и Крысиный король",
+       "ctx": "стычка · проповедь свинца · Венатор и Крысиный король",
        "use": 2,
        "lines": [
         {
          "s": "Rat King",
-         "en": "Half the tunnels under this city are mine. I could make you rich, holy man.",
-         "ru": "Половина туннелей под этим городом — мои. Я мог бы тебя обогатить, святой человек."
+         "en": "The rat king is here!",
+         "ru": "Крысиный король здесь!",
+         "a": "scenes/games/deadlock/v/rk-king-here.mp3"
         },
         {
          "s": "Venator",
-         "en": "The only thing I'd take from your tunnels is vermin. Starting with you.",
-         "ru": "Единственное, что я заберу из твоих туннелей, — гадость. Начиная с тебя."
+         "en": "The Lord is merciful... I am not.",
+         "ru": "Господь милосерден… я — нет.",
+         "a": "scenes/games/deadlock/v/ven-not-merciful.mp3"
         },
         {
          "s": "Rat King",
-         "en": "Touchy. Fine — the deal's off, and the rats are on you.",
-         "ru": "Обидчивый. Ладно — сделка отменяется, и крысы идут за тобой."
+         "en": "Holier than thou, crumbum!",
+         "ru": "Святее всех выискался, недомерок!",
+         "a": "scenes/games/deadlock/v/rk-holier.mp3"
+        },
+        {
+         "s": "Venator",
+         "en": "Die, monster!",
+         "ru": "Умри, чудовище!",
+         "a": "scenes/games/deadlock/v/ven-die-monster.mp3"
+        },
+        {
+         "s": "Rat King",
+         "en": "Go do some Hail Marys or somethin'.",
+         "ru": "Иди почитай свои «Радуйся, Мария», или как там.",
+         "a": "scenes/games/deadlock/v/rk-hail-marys.mp3"
+        },
+        {
+         "s": "Venator",
+         "en": "Evil dies today.",
+         "ru": "Сегодня зло умрёт.",
+         "a": "scenes/games/deadlock/v/ven-evil-dies.mp3"
+        },
+        {
+         "s": "Rat King",
+         "en": "Took down the Venatah!",
+         "ru": "Уложил Венатора!",
+         "a": "scenes/games/deadlock/v/rk-took-down.mp3"
         }
        ],
        "vocab": [
         {
-         "w": "vermin",
-         "r": "мерзость, пакостная живность"
+         "w": "merciful",
+         "r": "милосердный"
         },
         {
-         "w": "touchy",
-         "r": "обидчивый, вспыльчивый"
+         "w": "holier than thou",
+         "r": "«святее всех» (о заносчивом ханже)"
         },
         {
-         "w": "the deal's off",
-         "r": "сделка отменяется"
+         "w": "crumbum",
+         "r": "недомерок, пустое место (бруклинское жарг.)"
+        },
+        {
+         "w": "take down",
+         "r": "уложить, завалить (противника)"
         }
        ]
       },
       {
-       "ctx": "стыка · Венатор и Крысиный король",
+       "ctx": "поединок · крысиные дела · Венатор и Крысиный король",
        "use": 2,
        "lines": [
         {
-         "s": "Venator",
-         "en": "Kneel, creature. Last chance before the lead does the baptism.",
-         "ru": "На колени, тварь. Последний шанс, прежде чем свинец проведёт крещение."
-        },
-        {
          "s": "Rat King",
-         "en": "Kneel? In MY tunnels? Cute sermon, padre.",
-         "ru": "На колени? В МОИХ туннелях? Милая проповедь, падре."
+         "en": "Being King of the Rats ain't easy!.. you gotta do things. Important things! Rat things!",
+         "ru": "Быть Королём Крыс непросто!.. Надо делать дела. Важные дела! Крысиные!",
+         "a": "scenes/games/deadlock/v/rk-king-of-rats.mp3"
         },
         {
          "s": "Venator",
-         "en": "Your kingdom ends where my bullets start.",
-         "ru": "Твоё царство кончается там, где начинаются мои пули."
+         "en": "Come out and die.",
+         "ru": "Выходи — и умри.",
+         "a": "scenes/games/deadlock/v/ven-come-out.mp3"
         },
         {
          "s": "Rat King",
-         "en": "Big words from a man with one gun and no friends.",
-         "ru": "Громкие слова от человека с одной пушкой и без друзей."
+         "en": "I ain't through with you yet, crumbum!",
+         "ru": "Я ещё не закончил с тобой, недомерок!",
+         "a": "scenes/games/deadlock/v/rk-not-through.mp3"
+        },
+        {
+         "s": "Venator",
+         "en": "I fear no evil.",
+         "ru": "Я не боюсь зла.",
+         "a": "scenes/games/deadlock/v/ven-fear-no-evil.mp3"
+        },
+        {
+         "s": "Rat King",
+         "en": "You ain't stopping me, Venatah!",
+         "ru": "Меня не остановишь, Венатор!",
+         "a": "scenes/games/deadlock/v/rk-not-stopping.mp3"
         }
        ],
        "vocab": [
         {
-         "w": "the lead",
-         "r": "свинец (пули, сленг)"
+         "w": "gotta",
+         "r": "разг. «надо» (have got to)"
         },
         {
-         "w": "sermon",
-         "r": "проповедь"
+         "w": "ain't",
+         "r": "разг. отрицание-«не» (am/is/are not)"
         },
         {
-         "w": "padre",
-         "r": "падре, батюшка (солдатский сленг)"
+         "w": "be through with",
+         "r": "покончить с кем-то, закончить"
+        },
+        {
+         "w": "fear no evil",
+         "r": "«не убоюсь зла» (из 23-го псалма)"
         }
        ]
       },
@@ -243,7 +307,7 @@
        ]
       }
      ],
-     "icon": "scenes/games/deadlock/icon-rat-king.jpg",
+     "icon": "scenes/games/deadlock/icon-rat-king.png",
      "img": "scenes/games/deadlock/rat-king.mp4"
     },
     {
@@ -252,112 +316,176 @@
      "role": "Священник-охотник Ватикана",
      "dialogs": [
       {
-       "ctx": "враждебная встреча · Венатор и Крысиный король",
+       "ctx": "встреча · охота объявлена · Венатор и Крысиный король",
        "use": 3,
        "lines": [
         {
+         "s": "Venator",
+         "en": "Evil stirs in New York... and so the Vatican has called on me.",
+         "ru": "В Нью-Йорке пробуждается зло… и Ватикан призвал меня.",
+         "a": "scenes/games/deadlock/v/ven-evil-stirs.mp3"
+        },
+        {
          "s": "Rat King",
-         "en": "Well, well. A priest with a boomstick. Come to confess, old man?",
-         "ru": "Так-так. Священник со стволом. Исповедаться пришёл, старик?"
+         "en": "I thought I said you weren't supposed to show your face in the sewers again?!",
+         "ru": "Кажется, я велел тебе больше не совать морду в канализацию?!",
+         "a": "scenes/games/deadlock/v/rk-sewers.mp3"
         },
         {
          "s": "Venator",
-         "en": "I hunt what crawls out of the abyss. You reek of it, rat.",
-         "ru": "Я охочусь на то, что выползает из бездны. От тебя несёт ею, крыса."
+         "en": "You can't hide from a Venator.",
+         "ru": "От Венатора не спрятаться.",
+         "a": "scenes/games/deadlock/v/ven-no-hide.mp3"
         },
         {
          "s": "Rat King",
-         "en": "Heh. My rats smell better than your heaven does.",
-         "ru": "Хе. Мои крысы пахнут лучше твоего рая."
+         "en": "What's a priest gonna do to a king?!",
+         "ru": "А что поп сделает королю?!",
+         "a": "scenes/games/deadlock/v/rk-priest-vs-king.mp3"
+        },
+        {
+         "s": "Venator",
+         "en": "I will find you.",
+         "ru": "Я тебя найду.",
+         "a": "scenes/games/deadlock/v/ven-will-find.mp3"
         }
        ],
        "vocab": [
         {
-         "w": "boomstick",
-         "r": "ствол, стрелялка (грубо-шутливо о оружии)"
+         "w": "evil stirs",
+         "r": "зло пробуждается, зашевелилось"
         },
         {
-         "w": "reek of",
-         "r": "смердеть, пропахнуть (чем-то плохим)"
+         "w": "call on s.o.",
+         "r": "призвать кого-то, обратиться за помощью"
         },
         {
-         "w": "crawl out",
-         "r": "выползать, вылезать"
+         "w": "show your face",
+         "r": "показываться, соваться (куда-либо)"
+        },
+        {
+         "w": "be supposed to",
+         "r": "полагаться по уговору («не следовало…»)"
         }
        ]
       },
       {
-       "ctx": "торг в туннелях · Венатор и Крысиный король",
+       "ctx": "стычка · проповедь свинца · Венатор и Крысиный король",
        "use": 2,
        "lines": [
         {
          "s": "Rat King",
-         "en": "Half the tunnels under this city are mine. I could make you rich, holy man.",
-         "ru": "Половина туннелей под этим городом — мои. Я мог бы тебя обогатить, святой человек."
+         "en": "The rat king is here!",
+         "ru": "Крысиный король здесь!",
+         "a": "scenes/games/deadlock/v/rk-king-here.mp3"
         },
         {
          "s": "Venator",
-         "en": "The only thing I'd take from your tunnels is vermin. Starting with you.",
-         "ru": "Единственное, что я заберу из твоих туннелей, — гадость. Начиная с тебя."
+         "en": "The Lord is merciful... I am not.",
+         "ru": "Господь милосерден… я — нет.",
+         "a": "scenes/games/deadlock/v/ven-not-merciful.mp3"
         },
         {
          "s": "Rat King",
-         "en": "Touchy. Fine — the deal's off, and the rats are on you.",
-         "ru": "Обидчивый. Ладно — сделка отменяется, и крысы идут за тобой."
+         "en": "Holier than thou, crumbum!",
+         "ru": "Святее всех выискался, недомерок!",
+         "a": "scenes/games/deadlock/v/rk-holier.mp3"
+        },
+        {
+         "s": "Venator",
+         "en": "Die, monster!",
+         "ru": "Умри, чудовище!",
+         "a": "scenes/games/deadlock/v/ven-die-monster.mp3"
+        },
+        {
+         "s": "Rat King",
+         "en": "Go do some Hail Marys or somethin'.",
+         "ru": "Иди почитай свои «Радуйся, Мария», или как там.",
+         "a": "scenes/games/deadlock/v/rk-hail-marys.mp3"
+        },
+        {
+         "s": "Venator",
+         "en": "Evil dies today.",
+         "ru": "Сегодня зло умрёт.",
+         "a": "scenes/games/deadlock/v/ven-evil-dies.mp3"
+        },
+        {
+         "s": "Rat King",
+         "en": "Took down the Venatah!",
+         "ru": "Уложил Венатора!",
+         "a": "scenes/games/deadlock/v/rk-took-down.mp3"
         }
        ],
        "vocab": [
         {
-         "w": "vermin",
-         "r": "мерзость, пакостная живность"
+         "w": "merciful",
+         "r": "милосердный"
         },
         {
-         "w": "touchy",
-         "r": "обидчивый, вспыльчивый"
+         "w": "holier than thou",
+         "r": "«святее всех» (о заносчивом ханже)"
         },
         {
-         "w": "the deal's off",
-         "r": "сделка отменяется"
+         "w": "crumbum",
+         "r": "недомерок, пустое место (бруклинское жарг.)"
+        },
+        {
+         "w": "take down",
+         "r": "уложить, завалить (противника)"
         }
        ]
       },
       {
-       "ctx": "стыка · Венатор и Крысиный король",
+       "ctx": "поединок · крысиные дела · Венатор и Крысиный король",
        "use": 2,
        "lines": [
         {
-         "s": "Venator",
-         "en": "Kneel, creature. Last chance before the lead does the baptism.",
-         "ru": "На колени, тварь. Последний шанс, прежде чем свинец проведёт крещение."
-        },
-        {
          "s": "Rat King",
-         "en": "Kneel? In MY tunnels? Cute sermon, padre.",
-         "ru": "На колени? В МОИХ туннелях? Милая проповедь, падре."
+         "en": "Being King of the Rats ain't easy!.. you gotta do things. Important things! Rat things!",
+         "ru": "Быть Королём Крыс непросто!.. Надо делать дела. Важные дела! Крысиные!",
+         "a": "scenes/games/deadlock/v/rk-king-of-rats.mp3"
         },
         {
          "s": "Venator",
-         "en": "Your kingdom ends where my bullets start.",
-         "ru": "Твоё царство кончается там, где начинаются мои пули."
+         "en": "Come out and die.",
+         "ru": "Выходи — и умри.",
+         "a": "scenes/games/deadlock/v/ven-come-out.mp3"
         },
         {
          "s": "Rat King",
-         "en": "Big words from a man with one gun and no friends.",
-         "ru": "Громкие слова от человека с одной пушкой и без друзей."
+         "en": "I ain't through with you yet, crumbum!",
+         "ru": "Я ещё не закончил с тобой, недомерок!",
+         "a": "scenes/games/deadlock/v/rk-not-through.mp3"
+        },
+        {
+         "s": "Venator",
+         "en": "I fear no evil.",
+         "ru": "Я не боюсь зла.",
+         "a": "scenes/games/deadlock/v/ven-fear-no-evil.mp3"
+        },
+        {
+         "s": "Rat King",
+         "en": "You ain't stopping me, Venatah!",
+         "ru": "Меня не остановишь, Венатор!",
+         "a": "scenes/games/deadlock/v/rk-not-stopping.mp3"
         }
        ],
        "vocab": [
         {
-         "w": "the lead",
-         "r": "свинец (пули, сленг)"
+         "w": "gotta",
+         "r": "разг. «надо» (have got to)"
         },
         {
-         "w": "sermon",
-         "r": "проповедь"
+         "w": "ain't",
+         "r": "разг. отрицание-«не» (am/is/are not)"
         },
         {
-         "w": "padre",
-         "r": "падре, батюшка (солдатский сленг)"
+         "w": "be through with",
+         "r": "покончить с кем-то, закончить"
+        },
+        {
+         "w": "fear no evil",
+         "r": "«не убоюсь зла» (из 23-го псалма)"
         }
        ]
       },
@@ -506,7 +634,7 @@
       }
      ],
      "img": "scenes/games/deadlock/venator.mp4",
-     "icon": "scenes/games/deadlock/icon-venator.jpg"
+     "icon": "scenes/games/deadlock/icon-venator.png"
     },
     {
      "id": "rem",
