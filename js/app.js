@@ -981,7 +981,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.57';
+const APP_V='13.9.58';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -4638,8 +4638,10 @@ function gmUse(h){return (h.dialogs||[]).reduce((m,d)=>Math.max(m,d.use||0),0);}
 function gmAllLines(hs){const out=[];(hs||gmHeroes()).forEach(h=>(h.dialogs||[]).forEach(d=>d.lines.forEach(l=>out.push({h,d,l}))));return out;}
 function gmFace(h){const in2=(h.name||'?').split(/[\s&]+/).filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
   const hue=((h.id||'x').split('').reduce((a,c)=>a+c.charCodeAt(0),0)*37)%360;
-  return h.img?`<div class="gm-face" style="background-image:url('${esc(h.img)}')"></div>`
-    :`<div class="gm-face gm-ph" style="--h:${hue}">${esc(in2)}</div>`;}
+  if(h.img)return/\.mp4($|\?)/i.test(h.img)
+    ?`<div class="gm-face gm-vwrap"><video class="gm-vid" src="${esc(h.img)}" autoplay muted loop playsinline preload="metadata"></video></div>`
+    :`<div class="gm-face" style="background-image:url('${esc(h.img)}')"></div>`;
+  return `<div class="gm-face gm-ph" style="--h:${hue}">${esc(in2)}</div>`;}
 function gmDots(h){const u=gmUse(h);return u?`<i class="gm-dots">${'●'.repeat(u)}${'○'.repeat(5-u)}</i>`:'';}
 function gamesTabHTML(){return `<h1 class="title anim">Игры</h1><div class="gm-root anim" id="gmRoot"><div class="gm-wait">Загружаю…</div></div>`;}
 function bindGames(){setTimeout(gmMount,50);}

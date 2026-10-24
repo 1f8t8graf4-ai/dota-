@@ -1,102 +1,691 @@
-{"GAMES":{"deadlock":{"name":"Deadlock","site":"https://deadlock.wiki","heroes":[
-{"id":"rat-king","name":"Rat King","role":"Крысиный босс мафии","dialogs":[
-{"ctx":"враждебная встреча · с Кельвином","use":3,"lines":[
-{"s":"Rat King","en":"Keep your rotting corpse away from me, ya crumbum.","ru":"Держи свой гниющий труп подальше от меня, ты, ничтожество."},
-{"s":"Kelvin","en":"I'm fairly well-preserved, actually.","ru":"Я вообще-то неплохо сохранился."},
-{"s":"Rat King","en":"Shut up!","ru":"Заткнись!"}],
-"vocab":[{"w":"crumbum","r":"ничтожество, шляпа (старомодное оскорбление)"},{"w":"rotting corpse","r":"гниющий труп (Кельвин — замороженный мертвец)"},{"w":"well-preserved","r":"хорошо сохранился; каламбур: лёд сохраняет"}]},
-{"ctx":"сделка · с Билли","use":4,"lines":[
-{"s":"Rat King","en":"So after we win, you gonna let me live on Long Island?","ru":"Так, когда мы победим — ты дашь мне жить на Лонг-Айленде?"},
-{"s":"Billy","en":"Ehh, it's a tough question; on one hand, you got a goat head. On the other hand, the rest of ya's human, which begs the question: Is 9/10's a human too much human? My guts tellin' me yes.","ru":"Эээ, вопрос сложный: с одной стороны, у тебя козлиная голова. С другой — остальное человеческое, и это наводит на вопрос: 9/10 человека — это слишком много человека? Нутро чует, что да."},
-{"s":"Rat King","en":"You really doin' me like that?","ru":"Ты серьёзно так со мной?"},
-{"s":"Billy","en":"Tell ya what: Ya can visit, but ya can't own real estate.","ru":"Вот тебе встречное: приезжать можешь, но недвижимость не покупай."},
-{"s":"Rat King","en":"I'll take it.","ru":"По рукам."}],
-"vocab":[{"w":"begs the question","r":"напрашивается вопрос"},{"w":"my guts tellin' me","r":"нутро чует"},{"w":"You really doin' me like that?","r":"ты правда так со мной поступаешь?"},{"w":"real estate","r":"недвижимость"},{"w":"I'll take it","r":"по рукам (о сделке)"}]},
-{"ctx":"«мёртвый человек» · с Кельвином","use":4,"lines":[
-{"s":"Rat King","en":"Oh, I'm just tryna figure out if I should like ya cause you're a dead human, or, uh, if I should hate you cause you're a human that's refusing to die.","ru":"А, я просто пытаюсь понять: мне тебя любить за то, что ты мёртвый человек, или, эм, ненавидеть за то, что ты человек, который отказывается умирать."},
-{"s":"Kelvin","en":"You could like me because I'm a person invested in our survival?","ru":"Можешь любить меня за то, что я человек, вложившийся в наше выживание?"},
-{"s":"Rat King","en":"Yeah... I hate ya.","ru":"Ага… Я тебя ненавижу."}],
-"vocab":[{"w":"tryna","r":"trying to — пытаюсь"},{"w":"refuse to die","r":"отказываться умирать"},{"w":"invested in","r":"вложившийся в / заинтересованный в"}]}]},
-{"id":"venator","name":"Venator","role":"Священник-охотник Ватикана","dialogs":[
-{"ctx":"перед боем · с Селестой","use":3,"lines":[
-{"s":"Venator","en":"You look… delicate.","ru":"Ты выглядишь… хрупкой."},
-{"s":"Celeste","en":"\"Delicate\"?","ru":"«Хрупкой»?"},
-{"s":"Venator","en":"I'm tryin' to be kind.","ru":"Я пытаюсь быть любезным."},
-{"s":"Celeste","en":"You think I can't fight?","ru":"Думаешь, я не умею драться?"},
-{"s":"Venator","en":"We're about be shot at, and you're dressed like you just got off a shift at the circus. So yes. I have concerns.","ru":"Нас сейчас будут расстреливать, а ты одета, как будто только со смены в цирке. Так что да — у меня есть сомнения."},
-{"s":"Celeste","en":"It's the sideshow, but close enough.","ru":"Это было парк-шоу аттракционов, но неважно."},
-{"s":"Venator","en":"God help me...","ru":"Господи, помоги мне…"}],
-"vocab":[{"w":"delicate","r":"хрупкая, нежная (снисходительно)"},{"w":"get off a shift","r":"закончить смену"},{"w":"I have concerns","r":"у меня есть сомнения"},{"w":"close enough","r":"почти то самое / неважно"},{"w":"sideshow","r":"балаган, побочное шоу"}]},
-{"ctx":"знакомство · с Рем","use":2,"lines":[
-{"s":"Venator","en":"You lost, little one?","ru":"Ты потерялась, малая?"},
-{"s":"Rem","en":"Mhmm.","ru":"Ага."},
-{"s":"Venator","en":"Don't worry. I'll shepherd you home.","ru":"Не бойся. Я доведу тебя до дома, как пастырь."}],
-"vocab":[{"w":"little one","r":"малыш/малая (ласково)"},{"w":"shepherd","r":"пастырь, пастух; ирония: он священник"}]},
-{"ctx":"недоверие · с Сильвер","use":4,"lines":[
-{"s":"Silver","en":"You're not gonna stab me in the back, are ya?","ru":"Ты же не ударишь меня в спину, а?"},
-{"s":"Venator","en":"No.","ru":"Нет."},
-{"s":"Silver","en":"Let me guess... \"I'm gonna stab you in the front\"?","ru":"Дай угадаю… «Я ударю тебя в спину спереди»?"},
-{"s":"Venator","en":"I'm not stabbing you, period. You're a werewolf... I'm going to shoot you with silver bullets.","ru":"Я тебя не ударю ножом вообще. Ты оборотень… Я застрелю тебя серебряными пулями."},
-{"s":"Silver","en":"You're my kinda asshole, Padre.","ru":"Ты мой типаж, падре."}],
-"vocab":[{"w":"stab in the back","r":"удар в спину (и предательство)"},{"w":"period","r":"точка; «вообще, без вариантов»"},{"w":"my kinda...","r":"мой типаж, в моём вкусе"},{"w":"Padre","r":"падре, батя (жаргон)"}]}]},
-{"id":"rem","name":"Rem","role":"Существо из чужого сна","dialogs":[
-{"ctx":"недоверие · с Грей Талоном","use":4,"lines":[
-{"s":"Rem","en":"Whose dream did you come from?","ru":"Из чьего сна ты явился?"},
-{"s":"Grey Talon","en":"I don't think I'm supposed to tell you.","ru":"Думаю, мне не положено тебе говорить."},
-{"s":"Rem","en":"Why?","ru":"Почему?"},
-{"s":"Grey Talon","en":"Cause you're a stranger.","ru":"Потому что ты чужая."},
-{"s":"Rem","en":"I like naps. Do you like naps?","ru":"Я люблю подремать. А ты любишь подремать?"},
-{"s":"Grey Talon","en":"Actually, yes I do.","ru":"А вообще — да, люблю."},
-{"s":"Rem","en":"Yeah! Nap buddies!","ru":"Ура! Партнёры по сну!"}],
-"vocab":[{"w":"be supposed to","r":"быть должным, положенным"},{"w":"stranger","r":"чужой человек, незнакомец"},{"w":"nap","r":"короткий дневной сон"},{"w":"buddies","r":"приятели, напарники"}]},
-{"ctx":"знакомство · с Селестой","use":3,"lines":[
-{"s":"Celeste","en":"Hey little guy, what's your name?","ru":"Эй, малыш, как тебя зовут?"},
-{"s":"Rem","en":"Rem!","ru":"Рем!"},
-{"s":"Celeste","en":"Remmy's a great name!","ru":"Рэмми — отличное имя!"},
-{"s":"Rem","en":"Rem!","ru":"Рем!"},
-{"s":"Celeste","en":"Okay, okay! Rem it is.","ru":"Ладно-ладно! Рем так Рем."}],
-"vocab":[{"w":"little guy","r":"малыш, коротышка"},{"w":"X it is","r":"значит, X / так и решено"}]},
-{"ctx":"перед боем · с Аполло","use":3,"lines":[
-{"s":"Rem","en":"Why are you carrying a pillow?","ru":"Зачем ты таскаешь с собой подушку?"},
-{"s":"Apollo","en":"Oh, I get sleepy.","ru":"А, меня клонит в сон."},
-{"s":"Rem","en":"Oh, gods, I'm gonna die...","ru":"О боги, я погибну…"}],
-"vocab":[{"w":"carry","r":"носить с собой"},{"w":"get sleepy","r":"хотеть спать (get + прилагательное)"},{"w":"I'm gonna die","r":"я пропал / мне конец"}]}]},
-{"id":"grey-talon","name":"Grey Talon","role":"Старый охотник из «Бакстера»","dialogs":[
-{"ctx":"знакомство · с Селестой","use":3,"lines":[
-{"s":"Grey Talon","en":"You look very... colorful.","ru":"Ты выглядишь очень… колоритно."},
-{"s":"Celeste","en":"I am. You look like a sad bastard.","ru":"Так и есть. А ты выглядишь как жалкий тип."},
-{"s":"Grey Talon","en":"I am.","ru":"Так и есть."}],
-"vocab":[{"w":"colorful","r":"яркий, колоритный (дипломатичная насмешка)"},{"w":"sad bastard","r":"жалкий/несчастный тип"},{"w":"I am","r":"«а я и есть» — deadpan ответ"}]},
-{"ctx":"наставление · с Холидей","use":5,"lines":[
-{"s":"Grey Talon","en":"Can I give you an unsolicited word of advice, Holliday?","ru":"Могу дать тебе совет, которого ты не просила, Холидей?"},
-{"s":"Holliday","en":"Why not?","ru":"А почему бы и нет?"},
-{"s":"Grey Talon","en":"People are going to tell you that there is a difference between justice and revenge. That you will dishonor the dead by stooping to their killer's level. Ignore them. Revenge isn't for the dead. It's for the living.","ru":"Люди будут говорить: между правосудием и местью есть разница. Что, опускаясь до уровня убийц, ты опозоришь мёртвых. Не слушай. Месть — не для мёртвых. Она для живых."},
-{"s":"Holliday","en":"I knew I liked you.","ru":"Знала, что ты мне понравишься."}],
-"vocab":[{"w":"unsolicited","r":"непрошеный (о совете)"},{"w":"justice vs revenge","r":"правосудие против мести"},{"w":"dishonor the dead","r":"опозорить память умерших"},{"w":"stoop to smb's level","r":"опуститься до чьего-то уровня"}]},
-{"ctx":"приколы · с Лэшем","use":4,"lines":[
-{"s":"Lash","en":"How you feeling, old man?","ru":"Как ты там, старик?"},
-{"s":"Grey Talon","en":"I was feeling better before you started talking.","ru":"Мне было лучше, пока ты не начал говорить."},
-{"s":"Lash","en":"I get it. It must be harder seeing a younger you tear shit up.","ru":"Понимаю. Наверно, тяжело смотреть, как более молодой ты рвёт всех в клочья."},
-{"s":"Grey Talon","en":"Your delusions of grandeur are impressive.","ru":"Твоя мания величия впечатляет."},
-{"s":"Lash","en":"God damn right they are.","ru":"Чёрт возьми, ещё бы."}],
-"vocab":[{"w":"tear shit up","r":"жечь, громить всех (жаргон)"},{"w":"delusions of grandeur","r":"мания величия"},{"w":"God damn right","r":"чёрт возьми, точно"}]}]},
-{"id":"celeste","name":"Celeste","role":"Артистка циркового шоу","dialogs":[
-{"ctx":"имена · с Шивом","use":4,"lines":[
-{"s":"Shiv","en":"What's it like working with Gary Talon?","ru":"И каково это — работать с Гэри Талоном?"},
-{"s":"Celeste","en":"His name's Grey Talon.","ru":"Его имя Грей Талон."},
-{"s":"Shiv","en":"Thought it was Gary?","ru":"А я думал — Гэри?"},
-{"s":"Celeste","en":"I think I'd know the name of the man who saved my life.","ru":"Думаю, я бы знала имя человека, который спас мне жизнь."},
-{"s":"Shiv","en":"Hm. Guess he just really looks like a Gary.","ru":"Хм. Видимо, он просто ну очень похож на Гэри."}],
-"vocab":[{"w":"What's it like...?","r":"каково это —…?"},{"w":"I thought it was...","r":"я думал, это…"},{"w":"Guess he...","r":"видимо, он… (guess = I guess)"}]},
-{"ctx":"о друге · с Рейф","use":3,"lines":[
-{"s":"Wraith","en":"I just want you to know that I tried to warn your friend.","ru":"Я просто хочу, чтобы ты знала: я пытался предупредить твоего друга."},
-{"s":"Celeste","en":"I know.","ru":"Знаю."},
-{"s":"Wraith","en":"You can't help that guy! Lenny's always gonn-","ru":"Тому парню не поможешь! Ленни всегда будет…"},
-{"s":"Celeste","en":"Gonna Lenny. I know.","ru":"Всегда будет Ленни. Знаю."}],
-"vocab":[{"w":"warn","r":"предупреждать"},{"w":"can't help smb","r":"не в силах помочь"},{"w":"Gonna Lenny","r":"имя вместо глагола: «будет делать своё Ленни»"}]},
-{"ctx":"тактика · с Бибопом","use":2,"lines":[
-{"s":"Bebop","en":"How would you like this to work?","ru":"Как тебе видится, что нам делать?"},
-{"s":"Celeste","en":"If you see someone chased by a Glitter Ball, knock 'em into their friends.","ru":"Если увидишь, кого-то гонит Блестящий Шар — вбей его в его же друзей."},
-{"s":"Bebop","en":"Got it.","ru":"Принял."}],
-"vocab":[{"w":"How would you like this to work?","r":"как ты хочешь это организовать?"},{"w":"knock 'em into","r":"вбить/втолкнуть их в…"},{"w":"Got it","r":"принял, понял"}]}]}
-]}}}
+{
+ "GAMES": {
+  "deadlock": {
+   "name": "Deadlock",
+   "site": "https://deadlock.wiki",
+   "heroes": [
+    {
+     "id": "rat-king",
+     "name": "Rat King",
+     "role": "Крысиный босс мафии",
+     "dialogs": [
+      {
+       "ctx": "враждебная встреча · с Кельвином",
+       "use": 3,
+       "lines": [
+        {
+         "s": "Rat King",
+         "en": "Keep your rotting corpse away from me, ya crumbum.",
+         "ru": "Держи свой гниющий труп подальше от меня, ты, ничтожество."
+        },
+        {
+         "s": "Kelvin",
+         "en": "I'm fairly well-preserved, actually.",
+         "ru": "Я вообще-то неплохо сохранился."
+        },
+        {
+         "s": "Rat King",
+         "en": "Shut up!",
+         "ru": "Заткнись!"
+        }
+       ],
+       "vocab": [
+        {
+         "w": "crumbum",
+         "r": "ничтожество, шляпа (старомодное оскорбление)"
+        },
+        {
+         "w": "rotting corpse",
+         "r": "гниющий труп (Кельвин — замороженный мертвец)"
+        },
+        {
+         "w": "well-preserved",
+         "r": "хорошо сохранился; каламбур: лёд сохраняет"
+        }
+       ]
+      },
+      {
+       "ctx": "сделка · с Билли",
+       "use": 4,
+       "lines": [
+        {
+         "s": "Rat King",
+         "en": "So after we win, you gonna let me live on Long Island?",
+         "ru": "Так, когда мы победим — ты дашь мне жить на Лонг-Айленде?"
+        },
+        {
+         "s": "Billy",
+         "en": "Ehh, it's a tough question; on one hand, you got a goat head. On the other hand, the rest of ya's human, which begs the question: Is 9/10's a human too much human? My guts tellin' me yes.",
+         "ru": "Эээ, вопрос сложный: с одной стороны, у тебя козлиная голова. С другой — остальное человеческое, и это наводит на вопрос: 9/10 человека — это слишком много человека? Нутро чует, что да."
+        },
+        {
+         "s": "Rat King",
+         "en": "You really doin' me like that?",
+         "ru": "Ты серьёзно так со мной?"
+        },
+        {
+         "s": "Billy",
+         "en": "Tell ya what: Ya can visit, but ya can't own real estate.",
+         "ru": "Вот тебе встречное: приезжать можешь, но недвижимость не покупай."
+        },
+        {
+         "s": "Rat King",
+         "en": "I'll take it.",
+         "ru": "По рукам."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "begs the question",
+         "r": "напрашивается вопрос"
+        },
+        {
+         "w": "my guts tellin' me",
+         "r": "нутро чует"
+        },
+        {
+         "w": "You really doin' me like that?",
+         "r": "ты правда так со мной поступаешь?"
+        },
+        {
+         "w": "real estate",
+         "r": "недвижимость"
+        },
+        {
+         "w": "I'll take it",
+         "r": "по рукам (о сделке)"
+        }
+       ]
+      },
+      {
+       "ctx": "«мёртвый человек» · с Кельвином",
+       "use": 4,
+       "lines": [
+        {
+         "s": "Rat King",
+         "en": "Oh, I'm just tryna figure out if I should like ya cause you're a dead human, or, uh, if I should hate you cause you're a human that's refusing to die.",
+         "ru": "А, я просто пытаюсь понять: мне тебя любить за то, что ты мёртвый человек, или, эм, ненавидеть за то, что ты человек, который отказывается умирать."
+        },
+        {
+         "s": "Kelvin",
+         "en": "You could like me because I'm a person invested in our survival?",
+         "ru": "Можешь любить меня за то, что я человек, вложившийся в наше выживание?"
+        },
+        {
+         "s": "Rat King",
+         "en": "Yeah... I hate ya.",
+         "ru": "Ага… Я тебя ненавижу."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "tryna",
+         "r": "trying to — пытаюсь"
+        },
+        {
+         "w": "refuse to die",
+         "r": "отказываться умирать"
+        },
+        {
+         "w": "invested in",
+         "r": "вложившийся в / заинтересованный в"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "venator",
+     "name": "Venator",
+     "role": "Священник-охотник Ватикана",
+     "dialogs": [
+      {
+       "ctx": "перед боем · с Селестой",
+       "use": 3,
+       "lines": [
+        {
+         "s": "Venator",
+         "en": "You look… delicate.",
+         "ru": "Ты выглядишь… хрупкой."
+        },
+        {
+         "s": "Celeste",
+         "en": "\"Delicate\"?",
+         "ru": "«Хрупкой»?"
+        },
+        {
+         "s": "Venator",
+         "en": "I'm tryin' to be kind.",
+         "ru": "Я пытаюсь быть любезным."
+        },
+        {
+         "s": "Celeste",
+         "en": "You think I can't fight?",
+         "ru": "Думаешь, я не умею драться?"
+        },
+        {
+         "s": "Venator",
+         "en": "We're about be shot at, and you're dressed like you just got off a shift at the circus. So yes. I have concerns.",
+         "ru": "Нас сейчас будут расстреливать, а ты одета, как будто только со смены в цирке. Так что да — у меня есть сомнения."
+        },
+        {
+         "s": "Celeste",
+         "en": "It's the sideshow, but close enough.",
+         "ru": "Это было парк-шоу аттракционов, но неважно."
+        },
+        {
+         "s": "Venator",
+         "en": "God help me...",
+         "ru": "Господи, помоги мне…"
+        }
+       ],
+       "vocab": [
+        {
+         "w": "delicate",
+         "r": "хрупкая, нежная (снисходительно)"
+        },
+        {
+         "w": "get off a shift",
+         "r": "закончить смену"
+        },
+        {
+         "w": "I have concerns",
+         "r": "у меня есть сомнения"
+        },
+        {
+         "w": "close enough",
+         "r": "почти то самое / неважно"
+        },
+        {
+         "w": "sideshow",
+         "r": "балаган, побочное шоу"
+        }
+       ]
+      },
+      {
+       "ctx": "знакомство · с Рем",
+       "use": 2,
+       "lines": [
+        {
+         "s": "Venator",
+         "en": "You lost, little one?",
+         "ru": "Ты потерялась, малая?"
+        },
+        {
+         "s": "Rem",
+         "en": "Mhmm.",
+         "ru": "Ага."
+        },
+        {
+         "s": "Venator",
+         "en": "Don't worry. I'll shepherd you home.",
+         "ru": "Не бойся. Я доведу тебя до дома, как пастырь."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "little one",
+         "r": "малыш/малая (ласково)"
+        },
+        {
+         "w": "shepherd",
+         "r": "пастырь, пастух; ирония: он священник"
+        }
+       ]
+      },
+      {
+       "ctx": "недоверие · с Сильвер",
+       "use": 4,
+       "lines": [
+        {
+         "s": "Silver",
+         "en": "You're not gonna stab me in the back, are ya?",
+         "ru": "Ты же не ударишь меня в спину, а?"
+        },
+        {
+         "s": "Venator",
+         "en": "No.",
+         "ru": "Нет."
+        },
+        {
+         "s": "Silver",
+         "en": "Let me guess... \"I'm gonna stab you in the front\"?",
+         "ru": "Дай угадаю… «Я ударю тебя в спину спереди»?"
+        },
+        {
+         "s": "Venator",
+         "en": "I'm not stabbing you, period. You're a werewolf... I'm going to shoot you with silver bullets.",
+         "ru": "Я тебя не ударю ножом вообще. Ты оборотень… Я застрелю тебя серебряными пулями."
+        },
+        {
+         "s": "Silver",
+         "en": "You're my kinda asshole, Padre.",
+         "ru": "Ты мой типаж, падре."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "stab in the back",
+         "r": "удар в спину (и предательство)"
+        },
+        {
+         "w": "period",
+         "r": "точка; «вообще, без вариантов»"
+        },
+        {
+         "w": "my kinda...",
+         "r": "мой типаж, в моём вкусе"
+        },
+        {
+         "w": "Padre",
+         "r": "падре, батя (жаргон)"
+        }
+       ]
+      }
+     ],
+     "img": "https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/venator.mp4"
+    },
+    {
+     "id": "rem",
+     "name": "Rem",
+     "role": "Существо из чужого сна",
+     "dialogs": [
+      {
+       "ctx": "недоверие · с Грей Талоном",
+       "use": 4,
+       "lines": [
+        {
+         "s": "Rem",
+         "en": "Whose dream did you come from?",
+         "ru": "Из чьего сна ты явился?"
+        },
+        {
+         "s": "Grey Talon",
+         "en": "I don't think I'm supposed to tell you.",
+         "ru": "Думаю, мне не положено тебе говорить."
+        },
+        {
+         "s": "Rem",
+         "en": "Why?",
+         "ru": "Почему?"
+        },
+        {
+         "s": "Grey Talon",
+         "en": "Cause you're a stranger.",
+         "ru": "Потому что ты чужая."
+        },
+        {
+         "s": "Rem",
+         "en": "I like naps. Do you like naps?",
+         "ru": "Я люблю подремать. А ты любишь подремать?"
+        },
+        {
+         "s": "Grey Talon",
+         "en": "Actually, yes I do.",
+         "ru": "А вообще — да, люблю."
+        },
+        {
+         "s": "Rem",
+         "en": "Yeah! Nap buddies!",
+         "ru": "Ура! Партнёры по сну!"
+        }
+       ],
+       "vocab": [
+        {
+         "w": "be supposed to",
+         "r": "быть должным, положенным"
+        },
+        {
+         "w": "stranger",
+         "r": "чужой человек, незнакомец"
+        },
+        {
+         "w": "nap",
+         "r": "короткий дневной сон"
+        },
+        {
+         "w": "buddies",
+         "r": "приятели, напарники"
+        }
+       ]
+      },
+      {
+       "ctx": "знакомство · с Селестой",
+       "use": 3,
+       "lines": [
+        {
+         "s": "Celeste",
+         "en": "Hey little guy, what's your name?",
+         "ru": "Эй, малыш, как тебя зовут?"
+        },
+        {
+         "s": "Rem",
+         "en": "Rem!",
+         "ru": "Рем!"
+        },
+        {
+         "s": "Celeste",
+         "en": "Remmy's a great name!",
+         "ru": "Рэмми — отличное имя!"
+        },
+        {
+         "s": "Rem",
+         "en": "Rem!",
+         "ru": "Рем!"
+        },
+        {
+         "s": "Celeste",
+         "en": "Okay, okay! Rem it is.",
+         "ru": "Ладно-ладно! Рем так Рем."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "little guy",
+         "r": "малыш, коротышка"
+        },
+        {
+         "w": "X it is",
+         "r": "значит, X / так и решено"
+        }
+       ]
+      },
+      {
+       "ctx": "перед боем · с Аполло",
+       "use": 3,
+       "lines": [
+        {
+         "s": "Rem",
+         "en": "Why are you carrying a pillow?",
+         "ru": "Зачем ты таскаешь с собой подушку?"
+        },
+        {
+         "s": "Apollo",
+         "en": "Oh, I get sleepy.",
+         "ru": "А, меня клонит в сон."
+        },
+        {
+         "s": "Rem",
+         "en": "Oh, gods, I'm gonna die...",
+         "ru": "О боги, я погибну…"
+        }
+       ],
+       "vocab": [
+        {
+         "w": "carry",
+         "r": "носить с собой"
+        },
+        {
+         "w": "get sleepy",
+         "r": "хотеть спать (get + прилагательное)"
+        },
+        {
+         "w": "I'm gonna die",
+         "r": "я пропал / мне конец"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "grey-talon",
+     "name": "Grey Talon",
+     "role": "Старый охотник из «Бакстера»",
+     "dialogs": [
+      {
+       "ctx": "знакомство · с Селестой",
+       "use": 3,
+       "lines": [
+        {
+         "s": "Grey Talon",
+         "en": "You look very... colorful.",
+         "ru": "Ты выглядишь очень… колоритно."
+        },
+        {
+         "s": "Celeste",
+         "en": "I am. You look like a sad bastard.",
+         "ru": "Так и есть. А ты выглядишь как жалкий тип."
+        },
+        {
+         "s": "Grey Talon",
+         "en": "I am.",
+         "ru": "Так и есть."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "colorful",
+         "r": "яркий, колоритный (дипломатичная насмешка)"
+        },
+        {
+         "w": "sad bastard",
+         "r": "жалкий/несчастный тип"
+        },
+        {
+         "w": "I am",
+         "r": "«а я и есть» — deadpan ответ"
+        }
+       ]
+      },
+      {
+       "ctx": "наставление · с Холидей",
+       "use": 5,
+       "lines": [
+        {
+         "s": "Grey Talon",
+         "en": "Can I give you an unsolicited word of advice, Holliday?",
+         "ru": "Могу дать тебе совет, которого ты не просила, Холидей?"
+        },
+        {
+         "s": "Holliday",
+         "en": "Why not?",
+         "ru": "А почему бы и нет?"
+        },
+        {
+         "s": "Grey Talon",
+         "en": "People are going to tell you that there is a difference between justice and revenge. That you will dishonor the dead by stooping to their killer's level. Ignore them. Revenge isn't for the dead. It's for the living.",
+         "ru": "Люди будут говорить: между правосудием и местью есть разница. Что, опускаясь до уровня убийц, ты опозоришь мёртвых. Не слушай. Месть — не для мёртвых. Она для живых."
+        },
+        {
+         "s": "Holliday",
+         "en": "I knew I liked you.",
+         "ru": "Знала, что ты мне понравишься."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "unsolicited",
+         "r": "непрошеный (о совете)"
+        },
+        {
+         "w": "justice vs revenge",
+         "r": "правосудие против мести"
+        },
+        {
+         "w": "dishonor the dead",
+         "r": "опозорить память умерших"
+        },
+        {
+         "w": "stoop to smb's level",
+         "r": "опуститься до чьего-то уровня"
+        }
+       ]
+      },
+      {
+       "ctx": "приколы · с Лэшем",
+       "use": 4,
+       "lines": [
+        {
+         "s": "Lash",
+         "en": "How you feeling, old man?",
+         "ru": "Как ты там, старик?"
+        },
+        {
+         "s": "Grey Talon",
+         "en": "I was feeling better before you started talking.",
+         "ru": "Мне было лучше, пока ты не начал говорить."
+        },
+        {
+         "s": "Lash",
+         "en": "I get it. It must be harder seeing a younger you tear shit up.",
+         "ru": "Понимаю. Наверно, тяжело смотреть, как более молодой ты рвёт всех в клочья."
+        },
+        {
+         "s": "Grey Talon",
+         "en": "Your delusions of grandeur are impressive.",
+         "ru": "Твоя мания величия впечатляет."
+        },
+        {
+         "s": "Lash",
+         "en": "God damn right they are.",
+         "ru": "Чёрт возьми, ещё бы."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "tear shit up",
+         "r": "жечь, громить всех (жаргон)"
+        },
+        {
+         "w": "delusions of grandeur",
+         "r": "мания величия"
+        },
+        {
+         "w": "God damn right",
+         "r": "чёрт возьми, точно"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "celeste",
+     "name": "Celeste",
+     "role": "Артистка циркового шоу",
+     "dialogs": [
+      {
+       "ctx": "имена · с Шивом",
+       "use": 4,
+       "lines": [
+        {
+         "s": "Shiv",
+         "en": "What's it like working with Gary Talon?",
+         "ru": "И каково это — работать с Гэри Талоном?"
+        },
+        {
+         "s": "Celeste",
+         "en": "His name's Grey Talon.",
+         "ru": "Его имя Грей Талон."
+        },
+        {
+         "s": "Shiv",
+         "en": "Thought it was Gary?",
+         "ru": "А я думал — Гэри?"
+        },
+        {
+         "s": "Celeste",
+         "en": "I think I'd know the name of the man who saved my life.",
+         "ru": "Думаю, я бы знала имя человека, который спас мне жизнь."
+        },
+        {
+         "s": "Shiv",
+         "en": "Hm. Guess he just really looks like a Gary.",
+         "ru": "Хм. Видимо, он просто ну очень похож на Гэри."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "What's it like...?",
+         "r": "каково это —…?"
+        },
+        {
+         "w": "I thought it was...",
+         "r": "я думал, это…"
+        },
+        {
+         "w": "Guess he...",
+         "r": "видимо, он… (guess = I guess)"
+        }
+       ]
+      },
+      {
+       "ctx": "о друге · с Рейф",
+       "use": 3,
+       "lines": [
+        {
+         "s": "Wraith",
+         "en": "I just want you to know that I tried to warn your friend.",
+         "ru": "Я просто хочу, чтобы ты знала: я пытался предупредить твоего друга."
+        },
+        {
+         "s": "Celeste",
+         "en": "I know.",
+         "ru": "Знаю."
+        },
+        {
+         "s": "Wraith",
+         "en": "You can't help that guy! Lenny's always gonn-",
+         "ru": "Тому парню не поможешь! Ленни всегда будет…"
+        },
+        {
+         "s": "Celeste",
+         "en": "Gonna Lenny. I know.",
+         "ru": "Всегда будет Ленни. Знаю."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "warn",
+         "r": "предупреждать"
+        },
+        {
+         "w": "can't help smb",
+         "r": "не в силах помочь"
+        },
+        {
+         "w": "Gonna Lenny",
+         "r": "имя вместо глагола: «будет делать своё Ленни»"
+        }
+       ]
+      },
+      {
+       "ctx": "тактика · с Бибопом",
+       "use": 2,
+       "lines": [
+        {
+         "s": "Bebop",
+         "en": "How would you like this to work?",
+         "ru": "Как тебе видится, что нам делать?"
+        },
+        {
+         "s": "Celeste",
+         "en": "If you see someone chased by a Glitter Ball, knock 'em into their friends.",
+         "ru": "Если увидишь, кого-то гонит Блестящий Шар — вбей его в его же друзей."
+        },
+        {
+         "s": "Bebop",
+         "en": "Got it.",
+         "ru": "Принял."
+        }
+       ],
+       "vocab": [
+        {
+         "w": "How would you like this to work?",
+         "r": "как ты хочешь это организовать?"
+        },
+        {
+         "w": "knock 'em into",
+         "r": "вбить/втолкнуть их в…"
+        },
+        {
+         "w": "Got it",
+         "r": "принял, понял"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

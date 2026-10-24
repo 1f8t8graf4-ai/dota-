@@ -106,3 +106,6 @@ body.zai .dd-vocab .chip{display:inline-block;background:var(--n-soft);border:1p
 body.zai .dd-vocab .chip i{font-style:normal;color:var(--n-sub)}
 body.zai .gm-again{display:block;width:100%;margin-top:10px;background:var(--n-sub);color:var(--n-subInk);border:none;border-radius:999px;padding:10px;font-weight:800;font-size:13px}
 @keyframes ddpop{from{transform:translateY(8px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+/* 13.9.58: живые портреты DD — видео вместо плитки (h.img → .mp4) */
+body.zai .gm-vwrap{padding:0;overflow:hidden}
+body.zai .gm-vid{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;background:#000}
