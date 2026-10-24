@@ -1498,7 +1498,9 @@ function wSRS(it,good){const now=Date.now();it.st=it.st||0;if(good){it.st=Math.m
 function renderDaily(list,o){o=o||{};const L0=list||dailyItems(),back=o.back||(()=>renderTab('learn'));
   if(!list&&L0.length&&store.revDone===dayKey(new Date())&&premGate('rev',back))return;   // 13.9.30: без премиума — один заход повторения в день (если включено в админке)
   // 13.9.69 (П8): за раз — 3 задания, дальше «Ещё 3?». Ошибка — эта фраза в следующей порции (расписание и так вернёт её завтра)
-  const L=L0.slice(0,SC_PORT),REST=L0.slice(SC_PORT),CARRY=[];if(!o.all)o={...o,all:L0};
+  const sameLn=(a,b)=>a.k==='w'&&b.k==='w'&&a.it.line&&a.it.line===b.it.line,LS=L0.slice();   // 13.9.38: два слова одной реплики не подряд — по всему списку, до нарезки на порции
+  for(let j=1;j<LS.length;j++)if(sameLn(LS[j-1],LS[j])){const m=LS.findIndex((z,i)=>i>j&&!sameLn(LS[j-1],z));if(m>0)[LS[j],LS[m]]=[LS[m],LS[j]];}
+  const L=LS.slice(0,SC_PORT),REST=LS.slice(SC_PORT),CARRY=[];if(!o.all)o={...o,all:L0};
   if(!L0.length){mount(`<div class="page-head"><button class="icon-btn" id="bBtn" aria-label="Назад">${ui('back')}</button><h1 class="title">Повторение</h1></div>
     <div class="dl-empty card anim"><div class="dl-ic">✅</div><b>На сегодня всё повторено</b><span>Фразы из сцен и твои слова вернутся, когда придёт их время. Можно посмотреть новый эпизод или сохранить новые слова.</span>
     <button class="btn" id="dlGo">Новый эпизод →</button></div>`,'dlscr');$('#bBtn').onclick=()=>{sfx('tap');back();};
