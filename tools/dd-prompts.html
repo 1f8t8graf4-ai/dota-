@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deadlock · Промты анимации портретов</title>
+<style>
+:root{--bg:#131015;--card:#1c1720;--line:#2e2635;--am:#F0B44C;--tx:#ece7f2;--mut:#9a8fa8;--ok:#5fbf7a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.5 Verdana,Arial,sans-serif;padding:20px 12px 60px}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:24px}h1 b{color:var(--am)}
+.sub{color:var(--mut);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin:6px 0 16px}
+.bar{position:sticky;top:0;background:var(--bg);padding:8px 0 10px;z-index:5;border-bottom:1px solid var(--line)}
+.pbar{height:8px;background:#241d2c;border-radius:6px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--am);width:0%;transition:width .3s}
+.ptext{color:var(--mut);font-size:12px;margin-top:5px}
+.hint{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--mut);margin:14px 0}
+.hint b{color:var(--tx)}
+.base{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:14px 0}
+.base textarea{width:100%;background:#241d2c;color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:10px;font:12.5px/1.5 monospace;resize:vertical;min-height:110px}
+.row{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+button{background:#2b2334;color:var(--tx);border:1px solid #3d3348;border-radius:8px;padding:7px 12px;font:12.5px Verdana;cursor:pointer}
+button:hover{border-color:var(--am);color:var(--am)}
+button.copied{border-color:var(--ok);color:var(--ok)}
+.svc{display:inline-block;background:#241d2c;border:1px solid var(--line);border-radius:8px;padding:5px 10px;margin:0 6px 6px 0;font-size:12.5px}
+.svc i{color:var(--am);font-style:normal}
+.svc.no{opacity:.55;text-decoration:line-through}
+h2{font-size:16px;margin:26px 0 10px;color:var(--am)}
+.hero{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:8px 0}
+.hero.done{border-color:var(--ok)}
+.hero input[type=checkbox]{width:19px;height:19px;margin-top:3px;accent-color:#5fbf7a;flex:none;cursor:pointer}
+.hname{font-weight:bold;font-size:14.5px}
+.hname .tag{font-weight:normal;color:var(--am);font-size:11px;margin-left:6px}
+.hprompt{font:11.5px/1.45 monospace;color:var(--mut);margin-top:4px;word-break:break-word}
+.hbtns{display:flex;gap:6px;margin-top:7px}
+.hbtns button{padding:4px 9px;font-size:11px}
+.src{margin-top:34px;color:var(--mut);font-size:12px}
+.src a{color:var(--am)}
+</style>
+</head>
+<body><div class="wrap">
+<h1><b>DEADLOCK</b> · Промты анимации портретов</h1>
+<div class="sub">кнопка «Копировать промт» даёт всё сразу: страховка идентичности + база + герой + негатив</div>
+
+<div class="bar">
+<div class="pbar"><i id="pfill"></i></div>
+<div class="ptext" id="ptext">0 / 41</div>
+</div>
+
+<div class="hint"><b>Сервисы:</b>
+<span class="svc"><i>Kling</i> — 66 кредитов/день (~6 клипов), лучший выбор</span>
+<span class="svc"><i>Vidu</i> — 40 кр/мес + off-peak</span>
+<span class="svc"><i>Dreamina</i> — дневные кредиты</span>
+<span class="svc no">Hailuo</span><span class="svc no">Runway</span><span class="svc no">Luma</span><span class="svc no">Pika</span>
+</div>
+
+<div class="hint"><b>Как делать:</b> 1) арт — <b>полный рост</b> с deadlock.wiki (герой → Gallery); 2) Kling: Image-to-Video, режим <b>Professional</b>, длительность <b>5s</b>, CFG ≈ 0.5, камера — без трекинга; 3) вставь промт; 4) файл мне — склею петлю и залью.<br><b style="color:#e07a5f">Внимание:</b> надписи на арте (имена, логотипы, watermark типа THEGAMER) нейронки любят мутировать. Для 5 главных промты уже содержат «lettering stays perfectly static» — должно держать. Если текст поплывёт — кропни арт чуть выше надписи. <b>Дым — только если есть источник</b> (сигара, ствол, труба): без источника нейронка рисует дымку из ниоткуда.</div>
+
+<div class="hint"><b>Gemini (Veo):</b> можно юзать для тестов — Венатор вышел отлично (10 с, 720p). Кнопка «Копировать промт» уже содержит <b>страхову идентичности</b> + лок позиции: герой вкопан (дышит/моргает на месте), а <b>весь остальной кадр живёт</b> — крысенки снуют, дым, свет, фон, предметы. Крыса и Рем завалились именно из-за смены позы героя — новые промты это запрещают. Петлю/обрезку всё равно делаю я.</div>
+
+<div class="base">
+<b style="font-size:13px">НЕГАТИВ-ПРОМТ (вставляй в поле Negative, если оно есть):</b>
+<textarea id="neg">morphing, warping, distortion, extra limbs, extra fingers, face change, melting, text corruption, watermark artifacts, flickering, glitch, blur, style change, sudden movement, camera movement, zoom, cuts, pose change, walking, floating away</textarea>
+<div class="row"><button onclick="copyNeg(this)">Копировать негатив</button><span class="ptext">если поля нет — он уже зашит в промт фразой «no morphing»</span></div>
+</div>
+
+<div class="base">
+<b style="font-size:13px">БАЗА (одна для всех героев):</b>
+<textarea id="base">Subtle living-portrait animation: the main character stays perfectly still in the same pose — only slow breathing and natural blinking — while the entire frame stays alive: every creature, prop, background element and atmosphere effect moves gently and continuously in place. Floating dust motes drift through warm amber light. Cinematic mood, fixed camera, no zoom, no pan, no cuts. Keep the original art style exactly, face stays sharp. Seamless 5-second loop. No morphing, no distortion, no text.</textarea>
+<div class="row"><button onclick="copyBase(this)">Копировать всё (база)</button><span class="ptext">страховка + база + негатив · для любого героя без своей строки</span></div>
+</div>
+
+<div id="list"></div>
+
+<p class="src">Готово отмечай галочкой — статус сохраняется локально. Прислал мне файлы — скажи, я обновлю этот чек-лист и залью в R2. Источник артов: <a href="https://deadlock.wiki" target="_blank">deadlock.wiki</a> → герой → Gallery.</p>
+</div>
+<script>
+const BASE=document.getElementById('base').value.trim();
+const IDENT='Animate this exact image. Keep the main character 100% identical to the reference — same face, same clothing, same colors, same pose, same position. The main character stays planted in place the whole video: no pose changes, no walking, no body or head movement — only breathing and blinking. Everything else in the frame is ALIVE: creatures already present in the image (rats, birds, pets) keep their exact design and spot but visibly move — scurry, twitch, sniff, flap, look around; background, props, smoke, light and particles all move subtly and continuously. Do not redesign or replace anything. Do not add new characters or creatures.';
+const NEG='Avoid: morphing, warping, distortion, extra limbs, extra fingers, face change, melting, text corruption, watermark artifacts, flickering, glitch, blur, style change, sudden movement, camera movement, zoom, cuts, pose change, walking, floating away.';
+const H=[
+['rat-king','Rat King','полный промт','Living portrait of a smug rat mob boss on a scrap-metal throne: he stays planted in his pose, breathing slowly with a self-satisfied smirk, blinking naturally. His spiked crown and gold chains glimmer in red moonlight. The rats around him are alive: they scurry in place on the throne and floor, twitch whiskers, lash tails, sniff the air and crawl over the throne — all staying inside the frame with the exact same design. The glowing magic circle behind him shimmers softly, the red moon glows and pulses faintly. Fixed camera, no zoom, no pan. Keep the original painted art style exactly, face stays sharp, all lettering stays perfectly static. Seamless 5-second loop, subtle motion only. No morphing, no distortion.',1],
+['venator','Venator','полный промт','Living portrait of an old demon-hunter priest: he stands planted in his pose, chomping his cigar slowly, gray smoke curling upward. Once per loop he fires the grenade launcher: the weapon bucks sharply in his grip with a bright muzzle flash and a burst of smoke and sparks from the barrel, his shoulders and coat absorb the heavy recoil kick, the rosary swings — then everything settles back to the exact original pose. Faint smoke keeps drifting from the barrel, ember sparks glow and fade in the air. Purple smoke swirls slowly at the bottom, the dark gothic circle behind him glints and pulses faintly. Fixed camera, no zoom, no pan. Keep the original painted art style exactly, face stays sharp, all lettering stays perfectly static. Seamless 5-second loop. No morphing, no distortion.',1],
+['rem','Rem','полный промт','Living portrait of a sleepy floating cat spirit: it stays still in the air without bobbing, breathing softly, glowing eyes calm and heavy-lidded, staying awake. The teal candle flame in its paw flickers, casting soft warm light. Stars twinkle, clouds drift very slowly across the great dark moon, the city skyline glimmers below. Dreamy sleepy atmosphere. Fixed camera, no zoom, no pan. Keep the original painted art style exactly, all lettering stays perfectly static. Seamless 5-second loop, subtle motion only. No morphing, no distortion.',1],
+['grey-talon','Grey Talon','полный промт','Living portrait of an old weathered archer: he stands planted, breathing slowly, white braided hair and beard sway gently in a soft breeze, eyes calm and determined, blinking naturally. The whole frame is alive: dark green foliage behind him rustles and sways, loose leaves drift across the frame, soft light and mist move slowly through the scene. Fixed camera, no zoom, no pan. Keep the original painted art style exactly, face stays sharp. Seamless 5-second loop, subtle motion only. No morphing, no distortion.',1],
+['celeste','Celeste','полный промт','Living portrait of a mystical fortune-teller: she stays planted in her pose, breathes softly and blinks, then gives a slow playful wink without turning her head. Her glowing star-tipped wand pulses with warm light, sparkling particles and glowing tarot cards drift slowly around her. Loose strands of her purple hair sway gently, dark background with drifting amber dust. Fixed camera, no zoom, no pan. Keep the original painted art style exactly, face stays sharp, all lettering stays perfectly static. Seamless 5-second loop, subtle motion only. No morphing, no distortion.',1],
+['abrams','','','he cracks his knuckles, cape drifts, ember particles, vampire smirk'],
+['apollo','','','golden light rays behind him, confident grin, laurel dust'],
+['baba','','','gentle floating fabric, soft mystic glow, slow hover'],
+['bebop','','','robotic servos whir, antenna light blinks, hook arm swings, friendly eye glow'],
+['billy','','','bat shadow flutters behind, fanged grin, dramatic cape flick'],
+['calico','','','cat rubs against her leg, ribbon sways, playful paw sparkle'],
+['doorman','','','he slides a golden key across, chandelier light flickers, polished grin'],
+['drifter','','','cigarette smoke curls, red eyes glow, long coat sways'],
+['dynamo','','','gravity orb hums above his palm, coat flaps, faint equations glow'],
+['graves','','','lich hand glows violet, ghost wisps curl, silver hair drifts'],
+['haze','','','smoke wisps swirl around, blades glint, eyes shine through the smoke'],
+['holliday','','','sheriff badge glints, lasso spins at her side, desert dust drifts'],
+['infernus','','','flames rise from his shoulders, embers swirl, fire crackles'],
+['ivy','','','stone wings spread slightly, dust falls, kind smile, city lights behind'],
+['kelvin','','','frost sparkles drift, ice crystals grow on his shoulders, frosty breath'],
+['lady-geist','','','blood-red crystal pulses, surgical glow, elegant gown sways'],
+['lash','','','spectral purple energy crackles around his fists, taunting grin'],
+['mcginnis','','','spanner spins in her hand, turret light blinks, sparks fly'],
+['mina','','','bat wings flutter behind, candlelight flickers, aristocratic smirk'],
+['mirage','','','sand spirals around him, golden light, jewels glint'],
+['mo-krill','','','sand puffs as they half-dive underground, helmet light glints'],
+['paige','','','magic runes circle her hand, book pages flutter, warm glow'],
+['paradox','','','time particles spiral, clock hands blur behind, teal vortex glow'],
+['pocket','','','suitcase glows green, a single crow feather drifts, hidden face tilts'],
+['seven','','','electric arcs crackle between his fingers, storm glow, hair sparks'],
+['shiv','','','toxic green drips from his blade, poison vapor curls, restless fidget'],
+['silver','','','silver bullets spin in her palm, moonlight glints on the revolver'],
+['sinclair','','','stage-light glow, showman card flourish'],
+['victor','','','steam hisses from armor vents, iron plating glows'],
+['vindicta','','','crows circle behind her, spirit ravens glow blue, hair floats'],
+['viscous','','','goo body wobbles softly, bubbles pop inside, cheerful bounce'],
+['vyper','','','venom drips, snake eyes glow, coils shift'],
+['warden','','','mystic flask glows teal, trench coat sways, cold light'],
+['wraith','','','tarot cards fan out and glow purple, smoke drifts'],
+['yamato','','','katana shimmers with power aura, petals drift, sword stance']
+];
+const list=document.getElementById('list');
+list.innerHTML=H.map((h,i)=>`<div class="hero" id="h${i}">
+<label style="position:absolute"></label>
+<input type="checkbox" data-i="${i}" onchange="toggle(${i},this.checked)">
+<div style="flex:1"><div class="hname">${h[1]}<span class="tag">${h[2]}</span></div>
+<div class="hprompt">${h[3]}</div>
+<div class="hbtns"><button onclick="copyAny(${i},this)">Копировать промт</button></div>
+</div></div>`).join('');
+function load(){try{return JSON.parse(localStorage.getItem('ddDone')||'{}')}catch(e){return{}}}
+function save(o){localStorage.setItem('ddDone',JSON.stringify(o))}
+function toggle(i,on){const o=load();o[H[i][0]]=on;save(o);paint()}
+function paint(){const o=load();let n=0;H.forEach((h,i)=>{const el=document.getElementById('h'+i);const on=!!o[h[0]];el.classList.toggle('done',on);el.querySelector('input').checked=on;if(on)n++});
+document.getElementById('pfill').style.width=(n/H.length*100)+'%';document.getElementById('ptext').textContent=n+' / '+H.length+(n===H.length?' — все готово!':'')}
+function copyTxt(btn,t){const done=()=>{const o=btn.textContent;btn.textContent='Скопировано';btn.classList.add('copied');setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied')},1200)};
+if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(done).catch(()=>{legacyCopy(t)&&done()});}
+else{legacyCopy(t)&&done()}}
+function legacyCopy(t){const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;left:-999px;top:0';document.body.appendChild(ta);ta.focus();ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();return ok}
+function copyBase(b){copyTxt(b,IDENT+' '+BASE+' '+NEG)}
+function copyNeg(b){copyTxt(b,document.getElementById('neg').value.trim())}
+function copyAny(i,b){copyTxt(b,IDENT+' '+BASE+' '+H[i][3]+' '+NEG)}
+paint();
+</script>
+</body>
+</html>
