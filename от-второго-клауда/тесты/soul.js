@@ -1,4 +1,4 @@
-// 13.9.41 — «с душой» (дизайн/вдохновение-2.md): в «Новом» нет эмодзи (тонкие значки .ni), «пыль» на переводах в разборе,
+// 13.9.41 — «с душой» (дизайн/вдохновение-2.md): в «Новом» нет эмодзи (тонкие значки .ni), «пыль» на переводах — только где проверяешь себя (13.9.70: повторение; в разборе переводы открыты),
 // тест уровня — два круглых значка, «Помнишь, ради чего начал?» в Профиле, флаг ndnew — «Новый» у игрока без «Как было».  node soul.js ph|pc
 const {open}=require('./st');const {chromium}=require('playwright');
 const dev=process.argv[2]||'ph',pc=dev==='pc';
@@ -17,13 +17,17 @@ const EMO=`(()=>{const re=/\\p{Extended_Pictographic}/u,keep=/[★☆▶⏸↺�
   await P.evaluate(()=>renderTab('profile'));await P.waitForTimeout(700);
   r=await P.evaluate(()=>({why:(document.querySelector('.n-why')||{}).textContent||'',look:!!document.querySelector('#pfLook')}));
   ok('Профиль: «Помнишь, ради чего начал?» — Для работы; админу есть «Вернуть старый дизайн»',/ради чего/.test(r.why)&&/работы/.test(r.why)&&r.look,r);
-  // разбор: перевод под пылью, тап — видно
+  // 13.9.70: разбор — переводы открыты (пыль только там, где проверяешь себя: повторение, «Проверь себя»)
   await P.evaluate(()=>{const s=scOf('wolf-of-wall-street');scP(s.id).w[0]=1;scSave();renderScEp(s.id,0);});await P.waitForTimeout(1600);
-  r=await P.evaluate(()=>{const sp=document.querySelector('.rv2 .rv-c .n-sp');return sp&&{op:getComputedStyle(sp.querySelector('.n-spt')).opacity,n:document.querySelectorAll('.rv2 .n-sp').length};});
-  ok('разбор: переводы под «пылью» (текст скрыт)',r&&r.op==='0'&&r.n>=4,r);
-  await P.click('.rv2 .rv-c .n-sp');await P.waitForTimeout(700);
-  r=await P.evaluate(()=>{const sp=document.querySelector('.rv2 .rv-c .n-sp');return {open:sp.classList.contains('open'),op:getComputedStyle(sp.querySelector('.n-spt')).opacity,q:!!document.querySelector('.sc-q'),pop:!!document.querySelector('.kw-pop.on,.sc-wpop')};});
-  ok('тап по пыли — перевод виден, больше ничего не открылось',r.open&&r.op==='1'&&!r.q&&!r.pop,r);
+  r=await P.evaluate(()=>({n:document.querySelectorAll('.rv2 .n-sp').length,tr:[...document.querySelectorAll('.rv2 .rv-c .rv-t span')].map(x=>x.textContent).filter(Boolean).length}));
+  ok('разбор: переводы видны сразу, без «пыли»',r.n===0&&r.tr>=3,r);
+  // повторение: перевод под пылью, тап — видно
+  await P.evaluate(()=>{const s=scOf('wolf-of-wall-street'),P0=scP(s.id),f=scAct(s.parts[0].ph)[0];P0.done[0]=1;P0.r[f.id]=[1,Date.now()-1000];scSave();renderDaily();});await P.waitForTimeout(1400);
+  r=await P.evaluate(()=>{const sp=document.querySelector('.n-rcard .n-sp');return sp&&{op:getComputedStyle(sp.querySelector('.n-spt')).opacity};});
+  ok('повторение: перевод под «пылью» (текст скрыт)',r&&r.op==='0',r);
+  await P.click('.n-rcard .n-sp');await P.waitForTimeout(700);
+  r=await P.evaluate(()=>{const sp=document.querySelector('.n-rcard .n-sp');return {open:sp.classList.contains('open'),op:getComputedStyle(sp.querySelector('.n-spt')).opacity,pop:!!document.querySelector('.kw-pop.on,.sc-wpop')};});
+  ok('тап по пыли — перевод виден, больше ничего не открылось',r.open&&r.op==='1'&&!r.pop,r);
   // тест уровня: два круглых значка
   await P.evaluate(()=>{ONB=null;renderOnb(1);});await P.waitForTimeout(800);await P.click('#onbGo');await P.waitForTimeout(900);
   r=await P.evaluate(()=>{const y=document.querySelector('#onbYes'),n=document.querySelector('#onbNo'),q=y.getBoundingClientRect();return {w:Math.round(q.width),h:Math.round(q.height),ni:!!y.querySelector('.ni')&&!!n.querySelector('.ni'),hint:(document.querySelector('.n-ynh')||{}).textContent};});

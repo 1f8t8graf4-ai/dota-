@@ -339,3 +339,16 @@ body.dvx-on .toast{z-index:1300}
   .dvx-top{padding:0 20px;grid-template-columns:40px minmax(0,340px) 1fr minmax(0,340px)}
 }
 body.nofx .dvx-b,body.nofx .dvx-pan.fl,body.nofx .dvx-stage.vs .dvx-p,body.nofx .dvx-stage.vs::after,body.nofx .dvx-wave i{animation:none}
+
+/* ==== 13.9.70 — Versus по отзыву 24.10: без тёмной полосы посередине, герои ближе к краям, описание диалога ==== */
+/* было: каждый портрет 53 % (на ПК 44 %) и уходил в чёрное с 60 % ширины — посередине стояла тёмная колонна. Теперь половины встык,
+   у шва только лёгкая тень, лицо сдвинуто к внешнему краю (dvFit, 62 %). */
+.dvx-p{width:50.5%}
+.dvx-p.lf::after{background:linear-gradient(to right,rgba(7,8,11,0) 90%,rgba(7,8,11,.3) 100%),linear-gradient(to top,#07080B 0%,rgba(7,8,11,0) 40%)}
+.dvx-p.rt::after{background:linear-gradient(to left,rgba(7,8,11,0) 90%,rgba(7,8,11,.3) 100%),linear-gradient(to top,#07080B 0%,rgba(7,8,11,0) 40%)}
+.dvx-p.on{z-index:2}
+@media (min-width:900px){.dvx-p{width:50.5%}}
+.dv-dlgs button b{display:block;font-weight:700}
+.dv-dlgs button small{font-size:13px}
+.dv-dlgs button em{display:block;margin-top:4px;font-style:normal;font-size:11.5px;color:rgba(255,255,255,.45)}
+.kv-lbl small{font-weight:500;color:rgba(255,255,255,.45);margin-left:6px}
