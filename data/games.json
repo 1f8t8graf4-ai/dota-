@@ -308,7 +308,8 @@
       }
      ],
      "icon": "scenes/games/deadlock/icon-rat-king.png",
-     "img": "scenes/games/deadlock/rat-king.mp4"
+     "img": "scenes/games/deadlock/rat-king.mp4",
+     "fx": 0.69
     },
     {
      "id": "venator",
@@ -634,6 +635,7 @@
       }
      ],
      "img": "scenes/games/deadlock/venator.mp4",
+     "fx": 0.78,
      "icon": "scenes/games/deadlock/icon-venator.png"
     },
     {

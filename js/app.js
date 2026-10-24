@@ -537,6 +537,7 @@ const accuracy=()=>store.answered?Math.round(store.correct/store.answered*100):n
 function uiClean(cls){if(ONB_VS&&!/\bonbscr\b/.test(cls||''))tgVSwipes(false);   // 13.9.38: ушли с первого запуска — Telegram снова закрывается свайпом
 try{if(!/\bscnscr\b/.test(cls||''))SC_DIR=false;}catch(e){}if(screen==='prem'&&!/\bpremscr\b/.test(cls||''))screen='home';   // 13.9.30: ушли с экрана премиума на экран, который сам screen не ставит (повторение) — «назад» не должен вести на премиум
   const scn=/\bscnscr\b/.test(cls||'');if(!scn)try{NAV_BACK=null;}catch(e){}
+  try{if(document.getElementById('ddx'))ddxClose(true);}catch(e){}   // 13.9.65: дуэль во весь рост не висит над новым экраном
   document.querySelectorAll('.pk,.dx-turn,.dx-shade,.cd2,.gatewrap,.sc-sheetwrap.poll,.sc-sheetwrap.unl,.pwa').forEach(o=>o.remove());   // 13.2: пак карт и лист словаря не висят над новым экраном; 13.6.3: и отсчёт 3-2-1
   document.querySelectorAll('.srv').forEach(o=>o.remove());   // 13.6: открытие покупки
   try{if(window.DL)DL.clean();}catch(e){}   // 13.7: варианты словаря — карта в руке, демо-пак
@@ -994,7 +995,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.64';
+const APP_V='13.9.65';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -3575,6 +3576,7 @@ function bindLearn(){
 }
 function onBack(){
   ND_BACK=Date.now();   // 13.9.33: экран «назад» приходит слева
+  if(document.getElementById('ddx')){ddxClose();return;}   // 13.9.65: дуэль во весь рост — «назад» закрывает её
   if(screen==='onb'){onbBack();return;}   // 13.9.28: первый запуск — шаг назад
   if(screen==='prem'){(PREM.back||(()=>renderTab('learn')))();return;}   // 13.9.30: экран премиума
   {const g=document.querySelector('.gatewrap');if(g){g.click();return;}}   // аудит: окно «Технический перерыв / Скоро» закрывается «назад»
@@ -4749,6 +4751,66 @@ function gmDuelStep(i){
     if(v&&d.vocab&&d.vocab.length)v.innerHTML='<b>Лексика</b>'+d.vocab.map(x=>`<span class="chip"><i>${esc(x.w)}</i> — ${esc(x.r)}</span>`).join('')+'<button class="gm-again" data-again="1">Ещё раз</button>';
     const hint=$('.dd-hint');if(hint)hint.textContent='диалог пройден';}
 }
+// 13.9.65 — дуэль «во весь рост» (просьба Андрея: «слева и справа во весь рост портреты почти, и оттуда фразы вылетают, на которые нажать можно, и где-то перевод их внизу»).
+// Окно поверх экрана игры (в body — у .gm-root бывает transform, fixed внутри него не работает): два видео-портрета на всю высоту, левый отражён — смотрят друг на друга.
+// Реплика вылетает пузырём со стороны говорящего, говорящий светлее, молчащий приглушён. Перевод активной реплики — панелью внизу.
+// Тап по экрану — следующая реплика (+ войс, если звук вкл.), тап по фразе — ещё раз её голос и её перевод внизу. В конце — лексика, «Ещё раз», «К диалогам».
+// Кадр: ролики 16:9, герой справа — h.fx = где лицо по ширине кадра (0–1), object-position считается под размер окна (ddxFit).
+const DDX={h:null,hB:null,d:null,i:-1,sel:-1};
+function ddxPort(h,side){
+  return `<div class="ddx-p ${side}" data-side="${side}"><div class="ddx-pi">${gmAlive(h)?`<video src="${esc(assetUrl(h.img))}" data-fx="${+h.fx||0.75}" autoplay muted loop playsinline preload="auto"></video>`:gmFace(h)}</div><i class="ddx-dim"></i><b class="ddx-nm">${esc(h.name)}</b></div>`;}
+function ddxFit(){const st=$('#ddxStage');if(!st)return;
+  st.querySelectorAll('.ddx-pi video').forEach(v=>{const r=v.getBoundingClientRect();if(!r.width||!r.height)return;
+    const vw=v.videoWidth||1280,vh=v.videoHeight||720,s=Math.max(r.width/vw,r.height/vh),w=Math.min(1,r.width/(vw*s)),f=+v.dataset.fx||0.75;
+    const x=w>=1?50:Math.max(0,Math.min(100,(f-w/2)/(1-w)*100));v.style.objectPosition=x.toFixed(1)+'% 50%';});}
+function ddxOpen(h,d){ddxClose(true);
+  const other=d.lines.map(l=>l.s).find(s=>s!==h.name)||'',hB=gmHeroesAll().find(x=>x.name===other)||{id:other,name:other};
+  Object.assign(DDX,{h,hB,d,i:-1,sel:-1});
+  const w=document.createElement('div');w.className='ddx';w.id='ddx';
+  w.innerHTML=`<div class="ddx-in">
+    <div class="ddx-top"><button class="ddx-x" id="ddxX" aria-label="Закрыть">${ui('close')}</button><div class="ddx-ctx">${esc(d.ctx||'')}</div><span class="ddx-n" id="ddxN"></span></div>
+    <div class="ddx-prog"><i id="ddxProg"></i></div>
+    <div class="ddx-stage" id="ddxStage">${ddxPort(h,'lf')}${ddxPort(hB,'rt')}<div class="ddx-bubs" id="ddxBubs"></div></div>
+    <div class="ddx-sub" id="ddxSub"><span class="ddx-sw" id="ddxSw"></span><p class="ddx-ru" id="ddxRu"></p><small class="ddx-hint" id="ddxHint">нажми на экран — дальше · на фразу — ещё раз</small></div>
+    <div class="ddx-end" id="ddxEnd" hidden></div></div>`;
+  document.body.appendChild(w);document.body.classList.add('ddx-on');
+  w.querySelectorAll('video').forEach(v=>{v.addEventListener('loadedmetadata',ddxFit);const p=v.play();if(p&&p.catch)p.catch(()=>{});});
+  ddxFit();setTimeout(ddxFit,60);
+  $('#ddxX').onclick=e=>{e.stopPropagation();sfx('tap');ddxClose();};
+  $('#ddxStage').onclick=e=>{const b=e.target.closest('.ddx-b');if(b){e.stopPropagation();ddxSel(+b.dataset.k);return;}ddxNext();};
+  $('#ddxSub').onclick=()=>ddxNext();
+  requestAnimationFrame(()=>w.classList.add('in'));
+  ddxNext();}
+function ddxClose(quiet){const w=document.getElementById('ddx');gmPlay(null);if(!w)return false;
+  w.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});
+  w.remove();document.body.classList.remove('ddx-on');DDX.d=null;
+  if(!quiet){GM.dlg=null;const r=$('#gmRoot');if(r){r.innerHTML=gmHTML();gmBind();}}
+  return true;}
+function ddxVoice(k,auto){const l=DDX.d&&DDX.d.lines[k];if(!l||!l.a)return;if(auto&&!store.snd)return;
+  const b=document.querySelector(`#ddxBubs .ddx-b[data-k="${k}"] .dd-voice`);gmPlay(assetUrl(l.a),b);}
+function ddxSub(k){const l=DDX.d.lines[k],left=l.s===DDX.h.name,sub=$('#ddxSub');if(!sub)return;
+  $('#ddxSw').textContent=l.s;$('#ddxSw').className='ddx-sw '+(left?'lf':'rt');$('#ddxRu').textContent=l.ru||'';
+  sub.classList.remove('fl');void sub.offsetWidth;sub.classList.add('fl');}
+function ddxSpeak(k){const l=DDX.d.lines[k],left=l.s===DDX.h.name;
+  $$('#ddxStage .ddx-p').forEach(p=>p.classList.toggle('on',p.dataset.side===(left?'lf':'rt')));}
+function ddxNext(){const d=DDX.d;if(!d)return;const n=d.lines.length;
+  if(DDX.i+1>=n){ddxEnd();return;}
+  const i=++DDX.i,l=d.lines[i],left=l.s===DDX.h.name,box=$('#ddxBubs');DDX.sel=i;
+  box.querySelectorAll('.ddx-b').forEach(b=>{const age=(+b.dataset.age||0)+1;b.dataset.age=age;b.classList.add('old');b.classList.remove('sel');if(age>=3)b.remove();});
+  box.insertAdjacentHTML('beforeend',`<button class="ddx-b ${left?'lf':'rt'} sel" data-k="${i}" data-age="0"><span class="ddx-en">${esc(l.en)}</span>${l.a?'<i class="ddx-v dd-voice" aria-hidden="true">▸</i>':''}</button>`);
+  ddxSpeak(i);ddxSub(i);haptic('sel');sfx('tap');ddxVoice(i,true);
+  $('#ddxProg').style.width=Math.round((i+1)/n*100)+'%';$('#ddxN').textContent=(i+1)+' / '+n;
+  if(i+1>=n){$('#ddxHint').textContent='нажми — итог диалога';}}
+function ddxSel(k){const box=$('#ddxBubs');if(!box)return;DDX.sel=k;
+  box.querySelectorAll('.ddx-b').forEach(b=>b.classList.toggle('sel',+b.dataset.k===k));
+  ddxSpeak(k);ddxSub(k);haptic('medium');ddxVoice(k,false);}
+function ddxEnd(){const d=DDX.d,e=$('#ddxEnd');if(!d||!e)return;
+  e.innerHTML=`<b class="ddx-eh">Диалог пройден</b>${d.vocab&&d.vocab.length?`<div class="ddx-voc">${d.vocab.map(x=>`<span class="chip"><i>${esc(x.w)}</i> — ${esc(x.r)}</span>`).join('')}</div>`:''}
+    <div class="ddx-eb"><button class="ddx-again" id="ddxAgain">↺ Ещё раз</button><button class="ddx-out" id="ddxOut">К диалогам</button></div>`;
+  e.hidden=false;$('#ddxSub').hidden=true;sfx('learn');haptic('ok');
+  $('#ddxAgain').onclick=ev=>{ev.stopPropagation();sfx('tap');const h=DDX.h,dd=DDX.d;ddxOpen(h,dd);};
+  $('#ddxOut').onclick=ev=>{ev.stopPropagation();sfx('tap');ddxClose();};}
+addEventListener('resize',()=>{if(document.getElementById('ddx'))ddxFit();});
 function gmPickHTML(){
   const hs=gmHeroes();
   const n=gmAllLines(gmHeroes().filter(h=>GM.pick.has(h.id))).length;
@@ -4785,7 +4847,7 @@ function gmBind(){
   r.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{store.gmView=b.dataset.view;save();r.innerHTML=gmHTML();gmBind();});
   const sl=$('#gmSize');if(sl)sl.oninput=()=>{store.gmCols=+sl.value;save();const g=$('.gm-grid');if(g)g.style.setProperty('--gmcols',6-(+sl.value));};
   r.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{GM.hero=gmHero(b.dataset.h);GM.dlg=null;haptic('sel');r.innerHTML=gmHTML();gmBind();});
-  r.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const h=GM.hero;GM.dlg=(h.dialogs||[]).slice().sort((a,b2)=>(b2.use||0)-(a.use||0))[+b.dataset.d];haptic('sel');r.innerHTML=gmHTML();gmBind();gmDuelStep(0);});
+  r.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const h=GM.hero;const d=gmDlgs(h).slice().sort((a,b2)=>(b2.use||0)-(a.use||0))[+b.dataset.d];if(!d)return;GM.dlg=d;haptic('sel');ddxOpen(h,d);});   // 13.9.65: дуэль во весь рост — окно поверх; список диалогов остаётся под ним
   r.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>{const k=b.dataset.back;if(k==='2')GM.dlg=null;else if(k==='3'){GM.por=null;}else GM.hero=null;if(GM.mode!=='browse'&&k==='3'){GM.mode='browse';}haptic('sel');r.innerHTML=gmHTML();gmBind();});
   const stage=$('#ddStage');if(stage)stage.onclick=e=>{if(e.target.closest('button'))return;const d=GM.dlg;if(!d)return;const shown=$('#ddBub').querySelectorAll('.dd-bub').length;if(shown<d.lines.length)gmDuelStep(shown);};
   r.querySelectorAll('[data-again]').forEach(b=>b.onclick=()=>{const v=$('#ddVoc');if(v)v.innerHTML='';$('#ddBub').innerHTML='';const hint=$('.dd-hint');if(hint)hint.textContent='нажми — дальше';gmDuelStep(0);});

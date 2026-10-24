@@ -24,7 +24,7 @@ body.zai, body.zai[data-ndt="light"], body.zai[data-ndt="dark"]{
   --n-shadow:0 14px 34px rgba(0,0,0,.5);--n-shadow2:0 2px 10px rgba(0,0,0,.4);
 }
 
-body.zai .tabbar{background:linear-gradient(180deg,rgba(11,13,16,.86),rgba(11,13,16,.97));backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.05)}
+body.zai .tabbar{background:linear-gradient(180deg,rgba(11,13,16,.86),rgba(11,13,16,.97));border-top:1px solid rgba(255,255,255,.05)}
 body.zai #tabind{background:rgba(240,180,76,.15)}
 body.zai .n-hero{border:1px solid rgba(255,255,255,.055)}
 body.zai .n-hero::after{background:linear-gradient(180deg,rgba(5,7,9,.18) 18%,rgba(5,7,9,.9))}
@@ -74,7 +74,7 @@ body.zai .gm-dlg p{margin:5px 0 6px;font-size:14px;line-height:1.45}
 body.zai .gm-dlgm{display:flex;align-items:center;justify-content:space-between;color:var(--n-mute);font-size:11.5px}
 body.zai .gm-back{display:inline-block;background:transparent;border:none;color:var(--n-mute);font-size:13px;padding:4px 2px 10px}
 body.zai .gm-note{color:var(--n-mute);font-size:12.5px;margin:2px 0 10px}
-body.zai .gm-pickbar{position:sticky;bottom:74px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--n-glass);backdrop-filter:blur(12px);border:1px solid var(--n-line);border-radius:999px;padding:9px 10px 9px 16px;margin-top:12px}
+body.zai .gm-pickbar{position:sticky;bottom:74px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--n-card);border:1px solid var(--n-line);border-radius:999px;padding:9px 10px 9px 16px;margin-top:12px}
 body.zai .gm-pickbar span{font-size:12.5px;color:var(--n-mute)}
 body.zai .gm-pickbar button{background:var(--n-sub);color:var(--n-subInk);border:none;border-radius:999px;padding:9px 18px;font-weight:800;font-size:13px}
 body.zai .gm-pickbar button:disabled{opacity:.4}
@@ -114,3 +114,82 @@ body.zai .gm-again{display:block;width:100%;margin-top:10px;background:var(--n-s
 /* 13.9.58: живые портреты DD — видео вместо плитки (h.img → .mp4) */
 body.zai .gm-vwrap{padding:0;overflow:hidden}
 body.zai .gm-vid{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;background:#000}
+
+/* ==== 13.9.65 — дуэли во весь рост: два портрета на всю высоту, реплики вылетают от говорящего, перевод внизу ==== */
+/* окно в body (не внутри .gm-root — там бывает transform), всегда тёмное как плеер; анимации только transform/opacity, без размытий */
+.ddx{position:fixed;inset:0;z-index:950;background:#07080B;color:#fff;opacity:0;transition:opacity .25s ease;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.ddx.in{opacity:1}
+.ddx [hidden]{display:none!important}
+body.ddx-on{overflow:hidden}
+body.ddx-on .tabbar{display:none!important}
+.ddx-in{position:absolute;inset:0;margin:0 auto;max-width:1120px;display:flex;flex-direction:column;padding:max(8px,var(--st,0px),env(safe-area-inset-top,0px)) 0 max(12px,env(safe-area-inset-bottom,0px))}
+.ddx-top{display:flex;align-items:center;gap:10px;padding:0 12px;min-height:44px;position:relative;z-index:5}
+.ddx-x{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.09);color:#fff;display:grid;place-items:center;padding:0}
+.ddx-x svg{width:18px;height:18px}
+.ddx-x:active{transform:scale(.9)}
+.ddx-ctx{flex:1;min-width:0;font:700 10.5px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.55);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ddx-n{flex:none;font:600 12px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:rgba(255,255,255,.5);font-variant-numeric:tabular-nums}
+.ddx-prog{height:3px;margin:6px 14px 0;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;position:relative;z-index:5}
+.ddx-prog i{display:block;height:100%;width:0;background:#F0B44C;transition:width .3s ease}
+.ddx-stage{position:relative;flex:1;min-height:0;overflow:hidden;margin-top:6px;cursor:pointer}
+/* портреты: каждый ~половина ширины, внутренний край и низ уходят в фон градиентом — посередине тёмный шов; говорящий светлее и чуть выходит вперёд */
+.ddx-p{position:absolute;top:0;bottom:0;width:53%;opacity:.72;transform:none;transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .38s ease;z-index:1}
+.ddx-p.lf{left:0;transform-origin:left bottom}
+.ddx-p.rt{right:0;transform-origin:right bottom}
+.ddx-p.on{opacity:1;transform:scale(1.035);z-index:2}
+.ddx-pi{position:absolute;inset:0;overflow:hidden;background:#0d0f14}
+.ddx-pi video{width:100%;height:100%;object-fit:cover;object-position:75% 50%;display:block}
+.ddx-p.lf .ddx-pi video{transform:scaleX(-1)}
+.ddx-pi .gm-face{width:100%;height:100%;border-radius:0}
+.ddx-p::after{content:'';position:absolute;inset:-1px -3px;pointer-events:none}
+.ddx-p.lf::after{background:linear-gradient(to right,rgba(7,8,11,0) 60%,#07080B 94%),linear-gradient(to top,#07080B 0%,rgba(7,8,11,0) 38%)}
+.ddx-p.rt::after{background:linear-gradient(to left,rgba(7,8,11,0) 60%,#07080B 94%),linear-gradient(to top,#07080B 0%,rgba(7,8,11,0) 38%)}
+.ddx-dim{position:absolute;inset:0;background:#07080B;opacity:.4;transition:opacity .38s ease;pointer-events:none}
+.ddx-p.on .ddx-dim{opacity:0}
+.ddx-nm{position:absolute;top:30px;z-index:3;font:800 12px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#fff;opacity:.85;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.ddx-p.lf .ddx-nm{left:14px;color:#F6C76E}
+.ddx-p.rt .ddx-nm{right:14px;color:#A9C8FF}
+/* реплики: снизу вверх, новая — у говорящего; старые выше и бледнее (видно последние 3) */
+.ddx-bubs{position:absolute;left:0;right:0;bottom:4%;z-index:4;display:flex;flex-direction:column;justify-content:flex-end;gap:9px;padding:0 12px;pointer-events:none}
+.ddx-b{--c:#F0B44C;pointer-events:auto;position:relative;max-width:80%;display:flex;align-items:flex-start;gap:10px;text-align:left;background:rgba(13,15,20,.94);border:1.5px solid rgba(255,255,255,.14);color:#fff;border-radius:18px;padding:11px 12px 11px 14px;font:600 16px/1.36 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;box-shadow:0 12px 30px rgba(0,0,0,.5);transition:opacity .3s ease,transform .3s ease,border-color .25s}
+.ddx-b.rt{--c:#8FB8FF}
+.ddx-b.lf{align-self:flex-start;border-bottom-left-radius:6px;transform-origin:left bottom;animation:ddxFlyL .46s cubic-bezier(.2,1.25,.4,1) backwards}
+.ddx-b.rt{align-self:flex-end;border-bottom-right-radius:6px;transform-origin:right bottom;animation:ddxFlyR .46s cubic-bezier(.2,1.25,.4,1) backwards}
+.ddx-b::after{content:'';position:absolute;bottom:-7px;width:12px;height:12px;background:inherit;border:inherit;border-top:0;border-left:0}
+.ddx-b.lf::after{left:12px;transform:rotate(45deg) skew(10deg,10deg)}
+.ddx-b.rt::after{right:12px;transform:rotate(45deg) skew(10deg,10deg)}
+.ddx-b.sel{border-color:var(--c)}
+.ddx-b.old{opacity:.48;transform:scale(.94)}
+.ddx-b.old.sel{opacity:1;transform:none}
+.ddx-b:active{transform:scale(.97)}
+.ddx-en{flex:1;min-width:0}
+.ddx .ddx-b .ddx-v{flex:none;font-style:normal;width:26px;height:26px;margin-top:-1px;padding:0 0 0 2px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.09);color:var(--c);font-size:11px;font-weight:800;pointer-events:none}
+.ddx .ddx-b .ddx-v.on{background:var(--c);color:#111}
+@keyframes ddxFlyL{from{opacity:0;transform:translate(-38px,26px) scale(.5)}}
+@keyframes ddxFlyR{from{opacity:0;transform:translate(38px,26px) scale(.5)}}
+/* перевод внизу — панель как субтитры: кто говорит + русский текст */
+.ddx-sub,.ddx-end{margin:10px 12px 0;padding:12px 16px 11px;border-radius:16px;background:#12151B;border:1px solid rgba(255,255,255,.09);position:relative;z-index:5}
+.ddx-sub{min-height:96px;cursor:pointer}
+.ddx-sw{font:800 10.5px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-transform:uppercase;letter-spacing:.12em}
+.ddx-sw.lf{color:#F0B44C}
+.ddx-sw.rt{color:#8FB8FF}
+.ddx-ru{margin:6px 0 7px;font:500 16.5px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff}
+.ddx-sub.fl .ddx-ru,.ddx-sub.fl .ddx-sw{animation:ddxSubIn .3s ease-out backwards}
+.ddx-hint{display:block;color:rgba(255,255,255,.4);font-size:11px}
+@keyframes ddxSubIn{from{opacity:0;transform:translateY(6px)}}
+.ddx-eh{display:block;font:800 15px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin-bottom:8px}
+.ddx-voc .chip{display:inline-block;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:5px 9px;margin:0 5px 6px 0;font-size:12.5px;color:#fff}
+.ddx-voc .chip i{font-style:normal;color:#F0B44C}
+.ddx-eb{display:flex;gap:8px;margin-top:6px}
+.ddx-eb button{flex:1;border:0;border-radius:999px;padding:12px 10px;font:800 14px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.ddx-again{background:rgba(255,255,255,.1);color:#fff}
+.ddx-out{background:#F0B44C;color:#221803}
+.ddx-end{animation:ddxSubIn .35s ease-out backwards}
+@media (min-width:900px){
+  .ddx-p{width:44%}
+  .ddx-bubs{padding:0 16%;bottom:6%}
+  .ddx-b{max-width:62%;font-size:18px}
+  .ddx-sub,.ddx-end{margin:12px auto 0;width:min(720px,calc(100% - 24px))}
+  .ddx-ru{font-size:18px}
+}
+body.nofx .ddx-b,body.nofx .ddx-sub .ddx-ru,body.nofx .ddx-end{animation:none}
