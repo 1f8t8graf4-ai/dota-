@@ -10,7 +10,7 @@ import json, os
 PHOTO_TAIL = ('Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, '
               'real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background '
               'is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.')
-PHOTO_WIDE = ('Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: natural uneven light, deep shadows, slightly faded colors, '
+PHOTO_WIDE = ('Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, '
               'visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design '
               'render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.')
 ANIM_HEAD = 'Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: '
@@ -29,7 +29,7 @@ VIDEO_TAIL = ('Everything else stays perfectly still. The light does not change.
               'The last frame is identical to the first frame, so the video loops seamlessly. '
               'Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; '
               'not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. '
-              'No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No music, no voices.')
+              'No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.')
 def video(ph, an, wide=False):
     sc = ph.split(' Vertical 9:16.')[0].strip()
     mv = an[len(ANIM_HEAD):] if an.startswith(ANIM_HEAD) else an
@@ -37,7 +37,7 @@ def video(ph, an, wide=False):
     tail = VIDEO_TAIL
     if wide:
         tail = tail.replace('Shallow depth of field: the foreground is sharp, the background is softly out of focus.',
-                            'Like a frame from a 1990s film: natural uneven light, deep shadows, slightly faded colors, deep focus, real-world scale; '
+                            'Like a frame from a 1990s film: light from real lamps and the sky, rich contrast, slightly faded colors, deep focus, real-world scale; '
                             'not a miniature, not a stock photo, not an interior-design render; nothing arranged for display; no perfect symmetry.')
     if 'only small blurry green digits' in ph:
         tail = tail.replace('no text, letters or logos anywhere', 'no text or logos; only small blurry green digits on the screens')
@@ -46,92 +46,97 @@ def anim(t): return ANIM_HEAD + t.strip() + ' ' + ANIM_TAIL
 
 ITEMS = [
  # ---------- фильмы: один фон на фильм (и на его немецкий дубляж) ----------
- # 25.10, v3. Андрей: «масштабнее» → общий план вышел нейрослопом (Психопат: всё из списка расставлено как в шоуруме,
- # «дождь» снегом внутри комнаты, ровный синий свет). Правила v3: масштаб — от самого места (улица, океан, пустыня, зал в глубине),
- # а не от списка предметов; в кадре максимум одна вещь из сюжета, лежит как попало, не напоказ; камера на уровне человека,
- # кадр не по центру; свет — только настоящие источники, тёмные углы; без слов epic / luxury / minimalist / perfect.
+ # 25.10, v4. Андрей на v3 («Психопат»): «теперь вообще непонятно, что это Патрик — не под ноль же убирать»; «дождь, стекающий по окнам,
+ # не делай — всегда хуйня». Правила v4: масштаб — от места (как v3) + 2–3 узнаваемые вещи из самых известных кадров фильма, но не напоказ:
+ # лежат там, где им и место (газеты застилают пол, топор прислонён к стене в полутени); свет — живая лампа + город, а не тёмно-синяя муть;
+ # никакого дождя и капель на стёклах (у улиц — мокрый асфальт после дождя).
  dict(key='film:wolf', kind='film', title='Волк с Уолл-стрит', shows=['Волк с Уолл-стрит', 'The Wolf of Wall Street'], test='сложный', wide=1,
-  what='Аквариум с рыбкой на ближнем столе, а за ним в глубину — огромный тёмный торговый зал: ряды столов и сотни зелёных мониторов, бегущая строка на дальней стене.',
-  moves='Рыбка плавает, мигают зелёные цифры, по дальней стене ползёт бегущая строка.',
-  photo=photo('A round glass fishbowl with one orange goldfish on the nearest desk, on the left of the frame, sharp. Behind it the camera '
-   'looks deep into a huge dark trading floor of a 1990s brokerage firm at night after a party, nobody there: long rows of desks going far '
-   'back, hundreds of boxy monitors glowing with small green digits, a long green ticker band on the far wall, some confetti and empty '
-   'bottles left on the desks. Camera at seated eye level. Light: only the green glow of the screens and one desk lamp; the room is mostly dark.',
+  what='Аквариум с рыбкой и бутылка шампанского на ближнем столе, а за ними в глубину — огромный торговый зал после вечеринки: сотни зелёных мониторов, конфетти, бегущая строка на дальней стене.',
+  moves='Рыбка плавает, мигают зелёные цифры, по дальней стене ползёт бегущая строка, в бокале бегут пузырьки.',
+  photo=photo('A round glass fishbowl with one orange goldfish and an open champagne bottle with a half-full glass on the nearest desk, on '
+   'the left of the frame. Behind them the camera looks deep into a huge trading floor of a 1990s brokerage firm at night right after a '
+   'wild office party, nobody there: long rows of desks going far back, hundreds of boxy monitors glowing with small green digits, '
+   'confetti and streamers on the desks and the carpet, loosened ties and suit jackets thrown over chairs, a long green ticker band on the '
+   'far wall. Camera at seated eye level. Light: warm brass desk lamps and the green glow of the screens. Mood: money, excess and a hangover.',
    tail=PHOTO_WIDE.replace('no text, letters, numbers or logos anywhere', 'no text or logos; only small blurry green digits on the screens')),
-  animate=anim('the goldfish swims slowly in its bowl; the small green digits on the screens flicker; the ticker band on the far wall '
-   'scrolls slowly from right to left.')),
+  animate=anim('the goldfish swims slowly in its bowl; bubbles rise in the champagne glass; the small green digits on the screens '
+   'flicker; the ticker band on the far wall scrolls slowly from right to left.')),
  dict(key='film:psycho', kind='film', title='Американский психопат', shows=['Американский психопат'], test='простой', wide=1,
-  what='Тёмная белая квартира ночью, смотрим из глубины комнаты на стену окон: за ними весь Манхэттен под дождём; у края кадра угол белого дивана и газеты на полу.',
-  moves='По стеклу снаружи текут капли, мерцают огни города.',
-  photo=photo('Inside a dark white apartment high above Manhattan in 1987 at night, nobody there. The camera stands low in the back of the '
-   'room and looks toward a wall of tall windows; through them, the whole night skyline of Manhattan with thousands of small lit windows. '
-   'In the lower right corner, close: the edge of a white leather sofa in shadow and a few newspapers spread on the floor. The lights in the '
-   'room are off; the only light comes from the city outside, so the room is dark blue-grey with deep shadows. Rain is outside only, on '
-   'the outer side of the glass; nothing falls inside the room. Mood: cold, empty and silent.'),
-  animate=anim('raindrops run slowly down the outside of the window glass; the city lights twinkle far away.')),
+  what='Белая квартира-пентхаус 1987 года ночью: пол и белый кожаный диван застелены газетами, на стерео крутится пластинка, в полутени у стены стоит топор; за огромными окнами — весь Манхэттен.',
+  moves='Пластинка крутится, на стерео прыгают зелёные индикаторы, мерцают огни города за окном.',
+  photo=photo('A white Manhattan penthouse apartment in 1987 at night, nobody there, seen at eye level from the back of the living room. '
+   'The whole white floor and the long white leather sofa are carefully covered with spread newspapers, as if someone prepared the room '
+   'for something messy. On a low white cabinet on the left: a silver stereo with glowing green level meters and a record turntable with '
+   'a vinyl record on it. Against the white wall on the right, half in shadow: a fire axe with a red head leaning upright. Behind the sofa, '
+   'tall windows show the Manhattan skyline at night. Light: one warm floor lamp in the room and the cool city glow; clean dry glass. '
+   'Mood: perfect, sterile, expensive, and something horrible is about to happen.'),
+  animate=anim('the vinyl record spins on the turntable; the green level meters on the stereo bounce; the lights of the '
+   'city twinkle far away. The axe and the newspapers do not move.')),
  dict(key='film:taxi', kind='film', title='Таксист', shows=['Таксист'], wide=1,
-  what='Ночная улица Нью-Йорка 70-х под дождём с уровня тротуара: неон кинотеатров, мокрый асфальт, пар из люка, у бордюра жёлтое такси.',
-  moves='Из люка поднимается пар, неон мигает, моросит дождь, в лужах дрожат отражения.',
-  photo=photo('A street in 1970s New York at night in the rain, seen from the sidewalk at eye level, nobody around. On the left, a yellow '
-   '1970s taxi cab stands at the curb with its lights on. The street goes far into the distance between old buildings with glowing red and '
-   'pink neon signs of movie theaters and bars, all unreadable and blurry. Steam rises from a manhole in the middle of the street. The wet '
-   'asphalt reflects the neon. Light: neon and old street lamps only, deep shadows between them. Mood: dirty, lonely and feverish.'),
-  animate=anim('steam rises slowly from the manhole; the neon signs glow and blink softly; light rain falls; the reflections in the '
-   'puddles ripple. The taxi stays parked.')),
+  what='Ночная улица Нью-Йорка 70-х после дождя с уровня тротуара: неон кинотеатров, мокрый асфальт в отражениях, пар из люка, у бордюра жёлтое такси с включёнными фарами.',
+  moves='Из люка поднимается пар, неон мигает, в мокром асфальте дрожат отражения.',
+  photo=photo('A street in 1970s New York at night right after the rain, seen from the sidewalk at eye level, nobody around. On the left, a '
+   'yellow 1970s taxi cab stands at the curb with its headlights on. The street goes far into the distance between old buildings with '
+   'glowing red and pink neon signs of movie theaters and bars, all unreadable and blurry. Thick steam rises from a manhole in the middle '
+   'of the street. The wet asphalt mirrors all the neon. Light: neon and old street lamps. Mood: dirty, lonely and feverish.'),
+  animate=anim('steam rises slowly from the manhole; the neon signs glow and blink softly; the neon reflections shimmer on the wet asphalt. '
+   'No rain falls. The taxi stays parked.')),
  dict(key='film:titanic', kind='film', title='Титаник', shows=['Титаник', 'Titanic'], wide=1,
-  what='Огромный лайнер 1912 года ночью с уровня воды: чёрный борт уходит вверх и вдаль, ряды золотых иллюминаторов, четыре трубы на фоне звёзд; спокойное чёрное море.',
-  moves='Вода бежит вдоль борта и пенится у носа, в воде дрожат отражения огней, мерцают звёзды.',
-  photo=photo('A huge 1912 ocean liner at night on a calm black sea, seen from the water close to the side of the ship, the camera low near '
-   'the waterline. The black hull rises high and runs far into the distance like a wall, with long rows of small warm round portholes; '
-   'high above, the lit decks and four tall funnels against a dark starry sky. Light: only the warm portholes and the starlight; the sea is '
-   'black. Shot like a frame from a 1990s film, nothing glossy. Mood: enormous, quiet, doomed.'),
-  animate=anim('the dark water flows along the hull and foams softly at the waterline; the reflections of the portholes shimmer on the '
-   'water; the stars twinkle. The ship stays in the same place in the frame. No smoke from the funnels.')),
+  what='Нос огромного лайнера 1912 года на закате с воды: острый нос режет волну, за ним весь корабль с четырьмя трубами на фоне золотого неба.',
+  moves='У носа пенится волна, по воде бегут золотые блики, медленно плывут облака.',
+  photo=photo('The bow of a huge 1912 four-funnel ocean liner at sunset, seen from the water slightly ahead and to the side, the camera low '
+   'near the waves. The sharp black bow with its white railing at the very tip cuts through the sea toward the camera; behind it the long '
+   'black hull and white superstructure stretch back, with the four tall buff funnels with black tops against a golden-orange sky. The '
+   'decks are empty. Light: low golden sunset light from behind the ship, the sea glittering. Shot like a frame from a 1990s film, nothing '
+   'glossy. Mood: grandeur and romance, the most famous moment on the ship.'),
+  animate=anim('white foam curls at the bow where it cuts the water; golden glints run over the waves; the clouds drift very slowly. '
+   'The ship stays in the same place in the frame. No smoke from the funnels.')),
  dict(key='film:bunker', kind='film', title='Бункер', shows=['Бункер'], wide=1,
-  what='Разрушенная улица Берлина весной 1945-го в сумерках с уровня земли: выгоревшие каменные дома по обе стороны до самого горизонта, пожары, красное небо.',
+  what='Разрушенная главная улица Берлина в апреле 1945-го в сумерках: выгоревшие дома по обе стороны, пожары, в конце улицы повреждённые Бранденбургские ворота, красное небо.',
   moves='Огни пожаров дрожат на стенах, вверх летят редкие искры.',
-  photo=photo('A wide street in the center of Berlin at dusk in April 1945, seen at eye level from the rubble, nobody around. On both sides, '
-   'the burned-out shells of big old stone buildings with empty window holes run far into the distance; broken bricks and twisted metal '
-   'lie on the street; fires glow orange inside some of the ruins. A dark red sky above. No flags, symbols or insignia. Light: fire glow '
-   'only, deep shadows. Mood: red, black and ash grey; the end of everything.'),
+  photo=photo('The wide main avenue in the center of Berlin at dusk in April 1945, seen at eye level from the rubble, nobody around. On both '
+   'sides, the burned-out shells of big old stone buildings with empty window holes; broken bricks and twisted metal on the road; fires '
+   'glow orange inside some of the ruins. At the far end of the avenue stands the damaged Brandenburg Gate with its columns. A dark red sky '
+   'above. No flags, symbols or insignia. Light: fire glow only. Mood: red, black and ash grey; the end of everything.'),
   animate=anim('the fire glow flickers on the broken walls; a few orange embers float up from the fires.')),
  # ---------- сериалы: по фону на сезон ----------
  dict(key='season:sopranos:S01', kind='season', title='Клан Сопрано', season='S01', shows=['Клан Сопрано', 'Die Sopranos'], wide=1,
-  what='Задний двор большого дома в Нью-Джерси утром: в бассейне на переднем плане утка с утятами, за ним газон, деревья и большой белый дом.',
+  what='Задний двор большого дома в Нью-Джерси утром: в бассейне утка с утятами, на краю шезлонг с халатом и газетой, тарелка с хлебом; за ними газон, деревья и большой белый дом.',
   moves='Утки плавают по кругу, по воде рябь и блики, деревья качаются.',
   note='Утки — из самой сцены. Если утята выйдут кривыми — оставь одну утку.',
   photo=photo('The backyard of a big suburban New Jersey house on a spring morning, nobody around, seen from the edge of the swimming pool '
-   'at eye level. In the foreground: the pool with a wild mallard duck and three ducklings on the water. Behind: a wide green lawn, tall '
-   'old trees and the big white two-storey house with many windows. Light: soft morning sun through the trees. Mood: a calm family morning '
-   'that feels fragile.'),
+   'at eye level. On the water: a wild mallard duck and three ducklings. On the stone edge of the pool: a lounge chair with a white '
+   'bathrobe and a folded newspaper, and a plate with slices of white bread for the ducks. Behind: a wide green lawn, tall old trees and the '
+   'big white two-storey house. Light: soft morning sun through the trees. Mood: a calm family morning that feels fragile.'),
   animate=anim('the ducks paddle slowly in a small circle; ripples and sun glints move on the water; the tall trees sway in a light breeze.')),
  dict(key='season:sopranos:S04', kind='season', title='Клан Сопрано', season='S04', shows=['Клан Сопрано', 'Die Sopranos'], wide=1,
-  what='Стрип-клуб у трассы в Нью-Джерси ночью через мокрую парковку: низкое здание в розовом неоне, пара больших седанов; за ним эстакада и далёкие огни заводов.',
-  moves='Розовый неон пульсирует, моросит, в лужах рябь, мигают красные огни на трубах.',
+  what='Стрип-клуб у трассы в Нью-Джерси ночью через парковку: низкое здание в розовом неоне, два больших тёмных седана, мокрый асфальт; за ним эстакада и огни заводов.',
+  moves='Розовый неон пульсирует, в мокром асфальте дрожит отражение, мигают красные огни на трубах.',
   photo=photo('A low roadside strip club in industrial New Jersey at night, seen at eye level across a wet empty parking lot, nobody around. '
-   'The flat building glows with pink neon, its signs unreadable. Two big dark 2000s sedans are parked in front. Behind it: a highway '
-   'overpass on concrete pillars and, far away, the lights of factory chimneys and tanks. Light: pink neon and orange street lamps, deep '
-   'shadows. Mood: sickly pink and orange; grief, guilt and dirty money.'),
-  animate=anim('the pink neon pulses slowly; light drizzle makes small ripples in the puddles; the small red lights on the far chimneys blink.')),
+   'The flat brick building glows with pink neon, its signs unreadable. Two big dark 2000s sedans are parked in front. Behind it: a highway '
+   'overpass on concrete pillars and, far away, the lights of factory chimneys and tanks. Light: pink neon and orange street lamps. '
+   'Mood: sickly pink and orange; grief, guilt and dirty money.'),
+  animate=anim('the pink neon pulses slowly; its reflection shimmers in the puddles on the parking lot; the small red lights on the far '
+   'chimneys blink. No rain falls.')),
  dict(key='season:sopranos:S06', kind='season', title='Клан Сопрано', season='S06', shows=['Клан Сопрано', 'Die Sopranos'], wide=1,
-  what='Маленькая закусочная на углу ночью через улицу: тёплые окна, пустые кабинки, красный неон, пустая парковка, светофор.',
-  moves='Неон мерцает, моросит дождь, светофор переключается и возвращается.',
-  photo=photo('A small old corner diner in a New Jersey town at night, seen at eye level from across the street, nobody inside or outside. '
-   'Its big windows glow warm, showing empty booths and the counter with round stools; a red neon glow above the door. A wet empty parking '
-   'lot, an old street lamp and a traffic light on the corner, dark small houses around. Light: the warm diner windows in the cold blue '
-   'night. Mood: an ordinary evening that feels like the last one.'),
-  animate=anim('the red neon shimmers softly; light rain falls through the lamp light; the traffic light changes from green to yellow to '
-   'red and back to green.')),
+  what='Кабинка закусочной ночью: на столе корзинка луковых колец и настольный музыкальный автомат, за ней стойка, пустые табуреты и стеклянная дверь с колокольчиком.',
+  moves='Огоньки автомата мигают, над кофе вьётся пар, за дверью мерцает красный неон.',
+  photo=photo('Inside a small old New Jersey diner at night, nobody there, seen from a booth at seated eye level. On the table in the '
+   'foreground: a basket of onion rings, a white mug of coffee and a small chrome tabletop jukebox selector with glowing song cards that '
+   'cannot be read. Behind: the long counter with round chrome stools and, at the far end, the glass entrance door with a small bell '
+   'above it and red neon outside in the dark. Light: warm diner lamps. Mood: an ordinary family evening that feels like the last one.'),
+  animate=anim('the lights on the tabletop jukebox selector glow and blink softly; thin steam rises from the coffee; the red neon outside '
+   'the door shimmers.')),
  dict(key='season:bb:S01', kind='season', title='Во все тяжкие', season='S01', shows=['Во все тяжкие', 'Breaking Bad'], wide=1,
-  what='Бескрайняя пустыня Нью-Мексико на закате: столовые горы, огромное небо, на грунтовке маленький старый автодом.',
-  moves='Медленно плывут облака, над песком дрожит марево, качается сухая трава.',
-  photo=photo('The New Mexico desert at golden hour, nobody around, seen at eye level from a dirt road. Far away in the middle of the '
-   'frame, small: an old 1980s white motorhome with faded brown stripes parked on the dirt road. Around it, endless flat desert with dry '
-   'shrubs, red mesas on the horizon and a huge sky with tall clouds. Light: low warm sun, long shadows. Mood: sun-baked yellow; a small '
-   'man in a huge dangerous land.'),
-  animate=anim('the clouds drift very slowly; heat haze shimmers above the sand; the dry grass in the foreground sways in the hot wind.')),
+  what='Бескрайняя пустыня Нью-Мексико на закате: на грунтовке старый автодом с открытой дверью, на ступеньке жёлтый защитный костюм; на кусте у края кадра — брюки; столовые горы, огромное небо.',
+  moves='Брюки и сухая трава качаются от ветра, медленно плывут облака, над песком дрожит марево.',
+  photo=photo('The New Mexico desert at golden hour, nobody around, seen at eye level from a dirt road. In the middle distance: an old 1980s '
+   'white motorhome with faded brown stripes parked on the dirt road, its side door open, a yellow protective suit thrown on the metal '
+   'step. In the near right corner: a pair of khaki trousers caught on a dry desert shrub. Around: endless flat desert, red mesas on the '
+   'horizon and a huge sky with tall clouds. Light: low warm sun, long shadows. Mood: sun-baked yellow; a small man in a huge dangerous land.'),
+  animate=anim('the khaki trousers and the dry grass sway in the hot wind; the clouds drift very slowly; heat haze shimmers above the sand.')),
  dict(key='season:bb:S02', kind='season', title='Во все тяжкие', season='S02', shows=['Во все тяжкие', 'Breaking Bad'], wide=1,
-  what='Бассейн на заднем дворе в Альбукерке на рассвете: в воде плавает обгоревший розовый медведь; за забором крыши пригорода и горы.',
+  what='Бассейн на заднем дворе в Альбукерке на рассвете: в воде плавает обгоревший розовый медведь без глаза; за забором крыши пригорода и горы.',
   moves='Медведь медленно дрейфует, рябь, по стенкам бассейна бегут блики.',
   photo=photo('A backyard swimming pool in Albuquerque at dawn, nobody around, seen at eye level from the patio. On the water, a little off '
    'center: a pink plush teddy bear, half burned and missing one eye, floating face up. Behind the pool: a low stucco wall, the flat roofs '
@@ -139,21 +144,21 @@ ITEMS = [
    'something terrible has happened.'),
   animate=anim('the teddy bear drifts very slowly in a small circle; ripples spread from it; light patterns move on the pool walls.')),
  dict(key='season:bb:S04', kind='season', title='Во все тяжкие', season='S04', shows=['Во все тяжкие', 'Breaking Bad'], wide=1,
-  what='Огромная подземная лаборатория ночью, почти тёмная: ряды стальных баков уходят вглубь, трубы, галереи; на крюках жёлтые защитные костюмы.',
+  what='Огромная подземная суперлаборатория: ряды стальных баков уходят вглубь, галереи, жёлтые защитные костюмы с противогазами на крюках, на столе подносы с голубыми кристаллами.',
   moves='Из клапана идёт пар, мигают лампочки на пульте, костюмы чуть качаются от вентиляции.',
-  photo=photo('A huge underground industrial lab at night with most of the lights off, nobody there, seen at eye level from the entrance. '
-   'Rows of tall stainless-steel tanks and pipes go far back into the darkness, with metal catwalks above. On the left, close: a few yellow '
-   'protective suits hanging on hooks on the wall. Light: a few work lamps and small green and red indicator lights; deep shadows. '
-   'Mood: cold, enormous and secret.'),
+  photo=photo('A huge underground industrial lab, nobody there, seen at eye level from the entrance. Rows of tall polished stainless-steel '
+   'tanks and pipes go far back, with metal catwalks above. On the left, close: yellow protective suits with gas masks hanging on hooks. '
+   'On a steel table in the middle: shallow metal trays filled with broken sky-blue crystal. Light: bright cold work lamps and small green '
+   'and red indicator lights. Mood: clean, cold, enormous and secret.'),
   animate=anim('thin steam rises from one valve on a tank; the small indicator lights on a control panel blink; the yellow suits sway '
    'slightly in the air from a ventilation fan.')),
  dict(key='season:bb:S05', kind='season', title='Во все тяжкие', season='S05', shows=['Во все тяжкие', 'Breaking Bad'], wide=1,
-  what='Огромная свалка в пустыне в сумерках: ряды сплющенных машин уходят к горам, фургон с большим электромагнитом, розовое небо.',
+  what='Огромная свалка в пустыне в сумерках: ряды сплющенных машин уходят к горам, открытый фургон с огромным круглым электромагнитом, розовое небо.',
   moves='Метёт пыль, качается сухая трава, мигает огонёк на далёкой вышке.',
-  photo=photo('A big junkyard in the New Mexico desert at dusk, nobody around, seen at eye level. Rows and stacks of rusty crushed cars '
-   'go far back toward blue mountains under a pink sky. In the middle: an open box truck with a big round industrial electromagnet inside '
-   'and a tall work light on a pole. A radio tower with a red light far away. Light: the last pink daylight and one cold work light. '
-   'Mood: tired, tough and dangerous.'),
+  photo=photo('A big junkyard in the New Mexico desert at dusk, nobody around, seen at eye level. In the middle: an open box truck with a '
+   'huge round industrial electromagnet inside, cables hanging from it, and a tall work light on a pole. Rows and stacks of rusty crushed '
+   'cars go far back toward blue mountains under a pink sky; a radio tower with a red light far away. Light: the last pink daylight and '
+   'one cold work light. Mood: tired, tough and dangerous.'),
   animate=anim('thin dust blows low across the ground; dry grass waves in the wind; the red light on the far radio tower blinks.')),
  # ---------- интервью: фон на человека ----------
  dict(key='person:durov', kind='person', title='Павел Дуров', shows=['Павел Дуров'],
