@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deadlock · Промты — все фильмы, сериалы, интервью и герои</title>
+<style>
+:root{
+  --bg:#101318; --card:#1a1f27; --card2:#20262f; --line:#2b333e;
+  --tx:#e8ecf1; --tx2:#9aa7b4; --tx3:#6b7784;
+  --acc:#e8b34b; --acc2:#5aa7e8; --ok:#5fbf7a; --bad:#e86a5a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px}
+.wrap{max-width:1280px;margin:0 auto}
+h1{font-size:20px;margin-bottom:4px}
+.sub{color:var(--tx2);font-size:13px;margin-bottom:12px}
+.done-line{font-size:14px;margin-bottom:10px}
+.done-line b{color:var(--acc)}
+details.block{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+details.block summary{cursor:pointer;font-weight:600;font-size:14px}
+details.block ol{margin:8px 0 2px 18px;color:var(--tx2);font-size:13px}
+details.block li{margin-bottom:6px}
+.test-strip{margin:12px 0}
+.test-strip>h2{font-size:14px;color:var(--tx2);font-weight:600;margin-bottom:8px}
+.test-row{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:760px){.test-row{grid-template-columns:1fr 1fr}}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 12px;position:sticky;top:0;background:var(--bg);padding:6px 0;z-index:5}
+.tab{background:var(--card);border:1px solid var(--line);color:var(--tx2);border-radius:999px;padding:7px 14px;font-size:14px;cursor:pointer;user-select:none}
+.tab.on{background:var(--acc);border-color:var(--acc);color:#141414;font-weight:600}
+.tab .n{opacity:.65;font-size:12px}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1100px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
+.card.done{border-color:var(--ok)}
+.card.gap{background:#171b21;border-style:dashed;color:var(--tx2)}
+.card.gap h3{color:var(--tx2)}
+.card h3{font-size:16px;line-height:1.3;overflow-wrap:anywhere}
+.card .season-tag{color:var(--acc);font-weight:700}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+.badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--tx2)}
+.badge.up{background:rgba(95,191,122,.12);border-color:rgba(95,191,122,.5);color:var(--ok)}
+.badge.dlg{background:rgba(90,167,232,.12);border-color:rgba(90,167,232,.45);color:var(--acc2)}
+.badge.draft{background:rgba(232,179,75,.1);border-color:rgba(232,179,75,.45);color:var(--acc)}
+.badge.test-b{background:rgba(232,106,90,.12);border-color:rgba(232,106,90,.5);color:var(--bad)}
+.scenes{margin:8px 0;font-size:13px;color:var(--tx2)}
+.scenes b{color:var(--tx);font-weight:600;font-size:12px}
+.scenes ul{list-style:none}
+.scenes li{padding:1px 0;overflow-wrap:anywhere}
+.fld{font-size:13px;margin:6px 0;overflow-wrap:anywhere}
+.fld b{color:var(--tx2);font-weight:600}
+.ptext{background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--tx2);margin-top:6px;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-width:0}
+.ptext.open{display:block;-webkit-line-clamp:unset;overflow:visible}
+.pts{margin-top:10px}
+.pt-head{font-size:12px;color:var(--tx3);margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pt-more{color:var(--acc2);cursor:pointer;font-size:12px;user-select:none;white-space:nowrap}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.btn{background:var(--card2);border:1px solid var(--line);color:var(--tx);border-radius:8px;padding:7px 11px;font-size:13px;cursor:pointer}
+.btn:active{transform:translateY(1px)}
+.btn.copy{border-color:rgba(90,167,232,.4)}
+.btn.copy.ok{border-color:var(--ok);color:var(--ok)}
+.chk{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--tx2);cursor:pointer;user-select:none}
+.chk input{width:16px;height:16px;accent-color:var(--ok)}
+.note{font-size:12px;color:var(--acc);background:rgba(232,179,75,.07);border:1px solid rgba(232,179,75,.25);border-radius:8px;padding:6px 9px;margin-top:8px;overflow-wrap:anywhere}
+.footer{color:var(--tx3);font-size:12px;margin:18px 0 6px}
+.err{color:var(--bad);font-size:13px;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Промты · фото → оживление</h1>
+  <div class="sub" id="updated"></div>
+  <div class="done-line" id="doneLine"></div>
+  <div id="loadErr" class="err"></div>
+
+  <details class="block" open>
+    <summary>Как делать</summary>
+    <ol id="howList"></ol>
+  </details>
+  <details class="block">
+    <summary>Правила</summary>
+    <ol id="rulesList"></ol>
+  </details>
+
+  <div class="test-strip" id="testStrip" style="display:none">
+    <h2>Начни с теста</h2>
+    <div class="test-row" id="testRow"></div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="grid" id="grid"></div>
+  <div class="footer" id="ftr"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var QS = '?t=' + Date.now();
+var LS = 'bgp-done-v1';
+var done = {};
+try { done = JSON.parse(localStorage.getItem(LS) || '{}') || {}; } catch(e){ done = {}; }
+function saveDone(){ try { localStorage.setItem(LS, JSON.stringify(done)); } catch(e){} }
+
+var P = null, SCENES = [], HERO_IDS = {}, STATUS = {}, tab = 'film';
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function $(id){ return document.getElementById(id); }
+
+function fetchJSON(url, ok404){
+  return fetch(url + QS).then(function(r){
+    if (r.status === 404 && ok404) return null;
+    if (!r.ok) throw new Error(url + ' → ' + r.status);
+    return r.json();
+  });
+}
+
+function seasonOf(ep){
+  var m = /^S(\d+)/.exec(String(ep||''));
+  return m ? ('S' + m[1]) : null;
+}
+
+/* группа сцены: film:<show> | season:<show>:<Sxx> | person:<show> */
+function groupOfScene(sc){
+  if (sc.kind === 'film') return 'film:' + sc.title;
+  if (sc.kind === 'interview') return 'person:' + sc.title;
+  var s = seasonOf(sc.ep);
+  return s ? ('season:' + sc.title + ':' + s) : ('season:' + sc.title + ':?');
+}
+
+/* невидимые символы (U+2060 word joiner, ZWSP и т.п.) ломают точное сравнение названий */
+function deob(s){ return String(s==null?'':s).replace(/[\u2060\u200b\u200c\u200d\ufeff\u00ad]/g,'').toLowerCase().trim(); }
+
+/* сцена принадлежит фону? */
+function sceneInBg(sc, it){
+  var shows = it.shows || [];
+  var hit = false;
+  for (var i = 0; i < shows.length; i++) { if (deob(shows[i]) === deob(sc.title)) { hit = true; break; } }
+  if (!hit) return false;
+  if (it.kind === 'film') return sc.kind === 'film';
+  if (it.kind === 'person') return sc.kind === 'interview';
+  if (it.kind === 'season') return sc.kind === 'series' && seasonOf(sc.ep) === it.season;
+  return false;
+}
+
+function scenesFor(it){ return SCENES.filter(function(sc){ return sc.kind !== 'clip' && sceneInBg(sc, it); }); }
+function heroInGames(h){ return HERO_IDS[h] === true; }
+
+/* бейджи/кнопки */
+function isDone(key){ return done[key] === true; }
+function statusOf(key){ var s = STATUS[key]; return s && s.date ? s.date : null; }
+
+function cardHTML(it, opts){
+  var h = [];
+  var title = it.title;
+  if (it.kind === 'season' && it.season) title = esc(it.title) + ' · <span class="season-tag">' + esc(it.season) + '</span>';
+  else title = esc(title);
+  h.push('<div class="card' + (isDone(it.key) ? ' done' : '') + '" data-key="' + esc(it.key) + '">');
+  h.push('<h3>' + title + '</h3>');
+  h.push('<div class="badges">');
+  if (opts && opts.testLabel) h.push('<span class="badge test-b">тест: ' + esc(opts.testLabel) + '</span>');
+  if (it.kind === 'hero' && it.draft) h.push('<span class="badge draft">Черновик</span>');
+  if (it.kind === 'hero' && heroInGames(it.hero)) h.push('<span class="badge dlg">С диалогами</span>');
+  var up = statusOf(it.key);
+  if (up) h.push('<span class="badge up">Залит · ' + esc(up) + '</span>');
+  h.push('</div>');
+
+  if (it.kind === 'hero') {
+    h.push('<div class="fld"><b>Картинка:</b> ' + esc(it.art || '—') + '</div>');
+  } else {
+    var scs = scenesFor(it);
+    h.push('<div class="scenes"><b>Покрывает сцены (' + scs.length + '):</b><ul>');
+    scs.forEach(function(sc){
+      h.push('<li>' + esc(sc.title) + ' · ' + esc(sc.ep || '') + (sc.age === 18 ? ' · 18+' : '') + '</li>');
+    });
+    h.push('</ul></div>');
+    h.push('<div class="fld"><b>Что в кадре:</b> ' + esc(it.what || '—') + '</div>');
+    h.push('<div class="fld"><b>Что движется:</b> ' + esc(it.moves || '—') + '</div>');
+    if (it.note) h.push('<div class="note">' + esc(it.note) + '</div>');
+  }
+
+  h.push('<div class="pts">');
+  if (it.kind !== 'hero' && it.photo) {
+    h.push('<div class="pt-head"><span>Фото</span><span class="pt-more" data-more="1">показать весь</span></div>');
+    h.push('<div class="ptext" data-p="photo">' + esc(it.photo) + '</div>');
+  }
+  if (it.animate) {
+    h.push('<div class="pt-head"><span>Оживление</span><span class="pt-more" data-more="1">показать весь</span></div>');
+    h.push('<div class="ptext" data-p="anim">' + esc(it.animate) + '</div>');
+  }
+  h.push('</div>');
+
+  h.push('<div class="btns">');
+  if (it.kind !== 'hero' && it.photo)
+    h.push('<button class="btn copy" data-copy="photo">Скопировать фото</button>');
+  if (it.animate)
+    h.push('<button class="btn copy" data-copy="anim">Скопировать оживление</button>');
+  h.push('<label class="chk"><input type="checkbox" data-done="1"' + (isDone(it.key) ? ' checked' : '') + '> Готово</label>');
+  h.push('</div></div>');
+  return h.join('');
+}
+
+function gapHTML(title, lines){
+  var h = ['<div class="card gap"><h3>' + esc(title) + '</h3><div class="scenes"><ul>'];
+  lines.forEach(function(l){ h.push('<li>' + esc(l) + '</li>'); });
+  h.push('</ul></div><div class="fld">Промта нет — попроси Claude.</div></div>');
+  return h.join('');
+}
+
+function testLabel(it){
+  if (it.test === 'простой') return 'простой';
+  if (it.test === 'сложный') return 'сложный';
+  return null;
+}
+
+/* ---- рендер ---- */
+function render(){
+  var items = P.items || [];
+  var bgs = items.filter(function(i){ return i.kind === 'film' || i.kind === 'season' || i.kind === 'person'; });
+  var heroes = items.filter(function(i){ i.kind === 'hero'; return i.kind === 'hero'; });
+
+  /* шапка */
+  var total = items.length;
+  var dn = items.filter(function(i){ return isDone(i.key); }).length;
+  $('doneLine').innerHTML = 'Готово: <b>' + dn + '</b> из <b>' + total + '</b>' +
+    (P.updated ? ' · промты обновлены ' + esc(P.updated) : '');
+  $('ftr').innerHTML = 'Сцены: data/scenes.json (' + SCENES.length + ') · Игры: data/games.json (' +
+    Object.keys(HERO_IDS).length + ' героев с диалогами) · Статусы: tools/bg-status.json' +
+    (STATUS && Object.keys(STATUS).length ? '' : ' — пока пусто');
+
+  /* тестовые */
+  var tests = bgs.filter(function(i){ return i.test; });
+  $('testStrip').style.display = tests.length ? '' : 'none';
+  $('testRow').innerHTML = tests.map(function(i){
+    return cardHTML(i, { testLabel: testLabel(i) });
+  }).join('');
+
+  /* вкладки */
+  var tabs = [
+    ['film', 'Фильмы', bgs.filter(function(i){ return i.kind === 'film'; }).length],
+    ['season', 'Сериалы', bgs.filter(function(i){ return i.kind === 'season'; }).length],
+    ['person', 'Интервью', bgs.filter(function(i){ return i.kind === 'person'; }).length],
+    ['hero', 'Герои', heroes.length]
+  ];
+  $('tabs').innerHTML = tabs.map(function(t){
+    return '<button class="tab' + (tab === t[0] ? ' on' : '') + '" data-tab="' + t[0] + '">' +
+      esc(t[1]) + ' <span class="n">' + t[2] + '</span></button>';
+  }).join('');
+
+  /* сетка + поиск дыр */
+  var out = [];
+  var covered = {};
+
+  if (tab === 'hero') {
+    heroes.forEach(function(i){ out.push(cardHTML(i)); });
+    var seen = {};
+    heroes.forEach(function(i){ seen[i.hero] = true; });
+    Object.keys(HERO_IDS).forEach(function(hid){
+      if (!seen[hid]) out.push(gapHTML('Герой без промта: ' + (HERO_IDS[hid] || hid),
+        ['hero:deadlock:' + hid]));
+    });
+  } else {
+    bgs.filter(function(i){ return i.kind === tab; }).forEach(function(i){
+      out.push(cardHTML(i, { testLabel: testLabel(i) }));
+      scenesFor(i).forEach(function(sc){ covered[sc.id] = true; });
+    });
+    /* группы сцен без фона */
+    var groups = {};
+    SCENES.forEach(function(sc){
+      if (sc.kind === 'clip') return;
+      var want = sc.kind === 'film' ? 'film' : sc.kind === 'series' ? 'season' : 'person';
+      if (want !== tab) return;
+      var g = groupOfScene(sc);
+      (groups[g] = groups[g] || []).push(sc);
+    });
+    Object.keys(groups).forEach(function(g){
+      var scs = groups[g];
+      if (scs.every(function(sc){ return !covered[sc.id]; })) {
+        /* человекочитаемое имя: берём title из любого промта, чей shows покрывает эту сцену */
+        var name = scs[0].title;
+        bgs.forEach(function(b){
+          if ((b.shows || []).some(function(s){ return deob(s) === deob(scs[0].title); })) name = b.title;
+        });
+        var disp = name + (tab === 'season' ? ' · ' + (seasonOf(scs[0].ep) || '?') : '');
+        out.push(gapHTML('Промта нет: ' + disp,
+          scs.map(function(sc){ return sc.title + ' · ' + sc.ep; })));
+      }
+    });
+  }
+  $('grid').innerHTML = out.join('');
+}
+
+/* ---- события ---- */
+document.addEventListener('click', function(ev){
+  var t = ev.target;
+  var tb = t.closest('[data-tab]');
+  if (tb) { tab = tb.getAttribute('data-tab'); render(); window.scrollTo(0, 0); return; }
+
+  var more = t.closest('[data-more]');
+  if (more) {
+    var box = more.parentElement.parentElement.querySelector('.ptext');
+    var open = box.classList.toggle('open');
+    more.textContent = open ? 'свернуть' : 'показать весь';
+    return;
+  }
+
+  var btn = t.closest('[data-copy]');
+  if (btn) {
+    var card = btn.closest('.card');
+    var box2 = card.querySelector('.ptext[data-p="' + btn.getAttribute('data-copy') + '"]');
+    copyText(box2 ? box2.textContent : '', btn);
+    return;
+  }
+});
+
+document.addEventListener('change', function(ev){
+  var inp = ev.target;
+  if (inp.getAttribute && inp.getAttribute('data-done')) {
+    var key = inp.closest('.card').getAttribute('data-key');
+    done[key] = inp.checked;
+    if (!inp.checked) delete done[key];
+    saveDone();
+    var cards = document.querySelectorAll('.card[data-key="' + key + '"]');
+    Array.prototype.forEach.call(cards, function(c){ c.classList.toggle('done', inp.checked); });
+    var items = (P.items || []);
+    var dn = items.filter(function(i){ return isDone(i.key); }).length;
+    $('doneLine').innerHTML = 'Готово: <b>' + dn + '</b> из <b>' + items.length + '</b>' +
+      (P.updated ? ' · промты обновлены ' + esc(P.updated) : '');
+  }
+});
+
+function copyText(txt, btn){
+  function ok(){
+    var old = btn.textContent;
+    btn.classList.add('ok');
+    btn.textContent = 'Скопировано ✓';
+    setTimeout(function(){ btn.classList.remove('ok'); btn.textContent = old; }, 1500);
+  }
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); ok(); } catch(e){}
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(ok, fallback);
+  } else fallback();
+}
+
+/* ---- старт ---- */
+Promise.all([
+  fetchJSON('tools/bg-prompts.json'),
+  fetchJSON('data/scenes.json'),
+  fetchJSON('data/games.json'),
+  fetchJSON('tools/bg-status.json', true)
+]).then(function(r){
+  P = r[0]; SCENES = r[1].SCENES || [];
+  var g = r[2];
+  var dl = g && g.GAMES && g.GAMES.deadlock;
+  (dl && dl.heroes || []).forEach(function(h){ HERO_IDS[h.id] = h.name || h.id; });
+  STATUS = r[3] || {};
+
+  $('updated').textContent = 'Все промты подтягиваются из репо при открытии — ничего вписывать руками не надо.';
+  $('howList').innerHTML = (P.how || []).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('');
+  $('rulesList').innerHTML = (P.rules || []).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('');
+  render();
+}).catch(function(e){
+  $('loadErr').textContent = 'Ошибка загрузки данных: ' + e.message;
+});
+})();
+</script>
+</body>
+</html>
