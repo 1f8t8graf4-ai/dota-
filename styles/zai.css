@@ -354,3 +354,13 @@ body.nofx .dvx-b,body.nofx .dvx-pan.fl,body.nofx .dvx-stage.vs .dvx-p,body.nofx 
 .dv-dlgs button small{font-size:13px}
 .dv-dlgs button em{display:block;margin-top:4px;font-style:normal;font-size:11.5px;color:rgba(255,255,255,.45)}
 .kv-lbl small{font-weight:500;color:rgba(255,255,255,.45);margin-left:6px}
+
+/* ==== 13.9.73 — Versus: опыт героя в итоге боя (П12) ==== */
+.dvx-end .dvx-xp{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;max-width:300px;margin:4px auto 10px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.06);text-align:left}
+.dvx-end .dvx-xp span{font-weight:700;font-size:13.5px;color:#fff}
+.dvx-end .dvx-xp small{font-size:12px;color:#F6C76E;font-weight:700;text-align:right}
+.dvx-end .dvx-xp i{grid-column:1/-1;display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
+.dvx-end .dvx-xp i em{display:block;height:100%;background:linear-gradient(90deg,#F6C76E,#FFE7A3);transform-origin:left center}
+.dvx-end .dvx-xp.up{box-shadow:0 0 0 1px rgba(246,199,110,.55)}
+body:not(.nofx) .dvx-end .dvx-xp i em{animation:dvXp .9s cubic-bezier(.2,.8,.2,1) both .25s}
+@keyframes dvXp{from{transform:scaleX(0)}}

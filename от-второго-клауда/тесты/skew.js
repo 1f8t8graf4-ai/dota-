@@ -9,7 +9,7 @@ let fails=0;const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===u
   const old=fs.readFileSync(path.join(__dirname,'../../js/app.js'),'utf8').replace('const lvTag=','const lvTag_gone=');
   ok('старый app.js собран (без lvTag)',!/const lvTag=/.test(old));
   const {page,ctx,errs}=await open({browser:b,touch:dev==='ph',uid:876754050,ctx:{viewport:vp},wait:2500,init:seed,initArg:[base]});
-  await ctx.route(/127\.0\.0\.1:8080\/js\/app\.js/,r=>r.fulfill({status:200,contentType:'application/javascript',body:old}));
+  await ctx.route(new RegExp('127\\.0\\.0\\.1:'+(process.env.ST_PORT||8080)+'/js/app\\.js'),r=>r.fulfill({status:200,contentType:'application/javascript',body:old}));
   await page.reload();await page.waitForTimeout(2500);
   ok('lvTag в странице нет',await page.evaluate(()=>typeof lvTag==='undefined'));
   await page.evaluate(()=>SCENES.forEach(s=>{try{admPass(s);}catch(e){}}));await page.waitForTimeout(400);

@@ -400,6 +400,7 @@ function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==nu
   ['scOwn','kvPaid','kvDone','ach','duels','goalsDone','seg','showRw','dirCut'].forEach(k=>{if((c[k]&&typeof c[k]==='object'&&!Array.isArray(c[k]))||(L[k]&&typeof L[k]==='object'&&!Array.isArray(L[k])))o[k]=uni(k);});
   if(c.shop||L.shop){const a=c.shop||{},b=L.shop||{};o.shop={own:Object.assign({},a.own||{},b.own||{}),use:Object.assign({},(cNew?b:a).use||{},(cNew?a:b).use||{})};}   // 13.2: покупки — объединение
   o.best=uni('best');for(const k in c.best||{})o.best[k]=Math.max(+c.best[k]||0,+(L.best||{})[k]||0);
+  ['heroXP','dvPlay'].forEach(k=>{if(!c[k]&&!L[k])return;o[k]=uni(k);for(const x in c[k]||{})o[k][x]=Math.max(+c[k][x]||0,+(L[k]||{})[x]||0);});   // 13.9.73: опыт героев — больший
   ['answered','correct','bestStreak','played','reviews','perfect','goalsDone'].forEach(k=>o[k]=Math.max(+c[k]||0,+L[k]||0));
   LOCAL_ONLY.forEach(k=>{if(k in L)o[k]=L[k];else delete o[k];});
   return normalize(o);}
@@ -1031,7 +1032,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.72';
+const APP_V='13.9.73';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -4980,8 +4981,12 @@ addEventListener('resize',()=>{if(document.getElementById('ddx'))ddxFit();});
 // Вопросы целиком собирает создатель (текст, перевод, войс, кубики, варианты) — у друга ровно те же; qs[0].hs = [герой создателя, герой друга].
 // Очки — kvPts (верно 100 + до 50 за скорость, ошибка 0); полоска здоровья = 3×150 минус очки соперника. Кубики — одна попытка: в PvP вторая нечестна.
 // Окно #dvx — в body и всегда тёмное, как ddx (у .screen при входе бывает transform). Внутри маркер .kv — без него kvPoll останавливается.
-const DV_HP=150,DV_T={build:'Собери',mean:'Что значит',hear:'На слух'};
+const DV_HP=150,DV_T={build:'Собери',mean:'Что значит',tr:'Перевод',hear:'На слух'};
 const DV_STOP=new Set('them your yours our ours very some any all from into onto over than then there here were been being just only also even still more most such much many like gonna gotta wanna kinda yeah okay ever never tryna dunno lemme ain'.split(' '));   // служебные — не годятся в подмену на слух
+// 13.9.73 (П12): герой качается — опыт за бой (10 за верный ответ, победа +20, ничья +8), уровень = 1 + √(опыт/30): 30 → 2, 120 → 3, 270 → 4, 480 → 5
+const hxK=h=>'deadlock:'+(h&&h.id||''),hxXP=h=>+((store.heroXP||{})[hxK(h)])||0,hxLv=x=>1+Math.floor(Math.sqrt(Math.max(0,x)/30)),hxAt=l=>30*(l-1)*(l-1);
+const hxProg=x=>{const l=hxLv(x),a=hxAt(l),b=hxAt(l+1);return Math.max(0,Math.min(1,(x-a)/(b-a)));};
+function hxAdd(h,n){if(!h||!h.id||!(n>0))return null;const x0=hxXP(h),x1=x0+n;store.heroXP=Object.assign({},store.heroXP,{[hxK(h)]:x1});return {x0,x1,l0:hxLv(x0),l1:hxLv(x1)};}
 let DVAU=null;   // один <audio> на весь бой: на iPhone звук разрешён элементу после нажатия, а новый элемент без нажатия молчит
 function dvUnlock(){try{if(!DVAU)DVAU=new Audio();if(DVAU._ok)return;DVAU.src='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';const p=DVAU.play();if(p&&p.then)p.then(()=>{DVAU.pause();DVAU._ok=1;},()=>{});}catch(e){}}
 // войс реплики; end(true) — дослушал, end(false) — не заиграло
@@ -4997,59 +5002,78 @@ function dvParse(R){const m=/^dd:deadlock:([\w-]+):(\d+)/.exec(String(R&&R.sid||
   const by=n=>gmHeroesAll().find(x=>x.name===n)||{id:String(n||'?'),name:String(n||'?')};return {h,d,A:by(hs[0]),B:by(hs[1])};}
 const dvMe=()=>{const P=dvParse(KV.room);return KV.role==='A'?{me:P.A,fo:P.B,P}:{me:P.B,fo:P.A,P};};
 // 3 вопроса: собери (реплика до 7 слов, иначе выражение из лексики) · что значит (слово из лексики) · что он сказал (на слух, одно слово подменено)
-function dvMakeQs(d,hs){const L=(d.lines||[]).filter(l=>l&&l.en),voc=(d.vocab||[]).filter(v=>v&&v.w&&v.r),seen=new Set(L.map(l=>l.en)),oth=[],used=new Set();
+function dvMakeQs(d,hs,o){o=o||{};const L=(d.lines||[]).filter(l=>l&&l.en),voc=(d.vocab||[]).filter(v=>v&&v.w&&v.r),seen=new Set(L.map(l=>l.en)),oth=[],used=new Set();
   gmHeroesAll().forEach(h=>(h.dialogs||[]).forEach(x=>(x.lines||[]).forEach(l=>{if(l&&l.en&&!seen.has(l.en)){seen.add(l.en);oth.push(l);}})));
   const nW=t=>scToks(String(t).replace(/[.,!?;:…"«»()]+/g,' ')).length;
   const find=w=>{const x=String(w).replace(/\.\.\.|…/g,'').trim();if(!x)return null;const re=wordRe(x);for(const l of L){const m=re.exec(l.en);if(m){const i=m.index+m[1].length;return {l,i,x:l.en.slice(i,i+m[2].length)};}}return null;};
   const rs=v=>ruShort(String(v.r).replace(/^\s*(разг|жарг|бран|груб|ирон)\.\s*/i,''))||String(v.r);
   const lineQ=(t,l,o)=>Object.assign({t,s:l.s||'',a:l.a||'',en:l.en,ru:l.ru||''},o);
-  const voc2=[...new Set([...L,...oth].flatMap(x=>String(x.en).split(/[^A-Za-z']+/)).filter(w=>w.length>=3&&w===w.toLowerCase()&&!/'/.test(w)&&!SC_STOP.has(w)&&!DV_STOP.has(w)))],sfx2=w=>(w.match(/(ing|ed|ly|s)$/i)||[''])[0].toLowerCase();
+  const voc2=[...new Set([...L,...oth].flatMap(x=>String(x.en).split(/[^A-Za-z']+/)).filter(w=>w.length>=3&&w===w.toLowerCase()&&!/'/.test(w)&&!SC_STOP.has(w)&&!DV_STOP.has(w)))],sfx2=w=>{const m=(w.match(/(ing|ed|ly|s)$/i)||[''])[0].toLowerCase();return m&&w.length>=m.length+3?m:'';};   // 13.9.73: king — не «-ing», bed — не «-ed»
   const dvTk=t=>{const B=scBuildTiles(t,{},[],false),inT=new Set(B.tk.map(w=>w.toLowerCase())),pool=B.pool.map(x=>x.w),n=B.tk.length,near=w=>Math.abs(w.length-5);
     for(const w of shuffle(voc2.filter(w=>!inT.has(w))).sort((a,b)=>near(a)-near(b))){if(pool.length>=n+2)break;if(!pool.includes(w))pool.push(w);}
     return {tk:B.tk,pool:shuffle(pool.slice(0,n+2))};};   // ровно 2 лишних: форма того же слова (wForms) и слово из реплик героев
+  // 13.9.73 (П12): подмена на слух — похожее по звучанию слово (общее окончание / начало, мало разницы по буквам) той же части речи (по переводу в словарике), из словарика всех сцен и реплик героев: «priest» → «beast», а не «home»
+  const FN=new Set('from with into onto about after before until upon than that this these those what when where which while whose without within'.split(' '));   // служебные — не подменяем и не подставляем
+  const gp=w=>{const g=GLOSS[w];return g?ruShape(String(g).split(/[;,]/)[0]):'';},enP=w=>/ly$/.test(w)?'o':'',sfxN=(a,b)=>{let k=0;while(k<a.length&&k<b.length&&a[a.length-1-k]===b[b.length-1-k])k++;return k;},pre=(a,b)=>{let k=0;while(k<a.length&&k<b.length&&a[k]===b[k])k++;return k;};
+  const SUBP=[...new Set([...Object.keys(GLOSS).filter(w=>/^[a-z]{3,}$/.test(w)&&!SC_STOP.has(w)&&!DV_STOP.has(w)&&!FN.has(w)&&!/\((имя|фамилия|назв|город|марк|бренд|фр\.|исп\.|нем\.|лат\.|итал\.)|итальянск|французск|груб|мат\b|бран|вибратор|секс|порн|оргазм|член|наркот/i.test(String(GLOSS[w]))),...voc2])];
+  const dvSubs=(cw,inL,loose)=>{const p=loose?'':gp(cw)||enP(cw),L=cw.length;
+    if(FN.has(cw))return [];
+    const C=SUBP.filter(w=>w!==cw&&!inL.has(w)&&sfx2(w)===sfx2(cw)&&Math.abs(w.length-L)<=2).map(w=>{const q=gp(w)||enP(w);if(p&&q&&p!==q)return null;if(!p&&q&&q!=='n')return null;   // слова нет в словарике (priest, Venator) — скорее существительное
+      const e=sfxN(w,cw),f=pre(w,cw),d=lev(w,cw);if(d>Math.max(2,Math.ceil(L*.5))||!(e>=2||f>=2||(f>=1&&d<=2)))return null;
+      return {w,s:2*Math.min(e,4)+1.5*Math.min(f,3)-d-.5*Math.abs(w.length-L)+(p&&q?1:0)};}).filter(Boolean).sort((a,b)=>b.s-a.s);
+    return shuffle(C.slice(0,3)).slice(0,2).map(x=>x.w);};
+  // 13.9.73 (П12): «Выбери перевод» — реплика с голосом, 3 перевода: верный + переводы других реплик похожей длины (сначала этого же диалога). ru в вопросе пустой — старый клиент не покажет ответ в пузыре
+  const trQ=l=>{if(!l||!l.ru||!l.a)return null;const right=String(l.ru).trim(),n=right.length,st=new Set(ruStems(right)),wr=[];
+    const pool=[...shuffle(L.filter(x=>x.en!==l.en)),...shuffle(oth)].filter(x=>x&&x.ru).sort((a,b)=>(L.includes(b)?1:0)-(L.includes(a)?1:0)||Math.abs(String(a.ru).length-n)-Math.abs(String(b.ru).length-n));
+    for(const x of pool){if(wr.length>=2)break;const r=String(x.ru).trim();if(!r||r.toLowerCase()===right.toLowerCase()||wr.some(y=>y.toLowerCase()===r.toLowerCase()))continue;const rs2=ruStems(r);if(rs2.length&&rs2.filter(s=>st.has(s)).length>=Math.ceil(rs2.length/2))continue;wr.push(r);}
+    return wr.length>=2?lineQ('tr',l,{ru:'',tru:right,right,opts:shuffle([right,...wr])}):null;};
   // 1 — «Собери»: реплика с голосом, лучше 4–7 слов (случайная — в реванше другая)
   let q1=null;const bl=shuffle(L.filter(l=>l.a&&nW(l.en)>=4&&nW(l.en)<=SC_MAXB))[0]||shuffle(L.filter(l=>l.a&&nW(l.en)>=3&&nW(l.en)<=SC_MAXB))[0];
   if(bl){q1=lineQ('build',bl,dvTk(bl.en));used.add(bl.en);}
   else for(const v of shuffle(voc)){const n=scToks(String(v.w)).length;if(n<2||n>5)continue;const f=find(v.w);if(!f)continue;
     q1=lineQ('build',f.l,Object.assign(dvTk(f.x),{ex:{pre:f.l.en.slice(0,f.i),post:f.l.en.slice(f.i+f.x.length),ru:rs(v)}}));used.add(f.l.en);used.add(String(v.w).toLowerCase());break;}
   // 2 — «Что значит?»: чужие значения сначала из этого же диалога; значения того же слова из других диалогов — не варианты
-  let q2=null;const lw=v=>String(v.w).toLowerCase().trim();
+  let q2=null;const lw=v=>String(v.w).toLowerCase().trim(),trL=()=>shuffle(L.filter(l=>l.a&&l.ru&&!used.has(l.en)&&nW(l.en)>=3)).concat(shuffle(L.filter(l=>l.a&&l.ru&&!used.has(l.en))));
+  if(o.tr)for(const l of trL()){const q=trQ(l);if(q){q2=q;used.add(l.en);break;}}   // 13.9.73: через раз — «Выбери перевод» вместо «Что значит?»
   const mv=shuffle(voc.filter(v=>!used.has(lw(v)))).map(v=>({v,f:find(v.w)})).sort((a,b)=>(b.f?1:0)-(a.f?1:0))[0];
-  if(mv){const right=rs(mv.v),st=new Set(ruStems(right)),wr=[],pool=[...shuffle(voc),...shuffle(gmHeroesAll().flatMap(h=>(h.dialogs||[]).flatMap(x=>x.vocab||[])).filter(v=>v&&v.w&&v.r&&!voc.includes(v)))];
+  if(mv&&!q2){const right=rs(mv.v),st=new Set(ruStems(right)),wr=[],pool=[...shuffle(voc),...shuffle(gmHeroesAll().flatMap(h=>(h.dialogs||[]).flatMap(x=>x.vocab||[])).filter(v=>v&&v.w&&v.r&&!voc.includes(v)))];
     for(const v of pool){if(wr.length>=2)break;if(lw(v)===lw(mv.v))continue;const r=rs(v);if(!r||r.toLowerCase()===right.toLowerCase()||/[;()\[\]]/.test(r)||ruStems(r).some(s=>st.has(s))||wr.some(x=>x.toLowerCase()===r.toLowerCase()))continue;wr.push(r);}
     if(wr.length>=2){const f=mv.f;q2=Object.assign(f?lineQ('mean',f.l,{}):{t:'mean',s:'',a:'',en:'',ru:''},{w:String(mv.v.w),right,opts:shuffle([right,...wr])});used.add(lw(mv.v));if(f)used.add(f.l.en);}}
+  if(!q2)for(const l of trL()){const q=trQ(l);if(q){q2=q;used.add(l.en);break;}}   // нет лексики — перевод
   // 3 — «Что он сказал?»: варианты — та же реплика, но одно слово подменено похожим словом из реплик героев (та же длина и окончание) — надо расслышать;
   // не вышло — подмена как в «Что прозвучало?» у сцен, потом другие реплики похожей длины
-  const hearQ=l=>{const ws=String(l.en).split(/[^A-Za-z']+/).filter(Boolean),inL=new Set(ws.map(w=>w.toLowerCase())),re=w=>new RegExp('(^|[^A-Za-z\'])'+w+'(?=[^A-Za-z\']|$)');
-    const cand=ws.map((w,k)=>({w,s:(SC_STOP.has(w.toLowerCase())||w.length<3||/'/.test(w)||(k>0&&/^[A-Z]/.test(w))?-9:0)+Math.min(w.length,8)+(k>0?2:0)})).filter(x=>x.s>=0).sort((a,b)=>b.s-a.s);
-    let opts=null;for(const c of cand){const cw=c.w.toLowerCase(),cap=/^[A-Z]/.test(c.w),sub=shuffle(voc2.filter(w=>!inL.has(w)&&sfx2(w)===sfx2(cw)&&Math.abs(w.length-cw.length)<=2)).slice(0,2);
+  const hearQ=(l,strict)=>{const ws=String(l.en).split(/[^A-Za-z']+/).filter(Boolean),inL=new Set(ws.map(w=>w.toLowerCase())),re=w=>new RegExp('(^|[^A-Za-z\'])'+w+'(?=[^A-Za-z\']|$)');
+    const cand=ws.map((w,k)=>({w,bad:SC_STOP.has(w.toLowerCase())||DV_STOP.has(w.toLowerCase())||FN.has(w.toLowerCase())||w.length<3||/'/.test(w)||(k>0&&/^[A-Z]/.test(w)),s:Math.min(w.length,8)+(k>0?2:0)})).filter(x=>!x.bad).sort((a,b)=>b.s-a.s);   // 13.9.73: было «−9 к очкам» — длинное имя (Venator) всё равно проходило
+    let opts=null;for(const c of [...cand.map(c=>({w:c.w,lo:0})),...cand.map(c=>({w:c.w,lo:1}))]){const cw=c.w.toLowerCase(),cap=/^[A-Z]/.test(c.w),sub=dvSubs(cw,inL,c.lo);   // сначала той же части речи, потом — просто похожее на слух
       if(sub.length<2)continue;opts=sub.map(w=>l.en.replace(re(c.w),(m,a)=>a+(cap?w[0].toUpperCase()+w.slice(1):w)));if(new Set(opts).size===2&&!opts.includes(l.en))break;opts=null;}
+    if(!opts&&strict)return null;   // 13.9.73: у реплики нет похожих на слух слов — лучше взять другую реплику
     if(!opts)for(const c of cand){const u=[...new Set((scListenOpts({en:l.en,gap:c.w},oth,false)||[]).filter(x=>x&&x!==l.en))];if(u.length>=2){opts=u.slice(0,2);break;}}
     if(!opts){const n=nW(l.en);opts=shuffle([...L,...oth].filter(x=>x.en!==l.en)).sort((a,b)=>Math.abs(nW(a.en)-n)-Math.abs(nW(b.en)-n)).slice(0,2).map(x=>x.en);}
     return opts.length>=2?lineQ('hear',l,{right:l.en,opts:shuffle([l.en,...opts])}):null;};
-  const hl=shuffle(L.filter(l=>l.a&&!used.has(l.en)&&nW(l.en)>=3&&nW(l.en)<=14))[0]||shuffle(L.filter(l=>l.a&&!used.has(l.en)))[0];
-  const q3=hl?hearQ(hl):null;if(hl)used.add(hl.en);
+  const hls=[...shuffle(L.filter(l=>l.a&&!used.has(l.en)&&nW(l.en)>=3&&nW(l.en)<=14)),...shuffle(L.filter(l=>l.a&&!used.has(l.en)&&!(nW(l.en)>=3&&nW(l.en)<=14)))];
+  let q3=null,hl=null;for(const l of hls){q3=hearQ(l,true);if(q3){hl=l;break;}}if(!q3&&hls[0]){hl=hls[0];q3=hearQ(hl);}if(hl)used.add(hl.en);
   const out=[q1,q2,q3].filter(Boolean);
   for(const l of shuffle(L.filter(x=>x.a&&!used.has(x.en)))){if(out.length>=3)break;const q=hearQ(l);if(q){out.push(q);used.add(l.en);}}   // запас: всегда 3 вопроса
   if(out[0])out[0].hs=hs;return out;}
 // шторка: за кого играешь, диалог, ставка — как у дуэли по сцене
 function dvSheet(pre){pre=pre||{};const D=dvDialogs();if(!D.length){toast('Пока нет диалогов, где оба героя живые');return;}scCloseSheet();
   const g=store.gold||0,dvK=x=>x.h.id+':'+x.i,dvN=x=>((store.dvPlay||{})[dvK(x)]||0),auto=D.reduce((b,x,k)=>dvN(x)<dvN(D[b])?k:b,0);   // 13.9.70: диалог выбирается сам — тот, что меньше всего играли
-  let di=Math.max(0,pre.first?D.findIndex(x=>x.d.lines[0].en===pre.first):auto),side=0,bet=pre.bet!=null?(pre.bet<=g?pre.bet:0):(g>=25?25:0);if(di<0)di=0;
+  const re=pre.not!=null,auto2=re?D.reduce((b,x,k)=>{if(dvK(x)===pre.not)return b;if(b<0)return k;const hm=y=>!pre.me||y.A.name===pre.me||y.B.name===pre.me?0:1;return hm(x)<hm(D[b])||(hm(x)===hm(D[b])&&dvN(x)<dvN(D[b]))?k:b;},-1):-1;   // 13.9.73: реванш — другой диалог (тот же герой, меньше всего игранный)
+  let di=Math.max(0,pre.first?D.findIndex(x=>x.d.lines[0].en===pre.first):auto2>=0?auto2:auto),side=0,bet=pre.bet!=null?(pre.bet<=g?pre.bet:0):(g>=25?25:0);if(di<0)di=0;
   if(pre.me){const k=[D[di].A.name,D[di].B.name].indexOf(pre.me);if(k>=0)side=k;}
   const w=document.createElement('div');w.className='sc-sheetwrap dvs';let drawn=false;
   const ic=h=>`<span class="dv-ic"${h.icon?` style="background-image:url('${esc(assetUrl(h.icon))}')"`:''}></span>`;
   const draw=()=>{const x=D[di],hs=[x.A,x.B];w.innerHTML=`<div class="sc-sheet kv-sheet dv-sheet${drawn?' noanim':''}"><b>⚔️ Versus с другом</b><p class="kv-sub">Deadlock · 3 раунда: собери фразу, что значит, что сказал герой. Урон по сопернику — твои очки.</p>
-    <div class="kv-lbl">Ты за</div><div class="kv-modes dv-sides">${hs.map((h,k)=>`<button data-side="${k}" class="${k===side?'on':''}">${ic(h)}<b>${esc(h.name)}</b><small>${k===side?'это ты':'достанется другу'}</small></button>`).join('')}</div>
-    <div class="kv-lbl">Диалог <small>выбран сам — можно сменить</small></div><div class="kv-eps dv-dlgs">${D.map((x,k)=>`<button data-di="${k}" class="${k===di?'on':''}"><b>${esc(String(x.d.ctx||'').split('·').slice(0,2).join('·').trim())}</b><small>${x.d.about?esc(x.d.about):`«${esc(x.d.lines[0].en)}»`}</small><em>${x.d.lines.length} ${plural(x.d.lines.length,['реплика','реплики','реплик'])}${dvN(x)?` · играли ${dvN(x)}`:''}</em></button>`).join('')}</div>
+    <div class="kv-lbl">Ты за</div><div class="kv-modes dv-sides">${hs.map((h,k)=>`<button data-side="${k}" class="${k===side?'on':''}">${ic(h)}<b>${esc(h.name)}</b><small>${k===side?'это ты':'достанется другу'} · ур. ${hxLv(hxXP(h))}</small></button>`).join('')}</div>
+    <div class="kv-lbl">Диалог <small>${re?'реванш — другой диалог, можно сменить':'выбран сам — можно сменить'}</small></div><div class="kv-eps dv-dlgs">${D.map((x,k)=>`<button data-di="${k}" class="${k===di?'on':''}"><b>${esc(String(x.d.ctx||'').split('·').slice(0,2).join('·').trim())}</b><small>${x.d.about?esc(x.d.about):`«${esc(x.d.lines[0].en)}»`}</small><em>${x.d.lines.length} ${plural(x.d.lines.length,['реплика','реплики','реплик'])}${dvN(x)?` · играли ${dvN(x)}`:''}</em></button>`).join('')}</div>
     <div class="kv-lbl">Ставка <small>у тебя ${ui('coin')} ${fmt(g)}</small></div>${g<25?`<p class="kv-poor">Ставки — от ${ui('coin')} 25. Пройди эпизод — дадут билеты.</p>`:''}<div class="kv-bets">${[0,25,50,100,200].filter(v=>!v||v<=g||v===25).map(v=>`<button data-b="${v}" class="${v===bet?'on':''}"${v>g?' disabled':''}>${v?`${ui('coin')} ${v}`:'Без ставки'}</button>`).join('')}</div>
     ${bet?`<p class="kv-bank-note">Банк ${ui('coin')} <b>${bet*2}</b> — ставка списывается у обоих на старте, победитель забирает всё. Ничья — вернём.</p>`:''}
     <button class="sc-btn" id="dvGo">${bet?`Создать — ставка ${ui('coin')} ${bet} →`:'Создать и позвать друга →'}</button><button class="sc-btn ghost" data-close>Отмена</button></div>`;drawn=true;};
   draw();w.onclick=async e=>{const b=e.target.closest('button');if(e.target===w||(b&&b.hasAttribute('data-close'))){w.remove();return;}if(!b||b.disabled)return;sfx('tap');
     if(b.dataset.side){side=+b.dataset.side;draw();return;}if(b.dataset.di){const was=[D[di].A.name,D[di].B.name][side];di=+b.dataset.di;const k=[D[di].A.name,D[di].B.name].indexOf(was);side=k>=0?k:0;draw();return;}if(b.dataset.b){bet=+b.dataset.b;draw();return;}
     if(b.id==='dvGo'){dvUnlock();b.disabled=true;b.textContent='Создаю комнату…';const x=D[di],hs=[x.A,x.B],me=hs[side],fo=hs[1-side];
-      try{const qs=dvMakeQs(x.d,[me.name,fo.name]);const r=await kvNet({a:'create',fx:shopUse('st'),bg:profBgKey(),pf:myPub(),room:{sid:`dd:deadlock:${x.h.id}:${x.i}`,ep:0,mode:'race',bet,qs}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
-        w.remove();store.dvPlay=Object.assign({},store.dvPlay,{[dvK(x)]:dvN(x)+1});save();KV={code:r.v.code,role:'A',room:r.v,k:0,t0:0,dd:true};ev('dv_new','dd:'+x.h.id);dvShare();dvLobby();kvPoll();}catch(z){kvErr();b.disabled=false;draw();}}};
+      try{const qs=dvMakeQs(x.d,[me.name,fo.name],{tr:((store.dvQn||0)%2)===1});const r=await kvNet({a:'create',fx:shopUse('st'),bg:profBgKey(),pf:myPub(),room:{sid:`dd:deadlock:${x.h.id}:${x.i}`,ep:0,mode:'race',bet,qs}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
+        w.remove();store.dvPlay=Object.assign({},store.dvPlay,{[dvK(x)]:dvN(x)+1});store.dvQn=(store.dvQn||0)+1;save();KV={code:r.v.code,role:'A',room:r.v,k:0,t0:0,dd:true};ev('dv_new','dd:'+x.h.id);dvShare();dvLobby();kvPoll();}catch(z){kvErr();b.disabled=false;draw();}}};
   document.body.appendChild(w);}
 function dvShare(){const R=KV.room,{me,fo}=dvMe();shareLink(kvLink(),`Го в Versus по Deadlock: ${me.name} против ${fo.name} — кто лучше понимает английский? «Языки по кино»${R.bet?`, ставка ${R.bet} билетов`:''}. Комната ${KV.code}`);}
 // окно боя
@@ -5063,7 +5087,7 @@ function dvFit(){$$('#dvxStage .dvx-pi video').forEach(v=>{const r=v.getBounding
   const vw=v.videoWidth||1280,vh=v.videoHeight||720,s=Math.max(r.width/vw,r.height/vh),w=Math.min(1,r.width/(vw*s)),f=+v.dataset.fx||0.75;
   const x=w>=1?50:Math.max(0,Math.min(100,(f-0.62*w)/(1-w)*100));v.style.objectPosition=x.toFixed(1)+'% 50%';});}   // 13.9.70: лицо на 62 % окна (у левого, отражённого, — на 38 %): ближе к краю экрана, а не к шву посередине
 function dvStage(){const st=$('#dvxStage');if(!st||!KV)return;const {me,fo}=dvMe(),foN=(KV.room[kvFoe()]||{}).n||'Друг',key=me.name+'|'+fo.name+'|'+foN;if(st.dataset.k===key)return;st.dataset.k=key;
-  st.innerHTML=dvPort(me,'lf','Ты')+dvPort(fo,'rt',foN)+'<div class="dvx-bub" id="dvxBub"></div>';
+  st.innerHTML=dvPort(me,'lf','Ты · ур. '+hxLv(hxXP(me)))+dvPort(fo,'rt',foN)+'<div class="dvx-bub" id="dvxBub"></div>';   // 13.9.73: уровень своего героя
   st.querySelectorAll('video').forEach(v=>{v.addEventListener('loadedmetadata',dvFit);const p=v.play();if(p&&p.catch)p.catch(()=>{});});dvFit();setTimeout(dvFit,60);}
 function dvTop(){const t=$('#dvxTop');if(!t||!KV)return;const R=KV.room,me=R[KV.role]||{ans:{}},fo=R[kvFoe()]||{n:'Друг',ans:{}},n=R.qs.length,HP=n*DV_HP;
   if(!t.firstChild){t.innerHTML=`<button class="dvx-x" id="dvxX" aria-label="Выйти">${ui('close')}</button><div class="dvx-hp lf"><b id="dvNmL"></b><i><em id="dvHpL"></em></i><span id="dvHpLn"></span></div><div class="dvx-mid" id="dvxMid"></div><div class="dvx-hp rt"><b id="dvNmR"></b><i><em id="dvHpR"></em></i><span id="dvHpRn"></span></div>`;
@@ -5099,6 +5123,7 @@ function dvJoin(code,R){if(!gmData()){toast('Обнови приложение: 
   $('#dvNo').onclick=()=>{sfx('tap');KV=null;dvClose();};
   if($('#dvIn'))$('#dvIn').onclick=async()=>{sfx('tap');dvUnlock();$('#dvIn').disabled=true;try{const j=await kvNet({a:'join',code,fx:shopUse('st'),bg:profBgKey(),pf:myPub()});if(!j.ok){kvErr(j);$('#dvIn').disabled=false;return;}
       if(!j.v.B){KV.role='A';KV.guest=false;toast('Это твой же вызов — с одного аккаунта играть против себя нельзя. Отправь ссылку другу');dvClose();dvOpen();dvLobby();kvPoll();return;}   // 13.9.70: сервер узнал создателя комнаты — второго игрока нет
+      {const m=/^dd:deadlock:([\w-]+:\d+)/.exec(String(R.sid||''));if(m){store.dvPlay=Object.assign({},store.dvPlay,{[m[1]]:((store.dvPlay||{})[m[1]]||0)+1});save();}}   // 13.9.73: у друга этот диалог тоже «сыгран» — реванш предложит другой
       kvApply(j.v);kvPoll();}catch(e){kvErr();}};}
 // состояние комнаты (опрос kvPoll → kvApply → сюда)
 function dvApply(R){if(!KV)return;KV.room=R;
@@ -5122,12 +5147,14 @@ function dvRound(){if(!KV||KV.over)return;const R=KV.room,n=R.qs.length;if(KV.k>
   const say=`<button class="dvx-say" id="dvSay" aria-label="Послушать">▶</button>`,mk=q.t==='mean'&&q.en?markWord(q.en,q.w.replace(/\.\.\.|…/g,'').trim(),'<mark>','</mark>'):'';
   const bub=q.t==='hear'?`<div class="dvx-b ${side||'lf'}">${say}<span class="dvx-wave" aria-hidden="true">${'<i></i>'.repeat(9)}</span></div>`
     :q.t==='mean'?(q.en?`<div class="dvx-b ${side||'lf'}">${q.a?say:''}<span>${mk}</span></div>`:'')
+    :q.t==='tr'?`<div class="dvx-b ${side||'lf'}">${q.a?say:''}<span>${esc(q.en)}</span></div>`
     :`<div class="dvx-b ${side||'lf'}">${q.a?say:''}<span>«${esc(q.ru)}»</span></div>`;
   const b=$('#dvxBub');if(b)b.innerHTML=bub;
   const opts=()=>`<div class="dvx-o">${q.opts.map(o=>`<button data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
   dvPan(q.t==='build'?`<div class="dvx-ask">${q.ex?'Собери выражение':`Собери, что сказал ${esc(who)}`}<small>${q.ex?`«${esc(q.ex.ru)}» — внутри фразы`:'Перевод — в пузыре. Порядок слов — как в реплике'}</small></div>
       ${q.ex?`<div class="sc-expr">${esc(q.ex.pre)}<span class="sc-bans in" id="scbans"></span>${esc(q.ex.post)}</div>`:`<div class="sc-bans" id="scbans"></div>`}<div class="sc-bpool" id="scbpool"></div><button class="dvx-go" id="dvChk" disabled>Проверить</button><div class="dvx-fb" id="dvFb"></div>`
     :q.t==='mean'?`<div class="dvx-ask">Что значит «${esc(q.w)}»?${q.en?'<small>Слово — в реплике сверху</small>':''}</div>${opts()}<div class="dvx-fb" id="dvFb"></div>`
+    :q.t==='tr'?`<div class="dvx-ask">Выбери перевод<small>Что сказал ${esc(who)} — реплика сверху</small></div>${opts()}<div class="dvx-fb" id="dvFb"></div>`
     :`<div class="dvx-ask">Что сказал ${esc(who)}?<small>Послушай — варианты почти одинаковые</small></div>${opts()}<div class="dvx-fb" id="dvFb"></div>`,KV.k);
   const sb=$('#dvSay'),play=auto=>{if(!q.a)return;dvVoice(q.a,sb,ok=>{if(q.t==='hear'&&ok&&!KV.heard&&!KV.ansd&&KV){KV.heard=1;KV.qt=Date.now();}});};   // на слух время идёт с конца первого прослушивания
   if(sb)sb.onclick=e=>{e.stopPropagation();dvUnlock();haptic('sel');play(false);};
@@ -5148,6 +5175,7 @@ function dvTiles(q,done){const B={tk:q.tk,pool:q.pool.map((w,k)=>({w,k})),got:[]
 function dvFb(q,ok,pts,miss){const head=ok?`<b class="ok">✓ Верно</b> <span class="pts">+${pts}</span>`:'<b class="bad">✗ Мимо</b>';
   if(q.t==='build')return head+(ok?` · ${esc(q.en)}`:q.ex?scFixHTML(q.tk,miss,q.ex):`<div class="sc-fix"><small>Вот как правильно</small>${esc(q.en)}</div>`);
   if(q.t==='mean')return `${head} · «${esc(q.w)}» — ${esc(q.right)}`;
+  if(q.t==='tr')return `${head} · ${esc(q.en)}<small class="dvx-ru">${esc(q.tru||q.right)}</small>`;
   return `${head} · ${esc(q.en)}<small class="dvx-ru">${esc(q.ru)}</small>`;}
 // ответ: очки локально сразу, на сервер — в фоне; урон по полоске друга
 function dvAns(ok){const R=KV.room,k=KV.k,a={ok:!!ok,ms:Math.max(0,Date.now()-KV.qt)},pts=kvPts(a);KV.ansd=1;KV.k++;
@@ -5163,6 +5191,7 @@ function dvEnd(foeLeft){kvStop();try{if(DVAU)DVAU.pause();}catch(e){}const R=KV.
   store.kvDone=store.kvDone||{};const first=!store.kvDone[KV.code];store.kvDone[KV.code]=1;
   const a=kvSum(me),b=kvSum(fo),win=foeLeft?true:a===b?null:a>b,sc=p=>Object.values(p.ans||{}).filter(x=>x.ok).length;let gain=0,steal=null;
   if(first&&win===true)store.kvWins=(store.kvWins||0)+1;
+  const xpN=first?10*sc(me)+(win===true?20:win===null?8:0):0,xp=hxAdd(hm,xpN);   // 13.9.73: герой качается
   if(R.bet&&first){gain=win===true?R.bet*2:win===null?R.bet:0;if(gain)store.gold=(store.gold||0)+gain;   // банк — сразу (как в kvEnd): закрыл приложение во время анимации — билеты не пропадут
     if(win!==null)steal={win,bet:R.bet,me:{n:me.n},foe:{n:fo.n},style:win?shopUse('st'):stOf(fo.fx)};}
   save();sfx(win===false?'learn':'win');ev('pvp_end',R.sid);
@@ -5170,11 +5199,14 @@ function dvEnd(foeLeft){kvStop();try{if(DVAU)DVAU.pause();}catch(e){}const R=KV.
   if(win!==null){const lp=$(`#dvxStage .dvx-p.${win?'rt':'lf'}`);if(lp)lp.classList.add('ko');}
   const title=foeLeft?`Победа! ${esc(fo.n)} больше нет в бою`:win===true?'Победа!':win===false?(sc(fo)>sc(me)?`Побеждает ${esc(fo.n)} — больше верных ответов`:`Побеждает ${esc(fo.n)} — быстрее при равном счёте`):'Ничья';
   const cell=x=>x?`<td class="${x.ok?'ok':'bad'}">${x.ok?'✓':'✗'}<small>${(x.ms/1000).toFixed(1)} с</small><em>${kvPts(x)}</em></td>`:'<td>—</td>';
+  const hx=hxXP(hm),hl=hxLv(hx);
   dvPan(`<div class="dvx-end"><b>${title}</b><p>Ты ${a} очк. (${sc(me)} из ${n} верно)${foeLeft?'':` · ${esc(fo.n)} ${b} очк. (${sc(fo)} верно)`}</p>
+    <div class="dvx-xp${xp&&xp.l1>xp.l0?' up':''}"><span>${esc(hm.name)} · ур. ${hl}</span><i><em style="transform:scaleX(${hxProg(hx).toFixed(3)})"></em></i><small>${first?`+${xpN} опыта`:'опыт за этот бой уже начислен'}${xp&&xp.l1>xp.l0?` · новый уровень!`:''}</small></div>
     ${R.bet?`<p class="dvx-bank">${win===true?`Банк твой: ${ui('coin')} ${R.bet*2}`:win===null?`Ничья — ставка ${ui('coin')} ${R.bet} вернулась`:`Банк забирает ${esc(fo.n)}: ${ui('coin')} ${R.bet*2}`}</p>`:''}
     ${foeLeft?'':`<table class="kv-tbl"><thead><tr><th>Раунд</th><th>Ты</th><th>${esc(fo.n)}</th></tr></thead><tbody>${R.qs.map((q,i)=>`<tr><td>${esc(DV_T[q.t]||String(i+1))}</td>${cell((me.ans||{})[i])}${cell((fo.ans||{})[i])}</tr>`).join('')}</tbody><tfoot><tr><td>Σ</td><td>${a}</td><td>${b}</td></tr></tfoot></table>`}
-    <button class="dvx-go" id="dvAgain">⚔️ Реванш</button><button class="dvx-gh" id="dvOut">К героям</button></div>`);
-  const pre={me:hm.name,bet:R.bet,first:((dvParse(R).d||{}).lines||[{}])[0].en};
+    <button class="dvx-go" id="dvAgain">⚔️ Реванш — другой диалог</button><button class="dvx-gh" id="dvOut">К героям</button></div>`);
+  const pre={me:hm.name,bet:R.bet,not:(/^dd:deadlock:([\w-]+:\d+)/.exec(String(R.sid||''))||[])[1]||''};   // 13.9.73: реванш на другом диалоге
+  if(xp&&xp.l1>xp.l0)setTimeout(()=>{toast(`${hm.name} — уровень ${xp.l1}`);sfx('learn');},900);
   $('#dvAgain').onclick=()=>{sfx('tap');KV=null;dvClose();setTimeout(()=>dvSheet(pre),120);};
   $('#dvOut').onclick=()=>{sfx('tap');KV=null;dvClose();};
   if(steal)setTimeout(()=>kvSteal(steal).then(()=>{if(gain)goldFX(gain,$('.dvx-bank'));}),700);   // кража билетов, потом выплата — как в дуэли по сцене

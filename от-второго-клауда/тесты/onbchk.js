@@ -42,24 +42,24 @@ const VP=PC?{width:1280,height:720}:{width:390,height:844};
   ok('верный ответ — зелёный; ошибка — красный, верный показан зелёным',/\bok\b/.test(chs[0].after.find((x,j)=>chs[0].opts[j][1]==='1'))&&chs[1].after.some(x=>/\bbad\b/.test(x))&&/\bok\b/.test(chs[1].after.find((x,j)=>chs[1].opts[j][1]==='1')),chs.map(c=>c.after));
   let r=await P.evaluate(()=>({ph:ONB.lt.ph,rows:[...document.querySelectorAll('.onb-cr[data-j]')].map(x=>{const j=+x.dataset.j;return [ONB.lt.seq[j][0],x.querySelector('b').textContent,x.querySelector('.n-sp')?x.querySelector('.n-sp').classList.contains('open'):null];}),
     go:document.querySelector('#onbGo').disabled,lv:(document.querySelector('#onbCkL')||{}).textContent,est:ltEstimate({seq:ONB.lt.seq,fk:ONB.lt.fk,ckA:{},gok:[]}),fk:document.querySelectorAll('.onb-cr.fk').length}));
-  ok('после карточек — «Проверь себя»: 6 самых трудных «знаю», перевод под пылью, «Дальше» неактивна, уровень по словам сверху',r.ph==='chk'&&r.rows.length===6&&r.rows.every((x,j,a)=>!j||a[j-1][0]>=x[0])&&r.rows.every(x=>x[2]===false)&&r.go&&r.lv===r.est&&!r.fk,r);
+  ok('после карточек — «Проверь себя»: 6 самых трудных «знаю», перевод под пылью, «Дальше» неактивна, уровень по словам сверху',r.ph==='chk'&&r.rows.length===6&&r.rows.every((x,j,a)=>!j||a[j-1][0]>=x[0])&&r.rows.every(x=>x[2]===false)&&r.go&&r.lv===lvWn(r.est)&&!r.fk,r);
   await shot(P,'1-check');let L=await lay(P);ok('«Проверь себя»: ничего не вылезает, кнопки в окне',!L.wide.length&&!L.out.length&&!L.sx,L);
   await P.click('.onb-cr[data-j] .n-sp');await P.waitForTimeout(200);
   r=await P.evaluate(()=>({open:document.querySelector('.onb-cr[data-j] .n-sp').classList.contains('open'),go:document.querySelector('#onbGo').disabled}));
   ok('тап по пыли — перевод виден, «Дальше» ещё неактивна',r.open&&r.go,r);
   const lv0=r.lv;for(const x of await P.$$('.onb-cr[data-j] .onb-cb .y'))await x.click();await P.waitForTimeout(150);
   r=await P.evaluate(()=>({go:document.querySelector('#onbGo').disabled,lv:document.querySelector('#onbCkL').textContent,open:[...document.querySelectorAll('.onb-cr[data-j] .n-sp')].every(x=>x.classList.contains('open'))}));
-  ok('«Знал» на всех — «Дальше» активна, уровень тот же, переводы открылись',!r.go&&r.open&&r.lv===(await P.evaluate(()=>ltEstimate({seq:ONB.lt.seq,fk:ONB.lt.fk,ckA:{},gok:[]}))),r);
-  const before=await P.evaluate(()=>CEFR.indexOf(document.querySelector('#onbCkL').textContent));
+  ok('«Знал» на всех — «Дальше» активна, уровень тот же, переводы открылись',!r.go&&r.open&&r.lv===(await P.evaluate(()=>lvW(ltEstimate({seq:ONB.lt.seq,fk:ONB.lt.fk,ckA:{},gok:[]})))),r);
+  const before=await P.evaluate(()=>CEFR.findIndex(c=>lvW(c)===document.querySelector('#onbCkL').textContent));
   for(const x of await P.$$('.onb-cr[data-j] .onb-cb .n'))await x.click();await P.waitForTimeout(250);
-  r=await P.evaluate(()=>({lv:CEFR.indexOf(document.querySelector('#onbCkL').textContent),flip:ONB.lt.ck.every(j=>ONB.lt.seq[j][1]===false),nk:Object.values(ONB.lt.ckA).filter(v=>v===false).length,go:document.querySelector('#onbGo').disabled,cls:[...document.querySelectorAll('.onb-cr[data-j]')].every(x=>x.classList.contains('n'))}));
+  r=await P.evaluate(()=>({lv:CEFR.findIndex(c=>lvW(c)===document.querySelector('#onbCkL').textContent),flip:ONB.lt.ck.every(j=>ONB.lt.seq[j][1]===false),nk:Object.values(ONB.lt.ckA).filter(v=>v===false).length,go:document.querySelector('#onbGo').disabled,cls:[...document.querySelectorAll('.onb-cr[data-j]')].every(x=>x.classList.contains('n'))}));
   ok('«Не знал» на всех — уровень сверху ниже на глазах, записи стали «не знаю»',r.lv<before&&r.flip&&r.nk===6&&!r.go&&r.cls,{before,...r});
   await shot(P,'2-check-no');
   await P.click('#onbGo');await P.waitForTimeout(400);ok('«Дальше» — грамматика',(await st(P)).ph==='g');
   for(let k=0;k<4;k++){await P.click('.onb-opts .onb-o[data-ok="1"]');await P.waitForTimeout(800);}
   r=await P.evaluate(()=>{const T=ONB.lt,U=JSON.parse(JSON.stringify(T));U.ck.forEach(j=>U.seq[j][1]=true);U.ckA={};
     return {ph:T.ph,c:ONB.cefr,lv:(document.querySelector('#onbLv b')||{}).textContent,why:[...document.querySelectorAll('.onb-why span')].map(x=>x.textContent),m:[...document.querySelectorAll('.onb-why b.m')].map(x=>x.textContent),honest:ltEstimate(U)};});
-  ok('итог: уровень цветом и за что — «знаю 10 из 10», «не знал 6», «перевод 1 из 2», «выдуманные не попался», «грамматика 4 из 4»',r.ph==='res'&&r.lv===r.c&&r.why.join('|')==='знаю 10 из 10|не знал 6|перевод 1 из 2|выдуманные не попался|грамматика 4 из 4'&&r.m.join()==='6,1 из 2',r);
+  ok('итог: уровень цветом и за что — «знаю 10 из 10», «не знал 6», «перевод 1 из 2», «выдуманные не попался», «грамматика 4 из 4»',r.ph==='res'&&r.lv===lvWn(r.c)&&r.why.join('|')==='знаю 10 из 10|не знал 6|перевод 1 из 2|выдуманные не попался|грамматика 4 из 4'&&r.m.join()==='6,1 из 2',r);
   ok('честное «не знал» понизило итог',CEFR_I(r.c)<CEFR_I(r.honest),{c:r.c,без_не_знал:r.honest});
   await shot(P,'3-result');L=await lay(P);ok('итог: ничего не вылезает, кнопки в окне',!L.wide.length&&!L.out.length&&!L.sx,L);
   // «назад» из «Проверь себя» / итога — к началу теста, уровень считается заново
@@ -113,3 +113,4 @@ const VP=PC?{width:1280,height:720}:{width:390,height:844};
   ok('консоль чистая',![...A.errs,...B.errs,...C.errs,...D.errs].length,[...A.errs,...B.errs,...C.errs,...D.errs].slice(0,5));
   console.log(fails?`ИТОГ onbchk ${dev}: FAIL ${fails}`:`ИТОГ onbchk ${dev}: всё PASS`);await b.close();process.exit(fails?1:0);})();
 function CEFR_I(c){return ['A1','A2','B1','B2','C1'].indexOf(c);}
+function lvWn(c){return {A1:'Начинающий',A2:'Базовый',B1:'Средний',B2:'Выше среднего',C1:'Продвинутый'}[c];}   // 13.9.71: итог — словом
