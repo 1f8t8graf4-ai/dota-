@@ -21,16 +21,16 @@ ANIM_TAIL = ('Everything else stays perfectly still. The light does not change. 
 # модель всё равно рисует края и заодно «перерисовывает» героя по центру; 2) не сказано, куда смотрит голова — модель ставит фронтально;
 # 3) крупное действие (жуёт сигару + отдача на плечи) = смена позы. Теперь: голова и взгляд — как на арте, герой стоит на том же месте
 # и того же размера, пустые/чёрные края — продолжение фона арта; двигается только то, что УЖЕ нарисовано (без новых птиц, лепестков и т. п.).
-HERO = ('Animate this exact image of {name} from the game Deadlock. Keep the character exactly as drawn: same face, same head angle '
-        'and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. '
-        '{who} never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only '
-        'tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the '
-        'artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges '
-        'of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. {act} Natural blinking and '
-        'slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops '
-        'seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, '
-        'no text; any lettering in the art stays perfectly static.')
-HERO_NEG = ('Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, '
+HERO = ('Animate this exact image of {name} from the game Deadlock. It is a finished 16:9 frame: the painted artwork in the middle and a soft '
+        'blurred fill at the sides. Keep the whole frame exactly as it is: same framing, same size and position of the character, nothing '
+        'is cropped, zoomed, extended or repainted; the blurred sides stay soft and still. Keep the character exactly as drawn: same face, '
+        'same head angle and gaze direction, same pose, same clothes, colors and painted art style. {who} never turns toward the camera and '
+        'never turns away. Locked camera: no zoom, no pan, no tilt, no cuts. {act} Small living idle motion the whole time: the chest rises '
+        'and falls clearly with slow breathing, the shoulders shift slightly, the head makes one small nod or tilt and returns, hair and '
+        'clothing move a little, natural blinking. Everything moves slowly and continuously and the last frame is identical to the first, '
+        'so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra '
+        'limbs or fingers, no text; any lettering in the art stays perfectly static.')
+HERO_NEG = ('Avoid: turning to the camera, front view, camera pan up or down, tilt, crop, new pose, character redraw, re-centering, zoom, camera movement, '
             'cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, '
             'new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion.')
 
@@ -267,7 +267,7 @@ HEROES = [
 ]
 for hid, name, who, act in HEROES:
     ITEMS.append(dict(key=f'hero:deadlock:{hid}', kind='hero', game='deadlock', hero=hid, title=name, draft=False,
-        art=f'полный арт: ветка zai/hero-arts → heroes-arts/…/{hid}-full.png (как в pult.html)',
+        art=f'кадр 16:9: ветка claude/hero-16x9 → heroes-16x9/{hid}.jpg (полный арт по центру, по бокам — размытое продолжение)',
         animate=HERO.format(name=name, who=who, act=act), neg=HERO_NEG))
 
 OUT = dict(v=1, updated='2026-10-24',
