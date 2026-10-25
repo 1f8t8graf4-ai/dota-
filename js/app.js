@@ -397,7 +397,7 @@ function storeMerge(c,base){storeRelay(c);const L=store,cNew=(c.sv||0)>(base==nu
   o.myw=uni('myw');o.mywDel=uni('mywDel');for(const k in c.myw||{}){const a=(L.myw||{})[k],b=c.myw[k];if(a&&((b.st||0)>(a.st||0)||((b.st||0)===(a.st||0)&&(b.due||0)>(a.due||0))))o.myw[k]=b;}
   for(const k in o.mywDel)if(o.myw[k]&&(o.myw[k].at||0)<o.mywDel[k])delete o.myw[k];
   o.rw=uni('rw');for(const k in c.rw||{})if(L.rw&&L.rw[k]&&c.rw[k].t<L.rw[k].t)o.rw[k]=c.rw[k];
-  ['scOwn','kvPaid','kvDone','ach','duels','goalsDone','seg','showRw','dirCut'].forEach(k=>{if((c[k]&&typeof c[k]==='object'&&!Array.isArray(c[k]))||(L[k]&&typeof L[k]==='object'&&!Array.isArray(L[k])))o[k]=uni(k);});
+  ['scOwn','kvPaid','kvDone','ach','duels','goalsDone','seg','showRw','seasonRw','dirCut'].forEach(k=>{if((c[k]&&typeof c[k]==='object'&&!Array.isArray(c[k]))||(L[k]&&typeof L[k]==='object'&&!Array.isArray(L[k])))o[k]=uni(k);});
   if(c.shop||L.shop){const a=c.shop||{},b=L.shop||{};o.shop={own:Object.assign({},a.own||{},b.own||{}),use:Object.assign({},(cNew?b:a).use||{},(cNew?a:b).use||{})};}   // 13.2: покупки — объединение
   o.best=uni('best');for(const k in c.best||{})o.best[k]=Math.max(+c.best[k]||0,+(L.best||{})[k]||0);
   ['heroXP','dvPlay'].forEach(k=>{if(!c[k]&&!L[k])return;o[k]=uni(k);for(const x in c[k]||{})o[k][x]=Math.max(+c[k][x]||0,+(L[k]||{})[x]||0);});   // 13.9.73: опыт героев — больший
@@ -1032,7 +1032,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.73';
+const APP_V='13.9.74';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -3100,7 +3100,7 @@ function renderScQuiz(id,i){
       <div class="sc-btns">${rev?scRevMore(id)+scRevNext(id):boss?`<button class="sc-btn" id="scdir">🎬 Режиссёрская версия — сцена целиком</button><button class="sc-btn ghost" id="scsum">📚 Все фразы сцены</button><button class="sc-btn ghost" id="scpath">К пути сцены</button>`:`${!les&&s.parts[i+1]?`<button class="sc-btn" id="scnext">Следующий эпизод →</button>`:''}${lastEp?`<button class="sc-btn" id="scbossgo">👑 Финал сцены →</button><button class="sc-btn ghost" id="scsum">📚 Все фразы сцены</button>`:''}<button class="sc-btn ghost" id="scrp">Вернуться к эпизоду</button>`}<button class="sc-btn ghost" id="scshare">📤 Позвать друга учиться</button></div>
     </div>`;
     scMount(s,`${top}
-    ${epRw?rwEndHTML(s,i,rwNew):boss?(segGive(s)?segHTML(s,'new'):'')+(showGive(s)?showHTML(s):''):''}
+    ${epRw?rwEndHTML(s,i,rwNew):boss?(segGive(s)?segHTML(s,'new'):'')+(z=>z?seasonHTML(s,z):'')(seasonGive(s))+(showGive(s)?showHTML(s):''):''}
     <div class="sc-sec"><h2>Что закрепили</h2><span>${Q.filter(x=>x.res).length}</span></div>
     ${Q.filter((x,j,a)=>a.findIndex(y=>y.f===x.f)===j).map(x=>`<div class="sc-use sc-card${x.res?'':' miss'}" data-fid="${x.f.id}"><div class="en">${kwWrap(x.f,target(x.f))}</div><div class="ru">${esc(x.f.ru)}</div>${phInfoHTML(x.f,{noEx:true})}</div>`).join('')}`,'scend');
     kwBind(document.querySelector('.scn'),el=>{const c=el.closest('[data-fid]');return c?all.find(y=>y.id===c.dataset.fid):null;});
@@ -3163,11 +3163,34 @@ const showOf=s=>s.show||s.title;
 const showScenes=h=>SCENES.filter(x=>x.kind!=='clip'&&showOf(x)===h&&flagOf('scene-'+x.id)!=='hide');
 const showDone=h=>{const L=showScenes(h);return L.length>0&&L.every(x=>segDone(x));};
 const showHas=h=>!!(store.showRw&&store.showRw[h]);
-function showGive(s){const h=showOf(s);if(!showDone(h)||showHas(h))return false;store.showRw=store.showRw||{};store.showRw[h]={t:Date.now()};save();return true;}
+/* ===== 13.9.74 (П18): фоны по сезонам — решение Андрея: «фильмам — 1 фон, сериалам — на каждый сезон».
+   Ключ сезона — h:<сериал>|S04 (сезон — из начала поля ep: «S04E09 · …»), награда — за все сцены этого сезона в этой группе (у немецкой — свои).
+   Уже выданный фон «весь сериал» (h:<сериал>) остаётся у тех, у кого он есть; новым у сериала он больше не выдаётся.
+   Новые ролики (фильм, сезон, интервью) — scenes/_bg/<ключ>.mp4, ключ — из tools/bg-prompts.json, «:» → «-» (season-sopranos-S04.mp4), превью — <…>p.jpg.
+   В приложении ролик появляется, когда в tools/bg-status.json у ключа стоит "ok":1 (ставит Claude, посмотрев ролик); до этого — обложка / постер, у фильма — прежний film-bg.mp4. ===== */
+const BG_SHOW={'Волк с Уолл-стрит':'film:wolf','The Wolf of Wall Street':'film:wolf','Американский психопат':'film:psycho','Таксист':'film:taxi','Титаник':'film:titanic','Titanic':'film:titanic','Бункер':'film:bunker','Павел Дуров':'person:durov','Clavicular':'person:clavicular','Клан Сопрано':'season:sopranos','Die Sopranos':'season:sopranos','Во все тяжкие':'season:bb','Breaking Bad':'season:bb'};
+let BGST={},BGST_P=null;
+function bgStLoad(){if(BGST_P)return BGST_P;BGST_P=(location.protocol==='file:'?Promise.resolve({}):fetch('tools/bg-status.json?h='+Math.floor(Date.now()/36e5),{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})))
+  .then(j=>{BGST=j&&typeof j==='object'&&!Array.isArray(j)?j:{};return BGST;});return BGST_P;}
+const bgNewF=key=>{const x=key&&BGST[key];if(!x||!x.ok)return null;const f=/^scenes\/_bg\/[\w.-]+\.mp4$/.test(String(x.file||''))?x.file:'scenes/_bg/'+key.replace(/:/g,'-')+'.mp4';
+  return {vid:assetUrl(f),img:assetUrl(f.replace(/\.mp4$/,'p.jpg')),ev:x.ev!=null&&isFinite(+x.ev)?+x.ev:null};};
+const seasonOf=s=>{if(!s||s.kind!=='series')return '';const m=/^S(\d{2})/i.exec(String(s.ep||''));return m?'S'+m[1]:'';};
+const showSeasons=h=>[...new Set(showScenes(h).map(seasonOf).filter(Boolean))].sort();
+const seasonScenes=(h,sx)=>showScenes(h).filter(x=>seasonOf(x)===sx);
+const seasonK=(h,sx)=>'h:'+h+'|'+sx,seasonN=sx=>+String(sx||'').slice(1)||0;
+const seasonHas=k=>!!(store.seasonRw&&store.seasonRw[k]);
+function seasonGive(s){const sx=seasonOf(s);if(!sx)return false;const h=showOf(s),k=seasonK(h,sx),L=seasonScenes(h,sx);if(!L.length||!L.every(x=>segDone(x))||seasonHas(k))return false;
+  store.seasonRw=Object.assign({},store.seasonRw,{[k]:{t:Date.now()}});save();return k;}
+function showGive(s){const h=showOf(s);if(showSeasons(h).length||!showDone(h)||showHas(h))return false;store.showRw=store.showRw||{};store.showRw[h]={t:Date.now()};save();return true;}   // 13.9.74: у сериала — фоны сезонов, «весь сериал» больше не выдаём
 function bgInfo(k){if(!k)return null;const adm=ADM_OPEN();   // 13.0: админ видит все фоны
-  if(k.startsWith('h:')){const h=k.slice(2),L=showScenes(h);if(!L.length)return null;const F=L.filter(x=>x.filmbg),d=L.filter(segDone).length;
-    return {k,film:true,got:showHas(h)||adm,img:[...F.map(x=>assetUrl(scKey(x,'film-bgp.jpg'))),assetUrl(scKey(L[0],'poster.jpg')),scCover(L[0],'cover.jpg')],vid:F.map(x=>assetUrl(scKey(x,'film-bg.mp4'))),
-      name:h,sub:'Главный фон · '+(L[0].kind==='interview'?'всё интервью':L[0].kind==='series'?'весь сериал':'весь фильм'),live:F.length>0,ev:F.length&&F[0].filmbgev!=null?+F[0].filmbgev:null,
+  if(k.startsWith('h:')&&/\|S\d{2}$/.test(k)){const i=k.lastIndexOf('|'),h=k.slice(2,i),sx=k.slice(i+1),L=seasonScenes(h,sx);if(!L.length)return null;   // 13.9.74: фон сезона
+    const nf=BG_SHOW[h]?bgNewF(BG_SHOW[h]+':'+sx):null,d=L.filter(x=>segDone(x)).length,n=seasonN(sx);
+    return {k,film:true,season:sx,got:seasonHas(k)||adm,img:[...(nf?[nf.img]:[]),assetUrl(scKey(L[0],'poster.jpg')),scCover(L[0],'cover.jpg')],vid:nf?[nf.vid]:[],
+      name:`${h} · сезон ${n}`,sub:'Главный фон · сезон '+n,live:!!nf,ev:nf?nf.ev:null,
+      how:L.length>1?`Пройди все сцены ${n}-го сезона «${h}» — пройдено ${d} из ${L.length}`:`Пройди сцену «${L[0].sub||L[0].title}» целиком`};}
+  if(k.startsWith('h:')){const h=k.slice(2),L=showScenes(h);if(!L.length)return null;const F=L.filter(x=>x.filmbg),d=L.filter(segDone).length,nf=BG_SHOW[h]&&!/^season:/.test(BG_SHOW[h])?bgNewF(BG_SHOW[h]):null;   // 13.9.74: новый ролик фильма / интервью — первым
+    return {k,film:true,got:showHas(h)||adm,img:[...(nf?[nf.img]:[]),...F.map(x=>assetUrl(scKey(x,'film-bgp.jpg'))),assetUrl(scKey(L[0],'poster.jpg')),scCover(L[0],'cover.jpg')],vid:[...(nf?[nf.vid]:[]),...F.map(x=>assetUrl(scKey(x,'film-bg.mp4')))],
+      name:h,sub:'Главный фон · '+(L[0].kind==='interview'?'всё интервью':L[0].kind==='series'?'весь сериал':'весь фильм'),live:F.length>0||!!nf,ev:nf?nf.ev:F.length&&F[0].filmbgev!=null?+F[0].filmbgev:null,
       how:L.length>1?`Пройди все сцены «${h}» — пройдено ${d} из ${L.length}`:`Пройди сцену «${L[0].sub||L[0].title}» целиком`};}
   const s=scOf(k);if(!s||!s.parts||s.kind==='clip')return null;
   return {k,got:segHas(s)||adm,img:[...(s.bgv?[assetUrl(scKey(s,'bgp.jpg'))]:[]),assetUrl(scKey(s,'bg.jpg')),scCover(s,'cover.jpg')],vid:s.bgv?[assetUrl(scKey(s,'bg.mp4'))]:[],
@@ -3268,9 +3291,11 @@ function bgVid(L){L=L.filter(u=>!AMB_BAD[u]);if(!L.length)return null;const v=do
   v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.preload='auto';v.tabIndex=-1;v.addEventListener('playing',()=>v.classList.add('on'));
   let n=0;v.addEventListener('error',()=>{AMB_BAD[L[n]]=1;n++;if(L[n])v.src=L[n];else v.remove();});v.src=L[0];return v;}
 // итог эпизода: если этим эпизодом закончен сегмент — большая награда, иначе — кадр и факт
-function rwEndHTML(s,i,rwNew){const g=segGive(s),h=showGive(s);return rwHTML(s,i,rwNew)+(g?segHTML(s,g):'')+(h?showHTML(s):'');}
+function rwEndHTML(s,i,rwNew){const g=segGive(s),z=seasonGive(s),h=showGive(s);return rwHTML(s,i,rwNew)+(g?segHTML(s,g):'')+(z?seasonHTML(s,z):'')+(h?showHTML(s):'');}
 function showHTML(s){const h=showOf(s);return `<section class="rw sgw shw fresh"><div class="rw-h"><b>🏆 ${esc(h)} — пройден целиком</b><i>главная награда</i></div>
   <p class="seg-y">Все сцены пройдены. Тебе — главный фон «${esc(h)}»: смотри его в «Коллекции» на Главной.</p>${bgNewHTML('h:'+h,'🏆 Главный фон')}</section>`;}
+function seasonHTML(s,k){const h=showOf(s),n=seasonN(seasonOf(s));return `<section class="rw sgw shw fresh"><div class="rw-h"><b>🏆 ${esc(h)} · сезон ${n} — пройден</b><i>главная награда</i></div>
+  <p class="seg-y">Все сцены ${n}-го сезона пройдены. Тебе — фон сезона: смотри его в «Коллекции» на Главной.</p>${bgNewHTML(k,'🏆 Фон сезона')}</section>`;}
 function rwEndBind(box,s,i){rwBind(box,s,i);segBind(box,s);bgBind(box);}
 // кадры эпизодов (смотрят в «Коллекции» на Главной): кадр открывается и вертится
 function rwAll(){const L=[];SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)!=='hide').forEach(s=>s.parts.forEach((p,i)=>L.push({s,i,got:rwHas(s,i)})));return L;}
@@ -3285,7 +3310,8 @@ function segOpen(sid){const s=scOf(sid);if(!s||!segHas(s))return;const o=documen
 /* ===== 13.0: «Коллекция» — все награды в одном месте, вход с Главной (не путать со словарём): фоны, карточки сцен, кадры эпизодов.
    Будущие награды — новыми вкладками сюда же. Фоны: главный — за весь фильм / сериал / интервью, фон сцены — за всю сцену (на эпизоды фонов нет). ===== */
 const showList=()=>[...new Set(SCENES.filter(x=>x.kind!=='clip'&&flagOf('scene-'+x.id)!=='hide').map(showOf))];
-const bgKeys=()=>showList().flatMap(h=>['h:'+h,...showScenes(h).map(x=>x.id)]);
+const bgKeysOf=h=>{const S=showSeasons(h);return [...(!S.length||showHas(h)?['h:'+h]:[]),...S.map(sx=>seasonK(h,sx)),...showScenes(h).map(x=>x.id)];};   // 13.9.74: у сериала — фоны сезонов
+const bgKeys=()=>showList().flatMap(bgKeysOf);
 const collScenes=()=>SCENES.filter(s=>s.kind!=='clip'&&flagOf('scene-'+s.id)!=='hide');
 function collStat(){const B=bgKeys().map(bgInfo).filter(Boolean),SG=collScenes(),K=rwAll();
   return {bg:B.filter(b=>b.got).length,bgAll:B.length,cards:SG.filter(segHas).length,cardsAll:SG.length,kadr:K.filter(x=>x.got).length,kadrAll:K.length};}
@@ -3305,12 +3331,12 @@ function renderCollection(tab,open){if(screen!=='coll')COLL_BACK=(screen==='home
   $$('.coll [data-seg]').forEach(b=>b.onclick=()=>{sfx('tap');segOpen(b.dataset.seg);});
   if(open&&tab==='bg'){const t=document.querySelector(`.coll [data-bgk="${CSS.escape(open)}"]`);if(t)t.scrollIntoView({block:'center',inline:'center'});setTimeout(()=>bgView(open),150);}}
 function collBgHTML(){
-  const G=showList().map(h=>{const B=['h:'+h,...showScenes(h).map(x=>x.id)].map(bgInfo).filter(Boolean);return {h,B,g:B.filter(b=>b.got).length};});
+  const G=showList().map(h=>{const B=bgKeysOf(h).map(bgInfo).filter(Boolean);return {h,B,g:B.filter(b=>b.got).length};});
   return (ADM_OPEN()?'<p class="coll-adm">Ты админ — видишь все фоны, даже не полученные.</p>':'')+[...G.filter(x=>x.g),...G.filter(x=>!x.g)].map(({h,B,g})=>{   // где есть полученные — выше
     return `<h3 class="coll-h">${esc(h)} <span>${g} из ${B.length}</span></h3><div class="bgw">${B.map(b=>`<button class="bgw-i${b.film?' film':''}${b.got?'':' lock'}${b.got&&store.appBg===b.k?' on':''}${b.got&&store.profBg===b.k?' pf':''}" data-bgk="${esc(b.k)}" aria-label="${esc((b.film?'Главный фон ':'Фон сцены ')+b.name)}">
       <span class="bgw-img" style="background-image:${b.img.map(u=>`url('${u}')`).join(',')}"></span>${b.got?(b.live?'<i class="bgw-live">▶ живой</i>':''):'<i class="bgw-lk">🔒</i>'}
-      <span class="bgw-t"><em>${b.film?'Главный фон':'Сцена'}</em><b>${esc(b.film?b.sub.replace('Главный фон · ',''):b.name)}</b></span></button>`).join('')}</div>`;}).join('')+
-    `<small class="rwc-n">Сцена целиком — её фон. Весь фильм, сериал или интервью — главный фон. Нажми на полученный — смотри на весь экран.</small>`;}
+      <span class="bgw-t"><em>${b.season?'Фон сезона':b.film?'Главный фон':'Сцена'}</em><b>${esc(b.season?'Сезон '+seasonN(b.season):b.film?b.sub.replace('Главный фон · ',''):b.name)}</b></span></button>`).join('')}</div>`;}).join('')+
+    `<small class="rwc-n">Сцена целиком — её фон. Весь фильм или интервью — главный фон, у сериала — фон каждого сезона. Нажми на полученный — смотри на весь экран.</small>`;}
 function collCardsHTML(){const SG=collScenes(),sg=SG.filter(segHas);
   return `<div class="rwc"><div class="rwc-k seg-k">${[...sg,...SG.filter(x=>!segHas(x))].map(s=>segHas(s)?`<button class="rwc-kd seg-kd${(store.seg[s.id]||{}).gold?' gold':''}" data-seg="${s.id}" style="background-image:url('${assetUrl(scKey(s,'poster.jpg'))}'),url('${scCover(s,'cover.jpg')}')"><span>${(store.seg[s.id]||{}).gold?'★':'🎬'}</span></button>`:`<span class="rwc-kd seg-lock" title="${esc(dictFilm(s))} — ${esc(s.sub||'')}">🔒</span>`).join('')}</div>
     <small class="rwc-n">${sg.length?'Нажми на карточку — откроется. Все эпизоды сцены на 3★ — карточка станет золотой.':'Пройди все эпизоды одной сцены — получишь карточку сцены и её фон.'}</small></div>`;}
@@ -3417,7 +3443,7 @@ function applyFlagsUI(){
 /* ---- 11.2 админ → «Игрок»: пройти всё, сбросить прогресс (себе и по ID), режим игрока ---- */
 function admPass(s){const P=scP(s.id);P.done=s.parts.map((p,i)=>i);P.w=P.w||{};P.st=P.st||{};P.got=P.got||{};
   s.parts.forEach((p,i)=>{P.w[i]=1;P.st[i]=3;scAct(p.ph).forEach(f=>{P.m[f.id]=Math.max(P.m[f.id]||0,3);if(!P.got[f.id])P.got[f.id]=Date.now();});});P.boss=3;
-  store.scOwn=store.scOwn||{};store.scOwn[s.id]=1;s.parts.forEach((p,i)=>rwGive(s,i));segGive(s);showGive(s);}
+  store.scOwn=store.scOwn||{};store.scOwn[s.id]=1;s.parts.forEach((p,i)=>rwGive(s,i));segGive(s);seasonGive(s);showGive(s);}
 const ADM_KEEP=['dictVar','dlDemo','onboarded','langs','snd','fx','full','fullV','theme','tab','subV','subStyle','scSub','scSubChosen','scVol','scMute','musVol','musAuto','vtask','look','goal','games','roles','path','kvUid','admPlayer','remind'];
 function admResetMe(){const keep={};ADM_KEEP.forEach(k=>{if(store[k]!==undefined)keep[k]=store[k];});
   SC={};scSave();M={};saveM();RV={};saveRV();
@@ -4787,7 +4813,9 @@ try{
   if(q==='de'||q==='en')PARAM_LANG=q;
 }catch(e){}
 // 12.3: кто прошёл сцену до 12.3 — карточка сегмента и фон выдаются молча
-try{SCENES.forEach(x=>{if(segDone(x)&&!segHas(x))segGive(x);showGive(x);});}catch(e){}
+try{SCENES.forEach(x=>{if(segDone(x)&&!segHas(x))segGive(x);seasonGive(x);showGive(x);});}catch(e){}   // 13.9.74: прошедшим сезон раньше — фон сезона молча
+setTimeout(()=>bgStLoad().then(st=>{if(!Object.values(st).some(x=>x&&x.ok))return;const a=document.getElementById('appbg');if(a)a.dataset.k='';try{appBgApply();}catch(e){}
+  if(screen==='coll'&&!document.querySelector('.bgvw'))try{renderCollection(store.collTab);}catch(e){}}),3600);   // 13.9.74: какие новые ролики фонов уже можно показывать
 initTG();
 applyFx();shopApply();
 // 13.9.43: «С паузами» снова у всех один раз — без пауз объяснения фраз пролетали, и казалось, что фраз нет совсем

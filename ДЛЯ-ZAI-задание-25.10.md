@@ -99,6 +99,6 @@ No text, no logos, no extra characters.
    `python3 tools/dd_r2_up.py out.mp4 scenes/_bg/film-wolf.mp4` и превью `python3 tools/dd_r2_up.py outp.jpg scenes/_bg/film-wolfp.jpg image/jpeg`. Проверь `curl -I https://dota.1f8t8graf4.workers.dev/m/scenes/_bg/film-wolf.mp4` → 200.
    Герои — как раньше: `scenes/games/deadlock/<id>.mp4`, но **сначала новый ролик в `scenes/_bg/hero-deadlock-<id>.mp4`**, старый не перезаписывать, пока Claude не посмотрит.
 4. Отметить в `tools/bg-status.json` (создай, если нет): `{"film:wolf": {"file": "scenes/_bg/film-wolf.mp4", "date": "2026-10-25"}}`. Этот файл можно пушить в `main` так же, как `prompts.html` (коммит только с ним) — тогда на странице появится «Залит».
-5. В приложение фон **не ставь** (не трогай `data/scenes.json`, `filmbg`, код): ставит Claude — у сезонов своих фонов в приложении ещё нет, это его работа.
+5. В приложение фон **не ставь** (не трогай `data/scenes.json`, `filmbg`, код). С 13.9.74 приложение само читает `tools/bg-status.json`, но показывает ролик, только когда у ключа стоит `"ok":1` — его ставит Claude, посмотрев ролик. Ты пишешь только `file` и `date`, `"ok"` не ставь.
 6. Отчёт Андрею: какие ключи залиты, ссылки, что не так с роликами, которые не взял.
 
