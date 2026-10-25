@@ -25,9 +25,11 @@ HERO = ('Animate this exact image of {name} from the game Deadlock. It is a fini
         'blurred fill at the sides. Keep the whole frame exactly as it is: same framing, same size and position of the character, nothing '
         'is cropped, zoomed, extended or repainted; the blurred sides stay soft and still. Keep the character exactly as drawn: same face, '
         'same head angle and gaze direction, same pose, same clothes, colors and painted art style. {who} never turns toward the camera and '
-        'never turns away. Locked camera: no zoom, no pan, no tilt, no cuts. {act} Small living idle motion the whole time: the chest rises '
-        'and falls clearly with slow breathing, the shoulders shift slightly, the head makes one small nod or tilt and returns, hair and '
-        'clothing move a little, natural blinking. Everything moves slowly and continuously and the last frame is identical to the first, '
+        'never turns away. Locked camera: no zoom, no pan, no tilt, no cuts. {act} Spread these actions over the whole clip: one small '
+        'action about every two seconds, never all at once and never a still pause. On top, small living idle motion the whole time: the '
+        'chest rises and falls clearly with slow breathing, the shoulders shift slightly, the fingers flex a little, the weight shifts '
+        'slightly, the eyes glance a little to the side and back, the head makes one small nod or tilt and returns, hair and clothing '
+        'move a little, natural blinking. In the last second everything eases back into exactly the first-frame pose. Everything moves slowly and continuously and the last frame is identical to the first, '
         'so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra '
         'limbs or fingers, no text; any lettering in the art stays perfectly static.')
 # 25.10, Андрей: Венатор с размытыми боками вышел «ахуенно», но бока — докрасить нейронкой (потом такие кадры можно давать игрокам).
@@ -230,7 +232,7 @@ for it in ITEMS:
 # Действие — только то, что уже нарисовано на арте (смотрел все 44 арта 25.10). he/she/it — для слова «{who}».
 HEROES = [
  ('venator', 'Venator', 'He', 'He keeps his head turned to the right with the same smirk as in the art. The candle-like flame on top of his weapon flickers, the cigar ember glows and a thin wisp of smoke curls up from it, the rosary sways slightly, the gray halo behind him shimmers. Once, halfway through, the grenade launcher gives one short recoil with a bright flash at its muzzle: only his arm takes the kick and returns; his head, gaze and body stay exactly as they are.'),
- ('rat-king', 'Rat King', 'He', 'He stays seated on his throne, looking exactly where he looks in the art. His whiskers twitch, his long tail sways slowly, his cape stirs, the small rats around the throne scurry in place, warm light flickers over the junk around him.'),
+ ('rat-king', 'Rat King', 'He', 'He stays seated on his pipe throne, looking where he looks in the art. The small white rat on his shoulder sniffs at his big ear and his ear twitches in answer; the rat on his left wrist crawls a little along his forearm and he slowly curls his fingers under it so it does not fall; his whiskers twitch, he flicks his long tail once, his clawed fingers drum once on the pipe; the rat on the pizza slice nibbles the crust, the rat in the pipe hole peeks out and hides again, the rat at the bottom sniffs the air; his cape stirs and the light on his crown flickers.'),
  ('rem', 'Rem', 'He', 'He hangs from the blue umbrella and sways a little like a slow pendulum, his big white eyes stay wide open, the candle flame in his paw flickers, the small companion beside him flaps its tiny wings, the teal sparks twinkle and clouds drift slowly past the moon.'),
  ('grey-talon', 'Grey Talon', 'He', 'He keeps his bow lowered exactly as drawn. His white braid and the cloth at his waist sway in the wind, the green spirit owl behind him slowly opens its wings a little and folds them back, leaves drift in the background.'),
  ('celeste', 'Celeste', 'She', 'The star on her wand twinkles, the glowing blue spirit beside her ripples and drifts in place, strands of her purple hair sway, small sparkles float in the air.'),
