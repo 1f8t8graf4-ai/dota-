@@ -30,6 +30,15 @@ HERO = ('Animate this exact image of {name} from the game Deadlock. It is a fini
         'clothing move a little, natural blinking. Everything moves slowly and continuously and the last frame is identical to the first, '
         'so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra '
         'limbs or fingers, no text; any lettering in the art stays perfectly static.')
+# 25.10, Андрей: Венатор с размытыми боками вышел «ахуенно», но бока — докрасить нейронкой (потом такие кадры можно давать игрокам).
+# Шаг 1 — картинка (Gemini / Flow «картинка»): дорисовать размытые бока. Шаг 2 — оживить уже готовый кадр (HERO2).
+HERO_EXT = ('Edit this image of {name} from the game Deadlock. Keep the sharp painted artwork in the middle exactly as it is: the same '
+            'character, pose, face, colors and every detail, at the same size and position; do not redraw, move or crop it. Repaint only '
+            'the soft blurred areas on the left and right and any blurred patches around the character as a sharp continuation of the '
+            "artwork's own background: the same painted style, colors, brushstrokes, shapes, halftone dots and light, so it looks like one "
+            'complete 16:9 illustration. No new characters, creatures, objects, text or logos. Keep the 16:9 format.')
+HERO2 = (HERO.replace('It is a finished 16:9 frame: the painted artwork in the middle and a soft blurred fill at the sides.', 'It is a finished 16:9 painted frame.')
+         .replace('; the blurred sides stay soft and still', '; the background stays in place'))
 HERO_NEG = ('Avoid: turning to the camera, front view, camera pan up or down, tilt, crop, new pose, character redraw, re-centering, zoom, camera movement, '
             'cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, '
             'new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion.')
@@ -268,7 +277,8 @@ HEROES = [
 for hid, name, who, act in HEROES:
     ITEMS.append(dict(key=f'hero:deadlock:{hid}', kind='hero', game='deadlock', hero=hid, title=name, draft=False,
         art=f'кадр 16:9: ветка claude/hero-16x9 → heroes-16x9/{hid}.jpg (полный арт по центру, по бокам — размытое продолжение)',
-        animate=HERO.format(name=name, who=who, act=act), neg=HERO_NEG))
+        animate=HERO.format(name=name, who=who, act=act), neg=HERO_NEG,
+        extend=HERO_EXT.format(name=name), animate2=HERO2.format(name=name, who=who, act=act)))
 
 OUT = dict(v=1, updated='2026-10-24',
   how=['Без фото (25.10): поле video — один текст сразу в видео (Flow → «Текст в видео» / Veo, 9:16, 8 с). Поля photo и animate — запасной путь «фото → оживить».',
