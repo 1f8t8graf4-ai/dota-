@@ -50,6 +50,7 @@ ITEMS = [
  # не делай — всегда хуйня». Правила v4: масштаб — от места (как v3) + 2–3 узнаваемые вещи из самых известных кадров фильма, но не напоказ:
  # лежат там, где им и место (газеты застилают пол, топор прислонён к стене в полутени); свет — живая лампа + город, а не тёмно-синяя муть;
  # никакого дождя и капель на стёклах (у улиц — мокрый асфальт после дождя).
+ # v4.1: топор «прислонён к стене» вышел мутантом с двумя лезвиями и висел на стене → лежит на газетах, «одно лезвие»; + дождевик на подлокотнике.
  dict(key='film:wolf', kind='film', title='Волк с Уолл-стрит', shows=['Волк с Уолл-стрит', 'The Wolf of Wall Street'], test='сложный', wide=1,
   what='Аквариум с рыбкой и бутылка шампанского на ближнем столе, а за ними в глубину — огромный торговый зал после вечеринки: сотни зелёных мониторов, конфетти, бегущая строка на дальней стене.',
   moves='Рыбка плавает, мигают зелёные цифры, по дальней стене ползёт бегущая строка, в бокале бегут пузырьки.',
@@ -62,16 +63,17 @@ ITEMS = [
   animate=anim('the goldfish swims slowly in its bowl; bubbles rise in the champagne glass; the small green digits on the screens '
    'flicker; the ticker band on the far wall scrolls slowly from right to left.')),
  dict(key='film:psycho', kind='film', title='Американский психопат', shows=['Американский психопат'], test='простой', wide=1,
-  what='Белая квартира-пентхаус 1987 года ночью: пол и белый кожаный диван застелены газетами, на стерео крутится пластинка, в полутени у стены стоит топор; за огромными окнами — весь Манхэттен.',
+  what='Белая квартира-пентхаус 1987 года ночью: пол и белый кожаный диван застелены газетами, на стерео крутится пластинка, на подлокотнике прозрачный дождевик, на газетах у дивана лежит топор; за огромными окнами — весь Манхэттен.',
   moves='Пластинка крутится, на стерео прыгают зелёные индикаторы, мерцают огни города за окном.',
   photo=photo('A white Manhattan penthouse apartment in 1987 at night, nobody there, seen at eye level from the back of the living room. '
    'The whole white floor and the long white leather sofa are carefully covered with spread newspapers, as if someone prepared the room '
    'for something messy. On a low white cabinet on the left: a silver stereo with glowing green level meters and a record turntable with '
-   'a vinyl record on it. Against the white wall on the right, half in shadow: a fire axe with a red head leaning upright. Behind the sofa, '
+   'a vinyl record on it. A transparent plastic raincoat is thrown over the arm of the sofa. On the newspapers on the floor in front of the '
+   'sofa lies one ordinary fire axe: a single red steel head with one blade and a long plain wooden handle, lying flat. Behind the sofa, '
    'tall windows show the Manhattan skyline at night. Light: one warm floor lamp in the room and the cool city glow; clean dry glass. '
    'Mood: perfect, sterile, expensive, and something horrible is about to happen.'),
   animate=anim('the vinyl record spins on the turntable; the green level meters on the stereo bounce; the lights of the '
-   'city twinkle far away. The axe and the newspapers do not move.')),
+   'city twinkle far away. The axe, the raincoat and the newspapers do not move.')),
  dict(key='film:taxi', kind='film', title='Таксист', shows=['Таксист'], wide=1,
   what='Ночная улица Нью-Йорка 70-х после дождя с уровня тротуара: неон кинотеатров, мокрый асфальт в отражениях, пар из люка, у бордюра жёлтое такси с включёнными фарами.',
   moves='Из люка поднимается пар, неон мигает, в мокром асфальте дрожат отражения.',
