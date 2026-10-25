@@ -1,7 +1,8 @@
-# Страница «фоны без фото»: один промт сразу в видео на фон.  python3 tools/bg_video_page.py <выход.html>
+# Страница «фоны без фото»: один промт сразу в видео на фон.  python3 tools/bg_video_page.py <выход.html> [ключ,ключ…]
 import json, os, sys, html
 D = json.load(open(os.path.join(os.path.dirname(__file__), 'bg-prompts.json'), encoding='utf-8'))
 I = [x for x in D['items'] if x.get('video')]
+if len(sys.argv) > 2: I = [x for x in I if x['key'] in sys.argv[2].split(',')]   # только эти ключи (то, чего ещё нет)
 I.sort(key=lambda x: {'простой': 0, 'сложный': 1}.get(x.get('test'), 2))
 KIND = {'film': 'Фильм', 'season': 'Сезон', 'person': 'Интервью'}
 def card(x):
