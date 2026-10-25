@@ -1,4 +1,4 @@
-<title>Главная и ДД v3</title>
+<title>Главная и ДД v4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&display=swap">
 <style>
@@ -1392,14 +1392,159 @@ canvas.fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .t-film::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(0,0,0,.55));z-index:85}
 .t-film .ds-tl button{background:#F2E4CC;color:#1C1206;box-shadow:0 3px 0 #7A3A22}
 
+
+/* ===== Главная v4 (25.10): Афиша · Меню как в игре · Лента как в TikTok + окно «Подробнее» ===== */
+.ff.bb{font:800 28px/1 Oswald,Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em;color:#86D46E}
+.w4{color:#F3EBDD}
+.w4 .ff.wolf{font-size:27px}.w4 .ff.titanic{font-size:33px}.w4 .ff.psycho{font-size:19px}.w4 .ff.taxi{font-size:23px}.w4 .ff.sopranos{font-size:29px}
+.w4-lv{display:inline-flex;align-items:center;gap:6px;font:700 12px/1 Inter,sans-serif}
+.w4-st{display:inline-flex;gap:2px;vertical-align:-2px;margin-left:6px}
+.w4-st .ic{width:13px;height:13px;stroke-width:2;color:rgba(243,235,221,.3)}
+.w4-st i.f .ic{color:#E8B34B;fill:#E8B34B}
+.w4-sec{display:flex;justify-content:space-between;align-items:baseline;padding:4px 18px 10px}
+.w4-sec b{font:700 20px/1.1 "Playfair Display",Lora,serif}
+.w4-sec small{font:600 12px/1 Inter,sans-serif;color:rgba(243,235,221,.55)}
+.w4-pad{height:110px}
+.w4 .go{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:15px;border:0;background:#E8B34B;color:#1d1300;font:800 15px/1 Inter,sans-serif;white-space:nowrap}
+.w4 .go .ic{width:18px;height:18px}
+@keyframes w4kb{from{transform:scale(1.04)}to{transform:scale(1.16) translate(-2%,-1%)}}
+
+/* А · Афиша */
+.w4a-car{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 26px 4px;scrollbar-width:none;flex:none}
+.w4a-car::-webkit-scrollbar{display:none}
+.w4a-c{flex:none;width:292px;height:392px;border-radius:24px;position:relative;overflow:hidden;scroll-snap-align:center;background:#000;box-shadow:0 18px 40px -20px rgba(0,0,0,.9);cursor:pointer}
+.w4a-c .img{position:absolute;inset:0}
+.w4a-c.on .kb,.w4c-s.on .kb{animation:w4kb 9s ease-in-out infinite alternate}
+.w4a-c .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,0) 30%,rgba(5,6,10,.72) 55%,rgba(5,6,10,.96) 100%)}
+.w4a-tx{position:absolute;left:16px;right:16px;bottom:16px;display:grid;gap:6px}
+.w4a-tx small,.w4c-tx small,.w4f-ht small{font:700 10.5px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(243,235,221,.7)}
+.scr .w4a-tx p{font:500 15px/1.4 Inter,sans-serif;color:rgba(243,235,221,.92);margin:2px 0 0}
+.w4a-mt{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font:600 12px/1 Inter,sans-serif;color:rgba(243,235,221,.7)}
+.w4a-bt{display:flex;gap:8px;margin-top:6px}
+.w4a-bt .go{flex:1}
+.w4a-bt .more{flex:none;display:inline-flex;align-items:center;gap:6px;height:48px;padding:0 14px;border-radius:15px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:#F3EBDD;font:700 14px/1 Inter,sans-serif}
+.w4a-bt .more .ic{width:17px;height:17px}
+.w4a-dots{display:flex;justify-content:center;gap:6px;margin:12px 0 14px}
+.w4a-dots i{width:6px;height:6px;border-radius:3px;background:rgba(243,235,221,.25);transition:width .3s,background .3s}
+.w4a-dots i.on{width:20px;background:#E8B34B}
+.w4a-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 16px 0}
+.w4a-tiles button{display:grid;justify-items:start;gap:3px;padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:#141826;color:#F3EBDD;text-align:left;min-width:0}
+.w4a-tiles .i{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(232,179,75,.14);color:#E8B34B;margin-bottom:4px}
+.w4a-tiles .i .ic{width:18px;height:18px}
+.w4a-tiles b{font:700 13.5px/1.1 Inter,sans-serif}
+.w4a-tiles small{font:500 11px/1.2 Inter,sans-serif;color:rgba(243,235,221,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+
+/* окно «Подробнее» */
+.w4f{position:absolute;inset:0;z-index:70;background:#0A0C14;color:#F3EBDD}
+.w4f-sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.w4f-sc::-webkit-scrollbar{display:none}
+.w4f-hero{position:relative;height:340px;overflow:hidden;touch-action:pan-x}
+.w4f-hero .img{position:absolute;inset:0}
+.w4f-hero .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 25%,rgba(10,12,20,.4) 60%,#0A0C14 100%)}
+.w4f-ht{position:absolute;left:20px;right:20px;bottom:12px;display:grid;gap:8px}
+.w4f .ff.wolf{font-size:32px}.w4f .ff.titanic{font-size:40px}.w4f .ff.psycho{font-size:22px}.w4f .ff.taxi{font-size:28px}.w4f .ff.sopranos{font-size:34px}.w4f .ff.bb{font-size:34px}
+.w4f-bd{padding:2px 20px 0}
+.scr .w4f-ab{margin:0 0 14px;font:600 19px/1.4 Inter,sans-serif;color:#F3EBDD}
+.w4f-ch{display:flex;flex-wrap:wrap;gap:6px}
+.w4f-ch>span{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 10px;border-radius:999px;background:rgba(255,255,255,.07);font:600 12.5px/1 Inter,sans-serif;color:rgba(243,235,221,.85)}
+.w4f-ch .ic{width:14px;height:14px}
+.w4f-bd section{margin-top:20px}
+.w4f-bd h4{margin:0 0 6px;font:800 12px/1.2 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#E8B34B}
+.scr .w4f-bd section p{margin:0;font:500 15.5px/1.5 Inter,sans-serif;color:rgba(243,235,221,.85)}
+.w4f-eps{display:grid;gap:8px}
+.w4f-ep{display:flex;gap:12px;align-items:center;width:100%;padding:8px;border-radius:14px;border:0;background:rgba(255,255,255,.05);color:inherit;text-align:left}
+.w4f-ep i.img{flex:none;width:96px;height:56px;border-radius:10px}
+.w4f-ep span{flex:1;min-width:0;display:grid;gap:3px}
+.w4f-ep small{font:600 11.5px/1 Inter,sans-serif;color:rgba(243,235,221,.55)}
+.w4f-ep b{font:700 15px/1.2 Inter,sans-serif}
+.w4f-ep em{flex:none;font:600 11.5px/1 Inter,sans-serif;font-style:normal;color:rgba(243,235,221,.55)}
+.w4f-pad{height:120px}
+.w4f-x{position:absolute;top:52px;right:14px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.5);color:#fff;display:grid;place-items:center;z-index:3}
+.w4f-go{position:absolute;left:0;right:0;bottom:0;padding:26px 16px 30px;background:linear-gradient(rgba(10,12,20,0),#0A0C14 45%);z-index:2}
+.w4f-go button{width:100%;height:54px;border:0;border-radius:17px;background:#E8B34B;color:#1d1300;font:800 15.5px/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
+.w4f-go .ic{width:18px;height:18px}
+
+/* Б · Меню как в игре */
+.w4b{background:#000}
+.w4b-bg{position:absolute;inset:0;z-index:0}
+.w4b-v{position:absolute;inset:0;opacity:0;transition:opacity 1.4s}
+.w4b-v.on{opacity:1}
+.w4b-v video{width:100%;height:100%;object-fit:cover;display:block}
+.w4b-sh{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.6) 0,rgba(0,0,0,0) 20%,rgba(0,0,0,.1) 36%,rgba(0,0,0,.8) 66%,rgba(0,0,0,.95) 100%),linear-gradient(90deg,rgba(0,0,0,.45),rgba(0,0,0,0) 70%)}
+.w4b-top,.w4c-top{position:absolute;top:50px;left:0;right:0;z-index:5}
+.w4b-menu{position:absolute;left:18px;right:18px;bottom:96px;z-index:5}
+.w4b-cont{position:relative;padding-right:72px;display:grid;gap:6px}
+.w4b-cont small{font:800 10.5px/1 Inter,sans-serif;letter-spacing:.16em;color:#E8B34B}
+.w4b .w4b-ttl .ff.titanic{font-size:44px}.w4b .w4b-ttl .ff.wolf{font-size:34px}
+.w4b-ep{font:600 13px/1.2 Inter,sans-serif;color:rgba(243,235,221,.8)}
+.w4b-play{position:absolute;right:0;bottom:2px;width:60px;height:60px;border-radius:50%;border:0;background:#E8B34B;color:#1d1300;display:grid;place-items:center;box-shadow:0 10px 30px -8px rgba(232,179,75,.7)}
+.w4b-play .ic{width:26px;height:26px;margin-left:3px}
+.w4b-list{display:grid;gap:2px;margin-top:16px}
+.w4b-list button{position:relative;overflow:hidden;display:grid;grid-template-columns:36px 1fr;column-gap:10px;align-items:center;text-align:left;background:none;border:0;color:#F3EBDD;padding:8px 10px;border-radius:14px}
+.w4b-list i{grid-row:1/3;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:rgba(255,255,255,.08)}
+.w4b-list i .ic{width:18px;height:18px}
+.w4b-list b{font:700 21px/1.1 "Playfair Display",Lora,serif}
+.w4b-list small{font:500 12px/1.2 Inter,sans-serif;color:rgba(243,235,221,.6)}
+.w4b-list button.on{background:rgba(255,255,255,.09)}
+.w4b-list button.on i{background:#E8B34B;color:#1d1300}
+.w4b-list button.on::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:shine 3.2s ease-in-out infinite;pointer-events:none}
+.w4b-tb{--tbb:#0E1018;--tbs:0 10px 30px rgba(0,0,0,.7);--tbm:#80869a;--tbon:#F3EBDD;--tbsel:rgba(232,179,75,.18)}
+.w4b-pk{position:absolute;left:8px;right:8px;bottom:8px;z-index:60;border-radius:30px;background:#11141F;padding:16px 0 30px;box-shadow:0 -20px 50px rgba(0,0,0,.6)}
+.w4b-pkh{display:flex;justify-content:space-between;align-items:center;padding:0 16px}
+.w4b-pkh b{font:700 20px/1 "Playfair Display",Lora,serif}
+.w4b-pkh .x{width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:#fff;display:grid;place-items:center}
+.w4b-ps{display:flex;gap:10px;overflow-x:auto;padding:14px 16px 0;scrollbar-width:none}
+.w4b-ps::-webkit-scrollbar{display:none}
+.w4b-ps button{flex:none;width:116px;border:0;background:none;color:inherit;padding:0;display:grid;gap:7px;text-align:center}
+.w4b-ps i.img{height:172px;border-radius:12px;box-shadow:0 12px 22px -12px rgba(0,0,0,.9)}
+.w4b-ps small{font:600 12px/1 Inter,sans-serif;color:rgba(243,235,221,.65)}
+
+/* В · Лента как в TikTok */
+.w4c{background:#000}
+.w4c-feed{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;scrollbar-width:none}
+.w4c-feed::-webkit-scrollbar{display:none}
+.w4c-s{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.w4c-s .img{position:absolute;inset:0}
+.w4c-s .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 24%,rgba(0,0,0,.05) 42%,rgba(4,5,9,.85) 74%,rgba(4,5,9,.97) 100%)}
+.w4c-tx{position:absolute;left:18px;right:82px;bottom:104px;display:grid;gap:7px}
+.scr .w4c-tx p{margin:0;font:500 15.5px/1.4 Inter,sans-serif;color:rgba(243,235,221,.92)}
+.w4c-tx .go{justify-self:start;margin-top:6px}
+.w4c-side{position:absolute;right:10px;bottom:118px;display:grid;gap:14px;z-index:2}
+.w4c-side button{display:grid;justify-items:center;gap:4px;background:none;border:0;color:#fff;padding:0}
+.w4c-side i{width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.18);display:grid;place-items:center}
+.w4c-side .ic{width:22px;height:22px}
+.w4c-side small{font:700 10.5px/1 Inter,sans-serif;text-shadow:0 1px 4px rgba(0,0,0,.8)}
+.w4c-top{background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,0));padding-bottom:10px}
+.w4c-hint{position:absolute;left:50%;top:150px;z-index:6;display:grid;justify-items:center;gap:2px;color:#fff;transform:translate(-50%,0);pointer-events:none;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.w4c-hint .ic{width:26px;height:26px;stroke-width:2.6}
+.w4c-hint small{font:700 11px/1 Inter,sans-serif;letter-spacing:.06em}
+.w4c-s.rv{background:radial-gradient(120% 70% at 50% 40%,#3a2a0c 0%,#120d05 60%,#050403 100%)}
+.w4c-big{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:8px;text-align:center;padding:0 30px}
+.w4c-big small{font:800 11px/1 Inter,sans-serif;letter-spacing:.2em;color:#E8B34B}
+.w4c-big .n{font:900 120px/1 Unbounded,Inter,sans-serif;color:#FFE6B0;text-shadow:0 10px 40px rgba(232,179,75,.45)}
+.w4c-big span{font:600 16px/1.3 Inter,sans-serif;color:rgba(243,235,221,.8);margin-bottom:12px}
+.w4c-s.cs{background:#0A0C14}
+.w4c-two{position:absolute;left:16px;right:16px;top:150px;bottom:110px;display:grid;gap:12px}
+.w4c-two button{position:relative;overflow:hidden;border:0;border-radius:24px;background:#141826;color:#F3EBDD;display:grid;align-content:end;justify-items:start;gap:4px;padding:18px;text-align:left}
+.w4c-two i.img{position:absolute;inset:0;opacity:.75}
+.w4c-two button>b,.w4c-two button>small{position:relative}
+.w4c-two b{font:700 26px/1 "Playfair Display",Lora,serif}
+.w4c-two small{font:500 13px/1.2 Inter,sans-serif;color:rgba(243,235,221,.7)}
+.w4c-two .tk{position:absolute;top:18px;left:18px;display:inline-flex;align-items:center;gap:6px;color:#E8B34B;font:800 22px/1 Inter,sans-serif}
+.w4c-two .tk .ic{width:24px;height:24px}
+.w4c-two button::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,0) 35%,rgba(0,0,0,.78));z-index:0}
+.w4c-two button>b,.w4c-two button>small,.w4c-two .tk{z-index:1}
+.w4-tf{position:absolute;top:0;left:0;right:0;height:54px;background:linear-gradient(#0A0C14 60%,rgba(10,12,20,0));z-index:30;pointer-events:none}
+.w4a-bt .go{padding:0 12px}.w4a-bt .more{padding:0 12px}
+
 </style>
 
 <div class="wrap">
  <header>
-  <h1>Главная, ДД, комикс, тёмный дизайн — v3</h1>
-  <p class="lead">Справа у каждого экрана — что поменял и твои слова, на которые отвечал. Всё живое: смахивай, тапай, зажимай. «↻ Ещё раз» проигрывает заново. Прошлые варианты — кнопки «v2» и «v1».</p>
+  <h1>Главная v4 — три варианта по твоему отзыву</h1>
+  <p class="lead">Справа у каждого экрана — что поменял и твои слова, на которые отвечал. Всё живое: смахивай, тапай, зажимай. «↻ Ещё раз» проигрывает заново. Прошлые варианты — кнопки «v3», «v2» и «v1».</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
-  <div class="grp" id="grp"><button data-g="h3">Главная · 2</button><button data-g="d3">ДД · 2</button><button data-g="k3">Комикс</button><button data-g="x3">Тёмный дизайн · 3</button><span class="old"><small>v2:</small><button data-g="h2">Главная</button><button data-g="d2">ДД</button><button data-g="o2">Запуск</button></span><span class="old"><small>v1:</small><button data-g="home">Главная</button><button data-g="dd">ДД</button><button data-g="ob">Запуск</button></span></div>
+  <div class="grp" id="grp"><button data-g="h4">Главная · 3</button><button data-g="d3">ДД · 2</button><button data-g="k3">Комикс</button><button data-g="x3">Тёмный дизайн · 3</button><span class="old"><small>v3:</small><button data-g="h3">Главная</button></span><span class="old"><small>v2:</small><button data-g="h2">Главная</button><button data-g="d2">ДД</button><button data-g="o2">Запуск</button></span><span class="old"><small>v1:</small><button data-g="home">Главная</button><button data-g="dd">ДД</button><button data-g="ob">Запуск</button></span></div>
   <div class="vars" id="vars"></div>
  </header>
  <div class="stage">
@@ -2508,9 +2653,149 @@ V.push({g:'x3',id:'xc',n:'Тёплая плёнка',idea:'Старая плён
  from:'Твой отзыв: «дизайн атмосфернее — ща тупо белый». Тёплая плёнка — ближе к ощущению «старого кино», спокойнее неона.',minus:'Сепия съедает цвета кадров: у «Титаника» и «Волка» пропадёт часть красок. Можно оставлять кадры цветными, а сепию — только на фоне.',
  mount(R,ctx){dsg(R,ctx,'film')}});
 
+/* ===== Главная v4 (25.10, отзыв на v3): 3 разных варианта, окно «Подробнее» крупно, вкладка «Главная» ===== */
+Object.assign(ICO,{info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',share:'<path d="M12 4v11M7.5 8.5L12 4l4.5 4.5"/><path d="M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/>',up:'<path d="M6 14l6-6 6 6"/>',clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'});
+// настоящие данные сцен (data/scenes.json): о чём, год · режиссёр, почему такая сложность и польза, эпизоды
+const SC4=[
+ {k:'titanic',t:'Титаник',yr:'1997 · Джеймс Кэмерон',ab:'Джек сажает Роуз в шлюпку — а она прыгает обратно.',img:'bd_titanic',lv:2,use:4,
+  lw:'Короткие простые реплики, но кричат сквозь шум и панику.',uw:'Уговорить, отказаться, успокоить, «что-нибудь придумаем» — фразы на каждый день.',
+  eps:[['Садись в лодку','29 с',4,'tk1'],['Я выживу','46 с',6,'tk2'],['Я всегда выигрываю','34 с',5,'tk3'],['Ты прыгнешь — я прыгну','64 с',4,'tk4']]},
+ {k:'wolf',t:'Волк с Уолл-стрит',yr:'2013 · Мартин Скорсезе',ab:'Марк Ханна за обедом объясняет новичку правила Уолл-стрит.',img:'bd_wolf',lv:4,use:4,
+  lw:'Быстрая речь, сленг брокеров, много мата.',uw:'Деловые и разговорные фразы.',
+  eps:[['Первый день','51 с',6,'wk1'],['Фугази','50 с',3,'wk2'],['Новая идея','31 с',4,'wk3'],['Первый ключ','45 с',7,'wk4'],['Цифры и баланс','46 с',6,'wk5'],['Колесо обозрения','79 с',5,'wk6']]},
+ {k:'psycho',t:'Американский психопат',yr:'2000 · Мэри Хэррон',ab:'Визитки: чья круче. Бейтман и коллеги меряются карточками.',img:'bd_psycho',lv:2,use:4,
+  lw:'Чёткая дикция, говорят спокойно. Сложность только в редких словах про визитки.',uw:'Вежливые фразы, похвала и small talk в офисе.',
+  eps:[['Дорсия','26 с',5,'ak1'],['Маркус Хальберстрам','62 с',7,'ak2'],['Визитки','44 с',5,'ak3'],['Визитка Пола Аллена','47 с',4,'ak4']]},
+ {k:'sopranos',t:'Клан Сопрано',yr:'S01E01 · Pilot',ab:'Тони на первом приёме у психотерапевта.',img:'bd_sopranos',lv:3,use:5,
+  lw:'В кабинете говорят медленно и понятно, а на кухне — быстро и все разом. Плюс нью-джерсийский говор.',uw:'Как говорить о самочувствии, стрессе и работе — и живые семейные фразы с кухни.',
+  eps:[['Паническая атака','96 с',8],['Стресс','68 с',12],['Утки','48 с',2],['Утро на кухне','84 с',11]]},
+ {k:'taxi',t:'Таксист',yr:'1976 · Мартин Скорсезе',ab:'«Одинокий человек Бога»: Трэвис ночью за рулём и в своей комнате.',img:'bd_taxi',lv:3,use:4,
+  lw:'Монолог за кадром говорят медленно и чётко, но в начале — крики на улице и шум.',uw:'Как говорить о чувствах, одиночестве и переменах в жизни.',
+  eps:[['Спорт','50 с',2],['Одинокий человек','46 с',4]]},
+ {k:'bb',t:'Во все тяжкие',yr:'S02E11 · Mandala',ab:'Уолт приходит к Гасу Фрингу в «Лос Поллос Херманос».',img:'bd_bb',lv:2,use:5,
+  lw:'Говорят медленно, чётко и вежливо — деловые переговоры.',uw:'Вежливые фразы для работы и сервиса: «чем могу помочь», «простите, не понимаю».',
+  eps:[['Диетическая кола','102 с',11],['Осторожный человек','120 с',12]]}];
+const sc4Ph=s=>s.eps.reduce((a,e)=>a+e[2],0),sc4Min=s=>Math.max(1,Math.round(s.eps.reduce((a,e)=>a+parseInt(e[1]),0)/60));
+const lvTxt=n=>`${bars(n)}<span>${LVW[n-1]}</span>`;
+const TB4=(cls,on)=>`<nav class="tb ${cls}">${[['home','Главная'],['film','Сцены'],['dict','Словарь'],['user','Профиль']].map(([k,n],i)=>`<a class="${i===on?'on':''}"><svg viewBox="0 0 24 24">${TBI[k]}</svg><span>${n}</span></a>`).join('')}</nav>`;
+const stars4=n=>`<span class="w4-st">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'f':''}">${ic('star')}</i>`).join('')}</span>`;
+
+/* окно «Подробнее» — как в Кинотеке: кадр крупно, о чём, почему такая сложность, что выучишь, эпизоды, «Смотреть» снизу */
+function w4Full(R,ctx,s,from){
+ let ov=$('.w4f',R);if(ov)ov.remove();ov=document.createElement('div');ov.className='w4f';
+ const thumb=e=>e[3]?IMG[e[3]]:IMG[s.img];
+ ov.innerHTML=`<div class="w4f-sc"><div class="w4f-hero"><i class="img kb" style="background-image:url(${IMG[s.img]})"></i><i class="sh"></i>
+  <div class="w4f-ht"><small>${s.yr}</small>${ffT(s)}</div></div>
+  <div class="w4f-bd">
+   <p class="w4f-ab">${s.ab}</p>
+   <div class="w4f-ch"><span class="w4-lv">${lvTxt(s.lv)}</span><span>${ic('clock')}≈ ${sc4Min(s)} мин</span><span>${s.eps.length} эпизод${s.eps.length<5?'а':'ов'}</span><span>${sc4Ph(s)} фраз</span></div>
+   <section><h4>Сложность — ${LVW[s.lv-1].toLowerCase()}</h4><p>${s.lw}</p></section>
+   <section><h4>Что выучишь ${stars4(s.use)}</h4><p>${s.uw}</p></section>
+   <section><h4>Эпизоды</h4><div class="w4f-eps">${s.eps.map((e,j)=>`<button class="w4f-ep" data-t="▶ ${s.t}: эпизод ${j+1}"><i class="img" style="background-image:url(${thumb(e)})"></i><span><small>Эпизод ${j+1} · ${e[1]}</small><b>${e[0]}</b></span><em>${e[2]} фраз</em></button>`).join('')}</div></section>
+   <div class="w4f-pad"></div></div></div>
+  <button class="w4f-x" aria-label="Закрыть">${ic('x')}</button>
+  <div class="w4f-go"><button data-t="▶ ${s.t}: эпизод 1 «${s.eps[0][0]}»">${ic('play')}Смотреть эпизод 1 · ${s.eps[0][1]}</button></div>`;
+ R.appendChild(ov);const c=sub(ctx);
+ const a=from?rel(from,R):{x:20,y:200,w:304,h:300};
+ an(ov,[{clipPath:`inset(${a.y}px ${344-a.x-a.w}px ${754-a.y-a.h}px ${a.x}px round 24px)`},{clipPath:'inset(0 0 0 0 round 46px)'}],{sp:SPs});
+ an($('.w4f-hero .kb',ov),[{transform:'scale(1.25)'},{transform:'scale(1.06)'}],{d:900,e:EO});
+ $$('.w4f-ht>*,.w4f-ab,.w4f-ch,.w4f-bd section,.w4f-ep',ov).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:180+j*55}));
+ an($('.w4f-go button',ov),[{transform:'translateY(90px)'},{transform:'none'}],{sp:SPs,dl:350});
+ $$('[data-t]',ov).forEach(b=>c.on(b,'click',()=>{an(b,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});toast(R,b.dataset.t)}));
+ const close=()=>{if(!ov.isConnected)return;c.kill();const z=an(ov,[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(40px) scale(.96)'}],{d:240,e:EI,f:'forwards'});const fin=()=>ov.remove();if(z)z.onfinish=fin;else fin()};
+ c.on($('.w4f-x',ov),'click',close);
+ const sc=$('.w4f-sc',ov);drag(c,$('.w4f-hero',ov),{axis:'y',start(){if(sc.scrollTop>4)return false},move(dx,dy){if(dy>0)ov.style.transform=`translateY(${dy*.6}px)`},end(dx,dy){ov.style.transform='';if(dy>90)close()},tap(){}});
+ return close;}
+
+/* --- А «Афиша»: сторис, карусель «Что посмотреть» крупно, повторить, плитки --- */
+V.push({g:'h4',id:'h4a',n:'Афиша',
+ idea:'Главная как афиша кинотеатра: сверху сторис, под ними — большие карточки «Что посмотреть», листаются вбок сами. На карточке — фильм его шрифтом, о чём одной строкой, уровень словом, время. «Подробнее» открывает окно, где всё крупно, как в Кинотеке. Ниже — повторить и маленькие плитки: коллекция, магазин, с друзьями.',
+ moves:['карточки сами едут вбок каждые 5 с, пока не тронешь; у текущей кадр медленно наезжает','«Подробнее» — окно вырастает из карточки; кадр отъезжает, строки въезжают по одной','окно закрывается ✕ или свайпом вниз за кадр'],
+ from:'Твой отзыв: «на „Что посмотреть“ — открылось фулл окно, где больше инфы помещается, я вообще не могу прочитать, что там на первой сцене», «переименуй „Сегодня“ — в „Главная“ или как назвать».',
+ minus:'Игры — одной плиткой «С друзьями» внизу: васяну они не главное, но вход должен быть. Название вкладки — «Главная»; если хочется живее — «Афиша».',
+ mount(R,ctx){R.className='scr v3h w4 w4a';
+  R.innerHTML=`${SB(0)}<i class="w4-tf"></i><div class="v3h-sc">${v3Head()}<div class="v3h-st"></div>
+   <div class="w4-sec"><b>Что посмотреть</b><small>для тебя · средний</small></div>
+   <div class="w4a-car">${SC4.map((s,j)=>`<article class="w4a-c" data-s="${j}"><i class="img kb" style="background-image:url(${IMG[s.img]})"></i><i class="sh"></i>
+    <div class="w4a-tx"><small>${s.yr}</small>${ffT(s)}<p>${s.ab}</p><div class="w4a-mt"><span class="w4-lv">${lvTxt(s.lv)}</span><span>≈ ${sc4Min(s)} мин · ${s.eps.length} эп.</span></div>
+    <div class="w4a-bt"><button class="go" data-t="▶ ${s.t}: эпизод 1">${ic('play')}Смотреть</button><button class="more" data-more="${j}">${ic('info')}Подробнее</button></div></div></article>`).join('')}</div>
+   <div class="w4a-dots">${SC4.map((s,j)=>`<i class="${j?'':'on'}"></i>`).join('')}</div>
+   ${v3Rv()}
+   <div class="w4a-tiles"><button data-t="🏆 Коллекция: фоны, карточки, кадры"><span class="i">${ic('img')}</span><b>Коллекция</b><small>12 фонов</small></button><button data-t="🛍 Магазин за билеты"><span class="i">${ic('bag')}</span><b>Магазин</b><small>🎟 300</small></button><button data-t="⚔️ Versus, Шпион, дуэль по сцене"><span class="i">${ic('users')}</span><b>С друзьями</b><small>Versus · Шпион</small></button></div>
+   <div class="w4-pad"></div></div>${TB4('v3-tb',0)}<i class="hb"></i><div class="h1-sv c3" hidden></div>`;
+  v3Stories(R,ctx,$('.v3h-st',R),$('.h1-sv',R));v3Taps(R,ctx);
+  const car=$('.w4a-car',R),C=$$('.w4a-c',R),D=$$('.w4a-dots i',R);let cur=0,touched=false;
+  const hi=k=>{C.forEach((c,j)=>c.classList.toggle('on',j===k));D.forEach((d,j)=>d.classList.toggle('on',j===k))};hi(0);
+  ctx.on(car,'scroll',()=>{const k=Math.round(car.scrollLeft/(C[0].offsetWidth+12));if(k!==cur){cur=k;hi(k)}});
+  ctx.on(car,'pointerdown',()=>{touched=true});
+  const auto=()=>{if(!ctx.alive||touched||$('.w4f',R))return;const k=(cur+1)%C.length;car.scrollTo({left:C[k].offsetLeft-car.offsetLeft-16+16,behavior:'smooth'});ctx.t(auto,5000)};ctx.t(auto,5000);
+  C.forEach((c,j)=>an(c,[{opacity:0,transform:'translateX(60px) scale(.94)'},{opacity:1,transform:'none'}],{sp:SPs,dl:250+j*90}));
+  v3Cascade(R,'.w4-sec,.v3h-rv,.w4a-tiles button',300);
+  $$('[data-more]',R).forEach(b=>ctx.on(b,'click',e=>{e.stopPropagation();touched=true;w4Full(R,ctx,SC4[+b.dataset.more],b.closest('.w4a-c'))}));
+  C.forEach(c=>ctx.on(c,'click',e=>{if(e.target.closest('button'))return;touched=true;w4Full(R,ctx,SC4[+c.dataset.s],c)}));
+  an($('.v3h-hd',R),[{opacity:0,transform:'translateY(-10px)'},{opacity:1,transform:'none'}],{d:500});
+ }});
+
+/* --- Б «Меню как в игре»: живой фон на весь экран, большие пункты меню слева (как Planet Zoo) --- */
+V.push({g:'h4',id:'h4b',n:'Меню как в игре',
+ idea:'Главная как меню игры (ты хвалил Planet Zoo): на весь экран живой фон фильма, поверх — крупные пункты меню. Сверху сторис. Главный пункт — «Продолжить» с фильмом его шрифтом. «Что посмотреть» выдвигает снизу ряд постеров; тап — то же окно «Подробнее». Никаких карточек и плиток — только фон и меню.',
+ moves:['фон медленно живёт, раз в 8 с меняется на другой фильм наплывом — и меняется «Продолжить»','пункты меню въезжают слева по одному, по выбранному пробегает свет','«Что посмотреть» — ряд постеров выезжает снизу, постеры раскладываются веером'],
+ from:'Твой отзыв: «вайбовый дизайн какой-то, а не перекрас» и «укомплектуй главную: сторис вверху, что посмотреть, коллекция, сцены, магазин».',
+ minus:'Живой фон нужен хороший: пока у фильмов фонов нет, вместо видео — кадр с медленным наездом. Меню — сильный «вайб», но информации на экране меньше, чем в «Афише».',
+ mount(R,ctx){R.className='scr w4 w4b';
+  const BG=[['titanic',0],['bank',1],['wolf',1]];
+  R.innerHTML=`<div class="w4b-bg">${BG.map(([v],j)=>`<div class="w4b-v${j?'':' on'}">${vidHTML(v)}</div>`).join('')}</div><i class="w4b-sh"></i>${SB(0)}
+   <div class="w4b-top"><div class="v3h-st"></div></div>
+   <div class="w4b-menu"><div class="w4b-cont"><small>ПРОДОЛЖИТЬ</small><div class="w4b-ttl">${ffT(SC4[0])}</div><span class="w4b-ep">Эпизод 2 · «Я выживу» · 46 с</span>
+     <button class="w4b-play" data-t="▶ Продолжить">${ic('play')}</button></div>
+    <nav class="w4b-list">${[['film','Что посмотреть','6 сцен для тебя','pick'],['rep','Повторить','17 фраз · ≈ 4 мин','rv'],['img','Коллекция','12 фонов · 6 карточек','co'],['bag','Магазин','🎟 300','sh'],['users','С друзьями','Versus · Шпион · дуэль','fr']].map(([i,t,s,k])=>`<button data-k="${k}"><i>${ic(i)}</i><b>${t}</b><small>${s}</small></button>`).join('')}</nav></div>
+   <div class="w4b-pk" hidden><div class="w4b-pkh"><b>Что посмотреть</b><button class="x" aria-label="Закрыть">${ic('x')}</button></div><div class="w4b-ps">${SC4.map((s,j)=>`<button data-s="${j}"><i class="img" style="background-image:url(${IMG['p_'+(s.k==='sopranos'?'sopranos':s.k)]||IMG[s.img]})"></i><small>${LVW[s.lv-1]}</small></button>`).join('')}</div></div>
+   ${TB4('v3-tb w4b-tb',0)}<i class="hb"></i><div class="h1-sv c3" hidden></div>`;
+  vidStart(R);v3Stories(R,ctx,$('.w4b-top .v3h-st',R),$('.h1-sv',R));
+  const L=$$('.w4b-list button',R);L.forEach((b,j)=>an(b,[{opacity:0,transform:'translateX(-60px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:350+j*90}));
+  an($('.w4b-cont',R),[{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:150});
+  let sel=0;const pickL=k=>{L.forEach((b,j)=>b.classList.toggle('on',j===k));sel=k};pickL(0);
+  const T=[0,1,2],ttl=$('.w4b-ttl',R),ep=$('.w4b-ep',R),V3=$$('.w4b-v',R);let bi=0;
+  const CONT=[[0,'Эпизод 2 · «Я выживу» · 46 с'],[1,'Эпизод 4 · «Первый ключ» · 45 с'],[1,'Эпизод 3 · «Новая идея» · 31 с']];
+  const swap=()=>{if(!ctx.alive)return;if(!$('.w4f',R)&&$('.w4b-pk',R).hidden){bi=(bi+1)%V3.length;V3.forEach((v,j)=>v.classList.toggle('on',j===bi));const c=CONT[bi],s=SC4[c[0]];
+   const o=an(ttl,[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-12px)'}],{d:260,f:'forwards'});if(o)o.onfinish=()=>{o.cancel();ttl.innerHTML=ffT(s);ep.textContent=c[1];an(ttl,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{sp:SPs})}}ctx.t(swap,8000)};ctx.t(swap,8000);
+  const pk=$('.w4b-pk',R),openPk=()=>{pk.hidden=false;an(pk,[{transform:'translateY(110%)'},{transform:'none'}],{sp:SPs});$$('.w4b-ps button',pk).forEach((b,j)=>an(b,[{opacity:0,transform:`translateY(40px) rotate(${(j-2.5)*6}deg)`},{opacity:1,transform:'none'}],{sp:SPb,dl:120+j*60}))},
+   closePk=()=>{const a=an(pk,[{transform:'none'},{transform:'translateY(110%)'}],{d:240,e:EI,f:'forwards'});const f=()=>{pk.hidden=true;pk.getAnimations().forEach(x=>x.cancel())};if(a)a.onfinish=f;else f()};
+  L.forEach((b,j)=>ctx.on(b,'click',()=>{pickL(j);an(b,[{transform:'scale(.97)'},{transform:'none'}],{sp:SPb});const k=b.dataset.k;
+   if(k==='pick')openPk();else toast(R,{rv:'🔁 17 фраз · по 3 за раз',co:'🏆 Коллекция',sh:'🛍 Магазин',fr:'⚔️ Versus · Шпион · дуэль по сцене'}[k])}));
+  ctx.on($('.x',pk),'click',closePk);
+  $$('.w4b-ps button',pk).forEach(b=>ctx.on(b,'click',()=>w4Full(R,ctx,SC4[+b.dataset.s],b)));
+  ctx.on($('.w4b-play',R),'click',e=>{an(e.currentTarget,[{transform:'scale(.85)'},{transform:'none'}],{sp:SPb});toast(R,'▶ Продолжаю')});
+ }});
+
+/* --- В «Лента»: сцены на весь экран одна за другой, листаешь вверх, как в TikTok --- */
+V.push({g:'h4',id:'h4c',n:'Лента как в TikTok',
+ idea:'Главная как лента TikTok: каждая сцена — на весь экран, листаешь вверх. Между сценами — карточка «Повторить» и «Коллекция · Магазин». Сторис висят сверху поверх ленты. Справа, как в TikTok, — «Подробнее» и «Позвать друга». Те, кто придёт из твоих роликов, сразу узнают формат.',
+ moves:['кадр сцены медленно наезжает; при листании новая сцена встаёт на место с пружиной','стрелка «листай вверх» подпрыгивает, пока не полистаешь','«Подробнее» — окно вырастает из кнопки'],
+ from:'Наш разговор про ролики в TikTok: люди придут оттуда — пусть главная выглядит так же, как то, что привело их сюда.',
+ minus:'Одна сцена на экран — видно меньше выбора сразу. Хорошо для новичка, хуже для того, кто ищет конкретный фильм (для этого — вкладка «Сцены»).',
+ mount(R,ctx){R.className='scr w4 w4c';
+  const card=(s,j)=>`<section class="w4c-s" data-s="${j}"><i class="img kb" style="background-image:url(${IMG[s.img]})"></i><i class="sh"></i>
+   <div class="w4c-tx"><small>${s.yr}</small>${ffT(s)}<p>${s.ab}</p><div class="w4a-mt"><span class="w4-lv">${lvTxt(s.lv)}</span><span>≈ ${sc4Min(s)} мин · ${sc4Ph(s)} фраз</span></div>
+    <button class="go" data-t="▶ ${s.t}: эпизод 1">${ic('play')}Смотреть эпизод 1</button></div>
+   <div class="w4c-side"><button data-more="${j}"><i>${ic('info')}</i><small>Подробнее</small></button><button data-t="⚔️ Зову друга на дуэль по «${s.t}»"><i>${ic('users')}</i><small>С другом</small></button><button data-t="↗ Ссылка на сцену скопирована"><i>${ic('share')}</i><small>Поделиться</small></button></div></section>`;
+  const S=SC4.map(card);
+  S.splice(2,0,`<section class="w4c-s rv"><div class="w4c-big"><small>ПОВТОРИТЬ</small><b class="n">17</b><span>фраз ждут тебя · ≈ 4 мин</span><button class="go" data-t="🔁 Повторение: по 3 за раз">${ic('rep')}Повторить</button></div></section>`);
+  S.splice(5,0,`<section class="w4c-s cs"><div class="w4c-two"><button data-t="🏆 Коллекция"><i class="img" style="background-image:url(${IMG.v_titanic})"></i><b>Коллекция</b><small>12 фонов · 6 карточек</small></button><button data-t="🛍 Магазин"><span class="tk">${ic('ticket')}<b>300</b></span><b>Магазин</b><small>эффекты, карточки, звуки</small></button></div></section>`);
+  R.innerHTML=`<div class="w4c-feed">${S.join('')}</div>${SB(0)}<div class="w4c-top"><div class="v3h-st"></div></div><div class="w4c-hint">${ic('up')}<small>листай вверх</small></div>${TB4('v3-tb w4b-tb',0)}<i class="hb"></i><div class="h1-sv c3" hidden></div>`;
+  v3Stories(R,ctx,$('.w4c-top .v3h-st',R),$('.h1-sv',R));v3Taps(R,ctx);
+  const feed=$('.w4c-feed',R),hint=$('.w4c-hint',R),SS=$$('.w4c-s',R);let cur=0;
+  const act=k=>{SS.forEach((s,j)=>s.classList.toggle('on',j===k));const s=SS[k];$$('.w4c-tx>*,.w4c-side button,.w4c-big>*,.w4c-two button',s).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(22px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80+j*60}));
+   const n=$('.n',s);if(n)countUp(ctx,n,17,700)};act(0);
+  ctx.on(feed,'scroll',()=>{const k=Math.round(feed.scrollTop/feed.clientHeight);if(k!==cur){cur=k;act(k);if(!hint.hidden){const a=an(hint,[{opacity:1},{opacity:0}],{d:250,f:'forwards'});if(a)a.onfinish=()=>{hint.hidden=true}}}});
+  an(hint,[{transform:'translate(-50%,0)'},{transform:'translate(-50%,-10px)'},{transform:'translate(-50%,0)'}],{d:1100,e:'ease-in-out',it:Infinity});
+  $$('[data-more]',R).forEach(b=>ctx.on(b,'click',e=>{e.stopPropagation();w4Full(R,ctx,SC4[+b.dataset.more],b)}));
+  ctx.t(()=>{if(!ctx.alive||cur||R._touched)return;feed.scrollTo({top:feed.clientHeight,behavior:'smooth'})},4200);ctx.on(R,'pointerdown',()=>{R._touched=1},{capture:true});
+ }});
+
 /* ================= каркас страницы ================= */
-const GN={home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-let CTX=null,curV=null,curG='h3';
+const GN={home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v4',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+let CTX=null,curV=null,curG='h4';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -2519,9 +2804,9 @@ function notes(v){const L=V.filter(x=>x.g===v.g),i=L.indexOf(v);
  <div class="nav">${L.length>1?'<button data-n="-1">← Пред.</button>':''}<button class="pri" data-n="0">↻ Ещё раз</button>${L.length>1?'<button data-n="1">След. →</button>':''}</div>`;
  $$('#notes [data-n]').forEach(b=>b.onclick=()=>{const d=+b.dataset.n;if(!d)mount(v);else mount(L[(i+d+L.length)%L.length])})}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd7',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd8',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd7'))}catch(e){}
-mount(start||V.find(x=>x.g==='h3'));
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd8'))}catch(e){}
+mount(start||V.find(x=>x.g==='h4'));
 </script>
