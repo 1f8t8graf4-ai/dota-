@@ -297,14 +297,14 @@ function ndTodayHTML(){
   ].filter(Boolean).join('');
   return `<div class="n-scr n-today">
     <div class="n-hello"><div class="n-ava">${esc((nm||'Я').charAt(0).toUpperCase())}</div><div><b>${hi}${nm?', '+esc(nm):''}</b><span>${esc(sub)}</span></div>
-      <div class="n-fire${risk?' risk':''}"><i>🔥</i><i>${st}</i></div><button class="n-ring${ok?' ok':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 38 38"><circle class="bgc" cx="19" cy="19" r="15.9" pathLength="100"/><circle class="fg" cx="19" cy="19" r="15.9" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></div>
+      <button class="n-ring${ok?' ok':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 38 38"><circle class="bgc" cx="19" cy="19" r="15.9" pathLength="100"/><circle class="fg" cx="19" cy="19" r="15.9" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></div>
     <section class="n-hero" id="hHero" data-sc="${s.id}"><div class="n-bgi" style="background-image:${bdi?`url('${bdi}'),`:''}url('${assetUrl(scKey(s,'cover.jpg'))}')"></div>
       <div class="n-eb">${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'План на сегодня'}</div>
       <h3>Эпизод <em>«${esc(p.t)}»</em>${n?` и ${n} ${plural(n,['повторение','повторения','повторений'])}`:''}</h3>
       <div class="n-meta"><span class="n-chip ${cf.toLowerCase()}">${lvW(cf)}</span><span class="n-t">≈ ${mins} мин</span><span class="n-t">${esc(s.show||s.title)}</span></div>
       <div class="n-pull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></i></div>
     </section>
-    <div class="n-stats" role="group" aria-label="Статистика"><div><b>🔥 ${st}</b><small>серия</small></div><div><b>${ph}</b><small>фраз выучено</small></div><div><b>${eps}</b><small>эпизодов</small></div></div>
+    <div class="n-stats" role="group" aria-label="Статистика"><div${risk?' class="risk"':''}><b>🔥 ${st}</b><small>${risk?'ответь сегодня':'серия'}</small></div><div><b>${ph}</b><small>фраз выучено</small></div><div><b>${eps}</b><small>эпизодов</small></div></div>
     ${rows?`<div class="n-sechead">План на сегодня</div>${rows}`:''}
   </div>`;}
 const ndYear=s=>{const m=String(s.ep||'').match(/(19|20)\d\d/);return m?m[0]:'';};
@@ -4871,6 +4871,8 @@ function gmFace(h,big){const in2=(h.name||'?').split(/[\s&]+/).filter(Boolean).m
   const ic=h.icon?assetUrl(h.icon):(h.img&&!/\.mp4($|\?)/i.test(h.img)?assetUrl(h.img):null);
   if(ic)return `<div class="gm-face" style="background-image:url('${esc(ic)}')"></div>`;
   return `<div class="gm-face gm-ph" style="--h:${hue}">${esc(in2)}</div>`;}
+// 25.10: мини-иконка героя (голова 128×128, mini/<id>.png из артов вики — как на миникарте игры)
+function gmMini(h,cls){return h&&h.mini?`<i class="gm-mini${cls?' '+cls:''}" style="background-image:url('${esc(assetUrl(h.mini))}')"></i>`:'';}
 function gmDots(h){const u=Math.min(5,gmUse(h)||0);return u?`<i class="gm-dots">${'●'.repeat(u)}${'○'.repeat(5-u)}</i>`:'';}   // 13.9.60: clamp — repeat(5-u) падал при use>5
 // 13.9.62: игра как «фильм» — страница игры из «Кино → Игры» (вкладки «Игры» больше нет). Внутри — движок диалогов (герои → диалоги, выборка, рандом)
 function renderGameScreen(gid){const GS=window.__DATA&&window.__DATA.GAMES||{},g=GS[gid];if(!g){renderTab('kino');return;}
@@ -4898,8 +4900,8 @@ function gmBrowseHTML(){
   const sorted=[...hs].sort((a,b)=>store.gmSort==='abc'?a.name.localeCompare(b.name):(gmUse(b)-gmUse(a)||a.name.localeCompare(b.name)));
   const cards=sorted.map(h=>{const n=gmDlgs(h).length;
     return (store.gmView==='list'
-      ?`<button class="gm-row${n?'':' gm-soon'}" data-h="${h.id}">${gmFace(h)}<div class="gm-rowt"><b>${esc(h.name)}</b><span>${n?n+' '+(n===1?'диалог':n<5?'диалога':'диалогов'):'скоро'}</span></div>${gmDots(h)}</button>`
-      :`<button class="gm-card${n?'':' gm-soon'}" data-h="${h.id}">${gmFace(h)}<b>${esc(h.name)}</b><span>${n?n+' диалога':'скоро'}</span>${gmDots(h)}</button>`);}).join('');
+      ?`<button class="gm-row${n?'':' gm-soon'}" data-h="${h.id}">${h.mini?gmMini(h,'big'):gmFace(h)}<div class="gm-rowt"><b>${esc(h.name)}</b><span>${n?n+' '+(n===1?'диалог':n<5?'диалога':'диалогов'):'скоро'}</span></div>${gmDots(h)}</button>`
+      :`<button class="gm-card${n?'':' gm-soon'}" data-h="${h.id}">${gmFace(h)}${gmMini(h,'bd')}<b>${esc(h.name)}</b><span>${n?n+' диалога':'скоро'}</span>${gmDots(h)}</button>`);}).join('');
   return `<div class="gm-ctl">
     <div class="gm-chips"><b>Сортировка</b><button data-sort="abc" class="${store.gmSort==='abc'?'on':''}">А-Я</button><button data-sort="use" class="${store.gmSort!=='abc'?'on':''}">По полезности</button></div>
     <div class="gm-chips"><b>Вид</b><button data-view="grid" class="${store.gmView!=='list'?'on':''}">Как в игре</button><button data-view="list" class="${store.gmView==='list'?'on':''}">Списком</button></div>
@@ -4912,8 +4914,15 @@ function gmHeroHTML(){
   <div class="gm-herohead">${gmFace(h)}<div><b>${esc(h.name)}</b><span>${esc(h.role||'')}</span></div></div>
   ${(gmDlgs(h)||[]).slice().sort((a,b)=>(b.use||0)-(a.use||0)).map((d,i)=>{
     const other=d.lines.map(l=>l.s).find(s=>s!==h.name)||'';
-    return `<button class="gm-dlg" data-d="${i}"><span class="gm-ctx">${esc(d.ctx)}</span><p>«${esc(d.lines[0].en)}»</p><div class="gm-dlgm"><span>с ${esc(other)} · ${d.lines.length} реплик</span>${gmDots({dialogs:[d],id:h.id})}</div></button>`;}).join('')}`;
+    const hB=gmHeroesAll().find(x=>x.name===other);
+    return `<button class="gm-dlg" data-d="${i}"><span class="gm-ctx">${esc(d.ctx)}</span>${d.about?`<p class="gm-about">${esc(d.about)}</p>`:''}<p>«${esc(d.lines[0].en)}»</p><div class="gm-dlgm"><span class="gm-vs">${gmMini(h)}<em>vs</em>${gmMini(hB)} ${esc(other)} · ${d.lines.length} реплик</span>${gmDots({dialogs:[d],id:h.id})}</div></button>`;}).join('')}
+  ${gmPhrHTML(h)}`;
 }
+// 25.10: фразы героя (реплики Z.ai с вики: 15 лучших, с голосом из игры и пометкой — подкол, шутка, отсылка…)
+function gmPhrHTML(h){const L=(h.phr||[]).filter(x=>x&&x.en);if(!L.length)return '';const n=GM.phrAll===h.id?L.length:Math.min(8,L.length);
+  return `<div class="gm-phr"><div class="gm-phrh"><b>Фразы героя</b><span>${L.length} · голос из игры</span></div>
+    ${L.slice(0,n).map(x=>`<div class="gm-ph">${x.a?`<button class="dd-voice" data-au="${esc(assetUrl(x.a))}" aria-label="прослушать фразу">▸</button>`:'<i></i>'}<div><p>${esc(x.en)}</p><small>${esc(x.ru||'')}</small></div>${x.tag?`<em>${esc(x.tag)}</em>`:''}</div>`).join('')}
+    ${n<L.length?`<button class="gm-phm" data-phall="${esc(h.id)}">Ещё ${L.length-n}</button>`:''}</div>`;}
 function gmDuelHTML(){
   const h=GM.hero,d=GM.dlg;const other=d.lines.map(l=>l.s).find(s=>s!==h.name)||'';
   const hB=gmHeroesAll().find(x=>x.name===other)||{id:other,name:other};
@@ -4951,7 +4960,7 @@ function gmDuelStep(i){
 // Кадр: ролики 16:9, герой справа — h.fx = где лицо по ширине кадра (0–1), object-position считается под размер окна (ddxFit).
 const DDX={h:null,hB:null,d:null,i:-1,sel:-1};
 function ddxPort(h,side){
-  return `<div class="ddx-p ${side}" data-side="${side}"><div class="ddx-pi">${gmAlive(h)?`<video src="${esc(assetUrl(h.img))}" data-fx="${+h.fx||0.75}" autoplay muted loop playsinline preload="auto"></video>`:gmFace(h)}</div><i class="ddx-dim"></i><b class="ddx-nm">${esc(h.name)}</b></div>`;}
+  return `<div class="ddx-p ${side}" data-side="${side}"><div class="ddx-pi">${gmAlive(h)?`<video src="${esc(assetUrl(h.img))}" data-fx="${+h.fx||0.75}" autoplay muted loop playsinline preload="auto"></video>`:gmFace(h)}</div><i class="ddx-dim"></i><b class="ddx-nm">${gmMini(h,'nm')}${esc(h.name)}</b></div>`;}
 function ddxFit(){const st=$('#ddxStage');if(!st)return;
   st.querySelectorAll('.ddx-pi video').forEach(v=>{const r=v.getBoundingClientRect();if(!r.width||!r.height)return;
     const vw=v.videoWidth||1280,vh=v.videoHeight||720,s=Math.max(r.width/vw,r.height/vh),w=Math.min(1,r.width/(vw*s)),f=+v.dataset.fx||0.75;
@@ -5084,7 +5093,7 @@ function dvSheet(pre){pre=pre||{};const D=dvDialogs();if(!D.length){toast('По�
   let di=Math.max(0,pre.first?D.findIndex(x=>x.d.lines[0].en===pre.first):auto2>=0?auto2:auto),side=0,bet=pre.bet!=null?(pre.bet<=g?pre.bet:0):(g>=25?25:0);if(di<0)di=0;
   if(pre.me){const k=[D[di].A.name,D[di].B.name].indexOf(pre.me);if(k>=0)side=k;}
   const w=document.createElement('div');w.className='sc-sheetwrap dvs';let drawn=false;
-  const ic=h=>`<span class="dv-ic"${h.icon?` style="background-image:url('${esc(assetUrl(h.icon))}')"`:''}></span>`;
+  const ic=h=>`<span class="dv-ic${h.mini?' mn':''}"${h.mini||h.icon?` style="background-image:url('${esc(assetUrl(h.mini||h.icon))}')"`:''}></span>`;   // 25.10: мини-иконка героя
   const draw=()=>{const x=D[di],hs=[x.A,x.B];w.innerHTML=`<div class="sc-sheet kv-sheet dv-sheet${drawn?' noanim':''}"><b>⚔️ Versus с другом</b><p class="kv-sub">Deadlock · 3 раунда: собери фразу, что значит, что сказал герой. Урон по сопернику — твои очки.</p>
     <div class="kv-lbl">Ты за</div><div class="kv-modes dv-sides">${hs.map((h,k)=>`<button data-side="${k}" class="${k===side?'on':''}">${ic(h)}<b>${esc(h.name)}</b><small>${k===side?'это ты':'достанется другу'} · ур. ${hxLv(hxXP(h))}</small></button>`).join('')}</div>
     <div class="kv-lbl">Диалог <small>${re?'реванш — другой диалог, можно сменить':'выбран сам — можно сменить'}</small></div><div class="kv-eps dv-dlgs">${D.map((x,k)=>`<button data-di="${k}" class="${k===di?'on':''}"><b>${esc(String(x.d.ctx||'').split('·').slice(0,2).join('·').trim())}</b><small>${x.d.about?esc(x.d.about):`«${esc(x.d.lines[0].en)}»`}</small><em>${x.d.lines.length} ${plural(x.d.lines.length,['реплика','реплики','реплик'])}${dvN(x)?` · играли ${dvN(x)}`:''}</em></button>`).join('')}</div>
@@ -5104,7 +5113,7 @@ function dvOpen(){let w=document.getElementById('dvx');if(w)return w;w=document.
   document.body.appendChild(w);document.body.classList.add('dvx-on');requestAnimationFrame(()=>w.classList.add('in'));return w;}
 function dvClose(){const w=document.getElementById('dvx');try{if(DVAU){DVAU.onended=DVAU.onerror=null;DVAU.pause();}}catch(e){}if(!w)return false;
   w.querySelectorAll('video').forEach(v=>{try{v.pause();v.removeAttribute('src');v.load();}catch(e){}});w.remove();document.body.classList.remove('dvx-on');return true;}
-function dvPort(h,side,who){return `<div class="dvx-p ${side}" data-side="${side}"><div class="dvx-pi"${h.icon?` style="background-image:url('${esc(assetUrl(h.icon))}')"`:''}>${gmAlive(h)?`<video src="${esc(assetUrl(h.img))}" data-fx="${+h.fx||0.75}" autoplay muted loop playsinline preload="auto"></video>`:gmFace(h)}</div><i class="dvx-dim"></i><div class="dvx-nm"><b>${esc(h.name)}</b><small>${esc(who)}</small></div><i class="dvx-ko">K.O.</i></div>`;}
+function dvPort(h,side,who){return `<div class="dvx-p ${side}" data-side="${side}"><div class="dvx-pi"${h.icon?` style="background-image:url('${esc(assetUrl(h.icon))}')"`:''}>${gmAlive(h)?`<video src="${esc(assetUrl(h.img))}" data-fx="${+h.fx||0.75}" autoplay muted loop playsinline preload="auto"></video>`:gmFace(h)}</div><i class="dvx-dim"></i><div class="dvx-nm">${gmMini(h,'nm')}<b>${esc(h.name)}</b><small>${esc(who)}</small></div><i class="dvx-ko">K.O.</i></div>`;}
 function dvFit(){$$('#dvxStage .dvx-pi video').forEach(v=>{const r=v.getBoundingClientRect();if(!r.width||!r.height)return;   // как ddxFit: лицо героя (h.fx) — в кадре при любом размере окна
   const vw=v.videoWidth||1280,vh=v.videoHeight||720,s=Math.max(r.width/vw,r.height/vh),w=Math.min(1,r.width/(vw*s)),f=+v.dataset.fx||0.75;
   const x=w>=1?50:Math.max(0,Math.min(100,(f-0.62*w)/(1-w)*100));v.style.objectPosition=x.toFixed(1)+'% 50%';});}   // 13.9.70: лицо на 62 % окна (у левого, отражённого, — на 38 %): ближе к краю экрана, а не к шву посередине
@@ -5249,7 +5258,7 @@ function gmPickHTML(){
   const n=gmAllLines(gmHeroes().filter(h=>GM.pick.has(h.id))).length;
   return `<button class="gm-back" data-back="3">← Режимы</button>
   <p class="gm-note">Отметь героев — их реплики придут порциями по 5.</p>
-  <div class="gm-grid" style="--gmcols:3">${hs.map(h=>`<button class="gm-card${GM.pick.has(h.id)?' sel':''}" data-pick="${h.id}">${gmFace(h)}<b>${esc(h.name)}</b>${GM.pick.has(h.id)?'<i class="gm-tick">✓</i>':''}</button>`).join('')}</div>
+  <div class="gm-grid" style="--gmcols:3">${hs.map(h=>`<button class="gm-card${GM.pick.has(h.id)?' sel':''}" data-pick="${h.id}">${gmFace(h)}${gmMini(h,'bd')}<b>${esc(h.name)}</b>${GM.pick.has(h.id)?'<i class="gm-tick">✓</i>':''}</button>`).join('')}</div>
   <div class="gm-pickbar"><span>${n} реплик</span><button id="gmGo" ${GM.pick.size?'':'disabled'}>Порция ▸</button></div>
   ${GM.por?gmPortHTML():''}`;
 }
@@ -5290,4 +5299,5 @@ function gmBind(){
   const more=$('#gmMore');if(more)more.onclick=()=>{if(GM.por){GM.por.i+=5;haptic('sel');r.innerHTML=gmHTML();gmBind();}};
   const ag2=$('#gmAgain2');if(ag2)ag2.onclick=()=>{r.innerHTML=gmHTML();gmBind();haptic('sel');};
   r.querySelectorAll('[data-au]').forEach(b=>b.onclick=e=>{e.stopPropagation();haptic('medium');gmPlay(b.dataset.au,b);});   // 13.9.64: войс по кнопке ▸
+  r.querySelectorAll('[data-phall]').forEach(b=>b.onclick=()=>{GM.phrAll=b.dataset.phall;haptic('sel');const y=window.scrollY;r.innerHTML=gmHTML();gmBind();window.scrollTo(0,y);});   // 25.10: все фразы героя
 }

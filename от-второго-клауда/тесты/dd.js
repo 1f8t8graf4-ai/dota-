@@ -12,7 +12,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,wtapHint:1,lvl:'b',t
   if(!fs.existsSync(__dirname+'/shots'))fs.mkdirSync(__dirname+'/shots');
   const A=await open({browser:b,uid:111,name:'Андрей',platform:dev==='pc'?'tdesktop':'ios',touch:dev!=='pc',ctx:{viewport:vp,colorScheme:scheme},wait:2200,init,initArg:[base]});
   const P=A.page;const shot=async n=>{await P.waitForTimeout(450);await P.screenshot({path:`${__dirname}/shots/dd-${dev}-${scheme}-${n}.png`});};
-  const tap=async sel=>{const el=await P.$(sel);const bb=await el.boundingBox();if(dev==='pc')await P.mouse.click(bb.x+bb.width/2,bb.y+bb.height/2);else await P.touchscreen.tap(bb.x+bb.width/2,bb.y+bb.height/2);};
+  const tap=async sel=>{const el=await P.$(sel);await el.evaluate(e=>{const r=e.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight-110)e.scrollIntoView({block:'center'});});await P.waitForTimeout(120);const bb=await el.boundingBox();if(dev==='pc')await P.mouse.click(bb.x+bb.width/2,bb.y+bb.height/2);else await P.touchscreen.tap(bb.x+bb.width/2,bb.y+bb.height/2);};
   await P.evaluate(()=>renderGameScreen('deadlock'));await P.waitForTimeout(900);
   let r=await P.evaluate(()=>({heroes:[...document.querySelectorAll('#gmRoot [data-h]')].map(x=>x.dataset.h)}));
   ok('экран Deadlock: герои с живыми диалогами — Венатор и Крысиный король',r.heroes.includes('venator')&&r.heroes.includes('rat-king'),r);

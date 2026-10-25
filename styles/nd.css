@@ -583,3 +583,13 @@ body[data-look="nd"] .sc-sheetwrap.under>:first-child::after{opacity:.36}
 .n-lvr-x{grid-column:1/-1;display:none;padding-top:calc(8*var(--nu));border-top:1px solid var(--n-line);font:400 calc(12*var(--nu))/1.45 var(--n-f-ui);color:var(--n-mute)}
 .n-lvr.open .n-lvr-x{display:block}
 body.nofx .n-lvr-bar i{animation:none}
+
+/* ==== 13.9.76 — «Сегодня»: серия только в плитке (сверху цифры висели без круга), плашка «Начни отсюда» читается, ручка не наезжает на «Потяни» ==== */
+.n-hello .n-ring{margin-left:auto}
+.n-stats>div.risk b{color:var(--n-bad)}
+.n-stats>div.risk small{color:var(--n-bad)}
+body[data-look="nd"].ndc:not(#_) .n-hero .n-eb{display:inline-block;align-self:flex-start;width:auto;max-width:100%;padding:calc(3*var(--nu)) calc(9*var(--nu));color:#FFE3A3!important;background:rgba(10,8,4,.5);border:1px solid rgba(255,235,190,.24);border-radius:999px}
+@keyframes n-kn2{0%,55%,100%{transform:none}75%{transform:translateX(calc(8*var(--nu)))}}
+body[data-look="nd"]:not(#_) .n-pull:not(.drag):not(.done):not(.back) .ndpull-k{animation:n-kn2 3.5s cubic-bezier(.5,0,.2,1) infinite}
+body[data-look="nd"]:not(#_) .n-pull .ndpull-t{place-items:center start;padding-left:calc(60*var(--nu));font-size:calc(12.5*var(--nu))}
+body.nofx .n-pull .ndpull-k,html.lite .n-pull .ndpull-k{animation:none!important}

@@ -364,3 +364,33 @@ body.nofx .dvx-b,body.nofx .dvx-pan.fl,body.nofx .dvx-stage.vs .dvx-p,body.nofx 
 .dvx-end .dvx-xp.up{box-shadow:0 0 0 1px rgba(246,199,110,.55)}
 body:not(.nofx) .dvx-end .dvx-xp i em{animation:dvXp .9s cubic-bezier(.2,.8,.2,1) both .25s}
 @keyframes dvXp{from{transform:scaleX(0)}}
+
+/* ==== 25.10 — мини-иконки героев (голова с вики, как на миникарте) и фразы героя ==== */
+.gm-mini{display:inline-block;width:26px;height:26px;border-radius:50%;background:#1d1f25 center/118% no-repeat;box-shadow:0 0 0 1.5px rgba(255,255,255,.18),0 3px 8px rgba(0,0,0,.45);flex:none;vertical-align:middle}
+body.zai .gm-card .gm-mini.bd{position:absolute;left:6px;top:6px;width:30px;height:30px;box-shadow:0 0 0 2px var(--n-card),0 4px 10px rgba(0,0,0,.5);z-index:2}
+body.zai .gm-row .gm-mini.big{width:52px;height:52px;box-shadow:0 0 0 2px var(--n-line),0 6px 14px rgba(0,0,0,.4)}
+body.zai .gm-vs{display:inline-flex;align-items:center;gap:5px}
+body.zai .gm-vs .gm-mini{width:22px;height:22px}
+body.zai .gm-vs em{font:800 9px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+body.zai .gm-about{margin:4px 0 0!important;font-size:12.5px!important;color:var(--n-mute);line-height:1.4!important}
+body.zai .gm-phr{margin:18px 0 6px}
+body.zai .gm-phrh{display:flex;align-items:baseline;justify-content:space-between;margin:0 2px 8px}
+body.zai .gm-phrh b{font-size:15px;font-weight:800}
+body.zai .gm-phrh span{font-size:11.5px;color:var(--n-mute)}
+body.zai .gm-ph{display:flex;align-items:flex-start;gap:10px;padding:10px 4px;border-bottom:1px solid var(--n-line)}
+body.zai .gm-ph>div{flex:1;min-width:0}
+body.zai .gm-ph p{margin:0;font-size:14px;line-height:1.4}
+body.zai .gm-ph small{display:block;margin-top:3px;font-size:12px;color:var(--n-mute);line-height:1.35}
+body.zai .gm-ph em{flex:none;font-style:normal;font-size:10.5px;padding:3px 7px;border-radius:999px;background:var(--n-soft,rgba(255,255,255,.07));color:var(--n-mute);white-space:nowrap}
+body.zai .gm-ph>i{width:28px;flex:none}
+body.zai .gm-phm{display:block;width:100%;margin-top:10px;padding:10px;border-radius:var(--lk-rs,13px);background:var(--n-card);border:1px solid var(--n-line);font-weight:700;font-size:13px}
+.dv-sides .dv-ic.mn{border-radius:50%;background-size:118%;box-shadow:0 0 0 2px rgba(255,255,255,.14)}
+.dvx-nm .gm-mini.nm{display:block;width:34px;height:34px;margin-bottom:7px;box-shadow:0 0 0 2px rgba(255,255,255,.22),0 4px 12px rgba(0,0,0,.6)}
+.dvx-p.rt .dvx-nm .gm-mini.nm{margin-left:auto}
+.dvx-p.lf .dvx-nm .gm-mini.nm{box-shadow:0 0 0 2px #F6C76E,0 4px 12px rgba(0,0,0,.6)}
+.dvx-p.rt .dvx-nm .gm-mini.nm{box-shadow:0 0 0 2px #A9C8FF,0 4px 12px rgba(0,0,0,.6)}
+.ddx-nm{display:inline-flex;align-items:center;gap:7px}
+.ddx-nm .gm-mini.nm{width:24px;height:24px}
+body.zai .gm-head{flex-wrap:wrap;row-gap:10px}
+body.zai .gm-game{flex:1 0 auto}
+body.zai .gm-game span{white-space:nowrap}
