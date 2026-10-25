@@ -58,12 +58,12 @@ def main():
     sw = min(a.w, W) // 2 * 2
     sc = f'scale={sw}:-2:flags=lanczos,format=yuv420p'
     if hard:
-        fc = f'[0:v]trim=start_frame={S}:end_frame={E},setpts=PTS-STARTPTS,{sc}[o]'
+        fc = f'[0:v]trim=start_frame={S}:end_frame={E},setpts=PTS-STARTPTS,fps={fps},{sc}[o]'
     else:
         fc = (f'[0:v]split=3[x][y][z];'
-              f'[x]trim=start_frame={S + fd}:end_frame={E - fd},setpts=PTS-STARTPTS[A];'
-              f'[y]trim=start_frame={E - fd}:end_frame={E},setpts=PTS-STARTPTS[B];'
-              f'[z]trim=start_frame={S}:end_frame={S + fd},setpts=PTS-STARTPTS[C];'
+              f'[x]trim=start_frame={S + fd}:end_frame={E - fd},setpts=PTS-STARTPTS,fps={fps}[A];'
+              f'[y]trim=start_frame={E - fd}:end_frame={E},setpts=PTS-STARTPTS,fps={fps}[B];'
+              f'[z]trim=start_frame={S}:end_frame={S + fd},setpts=PTS-STARTPTS,fps={fps}[C];'
               f'[B][C]xfade=transition=fade:duration={fd / fps:.4f}:offset=0[BC];'
               f'[A][BC]concat=n=2:v=1:a=0,{sc}[o]')
     subprocess.run(['ffmpeg', '-nostdin', '-y', '-v', 'error', '-i', a.src, '-filter_complex', fc, '-map', '[o]', '-an',
