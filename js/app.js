@@ -338,6 +338,30 @@ const CEFR=['A1','A2','B1','B2','C1'];
 const LVW={A1:'Начинающий',A2:'Базовый',B1:'Средний',B2:'Выше среднего',C1:'Продвинутый'};
 const lvW=c=>LVW[c]||'';
 const onbLvP=c=>(c<'B1'?'Начнём со сцен попроще и с подсказками.':'Сцены — по твоему уровню, задания — обычной сложности.')+' Уровень дальше сам растёт и падает по твоим ответам.';
+// 13.9.72 (П10b): живой уровень — растёт и падает по ответам, как рейтинг (Андрей: «чтобы уровень менялся по ответам, как рейтинг»).
+// store.lvR — 1.0…5.99 (целая часть — уровень: 1 = A1 … 5 = C1); старт — середина уровня (store.cefr, иначе store.lvl), после теста уровня — заново.
+// Ответ с первой попытки: трудность d = уровень фразы (самое редкое слово, wlvText) или слова (wlvWord) + поправка за вид задания (на слух труднее);
+// ожидание p = σ(1.2·(lvR − d − 0.5) + 1.386) — фразы своего уровня решают в ~80 % случаев; lvR += K·(верно − p), K = 0.12 первые 30 ответов, потом 0.06.
+// Видимый уровень store.cefr меняется, только когда lvR ушёл за границу больше чем на 0.08 и с прошлой смены было ≥ 6 ответов. Вырос — плашка, упал — тихо.
+const LV_ADJ={listen:.5,heard:.3,hear:.3,lbuild:.5,dict:.6,build:.25,expr:.15,dexpr:.15};
+const lvSeed=()=>{const c=CEFR.indexOf(store.cefr||'');return c>=0?c+1.5:store.lvl==='a'?2.5:3.5;};
+const lvR=()=>typeof store.lvR==='number'&&store.lvR>=1?store.lvR:lvSeed();
+function lvRate(good,d,t){if(!d)return;   // у фразы нет уровня (имена, своё слово) — не считаем
+  try{const r=lvR(),p=1/(1+Math.exp(-(1.2*(r-d-(LV_ADJ[t]||0)-.5)+1.386))),n=store.lvN||0,v=Math.max(1,Math.min(5.99,r+(n<30?.12:.06)*((good?1:0)-p)));
+    store.lvR=Math.round(v*1000)/1000;store.lvN=n+1;
+    const cur=CEFR.indexOf(store.cefr||'')+1||Math.floor(lvSeed()),b=Math.floor(v);
+    if(b!==cur&&(v>=cur+1.08||v<cur-.08)&&store.lvN-(store.lvCh||0)>=6){const now=CEFR[b-1],up=b>cur;store.cefr=now;store.lvCh=store.lvN;
+      try{ph('capture','lv_change',{from:CEFR[cur-1],to:now});}catch(e){}
+      if(up)setTimeout(()=>{toast('Твой уровень вырос: '+lvW(now));sfx('learn');haptic('ok');},1300);}
+  }catch(e){}}
+// прогресс внутри уровня (0…1) для Профиля: от начала видимого уровня до следующего
+const lvProg=()=>{const c=CEFR.indexOf(store.cefr||'')+1||Math.floor(lvSeed());return Math.max(0,Math.min(1,lvR()-c));};
+// строка «Твой уровень» в Профиле: слово, полоски, сколько до следующего; тап — как считается
+function lvRowHTML(){const c=store.cefr||CEFR[Math.floor(lvSeed())-1],i=CEFR.indexOf(c),pr=Math.round(lvProg()*100),top=i>=CEFR.length-1;
+  return `<button class="n-lvr anim l-${c.toLowerCase()}" id="pfLv" aria-expanded="false"><span class="n-lvr-h"><small>Твой уровень</small><b>${lvW(c)}</b></span>${lvBars(c)}
+    <span class="n-lvr-bar" aria-hidden="true"><i style="width:${top?100:pr}%"></i></span>
+    <small class="n-lvr-s">${top?'Высший уровень — держи его ответами':`До уровня «${lvW(CEFR[i+1])}» — ${pr} %`} · растёт и падает по ответам</small>
+    <span class="n-lvr-x">Двигают ответы с первой попытки — в проверке эпизода, повторении, «Моих словах» и Versus. Трудная фраза верно — вверх, ошибка в лёгкой — вниз. Пройти тест заново — Настройки → «Пройти первый запуск заново».</span></button>`;}
 const lvBarsIn=n=>[1,2,3,4,5].map(k=>`<i${k<=n?' class="on"':''}></i>`).join('');
 const lvBars=(c,cls)=>{const n=CEFR.indexOf(c)+1;return n?`<i class="lvb l-${c.toLowerCase()}${cls?' '+cls:''}" title="${LVW[c]}" aria-label="Уровень: ${LVW[c]}">${lvBarsIn(n)}</i>`:'';};
 const cefrOf=s=>CEFR[Math.max(1,Math.min(5,(s&&s.lvl)||3))-1];
@@ -827,6 +851,7 @@ function ndProfileHTML(){const name=userName()||'Игрок',photo=tgPhoto(),pb=
       <p class="ndpc-s">${st?`🔥 ${st} ${plural(st,['день','дня','дней'])} подряд`:'Серия начнётся с первого ответа'}${pb?` · фон «${esc(pb.name)}»`:''}</p>
       <button class="ndpc-bgb" id="pcChg">${pb?'Сменить фон':bgAnyGot()?'Поставить фон':'Фон — за пройденную сцену'}</button></section>
     <div class="ndst anim">${cnt(eps,plural(eps,['эпизод','эпизода','эпизодов']))}${cnt(ph,plural(ph,['фраза','фразы','фраз']))}${cnt(mw,plural(mw,['слово','слова','слов']))}${cnt(bgs,plural(bgs,['фон','фона','фонов']))}</div>
+    ${lvRowHTML()}
     ${(()=>{const g=(typeof ONB_GOALS!=='undefined'?ONB_GOALS:[]).find(x=>x[0]===store.goalWhy);return g?`<div class="n-why anim">${niSVG('target')}<span><b>Помнишь, ради чего начал?</b><small>${esc(g[2])}. Каждая сцена — ещё шаг туда.</small></span></div>`:'';})()}
     <div class="ndl anim">
       ${premMode()!=='off'||FLAG_ADMIN?row('pfPrem','✦','Премиум',premHas()?`до ${premDate(premC().until)}`:premC().trialUsed?'повторение, подсказки, слова без лимита':'7 дней бесплатно'):''}
@@ -844,6 +869,7 @@ function ndProfileHTML(){const name=userName()||'Игрок',photo=tgPhoto(),pb=
     </div>
     <p class="foot">Версия ${APP_V}</p>`;}
 function ndBindProfile(){bindProfileAdmin();bindHead();bgFill($('.ndpc'));
+  {const b=$('#pfLv');if(b)b.onclick=()=>{sfx('tap');haptic('sel');b.setAttribute('aria-expanded',String(b.classList.toggle('open')));};}   // 13.9.72: как считается уровень — раскрывается по тапу
   $('#pcChg').onclick=e=>{e.stopPropagation();sfx('tap');haptic('sel');renderCollection('bg');};
   $('#ndPc').onclick=e=>{if(e.target.closest('button'))return;sfx('tap');pfView(meCard(),true);};
   $('#pfColl').onclick=()=>{sfx('tap');renderCollection();};
@@ -1005,7 +1031,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.71';
+const APP_V='13.9.72';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -1453,7 +1479,7 @@ function renderMyWordsQuiz(list,back,pool){const bk=back||renderMyWords,P0=pool|
     if(q.t==='pairs'){let sel=null,left=q.set.length;$$('.sw-pairs [data-l]').forEach(b=>b.onclick=()=>{$$('.sw-pairs [data-l]').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');sel=b;sfx('tap');});
       $$('.sw-pairs [data-r]').forEach(b=>b.onclick=()=>{if(!sel)return;const good=b.dataset.r===sel.dataset.l;
         if(good){sfx('good');sel.classList.add('ok');b.classList.add('ok');sel.disabled=b.disabled=true;sel=null;if(--left===0){ok++;setTimeout(next,450);}}else{sfx('bad');b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),400);}});}
-    else $$('.sc-opt').forEach(b=>b.onclick=()=>{const good=b.dataset.v===q.k._r;if(good)ok++;sfx(good?'good':'bad');const it=store.myw[q.k.k];if(it){wSRS(it,good);save();}
+    else $$('.sc-opt').forEach(b=>b.onclick=()=>{const good=b.dataset.v===q.k._r;if(good)ok++;lvRate(good,wlvText(q.k.w,wiLang(q.k.sid)),'mean');sfx(good?'good':'bad');const it=store.myw[q.k.k];if(it){wSRS(it,good);save();}
       $$('.sc-opt').forEach(x=>{x.disabled=true;if(x.dataset.v===q.k._r)x.classList.add('ok');});if(!good)b.classList.add('bad');
       $('#mqfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}"><div class="t">${good?'Верно':'Неверно'}</div><div class="en">${esc(q.k.w)} — ${esc(q.k._r)}</div>${q.k.lineRu?`<div class="orig">${esc(q.k.lineRu)}</div>`:''}<button class="sc-btn" id="mqn">Дальше →</button></div>`;$('#mqn').onclick=()=>{sfx('tap');next();};if(good)autoNext($('#mqn'),$('#mqfb'),2600);});}
   function end(){sfx(ok===Q.length?'win':'learn');const more=REST.length;mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">Мои слова</div><div class="sc-big">${ok} / ${Q.length}</div>
@@ -1524,7 +1550,8 @@ function renderDaily(list,o){o=o||{};const L0=list||dailyItems(),back=o.back||((
     mount(`<div class="scn noir"><div class="sc-head"><button class="icon-btn" id="dlx" aria-label="Закрыть">${ui('close')}</button><div class="sc-segs">${seg}</div></div>
       <div class="sc-q sc-card dl-q"><div class="sc-meta">${meta}</div>${body}<div id="dlfb"></div></div></div>`,'scnscr');
     $('#dlx').onclick=()=>{sfx('tap');back();};}
-  function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!o.nosrs&&!q.re&&!(good&&early)){   // 13.9.71 (ревью П8, п.1): повтор после ошибки (q.re) расписание не трогает — первая ошибка уже поставила «завтра», верный повтор не уносит на неделю
+  function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!q.re&&!o.nosrs)lvRate(good,q.k==='ph'?wlvText(tgtOf(q),q.s.lang==='de'?'de':'en'):wlvText(q.it.w,wiLang(q.it.sid)),q.t);   // 13.9.72: живой уровень
+    if(!o.nosrs&&!q.re&&!(good&&early)){   // 13.9.71 (ревью П8, п.1): повтор после ошибки (q.re) расписание не трогает — первая ошибка уже поставила «завтра», верный повтор не уносит на неделю
     if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);}res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
     if(!good&&!q.re)CARRY.push({...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?(typeOn()?'dict':'pmean'):fitQ(q,'build'))});   // 13.9.69: повтор — в следующей порции
     sfx(good?'good':'bad');haptic(good?'ok':'err');
@@ -2928,6 +2955,7 @@ function renderScQuiz(id,i){
       const r0=P.r[f.id];   // 13.9.69: шаг повторения до ответа — ошибка в повторении возвращает фразу завтра (раньше выпадала из расписания)
       try{const ms=Date.now()-(q.t0||Date.now()),nw=build?build.tk.length:scToks(String(correct||'')).length;ev('qtime',type+'|'+ms+'|'+nw,{t:type,ms,n:nw});}catch(e){}   // 13.9.34: время ответа (медиана — в «Воронке»)   // 12.6: «Не знаю» и подсказка про кубики висели после ответа
       if(right)ok++;else wrong++;
+      if(!q.re)lvRate(right&&!q.soft,wlvText(s.lang==='de'?f.de:f.en,s.lang==='de'?'de':'en'),type);   // 13.9.72: живой уровень
       if(right){combo++;if(combo>=3&&combo%3===0)toast(`🔥 ${combo} подряд без ошибок`);}else combo=0;
 
       // Ошибка не стирает выученное. Она только снимает «надолго» и возвращает точечный повтор.
@@ -4644,7 +4672,7 @@ function onbWhyHTML(T){const S=(T.seq||[]).filter(x=>x[4]==='s');if(!S.length)re
   if(G.length)r.push(`грамматика <b>${G.filter(x=>x[1]).length} из ${G.length}</b>`);
   return `<div class="onb-why">${r.map(x=>`<span>${x}</span>`).join('')}</div>`;}
 function onbFinish(){const O=ONB;if(!O)return;tgVSwipes(false);const c=O.cefr||(O.lt&&O.lt.seq&&O.lt.seq.length>=4?ltEstimate(O.lt):'A2'),ci=CEFR.indexOf(c);   // 24.10: «Пропустить» посреди теста — уровень по уже данным ответам
-  store.onboarded=true;store.introV=1;store.newb=1;store.langs=[O.lang];store.kinoLang=O.lang;store.cefr=c;store.lvl=ci<=1?'a':'b';store.goalWhy=O.goal;store.goal=O.min*2;store.daily=O.daily;store.scSubChosen=true;if(!store.path)store.path='mix';save();
+  store.onboarded=true;store.introV=1;store.newb=1;store.langs=[O.lang];store.kinoLang=O.lang;store.cefr=c;store.lvl=ci<=1?'a':'b';store.lvR=ci+1.5;store.lvN=0;store.lvCh=0;store.goalWhy=O.goal;store.goal=O.min*2;store.daily=O.daily;store.scSubChosen=true;if(!store.path)store.path='mix';save();
   try{remindSync();}catch(e){}
   const L=SCENES.filter(s=>scLang(s)===O.lang&&!s.age&&flagOf('scene-'+s.id)!=='hide'&&s.kind!=='clip'),pick=(START_PICK[O.lang]||[]).map(scOf).filter(Boolean);
   const near=(A)=>A.slice().sort((a,b)=>Math.abs((a.lvl||3)-1-ci)-Math.abs((b.lvl||3)-1-ci))[0];
@@ -4662,6 +4690,7 @@ const premFree=s=>!s||(s.lvl||3)<=2||START_PICK.en.includes(s.id)||START_PICK.de
 const premNeed=f=>{const m=premMode();if(m==='off'||premHas()||ADM_OPEN())return false;return f==='scene'?m==='scenes':true;};
 const premDate=t=>{const d=new Date(t);return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear();};
 setTimeout(premLoad,2800);setTimeout(phLoad,2500);   // 13.9.32: аналитика PostHog
+setTimeout(()=>{try{wlvLoad();}catch(e){}},3200);   // 13.9.72: уровни слов (21 КБ) — для живого уровня в заданиях
 // экран премиума: что даёт, пробные 7 дней, тарифы, оплата звёздами; у кого есть — статус и продление
 function renderPaywall(why,back){back=back||(()=>renderTab(store.tab||'learn'));screen='prem';backBtn(true);PREM.back=back;ph('capture','prem_view',{why:why||''});
   const c=premC(),has=premHas(),pr=c.prices||{m:250,y:1500},tr=!c.trialUsed&&!has,pick=PREM.pick||'y',plan=c.plan;
@@ -5122,6 +5151,7 @@ function dvFb(q,ok,pts,miss){const head=ok?`<b class="ok">✓ Верно</b> <sp
   return `${head} · ${esc(q.en)}<small class="dvx-ru">${esc(q.ru)}</small>`;}
 // ответ: очки локально сразу, на сервер — в фоне; урон по полоске друга
 function dvAns(ok){const R=KV.room,k=KV.k,a={ok:!!ok,ms:Math.max(0,Date.now()-KV.qt)},pts=kvPts(a);KV.ansd=1;KV.k++;
+  {const q=R.qs[k]||{};lvRate(ok,wlvText(q.t==='mean'?q.w:q.en,'en'),q.t);}   // 13.9.72: живой уровень
   if(R[KV.role]){R[KV.role].ans=R[KV.role].ans||{};R[KV.role].ans[k]=a;}sfx(ok?'good':'bad');if(ok)dvHit('rt',pts);else haptic('err');dvTop();
   const wait=ok?1500:2600;KV.lock=Date.now()+wait;kvNet({a:'ans',code:KV.code,k,ok:a.ok,ms:a.ms}).then(j=>{if(j&&j.ok&&KV&&KV.dd)KV.room=j.v;}).catch(()=>{});
   setTimeout(()=>{if(!KV||KV.over||!KV.dd)return;KV.lock=0;if(KV.k>=KV.room.qs.length){dvApply(KV.room);if(KV&&!KV.over)dvWait();}else dvRound();},wait);

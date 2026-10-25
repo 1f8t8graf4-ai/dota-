@@ -570,3 +570,16 @@ body[data-look="nd"] .sc-sheetwrap.under>:first-child::after{opacity:.36}
 .n-scr .n-lv .n-chip{flex:none;white-space:nowrap}
 /* сегмент «Фильмы · Сериалы · Интервью · Игры»: при 4–5 разделах подписи слипались («СериалыИнтервью») — мельче и в одну строку */
 .n-scr .n-sg[style*="--n:4"] button,.n-scr .n-sg[style*="--n:5"] button{min-width:0;font-size:calc(9.8*var(--nu));letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:calc(1*var(--nu));padding-right:calc(1*var(--nu))}
+/* ==== 13.9.72 — П10b: «Твой уровень» в Профиле — слово цветом уровня, полоски, сколько до следующего; тап — как считается ==== */
+.n-lvr{display:grid;grid-template-columns:1fr auto;align-items:center;gap:calc(7*var(--nu)) calc(10*var(--nu));width:100%;margin:0 0 calc(10*var(--nu));padding:calc(14*var(--nu));border-radius:calc(16*var(--nu));background:var(--n-card);color:var(--n-ink);text-align:left;box-shadow:var(--n-shadow2,none)}
+.n-lvr-h small{display:block;font:700 calc(10*var(--nu))/1.2 var(--n-f-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--n-mute)}
+.n-lvr-h b{display:block;margin-top:calc(2*var(--nu));font:800 calc(18*var(--nu))/1.15 var(--n-f-ui);color:var(--lc,var(--n-ink))}
+.n-lvr>.lvb{height:calc(22*var(--nu));gap:calc(2.5*var(--nu))}
+.n-lvr>.lvb>i{width:calc(5*var(--nu));border-radius:2px}
+.n-lvr-bar{grid-column:1/-1;display:block;height:6px;border-radius:3px;background:var(--n-soft);overflow:hidden}
+.n-lvr-bar i{display:block;height:100%;border-radius:inherit;background:var(--lc,var(--n-ink));transform-origin:left center;animation:n-lvr-in .9s cubic-bezier(.2,.8,.2,1) .15s both}
+@keyframes n-lvr-in{from{transform:scaleX(0)}}
+.n-lvr-s{grid-column:1/-1;font:500 calc(11.5*var(--nu))/1.35 var(--n-f-ui);color:var(--n-mute)}
+.n-lvr-x{grid-column:1/-1;display:none;padding-top:calc(8*var(--nu));border-top:1px solid var(--n-line);font:400 calc(12*var(--nu))/1.45 var(--n-f-ui);color:var(--n-mute)}
+.n-lvr.open .n-lvr-x{display:block}
+body.nofx .n-lvr-bar i{animation:none}
