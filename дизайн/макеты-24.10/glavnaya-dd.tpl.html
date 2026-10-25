@@ -1537,14 +1537,239 @@ canvas.fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .w4-tf{position:absolute;top:0;left:0;right:0;height:54px;background:linear-gradient(#0A0C14 60%,rgba(10,12,20,0));z-index:30;pointer-events:none}
 .w4a-bt .go{padding:0 12px}.w4a-bt .more{padding:0 12px}
 
+/* ===== Комикс v4: сцена нагнетает ===== */
+.k4{background:#0D0B09;color:#F4ECD8}
+.k4::before{content:"";position:absolute;inset:0;background:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1.5px) 0 0/6px 6px;pointer-events:none}
+.k4-hd{position:absolute;top:50px;left:14px;right:14px;display:flex;align-items:center;gap:10px;z-index:6}
+.k4-hd .tt{font:400 26px/1 Bangers,Impact,sans-serif;letter-spacing:.04em;color:#E04A3A}
+.k4-hd>div:not(.k4-heat){flex:1}
+.k4-hd small{display:block;font:800 9.5px/1 Inter,sans-serif;letter-spacing:.14em;color:rgba(244,236,216,.5)}
+.k4-hd i{font:600 italic 14px/1.2 Lora,Georgia,serif}
+.k4-heat{display:grid;gap:4px;justify-items:end}
+.k4-heat span{display:block;width:70px;height:7px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden}
+.k4-heat i{display:block;height:100%;background:linear-gradient(90deg,#F2D35B,#E04A3A);transform-origin:left;transform:scaleX(0);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.k4-strip{position:absolute;top:96px;left:14px;right:14px;display:flex;gap:6px;z-index:6}
+.k4-strip button{flex:1;height:46px;border-radius:6px;border:2px solid #2a241c;background:#1a1611;display:flex;align-items:center;justify-content:center;gap:4px;padding:0;color:rgba(244,236,216,.35);opacity:.45;transition:opacity .3s,border-color .3s}
+.k4-strip button .emb{width:26px;height:26px;filter:grayscale(1)}
+.k4-strip button b{font:400 15px/1 Bangers,Impact,sans-serif}
+.k4-strip button.seen{opacity:.85;border-color:var(--c)}
+.k4-strip button.seen .emb{filter:none}
+.k4-strip button.on{opacity:1;border-color:#F2D35B;box-shadow:0 0 0 2px rgba(242,211,91,.25)}
+.k4-pn{position:absolute;left:14px;top:152px;width:316px;height:392px;overflow:hidden;border:3px solid #F4ECD8;outline:3px solid #0D0B09;box-shadow:0 0 0 6px #F4ECD8,0 20px 40px rgba(0,0,0,.6);background:#050a07;cursor:pointer;touch-action:pan-y}
+.k4-cam{position:absolute;inset:0;transform-origin:50% 46%;transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.k4-tun{position:absolute;inset:0;width:100%;height:100%;display:block}
+.k4-rip path{animation:k3-rip 2.4s ease-in-out infinite;animation-delay:var(--d)}
+.k4-lamp{position:absolute;left:50%;top:-40px;width:260px;height:300px;margin-left:-130px;background:radial-gradient(50% 60% at 50% 15%,rgba(255,236,170,.55),rgba(255,220,140,.12) 55%,transparent 75%);transition:opacity .06s;pointer-events:none}
+.k4-eyes i{position:absolute;width:10px;height:4px;opacity:0;transition:opacity .6s}
+.k4-eyes i::before,.k4-eyes i::after{content:"";position:absolute;top:0;width:3.5px;height:3.5px;border-radius:50%;background:#FF3B2F;box-shadow:0 0 6px #FF3B2F}
+.k4-eyes i::before{left:0}.k4-eyes i::after{right:0}
+.k4-eyes i.on{opacity:1;animation:k4blink 3.6s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes k4blink{0%,46%,54%,100%{transform:scaleY(1)}50%{transform:scaleY(.1)}}
+.k4-red{position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 55%,transparent 30%,rgba(200,30,20,.75) 100%);opacity:0;transition:opacity 1.2s;pointer-events:none}
+.k4-sl{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none}
+.k4-cap{position:absolute;left:10px;right:10px;top:10px;padding:7px 10px;background:#F2D35B;border:2px solid #0D0B09;color:#17120C;font:700 12px/1.35 Inter,sans-serif;z-index:3;display:flex;gap:8px;align-items:flex-start}
+.k4-cap b{flex:none;width:20px;height:20px;border-radius:50%;background:#17120C;color:#F2D35B;display:grid;place-items:center;font:400 13px/1 Bangers,Impact,sans-serif}
+.k4-who{position:absolute;left:4px;bottom:8px;display:grid;justify-items:center;z-index:2;filter:drop-shadow(0 10px 18px rgba(0,0,0,.8))}
+.k4-pn.r .k4-who{left:auto;right:4px}
+.k4-who span{margin-top:-10px;padding:3px 8px;background:#0D0B09;border:2px solid var(--hg,#F2D35B);font:400 14px/1 Bangers,Impact,sans-serif;letter-spacing:.06em;color:var(--hg,#F2D35B)}
+.k4-pn.say .k4-who .emb{animation:k4say .45s ease-in-out infinite alternate}
+@keyframes k4say{to{transform:translateY(-4px) scale(1.04)}}
+.k4-bl{position:absolute;right:12px;top:86px;width:200px;padding:10px 34px 10px 12px;border-radius:16px;background:#fff;color:#17120C;border:2.5px solid #0D0B09;font:700 14px/1.32 Inter,sans-serif;z-index:3}
+.k4-pn.r .k4-bl{right:auto;left:12px}
+.k4-bl::after{content:"";position:absolute;left:28px;bottom:-13px;border:11px solid transparent;border-top-color:#0D0B09;border-bottom:0}
+.k4-pn.r .k4-bl::after{left:auto;right:28px}
+.k4-pn.loud .k4-bl{border-radius:6px;transform:rotate(-1.5deg);background:#FFF6D6}
+.k4-bl u{text-decoration:none;border-bottom:2px dashed #C0392B;cursor:pointer}
+.k4-pl{position:absolute;right:6px;top:50%;margin-top:-13px;width:26px;height:26px;border-radius:50%;border:0;background:#17120C;color:#F2D35B;display:grid;place-items:center}
+.k4-pl .ic{width:15px;height:15px}
+.k4-pn.say .k4-pl{animation:hc3-p .7s ease-in-out infinite}
+.k4-cov{position:absolute;inset:0;background:#0D0B09;transform:scaleX(0);z-index:5;pointer-events:none}
+.k4-tr{top:560px;background:#1a1611;border:1px solid #2a241c}
+.k4-ct button{background:#1a1611;color:#F4ECD8;border-color:#2a241c}
+.k4-ct .au.on{background:#F2D35B;color:#17120C}
+.k4-vig{position:absolute;inset:0;z-index:40;pointer-events:none;background:radial-gradient(90% 75% at 50% 45%,transparent 55%,rgba(170,20,10,.55) 100%);opacity:0;transition:opacity 1.2s}
+.k4 .k3-stamp{background:rgba(20,16,12,.94)}
+
+/* ===== Дизайн v4: общее ===== */
+.x4 .x4-p{position:absolute;inset:0;padding:54px 18px 100px;display:none;overflow:hidden}
+.x4 .x4-p.on{display:block}
+.x4-tb{position:absolute;left:14px;right:14px;bottom:22px;height:54px;z-index:50;display:flex;align-items:center;justify-content:space-around}
+.x4-tb a{flex:1;text-align:center;font:700 12px/1 Inter,sans-serif;padding:12px 0;cursor:pointer}
+.x4-sl{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:22px 0 18px}
+.x4-sl i{min-width:62px;height:40px;display:grid;place-items:center;font-style:normal}
+.x4-tl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.x4-tl button{cursor:pointer}
+.x4-tl button.used{opacity:.25}
+.x4-ck{display:block;margin:22px auto 0;cursor:pointer}
+.x4-ck:disabled{opacity:.4}
+.x4-ok{display:none;text-align:center;margin-top:18px}
+.x4-ok.on{display:grid;gap:6px}
+
+/* 1. Кинолента */
+.xf{background:#0B0906;color:#F2E6CC}
+.xf-grain{position:absolute;inset:-40%;opacity:.09;pointer-events:none;z-index:45;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.1s steps(5) infinite}
+.xf-perf{position:absolute;top:0;bottom:0;width:14px;z-index:4;background:linear-gradient(90deg,#1c160e 0 3px,transparent 3px 11px,#1c160e 11px),linear-gradient(#1c160e 0 6px,#050403 6px 15px,#1c160e 15px 20px);background-size:100% 20px;background-repeat:repeat-y}
+.xf-perf.l{left:0}.xf-perf.r{right:0}
+.xf .x4-p{padding:54px 24px 100px}
+.xf-hd small{font:700 10px/1 "PT Mono",monospace;letter-spacing:.14em;color:#E8B34B}
+.scr .xf-hd h2{margin:6px 0 14px;font:700 30px/1.05 "Playfair Display",Lora,serif}
+.scr .xf-hd p{margin:6px 0 12px;font:500 13.5px/1.4 Inter,sans-serif;color:rgba(242,230,204,.7)}
+.xf-hd .ff{display:block;margin-top:6px}
+.xf-frame{position:relative;overflow:hidden;border-radius:7px;background:#000;box-shadow:0 0 0 4px #000,0 0 0 5px #2a2218;cursor:pointer}
+.xf-frame .img{position:absolute;inset:0;animation:xfflick 4s steps(1) infinite}
+@keyframes xfflick{0%,100%{opacity:1}31%{opacity:.93}33%{opacity:1}72%{opacity:.96}}
+.xf-frame.big{height:282px}
+.xf-no{position:absolute;top:6px;left:8px;z-index:2;font:700 10px/1 "PT Mono",monospace;color:#E8B34B;letter-spacing:.1em}
+.xf-cap{position:absolute;left:0;right:0;bottom:0;padding:30px 12px 10px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.85));display:grid;gap:4px}
+.xf-cap small{font:700 9.5px/1 "PT Mono",monospace;letter-spacing:.12em;color:#E8B34B}
+.xf-cap b{font:700 15px/1.2 Inter,sans-serif}
+.xf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 0}
+.xf-slate{position:relative;overflow:hidden;display:grid;justify-items:start;gap:3px;padding:20px 12px 10px;border-radius:6px;border:0;background:#1b1813;color:#F2E6CC;text-align:left}
+.xf-st{position:absolute;left:0;right:0;top:0;height:11px;background:repeating-linear-gradient(-45deg,#111 0 9px,#EDE3CE 9px 18px)}
+.xf-slate b{font:700 15px/1.1 "PT Mono",monospace}
+.xf-slate small{font:500 11px/1.2 Inter,sans-serif;color:rgba(242,230,204,.6)}
+.xf-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.xf-frame.sm{height:132px}
+.xf-eps{display:grid;gap:10px}
+.xf-frame.ep{height:88px}
+.xf-frame.ep .xf-cap{padding:22px 12px 8px}
+.xf-frame.ep em{position:absolute;right:8px;top:8px;width:24px;height:24px;border-radius:50%;background:#E8B34B;color:#1d1300;display:grid;place-items:center;z-index:2;font-style:normal}
+.xf-frame.ep em .ic{width:14px;height:14px;stroke-width:3}
+.xf-frame.cur{box-shadow:0 0 0 4px #000,0 0 0 6px #E8B34B,0 0 34px rgba(246,212,136,.35)}
+.xf-clap{position:relative;margin-top:14px}
+.xf-top{height:30px;border-radius:4px 4px 0 0;background:repeating-linear-gradient(-45deg,#111 0 14px,#EDE3CE 14px 28px);transform-origin:4px 100%;transform:rotate(-14deg);transition:transform .2s}
+.xf-top.shut{transform:none}
+.xf-body{display:grid;grid-template-columns:1fr 1fr 1.3fr;border:3px solid #EDE3CE;border-top:0;background:#151310}
+.xf-body span{padding:8px 10px;border-right:2px solid rgba(237,227,206,.4);font:700 9.5px/1 "PT Mono",monospace;letter-spacing:.12em;color:rgba(237,227,206,.6);display:grid;gap:6px}
+.xf-body span:last-child{border-right:0}
+.xf-body b{font:700 24px/1 "PT Mono",monospace;color:#EDE3CE}.xf-body b.s{font-size:16px}
+.scr .xf-ru{margin:20px 0 0;text-align:center;font:600 italic 21px/1.3 Lora,Georgia,serif}
+.xf .x4-sl i{background:#000;border-radius:4px;box-shadow:0 0 0 3px #1c160e;font:700 14px/1 "PT Mono",monospace;color:#F2E6CC;padding:0 8px}
+.xf .x4-sl i.ok{box-shadow:0 0 0 3px #4ADE80}.xf .x4-sl i.bad{box-shadow:0 0 0 3px #E04A3A}
+.xf .x4-tl button{padding:9px 13px;border:0;border-radius:2px;background:#E8D7A8;color:#2a2010;font:700 14px/1 "PT Mono",monospace;box-shadow:0 3px 0 rgba(0,0,0,.4)}
+.xf .x4-tl button:nth-child(odd){transform:rotate(-2deg)}.xf .x4-tl button:nth-child(even){transform:rotate(1.5deg)}
+.xf-btn{height:50px;padding:0 28px;border:0;border-radius:4px;background:#E8B34B;color:#1d1300;font:700 15px/1 "PT Mono",monospace;letter-spacing:.06em}
+.xf-ok b{font:700 34px/1 "PT Mono",monospace;color:#E8B34B;letter-spacing:.08em}
+.xf-ok small{font:500 12.5px/1.3 Inter,sans-serif;color:rgba(242,230,204,.7)}
+.xf-flash{position:absolute;inset:0;background:#FFF6DC;opacity:0;pointer-events:none;z-index:46}
+.xf-tb{background:#120F0A;border-radius:6px;box-shadow:0 0 0 2px #2a2218}
+.xf-tb a{font-family:"PT Mono",monospace;color:rgba(242,230,204,.55);letter-spacing:.06em}
+.xf-tb a.on{color:#E8B34B}
+
+/* 2. Журнал */
+.xe{background:#0E0D0C;color:#EFE6D6}
+.xe-mast{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:8px;border-bottom:1px solid rgba(239,230,214,.25)}
+.xe-mast small{font:700 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:rgba(239,230,214,.6)}
+.xe-mast span{font:900 12px/1 "Playfair Display",serif;letter-spacing:.16em;color:#E0322B;white-space:nowrap}
+.xe-big{position:relative;height:290px;margin:12px -18px 0;overflow:hidden;cursor:pointer}
+.xe-big .img{position:absolute;right:18px;top:10px;bottom:10px;width:46%;filter:grayscale(1) contrast(1.1)}
+.xe-big .img::after{content:"";position:absolute;inset:0;background:#E0322B;mix-blend-mode:multiply;opacity:.55}
+.xe-big b{position:absolute;left:10px;top:40px;z-index:2;font:900 150px/.85 "Playfair Display",Lora,serif;letter-spacing:-.04em;color:#EFE6D6;white-space:nowrap;mix-blend-mode:difference}
+.scr .xe-lead{margin:12px 0 0;font:500 italic 17px/1.4 Lora,Georgia,serif;color:rgba(239,230,214,.85)}
+.xe-list{list-style:none;margin:16px 0 0;padding:0}
+.xe-list li{display:grid;grid-template-columns:34px 1fr auto;align-items:baseline;gap:6px;padding:11px 0;border-top:1px solid rgba(239,230,214,.18);cursor:pointer}
+.xe-list em,.xe-ep em{font:700 12px/1 Inter,sans-serif;font-style:normal;color:#E0322B}
+.xe-list b{font:700 22px/1 "Playfair Display",Lora,serif}
+.xe-list small{font:500 12px/1 Inter,sans-serif;color:rgba(239,230,214,.55)}
+.xe-h{margin:14px 0 0;font:900 52px/.92 "Playfair Display",Lora,serif;letter-spacing:-.02em}
+.xe-eps{margin-top:16px}
+.xe-ep{display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:8px;padding:6px 0;border-top:1px solid rgba(239,230,214,.18)}
+.xe-ep em{font:900 36px/1 "Playfair Display",serif;color:transparent;-webkit-text-stroke:1px rgba(239,230,214,.5)}
+.xe-ep.done em{color:#EFE6D6;-webkit-text-stroke:0}
+.xe-ep.cur em{color:#E0322B;-webkit-text-stroke:0}
+.xe-ep.cur{cursor:pointer}
+.xe-ep b{font:600 16px/1.2 Inter,sans-serif}
+.xe-ep small{font:500 12px/1 Inter,sans-serif;color:rgba(239,230,214,.55)}
+.scr .xe-ru{margin:34px 0 0;font:600 italic 30px/1.2 Lora,Georgia,serif}
+.xe .x4-sl{justify-content:flex-start;gap:12px}
+.xe .x4-sl i{min-width:60px;height:34px;border-bottom:2px solid rgba(239,230,214,.5);font:600 20px/1 Lora,Georgia,serif}
+.xe .x4-sl i.ok{border-color:#E0322B}.xe .x4-sl i.bad{border-color:#E0322B;color:#E0322B}
+.xe .x4-tl{justify-content:flex-start;gap:6px 16px}
+.xe .x4-tl button{border:0;background:none;color:#EFE6D6;font:500 21px/1.3 Lora,Georgia,serif;padding:2px 0;border-bottom:1px solid rgba(239,230,214,.25)}
+.xe-btn{margin:26px 0 0 !important;border:0;background:none;color:#E0322B;font:800 15px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:8px 0}
+.xe-ok{text-align:left}
+.xe-ok b{font:900 italic 40px/1 "Playfair Display",serif;color:#E0322B}
+.xe-ok small{font:500 13px/1.3 Inter,sans-serif;color:rgba(239,230,214,.7)}
+.xe-line{position:absolute;left:18px;right:18px;height:4px;background:#E0322B;transform:scaleX(0);transform-origin:0 50%;display:none}
+.xe-line.on{display:block;transform:none}
+.xe-tb{border-top:1px solid rgba(239,230,214,.25)}
+.xe-tb a{color:rgba(239,230,214,.5);font:700 11px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.xe-tb a.on{color:#E0322B}
+
+/* 3. Игра */
+.xg{background:#070B14;color:#E8F1FF}
+.xg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(110,231,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(110,231,255,.06) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.xg-pl{display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;padding:10px 12px;background:#0F1729;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);margin-top:4px}
+.xg-av{width:46px;height:46px;display:grid;place-items:center;background:linear-gradient(135deg,#6EE7FF,#7C5CFF);color:#081020;font:900 18px/1 Unbounded,Inter,sans-serif;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%)}
+.xg-pl b{font:800 15px/1 Inter,sans-serif}
+.xg-pl small{display:block;margin:4px 0 6px;font:700 11px/1 Inter,sans-serif;color:#6EE7FF}
+.xg-xp{display:block;height:7px;background:rgba(255,255,255,.08);clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.xg-xp i{display:block;height:100%;background:linear-gradient(90deg,#6EE7FF,#FFD23F);transform-origin:left;transform:scaleX(0);transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.xg-fl{display:grid;justify-items:center;font:900 15px/1 Unbounded,Inter,sans-serif;color:#FFD23F}
+.xg-fl .flame{width:24px;height:30px}
+.xg-ms{position:relative;overflow:hidden;margin-top:14px;height:168px;padding:16px;background:#0F1729;clip-path:polygon(16px 0,100% 0,calc(100% - 16px) 100%,0 100%);display:grid;align-content:end;gap:4px;cursor:pointer}
+.xg-ms .img{position:absolute;inset:0;opacity:.55}
+.xg-ms::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0F1729 30%,rgba(15,23,41,.2))}
+.xg-ms>*:not(.img):not(em){position:relative;z-index:1}
+.xg-ms em{z-index:2}
+.xg-ms small{font:800 10px/1 Inter,sans-serif;letter-spacing:.18em;color:#FF4DA6}
+.xg-ms b{font:900 20px/1.1 Unbounded,Inter,sans-serif;max-width:210px}
+.xg-ms span{font:600 12.5px/1.2 Inter,sans-serif;color:rgba(232,241,255,.75)}
+.xg-ms em{position:absolute;right:20px;top:14px;font:900 13px/1 Unbounded,Inter,sans-serif;font-style:normal;color:#081020;background:#FFD23F;padding:6px 10px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.xg-q{margin-top:14px;display:grid;gap:6px}
+.xg-q small{font:800 10px/1 Inter,sans-serif;letter-spacing:.16em;color:rgba(232,241,255,.55);margin-bottom:2px}
+.xg-qi{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:9px 12px;background:#0C1322;border-left:3px solid #2A3A5C;cursor:pointer}
+.xg-qi .ic{width:18px;height:18px;color:#6EE7FF}
+.xg-qi span{font:700 13.5px/1.1 Inter,sans-serif}
+.xg-qi em{font:800 12px/1 Unbounded,Inter,sans-serif;font-style:normal;color:#FFD23F}
+.xg-qi.done{border-left-color:#4ADE80;opacity:.6}.xg-qi.done span{text-decoration:line-through}
+.xg-mn{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.xg-mn button{height:46px;border:0;background:#141E36;color:#E8F1FF;font:800 13px/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.xg-mn .ic{width:17px;height:17px;color:#6EE7FF}
+.xg-sh{padding:6px 2px 4px}
+.xg-sh small{font:800 10px/1 Inter,sans-serif;letter-spacing:.16em;color:#FF4DA6}
+.xg-sh b{display:block;margin-top:6px;font:900 22px/1.1 Unbounded,Inter,sans-serif}
+.xg-map{position:relative;height:540px;margin-top:6px}
+.xg-path{position:absolute;inset:0;width:100%;height:100%}
+.xg-nd{position:absolute;left:var(--x);top:var(--y);transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:1;white-space:nowrap}
+.xg-nd i{width:50px;height:50px;display:grid;place-items:center;background:#141E36;color:#6EE7FF;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%)}
+.xg-nd.done i{background:#4ADE80;color:#081020}
+.xg-nd.cur i{background:#FFD23F;color:#081020;animation:xgp 1.4s ease-in-out infinite}
+@keyframes xgp{50%{transform:scale(1.12)}}
+.xg-nd.lk{opacity:.45}
+.xg-nd.cur{cursor:pointer}
+.xg-nd .ic{width:20px;height:20px;stroke-width:2.6}
+.xg-nd b{display:block;font:800 13px/1.1 Inter,sans-serif}
+.xg-nd small{font:700 11px/1 Inter,sans-serif;color:#FFD23F}
+.xg-hud{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.xg-tm{position:relative;width:44px;height:44px;display:grid;place-items:center}
+.xg-tm svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.xg-tm circle{fill:none;stroke:#6EE7FF;stroke-width:3;stroke-dasharray:94.2;stroke-dashoffset:30}
+.xg-tm b{font:900 14px/1 Unbounded,Inter,sans-serif}
+.xg-cb{font:800 11px/1 Inter,sans-serif;letter-spacing:.14em;color:rgba(232,241,255,.6)}
+.xg-cb b{display:inline-block;font:900 20px/1 Unbounded,Inter,sans-serif;color:#FF4DA6;letter-spacing:0}
+.xg-hp{display:flex;gap:4px}
+.xg-hp i{width:14px;height:14px;background:#FF4DA6;transform:rotate(45deg)}
+.scr .xg-ru{margin:26px 0 0;text-align:center;font:800 21px/1.3 Inter,sans-serif}
+.xg .x4-sl i{background:#0C1322;border:2px solid #2A3A5C;font:800 14px/1 Inter,sans-serif;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.xg .x4-sl i.ok{border-color:#4ADE80;background:rgba(74,222,128,.12)}.xg .x4-sl i.bad{border-color:#FF4DA6}
+.xg .x4-tl button{padding:11px 14px;border:0;border-radius:8px;background:#1B2440;color:#E8F1FF;font:800 15px/1 Inter,sans-serif;box-shadow:0 4px 0 #0B0F1A;transition:transform .08s,box-shadow .08s}
+.xg .x4-tl button:active{transform:translateY(3px);box-shadow:0 1px 0 #0B0F1A}
+.xg-btn{height:52px;padding:0 34px;border:0;background:#6EE7FF;color:#081020;font:900 14px/1 Unbounded,Inter,sans-serif;letter-spacing:.06em;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.xg-ok b{font:900 40px/1 Unbounded,Inter,sans-serif;color:#6EE7FF;text-shadow:0 0 20px rgba(110,231,255,.6)}
+.xg-ok small{font:500 12.5px/1.3 Inter,sans-serif;color:rgba(232,241,255,.7)}
+.xg-tb{background:#0F1729;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.xg-tb a{color:rgba(232,241,255,.5);font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.xg-tb a.on{color:#081020;background:#6EE7FF;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+
 </style>
 
 <div class="wrap">
  <header>
-  <h1>Главная v4 — три варианта по твоему отзыву</h1>
+  <h1>v4 по твоему отзыву: главная, комикс, дизайн</h1>
   <p class="lead">Справа у каждого экрана — что поменял и твои слова, на которые отвечал. Всё живое: смахивай, тапай, зажимай. «↻ Ещё раз» проигрывает заново. Прошлые варианты — кнопки «v3», «v2» и «v1».</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
-  <div class="grp" id="grp"><button data-g="h4">Главная · 3</button><button data-g="d3">ДД · 2</button><button data-g="k3">Комикс</button><button data-g="x3">Тёмный дизайн · 3</button><span class="old"><small>v3:</small><button data-g="h3">Главная</button></span><span class="old"><small>v2:</small><button data-g="h2">Главная</button><button data-g="d2">ДД</button><button data-g="o2">Запуск</button></span><span class="old"><small>v1:</small><button data-g="home">Главная</button><button data-g="dd">ДД</button><button data-g="ob">Запуск</button></span></div>
+  <div class="grp" id="grp"><button data-g="h4">Главная · 3</button><button data-g="d3">ДД · 2</button><button data-g="k4">Комикс</button><button data-g="x4">Дизайн · 3</button><span class="old"><small>v3:</small><button data-g="h3">Главная</button><button data-g="k3">Комикс</button><button data-g="x3">Дизайн</button></span><span class="old"><small>v2:</small><button data-g="h2">Главная</button><button data-g="d2">ДД</button><button data-g="o2">Запуск</button></span><span class="old"><small>v1:</small><button data-g="home">Главная</button><button data-g="dd">ДД</button><button data-g="ob">Запуск</button></span></div>
   <div class="vars" id="vars"></div>
  </header>
  <div class="stage">
@@ -2793,8 +3018,166 @@ V.push({g:'h4',id:'h4c',n:'Лента как в TikTok',
   ctx.t(()=>{if(!ctx.alive||cur||R._touched)return;feed.scrollTo({top:feed.clientHeight,behavior:'smooth'})},4200);ctx.on(R,'pointerdown',()=>{R._touched=1},{capture:true});
  }});
 
+/* ===== Комикс v4: одна большая панель-окно в сцену; сцена (тоннель) нарисована кодом и сама нагнетает по ходу диалога ===== */
+const K4L=[['venator','Evil stirs in New York... and so the Vatican has called on me.','В Нью-Йорке пробуждается зло… и Ватикан призвал меня.','Нью-Йорк, под городом. В канализацию спускается Венатор — охотник на нечисть.',.15],
+ ['rat',"I thought I said you weren't supposed to show your face in the sewers again?!",'Кажется, я велел тебе больше не совать морду в канализацию?!','Из темноты отвечает хозяин канализации — Крысиный король.',.45],
+ ['venator',"You can't hide from a Venator.",'От Венатора не спрятаться.','Венатор не уходит. Он идёт на голос.',.6],
+ ['rat',"What's a priest gonna do to a king?!",'А что поп сделает королю?!','Король смеётся. Из тоннелей на охотника смотрят его крысы.',.85],
+ ['venator','I will find you.','Я тебя найду.','Последнее слово — за Венатором. Охота объявлена.',1]];
+function k4Scene(){let s='<svg class="k4-tun" viewBox="0 0 316 392" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="k4g" cx="50%" cy="46%" r="60%"><stop offset="0" stop-color="#2c4a34"/><stop offset=".55" stop-color="#0f1d14"/><stop offset="1" stop-color="#050a07"/></radialGradient></defs><rect width="316" height="392" fill="url(#k4g)"/>';
+ for(let i=6;i>=0;i--){const k=.22+i*.13,w=200*k,h=260*k,x=158-w/2,y=180-h*.62;s+=`<path d="M${x} ${y+h} V${y+w/2} a${w/2} ${w/2} 0 0 1 ${w} 0 V${y+h}" fill="none" stroke="rgba(120,170,130,${(.08+i*.05).toFixed(2)})" stroke-width="${(1+i*.9).toFixed(1)}"/>`}
+ s+='<path d="M0 392 L120 236 L196 236 L316 392 Z" fill="#0b1a12"/><g class="k4-rip">';for(let i=0;i<10;i++){const y=250+i*14,w=30+i*14;s+=`<path d="M${158-w/2} ${y} h${w*.4} M${158+w*.1} ${y} h${w*.4}" stroke="#4f9d6e" stroke-width="1.5" opacity="${(.25+i*.04).toFixed(2)}" style="--d:${(i*.23).toFixed(2)}s"/>`}
+ return s+'</g></svg>'}
+V.push({g:'k4',id:'kb',n:'Сцена нагнетает',
+ idea:'Комикс стал понятнее: одна большая панель — окно в сцену, сверху подпись «что происходит», снизу перевод. Прошлые панели собираются лентой сверху — видно, где ты в истории, тап — вернуться. А фон — тоннель канализации — нарисован кодом и сам накаляется по ходу ссоры: свет лампы мигает всё чаще, из темноты загораются глаза крыс, края краснеют, на криках («!») панель трясёт.',
+ moves:['новая реплика: чернильная шторка смахивает старую панель, камера внутри сцены чуть наезжает в тоннель','говорящий въезжает со своей стороны (Венатор слева, Король справа), пузырь выскакивает пружиной и звучит','шкала «НАКАЛ» растёт; на 4-й реплике — глаза крыс в тоннелях, на криках — удар и тряска','в конце — штамп «Глава пройдена»'],
+ from:'Твой отзыв: «комикс оставляем, только проработать сам дизайн — где что происходит, и как бы бэкграунд смог накалять сам? или мне через нейронку, но немного».',
+ minus:'Фон — без нейронки, весь кодом: тоннель, лампа, вода, глаза. Для других героев нужен свой «тоннель» — 1 картинка места на диалог (можно из вики или одна генерация), остальное накаливает код. Подписи «что происходит» пишем к каждому диалогу руками.',
+ mount(R,ctx){R.className='scr k4';
+  R.innerHTML=`${SB(0)}<div class="k4-hd"><b class="tt">DEADLOCK</b><div><small>ГЛАВА 1</small><i>«Охота объявлена»</i></div><div class="k4-heat"><small>НАКАЛ</small><span><i></i></span></div></div>
+   <div class="k4-strip">${K4L.map((l,j)=>`<button data-j="${j}" style="--c:${HERO[l[0]].c1}">${emb(l[0],30)}<b>${j+1}</b></button>`).join('')}</div>
+   <div class="k4-pn"><div class="k4-cam">${k4Scene()}<i class="k4-lamp"></i><div class="k4-eyes">${[[70,150],[238,140],[110,205],[205,198],[150,120],[48,215],[270,212],[176,170]].map(([x,y],i)=>`<i style="left:${x}px;top:${y}px;--d:${(i*.37).toFixed(2)}s"></i>`).join('')}</div></div>
+    <i class="k4-red"></i><svg class="k4-sl" viewBox="0 0 316 392">${Array.from({length:22},(_,i)=>{const a=i/22*6.283,r1=150,r2=260;return `<path d="M${158+Math.cos(a)*r1} ${196+Math.sin(a)*r1} L${158+Math.cos(a)*r2} ${196+Math.sin(a)*r2}" stroke="#fff" stroke-width="${2+(i%3)}"/>`}).join('')}</svg>
+    <div class="k4-cap"></div><div class="k4-who"></div><div class="k4-bl"><b></b><button class="k4-pl" aria-label="Послушать">${ic('snd')}</button></div><i class="k4-cov"></i></div>
+   <div class="k3-tr k4-tr"><small class="who"></small><span class="ru">Тапни по панели — поехали</span></div>
+   <div class="k3-ct k4-ct"><button class="pv" aria-label="Назад">${ic('prev')}</button><button class="au">Авто</button><button class="nx" aria-label="Дальше">${ic('next')}</button></div>
+   <div class="k3-tip"></div><div class="k3-stamp">ГЛАВА ПРОЙДЕНА<small>+5 ФРАЗ В СЛОВАРЬ</small></div><i class="k4-vig"></i><canvas class="fx"></canvas><i class="hb"></i>`;
+  const fx=FX(ctx,$('.fx',R)),pn=$('.k4-pn',R),cam=$('.k4-cam',R),cap=$('.k4-cap',R),whoE=$('.k4-who',R),bl=$('.k4-bl',R),cov=$('.k4-cov',R),lamp=$('.k4-lamp',R),red=$('.k4-red',R),vig=$('.k4-vig',R),sl=$('.k4-sl',R),
+   eyes=$$('.k4-eyes i',R),heat=$('.k4-heat span i',R),ST=$$('.k4-strip button',R),who=$('.k4-tr .who',R),ru=$('.k4-tr .ru',R),au=$('.au',R),tip=$('.k3-tip',R);
+  let s=-1,auto=false,at=null,T=0;
+  // свет лампы мигает тем чаще, чем выше накал; капли с потолка — тоже от накала
+  const flick=()=>{if(!ctx.alive)return;const on=Math.random()>T*.45;lamp.style.opacity=on?(.85+Math.random()*.15).toFixed(2):(.15+Math.random()*.2).toFixed(2);ctx.t(flick,on?(900-T*700)*(.4+Math.random()):70+Math.random()*90)};ctx.t(flick,400);
+  const D=Array.from({length:14},()=>({x:20+Math.random()*304,y:Math.random()*700,v:2+Math.random()*3}));
+  fx.ambient({step(g,k){const n=Math.round(3+T*11);g.strokeStyle='rgba(140,200,160,.35)';g.lineWidth=1.2;for(let i=0;i<n;i++){const d=D[i];d.y+=d.v*k*(1+T);if(d.y>560){d.y=170;d.x=30+Math.random()*284}if(d.y>170){g.beginPath();g.moveTo(d.x,d.y);g.lineTo(d.x,d.y+6);g.stroke()}}}});
+  const setHeat=t=>{T=t;heat.style.transform=`scaleX(${t})`;red.style.opacity=(t*.55).toFixed(2);vig.style.opacity=(Math.max(0,t-.3)*.9).toFixed(2);
+   const ne=t<.8?0:Math.round((t-.75)*4*eyes.length);eyes.forEach((e,i)=>e.classList.toggle('on',i<ne));cam.style.transform=`scale(${(1+t*.16).toFixed(3)})`};
+  function speak(i,done){const l=K4L[i];pn.classList.add('say');const end=()=>{pn.classList.remove('say');done&&done()};if(!say(l[1],Object.assign({end},VOICE[l[0]])))ctx.t(end,1600)}
+  function go(n){if(n<0||n>=K4L.length+1)return;ctx.ct(at);hush();const st=$('.k3-stamp',R);st.getAnimations().forEach(a=>a.cancel());
+   if(n===K4L.length){s=n;setHeat(1);an(st,[{transform:'translate(-50%,-50%) rotate(-12deg) scale(2.6)',opacity:0},{transform:'translate(-50%,-50%) rotate(-12deg) scale(1)',opacity:1}],{d:420,e:'cubic-bezier(.3,1.6,.5,1)',f:'forwards'});
+    ctx.t(()=>{shake(R,7,380);fx.burst(172,330,{n:70,a0:-Math.PI*.95,spread:Math.PI*.9,v:8,g:.22,c:['#F2D35B','#C0392B','#fff'],l:90,s:6})},300);who.textContent='';ru.textContent='Глава пройдена. Назад — стрелкой.';return}
+   const back=n<s;s=n;const l=K4L[n],h=HERO[l[0]],left=l[0]==='venator',loud=/!/.test(l[1]);
+   ST.forEach((b,j)=>{b.classList.toggle('on',j===n);b.classList.toggle('seen',j<=n)});const sb=ST[n];if(!back)an(sb,[{transform:'scale(.4)',opacity:0},{transform:'none',opacity:1}],{sp:SPb});
+   an(cov,[{transform:'scaleX(0)',transformOrigin:back?'0 50%':'100% 50%'},{transform:'scaleX(1)',transformOrigin:back?'0 50%':'100% 50%',offset:.45},{transform:'scaleX(0)',transformOrigin:back?'100% 50%':'0 50%'}],{d:620,e:EIO});
+   ctx.t(()=>{pn.style.setProperty('--hc',h.c1);pn.style.setProperty('--hg',h.c2);pn.classList.toggle('r',!left);pn.classList.toggle('loud',loud);
+    cap.innerHTML=`<b>${n+1}</b>${l[3]}`;whoE.innerHTML=emb(l[0],132)+`<span>${h.n}</span>`;$('b',bl).innerHTML=cmxLine(l[1]);setHeat(l[4]);
+    an(cap,[{opacity:0,transform:'translateY(-14px)'},{opacity:1,transform:'none'}],{sp:SPs});
+    an(whoE,[{opacity:0,transform:`translateX(${left?-120:120}px)`},{opacity:1,transform:'none'}],{sp:SPs,dl:80});
+    an(bl,[{opacity:0,transform:'scale(.4)'},{opacity:1,transform:'none'}],{sp:SPb,dl:260});
+    if(loud){ctx.t(()=>{shake(pn,8,420);const r=rel(bl,R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:34,c:[h.c2,'#fff','#C0392B'],v:7,g:.12,s:4,l:55});an(sl,[{opacity:0,transform:'scale(.7)'},{opacity:.55,transform:'scale(1)',offset:.3},{opacity:0,transform:'scale(1.15)'}],{d:900})},420)}
+    who.textContent=h.n;ru.textContent=l[2];an($('.k4-tr',R),[{opacity:.3,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{d:380});
+    ctx.t(()=>speak(n,()=>{if(auto&&s===n)at=ctx.t(()=>go(s+1),700)}),560)},300)}
+  ctx.on(pn,'click',e=>{if(Date.now()-(R._sw||0)<350)return;const u=e.target.closest&&e.target.closest('u[data-t]');if(u){const r=rel(u,R);tip.textContent=u.dataset.t;tip.style.left=clamp(r.x-30,10,150)+'px';tip.style.top=(r.y-38)+'px';tip.getAnimations().forEach(a=>a.cancel());an(tip,[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none',offset:.15},{opacity:1,offset:.85},{opacity:0}],{d:2200});return}
+   if(e.target.closest('.k4-pl')){an(e.target.closest('.k4-pl'),[{transform:'scale(.7)'},{transform:'none'}],{sp:SPb});if(s>=0&&s<K4L.length)speak(s);return}go(s+1)});
+  drag(ctx,pn,{axis:'x',end(dx){R._sw=Date.now();if(dx<-40)go(s+1);else if(dx>40)go(Math.max(0,s-1))},tap(){}});
+  ST.forEach(b=>ctx.on(b,'click',()=>{const j=+b.dataset.j;if(j<=Math.max(s,0))go(j)}));
+  ctx.on($('.nx',R),'click',()=>go(s+1));ctx.on($('.pv',R),'click',()=>go(Math.max(0,s-1)));
+  ctx.on(au,'click',()=>{auto=!auto;au.classList.toggle('on',auto);toast(R,auto?'▶ Авто: листает само под голос':'Авто выключено');if(auto)go(s+1)});
+  ctx.add(hush);setHeat(0);an(pn,[{opacity:0,transform:'scale(.94)'},{opacity:1,transform:'none'}],{sp:SPs});ctx.t(()=>go(0),800);
+ }});
+
+/* ===== Дизайн v4: не перекрас — у каждого направления своя форма, вёрстка и движение (Главная · Сцена · Задание) ===== */
+const X4TK=['you','gotta','stay','relaxed','relax','got'],X4ANS=['you','gotta','stay','relaxed'],X4W=SC4[1];
+function x4Run(R,ctx,o){
+ const P={};$$('.x4-p',R).forEach(p=>P[p.dataset.s]=p);const ORD=['home','scene','task'];let cur='home',touched=false;
+ const tabs=$$('.x4-tb [data-go]',R);
+ function show(s){if(s===cur||!P[s])return;const a=P[cur],b=P[s],d=ORD.indexOf(s)>ORD.indexOf(cur)?1:-1;cur=s;
+  tabs.forEach(t=>t.classList.toggle('on',t.dataset.go===s));
+  const out=o.out(a,d),inn=o.in(b,d);b.classList.add('on');b.getAnimations().forEach(x=>x.cancel());
+  const ao=an(a,out,{d:o.dOut||320,e:EI,f:'forwards'});if(ao)ao.onfinish=()=>{a.classList.remove('on');ao.cancel()};
+  an(b,inn,{sp:o.sp||SPs,dl:o.dlIn||120});o.kids(b,s);if(s==='task')reset();if(o.onShow)o.onShow(s)}
+ P.home.classList.add('on');o.kids(P.home,'home');
+ ctx.on(R,'click',e=>{const g=e.target.closest&&e.target.closest('[data-go]');if(g){touched=true;show(g.dataset.go);return}
+  const t=e.target.closest&&e.target.closest('[data-t]');if(t){touched=true;an(t,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});toast(R,t.dataset.t)}});
+ ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ const SL=$$('.x4-sl i',P.task),TB=$$('.x4-tl button',P.task),ck=$('.x4-ck',P.task),okb=$('.x4-ok',P.task);let picked=[];
+ function reset(){picked=[];SL.forEach(s=>{s.textContent='';s.className=''});TB.forEach(b=>{b.disabled=false;b.classList.remove('used')});ck.disabled=true;okb.classList.remove('on');ck.hidden=false;if(o.reset)o.reset(P.task)}
+ function put(b){if(picked.length>=X4ANS.length||b.disabled)return;const sl=SL[picked.length];picked.push(+b.dataset.j);const a=rel(b,R),z=rel(sl,R);b.disabled=true;b.classList.add('used');sl.textContent=b.textContent;sl.className='f';
+  an(sl,[{transform:`translate(${a.x-z.x}px,${a.y-z.y}px)`},{transform:'none'}],{sp:SPs});ck.disabled=picked.length<X4ANS.length}
+ TB.forEach(b=>ctx.on(b,'click',()=>{touched=true;put(b)}));
+ ctx.on(ck,'click',()=>{const good=picked.map(j=>X4TK[j]).join(' ')===X4ANS.join(' ');if(!good){SL.forEach(s=>s.classList.add('bad'));shake($('.x4-sl',P.task),6,360);ctx.t(reset,900);return}
+  SL.forEach((s,j)=>{s.classList.add('ok');an(s,[{transform:'none'},{transform:'translateY(-8px)'},{transform:'none'}],{sp:SPb,dl:j*70})});ck.hidden=true;okb.classList.add('on');an(okb,[{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'none'}],{sp:SPs});o.good(P.task)});
+ const tour=async()=>{const w=ms=>ctx.wait(ms);await w(3800);if(touched)return;show('scene');await w(3800);if(touched)return;show('task');await w(1400);for(const j of [0,1,2,3]){if(touched)return;put(TB[j]);await w(420)}if(touched)return;await w(300);ck.click();await w(3200);if(touched)return;show('home')};
+ ctx.t(()=>{tour()},10);}
+const x4Tiles=()=>`<div class="x4-sl">${X4ANS.map(()=>'<i></i>').join('')}</div><div class="x4-tl">${X4TK.map((t,j)=>`<button data-j="${j}">${t}</button>`).join('')}</div>`;
+
+/* 1. Кинолента: всё — из плёнки. Перфорация по краям едет при переходах, кадры с номерами, задание — на хлопушке */
+V.push({g:'x4',id:'xf',n:'Кинолента',
+ idea:'Весь интерфейс собран из киноплёнки, а не из карточек. По краям экрана — перфорация, и она «протягивается», когда меняешь экран. «Продолжить» — кадр плёнки с номером, эпизоды — кадры подряд на ленте. Задание — на хлопушке: «Сцена 4 · Дубль 1», верный ответ — хлопушка хлопает.',
+ moves:['переход: лента протягивается вверх, новый экран «встаёт в рамку» с лёгким дрожанием, как в проекторе','кадры мерцают, как свет проектора; зерно плёнки','верный ответ — хлопушка захлопывается со вспышкой'],
+ from:'Твой отзыв на v3: «это литералли перекрас — я просил попробовать вайбовый дизайн, какие-то другие вариации». Здесь другая форма всего, а не цвет.',
+ minus:'Сильный стиль: всё приложение «про кино», но для игр (Deadlock) плёнка подходит хуже — там можно оставить свой стиль.',
+ mount(R,ctx){R.className='scr x4 xf';const W=X4W;
+  R.innerHTML=`<i class="xf-grain"></i><div class="xf-perf l"></div><div class="xf-perf r"></div>${SB(0)}
+  <section class="x4-p" data-s="home"><header class="xf-hd"><small>ВС · 25.10 · КАТУШКА 14</small><h2>Привет, Андрей</h2></header>
+   <div class="xf-frame big" data-go="scene"><i class="img" style="background-image:url(${IMG.bd_wolf})"></i><span class="xf-no">14A ▸</span><div class="xf-cap"><small>ПРОДОЛЖИТЬ · ЭП. 4 ИЗ 6</small>${ffT(W)}</div></div>
+   <div class="xf-row"><button class="xf-slate" data-t="🔁 Повторение: по 3 за раз"><i class="xf-st"></i><b>Повторить</b><small>17 фраз · 4 мин</small></button><button class="xf-slate g" data-t="⚔️ С друзьями"><i class="xf-st"></i><b>С друзьями</b><small>Versus · Шпион</small></button></div>
+   <div class="xf-strip">${['p_titanic','p_psycho','p_taxi'].map((k,j)=>`<div class="xf-frame sm" data-t="▶ Что посмотреть"><i class="img" style="background-image:url(${IMG[k]})"></i><span class="xf-no">${15+j}</span></div>`).join('')}</div></section>
+  <section class="x4-p" data-s="scene"><header class="xf-hd"><small>${W.yr.toUpperCase()}</small>${ffT(W)}<p>${W.ab}</p></header>
+   <div class="xf-eps">${W.eps.slice(0,4).map((e,j)=>`<div class="xf-frame ep ${j<3?'done':''} ${j===3?'cur':''}" data-go="task"><i class="img" style="background-image:url(${IMG[e[3]]})"></i><span class="xf-no">${j+1}</span><div class="xf-cap"><small>ЭПИЗОД ${j+1} · ${e[1]}</small><b>${e[0]}</b></div>${j<3?`<em>${ic('check')}</em>`:''}</div>`).join('')}</div></section>
+  <section class="x4-p" data-s="task"><div class="xf-clap"><div class="xf-top"></div><div class="xf-body"><span>СЦЕНА<b>4</b></span><span>ДУБЛЬ<b>1</b></span><span>ФИЛЬМ<b class="s">Волк</b></span></div></div>
+   <p class="xf-ru">Надо оставаться расслабленным.</p>${x4Tiles()}<button class="x4-ck xf-btn" disabled>Проверить</button><div class="x4-ok xf-ok"><b>СНЯТО!</b><small>You gotta stay relaxed. — Волк, эпизод 4</small></div></section>
+  <nav class="x4-tb xf-tb"><a data-go="home" class="on">Главная</a><a data-go="scene">Сцена</a><a data-go="task">Задание</a></nav><i class="xf-flash"></i><canvas class="fx"></canvas><i class="hb"></i>`;
+  const fx=FX(ctx,$('.fx',R)),perf=$$('.xf-perf',R);
+  x4Run(R,ctx,{dOut:280,
+   out:(a,d)=>[{transform:'none',opacity:1},{transform:`translateY(${-d*90}px)`,opacity:0}],
+   in:(b,d)=>[{transform:`translateY(${d*110}px)`,opacity:0},{transform:'translateY(-4px)',opacity:1,offset:.75},{transform:'translateY(2px)',offset:.88},{transform:'none',opacity:1}],sp:{d:620,e:'cubic-bezier(.2,.8,.2,1)'},
+   kids(b){perf.forEach(p=>an(p,[{backgroundPosition:'0 0'},{backgroundPosition:'0 -180px'}],{d:600,e:EIO}));$$('.xf-frame,.xf-slate,.xf-hd,.xf-clap,.xf-ru,.x4-tl button',b).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:150+j*60}))},
+   reset(p){$('.xf-top',p).classList.remove('shut')},
+   good(p){const t=$('.xf-top',p);t.classList.add('shut');an(t,[{transform:'rotate(-24deg)'},{transform:'rotate(0deg)'}],{d:220,e:EI});ctx.t(()=>{shake($('.xf-clap',p),5,260);const r=rel($('.xf-clap',p),R);fx.burst(r.x+r.w/2,r.y+20,{n:40,c:['#F6D488','#fff'],v:7,g:.14,s:4,l:55});an($('.xf-flash',R),[{opacity:.85},{opacity:0}],{d:520})},220)}});
+ }});
+
+/* 2. Журнал: огромная типографика вместо карточек — название фильма во весь экран, номера, тонкие линейки */
+V.push({g:'x4',id:'xe',n:'Журнал',
+ idea:'Как обложка киножурнала: вместо карточек — огромные буквы, номера и тонкие линейки. Название фильма — во весь экран и уходит за край, кадр — узкой полосой в красном. Эпизоды — большими цифрами «01, 02…». В задании нет кубиков: слова — просто текст, клетки — линейки, верный ответ подчёркивается красным.',
+ moves:['переход: текст проявляется шторкой слева направо, линейки «рисуются»','огромное название медленно едет вбок','верный ответ — красная линия прочерчивает фразу'],
+ from:'Твой отзыв на v3: «перекрас — попробуй вайбовый дизайн, другие вариации».',
+ minus:'Очень стильно и «дорого», но меньше подсказок «куда жать»: кнопки — текстом. Новичку может быть непонятнее, чем с карточками.',
+ mount(R,ctx){R.className='scr x4 xe';const W=X4W;
+  R.innerHTML=`${SB(0)}
+  <section class="x4-p" data-s="home"><div class="xe-mast"><small>№ 14 · ВОСКРЕСЕНЬЕ 25.10</small><span>ЯЗЫКИ ПО КИНО</span></div>
+   <div class="xe-big" data-go="scene"><b>ВОЛК</b><i class="img" style="background-image:url(${IMG.bd_wolf})"></i></div>
+   <p class="xe-lead">Продолжить: эпизод 4 из 6 — «Первый ключ», 45 секунд.</p>
+   <ol class="xe-list"><li data-go="scene"><em>01</em><b>Продолжить</b><small>Волк · эп. 4</small></li><li data-t="🔁 Повторение"><em>02</em><b>Повторить</b><small>17 фраз</small></li><li data-t="▶ Что посмотреть"><em>03</em><b>Что посмотреть</b><small>6 сцен</small></li><li data-t="⚔️ С друзьями"><em>04</em><b>С друзьями</b><small>Versus · Шпион</small></li></ol></section>
+  <section class="x4-p" data-s="scene"><div class="xe-mast"><small>${W.yr.toUpperCase()}</small><span>СЦЕНА</span></div><h2 class="xe-h">Волк<br>с Уолл-<br>стрит</h2><p class="xe-lead">${W.ab}</p>
+   <div class="xe-eps">${W.eps.slice(0,5).map((e,j)=>`<div class="xe-ep ${j<3?'done':''} ${j===3?'cur':''}" ${j===3?'data-go="task"':''}><em>${String(j+1).padStart(2,'0')}</em><b>${e[0]}</b><small>${e[1]}</small></div>`).join('')}</div></section>
+  <section class="x4-p" data-s="task"><div class="xe-mast"><small>ЗАДАНИЕ 1 / 3</small><span>СОБЕРИ ФРАЗУ</span></div><p class="xe-ru">«Надо оставаться расслабленным.»</p>${x4Tiles()}<button class="x4-ck xe-btn" disabled>Проверить →</button><div class="x4-ok xe-ok"><b>Верно.</b><small>You gotta stay relaxed. — Волк, эп. 4</small></div><i class="xe-line"></i></section>
+  <nav class="x4-tb xe-tb"><a data-go="home" class="on">Главная</a><a data-go="scene">Сцена</a><a data-go="task">Задание</a></nav><i class="hb"></i>`;
+  const big=$('.xe-big b',R);an(big,[{transform:'translateX(0)'},{transform:'translateX(-60px)'}],{d:9000,e:'ease-in-out',it:Infinity,dir:'alternate'});
+  x4Run(R,ctx,{dOut:260,
+   out:()=>[{opacity:1,clipPath:'inset(0 0 0 0)'},{opacity:0,clipPath:'inset(0 100% 0 0)'}],
+   in:()=>[{clipPath:'inset(0 0 0 100%)'},{clipPath:'inset(0 0 0 0)'}],sp:{d:560,e:'cubic-bezier(.65,0,.35,1)'},
+   kids(b){$$('.xe-mast,.xe-lead,.xe-list li,.xe-ep,.xe-ru,.x4-tl button,.xe-h',b).forEach((x,j)=>an(x,[{opacity:0,clipPath:'inset(0 100% 0 0)'},{opacity:1,clipPath:'inset(0 0 0 0)'}],{d:520,e:EIO,dl:200+j*70}))},
+   reset(p){$('.xe-line',p).classList.remove('on')},
+   good(p){const l=$('.xe-line',p),r=rel($('.x4-sl',p),R);l.style.top=(r.y+r.h-4)+'px';l.classList.add('on');an(l,[{transform:'scaleX(0)'},{transform:'scaleX(1)'}],{d:600,e:EIO})}});
+ }});
+
+/* 3. Игра: интерфейс как в игре — скошенные панели, миссия дня с наградой, опыт, комбо; задание — как бой */
+V.push({g:'x4',id:'xg',n:'Игра',
+ idea:'Как меню игры, а не приложения: скошенные панели, карточка игрока с уровнем и опытом, «Миссия дня» с наградой, ежедневные задания с галочками. Сцена — карта уровней со звёздами. Задание — как бой: таймер, комбо, кубики как клавиши, верный ответ — «+25 опыта». Подходит и к Deadlock — всё приложение в одном стиле.',
+ moves:['переход: панели въезжают с наклоном, как в меню файтинга','полоска опыта заливается, комбо подпрыгивает','кубики нажимаются вглубь, как клавиши; верно — вылетает «+25 XP»'],
+ from:'Твой отзыв на v3: «перекрас — попробуй вайбовый дизайн». И П22: игры к языку — тут весь интерфейс играет, а не только Versus.',
+ minus:'Может выглядеть «детским» для взрослых, кто пришёл ради кино. Зато цепляет тех, кто пришёл из игр и TikTok.',
+ mount(R,ctx){R.className='scr x4 xg';const W=X4W;
+  R.innerHTML=`<i class="xg-grid"></i>${SB(0)}
+  <section class="x4-p" data-s="home"><div class="xg-pl"><span class="xg-av">А</span><div><b>Андрей</b><small>${LVW[2]} · ур. 7</small><span class="xg-xp"><i></i></span></div><span class="xg-fl">${FLAME}<b>6</b></span></div>
+   <div class="xg-ms" data-go="scene"><small>МИССИЯ ДНЯ</small><b>${W.t}</b><span>Эпизод 4 · «Первый ключ»</span><em>+60 XP</em><i class="img" style="background-image:url(${IMG.bd_wolf})"></i></div>
+   <div class="xg-q"><small>ЗАДАНИЯ НА СЕГОДНЯ · 1 / 3</small><div class="xg-qi done">${ic('check')}<span>Посмотреть эпизод</span><em>+20</em></div><div class="xg-qi" data-t="🔁 Повторение">${ic('rep')}<span>Повторить 17 фраз</span><em>+30</em></div><div class="xg-qi" data-t="⚔️ Versus">${ic('sword')}<span>Выиграть Versus</span><em>+50</em></div></div>
+   <div class="xg-mn"><button data-t="🏆 Коллекция">${ic('img')}Коллекция</button><button data-t="🛍 Магазин">${ic('bag')}Магазин</button></div></section>
+  <section class="x4-p" data-s="scene"><div class="xg-sh"><small>${W.yr.toUpperCase()}</small><b>${W.t}</b></div>
+   <div class="xg-map">${W.eps.map((e,j)=>`<div class="xg-nd ${j<3?'done':''} ${j===3?'cur':''} ${j>3?'lk':''}" style="--x:${[18,62,26,66,22,60][j]}%;--y:${j*86}px" ${j===3?'data-go="task"':''}><i>${j<3?ic('check'):j===3?ic('play'):ic('lock')}</i><span><b>${e[0]}</b><small>${j<3?'★★★':j===3?'играть':e[1]}</small></span></div>`).join('')}<svg class="xg-path" viewBox="0 0 300 520" preserveAspectRatio="none"><path d="M70 30 C 180 40, 200 90, 190 116 S 60 170, 90 202 S 220 250, 200 288 S 50 340, 80 374 S 210 420, 190 460" fill="none" stroke="rgba(110,231,255,.35)" stroke-width="3" stroke-dasharray="6 8"/></svg></div></section>
+  <section class="x4-p" data-s="task"><div class="xg-hud"><span class="xg-tm"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"/></svg><b>12</b></span><span class="xg-cb">КОМБО <b>×3</b></span><span class="xg-hp">${'<i></i>'.repeat(3)}</span></div>
+   <p class="xg-ru">Надо оставаться расслабленным.</p>${x4Tiles()}<button class="x4-ck xg-btn" disabled>ПРОВЕРИТЬ</button><div class="x4-ok xg-ok"><b>+25 XP</b><small>You gotta stay relaxed. — Волк, эп. 4</small></div></section>
+  <nav class="x4-tb xg-tb"><a data-go="home" class="on">Главная</a><a data-go="scene">Сцена</a><a data-go="task">Задание</a></nav><canvas class="fx"></canvas><i class="hb"></i>`;
+  const fx=FX(ctx,$('.fx',R));ctx.t(()=>{const x=$('.xg-xp i',R);if(x)x.style.transform='scaleX(.62)'},300);
+  x4Run(R,ctx,{dOut:260,
+   out:(a,d)=>[{transform:'none',opacity:1},{transform:`translateX(${-d*120}px) skewX(${d*8}deg)`,opacity:0}],
+   in:(b,d)=>[{transform:`translateX(${d*140}px) skewX(${-d*10}deg)`,opacity:0},{transform:'none',opacity:1}],
+   kids(b){$$('.xg-pl,.xg-ms,.xg-qi,.xg-mn button,.xg-sh,.xg-nd,.xg-hud,.xg-ru,.x4-tl button',b).forEach((x,j)=>an(x,[{opacity:0,transform:'translateX(-40px) skewX(-8deg)'},{opacity:1,transform:'none'}],{sp:SPs,dl:120+j*55}))},
+   good(p){const r=rel($('.x4-ok b',p),R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:50,c:['#6EE7FF','#FFD23F','#fff'],v:8,g:.12,s:4,l:60});const c=$('.xg-cb b',p);c.textContent='×4';an(c,[{transform:'scale(1)'},{transform:'scale(1.8)'},{transform:'scale(1)'}],{d:500})}});
+ }});
+
 /* ================= каркас страницы ================= */
-const GN={home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v4',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+const GN={home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v4',k4:'Комикс v4',x4:'Дизайн v4',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
 let CTX=null,curV=null,curG='h4';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
