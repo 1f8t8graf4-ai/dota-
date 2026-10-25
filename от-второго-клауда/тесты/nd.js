@@ -25,7 +25,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   ok('светлый «Новый»: вид nd, тема light, шапка Telegram #f4f3ef, вкладки «Сегодня · Кино · Словарь · Профиль», ничего не вылезает',r.look==='nd'&&r.ndt==='light'&&r.hc==='#f4f3ef'&&r.tabs.join('|')==='Сегодня|Кино|Словарь|Профиль'&&r.w,r);
   r=await P.evaluate(()=>({hi:(document.querySelector('.n-hello b')||{}).textContent||'',ring:!!document.querySelector('#hDay.n-ring'),plan:(document.querySelector('.n-hero h3')||{}).textContent||'',lvl:(document.querySelector('.n-hero .n-chip')||{}).textContent||'',
     pull:!!document.querySelector('#ndPull'),font:!!document.getElementById('lkf-nd'),css:document.body.classList.contains('ndc'),shelves:document.querySelectorAll('.n-today .hposter,.n-today .hchips,.n-today .hsec').length,pod:!!document.querySelector('.n-today .n-row[data-go="pod"]'),next:!!document.querySelector('.n-today .n-row[data-go="next"]'),old:!!document.querySelector('.hh,#hCont,.ndp')}));
-  ok('«Сегодня» по макету (13.9.37): приветствие по имени, кольцо цели, «Эпизод «Фугази»», уровень B2, «Потяни», шрифт и nd.css; строки «Фраза дня» и «Смотреть дальше»; полок и старого кадра нет',/Андрей/.test(r.hi)&&r.ring&&/Фугази/.test(r.plan)&&r.lvl==='B2'&&r.pull&&r.font&&r.css&&!r.shelves&&r.pod&&r.next&&!r.old,r);
+  ok('«Сегодня» по макету (13.9.37): приветствие по имени, кольцо цели, «Эпизод «Фугази»», уровень «Выше среднего» (13.9.71 — словом), «Потяни», шрифт и nd.css; строки «Фраза дня» и «Смотреть дальше»; полок и старого кадра нет',/Андрей/.test(r.hi)&&r.ring&&/Фугази/.test(r.plan)&&r.lvl==='Выше среднего'&&r.pull&&r.font&&r.css&&!r.shelves&&r.pod&&r.next&&!r.old,r);
   await shot(P,`light-${dev}-1-today`);
   // «Потяни»: тап — не стартует (ручка подпрыгивает), потянул на 40 % — возвращается, до конца — эпизод
   await P.evaluate(()=>{window.__ep=null;const o=renderScEp;renderScEp=function(id,i){window.__ep=[id,i];return o.apply(this,arguments);};});
@@ -47,16 +47,16 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   ok('Кино, Словарь, Профиль, сцена, проверка — в «Новом», ничего не вылезает',!bad.length,bad);
   // «Кино» по макету (13.9.39): поиск, сегмент разделов с едущей плашкой, уровни, сетка постеров с меткой уровня и полоской
   await P.evaluate(()=>{store.kinoCat='film';store.kinoLang='en';store.kinoLv='all';renderTab('kino');});await P.waitForTimeout(900);
-  const kq=()=>P.evaluate(()=>({po:document.querySelectorAll('.n-kino .n-po').length,lv:[...document.querySelectorAll('.n-kino .n-po .n-chip')].map(x=>x.textContent),
+  const kq=()=>P.evaluate(()=>({po:document.querySelectorAll('.n-kino .n-po').length,lv:[...document.querySelectorAll('.n-kino .n-po .n-chip')].map(x=>x.title+':'+x.querySelectorAll('i.on').length),
     seg:[...document.querySelectorAll('.n-sg button')].map(x=>x.textContent+(x.classList.contains('on')?'*':'')).join('|'),pill:(document.querySelector('.n-sg i')||{}).style?.transform||'',
     lbl:(document.querySelector('.n-lbl span')||{}).textContent||'',old:document.querySelectorAll('.kposter,.kgrid').length,sr:!!document.querySelector('.n-srch'),kl:document.querySelectorAll('.n-kl button').length}));
   r=await kq();
-  ok('Кино: поиск, сегмент «Фильмы* | Сериалы | Интервью», постеры с меткой уровня, язык EN/DE, старой сетки нет',r.sr&&/^Фильмы\*\|Сериалы\|Интервью/.test(r.seg)&&r.po>=3&&r.lv.every(x=>/^[ABC][12]$/.test(x))&&r.kl===2&&!r.old,r);
+  ok('Кино: поиск, сегмент «Фильмы* | Сериалы | Интервью», постеры с меткой уровня (13.9.71 — полоски, слово в подсказке), язык EN/DE, старой сетки нет',r.sr&&/^Фильмы\*\|Сериалы\|Интервью/.test(r.seg)&&r.po>=3&&r.lv.every(x=>/^(Начинающий|Базовый|Средний|Выше среднего|Продвинутый):[1-5]$/.test(x))&&r.kl===2&&!r.old,r);
   const nFilm=r.po;await P.click('.n-sg button[data-cat="series"]');await P.waitForTimeout(700);r=await kq();
   ok('Кино: «Сериалы» — плашка уехала, сетка сменилась, вкладка не перерисована целиком',/Сериалы\*/.test(r.seg)&&/translateX\(100%\)/.test(r.pill)&&r.po>=2,r);
   await P.evaluate(()=>{store.cefr='B1';store.kinoLv='';renderTab('kino');});await P.waitForTimeout(700);r=await kq();
   const meLbl=r.lbl,meN=r.po;await P.evaluate(()=>{const b=[...document.querySelectorAll('.n-lv [data-lv]')].find(x=>x.dataset.lv!=='all');b&&b.click();});await P.waitForTimeout(500);r=await kq();
-  ok('Кино: «Для твоего уровня» → тап по уровню — только этот уровень',/твоего/.test(meLbl)&&/^Уровень [ABC][12]$/.test(r.lbl)&&r.po<=meN,{meLbl,meN,r});
+  ok('Кино: «Для твоего уровня» → тап по уровню — только этот уровень',/твоего/.test(meLbl)&&/^Уровень «(Начинающий|Базовый|Средний|Выше среднего|Продвинутый)»$/.test(r.lbl)&&r.po<=meN,{meLbl,meN,r});
   await P.click('.n-lv [data-lv="all"]');await P.waitForTimeout(500);r=await kq();ok('Кино: «Все уровни»',r.lbl==='Все уровни'&&r.po>=meN,r);
   await P.click('.n-sg button[data-cat="film"]');await P.waitForTimeout(500);
   await P.evaluate(()=>{window.__sc=null;const o=renderScene;renderScene=function(id){window.__sc=id;return o.apply(this,arguments);};});
@@ -125,7 +125,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   // сцена: метки, кнопка, эпизоды строками; плеер в эпизоде — тёмный даже при светлом Telegram
   await P.evaluate(()=>{store.look='nd';save();renderScene('wolf-of-wall-street');});await P.waitForTimeout(1200);
   r=await P.evaluate(()=>({chips:[...document.querySelectorAll('.n-st .n-chip')].map(x=>x.textContent),rows:[...document.querySelectorAll('.n-eps .n-ep[data-i]')].map(x=>Math.round(x.getBoundingClientRect().left)),go:!!document.querySelector('#scgo')}));
-  ok('сцена (13.9.39): метки «B2 · Фильм · 2013 · 6 эпизодов», эпизоды строками ровно друг под другом',r.chips[0]==='B2'&&/Фильм · 2013/.test(r.chips[1])&&/6 эпизод/.test(r.chips[2])&&r.go&&r.rows.length===6&&new Set(r.rows).size===1,r);
+  ok('сцена (13.9.39): метки «Выше среднего · Фильм · 2013 · 6 эпизодов» (13.9.71 — словом), эпизоды строками ровно друг под другом',r.chips[0]==='Выше среднего'&&/Фильм · 2013/.test(r.chips[1])&&/6 эпизод/.test(r.chips[2])&&r.go&&r.rows.length===6&&new Set(r.rows).size===1,r);
   await P.evaluate(()=>renderScEp('wolf-of-wall-street',1));await P.waitForTimeout(1300);
   r=await st(P);r.more=await P.evaluate(()=>{const m=document.querySelector('#scMore');return m?getComputedStyle(m).display:'нет';});
   ok('эпизод: тёмный при светлом Telegram, меню «⋯» плеера спрятано',r.look==='nd'&&r.ndt==='dark'&&r.more==='none',r);
@@ -157,7 +157,7 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   r=await OP.evaluate(()=>({c:ONB.cefr,lv:!!document.querySelector('#onbLv'),grid:document.querySelectorAll('.onb-grid button').length,est:CEFR.indexOf(ltEstimate({seq:[[3,1],[4,0],[3,1],[4,1],[4,0],[3,1]],fk:0,gok:[]})),estF:CEFR.indexOf(ltEstimate({seq:[[3,1],[4,0],[3,1],[4,1],[4,0],[3,1]],fk:3,gok:[]}))}));
   ok('итог: уровень цветом и сетка A1–C1; «знаю» на выдуманные слова снижает оценку',r.lv&&r.grid===5&&/^[ABC][12]$/.test(r.c)&&r.estF<r.est,r);
   await OP.click('.onb-grid button[data-c="A2"]');r=await OP.evaluate(()=>[ONB.cefr,document.querySelector('#onbLv b').textContent]);
-  ok('уровень можно выбрать руками',r[0]==='A2'&&r[1]==='A2',r);
+  ok('уровень можно выбрать руками (13.9.71 — словом)',r[0]==='A2'&&r[1]==='Базовый',r);
   await OP.click('#onbGo');await OP.waitForTimeout(300);await OP.click('[data-m="5"]');await OP.click('#onbGo');await OP.waitForTimeout(400);
   r=await OP.evaluate(()=>({hw:document.querySelector('.onb-hw')&&document.querySelector('.onb-hw').textContent,bub:!!document.querySelector('.onb-bub')}));
   ok('«Привет, Андрей!» почерком и фраза дня от бота',/Андрей/.test(r.hw)&&r.bub,r);
@@ -182,10 +182,10 @@ const base={onboarded:true,introV:1,unl:1,snd:false,fx:true,knWin:'sheet',wtapHi
   // словарь: метки уровня у фраз (A1–C1) и артикль цветом у немецких слов
   await P.evaluate(()=>{store.look='nd';store.myw=Object.assign({},store.myw,{'wolf-lunch-de|der kunde':{k:'wolf-lunch-de|der kunde',w:'der Kunde',ru:'клиент',sid:'wolf-lunch-de',pi:0,st:1,due:Date.now()+864e5,a:0,at:Date.now()}});save();renderTab('dict');});await P.waitForTimeout(2600);
   await P.evaluate(()=>DL.open({sid:'wolf-of-wall-street'}));await P.waitForTimeout(1200);await P.evaluate(()=>{const d=document.querySelector('details.kn-ep');if(d)d.open=true;});await P.waitForTimeout(500);
-  r=await P.evaluate(()=>[...document.querySelectorAll('.kq2:not(.lock) .kq-lv')].map(x=>[x.textContent,getComputedStyle(x).display]));
-  ok('словарь в «Новом»: у фраз метка уровня A1–C1',r.length>0&&r.every(x=>/^[ABC][12]$/.test(x[0])&&x[1]!=='none'),r.slice(0,4));
+  r=await P.evaluate(()=>[...document.querySelectorAll('.kq2:not(.lock) .kq-lv')].map(x=>[x.title+':'+x.querySelectorAll('i.on').length,getComputedStyle(x).display]));
+  ok('словарь в «Новом»: у фраз метка уровня — полоски, слово в подсказке (13.9.71)',r.length>0&&r.every(x=>/^(Начинающий|Базовый|Средний|Выше среднего|Продвинутый):[1-5]$/.test(x[0])&&x[1]!=='none'),r.slice(0,4));
   r=await P.evaluate(()=>{wlvLoad();return lvTag('der Kunde','de')+'|'+lvTag('How on Earth did you get a reservation there?','en');});
-  ok('у немецкого существительного — артикль цветом, у фразы — уровень по самому редкому слову',/a-der">der</.test(r)&&/>B[12]</.test(r),r);
+  ok('у немецкого существительного — артикль цветом, у фразы — уровень по самому редкому слову',/a-der">der</.test(r)&&/kq-lv lvb l-b[12]" title="(Средний|Выше среднего)"/.test(r),r);
   // 7. не-админ: вида нет, вкладки игр нет (13.9.43)
   const N=await go(base,{admin:false,flags:{}},'light');await N.page.evaluate(()=>renderTab('learn'));await N.page.waitForTimeout(900);
   r=await st(N.page);ok('не-админ: «Новый» не включается, вкладки прежние',!r.look&&!r.nd&&!r.tabs.includes('Игры')&&r.tabs[0]==='Главная',r);

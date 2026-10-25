@@ -1524,7 +1524,8 @@ function renderDaily(list,o){o=o||{};const L0=list||dailyItems(),back=o.back||((
     mount(`<div class="scn noir"><div class="sc-head"><button class="icon-btn" id="dlx" aria-label="Закрыть">${ui('close')}</button><div class="sc-segs">${seg}</div></div>
       <div class="sc-q sc-card dl-q"><div class="sc-meta">${meta}</div>${body}<div id="dlfb"></div></div></div>`,'scnscr');
     $('#dlx').onclick=()=>{sfx('tap');back();};}
-  function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!o.nosrs&&!(good&&early)){if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);}res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
+  function grade(q,good,html){const early=o.train&&!(q.due&&q.due<=Date.now());if(!o.nosrs&&!q.re&&!(good&&early)){   // 13.9.71 (ревью П8, п.1): повтор после ошибки (q.re) расписание не трогает — первая ошибка уже поставила «завтра», верный повтор не уносит на неделю
+    if(q.k==='ph')phSRS(q.s,q.f,good);else wSRS(q.it,good);}res.push({q,good});if(good){ok++;store.reviews=(store.reviews||0)+1;}countAnswer();save();
     if(!good&&!q.re)CARRY.push({...q,re:true,t:q.k==='w'?'mean':(nW(q)<2?(typeOn()?'dict':'pmean'):fitQ(q,'build'))});   // 13.9.69: повтор — в следующей порции
     sfx(good?'good':'bad');haptic(good?'ok':'err');
     $('#dlfb').innerHTML=`<div class="sc-fb ${good?'ok':'bad'}">${html}<button class="sc-btn" id="dln">Дальше →</button></div>`;$('#dln').onclick=()=>{sfx('tap');next();};}
@@ -1584,12 +1585,13 @@ function renderDaily(list,o){o=o||{};const L0=list||dailyItems(),back=o.back||((
         if(!o.nosrs)phSRS(q.s,q.f,false);res.push({q,good:false});countAnswer();save();CARRY.push({...q,re:true,t:fitQ(q,nW(q)<2?(typeOn()?'dict':'pmean'):'build')});next();},fxOK()?300:0);};
     onbSwipe(c,go,{tap:()=>{const sp=c.querySelector('.n-sp');if(sp)sp.classList.add('open');}});
     $('#rcNo').onclick=()=>go(false);$('#rcYes').onclick=()=>go(true);}
-  function end(){remindSync(true);if(!o.train)ev('review','daily');if(!list&&!o.train){store.revDone=dayKey(new Date());save();}const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
-    const left=[...CARRY,...REST];   // 13.9.69: что осталось — следующими порциями по 3
+  function end(){remindSync(true);const day=!o.train&&(!list||o.day),left=[...CARRY,...REST],dayDone=()=>{if(day){store.revDone=dayKey(new Date());save();}};   // 13.9.69: что осталось — следующими порциями по 3
+    if(!list&&!o.train)ev('review','daily');if(!left.length)dayDone();   // 13.9.71 (ревью П8, п.2–3): событие — один раз за заход; «повторение на сегодня было» — когда порций больше нет или нажал «Хватит»
+    const good=res.filter(x=>x.good).length;sfx(good===res.length?'win':'learn');
     mount(`<div class="scn noir"><div class="sc-q sc-card sc-result" style="text-align:center"><div class="sc-meta">${esc(o.title||'Повторение на сегодня')}</div><div class="sc-big">${good} / ${res.length}</div>
       <p class="sc-sub">${good===res.length?(o.train?'Всё вспомнил.':'Всё вспомнил. Следующая встреча — через несколько дней.'):'Что не вспомнилось — вернётся завтра. Так и запоминается.'}${left.length?` Осталось ещё ${left.length} — по три за раз.`:''}</p>
-      <div class="sc-btns">${left.length?`<button class="sc-btn" id="dlmore">Ещё ${Math.min(SC_PORT,left.length)} →</button>`:o.train?`<button class="sc-btn" id="dlh3">Ещё раз</button>`:''}<button class="sc-btn${o.train||left.length?' ghost':''}" id="dlh2">${left.length?'Хватит':o.back?'Назад в словарь':'На главную'}</button></div></div></div>`,'scnscr');$('#dlh2').onclick=()=>back();
-    if($('#dlmore'))$('#dlmore').onclick=()=>{sfx('tap');renderDaily(left,{...o,_cx:0});};
+      <div class="sc-btns">${left.length?`<button class="sc-btn" id="dlmore">Ещё ${Math.min(SC_PORT,left.length)} →</button>`:o.train?`<button class="sc-btn" id="dlh3">Ещё раз</button>`:''}<button class="sc-btn${o.train||left.length?' ghost':''}" id="dlh2">${left.length?'Хватит':o.back?'Назад в словарь':'На главную'}</button></div></div></div>`,'scnscr');$('#dlh2').onclick=()=>{if(left.length)dayDone();back();};
+    if($('#dlmore'))$('#dlmore').onclick=()=>{sfx('tap');renderDaily(left,{...o,_cx:0,day:day?1:0});};
     if($('#dlh3'))$('#dlh3').onclick=()=>{sfx('tap');renderDaily(shuffle((o.all||L).slice()).map(x=>x.k==='ph'?{...x,re:false,due:((scP(x.s.id).r||{})[x.f.id]||[0,0])[1]}:{...x,re:false}),{...o,all:null,_cx:0});};}
   show();}
 /* ================= 8.2: фраза дня ================= */
@@ -2609,7 +2611,7 @@ async function kvJoin(code){try{const r=await kvNet({a:'state',code});if(!r.ok){
         ${R.bet?`<div class="kv-code">Ставка <b>${ui('coin')} ${R.bet}</b> · у тебя ${fmt(g)}</div><p class="kv-rule">Победитель забирает банк ${ui('coin')} ${R.bet*2}. Очки: верно — 100 и до 50 за скорость, сначала решает точность.</p>`:''}
         ${poor?`<p class="kv-poor">Не хватает монет на ставку. Пройди эпизод или поиграй — и возвращайся по ссылке.</p>`:`<button class="sc-btn" id="kvIn">Принять ${R.mode==='race'?'вызов':'приглашение'} →</button>`}</div>`);
     bgFill($('.kv'));kvPvBind($('.kv'));$('#kvX').onclick=()=>{KV=null;renderHome();};
-    if($('#kvIn'))$('#kvIn').onclick=async()=>{sfx('tap');$('#kvIn').disabled=true;try{const j=await kvNet({a:'join',code,fx:shopUse('st'),bg:profBgKey(),pf:myPub()});if(!j.ok){kvErr(j);$('#kvIn').disabled=false;return;}kvApply(j.v);kvPoll();}catch(e){kvErr();}};
+    if($('#kvIn'))$('#kvIn').onclick=async()=>{sfx('tap');$('#kvIn').disabled=true;try{const j=await kvNet({a:'join',code,fx:shopUse('st'),bg:profBgKey(),pf:myPub()});if(!j.ok){kvErr(j);$('#kvIn').disabled=false;return;}if(!j.v.B){KV.role='A';KV.guest=false;toast('Это твой же вызов — с одного аккаунта играть против себя нельзя. Отправь ссылку другу');}kvApply(j.v);kvPoll();}catch(e){kvErr();}};   // 13.9.71 (ревью П8, п.4): как в Versus 13.9.70
   }catch(e){kvErr();renderHome();}}
 function kvPoll(){if(!KV)return;clearTimeout(KV.timer);KV.timer=setTimeout(async()=>{if(!KV)return;if(!document.querySelector('.kv')){kvStop();return;}
     try{const r=await kvNet({a:'state',code:KV.code});if(r.ok)kvApply(r.v);}catch(e){}kvPoll();},KV.room&&KV.room.st==='go'&&KV.started?900:1300);}
@@ -2945,7 +2947,8 @@ function renderScQuiz(id,i){
       if(P.m[f.id]>=3&&!P.r[f.id])P.r[f.id]=[0,Date.now()+SC_DAYS[0]*864e5];
 
       if(rev){
-        if(right){
+        if(q.re){if(r0)P.r[f.id]=r0;}   // 13.9.71 (ревью П8, п.1): повтор после ошибки — расписание как поставила первая ошибка (завтра), ни вперёд, ни ещё шаг назад
+        else if(right){
           const prev=P.r[f.id]||[0,0],st=prev[0]+1;
           if(st>=SC_DAYS.length){delete P.r[f.id];P.rDone=P.rDone||{};P.rDone[f.id]=1;}
           else P.r[f.id]=[st,Date.now()+SC_DAYS[st]*864e5];
