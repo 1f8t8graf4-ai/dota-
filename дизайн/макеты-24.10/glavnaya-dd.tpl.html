@@ -1,6 +1,6 @@
 <title>Главная и ДД v5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&family=Russo+One&display=swap">
 <style>
 :root{--bg:#EFEEEA;--fg:#141416;--mut:#6B6964;--line:rgba(20,20,22,.12);--chip:#FFFFFF;--acc:#141416;--acct:#FFFFFF;--note:#FFF2C6;--notefg:#5C4500;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D0D0F;--fg:#EDEDEF;--mut:#97969C;--line:rgba(255,255,255,.12);--chip:#1A1A1E;--acc:#FFD23F;--acct:#141414;--note:#2B2410;--notefg:#F1D88C;color-scheme:dark}}
@@ -1972,14 +1972,278 @@ canvas.fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 .xs-tb a.on{color:#F3EBDD;background:rgba(232,179,75,.16)}
 .xs .lvb{--lc:#E8B34B}
 
+
+/* ===== v6 (25.10): Афиша ×2, Меню как в игре, комикс «Герои», свой стиль у контента ===== */
+/* --- Афиша: карточка «лента», метка «↑ лентой» --- */
+.a6-lt{position:absolute;top:12px;right:12px;z-index:2;display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 10px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.16);color:#F3EBDD;font:700 11px/1 Inter,sans-serif}
+.a6-lt .ic{width:13px;height:13px;stroke-width:2.6}
+.a6-fc{background:radial-gradient(120% 80% at 50% 0%,#232B48 0%,#0E111C 70%);display:grid;align-content:space-between;padding:22px 18px 18px}
+.a6-stk{position:relative;height:200px}
+.a6-fc .a6-stk i.img{position:absolute;inset:auto;left:50%;top:14px;width:140px;height:190px;margin-left:-70px;border-radius:16px;box-shadow:0 14px 30px -10px rgba(0,0,0,.9);border:2px solid rgba(243,235,221,.15);transition:transform .8s cubic-bezier(.3,1.3,.5,1),opacity .8s}
+.a6-fct{display:grid;gap:6px;text-align:left}
+.a6-fct small{font:800 10.5px/1 Inter,sans-serif;letter-spacing:.16em;color:#E8B34B}
+.a6-fct b{font:700 22px/1.15 "Playfair Display",Lora,serif;color:#F3EBDD}
+.scr .a6-fct p{margin:0;font:500 13.5px/1.4 Inter,sans-serif;color:rgba(243,235,221,.72)}
+.a6-fct .go{justify-self:start;margin-top:6px}
+.w4a-dots i.fd{width:12px;border-radius:3px;background:rgba(232,179,75,.3)}
+.a6-sec{align-items:center}.a6-sec>div{display:grid;gap:4px}
+/* лента: шкала «какая по счёту», плашка «это лента» */
+.a6-vp{position:absolute;right:5px;top:200px;z-index:6;display:grid;gap:5px;pointer-events:none}
+.a6-vp i{width:4px;height:16px;border-radius:2px;background:rgba(255,255,255,.28);transition:height .3s,background .3s}
+.a6-vp i.on{height:28px;background:#E8B34B}
+.w4t-top b small{font:600 12px/1 Inter,sans-serif;color:rgba(255,255,255,.65)}
+.a6-fp{position:absolute;left:50%;top:196px;z-index:7;width:280px;display:grid;gap:4px;padding:12px 14px;border-radius:16px;background:rgba(14,17,28,.92);border:1px solid rgba(232,179,75,.35);color:#F3EBDD;transform:translate(-50%,0);pointer-events:none;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.a6-fp b{font:800 14px/1 Inter,sans-serif;color:#E8B34B}.a6-fp span{font:500 13px/1.35 Inter,sans-serif}
+/* «понятная»: как это работает, подписи, «?», подсказки, «что будет дальше» */
+.a6-q{position:absolute;top:62px;right:104px;z-index:31;width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(232,179,75,.5);background:rgba(232,179,75,.12);color:#E8B34B;font:800 16px/1 Inter,sans-serif}
+.a6-how{margin:0 16px 12px;padding:12px 12px 14px;border-radius:18px;background:#141826;border:1px solid rgba(232,179,75,.22)}
+.a6-hh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.a6-hh b{font:800 14px/1 Inter,sans-serif;color:#F3EBDD}
+.a6-hx{height:26px;padding:0 10px;border-radius:999px;border:0;background:rgba(255,255,255,.08);color:rgba(243,235,221,.75);font:700 11.5px/1 Inter,sans-serif}
+.a6-hs{display:flex;align-items:flex-start;gap:2px}
+.a6-hs>div{flex:1;display:grid;justify-items:center;gap:4px;text-align:center;min-width:0}
+.a6-hs i{position:relative;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(232,179,75,.15);color:#E8B34B}
+.a6-hs i .ic{width:19px;height:19px}
+.a6-hs em{position:absolute;top:-3px;right:-3px;width:17px;height:17px;border-radius:50%;background:#E8B34B;color:#1d1300;font:800 10px/17px Inter,sans-serif;font-style:normal}
+.a6-hs b{font:700 12px/1.15 Inter,sans-serif;color:#F3EBDD}
+.a6-hs small{font:500 10.5px/1.2 Inter,sans-serif;color:rgba(243,235,221,.6)}
+.a6-hs .ar{flex:none;margin-top:12px;color:rgba(232,179,75,.6);font:700 16px/1 Inter,sans-serif}
+.a6-cap{display:block;padding:0 18px 4px;font:800 10px/1 Inter,sans-serif;letter-spacing:.14em;color:rgba(243,235,221,.45)}
+.a6c .w4-sec small{display:block}
+.a6-rv{height:auto;min-height:52px;padding:8px 14px}
+.a6-rv span{display:grid;gap:3px}.a6-rv span small{font:500 11.5px/1.2 Inter,sans-serif;color:#8B92A8}
+.a6-cm{position:absolute;inset:0;z-index:80}
+.a6-cm .hole{position:absolute;border-radius:20px;box-shadow:0 0 0 1200px rgba(4,6,12,.74);border:2px solid #E8B34B;transition:left .45s cubic-bezier(.3,1.2,.5,1),top .45s cubic-bezier(.3,1.2,.5,1),width .45s cubic-bezier(.3,1.2,.5,1),height .45s cubic-bezier(.3,1.2,.5,1);pointer-events:none}
+.a6-cm .tip{position:absolute;left:16px;right:16px;display:grid;gap:6px;padding:14px 16px;border-radius:18px;background:#F3EBDD;color:#141826;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.a6-cm .tip small{font:800 10px/1 Inter,sans-serif;letter-spacing:.14em;color:#9A7A2E}
+.a6-cm .tip b{font:800 17px/1.2 Inter,sans-serif}
+.scr .a6-cm .tip p{margin:0;font:500 14px/1.4 Inter,sans-serif;color:#2A3150}
+.a6-cm .bt{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
+.a6-cm .bt button{height:38px;padding:0 16px;border-radius:12px;border:0;font:800 13.5px/1 Inter,sans-serif}
+.a6-cm .sk{background:none;color:#6A708A}.a6-cm .nx{background:#141826;color:#F3EBDD}
+.a6-nx{position:absolute;inset:0;z-index:75}
+.a6-nx .bk{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.a6-nx .sh{position:absolute;left:8px;right:8px;bottom:8px;border-radius:30px;background:#11141F;padding:12px 18px 22px;display:grid;gap:10px;color:#F3EBDD;box-shadow:0 -20px 50px rgba(0,0,0,.6)}
+.a6-nx .sh>small{font:800 10.5px/1 Inter,sans-serif;letter-spacing:.16em;color:#E8B34B;margin-top:6px}
+.a6-nx .sh>b{font:700 22px/1.15 "Playfair Display",Lora,serif}
+.scr .a6-nx ol{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.a6-nx li{display:flex;gap:12px;align-items:flex-start}
+.a6-nx li i{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(232,179,75,.14);color:#E8B34B}
+.a6-nx li i .ic{width:18px;height:18px}
+.a6-nx li span{display:grid;gap:3px}.a6-nx li b{font:700 14.5px/1.2 Inter,sans-serif}.a6-nx li small{font:500 12.5px/1.35 Inter,sans-serif;color:rgba(243,235,221,.65)}
+.a6-nx .go{height:54px;border:0;border-radius:17px;background:#E8B34B;color:#1d1300;font:800 15.5px/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.a6-nx .go .ic{width:18px;height:18px}
+.a6-nx .no{height:40px;border:0;background:none;color:rgba(243,235,221,.6);font:700 13.5px/1 Inter,sans-serif}
+
+/* --- Меню как в игре v6 --- */
+.m6{background:#000;color:#F3EBDD}
+.m6-bg{position:absolute;inset:-14px;z-index:0;transition:translate .5s ease-out}
+.m6-l{position:absolute;inset:0;opacity:0;transition:opacity 1s ease}
+.m6-l.on{opacity:1}
+.m6-l video{width:100%;height:100%;object-fit:cover;display:block}
+.m6-wall{position:absolute;inset:-30% -40%;display:flex;gap:12px;justify-content:center;transform:rotate(-12deg);opacity:.75}
+.m6-wc{display:grid;gap:12px;align-content:start;animation:m6wall 26s linear infinite;animation-delay:var(--d)}
+.m6-wc:nth-child(2){animation-direction:reverse}
+.m6-wc i{width:120px;height:178px;border-radius:12px;box-shadow:0 12px 24px rgba(0,0,0,.7)}
+@keyframes m6wall{to{transform:translateY(-50%)}}
+.m6-ph{position:absolute;inset:0;background:radial-gradient(90% 70% at 50% 35%,#16261c 0%,#060a08 75%)}
+.m6-ph span{position:absolute;left:var(--x);bottom:-40px;font:600 italic calc(17px * var(--s))/1 Lora,Georgia,serif;color:rgba(232,240,220,.55);white-space:nowrap;animation:m6up 16s linear infinite;animation-delay:var(--d)}
+@keyframes m6up{0%{transform:translateY(0);opacity:0}12%{opacity:1}85%{opacity:.8}100%{transform:translateY(-760px);opacity:0}}
+.m6-hv{position:absolute;inset:0;background:#07070A}
+.m6-hv>div{position:absolute;top:0;bottom:0;width:62%;overflow:hidden}
+.m6-hv .l{left:-6%}.m6-hv .r{right:-6%}
+.m6-hv video{width:100%;height:100%;object-fit:cover;object-position:78% 50%}
+.m6-hv .l video{transform:scaleX(-1)}
+.m6-hv .r video{object-position:70% 50%}
+.m6-hv .l::after,.m6-hv .r::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,#07070A 98%)}
+.m6-hv .r::after{background:linear-gradient(270deg,transparent 55%,#07070A 98%)}
+.m6-hv .vs{position:absolute;left:50%;top:27.5%;transform:translate(-50%,-50%) rotate(-6deg);font:400 64px/1 Bangers,Impact,sans-serif;color:#F2D35B;text-shadow:0 4px 0 #8a1a10,0 10px 30px rgba(0,0,0,.8);animation:m6vs 1.6s ease-in-out infinite alternate}
+@keyframes m6vs{to{transform:translate(-50%,-50%) rotate(-6deg) scale(1.08)}}
+.m6-shp{position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 35%,#3a2a0c 0%,#100b04 70%)}
+.m6-shp .r{position:absolute;left:50%;top:34%;width:520px;height:520px;margin:-260px 0 0 -260px;background:conic-gradient(from 0deg,rgba(246,212,136,.0),rgba(246,212,136,.18) 8%,rgba(246,212,136,0) 16%,rgba(246,212,136,.18) 24%,rgba(246,212,136,0) 32%,rgba(246,212,136,.18) 40%,rgba(246,212,136,0) 48%,rgba(246,212,136,.18) 56%,rgba(246,212,136,0) 64%,rgba(246,212,136,.18) 72%,rgba(246,212,136,0) 80%,rgba(246,212,136,.18) 88%,rgba(246,212,136,0));border-radius:50%;animation:m6rot 30s linear infinite}
+@keyframes m6rot{to{transform:rotate(360deg)}}
+.m6-shp span{position:absolute;left:50%;top:34%;color:#E8B34B;animation:m6orb 7s linear infinite;animation-delay:calc(var(--j) * -1.4s)}
+.m6-shp span .ic{width:46px;height:46px;stroke-width:1.6;filter:drop-shadow(0 6px 12px rgba(0,0,0,.6))}
+@keyframes m6orb{from{transform:translate(-50%,-50%) rotate(0) translateX(96px) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg) translateX(96px) rotate(-360deg)}}
+.m6-sh{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.65) 0,rgba(0,0,0,.05) 22%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.82) 60%,rgba(0,0,0,.96) 100%),linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 75%)}
+.m6 canvas.fx{z-index:2}
+.m6-gr{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.045) 1px,transparent 1.5px) 0 0/5px 5px;mix-blend-mode:overlay}
+.m6-hud{position:absolute;top:50px;left:16px;right:16px;z-index:6;display:flex;align-items:center;gap:10px}
+.m6-av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,#F6D488,#B9832A);color:#1d1300;font:800 16px/1 Inter,sans-serif;box-shadow:0 0 0 2px rgba(0,0,0,.5)}
+.m6-hud>div{flex:1;display:grid;gap:4px}.m6-hud b{font:800 14px/1 Inter,sans-serif}
+.m6-hud small{display:flex;align-items:center;gap:6px;font:600 11.5px/1 Inter,sans-serif;color:rgba(243,235,221,.7)}
+.m6-tk{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 11px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(232,179,75,.35);color:#E8B34B;font:800 14px/1 Inter,sans-serif}
+.m6-tk .ic{width:15px;height:15px}
+.m6-st{position:absolute;top:96px;left:0;right:0;z-index:6}
+.m6 .h1-sti{width:62px}.m6 .h1-sti small{font-size:10.5px;color:rgba(243,235,221,.75)}
+.m6-card{position:absolute;left:18px;right:18px;bottom:350px;z-index:6;display:grid;gap:7px;justify-items:start}
+.m6-card .eb{font:800 10.5px/1 Inter,sans-serif;letter-spacing:.2em;color:#E8B34B}
+.m6-card .bd{display:grid;gap:6px;justify-items:start}
+.m6 .ff.titanic{font-size:46px}
+.m6-big{font:800 40px/1 Unbounded,Inter,sans-serif;color:#FFE6B0;display:inline-flex;align-items:center;gap:6px}
+.m6-big .ic{width:34px;height:34px}
+.scr .m6-card p{margin:0;max-width:280px;font:500 14px/1.4 Inter,sans-serif;color:rgba(243,235,221,.82)}
+.m6-sv{display:flex;align-items:center;gap:10px;padding:8px;border-radius:14px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12)}
+.m6-sv>i.img{width:72px;height:44px;border-radius:8px}
+.m6-sv>span{display:grid;gap:4px;min-width:150px}.m6-sv b{font:700 13.5px/1.1 Inter,sans-serif}.m6-sv small{font:500 11.5px/1 Inter,sans-serif;color:rgba(243,235,221,.65)}
+.m6-bar{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.15);overflow:hidden}.m6-bar i{display:block;height:100%;background:#E8B34B}
+.m6-go{display:inline-flex;align-items:center;gap:7px;height:42px;padding:0 18px;margin-top:4px;border:0;border-radius:13px;background:#E8B34B;color:#1d1300;font:800 14px/1 Inter,sans-serif;box-shadow:0 10px 24px -8px rgba(232,179,75,.7)}
+.m6-menu{position:absolute;left:10px;right:10px;bottom:118px;z-index:6;display:grid;gap:2px}
+.m6-menu button{position:relative;overflow:hidden;display:flex;align-items:baseline;gap:10px;height:37px;padding:0 12px 0 14px;border:0;border-radius:12px;background:none;color:rgba(243,235,221,.72);text-align:left}
+.m6-menu b{font:700 21px/37px "Playfair Display",Lora,serif;white-space:nowrap}
+.m6-menu small{flex:1;font:500 11.5px/1 Inter,sans-serif;color:rgba(243,235,221,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transition:opacity .3s}
+.m6-menu .ar{font:400 26px/37px Inter,sans-serif;font-style:normal;color:#E8B34B;opacity:0;transition:opacity .3s}
+.m6-menu button::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:#E8B34B;transform:scaleY(0);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.m6-menu button.on{color:#FFF6E2;background:linear-gradient(90deg,rgba(232,179,75,.2),rgba(232,179,75,0) 85%)}
+.m6-menu button.on::before{transform:scaleY(1)}
+.m6-menu button.on small,.m6-menu button.on .ar{opacity:1}
+.m6-menu button.on::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);animation:shine 3.2s ease-in-out infinite;pointer-events:none}
+.m6-hint{position:absolute;left:0;right:0;bottom:96px;z-index:6;text-align:center;font:600 10.5px/1 Inter,sans-serif;letter-spacing:.06em;color:rgba(243,235,221,.4)}
+.m6-tb{z-index:7}
+/* выбор сцены — как выбор уровня в игре */
+.m6-lv{position:absolute;inset:0;z-index:66;background:#05060A;color:#F3EBDD;overflow:hidden}
+.m6-lvb{position:absolute;inset:-20px;background-size:cover;background-position:center;opacity:.42;transition:background-image .4s}
+.m6-lvs{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,10,.7) 0,rgba(5,6,10,.2) 30%,rgba(5,6,10,.65) 58%,#05060A 82%)}
+.m6-lvh{position:absolute;top:48px;left:12px;right:16px;z-index:3;display:flex;align-items:center;gap:10px}
+.m6-bk{width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.5);color:#fff;display:grid;place-items:center}
+.m6-lvh>div{flex:1;display:grid;gap:3px}.m6-lvh small{font:800 10px/1 Inter,sans-serif;letter-spacing:.2em;color:#E8B34B}.m6-lvh b{font:700 20px/1 "Playfair Display",Lora,serif}
+.m6-lvn{font:700 12px/1 Inter,sans-serif;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums}
+.m6-cf{position:absolute;left:0;right:0;top:110px;height:280px;z-index:2;perspective:800px;transform-style:preserve-3d;touch-action:pan-y}
+.m6-pc{position:absolute;left:50%;top:10px;width:160px;height:236px;margin-left:-80px;padding:0;border:0;border-radius:14px;background:#111;overflow:hidden;box-shadow:0 22px 40px -14px rgba(0,0,0,.95)}
+.m6-pc .img{position:absolute;inset:0}
+.m6-pc .gl{position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);opacity:0}
+.m6-pc.on{box-shadow:0 0 0 2px #E8B34B,0 26px 50px -12px rgba(232,179,75,.45)}
+.m6-pc.on .gl{opacity:1;animation:m6gl 3s ease-in-out infinite}
+@keyframes m6gl{0%{transform:translateX(-80%)}60%,100%{transform:translateX(80%)}}
+.m6-inf{position:absolute;left:18px;right:18px;top:410px;z-index:3;display:grid;gap:12px;touch-action:none}
+.m6-it{display:grid;gap:6px}
+.m6-it small{font:700 10.5px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(243,235,221,.7)}
+.scr .m6-it p{margin:0;font:500 14px/1.4 Inter,sans-serif;color:rgba(243,235,221,.82)}
+.m6-lv .ff.titanic{font-size:40px}.m6-lv .ff.wolf{font-size:28px}.m6-lv .ff.psycho{font-size:20px}.m6-lv .ff.taxi{font-size:26px}.m6-lv .ff.sopranos{font-size:30px}.m6-lv .ff.bb{font-size:30px}
+.m6-ib{display:flex;gap:8px}
+.m6-ib .go{flex:1;height:50px;border:0;border-radius:15px;background:#E8B34B;color:#1d1300;font:800 15px/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
+.m6-ib .more{display:inline-flex;align-items:center;gap:6px;height:50px;padding:0 14px;border-radius:15px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#F3EBDD;font:700 14px/1 Inter,sans-serif}
+.m6-ib .ic{width:17px;height:17px}
+.m6-up{position:absolute;left:0;right:0;bottom:28px;z-index:3;display:grid;justify-items:center;gap:2px;color:rgba(243,235,221,.75);font:600 11.5px/1 Inter,sans-serif;touch-action:none;cursor:pointer}
+.m6-up .ic{width:24px;height:24px;stroke-width:2.6;color:#E8B34B}
+
+/* --- Комикс: режим «Герои» — живые портреты, как в Versus --- */
+.k4-ct.k3-ct button{height:48px}
+.k4-ct .pv,.k4-ct .nx{width:56px}
+.k4-ct .hv{width:72px;display:grid;justify-items:center;gap:2px;align-content:center}
+.k4-ct .hv .ic{width:18px;height:18px}.k4-ct .hv small{font:800 10.5px/1 Inter,sans-serif}
+.k4-ct .hv.on{background:#F4ECD8;color:#17120C}
+.k6-hv{position:absolute;inset:0;z-index:2;display:none;background:#06070a}
+.k4.hv .k6-hv{display:block}
+.k4.hv .k4-who,.k4.hv .k4-bl,.k4.hv .k4-cov{display:none}
+.k6-p{position:absolute;top:0;bottom:0;width:51%;overflow:hidden}
+.k6-p.l{left:0}.k6-p.r{right:0}
+.k6-p video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.3,1.2,.5,1)}
+.k6-p.l video{transform:scaleX(-1)}
+.k6-p.sp video{transform:scale(1.04)}.k6-p.l.sp video{transform:scaleX(-1) scale(1.04)}
+.k6-p .dim{position:absolute;inset:0;background:rgba(4,5,8,.55);transition:opacity .4s}
+.k6-p.sp .dim{opacity:0}
+.k6-p::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(0,0,0,.85) 0,rgba(0,0,0,0) 30%)}
+.k6-p.l::before,.k6-p.r::before{content:"";position:absolute;top:0;bottom:0;width:40%;z-index:1;pointer-events:none}
+.k6-p.l::before{right:0;background:linear-gradient(90deg,rgba(6,7,10,0),rgba(6,7,10,.55))}
+.k6-p.r::before{left:0;background:linear-gradient(270deg,rgba(6,7,10,0),rgba(6,7,10,.55))}
+.k6-p b{position:absolute;bottom:10px;z-index:2;padding:3px 8px;background:#0D0B09;border:2px solid var(--hg);color:var(--hg);font:400 15px/1 Bangers,Impact,sans-serif;letter-spacing:.06em;opacity:.55;transition:opacity .4s}
+.k6-p.l b{left:10px}.k6-p.r b{right:10px}
+.k6-p.sp b{opacity:1}
+.k6-hv .seam{position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:linear-gradient(transparent,rgba(242,211,91,.35) 40%,rgba(242,211,91,.35) 60%,transparent);z-index:2}
+.k6-bs{position:absolute;left:8px;right:8px;top:66px;bottom:48px;z-index:3;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;pointer-events:none}
+.k6-b{position:relative;max-width:78%;padding:9px 32px 9px 11px;border-radius:15px;background:#fff;color:#17120C;border:2.5px solid #0D0B09;font:700 13.5px/1.3 Inter,sans-serif;pointer-events:auto;box-shadow:0 8px 18px rgba(0,0,0,.45)}
+.k6-b.l{align-self:flex-start;border-bottom-left-radius:4px}.k6-b.r{align-self:flex-end;border-bottom-right-radius:4px}
+.k6-b.loud{background:#FFF6D6;border-radius:6px}
+.k6-b.old{padding-right:11px;opacity:.55;transform-origin:50% 100%;font-size:12px;background:#E9E2D2}
+.k6-b u{text-decoration:none;border-bottom:2px dashed #C0392B;cursor:pointer}
+.k6-b .k6-pl{top:50%;right:4px}
+.k4.lis .k6-pl{display:none}
+.k6-lh{position:absolute;left:50%;bottom:24px;z-index:8;display:none;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(244,236,216,.25);background:rgba(26,22,17,.9);color:#F4ECD8;font:700 12.5px/1 Inter,sans-serif;transform:translateX(-50%)}
+.k6-lh .ic{width:16px;height:16px}
+.k6-lh.on{background:#F4ECD8;color:#17120C}
+.k4.lis .k6-lh{display:flex}
+.k4.lis .k4-sub{top:598px}
+.k4.hv .k4-cap{padding:5px 8px;font-size:11.5px;background:rgba(242,211,91,.94)}
+
+/* --- Свой стиль v6: у фильма, сериала, игры и интервью — своё оформление внутри одной оболочки --- */
+.x6-ths{display:flex;gap:4px;margin:0 0 12px;padding:4px;border-radius:14px;background:rgba(255,255,255,.06)}
+.x6-ths button{flex:1;height:32px;border:0;border-radius:10px;background:none;color:rgba(243,235,221,.6);font:700 12.5px/1 Inter,sans-serif;transition:background .3s,color .3s}
+.x6-ths button.on{background:var(--xa,#E8B34B);color:#141008}
+.x6 .x4-p[data-s="scene"]{padding-top:52px}
+.x6 .xs-cv{margin-top:0}
+.xs-cv[data-th="game"]{background:radial-gradient(70% 90% at 25% 60%,#5a0e18 0%,transparent 70%),radial-gradient(70% 90% at 80% 60%,#1f3412 0%,transparent 70%),#07080b}
+.xs-cv[data-th="game"] .img{display:none}
+.xs-cv[data-th="game"]::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.03) 0 2px,transparent 2px 9px)}
+.x6-gt{font:400 46px/1 Bangers,Impact,sans-serif;letter-spacing:.05em;color:#F2D35B;text-shadow:0 3px 0 #8a1a10}
+.x6-it{font:800 30px/1.05 Inter,sans-serif;letter-spacing:-.02em;color:#fff}
+.x6-tag{justify-self:start;display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:6px;font:800 11px/1 Inter,sans-serif;letter-spacing:.08em}
+.x6-tag.s{background:#D23B2E;color:#fff;font-family:Oswald,Inter,sans-serif;letter-spacing:.14em}
+.x6-tag.g{background:#F2D35B;color:#17120C;font:400 14px/1 Bangers,Impact,sans-serif;letter-spacing:.08em}
+.x6-tag.i{background:rgba(0,0,0,.55);color:#FF5A4A;border:1px solid rgba(255,90,74,.5);animation:x6on 1.6s ease-in-out infinite}
+@keyframes x6on{50%{opacity:.55}}
+.xs-cv[data-th="series"] .sh{background:linear-gradient(rgba(0,0,0,0) 30%,rgba(18,4,4,.92))}
+.xs-cv[data-th="iv"] .img{filter:none}
+.x4-p[data-th] .xs-ep.cur{border-color:color-mix(in srgb,var(--xa) 70%,transparent)}
+.x4-p[data-th] .xs-ep em{background:color-mix(in srgb,var(--xa) 18%,transparent);color:var(--xa)}
+.x4-p[data-th] .xs-ep em.c{background:var(--xa);color:#141008}
+.x4-p[data-th] .w4-lv .lvb{--lc:var(--xa)}
+.x4-p[data-th="series"] .xs-ep b{font-family:Oswald,Inter,sans-serif;font-weight:600;letter-spacing:.02em}
+.x4-p[data-th="game"] .xs-ep b{font:400 15px/1.15 "Russo One",Inter,sans-serif}
+.m6-go .ic{width:17px;height:17px}
+.xs-cv>.x6-gem{position:absolute;right:-6px;top:22px;display:flex;opacity:.92}.x6-gem .emb{width:104px;height:104px}.x6-gem .emb:last-child{margin-left:-30px;margin-top:34px}
+.x6-gem .emb{filter:drop-shadow(0 12px 22px rgba(0,0,0,.7))}
+.x4-p[data-th="iv"] .xs-ep i.img{filter:grayscale(.3)}
+.x6-em{display:grid;place-items:center;background:#0b0d12}
+/* оболочка «светлая»: бумага и чернила; кадры фильмов остаются тёмными окнами */
+.x6.xl{background:#F4EFE6;color:#1B1D26}
+.x6.xl .sb{color:#1B1D26}
+.xl .xs-hd small,.xl .xs-cap,.xl .xs-game small{color:#8A8778}
+.xl .xs-tk{background:#fff;color:#9A6B12;box-shadow:0 2px 10px rgba(60,40,10,.1)}
+.xl .xs-row,.xl .xs-ep{background:#fff;border-color:rgba(27,29,38,.06);color:#1B1D26;box-shadow:0 4px 14px -6px rgba(60,40,10,.18)}
+.xl .xs-row small,.xl .xs-ep small{color:#8A8778}
+.xl .xs-ch>span{background:#fff;color:#3A3C48;box-shadow:0 2px 8px -4px rgba(60,40,10,.2)}
+.xl .x6-ths{background:#E9E2D4}.xl .x6-ths button{color:#6E6A5C}
+.xl .xs-game{background:#1B1D26;color:#F3EBDD}
+.xl .xs-hero{background:#1B1D26;color:#F3EBDD}
+.xl .xs-ru{color:#1B1D26}
+.xl .x4-sl i{background:#fff;border-color:rgba(27,29,38,.2)}
+.xl .x4-tl button{background:#1B1D26;color:#F3EBDD;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.xl .xs-ok small{color:#4A4C58}
+.xl .xs-tb{background:#fff;box-shadow:0 10px 30px rgba(60,40,10,.18)}
+.xl .xs-tb a{color:#9A968A}.xl .xs-tb a.on{color:#1B1D26;background:rgba(232,179,75,.22)}
+.xl .h1-sti small{color:#5A5C68}.xl .h1-sti .in{background:#fff;border-color:#F4EFE6}.xl .h1-sti .num{color:#1B1D26}.xl .h1-sti.seen .rg{background:#DDD5C4}
+.xl .xs-ep.cur{background:#FFF8E8}
+.xl .xs-cv,.xl .xs-film{color:#F3EBDD}
+.xl .h1-sti .in{background:#1B1D26;border-color:#F4EFE6;color:#F3EBDD}.xl .h1-sti .num{color:#F3EBDD}
+/* оболочка «без рамок»: чёрная, кадры во всю ширину, разделы — линиями */
+.x6.xn{background:#000}
+.xn .xs-film{margin:0 -16px;border-radius:0;height:250px}
+.xn .xs-row{border:0;border-bottom:1px solid rgba(255,255,255,.1);border-radius:0;background:none;padding:0 2px;margin:0}
+.xn .xs-game{border-radius:0;margin:12px -16px 0;height:110px;background:#0B0B0E}
+.scr.xn .xs-hd h2{font:800 28px/1 Inter,sans-serif;letter-spacing:-.03em}
+.xn .xs-ep{border:0;border-radius:0;background:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.xn .xs-ep i.img{border-radius:4px;width:110px;height:62px}
+.xn .xs-ep.cur{border-color:rgba(255,255,255,.1)}
+.xn .xs-ep.cur b{color:var(--xa,#E8B34B)}
+.xn .xs-ch>span{background:none;border:1px solid rgba(255,255,255,.18);border-radius:4px}
+.xn .x6-ths{background:none;border-bottom:1px solid rgba(255,255,255,.12);border-radius:0;padding:0 0 0;gap:0}
+.xn .x6-ths button{border-radius:0;background:none!important;color:rgba(255,255,255,.5);border-bottom:2px solid transparent}
+.xn .x6-ths button.on{color:#fff;border-bottom-color:var(--xa,#E8B34B)}
+.xn .xs-hero{border-radius:0;border:0;background:#0B0B0E}
+.xn .xs-vs{border-radius:4px}
+.xn .xs-tb{left:0;right:0;bottom:0;height:84px;border-radius:0;background:#000;border-top:1px solid rgba(255,255,255,.1);box-shadow:none;padding-bottom:20px}
+.xn .xs-tb a.on{background:none;color:#fff}
+.xn .x4-tl button{border-radius:4px}.xn .x4-sl i{border-radius:4px}.xn .xs-btn{border-radius:4px}
+.xn .xs-cv{height:300px}
 </style>
 
 <div class="wrap">
  <header>
-  <h1>v5 по твоему отзыву: Афиша + лента, комикс «Слушать», иконки ДД, свой стиль</h1>
-  <p class="lead">Справа у каждого экрана — что поменял и твои слова, на которые отвечал. Всё живое: смахивай, тапай, зажимай. «↻ Ещё раз» проигрывает заново. Прошлые варианты — кнопки «v3», «v2» и «v1».</p>
+  <h1>v6 по твоему отзыву: две Афиши (обычная и понятная), «Меню как в игре», комикс с живыми героями, у фильма / сериала / игры — свой стиль</h1>
+  <p class="lead">Справа у каждого экрана — что поменял и твои слова, на которые отвечал. Всё живое: смахивай, тапай, зажимай. «↻ Ещё раз» проигрывает заново. Прошлые варианты — кнопки «v5», «v4», «v3», «v2» и «v1».</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
-  <div class="grp" id="grp"><button data-g="h4">Главная · 2</button><button data-g="d3">ДД · 2</button><button data-g="k4">Комикс</button><button data-g="x5">Дизайн</button><span class="old"><small>v4:</small><button data-g="x4">Дизайн</button></span><span class="old"><small>v3:</small><button data-g="h3">Главная</button><button data-g="k3">Комикс</button><button data-g="x3">Дизайн</button></span><span class="old"><small>v2:</small><button data-g="h2">Главная</button><button data-g="d2">ДД</button><button data-g="o2">Запуск</button></span><span class="old"><small>v1:</small><button data-g="home">Главная</button><button data-g="dd">ДД</button><button data-g="ob">Запуск</button></span></div>
+  <div class="grp" id="grp"><button data-g="h6">Главная · 3</button><button data-g="d3">ДД · 2</button><button data-g="k4">Комикс</button><button data-g="x6">Дизайн · 3</button><span class="old"><small>v5:</small><button data-g="h4">Главная</button><button data-g="x5">Дизайн</button></span><span class="old"><small>v4:</small><button data-g="x4">Дизайн</button></span><span class="old"><small>v3:</small><button data-g="h3">Главная</button><button data-g="k3">Комикс</button><button data-g="x3">Дизайн</button></span><span class="old"><small>v2:</small><button data-g="h2">Главная</button><button data-g="d2">ДД</button><button data-g="o2">Запуск</button></span><span class="old"><small>v1:</small><button data-g="home">Главная</button><button data-g="dd">ДД</button><button data-g="ob">Запуск</button></span></div>
   <div class="vars" id="vars"></div>
  </header>
  <div class="stage">
@@ -3519,9 +3783,258 @@ V.push({g:'x5',id:'xs',n:'Свой стиль',
    good(p){$$('.x4-sl i',p).forEach((s,j)=>an(s,[{transform:'none'},{transform:'translateY(-8px)'},{transform:'none'}],{sp:SPb,dl:j*70}));const r=rel($('.x4-sl',p),R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:40,c:['#E8B34B','#F6D488','#fff'],v:7,g:.14,s:4,l:55})}});
  }});
 
+/* ================= v6 (25.10, отзыв Андрея на v5) ================= */
+ICO.home=ICO.home||TBI.home;ICO.dict=ICO.dict||TBI.dict;ICO.user=ICO.user||TBI.user;
+/* --- Афиша: один движок на две одинаковые афиши; o.clear — «понятная» (мама: «не поняла, что жать, чего ждать и зачем», но сразу поняла, где что) --- */
+const AF_STEP=[['play','Смотришь','1 минуту фильма'],['snd','Жмёшь на слово','сразу перевод'],['check','3 вопроса','фразы — в словарь']];
+const AF_TIP=[['.w4a-c','Это сцена из фильма','«Смотреть» — откроется видео на 1 минуту. Потом 3 коротких вопроса — и фразы в твоём словаре.'],
+ ['.a6-fb','Не знаешь, что выбрать?','«Листать» — все сцены по одной на весь экран, как в TikTok. Листаешь вверх.'],
+ ['.v3h-rv','Повторить','Фразы, которые ты уже учил. Пара минут в день — и они не забудутся.'],
+ ['.v3-tb','Разделы','Внизу — всё остальное: сцены, словарь, профиль.']];
+function afisha6(R,ctx,o){o=o||{};const CL=!!o.clear;
+ R.className='scr v3h w4 w4a a6'+(CL?' a6c':'');
+ const card=(s,j)=>`<article class="w4a-c" data-s="${j}"><i class="img kb" style="background-image:url(${IMG[s.img]})"></i><i class="sh"></i><span class="a6-lt">${ic('up')}лентой</span>
+   <div class="w4a-tx"><small>${s.yr}</small>${ffT(s)}<p>${s.ab}</p><div class="w4a-mt"><span class="w4-lv">${lvTxt(s.lv)}</span><span>≈ ${sc4Min(s)} мин · ${s.eps.length} эп.</span></div>
+   <div class="w4a-bt"><button class="go" data-go="${j}">${ic('play')}${CL?'Смотреть · 1 мин':'Смотреть'}</button><button class="more" data-more="${j}">${ic('info')}${CL?'О чём':'Подробнее'}</button></div></div></article>`;
+ const fcard=`<article class="w4a-c a6-fc" data-fc><div class="a6-stk">${SC4.slice(0,4).map((s,j)=>`<i class="img" style="background-image:url(${IMG[s.img]});--j:${j}"></i>`).join('')}</div>
+   <div class="a6-fct"><small>ЛЕНТА</small><b>Все ${SC4.length} сцен подряд</b><p>Как в TikTok: каждая — на весь экран. Листаешь вверх — следующая.</p><span class="go">${ic('up')}Листать</span></div></article>`;
+ const how=CL?`<div class="a6-how"><div class="a6-hh"><b>Как это работает</b><button class="a6-hx" aria-label="Понятно">Понятно</button></div><div class="a6-hs">${AF_STEP.map((x,j)=>`<div><i>${ic(x[0])}<em>${j+1}</em></i><b>${x[1]}</b><small>${x[2]}</small></div>`).join('<span class="ar">›</span>')}</div></div>`:'';
+ R.innerHTML=`${SB(0)}<i class="w4-tf"></i><div class="v3h-sc">${v3Head()}${CL?'<button class="a6-q" aria-label="Подсказки">?</button>':''}${how}
+   ${CL?'<small class="a6-cap">ТВОЙ ДЕНЬ — нажми на кружок</small>':''}<div class="v3h-st"></div>
+   <div class="w4-sec a6-sec"><div><b>Что посмотреть</b>${CL?'<small>Короткие сцены из фильмов · листай вбок →</small>':''}</div><button class="w5-feed a6-fb" data-feed>${ic('up')}Листать</button></div>
+   <div class="w4a-car">${SC4.map(card).join('')}${fcard}</div>
+   <div class="w4a-dots">${SC4.map((s,j)=>`<i class="${j?'':'on'}"></i>`).join('')}<i class="fd"></i></div>
+   ${CL?`<button class="v3h-rv a6-rv" data-t="🔁 17 фраз · по 3 за раз">${ic('rep')}<span>Повторить 17 фраз<small>то, что ты уже учил — чтобы не забыть</small></span><small>≈ 4 мин</small>${ic('chev').replace('class="ic"','class="ic ch"')}</button>`:v3Rv()}
+   <div class="w5-tiles"><button class="w5-t coll" data-open="coll">${ICOLL}<div><b>Коллекция</b><small>${CL?'награды за пройденные сцены':'12 из 37 фонов'}</small></div><span class="w5-fan">${['v_titanic','v_wolf','v_bank'].map(k=>`<i class="img" style="background-image:url(${IMG[k]})"></i>`).join('')}</span></button>
+    <button class="w5-t shop" data-open="shop">${ISHOP}<div><b>Магазин</b><small>${CL?'тратишь билеты на эффекты':`${ic('ticket')}300 · новинка: Неон`}</small></div><span class="w5-new">NEW</span></button>
+    <button class="w5-t fr wide" data-t="⚔️ Versus, Шпион, дуэль по сцене">${IFR}<div><b>С друзьями</b><small>${CL?'играть вдвоём по ссылке в Telegram':'Versus · Шпион · дуэль по сцене'}</small></div>${ic('chev')}</button></div>
+   <div class="w4-pad"></div></div>${TB4('v3-tb',0)}<i class="hb"></i><div class="h1-sv c3" hidden></div>`;
+ v3Stories(R,ctx,$('.v3h-st',R),$('.h1-sv',R));v3Taps(R,ctx);
+ const sc=$('.v3h-sc',R),car=$('.w4a-car',R),C=$$('.w4a-c',R),D=$$('.w4a-dots i',R);let cur=0,touched=false;
+ const hi=k=>{C.forEach((c,j)=>c.classList.toggle('on',j===k));D.forEach((d,j)=>d.classList.toggle('on',j===k))};hi(0);
+ ctx.on(car,'scroll',()=>{const k=Math.round(car.scrollLeft/(C[0].offsetWidth+12));if(k!==cur){cur=k;hi(k)}});
+ ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ // обычная афиша сама листает карточки; «понятная» — нет: то, что движется само, сбивает (стоит и ждёт, пока листнёшь)
+ if(!CL){const auto=()=>{if(!ctx.alive||touched||$('.w4f,.w4t,.w5o',R))return;const k=(cur+1)%SC4.length;car.scrollTo({left:C[k].offsetLeft-car.offsetLeft,behavior:'smooth'});ctx.t(auto,5000)};ctx.t(auto,5000)}
+ else ctx.t(()=>{if(!touched&&!$('.a6-cm',R))an(car,[{transform:'none'},{transform:'translateX(-46px)'},{transform:'none'}],{d:1100,e:EIO})},1600);
+ C.forEach((c,j)=>an(c,[{opacity:0,transform:'translateX(60px) scale(.94)'},{opacity:1,transform:'none'}],{sp:SPs,dl:250+j*90}));
+ v3Cascade(R,'.a6-how,.w4-sec,.v3h-rv,.w5-t',300);
+ an($('.v3h-hd',R),[{opacity:0,transform:'translateY(-10px)'},{opacity:1,transform:'none'}],{d:500});
+ // стопка в карточке «лента» сама перелистывается вверх — видно, что это лента
+ const stk=$$('.a6-stk i',R),FAN=[['translate(0,0) rotate(0) scale(1)',1,4],['translate(-38px,-6px) rotate(-9deg) scale(.88)',.8,3],['translate(38px,-6px) rotate(9deg) scale(.88)',.8,2],['translate(0,-30px) scale(.76)',.45,1]];let si=0;
+ const flip=()=>{if(!ctx.alive)return;stk.forEach((x,j)=>{const f=FAN[(j-si+stk.length)%stk.length];x.style.transform=f[0];x.style.opacity=f[1];x.style.zIndex=f[2]});si=(si+1)%stk.length;ctx.t(flip,1600)};flip();
+ const openFeed=(j,from)=>{touched=true;w6Feed(R,ctx,j,from,CL)};
+ $$('[data-more]',R).forEach(b=>ctx.on(b,'click',e=>{e.stopPropagation();w4Full(R,ctx,SC4[+b.dataset.more],b.closest('.w4a-c'))}));
+ $$('[data-go]',R).forEach(b=>ctx.on(b,'click',e=>{e.stopPropagation();an(b,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});const s=SC4[+b.dataset.go];if(CL)a6Next(R,ctx,s);else toast(R,`▶ ${s.t}: эпизод 1`)}));
+ C.forEach(c=>ctx.on(c,'click',e=>{if(e.target.closest('button'))return;openFeed(c.dataset.fc!=null?0:+c.dataset.s,c)}));
+ ctx.on($('[data-feed]',R),'click',()=>openFeed(Math.min(cur,SC4.length-1),C[Math.min(cur,SC4.length-1)]));
+ ctx.on($('[data-open="coll"]',R),'click',e=>w5Coll(R,ctx,e.currentTarget));ctx.on($('[data-open="shop"]',R),'click',e=>w5Shop(R,ctx,e.currentTarget));
+ if(CL){const hx=$('.a6-hx',R);ctx.on(hx,'click',e=>{e.stopPropagation();const h=$('.a6-how',R);const a=an(h,[{opacity:1,transform:'none'},{opacity:0,transform:'scale(.96)'}],{d:220,f:'forwards'});const f=()=>h.remove();if(a)a.onfinish=f;else f()});
+  ctx.on($('.a6-q',R),'click',e=>{e.stopPropagation();a6Tour(R,ctx,sc)});ctx.t(()=>a6Tour(R,ctx,sc),1500)}}
+// «понятная»: после «Смотреть» — что будет дальше, по шагам (мама: «чего ждать и нахуя»)
+function a6Next(R,ctx,s){let ov=$('.a6-nx',R);if(ov)ov.remove();ov=document.createElement('div');ov.className='a6-nx';
+ ov.innerHTML=`<i class="bk"></i><div class="sh"><span class="w5-grab"></span><small>ЧТО БУДЕТ ДАЛЬШЕ</small><b>${s.t} · эпизод 1</b>
+  <ol>${[['play','Видео — 1 минута',`«${s.eps[0][0]}», ${s.eps[0][1]}. С субтитрами, можно ставить на паузу.`],['snd','Нажимаешь на любое слово','Сразу видно, что оно значит именно тут.'],['check','3 коротких вопроса','Собрать фразу, выбрать перевод, на слух. Ошибся — не страшно.'],['dict','Фразы — в твой словарь','Через день напомним повторить.']].map((x,j)=>`<li><i>${ic(x[0])}</i><span><b>${x[1]}</b><small>${x[2]}</small></span></li>`).join('')}</ol>
+  <button class="go" data-t="▶ ${s.t}: поехали">${ic('play')}Поехали · ≈ 2 мин</button><button class="no">Не сейчас</button></div>`;
+ R.appendChild(ov);const c=sub(ctx),sh=$('.sh',ov);an($('.bk',ov),[{opacity:0},{opacity:1}],{d:250});an(sh,[{transform:'translateY(100%)'},{transform:'none'}],{sp:SPs});
+ $$('li',ov).forEach((x,j)=>an(x,[{opacity:0,transform:'translateX(30px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:200+j*110}));
+ const close=()=>{c.kill();const a=an(sh,[{transform:'none'},{transform:'translateY(100%)'}],{d:240,e:EI,f:'forwards'});an($('.bk',ov),[{opacity:1},{opacity:0}],{d:240,f:'forwards'});const f=()=>ov.remove();if(a)a.onfinish=f;else f()};
+ c.on($('.go',ov),'click',()=>{toast(R,'▶ '+s.t+': поехали');close()});c.on($('.no',ov),'click',close);c.on($('.bk',ov),'click',close)}
+// «понятная»: подсказки поверх экрана — подсветка и пояснение по шагам; «?» в шапке — показать снова
+function a6Tour(R,ctx,sc){if($('.a6-cm',R)||$('.w4f,.w4t,.w5o,.a6-nx',R))return;const ov=document.createElement('div');ov.className='a6-cm';ov.innerHTML='<i class="hole"></i><div class="tip"><small></small><b></b><p></p><div class="bt"><button class="sk">Пропустить</button><button class="nx">Дальше</button></div></div>';
+ R.appendChild(ov);const c=sub(ctx),hole=$('.hole',ov),tip=$('.tip',ov);let i=-1;
+ const end=()=>{c.kill();const a=an(ov,[{opacity:1},{opacity:0}],{d:220,f:'forwards'});const f=()=>ov.remove();if(a)a.onfinish=f;else f()};
+ const step=async()=>{i++;if(i>=AF_TIP.length){end();return}const [sel,t,p]=AF_TIP[i],el=$(sel,R);if(!el){step();return}
+  let r=rel(el,R);if(r.y<70||r.y+r.h>660){sc.scrollTo({top:Math.max(0,sc.scrollTop+r.y-170),behavior:'smooth'});await c.wait(420);r=rel(el,R)}
+  const pd=6;hole.style.cssText=`left:${r.x-pd}px;top:${r.y-pd}px;width:${r.w+pd*2}px;height:${Math.min(r.h,420)+pd*2}px`;
+  $('small',tip).textContent=`ПОДСКАЗКА ${i+1} ИЗ ${AF_TIP.length}`;$('b',tip).textContent=t;$('p',tip).textContent=p;$('.nx',tip).textContent=i===AF_TIP.length-1?'Понятно':'Дальше';
+  const below=r.y+Math.min(r.h,420)+pd+170<740;tip.style.top=below?`${r.y+Math.min(r.h,420)+pd+12}px`:'';tip.style.bottom=below?'':`${754-r.y+pd+12}px`;
+  an(tip,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{sp:SPs})};
+ an(ov,[{opacity:0},{opacity:1}],{d:300});c.on($('.nx',ov),'click',e=>{e.stopPropagation();step()});c.on($('.sk',ov),'click',e=>{e.stopPropagation();end()});step()}
+// лента: та же, что в v5, + видно, что это лента: соседняя сцена выглядывает снизу, справа шкала «где я», в «понятной» — плашка «что это»
+function w6Feed(R,ctx,j0,from,cl){w4Feed(R,ctx,j0,from);const ov=$('.w4t',R);if(!ov)return;const feed=$('.w4c-feed',ov),c=sub(ctx);
+ $('.w4t-top b',ov).innerHTML=`Что посмотреть <small>· листай вверх</small>`;
+ const vp=document.createElement('div');vp.className='a6-vp';vp.innerHTML=SC4.map(()=>'<i></i>').join('');ov.appendChild(vp);const VP=$$('i',vp);
+ const mark=()=>{const k=Math.round(feed.scrollTop/(feed.clientHeight||1));VP.forEach((x,j)=>x.classList.toggle('on',j===k))};mark();c.on(feed,'scroll',mark);
+ if(cl){const pl=document.createElement('div');pl.className='a6-fp';pl.innerHTML=`<b>Это лента</b><span>Все сцены по одной. Листай вверх ↑ — следующая. ✕ — назад на главную.</span>`;ov.appendChild(pl);
+  an(pl,[{opacity:0,transform:'translate(-50%,10px)'},{opacity:1,transform:'translate(-50%,0)'}],{sp:SPs,dl:500});c.t(()=>{const a=an(pl,[{opacity:1},{opacity:0}],{d:400,f:'forwards'});if(a)a.onfinish=()=>pl.remove()},5200)}
+ let moved=false;c.on(feed,'pointerdown',()=>{moved=true});c.on(feed,'wheel',()=>{moved=true});c.on(feed,'touchstart',()=>{moved=true},{passive:true});
+ const eio=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+ const peek=()=>{if(moved||!ov.isConnected||feed.scrollTop+feed.clientHeight>=feed.scrollHeight-2)return;const y0=feed.scrollTop,t0=performance.now(),D=1500;feed.style.scrollSnapType='none';
+  const st=n=>{if(!ov.isConnected)return;const p=Math.min(1,(n-t0)/D),y=p<.45?eio(p/.45):p<.6?1:1-eio((p-.6)/.4);feed.scrollTop=y0+120*y;if(p<1)requestAnimationFrame(st);else{feed.scrollTop=y0;feed.style.scrollSnapType='';moved=true}};requestAnimationFrame(st)};
+ c.t(peek,cl?1400:900)}
+
+/* --- Меню как в игре v6: выбор — превью — вход, как в меню игры --- */
+const M6=[{k:'cont',t:'Продолжить',s:'Титаник · эпизод 2 из 4',eb:'СОХРАНЕНИЕ',h:()=>`${ffT(SC4[0])}<span class="m6-sv"><i class="img" style="background-image:url(${IMG.tk2})"></i><span><b>«Я выживу» · 46 с</b><small>эпизод 2 из 4 · 6 фраз</small><i class="m6-bar"><i style="width:25%"></i></i></span></span>`,go:`${ic('play')}Продолжить`},
+ {k:'pick',t:'Что посмотреть',s:'6 сцен для уровня «Средний»',eb:'ВЫБОР СЦЕНЫ',h:()=>`<b class="m6-big">6 сцен</b><p>Волк, Титаник, Психопат, Сопрано, Таксист, Во все тяжкие. Листаешь, как выбор уровня в игре.</p>`,go:'Выбрать сцену'},
+ {k:'rv',t:'Повторить',s:'17 фраз · ≈ 4 мин',eb:'ТРЕНИРОВКА',h:()=>`<b class="m6-big">17 фраз</b><p>То, что ты уже учил. По 3 за раз — пара минут.</p>`,go:`${ic('rep')}Повторить`},
+ {k:'fr',t:'С друзьями',s:'Versus · Шпион · дуэль',eb:'МУЛЬТИПЛЕЕР',h:()=>`<b class="m6-big">Versus</b><p>Бой героев Deadlock: 3 раунда, урон — твои очки. Зовёшь друга ссылкой.</p>`,go:`${ic('sword')}Позвать друга`},
+ {k:'co',t:'Коллекция',s:'12 фонов · 6 карточек',eb:'НАГРАДЫ',h:()=>`<b class="m6-big">12 из 37</b><p>Живые фоны, карточки и кадры за пройденные сцены.</p>`,go:'Открыть коллекцию'},
+ {k:'sh',t:'Магазин',s:'🎟 300 · новинка: Неон',eb:'МАГАЗИН',h:()=>`<b class="m6-big">${ic('ticket')}300</b><p>Эффекты, карточки, звуки. Сегодня — «Неон».</p>`,go:'Открыть магазин'}];
+const M6PH=['Have a seat','Nice tan','I\'ll never let go','Fugazi','Stress, maybe','You jump, I jump','Say my name','I am the danger','Sell me this pen','Whoa whoa whoa'];
+function m6Lv(R,ctx,from,done){let ov=$('.m6-lv',R);if(ov)ov.remove();ov=document.createElement('div');ov.className='m6-lv';
+ ov.innerHTML=`<i class="m6-lvb img"></i><i class="m6-lvs"></i><div class="m6-lvh"><button class="m6-bk" aria-label="Назад">${ic('back')}</button><div><small>ВЫБОР СЦЕНЫ</small><b>Что посмотреть</b></div><span class="m6-lvn"></span></div>
+  <div class="m6-cf">${SC4.map((s,j)=>`<div class="m6-pc" role="button" data-j="${j}"><i class="img" style="background-image:url(${IMG['p_'+s.k]||IMG[s.img]})"></i><i class="gl"></i></div>`).join('')}</div>
+  <div class="m6-inf"><div class="m6-it"></div><div class="m6-ib"><button class="go">${ic('play')}Смотреть</button><button class="more">${ic('info')}О чём</button></div></div>
+  <div class="m6-up">${ic('up')}<span>потяни вверх — все сцены лентой</span></div>`;
+ R.appendChild(ov);const c=sub(ctx),P=$$('.m6-pc',ov),it=$('.m6-it',ov),bg=$('.m6-lvb',ov),nn=$('.m6-lvn',ov);let cur=0,fx=0;
+ const lay=(o,tr)=>P.forEach((p,j)=>{const d=j-cur+o,a=Math.abs(d);p.style.transition=tr?`transform ${SPs.d}ms ${SPs.e}, opacity .3s`:'none';p.style.zIndex=20-Math.round(a);p.style.opacity=a>2.6?0:1;
+  p.style.transform=`translateX(${d*96}px) translateZ(${-a*90}px) rotateY(${clamp(-d*38,-60,60)}deg) scale(${a<.5?1.08:1})`;p.classList.toggle('on',Math.round(d)===0)});
+ const info=()=>{const s=SC4[cur];bg.style.backgroundImage=`url(${IMG[s.img]})`;nn.textContent=`${cur+1} / ${SC4.length}`;
+  it.innerHTML=`<small>${s.yr}</small>${ffT(s)}<p>${s.ab}</p><div class="w4a-mt"><span class="w4-lv">${lvTxt(s.lv)}</span><span>≈ ${sc4Min(s)} мин · ${s.eps.length} эп. · ${sc4Ph(s)} фраз</span></div>`;
+  an(it,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{sp:SPs});an(bg,[{opacity:.2},{opacity:.42}],{d:600})};
+ const to=k=>{k=clamp(k,0,SC4.length-1);if(k===cur){lay(0,true);return}cur=k;lay(0,true);info()};
+ lay(0,false);info();P.forEach((p,j)=>an(p,[{opacity:0,transform:`translateY(120px) rotate(${(j-2)*8}deg)`},{opacity:1}],{sp:SPs,dl:120+j*70}));
+ const a=from?rel(from,R):{x:20,y:400,w:300,h:60};an(ov,[{clipPath:`inset(${a.y}px ${344-a.x-a.w}px ${754-a.y-a.h}px ${a.x}px round 14px)`},{clipPath:'inset(0 0 0 0 round 46px)'}],{sp:SPs});
+ drag(c,$('.m6-cf',ov),{axis:'x',move(dx){fx=-dx/96;lay(-fx,false)},end(dx,dy,vx){const k=Math.round(cur-dx/96-vx*2);fx=0;to(k)},tap(e){const p=e&&e.target&&e.target.closest&&e.target.closest('.m6-pc');if(!p)return;const j=+p.dataset.j;if(j!==cur)to(j);else w4Full(R,ctx,SC4[cur],p)}});
+ c.on($('.go',ov),'click',()=>{toast(R,`▶ ${SC4[cur].t}: эпизод 1`)});c.on($('.more',ov),'click',e=>w4Full(R,ctx,SC4[cur],e.currentTarget));
+ const close=()=>{c.kill();const z=an(ov,[{opacity:1,transform:'none'},{opacity:0,transform:'scale(1.06)'}],{d:260,e:EI,f:'forwards'});const f=()=>{ov.remove();done&&done()};if(z)z.onfinish=f;else f()};
+ c.on($('.m6-bk',ov),'click',close);
+ const up=$('.m6-up',ov);an(up,[{transform:'translateY(0)'},{transform:'translateY(-7px)'},{transform:'translateY(0)'}],{d:1100,e:'ease-in-out',it:4,dl:900});
+ upDrag(c,$('.m6-inf',ov),R,{move(dy){ov.style.transform=dy<0?`translateY(${(Math.max(dy,-180)*.35).toFixed(1)}px)`:''},end(dy){ov.style.transform='';if(dy<-70)w4Feed(R,ctx,cur,P[cur])}});
+ upDrag(c,up,R,{move(dy){ov.style.transform=dy<0?`translateY(${(Math.max(dy,-180)*.35).toFixed(1)}px)`:''},end(dy){ov.style.transform='';if(dy<-40)w4Feed(R,ctx,cur,P[cur])}});
+ c.on(up,'click',()=>{if(Date.now()-(R._pkd||0)<350)return;w4Feed(R,ctx,cur,P[cur])})}
+V.push({g:'h6',id:'h6a',n:'Афиша',
+ idea:'Та же «Афиша», подтянута. Лента теперь понятна без слов: последняя карточка в ряду — «Все 6 сцен подряд» с живой стопкой кадров, которая сама листается вверх; на каждой карточке метка «↑ лентой»; кнопка у заголовка — «Листать». Открыл ленту — соседняя сцена сама выглядывает снизу и прячется (видно, что листать вверх), справа шкала «какая по счёту», в шапке «листай вверх».',
+ moves:['карточки сами едут вбок каждые 5 с, пока не тронешь','стопка в карточке «лента» перелистывается вверх раз в 1,5 с','лента вырастает из карточки; через секунду соседняя сцена выглядывает снизу и уезжает обратно','справа в ленте — шкала из 6 делений, горит та, что на экране'],
+ from:'Твой отзыв на v5: «афиша лучше получилась… немного улучши её и можешь как-то получше интегрировать переход в ленту? не совсем понятно, что за лента».',
+ minus:'Это «без решения проблемы» — как будто мамы не было: подсказок и объяснений нет, для того, кто первый раз, может быть непонятно. Понятная версия — следующая.',
+ mount(R,ctx){afisha6(R,ctx,{})}});
+V.push({g:'h6',id:'h6b',n:'Афиша · понятная',
+ idea:'Та же Афиша, но для человека, который видит приложение впервые (как мама). Что жать: одна главная кнопка в карточке — «Смотреть · 1 мин»; подсказки по шагам с подсветкой (кнопка «?» в шапке — показать снова). Чего ждать: после «Смотреть» — шторка «Что будет дальше»: видео 1 мин → жмёшь на слова → 3 вопроса → фразы в словарь. Зачем: сверху «Как это работает» в 3 шага (можно скрыть «Понятно»). У каждого раздела — подпись простыми словами, ничего не едет само.',
+ moves:['подсказки: экран темнеет, подсвечивается одна вещь, рядом — что это и зачем; «Дальше» / «Пропустить»','карточки сами не едут — один раз чуть сдвигаются вбок, чтобы было видно, что их листают','«Смотреть» — снизу выезжает «Что будет дальше», шаги появляются по одному','в ленте — плашка «Это лента: листай вверх, ✕ — назад» на 5 с'],
+ from:'Твой отзыв на v5: «позвал маму зачекать дизайн — она вообще не поняла, че жать, куда, чего ждать, нахуя; а во втором она сразу врубилась, че где находится. Подумай, как решить… создай афишу с решением проблемы и афишу без неё».',
+ minus:'Подсказки и подписи — это больше текста; тем, кто уже понял, они мешают. Поэтому всё убирается: «Понятно», «Пропустить», и подсказки показываются только при первом входе (в приложении — один раз).',
+ mount(R,ctx){afisha6(R,ctx,{clear:true})}});
+V.push({g:'h6',id:'h6m',n:'Меню как в игре',
+ idea:'Меню, как в настоящей игре: живой фон на весь экран, сверху — твой «игрок» (имя, уровень, билеты) и сторис, внизу — пункты меню крупными словами. Тап по пункту — выбираешь: фон меняется под пункт (Продолжить — твой фильм, Что посмотреть — стена постеров, Повторить — летящие фразы, С друзьями — живые герои Deadlock, Коллекция — живой фон), над меню — карточка «что это» с кнопкой. Ещё тап (или кнопка) — входишь. «Что посмотреть» — выбор сцены, как выбор уровня: постеры каруселью в 3D, листаешь вбок, тянешь вверх — лента.',
+ moves:['пока не тронешь — меню само пробегает по пунктам, как заставка игры','фон — наплывом под пункт, по выбранному пункту бежит свет, слева — золотая черта','пыль в луче проектора, лёгкий параллакс фона за пальцем','вход: пункты уезжают влево, фон чуть наезжает; назад — возвращаются','выбор сцены: постеры веером в 3D, тянешь — крутятся за пальцем; выбранный больше, фон — его кадр'],
+ from:'Твой отзыв на v5: «„Меню как в игре“ — в прошлый раз ты его вообще не дорабатывал, только добавил свайп вверх. Сделай его лучшей версией себя».',
+ minus:'Информации на первом экране меньше, чем в «Афише»: что смотреть — на шаг глубже. Зато вход — «вау», как в игру. В приложении фоны пунктов — наши живые фоны из «Коллекции», ничего генерить не надо.',
+ mount(R,ctx){R.className='scr m6';
+  const lay=k=>({cont:vidHTML('titanic'),
+   pick:`<div class="m6-wall">${[0,1,2].map(cI=>`<div class="m6-wc" style="--d:${cI*-7}s">${[...SC4,...SC4].map((s,j)=>`<i class="img" style="background-image:url(${IMG['p_'+SC4[(j+cI*2)%SC4.length].k]})"></i>`).join('')}</div>`).join('')}</div>`,
+   rv:`<div class="m6-ph">${M6PH.map((p,j)=>`<span style="--x:${(j*37)%86+4}%;--d:${(-j*1.7).toFixed(1)}s;--s:${(.85+(j%3)*.18).toFixed(2)}">${p}</span>`).join('')}</div>`,
+   fr:`<div class="m6-hv"><div class="l"><video muted loop playsinline data-hv="hv_venator" poster="${IMG.hv_venator}"></video></div><div class="r"><video muted loop playsinline data-hv="hv_rat" poster="${IMG.hv_rat}"></video></div><b class="vs">VS</b></div>`,
+   co:vidHTML('bank'),
+   sh:`<div class="m6-shp"><i class="r"></i>${[0,1,2,3,4].map(j=>`<span style="--j:${j}">${ic('ticket')}</span>`).join('')}</div>`})[k];
+  R.innerHTML=`<div class="m6-bg">${M6.map((m,j)=>`<div class="m6-l${j?'':' on'}" data-l="${m.k}">${lay(m.k)}</div>`).join('')}</div><i class="m6-sh"></i><canvas class="fx"></canvas><i class="m6-gr"></i>${SB(0)}
+   <div class="m6-hud"><span class="m6-av">А</span><div><b>Андрей</b><small>${bars(3)}Средний</small></div><span class="m6-tk">${ic('ticket')}<b>300</b></span></div>
+   <div class="m6-st v3h-st"></div>
+   <div class="m6-card"><small class="eb"></small><div class="bd"></div><button class="m6-go"></button></div>
+   <nav class="m6-menu">${M6.map((m,j)=>`<button data-k="${m.k}" data-j="${j}"><b>${m.t}</b><small>${m.s}</small><i class="ar">›</i></button>`).join('')}</nav>
+   <div class="m6-hint">тап — выбрать · ещё раз — войти</div>
+   ${TB4('v3-tb w4b-tb m6-tb',0)}<i class="hb"></i><div class="h1-sv c3" hidden></div>`;
+  vidStart(R);v3Stories(R,ctx,$('.m6-st',R),$('.h1-sv',R));
+  const fx=FX(ctx,$('.fx',R)),BG=$('.m6-bg',R),L=$$('.m6-l',R),B=$$('.m6-menu button',R),card=$('.m6-card',R),eb=$('.eb',card),bd=$('.bd',card),go=$('.m6-go',card);let cur=-1,touched=false;
+  // пыль в луче проектора
+  const DU=Array.from({length:34},()=>({x:Math.random()*344,y:Math.random()*754,v:.15+Math.random()*.35,r:.6+Math.random()*1.6,a:Math.random()*6.28}));
+  fx.ambient({step(g,k){for(const d of DU){d.y-=d.v*k;d.a+=.02*k;d.x+=Math.sin(d.a)*.25*k;if(d.y<-4){d.y=760;d.x=Math.random()*344}g.globalAlpha=.25+.25*Math.sin(d.a*2);g.fillStyle='#F6D488';g.beginPath();g.arc(d.x,d.y,d.r,0,6.3);g.fill()}g.globalAlpha=1}});
+  const hv=on=>$$('video[data-hv]',R).forEach(v=>{if(on){if(!v.src)v.src=vurl(v.dataset.hv);v.muted=true;const p=v.play();if(p&&p.catch)p.catch(()=>{})}else v.pause()});
+  function sel(j,quiet){if(j===cur)return;cur=j;const m=M6[j];B.forEach((b,i)=>b.classList.toggle('on',i===j));L.forEach(l=>l.classList.toggle('on',l.dataset.l===m.k));hv(m.k==='fr');
+   eb.textContent=m.eb;bd.innerHTML=m.h();go.innerHTML=m.go;card.dataset.k=m.k;
+   an(card,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs});$$('.bd>*',card).forEach((x,i)=>an(x,[{opacity:0,transform:'translateX(-16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:60+i*60}));
+   an(B[j],[{transform:'translateX(0)'},{transform:'translateX(10px)'}],{sp:SPs,f:'forwards'});B.forEach((b,i)=>{if(i!==j){b.getAnimations().forEach(a=>a.cancel())}});
+   if(!quiet){const r=rel(B[j],R);fx.burst(r.x+8,r.y+r.h/2,{n:12,c:['#F6D488','#E8B34B'],v:2.6,g:0,s:2,l:30})}}
+  // вход: пункты уезжают, фон наезжает; когда окно закрылось — всё возвращается
+  const out=()=>{B.forEach((b,i)=>an(b,[{opacity:1,transform:'translateX(10px)'},{opacity:0,transform:'translateX(-120px)'}],{d:260,dl:i*30,e:EI,f:'forwards'}));an(card,[{opacity:1},{opacity:0,transform:'translateY(20px)'}],{d:220,f:'forwards'});an(BG,[{transform:'none'},{transform:'scale(1.08)'}],{d:600,e:EO,f:'forwards'})};
+  const back=()=>{B.forEach((b,i)=>{b.getAnimations().forEach(a=>a.cancel());an(b,[{opacity:0,transform:'translateX(-60px)'},{opacity:1,transform:i===cur?'translateX(10px)':'none'}],{sp:SPs,dl:i*50,f:'forwards'})});card.getAnimations().forEach(a=>a.cancel());an(card,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:200});BG.getAnimations().forEach(a=>a.cancel());an(BG,[{transform:'scale(1.08)'},{transform:'none'}],{d:700,e:EO})};
+  const waitGone=sel=>{const chk=()=>{if(!ctx.alive)return;if($(sel,R))ctx.t(chk,250);else back()};ctx.t(chk,600)};
+  function enter(){const m=M6[cur];an(go,[{transform:'scale(.94)'},{transform:'none'}],{sp:SPb});
+   if(m.k==='pick'){out();ctx.t(()=>m6Lv(R,ctx,B[cur],back),220)}
+   else if(m.k==='co'){out();ctx.t(()=>{w5Coll(R,ctx,B[cur]);waitGone('.w5o')},220)}
+   else if(m.k==='sh'){out();ctx.t(()=>{w5Shop(R,ctx,B[cur]);waitGone('.w5o')},220)}
+   else toast(R,{cont:'▶ Титаник: эпизод 2 «Я выживу»',rv:'🔁 17 фраз · по 3 за раз',fr:'⚔️ Versus: выбери героя и позови друга'}[m.k])}
+  B.forEach((b,j)=>ctx.on(b,'click',()=>{touched=true;if(j===cur)enter();else sel(j)}));
+  ctx.on(go,'click',()=>{touched=true;enter()});
+  ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+  ctx.on(R,'pointermove',e=>{const b=R.getBoundingClientRect(),x=((e.clientX-b.left)/b.width-.5),y=((e.clientY-b.top)/b.height-.5);BG.style.translate=`${(-x*14).toFixed(1)}px ${(-y*10).toFixed(1)}px`});
+  // вход в меню: пункты по одному слева, карточка, потом «заставка» — меню само пробегает по пунктам, пока не тронешь
+  sel(0,true);an($('.m6-hud',R),[{opacity:0,transform:'translateY(-14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:100});
+  B.forEach((b,i)=>an(b,[{opacity:0,transform:'translateX(-70px)'},{opacity:1,transform:i?'none':'translateX(10px)'}],{sp:SPs,dl:250+i*80,f:i?'backwards':'forwards'}));
+  const demo=async()=>{await ctx.wait(3200);for(const j of [1,2,3,4,5,0]){if(touched)return;sel(j,true);await ctx.wait(2300)}};demo();
+ }});
+
+/* --- Комикс: третий способ — «Живые герои», как в Versus: два живых портрета, реплики вылетают пузырями от говорящего --- */
+const K6FX={venator:.73,rat:.61};
+(()=>{const KB=V.find(v=>v.id==='kb');if(!KB)return;const m0=KB.mount;
+ KB.idea='Комикс оставил как есть — это главная функция. Три способа: «Читать» (по панелям, тапаешь), «Слушать» (как ролик, само листается под голос) и новое — «Герои»: как в Versus, два живых портрета героев стоят слева и справа, реплики вылетают пузырями от того, кто говорит, говорящий светлее, последние 3 фразы видны. Подпись «что происходит», накал, перевод и слова с переводом по тапу — те же.';
+ KB.moves=['«Герои»: портреты въезжают с краёв, оживают; говорящий светлее и чуть больше','новая реплика — пузырь пружиной от своего героя, старые бледнеют и уходят вверх','«Слушать» работает и с героями: само листается под голос','всё прежнее: накал, тряска на криках, штамп «Глава пройдена»'];
+ KB.from='Твой отзыв на v5: «комиксы оставь как есть — 10 на 10, пусть это будет мейн функция (выбор: слушать или читать — читать проще, в ТТ залить легче), но добавь возможность, чтобы арты героев анимированные, как в Versus, — тупо стоят, накидывают фразы».';
+ KB.minus='Живые портреты — только у героев, для которых есть ролик (сейчас Венатор и Крысиный король). У диалога с героем без ролика кнопки «Герои» нет — только комикс.';
+ KB.mount=function(R,ctx){m0.call(this,R,ctx);R.classList.add('k6');
+  const pn=$('.k4-pn',R),ct=$('.k4-ct',R);if(!pn||!ct)return;
+  pn.insertAdjacentHTML('afterbegin',`<div class="k6-hv">${['venator','rat'].map((k,j)=>`<div class="k6-p ${j?'r':'l'}" data-h="${k}" style="--hc:${HERO[k].c1};--hg:${HERO[k].c2}"><video muted loop playsinline data-v="hv_${k}" poster="${IMG['hv_'+k]}"></video><i class="dim"></i><b>${HERO[k].n}</b></div>`).join('')}<i class="seam"></i><div class="k6-bs"></div></div>`);
+  const au=$('.au',ct);if(au)au.innerHTML=`${ic('play')}Слушать`;
+  const hb=document.createElement('button');hb.className='hv';hb.innerHTML=`${ic('users')}<small>Герои</small>`;ct.insertBefore(hb,$('.nx',ct));
+  const lh=document.createElement('button');lh.className='k6-lh';lh.innerHTML=`${ic('users')}<span>Герои</span>`;R.appendChild(lh);
+  const hvE=$('.k6-hv',R),bs=$('.k6-bs',R),PP=$$('.k6-p',R),cap=$('.k4-cap',R),stp=$('.k3-stamp',R);let key='';
+  const fit=()=>PP.forEach(p=>{const v=$('video',p),w=p.clientWidth||160,h=p.clientHeight||386,vw=h*16/9,f=K6FX[p.dataset.h]||.7,off=f*vw-.62*w;v.style.objectPosition=`${clamp(off/Math.max(1,vw-w)*100,0,100).toFixed(1)}% 50%`});
+  const curN=()=>$$('.k4-strip button',R).findIndex(b=>b.classList.contains('on'));
+  // последние 3 реплики пузырями: новая — снизу, у своего героя; старые бледнее и выше
+  const bub=(n,anim)=>{if(n<0)return;const a=Math.max(0,n-2);
+   bs.innerHTML=K4L.slice(a,n+1).map((l,i)=>`<div class="k6-b ${l[0]==='venator'?'l':'r'}${a+i<n?' old':''}${/!/.test(l[1])?' loud':''}"><b>${cmxLine(l[1])}</b>${a+i===n?`<button class="k4-pl k6-pl" aria-label="Послушать">${ic('snd')}</button>`:''}</div>`).join('');
+   PP.forEach(p=>p.classList.toggle('sp',p.dataset.h===K4L[n][0]));
+   const nb=bs.lastElementChild;if(!anim||!nb)return;const left=nb.classList.contains('l');
+   an(nb,[{opacity:0,transform:`translate(${left?-46:46}px,26px) scale(.5)`},{opacity:1,transform:'none'}],{sp:SPb});
+   $$('.k6-b.old',bs).forEach(x=>an(x,[{transform:'translateY(30px)'},{transform:'none'}],{sp:SPs}))};
+  // реплику меняет сам комикс (go): ловим смену подписи «что происходит»
+  let ph=0;ctx.loop(()=>{if(!R.classList.contains('hv'))return;if(pn.clientHeight!==ph){ph=pn.clientHeight;fit()}const k=cap.textContent+(stp.classList.contains('on')?'|end':'');if(k===key)return;const was=key;key=k;if(stp.classList.contains('on'))return;bub(curN(),!!was)});
+  const play=v=>$$('video',hvE).forEach(x=>{if(v){if(!x.src)x.src=vurl(x.dataset.v);x.muted=true;const p=x.play();if(p&&p.catch)p.catch(()=>{})}else x.pause()});
+  // iPhone/Telegram может сам поставить ролик на паузу — запускаем снова, пока герои на экране
+  const keep=()=>{if(!ctx.alive)return;if(R.classList.contains('hv'))$$('video',hvE).forEach(x=>{if(x.src&&x.paused){const p=x.play();if(p&&p.catch)p.catch(()=>{})}});ctx.t(keep,1500)};keep();
+  const on=v=>{R.classList.toggle('hv',v);hb.classList.toggle('on',v);lh.classList.toggle('on',v);$('small',hb).textContent=v?'Комикс':'Герои';$('span',lh).textContent=v?'Комикс':'Герои';play(v);
+   if(v){fit();key='';an(hvE,[{opacity:0},{opacity:1}],{d:350});PP.forEach((p,j)=>an(p,[{opacity:0,transform:`translateX(${j?80:-80}px)`},{opacity:1,transform:'none'}],{sp:SPs,dl:j*110}))}};
+  [hb,lh].forEach(b=>ctx.on(b,'click',e=>{e.stopPropagation();an(b,[{transform:'scale(.92)'},{transform:'none'}],{sp:SPb});on(!R.classList.contains('hv'))}));
+  ctx.on(window,'resize',()=>{if(R.classList.contains('hv'))fit()});
+  ctx.add(()=>$$('video',hvE).forEach(x=>{try{x.pause()}catch(e){}}))}})();
+
+/* --- Дизайн v6: «Свой стиль» + у фильма, сериала, игры и интервью — своё оформление внутри одной оболочки; ещё 2 варианта оболочки --- */
+const X6TH={
+ film:{l:'Фильм',eb:'ФИЛЬМ · 2013 · МАРТИН СКОРСЕЗЕ',img:'bd_wolf',tt:()=>ffT(X4W),ab:X4W.ab,lv:4,ch:['6 эпизодов','31 фраза'],ep:X4W.eps.slice(0,4).map((e,j)=>[`Эпизод ${j+1} · ${e[1]}`,e[0],IMG[e[3]]]),a:'#E8B34B',tag:''},
+ series:{l:'Сериал',eb:'СЕРИАЛ · СЕЗОН 1',img:'bd_sopranos',tt:()=>ffT(SC4[3]),ab:'Тони Сопрано впервые приходит к психотерапевту — и рассказывает про уток.',lv:3,ch:['S01E01 · Pilot','33 фразы'],ep:SC4[3].eps.map((e,j)=>[`S01E01 · часть ${j+1} · ${e[1]}`,e[0],IMG.bd_sopranos]),a:'#D23B2E',tag:'<span class="x6-tag s">S01 · E01</span>'},
+ game:{l:'Игра',eb:'ИГРА · ДИАЛОГИ ГЕРОЕВ',img:null,tt:()=>'<b class="x6-gt">DEADLOCK</b>',ab:'Венатор спускается в канализацию — и встречает Крысиного короля. Настоящие реплики из игры.',lv:2,ch:['3 диалога','17 реплик с голосом'],ep:[['Глава 1 · 5 реплик','Охота объявлена',null,'venator'],['Глава 2 · 4 реплики','Торг в туннелях',null,'rat'],['Глава 3 · 6 реплик','Проповедь свинца',null,'venator']],a:'#7FB24A',tag:'<span class="x6-tag g">⚔ Versus</span>'},
+ iv:{l:'Интервью',eb:'ИНТЕРВЬЮ · ТАКЕР КАРЛСОН · 2024',img:'c_durov',tt:()=>'<b class="x6-it">Павел Дуров</b>',ab:'Основатель Telegram о свободе, красных линиях и о том, почему он ушёл из России.',lv:4,ch:['3 куска','24 фразы'],ep:[['Кусок 1 · 1:40','Знакомство',IMG.c_durov],['Кусок 2 · 2:05','Красные линии',IMG.c_durov],['Кусок 3 · 1:52','Каналы',IMG.c_durov]],a:'#E04A3A',tag:'<span class="x6-tag i">● В ЭФИРЕ</span>'}};
+function x6Theme(R,k){const T=X6TH[k],P=$('.x4-p[data-s="scene"]',R);if(!P)return;P.dataset.th=k;P.style.setProperty('--xa',T.a);
+ const cv=$('.xs-cv',P);cv.dataset.th=k;$('.img',cv).style.backgroundImage=T.img?`url(${IMG[T.img]})`:'none';
+ const g0=$('.x6-gem',cv);if(g0)g0.remove();if(k==='game')$('.sh',cv).insertAdjacentHTML('afterend',`<div class="x6-gem">${emb('venator',118)}${emb('rat',118)}</div>`);
+ $('.xs-cv>div:not(.x6-gem)',cv).innerHTML=`<small>${T.eb}</small>${T.tt()}${T.tag}`;$('.xs-ab',P).textContent=T.ab;
+ $('.xs-ch',P).innerHTML=`<span class="w4-lv">${lvTxt(T.lv)}</span>`+T.ch.map(c=>`<span>${c}</span>`).join('');
+ $('.xs-eps',P).innerHTML=T.ep.map((e,j)=>`<div class="xs-ep ${j<1?'done':''} ${j===1?'cur':''}" ${j===1?'data-go="task"':''}>${e[2]?`<i class="img" style="background-image:url(${e[2]})"></i>`:`<i class="img x6-em">${emb(e[3],40)}</i>`}<span><small>${e[0]}</small><b>${e[1]}</b></span>${j<1?`<em>${ic('check')}</em>`:j===1?`<em class="c">${ic('play')}</em>`:''}</div>`).join('');
+ $$('.x6-ths button',R).forEach(b=>b.classList.toggle('on',b.dataset.th===k));
+ $$('.xs-cv>div>*,.xs-ab,.xs-ch,.xs-ep',P).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:j*45}))}
+function x6Mount(R,ctx,o){const XS=V.find(v=>v.id==='xs');XS.mount(R,ctx);R.classList.add('x6');if(o.cls)R.classList.add(o.cls);
+ const P=$('.x4-p[data-s="scene"]',R);if(!P)return;
+ P.insertAdjacentHTML('afterbegin',`<div class="x6-ths">${Object.entries(X6TH).map(([k,t])=>`<button data-th="${k}" class="${k==='film'?'on':''}">${t.l}</button>`).join('')}</div>`);
+ x6Theme(R,'film');
+ $$('.x6-ths button',R).forEach(b=>ctx.on(b,'click',e=>{e.stopPropagation();x6Theme(R,b.dataset.th)}));
+ // сам показывает, что у каждого — своё оформление: на экране «Сцена» перебирает фильм → сериал → игра → интервью
+ let tch=false;ctx.on(R,'pointerdown',()=>{tch=true},{capture:true});
+ const mo=new MutationObserver(()=>{if(tch||!P.classList.contains('on')||P._run)return;P._run=1;let i=0;const K=Object.keys(X6TH);const nx=()=>{if(tch||!ctx.alive||!P.classList.contains('on')){P._run=0;return}i++;if(i<K.length){x6Theme(R,K[i]);ctx.t(nx,1100)}else{x6Theme(R,'film');P._run=0}};ctx.t(nx,900)});
+ mo.observe(P,{attributes:true,attributeFilter:['class']});ctx.add(()=>mo.disconnect())}
+const X6IDEA='Оболочка одна, а у каждого вида контента — своё оформление внутри неё. На экране «Сцена» — переключатель «Фильм · Сериал · Игра · Интервью»: фильм — шрифтом и кадром фильма, золото («Волк»); сериал — код серии «S01 · E01», красный нуар («Сопрано»); игра — гербы героев, их цвета, «⚔ Versus» (Deadlock); интервью — «● В ЭФИРЕ», чистый шрифт, красная лампа (Дуров). Меняется акцент, обложка, подписи эпизодов — каркас тот же.';
+V.push({g:'x6',id:'x6a',n:'Свой стиль',
+ idea:X6IDEA+' Оболочка — тёмно-синяя, как в «Афише».',
+ moves:['на экране «Сцена» сам перебирает фильм → сериал → игру → интервью, пока не тронешь','акцент, обложка и эпизоды меняются каскадом','остальное — как в v5: сдвиг вбок между вкладками, кадр медленно наезжает, золотая волна на верном ответе'],
+ from:'Твой отзыв на v5: «чтобы у фильма был свой дизайн, у серика, игры и прочее — понятное дело (если это не так — исправь); дизайн приложения вроде норм, можешь ещё пару вариков добавить».',
+ minus:'Переключатель «Фильм · Сериал · Игра · Интервью» — только для показа в макете: в приложении оформление берётся само по тому, что открыл.',
+ mount(R,ctx){x6Mount(R,ctx,{})}});
+V.push({g:'x6',id:'x6b',n:'Свой стиль · светлый',
+ idea:X6IDEA+' Оболочка — светлая, «бумага и чернила»: белые карточки с мягкой тенью на кремовом фоне, тёмный текст. Кадры фильмов и гербы остаются «окнами» в тёмное кино — на светлом они выделяются ещё сильнее.',
+ moves:['то же движение, что в «Своём стиле»','карточки лежат с мягкой тенью, при нажатии чуть приседают'],
+ from:'«Можешь ещё пару вариков добавить» — вариант для тех, у кого Telegram в светлой теме (как в макетах Germanize, которые тебе нравились).',
+ minus:'Светлое — менее «кино» вечером. В приложении можно брать светлую или тёмную по теме Telegram.',
+ mount(R,ctx){x6Mount(R,ctx,{cls:'xl'})}});
+V.push({g:'x6',id:'x6c',n:'Свой стиль · без рамок',
+ idea:X6IDEA+' Оболочка — чёрная, без карточек и скруглений: кадры во всю ширину экрана, текст прямо на кадре, разделы — тонкими линиями, крупные заголовки. Как Apple TV или стриминг: главное — картинка.',
+ moves:['то же движение, что в «Своём стиле»','кадры от края до края, строки разделены тонкой линией'],
+ from:'«Можешь ещё пару вариков добавить» — вариант, где контент занимает весь экран, а оболочки почти не видно.',
+ minus:'Без рамок кнопки менее заметны — нажимаемое приходится выделять цветом акцента.',
+ mount(R,ctx){x6Mount(R,ctx,{cls:'xn'})}});
+
 /* ================= каркас страницы ================= */
-const GN={home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v4',k4:'Комикс v4',x4:'Дизайн v4',x5:'Дизайн v5',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-let CTX=null,curV=null,curG='h4';
+const GN={home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+let CTX=null,curV=null,curG='h6';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -3530,9 +4043,9 @@ function notes(v){const L=V.filter(x=>x.g===v.g),i=L.indexOf(v);
  <div class="nav">${L.length>1?'<button data-n="-1">← Пред.</button>':''}<button class="pri" data-n="0">↻ Ещё раз</button>${L.length>1?'<button data-n="1">След. →</button>':''}</div>`;
  $$('#notes [data-n]').forEach(b=>b.onclick=()=>{const d=+b.dataset.n;if(!d)mount(v);else mount(L[(i+d+L.length)%L.length])})}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd9',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd10',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd9'))}catch(e){}
-mount(start||V.find(x=>x.g==='h4'));
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd10'))}catch(e){}
+mount(start||V.find(x=>x.g==='h6'));
 </script>
