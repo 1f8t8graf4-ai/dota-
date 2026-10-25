@@ -1,43 +1,38 @@
-# Реплики героев Deadlock (часть Б) — что здесь лежит
+# Реплики героев Deadlock — что здесь лежит (обновлено по ТЗ-ZAI-реплики-25.10)
 
-Дата: 25.10. Делал ZAI. Задание — `ДЛЯ-ZAI-задание-25.10.md`, часть Б.
+Делал ZAI, 25.10. Основная сдача — `data/games-new.json` + mp3 в `heroes-voice/<hero>/`.
 
-## Формат
+## Главное: data/games-new.json
 
-Один файл на героя: `<slug>.json` (slug в стиле `data/games.json`: rat-king, grey-talon, mo-krill...). Внутри — массив:
+Формат как в `data/games.json` (Клауд проверит переводы, зальёт mp3 в R2 и вольёт):
 
-```json
-[{"en":"Evil stirs in New York...","cat":"select","sub":null,"file":"Venator_select_01.mp3","a":"scenes/games/deadlock/v/venator/venator-evil-stirs.mp3","with":[],"sec":2.4}]
-```
+- `dialogs` — 12 новых диалогов между девяткой героев (пары только из списка ТЗ):
+  {ctx, about, use, hook, hook_why, lines[{s, en, ru, a}], vocab[{w, r}]}
+  — `ru` живой русский, мат как в оригинале; `hook` — залипательность 1–5 (+ `hook_why` — почему);
+  - `a` = будущий ключ R2: `scenes/games/deadlock/v/<hero>-<NN>.mp3` (латиница, без пробелов/апострофов).
+- `heroes` — по 10–15 фраз на каждого из 9 героев: поле `lines` у героя:
+  [{en, ru, tag(подкол|угроза|приветствие|идиома|шутка), use, a}]
+- Дормен отдельно: 12 обычных фраз + **все 160 реплик ульты/портье** (`tag:"ult"`) — это набор для голоса-ведущего.
+- id героев в стиле games.json: venator, rat-king, rem, grey-talon, celeste, doorman, seven, deadman-danny, victor.
 
-- `en` — текст реплики как на вики (переводов НЕТ — это за тобой);
-- `cat` — раздел страницы коротко: `select`, `unselect`, `conversation`, `ability`, `generic`, `ping`, `hero-specific`, `other`, `removed`, `animintro`;
-- `sub` — подраздел страницы как есть (имя способности «Scrap Grena», «Kill Enemy Hero», «Killstreak», «Shopkeeper» и т. п.), null если раздел плоский;
-- `file` — исходное имя mp3 на вики;
-- `a` — ключ в R2: `scenes/games/deadlock/v/<slug>/<slug>-<слова>.mp3` (mono 80 kbps);
-- `with` — герои, которым реплика отвечает (раздел Conversations) или которых называет в тексте; слаги в том же стиле;
-- `sec` — длительность звука.
+Итого: 12 диалогов (66 реплик), 135 обычных фраз, 160 ультовых; mp3 — 357 файлов, 29,5 мин, mono 80 kbps.
 
-## Порядок и статусы
+## Аудио
 
-Порядок обработки: сначала 5 героев с диалогами из games.json, дальше по вики (см. лог запуска). У каждого json число реплик = всё, что удалось скачать с CDN (часть файлов на CDN отсутствует — такие реплики пропущены, число ошибок в отчёте Андрею).
+`heroes-voice/<hero>/<hero>-<NN>.mp3` — пережато из оригиналов вики (mono, ~80 кбит/с).
+Клауду при заливке в R2: файл `heroes-voice/<hero>/<файл>` → ключ `a` из json (имена уже совпадают: `<hero>-<NN>.mp3`).
 
-Заливка в R2: `scenes/games/deadlock/v/<slug>/*.mp3` — статус смотри у Андрея (нужен ключ Cloudflare, старый умер). Проверка: `curl -I https://dota.1f8t8graf4.workers.dev/m/<a>` → 200/206.
+## Про Венатор ↔ Крысиный король
 
-Иконки: `scenes/games/deadlock/icon-<slug>.png` (vertical с вики). У rat-king и venator иконки стояли ещё с 13.9.64 — не трогал.
+На вики обменов между ними больше НЕТ: все три существующих диалога уже в `data/games.json` (13.9.64), новых строк с mp3 на обеих страницах не осталось (проверено по префиксам аудиофайлов Priest_/Ratking_). Новых Ven↔RK — 0.
 
-## Как пересобрать героя
+## Папка data/dd-lines/ (сырьё)
 
-Качалка — `tools/dd_voice_fetch.py` (в этой же ветке):
+Полные дампы реплик (текст+файл+раздел) по 24 героям — источник для будущих подборок (Андрей добавит героев — докачаем). Это НЕ сдача, сдача — games-new.json. Формат дампов описан в `_readme` предыдущей ревизии (git history).
 
-```
-python3 tools/dd_voice_fetch.py "Rat King" --upload          # с нуля + заливка
-python3 tools/dd_voice_fetch.py --list heroes.txt            # пачкой
-python3 tools/dd_voice_fetch.py --upload-only rat-king       # только залить готовое
-```
+## Скрипты (пересобрать/продолжить)
 
-Кэш сырых mp3 — вне репо (`dd-lines-work/raw`), качалка инкрементная. Ключ Cloudflare — файлом вне репо (спросить у Андрея).
-
-## Что НЕ трогать
-
-`js/app.js`, `data/games.json`, `bot/worker.js`, `main` — по заданию. Подключение реплик в приложение — за Клаудом.
+- `tools/dd_voice_fetch.py` — дамп всех реплик героя (текст+mp3, кэш);
+- `tools/dd_dialogs.py` — разбор таблиц разговоров (кто говорит — по кодовому префиксу аудио: Priest=Venator, Ratking=Rat King, Familiar=Rem, Orion=Grey Talon, Unicorn=Celeste, Doorman, Gigawatt=Seven, Deadpack=Danny, Frank=Victor);
+- `tools/dd_pairs.py` — сборка парных обменов;
+- `tools/dd_build_games.py` + `tools/dd_data_*.py` — сборка games-new.json из выборки с переводами.
