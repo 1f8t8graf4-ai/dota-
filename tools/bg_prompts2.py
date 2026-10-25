@@ -16,11 +16,23 @@ PHOTO_WIDE = ('Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm:
 ANIM_HEAD = 'Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: '
 ANIM_TAIL = ('Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. '
              'The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.')
-HERO = ('Animate this exact image of {name}. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; '
-        'any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. '
-        '{act} The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops '
-        'seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, '
-        'no new characters, no text.')
+# 25.10, Андрей: Venator в Veo развернулся лицом в камеру («хочу, чтобы он просто дорисовывал фон, не разворачивая персонажа»).
+# Причины: 1) «the background does not change» — а кадр видео шире арта (арт ~1.15:1, видео 16:9, по краям прозрачное/чёрное),
+# модель всё равно рисует края и заодно «перерисовывает» героя по центру; 2) не сказано, куда смотрит голова — модель ставит фронтально;
+# 3) крупное действие (жуёт сигару + отдача на плечи) = смена позы. Теперь: голова и взгляд — как на арте, герой стоит на том же месте
+# и того же размера, пустые/чёрные края — продолжение фона арта; двигается только то, что УЖЕ нарисовано (без новых птиц, лепестков и т. п.).
+HERO = ('Animate this exact image of {name} from the game Deadlock. Keep the character exactly as drawn: same face, same head angle '
+        'and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. '
+        '{who} never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only '
+        'tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the '
+        'artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges '
+        'of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. {act} Natural blinking and '
+        'slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops '
+        'seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, '
+        'no text; any lettering in the art stays perfectly static.')
+HERO_NEG = ('Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, '
+            'cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, '
+            'new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion.')
 
 def photo(t, tail=PHOTO_TAIL): return t.strip() + ' ' + tail
 # 25.10, Андрей: «с фото ебал — давай без»: один текст сразу в видео (Veo / Flow «Текст в видео»), без шага с картинкой
@@ -205,43 +217,58 @@ for it in ITEMS:
     if it.get('wide') and it.get('photo','').endswith(PHOTO_TAIL): it['photo'] = it['photo'][:-len(PHOTO_TAIL)] + PHOTO_WIDE
     if it.get('photo') and it.get('animate'): it['video'] = video(it['photo'], it['animate'], it.get('wide'))
 
-# ---------- герои Deadlock: картинка — арт с вики (полный рост), промт — только «оживить» ----------
+# ---------- герои Deadlock: картинка — полный арт (ветка zai/hero-arts, heroes-arts/NN-Имя/<id>-full.png), промт — только «оживить» ----------
+# Действие — только то, что уже нарисовано на арте (смотрел все 44 арта 25.10). he/she/it — для слова «{who}».
 HEROES = [
- ('venator', 'Venator', 'He stands in his pose chewing his cigar, thin smoke curling from it. Halfway through he fires the grenade launcher once: a bright muzzle flash and a short puff of smoke from the barrel, his shoulders take the heavy recoil, the rosary swings — then he settles back into exactly the starting pose while thin smoke drifts from the barrel.', True),
- ('rat-king', 'Rat King', 'He sits on his scrap-metal throne with a smug smirk. The rats around him keep moving the whole time in their places — scurrying, twitching whiskers, lashing tails. He slowly turns his head to look over his rats and back to the camera and taps the armrest with his claws; his crown and gold chains glint, the red moon glows behind him.', True),
- ('rem', 'Rem', 'The sleepy cat spirit floats in place. It slowly lifts the teal candle, the flame flickers and grows brighter, then lowers it back while its heavy eyelids close halfway and open again; stars twinkle and clouds drift slowly across the big moon.', True),
- ('grey-talon', 'Grey Talon', 'The old archer slowly raises his bow and half-draws the string, aims for one breath, then eases the string and lowers the bow back to exactly the starting pose; his braided white hair and beard sway in the breeze, leaves drift behind him.', True),
- ('celeste', 'Celeste', 'She twirls her glowing star-tipped wand in one slow circle, a trail of sparkles follows it and glowing tarot cards drift around her; she gives a slow playful wink, and the wand comes back to exactly the starting position; strands of her purple hair sway.', True),
+ ('venator', 'Venator', 'He', 'He keeps his head turned to the right with the same smirk as in the art. The candle-like flame on top of his weapon flickers, the cigar ember glows and a thin wisp of smoke curls up from it, the rosary sways slightly, the gray halo behind him shimmers. Once, halfway through, the grenade launcher gives one short recoil with a bright flash at its muzzle: only his arm takes the kick and returns; his head, gaze and body stay exactly as they are.'),
+ ('rat-king', 'Rat King', 'He', 'He stays seated on his throne, looking exactly where he looks in the art. His whiskers twitch, his long tail sways slowly, his cape stirs, the small rats around the throne scurry in place, warm light flickers over the junk around him.'),
+ ('rem', 'Rem', 'He', 'He hangs from the blue umbrella and sways a little like a slow pendulum, his big white eyes stay wide open, the candle flame in his paw flickers, the small companion beside him flaps its tiny wings, the teal sparks twinkle and clouds drift slowly past the moon.'),
+ ('grey-talon', 'Grey Talon', 'He', 'He keeps his bow lowered exactly as drawn. His white braid and the cloth at his waist sway in the wind, the green spirit owl behind him slowly opens its wings a little and folds them back, leaves drift in the background.'),
+ ('celeste', 'Celeste', 'She', 'The star on her wand twinkles, the glowing blue spirit beside her ripples and drifts in place, strands of her purple hair sway, small sparkles float in the air.'),
+ ('abrams', 'Abrams', 'He', 'He keeps the revolver aimed exactly as drawn, steady. The tails of his long coat and his tie stir, light glints on his glasses and on the revolver, the background shards drift very slowly.'),
+ ('apollo', 'Apollo', 'He', 'He holds his lunging pose with the rapier. The red slash trail around him flows and shimmers along its path, his coat tails flutter, the blade glints.'),
+ ('baba', 'Baba', 'She', 'She stays seated on the green bench holding her teacup; thin steam rises from the cup, her scarf flutters, the pink birds around her flap their wings in place and a few feathers drift down.'),
+ ('bebop', 'Bebop', 'He', 'The robot stands still: the green lights in his eyes blink, small lights on his body glow and fade, the hanging ropes and cables sway slightly, thin steam escapes from a vent.'),
+ ('billy', 'Billy', 'He', 'He holds his pose with the spiked bat; his glowing eyes flicker, the chains and straps on his clothes sway, small sparks drift from the bat.'),
+ ('calico', 'Calico', 'She', 'The sphinx cat on her shoulder twitches its ears and slowly sways its tail, purple lightning flickers along her arm, light glints on her round goggles, the pink circle behind her glows softly.'),
+ ('deadmandanny', 'Dead Man Danny', 'He', 'The orange explosion behind him slowly churns in place with flickering fire, embers and sparks fly, his glowing eyes pulse.'),
+ ('doorman', 'Doorman', 'He', 'He holds his running pose with the raised hand. The tails of his uniform flutter, the golden key swings slightly, light gleams on the brass buttons, the warm yellow light behind him pulses softly.'),
+ ('drifter', 'Drifter', 'He', 'The red glow on his reaching claw-hand pulses, his red eyes glow, his red coat and the dark wisps around him sway.'),
+ ('dynamo', 'Dynamo', 'He', 'Small lights inside his glass dome twinkle, the small object floating above him bobs gently, straps on his body sway slightly.'),
+ ('graves', 'Graves', 'She', 'The green ghost skulls around her drift slowly in place, the green glow pulses, her white hair and coat move slightly.'),
+ ('haze', 'Haze', 'She', 'She is seen from behind and stays seen from behind: she never turns around. Her braids sway, the warm sunset light behind her flickers softly, light glints on her gun.'),
+ ('holliday', 'Holliday', 'She', 'She keeps the revolver aimed exactly as drawn; her scarf and coat flutter in the wind, dust drifts through the air, light glints on the barrel.'),
+ ('infernus', 'Infernus', 'He', 'Flames on his body and arms flicker and lick upward, embers fly around him, the orange glow pulses.'),
+ ('ivy', 'Ivy', 'She', 'Her stone wings flex slightly and settle, her cap and clothes stir, dust drifts down around her, the gun stays still.'),
+ ('kelvin', 'Kelvin', 'He', 'Cold vapor drifts from the muzzle of his ice gun, small snowflakes float around him, the fur of his collar stirs, light glints on the frost.'),
+ ('lady-geist', 'Lady Geist', 'She', 'The green energy in her raised palm swirls and pulses, the fur of her stole stirs, wisps of her pale hair move slightly.'),
+ ('lash', 'Lash', 'He', 'He holds his lunging pose; the strap of his tank top and the cloth at his belt sway, dust drifts in the orange light, the glow on his raised fist pulses.'),
+ ('mcginnis', 'McGinnis', 'She', 'The ends of her red bandana flutter, a small light on her turret blinks, a few sparks fly from the machinery.'),
+ ('mina', 'Mina', 'She', 'The red bats around her flutter in place, the fabric of her red umbrella ripples slightly, her dress and hair sway.'),
+ ('mirage', 'Mirage', 'He', 'He holds his long rifle up exactly as drawn; the hanging bottle at his side swings slightly, fine sand drifts through the air, his coat stirs.'),
+ ('mo-krill', 'Mo & Krill', 'They', 'The big creature holds its rolling pose; sand puffs drift around it, the heavy chain sways, the warm light flickers; the small rider stays in place on top.'),
+ ('nurseharrow', 'Nurse Harrow', 'She', 'The orange flame ribbon around her flows and flickers along its path, the glowing orange eye on her dress pulses, her apron stirs.'),
+ ('paige', 'Paige', 'She', 'The green magic above the open book swirls, the crystals shimmer, the open pages flutter gently; she keeps holding the books exactly as drawn.'),
+ ('paradox', 'Paradox', 'She', 'The pink hourglass shape on her helmet glows and pulses, the clock shapes behind her turn very slowly, her coat sways.'),
+ ('pocket', 'Pocket', 'He', 'The green glow on the right pulses and flickers, his long scarf and coat sway slightly.'),
+ ('seven', 'Seven', 'He', 'Electric sparks crackle between the coils on top of his dome, the orange light behind him flickers, small arcs jump along his arms.'),
+ ('shiv', 'Shiv', 'He', 'He holds his lunging pose; his coat flutters, light glints along his blade, the red glow pulses.'),
+ ('silver', 'Silver', 'She', 'The wolf behind her breathes slowly, its eyes glow, her long white hair sways, the red moon glows softly.'),
+ ('sinclair', 'Sinclair', 'He', 'The tip of his wand sparkles, the tails of his coat stir, the big moon behind him glows softly.'),
+ ('solomon', 'Solomon', 'He', 'He stays seated behind the chessboard; the halo of light behind his head pulses softly, his scarf stirs, the chess pieces stay exactly where they are and only glint.'),
+ ('victor', 'Victor', 'He', 'Small electric sparks flicker on the device at his chest, his long hair sways slightly, the chains in his hands stay still.'),
+ ('vindicta', 'Vindicta', 'She', 'Her long pale-blue hair flows slowly like water, blue wisps drift around her, her rifle stays still.'),
+ ('violet', 'Violet', 'She', 'The papers around her flutter in place, the pink trail of light flows along its path, her hair and sleeves sway.'),
+ ('viscous', 'Viscous', 'He', 'His green goo body jiggles softly, bubbles rise and pop inside him, the green glow pulses.'),
+ ('vyper', 'Vyper', 'She', 'Her tongue flicks, her tail sways slowly, light glints on her gun.'),
+ ('warden', 'Warden', 'He', 'He stands still; the thick rope across his chest sways slightly, light glints on his helmet badge, the shadows behind him shift softly.'),
+ ('wraith', 'Wraith', 'She', 'The glowing playing card above her hand pulses and spins slowly in place, her coat sways, the purple glow flickers.'),
+ ('yamato', 'Yamato', 'She', 'The fabric of her tall hood stirs, light glints along her sword, the red light behind her pulses softly.'),
 ]
-# черновики Z.ai (tools/dd-prompts.html) — действие одной строкой; перед генерацией переписать полным кругом, как у пяти выше
-DRAFT = {
- 'abrams': 'he cracks his knuckles, cape drifts, ember particles, vampire smirk', 'apollo': 'golden light rays behind him, confident grin, laurel dust',
- 'baba': 'gentle floating fabric, soft mystic glow, slow hover', 'bebop': 'robotic servos whir, antenna light blinks, hook arm swings, friendly eye glow',
- 'billy': 'bat shadow flutters behind, fanged grin, dramatic cape flick', 'calico': 'cat rubs against her leg, ribbon sways, playful paw sparkle',
- 'doorman': 'he slides a golden key across, chandelier light flickers, polished grin', 'drifter': 'cigarette smoke curls, red eyes glow, long coat sways',
- 'dynamo': 'gravity orb hums above his palm, coat flaps, faint equations glow', 'graves': 'lich hand glows violet, ghost wisps curl, silver hair drifts',
- 'haze': 'blades glint, eyes shine, coat sways', 'holliday': 'sheriff badge glints, lasso spins at her side, desert dust drifts',
- 'infernus': 'flames rise from his shoulders, embers swirl, fire crackles', 'ivy': 'stone wings spread slightly, dust falls, kind smile, city lights behind',
- 'kelvin': 'frost sparkles drift, ice crystals grow on his shoulders, frosty breath', 'lady-geist': 'blood-red crystal pulses, surgical glow, elegant gown sways',
- 'lash': 'spectral purple energy crackles around his fists, taunting grin', 'mcginnis': 'spanner spins in her hand, turret light blinks, sparks fly',
- 'mina': 'bat wings flutter behind, candlelight flickers, aristocratic smirk', 'mirage': 'sand spirals around him, golden light, jewels glint',
- 'mo-krill': 'sand puffs as they half-dive underground, helmet light glints', 'paige': 'magic runes circle her hand, book pages flutter, warm glow',
- 'paradox': 'time particles spiral, clock hands blur behind, teal vortex glow', 'pocket': 'suitcase glows green, a single crow feather drifts, hidden face tilts',
- 'seven': 'electric arcs crackle between his fingers, storm glow, hair sparks', 'shiv': 'toxic green drips from his blade, restless fidget',
- 'silver': 'silver bullets spin in her palm, moonlight glints on the revolver', 'sinclair': 'stage-light glow, showman card flourish',
- 'victor': 'steam hisses from armor vents, iron plating glows', 'vindicta': 'crows circle behind her, spirit ravens glow blue, hair floats',
- 'viscous': 'goo body wobbles softly, bubbles pop inside, cheerful bounce', 'vyper': 'venom drips, snake eyes glow, coils shift',
- 'warden': 'mystic flask glows teal, trench coat sways, cold light', 'wraith': 'tarot cards fan out and glow purple',
- 'yamato': 'katana shimmers with power aura, petals drift, sword stance',
-}
-for hid, name, act, ok in HEROES:
-    ITEMS.append(dict(key=f'hero:deadlock:{hid}', kind='hero', game='deadlock', hero=hid, title=name, draft=not ok,
-        art=f'deadlock.wiki → {name} → Gallery: арт в полный рост, без надписей', animate=HERO.format(name=name, act=act)))
-for hid, act in DRAFT.items():
-    name = ' '.join(w.capitalize() for w in hid.replace('-', ' ').split()).replace('Mcginnis', 'McGinnis').replace('Mo Krill', 'Mo & Krill')
-    ITEMS.append(dict(key=f'hero:deadlock:{hid}', kind='hero', game='deadlock', hero=hid, title=name, draft=True, act_draft=act,
-        art=f'deadlock.wiki → {name} → Gallery: арт в полный рост, без надписей',
-        animate=HERO.format(name=name, act='Action: ' + act + '.')))
+for hid, name, who, act in HEROES:
+    ITEMS.append(dict(key=f'hero:deadlock:{hid}', kind='hero', game='deadlock', hero=hid, title=name, draft=False,
+        art=f'полный арт: ветка zai/hero-arts → heroes-arts/…/{hid}-full.png (как в pult.html)',
+        animate=HERO.format(name=name, who=who, act=act), neg=HERO_NEG))
 
 OUT = dict(v=1, updated='2026-10-24',
   how=['Без фото (25.10): поле video — один текст сразу в видео (Flow → «Текст в видео» / Veo, 9:16, 8 с). Поля photo и animate — запасной путь «фото → оживить».',

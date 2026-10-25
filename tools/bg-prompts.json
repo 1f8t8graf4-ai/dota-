@@ -19,7 +19,7 @@
  "video_tail": "Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.",
  "anim_head": "Animate this exact image for 8 seconds. The camera is locked off: no zoom, no pan, no cuts. Only these things move, gently and continuously the whole time: ",
  "anim_tail": "Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.",
- "hero_template": "Animate this exact image of {name}. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. {act} The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text.",
+ "hero_template": "Animate this exact image of {name} from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. {who} never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. {act} Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
  "items": [
   {
    "key": "film:wolf",
@@ -259,8 +259,9 @@
    "hero": "venator",
    "title": "Venator",
    "draft": false,
-   "art": "deadlock.wiki → Venator → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Venator. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. He stands in his pose chewing his cigar, thin smoke curling from it. Halfway through he fires the grenade launcher once: a bright muzzle flash and a short puff of smoke from the barrel, his shoulders take the heavy recoil, the rosary swings — then he settles back into exactly the starting pose while thin smoke drifts from the barrel. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/venator-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Venator from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He keeps his head turned to the right with the same smirk as in the art. The candle-like flame on top of his weapon flickers, the cigar ember glows and a thin wisp of smoke curls up from it, the rosary sways slightly, the gray halo behind him shimmers. Once, halfway through, the grenade launcher gives one short recoil with a bright flash at its muzzle: only his arm takes the kick and returns; his head, gaze and body stay exactly as they are. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:rat-king",
@@ -269,8 +270,9 @@
    "hero": "rat-king",
    "title": "Rat King",
    "draft": false,
-   "art": "deadlock.wiki → Rat King → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Rat King. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. He sits on his scrap-metal throne with a smug smirk. The rats around him keep moving the whole time in their places — scurrying, twitching whiskers, lashing tails. He slowly turns his head to look over his rats and back to the camera and taps the armrest with his claws; his crown and gold chains glint, the red moon glows behind him. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/rat-king-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Rat King from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He stays seated on his throne, looking exactly where he looks in the art. His whiskers twitch, his long tail sways slowly, his cape stirs, the small rats around the throne scurry in place, warm light flickers over the junk around him. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:rem",
@@ -279,8 +281,9 @@
    "hero": "rem",
    "title": "Rem",
    "draft": false,
-   "art": "deadlock.wiki → Rem → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Rem. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. The sleepy cat spirit floats in place. It slowly lifts the teal candle, the flame flickers and grows brighter, then lowers it back while its heavy eyelids close halfway and open again; stars twinkle and clouds drift slowly across the big moon. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/rem-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Rem from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He hangs from the blue umbrella and sways a little like a slow pendulum, his big white eyes stay wide open, the candle flame in his paw flickers, the small companion beside him flaps its tiny wings, the teal sparks twinkle and clouds drift slowly past the moon. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:grey-talon",
@@ -289,8 +292,9 @@
    "hero": "grey-talon",
    "title": "Grey Talon",
    "draft": false,
-   "art": "deadlock.wiki → Grey Talon → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Grey Talon. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. The old archer slowly raises his bow and half-draws the string, aims for one breath, then eases the string and lowers the bow back to exactly the starting pose; his braided white hair and beard sway in the breeze, leaves drift behind him. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/grey-talon-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Grey Talon from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He keeps his bow lowered exactly as drawn. His white braid and the cloth at his waist sway in the wind, the green spirit owl behind him slowly opens its wings a little and folds them back, leaves drift in the background. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:celeste",
@@ -299,8 +303,9 @@
    "hero": "celeste",
    "title": "Celeste",
    "draft": false,
-   "art": "deadlock.wiki → Celeste → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Celeste. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. She twirls her glowing star-tipped wand in one slow circle, a trail of sparkles follows it and glowing tarot cards drift around her; she gives a slow playful wink, and the wand comes back to exactly the starting position; strands of her purple hair sway. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/celeste-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Celeste from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The star on her wand twinkles, the glowing blue spirit beside her ripples and drifts in place, strands of her purple hair sway, small sparkles float in the air. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:abrams",
@@ -308,10 +313,10 @@
    "game": "deadlock",
    "hero": "abrams",
    "title": "Abrams",
-   "draft": true,
-   "act_draft": "he cracks his knuckles, cape drifts, ember particles, vampire smirk",
-   "art": "deadlock.wiki → Abrams → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Abrams. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: he cracks his knuckles, cape drifts, ember particles, vampire smirk. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/abrams-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Abrams from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He keeps the revolver aimed exactly as drawn, steady. The tails of his long coat and his tie stir, light glints on his glasses and on the revolver, the background shards drift very slowly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:apollo",
@@ -319,10 +324,10 @@
    "game": "deadlock",
    "hero": "apollo",
    "title": "Apollo",
-   "draft": true,
-   "act_draft": "golden light rays behind him, confident grin, laurel dust",
-   "art": "deadlock.wiki → Apollo → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Apollo. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: golden light rays behind him, confident grin, laurel dust. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/apollo-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Apollo from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He holds his lunging pose with the rapier. The red slash trail around him flows and shimmers along its path, his coat tails flutter, the blade glints. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:baba",
@@ -330,10 +335,10 @@
    "game": "deadlock",
    "hero": "baba",
    "title": "Baba",
-   "draft": true,
-   "act_draft": "gentle floating fabric, soft mystic glow, slow hover",
-   "art": "deadlock.wiki → Baba → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Baba. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: gentle floating fabric, soft mystic glow, slow hover. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/baba-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Baba from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. She stays seated on the green bench holding her teacup; thin steam rises from the cup, her scarf flutters, the pink birds around her flap their wings in place and a few feathers drift down. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:bebop",
@@ -341,10 +346,10 @@
    "game": "deadlock",
    "hero": "bebop",
    "title": "Bebop",
-   "draft": true,
-   "act_draft": "robotic servos whir, antenna light blinks, hook arm swings, friendly eye glow",
-   "art": "deadlock.wiki → Bebop → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Bebop. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: robotic servos whir, antenna light blinks, hook arm swings, friendly eye glow. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/bebop-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Bebop from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The robot stands still: the green lights in his eyes blink, small lights on his body glow and fade, the hanging ropes and cables sway slightly, thin steam escapes from a vent. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:billy",
@@ -352,10 +357,10 @@
    "game": "deadlock",
    "hero": "billy",
    "title": "Billy",
-   "draft": true,
-   "act_draft": "bat shadow flutters behind, fanged grin, dramatic cape flick",
-   "art": "deadlock.wiki → Billy → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Billy. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: bat shadow flutters behind, fanged grin, dramatic cape flick. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/billy-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Billy from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He holds his pose with the spiked bat; his glowing eyes flicker, the chains and straps on his clothes sway, small sparks drift from the bat. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:calico",
@@ -363,10 +368,21 @@
    "game": "deadlock",
    "hero": "calico",
    "title": "Calico",
-   "draft": true,
-   "act_draft": "cat rubs against her leg, ribbon sways, playful paw sparkle",
-   "art": "deadlock.wiki → Calico → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Calico. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: cat rubs against her leg, ribbon sways, playful paw sparkle. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/calico-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Calico from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The sphinx cat on her shoulder twitches its ears and slowly sways its tail, purple lightning flickers along her arm, light glints on her round goggles, the pink circle behind her glows softly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
+  },
+  {
+   "key": "hero:deadlock:deadmandanny",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "deadmandanny",
+   "title": "Dead Man Danny",
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/deadmandanny-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Dead Man Danny from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The orange explosion behind him slowly churns in place with flickering fire, embers and sparks fly, his glowing eyes pulse. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:doorman",
@@ -374,10 +390,10 @@
    "game": "deadlock",
    "hero": "doorman",
    "title": "Doorman",
-   "draft": true,
-   "act_draft": "he slides a golden key across, chandelier light flickers, polished grin",
-   "art": "deadlock.wiki → Doorman → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Doorman. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: he slides a golden key across, chandelier light flickers, polished grin. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/doorman-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Doorman from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He holds his running pose with the raised hand. The tails of his uniform flutter, the golden key swings slightly, light gleams on the brass buttons, the warm yellow light behind him pulses softly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:drifter",
@@ -385,10 +401,10 @@
    "game": "deadlock",
    "hero": "drifter",
    "title": "Drifter",
-   "draft": true,
-   "act_draft": "cigarette smoke curls, red eyes glow, long coat sways",
-   "art": "deadlock.wiki → Drifter → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Drifter. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: cigarette smoke curls, red eyes glow, long coat sways. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/drifter-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Drifter from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The red glow on his reaching claw-hand pulses, his red eyes glow, his red coat and the dark wisps around him sway. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:dynamo",
@@ -396,10 +412,10 @@
    "game": "deadlock",
    "hero": "dynamo",
    "title": "Dynamo",
-   "draft": true,
-   "act_draft": "gravity orb hums above his palm, coat flaps, faint equations glow",
-   "art": "deadlock.wiki → Dynamo → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Dynamo. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: gravity orb hums above his palm, coat flaps, faint equations glow. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/dynamo-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Dynamo from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. Small lights inside his glass dome twinkle, the small object floating above him bobs gently, straps on his body sway slightly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:graves",
@@ -407,10 +423,10 @@
    "game": "deadlock",
    "hero": "graves",
    "title": "Graves",
-   "draft": true,
-   "act_draft": "lich hand glows violet, ghost wisps curl, silver hair drifts",
-   "art": "deadlock.wiki → Graves → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Graves. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: lich hand glows violet, ghost wisps curl, silver hair drifts. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/graves-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Graves from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The green ghost skulls around her drift slowly in place, the green glow pulses, her white hair and coat move slightly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:haze",
@@ -418,10 +434,10 @@
    "game": "deadlock",
    "hero": "haze",
    "title": "Haze",
-   "draft": true,
-   "act_draft": "blades glint, eyes shine, coat sways",
-   "art": "deadlock.wiki → Haze → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Haze. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: blades glint, eyes shine, coat sways. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/haze-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Haze from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. She is seen from behind and stays seen from behind: she never turns around. Her braids sway, the warm sunset light behind her flickers softly, light glints on her gun. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:holliday",
@@ -429,10 +445,10 @@
    "game": "deadlock",
    "hero": "holliday",
    "title": "Holliday",
-   "draft": true,
-   "act_draft": "sheriff badge glints, lasso spins at her side, desert dust drifts",
-   "art": "deadlock.wiki → Holliday → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Holliday. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: sheriff badge glints, lasso spins at her side, desert dust drifts. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/holliday-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Holliday from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. She keeps the revolver aimed exactly as drawn; her scarf and coat flutter in the wind, dust drifts through the air, light glints on the barrel. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:infernus",
@@ -440,10 +456,10 @@
    "game": "deadlock",
    "hero": "infernus",
    "title": "Infernus",
-   "draft": true,
-   "act_draft": "flames rise from his shoulders, embers swirl, fire crackles",
-   "art": "deadlock.wiki → Infernus → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Infernus. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: flames rise from his shoulders, embers swirl, fire crackles. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/infernus-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Infernus from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. Flames on his body and arms flicker and lick upward, embers fly around him, the orange glow pulses. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:ivy",
@@ -451,10 +467,10 @@
    "game": "deadlock",
    "hero": "ivy",
    "title": "Ivy",
-   "draft": true,
-   "act_draft": "stone wings spread slightly, dust falls, kind smile, city lights behind",
-   "art": "deadlock.wiki → Ivy → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Ivy. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: stone wings spread slightly, dust falls, kind smile, city lights behind. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/ivy-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Ivy from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. Her stone wings flex slightly and settle, her cap and clothes stir, dust drifts down around her, the gun stays still. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:kelvin",
@@ -462,10 +478,10 @@
    "game": "deadlock",
    "hero": "kelvin",
    "title": "Kelvin",
-   "draft": true,
-   "act_draft": "frost sparkles drift, ice crystals grow on his shoulders, frosty breath",
-   "art": "deadlock.wiki → Kelvin → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Kelvin. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: frost sparkles drift, ice crystals grow on his shoulders, frosty breath. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/kelvin-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Kelvin from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. Cold vapor drifts from the muzzle of his ice gun, small snowflakes float around him, the fur of his collar stirs, light glints on the frost. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:lady-geist",
@@ -473,10 +489,10 @@
    "game": "deadlock",
    "hero": "lady-geist",
    "title": "Lady Geist",
-   "draft": true,
-   "act_draft": "blood-red crystal pulses, surgical glow, elegant gown sways",
-   "art": "deadlock.wiki → Lady Geist → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Lady Geist. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: blood-red crystal pulses, surgical glow, elegant gown sways. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/lady-geist-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Lady Geist from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The green energy in her raised palm swirls and pulses, the fur of her stole stirs, wisps of her pale hair move slightly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:lash",
@@ -484,10 +500,10 @@
    "game": "deadlock",
    "hero": "lash",
    "title": "Lash",
-   "draft": true,
-   "act_draft": "spectral purple energy crackles around his fists, taunting grin",
-   "art": "deadlock.wiki → Lash → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Lash. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: spectral purple energy crackles around his fists, taunting grin. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/lash-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Lash from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He holds his lunging pose; the strap of his tank top and the cloth at his belt sway, dust drifts in the orange light, the glow on his raised fist pulses. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:mcginnis",
@@ -495,10 +511,10 @@
    "game": "deadlock",
    "hero": "mcginnis",
    "title": "McGinnis",
-   "draft": true,
-   "act_draft": "spanner spins in her hand, turret light blinks, sparks fly",
-   "art": "deadlock.wiki → McGinnis → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of McGinnis. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: spanner spins in her hand, turret light blinks, sparks fly. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/mcginnis-full.png (как в pult.html)",
+   "animate": "Animate this exact image of McGinnis from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The ends of her red bandana flutter, a small light on her turret blinks, a few sparks fly from the machinery. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:mina",
@@ -506,10 +522,10 @@
    "game": "deadlock",
    "hero": "mina",
    "title": "Mina",
-   "draft": true,
-   "act_draft": "bat wings flutter behind, candlelight flickers, aristocratic smirk",
-   "art": "deadlock.wiki → Mina → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Mina. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: bat wings flutter behind, candlelight flickers, aristocratic smirk. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/mina-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Mina from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The red bats around her flutter in place, the fabric of her red umbrella ripples slightly, her dress and hair sway. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:mirage",
@@ -517,10 +533,10 @@
    "game": "deadlock",
    "hero": "mirage",
    "title": "Mirage",
-   "draft": true,
-   "act_draft": "sand spirals around him, golden light, jewels glint",
-   "art": "deadlock.wiki → Mirage → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Mirage. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: sand spirals around him, golden light, jewels glint. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/mirage-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Mirage from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He holds his long rifle up exactly as drawn; the hanging bottle at his side swings slightly, fine sand drifts through the air, his coat stirs. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:mo-krill",
@@ -528,10 +544,21 @@
    "game": "deadlock",
    "hero": "mo-krill",
    "title": "Mo & Krill",
-   "draft": true,
-   "act_draft": "sand puffs as they half-dive underground, helmet light glints",
-   "art": "deadlock.wiki → Mo & Krill → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Mo & Krill. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: sand puffs as they half-dive underground, helmet light glints. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/mo-krill-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Mo & Krill from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. They never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The big creature holds its rolling pose; sand puffs drift around it, the heavy chain sways, the warm light flickers; the small rider stays in place on top. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
+  },
+  {
+   "key": "hero:deadlock:nurseharrow",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "nurseharrow",
+   "title": "Nurse Harrow",
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/nurseharrow-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Nurse Harrow from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The orange flame ribbon around her flows and flickers along its path, the glowing orange eye on her dress pulses, her apron stirs. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:paige",
@@ -539,10 +566,10 @@
    "game": "deadlock",
    "hero": "paige",
    "title": "Paige",
-   "draft": true,
-   "act_draft": "magic runes circle her hand, book pages flutter, warm glow",
-   "art": "deadlock.wiki → Paige → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Paige. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: magic runes circle her hand, book pages flutter, warm glow. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/paige-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Paige from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The green magic above the open book swirls, the crystals shimmer, the open pages flutter gently; she keeps holding the books exactly as drawn. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:paradox",
@@ -550,10 +577,10 @@
    "game": "deadlock",
    "hero": "paradox",
    "title": "Paradox",
-   "draft": true,
-   "act_draft": "time particles spiral, clock hands blur behind, teal vortex glow",
-   "art": "deadlock.wiki → Paradox → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Paradox. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: time particles spiral, clock hands blur behind, teal vortex glow. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/paradox-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Paradox from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The pink hourglass shape on her helmet glows and pulses, the clock shapes behind her turn very slowly, her coat sways. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:pocket",
@@ -561,10 +588,10 @@
    "game": "deadlock",
    "hero": "pocket",
    "title": "Pocket",
-   "draft": true,
-   "act_draft": "suitcase glows green, a single crow feather drifts, hidden face tilts",
-   "art": "deadlock.wiki → Pocket → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Pocket. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: suitcase glows green, a single crow feather drifts, hidden face tilts. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/pocket-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Pocket from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The green glow on the right pulses and flickers, his long scarf and coat sway slightly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:seven",
@@ -572,10 +599,10 @@
    "game": "deadlock",
    "hero": "seven",
    "title": "Seven",
-   "draft": true,
-   "act_draft": "electric arcs crackle between his fingers, storm glow, hair sparks",
-   "art": "deadlock.wiki → Seven → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Seven. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: electric arcs crackle between his fingers, storm glow, hair sparks. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/seven-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Seven from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. Electric sparks crackle between the coils on top of his dome, the orange light behind him flickers, small arcs jump along his arms. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:shiv",
@@ -583,10 +610,10 @@
    "game": "deadlock",
    "hero": "shiv",
    "title": "Shiv",
-   "draft": true,
-   "act_draft": "toxic green drips from his blade, restless fidget",
-   "art": "deadlock.wiki → Shiv → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Shiv. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: toxic green drips from his blade, restless fidget. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/shiv-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Shiv from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He holds his lunging pose; his coat flutters, light glints along his blade, the red glow pulses. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:silver",
@@ -594,10 +621,10 @@
    "game": "deadlock",
    "hero": "silver",
    "title": "Silver",
-   "draft": true,
-   "act_draft": "silver bullets spin in her palm, moonlight glints on the revolver",
-   "art": "deadlock.wiki → Silver → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Silver. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: silver bullets spin in her palm, moonlight glints on the revolver. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/silver-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Silver from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The wolf behind her breathes slowly, its eyes glow, her long white hair sways, the red moon glows softly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:sinclair",
@@ -605,10 +632,21 @@
    "game": "deadlock",
    "hero": "sinclair",
    "title": "Sinclair",
-   "draft": true,
-   "act_draft": "stage-light glow, showman card flourish",
-   "art": "deadlock.wiki → Sinclair → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Sinclair. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: stage-light glow, showman card flourish. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/sinclair-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Sinclair from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The tip of his wand sparkles, the tails of his coat stir, the big moon behind him glows softly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
+  },
+  {
+   "key": "hero:deadlock:solomon",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "solomon",
+   "title": "Solomon",
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/solomon-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Solomon from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He stays seated behind the chessboard; the halo of light behind his head pulses softly, his scarf stirs, the chess pieces stay exactly where they are and only glint. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:victor",
@@ -616,10 +654,10 @@
    "game": "deadlock",
    "hero": "victor",
    "title": "Victor",
-   "draft": true,
-   "act_draft": "steam hisses from armor vents, iron plating glows",
-   "art": "deadlock.wiki → Victor → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Victor. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: steam hisses from armor vents, iron plating glows. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/victor-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Victor from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. Small electric sparks flicker on the device at his chest, his long hair sways slightly, the chains in his hands stay still. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:vindicta",
@@ -627,10 +665,21 @@
    "game": "deadlock",
    "hero": "vindicta",
    "title": "Vindicta",
-   "draft": true,
-   "act_draft": "crows circle behind her, spirit ravens glow blue, hair floats",
-   "art": "deadlock.wiki → Vindicta → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Vindicta. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: crows circle behind her, spirit ravens glow blue, hair floats. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/vindicta-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Vindicta from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. Her long pale-blue hair flows slowly like water, blue wisps drift around her, her rifle stays still. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
+  },
+  {
+   "key": "hero:deadlock:violet",
+   "kind": "hero",
+   "game": "deadlock",
+   "hero": "violet",
+   "title": "Violet",
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/violet-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Violet from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The papers around her flutter in place, the pink trail of light flows along its path, her hair and sleeves sway. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:viscous",
@@ -638,10 +687,10 @@
    "game": "deadlock",
    "hero": "viscous",
    "title": "Viscous",
-   "draft": true,
-   "act_draft": "goo body wobbles softly, bubbles pop inside, cheerful bounce",
-   "art": "deadlock.wiki → Viscous → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Viscous. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: goo body wobbles softly, bubbles pop inside, cheerful bounce. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/viscous-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Viscous from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. His green goo body jiggles softly, bubbles rise and pop inside him, the green glow pulses. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:vyper",
@@ -649,10 +698,10 @@
    "game": "deadlock",
    "hero": "vyper",
    "title": "Vyper",
-   "draft": true,
-   "act_draft": "venom drips, snake eyes glow, coils shift",
-   "art": "deadlock.wiki → Vyper → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Vyper. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: venom drips, snake eyes glow, coils shift. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/vyper-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Vyper from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. Her tongue flicks, her tail sways slowly, light glints on her gun. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:warden",
@@ -660,10 +709,10 @@
    "game": "deadlock",
    "hero": "warden",
    "title": "Warden",
-   "draft": true,
-   "act_draft": "mystic flask glows teal, trench coat sways, cold light",
-   "art": "deadlock.wiki → Warden → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Warden. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: mystic flask glows teal, trench coat sways, cold light. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/warden-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Warden from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. He never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. He stands still; the thick rope across his chest sways slightly, light glints on his helmet badge, the shadows behind him shift softly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:wraith",
@@ -671,10 +720,10 @@
    "game": "deadlock",
    "hero": "wraith",
    "title": "Wraith",
-   "draft": true,
-   "act_draft": "tarot cards fan out and glow purple",
-   "art": "deadlock.wiki → Wraith → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Wraith. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: tarot cards fan out and glow purple. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/wraith-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Wraith from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The glowing playing card above her hand pulses and spins slowly in place, her coat sways, the purple glow flickers. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   },
   {
    "key": "hero:deadlock:yamato",
@@ -682,10 +731,10 @@
    "game": "deadlock",
    "hero": "yamato",
    "title": "Yamato",
-   "draft": true,
-   "act_draft": "katana shimmers with power aura, petals drift, sword stance",
-   "art": "deadlock.wiki → Yamato → Gallery: арт в полный рост, без надписей",
-   "animate": "Animate this exact image of Yamato. Keep the character 100% identical: same face, clothes, colors, pose and painted art style; any lettering on the image stays perfectly static. Locked camera: no zoom, no pan, no cuts; the background does not change. Action: katana shimmers with power aura, petals drift, sword stance. The motion never stops and never freezes, and it ends in exactly the same pose as the first frame, so the video loops seamlessly; never play the motion backwards. On top: slow breathing and natural blinking. No morphing, no extra limbs, no new characters, no text."
+   "draft": false,
+   "art": "полный арт: ветка zai/hero-arts → heroes-arts/…/yamato-full.png (как в pult.html)",
+   "animate": "Animate this exact image of Yamato from the game Deadlock. Keep the character exactly as drawn: same face, same head angle and gaze direction, same body pose, same position and size in the frame, same clothes, colors and painted art style. She never turns toward the camera, never turns away, never changes pose and does not move across the frame; the head may only tilt a few degrees. The picture is narrower than the video: fill every empty, black, transparent or flat green area around the artwork by extending its own background in the same painted style and colors, as if the artwork simply continues to the edges of the frame; once filled, the background stays in place. Locked camera: no zoom, no pan, no cuts. The fabric of her tall hood stirs, light glints along her sword, the red light behind her pulses softly. Natural blinking and slow breathing. Everything moves slowly and continuously and the last frame is identical to the first, so the video loops seamlessly; never play the motion backwards. No morphing, no new characters, creatures or objects, no extra limbs or fingers, no text; any lettering in the art stays perfectly static.",
+   "neg": "Avoid: turning to the camera, turning the head, front view, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, text, watermark, flicker, glitch, blur, sudden movement, reversed motion."
   }
  ]
 }
