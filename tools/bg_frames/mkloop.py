@@ -1,6 +1,7 @@
 # настоящая петля из эпизода: самый длинный кусок без склеек вокруг t (до 9 с) → loop_bg.py (наплыв хвоста на голову)
 import json, os, subprocess, sys
-D = os.environ.get('BGF', os.getcwd())  # рабочая папка: vid/<сцена>__NN.mp4, сюда же пишутся json, out/, loops/; C = json.load(open(D + '/calm.json'))
+D = os.environ.get('BGF', os.getcwd())  # рабочая папка: vid/<сцена>__NN.mp4, сюда же пишутся json, out/, loops/
+C = json.load(open(D + '/calm.json'))
 LB = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'loop_bg.py')
 def run(name, t, out):
     ts = sorted(w['t'] for w in C[name]['win'])
