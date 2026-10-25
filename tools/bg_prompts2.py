@@ -111,15 +111,19 @@ ITEMS = [
    'bathrobe and a folded newspaper, and a plate with slices of white bread for the ducks. Behind: a wide green lawn, tall old trees and the '
    'big white two-storey house. Light: soft morning sun through the trees. Mood: a calm family morning that feels fragile.'),
   animate=anim('the ducks paddle slowly in a small circle; ripples and sun glints move on the water; the tall trees sway in a light breeze.')),
+ # 25.10, Андрей: «а мб про скачки?» — S04E09: сгорает Пай-О-Май, Тони убивает Ральфа. Сезон — конюшня (пасхалка — обогреватель у сена), кухня Ральфа — «момент» ниже
  dict(key='season:sopranos:S04', kind='season', title='Клан Сопрано', season='S04', shows=['Клан Сопрано', 'Die Sopranos'], wide=1,
-  what='Стрип-клуб у трассы в Нью-Джерси ночью через парковку: низкое здание в розовом неоне, два больших тёмных седана, мокрый асфальт; за ним эстакада и огни заводов.',
-  moves='Розовый неон пульсирует, в мокром асфальте дрожит отражение, мигают красные огни на трубах.',
-  photo=photo('A low roadside strip club in industrial New Jersey at night, seen at eye level across a wet empty parking lot, nobody around. '
-   'The flat brick building glows with pink neon, its signs unreadable. Two big dark 2000s sedans are parked in front. Behind it: a highway '
-   'overpass on concrete pillars and, far away, the lights of factory chimneys and tanks. Light: pink neon and orange street lamps. '
-   'Mood: sickly pink and orange; grief, guilt and dirty money.'),
-  animate=anim('the pink neon pulses slowly; its reflection shimmers in the puddles on the parking lot; the small red lights on the far '
-   'chimneys blink. No rain falls.')),
+  what='Конюшня Пай-О-Май ночью: гнедая скаковая кобыла в деревянном стойле, лампа над дверцей, тюки сена; в углу у сена светится старый электрообогреватель; на гвозде попона и уздечка.',
+  moves='Лошадь дышит, прядёт ушами и машет хвостом, в луче лампы плавает пыль от сена, спирали обогревателя мерцают.',
+  note='Обогреватель — намёк на пожар, огня в кадре нет. Лошадь вышла кривой — пусть просто стоит и дышит.',
+  photo=photo('A small old wooden horse barn in the New Jersey countryside at night, nobody around, seen at eye level down the aisle. '
+   'In the foreground stall, sharp: a beautiful bay racehorse mare with a white blaze, standing calmly with her head over the half-door. '
+   'A single bulb in a metal cage hangs above the stall door. Stacked hay bales along the wooden wall, and in the corner next to the hay '
+   'an old electric space heater with glowing orange coils. A horse blanket and a bridle hang on nails. Behind, out of focus: the dark '
+   'aisle and an open barn door with the night outside. Light: the warm bulb and the orange glow of the heater. Mood: warm and quiet, '
+   'loved and fragile, as if something bad will happen tonight.'),
+  animate=anim('the mare breathes slowly, flicks one ear and swishes her tail; fine hay dust drifts slowly in the light of the bulb; '
+   'the orange coils of the heater shimmer. Nothing catches fire.')),
  dict(key='season:sopranos:S06', kind='season', title='Клан Сопрано', season='S06', shows=['Клан Сопрано', 'Die Sopranos'], wide=1,
   what='Кабинка закусочной ночью: на столе корзинка луковых колец и настольный музыкальный автомат, за ней стойка, пустые табуреты и стеклянная дверь с колокольчиком.',
   moves='Огоньки автомата мигают, над кофе вьётся пар, за дверью мерцает красный неон.',
@@ -183,6 +187,18 @@ ITEMS = [
    'ring light and pink-purple neon. Mood: clinical white and hot pink; obsession with the mirror.'),
   animate=anim('the ice cubes slowly melt and droplets slide down the glass bowl; the palm trees outside the small window sway; the '
    'pink-purple neon outside pulses softly.')),
+ # ---------- моменты: культовые кадры не за прохождение (как выдавать — решает Андрей) ----------
+ dict(key='moment:sopranos:ralph-kitchen', kind='moment', title='Клан Сопрано · кухня Ральфа', season='S04', shows=['Клан Сопрано', 'Die Sopranos'], wide=1,
+  what='Кухня Ральфа ночью сразу после драки: опрокинутый стул, на кафеле сковородка и жёлтый баллончик от тараканов, рядом лежит парик; на плите кастрюля, из неё идёт пар.',
+  moves='Пар из кастрюли, капает кран, секундная стрелка часов на стене идёт.',
+  note='Тони брызгает Ральфу в глаза средством от насекомых, у Ральфа слетает парик. Людей и крови в кадре нет. Veo откажет из-за насилия — убрать парик и баллончик.',
+  photo=photo('A suburban New Jersey kitchen in 2002 at night, right after a fight, nobody there, seen at eye level from the doorway. '
+   'On the beige tile floor, sharp: a kitchen chair knocked over on its side, a frying pan upside down, a yellow spray can of bug spray with '
+   'no label, and a man\'s dark hairpiece lying on the tiles. On the stove behind: a pot of pasta sauce simmering with a little steam. '
+   'A round clock on the wall, a dripping faucet over the sink, cabinets of light wood. Light: the cold ceiling light of the kitchen and '
+   'the dark window. Mood: sudden silence after something terrible; ordinary home, wrong at once.'),
+  animate=anim('a thin wisp of steam rises from the pot on the stove; a drop of water falls from the faucet now and then; the second hand '
+   'of the wall clock ticks around. The chair, the pan, the can and the hairpiece do not move.')),
 ]
 
 for it in ITEMS:
