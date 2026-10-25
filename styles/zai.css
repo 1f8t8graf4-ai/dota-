@@ -212,6 +212,8 @@ body:not(#_) .sc-sheetwrap .kv-sheet>b,body:not(#_) .sc-sheetwrap .kv-sheet .sc-
 body.dvx-on{overflow:hidden}
 body.dvx-on .tabbar{display:none!important}
 body.dvx-on .toast{z-index:1300}
+/* 25.10: «Банк 🎟 50» в шторке дуэли и Versus — одной строкой (общее .sc-sheet b{display:block;font-size:17px} разносило цифру на свою строку) */
+body:not(#_) .sc-sheet .kv-bank-note b{display:inline;font-size:inherit;margin:0}
 .dvx-in{position:absolute;inset:0;margin:0 auto;max-width:1120px;display:flex;flex-direction:column;padding:max(8px,var(--st,0px),env(safe-area-inset-top,0px)) 0 max(10px,env(safe-area-inset-bottom,0px))}
 /* верх: ✕, две полоски здоровья, посередине раунд или банк */
 .dvx-top{display:grid;grid-template-columns:40px minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;padding:0 12px;min-height:50px;position:relative;z-index:6}
