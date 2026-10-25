@@ -1032,7 +1032,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.74';
+const APP_V='13.9.75';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -4967,7 +4967,7 @@ function ddxOpen(h,d){ddxClose(true);
     <div class="ddx-sub" id="ddxSub"><span class="ddx-sw" id="ddxSw"></span><p class="ddx-ru" id="ddxRu"></p><small class="ddx-hint" id="ddxHint">нажми на экран — дальше · на фразу — ещё раз</small></div>
     <div class="ddx-end" id="ddxEnd" hidden></div></div>`;
   document.body.appendChild(w);document.body.classList.add('ddx-on');
-  w.querySelectorAll('video').forEach(v=>{v.addEventListener('loadedmetadata',ddxFit);const p=v.play();if(p&&p.catch)p.catch(()=>{});});
+  w.querySelectorAll('video').forEach(v=>{v.addEventListener('loadedmetadata',ddxFit);vidKeep(v);});
   ddxFit();setTimeout(ddxFit,60);
   $('#ddxX').onclick=e=>{e.stopPropagation();sfx('tap');ddxClose();};
   $('#ddxStage').onclick=e=>{const b=e.target.closest('.ddx-b');if(b){e.stopPropagation();ddxSel(+b.dataset.k);return;}ddxNext();};
@@ -5050,24 +5050,18 @@ function dvMakeQs(d,hs,o){o=o||{};const L=(d.lines||[]).filter(l=>l&&l.en),voc=(
       const e=sfxN(w,cw),f=pre(w,cw),d=lev(w,cw);if(d>Math.max(2,Math.ceil(L*.5))||!(e>=2||f>=2||(f>=1&&d<=2)))return null;
       return {w,s:2*Math.min(e,4)+1.5*Math.min(f,3)-d-.5*Math.abs(w.length-L)+(p&&q?1:0)};}).filter(Boolean).sort((a,b)=>b.s-a.s);
     return shuffle(C.slice(0,3)).slice(0,2).map(x=>x.w);};
-  // 13.9.73 (П12): «Выбери перевод» — реплика с голосом, 3 перевода: верный + переводы других реплик похожей длины (сначала этого же диалога). ru в вопросе пустой — старый клиент не покажет ответ в пузыре
-  const trQ=l=>{if(!l||!l.ru||!l.a)return null;const right=String(l.ru).trim(),n=right.length,st=new Set(ruStems(right)),wr=[];
-    const pool=[...shuffle(L.filter(x=>x.en!==l.en)),...shuffle(oth)].filter(x=>x&&x.ru).sort((a,b)=>(L.includes(b)?1:0)-(L.includes(a)?1:0)||Math.abs(String(a.ru).length-n)-Math.abs(String(b.ru).length-n));
-    for(const x of pool){if(wr.length>=2)break;const r=String(x.ru).trim();if(!r||r.toLowerCase()===right.toLowerCase()||wr.some(y=>y.toLowerCase()===r.toLowerCase()))continue;const rs2=ruStems(r);if(rs2.length&&rs2.filter(s=>st.has(s)).length>=Math.ceil(rs2.length/2))continue;wr.push(r);}
-    return wr.length>=2?lineQ('tr',l,{ru:'',tru:right,right,opts:shuffle([right,...wr])}):null;};
+  // 13.9.75: «Выбери перевод» (13.9.73) убран — Андрей: «хуйня какая-то, не надо». Второй раунд снова всегда «Что значит?»; показ вопроса tr остался — для комнат, созданных 13.9.73–74
   // 1 — «Собери»: реплика с голосом, лучше 4–7 слов (случайная — в реванше другая)
   let q1=null;const bl=shuffle(L.filter(l=>l.a&&nW(l.en)>=4&&nW(l.en)<=SC_MAXB))[0]||shuffle(L.filter(l=>l.a&&nW(l.en)>=3&&nW(l.en)<=SC_MAXB))[0];
   if(bl){q1=lineQ('build',bl,dvTk(bl.en));used.add(bl.en);}
   else for(const v of shuffle(voc)){const n=scToks(String(v.w)).length;if(n<2||n>5)continue;const f=find(v.w);if(!f)continue;
     q1=lineQ('build',f.l,Object.assign(dvTk(f.x),{ex:{pre:f.l.en.slice(0,f.i),post:f.l.en.slice(f.i+f.x.length),ru:rs(v)}}));used.add(f.l.en);used.add(String(v.w).toLowerCase());break;}
   // 2 — «Что значит?»: чужие значения сначала из этого же диалога; значения того же слова из других диалогов — не варианты
-  let q2=null;const lw=v=>String(v.w).toLowerCase().trim(),trL=()=>shuffle(L.filter(l=>l.a&&l.ru&&!used.has(l.en)&&nW(l.en)>=3)).concat(shuffle(L.filter(l=>l.a&&l.ru&&!used.has(l.en))));
-  if(o.tr)for(const l of trL()){const q=trQ(l);if(q){q2=q;used.add(l.en);break;}}   // 13.9.73: через раз — «Выбери перевод» вместо «Что значит?»
+  let q2=null;const lw=v=>String(v.w).toLowerCase().trim();
   const mv=shuffle(voc.filter(v=>!used.has(lw(v)))).map(v=>({v,f:find(v.w)})).sort((a,b)=>(b.f?1:0)-(a.f?1:0))[0];
   if(mv&&!q2){const right=rs(mv.v),st=new Set(ruStems(right)),wr=[],pool=[...shuffle(voc),...shuffle(gmHeroesAll().flatMap(h=>(h.dialogs||[]).flatMap(x=>x.vocab||[])).filter(v=>v&&v.w&&v.r&&!voc.includes(v)))];
     for(const v of pool){if(wr.length>=2)break;if(lw(v)===lw(mv.v))continue;const r=rs(v);if(!r||r.toLowerCase()===right.toLowerCase()||/[;()\[\]]/.test(r)||ruStems(r).some(s=>st.has(s))||wr.some(x=>x.toLowerCase()===r.toLowerCase()))continue;wr.push(r);}
     if(wr.length>=2){const f=mv.f;q2=Object.assign(f?lineQ('mean',f.l,{}):{t:'mean',s:'',a:'',en:'',ru:''},{w:String(mv.v.w),right,opts:shuffle([right,...wr])});used.add(lw(mv.v));if(f)used.add(f.l.en);}}
-  if(!q2)for(const l of trL()){const q=trQ(l);if(q){q2=q;used.add(l.en);break;}}   // нет лексики — перевод
   // 3 — «Что он сказал?»: варианты — та же реплика, но одно слово подменено похожим словом из реплик героев (та же длина и окончание) — надо расслышать;
   // не вышло — подмена как в «Что прозвучало?» у сцен, потом другие реплики похожей длины
   const hearQ=(l,strict)=>{const ws=String(l.en).split(/[^A-Za-z']+/).filter(Boolean),inL=new Set(ws.map(w=>w.toLowerCase())),re=w=>new RegExp('(^|[^A-Za-z\'])'+w+'(?=[^A-Za-z\']|$)');
@@ -5100,8 +5094,8 @@ function dvSheet(pre){pre=pre||{};const D=dvDialogs();if(!D.length){toast('По�
   draw();w.onclick=async e=>{const b=e.target.closest('button');if(e.target===w||(b&&b.hasAttribute('data-close'))){w.remove();return;}if(!b||b.disabled)return;sfx('tap');
     if(b.dataset.side){side=+b.dataset.side;draw();return;}if(b.dataset.di){const was=[D[di].A.name,D[di].B.name][side];di=+b.dataset.di;const k=[D[di].A.name,D[di].B.name].indexOf(was);side=k>=0?k:0;draw();return;}if(b.dataset.b){bet=+b.dataset.b;draw();return;}
     if(b.id==='dvGo'){dvUnlock();b.disabled=true;b.textContent='Создаю комнату…';const x=D[di],hs=[x.A,x.B],me=hs[side],fo=hs[1-side];
-      try{const qs=dvMakeQs(x.d,[me.name,fo.name],{tr:((store.dvQn||0)%2)===1});const r=await kvNet({a:'create',fx:shopUse('st'),bg:profBgKey(),pf:myPub(),room:{sid:`dd:deadlock:${x.h.id}:${x.i}`,ep:0,mode:'race',bet,qs}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
-        w.remove();store.dvPlay=Object.assign({},store.dvPlay,{[dvK(x)]:dvN(x)+1});store.dvQn=(store.dvQn||0)+1;save();KV={code:r.v.code,role:'A',room:r.v,k:0,t0:0,dd:true};ev('dv_new','dd:'+x.h.id);dvShare();dvLobby();kvPoll();}catch(z){kvErr();b.disabled=false;draw();}}};
+      try{const qs=dvMakeQs(x.d,[me.name,fo.name]);const r=await kvNet({a:'create',fx:shopUse('st'),bg:profBgKey(),pf:myPub(),room:{sid:`dd:deadlock:${x.h.id}:${x.i}`,ep:0,mode:'race',bet,qs}});if(!r.ok){kvErr(r);b.disabled=false;draw();return;}
+        w.remove();store.dvPlay=Object.assign({},store.dvPlay,{[dvK(x)]:dvN(x)+1});save();KV={code:r.v.code,role:'A',room:r.v,k:0,t0:0,dd:true};ev('dv_new','dd:'+x.h.id);dvShare();dvLobby();kvPoll();}catch(z){kvErr();b.disabled=false;draw();}}};
   document.body.appendChild(w);}
 function dvShare(){const R=KV.room,{me,fo}=dvMe();shareLink(kvLink(),`Го в Versus по Deadlock: ${me.name} против ${fo.name} — кто лучше понимает английский? «Языки по кино»${R.bet?`, ставка ${R.bet} билетов`:''}. Комната ${KV.code}`);}
 // окно боя
@@ -5114,9 +5108,15 @@ function dvPort(h,side,who){return `<div class="dvx-p ${side}" data-side="${side
 function dvFit(){$$('#dvxStage .dvx-pi video').forEach(v=>{const r=v.getBoundingClientRect();if(!r.width||!r.height)return;   // как ddxFit: лицо героя (h.fx) — в кадре при любом размере окна
   const vw=v.videoWidth||1280,vh=v.videoHeight||720,s=Math.max(r.width/vw,r.height/vh),w=Math.min(1,r.width/(vw*s)),f=+v.dataset.fx||0.75;
   const x=w>=1?50:Math.max(0,Math.min(100,(f-0.62*w)/(1-w)*100));v.style.objectPosition=x.toFixed(1)+'% 50%';});}   // 13.9.70: лицо на 62 % окна (у левого, отражённого, — на 38 %): ближе к краю экрана, а не к шву посередине
+// 13.9.75: ролики героев на арене не стоят. Андрей: «ролик Венатора по кд на паузу ставится» — в коде их никто не останавливает (звука в роликах нет),
+// это iPhone / Telegram ставит немые видео на паузу (голос реплики, сворачивание, экономия энергии). Встал — запускаем снова; закрыли окно (нет src или не в DOM) — нет
+function vidKeep(v){if(!v||v._keep)return;v._keep=1;v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;v.setAttribute('playsinline','');
+  const go=()=>{if(!v.isConnected||!v.getAttribute('src')||!v.paused||document.hidden)return;const p=v.play();if(p&&p.catch)p.catch(()=>{});};
+  v.addEventListener('pause',()=>setTimeout(go,150));v.addEventListener('ended',()=>{try{v.currentTime=0;}catch(e){}go();});v.addEventListener('stalled',()=>setTimeout(go,400));
+  const t=setInterval(()=>{if(!v.isConnected){clearInterval(t);return;}go();},1500);go();}
 function dvStage(){const st=$('#dvxStage');if(!st||!KV)return;const {me,fo}=dvMe(),foN=(KV.room[kvFoe()]||{}).n||'Друг',key=me.name+'|'+fo.name+'|'+foN;if(st.dataset.k===key)return;st.dataset.k=key;
   st.innerHTML=dvPort(me,'lf','Ты · ур. '+hxLv(hxXP(me)))+dvPort(fo,'rt',foN)+'<div class="dvx-bub" id="dvxBub"></div>';   // 13.9.73: уровень своего героя
-  st.querySelectorAll('video').forEach(v=>{v.addEventListener('loadedmetadata',dvFit);const p=v.play();if(p&&p.catch)p.catch(()=>{});});dvFit();setTimeout(dvFit,60);}
+  st.querySelectorAll('video').forEach(v=>{v.addEventListener('loadedmetadata',dvFit);vidKeep(v);});dvFit();setTimeout(dvFit,60);}
 function dvTop(){const t=$('#dvxTop');if(!t||!KV)return;const R=KV.room,me=R[KV.role]||{ans:{}},fo=R[kvFoe()]||{n:'Друг',ans:{}},n=R.qs.length,HP=n*DV_HP;
   if(!t.firstChild){t.innerHTML=`<button class="dvx-x" id="dvxX" aria-label="Выйти">${ui('close')}</button><div class="dvx-hp lf"><b id="dvNmL"></b><i><em id="dvHpL"></em></i><span id="dvHpLn"></span></div><div class="dvx-mid" id="dvxMid"></div><div class="dvx-hp rt"><b id="dvNmR"></b><i><em id="dvHpR"></em></i><span id="dvHpRn"></span></div>`;
     $('#dvxX').onclick=e=>{e.stopPropagation();sfx('tap');dvBack();};}

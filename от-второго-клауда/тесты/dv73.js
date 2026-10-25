@@ -1,10 +1,10 @@
-// 13.9.73 (П12): Versus — «Выбери перевод» через раз, варианты «на слух» похожи по звучанию, герой качается, реванш на другом диалоге.
+// 13.9.73 (П12) + 13.9.75: Versus — второй раунд всегда «Что значит?» («Выбери перевод» убран — Андрей: «не надо»), «на слух» — похожее по звучанию слово, герой качается, реванш на другом диалоге, ролики героев не встают.
 // node dv73.js ph|pc (стенд воркера stand2.mjs, порт 8788)
-// 1) вопросы: {tr:true} — второй раунд «Выбери перевод» (3 перевода, верный один, ru в вопросе пустой — старый клиент не покажет ответ);
-//    {tr:false} — «Что значит?»; «на слух» — подмена похожим на звук словом, служебные слова не трогаем, «priest» → не «home».
-// 2) бой: комната с переводом (store.dvQn нечётный), у друга — тот же вопрос, пузырь — английская реплика, варианты по-русски, разбор с переводом.
+// 1) вопросы: всегда «собери · что значит · на слух», {tr:true} игнорируется; «на слух» — подмена похожим на звук словом, служебные слова не трогаем, «priest» → не «home».
+//    (старые комнаты 13.9.73–74 с раундом tr приложение по-прежнему показывает).
+// 2) бой: у друга те же вопросы; ролик героя поставили на паузу — сам играет снова.
 // 3) итог: опыт героя (10 за верный, победа +20), «ур. N», «новый уровень», у друга диалог тоже «сыгран», опыт сливается по максимуму.
-// 4) реванш: шторка на другом диалоге (тот же герой и ставка), подпись «реванш — другой диалог», следующий бой — «Что значит?», «Ты · ур. 2» на арене.
+// 4) реванш: шторка на другом диалоге (тот же герой и ставка), подпись «реванш — другой диалог», «Ты · ур. 2» на арене.
 const {open,initData}=require('./st');const {chromium}=require('playwright');const fs=require('fs');
 const dev=process.argv[2]||'ph';let fails=0;
 const ok=(n,c,d)=>{if(!c)fails++;console.log(c?'PASS':'FAIL',n,d===undefined?'':typeof d==='string'?d:JSON.stringify(d));};
@@ -14,20 +14,18 @@ const vp=dev==='pc'?{width:1440,height:900}:{width:390,height:844};
 if(!fs.existsSync(__dirname+'/shots'))fs.mkdirSync(__dirname+'/shots');
 (async()=>{const b=await chromium.launch({args:['--autoplay-policy=no-user-gesture-required']});
   const mk=(uid,name,extra)=>open({browser:b,worker:true,uid,name,initData:initData(uid,name),platform:dev==='pc'?'tdesktop':'ios',ctx:{viewport:vp},wait:2300,init:seed,initArg:[Object.assign({},base,extra||{})]});
-  const A=await mk(311,'Аня',{dvQn:1}),B=await mk(322,'Боря');const errs=[];[A,B].forEach(P=>P.page.on('pageerror',e=>errs.push(String(e))));
+  const A=await mk(311,'Аня',{}),B=await mk(322,'Боря');const errs=[];[A,B].forEach(P=>P.page.on('pageerror',e=>errs.push(String(e))));
   const shot=async(P,n)=>{await P.waitForTimeout(300);await P.screenshot({path:`${__dirname}/shots/dv73-${dev}-${n}.png`});};
   // 1. вопросы
   let r=await A.page.evaluate(()=>{const D=dvDialogs(),out={tr:[],mean:[],hear:[]};
     D.forEach(x=>{for(let n=0;n<6;n++){const a=dvMakeQs(x.d,[x.A.name,x.B.name],{tr:true}),m=dvMakeQs(x.d,[x.A.name,x.B.name],{tr:false});
-      out.tr.push(a.map(q=>q.t).join()+'|'+JSON.stringify({opts:a[1].opts,right:a[1].right,ru:a[1].ru,tru:a[1].tru,a:!!a[1].a,cy:a[1].opts.every(o=>/[а-яё]/i.test(o))}));
+      out.tr.push(a.map(q=>q.t).join());
       out.mean.push(m.map(q=>q.t).join());
       [a[2],m[2]].forEach(q=>{if(q&&q.t==='hear')out.hear.push({right:q.right,opts:q.opts});});}});
     return out;});
-  const tr=r.tr.map(s=>{const i=s.indexOf('|');return {ts:s.slice(0,i),q:JSON.parse(s.slice(i+1))};});
-  ok('{tr:true}: второй раунд — «Выбери перевод» (собери · перевод · на слух)',tr.every(x=>x.ts==='build,tr,hear'),[...new Set(tr.map(x=>x.ts))]);
-  ok('«Выбери перевод»: 3 разных перевода, верный один, по-русски, реплика с голосом',tr.every(x=>x.q.opts.length===3&&new Set(x.q.opts).size===3&&x.q.opts.filter(o=>o===x.q.right).length===1&&x.q.cy&&x.q.a),tr.slice(0,2).map(x=>x.q.opts));
-  ok('в вопросе ru пустой (старый клиент не покажет ответ в пузыре), перевод — в tru',tr.every(x=>x.q.ru===''&&x.q.tru===x.q.right));
-  ok('{tr:false}: второй раунд — «Что значит?»',r.mean.every(t=>t==='build,mean,hear'),[...new Set(r.mean)]);
+  ok('всегда «собери · что значит · на слух», {tr:true} больше не даёт «Выбери перевод»',[...r.tr,...r.mean].every(t=>t==='build,mean,hear'),[...new Set([...r.tr,...r.mean])]);
+  ok('«Выбери перевод» в коде не собирается (нет trQ)',await A.page.evaluate(()=>!/trQ/.test(dvMakeQs.toString())));
+  const tr=[];   // раундов «Выбери перевод» больше нет
   // на слух: неверный вариант = та же реплика, одно слово заменено похожим на звук
   const FN=new Set('from with into onto about after before until upon than that this these those what when where which while whose without within the a an to of and or in on at for is are was were be it i you he she we they me my your his her our their some any all very'.split(' '));
   const lev=(a,b)=>{const m=a.length,n=b.length;let p=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c;}return p[n];};
@@ -52,13 +50,16 @@ if(!fs.existsSync(__dirname+'/shots'))fs.mkdirSync(__dirname+'/shots');
   ok('шторка: у героев — «ур. 1»',r.sm.length===2&&r.sm.every(t=>/ур\. 1/.test(t)),r);
   const meHero=await A.page.evaluate(()=>document.querySelector('.dv-sides button.on b').textContent);
   await A.page.click('#dvGo');await A.page.waitForTimeout(1300);
-  r=await A.page.evaluate(()=>({code:KV&&KV.code,ts:KV&&KV.room.qs.map(q=>q.t),sid:KV&&KV.room.sid,qn:store.dvQn}));
-  ok('комната: собери · выбери перевод · на слух (store.dvQn был нечётный), счётчик +1',r.ts&&r.ts.join()==='build,tr,hear'&&r.qn===2,r);
+  r=await A.page.evaluate(()=>({code:KV&&KV.code,ts:KV&&KV.room.qs.map(q=>q.t),sid:KV&&KV.room.sid,}));
+  ok('первый бой: собери · что значит · на слух',r.ts&&r.ts.join()==='build,mean,hear',r);
   const code=r.code,key=(/^dd:deadlock:([\w-]+:\d+)/.exec(r.sid)||[])[1];
   await B.page.evaluate(c=>kvJoin(c),code);await B.page.waitForTimeout(1500);await B.page.click('#dvIn');
   await Promise.all([A.page.waitForSelector('#dvxPan .dvx-ask',{timeout:9000}),B.page.waitForSelector('#dvxPan .dvx-ask',{timeout:9000})]);
+  // 13.9.75: ролик героя на арене встал (iPhone ставит немые видео на паузу) — сам запускается снова
+  r=await A.page.evaluate(async()=>{const V=[...document.querySelectorAll('#dvxStage video')];V.forEach(v=>v.pause());const was=V.map(v=>v.paused);await new Promise(r=>setTimeout(r,700));return {n:V.length,was,now:V.map(v=>v.paused),keep:V.map(v=>!!v._keep&&v.muted)};});
+  ok('ролик героя поставили на паузу — через миг снова играет (оба портрета)',r.n===2&&r.was.every(Boolean)&&r.now.every(x=>!x)&&r.keep.every(Boolean),r);
   r=await B.page.evaluate(k=>({qs:KV.room.qs.map(q=>q.t).join(),dp:(store.dvPlay||{})[k]||0}),key);
-  ok('у друга те же вопросы, его диалог тоже «сыгран» (для реванша)',r.qs==='build,tr,hear'&&r.dp===1,r);
+  ok('у друга те же вопросы, его диалог тоже «сыгран» (для реванша)',r.qs==='build,mean,hear'&&r.dp===1,r);
   async function play(P,plan,tag){const log=[];for(let k=0;k<3;k++){await P.waitForFunction(kk=>KV&&KV.k===kk&&document.querySelector(`#dvxPan[data-r="${kk}"] .dvx-ask`),k,{timeout:9000});
       const t=await P.evaluate(()=>KV.room.qs[KV.k].t),right=plan[k];
       if(t==='build'){const q=await P.evaluate(()=>KV.room.qs[KV.k]);const order=right?q.tk:[...q.tk].reverse();const used=new Set();
@@ -72,13 +73,13 @@ if(!fs.existsSync(__dirname+'/shots'))fs.mkdirSync(__dirname+'/shots');
       log.push(t+':'+(await P.evaluate(()=>((document.querySelector('#dvFb b')||{}).textContent||''))));}
     return log;}
   const [la,lb]=await Promise.all([play(A.page,[true,true,true],'A'),play(B.page,[true,false,true],'B')]);
-  ok('Аня — 3 из 3, Боря — ошибка в переводе',la.every(x=>/Верно/.test(x))&&/Мимо/.test(lb[1]),{la,lb});
+  ok('Аня — 3 из 3, Боря — ошибка во втором раунде',la.every(x=>/Верно/.test(x))&&/Мимо/.test(lb[1]),{la,lb});
   await Promise.all([A.page.waitForSelector('#dvx .dvx-end',{timeout:20000}),B.page.waitForSelector('#dvx .dvx-end',{timeout:20000})]);await A.page.waitForTimeout(500);
   // 3. опыт героя
   const hidA=await A.page.evaluate(n=>(gmHeroesAll().find(h=>h.name===n)||{}).id,meHero);
   r=await A.page.evaluate(id=>({xp:(store.heroXP||{})['deadlock:'+id],box:(document.querySelector('.dvx-end .dvx-xp')||{}).textContent||'',up:!!document.querySelector('.dvx-end .dvx-xp.up'),tbl:[...document.querySelectorAll('.dvx-end .kv-tbl tbody tr td:first-child')].map(x=>x.textContent)}),hidA);
   ok('Аня: +50 опыта (3 верных + победа), ур. 2, «новый уровень»',r.xp===50&&/\+50 опыта/.test(r.box)&&/ур\. 2/.test(r.box)&&/новый уровень/.test(r.box)&&r.up,r);
-  ok('таблица итога: раунд «Перевод»',r.tbl.join()==='Собери,Перевод,На слух',r.tbl);
+  ok('таблица итога: Собери · Что значит · На слух',r.tbl.join()==='Собери,Что значит,На слух',r.tbl);
   r=await B.page.evaluate(()=>{const id=(dvMe().me||{}).id;return {xp:(store.heroXP||{})['deadlock:'+id],box:(document.querySelector('.dvx-end .dvx-xp')||{}).textContent||''};});
   ok('Боря: +20 опыта (2 верных, поражение), ур. 1',r.xp===20&&/\+20 опыта/.test(r.box)&&/ур\. 1/.test(r.box),r);
   await shot(A.page,2);
@@ -93,8 +94,9 @@ if(!fs.existsSync(__dirname+'/shots'))fs.mkdirSync(__dirname+'/shots');
   await shot(A.page,3);
   await A.page.click('#dvGo');await A.page.waitForTimeout(1300);
   r=await A.page.evaluate(()=>({ts:KV&&KV.room.qs.map(q=>q.t).join(),nm:(document.querySelector('#dvxStage .dvx-p.lf .dvx-nm small')||{}).textContent}));
-  ok('следующий бой — «Что значит?» (через раз), на арене «Ты · ур. 2»',r.ts==='build,mean,hear'&&r.nm==='Ты · ур. 2',r);
-  await A.page.evaluate(()=>dvBack());await A.page.waitForTimeout(300);
+  ok('следующий бой — тоже «Что значит?», на арене «Ты · ур. 2»',r.ts==='build,mean,hear'&&r.nm==='Ты · ур. 2',r);
+  await A.page.evaluate(()=>dvBack());await A.page.waitForTimeout(600);
+  ok('арена закрыта — роликов героев не осталось, сами не воскресают',await A.page.evaluate(()=>!document.querySelector('#dvx')&&!document.querySelectorAll('video[src*="deadlock"]').length));
   const W=await A.page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1);ok('страница вбок не едет',W);
   ok('консоль чистая',!errs.length&&!A.errs.length&&!B.errs.length,errs.concat(A.errs,B.errs).slice(0,4));
   console.log(fails?`FAILS: ${fails}`:'ALL PASS');await b.close();process.exit(fails?1:0);
