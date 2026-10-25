@@ -20,6 +20,21 @@ HERO = ('Animate this exact image of {name}. Keep the character 100% identical: 
         'no new characters, no text.')
 
 def photo(t, tail=PHOTO_TAIL): return t.strip() + ' ' + tail
+# 25.10, Андрей: «с фото ебал — давай без»: один текст сразу в видео (Veo / Flow «Текст в видео»), без шага с картинкой
+VIDEO_HEAD = 'An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: '
+VIDEO_TAIL = ('Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. '
+              'The last frame is identical to the first frame, so the video loops seamlessly. '
+              'Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; '
+              'not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. '
+              'No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No music, no voices.')
+def video(ph, an):
+    sc = ph[:-len(PHOTO_TAIL)].strip() if ph.endswith(PHOTO_TAIL) else ph.split(' Vertical 9:16.')[0].strip()
+    mv = an[len(ANIM_HEAD):] if an.startswith(ANIM_HEAD) else an
+    mv = mv[:-len(ANIM_TAIL)].strip() if mv.endswith(ANIM_TAIL) else mv.strip()
+    tail = VIDEO_TAIL
+    if 'only small blurry green digits' in ph:
+        tail = tail.replace('no text, letters or logos anywhere', 'no text or logos; only small blurry green digits on the screens')
+    return VIDEO_HEAD + sc + ' Only these things move, gently and continuously the whole time: ' + mv + ' ' + tail
 def anim(t): return ANIM_HEAD + t.strip() + ' ' + ANIM_TAIL
 
 ITEMS = [
@@ -164,6 +179,9 @@ ITEMS = [
    'pink-purple neon outside pulses softly.')),
 ]
 
+for it in ITEMS:
+    if it.get('photo') and it.get('animate'): it['video'] = video(it['photo'], it['animate'])
+
 # ---------- герои Deadlock: картинка — арт с вики (полный рост), промт — только «оживить» ----------
 HEROES = [
  ('venator', 'Venator', 'He stands in his pose chewing his cigar, thin smoke curling from it. Halfway through he fires the grenade launcher once: a bright muzzle flash and a short puff of smoke from the barrel, his shoulders take the heavy recoil, the rosary swings — then he settles back into exactly the starting pose while thin smoke drifts from the barrel.', True),
@@ -203,7 +221,8 @@ for hid, act in DRAFT.items():
         animate=HERO.format(name=name, act='Action: ' + act + '.')))
 
 OUT = dict(v=1, updated='2026-10-24',
-  how=['Фото (не для героев): Gemini или Google Flow (labs.google/flow), формат 9:16, 3–4 варианта — выбери один, где всё на месте и нет пластмассы.',
+  how=['Без фото (25.10): поле video — один текст сразу в видео (Flow → «Текст в видео» / Veo, 9:16, 8 с). Поля photo и animate — запасной путь «фото → оживить».',
+       'Фото (не для героев): Gemini или Google Flow (labs.google/flow), формат 9:16, 3–4 варианта — выбери один, где всё на месте и нет пластмассы.',
        'Оживить: Flow → «Кадры в видео»; первый кадр и последний кадр — это же фото (у героя — арт с вики), 8 секунд.',
        'Нет поля «последний кадр» — только первый; петлю склеит Z.ai или Claude (tools/loop_bg.py).',
        'Готовый ролик отдай Z.ai: он склеит петлю, зальёт в R2 и отметит «залит». В приложение ставит Claude.',
@@ -211,7 +230,7 @@ OUT = dict(v=1, updated='2026-10-24',
   rules=['Фильму — один фон (немецкий дубляж берёт тот же). Сериалу — один фон на сезон. Интервью — один фон на человека. Героям — арт с вики.',
          'Начни с теста: «простой» (Психопат) и «сложный» (Волк). Выйдут нормально — делай остальные.',
          'Без людей, рук, лиц, надписей, логотипов и марок; без дыма и тумана; деньги — только мелко.'],
-  photo_tail=PHOTO_TAIL, anim_head=ANIM_HEAD, anim_tail=ANIM_TAIL, hero_template=HERO,
+  photo_tail=PHOTO_TAIL, video_head=VIDEO_HEAD, video_tail=VIDEO_TAIL, anim_head=ANIM_HEAD, anim_tail=ANIM_TAIL, hero_template=HERO,
   items=ITEMS)
 p = os.path.join(os.path.dirname(__file__), 'bg-prompts.json')
 open(p, 'w', encoding='utf-8').write(json.dumps(OUT, ensure_ascii=False, indent=1) + '\n')
