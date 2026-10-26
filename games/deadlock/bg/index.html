@@ -17,6 +17,7 @@
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:16px; margin-top:14px; }
   .card { border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#050506; }
   .frame { position:relative; aspect-ratio:360/780; background:#000; }
+  .frame.h916 { aspect-ratio:360/640; }
   .frame img, .frame object { position:absolute; inset:0; width:100%; height:100%; display:block; object-fit:cover; }
   /* зона видео: 60% ширины × 55% высоты, снизу */
   body.zones .frame::after { content:''; position:absolute; left:20%; top:45%; width:60%; height:55%; background:rgba(255,60,60,.16); border:1px dashed rgba(255,90,90,.65); }
@@ -58,6 +59,15 @@
     <div class="cap"><b>Венатор <span class="tag b">путь Б</span></b>venator.svg · 180×400 · 3.7 КБ · живые: hb-ray, hb-dr</div></div>
 </div>
 <div class="who">Исходник Венатора — полный арт 2560×1440 из <code>claude/hero-16x9</code>. Улучшенный кадр (640×360, из него делался venator-2.mp4) проверила: слишком мал и бока заблюрены — для фона 1080×1920 не годится.</div>
+
+<h2>Фоны «с самой карточки» (дополнение по ТЗ-ZAI-v12, 26.10)</h2>
+<div class="who">Кадр из живой петли героя (1280×720, середина ролика) → нейронка убрала героя и существ, дорисовала до 9:16 → 1080×1920 webp ≤ 250 КБ + превью 360 px. Цвет и свет — из ролика, середина спокойная и чуть темнее. В приложении этот фон пойдёт увеличенным и размытым за видео карточки.</div>
+<div class="grid">
+  <div class="card"><div class="frame h916"><img src="hero-bg/rat-king-card.webp" alt="Крысиный король, фон с карточки"></div>
+    <div class="cap"><b>Крысиный король <span class="tag a">с карточки</span></b>rat-king-card.webp · 1080×1920 · 46 КБ · кадр петли, герой и крысы убраны · <a href="hero-bg/rat-king-card-prev.jpg" style="color:#9fb8f0">превью</a></div></div>
+  <div class="card"><div class="frame h916"><img src="hero-bg/venator-card.webp" alt="Венатор, фон с карточки"></div>
+    <div class="cap"><b>Венатор <span class="tag a">с карточки</span></b>venator-card.webp · 1080×1920 · 26 КБ · кадр петли, Венатор убран · <a href="hero-bg/venator-card-prev.jpg" style="color:#9fb8f0">превью</a></div></div>
+</div>
 
 <h2>Правила: как проверить, что фон не спорит с героем</h2>
 <ol class="rules">
