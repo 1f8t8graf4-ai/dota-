@@ -1,0 +1,113 @@
+{
+ "venator": {
+  "ult": 4,
+  "a": [
+   {
+    "n": "Consecrating Grenade",
+    "cast": "venator/venator-a1-cast.mp3",
+    "hit": "venator/venator-a1-hit.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Priest%20shredding%20flames%20cast%2001.mp3",
+     "https://deadlock.wiki/Special:FilePath/Priest%20shredding%20flames%20hit%2001.mp3"
+    ]
+   },
+   {
+    "n": "Gutshot",
+    "cast": "venator/venator-a2-cast.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Priest%20a2%20gutshot%20fire%2001.mp3"
+    ]
+   },
+   {
+    "n": "Hex-lined Snap Trap",
+    "cast": "venator/venator-a3-cast.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Priest%20trap%20cast%2001.mp3"
+    ]
+   },
+   {
+    "n": "Ira Domini",
+    "cast": "venator/venator-a4-cast.mp3",
+    "hit": "venator/venator-a4-hit.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Priest%20witching%20hour%20cast%2001.mp3",
+     "https://deadlock.wiki/Special:FilePath/Priest%20witching%20hour%20hit%2001.mp3"
+    ]
+   }
+  ]
+ },
+ "rat-king": {
+  "ult": 4,
+  "a": [
+   {
+    "n": "Scrap Grenade",
+    "cast": "rat-king/rat-king-a1-cast.mp3",
+    "hit": "rat-king/rat-king-a1-hit.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Ratking%20scrap%20grenade%20cast%2001.mp3",
+     "https://deadlock.wiki/Special:FilePath/Ratking%20scrap%20grenade%20explode%2001.mp3"
+    ]
+   },
+   {
+    "n": "Rat Swarm",
+    "cast": "rat-king/rat-king-a2-cast.mp3",
+    "hit": "rat-king/rat-king-a2-hit.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Ratking%20nibble%20cast%2001.mp3",
+     "https://deadlock.wiki/Special:FilePath/Ratking%20nibble%20hit%2001.mp3"
+    ]
+   },
+   {
+    "n": "Royal Pestments",
+    "cast": "rat-king/rat-king-a3-cast.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Ratking%20armor%20cast%2001.mp3"
+    ]
+   },
+   {
+    "n": "Rule, Ratannia!",
+    "cast": "rat-king/rat-king-a4-cast.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Ratking%20charge%20cast%20delay%2001.mp3"
+    ]
+   }
+  ]
+ },
+ "doorman": {
+  "ult": 4,
+  "a": [
+   {
+    "n": "Call Bell",
+    "cast": "doorman/doorman-a1-cast.mp3",
+    "hit": "doorman/doorman-a1-hit.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Doorman%20callbell%20cast%2001.mp3",
+     "https://deadlock.wiki/Special:FilePath/Doorman%20callbell%20hit%2001.mp3"
+    ]
+   },
+   {
+    "n": "Doorway",
+    "cast": "doorman/doorman-a2-cast.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Doorman%20doorway%20place%20door%2001.mp3"
+    ]
+   },
+   {
+    "n": "Luggage Cart",
+    "cast": "doorman/doorman-a3-cast.mp3",
+    "hit": "doorman/doorman-a3-hit.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Doorman%20luggagecart%20cast%2001.mp3",
+     "https://deadlock.wiki/Special:FilePath/Doorman%20luggagecart%20hit%2001.mp3"
+    ]
+   },
+   {
+    "n": "Hotel Guest",
+    "cast": "doorman/doorman-a4-cast.mp3",
+    "src": [
+     "https://deadlock.wiki/Special:FilePath/Doorman%20hotel%20key%20start%2001.mp3"
+    ]
+   }
+  ]
+ }
+}
