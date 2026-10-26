@@ -1,0 +1,37 @@
+/* ===================== v11 · путь сцены ===================== */
+.p11 .p8-n{scale:1.14}
+.p11 .p11-fr{position:absolute;inset:3px;border-radius:inherit;background-size:cover;background-position:center;opacity:0;transition:opacity .4s}
+.p11 .p8-n.dn .p11-fr,.p11 .p8-n.cur .p11-fr{opacity:.9}
+.p11 .p8-n.dn b,.p11 .p8-n.cur b{position:relative;text-shadow:0 1px 3px #000,0 0 10px rgba(0,0,0,.8)}
+.p11-wolf .p11-fr{border-radius:50%}
+.p11-here{position:absolute;z-index:8;display:inline-flex;align-items:center;gap:4px;padding:5px 9px 5px 7px;border-radius:999px;background:#F2C14E;color:#1d1300;font:900 10.5px/1 Inter,sans-serif;white-space:nowrap;transform:translate(-50%,0);box-shadow:0 6px 14px rgba(0,0,0,.45);pointer-events:none;transition:left .6s cubic-bezier(.2,.8,.2,1),top .6s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.p11-here .ic{width:10px;height:10px}
+.p11-here::after{content:'';position:absolute;left:50%;bottom:-5px;width:10px;height:6px;margin-left:-5px;background:#F2C14E;clip-path:polygon(0 0,100% 0,50% 100%)}
+.p11-sopranos .p11-here{background:#C0392B;color:#fff}.p11-sopranos .p11-here::after{background:#C0392B}
+.p11-wolf .p11-here{background:#5BE38F;color:#06240f}.p11-wolf .p11-here::after{background:#5BE38F}
+/* награда — карточка фона: картинка слева, что это и сколько осталось — справа */
+.p11:not(.p11-sopranos) .p8-rw{width:188px;height:72px;margin-left:-64px;border-radius:16px!important;display:block;overflow:hidden;background:rgba(8,10,16,.9)!important;box-shadow:0 0 0 1.5px rgba(246,212,136,.5),0 12px 26px rgba(0,0,0,.55)}
+.p11:not(.p11-sopranos) .p8-rw .img{inset:0 auto 0 0;width:72px;filter:grayscale(.5) brightness(.6)}
+.p11:not(.p11-sopranos) .p8-rw>small{display:none}
+.p11:not(.p11-sopranos) .p8-rw.on{box-shadow:0 0 0 2.5px #F6D488,0 0 30px rgba(246,212,136,.65)}.p11 .p8-rw.on .img{filter:none}.p11 .p8-rw.on .p11-lk{display:none}
+.p11-rwb{position:absolute;left:72px;right:0;top:0;bottom:0;padding:9px 10px 0;display:block;text-align:left}
+.p11-rwt{display:grid;gap:3px}.p11-rwt small{font:800 7.5px/1 Inter,sans-serif;letter-spacing:.14em;color:rgba(246,212,136,.75)}.p11-rwt b{font:800 11px/1.15 Inter,sans-serif;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.p11-rwt em{font:600 9.5px/1.1 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.62)}
+.p11-lk{position:absolute;left:21px;top:21px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(8,10,16,.72);color:#F6D488;font-style:normal;z-index:2}.p11-lk .ic{width:15px;height:15px}
+.p11-pr{position:absolute;left:10px;right:10px;bottom:6px;height:3px;border-radius:2px;background:rgba(255,255,255,.14);overflow:hidden}.p11-pr i{display:block;height:100%;background:#F6D488}
+.p11-sopranos .p11-rwb{top:14px;bottom:auto;left:72px;right:auto;width:118px;padding:0;text-align:left;transform:rotate(-3deg)}.p11-sopranos .p11-rwt small{display:none}
+.p11-sopranos .p11-rwt small{color:rgba(20,37,79,.55)}.p11-sopranos .p11-rwt b{font:400 16px/1 Caveat,cursive;color:#14254f;-webkit-line-clamp:1}.p11-sopranos .p11-rwt em{color:rgba(20,37,79,.65)}
+.p11-sopranos .p11-lk{left:50%;top:18px;width:24px;height:24px;margin-left:-12px}.p11-sopranos .p11-pr{display:none}
+.p11-cn{fill:none;stroke:rgba(246,212,136,.5);stroke-width:1.6;stroke-dasharray:3 6;stroke-linecap:round;animation:p11cn 1.6s linear infinite}@keyframes p11cn{to{stroke-dashoffset:-18}}
+.p11-sopranos .p11-cn{stroke:rgba(31,59,138,.45)}.p11-wolf .p11-cn{stroke:rgba(91,227,143,.45)}.p11-bb .p11-cn{stroke:rgba(134,212,110,.45)}
+/* «Во все тяжкие»: плитки элементов и голубые кристаллы */
+.p11-pt{position:absolute;inset:0;pointer-events:none}
+.p11-pt i{position:absolute;width:42px;height:48px;padding:4px 5px;border-radius:4px;box-shadow:inset 0 0 0 1.5px rgba(134,212,110,.28);background:rgba(44,107,60,.12);font-style:normal;animation:p11pt 9s ease-in-out infinite alternate}
+.p11-pt small{display:block;font:700 7px/1 Inter,sans-serif;color:rgba(207,245,194,.5)}.p11-pt b{display:block;font:700 18px/1.05 Oswald,Inter,sans-serif;color:rgba(207,245,194,.55)}.p11-pt em{display:block;font:600 5.5px/1 Inter,sans-serif;font-style:normal;color:rgba(207,245,194,.38)}
+@keyframes p11pt{0%{transform:translateY(0);opacity:.55}50%{opacity:1;box-shadow:inset 0 0 0 1.5px rgba(134,212,110,.6),0 0 14px rgba(134,212,110,.25)}100%{transform:translateY(-10px);opacity:.6}}
+.p11-cr{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.p11-cr i{position:absolute;top:-12px;width:7px;height:10px;background:linear-gradient(160deg,#C8F1FF,#3FB7F0);clip-path:polygon(50% 0,100% 40%,70% 100%,20% 90%,0 35%);opacity:0;animation:p11cr 10s linear infinite}
+@keyframes p11cr{0%{transform:translateY(0) rotate(0);opacity:0}8%{opacity:.85}90%{opacity:.7}100%{transform:translateY(500px) rotate(320deg);opacity:0}}
+/* «Титаник»: пузырьки в воде */
+.p11-bub{position:absolute;left:0;right:0;top:36px;bottom:0;overflow:hidden;pointer-events:none}
+.p11-bub i{position:absolute;bottom:-8px;width:5px;height:5px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(210,240,255,.7);animation:p11bb 5s ease-in infinite}
+@keyframes p11bb{0%{transform:translate(0,0);opacity:0}15%{opacity:.9}100%{transform:translate(8px,-170px);opacity:0}}

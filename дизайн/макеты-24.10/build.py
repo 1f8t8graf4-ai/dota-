@@ -8,8 +8,11 @@ I = {os.path.basename(p)[:-5]: 'data:image/webp;base64,' + base64.b64encode(open
      for p in sorted(glob.glob(D + '/assets/img/*.webp'))}
 V = {os.path.basename(p)[:-4]: base64.b64encode(open(p, 'rb').read()).decode()
      for p in sorted(glob.glob(D + '/assets/vid/*.mp4'))}
+# голоса героев (v11): короткие mp3, играют по ▶ в макете
+AU = {os.path.basename(p)[:-4]: base64.b64encode(open(p, 'rb').read()).decode()
+      for p in sorted(glob.glob(D + '/assets/aud/*.mp3'))}
 t = open(D + '/glavnaya-dd.tpl.html', encoding='utf8').read()
-open(D + '/glavnaya-dd.html', 'w', encoding='utf8').write(t.replace('__ASSETS__', json.dumps({'I': I, 'V': V})))
+open(D + '/glavnaya-dd.html', 'w', encoding='utf8').write(t.replace('__ASSETS__', json.dumps({'I': I, 'V': V, 'A': AU})))
 t = open(D + '/tri-dizajna.tpl.html', encoding='utf8').read()
 open(D + '/tri-dizajna.html', 'w', encoding='utf8').write(t.replace('__IMG__', json.dumps(I)))
 print('собрано: glavnaya-dd.html, tri-dizajna.html')

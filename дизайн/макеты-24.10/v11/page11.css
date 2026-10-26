@@ -1,0 +1,13 @@
+/* ===================== v11 · страница ===================== */
+.vers .olds{background:transparent;border-style:dashed}
+.vers .olds>summary{font-weight:700;color:var(--mut)}
+.vers .olds .ol{display:grid;gap:6px;padding:0 10px 10px}
+.vers .olds .ol details{border-radius:12px}
+.vers .olds .ol summary{padding:10px 12px;font-size:14px}
+.vars{flex-wrap:wrap;overflow:visible;margin:10px 0 0;padding:0}
+.cmp{margin:0 0 14px;padding:10px 12px;border-radius:14px;background:var(--chip);border:1px solid var(--line)}
+.cmp small{display:block;font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.cmp div{display:flex;flex-wrap:wrap;gap:6px}
+.cmp button{border:1px solid var(--line);background:none;color:var(--fg);border-radius:10px;padding:8px 11px;font:700 13px/1 Inter,sans-serif;cursor:pointer}
+.cmp button.on{background:var(--acc);color:var(--acct);border-color:transparent}
+@media (max-width:860px){.stage{margin-top:12px}.notes{order:2}}
