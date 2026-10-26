@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Фоны героев · Крысиный король и Венатор — сдача ZAI 26.10</title>
+<style>
+  :root { --red:#c94032; --violet:#8a3ab4; --line:#26262c; --mut:#8b8b94; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:#000; color:#e8e8ec; font:14px/1.55 -apple-system,'Segoe UI',Roboto,sans-serif; padding:28px 20px 60px; max-width:1060px; margin:0 auto; }
+  h1 { font-size:20px; margin-bottom:6px; }
+  h2 { font-size:16px; margin:34px 0 12px; color:#fff; }
+  .sub { color:var(--mut); margin-bottom:20px; }
+  .verdict { border:1px solid var(--line); border-left:3px solid var(--red); border-radius:8px; padding:12px 14px; margin:14px 0 8px; background:#0b0b0d; }
+  .verdict b { color:#fff; }
+  /* сетка */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:16px; margin-top:14px; }
+  .card { border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#050506; }
+  .frame { position:relative; aspect-ratio:360/780; background:#000; }
+  .frame img, .frame object { position:absolute; inset:0; width:100%; height:100%; display:block; object-fit:cover; }
+  /* зона видео: 60% ширины × 55% высоты, снизу */
+  body.zones .frame::after { content:''; position:absolute; left:20%; top:45%; width:60%; height:55%; background:rgba(255,60,60,.16); border:1px dashed rgba(255,90,90,.65); }
+  .cap { padding:8px 10px; font-size:12.5px; color:var(--mut); border-top:1px solid var(--line); }
+  .cap b { color:#ddd; display:block; font-size:13px; }
+  .tag { display:inline-block; font-size:11px; padding:1px 7px; border-radius:20px; border:1px solid var(--line); margin-left:6px; color:#bbb; }
+  .tag.a { border-color:#3a5a3a; color:#9fd49f; }
+  .tag.b { border-color:#3a4a6a; color:#9fb8f0; }
+  label.toggle { display:inline-flex; gap:8px; align-items:center; border:1px solid var(--line); border-radius:20px; padding:7px 14px; cursor:pointer; user-select:none; color:#ccc; }
+  label.toggle input { accent-color:var(--red); }
+  /* правила */
+  ol.rules { padding-left:22px; } ol.rules li { margin:7px 0; }
+  ol.rules b { color:#fff; }
+  pre { background:#0b0b0d; border:1px solid var(--line); border-radius:8px; padding:12px 14px; overflow:auto; font:12px/1.5 ui-monospace,Consolas,monospace; color:#c8c8d0; white-space:pre-wrap; }
+  .who { color:var(--mut); font-size:12.5px; margin-top:4px; }
+  .ok { color:#9fd49f; }
+</style>
+</head>
+<body>
+
+<h1>Фоны героев — Крысиный король и Венатор</h1>
+<div class="sub">Сдача по ТЗ-ZAI-фоны-героев-26.10 · ветка <b>zai/hero-bg</b> · сделала ZAI 26.10</div>
+
+<div class="verdict">
+  <b>Выбор: путь А</b> — фон вынесен с арта нейронкой. Причина: он сохраняет <b>ровно ту сцену</b>, что на арте героя (трон из труб и красный круг у Крысы, нимб-роза и растр у Венатора) — игрок видит то же место за видео, что и на карточке арта, ничего не расходится. SVG (путь Б) приложены рядом как запасной лёгкий вариант (3.4–3.7 КБ против 130–190 КБ), но они плоские и проигрывают арту по атмосфере.
+</div>
+
+<h2>Варианты</h2>
+<label class="toggle"><input type="checkbox" onchange="document.body.classList.toggle('zones',this.checked)"> показать зону видео (60% × 55% снизу)</label>
+
+<div class="grid">
+  <div class="card"><div class="frame"><img src="rat-king.jpg" alt="Крысиный король, путь А"></div>
+    <div class="cap"><b>Крысиный король <span class="tag a">путь А</span></b>rat-king.jpg · 1080×1920 · 128 КБ · эдит арта нейронкой</div></div>
+  <div class="card"><div class="frame"><img src="rat-king.svg" alt="Крысиный король, путь Б"></div>
+    <div class="cap"><b>Крысиный король <span class="tag b">путь Б</span></b>rat-king.svg · 180×400 · 3.4 КБ · живые: hb-wv, hb-glow</div></div>
+  <div class="card"><div class="frame"><img src="venator.jpg" alt="Венатор, путь А"></div>
+    <div class="cap"><b>Венатор <span class="tag a">путь А</span></b>venator.jpg · 1080×1920 · 183 КБ · эдит арта нейронкой</div></div>
+  <div class="card"><div class="frame"><img src="venator.svg" alt="Венатор, путь Б"></div>
+    <div class="cap"><b>Венатор <span class="tag b">путь Б</span></b>venator.svg · 180×400 · 3.7 КБ · живые: hb-ray, hb-dr</div></div>
+</div>
+<div class="who">Исходник Венатора — полный арт 2560×1440 из <code>claude/hero-16x9</code>. Улучшенный кадр (640×360, из него делался venator-2.mp4) проверила: слишком мал и бока заблюрены — для фона 1080×1920 не годится.</div>
+
+<h2>Правила: как проверить, что фон не спорит с героем</h2>
+<ol class="rules">
+  <li><b>Чёрный экран 360×780.</b> Фон открывается один, без героя, страница эта — как раз он.</li>
+  <li><b>Зона видео.</b> Включи тумблер выше: 60% ширины × 55% высоты, снизу. Всё, что попало внутрь, игрок никогда не увидит — там ляжет видео героя.</li>
+  <li><b>Читается ли «чей фон».</b> По верхним 35% и краям должно быть понятно, чьё это место, за полсекунды: у Крысы — трубы и красный круг, у Венатора — нимб с лучами. Не видно — фон не годится.</li>
+  <li><b>В зоне видео не должно быть важных деталей.</b> Глаза-ловушки: лица, круги, яркие пятна в центре кадра. Всё главное — сверху и по краям, середина спокойная и темнее.</li>
+  <li><b>Герой читается.</b> Мысленно положи тёмный силуэт героя в зону: фон в середине должен быть темнее героя, а самый яркий объект фона — над головой (красный круг, нимб), не за торсом.</li>
+  <li><b>Один акцент цвета.</b> У фона один главный цвет-акцент, не конфликтующий с костюмом героя: красный свет у зелёно-бурой Крысы, серый нимб у чёрно-фиолетового Венатора. Два ярких цвета = каша.</li>
+  <li><b>Мелкий шум — только по краям.</b> Растр, мазки, капли — не в середине. В середине они выглядят грязью поверх видео.</li>
+  <li><b>Анимация не оттягивает взгляд.</b> Двигается 1–2 группы, медленно (лучи, вода, мерцание точек), у краёв/сверху. Если движение в центре ярче героя — выключить.</li>
+</ol>
+
+<h2>Оживление (путь А): промты для Flow — 8 с, петля</h2>
+<div class="who">Генерации видео у меня нет — ролики сгенерит Андрей в Flow (Veo), петлю соберёт Claude через <code>tools/hero_loop.py</code>. Правила: камера стоит, двигается только свет и мелочь, ничего не появляется и не пропадает, первый и последний кадр совпадают.</div>
+<pre>[Крысиный король]
+Slow cinematic loop, camera locked. A dark sewer throne room: the red-orange
+round light glows steady behind an empty iron throne of pipes. A thin film of
+water on the dark floor slowly flows toward the viewer, red reflections ripple
+gently across it. A faint red light reflection slowly crawls along the rusty
+pipes at the sides. Nothing appears or disappears, no characters, no animals,
+no text. First and last frames identical.</pre>
+<pre>[Венатор]
+Slow cinematic loop, camera locked. A dark charcoal-purple sky: a big grey
+circular stone halo with thin radiating lines in the upper third slowly
+rotates, the halftone dots around it shimmer very gently. Dark violet paint
+strokes at the bottom stay still. Nothing appears or disappears, no people,
+no faces, no crosses, no candles, no text. First and last frames identical.</pre>
+
+<h2>План</h2>
+<ol class="rules">
+  <li><span class="ok">✓</span> 25.10 — ветка <code>zai/hero-bg</code>: путь А (2 jpg) + путь Б (2 svg) + эта страница + правила.</li>
+  <li>Андрей смотрит; если ок — Клауд заливает в R2 (ключи и деплой на нём), при желании оживляет через Flow-промты выше и собирает петли.</li>
+  <li>Остальные герои — когда Андрей скажет: путь А по той же схеме (промты-шаблоны из ТЗ), у каждого героя 4 цвета и 1 мотив с арта.</li>
+</ol>
+
+</body>
+</html>
