@@ -14,7 +14,9 @@
 <script>/* 13.0.2: по ссылке-приглашению Telegram открывает мини-апп на полэкрана — разворачиваем сразу, ещё до загрузки данных */
 try{Telegram.WebApp.expand();}catch(e){}</script>
 <script>/* Версия релиза — одна на всё: сбивает кэш у стилей, скриптов и данных (?v=). Поднимай вместе с APP_V в js/app.js. */
-var V='13.9.75';document.write('<link rel="stylesheet" href="styles/main.css?v='+V+'">');</script>
+var V='13.9.76';document.write('<link rel="stylesheet" href="styles/main.css?v='+V+'">');
+/* 13.9.76: напоминания и будильники в стиле iOS — самостоятельный модуль, app.js зовёт window.RMIND */
+document.write('<scr'+'ipt src="js/remind.js?v='+V+'"><\/scr'+'ipt>');</script>
 </head>
 <body>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>

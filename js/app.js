@@ -282,7 +282,7 @@ function ndNext(c){const sh=x=>x.show||x.title,ok=x=>x.kind!=='clip'&&flagOf('sc
   const lv=CEFR.indexOf(store.cefr||'')+1||(store.lvl==='a'?2:3),L=SCENES.filter(x=>ok(x)&&todo(x)>=0).sort((a,b)=>go(b)-go(a)||Math.abs((a.lvl||3)-lv)-Math.abs((b.lvl||3)-lv));
   return L.length?{s:L[0],i:todo(L[0])}:null;}
 function ndTodayHTML(){
-  const c=continueScene(),s=c.s,p=s.parts[c.i],d=dayStat(),goal=store.goal||20,gp=Math.min(100,Math.round(d.n/goal*100)),st=streakNow(),n=dailyItems().length;
+  const c=continueScene(),s=c.s,p=s.parts[c.i],d=dayStat(),goal=store.goal||20,gp=Math.min(100,Math.round(d.n/goal*100)),st=streakNow(),n=dailyItems().length,mw=mywAll().length;
   const hr=new Date().getHours(),hi=hr<5?'Доброй ночи':hr<12?'Доброе утро':hr<18?'Добрый день':'Добрый вечер',nm=(userName()||'').trim().split(/\s+/)[0];
   const lv=store.cefr||(store.lvl==='a'?'A2':store.lvl==='b'?'B1':''),gw=ND_GOAL[store.goalWhy],sub=[lvW(lv),gw?'цель — '+gw:''].filter(Boolean).join(' · ')||'План на сегодня готов';
   const ok=d.n>=goal,risk=st>0&&store.lastDay!==new Date().toDateString(),bdi=filmImg(s,innerWidth>=1000?'bd.jpg':'bdm.jpg'),cf=cefrOf(s),mins=Math.max(2,Math.round((p.b-p.a)/60+2));
@@ -293,11 +293,13 @@ function ndTodayHTML(){
   const rows=[
     pod?`<button class="n-row" data-go="pod"><div class="n-th" ${th(pod.s,pod.f.pi)}></div><div><small>Фраза дня</small><b>${esc(pod.s.lang==='de'?pod.f.de:scT(pod.f))} — ${esc(pod.f.ru)}</b></div><span class="n-cv">›</span></button>`:'',
     nx?`<button class="n-row" data-go="next" data-sc="${nx.s.id}" data-i="${nx.i}"><div class="n-th" ${th(nx.s,nx.i)}></div><div><small>Смотреть дальше</small><b>${esc(nx.s.show||nx.s.title)} · ${esc(nx.s.parts[nx.i].t)}</b></div><span class="n-cv">›</span></button>`:'',
-    n?`<button class="n-row" data-go="rev"><div class="n-th" ${th(s,c.i)}></div><div><small>Повторить</small><b>Фразы и слова · ≈ ${Math.max(2,Math.round(n*0.4))} мин</b></div><span class="n-cnt">${n}</span></button>`:''
+    n?`<button class="n-row" data-go="rev"><div class="n-th" ${th(s,c.i)}></div><div><small>Повторить</small><b>Фразы и слова · ≈ ${Math.max(2,Math.round(n*0.4))} мин</b></div><span class="n-cnt">${n}</span></button>`:'',
+    // 13.9.76: быстрый вход в свои слова — учить можно и когда повторений нет
+    mw&&!n?`<button class="n-row" data-go="mw"><div class="n-th" ${th(s,c.i)}></div><div><small>Мои слова</small><b>Учить · ${mw} ${plural(mw,['слово','слова','слов'])}</b></div><span class="n-cnt">${mw}</span></button>`:''
   ].filter(Boolean).join('');
   return `<div class="n-scr n-today">
     <div class="n-hello"><div class="n-ava">${esc((nm||'Я').charAt(0).toUpperCase())}</div><div><b>${hi}${nm?', '+esc(nm):''}</b><span>${esc(sub)}</span></div>
-      <div class="n-fire${risk?' risk':''}"><i>🔥</i><i>${st}</i></div><button class="n-ring${ok?' ok':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 38 38"><circle class="bgc" cx="19" cy="19" r="15.9" pathLength="100"/><circle class="fg" cx="19" cy="19" r="15.9" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></div>
+      <button class="n-bell${(window.RMIND&&RMIND.list().some(r=>r.on!==false))?' has':''}" id="nRemind" aria-label="Напоминания и будильники"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button><div class="n-fire${risk?' risk':''}"><i>🔥</i><i>${st}</i></div><button class="n-ring${ok?' ok':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 38 38"><circle class="bgc" cx="19" cy="19" r="15.9" pathLength="100"/><circle class="fg" cx="19" cy="19" r="15.9" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></div>
     <section class="n-hero" id="hHero" data-sc="${s.id}"><div class="n-bgi" style="background-image:${bdi?`url('${bdi}'),`:''}url('${assetUrl(scKey(s,'cover.jpg'))}')"></div>
       <div class="n-eb">${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'План на сегодня'}</div>
       <h3>Эпизод <em>«${esc(p.t)}»</em>${n?` и ${n} ${plural(n,['повторение','повторения','повторений'])}`:''}</h3>
@@ -305,6 +307,7 @@ function ndTodayHTML(){
       <div class="n-pull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></i></div>
     </section>
     <div class="n-stats" role="group" aria-label="Статистика"><div><b>🔥 ${st}</b><small>серия</small></div><div><b>${ph}</b><small>фраз выучено</small></div><div><b>${eps}</b><small>эпизодов</small></div></div>
+    ${window.RMIND&&RMIND.weekHTML?RMIND.weekHTML():''}
     ${rows?`<div class="n-sechead">План на сегодня</div>${rows}`:''}
   </div>`;}
 const ndYear=s=>{const m=String(s.ep||'').match(/(19|20)\d\d/);return m?m[0]:'';};
@@ -1032,7 +1035,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.75';
+const APP_V='13.9.76';   // 13.9.76: напоминания/будильники iOS на главной (js/remind.js) + точки недели + «Мои слова» на «Сегодня»
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -3687,11 +3690,12 @@ function learnTabHTML(){
 }
 function bindLearn(){
   bindHead();setTimeout(()=>{unlockSheet();setTimeout(pollMaybe,400);},600);   // 13.9.19: первый пройденный эпизод — «Открылось: …»; после 3-го — опрос
+  try{if(window.RMIND){RMIND.start();RMIND.record();const nb=$('#nRemind');if(nb)nb.onclick=e=>{e.stopPropagation();haptic('light');sfx('tap');RMIND.open();};}}catch(e){}   // 13.9.76: будильник/напоминания
   const c=continueScene();
   if($('#hCont'))$('#hCont').onclick=()=>{haptic('medium');renderScEp(c.s.id,c.i);};
   {const h=$('#hHero');if(h)h.onclick=e=>{if(e.target.closest('button,.ndpull,.n-pull'))return;sfx('tap');renderScene(c.s.id);};}
   {const pl=$('#ndPull');if(pl)ndPull(pl,()=>renderScEp(c.s.id,c.i));
-   $$('.n-row[data-go]').forEach(b=>b.onclick=()=>{haptic('light');sfx('tap');const g=b.dataset.go;if(g==='pod'){const x=phraseOfDay();if(x)momOpen(x.s.id,x.f.pi,x.f.a);}else if(g==='next')renderScEp(b.dataset.sc,+b.dataset.i);else renderDaily();});
+   $$('.n-row[data-go]').forEach(b=>b.onclick=()=>{haptic('light');sfx('tap');const g=b.dataset.go;if(g==='pod'){const x=phraseOfDay();if(x)momOpen(x.s.id,x.f.pi,x.f.a);}else if(g==='next')renderScEp(b.dataset.sc,+b.dataset.i);else if(g==='mw')renderMyWords();else renderDaily();});
    const r=$('.ndring,.n-ring');if(r&&fxOK()){r.classList.add('rg0');requestAnimationFrame(()=>requestAnimationFrame(()=>r.classList.remove('rg0')));}}   // кольцо заполняется при входе   // 13.9.13: нажал на кадр — страница сцены
   if($('#hLesson'))$('#hLesson').onclick=()=>{haptic('medium');startScLesson();};
   if($('#hRev'))$('#hRev').onclick=()=>{haptic('medium');renderDaily();};
