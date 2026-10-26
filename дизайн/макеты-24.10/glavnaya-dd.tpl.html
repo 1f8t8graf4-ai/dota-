@@ -1,4 +1,4 @@
-<title>Макеты v11</title>
+<title>Макеты v12</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&family=Russo+One&display=swap">
 <style>
@@ -3951,12 +3951,456 @@ html.lite .h11 *{animation:none!important}
 .cmp button.on{background:var(--acc);color:var(--acct);border-color:transparent}
 @media (max-width:860px){.stage{margin-top:12px}.notes{order:2}}
 
+/* ================= v12 (26.10, отзыв на v11) ================= */
+.g12 [hidden],.k12 [hidden],.r12 [hidden]{display:none!important}
+/* --- City Never Sleeps живой --- */
+.c12-art{position:absolute;inset:0;overflow:hidden;border-radius:inherit}
+.c12-art>.img{position:absolute;left:0;right:0;top:0;aspect-ratio:1;background-image:var(--cns);background-size:cover;background-position:50% 0;transform-origin:50% 30%}
+.c12-gw{position:absolute;left:0;right:0;top:0;aspect-ratio:1;background-image:var(--cns);background-size:cover;mix-blend-mode:screen;opacity:0;animation:c12gw 5.5s ease-in-out infinite;pointer-events:none;-webkit-mask-image:linear-gradient(#000 64%,transparent 70%);mask-image:linear-gradient(#000 64%,transparent 70%)}
+@keyframes c12gw{0%,100%{opacity:0}50%{opacity:.28}}
+.c12-win{position:absolute;left:0;right:0;top:0;aspect-ratio:1;pointer-events:none}
+.c12-win i{position:absolute;width:3px;height:4px;border-radius:1px;background:#FFD58A;box-shadow:0 0 6px rgba(255,200,120,.9);opacity:0;animation:c12w 6s steps(1) infinite}
+@keyframes c12w{0%,40%{opacity:0}42%,80%{opacity:.95}82%,100%{opacity:0}}
+.c12-bm{position:absolute;top:-10%;width:70px;height:120%;margin-left:-35px;background:linear-gradient(180deg,rgba(255,236,190,.0),rgba(255,236,190,.16) 30%,rgba(255,236,190,0));clip-path:polygon(40% 100%,60% 100%,100% 0,0 0);transform-origin:50% 100%;mix-blend-mode:screen;pointer-events:none}
+.c12-bm.a{left:22%;animation:c12bm 10s ease-in-out infinite alternate}.c12-bm.b{left:80%;animation:c12bm 13s ease-in-out infinite alternate-reverse}
+@keyframes c12bm{from{transform:rotate(-24deg)}to{transform:rotate(22deg)}}
+.c12-sh{position:absolute;top:0;bottom:0;left:-40%;width:34%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.16),transparent);mix-blend-mode:overlay;animation:c12sh 7s ease-in-out infinite 1.5s;pointer-events:none}
+@keyframes c12sh{0%{transform:translateX(0);opacity:0}6%{opacity:1}36%{transform:translateX(420%);opacity:0}100%{transform:translateX(420%);opacity:0}}
+.c12-rain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+/* --- вкладка Игры --- */
+.g12-pg{padding-bottom:110px}
+.g12-sec{margin:16px 20px 10px}
+.g12-card{position:relative;display:block;width:calc(100% - 28px);margin:0 14px;padding:0;border:0;border-radius:26px!important;overflow:visible;background:transparent;color:#fff;text-align:left;transition:transform .25s ease-out}
+.g12-card.cns{height:388px}
+.g12-card.cns .c12-art{border-radius:26px;box-shadow:0 22px 50px -18px rgba(0,0,0,.95),inset 0 0 0 1px rgba(255,255,255,.08)}
+.g12-card.cns .c12-art>.img{top:-4px}
+.c12-fd{position:absolute;left:0;right:0;bottom:0;height:46%;border-radius:0 0 26px 26px;background:linear-gradient(180deg,transparent,rgba(8,8,12,.72) 34%,#08080C 78%);pointer-events:none}
+.g12-ct{position:absolute;left:18px;right:18px;bottom:66px;display:grid;gap:6px;pointer-events:none}
+.g12-ct small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.26em;color:rgba(243,235,221,.62)}
+.g12-ct b{font:400 40px/1 "Poiret One",Inter,sans-serif;letter-spacing:-.01em;color:#FFF3DA;text-shadow:0 0 2px #fff,0 0 10px #FFB547,0 0 24px rgba(255,120,40,.6)}
+.g12-ct span{font:700 12px/1.25 Inter,sans-serif;color:rgba(243,235,221,.8)}
+.g12-ft{position:absolute;left:14px;right:14px;bottom:14px;display:flex;justify-content:flex-end;z-index:6}
+.g12-go{display:inline-flex;align-items:center;gap:3px;height:42px;padding:0 14px 0 20px;border-radius:14px;background:linear-gradient(180deg,#F8D57A,#E8A93A);color:#1d1300;font:800 15px/1 Inter,sans-serif;box-shadow:0 10px 24px -8px rgba(232,169,58,.75),inset 0 -3px 0 rgba(120,70,0,.25)}
+.g12-go .ic{width:16px;height:16px}
+.g12-bd{position:absolute;right:-5px;top:-5px;z-index:9;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:#FF4D5E;color:#fff;font:900 12px/24px Inter,sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 3px #05070E}
+.g12-card.city{height:404px}
+.g12-card.city .g11-tx{top:30px}
+.g12-duel{position:relative;display:grid;grid-template-columns:96px 1fr;align-items:center;gap:12px;width:calc(100% - 28px);margin:0 14px;padding:14px;border:0;border-radius:22px!important;background:linear-gradient(160deg,#1a1d2c,#10121b);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 14px 30px -14px rgba(0,0,0,.9);color:#fff;text-align:left}
+.g12-duel .ps{position:relative;height:96px}
+.g12-duel .ps .img{position:absolute;top:6px;width:54px;height:80px;border-radius:9px;box-shadow:0 8px 18px rgba(0,0,0,.6),0 0 0 1.5px rgba(255,255,255,.12)}
+.g12-duel .ps .img:nth-child(1){left:0;transform:rotate(-10deg)}.g12-duel .ps .img:nth-child(2){left:22px;top:2px;z-index:2}.g12-duel .ps .img:nth-child(3){left:44px;transform:rotate(10deg)}
+.g12-duel .tx{display:grid;gap:5px}.g12-duel small{display:flex;align-items:center;gap:5px;font:800 9px/1 Inter,sans-serif;letter-spacing:.16em;color:#9FB3FF}.g12-duel small .ic{width:13px;height:13px}
+.g12-duel b{font:800 17px/1.1 Inter,sans-serif}.g12-duel em{font:500 12px/1.3 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.66)}
+.g12-duel .cta{grid-column:2;justify-self:start;display:inline-flex;align-items:center;gap:2px;height:32px;padding:0 10px 0 14px;border-radius:11px;background:#5C7CFF;color:#fff;font:800 13px/1 Inter,sans-serif}.g12-duel .cta .ic{width:14px;height:14px}
+.g12-soon{display:flex;align-items:center;gap:12px;margin:10px 14px 0;padding:12px 14px;border-radius:18px;border:1.5px dashed rgba(255,255,255,.12);color:rgba(255,255,255,.55)}
+.g12-soon i{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.05)}.g12-soon .ic{width:16px;height:16px}
+.g12-soon span{display:grid;gap:3px}.g12-soon b{font:700 13px/1.2 Inter,sans-serif;color:rgba(255,255,255,.8)}.g12-soon small{font:500 11.5px/1.2 Inter,sans-serif}
+.g12-moved{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;margin:14px 14px 0;padding:12px 12px 12px 14px;border-radius:18px;background:rgba(92,124,255,.1);box-shadow:inset 0 0 0 1px rgba(92,124,255,.3)}
+.g12-moved>.ic{width:22px;height:22px;color:#9FB3FF}.g12-moved span{display:grid;gap:3px}.g12-moved b{font:800 13px/1.2 Inter,sans-serif}.g12-moved small{font:500 11.5px/1.2 Inter,sans-serif;color:rgba(255,255,255,.6)}
+.g12-moved button{height:32px;padding:0 12px;border:0;border-radius:10px;background:#5C7CFF;color:#fff;font:800 12px/1 Inter,sans-serif}
+.g12-nt{padding:12px 20px 0;font:500 12px/1.4 Inter,sans-serif;color:rgba(255,255,255,.5)}
+.g12-sg{position:relative;display:grid;grid-template-columns:1fr 1fr;margin:2px 14px 14px;padding:4px;border-radius:14px;background:rgba(255,255,255,.06)}
+.g12-sg button{position:relative;z-index:2;height:36px;border:0;background:none;color:rgba(255,255,255,.6);font:800 13px/1 Inter,sans-serif;transition:color .25s}.g12-sg button.on{color:#14161E}
+.g12-sg>i{position:absolute;left:4px;top:4px;bottom:4px;width:calc(50% - 4px);border-radius:11px;background:#F3EBDD;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}.g12-sg.r>i{transform:translateX(100%)}
+/* «Сцены» с дуэлью */
+.g12-band{display:grid;grid-template-columns:24px 1fr 18px;align-items:center;gap:10px;width:calc(100% - 28px);margin:0 14px 14px;padding:13px 14px;border:0;border-radius:18px;background:linear-gradient(120deg,#2a3270,#1b1f3d);color:#fff;text-align:left;box-shadow:inset 0 0 0 1px rgba(159,179,255,.25)}
+.g12-band>.ic{color:#9FB3FF}.g12-band span{display:grid;gap:3px}.g12-band b{font:800 13.5px/1.2 Inter,sans-serif}.g12-band small{font:500 11.5px/1.2 Inter,sans-serif;color:rgba(255,255,255,.65)}
+.g12-pg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px 10px;margin:0 14px}
+.g12-po{position:relative;display:grid;gap:4px;padding:0;border:0;background:none;color:#fff;text-align:left}
+.g12-po .img{aspect-ratio:2/3;border-radius:12px;box-shadow:0 10px 20px -8px rgba(0,0,0,.9)}
+.g12-po .du{position:absolute;right:5px;top:5px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(10,12,22,.82);box-shadow:0 0 0 1.5px #9FB3FF;color:#C9D6FF}.g12-po .du .ic{width:14px;height:14px}
+.g12-po b{font:700 11.5px/1.2 Inter,sans-serif}.g12-po small{font:500 10px/1 Inter,sans-serif;color:rgba(255,255,255,.5)}
+.g12-dsh{position:absolute;inset:0;z-index:70}
+.g12-dsh .sc{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+.g12-dsh .pn{position:absolute;left:8px;right:8px;bottom:8px;padding:12px 18px 18px;border-radius:30px 30px 38px 38px;background:#151826;display:grid;gap:10px;box-shadow:0 -10px 40px rgba(0,0,0,.6)}
+.g12-dsh .hd{justify-self:center;width:38px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);margin-bottom:4px}
+.g12-dsh small{font:800 10px/1 Inter,sans-serif;letter-spacing:.2em;color:#9FB3FF}.g12-dsh b{font:800 22px/1.1 Inter,sans-serif}.g12-dsh p{font:500 13px/1.4 Inter,sans-serif;color:rgba(255,255,255,.7)}
+.g12-dsh .st{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.g12-dsh .st button{height:40px;border:0;border-radius:12px;background:rgba(255,255,255,.07);color:#fff;font:800 14px/1 Inter,sans-serif}.g12-dsh .st button.on{background:#F6D488;color:#1d1300}
+.g12-dsh .go{height:50px;border:0;border-radius:16px;background:#5C7CFF;color:#fff;font:800 15px/1 Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:4px}.g12-dsh .go .ic{width:16px;height:16px}
+/* --- хаб Deadlock --- */
+.g12-hh .c12-art{border-radius:0}.g12-hh .c12-art>.img{opacity:.62}
+.g12-hh{height:320px}
+.g12-vsb{margin-top:12px}
+.g12-two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 14px 0}
+.g12-two>button{position:relative;display:grid;gap:3px;padding:10px 10px 12px;border:0;border-radius:20px;background:linear-gradient(160deg,#101a22,#0a0f16);box-shadow:inset 0 0 0 1px rgba(46,230,197,.18);color:#fff;text-align:left;overflow:hidden}
+.g12-two .cb{position:relative;height:96px;border-radius:14px;overflow:hidden;margin-bottom:6px;background:#06121a}
+.g12-two b{font:800 14px/1.1 Inter,sans-serif}.g12-two small{font:500 11px/1.25 Inter,sans-serif;color:rgba(255,255,255,.6)}
+.g12-ln .cb .img{position:absolute;left:50%;top:8px;width:54px;height:76px;margin-left:-27px;border-radius:4px;box-shadow:0 0 0 1.5px #C9A45A,0 8px 18px rgba(0,0,0,.7)}
+.g12-ln .cb em{position:absolute;left:0;right:0;bottom:6px;text-align:center;font:900 italic 13px/1 Inter,sans-serif;color:#fff;text-shadow:0 2px 0 #000,0 0 10px rgba(0,0,0,.8)}
+.g12-ln{box-shadow:inset 0 0 0 1px rgba(232,169,58,.22)!important;background:linear-gradient(160deg,#1d160c,#0f0b07)!important}
+.g12-nw{position:absolute;left:10px;top:10px;z-index:6;padding:4px 8px;border-radius:999px;background:#F2C14E;color:#1d1300;font:800 10px/1 Inter,sans-serif;font-style:normal}
+/* --- карточки героев: фон с самой карточки --- */
+.g12-hs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 14px}
+.h12c{position:relative;display:block;aspect-ratio:3/4.15;padding:0;border:0;border-radius:20px;background:#0a0b10;color:#fff;text-align:left;overflow:hidden;transition:transform .25s ease-out;box-shadow:0 16px 30px -14px rgba(0,0,0,.95)}
+.h12c .bgw{position:absolute;inset:0;overflow:hidden}
+.h12c .bg{position:absolute;inset:-14%;width:128%;height:128%;object-fit:cover;filter:blur(14px) saturate(1.25) brightness(.8);transform:scale(1.1)}
+.h12c .bgw .vg{position:absolute;inset:0;background:radial-gradient(90% 70% at 50% 40%,transparent 30%,rgba(5,6,10,.75)),linear-gradient(180deg,transparent 55%,rgba(5,6,10,.92))}
+.h12c .fr{position:absolute;left:10%;right:10%;top:9%;bottom:24%;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1.5px var(--ac),0 0 0 4px rgba(5,6,10,.5),0 14px 26px rgba(0,0,0,.7)}
+.h12c .fg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.h12c .fr .gl{position:absolute;top:0;bottom:0;left:-50%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transition:transform .25s ease-out;pointer-events:none}
+.h12c:not(:hover) .fr .gl{animation:h12gl 6s ease-in-out infinite 2s}@keyframes h12gl{0%{transform:translateX(0);opacity:0}8%{opacity:1}30%{transform:translateX(400%);opacity:0}100%{transform:translateX(400%);opacity:0}}
+.h12c .nm{position:absolute;left:12px;right:12px;bottom:11px;display:grid;gap:3px}
+.h12c .nm b{font:800 14px/1 Inter,sans-serif;letter-spacing:.02em}.h12c .nm small{font:600 10.5px/1.2 Inter,sans-serif;color:rgba(255,255,255,.62)}
+.h12c.st .fr{filter:saturate(.85)}.h12c.st .nm small{color:rgba(255,255,255,.42)}
+.h12c.frame{background:#07080c}
+.h12c.frame .loc{position:absolute;inset:0}.h12c.frame .loc svg{position:absolute;inset:0;width:100%;height:100%}.h12c.frame .loc .img{position:absolute;inset:-10%;filter:blur(18px) brightness(.55)}
+.h12c.frame .fr{left:16%;right:16%;top:12%;bottom:27%;border-radius:3px;box-shadow:0 0 0 1px #C9A45A,0 0 0 4px rgba(10,8,4,.7),0 0 0 5px rgba(201,164,90,.45),0 16px 30px rgba(0,0,0,.8);animation:h12fl 5s ease-in-out infinite}
+@keyframes h12fl{0%,100%{translate:0 0}50%{translate:0 -4px}}
+.g12-hs.big{gap:12px}
+.g12-cards .g11-hd small{max-width:150px;text-align:right}
+.h12d{position:absolute;inset:0;z-index:75;background:#05060a;overflow:hidden}
+.h12d .bgw{position:absolute;inset:0}
+.h12d .bg{position:absolute;inset:-12%;width:124%;height:124%;object-fit:cover;filter:blur(20px) saturate(1.25) brightness(.72)}
+.h12d .loc svg{position:absolute;inset:0;width:100%;height:100%}
+.h12d .bgw .vg{position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 34%,transparent 30%,rgba(5,6,10,.8)),linear-gradient(180deg,transparent 40%,#05060a 78%)}
+.h12-bk{position:absolute;left:14px;top:52px;z-index:5;width:40px;height:40px;border:0;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;display:grid;place-items:center}
+.h12d .fr{position:absolute;left:12%;right:12%;top:96px;height:330px;border-radius:16px;overflow:hidden;box-shadow:0 0 0 2px var(--hac,#E23A4E),0 0 0 6px rgba(5,6,10,.5),0 24px 50px rgba(0,0,0,.8)}
+.h12d.frame .fr{border-radius:4px;box-shadow:0 0 0 1px #C9A45A,0 0 0 5px rgba(10,8,4,.7),0 0 0 6px rgba(201,164,90,.5),0 24px 50px rgba(0,0,0,.85)}
+.h12d .fg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.h12d .tx{position:absolute;left:22px;right:22px;top:444px;display:grid;gap:6px}
+.h12d .tx small{font:800 10px/1 Inter,sans-serif;letter-spacing:.18em;color:#FF8A8A;text-transform:uppercase}.h12d .tx b{font:900 34px/1 Inter,sans-serif;letter-spacing:-.01em}
+.h12d .hlv{display:flex;align-items:center;gap:10px}.h12d .hlv i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.12);position:relative;overflow:hidden}.h12d .hlv i::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#E23A4E,#FF8A6B);transform-origin:left;transform:scaleX(var(--p))}.h12d .hlv em{font:800 12px/1 Inter,sans-serif;font-style:normal}
+.h12d .ac{position:absolute;left:18px;right:18px;top:540px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.h12d .ac button{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border:0;border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font:700 13px/1 Inter,sans-serif}.h12d .ac button .ic{width:16px;height:16px}
+.h12d .ac .pri{grid-column:1/-1;height:50px;background:linear-gradient(180deg,#F8D57A,#E8A93A);color:#1d1300;font-weight:800;font-size:15px}
+.h12d .cl{position:absolute;left:18px;right:18px;top:654px;display:flex;gap:6px;overflow:hidden}
+.h12d .cl span{flex:1;display:grid;gap:3px;padding:8px 9px;border-radius:12px;background:rgba(255,255,255,.05)}.h12d .cl b{font:700 11px/1.15 Inter,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.h12d .cl small{font:600 9.5px/1 Inter,sans-serif;color:rgba(255,255,255,.5)}
+.h12d .cl .done small{color:#4FD18B}.h12d .cl .chk small{color:#F2C14E}.h12d .cl .new small{color:#9FB3FF}
+/* --- Радар 3D v12 --- */
+.r12{background:radial-gradient(120% 80% at 50% 40%,#0b2a2c 0%,#061417 55%,#030809 100%)}
+.r12-hd{position:absolute;left:12px;right:12px;top:50px;z-index:10;display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px}
+.r12-bk{width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.07);color:#fff;display:grid;place-items:center}
+.r12-hd span{display:grid;gap:3px}.r12-hd b{font:900 22px/1 Inter,sans-serif;color:#BFFFF3}.r12-hd small{font:600 11px/1 "JetBrains Mono",ui-monospace,monospace;color:rgba(46,230,197,.75)}
+.r12-hd em{padding:6px 10px;border-radius:999px;background:rgba(242,193,78,.14);color:#F2C14E;font:800 11px/1 Inter,sans-serif;font-style:normal}
+.r12-st{position:absolute;left:0;right:0;top:100px;height:440px;perspective:900px;touch-action:pan-y;cursor:grab}
+.r12-st .pl{--a:-28deg;--zz:5px;position:absolute;left:50%;top:50%;width:320px;height:320px;transform:translate(-50%,-50%) rotateX(56deg) rotateZ(var(--a));transform-style:preserve-3d;border-radius:28px;
+ background:radial-gradient(circle at 50% 50%,rgba(46,230,197,.08),transparent 70%),repeating-linear-gradient(0deg,rgba(46,230,197,.09) 0 1px,transparent 1px 32px),repeating-linear-gradient(90deg,rgba(46,230,197,.09) 0 1px,transparent 1px 32px);box-shadow:inset 0 0 0 1.5px rgba(46,230,197,.32),0 0 60px rgba(46,230,197,.12)}
+.r12-st .rv{position:absolute;inset:0;width:100%;height:100%}.r12-st .rv .fl{animation:r12fl 3s linear infinite}@keyframes r12fl{to{stroke-dashoffset:-40}}
+.r12-st .sw{position:absolute;left:50%;top:50%;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;background:conic-gradient(from 0deg,rgba(46,230,197,0) 0deg,rgba(46,230,197,.16) 40deg,transparent 41deg);animation:g11sw 6s linear infinite;pointer-events:none;-webkit-mask-image:radial-gradient(circle,#000 60%,transparent 72%);mask-image:radial-gradient(circle,#000 60%,transparent 72%)}
+.r12-p{position:absolute;width:64px;height:64px;margin:-32px 0 0 -32px;transform-style:preserve-3d}
+.r12-p .ly{position:absolute;inset:0;border-radius:15px;background:rgba(10,40,40,.75);box-shadow:inset 0 0 0 1.5px rgba(46,230,197,.4);transform:translateZ(calc(var(--zi) * var(--zz)))}
+.r12-p.z1 .ly{--zz:3px}.r12-p.z3 .ly{--zz:7px}
+.r12-p .ly:last-of-type{background:linear-gradient(160deg,rgba(18,70,66,.95),rgba(8,36,36,.95));box-shadow:inset 0 0 0 1.5px rgba(120,255,230,.55)}
+.r12-p.sig .ly:last-of-type{box-shadow:inset 0 0 0 1.5px var(--ac),0 0 24px var(--ac)}
+.r12-p.sig.soon .ly:last-of-type{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.25)}
+.r12-p .rg{position:absolute;inset:-8px;border-radius:20px;border:2px solid var(--ac);opacity:0;transform:translateZ(1px);animation:r12rg 2.4s ease-out infinite}.r12-p .rg.b{animation-delay:-1.2s}
+.r12-p.soon .rg{border-color:rgba(255,255,255,.4);animation-duration:3.6s}
+@keyframes r12rg{0%{opacity:.8;transform:translateZ(1px) scale(.85)}100%{opacity:0;transform:translateZ(1px) scale(1.6)}}
+.r12-p .bb{position:absolute;left:50%;bottom:50%;display:grid;justify-items:center;gap:3px;transform-origin:50% 100%;transform:translateX(-50%) translateZ(24px) rotateZ(calc(-1 * var(--a))) rotateX(-56deg);pointer-events:none;white-space:nowrap}
+.r12-p .bb .gl{width:22px;height:22px;fill:none;stroke:#BFFFF3;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(46,230,197,.8))}
+.r12-p.sig .bb .gl{stroke:#fff}
+.r12-p .bb b{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#CFFFF6;text-shadow:0 1px 6px #000}
+.r12-p .hi{display:flex}.r12-p .hi .m8{width:22px;height:22px}.r12-p .hi .m8+.m8{margin-left:-6px}
+.r12-p .bm{position:absolute;left:50%;top:50%;width:3px;height:110px;margin-left:-1.5px;background:linear-gradient(0deg,var(--ac),transparent);transform-origin:50% 0;transform:rotateX(-90deg);opacity:.75;pointer-events:none;animation:r12bm 2.4s ease-in-out infinite}
+@keyframes r12bm{0%,100%{opacity:.35}50%{opacity:.9}}
+.r12-p.on .ly:last-of-type{background:linear-gradient(160deg,rgba(46,230,197,.5),rgba(10,60,56,.95))}
+.r12-hint{position:absolute;left:0;right:0;top:540px;text-align:center;font:600 11px/1 Inter,sans-serif;color:rgba(191,255,243,.5)}
+.r12-lg{position:absolute;left:12px;right:12px;bottom:22px;z-index:12;border-radius:20px;background:rgba(6,20,22,.94);box-shadow:inset 0 0 0 1px rgba(46,230,197,.2)}
+.r12-lg .hd{display:flex;align-items:center;justify-content:space-between;width:100%;height:46px;padding:0 16px;border:0;background:none;color:#BFFFF3;font:800 13px/1 Inter,sans-serif}.r12-lg .hd .ic{width:16px;height:16px;transform:rotate(-90deg);transition:transform .3s}
+.r12-lg.op .hd .ic{transform:rotate(90deg)}
+.r12-lg .ls{display:none;grid-template-columns:1fr 1fr;gap:6px;padding:0 10px 12px}.r12-lg.op .ls{display:grid}
+.r12-lg .ls span{display:grid;grid-template-columns:24px 1fr;grid-template-rows:auto auto;column-gap:7px;align-items:center;padding:6px 8px;border-radius:10px;background:rgba(46,230,197,.06);cursor:pointer}
+.r12-lg .ls .m8{grid-row:1/3;width:24px;height:24px}.r12-lg .ls b{font:700 11px/1.1 Inter,sans-serif}.r12-lg .ls small{font:500 10px/1.1 Inter,sans-serif;color:rgba(191,255,243,.5)}
+.r12-sh{position:absolute;left:8px;right:8px;bottom:8px;z-index:20;padding:10px 16px 18px;border-radius:28px 28px 38px 38px;background:#0b1d20;box-shadow:0 -12px 40px rgba(0,0,0,.7),inset 0 0 0 1px rgba(46,230,197,.25);display:grid;gap:12px}
+.r12-sh .hd{justify-self:center;width:36px;height:5px;border-radius:3px;background:rgba(255,255,255,.2)}
+.r12-sh .t{display:grid;grid-template-columns:44px 1fr 34px;align-items:center;gap:10px}.r12-sh .t .m8.big{width:44px;height:44px}
+.r12-sh .t span{display:grid;gap:4px}.r12-sh .t small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:rgba(46,230,197,.8)}.r12-sh .t b{font:900 20px/1 Inter,sans-serif}
+.r12-sh .x{width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.07);color:#fff;display:grid;place-items:center}.r12-sh .x .ic{width:15px;height:15px}
+.r12-sh .rsg{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:rgba(46,230,197,.08)}.r12-sh .rsg.soon{background:rgba(255,255,255,.04);opacity:.75}
+.r12-sh .rsg .mm{display:flex}.r12-sh .rsg .m8{width:30px;height:30px}.r12-sh .rsg .m8+.m8{margin-left:-8px}
+.r12-sh .rsg span{display:grid;gap:3px}.r12-sh .rsg b{font:800 13px/1.2 Inter,sans-serif}.r12-sh .rsg small{font:500 11px/1.2 Inter,sans-serif;color:rgba(255,255,255,.6)}.r12-sh .rsg em{font:700 11px/1 "JetBrains Mono",monospace;font-style:normal;color:#F2C14E}
+.r12-sh .go{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border:0;border-radius:16px;background:#2EE6C5;color:#03201b;font:800 15px/1 Inter,sans-serif}.r12-sh .go .ic{width:17px;height:17px}
+.r12-sh .nn{font:500 12px/1.4 Inter,sans-serif;color:rgba(255,255,255,.6)}
+.r12-mini{position:absolute;inset:0;perspective:400px}
+.r12-mini .pl{--a:-24deg;--zz:2px;position:absolute;left:50%;top:50%;width:320px;height:320px;transform:translate(-50%,-50%) scale(.3) rotateX(56deg) rotateZ(var(--a));transform-style:preserve-3d;border-radius:28px;background:repeating-linear-gradient(0deg,rgba(46,230,197,.14) 0 2px,transparent 2px 32px),repeating-linear-gradient(90deg,rgba(46,230,197,.14) 0 2px,transparent 2px 32px);box-shadow:inset 0 0 0 4px rgba(46,230,197,.35)}
+.r12-mini .bb{transform:translateX(-50%) translateZ(30px) rotateZ(calc(-1 * var(--a))) rotateX(-56deg) scale(2.6)}
+.r12-mini .bb .gl{width:16px;height:16px}
+/* --- Versus v12 --- */
+.vs12{background:#07080D}
+.v12-top{position:absolute;left:10px;right:10px;top:50px;z-index:30;display:grid;grid-template-columns:34px 1fr auto 1fr;align-items:center;gap:8px}
+.v12-top .x{width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;display:grid;place-items:center}.v12-top .x .ic{width:16px;height:16px}
+.v12-top .hp{display:grid;gap:3px}.v12-top .hp small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.12em}.v12-top .hp b{font:800 10.5px/1 Inter,sans-serif;color:var(--mut)}
+.v12-top .hp>i{position:relative;display:block;height:9px;border-radius:5px;background:rgba(255,255,255,.1);overflow:hidden}.v12-top .hp>i>i{position:absolute;inset:0;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.v12-top .hp>i>.gh{background:rgba(255,255,255,.75);transition:transform .9s cubic-bezier(.4,0,.2,1)}
+.v12-top .hp.l small{color:#F6C76E}.v12-top .hp.l>i>.v{background:linear-gradient(90deg,#E8A93A,#F6D488)}.v12-top .hp.l>i>i{transform-origin:left}
+.v12-top .hp.r{text-align:right}.v12-top .hp.r small{color:#A9C8FF}.v12-top .hp.r>i>.v{background:linear-gradient(270deg,#5C8DFF,#A9C8FF)}.v12-top .hp.r>i>i{transform-origin:right}
+.v12-top .rd{text-align:center;display:grid;gap:3px}.v12-top .rd b{font:900 13px/1 Inter,sans-serif}.v12-top .rd small{font:600 9.5px/1 Inter,sans-serif;color:var(--mut)}
+.v12-dmg{position:absolute;right:0;top:42px;display:grid;justify-items:end;gap:2px;font:900 26px/1 Inter,sans-serif;color:#FF6B6B;text-shadow:0 2px 0 #5a0a0a,0 0 14px rgba(255,107,107,.6);opacity:0;pointer-events:none}
+.v12-dmg small{font:900 9.5px/1 Inter,sans-serif;letter-spacing:.14em;color:#FFD23F;text-shadow:0 1px 6px #000}
+.v12-st{position:absolute;left:0;right:0;top:100px;height:300px}
+.v12-p{position:absolute;top:0;bottom:0;width:50.5%;overflow:hidden;transition:filter .45s,transform .45s}
+.v12-p.lf{left:0}.v12-p.rt{right:0}
+.v12-p .hbg{position:absolute;inset:0}.v12-p .hbg svg{position:absolute;inset:0;width:100%;height:100%}.v12-p.lf .hbg{transform:scaleX(-1)}
+.v12-p video{position:absolute;left:50%;bottom:0;height:100%;width:auto;aspect-ratio:16/9;object-fit:cover;-webkit-mask-image:linear-gradient(transparent,#000 18%,#000 84%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 84%,transparent)}
+.v12-p.lf video{translate:-44% 0;scale:-1 1}.v12-p.rt video{translate:-48% 0}
+.v12-p .dm{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,13,.45),transparent 24%,transparent 62%,rgba(7,8,13,.96))}
+.v12-p .fl{position:absolute;inset:0;background:#fff;opacity:0;mix-blend-mode:overlay}
+.v12-p .nm{position:absolute;bottom:10px;z-index:3;display:flex;align-items:center;gap:7px;text-shadow:0 1px 8px rgba(0,0,0,.85)}
+.v12-p.lf .nm{left:12px}.v12-p.rt .nm{right:12px;flex-direction:row-reverse;text-align:right}
+.v12-p .nm span{display:grid;gap:3px}.v12-p .nm b{font:800 12px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase}.v12-p.lf .nm b{color:#F6C76E}.v12-p.rt .nm b{color:#A9C8FF}.v12-p .nm small{font:600 10.5px/1 Inter,sans-serif;color:rgba(255,255,255,.72)}
+.v12-p .nm .m8.nmi{width:30px;height:30px}.v12-p.lf .nmi{box-shadow:0 0 0 2px #F6C76E}.v12-p.rt .nmi{box-shadow:0 0 0 2px #A9C8FF}
+.v12-p .ko{position:absolute;left:50%;top:42%;font:900 italic 50px/1 Inter,sans-serif;color:#FF4D5E;text-shadow:0 3px 0 #4a0010,0 0 24px rgba(255,60,80,.6);opacity:0;pointer-events:none}
+.v12-p.tk{filter:brightness(1.12)}.v12-p.tk .nm .m8{animation:d10p .6s ease-in-out 3}
+.v12-p.qt{filter:brightness(.42) saturate(.55)}
+.v12-x{position:absolute;left:50%;top:46%;z-index:6;font:400 60px/1 "Russo One",Inter,sans-serif;color:#F6D488;text-shadow:0 0 30px rgba(246,212,136,.8);opacity:0;pointer-events:none}
+.vs12.stop video{filter:contrast(1.3) brightness(1.15)}
+.v12-ln{position:absolute;left:10px;right:10px;top:372px;z-index:8;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.v12-m{position:relative;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:10px;row-gap:4px;width:86%;padding:9px 12px 10px;border-radius:14px;background:#12141F;box-shadow:0 10px 24px rgba(0,0,0,.6);pointer-events:auto;transition:opacity .35s,transform .35s}
+.v12-m.lf{align-self:flex-start;border-left:3px solid #F6C76E}.v12-m.rt{align-self:flex-end;border-right:3px solid #A9C8FF}
+.v12-m .tl{position:absolute;top:-7px;width:14px;height:14px;background:#12141F;transform:rotate(45deg);border-radius:3px}.v12-m.lf .tl{left:30px}.v12-m.rt .tl{right:30px}
+.v12-m .who{grid-column:1;display:flex;align-items:center;gap:6px}.v12-m .who .m8{width:20px;height:20px}.v12-m .who b{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase}.v12-m.lf .who b{color:#F6C76E}.v12-m.rt .who b{color:#A9C8FF}
+.v12-m .tx{grid-column:1;font:700 14px/1.3 Inter,sans-serif}.v12-m .tx .dt{font-style:normal;letter-spacing:.2em;color:rgba(255,255,255,.45)}.v12-m .tx em{font:600 italic 11px/1 Lora,serif;color:var(--mut)}
+.v12-m .tx u{text-decoration:none;box-shadow:inset 0 -2px 0 #F2C14E}
+.v12-m .pl{grid-column:2;grid-row:1/3;align-self:center;width:32px;height:32px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff}.v12-m.lf .pl{background:#F6C76E;color:#1d1300}.v12-m .pl .ic{width:13px;height:13px;margin-left:2px}
+.v12-m .wv{position:absolute;left:12px;right:52px;bottom:3px;height:3px;display:none;gap:2px}.v12-m.say .wv{display:flex}
+.v12-m .wv i{flex:1;border-radius:2px;background:currentColor;animation:v12wv .7s ease-in-out infinite alternate}.v12-m.lf .wv{color:#F6C76E}.v12-m.rt .wv{color:#A9C8FF}
+@keyframes v12wv{from{transform:scaleY(.3)}to{transform:scaleY(1.6)}}
+.v12-m.old{opacity:.38;transform:scale(.96)}.v12-m.old .tl{display:none}.v12-m.old .wv{display:none}
+.v12-m.hid{box-shadow:0 0 0 1.5px #F6C76E,0 10px 24px rgba(0,0,0,.6)}
+.v12-pn{position:absolute;left:10px;right:10px;bottom:20px;z-index:20;display:grid;gap:8px;padding:12px 14px 14px;border-radius:22px;background:#121522;box-shadow:0 -10px 30px rgba(0,0,0,.5)}
+.v12-rb{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:8px}.v12-rb small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.18em;color:var(--mut)}.v12-rb b{font:900 13px/1 Inter,sans-serif;color:#F6D488;letter-spacing:.06em}
+.v12-rb .tm{grid-column:1/-1;margin-top:7px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}.v12-rb .tm i{display:block;height:100%;background:linear-gradient(90deg,#FF6B6B,#F6D488);transform-origin:left}
+.v12-q{display:grid;gap:6px}
+.v12-q .q{font:800 15px/1.2 Inter,sans-serif}.v12-q>small{font:500 italic 12.5px/1.3 Lora,Georgia,serif;color:var(--mut)}
+.v12-q .vsl{display:flex;flex-wrap:wrap;gap:5px;min-height:38px;padding:5px;border-radius:12px;background:rgba(255,255,255,.04)}
+.v12-q .vsl i{min-width:34px;height:28px;padding:0 8px;border-radius:8px;border:1.5px dashed rgba(255,255,255,.18);display:grid;place-items:center;font:700 13px/1 Inter,sans-serif;font-style:normal}
+.v12-q .vsl i.f{border:0;background:#F3EBDD;color:#14161E}.v12-q .vsl i.ok{background:#4FD18B;color:#05230F}
+.v12-q .tl{display:flex;flex-wrap:wrap;gap:6px}.v12-q .tl button{height:32px;padding:0 11px;border:0;border-radius:9px;background:#F3EBDD;color:#14161E;font:700 13px/1 Inter,sans-serif;box-shadow:0 3px 0 rgba(0,0,0,.35)}.v12-q .tl button:disabled{opacity:.15}
+.v12-q .ck{height:46px;margin-top:2px;border:0;border-radius:14px;background:#F6D488;color:#1d1300;font:800 15px/1 Inter,sans-serif}.v12-q .ck:disabled{background:rgba(246,212,136,.25)}
+.v12-q .op{display:grid;gap:6px}.v12-q .op button{height:44px;border:0;border-radius:13px;background:rgba(255,255,255,.07);color:#fff;font:700 14px/1 Inter,sans-serif;text-align:left;padding:0 14px;transition:background .25s}
+.v12-q .op button.ok{background:#1f6b45;box-shadow:inset 0 0 0 1.5px #4FD18B}.v12-q .op button.bad{background:#5a1f26;box-shadow:inset 0 0 0 1.5px #FF6B6B}
+.v12-win{display:grid;justify-items:center;gap:8px;padding:8px 0}.v12-win small{font:800 10px/1 Inter,sans-serif;letter-spacing:.2em;color:#4FD18B}.v12-win b{display:flex;align-items:center;gap:6px;font:900 32px/1 Inter,sans-serif;color:#F6D488}.v12-win span{font:600 13px/1.3 Inter,sans-serif;color:rgba(255,255,255,.75)}.v12-win em{font-style:normal;color:#F6D488}
+.v12-win .rv{display:flex;align-items:center;gap:8px;height:46px;padding:0 18px;border:0;border-radius:14px;background:#F6D488;color:#1d1300;font:800 14px/1 Inter,sans-serif}
+.v12-snd,.k12-snd{position:absolute;right:16px;bottom:-60px;z-index:31;display:none}
+.vs12 .v12-snd{display:flex;right:14px;top:96px;bottom:auto;align-items:center;gap:5px;height:28px;padding:0 10px;border:0;border-radius:999px;background:rgba(0,0,0,.55);color:rgba(255,255,255,.55);font:800 10.5px/1 Inter,sans-serif}
+.v12-snd .ic,.k12-snd .ic{width:14px;height:14px}.v12-snd.on,.k12-snd.on{color:#F6D488;box-shadow:inset 0 0 0 1px rgba(246,212,136,.45)}
+
+/* v12 Versus: имена — в полосках здоровья; реплика — у низа сцены, растёт вверх; старая — одной строкой */
+.v12-top{grid-template-columns:34px 1fr 58px 1fr}.v12-top .hp small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.06em}.v12-top .hp small em{font-style:normal;opacity:.6;font-weight:700}
+.v12-st{top:96px;height:362px}
+.v12-ln{top:auto;bottom:306px}
+.v12-m.old{grid-template-rows:auto;padding:5px 10px;width:70%}.v12-m.old .who b{display:none}.v12-m.old .who{grid-column:1;grid-row:1}.v12-m.old .tx{grid-column:1;grid-row:1;padding-left:26px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.v12-m.old .pl{display:none}
+.vs12 .v12-snd{left:50%;right:auto;top:102px;transform:translateX(-50%)}
+.g12-card.city .g11-sky{height:300px}.g12-card.city .g11-tx{top:40px}
+.r12-p:not(.sig):not(.on) .bb b{display:none}
+.r12-p.on .bb b{display:block;color:#fff}
+/* --- Реплики как в TikTok --- */
+.ln12{background:#0a0806}
+.ln12-bg{position:absolute;inset:0;opacity:.55}.ln12-bg svg{position:absolute;inset:0;width:100%;height:100%}
+.ln12-vg{position:absolute;inset:0;background:radial-gradient(70% 50% at 50% 38%,transparent 30%,rgba(8,6,4,.85)),linear-gradient(180deg,rgba(8,6,4,.6),transparent 22%,transparent 60%,rgba(8,6,4,.95))}
+.ln12-hd{position:absolute;left:12px;right:12px;top:50px;z-index:5;display:grid;grid-template-columns:40px 1fr;align-items:center;gap:10px}
+.ln12-hd .bk{width:40px;height:40px;border:0;border-radius:50%;background:rgba(0,0,0,.4);color:#fff;display:grid;place-items:center}
+.ln12-hd span{display:grid;gap:3px}.ln12-hd small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.2em;color:#E88A3A}.ln12-hd b{font:800 16px/1 Inter,sans-serif}
+.ln12-stage{position:absolute;left:0;right:0;top:104px;height:330px;z-index:3;display:grid;place-items:center}
+.ln12-stage .fr.big{position:relative;width:196px;height:262px;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px #C9A45A,0 0 0 5px rgba(12,9,4,.8),0 0 0 6px rgba(201,164,90,.55),0 26px 50px rgba(0,0,0,.85);animation:h12fl 5s ease-in-out infinite}
+.ln12-stage .fr video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ln12-stage .fr .gl{position:absolute;top:0;bottom:0;left:-50%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.2),transparent);animation:h12gl 6s ease-in-out infinite 1s}
+.ln12-stage .tg{position:absolute;bottom:4px;font:600 12px/1 "Oswald",Inter,sans-serif;letter-spacing:.06em;color:#E88A3A}
+.ln12.ab .ln12-stage{grid-template-columns:1fr 1fr;align-items:center;padding:0 18px;gap:14px}
+.ln12.ab .ls12{display:grid;gap:10px;justify-items:center}
+.ln12.ab .ls12 .fr{position:relative;width:132px;height:170px;border-radius:3px;overflow:hidden;box-shadow:0 0 0 2px #F3EBDD,0 16px 34px rgba(0,0,0,.8)}
+.ln12.ab .wf{display:flex;align-items:center;gap:2px;width:130px;height:18px}.ln12.ab .wf i{flex:1;height:calc(var(--h)*100%);border-radius:2px;background:rgba(243,235,221,.4)}
+.ln12-stage.say .wf i{background:#F3EBDD;animation:v12wv .5s ease-in-out infinite alternate}.ln12-stage.say .wf i:nth-child(3n){animation-delay:-.2s}.ln12-stage.say .wf i:nth-child(3n+1){animation-delay:-.35s}
+.ln12.ab .to{display:grid;justify-items:center;gap:8px}.ln12.ab .ct{position:relative;width:132px;height:170px;overflow:hidden;-webkit-mask-image:radial-gradient(60% 60% at 50% 45%,#000 55%,transparent 100%);mask-image:radial-gradient(60% 60% at 50% 45%,#000 55%,transparent 100%)}
+.ln12.ab .ct video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9)}
+.ln12.ab .to small{font:700 11px/1 Inter,sans-serif;color:rgba(255,255,255,.6)}
+.ln12-cap{position:absolute;left:14px;right:14px;top:444px;z-index:4;min-height:64px;display:grid;place-items:center;text-align:center}
+.ln12-cap .cw{border:0;background:none;padding:0 2px;color:#fff;font:900 italic 38px/1.05 Inter,sans-serif;text-shadow:0 3px 0 #000,0 0 18px rgba(0,0,0,.9),2px 2px 0 #000,-2px 2px 0 #000;cursor:pointer}
+.ln12-cap .all{line-height:1.2}.ln12-cap .cw.s{font-size:22px}
+.ln12-ru{position:absolute;left:24px;right:24px;top:520px;z-index:4;text-align:center;font:500 italic 14px/1.35 Lora,Georgia,serif;color:rgba(243,235,221,.75)}
+.ln12-chips{position:absolute;left:12px;right:12px;bottom:100px;z-index:5;display:flex;gap:6px;overflow:hidden;align-items:center}
+.ln12-chips>span{display:flex;align-items:center;gap:5px;font:700 11px/1 Inter,sans-serif;color:rgba(255,255,255,.6);white-space:nowrap}.ln12-chips .m8{width:22px;height:22px}
+.ln12-chips button{display:flex;align-items:center;gap:6px;height:32px;padding:0 10px 0 4px;border:0;border-radius:999px;background:rgba(255,255,255,.07);color:#fff;font:700 11.5px/1 Inter,sans-serif;white-space:nowrap}.ln12-chips button.on{background:rgba(232,138,58,.22);box-shadow:inset 0 0 0 1.5px #E88A3A}.ln12-chips button.lk{opacity:.4}
+.ln12-ft{position:absolute;left:14px;right:14px;bottom:28px;z-index:6;display:grid;grid-template-columns:48px 1fr 48px 48px;gap:8px}
+.ln12-ft button{height:52px;border:0;border-radius:16px;background:rgba(255,255,255,.08);color:#fff;display:grid;place-items:center}.ln12-ft .pl{display:flex;align-items:center;justify-content:center;gap:8px;background:#E88A3A;color:#1a0d00;font:800 15px/1 Inter,sans-serif}.ln12-ft .lpv .ic{transform:none}
+.ln12-ft .sv.on{color:#F2C14E;background:rgba(242,193,78,.16)}
+.ln12-fl{position:absolute;inset:0;z-index:7;background:radial-gradient(60% 40% at 50% 38%,rgba(255,230,190,.9),transparent 70%);opacity:0;pointer-events:none}
+/* --- Звук реплик --- */
+.sd12{background:linear-gradient(180deg,#120c0a,#07070a)}
+.sd12-hd{position:absolute;left:20px;right:20px;top:58px;display:grid;gap:4px}.sd12-hd b{font:900 26px/1 Inter,sans-serif}.sd12-hd small{font:600 12px/1 Inter,sans-serif;color:var(--mut)}
+.sd12-sg{position:absolute;left:14px;right:14px;top:120px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sd12-sg button{display:flex;align-items:center;justify-content:center;gap:7px;height:44px;border:0;border-radius:14px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);font:700 13px/1 Inter,sans-serif}.sd12-sg button.on{background:#F3EBDD;color:#14161E}.sd12-sg .m8{width:24px;height:24px}
+.sd12-cd{position:absolute;left:14px;right:14px;top:178px;display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;padding:12px;border-radius:20px;background:rgba(255,255,255,.04)}
+.sd12-cd .fr{position:relative;height:120px;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1.5px rgba(255,255,255,.12)}.sd12-cd video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sd12-cd .tx{display:grid;gap:6px}.sd12-cd b{font:800 16px/1.25 Inter,sans-serif}.sd12-cd small{font:500 italic 13px/1.3 Lora,serif;color:var(--mut)}
+.sd12-tr{position:absolute;left:14px;right:14px;top:336px;display:grid;gap:8px}
+.sd12-tr .t{display:grid;grid-template-columns:28px 1fr 74px;align-items:center;gap:10px;padding:10px 12px;border:0;border-radius:16px;background:rgba(255,255,255,.04);color:#fff;text-align:left;opacity:.5;transition:opacity .25s,background .25s}
+.sd12-tr .t.on{opacity:1;background:rgba(255,255,255,.07)}
+.sd12-tr .ck{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.08)}.sd12-tr .t.on .ck{background:#E88A3A;color:#1a0d00}.sd12-tr .ck .ic{width:14px;height:14px}
+.sd12-tr .t span{display:grid;gap:3px}.sd12-tr b{font:800 13.5px/1 Inter,sans-serif}.sd12-tr small{font:500 11px/1.2 Inter,sans-serif;color:var(--mut)}
+.sd12-tr .eq{display:flex;align-items:center;gap:2px;height:22px}.sd12-tr .eq i{flex:1;height:calc(var(--h)*100%);border-radius:2px;background:rgba(255,255,255,.2)}
+.sd12-tr .t.live .eq i{background:#E88A3A;animation:v12wv .45s ease-in-out infinite alternate;animation-delay:var(--d)}
+.sd12-ab{position:absolute;left:14px;right:14px;top:560px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sd12-ab button{display:flex;align-items:center;justify-content:center;gap:8px;height:56px;border:0;border-radius:18px;background:rgba(255,255,255,.08);color:#fff;font:800 15px/1 Inter,sans-serif}.sd12-ab .pri{background:#E88A3A;color:#1a0d00}.sd12-ab .ic{width:16px;height:16px}
+.sd12-nt{position:absolute;left:20px;right:20px;top:632px;font:500 11.5px/1.4 Inter,sans-serif;color:rgba(255,255,255,.45)}
+/* --- Комикс v12 --- */
+.k12{background:radial-gradient(120% 80% at 50% 30%,#1c1410,#09070a 70%)}
+.k12-hd{position:absolute;left:12px;right:12px;top:50px;z-index:10;display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:10px}
+.k12-hd .bk,.k12-hd .ict{width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.07);color:#fff;display:grid;place-items:center}.k12-hd .ict.on{color:#F6D488}
+.k12-hd .tt{display:grid;gap:3px}.k12-hd small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.2em;color:#E23A4E}.k12-hd b{font:700 italic 18px/1 Lora,Georgia,serif}
+.k12-who{position:absolute;left:14px;right:14px;top:100px;z-index:10;display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:14px;background:rgba(255,255,255,.05);white-space:nowrap;overflow:hidden}
+.k12-who .st{display:flex;align-items:center;font:800 9.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}.k12-who .st .ic{width:12px;height:12px}
+.k12-who .m8{width:24px;height:24px}.k12-who b{font:800 12.5px/1 Inter,sans-serif}.k12-who>i{width:1px;height:14px;background:rgba(255,255,255,.15);margin:0 2px}.k12-who small{font:500 11px/1 Inter,sans-serif;color:rgba(255,255,255,.55);overflow:hidden;text-overflow:ellipsis}
+.k12-pr{position:absolute;left:14px;right:14px;top:146px;z-index:10;display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.k12-pr i{position:relative;height:28px;border-radius:9px;background:rgba(255,255,255,.05);display:grid;place-items:center;opacity:.45;transition:opacity .3s,background .3s}
+.k12-pr i .m8{width:20px;height:20px}.k12-pr i.dn{opacity:.8}.k12-pr i.on{opacity:1;background:rgba(242,193,78,.16);box-shadow:inset 0 0 0 1.5px #F2C14E}
+.k12s-neutral .k12-pr{top:100px}.k12s-neutral .k12-pr i{height:6px;border-radius:3px}.k12s-neutral .k12-pr i.on,.k12s-neutral .k12-pr i.dn{background:#F3EBDD;box-shadow:none}
+.k12-pnl{position:absolute;left:14px;right:14px;top:184px;height:352px;z-index:4}
+.k12s-neutral .k12-pnl{top:122px;height:400px}
+.k12-pnl .fr{position:absolute;inset:0;padding:6px;border-radius:4px;background:#F3EBDD;box-shadow:0 20px 44px rgba(0,0,0,.7)}
+.k12-pnl .in{position:absolute;inset:6px;overflow:hidden;background:#140f0c;border-radius:2px}
+.k12-pnl .por{position:absolute;top:0;bottom:0;width:72%;overflow:hidden}.k12-pnl .por.l{left:0}.k12-pnl .por.r{right:0}
+.k12-pnl .por .hbg{position:absolute;inset:0}.k12-pnl .por .hbg svg{position:absolute;inset:0;width:100%;height:100%}
+.k12-pnl .por video{position:absolute;left:50%;bottom:0;height:88%;width:auto;aspect-ratio:16/9;translate:-50% 0;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
+.k12-pnl .por.l video{scale:-1 1}
+.k12-pnl .por .dm{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(20,15,12,.85))}
+.k12-pnl .bb{position:absolute;top:22px;z-index:3;max-width:66%;padding:11px 40px 12px 13px;border-radius:16px;background:#FFFDF6;color:#14100c;box-shadow:0 0 0 2px #14100c,0 10px 22px rgba(0,0,0,.6)}
+.k12-pnl .bb.l{right:12px}.k12-pnl .bb.r{left:12px}
+.k12-pnl .bb::after{content:'';position:absolute;bottom:-11px;width:18px;height:14px;background:#FFFDF6;box-shadow:2px 2px 0 #14100c}
+.k12-pnl .bb.l::after{left:24px;clip-path:polygon(0 0,100% 0,0 100%)}.k12-pnl .bb.r::after{right:24px;clip-path:polygon(0 0,100% 0,100% 100%)}
+.k12-pnl .bb .tx{font:800 14px/1.3 "Comic Neue","Inter",sans-serif;letter-spacing:.005em}
+.k12-pnl .bb .pl{position:absolute;right:8px;top:50%;margin-top:-13px;width:26px;height:26px;border:0;border-radius:50%;background:#14100c;color:#FFFDF6;display:grid;place-items:center}.k12-pnl .bb .pl .ic{width:11px;height:11px;margin-left:2px}
+.k12 .kw{display:inline;padding:0;border:0;background:none;font:inherit;color:inherit;box-shadow:inset 0 -2px 0 #E23A4E;cursor:pointer}
+.k12-pnl .bb.say{box-shadow:0 0 0 2px #14100c,0 0 0 5px rgba(242,193,78,.6),0 10px 22px rgba(0,0,0,.6)}
+.k12-pnl .tag{position:absolute;bottom:12px;z-index:3;display:flex;align-items:center;gap:6px;padding:5px 10px 5px 5px;border-radius:999px;background:rgba(0,0,0,.6)}
+.k12-pnl .tag.l{left:12px}.k12-pnl .tag.r{right:12px;flex-direction:row-reverse;padding:5px 5px 5px 10px}.k12-pnl .tag .m8{width:28px;height:28px}.k12-pnl .tag b{font:800 10.5px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#F2C14E}
+.k12-pnl .sil{position:absolute;bottom:0;width:150px;height:250px;background:radial-gradient(48px 52px at 50% 70px,#2a2522 98%,transparent 100%),radial-gradient(120px 150px at 50% 250px,#2a2522 98%,transparent 100%);opacity:.9}
+.k12-pnl .sil.l{left:20px}.k12-pnl .sil.r{right:20px}
+.k12s-neutral .k12-pnl .in{background:repeating-linear-gradient(135deg,#171310 0 6px,#140f0c 6px 12px)}
+.k12s-neutral .k12-pnl .bb{top:40px}
+.k12-pnl .nq{position:absolute;bottom:200px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#3a332e;color:#8f857c;font:900 22px/1 Inter,sans-serif;font-style:normal}
+.k12-pnl .nq.l{left:74px}.k12-pnl .nq.r{right:74px}
+.k12-ru{position:absolute;left:14px;right:14px;top:546px;z-index:4;display:grid;gap:4px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.05)}
+.k12s-neutral .k12-ru{top:532px}
+.k12-ru b{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:#F2C14E}.k12-ru span{font:500 13.5px/1.35 Inter,sans-serif;color:rgba(255,255,255,.85)}
+.k12-mem{position:absolute;left:14px;right:14px;top:612px;z-index:4;display:flex;justify-content:space-between;gap:8px;font:600 11px/1 Inter,sans-serif;color:rgba(255,255,255,.55)}
+.k12-mem span{display:flex;align-items:center;gap:5px}.k12-mem b{color:#4FD18B}.k12-mem .dp b{color:#F2C14E}.k12-mem .ic{width:13px;height:13px;color:#F2C14E}
+.k12-ft{position:absolute;left:14px;right:14px;bottom:26px;z-index:6;display:grid;grid-template-columns:52px 1fr 52px;gap:10px}
+.k12-ft button{height:52px;border:0;border-radius:16px;background:rgba(255,255,255,.08);color:#fff;display:grid;place-items:center}.k12-ft .pl{display:flex;align-items:center;justify-content:center;gap:8px;background:#F2C14E;color:#1d1300;font:800 15px/1 Inter,sans-serif}
+.k12 .k12-snd{display:flex;right:14px;bottom:86px;top:auto;align-items:center;gap:5px;height:28px;padding:0 10px;border:0;border-radius:999px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font:800 10.5px/1 Inter,sans-serif}
+.k12s-who .k12-snd,.k12s-neutral .k12-snd{bottom:78px}
+.k12s-neutral .k12-snd{display:flex}
+/* экран пополам */
+.k12-sp{position:absolute;inset:0}
+.k12-sp .hf{position:absolute;left:0;right:0;height:calc(50% - 24px);overflow:hidden;transition:filter .45s}
+.k12-sp .hf.t{top:0}.k12-sp .hf.b{bottom:0}
+.k12-sp .hbg{position:absolute;inset:0}.k12-sp .hbg svg{position:absolute;inset:0;width:100%;height:100%}
+.k12-sp video{position:absolute;left:50%;top:50%;height:120%;width:auto;aspect-ratio:16/9;translate:-50% -46%;object-fit:cover}
+.k12-sp .hf.b video{translate:-56% -50%}
+.k12-sp .dm{position:absolute;inset:0}.k12-sp .hf.t .dm{background:linear-gradient(180deg,rgba(8,6,6,.5),transparent 30%,transparent 55%,rgba(8,6,6,.9))}.k12-sp .hf.b .dm{background:linear-gradient(0deg,rgba(8,6,6,.55),transparent 30%,transparent 55%,rgba(8,6,6,.9))}
+.k12-sp .hf.off{filter:brightness(.32) saturate(.4)}
+.k12-sp .kbl{position:absolute;left:14px;right:14px;z-index:3}.k12-sp .hf.t .kbl{bottom:14px}.k12-sp .hf.b .kbl{top:14px}
+.k12-sp .bq{position:relative;display:grid;gap:5px;padding:12px 44px 12px 14px;border-radius:18px;background:#FFFDF6;color:#14100c;box-shadow:0 0 0 2px #14100c,0 12px 26px rgba(0,0,0,.6)}
+.k12-sp .bq .tx{font:800 15px/1.3 Inter,sans-serif}.k12-sp .bq small{font:500 italic 12.5px/1.3 Lora,serif;color:#5a4d40}
+.k12-sp .bq .pl{position:absolute;right:9px;top:50%;margin-top:-14px;width:28px;height:28px;border:0;border-radius:50%;background:#14100c;color:#FFFDF6;display:grid;place-items:center}.k12-sp .bq .pl .ic{width:12px;height:12px;margin-left:2px}
+.k12-sp .bq.say{box-shadow:0 0 0 2px #14100c,0 0 0 5px rgba(242,193,78,.6),0 12px 26px rgba(0,0,0,.6)}
+.k12-sp .mid{position:absolute;left:0;right:0;top:calc(50% - 24px);height:48px;z-index:5;display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:10px;padding:0 12px;background:#0b0908;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+.k12-sp .mid button{width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.07);color:#fff;display:grid;place-items:center}.k12-sp .mid .snd.on{color:#F6D488}.k12-sp .mid .ic{width:16px;height:16px}
+.k12-sp .kdots{display:flex;justify-content:center;gap:6px}.k12-sp .kdots i{width:22px;height:4px;border-radius:2px;background:rgba(255,255,255,.14);transition:background .3s}.k12-sp .kdots i.on{background:#F3EBDD}
+.k12s-split .hb{background:rgba(255,255,255,.6)}
+/* конец главы */
+.k12-end{position:absolute;inset:0;z-index:40;display:grid;align-items:end;padding:0 10px 18px;background:rgba(6,5,5,.72)}
+.k12-end .cd{display:grid;gap:10px;padding:18px 16px 16px;border-radius:26px;background:#17120f;box-shadow:0 -10px 40px rgba(0,0,0,.6),inset 0 0 0 1px rgba(242,193,78,.18)}
+.k12-end .cd>small{font:800 10px/1 Inter,sans-serif;letter-spacing:.2em;color:#4FD18B}.k12-end .cd>b{font:700 italic 26px/1.05 Lora,Georgia,serif}.k12-end .cd>em{display:flex;align-items:center;gap:6px;font:600 12.5px/1.3 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.7)}.k12-end .cd>em .m8{width:20px;height:20px}
+.k12-end .hw{display:grid;gap:7px;padding:12px;border-radius:16px;background:rgba(255,255,255,.04)}.k12-end .hw>small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:var(--mut);text-transform:uppercase}
+.k12-end .hw span{display:grid;grid-template-columns:18px 1fr;gap:8px;font:500 12.5px/1.35 Inter,sans-serif;color:rgba(255,255,255,.78)}.k12-end .hw .ic{width:16px;height:16px;color:#F2C14E;margin-top:1px}.k12-end .hw b{color:#fff}
+.k12-end .go{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border:0;border-radius:16px;background:#F2C14E;color:#1d1300;font:800 15px/1 Inter,sans-serif}.k12-end .go .ic{width:16px;height:16px}
+.k12-end .ls{height:40px;border:0;border-radius:14px;background:none;color:rgba(255,255,255,.6);font:700 13px/1 Inter,sans-serif}
+.k12-end .rv{display:flex;justify-content:center;gap:12px;perspective:600px}.k12-end .rv .p{position:relative;width:110px;height:120px;border-radius:12px;overflow:hidden;box-shadow:0 0 0 2px #F3EBDD}.k12-end .rv video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.k12-end .ck .csg{display:flex;gap:5px}.k12-end .ck .csg i{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.12)}.k12-end .ck .csg i.f{background:#4FD18B}.k12-end .ck .csg i.c{background:#F2C14E}
+.k12-end .ck>small{color:#F2C14E}.k12-end .ck .q{font:800 17px/1.25 Inter,sans-serif;font-style:normal}
+.k12-end .ck .ln{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0;border-radius:14px;background:rgba(255,255,255,.06);color:#fff;font:700 13.5px/1.3 Inter,sans-serif;text-align:left}.k12-end .ck .ln .ic{width:14px;height:14px;color:#F2C14E}
+.k12-end .ck .op{display:grid;gap:6px}.k12-end .ck .op button{height:46px;border:0;border-radius:13px;background:rgba(255,255,255,.07);color:#fff;font:700 14px/1 Inter,sans-serif;text-align:left;padding:0 14px}
+.k12-end .ck .op .ok{background:#1f6b45;box-shadow:inset 0 0 0 1.5px #4FD18B}.k12-end .ck .op .bad{background:#5a1f26;box-shadow:inset 0 0 0 1.5px #FF6B6B}
+.k12-end .why{font:500 12.5px/1.4 Inter,sans-serif;color:rgba(255,255,255,.7)}
+.k12-end .dn{justify-items:stretch}.k12-end .stp{justify-self:center;margin:6px 0 4px;padding:10px 18px;border:3px solid #E23A4E;border-radius:8px;color:#E23A4E;font:900 24px/1.05 Inter,sans-serif;font-style:normal;text-align:center;letter-spacing:.04em}.k12-end .stp small{display:block;margin-top:5px;font:800 10.5px/1 Inter,sans-serif;letter-spacing:.1em}
+.k12-end .dp{display:grid;gap:5px;padding:12px;border-radius:16px;background:rgba(242,193,78,.07);box-shadow:inset 0 0 0 1px rgba(242,193,78,.25)}.k12-end .dp small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.18em;color:#F2C14E}.k12-end .dp b{font:800 15px/1.2 Inter,sans-serif}.k12-end .dp em{font:500 12px/1.2 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.6)}
+.k12-end .dp .bt{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}.k12-end .dp .bt button{height:42px;border:0;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font:700 13px/1 Inter,sans-serif}.k12-end .dp .bt .pri{background:#F2C14E;color:#1d1300;font-weight:800}
+/* --- Обучение: хватит или ещё --- */
+.dp12{background:#0c0d12}
+.dp12-top{position:relative;height:208px;display:grid;align-content:end;gap:8px;padding:0 20px 16px;overflow:hidden}
+.dp12-top .img{position:absolute;inset:0;opacity:.45}.dp12-top .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,13,18,.5),#0c0d12 92%)}
+.dp12-top small,.dp12-top b{position:relative}.dp12-top small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.18em;color:rgba(255,255,255,.6)}.dp12-top b{font:900 25px/1.15 Inter,sans-serif}
+.dp12-top .n{font-style:normal;color:#4FD18B;transition:color .3s}.dp12-top .n.up{color:#F2C14E}
+.dp12-grid{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;margin:2px 20px 0}
+.dp12-grid i{aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.1);transition:background .35s,transform .35s;transition-delay:calc(var(--j) * 4ms)}
+.dp12-grid i.k{background:#4FD18B}.dp12-grid i.a{background:#F2C14E;transform:scale(1.15)}
+.dp12-q{padding:14px 20px 10px;font:600 14px/1.3 Inter,sans-serif;color:rgba(255,255,255,.8)}
+.dp12-ch{display:grid;gap:8px;margin:0 14px}
+.dp12-ch button{position:relative;display:grid;gap:4px;padding:13px 14px;border:0;border-radius:18px;background:rgba(255,255,255,.05);color:#fff;text-align:left;transition:background .25s,box-shadow .25s,transform .25s}
+.dp12-ch b{font:800 16px/1.15 Inter,sans-serif}.dp12-ch small{font:500 12px/1.2 Inter,sans-serif;color:rgba(255,255,255,.6)}
+.dp12-ch .tg{position:absolute;right:12px;top:12px;font:800 9px/1 Inter,sans-serif;letter-spacing:.14em;color:rgba(255,255,255,.5)}
+.dp12-ch em{display:flex;align-items:center;gap:6px;margin-top:3px;font:700 11.5px/1.2 Inter,sans-serif;font-style:normal}.dp12-ch em .ic{width:14px;height:14px}
+.dp12-ch .dc1{box-shadow:inset 0 0 0 1px rgba(46,230,197,.25)}.dp12-ch .dc1 em,.dp12-ch .dc1 .tg{color:#2EE6C5}
+.dp12-ch .dc2{box-shadow:inset 0 0 0 1px rgba(242,193,78,.3);background:linear-gradient(160deg,rgba(242,193,78,.09),rgba(255,255,255,.03))}.dp12-ch .dc2 em,.dp12-ch .dc2 .tg{color:#F2C14E}
+.dp12-ch button:hover,.dp12-ch button.hv{transform:translateY(-2px)}.dp12-ch .dc1:hover,.dp12-ch .dc1.hv{background:rgba(46,230,197,.1)}.dp12-ch .dc2:hover,.dp12-ch .dc2.hv{background:rgba(242,193,78,.14)}
+.dp12-nt{padding:12px 20px 0;font:500 12px/1.35 Inter,sans-serif;color:rgba(255,255,255,.45)}
+.dp12-fh{display:grid;gap:6px;padding:62px 20px 0}.dp12-fh small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.18em;color:#F2C14E}.dp12-fh b{font:900 30px/1 Inter,sans-serif}.dp12-fh span{font:500 12.5px/1 Inter,sans-serif;color:rgba(255,255,255,.6)}
+.dp12-ring{position:relative;width:200px;height:200px;margin:18px auto 6px}
+.dp12-ring svg{width:100%;height:100%;transform:rotate(0deg)}
+.dp12-ring .bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:9}
+.dp12-ring .fg{fill:none;stroke:#F2C14E;stroke-width:9;stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:326.7;transform:rotate(-90deg);transform-origin:60px 60px}
+.dp12-ring .ms{fill:#0c0d12;stroke:rgba(255,255,255,.3);stroke-width:2}.dp12-ring .ms.got{stroke:#F2C14E;fill:#F2C14E}
+.dp12-ring>b{position:absolute;inset:0;display:grid;place-items:center;font:900 48px/1 Inter,sans-serif}.dp12-ring>b small{font-size:20px;color:var(--mut)}
+.dp12-ring>b{grid-auto-flow:column;align-content:center;justify-content:center;gap:2px;align-items:baseline}
+.dp12-ms{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 14px}
+.dp12-ms span{display:grid;justify-items:center;gap:5px;padding:10px 6px;border-radius:14px;background:rgba(255,255,255,.04);text-align:center}
+.dp12-ms b{font:900 18px/1 Inter,sans-serif}.dp12-ms em{font:600 10.5px/1.2 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.6)}.dp12-ms i{color:rgba(255,255,255,.3)}.dp12-ms .ic{width:15px;height:15px}
+.dp12-ms .got{background:rgba(242,193,78,.1)}.dp12-ms .got i{color:#F2C14E}
+.dp12-nx{display:grid;gap:8px;margin:10px 14px 0;padding:12px;border-radius:18px;background:rgba(255,255,255,.04)}
+.dp12-nx small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:var(--mut)}
+.dp12-nx>span{display:flex;flex-wrap:wrap;gap:5px}.dp12-nx>span i{padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.07);font:600 12px/1 Inter,sans-serif;font-style:normal}.dp12-nx>span .m{color:var(--mut)}
+.dp12-nx button{height:46px;border:0;border-radius:14px;background:rgba(255,255,255,.07);color:#fff;font:700 13.5px/1 Inter,sans-serif}.dp12-nx .pri{background:#F2C14E;color:#1d1300;font-weight:800;font-size:15px}
+.dp12-ch2{display:grid;gap:12px;padding:64px 20px 4px}.dp12-ch2 .dhc{display:flex;align-items:center;gap:12px}.dp12-ch2 .m8.big{width:54px;height:54px}
+.dp12-ch2 .dhc span{display:grid;gap:5px}.dp12-ch2 small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.18em;color:#E23A4E}.dp12-ch2 b{font:900 22px/1 Inter,sans-serif}
+.dp12-ch2 .dxp{display:grid;gap:6px}.dp12-ch2 .dxp i{display:block;height:7px;border-radius:4px;background:linear-gradient(90deg,#E23A4E,#FF8A6B);transform-origin:left;box-shadow:0 0 0 999px rgba(255,255,255,0)}.dp12-ch2 .dxp span{font:700 11.5px/1 Inter,sans-serif;color:rgba(255,255,255,.6)}
+.dp12-ico{margin:12px 14px 0;padding:12px;border-radius:18px;background:rgba(255,255,255,.04);display:grid;gap:10px}
+.dp12-ico>small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:var(--mut);text-transform:uppercase}
+.dp12-ico .irow{display:grid;grid-template-columns:repeat(3,1fr)}.dp12-ico .irow span{display:grid;justify-items:center;gap:6px}.dp12-ico em{font:700 11px/1 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.65)}
+.dp12-ico .ic12{display:grid;place-items:center;width:52px;height:52px;border-radius:50%}.dp12-ico .ic12 .m8{width:44px;height:44px}
+.dp12-ico .ti0 .ic12{box-shadow:0 0 0 2px rgba(255,255,255,.2)}.dp12-ico .ti1 .ic12{box-shadow:0 0 0 2px #C8D2E0,0 0 14px rgba(200,210,224,.35)}.dp12-ico .ti2 .ic12{box-shadow:0 0 0 2.5px #F2C14E,0 0 0 5px rgba(242,193,78,.25),0 0 22px rgba(242,193,78,.55);animation:dp12g 2.4s ease-in-out infinite}
+@keyframes dp12g{0%,100%{box-shadow:0 0 0 2.5px #F2C14E,0 0 0 5px rgba(242,193,78,.25),0 0 18px rgba(242,193,78,.45)}50%{box-shadow:0 0 0 2.5px #F2C14E,0 0 0 7px rgba(242,193,78,.15),0 0 28px rgba(242,193,78,.7)}}
+.dp12-ico p{font:500 12px/1.4 Inter,sans-serif;color:rgba(255,255,255,.6)}
+/* --- «понимаешь %» --- */
+.pc12{background:#0c0d12}
+.pc12-hd{display:grid;gap:6px;padding:62px 20px 0}.pc12-hd small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.18em;color:var(--mut)}.pc12-hd b{font:900 24px/1.1 Inter,sans-serif}
+.pc12-big{display:flex;align-items:center;justify-content:center;gap:18px;margin:18px 0 6px}
+.pc12-big>span{display:grid;justify-items:center;grid-template-columns:auto auto;align-items:baseline;column-gap:2px}.pc12-big em{grid-column:1/-1;font:700 11px/1 Inter,sans-serif;font-style:normal;color:var(--mut);margin-bottom:6px}
+.pc12-big b{font:900 56px/1 Inter,sans-serif}.pc12-big small{font:800 22px/1 Inter,sans-serif;color:var(--mut)}
+.pc12-big .a b{color:#fff;transition:color .3s}.pc12-big .a.up b{color:#4FD18B}.pc12-big .ar .ic{width:26px;height:26px;color:var(--mut)}
+.pc12-f{padding:8px 20px 12px;font:500 13px/1.45 Inter,sans-serif;color:rgba(255,255,255,.75)}.pc12-f b{color:#fff}
+.pc12-it{display:flex;flex-wrap:wrap;gap:6px;margin:0 16px}
+.pc12-it span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);font:600 12px/1 Inter,sans-serif;color:rgba(255,255,255,.55);transition:background .35s,color .35s}
+.pc12-it span.k{background:rgba(79,209,139,.15);color:#8FF0B9;box-shadow:inset 0 0 0 1px rgba(79,209,139,.35)}.pc12-it span.nw{background:#4FD18B;color:#05230F}
+.pc12-st{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 16px 0}.pc12-st span{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);font:500 12px/1.3 Inter,sans-serif;color:rgba(255,255,255,.65)}.pc12-st b{display:block;font:900 20px/1 Inter,sans-serif;color:#fff;margin-bottom:4px}.pc12-st .p b{color:#4FD18B}
+.pc12-n{padding:12px 20px 0;font:500 12px/1.4 Inter,sans-serif;color:rgba(255,255,255,.5)}
+/* --- мнения нейронок --- */
+.op12{background:#0c0d12}
+.op12-hd{position:absolute;left:0;right:0;top:0;z-index:5;display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:56px 18px 12px;background:linear-gradient(180deg,#0c0d12 80%,rgba(12,13,18,0))}
+.op12-hd b{font:900 20px/1.1 Inter,sans-serif}.op12-hd small{grid-column:1;font:500 11.5px/1.3 Inter,sans-serif;color:var(--mut)}.op12-hd .ct{grid-column:2;grid-row:1/3;align-self:center;padding:6px 10px;border-radius:999px;background:rgba(242,193,78,.15);color:#F2C14E;font:800 12px/1 Inter,sans-serif;font-style:normal}
+.op12-ls{position:absolute;inset:0;overflow-y:auto;padding:128px 14px 96px;scrollbar-width:none;display:grid;gap:16px;align-content:start}.op12-ls::-webkit-scrollbar{display:none}
+.op12-g{display:grid;gap:8px}.op12-g .gh{display:flex;align-items:center;gap:8px;font:900 13px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase}.op12-g .gh small{padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:10.5px;color:var(--mut)}
+.op12-g.g .gh{color:#7FD8B4}.op12-g.m .gh{color:#8FB4FF}.op12-g.z .gh{color:#F2C14E}
+.op12-i{display:grid;gap:8px;padding:11px 12px;border-radius:16px;background:rgba(255,255,255,.04)}
+.op12-i p{font:500 12.5px/1.4 Inter,sans-serif;color:rgba(255,255,255,.88)}
+.op12-i .bt{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.op12-i .bt button{height:32px;border:0;border-radius:10px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);font:700 12px/1 Inter,sans-serif}
+.op12-i .bt [data-v="y"].on{background:#1f6b45;color:#fff;box-shadow:inset 0 0 0 1.5px #4FD18B}.op12-i .bt [data-v="n"].on{background:#5a1f26;color:#fff;box-shadow:inset 0 0 0 1.5px #FF6B6B}.op12-i .bt [data-v="l"].on{background:rgba(242,193,78,.18);color:#F2C14E;box-shadow:inset 0 0 0 1.5px #F2C14E}
+.op12-i.ans{box-shadow:inset 0 0 0 1px rgba(242,193,78,.25)}
+.op12-i .yo,.op12-i .me{display:grid;gap:3px;padding:8px 10px;border-radius:12px;font:500 12px/1.4 Inter,sans-serif}.op12-i .yo{background:rgba(143,180,255,.08);color:#C9D8FF}.op12-i .me{background:rgba(79,209,139,.08);color:#B8F0D2}
+.op12-i .yo small,.op12-i .me small{font:800 9px/1 Inter,sans-serif;letter-spacing:.18em;opacity:.7}
+.op12-ft{position:absolute;left:14px;right:14px;bottom:24px;z-index:6}.op12-ft .cp{width:100%;height:50px;border:0;border-radius:16px;background:#F2C14E;color:#1d1300;font:800 15px/1 Inter,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+
+/* правки поверх (стоят в конце, чтобы перебить разделы выше) */
+.k12-end .hw span{display:block;position:relative;padding-left:26px;font:500 12.5px/1.35 Inter,sans-serif;color:rgba(255,255,255,.78)}.k12-end .hw span .ic{position:absolute;left:0;top:1px}
+.op12-ls{padding-top:150px}.op12-hd{background:#0c0d12;padding-bottom:14px}
+.v12-ln{transition:bottom .35s cubic-bezier(.2,.8,.2,1)}
+
 </style>
 
 <div class="wrap">
  <header>
-  <h1>v11 — твой отзыв на v9, заново на максимуме</h1>
-  <p class="lead">Открыта v11. Прошлые версии — в «Прошлые версии». Под телефоном (на компьютере — справа) кнопки «v11 · v10 · v9» — тот же экран в другой версии, чтобы сравнить. Всё живое: тапай, смахивай; «↻ Ещё раз» — заново.</p>
+  <h1>v12 — твой отзыв на v11</h1>
+  <p class="lead">Открыта v12: игры (Deadlock отдельно от игр по кино, всё дедлоковское — внутри), герои на карточках, радар 3D, Versus по v10, реплики как в TikTok, звук с сопровождением, 3 комикса, обучение «хватит или ещё» и мнения нейронок — отметь, что берём. Прошлые версии — в «Прошлые версии», под телефоном кнопки «v12 · v11 · v10» — тот же экран в другой версии. Звук включается после первого касания.</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
   <div class="vers" id="grp"></div>
   <div class="vars" id="vars"></div>
@@ -8468,26 +8912,632 @@ V.push({g:'l11',id:'l11d',n:'Фильм · «Углубить эпизод» п�
  minus:'Углублённая — потолок 6 заданий: дальше это уже урок, а не проверка.',
  mount(R,ctx){l11Deep(R,ctx)}});
 
+/* ================= v12 (26.10, отзыв на v11) ================= */
+// герои v12: у Венатора и Короля — живой портрет (видео), у остальных пока арт с вики
+const H12={venator:{n:'Venator',ru:'Венатор',v:'hv_venator2',pos:'60% 30%',ac:'#E23A4E',loc:'Собор',bed:'cathedral',lv:2},
+ rat:{n:'Rat King',ru:'Крысиный король',v:'hv_rat3',pos:'50% 38%',ac:'#8FCB4F',loc:'Туннели',bed:'sewer',lv:1},
+ talon:{n:'Grey Talon',ru:'Грей Талон',ac:'#2FB6A8',loc:'Старый лес'},rem:{n:'Rem',ru:'Рэм',ac:'#8C6BFF',loc:'Сонная низина'},
+ celeste:{n:'Celeste',ru:'Селеста',ac:'#FF5FA2',loc:'Цирк'},doorman:{n:'Doorman',ru:'Дормен',ac:'#E8A93A',loc:'Отель'},
+ seven:{n:'Seven',ru:'Севен',ac:'#5EA8FF',loc:'Электростанция'},victor:{n:'Victor',ru:'Виктор',ac:'#9BE15D',loc:'Лаборатория'},
+ danny:{n:'Dead Man Danny',ru:'Дэнни',ac:'#FF7A3D',loc:'Кладбище'}};
+const HK12=Object.keys(H12);
+try{document.documentElement.style.setProperty('--cns',`url(${IMG.dl_cover})`)}catch(e){}
+// иконка героя — как у игрока в интерфейсе (гербы или арт); у кого герба нет — арт
+const hic12=(k,cl)=>HERO[k]?ic9(k,cl):`<i class="m8${cl?' '+cl:''}" style="background-image:url(${MINI(k)})"></i>`;
+function playV12(root){$$('video[data-hv]',root).forEach(v=>{if(v.src)return;v.src=vurl(v.dataset.hv);v.muted=true;v.defaultMuted=true;const p=v.play();if(p&&p.catch)p.catch(()=>{})})}
+
+/* --- звук v12: реплика + фон локации + звук абилки (Web Audio). Андрей: «реплики звучат сыро — добавь сопровождение».
+   В макете фон и абилка синтезированы; в приложении — записи из игры (их достаёт Зетка со страниц героев «Sounds» на вики). --- */
+const SND12=(()=>{let ac=null,out=null,vb=null,rv=null,bed=null,bedN='';const BUF={};
+ function A0(){if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();
+   out=ac.createDynamicsCompressor();out.threshold.value=-18;out.ratio.value=3;out.connect(ac.destination);
+   rv=ac.createConvolver();rv.buffer=imp(2.8,2.4);const rg=ac.createGain();rg.gain.value=.55;rv.connect(rg);rg.connect(out);
+   vb=ac.createGain();vb.gain.value=0;vb.connect(out);const vs=ac.createGain();vs.gain.value=.35;vb.connect(vs);vs.connect(rv)}
+  if(ac.state==='suspended')ac.resume();return ac}
+ function imp(sec,dc){const r=ac.sampleRate,n=Math.round(r*sec),b=ac.createBuffer(2,n,r);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,dc)}return b}
+ function noise(sec,brown){const r=ac.sampleRate,n=Math.round(r*sec),b=ac.createBuffer(1,n,r),d=b.getChannelData(0);let l=0;for(let i=0;i<n;i++){const w=Math.random()*2-1;if(brown){l=(l+.02*w)/1.02;d[i]=l*3.5}else d[i]=w}return b}
+ async function buf(k){k=AU11[k]||k;if(BUF[k])return BUF[k];const s=A.A&&A.A[k];if(!s||!A0())return null;let u;if(s.startsWith('a/')){try{u=new Uint8Array(await (await fetch(s)).arrayBuffer())}catch(e){return null}}else{const b=atob(s);u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i)}
+  try{BUF[k]=await new Promise((ok,no)=>ac.decodeAudioData(u.buffer,ok,no))}catch(e){return null}return BUF[k]}
+ // фоны локаций: собор — орган и колокол в большом эхе; туннели — гул и капли; арена — низкий гул и сердце
+ function bedStart(name){if(!A0()||bedN===name)return;bedStop();bedN=name;const g=ac.createGain();g.gain.value=0;g.connect(out);g.gain.linearRampToValueAtTime(.5,ac.currentTime+1.2);const N=[],T=[];
+  const send=ac.createGain();send.gain.value=.8;send.connect(rv);
+  if(name==='cathedral'){[110,164.8,220,329.6].forEach((f,i)=>{const o=ac.createOscillator();o.type=i%2?'triangle':'sine';o.frequency.value=f*(1+(i-1.5)*.0015);const og=ac.createGain();og.gain.value=[.09,.05,.05,.025][i];
+    const lf=ac.createOscillator(),lg=ac.createGain();lf.frequency.value=.13+i*.04;lg.gain.value=og.gain.value*.4;lf.connect(lg);lg.connect(og.gain);o.connect(og);og.connect(g);og.connect(send);o.start();lf.start();N.push(o,lf)});
+   const bell=()=>{if(bedN!=='cathedral')return;const t=ac.currentTime;[220,440*1.19,660*1.01].forEach((f,j)=>{const o=ac.createOscillator(),e=ac.createGain();o.frequency.value=f;e.gain.setValueAtTime(.0001,t);e.gain.exponentialRampToValueAtTime([.06,.025,.015][j],t+.02);e.gain.exponentialRampToValueAtTime(.0001,t+3.5);o.connect(e);e.connect(send);o.start(t);o.stop(t+3.6)});T.push(setTimeout(bell,5200+Math.random()*2600))};T.push(setTimeout(bell,1800))}
+  else if(name==='sewer'){const s=ac.createBufferSource();s.buffer=noise(4,1);s.loop=true;const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=260;const sg=ac.createGain();sg.gain.value=.55;s.connect(f);f.connect(sg);sg.connect(g);s.start();N.push(s);
+   const drip=()=>{if(bedN!=='sewer')return;const t=ac.currentTime,o=ac.createOscillator(),e=ac.createGain(),p=ac.createStereoPanner?ac.createStereoPanner():null;o.type='sine';const f0=900+Math.random()*700;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f0*.45,t+.07);
+    e.gain.setValueAtTime(.0001,t);e.gain.exponentialRampToValueAtTime(.12,t+.005);e.gain.exponentialRampToValueAtTime(.0001,t+.12);o.connect(e);if(p){p.pan.value=Math.random()*1.6-.8;e.connect(p);p.connect(send);p.connect(g)}else{e.connect(send);e.connect(g)}o.start(t);o.stop(t+.14);T.push(setTimeout(drip,500+Math.random()*1400))};T.push(setTimeout(drip,600))}
+  else{const o=ac.createOscillator();o.type='sawtooth';o.frequency.value=55;const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=180;const og=ac.createGain();og.gain.value=.08;o.connect(f);f.connect(og);og.connect(g);o.start();N.push(o);
+   const s=ac.createBufferSource();s.buffer=noise(4,0);s.loop=true;const bp=ac.createBiquadFilter();bp.type='bandpass';bp.frequency.value=900;bp.Q.value=.6;const sg=ac.createGain();sg.gain.value=.04;s.connect(bp);bp.connect(sg);sg.connect(g);s.start();N.push(s)}
+  bed={g,N,T}}
+ function bedStop(){if(!bed)return;const b=bed;bed=null;bedN='';try{b.g.gain.cancelScheduledValues(ac.currentTime);b.g.gain.setValueAtTime(b.g.gain.value,ac.currentTime);b.g.gain.linearRampToValueAtTime(0,ac.currentTime+.5)}catch(e){}b.T.forEach(clearTimeout);setTimeout(()=>{b.N.forEach(n=>{try{n.stop()}catch(e){}});try{b.g.disconnect()}catch(e){}},700)}
+ function duck(on){if(bed){const t=ac.currentTime;bed.g.gain.cancelScheduledValues(t);bed.g.gain.setValueAtTime(bed.g.gain.value,t);bed.g.gain.linearRampToValueAtTime(on?.18:.5,t+(on?.12:.6))}}
+ // звук абилки (пример): вжух шумом вверх + низкий удар
+ function abil(kind){if(!A0())return;const t=ac.currentTime;const s=ac.createBufferSource();s.buffer=noise(.6,0);const bp=ac.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.4;bp.frequency.setValueAtTime(kind==='rat'?300:500,t);bp.frequency.exponentialRampToValueAtTime(kind==='rat'?1600:3600,t+.38);
+  const e=ac.createGain();e.gain.setValueAtTime(.0001,t);e.gain.exponentialRampToValueAtTime(.5,t+.05);e.gain.exponentialRampToValueAtTime(.0001,t+.5);s.connect(bp);bp.connect(e);e.connect(out);e.connect(rv);s.start(t);s.stop(t+.6);
+  const o=ac.createOscillator(),oe=ac.createGain();o.frequency.setValueAtTime(kind==='rat'?90:70,t+.32);o.frequency.exponentialRampToValueAtTime(34,t+.8);oe.gain.setValueAtTime(.0001,t+.3);oe.gain.exponentialRampToValueAtTime(.8,t+.34);oe.gain.exponentialRampToValueAtTime(.0001,t+.95);o.connect(oe);oe.connect(out);o.start(t+.3);o.stop(t+1)}
+ // реплика: dry — как сейчас (без эха и фона); иначе — с эхом локации поверх фона
+ async function line(k,o){o=o||{};if(!A0())return 0;const b=await buf(k);if(!b)return 0;if(o.abil){abil(o.abil);await new Promise(r=>setTimeout(r,380))}
+  const s=ac.createBufferSource();s.buffer=b;const g=ac.createGain();g.gain.value=1;s.connect(g);
+  if(o.dry){g.connect(ac.destination)}else{g.connect(vb);vb.gain.value=1;duck(true)}
+  s.start();s.onended=()=>{if(!o.dry)duck(false);o.end&&o.end()};line.cur=s;return b.duration}
+ function stop(){try{line.cur&&line.cur.stop()}catch(e){}bedStop()}
+ return {A0,line,bed:bedStart,bedStop,abil,stop,on:()=>!!ac&&ac.state==='running'}})();
+// реплика в макете v12: играет с фоном локации (если фон включён), без касания — молча
+function say12(ctx,k,o){o=o||{};if(o.loud===false){return voice11(ctx,k,{mute:true,end:o.end})}
+ try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const d=(DUR11[AU11[k]||k]||2.4)*1000;let done=false;const fin=()=>{if(done)return;done=true;o.end&&o.end()};
+ if(!o.dry&&o.bed)SND12.bed(o.bed);SND12.line(k,{dry:o.dry,abil:o.abil,end:fin});ctx.add(()=>SND12.stop());ctx.t(fin,d+(o.abil?500:150));return d}
+const BED12={venator:'cathedral',rat:'sewer'};
+
+/* --- «City Never Sleeps» живой: окна мигают, луч прожектора, блик по буквам, неон дышит, дождь --- */
+// окна — только там, где на арте тёмные дома (координаты в % квадрата 640×640)
+const CNSW=[[33,0,16,9],[38,8,9,10],[80,0,18,14],[2,16,10,22],[56,40,40,20],[0,46,14,15]];
+function cns12(){let s=11;const r=()=>(s=(s*16807)%2147483647)/2147483647;let w='';
+ CNSW.forEach(([x,y,ww,hh])=>{for(let i=0;i<Math.round(ww*hh/14);i++)w+=`<i style="left:${(x+r()*ww).toFixed(1)}%;top:${(y+r()*hh).toFixed(1)}%;animation-delay:${(-r()*9).toFixed(1)}s;animation-duration:${(3.5+r()*6).toFixed(1)}s"></i>`});
+ return `<span class="c12-art"><i class="img"></i><i class="c12-gw img"></i><span class="c12-win">${w}</span><i class="c12-bm a"></i><i class="c12-bm b"></i><i class="c12-sh"></i><canvas class="c12-rain"></canvas></span>`}
+function cnsOn12(ctx,root,alive){const art=$('.c12-art',root);if(!art)return;ctx.t(()=>rain11(ctx,$('.c12-rain',art),{n:46,alive}),500);
+ an($('.img',art),[{transform:'scale(1.16)'},{transform:'scale(1.04)'}],{d:1600,e:EO,f:'forwards'})}
+
+/* --- карточка героя: фон берётся с самой анимированной карточки (Зетка вырезает его из ролика), герой — в рамке поверх --- */
+function hcard12(k,o){o=o||{};const h=H12[k],v=h.v,mode=o.mode||'card';
+ const fg=v?`<video class="fg" muted loop playsinline data-hv="${v}" poster="${IMG[v]}" style="object-position:${h.pos}"></video>`:`<i class="fg img" style="background-image:url(${VT(k)})"></i>`;
+ const bg=mode==='frame'?`<span class="loc">${HERO[k]?heroBg11(k):`<i class="img" style="background-image:url(${VT(k)})"></i>`}</span>`
+  :(v?`<video class="bg" muted loop playsinline data-hv="${v}" poster="${IMG[v]}"></video>`:`<i class="bg img" style="background-image:url(${VT(k)})"></i>`);
+ return `<button class="h12c ${mode}${v?' live':' st'}" data-k="${k}" style="--ac:${h.ac}"><span class="bgw">${bg}<i class="vg"></i></span><span class="fr">${fg}<i class="gl"></i></span>
+  <span class="nm"><b>${h.n}</b><small>${o.sub||(v?'ур. '+h.lv+' · '+h.loc:'портрет делаем')}</small></span>${o.badge||''}</button>`}
+function hcTilt12(ctx,root){$$('.h12c',root).forEach(b=>{ctx.on(b,'pointermove',e=>{const r=b.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;b.style.transform=`perspective(600px) rotateY(${(x*12).toFixed(1)}deg) rotateX(${(-y*9).toFixed(1)}deg)`;const g=$('.gl',b);if(g)g.style.transform=`translateX(${(x*160).toFixed(0)}%)`});ctx.on(b,'pointerleave',()=>{b.style.transform='';const g=$('.gl',b);if(g)g.style.transform=''})})}
+// крупно: карточка героя на весь экран — фон с карточки, герой в рамке, что у него внутри
+function hDetail12(R,ctx,k,from,mode){const h=H12[k];if(!h.v){toast(R,`${h.ru}: портрет ещё делаем`);return}let ov=$('.h12d',R);if(ov)ov.remove();ov=document.createElement('div');ov.className='h12d '+(mode||'card');
+ const c=sub(ctx);const CH=(G11CH[k]||[]).slice(0,3);
+ ov.innerHTML=`<span class="bgw">${mode==='frame'?`<span class="loc">${heroBg11(k)}</span>`:`<video class="bg" muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}"></video>`}<i class="vg"></i></span>
+  <button class="h12-bk">${ic('back')}</button>
+  <span class="fr"><video class="fg" muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video><i class="gl"></i></span>
+  <div class="tx"><small>${HERO[k].role||''}</small><b>${h.n}</b><span class="hlv"><i style="--p:${k==='venator'?.68:.6}"></i><em>ур. ${h.lv}</em></span></div>
+  <div class="ac"><button class="pri">${ic('sword')}Versus за ${h.ru.split(' ')[0]==='Крысиный'?'Короля':h.ru}</button><button>${ic('book11')}Комиксы · ${(G11CH[k]||[]).length}</button><button>${ic('snd')}Реплики</button></div>
+  <div class="cl">${CH.map(x=>`<span class="${x.st}"><b>${x.t}</b><small>${x.st==='done'?'закреплено':x.st==='chk'?'ждёт проверки':x.st==='new'?'новая':'замок'}</small></span>`).join('')}</div>`;
+ R.appendChild(ov);playV12(ov);
+ const q=from?rel(from,R):null;if(q)an(ov,[{clipPath:`inset(${q.y}px ${344-q.x-q.w}px ${754-q.y-q.h}px ${q.x}px round 20px)`},{clipPath:'inset(0 0 0 0 round 0)'}],{d:520,e:EO});else an(ov,[{opacity:0},{opacity:1}],{d:300});
+ an($('.fr',ov),[{transform:'translateY(30px) scale(.86)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:160});
+ $$('.tx>*,.ac>button,.cl>span',ov).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:300+i*50}));
+ c.on($('.h12-bk',ov),'click',()=>{c.kill();const z=an(ov,[{opacity:1},{opacity:0,transform:'scale(.96)'}],{d:220,e:EI,f:'forwards'});const f=()=>ov.remove();if(z)z.onfinish=f;else f()});
+ c.on($('.ac',ov),'click',e=>{const b=e.target.closest('button');if(!b)return;an(b,[{transform:'scale(.94)'},{transform:'none'}],{sp:SPb});toast(R,b.textContent.trim())})}
+
+/* --- вкладка «Игры» v12: Deadlock отдельно, игры по кино — отдельно; всё дедлоковское — внутри Deadlock --- */
+function g12Tab(R,ctx,o){o=o||{};const city=o.card==='city',seg=o.place==='seg',inScenes=o.place==='scenes';R.className='scr v8 g11 g12'+(seg?' g12-seg':'');
+ const W=316,SH=236;
+ const cityArt=`<span class="g11-crt"><i class="g11-glow"></i><span class="g11-sky">
+   ${sky11(W,SH,{seed:3,w:[16,30],h:[SH*.42,SH*.82],fill:'#161d3a',cls:'l1',mid:.6})}<i class="g11-bm a"></i><i class="g11-bm b"></i>
+   ${sky11(W,SH,{seed:11,w:[14,26],h:[SH*.26,SH*.6],fill:'#0e1430',win:.15,cls:'l2',wo:.8})}
+   <span class="g11-brg"><i class="g11-trn"><svg viewBox="0 0 230 14"><rect x="0" y="2" width="222" height="9" rx="2.5" fill="#05070f"/>${Array.from({length:19},(_,i)=>`<rect x="${6+i*11.4}" y="4.4" width="6.2" height="3.6" rx=".8" fill="#FFD58A" opacity="${i%6?'.95':'.25'}"/>`).join('')}<path d="M222 2 l7 4.5 -7 4.5z" fill="#05070f"/></svg></i></span>
+   ${sky11(W,SH,{seed:29,w:[18,34],h:[SH*.12,SH*.34],fill:'#05070f',win:.05,cls:'l3',wo:.55})}</span><canvas class="g11-rain"></canvas><i class="g11-fl"></i>
+   <span class="g11-tx"><small>ИГРА · ДИАЛОГИ ГЕРОЕВ</small>${neon11('DEADLOCK')}<span class="g11-ln">реплики героев с голосом · Versus · комиксы</span></span><i class="g11-gl"></i></span>`;
+ const card=city?`<button class="g11-card g12-card city" aria-label="Открыть Deadlock">${cityArt}<span class="g12-ft"><span class="g12-go">Войти ${ic('chev')}</span></span><i class="g12-bd">2</i></button>`
+  :`<button class="g12-card cns" aria-label="Открыть Deadlock">${cns12()}<i class="c12-fd"></i><span class="g12-ct"><small>ИГРА · ДИАЛОГИ ГЕРОЕВ</small><b>Deadlock</b><span>реплики героев с голосом · Versus · комиксы</span></span><span class="g12-ft"><span class="g12-go">Войти ${ic('chev')}</span></span><i class="g12-bd">2</i></button>`;
+ const duel=`<button class="g12-duel"><span class="ps"><i class="img" style="background-image:url(${IMG.p_wolf})"></i><i class="img" style="background-image:url(${IMG.p_titanic})"></i><i class="img" style="background-image:url(${IMG.p_psycho})"></i></span>
+   <span class="tx"><small>${ic('users11')}ИГРА ПО КИНО · С ДРУГОМ</small><b>Дуэль по сцене</b><em>Выбери сцену — кто быстрее поймёт, тот и забрал банк</em></span><span class="cta">Позвать ${ic('chev')}</span></button>`;
+ const soon=`<div class="g12-soon"><i>${ic('star')}</i><span><b>Скоро ещё игры по кино</b><small>тоже учат — но на спор</small></span></div>`;
+ const games=`<div class="g11-sec g12-sec"><b>Игры</b><small>играешь — и понимаешь английский</small></div>${card}`;
+ const learn=`<div class="g11-sec g12-sec"><b>Игры по кино</b><small>для учёбы — на спор с другом</small></div>${duel}${soon}`;
+ const body=seg?`<div class="g12-sg"><button class="on" data-s="g">Игры</button><button data-s="l">Учёба на спор</button><i></i></div><div class="g12-pane" data-p="g">${card}<p class="g12-nt">В Deadlock внутри: Радар, Versus, комиксы героев, реплики.</p></div><div class="g12-pane" data-p="l" hidden>${duel}${soon}</div>`
+  :games+(inScenes?`<div class="g12-moved">${ic('film11')}<span><b>Дуэль по сцене — теперь в «Сценах»</b><small>у каждой сцены кнопка «С другом»</small></span><button data-tb="film">Показать</button></div>`:learn);
+ R.innerHTML=`${SB(0)}<div class="g11-pg g12-pg"><div class="g11-hd"><b>Игры</b><small>учишь язык, пока играешь</small></div>${body}</div>
+  ${TB5('v3-tb w4b-tb m6-tb m7-tb v8-tb g11-tb',2)}<canvas class="fx"></canvas><i class="hb"></i>`;
+ const fx=FX(ctx,$('.fx',R)),cd=$('.g12-card',R);let hub=false,touched=false;const vis=()=>!hub;
+ ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ if(city){const crt=$('.g11-crt',R);an(crt,[{transform:'scaleY(.012)',opacity:.4},{transform:'scaleY(1)',opacity:1}],{d:480,e:'cubic-bezier(.2,.9,.25,1)',dl:200});$$('.g11-sk',R).forEach((s,i)=>an(s,[{transform:`translateY(${26+i*14}px)`},{transform:'none'}],{sp:SPs,dl:420+i*90}));
+  neonOn11(ctx,$('.g11-ne',R),640);neonLife11(ctx,$('.g11-ne',R),vis);ctx.t(()=>rain11(ctx,$('.g11-rain',R),{n:60,splash:true,alive:vis}),600);bolt11(ctx,$('.g11-fl',R),$('.g11-sk.l1',R),vis);
+  const L1=$('.g11-sk.l1',R),L2=$('.g11-sk.l2',R),L3=$('.g11-sk.l3',R);ctx.on(cd,'pointermove',e=>{const b=cd.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;cd.style.transform=`perspective(800px) rotateY(${(x*9).toFixed(1)}deg) rotateX(${(-y*7).toFixed(1)}deg)`;L1.style.transform=`translateX(${(-x*5).toFixed(1)}px)`;L2.style.transform=`translateX(${(-x*11).toFixed(1)}px)`;L3.style.transform=`translateX(${(-x*18).toFixed(1)}px)`});
+  ctx.on(cd,'pointerleave',()=>{cd.style.transform='';[L1,L2,L3].forEach(l=>l.style.transform='')})}
+ else{an(cd,[{opacity:0,transform:'translateY(24px) scale(.96)'},{opacity:1,transform:'none'}],{sp:SPs,dl:120});cnsOn12(ctx,cd,vis);
+  an($('.g12-ct b',R),[{opacity:0,letterSpacing:'.4em'},{opacity:1,letterSpacing:'-.01em'}],{d:900,e:EO,dl:500});
+  ctx.on(cd,'pointermove',e=>{const b=cd.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;cd.style.transform=`perspective(800px) rotateY(${(x*8).toFixed(1)}deg) rotateX(${(-y*6).toFixed(1)}deg)`;$('.c12-art .img',cd).style.translate=`${(-x*10).toFixed(1)}px ${(-y*8).toFixed(1)}px`});
+  ctx.on(cd,'pointerleave',()=>{cd.style.transform='';$('.c12-art .img',cd).style.translate=''})}
+ an($('.g12-bd',R),[{opacity:0,transform:'scale(.2)'},{opacity:1,transform:'none'}],{sp:SPb,dl:1300});
+ $$('.g12-sec,.g12-duel,.g12-soon,.g12-moved,.g12-sg,.g12-nt',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:520+i*80}));
+ const openHub=()=>{if(hub)return;hub=true;an(cd,[{transform:'scale(.97)'},{transform:'scale(1.015)'},{transform:'none'}],{d:300,e:EO});const r=rel(cd,R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:30,c:['#F6D488','#fff','#FF8A4C'],v:5,g:0,s:2.2,l:40});
+  ctx.t(()=>g12Hub(R,ctx,cd,{onClose(){hub=false}}),140)};
+ ctx.on(cd,'click',openHub);
+ ctx.on(R,'click',e=>{const d=e.target.closest('.g12-duel');if(d){an(d,[{transform:'scale(.97)'},{transform:'none'}],{sp:SPb});g12DuelSheet(R,ctx);return}
+  const s=e.target.closest('.g12-sg button');if(s){$$('.g12-sg button',R).forEach(b=>b.classList.toggle('on',b===s));$('.g12-sg',R).classList.toggle('r',s.dataset.s==='l');$$('.g12-pane',R).forEach(p=>{const on=p.dataset.p===s.dataset.s;p.hidden=!on;if(on)$$('.g12-card,.g12-duel,.g12-soon,.g12-nt',p).forEach((x,i)=>an(x,[{opacity:0,transform:`translateX(${s.dataset.s==='l'?30:-30}px)`},{opacity:1,transform:'none'}],{sp:SPs,dl:i*60}))});return}
+  const t=e.target.closest('[data-tb]');if(t){const k=t.dataset.tb;if(k==='film'){g12Scenes(R,ctx);return}if(k==='game'&&R.classList.contains('g12-sc')){g12Tab(R,ctx,o);return}if(k!=='game')toast(R,'В макете — только «Игры» и «Сцены»')}});
+ if(o.auto!==false)ctx.t(()=>{if(!touched)openHub()},o.autoMs||4600)}
+
+// «Сцены» с дуэлью: полоса «С другом» сверху, у каждой сцены — значок дуэли
+function g12Scenes(R,ctx){R.className='scr v8 g11 g12 g12-sc';const P=[['p_wolf','Волк с Уолл-стрит','6 эпизодов'],['p_titanic','Титаник','4 эпизода'],['p_psycho','Американский психопат','3 эпизода'],['p_taxi','Таксист','2 эпизода'],['p_sopranos','Клан Сопрано','4 эпизода'],['p_bb','Во все тяжкие','3 эпизода']];
+ R.innerHTML=`${SB(0)}<div class="g11-pg g12-pg"><div class="g11-hd"><b>Сцены</b><small>смотри и понимай</small></div>
+  <button class="g12-band">${ic('users11')}<span><b>С другом — дуэль по любой сцене</b><small>нажми ⚔ на постере · кто быстрее поймёт</small></span>${ic('chev')}</button>
+  <div class="g12-pg3">${P.map(([im,n,e])=>`<button class="g12-po"><i class="img" style="background-image:url(${IMG[im]})"></i><span class="du">${ic('sword')}</span><b>${n}</b><small>${e}</small></button>`).join('')}</div></div>
+  ${TB5('v3-tb w4b-tb m6-tb m7-tb v8-tb g11-tb',1)}<canvas class="fx"></canvas><i class="hb"></i>`;
+ $$('.g12-band,.g12-po',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80+i*50}));
+ $$('.g12-po .du',R).forEach((x,i)=>an(x,[{opacity:0,transform:'scale(.3) rotate(-30deg)'},{opacity:1,transform:'none'}],{sp:SPb,dl:600+i*60}));
+ ctx.on($('.g12-pg',R),'click',e=>{const p=e.target.closest('.g12-po,.g12-band');if(!p)return;an(p,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});g12DuelSheet(R,ctx,$('b',p).textContent)})}
+// шторка дуэли по сцене
+function g12DuelSheet(R,ctx,film){let s=$('.g12-dsh',R);if(s)s.remove();s=document.createElement('div');s.className='g12-dsh';
+ s.innerHTML=`<i class="sc"></i><div class="pn"><i class="hd"></i><small>ДУЭЛЬ ПО СЦЕНЕ</small><b>${film&&!/С другом/.test(film)?film:'Выбери сцену'}</b><p>3 вопроса по одной сцене. Кто ответит быстрее и точнее — забирает банк.</p>
+  <div class="st"><button>0</button><button class="on">25</button><button>50</button><button>100</button></div><button class="go">Позвать друга ${ic('chev')}</button></div>`;
+ R.appendChild(s);an($('.pn',s),[{transform:'translateY(100%)'},{transform:'none'}],{sp:SPs});an($('.sc',s),[{opacity:0},{opacity:1}],{d:240});
+ const c=sub(ctx),cl=()=>{c.kill();const z=an($('.pn',s),[{transform:'none'},{transform:'translateY(100%)'}],{d:220,e:EI,f:'forwards'});an($('.sc',s),[{opacity:1},{opacity:0}],{d:220,f:'forwards'});const f=()=>s.remove();if(z)z.onfinish=f;else f()};
+ c.on($('.sc',s),'click',cl);c.on($('.go',s),'click',()=>{toast(R,'Ссылка ушла другу в Telegram');cl()});
+ $$('.st button',s).forEach(b=>c.on(b,'click',()=>{$$('.st button',s).forEach(x=>x.classList.toggle('on',x===b));an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb})}))}
+
+/* --- Deadlock изнутри: всё, что про игру, — тут («Сейчас», Радар, Versus, реплики, герои на карточках) --- */
+function g12Hub(R,ctx,from,o){o=o||{};let ov=$('.g11-hub',R);if(ov)ov.remove();ov=document.createElement('div');ov.className='g11-hub g12-hub';
+ const LIVE=['venator','rat'],SOON=['talon','rem','celeste','doorman','seven','victor','danny'];
+ ov.innerHTML=`<div class="g11-hh g12-hh">${cns12()}<i class="sh"></i><button class="g11-bk" aria-label="Назад">${ic('back')}</button>
+   <div class="tx"><small>ИГРА · ДИАЛОГИ ГЕРОЕВ</small>${neon11('DEADLOCK','hh')}<span>9 героев · 6 комиксов · голоса из игры</span></div></div>
+  <div class="g11-sec"><b>Сейчас</b><small>новое — раз в 8 часов</small></div>
+  <div class="g11-feed">
+   <button class="g11-fi" data-go="radar"><span class="ic">${rdr11(0)}</span><span class="tx"><b>2 перехвата ждут</b><small>Туннели · Король и Венатор · ×2 опыта</small></span><em class="tm">5:12:40</em></button>
+   <button class="g11-fi" data-go="check"><span class="ic bk">${ic('book11')}</span><span class="tx"><b>Глава ждёт проверки</b><small>«Охота объявлена» · 3 вопроса · ≈ 30 с</small></span>${ic('chev')}</button>
+   <button class="g11-fi" data-go="vs"><span class="ic mm">${hic12('rat')}${hic12('venator')}</span><span class="tx"><b>Боря зовёт в Versus</b><small>ставка 50 · 2 ч назад</small></span><em class="ok">Принять</em></button></div>
+  <button class="g11-vsb g12-vsb"><span class="hv l"><video muted loop playsinline data-hv="hv_venator2" poster="${IMG.hv_venator2}"></video></span><span class="hv r"><video muted loop playsinline data-hv="hv_rat3" poster="${IMG.hv_rat3}"></video></span><i class="vsl"></i><b class="vs">VS</b>
+   <span class="tx"><small>${ic('sword')}VERSUS С ДРУГОМ</small><b>Кто лучше поймёт героев?</b><em>3 раунда · урон — твои очки</em></span><span class="cta">Позвать ${ic('chev')}</span></button>
+  <div class="g12-two"><button class="g12-rd" data-go="radar"><span class="cb">${radarMini12()}</span><b>Радар · 3D</b><small>кто где спорит сейчас</small></button>
+   <button class="g12-ln" data-go="lines"><span class="cb"><i class="img" style="background-image:url(${VT('doorman')})"></i><em>«Your heart…»</em></span><b>Реплики</b><small>как в TikTok · с голосом</small></button></div>
+  <div class="g11-sec"><b>Герои</b><small>нажми — его комиксы и реплики</small></div>
+  <div class="g12-hs">${LIVE.map(k=>hcard12(k,{badge:k==='venator'?'<em class="g12-nw">1 новая</em>':''})).join('')}${SOON.map(k=>hcard12(k)).join('')}</div>`;
+ R.appendChild(ov);playV12(ov);const c=sub(ctx);
+ if(from){const q=rel(from,R);an(ov,[{clipPath:`inset(${q.y}px ${344-q.x-q.w}px ${754-q.y-q.h}px ${q.x}px round 24px)`},{clipPath:'inset(0 0 0 0 round 0)'}],{d:560,e:EO})}else an(ov,[{opacity:0},{opacity:1}],{d:300});
+ neonOn11(c,$('.g11-ne.hh',ov),260);neonLife11(c,$('.g11-ne.hh',ov));cnsOn12(c,ov);
+ $$('.g11-sec,.g11-fi,.g12-vsb,.g12-two>button,.h12c',ov).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(22px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:420+i*60}));
+ an($('.g12-vsb .l',ov),[{transform:'translateX(-50%)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:700});an($('.g12-vsb .r',ov),[{transform:'translateX(50%)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:700});
+ hcTilt12(c,ov);radarSpin12(c,ov);
+ let touched=false;c.on(ov,'pointerdown',()=>{touched=true},{capture:true});
+ const close=()=>{c.kill();const z=an(ov,[{opacity:1,transform:'none'},{opacity:0,transform:'translateX(40px)'}],{d:240,e:EI,f:'forwards'});const f=()=>{ov.remove();o.onClose&&o.onClose()};if(z)z.onfinish=f;else f()};
+ c.on(ov,'click',e=>{const t=e.target;
+  if(t.closest('.g11-bk')){if(o.onClose||from)close();else toast(R,'← назад к вкладке «Игры»');return}
+  const h=t.closest('.h12c');if(h){touched=true;an(h,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});hDetail12(R,c,h.dataset.k,h);return}
+  const g=t.closest('[data-go]')||(t.closest('.g12-vsb')?{dataset:{go:'vs'}}:null);if(!g)return;touched=true;const el=t.closest('button');if(el)an(el,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});
+  const go=g.dataset.go;
+  if(go==='radar')g11Over(R,c,(pv,cc,cl)=>radar12(pv,cc,{onBack:cl}),null,el);
+  else if(go==='check')g11Over(R,c,(pv,cc,cl)=>comic12(pv,cc,'who',{start:'check',onBack:cl}),null,el);
+  else if(go==='vs')g11Over(R,c,(pv,cc,cl)=>vs12(pv,cc,{demo:false,onBack:cl}),null,el);
+  else if(go==='lines')g11Over(R,c,(pv,cc,cl)=>lines12(pv,cc,'ult',{onBack:cl}),null,el)});
+ if(o.demo)c.t(()=>{if(!touched){ov.scrollTo({top:520,behavior:'smooth'});c.t(()=>{if(touched)return;const h=$('.h12c[data-k="venator"]',ov);if(h)hDetail12(R,c,'venator',h)},1600)}},2600);
+ return ov}
+
+/* --- герои на карточках: фон взят с анимированной карточки (вариант Зетки) или рамка на фоне локации (как в TikTok) --- */
+function g12Cards(R,ctx,mode){R.className='scr v8 g11 g12 g12-cards '+mode;
+ R.innerHTML=`${SB(0)}<div class="g11-pg g12-pg"><div class="g11-hd"><b>Герои</b><small>${mode==='frame'?'рамка на фоне его локации':'фон — с его же карточки'}</small></div>
+  <div class="g12-hs big">${HK12.map(k=>hcard12(k,{mode})).join('')}</div>
+  <p class="g12-nt">${mode==='frame'?'Фон — живая локация героя (тот, что из v11), сам герой — в тонкой рамке, как в роликах «Desperation Ultimate Lines».':'Фон не рисуем отдельно: Зетка вырезает его из того же ролика-карточки (без героя) — цвет и свет всегда совпадают.'}</p></div>
+  <canvas class="fx"></canvas><i class="hb"></i>`;
+ playV12(R);hcTilt12(ctx,R);let touched=false;ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ $$('.h12c',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(26px) scale(.94)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80+i*60}));
+ ctx.on(R,'click',e=>{const h=e.target.closest('.h12c');if(h&&!e.target.closest('.h12d')){touched=true;an(h,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});hDetail12(R,ctx,h.dataset.k,h,mode)}});
+ ctx.t(()=>{if(!touched){const h=$('.h12c[data-k="venator"]',R);hDetail12(R,ctx,'venator',h,mode)}},3400)}
+
+/* --- Радар v12: 3D в стиле v10 (бирюза на тёмном), но легче 3D-города: 9 районов-плит, у каждого один знак и хозяин --- */
+const RD12=[{k:'sobor',n:'Собор',h:'venator',x:160,y:92,z:3,g:'sp'},{k:'tun',n:'Туннели',h:'rat',x:160,y:196,z:1,g:'ar'},{k:'cir',n:'Цирк',h:'celeste',x:258,y:142,z:2,g:'tn'},
+ {k:'les',n:'Старый лес',h:'talon',x:62,y:70,z:2,g:'tr'},{k:'lab',n:'Лаборатория',h:'victor',x:54,y:176,z:2,g:'fl'},{k:'niz',n:'Сонная низина',h:'rem',x:98,y:266,z:1,g:'mn'},
+ {k:'kla',n:'Кладбище',h:'danny',x:204,y:278,z:1,g:'cr'},{k:'otl',n:'Отель',h:'doorman',x:276,y:242,z:3,g:'ht'},{k:'ele',n:'Электростанция',h:'seven',x:258,y:44,z:2,g:'bt'}];
+const RSIG12={tun:{a:'rat',b:'venator',t:'«Охота объявлена»',st:'open',m:'5 реплик · ×2 опыта',left:'ещё 5:12'},sobor:{a:'venator',b:'rat',t:'«Проповедь свинца»',st:'open',m:'7 реплик · ×2 опыта',left:'ещё 3:40'},
+ cir:{a:'celeste',b:'talon',t:'Селеста и Талон',st:'soon',m:'портреты ещё делаем',left:'через 5 ч'},otl:{a:'doorman',b:'talon',t:'Дормен и Талон',st:'soon',m:'портреты ещё делаем',left:'через 8 ч'}};
+const RG12={sp:'<path d="M12 2v5M10 4h4M8 22V11l4-4 4 4v11"/><path d="M5 22v-7l3-3M19 22v-7l-3-3M12 16v6"/>',ar:'<path d="M4 20v-7a8 8 0 0 1 16 0v7"/><path d="M8 20v-6a4 4 0 0 1 8 0v6"/>',tn:'<path d="M3 20L12 4l9 16z"/><path d="M12 4v16M7.5 20L12 12l4.5 8"/>',
+ tr:'<path d="M12 3l6 9h-4l5 7H5l5-7H6z"/><path d="M12 19v3"/>',fl:'<path d="M9 3h6M10 3v6L5 19a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2L14 9V3"/><path d="M7.5 15h9"/>',mn:'<path d="M15 3a8 8 0 1 0 6 13A7 7 0 0 1 15 3z"/>',
+ cr:'<path d="M12 3v18M7 8h10"/><path d="M6 21h12"/>',ht:'<rect x="5" y="4" width="14" height="17" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10.5 21v-4h3v4"/>',bt:'<path d="M13 2L5 13h6l-1 9 8-11h-6z"/>'};
+function plate12(d,mini){const s=RSIG12[d.k],h=H12[d.h];const L=Array.from({length:mini?2:4},(_,i)=>`<i class="ly" style="--zi:${i}"></i>`).join('');
+ return `<span class="r12-p z${d.z}${s?' sig '+s.st:''}" data-k="${d.k}" style="left:${d.x}px;top:${d.y}px;--ac:${h.ac}">${L}${s&&!mini?'<i class="rg"></i><i class="rg b"></i>':''}
+  <span class="bb"><svg viewBox="0 0 24 24" class="gl">${RG12[d.g]}</svg>${mini?'':`<b>${d.n}</b><span class="hi">${hic12(d.h)}${s?hic12(s.b):''}</span>`}</span>${s&&!mini?'<i class="bm"></i>':''}</span>`}
+function radarMini12(){return `<span class="r12-mini"><span class="pl">${RD12.map(d=>plate12(d,1)).join('')}</span></span>`}
+function radarSpin12(ctx,root){const P=$$('.r12-mini .pl',root);if(!P.length)return;let a=-24;ctx.loop((n,dt)=>{a+=dt*.006;P.forEach(p=>p.style.setProperty('--a',a.toFixed(2)+'deg'))})}
+function radar12(R,ctx,o){o=o||{};R.className='scr v8 g11 r12';
+ R.innerHTML=`${SB(0)}<div class="r12-hd"><button class="r12-bk">${ic('back')}</button><span><b>Радар</b><small>2 сигнала · новые через 5:12:40</small></span><em>⚡ ×2 опыта</em></div>
+  <div class="r12-st"><span class="pl">
+   <svg class="rv" viewBox="0 0 320 320"><path d="M-10 150 C40 140 70 120 110 136 S190 168 220 150 S290 110 330 124" fill="none" stroke="rgba(46,230,197,.28)" stroke-width="14" stroke-linecap="round"/><path class="fl" d="M-10 150 C40 140 70 120 110 136 S190 168 220 150 S290 110 330 124" fill="none" stroke="rgba(190,255,245,.5)" stroke-width="1.6" stroke-dasharray="6 14"/></svg>
+   ${RD12.map(d=>plate12(d)).join('')}<i class="sw"></i></span></div>
+  <p class="r12-hint">тяни вбок — крутится · нажми на район</p>
+  <div class="r12-lg"><button class="hd">Что где ${ic('chev')}</button><div class="ls">${RD12.map(d=>`<span data-k="${d.k}">${hic12(d.h)}<b>${d.n}</b><small>${H12[d.h].ru}</small></span>`).join('')}</div></div>
+  <div class="r12-sh" hidden></div><canvas class="fx"></canvas><i class="hb"></i>`;
+ const pl=$('.r12-st .pl',R),st=$('.r12-st',R),sh=$('.r12-sh',R),fx=FX(ctx,$('.fx',R));let a=-28,va=0,drag0=false,touched=false;
+ const set=()=>pl.style.setProperty('--a',a.toFixed(2)+'deg');set();
+ an(pl,[{transform:'translate(-50%,-50%) rotateX(62deg) rotateZ(-70deg) scale(.6)',opacity:0},{transform:'translate(-50%,-50%) rotateX(56deg) rotateZ(var(--a)) scale(1)',opacity:1}],{d:1100,e:EO});
+ $$('.r12-p',R).forEach((p,i)=>an(p,[{opacity:0},{opacity:1}],{d:400,dl:300+i*60}));
+ $$('.r12-p .ly',R).forEach(l=>{const zi=+l.style.getPropertyValue('--zi');an(l,[{transform:'translateZ(0)'},{transform:`translateZ(calc(${zi} * var(--zz)))`}],{d:700,e:EO,dl:700})});
+ let a0=a;drag(ctx,st,{axis:'x',start(){touched=true;drag0=true;va=0;a0=a},move(dx,dy,vx){a=a0+dx*.45;set();va=vx*16*.45},end(){drag0=false},tap(e){const p=e.target.closest&&e.target.closest('.r12-p');if(p)openP(p.dataset.k)}});
+ ctx.loop((n,dt)=>{if(drag0)return;if(Math.abs(va)>.02){a+=va;va*=.93;set()}else if(!touched){a+=dt*.004;set()}});
+ function openP(k){const d=RD12.find(x=>x.k===k),s=RSIG12[k],h=H12[d.h];$$('.r12-p',R).forEach(p=>p.classList.toggle('on',p.dataset.k===k));
+  sh.hidden=false;sh.innerHTML=`<i class="hd"></i><div class="t">${hic12(d.h,'big')}<span><small>РАЙОН · ${h.ru.toUpperCase()}</small><b>${d.n}</b></span><button class="x">${ic('x')}</button></div>
+   ${s?`<div class="rsg ${s.st}"><span class="mm">${hic12(s.a)}${hic12(s.b)}</span><span><b>${s.st==='open'?'Перехват: ':''}${s.t}</b><small>${s.m}</small></span><em>${s.left}</em></div>
+   ${s.st==='open'?`<button class="go">${ic('book11')}Читать перехват</button>`:'<p class="nn">Сигнал появится, когда у обоих героев будет живой портрет.</p>'}`:`<p class="nn">Сейчас тихо. Новые сигналы — раз в 8 часов, до 4 за раз.</p>`}`;
+  an(sh,[{transform:'translateY(110%)'},{transform:'none'}],{sp:SPs});const r=rel($(`.r12-p[data-k="${k}"] .bb`,R),R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:22,c:[h.ac,'#fff','#2EE6C5'],v:3.4,g:0,s:2,l:34});
+  ctx.on($('.x',sh),'click',e=>{e.stopPropagation();an(sh,[{transform:'none'},{transform:'translateY(110%)'}],{d:220,e:EI,f:'forwards'}).onfinish=()=>{sh.hidden=true};$$('.r12-p',R).forEach(p=>p.classList.remove('on'))});
+  const go=$('.go',sh);if(go)ctx.on(go,'click',()=>{an(go,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});g11Over(R,ctx,(pv,cc,cl)=>comic12(pv,cc,'who',{onBack:cl}),null,go)})}
+ ctx.on($('.r12-lg .hd',R),'click',()=>{touched=true;$('.r12-lg',R).classList.toggle('op')});
+ ctx.on($('.r12-lg .ls',R),'click',e=>{const s=e.target.closest('[data-k]');if(s)openP(s.dataset.k)});
+ ctx.on($('.r12-bk',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← назад в Deadlock')});
+ if(o.demo!==false)ctx.t(()=>{if(!touched)openP('tun')},3200)}
+
+/* --- Versus v12: раскладка v10 (Андрей: «в 10 нет проблемы, кто что говорит»), аккуратнее:
+   говорит один — он светлее, второй в тени; реплика — под говорящим, с хвостиком к нему; урон — у полоски соперника, не поверх реплики --- */
+function vs12(R,ctx,o){o=o||{};R.className='scr v8 vs12';
+ const P=(k,side,nm,who)=>`<div class="v12-p ${side}" data-k="${k}"><div class="hbg">${heroBg11(k)}</div><video muted loop playsinline data-hv="${H12[k].v}" poster="${IMG[H12[k].v]}"></video><i class="dm"></i><i class="fl"></i><i class="ko">K.O.</i></div>`;
+ R.innerHTML=`${SB(0)}<div class="v12-top"><button class="x">${ic('x')}</button><div class="hp l"><small>ТЫ · VENATOR</small><i><i class="gh"></i><i class="v"></i></i><b>450</b></div><div class="rd"><b>Раунд 1</b><small>из 3 · банк 100</small></div><div class="hp r"><small>RAT KING · БОРЯ</small><i><i class="gh"></i><i class="v"></i></i><b>450</b></div><b class="v12-dmg"></b></div>
+  <div class="v12-st">${P('venator','lf','Venator','ты · ур. 2')}${P('rat','rt','Rat King','Боря · ур. 1')}<b class="v12-x">VS</b></div>
+  <div class="v12-ln"></div>
+  <div class="v12-pn"><div class="v12-rb"><small>РАУНД 1</small><b>СОБЕРИ</b><i class="tm"><i></i></i></div><div class="v12-q"></div></div>
+  <button class="v12-snd on">${ic('snd')}<span>фон</span></button><canvas class="fx"></canvas><i class="hb"></i>`;
+ playV12(R);const fx=FX(ctx,$('.fx',R)),LN=$('.v12-ln',R),Q=$('.v12-q',R),st=$('.v12-st',R);let hp=[450,450],streak=0,touched=false,t0=0,tmA=null,loud=false,bedOn=true;
+ ctx.on(R,'pointerdown',()=>{touched=true;loud=true},{capture:true});
+ ctx.on($('.v12-snd',R),'click',e=>{e.stopPropagation();bedOn=!bedOn;e.currentTarget.classList.toggle('on',bedOn);if(!bedOn)SND12.bedStop();toast(R,bedOn?'Фон арены под репликами: вкл':'Фон: выкл — как сейчас, сухо')});
+ // кто говорит: он светлее и чуть ближе, второй в тени; реплика — у его стороны, хвостик к нему
+ function say(k,txt,a,hid){const side=k==='venator'?'lf':'rt';$$('.v12-p',R).forEach(p=>p.classList.toggle('tk',p.dataset.k===k));$$('.v12-p',R).forEach(p=>p.classList.toggle('qt',p.dataset.k!==k));
+  const old=$$('.v12-m',LN);old.forEach(m=>{m.classList.add('old');if(m.classList.contains('old2'))m.remove();else m.classList.add('old2')});
+  const m=document.createElement('div');m.className='v12-m '+side+(hid?' hid':'');m.innerHTML=`<i class="tl"></i><span class="who">${hic12(k)}<b>${H12[k].n}</b></span><span class="tx">${hid?'<i class="dt">· · · · · · ·</i> <em>соберёшь ниже</em>':txt}</span>${a?`<button class="pl" data-a="${a}">${ic('play')}</button>`:''}<span class="wv">${Array.from({length:16},(_,i)=>`<i style="animation-delay:${(-i*.08).toFixed(2)}s"></i>`).join('')}</span>`;
+  LN.appendChild(m);an(m,[{opacity:0,transform:`translateY(10px) translateX(${side==='lf'?-16:16}px)`},{opacity:1,transform:'none'}],{sp:SPs});
+  if(a){m.classList.add('say');say12(ctx,a,{loud:loud,bed:bedOn?'arena':null,dry:!bedOn,end(){m.classList.remove('say')}});const pb=$('.pl',m);ctx.on(pb,'click',e=>{e.stopPropagation();m.classList.add('say');say12(ctx,a,{bed:bedOn?'arena':null,dry:!bedOn,end(){m.classList.remove('say')}})})}
+  return m}
+ function fitLn(){const p=$('.v12-pn',R);if(!p)return;const r=rel(p,R);LN.style.bottom=Math.max(300,754-r.y+8)+'px'}
+ if(window.ResizeObserver){const ro=new ResizeObserver(()=>fitLn());ro.observe($('.v12-pn',R));ctx.add(()=>ro.disconnect())}
+ function round(n,t){const rb=$('.v12-rb',R);rb.innerHTML=`<small>РАУНД ${n}</small><b>${t}</b><i class="tm"><i></i></i>`;an(rb,[{transform:'scale(.6)',opacity:0},{transform:'none',opacity:1}],{sp:SPb});
+  $('.v12-top .rd b',R).textContent=`Раунд ${n}`;t0=performance.now();if(tmA)tmA.cancel();tmA=an($('.v12-rb .tm i',R),[{transform:'scaleX(1)'},{transform:'scaleX(0)'}],{d:20000,e:'linear',f:'forwards'})}
+ function bar(side,v){const i=side==='l'?0:1;hp[i]=Math.max(0,v);const q=$(`.v12-top .hp.${side}`,R),s=hp[i]/450;$('.v',q).style.transform=`scaleX(${s})`;$('b',q).textContent=hp[i];ctx.t(()=>{$('.gh',q).style.transform=`scaleX(${s})`},520)}
+ function hit(){const fast=(performance.now()-t0)<6500,dmg=fast?150:130;streak++;const rt=$('.v12-p.rt',R),dm=$('.v12-dmg',R);
+  $$('video',R).forEach(v=>v.pause());R.classList.add('stop');ctx.t(()=>{$$('video',R).forEach(v=>{const p=v.play();if(p&&p.catch)p.catch(()=>{})});R.classList.remove('stop');
+   dm.innerHTML=`−${dmg}${fast?'<small>КРИТ · быстро</small>':''}${streak>1?`<small>×${streak} подряд</small>`:''}`;an(dm,[{opacity:0,transform:'translateY(-8px) scale(.6)'},{opacity:1,transform:'none',offset:.2},{opacity:1,transform:'none',offset:.75},{opacity:0,transform:'translateY(6px)'}],{d:1500,e:EO});
+   an(rt,[{transform:'none'},{transform:'translateX(14px)'},{transform:'translateX(-3px)'},{transform:'none'}],{d:420,e:EO});an($('.fl',rt),[{opacity:.7},{opacity:0}],{d:360});
+   const r=rel(rt,R);fx.burst(r.x+r.w*.5,r.y+r.h*.4,{n:fast?54:36,c:fast?['#FFD23F','#fff','#FF6B6B']:['#FF6B6B','#fff','#F6D488'],v:fast?8:6,g:.1,s:2.6,l:50});bar('r',hp[1]-dmg)},110)}
+ function ko(){const rt=$('.v12-p.rt',R);an(rt,[{filter:'grayscale(0) brightness(1)'},{filter:'grayscale(1) brightness(.5)'}],{d:900,f:'forwards'});an($('.ko',rt),[{opacity:0,transform:'translate(-50%,-50%) scale(3) rotate(-14deg)'},{opacity:1,transform:'translate(-50%,-50%) rotate(-10deg)'}],{d:520,e:EO,f:'forwards',dl:250});
+  ctx.t(()=>say('venator','Evil dies today.','ven-evil-dies'),700);
+  ctx.t(()=>{fx.burst(172,300,{n:80,c:['#F6D488','#fff','#E8B34B'],v:7,g:.12,s:3,l:66});$('.v12-pn',R).innerHTML=`<div class="v12-win"><small>ПОБЕДА · 3 ИЗ 3</small><b>+200 ${ic('ticket')}</b><span>Венатор · +40 опыта · ур. 2 → <em>3</em></span><button class="rv">${ic('sword')}Реванш — другой диалог</button></div>`;
+   fitLn();$$('.v12-win>*',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:i*80}));const bk=$('.v12-top .rd',R);bk.innerHTML='<b>K.O.</b><small>банк 200 — твой</small>'},2600)}
+ function r1(){round(1,'СОБЕРИ');const ANS=['You',"can't",'hide','from','a','Venator'],TK=['hide','You','a','from','Venator',"can't",'find','see'];let pk=[];
+  Q.innerHTML=`<b class="q">Собери ответ Венатора</b><small>От Венатора не спрячешься.</small><div class="vsl">${ANS.map(()=>'<i></i>').join('')}</div><div class="tl">${TK.map((w,j)=>`<button data-j="${j}">${w}</button>`).join('')}</div><button class="ck" disabled>Ударить</button>`;
+  fitLn();const SL=$$('.vsl i',Q),TB=$$('.tl button',Q),ck=$('.ck',Q);$$('.v12-q>*',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:i*40}));
+  const put=b=>{if(pk.length>=6||b.disabled)return;const s=SL[pk.length];pk.push(b.textContent);const a=rel(b,R),z=rel(s,R);b.disabled=true;s.textContent=b.textContent;s.className='f';an(s,[{transform:`translate(${a.x-z.x}px,${a.y-z.y}px)`},{transform:'none'}],{sp:SPs});ck.disabled=pk.length<6};
+  TB.forEach(b=>ctx.on(b,'click',()=>put(b)));
+  const go=()=>{if(pk.join(' ')!==ANS.join(' ')){shake($('.vsl',Q),6,360);streak=0;ctx.t(()=>{pk=[];SL.forEach(s=>{s.textContent='';s.className=''});TB.forEach(b=>b.disabled=false);ck.disabled=true},700);return}
+   SL.forEach((s,j)=>{s.classList.add('ok');an(s,[{transform:'none'},{transform:'translateY(-6px)'},{transform:'none'}],{sp:SPb,dl:j*50})});if(vm){$('.tx',vm).textContent="You can't hide from a Venator.";vm.classList.remove('hid')}
+   say('venator',"You can't hide from a Venator.",'ven-no-hide');ctx.t(hit,900);ctx.t(r2,3000)};
+  ctx.on(ck,'click',go);return {put,TB,ANS,go}}
+ function opts(n,t,q,line,O,r,after){round(n,t);Q.innerHTML=`<b class="q">${q}</b>${line}<div class="op">${O.map((x,j)=>`<button data-j="${j}">${x}</button>`).join('')}</div>`;
+  $$('.v12-q>*',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:i*40}));
+  fitLn();const B=$$('.op button',Q);B.forEach(b=>ctx.on(b,'click',()=>{B.forEach(x=>{x.disabled=true;x.classList.toggle('ok',+x.dataset.j===r)});if(+b.dataset.j!==r){b.classList.add('bad');shake(b,5,300);streak=0;ctx.t(after,1600);return}hit();ctx.t(after,2000)}))}
+ function r2(){say('rat','Holier than thou, <u>crumbum</u>!','rk-holier');ctx.t(()=>opts(2,'ЧТО ЗНАЧИТ','Что значит «crumbum» у Короля?','<small>crumb — крошка, bum — бродяга</small>',['ничтожество (ругательство)','крошка (ласково)','бродячий кот'],0,r3),900)}
+ function r3(){say('rat','Go do some <i class="dt">▢▢▢▢</i> Marys or somethin\'.','rk-hail-marys');ctx.t(()=>opts(3,'НА СЛУХ','Какое слово прозвучало?','<small>нажми ▶ у реплики — послушать ещё</small>',['Hail','Hell','Hale'],0,()=>{bar('r',0);ctx.t(ko,300)}),900)}
+ let vm=null,R1=null;
+ an($('.v12-p.lf',R),[{transform:'translateX(-70px)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:60});an($('.v12-p.rt',R),[{transform:'translateX(70px)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:60});
+ an($('.v12-x',R),[{opacity:0,transform:'translate(-50%,-50%) scale(2.6)'},{opacity:1,transform:'translate(-50%,-50%) scale(1)',offset:.35},{opacity:0,transform:'translate(-50%,-50%) scale(1.05)'}],{d:1300,dl:250});
+ ctx.t(()=>say('rat',"What's a priest gonna do to a king?!",'rk-priest-vs-king'),900);ctx.t(()=>{vm=say('venator','',null,true);R1=r1()},2600);
+ ctx.on($('.v12-top .x',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← выйти из боя')});
+ if(o.demo!==false)(async()=>{await ctx.wait(4400);if(!R1||touched)return;for(const w of R1.ANS){if(touched)return;const b=R1.TB.find(x=>x.textContent===w&&!x.disabled);if(b)R1.put(b);await ctx.wait(300)}if(touched)return;await ctx.wait(300);R1.go();
+  await ctx.wait(4400);if(touched)return;let b=$('.op button[data-j="0"]',Q);if(b)b.click();await ctx.wait(3400);if(touched)return;b=$('.op button[data-j="0"]',Q);if(b)b.click()})()}
+
+/* --- Реплики «как в TikTok»: карточка в тонкой рамке на фоне локации, слова крупно по одному, звук абилки + голос;
+   «X про Y» — как «favourite doorman voicelines»: кто говорит — карточкой, про кого — рядом --- */
+const LN12={venator:[{a:'ven-evil-stirs',en:'Evil stirs in New York... and so the Vatican has called on me.',ru:'В Нью-Йорке пробуждается зло… и Ватикан призвал меня.',tag:'Выход на бой'},{a:'ven-not-merciful',en:'The Lord is merciful... I am not.',ru:'Господь милосерден… а вот я — нет.',tag:'Ульта'}],
+ rat:[{a:'rk-king-here',en:'The rat king is here!',ru:'Крысиный король здесь!',tag:'Ульта'},{a:'rk-took-down',en:'Took down the Venatah!',ru:'Уложил Венатора!',tag:'Убил Венатора'}]};
+const AB12={venator:[{a:'ven-die-monster',en:'Die, monster!',ru:'Сдохни, тварь!'},{a:'ven-will-find',en:'I will find you.',ru:'Я тебя найду.'},{a:'ven-no-hide',en:"You can't hide from a Venator.",ru:'От Венатора не спрячешься.'}],
+ rat:[{a:'rk-priest-vs-king',en:"What's a priest gonna do to a king?!",ru:'И что поп сделает королю?!'},{a:'rk-took-down',en:'Took down the Venatah!',ru:'Уложил Венатора!'},{a:'rk-hail-marys',en:"Go do some Hail Marys or somethin'.",ru:'Иди почитай «Аве Мария», что ли.'}]};
+const WM12={evil:'зло',stirs:'шевелится, пробуждается',vatican:'Ватикан',called:'призвал (called on — позвал на помощь)',merciful:'милосердный',lord:'Господь',king:'король',rat:'крыса',took:'уложил (take down)',down:'(take down — завалить)',priest:'священник, поп',gonna:'= going to, собирается',die:'сдохни',monster:'чудовище, тварь',find:'найти',hide:'спрятаться',hail:'Hail Mary — молитва «Аве Мария»'};
+function lines12(R,ctx,mode,o){o=o||{};const about=mode==='about';R.className='scr v8 ln12 '+(about?'ab':'ul');let k=o.hero||'rat',i=0,touched=false,loud=false;
+ R.innerHTML=`${SB(0)}<div class="ln12-bg"></div><i class="ln12-vg"></i>
+  <div class="ln12-hd"><button class="bk">${ic('back')}</button><span><small>РЕПЛИКИ ГЕРОЕВ</small><b>${about?'Кто что говорит про кого':'Ульты и выходы'}</b></span></div>
+  <div class="ln12-stage"></div><div class="ln12-cap"></div><div class="ln12-ru"></div>
+  <div class="ln12-chips"></div>
+  <div class="ln12-ft"><button class="lpv">${ic('back')}</button><button class="pl">${ic('play')}<span>Слушать</span></button><button class="sv">${ic('star')}</button><button class="nx">${ic('chev')}</button></div>
+  <i class="ln12-fl"></i><canvas class="fx"></canvas><i class="hb"></i>`;
+ const stg=$('.ln12-stage',R),cap=$('.ln12-cap',R),ru=$('.ln12-ru',R),fx=FX(ctx,$('.fx',R));
+ ctx.on(R,'pointerdown',()=>{touched=true;loud=true},{capture:true});
+ const L=()=>about?AB12[k]:LN12[k];
+ function paint(){const h=H12[k],x=L()[i],tg=k==='rat'?'venator':'rat';$('.ln12-bg',R).innerHTML=heroBg11(k);
+  stg.innerHTML=about?`<span class="ls12"><span class="fr"><video muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video></span><span class="wf">${Array.from({length:22},(_,j)=>`<i style="--h:${(.25+.75*Math.abs(Math.sin(j*1.7+i))).toFixed(2)}"></i>`).join('')}</span></span>
+    <span class="to"><span class="ct"><video muted loop playsinline data-hv="${H12[tg].v}" poster="${IMG[H12[tg].v]}" style="object-position:${H12[tg].pos}"></video></span><small>про ${tg==='venator'?'Венатора':'Короля'}</small></span>`
+   :`<span class="fr big"><video muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video><i class="gl"></i></span><small class="tg">${x.tag} · ${h.n}</small>`;
+  playV12(stg);cap.innerHTML='';ru.textContent='';
+  $('.ln12-chips',R).innerHTML=about?`<span>${hic12(k)}<b>${h.n} про:</b></span><button class="on">${hic12(tg)}${H12[tg].n}</button><button class="lk">${hic12('victor')}Victor</button><button class="lk">${hic12('rem')}Rem</button>`
+   :`${['rat','venator'].map(q=>`<button class="${q===k?'on':''}" data-h="${q}">${hic12(q)}${H12[q].n}</button>`).join('')}<button class="lk">${hic12('doorman')}Doorman</button><button class="lk">${hic12('seven')}Seven</button>`;
+  an(stg,[{opacity:0,transform:'translateY(18px) scale(.94)'},{opacity:1,transform:'none'}],{sp:SPs})}
+ // слова — крупно по одному (как в роликах), тап по слову — что значит
+ function play(){const x=L()[i],W=x.en.split(' '),d=(DUR11[AU11[x.a]||x.a]||2.4)*1000,pre=about?120:480;const len=W.reduce((s,w)=>s+w.length+2,0);
+  if(!about){an($('.ln12-fl',R),[{opacity:0},{opacity:.6,offset:.1},{opacity:0}],{d:520});shake($('.fr',stg),5,320);const r=rel($('.fr',stg),R);fx.burst(r.x+r.w/2,r.y+r.h*.55,{n:40,c:[H12[k].ac,'#fff','#F6D488'],v:6,g:.06,s:2.4,l:44})}
+  stg.classList.add('say');say12(ctx,x.a,{loud,bed:BED12[k],abil:about?null:k,end(){stg.classList.remove('say')}});
+  let t=pre;cap.innerHTML='';ru.textContent='';W.forEach((w,j)=>{const ms=d*(w.length+2)/len;ctx.t(()=>{cap.innerHTML=`<button class="cw" data-w="${w.toLowerCase().replace(/[^a-z']/g,'')}">${w}</button>`;an($('.cw',cap),[{transform:'scale(.6) rotate(-4deg)',opacity:0},{transform:'none',opacity:1}],{sp:SPb})},t);t+=ms});
+  ctx.t(()=>{cap.innerHTML=`<span class="all">${W.map(w=>`<button class="cw s" data-w="${w.toLowerCase().replace(/[^a-z']/g,'')}">${w}</button>`).join(' ')}</span>`;ru.textContent=x.ru;an(ru,[{opacity:0},{opacity:1}],{d:400})},t+250)}
+ ctx.on(cap,'click',e=>{const b=e.target.closest('.cw');if(!b)return;const m=WM12[b.dataset.w];toast(R,m?`${b.textContent.replace(/[^A-Za-z']/g,'')} — ${m}`:'нажми слово — объясню (в приложении — по словарю сцены)');an(b,[{transform:'scale(1.2)'},{transform:'none'}],{sp:SPb})});
+ ctx.on($('.ln12-ft',R),'click',e=>{const b=e.target.closest('button');if(!b)return;an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});
+  if(b.classList.contains('pl'))play();else if(b.classList.contains('sv')){b.classList.toggle('on');toast(R,b.classList.contains('on')?'В «Мои фразы» — уйдёт в повторение':'Убрал из «Моих фраз»')}
+  else{const n=b.classList.contains('nx')?1:-1;i+=n;if(i<0||i>=L().length){k=k==='rat'?'venator':'rat';i=0}paint();ctx.t(play,500)}});
+ ctx.on($('.ln12-chips',R),'click',e=>{const b=e.target.closest('button');if(!b)return;if(b.classList.contains('lk')){toast(R,'Реплики этого героя ещё собирает Зетка');return}if(b.dataset.h){k=b.dataset.h;i=0;paint();ctx.t(play,500)}});
+ ctx.on($('.ln12-hd .bk',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← назад в Deadlock')});
+ paint();ctx.t(play,900);
+ // без касания — листает сам
+ const auto=()=>{if(touched)return;i++;if(i>=L().length){k=k==='rat'?'venator':'rat';i=0}paint();ctx.t(play,500);ctx.t(auto,6200)};ctx.t(auto,6400)}
+
+/* --- Звук реплики: «как сейчас» (сухо) и «как будет» — голос в эхе локации, под ним фон, перед ультой — звук абилки --- */
+function snd12(R,ctx){R.className='scr v8 sd12';let k='venator',tr={v:true,b:true,a:true},playing=false;
+ const LNS={venator:{a:'ven-not-merciful',en:'The Lord is merciful... I am not.',ru:'Господь милосерден… а вот я — нет.',bed:'Собор: орган и колокол в большом эхе'},rat:{a:'rk-king-here',en:'The rat king is here!',ru:'Крысиный король здесь!',bed:'Туннели: гул, капли воды'}};
+ R.innerHTML=`${SB(0)}<div class="sd12-hd"><b>Звук реплик</b><small>сравни: как сейчас и как будет</small></div>
+  <div class="sd12-sg"><button class="on" data-k="venator">${hic12('venator')}Венатор</button><button data-k="rat">${hic12('rat')}Король</button></div>
+  <div class="sd12-cd"></div>
+  <div class="sd12-tr">${[['v','Голос','реплика из игры'],['b','Фон локации',''],['a','Звук абилки','перед ультой']].map(([id,n,s])=>`<button class="t on" data-t="${id}"><i class="ck">${ic('check')}</i><span><b>${n}</b><small>${s}</small></span><span class="eq">${eqBars(12)}</span></button>`).join('')}</div>
+  <div class="sd12-ab"><button class="dry">${ic('play')}Как сейчас</button><button class="wet pri">${ic('play')}Как будет</button></div>
+  <p class="sd12-nt">В макете фон и абилка синтезированы. В приложении — настоящие звуки игры: у каждого героя на вики есть страница «Sounds» (каст, попадание, ульта) — их собирает Зетка.</p><i class="hb"></i>`;
+ const cd=$('.sd12-cd',R);
+ function paint(){const x=LNS[k],h=H12[k];cd.innerHTML=`<span class="fr"><video muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video></span><span class="tx"><b>${x.en}</b><small>${x.ru}</small></span>`;playV12(cd);
+  $('.sd12-tr [data-t="b"] small',R).textContent=x.bed;an(cd,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{sp:SPs})}
+ paint();$$('.sd12-tr .t,.sd12-ab button',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:120+i*60}));
+ ctx.on($('.sd12-sg',R),'click',e=>{const b=e.target.closest('button');if(!b)return;k=b.dataset.k;$$('.sd12-sg button',R).forEach(x=>x.classList.toggle('on',x===b));SND12.stop();paint()});
+ ctx.on($('.sd12-tr',R),'click',e=>{const b=e.target.closest('.t');if(!b||b.dataset.t==='v')return;tr[b.dataset.t]=!tr[b.dataset.t];b.classList.toggle('on',tr[b.dataset.t])});
+ const go=(dry)=>{SND12.stop();const x=LNS[k];R.classList.add('pl');R.classList.toggle('dry',dry);$$('.sd12-tr .t',R).forEach(t=>t.classList.toggle('live',!dry&&tr[t.dataset.t]||t.dataset.t==='v'));
+  ctx.t(()=>{say12(ctx,x.a,{dry:dry,bed:!dry&&tr.b?BED12[k]:null,abil:!dry&&tr.a?k:null,end(){R.classList.remove('pl');$$('.sd12-tr .t',R).forEach(t=>t.classList.remove('live'));if(!dry)ctx.t(()=>SND12.bedStop(),1400)}})},60)};
+ ctx.on($('.dry',R),'click',()=>go(true));ctx.on($('.wet',R),'click',()=>go(false))}
+
+/* --- Комикс v12: настоящие реплики главы 1; без подписей-спойлеров («последнее слово — за Венатором»); иконки — как у игрока в интерфейсе --- */
+const CM12=[{w:'venator',a:'ven-evil-stirs',en:'Evil <u>stirs</u> in New York... and so the Vatican has <u>called on</u> me.',ru:'В Нью-Йорке пробуждается зло… и Ватикан призвал меня.'},
+ {w:'rat',a:'rk-sewers',en:"I thought I said you weren't <u>supposed to</u> <u>show your face</u> in the sewers again?!",ru:'Кажется, я велел тебе больше не совать морду в канализацию?!'},
+ {w:'venator',a:'ven-no-hide',en:"You can't <u>hide</u> from a Venator.",ru:'От Венатора не спрячешься.'},
+ {w:'rat',a:'rk-priest-vs-king',en:"What's a priest <u>gonna</u> do to a king?!",ru:'И что поп сделает королю?!'},
+ {w:'venator',a:'ven-will-find',en:'I will <u>find</u> you.',ru:'Я тебя найду.'}];
+const CMW12={'stirs':'шевелится, пробуждается','called on':'призвал, позвал на помощь','supposed to':'должен был (велели)','show your face':'показываться, совать нос','hide':'прятаться','gonna':'= going to, собирается','find':'найти'};
+const CQ12=[{q:'Что значит «show your face» у Короля?',o:['показываться, совать нос','умыться','сделать фото'],r:0,why:'show your face (somewhere) — появляться там, где тебя не ждут.'},
+ {q:'Какое слово прозвучало?',l:"You can't ▢▢▢▢ from a Venator.",a:'ven-no-hide',o:['hide','hate','head'],r:0,why:'hide from — прятаться от.'},
+ {q:'«What\'s a priest gonna do?» — gonna это…',o:['going to — собирается','gone — ушёл','want to — хочет'],r:0,why:'gonna = going to: «что поп собирается сделать?»'}];
+function comic12(R,ctx,style,o){o=o||{};const NE=style==='neutral',SP=style==='split';R.className='scr v8 k12 k12s-'+style;let i=-1,touched=false,loud=false,bedOn=true;
+ const nm=k=>NE?'':H12[k].n;
+ const head=SP?'':`<div class="k12-hd"><button class="bk">${ic('back')}</button><span class="tt"><small>DEADLOCK · ГЛАВА 1</small><b>${NE?'Глава 1':'Охота объявлена'}</b></span>${NE?'':'<button class="ict" aria-label="Иконки"></button>'}</div>
+  ${NE?'':`<div class="k12-who"><span class="st">Начал${ic('chev')}</span>${hic12('venator')}<b>Venator</b><i></i><small>Туннели под собором · ночь</small></div>`}
+  <div class="k12-pr">${CM12.map(x=>`<i class="${NE?'':x.w}">${NE?'':hic12(x.w)}</i>`).join('')}</div>`;
+ const mem=`<div class="k12-mem"><span><b>3</b> фразы — в повторение</span><span class="dp">${ic('deep11')}углубить: ещё <b>6</b></span></div>`;
+ R.innerHTML=`${SB(0)}${head}
+  ${SP?`<div class="k12-sp"><div class="hf t" data-k="rat"><span class="hbg">${heroBg11('rat')}</span><video muted loop playsinline data-hv="hv_rat3" poster="${IMG.hv_rat3}"></video><i class="dm"></i><span class="kbl"></span></div>
+    <div class="mid"><button class="bk">${ic('back')}</button><span class="kdots">${CM12.map(()=>'<i></i>').join('')}</span><button class="snd on">${ic('snd')}</button></div>
+    <div class="hf b" data-k="venator"><span class="hbg">${heroBg11('venator')}</span><video muted loop playsinline data-hv="hv_venator2" poster="${IMG.hv_venator2}"></video><i class="dm"></i><span class="kbl"></span></div></div>`
+   :`<div class="k12-pnl"><div class="fr"><div class="in"></div></div></div><div class="k12-ru"></div>${NE?'':mem}`}
+  ${SP?'':`<div class="k12-ft"><button class="kpv">${ic('back')}</button><button class="pl">${ic('play')}<span>Слушать</span></button><button class="nx">${ic('chev')}</button></div><button class="k12-snd on">${ic('snd')}<span>фон</span></button>`}
+  <div class="k12-end" hidden></div><canvas class="fx"></canvas><i class="hb"></i>`;
+ playV12(R);const fx=FX(ctx,$('.fx',R));ctx.on(R,'pointerdown',()=>{touched=true;loud=true},{capture:true});
+ const icb=$('.ict',R);if(icb)icToggle(R,ctx,icb,()=>{$$('.k12-pr i',R).forEach((x,j)=>{x.innerHTML=hic12(CM12[j].w)});const w=$('.k12-who',R);if(w){const m=$('.m8',w);if(m)m.outerHTML=hic12('venator')}if(i>=0)show(i,true)});
+ const sndB=$('.k12-snd',R)||$('.k12-sp .snd',R);ctx.on(sndB,'click',e=>{e.stopPropagation();bedOn=!bedOn;sndB.classList.toggle('on',bedOn);if(!bedOn)SND12.bedStop();toast(R,bedOn?'Фон туннелей под репликами: вкл':'Фон выкл — как сейчас, сухо')});
+ const wrap=t=>t.replace(/<u>(.*?)<\/u>/g,(m,w)=>`<button class="kw" data-w="${w}">${w}</button>`);
+ function voice(x,b){if(!b)return;b.classList.add('say');say12(ctx,x.a,{loud,bed:bedOn?'sewer':null,dry:!bedOn,end(){b.classList.remove('say')}})}
+ function show(n,re){if(n>=CM12.length){end();return}i=n;const x=CM12[n],side=x.w==='venator'?'l':'r';
+  if(SP){$$('.k12-sp .hf',R).forEach(h=>{const on=h.dataset.k===x.w;h.classList.toggle('on',on);h.classList.toggle('off',!on);$('.kbl',h).innerHTML=''});
+   const h=$(`.k12-sp .hf[data-k="${x.w}"]`,R),bl=$('.kbl',h);bl.innerHTML=`<div class="bq"><span class="tx">${wrap(x.en)}</span><small>${x.ru}</small><button class="pl">${ic('play')}</button></div>`;
+   an($('.bq',bl),[{opacity:0,transform:`translateY(${x.w==='rat'?14:-14}px) scale(.94)`},{opacity:1,transform:'none'}],{sp:SPs});
+   $$('.k12-sp .kdots i',R).forEach((d,j)=>d.classList.toggle('on',j<=n));voice(x,$('.bq',bl));ctx.on($('.bq .pl',bl),'click',e=>{e.stopPropagation();voice(x,$('.bq',bl))});return}
+  const IN=$('.k12-pnl .in',R);const por=NE?`<span class="sil ${side}"></span>`:`<span class="por ${side}"><span class="hbg">${heroBg11(x.w)}</span><video muted loop playsinline data-hv="${H12[x.w].v}" poster="${IMG[H12[x.w].v]}" style="object-position:${H12[x.w].pos}"></video><i class="dm"></i></span>`;
+  IN.innerHTML=`${por}<div class="bb ${side}"><span class="tx">${wrap(x.en)}</span><button class="pl">${ic('play')}</button></div>${NE?'':`<span class="tag ${side}">${hic12(x.w)}<b>${x.w==='venator'?'Venator':'Rat King'}</b></span>`}`;
+  playV12(IN);an(IN,[{opacity:0,transform:`translateX(${side==='l'?-26:26}px)`},{opacity:1,transform:'none'}],{sp:SPs});an($('.bb',IN),[{opacity:0,transform:'scale(.8)'},{opacity:1,transform:'none'}],{sp:SPb,dl:160});
+  $('.k12-ru',R).innerHTML=`${NE?'':`<b>${x.w==='venator'?'VENATOR':'RAT KING'}</b>`}<span>${x.ru}</span>`;
+  $$('.k12-pr i',R).forEach((d,j)=>{d.classList.toggle('on',j===n);d.classList.toggle('dn',j<n)});
+  if(!re)voice(x,$('.bb',IN));ctx.on($('.bb .pl',IN),'click',e=>{e.stopPropagation();voice(x,$('.bb',IN))})}
+ ctx.on(R,'click',e=>{const k=e.target.closest('.kw');if(k){e.stopPropagation();toast(R,`${k.dataset.w} — ${CMW12[k.dataset.w]||''}`);an(k,[{transform:'scale(1.15)'},{transform:'none'}],{sp:SPb});return}
+  const b=e.target.closest('.k12-ft button');if(b){an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});if(b.classList.contains('nx'))show(i+1);else if(b.classList.contains('kpv'))show(Math.max(0,i-1));else{const x=CM12[i];if(x)voice(x,$('.bb',R))}return}
+  if(SP&&e.target.closest('.k12-sp .hf')&&!$('.k12-end',R).hidden===false)show(i+1);
+  if(e.target.closest('.bk')){if(o.onBack)o.onBack();else toast(R,'← назад в Deadlock')}});
+ // конец главы: кто начал, кто последний, как запомнится; проверка — 3 вопроса, «углубить» — по желанию
+ function end(){const E=$('.k12-end',R);E.hidden=false;
+  E.innerHTML=`<div class="cd">${NE?`<div class="rv"><span class="p l"><video muted loop playsinline data-hv="hv_venator2" poster="${IMG.hv_venator2}"></video></span><span class="p r"><video muted loop playsinline data-hv="hv_rat3" poster="${IMG.hv_rat3}"></video></span></div><small>ЭТО БЫЛИ</small><b>Venator и Rat King</b><em>Глава 1 · «Охота объявлена»</em>`
+    :SP?`<small>ГЛАВА 1</small><b>Охота объявлена</b><em>Venator и Rat King · 5 реплик</em>`:`<small>ГЛАВА ПРОЧИТАНА</small><b>Охота объявлена</b><em>начал ${hic12('venator')} Venator · последнее слово — тоже за ним</em>`}
+   <div class="hw"><small>Как запомнится</small><span>${ic('check')}<b>3 фразы</b> — проверка сейчас, потом завтра в повторение</span><span>${ic('deep11')}<b>ещё 6 слов главы</b> — по желанию: stirs, called on, gonna…</span><span>${ic('star')}<b>опыт Венатора</b> — +30, ×2 за углубление</span></div>
+   <button class="go">${ic('check')}Проверка · 3 вопроса · ≈ 30 с</button><button class="ls">Позже — следующая глава открыта</button></div>`;
+  playV12(E);an($('.cd',E),[{opacity:0,transform:'translateY(40px) scale(.94)'},{opacity:1,transform:'none'}],{sp:SPs});$$('.cd>*',E).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:120+j*60}));
+  if(NE){an($('.rv .l',E),[{transform:'rotateY(90deg)'},{transform:'none'}],{sp:SPs,dl:300});an($('.rv .r',E),[{transform:'rotateY(-90deg)'},{transform:'none'}],{sp:SPs,dl:420})}
+  ctx.on($('.go',E),'click',()=>check(E));ctx.on($('.ls',E),'click',()=>toast(R,'На герое — значок «1 глава ждёт проверки»'))}
+ function check(E){let n=0,ok=0;const step=()=>{if(n>=CQ12.length){done();return}const q=CQ12[n];
+   E.innerHTML=`<div class="cd ck"><div class="csg">${CQ12.map((_,j)=>`<i class="${j<n?'f':j===n?'c':''}"></i>`).join('')}</div><small>ПРОВЕРКА ГЛАВЫ · ${n+1} ИЗ 3</small><b class="q">${q.q}</b>${q.l?`<button class="ln">${ic('play')}<span>${q.l}</span></button>`:''}<div class="op">${q.o.map((x,j)=>`<button data-j="${j}">${x}</button>`).join('')}</div><p class="why" hidden>${q.why}</p></div>`;
+   an($('.cd',E),[{opacity:0,transform:'translateX(30px)'},{opacity:1,transform:'none'}],{sp:SPs});const l=$('.ln',E);if(l)ctx.on(l,'click',()=>voice({a:q.a},l));
+   $$('.op button',E).forEach(b=>ctx.on(b,'click',()=>{$$('.op button',E).forEach(x=>{x.disabled=true;x.classList.toggle('ok',+x.dataset.j===q.r)});if(+b.dataset.j!==q.r){b.classList.add('bad');shake(b,5,300)}else ok++;$('.why',E).hidden=false;ctx.t(()=>{n++;step()},1500)}))};step();
+  function done(){E.innerHTML=`<div class="cd dn"><i class="stp">ГЛАВА<br>ЗАКРЕПЛЕНА<small>${ok} из 3 · +30 опыта</small></i><div class="hw"><span>${ic('check')}<b>${ok} фразы</b> — завтра вернутся в повторение</span></div>
+    <div class="dp"><small>ПО ЖЕЛАНИЮ</small><b>Углубить главу · ещё 6 слов</b><em>≈ 1 мин · ×2 опыта Венатора</em><div class="bt"><button class="pri">Углубить</button><button>Хватит — дальше</button></div></div></div>`;
+   an($('.stp',E),[{opacity:0,transform:'scale(2.2) rotate(-14deg)'},{opacity:1,transform:'rotate(-8deg)'}],{d:420,e:EO});fx.burst(172,300,{n:50,c:['#F6D488','#fff','#E23A4E'],v:6,g:.1,s:2.6,l:50});
+   $$('.dp .bt button',E).forEach(b=>ctx.on(b,'click',()=>toast(R,b.classList.contains('pri')?'6 заданий: stirs, called on, supposed to…':'Следующая глава — «Проповедь свинца»')))}}
+ if(o.start==='check'){i=CM12.length-1;end();return}
+ ctx.t(()=>show(0),SP?900:700);
+ // без касания — листает сам (молча)
+ const auto=()=>{if(touched||!$('.k12-end',R).hidden)return;show(i+1);if(i<CM12.length)ctx.t(auto,3400)};ctx.t(auto,4200)}
+
+/* --- Обучение v12: «додрочить» любую сцену — по желанию. Посмотрел, знаешь 31 из 100 — хватит? иди дальше. Хочешь ещё 30 или все 100 — без проблем, за это награды и респект --- */
+function dots12(n,known,add){let s='';for(let j=0;j<n;j++)s+=`<i class="${j<known?'k':j<known+add?'a':''}" style="--j:${j}"></i>`;return s}
+function deep12(R,ctx,kind){R.className='scr v8 dp12 dp12-'+kind;let touched=false;ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ if(kind==='scene'){R.innerHTML=`${SB(0)}<div class="dp12-top"><i class="img" style="background-image:url(${IMG.bd_psycho})"></i><i class="sh"></i><small>АМЕРИКАНСКИЙ ПСИХОПАТ · ЭП. 1 ПРОЙДЕН</small><b>Ты знаешь <em class="n">31</em> из 100 слов сцены</b></div>
+   <div class="dp12-grid">${dots12(100,31,0)}</div>
+   <p class="dp12-q">Хватит — норм. Хочешь ещё — без проблем.</p>
+   <div class="dp12-ch"><button class="dc0" data-a="0"><b>Дальше смотреть</b><small>эпизод 2 · прогресс останется</small></button>
+    <button class="dc1" data-a="30"><span class="tg">УГЛУБЛЁННОЕ</span><b>Ещё 30 слов</b><small>≈ 6 мин · двумя подходами</small><em>${ic('star')}кадр «Офис» в рамке</em></button>
+    <button class="dc2" data-a="69"><span class="tg">ПОЛНОЕ</span><b>Все 100</b><small>≈ 20 мин · частями, когда хочешь</small><em>${ic('starf')}золотой фон сцены + «Знаток сцены»</em></button></div>
+   <p class="dp12-nt">Никто не заставляет. Ушёл — вернёшься с 32-го слова.</p><canvas class="fx"></canvas><i class="hb"></i>`;
+  const G=$$('.dp12-grid i',R),N=$('.dp12-top .n',R),fx=FX(ctx,$('.fx',R));
+  G.forEach((d,j)=>an(d,[{opacity:0,transform:'scale(.2)'},{opacity:1,transform:'none'}],{d:300,dl:200+j*7,e:EO}));countUp(ctx,N,31,1100);
+  $$('.dp12-ch button',R).forEach((b,j)=>an(b,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:900+j*80}));
+  const prev=a=>{G.forEach((d,j)=>{d.classList.toggle('a',j>=31&&j<31+a)});N.textContent=31+a;N.classList.toggle('up',a>0)};
+  $$('.dp12-ch button',R).forEach(b=>{ctx.on(b,'pointerenter',()=>prev(+b.dataset.a));ctx.on(b,'pointerleave',()=>prev(0));
+   ctx.on(b,'click',()=>{touched=true;const a=+b.dataset.a;an(b,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});if(!a){toast(R,'Эпизод 2 — поехали. 31 из 100 сохранено');return}prev(a);
+    const r=rel($('.dp12-grid',R),R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:40,c:a>30?['#F6D488','#fff','#E8B34B']:['#2EE6C5','#fff'],v:5,g:.05,s:2.2,l:44});toast(R,a>30?'Полное: 10 слов за подход, можно бросить в любой момент':'Углублённое: 15 слов сейчас, 15 — когда захочешь')})});
+  ctx.t(()=>{if(!touched){prev(30);$('.dc1',R).classList.add('hv');ctx.t(()=>{if(touched)return;prev(69);$('.dc1',R).classList.remove('hv');$('.dc2',R).classList.add('hv');ctx.t(()=>{if(!touched){prev(0);$('.dc2',R).classList.remove('hv')}},1800)},1800)}},2600);return}
+ if(kind==='full'){const M=[[50,'рамка кадра','got'],[75,'живой фон сцены',''],[100,'«Знаток сцены» в профиле','']];
+  R.innerHTML=`${SB(0)}<div class="dp12-fh"><small>ПОЛНОЕ ОБУЧЕНИЕ · «ОФИС»</small><b>64 из 100</b><span>осталось ≈ 7 мин · 4 подхода по 10 слов</span></div>
+   <div class="dp12-ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" style="--p:.64"/>${M.map(([p])=>{const a=(p/100)*Math.PI*2-Math.PI/2;return `<circle cx="${(60+Math.cos(a)*52).toFixed(1)}" cy="${(60+Math.sin(a)*52).toFixed(1)}" r="4.6" class="ms${p<=64?' got':''}"/>`}).join('')}</svg><b>64<small>%</small></b></div>
+   <div class="dp12-ms">${M.map(([p,n,g])=>`<span class="${p<=64?'got':''}"><b>${p}</b><em>${n}</em><i>${p<=64?ic('check'):ic('star')}</i></span>`).join('')}</div>
+   <div class="dp12-nx"><small>СЛЕДУЮЩИЙ ПОДХОД</small><span>${['sculpted','tan','reservation','lunch','partner','merger'].map(w=>`<i>${w}</i>`).join('')}<i class="m">+4</i></span><button class="pri">Продолжить с 65-го слова</button><button>Передохнуть — прогресс не сгорит</button></div><canvas class="fx"></canvas><i class="hb"></i>`;
+  const fg=$('.dp12-ring .fg',R);an(fg,[{strokeDashoffset:'326.7'},{strokeDashoffset:String(326.7*(1-.64))}],{d:1300,e:EO,f:'forwards'});countUp(ctx,$('.dp12-ring b',R).firstChild,64,1300);
+  $$('.dp12-ms span,.dp12-nx>*',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:500+i*70}));
+  $$('.dp12-nx button',R).forEach(b=>ctx.on(b,'click',()=>{an(b,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});toast(R,b.classList.contains('pri')?'10 слов · ≈ 2 мин':'Ок — продолжишь, когда захочешь')}));return}
+ // комикс Deadlock: те же уровни; прокачка в комиксе видна в Versus — иконка героя получше
+ R.innerHTML=`${SB(0)}<div class="dp12-ch2"><span class="dhc">${hic12('venator','big')}<span><small>VENATOR · ГЛАВА 1</small><b>Закреплено 3 из 3</b></span></span>
+   <div class="dxp"><i style="--p:.68"></i><span>ур. 2 · 340 / 500</span></div></div>
+  <p class="dp12-q">Дальше — как хочешь.</p>
+  <div class="dp12-ch"><button class="dc0"><b>Следующая глава</b><small>«Проповедь свинца» · 7 реплик</small></button>
+   <button class="dc1"><span class="tg">УГЛУБЛЁННОЕ</span><b>Ещё 6 слов главы</b><small>≈ 1 мин · ×2 опыта</small><em>${ic('star')}+60 опыта Венатора</em></button>
+   <button class="dc2"><span class="tg">ВЕСЬ ВЕНАТОР</span><b>Все 25 его фраз</b><small>≈ 6 мин · частями</small><em>${ic('starf')}золотая иконка — видно в Versus</em></button></div>
+  <div class="dp12-ico"><small>Что даёт уровень героя в Versus</small><div class="irow">${['ур. 1','ур. 3','все фразы'].map((n,j)=>`<span class="ti${j}"><i class="ic12">${hic12('venator')}</i><em>${n}</em></span>`).join('')}</div><p>Силы не даёт — честно для всех. Это вид: рамка иконки, вход героя в бой, его реплика победы.</p></div><i class="hb"></i>`;
+ $$('.dp12-ch button,.dp12-ico',R).forEach((b,j)=>an(b,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:300+j*80}));an($('.dp12-ch2 .dxp i',R),[{transform:'scaleX(0)'},{transform:'scaleX(var(--p))'}],{d:1100,e:EO,f:'forwards',dl:200});
+ $$('.dp12-ch button',R).forEach(b=>ctx.on(b,'click',()=>{an(b,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});toast(R,$('b',b).textContent)}))}
+
+/* --- «Понимаешь %»: как считаю до и после (Андрей: «не понятно, как ты будешь понимать, сколько Васян понимает после диалога») --- */
+function pct12(R,ctx,o){o=o||{};const dd=o.dd;R.className='scr v8 pc12';
+ const IT=dd?[['evil stirs',1],['called on',0],['supposed to',1],['show your face',0],['hide from',1],['gonna',1],['priest',1],['find you',0],['king',1],['sewers',0],['crumbum',0],['merciful',1]]
+  :[['Nice tan',1],['reservation',1],['I have to return some videotapes',0],['sculpted',0],['Is that Patrick?',1],['merger',1],['partner',1],['lunch',1],['Dorsia',0],['business card',1],['impressive',0],['nice try',1]];
+ const known=IT.filter(x=>x[1]).length,N=IT.length,AFT=dd?[1,3]:[3,8],pct=v=>Math.round(v/N*100);
+ R.innerHTML=`${SB(0)}<div class="pc12-hd"><small>${dd?'DEADLOCK · ГЛАВА 1':'АМЕРИКАНСКИЙ ПСИХОПАТ · ЭП. 1'}</small><b>Как считаю «понимаешь %»</b></div>
+  <div class="pc12-big"><span class="b"><em>до</em><b class="v0">${pct(known)}</b><small>%</small></span><i class="ar">${ic('chev')}</i><span class="a"><em>после</em><b class="v1">${pct(known)}</b><small>%</small></span></div>
+  <p class="pc12-f">В ${dd?'главе':'сцене'} <b>${N} ключевых</b> слов и фраз (их размечает Зетка). <b>Знаешь</b> — если хоть раз ответил верно с первой попытки и повторение не просрочено, здесь или в другой сцене.</p>
+  <div class="pc12-it">${IT.map((x,j)=>`<span class="${x[1]?'k':''}" data-j="${j}">${x[0]}</span>`).join('')}</div>
+  <div class="pc12-st"><span><b>${known}</b> из ${N} знал до</span><span class="p"><b>+${AFT.length}</b> ответил верно сейчас</span></div>
+  <p class="pc12-n">Ошибся — процент не падает. Вместо «−3 %» пишу «2 слова просят повторения».</p><canvas class="fx"></canvas><i class="hb"></i>`;
+ const fx=FX(ctx,$('.fx',R));$$('.pc12-it span',R).forEach((x,i)=>an(x,[{opacity:0,transform:'scale(.7)'},{opacity:1,transform:'none'}],{sp:SPb,dl:200+i*40}));
+ const go=()=>{AFT.forEach((j,n)=>ctx.t(()=>{const s=$(`.pc12-it [data-j="${j}"]`,R);s.classList.add('k','nw');an(s,[{transform:'scale(1.3)'},{transform:'none'}],{sp:SPb});const r=rel(s,R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:16,c:['#4FD18B','#fff'],v:3,g:0,s:1.8,l:28});
+  if(n===AFT.length-1){countUp(ctx,$('.v1',R),pct(known+AFT.length),700,pct(known));$('.pc12-big .a',R).classList.add('up')}},n*700))};ctx.t(go,1600);
+ ctx.on(R,'click',e=>{if(e.target.closest('.pc12-it,.pc12-big')){$$('.pc12-it .nw',R).forEach(s=>s.classList.remove('k','nw'));$('.v1',R).textContent=pct(known);$('.pc12-big .a',R).classList.remove('up');ctx.t(go,300)}})}
+
+/* --- Мнения ChatGPT, Gemini и Зетки об обучении — Андрей проверит и ответит; ответы помнит браузер, «Скопировать» — текстом в чат --- */
+const OP12=[['g','ChatGPT',[['g1','После эпизода две равные кнопки: «Закрепить 3 · ~1 мин» и «Смотреть дальше». Тест сам не открывается.'],['g2','3 пункта по умолчанию, максимум 5. Беден эпизод — 1–2, не добивать до нормы.'],['g3','Процент — по ключевым выражениям сцены, не по всем словам субтитров.'],['g4','Почему ошибка — одна строка у выбранного; остальное по кнопке «Почему другие нет?».'],['g5','Комикс: статусы «Прочитано» и «Закреплено», следующую главу не закрываем.'],['g6','Ошибся — ещё раз в конце этой же сессии, а завтра обычный повтор.'],['g7','Пропустил день — не наказывать.'],['g8','Нажатые слова — в повторение только по «Сохранить».']]],
+ ['m','Gemini',[['m1','Первый вопрос — прямо на экране конца эпизода, «Пропустить» — мелко.'],['m2','В каждом задании и в повторении звучит оригинальная реплика из фильма.'],['m3','«На слух» — звучит вся фраза, угадываешь слово в ней.'],['m4','Собрать — из 2–4 крупных кусков, перевод фразы показан.'],['m5','В разборе всей сцены — «Уже знаю» смахиванием: процент растёт.'],['m6','Без счётчика долгов: «3 вопроса — разогрев», а не «Повторить 45».'],['m7','Бот присылает вопрос из вчерашнего эпизода с кнопками ответа прямо в чате.'],['m8','Комикс: проверка как в игре — портрет, реплика с пропуском, 4 варианта; строго обязательно.'],['m9','Серия: заморозка, если пропустил день.']]],
+ ['z','Зетка',[['z1','Прогресс до и после: «понимаешь 71 %» до эпизода — цель, «71 → 74 %» после — маленькая победа.','Не совсем понятно, как ты будешь понимать, сколько Васян понимает после диалога.','Показал на экране «Как считаю %»: у сцены или главы ~40 (у главы ~12) ключевых слов и фраз, их размечает Зетка. «Знаешь» = хоть раз ответил верно с первой попытки и повторение не просрочено, в любой сцене. После эпизода или главы прибавляются только те, на что ответил верно сейчас. Ошибка процент не роняет.'],
+   ['z2','Падение — не процентом: вместо «−3 %» — «2 слова просят повторения».'],['z3','Приоритет нажатых: нажал в двух сценах — учим первым, дальше разметка, потом нажатое один раз.'],['z4','Комикс с клапаном: 3 задания после главы, можно «позже» — значок «2 главы ждут проверки», следующую не блокируем.'],['z5','Разбор всей сцены: «Продолжить с 12-й реплики», «осталось ~4 мин», вопрос раз в ~9 реплик, финал без субтитров.'],['z6','Пятый тип задания: твоё слово в новой реплике этой же сцены — «я это знаю!».'],['z7','Помнить выбор «Слова · Фразы · Всё», не спрашивать каждый раз.'],['z8','Замер: медиана «Закрепить» не дольше 90 с, уползла — режем порцию.'],['z9','Все нажатые слова — в завтрашнее повторение.'],
+   ['z10','«Не разливай уровень героя дальше комикса».','Хз, что в Versus будет давать уровень? Он же там не нужен. Или анимации другие, иконка? Прокачал в комиксе — в Versus иконка получше.','Да, так: уровень силы не даёт (иначе нечестно). Он меняет вид — рамку иконки (ур. 1 → 3 → «все фразы» золотая), вход героя в бой и его реплику победы. Показал на экране «Комикс · углубить».'],
+   ['z11','Push-уведомления с содержанием.','Можно попробовать: приходит фрагмент, и можно перейти в приложение на нужный тайминг.','Беру так: одно сообщение в день — «Фраза дня» становится куском из твоего же эпизода. Кнопка открывает эпизод ровно на этой секунде. Второго сообщения в день нет.'],
+   ['z12','Заморозка серии и восстановление за 3 задания.']]]];
+function ops12(R,ctx){R.className='scr v8 op12';let S={};try{S=JSON.parse(localStorage.getItem('kd12-op')||'{}')}catch(e){}
+ const save=()=>{try{localStorage.setItem('kd12-op',JSON.stringify(S))}catch(e){}};
+ const cnt=()=>{let a=0,n=0;OP12.forEach(([,,L])=>L.forEach(x=>{n++;if(x[2]||S[x[0]])a++}));return [a,n]};
+ R.innerHTML=`${SB(0)}<div class="op12-hd"><b>Обучение: мнения нейронок</b><small>отметь, что берём — я сделаю. Отметки помнит браузер.</small><em class="ct"></em></div>
+  <div class="op12-ls">${OP12.map(([c,n,L])=>`<div class="op12-g ${c}"><b class="gh">${n}<small>${L.length}</small></b>${L.map(x=>`<div class="op12-i${x[2]?' ans':''}" data-id="${x[0]}"><p>${x[1]}</p>${x[2]?`<div class="yo"><small>ТЫ</small>${x[2]}</div><div class="me"><small>Я</small>${x[3]}</div>`:`<div class="bt">${[['y','Беру'],['n','Нет'],['l','Потом']].map(([v,t])=>`<button data-v="${v}" class="${S[x[0]]===v?'on':''}">${t}</button>`).join('')}</div>`}</div>`).join('')}</div>`).join('')}</div>
+  <div class="op12-ft"><button class="cp">Скопировать ответы</button></div><i class="hb"></i>`;
+ const ct=()=>{const [a,n]=cnt();$('.op12-hd .ct',R).textContent=`${a} из ${n}`};ct();
+ $$('.op12-g',R).forEach((g,i)=>an(g,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:120+i*90}));
+ ctx.on($('.op12-ls',R),'click',e=>{const b=e.target.closest('.bt button');if(!b)return;const it=b.closest('.op12-i'),id=it.dataset.id;S[id]=S[id]===b.dataset.v?'':b.dataset.v;save();$$('.bt button',it).forEach(x=>x.classList.toggle('on',S[id]===x.dataset.v));an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});ct()});
+ ctx.on($('.cp',R),'click',()=>{const T={y:'беру',n:'нет',l:'потом'};let t='Мнения об обучении — мои ответы:\n';OP12.forEach(([,n,L])=>{t+=`\n${n}:\n`;L.forEach(x=>{if(x[2])return;t+=`${x[0]}. ${x[1]} — ${S[x[0]]?T[S[x[0]]]:'?'}\n`})});
+  const ok=()=>toast(R,'Скопировал — вставь мне в чат');try{navigator.clipboard.writeText(t).then(ok,()=>{prompt('Скопируй:',t)})}catch(e){prompt('Скопируй:',t)}})}
+
+/* --- варианты v12 --- */
+V.push({g:'g12',id:'g12t',n:'Игры · Deadlock и игры по кино',cmp:'games-tab',
+ idea:'Вкладка «Игры» — две полки. «Игры»: большая карточка Deadlock — живой ключевой арт «City Never Sleeps» (окна мигают, два луча прожекторов, дождь, при наклоне арт чуть едет за пальцем). Героев «VS» на карточке больше нет. «Игры по кино»: Дуэль по сцене (постеры, «Позвать») и «скоро ещё игры по кино». Ничего дедлоковского снаружи нет: «Сейчас» (перехваты, глава ждёт проверки, вызов в Versus) — внутри Deadlock. На карточке — только кружок «2»: внутри есть новое.',
+ moves:['карточка въезжает, арт «City Never Sleeps» отъезжает от камеры','окна в тёмных домах загораются и гаснут, по небу ходят два луча, идёт дождь','тап — Deadlock раскрывается из карточки'],
+ from:'Твой отзыв на v11: «мне не нравится, что там васяны стоят — мы же не только Versus делаем»; «всё, что в Deadlock, должно быть в Deadlock, не выносим»; «оставь вариант просто анимированной City Never Sleeps».',
+ minus:'Кружок «2» на карточке — это всё-таки весточка из Deadlock снаружи. Скажешь — уберу совсем.',
+ mount(R,ctx){g12Tab(R,ctx,{card:'cns',place:'shelves'})}});
+V.push({g:'g12',id:'g12s',n:'Игры · дуэль переехала в «Сцены»',cmp:'games-tab',
+ idea:'В «Играх» — только игры: Deadlock крупно. Дуэль по сцене — там, где сцены: в «Сценах» сверху полоса «С другом — дуэль по любой сцене», а на каждом постере значок ⚔. Нажми «Сцены» внизу или «Показать» — увидишь.',
+ moves:['значки ⚔ выпрыгивают на постерах по очереди','нажал на постер — шторка дуэли со ставкой'],
+ from:'Твой вопрос: «дуэль по сцене — хз, как лучше сделать и куда запихнуть: есть просто игры, а есть игры для обучения».',
+ minus:'Кто зашёл в «Игры» за дуэлью, её там не найдёт — нужна строка «Дуэль теперь в Сценах» (она есть).',
+ mount(R,ctx){g12Tab(R,ctx,{card:'cns',place:'scenes',auto:false})}});
+V.push({g:'g12',id:'g12g',n:'Игры · две вкладки внутри',cmp:'games-tab',
+ idea:'Сверху «Игры | Учёба на спор»: в первой — Deadlock (ночной город с неоновой вывеской, без героев), во второй — Дуэль по сцене и будущие игры по кино. Обе игры видны сразу, но не мешают друг другу.',
+ moves:['плашка вкладки едет, содержимое въезжает с той стороны','город: окна, поезд по мосту, дождь, молния'],
+ from:'Твой отзыв на v11 про «просто игры и игры для обучения».',
+ minus:'Ещё одни вкладки внутри вкладки — на шаг больше до дуэли.',
+ mount(R,ctx){g12Tab(R,ctx,{card:'city',place:'seg',auto:false})}});
+V.push({g:'g12',id:'g12h',n:'Deadlock изнутри: всё тут',cmp:'hub',
+ idea:'Всё про Deadlock — внутри Deadlock. Шапка — живой «City Never Sleeps». Ниже «Сейчас»: 2 перехвата, глава ждёт проверки, Боря зовёт в Versus. Потом Versus, Радар (только 3D) и «Реплики — как в TikTok». Герои — карточками: у каждого фон взят с его же живой карточки, сам герой — в рамке.',
+ moves:['неон DEADLOCK загорается по буквам','мини-радар на карточке медленно крутится','карточки героев наклоняются к пальцу, по рамке бежит блик','тап по герою — карточка вырастает на весь экран'],
+ from:'Твой отзыв на v11: «всё, что в Deadlock, должно быть в Deadlock», «радар — 3D», «фоны героев норм, но должны быть на карточках».',
+ minus:'Экран длинный: герои ниже первого экрана.',
+ mount(R,ctx){R.className='scr v8 g11 g12';R.innerHTML=SB(0)+'<i class="hb"></i>';g12Hub(R,ctx,null,{demo:true})}});
+V.push({g:'g12',id:'g12c',n:'Герои · фон с самой карточки',cmp:'herobg',
+ idea:'Фон героя не рисуем отдельно: Зетка вырезает его из того же живого ролика (без героя) и кладёт под карточку. Поэтому цвет и свет всегда совпадают с героем. Сам герой — в рамке поверх. У Венатора и Короля всё уже живое. У остальных пока арт с вики — заменим, когда будут ролики.',
+ moves:['фон под карточкой — тот же ролик, только крупнее и размытый (в приложении — вырезанный кадр Зетки)','наклон к пальцу, блик по рамке','тап — карточка на весь экран: рамка, уровень, Versus, комиксы'],
+ from:'Твой отзыв на v11: «фоны героев норм, но они должны быть на карточках»; «склоняюсь к тому, что Зетка должна брать фон с анимированной карточки и вставлять его».',
+ minus:'Скрин, который ты обещал прикрепить, до меня не дошёл. Если имел в виду другое — пришли его ещё раз, переделаю.',
+ mount(R,ctx){g12Cards(R,ctx,'card')}});
+V.push({g:'g12',id:'g12f',n:'Герои · рамка на фоне локации (как в TikTok)',cmp:'herobg',
+ idea:'Как в роликах «Desperation Ultimate Lines»: герой — в тонкой золотой рамке, а за ней живая локация героя (собор с витражом, туннели с водой — фоны из v11). Карточка выглядит как экспонат на стене.',
+ moves:['локация живёт за рамкой: лучи, вода, листья','рамка с героем чуть парит'],
+ from:'Твои ролики из TikTok (26.10): «Desperation Ultimate Lines» — карточки героев в рамке на фоне зала.',
+ minus:'Локацию для каждого героя надо нарисовать (сейчас есть у пяти). Фон с карточки (вариант 5) Зетка сделает быстрее.',
+ mount(R,ctx){g12Cards(R,ctx,'frame')}});
+V.push({g:'g12',id:'g12r',n:'Радар · 3D в стиле v10, без перегруза',cmp:'radar-3d',
+ idea:'Только 3D, как ты выбрал. Стиль v10: бирюза на тёмном. Но не город из сотни домов (v11), а 9 районов-плит: Собор, Туннели под ним, Цирк, Лес, Лаборатория, Сонная низина, Кладбище, Отель, Электростанция. На каждой плите один знак и иконка хозяина. Где сейчас перехват — плита пульсирует, вверх бьёт луч. Тянешь вбок — карта крутится. Нажал — шторка: чей район, кто спорит, «Читать перехват».',
+ moves:['карта садится из наклона, плиты вырастают слоями','перехваты пульсируют кольцами, над ними луч','тянешь — крутится с инерцией','шторка района выезжает снизу'],
+ from:'Твой отзыв на v11: «радар — 3D; рельеф не подходит 100 %; в стиле v10 или 3D-город, но 3D-город уж сильно перегружен».',
+ minus:'Районы — пока моя раскладка. Если у Зетки или в игре есть настоящая карта районов — подставлю её.',
+ mount(R,ctx){radar12(R,ctx)}});
+V.push({g:'g12',id:'g12v',n:'Versus · как v10, только аккуратнее',cmp:'versus',
+ idea:'Раскладка v10, а не файтинг из v11. Говорит всегда один: он светлее и чуть ближе, второй уходит в тень. Реплика появляется под говорящим, с хвостиком к нему, с его иконкой и именем; старая бледнеет. Урон («−150 КРИТ») — у полоски соперника наверху, на реплику больше не налезает. Баннер раунда — в шапке задания, сцену не закрывает. Справа внизу «фон»: голос под звуки арены или сухо, как сейчас.',
+ moves:['говорящий светлее, второй в тени — сразу видно, кто это сказал','реплика въезжает со стороны героя, у кнопки ▶ бегут столбики голоса','удар: стоп-кадр, отлёт, «−150» у полоски, полоска тает','K.O.: соперник сереет, Венатор говорит «Evil dies today.»'],
+ from:'Твой отзыв на v11: «Versus — будто вариант 10 лучше: в 11 это литерально файтинг, там неудобно, непонятно, кто что говорит. В 10 такой проблемы нет, но чуть аккуратнее сделать нужно».',
+ minus:'Без стоп-кадров и баннеров на весь экран бой выглядит спокойнее, чем в v11. Так и задумано.',
+ mount(R,ctx){vs12(R,ctx)}});
+V.push({g:'g12',id:'g12a',n:'Реплики · как в TikTok',
+ idea:'Из твоих роликов. Герой в тонкой рамке на своей локации. Сначала звук абилки и вспышка, потом реплика, и слова крупно по одному — как в «Desperation Ultimate Lines». Потом вся фраза и перевод. Тап по слову — что значит. ☆ — в «Мои фразы» и в повторение. Внизу — другие герои (у кого реплики ещё нет — Зетка собирает).',
+ moves:['вспышка и тряска рамки на звук абилки','слова выпрыгивают по одному в такт голосу','без касания листает сам'],
+ from:'Твои 3 ролика (26.10): «Desperation Ultimate Lines», «Rat King ult», «favourite doorman voicelines» — «все они супер популярные в TikTok».',
+ minus:'Звук абилки в макете — синтез. Настоящий достанет Зетка со страниц героев «Sounds» на вики.',
+ mount(R,ctx){lines12(R,ctx,'ult')}});
+V.push({g:'g12',id:'g12b',n:'Реплики · «кто про кого» (как Doorman)',
+ idea:'Как «ok just posting my favourite doorman voicelines»: кто говорит — карточкой слева, под ней бежит волна голоса. Про кого — живой портрет справа. Внизу слова крупно по одному. Чипы: «Король про: Венатора · Виктора · Рэма». В игре у героев много реплик про конкретных других — готовый материал.',
+ moves:['волна под карточкой бежит, пока звучит голос','слова по одному, потом вся фраза и перевод'],
+ from:'Твой ролик про Doorman (26.10).',
+ minus:'Реплики «про кого» есть не у всех пар. Список пар соберёт Зетка с вики.',
+ mount(R,ctx){lines12(R,ctx,'about')}});
+V.push({g:'g12',id:'g12z',n:'Звук · реплика с сопровождением',
+ idea:'Ты сказал: «реплики звучат сыро, трудно слушать просто речь с вики». Сравни. «Как сейчас» — голос сухо. «Как будет»: голос в эхе локации (собор гулкий, туннели глухие), под ним тихий фон (орган и колокол или капли и гул). Перед ультой — звук абилки. Пока голос звучит, фон сам приглушается. Каждую дорожку можно выключить.',
+ moves:['столбики дорожки бегут, пока она звучит','«Как сейчас» — только голос','«Как будет» — абилка, голос, фон'],
+ from:'Твой отзыв на v11: «все реплики звучат сыро, попробуй добавить какое-то сопровождение на фон к репликам»; «если что-то звучит во время каста абилок — такое ты смог бы достать?»',
+ minus:'В макете фон и абилка синтезированы — чтобы ты услышал идею. Настоящие звуки игры: на вики у каждого героя страница «Sounds» (каст, попадание, ульта). Их собирает Зетка.',
+ mount(R,ctx){snd12(R,ctx)}});
+V.push({g:'k12',id:'k12a',n:'Комикс · кто начал и как запомнится',cmp:'comic',
+ idea:'Сверху видно, кто начал разговор: «Начал · Venator», и где это (туннели под собором). Подписи-спойлеры вроде «последнее слово — за Венатором» убраны. Под панелью — «3 фразы — в повторение · углубить: ещё 6». Иконки — как у тебя в интерфейсе: гербы или арт из игры (кнопка справа сверху — это просто показать; в приложении берётся из настроек). В конце главы: кто начал, кто закончил, как запомнится. Потом проверка из 3 вопросов, печать, и «Углубить» по желанию.',
+ moves:['панель въезжает со стороны говорящего, пузырь выпрыгивает','полоса сверху: иконки говорящих по очереди','конец главы: карточка «как запомнится», потом печать «Глава закреплена»'],
+ from:'Твой отзыв на v11: «комиксы оставляй; показывай, кто начал диалог; показывай, сколько углубить и как оно будет запоминаться; иконки — если у юзера твои кастомные, то и комикс в них».',
+ minus:'Полоса с иконками сверху подсказывает, кто будет говорить дальше. Если мешает — оставлю просто точки.',
+ mount(R,ctx){comic12(R,ctx,'who')}});
+V.push({g:'k12',id:'k12n',n:'Комикс · нейтральный (кто там — не видно)',cmp:'comic',
+ idea:'Максимально нейтрально: ни имён, ни портретов, ни цвета героя. Серые силуэты слева и справа, пузыри и голос. Ты только слушаешь и читаешь, кто говорит — угадываешь по голосу. В конце: «Это были Venator и Rat King», портреты переворачиваются.',
+ moves:['силуэт со стороны говорящего','в конце портреты переворачиваются, как карты'],
+ from:'Твоя просьба: «сделай ещё 2 варианта: максимально нейтральный (непонятно, кто там)…»',
+ minus:'Без лиц меньше «вау», зато всё внимание на словах.',
+ mount(R,ctx){comic12(R,ctx,'neutral')}});
+V.push({g:'k12',id:'k12s',n:'Комикс · экран пополам',cmp:'comic',
+ idea:'Экран пополам: сверху Король, снизу Венатор, оба живые. Реплика появляется в половине того, кто говорит; вторая половина гаснет. Ни названия главы, ни подписей: непонятно, куда повернёт разговор, пока не дослушаешь. Название главы — только в конце. Тап по экрану — дальше.',
+ moves:['половина говорящего светлеет, вторая гаснет','пузырь вырастает из края половины','в конце — название главы и проверка'],
+ from:'Твоя просьба: «…и условно экран на 2 поделен, и непонятно, в каком русле диалог двигается».',
+ minus:'Пока живых портретов два, пополам можно делить только Венатора и Короля.',
+ mount(R,ctx){comic12(R,ctx,'split')}});
+V.push({g:'l12',id:'l12d',n:'После эпизода · хватит или ещё?',cmp:'learn-deep',
+ idea:'Как ты сказал: посмотрел — знаешь 31 из 100 слов сцены. Сотня точек: горят те, что знаешь. Три равные кнопки. «Дальше смотреть» — без вины, прогресс остаётся. «Углублённое · ещё 30» — 6 минут двумя подходами, награда: кадр в рамке. «Полное · все 100» — частями, когда хочешь, награда: золотой фон сцены и значок «Знаток сцены». Наведи или нажми — точки покажут, сколько станет.',
+ moves:['100 точек загораются волной, число набегает','навёл на вариант — точки досвечиваются до 61 или 100','выбрал — искры, тост, что дальше'],
+ from:'Твоё (26.10): «хочу, чтобы у Васяна была возможность додрочить любой контент. Посмотрел, выучил 31 % слов из 100 — не хочешь больше? Не интересно — окей, иди в другую сцену. Хочешь все 100 или ещё 30? Без проблем: углублённое и полное обучение, доп. награды и респект, но никто не заставляет».',
+ minus:'100 слов — для длинной сцены. У короткого эпизода будет 30–40, точек меньше.',
+ mount(R,ctx){deep12(R,ctx,'scene')}});
+V.push({g:'l12',id:'l12f',n:'Полное обучение · как идёт',
+ idea:'Если выбрал «все 100»: кольцо 64 %, вехи 50 (рамка — уже есть), 75 (живой фон), 100 («Знаток сцены»). Следующий подход — 10 слов, видно какие. «Продолжить с 65-го» или «передохнуть»: прогресс не сгорит.',
+ moves:['кольцо набегает до 64 %','вехи на кольце: полученная горит'],
+ from:'Продолжение твоего «полного обучения»: никто не держит, но можно дойти до конца.',
+ minus:'Награды за 75 и 100 надо сделать (живой фон сцены у нас уже есть, значок — новый).',
+ mount(R,ctx){deep12(R,ctx,'full')}});
+V.push({g:'l12',id:'l12k',n:'Deadlock · углубить главу и что даёт уровень',
+ idea:'То же для комиксов: закрепил главу — дальше как хочешь. Следующая глава, «ещё 6 слов главы · ×2 опыта» или «все 25 фраз Венатора». Внизу — что даёт уровень героя в Versus: силы не даёт (честно), а даёт вид — рамку иконки, вход героя в бой, его реплику победы. Всё выучил — иконка золотая.',
+ moves:['полоска опыта заполняется','три иконки: обычная → серебро → золото'],
+ from:'Твой вопрос на мнение Зетки: «хз, в Versus что будет давать уровень? Типа прокачал в комиксе — в Versus иконка получше».',
+ minus:'Если уровень вообще не показывать в Versus — экран проще. Решать тебе.',
+ mount(R,ctx){deep12(R,ctx,'comic')}});
+V.push({g:'l12',id:'l12p',n:'Как считаю «понимаешь %»',
+ idea:'Ответ на твой вопрос «как ты будешь понимать, сколько Васян понимает после диалога». У сцены есть ключевые слова и фразы — их размечает Зетка. «Знаешь» — значит, хоть раз ответил верно с первой попытки и повторение не просрочено, хоть в другой сцене. До эпизода: знал 8 из 12 — 67 %. После: ответил верно ещё на 2 — 83 %. Ошибка процент не роняет. Нажми на экран — пересчитает заново.',
+ moves:['чипы ключевых слов: зелёные — знаешь','после эпизода новые зелёные вспыхивают, число набегает'],
+ from:'Твой вопрос к мнению Зетки о «прогрессе до и после».',
+ minus:'Пока Зетка не разметила все сцены, процент будет только у размеченных.',
+ mount(R,ctx){pct12(R,ctx)}});
+V.push({g:'l12',id:'l12o',n:'Мнения нейронок · ответь',
+ idea:'Все советы ChatGPT, Gemini и Зетки об обучении — по пунктам. На каждый: «Беру / Нет / Потом». Там, где ты уже ответил (прогресс до и после, уровень героя, push-сообщения), — твой ответ и мой. «Скопировать ответы» — текст, вставь мне в чат.',
+ moves:['отметки сохраняются, счётчик сверху растёт'],
+ from:'Твоё: «Gemini, Зетка и ChatGPT кидали своё мнение по поводу обучения — можешь продублировать, я прочекаю и отвечу».',
+ minus:'Отметки живут только в этом браузере — поэтому есть «Скопировать».',
+ mount(R,ctx){ops12(R,ctx)}});
+
 /* ================= каркас страницы ================= */
-const GN={g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-const VERS=[['v11','отзыв на v9 — заново на максимуме · 26.10',[['g11','Игры · 8'],['p11','Сцена · путь · 4'],['l11','Обучение · 3'],['s11','Настройки · 3']]],
+const GN={g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+const VERS=[['v12','отзыв на v11 · 26.10',[['g12','Игры · 11'],['k12','Комикс · 3'],['l12','Обучение · 5']]],
+ ['v11','26.10',[['g11','Игры · 8'],['p11','Сцена · путь · 4'],['l11','Обучение · 3'],['s11','Настройки · 3']]],
  ['v10','26.10',[['g10','Игры'],['p10','Сцена · путь'],['l10','Обучение'],['x10','Дизайн']]],
  ['v9','25.10',[['h9','Главная · 3 + v7'],['g8','Игры'],['p8','Сцена · путь'],['l8','Обучение'],['s9','Настройки'],['x8','Дизайн']]],
  ['v7','',[['p7','Сцена'],['k7','Комикс'],['x7','Дизайн']]],['v6','',[['h6','Главная'],['d3','ДД'],['k4','Комикс'],['x6','Дизайн']]],
  ['v5','',[['h4','Главная'],['x5','Дизайн']]],['v4','',[['x4','Дизайн']]],['v3','',[['h3','Главная'],['k3','Комикс'],['x3','Дизайн']]],
  ['v2','',[['h2','Главная'],['d2','ДД'],['o2','Запуск']]],['v1','',[['home','Главная'],['dd','ДД'],['ob','Запуск']]]];
 const VDET=(v,open)=>`<details${open?' open':''}><summary>${v[0]}${open?'<span class="nw">новое</span>':''}<small>${v[1]}</small></summary><div class="bs">${v[2].map(b=>`<button data-g="${b[0]}">${b[1]}</button>`).join('')}</div></details>`;
-$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v10 … v1 — нажми, чтобы сравнить</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
+$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v11 … v1 — нажми, чтобы сравнить</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
 // «Как было»: тот же экран в прошлых версиях
 const CMPV={'set-user':[['v11','s11u'],['v9','s9u']],'set-watch':[['v11','s11w'],['v9','s9u']],'set-adm':[['v11','s11a'],['v9','s9a']],
- 'games-tab':[['v11','g11t'],['v10','g10a'],['v9','g8a']],'games-row':[['v11','g11c'],['v10','g10c'],['v9','g9c']],'hub':[['v11','g11h'],['v10','g10a'],['v9','g8a']],
- 'radar-relief':[['v11','g11r'],['v10','g10r'],['v9','g8r'],['v7','r7']],'radar-3d':[['v11','g11d'],['v10','g10s'],['v9','g8r']],'comic':[['v11','g11k'],['v10','g10k'],['v9','g9k']],
- 'versus':[['v11','g11v'],['v10','g10v'],['v9','g8v'],['v9 · сверху','g8w']],'herobg':[['v11','g11b'],['v10','g10b'],['v9','g9b']],
+ 'games-tab':[['v12','g12t'],['v11','g11t'],['v10','g10a'],['v9','g8a']],'games-row':[['v11','g11c'],['v10','g10c'],['v9','g9c']],'hub':[['v12','g12h'],['v11','g11h'],['v10','g10a'],['v9','g8a']],
+ 'radar-relief':[['v11','g11r'],['v10','g10r'],['v9','g8r'],['v7','r7']],'radar-3d':[['v12','g12r'],['v11','g11d'],['v10','g10s'],['v9','g8r']],'comic':[['v12','k12a'],['v11','g11k'],['v10','g10k'],['v9','g9k']],
+ 'versus':[['v12','g12v'],['v11','g11v'],['v10','g10v'],['v9','g8v'],['v9 · сверху','g8w']],'herobg':[['v12','g12c'],['v11','g11b'],['v10','g10b'],['v9','g9b']],
  'path-t':[['v11','p11t'],['v10','p10t'],['v9','p8t'],['v7','p7t']],'path-w':[['v11','p11w'],['v10','p10w'],['v9','p8w'],['v7','p7w']],'path-s':[['v11','p11s'],['v10','p10s'],['v9','p8s'],['v7','p7s']],'path-b':[['v11','p11b'],['v10','p10b'],['v9','p8b'],['v7','p7b']],
- 'learn-check':[['v11','l11a'],['v10','l10a'],['v9','l8a']],'learn-after':[['v11','l11b'],['v10','l10b'],['v9','l8b']],'learn-deep':[['v11','l11d'],['v10','l10d']],
+ 'learn-check':[['v11','l11a'],['v10','l10a'],['v9','l8a']],'learn-after':[['v11','l11b'],['v10','l10b'],['v9','l8b']],'learn-deep':[['v12','l12d'],['v11','l11d'],['v10','l10d']],
  'design':[['v10','x10a'],['v10 · 2','x10b'],['v8','x8a']]};
 function cmpOf(id){for(const k in CMPV)if(CMPV[k].some(x=>x[1]===id))return CMPV[k];return null}
-let CTX=null,curV=null,curG='g11';
+let CTX=null,curV=null,curG='g12';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -8497,9 +9547,9 @@ function notes(v){const L=V.filter(x=>x.g===v.g),i=L.indexOf(v);const CM=cmpOf(v
  $$('#notes [data-n]').forEach(b=>b.onclick=()=>{const d=+b.dataset.n;if(!d)mount(v);else mount(L[(i+d+L.length)%L.length])});
  $$('#notes [data-cmp]').forEach(b=>b.onclick=()=>{const x=V.find(y=>y.id===b.dataset.cmp);if(x){mount(x);const dv=$('#devw');if(dv&&dv.getBoundingClientRect().top<0)dv.scrollIntoView({behavior:'smooth'})}})}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const gb=$('#grp button.on');if(gb){let d=gb.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details')}}const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd12',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd13',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd12'))}catch(e){}
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd13'))}catch(e){}
 mount(start||V.find(x=>x.g===curG));
 </script>
