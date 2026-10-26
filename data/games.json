@@ -392,13 +392,13 @@
         {
          "s": "Seven",
          "en": "I'm going to make sure we win. The safety of your minions are not my concern.",
-         "ru": "Я сделаю так, что мы победим. Целость твоих прихвостней меня не волнует.",
+         "ru": "Я позабочусь, чтобы мы победили. Безопасность твоих прихвостней — не моя забота.",
          "a": "scenes/games/deadlock/v/seven-09.mp3"
         },
         {
          "s": "Rat King",
          "en": "Yeah, but it's mine. So you be careful... or I'm gonna remember you weren't.",
-         "ru": "Зато моя — волнует. Так что будь поосторожнее... а то я запомню, что не был.",
+         "ru": "Зато моя. Так что поосторожнее… а то я запомню, что ты не был осторожен.",
          "a": "scenes/games/deadlock/v/rat-king-07.mp3"
         }
        ],
@@ -560,6 +560,113 @@
       {
        "en": "Who's exterminating who now!",
        "ru": "Ну и кто теперь кого травит!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rat-king-18.mp3"
+      },
+      {
+       "en": "Get outta my face, pal!",
+       "ru": "Убирайся с глаз моих, приятель!",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-19.mp3"
+      },
+      {
+       "en": "Bow to me!",
+       "ru": "Склонись перед королём!",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-20.mp3"
+      },
+      {
+       "en": "Eat dirt, crumbum.",
+       "ru": "Жри землю, мелюзга.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rat-king-21.mp3"
+      },
+      {
+       "en": "You wanna fight the king?!",
+       "ru": "Хочешь драться с королём?!",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-22.mp3"
+      },
+      {
+       "en": "How's your streak lookin' now, pal?",
+       "ru": "Как там твоя серия теперь, приятель?",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rat-king-23.mp3"
+      },
+      {
+       "en": "Don't mess with the king.",
+       "ru": "С королём лучше не шутить.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-24.mp3"
+      },
+      {
+       "en": "My people are gonna eat your people's bones.",
+       "ru": "Мои люди обглодают кости твоих людей.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-25.mp3"
+      },
+      {
+       "en": "Yeah that's right, run away!",
+       "ru": "Да-да, беги, беги!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rat-king-26.mp3"
+      },
+      {
+       "en": "I knew you were a coward!",
+       "ru": "Я так и знал, что ты трус!",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-27.mp3"
+      },
+      {
+       "en": "Come on out and play, ya crumbum.",
+       "ru": "Выходи поиграть, мелюзга.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-28.mp3"
+      }
+     ],
+     "lines": [
+      {
+       "en": "We do this on my time, ya crumbum.",
+       "ru": "Делаем это в моё время, мелюзга.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-14.mp3"
+      },
+      {
+       "en": "No one rushes the king.",
+       "ru": "Короля не торопят.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-15.mp3"
+      },
+      {
+       "en": "I'm the guy in charge, got it?!",
+       "ru": "Здесь главный — я, понял?!",
+       "tag": "угроза",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rat-king-16.mp3"
+      },
+      {
+       "en": "You think I'm playin' with you?!",
+       "ru": "Думаешь, я с тобой играю?!",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rat-king-17.mp3"
+      },
+      {
+       "en": "Who's exterminating who now!",
+       "ru": "Ну и кто теперь кого травит?!",
        "tag": "подкол",
        "use": 5,
        "a": "scenes/games/deadlock/v/rat-king-18.mp3"
@@ -987,7 +1094,7 @@
         {
          "s": "Venator",
          "en": "Some people need to die.",
-         "ru": "Некоторым людям надо умирать.",
+         "ru": "Кое-кому надо умереть.",
          "a": "scenes/games/deadlock/v/venator-02.mp3"
         },
         {
@@ -1005,7 +1112,7 @@
         {
          "s": "Rem",
          "en": "Nuance sounds like a big word.",
-         "ru": "«Тонкости» звучит как слишком взрослое слово.",
+         "ru": "«Нюанс» — какое-то очень умное слово.",
          "a": "scenes/games/deadlock/v/rem-08.mp3"
         },
         {
@@ -1133,6 +1240,113 @@
       {
        "en": "Picked the wrong fight!",
        "ru": "Не с тем связался!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/venator-14.mp3"
+      },
+      {
+       "en": "Not today, friend.",
+       "ru": "Не в этот раз, дружок.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-15.mp3"
+      },
+      {
+       "en": "Nice try.",
+       "ru": "Хорошая попытка.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/venator-16.mp3"
+      },
+      {
+       "en": "You can't hide from a Venator.",
+       "ru": "От Венатора не спрячешься.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-17.mp3"
+      },
+      {
+       "en": "I will find you.",
+       "ru": "Я тебя найду.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-18.mp3"
+      },
+      {
+       "en": "Come out and die.",
+       "ru": "Выходи и умри.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-19.mp3"
+      },
+      {
+       "en": "It's not my time to die.",
+       "ru": "Мне пока рано умирать.",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-20.mp3"
+      },
+      {
+       "en": "The work doesn't come cheap.",
+       "ru": "Такая работа дёшево не стоит.",
+       "tag": "идиома",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/venator-21.mp3"
+      }
+     ],
+     "lines": [
+      {
+       "en": "The Lord is merciful... I am not.",
+       "ru": "Господь милосерден... а вот я — нет.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/venator-07.mp3"
+      },
+      {
+       "en": "Today... nine Commandments will have to do.",
+       "ru": "Сегодня... обойдёмся девятью заповедями.",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/venator-08.mp3"
+      },
+      {
+       "en": "God forgives. I do not.",
+       "ru": "Бог прощает. Я — нет.",
+       "tag": "угроза",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/venator-09.mp3"
+      },
+      {
+       "en": "Wealth will not buy you mercy.",
+       "ru": "Богатство не купит тебе милосердия.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-10.mp3"
+      },
+      {
+       "en": "These hands aren't made to comfort.",
+       "ru": "Эти руки созданы не для утешений.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-11.mp3"
+      },
+      {
+       "en": "You were never going to kill me.",
+       "ru": "Ты и не мог меня убить.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-12.mp3"
+      },
+      {
+       "en": "You've never fought a man like me.",
+       "ru": "Ты никогда не дрался с таким, как я.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/venator-13.mp3"
+      },
+      {
+       "en": "Picked the wrong fight!",
+       "ru": "Не с той дрался!",
        "tag": "подкол",
        "use": 5,
        "a": "scenes/games/deadlock/v/venator-14.mp3"
@@ -1444,7 +1658,7 @@
         {
          "s": "Venator",
          "en": "Some people need to die.",
-         "ru": "Некоторым людям надо умирать.",
+         "ru": "Кое-кому надо умереть.",
          "a": "scenes/games/deadlock/v/venator-02.mp3"
         },
         {
@@ -1462,7 +1676,7 @@
         {
          "s": "Rem",
          "en": "Nuance sounds like a big word.",
-         "ru": "«Тонкости» звучит как слишком взрослое слово.",
+         "ru": "«Нюанс» — какое-то очень умное слово.",
          "a": "scenes/games/deadlock/v/rem-08.mp3"
         },
         {
@@ -1494,6 +1708,113 @@
       {
        "en": "Being awake is hard!",
        "ru": "Быть бодрым — это тяжело!",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rem-09.mp3"
+      },
+      {
+       "en": "There are so many places I couldn't nap!",
+       "ru": "Столько мест, где я не мог подремать!",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rem-10.mp3"
+      },
+      {
+       "en": "I have a pillow.",
+       "ru": "У меня есть подушка.",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rem-11.mp3"
+      },
+      {
+       "en": "Need more sleep.",
+       "ru": "Надо больше спать.",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rem-12.mp3"
+      },
+      {
+       "en": "No thanks.",
+       "ru": "Нет, спасибо.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rem-13.mp3"
+      },
+      {
+       "en": "Leave me alone!",
+       "ru": "Отстаньте от меня!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rem-14.mp3"
+      },
+      {
+       "en": "Now you get to sleep!",
+       "ru": "Теперь твоя очередь поспать!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rem-15.mp3"
+      },
+      {
+       "en": "I just wanted to take a nap!",
+       "ru": "Я просто хотел поспать!",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rem-16.mp3"
+      },
+      {
+       "en": "I'm not scared, you're scared.",
+       "ru": "Это я не боюсь. Это ты боишься.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rem-17.mp3"
+      },
+      {
+       "en": "I dunno why they keep fighting, they're dumb.",
+       "ru": "Не понимаю, зачем они всё дерутся. Тупые же.",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rem-18.mp3"
+      },
+      {
+       "en": "Free money!",
+       "ru": "Бесплатные деньги!",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/rem-19.mp3"
+      },
+      {
+       "en": "Their body flooped, they're silly!",
+       "ru": "Их тело шлёпнулось — они смешные!",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rem-20.mp3"
+      },
+      {
+       "en": "Stop being mean!",
+       "ru": "Хватит быть злыми!",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rem-21.mp3"
+      },
+      {
+       "en": "Don't touch me.",
+       "ru": "Не трогай меня.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rem-22.mp3"
+      },
+      {
+       "en": "I guess I keep winning then!..",
+       "ru": "Ну, значит, я продолжаю побеждать!..",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/rem-23.mp3"
+      }
+     ],
+     "lines": [
+      {
+       "en": "Being awake is hard!",
+       "ru": "Не спать — это тяжело!",
        "tag": "шутка",
        "use": 5,
        "a": "scenes/games/deadlock/v/rem-09.mp3"
@@ -1906,13 +2227,13 @@
         {
          "s": "Grey Talon",
          "en": "It's not throwing it away if they die.",
-         "ru": "Это не выбрасывать на ветер — если они сдохнут.",
+         "ru": "Если они сдохнут — значит, не на ветер.",
          "a": "scenes/games/deadlock/v/grey-talon-10.mp3"
         },
         {
          "s": "Doorman",
          "en": "I'm sure your wife will see it the same way.",
-         "ru": "Уверен, твоя жена смотрит на это точно так же.",
+         "ru": "Уверен, твоя жена посмотрела бы на это так же.",
          "a": "scenes/games/deadlock/v/doorman-02.mp3"
         },
         {
@@ -1924,7 +2245,7 @@
         {
          "s": "Doorman",
          "en": "I forget myself, please accept my apology.",
-         "ru": "Прошу прощения, вышел из роли.",
+         "ru": "Я забылся, примите мои извинения.",
          "a": "scenes/games/deadlock/v/doorman-03.mp3"
         }
        ],
@@ -1939,7 +2260,7 @@
         },
         {
          "w": "forget myself",
-         "r": "выйти из роли, погорячиться"
+         "r": "забыться, погорячиться"
         }
        ]
       }
@@ -2027,6 +2348,113 @@
       {
        "en": "I don't have the luxury of mercy today!",
        "ru": "Сегодня на милость у меня нет времени!",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/grey-talon-23.mp3"
+      },
+      {
+       "en": "I'm not afraid to die! Are you?",
+       "ru": "Я умирать не боюсь! А ты?",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/grey-talon-24.mp3"
+      },
+      {
+       "en": "Giving up already?!",
+       "ru": "Уже сдаёшься?!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-25.mp3"
+      },
+      {
+       "en": "And you thought you were the apex predator.",
+       "ru": "А ты считал себя альфа-хищником.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/grey-talon-26.mp3"
+      }
+     ],
+     "lines": [
+      {
+       "en": "My bow is yours.",
+       "ru": "Мой лук к твоим услугам.",
+       "tag": "приветствие",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-12.mp3"
+      },
+      {
+       "en": "Blood demands blood.",
+       "ru": "Кровь требует крови.",
+       "tag": "идиома",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/grey-talon-13.mp3"
+      },
+      {
+       "en": "There is no escaping me.",
+       "ru": "От меня не убежать.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/grey-talon-14.mp3"
+      },
+      {
+       "en": "Revenge is surprisingly time-consuming.",
+       "ru": "Месть, как ни странно, отнимает уйму времени.",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-15.mp3"
+      },
+      {
+       "en": "Brake lines won't cut themselves.",
+       "ru": "Тормозные шланги сами себя не перережут.",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-16.mp3"
+      },
+      {
+       "en": "Too easy.",
+       "ru": "Слишком просто.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-17.mp3"
+      },
+      {
+       "en": "I was expecting a challenge.",
+       "ru": "Я ждал хотя бы вызова.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/grey-talon-18.mp3"
+      },
+      {
+       "en": "Respect your elders.",
+       "ru": "Уважай старших.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-19.mp3"
+      },
+      {
+       "en": "So young, so stupid.",
+       "ru": "Такой юный. И такой глупый.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-20.mp3"
+      },
+      {
+       "en": "Your arrogance was noted.",
+       "ru": "Твоё высокомерие зафиксировано.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-21.mp3"
+      },
+      {
+       "en": "Walk away while you still have the chance!",
+       "ru": "Уходи, пока ещё есть шанс!",
+       "tag": "угроза",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/grey-talon-22.mp3"
+      },
+      {
+       "en": "I don't have the luxury of mercy today!",
+       "ru": "Сегодня я не могу позволить себе милосердие!",
        "tag": "угроза",
        "use": 4,
        "a": "scenes/games/deadlock/v/grey-talon-23.mp3"
@@ -2414,6 +2842,113 @@
        "use": 4,
        "a": "scenes/games/deadlock/v/celeste-21.mp3"
       }
+     ],
+     "lines": [
+      {
+       "en": "If you need my help, I'll be there.",
+       "ru": "Если нужна помощь — я рядом.",
+       "tag": "приветствие",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/celeste-07.mp3"
+      },
+      {
+       "en": "Show's over, buddy.",
+       "ru": "Шоу окончено, приятель.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/celeste-08.mp3"
+      },
+      {
+       "en": "I don't wanna have to hurt you.",
+       "ru": "Не хочу причинять тебе боль.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/celeste-09.mp3"
+      },
+      {
+       "en": "You picked the wrong fight.",
+       "ru": "Ты выбрал не ту драку.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/celeste-10.mp3"
+      },
+      {
+       "en": "You think you can bully me?",
+       "ru": "Думаешь, меня запугаешь?",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/celeste-11.mp3"
+      },
+      {
+       "en": "Not what you expected, huh?",
+       "ru": "Не то, на что ты рассчитывал, а?",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/celeste-12.mp3"
+      },
+      {
+       "en": "Nothin' lasts forever.",
+       "ru": "Ничто не вечно.",
+       "tag": "идиома",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/celeste-13.mp3"
+      },
+      {
+       "en": "Enjoyin' the show?",
+       "ru": "Нравится представление?",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/celeste-14.mp3"
+      },
+      {
+       "en": "I'm not even warmed up yet!",
+       "ru": "Я даже не размялась ещё!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/celeste-15.mp3"
+      },
+      {
+       "en": "You'll have to try harder than that.",
+       "ru": "Придётся постараться сильнее.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/celeste-16.mp3"
+      },
+      {
+       "en": "Not on my watch.",
+       "ru": "Пока я рядом — не бывать этому.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/celeste-17.mp3"
+      },
+      {
+       "en": "I'll take the tip.",
+       "ru": "Чаевые беру себе.",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/celeste-18.mp3"
+      },
+      {
+       "en": "Come back again, buddy! I'll be waiting.",
+       "ru": "Заходи ещё, приятель! Я буду ждать.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/celeste-19.mp3"
+      },
+      {
+       "en": "I was really pushin' my luck there.",
+       "ru": "Я там здорово испытывала судьбу.",
+       "tag": "идиома",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/celeste-20.mp3"
+      },
+      {
+       "en": "My lucky day!",
+       "ru": "Мой счастливый день!",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/celeste-21.mp3"
+      }
      ]
     },
     {
@@ -2435,13 +2970,13 @@
         {
          "s": "Grey Talon",
          "en": "It's not throwing it away if they die.",
-         "ru": "Это не выбрасывать на ветер — если они сдохнут.",
+         "ru": "Если они сдохнут — значит, не на ветер.",
          "a": "scenes/games/deadlock/v/grey-talon-10.mp3"
         },
         {
          "s": "Doorman",
          "en": "I'm sure your wife will see it the same way.",
-         "ru": "Уверен, твоя жена смотрит на это точно так же.",
+         "ru": "Уверен, твоя жена посмотрела бы на это так же.",
          "a": "scenes/games/deadlock/v/doorman-02.mp3"
         },
         {
@@ -2453,7 +2988,7 @@
         {
          "s": "Doorman",
          "en": "I forget myself, please accept my apology.",
-         "ru": "Прошу прощения, вышел из роли.",
+         "ru": "Я забылся, примите мои извинения.",
          "a": "scenes/games/deadlock/v/doorman-03.mp3"
         }
        ],
@@ -2468,7 +3003,7 @@
         },
         {
          "w": "forget myself",
-         "r": "выйти из роли, погорячиться"
+         "r": "забыться, погорячиться"
         }
        ]
       }
@@ -2542,6 +3077,1212 @@
       {
        "en": "Old habits die hard, I'm afraid.",
        "ru": "Старые привычки, боюсь, умирают тяжело.",
+       "tag": "идиома",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/doorman-13.mp3"
+      },
+      {
+       "en": "Hello...? Housekeeping?",
+       "ru": "Алло...? Горничная?",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/doorman-14.mp3"
+      },
+      {
+       "en": "A valiant effort.",
+       "ru": "Достойная попытка.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/doorman-15.mp3"
+      },
+      {
+       "en": "The Baroness is ready to receive new guests.",
+       "ru": "Баронесса готова принимать новых гостей.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-16.mp3"
+      },
+      {
+       "en": "Ready to banish our enemies!",
+       "ru": "Готовы изгнать наших врагов!",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-17.mp3"
+      },
+      {
+       "en": "Ready to tear their minds asunder.",
+       "ru": "Готов разорвать их разум в клочья.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-18.mp3"
+      },
+      {
+       "en": "Ready to take them to the Baroness.",
+       "ru": "Готов доставить их в «Баронессу».",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-19.mp3"
+      },
+      {
+       "en": "The Baroness is ready.",
+       "ru": "Баронесса готова.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-20.mp3"
+      },
+      {
+       "en": "Ready to pull them off the battlefield.",
+       "ru": "Готов вытащить их с поля боя.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-21.mp3"
+      },
+      {
+       "en": "I will usher them to realms unimaginable.",
+       "ru": "Я провожу их в миры, которые невозможно вообразить.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-22.mp3"
+      },
+      {
+       "en": "Ready to show them what real power looks like!",
+       "ru": "Готов показать им, как выглядит настоящая сила!",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-23.mp3"
+      },
+      {
+       "en": "Ready to bend reality.",
+       "ru": "Готов изгибать реальность.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-24.mp3"
+      },
+      {
+       "en": "Ready to warp time and space.",
+       "ru": "Готов искривлять время и пространство.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-25.mp3"
+      },
+      {
+       "en": "The Baroness is almost ready.",
+       "ru": "Баронесса почти готова.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-26.mp3"
+      },
+      {
+       "en": "Hotel Guest's on cooldown.",
+       "ru": "У «Гостя отеля» перезарядка.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-27.mp3"
+      },
+      {
+       "en": "No one resists the call of the Baroness.",
+       "ru": "Никто не устоит перед зовом Баронессы.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-28.mp3"
+      },
+      {
+       "en": "I look forward to checking in new guests.",
+       "ru": "С нетерпением жду новых постояльцев.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-29.mp3"
+      },
+      {
+       "en": "The Baroness has rooms for everyone.",
+       "ru": "У Баронессы найдётся комната для каждого.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-30.mp3"
+      },
+      {
+       "en": "The Baroness will receive our foes with open arms.",
+       "ru": "Баронесса примет наших врагов с распростёртыми объятиями.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-31.mp3"
+      },
+      {
+       "en": "I can't wait to see the comment cards our guests will fill!",
+       "ru": "Не могу дождаться, какие отзывы оставят наши гости!",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-32.mp3"
+      },
+      {
+       "en": "I'll make sure the rooms are prepared.",
+       "ru": "Я прослежу, чтобы номера были готовы.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-33.mp3"
+      },
+      {
+       "en": "They will never forget their stay at the Baroness.",
+       "ru": "Они никогда не забудут свой визит в Баронессу.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-34.mp3"
+      },
+      {
+       "en": "The august halls of the Baroness await them.",
+       "ru": "Величественные залы Баронессы ждут их.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-35.mp3"
+      },
+      {
+       "en": "They will die surrounded by the finest of luxury.",
+       "ru": "Они умрут в окружении лучшей роскоши.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-36.mp3"
+      },
+      {
+       "en": "The Patrons won't mind if I put my thumb on the scale a little.",
+       "ru": "Думаю, Покровители не против, если я чуть-чуть подложу руку на весы.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-37.mp3"
+      },
+      {
+       "en": "Checking in.",
+       "ru": "Оформляем заселение.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-38.mp3"
+      },
+      {
+       "en": "Welcome to The Baroness.",
+       "ru": "Добро пожаловать в «Баронессу».",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-39.mp3"
+      },
+      {
+       "en": "Enjoy your stay.",
+       "ru": "Приятного пребывания.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-40.mp3"
+      },
+      {
+       "en": "Enjoy your stay.",
+       "ru": "Приятного пребывания.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-41.mp3"
+      },
+      {
+       "en": "I’ll take you to your room.",
+       "ru": "Провожу вас до вашего номера.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-42.mp3"
+      },
+      {
+       "en": "Your elevator awaits.",
+       "ru": "Ваш лифт ожидает.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-43.mp3"
+      },
+      {
+       "en": "The Baroness opens its arms for you.",
+       "ru": "Баронесса раскрывает вам свои объятия.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-44.mp3"
+      },
+      {
+       "en": "The Baroness awaits.",
+       "ru": "Баронесса ждёт.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-45.mp3"
+      },
+      {
+       "en": "Let me show you upstairs.",
+       "ru": "Позвольте показать вам верхние этажи.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-46.mp3"
+      },
+      {
+       "en": "I’ll get you settled.",
+       "ru": "Я устрою вас с комфортом.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-47.mp3"
+      },
+      {
+       "en": "Your stay will be unforgettable.",
+       "ru": "Ваш визит будет незабываемым.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-48.mp3"
+      },
+      {
+       "en": "Your stay will be unforgettable.",
+       "ru": "Ваш визит будет незабываемым.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-49.mp3"
+      },
+      {
+       "en": "[Laughter]",
+       "ru": "[Смех]",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-50.mp3"
+      },
+      {
+       "en": "You almost had me!",
+       "ru": "Ты чуть меня не достал!",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-51.mp3"
+      },
+      {
+       "en": "Welcome to the Baroness.",
+       "ru": "Добро пожаловать в Баронессу.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-52.mp3"
+      },
+      {
+       "en": "Enjoy your stay.",
+       "ru": "Приятного пребывания.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-53.mp3"
+      },
+      {
+       "en": "Right where I want you.",
+       "ru": "Именно там, где я тебя и хотел.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-54.mp3"
+      },
+      {
+       "en": "Welcome to The Baroness.",
+       "ru": "Добро пожаловать в «Баронессу».",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-55.mp3"
+      },
+      {
+       "en": "I hope you enjoy your stay here.",
+       "ru": "Надеюсь, вам здесь понравится.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-56.mp3"
+      },
+      {
+       "en": "Please, enjoy our Hospitality.",
+       "ru": "Прошу, насладитесь нашим гостеприимством.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-57.mp3"
+      },
+      {
+       "en": "Such secrets The Baroness can show you.",
+       "ru": "Какие секреты может показать вам Баронесса.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-58.mp3"
+      },
+      {
+       "en": "[Laughter]",
+       "ru": "[Смех]",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-59.mp3"
+      },
+      {
+       "en": "All you have to do is walk toward that door.",
+       "ru": "Всё, что от вас требуется, — дойти до той двери.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-60.mp3"
+      },
+      {
+       "en": "The Baroness is always looking for new guests.",
+       "ru": "Баронесса всегда рада новым гостям.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-61.mp3"
+      },
+      {
+       "en": "I hope your time at The Baroness is Unforgettable.",
+       "ru": "Надеюсь, время, проведённое в Баронессе, станет незабываемым.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-62.mp3"
+      },
+      {
+       "en": "Please, forgive the mess, The Baroness is mid-renovation.",
+       "ru": "Прошу простить беспорядок — Баронесса на середине ремонта.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-63.mp3"
+      },
+      {
+       "en": "You are, of course, welcome to stay at The Baroness for as long as you'd like. I do hope you enjoy your visit.",
+       "ru": "Разумеется, вы можете оставаться в Баронессе столько, сколько пожелаете. Надеюсь, визит вам понравится.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-64.mp3"
+      },
+      {
+       "en": "Right now, I'm sure your mind is reeling. Questioning your very eyes, if not your sanity.",
+       "ru": "Уверен, сейчас ваш разум лихорадочно ищет объяснения. Вы сомневаетесь в собственных глазах, если не в рассудке.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-65.mp3"
+      },
+      {
+       "en": "The hallowed halls of The Baroness welcome all. We do not discriminate. Stay as long as you’d like.",
+       "ru": "Священные залы Баронессы принимают всех. Мы не делаем различий. Оставайтесь столько, сколько захотите.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-66.mp3"
+      },
+      {
+       "en": "Time slips away, as does your worry. Well, I suppose your worry is likely mounting as we speak, but eventually, it will give way to... inevitability. And from there, to the sweet blackness of the void.",
+       "ru": "Время утекает, и тревога уходит вместе с ним. Впрочем, полагаю, ваша тревога пока лишь растёт, но рано или поздно она уступит место... неизбежности. А оттуда — сладкой черноте пустоты.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-67.mp3"
+      },
+      {
+       "en": "Your friends are alone. Likely dying, while you sit here basking in the finest luxuries this plane can offer. You can try to save them, but why? You're already too late.",
+       "ru": "Ваши друзья одни. Наверное, уже умирают, а вы сидите здесь и нежитесь в лучшей роскоши этого мира. Можете попытаться их спасти, но зачем? Вы уже опоздали.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-68.mp3"
+      },
+      {
+       "en": "Why die on the streets of Manhattan, like a common criminal? Die here in The Baroness, like a celebrity, with creative demons and a substance abuse problem.",
+       "ru": "Зачем умирать на улицах Манхэттена, как заурядный уголовник? Умрите здесь, в Баронессе, как знаменитость — с творческими демонами и проблемами с запрещёнными веществами.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-69.mp3"
+      },
+      {
+       "en": "Personally, I’m impressed with your will to live. It’s futile, and pointless, but inspiring. Like watching a colony of ants, working to carry a strawberry, blissfully unaware of the gardener turning on the hose.",
+       "ru": "Лично я впечатлён вашей жаждой жить. Она тщетна и бессмысленна, но вдохновляет. Как колония муравьёв, что тащит клубнику, не подозревая, что садовник уже взялся за шланг.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-70.mp3"
+      },
+      {
+       "en": "Thank you for giving your life at The Baroness Hotel. Gratuities are never expected, but always appreciated.",
+       "ru": "Благодарим за жизнь, отданную отелю «Баронесса». Чаевые не обязательны, но всегда приветствуются.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-71.mp3"
+      },
+      {
+       "en": "The Patrons have waited centuries to be summoned, they can wait a little longer. Stay. Enjoy the sauna and Egyptian cotton sheets. Let the troubles of the world melt away.",
+       "ru": "Покровители ждали призыва столетиями — подождут ещё немного. Оставайтесь. Наслаждайтесь сауной и египетским хлопком. Пусть мирские тревоги растают.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-72.mp3"
+      },
+      {
+       "en": "The Tome will pull you down with it, Abrams. It is inevitable.",
+       "ru": "Этот Том утянет тебя на дно вместе с собой, Абрамс. Это неизбежно.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-73.mp3"
+      },
+      {
+       "en": "The Tome is an impossible burden, detective. Why don’t you lay your head down and enjoy the amenities that The Baroness can offer?",
+       "ru": "Том — невыносимая ноша, детектив. Почему бы вам не прилечь и не насладиться удобствами Баронессы?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-74.mp3"
+      },
+      {
+       "en": "Apollo... the ritual matters to this plane, not Ixia. Don't throw away your life to benefit some humans.",
+       "ru": "Аполлон... ритуал важен для этого мира, а не для Иксии. Не выбрасывай жизнь ради каких-то людей.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-75.mp3"
+      },
+      {
+       "en": "Apollo, how does it feel to be a part of a family so hated that children in Ixia sing a schoolyard rhyme about your mother being impaled on a tree?",
+       "ru": "Аполлон, каково это — быть из семьи, которую так ненавидят, что дети в Иксии поют на переменках стишок про то, как вашу мать насадили на дерево?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-76.mp3"
+      },
+      {
+       "en": "Know this, Bebop: when Ms. Shelly dies, it will be because of your failure.",
+       "ru": "Запомни, Бибоп: когда мисс Шелли умрёт, это будет из-за твоего провала.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-77.mp3"
+      },
+      {
+       "en": "How much of your time is spent taking care of Ms. Shelly, Bebop? The double life you lead must be exhausting. Take some time for yourself, you deserve it.",
+       "ru": "Сколько своего времени ты тратишь на заботу о мисс Шелли, Бибоп? Эта двойная жизнь должна выматывать. Возьми выходной, ты его заслужил.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-78.mp3"
+      },
+      {
+       "en": "Billy, you are impressively uninteresting.",
+       "ru": "Билли, ты невероятно скучен.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-79.mp3"
+      },
+      {
+       "en": "Normally, I would take this time to make you confront your inner demons, but in order to do that, you’d have to be a person with some sort of actual passion and drive, but you’re not! You’re a caricature of outrage, a contrarian who thinks that hating something is the same thing as being interesting. So please leave, you’re dreadfully boring.",
+       "ru": "Обычно на этом месте я заставляю тебя взглянуть в лицо внутренним демонам, но для этого надо быть личностью хоть с какой-то страстью и огоньком. А ты — нет! Ты карикатура на недовольство, спорщик, который считает, что ненавидеть что-то — то же самое, что быть интересным. Так что уходи, ты невыносимо скучен.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-80.mp3"
+      },
+      {
+       "en": "Look on the bright side, Calico. When your body rots, I’ll take care of your cat.",
+       "ru": "Смотри на светлую сторону, Калико: когда твоё тело сгниёт, я присмотрю за твоим котом.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-81.mp3"
+      },
+      {
+       "en": "I see you, Calico. Your heart is cold, but it is not dead. There is a part of you that has not buried the past. It’s not too late to rethink your choices. Stay a while. The Baroness has a way of calming the tempest of the mind.",
+       "ru": "Я вижу тебя, Калико. Твоё сердце холодно, но не мертво. Часть тебя так и не похоронила прошлое. Ещё не поздно пересмотреть свой выбор. Побудь немного: Баронесса умеет утихомиривать бурю в разуме.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-82.mp3"
+      },
+      {
+       "en": "Lenny is lost, Celeste. But you need not suffer with him. It's safe here in The Baroness.",
+       "ru": "Ленни потерян, Селеста. Но тебе не обязательно страдать вместе с ним. Здесь, в Баронессе, безопасно.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-83.mp3"
+      },
+      {
+       "en": "Your found family is doomed, Celeste. Even if you save Lenny's soul now, do you really think he won't just sell it again the next time it's convenient?",
+       "ru": "Твоя найденная семья обречена, Селеста. Даже если ты спасёшь душу Ленни сейчас — думаешь, он не продаст её снова, как только будет удобно?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-84.mp3"
+      },
+      {
+       "en": "Now this is certainly unexpected.",
+       "ru": "Ну вот это уже неожиданно.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-85.mp3"
+      },
+      {
+       "en": "Reality twists and bends around you. How can this be? Has The Baroness turned on its loyal servant, or has a fledgling god lost his mind in the face of the Patrons?",
+       "ru": "Реальность искривляется вокруг тебя. Как это возможно? Баронесса обернулась против верного слуги, или юный бог сошёл с ума от встречи с Покровителями?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-86.mp3"
+      },
+      {
+       "en": "[Whistling]",
+       "ru": "[Свист]",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-87.mp3"
+      },
+      {
+       "en": "Your heart beats faster as you find yourself in new territory. Slowly, but surely, realizing that here you are no predator, merely vermin scuttling down the hall. It won't be long before you find yourself feeling something that’s eluded you for centuries: Fear.",
+       "ru": "Твоё сердце бьётся чаще: ты на чужой территории. Медленно, но верно ты понимаешь: здесь ты не хищник, а всего лишь тварь, шмыгающая по коридору. Скоро ты испытаешь то, чего избегал столетиями: Страх.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-88.mp3"
+      },
+      {
+       "en": "Professor, be honest with yourself: you’re never getting your body back.",
+       "ru": "Профессор, будьте честны с собой: тело вам уже не вернуть.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-89.mp3"
+      },
+      {
+       "en": "Professor, a little birdie told me that your anniversary is coming up. How wonderful! I would love to extend The Baroness’ hospitality to you and your wife.",
+       "ru": "Профессор, сорока на хвосте принесла, что у вас скоро годовщина. Прекрасно! Я с радостью предоставлю гостеприимство Баронессы вам и вашей жене.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-90.mp3"
+      },
+      {
+       "en": "You wish to help the dead, Miss Graves? There are so many here that need you. Stay.",
+       "ru": "Хотите помочь мёртвым, мисс Грейвз? Здесь их так много, они так нуждаются в вас. Останьтесь.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-91.mp3"
+      },
+      {
+       "en": "Miss Graves, you are so starving for a parental figure that you ran straight into the literal palm of a lich's hand. You know it's wrong, you know you can't control her. You know that you're going to die if you don't get help, and you're praying that your parents will notice before it's too late. They won't. But I see you. Stay at The Baroness, and let me be your teacher.",
+       "ru": "Мисс Грейвз, вы так отчаянно ищете родителя, что прибежали прямиком в ладонь лиха. Вы знаете, что это неправильно, знаете, что не контролируете её. Вы знаете, что умрёте, если не получите помощь, и молитесь, чтобы родители заметили, пока не поздно. Не заметят. Но я вижу вас. Останьтесь в Баронессе — позвольте мне стать вам учителем.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-92.mp3"
+      },
+      {
+       "en": "Talon, you couldn’t save your family and you can’t save yourself.",
+       "ru": "Талон, ты не смог спасти свою семью — и себя не спасёшь.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-93.mp3"
+      },
+      {
+       "en": "Wesley. You dedicated your life to protecting others, but in the end, you couldn’t protect your son. Or his wife. Or their children. How many moments of their lives did you miss because you were too busy? Because you were traveling for work, because your calling was important and your family would be there when you return. Yes, their lives were stolen, but it was you who robbed them of a father. Well done!",
+       "ru": "Уэсли. Ты посвятил жизнь защите других, но в итоге не смог защитить собственного сына. Ни его жену. Ни их детей. Сколько моментов их жизни ты пропустил, потому что был занят? Потому что уезжал по работе, потому что твоё призвание было важным, а семья подождёт до возвращения. Да, их жизни были украдены, но отца у них отнял именно ты. Отличная работа!",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-94.mp3"
+      },
+      {
+       "en": "Keep calling yourself a Sandman instead of executioner. Maybe you’ll believe it.",
+       "ru": "Продолжай называть себя Песочным человеком, а не палачом. Может, сам поверишь.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-95.mp3"
+      },
+      {
+       "en": "The OSIC is lucky to have you, Haze. Your commitment to your work is an inspiration, but even you deserve some R&R. Why don’t you take a PTO day at The Baroness?",
+       "ru": "ОСИК повезло с тобой, Хейз. Твоя преданность делу — пример для всех, но и ты заслуживаешь отпуска. Почему бы не взять отгул в Баронессе?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-96.mp3"
+      },
+      {
+       "en": "You failed to stop the Troubadour in Macomb, and you’ll fail again in New York.",
+       "ru": "Ты не остановил Трубадура в Макомбе — и не остановишь в Нью-Йорке.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-97.mp3"
+      },
+      {
+       "en": "I can only imagine the horrors you witnessed in Macomb. Rest, Holliday, and put aside your trauma for tomorrow.",
+       "ru": "Могу только вообразить ужасы, которые ты видела в Макомбе. Отдохни, Холлидей, отложи свою травму до завтра.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-98.mp3"
+      },
+      {
+       "en": "You thought you put your past behind you, but it will be your undoing.",
+       "ru": "Ты думал, оставил прошлое позади, — но оно тебя сгубит.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-99.mp3"
+      },
+      {
+       "en": "You ruined many lives, Infernus. Do you really think that saving Hank’s bar will make up for the harm you caused?",
+       "ru": "Ты разрушил много жизней, Инфернус. Правда думаешь, что спасение бара Хэнка искупит причинённый вред?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-100.mp3"
+      },
+      {
+       "en": "If you’re here with me, who is protecting the Arroyos from Mendoza?",
+       "ru": "Если ты здесь со мной, то кто защищает Арройо от Мендосы?",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-101.mp3"
+      },
+      {
+       "en": "Ivy, you’re a good person, and I have no desire to torment you here. Just know this: In five years, one of the Arroyos is going to die, and there is nothing you can do to stop it.",
+       "ru": "Айви, ты хороший человек, и мучить тебя здесь мне не хочется. Просто знай: через пять лет кто-то из Арройо умрёт, и ты ничего не сможешь с этим сделать.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-102.mp3"
+      },
+      {
+       "en": "You pushed away Ettrick for his ambitions, yet remained a slave to your own.",
+       "ru": "Ты оттолкнул Эттрика из-за его амбиций — но сам остался рабом своих.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-103.mp3"
+      },
+      {
+       "en": "You wrestle with so much guilt. The things you know you did and, even more horrifying, the things you forgot. But at The Baroness, you don’t need to worry about Ettrick or the expedition. Let me lighten the load.",
+       "ru": "Тебя так грызёт вина. За то, что ты помнишь, и — что страшнее — за то, что забыл. Но в Баронессе не нужно думать ни об Эттрике, ни об экспедиции. Позволь мне облегчить этот груз.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-104.mp3"
+      },
+      {
+       "en": "That ward on your arm won’t hold forever, Geist. Oathkeeper is coming for you.",
+       "ru": "Тот оберег на твоей руке не будет держаться вечно, Гейст. Клятвохранитель уже идёт за тобой.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-105.mp3"
+      },
+      {
+       "en": "Lady Geist, I have the most wonderful room for two. I’m sure that you and Oathkeeper will be happy at The Baroness.",
+       "ru": "Леди Гейст, у меня есть чудесный номер на двоих. Уверен, вам с Клятвохранителем будет в Баронессе счастливо.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-106.mp3"
+      },
+      {
+       "en": "Oh look, a stevedore with delusions of grandeur.",
+       "ru": "О-о, смотрите — грузчик с манией величия.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-107.mp3"
+      },
+      {
+       "en": "Lash, Lash, Lash. You have been such a naughty boy lately. Whatever should I do with you?",
+       "ru": "Лэш, Лэш, Лэш. Ты в последнее время был таким непослушным мальчиком. Что же мне с тобой делать?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-108.mp3"
+      },
+      {
+       "en": "Your creations are responsible for the deaths of millions, McGinnis. You’re a monster.",
+       "ru": "Твои творения виновны в смерти миллионов, Макгиннис. Ты чудовище.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-109.mp3"
+      },
+      {
+       "en": "The pursuit of excellence is a marathon, not a sprint. And while you are miles ahead of your competition, you still have miles to go. So please, take this time to rejuvenate yourself and relax. Fairfax Industries will be there tomorrow. You can take some me-time today.",
+       "ru": "Погоня за совершенством — марафон, а не спринт. И хотя ты на мили впереди конкурентов, мили тебе ещё остались. Так что отдохни и восстановись. Фэйрфакс подождёт до завтра. А сегодня — время для себя.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-110.mp3"
+      },
+      {
+       "en": "You’re a nobody, Mina. You don’t have a chance at becoming viscount.",
+       "ru": "Ты пустое место, Мина. Виконтессой тебе не бывать.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-111.mp3"
+      },
+      {
+       "en": "Mina, Mina, Mina. Your future was stolen from you by an assassin’s bullet and replaced with the promise of eternal youth. We both know how well that’s turned out for you. You’re a child, just learning to play a game that others have spent hundreds of years perfecting. You are destined to fail.",
+       "ru": "Мина, Мина, Мина. Твоё будущее украла пуля убийцы, а взамен пообещала вечную молодость. Мы оба знаем, как это обернулось. Ты ребёнок, который только учится играть в игру, которую другие оттачивали сотни лет. Тебе суждено проиграть.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-112.mp3"
+      },
+      {
+       "en": "Wyoming is a pipe dream, Mirage. The Djinn are doomed.",
+       "ru": "Вайоминг — несбыточная мечта, Мираж. Джинны обречены.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-113.mp3"
+      },
+      {
+       "en": "Wyoming can wait, Mirage. If your goal is to protect Nashala, there is no safer place in the world than The Baroness.",
+       "ru": "Вайоминг подождёт, Мираж. Если твоя цель — защитить Нашалу, безопаснее места, чем Баронесса, в мире нет.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-114.mp3"
+      },
+      {
+       "en": "Maurice, Krill is just dead weight. Kill him.",
+       "ru": "Морис, Крил — просто балласт. Убей его.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-115.mp3"
+      },
+      {
+       "en": "Krill, Maurice would be better off if he never met you.",
+       "ru": "Крил, Морису было бы лучше, если бы он никогда тебя не встречал.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-116.mp3"
+      },
+      {
+       "en": "Maurice, Krill is dead weight. An albatross, whose petty schemes have driven you to hide in the muck, like a common criminal. But you’re not common, you’re exceptional. Free yourself of him and see this for yourself.",
+       "ru": "Морис, Крил — балласт. Альбатрос, чьи мелочные интриги заставили тебя прятаться в грязи, как заурядного преступника. Но ты не заурядный — ты исключительный. Освободись от него и убедись сам.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-117.mp3"
+      },
+      {
+       "en": "Krill, your brilliance shines in the dark, but it would be radiant in the sun. Why do you lower yourself to Maurice’s standards? Your blind loyalty to him has cost you opportunity after opportunity. Cast him aside. Accept who you are.",
+       "ru": "Крил, твой блеск светит во тьме, но на солнце он был бы сиянием. Зачем ты опускаешься до уровня Мориса? Твоя слепая верность ему стоила тебе возможности за возможностью. Отбрось его. Прими, кто ты.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-118.mp3"
+      },
+      {
+       "en": "You’re not the hero of your story. You’re a footnote in mine.",
+       "ru": "Ты не герой своей истории. Ты сноска в моей.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-119.mp3"
+      },
+      {
+       "en": "Patience! You now find yourself the Alice to my Cheshire Cat. So please, indulge in your personal Lewis Carroll fantasy as long as you wish. Such wonderful sights and experiences await you here at The Baroness.",
+       "ru": "Потерпи! Теперь ты — Алиса при моём Чеширском Коте. Так что наслаждайся личной фантазией про Льюиса Кэрролла столько, сколько захочешь. В Баронессе тебя ждут такие чудеса и приключения!",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-120.mp3"
+      },
+      {
+       "en": "What will the Paradox council think when you fail in truly spectacular fashion?",
+       "ru": "Что подумает совет Парадоксов, когда ты с треском провалишься?",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-121.mp3"
+      },
+      {
+       "en": "I know what you’re thinking, Paradox. Sadly there are no tchotchkes for you to take as a souvenir from your time at The Baroness. Just the memory of an unforgettable experience.",
+       "ru": "Знаю, о чём ты думаешь, Парадокс. Увы, сувенирных безделушек из Баронессы тебе не достанется. Только память о незабываемом опыте.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-122.mp3"
+      },
+      {
+       "en": "Why couldn’t you have just died, like your family wanted? It would have saved us a lot of trouble.",
+       "ru": "Почему ты просто не умер, как хотела твоя семья? Это избавило бы нас от кучи хлопот.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-123.mp3"
+      },
+      {
+       "en": "Arin, your mother and father love you, and would be glad to see you come ho-... [Breaks into laughter] Sorry, I tried, but I couldn’t keep a straight face, you have no home.",
+       "ru": "Арин, мама и папа тебя любят и будут рады твоему возвращению домо-... [срывается на смех] Извини, я пытался, но не смог удержать лицо: у тебя нет дома.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-124.mp3"
+      },
+      {
+       "en": "Don't go, Rem, we have a very comfortable bed waiting for you.",
+       "ru": "Не уходи, Рем, мы приготовили для тебя очень удобную кровать.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-125.mp3"
+      },
+      {
+       "en": "Rem, if you continue to walk the streets of Manhattan, it is only a matter of time before you end up vivisected on a government table. But, if you stay here at The Baroness, I can provide safety and comfort.",
+       "ru": "Рем, если ты продолжишь бродить по улицам Манхэттена, рано или поздно ты окажешься препарированным на правительственном столе. Но если останешься здесь, в Баронессе, я дам тебе безопасность и уют.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-126.mp3"
+      },
+      {
+       "en": "Seven, your ambition got you killed once, why haven’t you learned your lesson?",
+       "ru": "Севен, твои амбиции уже убивали тебя однажды — чему ты не выучился?",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-127.mp3"
+      },
+      {
+       "en": "I’d offer you advice, but I know you wouldn’t take it. Good luck on your pursuit, Seven. I hope, in the end, the price that you paid was worth it.",
+       "ru": "Я бы дал тебе совет, но знаю, что ты его не примешь. Удачи в твоих поисках, Севен. Надеюсь, в конце концов цена, которую ты заплатил, того стоила.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-128.mp3"
+      },
+      {
+       "en": "The Baxter Society will turn on you, Shiv. It’s only a matter of time.",
+       "ru": "Общество Бакстера повернётся против тебя, Шив. Это лишь вопрос времени.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-129.mp3"
+      },
+      {
+       "en": "You don’t belong in the Baxter Society, Shiv, you know this. But there will always be a place for you here at The Baroness.",
+       "ru": "Ты не на своём месте в Обществе Бакстера, Шив, ты это знаешь. Но здесь, в Баронессе, для тебя всегда найдётся место.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-130.mp3"
+      },
+      {
+       "en": "There are no games to play with you, Silver, you already know your demons are going to win.",
+       "ru": "С тобой не в игры играть, Сильвер: ты и так знаешь, что твои демоны победят.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-131.mp3"
+      },
+      {
+       "en": "Oh, Lilah, where do I begin with someone as pathetic as you? The walls of your own making that ended friendships? The vices that you've become a slave to? Or perhaps this fantasy that one day killing Shiv and the Drifter will make up for all the lives that were lost because you just weren't good enough to stop them. I truly am spoiled for choice...",
+       "ru": "Ох, Лайла, с чего начать с такой жалкой особы? Со стен, что ты сама себе воздвигла и что разрушили дружбы? С пороков, в которых ты раб? Или с этой фантазии, что однажды убийство Шива и Дрифтера искупит все жизни, потерянные из-за того, что ты просто оказалась недостаточно хороша, чтобы их остановить? У меня поистине богатый выбор...",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-132.mp3"
+      },
+      {
+       "en": "You will be bound to each other for eternity.",
+       "ru": "Вы будете связаны друг с другом на вечность.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-133.mp3"
+      },
+      {
+       "en": "You were in love once, but that has given way to spite and jealousy. You don’t need a divorce, you need time together. Why don’t you stay in our honeymoon suite?",
+       "ru": "Вы когда-то любили друг друга, но это место заняли злоба и ревность. Вам не развод нужен, а время вдвоём. Почему бы не остановиться в нашем медовом номере?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-134.mp3"
+      },
+      {
+       "en": "I know you're prepared to die here, Venator, which is good, because you shall.",
+       "ru": "Знаю, ты готов здесь умереть, Венатор, — и это хорошо, потому что ты умрёшь.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-135.mp3"
+      },
+      {
+       "en": "You know, Rourke, one day you will actually believe the legend you sell to people, and on that day you will die screaming.",
+       "ru": "Знаешь, Рурк, однажды ты сам поверишь в легенду, которую продаёшь людям, — и в тот день ты умрёшь с криком.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-136.mp3"
+      },
+      {
+       "en": "You weren’t made for great purpose, you were made on a whim, to satisfy some scientist’s hubris.",
+       "ru": "Ты создан не для великой цели. Ты сделан на скорую руку, чтобы потешить тщеславие какого-то учёного.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-137.mp3"
+      },
+      {
+       "en": "You’ve looked so hard for answers, Victor, yet they still elude you... It must be exhausting. Take a moment to rest. The mysteries of your past will be there tomorrow.",
+       "ru": "Ты так отчаянно искал ответы, Виктор, но они всё ускользают... Должно быть, утомительно. Отдохни мгновение. Тайны твоего прошлого никуда не денутся и до завтра.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-138.mp3"
+      },
+      {
+       "en": "You can’t put a bullet through hate, Vindicta. Hathorne will win.",
+       "ru": "Ненависть пулей не пробьёшь, Виндикта. Хоторн победит.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-139.mp3"
+      },
+      {
+       "en": "Vindicta, how many lives have you claimed? Do they weigh on you? If so, rest, and purge yourself of that nagging sense of guilt. If not, take a moment to revel in the fruits of your labor.",
+       "ru": "Виндикта, сколько жизней ты забрала? Грызут ли они тебя? Если да — отдыхай, изгони это ноющее чувство вины. Если нет — насладись мгновением плодами своего труда.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-140.mp3"
+      },
+      {
+       "en": "(Alt: Vindicta, how many lives have you claimed? Do they weigh on you? If so, rest, and purge yourself of that nagging sense of guilt. If not, take a moment to revel in the fruits of your labor.)",
+       "ru": "Виндикта, сколько жизней ты забрала? Грызут ли они тебя? Если да — отдыхай, изгони это ноющее чувство вины. Если нет — насладись мгновением плодами своего труда.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-141.mp3"
+      },
+      {
+       "en": "Humans don’t understand the problems of the Deep because they don’t care about the problems of the Deep.",
+       "ru": "Люди не понимают проблем Глубин, потому что им плевать на проблемы Глубин.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-142.mp3"
+      },
+      {
+       "en": "I suppose The Baroness is much like the Cube. A warm refuge where you get to feel the glorious embrace of oblivion.",
+       "ru": "Полагаю, Баронесса — то же, что и Куб: тёплое убежище, где можно ощутить великолепные объятия небытия.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-143.mp3"
+      },
+      {
+       "en": "Oh, why bother taunting you, you’re going to die of liver failure anyway.",
+       "ru": "Ох, чего тебя дразнить — ты и так умрёшь от отказа печени.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-144.mp3"
+      },
+      {
+       "en": "I’ve seen you eye The Baroness as you stumble through Manhattan. Wondering what life could be like if you were the sort of person worthy of its hospitality. Vyper, I’m here to tell you that you are worthy. Just stay. You belong here.",
+       "ru": "Я видел, как ты посматривал на Баронессу, шатаясь по Манхэттену. Думал, какой была бы жизнь, будь ты тем, кто достоин её гостеприимства. Вайпер, я здесь, чтобы сказать: ты достоин. Просто останься. Ты здесь свой.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-145.mp3"
+      },
+      {
+       "en": "You’re not a man, you’re a war doll, fixing mommy and daddy’s failures.",
+       "ru": "Ты не человек. Ты боевая кукла, чинящая провалы мамы и папы.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-146.mp3"
+      },
+      {
+       "en": "What do you want, Warden? I can’t restore the childhood you were denied, but you can be happy here. All you have to do is choose to stay.",
+       "ru": "Чего ты хочешь, Уорден? Я не верну детство, которого тебя лишили, но здесь ты можешь быть счастлив. Нужно лишь выбрать — остаться.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-147.mp3"
+      },
+      {
+       "en": "Your aspirations are about to come crashing down, Wraith. The house always wins.",
+       "ru": "Твои амбиции вот-вот рухнут, Рейф. Казино всегда в выигрыше.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-148.mp3"
+      },
+      {
+       "en": "You’re a gambling woman, right Wraith? I bet you don't have the will to stay here until I'm finished talking. You're probably scoffing at the idea right now: \"why would I do that, there’s nothing to gain?” and yet you’re curious. Maybe the risk is worth the reward. Maybe there is a carrot at the end of the stick. Even as your life is slowly ebbing from your body, you wonder if this is a trick. Some sort of meta-commentary that is challenging you, and if you stay the course, riches await. They don't. Well, maybe they do, and this is part of the trick. Maybe I'm desperate to stall time because I need you to back out before you gain immeasurable power?.. Are you still alive? I can keep talking. You're fun.",
+       "ru": "Ты азартная женщина, Рейф, верно? Спорим, у тебя не хватит воли досидеть, пока я не договорю. Ты, наверное, уже усмехаешься: «зачем мне это, какой профит?» — и всё же тебе любопытно. Может, риск стоит награды. Может, на конце этой удочки и правда есть морковка. Даже когда жизнь медленно утекает из тела, ты думаешь: это трюк? Мета-вызов — и если держаться до конца, ждёт богатство. Не ждёт. Впрочем, может, и ждёт — и это часть трюка. Может, я отчаянно тяну время, потому что мне нужно, чтобы ты сдалась до того, как получишь безмерную силу?.. Ты ещё жива? Я могу говорить дальше. Ты забавная.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-149.mp3"
+      },
+      {
+       "en": "The only way you’ll ever honor your brother is by falling on his sword.",
+       "ru": "Единственный способ почтить брата — пасть на его мече.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-150.mp3"
+      },
+      {
+       "en": "Your brother died to save your life, Kaori, and what do you have to show for it? A life of exile in a country full of people that can't be bothered to learn your real name, and an organization that is a shadow of its former glory. Just give up Kaori. Sorry, I forgot it’s “Yamato” now.",
+       "ru": "Твой брат отдал жизнь, чтобы спасти тебя, Каори, — и что у тебя есть? Жизнь в изгнании в стране, где никому неинтересно выучить твоё настоящее имя, и в организации, которая — тень былой славы. Просто сдайся, Каори. Ой, прости, теперь ты — «Ямато».",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-151.mp3"
+      },
+      {
+       "en": "I think you’ll find the service at The Baroness to be… exemplary.",
+       "ru": "Думаю, сервис в Баронессе покажется вам... образцовым.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-152.mp3"
+      },
+      {
+       "en": "At The Baroness, we always strive for perfection.",
+       "ru": "В Баронессе мы всегда стремимся к совершенству.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-06.mp3"
+      },
+      {
+       "en": "Alas, my duties at The Baroness consume me today.",
+       "ru": "Увы, сегодня меня поглотили обязанности в Баронессе.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-153.mp3"
+      },
+      {
+       "en": "Sadly, the guests at The Baroness demand my attention.",
+       "ru": "Увы, гости Баронессы требуют моего внимания.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-154.mp3"
+      },
+      {
+       "en": "The Baroness will gladly open its doors to you, should you wish it.",
+       "ru": "Баронесса с радостью распахнёт перед тобой двери, стоит тебе лишь захотеть.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-155.mp3"
+      },
+      {
+       "en": "A gift from The Baroness.",
+       "ru": "Подарок от Баронессы.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-156.mp3"
+      },
+      {
+       "en": "You’re not welcome here.",
+       "ru": "Тебе здесь не рады.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-157.mp3"
+      },
+      {
+       "en": "You’ve overstayed your welcome.",
+       "ru": "Ты засиделся у нас в гостях.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-158.mp3"
+      },
+      {
+       "en": "I have a way of dealing with unwanted guests.",
+       "ru": "У меня есть способ расправляться с нежеланными гостями.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-159.mp3"
+      },
+      {
+       "en": "If you give up now, I'll throw in a free night stay at the Baroness.",
+       "ru": "Если сдашься сейчас — подарю бесплатную ночь в Баронессе.",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-160.mp3"
+      },
+      {
+       "en": "The Baroness will call to them.",
+       "ru": "Баронесса сама их позовёт.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-161.mp3"
+      },
+      {
+       "en": "Ready to see another guest.",
+       "ru": "Готовы принять ещё одного гостя.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-162.mp3"
+      },
+      {
+       "en": "The Baroness calls from across the cosmos!",
+       "ru": "Баронесса зовёт через всю вселенную!",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-163.mp3"
+      },
+      {
+       "en": "I must return to the Baroness.",
+       "ru": "Мне пора вернуться в Баронессу.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-164.mp3"
+      },
+      {
+       "en": "It's like the spa at the Baroness.",
+       "ru": "Почти как спа в Баронессе.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-165.mp3"
+      },
+      {
+       "en": "The Baroness needs to install a Cube.",
+       "ru": "Баронессе нужно установить такой Куб.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-166.mp3"
+      },
+      {
+       "en": "Ava is welcome to stay at the Baroness as long as she wishes.",
+       "ru": "Ава может гостить в Баронессе столько, сколько пожелает.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-167.mp3"
+      },
+      {
+       "en": "Ava will belong to the Baroness soon enough.",
+       "ru": "Скоро Ава будет принадлежать Баронессе.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-168.mp3"
+      },
+      {
+       "en": "I'm sorry your stay at the Baroness was cut short.",
+       "ru": "Сожалею, что ваш визит в Баронессу оборвался так рано.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-169.mp3"
+      },
+      {
+       "en": "I do hate killing the guests.",
+       "ru": "Ненавижу убивать гостей.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-170.mp3"
+      },
+      {
+       "en": "I wouldn't let you take a coaster from the Baroness' lounge, what makes you think I'll let you finish the ritual?",
+       "ru": "Я бы и подстаканник из барской гостиной тебе не позволил взять — с чего ты взял, что я дам завершить ритуал?",
+       "tag": "ult",
+       "use": 2,
+       "a": "scenes/games/deadlock/v/doorman-171.mp3"
+      },
+      {
+       "en": "And now to celebrate at the Baroness!",
+       "ru": "А теперь — праздновать в Баронессе!",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-172.mp3"
+      },
+      {
+       "en": "I'll reflect on this at the Baroness.",
+       "ru": "Я поразмышляю об этом в Баронессе.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-173.mp3"
+      },
+      {
+       "en": "Check out what Fathom bought.",
+       "ru": "Гляньте, что Фатом купил.",
+       "tag": "ult",
+       "use": 3,
+       "a": "scenes/games/deadlock/v/doorman-174.mp3"
+      }
+     ],
+     "lines": [
+      {
+       "en": "I am at your service.",
+       "ru": "К вашим услугам.",
+       "tag": "приветствие",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/doorman-04.mp3"
+      },
+      {
+       "en": "May your time in New York be unforgettable.",
+       "ru": "Пусть ваше пребывание в Нью-Йорке будет незабываемым.",
+       "tag": "приветствие",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/doorman-05.mp3"
+      },
+      {
+       "en": "At The Baroness, we always strive for perfection.",
+       "ru": "В «Баронессе» мы всегда стремимся к совершенству.",
+       "tag": "приветствие",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/doorman-06.mp3"
+      },
+      {
+       "en": "Do come back again.",
+       "ru": "Приходите ещё обязательно.",
+       "tag": "приветствие",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/doorman-07.mp3"
+      },
+      {
+       "en": "Mortals break so easily.",
+       "ru": "Смертные ломаются так легко.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/doorman-08.mp3"
+      },
+      {
+       "en": "It would appear I made a mess.",
+       "ru": "Похоже, я тут устроил беспорядок.",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/doorman-09.mp3"
+      },
+      {
+       "en": "I hope there's not blood on my uniform.",
+       "ru": "Надеюсь, на моей форме нет крови.",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/doorman-10.mp3"
+      },
+      {
+       "en": "Look what you made me do.",
+       "ru": "Посмотрите, что вы вынудили меня сделать.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/doorman-11.mp3"
+      },
+      {
+       "en": "Have some decorum!",
+       "ru": "Соблюдайте приличия!",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/doorman-12.mp3"
+      },
+      {
+       "en": "Old habits die hard, I'm afraid.",
+       "ru": "Старые привычки так просто не уходят, боюсь.",
        "tag": "идиома",
        "use": 5,
        "a": "scenes/games/deadlock/v/doorman-13.mp3"
@@ -3854,13 +5595,13 @@
         {
          "s": "Seven",
          "en": "I'm going to make sure we win. The safety of your minions are not my concern.",
-         "ru": "Я сделаю так, что мы победим. Целость твоих прихвостней меня не волнует.",
+         "ru": "Я позабочусь, чтобы мы победили. Безопасность твоих прихвостней — не моя забота.",
          "a": "scenes/games/deadlock/v/seven-09.mp3"
         },
         {
          "s": "Rat King",
          "en": "Yeah, but it's mine. So you be careful... or I'm gonna remember you weren't.",
-         "ru": "Зато моя — волнует. Так что будь поосторожнее... а то я запомню, что не был.",
+         "ru": "Зато моя. Так что поосторожнее… а то я запомню, что ты не был осторожен.",
          "a": "scenes/games/deadlock/v/rat-king-07.mp3"
         }
        ],
@@ -3883,6 +5624,113 @@
      "icon": "scenes/games/deadlock/icon-seven.png",
      "mini": "scenes/games/deadlock/mini/seven.png",
      "phr": [
+      {
+       "en": "My help comes with a price.",
+       "ru": "Моя помощь имеет цену.",
+       "tag": "идиома",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/seven-10.mp3"
+      },
+      {
+       "en": "They've made the wrong enemy.",
+       "ru": "Они нажили не того врага.",
+       "tag": "угроза",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/seven-11.mp3"
+      },
+      {
+       "en": "You'll be back.",
+       "ru": "Ты ещё вернёшься.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/seven-12.mp3"
+      },
+      {
+       "en": "It's true, I am intimidating.",
+       "ru": "Это правда: я внушаю страх.",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-13.mp3"
+      },
+      {
+       "en": "Another debt repaid.",
+       "ru": "Ещё один долг возвращён.",
+       "tag": "идиома",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-14.mp3"
+      },
+      {
+       "en": "That should send a message.",
+       "ru": "Это подаст им правильный сигнал.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-15.mp3"
+      },
+      {
+       "en": "Die, worm.",
+       "ru": "Умри, червь.",
+       "tag": "угроза",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/seven-16.mp3"
+      },
+      {
+       "en": "You thought you were better than me?!",
+       "ru": "А ты думал, что лучше меня?!",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-17.mp3"
+      },
+      {
+       "en": "Watch... and learn.",
+       "ru": "Смотри... и учись.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/seven-18.mp3"
+      },
+      {
+       "en": "Be humbled.",
+       "ru": "Смирись.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-19.mp3"
+      },
+      {
+       "en": "Has the futility set in yet?",
+       "ru": "Тщетность уже до тебя дошла?",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-20.mp3"
+      },
+      {
+       "en": "You need a better plan.",
+       "ru": "Тебе нужен план получше.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-21.mp3"
+      },
+      {
+       "en": "The dead have no use for coin!",
+       "ru": "Мёртвым деньги без надобности!",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-22.mp3"
+      },
+      {
+       "en": "Look at them scramble for some dignity!",
+       "ru": "Посмотри, как они выкручиваются, спасая остатки достоинства!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/seven-23.mp3"
+      },
+      {
+       "en": "I take what I want.",
+       "ru": "Я беру, что хочу.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/seven-24.mp3"
+      }
+     ],
+     "lines": [
       {
        "en": "My help comes with a price.",
        "ru": "Моя помощь имеет цену.",
@@ -4092,6 +5940,113 @@
       {
        "en": "I've faced tougher crowds with less!",
        "ru": "И не с такими залами я справлялся — и то понаглее!",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-14.mp3"
+      },
+      {
+       "en": "Get away from me.",
+       "ru": "Отойди от меня.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-15.mp3"
+      }
+     ],
+     "lines": [
+      {
+       "en": "Deadman Danny, at your service.",
+       "ru": "Мёртвый Дэнни — к вашим услугам.",
+       "tag": "приветствие",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/deadman-danny-01.mp3"
+      },
+      {
+       "en": "Sorry, my PTO already got approved.",
+       "ru": "Извини, мой отпуск уже согласован.",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/deadman-danny-02.mp3"
+      },
+      {
+       "en": "Revenge is the cornerstone of our business model!",
+       "ru": "Месть — краеугольный камень нашей бизнес-модели!",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/deadman-danny-03.mp3"
+      },
+      {
+       "en": "Another satisfied customer!",
+       "ru": "Ещё один довольный клиент!",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/deadman-danny-04.mp3"
+      },
+      {
+       "en": "Are we havin' fun yet?",
+       "ru": "Ну что, уже весело?",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-05.mp3"
+      },
+      {
+       "en": "Better luck next time, friend!",
+       "ru": "В следующий раз повезёт, друг!",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-06.mp3"
+      },
+      {
+       "en": "Who tries to punch a skeleton?!",
+       "ru": "Кто вообще пытается бить скелет?!",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/deadman-danny-07.mp3"
+      },
+      {
+       "en": "I'll be taking that.",
+       "ru": "Это я, пожалуй, заберу.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-08.mp3"
+      },
+      {
+       "en": "Ah, the tip is appreciated.",
+       "ru": "Ах, чаевые — это всегда приятно.",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-09.mp3"
+      },
+      {
+       "en": "Don't run, the demonstration isn't over!",
+       "ru": "Не убегайте, демонстрация не окончена!",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/deadman-danny-10.mp3"
+      },
+      {
+       "en": "Come back anytime!",
+       "ru": "Приходите ещё в любое время!",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-11.mp3"
+      },
+      {
+       "en": "Defying death is what I do best.",
+       "ru": "Обманывать смерть — моё лучшее умение.",
+       "tag": "шутка",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-12.mp3"
+      },
+      {
+       "en": "Not today, friend!",
+       "ru": "Не в этот раз, друг!",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/deadman-danny-13.mp3"
+      },
+      {
+       "en": "I've faced tougher crowds with less!",
+       "ru": "Видал публику и пожёстче — и справлялся!",
        "tag": "шутка",
        "use": 4,
        "a": "scenes/games/deadlock/v/deadman-danny-14.mp3"
@@ -4405,6 +6360,113 @@
       {
        "en": "Don't you get it? I can't die!",
        "ru": "Ты не понял? Я не умею умирать!",
+       "tag": "шутка",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-19.mp3"
+      },
+      {
+       "en": "Nothing lasts forever.",
+       "ru": "Ничто не вечно.",
+       "tag": "идиома",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/victor-20.mp3"
+      },
+      {
+       "en": "Nice try, pal.",
+       "ru": "Неплохая попытка, приятель.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-21.mp3"
+      },
+      {
+       "en": "I'd run from me too.",
+       "ru": "Я бы от меня тоже убежал.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-22.mp3"
+      },
+      {
+       "en": "They were smart to run.",
+       "ru": "Умно, что сбежали.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/victor-23.mp3"
+      },
+      {
+       "en": "Good luck, but you're on your own.",
+       "ru": "Удачи, но дальше ты сам.",
+       "tag": "подкол",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/victor-24.mp3"
+      },
+      {
+       "en": "Maybe some secrets are best left buried.",
+       "ru": "Может, некоторые секреты лучше оставить в земле.",
+       "tag": "идиома",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/victor-25.mp3"
+      }
+     ],
+     "lines": [
+      {
+       "en": "Nothing personal.",
+       "ru": "Ничего личного.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-11.mp3"
+      },
+      {
+       "en": "You should've left me alone.",
+       "ru": "Надо было меня не трогать.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/victor-12.mp3"
+      },
+      {
+       "en": "You picked the fight, I just finished it.",
+       "ru": "Драку начал ты — я её просто закончил.",
+       "tag": "идиома",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-13.mp3"
+      },
+      {
+       "en": "You asked for that.",
+       "ru": "Сам попросил.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-14.mp3"
+      },
+      {
+       "en": "You had it coming.",
+       "ru": "Сам напросился.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-15.mp3"
+      },
+      {
+       "en": "We had unfinished business.",
+       "ru": "У нас оставались незаконченные дела.",
+       "tag": "идиома",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-16.mp3"
+      },
+      {
+       "en": "You started this fight, I'm just ending it.",
+       "ru": "Ты начал эту драку — я её заканчиваю.",
+       "tag": "подкол",
+       "use": 5,
+       "a": "scenes/games/deadlock/v/victor-17.mp3"
+      },
+      {
+       "en": "Don't make me hurt you.",
+       "ru": "Не заставляй меня калечить тебя.",
+       "tag": "угроза",
+       "use": 4,
+       "a": "scenes/games/deadlock/v/victor-18.mp3"
+      },
+      {
+       "en": "Don't you get it? I can't die!",
+       "ru": "Не дошло? Я не могу умереть!",
        "tag": "шутка",
        "use": 5,
        "a": "scenes/games/deadlock/v/victor-19.mp3"
