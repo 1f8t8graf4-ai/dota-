@@ -1,0 +1,5233 @@
+{
+ "abrams": [
+  {
+   "en": "No one is taking this tome from me!",
+   "ru": "Никто не отнимет у меня эту хуйню!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "tome",
+     "книга/том (здесь - презрительное название предмета)"
+    ],
+    [
+     "from me",
+     "у меня"
+    ]
+   ]
+  },
+  {
+   "en": "Going up!",
+   "ru": "Подняться!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Going up",
+     "Подниматься (вверх)"
+    ]
+   ]
+  },
+  {
+   "en": "Here I come!",
+   "ru": "Я иду!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Here",
+     "Вот, здесь"
+    ],
+    [
+     "I come",
+     "я иду"
+    ]
+   ]
+  },
+  {
+   "en": "Droppin' in.",
+   "ru": "Тут как тут.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Droppin' in",
+     "Забрасывать (себя), появляться"
+    ]
+   ]
+  },
+  {
+   "en": "Ahahahahaha!",
+   "ru": "Ахахахахаха!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Ahahahahaha",
+     "Хохот"
+    ]
+   ]
+  },
+  {
+   "en": "Ahahahahaha!",
+   "ru": "Ахахахахаха!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20use%20power4%2005%20alt%2001.mp3",
+   "kw": [
+    [
+     "Ahahahahaha",
+     "Хохот"
+    ]
+   ]
+  },
+  {
+   "en": "This thing's gonna get me killed...",
+   "ru": "Эта хуйня меня убьёт...",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "This thing",
+     "Эта штука/хуйня"
+    ],
+    [
+     "gonna",
+     "собираться, gonna=going to"
+    ]
+   ]
+  },
+  {
+   "en": "Please work.",
+   "ru": "Рабочий, блядь.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Please",
+     "Пожалуйста (здесь - с оттенком отчаяния)"
+    ],
+    [
+     "work",
+     "работать"
+    ]
+   ]
+  },
+  {
+   "en": "We got one chance!",
+   "ru": "Один шанс!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "We got",
+     "У нас есть"
+    ],
+    [
+     "one chance",
+     "один шанс"
+    ]
+   ]
+  },
+  {
+   "en": "I'm on the case.",
+   "ru": "Я на месте.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "I'm",
+     "Я"
+    ],
+    [
+     "on the case",
+     "на деле, в деле"
+    ]
+   ]
+  },
+  {
+   "en": "We got this!",
+   "ru": "Мы справимся!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/atlas%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "We got",
+     "У нас есть"
+    ],
+    [
+     "this",
+     "это"
+    ]
+   ]
+  }
+ ],
+ "apollo": [
+  {
+   "en": "Victory's my birthright!",
+   "ru": "Победа — моё право!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Victory's",
+     "Победа (сокращение от Victory is)"
+    ],
+    [
+     "birthright",
+     "право по рождению"
+    ]
+   ]
+  },
+  {
+   "en": "I'm unmatched!",
+   "ru": "Я непобедим!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "I'm",
+     "Я"
+    ],
+    [
+     "unmatched",
+     "непревзойдённый, непобедимый"
+    ]
+   ]
+  },
+  {
+   "en": "Focusing!",
+   "ru": "Целься!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Focusing",
+     "Фокусироваться"
+    ]
+   ]
+  },
+  {
+   "en": "Die!",
+   "ru": "Умри!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Die",
+     "Умереть"
+    ]
+   ]
+  },
+  {
+   "en": "Now die!",
+   "ru": "А ну-умри!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "die",
+     "умри"
+    ]
+   ]
+  },
+  {
+   "en": "No more games!",
+   "ru": "Довольно игр!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "games",
+     "игр"
+    ]
+   ]
+  },
+  {
+   "en": "You're going to die.",
+   "ru": "Ты сдохнешь.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "die",
+     "сдохнешь"
+    ]
+   ]
+  },
+  {
+   "en": "I have to make this count.",
+   "ru": "Надо кончать.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "count",
+     "кончать"
+    ]
+   ]
+  },
+  {
+   "en": "I'm ending this!",
+   "ru": "Я всё кончаю!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "ending",
+     "кончаю"
+    ]
+   ]
+  },
+  {
+   "en": "You all are about to bear witness to greatness.",
+   "ru": "Все сейчас увидят моё величие.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "witness",
+     "увидят"
+    ]
+   ]
+  },
+  {
+   "en": "I'm a proud son of Ixia!",
+   "ru": "Я — гордый сын Иксии!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Fencer%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "son",
+     "сын"
+    ]
+   ]
+  }
+ ],
+ "bebop": [
+  {
+   "en": "Hyper Beam online.",
+   "ru": "Гипер-луч активирован.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "online",
+     "активирован"
+    ]
+   ]
+  },
+  {
+   "en": "Using Hyper Beam.",
+   "ru": "Использую гипер-луч.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Using",
+     "Использую"
+    ]
+   ]
+  },
+  {
+   "en": "Time to cut loose!",
+   "ru": "Пора разгуляться!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "cut loose",
+     "разгуляться"
+    ]
+   ]
+  },
+  {
+   "en": "Overclocking laser!",
+   "ru": "Перегрузка лазера!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Overclocking",
+     "Перегрузка"
+    ]
+   ]
+  },
+  {
+   "en": "Laser's running hot!",
+   "ru": "Лазер разогрелся!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "running",
+     "разогрелся"
+    ]
+   ]
+  },
+  {
+   "en": "I'll cut through all of ya!",
+   "ru": "Я вас всех порежу!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "cut",
+     "порежу"
+    ]
+   ]
+  },
+  {
+   "en": "Laser's hot!",
+   "ru": "Лазер горячий!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "hot",
+     "горячий"
+    ]
+   ]
+  },
+  {
+   "en": "Blastin' 'em!",
+   "ru": "Взрываю их!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Blastin'",
+     "Взрываю"
+    ]
+   ]
+  },
+  {
+   "en": "Urgh, here we go!",
+   "ru": "Ох, пошло поехало!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "here we go",
+     "поехало"
+    ]
+   ]
+  },
+  {
+   "en": "Don't worry Ms. Shelly, I won't let you down.",
+   "ru": "Не волнуйся мисс Шелли, подведу я тебя?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "let you down",
+     "подвести"
+    ]
+   ]
+  },
+  {
+   "en": "I, for one, am looking forward to proving I'm better than Lash!",
+   "ru": "Я лично жду момента, чтобы доказать, что я лучше Лэша!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/bebop%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "for one",
+     "лично"
+    ]
+   ]
+  }
+ ],
+ "billy": [
+  {
+   "en": "Chained ‘em!",
+   "ru": "Приковал!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Chained",
+     "Приковал"
+    ]
+   ]
+  },
+  {
+   "en": "Let’s dance!",
+   "ru": "Пора танцевать!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Let’s dance",
+     "Пора танцевать"
+    ]
+   ]
+  },
+  {
+   "en": "The party’s here, pal.",
+   "ru": "Вечеринка началась, приятель.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "The party’s",
+     "Вечеринка"
+    ]
+   ]
+  },
+  {
+   "en": "I’ll grab ‘em!",
+   "ru": "Я схвачу их!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "grab ‘em",
+     "схвачу их"
+    ]
+   ]
+  },
+  {
+   "en": "Time to get up close and personal.",
+   "ru": "Время подойти поближе.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "up close",
+     "поближе"
+    ]
+   ]
+  },
+  {
+   "en": "Don’t go runnin’ off on me!",
+   "ru": "Не смей убегать!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "runnin’ off",
+     "убегать"
+    ]
+   ]
+  },
+  {
+   "en": "You wanna go?",
+   "ru": "Ты хочешь?",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "You wanna",
+     "Ты хочешь"
+    ]
+   ]
+  },
+  {
+   "en": "Where you think you're goin'?",
+   "ru": "Куда думаешь?",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Where you think",
+     "Куда думаешь"
+    ]
+   ]
+  },
+  {
+   "en": "I ain't finished with you!",
+   "ru": "Я с тобой не закончил!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "ain't finished",
+     "не закончил"
+    ]
+   ]
+  },
+  {
+   "en": "Those chumps think they can beat us?",
+   "ru": "Эти клоуны думают, что нас побьют?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "chumps",
+     "клоуны"
+    ]
+   ]
+  },
+  {
+   "en": "They gonna wish they never stepped foot in New York.",
+   "ru": "Они пожалеют, что вообще пришли в Нью-Йорк.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "stepped foot",
+     "вошли"
+    ]
+   ]
+  }
+ ],
+ "calico": [
+  {
+   "en": "Adieu. (Goodbye.)",
+   "ru": "Адиос. (Прощай.)",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Adieu",
+     "Адиос"
+    ]
+   ]
+  },
+  {
+   "en": "The shadows call, and I answer.",
+   "ru": "Тени зовут — я отвечаю.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "shadows call",
+     "зовут, призывают"
+    ]
+   ]
+  },
+  {
+   "en": "I go where I wish.",
+   "ru": "Иду, куда хочу.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "go where",
+     "иду, куда"
+    ]
+   ]
+  },
+  {
+   "en": "And for my next trick...",
+   "ru": "А теперь — следующий фокус...",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "next trick",
+     "следующий фокус"
+    ]
+   ]
+  },
+  {
+   "en": "Surprise!",
+   "ru": "Сюрприз!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Surprise!",
+     "сюрприз"
+    ]
+   ]
+  },
+  {
+   "en": "Initiating.",
+   "ru": "Запускаю.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "Initiating",
+     "запускаю, начинаю"
+    ]
+   ]
+  },
+  {
+   "en": "This isn't over yet.",
+   "ru": "Ещё не всё кончено.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "over yet",
+     "ещё не кончено"
+    ]
+   ]
+  },
+  {
+   "en": "I need to get out of here.",
+   "ru": "Мне отсюда надо.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "get out",
+     "выбраться, отсюда надо"
+    ]
+   ]
+  },
+  {
+   "en": "Please work.",
+   "ru": "Заработай, блядь.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Please work",
+     "заработай, пожалуйста (с отчаянием)"
+    ]
+   ]
+  },
+  {
+   "en": "Ava, take a look at all the lovely people we're about to murder!",
+   "ru": "Ава, глянь, сколько тут народу, которого мы сейчас поубиваем!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "murder",
+     "убивать, резать"
+    ]
+   ]
+  },
+  {
+   "en": "So, are all of you contract killers or am I just going to be a lion amongst the lambs?",
+   "ru": "Так, вы все тут наёмники, или я просто лев среди овец?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/nano%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "lion amongst",
+     "лев среди"
+    ]
+   ]
+  }
+ ],
+ "celeste": [
+  {
+   "en": "Keep your eye on the ball, boys and girls.",
+   "ru": "Смотрите на шарик, детки.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20use%20power3%2001.mp3",
+   "kw": [
+    [
+     "Keep your eye",
+     "следите, смотрите"
+    ]
+   ]
+  },
+  {
+   "en": "Catch!",
+   "ru": "Лови!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20use%20power3%2002.mp3",
+   "kw": [
+    [
+     "Catch!",
+     "лови!"
+    ]
+   ]
+  },
+  {
+   "en": "This should be good.",
+   "ru": "Должно знатно.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20use%20power3%2003.mp3",
+   "kw": [
+    [
+     "be good",
+     "быть хорошим, знатным"
+    ]
+   ]
+  },
+  {
+   "en": "Hope this goes as well as rehearsal...",
+   "ru": "Надеюсь, пройдёт так же, как репетиция...",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20use%20power3%2004.mp3",
+   "kw": [
+    [
+     "as rehearsal",
+     "как репетиция"
+    ]
+   ]
+  },
+  {
+   "en": "It's all in the wrist.",
+   "ru": "Всё в запястье.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20use%20power3%2005.mp3",
+   "kw": [
+    [
+     "in the wrist",
+     "в запястье"
+    ]
+   ]
+  },
+  {
+   "en": "Into the fray!",
+   "ru": "В бой!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20use%20power3%2006.mp3",
+   "kw": [
+    [
+     "fray",
+     "битва, схватка"
+    ]
+   ]
+  },
+  {
+   "en": "Catch!",
+   "ru": "Лови!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20desperation%20power3%2001.mp3",
+   "kw": [
+    [
+     "Catch",
+     "лови, поймай"
+    ]
+   ]
+  },
+  {
+   "en": "This better do some work.",
+   "ru": "Чтоб работало.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20desperation%20power3%2002.mp3",
+   "kw": [
+    [
+     "do some work",
+     "сделать дело, сработать"
+    ]
+   ]
+  },
+  {
+   "en": "Come on, come on!..",
+   "ru": "Ну же, ну же!..",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20desperation%20power3%2003.mp3",
+   "kw": [
+    [
+     "come on",
+     "давай, быстрее"
+    ]
+   ]
+  },
+  {
+   "en": "Feel like my act is about to get a lot more dangerous.",
+   "ru": "Кажется, мой номер станет опасным.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "act",
+     "номер, представление"
+    ]
+   ]
+  },
+  {
+   "en": "So, you guys go to Coney a lot?",
+   "ru": "Так, вы часто бываете на Коней?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "go to Coney",
+     "ездить на Коней (остров)"
+    ]
+   ]
+  }
+ ],
+ "deadman-danny": [
+  {
+   "en": "You are about to watch something amazing!",
+   "ru": "Сейчас вы увидите нечто удивительное!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "amazing",
+     "удивительное, невероятное"
+    ]
+   ]
+  },
+  {
+   "en": "Now to see if Maggie did her job...",
+   "ru": "Теперь посмотрим, как Мэгги поработала...",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "did her job",
+     "сделала свою работу"
+    ]
+   ]
+  },
+  {
+   "en": "What's life without risk!",
+   "ru": "Жизнь без риска — не жизнь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "risk",
+     "риск"
+    ]
+   ]
+  },
+  {
+   "en": "This is about to get exciting.",
+   "ru": "Сейчас станет интересно.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "get exciting",
+     "становиться интересно"
+    ]
+   ]
+  },
+  {
+   "en": "The heavens await!",
+   "ru": "Небеса ждут!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "heavens",
+     "небеса"
+    ]
+   ]
+  },
+  {
+   "en": "Be earthbound no more with the Chimera Mark 1!",
+   "ru": "Больше не привязан к земле с Химерой 1!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "earthbound",
+     "прикованный к земле"
+    ]
+   ]
+  },
+  {
+   "en": "If I die, let it be flying the Chimera Mark 1!",
+   "ru": "Если я умру, пусть это будет на Химере 1!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "flying",
+     "полёт"
+    ]
+   ]
+  },
+  {
+   "en": "Don’t let your last breath be on the ground! Get the Chimera Mark 1 today!",
+   "ru": "Не давай последнему вздоху быть на земле! Химера 1 уже сегодня!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "last breath",
+     "последний вздох"
+    ]
+   ]
+  },
+  {
+   "en": "I have life insurance, but I won't need it!",
+   "ru": "У меня есть страховка, но она мне не понадобится!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "life insurance",
+     "страховка жизни"
+    ]
+   ]
+  },
+  {
+   "en": "Hey, before this thing gets started, anyone need a business card?!",
+   "ru": "Эй, перед тем как началось, кому визитки нужны?!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "business card",
+     "визитка"
+    ]
+   ]
+  },
+  {
+   "en": "If anyone needs some reading material, I have got enough Fairfax catalogs to go around.",
+   "ru": "Кому почитать есть, у меня Фэйрфаксовских каталогов хватит на всех.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/deadpack%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "reading material",
+     "чтиво / что почитать"
+    ]
+   ]
+  }
+ ],
+ "doorman": [
+  {
+   "en": "Checking in.",
+   "ru": "Проверяю.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Checking in",
+     "проверяю"
+    ]
+   ]
+  },
+  {
+   "en": "Welcome to The Baroness.",
+   "ru": "Добро пожаловать в «Баронессу».",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Welcome to",
+     "добро пожаловать в"
+    ]
+   ]
+  },
+  {
+   "en": "Enjoy your stay.",
+   "ru": "Надеюсь, вам понравится.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Enjoy your stay",
+     "надеюсь, понравится"
+    ]
+   ]
+  },
+  {
+   "en": "Enjoy your stay.",
+   "ru": "Надеюсь, вам понравится.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/doorman_use_power4_03_alt_01.mp3",
+   "kw": [
+    [
+     "Enjoy your stay",
+     "надеюсь, понравится"
+    ]
+   ]
+  },
+  {
+   "en": "I’ll take you to your room.",
+   "ru": "Я отведу вас в номер.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "I’ll take you",
+     "я отведу вас"
+    ]
+   ]
+  },
+  {
+   "en": "Your elevator awaits.",
+   "ru": "Ваш лифт ждёт.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Your elevator awaits",
+     "ваш лифт ждёт"
+    ]
+   ]
+  },
+  {
+   "en": "You almost had me!",
+   "ru": "Тебе почти удалось!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "almost had me",
+     "почти удалось"
+    ]
+   ]
+  },
+  {
+   "en": "Welcome to the Baroness.",
+   "ru": "Добро пожаловать в «Баронессу».",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Welcome to",
+     "добро пожаловать в"
+    ]
+   ]
+  },
+  {
+   "en": "You know, you don't have to complete the ritual. You could come to the Baroness for a spa day!",
+   "ru": "Знаешь, ритуал можно не доводить до конца. Можешь просто в «Баронессу» на спа-день!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "complete the ritual",
+     "довести до конца"
+    ]
+   ]
+  },
+  {
+   "en": "The sooner we complete the ritual, the sooner I can return to my duties at the Baroness.",
+   "ru": "Чем скорее мы завершим ритуал, тем скорее я вернусь к своим обязанностям в «Баронессе».",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "complete the ritual",
+     "завершить ритуал"
+    ]
+   ]
+  }
+ ],
+ "drifter": [
+  {
+   "en": "On the prowl.",
+   "ru": "Охота.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Drifter%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "On the prowl",
+     "охота / на охоте"
+    ]
+   ]
+  },
+  {
+   "en": "Stalkin' them!",
+   "ru": "Их выслеживаю!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Drifter%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Stalkin'",
+     "выслеживать"
+    ]
+   ]
+  },
+  {
+   "en": "No time to play with my food.",
+   "ru": "На еду время тратить некогда.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Drifter%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "play with my food",
+     "играть с едой"
+    ]
+   ]
+  },
+  {
+   "en": "Death walks amongst them!",
+   "ru": "Смерть среди них бродит!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Drifter%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "Death walks",
+     "Смерть ходит / бродит"
+    ]
+   ]
+  },
+  {
+   "en": "Their suffering's about to begin.",
+   "ru": "Им страдания только начинаются.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Drifter%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "suffering's",
+     "страдания"
+    ]
+   ]
+  },
+  {
+   "en": "They'll never survive, heheheh...",
+   "ru": "Выживут не все, хихихи...",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Drifter%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "survive",
+     "выжить"
+    ]
+   ]
+  },
+  {
+   "en": "Every single one of them are gonna die.",
+   "ru": "Все они сдохнут.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Drifter%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "gonna die",
+     "сдохнут / помрут"
+    ]
+   ]
+  }
+ ],
+ "dynamo": [
+  {
+   "en": "Opening Black Hole!",
+   "ru": "Открываю чёрную дыру!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_use_power4_01.mp3",
+   "kw": [
+    [
+     "Black Hole",
+     "чёрная дыра"
+    ]
+   ]
+  },
+  {
+   "en": "I'll hold 'em as long as I can!",
+   "ru": "Держу их, сколько смогу!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_use_power4_02.mp3",
+   "kw": [
+    [
+     "hold 'em",
+     "держу их"
+    ]
+   ]
+  },
+  {
+   "en": "I could use some help!",
+   "ru": "Нужна помощь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_use_power4_03.mp3",
+   "kw": [
+    [
+     "use some help",
+     "нужна помощь"
+    ]
+   ]
+  },
+  {
+   "en": "Help, please!",
+   "ru": "На помощь, прошу!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_use_power4_04.mp3",
+   "kw": [
+    [
+     "Help, please",
+     "На помощь, прошу"
+    ]
+   ]
+  },
+  {
+   "en": "I'm doin' it!",
+   "ru": "Делаю!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_use_power4_06.mp3",
+   "kw": [
+    [
+     "doin' it",
+     "делаю"
+    ]
+   ]
+  },
+  {
+   "en": "Nooow!",
+   "ru": "Нуууууух!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_use_power4_07.mp3",
+   "kw": [
+    [
+     "Nooow",
+     "Нуууууух! (крик во время ульты)"
+    ]
+   ]
+  },
+  {
+   "en": "Now's the time!",
+   "ru": "Время пришло!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_desperation_power4_01.mp3",
+   "kw": [
+    [
+     "Now's",
+     "Настоящий момент (для действия)"
+    ]
+   ]
+  },
+  {
+   "en": "They're helpless!",
+   "ru": "Они беспомощны!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_desperation_power4_02.mp3",
+   "kw": [
+    [
+     "helpless",
+     "Беспомощные, беззащитные"
+    ]
+   ]
+  },
+  {
+   "en": "We have to make this count!",
+   "ru": "Это должен быть решающий удар!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/dynamo_desperation_power4_03.mp3",
+   "kw": [
+    [
+     "make this count",
+     "Действовать решительно, иметь значение"
+    ]
+   ]
+  },
+  {
+   "en": "I think today is gonna be a great opportunity for personal growth.",
+   "ru": "Сегодня отличный шанс для личностного роста.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Dynamo%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "personal growth",
+     "Личностный рост (ирония)"
+    ]
+   ]
+  },
+  {
+   "en": "Who wants to summon an elder god?",
+   "ru": "Кто хочет призвать древнего бога?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Dynamo%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "summon",
+     "Призывать (в значении вызвать существо)"
+    ]
+   ]
+  }
+ ],
+ "graves": [
+  {
+   "en": "The dead demand justice.",
+   "ru": "Мертвые требуют возмездия.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20use%20power4%2001%20alt%2001.mp3",
+   "kw": [
+    [
+     "demand justice",
+     "Требовать возмездия/справедливости"
+    ]
+   ]
+  },
+  {
+   "en": "The dead lend their aid.",
+   "ru": "Мертвые идут мне на помощь.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "lend their aid",
+     "Предоставлять помощь, оказывать поддержку"
+    ]
+   ]
+  },
+  {
+   "en": "The dead's wrath will be felt.",
+   "ru": "Гнев мертвых они почувствуют на себе.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "wrath",
+     "Гнев, ярость (божественная)"
+    ]
+   ]
+  },
+  {
+   "en": "I will strike them down!",
+   "ru": "Я сокрушу их!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "strike them down",
+     "разить, повалить"
+    ]
+   ]
+  },
+  {
+   "en": "Channeling the dead!",
+   "ru": "Призываю мертвых!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Channeling",
+     "Направлять, призывать (сила)"
+    ]
+   ]
+  },
+  {
+   "en": "You can't escape fate.",
+   "ru": "Тебе не уйти от судьбы.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "escape fate",
+     "Убежать от судьбы/рокового предназначения"
+    ]
+   ]
+  },
+  {
+   "en": "I'm coming for you!",
+   "ru": "Я иду за тобой!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "coming for",
+     "Иду за кем-то (с намерением убить)"
+    ]
+   ]
+  },
+  {
+   "en": "It's your time to die!",
+   "ru": "Твой час настал!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "time to die",
+     "Время умирать, пора умереть"
+    ]
+   ]
+  },
+  {
+   "en": "You can't run from me!",
+   "ru": "От меня не убежишь!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "run from",
+     "Бежать от кого-то (бессмысленно)"
+    ]
+   ]
+  },
+  {
+   "en": "Look who we're facing! This shouldn't be too hard.",
+   "ru": "Ну погоди, кто это... Слишком просто.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "shouldn't be",
+     "не должно быть"
+    ]
+   ]
+  },
+  {
+   "en": "On the plus side, if you die, we can still keep in touch.",
+   "ru": "С другой стороны, если ты сдохнешь, мы всё ещё сможем общаться.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Necro%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "On the plus",
+     "С плюса"
+    ]
+   ]
+  }
+ ],
+ "grey-talon": [
+  {
+   "en": "Run while you still can.",
+   "ru": "Беги, пока ещё можешь.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "while you",
+     "пока ты"
+    ]
+   ]
+  },
+  {
+   "en": "I do not miss.",
+   "ru": "Я не промахиваюсь.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "do not miss",
+     "не промахиваюсь"
+    ]
+   ]
+  },
+  {
+   "en": "There's no hiding from me!",
+   "ru": "От меня не спрячешься!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "no hiding",
+     "нет прятанья"
+    ]
+   ]
+  },
+  {
+   "en": "I'll find them.",
+   "ru": "Я их найду.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "I'll find",
+     "Я найду"
+    ]
+   ]
+  },
+  {
+   "en": "Let them run. It will not save them.",
+   "ru": "Пусть бегут. Это их не спасёт.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "will not save",
+     "не спасёт"
+    ]
+   ]
+  },
+  {
+   "en": "This hunt... Is over.",
+   "ru": "Эта охота... окончена.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "Is over",
+     "кончена"
+    ]
+   ]
+  },
+  {
+   "en": "I can still help!",
+   "ru": "Я ещё могу помочь!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "can still",
+     "можу ещё"
+    ]
+   ]
+  },
+  {
+   "en": "I'll find them.",
+   "ru": "Я их найду.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "I'll find",
+     "Я найду"
+    ]
+   ]
+  },
+  {
+   "en": "No time to rest.",
+   "ru": "Некогда отдыхать.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "No time",
+     "Нет времени"
+    ]
+   ]
+  },
+  {
+   "en": "The hunt is about to begin.",
+   "ru": "Охота вот-вот начнётся.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "about to",
+     "вот-вот"
+    ]
+   ]
+  },
+  {
+   "en": "I hope you all have the will to do what needs to be done.",
+   "ru": "Надеюсь, у вас есть воля, чтобы сделать то, что нужно.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/orion%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "needs to be",
+     "нужно быть"
+    ]
+   ]
+  }
+ ],
+ "haze": [
+  {
+   "en": "Behold!",
+   "ru": "Взгляните!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Behold",
+     "Взгляните"
+    ]
+   ]
+  },
+  {
+   "en": "Death comes for you.",
+   "ru": "Смерть идёт за тобой.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "comes for",
+     "идёт за"
+    ]
+   ]
+  },
+  {
+   "en": "Die!",
+   "ru": "Сдохни!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Die",
+     "Сдохни"
+    ]
+   ]
+  },
+  {
+   "en": "It's my time!",
+   "ru": "Мой час!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "time",
+     "Мой час"
+    ]
+   ]
+  },
+  {
+   "en": "This is the end!",
+   "ru": "Конец тебе!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "end",
+     "Конец"
+    ]
+   ]
+  },
+  {
+   "en": "No survivors!",
+   "ru": "Ни один не уцелеет!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "survivors",
+     "Ни один не уцелеет"
+    ]
+   ]
+  },
+  {
+   "en": "No mercy!",
+   "ru": "Пощады не будет!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "No mercy",
+     "Пощады не будет"
+    ]
+   ]
+  },
+  {
+   "en": "You'll all pay.",
+   "ru": "Все заплатите.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "pay",
+     "Заплатите"
+    ]
+   ]
+  },
+  {
+   "en": "This is where you die!",
+   "ru": "Тут ты сдохнешь!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "die",
+     "Сдохнешь"
+    ]
+   ]
+  },
+  {
+   "en": "Leave this to the OSIC.",
+   "ru": "Это дело для ОСИК.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "OSIC",
+     "ОСИК (название организации)"
+    ]
+   ]
+  },
+  {
+   "en": "The sooner we finish the ritual, the sooner I get the paperwork filled out.",
+   "ru": "Чем быстрее мы ритуал закончим, тем быстрее бумаги оформлю.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/haze%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "paperwork",
+     "Бумаги (дело)"
+    ]
+   ]
+  }
+ ],
+ "holliday": [
+  {
+   "en": "I got 'em.",
+   "ru": "Я их заполучил.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Got 'em",
+     "Заполучил"
+    ]
+   ]
+  },
+  {
+   "en": "Will someone shoot 'em already?!",
+   "ru": "Кто-нибудь уже пристрелит их?!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "shoot",
+     "Пристрелит"
+    ]
+   ]
+  },
+  {
+   "en": "Wrangling 'em!",
+   "ru": "Погоня!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Wrangling",
+     "Погоня"
+    ]
+   ]
+  },
+  {
+   "en": "I'll draggin' 'em!",
+   "ru": "Я тащу их!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "draggin'",
+     "Тащу"
+    ]
+   ]
+  },
+  {
+   "en": "Got 'em roped up!",
+   "ru": "Я их приковал!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "roped up",
+     "Приковал"
+    ]
+   ]
+  },
+  {
+   "en": "They're tied up!",
+   "ru": "Они связаны!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "tied up",
+     "Связаны"
+    ]
+   ]
+  },
+  {
+   "en": "I got 'em!",
+   "ru": "Я их заполучил!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "got 'em",
+     "заполучил/схватил их"
+    ]
+   ]
+  },
+  {
+   "en": "They're held!",
+   "ru": "Взяты!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "held",
+     "захвачены/удерживаются"
+    ]
+   ]
+  },
+  {
+   "en": "Gimme a hand!",
+   "ru": "Дайте мне руку!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Gimme",
+     "дай мне (разг.)"
+    ]
+   ]
+  },
+  {
+   "en": "Simple plan. I grab 'em, you shoot 'em.",
+   "ru": "Простая схема. Я их хватаю, ты их стреляешь.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "Simple plan",
+     "простой план/схема"
+    ]
+   ]
+  },
+  {
+   "en": "Let's just summon the damn patron and get outta here!",
+   "ru": "Просто призовь чертова патрона и убирайся отсюда!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/astro%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "get outta",
+     "убирайся (разг.)"
+    ]
+   ]
+  }
+ ],
+ "infernus": [
+  {
+   "en": "I'm goin' in!",
+   "ru": "Я врываюсь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "goin' in",
+     "врываюсь (разг.)"
+    ]
+   ]
+  },
+  {
+   "en": "Initiating!",
+   "ru": "Начинаю!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Initiating",
+     "начинаю/инициирую"
+    ]
+   ]
+  },
+  {
+   "en": "Take 'em down!",
+   "ru": "Уничтожить их!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Take 'em down",
+     "уничтожить/вырубить их"
+    ]
+   ]
+  },
+  {
+   "en": "Burn it down!",
+   "ru": "Сжечь всё дотла!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Burn it down",
+     "сжечь всё дотла"
+    ]
+   ]
+  },
+  {
+   "en": "Turn them to ashes!",
+   "ru": "Обратить их в пепел!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "to ashes",
+     "в пепел (turn to ashes)"
+    ]
+   ]
+  },
+  {
+   "en": "It's my time!",
+   "ru": "Мой час настал!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "My time",
+     "мой час/мой черёд"
+    ]
+   ]
+  },
+  {
+   "en": "This better work...",
+   "ru": "Эта дрянь должна сработать...",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "This better",
+     "это лучше/должно"
+    ]
+   ]
+  },
+  {
+   "en": "I'll stun 'em!",
+   "ru": "Я их оглушу!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "stun 'em",
+     "оглушу их"
+    ]
+   ]
+  },
+  {
+   "en": "Gonna make an opening!",
+   "ru": "Сделаю проход!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Gonna make",
+     "сделаю (разг.)"
+    ]
+   ]
+  },
+  {
+   "en": "We win, I'm throwing a party at the bar.",
+   "ru": "Если мы победим, я устрою вечеринку в баре.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "throwing a party",
+     "устраиваю вечеринку"
+    ]
+   ]
+  },
+  {
+   "en": "Looks like I'm gonna get to put that misspent youth to good work.",
+   "ru": "Похоже, мне наконец-то пригодится это проклятое прошлое.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/inferno%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "misspent youth",
+     "проклятое прошлое (букв. 'потраченное не по назначению' молодость)"
+    ]
+   ]
+  }
+ ],
+ "ivy": [
+  {
+   "en": "Taking flight!",
+   "ru": "Взлетаю!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Taking flight",
+     "взлетаю"
+    ]
+   ]
+  },
+  {
+   "en": "I'm on my way!",
+   "ru": "Я иду!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "on my way",
+     "в пути/иду"
+    ]
+   ]
+  },
+  {
+   "en": "Woooo!",
+   "ru": "Ухууу!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Woooo",
+     "ухууу (междометие восторга)"
+    ]
+   ]
+  },
+  {
+   "en": "Woooo!",
+   "ru": "Ухууу!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20use%20power4%2003%20alt%2001.mp3",
+   "kw": [
+    [
+     "Woooo",
+     "ухууу (междометие восторга)"
+    ]
+   ]
+  },
+  {
+   "en": "To the skies!",
+   "ru": "В небеса!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "To the skies",
+     "в небеса"
+    ]
+   ]
+  },
+  {
+   "en": "Time to soar!",
+   "ru": "Время взмыть!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Time to soar",
+     "время взмыть/парить"
+    ]
+   ]
+  },
+  {
+   "en": "Can't stay here!",
+   "ru": "Здесь нельзя оставаться!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "Can't stay",
+     "нельзя оставаться"
+    ]
+   ]
+  },
+  {
+   "en": "Gotta move quick!",
+   "ru": "Нужно двигаться быстро!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "move quick",
+     "двигаться быстро"
+    ]
+   ]
+  },
+  {
+   "en": "¡No voy a morir aquí! (I'm not going to die here!)",
+   "ru": "Я не сдохну здесь!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "die here",
+     "здесь сдохнуть/умереть"
+    ]
+   ]
+  },
+  {
+   "en": "So, how are we feeling about this?",
+   "ru": "Ну как, нам тут как?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "how are we",
+     "как мы (как дела)"
+    ]
+   ]
+  },
+  {
+   "en": "Stick close to me, I'll do my best to protect you.",
+   "ru": "Держись поближе, я постараюсь тебя защитить.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/tengu%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "Stick close",
+     "держись поближе"
+    ]
+   ]
+  }
+ ],
+ "kali": [],
+ "kelvin": [
+  {
+   "en": "You are in my dominion!",
+   "ru": "Ты в моей вотчине!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "my dominion",
+     "моя вотчина/владения"
+    ]
+   ]
+  },
+  {
+   "en": "Face me!",
+   "ru": "Лицевая!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Face me",
+     "лицевая (букв. 'покажи мне лицо')"
+    ]
+   ]
+  },
+  {
+   "en": "You have nowhere to run!",
+   "ru": "Бежать некуда!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "nowhere to run",
+     "бежать некуда"
+    ]
+   ]
+  },
+  {
+   "en": "Welcome to my ice dome!",
+   "ru": "Добро пожаловать в мой ледяной купол!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "ice dome",
+     "ледяной купол"
+    ]
+   ]
+  },
+  {
+   "en": "Let's see how you fare now!",
+   "ru": "Посмотрим, как ты теперь справишься!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "fare",
+     "справляться"
+    ]
+   ]
+  },
+  {
+   "en": "There's no escape!",
+   "ru": "Бежать некуда!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "no escape",
+     "бежать некуда"
+    ]
+   ]
+  },
+  {
+   "en": "I won't meet my final debt!",
+   "ru": "Я не встречу свой долг!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "final debt",
+     "долг"
+    ]
+   ]
+  },
+  {
+   "en": "Dome's up!",
+   "ru": "Купол поднят!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Dome's up",
+     "Купол поднят"
+    ]
+   ]
+  },
+  {
+   "en": "Surprise.",
+   "ru": "Сюрприз.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/kelvin%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Surprise",
+     "Сюрприз"
+    ]
+   ]
+  },
+  {
+   "en": "So, friends, who among you is ready to summon an Elder God?",
+   "ru": "Ну что, друзья, кто из вас готов призвать Древнего Бога?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Kelvin%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "summon",
+     "призывать"
+    ]
+   ]
+  },
+  {
+   "en": "This will be an expedition to remember!",
+   "ru": "Это экспедиция, которую ты не забудешь!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Kelvin%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "expedition",
+     "экспедиция"
+    ]
+   ]
+  }
+ ],
+ "lady-geist": [
+  {
+   "en": "A reversal of fortune.",
+   "ru": "Переворот фортуны.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "reversal",
+     "переворот"
+    ]
+   ]
+  },
+  {
+   "en": "You think you're winning?",
+   "ru": "Думаешь, ты побеждаешь?",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "winning",
+     "побеждать"
+    ]
+   ]
+  },
+  {
+   "en": "Right where I want you.",
+   "ru": "Там, где я тебя и хочу.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "want you",
+     "хотеть тебя"
+    ]
+   ]
+  },
+  {
+   "en": "What's yours is mine.",
+   "ru": "Твое — теперь мое.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "yours is mine",
+     "твое — мое"
+    ]
+   ]
+  },
+  {
+   "en": "This isn't over yet!",
+   "ru": "Это еще не конец!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "over yet",
+     "еще не конец"
+    ]
+   ]
+  },
+  {
+   "en": "Oathkeeper will get his payment!",
+   "ru": "Клятвоблюх получит свою пощёчину!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "payment",
+     "расплата, возмездие (не оплата!)"
+    ]
+   ]
+  },
+  {
+   "en": "I want your soul!",
+   "ru": "Твоя душа мне нужна!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "soul",
+     "душа (в значении: жизненная сила, суть)"
+    ]
+   ]
+  },
+  {
+   "en": "Let's see what I have to work with today.",
+   "ru": "Посмотрим, что у меня сегодня есть в запасе.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "work with",
+     "работать с, использовать"
+    ]
+   ]
+  },
+  {
+   "en": "You all make suitable pawns.",
+   "ru": "Вы все подходящие пешки.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/ghost%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "suitable",
+     "подходящий, годный"
+    ]
+   ]
+  }
+ ],
+ "lash": [
+  {
+   "en": "Die!",
+   "ru": "Сдохни!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Die",
+     "Сдохнуть, сдохнуть"
+    ]
+   ]
+  },
+  {
+   "en": "Here's the grand finale.",
+   "ru": "Вот и всё, финал.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "grand finale",
+     "грандиозный финал"
+    ]
+   ]
+  },
+  {
+   "en": "Taking you out.",
+   "ru": "Тебя убираю.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Taking you out",
+     "укладываю тебя (take out)"
+    ]
+   ]
+  },
+  {
+   "en": "You can give up whenever you want.",
+   "ru": "Можешь сдаться в любой момент.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "give up",
+     "сдаться"
+    ]
+   ]
+  },
+  {
+   "en": "Alright, I'm done playin' with you.",
+   "ru": "Ладно, я над вами уже поигрался.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "playin' with",
+     "играть с (в значении: издеваться, мутить)"
+    ]
+   ]
+  },
+  {
+   "en": "You're outclassed.",
+   "ru": "Тебе не тягаться.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20use%20power4%2008.mp3",
+   "kw": [
+    [
+     "outclassed",
+     "не тягаться, быть слабее"
+    ]
+   ]
+  },
+  {
+   "en": "I got 'em!",
+   "ru": "Я их достал!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "got 'em",
+     "достал, подловил"
+    ]
+   ]
+  },
+  {
+   "en": "(Alt: I got 'em.)",
+   "ru": "Я их достал!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20desperation%20power4%2001%2002.mp3",
+   "kw": [
+    [
+     "got 'em",
+     "достал, подловил"
+    ]
+   ]
+  },
+  {
+   "en": "Grabbin' em!",
+   "ru": "Хватаю их!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Grabbin'",
+     "хватать (разг.)"
+    ]
+   ]
+  },
+  {
+   "en": "I hope you're all ready to watch the god of combat do his thing.",
+   "ru": "Надеюсь, вы готовы смотреть, как бог войны делает своё дело.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "do his thing",
+     "делать своё дело"
+    ]
+   ]
+  },
+  {
+   "en": "You don't need to summon the Patrons to have your wish granted: I'm already here.",
+   "ru": "Чтобы желание исполнилось, не нужно призывать Патронов: я уже здесь.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Lash%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "wish granted",
+     "желание исполнено"
+    ]
+   ]
+  }
+ ],
+ "mcginnis": [
+  {
+   "en": "Releasing spirits!",
+   "ru": "Высвобождаю духов!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Releasing",
+     "высвобождаю"
+    ]
+   ]
+  },
+  {
+   "en": "Spectral barrage!",
+   "ru": "Спектральный барабанный огонь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Spectral",
+     "спектральный"
+    ]
+   ]
+  },
+  {
+   "en": "Fire!",
+   "ru": "Огонь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Fire",
+     "огонь"
+    ]
+   ]
+  },
+  {
+   "en": "I'm going hot!",
+   "ru": "Я в деле!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "going hot",
+     "в деле / начинаю"
+    ]
+   ]
+  },
+  {
+   "en": "I'll give 'em hell!",
+   "ru": "Я им устрою ад!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "hell",
+     "ад"
+    ]
+   ]
+  },
+  {
+   "en": "Going hot!",
+   "ru": "В бой!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "Going",
+     "иду / начинаю"
+    ]
+   ]
+  },
+  {
+   "en": "Munitions are live!",
+   "ru": "Боеприпасы заряжены!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "Munitions",
+     "боеприпасы"
+    ]
+   ]
+  },
+  {
+   "en": "Starting bombardment!",
+   "ru": "Начинаю обстрел!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Starting",
+     "начинаю"
+    ]
+   ]
+  },
+  {
+   "en": "[Sigh] let's go, baby!",
+   "ru": "[Вздох] пошли, детка!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "let's go",
+     "пошли / вперёд"
+    ]
+   ]
+  },
+  {
+   "en": "Just wanna get ahead of this: I will probably misuse the wall at some point, and I'm sorry in advance.",
+   "ru": "Сразу предупрежу: я, скорее всего, где-то тупанул со стеной, извини заранее.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "misuse",
+     "использовать не по назначению"
+    ]
+   ]
+  },
+  {
+   "en": "Alright, boys and girls. Let's have fun!",
+   "ru": "Ну что, пацаны и девчонки. Пора оторваться!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/forge%20ping%20pre%20game%2003.mp3",
+   "kw": [
+    [
+     "fun",
+     "веселье / отрыв"
+    ]
+   ]
+  }
+ ],
+ "mina": [
+  {
+   "en": "Swarm them!",
+   "ru": "Накрыть их!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Swarm",
+     "накрыть"
+    ]
+   ]
+  },
+  {
+   "en": "Have fun, my darlings.",
+   "ru": "Наслаждайтесь, мои дорогие.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "darlings",
+     "дорогие"
+    ]
+   ]
+  },
+  {
+   "en": "My reach is boundless!",
+   "ru": "Мой простор безграничен!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "boundless",
+     "безграничен"
+    ]
+   ]
+  },
+  {
+   "en": "Run while you can!",
+   "ru": "Бегите, пока есть шанс!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Run",
+     "бегите"
+    ]
+   ]
+  },
+  {
+   "en": "New York will be mine!",
+   "ru": "Нью-Йорк будет моим!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "New York",
+     "Нью-Йорк (город)"
+    ],
+    [
+     "mine",
+     "моим"
+    ]
+   ]
+  },
+  {
+   "en": "I love hunting in the city!",
+   "ru": "Обожаю охоту в городе!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "love",
+     "обожаю"
+    ],
+    [
+     "hunting",
+     "охота"
+    ]
+   ]
+  },
+  {
+   "en": "You missed your chance to kill me!",
+   "ru": "Ты упустил шанс меня убить!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "chance",
+     "шанс"
+    ],
+    [
+     "kill",
+     "убить"
+    ]
+   ]
+  },
+  {
+   "en": "And now you die!",
+   "ru": "А теперь ты сдохнешь!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "now",
+     "теперь"
+    ],
+    [
+     "die",
+     "сдохнешь"
+    ]
+   ]
+  },
+  {
+   "en": "[Laughter]",
+   "ru": "[Хохот]",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Laughter",
+     "Хохот (звук)"
+    ]
+   ]
+  },
+  {
+   "en": "Some of you desperately need a fashion consultant.",
+   "ru": "Кому-то срочно нужен стилист.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "desperately",
+     "срочно"
+    ],
+    [
+     "fashion",
+     "стиль (одежды)"
+    ]
+   ]
+  },
+  {
+   "en": "Greatness awaits us.",
+   "ru": "Величие ждёт нас.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "Greatness",
+     "Величие"
+    ],
+    [
+     "awaits",
+     "ждёт"
+    ]
+   ]
+  }
+ ],
+ "mirage": [
+  {
+   "en": "Teleporting.",
+   "ru": "Телепортация.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20use%20power4%2001-imported.mp3",
+   "kw": [
+    [
+     "Teleporting",
+     "Телепортация (действие)"
+    ]
+   ]
+  },
+  {
+   "en": "Travelling.",
+   "ru": "Путешествие.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Travelling",
+     "Путешествие (действие)"
+    ]
+   ]
+  },
+  {
+   "en": "Take me where I'm needed.",
+   "ru": "Доведи меня до места.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Take",
+     "Доведи"
+    ],
+    [
+     "needed",
+     "места (куда нужно)"
+    ]
+   ]
+  },
+  {
+   "en": "Nashala, where do you need me to go?",
+   "ru": "Нашаала, куда мне нужно идти?",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "where",
+     "куда"
+    ],
+    [
+     "need",
+     "нужно"
+    ]
+   ]
+  },
+  {
+   "en": "I move at your whims, Nashala.",
+   "ru": "Делаюсь по твоему зову, Нашаала.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "whims",
+     "зов (прихоть)"
+    ],
+    [
+     "Nashala",
+     "Нашаала (имя)"
+    ]
+   ]
+  },
+  {
+   "en": "The Djinn take me where I'm needed.",
+   "ru": "Джинн доведёт меня до места.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "Djinn",
+     "Джинн"
+    ],
+    [
+     "needed",
+     "места (куда нужно)"
+    ]
+   ]
+  },
+  {
+   "en": "I need to get out of here.",
+   "ru": "Надо отсюда сваливать.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "get out",
+     "вываливаться отсюда"
+    ],
+    [
+     "here",
+     "отсюда"
+    ]
+   ]
+  },
+  {
+   "en": "It isn't safe here.",
+   "ru": "Здесь небезопасно.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "safe",
+     "безопасно"
+    ],
+    [
+     "here",
+     "здесь"
+    ]
+   ]
+  },
+  {
+   "en": "This isn't over, my friend.",
+   "ru": "Ещё не кончено, дружище.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "isn't over",
+     "ещё не кончено"
+    ]
+   ]
+  },
+  {
+   "en": "So this is New York, eh?",
+   "ru": "Так вот он, Нью-Йорк, да?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "New York",
+     "Нью-Йорк"
+    ]
+   ]
+  },
+  {
+   "en": "I hope after the ritual I have time to do some sightseeing.",
+   "ru": "Надеюсь, после ритуала у меня останется время на осмотр достопримечательностей.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/mirage%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "sightseeing",
+     "осмотр достопримечательностей"
+    ]
+   ]
+  }
+ ],
+ "mo-krill": [
+  {
+   "en": "Gotcha!",
+   "ru": "Попался!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Gotcha",
+     "Попался"
+    ]
+   ]
+  },
+  {
+   "en": "Get them, Maurice!",
+   "ru": "Вперед, Морис!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Get them",
+     "Вперед (в атаку)"
+    ]
+   ]
+  },
+  {
+   "en": "I can't hold them for long!",
+   "ru": "Долго я их сдержать не смогу!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "hold them",
+     "сдержать их"
+    ]
+   ]
+  },
+  {
+   "en": "We got 'em!",
+   "ru": "Мы их взяли!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "We got 'em",
+     "Мы их взяли"
+    ]
+   ]
+  },
+  {
+   "en": "Take care of them, Maurice!",
+   "ru": "Займись ими, Морис!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Take care of them",
+     "Займись ими"
+    ]
+   ]
+  },
+  {
+   "en": "Maurice, now!",
+   "ru": "Морис, сейчас!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "now",
+     "сейчас"
+    ]
+   ]
+  },
+  {
+   "en": "Get 'em, Mo!",
+   "ru": "Лови их, Мо!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "Get 'em",
+     "Лови их"
+    ]
+   ]
+  },
+  {
+   "en": "They're held!",
+   "ru": "Они прикованы!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "held",
+     "прикованы"
+    ]
+   ]
+  },
+  {
+   "en": "Gotcha!",
+   "ru": "Попался!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Gotcha",
+     "Попался"
+    ]
+   ]
+  },
+  {
+   "en": "Alright Mo, let's have some fun!",
+   "ru": "Ладно, Мо, поразвлекемся!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "let's have some fun",
+     "поразвлекемся"
+    ]
+   ]
+  },
+  {
+   "en": "I don't expect any of you are familiar with Mole-Man etiquette.",
+   "ru": "Думаю, ни из вас никто не знаком с этикетом Кротолюдей.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/krill%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "Mole-Man",
+     "Кротолюдей"
+    ]
+   ]
+  }
+ ],
+ "nurse-harrow": [
+  {
+   "en": "Run.",
+   "ru": "Беги.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20use%20power5%2001.mp3",
+   "kw": [
+    [
+     "Run",
+     "Беги"
+    ]
+   ]
+  },
+  {
+   "en": "Flee!",
+   "ru": "Бегите!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20use%20power5%2002.mp3",
+   "kw": [
+    [
+     "Flee",
+     "Бегите/Убирайся"
+    ]
+   ]
+  },
+  {
+   "en": "Cowards!",
+   "ru": "Трусы!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20use%20power5%2003.mp3",
+   "kw": [
+    [
+     "Cowards",
+     "Трусы/Твари"
+    ]
+   ]
+  },
+  {
+   "en": "I have something to show you!",
+   "ru": "Кое-что вам покажу!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20use%20power5%2004.mp3",
+   "kw": [
+    [
+     "something",
+     "Кое-что/Нечто"
+    ]
+   ]
+  },
+  {
+   "en": "Gaze upon me.",
+   "ru": "Смотрите на меня.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20use%20power5%2005.mp3",
+   "kw": [
+    [
+     "Gaze",
+     "Смотрите/Взгляните"
+    ]
+   ]
+  },
+  {
+   "en": "Tremble as they trembled.",
+   "ru": "Дрожите, как они дрожали.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20use%20power5%2006.mp3",
+   "kw": [
+    [
+     "Tremble",
+     "Дрожите/Трепещите"
+    ]
+   ]
+  },
+  {
+   "en": "Begone!",
+   "ru": "Прочь!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20desperation%20power5%2001.mp3",
+   "kw": [
+    [
+     "Begone",
+     "Прочь/Пропади"
+    ]
+   ]
+  },
+  {
+   "en": "Leave!",
+   "ru": "Вон!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20desperation%20power5%2002.mp3",
+   "kw": [
+    [
+     "Leave",
+     "Вон/Убирайся"
+    ]
+   ]
+  },
+  {
+   "en": "You have no power here.",
+   "ru": "Здесь у вас нет власти.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/nurse%20desperation%20power5%2003.mp3",
+   "kw": [
+    [
+     "power",
+     "Власти/Силы"
+    ]
+   ]
+  },
+  {
+   "en": "You are all under my care.",
+   "ru": "Я за вами присмотрю.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Nurse%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "care",
+     "Присмотр/Забота"
+    ]
+   ]
+  },
+  {
+   "en": "I do hope you all know how to follow instructions.",
+   "ru": "Надеюсь, вы умеете слушаться.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Nurse%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "instructions",
+     "Указания/Приказы"
+    ]
+   ]
+  }
+ ],
+ "paige": [
+  {
+   "en": "Meet my friends!",
+   "ru": "Знакомьтесь с моими друзьями!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Meet",
+     "Знакомьтесь/Встречайте"
+    ]
+   ]
+  },
+  {
+   "en": "For Camelot!",
+   "ru": "За Камелот!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Camelot",
+     "Камелот (мифическое королевство)"
+    ]
+   ]
+  },
+  {
+   "en": "This is the best part of the story!",
+   "ru": "Это лучшая часть истории!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "best",
+     "Лучшая/Самая крутая"
+    ]
+   ]
+  },
+  {
+   "en": "Ready for the finale?",
+   "ru": "Готовы к финалу?",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "finale",
+     "Финалу/Апогею"
+    ]
+   ]
+  },
+  {
+   "en": "Here comes the cavalry!",
+   "ru": "Вот и кавалерия!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "cavalry",
+     "Кавалерия/Подкрепление"
+    ]
+   ]
+  },
+  {
+   "en": "Charge!",
+   "ru": "В атаку!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "Charge",
+     "атака, налёт"
+    ]
+   ]
+  },
+  {
+   "en": "Lancelot? I need you!",
+   "ru": "Ланселот? Мне срочно!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "need",
+     "нужно, требуется"
+    ]
+   ]
+  },
+  {
+   "en": "Lancelot? I need you!",
+   "ru": "Ланселот? Мне срочно!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20desperation%20power4%2001%20alt%2001.mp3",
+   "kw": [
+    [
+     "need",
+     "нужно, требуется"
+    ]
+   ]
+  },
+  {
+   "en": "Please? Help me, Bors!",
+   "ru": "Ну? Помоги мне, Борс!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Please",
+     "пожалуйста, ну"
+    ]
+   ]
+  },
+  {
+   "en": "Oh my God, it's actually about to happen!",
+   "ru": "Блять, это реально случается!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "actually",
+     "действительно, реально"
+    ]
+   ]
+  },
+  {
+   "en": "This is how lots of great stories begin: with a motley crew that may or may not hate each other!",
+   "ru": "Так начинаются классные истории: с разной шайкой, которая друг друга может и ненавидеть!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "motley crew",
+     "разная шайка, сброд"
+    ]
+   ]
+  }
+ ],
+ "paradox": [
+  {
+   "en": "Swapping!",
+   "ru": "Меняюсь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Swapping",
+     "обмен, смена"
+    ]
+   ]
+  },
+  {
+   "en": "Where are you going?",
+   "ru": "Куда прёшь?",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Where are you",
+     "ты куда"
+    ]
+   ]
+  },
+  {
+   "en": "I got this!",
+   "ru": "Я справлюсь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "got this",
+     "справлюсь, под контролем"
+    ]
+   ]
+  },
+  {
+   "en": "Leave this to me.",
+   "ru": "Оставь это мне.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Leave this",
+     "оставь это"
+    ]
+   ]
+  },
+  {
+   "en": "I'll catch them!",
+   "ru": "Я их словлю!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "catch them",
+     "поймать, словить"
+    ]
+   ]
+  },
+  {
+   "en": "Get ready for them!",
+   "ru": "Готовься к ним!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "Get ready",
+     "готовься, приготовься"
+    ]
+   ]
+  },
+  {
+   "en": "I'm not dead yet!",
+   "ru": "Я ещё не сдох!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "not dead",
+     "не мёртв, не сдох"
+    ]
+   ]
+  },
+  {
+   "en": "You thought you had me?",
+   "ru": "Думал, меня прихлопнул?",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "thought you",
+     "думал ты"
+    ]
+   ]
+  },
+  {
+   "en": "Surprise!",
+   "ru": "Сюрприз!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Surprise",
+     "сюрприз"
+    ]
+   ]
+  },
+  {
+   "en": "They're not ready for what I've got planned.",
+   "ru": "Они не готовы к тому, что я им уготовил.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "what I've got",
+     "то, что я им уготовал"
+    ]
+   ]
+  },
+  {
+   "en": "Paradox is coming for them, and there's nothing they can do about it.",
+   "ru": "Парадокс идёт за ними, и они ничего не могут с этим поделать.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Chrono%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "nothing they can do",
+     "ничего не могут сделать"
+    ]
+   ]
+  }
+ ],
+ "pocket": [
+  {
+   "en": "I'll drain them!",
+   "ru": "Я их высосу досуха!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "drain them",
+     "высосу досуха"
+    ]
+   ]
+  },
+  {
+   "en": "You should run.",
+   "ru": "Тебе надо бежать.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "should run",
+     "надо бежать"
+    ]
+   ]
+  },
+  {
+   "en": "We can outlast them!",
+   "ru": "Мы их перетерпим!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "outlast them",
+     "перетерпим их"
+    ]
+   ]
+  },
+  {
+   "en": "They can't last forever!",
+   "ru": "Они не могут вечно держаться!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "last forever",
+     "вечно держаться"
+    ]
+   ]
+  },
+  {
+   "en": "I'll bleed them out!",
+   "ru": "Я их высосу досуха!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "bleed them out",
+     "высосу досуха"
+    ]
+   ]
+  },
+  {
+   "en": "Their life will dwindle away.",
+   "ru": "Их жизнь угаснет.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "dwindle away",
+     "угаснет"
+    ]
+   ]
+  },
+  {
+   "en": "God forgive me...",
+   "ru": "Боже, прости меня...",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "God forgive",
+     "Боже, прости"
+    ]
+   ]
+  },
+  {
+   "en": "I have no choice!",
+   "ru": "У меня нет выбора!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "no choice",
+     "нет выбора"
+    ]
+   ]
+  },
+  {
+   "en": "I have to do this.",
+   "ru": "Я должен это сделать.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "have to do",
+     "должен сделать"
+    ]
+   ]
+  },
+  {
+   "en": "If we work together, we'll win.",
+   "ru": "Если мы будем вместе, мы победим.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "work together",
+     "будем вместе"
+    ]
+   ]
+  },
+  {
+   "en": "I believe in us.",
+   "ru": "Я верю в нас.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/synth%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "believe in us",
+     "верю в нас"
+    ]
+   ]
+  }
+ ],
+ "rat-king": [
+  {
+   "en": "Let's roll boys!",
+   "ru": "Поехали, пацаны!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_use_power4_01.mp3",
+   "kw": [
+    [
+     "Let's roll",
+     "Поехали"
+    ]
+   ]
+  },
+  {
+   "en": "It's time to take the streets, boys.",
+   "ru": "Время брать улицы, пацаны.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_use_power4_03.mp3",
+   "kw": [
+    [
+     "take the streets",
+     "брать улицы"
+    ]
+   ]
+  },
+  {
+   "en": "It's our time now, baby!",
+   "ru": "Наш час настал, блядь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_use_power4_04.mp3",
+   "kw": [
+    [
+     "time now",
+     "наш час настал"
+    ]
+   ]
+  },
+  {
+   "en": "They can't stop the tide.",
+   "ru": "Они не остановят прилив.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_use_power4_05.mp3",
+   "kw": [
+    [
+     "stop the tide",
+     "остановить прилив (неудержимую силу)"
+    ]
+   ]
+  },
+  {
+   "en": "We're done scurrying like rats, we're biting their face off like rats!",
+   "ru": "Мы больше не бегаем, как крысы, мы им морды кусаем!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_use_power4_06.mp3",
+   "kw": [
+    [
+     "biting their face",
+     "кусаем им морды (агрессивно атакуем)"
+    ]
+   ]
+  },
+  {
+   "en": "It's crumbum huntin' season.",
+   "ru": "Сезон охоты на тварей.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_use_power4_07.mp3",
+   "kw": [
+    [
+     "crumbum huntin",
+     "охота на тварей (грубое 'твари')"
+    ]
+   ]
+  },
+  {
+   "en": "Show 'em no mercy!",
+   "ru": "Не щадить!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_desperation_power4_01.mp3",
+   "kw": [
+    [
+     "no mercy",
+     "не щадить (без пощады)"
+    ]
+   ]
+  },
+  {
+   "en": "We're running wild, baby!",
+   "ru": "Мы здесь, чтобы рулить, блядь!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_desperation_power4_02.mp3",
+   "kw": [
+    [
+     "running wild",
+     "рулить, делать что захочу (букв. 'бегать дико')"
+    ]
+   ]
+  },
+  {
+   "en": "We're not givin' up!",
+   "ru": "Мы не сдаемся!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking_desperation_power4_03.mp3",
+   "kw": [
+    [
+     "givin' up",
+     "сдаваться"
+    ]
+   ]
+  },
+  {
+   "en": "Long Island ain't gonna take over itself.",
+   "ru": "Лонг-Айленд сам себя не захватит.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "take over",
+     "захватить (букв. 'взять под контроль')"
+    ]
+   ]
+  },
+  {
+   "en": "Alright, crumbums! Let's kill those other crumbums.",
+   "ru": "Ладно, твари! Пошли убивать других тварей.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/ratking%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "crumbums",
+     "твари (грубое 'твари, отбросы')"
+    ]
+   ]
+  }
+ ],
+ "rem": [
+  {
+   "en": "Sweet dreams...",
+   "ru": "Сладких...",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Sweet dreams",
+     "сладких (снов, прощание)"
+    ]
+   ]
+  },
+  {
+   "en": "Night-night.",
+   "ru": "Спокойной ночи.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Night-night",
+     "спокойной ночи (детское)"
+    ]
+   ]
+  },
+  {
+   "en": "Naps are fun.",
+   "ru": "Сон — это весело.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Naps are fun",
+     "сон — это весело (дрема — это весело)"
+    ]
+   ]
+  },
+  {
+   "en": "Everybody sleep.",
+   "ru": "Все спать.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "Everybody sleep",
+     "все спать"
+    ]
+   ]
+  },
+  {
+   "en": "Sleep time.",
+   "ru": "Время спать.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "Sleep time",
+     "время спать"
+    ]
+   ]
+  },
+  {
+   "en": "Sleep!",
+   "ru": "Спи!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "Sleep",
+     "Спи"
+    ]
+   ]
+  },
+  {
+   "en": "Bed now!",
+   "ru": "Ложись спать!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Bed now",
+     "Ложись спать (букв. 'Кровать сейчас')"
+    ]
+   ]
+  },
+  {
+   "en": "Wow, you guys are tall!",
+   "ru": "Ого, вы такие высокие!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "Wow",
+     "Ого (восклицание удивления)"
+    ]
+   ]
+  },
+  {
+   "en": "I think I'm gonna stick with you guys.",
+   "ru": "Думаю, я с вами.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Familiar%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "stick with",
+     "Остаться с кем-то (букв. 'прилипнуть к')"
+    ]
+   ]
+  }
+ ],
+ "seven": [
+  {
+   "en": "Run while you can.",
+   "ru": "Беги, пока можешь.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Gigawatt%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Run while",
+     "Беги, пока..."
+    ]
+   ]
+  },
+  {
+   "en": "The storm gathers.",
+   "ru": "Надвигается буря.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Gigawatt%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "storm gathers",
+     "Буря собирается (букв. 'собирается')"
+    ]
+   ]
+  },
+  {
+   "en": "There's no escape!",
+   "ru": "От тебя не уйти!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Gigawatt%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "No escape",
+     "Нет побега (букв. 'нет бегства')"
+    ]
+   ]
+  },
+  {
+   "en": "No mercy!",
+   "ru": "Пощады не будет!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Gigawatt%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "No mercy",
+     "Нет пощады"
+    ]
+   ]
+  },
+  {
+   "en": "Everyone dies!",
+   "ru": "Все умрут!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/gigawatt%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "Everyone dies",
+     "Все умирают"
+    ]
+   ]
+  },
+  {
+   "en": "Your lives are forfeit!",
+   "ru": "Ваши жизни отобраны!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/gigawatt%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "forfeit",
+     "обречено (lives are forfeit)"
+    ]
+   ]
+  },
+  {
+   "en": "I am your end!",
+   "ru": "Я — твой конец!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/gigawatt%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "your end",
+     "Твой конец"
+    ]
+   ]
+  },
+  {
+   "en": "Today, we summon a god!",
+   "ru": "Сегодня мы призовём бога!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Gigawatt%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "summon",
+     "призывать (summon a god)"
+    ]
+   ]
+  },
+  {
+   "en": "No one will stop me from getting what I deserve.",
+   "ru": "Никто не помешает мне получить то, что я заслужил.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Gigawatt%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "what I deserve",
+     "то, что я заслужил"
+    ]
+   ]
+  }
+ ],
+ "shiv": [
+  {
+   "en": "They asked for this!",
+   "ru": "Просили!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "They asked",
+     "Просили"
+    ]
+   ]
+  },
+  {
+   "en": "I'll make it quick.",
+   "ru": "Будет быстро.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "make it quick",
+     "будет быстро"
+    ]
+   ]
+  },
+  {
+   "en": "I tried to be nice.",
+   "ru": "Я пытался быть хорошим.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "tried to be",
+     "пытался быть"
+    ]
+   ]
+  },
+  {
+   "en": "No more games!",
+   "ru": "Достаточно игр!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "No more games",
+     "достаточно игр"
+    ]
+   ]
+  },
+  {
+   "en": "It's over.",
+   "ru": "Всё.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "It's over",
+     "всё кончено / всё"
+    ]
+   ]
+  },
+  {
+   "en": "This is where it ends.",
+   "ru": "Вот здесь и кончается.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20use%20power4%2008.mp3",
+   "kw": [
+    [
+     "where it ends",
+     "где это заканчивается"
+    ]
+   ]
+  },
+  {
+   "en": "You asked for this!",
+   "ru": "Просили!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "You asked",
+     "Вы просили"
+    ]
+   ]
+  },
+  {
+   "en": "You wanna play rough? Fine by me!",
+   "ru": "Хот по-крупному? Норм, я за!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "play rough",
+     "играть по-крупному / жёстко"
+    ]
+   ]
+  },
+  {
+   "en": "Buckle up, boys and girls!",
+   "ru": "Пристегнитесь, детки!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Buckle up",
+     "пристегнитесь"
+    ]
+   ]
+  },
+  {
+   "en": "I'm gonna stab a whole lotta people today.",
+   "ru": "Сегодня я кого-то поножовствую.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "stab a whole",
+     "колоть целую кучу"
+    ]
+   ]
+  },
+  {
+   "en": "They're gonna regret pickin' a fight with the Baxter Society.",
+   "ru": "Пожалеют, что связались с Обществом Бакстеров.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/shiv%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "pickin' a fight",
+     "начали драку / связались"
+    ]
+   ]
+  }
+ ],
+ "silver": [
+  {
+   "en": "Oh god, not again...",
+   "ru": "О боже, не снова...",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "not again",
+     "не снова"
+    ]
+   ]
+  },
+  {
+   "en": "It's happening...",
+   "ru": "Это происходит...",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "It's happening",
+     "это происходит"
+    ]
+   ]
+  },
+  {
+   "en": "I thought I had this under control!",
+   "ru": "Я думал, что всё под контролем!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "under control",
+     "под контролем"
+    ]
+   ]
+  },
+  {
+   "en": "Big mistake, pal!",
+   "ru": "Огромная ошибка, дружище!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Big mistake",
+     "огромная ошибка (ошибочное решение)"
+    ]
+   ]
+  },
+  {
+   "en": "You're about to have a real bad day!",
+   "ru": "У тебя сейчас будет очень плохой день!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "real bad",
+     "действительно плохой (очень)"
+    ]
+   ]
+  },
+  {
+   "en": "Time to let out the beast!",
+   "ru": "Пора выпустить зверя!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "let out",
+     "выпустить (на свободу)"
+    ]
+   ]
+  },
+  {
+   "en": "You shouldn't have made me mad!",
+   "ru": "Тебе не следовало меня злить!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "made me mad",
+     "завел меня (заставил злиться)"
+    ]
+   ]
+  },
+  {
+   "en": "You're not givin' me any choice!",
+   "ru": "Ты мне не оставил выбора!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "givin' me",
+     "давая мне (оставляя)"
+    ]
+   ]
+  },
+  {
+   "en": "You shouldn't have poked the bear!",
+   "ru": "Тебе не следовало дразнить медведя!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "poked the bear",
+     "дразнить медведя (спровоцировать)"
+    ]
+   ]
+  },
+  {
+   "en": "Alright. Let's see who I have to work with here.",
+   "ru": "Ладно. Посмотрим, с кем мне придётся работать.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "work with",
+     "работать с (совместно)"
+    ]
+   ]
+  },
+  {
+   "en": "Guys, take a look at who we're fightin'. We shouldn't have much of a problem.",
+   "ru": "Парни, посмотрите, с кем мы воюем. У нас не должно быть проблем.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Werewolf%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "fightin'",
+     "воюем (сражаемся)"
+    ]
+   ]
+  }
+ ],
+ "sinclair": [],
+ "solomon": [
+  {
+   "en": "Here comes the queen.",
+   "ru": "Приходит королева.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "comes the",
+     "приходит (является)"
+    ]
+   ]
+  },
+  {
+   "en": "Long may she reign.",
+   "ru": "Да здравствует её правление!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "Long may",
+     "да здравствует (пусть долго)"
+    ]
+   ]
+  },
+  {
+   "en": "The queen has arrived.",
+   "ru": "Королева прибыла.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "has arrived",
+     "прибыла (явилась)"
+    ]
+   ]
+  },
+  {
+   "en": "She has come to... deliver us.",
+   "ru": "Она пришла... чтобы нас спасти.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "deliver us",
+     "спасти нас (достичь, избавить)"
+    ]
+   ]
+  },
+  {
+   "en": "She has come to deliver us!",
+   "ru": "Она пришла нас спасти!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20use%20power4%2005%20alt%2001.mp3",
+   "kw": [
+    [
+     "deliver us",
+     "спасти нас (достичь, избавить)"
+    ]
+   ]
+  },
+  {
+   "en": "The queen's might will not be questioned!",
+   "ru": "Могущество королевы не подлежит сомнению!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "might will",
+     "могущество будет (сила)"
+    ]
+   ]
+  },
+  {
+   "en": "I do not concede!",
+   "ru": "Я сдаюсь!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "do not concede",
+     "не признаю (уступаю)"
+    ]
+   ]
+  },
+  {
+   "en": "I have more tricks in store.",
+   "ru": "У меня ещё фокусы в запасе.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "tricks in store",
+     "в запасе"
+    ]
+   ]
+  },
+  {
+   "en": "First rule of the hustle: Let them think they're winning!",
+   "ru": "Главное правило махинации: Пусть думают, что выигрывают!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/chessmaster%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "Let them think",
+     "пусть думают"
+    ]
+   ]
+  },
+  {
+   "en": "I'm lookin' forward to workin' with all of you.",
+   "ru": "Рад поработать со всеми вами.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Chessmaster%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "lookin' forward to",
+     "рад"
+    ]
+   ]
+  },
+  {
+   "en": "A little bit of nerves are good for ya. It means... you're invested.",
+   "ru": "Чуточку нервозности — это полезно. Это значит... вы вовлечены.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Chessmaster%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "nerves are good",
+     "нервозность полезна"
+    ]
+   ]
+  }
+ ],
+ "venator": [
+  {
+   "en": "A shepherd protects the flock.",
+   "ru": "Пастух защищает стадо.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "shepherd",
+     "пастух"
+    ]
+   ]
+  },
+  {
+   "en": "Evil dies today.",
+   "ru": "Зло умрёт сегодня.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Evil",
+     "зло"
+    ]
+   ]
+  },
+  {
+   "en": "In nomine Patris, et Filii, et Spiritus Sancti. (In the name of the Father, the Son, and the Holy Spirit.)",
+   "ru": "Во имя Отца, и Сына, и Святого Духа.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "in nomine",
+     "во имя"
+    ]
+   ]
+  },
+  {
+   "en": "Domine, protege me, dum impios interficio. (Lord, protect me while I kill the wicked.)",
+   "ru": "Господи, защити меня, пока я убиваю нечестивых.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "interficio",
+     "убиваю"
+    ]
+   ]
+  },
+  {
+   "en": "They will learn to fear me.",
+   "ru": "Они научатся меня бояться.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "learn",
+     "научатся"
+    ]
+   ]
+  },
+  {
+   "en": "They can run, but it only will delay the inevitable.",
+   "ru": "Они могут бегать, но это лишь отсрочит неизбежное.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "delay",
+     "отсрочит"
+    ]
+   ]
+  },
+  {
+   "en": "I can't give up...",
+   "ru": "Я не могу сдаться...",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "give up",
+     "сдаться"
+    ]
+   ]
+  },
+  {
+   "en": "The Lord still has plans for me.",
+   "ru": "У Господа всё ещё есть планы на меня.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "plans",
+     "планы"
+    ]
+   ]
+  },
+  {
+   "en": "I'll kill as many as I can!",
+   "ru": "Я убью как можно больше!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "kill",
+     "убью"
+    ]
+   ]
+  },
+  {
+   "en": "I wish I could save you all.",
+   "ru": "Жаль, что я не могу вас всех спасти.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "save",
+     "спасти"
+    ]
+   ]
+  },
+  {
+   "en": "They won't stand a chance against us.",
+   "ru": "У них не будет ни шанса против нас.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Priest%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "stand a chance",
+     "иметь шанс"
+    ]
+   ]
+  }
+ ],
+ "victor": [
+  {
+   "en": "I live again!",
+   "ru": "Я возродился!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Frank%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "live again",
+     "возродился"
+    ]
+   ]
+  },
+  {
+   "en": "I'm reborn!",
+   "ru": "Я перерожусь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Frank%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "reborn",
+     "перерожусь"
+    ]
+   ]
+  },
+  {
+   "en": "I'm back.",
+   "ru": "Я вернулся.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Frank%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "back",
+     "вернулся"
+    ]
+   ]
+  },
+  {
+   "en": "It takes more than that to kill me.",
+   "ru": "Для того, чтобы меня убить, нужно больше.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Frank%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "takes more",
+     "нужно больше"
+    ]
+   ]
+  },
+  {
+   "en": "I'm not dead yet!",
+   "ru": "Я ещё не мёртв!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Frank%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "not dead",
+     "Не мёртв"
+    ]
+   ]
+  },
+  {
+   "en": "You think you're winning?",
+   "ru": "Думаешь, ты побеждаешь?",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Frank%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "think you're",
+     "Думаешь, ты..."
+    ]
+   ]
+  },
+  {
+   "en": "It's time to find some answers.",
+   "ru": "Пора найти ответы.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Frank%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "find some",
+     "Найти несколько (букв. 'найти какие-то')"
+    ]
+   ]
+  },
+  {
+   "en": "Apologies if I'm in a bad mood, my stitches are killing me today.",
+   "ru": "Извини, если я не в духе, у меня сегодня швы сводят с ума.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Frank%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "bad mood",
+     "Плохое настроение (букв. 'плохое расположение духа')"
+    ]
+   ]
+  }
+ ],
+ "vindicta": [
+  {
+   "en": "Bye bye.",
+   "ru": "Пока.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/hornet%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Bye bye",
+     "Прощание"
+    ]
+   ]
+  },
+  {
+   "en": "So long.",
+   "ru": "Пока.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/hornet%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "So long",
+     "Прощание"
+    ]
+   ]
+  },
+  {
+   "en": "I can make the shot!",
+   "ru": "Попаду!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/hornet%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "make the shot",
+     "Попасть в цель"
+    ]
+   ]
+  },
+  {
+   "en": "Need to make this count!",
+   "ru": "Попасть надо!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/hornet%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "make this count",
+     "Сделать это значимым/эффективным"
+    ]
+   ]
+  },
+  {
+   "en": "I can't afford to miss!",
+   "ru": "Не могу промахнуться!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/hornet%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "afford to miss",
+     "Позволить себе промахнуться"
+    ]
+   ]
+  },
+  {
+   "en": "I won't miss!",
+   "ru": "Не промахнусь!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/hornet%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "miss",
+     "Промахнуться"
+    ]
+   ]
+  },
+  {
+   "en": "Today, there will be a bloody reckoning.",
+   "ru": "Сегодня будет кровавая расплата.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/hornet%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "bloody reckoning",
+     "Кровавая/жестокая расплата"
+    ]
+   ]
+  }
+ ],
+ "viscous": [
+  {
+   "en": "I'm a ball!",
+   "ru": "Я — шар!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20use%20power4%2011.mp3",
+   "kw": [
+    [
+     "ball",
+     "шар (в данном контексте — форма)"
+    ]
+   ]
+  },
+  {
+   "en": "Rolling!",
+   "ru": "Катаюсь!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20use%20power4%2012.mp3",
+   "kw": [
+    [
+     "Rolling",
+     "катаюсь (дословно: катящийся)"
+    ]
+   ]
+  },
+  {
+   "en": "Weeee!",
+   "ru": "Уиии!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20use%20power4%2013.mp3",
+   "kw": [
+    [
+     "Weeee",
+     "возглас радости/восторга"
+    ]
+   ]
+  },
+  {
+   "en": "It's like walking, but better!",
+   "ru": "Это как ходьба, только лучше!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20use%20power4%2014.mp3",
+   "kw": [
+    [
+     "better",
+     "лучше"
+    ]
+   ]
+  },
+  {
+   "en": "Rolling goo!",
+   "ru": "Катящийся гу!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20use%20power4%2015.mp3",
+   "kw": [
+    [
+     "Rolling goo",
+     "катящийся гу (гу — слизь)"
+    ]
+   ]
+  },
+  {
+   "en": "It's funny because I'm basically immortal.",
+   "ru": "Это смешно, потому что я по сути бессмертный.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20use%20power4%2016.mp3",
+   "kw": [
+    [
+     "basically",
+     "по сути, в принципе"
+    ]
+   ]
+  },
+  {
+   "en": "Byyyye! (Alt: Byeeee!)",
+   "ru": "Пока!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "Byyyye",
+     "пока (провожание)"
+    ]
+   ]
+  },
+  {
+   "en": "Byyyye! (Alt: Byeeee!)",
+   "ru": "Пока!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20desperation%20power4%2001%2002.mp3",
+   "kw": [
+    [
+     "Byyyye",
+     "пока (провожание)"
+    ]
+   ]
+  },
+  {
+   "en": "Goodbye.",
+   "ru": "Прощай.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Goodbye",
+     "прощай"
+    ]
+   ]
+  },
+  {
+   "en": "I'm making friends!",
+   "ru": "Я завожу друзей!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "friends",
+     "друзья"
+    ]
+   ]
+  },
+  {
+   "en": "Oh look, I've made enemies. I feel more human already!",
+   "ru": "О, смотри, я нажил врагов. Чувствую себя человеком!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/viscous%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "enemies",
+     "враги"
+    ]
+   ]
+  }
+ ],
+ "vyper": [
+  {
+   "en": "I'll turn them to stone.",
+   "ru": "Я обращу их в камень.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "stone",
+     "камень (в значении — окаменеть)"
+    ]
+   ]
+  },
+  {
+   "en": "Throwing bola!",
+   "ru": "Бросаю болас!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "bola",
+     "болас (оружие)"
+    ]
+   ]
+  },
+  {
+   "en": "This never gets old.",
+   "ru": "Это никогда не надоедает.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "never",
+     "никогда"
+    ]
+   ]
+  },
+  {
+   "en": "Alright V, don't screw this up.",
+   "ru": "Ладно, В, не облажайся.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "screw",
+     "облажаться (дословно: испортить, засcrewить)"
+    ]
+   ]
+  },
+  {
+   "en": "This will take 'em out.",
+   "ru": "Этим их убить.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "take 'em out",
+     "убить их всех"
+    ]
+   ]
+  },
+  {
+   "en": "The old gorgon special.",
+   "ru": "Старый добрый горгон.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "old gorgon",
+     "старый добрый (как у горгоны)"
+    ]
+   ]
+  },
+  {
+   "en": "Gotta hit this.",
+   "ru": "Надо попасть.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "hit this",
+     "попасть в цель"
+    ]
+   ]
+  },
+  {
+   "en": "Petrify!",
+   "ru": "Окаменение!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "Petrify",
+     "окаменеть/окаменить"
+    ]
+   ]
+  },
+  {
+   "en": "Gotta land this!",
+   "ru": "Нужно попасть!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "land this",
+     "попасть/удачно завершить"
+    ]
+   ]
+  },
+  {
+   "en": "You guys look like you know how to party. Am I right?",
+   "ru": "Вы вроде те, кто умеет тусить. Так ведь?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "know how",
+     "умеет/умеет как раз"
+    ]
+   ]
+  },
+  {
+   "en": "Look at those chumps over there, no way we lose to them.",
+   "ru": "Посмотри на тех лузеров, мы им не проиграем.",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Viper%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "chumps",
+     "лузеры/дураки"
+    ]
+   ]
+  }
+ ],
+ "warden": [
+  {
+   "en": "I will stand against many!",
+   "ru": "Я выдержу многих!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "stand against",
+     "выстоять против"
+    ]
+   ]
+  },
+  {
+   "en": "This is my moment.",
+   "ru": "Мой час.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "my moment",
+     "мой час/мой момент славы"
+    ]
+   ]
+  },
+  {
+   "en": "I'll take on all of you!",
+   "ru": "Я возьму на себя вас всех!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "take on",
+     "взять на себя/принять вызов"
+    ]
+   ]
+  },
+  {
+   "en": "This is where you fall.",
+   "ru": "Здесь ты падаешь.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "where you fall",
+     "где ты падаешь/где ты погибаешь"
+    ]
+   ]
+  },
+  {
+   "en": "Never show fear, no matter the odds!",
+   "ru": "Никогда не показывай страха, как бы ни были плохи шансы!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "no matter",
+     "неважно/как бы ни"
+    ]
+   ]
+  },
+  {
+   "en": "It's time to change the world.",
+   "ru": "Пора менять мир.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20use%20power4%2007.mp3",
+   "kw": [
+    [
+     "change the world",
+     "менять мир"
+    ]
+   ]
+  },
+  {
+   "en": "I can't give up now!",
+   "ru": "Не могу сдаваться сейчас!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "give up",
+     "сдаваться/бросить"
+    ]
+   ]
+  },
+  {
+   "en": "I can turn the tide.",
+   "ru": "Я могу переломить ход.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "turn the tide",
+     "переломить ход/ситуацию"
+    ]
+   ]
+  },
+  {
+   "en": "This isn't where I die.",
+   "ru": "Здесь я сдохну.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "die",
+     "здесь сдохнуть"
+    ]
+   ]
+  },
+  {
+   "en": "It's time to kill a god!",
+   "ru": "Пора убивать бога!",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "kill a god",
+     "убивать бога"
+    ]
+   ]
+  },
+  {
+   "en": "You have no idea what I'm capable of...",
+   "ru": "Ты даже не представляешь, что я могу...",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/Warden%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "capable of",
+     "способный на"
+    ]
+   ]
+  }
+ ],
+ "wraith": [
+  {
+   "en": "Locking them down.",
+   "ru": "Запираю.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20use%20power4%2001.mp3",
+   "kw": [
+    [
+     "Locking them down",
+     "фиксирую их на месте (lock down)"
+    ]
+   ]
+  },
+  {
+   "en": "Lifted!",
+   "ru": "Взлетай!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20use%20power4%2002.mp3",
+   "kw": [
+    [
+     "Lifted",
+     "взлетать"
+    ]
+   ]
+  },
+  {
+   "en": "You're mine.",
+   "ru": "Ты мой.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20use%20power4%2003.mp3",
+   "kw": [
+    [
+     "mine",
+     "мой"
+    ]
+   ]
+  },
+  {
+   "en": "Hold it!",
+   "ru": "Стой!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20use%20power4%2004.mp3",
+   "kw": [
+    [
+     "Hold it",
+     "держать"
+    ]
+   ]
+  },
+  {
+   "en": "I got 'em.",
+   "ru": "Поймал.",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20use%20power4%2005.mp3",
+   "kw": [
+    [
+     "Got 'em",
+     "поймал"
+    ]
+   ]
+  },
+  {
+   "en": "Stay where you are!",
+   "ru": "Стоять!",
+   "tag": "ульта",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20use%20power4%2006.mp3",
+   "kw": [
+    [
+     "Stay where",
+     "стоять где"
+    ]
+   ]
+  },
+  {
+   "en": "It's now or never.",
+   "ru": "Сейчас или никогда.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20desperation%20power4%2001.mp3",
+   "kw": [
+    [
+     "now or never",
+     "сейчас или никогда"
+    ]
+   ]
+  },
+  {
+   "en": "We gotta take 'em out or I'm dead.",
+   "ru": "Надо их убрать, или я сдох.",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20desperation%20power4%2002.mp3",
+   "kw": [
+    [
+     "take 'em out",
+     "убрать их"
+    ]
+   ]
+  },
+  {
+   "en": "Got time for one more trick!",
+   "ru": "Время для одного фокуса!",
+   "tag": "ульта, когда почти мёртв",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20desperation%20power4%2003.mp3",
+   "kw": [
+    [
+     "one more trick",
+     "ещё один фокус"
+    ]
+   ]
+  },
+  {
+   "en": "Well, aren't we a fun bunch of malcontents?",
+   "ru": "О, разве мы не весёлая компания недовольных?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20ping%20pre%20game%2001.mp3",
+   "kw": [
+    [
+     "fun bunch",
+     "весёлая компания"
+    ]
+   ]
+  },
+  {
+   "en": "This is everyone's first time summoning an Elder God, right?",
+   "ru": "Всем впервые призывают Древнего бога, да?",
+   "tag": "выход на бой",
+   "a": "https://deadlock.wiki/Special:FilePath/wraith%20ping%20pre%20game%2002.mp3",
+   "kw": [
+    [
+     "first time",
+     "впервые"
+    ]
+   ]
+  }
+ ],
+ "yamato": []
+}
