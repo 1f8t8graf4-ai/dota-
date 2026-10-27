@@ -19,7 +19,7 @@ if '--pub' in sys.argv:
     P = D + '/pub'
     shutil.rmtree(P, ignore_errors=True)
     for sub, ext in (('img', 'webp'), ('vid', 'mp4'), ('aud', 'mp3')):
-        os.makedirs(P + '/a/' + sub)
+        os.makedirs(P + '/a/' + sub, exist_ok=True)
         for f in glob.glob(D + '/assets/%s/*.%s' % (sub, ext)): shutil.copy(f, P + '/a/' + sub)
     rel = lambda sub, ext, L: {k: 'a/%s/%s.%s' % (sub, k, ext) for k in L}
     A2 = {'I': rel('img', 'webp', I), 'V': rel('vid', 'mp4', V), 'A': rel('aud', 'mp3', AU)}

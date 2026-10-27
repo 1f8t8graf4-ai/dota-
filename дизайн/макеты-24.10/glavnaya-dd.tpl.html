@@ -1,4 +1,4 @@
-<title>Макеты v12</title>
+<title>Макеты v13</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&family=Russo+One&display=swap">
 <style>
@@ -4395,12 +4395,429 @@ html.lite .h11 *{animation:none!important}
 .op12-ls{padding-top:150px}.op12-hd{background:#0c0d12;padding-bottom:14px}
 .v12-ln{transition:bottom .35s cubic-bezier(.2,.8,.2,1)}
 
+/* ================= v13 (26.10, отзыв на v12) ================= */
+.g13-hub [hidden],.hp13 [hidden],.cs13 [hidden],.r13 [hidden],.vs13 [hidden],.tt13 [hidden],.op13 [hidden],.st13 [hidden]{display:none!important}
+@keyframes x13wv{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
+@keyframes h13fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+/* --- Deadlock изнутри: режимы плитками (Versus — одна из них, без двух героев) --- */
+.g13-md{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px}
+.g13-md>button{position:relative;display:grid;gap:4px;align-content:end;height:146px;padding:12px!important;border-radius:20px!important;background:linear-gradient(180deg,#121830,#0b1022)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);color:#fff;text-align:left;overflow:hidden}
+.g13-md .art{position:absolute;left:0;right:0;top:0;height:92px;display:flex;align-items:center;justify-content:center}
+.g13-md .art>.ic{width:44px;height:44px;stroke-width:1.5}
+.g13-md b{position:relative;font:800 15px/1 Inter,sans-serif}.g13-md small{position:relative;font:600 11px/1.2 Inter,sans-serif;color:rgba(255,255,255,.55)}
+.g13-md .cm .art{color:#F2C14E;background:radial-gradient(60% 70% at 50% 50%,rgba(242,193,78,.16),transparent)}
+.g13-md .cm .pg{position:absolute;width:30px;height:38px;border-radius:4px;background:#F4ECD8;opacity:.16}.g13-md .cm .pg.a{left:30%;top:24px;transform:rotate(-12deg)}.g13-md .cm .pg.b{right:28%;top:28px;transform:rotate(10deg)}
+.g13-md .vs .art{color:#FF8A95;background:radial-gradient(60% 70% at 50% 50%,rgba(255,77,94,.18),transparent)}
+.g13-md .rd .art{background:radial-gradient(60% 70% at 50% 50%,rgba(46,230,197,.14),transparent)}
+.g13-md .ln .art{gap:3px;background:radial-gradient(60% 70% at 50% 50%,rgba(143,180,255,.14),transparent)}
+.g13-md .ln .art i{width:5px;height:calc(var(--h) * 46px);border-radius:3px;background:#8FB4FF;transform-origin:50% 50%;animation:x13wv .55s ease-in-out infinite alternate;animation-delay:var(--d)}
+.g13-ict{display:flex;align-items:center;gap:12px;width:calc(100% - 28px);margin:14px 14px 0;padding:12px!important;border-radius:16px!important;background:rgba(255,255,255,.04)!important;text-align:left;color:#fff}
+.g13-ict .ic13{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(242,193,78,.12);color:#F2C14E;cursor:pointer}
+.g13-ict>span:last-child{display:grid;gap:3px}.g13-ict b{font:800 13.5px/1 Inter,sans-serif}.g13-ict small{font:500 11px/1.25 Inter,sans-serif;color:rgba(255,255,255,.5)}
+/* --- герои: живая локация на всю карточку, сам герой — маленькой иконкой --- */
+.h13-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px}
+.h13c{position:relative;display:block;width:100%;aspect-ratio:3/3.55;padding:0!important;border-radius:20px!important;overflow:hidden;background:#07080c!important;color:#fff;text-align:left;box-shadow:0 14px 28px -14px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.07)}
+.l13{position:absolute;inset:0;overflow:hidden}
+.l13.l13v svg{position:absolute;inset:0;width:100%;height:100%}
+.l13.la .img{position:absolute;inset:-12%;background-size:cover;background-position:50% 25%;filter:blur(9px) saturate(1.2) brightness(.5)}
+.l13.la::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 42%,color-mix(in srgb,var(--ac) 34%,transparent),transparent 75%)}
+.h13c .vg{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,10,.15),transparent 38%,rgba(5,6,10,.88))}
+.h13c .ri{position:absolute;left:50%;top:41%;width:76px;height:76px;margin:-38px 0 0 -38px;display:grid;place-items:center}
+.h13c .ico{display:block;animation:h13fl 5s ease-in-out infinite}.h13c:nth-child(2n) .ico{animation-delay:-2.2s}
+.h13c .ico .m8{display:block;width:58px;height:58px;box-shadow:0 0 0 2px rgba(255,255,255,.22),0 10px 22px rgba(0,0,0,.65)}
+.h13c .ico .m8.em{box-shadow:none;filter:drop-shadow(0 8px 14px rgba(0,0,0,.65))}
+.h13c .lr{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.h13c .lr .t{fill:none;stroke:rgba(255,255,255,.14);stroke-width:2.2}
+.h13c .lr .p{fill:none;stroke:var(--ac);stroke-width:2.6;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - var(--p));transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1)}
+.h13c .nm{position:absolute;left:12px;right:12px;bottom:10px;display:grid;gap:3px}
+.h13c .nm b{font:800 14px/1 Inter,sans-serif}.h13c .nm small{font:600 10.5px/1.2 Inter,sans-serif;color:rgba(255,255,255,.62)}
+.h13c.soon .ico{filter:saturate(.6) brightness(.85)}.h13c.soon .nm small{color:rgba(255,255,255,.4)}
+.nw13{position:absolute;right:8px;top:8px;padding:4px 7px;border-radius:999px;background:#FF4D5E;color:#fff;font:800 9.5px/1 Inter,sans-serif;font-style:normal}
+.g13h .g11-hd{align-items:center}
+.g13-ib{width:40px;height:40px;border-radius:12px!important;background:rgba(242,193,78,.12)!important;display:grid;place-items:center;color:#F2C14E!important}
+.scr .g13-hl{margin:0 20px 14px;font:500 12px/1.45 Inter,sans-serif;color:rgba(255,255,255,.6)}
+/* --- страница героя и выбор главы --- */
+.hp13{position:absolute;inset:0;z-index:70;overflow-y:auto;overflow-x:hidden;background:#05070E;padding-bottom:40px;scrollbar-width:none}.hp13::-webkit-scrollbar{display:none}
+.hp13-st{position:relative;height:330px;overflow:hidden}
+.hp13-st>.l13{position:absolute;inset:0}
+.hp13-st video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hp13-st .dm{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,14,.5),transparent 28%,transparent 52%,#05070E 98%)}
+.hp13-ic{position:absolute;right:12px;top:52px;z-index:5;width:40px;height:40px;border-radius:50%!important;background:rgba(5,7,14,.68)!important;display:grid;place-items:center;color:#F2C14E!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.hp13-st .nm{position:absolute;left:18px;right:18px;bottom:14px;display:grid;gap:7px}
+.hp13-st .nm small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.2em;color:rgba(243,235,221,.65)}
+.hp13-st .nm>b{font:700 34px/1 Oswald,Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.hp13 .lvl{display:flex;align-items:center;gap:10px}
+.hp13 .ring{position:relative;width:40px;height:40px;flex:none}.hp13 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.hp13 .ring .t{fill:none;stroke:rgba(255,255,255,.15);stroke-width:3}.hp13 .ring .p{fill:none;stroke:var(--ac);stroke-width:3.4;stroke-linecap:round;stroke-dasharray:100;transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1)}
+.hp13 .ring em{position:absolute;inset:0;display:grid;place-items:center;font:900 14px/1 Inter,sans-serif;font-style:normal}
+.hp13 .xp{display:grid;gap:4px}.hp13 .xp b{font:800 12.5px/1 Inter,sans-serif}.hp13 .xp small{font:600 11px/1.2 Inter,sans-serif;color:rgba(243,235,221,.72)}
+.hp13-bd{padding:8px 14px 0}
+.hp13-ac{display:grid;grid-template-columns:1.35fr 1fr;gap:8px}
+.hp13-ac button{display:flex;align-items:center;gap:10px;height:56px;padding:0 12px!important;border-radius:16px!important;background:rgba(255,255,255,.06)!important;color:#fff;text-align:left}
+.hp13-ac .vs{background:linear-gradient(180deg,#F8D57A,#E8A93A)!important;color:#1d1300}
+.hp13-ac .ic{width:22px;height:22px;flex:none}
+.hp13-ac span{display:grid;gap:3px}.hp13-ac b{font:800 13.5px/1 Inter,sans-serif}.hp13-ac small{font:600 10.5px/1.1 Inter,sans-serif;opacity:.7}
+.hp13-bd .g11-sec{margin:22px 4px 10px}
+.hp13-ls{display:grid;gap:10px}
+.scr .hp13-nt{display:flex;gap:10px;align-items:flex-start;margin:14px 0 0;padding:12px;border-radius:14px;background:rgba(255,255,255,.04);font:500 12px/1.4 Inter,sans-serif;color:rgba(255,255,255,.65)}.hp13-nt .ic{flex:none;width:18px;height:18px;color:#2EE6C5}
+.ch13{position:relative;display:flex;align-items:stretch;gap:12px;width:100%;padding:10px!important;border-radius:18px!important;background:#0f1428!important;text-align:left;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.ch13.s-new{box-shadow:inset 0 0 0 1.5px rgba(242,193,78,.6),0 0 26px -8px rgba(242,193,78,.5)}
+.ch13.s-chk{box-shadow:inset 0 0 0 1.5px rgba(255,138,76,.45)}
+.ch13.s-lock{opacity:.55}.ch13.s-lock .th13{filter:grayscale(1) brightness(.75)}
+.th13{position:relative;flex:none;width:84px;height:106px;border-radius:9px;background:#F4ECD8;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1.2fr 1fr;gap:3px;padding:3px;transform:rotate(-2.5deg);box-shadow:0 8px 18px rgba(0,0,0,.5)}
+.th13 .pn{position:relative;border-radius:3px;background:radial-gradient(120% 100% at 50% 30%,color-mix(in srgb,var(--ac) 55%,#111),#0c0c10);display:grid;place-items:center;overflow:hidden}
+.th13 .pn.p0{grid-column:1/3}
+.th13 .pn .m8{width:30px;height:30px}.th13 .pn.p0 .m8{width:40px;height:40px}
+.th13 .pn .m8.em{box-shadow:none}
+.th13 .bq{position:absolute;left:4px;top:4px;width:18px;height:9px;border-radius:5px;background:#fff;box-shadow:0 0 0 1px #111}.th13 .p0 .bq{width:28px;height:11px}
+.th13 .st1{position:absolute;left:-6px;top:42px;padding:3px 6px;border-radius:4px;background:#E04A3A;color:#fff;font:800 8px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;font-style:normal;transform:rotate(-4deg);box-shadow:0 2px 6px rgba(0,0,0,.45)}
+.ch13 .tx{flex:1;display:grid;align-content:center;gap:5px;min-width:0}
+.ch13 .tx>small{font:800 9px/1.2 Inter,sans-serif;letter-spacing:.12em;color:rgba(255,255,255,.5)}
+.ch13 .tx>b{font:800 15.5px/1.15 Inter,sans-serif}
+.ch13 .who{display:flex;align-items:center;gap:6px;font:600 11.5px/1.25 Inter,sans-serif;color:rgba(255,255,255,.72)}.ch13 .who .m8{width:20px;height:20px}.ch13 .who b{color:#fff}
+.ch13 .ft{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.ch13 .sc{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;font:800 10.5px/1 Inter,sans-serif}.ch13 .sc .ic{width:12px;height:12px}.ch13 .sc .dt{width:6px;height:6px;border-radius:50%;background:currentColor;animation:g11pl 1.4s ease-in-out infinite}
+.ch13 .sc.nw{background:rgba(242,193,78,.16);color:#F2C14E}.ch13 .sc.ck{background:rgba(255,138,76,.15);color:#FF9C66}.ch13 .sc.dn{background:rgba(79,209,139,.15);color:#4FD18B}.ch13 .sc.dp{background:rgba(242,193,78,.2);color:#F6D488}.ch13 .sc.lk{background:rgba(255,255,255,.06);color:rgba(255,255,255,.55)}
+.ch13 .dg{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;background:rgba(242,193,78,.1);color:#F2C14E;box-shadow:inset 0 0 0 1px rgba(242,193,78,.4);font:800 10.5px/1 Inter,sans-serif;cursor:pointer}.ch13 .dg .ic{width:12px;height:12px}
+.ch13 .go{align-self:center;color:rgba(255,255,255,.4);font-style:normal}.ch13 .go .ic{width:18px;height:18px}
+.ch13.strip{padding:12px 12px 12px 14px!important}
+.ch13 .ord{display:flex;align-items:center;margin:2px 0}
+.ch13 .ord i{display:block;width:24px;height:24px;margin-right:-5px;border-radius:50%;font-style:normal}.ch13 .ord i .m8{display:block;width:24px;height:24px;box-shadow:0 0 0 2px #0f1428}
+.ch13 .ord i.f{width:34px;height:34px;margin-right:3px}.ch13 .ord i.f .m8{width:34px;height:34px;box-shadow:0 0 0 2px var(--ac),0 0 12px color-mix(in srgb,var(--ac) 50%,transparent)}
+.ch13 .ord i .m8.em{box-shadow:none}.ch13 .ord i.f .m8.em{filter:drop-shadow(0 0 6px var(--ac))}
+.ch13 .who.t{font-size:11px}
+/* шторка главы */
+.cs13{position:absolute;inset:0;z-index:95}
+.cs13 .sc{position:absolute;inset:0;background:rgba(3,4,8,.62)}
+.cs13 .pn{position:absolute;left:8px;right:8px;bottom:8px;display:grid;gap:10px;padding:10px 18px 18px;border-radius:28px 28px 38px 38px;background:#0f1324;box-shadow:0 -16px 40px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.08);color:#fff}
+.cs13 .hd{justify-self:center;width:36px;height:5px;border-radius:3px;background:rgba(255,255,255,.2)}
+.cs13 .pn>small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:rgba(255,255,255,.5)}
+.cs13 .pn>b{font:800 22px/1.1 Inter,sans-serif}
+.cs13 .pn>p{font:500 italic 13px/1.35 Lora,Georgia,serif;color:rgba(243,235,221,.75)}
+.ord13{display:flex;align-items:center;flex-wrap:wrap;gap:5px;padding:10px 10px 22px;border-radius:16px;background:rgba(255,255,255,.04)}
+.ord13>span{position:relative;display:grid;justify-items:center}
+.ord13 .m8{width:28px;height:28px}.ord13 .f .m8{width:40px;height:40px;box-shadow:0 0 0 2px var(--ac),0 0 16px color-mix(in srgb,var(--ac) 60%,transparent)}
+.ord13 .f .m8.em{box-shadow:none;filter:drop-shadow(0 0 8px var(--ac))}
+.ord13 em{position:absolute;top:100%;margin-top:4px;font:800 8.5px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#F2C14E;font-style:normal;white-space:nowrap}
+.ord13 .ar{width:7px;height:2px;border-radius:1px;background:rgba(255,255,255,.22)}
+.ord13.sm{gap:3px;flex-wrap:nowrap}.ord13.sm .m8{width:24px;height:24px}.ord13.sm .f .m8{width:34px;height:34px}.ord13.sm .ar{width:4px}
+.cs13 .rows{display:grid;gap:6px}
+.cs13 .rows>span{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.04)}
+.cs13 .rows .m8{width:30px;height:30px}
+.cs13 .rows .ri{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(46,230,197,.12);color:#2EE6C5}.cs13 .rows .ri.g{background:rgba(242,193,78,.12);color:#F2C14E}.cs13 .rows .ri .ic{width:16px;height:16px}
+.cs13 .rows .tt{display:grid;gap:2px}.cs13 .rows b{font:700 12.5px/1.25 Inter,sans-serif}.cs13 .rows small{font:500 11px/1.3 Inter,sans-serif;color:rgba(255,255,255,.55)}
+.cs13 .bt{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;margin-top:2px}
+.cs13 .bt button{display:flex;align-items:center;justify-content:center;gap:7px;height:50px;padding:0 8px!important;border-radius:16px!important;background:rgba(255,255,255,.07)!important;color:#fff;font:800 13.5px/1.1 Inter,sans-serif}.cs13 .bt .pri{background:linear-gradient(180deg,#F8D57A,#E8A93A)!important;color:#1d1300}.cs13 .bt .ic{width:17px;height:17px}
+/* --- радар: модельки мест одним цветом --- */
+.r13-st{position:absolute;left:0;right:0;top:106px;height:452px;perspective:900px;perspective-origin:50% 38%;touch-action:pan-y;cursor:grab}
+.r13-pl{--a:-28deg;--ls:22;--ln:22;--lw:22;--le:22;position:absolute;left:50%;top:50%;width:300px;height:300px;transform:translate(-50%,-50%) rotateX(56deg) rotateZ(var(--a)) scale(1.16);transform-style:preserve-3d}
+.r13-pl .fl13{position:absolute;inset:-8px;border-radius:30px;background:radial-gradient(circle at 50% 50%,rgba(46,230,197,.08),transparent 70%),repeating-linear-gradient(0deg,rgba(46,230,197,.08) 0 1px,transparent 1px 30px),repeating-linear-gradient(90deg,rgba(46,230,197,.08) 0 1px,transparent 1px 30px);box-shadow:inset 0 0 0 1.5px rgba(46,230,197,.3),0 0 60px rgba(46,230,197,.1)}
+.rv13{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.rv13 .fl{animation:r12fl 3s linear infinite}
+.m13{position:absolute;width:0;height:0;transform-style:preserve-3d;--lift:0}
+.r13-pl .b3,.r13-pl .p3{position:absolute;transform-style:preserve-3d}
+.r13-pl .pw{position:absolute;left:0;top:0;width:100%;height:100%;transform-style:preserve-3d}
+.r13-pl .f{position:absolute;left:0;top:0;--L:var(--ls);background-color:hsl(172 36% calc((var(--L) + var(--up,0) + var(--lift)) * 1%));box-shadow:inset 0 0 0 .7px hsl(172 80% 70% / .34)}
+.r13-pl .f.zt{--L:34}.r13-pl .f.zs{--L:var(--ls)}.r13-pl .f.zn{--L:var(--ln)}.r13-pl .f.zw{--L:var(--lw)}.r13-pl .f.ze{--L:var(--le)}
+.r13-pl .b3>.zs,.r13-pl .b3>.zn{transform-origin:0 0;transform:rotateX(90deg)}
+.r13-pl .b3>.zw,.r13-pl .b3>.ze,.r13-pl .rf>.zw,.r13-pl .rf>.ze{transform-origin:0 0;transform:rotateY(-90deg)}
+.r13-pl .pw>.f{transform-origin:50% 100%;--up:8}
+.r13-pl .tr{clip-path:polygon(50% 0,100% 100%,0 100%)}
+.r13-pl .tri{clip-path:polygon(0 0,0 100%,100% 50%);--up:5}
+.r13-pl .rf .pw>.f{--up:10}
+.r13-pl .hill .f{--up:-5}.r13-pl .drum .f{--up:-3}.r13-pl .trunk .f{--up:-9}.r13-pl .tree .f{--up:5}.r13-pl .hillp .f{--up:3}.r13-pl .pylon .f{--up:-3}.r13-pl .awn .f{--up:7}
+.r13-pl .portal>.zs::after{content:'';position:absolute;left:28%;right:28%;top:0;height:76%;border-radius:0 0 99px 99px;background:#010605;box-shadow:inset 0 -2px 0 hsl(172 80% 70% / .5)}
+.r13-pl .tent .pw>.f{background-image:repeating-linear-gradient(90deg,transparent 0 5px,rgba(0,0,0,.24) 5px 10px)}
+.r13-pl .win>.zs,.r13-pl .win>.zn{background-image:repeating-linear-gradient(0deg,transparent 0 5px,hsl(172 85% 72% / .3) 5px 7px),repeating-linear-gradient(90deg,transparent 0 4px,rgba(0,0,0,.45) 4px 7px)}
+.r13-pl .win>.zw,.r13-pl .win>.ze{background-image:repeating-linear-gradient(90deg,transparent 0 5px,hsl(172 85% 72% / .3) 5px 7px),repeating-linear-gradient(0deg,transparent 0 4px,rgba(0,0,0,.45) 4px 7px)}
+.r13-pl .bb3{position:absolute;width:0;height:0;transform-style:preserve-3d;transform:translateZ(var(--z)) rotateZ(calc(-1 * var(--a))) rotateX(-56deg)}
+.r13-pl .bb3>i{position:absolute;left:0;bottom:0;transform:translateX(-50%)}
+.moon13{width:22px;height:22px;border-radius:50%;box-shadow:inset -6px 3px 0 0 hsl(172 70% 72%);filter:drop-shadow(0 0 6px hsl(172 80% 60% / .6))}
+.sph13{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,hsl(172 80% 82%),hsl(172 45% 28%));box-shadow:0 0 12px hsl(172 80% 60% / .6)}
+.r13-pl .bb3>i.flg13{left:1px;transform:none;width:14px;height:9px;background:hsl(172 60% 55%);clip-path:polygon(0 0,100% 50%,0 100%)}
+.bm13{width:12px;height:130px;background:linear-gradient(0deg,hsl(172 90% 70% / .65),hsl(172 90% 75% / .25) 55%,transparent);border-radius:6px;animation:bm13 2.2s ease-in-out infinite}
+@keyframes bm13{0%,100%{opacity:.55}50%{opacity:1}}
+.pu13{position:absolute;left:-30px;top:-30px;width:60px;height:60px;border-radius:50%;border:2px solid hsl(172 90% 65%);opacity:0;animation:r12rg 2.4s ease-out infinite}.pu13.b{animation-delay:-1.2s}
+.rl13{position:absolute;width:14px;height:36px;border-left:1.5px solid hsl(172 70% 60% / .6);border-right:1.5px solid hsl(172 70% 60% / .6);background:repeating-linear-gradient(0deg,transparent 0 4px,hsl(172 70% 60% / .35) 4px 5px)}
+.mh13{position:absolute;width:10px;height:10px;margin:-5px;border-radius:50%;box-shadow:inset 0 0 0 1.5px hsl(172 70% 60% / .55)}
+.lb3{position:absolute;width:0;height:0;transform:translateZ(1px) rotateZ(calc(-1 * var(--a)))}
+.lb3 b{position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;font:800 9px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:hsl(172 70% 72% / .72);cursor:pointer}
+.m13.on{--lift:11}.m13.on .f{box-shadow:inset 0 0 0 1px hsl(172 95% 82% / .85)}
+.r13 .r12-hint{top:552px}
+.r13-sg{position:absolute;left:12px;right:12px;bottom:26px;z-index:8;display:grid;gap:8px}
+.r13-sg button{display:flex;align-items:center;gap:10px;height:50px;padding:0 12px!important;border-radius:16px!important;background:rgba(8,30,30,.85)!important;box-shadow:inset 0 0 0 1px rgba(46,230,197,.25);color:#fff;text-align:left}
+.r13-sg .dot{flex:none;width:10px;height:10px;border-radius:50%;background:#2EE6C5;animation:r13dot 1.6s ease-out infinite}@keyframes r13dot{0%{box-shadow:0 0 0 0 rgba(46,230,197,.7)}100%{box-shadow:0 0 0 10px rgba(46,230,197,0)}}
+.r13-sg span{flex:1;display:grid;gap:3px}.r13-sg b{font:800 13.5px/1 Inter,sans-serif}.r13-sg small{font:600 11px/1 Inter,sans-serif;color:rgba(191,255,243,.6)}.r13-sg .ic{width:16px;height:16px;color:rgba(191,255,243,.5)}
+.r13 .r12-sh{z-index:30}
+.r13-mn{position:absolute;inset:0;perspective:520px;overflow:hidden;pointer-events:none}
+.r13-mn .r13-pl{transform:translate(-50%,-44%) scale(.34) rotateX(56deg) rotateZ(var(--a))}
+/* --- Versus v13: v10 + починенное --- */
+.vs13 .vs8-dmg.me{left:25%;color:#A9C8FF;text-shadow:0 2px 0 #0a1a40,0 0 18px rgba(169,200,255,.7)}
+.vs13 .vs8-pn .tl button.used{visibility:hidden}
+.vs13 .vs8-pn .sl i.f{cursor:pointer}
+.vs13 .vs9-m.lf.spk .bb{box-shadow:0 0 0 1.5px #F6C76E,0 8px 20px rgba(0,0,0,.55)}.vs13 .vs9-m.rt.spk .bb{box-shadow:0 0 0 1.5px #A9C8FF,0 8px 20px rgba(0,0,0,.55)}
+.vs13 .vs9-m .pl[hidden]{display:none}
+.vs13 .vs9-m .tx u{text-decoration:none;background:linear-gradient(transparent 55%,rgba(242,211,91,.45) 55%)}
+.vs13 .vs9-m .tx .dt{font-style:normal;letter-spacing:.06em;color:rgba(255,255,255,.45)}
+.v13-ls{display:flex;align-items:center;gap:10px;height:52px;margin-top:4px;padding:0 14px 0 8px!important;border-radius:14px!important;background:rgba(169,200,255,.12)!important;color:#A9C8FF!important;text-align:left}
+.v13-ls>.ic{width:34px;height:34px;padding:9px;border-radius:50%;background:#A9C8FF;color:#0b1430}
+.v13-ls .v10-wv{display:flex;flex:none;width:64px;height:18px;opacity:.35}.v13-ls.on .v10-wv{opacity:1}.v13-ls:not(.on) .v10-wv i{animation-play-state:paused}
+.v13-ls em{flex:1;min-width:0;font:600 italic 12.5px/1.2 Lora,Georgia,serif;color:rgba(255,255,255,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vs13 .v10-win.ls small{color:#FF6B6B}.vs13 .v10-win.ls>b{color:#FF8A95}
+/* сравнение шторкой */
+.vc13{background:#07080D}
+.vc13-l{position:absolute;inset:0;pointer-events:none}
+.vc13-l.b{clip-path:inset(0 0 0 172px)}
+.vc13-dv{position:absolute;top:0;bottom:0;left:172px;z-index:80;width:44px;margin-left:-22px;cursor:ew-resize;touch-action:none}
+.vc13-dv .ln{position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:#F6D488;box-shadow:0 0 12px rgba(246,212,136,.8)}
+.vc13-dv .kn{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:#F6D488;color:#1d1300;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.6)}.vc13-dv .kn .ic{width:12px;height:12px;stroke-width:3}
+.vc13-dv em{position:absolute;top:calc(50% + 30px);padding:4px 8px;border-radius:999px;background:rgba(7,8,13,.88);font:900 11px/1 Inter,sans-serif;font-style:normal}.vc13-dv .la{right:30px;color:#A9C8FF}.vc13-dv .lb{left:30px;color:#F6D488}
+.vc13-cap{position:absolute;left:8px;right:8px;top:4px;z-index:85;display:flex;align-items:center;gap:8px;min-height:38px;padding:4px 6px 4px 8px;border-radius:16px;background:rgba(7,8,13,.94);box-shadow:inset 0 0 0 1px rgba(246,212,136,.3)}
+.vc13-cap .n{flex:none;width:26px;height:26px;border-radius:50%;background:#F6D488;color:#1d1300;display:grid;place-items:center;font:900 13px/1 Inter,sans-serif}.vc13-cap .n:empty{display:none}
+.vc13-cap .t{flex:1;min-width:0;display:grid;gap:2px}.vc13-cap .t b{font:800 12px/1.15 Inter,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vc13-cap .t small{font:600 9.5px/1.15 Inter,sans-serif;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vc13-cap .md{flex:none;display:flex;gap:2px;padding:2px;border-radius:10px;background:rgba(255,255,255,.07)}.vc13-cap .md button{padding:6px 7px!important;border-radius:8px!important;font:800 10.5px/1 Inter,sans-serif;color:rgba(255,255,255,.6)}.vc13-cap .md button.on{background:#F6D488;color:#1d1300}
+.vc13-dv[hidden]{display:none}
+.vc13-me{position:absolute;left:50%;bottom:0;z-index:85;transform:translateX(-50%);display:flex;align-items:center;gap:3px;height:22px;padding:0 10px!important;border-radius:999px 999px 0 0!important;background:#F6D488!important;color:#1d1300!important;font:800 10.5px/1 Inter,sans-serif;white-space:nowrap}.vc13-me .ic{width:11px;height:11px;stroke-width:3}
+/* --- реплики как в TikTok: ульта, выход, убийство --- */
+.tt13{background:#05060a}
+.tt13-bg{position:absolute;inset:0}.tt13-bg .l13{filter:blur(2px) brightness(.6) saturate(1.1);transform:scale(1.08)}
+.tt13-vg{position:absolute;inset:0;background:radial-gradient(70% 50% at 50% 40%,transparent 30%,rgba(5,6,10,.85)),linear-gradient(180deg,rgba(5,6,10,.4),transparent 25%,transparent 55%,rgba(5,6,10,.95))}
+.tt13-dk{position:absolute;inset:0;z-index:2;background:radial-gradient(60% 45% at 50% 38%,transparent 15%,color-mix(in srgb,var(--ac) 30%,#000) 100%);opacity:0;pointer-events:none}
+.tt13-hd,.ab13-hd{position:absolute;left:12px;right:12px;top:50px;z-index:10;display:flex;align-items:center;gap:10px}
+.tt13-hd .bk,.ab13-hd .bk{flex:none;width:40px;height:40px;border-radius:50%!important;background:rgba(255,255,255,.08)!important;display:grid;place-items:center}
+.tt13-hd span,.ab13-hd span{display:grid;gap:4px}.tt13-hd small,.ab13-hd small{font:800 9px/1 Inter,sans-serif;letter-spacing:.2em;color:rgba(255,255,255,.55)}.tt13-hd b,.ab13-hd b{font:700 22px/1 Oswald,Inter,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+.tt13-tags{position:absolute;left:12px;right:12px;top:104px;z-index:10;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}.tt13-tags::-webkit-scrollbar{display:none}
+.tt13-tags button{flex:none;display:flex;align-items:center;gap:6px;height:30px;padding:0 11px!important;border-radius:999px!important;background:rgba(255,255,255,.08)!important;font:800 11px/1 Inter,sans-serif;color:rgba(255,255,255,.75);white-space:nowrap}
+.tt13-tags button::before{content:'';width:7px;height:7px;border-radius:50%;background:#F6D488}.tt13-tags .t-enter::before{background:#A9C8FF}.tt13-tags .t-kill::before{background:#FF4D5E}
+.tt13-tags button.on{background:#F3EBDD!important;color:#14161E}
+.tt13-stage{position:absolute;left:50%;top:150px;z-index:5;width:212px;height:268px;margin-left:-106px}
+.tt13-stage .fr{position:absolute;inset:0;border-radius:6px;overflow:hidden;box-shadow:0 0 0 1.5px #C9A45A,0 0 0 5px rgba(10,8,4,.75),0 0 0 6.5px rgba(201,164,90,.5),0 20px 40px rgba(0,0,0,.8);transition:box-shadow .3s}
+.tt13-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tt13-stage .gl{position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-130%) skewX(-18deg);pointer-events:none}
+.tt13-stage .ring{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;opacity:0;pointer-events:none}
+.tt13-stage .ring i{position:absolute;inset:0;border-radius:50%;border:2px dashed var(--ac);animation:tt13sp 2.4s linear infinite}.tt13-stage .ring .r2{inset:24px;border:1.5px solid var(--ac);opacity:.6;animation-direction:reverse;animation-duration:3.4s}
+@keyframes tt13sp{to{transform:rotate(360deg)}}
+.tt13-stage .wave{position:absolute;left:50%;top:50%;width:260px;height:260px;border-radius:50%;border:3px solid var(--ac);opacity:0;pointer-events:none}
+.tt13-stage .stamp{position:absolute;left:50%;top:50%;z-index:6;padding:8px 16px 10px;border-radius:10px;background:var(--ac);color:#0b0b0e;font:900 34px/1 Inter,sans-serif;letter-spacing:.06em;opacity:0;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.6);white-space:nowrap}
+.tt13-stage.kill .stamp{background:#FF4D5E;color:#fff}.tt13-stage.enter .stamp{background:#A9C8FF;color:#0b1430}
+.tt13-stage.say .fr{box-shadow:0 0 0 1.5px #C9A45A,0 0 0 5px rgba(10,8,4,.75),0 0 0 6.5px rgba(201,164,90,.5),0 0 44px color-mix(in srgb,var(--ac) 60%,transparent),0 20px 40px rgba(0,0,0,.8)}
+.tt13-cap{position:absolute;left:14px;right:14px;top:438px;z-index:6;min-height:64px;display:grid;place-items:center;text-align:center}
+.tt13-cap .cw,.ab13-cap .cw{font:900 40px/1 Inter,sans-serif;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.6),0 0 24px color-mix(in srgb,var(--ac,#F6D488) 70%,transparent)}
+.tt13-cap .all{font:800 20px/1.25 Inter,sans-serif;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.8)}.tt13-cap .all u{text-decoration:none;background:linear-gradient(transparent 58%,color-mix(in srgb,var(--ac) 70%,transparent) 58%)}
+.tt13-ru{position:absolute;left:20px;right:20px;top:514px;z-index:6;text-align:center;font:500 italic 15px/1.35 Lora,Georgia,serif;color:rgba(243,235,221,.85)}
+.tt13-kw{position:absolute;left:50%;top:568px;z-index:7;transform:translateX(-50%);padding:8px 12px!important;border-radius:12px!important;background:rgba(255,255,255,.08)!important;font:600 12.5px/1.2 Inter,sans-serif;white-space:nowrap;color:#fff}.tt13-kw b{color:var(--ac)}
+.tt13-chips{position:absolute;left:12px;right:12px;bottom:90px;z-index:8;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}.tt13-chips::-webkit-scrollbar{display:none}
+.tt13-chips button{flex:none;display:flex;align-items:center;gap:6px;height:36px;padding:0 10px 0 4px!important;border-radius:999px!important;background:rgba(255,255,255,.07)!important;font:700 12px/1 Inter,sans-serif;white-space:nowrap;color:#fff}.tt13-chips .m8{width:28px;height:28px}.tt13-chips button.on{background:#F3EBDD!important;color:#14161E}.tt13-chips .lk{opacity:.45}
+.tt13-ft,.ab13-ft{position:absolute;left:14px;right:14px;bottom:26px;z-index:8;display:grid;grid-template-columns:48px 1fr 48px 48px;gap:8px}
+.tt13-ft button,.ab13-ft button{height:52px;border-radius:16px!important;background:rgba(255,255,255,.08)!important;display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;font:800 14px/1 Inter,sans-serif}
+.tt13-ft .pl,.ab13-ft .pl{background:#F3EBDD!important;color:#14161E}.tt13-ft .sv.on{color:#F6D488}
+.tt13-fl{position:absolute;inset:0;z-index:20;background:#fff;opacity:0;pointer-events:none}
+/* --- «кто про кого»: место меняется панелью комикса --- */
+.ab13{background:#05060a}
+.ab13-pg{position:absolute;left:12px;right:12px;top:104px;height:360px;border-radius:4px;overflow:hidden;background:#0a0b10;box-shadow:0 0 0 3px #F4ECD8,0 0 0 5px #111,0 20px 40px rgba(0,0,0,.7);cursor:pointer}
+.ab13-pn{position:absolute;inset:0}
+.ab13-pn .vg{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,10,.25),transparent 40%,rgba(5,6,10,.72))}
+.ab13-pn .cb{position:absolute;left:10px;top:10px;z-index:3;padding:6px 9px;background:#F4E06A;color:#111;font:900 10px/1 Inter,sans-serif;letter-spacing:.08em;box-shadow:2px 2px 0 #111}
+.ab13-pn .ab13-sp{position:absolute;left:14px;bottom:14px;width:46%;aspect-ratio:3/4;border-radius:3px;overflow:hidden;box-shadow:0 0 0 2px #F4ECD8,0 0 0 4px #111,0 12px 24px rgba(0,0,0,.7)}
+.ab13-pn video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ab13-pn .to{position:absolute;right:16px;top:58px;display:grid;justify-items:center;gap:8px}
+.ab13-pn .to .c{position:relative;width:86px;height:86px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px #fff,0 0 0 5px #111,0 10px 20px rgba(0,0,0,.6)}
+.ab13-pn .to small{padding:4px 8px;border-radius:999px;background:#111;color:#fff;font:800 11px/1 Inter,sans-serif}
+.ab13-cap{position:absolute;left:14px;right:14px;top:478px;min-height:58px;display:grid;place-items:center;text-align:center}.ab13-cap .cw{font-size:36px}.ab13-cap .all{font:800 19px/1.25 Inter,sans-serif;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+.ab13-ru{position:absolute;left:20px;right:20px;top:546px;text-align:center;font:500 italic 14.5px/1.35 Lora,Georgia,serif;color:rgba(243,235,221,.85)}
+.scr .ab13-nt{position:absolute;left:14px;right:14px;top:600px;display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);font:500 11.5px/1.35 Inter,sans-serif;color:rgba(255,255,255,.65)}.ab13-nt .ic{flex:none;width:16px;height:16px;color:#F4E06A}
+.ab13-ft{grid-template-columns:1fr auto 52px;align-items:center}.ab13-ft .pl{padding:0 16px!important}
+.ab13-ft .dt13{display:flex;gap:5px}.ab13-ft .dt13 i{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.2);transition:width .3s,background .3s}.ab13-ft .dt13 i.on{width:18px;background:#F4E06A}
+/* --- звук реплики с сопровождением --- */
+.sd13 .sd13-ls{position:absolute;left:14px;right:14px;top:174px;display:grid;gap:6px}
+.sd13-ls button{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;height:38px;padding:0 10px!important;border-radius:12px!important;background:rgba(255,255,255,.04)!important;color:rgba(255,255,255,.75);text-align:left;font:600 12px/1.2 Inter,sans-serif}
+.sd13-ls span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sd13-ls button.on{background:rgba(232,138,58,.14)!important;color:#fff;box-shadow:inset 0 0 0 1px rgba(232,138,58,.5)}
+.sd13-ls i{font:800 9px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;font-style:normal;padding:4px 6px;border-radius:6px;background:rgba(255,255,255,.08)}.sd13-ls .t-ult{color:#F6D488}.sd13-ls .t-enter{color:#A9C8FF}.sd13-ls .t-kill{color:#FF6B6B}
+.sd13-cd{position:absolute;left:14px;right:14px;top:310px;display:grid;grid-template-columns:84px 1fr;gap:12px;align-items:center;padding:10px;border-radius:18px;background:rgba(255,255,255,.04)}
+.sd13-cd .fr{position:relative;height:100px;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1.5px rgba(255,255,255,.12)}.sd13-cd video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sd13-cd .tx{display:grid;gap:5px}.sd13-cd b{font:800 14.5px/1.25 Inter,sans-serif}.sd13-cd small{font:500 italic 12.5px/1.3 Lora,serif;color:rgba(255,255,255,.6)}
+.sd13-cd .eq{display:flex;align-items:center;gap:2px;height:18px;margin-top:2px}.sd13-cd .eq i{flex:1;height:calc(var(--h) * 100%);border-radius:2px;background:rgba(255,255,255,.18);transform-origin:50% 50%}
+.sd13-cd.say .eq i{background:#E88A3A;animation:x13wv .45s ease-in-out infinite alternate;animation-delay:var(--d)}
+.sd13-sl{position:absolute;left:14px;right:14px;top:436px;display:grid;gap:8px}
+.sd13-sl label{display:grid;gap:8px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.04)}
+.sd13-sl label>span{display:flex;justify-content:space-between;align-items:baseline}.sd13-sl b{font:800 13.5px/1 Inter,sans-serif}.sd13-sl small{font:600 11.5px/1 Inter,sans-serif;color:#E88A3A}
+.sd13-sl input{width:100%;accent-color:#E88A3A}
+.sd13-ab{position:absolute;left:14px;right:14px;top:584px;display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+.sd13-ab button{display:flex;align-items:center;justify-content:center;gap:8px;height:54px;border:0;border-radius:18px!important;background:rgba(255,255,255,.08)!important;color:#fff;font:800 14px/1 Inter,sans-serif}.sd13-ab .pri{background:#E88A3A!important;color:#1a0d00}.sd13-ab .ic{width:16px;height:16px}
+.sd13 .sd12-nt{top:652px}
+/* --- обучение: карточки вместо кадров --- */
+.scr.dp13,.scr.lv13,.scr.pc13{overflow-y:auto;scrollbar-width:none}.scr.dp13::-webkit-scrollbar,.scr.lv13::-webkit-scrollbar,.scr.pc13::-webkit-scrollbar{display:none}
+.dp13{padding-bottom:40px}
+.cd13{position:relative;flex:none;display:inline-block;width:34px;height:48px;border-radius:5px;overflow:hidden;transform:rotate(-8deg);box-shadow:0 0 0 1.5px #C8CDD6,0 6px 14px rgba(0,0,0,.55)}
+.cd13 .img{position:absolute;inset:0;background-size:cover;background-position:center}
+.cd13 .sh{position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.5) 50%,transparent 65%);transform:translateX(-120%);animation:cd13sh 3.4s ease-in-out infinite}
+@keyframes cd13sh{0%,60%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
+.cd13.r-s{box-shadow:0 0 0 2px #9FB3FF,0 0 14px rgba(159,179,255,.55),0 6px 14px rgba(0,0,0,.55)}
+.cd13.r-g{box-shadow:0 0 0 2px #F2C14E,0 0 16px rgba(242,193,78,.65),0 6px 14px rgba(0,0,0,.55)}
+.cd13.r-c .sh{animation-duration:5s}
+.dp13 .cd13>b,.dp13 .cd13>em{display:none!important}
+.dp13 .dp12-ch .rw{display:flex;align-items:center;gap:12px;margin-top:6px}.dp13 .dp12-ch .rw>em{margin:0}
+.dp13 .dp12-ch .dc1 .rw>em{color:#2EE6C5}.dp13 .dp12-ch .dc2 .rw>em{color:#F2C14E}
+.dp13-rw{display:grid;gap:8px;margin:12px 14px 0;padding:12px;border-radius:18px;background:rgba(255,255,255,.04)}
+.dp13-rw>small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:rgba(255,255,255,.5)}
+.dp13-rw>span{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px}
+.dp13-rw>span>.ic{width:20px;height:20px;color:#F2C14E}.dp13-rw>span.r>.ic{color:#B38CFF}
+.dp13-rw>span>span{display:grid;gap:3px}.dp13-rw b{font:800 13px/1.2 Inter,sans-serif}.dp13-rw small{font:500 11px/1.25 Inter,sans-serif;color:rgba(255,255,255,.55)}
+.dp13-rw>span>em{font:900 13px/1 Inter,sans-serif;font-style:normal;color:#F2C14E}
+.dp13-rw .pb{display:block;height:5px;margin-top:3px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}.dp13-rw .pb i{display:block;height:100%;border-radius:3px;background:#F2C14E;transform-origin:left;transform:scaleX(var(--p))}
+.dp13-how{display:grid;gap:8px;margin:14px 14px 0;padding:12px;border-radius:18px;background:rgba(255,255,255,.04)}
+.dp13-how>small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:#F2C14E}
+.dp13-how>span{display:grid;grid-template-columns:28px 1fr;column-gap:10px;align-items:center}
+.dp13-how>span>i{grid-row:1/3;width:28px;height:28px;border-radius:50%;background:rgba(242,193,78,.14);color:#F2C14E;display:grid;place-items:center;font:900 13px/1 Inter,sans-serif;font-style:normal}
+.dp13-how b{font:800 13px/1.2 Inter,sans-serif}.dp13-how span small{font:500 11.5px/1.25 Inter,sans-serif;color:rgba(255,255,255,.55)}
+.dp13-tr{display:grid;grid-template-columns:136px 1fr;align-items:center;gap:10px;margin:4px 14px 0}
+.dp13 .dp13-tr .dp12-ring{width:136px;height:136px;margin:6px 0}.dp13 .dp13-tr .dp12-ring>b{font-size:34px}
+.dp13-cds{display:grid;gap:6px}
+.dp13-cds>span{display:grid;grid-template-columns:38px 1fr;column-gap:10px;align-items:center;padding:7px 8px;border-radius:12px;background:rgba(255,255,255,.04);opacity:.55;cursor:pointer}
+.dp13-cds>span.got{opacity:1;background:rgba(242,193,78,.08)}
+.dp13-cds .cd13{grid-row:1/3;transform:rotate(-6deg)}
+.dp13-cds b{font:900 13px/1 Inter,sans-serif}.dp13-cds small{font:600 10.5px/1.25 Inter,sans-serif;color:rgba(255,255,255,.62)}
+/* --- уровень героя: награды за уровни --- */
+.scr.lv13{background:#0c0d12}
+.lv13-hd{position:relative;height:232px;overflow:hidden;display:flex;align-items:flex-end;gap:14px;padding:0 18px 16px}
+.lv13-hd>.l13{position:absolute;inset:0;opacity:.85}.lv13-hd .dm{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,13,18,.35),#0c0d12 95%)}
+.lv13-hd .ico{position:relative;z-index:2;flex:none}.lv13-hd .ico .m8{display:block;width:74px;height:74px}
+.lv13-hd .tx{position:relative;z-index:2;flex:1;display:grid;gap:6px}.lv13-hd small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.2em;color:rgba(255,255,255,.6)}.lv13-hd .tx b{font:900 26px/1 Inter,sans-serif}
+.lv13-hd .xp{display:block;height:7px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden}.lv13-hd .xp i{display:block;height:100%;background:linear-gradient(90deg,#E23A4E,#F6D488);transform-origin:left;transform:scaleX(var(--p))}
+.lv13-hd em{font:600 11.5px/1.2 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.72)}
+.ic13{display:inline-grid;place-items:center;border-radius:50%}.ic13 .m8{display:block}
+.f-fr .m8,.f-ic .m8{box-shadow:0 0 0 2px rgba(201,164,90,.9)}.f-ic .m8{box-shadow:0 0 0 1.5px rgba(255,255,255,.18)}
+.f-sv .m8,.ico.f-sv .m8{box-shadow:0 0 0 3px #DDE6F2,0 0 0 5px #6C7A8C,0 0 18px rgba(221,230,242,.55)!important}
+.f-gd .m8{box-shadow:0 0 0 3px #F6D488,0 0 0 5px #8a5a10,0 0 22px rgba(246,212,136,.8)!important}
+.f-ic .m8.em,.f-fr .m8.em,.f-sv .m8.em,.f-gd .m8.em{border-radius:50%}
+.scr .lv13-k{margin:6px 18px 0;padding:12px;border-radius:14px;background:rgba(242,193,78,.08);box-shadow:inset 0 0 0 1px rgba(242,193,78,.25);font:500 12.5px/1.45 Inter,sans-serif;color:rgba(255,255,255,.82)}.lv13-k b{color:#F6D488}
+.lv13 .g11-sec{margin:20px 18px 10px}
+.lv13-tr{position:relative;display:flex;gap:10px;overflow-x:auto;padding:6px 18px 10px;scrollbar-width:none}.lv13-tr::-webkit-scrollbar{display:none}
+.lv13-tr .ln{position:absolute;left:64px;top:24px;width:918px;height:3px;border-radius:2px;background:rgba(255,255,255,.1)}.lv13-tr .ln>i{display:block;height:100%;border-radius:2px;background:#F6D488;transform-origin:left;transform:scaleX(var(--p))}
+.lv13-tr .nd{position:relative;flex:none;width:92px;display:grid;justify-items:center;gap:6px;text-align:center;cursor:pointer}
+.lv13-tr .nd .dt{position:relative;z-index:1;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#1a1d28;box-shadow:0 0 0 2px rgba(255,255,255,.12);font:900 13px/1 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.6)}
+.lv13-tr .nd.got .dt{background:#F6D488;color:#1d1300;box-shadow:none}.lv13-tr .nd.now .dt{background:#0c0d12;box-shadow:0 0 0 2.5px #F6D488,0 0 16px rgba(246,212,136,.6);color:#F6D488}
+.lv13-tr .nd .dt .ic{width:16px;height:16px;stroke-width:2.6}
+.lv13-tr .nd .rw{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.05)}.lv13-tr .nd .rw>.ic{width:26px;height:26px;color:#F6D488}.lv13-tr .nd .rw .m8{width:42px;height:42px}
+.lv13-tr .nd b{font:800 12px/1 Inter,sans-serif}.lv13-tr .nd small{font:600 10.5px/1.25 Inter,sans-serif;color:rgba(255,255,255,.62)}
+.lv13-tr .nd:not(.got):not(.now){opacity:.62}
+.lv13-xp{display:grid;gap:6px;margin:0 18px}
+.lv13-xp span{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04)}.lv13-xp .ic{width:18px;height:18px;color:#2EE6C5}.lv13-xp b{font:700 13px/1.2 Inter,sans-serif}.lv13-xp em{font:900 12.5px/1 Inter,sans-serif;font-style:normal;color:#F6D488}
+.lv13-vs{display:grid;gap:12px;margin:16px 18px 40px;padding:14px;border-radius:18px;background:rgba(255,255,255,.04);text-align:center}
+.lv13-vs>small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.lv13-vs .rw13{display:flex;justify-content:center;gap:24px}.lv13-vs .rw13>span{display:grid;justify-items:center;gap:8px}.lv13-vs .m8{width:50px;height:50px}.lv13-vs em{font:800 11px/1 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.62)}
+.scr .lv13-vs p{font:500 11.5px/1.4 Inter,sans-serif;color:rgba(255,255,255,.55)}
+/* --- понимаешь % — как видит игрок --- */
+.pc13{padding-bottom:40px}
+.pc13-sc{position:relative;height:168px;margin:52px 14px 0;border-radius:22px;overflow:hidden;display:flex;align-items:flex-end;padding:14px}
+.pc13-sc .img{position:absolute;inset:0;background-size:cover;background-position:center}.pc13-sc .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,13,18,.1),rgba(12,13,18,.9))}
+.pc13-sc>span{position:relative;display:grid;gap:6px}.pc13-sc small{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:rgba(255,255,255,.7)}.pc13-sc b{font:900 25px/1 Inter,sans-serif}.pc13-sc b em{font-style:normal;color:#4FD18B}
+.pc13-sc .q{position:absolute;right:12px;top:12px;width:32px;height:32px;border-radius:50%!important;background:rgba(5,6,10,.72)!important;font:900 15px/1 Inter,sans-serif;color:#F6D488}
+.pc13-ex{margin:12px 14px 0;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.04)}.pc13-ex>b{font:800 14px/1.2 Inter,sans-serif}.scr .pc13-ex p{margin-top:5px;font:500 12.5px/1.45 Inter,sans-serif;color:rgba(255,255,255,.72)}.pc13-ex p b{color:#fff;font-weight:800}
+.pc13 .pc12-it{margin:12px 14px 0}
+.pc13 .pc12-it button{padding:7px 10px!important;border-radius:999px!important;background:rgba(255,255,255,.06)!important;font:600 12px/1 Inter,sans-serif;color:rgba(255,255,255,.55);transition:background .35s,color .35s}
+.pc13 .pc12-it button.k{background:rgba(79,209,139,.15)!important;color:#8FF0B9;box-shadow:inset 0 0 0 1px rgba(79,209,139,.35)}.pc13 .pc12-it button.nw{background:#4FD18B!important;color:#05230F}
+.scr .pc13-tip{margin:8px 14px 0;font:600 11px/1 Inter,sans-serif;color:rgba(255,255,255,.4)}
+.pc13-af{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 14px 0;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.04)}
+.pc13-af small{width:100%;font:800 9.5px/1 Inter,sans-serif;letter-spacing:.16em;color:rgba(255,255,255,.5)}
+.pc13-af>span{display:flex;align-items:center;gap:6px;font:900 22px/1 Inter,sans-serif}.pc13-af>span i{display:grid;color:rgba(255,255,255,.4)}.pc13-af>span .ic{width:18px;height:18px}
+.pc13-af em{font:600 11.5px/1.2 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.55)}.pc13-af.up .v2{color:#4FD18B}
+.pc13 .pc12-n{padding:12px 20px 0}
+/* --- советы нейронок по одному --- */
+.op13{background:#0c0d12}
+.op13-hd{position:absolute;left:20px;right:20px;top:54px;display:grid;gap:5px}.op13-hd b{font:700 26px/1 "Playfair Display",Georgia,serif}.op13-hd small{font:600 12px/1.3 Inter,sans-serif;color:rgba(255,255,255,.55)}
+.op13-ok{position:absolute;left:14px;right:14px;top:120px;display:grid;gap:6px;padding:10px 12px;border-radius:16px;background:rgba(79,209,139,.07);box-shadow:inset 0 0 0 1px rgba(79,209,139,.22)}
+.op13-ok>small{font:800 9px/1 Inter,sans-serif;letter-spacing:.12em;color:#4FD18B}
+.op13-ok>span{display:grid;grid-template-columns:16px 1fr;column-gap:8px;font:700 12px/1.25 Inter,sans-serif}.op13-ok .ic{grid-row:1/3;width:15px;height:15px;color:#4FD18B}.op13-ok em{font:500 10.5px/1.2 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.5)}
+.op13-pr{position:absolute;left:20px;right:20px;top:282px;height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}.op13-pr i{display:block;height:100%;background:#F6D488;transform-origin:left;transform:scaleX(0);transition:transform .4s}
+.op13-st{position:absolute;left:14px;right:14px;top:298px;height:272px;touch-action:pan-y}
+.op13-c{position:absolute;inset:0;display:grid;align-content:start;gap:10px;padding:18px;border-radius:24px;background:linear-gradient(160deg,#1a1e2e,#121522);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 20px 40px rgba(0,0,0,.5);cursor:grab}
+.op13-c>small{font:800 9.5px/1.3 Inter,sans-serif;letter-spacing:.12em;color:rgba(255,255,255,.5)}.op13-c>b{font:800 19px/1.25 Inter,sans-serif}
+.op13-c .ex{display:grid;gap:5px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);font:500 13px/1.35 Inter,sans-serif;color:rgba(255,255,255,.85)}.op13-c .ex i{font:800 9px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;font-style:normal;color:#2EE6C5}
+.op13-c .me{font:600 12px/1.35 Inter,sans-serif;color:rgba(255,255,255,.6)}.op13-c .me b{color:#4FD18B}.op13-c .me-n b{color:#FF6B6B}.op13-c .me-l b{color:#F6D488}
+.op13-c .was{font:700 11px/1 Inter,sans-serif;font-style:normal;color:#F6D488}
+.op13-bt{position:absolute;left:14px;right:14px;top:586px;display:grid;grid-template-columns:1fr 1.3fr;gap:8px}
+.op13-bt button{height:56px;border-radius:18px!important;font:800 16px/1 Inter,sans-serif}.op13-bt .n{background:rgba(255,255,255,.08)!important;color:#fff}.op13-bt .y{background:#4FD18B!important;color:#05230F}
+.op13-l{position:absolute;left:50%;top:652px;transform:translateX(-50%);padding:8px 14px!important;font:700 13px/1 Inter,sans-serif;color:rgba(255,255,255,.55)!important}
+.op13-sm{position:absolute;left:14px;right:14px;top:298px;bottom:36px;overflow:auto;display:grid;align-content:start;gap:7px;padding:14px;border-radius:24px;background:#121522;scrollbar-width:none}
+.op13-sm>b{font:800 18px/1 Inter,sans-serif;margin-bottom:4px}.op13-sm>span{display:grid;grid-template-columns:16px 1fr;gap:8px;font:600 12px/1.3 Inter,sans-serif;color:rgba(255,255,255,.82)}.op13-sm em{font-style:normal}.op13-sm .ic{width:15px;height:15px}
+.op13-sm .v-y .ic{color:#4FD18B}.op13-sm .v-n .ic{color:#FF6B6B}.op13-sm .v-n em{opacity:.5;text-decoration:line-through}.op13-sm .v-l,.op13-sm .v-q{color:rgba(255,255,255,.5)}
+.op13-sm .bt{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;margin-top:8px}.op13-sm .bt button{height:46px;border-radius:14px!important;background:rgba(255,255,255,.08)!important;font:800 13.5px/1 Inter,sans-serif;color:#fff}.op13-sm .bt .pri{background:#F6D488!important;color:#1d1300}
+/* --- настройки: кожа Главной --- */
+.st13{background:#06070B}
+.st13-m{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:52px 14px 120px;scrollbar-width:none}.st13-m::-webkit-scrollbar{display:none}
+.st13-hd{display:flex;align-items:center;gap:10px;margin:0 4px 14px}
+.st13-hd .bk{flex:none;width:36px;height:36px;border-radius:50%!important;background:rgba(255,255,255,.07)!important;display:grid;place-items:center}
+.st13-hd b{font:700 30px/1 "Playfair Display",Georgia,serif;letter-spacing:-.01em;color:#F3EBDD}
+.st13-hd .ad{margin-left:auto;padding:5px 8px;border-radius:8px;background:rgba(255,77,94,.14);color:#FF8A95;font:800 9.5px/1 "JetBrains Mono",ui-monospace,monospace;font-style:normal;letter-spacing:.04em}
+.st13-me{position:relative;display:grid;grid-template-columns:48px 1fr;align-items:center;column-gap:12px;width:100%;height:118px;padding:14px!important;border-radius:22px!important;overflow:hidden;text-align:left;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.st13-me .img{position:absolute;inset:0;background-size:cover;background-position:50% 30%}.st13-me .sh{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,7,11,.92) 35%,rgba(6,7,11,.35))}
+.st13-me .av{position:relative;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,#F6D488,#C8902C);color:#1d1300;font:800 20px/1 Inter,sans-serif}
+.st13-me .tx{position:relative;display:grid;gap:7px}.st13-me .tx b{font:800 18px/1 Inter,sans-serif}.st13-me .tx small{display:flex;align-items:center;gap:7px;font:600 12px/1 Inter,sans-serif;color:rgba(255,255,255,.78)}
+.st13 .lb{display:inline-flex;align-items:flex-end;gap:2px;height:12px;font-style:normal}.st13 .lb i{width:3px;border-radius:1px;background:rgba(255,255,255,.25)}
+.st13 .lb i:nth-child(1){height:30%}.st13 .lb i:nth-child(2){height:48%}.st13 .lb i:nth-child(3){height:66%}.st13 .lb i:nth-child(4){height:84%}.st13 .lb i:nth-child(5){height:100%}
+.st13-me .lb i:nth-child(-n+3),.st13 .lb.on3 i:nth-child(-n+3){background:#F6D488}
+.st13-me>em{position:absolute;right:14px;bottom:12px;display:flex;align-items:center;gap:3px;font:700 11.5px/1 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.82)}.st13-me>em .ic{width:13px;height:13px}
+.st13-q{display:flex;align-items:center;gap:8px;height:44px;margin:12px 0 0;padding:0 14px;border-radius:14px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5)}.st13-q .ic{width:18px;height:18px}
+.st13-q input{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font:600 14px/1 Inter,sans-serif}.st13-q input::placeholder{color:rgba(255,255,255,.4)}
+.scr .st13-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:24px 4px 10px;font:700 21px/1 "Playfair Display",Georgia,serif;color:#F3EBDD}.scr .st13-h small{font:600 11.5px/1 Inter,sans-serif;color:rgba(255,255,255,.45)}
+.st13-c{display:grid;border-radius:22px;background:linear-gradient(180deg,#121522,#0d1019);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);overflow:hidden}
+.st13-c .rw{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.05);transition:background .3s}.st13-c .rw:first-child{border-top:0}
+.st13-c .rw .t{flex:1;min-width:0;display:grid;gap:3px}.st13-c .rw .t b{font:700 14px/1.2 Inter,sans-serif}.st13-c .rw .t small{font:500 11.5px/1.3 Inter,sans-serif;color:rgba(255,255,255,.5)}
+.st13-c .rw .v{display:flex;align-items:center;gap:3px;font:600 13px/1 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.55)}.st13-c .rw .v .ic{width:15px;height:15px}
+.st13-c .rw.hl,.st13-c .op.hl{background:rgba(246,212,136,.1)}
+.st13-tg{position:relative;flex:none;width:50px;height:30px;padding:0!important;border-radius:15px!important;background:rgba(255,255,255,.14)!important;transition:background .25s}
+.st13-tg i{position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.35);transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.st13-tg.on{background:#F6D488!important}.st13-tg.on i{transform:translateX(20px)}
+.st13-sg{position:relative;flex:none;display:grid;grid-template-columns:repeat(var(--n),minmax(34px,auto));padding:3px;border-radius:12px;background:rgba(255,255,255,.07)}
+.st13-sg button{position:relative;z-index:1;padding:8px 9px!important;font:800 12px/1 Inter,sans-serif;color:rgba(255,255,255,.6);transition:color .25s;white-space:nowrap}.st13-sg button.on{color:#1d1300}
+.st13-sg>i{position:absolute;top:3px;bottom:3px;left:3px;width:calc((100% - 6px) / var(--n));border-radius:9px;background:#F6D488;transform:translateX(calc(100% * var(--i)));transition:transform .35s cubic-bezier(.3,1.25,.5,1)}
+.st13-c.pvw .fr{position:relative;display:block;height:168px;margin:10px 10px 0;border-radius:14px;overflow:hidden}
+.st13-c.pvw .fr .img{position:absolute;inset:0;background-size:cover;background-position:center}
+.st13-c.pvw .sub{position:absolute;left:10px;right:10px;bottom:12px;display:grid;justify-items:center;gap:3px;text-align:center}
+.st13-c.pvw .sub b{font:800 15px/1.2 Inter,sans-serif;text-shadow:0 1px 6px rgba(0,0,0,.95);transition:font-size .3s}.st13-c.pvw .sub small{font:600 12px/1.2 Inter,sans-serif;color:#F6D488;text-shadow:0 1px 6px rgba(0,0,0,.95);transition:font-size .3s}
+.st13-c.pvw[data-sz="0"] .sub b{font-size:12px}.st13-c.pvw[data-sz="0"] .sub small{font-size:10px}.st13-c.pvw[data-sz="2"] .sub b{font-size:18px}.st13-c.pvw[data-sz="2"] .sub small{font-size:14px}.st13-c.pvw[data-sz="3"] .sub b{font-size:21px}.st13-c.pvw[data-sz="3"] .sub small{font-size:16px}
+.st13-c.pvw.notr .sub small{display:none}
+.st13-c.pvw .pz{position:absolute;left:10px;top:10px;display:flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;background:rgba(6,7,11,.78);font:700 10.5px/1 Inter,sans-serif;font-style:normal;color:#F6D488}.st13-c.pvw .pz .ic{width:11px;height:11px}.st13-c.pvw.nopz .pz{display:none}
+.st13-c .lvb13{display:flex;align-items:center;gap:8px}.st13-c .lvb13 b{font:800 13px/1 Inter,sans-serif;color:#F6D488}
+.st13-c .rw.gl{flex-wrap:wrap}.st13-c .rw.gl .st13-sg{width:100%;grid-template-columns:repeat(4,1fr);margin-top:2px}
+.st13-c .ring{position:relative;flex:none;width:44px;height:44px;display:grid;place-items:center}.st13-c .ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.st13-c .ring .rt{fill:none;stroke:rgba(255,255,255,.12);stroke-width:3}.st13-c .ring .rp{fill:none;stroke:#4FD18B;stroke-width:3.4;stroke-linecap:round;stroke-dasharray:100;transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)}
+.st13-c .ring b{position:relative;margin-top:-5px;font:900 13px/1 Inter,sans-serif}.st13-c .ring small{position:absolute;bottom:8px;font:700 7.5px/1 Inter,sans-serif;color:rgba(255,255,255,.5)}
+.st13-c.icn13{grid-template-columns:1fr 1fr;gap:8px;padding:0;background:transparent;box-shadow:none;overflow:visible}
+.st13-c.icn13 .op{position:relative;display:grid;justify-items:start;gap:4px;padding:12px!important;border-radius:18px!important;background:linear-gradient(180deg,#121522,#0d1019)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);text-align:left;color:#fff;transition:box-shadow .25s}
+.st13-c.icn13 .rw13{display:flex;margin-bottom:6px}.st13-c.icn13 .rw13 .m8{width:28px;height:28px;margin-right:-8px;box-shadow:0 0 0 2px #0f121c}.st13-c.icn13 .rw13 .m8.em{box-shadow:none}
+.st13-c.icn13 .op b{font:800 14px/1 Inter,sans-serif}.st13-c.icn13 .op small{font:500 11px/1.2 Inter,sans-serif;color:rgba(255,255,255,.5)}
+.st13-c.icn13 .ck{position:absolute;right:10px;top:10px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);color:transparent;font-style:normal}.st13-c.icn13 .ck .ic{width:13px;height:13px;stroke-width:3}
+.st13-c.icn13 .op.on{box-shadow:inset 0 0 0 1.5px #F6D488}.st13-c.icn13 .op.on .ck{background:#F6D488;color:#1d1300}
+.st13-c .rw.bv input{flex:1;max-width:120px;accent-color:#F6D488}
+.st13-c .rw.bv .pl{flex:none;width:34px;height:34px;border-radius:50%!important;background:rgba(246,212,136,.14)!important;color:#F6D488;display:grid;place-items:center}.st13-c .rw.bv .pl .ic{width:14px;height:14px;margin-left:2px}
+.st13-c.rmd .tg{display:flex;align-items:flex-end;gap:8px;padding:12px 14px 6px;background:radial-gradient(120% 90% at 20% 0%,rgba(111,183,255,.08),transparent)}
+.st13-c.rmd .bot{flex:none;width:30px;height:30px;border-radius:50%;background:linear-gradient(140deg,#F6D488,#C8902C);color:#1d1300;display:grid;place-items:center;font:900 13px/1 Inter,sans-serif}
+.st13-c.rmd .bb{position:relative;display:grid;gap:3px;padding:8px 12px 18px;border-radius:14px 14px 14px 4px;background:#1c2233;max-width:82%}.st13-c.rmd .bb b{font:800 12px/1 Inter,sans-serif;color:#6FB7FF}.st13-c.rmd .bb span{font:700 12.5px/1.2 Inter,sans-serif}.st13-c.rmd .bb em{font:500 italic 12.5px/1.3 Lora,Georgia,serif;color:rgba(255,255,255,.82)}.st13-c.rmd .bb .t{position:absolute;right:8px;bottom:5px;font:600 9.5px/1 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.4)}
+.scr .st13-v{margin:22px 0 0;text-align:center;font:600 11px/1 Inter,sans-serif;color:rgba(255,255,255,.3)}
+.st13.nofx13 *{animation:none!important}
+/* админка */
+.ad13-n{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:2px}
+.ad13-n>span{display:grid;gap:4px;padding:12px;border-radius:18px;background:linear-gradient(180deg,#121522,#0d1019);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.ad13-n b{font:900 20px/1 Inter,sans-serif}.ad13-n small{font:600 10.5px/1.2 Inter,sans-serif;color:rgba(255,255,255,.5)}.ad13-n svg{width:100%;height:18px;margin-top:4px}.ad13-n path{fill:none;stroke:#4FD18B;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.st13-c.pl .st13-q.in{margin:10px 10px 4px;height:40px}
+.st13-c.pl .av{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);font:800 14px/1 Inter,sans-serif}
+.st13-c.pl .src{padding:4px 7px;border-radius:7px;background:rgba(46,230,197,.12);color:#2EE6C5;font:700 10px/1 "JetBrains Mono",ui-monospace,monospace;font-style:normal}.st13-c.pl .rw>.ic{width:15px;height:15px;color:rgba(255,255,255,.35)}
+.st13-c.pl .rw.mo{justify-content:space-between}.st13-c.pl .rw.mo b{font:800 13px/1 Inter,sans-serif;color:#F6D488}
+.st13-c.fn{gap:10px;padding:14px}
+.st13-c.fn .br{display:grid;grid-template-columns:1fr auto;gap:5px 10px;align-items:center}.st13-c.fn .br b{font:700 12.5px/1 Inter,sans-serif}.st13-c.fn .br em{font:700 11.5px/1 Inter,sans-serif;font-style:normal;color:rgba(255,255,255,.55)}
+.st13-c.fn .br>i{grid-column:1/3;display:block;height:7px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}.st13-c.fn .br>i>i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#2EE6C5,#4FD18B);transform-origin:left;transform:scaleX(var(--p))}
+.st13-c.fn .md{display:flex;align-items:baseline;gap:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}.st13-c.fn .md b{font:900 18px/1 Inter,sans-serif;color:#F6D488}.st13-c.fn .md small{font:600 11px/1 Inter,sans-serif;color:rgba(255,255,255,.5)}
+.st13 .pl13{flex:none;padding:6px 10px;border-radius:999px;font:800 11px/1 Inter,sans-serif;font-style:normal;cursor:pointer}.st13 .pl13.on{background:rgba(79,209,139,.15);color:#4FD18B}.st13 .pl13.tt{background:rgba(242,193,78,.15);color:#F2C14E}.st13 .pl13.off{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55)}
+.st13-c.me .bt{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 10px}.st13-c.me .bt button{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border-radius:14px!important;background:rgba(255,255,255,.07)!important;font:700 12.5px/1 Inter,sans-serif;color:#fff}.st13-c.me .bt .ic{width:15px;height:15px}
+.st13-c.me .rs{margin:0 14px 12px;height:44px;border-radius:14px!important;background:rgba(255,77,94,.08)!important;color:#FF6B6B;font:700 13px/1 Inter,sans-serif}
+
 </style>
 
 <div class="wrap">
  <header>
-  <h1>v12 — твой отзыв на v11</h1>
-  <p class="lead">Открыта v12: игры (Deadlock отдельно от игр по кино, всё дедлоковское — внутри), герои на карточках, радар 3D, Versus по v10, реплики как в TikTok, звук с сопровождением, 3 комикса, обучение «хватит или ещё» и мнения нейронок — отметь, что берём. Прошлые версии — в «Прошлые версии», под телефоном кнопки «v12 · v11 · v10» — тот же экран в другой версии. Звук включается после первого касания.</p>
+  <h1>v13 — твой отзыв на v12</h1>
+  <p class="lead">Открыта v13: Deadlock изнутри без «VS» на входе, герои маленькими иконками на живой локации, радар с модельками мест (цвета v12 один в один), Versus — v10 один в один и починенный, плюс сравнение с v10 шторкой; реплики с ультой и звуком; «кто про кого» со сменой места; выбор главы комикса; обучение — карточки вместо кадров, награды за уровень героя, советы нейронок по одному; настройки в виде Главной. Под телефоном кнопки «v13 · v12 · …» — тот же экран в другой версии. Звук включается после первого касания.</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
   <div class="vers" id="grp"></div>
   <div class="vars" id="vars"></div>
@@ -9035,7 +9452,7 @@ function g12Tab(R,ctx,o){o=o||{};const city=o.card==='city',seg=o.place==='seg',
  an($('.g12-bd',R),[{opacity:0,transform:'scale(.2)'},{opacity:1,transform:'none'}],{sp:SPb,dl:1300});
  $$('.g12-sec,.g12-duel,.g12-soon,.g12-moved,.g12-sg,.g12-nt',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:520+i*80}));
  const openHub=()=>{if(hub)return;hub=true;an(cd,[{transform:'scale(.97)'},{transform:'scale(1.015)'},{transform:'none'}],{d:300,e:EO});const r=rel(cd,R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:30,c:['#F6D488','#fff','#FF8A4C'],v:5,g:0,s:2.2,l:40});
-  ctx.t(()=>g12Hub(R,ctx,cd,{onClose(){hub=false}}),140)};
+  ctx.t(()=>(o.hub||g12Hub)(R,ctx,cd,{onClose(){hub=false}}),140)};
  ctx.on(cd,'click',openHub);
  ctx.on(R,'click',e=>{const d=e.target.closest('.g12-duel');if(d){an(d,[{transform:'scale(.97)'},{transform:'none'}],{sp:SPb});g12DuelSheet(R,ctx);return}
   const s=e.target.closest('.g12-sg button');if(s){$$('.g12-sg button',R).forEach(b=>b.classList.toggle('on',b===s));$('.g12-sg',R).classList.toggle('r',s.dataset.s==='l');$$('.g12-pane',R).forEach(p=>{const on=p.dataset.p===s.dataset.s;p.hidden=!on;if(on)$$('.g12-card,.g12-duel,.g12-soon,.g12-nt',p).forEach((x,i)=>an(x,[{opacity:0,transform:`translateX(${s.dataset.s==='l'?30:-30}px)`},{opacity:1,transform:'none'}],{sp:SPs,dl:i*60}))});return}
@@ -9517,9 +9934,786 @@ V.push({g:'l12',id:'l12o',n:'Мнения нейронок · ответь',
  minus:'Отметки живут только в этом браузере — поэтому есть «Скопировать».',
  mount(R,ctx){ops12(R,ctx)}});
 
+/* ================= v13 (26.10, отзыв на v12) ================= */
+Object.assign(ICO,{wave13:'<path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 7v10M21 12h0"/>',cards13:'<rect x="3.5" y="6" width="11" height="14" rx="2"/><path d="M8 3.5h9.5a2 2 0 0 1 2 2V17"/>',
+ swords13:'<path d="M4 4l9.5 9.5M4 4v4l8 8M4 4h4l8 8"/><path d="M20 4l-9.5 9.5M20 4v4l-3 3M20 4h-4l-3 3"/><path d="M13 16l-2 2 2 2M11 16l2 2-2 2"/>',
+ comic13:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 11h9M12 4v16M12 13h9"/>',trophy13:'<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"/>',
+ cal13:'<rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/>',ear13:'<path d="M7 10a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-6 0"/><path d="M10 10a2 2 0 0 1 4 0"/>'});
+
+/* --- звук v13 (свой движок, общий для всех экранов v13).
+   Андрей на v12: «половина реплик не работает в Versus», «шум на фоне постоянный».
+   Причина: на iPhone звук страницы открывается только касанием, а реплики v12 звучали по таймеру — до касания движок ещё не был открыт.
+   Теперь движок открывается на первом же касании любого места, а все реплики экрана загружаются заранее. В Versus фона нет: только голос и лёгкое эхо. --- */
+const S13=(()=>{let ac=null,out=null,rv=null,cur=null,bed=null,bedN='',bedV=.5,duckOn=false,ok=false;const BUF={},PR={};
+ function A0(){if(ac)return ac;const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();
+  out=ac.createDynamicsCompressor();out.threshold.value=-16;out.knee.value=8;out.ratio.value=2.4;out.connect(ac.destination);
+  rv=ac.createConvolver();rv.buffer=ir(1.5,3.2);rv.connect(out);return ac}
+ function ir(sec,dc){const r=ac.sampleRate,n=Math.round(r*sec),b=ac.createBuffer(2,n,r);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,dc)*(i<r*.012?i/(r*.012):1)}return b}
+ function unlock(){if(!A0())return;if(ac.state!=='running'){try{ac.resume()}catch(e){}}try{const b=ac.createBuffer(1,1,22050),s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0)}catch(e){}ok=true}
+ ['pointerdown','touchend','keydown'].forEach(ev=>document.addEventListener(ev,unlock,{capture:true,passive:true}));
+ const live=()=>!!ac&&ac.state==='running';
+ function key(k){return AU11[k]||k}
+ function load(k){k=key(k);if(BUF[k])return Promise.resolve(BUF[k]);if(PR[k])return PR[k];const s=A.A&&A.A[k];if(!s||!A0())return Promise.resolve(null);
+  PR[k]=(async()=>{try{let u;if(String(s).startsWith('a/'))u=new Uint8Array(await (await fetch(s)).arrayBuffer());else{const b=atob(s);u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i)}
+   BUF[k]=await new Promise((y,n)=>ac.decodeAudioData(u.buffer,y,n));return BUF[k]}catch(e){console.warn('звук не загрузился:',k);PR[k]=null;return null}})();return PR[k]}
+ const preload=L=>Promise.all(L.map(load));
+ function duck(on){duckOn=on;if(!bed)return;const t=ac.currentTime;bed.g.gain.cancelScheduledValues(t);bed.g.gain.setValueAtTime(bed.g.gain.value,t);bed.g.gain.linearRampToValueAtTime(on?bedV*.35:bedV,t+(on?.12:.7))}
+ function stopLine(){if(cur){try{cur.onended=null;cur.stop()}catch(e){}cur=null;duck(false)}}
+ // реплика: echo 0…1 — сколько эха места (0 — сухо, как с вики)
+ async function line(k,o){o=o||{};const b=await load(k);if(!b||!live())return 0;stopLine();const s=ac.createBufferSource();s.buffer=b;const g=ac.createGain();g.gain.value=o.gain||1;s.connect(g);g.connect(out);
+  if(o.echo){const e=ac.createGain();e.gain.value=o.echo;g.connect(e);e.connect(rv)}duck(true);s.onended=()=>{if(cur===s){cur=null;duck(false)}o.end&&o.end()};s.start();cur=s;return b.duration}
+ function noise(sec,brown){const r=ac.sampleRate,n=Math.round(r*sec),b=ac.createBuffer(1,n,r),d=b.getChannelData(0);let l=0;for(let i=0;i<n;i++){const w=Math.random()*2-1;if(brown){l=(l+.02*w)/1.02;d[i]=l*3.5}else d[i]=w}return b}
+ // фон места: собор — орган и колокол; туннели — гул и капли (громкость — vol, под голосом сам тише)
+ function bedOn(name,vol){if(!A0()||!live())return;if(vol!=null)bedV=vol;if(bedN===name){duck(duckOn);return}bedOff();bedN=name;const g=ac.createGain();g.gain.value=0;g.connect(out);const sd=ac.createGain();sd.gain.value=.7;sd.connect(rv);const N=[],T=[];
+  g.gain.linearRampToValueAtTime(duckOn?bedV*.35:bedV,ac.currentTime+1.4);
+  if(name==='cathedral'){[110,164.8,220,329.6].forEach((f,i)=>{const o=ac.createOscillator();o.type=i%2?'triangle':'sine';o.frequency.value=f*(1+(i-1.5)*.0015);const og=ac.createGain();og.gain.value=[.08,.045,.045,.02][i];
+    const lf=ac.createOscillator(),lg=ac.createGain();lf.frequency.value=.11+i*.04;lg.gain.value=og.gain.value*.45;lf.connect(lg);lg.connect(og.gain);o.connect(og);og.connect(g);og.connect(sd);o.start();lf.start();N.push(o,lf)});
+   const bell=()=>{if(bedN!=='cathedral')return;const t=ac.currentTime;[220,523.3,660.6].forEach((f,j)=>{const o=ac.createOscillator(),e=ac.createGain();o.frequency.value=f;e.gain.setValueAtTime(.0001,t);e.gain.exponentialRampToValueAtTime([.05,.02,.012][j],t+.02);e.gain.exponentialRampToValueAtTime(.0001,t+3.6);o.connect(e);e.connect(sd);e.connect(g);o.start(t);o.stop(t+3.7)});T.push(setTimeout(bell,6200+Math.random()*2600))};T.push(setTimeout(bell,2200))}
+  else{const s=ac.createBufferSource();s.buffer=noise(4,1);s.loop=true;const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=240;const sg=ac.createGain();sg.gain.value=.5;s.connect(f);f.connect(sg);sg.connect(g);s.start();N.push(s);
+   const drip=()=>{if(bedN!==name)return;const t=ac.currentTime,o=ac.createOscillator(),e=ac.createGain(),p=ac.createStereoPanner?ac.createStereoPanner():null;const f0=900+Math.random()*700;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f0*.45,t+.07);
+    e.gain.setValueAtTime(.0001,t);e.gain.exponentialRampToValueAtTime(.1,t+.005);e.gain.exponentialRampToValueAtTime(.0001,t+.12);o.connect(e);const to=p||e;if(p){p.pan.value=Math.random()*1.6-.8;e.connect(p)}to.connect(sd);to.connect(g);o.start(t);o.stop(t+.14);T.push(setTimeout(drip,700+Math.random()*1600))};T.push(setTimeout(drip,800))}
+  bed={g,N,T}}
+ function bedVol(v){bedV=v;duck(duckOn)}
+ function bedOff(){if(!bed)return;const b=bed;bed=null;bedN='';try{const t=ac.currentTime;b.g.gain.cancelScheduledValues(t);b.g.gain.setValueAtTime(b.g.gain.value,t);b.g.gain.linearRampToValueAtTime(0,t+.5)}catch(e){}b.T.forEach(clearTimeout);setTimeout(()=>{b.N.forEach(n=>{try{n.stop()}catch(e){}});try{b.g.disconnect()}catch(e){}},700)}
+ // звуки событий (в макете — синтез; в приложении — настоящие звуки игры от Зетки)
+ function sfx(kind){if(!A0()||!live())return 0;const t=ac.currentTime,o2=(f,ty)=>{const o=ac.createOscillator();o.type=ty||'sine';o.frequency.value=f;return o},env=(g,a,pk,d,t0)=>{g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(pk,t0+a);g.gain.exponentialRampToValueAtTime(.0001,t0+d)};
+  const nz=(sec,lo,hi,pk,t0,sweep)=>{const s=ac.createBufferSource();s.buffer=noise(sec,0);const bp=ac.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.2;bp.frequency.setValueAtTime(lo,t0);if(sweep)bp.frequency.exponentialRampToValueAtTime(hi,t0+sec*.85);else bp.frequency.value=hi;const g=ac.createGain();env(g,.04,pk,sec,t0);s.connect(bp);bp.connect(g);g.connect(out);g.connect(rv);s.start(t0);s.stop(t0+sec)};
+  const boom=(f0,pk,t0,d)=>{const o=o2(f0),g=ac.createGain();o.frequency.setValueAtTime(f0,t0);o.frequency.exponentialRampToValueAtTime(32,t0+d*.8);env(g,.01,pk,d,t0);o.connect(g);g.connect(out);o.start(t0);o.stop(t0+d)};
+  if(kind==='ult'){nz(.9,240,3200,.42,t,true);[0,.12,.24].forEach((dl,i)=>{const o=o2(220*(i+1)*1.5,'triangle'),g=ac.createGain();env(g,.3,.03,.9,t+dl);o.connect(g);g.connect(rv);o.start(t+dl);o.stop(t+dl+1)});boom(90,.95,t+.86,1.1);nz(.35,1800,1800,.22,t+.86);return 900}
+  if(kind==='enter'){nz(.5,3800,3800,.18,t);const o=o2(2637,'sine'),g=ac.createGain();env(g,.005,.12,1.4,t+.05);o.connect(g);g.connect(out);g.connect(rv);o.start(t+.05);o.stop(t+1.5);const o3=o2(3951),g3=ac.createGain();env(g3,.005,.05,1,t+.05);o3.connect(g3);g3.connect(rv);o3.start(t+.05);o3.stop(t+1.1);return 320}
+  if(kind==='kill'){[196,233.1,293.7].forEach((f,i)=>{const o=o2(f,'sawtooth'),lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1200;const g=ac.createGain();env(g,.01,.09,1.3,t+i*.05);o.connect(lp);lp.connect(g);g.connect(out);g.connect(rv);o.start(t+i*.05);o.stop(t+1.4)});boom(70,.6,t,.6);return 300}
+  if(kind==='hit'){boom(120,.8,t,.32);nz(.12,2200,2200,.25,t);return 0}
+  if(kind==='ko'){boom(60,.9,t,1.6);[110,164.8].forEach(f=>{const o=o2(f,'triangle'),g=ac.createGain();env(g,.02,.08,2.4,t);o.connect(g);g.connect(rv);o.start(t);o.stop(t+2.5)});return 0}
+  if(kind==='tick'){const o=o2(1800),g=ac.createGain();env(g,.002,.05,.06,t);o.connect(g);g.connect(out);o.start(t);o.stop(t+.08);return 0}
+  return 0}
+ function stop(){stopLine();bedOff()}
+ return {A0,load,preload,line,stopLine,bed:bedOn,bedVol,bedOff,sfx,stop,live,unlocked:()=>ok}})();
+// старый звук v12 тоже открываем на первом касании — чтобы и в v12 реплики по таймеру звучали
+['pointerdown','touchend'].forEach(ev=>document.addEventListener(ev,()=>{try{const a=SND12.A0();if(a&&a.state!=='running')a.resume()}catch(e){}},{capture:true,passive:true}));
+// реплика: до первого касания — молча (только волна), после — голос; sfx — звук события перед голосом
+function say13(ctx,k,o){o=o||{};const d=(DUR11[AU11[k]||k]||2.4)*1000;let done=false;const fin=()=>{if(done)return;done=true;o.end&&o.end()};
+ const gap=o.sfx&&S13.live()?S13.sfx(o.sfx):0;const go=()=>{S13.line(k,{echo:o.echo,gain:o.gain,end:fin}).then(x=>{if(!x)ctx.t(fin,d)})};
+ if(gap)ctx.t(go,gap);else go();ctx.add(()=>S13.stopLine());ctx.t(fin,d+gap+400);return d+gap}
+
+/* --- герои v13 --- */
+const LV13={venator:{lv:2,xp:340,nx:500,nxt:'серебряная рамка иконки'},rat:{lv:1,xp:120,nx:300,nxt:'рамка иконки'}};
+// главы: o — кто говорит по очереди (V — Венатор, R — Король, M — Рэм); первая буква — кто начинает
+const CH13={venator:[{t:'Охота объявлена',w:'rat',ab:'Ватикан послал Венатора в канализацию за Крысиным королём.',o:'VRVRV',st:'done',min:'1',dp:6},
+  {t:'Проповедь свинца',w:'rat',ab:'Драка в соборе: проповедь под выстрелы, Король дразнит молитвами.',o:'RVRVRVV',st:'chk',min:'1,5',dp:7},
+  {t:'Тяжела корона',w:'rat',ab:'Король жалуется, как тяжело быть королём крыс.',o:'RVRRV',st:'new',min:'1',dp:5},
+  {t:'Добрый пастырь',w:'rem',ab:'Рэм не верит, что поп может быть добрым.',o:'MVMVMVMV',st:'lock',min:'2',dp:8}],
+ rat:[{t:'Охота объявлена',w:'venator',ab:'В туннели Короля спустился поп с ружьём.',o:'VRVRV',st:'done',min:'1',dp:6},
+  {t:'Проповедь свинца',w:'venator',ab:'Король дразнит Венатора молитвами.',o:'RVRVRVV',st:'chk',min:'1,5',dp:7},
+  {t:'Тяжела корона',w:'venator',ab:'Быть королём крыс — это работа. Важные дела! Крысиные!',o:'RVRRV',st:'new',min:'1',dp:5}]};
+const CHK13={V:'venator',R:'rat',M:'rem'};
+// фон-локация героя: у пяти героев — живой фон (v11), у остальных — их арт, размытый и в цвете героя
+const loc13=k=>HERO[k]?`<span class="l13 l13v">${heroBg11(k)}</span>`:`<span class="l13 la" style="--ac:${H12[k].ac}"><i class="img" style="background-image:url(${VT(k)})"></i></span>`;
+// карточка героя: живая локация на весь размер, герой — маленькой иконкой (герб или мини-арт — как у игрока в настройках)
+function hc13(k,o){o=o||{};const h=H12[k],L=LV13[k];return `<button class="h13c${h.v?' live':' soon'}" data-k="${k}" style="--ac:${h.ac}">${loc13(k)}<i class="vg"></i>
+  <span class="ri"><span class="ico">${hic12(k,'h13i')}</span>${L?`<svg class="lr" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18.5" class="t"/><circle cx="20" cy="20" r="18.5" class="p" pathLength="100" style="--p:${Math.round(L.xp/L.nx*100)}"/></svg>`:''}</span>
+  <span class="nm"><b>${h.n}</b><small>${L?'ур. '+L.lv+' · '+h.loc:h.v?h.loc:'портрет делаем'}</small></span>${o.badge||''}</button>`}
+function hcPaint13(root){$$('.h13c',root).forEach(b=>{const i=$('.ico',b);if(i)i.innerHTML=hic12(b.dataset.k,'h13i')})}
+
+/* --- мини-комикс главы (обложка): панели по очереди говорящих — первая, крупная, — кто начинает --- */
+function th13(x){const sp=[...x.o].map(c=>CHK13[c]);const P=sp.slice(0,3);return `<span class="th13">${P.map((k,i)=>`<span class="pn p${i}" style="--ac:${(H12[k]||{}).ac||'#888'}">${hic12(k,'t13i')}<i class="bq"></i></span>`).join('')}<em class="st1">начинает</em></span>`}
+const ST13={new:['Новая','nw',''],chk:['Прочитана · проверка ждёт','ck','book11'],done:['Закреплено · 3 из 3','dn','check'],deep:['Углублено','dp','starf'],lock:['Откроется, когда будет портрет Рэма','lk','lock']};
+function chHTML13(k,x,j,mode){const s=ST13[x.st],w=H12[x.w]||{ru:'?'},first=CHK13[x.o[0]],strip=mode==='strip';
+ const who=`<span class="who">${hic12(first,'w13i')}<span><b>${H12[first].ru}</b> начинает · ${x.o.length} реплик · ≈ ${x.min} мин</span></span>`;
+ const ord=`<span class="ord">${[...x.o].map((c,i)=>`<i class="${i===0?'f':''}" style="--ac:${H12[CHK13[c]].ac}">${hic12(CHK13[c],'o13i')}</i>`).join('')}</span>`;
+ return `<button class="ch13 s-${x.st}${strip?' strip':''}" data-j="${j}">${strip?'':th13(x)}<span class="tx"><small>ГЛАВА ${j+1} · С ${(INS11[x.w]||'').toUpperCase()}</small><b>${x.t}</b>${strip?ord+`<span class="who t"><span><b>${H12[first].ru}</b> начинает · ${x.o.length} реплик · ≈ ${x.min} мин</span></span>`:who}
+  <span class="ft"><span class="sc ${s[1]}">${s[2]?ic(s[2]):'<i class="dt"></i>'}${s[0]}</span>${x.st==='done'?`<span class="dg" data-deep="${j}">${ic('deep11')}Углубить · +${x.dp} слов</span>`:''}</span></span>${x.st==='lock'?'':`<i class="go">${ic('chev')}</i>`}</button>`}
+
+/* --- страница героя: живой портрет сверху, уровень, комиксы — выбор главы (Андрей: «на стадии пика — кто начал, сколько углубить, как запомнится») --- */
+function hp13(R,ctx,k,from,o){o=o||{};const h=H12[k],L=LV13[k]||{lv:1,xp:0,nx:300,nxt:'рамка'},CH=(CH13[k]||[]).map(x=>Object.assign({},x)),mode=o.mode||'thumb';
+ const ov=document.createElement('div');ov.className='hp13';ov.style.setProperty('--ac',h.ac);
+ ov.innerHTML=`<div class="hp13-st">${loc13(k)}${h.v?`<video muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video>`:''}<i class="dm"></i>
+   <button class="g11-bk" aria-label="Назад">${ic('back')}</button><button class="hp13-ic" aria-label="Иконки"></button>
+   <div class="nm"><small>${(HERO[k]&&HERO[k].role||'').toUpperCase()}</small><b>${h.n}</b>
+    <span class="lvl"><span class="ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" class="t"/><circle cx="20" cy="20" r="16" class="p" pathLength="100"/></svg><em>${L.lv}</em></span>
+    <span class="xp"><b>ур. ${L.lv} · ${L.xp} / ${L.nx}</b><small>на ур. ${L.lv+1} — ${L.nxt}</small></span></span></div></div>
+  <div class="hp13-bd"><div class="hp13-ac"><button class="vs">${ic('swords13')}<span><b>Versus за ${k==='rat'?'Короля':h.ru+'а'}</b><small>3 раунда с другом</small></span></button><button class="ln">${ic('wave13')}<span><b>Реплики</b><small>с голосом</small></span></button></div>
+   <div class="g11-sec"><b>Комиксы · выбери главу</b><small>${CH.length} главы</small></div>
+   <div class="hp13-ls"></div>
+   <p class="hp13-nt">${ic('cal13')}<span>Каждая глава после чтения — 3 вопроса. Ответил — 3 фразы уходят в повторение на завтра. «Углубить» — по желанию: ещё слова главы и ×2 опыта.</span></p></div>`;
+ const paint=()=>{$('.hp13-ls',ov).innerHTML=CH.map((x,j)=>chHTML13(k,x,j,mode)).join('')};paint();
+ R.appendChild(ov);playV12(ov);const c=sub(ctx);
+ icToggle(R,c,$('.hp13-ic',ov),()=>{paint();hcPaint13(R)});
+ const q=from?rel(from,R):null;if(q)an(ov,[{clipPath:`inset(${q.y}px ${344-q.x-q.w}px ${754-q.y-q.h}px ${q.x}px round 20px)`},{clipPath:'inset(0 0 0 0 round 0)'}],{d:520,e:EO});else an(ov,[{opacity:0},{opacity:1}],{d:300});
+ const ring=$('.lvl .p',ov),xpv=L.xp/L.nx;ring.style.strokeDashoffset='100';c.t(()=>{ring.style.strokeDashoffset=String(100-Math.round(xpv*100))},380);
+ $$('.hp13-st .nm>*,.hp13-ac>button,.hp13-bd .g11-sec,.ch13,.hp13-nt',ov).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:260+Math.min(i,10)*55}));
+ let touched=false;c.on(ov,'pointerdown',()=>{touched=true},{capture:true});
+ const close=()=>{c.kill();const z=an(ov,[{opacity:1},{opacity:0,transform:'scale(.96)'}],{d:220,e:EI,f:'forwards'});const f=()=>{ov.remove();o.onClose&&o.onClose()};if(z)z.onfinish=f;else f()};
+ c.on(ov,'click',e=>{const t=e.target;if(t.closest('.g11-bk')){if(o.onClose||from)close();else toast(R,'← назад к героям');return}
+  if(t.closest('.hp13-ac .vs')){g11Over(R,c,(pv,cc,cl)=>vs13(pv,cc,{onBack:cl}),null,t.closest('button'));return}
+  if(t.closest('.hp13-ac .ln')){g11Over(R,c,(pv,cc,cl)=>tt13(pv,cc,{hero:k,onBack:cl}),null,t.closest('button'));return}
+  const dg=t.closest('[data-deep]');if(dg){e.stopPropagation();chSheet13(R,c,k,CH[+dg.dataset.deep],+dg.dataset.deep,'deep');return}
+  const ch=t.closest('.ch13');if(ch){const x=CH[+ch.dataset.j];an(ch,[{transform:'scale(.97)'},{transform:'none'}],{sp:SPb});if(x.st==='lock'){shake(ch,5,300);toast(R,'Откроется, когда у Рэма будет живой портрет');return}chSheet13(R,c,k,x,+ch.dataset.j)}});
+ if(o.demo)c.t(()=>{if(touched)return;const ch=$('.ch13[data-j="1"]',ov);if(ch){ov.scrollTo({top:Math.max(0,ch.offsetTop-300),behavior:'smooth'});c.t(()=>{if(!touched)chSheet13(R,c,k,CH[1],1)},1000)}},2600);
+ return ov}
+
+/* --- шторка главы перед чтением: кто начинает, кто отвечает, длина, как запомнится, сколько углубить --- */
+function chSheet13(R,ctx,k,x,j,want){let s=$('.cs13',R);if(s)s.remove();s=document.createElement('div');s.className='cs13';const sp=[...x.o].map(c=>CHK13[c]),first=sp[0],other=sp.find(q=>q!==first)||x.w,dn=x.st==='done'||x.st==='deep';
+ const go=x.st==='chk'?`<button class="pri" data-a="chk">${ic('check')}Проверка · 3 вопроса · ≈ 30 с</button><button data-a="read">Перечитать</button>`
+  :dn||want==='deep'?`<button class="pri" data-a="deep">${ic('deep11')}Углубить · ещё ${x.dp} слов</button><button data-a="read">Перечитать</button>`
+  :`<button class="pri" data-a="read">${ic('book11')}Читать главу</button><button data-a="listen">${ic('ear13')}Слушать как диалог</button>`;
+ s.innerHTML=`<i class="sc"></i><div class="pn"><i class="hd"></i><small>ГЛАВА ${j+1} · С ${(INS11[x.w]||'').toUpperCase()}</small><b>${x.t}</b><p>${x.ab}</p>
+  <div class="ord13${sp.length>6?' sm':''}">${sp.map((q,i)=>`<span class="${i===0?'f':''}" style="--ac:${H12[q].ac}">${hic12(q,'o13i')}${i===0?'<em>начинает</em>':''}</span>`).join('<i class="ar"></i>')}</div>
+  <div class="rows"><span>${hic12(first,'w13i')}<span class="tt"><b>${H12[first].ru} начинает, ${H12[other].ru} отвечает</b><small>${x.o.length} реплик · ≈ ${x.min} мин · голоса из игры</small></span></span>
+   <span><i class="ri">${ic('cal13')}</i><span class="tt"><b>Как запомнится</b><small>после главы 3 вопроса → 3 фразы завтра в повторение${dn?' · уже закреплено':''}</small></span></span>
+   <span><i class="ri g">${ic('deep11')}</i><span class="tt"><b>Углубить — по желанию</b><small>ещё ${x.dp} слов главы · ×2 опыта ${k==='rat'?'Короля':H12[k].ru+'а'}</small></span></span></div>
+  <div class="bt">${go}</div></div>`;
+ R.appendChild(s);an($('.pn',s),[{transform:'translateY(100%)'},{transform:'none'}],{sp:SPs});an($('.sc',s),[{opacity:0},{opacity:1}],{d:240});
+ $$('.ord13>span',s).forEach((e,i)=>an(e,[{opacity:0,transform:'scale(.4)'},{opacity:1,transform:'none'}],{sp:SPb,dl:200+i*70}));
+ const c=sub(ctx),cl=()=>{c.kill();const z=an($('.pn',s),[{transform:'none'},{transform:'translateY(100%)'}],{d:220,e:EI,f:'forwards'});an($('.sc',s),[{opacity:1},{opacity:0}],{d:220,f:'forwards'});const f=()=>s.remove();if(z)z.onfinish=f;else f()};
+ c.on($('.sc',s),'click',cl);
+ c.on($('.bt',s),'click',e=>{const b=e.target.closest('button');if(!b)return;an(b,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});const a=b.dataset.a;cl();
+  if(a==='read'||a==='listen')g11Over(R,ctx,(pv,cc,cb)=>comic12(pv,cc,'who',{onBack:cb}),null,null);
+  else if(a==='chk')g11Over(R,ctx,(pv,cc,cb)=>comic12(pv,cc,'who',{start:'check',onBack:cb}),null,null);
+  else toast(R,`Углублённая: ${x.dp} коротких заданий по словам главы · ×2 опыта`)})}
+
+/* --- Deadlock изнутри v13: шапка — сам Deadlock; Versus — обычная плитка среди других, без двух героев на всю ширину --- */
+function g13Hub(R,ctx,from,o){o=o||{};let ov=$('.g11-hub',R);if(ov)ov.remove();ov=document.createElement('div');ov.className='g11-hub g12-hub g13-hub';
+ ov.innerHTML=`<div class="g11-hh g12-hh">${cns12()}<i class="sh"></i><button class="g11-bk" aria-label="Назад">${ic('back')}</button>
+   <div class="tx"><small>ИГРА · ДИАЛОГИ ГЕРОЕВ</small>${neon11('DEADLOCK','hh')}<span>9 героев · 6 комиксов · голоса из игры</span></div></div>
+  <div class="g11-sec"><b>Сейчас</b><small>новое — раз в 8 часов</small></div>
+  <div class="g11-feed">
+   <button class="g11-fi" data-go="radar"><span class="ic">${rdr11(0)}</span><span class="tx"><b>2 перехвата ждут</b><small>Туннели · Собор · ×2 опыта</small></span><em class="tm">5:12:40</em></button>
+   <button class="g11-fi" data-go="check"><span class="ic bk">${ic('book11')}</span><span class="tx"><b>Глава ждёт проверки</b><small>«Проповедь свинца» · 3 вопроса · ≈ 30 с</small></span>${ic('chev')}</button>
+   <button class="g11-fi" data-go="vs"><span class="ic mm">${hic12('rat')}${hic12('venator')}</span><span class="tx"><b>Боря зовёт в Versus</b><small>ставка 50 · 2 ч назад</small></span><em class="ok">Принять</em></button></div>
+  <div class="g11-sec"><b>Во что играть</b><small>всё про Deadlock — тут</small></div>
+  <div class="g13-md">
+   <button data-go="comics" class="cm"><span class="art">${ic('comic13')}<i class="pg a"></i><i class="pg b"></i></span><b>Комиксы</b><small>6 глав · 1 ждёт</small></button>
+   <button data-go="vs" class="vs"><span class="art">${ic('swords13')}</span><b>Versus</b><small>с другом · 3 раунда</small></button>
+   <button data-go="radar" class="rd"><span class="art r13-mini">${radarMini13()}</span><b>Радар</b><small>2 перехвата</small></button>
+   <button data-go="lines" class="ln"><span class="art">${eqBars(9)}</span><b>Реплики</b><small>как в TikTok</small></button></div>
+  <div class="g11-sec"><b>Герои</b><small>иконки — как в твоих настройках</small></div>
+  <div class="h13-g">${HK12.map(k=>hc13(k,{badge:k==='venator'?'<em class="nw13">1 новая</em>':''})).join('')}</div>
+  <button class="g13-ict"><span class="ic13"></span><span><b>Иконки героев</b><small>гербы или арт из игры — в приложении это настройка</small></span></button>`;
+ R.appendChild(ov);const c=sub(ctx);
+ if(from){const q=rel(from,R);an(ov,[{clipPath:`inset(${q.y}px ${344-q.x-q.w}px ${754-q.y-q.h}px ${q.x}px round 24px)`},{clipPath:'inset(0 0 0 0 round 0)'}],{d:560,e:EO})}else an(ov,[{opacity:0},{opacity:1}],{d:300});
+ neonOn11(c,$('.g11-ne.hh',ov),260);neonLife11(c,$('.g11-ne.hh',ov));cnsOn12(c,ov);radarSpin13(c,ov);
+ icToggle(R,c,$('.g13-ict .ic13',ov),()=>{hcPaint13(ov);$$('.g11-fi .mm',ov).forEach(m=>{m.innerHTML=hic12('rat')+hic12('venator')})});
+ $$('.g11-sec,.g11-fi,.g13-md>button,.h13c,.g13-ict',ov).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:420+Math.min(i,14)*50}));
+ let touched=false;c.on(ov,'pointerdown',()=>{touched=true},{capture:true});
+ const close=()=>{c.kill();const z=an(ov,[{opacity:1,transform:'none'},{opacity:0,transform:'translateX(40px)'}],{d:240,e:EI,f:'forwards'});const f=()=>{ov.remove();o.onClose&&o.onClose()};if(z)z.onfinish=f;else f()};
+ c.on(ov,'click',e=>{const t=e.target;if(t.closest('.g13-ict')){if(!t.closest('.ic13'))$('.g13-ict .ic13',ov).click();return}
+  if(t.closest('.g11-bk')){if(o.onClose||from)close();else toast(R,'← назад к вкладке «Игры»');return}
+  const h=t.closest('.h13c');if(h){an(h,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});if(!H12[h.dataset.k].v){toast(R,`${H12[h.dataset.k].ru}: живой портрет ещё делаем`);return}hp13(R,c,h.dataset.k,h);return}
+  const g=t.closest('[data-go]');if(!g)return;an(g,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});const go=g.dataset.go;
+  if(go==='radar')g11Over(R,c,(pv,cc,cl)=>radar13(pv,cc,{onBack:cl}),null,g);
+  else if(go==='check')g11Over(R,c,(pv,cc,cl)=>comic12(pv,cc,'who',{start:'check',onBack:cl}),null,g);
+  else if(go==='vs')g11Over(R,c,(pv,cc,cl)=>vs13(pv,cc,{onBack:cl}),null,g);
+  else if(go==='lines')g11Over(R,c,(pv,cc,cl)=>tt13(pv,cc,{onBack:cl}),null,g);
+  else if(go==='comics')hp13(R,c,'venator',g)});
+ if(o.demo)c.t(()=>{if(!touched){ov.scrollTo({top:560,behavior:'smooth'});c.t(()=>{if(touched)return;const h=$('.h13c[data-k="venator"]',ov);if(h)hp13(R,c,'venator',h,{demo:true})},1700)}},2800);
+ return ov}
+
+/* --- «Герои»: живая локация, маленькая иконка героя (Андрей: «хотел увидеть иконки, которые твои были, маленькие, и мини-арты — сейчас анимированная иконка перекрывает всё и фон не видно») --- */
+function g13Heroes(R,ctx){R.className='scr v8 g11 g13h';
+ R.innerHTML=`${SB(0)}<div class="g11-pg g12-pg"><div class="g11-hd"><b>Герои</b><button class="g13-ib"></button></div>
+  <p class="g13-hl">Фон — живая локация героя. Сам герой — маленькой иконкой: гербом или мини-артом, как ты выбрал в настройках. Кнопка справа сверху — переключить.</p>
+  <div class="h13-g big">${HK12.map(k=>hc13(k,{badge:k==='venator'?'<em class="nw13">1 новая</em>':''})).join('')}</div></div><canvas class="fx"></canvas><i class="hb"></i>`;
+ let touched=false;ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ icToggle(R,ctx,$('.g13-ib',R),()=>{hcPaint13(R);$$('.h13c .ico',R).forEach((x,i)=>an(x,[{transform:'rotateY(90deg)'},{transform:'none'}],{sp:SPs,dl:i*40}))});
+ $$('.h13c',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(24px) scale(.95)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80+i*55}));
+ $$('.h13c .lr .p',R).forEach(p=>{const v=+p.style.getPropertyValue('--p');p.style.strokeDashoffset='100';ctx.t(()=>{p.style.strokeDashoffset=String(100-v)},600)});
+ ctx.on(R,'click',e=>{const h=e.target.closest('.h13c');if(!h||e.target.closest('.hp13'))return;touched=true;an(h,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});if(!H12[h.dataset.k].v){toast(R,`${H12[h.dataset.k].ru}: живой портрет ещё делаем`);return}hp13(R,ctx,h.dataset.k,h)});
+ // без касания: переключит иконки, чтобы было видно оба вида
+ ctx.t(()=>{if(touched)return;$('.g13-ib',R).click();ctx.t(()=>{if(!touched)$('.g13-ib',R).click()},2600)},2400)}
+
+/* --- Радар v13: 3D в цветах v12 (бирюза на тёмном) 1 в 1, но вместо плит с карточками — модельки мест одним цветом:
+   собор со шпилем, вход в туннель, цирковой шатёр, лес, лаборатория с башней, отель, электростанция, кладбище, холмы сна.
+   Свет один и тот же для всех (сверху слева), грани считаются от поворота карты — поэтому не «кривой», как в v11. Подписей-карточек нет. --- */
+// кубик: x,y — угол на карте, w×d — основание, h — высота, z — на какой высоте стоит
+const bx13=(x,y,w,d,h,z,c)=>`<i class="b3${c?' '+c:''}" style="left:${x}px;top:${y}px;width:${w}px;height:${d}px;transform:translateZ(${z||0}px)"><i class="f zt" style="width:${w}px;height:${d}px;transform:translateZ(${h}px)"></i><i class="f zs" style="top:${d}px;width:${w}px;height:${h}px"></i><i class="f zn" style="width:${w}px;height:${h}px"></i><i class="f zw" style="width:${h}px;height:${d}px"></i><i class="f ze" style="left:${w}px;width:${h}px;height:${d}px"></i></i>`;
+// пирамида (шпиль, шатёр, ёлка, холм): основание s×s, высота hp
+function py13(x,y,s,hp,z,c){const L=Math.hypot(hp,s/2),ang=-Math.asin(hp/L)*180/Math.PI;const S=['zs','zw','zn','ze'];
+ return `<i class="p3${c?' '+c:''}" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px;transform:translateZ(${z||0}px)">${S.map((q,i)=>`<i class="pw" style="transform:rotateZ(${i*90}deg)"><i class="f ${q} tr" style="width:${s}px;height:${L.toFixed(1)}px;top:${(s-L).toFixed(1)}px;transform:rotateX(${ang.toFixed(2)}deg)"></i></i>`).join('')}</i>`}
+// двускатная крыша: основание w×d, высота hr, конёк — вдоль длинной стороны (x)
+function rf13(x,y,w,d,hr,z,c){const L=Math.hypot(hr,d/2),ang=-Math.asin(hr/L)*180/Math.PI,sl=q=>`<i class="f ${q}" style="width:${w}px;height:${L.toFixed(1)}px;top:${(d-L).toFixed(1)}px;transform:rotateX(${ang.toFixed(2)}deg)"></i>`;
+ return `<i class="p3 rf${c?' '+c:''}" style="left:${x}px;top:${y}px;width:${w}px;height:${d}px;transform:translateZ(${z||0}px)"><i class="pw">${sl('zs')}</i><i class="pw" style="transform:rotateZ(180deg)">${sl('zn')}</i><i class="f zw tri" style="width:${hr}px;height:${d}px"></i><i class="f ze tri" style="left:${w}px;width:${hr}px;height:${d}px"></i></i>`}
+// «щит» стоит лицом к камере (луна, шар, луч сигнала)
+const bb13=(x,y,z,html,c)=>`<i class="bb3${c?' '+c:''}" style="left:${x}px;top:${y}px;--z:${z}px">${html}</i>`;
+// подпись лежит на земле, всегда читается
+const lb13=(x,y,t,k)=>`<i class="lb3" data-k="${k}" style="left:${x}px;top:${y}px"><b>${t}</b></i>`;
+const MD13={
+ sobor:()=>bx13(-28,-14,56,24,20,0)+rf13(-28,-14,56,24,12,20)+bx13(28,-10,10,16,14,0)+rf13(28,-10,10,16,6,14)+bx13(-42,10,16,16,44,0)+py13(-42,10,16,26,44)+bx13(-34.8,17.2,1.6,1.6,10,68)+bx13(-38,17.2,8,1.6,1.6,74),
+ tun:()=>`<i class="rl13" style="left:-7px;top:14px"></i>`+bx13(-34,-24,68,28,10,0,'hill')+bx13(-16,4,32,10,20,0,'portal')+rf13(-16,4,32,10,6,20)+bx13(22,8,10,10,4,0)+`<i class="mh13" style="left:-40px;top:16px"></i><i class="mh13" style="left:28px;top:-26px"></i>`,
+ cir:()=>bx13(-22,-22,44,44,8,0,'drum')+py13(-22,-22,44,32,8,'tent')+bx13(-.8,-.8,1.6,1.6,14,40)+bb13(0,0,54,'<i class="flg13"></i>')+bx13(28,-6,10,10,6,0),
+ les:()=>[[-22,-14,20,30],[2,-22,16,24],[-6,4,22,34],[16,2,14,20],[-30,10,12,18]].map(([x,y,s,h])=>bx13(x+s/2-1.5,y+s/2-1.5,3,3,5,0,'trunk')+py13(x,y,s,h,5,'tree')).join(''),
+ lab:()=>bx13(-24,-14,40,28,18,0)+bx13(20,-8,8,8,40,0)+bb13(24,-4,46,'<i class="sph13"></i>')+bx13(-18,-24,10,10,26,0),
+ niz:()=>py13(-34,-14,34,10,0,'hillp')+py13(-4,-24,30,14,0,'hillp')+py13(2,2,26,8,0,'hillp')+bb13(-4,-6,58,'<i class="moon13"></i>'),
+ kla:()=>bx13(-28,-22,56,1.6,6,0)+bx13(-28,20.4,56,1.6,6,0)+bx13(-28,-22,1.6,44,6,0)+bx13(26.4,-22,1.6,44,6,0)+[[-16,-10],[-2,-10],[12,-10],[-16,6],[2,6],[14,6]].map(([x,y],i)=>i%2?bx13(x,y,6,2,8,0):(bx13(x+2.2,y,1.6,1.6,12,0)+bx13(x,y,6,1.6,1.6,8))).join(''),
+ otl:()=>bx13(-16,-14,32,26,64,0,'win')+bx13(-10,12,20,8,2,14,'awn')+bx13(-12,-10,8,8,8,64),
+ ele:()=>bx13(-26,-14,40,28,20,0)+bx13(18,-14,9,9,48,0)+bx13(18,2,9,9,40,0)+py13(-34,-30,12,52,0,'pylon')};
+// карта 300×300: где стоит каждое место (центр модели), чьё оно
+const RD13=[{k:'sobor',n:'Собор',h:'venator',x:150,y:96},{k:'tun',n:'Туннели',h:'rat',x:150,y:206},{k:'cir',n:'Цирк',h:'celeste',x:252,y:150},
+ {k:'les',n:'Старый лес',h:'talon',x:52,y:72},{k:'lab',n:'Лаборатория',h:'victor',x:52,y:182},{k:'niz',n:'Сонная низина',h:'rem',x:92,y:266},
+ {k:'kla',n:'Кладбище',h:'danny',x:206,y:268},{k:'otl',n:'Отель',h:'doorman',x:264,y:240},{k:'ele',n:'Электростанция',h:'seven',x:250,y:52}];
+const RS13={tun:{a:'rat',b:'venator',t:'«Охота объявлена»',m:'5 реплик · ×2 опыта',left:'ещё 5:12'},sobor:{a:'venator',b:'rat',t:'«Проповедь свинца»',m:'7 реплик · ×2 опыта',left:'ещё 3:40'}};
+function map13(mini){return `<span class="r13-pl${mini?' mini':''}"><i class="fl13"></i>
+  <svg class="rv13" viewBox="0 0 300 300"><path d="M-10 146 C40 136 70 118 108 132 S188 166 222 148 S288 108 330 120" fill="none" stroke="hsl(172 60% 40% / .35)" stroke-width="13" stroke-linecap="round"/><path class="fl" d="M-10 146 C40 136 70 118 108 132 S188 166 222 148 S288 108 330 120" fill="none" stroke="hsl(172 80% 78% / .5)" stroke-width="1.4" stroke-dasharray="5 13"/></svg>
+  ${RD13.map(d=>`<span class="m13" data-k="${d.k}" style="left:${d.x}px;top:${d.y}px">${MD13[d.k]()}${RS13[d.k]&&!mini?`<i class="pu13"></i><i class="pu13 b"></i>`+bb13(0,0,0,'<i class="bm13"></i>','beam'):''}</span>`).join('')}
+  ${mini?'':RD13.map(d=>lb13(d.x,d.y+(d.k==='sobor'?34:d.k==='tun'?24:28),d.n,d.k)).join('')}</span>`}
+// свет: грань ярче, если смотрит туда, откуда свет (верх-лево экрана); считаем от угла поворота карты
+function light13(pl,a){const L=q=>{const v=22+11*Math.cos((q+a-225)*Math.PI/180);return v.toFixed(1)};pl.style.setProperty('--a',a.toFixed(2)+'deg');pl.style.setProperty('--le',L(0));pl.style.setProperty('--ls',L(90));pl.style.setProperty('--lw',L(180));pl.style.setProperty('--ln',L(270))}
+function radarMini13(){return `<span class="r13-mn">${map13(1)}</span>`}
+function radarSpin13(ctx,root){const P=$$('.r13-mn .r13-pl',root);if(!P.length)return;let a=-30;light13(P[0],a);ctx.loop((n,dt)=>{a+=dt*.008;P.forEach(p=>light13(p,a))})}
+function radar13(R,ctx,o){o=o||{};R.className='scr v8 g11 r12 r13';
+ R.innerHTML=`${SB(0)}<div class="r12-hd"><button class="r12-bk">${ic('back')}</button><span><b>Радар</b><small>2 сигнала · новые через 5:12:40</small></span><em>⚡ ×2 опыта</em></div>
+  <div class="r13-st">${map13()}</div>
+  <p class="r12-hint">тяни вбок — крутится · нажми на место</p>
+  <div class="r13-sg">${Object.keys(RS13).map(k=>{const d=RD13.find(x=>x.k===k),s=RS13[k];return `<button data-k="${k}"><i class="dot"></i><span><b>${d.n}</b><small>${s.t} · ${s.left}</small></span>${ic('chev')}</button>`}).join('')}</div>
+  <div class="r12-sh" hidden></div><canvas class="fx"></canvas><i class="hb"></i>`;
+ const pl=$('.r13-pl',R),st=$('.r13-st',R),sh=$('.r12-sh',R),fx=FX(ctx,$('.fx',R));let a=-28,va=0,dr=false,touched=false,cur=null;light13(pl,a);
+ an(pl,[{transform:'translate(-50%,-50%) rotateX(66deg) rotateZ(-80deg) scale(.7)',opacity:0},{transform:'translate(-50%,-50%) rotateX(56deg) rotateZ(var(--a)) scale(1.16)',opacity:1}],{d:1100,e:EO});
+ $$('.m13',R).forEach((m,i)=>an(m,[{transform:'scale3d(1,1,.02)',opacity:0},{transform:'none',opacity:1}],{d:640,e:EO,dl:420+i*70}));
+ let a0=a;drag(ctx,st,{axis:'x',start(){touched=true;dr=true;va=0;a0=a},move(dx,dy,vx){a=a0+dx*.45;light13(pl,a);va=vx*16*.45},end(){dr=false},tap(e,x,y){const el=document.elementFromPoint(x,y),m=el&&el.closest&&el.closest('.m13,.lb3');if(m)open(m.dataset.k)}});
+ ctx.loop((n,dt)=>{if(dr)return;if(Math.abs(va)>.02){a+=va;va*=.93;light13(pl,a)}else if(!touched){a+=dt*.004;light13(pl,a)}});
+ function open(k){const d=RD13.find(x=>x.k===k),s=RS13[k],h=H12[d.h];cur=k;$$('.m13',R).forEach(m=>m.classList.toggle('on',m.dataset.k===k));
+  sh.hidden=false;sh.innerHTML=`<i class="hd"></i><div class="t">${hic12(d.h,'big')}<span><small>МЕСТО · ${h.ru.toUpperCase()}</small><b>${d.n}</b></span><button class="x">${ic('x')}</button></div>
+   ${s?`<div class="rsg open"><span class="mm">${hic12(s.a)}${hic12(s.b)}</span><span><b>Перехват: ${s.t}</b><small>${s.m}</small></span><em>${s.left}</em></div><button class="go">${ic('book11')}Читать перехват</button>`
+    :`<p class="nn">Сейчас тихо. Сигналы — раз в 8 часов, до 4 за раз. ${h.v?'':'Здесь заговорят, когда у героя будет живой портрет.'}</p>`}`;
+  an(sh,[{transform:'translateY(110%)'},{transform:'none'}],{sp:SPs});const m=$(`.m13[data-k="${k}"]`,R),r=rel(m,R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:20,c:[h.ac,'#fff','#2EE6C5'],v:3.2,g:0,s:2,l:32});
+  ctx.on($('.x',sh),'click',e=>{e.stopPropagation();close()});const go=$('.go',sh);if(go)ctx.on(go,'click',()=>{an(go,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});g11Over(R,ctx,(pv,cc,cl)=>comic12(pv,cc,'who',{onBack:cl}),null,go)})}
+ function close(){const z=an(sh,[{transform:'none'},{transform:'translateY(110%)'}],{d:220,e:EI,f:'forwards'});if(z)z.onfinish=()=>{sh.hidden=true};else sh.hidden=true;$$('.m13',R).forEach(m=>m.classList.remove('on'));cur=null}
+ ctx.on($('.r13-sg',R),'click',e=>{const b=e.target.closest('[data-k]');if(b){touched=true;an(b,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});open(b.dataset.k)}});
+ ctx.on($('.r12-bk',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← назад в Deadlock')});
+ if(o.demo!==false)ctx.t(()=>{if(!touched)open('tun')},3600)}
+
+/* --- Versus v13: раскладка v10 один в один (Андрей на v12: «v10 лучше», «половина реплик не работает», «шум на фоне постоянный»).
+   Что поменял — только то, что в v10 молчало или ломалось: реплики настоящие и звучат, ▶ переслушивает, фона-шума нет (голос и лёгкое эхо),
+   взятый кубик оставляет пустое место, ошибка не стопорит бой — соперник бьёт тебя, «на слух» правда играет реплику.
+   sync — те же секунды, что в v10 (для сравнения шторкой). --- */
+const VR13=[{t:'СОБЕРИ',q:'Собери, что ответил Venator'},{t:'ЧТО ЗНАЧИТ',q:'Что значит «crumbum»?',o:['ничтожество (ругательство)','крошка (ласково)','бродячий кот'],r:0},{t:'НА СЛУХ',q:'Какое слово прозвучало?',o:['Hail','Hell','Hale'],r:0}];
+const VA13=['rk-priest-vs-king','ven-no-hide','rk-holier','rk-hail-marys','ven-evil-dies','rat-king-21','venator-14'];
+function vs13(R,ctx,o){o=o||{};R.className='scr v8 vs8 vs9 vs10 vs13';S13.preload(VA13);
+ const P=(k,side,nm,who)=>`<div class="vs8-p ${side}" data-k="${k}"><div class="hbg">${heroBg10(k)}</div><video muted loop playsinline data-hv="${H12[k].v}" poster="${IMG[H12[k].v]}"></video><i class="dm"></i><i class="v10-fl"></i><div class="nm">${ic9(k,'nmi')}<b>${nm}</b><small>${who}</small></div><i class="ko">K.O.</i></div>`;
+ R.innerHTML=`${SB(0)}<div class="vs8-top"><button class="x">${ic('x')}</button><div class="hp l"><small>ТЫ</small><i><i class="gh"></i><i class="v"></i></i><b>450</b></div><div class="rd"><b>Раунд 1</b><small>из 3 · банк 100</small></div><div class="hp r"><small>БОРЯ</small><i><i class="gh"></i><i class="v"></i></i><b>450</b></div></div>
+  <div class="vs8-st">${P('venator','lf','Venator','Ты · ур. 2')}${P('rat','rt','Rat King','Боря')}<div class="vs9-log"></div><b class="vs8-x">VS</b><b class="vs8-dmg"></b><b class="vs8-dmg me"></b><b class="v10-bn"></b><b class="v10-cb"></b></div>
+  <div class="vs8-pn v10-pn"></div><i class="v10-tm"><i></i></i>
+  <canvas class="fx"></canvas><i class="v10-wh"></i><i class="hb"></i>`;
+ playV12(R);
+ const fx=FX(ctx,$('.fx',R)),pn=$('.v10-pn',R),LOG=$('.vs9-log',R),st=$('.vs8-st',R),tmb=$('.v10-tm i',R);let hp=[450,450],rd=0,streak=0,touched=false,t0=0,tmA=null,vm=null;
+ if(!o.sync)ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ // реплика: звучит голосом; пока звучит — бегут столбики, говорящий светлее; ▶ — ещё раз
+ function speak(m,k,a){if(!a)return;const pv=$(`.vs8-p[data-k="${k}"]`,R);m.classList.add('spk');pv.classList.add('tk');say13(ctx,a,{echo:.18,end(){m.classList.remove('spk');pv.classList.remove('tk')}})}
+ function say(k,side,txt,a,hid){const m=document.createElement('div');m.className='vs9-m '+side+(hid?' hid':'');
+  m.innerHTML=`<span class="who">${ic9(k)}</span><div class="bb"><b class="nm">${HERO[k].n}</b><span class="tx">${hid?'<i class="dt">· · · · · ·</i><em>соберёшь ниже</em>':txt}</span><span class="v10-wv">${Array.from({length:14},(_,i)=>`<i style="animation-delay:${(-i*.09).toFixed(2)}s"></i>`).join('')}</span></div><button class="pl"${hid?' hidden':''}>${ic('play')}</button>`;
+  LOG.appendChild(m);const M=$$('.vs9-m',LOG);M.forEach((x,i)=>x.classList.toggle('old',i<M.length-1));if(M.length>3)M[0].remove();
+  an(m,[{opacity:0,transform:`translateX(${side==='lf'?-30:30}px) scale(.9)`},{opacity:1,transform:'none'}],{sp:SPs});m._a=a;m._k=k;
+  ctx.on($('.pl',m),'click',e=>{e.stopPropagation();an($('.pl',m),[{transform:'scale(.85)'},{transform:'none'}],{sp:SPb});speak(m,k,m._a)});if(!hid)speak(m,k,a);return m}
+ function banner(t){const b=$('.v10-bn',R);b.innerHTML=`<small>РАУНД ${rd+1}</small>${t}`;b.getAnimations().forEach(a=>a.cancel());
+  an(b,[{opacity:0,transform:'translate(-50%,-50%) scale(2.4) rotate(-6deg)'},{opacity:1,transform:'translate(-50%,-50%) scale(1) rotate(-3deg)',offset:.25},{opacity:1,transform:'translate(-50%,-50%) scale(1.04) rotate(-3deg)',offset:.8},{opacity:0,transform:'translate(-50%,-50%) translateX(80px) rotate(-3deg)'}],{d:1300,e:'linear',f:'forwards'});
+  $('.vs8-top .rd b',R).textContent=`Раунд ${rd+1}`;an($('.vs8-top .rd',R),[{transform:'scale(1.25)'},{transform:'none'}],{sp:SPb})}
+ function timer(){t0=performance.now();if(tmA)tmA.cancel();tmA=an(tmb,[{transform:'scaleX(1)'},{transform:'scaleX(0)'}],{d:20000,e:'linear',f:'forwards'})}
+ function bar(side,v){const i=side==='l'?0:1;hp[i]=Math.max(0,v);const q=$(`.hp.${side}`,R),f=$('.v',q),g=$('.gh',q),s=hp[i]/450;f.style.transform=`scaleX(${s})`;$('b',q).textContent=hp[i];ctx.t(()=>{g.style.transform=`scaleX(${s})`},520);an(q,[{transform:'none'},{transform:'translateY(-2px) scale(1.04)'},{transform:'none'}],{d:300})}
+ // удар: стоп-кадр, вспышка, отлёт (как в v10); me — бьют тебя
+ function hit(me){const fast=!me&&(performance.now()-t0)<6500,dmg=me?120:fast?150:Math.round(110+Math.random()*30);if(!me)streak++;
+  const vids=$$('video',R);vids.forEach(v=>v.pause());R.classList.add('stop');an($('.v10-wh',R),[{opacity:0},{opacity:.55},{opacity:0}],{d:260});
+  ctx.t(()=>{vids.forEach(v=>{const p=v.play();if(p&&p.catch)p.catch(()=>{})});R.classList.remove('stop');S13.sfx('hit');
+   const tg=$(me?'.vs8-p.lf':'.vs8-p.rt',R),r=rel(tg,R),dm=$(me?'.vs8-dmg.me':'.vs8-dmg:not(.me)',R);dm.className='vs8-dmg'+(me?' me':fast?' cr':'');dm.innerHTML=(fast?'<small>КРИТ · БЫСТРО</small>':'')+'−'+dmg;
+   an(dm,[{opacity:0,transform:'translate(-50%,0) scale(.4)'},{opacity:1,transform:'translate(-50%,-20px) scale(1.3)',offset:.25},{opacity:1,transform:'translate(-50%,-34px) scale(1.1)',offset:.7},{opacity:0,transform:'translate(-50%,-70px) scale(1)'}],{d:1400,e:EO});
+   const dx=me?-18:18;an(tg,[{transform:'none'},{transform:`translateX(${dx}px) rotate(${me?-1.5:1.5}deg)`},{transform:`translateX(${-dx/4}px)`},{transform:'none'}],{d:460,e:EO});an($('.v10-fl',tg),[{opacity:.8},{opacity:0}],{d:380});
+   an(st,[{transform:'none'},{transform:'translate(-5px,3px)'},{transform:'translate(4px,-2px)'},{transform:'none'}],{d:260});
+   fx.burst(r.x+r.w/2,r.y+r.h*.45,{n:fast?70:44,c:me?['#A9C8FF','#fff','#5C8DFF']:fast?['#FFD23F','#fff','#FF6B6B']:['#FF6B6B','#fff','#F6D488'],v:fast?9:7,g:.1,s:3,l:55});
+   bar(me?'l':'r',hp[me?0:1]-dmg);
+   if(!me&&streak>1){const cb=$('.v10-cb',R);cb.textContent=`×${streak} подряд`;an(cb,[{opacity:0,transform:'translateY(10px) scale(.6)'},{opacity:1,transform:'none',offset:.3},{opacity:0,transform:'translateY(-14px)'}],{d:1400})}},110)}
+ function end(){const win=hp[1]<=0||hp[0]>hp[1];const L=$(win?'.vs8-p.rt':'.vs8-p.lf',R),W=$(win?'.vs8-p.lf':'.vs8-p.rt',R);R.classList.add('slo');S13.sfx('ko');
+  an(L,[{filter:'grayscale(0) brightness(1)'},{filter:'grayscale(1) brightness(.55)'}],{d:900,f:'forwards'});
+  an($('.ko',L),[{opacity:0,transform:'translate(-50%,-50%) scale(3) rotate(-14deg)'},{opacity:1,transform:'translate(-50%,-50%) scale(1) rotate(-10deg)'}],{d:520,e:EO,f:'forwards',dl:300});
+  an(W,[{transform:'none'},{transform:'scale(1.04)'}],{d:1200,e:EO,f:'forwards'});
+  ctx.t(()=>{if(win)say('venator','lf','Evil dies today.','ven-evil-dies');else say('rat','rt','Took down the Venatah!','rk-took-down')},450);
+  ctx.t(()=>{fx.burst(172,300,{n:90,c:['#F6D488','#fff','#E8B34B'],v:8,g:.12,s:3,l:70});pn.innerHTML=win?`<div class="v10-win"><small>ПОБЕДА · ${hp[1]<=0?'K.O.':'ПО ОЧКАМ'}</small><b>+200 ${ic('ticket')}</b><span>Венатор · +40 опыта · ур. 2 → <em>3</em></span><div class="bt"><button class="rv">${ic('sword')}Реванш — другой диалог</button></div></div>`
+    :`<div class="v10-win ls"><small>ПОРАЖЕНИЕ</small><b>−50 ${ic('ticket')}</b><span>Венатор · +10 опыта за бой</span><div class="bt"><button class="rv">${ic('sword')}Реванш — другой диалог</button></div></div>`;
+   $$('.v10-win>*',pn).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:i*90}));
+   const bk=$('.vs8-top .rd',R);bk.innerHTML=win?'<b>K.O.</b><small>банк 200 — твой</small>':'<b>Конец</b><small>банк — у Бори</small>';an(bk,[{transform:'scale(1.4)'},{transform:'none'}],{sp:SPb})},1100)}
+ // раунд 1 — собрать ответ Венатора; взятый кубик оставляет пустое место, тап по клетке — вернуть
+ function r1(){rd=0;banner('СОБЕРИ');timer();const ANS=['You',"can't",'hide','from','a','Venator'],TK=['hide','You','a','from','Venator',"can't",'find','see'];let pk=[];
+  pn.innerHTML=`<b class="q">${VR13[0].q}</b><small>От Венатора не спрячешься.</small><div class="sl">${ANS.map(()=>'<i></i>').join('')}</div><div class="tl">${TK.map((w,j)=>`<button data-j="${j}">${w}</button>`).join('')}</div><button class="ck" disabled>Проверить</button>`;
+  const SL=$$('.sl i',pn),TB=$$('.tl button',pn),ck=$('.ck',pn);$$('.v10-pn>*',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:200+i*50}));
+  const paint=()=>{SL.forEach((s,j)=>{const b=pk[j];s.textContent=b?b.textContent:'';s.className=b?'f':''});TB.forEach(b=>b.classList.toggle('used',pk.includes(b)));ck.disabled=pk.length<6};
+  const put=b=>{if(pk.length>=6||pk.includes(b))return;const s=SL[pk.length];pk.push(b);const a=rel(b,R),z=rel(s,R);paint();an(s,[{transform:`translate(${a.x-z.x}px,${a.y-z.y}px)`},{transform:'none'}],{sp:SPs});S13.sfx('tick')};
+  TB.forEach(b=>ctx.on(b,'click',()=>{touched=true;put(b)}));
+  SL.forEach((s,j)=>ctx.on(s,'click',()=>{if(!pk[j]||s.classList.contains('ok'))return;touched=true;pk.splice(j,1);paint()}));
+  const go=()=>{if(pk.map(b=>b.textContent).join(' ')!==ANS.join(' ')){shake($('.sl',pn),6,360);streak=0;ctx.t(()=>{pk=[];paint()},700);return}
+   if(vm){vm.classList.remove('hid');$('.tx',vm).textContent="You can't hide from a Venator.";$('.pl',vm).hidden=false;vm._a='ven-no-hide';speak(vm,'venator','ven-no-hide')}
+   SL.forEach((s,j)=>{s.classList.add('ok');an(s,[{transform:'none'},{transform:'translateY(-7px)'},{transform:'none'}],{sp:SPb,dl:j*60})});hit();ctx.t(r2,2200)};
+  ctx.on(ck,'click',()=>{touched=true;go()});return {put,TB,ANS,go}}
+ // раунды 2–3 — варианты; ошибка не стопорит бой: соперник бьёт тебя, бой идёт дальше
+ function choice(n,after,getL){rd=n;const line=()=>getL?getL():null;const q=VR13[n];banner(q.t);timer();
+  pn.innerHTML=`<b class="q">${q.q}</b>${n===2?`<button class="v10-ls v13-ls">${ic('play')}<span class="v10-wv">${Array.from({length:18},(_,i)=>`<i style="animation-delay:${(-i*.08).toFixed(2)}s"></i>`).join('')}</span><em>Go do some ▢▢▢▢ Marys…</em></button>`:'<small>Король: «Holier than thou, <u>crumbum</u>!»</small>'}<div class="v10-op">${q.o.map((o,j)=>`<button data-j="${j}">${o}</button>`).join('')}</div>`;
+  $$('.v10-pn>*',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:200+i*50}));
+  const ls=$('.v13-ls',pn);if(ls)ctx.on(ls,'click',()=>{touched=true;an(ls,[{transform:'scale(.97)'},{transform:'none'}],{sp:SPb});const L=line();ls.classList.add('on');if(L)L.classList.add('spk');say13(ctx,'rk-hail-marys',{echo:.18,end(){ls.classList.remove('on');if(L)L.classList.remove('spk')}})});
+  const O=$$('.v10-op button',pn);O.forEach(b=>ctx.on(b,'click',()=>{touched=true;O.forEach(x=>{x.disabled=true;x.classList.toggle('ok',+x.dataset.j===q.r)});
+   if(+b.dataset.j!==q.r){b.classList.add('bad');shake(b,5,300);streak=0;ctx.t(()=>{say('rat','rt','Eat dirt, crumbum.','rat-king-21');ctx.t(()=>hit(true),500)},600);ctx.t(after,3200);return}
+   if(n===2&&line()){$('.tx',line()).innerHTML="Go do some <u>Hail</u> Marys or somethin'."}hit();ctx.t(after,2000)}))}
+ let n2=0;
+ function r2(){if(n2)return;n2=1;ctx.t(()=>say('rat','rt','Holier than thou, <u>crumbum</u>!','rk-holier'),300);choice(1,r3)}
+ function r3(){let ln=null;ctx.t(()=>{ln=say('rat','rt','Go do some <i class="dt">▢▢▢▢</i> Marys or somethin\'.','rk-hail-marys')},300);choice(2,()=>{if(hp[1]>0&&hp[0]>hp[1])bar('r',0);ctx.t(end,300)},()=>ln)}
+ ctx.t(()=>say('rat','rt',"What's a priest gonna do to a king?!",'rk-priest-vs-king'),1000);ctx.t(()=>{vm=say('venator','lf','',null,true)},2100);
+ an($('.vs8-p.lf',R),[{transform:'translateX(-80px)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:80});
+ an($('.vs8-p.rt',R),[{transform:'translateX(80px)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:80});
+ an($('.vs8-x',R),[{opacity:0,transform:'translate(-50%,-50%) scale(3)'},{opacity:1,transform:'translate(-50%,-50%) scale(1)',offset:.4},{opacity:0,transform:'translate(-50%,-50%) scale(1.1)'}],{d:1200,dl:300});
+ let R1=null;ctx.t(()=>{R1=r1()},1200);
+ ctx.on($('.vs8-top .x',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← выйти из боя')});
+ ctx.on(pn,'click',e=>{if(e.target.closest('.rv'))toast(R,'Реванш: «Тяжела корона» — другой диалог, те же герои')});
+ if(o.demo===false)return;
+ const demo=async()=>{await ctx.wait(3600);if(!R1)return;for(const w of R1.ANS){if(touched)return;const b=R1.TB.find(x=>x.textContent===w&&!x.classList.contains('used'));if(b)R1.put(b);await ctx.wait(320)}if(touched)return;await ctx.wait(300);R1.go();
+  await ctx.wait(3600);if(touched)return;let b=$('.v10-op button[data-j="0"]',pn);if(b)b.click();await ctx.wait(3500);if(touched)return;b=$('.v10-op button[data-j="0"]',pn);if(b)b.click()};demo()}
+
+/* --- Сравнение 1 в 1: v10 и v13 идут одновременно, секунда в секунду; шторка показывает, где что поменялось (Андрей: «сравни 1 в 1, чтобы я видел разницу») --- */
+const VC13=[[900,'1','Реплики звучат голосом из игры','в v10 ▶ был без звука'],[2400,'2','Реплики — настоящие из игры','в v10 — придуманные'],[4300,'3','Взятый кубик — пустое место','в v10 оставался серым'],
+ [6400,'4','Говорящий светлее, пока звучит','в v10 — всегда 1,8 с'],[8200,'5','Без фона-шума: голос и эхо','в v12 гудела арена'],[10300,'6','«На слух» — ▶ правда играет','в v10 волна нарисована'],
+ [12600,'7','K.O. — «Evil dies today.»','в v10 — тишина'],[15200,'8','Ошибся — бой идёт дальше','в v10 всё вставало · проверь сам ↓']];
+function vsCmp13(R,ctx){R.className='scr v8 vc13';
+ R.innerHTML=`<div class="vc13-l a"><div class="scr"></div></div><div class="vc13-l b"><div class="scr"></div></div>
+  <div class="vc13-dv"><i class="ln"></i><span class="kn" aria-label="Тяни">${ic('back')}${ic('chev')}</span><em class="la">v10</em><em class="lb">v13</em></div>
+  <div class="vc13-cap"><span class="n"></span><span class="t"><b></b><small></small></span><span class="md"><button data-m="a">v10</button><button data-m="s" class="on">⇆</button><button data-m="b">v13</button></span></div>
+  <button class="vc13-me">Сыграть v13 самому ${ic('chev')}</button>`;
+ const A=$('.vc13-l.a .scr',R),B=$('.vc13-l.b .scr',R),LB=$('.vc13-l.b',R),dv=$('.vc13-dv',R);vs10(A,sub(ctx));vs13(B,sub(ctx),{sync:true});
+ let X=172,dragged=false,mode='s';const set=x=>{X=clamp(x,0,344);LB.style.clipPath=`inset(0 0 0 ${X.toFixed(1)}px)`;dv.style.left=X.toFixed(1)+'px'};set(X);
+ const md=m=>{mode=m;$$('.vc13-cap .md button',R).forEach(b=>b.classList.toggle('on',b.dataset.m===m));dv.hidden=m!=='s';if(m==='a')set(344);else if(m==='b')set(0);else set(172)};
+ let x0=X;drag(ctx,dv,{start(){dragged=true;if(mode!=='s')md('s');x0=X},move(dx){set(x0+dx)},tap(){}});
+ ctx.on($('.vc13-cap .md',R),'click',e=>{const b=e.target.closest('button');if(b){dragged=true;md(b.dataset.m)}});
+ // шторка сама проезжает туда-обратно, пока ты её не тронул
+ const sweep=async()=>{await ctx.wait(1600);for(const [to,ms] of [[286,900],[58,1300],[172,800]]){if(dragged)return;const f=X,t0=performance.now();await new Promise(r=>{const st=ctx.loop(n=>{const p=Math.min(1,(n-t0)/ms),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;if(!dragged)set(f+(to-f)*e);if(p>=1||dragged){st();r()}})})}};sweep();
+ const cap=$('.vc13-cap',R);VC13.forEach(([t,n,a,b])=>ctx.t(()=>{$('.n',cap).textContent=n;$('.t b',cap).textContent=a;$('.t small',cap).textContent=b;an($('.t',cap),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{sp:SPs});an($('.n',cap),[{transform:'scale(.5)'},{transform:'none'}],{sp:SPb})},t));
+ ctx.on($('.vc13-me',R),'click',()=>{const v=V.find(x=>x.id==='g13v');if(v)mount(v)})}
+
+/* --- Реплики «как в TikTok» v13 (Андрей: «должна быть ульта со звуком и звуком ульты и т. д.»):
+   у каждой реплики — свой момент: ульта (заряд → удар → голос), выход на бой (звон клинка), убийство (аккорд).
+   Звуки событий в макете — синтез; в приложении — настоящие звуки абилок из игры (их собирает Зетка). --- */
+const TT13={rat:[{a:'rk-king-here',en:'The rat king is here!',ru:'Крысиный король здесь!',tag:'Ульта',fx:'ult',kw:['king','король']},
+  {a:'rk-priest-vs-king',en:"What's a priest gonna do to a king?!",ru:'И что поп сделает королю?!',tag:'Выход на бой',fx:'enter',kw:['gonna','= going to, собирается']},
+  {a:'rk-took-down',en:'Took down the Venatah!',ru:'Уложил Венатора!',tag:'Убил Венатора',fx:'kill',kw:['took down','уложил, завалил']},
+  {a:'rat-king-18',en:"Who's exterminating who now!",ru:'Ну и кто теперь кого травит?!',tag:'Убийство · игра слов',fx:'kill',kw:['exterminating','травить (крыс, тараканов)']}],
+ venator:[{a:'ven-not-merciful',en:'The Lord is merciful... I am not.',ru:'Господь милосерден… а вот я — нет.',tag:'Ульта',fx:'ult',kw:['merciful','милосердный']},
+  {a:'ven-evil-stirs',en:'Evil stirs in New York... and so the Vatican has called on me.',ru:'В Нью-Йорке пробуждается зло… и Ватикан призвал меня.',tag:'Выход на бой',fx:'enter',kw:['called on','призвал, позвал на помощь']},
+  {a:'ven-evil-dies',en:'Evil dies today.',ru:'Зло сегодня умрёт.',tag:'Убийство',fx:'kill',kw:['evil','зло']}]};
+const TTL13={ult:'УЛЬТА',enter:'ВЫХОД',kill:'УБИЛ'};
+function tt13(R,ctx,o){o=o||{};let k=o.hero==='venator'?'venator':'rat',i=0,touched=false,busy=false;R.className='scr v8 tt13';
+ S13.preload([...TT13.rat,...TT13.venator].map(x=>x.a));
+ R.innerHTML=`${SB(0)}<div class="tt13-bg"></div><i class="tt13-vg"></i><i class="tt13-dk"></i>
+  <div class="tt13-hd"><button class="bk">${ic('back')}</button><span><small>РЕПЛИКИ ГЕРОЕВ · КАК В TIKTOK</small><b class="nm"></b></span></div>
+  <div class="tt13-tags"></div>
+  <div class="tt13-stage"><span class="ring"><i class="r1"></i><i class="r2"></i></span><span class="fr"><video muted loop playsinline></video><i class="gl"></i></span><i class="wave"></i><b class="stamp"></b></div>
+  <div class="tt13-cap"></div><div class="tt13-ru"></div><button class="tt13-kw" hidden></button>
+  <div class="tt13-chips"></div>
+  <div class="tt13-ft"><button class="pv">${ic('back')}</button><button class="pl">${ic('play')}<span>Ещё раз</span></button><button class="sv">${ic('star')}</button><button class="nx">${ic('chev')}</button></div>
+  <i class="tt13-fl"></i><canvas class="fx"></canvas><i class="hb"></i>`;
+ const stg=$('.tt13-stage',R),cap=$('.tt13-cap',R),ru=$('.tt13-ru',R),kw=$('.tt13-kw',R),fx=FX(ctx,$('.fx',R)),vid=$('.fr video',R);
+ ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ const L=()=>TT13[k];
+ function paint(){const h=H12[k],x=L()[i];R.style.setProperty('--ac',h.ac);$('.tt13-bg',R).innerHTML=loc13(k);$('.tt13-hd .nm',R).textContent=h.n;
+  if(vid.dataset.hv!==h.v){vid.dataset.hv=h.v;vid.poster=IMG[h.v];vid.style.objectPosition=h.pos;vid.src=vurl(h.v);const p=vid.play();if(p&&p.catch)p.catch(()=>{})}
+  $('.tt13-tags',R).innerHTML=L().map((y,j)=>`<button class="${j===i?'on':''} t-${y.fx}" data-i="${j}">${y.tag}</button>`).join('');
+  $('.tt13-chips',R).innerHTML=`${['rat','venator'].map(q=>`<button class="${q===k?'on':''}" data-h="${q}">${hic12(q)}${H12[q].n}</button>`).join('')}<button class="lk">${hic12('doorman')}Doorman</button><button class="lk">${hic12('seven')}Seven</button>`;
+  cap.innerHTML='';ru.textContent='';kw.hidden=true;$('.stamp',stg).textContent='';stg.className='tt13-stage'}
+ // момент реплики: ульта — заряд кольцом, удар, вспышка, тряска; выход — блик по рамке; убийство — красный удар
+ async function play(){if(busy)return;busy=true;const x=L()[i],h=H12[k],W=x.en.split(' '),d=(DUR11[AU11[x.a]||x.a]||2.4)*1000;cap.innerHTML='';ru.textContent='';kw.hidden=true;stg.classList.add('go',x.fx);
+  const st=$('.stamp',stg);st.textContent=TTL13[x.fx];const dk=$('.tt13-dk',R);
+  if(x.fx==='ult'){an(dk,[{opacity:0},{opacity:.72}],{d:500,f:'forwards'});an($('.ring',stg),[{opacity:0,transform:'scale(.55) rotate(-90deg)'},{opacity:1,transform:'scale(1) rotate(0deg)'}],{d:860,e:'cubic-bezier(.5,0,.9,.6)'});
+   an($('.fr',stg),[{transform:'scale(1)'},{transform:'scale(.94)'}],{d:860,e:'cubic-bezier(.5,0,.9,.6)',f:'forwards'})}
+  else if(x.fx==='enter'){an($('.gl',stg),[{transform:'translateX(-130%) skewX(-18deg)'},{transform:'translateX(130%) skewX(-18deg)'}],{d:700,e:EIO})}
+  else{an(dk,[{opacity:0},{opacity:.5,offset:.2},{opacity:.25}],{d:700,f:'forwards'})}
+  const gap=S13.live()?S13.sfx(x.fx):(x.fx==='ult'?900:300);await ctx.wait(gap||300);if(!ctx.alive)return;
+  // удар
+  const r=rel($('.fr',stg),R);an($('.tt13-fl',R),[{opacity:0},{opacity:x.fx==='kill'?.4:.6,offset:.1},{opacity:0}],{d:520});shake($('.fr',stg),x.fx==='ult'?9:5,360);
+  an($('.fr',stg),[{transform:'scale(1.08)'},{transform:'scale(1)'}],{sp:SPb,f:'forwards'});an($('.wave',stg),[{opacity:.9,transform:'translate(-50%,-50%) scale(.3)'},{opacity:0,transform:'translate(-50%,-50%) scale(2.6)'}],{d:700,e:EO});
+  an(st,[{opacity:0,transform:'translate(-50%,-50%) scale(2.6) rotate(-14deg)'},{opacity:1,transform:'translate(-50%,-50%) scale(1) rotate(-9deg)',offset:.25},{opacity:1,transform:'translate(-50%,-50%) scale(1.02) rotate(-9deg)',offset:.75},{opacity:0,transform:'translate(-50%,-50%) scale(1.1) rotate(-9deg)'}],{d:1300,e:'linear'});
+  fx.burst(r.x+r.w/2,r.y+r.h*.5,{n:x.fx==='ult'?70:40,c:x.fx==='kill'?['#FF4D5E','#fff','#7a0b16']:[h.ac,'#fff','#F6D488'],v:x.fx==='ult'?9:6,g:.06,s:2.6,l:50});
+  an(dk,[{opacity:.72},{opacity:.2}],{d:900,f:'forwards',dl:300});
+  stg.classList.add('say');say13(ctx,x.a,{echo:.3,end(){stg.classList.remove('say')}});
+  // слова по одному, как в роликах
+  const len=W.reduce((s,w)=>s+w.length+2,0);let t=120;W.forEach((w,j)=>{const ms=d*(w.length+2)/len;ctx.t(()=>{cap.innerHTML=`<span class="cw">${w}</span>`;an($('.cw',cap),[{transform:'scale(.55) rotate(-5deg)',opacity:0},{transform:'none',opacity:1}],{sp:SPb})},t);t+=ms});
+  ctx.t(()=>{cap.innerHTML=`<span class="all">${x.en.replace(new RegExp('('+x.kw[0]+')','i'),'<u>$1</u>')}</span>`;ru.textContent=x.ru;an(ru,[{opacity:0},{opacity:1}],{d:400});
+   kw.hidden=false;kw.innerHTML=`<b>${x.kw[0]}</b> — ${x.kw[1]}`;an(kw,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{sp:SPs});stg.classList.remove('go','ult','enter','kill');busy=false},t+260)}
+ ctx.on($('.tt13-ft',R),'click',e=>{const b=e.target.closest('button');if(!b)return;an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});
+  if(b.classList.contains('pl')){busy=false;play();return}if(b.classList.contains('sv')){b.classList.toggle('on');toast(R,b.classList.contains('on')?'В «Мои фразы» — уйдёт в повторение':'Убрал');return}
+  const n=b.classList.contains('nx')?1:-1;i+=n;if(i<0||i>=L().length){k=k==='rat'?'venator':'rat';i=n>0?0:L().length-1}busy=false;paint();ctx.t(play,450)});
+ ctx.on($('.tt13-tags',R),'click',e=>{const b=e.target.closest('[data-i]');if(!b)return;i=+b.dataset.i;busy=false;paint();ctx.t(play,350)});
+ ctx.on($('.tt13-chips',R),'click',e=>{const b=e.target.closest('button');if(!b)return;if(b.classList.contains('lk')){toast(R,'Реплики этого героя ещё собирает Зетка');return}k=b.dataset.h;i=0;busy=false;paint();ctx.t(play,450)});
+ ctx.on($('.tt13-hd .bk',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← назад в Deadlock')});
+ paint();ctx.t(play,900);
+ const auto=()=>{if(touched)return;i++;if(i>=L().length){k=k==='rat'?'venator':'rat';i=0}busy=false;paint();ctx.t(play,400);ctx.t(auto,6800)};ctx.t(auto,7200)}
+
+/* --- «Кто про кого» v13: говорит другой — меняется и место, как панель в комиксе (Андрей: «локации же будут меняться? про смену — как в комиксах»).
+   Рисовать локации не надо: фон берём с живой карточки героя (это делает Зетка). --- */
+const AB13=[{k:'rat',to:'venator',a:'rk-priest-vs-king',en:"What's a priest gonna do to a king?!",ru:'И что поп сделает королю?!',w:'Туннели'},
+ {k:'venator',to:'rat',a:'ven-will-find',en:'I will find you.',ru:'Я тебя найду.',w:'Собор'},
+ {k:'rat',to:'venator',a:'rk-took-down',en:'Took down the Venatah!',ru:'Уложил Венатора!',w:'Туннели'},
+ {k:'venator',to:'rat',a:'ven-die-monster',en:'Die, monster!',ru:'Сдохни, тварь!',w:'Собор'}];
+function ab13(R,ctx,o){o=o||{};let i=-1,touched=false;R.className='scr v8 ab13';S13.preload(AB13.map(x=>x.a));
+ R.innerHTML=`${SB(0)}<div class="ab13-hd"><button class="bk">${ic('back')}</button><span><small>РЕПЛИКИ · КТО ПРО КОГО</small><b>Король и Венатор</b></span></div>
+  <div class="ab13-pg"></div>
+  <div class="ab13-cap"></div><div class="ab13-ru"></div>
+  <p class="ab13-nt">${ic('comic13')}<span>Говорит другой — меняется и место, как панель в комиксе. Локации не рисуем: фон берём с живой карточки героя.</span></p>
+  <div class="ab13-ft"><span class="dt13">${AB13.map(()=>'<i></i>').join('')}</span><button class="pl">${ic('play')}<span>Ещё раз</span></button><button class="nx">${ic('chev')}</button></div><canvas class="fx"></canvas><i class="hb"></i>`;
+ const pg=$('.ab13-pg',R),cap=$('.ab13-cap',R),ru=$('.ab13-ru',R);ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ function panel(x,dir){const h=H12[x.k],t=H12[x.to];const p=document.createElement('div');p.className='ab13-pn';p.innerHTML=`${loc13(x.k)}<i class="vg"></i>
+   <span class="cb">${x.w.toUpperCase()} · ${x.k==='rat'?'КОРОЛЬ':'ВЕНАТОР'} ПРО ${x.to==='rat'?'КОРОЛЯ':'ВЕНАТОРА'}</span>
+   <span class="ab13-sp"><video muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video></span>
+   <span class="to"><span class="c"><video muted loop playsinline data-hv="${t.v}" poster="${IMG[t.v]}" style="object-position:${t.pos}"></video></span><small>про ${x.to==='rat'?'Короля':'Венатора'}</small></span>`;
+  pg.appendChild(p);playV12(p);const old=$$('.ab13-pn',pg).filter(q=>q!==p);
+  // смена панели: новая заезжает косым срезом, старая уходит назад
+  an(p,[{clipPath:dir>0?'polygon(100% 0,140% 0,120% 100%,80% 100%)':'polygon(-40% 0,0 0,20% 100%,-20% 100%)'},{clipPath:'polygon(-20% 0,140% 0,120% 100%,-40% 100%)'}],{d:620,e:EO});
+  an($('.ab13-sp',p),[{transform:`translateX(${dir*40}px) scale(.9)`,opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:200});an($('.to',p),[{transform:'scale(.4)',opacity:0},{transform:'none',opacity:1}],{sp:SPb,dl:420});
+  an($('.cb',p),[{transform:'translateY(-12px)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:300});
+  old.forEach(q=>{const z=an(q,[{transform:'none',opacity:1},{transform:`translateX(${-dir*30}px) scale(.94)`,opacity:.0}],{d:620,e:EO,f:'forwards'});if(z)z.onfinish=()=>q.remove();else q.remove()})}
+ function show(n){if(n>=AB13.length)n=0;const dir=n>i?1:-1;i=n;const x=AB13[n];panel(x,i%2?-1:1);
+  $$('.ab13-ft .dt13 i',R).forEach((d,j)=>d.classList.toggle('on',j===n));cap.innerHTML='';ru.textContent='';
+  ctx.t(()=>{const W=x.en.split(' '),d=(DUR11[x.a]||2.4)*1000,len=W.reduce((s,w)=>s+w.length+2,0);let t=0;say13(ctx,x.a,{echo:.28});
+   W.forEach(w=>{const ms=d*(w.length+2)/len;ctx.t(()=>{cap.innerHTML=`<span class="cw">${w}</span>`;an($('.cw',cap),[{transform:'scale(.6)',opacity:0},{transform:'none',opacity:1}],{sp:SPb})},t);t+=ms});
+   ctx.t(()=>{cap.innerHTML=`<span class="all">${x.en}</span>`;ru.textContent=x.ru;an(ru,[{opacity:0},{opacity:1}],{d:400})},t+200)},650)}
+ ctx.on($('.ab13-ft',R),'click',e=>{const b=e.target.closest('button');if(!b)return;an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});if(b.classList.contains('nx'))show(i+1);else show(i)});
+ ctx.on(pg,'click',()=>show(i+1));
+ ctx.on($('.ab13-hd .bk',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← назад в Deadlock')});
+ ctx.t(()=>show(0),500);const auto=()=>{if(touched)return;show(i+1);ctx.t(auto,5200)};ctx.t(auto,5600)}
+
+/* --- Звук реплики v13 (Андрей: «10 из 10, просто улучши»): добавил регуляторы фона и эха, по три реплики на героя, звук события перед каждой.
+   В Versus фона нет — только голос и лёгкое эхо (там шум мешал). --- */
+function sd13(R,ctx){R.className='scr v8 sd12 sd13';let k='venator',j=0,bv=.5,ec=.3,wet=true,pl=false;
+ const L=()=>TT13[k].slice(0,3);S13.preload([...TT13.rat,...TT13.venator].map(x=>x.a));
+ R.innerHTML=`${SB(0)}<div class="sd12-hd"><b>Звук реплик</b><small>голос + место + звук события</small></div>
+  <div class="sd12-sg"><button class="on" data-k="venator">${hic12('venator')}Венатор · собор</button><button data-k="rat">${hic12('rat')}Король · туннели</button></div>
+  <div class="sd13-ls"></div>
+  <div class="sd13-cd"></div>
+  <div class="sd13-sl"><label><span><b>Фон места</b><small class="bvt"></small></span><input type="range" min="0" max="100" value="50" class="bv"></label>
+   <label><span><b>Эхо места</b><small class="ect"></small></span><input type="range" min="0" max="100" value="60" class="ec"></label></div>
+  <div class="sd13-ab"><button class="dry">${ic('play')}Сухо</button><button class="wet pri">${ic('play')}С сопровождением</button></div>
+  <p class="sd12-nt">Где будет: реплики героев, комиксы, «кто про кого», ролики для TikTok. В Versus — без фона: голос и лёгкое эхо. Звуки событий в макете — синтез, в приложении — из игры.</p><i class="hb"></i>`;
+ const cd=$('.sd13-cd',R),bvt=$('.bvt',R),ect=$('.ect',R);
+ const lbl=()=>{bvt.textContent=bv<.02?'выкл':bv<.35?'еле слышно':bv<.7?'тихо, под голосом':'заметно';ect.textContent=ec<.05?'сухо, как с вики':ec<.35?'чуть-чуть':ec<.65?'как в комнате':'как в соборе'};lbl();
+ function paint(){const h=H12[k];$('.sd13-ls',R).innerHTML=L().map((x,n)=>`<button class="${n===j?'on':''}" data-j="${n}"><i class="t-${x.fx}">${x.tag}</i><span>${x.en}</span></button>`).join('');
+  const x=L()[j];cd.innerHTML=`<span class="fr"><video muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video></span><span class="tx"><b>${x.en}</b><small>${x.ru}</small><span class="eq">${eqBars(16)}</span></span>`;playV12(cd)}
+ paint();$$('.sd13-ls button,.sd13-sl label,.sd13-ab button',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:100+i*50}));
+ ctx.on($('.sd12-sg',R),'click',e=>{const b=e.target.closest('button');if(!b)return;k=b.dataset.k;j=0;$$('.sd12-sg button',R).forEach(x=>x.classList.toggle('on',x===b));S13.stop();paint()});
+ ctx.on($('.sd13-ls',R),'click',e=>{const b=e.target.closest('[data-j]');if(!b)return;j=+b.dataset.j;paint();go(wet)});
+ ctx.on($('.bv',R),'input',e=>{bv=e.target.value/100;lbl();S13.bedVol(bv)});ctx.on($('.ec',R),'input',e=>{ec=e.target.value/100*.5;lbl()});
+ function go(w){wet=w;const x=L()[j];S13.stopLine();R.classList.add('pl');R.classList.toggle('dry',!w);cd.classList.add('say');
+  if(w)S13.bed(k==='rat'?'sewer':'cathedral',bv);else S13.bedOff();
+  ctx.t(()=>say13(ctx,x.a,{echo:w?ec:0,sfx:w?x.fx:null,end(){cd.classList.remove('say');R.classList.remove('pl');if(!w)return;ctx.t(()=>{if(!R.classList.contains('pl'))S13.bedOff()},2600)}}),w?500:60)}
+ ctx.on($('.dry',R),'click',()=>go(false));ctx.on($('.wet',R),'click',()=>go(true));ctx.add(()=>S13.stop())}
+
+/* --- Обучение v13 (Андрей на v12): награда — карточка, а не кадр («кадры убери»); фон сцены — только в исключительных случаях
+   (вручную или как редкая случайная награда); главный фон фильма — за 100 % всего фильма; объяснять как игроку, а не как админу --- */
+const card13=(im,r,n)=>`<span class="cd13 r-${r}"><i class="img" style="background-image:url(${IMG[im]})"></i><i class="sh"></i><b>${n||''}</b><em>${{c:'обычная',s:'редкая',g:'золотая'}[r]}</em></span>`;
+function deep13(R,ctx,kind){R.className='scr v8 dp12 dp13 dp13-'+kind;let touched=false;ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});const fx=()=>FX(ctx,$('.fx',R));
+ if(kind==='scene'){R.innerHTML=`${SB(0)}<div class="dp12-top"><i class="img" style="background-image:url(${IMG.bd_psycho})"></i><i class="sh"></i><small>АМЕРИКАНСКИЙ ПСИХОПАТ · ЭП. 1 ПРОЙДЕН</small><b>Ты знаешь <em class="n">31</em> из 100 слов сцены</b></div>
+   <div class="dp12-grid">${dots12(100,31,0)}</div>
+   <p class="dp12-q">Хватит — норм. Хочешь ещё — без проблем.</p>
+   <div class="dp12-ch"><button class="dc0" data-a="0"><b>Дальше смотреть</b><small>эпизод 2 · прогресс останется</small></button>
+    <button class="dc1" data-a="30"><span class="tg">УГЛУБЛЁННОЕ</span><b>Ещё 30 слов</b><small>≈ 6 мин · двумя подходами</small><span class="rw">${card13('p_psycho','c')}<em>карточка сцены «Офис»</em></span></button>
+    <button class="dc2" data-a="69"><span class="tg">ПОЛНОЕ</span><b>Все 100</b><small>≈ 20 мин · частями, когда хочешь</small><span class="rw">${card13('p_psycho','g')}<em>золотая карточка + «Знаток сцены»</em></span></button></div>
+   <div class="dp13-rw"><small>ЕЩЁ НАГРАДЫ</small>
+    <span class="f">${ic('film11')}<span><b>Живой фон фильма</b><small>когда весь «Американский психопат» на 100 %</small><i class="pb"><i style="--p:.18"></i></i></span><em>18 %</em></span>
+    <span class="r">${ic('star')}<span><b>Фон сцены — редкость</b><small>иногда выпадает сам, за любой подход</small></span></span></div>
+   <p class="dp12-nt">Никто не заставляет. Ушёл — вернёшься с 32-го слова.</p><canvas class="fx"></canvas><i class="hb"></i>`;
+  const G=$$('.dp12-grid i',R),N=$('.dp12-top .n',R),F=fx();
+  G.forEach((d,j)=>an(d,[{opacity:0,transform:'scale(.2)'},{opacity:1,transform:'none'}],{d:300,dl:200+j*7,e:EO}));countUp(ctx,N,31,1100);
+  $$('.dp12-ch button,.dp13-rw>*',R).forEach((b,j)=>an(b,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:900+j*70}));
+  an($('.dp13-rw .pb i',R),[{transform:'scaleX(0)'},{transform:'scaleX(var(--p))'}],{d:1000,e:EO,f:'forwards',dl:1500});
+  const prev=a=>{G.forEach((d,j)=>{d.classList.toggle('a',j>=31&&j<31+a)});N.textContent=31+a;N.classList.toggle('up',a>0)};
+  $$('.dp12-ch button',R).forEach(b=>{ctx.on(b,'pointerenter',()=>prev(+b.dataset.a));ctx.on(b,'pointerleave',()=>prev(0));
+   ctx.on(b,'click',()=>{touched=true;const a=+b.dataset.a;an(b,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});if(!a){toast(R,'Эпизод 2 — поехали. 31 из 100 сохранено');return}prev(a);
+    const c=$('.cd13',b);if(c)an(c,[{transform:'rotate(-8deg) scale(1)'},{transform:'rotate(4deg) scale(1.35)'},{transform:'rotate(-8deg) scale(1)'}],{d:700,e:EO});
+    const r=rel($('.dp12-grid',R),R);F.burst(r.x+r.w/2,r.y+r.h/2,{n:40,c:a>30?['#F6D488','#fff','#E8B34B']:['#2EE6C5','#fff'],v:5,g:.05,s:2.2,l:44});toast(R,a>30?'Полное: 10 слов за подход — бросить можно в любой момент':'Углублённое: 15 слов сейчас, 15 — когда захочешь')})});
+  ctx.t(()=>{if(!touched){prev(30);$('.dc1',R).classList.add('hv');ctx.t(()=>{if(touched)return;prev(69);$('.dc1',R).classList.remove('hv');$('.dc2',R).classList.add('hv');ctx.t(()=>{if(!touched){prev(0);$('.dc2',R).classList.remove('hv')}},1800)},1800)}},2600);return}
+ if(kind==='full'){const M=[[50,'карточка сцены','c'],[75,'редкая карточка','s'],[100,'золотая карточка + «Знаток сцены»','g']];
+  R.innerHTML=`${SB(0)}<div class="dp12-fh"><small>ПОЛНОЕ ОБУЧЕНИЕ · «ОФИС»</small><b>64 из 100 слов</b><span>осталось ≈ 7 мин</span></div>
+   <div class="dp13-how"><small>КАК ЭТО РАБОТАЕТ</small>
+    <span><i>1</i><b>Учишь по 10 слов за раз</b><small>≈ 2 минуты, задания как в проверке</small></span>
+    <span><i>2</i><b>Бросил — ничего не сгорает</b><small>вернёшься — продолжишь с того же слова</small></span>
+    <span><i>3</i><b>На 50, 75 и 100 % — карточки</b><small>каждая лучше прошлой, лежат в «Коллекции»</small></span></div>
+   <div class="dp13-tr"><div class="dp12-ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg" style="--p:.64"/>${M.map(([p])=>{const a=(p/100)*Math.PI*2-Math.PI/2;return `<circle cx="${(60+Math.cos(a)*52).toFixed(1)}" cy="${(60+Math.sin(a)*52).toFixed(1)}" r="4.6" class="ms${p<=64?' got':''}"/>`}).join('')}</svg><b>64<small>%</small></b></div>
+    <div class="dp13-cds">${M.map(([p,n,r])=>`<span class="${p<=64?'got':''}">${card13('p_psycho',r)}<b>${p} %</b><small>${n}</small></span>`).join('')}</div></div>
+   <div class="dp13-rw"><span class="f">${ic('film11')}<span><b>Весь фильм на 100 % — живой фон фильма</b><small>«Офис» 64 % · «Визитки» 0 % · «Утро» 0 %</small><i class="pb"><i style="--p:.21"></i></i></span><em>21 %</em></span></div>
+   <div class="dp12-nx"><small>СЛЕДУЮЩИЕ 10 СЛОВ</small><span>${['sculpted','tan','reservation','lunch','partner','merger'].map(w=>`<i>${w}</i>`).join('')}<i class="m">+4</i></span><button class="pri">Продолжить · 10 слов · 2 мин</button><button>Передохнуть — прогресс не сгорит</button></div><canvas class="fx"></canvas><i class="hb"></i>`;
+  const fg=$('.dp12-ring .fg',R);an(fg,[{strokeDashoffset:'326.7'},{strokeDashoffset:String(326.7*(1-.64))}],{d:1300,e:EO,f:'forwards'});countUp(ctx,$('.dp12-ring b',R).firstChild,64,1300);
+  $$('.dp13-how>span,.dp13-cds>span,.dp13-rw>*,.dp12-nx>*',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:300+i*60}));
+  an($('.dp13-rw .pb i',R),[{transform:'scaleX(0)'},{transform:'scaleX(var(--p))'}],{d:1000,e:EO,f:'forwards',dl:1200});
+  $$('.dp12-nx button',R).forEach(b=>ctx.on(b,'click',()=>{an(b,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});toast(R,b.classList.contains('pri')?'10 слов · ≈ 2 мин':'Ок — продолжишь, когда захочешь')}));
+  $$('.dp13-cds>span',R).forEach(s=>ctx.on(s,'click',()=>{const c=$('.cd13',s);an(c,[{transform:'rotateY(0)'},{transform:'rotateY(180deg)'},{transform:'rotateY(360deg)'}],{d:700,e:EO});toast(R,s.classList.contains('got')?'Уже твоя — лежит в «Коллекции»':'Откроется на '+$('b',s).textContent)}));return}}
+
+/* --- Уровень героя v13 (Андрей: «награды должны идти за уровень, а не иконка просто после комикса»):
+   комикс, проверка, углубление и Versus дают опыт; награды даёт только уровень. --- */
+const LVT13=[[1,'иконка героя','ic'],[2,'рамка иконки','fr'],[3,'серебряная рамка','sv'],[4,'карточка героя','cd'],[5,'вход в бой','en'],[6,'фон героя в профиль','bg'],[7,'реплика победы','vo'],[8,'анимация удара','hit'],[9,'рамка в профиль','pf'],[10,'золотая иконка','gd']];
+function lv13(R,ctx){R.className='scr v8 lv13';const L=LV13.venator;let touched=false;ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ const node=([n,t,c])=>`<span class="nd ${n<L.lv?'got':n===L.lv?'now':''}" data-n="${n}"><i class="dt">${n<=L.lv?ic('check'):n}</i><span class="rw r-${c}">${c==='ic'||c==='fr'||c==='sv'||c==='gd'?`<i class="ic13 f-${c}">${hic12('venator')}</i>`:ic({cd:'cards13',en:'swords13',bg:'img',vo:'snd',hit:'bolt',pf:'user'}[c])}</span><b>ур. ${n}</b><small>${t}</small></span>`;
+ R.innerHTML=`${SB(0)}<div class="lv13-hd">${loc13('venator')}<i class="dm"></i><span class="ico">${hic12('venator','big')}</span><span class="tx"><small>VENATOR</small><b>Уровень ${L.lv}</b><span class="xp"><i style="--p:${(L.xp/L.nx).toFixed(2)}"></i></span><em>${L.xp} / ${L.nx} опыта · ещё ${L.nx-L.xp} до ур. ${L.lv+1}</em></span></div>
+  <p class="lv13-k"><b>Главное — уровень.</b> Комиксы и Versus дают опыт, а награду даёт только уровень. Иконку «просто за комикс» больше не выдаём.</p>
+  <div class="g11-sec"><b>Что даёт каждый уровень</b><small>листай →</small></div>
+  <div class="lv13-tr"><i class="ln"><i style="--p:${((L.lv-1)/9).toFixed(3)}"></i></i>${LVT13.map(node).join('')}</div>
+  <div class="g11-sec"><b>Откуда опыт</b><small>за Венатора</small></div>
+  <div class="lv13-xp">${[['book11','Прочитал главу','+30'],['check','Закрепил главу · 3 вопроса','+30'],['deep11','Углубил главу','×2 за неё'],['swords13','Versus: победа · поражение','+40 · +10'],['radar','Перехват с Радара','×2 опыта']].map(([i,t,v])=>`<span>${ic(i)}<b>${t}</b><em>${v}</em></span>`).join('')}</div>
+  <div class="lv13-vs"><small>Так тебя видят друзья в Versus</small><div class="rw13">${[[1,'ур. 1'],[3,'ур. 3'],[10,'ур. 10']].map(([n,t])=>`<span class="f-${n===1?'ic':n===3?'sv':'gd'}"><i class="ic13">${hic12('venator')}</i><em>${t}</em></span>`).join('')}</div><p>Силы уровень не даёт — бой честный. Только вид.</p></div><canvas class="fx"></canvas><i class="hb"></i>`;
+ const fx=FX(ctx,$('.fx',R));an($('.lv13-hd .xp i',R),[{transform:'scaleX(0)'},{transform:'scaleX(var(--p))'}],{d:1100,e:EO,f:'forwards',dl:300});
+ an($('.lv13-tr .ln>i',R),[{transform:'scaleX(0)'},{transform:'scaleX(var(--p))'}],{d:1200,e:EO,f:'forwards',dl:500});
+ $$('.lv13-tr .nd',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(16px) scale(.9)'},{opacity:1,transform:'none'}],{sp:SPs,dl:400+i*60}));
+ $$('.lv13-xp>span,.lv13-vs',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:900+i*60}));
+ ctx.on($('.lv13-tr',R),'click',e=>{const n=e.target.closest('.nd');if(!n)return;touched=true;const v=+n.dataset.n,x=LVT13[v-1];an(n,[{transform:'scale(.92)'},{transform:'none'}],{sp:SPb});toast(R,v<=L.lv?`ур. ${v} — ${x[1]}: уже твоё`:`ур. ${v} — ${x[1]}: ещё ≈ ${(L.nx-L.xp)+(v-L.lv-1)*200} опыта`)});
+ // без касания: «получить» ур. 3 — опыт добегает, рамка становится серебряной
+ ctx.t(()=>{if(touched)return;const tr=$('.lv13-tr',R),n3=$('.nd[data-n="3"]',R);tr.scrollTo({left:Math.max(0,n3.offsetLeft-120),behavior:'smooth'});
+  ctx.t(()=>{if(touched)return;an($('.lv13-hd .xp i',R),[{transform:`scaleX(${(L.xp/L.nx).toFixed(2)})`},{transform:'scaleX(1)'}],{d:900,e:EO,f:'forwards'});$('.lv13-hd em',R).textContent='500 / 500 · новый уровень!';
+   ctx.t(()=>{if(touched)return;n3.classList.add('now');$('.nd[data-n="2"]',R).classList.replace('now','got');$('.lv13-hd .tx b',R).textContent='Уровень 3';const ico=$('.lv13-hd .ico',R);ico.classList.add('f-sv');
+    const r=rel(n3,R);fx.burst(r.x+r.w/2,r.y+24,{n:46,c:['#DDE6F2','#fff','#9FB3C8'],v:5.5,g:.08,s:2.4,l:46});an(ico,[{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}],{sp:SPb});toast(R,'Уровень 3 — серебряная рамка иконки')},950)},1100)},3200)}
+
+/* --- «Понимаешь %» v13: как видит игрок (Андрей: «добавляй, только чуть улучши») --- */
+function pct13(R,ctx){R.className='scr v8 pc12 pc13';const IT=[['Nice tan',1,'«Офис», 2 дня назад'],['reservation',1,'«Визитки», вчера'],['I have to return some videotapes',0,''],['sculpted',0,''],['Is that Patrick?',1,'«Офис», сегодня'],['merger',1,'«Офис», 3 дня назад'],['partner',1,'«Волк», неделю назад'],['lunch',1,'«Волк», 5 дней назад'],['Dorsia',0,''],['business card',1,'«Визитки», вчера'],['impressive',0,''],['nice try',1,'«Таксист», 4 дня назад']];
+ const known=IT.filter(x=>x[1]).length,N=IT.length,AFT=[3,8],pct=v=>Math.round(v/N*100);
+ R.innerHTML=`${SB(0)}<div class="pc13-sc"><i class="img" style="background-image:url(${IMG.bd_psycho})"></i><i class="sh"></i><span><small>АМЕРИКАНСКИЙ ПСИХОПАТ · ЭП. 1</small><b>Понимаешь <em class="v1">${pct(known)}</em>%</b></span><button class="q">?</button></div>
+  <div class="pc13-ex"><b>Что это значит</b><p>В этом эпизоде <b>${N} главных</b> слов и фраз. Ты уже знаешь <b class="kn">${known}</b> — значит, понимаешь <b class="pe">${pct(known)}</b> %. Знаешь — это когда хоть раз ответил верно с первого раза, в любой сцене.</p></div>
+  <div class="pc12-it">${IT.map((x,j)=>`<button class="${x[1]?'k':''}" data-j="${j}">${x[0]}</button>`).join('')}</div>
+  <p class="pc13-tip">нажми на слово — покажу, где ты его выучил</p>
+  <div class="pc13-af"><small>ПОСЛЕ ЭПИЗОДА</small><span><b class="v0">${pct(known)}</b><i>${ic('chev')}</i><b class="v2">${pct(known)}</b>%</span><em>ответил верно ещё на 2 слова</em></div>
+  <p class="pc12-n">Ошибся — процент не падает. Вместо «−3 %» пишу «2 слова просят повторения».</p><canvas class="fx"></canvas><i class="hb"></i>`;
+ const fx=FX(ctx,$('.fx',R));$$('.pc12-it button',R).forEach((x,i)=>an(x,[{opacity:0,transform:'scale(.7)'},{opacity:1,transform:'none'}],{sp:SPb,dl:200+i*40}));
+ ctx.on($('.pc12-it',R),'click',e=>{const b=e.target.closest('button');if(!b)return;const x=IT[+b.dataset.j];an(b,[{transform:'scale(1.12)'},{transform:'none'}],{sp:SPb});toast(R,b.classList.contains('nw')?`${x[0]} — ответил верно только что`:x[1]?`${x[0]} — знаешь: ${x[2]}`:`${x[0]} — ещё не встречал, будет в заданиях`)});
+ ctx.on($('.pc13-sc .q',R),'click',()=>{const e=$('.pc13-ex',R);an(e,[{boxShadow:'0 0 0 2px #F6D488'},{boxShadow:'0 0 0 0 transparent'}],{d:1200})});
+ const go=()=>{AFT.forEach((j,n)=>ctx.t(()=>{const s=$(`.pc12-it [data-j="${j}"]`,R);s.classList.add('k','nw');an(s,[{transform:'scale(1.3)'},{transform:'none'}],{sp:SPb});const r=rel(s,R);fx.burst(r.x+r.w/2,r.y+r.h/2,{n:16,c:['#4FD18B','#fff'],v:3,g:0,s:1.8,l:28});
+  if(n===AFT.length-1){countUp(ctx,$('.v2',R),pct(known+AFT.length),700,pct(known));countUp(ctx,$('.pc13-sc .v1',R),pct(known+AFT.length),700,pct(known));$('.kn',R).textContent=known+AFT.length;$('.pe',R).textContent=pct(known+AFT.length);$('.pc13-af',R).classList.add('up')}},n*700))};ctx.t(go,2200)}
+
+/* --- Советы нейронок — просто (Андрей: «вопрос 5 вообще не понял, очень сложно»): по одному, обычными словами, с примером.
+   Мои ответы, где я сказал «беру», он одобрил («можешь брать») — они сверху как решённые. --- */
+const OP13=[{id:'a1',t:'После эпизода — две кнопки: «Закрепить · 1 мин» и «Смотреть дальше».',ex:'Досмотрел → две равные кнопки. Задания сами не выскакивают.',by:'ChatGPT',me:'y',why:'не давит: кто хочет — закрепит'},
+ {id:'a2',t:'Заданий за раз мало: 3, максимум 5.',ex:'«Закрепить» — это 3 вопроса, а не 10.',by:'ChatGPT · Зетка',me:'y',why:'в приложении уже так'},
+ {id:'a3',t:'Ошибся — одна строка «почему». Остальное — по кнопке.',ex:'«hide — прятаться». «Почему другие нет?» — если нажмёшь.',by:'ChatGPT',me:'y',why:'меньше текста на экране'},
+ {id:'a4',t:'Ошибся — эта фраза вернётся в конце этого же захода.',ex:'Неверно на «show your face» → через 2 вопроса она снова.',by:'ChatGPT',me:'y',why:'закрепляет сразу, а не завтра'},
+ {id:'a5',t:'Пропустил день — серия не сгорает, а замерзает.',ex:'Не зашёл в субботу → «Серия заморожена · 1 из 2 в неделю».',by:'ChatGPT · Gemini · Зетка',me:'y',why:'не наказываем — так возвращаются'},
+ {id:'a6',t:'В каждом задании звучит реплика из фильма.',ex:'«Что значит crumbum?» — и сразу голос Короля.',by:'Gemini',me:'y',why:'учимся по живой речи — наша фишка'},
+ {id:'a7',t:'Без «долгов»: «Разогрев · 3 вопроса», а не «Повторить 45».',ex:'На главной всегда 3, даже если накопилось 45.',by:'Gemini · Зетка',me:'y',why:'цифра 45 пугает и не даёт начать'},
+ {id:'a8',t:'Слова, которые ты нажимал, — после эпизода списком. Сам решаешь, учить ли.',ex:'«Тебя заинтересовало: tan, merger, sculpted» — галочки.',by:'ChatGPT · Зетка',me:'y',why:'сам нажал — значит, интересно'},
+ {id:'a9',t:'Выученное слово звучит в новой реплике — «я это знаю!».',ex:'Выучил «hide» → в эпизоде 3 оно снова, подсвечено.',by:'Зетка',me:'y',why:'приятно и закрепляет'},
+ {id:'a10',t:'Бот присылает вопрос из вчерашнего эпизода — отвечаешь прямо в чате.',ex:'В Telegram: «Что значит „show your face“?» и 3 кнопки.',by:'Gemini',me:'l',why:'позже: сначала «Фраза дня» с переходом'},
+ {id:'a11',t:'Проверка главы комикса — строго обязательна.',ex:'Не ответил на 3 вопроса — следующая глава закрыта.',by:'Gemini',me:'n',why:'против: глава открыта, проверка ждёт значком'}];
+const OPOK13=[['Прогресс «до и после»: «понимаешь 67 → 83 %»','как считаю — экран «Понимаешь %»'],['Уровень героя даёт вид, а не силу','рамка иконки, вход в бой, реплика победы'],['«Фраза дня» — кусок твоего эпизода','кнопка открывает эпизод на этой секунде']];
+function ops13(R,ctx){R.className='scr v8 op13';let S={},i=0;try{S=JSON.parse(localStorage.getItem('kd13-op')||'{}')}catch(e){}const save=()=>{try{localStorage.setItem('kd13-op',JSON.stringify(S))}catch(e){}};
+ const T={y:'Беру',n:'Не надо',l:'Потом'};
+ R.innerHTML=`${SB(0)}<div class="op13-hd"><b>Советы нейронок</b><small>по одному, коротко. Отвечай «Беру» или «Не надо».</small></div>
+  <div class="op13-ok"><small>УЖЕ РЕШЕНО · ты сказал «можешь брать»</small>${OPOK13.map(([a,b])=>`<span>${ic('check')}<b>${a}</b><em>${b}</em></span>`).join('')}</div>
+  <div class="op13-pr"><i></i></div><div class="op13-st"></div>
+  <div class="op13-bt"><button class="n" data-v="n">Не надо</button><button class="y" data-v="y">Беру</button></div><button class="op13-l" data-v="l">Потом</button>
+  <div class="op13-sm" hidden></div><i class="hb"></i>`;
+ const st=$('.op13-st',R);
+ function card(dir){if(i>=OP13.length){sum();return}const x=OP13[i];st.innerHTML=`<div class="op13-c"><small>СОВЕТ ${i+1} ИЗ ${OP13.length} · ${x.by}</small><b>${x.t}</b><span class="ex"><i>как будет</i>${x.ex}</span><span class="me me-${x.me}">Я бы: <b>${T[x.me].toLowerCase()}</b> — ${x.why}</span>${S[x.id]?`<em class="was">твой ответ: ${T[S[x.id]]}</em>`:''}</div>`;
+  $('.op13-pr i',R).style.transform=`scaleX(${(i/OP13.length).toFixed(3)})`;an($('.op13-c',st),[{opacity:0,transform:`translateX(${dir||40}px) rotate(${(dir||40)/12}deg)`},{opacity:1,transform:'none'}],{sp:SPs})}
+ function vote(v){const x=OP13[i];if(!x)return;S[x.id]=v;save();const c=$('.op13-c',st);const z=an(c,[{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${v==='y'?220:v==='n'?-220:0}px) translateY(${v==='l'?40:0}px) rotate(${v==='y'?12:v==='n'?-12:0}deg)`}],{d:260,e:EI,f:'forwards'});i++;const nx=()=>card(v==='n'?-40:40);if(z)z.onfinish=nx;else nx()}
+ function sum(){$('.op13-pr i',R).style.transform='scaleX(1)';$('.op13-bt',R).hidden=true;$('.op13-l',R).hidden=true;st.innerHTML='';const s=$('.op13-sm',R);s.hidden=false;
+  s.innerHTML=`<b>Готово</b>${OP13.map(x=>`<span class="v-${S[x.id]||'q'}">${S[x.id]==='y'?ic('check'):S[x.id]==='n'?ic('x'):'·'}<em>${x.t}</em></span>`).join('')}<div class="bt"><button class="cp pri">Скопировать ответы</button><button class="rs">Заново</button></div>`;
+  an(s,[{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'none'}],{sp:SPs});
+  ctx.on($('.cp',s),'click',()=>{let t='Советы нейронок — мои ответы:\n';OP13.forEach((x,n)=>{t+=`${n+1}. ${x.t} — ${S[x.id]?T[S[x.id]]:'?'}\n`});const ok=()=>toast(R,'Скопировал — вставь мне в чат');try{navigator.clipboard.writeText(t).then(ok,()=>toast(R,'Не скопировалось — выдели текст выше'))}catch(e){toast(R,'Не скопировалось — выдели текст выше')}});
+  ctx.on($('.rs',s),'click',()=>{i=0;s.hidden=true;$('.op13-bt',R).hidden=false;$('.op13-l',R).hidden=false;card()})}
+ ctx.on(R,'click',e=>{const b=e.target.closest('[data-v]');if(!b)return;an(b,[{transform:'scale(.92)'},{transform:'none'}],{sp:SPb});vote(b.dataset.v)});
+ drag(ctx,st,{axis:'x',move(dx){const c=$('.op13-c',st);if(c)c.style.transform=`translateX(${dx}px) rotate(${dx/16}deg)`},end(dx){const c=$('.op13-c',st);if(Math.abs(dx)>90)vote(dx>0?'y':'n');else if(c){c.style.transform='';an(c,[{transform:`translateX(${dx}px)`},{transform:'none'}],{sp:SPs})}}});
+ $$('.op13-ok>span',R).forEach((x,j)=>an(x,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:100+j*60}));card()}
+
+/* --- Настройки v13 (Андрей на v11: «настройки уёбищно выглядят — что у админа, что обычные, по дизайну не подходят под приложение»).
+   Теперь та же «кожа», что у Главной: тёмно-синий фон, заголовки с засечками, карточки как «Что посмотреть», золото — только на выбранном,
+   внизу те же вкладки. Каждая настройка показывает, что изменится, прямо на превью. Админка — в той же оболочке, только с пометкой ADMIN. --- */
+const sw13=(on,k)=>`<button class="st13-tg${on?' on':''}" data-t="${k}" aria-label="вкл/выкл"><i></i></button>`;
+const sg13=(k,L,on)=>`<span class="st13-sg" data-s="${k}" style="--n:${L.length};--i:${on}">${L.map((x,i)=>`<button class="${i===on?'on':''}" data-i="${i}">${x}</button>`).join('')}<i></i></span>`;
+function set13(R,ctx){R.className='scr v8 st13';const S={sz:1,pz:true,tr:true,ty:false,gl:2,ic:icMode(),vo:true,bed:.35,fx:true,rm:true,tm:1,a18:false};
+ R.innerHTML=`${SB(0)}<div class="st13-m">
+  <div class="st13-hd"><button class="bk">${ic('back')}</button><b>Настройки</b></div>
+  <button class="st13-me"><i class="img" style="background-image:url(${IMG.bd_titanic})"></i><i class="sh"></i><span class="av">А</span><span class="tx"><b>Андрей</b><small><i class="lb">${'<i></i>'.repeat(5)}</i>Средний · 6 дней подряд</small></span><em>фон профиля: Титаник ${ic('chev')}</em></button>
+  <label class="st13-q">${ic('search')}<input placeholder="Найти настройку"></label>
+  <h3 class="st13-h" data-g="view">Просмотр<small>как идёт эпизод</small></h3>
+  <div class="st13-c pvw"><span class="fr"><i class="img" style="background-image:url(${IMG.v_titanic})"></i><span class="sub"><b>No, you have to go, now.</b><small>Нет, ты должна ехать. Сейчас же.</small></span><i class="pz">${ic('play')}пауза: полезная фраза</i></span>
+   <span class="rw"><span class="t"><b>Размер субтитров</b><small>как на видео в эпизоде</small></span>${sg13('sz',['S','M','L','XL'],1)}</span>
+   <span class="rw"><span class="t"><b>Паузы на полезных фразах</b><small>видео встаёт и показывает фразу</small></span>${sw13(true,'pz')}</span>
+   <span class="rw"><span class="t"><b>Перевод под оригиналом</b></span>${sw13(true,'tr')}</span></div>
+  <h3 class="st13-h" data-g="learn">Обучение<small>сколько и как</small></h3>
+  <div class="st13-c lr"><span class="rw"><span class="t"><b>Твой уровень</b><small>растёт сам по ответам</small></span><span class="lvb13"><i class="lb on3">${'<i></i>'.repeat(5)}</i><b>Средний</b></span></span>
+   <span class="rw gl"><span class="ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" class="rt"/><circle cx="20" cy="20" r="16" class="rp" pathLength="100"/></svg><b>10</b><small>мин</small></span><span class="t"><b>Цель на день</b><small>≈ 20 ответов · 200 билетов за цель</small></span>${sg13('gl',['5','10','15','20'],1)}</span>
+   <span class="rw"><span class="t"><b>Писать самому</b><small>вместо кубиков — клавиатура</small></span>${sw13(false,'ty')}</span></div>
+  <h3 class="st13-h" data-g="games">Игры<small>как выглядят герои</small></h3>
+  <div class="st13-c icn13"><button class="op${S.ic==='e'?' on':''}" data-ic="e"><span class="rw13">${['venator','rat','rem','talon','celeste'].map(k=>`<i class="m8 em">${emb(k,40)}</i>`).join('')}</span><b>Гербы</b><small>свои, одним стилем</small><i class="ck">${ic('check')}</i></button>
+   <button class="op${S.ic==='g'?' on':''}" data-ic="g"><span class="rw13">${['venator','rat','rem','talon','celeste'].map(k=>mini8(k)).join('')}</span><b>Арт из игры</b><small>мини-портреты</small><i class="ck">${ic('check')}</i></button></div>
+  <h3 class="st13-h" data-g="snd">Звук<small>голос и сопровождение</small></h3>
+  <div class="st13-c sd"><span class="rw"><span class="t"><b>Голоса героев</b><small>реплики из игры</small></span>${sw13(true,'vo')}</span>
+   <span class="rw bv"><span class="t"><b>Фон под репликами</b><small class="bvt">еле слышно</small></span><input type="range" min="0" max="100" value="35"><button class="pl">${ic('play')}</button></span>
+   <span class="rw"><span class="t"><b>Анимации</b><small>частицы, полёты, конфетти</small></span>${sw13(true,'fx')}</span></div>
+  <h3 class="st13-h" data-g="rem">Напоминания<small>бот в Telegram</small></h3>
+  <div class="st13-c rmd"><span class="tg"><span class="bot">K</span><span class="bb"><b>Языки по кино</b><span>🎬 Фраза дня · «Титаник»</span><em>No, you have to go, now.</em><i class="t">12:00</i></span></span>
+   <span class="rw"><span class="t"><b>Фраза дня</b><small>кусок твоего эпизода</small></span>${sw13(true,'rm')}</span>
+   <span class="rw"><span class="t"><b>Во сколько</b></span>${sg13('tm',['9:00','12:00','19:00'],1)}</span></div>
+  <h3 class="st13-h">Ещё</h3>
+  <div class="st13-c ls"><span class="rw"><span class="t"><b>Язык фильмов</b></span><em class="v">English ${ic('chev')}</em></span>
+   <span class="rw"><span class="t"><b>Сцены 18+</b><small>откровенные интервью</small></span>${sw13(false,'a18')}</span>
+   <span class="rw"><span class="t"><b>Как тут всё устроено</b><small>короткий тур</small></span><em class="v">${ic('chev')}</em></span>
+   <span class="rw"><span class="t"><b>Пройти первый запуск заново</b></span><em class="v">${ic('chev')}</em></span></div>
+  <p class="st13-v">Языки по кино · 13.9.76</p></div>
+  ${TB5('v3-tb w4b-tb m6-tb m7-tb v8-tb g11-tb',4)}<i class="hb"></i>`;
+ const M=$('.st13-m',R),P=$('.st13-c.pvw',R);let touched=false;ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ $$('.st13-me,.st13-q,.st13-h,.st13-c',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80+Math.min(i,10)*55}));
+ $$('.st13-sg',R).forEach(s=>{const n=+s.style.getPropertyValue('--n');s.style.setProperty('--n',n)});
+ const ring=$('.lr .ring .rp',R);ring.style.strokeDashoffset='100';ctx.t(()=>{ring.style.strokeDashoffset='45'},500);
+ const apply=()=>{P.dataset.sz=S.sz;P.classList.toggle('nopz',!S.pz);P.classList.toggle('notr',!S.tr);$('.lr .ring b',R).textContent=['5','10','15','20'][S.gl];ring.style.strokeDashoffset=String(100-[25,55,70,90][S.gl]);
+  const b=S.bed;$('.bvt',R).textContent=b<.02?'выкл — голос сухо':b<.3?'еле слышно':b<.6?'тихо, под голосом':'заметно';R.classList.toggle('nofx13',!S.fx)};apply();
+ ctx.on(M,'click',e=>{const t=e.target;
+  const g=t.closest('.st13-sg button');if(g){const s=g.closest('.st13-sg'),i=+g.dataset.i;s.style.setProperty('--i',i);$$('button',s).forEach(x=>x.classList.toggle('on',x===g));S[s.dataset.s]=i;apply();
+   if(s.dataset.s==='sz')an($('.sub',P),[{transform:'scale(.92)'},{transform:'none'}],{sp:SPb});return}
+  const w=t.closest('.st13-tg');if(w){w.classList.toggle('on');S[w.dataset.t]=w.classList.contains('on');apply();if(w.dataset.t==='pz'&&S.pz)an($('.pz',P),[{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{sp:SPs});return}
+  const op=t.closest('.st13-c.icn13 .op');if(op){$$('.st13-c.icn13 .op',R).forEach(x=>x.classList.toggle('on',x===op));try{localStorage.setItem('kd-ic',op.dataset.ic)}catch(x){}an(op,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});$$('.rw13>i',op).forEach((x,i)=>an(x,[{transform:'translateY(6px) scale(.8)',opacity:.4},{transform:'none',opacity:1}],{sp:SPb,dl:i*50}));toast(R,op.dataset.ic==='g'?'Герои — артом из игры: в играх, комиксах, Радаре':'Герои — гербами');return}
+  if(t.closest('.bv .pl')){S13.bed('cathedral',S.bed);say13(ctx,'ven-not-merciful',{echo:.3,end(){ctx.t(()=>S13.bedOff(),1400)}});return}
+  if(t.closest('.st13-me')){toast(R,'Фон профиля меняется в «Коллекции»');return}
+  const r=t.closest('.rw');if(r&&$('.v',r)){an(r,[{background:'rgba(246,212,136,.1)'},{background:'transparent'}],{d:600});toast(R,$('b',r).textContent)}});
+ ctx.on($('.bv input',R),'input',e=>{S.bed=e.target.value/100;apply();S13.bedVol(S.bed)});
+ ctx.on($('.st13-hd .bk',R),'click',()=>toast(R,'← в Профиль'));
+ ctx.on($('.st13-q input',R),'input',e=>{const q=e.target.value.trim().toLowerCase();$$('.st13-c .rw,.st13-c .op',R).forEach(x=>{const m=!q||x.textContent.toLowerCase().includes(q);x.classList.toggle('hl',!!q&&m);x.style.opacity=!q||m?'':'.3'})});
+ ctx.add(()=>S13.stop());
+ // без касания: размер субтитров меняется на превью, потом листает вниз
+ ctx.t(()=>{if(touched)return;const b=$('.st13-sg[data-s="sz"] button[data-i="2"]',R);if(b)b.click();ctx.t(()=>{if(touched)return;const c=$('.st13-sg[data-s="sz"] button[data-i="1"]',R);if(c)c.click();ctx.t(()=>{if(!touched)M.scrollTo({top:470,behavior:'smooth'})},900)},1300)},1800)}
+
+/* --- Админка v13: та же оболочка, что у приложения; отличие — пометка ADMIN и цифры. 5 разделов, как в приложении --- */
+function adm13(R,ctx){R.className='scr v8 st13 ad13';
+ const FL=[['Игры (Deadlock)','тестерам','tt'],['Дизайн «Новый»','всем','on'],['Премиум','выкл','off'],['Сцены 18+','по вопросу','tt']];
+ const PL=[['Б','Боря','@borya_dl','5 мин назад','src_tiktok'],['М','Маша','@mashaa','1 ч назад','src_friend'],['К','Кирилл','—','вчера','']];
+ const FN=[['Зашли',412,100],['Выбрали сцену',301,73],['Посмотрели эпизод',236,57],['Дошли до проверки',171,42],['Повторение',88,21]];
+ R.innerHTML=`${SB(0)}<div class="st13-m">
+  <div class="st13-hd"><button class="bk">${ic('back')}</button><b>Админка</b><em class="ad">ADMIN · 876754050</em></div>
+  <div class="ad13-n">${[['1 284','игроков'],['+37','новых за сутки'],['412','заходили сегодня']].map(([v,t],i)=>`<span><b data-v="${v}">${v}</b><small>${t}</small><svg viewBox="0 0 60 18"><path d="${['M0 14 L10 12 L20 13 L30 9 L40 10 L50 6 L60 4','M0 12 L10 14 L20 9 L30 11 L40 7 L50 9 L60 5','M0 10 L10 8 L20 12 L30 6 L40 9 L50 5 L60 7'][i]}"/></svg></span>`).join('')}</div>
+  <h3 class="st13-h">Игроки<small>кто открывал приложение</small></h3>
+  <div class="st13-c pl"><label class="st13-q in">${ic('search')}<input placeholder="ID, имя или @ник"></label>${PL.map(([a,n,u,w,s])=>`<span class="rw"><span class="av">${a}</span><span class="t"><b>${n}</b><small>${u} · был ${w}</small></span>${s?`<em class="src">${s}</em>`:''}${ic('chev')}</span>`).join('')}<span class="rw mo"><b>Все игроки · 1 284</b>${ic('chev')}</span></div>
+  <h3 class="st13-h">Статистика<small>за 7 дней</small></h3>
+  <div class="st13-c fn">${FN.map(([t,n,p])=>`<span class="br"><b>${t}</b><i><i style="--p:${p/100}"></i></i><em>${n} · ${p} %</em></span>`).join('')}<span class="md"><b>14 с</b><small>время на задание · медиана</small></span></div>
+  <h3 class="st13-h">Доступ<small>нажми — сменить</small></h3>
+  <div class="st13-c fl">${FL.map(([t,v,c])=>`<span class="rw"><span class="t"><b>${t}</b></span><em class="pl13 ${c}">${v}</em></span>`).join('')}</div>
+  <h3 class="st13-h">Премиум</h3>
+  <div class="st13-c pm"><span class="rw"><span class="t"><b>Режим</b><small>что платное</small></span>${sg13('pm',['выкл','функции','+ сцены'],0)}</span><span class="rw"><span class="t"><b>Звёзд за 30 дней</b></span><em class="v">4 250 ★</em></span></div>
+  <h3 class="st13-h">Я как игрок</h3>
+  <div class="st13-c me"><span class="rw"><span class="t"><b>Смотрю как игрок</b><small>замки, премиум, 18+ — как у всех</small></span>${sw13(false,'pl')}</span>
+   <span class="bt"><button>${ic('ticket')}+1000 билетов</button><button>Проверка установки</button></span><button class="rs">Сбросить мой прогресс</button></div>
+  <p class="st13-v">13.9.76 · воркер 13.9.34 — передеплой нужен</p></div>
+  ${TB5('v3-tb w4b-tb m6-tb m7-tb v8-tb g11-tb',4)}<i class="hb"></i>`;
+ const M=$('.st13-m',R);$$('.ad13-n>span,.st13-h,.st13-c',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80+Math.min(i,10)*55}));
+ $$('.ad13-n b',R).forEach(b=>{const v=+b.dataset.v.replace(/\D/g,'');const pre=b.dataset.v.startsWith('+')?'+':'';countUp(ctx,b,v,900);if(pre)ctx.t(()=>{b.textContent=pre+b.textContent},950)});
+ $$('.fn .br i>i',R).forEach((x,i)=>an(x,[{transform:'scaleX(0)'},{transform:'scaleX(var(--p))'}],{d:900,e:EO,f:'forwards',dl:400+i*90}));
+ const CY={tt:['тестерам','on'],on:['всем','off'],off:['выкл','tt']};
+ ctx.on(M,'click',e=>{const t=e.target,p=t.closest('.pl13');if(p){const c=[...p.classList].find(x=>CY[x]);const [,nx]=CY[c];p.classList.replace(c,nx);p.textContent=CY[nx][0];an(p,[{transform:'scale(.8)'},{transform:'none'}],{sp:SPb});toast(R,'Сохранится по «Сохранить» внизу');return}
+  const g=t.closest('.st13-sg button');if(g){const s=g.closest('.st13-sg');s.style.setProperty('--i',g.dataset.i);$$('button',s).forEach(x=>x.classList.toggle('on',x===g));return}
+  const w=t.closest('.st13-tg');if(w){w.classList.toggle('on');return}
+  const b=t.closest('button,.rw');if(b&&!t.closest('input')){an(b,[{transform:'scale(.97)'},{transform:'none'}],{sp:SPb});const tx=($('b',b)||b).textContent.trim();if(tx)toast(R,tx)}});
+ ctx.on($('.st13-hd .bk',R),'click',()=>toast(R,'← в Профиль'))}
+
+/* --- варианты v13 --- */
+V.push({g:'g13',id:'g13t',n:'Вкладка «Игры» → Deadlock',cmp:'games-tab',
+ idea:'Вкладка «Игры» — как в v12 (живой «City Never Sleeps», дуэль по сцене — полкой «Игры по кино»). Нажал «Войти» — внутри Deadlock в новом виде (следующий вариант): никаких «VS» и двух героев на входе.',
+ moves:['арт «City Never Sleeps» живёт: окна, лучи, дождь','тап — Deadlock раскрывается из карточки'],
+ from:'Твой отзыв на v12: «игры вкладка — опять же выносится Versus и 2 героя, а должен быть как бы Deadlock».',
+ minus:'Куда девать дуэль по сцене, ты ещё не выбрал — тут она полкой «Игры по кино», как в первом варианте v12.',
+ mount(R,ctx){g12Tab(R,ctx,{card:'cns',place:'shelves',hub:g13Hub})}});
+V.push({g:'g13',id:'g13h',n:'Deadlock изнутри · без «VS» на входе',cmp:'hub',
+ idea:'Сверху — сам Deadlock (живой «City Never Sleeps», неоновая вывеска). Дальше «Сейчас»: перехваты, глава ждёт проверки, Боря зовёт. Потом «Во что играть» — четыре равные плитки: Комиксы, Versus, Радар, Реплики. Versus теперь одна из плиток со скрещёнными клинками — двух героев на всю ширину больше нет. Внизу герои: живая локация и маленькая иконка героя.',
+ moves:['неон DEADLOCK загорается по буквам','в плитке Радара крутится маленький город с модельками','иконки героев чуть парят над локацией, кольцо — сколько до следующего уровня'],
+ from:'Твой отзыв на v12: «выносится Versus и 2 героя, а должен быть Deadlock»; «всё, что в Deadlock, — в Deadlock».',
+ minus:'«Сейчас» — тоже вход в Versus (вызов Бори). Но это весточка, а не баннер на полэкрана.',
+ mount(R,ctx){R.className='scr v8 g11 g12';R.innerHTML=SB(0)+'<i class="hb"></i>';g13Hub(R,ctx,null,{demo:true})}});
+V.push({g:'g13',id:'g13f',n:'Герои · маленькие иконки на живой локации',cmp:'herobg',
+ idea:'Как ты хотел: фон — живая локация героя на всю карточку, а сам герой — маленькой иконкой посередине. Иконка — как в настройках: мои гербы или мини-арт из игры (кнопка сверху переключает — без касания переключится сама, чтобы ты увидел оба). Кольцо вокруг иконки — сколько до следующего уровня. Живой портрет — уже внутри, когда нажал на героя.',
+ moves:['иконка чуть парит над локацией','переключил вид — иконки переворачиваются по очереди','кольцо уровня заполняется'],
+ from:'Твой отзыв на v12: «хотел увидеть иконки, которые твои были, маленькие крутые, и мини-арты — сейчас иконка анимированная перекрывает тупо всё, и даже фон не видно».',
+ minus:'У четырёх героев ещё нет живой локации — у них пока их арт, размытый в цвете героя. Заменим фоном с карточки, когда Зетка их вырежет.',
+ mount(R,ctx){g13Heroes(R,ctx)}});
+V.push({g:'g13',id:'g13r',n:'Радар 3D · модельки мест',cmp:'radar-3d',
+ idea:'Цвета — 1 в 1 как в v12: бирюза на тёмном. Плит с карточками больше нет — на их месте модельки одним цветом: собор с башней, шпилем и крестом; вход в туннель с аркой и рельсами; цирковой шатёр в полоску с флажком; лес; лаборатория с башней и шаром; отель с окнами; электростанция с трубами; кладбище с оградой; сонные холмы с луной. Свет у всех один — сверху слева. Повернул карту — грани светлеют и темнеют правильно, свет не «кривой». Названия лежат на земле, как на карте. Где перехват — бьёт луч и расходятся кольца. Внизу — сигналы строкой, нажми на место или на сигнал.',
+ moves:['карта садится из наклона, модельки вырастают из земли','тянешь вбок — крутится с инерцией, свет на гранях меняется','перехват: луч и кольца','нажал — шторка: чьё место, кто спорит, «Читать перехват»'],
+ from:'Твой отзыв на v12: «не перекрашивай в другие цвета, всё 1 в 1, просто модельки: церковь, вход в туннель, цирк — одноцветно, но чтобы отличалось; в v11 хуйня со светом, всё кривое; карточки убери под корень; сделай, как ты видишь».',
+ minus:'Модельки — из простых фигур (кубики и пирамиды), чтобы не грузить телефон. Если захочешь детальнее — это уже 3D-модели, другой объём работы.',
+ mount(R,ctx){radar13(R,ctx)}});
+V.push({g:'g13',id:'g13v',n:'Versus · v10 один в один, только починил',cmp:'versus',
+ idea:'Раскладка и анимации — v10 один в один. Поменял только то, что было сломано или молчало: каждая реплика звучит голосом из игры (▶ — переслушать), пока звучит — герой светлее и бегут столбики; фона-шума нет — только голос и лёгкое эхо; взятый кубик оставляет пустое место, тап по клетке — вернуть; ошибся — бой не встаёт, Король бьёт тебя («−120» по твоей полоске) и бой идёт дальше; в «на слух» большая ▶ правда играет реплику. Звук включается с первого касания — поэтому в v12 «половина реплик не работала»: на телефоне звук по таймеру без касания молчал.',
+ moves:['как в v10: баннер раунда, стоп-кадр, отлёт, «призрачная» полоска, K.O.','новое: удар по тебе — синие искры и «−120» над твоим героем','K.O. — Венатор говорит «Evil dies today.»'],
+ from:'Твой отзыв на v12: «Versus супер хуёво: шум на фоне постоянный, ничего не поменял, v10 лучше; половина реплик не работает — всё поломанное; улучши и сравни 1 в 1».',
+ minus:'Ошибиться в демо нельзя — оно отвечает верно. Нажми сам неверный вариант, чтобы увидеть удар по себе.',
+ mount(R,ctx){vs13(R,ctx)}});
+V.push({g:'g13',id:'g13x',n:'Versus · сравни с v10 шторкой',cmp:'versus',
+ idea:'Как ты просил — 1 в 1. Слева v10, справа v13, идут одновременно, секунда в секунду. Тяни золотую шторку — увидишь, что где поменялось. Сверху по ходу боя пишу, что именно изменилось и как было в v10. Кнопки «v10 · ⇆ · v13» — показать целиком одну из версий. Звук идёт только у v13 (в v10 его и не было) — дотронься до экрана, чтобы он включился.',
+ moves:['шторка сама проезжает туда-обратно, пока ты её не тронул','сверху — номер и что изменилось'],
+ from:'Твой отзыв на v12: «улучши и как закончишь — сравни 1 в 1, ну и чтобы я видел, какая разница».',
+ minus:'Обе версии в демо отвечают верно, поэтому «ошибка не стопорит бой» тут не видна — она в «Сыграть v13 самому».',
+ mount(R,ctx){vsCmp13(R,ctx)}});
+V.push({g:'g13',id:'g13a',n:'Реплики · как в TikTok — ульта со звуком',
+ idea:'Как в «Desperation Ultimate Lines», но у каждой реплики свой момент. Ульта: экран темнеет в цвет героя, вокруг рамки заряжается кольцо, звук заряда — удар со вспышкой и тряской, печать «УЛЬТА», голос в эхе, слова крупно по одному. Выход на бой — звон клинка и блик по рамке. Убийство — красный удар и аккорд. Потом вся фраза, перевод и одно слово «что значит». Сверху — «Ульта · Выход на бой · Убил…».',
+ moves:['ульта: кольцо заряжается, удар, ударная волна, печать','слова выпрыгивают по одному в такт голосу','без касания листает сам'],
+ from:'Твой отзыв на v12: «реплики как в TikTok норм, но там должна быть ульта со звуком и со звуком ульты и т. д.».',
+ minus:'Звуки ульты и абилок в макете — синтез. Настоящие из игры собирает Зетка (страницы героев «Sounds» на вики).',
+ mount(R,ctx){tt13(R,ctx,{})}});
+V.push({g:'g13',id:'g13b',n:'Реплики · кто про кого — место меняется',
+ idea:'Говорит другой — меняется и место, как панель в комиксе: новая панель заезжает косым срезом, старая уходит. Король — в туннелях, Венатор — в соборе. В углу — плашка как в комиксе: «Туннели · Король про Венатора». Кто говорит — крупно, про кого — в кружке. Тап по панели — следующая реплика. Локации не рисуем отдельно: фон берётся с живой карточки героя.',
+ moves:['смена говорящего — смена панели и места','про кого — кружок выпрыгивает','слова по одному, потом фраза и перевод'],
+ from:'Твой отзыв на v12: «кто про кого — супер ахуенно; локации же будут меняться? Я точно не буду рисовать каждую локу… про смену — как в комиксах».',
+ minus:'Если у героя «про кого» говорят в одном месте (например, оба в туннелях) — место не меняется, меняется только кадр.',
+ mount(R,ctx){ab13(R,ctx)}});
+V.push({g:'g13',id:'g13z',n:'Звук · реплика с сопровождением',
+ idea:'Ты сказал «10 из 10» — улучшил по мелочи. По три реплики на героя: ульта, выход, убийство — перед каждой свой звук. Два ползунка: «Фон места» (выкл → еле слышно → заметно) и «Эхо места» (сухо, как с вики → как в соборе). Двигай во время звучания — фон меняется сразу. «Сухо» — как сейчас. В Versus фона не будет: там только голос и лёгкое эхо — шум мешал.',
+ moves:['столбики бегут, пока звучит голос','ползунок фона — громкость меняется на ходу'],
+ from:'Твой отзыв на v12: «реплика с сопровождением — ахуенно, просто улучши, а так 10 из 10 придумал».',
+ minus:'Фон и звуки событий — синтез. Настоящие звуки абилок — от Зетки.',
+ mount(R,ctx){sd13(R,ctx)}});
+
+V.push({g:'k13',id:'k13a',n:'Выбор главы · обложка-комикс',cmp:'comic',
+ idea:'Это «стадия пика» со скрина: страница героя, список глав. Обложка главы — маленький комикс: первая, крупная панель — тот, кто начинает разговор (с плашкой «начинает»), дальше — кто отвечает. Иконки — как у тебя в интерфейсе: гербы или арт (кнопка справа сверху). Под названием — «Венатор начинает · 5 реплик · ≈ 1 мин». Статус: новая, проверка ждёт, закреплено; у закреплённой — «Углубить · +6 слов». Нажал главу — шторка: кто начинает и кто отвечает (по очереди, иконками), как запомнится (3 вопроса → 3 фразы завтра в повторение), сколько углубить и что за это (×2 опыта).',
+ moves:['страница героя раскрывается, кольцо уровня заполняется','шторка главы: иконки говорящих выскакивают по очереди'],
+ from:'Твой отзыв на v12: «про комикс я имел в виду стадию пика (скриншот) — когда ты выбираешь комикс через героя»; раньше: «показывай, кто начал диалог, сколько углубить и как оно будет запоминаться; иконки — как у юзера».',
+ minus:'Обложка показывает первых трёх говорящих — весь порядок виден в шторке.',
+ mount(R,ctx){R.className='scr v8 g11';R.innerHTML=SB(0)+'<i class="hb"></i>';hp13(R,ctx,'venator',null,{demo:true,mode:'thumb'})}});
+V.push({g:'k13',id:'k13b',n:'Выбор главы · лента говорящих',cmp:'comic',
+ idea:'То же, но вместо обложки — лента иконок: кто говорит по очереди, первый — крупно и в цвете героя. Сразу видно и кто начинает, и какой разговор: «Венатор — Король — Венатор…» или Король говорит два раза подряд. Компактнее: глав влезает больше.',
+ moves:['лента иконок слева направо','шторка главы — та же'],
+ from:'Твой отзыв на v12 про стадию пика.',
+ minus:'Без картинки-комикса список выглядит строже.',
+ mount(R,ctx){R.className='scr v8 g11';R.innerHTML=SB(0)+'<i class="hb"></i>';hp13(R,ctx,'venator',null,{demo:true,mode:'strip'})}});
+
+V.push({g:'l13',id:'l13d',n:'После эпизода · хватит или ещё',cmp:'learn-deep',
+ idea:'Как в v12 (ты сказал «прикольно, улучши»). Награды теперь — карточки, а не кадры: «Углублённое» — карточка сцены, «Полное» — золотая карточка и «Знаток сцены». Ниже — «ещё награды»: живой фон фильма — только когда весь фильм на 100 % (тут видно, сколько уже: 18 %); фон сцены — редкость, иногда выпадает сам, за любой подход. Наведи на вариант — точки покажут, сколько станет.',
+ moves:['100 точек загораются волной','навёл — точки досвечиваются','выбрал — карточка подпрыгивает, искры'],
+ from:'Твой отзыв на v12: «первое прикольно сделано, улучши чуть; фон сцены должен давать в исключительных случаях — если захочу добавить или как рандомная награда; а основной — фильма, за завершение всего до 100 % контента»; «лутать не кадр, а карточку».',
+ minus:'Карточки сцены надо нарисовать (из постера и кадров — это может Зетка).',
+ mount(R,ctx){deep13(R,ctx,'scene')}});
+V.push({g:'l13',id:'l13f',n:'Полное обучение · как это работает',
+ idea:'Объяснил как игроку, а не как админу. Сверху — три шага: учишь по 10 слов за раз (≈ 2 мин); бросил — ничего не сгорает; на 50, 75 и 100 % — карточки, каждая лучше прошлой (обычная → редкая → золотая). Кадров больше нет. Ниже — сколько уже у всего фильма: дойдёшь до 100 % во всех сценах — живой фон фильма. Нажми на карточку — повернётся.',
+ moves:['кольцо набегает до 64 %','карточки: полученная горит, остальные ждут'],
+ from:'Твой отзыв на v12: «в принципе норм, но улучши; лутать именно карточку, а не кадр — кадры убери»; «я не совсем понял, как это работает — ты объяснил не как юзеру».',
+ minus:'Три карточки на сцену — это 90 карточек на 30 сцен. Рисует Зетка по шаблону: постер + рамка редкости.',
+ mount(R,ctx){deep13(R,ctx,'full')}});
+V.push({g:'l13',id:'l13k',n:'Уровень героя · награды за уровни',
+ idea:'Главное — уровень. Комиксы, проверка, углубление, Versus и перехваты дают опыт, а награду даёт только уровень: ур. 2 — рамка иконки, 3 — серебряная, 4 — карточка героя, 5 — вход в бой, 6 — фон героя в профиль, 7 — реплика победы, … 10 — золотая иконка. Иконку «просто за комикс» больше не выдаём. Внизу — откуда опыт и как тебя видят друзья в Versus (силы уровень не даёт — только вид). Без касания опыт добежит до ур. 3 — увидишь, как рамка станет серебряной.',
+ moves:['лента уровней: полученные — золотые, текущий светится','опыт добегает, «новый уровень», рамка иконки — серебро'],
+ from:'Твой отзыв на v12: «я качаю чисто лвл? Награды в первую очередь должны идти за лвл, а ты, как я понял, хочешь, чтобы иконка давалась просто после комикса — так быть не должно».',
+ minus:'10 уровней на героя — с запасом. Сколько опыта на уровень — подберём по замеру (чтобы ур. 3 был за 2–3 главы).',
+ mount(R,ctx){lv13(R,ctx)}});
+V.push({g:'l13',id:'l13p',n:'«Понимаешь %» · как видит игрок',
+ idea:'Ты сказал: «добавляй, только чуть улучши». Теперь как у игрока: на карточке сцены — «Понимаешь 67 %», и сразу под ней — что это значит обычными словами. Слова сцены — чипами: зелёные знаешь. Нажми на слово — скажу, где ты его выучил («Офис», 2 дня назад). После эпизода: ответил верно ещё на 2 слова — 67 → 83 %. Ошибка процент не роняет.',
+ moves:['чипы появляются по одному','после эпизода новые слова вспыхивают, проценты набегают и на карточке, и внизу'],
+ from:'Твой отзыв на v12: «вопрос 4 — добавляй, только чуть улучши».',
+ minus:'Процент — только у сцен, где Зетка разметила ключевые слова.',
+ mount(R,ctx){pct13(R,ctx)}});
+V.push({g:'l13',id:'l13o',n:'Советы нейронок · по одному',
+ idea:'Вместо длинного списка — по одному совету на экране. Обычными словами, с примером «как будет», кто советует и что бы сделал я. Отвечаешь «Беру» или «Не надо» (или смахни вправо и влево), «Потом» — если не уверен. Сверху — то, что уже решено: ты сказал «можешь брать» про мои ответы. В конце — список и «Скопировать ответы».',
+ moves:['карточка уезжает вправо («беру») или влево («не надо»)','полоска сверху — сколько осталось'],
+ from:'Твой отзыв на v12: «вопрос 5 я вообще не понял, там очень сложно — ответил только на некоторые»; «то, что ты отвечал „беру“, — твоё мнение выглядит хорошо, можешь брать».',
+ minus:'Ответы живут в этом браузере — поэтому в конце «Скопировать».',
+ mount(R,ctx){ops13(R,ctx)}});
+
+V.push({g:'s13',id:'s13u',n:'Настройки · как Главная',cmp:'set-user',
+ idea:'Та же «кожа», что у Главной: тёмно-синий фон, заголовки с засечками («Просмотр», «Обучение»…), карточки как «Что посмотреть», золото — только на выбранном, внизу те же вкладки. Сверху — ты на своём фоне из «Коллекции». Каждая настройка показывает, что изменится: размер субтитров — прямо на кадре из «Титаника», паузы — плашкой на кадре, иконки героев — двумя рядами (гербы или арт), фон под репликами — ▶ послушать, напоминание — так, как его пришлёт бот.',
+ moves:['без касания: размер субтитров на кадре меняется S → L → M','переключатели — с пружинкой','поиск подсвечивает нужную строку'],
+ from:'Твой отзыв: «настройки уёбищно выглядят — что у админа, что обычные, будто вообще по дизайну не подходят под приложение».',
+ minus:'Экран длиннее, чем список: настроек с превью меньше влезает в один экран.',
+ mount(R,ctx){set13(R,ctx)}});
+V.push({g:'s13',id:'s13a',n:'Админка · та же оболочка',cmp:'set-adm',
+ idea:'Не «другой мир», а то же приложение: тот же фон, заголовки, карточки и вкладки. Отличие — пометка ADMIN с твоим ID и цифры. Сверху — игроки, новые и кто заходил сегодня (с маленьким графиком). Разделы — как в приложении: Игроки, Статистика (воронка полосками и время на задание), Доступ (нажми на плашку — сменить: тестерам · всем · выкл), Премиум, Я как игрок.',
+ moves:['цифры набегают','полоски воронки заполняются','плашка доступа меняется по тапу'],
+ from:'Твой отзыв: «настройки уёбищно выглядят — что у админа, что обычные».',
+ minus:'Цифры в макете — придуманные. В приложении — настоящие из воркера.',
+ mount(R,ctx){adm13(R,ctx)}});
+
 /* ================= каркас страницы ================= */
-const GN={g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-const VERS=[['v12','отзыв на v11 · 26.10',[['g12','Игры · 11'],['k12','Комикс · 3'],['l12','Обучение · 5']]],
+const GN={g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+const VERS=[['v13','отзыв на v12 · 26.10',[['g13','Игры · 9'],['k13','Комикс · выбор главы · 2'],['l13','Обучение · 5'],['s13','Настройки · 2']]],
+ ['v12','отзыв на v11 · 26.10',[['g12','Игры · 11'],['k12','Комикс · 3'],['l12','Обучение · 5']]],
  ['v11','26.10',[['g11','Игры · 8'],['p11','Сцена · путь · 4'],['l11','Обучение · 3'],['s11','Настройки · 3']]],
  ['v10','26.10',[['g10','Игры'],['p10','Сцена · путь'],['l10','Обучение'],['x10','Дизайн']]],
  ['v9','25.10',[['h9','Главная · 3 + v7'],['g8','Игры'],['p8','Сцена · путь'],['l8','Обучение'],['s9','Настройки'],['x8','Дизайн']]],
@@ -9527,17 +10721,17 @@ const VERS=[['v12','отзыв на v11 · 26.10',[['g12','Игры · 11'],['k1
  ['v5','',[['h4','Главная'],['x5','Дизайн']]],['v4','',[['x4','Дизайн']]],['v3','',[['h3','Главная'],['k3','Комикс'],['x3','Дизайн']]],
  ['v2','',[['h2','Главная'],['d2','ДД'],['o2','Запуск']]],['v1','',[['home','Главная'],['dd','ДД'],['ob','Запуск']]]];
 const VDET=(v,open)=>`<details${open?' open':''}><summary>${v[0]}${open?'<span class="nw">новое</span>':''}<small>${v[1]}</small></summary><div class="bs">${v[2].map(b=>`<button data-g="${b[0]}">${b[1]}</button>`).join('')}</div></details>`;
-$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v11 … v1 — нажми, чтобы сравнить</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
+$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v12 … v1 — нажми, чтобы сравнить</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
 // «Как было»: тот же экран в прошлых версиях
-const CMPV={'set-user':[['v11','s11u'],['v9','s9u']],'set-watch':[['v11','s11w'],['v9','s9u']],'set-adm':[['v11','s11a'],['v9','s9a']],
- 'games-tab':[['v12','g12t'],['v11','g11t'],['v10','g10a'],['v9','g8a']],'games-row':[['v11','g11c'],['v10','g10c'],['v9','g9c']],'hub':[['v12','g12h'],['v11','g11h'],['v10','g10a'],['v9','g8a']],
- 'radar-relief':[['v11','g11r'],['v10','g10r'],['v9','g8r'],['v7','r7']],'radar-3d':[['v12','g12r'],['v11','g11d'],['v10','g10s'],['v9','g8r']],'comic':[['v12','k12a'],['v11','g11k'],['v10','g10k'],['v9','g9k']],
- 'versus':[['v12','g12v'],['v11','g11v'],['v10','g10v'],['v9','g8v'],['v9 · сверху','g8w']],'herobg':[['v12','g12c'],['v11','g11b'],['v10','g10b'],['v9','g9b']],
+const CMPV={'set-user':[['v13','s13u'],['v11','s11u'],['v9','s9u']],'set-watch':[['v11','s11w'],['v9','s9u']],'set-adm':[['v13','s13a'],['v11','s11a'],['v9','s9a']],
+ 'games-tab':[['v13','g13t'],['v12','g12t'],['v11','g11t'],['v10','g10a'],['v9','g8a']],'games-row':[['v11','g11c'],['v10','g10c'],['v9','g9c']],'hub':[['v13','g13h'],['v12','g12h'],['v11','g11h'],['v10','g10a'],['v9','g8a']],
+ 'radar-relief':[['v11','g11r'],['v10','g10r'],['v9','g8r'],['v7','r7']],'radar-3d':[['v13','g13r'],['v12','g12r'],['v11','g11d'],['v10','g10s'],['v9','g8r']],'comic':[['v13','k13a'],['v12','k12a'],['v11','g11k'],['v10','g10k'],['v9','g9k']],
+ 'versus':[['v13','g13v'],['v12','g12v'],['v11','g11v'],['v10','g10v'],['v9','g8v'],['v9 · сверху','g8w']],'herobg':[['v13','g13f'],['v12','g12c'],['v11','g11b'],['v10','g10b'],['v9','g9b']],
  'path-t':[['v11','p11t'],['v10','p10t'],['v9','p8t'],['v7','p7t']],'path-w':[['v11','p11w'],['v10','p10w'],['v9','p8w'],['v7','p7w']],'path-s':[['v11','p11s'],['v10','p10s'],['v9','p8s'],['v7','p7s']],'path-b':[['v11','p11b'],['v10','p10b'],['v9','p8b'],['v7','p7b']],
- 'learn-check':[['v11','l11a'],['v10','l10a'],['v9','l8a']],'learn-after':[['v11','l11b'],['v10','l10b'],['v9','l8b']],'learn-deep':[['v12','l12d'],['v11','l11d'],['v10','l10d']],
+ 'learn-check':[['v11','l11a'],['v10','l10a'],['v9','l8a']],'learn-after':[['v11','l11b'],['v10','l10b'],['v9','l8b']],'learn-deep':[['v13','l13d'],['v12','l12d'],['v11','l11d'],['v10','l10d']],
  'design':[['v10','x10a'],['v10 · 2','x10b'],['v8','x8a']]};
 function cmpOf(id){for(const k in CMPV)if(CMPV[k].some(x=>x[1]===id))return CMPV[k];return null}
-let CTX=null,curV=null,curG='g12';
+let CTX=null,curV=null,curG='g13';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -9547,9 +10741,9 @@ function notes(v){const L=V.filter(x=>x.g===v.g),i=L.indexOf(v);const CM=cmpOf(v
  $$('#notes [data-n]').forEach(b=>b.onclick=()=>{const d=+b.dataset.n;if(!d)mount(v);else mount(L[(i+d+L.length)%L.length])});
  $$('#notes [data-cmp]').forEach(b=>b.onclick=()=>{const x=V.find(y=>y.id===b.dataset.cmp);if(x){mount(x);const dv=$('#devw');if(dv&&dv.getBoundingClientRect().top<0)dv.scrollIntoView({behavior:'smooth'})}})}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const gb=$('#grp button.on');if(gb){let d=gb.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details')}}const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd13',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd14',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd13'))}catch(e){}
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd14'))}catch(e){}
 mount(start||V.find(x=>x.g===curG));
 </script>

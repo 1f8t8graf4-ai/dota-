@@ -13,7 +13,11 @@ BGJ={x['key'].split(':')[-1]:x for x in json.load(open(''+os.path.join(D,'..')+'
 def fresh(k,a):
     x=BGJ.get(k) or BGJ.get('hero:deadlock:'+k)
     if not x or not x.get('animate'):return a
-    return re.sub(r'<p class="pr">.*?</p>','<p class="pr">'+html.escape(x['animate'])+'</p>',a,count=1,flags=re.S)
+    a=re.sub(r'<p class="pr">.*?</p>','<p class="pr">'+html.escape(x['animate'])+'</p>',a,count=1,flags=re.S)
+    if x.get('animate_alt'): # запасной промт — второй блок с кнопкой (кнопка копирует текст над собой)
+        i=a.find('</div>',a.find('<div class="bt">'))+6
+        a=a[:i]+'<p class="alt">Запасной — для Flow / Veo, если Gemini откажет</p><p class="pr">'+html.escape(x['animate_alt'])+'</p><div class="bt"><button class="cp" data-c="p">Скопировать запасной</button></div>'+a[i:]
+    return a
 arts={k:fresh(k,v) for k,v in arts.items()}
 neg=re.search(r'const NEG=(".*?");',s).group(1)
 # общий негатив героев — из bg-prompts.json (раньше запускали bg_prompts2.py подпроцессом — падало на Windows)
@@ -25,8 +29,8 @@ NOW=[('victor','Реплики есть · сразу откроет 3 диал�
      ('deadmandanny','Реплики есть (15 фраз) · диалогов пока нет')]
 REDO=[('rem','По ролику v11 (26.10): «всё отлично, но подушка падает с головы». Теперь подушка прибита к верхнему краю кадра, как крюк к потолку: не падает, не съезжает, не выскальзывает из лапы; качается только сам Рэм под ней. Зелёный свет свечи и тёмный фон — как были.'),
      ('grey-talon','По ролику v11 (26.10): сова «застывала» на середине и в конце пыталась заговорить. Теперь крылья ходят в одном медленном ритме весь ролик, без пауз; клюв всё время закрыт, голова совы не поворачивается и не смотрит на зрителя.'),
-     ('doorman','Gemini отказал: «interests of third-party content providers» — он не берёт узнаваемое чужое. Теперь в промте нет ни «Deadlock», ни «Doorman», только «нарисованный персонаж». Если опять откажет, значит, он узнал сам арт: делай в Flow (Veo), а не в Gemini.'),
-     ('rat-king','По ролику v11 (26.10): живот раздувался, морда «радовалась». Причина — общий кусок шаблона «грудь поднимается с дыханием», модель раздула живот. Для Крысы его убрал: тело неподвижно, как статуя, живот не меняет размер, выражение морды как на арте в каждом кадре. Хвост по-прежнему часть трона. Ролик, что уже в игре, не трогаем.')]
+     ('doorman','Gemini отказал второй раз, и без имён: он узнаёт сам арт, текстом это не обойти. Делай в Flow (labs.google/flow → «Кадры в видео», модель Veo), там свои правила: первый промт или запасной под ним — он короче. Откажет и Flow — сделаю Дормену живой портрет кодом из арта (ключи и полы кафтана качаются, блик), без нейросети.'),
+     ('rat-king','По ролику v11 (26.10): живот раздувался, морда «радовалась». Причина — общий кусок шаблона «грудь поднимается с дыханием», модель раздула живот. Для Крысы его убрал: тело неподвижно, как статуя, живот не меняет размер, выражение морды как на арте в каждом кадре. По v12 (27.10): хвост чуть двигается, но заметно — кончик хвоста слева медленно покачивается на 4-й и 6-й секунде, сам хвост лежит на трубе. Ролик, что уже в игре, не трогаем.')]
 DONE=[('venator','Готово: петля из твоего ролика лежит в R2 (venator-2.mp4)')]
 used={k for k,_ in NOW+REDO+DONE}
 LATER=[(k,'Реплики ещё не готовы — задача Зетке «Интересные фразы остальных 35 героев»') for k in arts if k not in used]
@@ -47,6 +51,7 @@ css='''
 .tb{flex:none;display:flex;gap:6px;align-items:center;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:9px 14px}
 .tb small{font:600 11px/1 var(--f-b);color:var(--mut)} .tb.on{background:var(--acc);color:var(--card);border-color:var(--acc)} .tb.on small{color:var(--card);opacity:.8}
 .pi{margin:0 0 12px;color:var(--mut);max-width:70ch}
+.alt{margin:10px 0 0;font:600 12px/1.3 var(--f-b);color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
 .why{margin:0;font-size:13px;line-height:1.4;padding:7px 10px;border-radius:9px;background:var(--bg)}
 .c.now .why{background:color-mix(in srgb,var(--acc) 14%,var(--card))} .c.redo .why{background:color-mix(in srgb,#E2902A 18%,var(--card))} .c.dn2 .why{background:color-mix(in srgb,var(--ok) 16%,var(--card))}
 .tk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:8px;min-width:0}
