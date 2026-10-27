@@ -1,4 +1,4 @@
-<title>Макеты v16</title>
+<title>Макеты v17</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&family=Russo+One&display=swap">
 <style>
@@ -5849,12 +5849,189 @@ html.lite .h11 *{animation:none!important}
 .vers details:not([open])>summary::after{transform:rotate(45deg)}
 .vers details[open]>summary::after{transform:rotate(225deg)}
 
+/* ================= v17 · Главная под микс: Меню, Афиша, Две двери (28.10) ================= */
+/* общая шапка: аватарка → профиль, кружки сторис, билеты → Магазин */
+.q7{background:#0B0A0F;color:#F4EFE6}
+.q7-top{position:absolute;top:50px;left:14px;right:14px;z-index:40;display:flex;align-items:center;gap:8px}
+.q7-av{position:relative;width:46px;height:46px;border-radius:50%;border:0;padding:0;flex:none;background:conic-gradient(#FFD23F 0 62%,rgba(255,255,255,.18) 62% 100%);display:grid;place-items:center}
+.q7-av b{width:40px;height:40px;border-radius:50%;background:#2A2230;display:grid;place-items:center;font:800 17px/1 Manrope,Inter,sans-serif;color:#FFE7A8}
+.q7-av .lv{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);padding:2px 4px;border-radius:6px;background:#0B0A0F;display:flex;gap:1.5px}
+.q7-av .lv i{width:3px;height:7px;border-radius:1px;background:rgba(255,255,255,.25)}
+.q7-av .lv i.f{background:#FFD23F}
+.q7-st{flex:1;display:flex;gap:6px;justify-content:center}
+.q7-sti{width:40px;height:40px;border-radius:50%;padding:2px;border:0;background:conic-gradient(from 210deg,#FFD23F,#FF6A3D,#E0338C,#FFD23F);flex:none}
+.q7-sti.seen{background:rgba(255,255,255,.28)}
+.q7-sti>span{width:100%;height:100%;border-radius:50%;background:#15121B;border:2px solid #0B0A0F;display:grid;place-items:center;color:#FFE7A8;font:800 11px/1 Manrope,Inter,sans-serif;position:relative}
+.q7-sti .ic{width:16px;height:16px}
+.q7-sti.nw::after{content:'';position:absolute;right:2px;top:2px;width:9px;height:9px;border-radius:50%;background:#FF5C5C;box-shadow:0 0 0 2px #0B0A0F}
+.q7-sti{position:relative}
+.q7-tk{display:flex;align-items:center;gap:4px;height:34px;padding:0 11px;border-radius:17px;border:1px solid rgba(255,210,63,.35);background:rgba(20,16,10,.66);color:#FFE7A8;font:800 13px/1 Manrope,Inter,sans-serif;flex:none}
+.q7-tk .ic{width:16px;height:16px}
+/* нижние вкладки: Главная · Сцены · Игры · Словарь (профиль — аватаркой сверху) */
+.q7-tb{position:absolute;left:12px;right:12px;bottom:22px;height:62px;z-index:45;display:grid;grid-template-columns:repeat(4,1fr);border-radius:22px;background:#17141D;border:1px solid rgba(255,255,255,.07)}
+.q7-tb a{display:grid;justify-items:center;align-content:center;gap:3px;color:rgba(244,239,230,.48);font:700 10.5px/1 Inter,sans-serif;cursor:pointer}
+.q7-tb a svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.q7-tb a.on{color:#FFD23F}
+/* профиль — шторка из аватарки */
+.q7-pf{position:absolute;inset:0;z-index:80;display:none}
+.q7-pf.on{display:block}
+.q7-pf .gr{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+.q7-pfw{position:absolute;left:8px;right:8px;top:44px;bottom:8px;border-radius:34px;overflow:hidden;background:#100E14;transform-origin:30px 30px}
+.q7-pfbg{position:absolute;left:0;right:0;top:0;height:300px}
+.q7-pfbg>video,.q7-pfbg>.img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.q7-pfbg .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,14,20,.15),rgba(16,14,20,.35) 45%,#100E14 98%)}
+.q7-pfbg .tag{position:absolute;left:16px;top:16px;padding:6px 10px;border-radius:12px;background:rgba(0,0,0,.5);font:700 11px/1.2 Inter,sans-serif;color:#FFE7A8}
+.q7-pfx{position:absolute;right:14px;top:12px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.5);color:#fff;display:grid;place-items:center;z-index:2}
+.q7-pfin{position:absolute;inset:0;overflow:auto;padding:150px 16px 24px;scrollbar-width:none}
+.q7-pfin::-webkit-scrollbar{display:none}
+.q7-pfh{display:flex;gap:12px;align-items:center}
+.q7-pfh .av{width:64px;height:64px;border-radius:50%;background:#2A2230;border:3px solid #FFD23F;display:grid;place-items:center;font:800 26px/1 Manrope,Inter,sans-serif;color:#FFE7A8;flex:none}
+.q7-pfh b{display:block;font:800 22px/1.1 Manrope,Inter,sans-serif}
+.q7-pfh small{display:block;margin-top:4px;font:600 12px/1.3 Inter,sans-serif;color:rgba(244,239,230,.7)}
+.q7-pfh .q7-pr{display:block;margin-top:7px;height:5px;border-radius:3px;background:rgba(255,255,255,.14);overflow:hidden}
+.q7-pfh .q7-pr i{display:block;height:100%;width:62%;background:#FFD23F;border-radius:3px;transform-origin:0 0}
+.q7-pfs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:16px}
+.q7-pfs span{padding:10px 4px;border-radius:14px;background:rgba(255,255,255,.06);text-align:center;font:600 10.5px/1.25 Inter,sans-serif;color:rgba(244,239,230,.65)}
+.q7-pfs b{display:block;font:800 17px/1.1 Manrope,Inter,sans-serif;color:#F4EFE6;margin-bottom:2px}
+.q7-pfc{margin:20px 2px 8px;display:flex;align-items:baseline;justify-content:space-between}
+.q7-pfc b{font:800 15px/1 Manrope,Inter,sans-serif}
+.q7-pfc small{font:600 11px/1 Inter,sans-serif;color:rgba(244,239,230,.55)}
+.q7-shelf{display:flex;gap:9px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
+.q7-shelf::-webkit-scrollbar{display:none}
+.q7-cd{position:relative;flex:none;width:92px;height:128px;border-radius:12px;overflow:hidden;border:2px solid var(--rc,#6E6A75);box-shadow:0 8px 18px rgba(0,0,0,.4);transform:rotate(var(--rt,0deg))}
+.q7-cd .img{position:absolute;inset:0}
+.q7-cd span{position:absolute;left:0;right:0;bottom:0;padding:16px 6px 6px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.85));font:700 10px/1.2 Inter,sans-serif}
+.q7-cd em{display:block;font-style:normal;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--rc)}
+.q7-cd .gl{position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.35) 50%,transparent 60%);animation:q7gl 4.2s ease-in-out infinite;pointer-events:none}
+@keyframes q7gl{0%,55%{transform:translateX(-60%)}100%{transform:translateX(60%)}}
+.q7-pfb{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.q7-pfb button{height:52px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);color:#F4EFE6;font:700 13px/1.2 Inter,sans-serif;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+.q7-pfb button em{font-style:normal;color:#FFD23F;font-size:12px}
+.q7-pfb .w{grid-column:1/-1}
+.q7-chg{margin-top:10px;width:100%;height:44px;border-radius:14px;border:1px dashed rgba(255,210,63,.45);background:none;color:#FFE7A8;font:700 12.5px/1 Inter,sans-serif}
+.q7-pfn{margin-top:12px;font:500 11.5px/1.4 Inter,sans-serif;color:rgba(244,239,230,.5);text-align:center}
+
+/* ---------- 1. Меню — как меню Deadlock ---------- */
+.q7m-bg{position:absolute;inset:0}
+.q7m-l{position:absolute;inset:0;opacity:0;transition:opacity .7s}
+.q7m-l.on{opacity:1}
+.q7m-l>video,.q7m-l>.img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.q7m-l .kb{animation:q7kb 18s ease-in-out infinite alternate}
+@keyframes q7kb{from{transform:scale(1.04)}to{transform:scale(1.14) translate(-10px,-6px)}}
+.q7m-hv{position:absolute;right:-30px;bottom:150px;width:250px;height:330px;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent,#000 35%);mask-image:linear-gradient(90deg,transparent,#000 35%)}
+.q7m-wall{position:absolute;inset:-60px -40px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;transform:rotate(-8deg);animation:q7wall 26s linear infinite}
+.q7m-wall i{aspect-ratio:2/3;border-radius:10px}
+@keyframes q7wall{from{transform:rotate(-8deg) translateY(0)}to{transform:rotate(-8deg) translateY(-50%)}}
+.q7m-rv{position:absolute;inset:0;display:grid;place-items:center;gap:6px;align-content:center;font:italic 600 26px/1.3 "Cormorant Garamond",Lora,serif;color:rgba(255,231,168,.28);text-align:center}
+.q7m-rv span{animation:q7rv 7s ease-in-out infinite;display:block}
+@keyframes q7rv{0%,100%{transform:translateX(-14px);opacity:.25}50%{transform:translateX(14px);opacity:.6}}
+.q7m-sh{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,7,10,.92),rgba(8,7,10,.55) 55%,rgba(8,7,10,.15)),linear-gradient(180deg,rgba(8,7,10,.7),transparent 22%,transparent 60%,rgba(8,7,10,.9))}
+.q7m-mn{position:absolute;left:22px;right:22px;bottom:104px;z-index:30;display:grid;gap:4px;justify-items:start}
+.q7m-i{position:relative;border:0;background:none;padding:6px 14px 6px 10px;margin-left:-10px;color:rgba(244,239,230,.55);text-align:left;transform:rotate(-1.4deg);transform-origin:0 50%;transition:color .2s}
+.q7m-i::before{content:'';position:absolute;inset:4px -6px 4px 0;background:linear-gradient(90deg,rgba(255,210,63,.95),rgba(255,160,40,.85));clip-path:polygon(0 8%,100% 0,97% 92%,2% 100%);transform:scaleX(0);transform-origin:0 50%;transition:transform .32s cubic-bezier(.2,.8,.2,1);z-index:-1}
+.q7m-i b{display:block;font:700 44px/1 Oswald,Inter,sans-serif;letter-spacing:.01em;text-transform:uppercase}
+.q7m-i small{display:block;margin-top:3px;font:600 12px/1.25 Inter,sans-serif;letter-spacing:.02em;opacity:0;max-height:0;transition:opacity .25s,max-height .3s;overflow:hidden}
+.q7m-i.on{color:#16110A}
+.q7m-i.on::before{transform:none}
+.q7m-i.on small{opacity:.85;max-height:40px}
+.q7m-i .q7-pr{display:block;margin-top:6px;width:150px;height:4px;border-radius:2px;background:rgba(0,0,0,.2);overflow:hidden;opacity:0}
+.q7m-i.on .q7-pr{opacity:1}
+.q7m-i .q7-pr i{display:block;height:100%;width:25%;background:#16110A}
+.q7m-i .bdg{display:inline-block;vertical-align:top;margin:2px 0 0 8px;letter-spacing:0;text-transform:none;padding:3px 7px;border-radius:9px;background:#FF5C5C;color:#fff;font:800 10px/1 Inter,sans-serif;transform:rotate(1.4deg)}
+.q7m-mi{display:flex;gap:18px;margin-top:10px}
+.q7m-mi button{border:0;background:none;padding:2px 0;color:rgba(244,239,230,.7);font:700 17px/1 Oswald,Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.q7m-mi em{font-style:normal;color:#FFD23F;margin-left:4px}
+.q7m-mi button:hover{color:#FFD23F}
+.q7m-hint{position:absolute;left:24px;bottom:96px;z-index:30;font:600 10.5px/1 Inter,sans-serif;color:rgba(244,239,230,.4)}
+
+/* ---------- 2. Афиша — кино и главы Deadlock в одной афише ---------- */
+.q7a-sc{position:absolute;left:0;right:0;top:106px;bottom:0;overflow:auto;padding:0 14px 104px;scrollbar-width:none}
+.q7a-sc::-webkit-scrollbar{display:none}
+.q7a-now{position:relative;display:block;width:100%;height:236px;border:0;padding:0;border-radius:24px;overflow:hidden;text-align:left;color:#fff;background:#000}
+.q7a-now>video,.q7a-now>.img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.q7a-now .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.85))}
+.q7a-now .tx{position:absolute;left:16px;right:16px;bottom:14px}
+.q7a-now small{display:block;font:800 10.5px/1 Inter,sans-serif;letter-spacing:.12em;color:#FFD23F}
+.q7a-now .ff{margin:6px 0 4px}
+.q7a-now p{margin:0;font:500 12px/1.35 Inter,sans-serif;opacity:.85}
+.q7a-go{display:flex;align-items:center;gap:10px;margin-top:10px}
+.q7a-go b{display:flex;align-items:center;gap:6px;height:42px;padding:0 18px 0 14px;border-radius:21px;background:#FFD23F;color:#16110A;font:800 14px/1 Manrope,Inter,sans-serif}
+.q7a-go b .ic{width:18px;height:18px}
+.q7a-go .q7-pr{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden}
+.q7a-go .q7-pr i{display:block;height:100%;width:25%;background:#FFD23F}
+.q7a-ch{display:flex;gap:6px;overflow-x:auto;margin:16px -14px 0;padding:0 14px;scrollbar-width:none}
+.q7a-ch::-webkit-scrollbar{display:none}
+.q7a-ch button{flex:none;height:34px;padding:0 14px;border-radius:17px;border:1px solid rgba(255,255,255,.12);background:none;color:rgba(244,239,230,.75);font:700 12.5px/1 Inter,sans-serif}
+.q7a-ch button.on{background:#F4EFE6;color:#16110A;border-color:#F4EFE6}
+.q7a-ch button.dl.on{background:linear-gradient(90deg,#B3202E,#4F7A2B);color:#fff;border-color:transparent}
+.q7a-hd{display:flex;justify-content:space-between;align-items:baseline;margin:18px 2px 10px}
+.q7a-hd b{font:800 18px/1 Manrope,Inter,sans-serif}
+.q7a-hd button{border:0;background:none;color:#FFD23F;font:700 12px/1 Inter,sans-serif;display:flex;align-items:center;gap:2px}
+.q7a-hd button .ic{width:14px;height:14px}
+.q7a-gr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 8px}
+.q7a-c{position:relative;border:0;padding:0;background:none;color:inherit;text-align:left}
+.q7a-c .pc{position:relative;display:block;aspect-ratio:2/3;border-radius:12px;overflow:hidden;background:#222}
+.q7a-c .pc .img{position:absolute;inset:0}
+.q7a-c b{display:block;margin-top:6px;font:700 11.5px/1.2 Inter,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.q7a-c small{display:block;margin-top:2px;font:600 10px/1.2 Inter,sans-serif;color:rgba(244,239,230,.5)}
+.q7a-c .tg{position:absolute;left:5px;top:5px;padding:3px 6px;border-radius:6px;background:rgba(0,0,0,.6);font:800 8.5px/1 Inter,sans-serif;letter-spacing:.08em;color:#fff}
+.q7a-c.dl .pc{border:2px solid var(--hc);box-shadow:0 0 0 1px rgba(0,0,0,.6) inset}
+.q7a-c.dl .tg{background:var(--hc);color:#fff}
+.q7a-c.dl .pc::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 9px,rgba(255,255,255,.05) 9px 10px);mix-blend-mode:screen}
+.q7a-c .lvb{position:absolute;right:5px;bottom:5px}
+.q7a-c.hid{display:none}
+.q7a-rv{display:flex;align-items:center;gap:10px;width:100%;margin-top:16px;height:52px;padding:0 16px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#F4EFE6;font:700 13.5px/1 Inter,sans-serif}
+.q7a-rv span{flex:1;text-align:left}
+.q7a-rv small{color:rgba(244,239,230,.5);font-weight:600}
+
+/* ---------- 3. Две двери — кино сверху, Deadlock снизу ---------- */
+.q7d-dr{position:absolute;left:0;right:0;top:104px;bottom:96px;--s:52%}
+.q7d-a,.q7d-b{position:absolute;inset:0;border:0;padding:0;background:#000;color:#fff;text-align:left;overflow:hidden}
+.q7d-a{clip-path:polygon(0 0,100% 0,100% calc(var(--s) - 18px),0 calc(var(--s) + 14px))}
+.q7d-b{clip-path:polygon(0 calc(var(--s) + 20px),100% calc(var(--s) - 12px),100% 100%,0 100%)}
+.q7d-a>video,.q7d-a>.img,.q7d-b>.img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.q7d-a .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.05) 30%,rgba(0,0,0,.75) calc(var(--s) - 4%),rgba(0,0,0,.9) var(--s))}
+.q7d-b .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,5,8,.9) var(--s),rgba(10,5,8,.35) calc(var(--s) + 22%),rgba(10,5,8,.85))}
+.q7d-b .hv{position:absolute;right:-24px;bottom:0;width:230px;height:calc(100% - var(--s) + 4px);object-fit:cover;object-position:60% 30%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 40%);mask-image:linear-gradient(90deg,transparent,#000 40%)}
+.q7d-col{position:absolute;left:18px;right:18px;z-index:2;display:flex;flex-direction:column;align-items:flex-start}
+.q7d-a .q7d-col{bottom:calc(100% - var(--s) + 24px)}
+.q7d-b .q7d-col{bottom:18px;right:120px}
+.q7d-tx{align-self:stretch}
+.q7d-tx small{display:block;font:800 10.5px/1 Inter,sans-serif;letter-spacing:.14em;color:#FFD23F;margin-bottom:6px}
+.q7d-b .q7d-tx small{color:#F0C86A}
+.q7d-tx p{margin:4px 0 0;font:600 12px/1.35 Inter,sans-serif;opacity:.85}
+.q7d-tt{font:700 34px/1 Oswald,Inter,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+.q7d-go{display:inline-flex;align-items:center;gap:6px;margin-top:10px;height:40px;padding:0 16px 0 12px;border-radius:20px;background:#FFD23F;color:#16110A;font:800 13.5px/1 Manrope,Inter,sans-serif}
+.q7d-b .q7d-go{background:linear-gradient(90deg,#F0C86A,#E39A3B)}
+.q7d-go .ic{width:17px;height:17px}
+.q7d-bdg{position:absolute;right:16px;top:calc(var(--s) + 24px);padding:5px 9px;border-radius:10px;background:#FF5C5C;font:800 10.5px/1 Inter,sans-serif;color:#fff;z-index:3}
+.q7d-sm{position:absolute;left:50%;top:var(--s);width:120px;height:34px;margin:-17px 0 0 -60px;z-index:5;border:0;border-radius:17px;background:#15121B;border:1px solid rgba(255,255,255,.14);color:#F4EFE6;display:flex;align-items:center;justify-content:center;gap:6px;font:700 12px/1 Inter,sans-serif;cursor:ns-resize;touch-action:none;box-shadow:0 6px 16px rgba(0,0,0,.5)}
+.q7d-sm .ic{width:15px;height:15px;color:#FFD23F}
+.q7d-sm em{font-style:normal;color:#FFD23F}
+.q7d-gp{position:absolute;left:0;right:0;top:calc(var(--s) - 18px);height:38px;z-index:4;pointer-events:none;background:linear-gradient(170deg,transparent 46%,rgba(255,210,63,.5) 49.5%,rgba(255,210,63,.5) 50.5%,transparent 54%);opacity:.7}
+.q7d.drag .q7d-a,.q7d.drag .q7d-b{transition:none}
+.q7d-hint{position:absolute;left:0;right:0;bottom:92px;z-index:6;text-align:center;font:600 10.5px/1 Inter,sans-serif;color:rgba(244,239,230,.42)}
+.q7d-ps{display:flex;gap:6px;margin:0 0 12px -2px}
+.q7d-ps i{width:30px;height:44px;border-radius:7px;border:2px solid rgba(255,255,255,.28);opacity:.72;transition:transform .2s,opacity .2s,border-color .2s;box-shadow:0 4px 10px rgba(0,0,0,.45)}
+.q7d-ps i.on{opacity:1;border-color:#FFD23F;transform:translateY(-2px) scale(1.1)}
+.q7d-hs{display:flex;gap:7px;margin:0 0 12px -2px}
+.q7d-h{width:36px;height:36px;border-radius:50%;background-size:cover;background-position:center;border:2px solid var(--hc);opacity:.6;transition:transform .2s,opacity .2s;box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.q7d-h.on{opacity:1;transform:scale(1.12)}
+.q7d-ft .ff{font-size:32px}
+.q7d-b .hv{transition:opacity .4s}
+
+.q7m-l[data-j="3"]>.img{filter:brightness(.45) saturate(.8)}
+.q7d-dr.lo .q7d-b p,.q7d-dr.hi .q7d-a p{display:none}
+.q7d-dr.lo .q7d-tt{font-size:27px}
+.q7d-dr.lo .q7d-hs,.q7d-dr.hi .q7d-ps{margin-bottom:8px}
+.q7d-dr.hi .q7d-ft .ff{font-size:26px}
+
 </style>
 
 <div class="wrap">
  <header>
-  <h1>Макеты v15 и вкладка «Уже готово»</h1>
-  <p class="lead"><b>Новое — вкладка «Уже готово»:</b> что уже в приложении, что ты одобрил за все версии и что ждёт твоего выбора, с кнопками к макетам. Главная и Магазин с Коллекцией — первыми кнопками ниже. В v15 переделал по 28 твоим ответам в полях «Твоё мнение». Deadlock: вход без дубля радара, герои с сортировкой и тремя размерами, реплики без эха с режимом без звука, компактный Versus со способностью героя, 5 вариантов радара. Дальше — канал, обучение, мод и настройки. Прошлые версии — ниже. Поле «Твоё мнение» под каждым вариантом — как раньше. Звук включается после первого касания.</p>
+  <h1>v17 — главная под микс: Меню, Афиша, Две двери</h1>
+  <p class="lead"><b>Новое — главная заново, три варианта под микс кино + Deadlock:</b> «Меню» (как меню Deadlock по Esc), «Афиша» (фильмы, сериалы, интервью и главы комикса в одной сетке) и мой «Две двери» (кино сверху, Deadlock снизу, шов тянется). Во всех трёх аватарка слева сверху — это профиль: живой фон из Коллекции, уровень, полка наград, Коллекция и Магазин. Вкладка «Уже готово» обновлена по твоим ответам. Прошлые версии — ниже.</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
   <div class="pt" id="ptab"></div>
   <div class="vers" id="grp"></div>
@@ -13145,9 +13322,194 @@ V.push({g:'c15',id:'c15t',n:'Ролик · переписка Дормена и 
  minus:'Время слов — по громкости, пока Зетка не распознает все реплики (ТЗ v15, п. 1). Скрипт — tools/tt_chat.py: тот же json, что у прошлых роликов, — пачку можно собирать сразу.',
  mount(R,ctx){ttk13(R,ctx,[['tt_dm2','Дормен · Талон · переписка','Дормен давит Грей Талону на больное #deadlock #английский'],['tt_dm','Дормен · Талон · бумага (было)','Дормен полез Грей Талону в больное #deadlock #английский'],['tt_hunt','Охота','Венатор пришёл за Крысиным королём #deadlock #английский']])}});
 
+/* ================= v17 · Главная под микс: Меню, Афиша, Две двери (28.10) =================
+   Андрей на v9 «Меню + Афиша»: «сделай меню и афишу (обе разные) и свой дизайн, который подходит нам, учитывая, что у нас микс».
+   Общее у всех трёх: шапка — аватарка (→ профиль с полкой наград и фоном из Коллекции), кружки сторис, билеты (→ Магазин);
+   вкладки — Главная · Сцены · Игры · Словарь (профиль — аватаркой, как решили в v10). */
+const Q7CH=['venator','rat','rem','talon'].map(k=>{const h=HERO[k],c=(typeof CH13!=='undefined'&&CH13[k]&&CH13[k][0])||null;
+ return {k,ru:h.ru,hc:h.c1,img:'vt_'+k,t:c?c.t:h.ru,ab:c?c.ab:h.role}});
+const q7Win=()=>`<span class="g9-cv"><i class="bm"></i><i class="bm b"></i>${Array.from({length:14},(_,i)=>`<i class="w" style="left:${(7+(i*37)%86)}%;top:${(18+(i*23)%44)}%;animation-delay:${(-i*.83).toFixed(2)}s;animation-duration:${(2.6+(i%4)*.9).toFixed(1)}s"></i>`).join('')}<i class="fg"></i></span>`;
+const q7Hv=(k,cl)=>`<video class="${cl}" muted loop playsinline autoplay preload="auto" data-v="hv_${k}" poster="${IMG['hv_'+k]}"></video>`;
+function q7Top(){return `<div class="q7-top"><button class="q7-av" aria-label="Профиль"><b>А</b><span class="lv">${[1,2,3,4,5].map(k=>`<i class="${k<=3?'f':''}"></i>`).join('')}</span></button>
+  <div class="q7-st">${[[ic('bell'),'новое',0,1],[ic('snd'),'фраза дня',2],['6','серия',3],['14','цель дня',1]].map(c=>`<button class="q7-sti${c[3]?' nw':''}" data-s="${c[2]}" title="${c[1]}"><span>${c[0]}</span></button>`).join('')}</div>
+  <button class="q7-tk" aria-label="Магазин">${ic('ticket')}<b>300</b></button></div><div class="h1-sv" hidden></div>`}
+function q7TopBind(R,ctx){
+ const sv=$('.h1-sv',R),SL=[newsSlide(),...daySlides().slice(0,4)];let svc=null;
+ const close=()=>{if(!svc)return;const c=svc;svc=null;$$('.q7-sti',R).forEach(b=>b.classList.add('seen'));
+  const a=an(sv,[{opacity:1},{opacity:0,transform:'scale(.94)'}],{d:240,f:'forwards'});
+  const fin=()=>{c.kill();sv.hidden=true;sv.classList.remove('on');sv.innerHTML='';sv.getAnimations().forEach(x=>x.cancel())};if(a)a.onfinish=fin;else fin()};
+ $$('.q7-sti',R).forEach((b,j)=>{an(b,[{opacity:0,transform:'scale(.5)'},{opacity:1,transform:'none'}],{sp:SPb,dl:120+j*60});
+  ctx.on(b,'click',()=>{if(svc)svc.kill();svc=sub(ctx);sv.hidden=false;sv.classList.add('on');an(sv,[{opacity:0,transform:'scale(.92)'},{opacity:1,transform:'none'}],{sp:SPs});stories(sv,svc,SL,+b.dataset.s,{R,end:close,x:close})})});
+ const av=$('.q7-av',R);ctx.on(av,'click',()=>{an(av,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});q7Prof(R,ctx,av)});
+ const tk=$('.q7-tk',R);ctx.on(tk,'click',()=>{an(tk,[{transform:'scale(.92)'},{transform:'none'}],{sp:SPb});q7Ov(R,()=>w5Shop(R,ctx,tk))});
+ an($('.q7-av',R),[{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'none'}],{sp:SPb,dl:60});an(tk,[{opacity:0,transform:'translateX(16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:200})}
+// оверлеи Коллекции и Магазина — поверх профиля
+function q7Ov(R,f){f();const o=$('.w5o',R);if(o)o.style.zIndex=95}
+const q7TB=on=>`<nav class="q7-tb">${[['home','Главная'],['film','Сцены'],['game','Игры'],['dict','Словарь']].map(([k,n],i)=>`<a class="${i===on?'on':''}" data-tb="${k}"><svg viewBox="0 0 24 24">${TBI[k]}</svg><span>${n}</span></a>`).join('')}</nav>`;
+function q7TBBind(R,ctx){$$('.q7-tb a',R).forEach(a=>ctx.on(a,'click',()=>{const k=a.dataset.tb;if(k==='home')return;an(a,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});
+ if(k==='game')g8Hub(R,ctx,a,()=>{});else toast(R,k==='film'?'🎬 Сцены — каталог фильмов (в этом макете — только Главная)':'📖 Словарь — в этом макете только Главная')}))}
+
+/* профиль — шторка растёт из аватарки: фон из Коллекции (живой), уровень, полка наград, вход в Коллекцию и Магазин */
+function q7Prof(R,ctx,from){let ov=$('.q7-pf',R);if(ov)ov.remove();ov=document.createElement('div');ov.className='q7-pf on';
+ const BGS=[['vid','bank','Волк · Женева','фон сцены · редкий'],['img','bd_titanic','Титаник','фон фильма · за 100 %'],['img','bd_sopranos','Клан Сопрано','фон сезона 1']];let bi=0;
+ const bgH=b=>b[0]==='vid'?vidHTML(b[1]):`<i class="img" style="background-image:url(${IMG[b[1]]})"></i>`;
+ const CD=[['tk2','Я выживу','Эпическая','#B36BFF',-3],['wk4','Первый ключ','Легендарная','#FFC83D',2],['ak3','Визитки','Редкая','#4FA3FF',-1],['vt_venator','Венатор · ур. 3','Герой','#E0414F',3],['wk2','Фугази','Обычная','#8A8494',-2]];
+ ov.innerHTML=`<i class="gr"></i><div class="q7-pfw"><div class="q7-pfbg">${bgH(BGS[0])}<i class="sh"></i><span class="tag">Фон из Коллекции · ${BGS[0][2]}</span></div><button class="q7-pfx" aria-label="Закрыть">${ic('x')}</button>
+  <div class="q7-pfin"><div class="q7-pfh"><span class="av">А</span><div><b>Андрей</b><small>Средний · до «Выше среднего» 62 %</small><i class="q7-pr"><i></i></i></div></div>
+   <div class="q7-pfs"><span><b>6</b>дней подряд</span><span><b>128</b>слов</span><span><b>41</b>фраза</span><span><b>7/37</b>наград</span></div>
+   <div class="q7-pfc"><b>Полка наград</b><small>её видят друзья в дуэли</small></div>
+   <div class="q7-shelf">${CD.map(c=>`<div class="q7-cd" style="--rc:${c[3]};--rt:${c[4]}deg" data-rt="${c[4]}"><i class="img" style="background-image:url(${IMG[c[0]]})"></i>${c[2]==='Легендарная'?'<i class="gl"></i>':''}<span><em>${c[2]}</em>${c[1]}</span></div>`).join('')}</div>
+   <button class="q7-chg">Сменить фон — из Коллекции</button>
+   <div class="q7-pfb"><button data-go="coll">Коллекция <em>7 из 37</em></button><button data-go="shop">Магазин <em>300 билетов</em></button><button class="w" data-go="set">Настройки <em>тема, звук, субтитры</em></button></div>
+   <p class="q7-pfn">Аватарка стоит в одном углу на любой из трёх главных — что бы ни выбрал, профиль на месте.</p></div></div>`;
+ R.appendChild(ov);vidStart(ov);
+ const w=$('.q7-pfw',ov),gr=$('.gr',ov),r=rel(from,R),wr=rel(w,R);
+ w.style.transformOrigin=`${(r.x-wr.x+r.w/2).toFixed(0)}px ${(r.y-wr.y+r.h/2).toFixed(0)}px`;
+ an(w,[{transform:'scale(.1)',opacity:0},{transform:'none',opacity:1}],{sp:SPs});an(gr,[{opacity:0},{opacity:1}],{d:260});
+ ctx.t(()=>{const p=$('.q7-pr i',ov);if(p)an(p,[{transform:'scaleX(0)'},{transform:'none'}],{d:900,e:EO})},260);
+ $$('.q7-cd',ov).forEach((c,j)=>{const rt=+c.dataset.rt;an(c,[{opacity:0,transform:`translateY(26px) rotate(${rt+(j%2?9:-9)}deg)`},{opacity:1,transform:`rotate(${rt}deg)`}],{sp:SPb,dl:320+j*70})});
+ let shut=false;const close=()=>{if(shut)return;shut=true;an(w,[{transform:'none',opacity:1},{transform:'scale(.1)',opacity:0}],{d:240,e:EI,f:'forwards'});an(gr,[{opacity:1},{opacity:0}],{d:240,f:'forwards'});ctx.t(()=>ov.remove(),250)};
+ ctx.on($('.q7-pfx',ov),'click',close);ctx.on(gr,'click',close);
+ // смахнуть вниз — закрыть (когда прокрутка в самом верху)
+ const inn=$('.q7-pfin',ov);let y0=null;ctx.on(inn,'pointerdown',e=>{y0=inn.scrollTop<=0?e.clientY:null});
+ ctx.on(inn,'pointerup',e=>{if(y0!=null&&(e.clientY-y0)/SCALE>90)close();y0=null});
+ ctx.on($('.q7-chg',ov),'click',()=>{bi=(bi+1)%BGS.length;const b=BGS[bi],box=$('.q7-pfbg',ov),old=box.firstElementChild,tmp=document.createElement('div');tmp.innerHTML=bgH(b);const nw=tmp.firstElementChild;
+  box.insertBefore(nw,old);vidStart(box);const a=an(old,[{opacity:1},{opacity:0}],{d:520,f:'forwards'});const fin=()=>old.remove();if(a)a.onfinish=fin;else fin();
+  $('.tag',ov).textContent=`Фон из Коллекции · ${b[2]} · ${b[3]}`;an(nw,[{transform:'scale(1.06)'},{transform:'none'}],{d:900,e:EO})});
+ $$('.q7-pfb [data-go]',ov).forEach(b=>ctx.on(b,'click',()=>{an(b,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});const g=b.dataset.go;
+  if(g==='coll')q7Ov(R,()=>w5Coll(R,ctx,b));else if(g==='shop')q7Ov(R,()=>w5Shop(R,ctx,b));else toast(R,'⚙️ Настройки — как в v13: папки, тема, пауза примером')}))}
+
+/* ---------- 1. Меню — как меню Deadlock по Esc ---------- */
+function q7Menu(R,ctx){R.className='scr q7 q7m';
+ const IT=[{b:'Смотреть',s:'Титаник · эпизод 2 «Я выживу» · 46 с',pr:1},{b:'Deadlock',s:`Комикс «${Q7CH[0].t}» · 2 перехвата ждут`,bdg:'2'},{b:'Афиша',s:'6 фильмов и сериалов · 2 интервью · 4 главы Deadlock'}];
+ const PW=['p_titanic','p_wolf','p_psycho','vt_venator','p_sopranos','p_taxi','vt_rat','p_bb','p_durov','vt_rem','p_clav','p_bunker'];
+ R.innerHTML=`<div class="q7m-bg">
+  <div class="q7m-l on" data-j="0">${vidHTML('titanic')}</div>
+  <div class="q7m-l" data-j="1"><i class="img kb" style="background-image:url(${IMG.dl_cover})"></i>${q7Win()}${q7Hv('venator','q7m-hv')}</div>
+  <div class="q7m-l" data-j="2"><div class="q7m-wall">${PW.concat(PW).map(k=>`<i class="img" style="background-image:url(${IMG[k]})"></i>`).join('')}</div></div>
+  <div class="q7m-l" data-j="3"><i class="img kb" style="background-image:url(${IMG.bd_wolf})"></i><div class="q7m-rv">${["Trust me.","Have a seat, please.","I'll be fine.","Stress, maybe."].map((p,i)=>`<span style="animation-delay:${-i*1.7}s">${p}</span>`).join('')}</div></div>
+ </div><i class="q7m-sh"></i><canvas class="fx"></canvas>${SB(0)}${q7Top()}
+ <nav class="q7m-mn">${IT.map((it,j)=>`<button class="q7m-i${j?'':' on'}" data-j="${j}"><b>${it.b}${it.bdg?`<i class="bdg">${it.bdg}</i>`:''}</b><small>${it.s}</small>${it.pr?'<i class="q7-pr"><i></i></i>':''}</button>`).join('')}
+  <div class="q7m-mi"><button data-j="3">Повторить<em>17</em></button><button data-j="4">С друзьями</button></div></nav>
+ ${q7TB(0)}<i class="hb"></i>`;
+ vidStart(R);q7TopBind(R,ctx);q7TBBind(R,ctx);
+ const fx=FX(ctx,$('.fx',R)),L=$$('.q7m-l',R),I=$$('.q7m-i',R);let cur=0,touched=false;
+ const DU=Array.from({length:22},()=>({x:Math.random()*344,y:Math.random()*754,v:.1+Math.random()*.25,r:.6+Math.random()*1.3,a:Math.random()*6.28}));
+ fx.ambient({step(g,k){for(const d of DU){d.y-=d.v*k;d.a+=.02*k;d.x+=Math.sin(d.a)*.2*k;if(d.y<-4){d.y=760;d.x=Math.random()*344}g.globalAlpha=.14+.16*Math.sin(d.a*2);g.fillStyle='#FFD98A';g.beginPath();g.arc(d.x,d.y,d.r,0,6.3);g.fill()}g.globalAlpha=1}});
+ function sel(j){if(j===cur||j>3)return;cur=j;L.forEach(l=>l.classList.toggle('on',+l.dataset.j===j));I.forEach(i=>i.classList.toggle('on',+i.dataset.j===j))}
+ const back=()=>{$$('.q7m-mn,.q7-top',R).forEach((x,i)=>{x.getAnimations().forEach(a=>a.cancel());an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:i*60})})};
+ function enter(j,el){touched=true;sel(j);
+  an(el,[{scale:'1'},{scale:'.95'},{scale:'1.05'},{scale:'1'}],{d:320,e:EO});
+  const r=rel(el,R);fx.burst(r.x+50,r.y+r.h/2,{n:18,c:['#FFD23F','#fff'],v:3.4,g:0,s:2,l:30});
+  ctx.t(()=>{if(j===0){$$('.q7m-mn,.q7-top',R).forEach((x,i)=>an(x,[{opacity:1},{opacity:0,transform:'translateY(18px)'}],{d:220,dl:i*30,e:EI,f:'forwards'}));m7Play(R,ctx,el,back)}
+   else if(j===1)g8Hub(R,ctx,el,()=>{});else if(j===2)w4Feed(R,ctx,0,el);
+   else toast(R,j===3?'🔁 Повторение: 17 фраз, по 3 за раз':'⚔️ Дуэль по сцене — ссылкой другу в Telegram')},j<3?300:80)}
+ I.forEach(b=>{ctx.on(b,'pointerenter',e=>{if(e.pointerType==='mouse'){touched=true;sel(+b.dataset.j)}});ctx.on(b,'click',()=>enter(+b.dataset.j,b))});
+ $$('.q7m-mi button',R).forEach(b=>{ctx.on(b,'pointerenter',e=>{if(e.pointerType==='mouse'&&b.dataset.j==='3'){touched=true;sel(3)}});ctx.on(b,'click',()=>enter(+b.dataset.j,b))});
+ ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ I.forEach((b,i)=>an(b,[{opacity:0,transform:'rotate(-1.4deg) translateX(-60px)'},{opacity:1,transform:'rotate(-1.4deg)'}],{sp:SPs,dl:160+i*90}));
+ an($('.q7m-mi',R),[{opacity:0},{opacity:1}],{d:500,dl:520});
+ // пока не тронешь — сам перебирает пункты (фон наплывает)
+ let k=0;const cyc=()=>{if(touched)return;k=(k+1)%4;sel(k);ctx.t(cyc,k===0?4200:2700)};ctx.t(cyc,3800)}
+
+/* ---------- 2. Афиша — кино, сериалы, интервью и главы Deadlock в одной сетке ---------- */
+function q7Af(R,ctx){R.className='scr q7 q7a';
+ const S=SC4,KN={titanic:'f',wolf:'f',psycho:'f',sopranos:'s',taxi:'f',bb:'s'},IV={durov:['p_durov','Павел Дуров','интервью · 3 части'],clav:['p_clav','Clavicular','интервью · 4 части']};
+ const ORD=[['f',0],['d',0],['f',1],['s',3],['d',1],['f',2],['i','durov'],['s',5],['d',2],['f',4],['i','clav'],['d',3]];
+ const card=([t,j])=>{if(t==='d'){const c=Q7CH[j];return `<button class="q7a-c dl" data-t="d" data-j="${j}" style="--hc:${c.hc}"><span class="pc"><i class="img" style="background-image:url(${IMG[c.img]})"></i><span class="tg">КОМИКС</span></span><b>${c.t}</b><small>${c.ru} · глава 1</small></button>`}
+  if(t==='i'){const v=IV[j];return `<button class="q7a-c" data-t="i" data-j="${j}"><span class="pc"><i class="img" style="background-image:url(${IMG[v[0]]})"></i><span class="tg">ИНТЕРВЬЮ</span></span><b>${v[1]}</b><small>${v[2]}</small></button>`}
+  const s=S[j];return `<button class="q7a-c" data-t="${t}" data-j="${j}"><span class="pc"><i class="img" style="background-image:url(${IMG['p_'+s.k]||IMG[s.img]})"></i><span class="tg">${t==='s'?'СЕРИАЛ':'ФИЛЬМ'}</span>${bars(s.lv)}</span><b>${s.t}</b><small>${s.eps.length} эп. · ≈ ${sc4Min(s)} мин</small></button>`};
+ R.innerHTML=`${SB(0)}${q7Top()}<div class="q7a-sc">
+  <button class="q7a-now">${vidHTML('titanic')}<i class="sh"></i><span class="tx"><small>СЕЙЧАС СМОТРИШЬ · ЭПИЗОД 2 ИЗ 4</small>${ffT(S[0])}<p>«Я выживу» — Джек уговаривает Роуз сесть в шлюпку.</p><span class="q7a-go"><b>${ic('play')}Смотреть</b><i class="q7-pr"><i></i></i></span></span></button>
+  <div class="q7a-ch">${[['all','Всё'],['f','Фильмы'],['s','Сериалы'],['i','Интервью'],['d','Deadlock']].map(([k,n],i)=>`<button class="${i?'':'on'}${k==='d'?' dl':''}" data-f="${k}">${n}</button>`).join('')}</div>
+  <div class="q7a-hd"><b>В афише</b><button class="all">все лентой ${ic('chev')}</button></div>
+  <div class="q7a-gr">${ORD.map(card).join('')}</div>
+  <button class="q7a-rv">${ic('rep')}<span>Повторить 17 фраз</span><small>≈ 4 мин</small>${ic('chev')}</button></div>
+ ${q7TB(0)}<i class="hb"></i>`;
+ vidStart(R);q7TopBind(R,ctx);q7TBBind(R,ctx);
+ const now=$('.q7a-now',R),C=$$('.q7a-c',R),F=$$('.q7a-ch button',R);
+ an(now,[{opacity:0,transform:'translateY(20px) scale(.97)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80});
+ C.forEach((c,i)=>an(c,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:240+i*45}));
+ const back=()=>{now.getAnimations().forEach(a=>a.cancel());an(now,[{opacity:0,transform:'scale(.97)'},{opacity:1,transform:'none'}],{sp:SPs})};
+ ctx.on(now,'click',()=>{an($('.q7a-go b',now),[{transform:'scale(.9)'},{transform:'scale(1.06)'},{transform:'none'}],{d:320,e:EO});ctx.t(()=>m7Play(R,ctx,now,back),240)});
+ F.forEach(b=>ctx.on(b,'click',()=>{F.forEach(x=>x.classList.toggle('on',x===b));const f=b.dataset.f;let n=0;
+  C.forEach(c=>{const on=f==='all'||c.dataset.t===f;if(on){const was=c.classList.contains('hid');c.classList.remove('hid');if(was||f!=='all')an(c,[{opacity:0,transform:'translateY(14px) scale(.96)'},{opacity:1,transform:'none'}],{sp:SPs,dl:n++*55})}else c.classList.add('hid')})}));
+ C.forEach(c=>ctx.on(c,'click',()=>{an(c,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});const t=c.dataset.t,j=c.dataset.j;
+  if(t==='f'||t==='s')w4Full(R,ctx,S[+j],c);else if(t==='d'){const ch=Q7CH[+j];toast(R,`📖 ${ch.ru}: «${ch.t}» — глава комикса`);ctx.t(()=>g8Hub(R,ctx,c,()=>{}),700)}
+  else toast(R,`🎙 ${IV[j][1]} — интервью, ${IV[j][2].split('· ')[1]}`)}));
+ ctx.on($('.q7a-hd .all',R),'click',e=>w4Feed(R,ctx,0,e.currentTarget));
+ ctx.on($('.q7a-rv',R),'click',e=>{an(e.currentTarget,[{transform:'scale(.97)'},{transform:'none'}],{sp:SPb});toast(R,'🔁 Повторение: 17 фраз, по 3 за раз')})}
+
+/* ---------- 3. Две двери — кино сверху, Deadlock снизу; шов тянется ---------- */
+function q7Dv(R,ctx){R.className='scr q7 q7d';
+ const S=SC4,PS=[0,1,2,3,4,5];let fi=0,ci=0,s=52;
+ try{const v=+localStorage.getItem('q7-s');if(v>=34&&v<=70)s=v}catch(e){}
+ R.innerHTML=`${SB(0)}<div class="q7d-dr" style="--s:${s}%">
+  <button class="q7d-a"><span class="q7d-bgA">${vidHTML('titanic')}</span><i class="sh"></i>
+   <span class="q7d-col"><span class="q7d-ps">${PS.map(j=>`<i class="img${j?'':' on'}" data-j="${j}" style="background-image:url(${IMG['p_'+S[j].k]})"></i>`).join('')}</span>
+   <div class="q7d-tx"><small>КИНО · ПРОДОЛЖИТЬ</small><span class="q7d-ft">${ffT(S[0])}</span><p>Эпизод 2 «Я выживу» · 46 с</p><span class="q7d-go">${ic('play')}Смотреть</span></div></span></button>
+  <button class="q7d-b"><i class="img kb" style="background-image:url(${IMG.dl_cover})"></i>${q7Win()}${q7Hv('venator','hv')}<i class="sh"></i>
+   <span class="q7d-col"><span class="q7d-hs">${Q7CH.map((c,j)=>`<i class="q7d-h${j?'':' on'}" data-j="${j}" style="background-image:url(${MINI(c.k)});--hc:${c.hc}"></i>`).join('')}</span>
+   <div class="q7d-tx"><small>DEADLOCK · КОМИКС</small><div class="q7d-tt">${Q7CH[0].t}</div><p>${Q7CH[0].ru} · глава 1</p><span class="q7d-go">${ic('play')}Играть</span></div></span></button>
+  <span class="q7d-bdg">2 перехвата</span><i class="q7d-gp"></i><button class="q7d-sm">${ic('rep')}Повторить <em>17</em></button></div>
+  <p class="q7d-hint">тяни «Повторить» вверх или вниз — какую дверь больше</p>
+  ${q7Top()}${q7TB(0)}<i class="hb"></i>`;
+ vidStart(R);q7TopBind(R,ctx);q7TBBind(R,ctx);
+ const dr=$('.q7d-dr',R),A=$('.q7d-a',R),B=$('.q7d-b',R),sm=$('.q7d-sm',R);let touched=false;
+ const setS=v=>{s=Math.max(34,Math.min(70,v));dr.style.setProperty('--s',s.toFixed(2)+'%');dr.classList.toggle('lo',s>=60);dr.classList.toggle('hi',s<=42)};
+ setS(s);
+ const tw=(to,ms,cb)=>{const f0=s,t0=performance.now();const st=()=>{if(!ctx.alive)return;const k=Math.min(1,(performance.now()-t0)/ms),e=1-Math.pow(1-k,3);setS(f0+(to-f0)*e);if(k<1)requestAnimationFrame(st);else if(cb)cb()};requestAnimationFrame(st)};
+ an(A,[{opacity:0,transform:'translateX(-40px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80});an(B,[{opacity:0,transform:'translateX(40px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:180});
+ an(sm,[{opacity:0,transform:'scale(.5)'},{opacity:1,transform:'none'}],{sp:SPb,dl:520});an($('.q7d-gp',R),[{opacity:0},{opacity:1},{opacity:.7}],{d:900,dl:400});
+ // шов: тянется пальцем, прилипает к трём положениям; тап без движения — «Повторить»
+ let y0=null,s0=0,moved=false;
+ ctx.on(sm,'pointerdown',e=>{touched=true;y0=e.clientY;s0=s;moved=false;R.classList.add('drag');try{sm.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
+ ctx.on(sm,'pointermove',e=>{if(y0==null)return;const dy=(e.clientY-y0)/SCALE;if(Math.abs(dy)>5)moved=true;if(moved)setS(s0+dy/dr.offsetHeight*100)});
+ const up=()=>{if(y0==null)return;y0=null;R.classList.remove('drag');
+  if(!moved){an(sm,[{transform:'scale(.92)'},{transform:'none'}],{sp:SPb});toast(R,'🔁 Повторение: 17 фраз, по 3 за раз');return}
+  const to=[36,52,68].reduce((a,b)=>Math.abs(b-s)<Math.abs(a-s)?b:a);tw(to,260,()=>{try{localStorage.setItem('q7-s',String(to))}catch(_){}})};
+ ctx.on(sm,'pointerup',up);ctx.on(sm,'pointercancel',up);
+ // мини-постеры в кинодвери и мини-иконки героев в двери Deadlock — выбрать, что за дверью
+ const fill=j=>{fi=j;const sc=S[j],bg=$('.q7d-bgA',A),tx=$('.q7d-tx',A);$$('.q7d-ps i',A).forEach(x=>x.classList.toggle('on',+x.dataset.j===j));
+  bg.innerHTML=j===0?vidHTML('titanic'):`<i class="img kb" style="background-image:url(${IMG[sc.img]})"></i>`;vidStart(bg);an(bg,[{opacity:.2,transform:'scale(1.05)'},{opacity:1,transform:'none'}],{d:600,e:EO});
+  $('small',tx).textContent=j===0?'КИНО · ПРОДОЛЖИТЬ':`КИНО · ${sc.eps.length} ЭПИЗОДА · ≈ ${sc4Min(sc)} МИН`;$('.q7d-ft',tx).innerHTML=ffT(sc);$('p',tx).textContent=j===0?'Эпизод 2 «Я выживу» · 46 с':sc.ab;
+  an(tx,[{opacity:0,transform:'translateX(18px)'},{opacity:1,transform:'none'}],{sp:SPs})};
+ const fillC=j=>{ci=j;const c=Q7CH[j],tx=$('.q7d-tx',B);$$('.q7d-hs i',B).forEach(x=>x.classList.toggle('on',+x.dataset.j===j));
+  const v=$('video.hv',B);if(v){const has=['venator','rat'].includes(c.k);v.style.opacity=has?'':'0';if(has&&v.dataset.v!=='hv_'+c.k){v.dataset.v='hv_'+c.k;v.poster=IMG['hv_'+c.k];vidStart(B)}}
+  $('.q7d-tt',tx).textContent=c.t;$('p',tx).textContent=`${c.ru} · глава 1`;an(tx,[{opacity:0,transform:'translateX(18px)'},{opacity:1,transform:'none'}],{sp:SPs})};
+ const back=()=>{[A,B].forEach(x=>{x.getAnimations().forEach(a=>a.cancel());an(x,[{opacity:0},{opacity:1}],{d:400})})};
+ ctx.on(A,'click',e=>{touched=true;const p=e.target.closest('.q7d-ps i');if(p){const j=+p.dataset.j;if(j!==fi){fill(j);return}}
+  an($('.q7d-go',A),[{transform:'scale(.9)'},{transform:'scale(1.06)'},{transform:'none'}],{d:300,e:EO});
+  if(fi===0)ctx.t(()=>m7Play(R,ctx,A,back),220);else ctx.t(()=>w4Full(R,ctx,S[fi],$('.q7d-go',A)),200)});
+ ctx.on(B,'click',e=>{touched=true;const p=e.target.closest('.q7d-hs i');if(p){const j=+p.dataset.j;if(j!==ci){fillC(j);return}}
+  an($('.q7d-go',B),[{transform:'scale(.9)'},{transform:'scale(1.06)'},{transform:'none'}],{d:300,e:EO});ctx.t(()=>g8Hub(R,ctx,B,()=>{}),220)});
+ ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ // первый раз шов сам качнётся — показать, что тянется
+ ctx.t(()=>{if(touched)return;const b=s;tw(b+10,520,()=>ctx.t(()=>{if(!touched)tw(b,620)},260))},2200)}
+
+V.push({g:'h17',id:'h17m',n:'Меню — как меню Deadlock',
+ idea:'Как меню игры по Esc (твой скрин с Torfus Voice): крупные пункты капсом, выбранный — на жёлтом мазке. Пунктов три, кино и игра наравне: «Смотреть» (продолжить фильм), «Deadlock», «Афиша». Ниже мелко — «Повторить 17» и «С друзьями». Фон — то, что выбрано: живой кадр фильма, город Deadlock с живым Венатором, стена постеров и глав, реплики для повторения. Тап — сразу внутрь, без второго нажатия; мышью наведение меняет фон.',
+ moves:['пока не тронешь — сам перебирает пункты, фон наплывает','у выбранного пункта мазок вытягивается слева направо','нажал — пункт вздрагивает, искры, сразу эпизод / Deadlock / лента «Что посмотреть»','аватарка слева сверху → профиль растёт из неё'],
+ from:'Твой ответ на «Меню + Афиша» (v9): «сделай меню и афишу (обе разные) и какой-то свой дизайн, который подходит нам, учитывая, что у нас микс». Вид пунктов — как меню Deadlock.',
+ minus:'Что посмотреть — за пунктом «Афиша»: сцены видно по нажатию или пока меню само перебирает.',
+ mount(R,ctx){q7Menu(R,ctx)}});
+V.push({g:'h17',id:'h17a',n:'Афиша — кино и главы Deadlock вместе',
+ idea:'Сверху — что сейчас смотришь: живой кадр и одна «▶ Смотреть». Ниже — афиша: фильмы, сериалы, интервью и главы комикса Deadlock в одной сетке; глава — в рамке цвета героя с пометкой «КОМИКС». Чипы: Фильмы · Сериалы · Интервью · Deadlock. «Все лентой» — лента как в TikTok. «Повторить 17» — строкой внизу. Аватарка и билеты — в шапке.',
+ moves:['чип — карточки другого раздела гаснут, свои въезжают по очереди','у главы Deadlock рамка героя и лёгкая штриховка комикса','тап по фильму — окно «Подробнее» растёт из постера, по главе — сразу в Deadlock'],
+ from:'Твой ответ на «Меню + Афиша» (v9): меню и афишу — раздельно. Афиша — каталог на главной, но без «кучи лишнего» v7: одна кнопка, сетка, одна строка.',
+ minus:'Длиннее меню: сетку надо листать. Зато всё, что можно посмотреть и почитать, — на одном экране.',
+ mount(R,ctx){q7Af(R,ctx)}});
+V.push({g:'h17',id:'h17d',n:'Две двери — мой вариант под микс',
+ idea:'Микс — это две разные вещи: кино и игра. Экран и делится на две двери по диагонали: сверху кино (живой кадр, шрифт фильма, «▶ Смотреть», мини-постеры — выбрать другой фильм), снизу Deadlock (город, живой Венатор, «▶ Играть», мини-иконки героев — выбрать главу, перехваты). На шве — «Повторить 17». Шов тянется: смотришь больше кино — верхняя дверь больше, играешь чаще — нижняя. Запоминается.',
+ moves:['двери въезжают с разных сторон, шов вспыхивает','шов тянется пальцем и прилипает к трём положениям','первый раз шов сам качнётся — показать, что тянется','мини-постер — фон и шрифт фильма меняются за дверью'],
+ from:'Твой ответ на «Меню + Афиша» (v9): «какой-то ещё дизайн свой, который подходит нам, учитывая, что у нас микс».',
+ minus:'Каталога на главной нет — только мини-постеры; весь список — во вкладке «Сцены».',
+ mount(R,ctx){q7Dv(R,ctx)}});
+
 /* ================= каркас страницы ================= */
-const GN={d15:'Deadlock v15',r15:'Радар v15',k15:'Комикс v15',x15:'Restless v15',c15:'Канал v15',l15:'Обучение v15',m15:'Мод v15',s15:'Настройки v15',c14:'Канал v14',m14:'Мод в Deadlock v14',g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-const VERS=[['v15','27.10 · ночь · твои ответы',[['h9','Главная · ждёт выбора (из v9)'],['x10','Магазин, Коллекция, вкладки · 2 (из v10)'],['d15','Deadlock · 4'],['r15','Радар · 5 вариантов'],['k15','Герой и главы · 1'],['x15','Restless · разбор матчей · 3'],['c15','Канал, разбор, ролик · 5'],['l15','Обучение · 5'],['m15','Мод · 2'],['s15','Настройки · 2']]],
+const GN={h17:'Главная v17',d15:'Deadlock v15',r15:'Радар v15',k15:'Комикс v15',x15:'Restless v15',c15:'Канал v15',l15:'Обучение v15',m15:'Мод v15',s15:'Настройки v15',c14:'Канал v14',m14:'Мод в Deadlock v14',g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+const VERS=[['v17','28.10 · главная под микс',[['h17','Главная · 3 · под микс'],['h9','Главная v9 · как было']]],
+ ['v15','27.10 · ночь · твои ответы',[['h9','Главная · ждёт выбора (из v9)'],['x10','Магазин, Коллекция, вкладки · 2 (из v10)'],['d15','Deadlock · 4'],['r15','Радар · 5 вариантов'],['k15','Герой и главы · 1'],['x15','Restless · разбор матчей · 3'],['c15','Канал, разбор, ролик · 5'],['l15','Обучение · 5'],['m15','Мод · 2'],['s15','Настройки · 2']]],
  ['v14','27.10 · вечер',[['c14','Канал и разбор · 5'],['m14','Мод в Deadlock · 2']]],
  ['v13','отзыв на v12 · 26.10',[['g13','Игры · 12'],['k13','Комикс · выбор главы · 2'],['l13','Обучение · 5'],['s13','Настройки · 2']]],
  ['v12','отзыв на v11 · 26.10',[['g12','Игры · 11'],['k12','Комикс · 3'],['l12','Обучение · 5']]],
@@ -13168,7 +13530,7 @@ const CMPV={'set-user':[['v15','s15u'],['v13','s13u'],['v11','s11u'],['v9','s9u'
  'learn-check':[['v11','l11a'],['v10','l10a'],['v9','l8a']],'learn-after':[['v11','l11b'],['v10','l10b'],['v9','l8b']],'learn-deep':[['v15','l15d'],['v13','l13d'],['v12','l12d'],['v11','l11d'],['v10','l10d']],
  'design':[['v10','x10a'],['v10 · 2','x10b'],['v8','x8a']]};
 function cmpOf(id){for(const k in CMPV)if(CMPV[k].some(x=>x[1]===id))return CMPV[k];return null}
-let CTX=null,curV=null,curG='d15';
+let CTX=null,curV=null,curG='h17';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -13192,7 +13554,7 @@ function fbMount(v){const N=$('#notes');if(!N)return;let el=N.querySelector('.fb
   if(NDB){show('сохраняю…');NDB.doc(key).set({t:s,id:v.id,g:v.g,n:v.n,at:Date.now()}).then(()=>show('сохранено · Claude увидит')).catch(()=>show('не сохранилось в базе — осталось в браузере'))}else show('сохранено в браузере')};
  ta.oninput=()=>{clearTimeout(tm);tm=setTimeout(save,1200)};ta.onblur=save}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const gb=$('#grp button.on');if(gb){let d=gb.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details')}}const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd15',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd17',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 /* ===== v16: вкладка «Уже готово» — что уже в приложении (Андрей его не открывает), что ждёт «го», что ждёт выбора ===== */
 const DN_APP=[
@@ -13239,7 +13601,8 @@ const DN_OK=[
   ['Проверка главы','Как с фильмами: минимум сделал — дальше.','в целом норм','v9, v15'],
   ['Уровень героя','Нажал на героя — лента наград за уровни. Награды доработаем потом.','харош, сейчас костяк','v15 · Уровень героя'],
   ['Профиль героя','Уютнее, лёгкая способность на бой у каждого (все одной силы), главы.','прикольно придумал','v15 · Герой'],
-  ['Радар — перехват, сонар','Точка — диалог, 4 за 8 часов, ×2 опыта. Вид — как в v9 и v11, без «рисовать каждое место».','лучше всего в v9 и v11; обычный сонар лучше','v2, v7, v15'],
+  ['Радар — перехват, сонар v9','Точка — диалог, 4 за 8 часов, ×2 опыта. Вид — сонар v9: «не нужно придумывать» каждое место.','сонар 9 лучше; v9 поприятнее','v9 · твой ответ 27.10'],
+  ['«Кто начал» — до комикса','Кто начал и сколько реплик — в выборе главы и в карточке героя. Внутри комикса — нейтрально, без подписей.','это при выборе комикса или в героях, не в самих комиксах','v12 · твой ответ 27.10'],
   ['Versus — раскладка v10','Не файтинг, не громоздко; звук приятный, как в роликах.','v10 был лучше','v11–v15'],
   ['Реплика с сопровождением','Без эха и «канализации», с режимом без звука.','10/10, улучшить','v12–v15 · Реплики']]],
  ['Дизайн, настройки, админка',[
@@ -13271,12 +13634,10 @@ const DN_NO=[
  ['Свои FPS-конфиги','Уже есть в менеджере модов.']
 ];
 const DN_PICK=[
- ['Главная — раскладка','«Меню + Афиша», «Меню · 3 пункта» или «Афиша · без лишнего» (v9) и куда Магазин, Коллекцию и вкладки (2 расстановки v10). Всё решённое выше войдёт в любую.',[['Меню + Афиша','h9x'],['Меню · 3 пункта','h9m'],['Афиша · без лишнего','h9a'],['Расстановка 1','x10a'],['Расстановка 2','x10b']]],
+ ['Главная — какую из трёх (v17)','«Меню» — как меню Deadlock, «Афиша» — кино и главы Deadlock в одной сетке, «Две двери» — мой вариант: кино сверху, Deadlock снизу, шов тянется. Всё решённое выше войдёт в любую.',[['Меню','h17m'],['Афиша','h17a'],['Две двери','h17d']]],
  ['Дизайн','«Свой стиль» — какую тему по умолчанию: день или ночь.',[['День / ночь','x7a']]],
- ['Радар','Ты сказал «лучше всего в v9 и v11». Возьму сонар v9 с городом v11 — или скажи иначе.',[['Сонар v9','g8r'],['3D-город v11','g11d']]],
- ['Комикс','Как начинать главу: «кто начал», нейтральный или «экран пополам» (v12).',[['Кто начал','k12a'],['Нейтральный','k12n'],['Экран пополам','k12s']]],
  ['Фоны из кадров фильмов','Страница с 92 кадрами — отметь «беру» (промты тебя заебали — это вместо них).',[['Открыть страницу','https://claude.ai/artifact/38bb315JjeT1a3N4R5KZZk']]],
- ['Профиль-бенто','Нужен ли вообще: ты писал «не понял, что это». Это витрина, которую видят друзья в дуэли.',[['Посмотреть','h3']]],
+ ['Профиль','Фон из Коллекции — оставил (твой ответ). Мой вариант: аватарка в одном углу на любой главной → шторка: живой фон, уровень, полка наград, Коллекция и Магазин.',[['Открыть','h17a']]],
  ['Ролики TikTok','Дормен «гостям отеля»: «минимал» (две карточки и слово) или «гость отеля» (герой на фоне и бумага). Оба прислал в чат.'],
  ['Деньги','Что платное в подписке — «как у Germanize» или иначе.']
 ];
@@ -13287,9 +13648,9 @@ const DN_WAIT=[
  ['Время слов во всех репликах','Зетка распознаёт все mp3 героев — субтитры перестанут отставать.','Зетка']
 ];
 const DN_TODAY=[
- ['Разбор 4 модов из твоего zip','В модах есть JavaScript: можно тянуть сборки с винрейтом из интернета прямо в магазин. FPS в одну кнопку уже есть в менеджере — свои конфиги не делаем. «КД ультов под иконками» уже есть в QoL Lock — повторять незачем. Наша ниша: сборки в магазине, «Разбор этого матча» после игры, двуязычные субтитры.','ресёрч-моды-27.10.md'],
- ['Два ролика Дормена','«Гость отеля» и «минимал» по твоим примерам. Реплики настоящие, из его ульты, слова — точно по голосу (распознавание теперь работает в облаке).','в чате'],
- ['Зетке','FPS из её задания снят, по моду осталось 3 вопроса.','ТЗ-ZAI-v15-27.10.md']
+ ['Главная v17 — три варианта под микс','«Меню» (как меню Deadlock), «Афиша» (кино и главы Deadlock вместе), «Две двери» (мой). Во всех — аватарка → профиль с полкой наград.','макеты → Главная v17'],
+ ['Мод Restless 0.8','Кнопка RESTLESS — как у кнопок игры, между «Отзыв игрока» и «Настройки». Меню не подменяем — уживается с Torfus Voice и QoL Lock. Первая функция: КД ульты в секундах над значком в верхней панели.','файл в чате'],
+ ['Промт Крысиного короля','Король дышит плечами и плащом, барабанит пальцами по трубе, блестит перстень; крыс не трогал.','в чате и в пульте']
 ];
 function dnRender(){const D=$('#done');if(!D||D.dataset.r)return;D.dataset.r=1;
  const li=(a)=>a.map(x=>`<li><b>${x[0]}</b><span>${x[1]}</span>${x[2]?`<em>${x[2]}</em>`:''}</li>`).join('');
@@ -13320,7 +13681,7 @@ $$('#ptab button').forEach(b=>b.onclick=()=>dnTab(b.dataset.p));
 addEventListener('hashchange',()=>{if(location.hash==='#done')dnTab('d')});
 
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd15'))}catch(e){}
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd17'))}catch(e){}
 mount(start||V.find(x=>x.g===curG));
 if((location.hash||'')==='#done')dnTab('d');
 </script>
