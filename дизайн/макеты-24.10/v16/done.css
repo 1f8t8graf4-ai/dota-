@@ -34,3 +34,6 @@
 :root[data-theme="dark"] .dn-l li q{color:#5fd394}
 .dn-l.go li em{grid-row:1/4}
 .dn-l.no{--k:#d0503c}.dn-l.no li b{text-decoration:line-through;text-decoration-color:rgba(208,80,60,.6)}
+.dn-go{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.dn-go button,.dn-go a{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:7px 12px;font:600 13px/1 Inter,sans-serif;cursor:pointer;text-decoration:none}
+.dn-go button:hover,.dn-go a:hover{background:var(--acc);color:var(--acct);border-color:transparent}
