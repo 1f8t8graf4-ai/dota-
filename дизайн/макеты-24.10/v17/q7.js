@@ -31,7 +31,7 @@ function q7Prof(R,ctx,from){let ov=$('.q7-pf',R);if(ov)ov.remove();ov=document.c
  const bgH=b=>b[0]==='vid'?vidHTML(b[1]):`<i class="img" style="background-image:url(${IMG[b[1]]})"></i>`;
  const CD=[['tk2','Я выживу','Эпическая','#B36BFF',-3],['wk4','Первый ключ','Легендарная','#FFC83D',2],['ak3','Визитки','Редкая','#4FA3FF',-1],['vt_venator','Венатор · ур. 3','Герой','#E0414F',3],['wk2','Фугази','Обычная','#8A8494',-2]];
  ov.innerHTML=`<i class="gr"></i><div class="q7-pfw"><div class="q7-pfbg">${bgH(BGS[0])}<i class="sh"></i><span class="tag">Фон из Коллекции · ${BGS[0][2]}</span></div><button class="q7-pfx" aria-label="Закрыть">${ic('x')}</button>
-  <div class="q7-pfin"><div class="q7-pfh"><span class="av">А</span><div><b>Андрей</b><small>Средний · до «Выше среднего» 62 %</small><i class="q7-pr"><i></i></i></div></div>
+  <div class="q7-pfin"><div class="q7-pfh"><span class="av">А</span><div><b>Андрей</b><small>Средний · <em>62&nbsp;%</em> до&nbsp;«Выше среднего»</small><i class="q7-pr"><i></i></i></div></div>
    <div class="q7-pfs"><span><b>6</b>дней подряд</span><span><b>128</b>слов</span><span><b>41</b>фраза</span><span><b>7/37</b>наград</span></div>
    <div class="q7-pfc"><b>Полка наград</b><small>её видят друзья в дуэли</small></div>
    <div class="q7-shelf">${CD.map(c=>`<div class="q7-cd" style="--rc:${c[3]};--rt:${c[4]}deg" data-rt="${c[4]}"><i class="img" style="background-image:url(${IMG[c[0]]})"></i>${c[2]==='Легендарная'?'<i class="gl"></i>':''}<span><em>${c[2]}</em>${c[1]}</span></div>`).join('')}</div>
