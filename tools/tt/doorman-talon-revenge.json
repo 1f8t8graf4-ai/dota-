@@ -112,5 +112,6 @@
   "big": "@languagegamesbot",
   "sub": "учи английский по играм и кино"
  },
- "_media": "арты и голоса — ветки zai/hero-arts и zai/dd-lines (heroes-voice); doorman-flat.jpg / talon-flat.jpg = арт *-full.png поверх своего фона, *-bg.jpg — размытый арт / grey-talon-select-bg.png (см. CLAUDE.md, «Облако, 27.10 — v14»)"
+ "_media": "арты и голоса — ветки zai/hero-arts и zai/dd-lines (heroes-voice); doorman-flat.jpg / talon-flat.jpg = арт *-full.png поверх своего фона, *-bg.jpg — размытый арт / grey-talon-select-bg.png (см. CLAUDE.md, «Облако, 27.10 — v14»)",
+ "hook": "Дормен давит Грей Талону на больное"
 }
