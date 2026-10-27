@@ -18,7 +18,8 @@
 1. Steam → Deadlock → «Управление» → «Просмотреть локальные файлы».
 2. **Включить моды в игре** — без этого игра папку `addons` не читает (27.10: у Андрея после удаления модов строки не было, пробник «ничего не показывал»):
    - открыть `game/citadel/gameinfo.gi` Блокнотом;
-   - в блоке `SearchPaths` над строкой `Game				citadel` вписать строку `Game				citadel/addons`;
+   - в блоке `SearchPaths` (внутри фигурных скобок) над строкой `Game				citadel` вписать три строки: `Mod citadel`, `Write citadel`, `Game citadel/addons`; перед `Game core` — `Mod core` и `Write core`. Как в гайде deadlockmodding.pages.dev/installing-mods;
+   - **без `Mod citadel` игра не запускается:** «FATAL ERROR: Unable to read default keybinding configuration (user_keys_default)» — главной папкой становится первая `Game`, то есть `citadel/addons` (у Андрея 27.10);
    - сохранить.
    - DMM при установке модов вписывает эту строку сам. После обновления Deadlock строка может пропасть — вписать снова. Сломал файл — «Проверить целостность файлов» в Steam.
 3. Положить `pak42_dir.vpk` в `game/citadel/addons` (папки нет — создать).
