@@ -30,7 +30,7 @@
 					<Panel id="LeftStripe" hittest="false">
 						<Panel id="LogoArea">
 							<Panel id="GameTitle" />
-							<Label class="GameSubtext" text="Restless: мод загружен" />
+							<Label class="GameSubtext" text="#Citadel_Main_EarlyDevBuild" />
 						</Panel>
 						<Panel id="Menu" hittest="false">
 							<Button id="resume" class="nav_menu_item primary" onactivate="CitadelResumePlaying()">
@@ -87,6 +87,9 @@
 							</Button>
 							<Button id="match_practice" class="nav_menu_item primary" onactivate="CitadelShowTrainingPage()">
 								<Label text="#menu_resources" class="menuButtonLabel" />
+							</Button>
+							<Button id="RestlessMenuBtn" class="nav_menu_item primary">
+								<Label text="Restless" class="menuButtonLabel" />
 							</Button>
 							<Panel class="menu_divider" />
 							<Panel class="menu_divider" />
