@@ -1,6 +1,7 @@
-// Заглушка Panorama для проверки скрипта Restless без игры (0.8).
-// HUD: корень Hud → верхняя панель (наш файл), субтитры (наш файл), меню по Esc — ванильное из игры (мы его не подменяем).
-// Скрипт запускается в двух местах (субтитры и верхняя панель) — работать должна одна копия.
+// Заглушка Panorama для проверки скрипта Restless без игры (0.9).
+// HUD: корень Hud → верхняя панель (ванильная), субтитры, скорость, меню по Esc (наши файлы со скриптом).
+// Как в игре: скрипт файла запускается раньше, чем панель вставлена в HUD, — он должен дождаться, а не выключиться.
+// Второй прогон: меню по Esc — чужое (ванильная копия без скрипта) — кнопку всё равно ставит скрипт из субтитров/скорости.
 // node mod/tools/mock_panorama.js mod/restless-probe/panorama <ванильный hud_escape_menu.xml>
 const fs=require('fs'),vm=require('vm'),path=require('path');
 const dir=process.argv[2]||'mod/restless-probe/panorama', escXml=process.argv[3];
@@ -31,29 +32,35 @@ function run(ctxp){const $={GetContextPanel:()=>ctxp,CreatePanel:(t,par,id,pr)=>
 const tick=(n=1)=>{for(let i=0;i<n;i++){const s=sched;sched=[];s.forEach(f=>f())}};
 let fail=0;const ok=(c,t)=>{console.log((c?'PASS ':'FAIL ')+t);if(!c)fail++};
 // HUD
+const L=f=>fs.readFileSync(path.join(dir,'layout/'+f),'utf8');
+ok(!fs.existsSync(path.join(dir,'layout/citadel_hud_top_bar.xml')),'верхнюю панель не подменяем (её меняют QoL Lock, QoL Lite)');
+['hud_escape_menu.xml','citadel_hud_subtitles.xml','hud_movement_speed.xml'].forEach(f=>ok(/restless\.vjs_c/.test(L(f)),'скрипт подключён: '+f));
 const hud=P('CitadelHud','Hud');
-const top=add(hud,P('CitadelHudTopBar','TopBar'));parse(fs.readFileSync(path.join(dir,'layout/citadel_hud_top_bar.xml'),'utf8'),top);
-const topCtx=top.ch[0];
+const top=add(hud,P('CitadelHudTopBar','TopBar'));const topCtx=top;
 // игроки верхней панели: CitadelHudTopBarPlayer → StatusRow → UltimateStatus → UltimateStatusBG
 const players=[];for(let i=0;i<4;i++){const pl=add(topCtx,P('CitadelHudTopBarPlayer','TopBarPlayer'+i));const sr=add(pl,P('Panel','StatusRow'));
  const us=add(sr,P('Panel','UltimateStatus',{class:'UltimateStatus'}));add(us,P('Panel','UltimateStatusBG',{class:'UltimateStatusBG'}));players.push(pl)}
-const subs=add(hud,P('CitadelHudSubtitles','HudSubtitles'));parse(fs.readFileSync(path.join(dir,'layout/citadel_hud_subtitles.xml'),'utf8'),subs);
-const em=add(hud,P('CitadelHudEscapeMenu','EscapeMenu'));const menu=parse(fs.readFileSync(escXml,'utf8'),em);
-ok(!fs.existsSync(path.join(dir,'layout/hud_escape_menu.xml')),'меню по Esc не подменяем (файла в моде нет)');
-ok(/restless\.vjs_c/.test(fs.readFileSync(path.join(dir,'layout/citadel_hud_subtitles.xml'),'utf8')),'скрипт подключён к субтитрам');
-const $s=run(subs.ch[0]);const $t=run(topCtx);
-tick(2);
-const owners=msgs.filter(m=>/скрипт запущен/.test(m));
-ok(owners.length===2,'скрипт запущен в двух местах: '+owners.join(' | '));
+// панели созданы, но ещё не вставлены в HUD — скрипты уже запускаются
+const subs=P('CitadelHudSubtitles','HudSubtitles');parse(L('citadel_hud_subtitles.xml'),subs);
+const ms=P('CitadelHudMovementSpeed','MovementSpeedPanel');parse(L('hud_movement_speed.xml'),ms);
+const em=P('CitadelHudEscapeMenu','EscapeMenu');const menu=parse(L('hud_escape_menu.xml'),em);
+run(subs.ch[0]);run(ms.ch[0]);run(menu);
+tick(6);
+ok(!msgs.some(m=>/запущен в HUD/.test(m))&&!msgs.some(m=>/не HUD/.test(m)),'панели ещё не в HUD — скрипт ждёт, не выключается');
+ok(sched.length===3,'все три копии продолжают ждать: '+sched.length);
+add(hud,subs);add(hud,ms);add(hud,em);
+tick(3);
+const owners=msgs.filter(m=>/запущен в HUD/.test(m));
+ok(owners.length===3,'вставили в HUD — скрипт запустился во всех трёх: '+owners.join(' | '));
 const F=i=>hud.FindChildTraverse(i);
-ok(hud.FindChildrenWithClassTraverse('SettingsRow').filter(r=>r.id==='RestlessRow').length===1,'кнопка одна, хотя скриптов два');
+ok(hud.FindChildrenWithClassTraverse('SettingsRow').filter(r=>r.id==='RestlessRow').length===1,'кнопка одна, хотя скриптов три');
 const btn=F('RestlessMenuBtn'),row=btn.par,sub=row.par;
 ok(sub.id==='SubOptions','кнопка — в столбике под «Сменить героя»');
 const order=sub.ch.map(c=>c.id||[...c.cls].join('.')||c.type);
 ok(order.indexOf('RestlessRow')===order.indexOf('FeedbackRow')+1&&sub.ch[order.indexOf('RestlessRow')+1].FindChildTraverse('settings'),'порядок: Отзыв игрока → RESTLESS → Настройки ('+order.join(', ')+')');
 ok(btn.cls.has('nav_menu_item')&&btn.cls.has('minor')&&!Object.keys(btn.style).length,'класс как у кнопок игры, без своих стилей');
 const bl=btn.ch[0];ok(bl.text==='RESTLESS'&&bl.cls.has('menuButtonLabel')&&!Object.keys(bl.style).length,'подпись RESTLESS тем же шрифтом');
-const mark=F('RestlessMark');ok(mark&&mark.par===hud&&mark.style.visibility==='visible'&&/RESTLESS 0\.8 · работает · кнопка в Esc/.test(mark.text),'надпись: «'+(mark&&mark.text)+'»');
+const mark=F('RestlessMark');ok(mark&&mark.par===hud&&mark.style.visibility==='visible'&&/RESTLESS 0\.9 · работает · кнопка в Esc/.test(mark.text),'надпись: «'+(mark&&mark.text)+'»');
 // «Сменить героя» налезает — поднимаем
 em.cls.add('ShowEscapeMenu');const ch=F('changehero'),mn=ch.par;
 Object.assign(mn,{actuallayoutheight:1080});Object.assign(ch,{actualyoffset:730,actuallayoutheight:70});Object.assign(sub,{actualyoffset:780,actuallayoutheight:170});
@@ -110,7 +117,12 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
 // бот
 const bot=all(win).find(x=>x.type==='Button'&&x.style.backgroundColor==='#ffc83d'&&x.style.borderRadius==='8px');bot.ev.onactivate();
 ok(msgs.includes('URL https://t.me/languagegamesbot'),'кнопка бота открывает ссылку');
-// не HUD — молчит
-const pop=P('Panel','Popups');const ps=add(pop,P('CitadelHudSubtitles','x'));const n0=sched.length;run(ps);ok(sched.length===n0&&msgs.some(m=>/не HUD/.test(m)),'в окне настроек игры (не HUD) скрипт ничего не делает');
+// не HUD (окно настроек игры: там тоже есть субтитры) — ничего не создаёт
+const pop=P('Panel','Popups');const ps=add(pop,P('CitadelHudSubtitles','x'));parse(L('citadel_hud_subtitles.xml'),ps);run(ps.ch[0]);tick(5);
+ok(!all(pop).some(x=>/^Restless/.test(x.id)),'в окне настроек игры (не HUD) скрипт ничего не создаёт');
+// второй прогон: меню по Esc — чужое (другой мод победил), скрипт — только в субтитрах и скорости
+{const hud2=P('CitadelHud','Hud');const em2=add(hud2,P('CitadelHudEscapeMenu','EscapeMenu'));parse(fs.readFileSync(escXml,'utf8'),em2);
+ const ms2=add(hud2,P('CitadelHudMovementSpeed','m'));parse(L('hud_movement_speed.xml'),ms2);run(ms2.ch[0]);tick(3);
+ const b2=hud2.FindChildTraverse('RestlessMenuBtn');ok(b2&&b2.par.par.id==='SubOptions','чужое меню по Esc — кнопку ставит скрипт из файла скорости');}
 console.log('\nконсоль:',msgs.filter(m=>m.startsWith('[Restless]')).join(' | '));
 console.log(fail?`\nКРАСНЫХ: ${fail}`:'\nвсё PASS');process.exit(fail?1:0);

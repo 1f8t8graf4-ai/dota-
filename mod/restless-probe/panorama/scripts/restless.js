@@ -1,23 +1,21 @@
-// Restless 0.8.
-// Файл меню по Esc (hud_escape_menu) больше не подменяем: его подменяют и другие моды (QoL Lock, Torfus Voice, UMM),
-// а в игре остаётся только одна копия. Кнопку RESTLESS и окно настроек ставит этот скрипт — в то меню,
-// какое загрузилось, строкой перед «Настройками» и тем же классом, что у кнопок игры.
-// Скрипт подключён к двум файлам HUD: субтитры (их никто не трогает) и верхняя панель (запасной путь).
+// Restless 0.9.
+// 0.8 не запускался: скрипт сразу искал меню Esc, а игра запускает скрипт файла раньше, чем вставляет его панель в HUD, —
+// скрипт решал «это не HUD» и выключался насовсем. Теперь ждём: ищем корень каждые 0,25 с, потом раз в секунду.
+// Меню по Esc не подменяем (его подменяют QoL Lock, QoL Lite, Torfus Voice — остаётся одна копия): кнопку RESTLESS
+// и окно ставит этот скрипт — в то меню, какое загрузилось, строкой перед «Настройками», классом кнопок игры.
+// Скрипт подключён к нескольким файлам: HUD — субтитры, скорость, чат; главное меню — dashboard (надпись «работает»).
 // Работает одна копия — «хозяин» отмечается в атрибуте корневой панели; вторая ждёт и подхватит, если хозяин пропал.
 // КД ульты: игра сама кладёт секунды в верхнюю панель ({i:ult_cooldown}), но не показывает — выводим их поверх значка.
 // Память игры не читает, ничего не отправляет. Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.8';
+	var VER = '0.9';
 	var BOT = 'https://t.me/languagegamesbot';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
 	if (!ctx) return;
-	var ROOT = ctx;
-	try { while (ROOT.GetParent && ROOT.GetParent()) ROOT = ROOT.GetParent(); } catch (e) {}
-	var HOOK = ctx.FindChildTraverse('GameTime') ? 'панель' : 'субтитры';
-	if (!ROOT.FindChildTraverse('EscapeMenu')) { $.Msg('[Restless] ' + VER + ' (' + HOOK + '): не HUD, выходим'); return; }
-	var HUD = (ROOT.id === 'Hud' || ROOT.paneltype === 'CitadelHud') ? ROOT : (ROOT.FindChildTraverse('Hud') || ROOT);
-	$.Msg('[Restless] ' + VER + ' скрипт запущен: ' + HOOK);
+	var HOOK = String(ctx.paneltype || ctx.id || '?').replace(/^Citadel(Hud)?/, '');
+	var ROOT = null, HUD = null;
+	$.Msg('[Restless] ' + VER + ' файл загружен: ' + HOOK);
 
 	// ---------- общие настройки: атрибуты корневой панели (меню и HUD видят одно и то же) ----------
 	var MEM = {};
@@ -272,7 +270,7 @@
 	}
 
 	// ---------- общий такт ----------
-	(function tick() {
+	function tick() {
 		if (!ok(ctx)) return;
 		if (mine()) {
 			try { markTick(); } catch (e) { $.Msg('[Restless] надпись: ' + e); }
@@ -283,5 +281,51 @@
 		} else {
 			$.Schedule(1.0, tick);
 		}
-	})();
+	}
+
+	// ---------- главное меню: только надпись, что мод загружен ----------
+	function menuMarkTick(r) {
+		if (!ok(ctx)) return;
+		try {
+			var m = r.FindChildTraverse('RestlessMenuMark');
+			if (!ok(m)) {
+				m = lab(r, 'RestlessMenuMark', { horizontalAlign: 'left', verticalAlign: 'bottom', marginLeft: '28px', marginBottom: '22px',
+					fontSize: '18px', fontWeight: 'bold', color: A, zIndex: '50' });
+				$.Msg('[Restless] надпись в главном меню');
+			}
+			setText(m, lang() === 'en' ? 'RESTLESS ' + VER + ' · running · Esc button is in a match' : 'RESTLESS ' + VER + ' · работает · кнопка — в матче по Esc');
+		} catch (e) { $.Msg('[Restless] надпись меню: ' + e); }
+		$.Schedule(2.0, function () { menuMarkTick(r); });
+	}
+
+	// ---------- запуск: ждём, пока панель окажется в HUD или в главном меню ----------
+	var tries = 0, menuOn = false;
+	function climb() { var r = ctx; try { while (r.GetParent && r.GetParent()) r = r.GetParent(); } catch (e) {} return r; }
+	function boot() {
+		if (!ok(ctx)) return;
+		var r = climb(), em = null, dash = null;
+		try { em = r.FindChildTraverse('EscapeMenu'); } catch (e) {}
+		if (ok(em)) {
+			ROOT = r;
+			HUD = (r.id === 'Hud' || r.paneltype === 'CitadelHud') ? r : (r.FindChildTraverse('Hud') || r);
+			$.Msg('[Restless] ' + VER + ' запущен в HUD через ' + HOOK + ' (попытка ' + tries + ')');
+			tick();
+			return;
+		}
+		// главное меню: этот файл — сам dashboard (корень CitadelDB) или стоит внутри него
+		var p = ctx, inDash = false;
+		try { while (p) { if (p.paneltype === 'CitadelDB') { inDash = true; break; } p = p.GetParent ? p.GetParent() : null; } } catch (e) {}
+		if (inDash) {
+			if (ctx.paneltype === 'CitadelDB' && !menuOn) {
+				menuOn = true; ROOT = ctx;
+				$.Msg('[Restless] ' + VER + ' главное меню');
+				menuMarkTick(ctx);
+			}
+			return;
+		}
+		tries++;
+		if (tries < 2400) $.Schedule(tries < 40 ? 0.25 : 1.0, boot);
+		else $.Msg('[Restless] ' + VER + ' HUD так и не найден: ' + HOOK);
+	}
+	boot();
 })();
