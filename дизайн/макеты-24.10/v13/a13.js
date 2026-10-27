@@ -24,8 +24,11 @@ const S13=(()=>{let ac=null,out=null,rv=null,cur=null,bed=null,bedN='',bedV=.5,d
  function duck(on){duckOn=on;if(!bed)return;const t=ac.currentTime;bed.g.gain.cancelScheduledValues(t);bed.g.gain.setValueAtTime(bed.g.gain.value,t);bed.g.gain.linearRampToValueAtTime(on?bedV*.35:bedV,t+(on?.12:.7))}
  function stopLine(){if(cur){try{cur.onended=null;cur.stop()}catch(e){}cur=null;duck(false)}}
  // реплика: echo 0…1 — сколько эха места (0 — сухо, как с вики)
- async function line(k,o){o=o||{};const b=await load(k);if(!b||!live())return 0;stopLine();const s=ac.createBufferSource();s.buffer=b;const g=ac.createGain();g.gain.value=o.gain||1;s.connect(g);g.connect(out);
-  if(o.echo){const e=ac.createGain();e.gain.value=o.echo;g.connect(e);e.connect(rv)}duck(true);s.onended=()=>{if(cur===s){cur=null;duck(false)}o.end&&o.end()};s.start();cur=s;return b.duration}
+ let tok=0,t0=0;
+ async function line(k,o){o=o||{};const my=++tok;stopLine();const b=await load(k);if(my!==tok||!b||!live())return 0;stopLine();const s=ac.createBufferSource();s.buffer=b;const g=ac.createGain();g.gain.value=o.gain||1;s.connect(g);g.connect(out);
+  if(o.echo){const e=ac.createGain();e.gain.value=o.echo;g.connect(e);e.connect(rv)}duck(true);s.onended=()=>{if(cur===s){cur=null;duck(false)}o.end&&o.end()};s.start();t0=ac.currentTime;cur=s;o.start&&o.start();return b.duration}
+ const pos=()=>cur&&ac?ac.currentTime-t0:-1;
+ function cancel(){tok++;stopLine()}
  function noise(sec,brown){const r=ac.sampleRate,n=Math.round(r*sec),b=ac.createBuffer(1,n,r),d=b.getChannelData(0);let l=0;for(let i=0;i<n;i++){const w=Math.random()*2-1;if(brown){l=(l+.02*w)/1.02;d[i]=l*3.5}else d[i]=w}return b}
  // фон места: собор — орган и колокол; туннели — гул и капли (громкость — vol, под голосом сам тише)
  function bedOn(name,vol){if(!A0()||!live())return;if(vol!=null)bedV=vol;if(bedN===name){duck(duckOn);return}bedOff();bedN=name;const g=ac.createGain();g.gain.value=0;g.connect(out);const sd=ac.createGain();sd.gain.value=.7;sd.connect(rv);const N=[],T=[];
@@ -52,14 +55,41 @@ const S13=(()=>{let ac=null,out=null,rv=null,cur=null,bed=null,bedN='',bedV=.5,d
   return 0}
  // 27.10: настоящий звук абилки из игры (Зетка, ветка zai/sfx) — поверх, не обрывая реплику; вернёт, через сколько мс пускать голос (-1 — нет файла)
  function fxPlay(k){k=key(k);const b=BUF[k];if(!b||!live())return -1;const s=ac.createBufferSource();s.buffer=b;const g=ac.createGain();g.gain.value=.85;s.connect(g);g.connect(out);const e=ac.createGain();e.gain.value=.22;g.connect(e);e.connect(rv);s.start();return Math.round(Math.min(b.duration*700,1500))}
- function stop(){stopLine();bedOff()}
- return {A0,load,preload,line,stopLine,bed:bedOn,bedVol,bedOff,sfx,fxPlay,stop,live,unlocked:()=>ok}})();
+ function stop(){cancel();bedOff()}
+ return {A0,load,preload,line,stopLine:cancel,pos,bed:bedOn,bedVol,bedOff,sfx,fxPlay,stop,live,unlocked:()=>ok}})();
 // старый звук v12 тоже открываем на первом касании — чтобы и в v12 реплики по таймеру звучали
 ['pointerdown','touchend'].forEach(ev=>document.addEventListener(ev,()=>{try{const a=SND12.A0();if(a&&a.state!=='running')a.resume()}catch(e){}},{capture:true,passive:true}));
 // реплика: до первого касания — молча (только волна), после — голос; sfx — звук события перед голосом
-function say13(ctx,k,o){o=o||{};const d=(DUR11[AU11[k]||k]||2.4)*1000;let done=false;const fin=()=>{if(done)return;done=true;o.end&&o.end()};
- let gap=o.sx&&S13.live()?S13.fxPlay(o.sx):-1;if(gap<0)gap=o.sfx&&S13.live()?S13.sfx(o.sfx):0;const go=()=>{S13.line(k,{echo:o.echo,gain:o.gain,end:fin}).then(x=>{if(!x)ctx.t(fin,d)})};
- if(gap)ctx.t(go,gap);else go();ctx.add(()=>S13.stopLine());ctx.t(fin,d+gap+400);return d+gap}
+/* 27.10, Андрей: «реплики по звуку и перевод за ними не успевают, не совпадают». Было: слова шли по таймеру «на глаз» от длины файла
+   и стартовали до того, как звук реально пошёл. Теперь время каждого слова — из распознавания самих mp3 (WT13, faster-whisper),
+   слова загораются по реальному месту воспроизведения (S13.pos), без звука — тем же ритмом. Перевод показывают сразу, как пошла реплика. */
+const WT13={"rat-king-14":[["We",0.0,0.12],["do",0.12,0.34],["this",0.34,0.54],["on",0.54,0.78],["my",0.78,1.02],["time,",1.02,1.46],["you",1.64,1.68],["crumb",1.68,2.22],["bum.",2.22,2.46]],"rat-king-15":[["NO",0.0,0.22],["ONE",0.22,0.6],["RUSHES",0.6,1.24],["THE",1.24,1.48],["KING!",1.48,1.86]],"rat-king-18":[["Who's",0.0,0.4],["exterminatin'",0.4,1.44],["who",1.78,1.94],["now?",1.94,2.52]],"rat-king-19":[["Get",0.0,0.16],["outta",0.16,0.52],["my",0.52,0.78],["face,",0.78,1.4],["pal!",1.8,1.9]],"rat-king-21":[["Eat",0.0,0.3],["dirt",0.3,0.98],["crumb",0.98,1.72],["bum.",1.72,2.04]],"rat-king-23":[["How's",0.0,0.3],["your",0.3,0.42],["streak",0.42,0.94],["lookin'",0.94,1.44],["now,",1.72,1.86],["pal?",2.2,2.22]],"rk-hail-marys":[["Go",0.0,0.2],["do",0.2,0.48],["some",0.48,0.82],["Hail",0.82,1.16],["Marys",1.16,1.9],["or",1.9,2.02],["something.",2.02,2.38]],"rk-holier":[["Haulier",0.0,0.6],["than",0.6,0.8],["thou,",0.8,1.32],["crumb",1.74,2.04],["bum.",2.04,2.36]],"rk-king-here":[["The",0.0,0.3],["Red",0.3,0.66],["King",0.66,1.26],["is",1.26,1.68],["here!",1.68,2.28]],"rk-priest-vs-king":[["What's",0.0,0.3],["a",0.3,0.4],["priest",0.4,0.76],["gonna",0.76,1.1],["do",1.1,1.4],["to",1.4,1.56],["a",1.56,1.74],["king?",1.74,2.1]],"rk-sewers":[["I",0.0,0.18],["thought",0.18,0.4],["I",0.4,0.62],["said",0.62,1.0],["you",1.0,1.24],["weren't",1.24,1.6],["supposed",1.6,1.9],["to",1.9,2.2],["show",2.2,2.44],["your",2.44,2.74],["face",2.74,3.08],["in",3.08,3.32],["the",3.32,3.46],["sewers",3.46,3.94],["again.",3.94,4.36]],"rk-took-down":[["Took",0.0,0.24],["DOWN",0.24,0.56],["THE",0.56,0.78],["VANADA!",0.78,1.34]],"rk-ult-roll":[["Let's",0.0,0.52],["roll",0.52,0.96],["boys!",0.96,1.6]],"ven-die-monster":[["Die,",0.0,0.48],["monster!",0.86,1.1]],"ven-evil-dies":[["Evil",0.0,0.34],["dies",0.34,0.88],["today.",0.88,1.64]],"ven-evil-stirs":[["Evil",0.0,0.32],["stirs",0.32,0.92],["in",0.92,1.08],["New",1.08,1.22],["York,",1.22,1.58],["and",2.26,2.48],["so",2.48,2.64],["the",2.64,2.76],["Vatican",2.76,3.14],["has",3.14,3.42],["called",3.42,3.64],["on",3.64,3.86],["me.",3.86,4.06]],"ven-no-hide":[["You",0.0,0.16],["can't",0.16,0.6],["hide",0.6,0.8],["from",0.8,1.06],["a",1.06,1.18],["Venator.",1.18,1.64]],"ven-not-merciful":[["The",0.0,0.16],["Lord",0.16,0.4],["is",0.4,0.66],["merciful,",0.66,1.36],["I",2.16,2.48],["am",2.48,2.66],["not.",2.66,2.98]],"ven-will-find":[["I",0.0,0.18],["will",0.18,0.4],["find",0.4,0.74],["you.",0.74,1.04]],"venator-08":[["Today,",0.0,0.4],["nine",1.42,1.72],["commandments",1.72,2.2],["will",2.2,2.5],["have",2.5,2.64],["to",2.64,2.78],["do.",2.78,2.96]],"venator-09":[["God",0.0,0.24],["forgives,",0.24,0.94],["I",1.44,2.0],["do",2.0,2.22],["not.",2.22,2.5]],"venator-14":[["Picked",0.0,0.2],["the",0.2,0.34],["wrong",0.34,0.56],["fight.",0.56,0.92]],"venator-21":[["The",0.0,0.08],["work",0.08,0.26],["doesn't",0.26,0.68],["come",0.68,0.82],["cheap.",0.82,1.16]]};
+Object.assign(DUR11,{"rat-king-14":2.89,"rat-king-15":2.35,"rat-king-18":3.31,"rat-king-19":2.33,"rat-king-21":2.37,"rat-king-23":2.65,"rk-a4":2.45,"rk-hail-marys":2.84,"rk-holier":2.73,"rk-king-here":2.95,"rk-priest-vs-king":2.53,"rk-sewers":4.77,"rk-took-down":1.73,"rk-ult-roll":2.37,"ven-a4":2.45,"ven-die-monster":1.79,"ven-evil-dies":2.3,"ven-evil-stirs":4.43,"ven-no-hide":2.3,"ven-not-merciful":3.5,"ven-will-find":1.4,"venator-08":3.4,"venator-09":2.98,"venator-14":1.37,"venator-21":1.6});
+// время слов на экране (D — слова как написаны у нас): совпало число слов — 1:1, нет («crumbum» = «crumb bum») — по доле букв
+function wt13(k,D){const T=WT13[AU11[k]||k],cl=s=>s.replace(/[^a-z0-9']/gi,'').length||1;
+ if(!T||!T.length){const d=(DUR11[AU11[k]||k]||2.4)*.85,L=D.reduce((s,w)=>s+cl(w),0);let t=0;return D.map(w=>{const a=t;t+=d*cl(w)/L;return[a,t]})}
+ if(T.length===D.length)return T.map(x=>[x[1],x[2]]);
+ const tc=[];let acc=0;T.forEach(x=>{const n=cl(x[0]);tc.push([acc,acc+n,x[1],x[2]]);acc+=n});
+ const at=f=>{const c=f*acc;for(const q of tc)if(c<=q[1]+1e-6)return q[2]+(q[3]-q[2])*Math.max(0,(c-q[0])/(q[1]-q[0]));return tc[tc.length-1][3]};
+ const dc=D.map(cl),DT=dc.reduce((a,b)=>a+b,0);let c=0;return D.map((w,i)=>{const a=at(c/DT),b=at((c+dc[i])/DT);c+=dc[i];return[a,b]})}
+let SPK13=0;
+// реплика: sx/sfx — звук перед голосом; words + onWord(i) — слова по голосу; onStart — звук пошёл (тут показывать перевод); onEnd — договорил
+function speak13(ctx,k,o){o=o||{};const id=++SPK13,D=o.words||[],T=wt13(k,D),dur=DUR11[AU11[k]||k]||2.4;let done=false,started=false,iw=-1;
+ const words=t=>{while(iw+1<D.length&&t>=T[iw+1][0]-.04){iw++;o.onWord&&o.onWord(iw)}};
+ const fin=()=>{if(done)return;done=true;if(id===SPK13)words(1e9);o.end&&o.end();o.onEnd&&o.onEnd()};
+ const loop=get=>{const f=()=>{if(done||!ctx.alive||id!==SPK13)return;words(get());requestAnimationFrame(f)};f()};
+ const begin=get=>{if(started)return;started=true;o.onStart&&o.onStart();loop(get)};
+ const silent=()=>{if(started||done)return;const s0=performance.now();begin(()=>(performance.now()-s0)/1000);ctx.t(()=>{if(id===SPK13)fin()},dur*1000+120)};
+ const go=()=>{if(id!==SPK13)return;if(o.mute||!S13.live()){silent();return}
+  S13.line(k,{echo:o.echo,gain:o.gain,start(){begin(()=>Math.max(0,S13.pos()))},end(){if(id===SPK13)fin()}}).then(x=>{if(!x)silent()})};
+ let gap=0;if(!o.mute&&S13.live()){gap=o.sx?S13.fxPlay(o.sx):-1;if(gap<0)gap=o.sfx?S13.sfx(o.sfx):0}
+ if(gap)ctx.t(go,gap);else go();ctx.add(()=>{if(id===SPK13)S13.stopLine()});
+ ctx.t(()=>{if(!started&&!done&&id===SPK13)silent()},gap+2500); // звук не пошёл за 2,5 с (сеть) — текст не висит
+ return (dur*1000+gap)}
+function say13(ctx,k,o){o=o||{};return speak13(ctx,k,{echo:o.echo,gain:o.gain,sx:o.sx,sfx:o.sfx,mute:o.mute,end:o.end})}
+// комикс в v13 открывает движок v12 — его реплики тоже через этот звук (один голос за раз, без двух звуковых движков)
+const SAY12_OLD=say12;
+say12=function(ctx,k,o){o=o||{};if(curV&&/^[gkls]13/.test(curV.id||'')){if(o.bed&&!o.dry&&o.loud!==false)S13.bed(o.bed==='arena'?'sewer':o.bed,.3);return say13(ctx,k,{echo:o.dry?0:.2,mute:o.loud===false,end:o.end})}return SAY12_OLD(ctx,k,o)};
 
 /* --- герои v13 --- */
 const LV13={venator:{lv:2,xp:340,nx:500,nxt:'серебряная рамка иконки'},rat:{lv:1,xp:120,nx:300,nxt:'рамка иконки'}};

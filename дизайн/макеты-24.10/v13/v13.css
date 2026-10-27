@@ -414,3 +414,19 @@
 .st13 .pl13{flex:none;padding:6px 10px;border-radius:999px;font:800 11px/1 Inter,sans-serif;font-style:normal;cursor:pointer}.st13 .pl13.on{background:rgba(79,209,139,.15);color:#4FD18B}.st13 .pl13.tt{background:rgba(242,193,78,.15);color:#F2C14E}.st13 .pl13.off{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55)}
 .st13-c.me .bt{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 10px}.st13-c.me .bt button{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border-radius:14px!important;background:rgba(255,255,255,.07)!important;font:700 12.5px/1 Inter,sans-serif;color:#fff}.st13-c.me .bt .ic{width:15px;height:15px}
 .st13-c.me .rs{margin:0 14px 12px;height:44px;border-radius:14px!important;background:rgba(255,77,94,.08)!important;color:#FF6B6B;font:700 13px/1 Inter,sans-serif}
+
+/* ===== 27.10 — Versus без лагов (Андрей: «версус лагает»): фильтры на видео и на всём портрете пересчитывались каждый кадр.
+   Теперь видео без фильтра, «говорит / молчит / проиграл» — затемнением сверху (opacity), фон-SVG под видео не рисуется, столбики голоса — только у говорящего ===== */
+.vs13 .vs8-p video,.vs13.stop .vs8-p video,.vs13.stop video{filter:none!important}
+.vs13 .vs8-p{filter:none!important;transition:none!important}
+.vs13 .vs8-p::after{content:"";position:absolute;inset:0;z-index:1;background:#05070d;opacity:.26;transition:opacity .3s;pointer-events:none}
+.vs13 .vs8-p.tk::after{opacity:0}
+.vs13 .vs8-p.lose::after{opacity:.62;transition:opacity .9s}
+.vs13 .vs8-p .nm,.vs13 .vs8-p .ko{z-index:2}
+.vs13 .hbg{display:none}
+.vs13.stop *{animation-play-state:running!important}
+.vs13 .vs9-m:not(.spk) .v10-wv i{animation:none;transform:scaleY(.3)}
+/* звук: слова реплики загораются по голосу */
+.sd13-cd .tx b .kk{font-style:normal;transition:opacity .12s,color .12s}
+.sd13-cd.say .tx b .kk{opacity:.42}
+.sd13-cd.say .tx b .kk.on{opacity:1;color:#F6D488}

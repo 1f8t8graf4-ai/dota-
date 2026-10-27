@@ -27,6 +27,7 @@ function tt13(R,ctx,o){o=o||{};let k=o.hero==='venator'?'venator':'rat',i=0,touc
   $('.tt13-chips',R).innerHTML=`${['rat','venator'].map(q=>`<button class="${q===k?'on':''}" data-h="${q}">${hic12(q)}${H12[q].n}</button>`).join('')}<button class="lk">${hic12('doorman')}Doorman</button><button class="lk">${hic12('seven')}Seven</button>`;
   cap.innerHTML='';ru.textContent='';kw.hidden=true;$('.stamp',stg).textContent='';stg.className='tt13-stage'}
  // момент реплики: ульта — заряд кольцом, удар, вспышка, тряска; выход — блик по рамке; убийство — красный удар
+ let seq=0;
  async function play(){if(busy)return;busy=true;const x=L()[i],h=H12[k],W=x.en.split(' '),d=(DUR11[AU11[x.a]||x.a]||2.4)*1000;cap.innerHTML='';ru.textContent='';kw.hidden=true;stg.classList.add('go',x.fx);
   const st=$('.stamp',stg);st.textContent=TTL13[x.fx];const dk=$('.tt13-dk',R);
   if(x.fx==='ult'){an(dk,[{opacity:0},{opacity:.72}],{d:500,f:'forwards'});an($('.ring',stg),[{opacity:0,transform:'scale(.55) rotate(-90deg)'},{opacity:1,transform:'scale(1) rotate(0deg)'}],{d:860,e:'cubic-bezier(.5,0,.9,.6)'});
@@ -40,11 +41,13 @@ function tt13(R,ctx,o){o=o||{};let k=o.hero==='venator'?'venator':'rat',i=0,touc
   an(st,[{opacity:0,transform:'translate(-50%,-50%) scale(2.6) rotate(-14deg)'},{opacity:1,transform:'translate(-50%,-50%) scale(1) rotate(-9deg)',offset:.25},{opacity:1,transform:'translate(-50%,-50%) scale(1.02) rotate(-9deg)',offset:.75},{opacity:0,transform:'translate(-50%,-50%) scale(1.1) rotate(-9deg)'}],{d:1300,e:'linear'});
   fx.burst(r.x+r.w/2,r.y+r.h*.5,{n:x.fx==='ult'?70:40,c:x.fx==='kill'?['#FF4D5E','#fff','#7a0b16']:[h.ac,'#fff','#F6D488'],v:x.fx==='ult'?9:6,g:.06,s:2.6,l:50});
   an(dk,[{opacity:.72},{opacity:.2}],{d:900,f:'forwards',dl:300});
-  stg.classList.add('say');say13(ctx,x.a,{echo:.3,end(){stg.classList.remove('say')}});
-  // слова по одному, как в роликах
-  const len=W.reduce((s,w)=>s+w.length+2,0);let t=120;W.forEach((w,j)=>{const ms=d*(w.length+2)/len;ctx.t(()=>{cap.innerHTML=`<span class="cw">${w}</span>`;an($('.cw',cap),[{transform:'scale(.55) rotate(-5deg)',opacity:0},{transform:'none',opacity:1}],{sp:SPb})},t);t+=ms});
-  ctx.t(()=>{cap.innerHTML=`<span class="all">${x.en.replace(new RegExp('('+x.kw[0]+')','i'),'<u>$1</u>')}</span>`;ru.textContent=x.ru;an(ru,[{opacity:0},{opacity:1}],{d:400});
-   kw.hidden=false;kw.innerHTML=`<b>${x.kw[0]}</b> — ${x.kw[1]}`;an(kw,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{sp:SPs});stg.classList.remove('go','ult','enter','kill');busy=false},t+260)}
+  stg.classList.add('say');const my=++seq;
+  // 27.10: слова — по голосу (WT13), перевод — сразу, как пошла реплика; дальше — когда договорил и успел прочитать
+  speak13(ctx,x.a,{echo:.3,words:W,onStart(){ru.textContent=x.ru;an(ru,[{opacity:0},{opacity:1}],{d:250})},
+   onWord(j){cap.innerHTML=`<span class="cw">${W[j]}</span>`;an($('.cw',cap),[{transform:'scale(.6) rotate(-4deg)',opacity:0},{transform:'none',opacity:1}],{d:160,e:EO})},
+   onEnd(){if(my!==seq)return;stg.classList.remove('say');cap.innerHTML=`<span class="all">${x.en.replace(new RegExp('('+x.kw[0]+')','i'),'<u>$1</u>')}</span>`;
+    kw.hidden=false;kw.innerHTML=`<b>${x.kw[0]}</b> — ${x.kw[1]}`;an(kw,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{sp:SPs});stg.classList.remove('go','ult','enter','kill');busy=false;
+    if(!touched)ctx.t(()=>{if(!touched&&my===seq)nextAuto()},3000)}})}
  ctx.on($('.tt13-ft',R),'click',e=>{const b=e.target.closest('button');if(!b)return;an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});
   if(b.classList.contains('pl')){busy=false;play();return}if(b.classList.contains('sv')){b.classList.toggle('on');toast(R,b.classList.contains('on')?'В «Мои фразы» — уйдёт в повторение':'Убрал');return}
   const n=b.classList.contains('nx')?1:-1;i+=n;if(i<0||i>=L().length){k=k==='rat'?'venator':'rat';i=n>0?0:L().length-1}busy=false;paint();ctx.t(play,450)});
@@ -52,7 +55,7 @@ function tt13(R,ctx,o){o=o||{};let k=o.hero==='venator'?'venator':'rat',i=0,touc
  ctx.on($('.tt13-chips',R),'click',e=>{const b=e.target.closest('button');if(!b)return;if(b.classList.contains('lk')){toast(R,'Реплики этого героя ещё собирает Зетка');return}k=b.dataset.h;i=0;busy=false;paint();ctx.t(play,450)});
  ctx.on($('.tt13-hd .bk',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← назад в Deadlock')});
  paint();ctx.t(play,900);
- const auto=()=>{if(touched)return;i++;if(i>=L().length){k=k==='rat'?'venator':'rat';i=0}busy=false;paint();ctx.t(play,400);ctx.t(auto,6800)};ctx.t(auto,7200)}
+ function nextAuto(){if(touched)return;i++;if(i>=L().length){k=k==='rat'?'venator':'rat';i=0}busy=false;paint();ctx.t(play,400)}}
 
 /* --- «Кто про кого» v13: говорит другой — меняется и место, как панель в комиксе (Андрей: «локации же будут меняться? про смену — как в комиксах»).
    Рисовать локации не надо: фон берём с живой карточки героя (это делает Зетка). --- */
@@ -77,15 +80,17 @@ function ab13(R,ctx,o){o=o||{};let i=-1,touched=false;R.className='scr v8 ab13';
   an($('.ab13-sp',p),[{transform:`translateX(${dir*40}px) scale(.9)`,opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:200});an($('.to',p),[{transform:'scale(.4)',opacity:0},{transform:'none',opacity:1}],{sp:SPb,dl:420});
   an($('.cb',p),[{transform:'translateY(-12px)',opacity:0},{transform:'none',opacity:1}],{sp:SPs,dl:300});
   old.forEach(q=>{const z=an(q,[{transform:'none',opacity:1},{transform:`translateX(${-dir*30}px) scale(.94)`,opacity:.0}],{d:620,e:EO,f:'forwards'});if(z)z.onfinish=()=>q.remove();else q.remove()})}
+ let seq=0;
  function show(n){if(n>=AB13.length)n=0;const dir=n>i?1:-1;i=n;const x=AB13[n];panel(x,i%2?-1:1);
   $$('.ab13-ft .dt13 i',R).forEach((d,j)=>d.classList.toggle('on',j===n));cap.innerHTML='';ru.textContent='';
-  ctx.t(()=>{const W=x.en.split(' '),d=(DUR11[x.a]||2.4)*1000,len=W.reduce((s,w)=>s+w.length+2,0);let t=0;say13(ctx,x.a,{echo:.28});
-   W.forEach(w=>{const ms=d*(w.length+2)/len;ctx.t(()=>{cap.innerHTML=`<span class="cw">${w}</span>`;an($('.cw',cap),[{transform:'scale(.6)',opacity:0},{transform:'none',opacity:1}],{sp:SPb})},t);t+=ms});
-   ctx.t(()=>{cap.innerHTML=`<span class="all">${x.en}</span>`;ru.textContent=x.ru;an(ru,[{opacity:0},{opacity:1}],{d:400})},t+200)},650)}
+  const my=++seq;ctx.t(()=>{if(my!==seq)return;const W=x.en.split(' ');
+   speak13(ctx,x.a,{echo:.28,words:W,onStart(){ru.textContent=x.ru;an(ru,[{opacity:0},{opacity:1}],{d:250})},
+    onWord(j){cap.innerHTML=`<span class="cw">${W[j]}</span>`;an($('.cw',cap),[{transform:'scale(.6)',opacity:0},{transform:'none',opacity:1}],{d:160,e:EO})},
+    onEnd(){if(my!==seq)return;cap.innerHTML=`<span class="all">${x.en}</span>`;if(!touched)ctx.t(()=>{if(!touched&&my===seq)show(i+1)},2800)}})},650)}
  ctx.on($('.ab13-ft',R),'click',e=>{const b=e.target.closest('button');if(!b)return;an(b,[{transform:'scale(.9)'},{transform:'none'}],{sp:SPb});if(b.classList.contains('nx'))show(i+1);else show(i)});
  ctx.on(pg,'click',()=>show(i+1));
  ctx.on($('.ab13-hd .bk',R),'click',()=>{if(o.onBack)o.onBack();else toast(R,'← назад в Deadlock')});
- ctx.t(()=>show(0),500);const auto=()=>{if(touched)return;show(i+1);ctx.t(auto,5200)};ctx.t(auto,5600)}
+ ctx.t(()=>show(0),500)}
 
 /* --- Звук реплики v13 (Андрей: «10 из 10, просто улучши»): добавил регуляторы фона и эха, по три реплики на героя, звук события перед каждой.
    В Versus фона нет — только голос и лёгкое эхо (там шум мешал). --- */
@@ -102,12 +107,13 @@ function sd13(R,ctx){R.className='scr v8 sd12 sd13';let k='venator',j=0,bv=.5,ec
  const cd=$('.sd13-cd',R),bvt=$('.bvt',R),ect=$('.ect',R);
  const lbl=()=>{bvt.textContent=bv<.02?'выкл':bv<.35?'еле слышно':bv<.7?'тихо, под голосом':'заметно';ect.textContent=ec<.05?'сухо, как с вики':ec<.35?'чуть-чуть':ec<.65?'как в комнате':'как в соборе'};lbl();
  function paint(){const h=H12[k];$('.sd13-ls',R).innerHTML=L().map((x,n)=>`<button class="${n===j?'on':''}" data-j="${n}"><i class="t-${x.fx}">${x.tag}</i><span>${x.en}</span></button>`).join('');
-  const x=L()[j];cd.innerHTML=`<span class="fr"><video muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video></span><span class="tx"><b>${x.en}</b><small>${x.ru}</small><span class="eq">${eqBars(16)}</span></span>`;playV12(cd)}
+  const x=L()[j];cd.innerHTML=`<span class="fr"><video muted loop playsinline data-hv="${h.v}" poster="${IMG[h.v]}" style="object-position:${h.pos}"></video></span><span class="tx"><b>${x.en.split(' ').map(w=>`<i class="kk">${w}</i>`).join(' ')}</b><small>${x.ru}</small><span class="eq">${eqBars(16)}</span></span>`;playV12(cd)}
  paint();$$('.sd13-ls button,.sd13-sl label,.sd13-ab button',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:100+i*50}));
  ctx.on($('.sd12-sg',R),'click',e=>{const b=e.target.closest('button');if(!b)return;k=b.dataset.k;j=0;$$('.sd12-sg button',R).forEach(x=>x.classList.toggle('on',x===b));S13.stop();paint()});
  ctx.on($('.sd13-ls',R),'click',e=>{const b=e.target.closest('[data-j]');if(!b)return;j=+b.dataset.j;paint();go(wet)});
  ctx.on($('.bv',R),'input',e=>{bv=e.target.value/100;lbl();S13.bedVol(bv)});ctx.on($('.ec',R),'input',e=>{ec=e.target.value/100*.5;lbl()});
  function go(w){wet=w;const x=L()[j];S13.stopLine();R.classList.add('pl');R.classList.toggle('dry',!w);cd.classList.add('say');
   if(w)S13.bed(k==='rat'?'sewer':'cathedral',bv);else S13.bedOff();
-  ctx.t(()=>say13(ctx,x.a,{echo:w?ec:0,sfx:w?x.fx:null,sx:w?x.sx:null,end(){cd.classList.remove('say');R.classList.remove('pl');if(!w)return;ctx.t(()=>{if(!R.classList.contains('pl'))S13.bedOff()},2600)}}),w?500:60)}
+  const K=$$('.tx .kk',cd);K.forEach(q=>q.classList.remove('on'));
+  ctx.t(()=>speak13(ctx,x.a,{echo:w?ec:0,sfx:w?x.fx:null,sx:w?x.sx:null,words:K.map(q=>q.textContent),onWord(n){K[n]&&K[n].classList.add('on')},end(){cd.classList.remove('say');R.classList.remove('pl');if(!w)return;ctx.t(()=>{if(!R.classList.contains('pl'))S13.bedOff()},2600)}}),w?500:60)}
  ctx.on($('.dry',R),'click',()=>go(false));ctx.on($('.wet',R),'click',()=>go(true));ctx.add(()=>S13.stop())}

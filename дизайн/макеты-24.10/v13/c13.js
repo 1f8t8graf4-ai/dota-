@@ -27,8 +27,8 @@ function vs13(R,ctx,o){o=o||{};R.className='scr v8 vs8 vs9 vs10 vs13';S13.preloa
  function bar(side,v){const i=side==='l'?0:1;hp[i]=Math.max(0,v);const q=$(`.hp.${side}`,R),f=$('.v',q),g=$('.gh',q),s=hp[i]/450;f.style.transform=`scaleX(${s})`;$('b',q).textContent=hp[i];ctx.t(()=>{g.style.transform=`scaleX(${s})`},520);an(q,[{transform:'none'},{transform:'translateY(-2px) scale(1.04)'},{transform:'none'}],{d:300})}
  // удар: стоп-кадр, вспышка, отлёт (как в v10); me — бьют тебя
  function hit(me){const fast=!me&&(performance.now()-t0)<6500,dmg=me?120:fast?150:Math.round(110+Math.random()*30);if(!me)streak++;
-  const vids=$$('video',R);vids.forEach(v=>v.pause());R.classList.add('stop');an($('.v10-wh',R),[{opacity:0},{opacity:.55},{opacity:0}],{d:260});
-  ctx.t(()=>{vids.forEach(v=>{const p=v.play();if(p&&p.catch)p.catch(()=>{})});R.classList.remove('stop');S13.sfx('hit');
+  R.classList.add('stop');an($('.v10-wh',R),[{opacity:0},{opacity:.55},{opacity:0}],{d:260});
+  ctx.t(()=>{R.classList.remove('stop');S13.sfx('hit');
    const tg=$(me?'.vs8-p.lf':'.vs8-p.rt',R),r=rel(tg,R),dm=$(me?'.vs8-dmg.me':'.vs8-dmg:not(.me)',R);dm.className='vs8-dmg'+(me?' me':fast?' cr':'');dm.innerHTML=(fast?'<small>КРИТ · БЫСТРО</small>':'')+'−'+dmg;
    an(dm,[{opacity:0,transform:'translate(-50%,0) scale(.4)'},{opacity:1,transform:'translate(-50%,-20px) scale(1.3)',offset:.25},{opacity:1,transform:'translate(-50%,-34px) scale(1.1)',offset:.7},{opacity:0,transform:'translate(-50%,-70px) scale(1)'}],{d:1400,e:EO});
    const dx=me?-18:18;an(tg,[{transform:'none'},{transform:`translateX(${dx}px) rotate(${me?-1.5:1.5}deg)`},{transform:`translateX(${-dx/4}px)`},{transform:'none'}],{d:460,e:EO});an($('.v10-fl',tg),[{opacity:.8},{opacity:0}],{d:380});
@@ -37,7 +37,7 @@ function vs13(R,ctx,o){o=o||{};R.className='scr v8 vs8 vs9 vs10 vs13';S13.preloa
    bar(me?'l':'r',hp[me?0:1]-dmg);
    if(!me&&streak>1){const cb=$('.v10-cb',R);cb.textContent=`×${streak} подряд`;an(cb,[{opacity:0,transform:'translateY(10px) scale(.6)'},{opacity:1,transform:'none',offset:.3},{opacity:0,transform:'translateY(-14px)'}],{d:1400})}},110)}
  function end(){const win=hp[1]<=0||hp[0]>hp[1];const L=$(win?'.vs8-p.rt':'.vs8-p.lf',R),W=$(win?'.vs8-p.lf':'.vs8-p.rt',R);R.classList.add('slo');S13.sfx('ko');
-  an(L,[{filter:'grayscale(0) brightness(1)'},{filter:'grayscale(1) brightness(.55)'}],{d:900,f:'forwards'});
+  L.classList.add('lose');
   an($('.ko',L),[{opacity:0,transform:'translate(-50%,-50%) scale(3) rotate(-14deg)'},{opacity:1,transform:'translate(-50%,-50%) scale(1) rotate(-10deg)'}],{d:520,e:EO,f:'forwards',dl:300});
   an(W,[{transform:'none'},{transform:'scale(1.04)'}],{d:1200,e:EO,f:'forwards'});
   ctx.t(()=>{if(win)say('venator','lf','Evil dies today.','ven-evil-dies');else say('rat','rt','Took down the Venatah!','rk-took-down')},450);
@@ -88,7 +88,7 @@ function vsCmp13(R,ctx){R.className='scr v8 vc13';
   <div class="vc13-dv"><i class="ln"></i><span class="kn" aria-label="Тяни">${ic('back')}${ic('chev')}</span><em class="la">v10</em><em class="lb">v13</em></div>
   <div class="vc13-cap"><span class="n"></span><span class="t"><b></b><small></small></span><span class="md"><button data-m="a">v10</button><button data-m="s" class="on">⇆</button><button data-m="b">v13</button></span></div>
   <button class="vc13-me">Сыграть v13 самому ${ic('chev')}</button>`;
- const A=$('.vc13-l.a .scr',R),B=$('.vc13-l.b .scr',R),LB=$('.vc13-l.b',R),dv=$('.vc13-dv',R);vs10(A,sub(ctx));vs13(B,sub(ctx),{sync:true});
+ const A=$('.vc13-l.a .scr',R),B=$('.vc13-l.b .scr',R),LB=$('.vc13-l.b',R),dv=$('.vc13-dv',R);vs10(A,sub(ctx));vs13(B,sub(ctx),{sync:true});ctx.t(()=>$$('video',R).forEach(v=>{try{v.pause();v.autoplay=false}catch(e){}}),700);
  let X=172,dragged=false,mode='s';const set=x=>{X=clamp(x,0,344);LB.style.clipPath=`inset(0 0 0 ${X.toFixed(1)}px)`;dv.style.left=X.toFixed(1)+'px'};set(X);
  const md=m=>{mode=m;$$('.vc13-cap .md button',R).forEach(b=>b.classList.toggle('on',b.dataset.m===m));dv.hidden=m!=='s';if(m==='a')set(344);else if(m==='b')set(0);else set(172)};
  let x0=X;drag(ctx,dv,{start(){dragged=true;if(mode!=='s')md('s');x0=X},move(dx){set(x0+dx)},tap(){}});
