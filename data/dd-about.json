@@ -1,0 +1,6631 @@
+[
+ {
+  "by": "abrams",
+  "about": "rat-king",
+  "en": "That was one... big-ass rat.",
+  "ru": "Ну и крыса… огроменная.",
+  "when": "убил Крысиного короля",
+  "a": "https://deadlock.wiki/Special:FilePath/atlas%20kill%20ratking%2001.mp3",
+  "kw": [
+   [
+    "big-ass",
+    "здоровенный (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "abrams",
+  "about": "grey-talon",
+  "en": "Nice shot!",
+  "ru": "Классный выстрел!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/atlas%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Nice shot",
+    "классный выстрел"
+   ]
+  ]
+ },
+ {
+  "by": "apollo",
+  "about": "venator",
+  "en": "The priest is dead.",
+  "ru": "Священник мёртв.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Fencer%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "dead",
+    "мёртвый"
+   ]
+  ]
+ },
+ {
+  "by": "apollo",
+  "about": "venator",
+  "en": "They took out Father Quinn!",
+  "ru": "Отца Куинна убрали!",
+  "when": "союзника Венатора убили",
+  "a": "https://deadlock.wiki/Special:FilePath/Fencer%20ally%20priest%20killed%20in%20lane%2001%20alt.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "bebop",
+  "about": "venator",
+  "en": "Not your day, Venator!",
+  "ru": "Не твой день, Венатор!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/bebop%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Not your day",
+    "не твой день"
+   ]
+  ]
+ },
+ {
+  "by": "bebop",
+  "about": "venator",
+  "en": "The Venator's finished!",
+  "ru": "Венатору конец!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/bebop%20kill%20priest%2002.mp3",
+  "kw": [
+   [
+    "finished",
+    "кончен, конец"
+   ]
+  ]
+ },
+ {
+  "by": "billy",
+  "about": "venator",
+  "en": "Hey Padre, what's the Latin word for \"I just got my ass kicked\"?",
+  "ru": "Эй, падре, как по-латыни «мне только что надрали задницу»?",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Padre",
+    "падре, батюшка"
+   ],
+   [
+    "got my ass kicked",
+    "получить по полной (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "billy",
+  "about": "grey-talon",
+  "en": "The old man ain't totally useless.",
+  "ru": "Старик не совсем бесполезен.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/punkgoat%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "useless",
+    "бесполезный"
+   ]
+  ]
+ },
+ {
+  "by": "calico",
+  "about": "grey-talon",
+  "en": "Grey Talon's down.",
+  "ru": "Грей Тэлон повержен.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/nano%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "down",
+    "повержен (игр.)"
+   ]
+  ]
+ },
+ {
+  "by": "calico",
+  "about": "grey-talon",
+  "en": "Great shot, Talon!",
+  "ru": "Шикарный выстрел, Тэлон!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/nano%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Great shot",
+    "шикарный выстрел"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "abrams",
+  "en": "That book was always gonna lead ya to your death, Abrams.",
+  "ru": "Эта книга всегда была путёвкой на тот свет, Абрамс.",
+  "when": "убил Абрамса",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20atlas%2001.mp3",
+  "kw": [
+   [
+    "lead ya to",
+    "довести до гибели (lead)"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "abrams",
+  "en": "Good job, big guy!",
+  "ru": "Хорошая работа, здоровяк!",
+  "when": "союзник Абрамс приложил всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20ally%20atlas%20big%20stun%2001.mp3",
+  "kw": [
+   [
+    "Good job",
+    "хорошая работа"
+   ],
+   [
+    "big guy",
+    "здоровяк"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "apollo",
+  "en": "Stopped the fencer.",
+  "ru": "Фехтовальщика остановила.",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20fencer%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "apollo",
+  "en": "This isn't prep school, kid!",
+  "ru": "Это тебе не подготовительная школа, малыш!",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20fencer%2002.mp3",
+  "kw": [
+   [
+    "prep school",
+    "подготовительная школа"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "bebop",
+  "en": "You're not grabbin' my friends, Bebop.",
+  "ru": "Моих друзей не хватай, Бибоп.",
+  "when": "убил Бибопа",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20bebop%2001.mp3",
+  "kw": [
+   [
+    "grabbin'",
+    "хватать"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "bebop",
+  "en": "Nice hook!",
+  "ru": "Классный крюк!",
+  "when": "союзник Бибоп зацепил крюком",
+  "a": "https://deadlock.wiki/Special:FilePath/Unicorn%20ally%20bebop%20far%20hook%2001.mp3",
+  "kw": [
+   [
+    "Nice",
+    "классный"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "billy",
+  "en": "Shut up, Billy.",
+  "ru": "Заткнись, Билли.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20punkgoat%2001.mp3",
+  "kw": [
+   [
+    "Shut up",
+    "заткнуться"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "billy",
+  "en": "Billy is such a loser.",
+  "ru": "Билли — редкий лузер.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20punkgoat%2002.mp3",
+  "kw": [
+   [
+    "loser",
+    "лузер, неудачник"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "calico",
+  "en": "Stopped Calico!",
+  "ru": "Калико остановлена!",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20nano%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "calico",
+  "en": "I know that she tried to kill me, but she sounds so fancy! I kinda love it.",
+  "ru": "Да, она пыталась меня убить, но звучит она так аристократично! Даже нравится.",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20nano%2002.mp3",
+  "kw": [
+   [
+    "fancy",
+    "аристократичный, шикарный"
+   ],
+   [
+    "kinda",
+    "вроде бы"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "venator",
+  "en": "Took out the Venator.",
+  "ru": "Венатора убрала.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "grey-talon",
+  "en": "Not bad, Grey Talon!",
+  "ru": "Неплохо, Грей Тэлон!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Not bad",
+    "неплохо"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "drifter",
+  "en": "I stopped Drifter.",
+  "ru": "Дрифтера остановила.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20drifter%2001.mp3",
+  "kw": [
+   [
+    "stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "drifter",
+  "en": "He would kill us all if he could...",
+  "ru": "Он бы всех нас вырезал, дай ему волю…",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20drifter%2002.mp3",
+  "kw": [
+   [
+    "if he could",
+    "дай ему волю, если бы смог"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "dynamo",
+  "en": "I stopped the professor.",
+  "ru": "Профессора остановила.",
+  "when": "убил Динамо",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20dynamo%2001.mp3",
+  "kw": [
+   [
+    "stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "dynamo",
+  "en": "Black hole!",
+  "ru": "Чёрная дыра!",
+  "when": "союзник Динамо собрал всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20dynamo%20big%20blackhole%2001.mp3",
+  "kw": [
+   [
+    "Black hole",
+    "чёрная дыра"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "graves",
+  "en": "You're done, Graves!",
+  "ru": "Всё, Грейвс, финиш!",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20necro%2001.mp3",
+  "kw": [
+   [
+    "done",
+    "конец, финиш"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "graves",
+  "en": "Sister, go back to your homeroom!",
+  "ru": "Сестрёнка, возвращайся в свой класс!",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20necro%2002.mp3",
+  "kw": [
+   [
+    "homeroom",
+    "классная комната"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "haze",
+  "en": "I took out Haze.",
+  "ru": "Хейз убрала.",
+  "when": "убил Хейз",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20haze%2001.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "haze",
+  "en": "You got some moves, Haze.",
+  "ru": "Двигаешься ты знатно, Хейз.",
+  "when": "союзница Хейз выкосила всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20haze%20big%20ult%2001.mp3",
+  "kw": [
+   [
+    "moves",
+    "движения, пластика"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "holliday",
+  "en": "You're not stoppin' us, sheriff.",
+  "ru": "Нас вам не остановить, шериф.",
+  "when": "убил Холлидей",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20astro%2001.mp3",
+  "kw": [
+   [
+    "stoppin'",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "holliday",
+  "en": "Woo!",
+  "ru": "Ух!",
+  "when": "союзница Холлидей подбросила на батуте",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20astro%20bounce%20pad%2001.mp3",
+  "kw": []
+ },
+ {
+  "by": "celeste",
+  "about": "infernus",
+  "en": "Stopped Infernus!",
+  "ru": "Инфернуса остановила!",
+  "when": "убил Инфернуса",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20inferno%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "infernus",
+  "en": "Well that didn't last long.",
+  "ru": "Ну, это было недолго.",
+  "when": "союзник Инфернус сжёг объект",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20inferno%20burns%20down%20objective%2001.mp3",
+  "kw": [
+   [
+    "last",
+    "держаться, простоять"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "ivy",
+  "en": "Sorry, Ivy.",
+  "ru": "Прости, Айви.",
+  "when": "убил Айви",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20tengu%2001.mp3",
+  "kw": [
+   [
+    "Sorry",
+    "прости"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "ivy",
+  "en": "Good workin' with ya, Ivy!",
+  "ru": "Рада была поработать с тобой, Айви!",
+  "when": "союзница Айви взяла объект через Кудзу",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20tengu%20take%20objective%20with%20teather%2001.mp3",
+  "kw": [
+   [
+    "workin' with",
+    "работать с (work with)"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "kelvin",
+  "en": "I could smell that parka a mile away.",
+  "ru": "Я его парку за милю учуяла.",
+  "when": "убил Келвина",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20kelvin%2001.mp3",
+  "kw": [
+   [
+    "smell",
+    "чувствовать запах"
+   ],
+   [
+    "a mile away",
+    "за милю"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "kelvin",
+  "en": "Glad you're here, Kelvin.",
+  "ru": "Рада тебе, Келвин.",
+  "when": "союзник Келвин спас лечением",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20kelvin%20clutch%20heal%2001.mp3",
+  "kw": [
+   [
+    "Glad",
+    "рада"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "lady-geist",
+  "en": "She was a cutie!.. Evil, but great hair.",
+  "ru": "Она была милашкой!.. Злая, но шевелюра — огонь.",
+  "when": "убил Леди Гейст",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20ghost%2001.mp3",
+  "kw": [
+   [
+    "cutie",
+    "милашка"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "lady-geist",
+  "en": "Good lord, Geist!",
+  "ru": "Боже правый, Гейст!",
+  "when": "союзница Леди Гейст обменялась душами",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20ghost%20see%20big%20swap%2001.mp3",
+  "kw": [
+   [
+    "Good lord",
+    "боже правый"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "lash",
+  "en": "Go home, Lash!",
+  "ru": "По домам, Лэш!",
+  "when": "убил Лэша",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20lash%2001.mp3",
+  "kw": [
+   [
+    "Go home",
+    "иди домой"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "lash",
+  "en": "Oh, that was brutal.",
+  "ru": "Ого, это было жёстко.",
+  "when": "союзник Лэш вдарил с прыжка",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20lash%20see%20massive%20stomp%2001.mp3",
+  "kw": [
+   [
+    "brutal",
+    "жёсткий, брутальный"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "mcginnis",
+  "en": "Stopped McGinnis and her little flea circus of murder.",
+  "ru": "Остановила МакГиннис и её блошиный цирк смерти.",
+  "when": "убил МакГиннис",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20forge%2001.mp3",
+  "kw": [
+   [
+    "flea circus",
+    "блошиный цирк"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "mcginnis",
+  "en": "Nice wall!",
+  "ru": "Классная стена!",
+  "when": "союзница МакГиннис придавила стеной",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20forge%20wall%20stun%20kill%2001.mp3",
+  "kw": [
+   [
+    "Nice",
+    "классный"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "mina",
+  "en": "You're not a very nice person, Mina.",
+  "ru": "Ты, Мина, человек совсем не приятный.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20vampirebat%2001.mp3",
+  "kw": [
+   [
+    "nice person",
+    "приятный человек"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "mina",
+  "en": "Mina isn't a problem anymore.",
+  "ru": "Мина больше не проблема.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20vampirebat%2002.mp3",
+  "kw": [
+   [
+    "problem",
+    "проблема"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "mirage",
+  "en": "Not your day, Mirage.",
+  "ru": "Не твой день, Мираж.",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20mirage%2001.mp3",
+  "kw": [
+   [
+    "Not your day",
+    "не твой день"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "mirage",
+  "en": "Will you just stop throwing scarabs at people already?!",
+  "ru": "Хватит уже кидаться скарабеями в людей!",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20mirage%2002.mp3",
+  "kw": [
+   [
+    "throwing",
+    "кидать (в) (throw)"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "mo-krill",
+  "en": "Sorry, Maurice.",
+  "ru": "Извини, Морис.",
+  "when": "убил Мо и Крилла",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20krill%2001.mp3",
+  "kw": [
+   [
+    "Sorry",
+    "извини"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "mo-krill",
+  "en": "Krill grabbed 'em.",
+  "ru": "Крилл их схватил.",
+  "when": "союзник Крилл вытащил комбо",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20krill%20grab%20mid%20enemy%20ult%2001.mp3",
+  "kw": [
+   [
+    "grabbed",
+    "зачерпнуть, схватить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "paige",
+  "en": "God, she was so adorable...",
+  "ru": "Господи, какая же она была лапочка…",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20bookworm%2001.mp3",
+  "kw": [
+   [
+    "adorable",
+    "лапочка, прелестная"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "paige",
+  "en": "That poor girl is in over her head.",
+  "ru": "Бедняжка не справляется.",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20bookworm%2002.mp3",
+  "kw": [
+   [
+    "in over her head",
+    "не по силам, выше головы"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "paradox",
+  "en": "Took out Paradox.",
+  "ru": "Парадокс убрала.",
+  "when": "убил Парадокс",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20chrono%2001.mp3",
+  "kw": [
+   [
+    "Took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "paradox",
+  "en": "Nice swap!",
+  "ru": "Классная подмена!",
+  "when": "союзница Парадокс подменила врага к боссу",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20chrono%20swap%20to%20boss%2001.mp3",
+  "kw": [
+   [
+    "swap",
+    "подмена"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "pocket",
+  "en": "Pocket is down.",
+  "ru": "Покета больше нет.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20synth%2001.mp3",
+  "kw": [
+   [
+    "down",
+    "повержен, выведен (игр.)"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "pocket",
+  "en": "Everyone's luck runs out eventually, Pocket.",
+  "ru": "Везение у всех заканчивается, Покет.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20synth%2003.mp3",
+  "kw": [
+   [
+    "luck runs out",
+    "везение заканчивается"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "seven",
+  "en": "That guy was scary…",
+  "ru": "Этот тип был жуткий…",
+  "when": "убил Севена",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20gigawatt%2001.mp3",
+  "kw": [
+   [
+    "scary",
+    "жуткий"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "seven",
+  "en": "Seven killed them all!",
+  "ru": "Севен их всех поразил!",
+  "when": "союзник Севен выкосил ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20gigawatt%20multi%20kill%20ult%2001.mp3",
+  "kw": [
+   [
+    "killed them all",
+    "убить их всех"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "shiv",
+  "en": "I've seen better knife throwers.",
+  "ru": "Метателей ножей я видела и получше.",
+  "when": "убил Шива",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20shiv%2001.mp3",
+  "kw": [
+   [
+    "knife throwers",
+    "метатель ножей"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "shiv",
+  "en": "He killed them all!",
+  "ru": "Он их всех вырезал!",
+  "when": "союзник Шив вырезал нескольких",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20shiv%20multikill%2001.mp3",
+  "kw": [
+   [
+    "killed them all",
+    "вырезать всех"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "silver",
+  "en": "There goes one hot mess...",
+  "ru": "Ну и развалина ушла…",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20werewolf%2001.mp3",
+  "kw": [
+   [
+    "hot mess",
+    "полная развалина, бардак"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "silver",
+  "en": "I'm not your prey, Silver.",
+  "ru": "Я тебе не дичь, Сильвер.",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20werewolf%2002.mp3",
+  "kw": [
+   [
+    "prey",
+    "добыча, дичь"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "sinclair",
+  "en": "Stopped the magician!",
+  "ru": "Фокусника остановила!",
+  "when": "убил Синклера",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20magician%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "sinclair",
+  "en": "Took out Sinclair!",
+  "ru": "Синклера убрала!",
+  "when": "убил Синклера",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20magician%2002.mp3",
+  "kw": [
+   [
+    "Took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "victor",
+  "en": "That guy really needs to loosen up.",
+  "ru": "Этому парню не мешало бы расслабиться.",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20frank%2001.mp3",
+  "kw": [
+   [
+    "loosen up",
+    "расслабиться"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "victor",
+  "en": "That had to be the most uptight corpse I've ever seen.",
+  "ru": "Это был самый зажатый труп в моей жизни.",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20frank%2002.mp3",
+  "kw": [
+   [
+    "uptight",
+    "зажатый, скомканный"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "vindicta",
+  "en": "Stopped their sniper!",
+  "ru": "Их снайпера остановила!",
+  "when": "убил Виндикту",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20hornet%2001.mp3",
+  "kw": [
+   [
+    "sniper",
+    "снайпер"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "vindicta",
+  "en": "Nice shot, Vindicta!",
+  "ru": "Классный выстрел, Виндикта!",
+  "when": "союзница Виндикта сняла издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20hornet%20far%20snipe%2001.mp3",
+  "kw": [
+   [
+    "Nice shot",
+    "классный выстрел"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "viscous",
+  "en": "I can make it up to him later.",
+  "ru": "Потом заглажу перед ним вину.",
+  "when": "убил Вискаса",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20viscous%2001.mp3",
+  "kw": [
+   [
+    "make it up to",
+    "загладить вину перед"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "vyper",
+  "en": "When even the carnies think you're a scumbag, you should re-evaluate your life.",
+  "ru": "Когда даже балаганщики считают тебя подонком, стоит пересмотреть жизнь.",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20viper%2001.mp3",
+  "kw": [
+   [
+    "carnies",
+    "балаганный артист"
+   ],
+   [
+    "scumbag",
+    "подонок (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "vyper",
+  "en": "Quit stalkin' people, Vyper!",
+  "ru": "Хватит за людьми следить, Вайпер!",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20viper%2002.mp3",
+  "kw": [
+   [
+    "stalkin'",
+    "следить, преследовать"
+   ],
+   [
+    "Quit",
+    "прекращать"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "warden",
+  "en": "Took out Warden!",
+  "ru": "Уордена убрала!",
+  "when": "убил Уордена",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20warden%2001.mp3",
+  "kw": [
+   [
+    "Took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "warden",
+  "en": "Nice job, Warden!",
+  "ru": "Хорошая работа, Уорден!",
+  "when": "союзник Уорден выкосил ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20warden%20big%20ult%2001.mp3",
+  "kw": [
+   [
+    "Nice job",
+    "хорошая работа"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "wraith",
+  "en": "Stopped Wraith!",
+  "ru": "Рэйс остановлена!",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20wraith%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "wraith",
+  "en": "Tell you what, Wraith: forget the marker on Dutch, and I'll stop kickin' your ass!",
+  "ru": "Вот что, Рэйс: прости Голландцу долг, а я перестану надирать тебе задницу!",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20wraith%2002.mp3",
+  "kw": [
+   [
+    "marker",
+    "долговая расписка (игр.)"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "yamato",
+  "en": "Yamato's gonna be lookin' for payback.",
+  "ru": "Ямато теперь захочет отомстить.",
+  "when": "убил Ямато",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20kill%20yamato%2001.mp3",
+  "kw": [
+   [
+    "payback",
+    "расплата, месть"
+   ]
+  ]
+ },
+ {
+  "by": "celeste",
+  "about": "yamato",
+  "en": "Good job, Yamato!",
+  "ru": "Хорошая работа, Ямато!",
+  "when": "союзница Ямато режет крюком",
+  "a": "https://deadlock.wiki/Special:FilePath/unicorn%20ally%20yamato%20kills%20with%20hook%2001.mp3",
+  "kw": [
+   [
+    "Good job",
+    "хорошая работа"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "abrams",
+  "en": "Detective Abrams has been put down.",
+  "ru": "Детектив Абрамс обезврежен.",
+  "when": "убил Абрамса",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20atlas%2001.mp3",
+  "kw": [
+   [
+    "put down",
+    "положить конец, обезвредить"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "abrams",
+  "en": "Abrams made his move!",
+  "ru": "Абрамс сыграл!",
+  "when": "союзник Абрамс приложил всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20atlas%20big%20stun%2001.mp3",
+  "kw": [
+   [
+    "made his move",
+    "сделать ход"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "apollo",
+  "en": "It's good for young men to learn about disappointment.",
+  "ru": "Молодым полезно узнать, что такое разочарование.",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20fencer%2001.mp3",
+  "kw": [
+   [
+    "disappointment",
+    "разочарование"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "apollo",
+  "en": "Behave, Apollo!",
+  "ru": "Веди себя прилично, Аполлон!",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20fencer%2002.mp3",
+  "kw": [
+   [
+    "Behave",
+    "вести себя прилично"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "bebop",
+  "en": "The scrap golem's been handled.",
+  "ru": "С жестяным големом покончено.",
+  "when": "убил Бибопа",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20bebop%2001.mp3",
+  "kw": [
+   [
+    "handled",
+    "разобрались, покончено"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "bebop",
+  "en": "Good hook, Bebop!",
+  "ru": "Хороший крюк, Бибоп!",
+  "when": "союзник Бибоп зацепил крюком",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20bebop%20far%20hook%2001.mp3",
+  "kw": [
+   [
+    "hook",
+    "крюк"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "billy",
+  "en": "Slaughtered the goat.",
+  "ru": "Козла заколол.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20punkgoat%2001.mp3",
+  "kw": [
+   [
+    "Slaughtered",
+    "заколоть, зарезать"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "billy",
+  "en": "I see the goatman.",
+  "ru": "Вижу козла.",
+  "when": "увидел Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/doorman_ping_see_punkgoat_01.mp3",
+  "kw": [
+   [
+    "see",
+    "видеть"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "calico",
+  "en": "I liked her.",
+  "ru": "Она мне даже нравилась.",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20nano%2001.mp3",
+  "kw": [
+   [
+    "liked",
+    "нравиться"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "calico",
+  "en": "Ava is welcome to stay at the Baroness as long as she wishes.",
+  "ru": "Ава может жить в «Баронессе» сколько пожелает.",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20nano%2002.mp3",
+  "kw": [
+   [
+    "as long as she wishes",
+    "сколько пожелает"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "celeste",
+  "en": "A unicorn in New York... fascinating.",
+  "ru": "Единорог в Нью-Йорке… занятно.",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20unicorn%2001.mp3",
+  "kw": [
+   [
+    "fascinating",
+    "занятный, восхитительный"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "celeste",
+  "en": "A shame I had to destroy something so beautiful.",
+  "ru": "Жаль уничтожать нечто столь прекрасное.",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20unicorn%2002.mp3",
+  "kw": [
+   [
+    "A shame",
+    "жаль"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "venator",
+  "en": "Your mission is doomed to fail, Venator!",
+  "ru": "Твоя миссия обречена, Венатор!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "doomed to fail",
+    "обречён на провал"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "venator",
+  "en": "You know, Cain, one day you will actually believe the legend you sell to people, and on that day you will die screaming.",
+  "ru": "Знаешь, Кейн, однажды ты сам поверишь в легенду, которую продаёшь людям, — и в тот день умрёшь с криком.",
+  "when": "глумится над Венатором ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/doorman_power4_on_priest.mp3",
+  "kw": [
+   [
+    "die screaming",
+    "умереть с криком"
+   ],
+   [
+    "sell to people",
+    "продавать людям"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "drifter",
+  "en": "Always a pleasure to see you again, Drifter.",
+  "ru": "Всегда рад твоему возвращению, Дрифтер.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20drifter%2001.mp3",
+  "kw": [
+   [
+    "a pleasure to see",
+    "рад видеть"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "drifter",
+  "en": "The Drifter stalks us no more.",
+  "ru": "Дрифтер нас больше не преследует.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20drifter%2002.mp3",
+  "kw": [
+   [
+    "stalks",
+    "преследовать, выслеживать"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "dynamo",
+  "en": "Greetings and farewell, professor.",
+  "ru": "Приветствую и прощайте, профессор.",
+  "when": "убил Динамо",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20dynamo%2001.mp3",
+  "kw": [
+   [
+    "Greetings and farewell",
+    "здравствуйте и до свидания"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "dynamo",
+  "en": "The professor has them!",
+  "ru": "Профессор их поймал!",
+  "when": "союзник Динамо собрал всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20dynamo%20big%20blackhole%2001.mp3",
+  "kw": [
+   [
+    "has them",
+    "их поймал"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "graves",
+  "en": "Oh Miss Graves, you have no idea what you're doing, do you?",
+  "ru": "Ох, мисс Грейвс, вы же сами не понимаете, что творите?",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20necro%2001.mp3",
+  "kw": [
+   [
+    "have no idea",
+    "не иметь понятия"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "graves",
+  "en": "I don't fear necromancers.",
+  "ru": "Некромантов я не боюсь.",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20necro%2002.mp3",
+  "kw": [
+   [
+    "necromancers",
+    "некромант"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "grey-talon",
+  "en": "The archer is dead.",
+  "ru": "Лучник мёртв.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "archer",
+    "лучник"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "grey-talon",
+  "en": "Your aim is incredible!",
+  "ru": "Меткость невероятная!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "aim",
+    "меткость, прицел"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "haze",
+  "en": "The OSIC is not in control here.",
+  "ru": "Здесь не OSIC заправляет.",
+  "when": "убил Хейз",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20haze%2001.mp3",
+  "kw": [
+   [
+    "in control",
+    "контролировать"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "haze",
+  "en": "I could watch her dance for hours.",
+  "ru": "Я бы смотрел на её танец часами.",
+  "when": "союзница Хейз выкосила всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20haze%20big%20ult%2001.mp3",
+  "kw": [
+   [
+    "for hours",
+    "часами"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "holliday",
+  "en": "Goodbye, sheriff.",
+  "ru": "Прощайте, шериф.",
+  "when": "убил Холлидей",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20astro%2001.mp3",
+  "kw": [
+   [
+    "Goodbye",
+    "до свидания"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "holliday",
+  "en": "Thanks, Holliday.",
+  "ru": "Спасибо, Холлидей.",
+  "when": "союзница Холлидей подбросила на батуте",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20astro%20bounce%20pad%2001.mp3",
+  "kw": [
+   [
+    "Thanks",
+    "спасибо"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "infernus",
+  "en": "I hate fighting a fellow member of the service industry.",
+  "ru": "Ненавижу воевать с коллегами по сервису.",
+  "when": "убил Инфернуса",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20inferno%2001.mp3",
+  "kw": [
+   [
+    "service industry",
+    "сфера обслуживания"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "infernus",
+  "en": "Good to see you cut loose, Infernus.",
+  "ru": "Рад видеть, как ты отрываешься, Инфернус.",
+  "when": "союзник Инфернус сжёг объект",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20inferno%20burns%20down%20objective%2001.mp3",
+  "kw": [
+   [
+    "cut loose",
+    "оторваться, дать себе волю"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "ivy",
+  "en": "You have a big heart, Ivy. That won't save you here.",
+  "ru": "У тебя большое сердце, Айви. Здесь оно тебя не спасёт.",
+  "when": "убил Айви",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20tengu%2001.mp3",
+  "kw": [
+   [
+    "big heart",
+    "большое сердце"
+   ],
+   [
+    "save",
+    "спасти"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "ivy",
+  "en": "Thanks for your help, Ivy.",
+  "ru": "Спасибо за помощь, Айви.",
+  "when": "союзница Айви взяла объект через Кудзу",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20tengu%20take%20objective%20with%20teather%2001.mp3",
+  "kw": [
+   [
+    "Thanks for your help",
+    "спасибо за помощь"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "kelvin",
+  "en": "The Ice Wight is dead.",
+  "ru": "Ледяного мертвеца больше нет.",
+  "when": "убил Келвина",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20kelvin%2001.mp3",
+  "kw": [
+   [
+    "Wight",
+    "мертвец, призрак"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "kelvin",
+  "en": "Why, thank you, Kelvin!",
+  "ru": "О, благодарю, Келвин!",
+  "when": "союзник Келвин спас лечением",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20kelvin%20clutch%20heal%2001.mp3",
+  "kw": [
+   [
+    "Why thank you",
+    "ох, благодарю"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "lady-geist",
+  "en": "Better luck next time, Lady Geist.",
+  "ru": "Повезёт в следующий раз, Леди Гейст.",
+  "when": "убил Леди Гейст",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20ghost%2001.mp3",
+  "kw": [
+   [
+    "Better luck next time",
+    "повезёт в следующий раз"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "lady-geist",
+  "en": "Well done, Jeanne.",
+  "ru": "Прекрасно, Жанна.",
+  "when": "союзница Леди Гейст обменялась душами",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20ghost%20see%20big%20swap%2001.mp3",
+  "kw": [
+   [
+    "Well done",
+    "прекрасно"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "lash",
+  "en": "You're too predictable, Lash!",
+  "ru": "Ты слишком предсказуем, Лэш!",
+  "when": "убил Лэша",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20lash%2001.mp3",
+  "kw": [
+   [
+    "predictable",
+    "предсказуемый"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "lash",
+  "en": "Ouch!",
+  "ru": "Ой-ой!",
+  "when": "союзник Лэш вдарил с прыжка",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20lash%20see%20massive%20stomp%2001.mp3",
+  "kw": [
+   [
+    "Ouch",
+    "ой"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "mcginnis",
+  "en": "I stopped their engineer.",
+  "ru": "Я остановил их инженера.",
+  "when": "убил МакГиннис",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20forge%2001.mp3",
+  "kw": [
+   [
+    "stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "mcginnis",
+  "en": "Well done, McGinnis!",
+  "ru": "Прекрасно, МакГиннис!",
+  "when": "союзница МакГиннис придавила стеной",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20forge%20wall%20stun%20kill%2001.mp3",
+  "kw": [
+   [
+    "Well done",
+    "прекрасно"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "mina",
+  "en": "So long, Ms. Ha.",
+  "ru": "Всего доброго, мисс Ха.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20vampirebat%2001.mp3",
+  "kw": [
+   [
+    "So long",
+    "всего доброго, до встречи"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "mina",
+  "en": "The vampire girl's missing.",
+  "ru": "Вампирша пропала.",
+  "when": "увидел уход Мины",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ping%20vampirebat%20missing%2001.mp3",
+  "kw": [
+   [
+    "missing",
+    "пропала, отсутствует"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "mirage",
+  "en": "I'm sorry your stay at the Baroness was cut short.",
+  "ru": "Сожалею, что ваш визит в «Баронессу» оборвался.",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20mirage%2001.mp3",
+  "kw": [
+   [
+    "cut short",
+    "оборваться, прерваться"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "mirage",
+  "en": "I do hate killing the guests.",
+  "ru": "Ненавижу убивать постояльцев.",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20mirage%2002.mp3",
+  "kw": [
+   [
+    "guests",
+    "гость, постоялец"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "mo-krill",
+  "en": "You're strong, Maurice, but not strong enough.",
+  "ru": "Ты силён, Морис, но недостаточно.",
+  "when": "убил Мо и Крилла",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20krill%2001.mp3",
+  "kw": [
+   [
+    "strong enough",
+    "достаточно сильный"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "mo-krill",
+  "en": "Well done, Maurice!",
+  "ru": "Прекрасно, Морис!",
+  "when": "союзник Крилл вытащил комбо",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20krill%20grab%20mid%20enemy%20ult%2001.mp3",
+  "kw": [
+   [
+    "Well done",
+    "прекрасно"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "paige",
+  "en": "Stick to the library, my dear.",
+  "ru": "Оставайся в библиотеке, дорогуша.",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20bookworm%2001.mp3",
+  "kw": [
+   [
+    "Stick to",
+    "держаться, не выходить за рамки"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "paige",
+  "en": "I see the bookworm.",
+  "ru": "Вижу книжного червя.",
+  "when": "увидел Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ping%20see%20bookworm%2002%20alt.mp3",
+  "kw": [
+   [
+    "bookworm",
+    "книжный червь, книголюб"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "paradox",
+  "en": "Paradox has been defeated.",
+  "ru": "Парадокс побеждена.",
+  "when": "убил Парадокс",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20chrono%2001.mp3",
+  "kw": [
+   [
+    "defeated",
+    "побеждённый"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "paradox",
+  "en": "Good thinking, Paradox.",
+  "ru": "Хорошая мысль, Парадокс.",
+  "when": "союзница Парадокс подменила врага к боссу",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20chrono%20swap%20to%20boss%2001.mp3",
+  "kw": [
+   [
+    "Good thinking",
+    "хорошая мысль"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "pocket",
+  "en": "Poor Pocket.",
+  "ru": "Бедный Покет.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20synth%2001.mp3",
+  "kw": [
+   [
+    "Poor",
+    "бедный, несчастный"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "pocket",
+  "en": "The child was out of their depth.",
+  "ru": "Ребёнок не потянул.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20synth%2002.mp3",
+  "kw": [
+   [
+    "out of their depth",
+    "не по зубам, не потянуть"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "rem",
+  "en": "That poor child has no idea what he's in for.",
+  "ru": "Этот бедный ребёнок даже не знает, что его ждёт.",
+  "when": "убил Рэма",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20familiar%2001.mp3",
+  "kw": [
+   [
+    "in for",
+    "что ждёт (be in for)"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "rem",
+  "en": "Dispatched Rem.",
+  "ru": "Рэм отправлен на покой.",
+  "when": "убил Рэма",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20familiar%2002.mp3",
+  "kw": [
+   [
+    "Dispatched",
+    "отправить, упокоить"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "seven",
+  "en": "Train harder, Seven!",
+  "ru": "Тренируйся усерднее, Севен!",
+  "when": "убил Севена",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20gigawatt%2001.mp3",
+  "kw": [
+   [
+    "Train harder",
+    "тренироваться усерднее"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "seven",
+  "en": "Seven, you naughty boy!",
+  "ru": "Севен, ну ты и шалун!",
+  "when": "союзник Севен выкосил ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20gigawatt%20multi%20kill%20ult%2001.mp3",
+  "kw": [
+   [
+    "naughty boy",
+    "шалун"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "shiv",
+  "en": "Knives. How pedestrian!",
+  "ru": "Ножи. Как банально!",
+  "when": "убил Шива",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20shiv%2001.mp3",
+  "kw": [
+   [
+    "pedestrian",
+    "банальный, заурядный"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "shiv",
+  "en": "You're so fast!",
+  "ru": "Какой ты быстрый!",
+  "when": "союзник Шив вырезал нескольких",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20shiv%20multikill%2001.mp3",
+  "kw": [
+   [
+    "fast",
+    "быстрый"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "silver",
+  "en": "You're pathetic, Silver.",
+  "ru": "Жалок, Сильвер.",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20werewolf%2001.mp3",
+  "kw": [
+   [
+    "pathetic",
+    "жалкий"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "silver",
+  "en": "The werewolf was no threat.",
+  "ru": "Оборотень не представлял угрозы.",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20werewolf%2002.mp3",
+  "kw": [
+   [
+    "threat",
+    "угроза"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "victor",
+  "en": "Return to obscurity, Victor, it's where you belong!",
+  "ru": "Возвращайся в безвестность, Виктор, твоё место там!",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20frank%2001.mp3",
+  "kw": [
+   [
+    "obscurity",
+    "безвестность"
+   ],
+   [
+    "belong",
+    "быть должным быть где-то"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "victor",
+  "en": "I stopped the cadaver man.",
+  "ru": "Я остановил ходячий труп.",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20frank%2002.mp3",
+  "kw": [
+   [
+    "cadaver",
+    "труп"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "vindicta",
+  "en": "You can't hide from me, Vindicta.",
+  "ru": "От меня не спрячешься, Виндикта.",
+  "when": "убил Виндикту",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20hornet%2001.mp3",
+  "kw": [
+   [
+    "hide",
+    "прятаться"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "vindicta",
+  "en": "Oooh.",
+  "ru": "О-о-о.",
+  "when": "союзница Виндикта сняла издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20hornet%20far%20snipe%2001.mp3",
+  "kw": []
+ },
+ {
+  "by": "doorman",
+  "about": "viscous",
+  "en": "He was so earnest.",
+  "ru": "Он был таким искренним.",
+  "when": "убил Вискаса",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20viscous%2001.mp3",
+  "kw": [
+   [
+    "earnest",
+    "искренний"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "viscous",
+  "en": "The Cube is so warm.",
+  "ru": "Куб такой тёплый.",
+  "when": "союзник Вискас спас Кубом",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20viscous%20clutch%20cube%2001.mp3",
+  "kw": [
+   [
+    "warm",
+    "тёплый"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "vyper",
+  "en": "You're scum, Vyper!",
+  "ru": "Ты мразь, Вайпер!",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20viper%2001.mp3",
+  "kw": [
+   [
+    "scum",
+    "мразь (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "vyper",
+  "en": "That woman is vile!",
+  "ru": "Мерзкая женщина!",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20viper%2002.mp3",
+  "kw": [
+   [
+    "vile",
+    "мерзкий, гнусный"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "warden",
+  "en": "Your parents will be sorely disappointed in you.",
+  "ru": "Твои родители будут в ужасе от тебя.",
+  "when": "убил Уордена",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20warden%2001.mp3",
+  "kw": [
+   [
+    "sorely disappointed",
+    "сильно разочарованы"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "warden",
+  "en": "Good work, Warden!",
+  "ru": "Хорошая работа, Уорден!",
+  "when": "союзник Уорден выкосил ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20warden%20big%20ult%2001.mp3",
+  "kw": [
+   [
+    "Good work",
+    "хорошая работа"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "wraith",
+  "en": "Wraith, I just want you to know that I still think you're a delight!",
+  "ru": "Рэйс, знай: я по-прежнему нахожу тебя очаровательной!",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20wraith%2001.mp3",
+  "kw": [
+   [
+    "delight",
+    "очарование, прелесть"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "wraith",
+  "en": "She was such a generous tipper, too!",
+  "ru": "И чаевые оставляла щедрые!",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20wraith%2002.mp3",
+  "kw": [
+   [
+    "generous tipper",
+    "щедро дающий на чай"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "yamato",
+  "en": "Stopped the swordswoman.",
+  "ru": "Мечница остановлена.",
+  "when": "убил Ямато",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20kill%20yamato%2001.mp3",
+  "kw": [
+   [
+    "swordswoman",
+    "мечница"
+   ]
+  ]
+ },
+ {
+  "by": "doorman",
+  "about": "yamato",
+  "en": "You are relentless, my dear.",
+  "ru": "Ты беспощадна, дорогая.",
+  "when": "союзница Ямато режет крюком",
+  "a": "https://deadlock.wiki/Special:FilePath/Doorman%20ally%20yamato%20kills%20with%20hook%2001.mp3",
+  "kw": [
+   [
+    "relentless",
+    "беспощадный, неудержимый"
+   ]
+  ]
+ },
+ {
+  "by": "drifter",
+  "about": "venator",
+  "en": "Another Venator dead.",
+  "ru": "Ещё один Венатор мёртв.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Drifter%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Another",
+    "ещё один"
+   ]
+  ]
+ },
+ {
+  "by": "drifter",
+  "about": "venator",
+  "en": "Come out and play, Venator... Don't be scared.",
+  "ru": "Выходи поиграть, Венатор… Не трусь.",
+  "when": "выслеживает Венатора по запаху",
+  "a": "https://deadlock.wiki/Special:FilePath/Drifter%20bespoke%20ability%20line%2011.mp3",
+  "kw": [
+   [
+    "Come out and play",
+    "выходи поиграть"
+   ],
+   [
+    "scared",
+    "испуганный"
+   ]
+  ]
+ },
+ {
+  "by": "dynamo",
+  "about": "grey-talon",
+  "en": "Stopped Grey Talon.",
+  "ru": "Грей Тэлона остановил.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/dynamo_kill_orion_01.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "dynamo",
+  "about": "grey-talon",
+  "en": "You still have it, don't you, Talon?",
+  "ru": "Ты ещё в форме, Тэлон, я смотрю.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/dynamo_ally_orion_far_shot_01.mp3",
+  "kw": [
+   [
+    "still have it",
+    "всё ещё в форме, не растерял навык"
+   ]
+  ]
+ },
+ {
+  "by": "graves",
+  "about": "venator",
+  "en": "Stopped the Venator.",
+  "ru": "Венатора остановила.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Necro%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "graves",
+  "about": "venator",
+  "en": "They took out the Venator!",
+  "ru": "Венатора убрали!",
+  "when": "союзника Венатора убили",
+  "a": "https://deadlock.wiki/Special:FilePath/Necro%20ally%20priest%20killed%20in%20lane%2001%20alt.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "abrams",
+  "en": "Took out Abrams!",
+  "ru": "Абрамса убрал!",
+  "when": "убил Абрамса",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20atlas%2001.mp3",
+  "kw": [
+   [
+    "Took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "abrams",
+  "en": "Abrams made his move!",
+  "ru": "Абрамс сыграл!",
+  "when": "союзник Абрамс приложил всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20atlas%20big%20stun%2001.mp3",
+  "kw": [
+   [
+    "made his move",
+    "сделать ход"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "apollo",
+  "en": "This isn't how I wanted things to go, Apollo.",
+  "ru": "Не так я всё это представлял, Аполлон.",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20fencer%2001.mp3",
+  "kw": [
+   [
+    "how I wanted things to go",
+    "как я хотел, чтобы всё вышло"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "apollo",
+  "en": "I stopped the fencer.",
+  "ru": "Фехтовальщика остановил.",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20fencer%2002.mp3",
+  "kw": [
+   [
+    "stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "bebop",
+  "en": "Destroyed the golem!",
+  "ru": "Голем уничтожен!",
+  "when": "убил Бибопа",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20bebop%2001.mp3",
+  "kw": [
+   [
+    "Destroyed",
+    "уничтожить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "bebop",
+  "en": "They killed the golem.",
+  "ru": "Голема убили.",
+  "when": "союзника Бибопа убили",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20bebop%20killed%20in%20lane%2001.mp3",
+  "kw": [
+   [
+    "killed",
+    "убить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "billy",
+  "en": "What a sad little man.",
+  "ru": "Какой жалкий человечишка.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20punkgoat%2001.mp3",
+  "kw": [
+   [
+    "sad little man",
+    "жалкий человечишка"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "billy",
+  "en": "One day you'll learn what real anger feels like, Billy.",
+  "ru": "Однажды ты узнаешь, какова настоящая злость, Билли.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20punkgoat%2002.mp3",
+  "kw": [
+   [
+    "real anger",
+    "настоящий гнев"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "calico",
+  "en": "I was content to leave you alone, Calico. Why did you have to come here?",
+  "ru": "Я был не прочь тебя не трогать, Калико. Зачем ты пришла?",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20nano%2001.mp3",
+  "kw": [
+   [
+    "content",
+    "довольный, не против"
+   ],
+   [
+    "have to",
+    "быть вынужденным"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "calico",
+  "en": "What happened to you, Calico?",
+  "ru": "Что с тобой стало, Калико?",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20nano%2002.mp3",
+  "kw": [
+   [
+    "What happened to you",
+    "что с тобой случилось"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "celeste",
+  "en": "I took out Celeste.",
+  "ru": "Селесту убрал.",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20unicorn%2001.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "celeste",
+  "en": "The unicorn's dead.",
+  "ru": "Единорог мёртв.",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20unicorn%2002.mp3",
+  "kw": [
+   [
+    "dead",
+    "мёртвый"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "drifter",
+  "en": "I've waited for this, Drifter.",
+  "ru": "Я этого ждал, Дрифтер.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20drifter%2001.mp3",
+  "kw": [
+   [
+    "waited for",
+    "ждать"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "drifter",
+  "en": "Finally...",
+  "ru": "Наконец-то…",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20drifter%2002.mp3",
+  "kw": [
+   [
+    "Finally",
+    "наконец-то"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "dynamo",
+  "en": "You don't belong here, professor.",
+  "ru": "Тебе здесь не место, профессор.",
+  "when": "убил Динамо",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20dynamo%2001.mp3",
+  "kw": [
+   [
+    "belong",
+    "быть на своём месте"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "dynamo",
+  "en": "They stopped the professor!",
+  "ru": "Профессора остановили!",
+  "when": "союзника Динамо убили",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20dynamo%20killed%20in%20lane%2001.mp3",
+  "kw": [
+   [
+    "stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "graves",
+  "en": "Get out of my way, Graves.",
+  "ru": "С дороги, Грейвс.",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20necro%2001.mp3",
+  "kw": [
+   [
+    "Get out of my way",
+    "с дороги, посторонись"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "graves",
+  "en": "You're not using that lich hand, Graves. It's using you!",
+  "ru": "Это не ты управляешь рукой лича, Грейвс — она управляет тобой!",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20necro%2002.mp3",
+  "kw": [
+   [
+    "using",
+    "использовать"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "venator",
+  "en": "Wish the Venator was fighting for us.",
+  "ru": "Вот бы Венатор за нас сражался.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "fighting for",
+    "сражаться за"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "venator",
+  "en": "I've seen a few venators in my time... that one was angrier than most.",
+  "ru": "Охотников я в жизни повидал немало… этот злее большинства.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20priest%2002.mp3",
+  "kw": [
+   [
+    "in my time",
+    "за свою жизнь"
+   ],
+   [
+    "angrier",
+    "злой"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "haze",
+  "en": "I won't let the government get in my way.",
+  "ru": "Пусть даже государство — мне оно не помеха.",
+  "when": "убил Хейз",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20haze%2001.mp3",
+  "kw": [
+   [
+    "get in my way",
+    "стоять на пути"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "haze",
+  "en": "The Baxter Society could use someone like you, Haze.",
+  "ru": "Обществу Бакстера пригодилась бы такая, как ты, Хейз.",
+  "when": "союзница Хейз выкосила всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20haze%20big%20ult%2001.mp3",
+  "kw": [
+   [
+    "could use",
+    "пригодиться, не помешать"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "holliday",
+  "en": "I'm sorry, Holliday.",
+  "ru": "Прости, Холлидей.",
+  "when": "убил Холлидей",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20astro%2001.mp3",
+  "kw": [
+   [
+    "sorry",
+    "извини, жаль"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "holliday",
+  "en": "Good luck, Sherrif!",
+  "ru": "Удачи, шериф!",
+  "when": "союзница Холлидей пронеслась на зиплайне",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20astro%20pass%20on%20zipline%2001.mp3",
+  "kw": [
+   [
+    "Good luck",
+    "удачи"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "infernus",
+  "en": "I wish there was another way.",
+  "ru": "Хотел бы я, чтобы был другой путь.",
+  "when": "убил Инфернуса",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20inferno%2001.mp3",
+  "kw": [
+   [
+    "another way",
+    "другой путь, выход"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "infernus",
+  "en": "It's an honour to work with you, Infernus.",
+  "ru": "Работать с тобой — честь, Инфернус.",
+  "when": "союзник Инфернус сжёг объект",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20inferno%20burns%20down%20objective%2001.mp3",
+  "kw": [
+   [
+    "It's an honour",
+    "честь, почёт"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "ivy",
+  "en": "Killed the gargoyle!",
+  "ru": "Гаргулью убил!",
+  "when": "убил Айви",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20tengu%2001.mp3",
+  "kw": [
+   [
+    "Killed",
+    "убить"
+   ],
+   [
+    "gargoyle",
+    "гаргулья"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "ivy",
+  "en": "Thank you, Ivy.",
+  "ru": "Спасибо, Айви.",
+  "when": "союзница Айви взяла объект через Кудзу",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20tengu%20take%20objective%20with%20teather%2001.mp3",
+  "kw": [
+   [
+    "Thank you",
+    "спасибо"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "kelvin",
+  "en": "The dead belong in the ground.",
+  "ru": "Мёртвым место в земле.",
+  "when": "убил Келвина",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20kelvin%2001.mp3",
+  "kw": [
+   [
+    "belong in",
+    "быть положенным где-то"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "kelvin",
+  "en": "Thank you, Kelvin.",
+  "ru": "Благодарю, Келвин.",
+  "when": "союзник Келвин спас лечением",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20kelvin%20clutch%20heal%2001.mp3",
+  "kw": [
+   [
+    "Thank you",
+    "благодарю"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "lady-geist",
+  "en": "Die, Geist!",
+  "ru": "Сдохни, Гейст!",
+  "when": "убил Леди Гейст",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20ghost%2001.mp3",
+  "kw": [
+   [
+    "Die",
+    "сдохни (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "lady-geist",
+  "en": "Oathkeeper hungers...",
+  "ru": "Клятвохранитель жаждет…",
+  "when": "союзница Леди Гейст обменялась душами",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20ghost%20see%20big%20swap%2001.mp3",
+  "kw": [
+   [
+    "hungers",
+    "жаждать"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "lash",
+  "en": "Killed the bragget!",
+  "ru": "Хвастуна убрал!",
+  "when": "убил Лэша",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20lash%2001.mp3",
+  "kw": [
+   [
+    "bragget",
+    "хвастун (на вики опечатка; правильно braggart)"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "lash",
+  "en": "Lash got himself killed!",
+  "ru": "Лэш сам себя погубил!",
+  "when": "союзника Лэша убили",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20lash%20killed%20in%20lane%2001.mp3",
+  "kw": [
+   [
+    "got himself killed",
+    "сам себя погубить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "mcginnis",
+  "en": "Your machines will never stop me!",
+  "ru": "Твоим машинам меня не остановить!",
+  "when": "убил МакГиннис",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20forge%2001.mp3",
+  "kw": [
+   [
+    "stop",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "mcginnis",
+  "en": "Smart thinking, McGinnis.",
+  "ru": "Умный ход, МакГиннис.",
+  "when": "союзница МакГиннис придавила стеной",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20forge%20wall%20stun%20kill%2001.mp3",
+  "kw": [
+   [
+    "Smart thinking",
+    "умное решение"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "mina",
+  "en": "Oh, the misplaced arrogance of youth.",
+  "ru": "О, юношеская заносчивость.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20vampirebat%2001.mp3",
+  "kw": [
+   [
+    "misplaced arrogance",
+    "неуместная заносчивость"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "mina",
+  "en": "Young vampires are always the stupidest.",
+  "ru": "Молодые вампиры — всегда самые глупые.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20vampirebat%2002.mp3",
+  "kw": [
+   [
+    "stupidest",
+    "глупый"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "mirage",
+  "en": "You failed your charge.",
+  "ru": "Ты не справился со своей миссией.",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20mirage%2001.mp3",
+  "kw": [
+   [
+    "failed your charge",
+    "не справиться с поручением"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "mirage",
+  "en": "The Djinn are on the wrong side today.",
+  "ru": "Джинны сегодня не на той стороне.",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20mirage%2002.mp3",
+  "kw": [
+   [
+    "wrong side",
+    "не та сторона"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "mo-krill",
+  "en": "Mo and Krill are dead.",
+  "ru": "Мо и Крилл мертвы.",
+  "when": "убил Мо и Крилла",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20krill%2001.mp3",
+  "kw": [
+   [
+    "dead",
+    "мёртвый"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "mo-krill",
+  "en": "They killed our mole!",
+  "ru": "Нашего крота убили!",
+  "when": "союзников Мо и Крилла убили",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20krill%20killed%20in%20lane%2001.mp3",
+  "kw": [
+   [
+    "mole",
+    "крот"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "paige",
+  "en": "I took out their support.",
+  "ru": "Я убрал их врача.",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20bookworm%2001.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ],
+   [
+    "support",
+    "поддержка, врач"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "paige",
+  "en": "She won't be shielding her allies anymore.",
+  "ru": "Прикрывать союзников она больше не будет.",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20bookworm%2002.mp3",
+  "kw": [
+   [
+    "shielding",
+    "прикрывать, щит"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "paradox",
+  "en": "I have no time for games, Paradox.",
+  "ru": "Мне некогда играть в игры, Парадокс.",
+  "when": "убил Парадокс",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20chrono%2001.mp3",
+  "kw": [
+   [
+    "have no time for",
+    "нет времени на"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "paradox",
+  "en": "Bring misery, Paradox.",
+  "ru": "Сей беду, Парадокс.",
+  "when": "союзница Парадокс пронеслась на зиплайне",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20chrono%20pass%20on%20zipline%2001.mp3",
+  "kw": [
+   [
+    "misery",
+    "беда, страдание"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "pocket",
+  "en": "I am sorry, child.",
+  "ru": "Прости, дитя.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20synth%2001.mp3",
+  "kw": [
+   [
+    "sorry",
+    "прости"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "pocket",
+  "en": "Pocket... you forced my hand.",
+  "ru": "Покет… ты меня вынудил.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20synth%2002.mp3",
+  "kw": [
+   [
+    "forced my hand",
+    "вынудить, заставить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "rem",
+  "en": "You don't belong here, Rem.",
+  "ru": "Тебе здесь не место, Рэм.",
+  "when": "убил Рэма",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20familiar%2001.mp3",
+  "kw": [
+   [
+    "belong",
+    "быть на своём месте"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "rem",
+  "en": "Well, at least I don't have much longer to live with the guilt.",
+  "ru": "Ну, хоть виниться мне осталось недолго.",
+  "when": "убил Рэма",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20familiar%2002.mp3",
+  "kw": [
+   [
+    "guilt",
+    "вина"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "seven",
+  "en": "You're a monster, Seven.",
+  "ru": "Ты монстр, Севен.",
+  "when": "убил Севена",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20gigawatt%2001.mp3",
+  "kw": [
+   [
+    "monster",
+    "монстр"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "seven",
+  "en": "That man is a threat...",
+  "ru": "Этот мужчина — угроза…",
+  "when": "союзник Севен выкосил ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20gigawatt%20multi%20kill%20ult%2001.mp3",
+  "kw": [
+   [
+    "threat",
+    "угроза"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "shiv",
+  "en": "And here I thought you could replace me, Shiv.",
+  "ru": "А я-то думал, ты сможешь меня заменить, Шив.",
+  "when": "убил Шива",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20shiv%2001.mp3",
+  "kw": [
+   [
+    "replace",
+    "заменить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "shiv",
+  "en": "Perfection.",
+  "ru": "Идеально.",
+  "when": "союзник Шив вырезал нескольких",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20shiv%20multikill%2001.mp3",
+  "kw": [
+   [
+    "Perfection",
+    "совершенство"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "silver",
+  "en": "This doesn't concern you, Silver.",
+  "ru": "Тебя это не касается, Сильвер.",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20werewolf%2001.mp3",
+  "kw": [
+   [
+    "concern",
+    "касаться"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "silver",
+  "en": "Lilah. Stand down!",
+  "ru": "Лайла, отставить!",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20werewolf%2002.mp3",
+  "kw": [
+   [
+    "Stand down",
+    "прекратить, остановиться"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "victor",
+  "en": "I won't let you get in my way, Victor!",
+  "ru": "Не будь мне помехой, Виктор!",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20frank%2001.mp3",
+  "kw": [
+   [
+    "get in my way",
+    "стоять на пути"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "victor",
+  "en": "I ended his pain.",
+  "ru": "Я избавил его от боли.",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20frank%2002.mp3",
+  "kw": [
+   [
+    "ended",
+    "прекратить, избавить"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "vindicta",
+  "en": "Why did you turn on me, Vindicta?!",
+  "ru": "За что ты меня предала, Виндикта?!",
+  "when": "убил Виндикту",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20hornet%2001.mp3",
+  "kw": [
+   [
+    "turn on me",
+    "предать, ополчиться на"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "vindicta",
+  "en": "I will avenge you, Vindicta!",
+  "ru": "Я отомщу за тебя, Виндикта!",
+  "when": "союзницу Виндикту убили",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20hornet%20killed%20in%20lane%2002.mp3",
+  "kw": [
+   [
+    "avenge",
+    "отомстить за"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "viscous",
+  "en": "Return to the Deep, Viscous.",
+  "ru": "Возвращайся в Глубину, Вискас.",
+  "when": "убил Вискаса",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20viscous%2001.mp3",
+  "kw": [
+   [
+    "Return",
+    "возвращаться"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "viscous",
+  "en": "Well, this is relaxing.",
+  "ru": "Ну, теперь можно расслабиться.",
+  "when": "союзник Вискас спас Кубом",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20viscous%20clutch%20cube%2001.mp3",
+  "kw": [
+   [
+    "relaxing",
+    "расслабляющий"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "vyper",
+  "en": "I'm not as frail as I look, Vyper.",
+  "ru": "Я не так хрупок, как кажусь, Вайпер.",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20viper%2001.mp3",
+  "kw": [
+   [
+    "frail",
+    "хрупкий"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "vyper",
+  "en": "What a contemptible woman.",
+  "ru": "Несносная женщина.",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20viper%2002.mp3",
+  "kw": [
+   [
+    "contemptible",
+    "презренный, несносный"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "warden",
+  "en": "I appreciate your conviction, Warden.",
+  "ru": "Уважаю твою убеждённость, Уорден.",
+  "when": "убил Уордена",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20warden%2001.mp3",
+  "kw": [
+   [
+    "appreciate",
+    "ценим, уважаю"
+   ],
+   [
+    "conviction",
+    "убеждённость"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "warden",
+  "en": "Warden is a man possessed!",
+  "ru": "Уорден как одержимый!",
+  "when": "союзник Уорден выкосил ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20warden%20big%20ult%2001.mp3",
+  "kw": [
+   [
+    "possessed",
+    "одержимый"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "wraith",
+  "en": "You picked the wrong time to chose a side.",
+  "ru": "Не лучшее время было выбирать сторону.",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20wraith%2001.mp3",
+  "kw": [
+   [
+    "chose a side",
+    "выбрать сторону (choose a side)"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "wraith",
+  "en": "I got 'em, Wraith.",
+  "ru": "Я их держу, Рэйс!",
+  "when": "союзница Рэйс подняла телекинезом",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20wraith%20kill%20in%20lift%2001.mp3",
+  "kw": [
+   [
+    "got 'em",
+    "насчитал, взял их"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "yamato",
+  "en": "I am sorry that you failed your brother.",
+  "ru": "Жаль, что ты подвела брата.",
+  "when": "убил Ямато",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20kill%20yamato%2001.mp3",
+  "kw": [
+   [
+    "failed",
+    "подвести"
+   ],
+   [
+    "brother",
+    "брат"
+   ]
+  ]
+ },
+ {
+  "by": "grey-talon",
+  "about": "yamato",
+  "en": "Look at her move...",
+  "ru": "Только глянь, как она движется…",
+  "when": "союзница Ямато режет крюком",
+  "a": "https://deadlock.wiki/Special:FilePath/orion%20ally%20yamato%20kills%20with%20hook%2001.mp3",
+  "kw": [
+   [
+    "move",
+    "двигаться"
+   ]
+  ]
+ },
+ {
+  "by": "haze",
+  "about": "venator",
+  "en": "The Vatican oversteps.",
+  "ru": "Ватикан перегнул палку.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/haze%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "oversteps",
+    "перегнуть, выйти за рамки"
+   ]
+  ]
+ },
+ {
+  "by": "haze",
+  "about": "grey-talon",
+  "en": "Good shot, Talon!",
+  "ru": "Хороший выстрел, Тэлон!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/haze%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Good shot",
+    "хороший выстрел"
+   ]
+  ]
+ },
+ {
+  "by": "holliday",
+  "about": "venator",
+  "en": "I've seen some crazy preachers before, but that's a new one.",
+  "ru": "Проповедников странных я видела, но такое — впервые.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/astro%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "preachers",
+    "проповедник"
+   ]
+  ]
+ },
+ {
+  "by": "holliday",
+  "about": "grey-talon",
+  "en": "Good shot, Grey Talon!",
+  "ru": "Хороший выстрел, Грей Тэлон!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/astro%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Good shot",
+    "хороший выстрел"
+   ]
+  ]
+ },
+ {
+  "by": "infernus",
+  "about": "venator",
+  "en": "I stopped the Venator!",
+  "ru": "Венатора остановил!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/inferno%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "infernus",
+  "about": "venator",
+  "en": "They took out Father Quinn!",
+  "ru": "Отца Куинна убрали!",
+  "when": "союзника Венатора убили",
+  "a": "https://deadlock.wiki/Special:FilePath/inferno%20ally%20priest%20killed%20in%20lane%2001%20alt.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "ivy",
+  "about": "venator",
+  "en": "I, uh... I probably shouldn't tell the Arroyos about this.",
+  "ru": "Я, эм… наверное, не стоит рассказывать об этом Арройо.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/tengu%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "shouldn't",
+    "не следует"
+   ],
+   [
+    "probably",
+    "наверное"
+   ]
+  ]
+ },
+ {
+  "by": "ivy",
+  "about": "grey-talon",
+  "en": "I don't know how you landed that.",
+  "ru": "Не представляю, как ты это вытянул.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/tengu%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "landed",
+    "вытянуть, выполнить (о выстреле)"
+   ]
+  ]
+ },
+ {
+  "by": "kelvin",
+  "about": "venator",
+  "en": "I never thought I'd be at war with the Vatican!",
+  "ru": "Я и подумать не мог, что буду воевать с Ватиканом!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/kelvin%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "at war with",
+    "в состоянии войны с"
+   ]
+  ]
+ },
+ {
+  "by": "kelvin",
+  "about": "grey-talon",
+  "en": "You know how to use a bow, sir!",
+  "ru": "Вы умеете обращаться с луком, сэр!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/kelvin%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "bow",
+    "лук"
+   ]
+  ]
+ },
+ {
+  "by": "lady-geist",
+  "about": "venator",
+  "en": "You made a mistake coming here, Venator.",
+  "ru": "Ты ошибся, придя сюда, Венатор.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/ghost%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "made a mistake",
+    "сделать ошибку"
+   ]
+  ]
+ },
+ {
+  "by": "lady-geist",
+  "about": "grey-talon",
+  "en": "Well done, Grey Talon.",
+  "ru": "Прекрасно, Грей Тэлон.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/ghost%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Well done",
+    "прекрасно"
+   ]
+  ]
+ },
+ {
+  "by": "lash",
+  "about": "grey-talon",
+  "en": "Grey Talon's down.",
+  "ru": "Грей Тэлон повержен.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/lash%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "down",
+    "повержен (игр.)"
+   ]
+  ]
+ },
+ {
+  "by": "lash",
+  "about": "grey-talon",
+  "en": "Lash had to make an exception to his \"don't punch old people\" rule.",
+  "ru": "Лэшу пришлось сделать исключение из правила «не бить стариков».",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/lash%20kill%20orion%2002.mp3",
+  "kw": [
+   [
+    "make an exception",
+    "сделать исключение"
+   ],
+   [
+    "punch",
+    "бить кулаком"
+   ]
+  ]
+ },
+ {
+  "by": "mina",
+  "about": "venator",
+  "en": "Stopped the Venator.",
+  "ru": "Венатора остановила.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "mina",
+  "about": "grey-talon",
+  "en": "Looks like someone took their arthritis medication.",
+  "ru": "Кто-то, похоже, выпил лекарство от артрита.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/Vampirebat%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "arthritis",
+    "артрит"
+   ],
+   [
+    "medication",
+    "лекарство"
+   ]
+  ]
+ },
+ {
+  "by": "mirage",
+  "about": "venator",
+  "en": "You picked the wrong prey, Venator.",
+  "ru": "Ты выбрал не ту добычу, Венатор.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/mirage%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "prey",
+    "добыча"
+   ],
+   [
+    "picked",
+    "выбирать"
+   ]
+  ]
+ },
+ {
+  "by": "mirage",
+  "about": "venator",
+  "en": "The Djinn will be protected from the likes of you.",
+  "ru": "Джиннов от таких, как ты, я защищу.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/mirage%20kill%20priest%2002.mp3",
+  "kw": [
+   [
+    "protected",
+    "защищать"
+   ],
+   [
+    "the likes of you",
+    "такие, как ты"
+   ]
+  ]
+ },
+ {
+  "by": "mo-krill",
+  "about": "venator",
+  "en": "Took down the Venator!",
+  "ru": "Свалили Венатора!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/krill%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Took down",
+    "свалить, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "mo-krill",
+  "about": "grey-talon",
+  "en": "Nice aim, Talon.",
+  "ru": "Отличный прицел, Тэлон.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/krill%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "aim",
+    "прицел"
+   ]
+  ]
+ },
+ {
+  "by": "paige",
+  "about": "venator",
+  "en": "I thought you were supposed to hunt monsters!",
+  "ru": "Так ты же монстров должен ловить!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "were supposed to",
+    "положено"
+   ],
+   [
+    "hunt",
+    "ловить, охотиться"
+   ]
+  ]
+ },
+ {
+  "by": "paige",
+  "about": "venator",
+  "en": "The Venator's lost his mind!",
+  "ru": "Венатор тронулся умом!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Bookworm%20kill%20priest%2002.mp3",
+  "kw": [
+   [
+    "lost his mind",
+    "тронуться умом"
+   ]
+  ]
+ },
+ {
+  "by": "paradox",
+  "about": "venator",
+  "en": "Was wondering when they'd send you after me.",
+  "ru": "Всё гадала, когда тебя пошлют за мной.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Chrono%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "wondering",
+    "интересоваться"
+   ]
+  ]
+ },
+ {
+  "by": "paradox",
+  "about": "venator",
+  "en": "Knew this was bound to happen one day.",
+  "ru": "Я знала: рано или поздно это случится.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Chrono%20kill%20priest%2002.mp3",
+  "kw": [
+   [
+    "bound to happen",
+    "неизбежно случиться"
+   ]
+  ]
+ },
+ {
+  "by": "pocket",
+  "about": "grey-talon",
+  "en": "Took down Grey Talon!",
+  "ru": "Завалил Грей Тэлона!",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/synth%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "Took down",
+    "свалить, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "pocket",
+  "about": "grey-talon",
+  "en": "He may be old, but he's still dangerous.",
+  "ru": "Стар, но всё ещё опасен.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/synth%20kill%20orion%2002.mp3",
+  "kw": [
+   [
+    "dangerous",
+    "опасный"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "abrams",
+  "en": "Better luck next time, ya big blue bastard.",
+  "ru": "Повезёт в следующий раз, синий здоровый ублюдок.",
+  "when": "убил Абрамса",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20atlas%2001.mp3",
+  "kw": [
+   [
+    "Better luck next time",
+    "повезёт в следующий раз"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "abrams",
+  "en": "You think you're tougher than me, Abrams?",
+  "ru": "Думаешь, ты круче меня, Абрамс?",
+  "when": "убил Абрамса",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20atlas%2002.mp3",
+  "kw": [
+   [
+    "tougher",
+    "жёстче, круче"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "apollo",
+  "en": "Welcome to New York, kid.",
+  "ru": "Добро пожаловать в Нью-Йорк, малыш.",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20fencer%2001.mp3",
+  "kw": [
+   [
+    "kid",
+    "малыш, пацан"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "apollo",
+  "en": "Daddy can't help you here!",
+  "ru": "Папочка тут тебя не спасёт!",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20fencer%2002.mp3",
+  "kw": [
+   [
+    "can't help",
+    "не поможет, не спасёт"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "bebop",
+  "en": "That scrap golem ain't got shit on me!",
+  "ru": "Этот жестяной голем мне в подмётки не годится!",
+  "when": "убил Бибопа",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20bebop%2001.mp3",
+  "kw": [
+   [
+    "ain't got shit on me",
+    "мне в подмётки не годится (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "bebop",
+  "en": "I'm gonna make my new crown outta your skull, Bebop!",
+  "ru": "Новую корону выточу из твоего черепа, Бибоп!",
+  "when": "убил Бибопа",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20bebop%2002.mp3",
+  "kw": [
+   [
+    "skull",
+    "череп"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "billy",
+  "en": "I always knew you were a fraud.",
+  "ru": "Я всегда знал, что ты шарлатан.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20punkgoat%2001.mp3",
+  "kw": [
+   [
+    "fraud",
+    "шарлатан, обманщик"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "billy",
+  "en": "I hope you get rabies, Billy.",
+  "ru": "Чтоб ты бешенство подхватил, Билли.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20punkgoat%2002.mp3",
+  "kw": [
+   [
+    "rabies",
+    "бешенство"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "calico",
+  "en": "Keep that goddamn cat away from me!",
+  "ru": "Убери свою грёбаную кошку от меня!",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20nano%2001.mp3",
+  "kw": [
+   [
+    "away from",
+    "прочь от (keep away)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "calico",
+  "en": "I'm killin' that cat 'n eatin' it!",
+  "ru": "Убью эту кошку и съем!",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20nano%2002.mp3",
+  "kw": [
+   [
+    "eatin'",
+    "ест, съем (eatin' = eating)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "celeste",
+  "en": "Don't talk to me about bein' a freak, Celeste, you pass as one of them!",
+  "ru": "Не тебе мне про уродов рассказывать, Селеста, — ты-то сходишь за человека!",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20unicorn%2001.mp3",
+  "kw": [
+   [
+    "pass as",
+    "сходить за, прикидываться"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "celeste",
+  "en": "You're a traitor, Celeste!",
+  "ru": "Ты предательница, Селеста!",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20unicorn%2002.mp3",
+  "kw": [
+   [
+    "traitor",
+    "предатель, предательница"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "doorman",
+  "en": "You think you're better than me cause you work for a hotel?",
+  "ru": "Считаешь себя лучше меня, потому что в отеле работаешь?",
+  "when": "убил Дормана",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20doorman%2001.mp3",
+  "kw": [
+   [
+    "work for",
+    "работать на, в"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "doorman",
+  "en": "After we're done here, I'm chewin' up all the duvets in The Baroness.",
+  "ru": "Когда тут закончим, перегрызу все одеяла в «Баронессе».",
+  "when": "убил Дормана",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20doorman%2002.mp3",
+  "kw": [
+   [
+    "duvets",
+    "пуховое одеяло"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "drifter",
+  "en": "Stay outta Long Island if you know what's good for ya.",
+  "ru": "Держись подальше от Лонг-Айленда, если хочешь дожить до старости.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20drifter%2001.mp3",
+  "kw": [
+   [
+    "Stay outta",
+    "не соваться (stay out of)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "drifter",
+  "en": "You know, until you started coming for rats, I thought you were an alright guy.",
+  "ru": "Знаешь, пока ты не начал травить крыс, я думал, ты нормальный тип.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20drifter%2002.mp3",
+  "kw": [
+   [
+    "alright",
+    "нормальный, сносный"
+   ],
+   [
+    "coming for",
+    "приходить за"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "dynamo",
+  "en": "I want his jacket! It'll make me look smart.",
+  "ru": "Хочу его пиджак! Буду в нём выглядеть умным.",
+  "when": "убил Динамо",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20dynamo%2001.mp3",
+  "kw": [
+   [
+    "look smart",
+    "выглядеть умным, шикарным"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "dynamo",
+  "en": "I knew college was useless.",
+  "ru": "Я говорил: колледж — пустая трата времени.",
+  "when": "убил Динамо",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20dynamo%2002.mp3",
+  "kw": [
+   [
+    "useless",
+    "бесполезный"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "graves",
+  "en": "You know, as far as humans go, she's not the worst of 'em.",
+  "ru": "Знаешь, для человека она вполне ничего.",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20necro%2001.mp3",
+  "kw": [
+   [
+    "as far as",
+    "что до, если уж о…"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "graves",
+  "en": "Humans never know better.",
+  "ru": "Люди никогда не понимают, что к чему.",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20necro%2002.mp3",
+  "kw": [
+   [
+    "know better",
+    "понимать, как лучше"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "grey-talon",
+  "en": "Look on the bright side, Talon! You lived long enough to be killed by a king!",
+  "ru": "Смотри на вещи позитивно, Тэлон! Ты дожил до смерти от руки короля!",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "Look on the bright side",
+    "смотри на плюсы, не унывай"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "grey-talon",
+  "en": "The old man's dead!",
+  "ru": "Старикан сдох!",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20orion%2002.mp3",
+  "kw": [
+   [
+    "old man's",
+    "старикан"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "haze",
+  "en": "Killed the fed!",
+  "ru": "Копа завалил!",
+  "when": "убил Хейз",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20haze%2001.mp3",
+  "kw": [
+   [
+    "fed",
+    "федерал, коп (сленг)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "haze",
+  "en": "Took out the federal crumbum!",
+  "ru": "Федеральную шелупонь убрал!",
+  "when": "убил Хейз",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20haze%2002.mp3",
+  "kw": [
+   [
+    "Took out",
+    "убрать, завалить (сленг)"
+   ],
+   [
+    "crumbum",
+    "мелкая сошка, шелупонь"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "holliday",
+  "en": "Stupid human cop!",
+  "ru": "Тупой человеческий коп!",
+  "when": "убил Холлидей",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20astro%2001.mp3",
+  "kw": [
+   [
+    "cop",
+    "коп, полицейский"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "holliday",
+  "en": "You got nothin' on me, copper!",
+  "ru": "Куда тебе до меня, легавый!",
+  "when": "убил Холлидей",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20astro%2002.mp3",
+  "kw": [
+   [
+    "got nothin' on me",
+    "мне не ровня, куда тебе до меня"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "infernus",
+  "en": "Took out Infernus!",
+  "ru": "Инферна завалил!",
+  "when": "убил Инфернуса",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20inferno%2001.mp3",
+  "kw": [
+   [
+    "Took out",
+    "завалить, убрать"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "infernus",
+  "en": "You picked the wrong side, pal!",
+  "ru": "Не на ту сторону встал, приятель!",
+  "when": "убил Инфернуса",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20inferno%2002.mp3",
+  "kw": [
+   [
+    "wrong side",
+    "проигравшая сторона (pick a side)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "ivy",
+  "en": "Took down the gargoyle.",
+  "ru": "Гаргулью сшиб.",
+  "when": "убил Айви",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20tengu%2001.mp3",
+  "kw": [
+   [
+    "Took down",
+    "свалить, завалить"
+   ],
+   [
+    "gargoyle",
+    "гаргулья"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "ivy",
+  "en": "Dirt nap for the stone lady!",
+  "ru": "Каменной даме — вечный сон в земле!",
+  "when": "убил Айви",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20tengu%2002.mp3",
+  "kw": [
+   [
+    "Dirt nap",
+    "вечный сон, могила (сленг)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "kelvin",
+  "en": "Normally, I'm okay with dead humans...",
+  "ru": "Обычно меня мёртвые люди и не смущают…",
+  "when": "убил Келвина",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20kelvin%2001.mp3",
+  "kw": [
+   [
+    "Normally",
+    "обычно"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "kelvin",
+  "en": "Not a fan, Kelvin... not a fan.",
+  "ru": "Не мой формат, Келвин… не мой формат.",
+  "when": "убил Келвина",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20kelvin%2002.mp3",
+  "kw": [
+   [
+    "Not a fan",
+    "не в восторге, не любитель"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "lady-geist",
+  "en": "Hey, Geist! I'm not impressed.",
+  "ru": "Эй, Гейст! Впечатления — ноль.",
+  "when": "убил Леди Гейст",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20ghost%2001.mp3",
+  "kw": [
+   [
+    "not impressed",
+    "не впечатлён"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "lady-geist",
+  "en": "What makes her think she's so goddamn special?",
+  "ru": "Что она о себе возомнила, такая грёбаная особенная?",
+  "when": "убил Леди Гейст",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20ghost%2002.mp3",
+  "kw": [
+   [
+    "What makes her think",
+    "что позволяет кому-то считать…"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "lash",
+  "en": "Took out Lash!",
+  "ru": "Лэша убрал!",
+  "when": "убил Лэша",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20lash%2001.mp3",
+  "kw": [
+   [
+    "Took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "lash",
+  "en": "I like you, Lash! Shame I had to kill ya.",
+  "ru": "Ты мне нравишься, Лэш! Жаль, что пришлось убить.",
+  "when": "убил Лэша",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20lash%2002.mp3",
+  "kw": [
+   [
+    "had to",
+    "пришлось"
+   ],
+   [
+    "Shame",
+    "жаль, досадно"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "mcginnis",
+  "en": "Fairfax Industries is gonna burn.",
+  "ru": "Фэйрфакс Индастриз сгорит дотла.",
+  "when": "убил МакГиннис",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20forge%2001.mp3",
+  "kw": [
+   [
+    "burn",
+    "гореть, сгореть"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "mcginnis",
+  "en": "Death to Fairfax!",
+  "ru": "Смерть Фэйрфаксу!",
+  "when": "убил МакГиннис",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20forge%2002.mp3",
+  "kw": [
+   [
+    "Death to",
+    "смерть кому-то"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "mina",
+  "en": "You vampires think you're sooo smart.",
+  "ru": "Вы, вампиры, думаете, что вы о-о-очень умные.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20vampirebat%2001.mp3",
+  "kw": [
+   [
+    "vampires",
+    "вампир"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "mina",
+  "en": "No vampires are gonna be allowed on Long Island.",
+  "ru": "Вампирам на Лонг-Айленде делать нечего.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20vampirebat%2002.mp3",
+  "kw": [
+   [
+    "be allowed",
+    "разрешаться, допускаться"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "mirage",
+  "en": "The Djinn too good to meet with the rats?!",
+  "ru": "Джинн слишком зазнался, чтобы с крысами встречаться?!",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20mirage%2001.mp3",
+  "kw": [
+   [
+    "too good to",
+    "слишком зазнался, чтобы…"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "mirage",
+  "en": "You think you're so cultured, don't ya Mirage?",
+  "ru": "Считаешь себя таким культурным, да, Мираж?",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20mirage%2002.mp3",
+  "kw": [
+   [
+    "cultured",
+    "культурный, начитанный"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "mo-krill",
+  "en": "I always knew it'd come to this.",
+  "ru": "Я знал, что до этого дойдёт.",
+  "when": "убил Мо и Крилла",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20krill%2001.mp3",
+  "kw": [
+   [
+    "come to this",
+    "дойти до такого"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "mo-krill",
+  "en": "You should have accepted me as your king, boys!",
+  "ru": "Надо было принять меня как короля, парни!",
+  "when": "убил Мо и Крилла",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20krill%2002.mp3",
+  "kw": [
+   [
+    "should have",
+    "надо было (а не сделал)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "paige",
+  "en": "Looks like those books ain't helping ya now.",
+  "ru": "Похоже, книжки тебя сейчас не спасают.",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20bookworm%2001.mp3",
+  "kw": [
+   [
+    "Looks like",
+    "похоже, что"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "paige",
+  "en": "I thought you were supposed to be sooo smart?",
+  "ru": "А тебя ведь умницей считали?",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20bookworm%2002.mp3",
+  "kw": [
+   [
+    "were supposed to",
+    "считаться, полагаться"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "paradox",
+  "en": "Stopped Paradox!",
+  "ru": "Парадокс остановлена!",
+  "when": "убил Парадокс",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20chrono%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "paradox",
+  "en": "You're lucky I can't see your face, ya fishbowl-headed mook! Cause if I did, I'd bite it off!",
+  "ru": "Повезло тебе, что лица твоего не видно, аквариумоголовый! А то бы откусил!",
+  "when": "убил Парадокс",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20chrono%2002.mp3",
+  "kw": [
+   [
+    "mook",
+    "болван, простофиля (сленг)"
+   ],
+   [
+    "fishbowl-headed",
+    "рыбий аквариум"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "pocket",
+  "en": "Killed the mole man's pet human!",
+  "ru": "Прикончил ручного человечка крота!",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20synth%2001.mp3",
+  "kw": [
+   [
+    "pet",
+    "ручной, домашний любимец"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "pocket",
+  "en": "I always knew you were a traitor.",
+  "ru": "Я всегда знал, что ты предатель.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20synth%2002.mp3",
+  "kw": [
+   [
+    "traitor",
+    "предатель"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "rem",
+  "en": "Yeah, I don't feel bad about that.",
+  "ru": "Ага, и совесть не мучает.",
+  "when": "убил Рэма",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20familiar%2001.mp3",
+  "kw": [
+   [
+    "feel bad about",
+    "испытывать вину за"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "rem",
+  "en": "Hey! You wanna play with the adults, you're gonna get what you're gonna get.",
+  "ru": "Эй! Хочешь играть со взрослыми — получай, что положено.",
+  "when": "убил Рэма",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20familiar%2002.mp3",
+  "kw": [
+   [
+    "you're gonna get",
+    "ты получишь (be gonna)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "seven",
+  "en": "Get outta my sewers!",
+  "ru": "Вон из моей канализации!",
+  "when": "убил Севена",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20gigawatt%2001.mp3",
+  "kw": [
+   [
+    "Get outta",
+    "убирайся из (get out of)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "seven",
+  "en": "You shoulda paid tribute, Seven.",
+  "ru": "Дань платить надо было, Севен.",
+  "when": "убил Севена",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20gigawatt%2002.mp3",
+  "kw": [
+   [
+    "paid tribute",
+    "платить дань"
+   ],
+   [
+    "shoulda",
+    "надо было (should have)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "shiv",
+  "en": "I ain't lettin' you hunt me down.",
+  "ru": "Не дам себя выслеживать.",
+  "when": "убил Шива",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20shiv%2001.mp3",
+  "kw": [
+   [
+    "hunt me down",
+    "загнать, выследить (hunt down)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "shiv",
+  "en": "Nice try, pretty boy.",
+  "ru": "Неплохая попытка, красавчик.",
+  "when": "убил Шива",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20shiv%2002.mp3",
+  "kw": [
+   [
+    "Nice try",
+    "неплохая попытка"
+   ],
+   [
+    "pretty boy",
+    "красавчик"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "silver",
+  "en": "You should have better friends, Silver.",
+  "ru": "Друзей надо получше выбирать, Сильвер.",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20werewolf%2001.mp3",
+  "kw": [
+   [
+    "should have",
+    "надо бы иметь"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "silver",
+  "en": "Oh, I see how it is, Silver. You're sidin' with them!",
+  "ru": "А, вот оно что, Сильвер. Ты к ним перебежал!",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20werewolf%2002.mp3",
+  "kw": [
+   [
+    "sidin' with",
+    "вставать на сторону (side with)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "sinclair",
+  "en": "Stopped Sinclair!",
+  "ru": "Синклера остановил!",
+  "when": "убил Синклера",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20magician%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "sinclair",
+  "en": "No one turns me into a rabbit!",
+  "ru": "Никто не превращает меня в кролика!",
+  "when": "убил Синклера",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20magician%2002.mp3",
+  "kw": [
+   [
+    "turns me into",
+    "превращать (в) (turn into)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "venator",
+  "en": "Holier than thou, crumbum!",
+  "ru": "Святее папы римского, шелупонь!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Holier than thou",
+    "святее всех, праведнее всех"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "venator",
+  "en": "Go do some Hail Marys or somethin'.",
+  "ru": "Иди помолись там, что ли.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20priest%2002.mp3",
+  "kw": [
+   [
+    "Hail Marys",
+    "«Радуйся, Мария» — молитва"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "victor",
+  "en": "Took down Victor!",
+  "ru": "Виктора завалил!",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20frank%2001.mp3",
+  "kw": [
+   [
+    "Took down",
+    "завалить, свалить"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "victor",
+  "en": "It ain't personal, Victor.",
+  "ru": "Ничего личного, Виктор.",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20frank%2002.mp3",
+  "kw": [
+   [
+    "ain't personal",
+    "ничего личного (it's not personal)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "vindicta",
+  "en": "Ain't personal, Vindicta!",
+  "ru": "Ничего личного, Виндикта!",
+  "when": "убил Виндикту",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20hornet%2001.mp3",
+  "kw": [
+   [
+    "personal",
+    "личный; ничего личного"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "vindicta",
+  "en": "I was hopin' we could hate humanity together, Vindicta.",
+  "ru": "Я надеялся, человечество мы возненавидим вместе, Виндикта.",
+  "when": "убил Виндикту",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20hornet%2002.mp3",
+  "kw": [
+   [
+    "hate",
+    "ненавидеть"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "viscous",
+  "en": "Stop talking about The Cube, ya goo-faced crumbum!",
+  "ru": "Хватит про свой Куб трещать, слизнолицая шелупонь!",
+  "when": "убил Вискаса",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20viscous%2001.mp3",
+  "kw": [
+   [
+    "Stop talking",
+    "перестань (stop doing)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "viscous",
+  "en": "Slink off to The Deep, Viscous.",
+  "ru": "Уползай в свою Глубину, Вискас.",
+  "when": "убил Вискаса",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20viscous%2002.mp3",
+  "kw": [
+   [
+    "Slink off",
+    "улизнуть, ускользнуть"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "vyper",
+  "en": "You think you can steal from us and get away with it?",
+  "ru": "Думаешь, у нас украсть и безнаказанно уйдёшь?",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20viper%2001.mp3",
+  "kw": [
+   [
+    "get away with",
+    "уйти безнаказанно"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "vyper",
+  "en": "Lady, you messed with the wrong rat.",
+  "ru": "Ты, барышня, не с той крысой связалась.",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20viper%2002.mp3",
+  "kw": [
+   [
+    "messed with",
+    "связываться с"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "warden",
+  "en": "I stopped Warden.",
+  "ru": "Уордена остановил.",
+  "when": "убил Уордена",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20warden%2001.mp3",
+  "kw": [
+   [
+    "stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "warden",
+  "en": "You're supposed to be humanity's protector? Piss off!",
+  "ru": "Ты же защитник человечества? Катись!",
+  "when": "убил Уордена",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20warden%2002.mp3",
+  "kw": [
+   [
+    "Piss off",
+    "отвали, катись (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "wraith",
+  "en": "\"Queen of the Underworld\" my ass!",
+  "ru": "«Королева преисподней», как же!",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20wraith%2001.mp3",
+  "kw": [
+   [
+    "my ass",
+    "как же! (возмущение, груб.)"
+   ],
+   [
+    "Underworld",
+    "преисподняя"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "wraith",
+  "en": "That's for kicking me outta your stupid casino!",
+  "ru": "Это за то, что выгнала меня из своего дурацкого казино!",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20wraith%2002.mp3",
+  "kw": [
+   [
+    "That's for",
+    "это за (в отместку)"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "yamato",
+  "en": "Get the hell outta New York!",
+  "ru": "К чёрту из Нью-Йорка убирайся!",
+  "when": "убил Ямато",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20yamato%2001.mp3",
+  "kw": [
+   [
+    "Get the hell outta",
+    "вон, к чёрту убираться"
+   ]
+  ]
+ },
+ {
+  "by": "rat-king",
+  "about": "yamato",
+  "en": "New York ain't ever gonna belong to the Seventh Moon.",
+  "ru": "Нью-Йорк никогда не будет принадлежать Седьмой Луне.",
+  "when": "убил Ямато",
+  "a": "https://deadlock.wiki/Special:FilePath/ratking%20kill%20yamato%2002.mp3",
+  "kw": [
+   [
+    "belong to",
+    "принадлежать"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "abrams",
+  "en": "He was big.",
+  "ru": "Он был большой.",
+  "when": "убил Абрамса",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20atlas%2001.mp3",
+  "kw": [
+   [
+    "big",
+    "большой"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "apollo",
+  "en": "He thought he was better than me.",
+  "ru": "Он думал, что он круче меня.",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20fencer%2001.mp3",
+  "kw": [
+   [
+    "better than me",
+    "лучше меня"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "bebop",
+  "en": "Nice robot got broken!",
+  "ru": "Хорошенького робота сломали!",
+  "when": "убил Бибопа",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20bebop%2001.mp3",
+  "kw": [
+   [
+    "broken",
+    "сломанный"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "billy",
+  "en": "He was silly.",
+  "ru": "Он был глупенький.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20punkgoat%2001.mp3",
+  "kw": [
+   [
+    "silly",
+    "глупенький"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "calico",
+  "en": "Her cat is scary.",
+  "ru": "Её кошка страшная.",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20nano%2001.mp3",
+  "kw": [
+   [
+    "scary",
+    "страшный"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "celeste",
+  "en": "Her hair was so neat!",
+  "ru": "У неё была такая классная причёска!",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20unicorn%2001.mp3",
+  "kw": [
+   [
+    "neat",
+    "классный, опрятный"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "celeste",
+  "en": "I see \"Celesteseses\"!",
+  "ru": "Вижу «Селестесесес»!",
+  "when": "увидел Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20ping%20see%20unicorn%2002.mp3",
+  "kw": [
+   [
+    "see",
+    "вижу"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "doorman",
+  "en": "I like him a lot!",
+  "ru": "Он мне очень нравится!",
+  "when": "убил Дормана",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20doorman%2004.mp3",
+  "kw": [
+   [
+    "a lot",
+    "очень, сильно"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "doorman",
+  "en": "That guy gets it!",
+  "ru": "Этот мужик рубит фишку!",
+  "when": "убил Дормана",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20doorman%2005.mp3",
+  "kw": [
+   [
+    "gets it",
+    "рубить фишку, понимать"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "drifter",
+  "en": "I don't wanna play with Drifter.",
+  "ru": "Я не хочу играть с Дрифтером.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20drifter%2001.mp3",
+  "kw": [
+   [
+    "wanna play",
+    "хотеть играть (want to play)"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "dynamo",
+  "en": "He likes tweed.",
+  "ru": "Он любит твид.",
+  "when": "убил Динамо",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20dynamo%2001.mp3",
+  "kw": [
+   [
+    "tweed",
+    "твид"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "graves",
+  "en": "She smells like wet dirt.",
+  "ru": "Она пахнет мокрой землёй.",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20necro%2001.mp3",
+  "kw": [
+   [
+    "smells like",
+    "пахнуть чем-то"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "grey-talon",
+  "en": "I'm sorry, Grandpa.",
+  "ru": "Прости, дедуля.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20orion%2004.mp3",
+  "kw": [
+   [
+    "Grandpa",
+    "дедуля"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "grey-talon",
+  "en": "I'm worried about his blood pressure.",
+  "ru": "Я беспокоюсь о его давлении.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20orion%2005.mp3",
+  "kw": [
+   [
+    "blood pressure",
+    "кровяное давление"
+   ],
+   [
+    "worried",
+    "беспокоиться"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "haze",
+  "en": "I like her dreams.",
+  "ru": "Мне нравятся её сны.",
+  "when": "убил Хейз",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20haze%2001.mp3",
+  "kw": [
+   [
+    "dreams",
+    "сон"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "holliday",
+  "en": "That's a dead cowboy.",
+  "ru": "Ещё один мёртвый ковбой.",
+  "when": "убил Холлидей",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20astro%2001.mp3",
+  "kw": [
+   [
+    "cowboy",
+    "ковбой"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "infernus",
+  "en": "Neat hat!",
+  "ru": "Классная шляпа!",
+  "when": "убил Инфернуса",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20inferno%2001.mp3",
+  "kw": [
+   [
+    "Neat",
+    "классный"
+   ],
+   [
+    "hat",
+    "шляпа"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "ivy",
+  "en": "She was nice.",
+  "ru": "Она была добрая.",
+  "when": "убил Айви",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20tengu%2001.mp3",
+  "kw": [
+   [
+    "nice",
+    "добрый, милый"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "kelvin",
+  "en": "His coat looks warm.",
+  "ru": "У него тёплое пальто.",
+  "when": "убил Келвина",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20kelvin%2001.mp3",
+  "kw": [
+   [
+    "coat",
+    "пальто"
+   ],
+   [
+    "warm",
+    "тёплый"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "lady-geist",
+  "en": "Pretty green.",
+  "ru": "Зелёный красивый.",
+  "when": "убил Леди Гейст",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20ghost%2001.mp3",
+  "kw": [
+   [
+    "Pretty",
+    "красивый"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "lash",
+  "en": "I want his moustache.",
+  "ru": "Хочу его усы.",
+  "when": "убил Лэша",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20lash%2001.mp3",
+  "kw": [
+   [
+    "moustache",
+    "усы"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "mcginnis",
+  "en": "She builds toys!",
+  "ru": "Она строит игрушки!",
+  "when": "убил МакГиннис",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20forge%2001.mp3",
+  "kw": [
+   [
+    "builds",
+    "строить"
+   ],
+   [
+    "toys",
+    "игрушки"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "mcginnis",
+  "en": "Ready, Micke- Micka- Ginnis?",
+  "ru": "Готова, Мике- Мика- Гиннис?",
+  "when": "спрашивает про МакГиннис",
+  "a": "https://deadlock.wiki/Special:FilePath/familiar_ping_check_on_forge_alt01.mp3",
+  "kw": [
+   [
+    "Ready",
+    "готова"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "mina",
+  "en": "I wanna hold her umbrella.",
+  "ru": "Хочу подержать её зонт.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/familiar_kill_vampirebat_01.mp3",
+  "kw": [
+   [
+    "hold",
+    "держать"
+   ],
+   [
+    "umbrella",
+    "зонт"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "mirage",
+  "en": "For the Djinn!",
+  "ru": "За джиннов!",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20mirage%2001.mp3",
+  "kw": [
+   [
+    "For",
+    "за"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "mo-krill",
+  "en": "Hi Mo!",
+  "ru": "Привет, Мо!",
+  "when": "убил Мо и Крилла",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20krill%2001.mp3",
+  "kw": [
+   [
+    "Hi",
+    "привет"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "paige",
+  "en": "She needs to read me a bedtime story.",
+  "ru": "Пусть почитает мне на ночь.",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20bookworm%2001.mp3",
+  "kw": [
+   [
+    "bedtime story",
+    "сказка на ночь"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "paradox",
+  "en": "She stole.",
+  "ru": "Она украла.",
+  "when": "убил Парадокс",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20chrono%2001.mp3",
+  "kw": [
+   [
+    "stole",
+    "украсть"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "pocket",
+  "en": "I like your scarf.",
+  "ru": "Красивый у тебя шарфик.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20synth%2001.mp3",
+  "kw": [
+   [
+    "scarf",
+    "шарф"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "venator",
+  "en": "I don't know much about priests, but I don't think they're supposed to shoot people.",
+  "ru": "Я мало знаю про священников, но вроде бы они не должны в людей стрелять.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "supposed to",
+    "положено (be supposed to)"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "venator",
+  "en": "I pulled the pin, now what do I do?",
+  "ru": "Чеку выдернул — а дальше что?",
+  "when": "усыпил Венатора ультой (глумится)",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20sleepy%20use%20power%20priest.mp3",
+  "kw": [
+   [
+    "pulled the pin",
+    "выдернуть чеку"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "seven",
+  "en": "He makes my fur tickle.",
+  "ru": "От него у меня шёрстка щекочется.",
+  "when": "убил Севена",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20gigawatt%2001.mp3",
+  "kw": [
+   [
+    "tickle",
+    "щекотать; мурашки"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "shiv",
+  "en": "You're so fancy.",
+  "ru": "Ты такой шикарный.",
+  "when": "убил Шива",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20shiv%2001.mp3",
+  "kw": [
+   [
+    "fancy",
+    "шикарный"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "silver",
+  "en": "She was really scary.",
+  "ru": "Она была по-настоящему страшная.",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20werewolf%2001.mp3",
+  "kw": [
+   [
+    "really scary",
+    "по-настоящему страшная"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "sinclair",
+  "en": "I don't like card tricks, they all end the same!",
+  "ru": "Фокусы с картами не люблю, все они одинаково кончаются!",
+  "when": "убил Синклера",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20magician%2001.mp3",
+  "kw": [
+   [
+    "card tricks",
+    "карточный фокус"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "venator",
+  "en": "He has a name I can't pronounce.",
+  "ru": "У него имя, которое я не могу выговорить.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20priest%2004.mp3",
+  "kw": [
+   [
+    "pronounce",
+    "выговорить, произнести"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "venator",
+  "en": "I see the \"Venader\".",
+  "ru": "Вижу «Венадера».",
+  "when": "увидел Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/familiar_ping_see_priest_01_alt.mp3",
+  "kw": [
+   [
+    "see",
+    "вижу"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "victor",
+  "en": "He looks so sad.",
+  "ru": "Он такой грустный на вид.",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20frank%2001.mp3",
+  "kw": [
+   [
+    "sad",
+    "грустный"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "vindicta",
+  "en": "She hates shoes too.",
+  "ru": "Она тоже ненавидит обувь.",
+  "when": "убил Виндикту",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20hornet%2001.mp3",
+  "kw": [
+   [
+    "hates",
+    "ненавидеть"
+   ],
+   [
+    "shoes",
+    "обувь"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "viscous",
+  "en": "Cuuuubbbeee.",
+  "ru": "Кууууубик.",
+  "when": "убил Вискаса",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20viscous%2001.mp3",
+  "kw": []
+ },
+ {
+  "by": "rem",
+  "about": "vyper",
+  "en": "You can be my cool aunt.",
+  "ru": "Будь моей крутой тётей.",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20viper%2001.mp3",
+  "kw": [
+   [
+    "cool aunt",
+    "крутая тётя"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "warden",
+  "en": "I bet he's mad all the time!",
+  "ru": "Спорим, он вечно злой!",
+  "when": "убил Уордена",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20warden%2001.mp3",
+  "kw": [
+   [
+    "bet",
+    "спорим, наверное"
+   ],
+   [
+    "mad",
+    "злой (разг.)"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "wraith",
+  "en": "She had four arms, that's weird.",
+  "ru": "У неё было четыре руки, это странно.",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20wraith%2001.mp3",
+  "kw": [
+   [
+    "weird",
+    "странный"
+   ],
+   [
+    "four arms",
+    "четыре руки"
+   ]
+  ]
+ },
+ {
+  "by": "rem",
+  "about": "yamato",
+  "en": "She's mean.",
+  "ru": "Она злая.",
+  "when": "убил Ямато",
+  "a": "https://deadlock.wiki/Special:FilePath/Familiar%20kill%20yamato%2001.mp3",
+  "kw": [
+   [
+    "mean",
+    "злая, вредная"
+   ]
+  ]
+ },
+ {
+  "by": "seven",
+  "about": "venator",
+  "en": "Today keeps getting better and better!",
+  "ru": "День становится всё лучше и лучше!",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/gigawatt%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "getting better",
+    "становится лучше (get better)"
+   ]
+  ]
+ },
+ {
+  "by": "seven",
+  "about": "grey-talon",
+  "en": "Good shot, Talon!",
+  "ru": "Хороший выстрел, Тэлон!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/Gigawatt%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Good shot",
+    "хороший выстрел"
+   ]
+  ]
+ },
+ {
+  "by": "shiv",
+  "about": "grey-talon",
+  "en": "Old man's tough as hell!",
+  "ru": "Старик крепкий как чёрт!",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/shiv%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "tough as hell",
+    "крепкий как чёрт (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "shiv",
+  "about": "grey-talon",
+  "en": "Rest, old man.",
+  "ru": "Отдыхай, старик.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/shiv%20kill%20orion%2005.mp3",
+  "kw": [
+   [
+    "Rest",
+    "отдыхать"
+   ]
+  ]
+ },
+ {
+  "by": "silver",
+  "about": "venator",
+  "en": "I took out the Venator.",
+  "ru": "Я убрала Венатора.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/werewolf%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "silver",
+  "about": "grey-talon",
+  "en": "Looks like the arthritis hasn't kicked in after all.",
+  "ru": "Кажется, артрит его всё-таки не настиг.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/werewolf%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "kicked in",
+    "наступить, дать о себе знать"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "abrams",
+  "en": "I took out the detective.",
+  "ru": "Я убрал детектива.",
+  "when": "убил Абрамса",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20atlas%2001.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить (сленг)"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "abrams",
+  "en": "The detective made his move!",
+  "ru": "Детектив сыграл свою партию!",
+  "when": "союзник Абрамс приложил всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20atlas%20big%20stun%2001.mp3",
+  "kw": [
+   [
+    "made his move",
+    "сделать ход, нанести удар"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "apollo",
+  "en": "He had his whole life ahead of him.",
+  "ru": "Вся жизнь у него ещё была впереди.",
+  "when": "убил Аполлона",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20fencer%2001.mp3",
+  "kw": [
+   [
+    "ahead of him",
+    "впереди"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "apollo",
+  "en": "They took out the fencer!",
+  "ru": "Фехтовальщика убрали!",
+  "when": "союзника Аполлона убили",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20fencer%20killed%20in%20lane%2001.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "bebop",
+  "en": "I took out Bebop.",
+  "ru": "Я убрал Бибопа.",
+  "when": "убил Бибопа",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20bebop%2001.mp3",
+  "kw": [
+   [
+    "took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "bebop",
+  "en": "Good hook!",
+  "ru": "Отличный крюк!",
+  "when": "союзник Бибоп зацепил крюком",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20bebop%20far%20hook%2001.mp3",
+  "kw": [
+   [
+    "hook",
+    "крюк, крюк-захват"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "billy",
+  "en": "Just shut up, Billy!",
+  "ru": "Заткнись уже, Билли!",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20punkgoat%2001.mp3",
+  "kw": [
+   [
+    "shut up",
+    "заткнуться"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "billy",
+  "en": "You're not an iconoclast, you're a cliché.",
+  "ru": "Ты не бунтарь, ты штамп.",
+  "when": "убил Билли",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20punkgoat%2002.mp3",
+  "kw": [
+   [
+    "iconoclast",
+    "бунтарь, ниспровергатель"
+   ],
+   [
+    "cliché",
+    "штамп, клише"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "calico",
+  "en": "The black sheep of the Baxter Society is dead.",
+  "ru": "Паршивая овца Общества Бакстера мертва.",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20nano%2001.mp3",
+  "kw": [
+   [
+    "black sheep",
+    "паршивая овца, изгой"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "calico",
+  "en": "I hope your thirty pieces of silver was worth it, Calico.",
+  "ru": "Надеюсь, твои тридцать сребреников того стоили, Калико.",
+  "when": "убил Калико",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20nano%2002.mp3",
+  "kw": [
+   [
+    "thirty pieces of silver",
+    "тридцать сребреников — плата предательства"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "celeste",
+  "en": "She should have stayed in the circus.",
+  "ru": "Надо было оставаться в цирке.",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20unicorn%2001.mp3",
+  "kw": [
+   [
+    "should have stayed",
+    "надо было остаться"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "celeste",
+  "en": "Showmen don't make for great fighters.",
+  "ru": "Шоумены — плохие бойцы.",
+  "when": "убил Селесту",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20unicorn%2002.mp3",
+  "kw": [
+   [
+    "make for",
+    "годиться на роль"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "doorman",
+  "en": "He was ancient. Powerful.",
+  "ru": "Он был древен. Могущественен.",
+  "when": "убил Дормана",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20doorman%2001.mp3",
+  "kw": [
+   [
+    "ancient",
+    "древний"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "doorman",
+  "en": "I need to speak to the others about the Baroness.",
+  "ru": "Надо переговорить с остальными о «Баронессе».",
+  "when": "убил Дормана",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20doorman%2002.mp3",
+  "kw": [
+   [
+    "speak to",
+    "поговорить с"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "drifter",
+  "en": "I hope he suffered.",
+  "ru": "Хочу верить, он помучился.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20drifter%2001.mp3",
+  "kw": [
+   [
+    "suffered",
+    "страдать, мучиться"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "drifter",
+  "en": "Hell is too good for him.",
+  "ru": "Для него и ад — слишком хорошо.",
+  "when": "убил Дрифтера",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20drifter%2002.mp3",
+  "kw": [
+   [
+    "too good for",
+    "слишком хорошо для"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "dynamo",
+  "en": "Science only takes you so far, professor.",
+  "ru": "Наука не всесильна, профессор.",
+  "when": "убил Динамо",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20dynamo%2001.mp3",
+  "kw": [
+   [
+    "takes you so far",
+    "помогает лишь до какого-то предела"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "dynamo",
+  "en": "The professor grabbed 'em!",
+  "ru": "Профессор их затянул!",
+  "when": "союзник Динамо собрал всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20dynamo%20big%20blackhole%2001.mp3",
+  "kw": [
+   [
+    "grabbed",
+    "схватить, зачерпнуть"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "graves",
+  "en": "The dead are nothing to play with, child.",
+  "ru": "С мёртвыми не шутят, дитя.",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20necro%2001.mp3",
+  "kw": [
+   [
+    "nothing to play with",
+    "не игрушка, не для забавы"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "graves",
+  "en": "Killed the lich's pawn.",
+  "ru": "Пешку лича убрал.",
+  "when": "убил Грейвс",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20necro%2002.mp3",
+  "kw": [
+   [
+    "pawn",
+    "пешка"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "grey-talon",
+  "en": "Peace never lasts for men like us.",
+  "ru": "Для таких, как мы, покой недолог.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "lasts",
+    "длиться"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "grey-talon",
+  "en": "Well done, Grey Talon.",
+  "ru": "Хорошая работа, Грей Тэлон.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Well done",
+    "отличная работа"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "haze",
+  "en": "The OSIC is not in control here, Haze!",
+  "ru": "Здесь заправляю не OSIC, Хейз!",
+  "when": "убил Хейз",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20haze%2001.mp3",
+  "kw": [
+   [
+    "in control",
+    "контролировать, заправлять"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "haze",
+  "en": "She's an angel of death!",
+  "ru": "Она — ангел смерти!",
+  "when": "союзница Хейз выкосила всех ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20haze%20big%20ult%2001.mp3",
+  "kw": [
+   [
+    "angel of death",
+    "ангел смерти"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "holliday",
+  "en": "Leave the Troubadour to me, sheriff.",
+  "ru": "Трубадура оставь мне, шериф.",
+  "when": "убил Холлидей",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20astro%2001.mp3",
+  "kw": [
+   [
+    "Leave",
+    "оставить (leave smth to me)"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "holliday",
+  "en": "Thanks, sheriff.",
+  "ru": "Спасибо, шериф.",
+  "when": "союзница Холлидей подбросила на батуте",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20astro%20bounce%20pad%2001.mp3",
+  "kw": [
+   [
+    "Thanks",
+    "спасибо"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "infernus",
+  "en": "I don't fear the flames, Infernus.",
+  "ru": "Огня я не боюсь, Инфернус.",
+  "when": "убил Инфернуса",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20inferno%2001.mp3",
+  "kw": [
+   [
+    "fear",
+    "бояться"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "infernus",
+  "en": "Very effective, Infernus!",
+  "ru": "Эффективно, Инфернус!",
+  "when": "союзник Инфернус сжёг объект",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20inferno%20burns%20down%20objective%2001.mp3",
+  "kw": [
+   [
+    "effective",
+    "эффективный"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "ivy",
+  "en": "I'm sorry I have to do this, Ivy.",
+  "ru": "Прости, Айви, иначе нельзя.",
+  "when": "убил Айви",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20tengu%2001.mp3",
+  "kw": [
+   [
+    "have to",
+    "быть вынужденным"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "ivy",
+  "en": "Well done, little gargoyle.",
+  "ru": "Молодец, гаргулья.",
+  "when": "союзница Айви взяла объект через Кудзу",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20tengu%20take%20objective%20with%20teather%2001.mp3",
+  "kw": [
+   [
+    "Well done",
+    "молодец, отлично"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "kelvin",
+  "en": "The power coursing through Kelvin is unlike anything I've ever encountered before.",
+  "ru": "Сила, что течёт в Келвине, — таких я ещё не встречал.",
+  "when": "убил Келвина",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20kelvin%2001.mp3",
+  "kw": [
+   [
+    "coursing through",
+    "течь по, пронизывать"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "kelvin",
+  "en": "Good timing, Kelvin.",
+  "ru": "Вовремя, Келвин.",
+  "when": "союзник Келвин спас лечением",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20kelvin%20clutch%20heal%2001.mp3",
+  "kw": [
+   [
+    "Good timing",
+    "вовремя, как нельзя кстати"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "lady-geist",
+  "en": "Your unnatural life has come to an end.",
+  "ru": "Твоя неестественная жизнь окончена.",
+  "when": "убил Леди Гейст",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20ghost%2001.mp3",
+  "kw": [
+   [
+    "come to an end",
+    "подойти к концу"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "lady-geist",
+  "en": "Time to finish what Geist started!",
+  "ru": "Пора закончить то, что начала Гейст!",
+  "when": "союзница Леди Гейст обменялась душами",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20ghost%20see%20big%20swap%2001.mp3",
+  "kw": [
+   [
+    "finish",
+    "закончить начатое (finish what someone started)"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "lash",
+  "en": "Lash, the only thing impressive about you is your moustache.",
+  "ru": "Лэш, впечатляют у тебя только усы.",
+  "when": "убил Лэша",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20lash%2001.mp3",
+  "kw": [
+   [
+    "impressive",
+    "впечатляющий"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "lash",
+  "en": "That was beautiful, Lash!",
+  "ru": "Это было прекрасно, Лэш!",
+  "when": "союзник Лэш вдарил с прыжка",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20lash%20see%20massive%20stomp%2001.mp3",
+  "kw": [
+   [
+    "beautiful",
+    "прекрасный"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "mcginnis",
+  "en": "Your tools of war won't be enough, McGinnis.",
+  "ru": "Твоих военных игрушек не хватит, МакГиннис.",
+  "when": "убил МакГиннис",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20forge%2001.mp3",
+  "kw": [
+   [
+    "enough",
+    "достаточно"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "mcginnis",
+  "en": "Thanks for the help, McGinnis.",
+  "ru": "Спасибо за помощь, МакГиннис.",
+  "when": "союзница МакГиннис придавила стеной",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20forge%20wall%20stun%20kill%2001.mp3",
+  "kw": []
+ },
+ {
+  "by": "venator",
+  "about": "mina",
+  "en": "Killed the whiny vampire.",
+  "ru": "Нытику-вампиру крышка.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20vampirebat%2001.mp3",
+  "kw": [
+   [
+    "whiny",
+    "нытик, плаксивый"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "mina",
+  "en": "Mina, you needed a little dose of reality.",
+  "ru": "Мина, тебе не хватало капли реальности.",
+  "when": "убил Мину",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20vampirebat%2002.mp3",
+  "kw": [
+   [
+    "dose of reality",
+    "доза реальности"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "mirage",
+  "en": "He was a man of duty and honour.",
+  "ru": "Он был человеком долга и чести.",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20mirage%2001.mp3",
+  "kw": [
+   [
+    "duty",
+    "долг"
+   ],
+   [
+    "honour",
+    "честь"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "mirage",
+  "en": "In another life we could've been friends.",
+  "ru": "В другой жизни мы могли бы дружить.",
+  "when": "убил Миража",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20mirage%2002.mp3",
+  "kw": [
+   [
+    "In another life",
+    "в другой жизни"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "mo-krill",
+  "en": "A shame we can't be working together, boys.",
+  "ru": "Жаль, что нам не поработать вместе, ребята.",
+  "when": "убил Мо и Крилла",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20krill%2001.mp3",
+  "kw": [
+   [
+    "A shame",
+    "жаль"
+   ],
+   [
+    "working together",
+    "работать вместе"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "mo-krill",
+  "en": "Thanks, Krill!",
+  "ru": "Спасибо, Крилл!",
+  "when": "союзник Крилл вытащил комбо",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20krill%20grab%20mid%20enemy%20ult%2001.mp3",
+  "kw": [
+   [
+    "Thanks",
+    "спасибо (thank)"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "paige",
+  "en": "Poor thing had no idea what she was in for.",
+  "ru": "Бедняжка даже не понимала, во что ввязалась.",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20bookworm%2001.mp3",
+  "kw": [
+   [
+    "was in for",
+    "что тебя ждёт, во что ввязываешься"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "paige",
+  "en": "This isn't a story, Paige! This is the real world!",
+  "ru": "Это не сказка, Пейдж! Это реальный мир!",
+  "when": "убил Пейдж",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20bookworm%2002.mp3",
+  "kw": [
+   [
+    "real world",
+    "реальный мир"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "paradox",
+  "en": "Paradox will regret coming here.",
+  "ru": "Парадокс пожалеет, что пришла.",
+  "when": "убил Парадокс",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20chrono%2001.mp3",
+  "kw": [
+   [
+    "regret",
+    "пожалеть"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "paradox",
+  "en": "Paradox is being wily.",
+  "ru": "Парадокс рулит по-хитрому.",
+  "when": "союзница Парадокс подменила врага к боссу",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20chrono%20swap%20to%20boss%2001.mp3",
+  "kw": [
+   [
+    "wily",
+    "хитрый, лукавый"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "pocket",
+  "en": "Pocket, you picked a bad time to come back to New York.",
+  "ru": "Покет, не время выбрал возвращаться в Нью-Йорк.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20synth%2001.mp3",
+  "kw": [
+   [
+    "picked a bad time",
+    "выбрать неудачный момент"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "pocket",
+  "en": "Fairfax Industries needs to be ripped out, root and stem.",
+  "ru": "Фэйрфакс Индастриз надо вырвать с корнем.",
+  "when": "убил Покета",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20synth%2002.mp3",
+  "kw": [
+   [
+    "root and stem",
+    "с корнем, подчистую"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "rem",
+  "en": "Go back to whatever hole you've crawled out of.",
+  "ru": "Возвращайся в нору, откуда вылез.",
+  "when": "убил Рэма",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20familiar%2001.mp3",
+  "kw": [
+   [
+    "crawled out of",
+    "вылезать из"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "rem",
+  "en": "I'm not fallin' for the cute façade.",
+  "ru": "Милой мордочкой меня не проймёшь.",
+  "when": "убил Рэма",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20familiar%2002.mp3",
+  "kw": [
+   [
+    "fallin' for",
+    "вестись на (fall for)"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "seven",
+  "en": "You're no God, Seven.",
+  "ru": "Ты не бог, Севен.",
+  "when": "убил Севена",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20gigawatt%2001.mp3",
+  "kw": [
+   [
+    "no God",
+    "не бог"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "seven",
+  "en": "That man belonged in Lost Whisper.",
+  "ru": "Этому мужчине место в «Пропавшем шёпоте».",
+  "when": "союзник Севен выкосил ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20gigawatt%20multi%20kill%20ult%2001.mp3",
+  "kw": [
+   [
+    "belonged in",
+    "быть положенным в какое-то место"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "shiv",
+  "en": "There is no redeeming you, Shiv.",
+  "ru": "Тебя не спасти, Шив.",
+  "when": "убил Шива",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20shiv%2001.mp3",
+  "kw": [
+   [
+    "redeeming",
+    "искупить, спасти душу"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "shiv",
+  "en": "He fights like a man possessed!",
+  "ru": "Дерётся как одержимый!",
+  "when": "союзник Шив вырезал нескольких",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20shiv%20multikill%2001.mp3",
+  "kw": [
+   [
+    "possessed",
+    "одержимый"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "silver",
+  "en": "I hate dealin' with werewolves.",
+  "ru": "Ненавижу возиться с оборотнями.",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20werewolf%2001.mp3",
+  "kw": [
+   [
+    "dealin' with",
+    "возиться с (deal with)"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "silver",
+  "en": "I took down Silver.",
+  "ru": "Я завалил Сильвера.",
+  "when": "убил Сильвера",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20werewolf%2002.mp3",
+  "kw": [
+   [
+    "took down",
+    "свалить, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "sinclair",
+  "en": "I'll separate your souls for you.",
+  "ru": "Разлучу ваши души сам.",
+  "when": "убил Синклера",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20magician%2001.mp3",
+  "kw": [
+   [
+    "separate",
+    "разлучить, разделить"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "sinclair",
+  "en": "The magician is no threat to us.",
+  "ru": "Фокусник нам не опасен.",
+  "when": "убил Синклера",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20magician%2002.mp3",
+  "kw": [
+   [
+    "threat",
+    "угроза"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "victor",
+  "en": "What a sad bastard.",
+  "ru": "Какой жалкий тип.",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20frank%2001.mp3",
+  "kw": [
+   [
+    "sad bastard",
+    "жалкий тип (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "victor",
+  "en": "Victor, quit moping around and try to live a life!",
+  "ru": "Виктор, хватит хандрить — поживи уже по-человечески!",
+  "when": "убил Виктора",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20frank%2002.mp3",
+  "kw": [
+   [
+    "moping around",
+    "хандрить, ныть"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "vindicta",
+  "en": "You confuse revenge with justice, Vindicta.",
+  "ru": "Ты путаешь месть с правосудием, Виндикта.",
+  "when": "убил Виндикту",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20hornet%2001.mp3",
+  "kw": [
+   [
+    "confuse",
+    "путать (confuse smth with — путать с)"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "vindicta",
+  "en": "Incredible shot, Vindicta.",
+  "ru": "Невероятный выстрел, Виндикта.",
+  "when": "союзница Виндикта сняла издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20hornet%20far%20snipe%2001.mp3",
+  "kw": [
+   [
+    "Incredible",
+    "невероятный"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "viscous",
+  "en": "Being ignorant of the world doesn't make you immune from consequences!",
+  "ru": "Незнание мира не спасает от последствий!",
+  "when": "убил Вискаса",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20viscous%2001.mp3",
+  "kw": [
+   [
+    "immune from",
+    "иммунитет к, защита от"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "viscous",
+  "en": "This is bliss..",
+  "ru": "Блаженство…",
+  "when": "союзник Вискас спас Кубом",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20viscous%20clutch%20cube%2001.mp3",
+  "kw": [
+   [
+    "bliss",
+    "блаженство"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "vyper",
+  "en": "Wretched woman.",
+  "ru": "Презренная женщина.",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20viper%2001.mp3",
+  "kw": [
+   [
+    "Wretched",
+    "несчастный, презренный"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "vyper",
+  "en": "I won't let you prey on my friends, Vyper.",
+  "ru": "Друзей я тебе не дам обижать, Вайпер.",
+  "when": "убил Вайпера",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20viper%2002.mp3",
+  "kw": [
+   [
+    "prey on",
+    "охотиться на, обижать"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "warden",
+  "en": "His resolve rivaled my own.",
+  "ru": "Его воля не уступала моей.",
+  "when": "убил Уордена",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20warden%2001.mp3",
+  "kw": [
+   [
+    "rivaled",
+    "равняться, не уступать"
+   ],
+   [
+    "resolve",
+    "решимость, воля"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "warden",
+  "en": "He truly is a man of conviction.",
+  "ru": "По-настоящему убеждённый человек.",
+  "when": "союзник Уорден выкосил ультой",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20warden%20big%20ult%2001.mp3",
+  "kw": [
+   [
+    "conviction",
+    "убеждение"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "wraith",
+  "en": "The gambler's dead.",
+  "ru": "Игрок мёртв.",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20wraith%2001.mp3",
+  "kw": [
+   [
+    "gambler's",
+    "игрок, азартный игрок"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "wraith",
+  "en": "Your empire dies today, Wraith.",
+  "ru": "Твоя империя падёт сегодня, Рэйс.",
+  "when": "убил Рэйс",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20wraith%2002.mp3",
+  "kw": [
+   [
+    "empire",
+    "империя"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "yamato",
+  "en": "I took down Yamato.",
+  "ru": "Ямато повержена.",
+  "when": "убил Ямато",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20kill%20yamato%2001.mp3",
+  "kw": [
+   [
+    "took down",
+    "повалить, сразить"
+   ]
+  ]
+ },
+ {
+  "by": "venator",
+  "about": "yamato",
+  "en": "That woman is deadly.",
+  "ru": "Эта женщина — смерть.",
+  "when": "союзница Ямато режет крюком",
+  "a": "https://deadlock.wiki/Special:FilePath/priest%20ally%20yamato%20kills%20with%20hook%2001.mp3",
+  "kw": [
+   [
+    "deadly",
+    "смертоносный"
+   ]
+  ]
+ },
+ {
+  "by": "victor",
+  "about": "venator",
+  "en": "Stopped the Venator.",
+  "ru": "Венатора остановил.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Frank%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Stopped",
+    "остановить"
+   ]
+  ]
+ },
+ {
+  "by": "victor",
+  "about": "grey-talon",
+  "en": "Good shot, Talon.",
+  "ru": "Хороший выстрел, Тэлон.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/Frank%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Good shot",
+    "хороший выстрел"
+   ]
+  ]
+ },
+ {
+  "by": "vindicta",
+  "about": "venator",
+  "en": "I respect you, Venator.",
+  "ru": "Я тебя уважаю, Венатор.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/hornet%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "respect",
+    "уважать"
+   ]
+  ]
+ },
+ {
+  "by": "vindicta",
+  "about": "grey-talon",
+  "en": "Wesley!",
+  "ru": "Уэсли!",
+  "when": "союзника Грей Тэлона убили",
+  "a": "https://deadlock.wiki/Special:FilePath/hornet%20ally%20orion%20killed%20in%20lane%2001.mp3",
+  "kw": []
+ },
+ {
+  "by": "viscous",
+  "about": "grey-talon",
+  "en": "I don't want arrows getting stuck in my goo!",
+  "ru": "Не хочу, чтобы в моей слизи стрелы застревали!",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/viscous%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "goo",
+    "слизь"
+   ]
+  ]
+ },
+ {
+  "by": "viscous",
+  "about": "grey-talon",
+  "en": "Impressive shot, Grey Talon!",
+  "ru": "Впечатляющий выстрел, Грей Тэлон!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/viscous%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Impressive",
+    "впечатляющий"
+   ]
+  ]
+ },
+ {
+  "by": "vyper",
+  "about": "venator",
+  "en": "Took out the Venator.",
+  "ru": "Венатора убрала.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Viper%20kill%20priest%2001.mp3",
+  "kw": [
+   [
+    "Took out",
+    "убрать, завалить"
+   ]
+  ]
+ },
+ {
+  "by": "vyper",
+  "about": "venator",
+  "en": "You know, you'd think the Vatican could afford better assassins.",
+  "ru": "Знаешь, казалось бы, Ватикан мог бы позволить себе убийц получше.",
+  "when": "убил Венатора",
+  "a": "https://deadlock.wiki/Special:FilePath/Viper%20kill%20priest%2002.mp3",
+  "kw": [
+   [
+    "afford",
+    "позволить себе"
+   ],
+   [
+    "assassins",
+    "убийца, ассасин"
+   ]
+  ]
+ },
+ {
+  "by": "warden",
+  "about": "grey-talon",
+  "en": "Don't make me do this, Talon.",
+  "ru": "Не заставляй меня это делать, Тэлон.",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/warden%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "make me do",
+    "заставить кого-то сделать"
+   ]
+  ]
+ },
+ {
+  "by": "warden",
+  "about": "grey-talon",
+  "en": "Excellent shot, Grey Talon.",
+  "ru": "Великолепный выстрел, Грей Тэлон.",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/warden%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "Excellent",
+    "великолепный"
+   ]
+  ]
+ },
+ {
+  "by": "wraith",
+  "about": "grey-talon",
+  "en": "You're a tough old bastard, aren't you Talon?",
+  "ru": "Ты крепкий старый пройдоха, да, Тэлон?",
+  "when": "убил Грей Тэлона",
+  "a": "https://deadlock.wiki/Special:FilePath/wraith%20kill%20orion%2001.mp3",
+  "kw": [
+   [
+    "tough old bastard",
+    "крепкий старый пройдоха (груб.)"
+   ]
+  ]
+ },
+ {
+  "by": "wraith",
+  "about": "grey-talon",
+  "en": "Looks like someone took their arthritis medication!",
+  "ru": "Кто-то, похоже, выпил лекарство от артрита!",
+  "when": "союзник Грей Тэлон снял издалека",
+  "a": "https://deadlock.wiki/Special:FilePath/wraith%20ally%20orion%20far%20shot%2001.mp3",
+  "kw": [
+   [
+    "arthritis",
+    "артрит"
+   ]
+  ]
+ }
+]

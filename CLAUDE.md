@@ -1426,4 +1426,10 @@ Telegram Mini App + бот для изучения **английского (и 
   - Twitter/X — только платный API, не берём;
   - нужно от Андрея: канал + бот админом, токен бота в секреты окружения, домены (`deadlock.wiki`, `api.deadlock-api.com`, `api.telegram.org`, `api.steampowered.com`, `www.reddit.com`, `forums.playdeadlock.com`, `dota.1f8t8graf4.workers.dev`), сразу публиковать или черновик ему.
   - Образец поста — «Патчноут» в макетах v13 (`g13p`).
+- **Ветки Зетки по ТЗ v12 проверены** — `ревью-ZAI-v12-27.10.md`:
+  - `zai/sfx` и `zai/hero-bg` — приняты (медиа в `main` не льём, ждут ключа R2);
+  - `zai/dd-ult` → `data/dd-ult.json` (84 перевода исправлено, ключевые слова переделать Зетке);
+  - `zai/dd-about` → `data/dd-about.json` (29 правок, японские реплики убраны);
+  - `zai/learn` → `learn/dd-chapters.jsonl` + `tools/check_dd_chapters.py`.
+  Приложение эти файлы пока не грузит.
 
