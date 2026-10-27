@@ -5,7 +5,7 @@
 		<include src="s2r://panorama/styles/dashboard.vcss_c" />
 	</styles>
 	<scripts>
-		<include src="s2r://panorama/scripts/restless_probe.vjs_c" />
+		<include src="s2r://panorama/scripts/restless.vjs_c" />
 	</scripts>
 	<snippets>
 		<snippet name="AchievementToast">

@@ -1,11 +1,11 @@
-// Restless 0.5 — пробник мода.
-// Меню по Esc: в укрытии и в матче это игровое меню (hud_escape_menu) — кнопка «Restless» под «Сменить героя»;
+// Restless 0.6 — пробник мода. Файл называется restless.js (до 0.5 — restless_probe.js: старые копии с меньшим номером pak перебивали новый скрипт).
+// Меню по Esc: в укрытии и в матче это игровое меню (hud_escape_menu) — кнопка «Restless» первой в списке под «Сменить героя»;
 // в главном меню игры (dashboard) — после «Тренировки». Кнопка открывает окно настроек.
 // HUD (верхняя панель): надпись RESTLESS и плашка с таймером — слушаются настроек.
 // Память игры не читает, ничего не отправляет. Настройки живут до выхода из игры
 // ($.persistentStorage в Deadlock нет — сохранение после перезапуска будет через нашу страницу).
 (function () {
-	var VER = '0.5';
+	var VER = '0.6';
 	var IMG = 'https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/icon-venator.png';
 	var BOT = 'https://t.me/languagegamesbot';
 	var ctx = $.GetContextPanel();

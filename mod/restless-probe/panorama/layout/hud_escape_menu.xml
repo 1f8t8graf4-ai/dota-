@@ -4,7 +4,7 @@
 		<include src="s2r://panorama/styles/hud_escape_menu.vcss_c" />
 	</styles>
 	<scripts>
-		<include src="s2r://panorama/scripts/restless_probe.vjs_c" />
+		<include src="s2r://panorama/scripts/restless.vjs_c" />
 	</scripts>
 	<CitadelHudEscapeMenu oncancel="CitadelResumePlaying()">
 		<Panel id="EscapeBackground" onactivate="CitadelResumePlaying()" />
@@ -42,10 +42,12 @@
 				<Button id="changehero" class="nav_menu_item primary" onactivate="CitadelEscapeMenuChangeHero()">
 					<Label text="#menu_changehero" class="menuButtonLabel" />
 				</Button>
-				<Button id="RestlessMenuBtn" class="nav_menu_item primary">
-					<Label text="Restless" class="menuButtonLabel" />
-				</Button>
 				<Panel id="SubOptions">
+					<Panel class="FeedbackRow">
+						<Button id="RestlessMenuBtn" class="nav_menu_item minor">
+							<Label text="Restless" class="menuButtonLabel" style="color: #ffc83d;" />
+						</Button>
+					</Panel>
 					<Panel class="FeedbackRow">
 						<Button id="PlayerFeedback" class="nav_menu_item minor" onactivate="CitadelShowPlayerFeedbackPopup()">
 							<Label text="#Citadel_PlayerFeedback_Title" class="menuButtonLabel" />

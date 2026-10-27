@@ -6,7 +6,7 @@
 		<include src="s2r://panorama/styles/unit_status_icons.vcss_c" />
 	</styles>
 	<scripts>
-		<include src="s2r://panorama/scripts/restless_probe.vjs_c" />
+		<include src="s2r://panorama/scripts/restless.vjs_c" />
 	</scripts>
 	<CitadelHudTopBar hittest="false">
 		<GlobalClassListener classes="gDetailView gShopOpen gScoreboardOpen gStreetBrawl gPVE" />
