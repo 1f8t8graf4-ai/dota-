@@ -1,16 +1,15 @@
 /* --- Реплики «как в TikTok» v13 (Андрей: «должна быть ульта со звуком и звуком ульты и т. д.»):
    у каждой реплики — свой момент: ульта (заряд → удар → голос), выход на бой (звон клинка), убийство (аккорд).
    Звуки событий в макете — синтез; в приложении — настоящие звуки абилок из игры (их собирает Зетка). --- */
-const TT13={rat:[{a:'rk-king-here',en:'The rat king is here!',ru:'Крысиный король здесь!',tag:'Ульта',fx:'ult',kw:['king','король']},
-  {a:'rk-priest-vs-king',en:"What's a priest gonna do to a king?!",ru:'И что поп сделает королю?!',tag:'Выход на бой',fx:'enter',kw:['gonna','= going to, собирается']},
+const TT13={rat:[{a:'rk-ult-roll',sx:'rk-a4',en:"Let's roll, boys!",ru:'Погнали, пацаны!',tag:'Ульта · Rule, Ratannia!',fx:'ult',kw:["let's roll",'погнали, поехали']},
+  {a:'rk-king-here',en:'The rat king is here!',ru:'Крысиный король здесь!',tag:'Выход на бой',fx:'enter',kw:['king','король']},
   {a:'rk-took-down',en:'Took down the Venatah!',ru:'Уложил Венатора!',tag:'Убил Венатора',fx:'kill',kw:['took down','уложил, завалил']},
   {a:'rat-king-18',en:"Who's exterminating who now!",ru:'Ну и кто теперь кого травит?!',tag:'Убийство · игра слов',fx:'kill',kw:['exterminating','травить (крыс, тараканов)']}],
- venator:[{a:'ven-not-merciful',en:'The Lord is merciful... I am not.',ru:'Господь милосерден… а вот я — нет.',tag:'Ульта',fx:'ult',kw:['merciful','милосердный']},
-  {a:'ven-evil-stirs',en:'Evil stirs in New York... and so the Vatican has called on me.',ru:'В Нью-Йорке пробуждается зло… и Ватикан призвал меня.',tag:'Выход на бой',fx:'enter',kw:['called on','призвал, позвал на помощь']},
-  {a:'ven-evil-dies',en:'Evil dies today.',ru:'Зло сегодня умрёт.',tag:'Убийство',fx:'kill',kw:['evil','зло']}]};
+ venator:[{a:'ven-evil-dies',sx:'ven-a4',en:'Evil dies today.',ru:'Зло сегодня умрёт.',tag:'Ульта · Ira Domini',fx:'ult',kw:['evil','зло']},
+  {a:'ven-evil-stirs',en:'Evil stirs in New York... and so the Vatican has called on me.',ru:'В Нью-Йорке пробуждается зло… и Ватикан призвал меня.',tag:'Выход на бой',fx:'enter',kw:['called on','призвал, позвал на помощь']}]};
 const TTL13={ult:'УЛЬТА',enter:'ВЫХОД',kill:'УБИЛ'};
 function tt13(R,ctx,o){o=o||{};let k=o.hero==='venator'?'venator':'rat',i=0,touched=false,busy=false;R.className='scr v8 tt13';
- S13.preload([...TT13.rat,...TT13.venator].map(x=>x.a));
+ S13.preload([...TT13.rat,...TT13.venator].flatMap(x=>x.sx?[x.a,x.sx]:[x.a]));
  R.innerHTML=`${SB(0)}<div class="tt13-bg"></div><i class="tt13-vg"></i><i class="tt13-dk"></i>
   <div class="tt13-hd"><button class="bk">${ic('back')}</button><span><small>РЕПЛИКИ ГЕРОЕВ · КАК В TIKTOK</small><b class="nm"></b></span></div>
   <div class="tt13-tags"></div>
@@ -34,7 +33,7 @@ function tt13(R,ctx,o){o=o||{};let k=o.hero==='venator'?'venator':'rat',i=0,touc
    an($('.fr',stg),[{transform:'scale(1)'},{transform:'scale(.94)'}],{d:860,e:'cubic-bezier(.5,0,.9,.6)',f:'forwards'})}
   else if(x.fx==='enter'){an($('.gl',stg),[{transform:'translateX(-130%) skewX(-18deg)'},{transform:'translateX(130%) skewX(-18deg)'}],{d:700,e:EIO})}
   else{an(dk,[{opacity:0},{opacity:.5,offset:.2},{opacity:.25}],{d:700,f:'forwards'})}
-  const gap=S13.live()?S13.sfx(x.fx):(x.fx==='ult'?900:300);await ctx.wait(gap||300);if(!ctx.alive)return;
+  let gap=S13.live()&&x.sx?S13.fxPlay(x.sx):-1;if(gap<0)gap=S13.live()?S13.sfx(x.fx):(x.fx==='ult'?900:300);await ctx.wait(gap||300);if(!ctx.alive)return;
   // удар
   const r=rel($('.fr',stg),R);an($('.tt13-fl',R),[{opacity:0},{opacity:x.fx==='kill'?.4:.6,offset:.1},{opacity:0}],{d:520});shake($('.fr',stg),x.fx==='ult'?9:5,360);
   an($('.fr',stg),[{transform:'scale(1.08)'},{transform:'scale(1)'}],{sp:SPb,f:'forwards'});an($('.wave',stg),[{opacity:.9,transform:'translate(-50%,-50%) scale(.3)'},{opacity:0,transform:'translate(-50%,-50%) scale(2.6)'}],{d:700,e:EO});
@@ -91,7 +90,7 @@ function ab13(R,ctx,o){o=o||{};let i=-1,touched=false;R.className='scr v8 ab13';
 /* --- Звук реплики v13 (Андрей: «10 из 10, просто улучши»): добавил регуляторы фона и эха, по три реплики на героя, звук события перед каждой.
    В Versus фона нет — только голос и лёгкое эхо (там шум мешал). --- */
 function sd13(R,ctx){R.className='scr v8 sd12 sd13';let k='venator',j=0,bv=.5,ec=.3,wet=true,pl=false;
- const L=()=>TT13[k].slice(0,3);S13.preload([...TT13.rat,...TT13.venator].map(x=>x.a));
+ const L=()=>TT13[k].slice(0,3);S13.preload([...TT13.rat,...TT13.venator].flatMap(x=>x.sx?[x.a,x.sx]:[x.a]));
  R.innerHTML=`${SB(0)}<div class="sd12-hd"><b>Звук реплик</b><small>голос + место + звук события</small></div>
   <div class="sd12-sg"><button class="on" data-k="venator">${hic12('venator')}Венатор · собор</button><button data-k="rat">${hic12('rat')}Король · туннели</button></div>
   <div class="sd13-ls"></div>
@@ -110,5 +109,5 @@ function sd13(R,ctx){R.className='scr v8 sd12 sd13';let k='venator',j=0,bv=.5,ec
  ctx.on($('.bv',R),'input',e=>{bv=e.target.value/100;lbl();S13.bedVol(bv)});ctx.on($('.ec',R),'input',e=>{ec=e.target.value/100*.5;lbl()});
  function go(w){wet=w;const x=L()[j];S13.stopLine();R.classList.add('pl');R.classList.toggle('dry',!w);cd.classList.add('say');
   if(w)S13.bed(k==='rat'?'sewer':'cathedral',bv);else S13.bedOff();
-  ctx.t(()=>say13(ctx,x.a,{echo:w?ec:0,sfx:w?x.fx:null,end(){cd.classList.remove('say');R.classList.remove('pl');if(!w)return;ctx.t(()=>{if(!R.classList.contains('pl'))S13.bedOff()},2600)}}),w?500:60)}
+  ctx.t(()=>say13(ctx,x.a,{echo:w?ec:0,sfx:w?x.fx:null,sx:w?x.sx:null,end(){cd.classList.remove('say');R.classList.remove('pl');if(!w)return;ctx.t(()=>{if(!R.classList.contains('pl'))S13.bedOff()},2600)}}),w?500:60)}
  ctx.on($('.dry',R),'click',()=>go(false));ctx.on($('.wet',R),'click',()=>go(true));ctx.add(()=>S13.stop())}

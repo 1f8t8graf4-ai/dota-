@@ -6,8 +6,8 @@ P = os.path.join(S, '..', 'glavnaya-dd.tpl.html')
 t = open(P, encoding='utf8').read()
 if "g13:'Игры v13'" in t:
     sys.exit('v13 уже вставлена — откати шаблон из git (git checkout -- glavnaya-dd.tpl.html) и запусти снова')
-css = open(os.path.join(S, 'v13.css'), encoding='utf8').read()
-js = '\n'.join(open(os.path.join(S, f), encoding='utf8').read() for f in ['a13.js', 'b13.js', 'c13.js', 'e13.js', 'l13.js', 's13.js', 'd13.js'])
+css = '\n'.join(open(os.path.join(S, f), encoding='utf8').read() for f in ['v13.css', 'p13.css'])
+js = '\n'.join(open(os.path.join(S, f), encoding='utf8').read() for f in ['a13.js', 'b13.js', 'c13.js', 'e13.js', 'p13.js', 'l13.js', 's13.js', 'd13.js'])
 def R(a, b):
     global t
     assert a in t, 'нет: ' + a[:90]
@@ -19,7 +19,7 @@ i = t.index(m); t = t[:i] + js + '\n' + t[i:]
 R("ctx.t(()=>g12Hub(R,ctx,cd,{onClose(){hub=false}}),140)", "ctx.t(()=>(o.hub||g12Hub)(R,ctx,cd,{onClose(){hub=false}}),140)")
 R("const GN={g12:'Игры v12',", "const GN={g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',")
 R("const VERS=[['v12','отзыв на v11 · 26.10',",
-  "const VERS=[['v13','отзыв на v12 · 26.10',[['g13','Игры · 9'],['k13','Комикс · выбор главы · 2'],['l13','Обучение · 5'],['s13','Настройки · 2']]],\n ['v12','отзыв на v11 · 26.10',")
+  "const VERS=[['v13','отзыв на v12 · 26.10',[['g13','Игры · 10'],['k13','Комикс · выбор главы · 2'],['l13','Обучение · 5'],['s13','Настройки · 2']]],\n ['v12','отзыв на v11 · 26.10',")
 R("Прошлые версии<small>v11 … v1 — нажми, чтобы сравнить</small>", "Прошлые версии<small>v12 … v1 — нажми, чтобы сравнить</small>")
 for k, v in [('games-tab', 'g13t'), ('hub', 'g13h'), ('radar-3d', 'g13r'), ('comic', 'k13a'), ('versus', 'g13v'), ('herobg', 'g13f'), ('learn-deep', 'l13d'), ('set-user', 's13u'), ('set-adm', 's13a')]:
     R(f"'{k}':[", f"'{k}':[['v13','{v}'],")

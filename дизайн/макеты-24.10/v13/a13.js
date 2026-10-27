@@ -50,13 +50,15 @@ const S13=(()=>{let ac=null,out=null,rv=null,cur=null,bed=null,bedN='',bedV=.5,d
   if(kind==='ko'){boom(60,.9,t,1.6);[110,164.8].forEach(f=>{const o=o2(f,'triangle'),g=ac.createGain();env(g,.02,.08,2.4,t);o.connect(g);g.connect(rv);o.start(t);o.stop(t+2.5)});return 0}
   if(kind==='tick'){const o=o2(1800),g=ac.createGain();env(g,.002,.05,.06,t);o.connect(g);g.connect(out);o.start(t);o.stop(t+.08);return 0}
   return 0}
+ // 27.10: настоящий звук абилки из игры (Зетка, ветка zai/sfx) — поверх, не обрывая реплику; вернёт, через сколько мс пускать голос (-1 — нет файла)
+ function fxPlay(k){k=key(k);const b=BUF[k];if(!b||!live())return -1;const s=ac.createBufferSource();s.buffer=b;const g=ac.createGain();g.gain.value=.85;s.connect(g);g.connect(out);const e=ac.createGain();e.gain.value=.22;g.connect(e);e.connect(rv);s.start();return Math.round(Math.min(b.duration*700,1500))}
  function stop(){stopLine();bedOff()}
- return {A0,load,preload,line,stopLine,bed:bedOn,bedVol,bedOff,sfx,stop,live,unlocked:()=>ok}})();
+ return {A0,load,preload,line,stopLine,bed:bedOn,bedVol,bedOff,sfx,fxPlay,stop,live,unlocked:()=>ok}})();
 // старый звук v12 тоже открываем на первом касании — чтобы и в v12 реплики по таймеру звучали
 ['pointerdown','touchend'].forEach(ev=>document.addEventListener(ev,()=>{try{const a=SND12.A0();if(a&&a.state!=='running')a.resume()}catch(e){}},{capture:true,passive:true}));
 // реплика: до первого касания — молча (только волна), после — голос; sfx — звук события перед голосом
 function say13(ctx,k,o){o=o||{};const d=(DUR11[AU11[k]||k]||2.4)*1000;let done=false;const fin=()=>{if(done)return;done=true;o.end&&o.end()};
- const gap=o.sfx&&S13.live()?S13.sfx(o.sfx):0;const go=()=>{S13.line(k,{echo:o.echo,gain:o.gain,end:fin}).then(x=>{if(!x)ctx.t(fin,d)})};
+ let gap=o.sx&&S13.live()?S13.fxPlay(o.sx):-1;if(gap<0)gap=o.sfx&&S13.live()?S13.sfx(o.sfx):0;const go=()=>{S13.line(k,{echo:o.echo,gain:o.gain,end:fin}).then(x=>{if(!x)ctx.t(fin,d)})};
  if(gap)ctx.t(go,gap);else go();ctx.add(()=>S13.stopLine());ctx.t(fin,d+gap+400);return d+gap}
 
 /* --- герои v13 --- */
