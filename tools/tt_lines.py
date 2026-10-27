@@ -331,6 +331,8 @@ class Art:
         cw, ch = bw * s, bh * s
         ox = (bw - cw) / 2 + 6 * math.sin(2 * math.pi * t / 9)
         oy = (bh - ch) / 2 + 5 * math.sin(2 * math.pi * t / 7)
+        ox = min(max(ox, 0), bw - cw)
+        oy = min(max(oy, 0), bh - ch)
         return self.big.resize(self.size, Image.BILINEAR, box=(ox, oy, ox + cw, oy + ch))
 
 

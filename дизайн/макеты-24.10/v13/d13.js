@@ -125,7 +125,7 @@ V.push({g:'g13',id:'g13k',n:'Ролики в TikTok · проба',
  minus:'В макете ролики ужаты до 720p, настоящие — 1080×1920 (прислал файлами). Пачку на всех героев собирает Зетка — ТЗ-ZAI-tiktok-27.10.md.',
  mount(R,ctx){ttk13(R,ctx)}});
 function ttk13(R,ctx){
- const L=[['tt_hunt','Диалог · охота'],['tt_rk','Фразы · Король про Венатора']];
+ const L=[['tt_dm','Дормен · Талон','Дормен полез Грей Талону в больное 🛎 #deadlock #английский'],['tt_hunt','Охота','Венатор пришёл за Крысиным королём ✝️ #deadlock #английский'],['tt_rk','Король про Венатора','Что Король сказал Венатору 🐀 #deadlock #английский']];
  const ic=p=>`<svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">${p}</svg>`;
  R.className='scr v8 g11 ttk13';
  R.innerHTML=`<style>
@@ -141,11 +141,11 @@ function ttk13(R,ctx){
 </style>${SB(0)}<div class="tk-v"><video playsinline loop muted></video></div>
 <div class="tk-ui"><div class="tk-top"><span>Подписки</span><b>Для вас</b></div>
 <div class="tk-r"><i><span class="tk-av">Я</span></i><i>${ic('<path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.6 4.5c2 0 3.6 1.1 5.4 3.2 1.8-2.1 3.4-3.2 5.4-3.2 3.6 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z"/>')}48,2K</i><i>${ic('<path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.4 1.2 4.6 3.1 6.1L4.5 21l4-2.1c1.1.3 2.3.5 3.5.5 5.5 0 10-3.8 10-8.5S17.5 3 12 3z"/>')}1 204</i><i>${ic('<path d="M6 3h12v18l-6-4-6 4z"/>')}3 911</i><i>${ic('<path d="M14 4l8 7-8 7v-4.5C8 13.5 4.5 15.5 2 20c.8-6.5 4.5-11 12-11.5z"/>')}Поделиться</i></div>
-<div class="tk-cap"><b>@languagegamesbot</b>Что Король сказал Венатору 🐀 #deadlock #английский</div></div>
+<div class="tk-cap"><b>@languagegamesbot</b><span class="tk-ct"></span></div></div>
 <button class="tk-ub">UI TikTok</button><div class="tk-snd">тап — звук</div>
 <div class="tk-sw">${L.map((x,i)=>`<button data-i="${i}" class="${i?'':'on'}">${x[1]}</button>`).join('')}</div>`;
  const v=R.querySelector('video'),snd=R.querySelector('.tk-snd');
- const set=i=>{R.querySelectorAll('.tk-sw button').forEach((b,j)=>b.classList.toggle('on',j===i));v.src=vurl(L[i][0]);try{v.currentTime=0}catch(e){}const p=v.play();if(p&&p.catch)p.catch(()=>{})};
+ const set=i=>{R.querySelectorAll('.tk-sw button').forEach((b,j)=>b.classList.toggle('on',j===i));v.src=vurl(L[i][0]);R.querySelector('.tk-ct').textContent=L[i][2];try{v.currentTime=0}catch(e){}const p=v.play();if(p&&p.catch)p.catch(()=>{})};
  R.querySelectorAll('.tk-sw button').forEach(b=>ctx.on(b,'click',e=>{e.stopPropagation();set(+b.dataset.i)}));
  ctx.on(R.querySelector('.tk-ub'),'click',e=>{e.stopPropagation();R.classList.toggle('noui')});
  ctx.on(R.querySelector('.tk-v'),'click',()=>{v.muted=!v.muted;snd.textContent=v.muted?'звук выкл':'звук вкл';snd.style.opacity=1;ctx.t(()=>{snd.style.opacity=0},900);const p=v.play();if(p&&p.catch)p.catch(()=>{})});
