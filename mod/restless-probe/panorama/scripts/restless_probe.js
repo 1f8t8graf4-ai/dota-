@@ -9,7 +9,9 @@
 
 	function mk(type, parent, id, st) {
 		var p = $.CreatePanel(type, parent, id || '');
-		for (var k in st) p.style[k] = st[k];
+		for (var k in st) {
+			try { p.style[k] = st[k]; } catch (e) { $.Msg('[Restless] стиль ' + k + ': ' + e); }
+		}
 		return p;
 	}
 

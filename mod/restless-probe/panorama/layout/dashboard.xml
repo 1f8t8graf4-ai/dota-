@@ -30,7 +30,7 @@
 					<Panel id="LeftStripe" hittest="false">
 						<Panel id="LogoArea">
 							<Panel id="GameTitle" />
-							<Label class="GameSubtext" text="#Citadel_Main_EarlyDevBuild" />
+							<Label class="GameSubtext" text="Restless: мод загружен" />
 						</Panel>
 						<Panel id="Menu" hittest="false">
 							<Button id="resume" class="nav_menu_item primary" onactivate="CitadelResumePlaying()">
