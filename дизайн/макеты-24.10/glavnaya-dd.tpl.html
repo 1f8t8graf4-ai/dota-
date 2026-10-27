@@ -5845,6 +5845,9 @@ html.lite .h11 *{animation:none!important}
 .dn-go{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .dn-go button,.dn-go a{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:7px 12px;font:600 13px/1 Inter,sans-serif;cursor:pointer;text-decoration:none}
 .dn-go button:hover,.dn-go a:hover{background:var(--acc);color:var(--acct);border-color:transparent}
+/* стрелка у вложенных версий: была как у открытой, если открыты «Прошлые версии» */
+.vers details:not([open])>summary::after{transform:rotate(45deg)}
+.vers details[open]>summary::after{transform:rotate(225deg)}
 
 </style>
 
@@ -13155,7 +13158,7 @@ const VERS=[['v15','27.10 · ночь · твои ответы',[['h9','Глав
  ['v5','',[['h4','Главная'],['x5','Дизайн']]],['v4','',[['x4','Дизайн']]],['v3','',[['h3','Главная'],['k3','Комикс'],['x3','Дизайн']]],
  ['v2','',[['h2','Главная'],['d2','ДД'],['o2','Запуск']]],['v1','',[['home','Главная'],['dd','ДД'],['ob','Запуск']]]];
 const VDET=(v,open)=>`<details${open?' open':''}><summary>${v[0]}${open?'<span class="nw">новое</span>':''}<small>${v[1]}</small></summary><div class="bs">${v[2].map(b=>`<button data-g="${b[0]}">${b[1]}</button>`).join('')}</div></details>`;
-$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v13 … v1 — нажми, чтобы сравнить</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
+$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v14 … v1 — нажми на версию, она раскроется</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
 // «Как было»: тот же экран в прошлых версиях
 const CMPV={'set-user':[['v15','s15u'],['v13','s13u'],['v11','s11u'],['v9','s9u']],'set-watch':[['v11','s11w'],['v9','s9u']],'set-adm':[['v15','s15a'],['v13','s13a'],['v11','s11a'],['v9','s9a']],
  'games-tab':[['v13','g13t'],['v12','g12t'],['v11','g11t'],['v10','g10a'],['v9','g8a']],'games-row':[['v11','g11c'],['v10','g10c'],['v9','g9c']],'hub':[['v15','d15h'],['v13','g13h'],['v12','g12h'],['v11','g11h'],['v10','g10a'],['v9','g8a']],

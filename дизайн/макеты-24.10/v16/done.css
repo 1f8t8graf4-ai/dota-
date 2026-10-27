@@ -37,3 +37,6 @@
 .dn-go{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .dn-go button,.dn-go a{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:7px 12px;font:600 13px/1 Inter,sans-serif;cursor:pointer;text-decoration:none}
 .dn-go button:hover,.dn-go a:hover{background:var(--acc);color:var(--acct);border-color:transparent}
+/* стрелка у вложенных версий: была как у открытой, если открыты «Прошлые версии» */
+.vers details:not([open])>summary::after{transform:rotate(45deg)}
+.vers details[open]>summary::after{transform:rotate(225deg)}
