@@ -152,3 +152,107 @@ function ttk13(R,ctx){
  ctx.t(()=>{snd.style.opacity=0},2600);
  ctx.add(()=>{try{v.pause();v.removeAttribute('src');v.load()}catch(e){}});
  set(0)}
+
+/* --- 27.10 (облако): канал по Deadlock — как бот находит новое и что тебе приходит; тест на настоящих файлах игры 16–26.10 --- */
+V.push({g:'g13',id:'g13c',n:'Канал · как это работает (тест)',
+ idea:'Так это будет работать. Раз-два в день бот сам смотрит, что нового: файлы игры (там сливы видны первыми), патчноуты, форум, Reddit. Нашёл — пишет тебе в Telegram: что нашёл, откуда, и готовый черновик поста. Ты жмёшь «В канал» — пост уходит в канал; «Переписать» — короче или подробнее; «Пропустить» — ничего. Здесь всё на настоящих данных: что поменялось в файлах Deadlock с 16 по 26 октября.',
+ moves:['бот присылает находку и черновик','«В канал» — пост появляется в канале с просмотрами и реакциями','«Переписать» — короткая версия','«Скопировать пост» — текст в буфер'],
+ from:'Твоё: «не совсем врубился, как это будет работать — сделай тестовый разбор патча и добавь в макеты».',
+ minus:'Из облака сейчас доступны только файлы игры (SteamDatabase на GitHub). Форум, Reddit, вики и Telegram для публикации — когда разрешишь домены и дашь токен бота. Сливы из файлов — не анонс: Valve может всё поменять.',
+ mount(R,ctx){chn13(R,ctx)}});
+const CHN13={
+ find:`<b>🔎 Нашёл новое в Deadlock</b>
+<small>файлы игры · сборки 6790–6821 · 16–26.10</small>
+• Вайолет (Художница): 4 способности и лор
+• Медсестра Харроу: весь набор способностей
+• Уорден: ульта теперь спасает от страха
+• 2 предмета: срабатывают по любым героям
+<i>Черновик поста ниже ↓</i>`,
+ post:`<b>СЛИВЫ НЕДЕЛИ · что нашли в файлах Deadlock</b>
+<small>16–26 октября · это не анонс, Valve может поменять</small>
+
+<b>🎨 Вайолет — героиня-художница</b>
+• <b>Living Ink</b> — следующие 3 пули оживают, ими можно рулить в полёте. Или рисуешь чернилами стену: она держит пули и героев.
+• <b>Flow State</b> — кисть едет вперёд и оставляет след: союзники по нему скользят дальше.
+• <b>Still Life</b> — выбираешь героя «натурщиком» и рисуешь, пока смотришь на него. Дорисовала — он получает урон, а ты подбираешь эскиз и навсегда забираешь его статы.
+• <b>Abstract Landscape</b> — круг из туши: снаружи не видно, кто внутри, а враг, который выходит, получает урон.
+<i>Лор: переехала в Нью-Йорк в 12, арт-школа, выставка в MoMA — и страх умереть неудачницей. На Ритуал идёт, чтобы мир её увидел.</i>
+
+<b>💉 Медсестра Харроу</b>
+• <b>Leech Therapy</b> — банка пиявок: пьют здоровье и съедают баффы врагов. Сытых пиявок она подбирает и растёт.
+• <b>Lurking Terrors</b> — открывает сумку с ужасами: кто на неё смотрит, копит страх и не может прыгать и дэшить. На максимуме — убегает.
+• <b>Healing Needles</b> — магазин шприцев, лечит союзников выстрелами.
+• <b>Wretched Vapors</b> — пар на себя или союзника: сначала всё быстрее и урон не чувствуется, потом откат — медленнее и урон догоняет.
+
+<b>🛡 Уорден</b> — ульта Last Stand теперь даёт иммунитет к страху. Явно под Харроу.
+<b>🔫 Tech Overflow и Reinforcing Casings</b> — было «попадание по вражескому герою», стало «по герою». Похоже, будут срабатывать и при лечении союзников шприцами.
+
+<b>📚 Английский из патча</b>
+• <b>still life</b> — натюрморт (дословно «тихая жизнь»)
+• <b>leech</b> — пиявка; <b>to leech off someone</b> — сидеть на шее
+• <b>lurking</b> — притаившийся; <b>lurker</b> — тот, кто читает чат, но молчит
+• <b>wretched</b> — мерзкий, жалкий
+
+Реплики героев с переводом — @languagegamesbot`,
+ short:`<b>СЛИВЫ НЕДЕЛИ · Deadlock</b>
+🎨 <b>Вайолет</b> — художница: оживляет пули, рисует стены из туши, «натурщик» отдаёт ей статы навсегда.
+💉 <b>Харроу</b> — пиявки, шприцы, страх: смотришь на неё — не можешь прыгать.
+🛡 <b>Уорден</b> — иммунитет к страху в ульте.
+📚 <b>still life</b> — натюрморт · <b>leech off</b> — сидеть на шее
+@languagegamesbot`};
+function chn13(R,ctx){
+ R.className='scr v8 g11 chn13';
+ const plain=h=>h.replace(/<br>/g,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ');
+ const nl=s=>s.replace(/\n/g,'<br>');
+ R.innerHTML=`<style>
+.chn13{background:#0E1621;color:#E8EDF2;font:14px/1.38 -apple-system,Inter,sans-serif}
+.chn13 .c-hd{position:absolute;top:44px;left:0;right:0;height:52px;display:flex;align-items:center;gap:10px;padding:0 14px;background:#17212B;z-index:5;border-bottom:1px solid #0B121A}
+.chn13 .c-av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:800 15px/1 Inter;color:#fff;flex:none}
+.chn13 .c-hd b{display:block;font:700 15px/1.2 Inter}.chn13 .c-hd small{color:#7F91A4;font-size:12px}
+.chn13 .c-bd{position:absolute;top:96px;left:0;right:0;bottom:0;overflow-y:auto;padding:12px 10px 90px;scrollbar-width:none;background:#0E1621 linear-gradient(160deg,#0E1621,#132233)}
+.chn13 .c-bd::-webkit-scrollbar{display:none}
+.chn13 .m{max-width:92%;background:#182533;border-radius:14px 14px 14px 4px;padding:9px 11px 6px;margin:0 0 8px;font-size:13px}
+.chn13 .m small{display:block;color:#7F91A4;font-size:11px;margin:2px 0 4px}
+.chn13 .m i{color:#9FB0C2}
+.chn13 .m .t{display:block;text-align:right;color:#6D7F92;font-size:10.5px;margin-top:3px}
+.chn13 .m.dr{border:1px dashed #3A5068;background:#152231}
+.chn13 .kb{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:-2px 0 10px;max-width:92%}
+.chn13 .kb button{border:0;border-radius:9px;background:#22384D;color:#E8EDF2;font:600 12.5px/1.1 Inter;padding:10px 4px}
+.chn13 .kb button.pr{background:#2B83D6}
+.chn13 .kb button.hint{animation:chh 1.4s ease-in-out infinite}
+@keyframes chh{50%{transform:scale(1.06);box-shadow:0 0 0 4px rgba(43,131,214,.35)}}
+.chn13 .mine{margin-left:auto;background:#2B5278;border-radius:14px 14px 4px 14px}
+.chn13 .post{background:#182533;border-radius:12px;padding:10px 12px 8px;font-size:13px}
+.chn13 .post .ft{display:flex;align-items:center;gap:8px;margin-top:8px;color:#7F91A4;font-size:11px}
+.chn13 .post .rx{display:flex;gap:5px}.chn13 .post .rx span{background:#22384D;border-radius:12px;padding:3px 7px;color:#E8EDF2;font-size:11px}
+.chn13 .cp{position:absolute;left:12px;right:12px;bottom:26px;z-index:6;border:0;border-radius:14px;background:#2B83D6;color:#fff;font:700 14px/1 Inter;padding:14px}
+.chn13 .cp.gh{background:#22384D}
+.chn13 .lbl{text-align:center;color:#7F91A4;font-size:11px;margin:4px 0 10px}
+</style>${SB(0)}<div class="c-hd"></div><div class="c-bd"></div><button class="cp gh" hidden></button>`;
+ const hd=R.querySelector('.c-hd'),bd=R.querySelector('.c-bd'),cp=R.querySelector('.cp');
+ const head=(ch)=>{hd.innerHTML=ch?`<span class="c-av" style="background:linear-gradient(135deg,#C9A45A,#7A5A1E)">D</span><div><b>Deadlock по-русски</b><small>канал · 1 284 подписчика</small></div>`:`<span class="c-av" style="background:linear-gradient(135deg,#3FA96B,#1E6B45)">R</span><div><b>Deadlock · радар</b><small>бот · пишет только тебе</small></div>`};
+ const pop=el=>{try{el.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:260,easing:'cubic-bezier(.2,.8,.2,1)'})}catch(e){}};
+ const add=(html,cls)=>{const d=document.createElement('div');d.className=cls||'m';d.innerHTML=html;bd.appendChild(d);pop(d);bd.scrollTop=bd.scrollHeight;return d};
+ let mode='full';
+ function chat(){
+  head(0);bd.style.paddingBottom='';bd.innerHTML='';cp.hidden=true;
+  add(`<small>сегодня · 09:30 · проверка по расписанию</small>${nl(CHN13.find)}<span class="t">09:30</span>`);
+  ctx.t(()=>{
+   add(`${nl(mode==='short'?CHN13.short:CHN13.post)}<span class="t">черновик</span>`,'m dr');
+   const kb=add(`<button class="pr hint" data-a="pub">📣 В канал</button><button data-a="re">✏️ ${mode==='short'?'Подробнее':'Короче'}</button><button data-a="skip">🗑 Пропустить</button>`,'kb');
+   kb.querySelectorAll('button').forEach(b=>ctx.on(b,'click',()=>act(b.dataset.a)));
+  },500);
+ }
+ function act(a){
+  if(a==='pub'){add('📣 В канал','m mine');ctx.t(()=>{add('✅ Опубликовано в «Deadlock по-русски». <i>Открываю канал…</i><span class="t">09:31</span>');ctx.t(channel,900)},350)}
+  else if(a==='re'){mode=mode==='short'?'full':'short';add(mode==='short'?'✏️ Короче':'✏️ Подробнее','m mine');ctx.t(()=>{add(mode==='short'?'Сократил до 5 строк ↓':'Вернул полную версию ↓');ctx.t(()=>{const d=add(`${nl(mode==='short'?CHN13.short:CHN13.post)}<span class="t">черновик</span>`,'m dr');const kb=add(`<button class="pr" data-a="pub">📣 В канал</button><button data-a="re">✏️ ${mode==='short'?'Подробнее':'Короче'}</button><button data-a="skip">🗑 Пропустить</button>`,'kb');kb.querySelectorAll('button').forEach(b=>ctx.on(b,'click',()=>act(b.dataset.a)))},400)},350)}
+  else{add('🗑 Пропустить','m mine');ctx.t(()=>{add('Ок, не публикую. Следующая проверка — завтра в 09:30.');ctx.t(()=>{const kb=add('<button class="pr" data-a="again" style="grid-column:1/-1">↺ Показать ещё раз</button>','kb');kb.querySelector('button').onclick=()=>chat()},500)},350)}
+ }
+ function channel(){
+  head(1);bd.style.paddingBottom='160px';bd.innerHTML='<div class="lbl">сегодня</div>';
+  const d=add(`${nl(mode==='short'?CHN13.short:CHN13.post)}<div class="ft"><span class="rx"><span>🔥 214</span><span>🤯 87</span><span>👍 51</span></span><span style="margin-left:auto">👁 3,1K · 09:31</span></div>`,'post');
+  cp.hidden=false;cp.className='cp';cp.textContent='Скопировать пост';
+  cp.onclick=()=>{const txt=plain(nl(mode==='short'?CHN13.short:CHN13.post));const ok=()=>{cp.textContent='Скопировано ✓';ctx.t(()=>{cp.textContent='Скопировать пост'},1500)};try{navigator.clipboard.writeText(txt).then(ok,ok)}catch(e){ok()}};
+  const back=document.createElement('button');back.className='cp gh';back.style.bottom='82px';back.textContent='‹ К боту';back.onclick=()=>{back.remove();chat()};R.appendChild(back);ctx.add(()=>back.remove());
+ }
+ chat()}
