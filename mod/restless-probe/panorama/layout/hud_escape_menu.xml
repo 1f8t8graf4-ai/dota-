@@ -6,7 +6,7 @@
 	<scripts>
 		<include src="s2r://panorama/scripts/restless.vjs_c" />
 	</scripts>
-	<CitadelHudEscapeMenu oncancel="CitadelResumePlaying()">
+	<CitadelHudEscapeMenu oncancel="if ($.RestlessIsOpen &amp;&amp; $.RestlessIsOpen()) { $.RestlessClose(); } else { CitadelResumePlaying(); }">
 		<Panel id="EscapeBackground" onactivate="CitadelResumePlaying()" />
 		<Panel id="LeftStripeBlur" />
 		<Panel id="LeftStripe" hittest="false">
@@ -39,13 +39,13 @@
 						<Label text="#DevMenu_UnstickHero" class="menuButtonLabel" />
 					</Button>
 				</Panel>
-				<Button id="changehero" class="nav_menu_item primary" onactivate="CitadelEscapeMenuChangeHero()">
+				<Button id="changehero" class="nav_menu_item primary" onactivate="CitadelEscapeMenuChangeHero()" style="margin-bottom: 350px;">
 					<Label text="#menu_changehero" class="menuButtonLabel" />
 				</Button>
 				<Panel id="SubOptions">
-					<Panel class="FeedbackRow">
+					<Panel id="RestlessRow" class="SettingsRow" style="margin-top: 18px;">
 						<Button id="RestlessMenuBtn" class="nav_menu_item minor">
-							<Label text="Restless" class="menuButtonLabel" style="color: #ffc83d;" />
+							<Label text="RESTLESS" class="menuButtonLabel" style="font-size: 34px; height: 44px; color: #ffc83d;" />
 						</Button>
 					</Panel>
 					<Panel class="FeedbackRow">
@@ -85,6 +85,64 @@
 					<CitadelPlayersList id="PlayersList" />
 				</TabContents>
 			</Panel>
+		</Panel>
+		<Button id="RestlessShade" style="width: 100%; height: 100%; background-color: #000000b4; visibility: collapse; z-index: 4900;" />
+		<Panel id="RestlessWindow" hittest="true" onactivate="" style="horizontal-align: center; vertical-align: center; width: 640px; flow-children: down; padding: 26px 30px 24px 30px; background-color: #121014fa; border: 1px solid #ffc83d73; border-radius: 12px; visibility: collapse; z-index: 5000;">
+			<Panel style="width: 100%; flow-children: right; margin-bottom: 12px;">
+				<Panel style="width: 5px; height: 46px; background-color: #ffc83d; border-radius: 2px; margin-right: 14px; vertical-align: center;" />
+				<Panel style="width: fill-parent-flow(1.0); flow-children: down; vertical-align: center;">
+					<Label text="RESTLESS" style="font-size: 32px; font-weight: bold; color: #ffc83d; letter-spacing: 2px;" />
+					<Label id="RestlessSub" text="настройки мода" style="font-size: 15px; color: #a89f90;" />
+				</Panel>
+				<Button id="RestlessX" style="width: 44px; height: 44px; border-radius: 22px; vertical-align: center; background-color: #ffffff14;">
+					<Label text="×" hittest="false" style="horizontal-align: center; vertical-align: center; font-size: 26px; color: #f3ebdd;" />
+				</Button>
+			</Panel>
+			<Label id="RestlessSecGame" text="В ИГРЕ" style="font-size: 13px; font-weight: bold; color: #a89f90; letter-spacing: 1px; margin-top: 4px;" />
+			<Panel style="width: 100%; flow-children: right; padding: 12px 0px 12px 0px;">
+				<Panel style="width: fill-parent-flow(1.0); flow-children: down; vertical-align: center;">
+					<Label id="RestlessMarkT" text="Надпись RESTLESS" style="font-size: 19px; color: #f3ebdd;" />
+					<Label id="RestlessMarkS" text="в верхней панели, рядом с часами" style="font-size: 14px; color: #a89f90; margin-top: 2px;" />
+				</Panel>
+				<Button id="RestlessMarkBtn" style="width: 104px; height: 38px; border-radius: 19px; vertical-align: center; background-color: #ffc83d;">
+					<Label id="RestlessMarkL" text="ВКЛ" hittest="false" style="horizontal-align: center; vertical-align: center; font-size: 16px; font-weight: bold; color: #1a1408;" />
+				</Button>
+			</Panel>
+			<Panel style="width: 100%; height: 1px; background-color: #ffffff14;" />
+			<Panel style="width: 100%; flow-children: right; padding: 12px 0px 12px 0px;">
+				<Panel style="width: fill-parent-flow(1.0); flow-children: down; vertical-align: center;">
+					<Label id="RestlessCardT" text="Плашка справа" style="font-size: 19px; color: #f3ebdd;" />
+					<Label id="RestlessCardS" text="арт героя и таймер — проверка, что мод живой" style="font-size: 14px; color: #a89f90; margin-top: 2px;" />
+				</Panel>
+				<Button id="RestlessCardBtn" style="width: 104px; height: 38px; border-radius: 19px; vertical-align: center; background-color: #ffc83d;">
+					<Label id="RestlessCardL" text="ВКЛ" hittest="false" style="horizontal-align: center; vertical-align: center; font-size: 16px; font-weight: bold; color: #1a1408;" />
+				</Button>
+			</Panel>
+			<Panel style="width: 100%; height: 1px; background-color: #ffffff14;" />
+			<Panel style="width: 100%; flow-children: right; padding: 12px 0px 12px 0px;">
+				<Label id="RestlessLangT" text="Язык мода" style="width: fill-parent-flow(1.0); vertical-align: center; font-size: 19px; color: #f3ebdd;" />
+				<Button id="RestlessLangRu" style="padding: 8px 18px 8px 18px; margin-left: 8px; border-radius: 17px; vertical-align: center; background-color: #ffffff14;">
+					<Label id="RestlessLangRuL" text="Русский" hittest="false" style="font-size: 16px; font-weight: bold; color: #f3ebdd;" />
+				</Button>
+				<Button id="RestlessLangEn" style="padding: 8px 18px 8px 18px; margin-left: 8px; border-radius: 17px; vertical-align: center; background-color: #ffffff14;">
+					<Label id="RestlessLangEnL" text="English" hittest="false" style="font-size: 16px; font-weight: bold; color: #f3ebdd;" />
+				</Button>
+			</Panel>
+			<Panel style="width: 100%; height: 1px; background-color: #ffffff14;" />
+			<Label id="RestlessStatus" text="" style="font-size: 14px; color: #a89f90; margin-top: 12px;" />
+			<Label id="RestlessSecSoon" text="СКОРО" style="font-size: 13px; font-weight: bold; color: #a89f90; letter-spacing: 1px; margin-top: 16px; margin-bottom: 4px;" />
+			<Label id="RestlessSoon1" text="·  Сборки с винрейтом прямо в магазине" style="font-size: 15px; color: #f3ebdd8c; margin-top: 4px;" />
+			<Label id="RestlessSoon2" text="·  Разбор матча — кнопка после игры" style="font-size: 15px; color: #f3ebdd8c; margin-top: 4px;" />
+			<Label id="RestlessSoon3" text="·  Двуязычные субтитры реплик героев" style="font-size: 15px; color: #f3ebdd8c; margin-top: 4px;" />
+			<Panel style="width: 100%; flow-children: right; margin-top: 22px;">
+				<Button id="RestlessBot" style="padding: 11px 22px 11px 22px; border-radius: 8px; background-color: #ffc83d;">
+					<Label id="RestlessBotL" text="Открыть бота" hittest="false" style="font-size: 16px; font-weight: bold; color: #1a1408;" />
+				</Button>
+				<Button id="RestlessClose" style="padding: 11px 22px 11px 22px; margin-left: 10px; border-radius: 8px; background-color: #ffffff14;">
+					<Label id="RestlessCloseL" text="Закрыть" hittest="false" style="font-size: 16px; color: #f3ebdd;" />
+				</Button>
+			</Panel>
+			<Label id="RestlessNote" text="Настройки держатся до выхода из игры." style="font-size: 13px; color: #a89f90; margin-top: 14px;" />
 		</Panel>
 	</CitadelHudEscapeMenu>
 </root>

@@ -1,76 +1,90 @@
-// Restless 0.6 — пробник мода. Файл называется restless.js (до 0.5 — restless_probe.js: старые копии с меньшим номером pak перебивали новый скрипт).
-// Меню по Esc: в укрытии и в матче это игровое меню (hud_escape_menu) — кнопка «Restless» первой в списке под «Сменить героя»;
-// в главном меню игры (dashboard) — после «Тренировки». Кнопка открывает окно настроек.
+// Restless 0.7 — пробник мода.
+// Меню по Esc (hud_escape_menu): кнопка RESTLESS под «Сменить героя», окно настроек объявлено в разметке меню
+// (по центру, тёмная подложка ловит клики — сквозь окно в меню не нажать).
 // HUD (верхняя панель): надпись RESTLESS и плашка с таймером — слушаются настроек.
-// Память игры не читает, ничего не отправляет. Настройки живут до выхода из игры
-// ($.persistentStorage в Deadlock нет — сохранение после перезапуска будет через нашу страницу).
+// Меню и HUD — разные экраны со своими скриптами. Настройки между ними — атрибутами корневой панели
+// (SetAttributeString / GetAttributeString), как у модов QoL. Держатся до выхода из игры.
+// Память игры не читает, ничего не отправляет.
 (function () {
-	var VER = '0.6';
+	var VER = '0.7';
 	var IMG = 'https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/icon-venator.png';
 	var BOT = 'https://t.me/languagegamesbot';
+	var A = '#ffc83d', INK = '#f3ebdd', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
 	if (!ctx) return;
 	var hud = !!ctx.FindChildTraverse('GameTime');
 	var esc = !!ctx.FindChildTraverse('EscapeBackground');
-	var where = hud ? 'HUD' : (esc ? 'Esc-меню' : 'главное меню');
-	var root = ctx;
-	while (root.GetParent && root.GetParent()) root = root.GetParent();
+	var where = hud ? 'HUD' : (esc ? 'Esc-меню' : 'другой экран');
+	var ROOT = ctx;
+	try { while (ROOT.GetParent && ROOT.GetParent()) ROOT = ROOT.GetParent(); } catch (e) {}
 	$.Msg('[Restless] ' + VER + ' скрипт запущен: ' + where);
 
-	// Общие настройки меню и HUD: GameUI.CustomUIConfig(), иначе сам объект $ (так делают моды QoL).
-	// Если общий объект недоступен — свои настройки внутри этого экрана, без падений.
-	var LOCAL = { card: true, mark: true, lang: 'ru', esc: false };
-	function S() {
-		var t = null;
-		try { if (typeof GameUI !== 'undefined' && GameUI && typeof GameUI.CustomUIConfig === 'function') t = GameUI.CustomUIConfig(); } catch (e) { t = null; }
-		if (!t) t = $;
-		try { if (!t.__restless) t.__restless = LOCAL; } catch (e) { return LOCAL; }
-		return t.__restless || LOCAL;
+	// ---------- общие настройки ----------
+	var MEM = {};
+	function cfgObj() {
+		try { if (typeof GameUI !== 'undefined' && GameUI && typeof GameUI.CustomUIConfig === 'function') return GameUI.CustomUIConfig() || null; } catch (e) {}
+		return null;
 	}
-	// Текст и видимость — только если поменялись: меньше перерисовок.
-	function setText(l, v) { if (l && l.text !== v) l.text = v; }
-	function setVis(p, on) { var v = on ? 'visible' : 'collapse'; if (p && p.__v !== v) { p.style.visibility = v; p.__v = v; } }
+	function get(k, def) {
+		var v = '';
+		try { if (ROOT && ROOT.GetAttributeString) v = ROOT.GetAttributeString('RESTLESS_' + k, '') || ''; } catch (e) { v = ''; }
+		if (!v) { var o = cfgObj(); try { if (o && o.__restless7 && o.__restless7[k]) v = o.__restless7[k]; } catch (e) {} }
+		if (!v && MEM[k]) v = MEM[k];
+		return v ? String(v) : def;
+	}
+	function set(k, v) {
+		v = String(v); MEM[k] = v;
+		try { if (ROOT && ROOT.SetAttributeString) ROOT.SetAttributeString('RESTLESS_' + k, v); } catch (e) {}
+		var o = cfgObj();
+		try { if (o) { if (!o.__restless7) o.__restless7 = {}; o.__restless7[k] = v; } } catch (e) {}
+	}
+	function on(k) { return get(k, '1') === '1'; }
+	function lang() { return get('LANG', 'ru') === 'en' ? 'en' : 'ru'; }
 
 	var TX = {
 		ru: {
 			on: 'Restless работает', sub: 'мод загружен · картинка — из интернета', timer: 'таймер: ', sec: ' с',
-			mark: 'RESTLESS ' + VER + ' · работает', markEsc: ' · кнопка в Esc есть', settings: 'настройки мода', inGame: 'В ИГРЕ',
-			card: 'Плашка справа', cardSub: 'арт героя и таймер — проверка, что мод живой',
-			markT: 'Надпись RESTLESS', markSub: 'в верхней панели, рядом с часами',
-			lang: 'Язык мода', soon: 'СКОРО',
+			mark: 'RESTLESS ' + VER + ' · работает', markEsc: ' · меню на связи',
+			settings: 'настройки мода · ' + VER, inGame: 'В ИГРЕ',
+			markT: 'Надпись RESTLESS', markS: 'в верхней панели, рядом с часами',
+			cardT: 'Плашка справа', cardS: 'арт героя и таймер — проверка, что мод живой',
+			yes: 'ВКЛ', no: 'ВЫКЛ', lang: 'Язык мода', soon: 'СКОРО',
 			s1: 'Сборки с винрейтом прямо в магазине', s2: 'Разбор матча — кнопка после игры', s3: 'Двуязычные субтитры реплик героев',
-			bot: 'Открыть бота', close: 'Закрыть',
-			note: 'Настройки держатся до выхода из игры. Сохранение после перезапуска — в следующей версии.'
+			hudOk: 'HUD на связи — переключатели срабатывают сразу, смотри за меню.',
+			hudNo: 'HUD пока не отозвался — зайди в укрытие или матч и открой окно снова.',
+			bot: 'Открыть бота', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.'
 		},
 		en: {
 			on: 'Restless is on', sub: 'mod loaded · image from the web', timer: 'timer: ', sec: ' s',
-			mark: 'RESTLESS ' + VER + ' · running', markEsc: ' · Esc button ready', settings: 'mod settings', inGame: 'IN GAME',
-			card: 'Corner card', cardSub: 'hero art and timer — shows the mod is alive',
-			markT: 'RESTLESS label', markSub: 'in the top bar, next to the clock',
-			lang: 'Mod language', soon: 'COMING SOON',
+			mark: 'RESTLESS ' + VER + ' · running', markEsc: ' · menu linked',
+			settings: 'mod settings · ' + VER, inGame: 'IN GAME',
+			markT: 'RESTLESS label', markS: 'in the top bar, next to the clock',
+			cardT: 'Corner card', cardS: 'hero art and timer — shows the mod is alive',
+			yes: 'ON', no: 'OFF', lang: 'Mod language', soon: 'COMING SOON',
 			s1: 'Builds with win rate right in the shop', s2: 'Match breakdown — button after the game', s3: 'Bilingual hero voice-line subtitles',
-			bot: 'Open the bot', close: 'Close',
-			note: 'Settings last until you quit the game. Saving across restarts comes next.'
+			hudOk: 'HUD is linked — toggles apply instantly, look behind the menu.',
+			hudNo: 'HUD has not answered yet — enter the hideout or a match and reopen.',
+			bot: 'Open the bot', close: 'Close', note: 'Settings last until you quit the game.'
 		}
 	};
-	function T(k) { var l = TX[S().lang] || TX.ru; return l[k]; }
-
+	function T(k) { return (TX[lang()] || TX.ru)[k]; }
+	function setText(l, v) { if (l && l.text !== v) l.text = v; }
+	function setVis(p, v) { var s = v ? 'visible' : 'collapse'; if (p && p.__v !== s) { p.style.visibility = s; p.__v = s; } }
 	function mk(type, parent, id, st) {
 		var p = $.CreatePanel(type, parent, id || '');
-		for (var k in st) {
-			try { p.style[k] = st[k]; } catch (e) { $.Msg('[Restless] стиль ' + k + ': ' + e); }
-		}
+		for (var k in st) { try { p.style[k] = st[k]; } catch (e) { $.Msg('[Restless] стиль ' + k + ': ' + e); } }
 		return p;
 	}
-	function lab(parent, text, st) { var l = mk('Label', parent, '', st); l.text = text; return l; }
+	function lab(parent, st) { var l = mk('Label', parent, '', st); l.hittest = false; return l; }
 
 	// ---------- HUD ----------
 	if (hud) {
+		set('HUD', '1');
 		var mark = ctx.FindChildTraverse('RestlessMark');
 		var ID = 'RestlessProbeHud';
-		if (root.FindChildTraverse(ID)) return;
+		if (ROOT.FindChildTraverse(ID)) return;
 		try {
-			var card = mk('Panel', root, ID, {
+			var card = mk('Panel', ROOT, ID, {
 				ignoreParentFlow: 'true', horizontalAlign: 'right', verticalAlign: 'top',
 				marginTop: '200px', marginRight: '40px', zIndex: '1000',
 				flowChildren: 'right', padding: '12px 16px 12px 12px',
@@ -78,20 +92,22 @@
 				border: '1px solid rgba(255, 200, 61, 0.55)'
 			});
 			card.hittest = false;
-			mk('Panel', card, '', { width: '4px', height: '80px', marginRight: '12px', backgroundColor: '#ffc83d', borderRadius: '2px' });
+			mk('Panel', card, '', { width: '4px', height: '80px', marginRight: '12px', backgroundColor: A, borderRadius: '2px' }).hittest = false;
 			var pic = mk('Image', card, '', { width: '48px', height: '80px', marginRight: '12px', borderRadius: '4px', backgroundColor: '#222222' });
+			pic.hittest = false;
 			pic.SetImage(IMG);
 			var col = mk('Panel', card, '', { flowChildren: 'down', verticalAlign: 'center' });
-			var t1 = lab(col, '', { fontSize: '22px', fontWeight: 'bold', color: '#ffc83d' });
-			var t2 = lab(col, '', { fontSize: '15px', color: '#f3ebdd', marginTop: '4px' });
-			var t3 = lab(col, '', { fontSize: '14px', color: '#a89f90', marginTop: '4px' });
+			col.hittest = false;
+			var t1 = lab(col, { fontSize: '22px', fontWeight: 'bold', color: A });
+			var t2 = lab(col, { fontSize: '15px', color: INK, marginTop: '4px' });
+			var t3 = lab(col, { fontSize: '14px', color: '#a89f90', marginTop: '4px' });
 			var n = 0;
 			(function tick() {
 				if (!card.IsValid()) return;
-				var s = S();
-				setVis(card, s.card);
-				if (mark && mark.IsValid()) { setVis(mark, s.mark); setText(mark, T('mark') + (s.esc ? T('markEsc') : '')); }
-				if (s.card) {
+				var c = on('CARD');
+				setVis(card, c);
+				if (mark && mark.IsValid()) { setVis(mark, on('MARK')); setText(mark, T('mark') + (get('ESC', '') === '1' ? T('markEsc') : '')); }
+				if (c) {
 					setText(t1, T('on') + ' · HUD');
 					setText(t2, T('sub'));
 					setText(t3, T('timer') + Math.floor(n / 2) + T('sec'));
@@ -107,113 +123,80 @@
 		return;
 	}
 
-	// ---------- Меню: кнопка и окно настроек ----------
-	var OV = 'RestlessSettings';
-	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90';
+	// ---------- меню по Esc ----------
+	if (!esc) { $.Msg('[Restless] здесь окна нет: ' + where); return; }
+	function F(id) { return ctx.FindChildTraverse(id); }
+	var win = F('RestlessWindow'), shade = F('RestlessShade'), btn = F('RestlessMenuBtn');
+	if (!win || !btn) { $.Msg('[Restless] в разметке меню нет окна или кнопки'); return; }
+	set('ESC', '1');
+	var open = false, seen = false, timer = 0;
 
-	function sw(parent, on) {
-		var tr = mk('Panel', parent, '', {
-			width: '52px', height: '28px', borderRadius: '14px', horizontalAlign: 'right', verticalAlign: 'center',
-			backgroundColor: on ? A : '#3a3540'
-		});
-		tr.hittest = false;
-		var kn = mk('Panel', tr, '', {
-			width: '22px', height: '22px', borderRadius: '11px', verticalAlign: 'center',
-			horizontalAlign: on ? 'right' : 'left', margin: '0px 3px 0px 3px', backgroundColor: on ? '#1a1408' : '#d8d2c8'
-		});
-		kn.hittest = false;
+	function menuShown() {
+		var p = ctx;
+		try { while (p) { if (p.BHasClass && p.BHasClass('ShowEscapeMenu')) return true; p = p.GetParent ? p.GetParent() : null; } } catch (e) {}
+		return false;
+	}
+	function paintToggle(key) {
+		var b = F('Restless' + key + 'Btn'), l = F('Restless' + key + 'L'), v = on(key.toUpperCase());
+		if (b) b.style.backgroundColor = v ? A : OFF;
+		if (l) { setText(l, v ? T('yes') : T('no')); l.style.color = v ? DARK : INK; }
+	}
+	function paintPill(id, v) {
+		var b = F(id), l = F(id + 'L');
+		if (b) b.style.backgroundColor = v ? A : OFF;
+		if (l) l.style.color = v ? DARK : INK;
+	}
+	function paint() {
+		var L = [['RestlessSub', 'settings'], ['RestlessSecGame', 'inGame'], ['RestlessMarkT', 'markT'], ['RestlessMarkS', 'markS'],
+			['RestlessCardT', 'cardT'], ['RestlessCardS', 'cardS'], ['RestlessLangT', 'lang'], ['RestlessSecSoon', 'soon'],
+			['RestlessBotL', 'bot'], ['RestlessCloseL', 'close'], ['RestlessNote', 'note']];
+		for (var i = 0; i < L.length; i++) setText(F(L[i][0]), T(L[i][1]));
+		for (var j = 1; j <= 3; j++) setText(F('RestlessSoon' + j), '·  ' + T('s' + j));
+		paintToggle('Mark'); paintToggle('Card');
+		paintPill('RestlessLangRu', lang() === 'ru'); paintPill('RestlessLangEn', lang() === 'en');
+		setText(F('RestlessStatus'), get('HUD', '') === '1' ? T('hudOk') : T('hudNo'));
+	}
+	function show(v) {
+		open = v;
+		setVis(win, v); setVis(shade, v);
+		timer++;
+		if (!v) return;
+		paint();
+		seen = menuShown();
+		var my = timer;
+		(function watch() {
+			if (!open || my !== timer || !win.IsValid()) return;
+			// меню закрыли (Esc, «Продолжить») — закрываем и окно, чтобы оно не висело при следующем открытии
+			if (seen && !menuShown()) { show(false); return; }
+			setText(F('RestlessStatus'), get('HUD', '') === '1' ? T('hudOk') : T('hudNo'));
+			$.Schedule(0.3, watch);
+		})();
+	}
+	function flip(k) { set(k, on(k) ? '0' : '1'); paint(); }
+	function bind(id, fn) {
+		var p = F(id);
+		if (!p) { $.Msg('[Restless] нет ' + id); return; }
+		p.SetPanelEvent('onactivate', function () { try { fn(); } catch (e) { $.Msg('[Restless] ' + id + ': ' + e); } });
 	}
 
-	function row(parent, key, title, sub) {
-		var b = mk('Button', parent, '', { width: '100%', flowChildren: 'right', padding: '12px 4px 12px 4px' });
-		var c = mk('Panel', b, '', { flowChildren: 'down', width: 'fill-parent-flow(1.0)', verticalAlign: 'center' });
-		c.hittest = false;
-		lab(c, title, { fontSize: '18px', color: INK }).hittest = false;
-		lab(c, sub, { fontSize: '13px', color: MUTED, marginTop: '2px' }).hittest = false;
-		sw(b, !!S()[key]);
-		b.SetPanelEvent('onactivate', function () { S()[key] = !S()[key]; build(); });
-		mk('Panel', parent, '', { width: '100%', height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.08)' });
-	}
-
-	function pill(parent, text, on, fn) {
-		var b = mk('Button', parent, '', {
-			padding: '8px 16px 8px 16px', marginLeft: '8px', borderRadius: '16px',
-			backgroundColor: on ? A : 'rgba(255, 255, 255, 0.08)'
-		});
-		lab(b, text, { fontSize: '15px', fontWeight: 'bold', color: on ? '#1a1408' : INK }).hittest = false;
-		b.SetPanelEvent('onactivate', fn);
-		return b;
-	}
-
-	function build() {
-		var ov = ctx.FindChildTraverse(OV);
-		if (!ov) {
-			ov = mk('Panel', ctx, OV, { width: '100%', height: '100%', zIndex: '2000', ignoreParentFlow: 'true' });
-			var back = mk('Button', ov, '', { width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.62)' });
-			back.SetPanelEvent('onactivate', close);
-			mk('Panel', ov, 'RestlessWin', {
-				width: '600px', flowChildren: 'down', padding: '26px 30px 22px 30px',
-				horizontalAlign: 'center', verticalAlign: 'center',
-				backgroundColor: 'rgba(18, 16, 20, 0.98)', borderRadius: '12px',
-				border: '1px solid rgba(255, 200, 61, 0.45)'
-			});
-		}
-		ov.style.visibility = 'visible';
-		var w = ov.FindChildTraverse('RestlessWin');
-		w.RemoveAndDeleteChildren();
-		var s = S();
-
-		var head = mk('Panel', w, '', { width: '100%', flowChildren: 'right', marginBottom: '14px' });
-		mk('Panel', head, '', { width: '5px', height: '40px', backgroundColor: A, borderRadius: '2px', marginRight: '14px', verticalAlign: 'center' });
-		var hc = mk('Panel', head, '', { flowChildren: 'down', width: 'fill-parent-flow(1.0)', verticalAlign: 'center' });
-		lab(hc, 'RESTLESS', { fontSize: '30px', fontWeight: 'bold', color: A, letterSpacing: '2px' });
-		lab(hc, T('settings') + ' · ' + VER, { fontSize: '14px', color: MUTED });
-		var x = mk('Button', head, '', { width: '40px', height: '40px', borderRadius: '20px', backgroundColor: 'rgba(255, 255, 255, 0.08)', verticalAlign: 'center' });
-		lab(x, '×', { fontSize: '18px', color: INK, horizontalAlign: 'center', verticalAlign: 'center' }).hittest = false;
-		x.SetPanelEvent('onactivate', close);
-
-		lab(w, T('inGame'), { fontSize: '12px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '6px' });
-		row(w, 'card', T('card'), T('cardSub'));
-		row(w, 'mark', T('markT'), T('markSub'));
-
-		var lr = mk('Panel', w, '', { width: '100%', flowChildren: 'right', padding: '14px 4px 14px 4px' });
-		lab(lr, T('lang'), { fontSize: '18px', color: INK, width: 'fill-parent-flow(1.0)', verticalAlign: 'center' });
-		pill(lr, 'Русский', s.lang === 'ru', function () { S().lang = 'ru'; build(); });
-		pill(lr, 'English', s.lang === 'en', function () { S().lang = 'en'; build(); });
-		mk('Panel', w, '', { width: '100%', height: '1px', backgroundColor: 'rgba(255, 255, 255, 0.08)' });
-
-		lab(w, T('soon'), { fontSize: '12px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '16px', marginBottom: '6px' });
-		['s1', 's2', 's3'].forEach(function (k) { lab(w, '·  ' + T(k), { fontSize: '15px', color: 'rgba(243, 235, 221, 0.55)', marginTop: '4px' }); });
-
-		var f = mk('Panel', w, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
-		var bot = mk('Button', f, '', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
-		lab(bot, T('bot'), { fontSize: '16px', fontWeight: 'bold', color: '#1a1408' }).hittest = false;
-		bot.SetPanelEvent('onactivate', function () {
-			try { if (typeof SteamOverlayAPI !== 'undefined' && SteamOverlayAPI && SteamOverlayAPI.OpenURL) SteamOverlayAPI.OpenURL(BOT); } catch (e) { $.Msg('[Restless] ссылка: ' + e); }
-		});
-		var cl = mk('Button', f, '', { padding: '11px 22px 11px 22px', marginLeft: '10px', borderRadius: '8px', backgroundColor: 'rgba(255, 255, 255, 0.08)' });
-		lab(cl, T('close'), { fontSize: '16px', color: INK }).hittest = false;
-		cl.SetPanelEvent('onactivate', close);
-
-		lab(w, T('note'), { fontSize: '12px', color: MUTED, marginTop: '16px' });
-	}
-
-	function close() {
-		var ov = ctx.FindChildTraverse(OV);
-		if (ov) ov.style.visibility = 'collapse';
-	}
+	$.RestlessToggle = function () { show(!open); };
+	$.RestlessClose = function () { show(false); };
+	$.RestlessIsOpen = function () { return open; };
 
 	try {
-		var btn = ctx.FindChildTraverse('RestlessMenuBtn');
-		if (btn) {
-			btn.SetPanelEvent('onactivate', function () {
-				try { build(); } catch (e) { $.Msg('[Restless] окно: ' + e); }
-			});
-			if (esc) S().esc = true;
-			$.Msg('[Restless] кнопка готова: ' + where);
-		} else {
-			$.Msg('[Restless] кнопки в меню нет');
-		}
+		bind('RestlessMenuBtn', function () { show(!open); });
+		bind('RestlessShade', function () { show(false); });
+		bind('RestlessX', function () { show(false); });
+		bind('RestlessClose', function () { show(false); });
+		bind('RestlessMarkBtn', function () { flip('MARK'); });
+		bind('RestlessCardBtn', function () { flip('CARD'); });
+		bind('RestlessLangRu', function () { set('LANG', 'ru'); paint(); });
+		bind('RestlessLangEn', function () { set('LANG', 'en'); paint(); });
+		bind('RestlessBot', function () {
+			if (typeof SteamOverlayAPI !== 'undefined' && SteamOverlayAPI && SteamOverlayAPI.OpenURL) SteamOverlayAPI.OpenURL(BOT);
+		});
+		show(false);
+		$.Msg('[Restless] кнопка и окно готовы');
 	} catch (e) {
 		$.Msg('[Restless] ошибка меню: ' + e);
 	}
