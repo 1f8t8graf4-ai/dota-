@@ -6,6 +6,10 @@
 #   - снизу — рваная бумага: слова появляются по одному точно по голосу (время слов — распознавание mp3),
 #     ключевое слово — жёлтым маркером, перевод сразу, после реплики — плашка «что значит»;
 #   - в конце — бумага с @languagegamesbot.
+# Диалог (поле heroes, у реплик by/to): говорит один — он на экране на своём месте, второй — в кружке;
+# сменился говорящий — новая панель заезжает косым срезом, как в комиксе; на бумаге ярлык «кто говорит».
+# Герой без живой петли — поле art вместо video: арт дышит и чуть плывёт.
+# Нет времени слов (w) — по длине слов внутри голоса (хуже: лучше распознать, см. ТЗ Зетке).
 # Звук: голос + эхо места (чуть-чуть) + еле слышный фон места, проседает под голос (amb_make.py) + шорох бумаги; −14 LUFS.
 #   python3 tools/tt_lines.py tools/tt/<ролик>.json [--out <папка>] [--media <папка>] [--amb <папка из amb_make.py>]
 # --media — папка, где искать видео и картинки по имени файла (если их нет — качаются по ссылке из json).
@@ -16,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from tt_make import lufs, run  # noqa: E402
+from tt_make import lufs, run, speech  # noqa: E402
 
 W, H, FPS = 1080, 1920, 30
 INK = (26, 22, 18)
@@ -163,7 +167,7 @@ def paper_base(ph, seed):
     return im, pad
 
 
-def layout(ln):
+def layout(ln, top=58):
     # раскладка реплики на бумаге: слова (по строкам, по центру), перевод, плашка «что значит»
     fe = font('black', 74)
     words = ln['en'].replace("'", '’').split()
@@ -178,7 +182,7 @@ def layout(ln):
         cw += (sp if cur else 0) + lw
         cur.append(w)
     rows.append(cur)
-    y = 58
+    y = top
     pos = []
     for row in rows:
         tw = sum(fe.getlength(w) for w in row) + sp * (len(row) - 1)
@@ -296,16 +300,73 @@ def circle_mask(n):
     return m.resize((n, n), Image.LANCZOS)
 
 
+# ---------- герои: живая петля или арт ----------
+class Art:
+    # герой без петли: арт дышит и чуть плывёт (пока Андрей не сделал ролик во Flow)
+    def __init__(self, path, crop, size):
+        x, y, w, h = crop
+        self.size = size
+        self.big = Image.open(path).convert('RGB').crop((x, y, x + w, y + h)).resize((int(size[0] * 1.08), int(size[1] * 1.08)), Image.LANCZOS)
+        self.i = 0
+
+    def next(self):
+        t = self.i / FPS
+        self.i += 1
+        s = 1 - .025 * (1 + math.sin(2 * math.pi * t / 4.6)) / 2
+        bw, bh = self.big.size
+        cw, ch = bw * s, bh * s
+        ox = (bw - cw) / 2 + 6 * math.sin(2 * math.pi * t / 9)
+        oy = (bh - ch) / 2 + 5 * math.sin(2 * math.pi * t / 7)
+        return self.big.resize(self.size, Image.BILINEAR, box=(ox, oy, ox + cw, oy + ch))
+
+
+def source(h, box, size, base_dir, mdir, wk, dur):
+    if h.get('video'):
+        return Frames(media(h['video'], base_dir, mdir, wk), box, size, dur)
+    if h.get('art'):
+        return Art(media(h['art'], base_dir, mdir, wk), box, size)
+    sys.exit('у героя ' + h['name'] + ' нет ни video, ни art')
+
+
+def norm(spec):
+    # старый вид (один герой + partner) → общий: heroes + by/to у каждой реплики
+    if 'heroes' not in spec:
+        H = {'main': dict(name=spec['hero'], color=spec.get('accent', '#8FCB4F'), video=spec.get('video'), art=spec.get('art'),
+                          crop=spec['crop'], bg=spec['bg'])}
+        P = spec.get('partner')
+        if P:
+            H['partner'] = dict(name=P['name'], color=P['color'], video=P.get('video'), art=P.get('art'), face=P['face'])
+        for ln in spec['lines']:
+            ln.setdefault('by', 'main')
+            if ln.get('about') and P:
+                ln.setdefault('to', 'partner')
+        spec['heroes'] = H
+        spec.setdefault('title', spec['hero'])
+    else:
+        ks = list(spec['heroes'])
+        for ln in spec['lines']:
+            if 'to' not in ln and len(ks) == 2:
+                ln['to'] = ks[1] if ln['by'] == ks[0] else ks[0]
+    if spec.get('ult'):
+        spec['ult'].setdefault('by', spec['lines'][0]['by'])
+    return spec
+
+
 # ---------- сборка ----------
 def build(spec, base_dir, out, mdir, amb):
+    spec = norm(spec)
     os.makedirs(out, exist_ok=True)
     wk = tempfile.mkdtemp(prefix='ttl_')
-    acc = hexrgb(spec.get('accent', '#8FCB4F'))
+    HS = spec['heroes']
+    for h in HS.values():
+        h['rgb'] = hexrgb(h.get('color', '#8FCB4F'))
     adir = spec['audio'] if os.path.isabs(spec['audio']) else os.path.join(base_dir, spec['audio'])
-    vid = media(spec['video'], base_dir, mdir, wk)
-    bgp = media(spec['bg'], base_dir, mdir, wk)
-    P = spec.get('partner')
     ult = spec.get('ult')
+    speakers = []
+    for ln in spec['lines']:
+        if ln['by'] not in speakers:
+            speakers.append(ln['by'])
+    dialog = len(speakers) > 1
     # --- время ---
     VO, SX = [], []
     HIT = .05
@@ -316,15 +377,22 @@ def build(spec, base_dir, out, mdir, amb):
     LS = []
     for ln in spec['lines']:
         words = ln['en'].replace("'", '’').split()
+        if 'w' not in ln:   # нет времени слов — по длине слова внутри голоса (хуже; лучше распознать)
+            s0, s1, _ = speech(os.path.join(adir, ln['a']))
+            wt = [len(''.join(c for c in w if c.isalnum())) + 2 for w in words]
+            a, ln['w'] = s0, []
+            for x in wt:
+                b = a + (s1 - s0) * x / sum(wt)
+                ln['w'].append([round(a - s0, 2), round(b - s0, 2)])
+                a = b
         if len(words) != len(ln['w']):
             sys.exit('слов %d, а времени %d: %s' % (len(words), len(ln['w']), ln['en']))
-        lay = layout(ln)
+        lay = layout(ln, 86 if dialog else 58)
         Wt = [(w, t + a, t + b, is_kw(w, ln.get('kw', []))) for w, (a, b) in zip(words, ln['w'])]
         end = t + ln['w'][-1][1]
-        hold = 1.25 + .02 * len(ln['ru']) + (.35 if ln.get('note') else 0)
-        L = dict(ln=ln, lay=lay, W=Wt, t0=t, end=end, pin=t - .32, note=ln.get('note'),
-                 about=ln.get('about'), kill=ln.get('kill'), ult=ln.get('ult'))
-        LS.append(L)
+        hold = spec.get('hold', 1.25) + .02 * len(ln['ru']) + (.35 if ln.get('note') else 0)
+        LS.append(dict(ln=ln, lay=lay, W=Wt, t0=t, end=end, pin=t - .32, note=ln.get('note'),
+                       by=ln['by'], to=ln.get('to'), kill=ln.get('kill')))
         VO.append((os.path.join(adir, ln['a']), t))
         SX.append((page, t - .32, -9))
         t = end + hold + .32
@@ -335,35 +403,57 @@ def build(spec, base_dir, out, mdir, amb):
     for i, L in enumerate(LS):
         L['base'], L['pad'] = paper_base(L['lay']['ph'], 11 + i * 7)
         L['ang'] = (-1.6, 1.3, -1.1, 1.7, -1.4, 1.0)[i % 6]
+        if dialog:   # ярлык «кто говорит» в углу бумаги
+            hh = HS[L['by']]
+            tg = text_img(hh['name'].upper(), font('black', 28), (20, 16, 12, 255))
+            d = ImageDraw.Draw(L['base'])
+            x0, y0 = L['pad'] + 34, L['pad'] + 22
+            d.rounded_rectangle([x0, y0, x0 + tg.width + 28, y0 + tg.height + 14], 16, fill=hh['rgb'] + (255,))
+            L['base'].alpha_composite(tg, (x0 + 14, y0 + 7))
     ep = paper_base(300, 99)
+    # кто на экране: смена говорящего — смена панели
+    SW = [(0.0, ult['by'] if ult else LS[0]['by'])]
+    for L in LS:
+        if L['by'] != SW[-1][1]:
+            SW.append((L['pin'], L['by']))
+    # иконка: тот, к кому/про кого реплика; появляется с первой реплики подряд про него
+    for i, L in enumerate(LS):
+        L['ic_t'] = LS[i - 1]['ic_t'] if i and LS[i - 1]['to'] == L['to'] else L['pin']
+    DEAD = {L['to']: L['W'][-1][1] for L in LS if L['kill'] and L['to']}
     # --- картинка ---
-    HH = int(round(spec['crop'][3] * W / spec['crop'][2] / 2)) * 2
-    hero = Frames(vid, spec['crop'], (W, HH), DUR)
+    MAIN = {}
+    for k in speakers + ([ult['by']] if ult else []):
+        if k in MAIN:
+            continue
+        h = HS[k]
+        HH = int(round(h['crop'][3] * W / h['crop'][2] / 2)) * 2
+        bgi = Image.open(media(h['bg'], base_dir, mdir, wk)).convert('RGB').resize((W, H), Image.LANCZOS)
+        bgi = Image.blend(bgi, Image.new('RGB', (W, H), (0, 0, 0)), .28)
+        m = np.ones((HH, W), np.float32)
+        xr, yr = np.arange(W), np.arange(HH)
+        m *= np.clip(np.minimum(xr, W - 1 - xr) / 80, 0, 1)[None, :]
+        m *= np.clip(yr / 40, 0, 1)[:, None] * np.clip((HH - 1 - yr) / 260, 0, 1)[:, None]
+        MAIN[k] = dict(src=source(h, h['crop'], (W, HH), base_dir, mdir, wk, DUR), HH=HH,
+                       bg=bgi.resize((int(W * 1.07), int(H * 1.07)), Image.LANCZOS),
+                       mask=Image.fromarray((m ** 1.4 * 255).astype(np.uint8)))
     PS = 210
-    pfr = Frames(media(P['video'], base_dir, mdir, wk), P['face'], (PS, PS), DUR) if P else None
-    pcol = hexrgb(P['color']) if P else acc
+    ICON = {}
+    for L in LS:
+        k = L['to']
+        if k and k not in ICON and HS[k].get('face'):
+            ICON[k] = source(HS[k], HS[k]['face'], (PS, PS), base_dir, mdir, wk, DUR)
     cm = circle_mask(PS)
-    bgi = Image.open(bgp).convert('RGB').resize((W, H), Image.LANCZOS)
-    bgi = Image.blend(bgi, Image.new('RGB', (W, H), (0, 0, 0)), .28)
-    BW, BH = int(W * 1.07), int(H * 1.07)
-    bgi = bgi.resize((BW, BH), Image.LANCZOS)
-    # маска героя: края и низ растворяются в фоне
-    m = np.ones((HH, W), np.float32)
-    xr = np.arange(W)
-    m *= np.clip(np.minimum(xr, W - 1 - xr) / 80, 0, 1)[None, :]
-    yr = np.arange(HH)
-    m *= np.clip(yr / 40, 0, 1)[:, None] * np.clip((HH - 1 - yr) / 260, 0, 1)[:, None]
-    hmask = Image.fromarray((m ** 1.4 * 255).astype(np.uint8))
-    hdr = text_img(spec['hero'].upper(), font('black', 50), (255, 255, 255, 255), 5, (0, 0, 0))
-    hab = text_img(spec.get('about', ''), font('bi', 40), acc + (255,), 4, (0, 0, 0)) if spec.get('about') else None
-    pname = text_img(P['name'], font('bold', 30), (255, 255, 255, 255), 4, (0, 0, 0)) if P else None
-    st = ult and text_img(ult['stamp'], font('bki', 190), acc + (255,), 12, (12, 10, 8))
-    if st:
-        st = st.rotate(8, resample=Image.BICUBIC, expand=True)
-    stsub = ult and ult.get('sub') and text_img(ult['sub'], font('bi', 48), (255, 255, 255, 255), 5, (0, 0, 0))
-    first_about = next((L['pin'] for L in LS if L['about']), None)
-    kill = next((L for L in LS if L['kill']), None)
-    kill_t = kill['W'][-1][1] if kill else None
+    NAMEI = {k: text_img(h['name'].upper(), font('black', 50), (255, 255, 255, 255), 5, (0, 0, 0)) for k, h in HS.items()}
+    LBL = {k: text_img(h['name'], font('bold', 30), (255, 255, 255, 255), 4, (0, 0, 0)) for k, h in HS.items()}
+    sub = spec.get('about')
+    first_to = next((L['pin'] for L in LS if L['to']), None)
+    sub_t = .9 if dialog else first_to
+    st = stsub = None
+    if ult:
+        st = text_img(ult['stamp'], font('bki', 190), HS[ult['by']]['rgb'] + (255,), 12, (12, 10, 8)).rotate(8, resample=Image.BICUBIC, expand=True)
+        if ult.get('sub'):
+            stsub = text_img(ult['sub'], font('bi', 48), (255, 255, 255, 255), 5, (0, 0, 0))
+    kill_ts = sorted(DEAD.values())
     enc = subprocess.Popen(['ffmpeg', '-y', '-v', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS),
                             '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-profile:v', 'high',
                             '-pix_fmt', 'yuv420p', os.path.join(wk, 'v.mp4')], stdin=subprocess.PIPE)
@@ -371,39 +461,54 @@ def build(spec, base_dir, out, mdir, amb):
     cover = None
     for fi in range(N):
         t = fi / FPS
-        # тряска: ульта и убийство
+        hf = {k: M['src'].next() for k, M in MAIN.items()}
+        icf = {k: s.next() for k, s in ICON.items()}
         sx = sy = 0.0
-        for t0, a in ((HIT if ult else -9, 22), (kill_t if kill_t else -9, 12)):
+        for t0, a in [(HIT if ult else -9, 22)] + [(x, 12) for x in kill_ts]:
             k = t - t0
             if 0 <= k < .6:
                 sx += a * math.sin(k * 75) * math.exp(-k * 6)
                 sy += a * .6 * math.cos(k * 61) * math.exp(-k * 6)
-        ox = (BW - W) / 2 + 22 * math.sin(2 * math.pi * t / 14)
-        oy = (BH - H) / 2 + 26 * math.sin(2 * math.pi * t / 17)
-        fr = bgi.crop((int(ox), int(oy), int(ox) + W, int(oy) + H)).convert('RGBA')
-        # герой
-        hf = hero.next()
-        s = 1.0
-        if ult and t >= HIT:
-            s = 1 + .16 * math.exp(-(t - HIT) * 6)
-        elif ult:
-            s = 1.16
-        if s > 1.002:
-            hw, hh = int(W * s), int(HH * s)
-            hf = hf.resize((hw, hh), Image.BILINEAR).crop(((hw - W) // 2, (hh - HH) // 2, (hw - W) // 2 + W, (hh - HH) // 2 + HH))
-        fr.paste(hf, (int(sx), int(HERO_Y + sy)), hmask)
+
+        def panel(k):
+            M = MAIN[k]
+            ox = (M['bg'].width - W) / 2 + 22 * math.sin(2 * math.pi * t / 14)
+            oy = (M['bg'].height - H) / 2 + 26 * math.sin(2 * math.pi * t / 17)
+            fr = M['bg'].crop((int(ox), int(oy), int(ox) + W, int(oy) + H)).convert('RGBA')
+            f = hf[k]
+            s = 1.0
+            if ult and k == ult['by']:
+                s = 1 + .16 * math.exp(-(t - HIT) * 6) if t >= HIT else 1.16
+            if s > 1.002:
+                hw, hh = int(W * s), int(M['HH'] * s)
+                f = f.resize((hw, hh), Image.BILINEAR).crop(((hw - W) // 2, (hh - M['HH']) // 2, (hw - W) // 2 + W, (hh - M['HH']) // 2 + M['HH']))
+            fr.paste(f, (int(sx), int(HERO_Y + sy)), M['mask'])
+            return fr
+        si = max(i for i, (t0, _) in enumerate(SW) if t >= t0)
+        spk = SW[si][1]
+        q = (t - SW[si][0]) / .34 if si else 1
+        fr = panel(spk)
+        if q < 1:   # новая панель заезжает косым срезом поверх старой, по срезу — полоса цвета говорящего
+            old = panel(SW[si - 1][1])
+            e = ease(q)
+            xb = W + 300 - (W + 600) * e
+            msk = Image.new('L', (W, H), 0)
+            ImageDraw.Draw(msk).polygon([(xb + 260, 0), (W + 400, 0), (W + 400, H), (xb - 260, H)], fill=255)
+            fr = Image.composite(fr, old, msk)
+            ImageDraw.Draw(fr).line([(xb + 260, 0), (xb - 260, H)], fill=HS[spk]['rgb'] + (255,), width=14)
         # ульта: экран в цвет героя, ударная волна, вспышка, печать
         if ult and t < 2.6:
+            acc = HS[ult['by']]['rgb']
             if t < .9:
                 g = .5 * (1 - ease((t - .1) / .8)) if t > .1 else .5
                 fr = Image.blend(fr, Image.new('RGBA', (W, H), acc + (255,)), g * .42)
             k = t - HIT
             if 0 <= k < .55:
                 ov = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-                od = ImageDraw.Draw(ov)
                 rr = 80 + 900 * ease(k / .55)
-                cx, cy = W / 2, HERO_Y + HH * .42
-                od.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], outline=acc + (int(230 * (1 - k / .55)),), width=int(26 * (1 - k / .55)) + 2)
+                cx, cy = W / 2, HERO_Y + MAIN[ult['by']]['HH'] * .42
+                ImageDraw.Draw(ov).ellipse([cx - rr, cy - rr, cx + rr, cy + rr], outline=acc + (int(230 * (1 - k / .55)),),
+                                           width=int(26 * (1 - k / .55)) + 2)
                 fr.alpha_composite(ov)
             if st and t < 1.75:
                 p = min(1, (t + .02) / .15)
@@ -415,102 +520,100 @@ def build(spec, base_dir, out, mdir, amb):
                     fr.alpha_composite(fade(stsub, a * ease((k - .25) / .25)), (int(W / 2 - stsub.width / 2), 790))
             if 0 <= k < .45:
                 fr = Image.blend(fr, Image.new('RGBA', (W, H), (255, 252, 240, 255)), .7 * math.exp(-k / .07))
-        # шапка: кто говорит и про кого
+        # шапка: кто говорит (меняется вместе с панелью) и о чём
         if t > .9:
             a = ease((t - .9) / .35)
-            fr.alpha_composite(fade(hdr, a), (int(56 - 40 * (1 - a)), 170))
-            if hab and first_about is not None and t > first_about:
-                a2 = ease((t - first_about) / .35)
-                fr.alpha_composite(fade(hab, a2), (int(58 - 40 * (1 - a2)), 170 + hdr.height + 6))
-        # живая иконка того, про кого речь
-        if pfr is not None:
-            pf = pfr.next()
-            if first_about is not None and t > first_about:
-                p = back((t - first_about) / .35)
-                dead = kill_t is not None and t > kill_t
-                ic = pf.convert('RGBA')
-                ring = pcol
-                if dead:
-                    k = t - kill_t
-                    gray = pf.convert('L').convert('RGBA')
-                    ic = Image.blend(ic, gray, min(1, k / .35))
-                    ic = Image.blend(ic, Image.new('RGBA', (PS, PS), (200, 30, 30, 255)), .45 * math.exp(-k / .25))
-                    ring = (220, 50, 50)
-                ic.putalpha(cm)
-                n = PS + 16
-                bub = Image.new('RGBA', (n, n), (0, 0, 0, 0))
-                bd = ImageDraw.Draw(bub)
-                bd.ellipse([0, 0, n - 1, n - 1], fill=ring + (255,))
-                bub.alpha_composite(ic, (8, 8))
-                if dead:
-                    k = t - kill_t
-                    q = ease(k / .2)
-                    bd = ImageDraw.Draw(bub)
-                    c = n / 2
-                    L1 = 70 * q
-                    bd.line([c - L1, c - L1, c + L1, c + L1], fill=(230, 40, 40, 255), width=16)
-                    bd.line([c + L1, c - L1, c - L1, c + L1], fill=(230, 40, 40, 255), width=16)
-                sc = max(.05, p)
-                if abs(sc - 1) > .002:
-                    bub = bub.resize((max(1, int(n * sc)), max(1, int(n * sc))), Image.BICUBIC)
-                jx = 0
-                if kill_t is not None and 0 <= t - kill_t < .5:
-                    jx = 14 * math.sin((t - kill_t) * 70) * math.exp(-(t - kill_t) * 7)
-                cx, cy = 912, 312
-                fr.alpha_composite(bub, (int(cx - bub.width / 2 + jx), int(cy - bub.height / 2)))
-                if p > .6:
-                    fr.alpha_composite(fade(pname, min(1, (p - .6) / .4)), (int(cx - pname.width / 2), int(cy + n / 2 + 4)))
-        # бумага: текущая въезжает снизу, прошлая улетает влево
-        cur = None
+            if q < 1:
+                fr.alpha_composite(fade(NAMEI[SW[si - 1][1]], 1 - ease(q * 1.6)), (56, 170))
+                fr.alpha_composite(fade(NAMEI[spk], ease(q)), (int(56 + 50 * (1 - ease(q))), 170))
+            else:
+                fr.alpha_composite(fade(NAMEI[spk], a), (int(56 - 40 * (1 - a)), 170))
+            if sub and sub_t is not None and t > sub_t:
+                a2 = ease((t - sub_t) / .35)
+                si_ = text_img(sub, font('bi', 40), HS[spk]['rgb'] + (255,), 4, (0, 0, 0))
+                fr.alpha_composite(fade(si_, a2), (int(58 - 40 * (1 - a2)), 170 + NAMEI[spk].height + 6))
+        # живая иконка того, к кому / про кого реплика
+        ci = None
         for i, L in enumerate(LS):
             if t >= L['pin']:
-                cur = i
+                ci = i
+        if ci is not None and t < ENDT + .3 and LS[ci]['to'] in ICON:
+            L = LS[ci]
+            k_ = L['to']
+            p = back((t - L['ic_t']) / .35)
+            ic = icf[k_].convert('RGBA')
+            ring = HS[k_]['rgb']
+            dt = DEAD.get(k_)
+            dead = dt is not None and t > dt
+            if dead:
+                k = t - dt
+                ic = Image.blend(ic, ic.convert('L').convert('RGBA'), min(1, k / .35))
+                ic = Image.blend(ic, Image.new('RGBA', (PS, PS), (200, 30, 30, 255)), .45 * math.exp(-k / .25))
+                ring = (220, 50, 50)
+            ic.putalpha(cm)
+            n = PS + 16
+            bub = Image.new('RGBA', (n, n), (0, 0, 0, 0))
+            ImageDraw.Draw(bub).ellipse([0, 0, n - 1, n - 1], fill=ring + (255,))
+            bub.alpha_composite(ic, (8, 8))
+            if dead:
+                Lx = 70 * ease((t - dt) / .2)
+                bd = ImageDraw.Draw(bub)
+                c = n / 2
+                bd.line([c - Lx, c - Lx, c + Lx, c + Lx], fill=(230, 40, 40, 255), width=16)
+                bd.line([c + Lx, c - Lx, c - Lx, c + Lx], fill=(230, 40, 40, 255), width=16)
+            sc = max(.05, p)
+            if abs(sc - 1) > .002:
+                bub = bub.resize((max(1, int(n * sc)), max(1, int(n * sc))), Image.BICUBIC)
+            jx = 14 * math.sin((t - dt) * 70) * math.exp(-(t - dt) * 7) if dt is not None and 0 <= t - dt < .5 else 0
+            cx, cy = 912, 312
+            fr.alpha_composite(bub, (int(cx - bub.width / 2 + jx), int(cy - bub.height / 2)))
+            if p > .6:
+                fr.alpha_composite(fade(LBL[k_], min(1, (p - .6) / .4)), (int(cx - LBL[k_].width / 2), int(cy + n / 2 + 4)))
+        # бумага: текущая въезжает снизу, прошлая улетает влево
         papers = []
         if t >= ENDT:
-            papers.append(('end', ENDT))
             if LS:
-                papers.insert(0, (len(LS) - 1, None))
-        elif cur is not None:
-            if cur > 0:
-                papers.append((cur - 1, None))
-            papers.append((cur, LS[cur]['pin']))
+                papers.append((len(LS) - 1, None))
+            papers.append(('end', ENDT))
+        elif ci is not None:
+            if ci > 0:
+                papers.append((ci - 1, None))
+            papers.append((ci, LS[ci]['pin']))
         for idx, pin in papers:
             if idx == 'end':
                 im = end_paper(E, t, ep[0], ep[1], ENDT + .2)
-                ang, tin, outk = -.8, ENDT, None
+                ang, tin, outk, pad = -.8, ENDT, None, ep[1]
             else:
                 L = LS[idx]
                 im = paper_frame(L, t, L['base'], L['pad'])
-                ang, tin = L['ang'], L['pin']
+                ang, tin, pad = L['ang'], L['pin'], L['pad']
                 nxt = LS[idx + 1]['pin'] if idx + 1 < len(LS) else ENDT
                 outk = t - nxt
             dx = dy = 0.0
             ra = ang
             k = t - tin
             if k < .32:
-                q = ease(k / .32)
-                dy = (1 - q) * 520
-                ra = ang + (1 - q) * 7
+                qq = ease(k / .32)
+                dy = (1 - qq) * 520
+                ra = ang + (1 - qq) * 7
             if outk is not None and outk >= 0:
                 if outk > .3:
                     continue
-                q = ease(outk / .3)
-                dx = -q * 1100
-                ra = ang - q * 14
-                dy = -q * 60
+                qq = ease(outk / .3)
+                dx, dy, ra = -qq * 1100, -qq * 60, ang - qq * 14
             rim = im.rotate(ra, resample=Image.BICUBIC, expand=True)
             x = PAPER_X - rim.width / 2 + dx + sx * .4
-            y = PAPER_Y - (rim.height - im.height) / 2 - (L['pad'] if idx != 'end' else ep[1]) + dy
+            y = PAPER_Y - (rim.height - im.height) / 2 - pad + dy
             fr.alpha_composite(rim, (int(x), int(y)))
         rgb = fr.convert('RGB')
         enc.stdin.write(rgb.tobytes())
-        if LS and cover is None and len(LS) > 1 and t >= LS[1]['end'] + .2:
+        if cover is None and len(LS) > 1 and t >= LS[1]['end'] + .2:
             cover = rgb
     enc.stdin.close()
     enc.wait()
-    hero.p.kill()
-    if pfr:
-        pfr.p.kill()
+    for s in [M['src'] for M in MAIN.values()] + list(ICON.values()):
+        if isinstance(s, Frames):
+            s.p.kill()
     # --- звук: голос (+ капля эха), фон места под голос, звуки ---
     ins, fl = [], []
     for i, (p, at) in enumerate(VO):
