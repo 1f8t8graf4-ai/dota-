@@ -1,0 +1,34 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/citadel_base_styles.vcss_c" />
+		<include src="s2r://panorama/styles/citadel_hud_subtitles.vcss_c" />
+	</styles>
+	<scripts>
+		<include src="s2r://panorama/scripts/restless.vjs_c" />
+	</scripts>
+	<snippets>
+		<snippet name="Subtitle">
+			<Panel hittest="false" class="Subtitle">
+				<Label class="ForWorld" text="#Citadel_Subtitles_Message_World" html="true" />
+				<Label class="ForEntity" text="#Citadel_Subtitles_Message_Entity" html="true" />
+				<Label class="ForIconAndName" text="#Citadel_Subtitles_Message_IconAndName" html="true">
+					<Panel id="SpeakerIcon" class="SubtitleSpeakerIcon">
+						<Image id="SpeakerIconOutline" scaling="stretch-to-fit-preserve-aspect" />
+						<Image id="SpeakerIconKeyline" scaling="stretch-to-fit-preserve-aspect" />
+						<Panel id="SpeakerIconBacking" />
+						<Image id="SpeakerIconImage" scaling="stretch-to-fit-preserve-aspect" />
+					</Panel>
+				</Label>
+				<Label class="ForIcon" text="#Citadel_Subtitles_Message_Icon" html="true">
+					<Panel id="SpeakerIcon" class="SubtitleSpeakerIcon">
+						<Image id="SpeakerIconOutline" scaling="stretch-to-fit-preserve-aspect" />
+						<Image id="SpeakerIconKeyline" scaling="stretch-to-fit-preserve-aspect" />
+						<Panel id="SpeakerIconBacking" />
+						<Image id="SpeakerIconImage" scaling="stretch-to-fit-preserve-aspect" />
+					</Panel>
+				</Label>
+			</Panel>
+		</snippet>
+	</snippets>
+	<CitadelHudSubtitles class="WindowRoot" />
+</root>

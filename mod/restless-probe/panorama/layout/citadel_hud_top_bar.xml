@@ -11,7 +11,6 @@
 	<CitadelHudTopBar hittest="false">
 		<GlobalClassListener classes="gDetailView gShopOpen gScoreboardOpen gStreetBrawl gPVE" />
 		<Panel id="GradientBacker" />
-		<Label id="RestlessMark" text="RESTLESS: мод загружен" hittest="false" style="horizontal-align: left; vertical-align: top; margin-left: 24px; margin-top: 8px; font-size: 20px; font-weight: bold; color: #ffc83d;" />
 		<Panel class="GameClock">
 			<Label class="GameTime" id="GameTime" text="{s:game_clock}" />
 			<Label class="Overtime" text="#Citadel_Overtime" />
