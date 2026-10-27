@@ -1,33 +1,40 @@
-// Restless 0.4 — пробник мода.
-// Меню по Esc (dashboard): кнопка «Restless» рядом с «Обучением» → окно настроек.
+// Restless 0.5 — пробник мода.
+// Меню по Esc: в укрытии и в матче это игровое меню (hud_escape_menu) — кнопка «Restless» под «Сменить героя»;
+// в главном меню игры (dashboard) — после «Тренировки». Кнопка открывает окно настроек.
 // HUD (верхняя панель): надпись RESTLESS и плашка с таймером — слушаются настроек.
 // Память игры не читает, ничего не отправляет. Настройки живут до выхода из игры
 // ($.persistentStorage в Deadlock нет — сохранение после перезапуска будет через нашу страницу).
 (function () {
-	var VER = '0.4';
+	var VER = '0.5';
 	var IMG = 'https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/icon-venator.png';
 	var BOT = 'https://t.me/languagegamesbot';
 	var ctx = $.GetContextPanel();
 	if (!ctx) return;
 	var hud = !!ctx.FindChildTraverse('GameTime');
-	var where = hud ? 'HUD' : 'меню';
+	var esc = !!ctx.FindChildTraverse('EscapeBackground');
+	var where = hud ? 'HUD' : (esc ? 'Esc-меню' : 'главное меню');
 	var root = ctx;
 	while (root.GetParent && root.GetParent()) root = root.GetParent();
 	$.Msg('[Restless] ' + VER + ' скрипт запущен: ' + where);
 
 	// Общие настройки меню и HUD: GameUI.CustomUIConfig(), иначе сам объект $ (так делают моды QoL).
+	// Если общий объект недоступен — свои настройки внутри этого экрана, без падений.
+	var LOCAL = { card: true, mark: true, lang: 'ru', esc: false };
 	function S() {
 		var t = null;
 		try { if (typeof GameUI !== 'undefined' && GameUI && typeof GameUI.CustomUIConfig === 'function') t = GameUI.CustomUIConfig(); } catch (e) { t = null; }
 		if (!t) t = $;
-		if (!t.__restless) t.__restless = { card: true, mark: true, lang: 'ru' };
-		return t.__restless;
+		try { if (!t.__restless) t.__restless = LOCAL; } catch (e) { return LOCAL; }
+		return t.__restless || LOCAL;
 	}
+	// Текст и видимость — только если поменялись: меньше перерисовок.
+	function setText(l, v) { if (l && l.text !== v) l.text = v; }
+	function setVis(p, on) { var v = on ? 'visible' : 'collapse'; if (p && p.__v !== v) { p.style.visibility = v; p.__v = v; } }
 
 	var TX = {
 		ru: {
 			on: 'Restless работает', sub: 'мод загружен · картинка — из интернета', timer: 'таймер: ', sec: ' с',
-			mark: 'RESTLESS: мод загружен', settings: 'настройки мода', inGame: 'В ИГРЕ',
+			mark: 'RESTLESS ' + VER + ' · работает', markEsc: ' · кнопка в Esc есть', settings: 'настройки мода', inGame: 'В ИГРЕ',
 			card: 'Плашка справа', cardSub: 'арт героя и таймер — проверка, что мод живой',
 			markT: 'Надпись RESTLESS', markSub: 'в верхней панели, рядом с часами',
 			lang: 'Язык мода', soon: 'СКОРО',
@@ -37,7 +44,7 @@
 		},
 		en: {
 			on: 'Restless is on', sub: 'mod loaded · image from the web', timer: 'timer: ', sec: ' s',
-			mark: 'RESTLESS: mod loaded', settings: 'mod settings', inGame: 'IN GAME',
+			mark: 'RESTLESS ' + VER + ' · running', markEsc: ' · Esc button ready', settings: 'mod settings', inGame: 'IN GAME',
 			card: 'Corner card', cardSub: 'hero art and timer — shows the mod is alive',
 			markT: 'RESTLESS label', markSub: 'in the top bar, next to the clock',
 			lang: 'Mod language', soon: 'COMING SOON',
@@ -82,17 +89,20 @@
 			(function tick() {
 				if (!card.IsValid()) return;
 				var s = S();
-				card.style.visibility = s.card ? 'visible' : 'collapse';
-				if (mark && mark.IsValid()) { mark.style.visibility = s.mark ? 'visible' : 'collapse'; mark.text = T('mark'); }
-				t1.text = T('on') + ' · HUD';
-				t2.text = T('sub');
-				t3.text = T('timer') + Math.floor(n / 2) + T('sec');
+				setVis(card, s.card);
+				if (mark && mark.IsValid()) { setVis(mark, s.mark); setText(mark, T('mark') + (s.esc ? T('markEsc') : '')); }
+				if (s.card) {
+					setText(t1, T('on') + ' · HUD');
+					setText(t2, T('sub'));
+					setText(t3, T('timer') + Math.floor(n / 2) + T('sec'));
+				}
 				n++;
 				$.Schedule(0.5, tick);
 			})();
 			$.Msg('[Restless] HUD готов');
 		} catch (e) {
 			$.Msg('[Restless] ошибка HUD: ' + e);
+			try { if (mark) mark.text = 'RESTLESS ' + VER + ' · ошибка: ' + e; } catch (e2) {}
 		}
 		return;
 	}
@@ -136,9 +146,9 @@
 	}
 
 	function build() {
-		var ov = root.FindChildTraverse(OV);
+		var ov = ctx.FindChildTraverse(OV);
 		if (!ov) {
-			ov = mk('Panel', root, OV, { width: '100%', height: '100%', zIndex: '2000', ignoreParentFlow: 'true' });
+			ov = mk('Panel', ctx, OV, { width: '100%', height: '100%', zIndex: '2000', ignoreParentFlow: 'true' });
 			var back = mk('Button', ov, '', { width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.62)' });
 			back.SetPanelEvent('onactivate', close);
 			mk('Panel', ov, 'RestlessWin', {
@@ -189,7 +199,7 @@
 	}
 
 	function close() {
-		var ov = root.FindChildTraverse(OV);
+		var ov = ctx.FindChildTraverse(OV);
 		if (ov) ov.style.visibility = 'collapse';
 	}
 
@@ -199,7 +209,8 @@
 			btn.SetPanelEvent('onactivate', function () {
 				try { build(); } catch (e) { $.Msg('[Restless] окно: ' + e); }
 			});
-			$.Msg('[Restless] кнопка в меню готова');
+			if (esc) S().esc = true;
+			$.Msg('[Restless] кнопка готова: ' + where);
 		} else {
 			$.Msg('[Restless] кнопки в меню нет');
 		}
