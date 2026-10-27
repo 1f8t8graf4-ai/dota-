@@ -10905,9 +10905,45 @@ V.push({g:'s13',id:'s13a',n:'Админка · та же оболочка',cmp:'
  minus:'Цифры в макете — придуманные. В приложении — настоящие из воркера.',
  mount(R,ctx){adm13(R,ctx)}});
 
+/* --- 27.10 (облако): пробные ролики TikTok — собраны кодом (tools/tt_lines.py), без записи футажей --- */
+V.push({g:'g13',id:'g13k',n:'Ролики в TikTok · проба',
+ idea:'Два ролика собраны кодом, без записи футажей. «Диалог» — Венатор и Король говорят по очереди: кто говорит — на экране на своём месте, второй в кружке, сменился говорящий — новая панель заезжает косым срезом, как в комиксе. «Фразы» — Король про Венатора. В обоих в начале ульта со звуком, снизу рваная бумага: слова по голосу, ключевое — маркером, перевод и «что значит». Поверх — интерфейс TikTok, чтобы видно было, что ничего не перекрыто. Тап по видео — звук.',
+ moves:['ульта: печать, вспышка, тряска, звук из игры','слова загораются по голосу','смена говорящего — панель косым срезом','на «Took down the Venatah!» кружок краснеет и перечёркивается'],
+ from:'Твоё: «пробный ролик сделан неплохо, но скорее подходит связный диалог, как у Дормена»; «вставь это в макеты».',
+ minus:'В макете ролики ужаты до 720p, настоящие — 1080×1920 (прислал файлами). Пачку на всех героев собирает Зетка — ТЗ-ZAI-tiktok-27.10.md.',
+ mount(R,ctx){ttk13(R,ctx)}});
+function ttk13(R,ctx){
+ const L=[['tt_hunt','Диалог · охота'],['tt_rk','Фразы · Король про Венатора']];
+ const ic=p=>`<svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">${p}</svg>`;
+ R.className='scr v8 g11 ttk13';
+ R.innerHTML=`<style>
+.ttk13 .tk-v{position:absolute;inset:0;background:#000}.ttk13 .tk-v video{width:100%;height:100%;object-fit:contain;display:block}
+.ttk13 .tk-top{position:absolute;top:52px;left:0;right:0;display:flex;justify-content:center;gap:18px;font:700 15px/1 Inter,sans-serif;color:rgba(255,255,255,.62);z-index:3;pointer-events:none}.ttk13 .tk-top b{color:#fff;border-bottom:2px solid #fff;padding-bottom:5px}
+.ttk13 .tk-r{position:absolute;right:8px;bottom:118px;display:flex;flex-direction:column;align-items:center;gap:15px;z-index:3;pointer-events:none;font:700 11px/1 Inter,sans-serif;color:#fff;text-shadow:0 1px 2px #0008}
+.ttk13 .tk-r i{display:flex;flex-direction:column;align-items:center;gap:4px;font-style:normal}.ttk13 .tk-av{width:44px;height:44px;border-radius:50%;border:2px solid #fff;background:#8FCB4F url() center/cover;display:grid;place-items:center;font:900 15px/1 Inter;color:#111}
+.ttk13 .tk-cap{position:absolute;left:12px;right:74px;bottom:98px;z-index:3;pointer-events:none;color:#fff;font:600 13px/1.35 Inter,sans-serif;text-shadow:0 1px 2px #000a}.ttk13 .tk-cap b{display:block;font-weight:800;margin-bottom:3px}
+.ttk13 .tk-sw{position:absolute;left:10px;right:10px;bottom:22px;display:flex;gap:6px;z-index:4}.ttk13 .tk-sw button{flex:1;border:0;border-radius:14px;padding:10px 6px;font:700 12px/1.15 Inter,sans-serif;background:rgba(20,18,16,.82);color:#d8d2c6}.ttk13 .tk-sw button.on{background:#FFD23F;color:#111}
+.ttk13 .tk-snd{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:4;background:rgba(0,0,0,.6);color:#fff;border-radius:22px;padding:10px 16px;font:700 13px/1 Inter,sans-serif;pointer-events:none;transition:opacity .3s}
+.ttk13 .tk-ui{transition:opacity .25s}.ttk13.noui .tk-ui{opacity:0}
+.ttk13 .tk-ub{position:absolute;right:10px;top:84px;z-index:4;border:0;border-radius:12px;padding:6px 9px;background:rgba(0,0,0,.55);color:#fff;font:700 11px/1 Inter,sans-serif}
+</style>${SB(0)}<div class="tk-v"><video playsinline loop muted></video></div>
+<div class="tk-ui"><div class="tk-top"><span>Подписки</span><b>Для вас</b></div>
+<div class="tk-r"><i><span class="tk-av">Я</span></i><i>${ic('<path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.6 4.5c2 0 3.6 1.1 5.4 3.2 1.8-2.1 3.4-3.2 5.4-3.2 3.6 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z"/>')}48,2K</i><i>${ic('<path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.4 1.2 4.6 3.1 6.1L4.5 21l4-2.1c1.1.3 2.3.5 3.5.5 5.5 0 10-3.8 10-8.5S17.5 3 12 3z"/>')}1 204</i><i>${ic('<path d="M6 3h12v18l-6-4-6 4z"/>')}3 911</i><i>${ic('<path d="M14 4l8 7-8 7v-4.5C8 13.5 4.5 15.5 2 20c.8-6.5 4.5-11 12-11.5z"/>')}Поделиться</i></div>
+<div class="tk-cap"><b>@languagegamesbot</b>Что Король сказал Венатору 🐀 #deadlock #английский</div></div>
+<button class="tk-ub">UI TikTok</button><div class="tk-snd">тап — звук</div>
+<div class="tk-sw">${L.map((x,i)=>`<button data-i="${i}" class="${i?'':'on'}">${x[1]}</button>`).join('')}</div>`;
+ const v=R.querySelector('video'),snd=R.querySelector('.tk-snd');
+ const set=i=>{R.querySelectorAll('.tk-sw button').forEach((b,j)=>b.classList.toggle('on',j===i));v.src=vurl(L[i][0]);try{v.currentTime=0}catch(e){}const p=v.play();if(p&&p.catch)p.catch(()=>{})};
+ R.querySelectorAll('.tk-sw button').forEach(b=>ctx.on(b,'click',e=>{e.stopPropagation();set(+b.dataset.i)}));
+ ctx.on(R.querySelector('.tk-ub'),'click',e=>{e.stopPropagation();R.classList.toggle('noui')});
+ ctx.on(R.querySelector('.tk-v'),'click',()=>{v.muted=!v.muted;snd.textContent=v.muted?'звук выкл':'звук вкл';snd.style.opacity=1;ctx.t(()=>{snd.style.opacity=0},900);const p=v.play();if(p&&p.catch)p.catch(()=>{})});
+ ctx.t(()=>{snd.style.opacity=0},2600);
+ ctx.add(()=>{try{v.pause();v.removeAttribute('src');v.load()}catch(e){}});
+ set(0)}
+
 /* ================= каркас страницы ================= */
 const GN={g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-const VERS=[['v13','отзыв на v12 · 26.10',[['g13','Игры · 10'],['k13','Комикс · выбор главы · 2'],['l13','Обучение · 5'],['s13','Настройки · 2']]],
+const VERS=[['v13','отзыв на v12 · 26.10',[['g13','Игры · 11'],['k13','Комикс · выбор главы · 2'],['l13','Обучение · 5'],['s13','Настройки · 2']]],
  ['v12','отзыв на v11 · 26.10',[['g12','Игры · 11'],['k12','Комикс · 3'],['l12','Обучение · 5']]],
  ['v11','26.10',[['g11','Игры · 8'],['p11','Сцена · путь · 4'],['l11','Обучение · 3'],['s11','Настройки · 3']]],
  ['v10','26.10',[['g10','Игры'],['p10','Сцена · путь'],['l10','Обучение'],['x10','Дизайн']]],

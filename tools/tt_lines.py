@@ -26,8 +26,8 @@ W, H, FPS = 1080, 1920, 30
 INK = (26, 22, 18)
 INK2 = (92, 80, 66)
 MARK = (255, 210, 63)
-PAPER_X, PAPER_Y, PW = 495, 1130, 900   # центр бумаги по x (левее центра — справа кнопки TikTok), верх, ширина
-HERO_Y = 228
+PAPER_X, PAPER_Y, PW = 495, 1050, 900   # центр бумаги по x (левее центра — справа кнопки TikTok), верх (низ ≤ 1530: ниже подпись TikTok), ширина
+HERO_Y = 200
 
 
 # ---------- шрифты ----------
@@ -167,9 +167,21 @@ def paper_base(ph, seed):
     return im, pad
 
 
+PAPER_MAX = 1530   # низ бумаги: ниже — подпись и кнопки TikTok
+
+
 def layout(ln, top=58):
-    # раскладка реплики на бумаге: слова (по строкам, по центру), перевод, плашка «что значит»
-    fe = font('black', 74)
+    # раскладка реплики на бумаге; длинная реплика — шрифт мельче, чтобы низ бумаги не ушёл под подпись TikTok
+    for fs in (74, 66, 60):   # не помещается и так — бумага поднимается выше (наезжает на героя)
+        L = layout1(ln, top, fs)
+        if PAPER_Y + L['ph'] <= PAPER_MAX:
+            break
+    return L
+
+
+def layout1(ln, top, fs):
+    # слова (по строкам, по центру), перевод, плашка «что значит»
+    fe = font('black', fs)
     words = ln['en'].replace("'", '’').split()
     maxw = PW - 150
     sp = fe.getlength(' ')
@@ -191,8 +203,9 @@ def layout(ln, top=58):
             lw = fe.getlength(w)
             pos.append((w, x, y, lw))
             x += lw + sp
-        y += 90
-    fr = font('bi', 44)
+        y += round(fs * 1.22)
+    rs = 44 if fs >= 74 else 40
+    fr = font('bi', rs)
     ru_rows, cur = [], ''
     for w in ln['ru'].split():
         t = (cur + ' ' + w).strip()
@@ -203,7 +216,7 @@ def layout(ln, top=58):
             cur = t
     ru_rows.append(cur)
     yr = y + 14
-    y = yr + 56 * len(ru_rows)
+    y = yr + round(rs * 1.27) * len(ru_rows)
     yn, note = None, []
     if ln.get('note'):
         fn = font('bold', 32)
@@ -218,7 +231,7 @@ def layout(ln, top=58):
         note.append(cur)
         yn = y + 22
         y = yn + 14 + 42 * len(note)
-    return dict(words=pos, ru=ru_rows, yr=yr, yn=yn, note=note, ph=int(y + 46))
+    return dict(words=pos, ru=ru_rows, yr=yr, yn=yn, note=note, ph=int(y + 46), fs=fs, rs=rs)
 
 
 def is_kw(w, kws):
@@ -231,14 +244,15 @@ def paper_frame(L, t, base, pad):
     im = base.copy()
     d = ImageDraw.Draw(im, 'RGBA')
     ox, oy = pad, pad
-    fe = font('black', 74)
+    fs, rs = L['lay']['fs'], L['lay']['rs']
+    fe = font('black', fs)
     for j, (w, x, y, lw) in enumerate(L['lay']['words']):
         a, b, key = L['W'][j][1], L['W'][j][2], L['W'][j][3]
         if t < a:
             continue
         if key:
             p = ease((t - a) / .22)
-            d.rounded_rectangle([ox + x - 8, oy + y + 6, ox + x - 8 + (lw + 16) * p, oy + y + 80], 10, fill=MARK + (235,))
+            d.rounded_rectangle([ox + x - 8, oy + y + fs * .08, ox + x - 8 + (lw + 16) * p, oy + y + fs * 1.08], 10, fill=MARK + (235,))
     for j, (w, x, y, lw) in enumerate(L['lay']['words']):
         a = L['W'][j][1]
         if t < a:
@@ -246,19 +260,19 @@ def paper_frame(L, t, base, pad):
         k = t - a
         if k < .16:
             s = 1.32 - .32 * ease(k / .16)
-            f2 = font('black', 74 * s)
+            f2 = font('black', fs * s)
             ti = text_img(w, f2, INK + (255,))
-            cx, cy = ox + x + lw / 2, oy + y + 44
+            cx, cy = ox + x + lw / 2, oy + y + fs * .6
             im.alpha_composite(fade(ti, .4 + .6 * k / .16), (int(cx - ti.width / 2), int(cy - ti.height / 2)))
         else:
             d.text((ox + x, oy + y), w, font=fe, fill=INK + (255,))
     k = t - L['t0']
     if k > -.05:
         al = int(255 * ease((k + .05) / .3))
-        fr = font('bi', 44)
+        fr = font('bi', rs)
         for i, row in enumerate(L['lay']['ru']):
             tw = fr.getlength(row)
-            d.text((ox + (PW - tw) / 2, oy + L['lay']['yr'] + i * 56), row, font=fr, fill=INK2 + (al,))
+            d.text((ox + (PW - tw) / 2, oy + L['lay']['yr'] + i * round(rs * 1.27)), row, font=fr, fill=INK2 + (al,))
     if L['lay']['yn'] is not None and t > L['end'] + .1:
         p = back((t - L['end'] - .1) / .3)
         fn = font('bold', 32)
@@ -582,11 +596,12 @@ def build(spec, base_dir, out, mdir, amb):
         for idx, pin in papers:
             if idx == 'end':
                 im = end_paper(E, t, ep[0], ep[1], ENDT + .2)
-                ang, tin, outk, pad = -.8, ENDT, None, ep[1]
+                ang, tin, outk, pad, py = -.8, ENDT, None, ep[1], PAPER_Y
             else:
                 L = LS[idx]
                 im = paper_frame(L, t, L['base'], L['pad'])
                 ang, tin, pad = L['ang'], L['pin'], L['pad']
+                py = min(PAPER_Y, PAPER_MAX - L['lay']['ph'])
                 nxt = LS[idx + 1]['pin'] if idx + 1 < len(LS) else ENDT
                 outk = t - nxt
             dx = dy = 0.0
@@ -603,7 +618,7 @@ def build(spec, base_dir, out, mdir, amb):
                 dx, dy, ra = -qq * 1100, -qq * 60, ang - qq * 14
             rim = im.rotate(ra, resample=Image.BICUBIC, expand=True)
             x = PAPER_X - rim.width / 2 + dx + sx * .4
-            y = PAPER_Y - (rim.height - im.height) / 2 - pad + dy
+            y = py - (rim.height - im.height) / 2 - pad + dy
             fr.alpha_composite(rim, (int(x), int(y)))
         rgb = fr.convert('RGB')
         enc.stdin.write(rgb.tobytes())
