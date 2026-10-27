@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Restless · Deadlock</title>
+<meta name="description" content="Restless — ранги, матчи, разбор игры и сборки по винрейту в Deadlock">
+<meta name="theme-color" content="#0e0c0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0c0a;--pn:#17130f;--pn2:#1f1a14;--ln:#2c251d;--tx:#f3ebdd;--mu:#a89f90;--mu2:#7d7466;--ac:#ffc83d;--acd:#1a1408;
+ --win:#66d38e;--loss:#ec5f55;--t0:#e8a33c;--t1:#6f9cf2;--r:14px;--f:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--h:'Oswald','Inter',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 var(--f);-webkit-text-size-adjust:100%}
+body{min-height:100vh;background:radial-gradient(1200px 600px at 70% -10%,#2a1f1255,transparent 60%),var(--bg)}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+img{display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px 60px}
+.top{display:flex;align-items:center;gap:14px;padding:18px 0 12px}
+.logo{font:700 30px/1 var(--h);letter-spacing:.06em;color:var(--ac);text-transform:uppercase}
+.logo small{display:block;font:500 11.5px/1.3 var(--f);letter-spacing:.04em;color:var(--mu);text-transform:none;margin-top:4px}
+.sp{flex:1}
+.me{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border-radius:30px;background:var(--pn);border:1px solid var(--ln);max-width:52vw}
+.me img.av{width:34px;height:34px;border-radius:50%;object-fit:cover;background:var(--pn2)}
+.me b{font:600 14px/1.15 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:180px}
+.me span{font-size:12px;color:var(--mu)}
+.rk{width:34px;height:34px;object-fit:contain}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--ln);margin-bottom:18px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{font:600 15px/1 var(--h);letter-spacing:.08em;text-transform:uppercase;color:var(--mu);text-decoration:none;padding:12px 14px 13px;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs a.on{color:var(--tx);border-color:var(--ac)}
+.h1{font:700 26px/1.1 var(--h);letter-spacing:.03em;text-transform:uppercase;margin:4px 0 4px}
+.h2{font:600 17px/1.2 var(--h);letter-spacing:.07em;text-transform:uppercase;color:var(--mu);margin:26px 0 10px}
+.sub{color:var(--mu);font-size:13.5px}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:var(--r)}
+.pad{padding:16px}
+.row{display:flex;align-items:center;gap:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;background:var(--pn2);border:1px solid var(--ln);color:var(--mu);white-space:nowrap}
+.chip.g{color:#0e1a12;background:var(--win);border-color:transparent}
+.chip.r{color:#fff;background:#a63a33;border-color:transparent}
+.chip.a{color:var(--acd);background:var(--ac);border-color:transparent}
+.chip.b{color:#dce8ff;background:#29406b;border-color:transparent}
+.win{color:var(--win)}.loss{color:var(--loss)}
+.num{font:600 22px/1 var(--h);letter-spacing:.02em}
+.stat{display:flex;flex-direction:column;gap:5px;min-width:0}
+.stat span{font-size:12px;color:var(--mu)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stats .card{padding:12px 14px}
+.hi{width:40px;height:40px;border-radius:8px;object-fit:cover;background:var(--pn2);flex:none}
+.hi.s{width:30px;height:30px;border-radius:6px}
+.hi.l{width:64px;height:64px;border-radius:12px}
+.bar{height:6px;border-radius:3px;background:var(--pn2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ac)}
+.empty{padding:28px 18px;text-align:center;color:var(--mu)}
+.load{padding:40px 0;text-align:center;color:var(--mu)}
+.load:before{content:'';display:block;width:28px;height:28px;margin:0 auto 12px;border-radius:50%;border:3px solid var(--ln);border-top-color:var(--ac);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.err{padding:14px 16px;border-radius:var(--r);background:#2a1513;border:1px solid #5b2621;color:#ffb4ad}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:12px;background:var(--ac);color:var(--acd);font:700 15px/1 var(--f)}
+.btn.g{background:var(--pn2);color:var(--tx);border:1px solid var(--ln)}
+input.in{width:100%;height:48px;border-radius:12px;border:1px solid var(--ln);background:var(--pn2);color:var(--tx);padding:0 14px;font:500 15px var(--f);outline:none}
+input.in:focus{border-color:var(--ac)}
+/* Сейчас: команды */
+.team h3{margin:0 0 10px;font:600 16px/1 var(--h);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.team h3 i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.pl{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:12px;background:var(--pn);border:1px solid var(--ln);margin-bottom:8px}
+.pl.me2{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac) inset}
+.pl .hi{width:48px;height:48px}
+.pl b{font-weight:700;font-size:14.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl .ln{font-size:12.5px;color:var(--mu);margin-top:2px}
+.pl .tg{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.pl .rkb{text-align:center;min-width:64px}
+.pl .rkb img{width:40px;height:40px;margin:0 auto 2px;object-fit:contain}
+.pl .rkb small{font-size:11px;color:var(--mu);display:block;line-height:1.15}
+/* Матчи */
+.mt{display:grid;grid-template-columns:6px 44px 1fr auto;gap:12px;align-items:center;padding:10px 12px 10px 0;border-radius:12px;background:var(--pn);border:1px solid var(--ln);margin-bottom:6px;text-decoration:none;overflow:hidden}
+.mt .st{height:100%;min-height:44px}
+.mt .k{font:600 16px/1 var(--h);letter-spacing:.03em}
+.mt .r{text-align:right;font-size:12.5px;color:var(--mu)}
+.mt:hover{border-color:#4a3d2c}
+/* Разбор */
+.mh{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.mh img.cardimg{width:96px;height:132px;border-radius:12px;object-fit:cover;background:var(--pn2)}
+.pts{margin:0;padding-left:18px}
+.pts li{margin:6px 0}
+.chart{width:100%;height:auto;display:block}
+.it{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln)}
+.it:last-child{border-bottom:0}
+.it img{width:42px;height:42px;border-radius:8px;background:var(--pn2);object-fit:cover}
+.it b{font-weight:600;font-size:14px}
+.it small{display:block;color:var(--mu);font-size:12px}
+.map{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:#15120e center/cover no-repeat;border:1px solid var(--ln)}
+.map img.mi{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.92}
+.map .d{position:absolute;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:var(--loss);border:2px solid #fff;color:#fff;font:700 11px/20px var(--f);text-align:center;box-shadow:0 2px 8px #000a}
+.map .d.k{background:#333;width:20px;height:20px;margin:-10px 0 0 -10px;border:2px solid var(--loss);overflow:hidden}
+.map .d.k img{width:100%;height:100%;object-fit:cover}
+.sb{width:100%;border-collapse:collapse;font-size:13.5px}
+.sb th{font:600 12px/1 var(--f);color:var(--mu);text-align:right;padding:8px 6px;border-bottom:1px solid var(--ln)}
+.sb th:first-child{text-align:left}
+.sb td{padding:7px 6px;border-bottom:1px solid var(--ln);text-align:right;white-space:nowrap}
+.sb td:first-child{text-align:left;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.sb tr.me3 td{background:#2a2112}
+.sbw{overflow-x:auto}
+/* Билды */
+.hg{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.hg a{display:block;text-decoration:none;text-align:center;font-size:12.5px;color:var(--mu)}
+.hg a img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;background:var(--pn2);margin-bottom:5px;border:1px solid var(--ln)}
+.hg a:hover img{border-color:var(--ac)}
+.seg{display:inline-flex;background:var(--pn2);border:1px solid var(--ln);border-radius:12px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{padding:8px 12px;border-radius:9px;font-weight:600;font-size:13px;color:var(--mu)}
+.seg button.on{background:var(--ac);color:var(--acd)}
+.bd{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--ln)}
+.bd:last-child{border-bottom:0}
+.bd b{display:block;font-size:14.5px}
+.bd small{color:var(--mu);font-size:12.5px}
+.wr{font:600 20px/1 var(--h);text-align:right}
+.wr small{display:block;font:500 11.5px/1.3 var(--f);color:var(--mu)}
+.ph{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.ph{grid-template-columns:1fr}}
+.foot{margin-top:40px;color:var(--mu2);font-size:12px;line-height:1.6}
+.hide{display:none!important}
+.bd.hr{grid-template-columns:44px 1fr 160px auto}
+@media(max-width:560px){.logo small{display:none}.bd.hr{grid-template-columns:44px 1fr auto}.bd.hr .bar{display:none}.top{padding-top:12px}.h1{font-size:22px}}
+</style>
+<script src="data.js"></script>
+</head>
+<body>
+<div class="wrap">
+ <header class="top">
+  <div class="logo">Restless<small>Deadlock · ранги, матчи, разбор, сборки</small></div>
+  <div class="sp"></div>
+  <button class="me" id="me" title="Сменить игрока"></button>
+ </header>
+ <nav class="tabs" id="tabs">
+  <a href="#now" data-t="now">Сейчас</a>
+  <a href="#profile" data-t="profile">Профиль</a>
+  <a href="#matches" data-t="matches">Матчи</a>
+  <a href="#builds" data-t="builds">Сборки</a>
+ </nav>
+ <main id="v"></main>
+ <div class="foot">Данные — открытые: <a href="https://deadlock-api.com" target="_blank" rel="noopener">deadlock-api.com</a> (матчи, ранги, винрейт). Restless не входит в аккаунт и не читает игру: только то, что игра и так публикует. Не связан с Valve.</div>
+</div>
+<script>
+'use strict';
+const D = window.RL_DATA || {heroes:{}, items:{}, ranks:[], map:{}};
+const API = 'https://api.deadlock-api.com/v1/';
+const STEAM0 = 76561197960265728n;
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf = n => (n == null || isNaN(n)) ? '—' : Math.round(n).toLocaleString('ru-RU');
+const pc = (w, n) => n ? Math.round(100 * w / n) : 0;
+const mmss = s => { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+const ago = t => { const d = Date.now() / 1000 - t; if (d < 3600) return Math.max(1, Math.round(d / 60)) + ' мин назад'; if (d < 86400) return Math.round(d / 3600) + ' ч назад'; const k = Math.round(d / 86400); return k + (k === 1 ? ' день назад' : k < 5 ? ' дня назад' : ' дней назад'); };
+const now = () => Math.floor(Date.now() / 1000);
+const pl = (n, a) => { n = Math.abs(Math.round(n)) % 100; const k = n % 10; return a[n > 10 && n < 20 ? 2 : k === 1 ? 0 : k > 1 && k < 5 ? 1 : 2]; };
+const games = n => nf(n) + ' ' + pl(n, ['игра', 'игры', 'игр']);
+
+// ---------- данные ----------
+const CACHE = new Map();
+async function api(p) {
+  if (CACHE.has(p)) return CACHE.get(p);
+  const pr = fetch(API + p).then(async r => {
+    if (!r.ok) { const t = await r.text().catch(() => ''); throw new Error(r.status + ' ' + (t || r.statusText).slice(0, 140)); }
+    return r.json();
+  });
+  CACHE.set(p, pr);
+  pr.catch(() => CACHE.delete(p));
+  return pr;
+}
+const hero = id => D.heroes[id] || {n: 'Герой #' + id, i: '', c: '', m: ''};
+const heroImg = (id, cls = '') => `<img class="hi ${cls}" src="${esc(hero(id).i)}" alt="${esc(hero(id).n)}" loading="lazy" onerror="this.style.visibility='hidden'">`;
+const RANK_RU = ['Obscurus', 'Initiate', 'Seeker', 'Alchemist', 'Arcanist', 'Ritualist', 'Emissary', 'Archon', 'Oracle', 'Phantom', 'Ascendant', 'Eternus'];
+function rankOf(badge) {
+  badge = +badge || 0;
+  const t = Math.floor(badge / 10), s = badge % 10, R = D.ranks.find(x => x.t === t) || {};
+  const img = t && s ? `${API}assets/ranks/${t}/${s}/image?format=webp` : ((R.i || {}).small_webp || (R.i || {}).large_webp || '');
+  return {t, s, name: badge ? (R.n || RANK_RU[t] || '?') + (s ? ' ' + s : '') : 'Без ранга', img, color: R.c || '#888'};
+}
+const rankImg = (badge, cls = 'rk') => { const r = rankOf(badge); return r.img ? `<img class="${cls}" src="${esc(r.img)}" alt="${esc(r.name)}" title="${esc(r.name)}" loading="lazy" onerror="this.style.visibility='hidden'">` : ''; };
+
+// ---------- игрок ----------
+let ME = null;      // {id, name, avatar}
+function idFrom(q) {
+  q = String(q || '').trim();
+  let m = q.match(/steamcommunity\.com\/profiles\/(\d{17})/) || q.match(/^(\d{17})$/);
+  if (m) return Number(BigInt(m[1]) - STEAM0);
+  m = q.match(/^\[?U:1:(\d+)\]?$/i) || q.match(/^(\d{4,11})$/);
+  if (m) return +m[1];
+  return null;
+}
+async function setMe(id, push = true) {
+  id = +id; if (!id) return;
+  ME = {id, name: 'Игрок ' + id, avatar: ''};
+  try { localStorage.setItem('rl-id', String(id)); } catch (e) {}
+  if (push) { const u = new URL(location.href); u.searchParams.set('id', id); history.replaceState(null, '', u.pathname + u.search + location.hash); }
+  paintMe();
+  try {
+    const [s] = await api('players/steam?account_ids=' + id);
+    if (s) { ME.name = s.personaname || ME.name; ME.avatar = s.avatarmedium || s.avatar || ''; }
+    const r = await api('players/' + id + '/rank').catch(() => null);
+    ME.badge = r && r.badge || 0;
+  } catch (e) {}
+  paintMe();
+}
+function paintMe() {
+  const b = $('#me');
+  if (!ME) { b.innerHTML = '<b style="padding:4px 6px">Выбрать игрока</b>'; return; }
+  b.innerHTML = `${ME.avatar ? `<img class="av" src="${esc(ME.avatar)}" alt="" onerror="this.style.visibility='hidden'">` : '<i class="av" style="display:block;width:34px;height:34px;border-radius:50%;background:var(--pn2)"></i>'}<div><b>${esc(ME.name)}</b><span>${ME.badge != null ? esc(rankOf(ME.badge).name) : 'ID ' + ME.id}</span></div>${ME.badge ? rankImg(ME.badge) : ''}`;
+}
+$('#me').onclick = () => { location.hash = '#who'; };
+
+function viewWho() {
+  V(`<div class="card pad" style="max-width:640px">
+    <div class="h1">Чей Restless?</div>
+    <p class="sub" style="margin:4px 0 14px">Вставь ссылку на свой профиль Steam, Steam ID или ник. Входить в аккаунт не нужно — матчи и ранги в Deadlock открытые.</p>
+    <form id="wf" class="row" style="gap:8px"><input class="in" id="wq" placeholder="steamcommunity.com/profiles/7656…  или ник" autocomplete="off"><button class="btn" type="submit">Найти</button></form>
+    <div id="wr" style="margin-top:12px"></div>
+    <p class="sub" style="margin:14px 0 0">Ссылка вида <b>steamcommunity.com/id/имя</b> — тоже можно: ищу по имени. Не находит — открой профиль в Steam: «Скопировать адрес страницы».</p>
+  </div>`);
+  $('#wq').focus();
+  $('#wf').onsubmit = async e => {
+    e.preventDefault();
+    const q = $('#wq').value.trim(); if (!q) return;
+    const id = idFrom(q);
+    if (id) { await setMe(id); location.hash = '#now'; return; }
+    const name = (q.match(/steamcommunity\.com\/id\/([^\/?#]+)/) || [])[1] || q;
+    $('#wr').innerHTML = '<div class="load">Ищу…</div>';
+    try {
+      const L = await api('players/steam-search?limit=8&search_query=' + encodeURIComponent(name));
+      if (!L.length) { $('#wr').innerHTML = '<div class="empty">Никого не нашёл. Попробуй ссылку на профиль.</div>'; return; }
+      $('#wr').innerHTML = L.map(s => `<button class="pl" style="width:100%;text-align:left;grid-template-columns:44px 1fr auto" data-id="${s.account_id}">
+        <img class="hi" src="${esc(s.avatarmedium || s.avatar)}" alt=""><div><b>${esc(s.personaname)}</b><div class="ln">${esc(s.countrycode || '')} · ID ${s.account_id}</div></div><span class="chip a">Это я</span></button>`).join('');
+      $('#wr').querySelectorAll('[data-id]').forEach(b => b.onclick = async () => { await setMe(b.dataset.id); location.hash = '#now'; });
+    } catch (err) { $('#wr').innerHTML = `<div class="err">Поиск не сработал: ${esc(err.message)}</div>`; }
+  };
+}
+
+// ---------- «Сейчас»: кто в матче, как Porofessor ----------
+async function scout(players, heroOf) {
+  const ids = players.map(p => p.account_id).filter(Boolean);
+  const heroes = [...new Set(players.map(heroOf))];
+  const q = 'account_ids=' + ids.join(',');
+  const [steam, ranks, hs] = await Promise.all([
+    api('players/steam?' + q).catch(() => []),
+    api('players/rank?' + q).catch(() => []),
+    api('players/hero-stats?' + q).catch(() => [])
+  ]);
+  const S = {}, R = {}, H = {}, T = {};
+  steam.forEach(s => S[s.account_id] = s);
+  ranks.forEach(r => R[r.account_id] = r);
+  hs.forEach(h => {
+    (H[h.account_id] = H[h.account_id] || {})[h.hero_id] = h;
+    const t = T[h.account_id] = T[h.account_id] || {m: 0, w: 0};
+    t.m += h.matches_played || 0; t.w += h.wins || 0;
+  });
+  return players.map(p => {
+    const id = p.account_id, hid = heroOf(p), h = (H[id] || {})[hid] || {}, t = T[id] || {m: 0, w: 0}, r = R[id] || {};
+    const tags = [];
+    const hm = h.matches_played || 0, hw = h.wins || 0;
+    if (hm >= 20 && t.m && hm / t.m >= .25) tags.push(['a', 'Мейн героя']);
+    else if (hm >= 150) tags.push(['b', 'Опытный на герое']);
+    if (hm <= 2 && t.m >= 30) tags.push(['r', hm ? 'Почти не играл героя' : 'Первый раз на герое']);
+    if (t.m && t.m < 60) tags.push(['', 'Новичок в игре']);
+    const ws = r.last_match && r.last_match.player_rank_initial_win_streak;
+    if (ws >= 3 && r.last_match.start_time > now() - 86400 * 2) tags.push(['g', 'Серия побед · ' + ws]);
+    if (hm >= 15 && hw / hm >= .6) tags.push(['g', 'Сильный на герое']);
+    if (hm >= 15 && hw / hm <= .4) tags.push(['r', 'Слабый на герое']);
+    return {id, hid, team: p.team, name: (S[id] || {}).personaname || 'Скрытый игрок', avatar: (S[id] || {}).avatarmedium, badge: r.badge || 0,
+      hm, hw, tm: t.m, tw: t.w, kda: hm ? ((h.kills + h.assists) / Math.max(1, h.deaths)) : 0, tags};
+  });
+}
+function plCard(p) {
+  const wr = pc(p.hw, p.hm), twr = pc(p.tw, p.tm);
+  return `<div class="pl${ME && p.id === ME.id ? ' me2' : ''}">
+    ${heroImg(p.hid)}
+    <div style="min-width:0"><b>${esc(p.name)}</b>
+      <div class="ln">${esc(hero(p.hid).n)} · на герое <span class="${p.hm >= 5 ? (wr >= 52 ? 'win' : wr <= 46 ? 'loss' : '') : ''}">${p.hm ? wr + '%' : '—'}</span> · ${games(p.hm)}</div>
+      <div class="ln">Всего ${p.tm ? twr + '% · ' + games(p.tm) : 'нет данных'}${p.kda ? ' · KDA на герое ' + p.kda.toFixed(1) : ''}</div>
+      ${p.tags.length ? `<div class="tg">${p.tags.map(t => `<span class="chip ${t[0]}">${esc(t[1])}</span>`).join('')}</div>` : ''}
+    </div>
+    <div class="rkb">${rankImg(p.badge, '')}<small>${esc(rankOf(p.badge).name)}</small></div>
+  </div>`;
+}
+function teamsHTML(L, myTeam) {
+  const order = myTeam == null ? [0, 1] : [myTeam, 1 - myTeam];
+  return `<div class="grid2">${order.map(t => {
+    const P = L.filter(p => p.team === t), avg = P.filter(p => p.badge).reduce((a, p) => a + p.badge, 0) / Math.max(1, P.filter(p => p.badge).length);
+    return `<div class="team"><h3><i style="background:${t ? 'var(--t1)' : 'var(--t0)'}"></i>${myTeam == null ? (t ? 'Сапфировое пламя' : 'Янтарная рука') : (t === myTeam ? 'Твоя команда' : 'Соперники')}
+      <span class="sp"></span><span class="chip">средний ${esc(rankOf(Math.round(avg)).name)}</span></h3>${P.map(plCard).join('')}</div>`;
+  }).join('')}</div>`;
+}
+async function viewNow() {
+  if (!ME) return viewWho();
+  V('<div class="load">Ищу твой матч…</div>');
+  try {
+    const live = await api('matches/active?account_id=' + ME.id).catch(() => []);
+    let head, players, heroOf = p => p.hero_id, myTeam = null, mid = null;
+    if (live && live.length) {
+      const m = live[0]; players = m.players; mid = m.match_id;
+      const mine = players.find(p => p.account_id === ME.id); myTeam = mine ? mine.team : null;
+      head = `<div class="row" style="flex-wrap:wrap;gap:8px"><span class="chip g">● В игре</span><span class="sub">идёт ${mmss(now() - m.start_time)} · матч ${m.match_id}</span></div>`;
+    } else {
+      const H = await api('players/' + ME.id + '/match-history');
+      if (!H.length) { V('<div class="empty">Матчей не нашлось. Сыграй хоть один — и всё появится.</div>'); return; }
+      const last = H[0]; mid = last.match_id;
+      const md = await api('matches/' + mid + '/metadata');
+      players = md.match_info.players;
+      const mine = players.find(p => p.account_id === ME.id); myTeam = mine ? mine.team : null;
+      const won = last.player_team === last.match_result;
+      head = `<div class="row" style="flex-wrap:wrap;gap:8px"><span class="chip">Последний матч</span><span class="sub">${ago(last.start_time + last.match_duration_s)} · ${mmss(last.match_duration_s)} · </span><span class="chip ${won ? 'g' : 'r'}">${won ? 'Победа' : 'Поражение'}</span>
+        <span class="sp"></span><a class="btn g" href="#m/${mid}" style="height:36px;font-size:13.5px">Разбор матча →</a></div>
+        <p class="sub" style="margin:10px 0 0">Сейчас ты не в топ-200 матчей, которые видно снаружи, — показываю, с кем играл последний раз. Во время игры то же самое покажет окно Restless в игре (скоро).</p>`;
+    }
+    V(`<div class="h1">Кто в матче</div>${head}<div style="margin-top:14px" class="load" id="sc">Смотрю ранги и героев…</div>`);
+    const L = await scout(players, heroOf);
+    $('#sc').outerHTML = `<div style="margin-top:14px">${teamsHTML(L, myTeam)}</div>`;
+  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+}
+
+// ---------- «Профиль» ----------
+async function viewProfile() {
+  if (!ME) return viewWho();
+  V('<div class="load">Собираю профиль…</div>');
+  try {
+    const [H, HS, R] = await Promise.all([api('players/' + ME.id + '/match-history'), api('players/hero-stats?account_ids=' + ME.id), api('players/' + ME.id + '/rank').catch(() => null)]);
+    const L = H.slice(0, 20), n = L.length;
+    const w = L.filter(m => m.player_team === m.match_result).length;
+    const sum = k => L.reduce((a, m) => a + (m[k] || 0), 0);
+    const kda = (sum('player_kills') + sum('player_assists')) / Math.max(1, sum('player_deaths'));
+    const spm = sum('net_worth') / Math.max(1, sum('match_duration_s') / 60);
+    const rk = rankOf(R && R.badge);
+    const ws = R && R.last_match ? R.last_match.player_rank_initial_win_streak : 0;
+    const top = HS.slice().sort((a, b) => b.matches_played - a.matches_played).slice(0, 8);
+    const totM = HS.reduce((a, h) => a + h.matches_played, 0), totW = HS.reduce((a, h) => a + h.wins, 0);
+    V(`<div class="card pad row" style="gap:16px;flex-wrap:wrap">
+        ${ME.avatar ? `<img src="${esc(ME.avatar)}" style="width:72px;height:72px;border-radius:50%" alt="" onerror="this.style.display='none'">` : ''}
+        <div style="flex:1;min-width:200px"><div class="h1">${esc(ME.name)}</div><div class="sub">${nf(totM)} ${pl(totM, ['матч', 'матча', 'матчей'])} · ${pc(totW, totM)}% побед за всё время · ID ${ME.id}</div></div>
+        <div class="row">${rankImg(R && R.badge, '')}<div><div class="num" style="color:${esc(rk.color)}">${esc(rk.name)}</div><div class="sub">${ws >= 2 ? 'серия побед ' + ws : 'ранг сейчас'}</div></div></div>
+      </div>
+      <div class="h2">Последние ${n} матчей</div>
+      <div class="stats">
+        <div class="card stat"><span>Победы</span><b class="num ${pc(w, n) >= 50 ? 'win' : 'loss'}">${pc(w, n)}%</b><span>${w} из ${n}</span></div>
+        <div class="card stat"><span>KDA</span><b class="num">${kda.toFixed(2)}</b><span>${(sum('player_kills') / Math.max(1, n)).toFixed(1)} / ${(sum('player_deaths') / Math.max(1, n)).toFixed(1)} / ${(sum('player_assists') / Math.max(1, n)).toFixed(1)}</span></div>
+        <div class="card stat"><span>Души в минуту</span><b class="num">${nf(spm)}</b><span>в среднем за матч ${nf(sum('net_worth') / Math.max(1, n))}</span></div>
+        <div class="card stat"><span>Длина матча</span><b class="num">${mmss(sum('match_duration_s') / Math.max(1, n))}</b><span>в среднем</span></div>
+      </div>
+      <div class="row" style="gap:5px;flex-wrap:wrap;margin-top:12px">${L.map(m => `<a href="#m/${m.match_id}" title="${esc(hero(m.hero_id).n)} · ${m.player_kills}/${m.player_deaths}/${m.player_assists}" style="width:26px;height:26px;border-radius:6px;display:grid;place-items:center;font:700 11px var(--f);text-decoration:none;background:${m.player_team === m.match_result ? '#1f4a2f' : '#4a1f1c'};color:${m.player_team === m.match_result ? 'var(--win)' : 'var(--loss)'}">${m.player_team === m.match_result ? 'W' : 'L'}</a>`).join('')}</div>
+      <div class="h2">Герои</div>
+      <div class="card">${top.map(h => {
+        const wr = pc(h.wins, h.matches_played);
+        return `<div class="bd hr">${heroImg(h.hero_id)}<div><b>${esc(hero(h.hero_id).n)}</b><small>${games(h.matches_played)} · KDA ${((h.kills + h.assists) / Math.max(1, h.deaths)).toFixed(1)} · ${nf(h.networth_per_min)} душ/мин</small></div>
+          <div class="bar"><i style="width:${wr}%;background:${wr >= 50 ? 'var(--win)' : 'var(--loss)'}"></i></div><div class="wr">${wr}%<small>побед</small></div></div>`;
+      }).join('')}</div>`);
+  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+}
+
+// ---------- «Матчи» ----------
+async function viewMatches() {
+  if (!ME) return viewWho();
+  V('<div class="load">Загружаю матчи…</div>');
+  try {
+    const H = await api('players/' + ME.id + '/match-history');
+    const L = H.slice(0, 40);
+    V(`<div class="h1">Матчи</div><p class="sub" style="margin:0 0 12px">Нажми на матч — разбор: души против соперника по линии, покупки против топов, где умирал.</p>
+      ${L.map(m => { const w = m.player_team === m.match_result; return `<a class="mt" href="#m/${m.match_id}">
+        <i class="st" style="background:${w ? 'var(--win)' : 'var(--loss)'}"></i>${heroImg(m.hero_id)}
+        <div style="min-width:0"><div class="k">${m.player_kills} / ${m.player_deaths} / ${m.player_assists}</div><div class="sub">${esc(hero(m.hero_id).n)} · ${nf(m.net_worth)} душ · ${m.last_hits} добиваний</div></div>
+        <div class="r"><b class="${w ? 'win' : 'loss'}" style="font:600 14px var(--h);letter-spacing:.06em">${w ? 'ПОБЕДА' : 'ПОРАЖЕНИЕ'}</b><br>${mmss(m.match_duration_s)} · ${ago(m.start_time)}</div></a>`; }).join('')}`);
+  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+}
+
+// ---------- «Разбор матча» ----------
+function lineChart(series, w = 640, h = 220) {
+  const xs = series.flatMap(s => s.pts.map(p => p[0])), ys = series.flatMap(s => s.pts.map(p => p[1]));
+  const X = Math.max(...xs, 60), Y = Math.max(...ys, 1) * 1.08, pl = 44, pb = 22, pt = 10, pr = 10;
+  const x = v => pl + (w - pl - pr) * v / X, y = v => pt + (h - pt - pb) * (1 - v / Y);
+  const grid = [0, .25, .5, .75, 1].map(f => `<line x1="${pl}" x2="${w - pr}" y1="${y(Y * f)}" y2="${y(Y * f)}" stroke="#2c251d"/><text x="${pl - 6}" y="${y(Y * f) + 4}" text-anchor="end" font-size="10.5" fill="#7d7466">${nf(Y * f / 1000)}к</text>`).join('');
+  const xt = []; for (let t = 0; t <= X; t += 300) xt.push(`<text x="${x(t)}" y="${h - 6}" text-anchor="middle" font-size="10.5" fill="#7d7466">${t / 60}</text>`);
+  const lines = series.map(s => `<polyline fill="none" stroke="${s.c}" stroke-width="${s.w || 2.5}" ${s.dash ? 'stroke-dasharray="5 5"' : ''} points="${s.pts.map(p => x(p[0]) + ',' + y(p[1])).join(' ')}"/>`
+    + `<circle cx="${x(s.pts[s.pts.length - 1][0])}" cy="${y(s.pts[s.pts.length - 1][1])}" r="3.5" fill="${s.c}"/>`).join('');
+  return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Души по времени">${grid}${xt.join('')}${lines}</svg>`;
+}
+async function viewMatch(mid) {
+  if (!ME) return viewWho();
+  V('<div class="load">Разбираю матч…</div>');
+  try {
+    const md = await api('matches/' + mid + '/metadata'), mi = md.match_info, P = mi.players;
+    const me = P.find(p => p.account_id === ME.id) || P[0];
+    const won = mi.winning_team === me.team, dur = mi.duration_s;
+    const enemies = P.filter(p => p.team !== me.team), mates = P.filter(p => p.team === me.team);
+    const opp = enemies.filter(p => p.assigned_lane === me.assigned_lane).sort((a, b) => b.net_worth - a.net_worth)[0] || enemies.sort((a, b) => b.net_worth - a.net_worth)[0];
+    const last = p => p.stats[p.stats.length - 1] || {};
+    const at = (p, t) => { let v = 0; for (const s of p.stats) if (s.time_stamp_s <= t) v = s.net_worth; return v; };
+    const rankIn = (L, f) => 1 + L.filter(p => f(p) > f(me)).length;
+    const dmg = p => last(p).player_damage || 0;
+    // покупки и сравнение с топами
+    const since = now() - 30 * 86400;
+    const IS = await api(`analytics/item-stats?hero_id=${me.hero_id}&min_average_badge=100&min_unix_timestamp=${since}`).catch(() => []);
+    const avg = {}; IS.forEach(s => avg[s.item_id] = s);
+    const seen = new Set(), buys = [];
+    for (const it of me.items) { const I = D.items[it.item_id]; if (!I || seen.has(it.item_id)) continue; seen.add(it.item_id); buys.push({it, I, a: avg[it.item_id]}); }
+    const late = buys.filter(b => b.a && b.a.matches >= 30 && b.it.game_time_s - b.a.avg_buy_time_s > 150 && b.I.t >= 3).sort((a, b) => (b.it.game_time_s - b.a.avg_buy_time_s) - (a.it.game_time_s - a.a.avg_buy_time_s));
+    // главное
+    const pts = [];
+    const nw10 = at(me, 600), onw10 = opp ? at(opp, 600) : 0;
+    if (opp) pts.push(nw10 >= onw10
+      ? `Линию выиграл: к 10-й минуте <b class="win">+${nf(nw10 - onw10)}</b> душ против ${esc(hero(opp.hero_id).n)}.`
+      : `Линию проиграл: к 10-й минуте <b class="loss">−${nf(onw10 - nw10)}</b> душ против ${esc(hero(opp.hero_id).n)}.`);
+    pts.push(`Души: <b>${rankIn(mates, p => p.net_worth)}-й</b> в команде (${nf(me.net_worth)}), урон по героям — <b>${rankIn(mates, dmg)}-й</b> (${nf(dmg(me))}).`);
+    const avgD = P.reduce((a, p) => a + p.deaths, 0) / P.length;
+    pts.push(me.deaths > avgD * 1.3 ? `Смертей <b class="loss">${me.deaths}</b> — больше, чем в среднем в матче (${avgD.toFixed(1)}). Смотри карту ниже: где ловили.` : `Смертей ${me.deaths} — ${me.deaths <= avgD ? 'не больше' : 'чуть больше'} среднего в матче (${avgD.toFixed(1)}).`);
+    if (late.length) pts.push(`${esc(late[0].I.n)} — на <b class="loss">${mmss(late[0].it.game_time_s - late[0].a.avg_buy_time_s)}</b> позже, чем покупают топы на этом герое.`);
+    // карта смертей
+    const R = D.map.r || 10752, slot = {}; P.forEach(p => slot[p.player_slot] = p);
+    const pos = q => ({l: 100 * (q.x + R) / (2 * R), t: 100 * (1 - (q.y + R) / (2 * R))});
+    const deaths = (me.death_details || []).map((d, i) => { const a = pos(d.death_pos), k = slot[d.killer_player_slot]; return `<i class="d" style="left:${a.l}%;top:${a.t}%" title="${mmss(d.game_time_s)} · убил ${esc(k ? hero(k.hero_id).n : '?')}">${i + 1}</i>`; }).join('');
+    const sb = t => P.filter(p => p.team === t).sort((a, b) => b.net_worth - a.net_worth).map(p => `<tr class="${p === me ? 'me3' : ''}"><td><span class="row" style="gap:8px">${heroImg(p.hero_id, 's')}${esc(hero(p.hero_id).n)}</span></td><td>${p.kills}/${p.deaths}/${p.assists}</td><td>${nf(p.net_worth)}</td><td>${nf(dmg(p))}</td><td>${p.last_hits}</td></tr>`).join('');
+    V(`<a href="#matches" class="sub" style="text-decoration:none">‹ Матчи</a>
+      <div class="mh" style="margin-top:10px">${hero(me.hero_id).c ? `<img class="cardimg" src="${esc(hero(me.hero_id).c)}" alt="" onerror="this.style.display='none'">` : ''}
+        <div><div class="row" style="gap:8px;flex-wrap:wrap"><span class="chip ${won ? 'g' : 'r'}">${won ? 'Победа' : 'Поражение'}</span><span class="sub">${mmss(dur)} · ${ago(mi.start_time)} · матч ${mid}</span></div>
+          <div class="h1" style="margin-top:8px">${esc(hero(me.hero_id).n)} · ${me.kills} / ${me.deaths} / ${me.assists}</div>
+          <div class="sub">${nf(me.net_worth)} душ · ${nf(me.net_worth / Math.max(1, dur / 60))} в минуту · ${me.last_hits} добиваний · уровень ${me.level}</div></div></div>
+      <div class="h2">Главное</div><div class="card pad"><ul class="pts">${pts.map(x => `<li>${x}</li>`).join('')}</ul></div>
+      <div class="grid2" style="margin-top:14px">
+        <div><div class="h2" style="margin-top:12px">Души по времени</div><div class="card pad">
+          ${lineChart([{c: 'var(--ac)', pts: [[0, 0]].concat(me.stats.map(s => [s.time_stamp_s, s.net_worth]))}].concat(opp ? [{c: 'var(--loss)', dash: 1, pts: [[0, 0]].concat(opp.stats.map(s => [s.time_stamp_s, s.net_worth]))}] : []))}
+          <div class="row sub" style="gap:14px;margin-top:6px"><span><b style="color:var(--ac)">━</b> ты</span>${opp ? `<span><b style="color:var(--loss)">┅</b> ${esc(hero(opp.hero_id).n)} (соперник по линии)</span>` : ''}<span class="sp"></span><span>минуты →</span></div></div>
+          <div class="h2">Где умирал · ${me.deaths}</div>
+          <div class="map">${D.map.img ? `<img class="mi" src="${esc(D.map.img)}" alt="" onerror="this.remove()">` : ''}${deaths}</div>
+        </div>
+        <div><div class="h2" style="margin-top:12px">Покупки и топы</div><div class="card pad">
+          <p class="sub" style="margin:0 0 6px">Время покупки против топ-игроков (Ascendant+) на ${esc(hero(me.hero_id).n)} за 30 дней.</p>
+          ${buys.map(b => { const d = b.a && b.a.matches >= 30 ? b.it.game_time_s - b.a.avg_buy_time_s : null;
+            return `<div class="it"><img src="${esc(b.I.i)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div><b>${esc(b.I.n)}</b><small>${nf(b.I.p)} душ${b.a ? ' · у топов ' + pc(b.a.wins, b.a.matches) + '% побед' : ''}</small></div>
+              <div style="text-align:right"><b style="font:600 15px var(--h)">${mmss(b.it.game_time_s)}</b>${d == null ? '' : `<small class="${d > 60 ? 'loss' : d < -60 ? 'win' : ''}" style="display:block;font-size:12px">${d > 0 ? '+' : '−'}${mmss(Math.abs(d))} ${d > 0 ? 'позже' : 'раньше'}</small>`}</div></div>`; }).join('') || '<div class="empty">Покупок не видно.</div>'}
+        </div></div>
+      </div>
+      <div class="h2">Все игроки</div>
+      <div class="grid2">${[me.team, 1 - me.team].map(t => `<div class="card sbw"><table class="sb"><tr><th>${t === me.team ? 'Твоя команда' : 'Соперники'}</th><th>K/D/A</th><th>Души</th><th>Урон</th><th>Доб.</th></tr>${sb(t)}</table></div>`).join('')}</div>`);
+  } catch (e) { V(`<div class="err">Не вышло разобрать матч: ${esc(e.message)}</div>`); }
+}
+
+// ---------- «Сборки» ----------
+const BADGE = [['Все ранги', 0], ['Высокий · Oracle+', 80], ['Топ · Ascendant+', 100]];
+let BB = 1;
+function viewBuilds() {
+  const H = Object.entries(D.heroes).sort((a, b) => a[1].n.localeCompare(b[1].n));
+  V(`<div class="h1">Сборки</div><p class="sub" style="margin:0 0 14px">Выбери героя — покажу сборки игроков: сколько раз взяли и сколько побед, и предметы по винрейту у топов.</p>
+    <input class="in" id="hq" placeholder="Найти героя" style="max-width:360px;margin-bottom:14px">
+    <div class="hg" id="hg">${H.map(([id, h]) => `<a href="#b/${id}" data-n="${esc(h.n.toLowerCase())}"><img src="${esc(h.c || h.i)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">${esc(h.n)}</a>`).join('')}</div>`);
+  $('#hq').oninput = e => { const q = e.target.value.trim().toLowerCase(); document.querySelectorAll('#hg a').forEach(a => a.classList.toggle('hide', q && !a.dataset.n.includes(q))); };
+}
+async function viewBuild(hid) {
+  hid = +hid;
+  const h = hero(hid), since = now() - 21 * 86400, b = BADGE[BB][1];
+  V(`<a href="#builds" class="sub" style="text-decoration:none">‹ Все герои</a>
+    <div class="row" style="margin:10px 0 14px;gap:14px">${heroImg(hid, 'l')}<div><div class="h1">${esc(h.n)}</div><div class="seg" id="bb">${BADGE.map((x, i) => `<button class="${i === BB ? 'on' : ''}" data-i="${i}">${esc(x[0])}</button>`).join('')}</div></div></div>
+    <div id="bv"><div class="load">Считаю сборки и предметы…</div></div>`);
+  document.querySelectorAll('#bb button').forEach(x => x.onclick = () => { BB = +x.dataset.i; viewBuild(hid); });
+  try {
+    const q = `min_unix_timestamp=${since}${b ? '&min_average_badge=' + b : ''}`;
+    const [BS, IS] = await Promise.all([api(`analytics/hero-build-stats/${hid}?${q}`), api(`analytics/item-stats?hero_id=${hid}&${q}`)]);
+    const top = BS.filter(x => x.matches >= 30).sort((a, b) => b.matches - a.matches).slice(0, 10);
+    let names = {};
+    if (top.length) {
+      const L = await Promise.all(top.map(x => api(`builds?build_id=${x.hero_build_id}&only_latest=true&limit=1`).then(r => r[0]).catch(() => null)));
+      L.forEach((r, i) => { if (r) names[top[i].hero_build_id] = r.hero_build; });
+      const au = [...new Set(Object.values(names).map(x => x.author_account_id).filter(Boolean))];
+      if (au.length) { const S = await api('players/steam?account_ids=' + au.join(',')).catch(() => []); const SN = {}; S.forEach(s => SN[s.account_id] = s.personaname); Object.values(names).forEach(x => x.author = SN[x.author_account_id]); }
+    }
+    const maxM = Math.max(1, ...IS.map(s => s.matches));
+    const good = IS.filter(s => D.items[s.item_id] && s.matches >= Math.max(20, maxM * .04));
+    const phase = [['Начало · до 10 мин', 0, 600], ['Середина · 10–20 мин', 600, 1200], ['Поздняя игра · после 20 мин', 1200, 1e9]];
+    const itemRow = s => { const I = D.items[s.item_id], wr = pc(s.wins, s.matches); return `<div class="it"><img src="${esc(I.i)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div><b>${esc(I.n)}</b><small>берут в ${pc(s.matches, maxM)}% матчей · ~${mmss(s.avg_buy_time_s)}</small></div><div class="wr ${wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}" style="font-size:17px">${wr}%<small>побед</small></div></div>`; };
+    $('#bv').innerHTML = `<div class="h2" style="margin-top:4px">Сборки игроков · ${esc(BADGE[BB][0])}</div>
+      <div class="card">${top.length ? top.map(x => { const nm = names[x.hero_build_id] || {}, wr = pc(x.wins, x.matches);
+        return `<div class="bd"><div><b>${esc(nm.name || 'Сборка №' + x.hero_build_id)}</b><small>${nm.author ? 'автор ' + esc(nm.author) + ' · ' : ''}взяли ${nf(x.matches)} ${pl(x.matches, ['раз', 'раза', 'раз'])} · ${nf(x.players)} ${pl(x.players, ['игрок', 'игрока', 'игроков'])} · ID ${x.hero_build_id}</small></div>
+          <div class="wr ${wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}">${wr}%<small>побед</small></div></div>`; }).join('') : '<div class="empty">Мало матчей с этим фильтром.</div>'}</div>
+      <p class="sub">Поставить в игре: магазин → «Сборки» → поиск по названию. Скоро — кнопкой из окна Restless в самой игре.</p>
+      <div class="h2">Предметы по винрейту · ${esc(BADGE[BB][0])}</div>
+      <div class="ph">${phase.map(([t, a, z]) => { const L = good.filter(s => s.avg_buy_time_s >= a && s.avg_buy_time_s < z).sort((x, y) => y.wins / y.matches - x.wins / x.matches).slice(0, 8);
+        return `<div><div class="sub" style="margin-bottom:6px;font-weight:600">${t}</div><div class="card pad" style="padding:4px 14px">${L.map(itemRow).join('') || '<div class="empty">—</div>'}</div></div>`; }).join('')}</div>`;
+  } catch (e) { $('#bv').innerHTML = `<div class="err">Не вышло: ${esc(e.message)}</div>`; }
+}
+
+// ---------- навигация ----------
+function V(html) { $('#v').innerHTML = html; }
+function route() {
+  const h = location.hash.replace(/^#/, '') || (ME ? 'now' : 'who');
+  const [t, a] = h.split('/');
+  const tab = {m: 'matches', b: 'builds'}[t] || t;
+  document.querySelectorAll('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.t === tab));
+  window.scrollTo(0, 0);
+  if (t === 'who') return viewWho();
+  if (t === 'now') return viewNow();
+  if (t === 'profile') return viewProfile();
+  if (t === 'matches') return viewMatches();
+  if (t === 'm' && a) return viewMatch(a);
+  if (t === 'builds') return viewBuilds();
+  if (t === 'b' && a) return viewBuild(a);
+  return viewNow();
+}
+window.addEventListener('hashchange', route);
+(async () => {
+  const u = new URL(location.href);
+  let id = u.searchParams.get('id');
+  if (!id) try { id = localStorage.getItem('rl-id'); } catch (e) {}
+  if (id) await setMe(id, false); else paintMe();
+  route();
+})();
+</script>
+</body>
+</html>
