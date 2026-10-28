@@ -1,4 +1,6 @@
-// Restless 0.9.1.
+// Restless 0.10.
+// 0.10: в окне RESTLESS — блок «Что видит мод»: души, игроки и КД ульт, ячейки магазина с названиями, лагеря на миникарте.
+// Это проверка перед следующими шагами (подсветка сборки в магазине, таймеры лагерей): по фото блока видно, до чего мод дотягивается.
 // 0.9.1: КД ульты то появлялся, то пропадал. Копий скрипта несколько, хозяин между ними переходит, а «показано / спрятано»
 // каждая копия запоминала у себя — и не трогала число, которое другая копия спрятала. Теперь видимость сверяем с самой панелью,
 // число всегда видно (прячем пустым текстом), секунды читаем свежими через $.Localize у самой подписи, а не ждём, пока она обновится.
@@ -11,7 +13,7 @@
 // КД ульты: игра сама кладёт секунды в верхнюю панель ({i:ult_cooldown}), но не показывает — выводим их поверх значка.
 // Память игры не читает, ничего не отправляет. Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.9.1';
+	var VER = '0.10';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -43,7 +45,10 @@
 			markT: 'Надпись RESTLESS', markS: 'слева сверху — видно, что мод работает',
 			yes: 'ВКЛ', no: 'ВЫКЛ', lang: 'Язык мода', soon: 'СКОРО',
 			s1: 'Сборки с винрейтом прямо в магазине', s2: 'Кто в матче и сборки — прямо в окне мода', s3: 'Двуязычные субтитры реплик героев',
-			site: 'Мой Restless — разбор матчей', bot: 'Бот', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.'
+			site: 'Мой Restless — разбор матчей', bot: 'Бот', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.',
+			seeH: 'ЧТО ВИДИТ МОД · пришли фото этого блока', souls: 'Души: ', pl: 'Игроков в верхней панели: ', plU: ' · КД ульты в секундах: ',
+			shop: 'Магазин: ячеек ', shop0: 'Магазин: пусто — открой магазин, потом снова Esc → RESTLESS', first: ' · первые: ',
+			camp: 'Лагеря на миникарте: ', campOn: ' · сейчас живы: ', camp0: 'Лагеря на миникарте: не нашёл'
 		},
 		en: {
 			mark: 'RESTLESS ' + VER + ' · running', markMenu: ' · Esc button',
@@ -52,7 +57,10 @@
 			markT: 'RESTLESS label', markS: 'top left — shows the mod is running',
 			yes: 'ON', no: 'OFF', lang: 'Mod language', soon: 'COMING SOON',
 			s1: 'Builds with win rate right in the shop', s2: 'Who\'s in the match and builds — right in this window', s3: 'Bilingual hero voice-line subtitles',
-			site: 'My Restless — match breakdowns', bot: 'Bot', close: 'Close', note: 'Settings last until you quit the game.'
+			site: 'My Restless — match breakdowns', bot: 'Bot', close: 'Close', note: 'Settings last until you quit the game.',
+			seeH: 'WHAT THE MOD SEES · send a photo of this block', souls: 'Souls: ', pl: 'Players in the top bar: ', plU: ' · ult cooldown in seconds: ',
+			shop: 'Shop: cells ', shop0: 'Shop: empty — open the shop, then Esc → RESTLESS again', first: ' · first: ',
+			camp: 'Camps on the minimap: ', campOn: ' · alive now: ', camp0: 'Camps on the minimap: not found'
 		}
 	};
 	function T(k) { return (TX[lang()] || TX.ru)[k]; }
@@ -164,6 +172,10 @@
 		P.s = [];
 		for (var j = 1; j <= 3; j++) P.s.push(lab(WIN, '', { fontSize: '15px', color: '#f3ebdd8c', marginTop: '4px' }));
 
+		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '16px', marginBottom: '2px' });
+		P.see = [];
+		for (var q = 0; q < 4; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
+
 		var f = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
 		var site = mk('Button', f, 'RestlessSiteBtn', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
 		P.site = lab(site, '', { fontSize: '16px', fontWeight: 'bold', color: DARK });
@@ -200,6 +212,7 @@
 		setText(P.sub, T('settings')); setText(P.secGame, T('inGame')); setText(P.lang, T('lang')); setText(P.secSoon, T('soon'));
 		setText(P.site, T('site')); setText(P.bot, T('bot')); setText(P.close, T('close')); setText(P.note, T('note'));
 		for (var j = 0; j < 3; j++) setText(P.s[j], '·  ' + T('s' + (j + 1)));
+		setText(P.seeH, T('seeH'));
 		var keys = [['ULT', 'ultT', 'ultS'], ['MARK', 'markT', 'markS']];
 		for (var i = 0; i < keys.length; i++) {
 			var q = P[keys[i][0]], v = on(keys[i][0]);
@@ -223,6 +236,7 @@
 		paint();
 		seen = menuShown();
 		WIN.__fix = 0;
+		try { SEE = 0; seeTick(true); } catch (e) { $.Msg('[Restless] проверка: ' + e); }
 	}
 	// Окно должно стоять по центру, подложка — на весь экран. Если разметка поставила иначе — ставим по пикселям.
 	function winTick() {
@@ -289,6 +303,35 @@
 		}
 	}
 
+	// ---------- что видит мод: проверка перед магазином и лагерями ----------
+	// Ячейка магазина — панель класса mod_view (CitadelShopMod), название предмета — в её подписи modName.
+	// Лагерь на миникарте — map_button neutral, класс active = лагерь жив (игра так его и показывает).
+	var SEE = 0;
+	function txt(p) { try { return String(p.text || '').replace(/\s+/g, ' ').trim(); } catch (e) { return ''; } }
+	function seeTick(log) {
+		if (!open || !P.see || !P.see.length) return;
+		if (SEE-- > 0 && !log) return;
+		SEE = 3;
+		var out = [];
+		var g = HUD.FindChildTraverse('hudCurGoldLabel');
+		out.push(T('souls') + (ok(g) && txt(g) ? txt(g) : '—'));
+		var withSec = 0;
+		for (var i = 0; i < ULT.length; i++) if (ok(ULT[i].src) && ultVal(ULT[i])) withSec++;
+		out.push(T('pl') + ULT.length + T('plU') + withSec + (ULT_SRC ? ' (' + ULT_SRC + ')' : ''));
+		var sh = HUD.FindChildTraverse('Shop'), cells = ok(sh) && sh.FindChildrenWithClassTraverse ? sh.FindChildrenWithClassTraverse('mod_view') : [], names = [];
+		for (var c = 0; c < cells.length && names.length < 3; c++) {
+			var nl = cells[c].FindChildrenWithClassTraverse ? cells[c].FindChildrenWithClassTraverse('modName') : [];
+			var nm = nl.length ? txt(nl[0]) : '';
+			if (nm && nm.indexOf('{') < 0) names.push(nm);
+		}
+		out.push(cells.length ? T('shop') + cells.length + (names.length ? T('first') + names.join(', ') : '') : T('shop0'));
+		var nb = HUD.FindChildrenWithClassTraverse ? HUD.FindChildrenWithClassTraverse('neutral') : [], camps = 0, alive = 0;
+		for (var k = 0; k < nb.length; k++) if (nb[k].BHasClass && nb[k].BHasClass('map_button')) { camps++; if (nb[k].BHasClass('active')) alive++; }
+		out.push(camps ? T('camp') + camps + T('campOn') + alive : T('camp0'));
+		for (var j = 0; j < P.see.length; j++) setText(P.see[j], out[j] || '');
+		if (log) $.Msg('[Restless] видит: ' + out.join(' | '));
+	}
+
 	// ---------- общий такт ----------
 	function tick() {
 		if (!ok(ctx)) return;
@@ -297,6 +340,7 @@
 			try { menuTick(); } catch (e) { $.Msg('[Restless] меню: ' + e); }
 			try { winTick(); } catch (e) { $.Msg('[Restless] окно: ' + e); }
 			try { ultTick(); } catch (e) { $.Msg('[Restless] ульта: ' + e); }
+			try { seeTick(false); } catch (e) { $.Msg('[Restless] проверка: ' + e); }
 			$.Schedule(0.25, tick);
 		} else {
 			$.Schedule(1.0, tick);

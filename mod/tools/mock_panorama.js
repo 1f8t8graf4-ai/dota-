@@ -1,4 +1,4 @@
-// Заглушка Panorama для проверки скрипта Restless без игры (0.9.1).
+// Заглушка Panorama для проверки скрипта Restless без игры (0.10).
 // HUD: корень Hud → верхняя панель (ванильная), субтитры, скорость, меню по Esc (наши файлы со скриптом).
 // Как в игре: скрипт файла запускается раньше, чем панель вставлена в HUD, — он должен дождаться, а не выключиться.
 // Второй прогон: меню по Esc — чужое (ванильная копия без скрипта) — кнопку всё равно ставит скрипт из субтитров/скорости.
@@ -41,6 +41,11 @@ ok(!fs.existsSync(path.join(dir,'layout/citadel_hud_top_bar.xml')),'верхню
 const hud=P('CitadelHud','Hud');
 const top=add(hud,P('CitadelHudTopBar','TopBar'));const topCtx=top;
 // игроки верхней панели: CitadelHudTopBarPlayer → StatusRow → UltimateStatus → UltimateStatusBG
+// души, магазин (ячейки mod_view с подписью modName), миникарта (лагеря map_button neutral, живой — active)
+{const gc=add(hud,P('Panel','hudGoldContainer'));add(gc,P('Label','hudCurGoldLabel',{class:'CurrencyLabel',text:'7,250'}));
+ const sh=add(hud,P('CitadelHudHeroShop','HeroShop'));const shop=add(sh,P('Panel','Shop'));
+ ['Headshot Booster','High-Velocity Mag','Monster Rounds'].forEach((n,i)=>{const m=add(shop,P('CitadelShopMod','m'+i,{class:'mod_view'}));const a=add(m,P('Panel','',{class:'mod_name_area'}));add(a,P('Label','',{class:'modName',text:n}))});
+ const mm=add(hud,P('Panel','Minimap'));for(let i=0;i<5;i++)add(mm,P('Button','camp'+i,{class:'map_button neutral'+(i<3?' active':'')}));add(mm,P('Button','x',{class:'map_button neutral_spawn'}));}
 const players=[];for(let i=0;i<4;i++){const pl=add(topCtx,P('CitadelHudTopBarPlayer','TopBarPlayer'+i));const sr=add(pl,P('Panel','StatusRow'));
  const us=add(sr,P('Panel','UltimateStatus',{class:'UltimateStatus'}));add(us,P('Panel','UltimateStatusBG',{class:'UltimateStatusBG'}));players.push(pl)}
 // панели созданы, но ещё не вставлены в HUD — скрипты уже запускаются
@@ -63,7 +68,7 @@ const order=sub.ch.map(c=>c.id||[...c.cls].join('.')||c.type);
 ok(order.indexOf('RestlessRow')===order.indexOf('FeedbackRow')+1&&sub.ch[order.indexOf('RestlessRow')+1].FindChildTraverse('settings'),'порядок: Отзыв игрока → RESTLESS → Настройки ('+order.join(', ')+')');
 ok(btn.cls.has('nav_menu_item')&&btn.cls.has('minor')&&!Object.keys(btn.style).length,'класс как у кнопок игры, без своих стилей');
 const bl=btn.ch[0];ok(bl.text==='RESTLESS'&&bl.cls.has('menuButtonLabel')&&!Object.keys(bl.style).length,'подпись RESTLESS тем же шрифтом');
-const mark=F('RestlessMark');ok(mark&&mark.par===hud&&mark.style.visibility==='visible'&&/RESTLESS 0\.9\.1 · работает · кнопка в Esc/.test(mark.text),'надпись: «'+(mark&&mark.text)+'»');
+const mark=F('RestlessMark');ok(mark&&mark.par===hud&&mark.style.visibility==='visible'&&/RESTLESS 0\.10 · работает · кнопка в Esc/.test(mark.text),'надпись: «'+(mark&&mark.text)+'»');
 // «Сменить героя» налезает — поднимаем
 em.cls.add('ShowEscapeMenu');const ch=F('changehero'),mn=ch.par;
 Object.assign(mn,{actuallayoutheight:1080});Object.assign(ch,{actualyoffset:730,actuallayoutheight:70});Object.assign(sub,{actualyoffset:780,actuallayoutheight:170});
@@ -86,6 +91,10 @@ tick(1);
 ok(win.style.align==='left top'&&win.style.x==='640px'&&win.style.y==='280px','окно не по центру — поставлено по пикселям '+win.style.x+','+win.style.y);
 ok(shade.style.width==='1920px'&&shade.style.height==='1080px','подложка не на весь экран — растянута');
 ok(/по центру|поправлено/.test(texts().join(' ')),'строка проверки в окне');
+{const tx=texts().join(' / ');ok(/ЧТО ВИДИТ МОД/.test(tx)&&/Души: 7,250/.test(tx),'«Что видит мод»: души — '+(tx.match(/Души: [^/]*/)||[''])[0]);
+ ok(/Магазин: ячеек 3 · первые: Headshot Booster, High-Velocity Mag, Monster Rounds/.test(tx),'магазин: ячейки и названия');
+ ok(/Лагеря на миникарте: 5 · сейчас живы: 3/.test(tx),'лагеря: всего и живы (neutral_spawn не считаем)');
+ ok(msgs.some(m=>/\[Restless\] видит: Души: 7,250/.test(m)),'то же в консоль при открытии окна');}
 // переключатели
 const btns=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');
 btns[1].ev.onactivate();tick(1);
