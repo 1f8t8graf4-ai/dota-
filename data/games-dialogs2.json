@@ -1,0 +1,2985 @@
+{
+ "dialogs": [
+  {
+   "ctx": "разговор · Abrams и Celeste",
+   "about": "Абрамс и Селеста обсуждают общего знакомого Ленни, который влез в долги и не слушает никого, кроме самого себя.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Узнаваемая шутка про друга, который не слушает советов, — свой Ленни есть у всех.",
+   "lines": [
+    {
+     "s": "Abrams",
+     "en": "How's Lenny doing?",
+     "ru": "Как там наш Ленни?",
+     "a": "scenes/games/deadlock/v/abrams-d01.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "He's stressed.",
+     "ru": "На нервах.",
+     "a": "scenes/games/deadlock/v/celeste-d02.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "He should've never taken out a marker.",
+     "ru": "Не надо было ему влезать в долги.",
+     "a": "scenes/games/deadlock/v/abrams-d03.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "I know, I know. I tried to tell him, but you know Lenny, he's always going to Lenny.",
+     "ru": "Знаю, знаю. Я ему говорила. Но ты же знаешь Ленни — он всегда слушает только Ленни.",
+     "a": "scenes/games/deadlock/v/celeste-d04.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "It's kind of you to help him.",
+     "ru": "Хорошо, что ты ему помогаешь.",
+     "a": "scenes/games/deadlock/v/abrams-d05.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "What are friends for?",
+     "ru": "Для того друзья и нужны.",
+     "a": "scenes/games/deadlock/v/celeste-d06.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "marker",
+     "r": "долг под расписку"
+    },
+    {
+     "w": "stressed",
+     "r": "на нервах"
+    },
+    {
+     "w": "What are friends for?",
+     "r": "для того друзья и нужны"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Grey Talon и Abrams",
+   "about": "Абрамс переживает о вражеских стволах — Серый Коган обещает стрелы в шеях.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Спокойная жуть «стрелы в шеях» и немое согласие — короткий панч.",
+   "lines": [
+    {
+     "s": "Abrams",
+     "en": "You know they're gonna have guns, right?",
+     "ru": "Ты в курсе, что у них будут стволы?",
+     "a": "scenes/games/deadlock/v/abrams-d07.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "Yep. They're also going to have arrows through their necks.",
+     "ru": "Угум. И ещё у них будут стрелы в шеях.",
+     "a": "scenes/games/deadlock/v/grey-talon-d08.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "Fair enough.",
+     "ru": "Справедливо.",
+     "a": "scenes/games/deadlock/v/abrams-d09.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "guns",
+     "r": "стволы"
+    },
+    {
+     "w": "Fair enough",
+     "r": "справедливо, возражений нет"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Grey Talon и Abrams",
+   "about": "Абрамс умоляет старика не лезть на рожон — у того на счёт смерти свои планы.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Тёмное «не умру, пока не отомщу» цепляет недосказанностью.",
+   "lines": [
+    {
+     "s": "Abrams",
+     "en": "Talon, I know you don't care if you die, but I am highly motivated to stay alive! So please, don't do anything stupid!",
+     "ru": "Коган, я знаю, тебе плевать, выжить или нет, но мне очень хочется остаться в живых! Так что умоляю: не делай ничего тупого!",
+     "a": "scenes/games/deadlock/v/abrams-d10.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "Don't worry, Abrams. I'm not dying until I have my revenge.",
+     "ru": "Не переживай, Абрамс. Я не умру, пока не отомщу.",
+     "a": "scenes/games/deadlock/v/grey-talon-d11.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "revenge",
+     "r": "месть"
+    },
+    {
+     "w": "stay alive",
+     "r": "остаться в живых"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Abrams",
+   "about": "Абрамс пытается поговорить по душам с агентом Хейз — и получает служебную отписку.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Уход от ответа как панч — знакомо каждому, кто сталкивался с бюрократией.",
+   "lines": [
+    {
+     "s": "Abrams",
+     "en": "You like being a Sandman?",
+     "ru": "Тебе нравится быть Песочным человеком?",
+     "a": "scenes/games/deadlock/v/abrams-d12.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "I'm good at my job.",
+     "ru": "Я хорошо делаю свою работу.",
+     "a": "scenes/games/deadlock/v/haze-d13.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "That's not what I asked.",
+     "ru": "Я не это спросил.",
+     "a": "scenes/games/deadlock/v/abrams-d14.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "Stay focused on the task at hand.",
+     "ru": "Сфокусируйся на текущей задаче.",
+     "a": "scenes/games/deadlock/v/haze-d15.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "task at hand",
+     "r": "текущая задача"
+    },
+    {
+     "w": "That's not what I asked",
+     "r": "я не это спросил"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Abrams",
+   "about": "Абрамс боится, что невидимая напарница его подведёт, — Хейз обещает работать тихо, но исправно.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Атмосферно: невидимый союзник и честное обещание.",
+   "lines": [
+    {
+     "s": "Abrams",
+     "en": "You're not gonna leave me out to dry, are you?",
+     "ru": "Ты же не бросишь меня в беде, а?",
+     "a": "scenes/games/deadlock/v/abrams-d16.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "You may not see me, Detective. But I promise you, I'm doing my part.",
+     "ru": "Меня можно и не заметить, детектив. Но обещаю: свою часть работы я делаю.",
+     "a": "scenes/games/deadlock/v/haze-d17.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "leave me out to dry",
+     "r": "бросить меня в беде"
+    },
+    {
+     "w": "doing my part",
+     "r": "делаю свою часть"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Abrams и Infernus",
+   "about": "Абрамс выторговывает у бармена Инфернуса выпивку получше — за спасённую жизнь.",
+   "use": 3,
+   "hook": 2,
+   "hook_why": "Лёгкая сценка-договорняк, но панч слабый.",
+   "lines": [
+    {
+     "s": "Abrams",
+     "en": "Hey Fern, next time you're pouring me the good stuff, remember all the times I saved your life today.",
+     "ru": "Эй, Ферн, когда в следующий раз нальёшь мне что получше — вспомни, сколько раз я сегодня спас тебе жизнь.",
+     "a": "scenes/games/deadlock/v/abrams-d18.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "You got it, buddy!",
+     "ru": "Есть, приятель!",
+     "a": "scenes/games/deadlock/v/infernus-d19.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "the good stuff",
+     "r": "выпивка получше"
+    },
+    {
+     "w": "You got it",
+     "r": "есть, договорились"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Abrams и Infernus",
+   "about": "Инфернус расспрашивает пропавшего друга Абрамса — тот намекает, что его тёмное дело закончится сегодня.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Недосказанность: что за дело и что случится сегодня — хочется продолжения.",
+   "lines": [
+    {
+     "s": "Infernus",
+     "en": "I haven't seen you in a minute, brotha.",
+     "ru": "Сто лет тебя не видел, братан.",
+     "a": "scenes/games/deadlock/v/infernus-d20.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "Yeah, case I've been working's been... consuming...",
+     "ru": "Да, дело, за которое я взялся, оказалось... затягивающим...",
+     "a": "scenes/games/deadlock/v/abrams-d21.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "Are you okay?",
+     "ru": "Ты вообще в порядке?",
+     "a": "scenes/games/deadlock/v/infernus-d22.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "After today... I will be.",
+     "ru": "После сегодняшнего... буду.",
+     "a": "scenes/games/deadlock/v/abrams-d23.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "in a minute",
+     "r": "сто лет (не виделись)"
+    },
+    {
+     "w": "consuming",
+     "r": "затягивающий, поглощающий"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Abrams и Lady Geist",
+   "about": "Леди Гейст называет Абрамса громилой прямо в его присутствии — и не смущается.",
+   "use": 5,
+   "hook": 4,
+   "hook_why": "«Я вообще-то здесь» и мгновенная добивка — готовый панч-стендап.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "And now I have to work alongside a brute.",
+     "ru": "И теперь мне работать бок о бок с каким-то громилой.",
+     "a": "scenes/games/deadlock/v/lady-geist-d24.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "I'm right here.",
+     "ru": "Я вообще-то здесь.",
+     "a": "scenes/games/deadlock/v/abrams-d25.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "Correct. That's why I'm exasperated.",
+     "ru": "Именно. Поэтому я и страдаю.",
+     "a": "scenes/games/deadlock/v/lady-geist-d26.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "brute",
+     "r": "громила, грубиян"
+    },
+    {
+     "w": "exasperated",
+     "r": "раздосадована, измучена"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Abrams и Lady Geist",
+   "about": "Абрамс сомневается в сроках призыва Патрона, а леди Гейст обещает, что своё она получит.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Спокойная уверенность леди Гейст звучит как угроза — цепляет фоном.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "Thank you for your help, Detective.",
+     "ru": "Спасибо за помощь, детектив.",
+     "a": "scenes/games/deadlock/v/lady-geist-d27.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "We still got a long way to go before we summon the Patron!",
+     "ru": "До призыва Патрона нам ещё ой как далеко!",
+     "a": "scenes/games/deadlock/v/abrams-d28.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "Abrams, if there's one thing I am confident in, it's getting what I want.",
+     "ru": "Абрамс, в одном я уверена железно: я всегда получаю то, что хочу.",
+     "a": "scenes/games/deadlock/v/lady-geist-d29.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Patron",
+     "r": "Патрон — божество ритуала"
+    },
+    {
+     "w": "confident",
+     "r": "уверена в себе"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lash и Abrams",
+   "about": "Лэш не запоминает имена напарников — Абрамс обещает, что кулак запомнится.",
+   "use": 5,
+   "hook": 4,
+   "hook_why": "«Имя не запомню» → угроза кулаком → самоуверенная добивка Лэша.",
+   "lines": [
+    {
+     "s": "Lash",
+     "en": "Alright, Blue Boy, ahhh, let's get to work.",
+     "ru": "Так, Голубой Бой, эээ, приступим к делу.",
+     "a": "scenes/games/deadlock/v/lash-d30.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "My name's... Abrams.",
+     "ru": "Меня зовут... Абрамс.",
+     "a": "scenes/games/deadlock/v/abrams-d31.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "Probably not gonna remember that.",
+     "ru": "Вряд ли я это запомню.",
+     "a": "scenes/games/deadlock/v/lash-d32.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "After we win, I'm gonna punch you in the face! Think you'll remember that?!",
+     "ru": "После победы я въеду тебе в лицо! Это запомнишь?!",
+     "a": "scenes/games/deadlock/v/abrams-d33.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "Bluey, when this is over, if you want The Lash to send you to night-night land, you're welcome to try.",
+     "ru": "Голубка, когда всё закончится и захочешь, чтобы Лэш отправил тебя в страну снов, — милости прошу попробовать.",
+     "a": "scenes/games/deadlock/v/lash-d34.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Blue Boy",
+     "r": "Голубой Бой (прозвище)"
+    },
+    {
+     "w": "night-night land",
+     "r": "страна снов"
+    },
+    {
+     "w": "you're welcome to try",
+     "r": "попробуй, если хочешь"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Abrams и McGinnis",
+   "about": "Макгиннис заранее извиняется, что может закидать Абрамса призрачной стеной, — «да это часто бывает».",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Абсурдная конкретика извинения и панч «да это часто бывает».",
+   "lines": [
+    {
+     "s": "McGinnis",
+     "en": "Just wanna get this out of the way: I'm gonna be doing my best to support you, but shit happens and if you end up on the wrong side of a spectral wall... I'm sorry.",
+     "ru": "Сразу расставим точки: я буду изо всех сил тебя прикрывать, но дерьмо случается, и если ты окажешься не с той стороны призрачной стены... соболезную.",
+     "a": "scenes/games/deadlock/v/mcginnis-d35.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "That was... very specific.",
+     "ru": "Это было... подозрительно конкретно.",
+     "a": "scenes/games/deadlock/v/abrams-d36.mp3"
+    },
+    {
+     "s": "McGinnis",
+     "en": "It happens a lot.",
+     "ru": "Так часто бывает.",
+     "a": "scenes/games/deadlock/v/mcginnis-d37.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "Ha, I picked up on that.",
+     "ru": "Ага, я уже догадался.",
+     "a": "scenes/games/deadlock/v/abrams-d38.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "get this out of the way",
+     "r": "сразу расставим точки"
+    },
+    {
+     "w": "spectral",
+     "r": "призрачный"
+    },
+    {
+     "w": "It happens a lot",
+     "r": "да это часто бывает"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Paradox и Abrams",
+   "about": "Абрамс ловит Парадокс за разглядыванием своего Тома — разговор короткий.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Классический конфликт «не трогай моё» с лёгким флиртом.",
+   "lines": [
+    {
+     "s": "Abrams",
+     "en": "I don't like the way you've been looking at the Tome.",
+     "ru": "Мне не нравится, как ты пялишься на мой Том.",
+     "a": "scenes/games/deadlock/v/abrams-d39.mp3"
+    },
+    {
+     "s": "Paradox",
+     "en": "Can't a girl be curious?",
+     "ru": "Девушке уже и полюбопытствовать нельзя?",
+     "a": "scenes/games/deadlock/v/paradox-d40.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "I'm warning you, Paradox. You touch my property, you won't like what happens next.",
+     "ru": "Предупреждаю, Парадокс: тронешь моё имущество — дальше тебе не понравится.",
+     "a": "scenes/games/deadlock/v/abrams-d41.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Tome",
+     "r": "Том (фолиант)"
+    },
+    {
+     "w": "property",
+     "r": "имущество"
+    },
+    {
+     "w": "Can't a girl be curious?",
+     "r": "девушке нельзя полюбопытствовать?"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Abrams и Pocket",
+   "about": "Абрамс интересуется содержимым чемодана незнакомого парнишки — и получает вежливый отказ.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Загадочный чемодан и отказ от помощи — интрига с первой реплики.",
+   "lines": [
+    {
+     "s": "Abrams",
+     "en": "What's in the case?",
+     "ru": "Что в чемодане?",
+     "a": "scenes/games/deadlock/v/abrams-d42.mp3"
+    },
+    {
+     "s": "Pocket",
+     "en": "Something dangerous.",
+     "ru": "Кое-что опасное.",
+     "a": "scenes/games/deadlock/v/pocket-d43.mp3"
+    },
+    {
+     "s": "Abrams",
+     "en": "You in trouble, kid?",
+     "ru": "Ты в беду попал, малой?",
+     "a": "scenes/games/deadlock/v/abrams-d44.mp3"
+    },
+    {
+     "s": "Pocket",
+     "en": "Yeah, but you're not the person who can help me.",
+     "ru": "Ага. Но помочь мне можешь не ты.",
+     "a": "scenes/games/deadlock/v/pocket-d45.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "case",
+     "r": "чемодан"
+    },
+    {
+     "w": "kid",
+     "r": "малой, пацан"
+    },
+    {
+     "w": "You in trouble",
+     "r": "ты в беде?"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Celeste и Grey Talon",
+   "about": "Серый Коган отмечает пёстрый наряд Селесты — и честно принимает ответный комплимент.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Панч про «печального неудачника» и мгновенное «так и есть» — идеальная короткая переброска.",
+   "lines": [
+    {
+     "s": "Grey Talon",
+     "en": "You look very... colorful.",
+     "ru": "Выглядишь ты очень... пёстро.",
+     "a": "scenes/games/deadlock/v/grey-talon-d46.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "I am. You look like a sad bastard.",
+     "ru": "Так и есть. А ты — как печальный неудачник.",
+     "a": "scenes/games/deadlock/v/celeste-d47.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "I am.",
+     "ru": "Так и есть.",
+     "a": "scenes/games/deadlock/v/grey-talon-d48.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "colorful",
+     "r": "пёстрый, яркий"
+    },
+    {
+     "w": "sad bastard",
+     "r": "печальный неудачник"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Celeste и Grey Talon",
+   "about": "Селеста спрашивает Серого Когана о мотивах — тот честен, но невесел.",
+   "use": 3,
+   "hook": 2,
+   "hook_why": "Спокойный обмен репликами, панч мягкий.",
+   "lines": [
+    {
+     "s": "Grey Talon",
+     "en": "Why are you doing this?",
+     "ru": "А зачем ты в это ввязалась?",
+     "a": "scenes/games/deadlock/v/grey-talon-d49.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "Because my friend needs help. How about you?",
+     "ru": "Другу нужна помощь. А ты?",
+     "a": "scenes/games/deadlock/v/celeste-d50.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "Nothing so altruistic.",
+     "ru": "Ничего столь же благородного.",
+     "a": "scenes/games/deadlock/v/grey-talon-d51.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "altruistic",
+     "r": "благородный, альтруистичный"
+    },
+    {
+     "w": "Why are you doing this?",
+     "r": "зачем ты в это ввязалась?"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Celeste и Lady Geist",
+   "about": "Леди Гейст цедит оскорбления, а потом с трудом выдавливает из себя комплимент.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Неохотный комплимент через силу — живой, мемный панч.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "My life is in the hands of a circus freak... wonderful.",
+     "ru": "Моя жизнь в руках циркового уродца... прелесть.",
+     "a": "scenes/games/deadlock/v/lady-geist-d52.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "Yeah, well, maybe your life would be handled with a little more care if you didn't insult me.",
+     "ru": "Ну, знаешь, твою жизнь понесли бы поаккуратнее, если бы ты меня не оскорбляла.",
+     "a": "scenes/games/deadlock/v/celeste-d53.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "Very well: Your jacket isn't heinous. There. You just got a compliment.",
+     "ru": "Хорошо: твой пиджак не омерзителен. Вот. Только что получила комплимент.",
+     "a": "scenes/games/deadlock/v/lady-geist-d54.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "circus freak",
+     "r": "цирковой уродец"
+    },
+    {
+     "w": "heinous",
+     "r": "омерзительный"
+    },
+    {
+     "w": "You just got a compliment",
+     "r": "считай, получила комплимент"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Celeste и Lash",
+   "about": "Лэш пытается завязать разговор, Селеста трижды отвечает «не-а» — и это весь диалог.",
+   "use": 5,
+   "hook": 5,
+   "hook_why": "Повторяющийся панч «не-а» — готовый тикток-тренд: зрители ждут третьего «не-а».",
+   "lines": [
+    {
+     "s": "Lash",
+     "en": "Helloooo Celeste...",
+     "ru": "Аллооо, Селеста...",
+     "a": "scenes/games/deadlock/v/lash-d55.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "Nope.",
+     "ru": "Не-а.",
+     "a": "scenes/games/deadlock/v/celeste-d56.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "It's been a while.",
+     "ru": "Сто лет не виделись.",
+     "a": "scenes/games/deadlock/v/lash-d57.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "Nope.",
+     "ru": "Не-а.",
+     "a": "scenes/games/deadlock/v/celeste-d58.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "Anytime you wanna talk... The Lash will be here for you.",
+     "ru": "Захочешь поболтать — Лэш всегда к твоим услугам.",
+     "a": "scenes/games/deadlock/v/lash-d59.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "Nope.",
+     "ru": "Не-а.",
+     "a": "scenes/games/deadlock/v/celeste-d60.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Nope",
+     "r": "не-а, ни за что"
+    },
+    {
+     "w": "It's been a while",
+     "r": "сто лет не виделись"
+    },
+    {
+     "w": "The Lash will be here for you",
+     "r": "Лэш всегда рядом"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Celeste и Seven",
+   "about": "Семь стыдит Селесту за «цирковой балаган» — и получает ответку про собственные тоннели.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Панч «а ты живёшь в тоннелях» — короткий и убийственный.",
+   "lines": [
+    {
+     "s": "Seven",
+     "en": "You mask your power in a circus sideshow. It's pathetic!",
+     "ru": "Ты прячешь свою силу в цирковом балагане. Это жалко!",
+     "a": "scenes/games/deadlock/v/seven-d61.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "You're living in tunnels.",
+     "ru": "А ты живёшь в тоннелях.",
+     "a": "scenes/games/deadlock/v/celeste-d62.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "I'm hiding from federal agents, not trying to be queen in a kingdom of misfits!",
+     "ru": "Я скрываюсь от федеральных агентов, а не мечтаю стать королевой королевства уродов!",
+     "a": "scenes/games/deadlock/v/seven-d63.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "sideshow",
+     "r": "балаган"
+    },
+    {
+     "w": "misfits",
+     "r": "уроды, изгои"
+    },
+    {
+     "w": "pathetic",
+     "r": "жалкий"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Wraith и Celeste",
+   "about": "Рэйф и Селеста синхронно констатируют: Ленни всегда будет Ленни.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Синхронное перебивание на слове — живой, мемный приём.",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "I just want you to know that I tried to warn your friend.",
+     "ru": "Я просто хочу, чтобы ты знала: я пытался предупредить твоего друга.",
+     "a": "scenes/games/deadlock/v/wraith-d64.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "I know.",
+     "ru": "Я знаю.",
+     "a": "scenes/games/deadlock/v/celeste-d65.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "You can't help that guy! Lenny's always gonn-",
+     "ru": "Этому парню нельзя помочь! Ленни всегда остан-",
+     "a": "scenes/games/deadlock/v/wraith-d66.mp3"
+    },
+    {
+     "s": "Celeste",
+     "en": "Gonna Lenny. I know.",
+     "ru": "-ется Ленни. Я знаю.",
+     "a": "scenes/games/deadlock/v/celeste-d67.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "gonna",
+     "r": "разговорное «будет»"
+    },
+    {
+     "w": "warn",
+     "r": "предупредить"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Doorman и Haze",
+   "about": "Хейз проверяет, всё ли спокойно в заведении Дворецкого, — ответ слишком гладкий.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Жутковатая вежливость: что Дворецкий делает с «проблемами» — догадайся сам.",
+   "lines": [
+    {
+     "s": "Doorman",
+     "en": "How lovely to be collaborating with the OSIC.",
+     "ru": "Как чудесно — сотрудничать с ОСИК.",
+     "a": "scenes/games/deadlock/v/doorman-d68.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "I assume there are no issues at The Baroness?",
+     "ru": "Полагаю, в «Баронессе» всё спокойно?",
+     "a": "scenes/games/deadlock/v/haze-d69.mp3"
+    },
+    {
+     "s": "Doorman",
+     "en": "I assure you, if there were, I would be attending to them as we speak.",
+     "ru": "Уверяю: если бы и были проблемы, я бы уже занимался ими... прямо сейчас.",
+     "a": "scenes/games/deadlock/v/doorman-d70.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "I assure you",
+     "r": "уверяю вас"
+    },
+    {
+     "w": "as we speak",
+     "r": "прямо сейчас"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Doorman и Venator",
+   "about": "Венатор и Дворецкий обмениваются учтивостями двух хищников, знающих цену друг другу.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Светская вежливость с подтекстом: оба уже всё поняли друг о друге.",
+   "lines": [
+    {
+     "s": "Doorman",
+     "en": "Venator Rourke. It's an honor.",
+     "ru": "Венатор Рурк. Для меня честь.",
+     "a": "scenes/games/deadlock/v/doorman-d71.mp3"
+    },
+    {
+     "s": "Venator",
+     "en": "You must be \"The Doorman\".",
+     "ru": "Значит, ты и есть «Дворецкий».",
+     "a": "scenes/games/deadlock/v/venator-d72.mp3"
+    },
+    {
+     "s": "Doorman",
+     "en": "Ah. I see we're both familiar with each other's work. How lovely.",
+     "ru": "Ах, вижу, мы оба наслышаны о работе друг друга. Прелестно.",
+     "a": "scenes/games/deadlock/v/doorman-d73.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "It's an honor",
+     "r": "для меня честь"
+    },
+    {
+     "w": "familiar with",
+     "r": "наслышаны, знакомы"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Doorman и Venator",
+   "about": "Венатор спрашивает Дворецкого, кто он, — ответ «простой слуга» доверия не вызывает.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "«Простой слуга, как и ты» — дерзкий панч мрачному охотнику.",
+   "lines": [
+    {
+     "s": "Venator",
+     "en": "What are you?",
+     "ru": "Ты вообще кто такой?",
+     "a": "scenes/games/deadlock/v/venator-d74.mp3"
+    },
+    {
+     "s": "Doorman",
+     "en": "Merely a simple servant, just like you.",
+     "ru": "Всего лишь простой слуга. Как и ты.",
+     "a": "scenes/games/deadlock/v/doorman-d75.mp3"
+    },
+    {
+     "s": "Venator",
+     "en": "Somehow, I doubt that...",
+     "ru": "Почему-то мне не верится...",
+     "a": "scenes/games/deadlock/v/venator-d76.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Merely a simple servant",
+     "r": "всего лишь простой слуга"
+    },
+    {
+     "w": "I doubt that",
+     "r": "сомневаюсь"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Grey Talon",
+   "about": "Хейз и Серый Коган встречаются после утраты — короткий разговор, полный пауз.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Минимализм и паузы — эмоционально цепляет без лишних слов.",
+   "lines": [
+    {
+     "s": "Haze",
+     "en": "Been a while, Wesley.",
+     "ru": "Давно не виделись, Уэсли.",
+     "a": "scenes/games/deadlock/v/haze-d77.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "It has.",
+     "ru": "Давно.",
+     "a": "scenes/games/deadlock/v/grey-talon-d78.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "I'm sorry about Nathan.",
+     "ru": "Соболезную из-за Натана.",
+     "a": "scenes/games/deadlock/v/haze-d79.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "Thank you. We... we got your card.",
+     "ru": "Спасибо. Мы... получили твою открытку.",
+     "a": "scenes/games/deadlock/v/grey-talon-d80.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Been a while",
+     "r": "давно не виделись"
+    },
+    {
+     "w": "got your card",
+     "r": "получили твою открытку (соболезнования)"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Mo & Krill и Grey Talon",
+   "about": "Кроты благодарят Серого Когана за войну с «Друзьями человечества».",
+   "use": 3,
+   "hook": 2,
+   "hook_why": "Милая сцена благодарности, без панча.",
+   "lines": [
+    {
+     "s": "Mo & Krill",
+     "en": "You're the man making life hell for the Friends of Humanity, yes?",
+     "ru": "Вы тот самый человек, который устроил ад «Друзьям человечества», верно?",
+     "a": "scenes/games/deadlock/v/mo-krill-d81.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "I am.",
+     "ru": "Он самый.",
+     "a": "scenes/games/deadlock/v/grey-talon-d82.mp3"
+    },
+    {
+     "s": "Mo & Krill",
+     "en": "Thank you.",
+     "ru": "Спасибо вам.",
+     "a": "scenes/games/deadlock/v/mo-krill-d83.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Friends of Humanity",
+     "r": "«Друзья человечества» (организация)"
+    },
+    {
+     "w": "making life hell",
+     "r": "устраивать ад"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Mo & Krill и Grey Talon",
+   "about": "Серый Коган просит кротов о сыске — они берут не людьми, но сделают исключение.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Жуликоватая вежливость кротов звучит зловеще мило.",
+   "lines": [
+    {
+     "s": "Grey Talon",
+     "en": "If we fail today, can you help me track someone down?",
+     "ru": "Если сегодня мы проиграем, поможете мне выследить одного человека?",
+     "a": "scenes/games/deadlock/v/grey-talon-d84.mp3"
+    },
+    {
+     "s": "Mo & Krill",
+     "en": "Traditionally, we deal with objects more than people. But for you, we'd be happy to ask some questions.",
+     "ru": "Обычно мы работаем с вещами, а не с людьми. Но для вас с радостью зададим кое-какие вопросы.",
+     "a": "scenes/games/deadlock/v/mo-krill-d85.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "track someone down",
+     "r": "выследить человека"
+    },
+    {
+     "w": "ask some questions",
+     "r": "задать вопросы (с подтекстом)"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Grey Talon и Pocket",
+   "about": "Покет расспрашивает мрачного охотника — и узнаёт его взгляд на справедливость.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Циничный панч про справедливость — взрослая правда, которую любят цитировать.",
+   "lines": [
+    {
+     "s": "Pocket",
+     "en": "Why are you here?",
+     "ru": "Чего ты здесь ищешь?",
+     "a": "scenes/games/deadlock/v/pocket-d86.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "Someone hurt my family.",
+     "ru": "Кто-то причинил вред моей семье.",
+     "a": "scenes/games/deadlock/v/grey-talon-d87.mp3"
+    },
+    {
+     "s": "Pocket",
+     "en": "So what, you're looking for justice?",
+     "ru": "И что, ищешь справедливости?",
+     "a": "scenes/games/deadlock/v/pocket-d88.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "No... justice is for children who don't know how the world works.",
+     "ru": "Нет... справедливость — для детей, которые ещё не знают, как устроен мир.",
+     "a": "scenes/games/deadlock/v/grey-talon-d89.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "justice",
+     "r": "справедливость"
+    },
+    {
+     "w": "how the world works",
+     "r": "как устроен мир"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Grey Talon и Pocket",
+   "about": "Покет подкалывает охотника за лук — и получает зеркальный ответ про чемодан.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Зеркальный панч той же конструкцией — залипательно и мемно.",
+   "lines": [
+    {
+     "s": "Pocket",
+     "en": "The bow's a little on the nose for a hunter, don't you think?",
+     "ru": "Лук для охотника — это, согласись, слишком в лоб.",
+     "a": "scenes/games/deadlock/v/pocket-d90.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "The suitcase is a little on the nose for a kid wearing daddy's jacket to work, don't you think?",
+     "ru": "Чемодан для пацана в папином пиджаке — тоже слишком в лоб, согласись.",
+     "a": "scenes/games/deadlock/v/grey-talon-d91.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "on the nose",
+     "r": "слишком в лоб, в открытую"
+    },
+    {
+     "w": "suitcase",
+     "r": "чемодан"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Rem и Grey Talon",
+   "about": "Серый Коган допытывается, из чьего сна явился Рем, — секретность уровня детской площадки.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Детская логика «ты чужой» против сурового охотника — мило и смешно.",
+   "lines": [
+    {
+     "s": "Grey Talon",
+     "en": "Whose dream did you come from?",
+     "ru": "Из чьего сна ты пришёл?",
+     "a": "scenes/games/deadlock/v/grey-talon-d92.mp3"
+    },
+    {
+     "s": "Rem",
+     "en": "I don't think I'm supposed to tell you.",
+     "ru": "Мне, кажется, нельзя об этом рассказывать.",
+     "a": "scenes/games/deadlock/v/rem-d93.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "Why?",
+     "ru": "Почему?",
+     "a": "scenes/games/deadlock/v/grey-talon-d94.mp3"
+    },
+    {
+     "s": "Rem",
+     "en": "Cause you're a stranger.",
+     "ru": "Потому что ты чужой.",
+     "a": "scenes/games/deadlock/v/rem-d95.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "dream",
+     "r": "сон"
+    },
+    {
+     "w": "stranger",
+     "r": "чужой, незнакомец"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Grey Talon и Seven",
+   "about": "Серый Коган и Семь элегантно меряются самомнением.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Изящная переброска «уверен в себе / провидец» — остроумно, но без взрыва.",
+   "lines": [
+    {
+     "s": "Grey Talon",
+     "en": "If I was still in the Baxter Society, they would probably ask me to hunt you down.",
+     "ru": "Будь я всё ещё в Бакстерском обществе, меня бы наверняка попросили тебя изловить.",
+     "a": "scenes/games/deadlock/v/grey-talon-d96.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Fortunately for you, that's not the case.",
+     "ru": "К счастью для тебя, это не так.",
+     "a": "scenes/games/deadlock/v/seven-d97.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "Someone's confident.",
+     "ru": "Кто-то слишком уверен в себе.",
+     "a": "scenes/games/deadlock/v/grey-talon-d98.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Someone's a visionary.",
+     "ru": "А кто-то — провидец.",
+     "a": "scenes/games/deadlock/v/seven-d99.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "hunt you down",
+     "r": "выследить тебя"
+    },
+    {
+     "w": "visionary",
+     "r": "провидец"
+    },
+    {
+     "w": "confident",
+     "r": "уверенный в себе"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Grey Talon и Seven",
+   "about": "Семь напутствует Серого Когана в мести — звучит почти как комплимент.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Жуткое напутствие и вежливое «спасибо» — контраст цепляет.",
+   "lines": [
+    {
+     "s": "Seven",
+     "en": "Good luck on your quest for revenge. The small-minded deserve to be culled.",
+     "ru": "Удачи в твоей мести. Мелких людей надо прореживать.",
+     "a": "scenes/games/deadlock/v/seven-d100.mp3"
+    },
+    {
+     "s": "Grey Talon",
+     "en": "Thank you.",
+     "ru": "Спасибо.",
+     "a": "scenes/games/deadlock/v/grey-talon-d101.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "cull",
+     "r": "прореживать стадо"
+    },
+    {
+     "w": "quest for revenge",
+     "r": "поход за местью"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Infernus и Haze",
+   "about": "Хейз и Инфернус коротко сверяют планы на вражеских Стражей.",
+   "use": 2,
+   "hook": 2,
+   "hook_why": "Служебный обмен репликами без панча.",
+   "lines": [
+    {
+     "s": "Haze",
+     "en": "Those Guardians won't be standing for long.",
+     "ru": "Эти Стражи долго не простоят.",
+     "a": "scenes/games/deadlock/v/haze-d102.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "I know ma'am, they won't be.",
+     "ru": "Знаю, мэм, долго не простоят.",
+     "a": "scenes/games/deadlock/v/infernus-d103.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Guardians",
+     "r": "Стражи"
+    },
+    {
+     "w": "won't be standing",
+     "r": "долго не простоят"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Infernus и Haze",
+   "about": "Хейз подмечает хладнокровие бармена Инфернуса — разгадка в буйной юности.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Загадочное «не всегда был барменом» и смешной финал «буйная юность».",
+   "lines": [
+    {
+     "s": "Haze",
+     "en": "I would think a bartender would be a little more nervous.",
+     "ru": "Удивляюсь: любой бармен нервничал бы сильнее.",
+     "a": "scenes/games/deadlock/v/haze-d104.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "Wasn't always a bartender.",
+     "ru": "Не всегда я был барменом.",
+     "a": "scenes/games/deadlock/v/infernus-d105.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "Military?",
+     "ru": "Армия?",
+     "a": "scenes/games/deadlock/v/haze-d106.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "Misspent youth.",
+     "ru": "Буйная юность.",
+     "a": "scenes/games/deadlock/v/infernus-d107.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Misspent youth",
+     "r": "буйная, упущенная юность"
+    },
+    {
+     "w": "Military",
+     "r": "армия"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Lady Geist",
+   "about": "Хейз ставит леди Гейст ультиматум по «Оуткиперу» — коротко и по делу.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Сухой шантаж в три реплики — строго, как трейлер.",
+   "lines": [
+    {
+     "s": "Haze",
+     "en": "The Oathkeeper issue needs to be resolved, Lady Geist.",
+     "ru": "Историю с Оуткипером надо закрывать, леди Гейст.",
+     "a": "scenes/games/deadlock/v/haze-d108.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "It will be.",
+     "ru": "Будет закрыта.",
+     "a": "scenes/games/deadlock/v/lady-geist-d109.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "Good. If it's not, the OSIC will have to intervene.",
+     "ru": "Хорошо. А не закроешь — вмешается ОСИК.",
+     "a": "scenes/games/deadlock/v/haze-d110.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "resolved",
+     "r": "закрыть (вопрос)"
+    },
+    {
+     "w": "intervene",
+     "r": "вмешаться"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lash и Haze",
+   "about": "Лэш подкатывает к Хейз — та обещает ему долгий и болезненный день.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Панч «в тебя ещё не стреляли, но время есть» — сухой и убийственный.",
+   "lines": [
+    {
+     "s": "Lash",
+     "en": "Well, lucky me, I get to work with the smoke show.",
+     "ru": "Ну надо же, повезло: в напарницы мне — красотка-дым.",
+     "a": "scenes/games/deadlock/v/lash-d111.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "This is gonna be a long day.",
+     "ru": "День предстоит долгий.",
+     "a": "scenes/games/deadlock/v/haze-d112.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "Hah, best day of your life.",
+     "ru": "Ха, лучший день в твоей жизни.",
+     "a": "scenes/games/deadlock/v/lash-d113.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "Well, you haven't been shot yet but there's still time.",
+     "ru": "В тебя пока не стреляли, но день ещё не кончился.",
+     "a": "scenes/games/deadlock/v/haze-d114.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "smoke show",
+     "r": "красотка (сленг)"
+    },
+    {
+     "w": "there's still time",
+     "r": "время ещё есть"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lash и Haze",
+   "about": "Хейз сообщает Лэшу, что его ненавидят, — он уверен, что это зависть.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Самомнение Лэша превращает ненависть в зависть — смешно и очень в характере.",
+   "lines": [
+    {
+     "s": "Haze",
+     "en": "People hate you, Lash.",
+     "ru": "Люди тебя ненавидят, Лэш.",
+     "a": "scenes/games/deadlock/v/haze-d115.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "Y'know, it's not uncommon for folks to mistake soul-crushing envy for hate.",
+     "ru": "Знаешь, люди частенько путают душераздирающую зависть с ненавистью.",
+     "a": "scenes/games/deadlock/v/lash-d116.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "envy",
+     "r": "зависть"
+    },
+    {
+     "w": "soul-crushing",
+     "r": "душераздирающий"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Mo & Krill и Haze",
+   "about": "Кроты хотят увидеть свои налоги в действии — узнают, что налогов-то нет.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Панч «вы не платите налоги» и невозмутимое «это неоспоримо».",
+   "lines": [
+    {
+     "s": "Mo & Krill",
+     "en": "So you're one of the fabled sandmen of the OSIC.",
+     "ru": "Значит, вы один из легендарных песочных людей ОСИК.",
+     "a": "scenes/games/deadlock/v/mo-krill-d117.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "I am.",
+     "ru": "Один из.",
+     "a": "scenes/games/deadlock/v/haze-d118.mp3"
+    },
+    {
+     "s": "Mo & Krill",
+     "en": "How impressed will I be when I see my tax dollars at work?",
+     "ru": "Насколько я буду впечатлён, увидев свои налоги в действии?",
+     "a": "scenes/games/deadlock/v/mo-krill-d119.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "Neither of you pay taxes.",
+     "ru": "Вы двое налогов не платите.",
+     "a": "scenes/games/deadlock/v/haze-d120.mp3"
+    },
+    {
+     "s": "Mo & Krill",
+     "en": "That is very true.",
+     "ru": "Это неоспоримо.",
+     "a": "scenes/games/deadlock/v/mo-krill-d121.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "fabled",
+     "r": "легендарный"
+    },
+    {
+     "w": "tax dollars at work",
+     "r": "налоги в действии"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Paradox",
+   "about": "Парадокс пытается устроиться через знакомства — Хейз отрезает, но Парадокс не унывает.",
+   "use": 3,
+   "hook": 2,
+   "hook_why": "Мягкий юмор, панч слабоват.",
+   "lines": [
+    {
+     "s": "Paradox",
+     "en": "Uhh, if we win, I don't suppose you could put in a good word with the Curator Division for me?",
+     "ru": "Кхм... если мы победим, ты не могла бы замолвить за меня словечко в Кураторском отделе?",
+     "a": "scenes/games/deadlock/v/paradox-d122.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "Afraid not.",
+     "ru": "Боюсь, что нет.",
+     "a": "scenes/games/deadlock/v/haze-d123.mp3"
+    },
+    {
+     "s": "Paradox",
+     "en": "Worth trying.",
+     "ru": "Попытка не пытка.",
+     "a": "scenes/games/deadlock/v/paradox-d124.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "put in a good word",
+     "r": "замолвить словечко"
+    },
+    {
+     "w": "Worth trying",
+     "r": "попытка не пытка"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Paradox",
+   "about": "Парадокс сообщает Хейз, что та зажатая, и получает самый честный комплимент.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "«Не доверяю» как ответ на «ты зажатая» — острый, но лёгкий панч.",
+   "lines": [
+    {
+     "s": "Paradox",
+     "en": "You look uptight.",
+     "ru": "Выглядишь ты зажатой.",
+     "a": "scenes/games/deadlock/v/paradox-d125.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "That's because I don't trust you.",
+     "ru": "Это потому что я тебе не доверяю.",
+     "a": "scenes/games/deadlock/v/haze-d126.mp3"
+    },
+    {
+     "s": "Paradox",
+     "en": "You have more sense than I thought.",
+     "ru": "Ума у тебя побольше, чем я думала.",
+     "a": "scenes/games/deadlock/v/paradox-d127.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "uptight",
+     "r": "зажатый, нервный"
+    },
+    {
+     "w": "trust",
+     "r": "доверять"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Seven",
+   "about": "Семь наслаждается положением: агенту Хейз придётся сотрудничать с беглецом.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Самодовольный злодей против невозмутимого агента — классика.",
+   "lines": [
+    {
+     "s": "Seven",
+     "en": "This must eat at you. Fighting beside me?",
+     "ru": "Это ведь гложет тебя, да? Биться плечом к плечу со мной?",
+     "a": "scenes/games/deadlock/v/seven-d128.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "Don't flatter yourself.",
+     "ru": "Не льсти себе.",
+     "a": "scenes/games/deadlock/v/haze-d129.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Oh, we're going to have so much fun together.",
+     "ru": "О, мы славно повеселимся вместе.",
+     "a": "scenes/games/deadlock/v/seven-d130.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "eat at you",
+     "r": "грызть изнутри"
+    },
+    {
+     "w": "Don't flatter yourself",
+     "r": "не льсти себе"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Seven",
+   "about": "Семь давит на больную тему — Хейз просто выходит из разговора.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "«Мы этот разговор не ведём» — готовая фраза-мем для любых скользких тем.",
+   "lines": [
+    {
+     "s": "Seven",
+     "en": "Do your superiors know you're helping me?",
+     "ru": "Твоё начальство в курсе, что ты мне помогаешь?",
+     "a": "scenes/games/deadlock/v/seven-d131.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "We're not having this conversation.",
+     "ru": "Мы этот разговор не ведём.",
+     "a": "scenes/games/deadlock/v/haze-d132.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Aw, struck a nerve?",
+     "ru": "Оу, задел за живое?",
+     "a": "scenes/games/deadlock/v/seven-d133.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "struck a nerve",
+     "r": "задел за живое"
+    },
+    {
+     "w": "superiors",
+     "r": "начальство"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Venator и Haze",
+   "about": "Хейз передаёт привет от общего знакомого — Венатор отвечает с «любовью».",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Тёплый панч «передай подонку привет» — сдержанная ярость.",
+   "lines": [
+    {
+     "s": "Haze",
+     "en": "I think I work with a friend of yours.",
+     "ru": "Кажется, я работаю с твоим знакомым.",
+     "a": "scenes/games/deadlock/v/haze-d134.mp3"
+    },
+    {
+     "s": "Venator",
+     "en": "Marlowe's been spinnin' stories?",
+     "ru": "Марло плёл небылицы?",
+     "a": "scenes/games/deadlock/v/venator-d135.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "One or two.",
+     "ru": "Пару штук.",
+     "a": "scenes/games/deadlock/v/haze-d136.mp3"
+    },
+    {
+     "s": "Venator",
+     "en": "Tell the bastard I said hi.",
+     "ru": "Передай подонку, что я передаю привет.",
+     "a": "scenes/games/deadlock/v/venator-d137.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "Will do.",
+     "ru": "Будет сделано.",
+     "a": "scenes/games/deadlock/v/haze-d138.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "spinnin' stories",
+     "r": "плести небылицы"
+    },
+    {
+     "w": "Will do",
+     "r": "будет сделано"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Haze и Wraith",
+   "about": "Рэйф нервничает не по делу — Хейз успокаивает, слегка унизив бизнес.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Панч про «маленькую контору» и невозмутимая самоирония Рэйф.",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "You're not here for me, right?",
+     "ru": "Ты ведь не по мою душу явилась, так?",
+     "a": "scenes/games/deadlock/v/wraith-d139.mp3"
+    },
+    {
+     "s": "Haze",
+     "en": "The OSIC isn't concerned with your little casino, Wraith.",
+     "ru": "ОСИК не интересуется твоей маленькой казино-конторой, Рэйф.",
+     "a": "scenes/games/deadlock/v/haze-d140.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "I think \"little\" is underselling me a bit, but that's good to know.",
+     "ru": "«Маленькой» её называть — себе в убыток. Но приятно знать.",
+     "a": "scenes/games/deadlock/v/wraith-d141.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "little casino",
+     "r": "маленькая казино-контора"
+    },
+    {
+     "w": "underselling",
+     "r": "продешевить, преуменьшить"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Infernus и Lady Geist",
+   "about": "Леди Гейст заранее бронирует победную вечеринку в «Джезебель».",
+   "use": 3,
+   "hook": 2,
+   "hook_why": "Милая договарняк-реплика, панча нет.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "I'm assuming there will be a celebration at Jezebel's after we win?",
+     "ru": "Полагаю, после победы у вас в «Джезебель» будет вечеринка?",
+     "a": "scenes/games/deadlock/v/lady-geist-d142.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "You know it.",
+     "ru": "Ещё бы!",
+     "a": "scenes/games/deadlock/v/infernus-d143.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "celebration",
+     "r": "вечеринка, празднество"
+    },
+    {
+     "w": "You know it",
+     "r": "ещё бы"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Infernus и Lady Geist",
+   "about": "Леди Гейст расспрашивает про трактирщика Хэнка — и сама уже становится помощью.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Тёплый финал «ты уже помогаешь» — приятная эмоция.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "How is Hank?",
+     "ru": "Как там Хэнк?",
+     "a": "scenes/games/deadlock/v/lady-geist-d144.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "He's nervous. The bar's not pulling in what it used to, and he's got a bunch of issues with the Alchemy Bureau.",
+     "ru": "Нервничает. Бар приносит меньше, чем раньше, плюс куча проблем с Алхимическим бюро.",
+     "a": "scenes/games/deadlock/v/infernus-d145.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "Anything I can do to help?",
+     "ru": "Может, помочь чем-нибудь?",
+     "a": "scenes/games/deadlock/v/lady-geist-d146.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "You're doing it right now.",
+     "ru": "Ты уже помогаешь.",
+     "a": "scenes/games/deadlock/v/infernus-d147.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "pulling in",
+     "r": "приносит (зарабатывает)"
+    },
+    {
+     "w": "Alchemy Bureau",
+     "r": "Алхимическое бюро"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · McGinnis и Infernus",
+   "about": "Инфернус выманивает Макгиннис в шикарный бар бесплатным счётом.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Простая живая сценка про «за чей счёт банкет».",
+   "lines": [
+    {
+     "s": "Infernus",
+     "en": "You wanna swing by the bar afterwards to celebrate?",
+     "ru": "Заскочишь после матча в бар — отпраздновать?",
+     "a": "scenes/games/deadlock/v/infernus-d148.mp3"
+    },
+    {
+     "s": "McGinnis",
+     "en": "Nah, Jezebel's not my scene. Too fancy.",
+     "ru": "Не, «Джезебель» — не моя тусовка. Слишком шикарно.",
+     "a": "scenes/games/deadlock/v/mcginnis-d149.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "Hank will pick up the tab.",
+     "ru": "Хэнк выставит счёт за счёт бара.",
+     "a": "scenes/games/deadlock/v/infernus-d150.mp3"
+    },
+    {
+     "s": "McGinnis",
+     "en": "I'm in!",
+     "ru": "Тогда я в деле!",
+     "a": "scenes/games/deadlock/v/mcginnis-d151.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "swing by",
+     "r": "заскочить"
+    },
+    {
+     "w": "not my scene",
+     "r": "не моя тусовка"
+    },
+    {
+     "w": "pick up the tab",
+     "r": "заплатить по счёту"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Rem и Infernus",
+   "about": "Рем предлагает Инфернусу обменяться шляпами — сделка века не состоялась.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Наивная прямота ребёнка против смущённого взрослого.",
+   "lines": [
+    {
+     "s": "Rem",
+     "en": "We should trade hats.",
+     "ru": "Давай поменяемся шляпами!",
+     "a": "scenes/games/deadlock/v/rem-d152.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "I don't know if I could pull that off, little man.",
+     "ru": "Не уверен, что мне это пойдёт, мелкий.",
+     "a": "scenes/games/deadlock/v/infernus-d153.mp3"
+    },
+    {
+     "s": "Rem",
+     "en": "I bet you could!",
+     "ru": "Спорю, пойдёт!",
+     "a": "scenes/games/deadlock/v/rem-d154.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "trade hats",
+     "r": "поменяться шляпами"
+    },
+    {
+     "w": "pull that off",
+     "r": "суметь провернуть"
+    },
+    {
+     "w": "little man",
+     "r": "мелкий, малой"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Seven и Infernus",
+   "about": "Семь упрекает Инфернуса, что тот растрачивает силу за стойкой, — тот доволен жизнью.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Достойный ответ про свой выбор — зрелый панч.",
+   "lines": [
+    {
+     "s": "Seven",
+     "en": "All your power and you waste it as a bartender?",
+     "ru": "Вся твоя сила — и ты её тратишь на барменство?",
+     "a": "scenes/games/deadlock/v/seven-d155.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "Choosin' a different life for myself isn't a waste. It's the best thing I ever did.",
+     "ru": "Выбрать себе другую жизнь — не трата. Это лучшее, что я сделал.",
+     "a": "scenes/games/deadlock/v/infernus-d156.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "waste",
+     "r": "тратить впустую"
+    },
+    {
+     "w": "bartender",
+     "r": "бармен"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Seven и Infernus",
+   "about": "Инфернус припоминает Семёну, что его уже ловили, — тот не впечатлён.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Обмен колкостями про побег и бюрократию.",
+   "lines": [
+    {
+     "s": "Infernus",
+     "en": "I'm surprised you stayed in New York with the OSIC settin' up shop.",
+     "ru": "Удивляюсь, что ты остался в Нью-Йорке, раз ОСИК тут открывает контору.",
+     "a": "scenes/games/deadlock/v/infernus-d157.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "What do I have to fear from an inept government?",
+     "ru": "Чего мне бояться бездарного правительства?",
+     "a": "scenes/games/deadlock/v/seven-d158.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "Inept? They caught you before.",
+     "ru": "Бездарного? Тебя же уже ловили.",
+     "a": "scenes/games/deadlock/v/infernus-d159.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Sure they did.",
+     "ru": "Конечно, ловили.",
+     "a": "scenes/games/deadlock/v/seven-d160.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "inept",
+     "r": "бездарный"
+    },
+    {
+     "w": "settin' up shop",
+     "r": "открывает контору"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Venator и Infernus",
+   "about": "Инфернус интересуется проповедями Венатора — и получает саркастичное признание.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Сухой обмен колкостями про священника-охотника.",
+   "lines": [
+    {
+     "s": "Infernus",
+     "en": "I'd hate to see what kind of homilies you're dropping on Sundays.",
+     "ru": "Ох, не хотел бы я услышать твои воскресные проповеди.",
+     "a": "scenes/games/deadlock/v/infernus-d161.mp3"
+    },
+    {
+     "s": "Venator",
+     "en": "I don't serve at a parish.",
+     "ru": "Я не служу в приходе.",
+     "a": "scenes/games/deadlock/v/venator-d162.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "Can't imagine why.",
+     "ru": "Даже не удивлён.",
+     "a": "scenes/games/deadlock/v/infernus-d163.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "homilies",
+     "r": "проповеди"
+    },
+    {
+     "w": "parish",
+     "r": "приход"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Wraith и Infernus",
+   "about": "Рэйф и Инфернус предвкушают неприлично быстрый разгром objectives.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Короткая уверенная договорняк — бодрит, но без панча.",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "It's gonna be offensive how fast we burn down their objectives.",
+     "ru": "Будет даже неприлично, как быстро мы снесём их объекты.",
+     "a": "scenes/games/deadlock/v/wraith-d164.mp3"
+    },
+    {
+     "s": "Infernus",
+     "en": "You know it.",
+     "ru": "Ещё бы.",
+     "a": "scenes/games/deadlock/v/infernus-d165.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "objectives",
+     "r": "объекты (цели на карте)"
+    },
+    {
+     "w": "burn down",
+     "r": "сжигать дотла"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Mo & Krill и Lady Geist",
+   "about": "Леди Гейст путает крота с крысой — и получает вежливую угрозу от Мориса.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Сухая поправка «Крот.» и изысканная угроза — контраст премиум-класса.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "I can't believe I'm working with an oversized rat.",
+     "ru": "Не верится, что я работаю с переросшей крысой.",
+     "a": "scenes/games/deadlock/v/lady-geist-d166.mp3"
+    },
+    {
+     "s": "Mo & Krill",
+     "en": "Mole.",
+     "ru": "Крот.",
+     "a": "scenes/games/deadlock/v/mo-krill-d167.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "Apologies for saying the wrong rodent.",
+     "ru": "Прошу прощения за перепутанного грызуна.",
+     "a": "scenes/games/deadlock/v/lady-geist-d168.mp3"
+    },
+    {
+     "s": "Mo & Krill",
+     "en": "Lady Geist. For now, our purposes are aligned... but if you wish for that pretty arm of yours to remain attached after the ritual, I suggest you be kinder to Maurice.",
+     "ru": "Леди Гейст. Пока наши цели совпадают... но если хотите, чтобы ваша хорошенькая рука осталась при вас после ритуала, — будьте добрее к Морису.",
+     "a": "scenes/games/deadlock/v/mo-krill-d169.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "rodent",
+     "r": "грызун"
+    },
+    {
+     "w": "aligned",
+     "r": "совпадают (о целях)"
+    },
+    {
+     "w": "remain attached",
+     "r": "остаться на месте (о руке)"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lady Geist и Paradox",
+   "about": "Леди Гейст требует вернуть украденную картину — Парадокс предлагает ей сначала её найти.",
+   "use": 5,
+   "hook": 5,
+   "hook_why": "Наглость грабителя на максималках: «мы уже тебя обчистили» — виральный панч.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "I heard a rumor that you had one of my husband's paintings.",
+     "ru": "Я слышала слух, будто у тебя картина моего мужа.",
+     "a": "scenes/games/deadlock/v/lady-geist-d170.mp3"
+    },
+    {
+     "s": "Paradox",
+     "en": "I wouldn't know, art's not really my thing.",
+     "ru": "Ничего не знаю, живопись — не моё.",
+     "a": "scenes/games/deadlock/v/paradox-d171.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "I want it back.",
+     "ru": "Я хочу её вернуть.",
+     "a": "scenes/games/deadlock/v/lady-geist-d172.mp3"
+    },
+    {
+     "s": "Paradox",
+     "en": "I don't blame you.",
+     "ru": "Не осуждаю.",
+     "a": "scenes/games/deadlock/v/paradox-d173.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "I am not someone to play games with.",
+     "ru": "Со мной шутки плохи.",
+     "a": "scenes/games/deadlock/v/lady-geist-d174.mp3"
+    },
+    {
+     "s": "Paradox",
+     "en": "Lady, we already robbed you. You're exactly the person to play games with. If you want the painting back, I recommend that you try to find it. Good luck.",
+     "ru": "Милочка, мы тебя уже обчистили. Ты — идеальный человек для игр. Хочешь картину назад — советую её поискать. Удачи.",
+     "a": "scenes/games/deadlock/v/paradox-d175.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "play games with",
+     "r": "водить за нос, играть в игры"
+    },
+    {
+     "w": "robbed",
+     "r": "обчистили"
+    },
+    {
+     "w": "I wouldn't know",
+     "r": "ничего не знаю, не в курсе"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lady Geist и Pocket",
+   "about": "Леди Гейст узнаёт в Покете беспризорника из своего фонда — и напоминает про благодеяние.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "«Кстати, не за что» — королевский панч за чужой счёт.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "You seem familiar.",
+     "ru": "Лицо какое-то знакомое.",
+     "a": "scenes/games/deadlock/v/lady-geist-d176.mp3"
+    },
+    {
+     "s": "Pocket",
+     "en": "I have one of those faces.",
+     "ru": "Просто у меня такое лицо.",
+     "a": "scenes/games/deadlock/v/pocket-d177.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "You were one of the urchins my foundation paraded around for good press, weren't you?",
+     "ru": "Ты был из тех оборышей, которых мой фонд возил на приёмы для хорошей прессы, верно?",
+     "a": "scenes/games/deadlock/v/lady-geist-d178.mp3"
+    },
+    {
+     "s": "Pocket",
+     "en": "You got me.",
+     "ru": "Раскусили.",
+     "a": "scenes/games/deadlock/v/pocket-d179.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "You're welcome, by the way.",
+     "ru": "Кстати, не за что.",
+     "a": "scenes/games/deadlock/v/lady-geist-d180.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "urchin",
+     "r": "оборвыш, беспризорник"
+    },
+    {
+     "w": "You got me",
+     "r": "ты меня раскусила"
+    },
+    {
+     "w": "You're welcome",
+     "r": "не за что"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Seven и Lady Geist",
+   "about": "Семь предостерегает леди Гейст насчёт её сделки — прозрачно и зловеще.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Туманные намёки на сделку с дьяволом интригуют.",
+   "lines": [
+    {
+     "s": "Seven",
+     "en": "I see you're finally addressing your Oathkeeper problem.",
+     "ru": "Вижу, ты наконец занялась своей проблемой с Оуткипером.",
+     "a": "scenes/games/deadlock/v/seven-d181.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "What do you know about Oathkeeper?",
+     "ru": "А что ты знаешь об Оуткипере?",
+     "a": "scenes/games/deadlock/v/lady-geist-d182.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "I know that Faustian bargains rarely have happy endings.",
+     "ru": "Знаю, что сделки с дьяволом редко кончаются хэппи-эндом.",
+     "a": "scenes/games/deadlock/v/seven-d183.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Faustian bargains",
+     "r": "сделки с дьяволом"
+    },
+    {
+     "w": "happy endings",
+     "r": "хэппи-энд"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Seven и Lady Geist",
+   "about": "Леди Гейст боится позора больше, чем смерти, — знакомство с Семёном позорнее могилы.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Чёрный юмор: смерть как способ избежать неловкости.",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "I can't believe I'm about to be seen with a criminal.",
+     "ru": "Не верится, что меня вот-вот увидят в компании преступника.",
+     "a": "scenes/games/deadlock/v/lady-geist-d184.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "I think public image is the least of your worries.",
+     "ru": "Думаю, репутация — последнее, о чём тебе стоит беспокоиться.",
+     "a": "scenes/games/deadlock/v/seven-d185.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "It's the only thing to worry about. If I die, I won't have to deal with the shame of associating with you.",
+     "ru": "Это как раз единственное. Если я умру, то хотя бы не успею опозориться знакомством с тобой.",
+     "a": "scenes/games/deadlock/v/lady-geist-d186.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "associating with",
+     "r": "водить знакомство с"
+    },
+    {
+     "w": "shame",
+     "r": "стыд, позор"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lady Geist и Victor",
+   "about": "Леди Гейст обзывает Виктора — тот честно подтверждает, что он ходячий труп.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Мёртвый юмор буквально: «я ходячий труп».",
+   "lines": [
+    {
+     "s": "Lady Geist",
+     "en": "Well, aren't you a ghoulish creature?",
+     "ru": "Надо же, какой ты жуткий кадавр.",
+     "a": "scenes/games/deadlock/v/lady-geist-d187.mp3"
+    },
+    {
+     "s": "Victor",
+     "en": "I'm a walking corpse.",
+     "ru": "Я ходячий труп.",
+     "a": "scenes/games/deadlock/v/victor-d188.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "I think we've established that.",
+     "ru": "Уверена, мы это уже установили.",
+     "a": "scenes/games/deadlock/v/lady-geist-d189.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "ghoulish",
+     "r": "жуткий, могильный"
+    },
+    {
+     "w": "walking corpse",
+     "r": "ходячий труп"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lady Geist и Victor",
+   "about": "Виктор замечает отвращение леди Гейст — она даже не пытается быть вежливой.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Жёсткая честность без смягчения — смешно своей прямолинейностью.",
+   "lines": [
+    {
+     "s": "Victor",
+     "en": "You look repulsed, Lady Geist.",
+     "ru": "Ты смотришь на меня с отвращением, леди Гейст.",
+     "a": "scenes/games/deadlock/v/victor-d190.mp3"
+    },
+    {
+     "s": "Lady Geist",
+     "en": "You're a shambling mass of flesh. Why wouldn't I be?",
+     "ru": "Ты — шатающийся ком плоти. С чего бы мне не отвращаться?",
+     "a": "scenes/games/deadlock/v/lady-geist-d191.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "repulsed",
+     "r": "испытывающий отвращение"
+    },
+    {
+     "w": "shambling mass of flesh",
+     "r": "шатающийся ком плоти"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Seven и Lash",
+   "about": "Лэш пытается поболтать с Семёном-бабаем — и блестяще ведёт диалог в одиночку.",
+   "use": 5,
+   "hook": 4,
+   "hook_why": "Лэш разговаривает сам с собой — формат идеального тикток-скетча.",
+   "lines": [
+    {
+     "s": "Lash",
+     "en": "Word on the street is you're some kinda boogeyman.",
+     "ru": "Слух по улице: ты тут местный бабай.",
+     "a": "scenes/games/deadlock/v/lash-d192.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "I'm not interested in chit-chat.",
+     "ru": "Меня не интересует болтовня.",
+     "a": "scenes/games/deadlock/v/seven-d193.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "That's fine, the Lash knows how to carry a conversation.",
+     "ru": "Без проблем, Лэш умеет нести беседу за двоих.",
+     "a": "scenes/games/deadlock/v/lash-d194.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "There is no conversation.",
+     "ru": "Никакой беседы здесь нет.",
+     "a": "scenes/games/deadlock/v/seven-d195.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "The Lash does it again.",
+     "ru": "Лэш снова справился.",
+     "a": "scenes/games/deadlock/v/lash-d196.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "boogeyman",
+     "r": "бабай, страшилище"
+    },
+    {
+     "w": "chit-chat",
+     "r": "болтовня"
+    },
+    {
+     "w": "carry a conversation",
+     "r": "вести беседу"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lash и Victor",
+   "about": "Лэш зазывает Виктора в бойцовский клуб, где главный приз — проиграть Лэшу.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Абсурдная «честь проиграть мне» — самоирония, которой сам Лэш не замечает.",
+   "lines": [
+    {
+     "s": "Lash",
+     "en": "You should fight in the Bear Pit.",
+     "ru": "Тебе бы подраться в Медвежьей яме.",
+     "a": "scenes/games/deadlock/v/lash-d197.mp3"
+    },
+    {
+     "s": "Victor",
+     "en": "I'm not into getting mauled by grizzlies.",
+     "ru": "Не горю желанием, чтобы меня растерзали гризли.",
+     "a": "scenes/games/deadlock/v/victor-d198.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "It's not a literal bear pit. It's a fight club where the winner gets the honor of losing to me.",
+     "ru": "Это не буквальная яма. Это бойцовский клуб, где победителю выпадает честь проиграть мне.",
+     "a": "scenes/games/deadlock/v/lash-d199.mp3"
+    },
+    {
+     "s": "Victor",
+     "en": "I think I'll pass.",
+     "ru": "Пожалуй, я воздержусь.",
+     "a": "scenes/games/deadlock/v/victor-d200.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "Your loss.",
+     "ru": "Твоя потеря.",
+     "a": "scenes/games/deadlock/v/lash-d201.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "Bear Pit",
+     "r": "Медвежья яма (бойцовский клуб)"
+    },
+    {
+     "w": "I'll pass",
+     "r": "воздержусь, пас"
+    },
+    {
+     "w": "Your loss",
+     "r": "твоя потеря, сам виноват"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Lash и Wraith",
+   "about": "Рэйф пришёл разбираться за проигранную ставку — Лэш превращает жалобу в урок.",
+   "use": 5,
+   "hook": 4,
+   "hook_why": "Ставки, слив боя и коронный панч «никогда не ставь против Лэша».",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "Mendoza said you were gonna take a dive in that fight.",
+     "ru": "Мендоса болтал, что ты собирался слить тот бой.",
+     "a": "scenes/games/deadlock/v/wraith-d202.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "Mendoza says a lot of stupid shit.",
+     "ru": "Мендоса несёт много глупой чуши.",
+     "a": "scenes/games/deadlock/v/lash-d203.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "I lost a lot of money.",
+     "ru": "Я потерял на этом кучу денег.",
+     "a": "scenes/games/deadlock/v/wraith-d204.mp3"
+    },
+    {
+     "s": "Lash",
+     "en": "You didn't lose money. You spent it learning a valuable lesson: Never bet against the Lash.",
+     "ru": "Ты не потерял деньги. Ты заплатил за полезный урок: никогда не ставь против Лэша.",
+     "a": "scenes/games/deadlock/v/lash-d205.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "take a dive",
+     "r": "слить бой, подыграть"
+    },
+    {
+     "w": "bet against",
+     "r": "ставить против"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Wraith и McGinnis",
+   "about": "Рэйф знакомится с Макгиннис и моментально вляпывается в формулировки.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Смешная неловкость «pet» и ледяные ответы Макгиннис.",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "You're Fairfax's pet genius, right?",
+     "ru": "Ты же карманный гений Фэйрфакса, верно?",
+     "a": "scenes/games/deadlock/v/wraith-d206.mp3"
+    },
+    {
+     "s": "McGinnis",
+     "en": "I'm no one's \"pet\" anything.",
+     "ru": "Я не чья-то «карманная». Вообще ничья.",
+     "a": "scenes/games/deadlock/v/mcginnis-d207.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "Bad choice of words.",
+     "ru": "Неудачно выбрал слова.",
+     "a": "scenes/games/deadlock/v/wraith-d208.mp3"
+    },
+    {
+     "s": "McGinnis",
+     "en": "Little bit.",
+     "ru": "Чуть-чуть.",
+     "a": "scenes/games/deadlock/v/mcginnis-d209.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "Suppose now's not the time to ask for an introduction?",
+     "ru": "Полагаю, просить представления сейчас — не лучшее время?",
+     "a": "scenes/games/deadlock/v/wraith-d210.mp3"
+    },
+    {
+     "s": "McGinnis",
+     "en": "You'd be correct.",
+     "ru": "Именно так.",
+     "a": "scenes/games/deadlock/v/mcginnis-d211.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "pet genius",
+     "r": "карманный гений"
+    },
+    {
+     "w": "Bad choice of words",
+     "r": "неудачный выбор слов"
+    },
+    {
+     "w": "You'd be correct",
+     "r": "верно полагаешь"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Mo & Krill и Wraith",
+   "about": "Рэйф благодарит кротов за «добровольное» участие в деле.",
+   "use": 4,
+   "hook": 3,
+   "hook_why": "Сарказм про принудительный набор и долговые расписки Рэйф.",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "Thanks for comin' along, boys.",
+     "ru": "Спасибо, что явились, ребята.",
+     "a": "scenes/games/deadlock/v/wraith-d212.mp3"
+    },
+    {
+     "s": "Mo & Krill",
+     "en": "How could we say no to forced conscription?",
+     "ru": "Как можно было отказать принудительному набору?",
+     "a": "scenes/games/deadlock/v/mo-krill-d213.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "Hey! Of all the people I could call markers on I chose you, and that should count for something.",
+     "ru": "Эй! Из всех, кому я мог предъявить расписки, я выбрал именно вас, — это дорогого стоит.",
+     "a": "scenes/games/deadlock/v/wraith-d214.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "forced conscription",
+     "r": "принудительный набор"
+    },
+    {
+     "w": "call markers on",
+     "r": "предъявить расписку (потребовать долг)"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Mo & Krill и Wraith",
+   "about": "Рэйф случайно проявляет чувства — кроты немедленно их фиксируют.",
+   "use": 5,
+   "hook": 4,
+   "hook_why": "Панч «я сказал „почти“!» — идеальный финал-подножка.",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "I almost feel sorry for the poor bastards waiting for us in the lane.",
+     "ru": "Мне почти жаль бедолаг, которые ждут нас на линии.",
+     "a": "scenes/games/deadlock/v/wraith-d215.mp3"
+    },
+    {
+     "s": "Mo & Krill",
+     "en": "Wraith... is that... compassion I hear?",
+     "ru": "Рэйф... это что... сострадание я слышу?",
+     "a": "scenes/games/deadlock/v/mo-krill-d216.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "I said \"almost\"!",
+     "ru": "Я сказал «почти»!",
+     "a": "scenes/games/deadlock/v/wraith-d217.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "compassion",
+     "r": "сострадание"
+    },
+    {
+     "w": "poor bastards",
+     "r": "бедолаги"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Wraith и Paradox",
+   "about": "Парадокс и Рэйф предвкушают, как враги поймут, что убегать бесполезно.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Зловещий сетап и лёгкий панч Рэйф.",
+   "lines": [
+    {
+     "s": "Paradox",
+     "en": "At some point, they're going to think they escaped us... and then reality is going to hit them.",
+     "ru": "В какой-то момент они решат, что сбежали от нас... и тогда реальность их настигнет.",
+     "a": "scenes/games/deadlock/v/paradox-d218.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "Oh, it's gonna be hilarious.",
+     "ru": "О, это будет уморительно.",
+     "a": "scenes/games/deadlock/v/wraith-d219.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "reality is going to hit them",
+     "r": "реальность их настигнет"
+    },
+    {
+     "w": "hilarious",
+     "r": "уморительный"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Wraith и Pocket",
+   "about": "Рэйф делает юному Покету предложение о работе — тот отвечает туманно и взросло.",
+   "use": 3,
+   "hook": 3,
+   "hook_why": "Интригующий уход от ответа: что за «обязательства»?",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "Hey, kid... when this is over, if you're lookin' for work, let me know.",
+     "ru": "Эй, малой... когда всё это кончится — соберёшься искать работу, дай знать.",
+     "a": "scenes/games/deadlock/v/wraith-d220.mp3"
+    },
+    {
+     "s": "Pocket",
+     "en": "Appreciate the offer but assuming I'm alive after this... gonna have other responsibilities.",
+     "ru": "Спасибо за предложение, но если я переживу сегодняшний день... у меня будут другие обязательства.",
+     "a": "scenes/games/deadlock/v/pocket-d221.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "lookin' for work",
+     "r": "искать работу"
+    },
+    {
+     "w": "responsibilities",
+     "r": "обязательства"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Rat King и Victor",
+   "about": "Крысиный король выясняет, кто собрал Виктора, — тактичность отсутствует с обеих сторон.",
+   "use": 5,
+   "hook": 4,
+   "hook_why": "«Трупный шведский стол» и мгновенная перебранка — жирный панч.",
+   "lines": [
+    {
+     "s": "Rat King",
+     "en": "What kinda sick bastard made you?",
+     "ru": "Какой же больной ублюдок тебя собрал?",
+     "a": "scenes/games/deadlock/v/rat-king-d222.mp3"
+    },
+    {
+     "s": "Victor",
+     "en": "I wish I knew.",
+     "ru": "Вот бы мне знать.",
+     "a": "scenes/games/deadlock/v/victor-d223.mp3"
+    },
+    {
+     "s": "Rat King",
+     "en": "One dead human's bad enough, now I gotta deal with some kinda cadaver potluck?",
+     "ru": "Один мертвец — уже перебор, а тут ещё какой-то трупный шведский стол?",
+     "a": "scenes/games/deadlock/v/rat-king-d224.mp3"
+    },
+    {
+     "s": "Victor",
+     "en": "You don't have to be an asshole.",
+     "ru": "Мог бы и не быть мудаком.",
+     "a": "scenes/games/deadlock/v/victor-d225.mp3"
+    },
+    {
+     "s": "Rat King",
+     "en": "Watch yourself, crumbum.",
+     "ru": "Ты смотри у меня, дрянь.",
+     "a": "scenes/games/deadlock/v/rat-king-d226.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "made you",
+     "r": "тебя собрал, создал"
+    },
+    {
+     "w": "cadaver potluck",
+     "r": "трупный шведский стол"
+    },
+    {
+     "w": "Watch yourself",
+     "r": "смотри у меня, держись подальше"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Seven и Rem",
+   "about": "Рем честно оценивает Семёна — тот соглашается с каждым словом.",
+   "use": 5,
+   "hook": 4,
+   "hook_why": "Ребёнок судит злодея, злодей вежливо соглашается — мини-мем.",
+   "lines": [
+    {
+     "s": "Rem",
+     "en": "You're scary.",
+     "ru": "Ты страшный.",
+     "a": "scenes/games/deadlock/v/rem-d227.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Yes.",
+     "ru": "Да.",
+     "a": "scenes/games/deadlock/v/seven-d228.mp3"
+    },
+    {
+     "s": "Rem",
+     "en": "I don't think I like you.",
+     "ru": "Ты мне, кажется, не нравишься.",
+     "a": "scenes/games/deadlock/v/rem-d229.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "It's not an unreasonable position.",
+     "ru": "Позиция вполне разумная.",
+     "a": "scenes/games/deadlock/v/seven-d230.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "scary",
+     "r": "страшный"
+    },
+    {
+     "w": "unreasonable",
+     "r": "неразумный, безосновательный"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Rem и Venator",
+   "about": "Венатор находит потерявшегося Рема и обещает вывести домой.",
+   "use": 3,
+   "hook": 2,
+   "hook_why": "Милая, но простоватая сценка-опека.",
+   "lines": [
+    {
+     "s": "Venator",
+     "en": "You lost, little one?",
+     "ru": "Заблудился, малыш?",
+     "a": "scenes/games/deadlock/v/venator-d231.mp3"
+    },
+    {
+     "s": "Rem",
+     "en": "Mhmm.",
+     "ru": "Угум.",
+     "a": "scenes/games/deadlock/v/rem-d232.mp3"
+    },
+    {
+     "s": "Venator",
+     "en": "Don't worry. I'll shepherd you home.",
+     "ru": "Не бойся. Я отведу тебя домой.",
+     "a": "scenes/games/deadlock/v/venator-d233.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "little one",
+     "r": "малыш"
+    },
+    {
+     "w": "shepherd",
+     "r": "отвести, как пастырь"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Rem и Wraith",
+   "about": "Рем пересчитывает руки Рэйф — вывод: занятым людям лишние руки необходимы.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Абсурдный подсчёт рук и панч «я занятая женщина».",
+   "lines": [
+    {
+     "s": "Rem",
+     "en": "One... two... three... you have four arms!",
+     "ru": "Раз... два... три... у тебя четыре руки!",
+     "a": "scenes/games/deadlock/v/rem-d234.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "I have two arms.",
+     "ru": "У меня две руки.",
+     "a": "scenes/games/deadlock/v/wraith-d235.mp3"
+    },
+    {
+     "s": "Rem",
+     "en": "I see four.",
+     "ru": "А я вижу четыре.",
+     "a": "scenes/games/deadlock/v/rem-d236.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "Two of 'em are mechanical.",
+     "ru": "Две из них механические.",
+     "a": "scenes/games/deadlock/v/wraith-d237.mp3"
+    },
+    {
+     "s": "Rem",
+     "en": "Why do you need extra hands?",
+     "ru": "А зачем тебе лишние руки?",
+     "a": "scenes/games/deadlock/v/rem-d238.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "I'm a busy lady!",
+     "ru": "Я занятая женщина!",
+     "a": "scenes/games/deadlock/v/wraith-d239.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "mechanical",
+     "r": "механический"
+    },
+    {
+     "w": "extra hands",
+     "r": "лишние руки"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Seven и Venator",
+   "about": "Семь допытывается, действует ли охотник Венатор по приказу, — ответ с колом в перспективе.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Панч про кол в сердце — остроумная угроза.",
+   "lines": [
+    {
+     "s": "Seven",
+     "en": "Did your masters at the Vatican send you? [Gasps] Or are you thinking for yourself for a change?",
+     "ru": "Тебя прислал Ватикан? [Ахнул] Или ты впервые в жизни сам думаешь?",
+     "a": "scenes/games/deadlock/v/seven-d240.mp3"
+    },
+    {
+     "s": "Venator",
+     "en": "The fact that there's not a stake through your heart should be answer enough.",
+     "ru": "То, что в твоём сердце до сих пор нет кола, — вполне исчерпывающий ответ.",
+     "a": "scenes/games/deadlock/v/venator-d241.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Orders it is.",
+     "ru": "Значит, по приказу.",
+     "a": "scenes/games/deadlock/v/seven-d242.mp3"
+    },
+    {
+     "s": "Venator",
+     "en": "Smart lad.",
+     "ru": "Сообразительный парень.",
+     "a": "scenes/games/deadlock/v/venator-d243.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "stake",
+     "r": "кол (для вампира)"
+    },
+    {
+     "w": "orders",
+     "r": "приказы"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Seven и Venator",
+   "about": "Венатор припоминает Семёну убитого друга — разница в формулировках колоссальна.",
+   "use": 5,
+   "hook": 5,
+   "hook_why": "«Коллега по работе» вместо друга — циничный панч, который расходится мемами.",
+   "lines": [
+    {
+     "s": "Venator",
+     "en": "You killed a friend of mine.",
+     "ru": "Ты убил моего друга.",
+     "a": "scenes/games/deadlock/v/venator-d244.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "[Laughter] Oh, please! You're still willing to work with me? I killed a work acquaintance at best.",
+     "ru": "[Смех] Да ладно тебе! И ты всё ещё готов со мной работать? Я убил, так сказать, коллегу по работе.",
+     "a": "scenes/games/deadlock/v/seven-d245.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "work acquaintance",
+     "r": "коллега по работе"
+    },
+    {
+     "w": "willing to",
+     "r": "готов (что-то сделать)"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Wraith и Seven",
+   "about": "Рэйф предлагает Семёну продать шляпу под рулетку — сделка века сорвана.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Абсурдное предложение и хладнокровный отказ.",
+   "lines": [
+    {
+     "s": "Wraith",
+     "en": "If I gave you fifty bucks would you let me turn your hat into a roulette wheel?",
+     "ru": "Дам тебе полтос — позволишь превратить свою шляпу в рулетку?",
+     "a": "scenes/games/deadlock/v/wraith-d246.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Do you really think mocking me is a wise idea?",
+     "ru": "Ты правда считаешь, что издеваться надо мной — мудрая идея?",
+     "a": "scenes/games/deadlock/v/seven-d247.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "I think you're on the run, and desperate, and might need fifty bucks.",
+     "ru": "Я считаю, что ты в бегах, на мели, и полтос тебе не помешает.",
+     "a": "scenes/games/deadlock/v/wraith-d248.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "Your offer is declined.",
+     "ru": "Ваше предложение отклонено.",
+     "a": "scenes/games/deadlock/v/seven-d249.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "on the run",
+     "r": "в бегах"
+    },
+    {
+     "w": "fifty bucks",
+     "r": "пятьдесят баксов, полтос"
+    },
+    {
+     "w": "Your offer is declined",
+     "r": "ваше предложение отклонено"
+    }
+   ]
+  },
+  {
+   "ctx": "разговор · Wraith и Seven",
+   "about": "Рэйф честен в своих денежных мотивах — Семь разочарован, Рэйф доволен собой.",
+   "use": 4,
+   "hook": 4,
+   "hook_why": "Финал-поправка «прагматично» — самоирония и стиль.",
+   "lines": [
+    {
+     "s": "Seven",
+     "en": "Money can't be all you're after.",
+     "ru": "Не может быть, чтобы ты гнался только за деньгами.",
+     "a": "scenes/games/deadlock/v/seven-d250.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "It really is.",
+     "ru": "Может. Я именно за ними и гонюсь.",
+     "a": "scenes/games/deadlock/v/wraith-d251.mp3"
+    },
+    {
+     "s": "Seven",
+     "en": "How dissappointing.",
+     "ru": "Как разочаровывающе.",
+     "a": "scenes/games/deadlock/v/seven-d252.mp3"
+    },
+    {
+     "s": "Wraith",
+     "en": "Pragmatic. The word you're looking for is pragmatic.",
+     "ru": "Прагматично. Слово, которое ты ищешь, — прагматично.",
+     "a": "scenes/games/deadlock/v/wraith-d253.mp3"
+    }
+   ],
+   "vocab": [
+    {
+     "w": "pragmatic",
+     "r": "прагматичный"
+    },
+    {
+     "w": "dissappointing",
+     "r": "разочаровывающий (опечатка в оригинале)"
+    }
+   ]
+  }
+ ]
+}
