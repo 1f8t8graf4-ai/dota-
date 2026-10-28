@@ -1,0 +1,3855 @@
+{
+ "_note": "Интересные фразы 35 героев (кроме девятки venator/rat-king/rem/grey-talon/celeste/doorman/seven/deadman-danny/victor). a — плоские ключи, залить героев из heroes-voice/.",
+ "heroes": {
+  "abrams": {
+   "name": "Abrams",
+   "lines": [
+    {
+     "en": "One day, I'm gonna die. But it ain't gonna be today.",
+     "ru": "Когда-нибудь я всё-таки умру. Но точно не сегодня.",
+     "tag": "пафос",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/abrams-01.mp3"
+    },
+    {
+     "en": "I'm too stubborn to die.",
+     "ru": "Я слишком упёртый, чтобы сдохнуть.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/abrams-02.mp3"
+    },
+    {
+     "en": "You got my number. Call me anytime.",
+     "ru": "Мой номер у тебя есть. Звони, если что.",
+     "tag": "приветствие",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-03.mp3"
+    },
+    {
+     "en": "Your funeral.",
+     "ru": "Ну-ну. Это будут твои похороны.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/abrams-04.mp3"
+    },
+    {
+     "en": "Ehh, I've gotten shot at enough this week.",
+     "ru": "Эх, на этой неделе в меня уже настрелялись досыта.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-05.mp3"
+    },
+    {
+     "en": "Take a nap, kid.",
+     "ru": "Поспи чуток, малой.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-06.mp3"
+    },
+    {
+     "en": "All the money in the world can't buy talent.",
+     "ru": "Все деньги мира талант не купят.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-07.mp3"
+    },
+    {
+     "en": "Don't come begging for mercy.",
+     "ru": "О пощаде потом не проси.",
+     "tag": "угроза",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/abrams-08.mp3"
+    },
+    {
+     "en": "Keep throwing your lives away! It's fine by me.",
+     "ru": "Давайте-давайте, швыряйтесь жизнями! Мне не жалко.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-09.mp3"
+    },
+    {
+     "en": "Shoot me all you want.",
+     "ru": "Стреляйте в меня сколько влезет.",
+     "tag": "подкол",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/abrams-10.mp3"
+    },
+    {
+     "en": "Who do you think you were punching?",
+     "ru": "Ты вообще понял, кому съездил по лицу?",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-11.mp3"
+    },
+    {
+     "en": "Good. Now we get to kill 'em twice.",
+     "ru": "Отлично. Теперь их можно убить дважды.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-12.mp3"
+    },
+    {
+     "en": "Maybe trusting people isn't so bad after all.",
+     "ru": "Может, доверять людям всё-таки не так уж плохо.",
+     "tag": "мудрость",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/abrams-13.mp3"
+    },
+    {
+     "en": "They should run now and save us all some time.",
+     "ru": "Пусть бегут прямо сейчас — сэкономят всем время.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-14.mp3"
+    },
+    {
+     "en": "Drinks are on me!",
+     "ru": "Выпивка за мой счёт!",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/abrams-15.mp3"
+    }
+   ]
+  },
+  "apollo": {
+   "name": "Apollo",
+   "lines": [
+    {
+     "en": "Pathetic.",
+     "ru": "Жалкое зрелище.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-01.mp3"
+    },
+    {
+     "en": "That was their best? How sad.",
+     "ru": "И это был их лучший ход? Соболезную.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-02.mp3"
+    },
+    {
+     "en": "I'm beginning to see how the rest of my day's going to go.",
+     "ru": "Начинаю понимать, как пройдёт остаток моего дня.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-03.mp3"
+    },
+    {
+     "en": "Look on the bright side: you lost to the best.",
+     "ru": "Смотри на вещи шире: ты проиграл лучшему.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/apollo-04.mp3"
+    },
+    {
+     "en": "You were courageous... and stupid. Mostly stupid.",
+     "ru": "Ты был смелым... и глупым. В основном глупым.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/apollo-05.mp3"
+    },
+    {
+     "en": "Don't bleed on my pants.",
+     "ru": "Только не капай кровью на мои штаны.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/apollo-06.mp3"
+    },
+    {
+     "en": "Submit to your betters.",
+     "ru": "Покорись тем, кто выше тебя.",
+     "tag": "пафос",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/apollo-07.mp3"
+    },
+    {
+     "en": "Gods, I'm good.",
+     "ru": "Боги, я хорош.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-08.mp3"
+    },
+    {
+     "en": "There's no shame in losing to me.",
+     "ru": "Проигрывать мне не стыдно.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/apollo-09.mp3"
+    },
+    {
+     "en": "Of course they're dying: they're fighting me.",
+     "ru": "Они и должны умирать: они сражаются со мной.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-10.mp3"
+    },
+    {
+     "en": "You didn't honestly think that would work, right?",
+     "ru": "Ты ведь всерьёз думал, что это сработает?",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-11.mp3"
+    },
+    {
+     "en": "Die with some dignity!",
+     "ru": "Умри хотя бы с достоинством!",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-12.mp3"
+    },
+    {
+     "en": "Bet they can't wait to tell their friends how they ran away from a high school kid.",
+     "ru": "Спорю, им не терпится рассказать друзьям, как они убежали от школьника.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-13.mp3"
+    },
+    {
+     "en": "No need to thank me, victory is its own reward.",
+     "ru": "Благодарности не надо: победа сама по себе награда.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/apollo-14.mp3"
+    },
+    {
+     "en": "Try not to die before you're useful?",
+     "ru": "Постарайся не помереть, пока от тебя есть хоть какая-то польза?",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/apollo-15.mp3"
+    }
+   ]
+  },
+  "baba": {
+   "name": "Baba",
+   "lines": [
+    {
+     "en": "I'm tired of people talking about urban decay being inevitable. You know what would stop urban decay? People giving a shit.",
+     "ru": "Устала слушать, что упадок городов неизбежен. Знаешь, что бы его остановило? Люди, которым не наплевать.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/baba-01.mp3"
+    },
+    {
+     "en": "New York is the greatest city in the world... It survived one maelstrom, it will survive another.",
+     "ru": "Нью-Йорк — величайший город в мире… Один маэльштром он пережил, переживёт и второй.",
+     "tag": "пафос",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/baba-02.mp3"
+    },
+    {
+     "en": "\"End of the world\"? People are so damn dramatic these days.",
+     "ru": "«Конец света»? Люди в наше время такие драматичные, чёрт возьми.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/baba-03.mp3"
+    },
+    {
+     "en": "Every day's a gift, and I'm not wasting one of my last good ones running around with those yahoos.",
+     "ru": "Каждый день — подарок, а тратить одни из последних хороших на возню с этими балбесами я не собираюсь.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-04.mp3"
+    },
+    {
+     "en": "Listen dearie, if I die during the ritual, who's gonna feed the pigeons?",
+     "ru": "Послушай, милая, если я подохну во время ритуала, кто голубей кормить будет?",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/baba-05.mp3"
+    },
+    {
+     "en": "Mm, you should be nicer to old ladies.",
+     "ru": "М-м, со старушками надо вежливее, милок.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-06.mp3"
+    },
+    {
+     "en": "Bench, I could kiss you.",
+     "ru": "Скамейка, да я бы тебя расцеловала.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-07.mp3"
+    },
+    {
+     "en": "The bench doesn't like you.",
+     "ru": "А скамейка тебя не любит.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-08.mp3"
+    },
+    {
+     "en": "I'm a tougher broad than you expected, huh?",
+     "ru": "Ну что, баба покрепче, чем ты рассчитывал, а?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-09.mp3"
+    },
+    {
+     "en": "I forgot how good it feels to just destroy your enemies' will to live.",
+     "ru": "Забыла, какое это удовольствие — втаптывать врагам волю к жизни.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-10.mp3"
+    },
+    {
+     "en": "Try mugging me now!",
+     "ru": "Ну-ка, попробуй теперь меня ограбить!",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-11.mp3"
+    },
+    {
+     "en": "Just come out so I can turn you into a pigeon or somethin'!",
+     "ru": "Выйди уже сам, дай мне превратить тебя в голубя или ещё во что-нибудь!",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-12.mp3"
+    },
+    {
+     "en": "They can pry my rent-controlled apartment from my cold dead hands.",
+     "ru": "Отдадут мою квартиру с дешёвой арендой только из моих холодных мёртвых рук.",
+     "tag": "пафос",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/baba-13.mp3"
+    },
+    {
+     "en": "Whatever you say, dearie.",
+     "ru": "Как скажешь, милочка.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/baba-14.mp3"
+    },
+    {
+     "en": "You have all notes, but none of the music...",
+     "ru": "У тебя есть все ноты, только музыки нет…",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/baba-15.mp3"
+    }
+   ]
+  },
+  "bebop": {
+   "name": "Bebop",
+   "lines": [
+    {
+     "en": "People get me all wrong. I'm not interested in violence for violence's sake! I'm interested in violence for money's sake.",
+     "ru": "Меня все не так понимают. Мне неинтересно насилие ради насилия! Мне интересно насилие ради денег.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/bebop-01.mp3"
+    },
+    {
+     "en": "A little trouble never hurt anyone!",
+     "ru": "Немного неприятностей ещё никому не вредили!",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-02.mp3"
+    },
+    {
+     "en": "The only way this day gets any better is if I get to punch Lash in the face.",
+     "ru": "Единственное, что могло бы сделать этот день лучше, — врезать Лэшу по роже.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-03.mp3"
+    },
+    {
+     "en": "Your funeral!",
+     "ru": "Сам напросился!",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/bebop-04.mp3"
+    },
+    {
+     "en": "Gettin' close to me was never gonna work out well for ya.",
+     "ru": "Подходить ко мне близко тебе никогда хорошо не кончалось.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-05.mp3"
+    },
+    {
+     "en": "What's the matter, organics? Can't hang with ol' Bebop?",
+     "ru": "Чего застыли, органики? Со стариной Бибопом потягаться слабо?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-06.mp3"
+    },
+    {
+     "en": "Oh, you wanted to fight me? Well, here I am!",
+     "ru": "О, ты хотел меня побить? Да вот же я!",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-07.mp3"
+    },
+    {
+     "en": "Lash wishes he could be this good.",
+     "ru": "Лэш такое и не снилось.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-08.mp3"
+    },
+    {
+     "en": "You messed around and ya found out!",
+     "ru": "Нарывался — так и напоролся!",
+     "tag": "идиома",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/bebop-09.mp3"
+    },
+    {
+     "en": "They wanna kill me, they'll have to try harder then that!",
+     "ru": "Хотят меня прикончить — пусть постараются поусерднее!",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-10.mp3"
+    },
+    {
+     "en": "Hard to find good help, innit?",
+     "ru": "Хороших помощников днём с огнём не сыщешь, а?",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-11.mp3"
+    },
+    {
+     "en": "We're gonna win this, and I'm gonna look good doin' it!",
+     "ru": "Мы победим — и при этом буду выглядеть на все сто!",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-12.mp3"
+    },
+    {
+     "en": "I wasn't built for fighting, but I'm damn good at it.",
+     "ru": "Я не был создан для драк, но дерусь я, чёрт возьми, отлично.",
+     "tag": "пафос",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/bebop-13.mp3"
+    },
+    {
+     "en": "Ms. Shelly probably wouldn't approve of what I'm about to do. Unfortunately for them, she's at home, resting.",
+     "ru": "Мисс Шелли бы, наверное, не одобрила то, что я затеял. Но, к их несчастью, она дома отдыхает.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-14.mp3"
+    },
+    {
+     "en": "I do. Some of them even have happy endings.",
+     "ru": "Есть. И у некоторых даже счастливый конец.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/bebop-15.mp3"
+    }
+   ]
+  },
+  "billy": {
+   "name": "Billy",
+   "lines": [
+    {
+     "en": "People ask me if I’m angry all the time. And it’s like “yeah, I’m pissed, why aren’t you?”",
+     "ru": "Меня всё время спрашивают: что ты вечно злой? А я такой: ну да, в бешенстве, а ты почему нет?",
+     "tag": "злость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/billy-01.mp3"
+    },
+    {
+     "en": "Hey, your taste in music? Sucks.",
+     "ru": "Кстати, твой вкус в музыке? Полное дно.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/billy-02.mp3"
+    },
+    {
+     "en": "Jersey? Sucks. But it doesn’t suck as much as Long Island.",
+     "ru": "Нью-Джерси? Отстой. Но Лонг-Айленд отстойнее.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-03.mp3"
+    },
+    {
+     "en": "I hope I end up on the other team and I kick your ass.",
+     "ru": "Надеюсь, я попаду в команду противника и надеру тебе зад.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-04.mp3"
+    },
+    {
+     "en": "You know what? You didn’t unselect me, I unselected you. Piss off!",
+     "ru": "Ах так? Это не ты меня отменил, это я тебя отменил. Катись!",
+     "tag": "злость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-05.mp3"
+    },
+    {
+     "en": "And I thought the Knickerbockers sucked this year.",
+     "ru": "А я-то думал, «Никербокеры» в этом сезоне отстой.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-06.mp3"
+    },
+    {
+     "en": "Way to not suck.",
+     "ru": "Ну надо же, не облажались.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-07.mp3"
+    },
+    {
+     "en": "I ain't goin' anywhere, baby, I am New York!",
+     "ru": "Я никуда не денусь, детка, я и есть Нью-Йорк!",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-08.mp3"
+    },
+    {
+     "en": "How do you think I get away from the cops so much?",
+     "ru": "А как, по-твоему, я столько раз уходил от полиции?",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-09.mp3"
+    },
+    {
+     "en": "Get outta here with that weak shit.",
+     "ru": "Иди отсюда со своим слабеньким дерьмом.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-10.mp3"
+    },
+    {
+     "en": "Jokes on you, pal! People been tryin' to kill me since I was in the womb!",
+     "ru": "Ага, испугал! Меня пытаются убить с тех пор, как я был в утробе!",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/billy-11.mp3"
+    },
+    {
+     "en": "God, do I have to do everything?!",
+     "ru": "Господи, мне за всех всё делать?!",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/billy-12.mp3"
+    },
+    {
+     "en": "Do I get a thank you? Of course not.",
+     "ru": "Мне хотя бы спасибо скажут? Конечно нет.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-13.mp3"
+    },
+    {
+     "en": "The fact that I didn't turn my head into a goat makes me better than you.",
+     "ru": "А вот то, что я не превратил свою голову в козлиную, уже делает меня лучше тебя.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-14.mp3"
+    },
+    {
+     "en": "When your ivory tower comes crashing down, I hope you're under it.",
+     "ru": "Когда твоя башня из слоновой кости рухнет, я надеюсь, ты окажешься прямо под ней.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/billy-15.mp3"
+    }
+   ]
+  },
+  "calico": {
+   "name": "Calico",
+   "lines": [
+    {
+     "en": "It's important to surround yourself with disposable- I mean, good people.",
+     "ru": "Важно окружать себя одноразовы— то есть хорошими людьми.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/calico-01.mp3"
+    },
+    {
+     "en": "Greatness is a prison.",
+     "ru": "Величие — это тюрьма.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-02.mp3"
+    },
+    {
+     "en": "Hello, darlings!",
+     "ru": "Здравствуйте, дорогие мои!",
+     "tag": "приветствие",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/calico-03.mp3"
+    },
+    {
+     "en": "I'm not mad. Just disappointed.",
+     "ru": "Я не в ярости. Я просто разочарована.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/calico-04.mp3"
+    },
+    {
+     "en": "It's like I told my son: You are free to make all the horrible decisions you'd like.",
+     "ru": "Это я сыну говорю: делай какие хочешь ужасные ошибки — ты свободен.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/calico-05.mp3"
+    },
+    {
+     "en": "You have no idea how far out of your league you are...",
+     "ru": "Ты и представить не можешь, насколько ты мне не ровня…",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-06.mp3"
+    },
+    {
+     "en": "Remember your place.",
+     "ru": "Помни своё место.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-07.mp3"
+    },
+    {
+     "en": "I don't know what people are talking about, subjugating your enemies is rather easy, isn't it?",
+     "ru": "Не понимаю, о чём люди говорят: порабощать врагов совсем несложно, правда?",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-08.mp3"
+    },
+    {
+     "en": "Bullets are so pedestrian.",
+     "ru": "Пули — так вульгарно.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-09.mp3"
+    },
+    {
+     "en": "I can't spend this when I'm dead.",
+     "ru": "Мёртвой мне их всё равно не потратить.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-10.mp3"
+    },
+    {
+     "en": "You can't outrun the inevitable.",
+     "ru": "От неизбежного не убежишь.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-11.mp3"
+    },
+    {
+     "en": "This wouldn't even make my top five near-death experiences.",
+     "ru": "Это даже не войдёт в мой топ-5 почти-смертельных переживаний.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-12.mp3"
+    },
+    {
+     "en": "A day people stop trying to kill you is a day you lose relevance.",
+     "ru": "День, когда люди перестают пытаться тебя убить, — день, когда ты потерял актуальность.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/calico-13.mp3"
+    },
+    {
+     "en": "So, are all of you contract killers or am I just going to be a lion amongst the lambs?",
+     "ru": "Так, а вы все наёмные убийцы, или мне одной придётся быть львом среди овец?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/calico-14.mp3"
+    },
+    {
+     "en": "Everyone needs a hobby.",
+     "ru": "Всем же нужно какое-то хобби.",
+     "tag": "идиома",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/calico-15.mp3"
+    }
+   ]
+  },
+  "drifter": {
+   "name": "Drifter",
+   "lines": [
+    {
+     "en": "Oh, I’m exactly who you think I am.",
+     "ru": "О, я ровно тот, кем ты меня считаешь.",
+     "tag": "пафос",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/drifter-01.mp3"
+    },
+    {
+     "en": "By the time I’m through with them, the cops won’t be able to identify the body.",
+     "ru": "Когда я закончу, копы не смогут опознать тело.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/drifter-02.mp3"
+    },
+    {
+     "en": "Fact of the matter is: I'd do this for free. The Patron's gift is just a bonus.",
+     "ru": "Если по правде: я бы и бесплатно это делал. Дар Патрона — просто бонус.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/drifter-03.mp3"
+    },
+    {
+     "en": "We all got weaknesses, but mercy ain’t one of mine.",
+     "ru": "У всех есть слабости, но милосердие — не моя.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/drifter-04.mp3"
+    },
+    {
+     "en": "Killin's no fun if someone's telling you to do it. You gotta just feel it in the moment, like jazz.",
+     "ru": "Убивать по приказу — скучно. Надо ловить момент, как в джазе.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/drifter-05.mp3"
+    },
+    {
+     "en": "Love what you do, you'll never work a day in your life.",
+     "ru": "Люби своё дело — и ни один день не будет рабочим.",
+     "tag": "идиома",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/drifter-06.mp3"
+    },
+    {
+     "en": "I could listen to that scream all day.",
+     "ru": "Я мог бы слушать этот вопль целый день.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/drifter-07.mp3"
+    },
+    {
+     "en": "Friendly word of advice: you might wanna stay away from Times Square tonight. I plan on celebrating.",
+     "ru": "Совет по-дружески: вечером держись подальше от Таймс-сквер. Я планирую отпраздновать.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/drifter-08.mp3"
+    },
+    {
+     "en": "You're a house cat pretendin' to be a lion.",
+     "ru": "Ты домашний кот, который строит из себя льва.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/drifter-09.mp3"
+    },
+    {
+     "en": "Normally, I'd crack someone in the face for sayin' that, but since we're on the same team, I'll respectfully tell you to go to hell.",
+     "ru": "Обычно я бы за такие слова врезать по лицу, но раз мы в одной команде — культурно посылаю тебя в ад.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/drifter-10.mp3"
+    },
+    {
+     "en": "I'm just the doorman.",
+     "ru": "Я просто швейцар.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/drifter-11.mp3"
+    },
+    {
+     "en": "All business, heheh... that's fine. I can appreciate directness. I am going to kill more than you though.",
+     "ru": "Деловой, значит… Ладно, прямоту уважаю. Убью я всё-таки больше, чем ты.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/drifter-12.mp3"
+    },
+    {
+     "en": "Being good at something and liking something are two different things.",
+     "ru": "Уметь что-то делать и любить это — две разные вещи.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/drifter-13.mp3"
+    },
+    {
+     "en": "Life's more fun when you accept who you are, Haze.",
+     "ru": "Жизнь веселей, когда принимаешь, кто ты есть.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/drifter-14.mp3"
+    },
+    {
+     "en": "Careful, now. You keep talking like that and you might hurt my feelings. And no one wants that.",
+     "ru": "Осторожнее на поворотах. Продолжишь в том же духе — заденешь мои чувства. А этого никто не переживёт.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/drifter-15.mp3"
+    }
+   ]
+  },
+  "dynamo": {
+   "name": "Dynamo",
+   "lines": [
+    {
+     "en": "One day, my body will be returned to me.",
+     "ru": "Однажды мне вернут моё тело.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/dynamo-01.mp3"
+    },
+    {
+     "en": "Let me collect my extremities and I'll be right there.",
+     "ru": "Дайте мне собрать свои конечности — и я тут как тут.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-02.mp3"
+    },
+    {
+     "en": "I'm gonna take that \"no\" as a strong \"maybe\".",
+     "ru": "Считаю это «нет» твёрдым «может быть».",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-03.mp3"
+    },
+    {
+     "en": "It wasn't personal.",
+     "ru": "Ничего личного.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/dynamo-04.mp3"
+    },
+    {
+     "en": "Turns out morality is subjective.",
+     "ru": "Как выяснилось, мораль — понятие растяжимое.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-05.mp3"
+    },
+    {
+     "en": "Feel free to give up.",
+     "ru": "Можете смело сдаваться.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-06.mp3"
+    },
+    {
+     "en": "I am surprisingly good at killing people!",
+     "ru": "А я, оказывается, прилично умею убивать людей!",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-07.mp3"
+    },
+    {
+     "en": "You think I've never been in a fist fight before?",
+     "ru": "А что, по-вашему, я никогда не дрался на кулаках?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/dynamo-08.mp3"
+    },
+    {
+     "en": "Educators are not paid nearly enough.",
+     "ru": "Педагогам страшно мало платят.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-09.mp3"
+    },
+    {
+     "en": "Excuse me, could you come back please?",
+     "ru": "Простите, вы бы не могли вернуться, пожалуйста?",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-10.mp3"
+    },
+    {
+     "en": "Well, this is going great. I haven't seen an enemy in a while... yep, I haven't seen an enemy in a while, that's... that's not good, is it?",
+     "ru": "Ну отлично всё идёт. Я давно не видел врага… да, давно не видел врага… это… это плохой знак, да?",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/dynamo-11.mp3"
+    },
+    {
+     "en": "Okay, just breathe, I'll be fine, what's the worst that could happen, they'll kill me? Oookay, that sounds pretty bad.",
+     "ru": "Так, спокойно, дыши, всё будет хорошо. Что худшего может случиться? Меня убьют? …Ну окей, это довольно плохо.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-12.mp3"
+    },
+    {
+     "en": "See what a positive attitude and a nigh-unlimitless supply of ammunition can do?",
+     "ru": "Видите, что может позитивный настрой и почти неисчерпаемый боезапас?",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/dynamo-13.mp3"
+    },
+    {
+     "en": "If that doesn't justify my tenure, what does?!",
+     "ru": "Если после этого мне не дадут постоянную ставку, то что тогда?!",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/dynamo-14.mp3"
+    },
+    {
+     "en": "Good luck, everyone. Well... not everyone, I want them to lose.",
+     "ru": "Всем удачи. Ну… не всем, я хочу, чтобы они проиграли.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/dynamo-15.mp3"
+    }
+   ]
+  },
+  "graves": {
+   "name": "Graves",
+   "lines": [
+    {
+     "en": "Graveyards aren’t quiet. They’re loud. Sometimes, it’s overwhelming. But if you stop and listen, the dead can tell one hell of a story.",
+     "ru": "Кладбища не тихие. Они громкие. Иногда — чересчур. Но если остановиться и прислушаться, мёртвые расскажут чертовски хорошую историю.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/graves-01.mp3"
+    },
+    {
+     "en": "Great! I’m running around Manhattan with a severed lich hand, how did this become my life?",
+     "ru": "Отлично! Я ношусь по Манхэттену с отсечённой рукой лича — как моя жизнь до этого докатилась?",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-02.mp3"
+    },
+    {
+     "en": "Well, my teachers are always asking me to apply myself, so I might as well do this.",
+     "ru": "Ну, учителя всё время просят меня выкладываться — вот и выкладываюсь.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-03.mp3"
+    },
+    {
+     "en": "I already got through P.E. once, I am not running up and down the streets of Manhattan nonstop.",
+     "ru": "Физру я уже сдал один раз, и бегать без остановки по улицам Манхэттена я не собираюсь.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-04.mp3"
+    },
+    {
+     "en": "Who's laughing now?",
+     "ru": "Ну и кто теперь смеётся?",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-05.mp3"
+    },
+    {
+     "en": "I go to Blackmore. You think money impresses me?",
+     "ru": "Я учусь в Блэкморе. Думаешь, деньги меня впечатлят?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-06.mp3"
+    },
+    {
+     "en": "I'm good at group projects.",
+     "ru": "Я хорош в групповых проектах.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-07.mp3"
+    },
+    {
+     "en": "I bet the kids at Blackmore are gonna talk a lot less shit now.",
+     "ru": "Спорю, теперь детишки из Блэкмора будут куда меньше пиздеть.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-08.mp3"
+    },
+    {
+     "en": "My mentor thanks you for throwing away your lives.",
+     "ru": "Мой наставник благодарит тебя за то, что ты так бездарно расстался с жизнью.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-09.mp3"
+    },
+    {
+     "en": "Who said I was finished?",
+     "ru": "Это кто тут сказал, что я закончил?",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-10.mp3"
+    },
+    {
+     "en": "I can't tell if I'm being overconfident, or appropriately confident.",
+     "ru": "Не могу понять: это самоуверенность — или уверенность ровно в меру?",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/graves-11.mp3"
+    },
+    {
+     "en": "On the plus side, if you die, we can still keep in touch.",
+     "ru": "Есть и плюс: если ты умрёшь, мы сможем продолжить общение.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/graves-12.mp3"
+    },
+    {
+     "en": "You'd be cooler without the attitude.",
+     "ru": "А ты был бы покруче без этого тона.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-13.mp3"
+    },
+    {
+     "en": "And all you had to do was sell your soul.",
+     "ru": "И всё, что тебе пришлось сделать, — продать душу.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-14.mp3"
+    },
+    {
+     "en": "I've never not been one. Imagine if I asked you how you liked being a human?",
+     "ru": "Я никогда не был другим. А если бы ты спросил меня, каково это — быть человеком?",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/graves-15.mp3"
+    }
+   ]
+  },
+  "haze": {
+   "name": "Haze",
+   "lines": [
+    {
+     "en": "They won't see me coming.",
+     "ru": "Меня они даже не заметят.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-01.mp3"
+    },
+    {
+     "en": "You know it's bad when they send a Sandman.",
+     "ru": "Когда присылают Песочного человека — значит, дела совсем плохи.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-02.mp3"
+    },
+    {
+     "en": "Sleep well.",
+     "ru": "Сладких снов.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/haze-03.mp3"
+    },
+    {
+     "en": "Murder can wait.",
+     "ru": "Убийство подождёт.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-04.mp3"
+    },
+    {
+     "en": "Your enemies are grateful for your choice.",
+     "ru": "Твои враги благодарят тебя за решение.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/haze-05.mp3"
+    },
+    {
+     "en": "Us winning and you dying aren't mutually exclusive.",
+     "ru": "Наша победа и твоя смерть не исключают друг друга.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-06.mp3"
+    },
+    {
+     "en": "Lay there and bleed.",
+     "ru": "Лежи и истекай кровью.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-07.mp3"
+    },
+    {
+     "en": "Your time in the sun has passed.",
+     "ru": "Твой час под солнцем миновал.",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-08.mp3"
+    },
+    {
+     "en": "Exquisite.",
+     "ru": "Восхитительно.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-09.mp3"
+    },
+    {
+     "en": "This is the beginning of something beautiful.",
+     "ru": "Это начало чего-то прекрасного.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-10.mp3"
+    },
+    {
+     "en": "I'm a soldier, not a martyr.",
+     "ru": "Я солдат, а не мученица.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-11.mp3"
+    },
+    {
+     "en": "Always have an escape plan.",
+     "ru": "Всегда имей запасной план.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/haze-12.mp3"
+    },
+    {
+     "en": "My hands have been clean for far too long.",
+     "ru": "Руки у меня слишком долго были чистыми.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/haze-13.mp3"
+    },
+    {
+     "en": "I love my job.",
+     "ru": "Обожаю свою работу.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/haze-14.mp3"
+    },
+    {
+     "en": "If they were smart, they'd walk away now.",
+     "ru": "Будь они умнее, они бы уже ушли.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/haze-15.mp3"
+    }
+   ]
+  },
+  "holliday": {
+   "name": "Holliday",
+   "lines": [
+    {
+     "en": "God, I hate this city.",
+     "ru": "Господи, как же я ненавижу этот город.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-01.mp3"
+    },
+    {
+     "en": "You can only run from the law for so long.",
+     "ru": "От закона далеко не убежишь.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/holliday-02.mp3"
+    },
+    {
+     "en": "When I find who I'm looking for, I'm not bringing him in. I'm putting him down.",
+     "ru": "Когда я найду того, кого ищу, я его не сдам. Я его уложу.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-03.mp3"
+    },
+    {
+     "en": "Justice isn't always swift, but it comes for everyone.",
+     "ru": "Правосудие не всегда проворное, но рано или поздно настигает каждого.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/holliday-04.mp3"
+    },
+    {
+     "en": "You got my hopes up. Hope you're happy.",
+     "ru": "Ты дал мне надежду. Надеюсь, ты доволен собой.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-05.mp3"
+    },
+    {
+     "en": "Probably should talk to local law enforcement about that one.",
+     "ru": "Наверное, об этом стоит рассказать местной полиции.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-06.mp3"
+    },
+    {
+     "en": "Great, now there's blood on my boots. Those were a gift!",
+     "ru": "Отлично, теперь на моих сапогах кровь. А они мне были подарены!",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-07.mp3"
+    },
+    {
+     "en": "No one's untouchable.",
+     "ru": "Не бывает неприкосновенных.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-08.mp3"
+    },
+    {
+     "en": "You mess with the law, the law's gonna mess with you!",
+     "ru": "Кто с законом играет, тот по закону и получает!",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-09.mp3"
+    },
+    {
+     "en": "You guys gettin' the picture yet?",
+     "ru": "Ну что, картина проясняется?",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-10.mp3"
+    },
+    {
+     "en": "Feel free to surrender anytime.",
+     "ru": "Можете сдаваться в любой момент, я не тороплю.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/holliday-11.mp3"
+    },
+    {
+     "en": "You wanna play? Fine by me.",
+     "ru": "Хочешь поиграть? Да ради бога.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-12.mp3"
+    },
+    {
+     "en": "It's always up to me...",
+     "ru": "Опять всё на мне…",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-13.mp3"
+    },
+    {
+     "en": "No, I'm carrying it because I'm in Macbeth. What do you think?",
+     "ru": "Нет, я ношу её, потому что играю в «Макбета». А ты как думал?",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/holliday-14.mp3"
+    },
+    {
+     "en": "And I'm hoping you get shot.",
+     "ru": "А я продолжаю надеяться, что в тебя попадут.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/holliday-15.mp3"
+    }
+   ]
+  },
+  "infernus": {
+   "name": "Infernus",
+   "lines": [
+    {
+     "en": "Sometimes, you gotta go to extremes to help your friends.",
+     "ru": "Иногда, чтобы помочь друзьям, приходится идти на крайние меры.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-01.mp3"
+    },
+    {
+     "en": "They don't need a bouncer when I'm tending bar!",
+     "ru": "Когда за стойкой я, вышибала не нужен!",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-02.mp3"
+    },
+    {
+     "en": "It's so nice to know that my years of antisocial behavior can be put to good use.",
+     "ru": "Приятно понимать, что годы антисоциального поведения наконец-то пригодятся.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/infernus-03.mp3"
+    },
+    {
+     "en": "You got an eye for talent, I give you that.",
+     "ru": "Глаз на таланты у тебя намётан, спорить не буду.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-04.mp3"
+    },
+    {
+     "en": "If you need a drink after the ritual, you know where to find me.",
+     "ru": "Захочешь выпить после ритуала — знаешь, где меня найти.",
+     "tag": "приветствие",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-05.mp3"
+    },
+    {
+     "en": "The old me would have jumped at the chance, but I'm wiser now.",
+     "ru": "Старый я бы вцепился в такой шанс зубами, но теперь я поумнел.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-06.mp3"
+    },
+    {
+     "en": "I ain't about that life anymore.",
+     "ru": "Я с той жизнью завязал.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-07.mp3"
+    },
+    {
+     "en": "Not your day.",
+     "ru": "Не твой день.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-08.mp3"
+    },
+    {
+     "en": "You never should've messed with me.",
+     "ru": "Зря ты со мной связался.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-09.mp3"
+    },
+    {
+     "en": "Anyone else wanna play with fire?",
+     "ru": "Ещё кто-нибудь хочет поиграть с огнём?",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/infernus-10.mp3"
+    },
+    {
+     "en": "You're not even tryin' anymore.",
+     "ru": "Ты уже даже не стараешься.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-11.mp3"
+    },
+    {
+     "en": "You thought I was gonna forget what you did to me?",
+     "ru": "А ты думал, я забуду, что ты со мной сделал?",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/infernus-12.mp3"
+    },
+    {
+     "en": "Go big or go home, baby.",
+     "ru": "Пан или пропал, детка.",
+     "tag": "идиома",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/infernus-13.mp3"
+    },
+    {
+     "en": "Next round's on me! Well... It's on Hank, technically... But you get the idea.",
+     "ru": "Следующий раунд за мой счёт! Ну... технически — за счёт Хэнка... Но суть вы поняли.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/infernus-14.mp3"
+    },
+    {
+     "en": "If Wraith invites you to play cards, say no.",
+     "ru": "Если Рейт позовёт тебя играть в карты — откажись.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/infernus-15.mp3"
+    }
+   ]
+  },
+  "ivy": {
+   "name": "Ivy",
+   "lines": [
+    {
+     "en": "Looks like I'm missing that job interview...",
+     "ru": "Похоже, собеседование я как раз пропущу…",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/ivy-01.mp3"
+    },
+    {
+     "en": "I'm a little more subtle than I look.",
+     "ru": "Я куда более деликатная, чем кажусь.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/ivy-02.mp3"
+    },
+    {
+     "en": "I really need a job.",
+     "ru": "Мне правда очень нужна работа.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-03.mp3"
+    },
+    {
+     "en": "You had that coming.",
+     "ru": "Сам напросился.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-04.mp3"
+    },
+    {
+     "en": "I'd stay down, if I were you.",
+     "ru": "На твоём месте я бы оставалась лежать.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-05.mp3"
+    },
+    {
+     "en": "You tried to punch a gargoyle? Really?!",
+     "ru": "Ты попытался ударить горгулью? Серьёзно?!",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-06.mp3"
+    },
+    {
+     "en": "Well, they had Moxie! I mean, they're dead, but... Moxie!",
+     "ru": "Что ж, был характер! То есть они уже мертвы, но… характер!",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-07.mp3"
+    },
+    {
+     "en": "You think just because you have money you can bully people?!",
+     "ru": "Думаешь, раз у тебя есть деньги, можно всех задирать?!",
+     "tag": "злость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/ivy-08.mp3"
+    },
+    {
+     "en": "Welcome to New York!",
+     "ru": "Добро пожаловать в Нью-Йорк!",
+     "tag": "идиома",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-09.mp3"
+    },
+    {
+     "en": "I don't know what to tell you, I'm just better at this than you!",
+     "ru": "Тут даже нечего сказать: я просто делаю это лучше тебя!",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/ivy-10.mp3"
+    },
+    {
+     "en": "Who says vigilante work doesn't pay the bills?",
+     "ru": "Кто говорил, что работа народного мстителя не кормит?",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/ivy-11.mp3"
+    },
+    {
+     "en": "Truth usually is...",
+     "ru": "Правда обычно именно такая…",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-12.mp3"
+    },
+    {
+     "en": "Ohh, so you wanted to have moral superiority over someone you just met.",
+     "ru": "Ааа, то есть тебе нужно было почувствовать моральное превосходство над человеком, которого видишь впервые.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-13.mp3"
+    },
+    {
+     "en": "Horrible people tend to have the most money.",
+     "ru": "У ужасных людей обычно больше всего денег.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-14.mp3"
+    },
+    {
+     "en": "I'm in chronic pain and my body is stitched together from corpses I can't identify.",
+     "ru": "Я живу с хронической болью, а моё тело сшито из трупов, происхождение которых я не могу установить.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/ivy-15.mp3"
+    }
+   ]
+  },
+  "kelvin": {
+   "name": "Kelvin",
+   "lines": [
+    {
+     "en": "In life, I find that a positive outlook - and a freeze ray - makes all the difference in the world.",
+     "ru": "Я в жизни заметил: позитивный взгляд на вещи — и ледяная пушка — меняют всё.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-01.mp3"
+    },
+    {
+     "en": "This is dangerous work. Fortunately, I'm dangerously handsome.",
+     "ru": "Работа опасная. Но, к счастью, я опасно красив.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-02.mp3"
+    },
+    {
+     "en": "I love making new friends and even newer enemies!",
+     "ru": "Обожаю заводить новых друзей и ещё более новых врагов!",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-03.mp3"
+    },
+    {
+     "en": "Don't feel bad, my friend, no one is better than me.",
+     "ru": "Не расстраивайся, дружище: лучше меня никого нет.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/kelvin-04.mp3"
+    },
+    {
+     "en": "If you're going to lose, at least you lost to the best, yes?",
+     "ru": "Если уж проигрывать, так лучшему, согласен?",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-05.mp3"
+    },
+    {
+     "en": "It appears they have confused courage with stupidity!",
+     "ru": "Похоже, они перепутали храбрость с глупостью!",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-06.mp3"
+    },
+    {
+     "en": "It's in your best interest to stay down.",
+     "ru": "На твоём месте было бы разумнее остаться лежать.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/kelvin-07.mp3"
+    },
+    {
+     "en": "They may have the money, but we have the talent.",
+     "ru": "У них могут быть деньги, зато у нас талант.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/kelvin-08.mp3"
+    },
+    {
+     "en": "All good things come to an end.",
+     "ru": "Всё хорошее когда-нибудь заканчивается.",
+     "tag": "идиома",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-09.mp3"
+    },
+    {
+     "en": "It's not your fault that you're not better than me. It's just is what it is!",
+     "ru": "Ты не виноват, что я лучше тебя. Просто так устроен мир!",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-10.mp3"
+    },
+    {
+     "en": "I came to fight the best, and so far... Eh, I'm sorely disappointed.",
+     "ru": "Я пришёл биться с лучшими, и пока… увы, я жутко разочарован.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/kelvin-11.mp3"
+    },
+    {
+     "en": "Today is not the day I die.",
+     "ru": "Сегодня не тот день, когда я умру.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/kelvin-12.mp3"
+    },
+    {
+     "en": "We don't have to like each other, but we need to work together as a team.",
+     "ru": "Не обязательно друг друга любить, но работать в команде нам придётся.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-13.mp3"
+    },
+    {
+     "en": "I always get a little nervous before I get shot at...",
+     "ru": "Меня всегда немного мутит перед тем, как в меня начнут стрелять…",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/kelvin-14.mp3"
+    },
+    {
+     "en": "Respect and certain death have a way of binding people together, don't they?",
+     "ru": "Уважение и верная смерть умеют сближать, не так ли?",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/kelvin-15.mp3"
+    }
+   ]
+  },
+  "lady-geist": {
+   "name": "Lady Geist",
+   "lines": [
+    {
+     "en": "I paid a terrible price for a second chance. And I would gladly pay it again.",
+     "ru": "Я заплатила чудовищную цену за второй шанс. И с радостью заплатила бы снова.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lady-geist-01.mp3"
+    },
+    {
+     "en": "I didn't sell my soul. I saved my life.",
+     "ru": "Я не продавала душу. Я спасала жизнь.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/lady-geist-02.mp3"
+    },
+    {
+     "en": "Beauty doesn't need to fade.",
+     "ru": "Красота не обязана увядать.",
+     "tag": "подкол",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/lady-geist-03.mp3"
+    },
+    {
+     "en": "I think you can handle this all on your own.",
+     "ru": "Думаю, ты справишься и без меня.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/lady-geist-04.mp3"
+    },
+    {
+     "en": "I wish I could help, but I have a gala to attend.",
+     "ru": "Эх, помогла бы, но у меня сегодня светский приём.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lady-geist-05.mp3"
+    },
+    {
+     "en": "I will suffer this indignity quietly. And when misfortune falls upon you, you will always wonder: \"Was that fate? Or was that Lady Geist?\"",
+     "ru": "Я стерплю это унижение молча. Но когда на тебя обрушится беда, ты вечно будешь гадать: \"Это судьба? Или это была Леди Гейст?\"",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lady-geist-06.mp3"
+    },
+    {
+     "en": "No one will mourn you.",
+     "ru": "Тебя некому оплакать.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lady-geist-07.mp3"
+    },
+    {
+     "en": "No one is untouchable.",
+     "ru": "Неуязвимых не бывает.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/lady-geist-08.mp3"
+    },
+    {
+     "en": "At least you tried.",
+     "ru": "Зато была попытка.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/lady-geist-09.mp3"
+    },
+    {
+     "en": "Blood money spends as good as any coin.",
+     "ru": "Кровавые деньги тратятся ничуть не хуже честных.",
+     "tag": "идиома",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/lady-geist-10.mp3"
+    },
+    {
+     "en": "Let the mediocre fight for scraps.",
+     "ru": "Пусть посредственности грызутся за объедки.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lady-geist-11.mp3"
+    },
+    {
+     "en": "I know when it's time to leave a party.",
+     "ru": "Я умею вовремя уходить с вечеринок.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lady-geist-12.mp3"
+    },
+    {
+     "en": "You were all surprisingly competent. Good job.",
+     "ru": "Вы все, на удивление, оказались толковыми. Молодцы.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lady-geist-13.mp3"
+    },
+    {
+     "en": "I can't tell if you're delusional or appropriately arrogant.",
+     "ru": "Никак не решу: у тебя бред величия или высокомерие по заслугам.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/lady-geist-14.mp3"
+    },
+    {
+     "en": "Live at my behest... Die at my whim.",
+     "ru": "Живут по моему слову... умирают по моей прихоти.",
+     "tag": "пафос",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/lady-geist-15.mp3"
+    }
+   ]
+  },
+  "lash": {
+   "name": "Lash",
+   "lines": [
+    {
+     "en": "Reason number 87 I'm better than Bebop: He's Bebop.",
+     "ru": "Причина №87, почему я лучше Бибопа: он — Бибоп.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-01.mp3"
+    },
+    {
+     "en": "The only demons I can't punch... are my own.",
+     "ru": "Единственные демоны, которых мне не одолеть кулаками, — мои собственные.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-02.mp3"
+    },
+    {
+     "en": "Fear... is for lesser men. And Bebop.",
+     "ru": "Страх... это для слабаков. Ну и для Бибопа.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-03.mp3"
+    },
+    {
+     "en": "[Laughter], good one!.. Wait, you're serious?",
+     "ru": "[Смех] Отлично сказано!.. Стоп, ты серьёзно?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-04.mp3"
+    },
+    {
+     "en": "Not surprising. It takes time to get comfortable with greatness.",
+     "ru": "Неудивительно. К величию надо привыкнуть, это не сразу получается.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-05.mp3"
+    },
+    {
+     "en": "You're welcome.",
+     "ru": "Не за что.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/lash-06.mp3"
+    },
+    {
+     "en": "What, you think you hate me now? Just wait until I kill you again!",
+     "ru": "Что, думаешь, теперь ты меня ненавидишь? Подожди, я тебя ещё раз убью!",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-07.mp3"
+    },
+    {
+     "en": "Don't feel so bad. The world's full of mediocre talent.",
+     "ru": "Не расстраивайся так. Мир полон посредственностей.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-08.mp3"
+    },
+    {
+     "en": "It's cool, everyone. Gettin' killed by me is an honor.",
+     "ru": "Спокойно, народ. Быть убитым мной — почётно.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-09.mp3"
+    },
+    {
+     "en": "That was cute.",
+     "ru": "Это было мило.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/lash-10.mp3"
+    },
+    {
+     "en": "I'm good, but I'm not stupid.",
+     "ru": "Я крут, но не идиот.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/lash-11.mp3"
+    },
+    {
+     "en": "Alright people, let's go crush some dreams.",
+     "ru": "Так, народ, пошли крушить кому-нибудь мечты.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-12.mp3"
+    },
+    {
+     "en": "Ah-ah! No need to thank me. Being amazing is a burden I'm willing to bear.",
+     "ru": "Тс-с! Благодарить не надо. Быть потрясным — бремя, и я готов его нести.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-13.mp3"
+    },
+    {
+     "en": "It gives your sad life meaning, and that should be enough.",
+     "ru": "Зато это придаёт смысл твоей жалкой жизни — и то хорошо.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/lash-14.mp3"
+    },
+    {
+     "en": "So... how long you been with the old ball-and-chain?",
+     "ru": "Ну и как... давно ты носишь кандалы законного брака?",
+     "tag": "идиома",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/lash-15.mp3"
+    }
+   ]
+  },
+  "mcginnis": {
+   "name": "McGinnis",
+   "lines": [
+    {
+     "en": "Do I love working for Fairfax Industries? No. Does it pay a small fortune? Yes. How do I sleep at night? Like a baby.",
+     "ru": "Люблю ли я работать на Fairfax Industries? Нет. Платят ли там маленькое состояние? Да. Как я сплю после этого? Как младенец.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mcginnis-01.mp3"
+    },
+    {
+     "en": "You won't regret this.",
+     "ru": "Этика — для учёных, которым не хватает масштаба.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-02.mp3"
+    },
+    {
+     "en": "You wanna try to win without me? Be my guest.",
+     "ru": "Хочешь попробовать выиграть без меня? Ради бога.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-03.mp3"
+    },
+    {
+     "en": "Wish I could help, this deadline is killing me.",
+     "ru": "Эх, помогла бы, но дедлайн меня уже убивает.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-04.mp3"
+    },
+    {
+     "en": "Barely had to lift a finger.",
+     "ru": "Чуть пальцем не пошевелила.",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-05.mp3"
+    },
+    {
+     "en": "You're outta your league.",
+     "ru": "Ты просто не в своей лиге.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-06.mp3"
+    },
+    {
+     "en": "Thank God we put a stop to that shit.",
+     "ru": "Слава богу, мы остановили эту херню.",
+     "tag": "злость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-07.mp3"
+    },
+    {
+     "en": "After today, my rates are definitely going up.",
+     "ru": "После сегодняшнего мои расценки точно подрастут.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-08.mp3"
+    },
+    {
+     "en": "You gonna fight back? Are you really gonna let me do this to you all night?",
+     "ru": "А ты вообще собираешься отбиваться? Или будешь всю ночь позволять мне это делать?",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-09.mp3"
+    },
+    {
+     "en": "You guys wanna keep throwing yourselves in the murder pile, that's your business.",
+     "ru": "Хотите и дальше сами лезть в кучу трупов — дело ваше.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-10.mp3"
+    },
+    {
+     "en": "They're not paying me enough to die here.",
+     "ru": "Мне столько не платят, чтобы тут умирать.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mcginnis-11.mp3"
+    },
+    {
+     "en": "Nothing kills magic faster than a bullet.",
+     "ru": "Ничто не убивает магию быстрее пули.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-12.mp3"
+    },
+    {
+     "en": "No one \"needs\" a gun, it just makes surviving a firefight significantly more likely!",
+     "ru": "Пистолет никому не \"нужен\". Он просто заметно повышает шансы пережить перестрелку!",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-13.mp3"
+    },
+    {
+     "en": "Hope your back's strong, because we are gonna be carrying this team.",
+     "ru": "Надеюсь, спина у тебя крепкая — эту команду нам двоим придётся тащить.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mcginnis-14.mp3"
+    },
+    {
+     "en": "I'm amazed you know what either of those words mean.",
+     "ru": "Удивлена, что ты вообще в курсе, что значат оба этих слова.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mcginnis-15.mp3"
+    }
+   ]
+  },
+  "mina": {
+   "name": "Mina",
+   "lines": [
+    {
+     "en": "God, I look good today.",
+     "ru": "Боже, я сегодня хороша.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-01.mp3"
+    },
+    {
+     "en": "This city could use some new blood.",
+     "ru": "Этому городу не помешает свежая кровь.",
+     "tag": "идиома",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mina-02.mp3"
+    },
+    {
+     "en": "You have excellent taste.",
+     "ru": "У тебя отличный вкус.",
+     "tag": "флирт",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mina-03.mp3"
+    },
+    {
+     "en": "If I die, I can't go to fashion week and I'm not risking that.",
+     "ru": "Погибну — пропущу неделю моды. Рисковать этим я не собираюсь.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-04.mp3"
+    },
+    {
+     "en": "I'm sure there's someone out there dumb enough to risk their life.",
+     "ru": "Уверена, найдётся кто-нибудь достаточно глупый, чтобы рискнуть жизнью.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-05.mp3"
+    },
+    {
+     "en": "You were never untouchable.",
+     "ru": "До тебя всегда можно дотянуться.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-06.mp3"
+    },
+    {
+     "en": "Great. Now I'm gonna have to get this dry-cleaned.",
+     "ru": "Отлично. Теперь всё это в химчистку.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mina-07.mp3"
+    },
+    {
+     "en": "Surprisingly competent.",
+     "ru": "На удивление толково.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mina-08.mp3"
+    },
+    {
+     "en": "You all suck!",
+     "ru": "Да вы все сосёте!",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mina-09.mp3"
+    },
+    {
+     "en": "Yeah, no.",
+     "ru": "Ну, нет.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mina-10.mp3"
+    },
+    {
+     "en": "Just come out and die and save us all some time.",
+     "ru": "Ну выходи уже и умри — сэкономишь всем время.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-11.mp3"
+    },
+    {
+     "en": "Some of you desperately need a fashion consultant.",
+     "ru": "Некоторым из вас жизненно необходим стилист.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-12.mp3"
+    },
+    {
+     "en": "Hm! You weren't dead weight after all!",
+     "ru": "Хм! А ты, оказывается, не балласт!",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-13.mp3"
+    },
+    {
+     "en": "I can't speak for the food, I only drink blood.",
+     "ru": "За еду не ручаюсь, я пью только кровь.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-14.mp3"
+    },
+    {
+     "en": "Not your boss, just your better.",
+     "ru": "Я не твой босс. Я просто лучше тебя.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mina-15.mp3"
+    }
+   ]
+  },
+  "mirage": {
+   "name": "Mirage",
+   "lines": [
+    {
+     "en": "We all have a destiny. The only question is, do you have the courage to face it?",
+     "ru": "У каждого своя судьба. Вопрос лишь один: хватит ли смелости взглянуть ей в лицо?",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-01.mp3"
+    },
+    {
+     "en": "You're under my protection now.",
+     "ru": "Теперь ты под моей защитой.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-02.mp3"
+    },
+    {
+     "en": "Fate has other plans for me today. Today... I try a hot-dog.",
+     "ru": "У судьбы на меня другие планы. Сегодня... я попробую хот-дог.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-03.mp3"
+    },
+    {
+     "en": "I'm sure you will endure fine without me.",
+     "ru": "Уверен, вы и без меня как-нибудь справитесь.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-04.mp3"
+    },
+    {
+     "en": "I wish I could help, I truly do. But duty calls.",
+     "ru": "Я бы помог, поверь, по-настоящему. Но зов долга.",
+     "tag": "идиома",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/mirage-05.mp3"
+    },
+    {
+     "en": "You'll have to do better, my friend.",
+     "ru": "Придётся постараться, друг мой.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-06.mp3"
+    },
+    {
+     "en": "Today is not a day for gentle hands.",
+     "ru": "Сегодня — не день для нежных рук.",
+     "tag": "угроза",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/mirage-07.mp3"
+    },
+    {
+     "en": "It was your actions that brought death upon you.",
+     "ru": "Тебя сгубили твои же поступки.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-08.mp3"
+    },
+    {
+     "en": "Yield now, while you still can.",
+     "ru": "Сдавайся, пока ещё можешь.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-09.mp3"
+    },
+    {
+     "en": "I didn't choose this fight, but I will finish it.",
+     "ru": "Я не выбирал эту битву — но закончу её я.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-10.mp3"
+    },
+    {
+     "en": "I'm willing to die for Nashala-- and I am certainly willing to kill for her.",
+     "ru": "Я готов умереть за Нашалу — и уж точно готов убивать за неё.",
+     "tag": "пафос",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/mirage-11.mp3"
+    },
+    {
+     "en": "Soon Wyoming will be ours!",
+     "ru": "Скоро Вайоминг будет нашим!",
+     "tag": "шутка",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/mirage-12.mp3"
+    },
+    {
+     "en": "Not today, my friend.",
+     "ru": "Не сегодня, друг мой.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mirage-13.mp3"
+    },
+    {
+     "en": "Perhaps they have better judgement than I thought.",
+     "ru": "Возможно, голова у них работает лучше, чем я думал.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mirage-14.mp3"
+    },
+    {
+     "en": "Ah. Another victim of American divorce.",
+     "ru": "Ах. Ещё одна жертва американского развода.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mirage-15.mp3"
+    }
+   ]
+  },
+  "mo-krill": {
+   "name": "Mo & Krill",
+   "lines": [
+    {
+     "en": "It's not the rats in New York they should worry about.",
+     "ru": "Бояться в этом городе стоило бы не крыс.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-01.mp3"
+    },
+    {
+     "en": "He does the digging, I do the talking. We tried it the other way but, it didn't work.",
+     "ru": "Он копает, я разговариваю. Мы пробовали наоборот — не зашло.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mo-krill-02.mp3"
+    },
+    {
+     "en": "Don't mind the big guy, he's friendly. Unless, of course, you tried to stop us, in which case he would definitely maul you.",
+     "ru": "Не обращай внимания на здоровяка, он дружелюбный. Разве что попробуешь нам помешать — тогда он тебя определённо порвёт.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-03.mp3"
+    },
+    {
+     "en": "You sure about that? You get two for the price of one.",
+     "ru": "Ты уверен? С нами ты получаешь двух по цене одного.",
+     "tag": "идиома",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/mo-krill-04.mp3"
+    },
+    {
+     "en": "You obviously don't appreciate the value of a good mole person.",
+     "ru": "Ты явно не понимаешь, сколько стоит хороший человек-крот.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-05.mp3"
+    },
+    {
+     "en": "Alas, duty calls. And by \"duty\" I mean crime.",
+     "ru": "Увы, зов долга. И под \"долгом\" я имею в виду преступление.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/mo-krill-06.mp3"
+    },
+    {
+     "en": "Oh, Mo, you got some blood on your fur.",
+     "ru": "Ой, Мо, у тебя кровь на шёрстке.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-07.mp3"
+    },
+    {
+     "en": "What sort of idiot gets in a fist fight with a mole person?!",
+     "ru": "Какой же идиот полезет в драку на кулаках с человеком-кротом?!",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-08.mp3"
+    },
+    {
+     "en": "You have the money, but we have Maurice.",
+     "ru": "У тебя деньги, зато у нас Морис.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-09.mp3"
+    },
+    {
+     "en": "If you're looking for mercy, my friends, I'm afraid it's in short supply.",
+     "ru": "Если вы ищете пощады, друзья, боюсь, её сейчас нет в наличии.",
+     "tag": "угроза",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/mo-krill-10.mp3"
+    },
+    {
+     "en": "Maurice is gonna find youuu...",
+     "ru": "Морис тебя найдё-е-ет...",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-11.mp3"
+    },
+    {
+     "en": "You know, there's no shame in just giving up.",
+     "ru": "Между прочим, сдаваться совсем не стыдно.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-12.mp3"
+    },
+    {
+     "en": "Why delay the inevitable? Just come out and die.",
+     "ru": "Зачем оттягивать неизбежное? Выходи и умирай.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-13.mp3"
+    },
+    {
+     "en": "I am Krill. This is Maurice. Please don't confuse us, it's fairly rude.",
+     "ru": "Я Крилл. Это Морис. Только не перепутайте, это очень невежливо.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-14.mp3"
+    },
+    {
+     "en": "I can't help but notice all our new friends are dead.",
+     "ru": "Не могу не заметить: все наши новые друзья мертвы.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/mo-krill-15.mp3"
+    }
+   ]
+  },
+  "nurse-harrow": {
+   "name": "Nurse Harrow",
+   "lines": [
+    {
+     "en": "My work demands strict discipline.",
+     "ru": "Мне безразлично, нравлюсь я тебе или нет. Я эффективна и даю результат.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-01.mp3"
+    },
+    {
+     "en": "I don't particularly care if you like me or not. I am effective and I deliver results.",
+     "ru": "Доверься мне. Я знаю, как лучше.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/nurse-harrow-02.mp3"
+    },
+    {
+     "en": "Trust me. I know best.",
+     "ru": "Делай, что я говорю, — и выживешь. Или делай по-своему и умри. Твой выбор.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-03.mp3"
+    },
+    {
+     "en": "I have seen things you cannot fathom.",
+     "ru": "Мне не страшны ни духи, ни демоны, ни буйные родственники.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-04.mp3"
+    },
+    {
+     "en": "Feel free to tempt fate. I, however, know better.",
+     "ru": "Можешь смело искушать судьбу. Я-то лучше знаю.",
+     "tag": "мудрость",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/nurse-harrow-05.mp3"
+    },
+    {
+     "en": "Ugh, where's an orderly when you need one...",
+     "ru": "Тьфу, где санитар, когда он нужен...",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-06.mp3"
+    },
+    {
+     "en": "At least I don't have to fill out an incident report.",
+     "ru": "Зато не нужно заполнять акт о происшествии.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-07.mp3"
+    },
+    {
+     "en": "Behave!",
+     "ru": "Веди себя прилично!",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-08.mp3"
+    },
+    {
+     "en": "Humbling someone never gets old.",
+     "ru": "Унижать людей никогда не надоедает.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-09.mp3"
+    },
+    {
+     "en": "Pain is just part of the process.",
+     "ru": "Боль — просто часть процесса.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-10.mp3"
+    },
+    {
+     "en": "In case it's not apparent yet, nurses don't take the Hippocratic Oath.",
+     "ru": "На случай, если ещё не очевидно: медсёстры не дают клятвы Гиппократа.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-11.mp3"
+    },
+    {
+     "en": "If you've survived this long, congratulations. You've beat the odds.",
+     "ru": "Если ты жив до сих пор — поздравляю. Ты побил статистику.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-12.mp3"
+    },
+    {
+     "en": "Don't worry. Your suffering will end soon.",
+     "ru": "Не волнуйся. Твои страдания скоро закончатся.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/nurse-harrow-13.mp3"
+    },
+    {
+     "en": "I am tragically underpaid.",
+     "ru": "Мне трагически мало платят.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/nurse-harrow-14.mp3"
+    },
+    {
+     "en": "It's going to be a long shift...",
+     "ru": "Это будет долгая смена...",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/nurse-harrow-15.mp3"
+    }
+   ]
+  },
+  "paige": {
+   "name": "Paige",
+   "lines": [
+    {
+     "en": "I’m excited! Okay, that’s a lie, I’m really nervous…",
+     "ru": "Ура, я в восторге! Ладно, вру. Мне до жути страшно...",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-01.mp3"
+    },
+    {
+     "en": "Sorry, I’m a little late! Had to finish the chapter I was on.",
+     "ru": "Извините, чуть опоздала! Дочитывала главу.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-02.mp3"
+    },
+    {
+     "en": "There is nothing more rewarding than making stories come to life.",
+     "ru": "Нет ничего прекраснее, чем оживлять истории.",
+     "tag": "мудрость",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/paige-03.mp3"
+    },
+    {
+     "en": "I... think I’m just gonna read. That seems safer.",
+     "ru": "Я... пожалуй, лучше почитаю. Так безопаснее.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-04.mp3"
+    },
+    {
+     "en": "Ugh, you know, I would love to help, but I’ve got a kindergarten class to read to.",
+     "ru": "Ох, я бы с радостью, но мне нужно читать сказку детсадовцам.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-05.mp3"
+    },
+    {
+     "en": "Better them than me.",
+     "ru": "Лучше они, чем я.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/paige-06.mp3"
+    },
+    {
+     "en": "Oh, what have I gotten myself into?",
+     "ru": "И во что я опять ввязалась?",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-07.mp3"
+    },
+    {
+     "en": "All that money, and it still wasn't enough to save you!",
+     "ru": "Столько денег — и всё равно тебя не спасло!",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-08.mp3"
+    },
+    {
+     "en": "You guys can give up whenever you want.",
+     "ru": "Можете сдаваться в любой момент.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/paige-09.mp3"
+    },
+    {
+     "en": "Guys, you can't kill me, I've got plot armor!",
+     "ru": "Ребят, меня нельзя убить, у меня сюжетная броня!",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-10.mp3"
+    },
+    {
+     "en": "Don't you get it? I'm the protagonist! I always win!",
+     "ru": "Вы чего, не поняли? Я главная героиня! Я всегда побеждаю!",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-11.mp3"
+    },
+    {
+     "en": "Don't come back!.. Jerk!",
+     "ru": "И не возвращайся!.. Козёл!",
+     "tag": "злость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-12.mp3"
+    },
+    {
+     "en": "Okay, this is not ideal.",
+     "ru": "Ну, это не идеально.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/paige-13.mp3"
+    },
+    {
+     "en": "It'll be fine! I just need to not... Die.",
+     "ru": "Всё будет хорошо! Мне просто нельзя... Умереть.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-14.mp3"
+    },
+    {
+     "en": "This is how lots of great stories begin: with a motley crew that may or may not hate each other!",
+     "ru": "Многие великие истории начинаются именно так: со сборной командки, которая то ли ненавидит друг друга, то ли ещё нет!",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paige-15.mp3"
+    }
+   ]
+  },
+  "paradox": {
+   "name": "Paradox",
+   "lines": [
+    {
+     "en": "In time, all men die, the gun just speeds things up.",
+     "ru": "Со временем умирают все. Пуля просто экономит время.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/paradox-01.mp3"
+    },
+    {
+     "en": "People who say you can't outrun a bullet have a severe lack of imagination.",
+     "ru": "Те, кто говорит, что от пули не убежать, просто лишены воображения.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-02.mp3"
+    },
+    {
+     "en": "Time's a-wastin'! That was a little time joke. Not sure if you picked up on that.",
+     "ru": "Время уходит! Это была шутка про время. Не уверена, что ты её уловил.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-03.mp3"
+    },
+    {
+     "en": "That certainly was a choice.",
+     "ru": "Ну, это было... решение.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/paradox-04.mp3"
+    },
+    {
+     "en": "Great. I didn't wanna miss the Paradox blackmail party tonight, anyway.",
+     "ru": "Отлично. Я всё равно не хотела пропустить сегодняшнюю вечеринку шантажа от Paradox.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-05.mp3"
+    },
+    {
+     "en": "Paradox will remember this insult.",
+     "ru": "Paradox запомнит это оскорбление.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-06.mp3"
+    },
+    {
+     "en": "You think I'm bad now? Wait until I get going!",
+     "ru": "Думаешь, я сейчас страшная? Вот когда разогнюсь — тогда и поговорим!",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-07.mp3"
+    },
+    {
+     "en": "You guys could at least try to stop me!",
+     "ru": "Вы могли бы хотя бы попытаться меня остановить!",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/paradox-08.mp3"
+    },
+    {
+     "en": "I have all the time in the world to kill them.",
+     "ru": "У меня целая вечность, чтобы их убить.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-09.mp3"
+    },
+    {
+     "en": "There's more where that came from.",
+     "ru": "И это ещё не всё.",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-10.mp3"
+    },
+    {
+     "en": "Don't worry, boys and girls, time's on our side.",
+     "ru": "Не волнуйтесь, дамы и господа, время играет за нас.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-11.mp3"
+    },
+    {
+     "en": "What did I tell you? Paradox... is inevitable.",
+     "ru": "Что я говорила? Paradox... неизбежен.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-12.mp3"
+    },
+    {
+     "en": "An explorer is just a thief that specializes in stealing from the dead.",
+     "ru": "Исследователь — это просто вор, который специализируется на грабеже мёртвых.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-13.mp3"
+    },
+    {
+     "en": "You're looking spry for an old man.",
+     "ru": "Бодро вы выглядите для старика.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-14.mp3"
+    },
+    {
+     "en": "Who's got time for nuance?",
+     "ru": "Да кому нужны нюансы, когда времени в обрез?",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/paradox-15.mp3"
+    }
+   ]
+  },
+  "pocket": {
+   "name": "Pocket",
+   "lines": [
+    {
+     "en": "My father's gift for my 18th birthday was a bullet to the chest. Today is my chance to say \"thank you\".",
+     "ru": "На своё восемнадцатилетие отец подарил мне пулю в грудь. Сегодня у меня шанс сказать \"спасибо\".",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-01.mp3"
+    },
+    {
+     "en": "I think the worst part is that... my father would be more proud of me if I was trying to kill him rather than trying to stop him.",
+     "ru": "И самое обидное... отец бы гордился мной больше, если бы я пыталась его убить, а не остановить.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-02.mp3"
+    },
+    {
+     "en": "I'll use my family's name when I'm no longer ashamed of it.",
+     "ru": "Своей фамилией я воспользуюсь, когда перестану за неё стыдиться.",
+     "tag": "пафос",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/pocket-03.mp3"
+    },
+    {
+     "en": "Ah... what was I thinking?",
+     "ru": "Ах... о чём я только думала?",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-04.mp3"
+    },
+    {
+     "en": "It wasn't personal.",
+     "ru": "Ничего личного.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/pocket-05.mp3"
+    },
+    {
+     "en": "I'm becoming more and more like my father.",
+     "ru": "Я становлюсь всё больше похожа на отца.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-06.mp3"
+    },
+    {
+     "en": "Heh. Dad would be proud...",
+     "ru": "Хех. Папа бы гордился...",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-07.mp3"
+    },
+    {
+     "en": "Your life had value. I'm sorry.",
+     "ru": "Твоя жизнь имела ценность. Соболезную.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-08.mp3"
+    },
+    {
+     "en": "I hate that I'm getting good at this.",
+     "ru": "Ненавижу, что у меня это получается.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-09.mp3"
+    },
+    {
+     "en": "I can't change the world if I'm dead.",
+     "ru": "Мёртвая я мир не поменяю.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-10.mp3"
+    },
+    {
+     "en": "Every legacy comes to an end eventually.",
+     "ru": "Рано или поздно заканчивается любая династия.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-11.mp3"
+    },
+    {
+     "en": "Please give up. Don't make me kill you.",
+     "ru": "Пожалуйста, сдайтесь. Не заставляйте меня вас убивать.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-12.mp3"
+    },
+    {
+     "en": "I'm getting way too used to almost dying.",
+     "ru": "Я слишком быстро привыкаю к тому, что чуть не умираю.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/pocket-13.mp3"
+    },
+    {
+     "en": "I've survived death before. I can do it again.",
+     "ru": "Я уже пережила смерть однажды. Смогу и ещё раз.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-14.mp3"
+    },
+    {
+     "en": "I make my own luck.",
+     "ru": "Я сама делаю себе удачу.",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/pocket-15.mp3"
+    }
+   ]
+  },
+  "shiv": {
+   "name": "Shiv",
+   "lines": [
+    {
+     "en": "There's a lot of scary things out there, kid. I'm just scarier.",
+     "ru": "На свете полно страшных тварей, малыш. Но я — страшнее.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/shiv-01.mp3"
+    },
+    {
+     "en": "Sorry, friend, today is my day off and I'm going bowling.",
+     "ru": "Извини, друг, у меня сегодня выходной — я иду в боулинг.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-02.mp3"
+    },
+    {
+     "en": "Call me when you need something stabbed.",
+     "ru": "Звоните, когда надо кого-нибудь пырнуть.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/shiv-03.mp3"
+    },
+    {
+     "en": "Looks like I'll be hangin' out with my good friend \"Bourbon\" today.",
+     "ru": "Похоже, сегодня я проведу время с моим добрым другом \"Бурбоном\".",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-04.mp3"
+    },
+    {
+     "en": "You do you.",
+     "ru": "Ну-ну, как знаешь.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/shiv-05.mp3"
+    },
+    {
+     "en": "Didn't even mess up my hair.",
+     "ru": "Даже причёску не испортили.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-06.mp3"
+    },
+    {
+     "en": "Hope I didn't get blood in my hair.",
+     "ru": "Надеюсь, кровь мне в волосы не попала.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-07.mp3"
+    },
+    {
+     "en": "You picked a fight with the wrong man.",
+     "ru": "Ты связался не с тем парнем.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-08.mp3"
+    },
+    {
+     "en": "You live at my leisure!",
+     "ru": "Живёшь ты, пока я позволяю!",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-09.mp3"
+    },
+    {
+     "en": "If I were a lesser man, I'd be dead.",
+     "ru": "Будь я послабее — уже был бы труп.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-10.mp3"
+    },
+    {
+     "en": "Well, shit.",
+     "ru": "Ну, вот дерьмо.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/shiv-11.mp3"
+    },
+    {
+     "en": "They're gonna have to try a lot harder than that to kill me.",
+     "ru": "Чтобы меня убить, придётся постараться куда сильнее.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-12.mp3"
+    },
+    {
+     "en": "I'm gonna stab a whole lotta people today.",
+     "ru": "Сегодня я напыряю целую кучу народу.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-13.mp3"
+    },
+    {
+     "en": "Of course I killed a god!",
+     "ru": "Конечно, я убил бога!",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/shiv-14.mp3"
+    },
+    {
+     "en": "Not your day, pal.",
+     "ru": "Не твой день, приятель.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/shiv-15.mp3"
+    }
+   ]
+  },
+  "silver": {
+   "name": "Silver",
+   "lines": [
+    {
+     "en": "Doing this for money and... well... just money.",
+     "ru": "Делаю это ради денег и... ну... просто ради денег.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/silver-01.mp3"
+    },
+    {
+     "en": "Why does this have to be the one thing I'm good at? Why couldn't I have stuck with piano?",
+     "ru": "Почему из всего, что я умею, это — единственное? Почему я не осталась у пианино?",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-02.mp3"
+    },
+    {
+     "en": "This should be easy!.. it won't be, but I'm really good at lying to myself.",
+     "ru": "Это будет легко!.. Не будет. Но я отлично умею врать себе.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-03.mp3"
+    },
+    {
+     "en": "I'm desperate, but not that desperate... well, I am that desperate, but I also have self-preservation.",
+     "ru": "Я отчаялась, но не настолько... Ладно, настолько. Но инстинкт самосохранения у меня тоже есть.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-04.mp3"
+    },
+    {
+     "en": "Yep. Help a cult, get shot at, then summon an elder god that's gonna pull some monkey paw shit. No thanks.",
+     "ru": "Ага. Помочь секте, словить пуль, призвать древнего бога, который исполнит желание в стиле \"обезьяньей лапки\". Нет уж, спасибо.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-05.mp3"
+    },
+    {
+     "en": "Someone's having a bad day.",
+     "ru": "У кого-то сегодня день не задался.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/silver-06.mp3"
+    },
+    {
+     "en": "Everyone makes a mistake eventually. And when they do, they're mine.",
+     "ru": "Рано или поздно ошибается каждый. И в этот момент ты — мой.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-07.mp3"
+    },
+    {
+     "en": "That was me bein' nice.",
+     "ru": "А это я ещё по-хорошему.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-08.mp3"
+    },
+    {
+     "en": "Today's just not going your way, is it?",
+     "ru": "Сегодня явно не твой день, да?",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-09.mp3"
+    },
+    {
+     "en": "I fought better town drunks.",
+     "ru": "Я дралась с пьяницами — и те были посильнее.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-10.mp3"
+    },
+    {
+     "en": "Honey, this isn't gonna work out well for you.",
+     "ru": "Милый, добром для тебя это не кончится.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-11.mp3"
+    },
+    {
+     "en": "I could really go for 36 hours where people don't try to kill me.",
+     "ru": "Я бы не отказалась от 36 часов, когда никто не пытается меня убить.",
+     "tag": "усталость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/silver-12.mp3"
+    },
+    {
+     "en": "I'm self-destructive, not stupid.",
+     "ru": "Я саморазрушительная, но не глупая.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/silver-13.mp3"
+    },
+    {
+     "en": "Well, look at that! I learned how to save money for something other than rent or whiskey.",
+     "ru": "Надо же! Я научилась копить деньги на что-то, кроме съёмной хаты и виски.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-14.mp3"
+    },
+    {
+     "en": "It's cool that you brought a sword. I assumed you were gonna fight them with your silver spoon.",
+     "ru": "Круто, что ты взял меч. А я думала, драться будешь своей серебряной ложкой.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/silver-15.mp3"
+    }
+   ]
+  },
+  "sinclair": {
+   "name": "Sinclair",
+   "lines": [
+    {
+     "en": "Misery doesn't love company, company is misery.",
+     "ru": "Горе не любит компанию — компания и есть горе.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/sinclair-01.mp3"
+    },
+    {
+     "en": "I can't wait to be done with you.",
+     "ru": "Считаю секунды, когда с тобой будет покончено.",
+     "tag": "угроза",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/sinclair-02.mp3"
+    },
+    {
+     "en": "Yeah, the feeling's mutual, buddy.",
+     "ru": "Ох, чувство взаимное, приятель.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/sinclair-03.mp3"
+    },
+    {
+     "en": "Yeah, you calling yourself \"magnificent\" is hilarious.",
+     "ru": "Да, «великолепный» — это ты про себя? Умора.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/sinclair-04.mp3"
+    },
+    {
+     "en": "Us? I'll be doing 90% of the work!",
+     "ru": "Это мы?! Девяносто процентов работы сделаю я!",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/sinclair-05.mp3"
+    },
+    {
+     "en": "Can we please pretend to like each other for 60 minutes?",
+     "ru": "Давай уж сделаем вид, что любим друг друга. Всего час.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/sinclair-06.mp3"
+    },
+    {
+     "en": "I'm gonna be optimistic and say... sure.",
+     "ru": "Буду оптимистом и скажу... ладно, попробуем.",
+     "tag": "шутка",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/sinclair-07.mp3"
+    },
+    {
+     "en": "What, you're gonna make my dignity disappear?",
+     "ru": "Что, следующий фокус — исчезновение моего достоинства?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/sinclair-08.mp3"
+    },
+    {
+     "en": "You should try saying the line again, only actually funny.",
+     "ru": "Попробуй-ка снова, только теперь по-настоящему смешно.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/sinclair-09.mp3"
+    },
+    {
+     "en": "I'd say we'll do our best, but Savannah consistently gives it 35%.",
+     "ru": "Сказал бы, что мы выложимся, но Саванна стабильно выдаёт свои тридцать пять процентов.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/sinclair-10.mp3"
+    },
+    {
+     "en": "That's why I said it.",
+     "ru": "Знаю. Поэтому и говорю.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/sinclair-11.mp3"
+    },
+    {
+     "en": "Obviously. I married you.",
+     "ru": "Естественно. Я на тебе женат.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/sinclair-12.mp3"
+    },
+    {
+     "en": "Watch and learn, Savannah.",
+     "ru": "Смотри и учись, Саванна.",
+     "tag": "идиома",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/sinclair-13.mp3"
+    },
+    {
+     "en": "Please, hold your applause.",
+     "ru": "Прошу, сдержите аплодисменты.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/sinclair-14.mp3"
+    },
+    {
+     "en": "It's ok, I'm the responsible one.",
+     "ru": "Спокойно, я тут за ответственного.",
+     "tag": "шутка",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/sinclair-15.mp3"
+    }
+   ]
+  },
+  "solomon": {
+   "name": "Solomon",
+   "lines": [
+    {
+     "en": "Those with real strength don't need to show it.",
+     "ru": "По-настоящему сильным не нужно ничего доказывать.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/solomon-01.mp3"
+    },
+    {
+     "en": "Winning always comes with sacrifice... and I'm ready to make mine.",
+     "ru": "Победа всегда требует жертв... я готов принести свою.",
+     "tag": "пафос",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/solomon-02.mp3"
+    },
+    {
+     "en": "I'm always three moves ahead.",
+     "ru": "Я всегда просчитываю на три хода вперёд.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-03.mp3"
+    },
+    {
+     "en": "Time to show the children how it's done.",
+     "ru": "Пора показать детям, как это делается.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-04.mp3"
+    },
+    {
+     "en": "Kid, you've got a lot to learn.",
+     "ru": "Малой, тебе ещё учиться и учиться.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-05.mp3"
+    },
+    {
+     "en": "You got to think farther ahead if ya wanna beat me.",
+     "ru": "Хочешь обыграть меня — учись думать дальше, чем на один ход.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-06.mp3"
+    },
+    {
+     "en": "Rethink your life choices.",
+     "ru": "Может, пересмотришь пару жизненных решений?",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/solomon-07.mp3"
+    },
+    {
+     "en": "Chess is the great equalizer.",
+     "ru": "Шахматы — великий уравнитель.",
+     "tag": "мудрость",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/solomon-08.mp3"
+    },
+    {
+     "en": "Everybody loses eventually.",
+     "ru": "Рано или поздно проигрывают все.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-09.mp3"
+    },
+    {
+     "en": "Lose with some dignity!",
+     "ru": "Хоть немного достоинства при проигрыше!",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-10.mp3"
+    },
+    {
+     "en": "Don't get angry. It's only a game.",
+     "ru": "Не заводись. Это всего лишь игра.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-11.mp3"
+    },
+    {
+     "en": "Everyone has an angle. Mine is just more benign.",
+     "ru": "У каждого есть свой интерес. Мой просто безобиднее.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-12.mp3"
+    },
+    {
+     "en": "If this is the end, I want to spend it in Central Park. If it's not the end, I'd rather be spending my time in Central Park.",
+     "ru": "Если конец — хочу встретить его в Центральном парке. Если не конец — тем более лучше провести время в парке.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-13.mp3"
+    },
+    {
+     "en": "A little bit of nerves are good for ya. It means... you're invested.",
+     "ru": "Немного волнения даже полезно. Оно значит... что тебе не всё равно.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-14.mp3"
+    },
+    {
+     "en": "You guys are so predictable!",
+     "ru": "Ну вы и предсказуемые!",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/solomon-15.mp3"
+    }
+   ]
+  },
+  "vindicta": {
+   "name": "Vindicta",
+   "lines": [
+    {
+     "en": "Justice is a fantasy for those who lack the conviction of revenge.",
+     "ru": "Справедливость — фантазия тех, кому не хватает духа на месть.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-01.mp3"
+    },
+    {
+     "en": "I'm not a witch. Witches are people. They have wants, and dreams. All I have is revenge. And the undying will to see it through.",
+     "ru": "Я не ведьма. Ведьмы — люди. У них есть желания, мечты. У меня только месть. И несокрушимая воля довести её до конца.",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-02.mp3"
+    },
+    {
+     "en": "I'll make the world a better place, one body at a time.",
+     "ru": "Сделаю мир лучше — по одному трупу за раз.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vindicta-03.mp3"
+    },
+    {
+     "en": "Death comes for everyone, eventually. I'm just giving time a... helping hand.",
+     "ru": "Смерть рано или поздно приходит к каждому. Я просто... ускоряю процесс.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vindicta-04.mp3"
+    },
+    {
+     "en": "I don't have the luxury of morality. There are lives at stake.",
+     "ru": "Роскошь морали мне недоступна. На кону жизни.",
+     "tag": "мудрость",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/vindicta-05.mp3"
+    },
+    {
+     "en": "When you find your courage, call me.",
+     "ru": "Когда найдёшь смелость — позвони.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vindicta-06.mp3"
+    },
+    {
+     "en": "Be careful out there. There's a lot of nasty things in the shadows.",
+     "ru": "Поосторожнее там. В тенях много всякой мерзости.",
+     "tag": "мудрость",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/vindicta-07.mp3"
+    },
+    {
+     "en": "You should have run.",
+     "ru": "Надо было бежать.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vindicta-08.mp3"
+    },
+    {
+     "en": "Pursuing me was a mistake.",
+     "ru": "Гнаться за мной было ошибкой.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-09.mp3"
+    },
+    {
+     "en": "All the money in the world couldn't save them.",
+     "ru": "Все деньги мира их не спасли.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-10.mp3"
+    },
+    {
+     "en": "I'm just getting started.",
+     "ru": "Я только разогреваюсь.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-11.mp3"
+    },
+    {
+     "en": "Like fish in a barrel...",
+     "ru": "Как рыбы в бочке...",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-12.mp3"
+    },
+    {
+     "en": "You can be disappointed in someone and still hold them in esteem.",
+     "ru": "Можно быть разочарованным в человеке — и всё равно его уважать.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-13.mp3"
+    },
+    {
+     "en": "I love Wesley. I trust Wesley. But in this case, Wesley is full of shit.",
+     "ru": "Я люблю Уэсли. Верю Уэсли. Но в этот раз Уэсли несёт херню.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-14.mp3"
+    },
+    {
+     "en": "Carlos sounds like a preschool teacher.",
+     "ru": "Карлос — прямо воспитатель из детсада.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vindicta-15.mp3"
+    }
+   ]
+  },
+  "violet": {
+   "name": "Violet",
+   "lines": [
+    {
+     "en": "I'm not going to pretend I'm not scared... but I'm not going to pretend I can't do this either.",
+     "ru": "Я не буду делать вид, что мне не страшно... но и не буду делать вид, что мне это не по силам.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/violet-01.mp3"
+    },
+    {
+     "en": "Inspiration can come from some weird places.",
+     "ru": "Вдохновение может прийти из самых странных мест.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/violet-02.mp3"
+    },
+    {
+     "en": "Why not, I've been staring at blank canvas for the past 3 hours I could use the break.",
+     "ru": "А почему бы и нет: последние три часа я пялюсь на пустой холст, перерыв мне не помешает.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/violet-03.mp3"
+    },
+    {
+     "en": "No dream is worth dying for.",
+     "ru": "Ни одна мечта не стоит того, чтобы умирать.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/violet-04.mp3"
+    },
+    {
+     "en": "Look, I'm not in the mood.",
+     "ru": "Слушай, я не в настроении.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/violet-05.mp3"
+    },
+    {
+     "en": "I'm not dying before I graduate.",
+     "ru": "Я не собираюсь умирать до выпуска.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/violet-06.mp3"
+    },
+    {
+     "en": "I'm gonna need more time with my therapist next week...",
+     "ru": "Кажется, на следующей неделе терапевту понадобится на меня побольше времени...",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/violet-07.mp3"
+    },
+    {
+     "en": "I'm a broke student, I'll take what I can get.",
+     "ru": "Я студентка без копейки — беру всё, что дают.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/violet-08.mp3"
+    },
+    {
+     "en": "Always had a knack for still-life.",
+     "ru": "А натюрморты у меня всегда выходили.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/violet-09.mp3"
+    },
+    {
+     "en": "I'm never looking at splatter painting the same way.",
+     "ru": "После такого на живопись брызгами я буду смотреть иначе.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/violet-10.mp3"
+    },
+    {
+     "en": "You had the funding, but not the talent!",
+     "ru": "У тебя было финансирование, но не было таланта!",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/violet-11.mp3"
+    },
+    {
+     "en": "No one stays great forever.",
+     "ru": "Великим не остаётся никто — вечно.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/violet-12.mp3"
+    },
+    {
+     "en": "Why didn't people tell me revenge would feel so great?",
+     "ru": "Почему никто не предупреждал, что месть — это так приятно?",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/violet-13.mp3"
+    },
+    {
+     "en": "I think I cured my imposter syndrome!",
+     "ru": "Кажется, я только что вылечила синдром самозванца!",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/violet-14.mp3"
+    },
+    {
+     "en": "So are you the nice grandpa or the scary grandpa?",
+     "ru": "Так ты добрый дедушка или страшный дедушка?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/violet-15.mp3"
+    }
+   ]
+  },
+  "viscous": {
+   "name": "Viscous",
+   "lines": [
+    {
+     "en": "I am not a pile of goo. I'm merely piloting a pile of goo.",
+     "ru": "Я не куча слизи. Я всего лишь управляю кучей слизи.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/viscous-01.mp3"
+    },
+    {
+     "en": "If I had a mouth, I'd eat my feelings.",
+     "ru": "Если бы у меня был рот, я бы заедал грусть.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/viscous-02.mp3"
+    },
+    {
+     "en": "I'm squishy!",
+     "ru": "Я весь мягкий!",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/viscous-03.mp3"
+    },
+    {
+     "en": "Who would have thought that punching strangers would feel so good?",
+     "ru": "Кто бы мог подумать, что бить незнакомцев — такое удовольствие?",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/viscous-04.mp3"
+    },
+    {
+     "en": "Goo hits harder than you'd think, doesn't it?",
+     "ru": "Слизь бьёт больнее, чем ты думал, да?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/viscous-05.mp3"
+    },
+    {
+     "en": "Do I have your attention now?",
+     "ru": "Ну что, теперь я привлёк твоё внимание?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/viscous-06.mp3"
+    },
+    {
+     "en": "How embarrassing for them!",
+     "ru": "Как им должно быть стыдно!",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/viscous-07.mp3"
+    },
+    {
+     "en": "Come back, surface dweller, I want to be friends! But first I have to shoot you!",
+     "ru": "Вернись, житель поверхности, я хочу дружить! Но сначала мне придётся в тебя выстрелить!",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/viscous-08.mp3"
+    },
+    {
+     "en": "Bye friend! You're all alone.",
+     "ru": "Пока, друг! Ты тут совсем один.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/viscous-09.mp3"
+    },
+    {
+     "en": "Don't die while I'm gone!",
+     "ru": "Не умирай, пока меня нет!",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/viscous-10.mp3"
+    },
+    {
+     "en": "Oh look, I've made enemies. I feel more human already!",
+     "ru": "О, смотрите, я нажил врагов. Становлюсь всё более похожим на человека!",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/viscous-11.mp3"
+    },
+    {
+     "en": "You're all welcome in the Deep, but you'd probably drown.",
+     "ru": "Все вы приглашены в Бездну. Правда, утонете, скорее всего.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/viscous-12.mp3"
+    },
+    {
+     "en": "I don't have a nose, but if I did, I bet your hair would smell like flowers.",
+     "ru": "У меня нет носа, но будь он — держу пари, твои волосы пахли бы цветами.",
+     "tag": "флирт",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/viscous-13.mp3"
+    },
+    {
+     "en": "You'll probably be dead. I'm goo. I'll be fine.",
+     "ru": "Ты, скорее всего, погибнешь. А я — слизь. Я в порядке.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/viscous-14.mp3"
+    },
+    {
+     "en": "There's more going on in this world than what you perceive.",
+     "ru": "В этом мире происходит куда больше, чем ты способен увидеть.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/viscous-15.mp3"
+    }
+   ]
+  },
+  "vyper": {
+   "name": "Vyper",
+   "lines": [
+    {
+     "en": "Look, I'm not saying you need my help, I'm just saying, uh... No, I'm- I actually am saying you need my help.",
+     "ru": "Я не говорю, что тебе нужна моя помощь, я просто... Нет, всё-таки говорю: тебе нужна моя помощь.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vyper-01.mp3"
+    },
+    {
+     "en": "You ever get the feeling that something bad is gonna happen?... Yeah so, I don't, that's why I end up in jail so much.",
+     "ru": "Бывает чувство, что скоро случится что-то плохое?... Вот у меня нет — поэтому я так часто и попадаю в кутузку.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vyper-02.mp3"
+    },
+    {
+     "en": "You wanna know the best bars to get kicked out of, I am your girl.",
+     "ru": "Хочешь знать лучшие бары, откуда тебя выгонят, — я твоя девочка.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vyper-03.mp3"
+    },
+    {
+     "en": "I don't have the energy to lie today: I don't wanna help.",
+     "ru": "Нет сегодня сил врать: я не хочу помогать.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vyper-04.mp3"
+    },
+    {
+     "en": "No, I got a healthy desire to not get dead.",
+     "ru": "Нет уж, у меня здоровое желание не сдохнуть.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vyper-05.mp3"
+    },
+    {
+     "en": "I'm sorry, I thought these guys were supposed to be tough?",
+     "ru": "Извините, а эти ребята разве должны были быть крутыми?",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vyper-06.mp3"
+    },
+    {
+     "en": "Take a nap.",
+     "ru": "Вздремни.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vyper-07.mp3"
+    },
+    {
+     "en": "Oh, for now? Sure. And when I don't need you anymore I'm gonna take your shit, and I'm gonna leave you for dead.",
+     "ru": "Это пока? Ладно. А когда ты мне перестанешь быть нужен, я заберу твои шмотки и брошу тебя умирать.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vyper-08.mp3"
+    },
+    {
+     "en": "Doesn't matter how good you think you are, life catches up with you eventually!",
+     "ru": "Каким бы крутым ты себя ни считал — жизнь рано или поздно тебя догонит!",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vyper-09.mp3"
+    },
+    {
+     "en": "Saw that comin' a mile away.",
+     "ru": "Это было видно за километр.",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vyper-10.mp3"
+    },
+    {
+     "en": "You know me: cheating Death, breaking hearts!",
+     "ru": "Ты же меня знаешь: обманываю Смерть, разбиваю сердца!",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/vyper-11.mp3"
+    },
+    {
+     "en": "I can take 'em! Probably! Maybe... I don't know man, there's only one of me. Just have measured expectations, alright?",
+     "ru": "Да я их справлюсь! Наверное! Возможно... Не знаю, чувак, меня тут одна штука. Просто умерь ожидания, ладно?",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vyper-12.mp3"
+    },
+    {
+     "en": "And my P.O. thinks I don't have marketable skills.",
+     "ru": "А мой надзиратель ещё считает, что у меня нет востребованных навыков.",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vyper-13.mp3"
+    },
+    {
+     "en": "I don't care, alright, I'm looking for money, not an intellectual equal.",
+     "ru": "Я ищу деньги, а не интеллектуального собеседника.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vyper-14.mp3"
+    },
+    {
+     "en": "Hey listen, by the way, I'm not trying to make this weird or anything but you smell like key lime pie.",
+     "ru": "Слушай, я не хочу сделать это странным, но ты пахнешь лаймовым пирогом.",
+     "tag": "флирт",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/vyper-15.mp3"
+    }
+   ]
+  },
+  "warden": {
+   "name": "Warden",
+   "lines": [
+    {
+     "en": "Too often people think of the benefits without ever considering the costs.",
+     "ru": "Слишком часто люди думают о выгодах и ни разу — о цене.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/warden-01.mp3"
+    },
+    {
+     "en": "Humanity needs to be protected from itself.",
+     "ru": "Человечество нужно защищать от него самого.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/warden-02.mp3"
+    },
+    {
+     "en": "If I die, so be it.",
+     "ru": "Если погибну — значит, так и было задумано.",
+     "tag": "пафос",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/warden-03.mp3"
+    },
+    {
+     "en": "Too easy.",
+     "ru": "Слишком просто.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/warden-04.mp3"
+    },
+    {
+     "en": "You never were going to beat me.",
+     "ru": "У тебя никогда и не было шансов победить меня.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/warden-05.mp3"
+    },
+    {
+     "en": "I don't care about your wealth, you bleed the same as anyone else!",
+     "ru": "Мне плевать на твоё богатство — кровь у тебя течёт как у всех!",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/warden-06.mp3"
+    },
+    {
+     "en": "I'll give my life for the cause, but first I'll take yours.",
+     "ru": "Я отдам жизнь за дело. Но сначала заберу твою.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/warden-07.mp3"
+    },
+    {
+     "en": "Who among you will stand and face me?",
+     "ru": "Кто из вас осмелится встать и встретить меня?",
+     "tag": "пафос",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/warden-08.mp3"
+    },
+    {
+     "en": "Don't feel bad. I've trained my whole life for this.",
+     "ru": "Не казни себя. Я всю жизнь готовился к этому.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/warden-09.mp3"
+    },
+    {
+     "en": "The coward dies many deaths, the valiant; only one!",
+     "ru": "Трус умирает тысячу раз, храбрый — один.",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/warden-10.mp3"
+    },
+    {
+     "en": "You were homeschooled, weren't you?",
+     "ru": "Тебя же учили на дому, да?",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/warden-11.mp3"
+    },
+    {
+     "en": "Must be nice being able to delude yourself into thinking that the world is black and white.",
+     "ru": "Наверно, приятно обманывать себя, будто мир чёрно-белый.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/warden-12.mp3"
+    },
+    {
+     "en": "Sometimes the ends justify the means.",
+     "ru": "Иногда цель оправдывает средства.",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/warden-13.mp3"
+    },
+    {
+     "en": "What's life without a little risk?",
+     "ru": "Что за жизнь без капельки риска?",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/warden-14.mp3"
+    },
+    {
+     "en": "That will wake you up.",
+     "ru": "Вот от такого быстро просыпаешься.",
+     "tag": "шутка",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/warden-15.mp3"
+    }
+   ]
+  },
+  "wraith": {
+   "name": "Wraith",
+   "lines": [
+    {
+     "en": "If you think crime doesn't pay, you are outrageously bad at crime.",
+     "ru": "Если ты думаешь, что преступность не окупается — ты бездарно плох как преступник.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/wraith-01.mp3"
+    },
+    {
+     "en": "No one builds an empire without sacrifice.",
+     "ru": "Империю не построишь без жертв.",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/wraith-02.mp3"
+    },
+    {
+     "en": "Thank god for vices.",
+     "ru": "Слава богу за пороки.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/wraith-03.mp3"
+    },
+    {
+     "en": "\"Blackmail\" sounds so sleazy. I prefer... \"information retention services\".",
+     "ru": "«Шантаж» звучит так вульгарно. Я предпочитаю... «услуги по хранению информации».",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/wraith-04.mp3"
+    },
+    {
+     "en": "Friends are just acquaintances you feel bad for extorting.",
+     "ru": "Друзья — это знакомые, которых неловко доить.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/wraith-05.mp3"
+    },
+    {
+     "en": "Some people say it's better to be feared than loved. Those people totally get it.",
+     "ru": "Говорят, лучше, чтобы тебя боялись, чем любили. Эти люди всё поняли верно.",
+     "tag": "мудрость",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/wraith-06.mp3"
+    },
+    {
+     "en": "See, I bet you were gonna do that. I just made 5 bucks.",
+     "ru": "Вот: я ставил, что ты так и сделаешь. Пять баксов — в кармане.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/wraith-07.mp3"
+    },
+    {
+     "en": "You'll be back.",
+     "ru": "Ты ещё вернёшься.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/wraith-08.mp3"
+    },
+    {
+     "en": "Good timing. I was planning on getting rid of some loose ends today anyway.",
+     "ru": "Вовремя. Я и так собиралась сегодня подчистить хвосты.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/wraith-09.mp3"
+    },
+    {
+     "en": "Can't help, I need to go over my ledger. People always underestimate how important the \"organized\" part of \"organized crime\" is.",
+     "ru": "Люди всегда недооценивают, насколько важна «организованность» в «организованной преступности».",
+     "tag": "мудрость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/wraith-10.mp3"
+    },
+    {
+     "en": "Better people than you have tried to kill me.",
+     "ru": "Покруче тебя уже пытались меня убить.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/wraith-11.mp3"
+    },
+    {
+     "en": "Feel free to give up anytime.",
+     "ru": "Можете сдаваться хоть сейчас.",
+     "tag": "издёвка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/wraith-12.mp3"
+    },
+    {
+     "en": "No one is untouchable. No one.",
+     "ru": "Нет неприкосновенных. Никого.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/wraith-13.mp3"
+    },
+    {
+     "en": "Not on my watch.",
+     "ru": "Пока я тут — не бывать этому.",
+     "tag": "идиома",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/wraith-14.mp3"
+    },
+    {
+     "en": "I don't suppose anyone wants to place bets on who dies first.",
+     "ru": "Может, кто-то хочет поставить на то, кто отправится первым?",
+     "tag": "шутка",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/wraith-15.mp3"
+    }
+   ]
+  },
+  "yamato": {
+   "name": "Yamato",
+   "lines": [
+    {
+     "en": "I don't forget what you did.",
+     "ru": "Я не забываю того, что ты сделал.",
+     "tag": "угроза",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-01.mp3"
+    },
+    {
+     "en": "Acceptable.",
+     "ru": "Приемлемо.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-02.mp3"
+    },
+    {
+     "en": "Their death was inevitable.",
+     "ru": "Их смерть была неизбежна.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-03.mp3"
+    },
+    {
+     "en": "Surrender, and I'll give you a quick death.",
+     "ru": "Сдавайся — и я подарю тебе быструю смерть.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/yamato-04.mp3"
+    },
+    {
+     "en": "Come out and die with honour.",
+     "ru": "Выйди и умри с честью.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/yamato-05.mp3"
+    },
+    {
+     "en": "You're welcome.",
+     "ru": "Не за что.",
+     "tag": "подкол",
+     "use": 3,
+     "a": "scenes/games/deadlock/v/yamato-06.mp3"
+    },
+    {
+     "en": "You owe me, Detective.",
+     "ru": "Ты мне должен, детектив.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-07.mp3"
+    },
+    {
+     "en": "I haven't cut you down where you stand.",
+     "ru": "Это я ещё тебя на месте не срубил.",
+     "tag": "угроза",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/yamato-08.mp3"
+    },
+    {
+     "en": "Are you competent?",
+     "ru": "Ты вообще на что-то годишься?",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/yamato-09.mp3"
+    },
+    {
+     "en": "When do you try to arrest me?",
+     "ru": "А когда ты уже попробуешь меня арестовать?",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-10.mp3"
+    },
+    {
+     "en": "Don't be a snob.",
+     "ru": "Не задавайся.",
+     "tag": "подкол",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-11.mp3"
+    },
+    {
+     "en": "Good. Now try not to die.",
+     "ru": "Отлично. Теперь постарайся не умереть.",
+     "tag": "подкол",
+     "use": 5,
+     "a": "scenes/games/deadlock/v/yamato-12.mp3"
+    },
+    {
+     "en": "Stay if you want, but I'm leaving.",
+     "ru": "Оставайся, если хочешь, а я пошла.",
+     "tag": "усталость",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-13.mp3"
+    },
+    {
+     "en": "Tell me the name of your cat.",
+     "ru": "Назови мне имя своей кошки.",
+     "tag": "шутка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-14.mp3"
+    },
+    {
+     "en": "Then you're a fool.",
+     "ru": "Значит, ты глупец.",
+     "tag": "издёвка",
+     "use": 4,
+     "a": "scenes/games/deadlock/v/yamato-15.mp3"
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,2627 @@
+[
+ {
+  "f": "heroes-voice/abrams/abrams-01.mp3",
+  "k": "scenes/games/deadlock/v/abrams-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-02.mp3",
+  "k": "scenes/games/deadlock/v/abrams-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-03.mp3",
+  "k": "scenes/games/deadlock/v/abrams-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-04.mp3",
+  "k": "scenes/games/deadlock/v/abrams-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-05.mp3",
+  "k": "scenes/games/deadlock/v/abrams-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-06.mp3",
+  "k": "scenes/games/deadlock/v/abrams-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-07.mp3",
+  "k": "scenes/games/deadlock/v/abrams-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-08.mp3",
+  "k": "scenes/games/deadlock/v/abrams-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-09.mp3",
+  "k": "scenes/games/deadlock/v/abrams-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-10.mp3",
+  "k": "scenes/games/deadlock/v/abrams-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-11.mp3",
+  "k": "scenes/games/deadlock/v/abrams-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-12.mp3",
+  "k": "scenes/games/deadlock/v/abrams-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-13.mp3",
+  "k": "scenes/games/deadlock/v/abrams-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-14.mp3",
+  "k": "scenes/games/deadlock/v/abrams-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/abrams/abrams-15.mp3",
+  "k": "scenes/games/deadlock/v/abrams-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-01.mp3",
+  "k": "scenes/games/deadlock/v/apollo-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-02.mp3",
+  "k": "scenes/games/deadlock/v/apollo-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-03.mp3",
+  "k": "scenes/games/deadlock/v/apollo-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-04.mp3",
+  "k": "scenes/games/deadlock/v/apollo-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-05.mp3",
+  "k": "scenes/games/deadlock/v/apollo-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-06.mp3",
+  "k": "scenes/games/deadlock/v/apollo-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-07.mp3",
+  "k": "scenes/games/deadlock/v/apollo-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-08.mp3",
+  "k": "scenes/games/deadlock/v/apollo-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-09.mp3",
+  "k": "scenes/games/deadlock/v/apollo-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-10.mp3",
+  "k": "scenes/games/deadlock/v/apollo-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-11.mp3",
+  "k": "scenes/games/deadlock/v/apollo-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-12.mp3",
+  "k": "scenes/games/deadlock/v/apollo-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-13.mp3",
+  "k": "scenes/games/deadlock/v/apollo-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-14.mp3",
+  "k": "scenes/games/deadlock/v/apollo-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/apollo/apollo-15.mp3",
+  "k": "scenes/games/deadlock/v/apollo-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-01.mp3",
+  "k": "scenes/games/deadlock/v/baba-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-02.mp3",
+  "k": "scenes/games/deadlock/v/baba-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-03.mp3",
+  "k": "scenes/games/deadlock/v/baba-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-04.mp3",
+  "k": "scenes/games/deadlock/v/baba-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-05.mp3",
+  "k": "scenes/games/deadlock/v/baba-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-06.mp3",
+  "k": "scenes/games/deadlock/v/baba-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-07.mp3",
+  "k": "scenes/games/deadlock/v/baba-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-08.mp3",
+  "k": "scenes/games/deadlock/v/baba-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-09.mp3",
+  "k": "scenes/games/deadlock/v/baba-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-10.mp3",
+  "k": "scenes/games/deadlock/v/baba-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-11.mp3",
+  "k": "scenes/games/deadlock/v/baba-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-12.mp3",
+  "k": "scenes/games/deadlock/v/baba-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-13.mp3",
+  "k": "scenes/games/deadlock/v/baba-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-14.mp3",
+  "k": "scenes/games/deadlock/v/baba-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/baba/baba-15.mp3",
+  "k": "scenes/games/deadlock/v/baba-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-01.mp3",
+  "k": "scenes/games/deadlock/v/bebop-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-02.mp3",
+  "k": "scenes/games/deadlock/v/bebop-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-03.mp3",
+  "k": "scenes/games/deadlock/v/bebop-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-04.mp3",
+  "k": "scenes/games/deadlock/v/bebop-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-05.mp3",
+  "k": "scenes/games/deadlock/v/bebop-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-06.mp3",
+  "k": "scenes/games/deadlock/v/bebop-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-07.mp3",
+  "k": "scenes/games/deadlock/v/bebop-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-08.mp3",
+  "k": "scenes/games/deadlock/v/bebop-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-09.mp3",
+  "k": "scenes/games/deadlock/v/bebop-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-10.mp3",
+  "k": "scenes/games/deadlock/v/bebop-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-11.mp3",
+  "k": "scenes/games/deadlock/v/bebop-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-12.mp3",
+  "k": "scenes/games/deadlock/v/bebop-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-13.mp3",
+  "k": "scenes/games/deadlock/v/bebop-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-14.mp3",
+  "k": "scenes/games/deadlock/v/bebop-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/bebop/bebop-15.mp3",
+  "k": "scenes/games/deadlock/v/bebop-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-01.mp3",
+  "k": "scenes/games/deadlock/v/billy-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-02.mp3",
+  "k": "scenes/games/deadlock/v/billy-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-03.mp3",
+  "k": "scenes/games/deadlock/v/billy-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-04.mp3",
+  "k": "scenes/games/deadlock/v/billy-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-05.mp3",
+  "k": "scenes/games/deadlock/v/billy-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-06.mp3",
+  "k": "scenes/games/deadlock/v/billy-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-07.mp3",
+  "k": "scenes/games/deadlock/v/billy-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-08.mp3",
+  "k": "scenes/games/deadlock/v/billy-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-09.mp3",
+  "k": "scenes/games/deadlock/v/billy-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-10.mp3",
+  "k": "scenes/games/deadlock/v/billy-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-11.mp3",
+  "k": "scenes/games/deadlock/v/billy-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-12.mp3",
+  "k": "scenes/games/deadlock/v/billy-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-13.mp3",
+  "k": "scenes/games/deadlock/v/billy-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-14.mp3",
+  "k": "scenes/games/deadlock/v/billy-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/billy/billy-15.mp3",
+  "k": "scenes/games/deadlock/v/billy-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-01.mp3",
+  "k": "scenes/games/deadlock/v/calico-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-02.mp3",
+  "k": "scenes/games/deadlock/v/calico-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-03.mp3",
+  "k": "scenes/games/deadlock/v/calico-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-04.mp3",
+  "k": "scenes/games/deadlock/v/calico-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-05.mp3",
+  "k": "scenes/games/deadlock/v/calico-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-06.mp3",
+  "k": "scenes/games/deadlock/v/calico-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-07.mp3",
+  "k": "scenes/games/deadlock/v/calico-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-08.mp3",
+  "k": "scenes/games/deadlock/v/calico-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-09.mp3",
+  "k": "scenes/games/deadlock/v/calico-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-10.mp3",
+  "k": "scenes/games/deadlock/v/calico-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-11.mp3",
+  "k": "scenes/games/deadlock/v/calico-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-12.mp3",
+  "k": "scenes/games/deadlock/v/calico-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-13.mp3",
+  "k": "scenes/games/deadlock/v/calico-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-14.mp3",
+  "k": "scenes/games/deadlock/v/calico-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/calico/calico-15.mp3",
+  "k": "scenes/games/deadlock/v/calico-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-01.mp3",
+  "k": "scenes/games/deadlock/v/drifter-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-02.mp3",
+  "k": "scenes/games/deadlock/v/drifter-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-03.mp3",
+  "k": "scenes/games/deadlock/v/drifter-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-04.mp3",
+  "k": "scenes/games/deadlock/v/drifter-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-05.mp3",
+  "k": "scenes/games/deadlock/v/drifter-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-06.mp3",
+  "k": "scenes/games/deadlock/v/drifter-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-07.mp3",
+  "k": "scenes/games/deadlock/v/drifter-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-08.mp3",
+  "k": "scenes/games/deadlock/v/drifter-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-09.mp3",
+  "k": "scenes/games/deadlock/v/drifter-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-10.mp3",
+  "k": "scenes/games/deadlock/v/drifter-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-11.mp3",
+  "k": "scenes/games/deadlock/v/drifter-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-12.mp3",
+  "k": "scenes/games/deadlock/v/drifter-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-13.mp3",
+  "k": "scenes/games/deadlock/v/drifter-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-14.mp3",
+  "k": "scenes/games/deadlock/v/drifter-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/drifter/drifter-15.mp3",
+  "k": "scenes/games/deadlock/v/drifter-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-01.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-02.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-03.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-04.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-05.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-06.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-07.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-08.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-09.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-10.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-11.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-12.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-13.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-14.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/dynamo/dynamo-15.mp3",
+  "k": "scenes/games/deadlock/v/dynamo-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-01.mp3",
+  "k": "scenes/games/deadlock/v/graves-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-02.mp3",
+  "k": "scenes/games/deadlock/v/graves-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-03.mp3",
+  "k": "scenes/games/deadlock/v/graves-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-04.mp3",
+  "k": "scenes/games/deadlock/v/graves-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-05.mp3",
+  "k": "scenes/games/deadlock/v/graves-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-06.mp3",
+  "k": "scenes/games/deadlock/v/graves-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-07.mp3",
+  "k": "scenes/games/deadlock/v/graves-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-08.mp3",
+  "k": "scenes/games/deadlock/v/graves-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-09.mp3",
+  "k": "scenes/games/deadlock/v/graves-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-10.mp3",
+  "k": "scenes/games/deadlock/v/graves-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-11.mp3",
+  "k": "scenes/games/deadlock/v/graves-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-12.mp3",
+  "k": "scenes/games/deadlock/v/graves-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-13.mp3",
+  "k": "scenes/games/deadlock/v/graves-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-14.mp3",
+  "k": "scenes/games/deadlock/v/graves-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/graves/graves-15.mp3",
+  "k": "scenes/games/deadlock/v/graves-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-01.mp3",
+  "k": "scenes/games/deadlock/v/haze-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-02.mp3",
+  "k": "scenes/games/deadlock/v/haze-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-03.mp3",
+  "k": "scenes/games/deadlock/v/haze-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-04.mp3",
+  "k": "scenes/games/deadlock/v/haze-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-05.mp3",
+  "k": "scenes/games/deadlock/v/haze-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-06.mp3",
+  "k": "scenes/games/deadlock/v/haze-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-07.mp3",
+  "k": "scenes/games/deadlock/v/haze-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-08.mp3",
+  "k": "scenes/games/deadlock/v/haze-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-09.mp3",
+  "k": "scenes/games/deadlock/v/haze-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-10.mp3",
+  "k": "scenes/games/deadlock/v/haze-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-11.mp3",
+  "k": "scenes/games/deadlock/v/haze-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-12.mp3",
+  "k": "scenes/games/deadlock/v/haze-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-13.mp3",
+  "k": "scenes/games/deadlock/v/haze-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-14.mp3",
+  "k": "scenes/games/deadlock/v/haze-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/haze/haze-15.mp3",
+  "k": "scenes/games/deadlock/v/haze-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-01.mp3",
+  "k": "scenes/games/deadlock/v/holliday-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-02.mp3",
+  "k": "scenes/games/deadlock/v/holliday-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-03.mp3",
+  "k": "scenes/games/deadlock/v/holliday-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-04.mp3",
+  "k": "scenes/games/deadlock/v/holliday-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-05.mp3",
+  "k": "scenes/games/deadlock/v/holliday-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-06.mp3",
+  "k": "scenes/games/deadlock/v/holliday-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-07.mp3",
+  "k": "scenes/games/deadlock/v/holliday-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-08.mp3",
+  "k": "scenes/games/deadlock/v/holliday-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-09.mp3",
+  "k": "scenes/games/deadlock/v/holliday-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-10.mp3",
+  "k": "scenes/games/deadlock/v/holliday-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-11.mp3",
+  "k": "scenes/games/deadlock/v/holliday-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-12.mp3",
+  "k": "scenes/games/deadlock/v/holliday-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-13.mp3",
+  "k": "scenes/games/deadlock/v/holliday-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-14.mp3",
+  "k": "scenes/games/deadlock/v/holliday-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/holliday/holliday-15.mp3",
+  "k": "scenes/games/deadlock/v/holliday-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-01.mp3",
+  "k": "scenes/games/deadlock/v/infernus-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-02.mp3",
+  "k": "scenes/games/deadlock/v/infernus-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-03.mp3",
+  "k": "scenes/games/deadlock/v/infernus-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-04.mp3",
+  "k": "scenes/games/deadlock/v/infernus-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-05.mp3",
+  "k": "scenes/games/deadlock/v/infernus-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-06.mp3",
+  "k": "scenes/games/deadlock/v/infernus-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-07.mp3",
+  "k": "scenes/games/deadlock/v/infernus-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-08.mp3",
+  "k": "scenes/games/deadlock/v/infernus-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-09.mp3",
+  "k": "scenes/games/deadlock/v/infernus-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-10.mp3",
+  "k": "scenes/games/deadlock/v/infernus-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-11.mp3",
+  "k": "scenes/games/deadlock/v/infernus-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-12.mp3",
+  "k": "scenes/games/deadlock/v/infernus-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-13.mp3",
+  "k": "scenes/games/deadlock/v/infernus-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-14.mp3",
+  "k": "scenes/games/deadlock/v/infernus-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/infernus/infernus-15.mp3",
+  "k": "scenes/games/deadlock/v/infernus-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-01.mp3",
+  "k": "scenes/games/deadlock/v/ivy-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-02.mp3",
+  "k": "scenes/games/deadlock/v/ivy-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-03.mp3",
+  "k": "scenes/games/deadlock/v/ivy-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-04.mp3",
+  "k": "scenes/games/deadlock/v/ivy-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-05.mp3",
+  "k": "scenes/games/deadlock/v/ivy-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-06.mp3",
+  "k": "scenes/games/deadlock/v/ivy-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-07.mp3",
+  "k": "scenes/games/deadlock/v/ivy-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-08.mp3",
+  "k": "scenes/games/deadlock/v/ivy-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-09.mp3",
+  "k": "scenes/games/deadlock/v/ivy-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-10.mp3",
+  "k": "scenes/games/deadlock/v/ivy-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-11.mp3",
+  "k": "scenes/games/deadlock/v/ivy-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-12.mp3",
+  "k": "scenes/games/deadlock/v/ivy-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-13.mp3",
+  "k": "scenes/games/deadlock/v/ivy-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-14.mp3",
+  "k": "scenes/games/deadlock/v/ivy-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/ivy/ivy-15.mp3",
+  "k": "scenes/games/deadlock/v/ivy-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-01.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-02.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-03.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-04.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-05.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-06.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-07.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-08.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-09.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-10.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-11.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-12.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-13.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-14.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/kelvin/kelvin-15.mp3",
+  "k": "scenes/games/deadlock/v/kelvin-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-01.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-02.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-03.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-04.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-05.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-06.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-07.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-08.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-09.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-10.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-11.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-12.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-13.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-14.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lady-geist/lady-geist-15.mp3",
+  "k": "scenes/games/deadlock/v/lady-geist-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-01.mp3",
+  "k": "scenes/games/deadlock/v/lash-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-02.mp3",
+  "k": "scenes/games/deadlock/v/lash-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-03.mp3",
+  "k": "scenes/games/deadlock/v/lash-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-04.mp3",
+  "k": "scenes/games/deadlock/v/lash-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-05.mp3",
+  "k": "scenes/games/deadlock/v/lash-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-06.mp3",
+  "k": "scenes/games/deadlock/v/lash-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-07.mp3",
+  "k": "scenes/games/deadlock/v/lash-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-08.mp3",
+  "k": "scenes/games/deadlock/v/lash-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-09.mp3",
+  "k": "scenes/games/deadlock/v/lash-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-10.mp3",
+  "k": "scenes/games/deadlock/v/lash-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-11.mp3",
+  "k": "scenes/games/deadlock/v/lash-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-12.mp3",
+  "k": "scenes/games/deadlock/v/lash-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-13.mp3",
+  "k": "scenes/games/deadlock/v/lash-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-14.mp3",
+  "k": "scenes/games/deadlock/v/lash-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/lash/lash-15.mp3",
+  "k": "scenes/games/deadlock/v/lash-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-01.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-02.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-03.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-04.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-05.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-06.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-07.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-08.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-09.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-10.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-11.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-12.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-13.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-14.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mcginnis/mcginnis-15.mp3",
+  "k": "scenes/games/deadlock/v/mcginnis-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-01.mp3",
+  "k": "scenes/games/deadlock/v/mina-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-02.mp3",
+  "k": "scenes/games/deadlock/v/mina-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-03.mp3",
+  "k": "scenes/games/deadlock/v/mina-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-04.mp3",
+  "k": "scenes/games/deadlock/v/mina-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-05.mp3",
+  "k": "scenes/games/deadlock/v/mina-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-06.mp3",
+  "k": "scenes/games/deadlock/v/mina-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-07.mp3",
+  "k": "scenes/games/deadlock/v/mina-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-08.mp3",
+  "k": "scenes/games/deadlock/v/mina-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-09.mp3",
+  "k": "scenes/games/deadlock/v/mina-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-10.mp3",
+  "k": "scenes/games/deadlock/v/mina-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-11.mp3",
+  "k": "scenes/games/deadlock/v/mina-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-12.mp3",
+  "k": "scenes/games/deadlock/v/mina-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-13.mp3",
+  "k": "scenes/games/deadlock/v/mina-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-14.mp3",
+  "k": "scenes/games/deadlock/v/mina-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mina/mina-15.mp3",
+  "k": "scenes/games/deadlock/v/mina-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-01.mp3",
+  "k": "scenes/games/deadlock/v/mirage-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-02.mp3",
+  "k": "scenes/games/deadlock/v/mirage-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-03.mp3",
+  "k": "scenes/games/deadlock/v/mirage-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-04.mp3",
+  "k": "scenes/games/deadlock/v/mirage-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-05.mp3",
+  "k": "scenes/games/deadlock/v/mirage-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-06.mp3",
+  "k": "scenes/games/deadlock/v/mirage-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-07.mp3",
+  "k": "scenes/games/deadlock/v/mirage-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-08.mp3",
+  "k": "scenes/games/deadlock/v/mirage-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-09.mp3",
+  "k": "scenes/games/deadlock/v/mirage-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-10.mp3",
+  "k": "scenes/games/deadlock/v/mirage-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-11.mp3",
+  "k": "scenes/games/deadlock/v/mirage-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-12.mp3",
+  "k": "scenes/games/deadlock/v/mirage-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-13.mp3",
+  "k": "scenes/games/deadlock/v/mirage-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-14.mp3",
+  "k": "scenes/games/deadlock/v/mirage-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mirage/mirage-15.mp3",
+  "k": "scenes/games/deadlock/v/mirage-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-01.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-02.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-03.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-04.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-05.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-06.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-07.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-08.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-09.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-10.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-11.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-12.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-13.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-14.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/mo-krill/mo-krill-15.mp3",
+  "k": "scenes/games/deadlock/v/mo-krill-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-01.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-02.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-03.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-04.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-05.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-06.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-07.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-08.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-09.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-10.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-11.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-12.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-13.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-14.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/nurse-harrow/nurse-harrow-15.mp3",
+  "k": "scenes/games/deadlock/v/nurse-harrow-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-01.mp3",
+  "k": "scenes/games/deadlock/v/paige-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-02.mp3",
+  "k": "scenes/games/deadlock/v/paige-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-03.mp3",
+  "k": "scenes/games/deadlock/v/paige-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-04.mp3",
+  "k": "scenes/games/deadlock/v/paige-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-05.mp3",
+  "k": "scenes/games/deadlock/v/paige-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-06.mp3",
+  "k": "scenes/games/deadlock/v/paige-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-07.mp3",
+  "k": "scenes/games/deadlock/v/paige-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-08.mp3",
+  "k": "scenes/games/deadlock/v/paige-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-09.mp3",
+  "k": "scenes/games/deadlock/v/paige-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-10.mp3",
+  "k": "scenes/games/deadlock/v/paige-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-11.mp3",
+  "k": "scenes/games/deadlock/v/paige-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-12.mp3",
+  "k": "scenes/games/deadlock/v/paige-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-13.mp3",
+  "k": "scenes/games/deadlock/v/paige-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-14.mp3",
+  "k": "scenes/games/deadlock/v/paige-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paige/paige-15.mp3",
+  "k": "scenes/games/deadlock/v/paige-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-01.mp3",
+  "k": "scenes/games/deadlock/v/paradox-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-02.mp3",
+  "k": "scenes/games/deadlock/v/paradox-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-03.mp3",
+  "k": "scenes/games/deadlock/v/paradox-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-04.mp3",
+  "k": "scenes/games/deadlock/v/paradox-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-05.mp3",
+  "k": "scenes/games/deadlock/v/paradox-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-06.mp3",
+  "k": "scenes/games/deadlock/v/paradox-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-07.mp3",
+  "k": "scenes/games/deadlock/v/paradox-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-08.mp3",
+  "k": "scenes/games/deadlock/v/paradox-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-09.mp3",
+  "k": "scenes/games/deadlock/v/paradox-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-10.mp3",
+  "k": "scenes/games/deadlock/v/paradox-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-11.mp3",
+  "k": "scenes/games/deadlock/v/paradox-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-12.mp3",
+  "k": "scenes/games/deadlock/v/paradox-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-13.mp3",
+  "k": "scenes/games/deadlock/v/paradox-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-14.mp3",
+  "k": "scenes/games/deadlock/v/paradox-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/paradox/paradox-15.mp3",
+  "k": "scenes/games/deadlock/v/paradox-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-01.mp3",
+  "k": "scenes/games/deadlock/v/pocket-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-02.mp3",
+  "k": "scenes/games/deadlock/v/pocket-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-03.mp3",
+  "k": "scenes/games/deadlock/v/pocket-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-04.mp3",
+  "k": "scenes/games/deadlock/v/pocket-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-05.mp3",
+  "k": "scenes/games/deadlock/v/pocket-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-06.mp3",
+  "k": "scenes/games/deadlock/v/pocket-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-07.mp3",
+  "k": "scenes/games/deadlock/v/pocket-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-08.mp3",
+  "k": "scenes/games/deadlock/v/pocket-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-09.mp3",
+  "k": "scenes/games/deadlock/v/pocket-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-10.mp3",
+  "k": "scenes/games/deadlock/v/pocket-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-11.mp3",
+  "k": "scenes/games/deadlock/v/pocket-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-12.mp3",
+  "k": "scenes/games/deadlock/v/pocket-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-13.mp3",
+  "k": "scenes/games/deadlock/v/pocket-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-14.mp3",
+  "k": "scenes/games/deadlock/v/pocket-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/pocket/pocket-15.mp3",
+  "k": "scenes/games/deadlock/v/pocket-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-01.mp3",
+  "k": "scenes/games/deadlock/v/shiv-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-02.mp3",
+  "k": "scenes/games/deadlock/v/shiv-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-03.mp3",
+  "k": "scenes/games/deadlock/v/shiv-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-04.mp3",
+  "k": "scenes/games/deadlock/v/shiv-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-05.mp3",
+  "k": "scenes/games/deadlock/v/shiv-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-06.mp3",
+  "k": "scenes/games/deadlock/v/shiv-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-07.mp3",
+  "k": "scenes/games/deadlock/v/shiv-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-08.mp3",
+  "k": "scenes/games/deadlock/v/shiv-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-09.mp3",
+  "k": "scenes/games/deadlock/v/shiv-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-10.mp3",
+  "k": "scenes/games/deadlock/v/shiv-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-11.mp3",
+  "k": "scenes/games/deadlock/v/shiv-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-12.mp3",
+  "k": "scenes/games/deadlock/v/shiv-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-13.mp3",
+  "k": "scenes/games/deadlock/v/shiv-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-14.mp3",
+  "k": "scenes/games/deadlock/v/shiv-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/shiv/shiv-15.mp3",
+  "k": "scenes/games/deadlock/v/shiv-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-01.mp3",
+  "k": "scenes/games/deadlock/v/silver-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-02.mp3",
+  "k": "scenes/games/deadlock/v/silver-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-03.mp3",
+  "k": "scenes/games/deadlock/v/silver-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-04.mp3",
+  "k": "scenes/games/deadlock/v/silver-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-05.mp3",
+  "k": "scenes/games/deadlock/v/silver-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-06.mp3",
+  "k": "scenes/games/deadlock/v/silver-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-07.mp3",
+  "k": "scenes/games/deadlock/v/silver-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-08.mp3",
+  "k": "scenes/games/deadlock/v/silver-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-09.mp3",
+  "k": "scenes/games/deadlock/v/silver-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-10.mp3",
+  "k": "scenes/games/deadlock/v/silver-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-11.mp3",
+  "k": "scenes/games/deadlock/v/silver-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-12.mp3",
+  "k": "scenes/games/deadlock/v/silver-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-13.mp3",
+  "k": "scenes/games/deadlock/v/silver-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-14.mp3",
+  "k": "scenes/games/deadlock/v/silver-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/silver/silver-15.mp3",
+  "k": "scenes/games/deadlock/v/silver-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-01.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-02.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-03.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-04.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-05.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-06.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-07.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-08.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-09.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-10.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-11.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-12.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-13.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-14.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/sinclair/sinclair-15.mp3",
+  "k": "scenes/games/deadlock/v/sinclair-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-01.mp3",
+  "k": "scenes/games/deadlock/v/solomon-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-02.mp3",
+  "k": "scenes/games/deadlock/v/solomon-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-03.mp3",
+  "k": "scenes/games/deadlock/v/solomon-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-04.mp3",
+  "k": "scenes/games/deadlock/v/solomon-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-05.mp3",
+  "k": "scenes/games/deadlock/v/solomon-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-06.mp3",
+  "k": "scenes/games/deadlock/v/solomon-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-07.mp3",
+  "k": "scenes/games/deadlock/v/solomon-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-08.mp3",
+  "k": "scenes/games/deadlock/v/solomon-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-09.mp3",
+  "k": "scenes/games/deadlock/v/solomon-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-10.mp3",
+  "k": "scenes/games/deadlock/v/solomon-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-11.mp3",
+  "k": "scenes/games/deadlock/v/solomon-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-12.mp3",
+  "k": "scenes/games/deadlock/v/solomon-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-13.mp3",
+  "k": "scenes/games/deadlock/v/solomon-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-14.mp3",
+  "k": "scenes/games/deadlock/v/solomon-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/solomon/solomon-15.mp3",
+  "k": "scenes/games/deadlock/v/solomon-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-01.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-02.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-03.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-04.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-05.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-06.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-07.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-08.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-09.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-10.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-11.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-12.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-13.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-14.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vindicta/vindicta-15.mp3",
+  "k": "scenes/games/deadlock/v/vindicta-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-01.mp3",
+  "k": "scenes/games/deadlock/v/violet-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-02.mp3",
+  "k": "scenes/games/deadlock/v/violet-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-03.mp3",
+  "k": "scenes/games/deadlock/v/violet-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-04.mp3",
+  "k": "scenes/games/deadlock/v/violet-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-05.mp3",
+  "k": "scenes/games/deadlock/v/violet-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-06.mp3",
+  "k": "scenes/games/deadlock/v/violet-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-07.mp3",
+  "k": "scenes/games/deadlock/v/violet-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-08.mp3",
+  "k": "scenes/games/deadlock/v/violet-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-09.mp3",
+  "k": "scenes/games/deadlock/v/violet-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-10.mp3",
+  "k": "scenes/games/deadlock/v/violet-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-11.mp3",
+  "k": "scenes/games/deadlock/v/violet-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-12.mp3",
+  "k": "scenes/games/deadlock/v/violet-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-13.mp3",
+  "k": "scenes/games/deadlock/v/violet-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-14.mp3",
+  "k": "scenes/games/deadlock/v/violet-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/violet/violet-15.mp3",
+  "k": "scenes/games/deadlock/v/violet-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-01.mp3",
+  "k": "scenes/games/deadlock/v/viscous-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-02.mp3",
+  "k": "scenes/games/deadlock/v/viscous-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-03.mp3",
+  "k": "scenes/games/deadlock/v/viscous-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-04.mp3",
+  "k": "scenes/games/deadlock/v/viscous-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-05.mp3",
+  "k": "scenes/games/deadlock/v/viscous-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-06.mp3",
+  "k": "scenes/games/deadlock/v/viscous-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-07.mp3",
+  "k": "scenes/games/deadlock/v/viscous-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-08.mp3",
+  "k": "scenes/games/deadlock/v/viscous-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-09.mp3",
+  "k": "scenes/games/deadlock/v/viscous-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-10.mp3",
+  "k": "scenes/games/deadlock/v/viscous-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-11.mp3",
+  "k": "scenes/games/deadlock/v/viscous-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-12.mp3",
+  "k": "scenes/games/deadlock/v/viscous-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-13.mp3",
+  "k": "scenes/games/deadlock/v/viscous-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-14.mp3",
+  "k": "scenes/games/deadlock/v/viscous-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/viscous/viscous-15.mp3",
+  "k": "scenes/games/deadlock/v/viscous-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-01.mp3",
+  "k": "scenes/games/deadlock/v/vyper-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-02.mp3",
+  "k": "scenes/games/deadlock/v/vyper-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-03.mp3",
+  "k": "scenes/games/deadlock/v/vyper-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-04.mp3",
+  "k": "scenes/games/deadlock/v/vyper-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-05.mp3",
+  "k": "scenes/games/deadlock/v/vyper-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-06.mp3",
+  "k": "scenes/games/deadlock/v/vyper-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-07.mp3",
+  "k": "scenes/games/deadlock/v/vyper-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-08.mp3",
+  "k": "scenes/games/deadlock/v/vyper-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-09.mp3",
+  "k": "scenes/games/deadlock/v/vyper-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-10.mp3",
+  "k": "scenes/games/deadlock/v/vyper-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-11.mp3",
+  "k": "scenes/games/deadlock/v/vyper-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-12.mp3",
+  "k": "scenes/games/deadlock/v/vyper-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-13.mp3",
+  "k": "scenes/games/deadlock/v/vyper-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-14.mp3",
+  "k": "scenes/games/deadlock/v/vyper-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/vyper/vyper-15.mp3",
+  "k": "scenes/games/deadlock/v/vyper-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-01.mp3",
+  "k": "scenes/games/deadlock/v/warden-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-02.mp3",
+  "k": "scenes/games/deadlock/v/warden-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-03.mp3",
+  "k": "scenes/games/deadlock/v/warden-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-04.mp3",
+  "k": "scenes/games/deadlock/v/warden-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-05.mp3",
+  "k": "scenes/games/deadlock/v/warden-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-06.mp3",
+  "k": "scenes/games/deadlock/v/warden-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-07.mp3",
+  "k": "scenes/games/deadlock/v/warden-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-08.mp3",
+  "k": "scenes/games/deadlock/v/warden-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-09.mp3",
+  "k": "scenes/games/deadlock/v/warden-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-10.mp3",
+  "k": "scenes/games/deadlock/v/warden-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-11.mp3",
+  "k": "scenes/games/deadlock/v/warden-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-12.mp3",
+  "k": "scenes/games/deadlock/v/warden-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-13.mp3",
+  "k": "scenes/games/deadlock/v/warden-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-14.mp3",
+  "k": "scenes/games/deadlock/v/warden-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/warden/warden-15.mp3",
+  "k": "scenes/games/deadlock/v/warden-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-01.mp3",
+  "k": "scenes/games/deadlock/v/wraith-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-02.mp3",
+  "k": "scenes/games/deadlock/v/wraith-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-03.mp3",
+  "k": "scenes/games/deadlock/v/wraith-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-04.mp3",
+  "k": "scenes/games/deadlock/v/wraith-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-05.mp3",
+  "k": "scenes/games/deadlock/v/wraith-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-06.mp3",
+  "k": "scenes/games/deadlock/v/wraith-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-07.mp3",
+  "k": "scenes/games/deadlock/v/wraith-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-08.mp3",
+  "k": "scenes/games/deadlock/v/wraith-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-09.mp3",
+  "k": "scenes/games/deadlock/v/wraith-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-10.mp3",
+  "k": "scenes/games/deadlock/v/wraith-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-11.mp3",
+  "k": "scenes/games/deadlock/v/wraith-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-12.mp3",
+  "k": "scenes/games/deadlock/v/wraith-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-13.mp3",
+  "k": "scenes/games/deadlock/v/wraith-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-14.mp3",
+  "k": "scenes/games/deadlock/v/wraith-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/wraith/wraith-15.mp3",
+  "k": "scenes/games/deadlock/v/wraith-15.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-01.mp3",
+  "k": "scenes/games/deadlock/v/yamato-01.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-02.mp3",
+  "k": "scenes/games/deadlock/v/yamato-02.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-03.mp3",
+  "k": "scenes/games/deadlock/v/yamato-03.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-04.mp3",
+  "k": "scenes/games/deadlock/v/yamato-04.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-05.mp3",
+  "k": "scenes/games/deadlock/v/yamato-05.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-06.mp3",
+  "k": "scenes/games/deadlock/v/yamato-06.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-07.mp3",
+  "k": "scenes/games/deadlock/v/yamato-07.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-08.mp3",
+  "k": "scenes/games/deadlock/v/yamato-08.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-09.mp3",
+  "k": "scenes/games/deadlock/v/yamato-09.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-10.mp3",
+  "k": "scenes/games/deadlock/v/yamato-10.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-11.mp3",
+  "k": "scenes/games/deadlock/v/yamato-11.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-12.mp3",
+  "k": "scenes/games/deadlock/v/yamato-12.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-13.mp3",
+  "k": "scenes/games/deadlock/v/yamato-13.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-14.mp3",
+  "k": "scenes/games/deadlock/v/yamato-14.mp3",
+  "ct": "audio/mpeg"
+ },
+ {
+  "f": "heroes-voice/yamato/yamato-15.mp3",
+  "k": "scenes/games/deadlock/v/yamato-15.mp3",
+  "ct": "audio/mpeg"
+ }
+]
