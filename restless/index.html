@@ -265,6 +265,17 @@ img{display:block}
 .sb tr.me3 td{background:rgba(255,176,32,.07)}
 .ft{max-width:1280px;margin:0 auto;padding:0 max(18px,env(safe-area-inset-right,0px)) 40px max(18px,env(safe-area-inset-left,0px));color:var(--mu2);font-size:12px}
 
+.ptags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.ptags .tag{cursor:help}
+.pats{display:grid;gap:10px}
+.pt{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(80px,1fr) 64px;gap:12px;align-items:center}
+.pt span{font-size:13.5px}.pt small{display:block;color:var(--mu);font-size:11.5px}
+.pt i{position:relative;height:8px;border-radius:4px;background:var(--s3)}
+.pt i b{position:absolute;top:0;bottom:0;border-radius:4px}
+.pt i b.up{left:50%;background:var(--win)}.pt i b.dn{right:50%;background:var(--loss)}
+.pt i::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--mu2)}
+.pt em{font:700 13px/1 var(--m);font-style:normal;text-align:right}
+
 /* ===== 28.10 — три вида: «Labs» (чёрный + оранжевый, вкладки сверху), «Город» (как интерфейс Deadlock: латунь, кремовый, рамки ар-деко),
    «Графики» (как League of Graphs: сине-серые панели, бирюзовый, меню слева). html[data-skin], выбор — localStorage rl-skin ===== */
 .skins{display:inline-flex;gap:4px;padding:3px;border-radius:10px;background:var(--s1);border:1px solid var(--ln)}
@@ -518,7 +529,8 @@ async function viewHome() {
   if (!ME) return viewLanding();
   V('<div class="load">Собираю твой профиль…</div>');
   try {
-    const [H, HS, R] = await Promise.all([api('players/' + ME.id + '/match-history'), api('players/hero-stats?account_ids=' + ME.id).catch(() => []), api('players/' + ME.id + '/rank').catch(() => null)]);
+    const [H, HS, R, HSt] = await Promise.all([api('players/' + ME.id + '/match-history'), api('players/hero-stats?account_ids=' + ME.id).catch(() => []), api('players/' + ME.id + '/rank').catch(() => null), api('analytics/hero-stats?' + fq()).catch(() => [])]);
+    const HA = {}; HSt.forEach(h => HA[h.hero_id] = {spm: h.total_net_worth / Math.max(1, h.matches), dpm: h.total_deaths / Math.max(1, h.matches)});
     if (!H.length) { V('<div class="empty">У этого игрока нет матчей в открытых данных.</div>'); return; }
     const won = m => m.player_team === m.match_result;
     const L20 = H.slice(0, 20), w20 = L20.filter(won).length;
@@ -539,7 +551,7 @@ async function viewHome() {
     const pool = HS.slice().sort((a, b) => b.matches_played - a.matches_played).slice(0, 7);
     V(`<div class="card prof">
         ${ME.avatar ? `<img class="av" src="${esc(ME.avatar)}" alt="" onerror="${noimg}">` : '<i class="av"></i>'}
-        <div style="min-width:0"><div class="nm">${esc(ME.name)}</div><div class="sub">${nf(totM)} ${pl(totM, ['матч', 'матча', 'матчей'])} · ${pc(totW, totM)}% побед за всё время · ID ${ME.id}</div></div>
+        <div style="min-width:0"><div class="nm">${esc(ME.name)}</div><div class="sub">${nf(totM)} ${pl(totM, ['матч', 'матча', 'матчей'])} · ${pc(totW, totM)}% побед за всё время · ID ${ME.id}</div><div class="ptags">${tagsHTML(profTags(H, HS, HA))}</div></div>
         <div class="rkb">${rankImg(R && R.badge)}<div><b style="color:${esc(rk.color)}">${esc(rk.name)}</b><span class="sub">${ws >= 2 ? 'серия побед · ' + ws : R && R.badge ? 'ранг сейчас' : 'ранг скрыт или нет'}</span></div></div>
       </div>
       <div class="g4 st" style="margin-top:14px">
@@ -554,6 +566,7 @@ async function viewHome() {
         <div class="card pad"><div class="h2" style="margin:0 0 4px">Неделя<small>${wkN ? `${games(wkN)} · ${pc(wkW, wkN)}% побед` : 'не играл'}</small></div>
           <div class="wk">${wk.map(x => `<div title="${x.n ? `${x.w} из ${x.n}` : 'нет игр'}"><em class="${x.n ? (x.w / x.n >= .5 ? 'win' : 'loss') : 'mu'}">${x.n ? pc(x.w, x.n) + '%' : '—'}</em><i class="${x.n ? (x.w / x.n >= .5 ? '' : 'l') : 'n'}" style="height:${x.n ? Math.max(8, 70 * x.n / wkMax) : 4}px"></i><small>${DN[x.d.getDay()]}</small></div>`).join('')}</div></div>
       </div>
+      ${(() => { const P = profPatterns(H); return P.length ? `<div class="h2">Паттерны<small>винрейт против твоего общего · сессия — игры с перерывом меньше часа</small></div><div class="card pad pats">${P.map(p => `<div class="pt"><span>${esc(p.n)}<small>${games(p.c)} · ${Math.round(p.wr)}% побед</small></span><i><b class="${p.d >= 0 ? 'up' : 'dn'}" style="width:${Math.min(50, Math.abs(p.d) * 2.5)}%"></b></i><em class="${p.d >= 0 ? 'win' : 'loss'}">${p.d >= 0 ? '+' : '−'}${Math.abs(p.d).toFixed(1).replace('.', ',')}%</em></div>`).join('')}</div>` : ''; })()}
       <div class="g2">
         <div><div class="h2">Твои герои<small>за всё время</small></div><div class="card pool">${pool.map(h => { const wr = pc(h.wins, h.matches_played);
           return `<a href="#h/${h.hero_id}">${heroImg(h.hero_id)}<span style="min-width:0"><b>${esc(hero(h.hero_id).n)}</b><small>${games(h.matches_played)} · KDA ${((h.kills + h.assists) / Math.max(1, h.deaths)).toFixed(1).replace('.', ',')}</small></span><span class="bar"><i style="width:${wr}%;background:${wr >= 50 ? 'var(--win)' : 'var(--loss)'}"></i></span><span class="wr ${wrCls(h.wins, h.matches_played)}">${wr}%</span></a>`; }).join('') || '<div class="empty">Нет данных по героям.</div>'}</div></div>
@@ -561,6 +574,53 @@ async function viewHome() {
       </div>`);
   } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
 }
+
+// ---------- метки игрока и паттерны (как на League of Graphs) — только то, что честно считается по матчам ----------
+// T — [текст, класс плашки, пояснение]
+function profTags(H, HS, HA) {
+  const won = m => m.player_team === m.match_result, T = [];
+  let k = 0; while (k < H.length && won(H[k]) === won(H[0])) k++;
+  if (k >= 3) T.push([(won(H[0]) ? 'Винстрик ' : 'Лузстрик ') + k, won(H[0]) ? 'g' : 'r', `${k} ${won(H[0]) ? 'побед' : 'поражений'} подряд`]);
+  const L30 = H.filter(m => m.start_time >= now() - 30 * 86400), cnt = {};
+  L30.forEach(m => cnt[m.hero_id] = (cnt[m.hero_id] || 0) + 1);
+  const top = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
+  if (top && L30.length >= 10) { const s = top[1] / L30.length, n = hero(top[0]).n;
+    if (s >= .6) T.push(['OTP ' + n, 'a', `${Math.round(100 * s)}% игр за 30 дней — на одном герое`]);
+    else if (s >= .3) T.push([n + ' — моя любовь', 'b', `${Math.round(100 * s)}% игр за 30 дней`]); }
+  const vet = HS.slice().sort((a, b) => b.matches_played - a.matches_played)[0];
+  if (vet && vet.matches_played >= 300) T.push(['Ветеран ' + hero(vet.hero_id).n, 'a', `${nf(vet.matches_played)} игр на герое`]);
+  const last = H[0], hl = HS.find(h => h.hero_id === last.hero_id);
+  if (hl && hl.matches_played < 10) T.push(['Учит ' + hero(last.hero_id).n, '', `всего ${games(hl.matches_played)} на герое`]);
+  // души и смерти против среднего по герою (последние 20 игр, по каждому матчу)
+  const L20 = H.slice(0, 20).filter(m => HA[m.hero_id]);
+  if (L20.length >= 8) {
+    const r = (f) => L20.reduce((a, m) => a + f(m), 0) / L20.length;
+    const soul = r(m => m.net_worth / Math.max(1, HA[m.hero_id].spm)), dth = r(m => m.player_deaths / Math.max(.1, HA[m.hero_id].dpm));
+    if (soul >= 1.15) T.push(['Фармила', 'g', `душ на ${Math.round(100 * (soul - 1))}% больше среднего по своим героям`]);
+    else if (soul <= .85) T.push(['Мало фармит', 'r', `душ на ${Math.round(100 * (1 - soul))}% меньше среднего по своим героям`]);
+    if (dth >= 1.3) T.push(['Кормит', 'r', `смертей на ${Math.round(100 * (dth - 1))}% больше среднего по героям`]);
+    else if (dth <= .75) T.push(['Живучий', 'g', `смертей на ${Math.round(100 * (1 - dth))}% меньше среднего по героям`]);
+  }
+  const lv = L30.filter(m => m.abandoned_time_s).length;
+  if (lv) T.push([`Ливал ${lv} ${pl(lv, ['раз', 'раза', 'раз'])}`, 'r', 'вышел из матча за последние 30 дней']);
+  const byDay = {}; L30.forEach(m => { const d = new Date(m.start_time * 1000).toDateString(); byDay[d] = (byDay[d] || 0) + 1; });
+  const mx = Math.max(0, ...Object.values(byDay)); if (mx >= 8) T.push(['Марафонец', 'b', `до ${mx} игр за день`]);
+  const night = L30.filter(m => { const h = new Date(m.start_time * 1000).getHours(); return h < 6; }).length;
+  if (L30.length >= 10 && night / L30.length >= .4) T.push(['Ночной игрок', 'b', `${Math.round(100 * night / L30.length)}% игр с полуночи до 6 утра`]);
+  return T;
+}
+// паттерны: винрейт в разных условиях против общего (сессия — матчи с перерывом меньше часа)
+function profPatterns(H) {
+  const won = m => m.player_team === m.match_result, A = H.slice().reverse(), all = A.filter(won).length / Math.max(1, A.length);
+  const B = {s1: [], s2: [], s3: [], l2: [], long: []}; let pos = 0;
+  A.forEach((m, i) => { const p = A[i - 1]; pos = p && m.start_time - (p.start_time + p.match_duration_s) < 3600 ? pos + 1 : 1;
+    if (pos <= 3) B['s' + pos].push(won(m));
+    if (i >= 2 && !won(A[i - 1]) && !won(A[i - 2]) && pos > 1) B.l2.push(won(m));
+    if (m.match_duration_s >= 35 * 60) B.long.push(won(m)); });
+  const N = {s1: 'Первый матч сессии', s2: 'Второй матч сессии', s3: 'Третий матч сессии', l2: 'После двух поражений подряд', long: 'Игры длиннее 35 минут'};
+  return Object.entries(B).filter(([, v]) => v.length >= 12).map(([k, v]) => { const wr = v.filter(Boolean).length / v.length; return {n: N[k], d: 100 * (wr - all), wr: 100 * wr, c: v.length}; });
+}
+function tagsHTML(T) { return T.map(([s, c, h]) => `<span class="tag ${c}" title="${esc(h)}">${esc(s)}</span>`).join(''); }
 function mtRow(m) {
   const w = m.player_team === m.match_result;
   return `<a class="mt" href="#m/${m.match_id}"><i class="st" style="background:${w ? 'var(--win)' : 'var(--loss)'}"></i>${heroImg(m.hero_id)}
