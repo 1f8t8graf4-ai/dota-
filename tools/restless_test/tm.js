@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');const {execFileSync}=require('child_process');
+const W=process.argv[2]||'pc',O=process.argv[3];const col=u=>{let h=0;for(const c of u)h=(h*31+c.charCodeAt(0))>>>0;return `hsl(${h%360},45%,38%)`};
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:W==='ph'?{width:390,height:844}:{width:1440,height:900}});const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
+ await p.route('https://api.deadlock-api.com/**',async r=>{try{const out=execFileSync('curl',['-sS','-m','90',r.request().url()],{maxBuffer:256<<20});r.fulfill({status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:out})}catch(e){r.fulfill({status:502,body:'x'})}});
+ await p.route('https://assets-bucket.deadlock-api.com/**',r=>{const n=r.request().url().split('/').pop();r.fulfill({status:200,contentType:'image/svg+xml',body:`<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><circle cx="32" cy="32" r="24" fill="${col(n)}"/></svg>`})});
+ await p.route(/fonts\./,r=>r.abort());
+ await p.goto(`http://localhost:${process.env.PORT||8095}/restless/mod.html`);await p.waitForSelector('.game,.err',{timeout:150000});await p.waitForTimeout(800);
+ console.log((await p.evaluate(()=>document.querySelector('.rp')?.innerText||document.querySelector('#out').innerText)).replace(/\n+/g,' | ').slice(0,700));
+ console.log('own/nx/ctr in shop:',await p.$$eval('.shop .it.inb',L=>L.length),await p.$$eval('.shop .it.own',L=>L.length),await p.$$eval('.shop .it.nx',L=>L.length),await p.$$eval('.shop .it.ctr',L=>L.length));
+ await p.screenshot({path:`${O}/mod-${W}.png`,fullPage:true});
+ await p.click('#vw [data-v=hud]');await p.waitForTimeout(300);await p.screenshot({path:`${O}/modhud-${W}.png`});
+ console.log('вбок:',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),'ERR:',errs.join('\n')||'нет');await b.close()})();
