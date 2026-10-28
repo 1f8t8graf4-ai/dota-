@@ -1,4 +1,4 @@
-<title>Макеты v20</title>
+<title>Макеты v21</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&family=Russo+One&display=swap">
 <style>
@@ -6237,11 +6237,17 @@ html.lite .h11 *{animation:none!important}
 .pt{flex-wrap:wrap;max-width:100%}
 @media (max-width:480px){.pt button{padding:10px 11px;font-size:14px}}
 
+/* ===== v21 ===== */
+.r21 .r11-map{background:#10151b}
+.r21 .r11-lb{color:#c7d0da}
+.z21-alt{display:flex;gap:6px;flex-wrap:wrap;padding:0 6px 10px}
+.z21-alt button{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);font:600 12px/1 Inter,sans-serif;color:#d8d2c6}
+.z21-alt button.on{background:#FFD23F;color:#16110A}
 </style>
 
 <div class="wrap">
  <header>
-  <h1>v20 — всё в одном</h1>
+  <h1>v21 — по твоим заметкам к v20</h1>
   <p class="lead"><b>Ничего не потерялось:</b> v17–v19 трогали только главную, а радар, реплики, комикс и обучение лежали в v9–v15. Теперь всё в одном месте — 12 разделов приложения, в каждом то, что ты одобрил (твои слова — в «Откуда идея»). Вернул сонар, «кто про кого», реплики как в TikTok, углублённое обучение. Новое — «Сегодня в Deadlock» (чем заняться, как в приложении). Вкладки сверху: <b>«Итог»</b> — что будет в приложении и в каком виде + что решили в каждой версии; <b>«Вопросы»</b> — все открытые вопросы, отвечай кнопкой.</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
   <div class="pt" id="ptab"></div>
@@ -14173,9 +14179,69 @@ function zqRender(){const D=$('#zq');if(!D)return;if(D.dataset.r){zqCount();retu
  zqCount()}
 function zqCount(){const n=$$('#zq li.ans').length,el=$('#zq .zq-n');if(el)el.textContent=`Отвечено ${n} из ${Z20Q.length}.`;const b=$('#ptab [data-p="q"] b');if(b)b.textContent=Z20Q.length-n||'✓'}
 
+/* ================= v21 · по твоим заметкам к v20 ================= */
+// 1. Радар — однотонный 3D-город: дома по сетке с широкими улицами, не выше 16 этажей, камера выше — дома не наезжают друг на друга; без звука
+function city21(){let s=29;const r=()=>(s=(s*16807)%2147483647)/2147483647;const B=[];
+ const LMK=Object.values(C11LM).map(v=>[v[0],v[2]]),riv=(x,z)=>Math.abs(x-z*.62+6)<10,near=(x,z)=>LMK.some(([a,b])=>Math.abs(x-a)<12&&Math.abs(z-b)<12);
+ for(let gx=-6;gx<=6;gx++)for(let gz=-6;gz<=6;gz++){const x=gx*12,z=gz*12;if(riv(x,z)||near(x,z)||r()<.14)continue;const w=5+r()*1.5,d=5+r()*1.5;B.push({t:'box',x:x-w/2,z:z-d/2,w,d,h:3+r()*r()*13})}
+ // ориентиры — те же места, что у точек радара, ниже и проще: одна коробка, у главных — второй ярус
+ for(const [k,[x,y,z]] of Object.entries(C11LM)){const w=k==='ht'?7:9;B.push({t:'box',x:x-w/2,z:z-w/2,w,d:w,h:k==='ht'?24:k==='pw'?12:8,lm:k});if(k==='ht'||k==='cr')B.push({t:'box',x:x-w/4,z:z-w/4,w:w/2,d:w/2,h:k==='ht'?8:10,y0:k==='ht'?24:8,lm:k})}
+ B[0].mono=1;return B}
+function draw3d21(g,W,H,cam,B,t){const pitch=Math.min(1.36,cam.pitch+.24),cy=Math.cos(cam.yaw),sy=Math.sin(cam.yaw),cp=Math.cos(pitch),sp=Math.sin(pitch),S=cam.s*.92,ox=W/2,oy=H*.52;
+ const P=(x,y,z)=>{const dx=x-cam.cx,dz=z-cam.cz,rx=dx*cy-dz*sy,rz=dx*sy+dz*cy;return [ox+rx*S,oy+(rz*sp-y*cp)*S,rz*cp+y*sp]};
+ g.clearRect(0,0,W,H);
+ const poly=(pts,f)=>{g.fillStyle=f;g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fill()};
+ poly([[-82,-82],[82,-82],[82,82],[-82,82]].map(([x,z])=>P(x,0,z)),'#10151b');
+ // река — тот же тон, чуть темнее
+ const rv=[];for(let i=0;i<=24;i++){const z=-82+i*164/24;rv.push([z*.62-6-10,z])}for(let i=24;i>=0;i--){const z=-82+i*164/24;rv.push([z*.62-6+10,z])}
+ poly(rv.map(([x,z])=>P(x,0,z)),'#0b0f14');
+ // кольца и луч — единственный цвет радара
+ g.strokeStyle='rgba(46,230,197,.14)';g.lineWidth=1;[30,55,80].forEach(R0=>{g.beginPath();for(let a=0;a<=48;a++){const p=P(Math.cos(a/48*6.283)*R0,0,Math.sin(a/48*6.283)*R0);a?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1])}g.stroke()});
+ const sa=t*.0011;for(let k=0;k<6;k++){const a0=sa-k*.1,a1=a0-.1,c0=P(0,0,0),p0=P(Math.cos(a0)*84,0,Math.sin(a0)*84),p1=P(Math.cos(a1)*84,0,Math.sin(a1)*84);g.fillStyle=`rgba(46,230,197,${(.16*(1-k/6)).toFixed(3)})`;g.beginPath();g.moveTo(c0[0],c0[1]);g.lineTo(p0[0],p0[1]);g.lineTo(p1[0],p1[1]);g.closePath();g.fill()}
+ // дома: один цвет, свет только от наклона стены; дальние — первыми
+ const L=B.map(b=>[P(b.x+b.w/2,(b.y0||0),b.z+b.d/2)[2],b]).sort((a,b)=>a[0]-b[0]);
+ const tone=(k,lm)=>{const v=lm?k*1.18:k;return `rgb(${(58*v)|0},${(68*v)|0},${(80*v)|0})`};
+ for(const [,b] of L){const y0=b.y0||0,y1=y0+b.h,x0=b.x,x1=b.x+b.w,z0=b.z,z1=b.z+b.d,fx=sy>0?x1:x0,fz=cy>0?z1:z0;
+  poly([P(fx,y0,z0),P(fx,y0,z1),P(fx,y1,z1),P(fx,y1,z0)],tone(.62,b.lm));
+  poly([P(x0,y0,fz),P(x1,y0,fz),P(x1,y1,fz),P(x0,y1,fz)],tone(.8,b.lm));
+  poly([P(x0,y1,z0),P(x1,y1,z0),P(x1,y1,z1),P(x0,y1,z1)],tone(1.12,b.lm))}
+ return P}
+{const d0=draw3d11;draw3d11=function(g,W,H,cam,B,t){return (B[0]&&B[0].mono?draw3d21:d0)(g,W,H,cam,B,t)}}
+function radar21(R,ctx){const c0=city11;city11=city21;try{radar11(R,ctx,'city')}finally{city11=c0}R.classList.add('r21');
+ const h=$('.r11-hint',R);if(h)h.textContent='крути · тап по точке — подлетим'}
+
+// 2. «Сегодня в Deadlock» → «Сводка Ночного Города» (как газета в мире игры: Нью-Йорк 20-х, оккультный)
+const Z21N=[['Ночная сводка','как вечерняя газета в мире игры'],['Слухи с улиц','то, что шепчут в барах Нью-Йорка'],['Дела на ночь','коротко и по делу']];
+function z21Dl(R,ctx,k){z20Dl(R,ctx);const b=$('.z20-plan .hd b',R),sm=$('.z20-plan .hd small',R);if(b)b.textContent=Z21N[k][0];if(sm)sm.textContent='3 дела · ~6 мин';R.classList.add('z21dl');
+ const P=$('.z20-plan',R);if(P&&!$('.z21-alt',R)){P.insertAdjacentHTML('afterbegin',`<div class="z21-alt">${Z21N.map(([n],i)=>`<button data-n="${i}" class="${i===k?'on':''}">${n}</button>`).join('')}</div>`);
+  ctx.on($('.z21-alt',R),'click',e=>{const x=e.target.closest('[data-n]');if(!x)return;const i=+x.dataset.n;$$('.z21-alt button',R).forEach(y=>y.classList.toggle('on',y===x));b.textContent=Z21N[i][0];toast(R,Z21N[i][1])})}}
+
+// 3. Профиль-бенто без фона внизу: фон из Коллекции и так стоит в шапке
+function z21Bento(R,ctx){const o=V.find(x=>x.id==='h3');o.mount(R,ctx);const w=$('[data-w="bg"]',R);if(w)w.remove();R.classList.add('z21p')}
+
+V.push({g:'y21',id:'z21r',n:'Радар · однотонный 3D-город',
+ idea:'Твоё: «3D-город, только однотонно и чтобы здания друг на друга не наезжали; убери звук». Город — один серо-синий тон, ориентиры чуть светлее, цвет — только у луча радара и точек. Дома стоят по сетке с широкими улицами и не выше 16 этажей, камера выше — дома не закрывают друг друга. Звука нет.',
+ moves:['город вырастает из земли','крутится сам и пальцем / мышью','тап по точке — подлетаем, «Читать» — комикс главы'],
+ from:'Ты к v20: «все не очень… сделай как v11 · 3D-город, только однотонно и чтобы здания не наезжали… убери звук, заебался слушать».',
+ minus:'Город придуманный: в игре карта другая. Места — по репликам героев.',
+ mount(R,ctx){radar21(R,ctx)}});
+V.push({g:'y21',id:'z21d',n:'«Ночная сводка» вместо «Сегодня в Deadlock»',
+ idea:'Тот же план из 3 дел, название — из мира игры: Deadlock — оккультный Нью-Йорк 20-х, у города есть газеты и слухи. Сверху три варианта названия — нажми и выбери.',
+ moves:['«Ночная сводка», «Слухи с улиц», «Дела на ночь» — переключаются сверху'],
+ from:'Ты к v20: «норм, только по-другому называй, как-то более аутентично».',
+ minus:'—',
+ mount(R,ctx){z21Dl(R,ctx,0)}});
+V.push({g:'y21',id:'z21p',n:'Профиль-бенто без фона внизу',
+ idea:'Убрал виджет «Фон из Коллекции» внизу — фон уже стоит в шапке профиля. Остальное как было: любимая фраза, фильм, герой, серия, выучено, Versus.',
+ moves:['«Изменить» — виджеты дрожат, «−» и «＋ Виджет» — как было'],
+ from:'Ты к v20: «типа такого норм, только не понимаю, зачем внизу фон из Коллекции — вверху же есть».',
+ minus:'—',
+ mount(R,ctx){z21Bento(R,ctx)}});
+
 /* ================= каркас страницы ================= */
-const GN={z1:'Главная · итог',z2:'Deadlock · итог',z3:'Радар · итог',z4:'Реплики героев · итог',z5:'Комикс · итог',z6:'Versus · итог',z7:'Сцена · путь · итог',z8:'Обучение · итог',z9:'Настройки и админка · итог',z10:'Канал и бот · итог',z11:'Restless · итог',z12:'Ролики TikTok · итог',h19:'Главная v19',h18:'Главная v18',h17:'Главная v17',d15:'Deadlock v15',r15:'Радар v15',k15:'Комикс v15',x15:'Restless v15',c15:'Канал v15',l15:'Обучение v15',m15:'Мод v15',s15:'Настройки v15',c14:'Канал v14',m14:'Мод в Deadlock v14',g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-const VERS=[['v20','28.10 · всё в одном — по разделам, что ты одобрил',[['z1','Главная · 3'],['z2','Deadlock · 5'],['z3','Радар · 3'],['z4','Реплики героев · 4'],['z5','Комикс · 4'],['z6','Versus · 2'],['z7','Сцена · путь · 4'],['z8','Обучение · 8'],['z9','Настройки и админка · 2'],['z10','Канал и бот · 4'],['z11','Restless · 2'],['z12','Ролики TikTok · 2']]],
+const GN={y21:'По заметкам к v20',z1:'Главная · итог',z2:'Deadlock · итог',z3:'Радар · итог',z4:'Реплики героев · итог',z5:'Комикс · итог',z6:'Versus · итог',z7:'Сцена · путь · итог',z8:'Обучение · итог',z9:'Настройки и админка · итог',z10:'Канал и бот · итог',z11:'Restless · итог',z12:'Ролики TikTok · итог',h19:'Главная v19',h18:'Главная v18',h17:'Главная v17',d15:'Deadlock v15',r15:'Радар v15',k15:'Комикс v15',x15:'Restless v15',c15:'Канал v15',l15:'Обучение v15',m15:'Мод v15',s15:'Настройки v15',c14:'Канал v14',m14:'Мод в Deadlock v14',g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+const VERS=[['v21','29.10 · по твоим заметкам к v20',[['y21','Радар, название, профиль · 3']]],
+ ['v20','28.10 · всё в одном — по разделам, что ты одобрил',[['z1','Главная · 3'],['z2','Deadlock · 5'],['z3','Радар · 3'],['z4','Реплики героев · 4'],['z5','Комикс · 4'],['z6','Versus · 2'],['z7','Сцена · путь · 4'],['z8','Обучение · 8'],['z9','Настройки и админка · 2'],['z10','Канал и бот · 4'],['z11','Restless · 2'],['z12','Ролики TikTok · 2']]],
  ['v19','28.10 · игры в меню, Deadlock без комиксов',[['h19','Главная · 3'],['h18','Главная v18']]],
  ['v18','28.10 · Меню v2 и Каналы',[['h18','Главная · 2'],['h17','Главная v17']]],
  ['v17','28.10 · главная под микс',[['h17','Главная · 3 · под микс'],['h9','Главная v9 · как было']]],
@@ -14190,7 +14256,7 @@ const VERS=[['v20','28.10 · всё в одном — по разделам, ч�
  ['v5','',[['h4','Главная'],['x5','Дизайн']]],['v4','',[['x4','Дизайн']]],['v3','',[['h3','Главная'],['k3','Комикс'],['x3','Дизайн']]],
  ['v2','',[['h2','Главная'],['d2','ДД'],['o2','Запуск']]],['v1','',[['home','Главная'],['dd','ДД'],['ob','Запуск']]]];
 const VDET=(v,open)=>`<details${open?' open':''}><summary>${v[0]}${open?'<span class="nw">новое</span>':''}<small>${v[1]}</small></summary><div class="bs">${v[2].map(b=>`<button data-g="${b[0]}">${b[1]}</button>`).join('')}</div></details>`;
-$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v19 … v1 — нажми на версию, она раскроется</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
+$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v20 … v1 — нажми на версию, она раскроется</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
 // «Как было»: тот же экран в прошлых версиях
 const CMPV={'set-user':[['v15','s15u'],['v13','s13u'],['v11','s11u'],['v9','s9u']],'set-watch':[['v11','s11w'],['v9','s9u']],'set-adm':[['v15','s15a'],['v13','s13a'],['v11','s11a'],['v9','s9a']],
  'games-tab':[['v13','g13t'],['v12','g12t'],['v11','g11t'],['v10','g10a'],['v9','g8a']],'games-row':[['v11','g11c'],['v10','g10c'],['v9','g9c']],'hub':[['v15','d15h'],['v13','g13h'],['v12','g12h'],['v11','g11h'],['v10','g10a'],['v9','g8a']],
@@ -14200,7 +14266,7 @@ const CMPV={'set-user':[['v15','s15u'],['v13','s13u'],['v11','s11u'],['v9','s9u'
  'learn-check':[['v11','l11a'],['v10','l10a'],['v9','l8a']],'learn-after':[['v11','l11b'],['v10','l10b'],['v9','l8b']],'learn-deep':[['v15','l15d'],['v13','l13d'],['v12','l12d'],['v11','l11d'],['v10','l10d']],
  'design':[['v10','x10a'],['v10 · 2','x10b'],['v8','x8a']]};
 function cmpOf(id){for(const k in CMPV)if(CMPV[k].some(x=>x[1]===id))return CMPV[k];return null}
-let CTX=null,curV=null,curG='z1';
+let CTX=null,curV=null,curG='y21';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -14224,7 +14290,7 @@ function fbMount(v){const N=$('#notes');if(!N)return;let el=N.querySelector('.fb
   if(NDB){show('сохраняю…');NDB.doc(key).set({t:s,id:v.id,g:v.g,n:v.n,at:Date.now()}).then(()=>show('сохранено · Claude увидит')).catch(()=>show('не сохранилось в базе — осталось в браузере'))}else show('сохранено в браузере')};
  ta.oninput=()=>{clearTimeout(tm);tm=setTimeout(save,1200)};ta.onblur=save}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const gb=$('#grp button.on');if(gb){let d=gb.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details')}}const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd20',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd21',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 /* ===== v16: вкладка «Уже готово» — что уже в приложении (Андрей его не открывает), что ждёт «го», что ждёт выбора ===== */
 const DN_APP=[
@@ -14367,7 +14433,7 @@ $$('#ptab button').forEach(b=>b.onclick=()=>dnTab(b.dataset.p));
 addEventListener('hashchange',()=>{const p=PTH[location.hash];if(p)dnTab(p)});
 
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd20'))}catch(e){}
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd21'))}catch(e){}
 mount(start||V.find(x=>x.g===curG));
 if(PTH[location.hash||''])dnTab(PTH[location.hash]);
 setTimeout(()=>{try{zqRender();$('#zq').hidden=!$('#ptab [data-p="q"]').classList.contains('on')}catch(e){}},1800);
