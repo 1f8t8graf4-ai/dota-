@@ -23,7 +23,7 @@ MARK = (255, 210, 63)
 CREAM = (244, 236, 220)
 SAFE_R = 900      # правее — кнопки TikTok
 SAFE_B = 1530     # ниже — подпись TikTok
-GAP = 0.55        # пауза между репликами, с
+GAP = 0.3         # пауза между репликами, с: у примеров Андрея ≤ 0,5 (tools/tt_audio.py)
 FONTS = {}
 
 
@@ -201,27 +201,23 @@ def env(path, rate=100):
     return e / (e.max() + 1e-9), len(x) / 16000
 
 
-def build_audio(spec, media, tl, total, wk):
-    # голоса по местам + звук ульты; сухо, −14 LUFS
-    ins, fl = [], []
-    k = 0
-    for L in tl:
-        ins += ['-i', os.path.join(media, L['a'])]
-        fl.append(f'[{k}:a]aresample=48000,pan=stereo|c0=c0|c1=c0,adelay={int(L["t0"] * 1000)}|{int(L["t0"] * 1000)}[v{k}]')
-        k += 1
+def build_audio(spec, media, tl, total, wk, amb=None):
+    # голоса по местам + звук ульты; голос сжат, под всем — фон места (или тихий «воздух»), −14 LUFS — tools/tt_audio.py
+    from tt_audio import master
+    def track(items, name):
+        ins, fl = [], []
+        for k, (p, at, chain) in enumerate(items):
+            ins += ['-i', p]
+            fl.append(f'[{k}:a]aresample=48000,{chain},adelay={int(at * 1000)}|{int(at * 1000)}[v{k}]')
+        fl.append(''.join(f'[v{i}]' for i in range(len(items))) + f'amix=inputs={len(items)}:normalize=0:duration=longest,apad,atrim=0:{total:.2f}[m]')
+        out = os.path.join(wk, name)
+        run(['ffmpeg', '-v', 'error', '-y'] + ins + ['-filter_complex', ';'.join(fl), '-map', '[m]', '-ar', '48000', out])
+        return out
+    vo = track([(os.path.join(media, L['a']), L['t0'], 'pan=stereo|c0=c0|c1=c0') for L in tl], 'vo.wav')
     sfx = spec.get('sfx') or []
-    for s in sfx:
-        ins += ['-i', os.path.join(media, s['a'])]
-        fl.append(f'[{k}:a]aresample=48000,aformat=channel_layouts=stereo,volume={s.get("gain", 0.8)},adelay={int(s["t"] * 1000)}|{int(s["t"] * 1000)}[v{k}]')
-        k += 1
-    mix = ''.join(f'[v{i}]' for i in range(k))
-    fl.append(f'{mix}amix=inputs={k}:normalize=0:duration=longest,apad,atrim=0:{total:.2f}[m]')
-    raw = os.path.join(wk, 'mix.wav')
-    run(['ffmpeg', '-v', 'error', '-y'] + ins + ['-filter_complex', ';'.join(fl), '-map', '[m]', '-ar', '48000', raw])
-    g = -14 - lufs(raw)
-    out = os.path.join(wk, 'mix14.wav')
-    run(['ffmpeg', '-v', 'error', '-y', '-i', raw, '-af', f'volume={g:.2f}dB,alimiter=limit=0.89:level=false', out])
-    return out
+    sx = track([(os.path.join(media, s['a']), s['t'], f'aformat=channel_layouts=stereo,volume={s.get("gain", 0.8)}') for s in sfx], 'sx.wav') if sfx else None
+    bed = os.path.join(amb, 'amb-%s.wav' % spec.get('amb', 'city')) if amb else None
+    return master(vo, os.path.join(wk, 'mix14.wav'), total, bed=bed if bed and os.path.exists(bed) else None, extra=sx)
 
 
 # ---------- разметка реплик ----------
@@ -234,6 +230,10 @@ def timeline(spec, media, model):
             L['w'], q = align(model, p, L['en'])
             print('  %s: распознано %d%% слов' % (L['a'], round(q * 100)))
         e, dur = env(p)
+        lead = L['w'][0][0] if L['w'] else 0
+        sp = min(dur, L['w'][-1][1] + 0.12) if L['w'] else dur   # конец голоса, а не файла (хвост тишины не ждём)
+        if tl:
+            t -= lead
         words = [w[2] for w in L['w']]
         en_s, ru_s = sents(L['en']), sents(ru_clean(L['ru']))
         ws = word_sent(words)
@@ -241,8 +241,8 @@ def timeline(spec, media, model):
         if len(ru_s) != nS:   # не совпало число предложений — перевод целиком
             ru_s = [ru_clean(L['ru'])]
             ws = [0] * len(words)
-        tl.append(dict(L, t0=t, dur=dur, env=e, words=words, ws=ws, ru_s=ru_s, ch=chunks(words)))
-        t += dur + GAP
+        tl.append(dict(L, t0=t, dur=sp, env=e, words=words, ws=ws, ru_s=ru_s, ch=chunks(words)))
+        t += sp + GAP
     return tl, t - GAP
 
 
@@ -457,14 +457,15 @@ def main():
     ap.add_argument('--fonts')
     ap.add_argument('--model')
     ap.add_argument('--out', default='.')
+    ap.add_argument('--amb', help='папка из tools/amb_make.py — фон места (spec.amb); нет — тихий «воздух»')
     a = ap.parse_args()
     spec = json.load(open(a.spec, encoding='utf8'))
     if spec['mode'] == 'guest':
         spec.setdefault('intro', spec.get('ult', 1.9) + 0.25)
     tl, end = timeline(spec, a.media, a.model)
-    total = end + spec.get('outro', 1.4)
+    total = end + spec.get('outro', 1.2)
     wk = tempfile.mkdtemp(prefix='ttg_')
-    aud = build_audio(spec, a.media, tl, total, wk)
+    aud = build_audio(spec, a.media, tl, total, wk, a.amb)
     R = (Mini if spec['mode'] == 'mini' else Guest)(spec, a.media, a.fonts, tl)
     os.makedirs(a.out, exist_ok=True)
     out = os.path.join(a.out, spec['id'] + '.mp4')

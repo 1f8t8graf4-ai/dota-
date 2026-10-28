@@ -390,7 +390,7 @@ def build(spec, base_dir, out, mdir, amb):
     if ult:
         SX.append((os.path.join(adir, ult['sx']), HIT, 0))
     page = os.path.join(HERE, '..', 'snd', 'kino', 'page.mp3')
-    LS = []
+    LS, nxt = [], None
     for ln in spec['lines']:
         words = ln['en'].replace("'", '’').split()
         if 'w' not in ln:   # нет времени слов — по длине слова внутри голоса (хуже; лучше распознать)
@@ -399,23 +399,27 @@ def build(spec, base_dir, out, mdir, amb):
             a, ln['w'] = s0, []
             for x in wt:
                 b = a + (s1 - s0) * x / sum(wt)
-                ln['w'].append([round(a - s0, 2), round(b - s0, 2)])
+                ln['w'].append([round(a, 2), round(b, 2)])   # от начала файла — голос ставится с начала файла
                 a = b
         if len(words) != len(ln['w']):
             sys.exit('слов %d, а времени %d: %s' % (len(words), len(ln['w']), ln['en']))
+        if nxt is not None:
+            t = nxt - ln['w'][0][0]      # следующий голос — через паузу после конца прошлого (у примеров ≤ 0,5 с)
         lay = layout(ln, 86 if dialog else 58)
         Wt = [(w, t + a, t + b, is_kw(w, ln.get('kw', []))) for w, (a, b) in zip(words, ln['w'])]
         end = t + ln['w'][-1][1]
-        hold = spec.get('hold', 1.25) + .02 * len(ln['ru']) + (.35 if ln.get('note') else 0)
+        # перевод виден, пока идёт голос; ждём сверху, только если перевод не успеть прочесть (~33 знака в секунду)
+        hold = spec.get('hold', .3) + max(0, len(ln['ru']) / 33 - (end - t)) + (.55 if ln.get('note') else 0)
         LS.append(dict(ln=ln, lay=lay, W=Wt, t0=t, end=end, pin=t - .32, note=ln.get('note'),
                        by=ln['by'], to=ln.get('to'), kill=ln.get('kill')))
         VO.append((os.path.join(adir, ln['a']), t))
         SX.append((page, t - .32, -9))
-        t = end + hold + .32
+        nxt = end + hold + .32
+    t = nxt
     E = spec.get('end')
     ENDT = t - .32
     SX.append((page, ENDT, -9))
-    DUR = t + 2.4
+    DUR = t + 1.6
     for i, L in enumerate(LS):
         L['base'], L['pad'] = paper_base(L['lay']['ph'], 11 + i * 7)
         L['ang'] = (-1.6, 1.3, -1.1, 1.7, -1.4, 1.0)[i % 6]
@@ -646,17 +650,11 @@ def build(spec, base_dir, out, mdir, amb):
         fl.append(f'[{i}:a]aresample=48000,aformat=channel_layouts=stereo,volume={db}dB,adelay={ms}|{ms}[s{i}]')
     fl.append(''.join(f'[s{i}]' for i in range(len(SX))) + f'amix=inputs={len(SX)}:normalize=0,apad,atrim=0:{DUR:.2f}[o]')
     run(['ffmpeg', '-y', '-v', 'error', *ins, '-filter_complex', ';'.join(fl), '-map', '[o]', '-c:a', 'pcm_s16le', 'sx.wav'], cwd=wk)
-    Lv = lufs(os.path.join(wk, 'vo.wav'))
+    # голос сжат, фон места всё время на ~22 дБ тише голоса, без тишины (tools/tt_audio.py)
+    from tt_audio import master
     place = spec.get('amb', 'city')
-    bed, ir = os.path.join(amb, f'amb-{place}.wav'), os.path.join(amb, f'ir-{place}.wav')
-    gb = (Lv - 26) - lufs(bed)   # фон — на 26 дБ тише голоса: еле слышно, лишь бы не пустота
-    mix = (f"[0:a]asplit=2[vd][vr];[1:a]aformat=channel_layouts=stereo[irs];[vr][irs]afir=gtype=gn,volume=0.18,lowpass=f=5200[vrv];"
-           f"[vd][vrv]amix=inputs=2:normalize=0[voc];[voc]asplit=2[voc1][sc];"
-           f"[2:a]volume={gb:.2f}dB,aformat=channel_layouts=stereo,atrim=0:{DUR:.2f},afade=t=in:d=0.8,afade=t=out:st={DUR - .9:.2f}:d=0.9[bd];"
-           f"[bd][sc]sidechaincompress=threshold=0.02:ratio=5:attack=20:release=500[bdd];"
-           f"[voc1][bdd][3:a]amix=inputs=3:normalize=0,atrim=0:{DUR:.2f}[o]")
-    run(['ffmpeg', '-y', '-v', 'error', '-i', 'vo.wav', '-i', ir, '-stream_loop', '-1', '-i', bed, '-i', 'sx.wav',
-         '-filter_complex', mix, '-map', '[o]', '-c:a', 'pcm_s16le', 'mix.wav'], cwd=wk)
+    master(os.path.join(wk, 'vo.wav'), os.path.join(wk, 'mix.wav'), DUR, bed=os.path.join(amb, f'amb-{place}.wav'),
+           extra=os.path.join(wk, 'sx.wav'), ir=os.path.join(amb, f'ir-{place}.wav'), wet=.18)
     g = -14 - lufs(os.path.join(wk, 'mix.wav'))
     dst = os.path.join(os.path.abspath(out), spec['id'] + '.mp4')
     run(['ffmpeg', '-y', '-v', 'error', '-i', 'v.mp4', '-i', 'mix.wav', '-filter_complex',

@@ -139,8 +139,10 @@ def build(spec, base_dir, out, mdir, amb):
             order.append(k)
     SIDE = {order[0]: 0, order[1] if len(order) > 1 else order[0]: 1}
     # --- время: крючок, потом реплики подряд ---
-    HOOK = 1.6
-    t = HOOK + .35
+    HOOK = spec.get('hook_t', 1.0)   # крючок короче: у примеров голос идёт почти с первой секунды
+    t = HOOK + .1
+    gap = spec.get('gap', .35)       # пауза между репликами (tools/tt_audio.py: у примеров ≤ 0,5 с)
+    nxt = None
     VO, SX, LS = [], [], []
     pop = os.path.join(HERE, '..', 'snd', 'kino', 'tap.mp3')
     for ln in spec['lines']:
@@ -153,15 +155,19 @@ def build(spec, base_dir, out, mdir, amb):
                 b = a + (s1 - s0) * x / sum(wt)
                 ln['w'].append([round(a, 2), round(b, 2)])
                 a = b
+        if nxt is not None:
+            t = nxt - ln['w'][0][0]      # следующий голос — через gap после конца прошлого, а не после конца файла
         L = dict(by=ln['by'], ru=ln['ru'], note=ln.get('note'), words=words, t0=t, pin=t - .3)
         L['W'] = [(w, t + a, t + b, is_kw(w, ln.get('kw', []))) for w, (a, b) in zip(words, ln['w'])]
         L['end'] = t + ln['w'][-1][1]
         LS.append(L)
         VO.append((os.path.join(adir, ln['a']), t))
         SX.append((pop, t - .3, -14))
-        t = L['end'] + 1.0 + .018 * len(ln['ru']) + (.4 if ln.get('note') else 0)
+        # пузырь с переводом остаётся в чате — ждать, пока дочитают, не нужно; плашке «что значит» — чуть времени
+        nxt = L['end'] + gap + (.25 if ln.get('note') else 0)
+    t = nxt
     ENDT = t
-    DUR = ENDT + 2.6
+    DUR = ENDT + 1.8
     for L in LS:
         L['B'] = Bubble(L, HS[L['by']], SIDE.get(L['by'], 0))
     # --- картинка: фон — места обоих героев, слева и справа, мягко; шапка — кружки ---
@@ -327,17 +333,11 @@ def build(spec, base_dir, out, mdir, amb):
         fl.append(f'[{i}:a]aresample=48000,aformat=channel_layouts=stereo,volume={db}dB,adelay={ms}|{ms}[s{i}]')
     fl.append(''.join(f'[s{i}]' for i in range(len(SX))) + f'amix=inputs={len(SX)}:normalize=0,apad,atrim=0:{DUR:.2f}[o]')
     run(['ffmpeg', '-y', '-v', 'error', *ins, '-filter_complex', ';'.join(fl), '-map', '[o]', '-c:a', 'pcm_s16le', 'sx.wav'], cwd=wk)
-    Lv = lufs(os.path.join(wk, 'vo.wav'))
+    # голос сжат, фон места всё время на ~22 дБ тише голоса, без тишины (tools/tt_audio.py)
+    from tt_audio import master
     place = spec.get('amb', 'city')
-    bed, ir = os.path.join(amb, f'amb-{place}.wav'), os.path.join(amb, f'ir-{place}.wav')
-    gb = (Lv - 28) - lufs(bed)
-    mix = (f"[0:a]asplit=2[vd][vr];[1:a]aformat=channel_layouts=stereo[irs];[vr][irs]afir=gtype=gn,volume=0.12,lowpass=f=5200[vrv];"
-           f"[vd][vrv]amix=inputs=2:normalize=0[voc];[voc]asplit=2[voc1][sc];"
-           f"[2:a]volume={gb:.2f}dB,aformat=channel_layouts=stereo,atrim=0:{DUR:.2f},afade=t=in:d=0.8,afade=t=out:st={DUR - .9:.2f}:d=0.9[bd];"
-           f"[bd][sc]sidechaincompress=threshold=0.02:ratio=5:attack=20:release=500[bdd];"
-           f"[voc1][bdd][3:a]amix=inputs=3:normalize=0,atrim=0:{DUR:.2f}[o]")
-    run(['ffmpeg', '-y', '-v', 'error', '-i', 'vo.wav', '-i', ir, '-stream_loop', '-1', '-i', bed, '-i', 'sx.wav',
-         '-filter_complex', mix, '-map', '[o]', '-c:a', 'pcm_s16le', 'mix.wav'], cwd=wk)
+    master(os.path.join(wk, 'vo.wav'), os.path.join(wk, 'mix.wav'), DUR, bed=os.path.join(amb, f'amb-{place}.wav'),
+           extra=os.path.join(wk, 'sx.wav'), ir=os.path.join(amb, f'ir-{place}.wav'), wet=.12)
     g = -14 - lufs(os.path.join(wk, 'mix.wav'))
     dst = os.path.join(os.path.abspath(out), spec['id'] + '-chat.mp4')
     run(['ffmpeg', '-y', '-v', 'error', '-i', 'v.mp4', '-i', 'mix.wav', '-filter_complex',
