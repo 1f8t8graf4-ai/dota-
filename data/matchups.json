@@ -1,0 +1,791 @@
+{
+ "artist": {
+  "n": "Violet",
+  "ru": "Вайолет",
+  "tips": [
+   {
+    "ab": "Still Life",
+    "abr": "натюрморт",
+    "t": "Бьёт и в конце станит, пока смотрит на тебя. Забеги за стену — набросок не дорисуется.",
+    "q": "as long as you are looking at them",
+    "key": "ability_artist_tether_desc"
+   },
+   {
+    "ab": "Abstract Landscape",
+    "abr": "абстрактный пейзаж",
+    "t": "Круг чернил блокирует обзор, а за выход из него — урон и эффекты. Не заходи и не выходи суетой.",
+    "q": "Enemies inside are revealed, and leaving causes them to take",
+    "key": "ability_artist_bamboogrove_desc"
+   }
+  ]
+ },
+ "astro": {
+  "n": "Holliday",
+  "ru": "Холлидей",
+  "tips": [
+   {
+    "ab": "Powder Keg",
+    "abr": "пороховая бочка",
+    "t": "Бочка взрывается раньше от выстрела или удара — не стой рядом, когда катит её в драку.",
+    "q": "The barrel can be detonated early by being",
+    "key": "ability_explosive_barrel_desc"
+   },
+   {
+    "ab": "Crackshot",
+    "abr": "меткий выстрел",
+    "t": "Её хедшоты не теряют урон на дистанции — укрытие надёжнее, чем просто отбежать.",
+    "q": "Crackshot ignores range damage fall-off",
+    "key": "ability_crackshot_desc"
+   }
+  ]
+ },
+ "atlas": {
+  "n": "Abrams",
+  "ru": "Абрамс",
+  "tips": [
+   {
+    "ab": "Shoulder Charge",
+    "abr": "таранный рывок",
+    "t": "Вжатый в стену чардж станит — не прижимайся к стенам, когда он разгоняется.",
+    "q": "Pushing a hero into a wall",
+    "key": "citadel_ability_bull_charge_desc"
+   },
+   {
+    "ab": "Siphon Life",
+    "abr": "высасывание жизни",
+    "t": "Рядом с ним в упор он лечится за твой счёт — держи дистанцию.",
+    "q": "Drain health from nearby enemies",
+    "key": "citadel_ability_bull_heal_desc"
+   }
+  ]
+ },
+ "baba": {
+  "n": "Baba",
+  "ru": "Баба Яга",
+  "tips": [
+   {
+    "ab": "Feed The Birds",
+    "abr": "накормить птиц",
+    "t": "Пока она «кормит хлебом» перед собой — уходи из конуса: в конце пташки превратят в голубя.",
+    "q": "Cover targets in front of you with",
+    "key": "ability_baba_ultimate_2_desc"
+   }
+  ]
+ },
+ "bebop": {
+  "n": "Bebop",
+  "ru": "Бебоп",
+  "tips": [
+   {
+    "ab": "Grapple Arm",
+    "abr": "крюк",
+    "t": "Крюк цепляет первого на пути — встань за крипами, и он утащит не тебя.",
+    "q": "the first character it hits",
+    "key": "citadel_ability_hook_desc"
+   },
+   {
+    "ab": "Sticky Bomb",
+    "abr": "липкая бомба",
+    "t": "Бомба липнет и рвёт всех вокруг носителя — отойди от своих, пока тикает.",
+    "q": "explodes after a delay",
+    "key": "citadel_ability_sticky_bomb_desc"
+   }
+  ]
+ },
+ "bookworm": {
+  "n": "Paige",
+  "ru": "Пейдж",
+  "tips": [
+   {
+    "ab": "Bookwyrm",
+    "abr": "книжный червь",
+    "t": "Дракон летит вперёд и оставляет горящий след — не стой на линии и не отступай по ней.",
+    "q": "leaving a burning path in its trail",
+    "key": "ability_bookworm_dragonfire_desc"
+   },
+   {
+    "ab": "Captivating Read",
+    "abr": "захватывающее чтение",
+    "t": "Заряженный круг взрывается с задержкой — сразу выходи из зоны.",
+    "q": "The magic detonates after a delay",
+    "key": "ability_bookworm_aoemagic_desc"
+   }
+  ]
+ },
+ "chessmaster": {
+  "n": "Solomon",
+  "ru": "Соломон",
+  "tips": [
+   {
+    "ab": "Setup Bishop",
+    "abr": "поставить слона",
+    "t": "Слон активирует диагональные клетки под собой — не топчись по доске.",
+    "q": "when stepped on",
+    "key": "ability_chessmaster_throwbishop_desc"
+   },
+   {
+    "ab": "Rook Battery",
+    "abr": "ладья-батарея",
+    "t": "Ладьи отбиваются от стен в обратную сторону — не лови отскок у стены.",
+    "q": "If the rooks hit a wall, they reflect back in the opposite direction",
+    "key": "ability_chessmaster_forkpiece_desc"
+   }
+  ]
+ },
+ "chrono": {
+  "n": "Paradox",
+  "ru": "Парадокс",
+  "tips": [
+   {
+    "ab": "Time Wall",
+    "abr": "стена времени",
+    "t": "Её стена останавливает твои пули — обходи её или бей вплотную.",
+    "q": "enemy projectiles and bullets",
+    "key": "citadel_ability_chrono_time_wall_desc"
+   },
+   {
+    "ab": "Paradoxical Swap",
+    "abr": "парадоксальный обмен",
+    "t": "Меняется с тобой местами одним снарядом — видишь её проекцию, сместись с линии.",
+    "q": "swaps your position with the target enemy hero",
+    "key": "citadel_ability_chrono_swap_desc"
+   }
+  ]
+ },
+ "deadpack": {
+  "n": "Dead Man Danny",
+  "ru": "Дэнни",
+  "tips": [
+   {
+    "ab": "Chimera Mk1",
+    "abr": "джетpack",
+    "t": "Его дайв станит ЕГО, если не заденет ни одного героя — расступись, пусть вмажет в пол.",
+    "q": "If no hero is hit, you stun yourself",
+    "key": "ability_deadpack_rocketeer_desc"
+   },
+   {
+    "ab": "Strix Salvo",
+    "abr": "залп",
+    "t": "Ракеты взрываются при обнаружении врага — не иди по линии залпа.",
+    "q": "upon detecting an enemy",
+    "key": "ability_deadpack_chargeblast_desc"
+   }
+  ]
+ },
+ "doorman": {
+  "n": "Doorman",
+  "ru": "Дормен (The Doorman)",
+  "tips": [
+   {
+    "ab": "Call Bell",
+    "abr": "звонок",
+    "t": "Звонок подрывается раньше от выстрела — не жмись к нему.",
+    "q": "Can be shot to detonate early",
+    "key": "ability_doorman_bomb_desc"
+   },
+   {
+    "ab": "Hotel Guest",
+    "abr": "гость отеля",
+    "t": "В его ульте ты гость отеля: беги к лифту на выход, за просрочку — доплата.",
+    "q": "Failure to check-out on time costs additional",
+    "key": "ability_doorman_hotel_desc"
+   }
+  ]
+ },
+ "drifter": {
+  "n": "Drifter",
+  "ru": "Дрифтер",
+  "tips": [
+   {
+    "ab": "Stalker's Mark",
+    "abr": "метка сталкера",
+    "t": "Пока течёт его метка, он телепортируется тебе за спину — сбей дистанцию или держи спину к стене.",
+    "q": "appear behind their back",
+    "key": "drifter_shadow_mark_desc"
+   },
+   {
+    "ab": "Eternal Night",
+    "abr": "вечная ночь",
+    "t": "Ульт гасит тебе обзор и делает тебя «изолированным» — жми к команде, поодиночке он тебя найдёт.",
+    "q": "severely limiting their vision of other units",
+    "key": "drifter_darkness_desc"
+   }
+  ]
+ },
+ "dynamo": {
+  "n": "Dynamo",
+  "ru": "Динамо",
+  "tips": [
+   {
+    "ab": "Rejuvenating Aurora",
+    "abr": "исцеляющая аура",
+    "t": "Пока читает — лечит себя и всех рядом с ним: разбросай кучу, не бейся в его радиусе.",
+    "q": "to you and any allies nearby",
+    "key": "citadel_ability_nikuman_desc"
+   },
+   {
+    "ab": "Singularity",
+    "abr": "сингулярность",
+    "t": "Сингулярность стягивает и держит — не подставляйся под затягивание, держи дистанцию.",
+    "q": "Create a singularity in your hands",
+    "key": "citadel_ability_self_vacuum_desc"
+   }
+  ]
+ },
+ "familiar": {
+  "n": "Rem",
+  "ru": "Рем",
+  "tips": [
+   {
+    "ab": "Naptime",
+    "abr": "тихий час",
+    "t": "Её взгляд бьёт сквозь стены и пол, в конце — сон. Стена не спасёт: сместись с линии взгляда.",
+    "q": "piercing walls and floors",
+    "key": "ability_familiar_ability01_desc"
+   }
+  ]
+ },
+ "fencer": {
+  "n": "Apollo",
+  "ru": "Аполлон",
+  "tips": [
+   {
+    "ab": "Riposte",
+    "abr": "парирование",
+    "t": "В стойке он отбивает первый удар и становится неуязвим — не бей в лоб, пережди стойку.",
+    "q": "On a successful deflection",
+    "key": "ability_fencer_riposte_desc"
+   },
+   {
+    "ab": "Itani Lo Sahn",
+    "abr": "и-тани ло шань",
+    "t": "Под дальним слэшем ты не действуешь и не лечишься — не стой на линии заряженного удара.",
+    "q": "cannot take action or heal",
+    "key": "ability_fencer_ultimate_desc"
+   }
+  ]
+ },
+ "forge": {
+  "n": "McGinnis",
+  "ru": "Макгиннис",
+  "tips": [
+   {
+    "ab": "Spectral Wall",
+    "abr": "стена-разлом",
+    "t": "Её стену можно разбить ударами в ближнем бою — не упирайся, ударь рукой.",
+    "q": "Can be Destroyed with Melee Attacks",
+    "key": "citadel_ability_fissure_wall_desc"
+   },
+   {
+    "ab": "Heavy Barrage",
+    "abr": "тяжёлый залп",
+    "t": "Ракеты летят в отмеченную точку — сдвинься с места, куда целится.",
+    "q": "home in on a targeted location",
+    "key": "citadel_ability_rocket_barrage_desc"
+   }
+  ]
+ },
+ "frank": {
+  "n": "Victor",
+  "ru": "Виктор",
+  "tips": [
+   {
+    "ab": "Aura of Suffering",
+    "abr": "аура страдания",
+    "t": "Аура жжёт и его самого, и набирает урон с каждым тиком канала — тяни время, не стой в радиусе.",
+    "q": "the longer the ability is channeled, up to a maximum amount",
+    "key": "ability_frank_painaura_desc"
+   },
+   {
+    "ab": "Shocking Reanimation",
+    "abr": "шоковая реанимация",
+    "t": "После «смерти» он недолго готовится и встаёт волной урона — отойди от тела.",
+    "q": "After a brief channel you reanimate",
+    "key": "ability_frank_revive_desc"
+   }
+  ]
+ },
+ "ghost": {
+  "n": "Lady Geist",
+  "ru": "Леди Гейст",
+  "tips": [
+   {
+    "ab": "Life Drain",
+    "abr": "высасывание жизни",
+    "t": "Тянет твоё здоровье, пока видит и ты рядом. Зайди за угол или отбеги — связь рвётся.",
+    "q": "must be in line of sight and within max range",
+    "key": "ability_life_drain_desc"
+   },
+   {
+    "ab": "Soul Exchange",
+    "abr": "обмен душами",
+    "t": "Меняется с тобой уровнем здоровья — не подходи к ней, когда у неё красная полоса.",
+    "q": "Swaps health levels",
+    "key": "ability_health_swap_desc"
+   }
+  ]
+ },
+ "gigawatt": {
+  "n": "Seven",
+  "ru": "Севен",
+  "tips": [
+   {
+    "ab": "Lightning Ball",
+    "abr": "шаровая молния",
+    "t": "Шар летит по прямой и встаёт, упершись в стену, — за укрытием безопасно.",
+    "q": "stops if it hits the world",
+    "key": "citadel_ability_lightning_ball_desc"
+   },
+   {
+    "ab": "Storm Cloud",
+    "abr": "грозовое облако",
+    "t": "В туче урона нет без прямой видимости — спрячься за укрытие, а не беги по открытому.",
+    "q": "Enemies do not take damage when they are out of line-of-sight",
+    "key": "citadel_ability_storm_cloud_desc"
+   }
+  ]
+ },
+ "haze": {
+  "n": "Haze",
+  "ru": "Хейз",
+  "tips": [
+   {
+    "ab": "Sleep Dagger",
+    "abr": "усыпляющий кинжал",
+    "t": "Усыплённый просыпается от первого же урона — пни союзника мгновенно.",
+    "q": "Sleeping targets wake up shortly after being damaged",
+    "key": "ability_sleep_dagger_desc"
+   }
+  ]
+ },
+ "hornet": {
+  "n": "Vindicta",
+  "ru": "Виндикта",
+  "tips": [
+   {
+    "ab": "Stake",
+    "abr": "кол",
+    "t": "Кол приковывает тебя к месту, где воткнулся. Не стой рядом с воткнутым колом — цепь короткая.",
+    "q": "Enemy movement is restricted to the length of the tether",
+    "key": "citadel_ability_hornet_chain_desc"
+   },
+   {
+    "ab": "Assassinate",
+    "abr": "убийство",
+    "t": "Снайп полностью заряжается не сразу — первые секунды урон частичный, дёргайся рывками.",
+    "q": "Deal only partial damage until fully charged",
+    "key": "citadel_ability_hornet_snipe_desc"
+   }
+  ]
+ },
+ "inferno": {
+  "n": "Infernus",
+  "ru": "Инфернус",
+  "tips": [
+   {
+    "ab": "Concussive Combustion",
+    "abr": "контузящее горение",
+    "t": "Живая бомба: прервать нельзя — просто беги от него, пока тикает.",
+    "q": "Concussive Combustion cannot be interrupted",
+    "key": "ability_fire_bomb_desc"
+   },
+   {
+    "ab": "Flame Dash",
+    "abr": "огненный рывок",
+    "t": "Рывок оставляет горящий след — не отступай по его траектории.",
+    "q": "leaving a flaming trail",
+    "key": "ability_flame_dash_desc"
+   }
+  ]
+ },
+ "kelvin": {
+  "n": "Kelvin",
+  "ru": "Кельвин",
+  "tips": [
+   {
+    "ab": "Arctic Beam",
+    "abr": "арктический луч",
+    "t": "Луч замораживает сильнее, чем дольше ты в нём — сразу сдвинься, не стой в потоке.",
+    "q": "the longer you sustain the beam on them",
+    "key": "ability_icebeam_desc"
+   },
+   {
+    "ab": "Frozen Shelter",
+    "abr": "ледяной купол",
+    "t": "Купол непробиваем — не жги патроны, переждите или разбегитесь.",
+    "q": "impenetrable dome",
+    "key": "ability_ice_dome_desc"
+   }
+  ]
+ },
+ "krill": {
+  "n": "Mo & Krill",
+  "ru": "Мо и Крилл",
+  "tips": [
+   {
+    "ab": "Burrow",
+    "abr": "подкоп",
+    "t": "Под землёй он ускоряется, но урон от героев гасит буст — бей по холмику.",
+    "q": "Damage from enemy heroes will reduce the speed bonus",
+    "key": "ability_burrow_desc"
+   },
+   {
+    "ab": "Combo",
+    "abr": "комбо",
+    "t": "Ульт держит на месте станом весь канал — не подставляйся в упор, разрывай дистанцию заранее.",
+    "q": "stunning them",
+    "key": "ability_ult_combo_desc"
+   }
+  ]
+ },
+ "lash": {
+  "n": "Lash",
+  "ru": "Лэш",
+  "tips": [
+   {
+    "ab": "Death Slam",
+    "abr": "смертельный слэм",
+    "t": "Хлысты не цепляются тех, кто вне прямой видимости — за укрытием ты неуязвим для связки.",
+    "q": "not in line of sight",
+    "key": "citadel_ability_lash_ultimate_desc"
+   }
+  ]
+ },
+ "magician": {
+  "n": "Sinclair",
+  "ru": "Синклер",
+  "tips": [
+   {
+    "ab": "Rabbit Hex",
+    "abr": "кроличье проклятие",
+    "t": "Кролик не может почти ничего — но способности НЕ сбиваются: дожимай канал, даже обернувшись.",
+    "q": "Hex does not interrupt abilities",
+    "key": "ability_magician_animalhexarea_desc"
+   },
+   {
+    "ab": "Spectral Assistant",
+    "abr": "призрачный ассистент",
+    "t": "Она телепортируется к ассистенту — следи за обеими точками, а не только за ней.",
+    "q": "to swap positions with your",
+    "key": "ability_magician_cloneturret_desc"
+   }
+  ]
+ },
+ "mirage": {
+  "n": "Mirage",
+  "ru": "Мираж",
+  "tips": [
+   {
+    "ab": "Traveler",
+    "abr": "путешественник",
+    "t": "Его телепорт сбивается любым уроном в момент ожидания — пни, чтобы отменить.",
+    "q": "Taking damage during the wait period causes the teleport to be interrupted",
+    "key": "mirage_teleport_desc"
+   },
+   {
+    "ab": "Dust Devil",
+    "abr": "смерч",
+    "t": "Смерч поднимает в воздух — уйди с пути.",
+    "q": "lifting them up",
+    "key": "mirage_tornado_desc"
+   }
+  ]
+ },
+ "nano": {
+  "n": "Calico",
+  "ru": "Калико",
+  "tips": [
+   {
+    "ab": "Ava",
+    "abr": "тень-кошка",
+    "t": "В тенеформе её бонус скорости сбрасывается попаданием — клади урон, чтобы не убежала.",
+    "q": "Taking damage from an enemy hero resets your bonus move speed",
+    "key": "ability_nano_catform_desc"
+   }
+  ]
+ },
+ "necro": {
+  "n": "Graves",
+  "ru": "Грейвс",
+  "tips": [
+   {
+    "ab": "Grasping Hands",
+    "abr": "хватающие руки",
+    "t": "Линия рук бьёт и вешает эффекты проходящих — обойди стену, не проходи сквозь.",
+    "q": "Enemies who pass through",
+    "key": "ability_necro_zombiewall_desc"
+   }
+  ]
+ },
+ "nurse": {
+  "n": "Nurse Harrow",
+  "ru": "Сестра Харроу",
+  "tips": [
+   {
+    "ab": "Lurking Terrors",
+    "abr": "крадущиеся ужасы",
+    "t": "Не смотри на её открытую сумку: взгляд копит ужас, отрубает стамины и дэши, на пике — паника. Отвернись или выбеги.",
+    "q": "cannot use stamina or movement abilities",
+    "key": "ability_nurse_fear_desc"
+   },
+   {
+    "ab": "Leech Therapy",
+    "abr": "пиявкотерапия",
+    "t": "Пиявки съедают длительность твоих баффов — не твой момент для ульты под ними.",
+    "q": "eating away at the duration of enemy buffs",
+    "key": "ability_nurse_leech_therapy_desc"
+   }
+  ]
+ },
+ "orion": {
+  "n": "Grey Talon",
+  "ru": "Грей Талон",
+  "tips": [
+   {
+    "ab": "Charged Shot",
+    "abr": "заряженный выстрел",
+    "t": "Заряженная стрела пробивает насквозь — заслон из крипов не спасает, уходи с линии.",
+    "q": "pierces through enemies",
+    "key": "ability_charged_shot_desc"
+   },
+   {
+    "ab": "Rain of Arrows",
+    "abr": "дождь стрел",
+    "t": "В полёте у него бонус урона и мультивыстрел — не перестреливайся с ним, пока он вверху.",
+    "q": "While airborne, you gain",
+    "key": "ability_power_jump_desc"
+   }
+  ]
+ },
+ "priest": {
+  "n": "Venator",
+  "ru": "Венатор",
+  "tips": [
+   {
+    "ab": "Gutshot",
+    "abr": "выстрел в упор",
+    "t": "У стены дробовик бьёт и станит сильнее — не прижимайся к стенам в дуэли с ним.",
+    "q": "Enemies near a wall",
+    "key": "ability_priest_knockback_desc"
+   },
+   {
+    "ab": "Consecrating Grenade",
+    "abr": "освящённая граната",
+    "t": "Пока горишь от гранаты — твоё лечение в минусе: потушись и не лечись впустую.",
+    "q": "reduced healing",
+    "key": "ability_priest_flashbang_desc"
+   }
+  ]
+ },
+ "punkgoat": {
+  "n": "Billy",
+  "ru": "Билли",
+  "tips": [
+   {
+    "ab": "Chain Gang",
+    "abr": "цепочка",
+    "t": "Цепь рвётся, если скрыться из его видимости — сразу за угол.",
+    "q": "The chain breaks if you lose line of sight",
+    "key": "ability_punkgoat_tether_desc"
+   }
+  ]
+ },
+ "ratking": {
+  "n": "Rat King",
+  "ru": "Крысиный король",
+  "tips": [
+   {
+    "ab": "Rat Swarm",
+    "abr": "крысиный рой",
+    "t": "Прицепившуюся крысу сбрасывает дэш — дэшнись, когда прилипла.",
+    "q": "ground or air dash",
+    "key": "ability_ratking_ratnibble_desc"
+   },
+   {
+    "ab": "Scrap Grenade",
+    "abr": "граната из хлама",
+    "t": "Её гранату можно отбить ударом в ближнем бою — отлетает в сторону.",
+    "q": "The grenade can be meleed to knock it away",
+    "key": "ability_ratking_scrap_grenade_desc"
+   }
+  ]
+ },
+ "shiv": {
+  "n": "Shiv",
+  "ru": "Шив",
+  "tips": [
+   {
+    "ab": "Serrated Knives",
+    "abr": "зубчатые ножи",
+    "t": "Каждый нож стакает и освежает кровотечение — не разменивайся под ножами, стаки копятся.",
+    "q": "causing the bleed to increase per stack",
+    "key": "citadel_ability_shiv_dagger_desc"
+   }
+  ]
+ },
+ "synth": {
+  "n": "Pocket",
+  "ru": "Покет",
+  "tips": [
+   {
+    "ab": "Flying Cloak",
+    "abr": "летающий плащ",
+    "t": "Она телепортируется к плащу — следи, куда он летит, она прыгнет туда.",
+    "q": "Launch a sentient cloak that",
+    "key": "synth_plasma_flux_desc"
+   }
+  ]
+ },
+ "tengu": {
+  "n": "Ivy",
+  "ru": "Айви",
+  "tips": [
+   {
+    "ab": "Stone Form",
+    "abr": "каменная форма",
+    "t": "В камне она непробиваема и бьёт станом вокруг — отойди и не жги патроны.",
+    "q": "impervious stone",
+    "key": "citadel_ability_tengu_stone_form_desc"
+   }
+  ]
+ },
+ "unicorn": {
+  "n": "Celeste",
+  "ru": "Селеста",
+  "tips": [
+   {
+    "ab": "Dazzling Trick",
+    "abr": "ослепительный трюк",
+    "t": "Её призму нельзя ломать рядом с собой: разрушение вешает тишину ТЕБЕ.",
+    "q": "If the barrier is destroyed, it silences nearby enemies",
+    "key": "ability_unicorn_prismaticguard_desc"
+   },
+   {
+    "ab": "Radiant Daggers",
+    "abr": "сияющие кинжалы",
+    "t": "Луч с неба взрывается не сразу — сойди с метки, пока он формируется.",
+    "q": "the beam will fully form, causing an explosion",
+    "key": "ability_unicorn_luminousstrike_desc"
+   },
+   {
+    "ab": "Shining Wonder",
+    "abr": "сияющее чудо",
+    "t": "Шар света перескакивает между целями — расступись с союзниками.",
+    "q": "bounces to the enemies within range",
+    "key": "ability_unicorn_dazzlingorb_desc"
+   }
+  ]
+ },
+ "vampirebat": {
+  "n": "Mina",
+  "ru": "Мина",
+  "tips": [
+   {
+    "ab": "Sanguine Retreat",
+    "abr": "кровавый отход",
+    "t": "Миг рассеивания — она неуязвима: не трать выстрелы, подожди материализации.",
+    "q": "Briefly disperse",
+    "key": "ability_vampirebat_batblink_desc"
+   }
+  ]
+ },
+ "viper": {
+  "n": "Vyper",
+  "ru": "Вайпер",
+  "tips": [
+   {
+    "ab": "Petrifying Bola",
+    "abr": "окаменяющая бола",
+    "t": "Окаменевший блокирует ВЕСЬ урон (и сам бездействует) — не жги ульчистые выстрелы в камень.",
+    "q": "block all damage, but cannot take actions",
+    "key": "ability_viper_petrifybola_desc"
+   },
+   {
+    "ab": "Lethal Venom",
+    "abr": "смертельный яд",
+    "t": "Яд бьёт тем сильнее, чем меньше у тебя здоровья — лечись заранее, не на откате.",
+    "q": "increased by the target's missing health",
+    "key": "ability_viper_venom_desc"
+   }
+  ]
+ },
+ "viscous": {
+  "n": "Viscous",
+  "ru": "Вискоус",
+  "tips": [
+   {
+    "ab": "Puddle Punch",
+    "abr": "кулак из лужи",
+    "t": "Его кулак можно парировать — лови тайминг.",
+    "q": "Materialize a fist in the world",
+    "key": "viscous_telepunch_desc"
+   },
+   {
+    "ab": "Goo Ball",
+    "abr": "шар из слизи",
+    "t": "В шаре у него большие резисты — не дотюнивай его патронами, отойди.",
+    "q": "resist, bounces off walls",
+    "key": "viscous_goo_bowling_ball_desc"
+   }
+  ]
+ },
+ "warden": {
+  "n": "Warden",
+  "ru": "Уорден",
+  "tips": [
+   {
+    "ab": "Binding Word",
+    "abr": "связующее слово",
+    "t": "Повесил проклятие — сразу уходи с места: не сдвинулся вовремя — урон и обездвиживание.",
+    "q": "move away from their initial position",
+    "key": "ability_warden_lock_down_desc"
+   },
+   {
+    "ab": "Last Stand",
+    "abr": "последний рубеж",
+    "t": "В канале у него огромные резисты — не расстреливай в лоб, разорви дистанцию.",
+    "q": "you have greatly increased",
+    "key": "ability_warden_riot_protocol_desc"
+   }
+  ]
+ },
+ "werewolf": {
+  "n": "Silver",
+  "ru": "Сильвер",
+  "tips": [
+   {
+    "ab": "Entangling Bola",
+    "abr": "опутывающая бола",
+    "t": "Бола отрезает дэши и стамину — дёргайся ДО броска, после — только бег.",
+    "q": "preventing movement abilities or stamina",
+    "key": "ability_werewolf_netshot_desc"
+   }
+  ]
+ },
+ "wraith": {
+  "n": "Wraith",
+  "ru": "Рейф",
+  "tips": [
+   {
+    "ab": "Telekinesis",
+    "abr": "телекинез",
+    "t": "Поднимет в воздух и шваркнёт в точку — не жмись к ней вплотную.",
+    "q": "Lift an enemy hero into the air",
+    "key": "citadel_ability_psychic_lift_desc"
+   }
+  ]
+ },
+ "yamato": {
+  "n": "Yamato",
+  "ru": "Ямато",
+  "tips": [
+   {
+    "ab": "Shadow Transformation",
+    "abr": "теневая форма",
+    "t": "В тени она иммунна к статусам и с большими резистами — не трать контроль, отойди.",
+    "q": "immunity to negative status effects",
+    "key": "citadel_ability_infinity_slash_desc"
+   }
+  ]
+ }
+}
