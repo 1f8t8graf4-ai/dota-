@@ -363,6 +363,48 @@ html[data-skin="graphs"] .land{border:0;background:linear-gradient(90deg,rgba(42
 }
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* разбор матча как у RUINER */
+.vd{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:5px;font:700 11px/1 var(--f);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;background:var(--s3);color:#d6d1c7;cursor:help}
+.vd.h{background:var(--ac);color:#140b00}.vd.b{background:#0f2440;color:#8cc4ff}.vd.a{background:#3a2a07;color:var(--ac)}.vd.r{background:#3a1212;color:#ff8a80}
+.vd.big{height:auto;padding:10px 16px;font:700 26px/1 var(--h);letter-spacing:.04em;border-radius:8px}
+.vdc{margin-top:16px;display:grid;gap:10px}
+.vdc>p{margin:0;font-size:14.5px}
+.vdb{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.vds{display:flex;align-items:center;gap:10px}.vds b{font-size:30px;font-weight:700}.vds small{color:var(--mu);font-size:12px;line-height:1.3}
+.why summary{cursor:pointer;color:var(--mu);font-size:13px}.why p{margin:8px 0 0;color:var(--mu);font-size:13px}
+.rgs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:12px}
+@media (max-width:900px){.rgs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.rg{position:relative;background:var(--s1);border:1px solid var(--ln);border-radius:var(--r);padding:12px 8px 10px;display:grid;justify-items:center;gap:2px;text-align:center;min-width:0}
+.rg svg{width:64px;height:64px;transform:rotate(-90deg)}
+.rg circle{fill:none;stroke:var(--s3);stroke-width:6}.rg circle.v{stroke:var(--ac);stroke-linecap:round}
+.rg b{position:absolute;top:31px;left:0;right:0;font:700 14px/1 var(--m)}
+.rg b.sm{font-size:11.5px}.rg span{font:600 12px/1.2 var(--f);margin-top:4px}.rg small{color:var(--mu);font-size:11px}
+.dl{display:grid;margin-top:12px;border-top:1px solid var(--ln)}
+.dr{display:grid;grid-template-columns:24px 44px minmax(0,1fr);gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln)}
+.dr .d{position:static;transform:none;display:block;width:22px;height:22px;border-radius:50%;background:var(--loss);color:#fff;font:700 11px/22px var(--m);text-align:center;font-style:normal}
+.dr>span:last-child{display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:8px;align-items:center}
+.dr .hi.s{grid-row:span 2;width:28px;height:28px}
+.dr b{font-size:13.5px}.dr small{color:var(--mu);font-size:12px}
+.map .hd{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;overflow:hidden;background:var(--s3);box-shadow:0 0 0 2px var(--us);transition:left .25s linear,top .25s linear,opacity .2s}
+.map .hd.en{box-shadow:0 0 0 2px var(--en)}.map .hd.me{width:32px;height:32px;z-index:2;box-shadow:0 0 0 3px var(--us),0 0 12px var(--us)}
+.map .hd.dead{opacity:.25}.map .hd img{width:100%;height:100%;object-fit:cover}
+.msl{display:flex;align-items:center;gap:12px;margin:10px 0 6px}.msl input{flex:1;accent-color:var(--ac)}.msl b{font-size:13px;min-width:44px;text-align:right}
+.tln{position:relative;height:58px;margin:4px 6px 0;border-bottom:1px solid var(--ln2)}
+.tln>i{position:absolute;bottom:8px;transform:translateX(-50%)}.tln>i img{width:28px;height:28px;border-radius:6px;background:var(--s3);box-shadow:0 0 0 1px var(--ln2)}
+.tln>i:nth-child(even){bottom:26px}
+.tlx{position:absolute;left:0;right:0;top:100%}.tlx span{position:absolute;transform:translateX(-50%);top:4px;font:600 10.5px/1 var(--m);color:var(--mu2)}
+.tln+.tlx{display:none}
+.card.pad .tln{margin-bottom:18px}
+.nms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.nm{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;background:var(--s1);border:1px solid var(--ln);border-left:3px solid var(--us);border-radius:10px;padding:10px 12px}
+.nm.en{border-left-color:var(--en)}.nm.me{background:rgba(255,176,32,.07)}
+.nm .hi.s{width:34px;height:34px}.nm b{display:block;font:700 14px/1.2 var(--h);letter-spacing:.04em;text-transform:uppercase}.nm small{color:var(--mu);font-size:12px}
+.md{display:inline-block;margin:2px 4px 0 0;padding:2px 6px;border-radius:4px;background:var(--acd);color:var(--ac);font:700 10px/1.2 var(--f);letter-spacing:.04em;text-transform:uppercase;cursor:help}
+.sb .hn{display:block;font-weight:600}
+.sc{display:inline-block;vertical-align:middle;width:44px;height:5px;border-radius:3px;background:var(--s3);margin-right:6px;overflow:hidden}.sc i{display:block;height:100%;background:var(--ac)}
+html[data-skin="city"] .vd.h,html[data-skin="city"] .md{border-radius:0}
+html[data-skin="graphs"] .vd.h{background:var(--ac);color:#06201c}
 </style>
 </head>
 <body>
@@ -836,6 +878,146 @@ function lineChart(series, w = 640, h = 220) {
   const lines = series.map(s => `<polyline fill="none" stroke="${s.c}" stroke-width="${s.w || 2.5}" ${s.dash ? 'stroke-dasharray="5 5"' : ''} points="${s.pts.map(p => x(p[0]) + ',' + y(p[1])).join(' ')}"/><circle cx="${x(s.pts[s.pts.length - 1][0])}" cy="${y(s.pts[s.pts.length - 1][1])}" r="3.5" fill="${s.c}"/>`).join('');
   return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Души по времени">${grid}${xt.join('')}${lines}</svg>`;
 }
+// ---------- разбор как у RUINER: вклад, вердикт, почему умирал, номинации, метки ----------
+// всё считается внутри матча: игрок против среднего в этом матче (а не по слухам)
+function mLast(p) { return p.stats[p.stats.length - 1] || {}; }
+function mAt(p, t, k = 'net_worth') { let v = 0; for (const s of p.stats) if (s.time_stamp_s <= t) v = s[k] || 0; return v; }
+function mAnalyze(mi) {
+  const P = mi.players, dur = mi.duration_s, A = new Map();
+  const avg = (L, f) => L.reduce((a, p) => a + f(p), 0) / Math.max(1, L.length);
+  const dmg = p => mLast(p).player_damage || 0, boss = p => mLast(p).boss_damage || 0, heal = p => mLast(p).teammate_healing || 0;
+  const tk = t => P.filter(p => p.team === t).reduce((a, p) => a + p.kills, 0);
+  const avgD = avg(P, p => p.deaths), avgDmg = avg(P, dmg), avgB = avg(P, boss);
+  const cap = v => Math.max(0, Math.min(2, v));
+  for (const p of P) {
+    const T = P.filter(q => q.team === p.team), s = mLast(p);
+    const tnw = avg(T, q => q.net_worth), tkills = tk(p.team);
+    const kp = tkills ? (p.kills + p.assists) / tkills : 0, tkp = avg(T, q => tkills ? (q.kills + q.assists) / tkills : 0);
+    const shots = (s.shots_hit || 0) + (s.shots_missed || 0), acc = shots >= 300 ? s.shots_hit / shots : null;
+    const r = {souls: cap(p.net_worth / Math.max(1, tnw)), dmg: cap(dmg(p) / Math.max(1, avgDmg)), kp: cap(tkp ? kp / tkp : 1), live: cap((avgD + 1) / (p.deaths + 1)), obj: cap(avgB ? boss(p) / avgB : 1)};
+    let sc = .25 * r.souls + .25 * r.dmg + .2 * r.kp + .2 * r.live + .1 * r.obj;
+    const hb = Math.min(.12, heal(p) / 40000); sc += hb;
+    const score = Math.max(0, Math.min(100, Math.round(50 * sc)));
+    const prob = [];
+    if (p.deaths >= 5 && p.deaths >= avgD * 1.5) prob.push(`умирал ${p.deaths} раз — в 1,5 раза чаще среднего (${avgD.toFixed(1)})`);
+    if (p.net_worth <= .75 * tnw) prob.push(`душ ${nf(p.net_worth)} — на ${pc(tnw - p.net_worth, tnw)}% меньше среднего в команде`);
+    if (dmg(p) <= .7 * avgDmg && heal(p) < 8000) prob.push(`урона по героям ${nf(dmg(p))} — на ${pc(avgDmg - dmg(p), avgDmg)}% меньше среднего в матче`);
+    if (tkills >= 10 && kp < .35) prob.push(`участие в убийствах ${Math.round(100 * kp)}% — почти не был в драках`);
+    if (p.abandon_match_time_s) prob.push(`вышел из матча на ${mmss(p.abandon_match_time_s)}`);
+    const won = mi.winning_team === p.team;
+    let v;
+    if (p.abandon_match_time_s && p.abandon_match_time_s < dur - 60) v = ['Ливнул', 'r'];
+    else if (won) v = score >= 62 ? ['Тащил', 'h'] : score >= 40 || prob.length < 2 ? ['Норм', ''] : ['Под вопросом', 'a'];
+    else v = score >= 62 ? ['Не вытащил', 'b'] : score >= 40 ? ['Норм', ''] : prob.length >= 2 && score < 35 ? ['Слил?', 'r'] : ['Под вопросом', 'a'];
+    A.set(p, {score, r, kp, acc, prob, v, won, heal: heal(p), boss: boss(p), dmg: dmg(p), spm: p.net_worth / Math.max(1, dur / 60), kda: (p.kills + p.assists) / Math.max(1, p.deaths)});
+  }
+  return A;
+}
+// где был игрок в секунду t (match_paths: позиция = min + pos/res·(max−min))
+function mPaths(mi) {
+  const mp = mi.match_paths, M = {};
+  if (!mp || !mp.paths) return M;
+  const rx = mp.x_resolution || 16383, ry = mp.y_resolution || 16383, st = mp.interval_s || 1;
+  for (const q of mp.paths) M[q.player_slot] = t => { const i = Math.max(0, Math.min(q.x_pos.length - 1, Math.round(t / st))); return {x: q.x_min + q.x_pos[i] / rx * (q.x_max - q.x_min), y: q.y_min + q.y_pos[i] / ry * (q.y_max - q.y_min), hp: q.health[i], n: q.x_pos.length}; };
+  return M;
+}
+const mDist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+function mDeaths(mi, me, PT) {
+  const P = mi.players, slot = {}; P.forEach(p => slot[p.player_slot] = p);
+  return (me.death_details || []).map(d => {
+    const t = d.game_time_s, k = slot[d.killer_player_slot], dp = d.death_pos;
+    let mates = null, foes = null, hp = null;
+    if (PT[me.player_slot]) {
+      mates = P.filter(p => p.team === me.team && p !== me && PT[p.player_slot] && mDist(PT[p.player_slot](t - 1), dp) < 2200).length;
+      foes = P.filter(p => p.team !== me.team && PT[p.player_slot] && mDist(PT[p.player_slot](t - 1), dp) < 2200).length;
+      hp = PT[me.player_slot](t - 8).hp;
+    }
+    const why = [];
+    if (mates === 0) why.push('один, своих рядом не было');
+    if (foes >= 3) why.push(`против ${foes}`);
+    if (d.time_to_kill_s != null && d.time_to_kill_s < 3) why.push(`убили за ${d.time_to_kill_s.toFixed(1).replace('.', ',')} с — врасплох`);
+    else if (d.time_to_kill_s > 20) why.push('долго дрался и не ушёл');
+    if (hp != null && hp < 45) why.push(`за 8 с до смерти было ${hp}% здоровья`);
+    return {t, k, mates, foes, hp, ttk: d.time_to_kill_s, why, pos: dp};
+  });
+}
+function mDeathSum(DD, dur) {
+  if (!DD.length) return 'Ни разу не умер.';
+  const n = DD.length, alone = DD.filter(d => d.mates === 0).length, fast = DD.filter(d => d.ttk < 3).length, low = DD.filter(d => d.hp != null && d.hp < 45).length, lane = DD.filter(d => d.t < 600).length;
+  const L = [];
+  if (alone >= Math.max(2, n / 2)) L.push(`<b>${alone} из ${n}</b> раз умирал один — своих рядом не было. Ходи там, где видно своих, или с ними.`);
+  if (fast >= Math.max(2, n / 3)) L.push(`<b>${fast}</b> раз убивали быстрее 3 с — ловили врасплох. Смотри на миникарту, кого не видно.`);
+  if (low >= Math.max(2, n / 3)) L.push(`<b>${low}</b> раз шёл дальше с половиной здоровья. Отойди подлечиться — смерть дороже.`);
+  if (lane >= 2) L.push(`<b>${lane}</b> ${pl(lane, ['смерть', 'смерти', 'смертей'])} на линии (до 10-й минуты) — отдаёшь сопернику души.`);
+  if (!L.length) L.push('Смерти разные — общей ошибки не видно. Смотри по каждой ниже.');
+  return L.map(x => `<li>${x}</li>`).join('');
+}
+const MEDALS = [
+  ['Мясник', 'больше всех урона по героям', (p, a) => a.dmg],
+  ['Фармила', 'больше всех душ', p => p.net_worth],
+  ['Лекарь', 'больше всех лечил своих', (p, a) => a.heal, 3000],
+  ['Танк', 'больше всех принял урона', p => mLast(p).player_damage_taken || 0],
+  ['Снайпер', 'самая высокая точность (от 300 выстрелов)', (p, a) => a.acc || 0],
+  ['Хедшотер', 'больше всех убийств в голову', p => mLast(p).headshot_kills || 0, 3],
+  ['Разрушитель', 'больше всех урона по башням и боссам', (p, a) => a.boss],
+  ['Душа команды', 'самое высокое участие в убийствах', (p, a) => a.kp],
+  ['Неубиваемый', 'меньше всех смертей', p => -p.deaths],
+];
+function mMedals(P, A) {
+  const M = new Map(P.map(p => [p, []]));
+  for (const [n, h, f, min] of MEDALS) {
+    const best = P.slice().sort((a, b) => f(b, A.get(b)) - f(a, A.get(a)) || b.net_worth - a.net_worth)[0];
+    const v = f(best, A.get(best));
+    if (min != null && v < min) continue;
+    if (n === 'Неубиваемый' && -v > 2) continue;
+    if (M.get(best).length < 2) M.get(best).push([n, h]);
+  }
+  return M;
+}
+// метки матча — как на League of Graphs, только посчитанное
+function mTags(mi, me, A, PT, opp) {
+  const P = mi.players, dur = mi.duration_s, a = A.get(me), T = [], s = mLast(me);
+  const mates = P.filter(p => p.team === me.team);
+  if (opp) { const d = mAt(me, 600) - mAt(opp, 600), o = Math.max(1, mAt(opp, 600));
+    if (d / o >= .15) T.push(['Сильная линия', 'g', `к 10-й минуте на ${pc(d, o)}% душ больше соперника по линии`]);
+    else if (-d / o >= .15) T.push(['Тяжёлая линия', 'r', `к 10-й минуте на ${pc(-d, o)}% душ меньше соперника по линии`]); }
+  const ld = (me.death_details || []).filter(d => d.game_time_s < 600).length;
+  if (ld >= 2) T.push(['Умирал на линии', 'r', `${ld} ${pl(ld, ['смерть', 'смерти', 'смертей'])} до 10-й минуты`]);
+  if (dur > 1500) { const late = p => (p.net_worth - mAt(p, 1200)) / ((dur - 1200) / 60), tl = mates.reduce((x, p) => x + late(p), 0) / mates.length;
+    if (late(me) >= tl * 1.2) T.push(['Фарм в лейте', 'g', `после 20-й минуты ${nf(late(me))} душ/мин — больше, чем у своих (${nf(tl)})`]);
+    else if (late(me) <= tl * .75) T.push(['Перестал фармить', 'r', `после 20-й минуты ${nf(late(me))} душ/мин — меньше, чем у своих (${nf(tl)})`]); }
+  if (a.kda >= 4) T.push(['Высокий KDA', 'g', `(убийства + помощь) / смерти = ${a.kda.toFixed(1).replace('.', ',')}`]);
+  if (me.deaths <= 2 && dur > 1500) T.push(['Живучий', 'g', `${me.deaths} ${pl(me.deaths, ['смерть', 'смерти', 'смертей'])} за ${Math.round(dur / 60)} минут`]);
+  if (a.kp >= .65) T.push(['Всегда в драке', 'g', `участие в ${Math.round(100 * a.kp)}% убийств команды`]);
+  else if (a.kp < .35 && P.filter(p => p.team === me.team).reduce((x, p) => x + p.kills, 0) >= 10) T.push(['Мало в драках', 'r', `участие только в ${Math.round(100 * a.kp)}% убийств команды`]);
+  const tb = mates.reduce((x, p) => x + A.get(p).boss, 0);
+  if (tb > 0 && a.boss / tb >= .3) T.push(['Ломает башни', 'g', `${pc(a.boss, tb)}% урона команды по башням и боссам`]);
+  else if (tb > 0 && a.boss / tb <= .05) T.push(['Не бьёт башни', 'r', `только ${pc(a.boss, tb)}% урона команды по башням и боссам`]);
+  if (PT[me.player_slot]) { let al = 0, n = 0; const f = PT[me.player_slot];
+    for (let t = 600; t < dur; t += 5) { const q = f(t); if (q.hp <= 0) continue; n++; if (!mates.some(p => p !== me && PT[p.player_slot] && mDist(PT[p.player_slot](t), q) < 3000)) al++; }
+    if (n > 60 && al / n >= .6) T.push(['Ходит один', 'a', `после 10-й минуты ${pc(al, n)}% времени без своих рядом — сплит-пуш или фарм в одиночку`]); }
+  if (a.acc != null) { const best = Math.max(...P.map(p => A.get(p).acc || 0)); if (a.acc >= best - .001) T.push(['Самый меткий', 'g', `точность ${Math.round(100 * a.acc)}% — лучшая в матче`]); }
+  if ((s.headshot_kills || 0) >= 3) T.push(['Хедшотер', 'g', `${s.headshot_kills} убийств в голову`]);
+  if (a.heal >= 5000) T.push(['Лекарь', 'g', `вылечил своих на ${nf(a.heal)}`]);
+  return T;
+}
+function ring(v, max, lab, val, sub) {
+  const f = Math.max(0, Math.min(1, max ? v / max : 0)), C = 2 * Math.PI * 26;
+  return `<div class="rg"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26"/><circle class="v" cx="32" cy="32" r="26" stroke-dasharray="${(f * C).toFixed(1)} ${C.toFixed(1)}"/></svg><b${String(val).length > 4 ? ' class="sm"' : ''}>${val}</b><span>${lab}</span><small>${sub}</small></div>`;
+}
+// разница душ команд по времени: выше нуля — твоя команда впереди
+function diffChart(mi, team, w = 640, h = 200) {
+  const P = mi.players, ts = [...new Set(P.flatMap(p => p.stats.map(s => s.time_stamp_s)))].sort((a, b) => a - b);
+  const pts = [[0, 0]].concat(ts.map(t => [t, P.reduce((a, p) => a + (p.team === team ? 1 : -1) * mAt(p, t), 0)]));
+  const X = Math.max(...ts, 60), Y = Math.max(1000, ...pts.map(p => Math.abs(p[1]))) * 1.1, l = 44, b = 22, tp = 10, r = 10;
+  const x = v => l + (w - l - r) * v / X, y = v => tp + (h - tp - b) * (1 - (v + Y) / (2 * Y));
+  const line = pts.map(p => x(p[0]) + ',' + y(p[1])).join(' ');
+  const xt = []; for (let t = 0; t <= X; t += 300) xt.push(`<text x="${x(t)}" y="${h - 6}" text-anchor="middle" font-size="10.5" fill="#6a665e">${t / 60}</text>`);
+  const yt = [-Y, -Y / 2, 0, Y / 2, Y].map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? '#26262e' : '#4a4a55'}"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10.5" fill="#6a665e">${v > 0 ? '+' : v < 0 ? '−' : ''}${nf(Math.abs(v) / 1000)}к</text>`).join('');
+  return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Разница душ команд"><defs><clipPath id="dcU"><rect x="0" y="0" width="${w}" height="${y(0)}"/></clipPath><clipPath id="dcD"><rect x="0" y="${y(0)}" width="${w}" height="${h}"/></clipPath></defs>${yt}${xt.join('')}
+    <polygon points="${x(0)},${y(0)} ${line} ${x(pts[pts.length - 1][0])},${y(0)}" fill="var(--win)" fill-opacity=".22" clip-path="url(#dcU)"/><polygon points="${x(0)},${y(0)} ${line} ${x(pts[pts.length - 1][0])},${y(0)}" fill="var(--loss)" fill-opacity=".22" clip-path="url(#dcD)"/>
+    <polyline fill="none" stroke="var(--tx)" stroke-width="2" points="${line}"/></svg>`;
+}
 async function viewMatch(mid) {
   if (!ME) return viewLanding();
   V('<div class="load">Разбираю матч…</div>');
@@ -845,10 +1027,10 @@ async function viewMatch(mid) {
     const won = mi.winning_team === me.team, dur = mi.duration_s;
     const enemies = P.filter(p => p.team !== me.team), mates = P.filter(p => p.team === me.team);
     const opp = enemies.filter(p => p.assigned_lane === me.assigned_lane).sort((a, b) => b.net_worth - a.net_worth)[0] || enemies.slice().sort((a, b) => b.net_worth - a.net_worth)[0];
-    const last = p => p.stats[p.stats.length - 1] || {};
-    const at = (p, t) => { let v = 0; for (const s of p.stats) if (s.time_stamp_s <= t) v = s.net_worth; return v; };
+    const last = mLast, at = mAt;
     const rankIn = (L, f) => 1 + L.filter(p => f(p) > f(me)).length;
     const dmg = p => last(p).player_damage || 0;
+    const A = mAnalyze(mi), PT = mPaths(mi), a = A.get(me), MD = mMedals(P, A), DD = mDeaths(mi, me, PT), TG = mTags(mi, me, A, PT, opp);
     const IS = await api(`analytics/item-stats?hero_id=${me.hero_id}&min_average_badge=100&min_unix_timestamp=${now() - 30 * 86400 - now() % 3600}`).catch(() => []);
     const avg = {}; IS.forEach(s => avg[s.item_id] = s);
     const seen = new Set(), buys = [];
@@ -859,32 +1041,70 @@ async function viewMatch(mid) {
     if (opp) pts.push(nw10 >= onw10 ? `Линию выиграл: к 10-й минуте <b class="win">+${nf(nw10 - onw10)}</b> душ против ${esc(hero(opp.hero_id).n)}.` : `Линию проиграл: к 10-й минуте <b class="loss">−${nf(onw10 - nw10)}</b> душ против ${esc(hero(opp.hero_id).n)}.`);
     pts.push(`Души: <b>${rankIn(mates, p => p.net_worth)}-й</b> в команде (${nf(me.net_worth)}), урон по героям — <b>${rankIn(mates, dmg)}-й</b> (${nf(dmg(me))}).`);
     const avgD = P.reduce((a, p) => a + p.deaths, 0) / P.length;
-    pts.push(me.deaths > avgD * 1.3 ? `Смертей <b class="loss">${me.deaths}</b> — больше, чем в среднем в матче (${avgD.toFixed(1)}). Смотри карту: где ловили.` : `Смертей ${me.deaths} — ${me.deaths <= avgD ? 'не больше' : 'чуть больше'} среднего в матче (${avgD.toFixed(1)}).`);
+    pts.push(me.deaths > avgD * 1.3 ? `Смертей <b class="loss">${me.deaths}</b> — больше, чем в среднем в матче (${avgD.toFixed(1).replace(".", ",")}). Ниже — почему.` : `Смертей ${me.deaths} — ${me.deaths <= avgD ? 'не больше' : 'чуть больше'} среднего в матче (${avgD.toFixed(1).replace(".", ",")}).`);
     if (late.length) pts.push(`${esc(late[0].I.n)} — на <b class="loss">${mmss(late[0].it.game_time_s - late[0].a.avg_buy_time_s)}</b> позже, чем покупают топы на этом герое.`);
     if (opp && TIPS[opp.hero_id]) pts.push(`Против ${esc(hero(opp.hero_id).n)}: ${TIPS[opp.hero_id][2]}`);
     const R = D.map.r || 10752, slot = {}; P.forEach(p => slot[p.player_slot] = p);
     const pos = q => ({l: 100 * (q.x + R) / (2 * R), t: 100 * (1 - (q.y + R) / (2 * R))});
-    const deaths = (me.death_details || []).map((d, i) => { const a = pos(d.death_pos), k = slot[d.killer_player_slot]; return `<i class="d" style="left:${a.l}%;top:${a.t}%" title="${mmss(d.game_time_s)} · убил ${esc(k ? hero(k.hero_id).n : '?')}">${i + 1}</i>`; }).join('');
-    const sb = t => P.filter(p => p.team === t).sort((a, b) => b.net_worth - a.net_worth).map(p => `<tr class="${p === me ? 'me3' : ''}"><td><span class="row" style="gap:8px">${heroImg(p.hero_id, 's')}${esc(hero(p.hero_id).n)}</span></td><td>${p.kills}/${p.deaths}/${p.assists}</td><td>${nf(p.net_worth)}</td><td>${nf(dmg(p))}</td><td>${p.last_hits}</td></tr>`).join('');
+    const deaths = DD.map((d, i) => { const q = pos(d.pos); return `<i class="d" style="left:${q.l}%;top:${q.t}%" title="${mmss(d.t)} · убил ${esc(d.k ? hero(d.k.hero_id).n : '?')}">${i + 1}</i>`; }).join('');
+    const hasP = Object.keys(PT).length > 0;
+    const dots = hasP ? P.map(p => `<i class="hd ${p.team === me.team ? 'us' : 'en'}${p === me ? ' me' : ''}" data-s="${p.player_slot}"><img src="${esc(hero(p.hero_id).i)}" alt="" onerror="${noimg}"></i>`).join('') : '';
+    const vd = p => { const x = A.get(p); return `<span class="vd ${x.v[1]}" title="${esc(x.prob.join('; ') || 'вклад ' + x.score + ' из 100')}">${x.v[0]}</span>`; };
+    const md2 = p => MD.get(p).map(([n, h]) => `<span class="md" title="${esc(h)}">${n}</span>`).join('');
+    const sb = t => P.filter(p => p.team === t).sort((x, y) => A.get(y).score - A.get(x).score).map(p => `<tr class="${p === me ? 'me3' : ''}"><td><span class="row" style="gap:8px">${heroImg(p.hero_id, 's')}<span style="min-width:0"><b class="hn">${esc(hero(p.hero_id).n)}</b>${md2(p)}</span></span></td><td>${vd(p)}</td><td><span class="sc"><i style="width:${A.get(p).score}%"></i></span>${A.get(p).score}</td><td>${p.kills}/${p.deaths}/${p.assists}</td><td>${nf(p.net_worth)}</td><td>${nf(dmg(p))}</td></tr>`).join('');
+    const best = (f) => Math.max(...P.map(f));
+    const place = f => 1 + P.filter(p => f(p) > f(me)).length;
+    const tdm = mates.reduce((x, p) => x + dmg(p), 0), tnw = mates.reduce((x, p) => x + p.net_worth, 0);
+    const rings = [
+      ring(dmg(me) / tdm, best(p => dmg(p) / P.filter(q => q.team === p.team).reduce((x, q) => x + dmg(q), 0)), 'доля урона', Math.round(100 * dmg(me) / tdm) + '%', place(dmg) + '-й из 12'),
+      ring(me.net_worth / tnw, .3, 'доля душ', Math.round(100 * me.net_worth / tnw) + '%', place(p => p.net_worth) + '-й из 12'),
+      ring(a.kda, best(p => A.get(p).kda), 'KDA', a.kda.toFixed(1).replace('.', ','), place(p => A.get(p).kda) + '-й из 12'),
+      ring(a.kp, 1, 'участие', Math.round(100 * a.kp) + '%', 'в убийствах команды'),
+      ring(a.spm, best(p => A.get(p).spm), 'души / мин', nf(a.spm), place(p => A.get(p).spm) + '-й из 12'),
+      ring(a.acc || 0, best(p => A.get(p).acc || 0), 'точность', a.acc == null ? '—' : Math.round(100 * a.acc) + '%', a.acc == null ? 'мало выстрелов' : place(p => A.get(p).acc || 0) + '-й из 12'),
+    ].join('');
+    const tl = buys.filter(b => b.I.t >= 2).map(b => `<i style="left:${(100 * b.it.game_time_s / dur).toFixed(2)}%" title="${esc(b.I.n)} · ${mmss(b.it.game_time_s)}">${itImg(b.it.item_id)}</i>`).join('');
+    const tlx = []; for (let t = 0; t <= dur; t += 300) tlx.push(`<span style="left:${100 * t / dur}%">${t / 60}</span>`);
+    const nomin = P.filter(p => MD.get(p).length).map(p => MD.get(p).map(([n, h]) => `<div class="nm ${p.team === me.team ? 'us' : 'en'}${p === me ? ' me' : ''}">${heroImg(p.hero_id, 's')}<span><b>${n}</b><small>${esc(hero(p.hero_id).n)}${p === me ? ' · ты' : ''} — ${h}</small></span></div>`).join('')).join('');
     V(`<a href="#matches" class="sub" style="text-decoration:none">‹ Мои матчи</a>
       <div class="mh" style="margin-top:10px">${hero(me.hero_id).c ? `<img class="cardimg" src="${esc(hero(me.hero_id).c)}" alt="" onerror="${noimg}">` : ''}
         <div><div class="row" style="gap:8px;flex-wrap:wrap"><span class="tag ${won ? 'g' : 'r'}">${won ? 'победа' : 'поражение'}</span><span class="sub">${mmss(dur)} · ${ago(mi.start_time)} · матч ${mid}</span></div>
           <h1 class="h1" style="margin-top:8px">${esc(hero(me.hero_id).n)} · <span class="mono">${me.kills} / ${me.deaths} / ${me.assists}</span></h1>
-          <div class="sub">${nf(me.net_worth)} душ · ${nf(me.net_worth / Math.max(1, dur / 60))} в минуту · ${me.last_hits} добиваний · уровень ${me.level}</div></div></div>
+          <div class="sub">${nf(me.net_worth)} душ · ${nf(a.spm)} в минуту · ${me.last_hits} добиваний · уровень ${me.level}</div>
+          ${TG.length ? `<div class="ptags">${tagsHTML(TG)}</div>` : ''}</div></div>
+      <div class="vdc card pad"><div class="vdb"><span class="vd big ${a.v[1]}">${a.v[0]}</span><div class="vds"><b class="mono">${a.score}</b><small>вклад из 100<br>50 — средний в матче</small></div></div>
+        <p>${a.prob.length ? 'Что потянуло вниз: ' + esc(a.prob.join('; ')) + '.' : a.score >= 62 ? 'Сделал для команды больше среднего почти во всём.' : 'Провалов нет — сыграл ровно.'}</p>
+        <details class="why"><summary>Не согласен? Как это считается</summary><p>Считаем только по цифрам этого матча: души против среднего в команде (25%), урон по героям против среднего в матче (25%), участие в убийствах (20%), смерти — чем меньше, тем лучше (20%), урон по башням и боссам (10%), плюс лечение своих. «Слил?» ставим только проигравшим и только если провала два и больше — с вопросом, потому что цифры не видят всего: может, ты стоял на линии один против двух или держал карту. Мы не знаем, что было в голосовом.</p></details></div>
+      <div class="rgs">${rings}</div>
       <div class="h2">Главное</div><div class="card pad"><ul class="pts">${pts.map(x => `<li>${x}</li>`).join('')}</ul></div>
       <div class="g2">
         <div><div class="h2">Души по времени</div><div class="card pad">
           ${lineChart([{c: 'var(--ac)', pts: [[0, 0]].concat(me.stats.map(s => [s.time_stamp_s, s.net_worth]))}].concat(opp ? [{c: 'var(--en)', dash: 1, pts: [[0, 0]].concat(opp.stats.map(s => [s.time_stamp_s, s.net_worth]))}] : []))}
-          <div class="row sub" style="gap:14px;margin-top:6px;flex-wrap:wrap"><span><b style="color:var(--ac)">━</b> ты</span>${opp ? `<span><b style="color:var(--en)">┅</b> ${esc(hero(opp.hero_id).n)} — соперник по линии</span>` : ''}<span class="sp"></span><span>минуты →</span></div></div>
-          <div class="h2">Где умирал · ${me.deaths}</div>
-          <div class="map">${D.map.img ? `<img class="mi" src="${esc(D.map.img)}" alt="" onerror="this.remove()">` : ''}${deaths}</div></div>
-        <div><div class="h2">Покупки и топы<small>Ascendant+ на этом герое, 30 дней</small></div><div class="card">
+          <div class="row sub" style="gap:14px;margin-top:6px;flex-wrap:wrap"><span><b style="color:var(--ac)">━</b> ты</span>${opp ? `<span><b style="color:var(--en)">┅</b> ${esc(hero(opp.hero_id).n)} — соперник по линии</span>` : ''}<span class="sp"></span><span>минуты →</span></div></div></div>
+        <div><div class="h2">Разница душ команд</div><div class="card pad">${diffChart(mi, me.team)}
+          <div class="row sub" style="gap:14px;margin-top:6px;flex-wrap:wrap"><span class="win">выше нуля — твоя команда впереди</span><span class="loss">ниже — соперники</span></div></div></div>
+      </div>
+      <div class="g2">
+        <div><div class="h2">Почему умирал · ${me.deaths}</div><div class="card pad"><ul class="pts">${mDeathSum(DD, dur)}</ul>
+          ${DD.length ? `<div class="dl">${DD.map((d, i) => `<div class="dr"><i class="d">${i + 1}</i><span class="mono">${mmss(d.t)}</span><span style="min-width:0">${d.k ? heroImg(d.k.hero_id, 's') : ''}<b>${esc(d.k ? hero(d.k.hero_id).n : 'не герой')}</b><small>${esc(d.why.join(' · ') || (d.mates != null ? `рядом своих ${d.mates}, врагов ${d.foes}` : ''))}</small></span></div>`).join('')}</div>` : ''}</div></div>
+        <div><div class="h2">Карта${hasP ? '<small>тяни — где кто был</small>' : ''}</div>
+          <div class="map" id="mmap">${D.map.img ? `<img class="mi" src="${esc(D.map.img)}" alt="" onerror="this.remove()">` : ''}${deaths}${dots}</div>
+          ${hasP ? `<div class="msl"><input type="range" id="mt" min="0" max="${dur}" value="${Math.min(dur, 600)}" aria-label="Время матча"><b class="mono" id="mtv"></b></div><div class="row sub" style="gap:14px;flex-wrap:wrap"><span><b style="color:var(--ac)">●</b> свои</span><span><b style="color:var(--en)">●</b> соперники</span><span><b style="color:var(--loss)">●</b> твои смерти</span></div>` : ''}</div>
+      </div>
+      <div class="h2">Покупки<small>Ascendant+ на этом герое, 30 дней</small></div>
+      <div class="card pad"><div class="tln">${tl}<div class="tlx">${tlx.join('')}</div></div></div>
+      <div class="card" style="margin-top:12px">
           ${buys.map(b => { const d = b.a && b.a.matches >= 30 ? b.it.game_time_s - b.a.avg_buy_time_s : null;
             return `<div class="ir">${itImg(b.it.item_id)}<span style="min-width:0"><b>${esc(b.I.n)}</b><small>${nf(b.I.p)} душ${b.a ? ' · у топов ' + pc(b.a.wins, b.a.matches) + '% побед' : ''}</small></span><span class="wr">${mmss(b.it.game_time_s)}${d == null ? '' : `<small class="${d > 60 ? 'loss' : d < -60 ? 'win' : ''}">${d > 0 ? '+' : '−'}${mmss(Math.abs(d))} ${d > 0 ? 'позже' : 'раньше'}</small>`}</span></div>`; }).join('') || '<div class="empty">Покупок не видно.</div>'}
-        </div></div>
       </div>
-      <div class="h2">Все игроки</div>
-      <div class="g2">${[me.team, 1 - me.team].map(t => `<div class="card sbw"><table class="sb"><tr><th>${t === me.team ? 'Твоя команда' : 'Соперники'}</th><th>K/D/A</th><th>Души</th><th>Урон</th><th>Доб.</th></tr>${sb(t)}</table></div>`).join('')}</div>`);
+      ${nomin ? `<div class="h2">Номинации</div><div class="nms">${nomin}</div>` : ''}
+      <div class="h2">Все игроки<small>сверху — больше вклад</small></div>
+      <div class="g2">${[me.team, 1 - me.team].map(t => `<div class="card sbw"><table class="sb"><tr><th>${t === me.team ? 'Твоя команда' : 'Соперники'}${t === mi.winning_team ? ' · победа' : ''}</th><th>Итог</th><th>Вклад</th><th>K/D/A</th><th>Души</th><th>Урон</th></tr>${sb(t)}</table></div>`).join('')}</div>`);
+    if (hasP) {
+      const mv = () => { const t = +$('#mt').value; $('#mtv').textContent = mmss(t);
+        $$('#mmap .hd').forEach(e => { const f = PT[e.dataset.s]; if (!f) return; const q = f(t), p = pos(q); e.style.left = p.l + '%'; e.style.top = p.t + '%'; e.classList.toggle('dead', q.hp <= 0); }); };
+      $('#mt').oninput = mv; mv();
+    }
   } catch (e) { V(`<div class="err">Не вышло разобрать матч: ${esc(e.message)}</div>`); }
 }
 
