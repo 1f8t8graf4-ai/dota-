@@ -1,0 +1,19 @@
+{
+ "id": "rat-king-1",
+ "hero": "Rat King",
+ "ru": "Крысиный король",
+ "accent": "#8FCB4F",
+ "video": "https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/rat-king.mp4",
+ "crop": [560, 720, 380, 0],
+ "audio": "../../дизайн/макеты-24.10/assets/aud",
+ "amb": "sewer",
+ "abil": "rat",
+ "lines": [
+  {"a": "rk-king-here.mp3", "en": "The rat king is here!", "ru": "Крысиный король здесь!", "tag": "ульта", "abil": true},
+  {"a": "rk-holier.mp3", "en": "Holier than thou, crumbum!", "ru": "Святее всех выискался, мелюзга!", "kw": ["crumbum"],
+   "q": "Что значит «crumbum»?", "qa": "мелюзга, ничтожество", "qn": "crumb — крошка, bum — бродяга"},
+  {"a": "rat-king-18.mp3", "en": "Who's exterminating who now!", "ru": "Ну и кто теперь кого травит?!", "kw": ["exterminating"],
+   "q": "exterminate — это…?", "qa": "травить (крыс, тараканов)", "qn": "игра слов: крыс травят — а тут крыса травит"}
+ ],
+ "end": "все реплики с переводом — @languagegamesbot"
+}

@@ -33,7 +33,7 @@ Claude подхватывает `CLAUDE.md` сам. Z Code — дай ему п�
 | `styles/` | `main.css` (старый вид) → `nd.css` («Новый») → `zai.css` (тема Z.ai) → `znew.css` («Кино 2.0»). Новые правки — **слоем в конец** файла, старое не переписывать |
 | `data/*.json` | `scenes.json` (сцены, эпизоды, фразы), `games.json` (Deadlock), `ctx-en/de.json` (значения слов «тут»), `glossary`, `topics`… После правки — `python3 tools/rebuild_all_data.py` |
 | `bot/worker.js` | Cloudflare Worker: бот, раздача видео из R2 (`/m/…`), дуэли, премиум. **Не трогать без слова Андрея** — он передеплоивает руками |
-| `tools/` | `r2_up.py` (медиа сцен → R2), `dd_r2_up.py` (Deadlock → R2), `rebuild_all_data.py`, `check_data.py`, `check_ctx.py`, `sub_sync.py`, `hero_loop.sh`, `dd-prompts.html` |
+| `tools/` | `r2_up.py` (медиа сцен → R2), `dd_r2_up.py` (Deadlock → R2), `rebuild_all_data.py`, `check_data.py`, `check_ctx.py`, `sub_sync.py`, `hero_loop.py` (петля портрета героя из сырого ролика Flow; `hero_loop.sh` — обёртка), `dd-prompts.html` |
 | `от-второго-клауда/тесты/` | Playwright-тесты на Node (`st.js` — стенд: фейковый Telegram, мок медиа из `cache/`) |
 | `дизайн/` | макеты, разборы Germanize |
 

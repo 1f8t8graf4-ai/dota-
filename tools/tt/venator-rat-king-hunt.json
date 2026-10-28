@@ -1,0 +1,34 @@
+{
+ "id": "venator-rat-king-hunt",
+ "about": "Ватикан объявил охоту",
+ "audio": "../../дизайн/макеты-24.10/assets/aud",
+ "amb": "sewer",
+ "hold": 1.0,
+ "heroes": {
+  "venator": {"name": "Венатор", "color": "#A98BFF",
+              "video": "https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/venator.mp4",
+              "crop": [140, 0, 920, 720], "face": [650, 40, 200, 200], "bg": "venator-card.webp"},
+  "rat-king": {"name": "Крысиный король", "color": "#8FCB4F",
+               "video": "https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/rat-king.mp4",
+               "crop": [180, 0, 920, 720], "face": [400, 60, 230, 230], "bg": "rat-king-card.webp"}
+ },
+ "ult": {"by": "venator", "sx": "ven-a4.mp3", "stamp": "УЛЬТА", "sub": "Ira Domini"},
+ "lines": [
+  {"by": "venator", "a": "ven-evil-stirs.mp3", "en": "Evil stirs in New York... and so the Vatican has called on me.",
+   "ru": "В Нью-Йорке пробуждается зло… и Ватикан призвал меня.", "kw": ["called", "on"], "note": "call on — призвать, позвать на помощь",
+   "w": [[0.0, 0.32], [0.32, 0.92], [0.92, 1.08], [1.08, 1.22], [1.22, 1.58], [2.26, 2.48], [2.48, 2.64], [2.64, 2.76], [2.76, 3.14], [3.14, 3.42], [3.42, 3.64], [3.64, 3.86], [3.86, 4.06]]},
+  {"by": "rat-king", "a": "rk-sewers.mp3", "en": "I thought I said you weren't supposed to show your face in the sewers again?!",
+   "ru": "Кажется, я велел тебе больше не совать морду в канализацию?!", "kw": ["show", "your", "face"], "note": "show your face — показываться, совать нос",
+   "w": [[0.0, 0.18], [0.18, 0.4], [0.4, 0.62], [0.62, 1.0], [1.0, 1.24], [1.24, 1.6], [1.6, 1.9], [1.9, 2.2], [2.2, 2.44], [2.44, 2.74], [2.74, 3.08], [3.08, 3.32], [3.32, 3.46], [3.46, 3.94], [3.94, 4.36]]},
+  {"by": "venator", "a": "ven-no-hide.mp3", "en": "You can't hide from a Venator.",
+   "ru": "От Венатора не спрятаться.", "kw": ["hide"], "note": "hide from — прятаться от",
+   "w": [[0.0, 0.16], [0.16, 0.6], [0.6, 0.8], [0.8, 1.06], [1.06, 1.18], [1.18, 1.64]]},
+  {"by": "rat-king", "a": "rk-priest-vs-king.mp3", "en": "What's a priest gonna do to a king?!",
+   "ru": "А что поп сделает королю?!", "kw": ["gonna"], "note": "gonna = going to — собирается",
+   "w": [[0.0, 0.3], [0.3, 0.4], [0.4, 0.76], [0.76, 1.1], [1.1, 1.4], [1.4, 1.56], [1.56, 1.74], [1.74, 2.1]]},
+  {"by": "venator", "a": "ven-will-find.mp3", "en": "I will find you.",
+   "ru": "Я тебя найду.", "kw": ["find"], "note": "I will find you — я тебя найду",
+   "w": [[0.0, 0.18], [0.18, 0.4], [0.4, 0.74], [0.74, 1.04]]}
+ ],
+ "end": {"top": "Все реплики героев — с переводом", "big": "@languagegamesbot", "sub": "учи английский по играм и кино"}
+}

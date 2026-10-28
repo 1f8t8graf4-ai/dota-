@@ -1,0 +1,69 @@
+
+/* ===== v13 · патчноут-разбор (p13.js) ===== */
+.pn13{display:flex;flex-direction:column}
+.pn13 .m8{margin:0;box-shadow:0 0 0 1.5px rgba(255,255,255,.18)}
+.pn13-sw{position:relative;flex:none;display:grid;grid-template-columns:1fr 1fr;margin:50px 14px 10px;padding:3px;border-radius:12px;background:var(--s1)}
+.pn13-sw button{position:relative;z-index:1;height:32px;border:0;background:none;color:var(--mut);font:600 13px/1 Inter,sans-serif}
+.pn13-sw button.on{color:#0A0D16}
+.pn13-sw i{position:absolute;top:3px;left:3px;width:calc(50% - 3px);height:32px;border-radius:9px;background:var(--a);transition:transform .32s cubic-bezier(.3,1.25,.5,1)}
+.pn13.pm .pn13-sw i{transform:translateX(100%)}
+.pn13-bd{flex:1;min-height:0;overflow-y:auto;padding:0 14px 34px;scrollbar-width:none}
+.pn13-bd::-webkit-scrollbar{display:none}
+.pn13-hd{position:relative;height:178px;border-radius:20px;overflow:hidden;display:flex;align-items:flex-end;padding:14px}
+.pn13-hd .img{position:absolute;inset:0;background:center 30%/cover}
+.pn13-hd .sh{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,13,22,.1),rgba(10,13,22,.92))}
+.pn13-hd span{position:relative;display:grid;gap:4px}
+.pn13-hd small{font:700 10.5px/1 Inter,sans-serif;letter-spacing:.14em;color:var(--a2)}
+.pn13-hd b{font:800 26px/1.05 Manrope,Inter,sans-serif;letter-spacing:-.02em}
+.pn13-hd em{font:500 12px/1.3 Inter,sans-serif;font-style:normal;color:rgba(243,235,221,.75)}
+.pn13-n{position:absolute;top:12px;right:12px;display:grid;justify-items:end;padding:7px 10px;border-radius:12px;background:rgba(10,13,22,.72);font:500 10.5px/1.2 Inter,sans-serif;font-style:normal;color:var(--mut)}
+.pn13-n b{font:800 17px/1 Manrope,Inter,sans-serif;color:#F3EBDD}
+.pn13-h{margin:22px 2px 10px;font:700 11px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.pn13-c{display:grid;gap:6px;margin-bottom:10px;padding:13px 14px;border-radius:16px;background:var(--s1);border-left:3px solid var(--mut)}
+.pn13-c.nerf{border-left-color:var(--bad)}.pn13-c.buff{border-left-color:var(--ok)}.pn13-c.new{border-left-color:var(--a)}.pn13-c.fix{border-left-color:#7FA8FF}
+.pn13-c header{display:flex;align-items:center;gap:8px}
+.pn13-c header small{margin-left:auto;font:600 11px/1 Inter,sans-serif;color:var(--mut)}
+.pn13-tg{font:700 10.5px/1 Inter,sans-serif;font-style:normal;letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:7px;background:var(--s2)}
+.pn13-c.nerf .pn13-tg{color:var(--bad)}.pn13-c.buff .pn13-tg{color:var(--ok)}.pn13-c.new .pn13-tg{color:var(--a)}.pn13-c.fix .pn13-tg{color:#7FA8FF}
+.pn13-c>b{font:700 16px/1.25 Manrope,Inter,sans-serif}
+.scr .pn13-c p{margin:0;font:13px/1.45 Inter,sans-serif;color:rgba(243,235,221,.82)}
+.scr .pn13-c p.pn13-v{color:var(--a2);font-weight:600}
+.pn13-r{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8px 10px;border-radius:11px;background:var(--s2)}
+.pn13-r span{font:800 18px/1 Manrope,Inter,sans-serif;color:var(--mut)}
+.pn13-r span.nw{color:#F3EBDD}
+.pn13-r i{display:grid;width:16px;height:16px;color:var(--mut)}
+.pn13-r i svg{width:16px;height:16px}
+.pn13-r small{flex-basis:100%;font:11px/1.2 Inter,sans-serif;color:var(--mut)}
+.pn13 .pn13-av{width:30px;height:30px}
+.pn13 .pn13-av.sm{width:22px;height:22px}
+.pn13-lt{display:inline-grid;place-items:center;border-radius:50%;background:var(--s2);font:800 13px/1 Manrope,Inter,sans-serif;font-style:normal;color:var(--a2);flex:none}
+.pn13-bl{display:grid;gap:8px}
+.pn13-br{position:relative;display:flex;align-items:center;gap:10px;padding:8px 12px 8px 8px;border-radius:14px;background:var(--s1);overflow:hidden}
+.pn13-br>i:last-child{position:absolute;left:0;top:0;bottom:0;width:100%;transform-origin:0 50%;transform:scaleX(var(--w));opacity:.16;pointer-events:none}
+.pn13-br.up>i:last-child{background:var(--ok)}.pn13-br.dn>i:last-child{background:var(--bad)}
+.pn13-br span{position:relative;flex:1;min-width:0;display:grid;gap:2px}
+.pn13-br span b{font:700 14px/1.2 Inter,sans-serif}
+.pn13-br span small{font:11px/1.2 Inter,sans-serif;color:var(--mut)}
+.pn13-br em{position:relative;font:800 16px/1 Manrope,Inter,sans-serif;font-style:normal}
+.pn13-br.up em{color:var(--ok)}.pn13-br.dn em{color:var(--bad)}
+.pn13-our{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.v8 .pn13-our button{display:grid;justify-items:center;gap:3px;padding:10px 4px;border:0;border-radius:14px;background:var(--s1);color:#F3EBDD}
+.pn13-our button b{font:800 18px/1 Manrope,Inter,sans-serif}
+.pn13-our button small{font:11px/1.15 Inter,sans-serif;color:var(--mut);text-align:center}
+.pn13-our button em{font:700 12px/1 Inter,sans-serif;font-style:normal;color:var(--a2)}
+.pn13-w{display:flex;flex-wrap:wrap;gap:8px}
+.v8 .pn13-w button{display:grid;gap:2px;padding:8px 11px;border:0;border-radius:12px;background:var(--s1);color:#F3EBDD;text-align:left}
+.pn13-w button b{font:700 14px/1.1 Inter,sans-serif;color:var(--a2)}
+.pn13-w button small{font:11px/1.1 Inter,sans-serif;color:var(--mut)}
+.scr .pn13-src{margin:18px 2px 0;font:11px/1.45 Inter,sans-serif;color:var(--mut)}
+.pn13-tg2{border-radius:18px;overflow:hidden;background:#182533;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.pn13-tg2 header{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.pn13-ch{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--a),#B8742A);font:800 15px/1 Manrope,Inter,sans-serif;font-style:normal;color:#0A0D16}
+.pn13-tg2 header span{display:grid;gap:2px}
+.pn13-tg2 header b{font:700 14px/1 Inter,sans-serif}
+.pn13-tg2 header small{font:11.5px/1 Inter,sans-serif;color:#7D8E9F}
+.pn13-pic{height:150px;background:center 30%/cover;display:flex;align-items:flex-end;padding:10px 12px}
+.pn13-pic span{padding:5px 9px;border-radius:8px;background:rgba(10,13,22,.8);font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;color:var(--a2)}
+.pn13-txt{padding:12px 13px 14px;white-space:pre-wrap;font:13.5px/1.45 -apple-system,Inter,sans-serif;color:#E7EEF5;-webkit-user-select:text;user-select:text}
+.pn13-txt b{font-weight:700}
+.v8 .pn13-cp{width:100%;height:46px;margin-top:12px;border:0;border-radius:14px;background:var(--a);color:#0A0D16;font:700 15px/1 Inter,sans-serif}

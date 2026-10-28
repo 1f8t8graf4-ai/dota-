@@ -1,0 +1,33 @@
+{
+ "id": "rat-king-venator",
+ "hero": "Крысиный король",
+ "about": "про Венатора",
+ "accent": "#8FCB4F",
+ "video": "https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/rat-king.mp4",
+ "crop": [180, 0, 920, 720],
+ "bg": "rat-king-card.webp",
+ "audio": "../../дизайн/макеты-24.10/assets/aud",
+ "amb": "sewer",
+ "partner": {"name": "Венатор", "color": "#A98BFF",
+             "video": "https://dota.1f8t8graf4.workers.dev/m/scenes/games/deadlock/venator.mp4",
+             "face": [650, 40, 200, 200]},
+ "ult": {"sx": "rk-a4.mp3", "stamp": "УЛЬТА", "sub": "Rule, Ratannia!"},
+ "lines": [
+  {"a": "rk-ult-roll.mp3", "ult": true, "en": "Let's roll, boys!", "ru": "Погнали, пацаны!",
+   "kw": ["roll"], "note": "let's roll — погнали",
+   "w": [[0.0, 0.52], [0.52, 0.96], [0.96, 1.6]]},
+  {"a": "rk-priest-vs-king.mp3", "about": true, "en": "What's a priest gonna do to a king?!", "ru": "И что поп сделает королю?!",
+   "kw": ["gonna"], "note": "gonna = going to — собирается",
+   "w": [[0.0, 0.3], [0.3, 0.4], [0.4, 0.76], [0.76, 1.1], [1.1, 1.4], [1.4, 1.56], [1.56, 1.74], [1.74, 2.1]]},
+  {"a": "rk-hail-marys.mp3", "about": true, "en": "Go do some Hail Marys or somethin'.", "ru": "Иди почитай «Радуйся, Мария», что ли.",
+   "kw": ["Hail", "Marys"], "note": "Hail Mary — молитва «Радуйся, Мария»",
+   "w": [[0.0, 0.2], [0.2, 0.48], [0.48, 0.82], [0.82, 1.16], [1.16, 1.9], [1.9, 2.02], [2.02, 2.38]]},
+  {"a": "rk-holier.mp3", "about": true, "en": "Holier than thou, crumbum!", "ru": "Святее всех выискался, мелюзга!",
+   "kw": ["crumbum"], "note": "crumbum — ничтожество (crumb — крошка, bum — бродяга)",
+   "w": [[0.0, 0.6], [0.6, 0.8], [0.8, 1.32], [1.74, 2.36]]},
+  {"a": "rk-took-down.mp3", "about": true, "kill": true, "en": "Took down the Venatah!", "ru": "Уложил Венатора!",
+   "kw": ["Took", "down"], "note": "take down — завалить, уложить",
+   "w": [[0.0, 0.24], [0.24, 0.56], [0.56, 0.78], [0.78, 1.34]]}
+ ],
+ "end": {"top": "Все реплики героев — с переводом", "big": "@languagegamesbot", "sub": "учи английский по играм и кино"}
+}

@@ -1,0 +1,65 @@
+{
+ "id": "doorman-rem-guest",
+ "mode": "guest",
+ "hook": [
+  "ДОРМЕН ЗАПЕР",
+  "РЭМ В ОТЕЛЕ"
+ ],
+ "sub": "гость отеля «Баронесса»",
+ "ult": 1.9,
+ "speaker": {
+  "name": "Дормен",
+  "art": "art/doorman-full.png",
+  "face": [
+   590,
+   150,
+   440,
+   440
+  ],
+  "crop_hook": [
+   420,
+   0,
+   810,
+   1440
+  ]
+ },
+ "sfx": [
+  {
+   "a": "sfx/ult.mp3",
+   "t": 0.45,
+   "gain": 0.9
+  }
+ ],
+ "lines": [
+  {
+   "to": {
+    "name": "РЭМ",
+    "art": "art/rem-full.png",
+    "crop": [
+     245,
+     0,
+     810,
+     1440
+    ]
+   },
+   "a": "vo/doorman-126.mp3",
+   "en": "Rem, if you continue to walk the streets of Manhattan, it is only a matter of time before you end up vivisected on a government table. But, if you stay here at The Baroness, I can provide safety and comfort.",
+   "ru": "Рэм, если продолжишь бродить по улицам Манхэттена, рано или поздно окажешься на столе у правительства — под скальпелем. Но если останешься здесь, в «Баронессе», я дам тебе безопасность и уют."
+  },
+  {
+   "to": {
+    "name": "РЭМ",
+    "art": "art/rem-full.png",
+    "crop": [
+     245,
+     0,
+     810,
+     1440
+    ]
+   },
+   "a": "vo/doorman-125.mp3",
+   "en": "Don't go, Rem, we have a very comfortable bed waiting for you.",
+   "ru": "Не уходи, Рэм: тебя ждёт очень удобная кровать."
+  }
+ ]
+}

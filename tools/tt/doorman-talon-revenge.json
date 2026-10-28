@@ -1,0 +1,117 @@
+{
+ "id": "doorman-talon-revenge",
+ "about": "Дормен лезет в больное",
+ "audio": "aud",
+ "amb": "city",
+ "hold": 1.0,
+ "heroes": {
+  "doorman": {
+   "name": "Дормен",
+   "color": "#E8A33A",
+   "art": "doorman-flat.jpg",
+   "crop": [
+    0,
+    0,
+    1640,
+    1280
+   ],
+   "face": [
+    670,
+    130,
+    310,
+    310
+   ],
+   "bg": "doorman-bg.jpg"
+  },
+  "grey-talon": {
+   "name": "Грей Талон",
+   "color": "#5FC7A8",
+   "art": "talon-flat.jpg",
+   "crop": [
+    60,
+    0,
+    1630,
+    1273
+   ],
+   "face": [
+    640,
+    100,
+    310,
+    310
+   ],
+   "bg": "talon-bg.jpg"
+  }
+ },
+ "ult": {
+  "by": "doorman",
+  "sx": "dm-a4.mp3",
+  "stamp": "УЛЬТА",
+  "sub": "Hotel Guest"
+ },
+ "lines": [
+  {
+   "by": "doorman",
+   "a": "doorman-01.mp3",
+   "en": "I'm excited to get a front-row seat to you throwing your life away for revenge.",
+   "ru": "Жду не дождусь посмотреть из первого ряда, как ты пускаешь жизнь под откос ради мести.",
+   "kw": [
+    "front-row",
+    "seat"
+   ],
+   "note": "front-row seat — место в первом ряду"
+  },
+  {
+   "by": "grey-talon",
+   "a": "grey-talon-10.mp3",
+   "en": "It's not throwing it away if they die.",
+   "ru": "Это не под откос, если они сдохнут.",
+   "kw": [
+    "throwing",
+    "it",
+    "away"
+   ],
+   "note": "throw away — выбросить, пустить на ветер"
+  },
+  {
+   "by": "doorman",
+   "a": "doorman-02.mp3",
+   "en": "I'm sure your wife will see it the same way.",
+   "ru": "Уверен, твоя жена с тобой согласится.",
+   "kw": [
+    "the",
+    "same",
+    "way"
+   ],
+   "note": "see it the same way — думать так же"
+  },
+  {
+   "by": "grey-talon",
+   "a": "grey-talon-11.mp3",
+   "en": "Shut up.",
+   "ru": "Заткнись.",
+   "kw": [
+    "Shut",
+    "up."
+   ],
+   "note": "shut up — заткнись"
+  },
+  {
+   "by": "doorman",
+   "a": "doorman-03.mp3",
+   "en": "I forget myself, please accept my apology.",
+   "ru": "Забылся. Прошу принять мои извинения.",
+   "kw": [
+    "forget",
+    "myself,"
+   ],
+   "note": "forget oneself — забыться, перегнуть"
+  }
+ ],
+ "end": {
+  "top": "Настоящий диалог из игры — с переводом",
+  "big": "@languagegamesbot",
+  "sub": "учи английский по играм и кино"
+ },
+ "_media": "арты и голоса — ветки zai/hero-arts и zai/dd-lines (heroes-voice); doorman-flat.jpg / talon-flat.jpg = арт *-full.png поверх своего фона, *-bg.jpg — размытый арт / grey-talon-select-bg.png (см. CLAUDE.md, «Облако, 27.10 — v14»)",
+ "hook": "Дормен давит Грей Талону на больное"
+}

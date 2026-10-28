@@ -1,0 +1,457 @@
+<title>Интерфейс Restless</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Раскладка: сверху — «экран игры» 16:9 с вкладками этапов матча и пояснением справа; ниже — хотелки со статусами, разбор шести программ, порядок работ.
+   Один тёмный вид: это интерфейс поверх игры, светлой версии у него не будет. */
+:root{
+ --bg:#0f1013; --panel:#17181d; --panel2:#1f2027; --line:#2c2d35; --ink:#f1ece2; --mut:#9d978c; --acc:#ffc83d; --acc-ink:#1b1406;
+ --ok:#5cc58c; --test:#ffc83d; --wip:#6fa8ff; --data:#c08cff; --no:#e8615a;
+ --team:#ffb84a; --enemy:#5aa8ff; --weapon:#e8984a; --vit:#6cc36a; --spirit:#b77cf0;
+ --f-d:'Oswald','Arial Narrow',Impact,sans-serif; --f-b:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif; --f-m:'JetBrains Mono',ui-monospace,Consolas,monospace;
+ color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-b);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font:600 30px/1.1 var(--f-d);letter-spacing:.01em;text-transform:uppercase}
+h3{font:600 18px/1.2 var(--f-b)}
+a{color:var(--acc)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.lead{color:var(--mut);max-width:68ch;margin:8px 0 0}
+section{margin-top:56px}
+.sec-h{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+
+/* шапка */
+.top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;border-bottom:1px solid var(--line);padding-bottom:22px}
+.brand{font:700 clamp(48px,9vw,96px)/.9 var(--f-d);letter-spacing:.04em;color:var(--acc);margin:0}
+.brand small{display:block;font:500 15px/1.4 var(--f-b);letter-spacing:0;color:var(--mut);margin-top:12px;text-transform:none}
+.facts{display:grid;gap:8px;min-width:0}
+.facts>span{display:flex;gap:10px;align-items:baseline;font-size:14px}
+.facts b{font:700 12px/1 var(--f-m);color:var(--acc);min-width:22px}
+@media (max-width:760px){.top{grid-template-columns:1fr}}
+
+/* статусы */
+.st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font:600 11.5px/1 var(--f-b);padding:5px 8px;border-radius:999px;background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--c)}
+.st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c)}
+.st.later{--c:var(--mut)}.st.ok{--c:var(--ok)}.st.test{--c:var(--test)}.st.wip{--c:var(--wip)}.st.data{--c:var(--data)}.st.no{--c:var(--no)}
+
+/* ===== экран игры ===== */
+.mock{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;align-items:start}
+@media (max-width:980px){.mock{grid-template-columns:minmax(0,1fr)}}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tabs button{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 14px;font-weight:600;font-size:14px}
+.tabs button[aria-selected="true"]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.tabs button small{display:block;font:500 11px/1.2 var(--f-b);opacity:.7}
+.scrw{overflow-x:auto;border-radius:12px}
+.scrw-h{display:none;font-size:12.5px;color:var(--mut);margin:0 0 8px}
+@media (max-width:760px){.screen{min-width:720px}.scrw-h{display:block}}
+.screen{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;container-type:inline-size;background:#0b0c10;box-shadow:0 0 0 1px var(--line),0 24px 60px rgba(0,0,0,.5)}
+.screen canvas.world{position:absolute;inset:0;width:100%;height:100%}
+.ly{position:absolute;inset:0;pointer-events:none}
+.ly>*{pointer-events:auto}
+.ly[hidden]{display:none!important}
+.hl{animation:hl 1.2s ease-in-out 2}
+@keyframes hl{50%{box-shadow:0 0 0 .35cqw var(--acc),0 0 2cqw color-mix(in srgb,var(--acc) 60%,transparent)}}
+
+/* верхняя панель */
+.tb{position:absolute;top:1.2cqw;left:50%;transform:translateX(-50%);display:flex;gap:2.2cqw;align-items:flex-start}
+.tb .tm{display:flex;gap:.5cqw}
+.pt{position:relative;width:3.6cqw;display:flex;flex-direction:column;align-items:center;gap:.3cqw}
+.pt .av{width:3.6cqw;height:3.6cqw;border-radius:50%;background:#222 center/cover;box-shadow:0 0 0 .18cqw var(--tc);display:grid;place-items:center;font:700 1.5cqw/1 var(--f-d);color:#fff}
+.tm.us .pt{--tc:var(--team)}.tm.en .pt{--tc:var(--enemy)}
+.pt .ul{position:relative;width:1.7cqw;height:1.7cqw;transform:rotate(45deg);border-radius:.25cqw;background:#2a2b31;box-shadow:inset 0 0 0 .12cqw #4a4b55}
+.pt .ul.rd{background:var(--tc);box-shadow:0 0 .9cqw var(--tc)}
+.pt .cd{position:absolute;top:3.75cqw;left:50%;transform:translateX(-50%);font:700 1.25cqw/1 var(--f-m);color:#fff;text-shadow:0 0 .4cqw #000,0 0 .2cqw #000;z-index:2;display:none}
+.screen.ult .pt .cd{display:block}
+.tb .clock{font:700 1.5cqw/1 var(--f-m);color:#fff;background:rgba(0,0,0,.55);border-radius:.5cqw;padding:.5cqw .8cqw;margin-top:.6cqw}
+
+/* герои в мире */
+.foe{position:absolute;display:flex;flex-direction:column;align-items:center;gap:.4cqw}
+.foe .ohb{display:flex;align-items:center;gap:.5cqw;background:rgba(10,10,14,.7);border-radius:.4cqw;padding:.35cqw .5cqw}
+.foe .ohb b{font:600 1cqw/1 var(--f-b);color:#fff;white-space:nowrap}
+.foe .hp{width:7cqw;height:.75cqw;border-radius:.2cqw;background:#3a1c1c;overflow:hidden}
+.foe .hp i{display:block;height:100%;background:linear-gradient(90deg,#e14b42,#ff7a59)}
+.foe .gi{width:1.1cqw;height:1.1cqw;transform:rotate(45deg);border-radius:.15cqw;background:#444}
+.foe .gi.on{background:var(--enemy);box-shadow:0 0 .6cqw var(--enemy)}
+.foe .our{display:none;font:700 1cqw/1 var(--f-m);padding:.35cqw .55cqw;border-radius:.35cqw;background:var(--acc);color:var(--acc-ink);white-space:nowrap}
+.screen.oh .foe .our{display:block}
+.foe .body{width:var(--w);aspect-ratio:1/2.1;border-radius:40% 40% 18% 18%/22% 22% 10% 10%;background:linear-gradient(180deg,rgba(90,168,255,.45),rgba(20,30,50,.85));box-shadow:0 0 1.4cqw rgba(90,168,255,.35),inset 0 0 1cqw rgba(0,0,0,.6)}
+
+/* подсказка */
+.tip{position:absolute;right:1.4cqw;top:9cqw;width:24cqw;background:rgba(14,14,18,.86);border-radius:.8cqw;padding:1cqw 1.2cqw;box-shadow:inset 0 0 0 .1cqw rgba(255,200,61,.35);display:none}
+.screen.tips .tip{display:block}
+.tip small{display:block;font:700 .85cqw/1.2 var(--f-b);letter-spacing:.08em;color:var(--acc);margin-bottom:.4cqw;text-transform:uppercase}
+.tip p{margin:0;font:500 1.12cqw/1.38 var(--f-b);color:#fff}
+.tip em{font-style:normal;color:var(--acc);font-weight:700}
+
+/* души */
+.souls{position:absolute;left:1.6cqw;bottom:6.2cqw;display:none;flex-direction:column;gap:.45cqw}
+.screen.sl .souls{display:flex}
+.souls .n{font:700 1.9cqw/1 var(--f-m);color:#7be3c9;text-shadow:0 0 .6cqw rgba(0,0,0,.8)}
+.souls .n small{font:600 1cqw/1 var(--f-b);color:#cfe;margin-left:.6cqw}
+.souls .nx{display:flex;align-items:center;gap:.6cqw;background:rgba(14,14,18,.82);border-radius:.6cqw;padding:.55cqw .8cqw;font:600 1cqw/1.2 var(--f-b);color:#fff}
+.souls .nx i{width:1.5cqw;height:1.5cqw;border-radius:.3cqw;background:var(--weapon)}
+.souls .nx em{font-style:normal;color:var(--ok);font-family:var(--f-m)}
+.abil{position:absolute;left:50%;bottom:1.3cqw;transform:translateX(-50%);display:flex;gap:.6cqw}
+.abil i{width:3.2cqw;height:3.2cqw;border-radius:.6cqw;background:#1d1e24;box-shadow:inset 0 0 0 .12cqw #3b3c46}
+.abil i:last-child{background:radial-gradient(circle,#4a3a12,#1d1e24 70%);box-shadow:inset 0 0 0 .14cqw var(--team)}
+.hp-me{position:absolute;left:1.6cqw;bottom:1.6cqw;width:20cqw;height:1.4cqw;border-radius:.3cqw;background:#2b1515;overflow:hidden;box-shadow:inset 0 0 0 .1cqw #000}
+.hp-me i{display:block;width:74%;height:100%;background:linear-gradient(90deg,#3fb46a,#7ad38a)}
+.hp-me b{position:absolute;inset:0;display:grid;place-items:center;font:700 .9cqw/1 var(--f-m);color:#fff}
+
+/* миникарта и таймеры */
+.mm{position:absolute;right:1.4cqw;bottom:1.4cqw;width:16cqw;aspect-ratio:1;border-radius:1cqw;background:rgba(10,12,16,.85);box-shadow:inset 0 0 0 .12cqw #3a3b45;overflow:hidden}
+.mm svg{width:100%;height:100%;display:block}
+.mm .lay{opacity:0;transition:opacity .3s}
+.screen.mp .mm .lay{opacity:1}
+.tmr{position:absolute;right:18.4cqw;bottom:1.4cqw;display:none;flex-direction:column;gap:.45cqw;align-items:flex-end}
+.screen.mp .tmr{display:flex}
+.tmr span{display:flex;align-items:center;gap:.6cqw;background:rgba(14,14,18,.84);border-radius:.5cqw;padding:.45cqw .7cqw;font:600 .95cqw/1 var(--f-b);color:#fff;white-space:nowrap}
+.tmr span i{width:.8cqw;height:.8cqw;border-radius:50%;background:var(--c)}
+.tmr span b{font:700 1.05cqw/1 var(--f-m);color:var(--c)}
+.hk{position:absolute;left:50%;bottom:5.2cqw;transform:translateX(-50%);font:600 .85cqw/1 var(--f-b);color:rgba(255,255,255,.55);background:rgba(0,0,0,.45);padding:.35cqw .7cqw;border-radius:.4cqw;white-space:nowrap}
+
+/* панели этапов */
+.ly.pn{background:rgba(6,7,10,.5)}
+.pnl{position:absolute;top:5cqw;left:4cqw;right:4cqw;max-height:calc(100% - 8cqw);background:rgba(13,13,17,.94);border-radius:1.2cqw;box-shadow:inset 0 0 0 .12cqw #34353f;padding:2cqw 2.4cqw;overflow:hidden;display:flex;flex-direction:column;gap:1.4cqw}
+.pnl h4{margin:0;font:600 2.2cqw/1 var(--f-d);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:baseline;gap:1.2cqw}
+.pnl h4 small{font:500 1.05cqw/1 var(--f-b);color:var(--mut);letter-spacing:0;text-transform:none}
+.lob{display:grid;grid-template-columns:1fr 1fr;gap:2cqw;min-height:0}
+.lob .tm{display:flex;flex-direction:column;gap:.55cqw;min-width:0}
+.lob .tm>b{font:700 .95cqw/1 var(--f-b);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.lr{display:grid;grid-template-columns:2.6cqw minmax(0,1fr) auto;gap:.9cqw;align-items:center;padding:.55cqw .7cqw;border-radius:.6cqw;background:#18191f;text-align:left;border:0;width:100%}
+.lr.en{cursor:pointer}
+.lr.en:hover,.lr.on{background:#22242c;box-shadow:inset 0 0 0 .12cqw var(--enemy)}
+.lr .av{width:2.6cqw;height:2.6cqw;border-radius:50%;background:#333 center/cover;display:grid;place-items:center;font:700 1.1cqw/1 var(--f-d);color:#fff}
+.lr .t{min-width:0}
+.lr .t b{display:block;font:600 1.1cqw/1.2 var(--f-b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lr .t small{display:block;font:500 .9cqw/1.3 var(--f-b);color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lr .tg{display:flex;flex-direction:column;align-items:flex-end;gap:.3cqw}
+.rk{font:700 .85cqw/1 var(--f-b);padding:.3cqw .5cqw;border-radius:.3cqw;background:var(--rc);color:#fff;white-space:nowrap}
+.tag{font:600 .8cqw/1 var(--f-b);padding:.25cqw .45cqw;border-radius:.3cqw;background:#2a2b33;color:#ddd;white-space:nowrap}
+.tag.w{background:#3b2a12;color:var(--acc)}.tag.r{background:#3a1717;color:#ff8f86}
+.cnt{display:flex;flex-wrap:wrap;gap:.8cqw;align-items:center;font:500 1cqw/1.3 var(--f-b);color:var(--mut);border-top:1px solid #2a2b33;padding-top:1cqw;min-height:3.4cqw}
+.cnt b{color:#fff}
+.it{display:inline-flex;align-items:center;gap:.5cqw;background:#1d1e25;border-radius:.45cqw;padding:.4cqw .6cqw;font:600 1cqw/1 var(--f-b);color:#fff;white-space:nowrap}
+.it i{width:1.2cqw;height:1.2cqw;border-radius:.25cqw;background:var(--ic)}
+.it em{font:700 .95cqw/1 var(--f-m);font-style:normal;color:var(--ok)}
+.it.weapon{--ic:var(--weapon)}.it.vitality{--ic:var(--vit)}.it.spirit{--ic:var(--spirit)}
+.shop{display:grid;grid-template-columns:1.1fr 1fr;gap:2cqw;min-height:0}
+.shop .col{display:flex;flex-direction:column;gap:.8cqw;min-width:0}
+.shop .col>b{font:700 .95cqw/1 var(--f-b);letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.nb{display:grid;grid-template-columns:2.8cqw minmax(0,1fr) auto;gap:.9cqw;align-items:center;background:#18191f;border-radius:.6cqw;padding:.6cqw .8cqw}
+.nb.first{box-shadow:inset 0 0 0 .14cqw var(--acc)}
+.nb>i{width:2.8cqw;height:2.8cqw;border-radius:.5cqw;background:var(--ic)}
+.nb.weapon{--ic:var(--weapon)}.nb.vitality{--ic:var(--vit)}.nb.spirit{--ic:var(--spirit)}
+.nb b{display:block;font:600 1.15cqw/1.2 var(--f-b)}
+.nb small{display:block;font:500 .88cqw/1.3 var(--f-b);color:var(--mut)}
+.nb em{font:700 1.3cqw/1 var(--f-m);font-style:normal;color:var(--ok)}
+.vs{display:grid;grid-template-columns:2.4cqw minmax(0,1fr);gap:.8cqw;align-items:center;background:#18191f;border-radius:.6cqw;padding:.55cqw .7cqw}
+.vs .av{width:2.4cqw;height:2.4cqw;border-radius:50%;background:#333 center/cover;display:grid;place-items:center;font:700 1cqw/1 var(--f-d);color:#fff;box-shadow:0 0 0 .12cqw var(--enemy)}
+.vs .r{display:flex;flex-wrap:wrap;gap:.5cqw;align-items:center;min-width:0}
+.vs .r small{font:500 .88cqw/1.2 var(--f-b);color:var(--mut)}
+.note{font:500 .88cqw/1.4 var(--f-b);color:var(--mut);margin:0}
+.post{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2.4cqw;align-items:start}
+.post .res{font:700 4cqw/1 var(--f-d);color:var(--ok);letter-spacing:.04em}
+.post .res small{display:block;font:600 1.1cqw/1.3 var(--f-b);color:var(--mut);letter-spacing:0;margin-top:.6cqw}
+.post ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.7cqw}
+.post li{font:500 1.15cqw/1.4 var(--f-b);color:#eee;background:#18191f;border-radius:.6cqw;padding:.7cqw .9cqw}
+.post li b{color:var(--acc)}
+.go{align-self:flex-start;display:inline-flex;align-items:center;gap:.8cqw;background:var(--acc);color:var(--acc-ink);border:0;border-radius:.8cqw;padding:1.1cqw 1.6cqw;font:700 1.3cqw/1 var(--f-b);text-decoration:none}
+.ex{position:absolute;right:1.2cqw;top:1cqw;font:600 .8cqw/1 var(--f-b);color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em}
+
+/* переключатели слоёв */
+.lyr{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.lyr label{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px;cursor:pointer}
+.lyr input{accent-color:var(--acc);width:16px;height:16px}
+
+/* пояснение справа */
+.side{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side h3{font:600 22px/1.15 var(--f-d);text-transform:uppercase;letter-spacing:.02em}
+.side p{margin:0;color:var(--mut);font-size:14px}
+.side ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.side li button{width:100%;text-align:left;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:none;border:0;border-radius:10px;padding:9px 8px}
+.side li button:hover{background:var(--panel2)}
+.side li b{font-weight:600;font-size:14px;display:block}
+.side li small{display:block;color:var(--mut);font-size:12.5px;line-height:1.35}
+
+/* хотелки */
+.wish{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.wish{grid-template-columns:minmax(0,1fr)}}
+.wg{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 16px 6px}
+.wg h3{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.wi{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;padding:10px 0;border-top:1px solid var(--line)}
+.wi:first-of-type{border-top:0}
+.wi b{font-weight:600}
+.wi span{color:var(--mut);font-size:13.5px}
+.wi q{display:block;font-style:italic;color:#c9c2b5;font-size:13px;quotes:"«" "»"}
+
+/* программы */
+.apps{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.app{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px}
+@media (max-width:900px){.app{grid-template-columns:minmax(0,1fr)}}
+.app header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin-bottom:6px}
+.app header h3{font:600 24px/1.1 var(--f-d);text-transform:uppercase;letter-spacing:.02em}
+.app header span{color:var(--mut);font-size:13px}
+.app dl{margin:0;display:grid;gap:10px}
+.app dt{font:700 11.5px/1 var(--f-b);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.app dd{margin:4px 0 0;font-size:14.5px}
+.app dd.take{color:var(--ink)}
+.app dd.take::before{content:"Берём · ";color:var(--ok);font-weight:700}
+.app dd.skip::before{content:"Не берём · ";color:var(--no);font-weight:700}
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start}
+.shots button{border:0;padding:0;background:#000;border-radius:8px;overflow:hidden;aspect-ratio:16/9}
+.shots img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.shots button:hover img{transform:scale(1.04)}
+.noimg{display:grid;place-items:center;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:13px;padding:18px;text-align:center}
+
+/* отличия и порядок */
+.diff{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.diff{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.diff{grid-template-columns:minmax(0,1fr)}}
+.diff div{border-top:2px solid var(--acc);padding-top:12px}
+.diff b{display:block;font:600 17px/1.25 var(--f-b);margin-bottom:6px}
+.diff span{color:var(--mut);font-size:14px}
+.order{counter-reset:o;list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.order li{counter-increment:o;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.order li::before{content:counter(o);font:700 26px/1 var(--f-d);color:var(--acc);text-align:center}
+.order b{display:block;font-weight:600}
+.order span{color:var(--mut);font-size:13.5px}
+@media (max-width:560px){.order li{grid-template-columns:32px minmax(0,1fr)}.order li .st{grid-column:2;justify-self:start}}
+.src{margin-top:40px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+
+/* просмотр скрина */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.86);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb img{max-width:min(1200px,100%);max-height:86vh;border-radius:10px}
+.lb p{margin:10px 0 0;color:#ddd;text-align:center}
+@media (prefers-reduced-motion:reduce){.hl{animation:none;box-shadow:0 0 0 2px var(--acc)}.shots img{transition:none}}
+</style>
+
+<div class="wrap">
+<header class="top">
+ <h1 class="brand">RESTLESS<small>Мод и сайт для Deadlock: кто в матче, что купить, когда таймеры и как не попасться под чужую способность</small></h1>
+ <div class="facts">
+  <span><b>мод</b>Ставится через Deadlock Mod Manager, бесплатно. Без Overwolf и отдельной программы.</span>
+  <span><b>сайт</b><span><a href="https://1f8t8graf4-ai.github.io/dota-/restless/" target="_blank" rel="noopener">уже работает</a>: кто в матче, разбор, сборки.</span></span>
+  <span><b>чит?</b>Нет. Только то, что игра и так показывает, и открытые данные deadlock-api.</span>
+ </div>
+</header>
+
+<section aria-labelledby="h-mock">
+ <div class="sec-h"><h2 id="h-mock">Как это будет выглядеть</h2><p class="lead">Матч по шагам. Нажимай на вкладки и на пункты справа — нужное место подсветится. Цифры предметов и линий настоящие: deadlock-api, Венатор, ранги от Oracle, 14 дней до 28.10. Ники и ранги игроков — пример.</p></div>
+ <div class="mock">
+  <div>
+   <div class="tabs" role="tablist" aria-label="Этап матча">
+    <button role="tab" id="t-lobby" aria-selected="false" data-tab="lobby">Загрузка матча<small>кто против тебя</small></button>
+    <button role="tab" id="t-game" aria-selected="true" data-tab="game">В игре<small>поверх экрана</small></button>
+    <button role="tab" id="t-shop" aria-selected="false" data-tab="shop">Магазин<small>что купить сейчас</small></button>
+    <button role="tab" id="t-post" aria-selected="false" data-tab="post">После матча<small>разбор</small></button>
+   </div>
+   <p class="scrw-h">Это экран ПК — листай его вбок.</p><div class="scrw"><div class="screen ult oh tips sl mp" id="scr">
+    <canvas class="world" id="world" aria-hidden="true"></canvas>
+    <div class="ly" id="hud">
+     <div class="tb" id="tb"></div>
+     <div class="foe" id="f1" style="left:30%;top:30%"><div class="our" id="f1o">УЛЬТА ГОТОВА</div><div class="ohb"><b>Seven</b><span class="hp"><i style="width:62%"></i></span><span class="gi on"></span></div><div class="body" style="--w:6.5cqw"></div></div>
+     <div class="foe" id="f2" style="left:58%;top:36%"><div class="our">ульта 22</div><div class="ohb"><b>Violet</b><span class="hp"><i style="width:84%"></i></span><span class="gi"></span></div><div class="body" style="--w:4.2cqw"></div></div>
+     <div class="tip" id="tip"><small id="tipk"></small><p id="tipt"></p></div>
+     <div class="souls" id="souls"><div class="n">4 100<small>820 в минуту</small></div><div class="nx"><i></i>Следующее: Point Blank<em>50,1 %</em></div></div>
+     <div class="abil"><i></i><i></i><i></i><i></i></div>
+     <div class="hp-me"><i></i><b>1 480 / 2 000</b></div>
+     <div class="tmr" id="tmr">
+      <span style="--c:#ff7a59"><i></i>Средний босс<b>4:05</b></span>
+      <span style="--c:#7be3c9"><i></i>Баффы на мостах<b>0:48</b></span>
+      <span style="--c:#ffc83d"><i></i>Урна<b>2:10</b></span>
+      <span style="--c:#c08cff"><i></i>Разлом<b>1:32</b></span>
+     </div>
+     <div class="mm" id="mm"></div>
+     <div class="hk">Ctrl+O — передвинуть · Ctrl+R — спрятать всё</div>
+    </div>
+    <div class="ly pn" id="p-lobby" hidden><div class="pnl"><span class="ex">пример лобби</span>
+     <h4>Кто в матче<small>появляется, пока грузится матч · нажми на врага</small></h4>
+     <div class="lob"><div class="tm" id="lob-us" style="--c:var(--team)"><b>Твоя команда</b></div><div class="tm" id="lob-en" style="--c:var(--enemy)"><b>Противники</b></div></div>
+     <div class="cnt" id="cnt"></div></div></div>
+    <div class="ly pn" id="p-shop" hidden><div class="pnl"><span class="ex">цифры настоящие</span>
+     <h4>Магазин · Венатор<small>14:20 · у тебя 4 100 душ</small></h4>
+     <div class="shop"><div class="col" id="shop-next"><b>Следующая покупка · 3 200</b></div><div class="col" id="shop-vs"><b>Против их состава</b></div></div>
+     <p class="note">% побед — в матчах, где Венатор купил предмет (ранги от Oracle, 14 дней). У поздних предметов процент выше: их покупают те, кто уже выигрывает. Поэтому сравниваем с покупкой в то же время.</p></div></div>
+    <div class="ly pn" id="p-post" hidden><div class="pnl"><span class="ex">пример матча</span>
+     <h4>Матч окончен<small>Венатор · 34 мин · 9 / 4 / 11</small></h4>
+     <div class="post"><div class="res">ПОБЕДА<small>Твой винрейт за неделю: 56 %</small></div>
+      <ul><li>Линия: к 10-й минуте <b>−1 200 душ</b> к Крысиному королю — у Венатора против него на линии 41 % побед.</li>
+       <li>Умер <b>4 раза у моста</b> — 3 из 4 после 20-й минуты, без союзников рядом.</li>
+       <li>Point Blank купил на <b>19-й</b> минуте — топы берут его на 17-й.</li></ul></div>
+     <a class="go" href="https://1f8t8graf4-ai.github.io/dota-/restless/" target="_blank" rel="noopener">Разбор этого матча в Restless →</a></div></div>
+   </div>
+   </div>
+   <div class="lyr" id="lyr" aria-label="Что показывать в игре">
+    <label><input type="checkbox" id="l-ult" data-c="ult" checked>КД ульт наверху</label>
+    <label><input type="checkbox" id="l-oh" data-c="oh" checked>Ульта над героем</label>
+    <label><input type="checkbox" id="l-tips" data-c="tips" checked>Подсказка</label>
+    <label><input type="checkbox" id="l-sl" data-c="sl" checked>Души и следующий предмет</label>
+    <label><input type="checkbox" id="l-mp" data-c="mp" checked>Карта и таймеры</label>
+   </div>
+  </div>
+  <aside class="side" id="side" aria-live="polite"></aside>
+ </div>
+</section>
+
+<section aria-labelledby="h-wish">
+ <div class="sec-h"><h2 id="h-wish">Твои хотелки — где что</h2><p class="lead">Собрал всё, что ты просил про Deadlock, из твоих сообщений. У каждого пункта — где он будет и в каком он состоянии.</p></div>
+ <div class="wish" id="wish"></div>
+</section>
+
+<section aria-labelledby="h-apps">
+ <div class="sec-h"><h2 id="h-apps">Что берём у шести программ</h2><p class="lead">По твоим скринам и описаниям. Скрин можно открыть крупно.</p></div>
+ <div class="apps" id="apps"></div>
+</section>
+
+<section aria-labelledby="h-diff">
+ <div class="sec-h"><h2 id="h-diff">Чем Restless будет другим</h2></div>
+ <div class="diff">
+  <div><b>Без Overwolf</b><span>У всех шести — отдельная программа или Overwolf с рекламой. У нас — мод через Deadlock Mod Manager: игра сама рисует наш интерфейс, без окон поверх.</span></div>
+  <div><b>По-русски</b><span>Все шесть — на английском, русский где-то вторым языком. У нас русский — основной, а названия способностей и предметов — по-английски с переводом, как в игре.</span></div>
+  <div><b>Одна подсказка за раз</b><span>Как у Soulbound: спокойно, ничего не прыгает в драке. Одна карточка, то, что важно сейчас.</span></div>
+  <div><b>Вместе с языками</b><span>Премиум Restless+ — одной подпиской с «Языками по кино». Реплики героев с переводом — уже у нас в приложении.</span></div>
+ </div>
+</section>
+
+<section aria-labelledby="h-order">
+ <div class="sec-h"><h2 id="h-order">Порядок работ</h2></div>
+ <ol class="order" id="order"></ol>
+</section>
+
+<p class="src">Цифры предметов и линий — api.deadlock-api.com (item-stats, hero-counter-stats), Венатор, средний ранг матча от Oracle, 14 дней до 28.10.2026. Места лагерей, ящиков, баффов, урны и разломов на миникарте — настоящие, из /v1/assets/map. Тексты способностей — файлы игры (SteamDatabase/GameTracking-Deadlock). Скрины программ — из твоего архива.</p>
+</div>
+
+<script>
+const IMG={{imgs}};
+const MAP={{map}};
+const H={venator:['Venator','Венатор',IMG.mini_venator],doorman:['The Doorman','Дормен',IMG.mini_doorman],celeste:['Celeste','Селеста',IMG.mini_celeste],rem:['Rem','Рэм',IMG.mini_rem],talon:['Grey Talon','Грей Талон',IMG.mini_talon],victor:['Victor','Виктор',IMG.mini_victor],
+ violet:['Violet','Вайолет',null,'#c86bd8'],rat:['Rat King','Крысиный король',IMG.mini_rat],seven:['Seven','Севен',IMG.mini_seven],warden:['Warden','Уорден',null,'#5b8def'],geist:['Lady Geist','Леди Гайст',null,'#e0566b'],vindicta:['Vindicta','Виндикта',null,'#7fb069']};
+const av=k=>{const h=H[k];return h[2]?`style="background-image:url(${h[2]})"`:`style="background:${h[3]}"`};
+const avTx=k=>H[k][2]?'':H[k][0][0];
+// верхняя панель: свои и враги, у каждого — значок ульты игры и наши секунды
+const US=[['venator','r'],['doorman',38],['celeste','r'],['rem',12],['talon',64],['victor','r']],EN=[['violet',22],['rat','r'],['seven','r'],['warden',71],['geist',5],['vindicta',40]];
+const pt=([k,u])=>`<div class="pt"><span class="av" ${av(k)} title="${H[k][1]}">${avTx(k)}</span><span class="ul${u==='r'?' rd':''}"></span><span class="cd">${u==='r'?'':u}</span></div>`;
+document.getElementById('tb').innerHTML=`<div class="tm us">${US.map(pt).join('')}</div><span class="clock">14:20</span><div class="tm en">${EN.map(pt).join('')}</div>`;
+
+// миникарта из настоящих мест deadlock-api
+(function(){const s=v=>(v*100).toFixed(2);let g='<svg viewBox="0 0 100 100" aria-label="Миникарта">';
+ MAP.lanes.forEach(l=>{g+=`<polyline points="${l.p.map(p=>s(p[0])+','+s(p[1])).join(' ')}" fill="none" stroke="${l.c}" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>`});
+ g+=`<circle cx="50" cy="50" r="2.6" fill="#ff7a59"/>`;
+ g+='<g class="lay">';
+ MAP.crates.forEach(p=>{g+=`<rect x="${s(p[0])-.35}" y="${s(p[1])-.35}" width=".7" height=".7" fill="#b9a27a" opacity=".55"/>`});
+ MAP.tough.forEach(p=>{g+=`<rect x="${s(p[0])-.6}" y="${s(p[1])-.6}" width="1.2" height="1.2" fill="#e0c48a"/>`});
+ MAP.camps.forEach(p=>{const r={weak:1,medium:1.3,strong:1.8,vault:1.5}[p[2]]||1.2;g+=`<circle cx="${s(p[0])}" cy="${s(p[1])}" r="${r}" fill="${p[2]==='vault'?'#ffd36b':'#e6e1d6'}" stroke="#000" stroke-width=".3"/>`});
+ MAP.buffs.forEach(p=>{g+=`<circle cx="${s(p[0])}" cy="${s(p[1])}" r="2" fill="#7be3c9" stroke="#000" stroke-width=".4"/>`});
+ MAP.urn.forEach(p=>{g+=`<rect x="${s(p[0])-1.2}" y="${s(p[1])-1.2}" width="2.4" height="2.4" transform="rotate(45 ${s(p[0])} ${s(p[1])})" fill="#ffc83d" stroke="#000" stroke-width=".3"/>`});
+ MAP.rifts.forEach(p=>{g+=`<circle cx="${s(p[0])}" cy="${s(p[1])}" r="2.2" fill="none" stroke="#c08cff" stroke-width=".9"/>`});
+ g+='</g><circle cx="44" cy="74" r="2" fill="var(--team)" stroke="#000" stroke-width=".4"/></svg>';document.getElementById('mm').innerHTML=g})();
+
+// фон: ночная улица Нью-Йорка, перспектива, окна, туман
+const cv=document.getElementById('world'),gx=cv.getContext('2d');let WIN=[];
+function world(){const b=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1),W=Math.round(b.width*d),Hh=Math.round(b.height*d);if(!W)return;cv.width=W;cv.height=Hh;
+ const sky=gx.createLinearGradient(0,0,0,Hh);sky.addColorStop(0,'#0b1220');sky.addColorStop(.55,'#1a2233');sky.addColorStop(1,'#0d0e12');gx.fillStyle=sky;gx.fillRect(0,0,W,Hh);
+ const hz=Hh*.52,vx=W*.5;let seed=7;const R=()=>(seed=(seed*16807)%2147483647)/2147483647;WIN=[];
+ [[-1,1],[1,1]].forEach(([side])=>{let x=side<0?0:W;for(let i=0;i<7;i++){const w=W*(.06+R()*.07),h=Hh*(.25+R()*.4),x0=side<0?x:x-w;const top=hz-h*(1-i*.08);
+   gx.fillStyle=`hsl(225,16%,${13+i*2}%)`;gx.fillRect(x0,top,w,Hh-top);for(let wy=top+8*d;wy<Hh*.8;wy+=11*d)for(let wx=x0+6*d;wx<x0+w-6*d;wx+=10*d)if(R()<.32)WIN.push([wx,wy,R()<.2]);x+=side*w*.82}});
+ gx.fillStyle='#14161c';gx.beginPath();gx.moveTo(0,Hh);gx.lineTo(vx-W*.06,hz);gx.lineTo(vx+W*.06,hz);gx.lineTo(W,Hh);gx.fill();
+ gx.strokeStyle='rgba(255,200,61,.35)';gx.lineWidth=2*d;gx.setLineDash([14*d,18*d]);gx.beginPath();gx.moveTo(vx,hz);gx.lineTo(vx,Hh);gx.stroke();gx.setLineDash([]);
+ const fog=gx.createLinearGradient(0,hz-Hh*.15,0,hz+Hh*.2);fog.addColorStop(0,'rgba(120,140,180,0)');fog.addColorStop(.5,'rgba(120,140,180,.14)');fog.addColorStop(1,'rgba(120,140,180,0)');gx.fillStyle=fog;gx.fillRect(0,hz-Hh*.15,W,Hh*.35);
+ drawWin(d)}
+function drawWin(d){WIN.forEach(([x,y,c])=>{gx.fillStyle=c?'rgba(255,90,140,.75)':'rgba(255,210,130,.55)';gx.fillRect(x,y,4*d,6*d)})}
+world();addEventListener('resize',()=>world());
+
+// подсказки по очереди — одна за раз
+const TIPS=[['Севен · ульта готова','У Севена горит ульта. <em>Не стойте кучей</em> — разойдитесь, пока он рядом.'],['Вайолет на твоей линии','<em>Still Life</em> бьёт и в конце станит, пока она на тебя смотрит. <em>Забеги за стену</em> — набросок не дорисуется.'],['Средний босс через 4:05','Соберитесь у центра заранее: у врагов 3 ульты готовы, у вас — 3.']];
+let ti=0;const showTip=()=>{const t=TIPS[ti%TIPS.length];document.getElementById('tipk').textContent=t[0];document.getElementById('tipt').innerHTML=t[1];ti++};showTip();
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(showTip,6000);
+
+// лобби
+const RK={Eternus:'#c9a227',Ascendant:'#9a5fd0',Phantom:'#4b6fd6',Oracle:'#2d8f8f',Emissary:'#4f8f3a',Ritualist:'#a24f2a'};
+const LOB_US=[['venator','ты','Oracle 4',212,58,[['мейн героя','w']]],['doorman','Kostya_pls','Oracle 2',48,51,[]],['celeste','mirra','Phantom 1',301,55,[['мейн героя','w']]],['rem','sleepyhead','Oracle 6',12,42,[['мало игр на герое','']]],['talon','owl.exe','Emissary 5',95,49,[]],['victor','frank','Oracle 3',160,53,[['серия 4 победы','w']]]];
+const LOB_EN=[['violet','paintbrush','Phantom 2',188,57,[['мейн героя','w']]],['rat','sewerking','Oracle 5',340,61,[['контрит тебя на линии','r']]],['seven','zeus_lite','Ascendant 1',90,54,[]],['warden','badge','Oracle 1',3,33,[['первые игры на герое','']]],['geist','ghost','Oracle 4',77,50,[['проиграл 4 подряд','']]],['vindicta','crow','Phantom 3',122,55,[]]];
+const lr=(r,en)=>{const [k,nick,rank,g,wr,tags]=r,rn=rank.split(' ')[0];return `<button class="lr${en?' en':''}" ${en?`data-k="${k}"`:'tabindex="-1"'}><span class="av" ${av(k)}>${avTx(k)}</span><span class="t"><b>${nick} · ${H[k][1]}</b><small>на герое ${g} игр · ${wr} % побед</small></span><span class="tg"><span class="rk" style="--rc:${RK[rn]||'#555'}">${rank}</span>${tags.map(t=>`<span class="tag ${t[1]}">${t[0]}</span>`).join('')}</span></button>`};
+document.getElementById('lob-us').insertAdjacentHTML('beforeend',LOB_US.map(r=>lr(r,0)).join(''));
+document.getElementById('lob-en').insertAdjacentHTML('beforeend',LOB_EN.map(r=>lr(r,1)).join(''));
+const IT=(n,s,p)=>`<span class="it ${s}"><i></i>${n}<em>${p}</em></span>`;
+const CNT={violet:['Вайолет',`<b>Против Вайолет</b> Венатору лучше обычного: ${IT('Ethereal Shift','spirit','+9,7 %')} ${IT('Active Reload','weapon','+7,9 %')} ${IT("Hunter's Aura",'weapon','+4,4 %')}`],
+ rat:['Крысиный король',`<b>Крысиный король</b> — на линии у Венатора против него 41 % побед (3 658 матчей). Предметы почти ничего не меняют: ${IT('Sharpshooter','weapon','+1,2 %')} — играй от линии, не размен.`],
+ seven:['Севен',`<b>Против Севена</b>: ${IT('Warp Stone','vitality','+8,7 %')} ${IT('Spellbreaker','vitality','+4,4 %')} ${IT('Lucky Shot','weapon','+4,0 %')}`],
+ warden:['Уорден','<b>Уорден</b>: у Венатора против него 53 % побед на линии — но игр мало (257), цифре пока не верим.'],
+ geist:['Леди Гайст','<b>Леди Гайст</b>: Life Drain тянет здоровье, пока видит тебя и ты рядом — зайди за угол. На линии 51 % у Венатора.'],
+ vindicta:['Виндикта','<b>Виндикта</b>: на линии 49 % у Венатора. Её кол держит у места, где упал, — не стой рядом.']};
+const cnt=document.getElementById('cnt');
+function pickEnemy(k){document.querySelectorAll('#lob-en .lr').forEach(b=>b.classList.toggle('on',b.dataset.k===k));cnt.innerHTML=CNT[k][1]}
+document.getElementById('lob-en').addEventListener('click',e=>{const b=e.target.closest('.lr');if(b)pickEnemy(b.dataset.k)});
+pickEnemy('violet');
+
+// магазин
+document.getElementById('shop-next').insertAdjacentHTML('beforeend',[['Point Blank','weapon',50.1,5598,'топы берут на 17-й минуте'],['Hollow Point','weapon',48.8,11574,'на 17–18-й'],['Weighted Shots','weapon',48.1,14240,'на 17–18-й']].map((x,i)=>`<div class="nb ${x[1]}${i?'':' first'}"><i></i><span><b>${x[0]}</b><small>${x[3].toLocaleString('ru')} матчей · ${x[4]}</small></span><em>${String(x[2]).replace('.',',')} %</em></div>`).join(''));
+document.getElementById('shop-vs').insertAdjacentHTML('beforeend',[['violet',[['Ethereal Shift','spirit','+9,7'],['Active Reload','weapon','+7,9']]],['seven',[['Warp Stone','vitality','+8,7'],['Spellbreaker','vitality','+4,4']]],['rat',null]].map(([k,L])=>`<div class="vs"><span class="av" ${av(k)}>${avTx(k)}</span><span class="r">${L?L.map(x=>IT(x[0],x[1],x[2]+' %')).join(''):'<small>Крысиный король: предметы почти не помогают — береги линию</small>'}</span></div>`).join(''));
+
+// вкладки и пояснения
+const SIDE={
+ game:{h:'В игре',p:'Всё лежит по краям, как в самой игре, и не двигается в драке. Любую часть можно выключить или передвинуть.',L:[
+  ['ult','КД ульт наверху','Секунды под значком ульты у каждого — игра их отдаёт, но не пишет.','test','в моде 0.9.1'],
+  ['oh','Ульта над героем','Те же секунды — над хп-баром. Игра там рисует только значок.','wip','пробник 0.10'],
+  ['tips','Одна подсказка','По очереди: чья ульта готова, кто на твоей линии и чем опасен.','wip','делаем'],
+  ['sl','Души и следующий предмет','Души в минуту и что купить следующим под этот матч.','wip','делаем'],
+  ['mp','Карта: лагеря, ящики, разломы, урна','Места — настоящие, из открытых данных. Таймеры — по часам матча.','data','ждём правила от Зетки'],
+  ['mp','«Лагерь зачистили 20 с назад»','Игра этого моду не говорит — это была бы скрытая информация.','no','нельзя']]},
+ lobby:{h:'Загрузка матча',p:'Пока грузится матч — все 12 игроков: ранг, игры и % побед на герое, метки. Нажми на врага — что брать против него.',L:[
+  ['lob','Ранги и винрейты всех 12','На сайте уже есть. В игре — картинкой с нашего сервера: мод видит игроков, как QoL.','wip','идея, пробуем'],
+  ['lob','Метки: мейн, серия, контрит тебя','Считаем по истории матчей игрока и по линиям героев.','ok','на сайте есть'],
+  ['cnt','Предметы против врага','% побед с предметом против этого героя минус обычный.','ok','данные есть']]},
+ shop:{h:'Магазин',p:'Открыл магазин — сверху наша полоса: что купить сейчас и что брать против их состава. С процентом побед и числом матчей.',L:[
+  ['next','Следующая покупка','Под твоё время и души. Цифры на макете — настоящие.','wip','делаем'],
+  ['vs','Против их состава','По каждому врагу — 2–3 предмета, которые помогают лучше обычного.','wip','делаем'],
+  ['next','Сборки топов (Eternus)','Фильтр по рангу — как на сайте.','ok','на сайте есть']]},
+ post:{h:'После матча',p:'Матч кончился — три главных вывода и кнопка «Разбор этого матча». Разбор открывается на сайте.',L:[
+  ['go','Кнопка «Разбор этого матча»','Открывает сайт Restless сразу на этом матче.','data','Зетка ищет ID матча на экране'],
+  ['go','Разбор: линия, смерти, покупки','Как Ruiner для Доты: где проиграл линию, где умирал, что купил поздно.','ok','на сайте есть']]}};
+const ST={ok:'есть',test:'проверь',wip:'делаем',data:'ждём данные',no:'нельзя'};
+const scr=document.getElementById('scr'),side=document.getElementById('side');
+const TARGET={ult:'#tb',oh:'#f1',tips:'#tip',sl:'#souls',mp:'#mm',lob:'#lob-en',cnt:'#cnt',next:'#shop-next',vs:'#shop-vs',go:'.go'};
+function flash(k){const el=scr.querySelector(TARGET[k]);if(!el)return;el.classList.remove('hl');void el.offsetWidth;el.classList.add('hl')}
+function tab(t){document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
+ document.getElementById('hud').hidden=false;['lobby','shop','post'].forEach(x=>document.getElementById('p-'+x).hidden=x!==t);
+ scr.style.setProperty('--dim',t==='game'?0:1);document.getElementById('lyr').hidden=t!=='game';
+ const s=SIDE[t];side.innerHTML=`<h3>${s.h}</h3><p>${s.p}</p><ul>${s.L.map(x=>`<li><button data-k="${x[0]}"><span><b>${x[1]}</b><small>${x[2]}</small></span><span class="st ${x[3]}">${x[4]||ST[x[3]]}</span></button></li>`).join('')}</ul>`;
+ try{localStorage.setItem('rl-ui-tab',t)}catch(e){}}
+document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)tab(b.dataset.tab)});
+side.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;const k=b.dataset.k;const cb=document.querySelector(`#lyr input[data-c="${k}"]`);if(cb&&!cb.checked){cb.checked=true;scr.classList.add(k)}flash(k)});
+document.getElementById('lyr').addEventListener('change',e=>{const c=e.target.dataset.c;if(c)scr.classList.toggle(c,e.target.checked)});
+let t0='game';try{t0=localStorage.getItem('rl-ui-tab')||'game'}catch(e){}tab(SIDE[t0]?t0:'game');
+
+// хотелки
+const W=[
+ ['ok','Уже есть',[['Кто в матче: ранги и игры на герое всех 12','Сайт Restless. В игре — следующим шагом.','делай его блитцом и профессором'],['Разбор матча — как Ruiner','Сайт: линия, души против соперника, покупки против топов, где умирал.','Ruiner для Доты — так же для ДД можно'],['Сборки игроков с % побед и сколько взяли','Сайт, вкладка «Сборки», фильтр по рангу (в т.ч. Eternus).','обычные сборки с процентом и сборки топов'],['Советы против героев','4 героя в макетах v19, остальных Зетка собирает из описаний способностей.','против художницы — её стан можно заблокировать, забежав за стену']]],
+ ['test','В моде — проверь',[['КД ульты в верхней панели','Мод 0.9.1 — секунды поверх значка ульты.','кд ульты']]],
+ ['wip','Делаем',[['КД ульты над хп-баром героя','Пробник 0.10: дотянется ли мод до полосок над героями.','показываешь конкретно над хп баром героев ульт?'],['% побед предметов прямо в магазине','Полоса над магазином игры.','лучше всего прямо в игре, в магазине'],['Следующая покупка под этот матч','По твоему времени, душам и их составу.',null],['Таймер среднего босса','Игра его уже отдаёт интерфейсу.',null],['Кнопка «Разбор» после матча','Открывает сайт на этом матче.',null]]],
+ ['data','Ждём данные (Зетка)',[['Таймеры баффов на мостах, урны, разломов, статуй','Места есть, нужны правила появления по патчам.','трекер кемпов, рифта, урны'],['Ящики на миникарте','Места 423 ящиков и 74 крепких — есть. Нужны правила появления.','и коробок желательно'],['Двуязычные субтитры реплик в игре','Где лежат субтитры в файлах игры и можно ли подменить модом.',null]]],
+ ['no','Нельзя (это чит)',[['Какой лагерь зачистили и когда','Игра этого моду не говорит. Можно отметить самому нажатием.',null],['КД предметов у врагов','Игра их интерфейсу не отдаёт.',null],['Всё, что читает память игры','Только то, что игра и так показывает.','не чит']]],
+ ['ok','Уже есть в другом месте',[['FPS-конфиги','В Deadlock Mod Manager уже есть: шкала Pretty → Potato, одной кнопкой.','фпс конфиги']]]];
+document.getElementById('wish').innerHTML=W.map(([s,h,L])=>`<div class="wg"><h3><span class="st ${s}">${h}</span></h3>${L.map(x=>`<div class="wi"><b>${x[0]}</b><span>${x[1]}</span>${x[2]?`<q>${x[2]}</q>`:''}</div>`).join('')}</div>`).join('');
+
+// программы
+const A=[
+ ['Deadlock Labs','Tracker.gg / WIKILY.GG · Overwolf · бесплатно',['dl-lobby','dl-build','dl-heroes','dl-dash'],'Компаньон сайта deadlocklabs.gg. Пока грузится матч — все игроки с рангом и % побед и метками. В игре — таймеры урны и лагерей у миникарты, души в минуту и следующий предмет у счётчика душ (Ctrl+O двигать). Предметы против каждого врага, дашборд, сборки по фазам с порядком умений и импортом в игру.','Метки игроков («мейн героя», «контрит тебя», «серия»); следующий предмет у счётчика душ; предметы против каждого врага; сборки по фазам.','Отдельную программу Overwolf — у нас мод.'],
+ ['Soulbound','Jackalope Digital',['sb-overlay','sb-scout','sb-counters','sb-compare'],'Спокойный оверлей: кто откормлен («Watch: NeonVandal 7/1/4 — THREAT»), «Seven ult ready — держись за укрытием», таймеры баффов на мостах и Sinner\'s Sacrifice, предмет с % побед. Перед матчем — уровень угрозы каждого врага. Сравнение двух игроков.','Одна подсказка за раз и ничего не прыгает в драке; «ульта готова» словами; угрозу врага.','Сравнение двух игроков — потом, это не главное.'],
+ ['Deadlock Coach','Rho Technologies · Overwolf · 35 тыс. загрузок · 3,4 · реклама и подписка',['dc-ingame','dc-hero','dc-meta','dc-home'],'Живая статистика игроков и героев по последним матчам. В игре — окно с лучшим порядком умений и предметами («Unlock now»). Мета героев тирами, страница героя с лучшими парами и тяжёлыми матчапами, лидеры и про-матчи.','Порядок умений прямо в игре; «лучшие пары и тяжёлые матчапы» на странице героя.','Серое окно поверх игры и рекламу. 35 тыс. загрузок при таком виде — значит, место есть.'],
+ ['Deadlock Signal','Deadlock Signal · 18 языков',[],'Живая доска матча обеих команд, сборки в порядке покупки, сканер драфта Street Brawl, порядок умений, автоматическая запись матчей, статистика по героям и матчапам, лента про-игроков со сборками, клипы в фоне.','Сборку «в порядке покупки»; ленту про-игроков — для канала.','Запись клипов в фоне — тяжело и не про нас.'],
+ ['Deadlock Companion','на открытых данных deadlock-api',[],'Матчи, живая статистика, профиль. Построен на том же открытом deadlock-api, что и наш сайт: данные пополняют сами игроки.','Честный источник данных — у нас он тот же.','Почти всё это уже на нашем сайте.'],
+ ['Statlocker','профиль по статистике',['sl-profile'],'Профиль игрока: % побед, KDA, часы, любимый режим, герои — «по данным сообщества deadlock-api».','Профиль-карточку для друзей — как у нас в приложении.','Отдельный сайт — профиль будет внутри Restless.']];
+document.getElementById('apps').innerHTML=A.map(([n,by,sh,what,take,skip])=>`<article class="app"><div><header><h3>${n}</h3><span>${by}</span></header><dl><div><dt>Что делает</dt><dd>${what}</dd></div><div><dt>Что берём</dt><dd class="take">${take}</dd></div><div><dt>Что нет</dt><dd class="skip">${skip}</dd></div></dl></div>
+ ${sh.length?`<div class="shots">${sh.map(k=>`<button data-img="${k}" aria-label="Открыть скрин ${n}"><img src="${IMG[k]}" alt="Скрин ${n}" ></button>`).join('')}</div>`:'<div class="noimg">Скринов нет — по описанию из Overwolf</div>'}</article>`).join('');
+document.getElementById('apps').addEventListener('click',e=>{const b=e.target.closest('[data-img]');if(!b)return;const d=document.createElement('div');d.className='lb';d.tabIndex=0;d.innerHTML=`<div><img src="${IMG[b.dataset.img]}" alt=""><p>Нажми, чтобы закрыть</p></div>`;document.body.appendChild(d);d.focus();const x=()=>d.remove();d.addEventListener('click',x);d.addEventListener('keydown',ev=>{if(ev.key==='Escape')x()})});
+
+// порядок работ
+const O=[['Пробник 0.10','Видит ли мод полоски над героями. Видит — секунды ульты над хп-баром. Плюс таймер среднего босса.','wip','следующим'],['Магазин: % побед и следующая покупка','Полоса над магазином игры, цифры — с нашего сервера картинкой.','wip','делаем'],['Кто в матче — в игре','Мод видит 12 игроков → наш сервер рисует карточку с рангами и метками → мод её показывает.','wip','идея, пробуем'],['Таймеры баффов, урны, разломов и ящики','Когда Зетка принесёт правила появления по патчам.','data','ждём данные'],['Кнопка «Разбор» после матча','Когда найдём ID матча на экране итогов.','data','ждём данные'],['Своя программа на ПК','Только если мода не хватит. Делать бесплатно; подпись для Windows — по желанию.','later','потом']];
+document.getElementById('order').innerHTML=O.map(([b,s,c,l])=>`<li><div><b>${b}</b><span>${s}</span></div><span class="st ${c}">${l}</span></li>`).join('');
+</script>

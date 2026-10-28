@@ -1,0 +1,77 @@
+{
+ "id": "doorman-guests-mini",
+ "mode": "mini",
+ "title": "ок, просто выкладываю любимые реплики Дормена гостям его отеля",
+ "speaker": {
+  "name": "Дормен",
+  "art": "art/doorman-full.png",
+  "crop": [
+   418,
+   110,
+   760,
+   976
+  ]
+ },
+ "lines": [
+  {
+   "to": {
+    "name": "Дрифтер",
+    "art": "art/drifter-full.png",
+    "crop": [
+     720,
+     60,
+     760,
+     976
+    ]
+   },
+   "a": "vo/doorman-88.mp3",
+   "en": "Your heart beats faster as you find yourself in new territory. Slowly, but surely, realizing that here you are no predator, merely vermin scuttling down the hall. It won't be long before you find yourself feeling something that’s eluded you for centuries: Fear.",
+   "ru": "Твоё сердце бьётся чаще: ты на чужой территории. Медленно, но верно ты понимаешь: здесь ты не хищник, а всего лишь паразит, снующий по коридору. Скоро ты почувствуешь то, чего не знал веками: страх."
+  },
+  {
+   "to": {
+    "name": "Калико",
+    "art": "art/calico-full.png",
+    "crop": [
+     560,
+     120,
+     760,
+     976
+    ]
+   },
+   "a": "vo/doorman-81.mp3",
+   "en": "Look on the bright side, Calico. When your body rots, I’ll take care of your cat.",
+   "ru": "Взгляни на это с хорошей стороны, Калико. Когда твоё тело сгниёт, я позабочусь о твоей кошке."
+  },
+  {
+   "to": {
+    "name": "Покет",
+    "art": "art/pocket-full.png",
+    "crop": [
+     785,
+     0,
+     760,
+     976
+    ]
+   },
+   "a": "vo/doorman-124.mp3",
+   "en": "Arin, your mother and father love you, and would be glad to see you come ho-... [Breaks into laughter] Sorry, I tried, but I couldn’t keep a straight face, you have no home.",
+   "ru": "Арин, мама и папа тебя любят и будут рады, если ты вернёшься домо-… [смеётся] Прости, я старался, но не смог сдержать смех: у тебя нет дома."
+  },
+  {
+   "to": {
+    "name": "Ямато",
+    "art": "art/yamato-full.png",
+    "crop": [
+     255,
+     0,
+     760,
+     976
+    ]
+   },
+   "a": "vo/doorman-150.mp3",
+   "en": "The only way you’ll ever honor your brother is by falling on his sword.",
+   "ru": "Почтить брата ты сможешь только одним способом — броситься на его меч."
+  }
+ ]
+}

@@ -297,14 +297,14 @@ function ndTodayHTML(){
   ].filter(Boolean).join('');
   return `<div class="n-scr n-today">
     <div class="n-hello"><div class="n-ava">${esc((nm||'Я').charAt(0).toUpperCase())}</div><div><b>${hi}${nm?', '+esc(nm):''}</b><span>${esc(sub)}</span></div>
-      <div class="n-fire${risk?' risk':''}"><i>🔥</i><i>${st}</i></div><button class="n-ring${ok?' ok':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 38 38"><circle class="bgc" cx="19" cy="19" r="15.9" pathLength="100"/><circle class="fg" cx="19" cy="19" r="15.9" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></div>
+      <button class="n-ring${ok?' ok':''}" id="hDay" aria-label="Цель дня" style="--p:${gp}"><svg viewBox="0 0 38 38"><circle class="bgc" cx="19" cy="19" r="15.9" pathLength="100"/><circle class="fg" cx="19" cy="19" r="15.9" pathLength="100"/></svg><b>${ok?'✓':Math.min(d.n,goal)}</b></button></div>
     <section class="n-hero" id="hHero" data-sc="${s.id}"><div class="n-bgi" style="background-image:${bdi?`url('${bdi}'),`:''}url('${assetUrl(scKey(s,'cover.jpg'))}')"></div>
       <div class="n-eb">${c.fresh?'Начни отсюда':c.next?'Следующая сцена':'План на сегодня'}</div>
       <h3>Эпизод <em>«${esc(p.t)}»</em>${n?` и ${n} ${plural(n,['повторение','повторения','повторений'])}`:''}</h3>
       <div class="n-meta"><span class="n-chip ${cf.toLowerCase()}">${lvW(cf)}</span><span class="n-t">≈ ${mins} мин</span><span class="n-t">${esc(s.show||s.title)}</span></div>
       <div class="n-pull" id="ndPull" role="button" tabindex="0" aria-label="Потяни, чтобы начать"><i class="ndpull-f"></i><span class="ndpull-t">Потяни, чтобы начать</span><i class="ndpull-k"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></i></div>
     </section>
-    <div class="n-stats" role="group" aria-label="Статистика"><div><b>🔥 ${st}</b><small>серия</small></div><div><b>${ph}</b><small>фраз выучено</small></div><div><b>${eps}</b><small>эпизодов</small></div></div>
+    <div class="n-stats" role="group" aria-label="Статистика"><div${risk?' class="risk"':''}><b>🔥 ${st}</b><small>${risk?'ответь сегодня':'серия'}</small></div><div><b>${ph}</b><small>фраз выучено</small></div><div><b>${eps}</b><small>эпизодов</small></div></div>
     ${rows?`<div class="n-sechead">План на сегодня</div>${rows}`:''}
   </div>`;}
 const ndYear=s=>{const m=String(s.ep||'').match(/(19|20)\d\d/);return m?m[0]:'';};
@@ -1032,7 +1032,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.75';
+const APP_V='13.9.76';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
