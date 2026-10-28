@@ -1,0 +1,152 @@
+[
+ {
+  "en": "buff",
+  "ru": "усиление",
+  "ex": "Health regen increased from 2.5 to 3.25"
+ },
+ {
+  "en": "nerf",
+  "ru": "ослабление",
+  "ex": "Spirit Resistance scaling reduced from 0.12 to 0.1"
+ },
+ {
+  "en": "cooldown",
+  "ru": "откат способности (CD)",
+  "ex": "Cooldown increased from 30s to 32s"
+ },
+ {
+  "en": "scaling",
+  "ru": "прибавка от силы героя (масштабирование)",
+  "ex": "Damage spirit scaling from 0.9 to 1.1"
+ },
+ {
+  "en": "spirit power",
+  "ru": "сила спирита (второй тип урона)",
+  "ex": "now spirit damage"
+ },
+ {
+  "en": "bullet damage",
+  "ru": "урон пулями",
+  "ex": "Base bullet damage for uncharged shots from 12 to 15"
+ },
+ {
+  "en": "health regen",
+  "ru": "восстановление здоровья",
+  "ex": "Health regen increased from 2.5 to 3.25"
+ },
+ {
+  "en": "base health",
+  "ru": "базовое здоровье",
+  "ex": "Base health increased from 680 to 730"
+ },
+ {
+  "en": "undocumented",
+  "ru": "не упомянуто в патчноутах",
+  "ex": "(Undocumented) Self damage reduced from 12% max HP to 10%"
+ },
+ {
+  "en": "charged shot",
+  "ru": "заряженный выстрел",
+  "ex": "charged shots from 44 to 48"
+ },
+ {
+  "en": "bullet resistance",
+  "ru": "сопротивление пулям",
+  "ex": "Now has -7% Base Bullet Resistance"
+ },
+ {
+  "en": "spirit resistance",
+  "ru": "сопротивление спириту",
+  "ex": "Spirit Resistance scaling reduced from 0.12 to 0.1"
+ },
+ {
+  "en": "barrier",
+  "ru": "барьер, временный щит",
+  "ex": "Barrier reduced from 100 to 90"
+ },
+ {
+  "en": "melee",
+  "ru": "ближний удар (оружие вплотную)",
+  "ex": "Repeat light melees while airborne"
+ },
+ {
+  "en": "light melee",
+  "ru": "лёгкий ближний удар",
+  "ex": "Repeat light melees while airborne now have diminishing forward momentum"
+ },
+ {
+  "en": "heavy melee",
+  "ru": "тяжёлый ближний удар",
+  "ex": "Heavy melee ground pound no longer gains horizontal speed"
+ },
+ {
+  "en": "ground pound",
+  "ru": "удар о землю с прыжка",
+  "ex": "Heavy melee ground pound no longer gains horizontal speed when landing on slopes"
+ },
+ {
+  "en": "max HP",
+  "ru": "максимальный запас здоровья",
+  "ex": "Self damage from 6.5% max HP to 5%"
+ },
+ {
+  "en": "AP (ability point)",
+  "ru": "очко прокачки способности",
+  "ex": "Close the Deal - 1AP increased from +50 to +90"
+ },
+ {
+  "en": "on hit",
+  "ru": "при попадании",
+  "ex": "-40% Cooldown on Hit"
+ },
+ {
+  "en": "slow",
+  "ru": "замедление",
+  "ex": "Slow effectiveness in air reduced by 15%"
+ },
+ {
+  "en": "diminishing",
+  "ru": "затухающий, всё слабее",
+  "ex": "now have diminishing forward momentum"
+ },
+ {
+  "en": "duration",
+  "ru": "длительность эффекта",
+  "ex": "duration lasts 35% less"
+ },
+ {
+  "en": "release",
+  "ru": "выход (героя, патча)",
+  "ex": "Solomon is available in-game now"
+ },
+ {
+  "en": "ranked season",
+  "ru": "сезон рейтинговых игр",
+  "ex": "the end date for our first Ranked season has been pushed back"
+ },
+ {
+  "en": "pushed back",
+  "ru": "перенесён на позже",
+  "ex": "end date ... has been pushed back to Thursday November 5th"
+ },
+ {
+  "en": "VO (voice over)",
+  "ru": "озвучка",
+  "ex": "Updated VO pass for Viscous"
+ },
+ {
+  "en": "remastered",
+  "ru": "перезаписан, сделан заново (про звук)",
+  "ex": "Remastered recently added voice lines"
+ },
+ {
+  "en": "turnout",
+  "ru": "явка, сколько людей пришло",
+  "ex": "Big Turnout: Over 110 Million votes were cast"
+ },
+ {
+  "en": "win rate",
+  "ru": "процент побед",
+  "ex": "Nurse Harrow voters consistently proved to have a higher win rate"
+ }
+]

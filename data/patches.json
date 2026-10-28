@@ -1,0 +1,438 @@
+[
+ {
+  "date": "2026-10-20",
+  "title": "Shh... This Won't Hurt a Bit.",
+  "size": "big",
+  "src": "https://store.steampowered.com/news/app/1422450/view/669505296465396778",
+  "changes": [
+   {
+    "k": "nurse-harrow",
+    "t": "new",
+    "ty": "new",
+    "h": "Новый герой — Нёрс Харроу",
+    "rows": [
+     [
+      "Leech Therapy — бросок банки с пиявками",
+      "—",
+      "цепляется к врагам, вытягивает здоровье и энергию, пиявки ползут назад и приносят добычу"
+     ],
+     [
+      "Wretched Vapors — склянка с парами",
+      "—",
+      "усиливает союзников; когда пары заканчиваются — побочные эффекты"
+     ],
+     [
+      "Healing Needles — шприц с иглами",
+      "—",
+      "лечит союзников прямо в вены"
+     ],
+     [
+      "Lurking Terrors — ульт, открывает сумку",
+      "—",
+      "выпускает терроров, враги разбегаются по укрытиям"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_20,_2026#Heroes"
+   },
+   {
+    "k": "map",
+    "t": "change",
+    "ty": "map",
+    "h": "Карта: закусочная и магазины синей линии (без упоминания в патчноутах)",
+    "rows": [
+     [
+      "Diner (синяя линия)",
+      "—",
+      "обновлена"
+     ],
+     [
+      "Salt & Chalk (скрытый магазин Короля, синяя линия)",
+      "—",
+      "обновлено здание"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_20,_2026#Undocumented_changes"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-16",
+  "title": "Paint the Town",
+  "size": "big",
+  "src": "https://store.steampowered.com/news/app/1422450/view/669505296465396531",
+  "changes": [
+   {
+    "k": "violet",
+    "t": "new",
+    "ty": "new",
+    "h": "Новый герой — Вайолет, художница",
+    "rows": [
+     [
+      "Living Ink — живые чернила",
+      "—",
+      "усиливают пули и превращают вдохновение в реальность"
+     ],
+     [
+      "Flow State",
+      "—",
+      "чернила плывут к опасности (урон) или от неё (побег)"
+     ],
+     [
+      "Still Life",
+      "—",
+      "натюрморт: захватывает точный облик врага"
+     ],
+     [
+      "Abstract Landscape — ульт",
+      "—",
+      "окружает себя и рядом стоящих крупнейшей работой; зрители теряют дар речи"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_16,_2026#Heroes"
+   },
+   {
+    "k": "map",
+    "t": "change",
+    "ty": "map",
+    "h": "Карта: синяя линия (без упоминания в патчноутах)",
+    "rows": [
+     [
+      "Diner (синяя линия)",
+      "—",
+      "обновлена"
+     ],
+     [
+      "Drug Store (синяя линия)",
+      "—",
+      "обновлена"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_16,_2026#Undocumented_changes"
+   },
+   {
+    "k": "solomon",
+    "t": "change",
+    "ty": "hero",
+    "h": "Соломон: перемещение королём — по кнопке способности",
+    "rows": [
+     [
+      "Kingside Knight: движение королём",
+      "—",
+      "теперь по кнопке способности (без упоминания в патчноутах)"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_16,_2026#Undocumented_changes"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-14",
+  "title": "Minor Update - 10-14-2026",
+  "size": "big",
+  "src": "https://store.steampowered.com/news/externalpost/steam_community_announcements/1846651706676198",
+  "changes": [
+   {
+    "k": "baba",
+    "t": "nerf",
+    "ty": "hero",
+    "h": "Бабу ослабили: сопротивления, откат Threadsap и Brew",
+    "rows": [
+     [
+      "Stats: Spirit Resistance scaling",
+      "0.12",
+      "0.1"
+     ],
+     [
+      "Stats: Base Bullet Resistance",
+      "—",
+      "-7%"
+     ],
+     [
+      "Threadsap: снятие спирита с врага заканчивается",
+      "—",
+      "когда Баба умирает"
+     ],
+     [
+      "Threadsap: Cooldown",
+      "26s",
+      "28s"
+     ],
+     [
+      "Granny Long Legs: Cooldown",
+      "30s",
+      "32s"
+     ],
+     [
+      "Granny Long Legs: повторные лёгкие удары в воздухе",
+      "—",
+      "затухающий рывок вперёд"
+     ],
+     [
+      "Granny Long Legs: подброс лёгким ударом вверх",
+      "—",
+      "уменьшен (взгляд вверх больше не поднимает так высоко)"
+     ],
+     [
+      "Granny Long Legs: ground pound тяжёлым ударом",
+      "—",
+      "не даёт горизонтальной скорости при посадке на склоны"
+     ],
+     [
+      "Baba's Brew: Barrier scaling",
+      "1.2",
+      "0.7"
+     ],
+     [
+      "Baba's Brew: Barrier",
+      "100",
+      "90"
+     ],
+     [
+      "Baba's Brew: Cooldown",
+      "25s",
+      "27s (перенесён на T2)"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_14,_2026#Heroes"
+   },
+   {
+    "k": "deadman-danny",
+    "t": "buff",
+    "ty": "hero",
+    "h": "Дэнни усилили: здоровье, пушка, Chimera, Strix Salvo",
+    "rows": [
+     [
+      "Stats: Health regen",
+      "2.5",
+      "3.25"
+     ],
+     [
+      "Stats: Base health",
+      "680",
+      "730"
+     ],
+     [
+      "Stats: пушка, uncharged shots",
+      "12",
+      "15"
+     ],
+     [
+      "Stats: пушка, charged shots",
+      "44",
+      "48"
+     ],
+     [
+      "Stats: Close the Deal, 1AP",
+      "+50",
+      "+90"
+     ],
+     [
+      "Stats: Chimera Mk1, 5AP — Cooldown on Hit (без упоминания)",
+      "-40%",
+      "-50%"
+     ],
+     [
+      "Stats: Rocket Jumping — урон себе",
+      "6.5% max HP",
+      "5% max HP, теперь spirit damage"
+     ],
+     [
+      "Chimera Mk1: Cooldown boon scaling",
+      "-0.25",
+      "-0.45"
+     ],
+     [
+      "Chimera Mk1: Heal on hit spirit scaling",
+      "1",
+      "2"
+     ],
+     [
+      "Chimera Mk1: Weapon scaling",
+      "1.15",
+      "1.4"
+     ],
+     [
+      "Chimera Mk1: Slow effectiveness в воздухе",
+      "—",
+      "снижено на 15%"
+     ],
+     [
+      "Chimera Mk1: урон себе (без упоминания)",
+      "12% max HP",
+      "10% max HP"
+     ],
+     [
+      "Strix Salvo: Cooldown",
+      "30s",
+      "25s"
+     ],
+     [
+      "Strix Salvo: Damage spirit scaling",
+      "0.9",
+      "1.1"
+     ],
+     [
+      "Strix Salvo: T2",
+      "+20 damage / +35 mark damage",
+      "+30 damage / +45 mark damage"
+     ],
+     [
+      "Strix Salvo: T3, spirit scaling",
+      "+0.2",
+      "+0.35"
+     ],
+     [
+      "Close The Deal: бонусный урон по целям ниже половины здоровья",
+      "+50%",
+      "+75%"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_14,_2026#Heroes"
+   },
+   {
+    "k": "baba",
+    "t": "nerf",
+    "ty": "fix",
+    "h": "Street Brawl: пряжа Бабы короче",
+    "rows": [
+     [
+      "Threadsap: длительность в Street Brawl",
+      "—",
+      "на 35% короче"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_14,_2026#Street_Brawl"
+   },
+   {
+    "k": "item:Radiant Regeneration",
+    "t": "nerf",
+    "ty": "item",
+    "h": "Предмет Radiant Regeneration ослаблен",
+    "rows": [
+     [
+      "Spirit scaling",
+      "0.04",
+      "0.035"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_14,_2026#Items"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-09",
+  "title": "Make Your Move.",
+  "size": "big",
+  "src": "https://store.steampowered.com/news/app/1422450/view/703281660030879519",
+  "changes": [
+   {
+    "k": "solomon",
+    "t": "new",
+    "ty": "new",
+    "h": "Новый герой — Соломон, шахматист",
+    "rows": [
+     [
+      "Setup Bishop",
+      "—",
+      "выставляет пешек-стрелков и плавно сдвигает их по улицам"
+     ],
+     [
+      "Kingside Knight",
+      "—",
+      "защита союзникам и тактические отходы"
+     ],
+     [
+      "Rook Battery",
+      "—",
+      "ладья несётся вперёд и останавливает врагов"
+     ],
+     [
+      "Develop Queen — ульт",
+      "—",
+      "запирает врагов, шах и мат"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_9,_2026#Heroes"
+   },
+   {
+    "k": "map",
+    "t": "change",
+    "ty": "map",
+    "h": "Карта: новые канаты, мосты и коридоры (без упоминания в патчноутах)",
+    "rows": [
+     [
+      "Канаты, мосты, проходы в некоторых местах",
+      "—",
+      "добавлены"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_9,_2026#Undocumented_changes"
+   },
+   {
+    "k": "viscous",
+    "t": "change",
+    "ty": "hero",
+    "h": "Визкоус: ремастер озвучки (без упоминания в патчноутах)",
+    "rows": [
+     [
+      "VO: недавно добавленные реплики и новый контент",
+      "—",
+      "перезаписаны"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_9,_2026#Undocumented_changes"
+   }
+  ]
+ },
+ {
+  "date": "2026-10-06",
+  "title": "Mind the Birds!",
+  "size": "big",
+  "src": "https://store.steampowered.com/news/app/1422450/view/703281025618282871",
+  "changes": [
+   {
+    "k": "baba",
+    "t": "new",
+    "ty": "new",
+    "h": "Новый герой — Баба с голубями",
+    "rows": [
+     [
+      "Threadsap",
+      "—",
+      "бросает клубок пряжи, крадёт спирит врагов и усиливается"
+     ],
+     [
+      "Скамья",
+      "—",
+      "оживает: бег, прыжки, удары с разгона"
+     ],
+     [
+      "Baba's Brew",
+      "—",
+      "плеснуть чаем: некоторые слаще других"
+     ],
+     [
+      "The Birds — ульт",
+      "—",
+      "птицы выходят играть"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_6,_2026#Heroes"
+   },
+   {
+    "k": "system",
+    "t": "change",
+    "ty": "fix",
+    "h": "Первый рейтедовый сезон продлён до 5 ноября",
+    "rows": [
+     [
+      "Конец первого Ranked-сезона",
+      "—",
+      "перенесён на четверг 5 ноября 2026, 14:00 PDT; следующий стартует сразу после"
+     ]
+    ],
+    "src": "https://deadlock.wiki/wiki/Update:October_6,_2026#Notes"
+   }
+  ]
+ }
+]
