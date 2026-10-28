@@ -4,3 +4,9 @@
 .z21-alt{display:flex;gap:6px;flex-wrap:wrap;padding:0 6px 10px}
 .z21-alt button{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);font:600 12px/1 Inter,sans-serif;color:#d8d2c6}
 .z21-alt button.on{background:#FFD23F;color:#16110A}
+.z21p .h3-w.ph{cursor:pointer}
+.z21-pl{position:absolute;right:86px;bottom:13px;width:34px;height:34px;border-radius:50%;background:#FFD23F;color:#16110A;display:grid;place-items:center}
+.z21-pl svg{width:16px;height:16px}
+.z21p .h3-w.ph:not(.z21-on) .eq i{animation-play-state:paused;transform:scaleY(.3)}
+.z21p .h3-w.ph .ff .w{transition:color .2s,opacity .2s}
+.z21p .h3-w.ph.z21-on .ff .w{opacity:.45}.z21p .h3-w.ph.z21-on .ff .w.lit{opacity:1;color:#fff}
