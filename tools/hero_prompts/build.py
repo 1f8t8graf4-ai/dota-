@@ -14,6 +14,8 @@ def fresh(k,a):
     x=BGJ.get(k) or BGJ.get('hero:deadlock:'+k)
     if not x or not x.get('animate'):return a
     a=re.sub(r'<p class="pr">.*?</p>','<p class="pr">'+html.escape(x['animate'])+'</p>',a,count=1,flags=re.S)
+    # старые «Запасные» снять: страница собирается из самой себя, иначе каждый прогон дописывал ещё один (28.10 было по 3)
+    a=re.sub(r'<p class="alt">Запасной[^<]*</p><p class="pr">.*?</p><div class="bt">.*?</div>','',a,flags=re.S)
     if x.get('animate_alt'): # запасной промт — второй блок с кнопкой (кнопка копирует текст над собой)
         i=a.find('</div>',a.find('<div class="bt">'))+6
         a=a[:i]+'<p class="alt">Запасной — для Flow / Veo, если Gemini откажет</p><p class="pr">'+html.escape(x['animate_alt'])+'</p><div class="bt"><button class="cp" data-c="p">Скопировать запасной</button></div>'+a[i:]
