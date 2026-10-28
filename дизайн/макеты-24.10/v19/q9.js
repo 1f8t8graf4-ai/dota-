@@ -36,7 +36,7 @@ function q9Menu(R,ctx,mode){R.className='scr q7 q7m q8m q9m';
  function sel(j){if(j>3||(lv===0&&j===cur))return;cur=j;layer(j);$$('.q7m-i',M).forEach(i=>i.classList.toggle('on',+i.dataset.j===j))}
  function selG(i){$$('.q7m-i',G).forEach(b=>b.classList.toggle('on',+b.dataset.g===i));layer(Q9G[i].on?1:5)}
  function level(n){lv=n;const a=n?M:G,b=n?G:M;an(a,[{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${n?-40:40}px)`}],{d:200,e:EI,f:'forwards'});
-  ctx.t(()=>{a.hidden=true;b.hidden=false;$$('.q7m-i,.q8-bk',b).forEach((x,i)=>an(x,[{opacity:0,transform:`rotate(-1.4deg) translateX(${n?60:-60}px)`},{opacity:1,transform:'rotate(-1.4deg)'}],{sp:SPs,dl:i*70}));if(n)selG(0);else{cur=-1;sel(1)}},200)}
+  ctx.t(()=>{a.hidden=true;b.hidden=false;b.getAnimations().forEach(x=>x.cancel());$$('.q7m-i,.q8-bk',b).forEach((x,i)=>an(x,[{opacity:0,transform:`rotate(-1.4deg) translateX(${n?60:-60}px)`},{opacity:1,transform:'rotate(-1.4deg)'}],{sp:SPs,dl:i*70}));if(n)selG(0);else{cur=-1;sel(1)}},200)}
  const back=()=>{$$('.q8-mn,.q8-gm,.q7-top',R).forEach((x,i)=>{x.getAnimations().forEach(a=>a.cancel());an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:i*60})})};
  function pop(el){an(el,[{scale:'1'},{scale:'.95'},{scale:'1.05'},{scale:'1'}],{d:320,e:EO});const r=rel(el,R);fx.burst(r.x+50,r.y+r.h/2,{n:18,c:['#FFD23F','#fff'],v:3.4,g:0,s:2,l:30})}
  const hub=el=>g11Over(R,ctx,(pv,cc,cl)=>q9Hub(pv,cc,{onBack:cl}),null,el);
