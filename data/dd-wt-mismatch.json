@@ -1,0 +1,632 @@
+[
+ {
+  "file": "celeste-06",
+  "in_data": "Really? 'Cause you totally look like someone that would lose to Lash.",
+  "heard": "Really? Cuz ? you totally look like someone that would lose to Lash."
+ },
+ {
+  "file": "celeste-09",
+  "in_data": "I don't wanna have to hurt you.",
+  "heard": "I don't want ? to have to hurt you."
+ },
+ {
+  "file": "celeste-11",
+  "in_data": "You think you can bully me?",
+  "heard": "You think you could ? bully me?"
+ },
+ {
+  "file": "celeste-13",
+  "in_data": "Nothin' lasts forever.",
+  "heard": "Nothing lasts forever."
+ },
+ {
+  "file": "celeste-14",
+  "in_data": "Enjoyin' the show?",
+  "heard": "Enjoying the show?"
+ },
+ {
+  "file": "celeste-20",
+  "in_data": "I was really pushin' my luck there.",
+  "heard": "I was really pushing my luck there."
+ },
+ {
+  "file": "deadman-danny-05",
+  "in_data": "Are we havin' fun yet?",
+  "heard": "ARE ? WE HAVING FUN YET?"
+ },
+ {
+  "file": "deadman-danny-08",
+  "in_data": "I'll be taking that.",
+  "heard": "I 'LL BE TAKING THAT!"
+ },
+ {
+  "file": "deadman-danny-11",
+  "in_data": "Come back anytime!",
+  "heard": "Come back any ? time!"
+ },
+ {
+  "file": "deadman-danny-14",
+  "in_data": "I've faced tougher crowds with less!",
+  "heard": "I face tougher crowds with less!"
+ },
+ {
+  "file": "doorman-01",
+  "in_data": "I'm excited to get a front-row seat to you throwing your life away for revenge.",
+  "heard": "I'm excited to get a front row seat to you, throwing your life away for revenge."
+ },
+ {
+  "file": "doorman-100",
+  "in_data": "You ruined many lives, Infernus. Do you really think that saving Hank’s bar will make up for the harm you caused?",
+  "heard": "You ruined many lives in furnace. ? Do you really think that saving Hanks bar ? will make up for the harm you caused?"
+ },
+ {
+  "file": "doorman-101",
+  "in_data": "If you’re here with me, who is protecting the Arroyos from Mendoza?",
+  "heard": "If you're here with me, who's protecting the Arroyos from Mendoza?"
+ },
+ {
+  "file": "doorman-103",
+  "in_data": "You pushed away Ettrick for his ambitions, yet remained a slave to your own.",
+  "heard": "You pushed away Etrich for his ambitions, yet remained a slave to your own."
+ },
+ {
+  "file": "doorman-110",
+  "in_data": "The pursuit of excellence is a marathon, not a sprint. And while you are miles ahead of your competition, you still have miles to go. So please, take this time to rejuvenate yourself and relax. Fairfax Industries will be there tomorrow. You can take some me-time today.",
+  "heard": "The pursuit of excellence is a marathon, not a sprint. And while you are miles ahead of your competition, you still have miles to go. So please, take this time to rejuvenate yourself and relax. Fairfax Industries will be there tomorrow. You can take some me time today."
+ },
+ {
+  "file": "doorman-113",
+  "in_data": "Wyoming is a pipe dream, Mirage. The Djinn are doomed.",
+  "heard": "Wyoming is a pipe dream, Miraz. The Djinn are doomed."
+ },
+ {
+  "file": "doorman-114",
+  "in_data": "Wyoming can wait, Mirage. If your goal is to protect Nashala, there is no safer place in the world than The Baroness.",
+  "heard": "Wyoming can wait mirage if your goal is to protect nishala. ? There is no safer place in the world than the Baroness"
+ },
+ {
+  "file": "doorman-115",
+  "in_data": "Maurice, Krill is just dead weight. Kill him.",
+  "heard": "Maurice, Krill is just dead wheat. Kill him."
+ },
+ {
+  "file": "doorman-124",
+  "in_data": "Arin, your mother and father love you, and would be glad to see you come ho-... [Breaks into laughter] Sorry, I tried, but I couldn’t keep a straight face, you have no home.",
+  "heard": "Eren, ? your mother and father love you, and would be glad to see you come home. Hahahaha! ? Sorry, I tried, but I couldn't keep a straight face. You have no home."
+ },
+ {
+  "file": "doorman-127",
+  "in_data": "Seven, your ambition got you killed once, why haven’t you learned your lesson?",
+  "heard": "7 ? your ? ambition got you killed once why ? haven't you learned your lesson"
+ },
+ {
+  "file": "doorman-128",
+  "in_data": "I’d offer you advice, but I know you wouldn’t take it. Good luck on your pursuit, Seven. I hope, in the end, the price that you paid was worth it.",
+  "heard": "I'd offer you advice, but I know you wouldn't take it. Good luck in your pursuits. I hope in the end, the price that you paid was worth it."
+ },
+ {
+  "file": "doorman-132",
+  "in_data": "Oh, Lilah, where do I begin with someone as pathetic as you? The walls of your own making that ended friendships? The vices that you've become a slave to? Or perhaps this fantasy that one day killing Shiv and the Drifter will make up for all the lives that were lost because you just weren't good enough to stop them. I truly am spoiled for choice...",
+  "heard": "Oh, Lila, where do I begin with someone as pathetic as you? The walls of your own making that ended friendships? The vices that you've become a slave to? Or perhaps this fantasy that one day killing Shiv and the Drifter will make up for all the lives that were lost because you just weren't good enough to stop them? I truly am spoiled for choice."
+ },
+ {
+  "file": "doorman-137",
+  "in_data": "You weren’t made for great purpose, you were made on a whim, to satisfy some scientist’s hubris.",
+  "heard": "You weren't made for great purpose, you were made on a whim to satisfy some scientist hubris."
+ },
+ {
+  "file": "doorman-139",
+  "in_data": "You can’t put a bullet through hate, Vindicta. Hathorne will win.",
+  "heard": "You can't put a bullet through hate, Vindicta. Haythorn ? will win."
+ },
+ {
+  "file": "doorman-141",
+  "in_data": "(Alt: Vindicta, how many lives have you claimed? Do they weigh on you? If so, rest, and purge yourself of that nagging sense of guilt. If not, take a moment to revel in the fruits of your labor.)",
+  "heard": "Vindicta, how many lives have you claimed? Do they weigh on you? If so, rest and purge yourself of that nagging sense of guilt. If not, take a moment to revel in the fruits of your labor."
+ },
+ {
+  "file": "doorman-145",
+  "in_data": "I’ve seen you eye The Baroness as you stumble through Manhattan. Wondering what life could be like if you were the sort of person worthy of its hospitality. Vyper, I’m here to tell you that you are worthy. Just stay. You belong here.",
+  "heard": "I've seen you eye the Baroness as you stumble through Manhattan, wondering what life could be like if you were the sort of person worthy of its hospitality. Viper, I'm here to tell you that you are worthy. Just stay. You belong here."
+ },
+ {
+  "file": "doorman-149",
+  "in_data": "You’re a gambling woman, right Wraith? I bet you don't have the will to stay here until I'm finished talking. You're probably scoffing at the idea right now: \"why would I do that, there’s nothing to gain?” and yet you’re curious. Maybe the risk is worth the reward. Maybe there is a carrot at the end of the stick. Even as your life is slowly ebbing from your body, you wonder if this is a trick. Some sort of meta-commentary that is challenging you, and if you stay the course, riches await. They don't. Well, maybe they do, and this is part of the trick. Maybe I'm desperate to stall time because I need you to back out before you gain immeasurable power?.. Are you still alive? I can keep talking. You're fun.",
+  "heard": "You're ? a gambling woman, right, Wraith? I bet you don't have the will to stay here until I'm finished talking. You're probably scoffing at the idea right now. Why would I do that? There's nothing to gain. And yet, you're curious. Maybe the risk is worth the reward. Maybe there is a carrot at the end of the stick. Even as your life is slowly ebbing from your body, you wonder if this is a trick. Some ? sort of meta commentary ? that is challenging you. And if you stay the course, riches await. They don't. Well, maybe they do, and this is part of the trick. Maybe I'm desperate to stall time because I need you to back out before you gain immeasurable power. Are you still alive? I can keep talking. You're fun."
+ },
+ {
+  "file": "doorman-160",
+  "in_data": "If you give up now, I'll throw in a free night stay at the Baroness.",
+  "heard": "If you give up now, I'll throw in a free night's stay at the Baroness."
+ },
+ {
+  "file": "doorman-171",
+  "in_data": "I wouldn't let you take a coaster from the Baroness' lounge, what makes you think I'll let you finish the ritual?",
+  "heard": "I wouldn't let you take a coaster from the Baroness's lounge. What makes you think I'll let you finish the ritual?"
+ },
+ {
+  "file": "doorman-27",
+  "in_data": "Hotel Guest's on cooldown.",
+  "heard": "Hotel guests on cooldown."
+ },
+ {
+  "file": "doorman-50",
+  "in_data": "[Laughter]",
+  "heard": "Hahahaha ?"
+ },
+ {
+  "file": "doorman-59",
+  "in_data": "[Laughter]",
+  "heard": "Heheheheheheheheheheheheh"
+ },
+ {
+  "file": "doorman-63",
+  "in_data": "Please, forgive the mess, The Baroness is mid-renovation.",
+  "heard": "Please forgive the mess. The Baroness is need ? renovation."
+ },
+ {
+  "file": "doorman-77",
+  "in_data": "Know this, Bebop: when Ms. Shelly dies, it will be because of your failure.",
+  "heard": "Know this, Bebop. When Miss Shelley dies, it will be because of your failure."
+ },
+ {
+  "file": "doorman-78",
+  "in_data": "How much of your time is spent taking care of Ms. Shelly, Bebop? The double life you lead must be exhausting. Take some time for yourself, you deserve it.",
+  "heard": "How much of your time is spent taking care of Miss Shelley, Bebop? The double life you lead must be exhausting. Take some time for yourself. You deserve it."
+ },
+ {
+  "file": "doorman-83",
+  "in_data": "Lenny is lost, Celeste. But you need not suffer with him. It's safe here in The Baroness.",
+  "heard": "Lenny is lost, Celeste. But you need not suffer with him. It's safe here in the Barreness. ?"
+ },
+ {
+  "file": "doorman-90",
+  "in_data": "Professor, a little birdie told me that your anniversary is coming up. How wonderful! I would love to extend The Baroness’ hospitality to you and your wife.",
+  "heard": "Professor a ? little birdie told me that your anniversary is coming up. How wonderful I would love to extend the Baroness's hospitality to you and your wife"
+ },
+ {
+  "file": "doorman-92",
+  "in_data": "Miss Graves, you are so starving for a parental figure that you ran straight into the literal palm of a lich's hand. You know it's wrong, you know you can't control her. You know that you're going to die if you don't get help, and you're praying that your parents will notice before it's too late. They won't. But I see you. Stay at The Baroness, and let me be your teacher.",
+  "heard": "Ms. ? Graves, you are so starving for a parental figure that you ran straight into the literal palm of a lich's hand. You know it's wrong, you know you can't control her, you know that you're going to die if you don't get help and ? you're praying that your parents will notice before it's too late. They won't, but I see you. Stay at the Baroness and let me be your teacher."
+ },
+ {
+  "file": "doorman-96",
+  "in_data": "The OSIC is lucky to have you, Haze. Your commitment to your work is an inspiration, but even you deserve some R&R. Why don’t you take a PTO day at The Baroness?",
+  "heard": "The OSIC is lucky to have you, Hayes. ? Your commitment to your work is an inspiration, but even you deserve some R &R. Why don't you take a PTO day at The ? Baroness?"
+ },
+ {
+  "file": "doorman-98",
+  "in_data": "I can only imagine the horrors you witnessed in Macomb. Rest, Holliday, and put aside your trauma for tomorrow.",
+  "heard": "I can only imagine the horrors you witnessed in Macomb. ? Rest, Holiday, and put aside your trauma for tomorrow."
+ },
+ {
+  "file": "grey-talon-15",
+  "in_data": "Revenge is surprisingly time-consuming.",
+  "heard": "Revenge is surprisingly time -consuming."
+ },
+ {
+  "file": "grey-talon-16",
+  "in_data": "Brake lines won't cut themselves.",
+  "heard": "Break lines ? won't cut themselves."
+ },
+ {
+  "file": "rat-king-02",
+  "in_data": "After the ritual, I'm gonna introduce you to one of my people.",
+  "heard": "But ? after the ritual, I'm gonna introduce you to one of my people."
+ },
+ {
+  "file": "rat-king-03",
+  "in_data": "Valerie. She's a good gal, she's just got a wandering heart. Gets it from her mother.",
+  "heard": "Valerie. She's a good gal. She just has a wandering heart. Gets it from her mother."
+ },
+ {
+  "file": "rat-king-06",
+  "in_data": "Hey, give me a heads-up before you do that whole electrical storm thing, I got a lotta people with me, and they ain't as tough as us.",
+  "heard": "Hey, give me a heads up before you do that whole electrical storm thing. I got a lot of people with me and ? they ain't as tough as us."
+ },
+ {
+  "file": "rat-king-08",
+  "in_data": "What kinda sick bastard made you?",
+  "heard": "What kind of sick bastard made you?"
+ },
+ {
+  "file": "rat-king-09",
+  "in_data": "One dead human's bad enough, now I gotta deal with some kinda cadaver potluck?",
+  "heard": "One dead human's bad enough, now I gotta deal with some kind of cadaver potluck?"
+ },
+ {
+  "file": "rat-king-11",
+  "in_data": "You the typa undead that don't have to worry about gettin' sick?",
+  "heard": "You the type of undead that don't have to worry about gettin' ? shit?"
+ },
+ {
+  "file": "rat-king-12",
+  "in_data": "Well, if you want to experiment a little, maybe get hopped up on rabies or somethin' before the fight... I know a guy.",
+  "heard": "Ahh, ? if you want to experiment a little, maybe get hopped up on rabies or something before the fight. I know a guy."
+ },
+ {
+  "file": "rat-king-13",
+  "in_data": "Your loss!",
+  "heard": "You're ? lost!"
+ },
+ {
+  "file": "rat-king-14",
+  "in_data": "We do this on my time, ya crumbum.",
+  "heard": "We do this on my time, you ? crumb bum!"
+ },
+ {
+  "file": "celeste-06",
+  "in_data": "Really? 'Cause you totally look like someone that would lose to Lash.",
+  "heard": "Really? Cuz ? you totally look like someone that would lose to Lash."
+ },
+ {
+  "file": "celeste-09",
+  "in_data": "I don't wanna have to hurt you.",
+  "heard": "I don't want ? to have to hurt you."
+ },
+ {
+  "file": "celeste-11",
+  "in_data": "You think you can bully me?",
+  "heard": "You think you could ? bully me?"
+ },
+ {
+  "file": "celeste-13",
+  "in_data": "Nothin' lasts forever.",
+  "heard": "Nothing lasts forever."
+ },
+ {
+  "file": "celeste-14",
+  "in_data": "Enjoyin' the show?",
+  "heard": "Enjoying the show?"
+ },
+ {
+  "file": "celeste-20",
+  "in_data": "I was really pushin' my luck there.",
+  "heard": "I was really pushing my luck there."
+ },
+ {
+  "file": "deadman-danny-05",
+  "in_data": "Are we havin' fun yet?",
+  "heard": "ARE ? WE HAVING FUN YET?"
+ },
+ {
+  "file": "deadman-danny-08",
+  "in_data": "I'll be taking that.",
+  "heard": "I 'LL BE TAKING THAT!"
+ },
+ {
+  "file": "deadman-danny-11",
+  "in_data": "Come back anytime!",
+  "heard": "Come back any ? time!"
+ },
+ {
+  "file": "deadman-danny-14",
+  "in_data": "I've faced tougher crowds with less!",
+  "heard": "I face tougher crowds with less!"
+ },
+ {
+  "file": "doorman-01",
+  "in_data": "I'm excited to get a front-row seat to you throwing your life away for revenge.",
+  "heard": "I'm excited to get a front row seat to you, throwing your life away for revenge."
+ },
+ {
+  "file": "doorman-100",
+  "in_data": "You ruined many lives, Infernus. Do you really think that saving Hank’s bar will make up for the harm you caused?",
+  "heard": "You ruined many lives in furnace. ? Do you really think that saving Hanks bar ? will make up for the harm you caused?"
+ },
+ {
+  "file": "doorman-101",
+  "in_data": "If you’re here with me, who is protecting the Arroyos from Mendoza?",
+  "heard": "If you're here with me, who's protecting the Arroyos from Mendoza?"
+ },
+ {
+  "file": "doorman-103",
+  "in_data": "You pushed away Ettrick for his ambitions, yet remained a slave to your own.",
+  "heard": "You pushed away Etrich for his ambitions, yet remained a slave to your own."
+ },
+ {
+  "file": "doorman-110",
+  "in_data": "The pursuit of excellence is a marathon, not a sprint. And while you are miles ahead of your competition, you still have miles to go. So please, take this time to rejuvenate yourself and relax. Fairfax Industries will be there tomorrow. You can take some me-time today.",
+  "heard": "The pursuit of excellence is a marathon, not a sprint. And while you are miles ahead of your competition, you still have miles to go. So please, take this time to rejuvenate yourself and relax. Fairfax Industries will be there tomorrow. You can take some me time today."
+ },
+ {
+  "file": "doorman-113",
+  "in_data": "Wyoming is a pipe dream, Mirage. The Djinn are doomed.",
+  "heard": "Wyoming is a pipe dream, Miraz. The Djinn are doomed."
+ },
+ {
+  "file": "doorman-114",
+  "in_data": "Wyoming can wait, Mirage. If your goal is to protect Nashala, there is no safer place in the world than The Baroness.",
+  "heard": "Wyoming can wait mirage if your goal is to protect nishala. ? There is no safer place in the world than the Baroness"
+ },
+ {
+  "file": "doorman-115",
+  "in_data": "Maurice, Krill is just dead weight. Kill him.",
+  "heard": "Maurice, Krill is just dead wheat. Kill him."
+ },
+ {
+  "file": "doorman-124",
+  "in_data": "Arin, your mother and father love you, and would be glad to see you come ho-... [Breaks into laughter] Sorry, I tried, but I couldn’t keep a straight face, you have no home.",
+  "heard": "Eren, ? your mother and father love you, and would be glad to see you come home. Hahahaha! ? Sorry, I tried, but I couldn't keep a straight face. You have no home."
+ },
+ {
+  "file": "doorman-127",
+  "in_data": "Seven, your ambition got you killed once, why haven’t you learned your lesson?",
+  "heard": "7 ? your ? ambition got you killed once why ? haven't you learned your lesson"
+ },
+ {
+  "file": "doorman-128",
+  "in_data": "I’d offer you advice, but I know you wouldn’t take it. Good luck on your pursuit, Seven. I hope, in the end, the price that you paid was worth it.",
+  "heard": "I'd offer you advice, but I know you wouldn't take it. Good luck in your pursuits. I hope in the end, the price that you paid was worth it."
+ },
+ {
+  "file": "doorman-132",
+  "in_data": "Oh, Lilah, where do I begin with someone as pathetic as you? The walls of your own making that ended friendships? The vices that you've become a slave to? Or perhaps this fantasy that one day killing Shiv and the Drifter will make up for all the lives that were lost because you just weren't good enough to stop them. I truly am spoiled for choice...",
+  "heard": "Oh, Lila, where do I begin with someone as pathetic as you? The walls of your own making that ended friendships? The vices that you've become a slave to? Or perhaps this fantasy that one day killing Shiv and the Drifter will make up for all the lives that were lost because you just weren't good enough to stop them? I truly am spoiled for choice."
+ },
+ {
+  "file": "doorman-137",
+  "in_data": "You weren’t made for great purpose, you were made on a whim, to satisfy some scientist’s hubris.",
+  "heard": "You weren't made for great purpose, you were made on a whim to satisfy some scientist hubris."
+ },
+ {
+  "file": "doorman-139",
+  "in_data": "You can’t put a bullet through hate, Vindicta. Hathorne will win.",
+  "heard": "You can't put a bullet through hate, Vindicta. Haythorn ? will win."
+ },
+ {
+  "file": "doorman-141",
+  "in_data": "(Alt: Vindicta, how many lives have you claimed? Do they weigh on you? If so, rest, and purge yourself of that nagging sense of guilt. If not, take a moment to revel in the fruits of your labor.)",
+  "heard": "Vindicta, how many lives have you claimed? Do they weigh on you? If so, rest and purge yourself of that nagging sense of guilt. If not, take a moment to revel in the fruits of your labor."
+ },
+ {
+  "file": "doorman-145",
+  "in_data": "I’ve seen you eye The Baroness as you stumble through Manhattan. Wondering what life could be like if you were the sort of person worthy of its hospitality. Vyper, I’m here to tell you that you are worthy. Just stay. You belong here.",
+  "heard": "I've seen you eye the Baroness as you stumble through Manhattan, wondering what life could be like if you were the sort of person worthy of its hospitality. Viper, I'm here to tell you that you are worthy. Just stay. You belong here."
+ },
+ {
+  "file": "doorman-149",
+  "in_data": "You’re a gambling woman, right Wraith? I bet you don't have the will to stay here until I'm finished talking. You're probably scoffing at the idea right now: \"why would I do that, there’s nothing to gain?” and yet you’re curious. Maybe the risk is worth the reward. Maybe there is a carrot at the end of the stick. Even as your life is slowly ebbing from your body, you wonder if this is a trick. Some sort of meta-commentary that is challenging you, and if you stay the course, riches await. They don't. Well, maybe they do, and this is part of the trick. Maybe I'm desperate to stall time because I need you to back out before you gain immeasurable power?.. Are you still alive? I can keep talking. You're fun.",
+  "heard": "You're ? a gambling woman, right, Wraith? I bet you don't have the will to stay here until I'm finished talking. You're probably scoffing at the idea right now. Why would I do that? There's nothing to gain. And yet, you're curious. Maybe the risk is worth the reward. Maybe there is a carrot at the end of the stick. Even as your life is slowly ebbing from your body, you wonder if this is a trick. Some ? sort of meta commentary ? that is challenging you. And if you stay the course, riches await. They don't. Well, maybe they do, and this is part of the trick. Maybe I'm desperate to stall time because I need you to back out before you gain immeasurable power. Are you still alive? I can keep talking. You're fun."
+ },
+ {
+  "file": "doorman-160",
+  "in_data": "If you give up now, I'll throw in a free night stay at the Baroness.",
+  "heard": "If you give up now, I'll throw in a free night's stay at the Baroness."
+ },
+ {
+  "file": "doorman-171",
+  "in_data": "I wouldn't let you take a coaster from the Baroness' lounge, what makes you think I'll let you finish the ritual?",
+  "heard": "I wouldn't let you take a coaster from the Baroness's lounge. What makes you think I'll let you finish the ritual?"
+ },
+ {
+  "file": "doorman-27",
+  "in_data": "Hotel Guest's on cooldown.",
+  "heard": "Hotel guests on cooldown."
+ },
+ {
+  "file": "doorman-50",
+  "in_data": "[Laughter]",
+  "heard": "Hahahaha ?"
+ },
+ {
+  "file": "doorman-59",
+  "in_data": "[Laughter]",
+  "heard": "Ha ? ha ha ha ha ha."
+ },
+ {
+  "file": "doorman-63",
+  "in_data": "Please, forgive the mess, The Baroness is mid-renovation.",
+  "heard": "Please forgive the mess. The Baroness is need ? renovation."
+ },
+ {
+  "file": "doorman-77",
+  "in_data": "Know this, Bebop: when Ms. Shelly dies, it will be because of your failure.",
+  "heard": "Know this, Bebop. When Miss Shelley dies, it will be because of your failure."
+ },
+ {
+  "file": "doorman-78",
+  "in_data": "How much of your time is spent taking care of Ms. Shelly, Bebop? The double life you lead must be exhausting. Take some time for yourself, you deserve it.",
+  "heard": "How much of your time is spent taking care of Miss Shelley, Bebop? The double life you lead must be exhausting. Take some time for yourself. You deserve it."
+ },
+ {
+  "file": "doorman-83",
+  "in_data": "Lenny is lost, Celeste. But you need not suffer with him. It's safe here in The Baroness.",
+  "heard": "Lenny is lost, Celeste. But you need not suffer with him. It's safe here in the Barreness. ?"
+ },
+ {
+  "file": "doorman-87",
+  "in_data": "[Whistling]",
+  "heard": "All ? I ? can ? say ? is I'm ? gonna ? get ? the ? best ? out ? of this. ?"
+ },
+ {
+  "file": "doorman-90",
+  "in_data": "Professor, a little birdie told me that your anniversary is coming up. How wonderful! I would love to extend The Baroness’ hospitality to you and your wife.",
+  "heard": "Professor a ? little birdie told me that your anniversary is coming up. How wonderful I would love to extend the Baroness's hospitality to you and your wife"
+ },
+ {
+  "file": "doorman-92",
+  "in_data": "Miss Graves, you are so starving for a parental figure that you ran straight into the literal palm of a lich's hand. You know it's wrong, you know you can't control her. You know that you're going to die if you don't get help, and you're praying that your parents will notice before it's too late. They won't. But I see you. Stay at The Baroness, and let me be your teacher.",
+  "heard": "Ms. ? Graves, you are so starving for a parental figure that you ran straight into the literal palm of a lich's hand. You know it's wrong, you know you can't control her, you know that you're going to die if you don't get help and ? you're praying that your parents will notice before it's too late. They won't, but I see you. Stay at the Baroness and let me be your teacher."
+ },
+ {
+  "file": "doorman-96",
+  "in_data": "The OSIC is lucky to have you, Haze. Your commitment to your work is an inspiration, but even you deserve some R&R. Why don’t you take a PTO day at The Baroness?",
+  "heard": "The OSIC is lucky to have you, Hayes. ? Your commitment to your work is an inspiration, but even you deserve some R &R. Why don't you take a PTO day at The ? Baroness?"
+ },
+ {
+  "file": "doorman-98",
+  "in_data": "I can only imagine the horrors you witnessed in Macomb. Rest, Holliday, and put aside your trauma for tomorrow.",
+  "heard": "I can only imagine the horrors you witnessed in Macomb. ? Rest, Holiday, and put aside your trauma for tomorrow."
+ },
+ {
+  "file": "grey-talon-15",
+  "in_data": "Revenge is surprisingly time-consuming.",
+  "heard": "Revenge is surprisingly time -consuming."
+ },
+ {
+  "file": "grey-talon-16",
+  "in_data": "Brake lines won't cut themselves.",
+  "heard": "Break lines ? won't cut themselves."
+ },
+ {
+  "file": "rat-king-02",
+  "in_data": "After the ritual, I'm gonna introduce you to one of my people.",
+  "heard": "But ? after the ritual, I'm gonna introduce you to one of my people."
+ },
+ {
+  "file": "rat-king-03",
+  "in_data": "Valerie. She's a good gal, she's just got a wandering heart. Gets it from her mother.",
+  "heard": "Valerie. She's a good gal. She just has a wandering heart. Gets it from her mother."
+ },
+ {
+  "file": "rat-king-06",
+  "in_data": "Hey, give me a heads-up before you do that whole electrical storm thing, I got a lotta people with me, and they ain't as tough as us.",
+  "heard": "Hey, give me a heads up before you do that whole electrical storm thing. I got a lot of people with me and ? they ain't as tough as us."
+ },
+ {
+  "file": "rat-king-08",
+  "in_data": "What kinda sick bastard made you?",
+  "heard": "What kind of sick bastard made you?"
+ },
+ {
+  "file": "rat-king-09",
+  "in_data": "One dead human's bad enough, now I gotta deal with some kinda cadaver potluck?",
+  "heard": "One dead human's bad enough, now I gotta deal with some kind of cadaver potluck?"
+ },
+ {
+  "file": "rat-king-11",
+  "in_data": "You the typa undead that don't have to worry about gettin' sick?",
+  "heard": "You the type of undead that don't have to worry about gettin' ? shit?"
+ },
+ {
+  "file": "rat-king-12",
+  "in_data": "Well, if you want to experiment a little, maybe get hopped up on rabies or somethin' before the fight... I know a guy.",
+  "heard": "Ahh, ? if you want to experiment a little, maybe get hopped up on rabies or something before the fight. I know a guy."
+ },
+ {
+  "file": "rat-king-13",
+  "in_data": "Your loss!",
+  "heard": "You're ? lost!"
+ },
+ {
+  "file": "rat-king-14",
+  "in_data": "We do this on my time, ya crumbum.",
+  "heard": "We do this on my time, you ? crumb bum!"
+ },
+ {
+  "file": "rat-king-17",
+  "in_data": "You think I'm playin' with you?!",
+  "heard": "You think I'm playing with you?"
+ },
+ {
+  "file": "rat-king-18",
+  "in_data": "Who's exterminating who now!",
+  "heard": "Who's exterminatin' who now?"
+ },
+ {
+  "file": "rat-king-19",
+  "in_data": "Get outta my face, pal!",
+  "heard": "Get ? out of my face, pal!"
+ },
+ {
+  "file": "rat-king-21",
+  "in_data": "Eat dirt, crumbum.",
+  "heard": "Eat dirt, crumb bum!"
+ },
+ {
+  "file": "rat-king-23",
+  "in_data": "How's your streak lookin' now, pal?",
+  "heard": "How's your streak looking now, pal?"
+ },
+ {
+  "file": "rat-king-28",
+  "in_data": "Come on out and play, ya crumbum.",
+  "heard": "Come on out and play, you crumb bum! ?"
+ },
+ {
+  "file": "rem-02",
+  "in_data": "Cause you're a stranger.",
+  "heard": "Cuz ? you're a stranger."
+ },
+ {
+  "file": "rem-09",
+  "in_data": "Being awake is hard!",
+  "heard": "People ? wake his heart."
+ },
+ {
+  "file": "rem-11",
+  "in_data": "I have a pillow.",
+  "heard": "Have ? a pillow!"
+ },
+ {
+  "file": "rem-18",
+  "in_data": "I dunno why they keep fighting, they're dumb.",
+  "heard": "I don't know why they keep fighting. They're dumb."
+ },
+ {
+  "file": "rem-20",
+  "in_data": "Their body flooped, they're silly!",
+  "heard": "They're body flopped, ? they're silly!"
+ },
+ {
+  "file": "seven-02",
+  "in_data": "I'm hiding from federal agents, not trying to be queen in a kingdom of misfits!",
+  "heard": "I'm hiding from federal agents, now trying to be Queen ? in a kingdom of misfits."
+ },
+ {
+  "file": "seven-06",
+  "in_data": "It's not an unreasonable position.",
+  "heard": "IT ? 'S NOT AN UNREASONABLE POSITION"
+ },
+ {
+  "file": "seven-11",
+  "in_data": "They've made the wrong enemy.",
+  "heard": "THEY ? 'VE MADE THE WRONG ENEMY"
+ },
+ {
+  "file": "seven-12",
+  "in_data": "You'll be back.",
+  "heard": "YOU ? 'LL BE BACK!"
+ },
+ {
+  "file": "seven-15",
+  "in_data": "That should send a message.",
+  "heard": "I should send a message."
+ },
+ {
+  "file": "seven-18",
+  "in_data": "Watch... and learn.",
+  "heard": "Watch The ? Land! ?"
+ },
+ {
+  "file": "venator-04",
+  "in_data": "Don't worry about it. Just know I'll protect you.",
+  "heard": "Don't worry about it, there's no I'll ? protect you."
+ },
+ {
+  "file": "venator-05",
+  "in_data": "No.",
+  "heard": "Gnome."
+ },
+ {
+  "file": "venator-11",
+  "in_data": "These hands aren't made to comfort.",
+  "heard": "These hands weren't made to comfort."
+ },
+ {
+  "file": "victor-12",
+  "in_data": "You should've left me alone.",
+  "heard": "You should have left me alone."
+ },
+ {
+  "file": "victor-16",
+  "in_data": "We had unfinished business.",
+  "heard": "We are ? unfinished business."
+ },
+ {
+  "file": "victor-22",
+  "in_data": "I'd run from me too.",
+  "heard": "I'd run for me too."
+ }
+]
