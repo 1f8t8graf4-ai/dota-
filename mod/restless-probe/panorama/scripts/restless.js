@@ -1,4 +1,7 @@
-// Restless 0.9.
+// Restless 0.9.1.
+// 0.9.1: КД ульты то появлялся, то пропадал. Копий скрипта несколько, хозяин между ними переходит, а «показано / спрятано»
+// каждая копия запоминала у себя — и не трогала число, которое другая копия спрятала. Теперь видимость сверяем с самой панелью,
+// число всегда видно (прячем пустым текстом), секунды читаем свежими через $.Localize у самой подписи, а не ждём, пока она обновится.
 // 0.8 не запускался: скрипт сразу искал меню Esc, а игра запускает скрипт файла раньше, чем вставляет его панель в HUD, —
 // скрипт решал «это не HUD» и выключался насовсем. Теперь ждём: ищем корень каждые 0,25 с, потом раз в секунду.
 // Меню по Esc не подменяем (его подменяют QoL Lock, QoL Lite, Torfus Voice — остаётся одна копия): кнопку RESTLESS
@@ -8,8 +11,8 @@
 // КД ульты: игра сама кладёт секунды в верхнюю панель ({i:ult_cooldown}), но не показывает — выводим их поверх значка.
 // Память игры не читает, ничего не отправляет. Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.9';
-	var BOT = 'https://t.me/languagegamesbot';
+	var VER = '0.9.1';
+	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
 	if (!ctx) return;
@@ -39,8 +42,8 @@
 			ultT: 'КД ульты в верхней панели', ultS: 'секунды поверх значка ульты у каждого игрока — в матче',
 			markT: 'Надпись RESTLESS', markS: 'слева сверху — видно, что мод работает',
 			yes: 'ВКЛ', no: 'ВЫКЛ', lang: 'Язык мода', soon: 'СКОРО',
-			s1: 'Сборки с винрейтом прямо в магазине', s2: 'Разбор матча — кнопка после игры', s3: 'Двуязычные субтитры реплик героев',
-			bot: 'Открыть бота', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.'
+			s1: 'Сборки с винрейтом прямо в магазине', s2: 'Кто в матче и сборки — прямо в окне мода', s3: 'Двуязычные субтитры реплик героев',
+			site: 'Мой Restless — разбор матчей', bot: 'Бот', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.'
 		},
 		en: {
 			mark: 'RESTLESS ' + VER + ' · running', markMenu: ' · Esc button',
@@ -48,13 +51,18 @@
 			ultT: 'Ult cooldown in the top bar', ultS: 'seconds over every player\'s ult icon — in a match',
 			markT: 'RESTLESS label', markS: 'top left — shows the mod is running',
 			yes: 'ON', no: 'OFF', lang: 'Mod language', soon: 'COMING SOON',
-			s1: 'Builds with win rate right in the shop', s2: 'Match breakdown — button after the game', s3: 'Bilingual hero voice-line subtitles',
-			bot: 'Open the bot', close: 'Close', note: 'Settings last until you quit the game.'
+			s1: 'Builds with win rate right in the shop', s2: 'Who\'s in the match and builds — right in this window', s3: 'Bilingual hero voice-line subtitles',
+			site: 'My Restless — match breakdowns', bot: 'Bot', close: 'Close', note: 'Settings last until you quit the game.'
 		}
 	};
 	function T(k) { return (TX[lang()] || TX.ru)[k]; }
 	function setText(l, v) { if (l && l.text !== v) l.text = v; }
-	function setVis(p, v) { var s = v ? 'visible' : 'collapse'; if (p && p.__v !== s) { p.style.visibility = s; p.__v = s; } }
+	// без запоминания в копии скрипта: панель могла поменять другая копия
+	function setVis(p, v) { if (!p) return; var s = v ? 'visible' : 'collapse', c = ''; try { c = String(p.style.visibility || ''); } catch (e) {} if (c !== s) p.style.visibility = s; }
+	function url(u) {
+		try { $.DispatchEvent('ExternalBrowserGoToURL', u); return; } catch (e) { $.Msg('[Restless] ссылка: ' + e); }
+		try { if (typeof SteamOverlayAPI !== 'undefined' && SteamOverlayAPI && SteamOverlayAPI.OpenURL) SteamOverlayAPI.OpenURL(u); } catch (e) {}
+	}
 	function ok(p) { try { return !!(p && p.IsValid && p.IsValid()); } catch (e) { return false; } }
 	function sty(p, st) { for (var k in st) { try { p.style[k] = st[k]; } catch (e) { $.Msg('[Restless] стиль ' + k + ': ' + e); } } return p; }
 	function mk(type, parent, id, st, props) { return sty($.CreatePanel(type, parent, id || '', props || {}), st || {}); }
@@ -157,11 +165,12 @@
 		for (var j = 1; j <= 3; j++) P.s.push(lab(WIN, '', { fontSize: '15px', color: '#f3ebdd8c', marginTop: '4px' }));
 
 		var f = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
-		var bot = mk('Button', f, '', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
-		P.bot = lab(bot, '', { fontSize: '16px', fontWeight: 'bold', color: DARK });
-		bot.SetPanelEvent('onactivate', function () {
-			try { if (typeof SteamOverlayAPI !== 'undefined' && SteamOverlayAPI && SteamOverlayAPI.OpenURL) SteamOverlayAPI.OpenURL(BOT); } catch (e) { $.Msg('[Restless] ссылка: ' + e); }
-		});
+		var site = mk('Button', f, 'RestlessSiteBtn', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
+		P.site = lab(site, '', { fontSize: '16px', fontWeight: 'bold', color: DARK });
+		site.SetPanelEvent('onactivate', function () { url(SITE); });
+		var bot = mk('Button', f, 'RestlessBotBtn', { padding: '11px 22px 11px 22px', marginLeft: '10px', borderRadius: '8px', backgroundColor: OFF });
+		P.bot = lab(bot, '', { fontSize: '16px', fontWeight: 'bold', color: INK });
+		bot.SetPanelEvent('onactivate', function () { url(BOT); });
 		var cl = mk('Button', f, '', { padding: '11px 22px 11px 22px', marginLeft: '10px', borderRadius: '8px', backgroundColor: OFF });
 		P.close = lab(cl, '', { fontSize: '16px', color: INK });
 		cl.SetPanelEvent('onactivate', function () { show(false); });
@@ -189,7 +198,7 @@
 	}
 	function paint() {
 		setText(P.sub, T('settings')); setText(P.secGame, T('inGame')); setText(P.lang, T('lang')); setText(P.secSoon, T('soon'));
-		setText(P.bot, T('bot')); setText(P.close, T('close')); setText(P.note, T('note'));
+		setText(P.site, T('site')); setText(P.bot, T('bot')); setText(P.close, T('close')); setText(P.note, T('note'));
 		for (var j = 0; j < 3; j++) setText(P.s[j], '·  ' + T('s' + (j + 1)));
 		var keys = [['ULT', 'ultT', 'ultS'], ['MARK', 'markT', 'markS']];
 		for (var i = 0; i < keys.length; i++) {
@@ -230,28 +239,41 @@
 		}
 		if (ok(SHADE) && SHADE.actuallayoutwidth < W * 0.9) sty(SHADE, { width: Math.round(W / sx) + 'px', height: Math.round(H / sy) + 'px', align: 'left top', x: '0px', y: '0px' });
 		setText(P.diag, 'окно ' + Math.round(w) + '×' + Math.round(h) + ' · экран ' + Math.round(W) + '×' + Math.round(H) +
-			(dx > 24 || dy > 24 ? ' · не по центру, поправлено ' + WIN.__fix : ' · по центру') + ' · ' + HOOK);
+			(dx > 24 || dy > 24 ? ' · не по центру, поправлено ' + WIN.__fix : ' · по центру') + ' · ' + HOOK +
+			' · ульт ' + ULT.length + (ULT_SRC ? ' (' + ULT_SRC + ')' : ''));
 	}
 
 	// ---------- КД ульты в верхней панели ----------
-	var ULT = [], ultScan = 0;
+	// Игра кладёт секунды в переменную ult_cooldown панели игрока. Скрытая подпись {i:ult_cooldown} — запасной путь,
+	// главный — $.Localize у этой подписи на каждом такте (свежее значение, а не то, что подпись успела показать).
+	var ULT = [], ultScan = 0, ULT_SRC = '', TB = null;
+	function digits(v) { v = String(v == null ? '' : v).trim(); return /^\d+$/.test(v) ? v : ''; }
+	function ultVal(u) {
+		var v = '';
+		try { v = digits($.Localize('{i:ult_cooldown}', u.src)); if (v) { ULT_SRC = 'localize'; return v; } } catch (e) {}
+		if (u.pl) try { v = digits($.Localize('{i:ult_cooldown}', u.pl)); if (v) { ULT_SRC = 'localize·игрок'; return v; } } catch (e) {}
+		v = digits(u.src.text); if (v) ULT_SRC = 'подпись';
+		return v;
+	}
+	function ultClear() { for (var i = 0; i < ULT.length; i++) if (ok(ULT[i].txt)) setText(ULT[i].txt, ''); }
 	function ultTick() {
-		var tb = HUD.FindChildTraverse('TopBar');
+		if (!ok(TB)) TB = HUD.FindChildTraverse('TopBar');
+		var tb = TB;
 		var want = on('ULT') && ok(tb) && !(tb.BHasClass && tb.BHasClass('InHideout'));
-		if (!want) { for (var i = 0; i < ULT.length; i++) if (ok(ULT[i].txt)) setVis(ULT[i].txt, false); return; }
+		if (!want) { ultClear(); return; }
 		if (ultScan-- <= 0 || !ULT.length) {
-			ultScan = 10;
+			ultScan = 4;
 			ULT = [];
-			var list = tb.FindChildrenWithClassTraverse ? tb.FindChildrenWithClassTraverse('UltimateStatus') : [];
-			for (var j = 0; j < list.length; j++) {
-				var us = list[j];
+			var n = tb.FindChildrenWithClassTraverse ? tb.FindChildrenWithClassTraverse('UltimateStatus') : [];
+			for (var j = 0; j < n.length; j++) {
+				var us = n[j];
 				if (!ok(us)) continue;
 				var bg = us.FindChildTraverse('UltimateStatusBG') || us;
 				var src = us.FindChildTraverse('RestlessUltSrc');
 				if (!ok(src)) { src = $.CreatePanel('Label', bg, 'RestlessUltSrc', { text: '{i:ult_cooldown}', hittest: 'false' }); src.style.visibility = 'collapse'; }
 				var txt = us.FindChildTraverse('RestlessUltTxt');
 				if (!ok(txt)) txt = lab(us, 'RestlessUltTxt', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '17px', fontWeight: 'bold',
-					color: '#ffffff', textShadow: '0px 0px 4px 2.0 #000000', zIndex: '10', visibility: 'collapse' });
+					color: '#ffffff', textShadow: '0px 0px 4px 2.0 #000000', zIndex: '10' });
 				var pl = us, d = 0;
 				while (ok(pl) && d < 8 && pl.paneltype !== 'CitadelHudTopBarPlayer') { pl = pl.GetParent(); d++; }
 				ULT.push({ src: src, txt: txt, pl: ok(pl) && pl.paneltype === 'CitadelHudTopBarPlayer' ? pl : null });
@@ -260,12 +282,10 @@
 		for (var k = 0; k < ULT.length; k++) {
 			var u = ULT[k];
 			if (!ok(u.src) || !ok(u.txt)) { ultScan = 0; continue; }
-			var v = String(u.src.text || '').trim();
-			if (!/^\d+$/.test(v) && u.pl) { try { v = String($.Localize('{i:ult_cooldown}', u.pl) || '').trim(); } catch (e) { v = ''; } }
+			var v = ultVal(u);
 			var ready = u.pl && u.pl.BHasClass && u.pl.BHasClass('UltimateCooldownReady');
-			var showIt = /^\d+$/.test(v) && v !== '0' && !ready;
-			setText(u.txt, showIt ? v : '');
-			setVis(u.txt, showIt);
+			setVis(u.txt, true);
+			setText(u.txt, v && v !== '0' && !ready ? v : '');
 		}
 	}
 
@@ -277,7 +297,7 @@
 			try { menuTick(); } catch (e) { $.Msg('[Restless] меню: ' + e); }
 			try { winTick(); } catch (e) { $.Msg('[Restless] окно: ' + e); }
 			try { ultTick(); } catch (e) { $.Msg('[Restless] ульта: ' + e); }
-			$.Schedule(open ? 0.25 : 0.5, tick);
+			$.Schedule(0.25, tick);
 		} else {
 			$.Schedule(1.0, tick);
 		}
