@@ -432,6 +432,46 @@ html[data-skin="graphs"] .vd.h{background:var(--ac);color:#06201c}
 .lbr{margin:10px 12px;overflow-x:auto;max-width:calc(100% - 24px)}
 .lbrw{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 14px;border-top:1px solid var(--ln);text-decoration:none}
 a.lbrw:hover{background:var(--s2)}.lbrw b{color:var(--ac)}.lbrw span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lbrw small{color:var(--mu);font-size:11.5px}
+
+/* карты героев как в Marvel Snap */
+.sng{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 28px;padding:14px 8px 0}
+@media (max-width:640px){.sng{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 22px}}
+.sn{position:relative;perspective:700px;cursor:pointer;outline:none}
+.sn-in{position:relative;aspect-ratio:3/4.1;border-radius:14px;transform:rotateX(var(--rx,0)) rotateY(var(--ry,0));transform-style:preserve-3d;transition:transform .25s cubic-bezier(.2,.8,.2,1);background:#15151a;box-shadow:0 0 0 3px #3a3a44,0 10px 24px rgba(0,0,0,.5)}
+.sn:hover .sn-in,.sn:focus-visible .sn-in{transition-duration:.08s}
+.sn-bg{position:absolute;inset:0;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#24242c,#0e0e12)}
+.sn-bg img{width:100%;height:100%;object-fit:cover;opacity:.0}
+.sn-art{position:absolute;left:0;right:0;bottom:0;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:14px;transform:translateZ(18px)}
+.sn-nm{position:absolute;left:6px;right:6px;bottom:8px;text-align:center;font:700 17px/1 var(--h);letter-spacing:.04em;text-transform:uppercase;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.6),0 0 12px rgba(0,0,0,.8);transform:translateZ(30px)}
+.sn-foil{position:absolute;inset:0;border-radius:14px;pointer-events:none;opacity:0}
+.sn-lv,.sn-sc{position:absolute;top:-10px;width:34px;height:38px;display:grid;place-items:center;font:700 17px/1 var(--m);color:#fff;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);z-index:3}
+.sn-lv{left:-8px;background:#2b6fd6;box-shadow:inset 0 0 0 3px rgba(255,255,255,.25)}
+.sn-sc{right:-8px;background:#e86a10}
+.sn-n{display:block;text-align:center;margin-top:8px;color:var(--mu);font-size:12px}
+/* 2 — рамка цвета героя */
+.sn.l2 .sn-in,.sn.l3 .sn-in,.sn.l4 .sn-in,.sn.l5 .sn-in,.sn.l6 .sn-in{box-shadow:0 0 0 3px var(--hc),0 0 0 5px rgba(0,0,0,.6),0 10px 24px rgba(0,0,0,.5)}
+/* 3 — арт выходит за рамку: арт выше карты, верх растворяется */
+.sn.l3 .sn-art,.sn.l4 .sn-art,.sn.l5 .sn-art,.sn.l6 .sn-art{height:118%;border-radius:0 0 14px 14px;-webkit-mask-image:linear-gradient(0deg,#000 80%,transparent);mask-image:linear-gradient(0deg,#000 80%,transparent)}
+.sn.l3 .sn-art,.sn.l4 .sn-art,.sn.l5 .sn-art,.sn.l6 .sn-art{transform:translateZ(28px)}
+/* 4 — живой фон: фон героя плывёт, арт поверх */
+.sn.l4 .sn-bg img,.sn.l5 .sn-bg img,.sn.l6 .sn-bg img{opacity:.9;animation:snPan 14s ease-in-out infinite alternate}
+.sn.l4 .sn-art,.sn.l5 .sn-art,.sn.l6 .sn-art{opacity:.92}
+@keyframes snPan{from{transform:scale(1.15) translateX(-4%)}to{transform:scale(1.15) translateX(4%)}}
+/* 5 — переливающаяся рамка и имя в 3D */
+.sn.l5 .sn-in::before,.sn.l6 .sn-in::before{content:"";position:absolute;inset:-4px;border-radius:17px;background:linear-gradient(115deg,var(--hc),#fff6d0,var(--hc),#7a4cff,var(--hc));background-size:300% 100%;animation:snShine 4s linear infinite;z-index:-1;transform:translateZ(-1px)}
+@keyframes snShine{to{background-position:300% 0}}
+.sn.l5 .sn-nm,.sn.l6 .sn-nm{font-size:21px;color:#fff6d8;text-shadow:0 1px 0 var(--hc),0 2px 0 var(--hc),0 3px 0 #000,0 4px 0 #000,0 6px 12px rgba(0,0,0,.8)}
+/* 6 — фольга */
+.sn.l6 .sn-foil{opacity:.55;mix-blend-mode:color-dodge;background:linear-gradient(115deg,transparent 20%,rgba(255,0,170,.5) 35%,rgba(0,255,230,.5) 50%,rgba(255,230,0,.5) 65%,transparent 80%);background-size:250% 100%;background-position:var(--fx,50%) 0;transform:translateZ(32px)}
+.sn-lg{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:22px;color:var(--mu);font-size:12.5px}
+.sn-lg b{display:inline-grid;place-items:center;width:20px;height:22px;margin-right:6px;background:#2b6fd6;color:#fff;font:700 12px/1 var(--m);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.sn-lg small{margin-left:4px;color:var(--mu2)}
+.sno{position:fixed;inset:0;z-index:60;background:rgba(5,5,8,.96);display:grid;place-items:center;padding:24px;overflow:auto}
+.sno-c{display:grid;grid-template-columns:280px minmax(0,420px);gap:30px;align-items:center}
+.sn.big{width:280px}.sn.big .sn-nm{font-size:26px}.sn.big.l5 .sn-nm,.sn.big.l6 .sn-nm{font-size:30px}.sn.big .sn-lv,.sn.big .sn-sc{width:46px;height:52px;font-size:22px;top:-14px}
+.sno-t{display:grid;gap:12px}.sno-t .ty{font:700 11px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ac)}
+@media (max-width:700px){.sno-c{grid-template-columns:minmax(0,1fr);justify-items:center}.sn.big{width:220px}}
+@media (prefers-reduced-motion:reduce){.sn-bg img,.sn-in::before{animation:none!important}}
 </style>
 </head>
 <body>
@@ -823,7 +863,7 @@ async function viewHeroes() {
   const sg = (k, L) => `<div class="seg" data-k="${k}">${L.map(([v, n]) => `<button data-v="${v}" class="${HV[k] === v ? 'on' : ''}">${n}</button>`).join('')}</div>`;
   V(`<div class="row" style="flex-wrap:wrap;gap:12px;align-items:flex-end"><h1 class="h1">Все <em>герои</em></h1><span class="sp"></span>${fltHTML()}</div>
     <p class="sub" style="margin:8px 0 0">Метки — из цифр за период и из файлов игры. Нажми на героя — живой герой, его фразы, сборки, с кем тяжело, кто лучше всех на нём.</p>
-    <div class="row hvb" style="margin-top:14px;gap:10px;flex-wrap:wrap">${sg('view', [['grid', 'Сетка'], ['tier', 'Тиры']])}${sg('sort', [['wr', '% побед'], ['pr', 'Берут'], ['az', 'А–Я']])}${sg('ty', [['', 'Все'], ['marksman', 'Стрелки'], ['brawler', 'Бойцы'], ['mystic', 'Мистики'], ['assassin', 'Убийцы']])}</div>
+    <div class="row hvb" style="margin-top:14px;gap:10px;flex-wrap:wrap">${sg('view', [['grid', 'Сетка'], ['cards', 'Карты'], ['tier', 'Тиры']])}${sg('sort', [['wr', '% побед'], ['pr', 'Берут'], ['az', 'А–Я']])}${sg('ty', [['', 'Все'], ['marksman', 'Стрелки'], ['brawler', 'Бойцы'], ['mystic', 'Мистики'], ['assassin', 'Убийцы']])}</div>
     <div id="tiers" style="margin-top:14px"><div class="load" style="padding:18px">Считаю мету…</div></div>`);
   fltBind(viewHeroes);
   $$('.hvb .seg').forEach(s => s.onclick = e => { const b = e.target.closest('button'); if (!b) return; HV[s.dataset.k] = b.dataset.v; viewHeroes(); });
@@ -831,6 +871,7 @@ async function viewHeroes() {
     const MM = await heroStats(), all = Object.values(MM);
     const M = all.filter(h => !HV.ty || hero(h.id).ty === HV.ty).sort(HV.sort === 'az' ? (a, b) => hero(a.id).n.localeCompare(hero(b.id).n) : HV.sort === 'pr' ? (a, b) => b.pr - a.pr : (a, b) => b.wr - a.wr);
     const wrS = h => `<em style="font-style:normal" class="${h.wr >= 51 ? 'win' : h.wr < 48 ? 'loss' : ''}">${h.wr.toFixed(1).replace('.', ',')}%</em>`;
+    if (HV.view === 'cards') return heroCards(M);
     if (HV.view === 'grid') {
       $('#tiers').innerHTML = `<div class="hg">${M.map(h => `<a class="hgc" href="#h/${h.id}" style="--hc:${esc(hero(h.id).col || 'var(--ac)')}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><div><b>${esc(hero(h.id).n)}</b><span class="mono">${wrS(h)} <small>· берут ${h.pr.toFixed(1).replace('.', ',')}%</small></span><div class="ptags">${tagsHTML(heroTags(h, MM).slice(0, 3))}</div></div></a>`).join('')}</div>`;
       return;
@@ -839,6 +880,50 @@ async function viewHeroes() {
     $('#tiers').innerHTML = '<div class="card">' + T.map(([t, lo], i) => { const hi = i ? T[i - 1][1] : 999, L = M.filter(h => h.wr >= lo && h.wr < hi); if (!L.length) return '';
       return `<div class="tl"><div class="t" style="color:${T[i][2]}">${t}</div><div class="hs">${L.map(h => `<a class="hc" href="#h/${h.id}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><b>${esc(hero(h.id).n)}</b><span>${wrS(h)}<small>${h.pr.toFixed(1).replace('.', ',')}%</small></span></a>`).join('')}</div></div>`; }).join('') + '</div>';
   } catch (e) { $('#tiers').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+// ---------- карты героев как в Marvel Snap: уровень — от твоих игр на герое ----------
+const LV = [0, 5, 20, 50, 100, 200], LVN = ['Базовая', 'Рамка цвета героя', 'Арт выходит за рамку', 'Живой фон', 'Переливается, имя в 3D', 'Фольга'];
+const lvOf = n => LV.filter(x => n >= x).length;
+function snapCard(id, n, sc, big) {
+  const h = hero(id), L = lvOf(n);
+  return `<div class="sn l${L}${big ? ' big' : ''}" data-h="${id}" style="--hc:${esc(h.col || '#ffb020')}" tabindex="0" role="button" aria-label="${esc(h.n)}, уровень ${L}">
+    <div class="sn-in"><div class="sn-bg">${h.bg ? `<img src="${esc(h.bg)}" alt="" loading="lazy" onerror="this.remove()">` : ''}</div>
+      <img class="sn-art" src="${esc(h.v || h.c || h.i)}" alt="" loading="lazy" onerror="${noimg}"><i class="sn-foil"></i>
+      <b class="sn-nm" data-t="${esc(h.n)}">${esc(h.n)}</b></div>
+    <span class="sn-lv" title="Уровень ${L}: ${LVN[L - 1]}">${L}</span>${sc != null ? `<span class="sn-sc" title="Твой рейтинг на герое">${sc}</span>` : ''}
+    ${big ? '' : `<small class="sn-n">${n ? nf(n) + ' ' + pl(n, ['игра', 'игры', 'игр']) : 'не играл'}</small>`}</div>`;
+}
+function snapTilt(root) {
+  $$('.sn', root).forEach(c => {
+    c.onpointermove = e => { const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; c.style.setProperty('--rx', (-y * 14).toFixed(2) + 'deg'); c.style.setProperty('--ry', (x * 16).toFixed(2) + 'deg'); c.style.setProperty('--fx', (50 + x * 80).toFixed(1) + '%'); };
+    c.onpointerleave = () => { c.style.removeProperty('--rx'); c.style.removeProperty('--ry'); c.style.removeProperty('--fx'); };
+  });
+}
+async function heroCards(M) {
+  let mine = {};
+  if (ME) { try { (await api('players/hero-stats?account_ids=' + ME.id)).forEach(r => mine[r.hero_id] = r); } catch (e) {} }
+  const MM = {}; M.forEach(x => MM[x.id] = x);
+  const score = x => { const r = mine[x.id], m = MM[x.id]; if (!r || r.matches_played < 20 || !m) return null; const wr = 100 * r.wins / r.matches_played, kda = (r.kills + r.assists) / Math.max(1, r.deaths); const c = v => Math.max(-25, Math.min(25, v)); return Math.round(Math.max(0, Math.min(100, 50 + c(1.5 * (wr - m.wr)) + c(25 * (kda / m.kda - 1))))); };
+  const L = M.slice().sort((a, b) => HV.sort === 'wr' || HV.sort === 'pr' ? ((mine[b.id] || {}).matches_played || 0) - ((mine[a.id] || {}).matches_played || 0) || b.wr - a.wr : 0);
+  $('#tiers').innerHTML = `<p class="sub" style="margin:0 0 12px">${ME ? 'Карты качаются от твоих игр на герое: 5 игр — рамка цвета героя, 20 — арт выходит за рамку, 50 — живой фон, 100 — переливается, 200 — фольга. Синий — уровень, оранжевый — твой рейтинг на герое (от 20 игр, 50 — как средний игрок).' : 'Найди себя сверху — карты прокачаются от твоих игр на героях.'} Нажми на карту — фраза героя.</p>
+    <div class="sng">${L.map(x => snapCard(x.id, (mine[x.id] || {}).matches_played || 0, score(x))).join('')}</div>
+    <div class="sn-lg">${LVN.map((n, i) => `<span><b>${i + 1}</b>${n}<small>${LV[i] ? 'от ' + LV[i] + ' игр' : ''}</small></span>`).join('')}</div>`;
+  snapTilt($('#tiers'));
+  $$('#tiers .sn').forEach(c => c.onclick = () => snapOpen(+c.dataset.h, (mine[c.dataset.h] || {}).matches_played || 0, score(MM[c.dataset.h])));
+}
+function snapOpen(id, n, sc) {
+  const h = hero(id), L = lvOf(n);
+  const o = document.createElement('div'); o.className = 'sno';
+  o.innerHTML = `<div class="sno-c">${snapCard(id, n, sc, 1)}<div class="sno-t"><div class="ty">${esc(TYPE_RU[h.ty] || '')} · уровень ${L} — ${LVN[L - 1]}</div>
+    <div class="hln" style="--hc:${esc(h.col || 'var(--ac)')}"></div>
+    <p class="sub">${n ? `${nf(n)} ${pl(n, ['игра', 'игры', 'игр'])} на герое.` : 'Ты ещё не играл на нём.'}${L < 6 ? ` До уровня ${L + 1} — ${LV[L] - n} ${pl(LV[L] - n, ['игра', 'игры', 'игр'])}.` : ' Максимум.'}</p>
+    <div class="row" style="gap:8px;flex-wrap:wrap"><a class="btn" href="#h/${id}">Страница героя ›</a><button class="btn s" type="button" data-x>Закрыть</button></div></div></div>`;
+  document.body.appendChild(o);
+  snapTilt(o); heroLine(h, $('.hln', o));
+  const close = () => { o.remove(); removeEventListener('keydown', kd); }, kd = e => { if (e.key === 'Escape') close(); };
+  o.onclick = e => { if (e.target === o || e.target.closest('[data-x]') || e.target.closest('a.btn')) close(); };
+  addEventListener('keydown', kd);
 }
 
 // ---------- страница героя ----------
