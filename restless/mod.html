@@ -107,6 +107,18 @@ select{height:38px;border-radius:10px;border:1px solid var(--ln2);background:var
 .err{padding:14px;border-radius:10px;background:#3a1212;color:#ffb3ab}
 @media (max-width:980px){.game{grid-template-columns:minmax(0,1fr)}.rp{margin:0 14px 14px}.sh-cols{grid-template-columns:repeat(2,minmax(0,1fr))}.note{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:520px){.sh-hd{flex-wrap:wrap;gap:8px}.sh-tabs button{padding:0 9px;font-size:12px}h1{font-size:27px}.itg{grid-template-columns:repeat(3,minmax(0,1fr))}.hw{width:62%}}
+/* 28.10: как читать */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0 6px}
+.steps div{background:var(--s1);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;font-size:13.5px;color:#d6d1c7;display:flex;gap:10px;align-items:flex-start}
+.steps b{flex:none;width:24px;height:24px;border-radius:50%;background:var(--ac);color:#140b00;font:700 13px/24px var(--m);text-align:center}
+.lg{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:0 0 12px;font-size:13px;color:#d6d1c7}
+.lg span{display:inline-flex;align-items:center;gap:8px;padding-left:6px}
+.lg .it{width:30px;flex:none}.lg .it .no{width:16px;height:16px;font-size:9.5px;line-height:16px;top:-5px;left:-5px}
+.lg .it.ctr::before{width:15px;height:15px;font-size:9.5px;line-height:15px;top:-5px;right:-5px}
+.lg .dt{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ac)}
+.shop .itg .it:not(.inb):not(.ctr){opacity:.32;filter:saturate(.4)}
+.shop .itg .it:not(.inb):not(.ctr):hover{opacity:1;filter:none}
+@media (max-width:760px){.steps{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){.it.nx{animation:none}}
 </style>
 </head>
@@ -114,7 +126,12 @@ select{height:38px;border-radius:10px;border:1px solid var(--ln2);background:var
 <div class="wrap">
  <div class="top"><a class="logo" href="./">RESTLESS</a><a class="bk" href="./#heroes">‹ на сайт</a></div>
  <h1>Сборки <em>в игре</em></h1>
- <p class="sub">Так мод покажет сборки прямо в магазине Deadlock. Данные настоящие: сборки игроков и их процент побед за 14 дней (deadlock-api). Двигай «души» — увидишь, что уже куплено и что дальше. Выбери соперников — мод подскажет, что брать против них.</p>
+ <p class="sub">Это показ, а не игра: ниже — магазин Deadlock, каким он станет с модом Restless. Сборки и проценты побед — настоящие, игроков рангом от Oracle за 14 дней.</p>
+ <div class="steps">
+  <div><b>1</b><span>Выбери героя. Справа появятся 3 сборки, которые игроки берут чаще всего, — у кого больше побед, та сверху.</span></div>
+  <div><b>2</b><span>Двигай «Души» — это сколько у тебя сейчас. Что по сборке уже по карману — станет бледным с ✓, что брать дальше — замигает.</span></div>
+  <div><b>3</b><span>Соперники — кто против тебя на линии. Мод покажет предмет, с которым против них побеждают чаще обычного (красный «!»).</span></div>
+ </div>
  <div class="ctl">
   <label>Герой <select id="hs"></select></label>
   <div class="seg" id="vw"><button data-v="shop" class="on">Магазин</button><button data-v="hud">В бою</button></div>
@@ -194,6 +211,7 @@ async function counters() {
   }
   S.ctr = Object.values(R).sort((a, b) => b.d - a.d).slice(0, 3);
 }
+const LG = {inb: '<i class="it weapon inb"><span class="no">1</span></i>', own: '<i class="it vitality inb own"><span class="no">2</span></i>', nx: '<i class="it spirit inb nx"><span class="no">3</span></i>', ctr: '<i class="it weapon ctr"></i>'};
 function paint() {
   const souls = +$('#so').value; $('#sov').textContent = nf(souls);
   if (!S.B.length) { $('#out').innerHTML = '<div class="err">Мало сборок с этим героем за 14 дней.</div>'; return; }
@@ -213,7 +231,7 @@ function paint() {
     const tiers = [1, 2, 3, 4], all = Object.entries(D.items).filter(([, I]) => I.s === S.slot && tiers.includes(I.t));
     const idx = {}; O.forEach((id, i) => idx[id] = i + 1);
     const cell = ([id, I]) => itHTML(id, [idx[id] ? 'inb' : '', own.has(+id) ? 'own' : '', +id === nx ? 'nx' : '', ctr && +id === ctr.id ? 'ctr' : ''].join(' '), idx[id] || null, idx[id] ? `<small>№${idx[id]} в сборке</small>` : '');
-    $('#out').innerHTML = `<div class="game"><i class="gl"></i><section class="shop"><div class="sh-hd"><b>SHOP</b><div class="sh-tabs">${Object.entries(SLOT).map(([k, n]) => `<button data-s="${k}" class="${k === S.slot ? 'on' : ''}">${n}${nx && item(nx).s === k ? ' <i class="dt" title="тут следующий предмет"></i>' : ''}</button>`).join('')}</div></div>
+    $('#out').innerHTML = `<div class="lg"><span>${LG.inb}из сборки, цифра — по счёту покупать</span><span>${LG.own}уже купил</span><span>${LG.nx}купить следующим</span><span>${LG.ctr}против их состава</span><span><i class="dt"></i>на этой вкладке — следующий</span><span style="color:var(--mu)">Тусклые — не из сборки</span></div><div class="game"><i class="gl"></i><section class="shop"><div class="sh-hd"><b>SHOP</b><div class="sh-tabs">${Object.entries(SLOT).map(([k, n]) => `<button data-s="${k}" class="${k === S.slot ? 'on' : ''}">${n}${nx && item(nx).s === k ? ' <i class="dt" title="тут следующий предмет"></i>' : ''}</button>`).join('')}</div></div>
       <div class="sh-cols">${tiers.map(t => { const L = all.filter(([, I]) => I.t === t); return `<div class="sh-col"><h4>${nf([800, 1600, 3200, 6400][t - 1])}<small>${L.length} ${pl(L.length, ['предмет', 'предмета', 'предметов'])}</small></h4><div class="itg">${L.map(cell).join('')}</div></div>`; }).join('')}</div></section>${panel}</div>`;
     $$('.sh-tabs button').forEach(b => b.onclick = () => { S.slot = b.dataset.s; paint(); });
   } else {
