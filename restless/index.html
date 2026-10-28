@@ -8,7 +8,8 @@
 <meta name="theme-color" content="#09090b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Cormorant+SC:wght@600;700&family=Cormorant+Garamond:ital,wght@1,600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script>try{document.documentElement.dataset.skin=localStorage.getItem('rl-skin')||'labs'}catch(e){document.documentElement.dataset.skin='labs'}</script>
 <style>
 /* Restless 2.0 — приложение: шапка с вкладками и поиском игрока, ниже экран вкладки.
    Чёрный, янтарный акцент, заголовки Oswald капсом (как у Deadlock Labs), цифры моноширинные, метки игроков цветными плашками. */
@@ -263,6 +264,93 @@ img{display:block}
 .sb td:first-child{font-family:var(--f)}
 .sb tr.me3 td{background:rgba(255,176,32,.07)}
 .ft{max-width:1280px;margin:0 auto;padding:0 max(18px,env(safe-area-inset-right,0px)) 40px max(18px,env(safe-area-inset-left,0px));color:var(--mu2);font-size:12px}
+
+/* ===== 28.10 — три вида: «Labs» (чёрный + оранжевый, вкладки сверху), «Город» (как интерфейс Deadlock: латунь, кремовый, рамки ар-деко),
+   «Графики» (как League of Graphs: сине-серые панели, бирюзовый, меню слева). html[data-skin], выбор — localStorage rl-skin ===== */
+.skins{display:inline-flex;gap:4px;padding:3px;border-radius:10px;background:var(--s1);border:1px solid var(--ln)}
+.skins button{width:26px;height:26px;border-radius:7px;display:grid;place-items:center}
+.skins button i{width:14px;height:14px;border-radius:50%;display:block}
+.skins button.on{background:var(--s3)}
+.skins [data-s="labs"] i{background:linear-gradient(135deg,#ff6a00 50%,#0a0a0a 50%)}
+.skins [data-s="city"] i{background:linear-gradient(135deg,#d6b46a 50%,#1a2a24 50%)}
+.skins [data-s="graphs"] i{background:linear-gradient(135deg,#4be3e8 50%,#2f4466 50%)}
+.skpick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.skpick button{text-align:left;padding:14px;border-radius:14px;border:1px solid var(--ln2);background:var(--s1)}
+.skpick button.on{outline:2px solid var(--ac)}
+.skpick b{display:block;font:600 16px/1.1 var(--h);letter-spacing:.05em;text-transform:uppercase;margin:10px 0 4px}
+.skpick span{font-size:12.5px;color:var(--mu)}
+.skpick .sw{height:56px;border-radius:9px}
+.skpick [data-s="labs"] .sw{background:linear-gradient(90deg,#0a0a0a 0 60%,#ff6a00 60% 64%,#161616 64%)}
+.skpick [data-s="city"] .sw{background:linear-gradient(90deg,#14201b 0 60%,#d6b46a 60% 64%,#efe3c6 64%)}
+.skpick [data-s="graphs"] .sw{background:linear-gradient(90deg,#2a3b58 0 22%,#3a5078 22% 60%,#4be3e8 60% 64%,#46608c 64%)}
+@media (max-width:640px){.skpick{grid-template-columns:minmax(0,1fr)}.skpick .sw{height:28px}}
+
+/* --- Labs: строже и резче — почти чёрный, один оранжевый, углы 4px, всё капсом --- */
+html[data-skin="labs"]{--bg:#070707;--s1:#0f0f0f;--s2:#151515;--s3:#1d1d1d;--ln:#232323;--ln2:#2e2e2e;--tx:#f5f5f5;--mu:#8a8a8a;--ac:#ff6a00;--acd:#160700;--hot:#ff2e2e;--r:4px}
+html[data-skin="labs"] .h1{font-size:44px;letter-spacing:.01em}
+html[data-skin="labs"] .tabs a{text-transform:uppercase;letter-spacing:.08em;font:700 13px/1 var(--h)}
+html[data-skin="labs"] .tabs a.on{border-bottom-width:3px}
+html[data-skin="labs"] .btn,html[data-skin="labs"] .seg,html[data-skin="labs"] .seg button,html[data-skin="labs"] .srch input,html[data-skin="labs"] .tag,html[data-skin="labs"] .hc,html[data-skin="labs"] .it{border-radius:3px}
+html[data-skin="labs"] .btn{text-transform:uppercase;letter-spacing:.06em}
+html[data-skin="labs"] .tag{background:transparent;border:1px solid currentColor;color:var(--ac)}
+html[data-skin="labs"] .tag.g{color:var(--win)}html[data-skin="labs"] .tag.r{color:var(--loss)}html[data-skin="labs"] .tag.b{color:#6fb6ff}html[data-skin="labs"] .tag.h{background:var(--ac);color:#000;border-color:var(--ac)}
+html[data-skin="labs"] .h2{border-left:3px solid var(--ac);padding-left:10px}
+html[data-skin="labs"] .land{background:linear-gradient(115deg,#0d0d0d 0 55%,#ff6a00 55% 55.4%,#120a04 55.4%);border-radius:4px}
+html[data-skin="labs"] .hh{border-radius:4px}html[data-skin="labs"] .hh .vi{box-shadow:none;border-bottom:4px solid var(--ac);border-radius:2px}
+html[data-skin="labs"] .hh .nm{font-size:clamp(46px,7vw,86px)}
+
+/* --- Город: как меню Deadlock — тёмно-зелёный, латунь, кремовые плашки, двойные рамки, Cormorant SC --- */
+html[data-skin="city"]{--bg:#0e1512;--s1:#141e1a;--s2:#1a2722;--s3:#22332c;--ln:#2c3f37;--ln2:#3b5247;--tx:#efe3c6;--mu:#a49a80;--mu2:#7a735f;--ac:#d6b46a;--acd:#1b1406;--hot:#c8553d;--win:#8fcf8a;--loss:#e07a5f;--r:2px;
+ --h:'Cormorant SC','Cormorant Garamond',Georgia,serif;--f:'IBM Plex Sans',system-ui,sans-serif}
+html[data-skin="city"] body{background:radial-gradient(1200px 600px at 50% -10%,rgba(214,180,106,.10),transparent 70%),repeating-linear-gradient(90deg,rgba(214,180,106,.025) 0 1px,transparent 1px 64px),var(--bg)}
+html[data-skin="city"] .nav{background:rgba(14,21,18,.95);border-bottom:1px solid var(--ac);box-shadow:0 3px 0 -2px var(--ac)}
+html[data-skin="city"] .logo{font:700 28px/1 var(--h);letter-spacing:.16em}
+html[data-skin="city"] .tabs a{font:700 17px/1 var(--h);letter-spacing:.08em;text-transform:none}
+html[data-skin="city"] .tabs a.on{color:var(--ac)}
+html[data-skin="city"] .h1{font:700 44px/1 var(--h);letter-spacing:.04em;text-transform:none}
+html[data-skin="city"] .h2{font:700 21px/1 var(--h);letter-spacing:.06em;text-transform:none;justify-content:flex-start;gap:12px}
+html[data-skin="city"] .h2::before{content:"";width:22px;height:9px;background:linear-gradient(var(--ac),var(--ac)) 0 50%/100% 1px no-repeat,linear-gradient(45deg,transparent 40%,var(--ac) 40% 60%,transparent 60%) 50% 50%/9px 9px no-repeat;flex:none;align-self:center}
+html[data-skin="city"] .card{border:1px solid var(--ln2);outline:1px solid rgba(214,180,106,.18);outline-offset:3px;border-radius:2px}
+html[data-skin="city"] .btn{border-radius:0;background:var(--ac);clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%);padding:0 24px;font:700 15px/1 var(--h);letter-spacing:.08em}
+html[data-skin="city"] .btn.g{background:var(--s3);color:var(--tx);border:0}
+html[data-skin="city"] .tag{border-radius:0;background:#efe3c6;color:#2a2418;font:700 11.5px/1 var(--h);letter-spacing:.06em;text-transform:none}
+html[data-skin="city"] .tag.g{background:#cfe6c7;color:#173a17}html[data-skin="city"] .tag.r{background:#f0c9bd;color:#5a1d0f}html[data-skin="city"] .tag.b{background:#c9dbe6;color:#13324a}html[data-skin="city"] .tag.h{background:var(--hot);color:#fff}
+html[data-skin="city"] .seg,html[data-skin="city"] .seg button,html[data-skin="city"] .srch input,html[data-skin="city"] .hc,html[data-skin="city"] .it{border-radius:0}
+html[data-skin="city"] .land{border-radius:2px;border:1px solid var(--ac);background:radial-gradient(700px 400px at 80% 20%,rgba(214,180,106,.14),transparent 70%),linear-gradient(180deg,#16231e,#0e1512)}
+html[data-skin="city"] .land .h1{font-size:clamp(40px,5.4vw,66px)}
+html[data-skin="city"] .hh{border-radius:2px;border:1px solid var(--ac)}
+html[data-skin="city"] .hh .vi{border-radius:0;box-shadow:0 0 0 1px var(--ac),0 0 0 6px var(--bg),0 0 0 7px var(--ac)}
+html[data-skin="city"] .hh .nm{font-family:var(--h);text-transform:none;font-size:clamp(44px,6vw,74px)}
+html[data-skin="city"] .stat b,html[data-skin="city"] .hh .ss div b{color:var(--ac)}
+html[data-skin="city"] .prof .nm{font-family:var(--h);text-transform:none;font-size:34px}
+
+/* --- Графики: как League of Graphs — сине-серые панели, бирюзовые подчёркивания, меню слева на ПК, метки рамкой --- */
+html[data-skin="graphs"]{--bg:#2a3b58;--s1:#3a4f73;--s2:#425a82;--s3:#4b6590;--ln:#4e678f;--ln2:#5a75a0;--tx:#f2f6fb;--mu:#b7c4d8;--mu2:#93a4bf;--ac:#4be3e8;--acd:#0b2a33;--hot:#ffd84b;--win:#4be3e8;--loss:#ff8fa3;--r:6px;--h:'Roboto',system-ui,sans-serif;--f:'Roboto',system-ui,sans-serif}
+html[data-skin="graphs"] .h1,html[data-skin="graphs"] .h2,html[data-skin="graphs"] .prof .nm,html[data-skin="graphs"] .hh .nm,html[data-skin="graphs"] .tabs a,html[data-skin="graphs"] .logo{text-transform:none;letter-spacing:0}
+html[data-skin="graphs"] .h1{font-weight:700}
+html[data-skin="graphs"] .h2{font-weight:700;font-size:16px;border-bottom:2px solid var(--ac);padding-bottom:8px;display:flex}
+html[data-skin="graphs"] .tag{background:transparent;border:1px solid var(--ac);color:var(--ac);border-radius:3px;text-transform:none;letter-spacing:0;font:500 12px/1 var(--f);height:24px;padding:0 9px}
+html[data-skin="graphs"] .tag.g{border-color:var(--ac);color:var(--ac)}html[data-skin="graphs"] .tag.r{border-color:var(--loss);color:var(--loss)}html[data-skin="graphs"] .tag.a,html[data-skin="graphs"] .tag.h{border-color:var(--hot);color:var(--hot);background:transparent}
+html[data-skin="graphs"] .btn{background:var(--ac);color:var(--acd);border-radius:4px}
+html[data-skin="graphs"] .card{border:0;box-shadow:0 2px 0 rgba(0,0,0,.12)}
+html[data-skin="graphs"] .mt .st{width:4px}
+html[data-skin="graphs"] .land{border:0;background:linear-gradient(90deg,rgba(42,59,88,.97) 40%,rgba(42,59,88,.55)),#2a3b58}
+@media (min-width:1100px){
+ html[data-skin="graphs"] .nav{position:fixed;left:0;top:0;bottom:0;width:230px;border:0;background:#33476a;z-index:40}
+ html[data-skin="graphs"] .nav .in{flex-direction:column;align-items:stretch;height:100%;gap:6px;padding:18px 0}
+ html[data-skin="graphs"] .logo{padding:0 18px 12px;font-size:26px;color:#fff}
+ html[data-skin="graphs"] .logo small{color:var(--ac)}
+ html[data-skin="graphs"] .tabs{flex-direction:column;height:auto;gap:0}
+ html[data-skin="graphs"] .tabs a{height:46px;padding:0 20px;border-bottom:0;border-left:3px solid transparent;font-size:15px;color:#dfe7f3}
+ html[data-skin="graphs"] .tabs a.on{background:#3e5580;border-left-color:var(--ac);color:#fff}
+ html[data-skin="graphs"] .srch{order:-1;width:auto;margin:0 14px 10px}
+ html[data-skin="graphs"] .logo{order:-2}
+ html[data-skin="graphs"] .nav .sp{flex:1}
+ html[data-skin="graphs"] .me{margin:0 14px;max-width:none}
+ html[data-skin="graphs"] .skins{margin:8px 14px 0;align-self:flex-start}
+ html[data-skin="graphs"] .wrap,html[data-skin="graphs"] .ft{margin-left:230px;max-width:1180px}
+}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -282,6 +370,7 @@ img{display:block}
   <div class="dd hide" id="sd"></div>
  </form>
  <a class="me hide" id="me" href="#home"></a>
+ <div class="skins" id="skins" role="group" aria-label="Вид сайта"><button data-s="labs" title="Labs"><i></i></button><button data-s="city" title="Город"><i></i></button><button data-s="graphs" title="Графики"><i></i></button></div>
 </div></header>
 <main class="wrap" id="v"></main>
 <p class="ft">Данные — открытый api.deadlock-api.com (матчи, ранги, винрейты). Restless не связан с Valve. Входить в Steam не нужно: профили и матчи в Deadlock открытые.</p>
@@ -480,7 +569,7 @@ function mtRow(m) {
 }
 async function viewLanding() {
   const art = [65, 84, 86].map(id => hero(id).v || hero(id).c).filter(Boolean);
-  V(`<section class="land">
+  V(`<h2 class="h2" style="margin-top:0">Выбери вид сайта <small>можно сменить в шапке</small></h2>${skinPickHTML()}<section class="land">
       <h1 class="h1">Кто в твоём матче — <em>до первой драки</em></h1>
       <p>Ранги и винрейты всех 12 игроков, кто мейнит героя и кто тебя контрит, что купить против их состава. Плюс мета героев, сборки топов и разбор каждого твоего матча. Входить в Steam не нужно.</p>
       <form id="lf"><input id="lq" placeholder="Ссылка на профиль Steam, ник или ID" autocomplete="off" aria-label="Игрок"><button class="btn" type="submit">Найти себя</button></form>
@@ -740,6 +829,13 @@ async function viewMatch(mid) {
 }
 
 // ---------- навигация ----------
+
+// ---------- три вида ----------
+const SKINS = [['labs', 'Labs', 'Чёрный и оранжевый, всё строго — как у Deadlock Labs'], ['city', 'Город', 'Как меню самой игры: латунь, кремовый, рамки ар-деко'], ['graphs', 'Графики', 'Как League of Graphs: сине-серые панели, меню слева']];
+function skinSet(s) { document.documentElement.dataset.skin = s; try { localStorage.setItem('rl-skin', s); } catch (e) {} $$('#skins button,.skpick button').forEach(b => b.classList.toggle('on', b.dataset.s === s)); }
+function skinPickHTML() { const c = document.documentElement.dataset.skin; return `<div class="skpick">${SKINS.map(([k, n, d]) => `<button data-s="${k}" class="${k === c ? 'on' : ''}"><div class="sw"></div><b>${n}</b><span>${d}</span></button>`).join('')}</div>`; }
+document.addEventListener('click', e => { const b = e.target.closest('#skins button,.skpick button'); if (b) skinSet(b.dataset.s); });
+skinSet(document.documentElement.dataset.skin || 'labs');
 function V(html) { $('#v').innerHTML = html; }
 function route() {
   const h = location.hash.replace(/^#/, '') || 'home';
