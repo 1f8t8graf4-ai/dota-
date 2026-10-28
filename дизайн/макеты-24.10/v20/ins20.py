@@ -18,6 +18,7 @@ def fresh(rel):
     new = open(os.path.join(D, rel), encoding='utf8').read().strip()
     if old and old != new: R(old, new)
 for f in ['v16/done.js', 'v19/q9.js']: fresh(f)
+# дальше done.js в шаблоне правь только данные DN_* (до «function dnRender»): dnTab там переписан этим скриптом
 css = open(os.path.join(S, 'z20.css'), encoding='utf8').read()
 js = open(os.path.join(S, 'z20.js'), encoding='utf8').read()
 i = t.index('</style>'); t = t[:i] + css + '\n' + t[i:]
