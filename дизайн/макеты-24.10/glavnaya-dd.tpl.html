@@ -1,4 +1,4 @@
-<title>Макеты v18</title>
+<title>Макеты v19</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&family=Russo+One&display=swap">
 <style>
@@ -6079,12 +6079,109 @@ html.lite .h11 *{animation:none!important}
 .q8c-hint{position:absolute;left:0;right:0;bottom:92px;z-index:30;text-align:center;font:600 10.5px/1 Inter,sans-serif;color:rgba(244,239,230,.42);margin:0}
 .q8m [hidden],.q8c [hidden]{display:none!important}
 
+/* ===== v19 · меню «Deadlock / Игры», Deadlock внутри без комиксов, «Почитать · Послушать», «Против кого стоишь» (классы q9) ===== */
+.q9m .q9-gl{display:flex;align-items:center;gap:5px;margin-top:3px}
+.q9m .q9-gl i{font:700 10px/1 Oswald,Inter,sans-serif;letter-spacing:.06em;padding:4px 5px;border-radius:5px;background:rgba(255,255,255,.08);color:rgba(244,239,230,.38);font-style:normal}
+.q9m .q9-gl i.on{background:#FFD23F;color:#16110A}
+.q9m .q9-gl em{font:600 11.5px/1.2 Inter,sans-serif;font-style:normal;color:rgba(244,239,230,.62);margin-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.q9m .q7m-i.on .q9-gl em{color:rgba(22,17,10,.7)}
+.q9m .q7m-i.on .q9-gl i:not(.on){background:rgba(22,17,10,.12);color:rgba(22,17,10,.45)}
+.q9m .q7m-mi{flex-wrap:nowrap;gap:14px}
+.q9m .q7m-mi button{font-size:15.5px;white-space:nowrap}
+
+/* Deadlock внутри v2 */
+.q9hub .q9-sec{padding:20px 16px 10px;flex-direction:column;align-items:flex-start;gap:3px}
+.q9hub .q9-sec>b{white-space:nowrap}
+.q9hub .y5hg{padding-top:0}
+.q9hub .q9-tiles{grid-template-columns:repeat(3,1fr);gap:8px;padding:16px 16px 0}
+.q9hub .q9-tiles .tl{height:112px}
+.q9hub .q9-tiles .tl .lb b{font-size:15px}
+.q9hub .q9-tiles .tl .lb small{font-size:10.5px;line-height:1.25}
+.q9hub .q9-rd .art{background:linear-gradient(160deg,#2a2218,#15110c)}
+.q9hub .q9-rd .pg{position:absolute;top:14px;left:18%;width:56%;height:72%;background:#efe6d4;border-radius:3px;transform:rotate(-6deg);box-shadow:0 6px 16px rgba(0,0,0,.4)}
+.q9hub .q9-rd .pg.b{left:28%;transform:rotate(4deg);background:#f7f0e2}
+.q9hub .q9-rd .ln{position:absolute;top:26px;left:34%;width:40%;display:flex;flex-direction:column;gap:6px;transform:rotate(4deg)}
+.q9hub .q9-rd .ln i{display:block;height:3px;border-radius:2px;background:rgba(40,30,20,.35)}
+.q9hub .q9-rd .ln i:nth-child(3n){width:70%}
+.q9hub .q9-rd .ln i:nth-child(2){background:#FFD23F;opacity:.9}
+.q9-coach{margin:0 16px 12px;padding:12px 14px;border-radius:16px;background:rgba(255,210,63,.1);box-shadow:inset 0 0 0 1px rgba(255,210,63,.32);display:grid;gap:4px;font-size:12.5px;line-height:1.4;color:rgba(243,239,231,.82)}
+.q9-coach b{color:#FFD23F;font-weight:700;font-size:13.5px}
+.q9-coach .q9-cok{justify-self:end;margin-top:4px;border-radius:10px;padding:7px 14px;background:#FFD23F;color:#16110A;font:700 12.5px/1 Inter,sans-serif}
+.y5hc.q9-glow{position:relative;z-index:2;animation:q9g 1.6s ease-in-out infinite}
+@keyframes q9g{0%,100%{box-shadow:0 0 0 2px rgba(255,210,63,.9),0 0 0 6px rgba(255,210,63,0)}50%{box-shadow:0 0 0 2px rgba(255,210,63,.9),0 0 22px 6px rgba(255,210,63,.35)}}
+.q9-mono{display:inline-grid;place-items:center;flex:none;width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--c) 70%,#fff),var(--c) 55%,color-mix(in srgb,var(--c) 55%,#000));color:#fff;font:700 17px/1 Oswald,Inter,sans-serif;font-style:normal;box-shadow:0 0 0 2px rgba(255,255,255,.14)}
+.q9-mono.big{width:58px;height:58px;font-size:26px}
+.q9hub .q9-mu{display:flex;flex-direction:column;padding:0 12px}
+.q9hub .q9-mu>button{display:flex;align-items:flex-start;gap:12px;padding:11px 8px;text-align:left;border-radius:14px}
+.q9hub .q9-mu>button+button{border-top:1px solid var(--ln);border-radius:0 0 14px 14px}
+.q9hub .q9-mu .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.q9hub .q9-mu small{color:var(--mu);font-size:11.5px}
+.q9hub .q9-mu small em{font-style:normal;color:#FFD23F;font-weight:600}
+.q9hub .q9-mu .tx>span{font-size:13px;line-height:1.38;color:rgba(243,239,231,.9)}
+.q9hub .q9-mu .tx>span b{font-weight:700;color:#fff}
+.q9hub .q9-mux{display:flex;align-items:center;gap:4px;margin:6px 20px 0;font-size:12px;color:var(--mu)}
+.q9hub .q9-mux .ic{width:14px;height:14px}
+.q9hub .q9-vs{display:flex;align-items:center;gap:12px;margin:22px 16px 28px;padding:12px 14px;border-radius:16px;background:var(--s1);box-shadow:inset 0 0 0 1px var(--ln);text-align:left;width:calc(100% - 32px)}
+.q9hub .q9-vs .pr{display:flex;align-items:center;gap:4px}
+.q9hub .q9-vs .pr b{font:italic 700 13px/1 Oswald,sans-serif;color:var(--gd)}
+.q9hub .q9-vs .t{flex:1;min-width:0;display:flex;flex-direction:column}
+.q9hub .q9-vs .t b{font-weight:600;font-size:14px;white-space:nowrap}
+.q9hub .q9-vs .t small{color:var(--mu);font-size:11.5px}
+.q9hub .q9-vs em{font-style:normal;font-weight:600;font-size:13px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.08)}
+/* шторка совета */
+.q9-tip{position:absolute;inset:0;z-index:96}
+.q9-tip .dm{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+.q9-tip .sh{position:absolute;left:0;right:0;bottom:0;padding:10px 20px 30px;border-radius:24px 24px 0 0;background:#17181c;box-shadow:0 -10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:12px}
+.q9-tip .gr{align-self:center;width:38px;height:4px;border-radius:2px;background:rgba(255,255,255,.18)}
+.q9-tip .hd{display:flex;align-items:center;gap:12px}
+.q9-tip .hd small{display:block;font-size:10.5px;letter-spacing:.12em;color:var(--mu)}
+.q9-tip .hd b{font:600 24px/1.1 Oswald,Inter,sans-serif}
+.q9-tip .ab{display:flex;align-items:baseline;gap:8px}
+.q9-tip .ab b{font:600 20px/1 Oswald,Inter,sans-serif;color:#FFD23F}
+.q9-tip .ab span{color:var(--mu);font-size:13px}
+.q9-tip p{margin:0;font-size:14px;line-height:1.45;color:rgba(243,239,231,.92)}
+.q9-tip p b{color:#fff}
+.q9-tip .wd{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px}
+.q9-tip .wd small{width:100%;font-size:10.5px;letter-spacing:.12em;color:var(--mu)}
+.q9-tip .wd span b{display:inline-block;padding:5px 9px;border-radius:8px;background:rgba(255,255,255,.08);font-weight:600}
+.q9-tip .wd .tr{color:var(--mu)}
+.q9-tip .src{font-size:11.5px!important;color:var(--mu)!important}
+.q9-tip .ok{align-self:stretch;margin-top:4px;height:46px;border-radius:14px;background:#FFD23F;color:#16110A;font:700 14px/1 Inter,sans-serif}
+/* «Почитать», «Послушать» */
+.q9pg .y5top{display:flex;align-items:baseline;gap:8px;padding:58px 20px 14px 64px}
+.q9pg .y5top .y5bk{top:50px}
+.q9pg .y5top b{font:600 26px/1 Oswald,Inter,sans-serif;letter-spacing:.02em}
+.q9pg .y5top span{color:var(--mu);font-size:14px}
+.q9-list{display:flex;flex-direction:column;padding:0 12px}
+.q9-list>button{display:flex;align-items:center;gap:12px;padding:12px 8px;text-align:left;border-radius:14px}
+.q9-list>button+button{border-top:1px solid var(--ln);border-radius:0 0 14px 14px}
+.q9-list .t{flex:1;min-width:0;display:flex;flex-direction:column}
+.q9-list .t b{font-weight:600;font-size:14.5px}
+.q9-list .t small{color:var(--mu);font-size:12px}
+.q9-list>button>.ic{width:16px;height:16px;opacity:.5}
+.q9-list em{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#FFD23F;color:#16110A;font-style:normal}
+.q9-list em .ic{width:15px;height:15px}
+.q9-hint{margin:12px 20px 0;font-size:12px;line-height:1.4;color:var(--mu)}
+.q9-art{margin:18px 16px 28px;padding:18px 18px 20px;border-radius:18px;background:#f4ecdc;color:#22190f}
+.q9-art h3{margin:0 0 10px;font:600 22px/1.1 Oswald,Inter,sans-serif;color:#22190f}
+.q9-art .en{margin:0;font:400 16px/1.55 Lora,Georgia,serif}
+.q9-art u{text-decoration:none;border-bottom:2px dotted #b07a19;cursor:pointer;position:relative}
+.q9-art u.on{background:#FFD23F;border-bottom-color:transparent;border-radius:3px}
+.q9-art u.on::after{content:attr(data-r);position:absolute;left:0;bottom:calc(100% + 6px);white-space:nowrap;padding:5px 9px;border-radius:8px;background:#22190f;color:#fff;font:600 12px/1 Inter,sans-serif;z-index:3;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.q9-art .q9-hint{margin:12px 0 6px;color:#7a6a52}
+.q9-art .ru{margin:0;font-size:14px;line-height:1.5}
+.q9-art .dust{display:inline;color:transparent;text-shadow:0 0 8px rgba(34,25,15,.55);cursor:pointer;transition:color .35s,text-shadow .35s}
+.q9-art .dust.open{color:#3a2c1c;text-shadow:none}
+
+.q9hub .q9-tiles .tl.ln .eq{top:10px;bottom:auto;right:10px;height:18px}
+.q9hub .q9-tiles .tl .lb small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 </style>
 
 <div class="wrap">
  <header>
-  <h1>v18 — Меню v2 и Каналы</h1>
-  <p class="lead"><b>По твоим ответам на v17.</b> «Меню» — оставил с тем же шрифтом, пункты теперь понятные: «Продолжить» · «Играть» (все игры внутри списком — сколько бы их ни было) · «Что посмотреть»; «Афишу» убрал. Вместо «Двух дверей» — «Каналы»: каждый фильм и каждая игра — канал на весь экран, листаешь вверх-вниз. Цифры в сторис и в профиле поправил. «Динамическая» — это только цвет, стала настройкой темы. В «Уже готово» — сайт Restless и мод 0.9.</p>
+  <h1>v19 — игры в меню, Deadlock без комиксов</h1>
+  <p class="lead"><b>По твоим словам к v18.</b> Вместо непонятного «Играть» — два способа: «Deadlock» (последняя игра, сразу внутрь; другие — «Все игры» внизу) или «Игры» со значками игр. Deadlock внутри — без комиксов (они в карточке героя, новичку подсвечен Венатор), «Почитать · Послушать», «Против кого стоишь» (твой совет про художницу — Вайолет, он верный), Versus с другом — в самом низу. В «Уже готово» — мод 0.9.1 и ролики без тишины.</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
   <div class="pt" id="ptab"></div>
   <div class="vers" id="grp"></div>
@@ -13683,9 +13780,185 @@ V.push({g:'h18',id:'h18c',n:'Каналы — мой вариант под ми�
  minus:'Всё смотришь по одному: сразу пяти фильмов рядом не видно — для этого «Сцены».',
  mount(R,ctx){q8Ch(R,ctx)}});
 
+/* ================= v19 · «Играть» понятнее, Deadlock без комиксов, «Почитать · Послушать», «Против кого стоишь» (28.10) =================
+   Андрей на v18: «кнопка «Играть» сочно выглядит, но непонятно, что значит „играть“; Deadlock выглядел неплохо — как последняя игра»;
+   «убери комиксы — мы же говорили, они в героях (хотя тут тоже за ручку вести нужно)»; «Versus с другом — куда-то вниз»;
+   «какой-то „что почитать / послушать“ — сюда же»; «советы: стоишь на линии против художницы — её стан можно заблокировать, забежав за стену».
+   Художница — Вайолет (в файлах игры hero_artist): «Still Life» бьёт и станит, «пока она на тебя смотрит» — совет Андрея верный.
+   В v18 «Играть» → Deadlock открывал старый экран из v8 (там и был список комиксов). Здесь — экран Deadlock из v15 (y5), переделанный. */
+
+/* ---------- 1. Меню: пункт игр — двумя способами ---------- */
+const Q9G=[{k:'deadlock',n:'Deadlock',s:'радар: 2 перехвата · Versus · 9 героев',bdg:'2',on:1},{k:'dota',n:'Dota 2',s:'скоро — появится тут сама'},{k:'ow',n:'Overwatch',s:'скоро'}];
+function q9Menu(R,ctx,mode){R.className='scr q7 q7m q8m q9m';
+ const DL=mode==='dl';
+ const IT=[{b:'Продолжить',s:'Титаник · эпизод 2 «Я выживу» · 46 с',pr:1,why:'то, что ты начал'},
+  DL?{b:'Deadlock',s:'последняя игра · радар: 2 перехвата',bdg:'2',why:'игра, в которую ты играл последним, — сразу внутрь; другие игры — «Все игры» внизу'}
+    :{b:'Игры',s:'',gm:1,bdg:'2',why:'все игры списком — сколько бы их ни было'},
+  {b:'Что посмотреть',s:'6 фильмов и сериалов · 2 интервью — лентой',why:'выбрать новое'}];
+ const PW=['p_titanic','p_wolf','p_psycho','p_sopranos','p_taxi','p_bb','p_durov','p_clav','p_bunker'];
+ const gms=`<span class="q9-gl">${[['DL',1],['D2',0],['OW',0]].map(([t,on])=>`<i class="${on?'on':''}">${t}</i>`).join('')}<em>Deadlock · скоро Dota 2 и Overwatch</em></span>`;
+ R.innerHTML=`<div class="q7m-bg">
+  <div class="q7m-l on" data-j="0">${vidHTML('titanic')}</div>
+  <div class="q7m-l" data-j="1"><i class="img kb" style="background-image:url(${IMG.dl_cover})"></i>${q7Win()}${q7Hv('venator','q7m-hv')}</div>
+  <div class="q7m-l" data-j="2"><div class="q7m-wall">${PW.concat(PW).map(k=>`<i class="img" style="background-image:url(${IMG[k]})"></i>`).join('')}</div></div>
+  <div class="q7m-l" data-j="3"><i class="img kb" style="background-image:url(${IMG.bd_wolf})"></i><div class="q7m-rv">${["Trust me.","Have a seat, please.","I'll be fine.","Stress, maybe."].map((p,i)=>`<span style="animation-delay:${-i*1.7}s">${p}</span>`).join('')}</div></div>
+  <div class="q7m-l q8-soon" data-j="5"><canvas class="q8-nz" width="86" height="188"></canvas><b>СКОРО</b></div>
+ </div><i class="q7m-sh"></i><canvas class="fx"></canvas>${SB(0)}${q7Top()}
+ <nav class="q7m-mn q8-mn" data-lv="0">${IT.map((it,j)=>`<button class="q7m-i${j?'':' on'}" data-j="${j}"><b>${it.b}${it.bdg?`<i class="bdg">${it.bdg}</i>`:''}</b>${it.gm?gms:`<small>${it.s}</small>`}${it.pr?'<i class="q7-pr"><i></i></i>':''}</button>`).join('')}
+  <div class="q7m-mi"><button data-j="3">Повторить<em>17</em></button>${DL?'<button data-j="6">Все игры</button>':''}<button data-j="4">С друзьями</button></div></nav>
+ <nav class="q7m-mn q8-gm" data-lv="1" hidden><button class="q8-bk">‹ Назад</button>${Q9G.map((g,i)=>`<button class="q7m-i${i?'':' on'}${g.on?'':' off'}" data-g="${i}"><b>${g.n}${g.bdg?`<i class="bdg">${g.bdg}</i>`:''}</b><small>${g.s}</small></button>`).join('')}</nav>
+ <div class="q8-why" hidden>${IT.map(it=>`<span><b>${it.b}</b> — ${it.why}</span>`).join('')}<span><b>Повторить · ${DL?'Все игры · ':''}С друзьями</b> — раз в день, другие игры и с другом</span><button class="q8-ok">Понятно</button></div>
+ ${q7TB(0)}<i class="hb"></i>`;
+ vidStart(R);q7TopBind(R,ctx);q7TBBind(R,ctx);
+ const fx=FX(ctx,$('.fx',R)),L=$$('.q7m-l',R),M=$('.q8-mn',R),G=$('.q8-gm',R);let cur=0,touched=false,lv=0;
+ q8Noise(ctx,$('.q8-nz',R));
+ const DU=Array.from({length:22},()=>({x:Math.random()*344,y:Math.random()*754,v:.1+Math.random()*.25,r:.6+Math.random()*1.3,a:Math.random()*6.28}));
+ fx.ambient({step(g,k){for(const d of DU){d.y-=d.v*k;d.a+=.02*k;d.x+=Math.sin(d.a)*.2*k;if(d.y<-4){d.y=760;d.x=Math.random()*344}g.globalAlpha=.14+.16*Math.sin(d.a*2);g.fillStyle='#FFD98A';g.beginPath();g.arc(d.x,d.y,d.r,0,6.3);g.fill()}g.globalAlpha=1}});
+ const layer=j=>L.forEach(l=>l.classList.toggle('on',+l.dataset.j===j));
+ function sel(j){if(j>3||(lv===0&&j===cur))return;cur=j;layer(j);$$('.q7m-i',M).forEach(i=>i.classList.toggle('on',+i.dataset.j===j))}
+ function selG(i){$$('.q7m-i',G).forEach(b=>b.classList.toggle('on',+b.dataset.g===i));layer(Q9G[i].on?1:5)}
+ function level(n){lv=n;const a=n?M:G,b=n?G:M;an(a,[{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${n?-40:40}px)`}],{d:200,e:EI,f:'forwards'});
+  ctx.t(()=>{a.hidden=true;b.hidden=false;$$('.q7m-i,.q8-bk',b).forEach((x,i)=>an(x,[{opacity:0,transform:`rotate(-1.4deg) translateX(${n?60:-60}px)`},{opacity:1,transform:'rotate(-1.4deg)'}],{sp:SPs,dl:i*70}));if(n)selG(0);else{cur=-1;sel(1)}},200)}
+ const back=()=>{$$('.q8-mn,.q8-gm,.q7-top',R).forEach((x,i)=>{x.getAnimations().forEach(a=>a.cancel());an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:i*60})})};
+ function pop(el){an(el,[{scale:'1'},{scale:'.95'},{scale:'1.05'},{scale:'1'}],{d:320,e:EO});const r=rel(el,R);fx.burst(r.x+50,r.y+r.h/2,{n:18,c:['#FFD23F','#fff'],v:3.4,g:0,s:2,l:30})}
+ const hub=el=>g11Over(R,ctx,(pv,cc,cl)=>q9Hub(pv,cc,{onBack:cl}),null,el);
+ function enter(j,el){touched=true;sel(j);pop(el);
+  ctx.t(()=>{if(j===0){$$('.q8-mn,.q7-top',R).forEach((x,i)=>an(x,[{opacity:1},{opacity:0,transform:'translateY(18px)'}],{d:220,dl:i*30,e:EI,f:'forwards'}));m7Play(R,ctx,el,back)}
+   else if(j===1){if(DL)hub(el);else level(1)}else if(j===6)level(1);else if(j===2)w4Feed(R,ctx,0,el);
+   else toast(R,j===3?'🔁 Повторение: 17 фраз, по 3 за раз':'⚔️ Дуэль по сцене — ссылкой другу в Telegram')},j===1&&!DL?120:j===6?120:j<3?300:80)}
+ $$('.q7m-i',M).forEach(b=>{ctx.on(b,'pointerenter',e=>{if(e.pointerType==='mouse'){touched=true;sel(+b.dataset.j)}});ctx.on(b,'click',()=>enter(+b.dataset.j,b))});
+ $$('.q7m-mi button',M).forEach(b=>{ctx.on(b,'pointerenter',e=>{if(e.pointerType==='mouse'&&b.dataset.j==='3'){touched=true;sel(3)}});ctx.on(b,'click',()=>enter(+b.dataset.j,b))});
+ $$('.q7m-i',G).forEach(b=>{const i=+b.dataset.g;ctx.on(b,'pointerenter',e=>{if(e.pointerType==='mouse')selG(i)});
+  ctx.on(b,'click',()=>{selG(i);pop(b);if(Q9G[i].on)ctx.t(()=>hub(b),260);else toast(R,`🎮 ${Q9G[i].n} — скоро, появится здесь`)})});
+ ctx.on($('.q8-bk',R),'click',()=>level(0));
+ ctx.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ $$('.q7m-i',M).forEach((b,i)=>an(b,[{opacity:0,transform:'rotate(-1.4deg) translateX(-60px)'},{opacity:1,transform:'rotate(-1.4deg)'}],{sp:SPs,dl:160+i*90}));
+ an($('.q7m-mi',M),[{opacity:0},{opacity:1}],{d:500,dl:520});
+ let seen=false;try{seen=localStorage.getItem('q9-why-'+mode)==='1'}catch(e){}
+ const W=$('.q8-why',R);if(!seen)ctx.t(()=>{W.hidden=false;an(W,[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{sp:SPs})},900);
+ ctx.on($('.q8-ok',R),'click',()=>{try{localStorage.setItem('q9-why-'+mode,'1')}catch(e){}an(W,[{opacity:1},{opacity:0}],{d:200,f:'forwards'});ctx.t(()=>W.hidden=true,200)});
+ let k=0;const cyc=()=>{if(touched||lv)return;k=(k+1)%3;sel(k);ctx.t(cyc,k===0?4200:2700)};ctx.t(cyc,3800)}
+
+/* ---------- 2. Deadlock внутри v2: без плитки комиксов, Versus внизу ---------- */
+// советы против героев — из описаний способностей в файлах игры (SteamDatabase/GameTracking-Deadlock, citadel_heroes_english):
+// слова способности оставляем по-английски — заодно учишь, как их зовут в игре
+const Q9MU=[
+ {k:'violet',n:'Вайолет',c:'#C86BD8',ab:'Still Life',abr:'натюрморт',t:'Бьёт и в конце станит, <b>пока смотрит на тебя</b>. Забеги за стену — набросок не дорисуется.',src:'«as long as you are looking at them»'},
+ {k:'warden',n:'Уорден',c:'#5B8DEF',ab:'Lock Down',abr:'запереть',t:'Повесил проклятие — <b>сразу уходи с места</b>. Не сдвинулся вовремя — урон и не двигаешься.',src:'«if they don\'t move away… within the escape time»'},
+ {k:'geist',n:'Леди Гайст',c:'#E0566B',ab:'Life Drain',abr:'высасывание жизни',t:'Тянет твоё здоровье, <b>пока видит и ты рядом</b>. Зайди за угол или отбеги — связь рвётся.',src:'«must be in line of sight and within max range»'},
+ {k:'vindicta',n:'Виндикта',c:'#7FB069',ab:'Stake',abr:'кол',t:'Цепь держит у места, <b>где упал кол</b>. Не стой рядом с ним — дальше длины цепи не уйдёшь.',src:'«tethers enemies to the location where the stake lands»'}];
+const Q9RD=[
+ {k:'violet',t:'История Вайолет',s:'2 мин · 5 слов · с переводом',en:'Violet <u data-r="переехала">immigrated</u> to The Cursed Apple when she was 12, and while there was a certain amount of <u data-r="культурный шок">culture shock</u>, she quickly fell in love with the <u data-r="жизнь, яркость">vibrance</u> of the city. First, a <u data-r="полная стипендия">full ride</u> to art school… However Violet has not been able shake her <u data-r="страх, что жизнь — впустую">existential dread</u> of dying a failure.',
+  ru:'Вайолет переехала в Проклятое Яблоко в 12 лет, и, хоть без культурного шока не обошлось, быстро влюбилась в жизнь этого города. Сначала — полная стипендия в художественной школе… Но Вайолет так и не избавилась от страха умереть неудачницей.'},
+ {k:'patch',t:'Разбор патча 26.10',s:'что поменяли · 8 слов из патча',go:'patch'},
+ {k:'venator',t:'Кто такой Венатор',s:'1 мин · слова: stir, call on, show your face',go:'hero'}];
+const Q9LS=[
+ {t:'Венатор — все реплики подряд',s:'4 мин · как подкаст · по-английски с субтитрами',k:'venator'},
+ {t:'Севен ↔ Венатор — разговор из игры',s:'1 мин · настоящий диалог',k:'seven'},
+ {t:'Дормен — отель «Баронесса»',s:'2 мин · реплики гостям',k:'doorman'}];
+const q9Mono=(h,cl)=>`<i class="q9-mono${cl?' '+cl:''}" style="--c:${h.c}">${h.n[0]}</i>`;
+function q9Hub(R,ctx,o){o=o||{};R.className='scr y5 y5hub q9hub';
+ const nb=o.newbie!==false;
+ R.innerHTML=`${SB(0)}<div class="y5sc">
+  <div class="y5hh">${cns12()}<i class="sh"></i><button class="y5bk" aria-label="Назад">${ic('back')}</button>
+   <div class="tx">${neon11('DEADLOCK','hh')}<span>Голоса героев · по-английски</span></div></div>
+  <div class="y5now">
+   <button data-go="check"><span class="pr">${hic12('venator','y5s')}${hic12('rat','y5s')}</span><span class="t"><b>Глава ждёт проверки</b><small>«Проповедь свинца» · 3 вопроса</small></span><em>Проверить</em></button></div>
+  <div class="y5sec q9-sec"><b>Герои</b><small>нажми — его комиксы, фразы, Versus</small></div>
+  ${nb?`<div class="q9-coach" hidden><b>Начни с героя</b><span>У каждого героя внутри — его комиксы (разговоры из игры), интересные фразы и Versus за него. Венатор — первый.</span><button class="q9-cok">Понятно</button></div>`:''}
+  <div class="y5hg"></div>
+  <div class="y5tiles q9-tiles">
+   <button data-go="radar" class="tl rd"><span class="art"><canvas class="y5mini"></canvas></span><span class="lb"><b>Радар</b><small>2 перехвата</small></span><i class="bd">2</i></button>
+   <button data-go="read" class="tl q9-rd"><span class="art"><i class="pg"></i><i class="pg b"></i><span class="ln">${'<i></i>'.repeat(6)}</span></span><span class="lb"><b>Почитать</b><small>истории · патчи</small></span></button>
+   <button data-go="listen" class="tl ln q9-ls"><span class="art"><video muted loop playsinline data-hv="hv_rat3" poster="${IMG.hv_rat3}"></video><span class="eq">${eqBars(12)}</span></span><span class="lb"><b>Послушать</b><small>как подкаст</small></span></button></div>
+  <div class="y5sec q9-sec"><b>Против кого стоишь</b><small>коротко — как не попасться</small></div>
+  <div class="q9-mu">${Q9MU.map((h,i)=>`<button data-mu="${i}">${q9Mono(h)}<span class="tx"><small>${h.n} · <em>${h.ab}</em> — ${h.abr}</small><span>${h.t}</span></span></button>`).join('')}</div>
+  <p class="q9-mux">Все герои — в Restless: на линии против кого, что купить, как играть. ${ic('chev')}</p>
+  <button class="q9-vs" data-go="vs"><span class="pr">${hic12('venator','y5s')}<b>VS</b>${hic12('rat','y5s')}</span><span class="t"><b>Versus с другом</b><small>3 раунда · Боря звал 2 ч назад</small></span><em>Позвать</em></button>
+ </div><i class="hb"></i>`;
+ const c=ctx;playV12(R);cnsOn12(c,R);const ne=$('.g11-ne.hh',R);neonOn11(c,ne,260);neonLife11(c,ne);y5sonarMini(c,$('.y5mini',R));
+ const G=y5grid(R,c,{size:o.size||'s'});
+ $$('.y5now>button,.q9-sec,.y5tiles>.tl,.q9-mu>button,.q9-vs',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:380+Math.min(i,10)*55}));
+ // новичка ведём за руку: первый раз — подсветка Венатора и одна подсказка, потом не показываем
+ let seen=false;try{seen=localStorage.getItem('q9-coach')==='1'}catch(e){}
+ const CO=$('.q9-coach',R),ven=()=>$('.y5hc[data-k="venator"]',R);
+ if(CO&&!seen)c.t(()=>{CO.hidden=false;an(CO,[{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{sp:SPs});const v=ven();if(v)v.classList.add('q9-glow')},1300);
+ const coachOff=()=>{if(!CO||CO.hidden)return;try{localStorage.setItem('q9-coach','1')}catch(e){}an(CO,[{opacity:1},{opacity:0}],{d:200,f:'forwards'});c.t(()=>CO.hidden=true,200);const v=ven();if(v)v.classList.remove('q9-glow')};
+ let touched=false;c.on(R,'pointerdown',()=>{touched=true},{capture:true});
+ c.on(R,'click',e=>{const t=e.target;if(t.closest('.y5bk')){o.onBack?o.onBack():toast(R,'← назад в меню');return}
+  if(t.closest('.q9-cok')){coachOff();return}
+  const s=t.closest('[data-s]');if(s){G.resort(s.dataset.s);return}
+  if(t.closest('.y5vw')){y5viewSheet(R,c,G);return}
+  const h=t.closest('.y5hc');if(h){coachOff();an(h,[{transform:'scale(.95)'},{transform:'none'}],{sp:SPb});if(!H12[h.dataset.k].v){toast(R,`${H12[h.dataset.k].ru}: живой портрет ещё делаем`);return}g11Over(R,c,(pv,cc,cl)=>y5Hero(pv,cc,h.dataset.k,{onBack:cl}),null,h);return}
+  const m=t.closest('[data-mu]');if(m){q9Tip(R,c,Q9MU[+m.dataset.mu],m);return}
+  if(t.closest('.q9-mux')){toast(R,'🧭 Restless — сайт и мод: 1f8t8graf4-ai.github.io/dota-/restless');return}
+  const g=t.closest('[data-go]');if(!g)return;an(g,[{transform:'scale(.96)'},{transform:'none'}],{sp:SPb});const go=g.dataset.go;
+  if(go==='radar')g11Over(R,c,(pv,cc,cl)=>y5RadarA(pv,cc,{onBack:cl}),null,g);
+  else if(go==='vs')g11Over(R,c,(pv,cc,cl)=>y5Vs(pv,cc,{onBack:cl}),null,g);
+  else if(go==='listen')q9Listen(R,c,g);
+  else if(go==='read')q9Read(R,c,g);
+  else if(go==='check')g11Over(R,c,(pv,cc,cl)=>comic12(pv,cc,'who',{start:'check',onBack:cl}),null,g)});
+ if(o.demo)c.t(()=>{if(touched)return;$('.y5sc',R).scrollTo({top:520,behavior:'smooth'});c.t(()=>{if(!touched)q9Tip(R,c,Q9MU[0],$('[data-mu="0"]',R))},1700)},4200);
+ return G}
+
+/* шторка совета: способность по-английски, что делать, откуда взято */
+function q9Tip(R,ctx,h,from){let s=$('.q9-tip',R);if(s)s.remove();s=document.createElement('div');s.className='q9-tip';
+ s.innerHTML=`<i class="dm"></i><div class="sh"><i class="gr"></i><div class="hd">${q9Mono(h,'big')}<div><small>НА ЛИНИИ ПРОТИВ</small><b>${h.n}</b></div></div>
+  <div class="ab"><b>${h.ab}</b><span>«${h.abr}»</span></div><p>${h.t}</p>
+  <div class="wd"><small>СЛОВА</small>${h.ab.split(' ').map(w=>`<span><b>${w.toLowerCase()}</b></span>`).join('')}<span class="tr">${h.abr}</span></div>
+  <p class="src">Из описания способности в игре: ${h.src}</p>
+  <button class="ok">Понятно</button></div>`;
+ R.appendChild(s);const sh=$('.sh',s);an(sh,[{transform:'translateY(100%)'},{transform:'none'}],{sp:SPs});an($('.dm',s),[{opacity:0},{opacity:1}],{d:220});
+ const close=()=>{const z=an(sh,[{transform:'none'},{transform:'translateY(100%)'}],{d:220,e:EI,f:'forwards'});an($('.dm',s),[{opacity:1},{opacity:0}],{d:220,f:'forwards'});const f=()=>s.remove();if(z)z.onfinish=f;else f()};
+ ctx.on($('.dm',s),'click',close);ctx.on($('.ok',s),'click',close)}
+
+/* «Почитать»: список; история героя — по-английски, слова нажимаются, перевод — под пылью */
+function q9Read(R,ctx,from){g11Over(R,ctx,(pv,c,cl)=>{pv.className='scr y5 q9pg';
+ pv.innerHTML=`${SB(0)}<div class="y5sc"><div class="y5top"><button class="y5bk" aria-label="Назад">${ic('back')}</button><b>Почитать</b><span>${Q9RD.length}</span></div>
+  <div class="q9-list">${Q9RD.map((r,i)=>`<button data-i="${i}">${r.k==='patch'?`<i class="q9-mono" style="--c:#FFD23F">P</i>`:hic12(r.k==='violet'?'venator':r.k,'y5s')}<span class="t"><b>${r.t}</b><small>${r.s}</small></span>${ic('chev')}</button>`).join('')}</div>
+  <article class="q9-art" hidden></article></div><i class="hb"></i>`;
+ const A=$('.q9-art',pv);let touched=false;c.on(pv,'pointerdown',()=>{touched=true},{capture:true});
+ function open(i){const r=Q9RD[i];if(!r.en){toast(pv,r.go==='patch'?'📰 Разбор патча — как пост в канале (вариант «Канал»)':'🎙 Венатор — его карточка в «Героях»');return}
+  A.hidden=false;A.innerHTML=`<h3>${r.t}</h3><p class="en">${r.en}</p><p class="q9-hint">Нажми на подчёркнутое слово — перевод. Весь перевод — ниже, под пылью.</p><p class="ru"><span class="dust">${r.ru}</span></p>`;
+  an(A,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs});$('.y5sc',pv).scrollTo({top:A.offsetTop-60,behavior:'smooth'})}
+ c.on(pv,'click',e=>{const t=e.target;if(t.closest('.y5bk')){cl();return}
+  const u=t.closest('u[data-r]');if(u){$$('u.on',A).forEach(x=>x!==u&&x.classList.remove('on'));u.classList.toggle('on');return}
+  const d=t.closest('.dust');if(d){d.classList.add('open');return}
+  const b=t.closest('.q9-list>button');if(b)open(+b.dataset.i)});
+ $$('.q9-list>button',pv).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:120+i*60}));
+ c.t(()=>{if(!touched){open(0);c.t(()=>{if(!touched){const u=$$('u[data-r]',A)[2];if(u)u.classList.add('on')}},1400)}},1500)},null,from)}
+
+/* «Послушать»: подборки — нажал, и пошли реплики подряд (экран «Реплики» из v15) */
+function q9Listen(R,ctx,from){g11Over(R,ctx,(pv,c,cl)=>{pv.className='scr y5 q9pg';
+ pv.innerHTML=`${SB(0)}<div class="y5sc"><div class="y5top"><button class="y5bk" aria-label="Назад">${ic('back')}</button><b>Послушать</b><span>${Q9LS.length}</span></div>
+  <div class="q9-list">${Q9LS.map((r,i)=>`<button data-i="${i}">${hic12(r.k,'y5s')}<span class="t"><b>${r.t}</b><small>${r.s}</small></span><em>${ic('play')}</em></button>`).join('')}</div>
+  <p class="q9-hint">Как подкаст: можно убрать телефон — реплики идут сами, перевод на экране.</p></div><i class="hb"></i>`;
+ c.on(pv,'click',e=>{const t=e.target;if(t.closest('.y5bk')){cl();return}const b=t.closest('.q9-list>button');if(b)g11Over(pv,c,(p2,c2,cl2)=>y5Lines(p2,c2,{onBack:cl2}),null,b)});
+ $$('.q9-list>button',pv).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:120+i*60}))},null,from)}
+
+V.push({g:'h19',id:'h19d',n:'Меню · «Deadlock» — последняя игра',
+ idea:'Твоя мысль: вместо непонятного «Играть» — сразу игра, в которую ты играл последним: «DEADLOCK · радар: 2 перехвата». Одно нажатие — и ты внутри. Остальные игры — мелко внизу «Все игры» (тем же шрифтом выезжает список: Deadlock, Dota 2 и Overwatch — «скоро»). Когда начнёшь играть в другую — пункт сам станет ей.',
+ moves:['наведение мышью на «Deadlock» — фон меню становится Deadlock (живой Венатор)','«Все игры» → пункты уезжают влево, выезжает список игр; «‹ Назад» — обратно','первый раз — одна подсказка «что тут что», «Понятно» — и больше её нет'],
+ from:'Твой ответ на v18: «„Играть“ сочно, но непонятно, что значит; Deadlock выглядел неплохо — как ласт игра, но не уверен».',
+ minus:'Пока игра одна, «Все игры» почти пустые. Новичку, который ещё ни во что не играл, пункт покажет Deadlock — как самую живую.',
+ mount(R,ctx){q9Menu(R,ctx,'dl')}});
+V.push({g:'h19',id:'h19g',n:'Меню · «Игры» — со значками игр',
+ idea:'Второй способ: пункт называется просто «Игры», а под ним — значки игр (DL горит, D2 и OW — серые «скоро») и строка «Deadlock · скоро Dota 2 и Overwatch». Сразу понятно, что внутри список игр. Нажал — тем же шрифтом список.',
+ moves:['значки игр под пунктом — горит та, что есть','«Игры» → список игр тем же шрифтом','у игры «скоро» — шум телевизора вместо фона'],
+ from:'Твой вопрос: «как-то по-другому назвать можно — не совсем понятно, что значит „играть“».',
+ minus:'Два нажатия до Deadlock (как в v18). Зато ничего не надо объяснять.',
+ mount(R,ctx){q9Menu(R,ctx,'games')}});
+V.push({g:'h19',id:'h19h',n:'Deadlock внутри — без комиксов, Versus внизу',
+ idea:'Как в v15, но по твоим словам: плитки «Комиксы» больше нет — комиксы в карточке героя (нажал на Венатора — его разговоры, фразы, Versus за него). Новичка ведём за руку: первый раз Венатор подсвечен и одна подсказка «Начни с героя». Ниже — «Радар · Почитать · Послушать», потом «Против кого стоишь» (коротко, как не попасться: Вайолет — забеги за стену; это твой совет, он верный — в описании её способности «пока смотрит на тебя»). Versus с другом — в самом низу одной строкой.',
+ moves:['первый раз — Венатор светится, подсказка «Начни с героя» → «Понятно» или тап по любому герою, и её нет','«Против кого стоишь» → шторка: способность по-английски, перевод, что делать, откуда взято','«Почитать» → история Вайолет по-английски, слова нажимаются, весь перевод — под пылью','«Послушать» → подборки: реплики подряд, как подкаст'],
+ from:'Твои слова к v18: «убери комиксы, они должны быть в героях, хотя тут тоже за ручку вести нужно; Versus с другом — куда-то вниз; что почитать / послушать — сюда же» и совет про художницу.',
+ minus:'Советы есть пока к 4 героям — остальных Зетка соберёт из описаний способностей. Значки героев в советах — буквы, иконки из игры вставим.',
+ mount(R,ctx){q9Hub(R,ctx,{demo:true})}});
+
 /* ================= каркас страницы ================= */
-const GN={h18:'Главная v18',h17:'Главная v17',d15:'Deadlock v15',r15:'Радар v15',k15:'Комикс v15',x15:'Restless v15',c15:'Канал v15',l15:'Обучение v15',m15:'Мод v15',s15:'Настройки v15',c14:'Канал v14',m14:'Мод в Deadlock v14',g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-const VERS=[['v18','28.10 · Меню v2 и Каналы',[['h18','Главная · 2'],['h17','Главная v17']]],
+const GN={h19:'Главная v19',h18:'Главная v18',h17:'Главная v17',d15:'Deadlock v15',r15:'Радар v15',k15:'Комикс v15',x15:'Restless v15',c15:'Канал v15',l15:'Обучение v15',m15:'Мод v15',s15:'Настройки v15',c14:'Канал v14',m14:'Мод в Deadlock v14',g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+const VERS=[['v19','28.10 · игры в меню, Deadlock без комиксов',[['h19','Главная · 3'],['h18','Главная v18']]],
+ ['v18','28.10 · Меню v2 и Каналы',[['h18','Главная · 2'],['h17','Главная v17']]],
  ['v17','28.10 · главная под микс',[['h17','Главная · 3 · под микс'],['h9','Главная v9 · как было']]],
  ['v15','27.10 · ночь · твои ответы',[['h9','Главная · ждёт выбора (из v9)'],['x10','Магазин, Коллекция, вкладки · 2 (из v10)'],['d15','Deadlock · 4'],['r15','Радар · 5 вариантов'],['k15','Герой и главы · 1'],['x15','Restless · разбор матчей · 3'],['c15','Канал, разбор, ролик · 5'],['l15','Обучение · 5'],['m15','Мод · 2'],['s15','Настройки · 2']]],
  ['v14','27.10 · вечер',[['c14','Канал и разбор · 5'],['m14','Мод в Deadlock · 2']]],
@@ -13708,7 +13981,7 @@ const CMPV={'set-user':[['v15','s15u'],['v13','s13u'],['v11','s11u'],['v9','s9u'
  'learn-check':[['v11','l11a'],['v10','l10a'],['v9','l8a']],'learn-after':[['v11','l11b'],['v10','l10b'],['v9','l8b']],'learn-deep':[['v15','l15d'],['v13','l13d'],['v12','l12d'],['v11','l11d'],['v10','l10d']],
  'design':[['v10','x10a'],['v10 · 2','x10b'],['v8','x8a']]};
 function cmpOf(id){for(const k in CMPV)if(CMPV[k].some(x=>x[1]===id))return CMPV[k];return null}
-let CTX=null,curV=null,curG='h18';
+let CTX=null,curV=null,curG='h19';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -13732,7 +14005,7 @@ function fbMount(v){const N=$('#notes');if(!N)return;let el=N.querySelector('.fb
   if(NDB){show('сохраняю…');NDB.doc(key).set({t:s,id:v.id,g:v.g,n:v.n,at:Date.now()}).then(()=>show('сохранено · Claude увидит')).catch(()=>show('не сохранилось в базе — осталось в браузере'))}else show('сохранено в браузере')};
  ta.oninput=()=>{clearTimeout(tm);tm=setTimeout(save,1200)};ta.onblur=save}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const gb=$('#grp button.on');if(gb){let d=gb.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details')}}const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd18',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd19',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 /* ===== v16: вкладка «Уже готово» — что уже в приложении (Андрей его не открывает), что ждёт «го», что ждёт выбора ===== */
 const DN_APP=[
@@ -13815,7 +14088,9 @@ const DN_NO=[
  ['Свои FPS-конфиги','Уже есть в менеджере модов.']
 ];
 const DN_PICK=[
- ['Главная — «Меню v2» или «Каналы» (v18)','«Меню» — твой выбор, шрифт оставил. Пункты теперь понятные: «Продолжить» (что начал) · «Играть» (все игры внутри списком — их будет много) · «Что посмотреть» (новое, лентой); «Афишу» убрал. «Каналы» — мой новый вариант вместо дверей: каждый фильм и каждая игра — канал, листаешь вверх-вниз.',[['Меню v2','h18m'],['Каналы','h18c']]],
+ ['Пункт игр в «Меню» (v19)','Вместо «Играть»: «Deadlock» — последняя игра, сразу внутрь (другие — «Все игры» внизу) или «Игры» со значками игр под пунктом.',[['Deadlock','h19d'],['Игры','h19g']]],
+ ['Deadlock внутри (v19)','Плитки «Комиксы» нет — комиксы в карточке героя; новичку первый раз подсвечен Венатор. «Радар · Почитать · Послушать», «Против кого стоишь» (твой совет про Вайолет), Versus — в самом низу.',[['Открыть','h19h']]],
+ ['Главная — «Меню v2» или «Каналы» (v18)','«Меню» — твой выбор, шрифт оставил. Пункты теперь понятные: «Продолжить» (что начал) · игры (как назвать — выше, v19) · «Что посмотреть» (новое, лентой); «Афишу» убрал. «Каналы» — мой новый вариант вместо дверей: каждый фильм и каждая игра — канал, листаешь вверх-вниз.',[['Меню v2','h18m'],['Каналы','h18c']]],
  ['Тема: день или ночь','Это не дизайн, а только цвет — как тема в Telegram, настройкой. Дизайн — это форма и шрифт: «Меню» или «Каналы» выше. Какую тему ставить по умолчанию?',[['День / ночь','x7a']]],
  ['Фоны из кадров фильмов','Страница с 92 кадрами — отметь «беру» (промты тебя заебали — это вместо них).',[['Открыть страницу','https://claude.ai/artifact/38bb315JjeT1a3N4R5KZZk']]],
  ['Профиль','Фон из Коллекции — оставил (твой ответ). Аватарка в одном углу на любой главной → шторка: живой фон, уровень, полка наград, Коллекция и Магазин. Цифры больше не переносятся по одной.',[['Открыть','h18m']]],
@@ -13825,11 +14100,14 @@ const DN_PICK=[
 const DN_WAIT=[
  ['Канал в Telegram','Нужно от тебя: канал, бот в нём админом, токен бота — в секреты окружения (не в чат). Потом посты идут сами.','ты'],
  ['Restless на твоём профиле','Пришли ссылку на свой профиль Steam — открою сайт Restless на твоих матчах. Входить в аккаунт не нужно.','ты'],
- ['Мод Restless 0.9 в игре','Видно ли надпись «RESTLESS 0.9 · работает» и кнопку в меню по Esc.','ты'],
+ ['Мод Restless 0.9.1 в игре','КД ульты держится и не пропадает? Если пропадёт — скрин нижней строки в окне мода («ульт N»).','ты'],
  ['Фоны и петли героев','Ролики фонов и петля Дормена лежат — залить в R2 может только твой ключ.','ты'],
  ['Время слов во всех репликах','Зетка распознаёт все mp3 героев — субтитры перестанут отставать.','Зетка']
 ];
 const DN_TODAY=[
+ ['Мод Restless 0.9.1','КД ульты больше не пропадает (копии скрипта перебивали друг друга), секунды каждые 0,25 с; в окне мода — кнопка «Мой Restless» (сайт).','файл в чате'],
+ ['Ролики TikTok без тишины','Замерил твои 5 примеров: речь 87–93 % времени, паузы до 0,5 с, под всем фон. Наши были 51–67 % и паузы до 4,5 с — пересобрал: паузы ≤ 0,6 с, фон всё время, голос ровный.','2 ролика в чате'],
+ ['Главная v19','Пункт игр без слова «Играть»: «Deadlock» (последняя игра) или «Игры» со значками; Deadlock внутри — без комиксов, «Почитать · Послушать», «Против кого стоишь», Versus внизу.','макеты → Главная v19'],
  ['Restless — сайт как Porofessor и Blitz','Кто в матче (ранги и герои всех 12), профиль, матчи, разбор матча (линия, души против соперника, покупки против топов, где умирал), сборки игроков: сколько взяли и % побед.','1f8t8graf4-ai.github.io/dota-/restless'],
  ['Мод Restless 0.9','0.8 выключалась сама: скрипт запускался раньше, чем игра вставляла его в HUD. Теперь ждёт. Подключён к трём файлам HUD, верхнюю панель QoL не трогаем.','файл в чате'],
  ['Главная v18','«Меню v2» (три дела, игры внутри списком, «Афиша» → «Что посмотреть») и «Каналы» — вместо дверей.','макеты → Главная v18'],
@@ -13864,7 +14142,7 @@ $$('#ptab button').forEach(b=>b.onclick=()=>dnTab(b.dataset.p));
 addEventListener('hashchange',()=>{if(location.hash==='#done')dnTab('d')});
 
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd18'))}catch(e){}
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd19'))}catch(e){}
 mount(start||V.find(x=>x.g===curG));
 if((location.hash||'')==='#done')dnTab('d');
 </script>
