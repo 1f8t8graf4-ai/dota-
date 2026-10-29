@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Restless · Deadlock</title>
-<meta name="description" content="Restless — кто в матче, мета героев, сборки по винрейту и разбор матча в Deadlock">
+<meta name="description" content="Restless — профиль с оценками матчей, мета тир-листом, официальный топ, сборки с винрейтом и разбор матча в Deadlock">
 <meta name="theme-color" content="#0a1420">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,8 +88,6 @@ img{display:block}
 .seg button.on{background:var(--s3);color:var(--tx)}
 .tag{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:5px;font:700 10.5px/1 var(--f);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;background:var(--s3);color:#d6d1c7}
 .tag.a{background:#3a2a07;color:var(--ac)}.tag.g{background:#0f3321;color:var(--win)}.tag.r{background:#3a1212;color:#ff8a80}.tag.b{background:#0f2440;color:#8cc4ff}.tag.h{background:var(--hot);color:#1a0800}
-#tagtip{position:fixed;z-index:60;max-width:290px;transform:translate(-50%,-100%);background:var(--bg);border:1px solid var(--ln2);border-radius:8px;color:var(--tx);font:500 12.5px/1.45 var(--f);letter-spacing:0;padding:8px 11px;pointer-events:none;box-shadow:0 10px 26px rgba(0,0,0,.5);text-transform:none;white-space:normal}
-#tagtip.dn{transform:translate(-50%,0)}
 .hi{width:40px;height:40px;border-radius:8px;object-fit:cover;background:var(--s3);flex:none}
 .hi.s{width:28px;height:28px;border-radius:6px}.hi.l{width:56px;height:56px;border-radius:12px}
 .rk{width:36px;height:36px;object-fit:contain;flex:none}
@@ -531,144 +529,173 @@ a.prow:hover{background:var(--s2)}
 .prow .sub{white-space:nowrap;font-size:12px}
 @media (max-width:640px){.prow{grid-template-columns:34px minmax(0,1fr) auto}.prow .sub{display:none}}
 
-/* ===== 29.10 — 10 видов (7 новых) + карточка героя при наведении ===== */
-.skins{flex-wrap:wrap}
-.skpick{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
-@media (max-width:640px){.skpick{grid-template-columns:repeat(2,minmax(0,1fr))}.skpick b{font-size:13px}.skpick span{font-size:11px}}
-.skins [data-s="inferno"] i{background:linear-gradient(135deg,#ff7a1a 50%,#150d06 50%)}
-.skins [data-s="occult"] i{background:linear-gradient(135deg,#c95cff 50%,#120a20 50%)}
-.skins [data-s="midnight"] i{background:linear-gradient(135deg,#3d8bff 50%,#060910 50%)}
-.skins [data-s="forest"] i{background:linear-gradient(135deg,#8ce04a 50%,#0c160d 50%)}
-.skins [data-s="rivals"] i{background:linear-gradient(135deg,#ffd51e 50%,#182142 50%)}
-.skins [data-s="arcade"] i{background:linear-gradient(135deg,#ff2ec4 50%,#120726 50%)}
-.skins [data-s="paper"] i{background:linear-gradient(135deg,#b02a1e 50%,#efe8d8 50%)}
-.skpick [data-s="inferno"] .sw{background:linear-gradient(90deg,#140e08 0 60%,#ff7a1a 60% 64%,#3a1f0c 64%)}
-.skpick [data-s="occult"] .sw{background:linear-gradient(90deg,#110b1f 0 60%,#c95cff 60% 64%,#2a1846 64%)}
-.skpick [data-s="midnight"] .sw{background:linear-gradient(90deg,#080d18 0 60%,#3d8bff 60% 64%,#101b30 64%)}
-.skpick [data-s="forest"] .sw{background:linear-gradient(90deg,#101b11 0 60%,#8ce04a 60% 64%,#1d3320 64%)}
-.skpick [data-s="rivals"] .sw{background:linear-gradient(90deg,#151b31 0 60%,#ffd51e 60% 64%,#ff4655 64%)}
-.skpick [data-s="arcade"] .sw{background:linear-gradient(90deg,#120824 0 60%,#ff2ec4 60% 64%,#00e5ff 64%)}
-.skpick [data-s="paper"] .sw{background:linear-gradient(90deg,#f5efe2 0 60%,#b02a1e 60% 64%,#221f19 64%)}
+/* ===== v3 ===== */
+/* ===== v3: профиль как у Deadlock Labs, мета, топ, про, билды ===== */
+/* профиль: шапка игрока */
+.profh{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 18px}
+.profh .av{width:64px;height:64px;border-radius:50%;border:2px solid var(--ln2);object-fit:cover}
+.profh .pfi .nm{font:700 24px/1.1 var(--h);letter-spacing:.03em;text-transform:uppercase}
+.profh .rkb{display:grid;grid-template-columns:auto auto;gap:10px;align-items:center;text-align:left;background:var(--s1);border:1px solid var(--ln);border-radius:12px;padding:10px 14px}
+.profh .rkb b{display:block;font:700 15px/1.2 var(--h);letter-spacing:.04em;text-transform:uppercase}
+.profh .rkb small{color:var(--mu);font-size:11px;display:block}
+.profh .rkb .rk{width:40px;height:40px}
+/* две колонки профиля */
+.pgrid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,1fr);gap:16px;align-items:start}
+@media(max-width:980px){.pgrid{grid-template-columns:1fr}}
+/* история матчей */
+.mhl{display:flex;flex-direction:column;overflow:hidden}
+.mh{display:grid;grid-template-columns:46px 44px minmax(0,1fr) 40px auto;gap:12px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--ln);text-decoration:none;color:var(--tx);transition:background .15s}
+.mh:last-child{border-bottom:0}
+.mh:hover{background:var(--s2)}
+.mh .vf{width:38px;height:38px;flex:none}
+.vf circle{fill:#2b6d3f;stroke:#39d17f;stroke-width:2.5}
+.vf .e{fill:#d8ffe6;stroke:none}
+.vf .m{fill:none;stroke:#d8ffe6;stroke-width:2.6;stroke-linecap:round}
+.vf .star{fill:#ffd75e;stroke:none}
+.vf.sad circle{fill:#4a3134;stroke:#ff5050}
+.vf.sad .e,.vf.sad .m{fill:#ffd7d7;stroke:#ffd7d7}
+.vf.sad .m{fill:none}
+.vf.sad .b{fill:none;stroke:#ffd7d7;stroke-width:2.6;stroke-linecap:round}
+.vf.sad .tear{fill:#8cc4ff}
+.mh .hi{width:44px;height:58px;border-radius:8px;object-fit:cover;background:var(--s3)}
+.mh .mhc{min-width:0}
+.mh .mhc .nm{font:700 14px/1.2 var(--h);letter-spacing:.04em;text-transform:uppercase;display:flex;gap:6px;align-items:center}
+.mh .kd{font:700 17px/1.1 var(--m);margin:2px 0}
+.mh .kd b{color:var(--tx)}
+.mh .kd span{color:var(--loss)}
+.mh .mhc .ptags{margin-top:2px}
+.mh .ptags .tag{font-size:9.5px;padding:1.5px 5px}
+.mh .mhr{text-align:right}
+.mh .mhr b{display:block;font:700 12px/1.3 var(--f);letter-spacing:.08em}
+.mh .mhr small{display:block;color:var(--mu);font-size:11.5px}
+.mh .mhr .dl{font-weight:700}
+/* оценка S/A/B/C/D */
+.grd{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:color-mix(in srgb, var(--gc) 18%, transparent);color:var(--gc);border:1.5px solid var(--gc);font:700 19px/1 var(--h);cursor:help;flex:none}
+.grd.s{width:22px;height:22px;font-size:12px;border-radius:6px;margin-left:6px;vertical-align:middle}
+.gl{font-style:normal;font:700 15px/1 var(--m);margin:0 2px}
+/* большая строка (ранг в ЕУ) */
+.bigrow{display:flex;gap:14px;align-items:center;margin-bottom:10px}
+.bigrow b.mono{font:700 34px/1 var(--m)}
+.bigrow span small{display:block;color:var(--mu)}
+/* стат-карточки: 5 в ряд */
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:980px){.g5{grid-template-columns:repeat(2,1fr)}}
+.g5 .stat b{font:700 20px/1.2 var(--m)}
+/* ===== мета: тир-лист ===== */
+.tw{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--ln);align-items:start}
+.tw:last-child{border-bottom:0}
+.tw .t{font:700 30px/1 var(--h);text-align:center;padding-top:14px}
+.tw .hs{display:flex;flex-wrap:wrap;gap:8px}
+.hc{display:inline-grid;grid-template-columns:52px minmax(0,1fr);gap:8px;align-items:center;padding:6px 10px 6px 6px;background:var(--s1);border:1px solid var(--ln);border-left:3px solid var(--hc,var(--ac));border-radius:10px;text-decoration:none;color:var(--tx);min-width:150px}
+.hc:hover{border-color:var(--hc,var(--ac))}
+.hc img{width:52px;height:52px;border-radius:8px;object-fit:cover;background:var(--s3)}
+.hc b{display:block;font:700 13px/1.15 var(--h);letter-spacing:.03em;text-transform:uppercase}
+.hc em{font-style:normal;font:700 12.5px/1.2 var(--m)}
+.hc small{display:block;color:var(--mu);font-size:10.5px;white-space:nowrap}
+/* ===== топ (лидерборд) ===== */
+table.lbt{width:100%;border-collapse:collapse}
+table.lbt th{text-align:left;padding:10px 14px;color:var(--mu);font:600 11px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--ln)}
+table.lbt td{padding:8px 14px;border-bottom:1px solid var(--ln);vertical-align:middle}
+table.lbt tr:last-child td{border-bottom:0}
+table.lbt tr.mine{background:rgba(255,176,32,.09);outline:1.5px solid var(--ac)}
+table.lbt tr.fl{animation:flsh 1.6s ease 2}
+@keyframes flsh{0%,100%{background:rgba(255,176,32,.09)}50%{background:rgba(255,176,32,.3)}}
+table.lbt .pn{display:flex;gap:8px;align-items:center}
+table.lbt .pn small{display:block;color:var(--ac);font-size:10.5px}
+table.lbt .rkc{display:flex;gap:8px;align-items:center;font-size:12.5px}
+table.lbt .his{display:flex;gap:3px}
+table.lbt .his img{width:26px;height:26px;border-radius:6px}
+/* ===== про ===== */
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.pc{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;background:var(--s1);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--tx)}
+.pc:hover{border-color:var(--ac)}
+.pc b.mono{grid-row:span 3;font:700 20px/1 var(--m);color:var(--ac);align-self:center}
+.pc span{font:600 14px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .his img{width:26px;height:26px;border-radius:6px;margin-right:3px}
+.pc small{color:var(--mu);font-size:11px}
+/* ===== билды ===== */
+.bd2{border:1px solid var(--ln);border-radius:12px;padding:10px 12px;margin-bottom:10px;background:var(--s1)}
+.bd2.on{border-color:var(--ac)}
+.bdh{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
+.bdh b{display:block;font:600 14px/1.25 var(--f)}
+.bdh small{display:block;color:var(--mu);font-size:11.5px}
+.srcs{display:flex;gap:4px;flex-direction:column;align-items:flex-start}
+.bdi{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+.bdi .ii{width:30px;height:30px;border-radius:6px;background:var(--s3);object-fit:cover}
+.bdd{margin-top:8px;border-top:1px dashed var(--ln2);padding-top:8px}
+.bdc{margin-bottom:8px}
+.bdc>b{display:block;font:700 11px/1.3 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:4px}
+.bdc .it{display:inline-flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--ln);border-radius:8px;padding:3px 7px 3px 3px;margin:0 4px 4px 0;font-size:12px}
+.bdc .it img{width:24px;height:24px;border-radius:5px;background:var(--s3)}
+.bdc .it em{font-style:normal;color:var(--mu);font:500 10.5px/1 var(--m)}
+.btn.gh{opacity:.85}
+/* мои билды в профиле */
+.myc{display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--ln)}
+.myc:last-child{border-bottom:0}
+.myc img.hi{width:34px;height:44px;border-radius:6px;object-fit:cover;background:var(--s3)}
+.myc .bch{display:flex;flex-wrap:wrap;gap:4px}
+.myc .bch a{display:inline-flex;align-items:center;gap:4px;background:var(--s2);border:1px solid var(--ln);border-radius:7px;padding:2px 7px;font-size:11px;text-decoration:none;color:var(--tx)}
+.myc .bch a:hover{border-color:var(--ac)}
+.myc .bch img{width:16px;height:16px;border-radius:3px}
+.myc .bch em{font-style:normal;font:700 10.5px/1 var(--m);color:var(--win)}
+.myc .bch .ca{color:var(--mu);font-size:9.5px}
+/* ===== настройки ===== */
+.setc{max-width:520px}
+.set{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--ln)}
+.set:last-of-type{border-bottom:0}
+.set small{display:block;color:var(--mu);font-size:12px;margin-top:2px}
+.sw2{position:relative;display:inline-block;width:44px;height:24px}
+.sw2 input{opacity:0;width:0;height:0}
+.sw2 span{position:absolute;inset:0;background:var(--s3);border-radius:12px;transition:.2s;cursor:pointer}
+.sw2 span:before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:var(--mu);top:3px;left:3px;transition:.2s}
+.sw2 input:checked + span{background:var(--ac)}
+.sw2 input:checked + span:before{background:#06201c;transform:translateX(20px)}
 
-/* --- Инферно: уголь и огонь --- */
-html[data-skin="inferno"]{--bg:#0c0906;--s1:#140e08;--s2:#1b120a;--s3:#251810;--ln:#342314;--ln2:#4e3117;--tx:#f6eee1;--mu:#a5937c;--mu2:#7a6b58;--ac:#ff7a1a;--acd:#241208;--hot:#ff3d00;--r:6px}
-html[data-skin="inferno"] body{background:radial-gradient(1000px 500px at 80% -10%,rgba(255,90,10,.09),transparent 65%),var(--bg)}
-html[data-skin="inferno"] .logo{color:#ff9a2a}
-html[data-skin="inferno"] .h2{border-left:3px solid var(--ac);padding-left:10px}
-html[data-skin="inferno"] .btn{background:linear-gradient(135deg,#ff9a2a,#ff3d00);color:#1e0d02;border-radius:4px}
-html[data-skin="inferno"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
-html[data-skin="inferno"] .tag{border-radius:3px}
-html[data-skin="inferno"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 85% 0%,rgba(255,90,10,.13),transparent 60%),linear-gradient(180deg,#170f08,#0c0906)}
-html[data-skin="inferno"] .land p{color:#c6b39c}
-html[data-skin="inferno"] .hh{background:#130d07}
-html[data-skin="inferno"] .hh::after{background:linear-gradient(90deg,rgba(12,9,6,.95),rgba(12,9,6,.55) 60%,rgba(12,9,6,.2)),linear-gradient(0deg,rgba(12,9,6,.85),transparent 60%)}
-html[data-skin="inferno"] .srch input,html[data-skin="inferno"] .land input{background:#0f0a05;border-color:var(--ln2)}
+/* мобильная доводка v3 */
+.gl{display:inline-block}
+@media(max-width:700px){
+  .profh{grid-template-columns:auto minmax(0,1fr)}
+  .profh .rkb{grid-column:1/-1}
+  .profh .pfi{min-width:0}
+  .g5{grid-template-columns:repeat(2,1fr)}
+  .g5 .stat{min-width:0}
+  .g5 .stat b{font-size:17px}
+  .g5 .stat .gl{font-size:12.5px;margin:0 1px}
+  .mh{grid-template-columns:32px 40px minmax(0,1fr) 32px;gap:8px;padding:10px}
+  .mh .vf{width:26px;height:26px}
+  .mh .hi{width:40px;height:52px}
+  .mh .grd{width:30px;height:30px;font-size:15px}
+  .mh .kd{font-size:15px}
+  .mh .mhc{min-width:0}
+  .mh .mhc .nm{flex-wrap:wrap}
+  .mh .mhr{grid-column:1/-1;text-align:left;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
+  .seg{flex-wrap:wrap}
+  #lbt{overflow-x:auto}
+  table.lbt{min-width:560px}
+  .bdh{grid-template-columns:minmax(0,1fr) auto}
+  .bdh .srcs{grid-row:1;flex-direction:row;grid-column:1/-1;margin-bottom:4px}
+  .bigrow b.mono{font-size:26px}
+  .myc{flex-wrap:wrap}
+  .myc .bch{width:100%}
+}
 
-/* --- Оккульт: ночь, фиалка и магента --- */
-html[data-skin="occult"]{--bg:#0a0612;--s1:#110b1f;--s2:#171030;--s3:#201743;--ln:#2c1f52;--ln2:#43306e;--tx:#efe7ff;--mu:#a792cf;--mu2:#7c6aa4;--ac:#c95cff;--acd:#220b36;--hot:#8b5cf6;--r:10px}
-html[data-skin="occult"] body{background:radial-gradient(1000px 500px at 70% -10%,rgba(201,92,255,.10),transparent 65%),var(--bg)}
-html[data-skin="occult"] .card{border-color:#3a2a63;box-shadow:0 0 26px -16px rgba(201,92,255,.55)}
-html[data-skin="occult"] .h2::before{content:"";width:8px;height:8px;background:var(--ac);transform:rotate(45deg);flex:none;align-self:center;margin-right:2px}
-html[data-skin="occult"] .btn{background:var(--ac);color:#1d0630}
-html[data-skin="occult"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
-html[data-skin="occult"] .tabs a.on{color:var(--ac)}
-html[data-skin="occult"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 82% 0%,rgba(201,92,255,.14),transparent 60%),linear-gradient(180deg,#160c2b,#0a0612)}
-html[data-skin="occult"] .land p{color:#c3b4de}
-html[data-skin="occult"] .hh{background:#130b24}
-html[data-skin="occult"] .hh::after{background:linear-gradient(90deg,rgba(10,6,18,.95),rgba(10,6,18,.55) 60%,rgba(10,6,18,.2)),linear-gradient(0deg,rgba(10,6,18,.85),transparent 60%)}
-html[data-skin="occult"] .lob tr.mine td{background:rgba(201,92,255,.08)}
-html[data-skin="occult"] .rk{filter:drop-shadow(0 0 5px rgba(201,92,255,.35))}
-
-/* --- Полночь: чёрный лёд и электрик-синий --- */
-html[data-skin="midnight"]{--bg:#04060c;--s1:#090d17;--s2:#0d1322;--s3:#121b30;--ln:#19233c;--ln2:#28395e;--tx:#e7edf9;--mu:#8395b3;--mu2:#5e7090;--ac:#3d8bff;--acd:#071428;--hot:#39d1ff;--r:8px}
-html[data-skin="midnight"] .logo{text-shadow:0 0 14px rgba(61,139,255,.75)}
-html[data-skin="midnight"] .h2{border-bottom:1px solid var(--ln);padding-bottom:8px}
-html[data-skin="midnight"] .btn{background:var(--ac);color:#041226;box-shadow:0 0 18px -6px rgba(61,139,255,.8)}
-html[data-skin="midnight"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
-html[data-skin="midnight"] .tabs a.on{border-bottom-color:var(--ac);box-shadow:0 12px 16px -14px rgba(61,139,255,.9)}
-html[data-skin="midnight"] .card{box-shadow:0 0 30px -22px rgba(61,139,255,.5)}
-html[data-skin="midnight"] .land{border-color:var(--ln);background:radial-gradient(900px 420px at 80% 0%,rgba(61,139,255,.12),transparent 60%),linear-gradient(180deg,#0a1120,#04060c)}
-html[data-skin="midnight"] .land p{color:#b6c4dc}
-html[data-skin="midnight"] .hh{background:#070c16}
-html[data-skin="midnight"] .hh::after{background:linear-gradient(90deg,rgba(4,6,12,.95),rgba(4,6,12,.55) 60%,rgba(4,6,12,.2)),linear-gradient(0deg,rgba(4,6,12,.85),transparent 60%)}
-
-/* --- Джунгли: тёмная зелень Айви --- */
-html[data-skin="forest"]{--bg:#0a110b;--s1:#101b11;--s2:#152416;--s3:#1c2f1e;--ln:#274228;--ln2:#3b633c;--tx:#eef6ec;--mu:#96b491;--mu2:#6f8d6c;--ac:#8ce04a;--acd:#12290a;--hot:#d9e021;--r:12px}
-html[data-skin="forest"] .h2{border-left:3px solid var(--ac);padding-left:10px}
-html[data-skin="forest"] .btn{background:var(--ac);color:#0d1f06}
-html[data-skin="forest"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
-html[data-skin="forest"] .tag{border-radius:999px}
-html[data-skin="forest"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 85% 0%,rgba(140,224,74,.10),transparent 60%),linear-gradient(180deg,#122112,#0a110b)}
-html[data-skin="forest"] .land p{color:#bccdb6}
-html[data-skin="forest"] .hh{background:#0f1a10}
-html[data-skin="forest"] .hh::after{background:linear-gradient(90deg,rgba(10,17,11,.95),rgba(10,17,11,.55) 60%,rgba(10,17,11,.2)),linear-gradient(0deg,rgba(10,17,11,.85),transparent 60%)}
-
-/* --- Ривалс: комикс Marvel Rivals --- */
-html[data-skin="rivals"]{--bg:#0f1322;--s1:#151b31;--s2:#1b2342;--s3:#253057;--ln:#334073;--ln2:#4b5c9e;--tx:#f4f6ff;--mu:#9ba7d6;--mu2:#7280b3;--ac:#ffd51e;--acd:#2a2000;--hot:#ff4655;--r:4px}
-html[data-skin="rivals"] .h1,html[data-skin="rivals"] .h2,html[data-skin="rivals"] .hh .nm{text-shadow:2px 2px 0 rgba(0,0,0,.85)}
-html[data-skin="rivals"] .h2{border-bottom:3px solid var(--ac);padding-bottom:8px}
-html[data-skin="rivals"] .btn{background:var(--ac);color:#12100a;border:1px solid #000;box-shadow:3px 3px 0 #000}
-html[data-skin="rivals"] .btn.g{background:var(--s2);color:var(--tx);box-shadow:3px 3px 0 #000}
-html[data-skin="rivals"] .card{border:1px solid #000;box-shadow:4px 4px 0 rgba(255,213,30,.22)}
-html[data-skin="rivals"] .tag{border:1px solid #000;box-shadow:2px 2px 0 rgba(0,0,0,.7)}
-html[data-skin="rivals"] .tabs a.on{border-bottom:3px solid var(--ac)}
-html[data-skin="rivals"] .land{border:1px solid #000;box-shadow:5px 5px 0 rgba(255,70,85,.35);background:radial-gradient(700px 400px at 80% 0%,rgba(255,213,30,.12),transparent 60%),linear-gradient(160deg,#1a2244,#0f1322)}
-html[data-skin="rivals"] .land p{color:#b9c3e2}
-
-/* --- Аркада: ретро-неон --- */
-html[data-skin="arcade"]{--bg:#08040f;--s1:#120824;--s2:#180c33;--s3:#221149;--ln:#331a66;--ln2:#503093;--tx:#f1eaff;--mu:#a78fd8;--mu2:#7d68a9;--ac:#ff2ec4;--acd:#2e0036;--hot:#00e5ff;--r:12px}
-html[data-skin="arcade"] body{background:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 3px),radial-gradient(1000px 500px at 75% -10%,rgba(255,46,196,.08),transparent 60%),var(--bg)}
-html[data-skin="arcade"] .logo{color:#ff2ec4;text-shadow:0 0 12px rgba(255,46,196,.8),0 0 30px rgba(255,46,196,.4)}
-html[data-skin="arcade"] .h2{border-bottom:2px solid #ff2ec4;border-image:linear-gradient(90deg,#ff2ec4,#00e5ff) 1;padding-bottom:8px}
-html[data-skin="arcade"] .btn{background:var(--ac);color:#fff;box-shadow:0 0 16px -4px rgba(255,46,196,.9)}
-html[data-skin="arcade"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
-html[data-skin="arcade"] .tabs a.on{border-bottom-color:#00e5ff;box-shadow:0 12px 16px -13px rgba(0,229,255,.9)}
-html[data-skin="arcade"] .card{border-color:rgba(255,46,196,.28);box-shadow:0 0 26px -18px rgba(255,46,196,.7)}
-html[data-skin="arcade"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 82% 0%,rgba(255,46,196,.12),transparent 60%),linear-gradient(180deg,#160a30,#08040f)}
-html[data-skin="arcade"] .land p{color:#c9b8e6}
-html[data-skin="arcade"] .hh{background:#0e0620}
-html[data-skin="arcade"] .hh::after{background:linear-gradient(90deg,rgba(8,4,15,.95),rgba(8,4,15,.55) 60%,rgba(8,4,15,.2)),linear-gradient(0deg,rgba(8,4,15,.85),transparent 60%)}
-
-/* --- Газета 1930-х: светлая, бумага и чернила --- */
-html[data-skin="paper"]{--bg:#e9e2d2;--s1:#f5efe2;--s2:#eee7d6;--s3:#e3dac4;--ln:#d0c5aa;--ln2:#b3a687;--tx:#221f19;--mu:#6c6452;--mu2:#93896f;--ac:#b02a1e;--acd:#f6e3df;--hot:#1f4fa3;--win:#2e7d32;--loss:#c62828;--r:2px;--h:'Times New Roman',Georgia,serif;color-scheme:light}
-html[data-skin="paper"] body{background:repeating-linear-gradient(0deg,rgba(34,31,25,.022) 0 1px,transparent 1px 26px),var(--bg)}
-html[data-skin="paper"] .nav{background:rgba(245,239,226,.95);border-bottom:3px double var(--tx)}
-html[data-skin="paper"] .tabs a{color:#4c463a}html[data-skin="paper"] .tabs a:hover{color:var(--tx)}html[data-skin="paper"] .tabs a.on{color:var(--tx)}
-html[data-skin="paper"] .logo{color:var(--ac)}
-html[data-skin="paper"] .h2{border-bottom:2px solid var(--tx);padding-bottom:8px}
-html[data-skin="paper"] .card{border:1px solid #b8ac8e;box-shadow:0 2px 6px rgba(34,31,25,.08)}
-html[data-skin="paper"] .btn{background:var(--ac);color:#f5efe2;border-radius:2px;letter-spacing:.05em;text-transform:uppercase;font-size:13px}
-html[data-skin="paper"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
-html[data-skin="paper"] .tag{background:transparent;border:1px solid currentColor;color:#4c463a}
-html[data-skin="paper"] .tag.g{color:#2e7d32}html[data-skin="paper"] .tag.r{color:#c62828}html[data-skin="paper"] .tag.h{background:var(--ac);border-color:var(--ac);color:#f5efe2}
-html[data-skin="paper"] .land{border:1px solid var(--tx);background:radial-gradient(700px 380px at 85% 0%,rgba(176,42,30,.06),transparent 60%),linear-gradient(180deg,#f2ecdd,#e7dfcb)}
-html[data-skin="paper"] .land p{color:#4c463a}
-html[data-skin="paper"] .land input,html[data-skin="paper"] .srch input,html[data-skin="paper"] .srch .dd{background:#fbf7ec;border-color:var(--ln2)}
-html[data-skin="paper"] .hh{background:#eee7d6}
-html[data-skin="paper"] .hh::after{background:linear-gradient(90deg,rgba(238,231,214,.96),rgba(238,231,214,.55) 60%,rgba(238,231,214,.2)),linear-gradient(0deg,rgba(238,231,214,.85),transparent 60%)}
-html[data-skin="paper"] .me{background:var(--s1)}
-html[data-skin="paper"] .hln{background:rgba(34,31,25,.05);border-color:var(--ln2)}
-html[data-skin="paper"] .hln .pl{color:#f5efe2}
-html[data-skin="paper"] .hh .vi{box-shadow:0 0 0 2px var(--hc,var(--ac))}
-
-/* --- карточка героя при наведении --- */
-#hcard{position:fixed;z-index:55;width:176px;pointer-events:none;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .16s ease,transform .16s ease;filter:drop-shadow(0 16px 32px rgba(0,0,0,.6))}
-#hcard.on{opacity:1;transform:none}
-#hcard .sn{width:100%}
-#hcard .hcc{margin-top:8px;background:rgba(8,8,12,.9);border:1px solid var(--ln2);border-radius:10px;padding:7px 9px;font-size:11px;line-height:1.35;color:var(--mu);text-align:center}
-#hcard .hcc b{display:block;font:700 12.5px/1.2 var(--h);letter-spacing:.04em;text-transform:uppercase;color:var(--tx);margin-bottom:2px}
-html[data-skin="paper"] #hcard .hcc{background:rgba(245,239,226,.94);color:#4c463a}
-html[data-skin="paper"] #hcard .hcc b{color:#221f19}
+input.inp{background:var(--s2);border:1px solid var(--ln);border-radius:9px;color:var(--tx);padding:8px 12px;font:14px var(--f);outline:none}
+input.inp:focus{border-color:var(--ac)}
+.stg{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--s2);border:1px solid var(--ln);color:var(--mu);cursor:pointer;padding:0}
+.stg:hover{color:var(--ac);border-color:var(--ac)}
 </style>
 </head>
 <body>
 <header class="nav"><div class="in">
  <a class="logo" href="#home">RESTLESS<small>ДЛЯ DEADLOCK</small></a>
- <nav class="tabs" id="tabs">
-  <a href="#home" data-t="home">Главная</a>
-  <a href="#live" data-t="live">Матч</a>
+<nav id="tabs">
+  <a href="#home" data-t="home">Профиль</a>
   <a href="#heroes" data-t="heroes">Герои</a>
-  <a href="#matches" data-t="matches">Мои матчи</a>
+  <a href="#meta" data-t="meta">Мета</a>
+  <a href="#lb" data-t="lb">Топ</a>
+  <a href="#matches" data-t="matches">Матчи</a>
+  <a href="#live" data-t="live">Лобби</a>
+  <a href="#pro" data-t="pro">Про</a>
  </nav>
  <span class="sp"></span>
  <form class="srch" id="sf" role="search" autocomplete="off">
@@ -677,12 +704,14 @@ html[data-skin="paper"] #hcard .hcc b{color:#221f19}
   <div class="dd hide" id="sd"></div>
  </form>
  <a class="me hide" id="me" href="#home"></a>
- <div class="skins" id="skins" role="group" aria-label="Вид сайта"></div>
+ <div class="skins" id="skins" role="group" aria-label="Вид сайта"><button data-s="labs" title="Labs"><i></i></button><button data-s="city" title="Город"><i></i></button><button data-s="graphs" title="Графики"><i></i></button></div>
+ <button id="stg" class="stg" title="Настройки" aria-label="Настройки"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h0a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h0a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v0a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg></button>
 </div></header>
 <main class="wrap" id="v"></main>
-<p class="ft">Данные — открытый api.deadlock-api.com (матчи, ранги, винрейты). Restless не связан с Valve. Входить в Steam не нужно: профили и матчи в Deadlock открытые.</p>
+<p class="ft">Данные — открытый api.deadlock-api.com (матчи, ранги, винрейты, сборки). Restless не связан с Valve. Входить в Steam не нужно: профили и матчи в Deadlock открытые.</p>
 <script src="data.js"></script>
 <script>
+'use strict';
 'use strict';
 const D = window.RL_DATA || {heroes:{}, items:{}, ranks:[], map:{}};
 const API = 'https://api.deadlock-api.com/v1/';
@@ -715,7 +744,7 @@ async function api(p) {
 }
 const TYPE_RU = {marksman: 'Стрелок', brawler: 'Боец', mystic: 'Мистик', assassin: 'Убийца'};
 const hero = id => D.heroes[id] || {n: 'Герой #' + id, i: '', c: '', ab: []};
-const heroImg = (id, cls = '') => `<img class="hi ${cls}" data-h="${id}" src="${esc(hero(id).i)}" alt="${esc(hero(id).n)}" title="${esc(hero(id).n)}" loading="lazy" onerror="${noimg}">`;
+const heroImg = (id, cls = '') => `<img class="hi ${cls}" src="${esc(hero(id).i)}" alt="${esc(hero(id).n)}" title="${esc(hero(id).n)}" loading="lazy" onerror="${noimg}">`;
 const item = id => D.items[id];
 const itImg = id => `<img src="${esc((item(id) || {}).i)}" alt="" loading="lazy" onerror="${noimg}">`;
 function rankOf(badge) {
@@ -823,12 +852,10 @@ function alertBox(t) { const v = $('#v'); v.insertAdjacentHTML('afterbegin', `<d
 // ---------- главная ----------
 async function viewHome() {
   if (!ME) return viewLanding();
-  const seq = ++VSEQ;
   V('<div class="load">Собираю твой профиль…</div>');
   try {
     const [H, HS, R, HSt] = await Promise.all([api('players/' + ME.id + '/match-history'), api('players/hero-stats?account_ids=' + ME.id).catch(() => []), api('players/' + ME.id + '/rank').catch(() => null), api('analytics/hero-stats?' + fq()).catch(() => [])]);
     const HA = {}, HTOT = HSt.reduce((a, h) => a + h.matches, 0) / 12 || 1; HSt.forEach(h => { const n = Math.max(1, h.matches); HA[h.hero_id] = {spm: h.total_net_worth / n, dpm: h.total_deaths / n, kpm: h.total_kills / n, apm: h.total_assists / n, lhm: h.total_last_hits / n, den: (h.total_denies || 0) / n, pr: 100 * h.matches / HTOT}; });
-    if (!vOk(seq)) return;
     if (!H.length) { V('<div class="empty">У этого игрока нет матчей в открытых данных.</div>'); return; }
     const won = m => m.player_team === m.match_result;
     const L20 = H.slice(0, 20), w20 = L20.filter(won).length;
@@ -870,7 +897,7 @@ async function viewHome() {
           return `<a href="#h/${h.hero_id}">${heroImg(h.hero_id)}<span style="min-width:0"><b>${esc(hero(h.hero_id).n)}</b><small>${games(h.matches_played)} · KDA ${((h.kills + h.assists) / Math.max(1, h.deaths)).toFixed(1).replace('.', ',')}</small></span><span class="bar"><i style="width:${wr}%;background:${wr >= 50 ? 'var(--win)' : 'var(--loss)'}"></i></span><span class="wr ${wrCls(h.wins, h.matches_played)}">${wr}%</span></a>`; }).join('') || '<div class="empty">Нет данных по героям.</div>'}</div></div>
         <div><div class="h2">Матчи<span class="sp"></span><a class="sub" href="#matches">все →</a></div><div class="card">${H.slice(0, 7).map(mtRow).join('')}</div></div>
       </div>`);
-  } catch (e) { if (vOk(seq)) V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
 }
 
 // ---------- метки игрока и паттерны (как на League of Graphs) — только то, что честно считается по матчам ----------
@@ -880,32 +907,32 @@ function profTags(H, HS, HA) {
   const won = m => m.player_team === m.match_result, T = [], pct = v => Math.round(100 * v);
   // форма
   let k = 0; while (k < H.length && won(H[k]) === won(H[0])) k++;
-  if (k >= 3) T.push([won(H[0]) ? 'Винстрик' : 'Лузстрик', won(H[0]) ? 'g' : 'r', `${k} ${won(H[0]) ? 'побед' : 'поражений'} подряд`]);
+  if (k >= 3) T.push([(won(H[0]) ? 'Винстрик ' : 'Лузстрик ') + k, won(H[0]) ? 'g' : 'r', `${k} ${won(H[0]) ? 'побед' : 'поражений'} подряд`]);
   const L20 = H.slice(0, 20), w20 = L20.filter(won).length;
-  if (L20.length >= 15 && w20 / L20.length >= .65) T.push(['Жарит', 'g', `${w20} побед из ${L20.length} последних — форма на пике`]);
-  else if (L20.length >= 15 && w20 / L20.length <= .35) T.push(['Тонет', 'r', `${w20} побед из ${L20.length} последних — ничего не заходит`]);
+  if (L20.length >= 15 && w20 / L20.length >= .65) T.push(['В ударе', 'g', `${w20} побед из ${L20.length} последних`]);
+  else if (L20.length >= 15 && w20 / L20.length <= .35) T.push(['Чёрная полоса', 'r', `${w20} побед из ${L20.length} последних`]);
   const RD = L20.map(m => m.ranked_delta).filter(v => typeof v === 'number');
-  if (RD.length >= 5) { const s = RD.reduce((a, v) => a + v, 0); if (s > 0) T.push(['Подъём', 'g', `ранг растёт: +${s} очков за последние игры`]); else if (s < 0) T.push(['Падение', 'r', `ранг сыплется: ${s} очков за последние игры`]); }
+  if (RD.length >= 5) { const s = RD.reduce((a, v) => a + v, 0); if (s > 0) T.push(['Растёт в ранге', 'g', `очки ранга за последние игры: +${s}`]); else if (s < 0) T.push(['Теряет ранг', 'r', `очки ранга за последние игры: ${s}`]); }
   const P = profPatterns(H), all = H.filter(won).length / Math.max(1, H.length), tl = P.find(x => x.n.startsWith('После двух'));
-  if (tl && tl.d <= -10) T.push(['Накрыло', 'r', `после двух поражений подряд побеждает в ${Math.round(tl.wr)}% (обычно ${pct(all)}%) — тильт`]);
-  else if (tl && tl.d >= 8) T.push(['Стабильный', 'g', `после двух поражений подряд побеждает в ${Math.round(tl.wr)}% (обычно ${pct(all)}%) — голову не теряет`]);
+  if (tl && tl.d <= -10) T.push(['Тильтует', 'r', `после двух поражений подряд побеждает в ${Math.round(tl.wr)}% (обычно ${pct(all)}%)`]);
+  else if (tl && tl.d >= 8) T.push(['Не тильтует', 'g', `после двух поражений подряд побеждает в ${Math.round(tl.wr)}% (обычно ${pct(all)}%)`]);
   // герои
   const L30 = H.filter(m => m.start_time >= now() - 30 * 86400), cnt = {};
   L30.forEach(m => cnt[m.hero_id] = (cnt[m.hero_id] || 0) + 1);
   const top = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
   if (top && L30.length >= 10) { const s = top[1] / L30.length, n = hero(top[0]).n;
-    if (s >= .6) T.push(['OTP', 'a', `${pct(s)}% игр за 30 дней — на ${n}`]);
-    else if (s >= .3) T.push(['Фанат', 'b', `${pct(s)}% игр за 30 дней — на ${n}`]);
+    if (s >= .6) T.push(['OTP ' + n, 'a', `${pct(s)}% игр за 30 дней — на одном герое`]);
+    else if (s >= .3) T.push([n + ' — моя любовь', 'b', `${pct(s)}% игр за 30 дней`]);
     const ha = HA[top[0]], tm = L30.filter(m => m.hero_id === +top[0]);
-    if (ha && tm.length >= 10) { const r = tm.reduce((a, m) => a + m.net_worth, 0) / tm.length / ha.spm; if (r >= 1.2) T.push(['Миллионер', 'g', `души за матч на ${pct(r - 1)}% выше обычного на ${n}`]); }
-    if (ha && s >= .25 && ha.pr && Object.values(HA).filter(x => x.pr < ha.pr).length / Object.keys(HA).length <= .25) T.push(['Экзотика', 'b', `${n} берут редко — в ${ha.pr.toFixed(1).replace('.', ',')}% матчей`]); }
+    if (ha && tm.length >= 10) { const r = tm.reduce((a, m) => a + m.net_worth, 0) / tm.length / ha.spm; if (r >= 1.2) T.push(['Миллионер на ' + n, 'g', `душ за матч на ${pct(r - 1)}% больше, чем обычно на этом герое`]); }
+    if (ha && s >= .25 && ha.pr && Object.values(HA).filter(x => x.pr < ha.pr).length / Object.keys(HA).length <= .25) T.push(['Необычный пик', 'b', `${n} берут редко — в ${ha.pr.toFixed(1).replace('.', ',')}% матчей`]); }
   const byH = HS.slice().sort((a, b) => b.matches_played - a.matches_played), vet = byH[0];
-  if (vet && vet.matches_played >= 300) T.push(['Ветеран ' + hero(vet.hero_id).n, 'a', `${nf(vet.matches_played)} игр — самый накатанный герой`]);
-  else if (vet && vet.matches_played >= 100) T.push(['Мейн ' + hero(vet.hero_id).n, 'a', `${nf(vet.matches_played)} игр — больше, чем на любом другом`]);
+  if (vet && vet.matches_played >= 300) T.push(['Ветеран ' + hero(vet.hero_id).n, 'a', `${nf(vet.matches_played)} игр на герое`]);
+  else if (vet && vet.matches_played >= 100) T.push(['Мейн ' + hero(vet.hero_id).n, 'a', `${nf(vet.matches_played)} игр на герое — больше всех`]);
   const L50 = H.slice(0, 50), c50 = {}; L50.forEach(m => c50[m.hero_id] = (c50[m.hero_id] || 0) + 1);
-  const many = Object.values(c50).filter(v => v >= 3).length; if (L50.length >= 30 && many >= 8) T.push(['Универсал', 'b', `${many} героев по 3+ игры из последних ${L50.length}`]);
+  const many = Object.values(c50).filter(v => v >= 3).length; if (L50.length >= 30 && many >= 8) T.push(['Мастер на все руки', 'b', `${many} героев по 3+ игры из последних ${L50.length}`]);
   const last = H[0], hl = HS.find(h => h.hero_id === last.hero_id);
-  if (hl && hl.matches_played < 10) T.push(['Стажёр', '', `всего ${games(hl.matches_played)} на ${hero(last.hero_id).n} — только раскачивается`]);
+  if (hl && hl.matches_played < 10) T.push(['Учит ' + hero(last.hero_id).n, '', `всего ${games(hl.matches_played)} на герое`]);
   // стиль: последние 20 игр против среднего по тем же героям (по каждому матчу)
   const S = L20.filter(m => HA[m.hero_id]);
   if (S.length >= 8) {
@@ -913,28 +940,28 @@ function profTags(H, HS, HA) {
     const soul = r((m, a) => m.net_worth / Math.max(1, a.spm)), dth = r((m, a) => m.player_deaths / Math.max(.1, a.dpm)),
       kil = r((m, a) => m.player_kills / Math.max(.1, a.kpm)), ast = r((m, a) => m.player_assists / Math.max(.1, a.apm)),
       lh = r((m, a) => m.last_hits / Math.max(1, a.lhm)), dn = r((m, a) => (m.denies || 0) / Math.max(.3, a.den));
-    if (soul >= 1.15) T.push(['Фармила', 'g', `фармит на ${pct(soul - 1)}% больше душ, чем обычно`]);
-    else if (soul <= .85) T.push(['Голодает', 'r', `души на ${pct(1 - soul)}% ниже обычного — фарм просел`]);
-    if (dth >= 1.3) T.push(['Кормит', 'r', `умирает на ${pct(dth - 1)}% чаще обычного`]);
-    else if (dth <= .75) T.push(['Живучий', 'g', `умирает на ${pct(1 - dth)}% реже обычного`]);
-    if (kil >= 1.3) T.push(['Убийца', 'g', `убивает на ${pct(kil - 1)}% чаще обычного`]);
-    if (ast >= 1.3) T.push(['Командный', 'g', `ассистов на ${pct(ast - 1)}% больше обычного`]);
-    if (kil <= .7 && ast <= .8) T.push(['Пассивный', 'r', 'и убийств, и помощи меньше обычного — отсиживается']);
-    if (lh >= 1.2) T.push(['Добиватель', 'g', `добиваний (лх) на ${pct(lh - 1)}% больше обычного`]);
-    else if (lh <= .8) T.push(['Мажет', 'r', `добиваний (лх) на ${pct(1 - lh)}% меньше обычного`]);
-    if (dn >= 1.5) T.push(['Жадина', 'g', 'денаев в 1,5 раза больше обычного — отжимает линию']);
+    if (soul >= 1.15) T.push(['Фармила', 'g', `душ на ${pct(soul - 1)}% больше среднего по своим героям`]);
+    else if (soul <= .85) T.push(['Плохой фарм', 'r', `душ на ${pct(1 - soul)}% меньше среднего по своим героям`]);
+    if (dth >= 1.3) T.push(['Кормит', 'r', `смертей на ${pct(dth - 1)}% больше среднего по героям`]);
+    else if (dth <= .75) T.push(['Живучий', 'g', `смертей на ${pct(1 - dth)}% меньше среднего по героям`]);
+    if (kil >= 1.3) T.push(['Убийца', 'g', `убийств на ${pct(kil - 1)}% больше среднего по героям`]);
+    if (ast >= 1.3) T.push(['Командный', 'g', `помощи в убийствах на ${pct(ast - 1)}% больше среднего по героям`]);
+    if (kil <= .7 && ast <= .8) T.push(['Мало в драках', 'r', 'и убийств, и помощи меньше среднего по героям']);
+    if (lh >= 1.2) T.push(['Мастер добивания', 'g', `добиваний на ${pct(lh - 1)}% больше среднего по героям`]);
+    else if (lh <= .8) T.push(['Не добивает', 'r', `добиваний на ${pct(1 - lh)}% меньше среднего по героям`]);
+    if (dn >= 1.5) T.push(['Отнимает души', 'g', 'отказов (денаев) в 1,5 раза больше среднего — не даёт сопернику добить']);
   }
   const lv = L30.filter(m => m.abandoned_time_s).length;
-  if (lv) T.push(['Ливер', 'r', `ливал ${lv} ${pl(lv, ['раз', 'раза', 'раз'])} за последние 30 дней — выходит из матчей`]);
+  if (lv) T.push([`Ливал ${lv} ${pl(lv, ['раз', 'раза', 'раз'])}`, 'r', 'вышел из матча за последние 30 дней']);
   // когда играет
   const day = m => new Date(m.start_time * 1000), byDay = {}; L30.forEach(m => { const d = day(m).toDateString(); byDay[d] = (byDay[d] || 0) + 1; });
   const mx = Math.max(0, ...Object.values(byDay)); if (mx >= 8) T.push(['Марафонец', 'b', `до ${mx} игр за день`]);
   const d14 = new Set(H.filter(m => m.start_time >= now() - 14 * 86400).map(m => day(m).toDateString())).size;
-  if (d14 >= 12) T.push(['Ежедневно', 'b', `играл ${d14} дней из последних 14`]);
+  if (d14 >= 12) T.push(['Каждый день', 'b', `играл ${d14} дней из последних 14`]);
   const night = L30.filter(m => day(m).getHours() < 6).length;
-  if (L30.length >= 10 && night / L30.length >= .4) T.push(['Полуночник', 'b', `${pct(night / L30.length)}% игр с полуночи до 6 утра`]);
+  if (L30.length >= 10 && night / L30.length >= .4) T.push(['Ночной игрок', 'b', `${pct(night / L30.length)}% игр с полуночи до 6 утра`]);
   const wk = L30.filter(m => [0, 6].includes(day(m).getDay())).length;
-  if (L30.length >= 15 && wk / L30.length >= .6) T.push(['Воскресник', 'b', `${pct(wk / L30.length)}% игр — в субботу и воскресенье`]);
+  if (L30.length >= 15 && wk / L30.length >= .6) T.push(['По выходным', 'b', `${pct(wk / L30.length)}% игр — в субботу и воскресенье`]);
   if (H.length >= 2 && H[0].start_time - (H[1].start_time + H[1].match_duration_s) >= 14 * 86400) T.push(['Вернулся', 'b', `перерыв ${Math.round((H[0].start_time - H[1].start_time) / 86400)} дней перед последней игрой`]);
   return T;
 }
@@ -949,7 +976,7 @@ function profPatterns(H) {
   const N = {s1: 'Первый матч сессии', s2: 'Второй матч сессии', s3: 'Третий матч сессии', l2: 'После двух поражений подряд', long: 'Игры длиннее 35 минут'};
   return Object.entries(B).filter(([, v]) => v.length >= 12).map(([k, v]) => { const wr = v.filter(Boolean).length / v.length; return {n: N[k], d: 100 * (wr - all), wr: 100 * wr, c: v.length}; });
 }
-function tagsHTML(T) { return T.map(([s, c, h]) => `<span class="tag ${c}" data-tip="${esc(h)}">${esc(s)}</span>`).join(''); }
+function tagsHTML(T) { return T.map(([s, c, h]) => `<span class="tag ${c}" title="${esc(h)}">${esc(s)}</span>`).join(''); }
 function mtRow(m) {
   const w = m.player_team === m.match_result;
   return `<a class="mt" href="#m/${m.match_id}"><i class="st" style="background:${w ? 'var(--win)' : 'var(--loss)'}"></i>${heroImg(m.hero_id)}
@@ -966,7 +993,7 @@ async function viewLanding() {
       <div class="art">${art.map(u => `<img src="${esc(u)}" alt="" onerror="this.remove()">`).join('')}</div>
     </section>
     <div class="g4 feat" style="margin-top:14px">
-      <a class="card" href="#live"><b>Матч</b><span>Кто против тебя: ранги, игры на герое, метки «Мейн», «Контрит», «Угроза» — наведи на метку, узнаешь за что.</span></a>
+      <a class="card" href="#live"><b>Матч</b><span>Кто против тебя: ранги, игры на герое, метки «мейн», «контрит тебя», главная угроза.</span></a>
       <a class="card" href="#heroes"><b>Мета героев</b><span>Тир-лист по винрейту: кто сейчас сильный на твоём ранге.</span></a>
       <a class="card" href="#h/65"><b>Сборки и умения</b><span>Порядок умений, предметы по фазам и сборки игроков с % побед.</span></a>
       <a class="card" href="#matches"><b>Разбор матча</b><span>Где проиграл линию, где умирал, что купил позже топов.</span></a>
@@ -993,14 +1020,14 @@ async function scout(players) {
   return players.map(p => {
     const id = p.account_id, hid = p.hero_id, h = (H[id] || {})[hid] || {}, t = T[id] || {m: 0, w: 0}, r = R[id] || {};
     const hm = h.matches_played || 0, hw = h.wins || 0, tags = [];
-    if (hm >= 20 && t.m && hm / t.m >= .25) tags.push(['a', 'Мейн', 'четверть+ всех игр за месяц — на этом герое']);
-    else if (hm >= 150) tags.push(['b', 'Ветеран', '150+ игр на этом герое']);
-    if (hm <= 2 && t.m >= 30) tags.push(['r', 'Дебют', hm ? `всего ${hm} ${pl(hm, ['игра', 'игры', 'игр'])} на герое` : 'первый матч на этом герое']);
-    if (t.m && t.m < 60) tags.push(['', 'Новичок', `всего ${games(t.m)} в игре — аккаунт свежий`]);
+    if (hm >= 20 && t.m && hm / t.m >= .25) tags.push(['a', 'мейн героя']);
+    else if (hm >= 150) tags.push(['b', 'ветеран героя']);
+    if (hm <= 2 && t.m >= 30) tags.push(['r', hm ? 'почти не играл' : 'первый раз на герое']);
+    if (t.m && t.m < 60) tags.push(['', 'новичок']);
     const ws = r.last_match && r.last_match.player_rank_initial_win_streak;
-    if (ws >= 3 && r.last_match.start_time > now() - 86400 * 2) tags.push(['g', 'Винстрик', `${ws} побед подряд — с такими осторожнее`]);
-    if (hm >= 15 && hw / hm >= .6) tags.push(['g', 'Сильный', `винрейт ${pc(hw, hm)}% за ${nf(hm)} игр на герое`]);
-    if (hm >= 15 && hw / hm <= .4) tags.push(['r', 'Слабый', `винрейт ${pc(hw, hm)}% за ${nf(hm)} игр на герое`]);
+    if (ws >= 3 && r.last_match.start_time > now() - 86400 * 2) tags.push(['g', 'серия побед · ' + ws]);
+    if (hm >= 15 && hw / hm >= .6) tags.push(['g', 'сильный на герое']);
+    if (hm >= 15 && hw / hm <= .4) tags.push(['r', 'слабый на герое']);
     const threat = hm >= 10 ? (hw / hm - .5) * Math.min(1, hm / 60) + (ws >= 3 ? .05 : 0) + (r.badge || 0) / 1000 : (r.badge || 0) / 1000 - .1;
     return {id, hid, team: p.team, lane: p.assigned_lane, name: (S[id] || {}).personaname || 'Скрытый игрок', avatar: (S[id] || {}).avatarmedium, badge: r.badge || 0, hm, hw, tm: t.m, tw: t.w, kda: hm ? (h.kills + h.assists) / Math.max(1, h.deaths) : 0, tags, threat};
   });
@@ -1014,26 +1041,22 @@ function lobRow(p, en, thr) {
     <td class="num">${p.hm ? nf(p.hm) : '—'}</td>
     <td><span class="wr ${wrCls(p.hw, p.hm)}">${p.hm ? wr + '%' : '—'}</span></td>
     <td class="num">${p.kda ? p.kda.toFixed(1).replace('.', ',') : '—'}</td>
-    <td><div class="tags">${thr ? '<span class="tag h" data-tip="самый опасный враг по играм на герое, винрейту и рангу">Угроза</span>' : ''}${p.cn ? `<span class="tag r" data-tip="обыгрывает твоего героя в ${p.cn}% матчей по мете">Контрит</span>` : ''}${p.tags.map(t => `<span class="tag ${t[0]}"${t[2] ? ` data-tip="${esc(t[2])}"` : ''}>${esc(t[1])}</span>`).join('')}</div></td></tr>`;
+    <td><div class="tags">${thr ? '<span class="tag h">главная угроза</span>' : ''}${p.cn ? `<span class="tag r">контрит тебя · ${p.cn}%</span>` : ''}${p.tags.map(t => `<span class="tag ${t[0]}">${esc(t[1])}</span>`).join('')}</div></td></tr>`;
 }
 async function viewLive() {
   if (!ME) return viewLanding();
-  const seq = ++VSEQ;
   V('<div class="load">Ищу твой матч…</div>');
   try {
     const live = await api('matches/active?account_id=' + ME.id).catch(() => []);
-    if (!vOk(seq)) return;
     let players, head, mid, isLive = false;
     if (live && live.length) {
       const m = live[0]; players = m.players; mid = m.match_id; isLive = true;
       head = `<span class="tag g">● идёт матч</span><span class="sub">${mmss(now() - m.start_time)} · матч ${m.match_id}</span>`;
     } else {
       const H = await api('players/' + ME.id + '/match-history');
-      if (!vOk(seq)) return;
       if (!H.length) { V('<div class="empty">Матчей не нашлось.</div>'); return; }
       mid = H[0].match_id;
       const md = await api('matches/' + mid + '/metadata');
-      if (!vOk(seq)) return;
       players = md.match_info.players;
       const w = H[0].player_team === H[0].match_result;
       head = `<span class="tag">последний матч</span><span class="sub">${ago(H[0].start_time + H[0].match_duration_s)} · ${mmss(H[0].match_duration_s)}</span><span class="tag ${w ? 'g' : 'r'}">${w ? 'победа' : 'поражение'}</span><span class="sp"></span><a class="btn s" href="#m/${mid}">Разбор матча →</a>`;
@@ -1045,7 +1068,6 @@ async function viewLive() {
       <div id="lb" style="margin-top:14px"><div class="load">Смотрю ранги и героев 12 игроков…</div></div>`);
     fltBind(viewLive);
     const [L, CS] = await Promise.all([scout(players), counterStats().catch(() => [])]);
-    if (!vOk(seq)) return;
     // «контрит тебя»: у твоего героя на линии против этого героя < 47 % (от 200 матчей)
     if (myHero) { const C = {}; CS.forEach(x => { if (x.hero_id === myHero) C[x.enemy_hero_id] = x; });
       L.forEach(p => { if (p.team === myTeam) return; const x = C[p.hid]; if (x && x.matches_played >= 200 && x.wins / x.matches_played < .47) p.cn = pc(x.wins, x.matches_played); }); }
@@ -1059,17 +1081,15 @@ async function viewLive() {
     $$('#lb tr.en').forEach(tr => { const f = () => { $$('#lb tr.en').forEach(x => x.classList.toggle('sel', x === tr)); const r = $('#vs-' + tr.dataset.h); if (r) { r.scrollIntoView({block: 'center', behavior: 'smooth'}); r.classList.remove('fl'); void r.offsetWidth; r.classList.add('fl'); } }; tr.onclick = f; tr.onkeydown = e => { if (e.key === 'Enter') f(); }; });
     if (!myHero) { $('#vsall').innerHTML = '<div class="empty">Тебя нет в этом матче.</div>'; return; }
     const base = await api(`analytics/item-stats?hero_id=${myHero}&${fq()}`).catch(() => []);
-    if (!vOk(seq)) return;
     const B = {}; base.forEach(s => B[s.item_id] = s);
     const rows = await Promise.all(en.map(async p => {
       const S = await api(`analytics/item-stats?hero_id=${myHero}&enemy_hero_ids=${p.hid}&${fq()}`).catch(() => []);
       const L2 = S.filter(s => item(s.item_id) && s.matches >= 40 && B[s.item_id] && B[s.item_id].matches >= 150).map(s => ({id: s.item_id, d: 100 * (s.wins / s.matches - B[s.item_id].wins / B[s.item_id].matches), m: s.matches})).sort((a, b) => b.d - a.d).slice(0, 3);
       return {p, L: L2};
     }));
-    if (!vOk(seq)) return;
     $('#vsall').innerHTML = `<div class="cnt">${rows.map(({p, L: L2}) => `<div class="cr" id="vs-${p.hid}"><a href="#h/${p.hid}" title="${esc(hero(p.hid).n)} — страница героя">${heroImg(p.hid)}</a><div class="its"><a class="crn" href="#h/${p.hid}">${esc(hero(p.hid).n)}</a>${L2.filter(x => x.d > 1).map(x => `<span class="it">${itImg(x.id)}${esc(item(x.id).n)}<em>+${x.d.toFixed(1).replace('.', ',')}%</em></span>`).join('') || `<span class="sub">${esc(hero(p.hid).n)}: предметы почти ничего не меняют — играй от линии.</span>`}${TIPS[p.hid] ? `<span class="tag a" title="${esc(TIPS[p.hid][3])}">совет: ${esc(TIPS[p.hid][0])}</span>` : ''}</div></div>`).join('')}</div>
       <p class="note" style="padding:0 16px 14px">% — насколько чаще ${esc(hero(myHero).n)} выигрывает с предметом, когда против этот герой, чем обычно с ним же.</p>`;
-  } catch (e) { if (vOk(seq)) V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
 }
 
 // ---------- «Герои»: мета тир-листом ----------
@@ -1077,17 +1097,16 @@ async function viewLive() {
 function heroTags(x, M) {
   const h = hero(x.id), T = [], L = Object.values(M), q = (f, p) => { const s = L.map(f).sort((a, b) => a - b); return s[Math.floor(p * (s.length - 1))]; };
   if (TYPE_RU[h.ty]) T.push([TYPE_RU[h.ty], 'b', 'роль из файлов игры']);
-  if (x.wr >= 53) T.push(['Имба', 'h', `${x.wr.toFixed(1).replace('.', ',')}% побед за период`]);
-  else if (x.wr < 47) T.push(['Мимо', 'r', `${x.wr.toFixed(1).replace('.', ',')}% побед за период`]);
-  if (x.pr >= q(y => y.pr, .75)) T.push(['Народный', 'a', `берут в ${x.pr.toFixed(1).replace('.', ',')}% матчей`]);
-  else if (x.pr <= q(y => y.pr, .2)) T.push(['Экзотика', '', `берут в ${x.pr.toFixed(1).replace('.', ',')}% матчей`]);
+  if (x.wr >= 53) T.push(['Сильный сейчас', 'h', `${x.wr.toFixed(1).replace('.', ',')}% побед за период`]);
+  else if (x.wr < 47) T.push(['Слабый сейчас', 'r', `${x.wr.toFixed(1).replace('.', ',')}% побед за период`]);
+  if (x.pr >= q(y => y.pr, .75)) T.push(['Популярный', 'a', `берут в ${x.pr.toFixed(1).replace('.', ',')}% матчей`]);
+  else if (x.pr <= q(y => y.pr, .2)) T.push(['Редко берут', '', `берут в ${x.pr.toFixed(1).replace('.', ',')}% матчей`]);
   if (h.cx === 1) T.push(['Простой', 'g', 'сложность 1 из 3 — для начала']); else if (h.cx === 3) T.push(['Сложный', 'r', 'сложность 3 из 3']);
   if (x.kda >= q(y => y.kda, .8)) T.push(['Живучий', 'g', `KDA ${x.kda.toFixed(2).replace('.', ',')} — среди лучших`]);
   return T;
 }
 const HV = {view: 'grid', sort: 'wr', ty: ''};
 async function viewHeroes() {
-  const seq = ++VSEQ;
   const sg = (k, L) => `<div class="seg" data-k="${k}">${L.map(([v, n]) => `<button data-v="${v}" class="${HV[k] === v ? 'on' : ''}">${n}</button>`).join('')}</div>`;
   V(`<div class="row" style="flex-wrap:wrap;gap:12px;align-items:flex-end"><h1 class="h1">Все <em>герои</em></h1><span class="sp"></span>${fltHTML()}</div>
     <p class="sub" style="margin:8px 0 0">Метки — из цифр за период и из файлов игры. Нажми на героя — живой герой, его фразы, сборки, с кем тяжело, кто лучше всех на нём.</p>
@@ -1097,18 +1116,17 @@ async function viewHeroes() {
   $$('.hvb .seg').forEach(s => s.onclick = e => { const b = e.target.closest('button'); if (!b) return; HV[s.dataset.k] = b.dataset.v; viewHeroes(); });
   try {
     const MM = await heroStats(), all = Object.values(MM);
-    if (!vOk(seq)) return;
     const M = all.filter(h => !HV.ty || hero(h.id).ty === HV.ty).sort(HV.sort === 'az' ? (a, b) => hero(a.id).n.localeCompare(hero(b.id).n) : HV.sort === 'pr' ? (a, b) => b.pr - a.pr : (a, b) => b.wr - a.wr);
     const wrS = h => `<em style="font-style:normal" class="${h.wr >= 51 ? 'win' : h.wr < 48 ? 'loss' : ''}">${h.wr.toFixed(1).replace('.', ',')}%</em>`;
-    if (HV.view === 'cards') return heroCards(M, seq);
+    if (HV.view === 'cards') return heroCards(M);
     if (HV.view === 'grid') {
-      $('#tiers').innerHTML = `<div class="hg">${M.map(h => `<a class="hgc" data-h="${h.id}" href="#h/${h.id}" style="--hc:${esc(hero(h.id).col || 'var(--ac)')}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><div><b>${esc(hero(h.id).n)}</b><span class="mono">${wrS(h)} <small>· берут ${h.pr.toFixed(1).replace('.', ',')}%</small></span><div class="ptags">${tagsHTML(heroTags(h, MM).slice(0, 3))}</div></div></a>`).join('')}</div>`;
+      $('#tiers').innerHTML = `<div class="hg">${M.map(h => `<a class="hgc" href="#h/${h.id}" style="--hc:${esc(hero(h.id).col || 'var(--ac)')}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><div><b>${esc(hero(h.id).n)}</b><span class="mono">${wrS(h)} <small>· берут ${h.pr.toFixed(1).replace('.', ',')}%</small></span><div class="ptags">${tagsHTML(heroTags(h, MM).slice(0, 3))}</div></div></a>`).join('')}</div>`;
       return;
     }
     const T = [['S', 53, '#ff5a1f'], ['A', 51, '#ffb020'], ['B', 49, '#e8d36a'], ['C', 47, '#8cc4ff'], ['D', 0, '#8e897f']];
     $('#tiers').innerHTML = '<div class="card">' + T.map(([t, lo], i) => { const hi = i ? T[i - 1][1] : 999, L = M.filter(h => h.wr >= lo && h.wr < hi); if (!L.length) return '';
-      return `<div class="tl"><div class="t" style="color:${T[i][2]}">${t}</div><div class="hs">${L.map(h => `<a class="hc" data-h="${h.id}" href="#h/${h.id}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><b>${esc(hero(h.id).n)}</b><span>${wrS(h)}<small>${h.pr.toFixed(1).replace('.', ',')}%</small></span></a>`).join('')}</div></div>`; }).join('') + '</div>';
-  } catch (e) { if (vOk(seq)) $('#tiers').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+      return `<div class="tl"><div class="t" style="color:${T[i][2]}">${t}</div><div class="hs">${L.map(h => `<a class="hc" href="#h/${h.id}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><b>${esc(hero(h.id).n)}</b><span>${wrS(h)}<small>${h.pr.toFixed(1).replace('.', ',')}%</small></span></a>`).join('')}</div></div>`; }).join('') + '</div>';
+  } catch (e) { $('#tiers').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
 
 // ---------- карты героев как в Marvel Snap: уровень — от твоих игр на герое ----------
@@ -1129,10 +1147,9 @@ function snapTilt(root) {
     c.onpointerleave = () => { c.style.removeProperty('--rx'); c.style.removeProperty('--ry'); c.style.removeProperty('--fx'); };
   });
 }
-async function heroCards(M, seq) {
+async function heroCards(M) {
   let mine = {};
   if (ME) { try { (await api('players/hero-stats?account_ids=' + ME.id)).forEach(r => mine[r.hero_id] = r); } catch (e) {} }
-  if (seq != null && !vOk(seq)) return;
   const MM = {}; M.forEach(x => MM[x.id] = x);
   const score = x => { const r = mine[x.id], m = MM[x.id]; if (!r || r.matches_played < 20 || !m) return null; const wr = 100 * r.wins / r.matches_played, kda = (r.kills + r.assists) / Math.max(1, r.deaths); const c = v => Math.max(-25, Math.min(25, v)); return Math.round(Math.max(0, Math.min(100, 50 + c(1.5 * (wr - m.wr)) + c(25 * (kda / m.kda - 1))))); };
   const L = M.slice().sort((a, b) => HV.sort === 'wr' || HV.sort === 'pr' ? ((mine[b.id] || {}).matches_played || 0) - ((mine[a.id] || {}).matches_played || 0) || b.wr - a.wr : 0);
@@ -1230,7 +1247,7 @@ async function heroPro(hid) {
   } catch (e) { el.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
 async function viewHero(hid) {
-  hid = +hid; const seq = ++VSEQ, h = hero(hid);
+  hid = +hid; const h = hero(hid);
   V(`<a class="sub" href="#heroes" style="text-decoration:none">‹ Мета героев</a>
     <section class="hh" style="margin-top:10px;--hc:${esc(h.col || 'var(--ac)')}">${h.bg ? `<img class="bgi" src="${esc(h.bg)}" alt="" onerror="this.remove()">` : ''}
       <div class="viw"><img class="vi" src="${esc(h.v || h.c || h.i)}" alt="" onerror="${noimg}"><video class="vv" muted loop playsinline preload="metadata" src="${esc(MEDIA + 'scenes/games/deadlock/' + hSlug(h) + '.mp4')}" onloadeddata="this.classList.add('on');this.play().catch(()=>{})" onerror="this.remove()"></video></div>
@@ -1258,21 +1275,18 @@ async function viewHero(hid) {
   heroPro(hid);
   if (ME) heroMine(hid);
   const muRow = (id, w, m, k) => `<a href="#h/${id}">${heroImg(id, 's')}<span style="min-width:0"><b>${esc(hero(id).n)}</b><small>${nf(m)} ${pl(m, ['матч', 'матча', 'матчей'])}</small></span><span class="wr ${k}">${pc1(w, m)}%</span></a>`;
-  heroStats().then(M => { if (!vOk(seq)) return; const x = M[hid]; $('#hss').innerHTML = x ? `<div><span>% побед</span><b class="${x.wr >= 51 ? 'win' : x.wr < 48 ? 'loss' : ''}">${x.wr.toFixed(1).replace('.', ',')}%</b></div><div><span>Берут</span><b>${x.pr.toFixed(1).replace('.', ',')}%</b></div><div><span>Матчей</span><b>${nf(x.m)}</b></div><div><span>KDA</span><b>${x.kda.toFixed(2).replace('.', ',')}</b></div><div><span>Душ за матч</span><b>${nf(x.spm)}</b></div>` : '<div class="sub">Мало матчей с этим фильтром</div>'; }).catch(e => { if (vOk(seq)) $('#hss').innerHTML = `<div class="sub">${esc(e.message)}</div>`; });
+  heroStats().then(M => { const x = M[hid]; $('#hss').innerHTML = x ? `<div><span>% побед</span><b class="${x.wr >= 51 ? 'win' : x.wr < 48 ? 'loss' : ''}">${x.wr.toFixed(1).replace('.', ',')}%</b></div><div><span>Берут</span><b>${x.pr.toFixed(1).replace('.', ',')}%</b></div><div><span>Матчей</span><b>${nf(x.m)}</b></div><div><span>KDA</span><b>${x.kda.toFixed(2).replace('.', ',')}</b></div><div><span>Душ за матч</span><b>${nf(x.spm)}</b></div>` : '<div class="sub">Мало матчей с этим фильтром</div>'; }).catch(e => { $('#hss').innerHTML = `<div class="sub">${esc(e.message)}</div>`; });
   counterStats().then(CS => {
-    if (!vOk(seq)) return;
     const L = CS.filter(x => x.hero_id === hid && x.matches_played >= 150 && D.heroes[x.enemy_hero_id]);
     $('#hard').innerHTML = L.slice().sort((a, b) => a.wins / a.matches_played - b.wins / b.matches_played).slice(0, 5).map(x => muRow(x.enemy_hero_id, x.wins, x.matches_played, 'loss')).join('') || '<div class="empty">Мало матчей.</div>';
     $('#easy').innerHTML = L.slice().sort((a, b) => b.wins / b.matches_played - a.wins / a.matches_played).slice(0, 5).map(x => muRow(x.enemy_hero_id, x.wins, x.matches_played, 'win')).join('') || '<div class="empty">Мало матчей.</div>';
-  }).catch(e => { if (vOk(seq)) $('#hard').innerHTML = $('#easy').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  }).catch(e => { $('#hard').innerHTML = $('#easy').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
   synergyStats().then(SS => {
-    if (!vOk(seq)) return;
     const L = SS.filter(x => (x.hero_id1 === hid || x.hero_id2 === hid) && x.matches_played >= 150).map(x => ({id: x.hero_id1 === hid ? x.hero_id2 : x.hero_id1, w: x.wins, m: x.matches_played})).filter(x => D.heroes[x.id]);
     $('#duo').innerHTML = L.sort((a, b) => b.w / b.m - a.w / a.m).slice(0, 5).map(x => muRow(x.id, x.w, x.m, 'win')).join('') || '<div class="empty">Мало матчей.</div>';
-  }).catch(e => { if (vOk(seq)) $('#duo').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  }).catch(e => { $('#duo').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
   // порядок умений: самая частая последовательность из 15+ прокачек
   api(`analytics/ability-order-stats?hero_id=${hid}&min_matches=30&${fq()}`).then(L => {
-    if (!vOk(seq)) return;
     const best = L.filter(x => x.abilities && x.abilities.length >= 12).sort((a, b) => b.matches - a.matches)[0];
     if (!best) { $('#so').innerHTML = '<div class="empty">Мало матчей с этим фильтром.</div>'; return; }
     $('#soc').textContent = `${nf(best.matches)} ${pl(best.matches, ['матч', 'матча', 'матчей'])} · ${pc(best.wins, best.matches)}% побед`;
@@ -1280,21 +1294,19 @@ async function viewHero(hid) {
     const seen = new Set(), steps = best.abilities;
     $('#so').innerHTML = `<table>${AB.map(a => `<tr><th><div class="row">${a.i ? `<img src="${esc(a.i)}" alt="" onerror="${noimg}">` : ''}<span>${esc(a.n)}<small>${a.k === 4 ? 'ульта' : 'умение ' + a.k}</small></span></div></th>${steps.map((id, i) => { if (id !== a.id) return '<td></td>'; const un = !seen.has(id); seen.add(id); return `<td class="${un ? 'un' : 'on'}" title="${un ? 'открыть' : 'улучшить'} · ~${mmss(best.avg_upgrade_times_s[i])}">${i + 1}</td>`; }).join('')}</tr>`).join('')}</table>
       <p class="note">Тёмные клетки — открыть умение, жёлтые — улучшить. Наведи — примерное время.</p>`;
-  }).catch(e => { if (vOk(seq)) $('#so').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  }).catch(e => { $('#so').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
   // предметы по фазам
   api(`analytics/item-stats?hero_id=${hid}&${fq()}`).then(IS => {
-    if (!vOk(seq)) return;
     const maxM = Math.max(1, ...IS.map(s => s.matches));
     const good = IS.filter(s => item(s.item_id) && s.matches >= Math.max(20, maxM * .04));
     const ph = [['Начало · до 10 мин', 0, 600], ['Середина · 10–20 мин', 600, 1200], ['Поздняя игра · после 20 мин', 1200, 1e9]];
     $('#its').innerHTML = ph.map(([t, a, z]) => { const L = good.filter(s => s.avg_buy_time_s >= a && s.avg_buy_time_s < z).sort((x, y) => y.wins / y.matches - x.wins / x.matches).slice(0, 7);
       return `<div class="card"><div class="thd"><b>${t}</b></div>${L.map(s => { const I = item(s.item_id), wr = pc(s.wins, s.matches); return `<div class="ir">${itImg(s.item_id)}<span style="min-width:0"><b>${esc(I.n)}</b><small>${nf(I.p)} душ · берут в ${pc(s.matches, maxM)}% · ~${mmss(s.avg_buy_time_s)}</small></span><span class="wr ${wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}">${wr}%<small>побед</small></span></div>`; }).join('') || '<div class="empty">—</div>'}</div>`; }).join('');
-  }).catch(e => { if (vOk(seq)) $('#its').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  }).catch(e => { $('#its').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
   // сборки игроков
   (async () => {
     try {
       const BS = await api(`analytics/hero-build-stats/${hid}?${fq()}`);
-      if (!vOk(seq)) return;
       const top = BS.filter(x => x.matches >= 30).sort((a, b) => b.matches - a.matches).slice(0, 8);
       if (!top.length) { $('#bds').innerHTML = '<div class="empty">Мало матчей с этим фильтром.</div>'; return; }
       const names = {};
@@ -1307,20 +1319,18 @@ async function viewHero(hid) {
         return `<div class="bd"><span style="min-width:0"><b>${k3 >= 0 ? `<span class="tag h" title="по проценту побед среди этих сборок">топ-${k3 + 1}</span> ` : ''}${esc(nm.name || 'Сборка №' + x.hero_build_id)}</b><small>${nm.author ? 'автор ' + esc(nm.author) + ' · ' : ''}взяли ${nf(x.matches)} ${pl(x.matches, ['раз', 'раза', 'раз'])} · ${nf(x.players)} ${pl(x.players, ['игрок', 'игрока', 'игроков'])}</small></span>
           <button class="cp" type="button" data-cp="${x.hero_build_id}" title="Скопировать ID сборки">ID ${x.hero_build_id}</button><span class="wr ${wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}">${wr}%<small>побед</small></span></div>`; }).join('');
       $$('#bds [data-cp]').forEach(b => b.onclick = () => { const t = b.dataset.cp; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => { b.textContent = 'скопировано'; setTimeout(() => b.textContent = 'ID ' + t, 1400); }).catch(() => {}); });
-    } catch (e) { if (vOk(seq)) $('#bds').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+    } catch (e) { $('#bds').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
   })();
 }
 
 // ---------- «Мои матчи» и разбор ----------
 async function viewMatches() {
   if (!ME) return viewLanding();
-  const seq = ++VSEQ;
   V('<div class="load">Загружаю матчи…</div>');
   try {
     const H = await api('players/' + ME.id + '/match-history');
-    if (!vOk(seq)) return;
     V(`<h1 class="h1">Мои <em>матчи</em></h1><p class="sub" style="margin:6px 0 14px">Нажми на матч — разбор: души против соперника по линии, покупки против топов, где умирал.</p><div class="card">${H.slice(0, 40).map(mtRow).join('')}</div>`);
-  } catch (e) { if (vOk(seq)) V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
 }
 function lineChart(series, w = 640, h = 220) {
   const xs = series.flatMap(s => s.pts.map(p => p[0])), ys = series.flatMap(s => s.pts.map(p => p[1]));
@@ -1432,49 +1442,49 @@ function mTags(mi, me, A, PT, opp) {
   const P = mi.players, dur = mi.duration_s, a = A.get(me), T = [], s = mLast(me);
   const mates = P.filter(p => p.team === me.team);
   if (opp) { const d = mAt(me, 600) - mAt(opp, 600), o = Math.max(1, mAt(opp, 600));
-    if (d / o >= .15) T.push(['Продавил', 'g', `к 10-й минуте на ${pc(d, o)}% душ больше соперника по линии`]);
-    else if (-d / o >= .15) T.push(['Давили', 'r', `к 10-й минуте на ${pc(-d, o)}% душ меньше соперника по линии`]); }
+    if (d / o >= .15) T.push(['Сильная линия', 'g', `к 10-й минуте на ${pc(d, o)}% душ больше соперника по линии`]);
+    else if (-d / o >= .15) T.push(['Тяжёлая линия', 'r', `к 10-й минуте на ${pc(-d, o)}% душ меньше соперника по линии`]); }
   const ld = (me.death_details || []).filter(d => d.game_time_s < 600).length;
-  if (ld >= 2) T.push(['Наказан', 'r', `${ld} ${pl(ld, ['смерть', 'смерти', 'смертей'])} до 10-й минуты`]);
+  if (ld >= 2) T.push(['Умирал на линии', 'r', `${ld} ${pl(ld, ['смерть', 'смерти', 'смертей'])} до 10-й минуты`]);
   if (dur > 1500) { const late = p => (p.net_worth - mAt(p, 1200)) / ((dur - 1200) / 60), tl = mates.reduce((x, p) => x + late(p), 0) / mates.length;
-    if (late(me) >= tl * 1.2) T.push(['Лейтфарм', 'g', `после 20-й минуты ${nf(late(me))} душ/мин — больше, чем у своих (${nf(tl)})`]);
-    else if (late(me) <= tl * .75) T.push(['Сдулся', 'r', `после 20-й минуты ${nf(late(me))} душ/мин — меньше, чем у своих (${nf(tl)})`]); }
-  if (a.kda >= 4) T.push(['Чисто', 'g', `(убийства + помощь) / смерти = ${a.kda.toFixed(1).replace('.', ',')}`]);
+    if (late(me) >= tl * 1.2) T.push(['Фарм в лейте', 'g', `после 20-й минуты ${nf(late(me))} душ/мин — больше, чем у своих (${nf(tl)})`]);
+    else if (late(me) <= tl * .75) T.push(['Перестал фармить', 'r', `после 20-й минуты ${nf(late(me))} душ/мин — меньше, чем у своих (${nf(tl)})`]); }
+  if (a.kda >= 4) T.push(['Высокий KDA', 'g', `(убийства + помощь) / смерти = ${a.kda.toFixed(1).replace('.', ',')}`]);
   if (me.deaths <= 2 && dur > 1500) T.push(['Живучий', 'g', `${me.deaths} ${pl(me.deaths, ['смерть', 'смерти', 'смертей'])} за ${Math.round(dur / 60)} минут`]);
-  if (a.kp >= .65) T.push(['Файтер', 'g', `участие в ${Math.round(100 * a.kp)}% убийств команды — вечно в драке`]);
-  else if (a.kp < .35 && P.filter(p => p.team === me.team).reduce((x, p) => x + p.kills, 0) >= 10) T.push(['Пассивный', 'r', `участие только в ${Math.round(100 * a.kp)}% убийств команды`]);
+  if (a.kp >= .65) T.push(['Всегда в драке', 'g', `участие в ${Math.round(100 * a.kp)}% убийств команды`]);
+  else if (a.kp < .35 && P.filter(p => p.team === me.team).reduce((x, p) => x + p.kills, 0) >= 10) T.push(['Мало в драках', 'r', `участие только в ${Math.round(100 * a.kp)}% убийств команды`]);
   const tb = mates.reduce((x, p) => x + A.get(p).boss, 0);
-  if (tb > 0 && a.boss / tb >= .3) T.push(['Таран', 'g', `${pc(a.boss, tb)}% урона команды по башням и боссам`]);
-  else if (tb > 0 && a.boss / tb <= .05) T.push(['Пацифист', 'r', `только ${pc(a.boss, tb)}% урона команды по башням и боссам`]);
+  if (tb > 0 && a.boss / tb >= .3) T.push(['Ломает башни', 'g', `${pc(a.boss, tb)}% урона команды по башням и боссам`]);
+  else if (tb > 0 && a.boss / tb <= .05) T.push(['Не бьёт башни', 'r', `только ${pc(a.boss, tb)}% урона команды по башням и боссам`]);
   if (PT[me.player_slot]) { let al = 0, n = 0; const f = PT[me.player_slot];
     for (let t = 600; t < dur; t += 5) { const q = f(t); if (q.hp <= 0) continue; n++; if (!mates.some(p => p !== me && PT[p.player_slot] && mDist(PT[p.player_slot](t), q) < 3000)) al++; }
-    if (n > 60 && al / n >= .6) T.push(['Одиночка', 'a', `после 10-й минуты ${pc(al, n)}% времени без своих рядом — сплит-пуш или фарм в одиночку`]); }
-  if (a.acc != null) { const best = Math.max(...P.map(p => A.get(p).acc || 0)); if (a.acc >= best - .001) T.push(['Снайпер', 'g', `точность ${Math.round(100 * a.acc)}% — лучшая в матче`]); }
+    if (n > 60 && al / n >= .6) T.push(['Ходит один', 'a', `после 10-й минуты ${pc(al, n)}% времени без своих рядом — сплит-пуш или фарм в одиночку`]); }
+  if (a.acc != null) { const best = Math.max(...P.map(p => A.get(p).acc || 0)); if (a.acc >= best - .001) T.push(['Самый меткий', 'g', `точность ${Math.round(100 * a.acc)}% — лучшая в матче`]); }
   if ((s.headshot_kills || 0) >= 3) T.push(['Хедшотер', 'g', `${s.headshot_kills} убийств в голову`]);
   if (a.heal >= 5000) T.push(['Лекарь', 'g', `вылечил своих на ${nf(a.heal)}`]);
   // ещё как на League of Graphs
   const avgD = P.reduce((x, p) => x + p.deaths, 0) / P.length, avgDmg = P.reduce((x, p) => x + A.get(p).dmg, 0) / P.length, tnw = mates.reduce((x, p) => x + p.net_worth, 0) / mates.length;
   if (P.every(p => p === me || p.net_worth <= me.net_worth)) T.push(['Миллионер', 'g', `больше всех душ в матче: ${nf(me.net_worth)}`]);
-  else if (me.net_worth <= .75 * tnw) T.push(['Голодает', 'r', `душ на ${pc(tnw - me.net_worth, tnw)}% меньше среднего в команде`]);
-  if (P.every(p => p === me || A.get(p).dmg <= a.dmg)) T.push(['Дамагер', 'g', `${hero(me.hero_id).n}: больше всех урона по героям — ${nf(a.dmg)}`]);
-  else if (a.dmg <= .7 * avgDmg && a.heal < 8000) T.push(['Пшик', 'r', `урона на ${pc(avgDmg - a.dmg, avgDmg)}% меньше среднего в матче`]);
+  else if (me.net_worth <= .75 * tnw) T.push(['Плохой фарм', 'r', `душ на ${pc(tnw - me.net_worth, tnw)}% меньше среднего в команде`]);
+  if (P.every(p => p === me || A.get(p).dmg <= a.dmg)) T.push([hero(me.hero_id).n + ' с высоким уроном', 'g', `больше всех урона по героям: ${nf(a.dmg)}`]);
+  else if (a.dmg <= .7 * avgDmg && a.heal < 8000) T.push(['Низкий урон', 'r', `урона на ${pc(avgDmg - a.dmg, avgDmg)}% меньше среднего в матче`]);
   if (me.deaths >= Math.max(8, 1.5 * avgD)) T.push(['Кормил', 'r', `${me.deaths} смертей — в среднем в матче ${avgD.toFixed(1).replace('.', ',')}`]);
-  if (me.deaths === 0 && dur > 900) T.push(['Бессмертный', 'g', `ни одной смерти за ${Math.round(dur / 60)} минут`]);
-  if (P.every(p => p === me || p.last_hits <= me.last_hits)) T.push(['Фармер', 'g', `больше всех добиваний (ластхитов): ${me.last_hits}`]);
+  if (me.deaths === 0 && dur > 900) T.push(['Без смертей', 'g', 'ни разу не умер']);
+  if (P.every(p => p === me || p.last_hits <= me.last_hits)) T.push(['Мастер добивания', 'g', `больше всех добиваний: ${me.last_hits}`]);
   const tk = p => mLast(p).player_damage_taken || 0, tTk = mates.reduce((x, p) => x + tk(p), 0) / mates.length;
   if (mates.every(p => p === me || tk(p) <= tk(me)) && tk(me) >= 1.3 * tTk) T.push(['Танк', 'g', `принял больше всех урона в команде: ${nf(tk(me))}`]);
   const nc = s.gold_neutral_creep || 0; if (me.net_worth && nc / me.net_worth >= .25) T.push(['Лесник', 'b', `${pc(nc, me.net_worth)}% душ — с лагерей`]);
   // первая кровь и серии убийств — из смертей всех игроков
   const KD = P.flatMap(p => (p.death_details || []).map(d => ({t: d.game_time_s, k: d.killer_player_slot}))).sort((x, y) => x.t - y.t);
-  if (KD.length && KD[0].k === me.player_slot) T.push(['ФБ', 'g', `первая кровь матча — на ${mmss(KD[0].t)}`]);
+  if (KD.length && KD[0].k === me.player_slot) T.push(['Первая кровь', 'g', `первое убийство матча — ${mmss(KD[0].t)}`]);
   const my = KD.filter(d => d.k === me.player_slot).map(d => d.t); let best = 0;
   for (let i = 0; i < my.length; i++) { let j = i; while (j + 1 < my.length && my[j + 1] - my[j] <= 12) j++; best = Math.max(best, j - i + 1); }
-  if (best >= 3) T.push([['', '', '', 'Тройное', 'Четверное', 'Пятерное', 'Резня'][Math.min(6, best)], 'g', `${best} ${pl(best, ['убийство', 'убийства', 'убийств'])} подряд, между каждым — не больше 12 секунд`]);
+  if (best >= 3) T.push([['', '', '', 'Тройное убийство', 'Четыре подряд', 'Пять подряд', 'Вся команда'][Math.min(6, best)], 'g', `${best} убийства, между каждым — не больше 12 секунд`]);
   // камбэк / отдал игру — по разнице душ команд в снимках
   const ts = [...new Set(P.flatMap(p => p.stats.map(x => x.time_stamp_s)))], df = ts.map(x => P.reduce((y, p) => y + (p.team === me.team ? 1 : -1) * mAt(p, x), 0));
   const lo = Math.min(0, ...df), hi = Math.max(0, ...df), won = mi.winning_team === me.team;
   if (won && lo <= -5000) T.push(['Камбэк', 'g', `выиграли, хотя отставали на ${nf(-lo)} душ`]);
-  if (!won && hi >= 5000) T.push(['Слили', 'r', `проиграли, хотя были впереди на ${nf(hi)} душ`]);
+  if (!won && hi >= 5000) T.push(['Отдали игру', 'r', `проиграли, хотя были впереди на ${nf(hi)} душ`]);
   return T;
 }
 function ring(v, max, lab, val, sub) {
@@ -1496,11 +1506,9 @@ function diffChart(mi, team, w = 640, h = 200) {
 }
 async function viewMatch(mid) {
   if (!ME) return viewLanding();
-  const seq = ++VSEQ;
   V('<div class="load">Разбираю матч…</div>');
   try {
     const md = await api('matches/' + mid + '/metadata'), mi = md.match_info, P = mi.players;
-    if (!vOk(seq)) return;
     const me = P.find(p => p.account_id === ME.id) || P[0];
     const won = mi.winning_team === me.team, dur = mi.duration_s;
     const enemies = P.filter(p => p.team !== me.team), mates = P.filter(p => p.team === me.team);
@@ -1528,7 +1536,7 @@ async function viewMatch(mid) {
     const hasP = Object.keys(PT).length > 0;
     const dots = hasP ? P.map(p => `<i class="hd ${p.team === me.team ? 'us' : 'en'}${p === me ? ' me' : ''}" data-s="${p.player_slot}"><img src="${esc(hero(p.hero_id).i)}" alt="" onerror="${noimg}"></i>`).join('') : '';
     const vd = p => { const x = A.get(p); return `<span class="vd ${x.v[1]}" title="${esc(x.prob.join('; ') || 'вклад ' + x.score + ' из 100')}">${x.v[0]}</span>`; };
-    const md2 = p => MD.get(p).map(([n, h]) => `<span class="md" data-tip="${esc(h)}">${n}</span>`).join('');
+    const md2 = p => MD.get(p).map(([n, h]) => `<span class="md" title="${esc(h)}">${n}</span>`).join('');
     const sb = t => P.filter(p => p.team === t).sort((x, y) => A.get(y).score - A.get(x).score).map(p => `<tr class="${p === me ? 'me3' : ''}"><td><span class="row" style="gap:8px">${heroImg(p.hero_id, 's')}<span style="min-width:0"><b class="hn">${esc(hero(p.hero_id).n)}</b>${md2(p)}</span></span></td><td>${vd(p)}</td><td><span class="sc"><i style="width:${A.get(p).score}%"></i></span>${A.get(p).score}</td><td>${p.kills}/${p.deaths}/${p.assists}</td><td>${nf(p.net_worth)}</td><td>${nf(dmg(p))}</td></tr>`).join('');
     const best = (f) => Math.max(...P.map(f));
     const place = f => 1 + P.filter(p => f(p) > f(me)).length;
@@ -1583,95 +1591,466 @@ async function viewMatch(mid) {
         $$('#mmap .hd').forEach(e => { const f = PT[e.dataset.s]; if (!f) return; const q = f(t), p = pos(q); e.style.left = p.l + '%'; e.style.top = p.t + '%'; e.classList.toggle('dead', q.hp <= 0); }); };
       $('#mt').oninput = mv; mv();
     }
-  } catch (e) { if (vOk(seq)) V(`<div class="err">Не вышло разобрать матч: ${esc(e.message)}</div>`); }
+  } catch (e) { V(`<div class="err">Не вышло разобрать матч: ${esc(e.message)}</div>`); }
 }
+
+
+// ================= v3: новые и перекрывающие функции (идут после старых — перекрывают их) =================
+// ---------- главная: профиль как у Deadlock Labs ----------
+function alertBox(t) { const v = $('#v'); v.insertAdjacentHTML('afterbegin', `<div class="err" style="margin-bottom:14px">${esc(t)}</div>`); }
+async function exampleTop() {
+  try {
+    const L = await api('leaderboard/Europe');
+    const e = (L.entries || []).find(x => (x.possible_account_ids || []).length === 1) || (L.entries || [])[0];
+    if (e) { await setMe(e.possible_account_ids[0]); location.hash = '#home'; route(); }
+  } catch (err) { alertBox('Не вышло взять пример: ' + err.message); }
+}
+// васян: улыбается после победы и грустит после поражения
+function vasFace(w) {
+  return w
+    ? `<svg class="vf" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18"/><circle class="e" cx="15.5" cy="18" r="2.3"/><circle class="e" cx="28.5" cy="18" r="2.3"/><path class="m" d="M13.5 26q8.5 9 17 0"/><path class="star" d="M36 5l1.8 3.8 4.2 .6-3 3 .7 4.1-3.7-2-3.7 2 .7-4.1-3-3 4.2-.6z"/></svg>`
+    : `<svg class="vf sad" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18"/><path class="b" d="M12.5 14.5l5.5 3.5M31.5 14.5l-5.5 3.5"/><path class="m" d="M13.5 31.5q8.5-8 17 0"/><path class="tear" d="M31 21q2.8 4.8 0 7.6-2.8-2.8 0-7.6z"/></svg>`;
+}
+// оценка за матч S/A/B/C/D — только по открытым цифрам
+function mGrade(m) {
+  const dur = Math.max(300, m.match_duration_s || 600);
+  if (m.abandoned_time_s && m.abandoned_time_s < dur - 60) return ['E', 'вышел из матча до конца', '#8e897f'];
+  const kda = (m.player_kills + m.player_assists) / Math.max(1, m.player_deaths);
+  const spm = m.net_worth / (dur / 60), lhm = (m.last_hits || 0) / (dur / 60);
+  const sc = 100 * (0.35 * Math.min(1, kda / 5) + 0.3 * Math.min(1, spm / 900) + 0.2 * Math.min(1, lhm / 11) + 0.15 * Math.max(0, 1 - m.player_deaths / 12));
+  return sc >= 78 ? ['S', 'разнёс матч: KDA, фарм и выживание — топ', '#ff5a1f']
+    : sc >= 66 ? ['A', 'сильно: выше среднего почти по всем цифрам', '#ffb020']
+    : sc >= 54 ? ['B', 'ровно: без провалов, но и без доминации', '#e8d36a']
+    : sc >= 42 ? ['C', 'слабо: по цифрам просел', '#8cc4ff']
+    : ['D', 'плохо: худший свой матч по цифрам', '#ff5050'];
+}
+// мини-метки за матч — 1–2 штуки, честно из истории матчей
+function mMiniTags(m, CNT) {
+  const T = [], dur = Math.max(300, m.match_duration_s), c = CNT[m.hero_id] || 0;
+  if (c >= 8) T.push(['Мейн', 'a', `${c} игр на ${hero(m.hero_id).n} за 30 дней`]);
+  else if (c === 1) T.push(['Дебют', 'b', `первая игра за ${hero(m.hero_id).n} в последних матчах`]);
+  const spm = m.net_worth / (dur / 60);
+  if (spm >= 800) T.push(['Фармила', 'g', `${nf(spm)} душ в минуту`]);
+  else if (spm <= 430) T.push(['Голодает', 'r', `${nf(spm)} душ в минуту`]);
+  if (m.player_deaths >= 11) T.push(['Кормил', 'r', `${m.player_deaths} смертей`]);
+  else if (m.player_deaths === 0 && dur > 900) T.push(['Без смертей', 'g', 'ни разу не умер']);
+  return T.slice(0, 2);
+}
+function mhRow(m, CNT, prev) {
+  const w = m.player_team === m.match_result, [g, tip, col] = mGrade(m);
+  const mt = mMiniTags(m, CNT);
+  const sess = prev && prev.start_time - (m.start_time + m.match_duration_s) < 5400;
+  return `<a class="mh ${w ? 'w' : 'l'}" href="#m/${m.match_id}">
+    ${vasFace(w)}
+    ${heroImg(m.hero_id)}
+    <div class="mhc"><div class="nm">${esc(hero(m.hero_id).n)}${sess ? '<span class="tag b" title="перерыв до прошлой игры меньше часа — та же сессия">сессия</span>' : ''}</div>
+      <div class="kd mono"><b>${m.player_kills}</b> / <span>${m.player_deaths}</span> / <b>${m.player_assists}</b></div>
+      ${mt.length ? `<div class="ptags">${mt.map(([s, c2, h]) => `<span class="tag ${c2}" title="${esc(h)}">${esc(s)}</span>`).join('')}</div>` : ''}</div>
+    <span class="grd" style="--gc:${col}" title="Оценка за матч (S/A/B/C/D): ${esc(tip)}. Считается по KDA, душам в минуту, добиваниям и смертям.">${g}</span>
+    <div class="mhr"><b class="${w ? 'win' : 'loss'}">${w ? 'ПОБЕДА' : 'ПОРАЖЕНИЕ'}</b><small>${mmss(m.match_duration_s)} · ${ago(m.start_time)}</small><small class="mono">${nf(m.net_worth)} душ${m.ranked_delta != null && m.ranked_delta !== 0 ? ` · <span class="dl ${m.ranked_delta > 0 ? 'win' : 'loss'}">${m.ranked_delta > 0 ? '+' : ''}${m.ranked_delta}</span>` : ''}</small></div></a>`;
+}
+const GCOL = {S: '#ff5a1f', A: '#ffb020', B: '#e8d36a', C: '#8cc4ff', D: '#ff5050', E: '#8e897f'};
+const gRank = g => ['S', 'A', 'B', 'C', 'D', 'E'].indexOf(g);
+async function viewHome() {
+  if (!ME) return viewLanding();
+  V('<div class="load">Собираю твой профиль…</div>');
+  try {
+    const [H, HS, R, HSt] = await Promise.all([
+      api('players/' + ME.id + '/match-history'),
+      api('players/hero-stats?account_ids=' + ME.id).catch(() => []),
+      api('players/' + ME.id + '/rank').catch(() => null),
+      api('analytics/hero-stats?' + fq()).catch(() => [])]);
+    if (!H.length) { V('<div class="empty">У этого игрока нет матчей в открытых данных.</div>'); return; }
+    const HA = {}, HTOT = HSt.reduce((a, x) => a + x.matches, 0) / 12 || 1;
+    HSt.forEach(x => { const n = Math.max(1, x.matches); HA[x.hero_id] = {spm: x.total_net_worth / n, dpm: x.total_deaths / n, kpm: x.total_kills / n, apm: x.total_assists / n, lhm: x.total_last_hits / n, den: (x.total_denies || 0) / n, pr: 100 * x.matches / HTOT}; });
+    const won = m => m.player_team === m.match_result;
+    const L20 = H.slice(0, 20), w20 = L20.filter(won).length;
+    const sum = (L, k) => L.reduce((a, m) => a + (m[k] || 0), 0);
+    const kda = (sum(L20, 'player_kills') + sum(L20, 'player_assists')) / Math.max(1, sum(L20, 'player_deaths'));
+    const spm = sum(L20, 'net_worth') / Math.max(1, sum(L20, 'match_duration_s') / 60);
+    const totM = HS.reduce((a, x) => a + x.matches_played, 0), totW = HS.reduce((a, x) => a + x.wins, 0);
+    const rk = rankOf(R && R.badge);
+    const ws = R && R.last_match ? R.last_match.player_rank_initial_win_streak : 0;
+    const rd = H.slice(0, 30).filter(m => m.ranked_delta != null).reduce((a, m) => a + m.ranked_delta, 0);
+    // счётчик игр на герое за 30 дней — для мини-меток в истории
+    const CNT = {}; H.filter(m => m.start_time >= now() - 30 * 86400).forEach(m => CNT[m.hero_id] = (CNT[m.hero_id] || 0) + 1);
+    const grades = H.slice(0, 20).map(m => mGrade(m)[0]);
+    const gMed = grades.length >= 5 ? grades.slice().sort((a, b) => gRank(a) - gRank(b))[Math.floor(grades.length / 2)] : null;
+    const P = profPatterns(H);
+    const pool = HS.slice().sort((a, b) => b.matches_played - a.matches_played).slice(0, 6);
+    V(`<div class="profh card">
+      ${ME.avatar ? `<img class="av" src="${esc(ME.avatar)}" alt="" onerror="${noimg}">` : '<i class="av" style="display:block;width:64px;height:64px;border-radius:50%;background:var(--s3)"></i>'}
+      <div class="pfi"><div class="nm">${esc(ME.name)}</div>
+        <div class="sub">${totM ? `${nf(totM)} ${pl(totM, ['матч', 'матча', 'матчей'])} · ${pc(totW, totM)}% побед за всё время · ID ${ME.id}` : 'ID ' + ME.id}</div>
+        <div class="ptags">${tagsHTML(profTags(H, HS, HA))}</div></div>
+      <div class="rkb">${rankImg(R && R.badge)}<div><small>Ранг</small><b style="color:${esc(rk.color)}">${esc(rk.name)}</b>${ws >= 2 ? `<small>серия побед · ${ws}</small>` : (R && R.badge ? '<small>ранг сейчас</small>' : '<small>ранг скрыт</small>')}</div></div>
+    </div>
+    <div class="g5 st" style="margin-top:14px">
+      <div class="card stat"><span>Победы · 20</span><b class="${w20 / Math.max(1, L20.length) >= .5 ? 'win' : 'loss'}">${pc(w20, L20.length)}%</b><small>${w20} из ${L20.length}</small></div>
+      <div class="card stat"><span>KDA · 20</span><b>${kda.toFixed(2).replace('.', ',')}</b><small>${(sum(L20, 'player_kills') / Math.max(1, L20.length)).toFixed(1)} / ${(sum(L20, 'player_deaths') / Math.max(1, L20.length)).toFixed(1)} / ${(sum(L20, 'player_assists') / Math.max(1, L20.length)).toFixed(1)}</small></div>
+      <div class="card stat"><span>Души в минуту</span><b>${nf(spm)}</b><small>в среднем за матч</small></div>
+      <div class="card stat"><span>Оценки · 20</span><b>${grades.length ? grades.map(g => `<i class="gl" style="color:${GCOL[g]}" title="оценка за матч">${g}</i>`).join('') : '—'}</b><small>${gMed ? `чаще всего <i class="gl" style="color:${GCOL[gMed]}">${gMed}</i> · S разнёс, D провал` : 'S — разнёс, D — провал'}</small></div>
+      <div class="card stat"><span>Ранг · 30</span><b class="${rd > 0 ? 'win' : rd < 0 ? 'loss' : ''}">${rd > 0 ? '+' : ''}${nf(rd)}</b><small>очков ранга</small></div>
+    </div>
+    <div class="pgrid" style="margin-top:14px">
+      <div>
+        <div class="h2">История матчей<small>васян радуется победе и грустит после поражения · метки за игру · оценка S/A/B/C/D · нажми — разбор</small></div>
+        <div class="card mhl">${H.slice(0, 24).map((m, i) => mhRow(m, CNT, i ? H[i - 1] : null)).join('')}</div>
+      </div>
+      <div class="pside">
+        <div class="h2">Паттерны<small>винрейт в ситуации против твоего общего</small></div>
+        <div class="card pad">${P.length ? P.map(p => `<div class="pt"><span>${esc(p.n)}<small>${games(p.c)} · ${Math.round(p.wr)}% побед</small></span><i><b class="${p.d >= 0 ? 'up' : 'dn'}" style="width:${Math.min(50, Math.abs(p.d) * 2.5)}%"></b></i><em class="${p.d >= 0 ? 'win' : 'loss'}">${p.d >= 0 ? '+' : '−'}${Math.abs(p.d).toFixed(1).replace('.', ',')}%</em></div>`).join('') : '<div class="empty">Пока мало матчей — паттерны появятся, когда наберётся история.</div>'}</div>
+        <div class="h2">Топ в Европе<small>официальный лидерборд игры</small></div>
+        <div class="card pad" id="eub"><div class="load">Ищу тебя в топ-1000 Европы…</div></div>
+        <div class="h2">Мои билды<small>${autoOn() ? 'автоподбор включён: лучшие по винрейту' : 'жми «В профиль» на странице героя'}</small></div>
+        <div class="card pad" id="myb"><div class="load">Собираю билды…</div></div>
+        <div class="h2">Твои герои<small>винрейт, KDA и игры за всё время</small></div>
+        <div class="card pool">${pool.map(x => { const wr = pc(x.wins, x.matches_played); return `<a href="#h/${x.hero_id}">${heroImg(x.hero_id)}<span style="min-width:0"><b>${esc(hero(x.hero_id).n)}</b><small>${games(x.matches_played)} · KDA ${((x.kills + x.assists) / Math.max(1, x.deaths)).toFixed(1).replace('.', ',')}</small></span><span class="bar"><i style="width:${wr}%;background:${wr >= 50 ? 'var(--win)' : 'var(--loss)'}"></i></span><span class="wr ${wrCls(x.wins, x.matches_played)}">${wr}%</span></a>`; }).join('') || '<div class="empty">Нет данных по героям.</div>'}</div>
+      </div>
+    </div>`);
+    // «Топ в Европе»: позиция или прочерк, клик — к строке в «Топе»
+    api('leaderboard/Europe').then(L => {
+      const el = $('#eub'); if (!el) return;
+      const E = L.entries || [], i = ME ? E.findIndex(e => (e.possible_account_ids || []).includes(ME.id)) : -1;
+      if (i < 0) { el.innerHTML = `<div class="bigrow"><b class="mono" style="color:var(--mu)">—</b><span class="sub">нет в топ-1000 Европы.<br>Туда попадают с высокими рангами — играй рейтинговые и не сливай.</span></div><a class="btn s" href="#lb">Смотреть топ →</a>`; return; }
+      const e = E[i];
+      el.innerHTML = `<div class="bigrow"><b class="mono" style="color:var(--ac)">#${i + 1}</b><span><b>${esc(e.account_name || ME.name)}</b><small>${esc(rankOf(e.rank).name)} · топ официального лидерборда</small></span></div><a class="btn s" href="#lb" id="eub-go">Показать в списке →</a>`;
+      const go = $('#eub-go'); if (go) go.onclick = () => { try { sessionStorage.setItem('lb-seek', '1'); } catch (er) {} };
+    }).catch(err => { const el = $('#eub'); if (el) el.innerHTML = `<div class="err">${esc(err.message)}</div>`; });
+    renderMyBuilds();
+  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+}
+
+// ---------- лендинг (без профиля) ----------
+async function viewLanding() {
+  const art = [65, 84, 86].map(id => hero(id).v || hero(id).c).filter(Boolean);
+  V(`<h2 class="h2" style="margin-top:0">Выбери вид сайта <small>шестерёнка в шапке</small></h2>${skinPickHTML()}<section class="land">
+      <h1 class="h1">Кто в твоём матче — <em>до первой драки</em></h1>
+      <p>Ранги и винрейты всех 12 игроков, кто мейнит героя и кто тебя контрит, что купить против их состава. Мета тир-листом, официальный топ, сборки с винрейтом — прямо в профиль, и разбор каждого матча. Входить в Steam не нужно.</p>
+      <form id="lf"><input id="lq" placeholder="Ссылка на профиль Steam, ник или ID" autocomplete="off" aria-label="Игрок"><button class="btn" type="submit">Найти себя</button></form>
+      <div class="ex">Или посмотри на примере: <button id="lx" type="button">топ-1 Европы</button></div>
+      <div class="art">${art.map(u => `<img src="${esc(u)}" alt="" onerror="this.remove()">`).join('')}</div>
+    </section>
+    <div class="g4 feat" style="margin-top:14px">
+      <a class="card" href="#live"><b>Лобби</b><span>Кто против тебя: ранги, игры на герое, метки «мейн», «контрит тебя», главная угроза.</span></a>
+      <a class="card" href="#meta"><b>Мета</b><span>Тир-лист по винрейту: кто сейчас сильный на твоём ранге, KDA и популярность под иконкой.</span></a>
+      <a class="card" href="#lb"><b>Топ</b><span>Официальный лидерборд. Найдёшь себя — кнопка сама докрутит к твоей строке.</span></a>
+      <a class="card" href="#pro"><b>Про</b><span>Верхушка топа и их последние матчи — каждый открывается в разбор.</span></a>
+    </div>
+    <div class="h2">Сейчас сильнее всех<small id="mtop">${esc(fName())}</small></div><div class="card" id="top5"><div class="load" style="padding:18px">Считаю мету…</div></div>`);
+  $('#lf').onsubmit = async e => { e.preventDefault(); const q = $('#lq').value.trim(); const id = idFrom(q); if (id) { await setMe(id); route(); } else { $('#sq').value = q; $('#sq').focus(); $('#sq').dispatchEvent(new Event('input')); } };
+  $('#lx').onclick = exampleTop;
+  try {
+    const M = await heroStats();
+    const L = Object.values(M).filter(x => x.pr >= 1.5).sort((a, b) => b.wr - a.wr).slice(0, 6);
+    $('#top5').innerHTML = `<div class="pool">${L.map(x => `<a href="#h/${x.id}">${heroImg(x.id)}<span style="min-width:0"><b>${esc(hero(x.id).n)}</b><small>${esc(TYPE_RU[hero(x.id).ty] || '')} · в ${x.pr.toFixed(1).replace('.', ',')}% матчей</small></span><span class="bar"><i style="width:${x.wr}%;background:var(--win)"></i></span><span class="wr win">${x.wr.toFixed(1).replace('.', ',')}%</span></a>`).join('')}</div>`;
+  } catch (e) { $('#top5').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+
+async function viewHero(hid) {
+  hid = +hid; const h = hero(hid);
+  HBF = {cat: '', src: ''}; HB = [];
+  V(`<a class="sub" href="#heroes" style="text-decoration:none">‹ Все герои</a>
+    <section class="hh" style="margin-top:10px;--hc:${esc(h.col || 'var(--ac)')}">${h.bg ? `<img class="bgi" src="${esc(h.bg)}" alt="" onerror="this.remove()">` : ''}
+      <div class="viw"><img class="vi" src="${esc(h.v || h.c || h.i)}" alt="" onerror="${noimg}"><video class="vv" muted loop playsinline preload="metadata" src="${esc(MEDIA + 'scenes/games/deadlock/' + hSlug(h) + '.mp4')}" onloadeddata="this.classList.add('on');this.play().catch(()=>{})" onerror="this.remove()"></video></div>
+      <div><div class="ty">${esc(TYPE_RU[h.ty] || h.ty || '')}${h.cx ? ' · сложность ' + h.cx + ' из 3' : ''}</div><h1 class="nm">${esc(h.n)}</h1>
+        <div class="ss" id="hss"><div><span>% побед</span><b>…</b></div></div><div class="hln" id="hln"></div></div>
+    </section>
+    <div class="row" style="margin-top:14px;flex-wrap:wrap"><span class="sub">Статистика: ${esc(fName())}</span><span class="sp"></span>${fltHTML()}</div>
+    ${TIPS[hid] ? `<div class="card tipc" style="margin-top:14px"><b>Как играть против: ${esc(TIPS[hid][0])}</b> <span class="sub">«${esc(TIPS[hid][1])}»</span><p>${TIPS[hid][2]}</p><small>Из описания способности в игре: «${esc(TIPS[hid][3])}»</small></div>` : ''}
+    ${ME ? '<div class="h2">Ты на этом герое</div><div class="card pad" id="hme"><div class="load">…</div></div>' : ''}
+    <div class="h2">Сборки<small>через что играют: оружие или дух · у каждой — винрейт и сколько раз взяли · жми «В профиль», айди вставлять не надо</small></div>
+    <div id="blds"><div class="card pad"><div class="load">Тяну сборки и их винрейты…</div></div></div>
+    <div class="g2">
+      <div><div class="h2">Против него покупают<small>предметы, с которыми у соперников больше побед</small></div><div class="card" id="hctr"><div class="load" style="padding:14px">…</div></div></div>
+      <div><div class="h2">Лучшие на герое<small>официальный топ</small></div><div class="card" id="hlb"><div class="load" style="padding:14px">…</div></div></div>
+    </div>
+    <div class="h2">Про-матчи<small>последние игры топов официального лидерборда на герое</small></div><div class="card" id="hpro"><div class="load" style="padding:14px">…</div></div>
+    <div class="g3" style="margin-top:4px">
+      <div><div class="h2">Тяжело против<small>на линии</small></div><div class="card mu-l" id="hard"><div class="load" style="padding:14px">…</div></div></div>
+      <div><div class="h2">Легко против<small>на линии</small></div><div class="card mu-l" id="easy"><div class="load" style="padding:14px">…</div></div></div>
+      <div><div class="h2">Лучшие напарники</div><div class="card mu-l" id="duo"><div class="load" style="padding:14px">…</div></div></div>
+    </div>
+    <div class="h2">Порядок умений<small id="soc">самый частый у игроков</small></div><div class="card so" id="so"><div class="load">…</div></div>
+    <div class="h2">Предметы по фазам<small>сортировка — по проценту побед, от 4% матчей</small></div><div class="phs" id="its"><div class="load">…</div></div>`);
+  fltBind(() => viewHero(hid));
+  heroLine(h, $('#hln'));
+  heroBuilds(hid);
+  heroCounterItems(hid);
+  heroTop(hid, 'Europe');
+  heroPro(hid);
+  if (ME) heroMine(hid);
+  const muRow = (id, w, m, k) => `<a href="#h/${id}">${heroImg(id, 's')}<span style="min-width:0"><b>${esc(hero(id).n)}</b><small>${nf(m)} ${pl(m, ['матч', 'матча', 'матчей'])}</small></span><span class="wr ${k}">${pc1(w, m)}%</span></a>`;
+  heroStats().then(M => { const x = M[hid]; $('#hss').innerHTML = x ? `<div><span>% побед</span><b class="${x.wr >= 51 ? 'win' : x.wr < 48 ? 'loss' : ''}">${x.wr.toFixed(1).replace('.', ',')}%</b></div><div><span>Берут</span><b>${x.pr.toFixed(1).replace('.', ',')}%</b></div><div><span>Матчей</span><b>${nf(x.m)}</b></div><div><span>KDA</span><b>${x.kda.toFixed(2).replace('.', ',')}</b></div><div><span>Душ за матч</span><b>${nf(x.spm)}</b></div>` : '<div class="sub">Мало матчей с этим фильтром</div>'; }).catch(e => { $('#hss').innerHTML = `<div class="sub">${esc(e.message)}</div>`; });
+  counterStats().then(CS => {
+    const L = CS.filter(x => x.hero_id === hid && x.matches_played >= 150 && D.heroes[x.enemy_hero_id]);
+    $('#hard').innerHTML = L.slice().sort((a, b) => a.wins / a.matches_played - b.wins / b.matches_played).slice(0, 5).map(x => muRow(x.enemy_hero_id, x.wins, x.matches_played, 'loss')).join('') || '<div class="empty">Мало матчей.</div>';
+    $('#easy').innerHTML = L.slice().sort((a, b) => b.wins / b.matches_played - a.wins / a.matches_played).slice(0, 5).map(x => muRow(x.enemy_hero_id, x.wins, x.matches_played, 'win')).join('') || '<div class="empty">Мало матчей.</div>';
+  }).catch(e => { $('#hard').innerHTML = $('#easy').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  synergyStats().then(SS => {
+    const L = SS.filter(x => (x.hero_id1 === hid || x.hero_id2 === hid) && x.matches_played >= 150).map(x => ({id: x.hero_id1 === hid ? x.hero_id2 : x.hero_id1, w: x.wins, m: x.matches_played})).filter(x => D.heroes[x.id]);
+    $('#duo').innerHTML = L.sort((a, b) => b.w / b.m - a.w / a.m).slice(0, 5).map(x => muRow(x.id, x.w, x.m, 'win')).join('') || '<div class="empty">Мало матчей.</div>';
+  }).catch(e => { $('#duo').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  // порядок умений: самая частая последовательность
+  api(`analytics/ability-order-stats?hero_id=${hid}&min_matches=30&${fq()}`).then(L => {
+    const best = L.filter(x => x.abilities && x.abilities.length >= 12).sort((a, b) => b.matches - a.matches)[0];
+    if (!best) { $('#so').innerHTML = '<div class="empty">Мало матчей с этим фильтром.</div>'; return; }
+    $('#soc').textContent = `${nf(best.matches)} ${pl(best.matches, ['матч', 'матча', 'матчей'])} · ${pc(best.wins, best.matches)}% побед`;
+    const AB = h.ab.length ? h.ab : [...new Set(best.abilities)].map((id, k) => ({id, n: '#' + id, k: k + 1}));
+    const seen = new Set(), steps = best.abilities;
+    $('#so').innerHTML = `<table>${AB.map(a => `<tr><th><div class="row">${a.i ? `<img src="${esc(a.i)}" alt="" onerror="${noimg}">` : ''}<span>${esc(a.n)}<small>${a.k === 4 ? 'ульта' : 'умение ' + a.k}</small></span></div></th>${steps.map((id, i) => { if (id !== a.id) return '<td></td>'; const un = !seen.has(id); seen.add(id); return `<td class="${un ? 'un' : 'on'}" title="${un ? 'открыть' : 'улучшить'} · ~${mmss(best.avg_upgrade_times_s[i])}">${i + 1}</td>`; }).join('')}</tr>`).join('')}</table>
+      <p class="note">Тёмные клетки — открыть умение, жёлтые — улучшить. Наведи — примерное время.</p>`;
+  }).catch(e => { $('#so').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  // предметы по фазам
+  api(`analytics/item-stats?hero_id=${hid}&${fq()}`).then(IS => {
+    const maxM = Math.max(1, ...IS.map(s => s.matches));
+    const good = IS.filter(s => item(s.item_id) && s.matches >= Math.max(20, maxM * .04));
+    const ph = [['Начало · до 10 мин', 0, 600], ['Середина · 10–20 мин', 600, 1200], ['Поздняя игра · после 20 мин', 1200, 1e9]];
+    $('#its').innerHTML = ph.map(([t, a, z]) => { const L = good.filter(s => s.avg_buy_time_s >= a && s.avg_buy_time_s < z).sort((x, y) => y.wins / y.matches - x.wins / x.matches).slice(0, 7);
+      return `<div class="card"><div class="thd"><b>${t}</b></div>${L.map(s => { const I = item(s.item_id), wr = pc(s.wins, s.matches); return `<div class="ir">${itImg(s.item_id)}<span style="min-width:0"><b>${esc(I.n)}</b><small>${nf(I.p)} душ · берут в ${pc(s.matches, maxM)}% · ~${mmss(s.avg_buy_time_s)}</small></span><span class="wr ${wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}">${wr}%<small>побед</small></span></div>`; }).join('') || '<div class="empty">—</div>'}</div>`; }).join('');
+  }).catch(e => { $('#its').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+}
+
+// ---------- «Мета»: тир-лист со статой под иконками ----------
+const MT = [['S+', 56, '#ff5a1f'], ['S', 54, '#ff7a3d'], ['A', 52, '#ffb020'], ['B', 50, '#e8d36a'], ['C', 47.5, '#8cc4ff'], ['D', 0, '#8e897f']];
+const MF = {ty: ''};
+async function viewMeta() {
+  const sg = `<div class="seg" data-k="ty">${[['', 'Все'], ['marksman', 'Стрелки'], ['brawler', 'Бойцы'], ['mystic', 'Мистики'], ['assassin', 'Убийцы']].map(([v, n]) => `<button data-v="${v}" class="${MF.ty === v ? 'on' : ''}">${n}</button>`).join('')}</div>`;
+  V(`<div class="row" style="flex-wrap:wrap;gap:12px;align-items:flex-end"><h1 class="h1">Мета <em>героев</em></h1><span class="sp"></span>${fltHTML()}</div>
+    <p class="sub" style="margin:8px 0 0">Тир — по проценту побед за период на выбранном ранге. Под иконкой: винрейт, KDA, сколько берут и сколько матчей. Нажми на героя — его страница.</p>
+    <div class="row" style="margin-top:12px;gap:10px;flex-wrap:wrap">${sg}</div>
+    <div id="mtw" style="margin-top:14px"><div class="load" style="padding:18px">Считаю мету…</div></div>`);
+  fltBind(viewMeta);
+  $$('#mtw').length && 0;
+  $$('[data-k="ty"] button').forEach(b => b.onclick = () => { MF.ty = b.dataset.v; viewMeta(); });
+  try {
+    const M = await heroStats();
+    const all = Object.values(M).filter(h => !MF.ty || hero(h.id).ty === MF.ty);
+    const rows = MT.map(([t, lo, col], i) => {
+      const hi = i ? MT[i - 1][1] : 999;
+      const L = all.filter(h => h.wr >= lo && h.wr < hi).sort((a, b) => b.wr - a.wr);
+      if (!L.length) return '';
+      return `<div class="tw"><div class="t" style="color:${col}">${t}</div><div class="hs">${L.map(h => `<a class="hc" href="#h/${h.id}" style="--hc:${esc(hero(h.id).col || 'var(--ac)')}"><img src="${esc(hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><span style="min-width:0"><b>${esc(hero(h.id).n)}</b><em class="${h.wr >= 51 ? 'win' : h.wr < 48 ? 'loss' : ''}">${h.wr.toFixed(1).replace('.', ',')}%</em><small>KDA ${h.kda.toFixed(1).replace('.', ',')} · берут ${h.pr.toFixed(1).replace('.', ',')}% · ${nf(h.m)} игр</small></span></a>`).join('')}</div></div>`;
+    }).join('');
+    $('#mtw').innerHTML = `<div class="card">${rows || '<div class="empty">Под этот фильтр героев нет.</div>'}</div><p class="note">Границы тиров: S+ от 56% побед, S от 54, A от 52, B от 50, C от 47,5, D — остальное. Цифры — ${esc(fName())}.</p>`;
+  } catch (e) { $('#mtw').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+// ---------- «Топ»: официальный лидерборд ----------
+const LBREG = [['Europe', 'Европа'], ['NAmerica', 'С. Америка'], ['SAmerica', 'Ю. Америка'], ['Asia', 'Азия'], ['Oceania', 'Океания']];
+let LBQ = '', LBROW = () => '';
+async function viewLb() {
+  V(`<h1 class="h1">Официальный <em>топ</em></h1>
+    <p class="sub" style="margin:6px 0 14px">Лидерборд самой игры по регионам. Нажми на игрока — его профиль и матчи. Если нашёл себя — жми «Показать меня», список сам докрутится к твоей строке.</p>
+    <div class="row" style="gap:10px;flex-wrap:wrap;align-items:center">
+      <div class="seg" id="lbrg">${LBREG.map(([k, n], i) => `<button data-r="${k}" class="${i === 0 ? 'on' : ''}">${n}</button>`).join('')}</div>
+      <input id="lbf" class="inp" placeholder="Фильтр по имени…" aria-label="Фильтр по имени" style="max-width:240px">
+      <button class="btn s" id="lbme" type="button">Показать меня ↓</button>
+    </div>
+    <div class="card" id="lbt" style="margin-top:14px"><div class="load">Загружаю Европу…</div></div>`);
+  let RG = 'Europe';
+  const regName = () => (LBREG.find(x => x[0] === RG) || ['', ''])[1];
+  const draw = async () => {
+    const el = $('#lbt');
+    el.innerHTML = `<div class="load">Загружаю ${esc(regName())}…</div>`;
+    try {
+      const E = (await api('leaderboard/' + RG)).entries || [];
+      const myI = ME ? E.findIndex(e => (e.possible_account_ids || []).includes(ME.id)) : -1;
+      LBROW = q => `<table class="lbt"><tr><th>#</th><th>Игрок</th><th>Ранг</th><th>Топ герои</th><th></th></tr>
+        ${E.map((e, i) => ({e, i})).filter(({e}) => !q || String(e.account_name || '').toLowerCase().includes(q)).slice(0, 400).map(({e, i}) => {
+          const one = (e.possible_account_ids || []).length === 1 ? e.possible_account_ids[0] : null;
+          const mine = myI >= 0 && i === myI;
+          return `<tr id="lbr-${i}" class="${mine ? 'mine' : ''}"><td class="mono">#${i + 1}</td>
+            <td><div class="pn"><span style="min-width:0"><b>${esc(e.account_name || 'Скрытый игрок')}</b>${mine ? '<small>это ты</small>' : ''}</span></div></td>
+            <td><div class="rkc">${rankImg(e.rank)}<span>${esc(rankOf(e.rank).name)}</span></div></td>
+            <td><div class="his">${(e.top_hero_ids || []).slice(0, 4).map(h => `<a href="#h/${h}" title="${esc(hero(h).n)}" onclick="event.stopPropagation()">${heroImg(h, 's')}</a>`).join('')}</div></td>
+            <td>${one ? `<a class="btn s" href="?id=${one}#home">профиль ›</a>` : '<span class="sub">—</span>'}</td></tr>`;
+        }).join('') || '<tr><td colspan="5"><div class="empty">Никого не нашлось по этому имени.</div></td></tr>'}</table>
+        <p class="note">Показаны первые 400 строк — чтобы страницу не рвало, весь топ берёт игра. Позиция — место в официальном топе региона. Кнопка «профиль» есть у тех, чей Steam-аккаунт определён точно.</p>`;
+      el.innerHTML = LBROW(LBQ);
+      const seek = () => {
+        const r = myI >= 0 ? $('#lbr-' + myI) : null;
+        if (r) { r.scrollIntoView({block: 'center', behavior: 'smooth'}); r.classList.remove('fl'); void r.offsetWidth; r.classList.add('fl'); }
+        else alertBox(`Тебя нет в топе региона ${esc(regName())} — туда попадают игроки с очень высоким рангом.`);
+      };
+      $('#lbme').onclick = seek;
+      try { if (sessionStorage.getItem('lb-seek')) { sessionStorage.removeItem('lb-seek'); setTimeout(seek, 80); } } catch (er) {}
+    } catch (err) { el.innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+  };
+  $$('#lbrg button').forEach(b => b.onclick = () => { $$('#lbrg button').forEach(x => x.classList.toggle('on', x === b)); RG = b.dataset.r; LBQ = ''; $('#lbf').value = ''; draw(); });
+  $('#lbf').oninput = e => { LBQ = e.target.value.trim().toLowerCase(); $('#lbt').innerHTML = LBROW(LBQ); };
+  draw();
+}
+
+// ---------- «Про»: верхушка топа и их матчи ----------
+async function viewPro() {
+  V(`<h1 class="h1">Про-<em>игры</em></h1>
+    <p class="sub" style="margin:6px 0 14px">Верхушка официального топа и их последние матчи. Реплеи Valve публично не выкладывает — но цифры открытые: каждый матч ниже открывается в полный разбор.</p>
+    <div class="h2">Топ Европы<small>первые 10 официального лидерборда</small></div>
+    <div class="card pad" id="ptop"><div class="load">Загружаю…</div></div>
+    <div class="h2">Последние про-матчи<small>во что играют лучшие прямо сейчас · оценка S/A/B/C/D — та же, что у тебя в профиле</small></div>
+    <div class="card" id="pmt"><div class="load">Смотрю истории матчей топов…</div></div>`);
+  try {
+    const L = await api('leaderboard/Europe');
+    const E = (L.entries || []).slice(0, 10);
+    $('#ptop').innerHTML = `<div class="pg">${E.map((e, i) => {
+      const one = (e.possible_account_ids || []).length === 1 ? e.possible_account_ids[0] : null;
+      return `<${one ? `a href="?id=${one}#home"` : 'div'} class="pc"><b class="mono">#${i + 1}</b><span>${esc(e.account_name || 'Скрытый игрок')}</span><div class="his">${(e.top_hero_ids || []).slice(0, 3).map(h => `<a href="#h/${h}" title="${esc(hero(h).n)}" onclick="event.stopPropagation()">${heroImg(h, 's')}</a>`).join('')}</div><small>${esc(rankOf(e.rank).name)}</small></${one ? 'a' : 'div'}>`;
+    }).join('')}</div>`;
+    const six = (L.entries || []).filter(e => (e.possible_account_ids || []).length === 1).slice(0, 6);
+    const HS2 = await Promise.all(six.map(e => api('players/' + e.possible_account_ids[0] + '/match-history').catch(() => [])));
+    const rows = [];
+    HS2.forEach((H, i) => (H || []).slice(0, 4).forEach(m => rows.push({p: six[i], m})));
+    rows.sort((a, b) => b.m.start_time - a.m.start_time);
+    $('#pmt').innerHTML = rows.slice(0, 14).map(({p, m}) => {
+      const w = m.player_team === m.match_result, [g, , col] = mGrade(m);
+      return `<a class="mt" href="#m/${m.match_id}"><i class="st" style="background:${w ? 'var(--win)' : 'var(--loss)'}"></i>${heroImg(m.hero_id)}
+        <div style="min-width:0"><div class="k">${m.player_kills} / ${m.player_deaths} / ${m.player_assists}<span class="grd s" style="--gc:${col}" title="Оценка за матч">${g}</span></div>
+        <div class="sub">${esc(p.account_name)} · ${esc(hero(m.hero_id).n)} · ${nf(m.net_worth)} душ</div></div>
+        <div class="r"><b class="${w ? 'win' : 'loss'}">${w ? 'ПОБЕДА' : 'ПОРАЖЕНИЕ'}</b>${mmss(m.match_duration_s)} · ${ago(m.start_time)}</div></a>`;
+    }).join('') || '<div class="empty">У топов недавно не было матчей.</div>';
+  } catch (e) { const el = $('#ptop'); if (el) el.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+// ---------- билды: на герое, с винрейтом, источниками и «в профиль» ----------
+// хранилище: BSP[accId][heroId] = [{id, name, cat, src, wr, mt, items:[...]}]
+let BSP = {};
+try { BSP = JSON.parse(localStorage.getItem('rl-bld') || '{}'); } catch (e) { BSP = {}; }
+const bldFlush = () => { try { localStorage.setItem('rl-bld', JSON.stringify(BSP)); } catch (e) {} };
+const autoOn = () => { try { return localStorage.getItem('rl-auto') === '1'; } catch (e) { return false; } };
+const CATN = {gun: 'Оружие', spirit: 'Дух', mix: 'Микс'};
+function bldCat(b) {
+  let w = 0, s = 0;
+  ((b.hero_build && b.hero_build.details && b.hero_build.details.mod_categories) || []).forEach(c => (c.mods || []).forEach(x => { const I = item(x.ability_id); if (!I) return; if (I.s === 'weapon') w++; else if (I.s === 'spirit') s++; }));
+  return w > s ? 'gun' : s > w ? 'spirit' : 'mix';
+}
+function itemsOfBuild(b) {
+  const L = [];
+  ((b.hero_build && b.hero_build.details && b.hero_build.details.mod_categories) || []).forEach(c => (c.mods || []).forEach(x => L.push(x.ability_id)));
+  return L.filter(id => item(id));
+}
+function buildIcons(rec, n = 12) { return (rec.items || []).slice(0, n).map(id => item(id) ? `<img class="ii" src="${esc(item(id).i)}" alt="" title="${esc(item(id).n)}" loading="lazy" onerror="${noimg}">` : '').join(''); }
+function bldSave(hid, rec) {
+  const k = String(ME.id), o = BSP[k] = BSP[k] || {}, L = o[hid] = o[hid] || [];
+  if (L.some(x => String(x.id) === String(rec.id) && x.src === rec.src)) return false;
+  L.push(rec); bldFlush(); return true;
+}
+let HB = [], HBF = {cat: '', src: ''};
+function drawBlds(hid) {
+  const el = $('#blds'); if (!el) return;
+  const mine = ME ? ((BSP[String(ME.id)] || {})[hid] || []).map(x => String(x.id)) : [];
+  const L = HB.filter(x => (!HBF.cat || x.cat === HBF.cat) && (!HBF.src || x.src === HBF.src))
+    .slice().sort((a, b) => (b.src === 'restless') - (a.src === 'restless') || b.wr - a.wr).slice(0, 24);
+  el.innerHTML = `<div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <div class="seg">${['', 'gun', 'spirit', 'mix'].map(c => `<button data-k="cat" data-v="${c}" class="${HBF.cat === c ? 'on' : ''}">${c === '' ? 'Все' : CATN[c]}</button>`).join('')}</div>
+      <div class="seg">${[['', 'Все'], ['restless', 'Restless'], ['pro', 'От прошников'], ['vas', 'От васянов']].map(([s, n]) => `<button data-k="src" data-v="${s}" class="${HBF.src === s ? 'on' : ''}">${n}</button>`).join('')}</div>
+      <span class="sub">показано ${L.length} из ${HB.length} · выборка от 150 матчей</span></div>
+    ${L.map(x => `<div class="bd2${mine.includes(String(x.id)) ? ' on' : ''}">
+      <div class="bdh"><span class="srcs">${x.src === 'restless' ? '<span class="tag h" title="максимальный винрейт при большой выборке — подбор Restless">Restless</span>' : x.pro ? '<span class="tag b" title="средний ранг игроков этой сборки — Ascendant+">про</span>' : '<span class="tag" title="народная сборка">васян</span>'}<span class="tag">${CATN[x.cat]}</span></span>
+        <span style="min-width:0"><b>${esc(x.name)}</b><small>автор ${esc(x.author)} · взяли ${nf(x.mt)} ${pl(x.mt, ['раз', 'раза', 'раз'])}${x.fav ? ` · ❤ ${nf(x.fav)}` : ''}</small></span>
+        <span class="wr ${x.wr >= 52 ? 'win' : x.wr <= 46 ? 'loss' : ''}">${x.wr.toFixed(1).replace('.', ',')}%<small>побед</small></span></div>
+      <div class="bdi">${buildIcons(x)}</div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn s" data-x="${x.id}">${mine.includes(String(x.id)) ? 'в профиле ✓' : 'В профиль →'}</button><button class="btn s gh" data-d="${x.id}">Подробнее</button><span class="sub mono">ID ${x.id}</span></div>
+      <div class="bdd hide" id="bd-${x.id}">${((x.raw.hero_build.details || {}).mod_categories || []).map(c => `<div class="bdc"><b>${esc(c.name)}</b><div>${(c.mods || []).map(y => item(y.ability_id) ? `<span class="it">${itImg(y.ability_id)}${esc(item(y.ability_id).n)}<em>${nf(item(y.ability_id).p)}</em></span>` : '').join('') || '<span class="sub">—</span>'}</div></div>`).join('') || '<div class="empty">Автор не расписал предметы по полкам — смотри иконки выше или открывай сборку в игре по ID.</div>'}</div>
+    </div>`).join('') || '<div class="empty">Под этот фильтр сборок нет — собери свою.</div>'}`;
+  $$('#blds .seg button').forEach(b => b.onclick = () => { HBF[b.dataset.k] = b.dataset.v; drawBlds(hid); });
+  $$('#blds [data-d]').forEach(b => b.onclick = () => $('#bd-' + b.dataset.d).classList.toggle('hide'));
+  $$('#blds [data-x]').forEach(b => b.onclick = () => {
+    const x = HB.find(y => String(y.id) === b.dataset.x); if (!x) return;
+    if (bldSave(hid, {id: x.id, name: x.name, cat: x.cat, src: x.src, wr: x.wr, mt: x.mt, items: x.items.slice(0, 12)})) {
+      b.textContent = 'в профиле ✓'; b.closest('.bd2').classList.add('on');
+      if ($('#myb')) renderMyBuilds(); else alertBox('Билд положил в профиль — глянь «Мои билды» в профиле.');
+    }
+  });
+}
+// сборки на странице героя: винрейт из матчей игроков + состав из самих сборок
+async function heroBuilds(hid) {
+  const el = $('#blds'); if (!el) return;
+  el.innerHTML = '<div class="load">Тяну сборки и их винрейты…</div>';
+  try {
+    const [BS, BL] = await Promise.all([
+      api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${now() - 60 * 86400}&min_matches=150`).catch(() => []),
+      api(`builds?hero_id=${hid}&only_latest=true&limit=80`).catch(() => [])]);
+    const byId = {}; BS.forEach(x => byId[x.hero_build_id] = x);
+    const rows = BL.map(b => ({b, st: byId[b.hero_build.hero_build_id]})).filter(x => x.st && x.st.matches >= 150);
+    if (!rows.length) { el.innerHTML = '<div class="empty">Сборок с нормальной выборкой за 60 дней не нашлось — загляни позже или играй свои.</div>'; return; }
+    rows.forEach(x => { x.cat = bldCat(x.b); x.wr = 100 * x.st.wins / x.st.matches; });
+    const rest = rows.filter(x => x.st.matches >= 1000).sort((a, b) => b.wr - a.wr)[0];
+    if (rest) rest.src = 'restless';
+    const au = [...new Set(rows.map(x => x.b.hero_build.author_account_id).filter(Boolean))];
+    const SN = {};
+    if (au.length) { try { (await api('players/steam?account_ids=' + au.join(','))).forEach(s => SN[s.account_id] = s.personaname); } catch (er) {} }
+    HB = rows.map(x => ({id: x.b.hero_build.hero_build_id, name: x.b.hero_build.name || 'Сборка #' + x.b.hero_build.hero_build_id, author: SN[x.b.hero_build.author_account_id] || (x.b.hero_build.author_account_id ? 'игрок ' + x.b.hero_build.author_account_id : 'неизвестно'), cat: x.cat, wr: x.wr, mt: x.st.matches, fav: x.b.num_favorites || 0, pro: (x.st.avg_average_badge || 0) >= 100, src: x.src || ((x.st.avg_average_badge || 0) >= 100 ? 'pro' : 'vas'), items: itemsOfBuild(x.b), raw: x.b}));
+    drawBlds(hid);
+  } catch (e) { el.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+// «Мои билды» в профиле: ручные + автоподбор (настройки)
+async function renderMyBuilds() {
+  const el = $('#myb'); if (!el) return;
+  if (!ME) { el.innerHTML = '<div class="sub">Найди себя сверху — и билды лягут сюда.</div>'; return; }
+  const mine = BSP[String(ME.id)] = BSP[String(ME.id)] || {};
+  if (autoOn()) {
+    try {
+      const HS = await api('players/hero-stats?account_ids=' + ME.id).catch(() => []);
+      const top = HS.slice().sort((a, b) => b.matches_played - a.matches_played).slice(0, 5);
+      const extra = await Promise.all(top.map(async hx => {
+        const [BS, BL] = await Promise.all([
+          api(`analytics/hero-build-stats/${hx.hero_id}?min_unix_timestamp=${now() - 60 * 86400}&min_matches=200`).catch(() => []),
+          api(`builds?hero_id=${hx.hero_id}&only_latest=true&limit=80`).catch(() => [])]);
+        const byId = {}; BS.forEach(x => byId[x.hero_build_id] = x);
+        const rows = BL.map(b => ({b, st: byId[b.hero_build.hero_build_id]})).filter(x => x.st && x.st.matches >= 300);
+        rows.forEach(x => { x.cat = bldCat(x.b); x.wr = 100 * x.st.wins / x.st.matches; });
+        const pick = c => rows.filter(x => x.cat === c).sort((a, b) => b.wr - a.wr)[0];
+        return {hid: hx.hero_id, L: ['gun', 'spirit'].map(c => { const p = pick(c); return p ? {id: p.b.hero_build.hero_build_id, name: p.b.hero_build.name || 'Сборка', cat: c, src: 'auto', wr: p.wr, mt: p.st.matches, items: itemsOfBuild(p.b).slice(0, 12)} : null; }).filter(Boolean)};
+      }));
+      extra.forEach(e => { if (!e || !e.L.length) return; const cur = mine[e.hid] = mine[e.hid] || []; e.L.forEach(x => { if (!cur.some(y => String(y.id) === String(x.id))) cur.push(x); }); if (cur.length > 4) cur.length = 4; });
+      bldFlush();
+    } catch (e) {}
+  }
+  const rows = Object.entries(mine).map(([hid, L]) => ({hid, L: L.slice(-4)})).filter(x => x.L.length).sort((a, b) => b.L.length - a.L.length);
+  if (!rows.length) { el.innerHTML = `<div class="sub">Пока пусто.${autoOn() ? ' Автоподбор качает билды для твоих героев — секундочку.' : ' Открой героя и жми «В профиль» на приглянувшейся сборке.'}</div>`; return; }
+  el.innerHTML = rows.map(({hid, L}) => `<div class="myc"><a href="#h/${hid}">${heroImg(hid)}</a>
+    <div style="min-width:0"><a class="hn" href="#h/${hid}" style="font-weight:600">${esc(hero(hid).n)}</a>
+      <div class="bch">${L.map(x => `<a href="#h/${hid}" title="${esc(x.name)} · ${x.wr ? x.wr.toFixed(1).replace('.', ',') + '% побед' : ''} · ${nf(x.mt || 0)} матчей">${x.cat ? `<span class="ca">${CATN[x.cat] || ''}</span>` : ''}${(x.items || []).slice(0, 5).map(id => item(id) ? `<img src="${esc(item(id).i)}" alt="" onerror="${noimg}">` : '').join('')}<em>${x.wr ? x.wr.toFixed(0) + '%' : ''}</em>${x.src === 'auto' ? '<span class="ca">авто</span>' : ''}</a>`).join('')}</div></div></div>`).join('');
+}
+// ---------- настройки ----------
+function settingsHTML() {
+  return `<div class="sno" id="setm"><div class="sno-c setc"><h2 class="h2" style="margin-top:0">Настройки</h2>
+    <div class="set"><b>Вид сайта</b><div>${skinPickHTML()}</div></div>
+    <div class="set"><label class="sw2"><input type="checkbox" id="autb" ${autoOn() ? 'checked' : ''}><span></span></label><div><b>Автоподбор билдов</b><small>в профиле у твоих героев сами появляются два билда с лучшим винрейтом — «Оружие» и «Дух». Каждый раз, когда открываешь профиль, берём свежие цифры.</small></div></div>
+    <p class="note">Билды и винрейты — открытые данные api.deadlock-api.com за последние 60 дней. «Про» — сборки, которыми играют Ascendant и выше.</p>
+    <div class="row" style="gap:8px;margin-top:10px"><button class="btn" data-x>Готово</button></div></div></div>`;
+}
+function settingsOpen() {
+  const o = document.createElement('div');
+  o.innerHTML = settingsHTML();
+  document.body.appendChild(o.firstElementChild);
+  const cb = $('#autb');
+  cb.onchange = () => { try { localStorage.setItem('rl-auto', cb.checked ? '1' : '0'); } catch (e) {} };
+  const close = () => { $('#setm').remove(); removeEventListener('keydown', kd); }, kd = e => { if (e.key === 'Escape') close(); };
+  $('#setm').onclick = e => { if (e.target === $('#setm') || e.target.closest('[data-x]')) close(); };
+  addEventListener('keydown', kd);
+}
+$('#stg').onclick = settingsOpen;
 
 // ---------- навигация ----------
-
-// ---------- три вида ----------
-const SKINS = [
-  ['graphs', 'Графики', 'Как League of Graphs: глубокий синий, бирюза, золото рангов, меню слева'],
-  ['labs', 'Labs', 'Чёрный и оранжевый, всё строго — как у Deadlock Labs'],
-  ['city', 'Город', 'Как меню самой игры: латунь, кремовый, рамки ар-деко'],
-  ['inferno', 'Инферно', 'Уголь и огонь: жжёный чёрный, раскалённый оранжевый, острые углы'],
-  ['occult', 'Оккульт', 'Мистика: ночь, фиалка и магента, светящиеся рамки'],
-  ['midnight', 'Полночь', 'Чёрный лёд и электрик-синий, неон на линиях'],
-  ['forest', 'Джунгли', 'Тёмная зелень Айви и салатовый акцент, спокойный'],
-  ['rivals', 'Ривалс', 'Комикс Marvel Rivals: жирные рамки, жёлтый, жёсткие тени'],
-  ['arcade', 'Аркада', 'Ретро-неон: магента и циан, VHS-полосы'],
-  ['paper', 'Газета', '1930-е: бумага, чернила, красный штамп — единственная светлая']
-];
-const SKIN_BG = {graphs:'#0a1420', labs:'#070707', city:'#0e1512', inferno:'#0c0906', occult:'#0a0612', midnight:'#04060c', forest:'#0a110b', rivals:'#0f1322', arcade:'#08040f', paper:'#e9e2d2'};
-function skinSet(s) { document.documentElement.dataset.skin = s; try { localStorage.setItem('rl-skin', s); localStorage.setItem('rl-skin-pick', '1'); } catch (e) {} const _m = document.querySelector('meta[name=theme-color]'); if (_m && SKIN_BG[s]) _m.content = SKIN_BG[s]; $$('#skins button,.skpick button').forEach(b => b.classList.toggle('on', b.dataset.s === s)); }
+const SKINS = [['labs', 'Labs', 'Чёрный и оранжевый, всё строго — как у Deadlock Labs'], ['city', 'Город', 'Как меню самой игры: латунь, кремовый, рамки ар-деко'], ['graphs', 'Графики', 'Как League of Graphs: глубокий синий, бирюза, золото рангов, меню слева']];
+function skinSet(s) { document.documentElement.dataset.skin = s; try { localStorage.setItem('rl-skin', s); localStorage.setItem('rl-skin-pick', '1'); } catch (e) {} $$('#skins button,.skpick button').forEach(b => b.classList.toggle('on', b.dataset.s === s)); }
 function skinPickHTML() { const c = document.documentElement.dataset.skin; return `<div class="skpick">${SKINS.map(([k, n, d]) => `<button data-s="${k}" class="${k === c ? 'on' : ''}"><div class="sw"></div><b>${n}</b><span>${d}</span></button>`).join('')}</div>`; }
 document.addEventListener('click', e => { const b = e.target.closest('#skins button,.skpick button'); if (b) skinSet(b.dataset.s); });
-const _sb = $('#skins'); if (_sb && !_sb.children.length) _sb.innerHTML = SKINS.map(([k, n]) => `<button data-s="${k}" title="${n}"><i></i></button>`).join('');
 skinSet(document.documentElement.dataset.skin || 'graphs');
-
-// ---------- карточка героя при наведении на иконку (как в Marvel Snap) ----------
-const HC = document.createElement('div'); HC.id = 'hcard'; HC.setAttribute('aria-hidden', 'true'); document.body.appendChild(HC);
-let HCt = 0, HCh = 0, HClp = 0, HCg = {}, HCgt = 0;
-function hcHide() { HCh = 0; clearTimeout(HCt); HC.classList.remove('on'); HC.innerHTML = ''; }
-async function hcGames() { if (!ME || Date.now() - HCgt < 300000) return; HCgt = Date.now(); HCg = {}; try { (await api('players/hero-stats?account_ids=' + ME.id)).forEach(r => HCg[r.hero_id] = r.matches_played || 0); } catch (e) {} }
-async function hcShow(id, t) {
-  if (!D.heroes[id]) return;
-  await hcGames();
-  if (HCh !== id) return;
-  const h = hero(id), n = HCg[id] || 0, L = lvOf(n);
-  HC.innerHTML = snapCard(id, n, null) + `<div class="hcc"><b>${esc(h.n)}</b>${esc(TYPE_RU[h.ty] || '')}${h.cx ? ' · сложность ' + h.cx + '/3' : ''} · ур. ${L} — ${esc(LVN[L - 1])}${n ? ` · у тебя ${nf(n)} ${pl(n, ['игра', 'игры', 'игр'])}` : ''}</div>`;
-  const r = t.getBoundingClientRect(), w = 176;
-  let x = r.right + 12; if (x + w > innerWidth - 8) x = r.left - w - 12; if (x < 8) x = Math.max(8, Math.min(innerWidth - w - 8, r.left));
-  HC.style.width = w + 'px'; HC.style.left = x + 'px'; HC.classList.add('on');
-  requestAnimationFrame(() => { HC.style.top = Math.max(8, Math.min(innerHeight - HC.offsetHeight - 8, r.top - 4)) + 'px'; });
-}
-document.addEventListener('pointerover', e => {
-  if (e.pointerType === 'touch' || e.target.closest('.sn,.sno,#hcard')) return;
-  const t = e.target.closest('[data-h]');
-  if (!t) { if (HCh) hcHide(); return; }
-  const id = +t.dataset.h; if (!D.heroes[id]) return;
-  if (HCh === id) return;
-  clearTimeout(HCt); HCh = id;
-  HCt = setTimeout(() => hcShow(id, t), 260);
-});
-document.addEventListener('pointermove', e => {
-  if (!HCh || !HC.classList.contains('on')) return;
-  const c = $('.sn', HC); if (!c) return;
-  const r = c.getBoundingClientRect();
-  if (e.clientX < r.left - 60 || e.clientX > r.right + 60 || e.clientY < r.top - 60 || e.clientY > r.bottom + 60) return;
-  const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-  c.style.setProperty('--rx', (-y * 14).toFixed(2) + 'deg'); c.style.setProperty('--ry', (x * 16).toFixed(2) + 'deg'); c.style.setProperty('--fx', (50 + x * 80).toFixed(1) + '%');
-});
-addEventListener('scroll', () => { if (HCh) hcHide(); }, {passive: true});
-addEventListener('blur', () => { if (HCh) hcHide(); });
-document.addEventListener('touchstart', e => {
-  const t = e.target.closest('[data-h]');
-  if (!t || e.target.closest('.sn,.sno')) { if (HCh) hcHide(); return; }
-  const id = +t.dataset.h; if (!D.heroes[id]) return;
-  clearTimeout(HClp); HClp = setTimeout(() => { HCh = id; hcShow(id, t); }, 420);
-}, {passive: true});
-['touchend', 'touchmove', 'touchcancel'].forEach(v => document.addEventListener(v, () => clearTimeout(HClp), {passive: true}));
-// ---------- подсказка меток: навёл на метку — узнал, за что она ----------
-const TT = document.createElement('div'); TT.id = 'tagtip'; TT.setAttribute('aria-hidden', 'true'); TT.hidden = true; document.body.appendChild(TT);
-document.addEventListener('pointerover', e => {
-  const t = e.target.closest('.tag[data-tip],.md[data-tip]');
-  if (!t) { TT.hidden = true; return; }
-  TT.textContent = t.dataset.tip; TT.hidden = false;
-  const r = t.getBoundingClientRect(), w = TT.offsetWidth;
-  TT.style.left = Math.max(w / 2 + 8, Math.min(innerWidth - w / 2 - 8, r.left + r.width / 2)) + 'px';
-  if (r.top < 76) { TT.classList.add('dn'); TT.style.top = r.bottom + 8 + 'px'; } else { TT.classList.remove('dn'); TT.style.top = r.top - 8 + 'px'; }
-});
-addEventListener('scroll', () => { TT.hidden = true; }, {passive: true});
-document.addEventListener('click', e => { if (!e.target.closest('.tag[data-tip],.md[data-tip]')) TT.hidden = true; });
-let VSEQ = 0; const vOk = s => s === VSEQ;
 function V(html) { $('#v').innerHTML = html; }
 function route() {
-  TT.hidden = true;
   const h = location.hash.replace(/^#/, '') || 'home';
   const [t, a] = h.split('/');
-  const tab = {m: 'matches', h: 'heroes', who: 'home', now: 'live', builds: 'heroes', b: 'heroes', profile: 'home'}[t] || t;
+  const tab = {m: 'matches', h: 'heroes', who: 'home', now: 'live', builds: 'heroes', b: 'heroes', profile: 'home', top: 'lb', leaderboard: 'lb'}[t] || t;
   $$('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.t === tab));
   window.scrollTo(0, 0);
   if (t === 'live' || t === 'now') return viewLive();
+  if (t === 'meta') return viewMeta();
+  if (t === 'lb' || t === 'top' || t === 'leaderboard') return viewLb();
+  if (t === 'pro') return viewPro();
   if (t === 'heroes' || t === 'builds') return viewHeroes();
   if ((t === 'h' || t === 'b') && a) return viewHero(a);
   if (t === 'matches') return viewMatches();
@@ -1686,6 +2065,7 @@ window.addEventListener('hashchange', route);
   if (id) setMe(id, !!q && false);
   route();
 })();
+
 </script>
 </body>
 </html>
