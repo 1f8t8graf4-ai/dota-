@@ -821,10 +821,12 @@ function alertBox(t) { const v = $('#v'); v.insertAdjacentHTML('afterbegin', `<d
 // ---------- главная ----------
 async function viewHome() {
   if (!ME) return viewLanding();
+  const seq = ++VSEQ;
   V('<div class="load">Собираю твой профиль…</div>');
   try {
     const [H, HS, R, HSt] = await Promise.all([api('players/' + ME.id + '/match-history'), api('players/hero-stats?account_ids=' + ME.id).catch(() => []), api('players/' + ME.id + '/rank').catch(() => null), api('analytics/hero-stats?' + fq()).catch(() => [])]);
     const HA = {}, HTOT = HSt.reduce((a, h) => a + h.matches, 0) / 12 || 1; HSt.forEach(h => { const n = Math.max(1, h.matches); HA[h.hero_id] = {spm: h.total_net_worth / n, dpm: h.total_deaths / n, kpm: h.total_kills / n, apm: h.total_assists / n, lhm: h.total_last_hits / n, den: (h.total_denies || 0) / n, pr: 100 * h.matches / HTOT}; });
+    if (!vOk(seq)) return;
     if (!H.length) { V('<div class="empty">У этого игрока нет матчей в открытых данных.</div>'); return; }
     const won = m => m.player_team === m.match_result;
     const L20 = H.slice(0, 20), w20 = L20.filter(won).length;
@@ -866,7 +868,7 @@ async function viewHome() {
           return `<a href="#h/${h.hero_id}">${heroImg(h.hero_id)}<span style="min-width:0"><b>${esc(hero(h.hero_id).n)}</b><small>${games(h.matches_played)} · KDA ${((h.kills + h.assists) / Math.max(1, h.deaths)).toFixed(1).replace('.', ',')}</small></span><span class="bar"><i style="width:${wr}%;background:${wr >= 50 ? 'var(--win)' : 'var(--loss)'}"></i></span><span class="wr ${wrCls(h.wins, h.matches_played)}">${wr}%</span></a>`; }).join('') || '<div class="empty">Нет данных по героям.</div>'}</div></div>
         <div><div class="h2">Матчи<span class="sp"></span><a class="sub" href="#matches">все →</a></div><div class="card">${H.slice(0, 7).map(mtRow).join('')}</div></div>
       </div>`);
-  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+  } catch (e) { if (vOk(seq)) V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
 }
 
 // ---------- метки игрока и паттерны (как на League of Graphs) — только то, что честно считается по матчам ----------
@@ -1014,18 +1016,22 @@ function lobRow(p, en, thr) {
 }
 async function viewLive() {
   if (!ME) return viewLanding();
+  const seq = ++VSEQ;
   V('<div class="load">Ищу твой матч…</div>');
   try {
     const live = await api('matches/active?account_id=' + ME.id).catch(() => []);
+    if (!vOk(seq)) return;
     let players, head, mid, isLive = false;
     if (live && live.length) {
       const m = live[0]; players = m.players; mid = m.match_id; isLive = true;
       head = `<span class="tag g">● идёт матч</span><span class="sub">${mmss(now() - m.start_time)} · матч ${m.match_id}</span>`;
     } else {
       const H = await api('players/' + ME.id + '/match-history');
+      if (!vOk(seq)) return;
       if (!H.length) { V('<div class="empty">Матчей не нашлось.</div>'); return; }
       mid = H[0].match_id;
       const md = await api('matches/' + mid + '/metadata');
+      if (!vOk(seq)) return;
       players = md.match_info.players;
       const w = H[0].player_team === H[0].match_result;
       head = `<span class="tag">последний матч</span><span class="sub">${ago(H[0].start_time + H[0].match_duration_s)} · ${mmss(H[0].match_duration_s)}</span><span class="tag ${w ? 'g' : 'r'}">${w ? 'победа' : 'поражение'}</span><span class="sp"></span><a class="btn s" href="#m/${mid}">Разбор матча →</a>`;
@@ -1037,6 +1043,7 @@ async function viewLive() {
       <div id="lb" style="margin-top:14px"><div class="load">Смотрю ранги и героев 12 игроков…</div></div>`);
     fltBind(viewLive);
     const [L, CS] = await Promise.all([scout(players), counterStats().catch(() => [])]);
+    if (!vOk(seq)) return;
     // «контрит тебя»: у твоего героя на линии против этого героя < 47 % (от 200 матчей)
     if (myHero) { const C = {}; CS.forEach(x => { if (x.hero_id === myHero) C[x.enemy_hero_id] = x; });
       L.forEach(p => { if (p.team === myTeam) return; const x = C[p.hid]; if (x && x.matches_played >= 200 && x.wins / x.matches_played < .47) p.cn = pc(x.wins, x.matches_played); }); }
@@ -1050,15 +1057,17 @@ async function viewLive() {
     $$('#lb tr.en').forEach(tr => { const f = () => { $$('#lb tr.en').forEach(x => x.classList.toggle('sel', x === tr)); const r = $('#vs-' + tr.dataset.h); if (r) { r.scrollIntoView({block: 'center', behavior: 'smooth'}); r.classList.remove('fl'); void r.offsetWidth; r.classList.add('fl'); } }; tr.onclick = f; tr.onkeydown = e => { if (e.key === 'Enter') f(); }; });
     if (!myHero) { $('#vsall').innerHTML = '<div class="empty">Тебя нет в этом матче.</div>'; return; }
     const base = await api(`analytics/item-stats?hero_id=${myHero}&${fq()}`).catch(() => []);
+    if (!vOk(seq)) return;
     const B = {}; base.forEach(s => B[s.item_id] = s);
     const rows = await Promise.all(en.map(async p => {
       const S = await api(`analytics/item-stats?hero_id=${myHero}&enemy_hero_ids=${p.hid}&${fq()}`).catch(() => []);
       const L2 = S.filter(s => item(s.item_id) && s.matches >= 40 && B[s.item_id] && B[s.item_id].matches >= 150).map(s => ({id: s.item_id, d: 100 * (s.wins / s.matches - B[s.item_id].wins / B[s.item_id].matches), m: s.matches})).sort((a, b) => b.d - a.d).slice(0, 3);
       return {p, L: L2};
     }));
+    if (!vOk(seq)) return;
     $('#vsall').innerHTML = `<div class="cnt">${rows.map(({p, L: L2}) => `<div class="cr" id="vs-${p.hid}"><a href="#h/${p.hid}" title="${esc(hero(p.hid).n)} — страница героя">${heroImg(p.hid)}</a><div class="its"><a class="crn" href="#h/${p.hid}">${esc(hero(p.hid).n)}</a>${L2.filter(x => x.d > 1).map(x => `<span class="it">${itImg(x.id)}${esc(item(x.id).n)}<em>+${x.d.toFixed(1).replace('.', ',')}%</em></span>`).join('') || `<span class="sub">${esc(hero(p.hid).n)}: предметы почти ничего не меняют — играй от линии.</span>`}${TIPS[p.hid] ? `<span class="tag a" title="${esc(TIPS[p.hid][3])}">совет: ${esc(TIPS[p.hid][0])}</span>` : ''}</div></div>`).join('')}</div>
       <p class="note" style="padding:0 16px 14px">% — насколько чаще ${esc(hero(myHero).n)} выигрывает с предметом, когда против этот герой, чем обычно с ним же.</p>`;
-  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+  } catch (e) { if (vOk(seq)) V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
 }
 
 // ---------- «Герои»: мета тир-листом ----------
@@ -1076,6 +1085,7 @@ function heroTags(x, M) {
 }
 const HV = {view: 'grid', sort: 'wr', ty: ''};
 async function viewHeroes() {
+  const seq = ++VSEQ;
   const sg = (k, L) => `<div class="seg" data-k="${k}">${L.map(([v, n]) => `<button data-v="${v}" class="${HV[k] === v ? 'on' : ''}">${n}</button>`).join('')}</div>`;
   V(`<div class="row" style="flex-wrap:wrap;gap:12px;align-items:flex-end"><h1 class="h1">Все <em>герои</em></h1><span class="sp"></span>${fltHTML()}</div>
     <p class="sub" style="margin:8px 0 0">Метки — из цифр за период и из файлов игры. Нажми на героя — живой герой, его фразы, сборки, с кем тяжело, кто лучше всех на нём.</p>
@@ -1085,9 +1095,10 @@ async function viewHeroes() {
   $$('.hvb .seg').forEach(s => s.onclick = e => { const b = e.target.closest('button'); if (!b) return; HV[s.dataset.k] = b.dataset.v; viewHeroes(); });
   try {
     const MM = await heroStats(), all = Object.values(MM);
+    if (!vOk(seq)) return;
     const M = all.filter(h => !HV.ty || hero(h.id).ty === HV.ty).sort(HV.sort === 'az' ? (a, b) => hero(a.id).n.localeCompare(hero(b.id).n) : HV.sort === 'pr' ? (a, b) => b.pr - a.pr : (a, b) => b.wr - a.wr);
     const wrS = h => `<em style="font-style:normal" class="${h.wr >= 51 ? 'win' : h.wr < 48 ? 'loss' : ''}">${h.wr.toFixed(1).replace('.', ',')}%</em>`;
-    if (HV.view === 'cards') return heroCards(M);
+    if (HV.view === 'cards') return heroCards(M, seq);
     if (HV.view === 'grid') {
       $('#tiers').innerHTML = `<div class="hg">${M.map(h => `<a class="hgc" data-h="${h.id}" href="#h/${h.id}" style="--hc:${esc(hero(h.id).col || 'var(--ac)')}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><div><b>${esc(hero(h.id).n)}</b><span class="mono">${wrS(h)} <small>· берут ${h.pr.toFixed(1).replace('.', ',')}%</small></span><div class="ptags">${tagsHTML(heroTags(h, MM).slice(0, 3))}</div></div></a>`).join('')}</div>`;
       return;
@@ -1095,7 +1106,7 @@ async function viewHeroes() {
     const T = [['S', 53, '#ff5a1f'], ['A', 51, '#ffb020'], ['B', 49, '#e8d36a'], ['C', 47, '#8cc4ff'], ['D', 0, '#8e897f']];
     $('#tiers').innerHTML = '<div class="card">' + T.map(([t, lo], i) => { const hi = i ? T[i - 1][1] : 999, L = M.filter(h => h.wr >= lo && h.wr < hi); if (!L.length) return '';
       return `<div class="tl"><div class="t" style="color:${T[i][2]}">${t}</div><div class="hs">${L.map(h => `<a class="hc" data-h="${h.id}" href="#h/${h.id}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><b>${esc(hero(h.id).n)}</b><span>${wrS(h)}<small>${h.pr.toFixed(1).replace('.', ',')}%</small></span></a>`).join('')}</div></div>`; }).join('') + '</div>';
-  } catch (e) { $('#tiers').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  } catch (e) { if (vOk(seq)) $('#tiers').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
 
 // ---------- карты героев как в Marvel Snap: уровень — от твоих игр на герое ----------
@@ -1116,9 +1127,10 @@ function snapTilt(root) {
     c.onpointerleave = () => { c.style.removeProperty('--rx'); c.style.removeProperty('--ry'); c.style.removeProperty('--fx'); };
   });
 }
-async function heroCards(M) {
+async function heroCards(M, seq) {
   let mine = {};
   if (ME) { try { (await api('players/hero-stats?account_ids=' + ME.id)).forEach(r => mine[r.hero_id] = r); } catch (e) {} }
+  if (seq != null && !vOk(seq)) return;
   const MM = {}; M.forEach(x => MM[x.id] = x);
   const score = x => { const r = mine[x.id], m = MM[x.id]; if (!r || r.matches_played < 20 || !m) return null; const wr = 100 * r.wins / r.matches_played, kda = (r.kills + r.assists) / Math.max(1, r.deaths); const c = v => Math.max(-25, Math.min(25, v)); return Math.round(Math.max(0, Math.min(100, 50 + c(1.5 * (wr - m.wr)) + c(25 * (kda / m.kda - 1))))); };
   const L = M.slice().sort((a, b) => HV.sort === 'wr' || HV.sort === 'pr' ? ((mine[b.id] || {}).matches_played || 0) - ((mine[a.id] || {}).matches_played || 0) || b.wr - a.wr : 0);
@@ -1216,7 +1228,7 @@ async function heroPro(hid) {
   } catch (e) { el.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
 async function viewHero(hid) {
-  hid = +hid; const h = hero(hid);
+  hid = +hid; const seq = ++VSEQ, h = hero(hid);
   V(`<a class="sub" href="#heroes" style="text-decoration:none">‹ Мета героев</a>
     <section class="hh" style="margin-top:10px;--hc:${esc(h.col || 'var(--ac)')}">${h.bg ? `<img class="bgi" src="${esc(h.bg)}" alt="" onerror="this.remove()">` : ''}
       <div class="viw"><img class="vi" src="${esc(h.v || h.c || h.i)}" alt="" onerror="${noimg}"><video class="vv" muted loop playsinline preload="metadata" src="${esc(MEDIA + 'scenes/games/deadlock/' + hSlug(h) + '.mp4')}" onloadeddata="this.classList.add('on');this.play().catch(()=>{})" onerror="this.remove()"></video></div>
@@ -1244,18 +1256,21 @@ async function viewHero(hid) {
   heroPro(hid);
   if (ME) heroMine(hid);
   const muRow = (id, w, m, k) => `<a href="#h/${id}">${heroImg(id, 's')}<span style="min-width:0"><b>${esc(hero(id).n)}</b><small>${nf(m)} ${pl(m, ['матч', 'матча', 'матчей'])}</small></span><span class="wr ${k}">${pc1(w, m)}%</span></a>`;
-  heroStats().then(M => { const x = M[hid]; $('#hss').innerHTML = x ? `<div><span>% побед</span><b class="${x.wr >= 51 ? 'win' : x.wr < 48 ? 'loss' : ''}">${x.wr.toFixed(1).replace('.', ',')}%</b></div><div><span>Берут</span><b>${x.pr.toFixed(1).replace('.', ',')}%</b></div><div><span>Матчей</span><b>${nf(x.m)}</b></div><div><span>KDA</span><b>${x.kda.toFixed(2).replace('.', ',')}</b></div><div><span>Душ за матч</span><b>${nf(x.spm)}</b></div>` : '<div class="sub">Мало матчей с этим фильтром</div>'; }).catch(e => { $('#hss').innerHTML = `<div class="sub">${esc(e.message)}</div>`; });
+  heroStats().then(M => { if (!vOk(seq)) return; const x = M[hid]; $('#hss').innerHTML = x ? `<div><span>% побед</span><b class="${x.wr >= 51 ? 'win' : x.wr < 48 ? 'loss' : ''}">${x.wr.toFixed(1).replace('.', ',')}%</b></div><div><span>Берут</span><b>${x.pr.toFixed(1).replace('.', ',')}%</b></div><div><span>Матчей</span><b>${nf(x.m)}</b></div><div><span>KDA</span><b>${x.kda.toFixed(2).replace('.', ',')}</b></div><div><span>Душ за матч</span><b>${nf(x.spm)}</b></div>` : '<div class="sub">Мало матчей с этим фильтром</div>'; }).catch(e => { if (vOk(seq)) $('#hss').innerHTML = `<div class="sub">${esc(e.message)}</div>`; });
   counterStats().then(CS => {
+    if (!vOk(seq)) return;
     const L = CS.filter(x => x.hero_id === hid && x.matches_played >= 150 && D.heroes[x.enemy_hero_id]);
     $('#hard').innerHTML = L.slice().sort((a, b) => a.wins / a.matches_played - b.wins / b.matches_played).slice(0, 5).map(x => muRow(x.enemy_hero_id, x.wins, x.matches_played, 'loss')).join('') || '<div class="empty">Мало матчей.</div>';
     $('#easy').innerHTML = L.slice().sort((a, b) => b.wins / b.matches_played - a.wins / a.matches_played).slice(0, 5).map(x => muRow(x.enemy_hero_id, x.wins, x.matches_played, 'win')).join('') || '<div class="empty">Мало матчей.</div>';
-  }).catch(e => { $('#hard').innerHTML = $('#easy').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  }).catch(e => { if (vOk(seq)) $('#hard').innerHTML = $('#easy').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
   synergyStats().then(SS => {
+    if (!vOk(seq)) return;
     const L = SS.filter(x => (x.hero_id1 === hid || x.hero_id2 === hid) && x.matches_played >= 150).map(x => ({id: x.hero_id1 === hid ? x.hero_id2 : x.hero_id1, w: x.wins, m: x.matches_played})).filter(x => D.heroes[x.id]);
     $('#duo').innerHTML = L.sort((a, b) => b.w / b.m - a.w / a.m).slice(0, 5).map(x => muRow(x.id, x.w, x.m, 'win')).join('') || '<div class="empty">Мало матчей.</div>';
-  }).catch(e => { $('#duo').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  }).catch(e => { if (vOk(seq)) $('#duo').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
   // порядок умений: самая частая последовательность из 15+ прокачек
   api(`analytics/ability-order-stats?hero_id=${hid}&min_matches=30&${fq()}`).then(L => {
+    if (!vOk(seq)) return;
     const best = L.filter(x => x.abilities && x.abilities.length >= 12).sort((a, b) => b.matches - a.matches)[0];
     if (!best) { $('#so').innerHTML = '<div class="empty">Мало матчей с этим фильтром.</div>'; return; }
     $('#soc').textContent = `${nf(best.matches)} ${pl(best.matches, ['матч', 'матча', 'матчей'])} · ${pc(best.wins, best.matches)}% побед`;
@@ -1263,19 +1278,21 @@ async function viewHero(hid) {
     const seen = new Set(), steps = best.abilities;
     $('#so').innerHTML = `<table>${AB.map(a => `<tr><th><div class="row">${a.i ? `<img src="${esc(a.i)}" alt="" onerror="${noimg}">` : ''}<span>${esc(a.n)}<small>${a.k === 4 ? 'ульта' : 'умение ' + a.k}</small></span></div></th>${steps.map((id, i) => { if (id !== a.id) return '<td></td>'; const un = !seen.has(id); seen.add(id); return `<td class="${un ? 'un' : 'on'}" title="${un ? 'открыть' : 'улучшить'} · ~${mmss(best.avg_upgrade_times_s[i])}">${i + 1}</td>`; }).join('')}</tr>`).join('')}</table>
       <p class="note">Тёмные клетки — открыть умение, жёлтые — улучшить. Наведи — примерное время.</p>`;
-  }).catch(e => { $('#so').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  }).catch(e => { if (vOk(seq)) $('#so').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
   // предметы по фазам
   api(`analytics/item-stats?hero_id=${hid}&${fq()}`).then(IS => {
+    if (!vOk(seq)) return;
     const maxM = Math.max(1, ...IS.map(s => s.matches));
     const good = IS.filter(s => item(s.item_id) && s.matches >= Math.max(20, maxM * .04));
     const ph = [['Начало · до 10 мин', 0, 600], ['Середина · 10–20 мин', 600, 1200], ['Поздняя игра · после 20 мин', 1200, 1e9]];
     $('#its').innerHTML = ph.map(([t, a, z]) => { const L = good.filter(s => s.avg_buy_time_s >= a && s.avg_buy_time_s < z).sort((x, y) => y.wins / y.matches - x.wins / x.matches).slice(0, 7);
       return `<div class="card"><div class="thd"><b>${t}</b></div>${L.map(s => { const I = item(s.item_id), wr = pc(s.wins, s.matches); return `<div class="ir">${itImg(s.item_id)}<span style="min-width:0"><b>${esc(I.n)}</b><small>${nf(I.p)} душ · берут в ${pc(s.matches, maxM)}% · ~${mmss(s.avg_buy_time_s)}</small></span><span class="wr ${wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}">${wr}%<small>побед</small></span></div>`; }).join('') || '<div class="empty">—</div>'}</div>`; }).join('');
-  }).catch(e => { $('#its').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
+  }).catch(e => { if (vOk(seq)) $('#its').innerHTML = `<div class="err">${esc(e.message)}</div>`; });
   // сборки игроков
   (async () => {
     try {
       const BS = await api(`analytics/hero-build-stats/${hid}?${fq()}`);
+      if (!vOk(seq)) return;
       const top = BS.filter(x => x.matches >= 30).sort((a, b) => b.matches - a.matches).slice(0, 8);
       if (!top.length) { $('#bds').innerHTML = '<div class="empty">Мало матчей с этим фильтром.</div>'; return; }
       const names = {};
@@ -1288,18 +1305,20 @@ async function viewHero(hid) {
         return `<div class="bd"><span style="min-width:0"><b>${k3 >= 0 ? `<span class="tag h" title="по проценту побед среди этих сборок">топ-${k3 + 1}</span> ` : ''}${esc(nm.name || 'Сборка №' + x.hero_build_id)}</b><small>${nm.author ? 'автор ' + esc(nm.author) + ' · ' : ''}взяли ${nf(x.matches)} ${pl(x.matches, ['раз', 'раза', 'раз'])} · ${nf(x.players)} ${pl(x.players, ['игрок', 'игрока', 'игроков'])}</small></span>
           <button class="cp" type="button" data-cp="${x.hero_build_id}" title="Скопировать ID сборки">ID ${x.hero_build_id}</button><span class="wr ${wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}">${wr}%<small>побед</small></span></div>`; }).join('');
       $$('#bds [data-cp]').forEach(b => b.onclick = () => { const t = b.dataset.cp; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => { b.textContent = 'скопировано'; setTimeout(() => b.textContent = 'ID ' + t, 1400); }).catch(() => {}); });
-    } catch (e) { $('#bds').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+    } catch (e) { if (vOk(seq)) $('#bds').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
   })();
 }
 
 // ---------- «Мои матчи» и разбор ----------
 async function viewMatches() {
   if (!ME) return viewLanding();
+  const seq = ++VSEQ;
   V('<div class="load">Загружаю матчи…</div>');
   try {
     const H = await api('players/' + ME.id + '/match-history');
+    if (!vOk(seq)) return;
     V(`<h1 class="h1">Мои <em>матчи</em></h1><p class="sub" style="margin:6px 0 14px">Нажми на матч — разбор: души против соперника по линии, покупки против топов, где умирал.</p><div class="card">${H.slice(0, 40).map(mtRow).join('')}</div>`);
-  } catch (e) { V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+  } catch (e) { if (vOk(seq)) V(`<div class="err">Не вышло: ${esc(e.message)}</div>`); }
 }
 function lineChart(series, w = 640, h = 220) {
   const xs = series.flatMap(s => s.pts.map(p => p[0])), ys = series.flatMap(s => s.pts.map(p => p[1]));
@@ -1475,9 +1494,11 @@ function diffChart(mi, team, w = 640, h = 200) {
 }
 async function viewMatch(mid) {
   if (!ME) return viewLanding();
+  const seq = ++VSEQ;
   V('<div class="load">Разбираю матч…</div>');
   try {
     const md = await api('matches/' + mid + '/metadata'), mi = md.match_info, P = mi.players;
+    if (!vOk(seq)) return;
     const me = P.find(p => p.account_id === ME.id) || P[0];
     const won = mi.winning_team === me.team, dur = mi.duration_s;
     const enemies = P.filter(p => p.team !== me.team), mates = P.filter(p => p.team === me.team);
@@ -1560,7 +1581,7 @@ async function viewMatch(mid) {
         $$('#mmap .hd').forEach(e => { const f = PT[e.dataset.s]; if (!f) return; const q = f(t), p = pos(q); e.style.left = p.l + '%'; e.style.top = p.t + '%'; e.classList.toggle('dead', q.hp <= 0); }); };
       $('#mt').oninput = mv; mv();
     }
-  } catch (e) { V(`<div class="err">Не вышло разобрать матч: ${esc(e.message)}</div>`); }
+  } catch (e) { if (vOk(seq)) V(`<div class="err">Не вышло разобрать матч: ${esc(e.message)}</div>`); }
 }
 
 // ---------- навигация ----------
@@ -1627,6 +1648,7 @@ document.addEventListener('touchstart', e => {
   clearTimeout(HClp); HClp = setTimeout(() => { HCh = id; hcShow(id, t); }, 420);
 }, {passive: true});
 ['touchend', 'touchmove', 'touchcancel'].forEach(v => document.addEventListener(v, () => clearTimeout(HClp), {passive: true}));
+let VSEQ = 0; const vOk = s => s === VSEQ;
 function V(html) { $('#v').innerHTML = html; }
 function route() {
   const h = location.hash.replace(/^#/, '') || 'home';
