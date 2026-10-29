@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Restless · Deadlock</title>
 <meta name="description" content="Restless — кто в матче, мета героев, сборки по винрейту и разбор матча в Deadlock">
-<meta name="theme-color" content="#09090b">
+<meta name="theme-color" content="#0a1420">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Cormorant+SC:wght@600;700&family=Cormorant+Garamond:ital,wght@1,600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<script>try{document.documentElement.dataset.skin=localStorage.getItem('rl-skin')||'labs'}catch(e){document.documentElement.dataset.skin='labs'}</script>
+<script>try{var _s=localStorage.getItem('rl-skin');if(!localStorage.getItem('rl-skin-pick')&&(!_s||_s=='labs'))_s='graphs';document.documentElement.dataset.skin=_s||'graphs'}catch(e){document.documentElement.dataset.skin='graphs'}</script>
 <style>
 /* Restless 2.0 — приложение: шапка с вкладками и поиском игрока, ниже экран вкладки.
    Чёрный, янтарный акцент, заголовки Oswald капсом (как у Deadlock Labs), цифры моноширинные, метки игроков цветными плашками. */
@@ -397,9 +397,9 @@ html[data-skin="graphs"] .land{border:0;background:linear-gradient(90deg,rgba(42
 .tln+.tlx{display:none}
 .card.pad .tln{margin-bottom:18px}
 .nms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
-.nm{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;background:var(--s1);border:1px solid var(--ln);border-left:3px solid var(--us);border-radius:10px;padding:10px 12px}
-.nm.en{border-left-color:var(--en)}.nm.me{background:rgba(255,176,32,.07)}
-.nm .hi.s{width:34px;height:34px}.nm b{display:block;font:700 14px/1.2 var(--h);letter-spacing:.04em;text-transform:uppercase}.nm small{color:var(--mu);font-size:12px}
+.nms .nm{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;background:var(--s1);border:1px solid var(--ln);border-left:3px solid var(--us);border-radius:10px;padding:10px 12px}
+.nms .nm.en{border-left-color:var(--en)}.nms .nm.me{background:rgba(255,176,32,.07)}
+.nms .nm .hi.s{width:34px;height:34px}.nms .nm b{display:block;font:700 14px/1.2 var(--h);letter-spacing:.04em;text-transform:uppercase}.nms .nm small{color:var(--mu);font-size:12px}
 .md{display:inline-block;margin:2px 4px 0 0;padding:2px 6px;border-radius:4px;background:var(--acd);color:var(--ac);font:700 10px/1.2 var(--f);letter-spacing:.04em;text-transform:uppercase;cursor:help}
 .sb .hn{display:block;font-weight:600}
 .sc{display:inline-block;vertical-align:middle;width:44px;height:5px;border-radius:3px;background:var(--s3);margin-right:6px;overflow:hidden}.sc i{display:block;height:100%;background:var(--ac)}
@@ -472,6 +472,62 @@ a.lbrw:hover{background:var(--s2)}.lbrw b{color:var(--ac)}.lbrw span{white-space
 .sno-t{display:grid;gap:12px}.sno-t .ty{font:700 11px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ac)}
 @media (max-width:700px){.sno-c{grid-template-columns:minmax(0,1fr);justify-items:center}.sn.big{width:220px}}
 @media (prefers-reduced-motion:reduce){.sn-bg img,.sn-in::before{animation:none!important}}
+
+/* --- Графики 2.0: ближе к настоящему League of Graphs — глубокий navy вместо светло-синего, золото рангов, своя команда синяя / враги красные, панели с рамкой --- */
+html[data-skin="graphs"]{--bg:#0a1420;--s1:#0e1b2b;--s2:#13253a;--s3:#1a2f47;--ln:#1e3450;--ln2:#2c4b6f;--mu:#8fa9c4;--mu2:#6c89a8;--us:#4da3ff;--en:#ff6a75}
+html[data-skin="graphs"] body{background:radial-gradient(1100px 480px at 72% -8%,rgba(75,227,232,.05),transparent 70%),var(--bg)}
+html[data-skin="graphs"] .nav{background:rgba(8,15,24,.97)}
+html[data-skin="graphs"] .logo{color:#fff}
+html[data-skin="graphs"] .card{background:var(--s1);border:1px solid var(--ln);box-shadow:none}
+html[data-skin="graphs"] .h2{color:#fff;font-size:15px;margin-top:30px}
+html[data-skin="graphs"] .stat b{color:#fff}
+html[data-skin="graphs"] .btn{background:var(--ac);color:#05242b}
+html[data-skin="graphs"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="graphs"] .seg{background:var(--s1);border-color:var(--ln)}
+html[data-skin="graphs"] .seg button.on{background:var(--s3);color:#fff}
+html[data-skin="graphs"] .srch input,html[data-skin="graphs"] .land input{background:#0b1624;border-color:var(--ln2)}
+html[data-skin="graphs"] .srch .dd{background:#0f2033;border-color:var(--ln2)}
+html[data-skin="graphs"] .me{background:var(--s1);border-color:var(--ln)}
+html[data-skin="graphs"] .rk{filter:drop-shadow(0 0 5px rgba(255,216,75,.28))}
+html[data-skin="graphs"] .prof .rkb b{color:var(--hot)}
+html[data-skin="graphs"] .lob tr.mine td{background:rgba(77,163,255,.09)}
+html[data-skin="graphs"] .lob tr.mine td:first-child{box-shadow:inset 3px 0 0 var(--us)}
+html[data-skin="graphs"] .lob tr.thr td{background:rgba(255,216,75,.07)}
+html[data-skin="graphs"] .lob tr.thr td:first-child{box-shadow:inset 3px 0 0 var(--hot)}
+html[data-skin="graphs"] .lob th{color:var(--mu2)}
+html[data-skin="graphs"] .nms .nm.me{background:rgba(77,163,255,.09)}
+html[data-skin="graphs"] .sb tr.me3 td{background:rgba(77,163,255,.09)}
+html[data-skin="graphs"] .traj a.w{background:rgba(75,227,232,.12)}
+html[data-skin="graphs"] .traj a.l{background:rgba(255,143,163,.12)}
+html[data-skin="graphs"] .so td.un{background:#11333f;color:var(--ac)}
+html[data-skin="graphs"] .vd.a{background:transparent;border:1px solid var(--hot);color:var(--hot)}
+html[data-skin="graphs"] .land{border:1px solid var(--ln);background:radial-gradient(900px 420px at 85% 0%,rgba(75,227,232,.10),transparent 60%),linear-gradient(180deg,#102134,#0a1420)}
+html[data-skin="graphs"] .land p{color:#b9cadf}
+html[data-skin="graphs"] .hh{background:#0c1a2b}
+html[data-skin="graphs"] .hh::after{background:linear-gradient(90deg,rgba(10,20,32,.96),rgba(10,20,32,.6) 60%,rgba(10,20,32,.25)),linear-gradient(0deg,rgba(10,20,32,.88),transparent 60%)}
+html[data-skin="graphs"] .md{background:var(--acd);color:var(--ac)}
+html[data-skin="graphs"] .it{background:var(--s2);border-color:var(--ln)}
+html[data-skin="graphs"] .cr.fl{animation-name:flg}
+@keyframes flg{0%,40%{background:rgba(75,227,232,.13)}100%{background:transparent}}
+@media (min-width:1100px){
+ html[data-skin="graphs"] .nav{background:#0c1725;border-right:1px solid var(--ln)}
+ html[data-skin="graphs"] .tabs a{color:#a7bcd4}
+ html[data-skin="graphs"] .tabs a:hover{background:#10263d;color:#fff}
+ html[data-skin="graphs"] .tabs a.on{background:#15304d;border-left-color:var(--ac);color:#fff}
+ html[data-skin="graphs"] .me{background:var(--s1)}
+}
+/* про-матчи на герое */
+.prow{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:9px 14px;border-top:1px solid var(--ln);text-decoration:none}
+.prow:first-child{border-top:0}
+a.prow:hover{background:var(--s2)}
+.prow>b{color:var(--hot);font-size:13px}
+.prow .pnm{min-width:0;font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .pnm small{display:block;color:var(--mu);font-weight:400;font-size:11.5px}
+.prow .res{font:700 11.5px/1 var(--m);padding:4px 8px;border-radius:4px;border:1px solid;white-space:nowrap}
+.prow .res.w{color:var(--win);border-color:var(--win)}
+.prow .res.l{color:var(--loss);border-color:var(--loss)}
+.prow .sub{white-space:nowrap;font-size:12px}
+@media (max-width:640px){.prow{grid-template-columns:34px minmax(0,1fr) auto}.prow .sub{display:none}}
 </style>
 </head>
 <body>
@@ -1016,6 +1072,20 @@ async function heroMine(hid) {
       <details class="why"><summary>Как считается рейтинг</summary><p>Сравниваем с игроками на этом же герое за период из фильтра: % побед (×1,5 за каждый процент), KDA и урон за матч (по 25 за +100%). Каждая часть — не больше ±25. Меньше 20 игр — рейтинга нет: слишком мало, чтобы судить.</p></details>`;
   } catch (e) { el.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
+// про-матчи: последние матчи топов лидерборда Европы на этом герое
+async function heroPro(hid) {
+  const el = $('#hpro'); if (!el) return;
+  try {
+    const E = ((await api(`leaderboard/Europe/${hid}`)).entries || []).filter(x => x.possible_account_ids && x.possible_account_ids.length === 1).slice(0, 4);
+    const L = await Promise.all(E.map(x => api('players/' + x.possible_account_ids[0] + '/match-history').catch(() => [])));
+    const rows = [];
+    L.forEach((H, i) => (H || []).filter(m => m.hero_id === hid).slice(0, 2).forEach(m => rows.push({ p: E[i], m })));
+    rows.sort((a, b) => b.m.start_time - a.m.start_time);
+    el.innerHTML = rows.slice(0, 6).map(({ p, m }) => { const w = m.player_team === m.match_result;
+      return `<a class="prow" href="#m/${m.match_id}"><b class="mono">#${p.rank}</b><span class="pnm">${esc(p.account_name)}<small>топ официального лидерборда</small></span><span class="res ${w ? 'w' : 'l'}">${w ? 'победа' : 'поражение'}</span><span class="sub">${Math.round(m.match_duration_s / 60)} мин · ${ago(m.start_time)}</span></a>`;
+    }).join('') || '<div class="empty">Топы региона недавно на герое не играли.</div>';
+  } catch (e) { el.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
 async function viewHero(hid) {
   hid = +hid; const h = hero(hid);
   V(`<a class="sub" href="#heroes" style="text-decoration:none">‹ Мета героев</a>
@@ -1029,6 +1099,7 @@ async function viewHero(hid) {
     ${ME ? '<div class="h2">Ты на этом герое</div><div class="card pad" id="hme"><div class="load">…</div></div>' : ''}
     <div class="g2"><div><div class="h2">Против него покупают<small>предметы, с которыми у соперников больше побед</small></div><div class="card" id="hctr"><div class="load" style="padding:14px">…</div></div></div>
       <div><div class="h2">Лучшие на герое<small>официальный топ</small></div><div class="card" id="hlb"><div class="load" style="padding:14px">…</div></div></div></div>
+    <div class="h2">Про-матчи<small>последние игры топов официального лидерборда на герое</small></div><div class="card" id="hpro"><div class="load" style="padding:14px">…</div></div>
     <div class="g3" style="margin-top:4px">
       <div><div class="h2">Тяжело против<small>на линии</small></div><div class="card mu-l" id="hard"><div class="load" style="padding:14px">…</div></div></div>
       <div><div class="h2">Легко против<small>на линии</small></div><div class="card mu-l" id="easy"><div class="load" style="padding:14px">…</div></div></div>
@@ -1041,6 +1112,7 @@ async function viewHero(hid) {
   heroLine(h, $('#hln'));
   heroCounterItems(hid);
   heroTop(hid, 'Europe');
+  heroPro(hid);
   if (ME) heroMine(hid);
   const muRow = (id, w, m, k) => `<a href="#h/${id}">${heroImg(id, 's')}<span style="min-width:0"><b>${esc(hero(id).n)}</b><small>${nf(m)} ${pl(m, ['матч', 'матча', 'матчей'])}</small></span><span class="wr ${k}">${pc1(w, m)}%</span></a>`;
   heroStats().then(M => { const x = M[hid]; $('#hss').innerHTML = x ? `<div><span>% побед</span><b class="${x.wr >= 51 ? 'win' : x.wr < 48 ? 'loss' : ''}">${x.wr.toFixed(1).replace('.', ',')}%</b></div><div><span>Берут</span><b>${x.pr.toFixed(1).replace('.', ',')}%</b></div><div><span>Матчей</span><b>${nf(x.m)}</b></div><div><span>KDA</span><b>${x.kda.toFixed(2).replace('.', ',')}</b></div><div><span>Душ за матч</span><b>${nf(x.spm)}</b></div>` : '<div class="sub">Мало матчей с этим фильтром</div>'; }).catch(e => { $('#hss').innerHTML = `<div class="sub">${esc(e.message)}</div>`; });
@@ -1365,11 +1437,11 @@ async function viewMatch(mid) {
 // ---------- навигация ----------
 
 // ---------- три вида ----------
-const SKINS = [['labs', 'Labs', 'Чёрный и оранжевый, всё строго — как у Deadlock Labs'], ['city', 'Город', 'Как меню самой игры: латунь, кремовый, рамки ар-деко'], ['graphs', 'Графики', 'Как League of Graphs: сине-серые панели, меню слева']];
-function skinSet(s) { document.documentElement.dataset.skin = s; try { localStorage.setItem('rl-skin', s); } catch (e) {} $$('#skins button,.skpick button').forEach(b => b.classList.toggle('on', b.dataset.s === s)); }
+const SKINS = [['labs', 'Labs', 'Чёрный и оранжевый, всё строго — как у Deadlock Labs'], ['city', 'Город', 'Как меню самой игры: латунь, кремовый, рамки ар-деко'], ['graphs', 'Графики', 'Как League of Graphs: глубокий синий, бирюза, золото рангов, меню слева']];
+function skinSet(s) { document.documentElement.dataset.skin = s; try { localStorage.setItem('rl-skin', s); localStorage.setItem('rl-skin-pick', '1'); } catch (e) {} $$('#skins button,.skpick button').forEach(b => b.classList.toggle('on', b.dataset.s === s)); }
 function skinPickHTML() { const c = document.documentElement.dataset.skin; return `<div class="skpick">${SKINS.map(([k, n, d]) => `<button data-s="${k}" class="${k === c ? 'on' : ''}"><div class="sw"></div><b>${n}</b><span>${d}</span></button>`).join('')}</div>`; }
 document.addEventListener('click', e => { const b = e.target.closest('#skins button,.skpick button'); if (b) skinSet(b.dataset.s); });
-skinSet(document.documentElement.dataset.skin || 'labs');
+skinSet(document.documentElement.dataset.skin || 'graphs');
 function V(html) { $('#v').innerHTML = html; }
 function route() {
   const h = location.hash.replace(/^#/, '') || 'home';
