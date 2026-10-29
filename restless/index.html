@@ -586,6 +586,66 @@ a.card span{display:block;color:var(--mu);font-size:13px;line-height:1.5}
 </style>
 </head>
 <body>
+<script>
+/* RESTLESS dev-gate: пока status.json не скажет open:true — сайт закрыт экраном-замком.
+   Своё устройство открывается один раз: ссылка с ?dev=КЛЮЧ или ввод ключа на замке.
+   Локальная копия (file://) всегда открыта. */
+(function () {
+  var DEV_KEY = 'vasyan2026';
+  var dev = false;
+  try { dev = localStorage.getItem('r_dev') === '1'; } catch (e) {}
+  var m = location.search.match(/[?&]dev=([^&#+]*)/);
+  if (m) {
+    var k = '';
+    try { k = decodeURIComponent(m[1]).replace(/\+/g, ' ').trim().toLowerCase(); } catch (e) { k = String(m[1]).toLowerCase(); }
+    if (k === DEV_KEY) { dev = true; try { localStorage.setItem('r_dev', '1'); } catch (e) {} }
+    var q = location.search.replace(/[?&]dev=[^&#+]*/g, '');
+    q = q.replace(/^\?&/, '?');
+    if (q === '?') q = '';
+    try { history.replaceState(null, '', location.pathname + q + location.hash); } catch (e) {}
+  }
+  if (dev || location.protocol === 'file:') { console.log('[Restless] dev-доступ: сайт открыт на этом устройстве'); return; }
+  var ov = null;
+  function lock() {
+    if (ov) return;
+    var st = document.createElement('style');
+    st.id = 'rlk-st';
+    st.textContent = '#rlk{position:fixed;inset:0;z-index:2147483647;background:#06080d;display:flex;align-items:center;justify-content:center;font:14px/1.5 Inter,system-ui,sans-serif;color:#e8e6df}#rlk .b{width:min(92vw,380px);text-align:center}#rlk .lg{font:700 34px/1 Unbounded,Inter,sans-serif;letter-spacing:.12em;color:#f6b73c}#rlk .lg small{display:block;font:500 11px/1 Inter,sans-serif;letter-spacing:.42em;color:#8a8577;margin-top:8px}#rlk p{color:#9b968a;margin:18px 0 14px}#rlk .row{display:flex;gap:8px}#rlk input{flex:1;background:#11141a;border:1px solid #262b35;border-radius:10px;color:#e8e6df;padding:11px 13px;font:600 13px Inter,sans-serif;outline:none;min-width:0}#rlk input:focus{border-color:#f6b73c}#rlk button{background:#f6b73c;border:0;border-radius:10px;color:#14100a;font:700 13px Inter,sans-serif;padding:11px 16px;cursor:pointer}#rlk .er{color:#ff7a6b;font:600 12px Inter,sans-serif;height:18px;margin-top:10px;opacity:0;transition:.2s}#rlk .er.on{opacity:1}#rlk.shake .b{animation:rlk-sh .3s}@keyframes rlk-sh{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}';
+    document.head.appendChild(st);
+    ov = document.createElement('div');
+    ov.id = 'rlk';
+    ov.innerHTML = '<div class="b"><div class="lg">RESTLESS<small>DEADLOCK</small></div><p>Сайт закрыт на разработку.<br>Для всех откроется позже — хозяин, ключ сюда.</p><div class="row"><input id="rlk-in" type="password" placeholder="Ключ доступа" autocomplete="off"><button id="rlk-go" type="button">Открыть</button></div><div class="er" id="rlk-er">Не тот ключ</div></div>';
+    (document.body || document.documentElement).appendChild(ov);
+    try { document.documentElement.style.overflow = 'hidden'; } catch (e) {}
+    var inp = document.getElementById('rlk-in');
+    function tryKey() {
+      var v = (inp.value || '').trim().toLowerCase();
+      if (v === DEV_KEY) { try { localStorage.setItem('r_dev', '1'); } catch (e) {} unlock(); }
+      else {
+        var er = document.getElementById('rlk-er');
+        er.classList.add('on');
+        ov.classList.remove('shake'); void ov.offsetWidth; ov.classList.add('shake');
+      }
+    }
+    document.getElementById('rlk-go').addEventListener('click', tryKey);
+    inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') tryKey(); });
+    setTimeout(function () { try { inp.focus(); } catch (e) {} }, 50);
+  }
+  function unlock() {
+    if (ov) { ov.remove(); ov = null; }
+    var st = document.getElementById('rlk-st'); if (st) st.remove();
+    try { document.documentElement.style.overflow = ''; } catch (e) {}
+    console.log('[Restless] замок снят');
+  }
+  lock();
+  if (location.protocol !== 'file:') {
+    fetch('status.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (j && j.open === true) { unlock(); console.log('[Restless] сайт открыт для всех (status.json)'); }
+    }).catch(function () {});
+  }
+})();
+</script>
+
 <header class="nav"><div class="in">
  <a class="logo" href="#home">RESTLESS<small>DEADLOCK</small></a>
  <nav class="tabs" id="tabs" aria-label="Разделы">
