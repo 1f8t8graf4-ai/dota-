@@ -528,6 +528,135 @@ a.prow:hover{background:var(--s2)}
 .prow .res.l{color:var(--loss);border-color:var(--loss)}
 .prow .sub{white-space:nowrap;font-size:12px}
 @media (max-width:640px){.prow{grid-template-columns:34px minmax(0,1fr) auto}.prow .sub{display:none}}
+
+/* ===== 29.10 — 10 видов (7 новых) + карточка героя при наведении ===== */
+.skins{flex-wrap:wrap}
+.skpick{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+@media (max-width:640px){.skpick{grid-template-columns:repeat(2,minmax(0,1fr))}.skpick b{font-size:13px}.skpick span{font-size:11px}}
+.skins [data-s="inferno"] i{background:linear-gradient(135deg,#ff7a1a 50%,#150d06 50%)}
+.skins [data-s="occult"] i{background:linear-gradient(135deg,#c95cff 50%,#120a20 50%)}
+.skins [data-s="midnight"] i{background:linear-gradient(135deg,#3d8bff 50%,#060910 50%)}
+.skins [data-s="forest"] i{background:linear-gradient(135deg,#8ce04a 50%,#0c160d 50%)}
+.skins [data-s="rivals"] i{background:linear-gradient(135deg,#ffd51e 50%,#182142 50%)}
+.skins [data-s="arcade"] i{background:linear-gradient(135deg,#ff2ec4 50%,#120726 50%)}
+.skins [data-s="paper"] i{background:linear-gradient(135deg,#b02a1e 50%,#efe8d8 50%)}
+.skpick [data-s="inferno"] .sw{background:linear-gradient(90deg,#140e08 0 60%,#ff7a1a 60% 64%,#3a1f0c 64%)}
+.skpick [data-s="occult"] .sw{background:linear-gradient(90deg,#110b1f 0 60%,#c95cff 60% 64%,#2a1846 64%)}
+.skpick [data-s="midnight"] .sw{background:linear-gradient(90deg,#080d18 0 60%,#3d8bff 60% 64%,#101b30 64%)}
+.skpick [data-s="forest"] .sw{background:linear-gradient(90deg,#101b11 0 60%,#8ce04a 60% 64%,#1d3320 64%)}
+.skpick [data-s="rivals"] .sw{background:linear-gradient(90deg,#151b31 0 60%,#ffd51e 60% 64%,#ff4655 64%)}
+.skpick [data-s="arcade"] .sw{background:linear-gradient(90deg,#120824 0 60%,#ff2ec4 60% 64%,#00e5ff 64%)}
+.skpick [data-s="paper"] .sw{background:linear-gradient(90deg,#f5efe2 0 60%,#b02a1e 60% 64%,#221f19 64%)}
+
+/* --- Инферно: уголь и огонь --- */
+html[data-skin="inferno"]{--bg:#0c0906;--s1:#140e08;--s2:#1b120a;--s3:#251810;--ln:#342314;--ln2:#4e3117;--tx:#f6eee1;--mu:#a5937c;--mu2:#7a6b58;--ac:#ff7a1a;--acd:#241208;--hot:#ff3d00;--r:6px}
+html[data-skin="inferno"] body{background:radial-gradient(1000px 500px at 80% -10%,rgba(255,90,10,.09),transparent 65%),var(--bg)}
+html[data-skin="inferno"] .logo{color:#ff9a2a}
+html[data-skin="inferno"] .h2{border-left:3px solid var(--ac);padding-left:10px}
+html[data-skin="inferno"] .btn{background:linear-gradient(135deg,#ff9a2a,#ff3d00);color:#1e0d02;border-radius:4px}
+html[data-skin="inferno"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="inferno"] .tag{border-radius:3px}
+html[data-skin="inferno"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 85% 0%,rgba(255,90,10,.13),transparent 60%),linear-gradient(180deg,#170f08,#0c0906)}
+html[data-skin="inferno"] .land p{color:#c6b39c}
+html[data-skin="inferno"] .hh{background:#130d07}
+html[data-skin="inferno"] .hh::after{background:linear-gradient(90deg,rgba(12,9,6,.95),rgba(12,9,6,.55) 60%,rgba(12,9,6,.2)),linear-gradient(0deg,rgba(12,9,6,.85),transparent 60%)}
+html[data-skin="inferno"] .srch input,html[data-skin="inferno"] .land input{background:#0f0a05;border-color:var(--ln2)}
+
+/* --- Оккульт: ночь, фиалка и магента --- */
+html[data-skin="occult"]{--bg:#0a0612;--s1:#110b1f;--s2:#171030;--s3:#201743;--ln:#2c1f52;--ln2:#43306e;--tx:#efe7ff;--mu:#a792cf;--mu2:#7c6aa4;--ac:#c95cff;--acd:#220b36;--hot:#8b5cf6;--r:10px}
+html[data-skin="occult"] body{background:radial-gradient(1000px 500px at 70% -10%,rgba(201,92,255,.10),transparent 65%),var(--bg)}
+html[data-skin="occult"] .card{border-color:#3a2a63;box-shadow:0 0 26px -16px rgba(201,92,255,.55)}
+html[data-skin="occult"] .h2::before{content:"";width:8px;height:8px;background:var(--ac);transform:rotate(45deg);flex:none;align-self:center;margin-right:2px}
+html[data-skin="occult"] .btn{background:var(--ac);color:#1d0630}
+html[data-skin="occult"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="occult"] .tabs a.on{color:var(--ac)}
+html[data-skin="occult"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 82% 0%,rgba(201,92,255,.14),transparent 60%),linear-gradient(180deg,#160c2b,#0a0612)}
+html[data-skin="occult"] .land p{color:#c3b4de}
+html[data-skin="occult"] .hh{background:#130b24}
+html[data-skin="occult"] .hh::after{background:linear-gradient(90deg,rgba(10,6,18,.95),rgba(10,6,18,.55) 60%,rgba(10,6,18,.2)),linear-gradient(0deg,rgba(10,6,18,.85),transparent 60%)}
+html[data-skin="occult"] .lob tr.mine td{background:rgba(201,92,255,.08)}
+html[data-skin="occult"] .rk{filter:drop-shadow(0 0 5px rgba(201,92,255,.35))}
+
+/* --- Полночь: чёрный лёд и электрик-синий --- */
+html[data-skin="midnight"]{--bg:#04060c;--s1:#090d17;--s2:#0d1322;--s3:#121b30;--ln:#19233c;--ln2:#28395e;--tx:#e7edf9;--mu:#8395b3;--mu2:#5e7090;--ac:#3d8bff;--acd:#071428;--hot:#39d1ff;--r:8px}
+html[data-skin="midnight"] .logo{text-shadow:0 0 14px rgba(61,139,255,.75)}
+html[data-skin="midnight"] .h2{border-bottom:1px solid var(--ln);padding-bottom:8px}
+html[data-skin="midnight"] .btn{background:var(--ac);color:#041226;box-shadow:0 0 18px -6px rgba(61,139,255,.8)}
+html[data-skin="midnight"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="midnight"] .tabs a.on{border-bottom-color:var(--ac);box-shadow:0 12px 16px -14px rgba(61,139,255,.9)}
+html[data-skin="midnight"] .card{box-shadow:0 0 30px -22px rgba(61,139,255,.5)}
+html[data-skin="midnight"] .land{border-color:var(--ln);background:radial-gradient(900px 420px at 80% 0%,rgba(61,139,255,.12),transparent 60%),linear-gradient(180deg,#0a1120,#04060c)}
+html[data-skin="midnight"] .land p{color:#b6c4dc}
+html[data-skin="midnight"] .hh{background:#070c16}
+html[data-skin="midnight"] .hh::after{background:linear-gradient(90deg,rgba(4,6,12,.95),rgba(4,6,12,.55) 60%,rgba(4,6,12,.2)),linear-gradient(0deg,rgba(4,6,12,.85),transparent 60%)}
+
+/* --- Джунгли: тёмная зелень Айви --- */
+html[data-skin="forest"]{--bg:#0a110b;--s1:#101b11;--s2:#152416;--s3:#1c2f1e;--ln:#274228;--ln2:#3b633c;--tx:#eef6ec;--mu:#96b491;--mu2:#6f8d6c;--ac:#8ce04a;--acd:#12290a;--hot:#d9e021;--r:12px}
+html[data-skin="forest"] .h2{border-left:3px solid var(--ac);padding-left:10px}
+html[data-skin="forest"] .btn{background:var(--ac);color:#0d1f06}
+html[data-skin="forest"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="forest"] .tag{border-radius:999px}
+html[data-skin="forest"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 85% 0%,rgba(140,224,74,.10),transparent 60%),linear-gradient(180deg,#122112,#0a110b)}
+html[data-skin="forest"] .land p{color:#bccdb6}
+html[data-skin="forest"] .hh{background:#0f1a10}
+html[data-skin="forest"] .hh::after{background:linear-gradient(90deg,rgba(10,17,11,.95),rgba(10,17,11,.55) 60%,rgba(10,17,11,.2)),linear-gradient(0deg,rgba(10,17,11,.85),transparent 60%)}
+
+/* --- Ривалс: комикс Marvel Rivals --- */
+html[data-skin="rivals"]{--bg:#0f1322;--s1:#151b31;--s2:#1b2342;--s3:#253057;--ln:#334073;--ln2:#4b5c9e;--tx:#f4f6ff;--mu:#9ba7d6;--mu2:#7280b3;--ac:#ffd51e;--acd:#2a2000;--hot:#ff4655;--r:4px}
+html[data-skin="rivals"] .h1,html[data-skin="rivals"] .h2,html[data-skin="rivals"] .hh .nm{text-shadow:2px 2px 0 rgba(0,0,0,.85)}
+html[data-skin="rivals"] .h2{border-bottom:3px solid var(--ac);padding-bottom:8px}
+html[data-skin="rivals"] .btn{background:var(--ac);color:#12100a;border:1px solid #000;box-shadow:3px 3px 0 #000}
+html[data-skin="rivals"] .btn.g{background:var(--s2);color:var(--tx);box-shadow:3px 3px 0 #000}
+html[data-skin="rivals"] .card{border:1px solid #000;box-shadow:4px 4px 0 rgba(255,213,30,.22)}
+html[data-skin="rivals"] .tag{border:1px solid #000;box-shadow:2px 2px 0 rgba(0,0,0,.7)}
+html[data-skin="rivals"] .tabs a.on{border-bottom:3px solid var(--ac)}
+html[data-skin="rivals"] .land{border:1px solid #000;box-shadow:5px 5px 0 rgba(255,70,85,.35);background:radial-gradient(700px 400px at 80% 0%,rgba(255,213,30,.12),transparent 60%),linear-gradient(160deg,#1a2244,#0f1322)}
+html[data-skin="rivals"] .land p{color:#b9c3e2}
+
+/* --- Аркада: ретро-неон --- */
+html[data-skin="arcade"]{--bg:#08040f;--s1:#120824;--s2:#180c33;--s3:#221149;--ln:#331a66;--ln2:#503093;--tx:#f1eaff;--mu:#a78fd8;--mu2:#7d68a9;--ac:#ff2ec4;--acd:#2e0036;--hot:#00e5ff;--r:12px}
+html[data-skin="arcade"] body{background:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 3px),radial-gradient(1000px 500px at 75% -10%,rgba(255,46,196,.08),transparent 60%),var(--bg)}
+html[data-skin="arcade"] .logo{color:#ff2ec4;text-shadow:0 0 12px rgba(255,46,196,.8),0 0 30px rgba(255,46,196,.4)}
+html[data-skin="arcade"] .h2{border-bottom:2px solid #ff2ec4;border-image:linear-gradient(90deg,#ff2ec4,#00e5ff) 1;padding-bottom:8px}
+html[data-skin="arcade"] .btn{background:var(--ac);color:#fff;box-shadow:0 0 16px -4px rgba(255,46,196,.9)}
+html[data-skin="arcade"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="arcade"] .tabs a.on{border-bottom-color:#00e5ff;box-shadow:0 12px 16px -13px rgba(0,229,255,.9)}
+html[data-skin="arcade"] .card{border-color:rgba(255,46,196,.28);box-shadow:0 0 26px -18px rgba(255,46,196,.7)}
+html[data-skin="arcade"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 82% 0%,rgba(255,46,196,.12),transparent 60%),linear-gradient(180deg,#160a30,#08040f)}
+html[data-skin="arcade"] .land p{color:#c9b8e6}
+html[data-skin="arcade"] .hh{background:#0e0620}
+html[data-skin="arcade"] .hh::after{background:linear-gradient(90deg,rgba(8,4,15,.95),rgba(8,4,15,.55) 60%,rgba(8,4,15,.2)),linear-gradient(0deg,rgba(8,4,15,.85),transparent 60%)}
+
+/* --- Газета 1930-х: светлая, бумага и чернила --- */
+html[data-skin="paper"]{--bg:#e9e2d2;--s1:#f5efe2;--s2:#eee7d6;--s3:#e3dac4;--ln:#d0c5aa;--ln2:#b3a687;--tx:#221f19;--mu:#6c6452;--mu2:#93896f;--ac:#b02a1e;--acd:#f6e3df;--hot:#1f4fa3;--win:#2e7d32;--loss:#c62828;--r:2px;--h:'Times New Roman',Georgia,serif;color-scheme:light}
+html[data-skin="paper"] body{background:repeating-linear-gradient(0deg,rgba(34,31,25,.022) 0 1px,transparent 1px 26px),var(--bg)}
+html[data-skin="paper"] .nav{background:rgba(245,239,226,.95);border-bottom:3px double var(--tx)}
+html[data-skin="paper"] .tabs a{color:#4c463a}html[data-skin="paper"] .tabs a:hover{color:var(--tx)}html[data-skin="paper"] .tabs a.on{color:var(--tx)}
+html[data-skin="paper"] .logo{color:var(--ac)}
+html[data-skin="paper"] .h2{border-bottom:2px solid var(--tx);padding-bottom:8px}
+html[data-skin="paper"] .card{border:1px solid #b8ac8e;box-shadow:0 2px 6px rgba(34,31,25,.08)}
+html[data-skin="paper"] .btn{background:var(--ac);color:#f5efe2;border-radius:2px;letter-spacing:.05em;text-transform:uppercase;font-size:13px}
+html[data-skin="paper"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="paper"] .tag{background:transparent;border:1px solid currentColor;color:#4c463a}
+html[data-skin="paper"] .tag.g{color:#2e7d32}html[data-skin="paper"] .tag.r{color:#c62828}html[data-skin="paper"] .tag.h{background:var(--ac);border-color:var(--ac);color:#f5efe2}
+html[data-skin="paper"] .land{border:1px solid var(--tx);background:radial-gradient(700px 380px at 85% 0%,rgba(176,42,30,.06),transparent 60%),linear-gradient(180deg,#f2ecdd,#e7dfcb)}
+html[data-skin="paper"] .land p{color:#4c463a}
+html[data-skin="paper"] .land input,html[data-skin="paper"] .srch input,html[data-skin="paper"] .srch .dd{background:#fbf7ec;border-color:var(--ln2)}
+html[data-skin="paper"] .hh{background:#eee7d6}
+html[data-skin="paper"] .hh::after{background:linear-gradient(90deg,rgba(238,231,214,.96),rgba(238,231,214,.55) 60%,rgba(238,231,214,.2)),linear-gradient(0deg,rgba(238,231,214,.85),transparent 60%)}
+html[data-skin="paper"] .me{background:var(--s1)}
+html[data-skin="paper"] .hln{background:rgba(34,31,25,.05);border-color:var(--ln2)}
+html[data-skin="paper"] .hln .pl{color:#f5efe2}
+html[data-skin="paper"] .hh .vi{box-shadow:0 0 0 2px var(--hc,var(--ac))}
+
+/* --- карточка героя при наведении --- */
+#hcard{position:fixed;z-index:55;width:176px;pointer-events:none;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .16s ease,transform .16s ease;filter:drop-shadow(0 16px 32px rgba(0,0,0,.6))}
+#hcard.on{opacity:1;transform:none}
+#hcard .sn{width:100%}
+#hcard .hcc{margin-top:8px;background:rgba(8,8,12,.9);border:1px solid var(--ln2);border-radius:10px;padding:7px 9px;font-size:11px;line-height:1.35;color:var(--mu);text-align:center}
+#hcard .hcc b{display:block;font:700 12.5px/1.2 var(--h);letter-spacing:.04em;text-transform:uppercase;color:var(--tx);margin-bottom:2px}
+html[data-skin="paper"] #hcard .hcc{background:rgba(245,239,226,.94);color:#4c463a}
+html[data-skin="paper"] #hcard .hcc b{color:#221f19}
 </style>
 </head>
 <body>
@@ -546,7 +675,7 @@ a.prow:hover{background:var(--s2)}
   <div class="dd hide" id="sd"></div>
  </form>
  <a class="me hide" id="me" href="#home"></a>
- <div class="skins" id="skins" role="group" aria-label="Вид сайта"><button data-s="labs" title="Labs"><i></i></button><button data-s="city" title="Город"><i></i></button><button data-s="graphs" title="Графики"><i></i></button></div>
+ <div class="skins" id="skins" role="group" aria-label="Вид сайта"></div>
 </div></header>
 <main class="wrap" id="v"></main>
 <p class="ft">Данные — открытый api.deadlock-api.com (матчи, ранги, винрейты). Restless не связан с Valve. Входить в Steam не нужно: профили и матчи в Deadlock открытые.</p>
@@ -584,7 +713,7 @@ async function api(p) {
 }
 const TYPE_RU = {marksman: 'Стрелок', brawler: 'Боец', mystic: 'Мистик', assassin: 'Убийца'};
 const hero = id => D.heroes[id] || {n: 'Герой #' + id, i: '', c: '', ab: []};
-const heroImg = (id, cls = '') => `<img class="hi ${cls}" src="${esc(hero(id).i)}" alt="${esc(hero(id).n)}" title="${esc(hero(id).n)}" loading="lazy" onerror="${noimg}">`;
+const heroImg = (id, cls = '') => `<img class="hi ${cls}" data-h="${id}" src="${esc(hero(id).i)}" alt="${esc(hero(id).n)}" title="${esc(hero(id).n)}" loading="lazy" onerror="${noimg}">`;
 const item = id => D.items[id];
 const itImg = id => `<img src="${esc((item(id) || {}).i)}" alt="" loading="lazy" onerror="${noimg}">`;
 function rankOf(badge) {
@@ -960,12 +1089,12 @@ async function viewHeroes() {
     const wrS = h => `<em style="font-style:normal" class="${h.wr >= 51 ? 'win' : h.wr < 48 ? 'loss' : ''}">${h.wr.toFixed(1).replace('.', ',')}%</em>`;
     if (HV.view === 'cards') return heroCards(M);
     if (HV.view === 'grid') {
-      $('#tiers').innerHTML = `<div class="hg">${M.map(h => `<a class="hgc" href="#h/${h.id}" style="--hc:${esc(hero(h.id).col || 'var(--ac)')}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><div><b>${esc(hero(h.id).n)}</b><span class="mono">${wrS(h)} <small>· берут ${h.pr.toFixed(1).replace('.', ',')}%</small></span><div class="ptags">${tagsHTML(heroTags(h, MM).slice(0, 3))}</div></div></a>`).join('')}</div>`;
+      $('#tiers').innerHTML = `<div class="hg">${M.map(h => `<a class="hgc" data-h="${h.id}" href="#h/${h.id}" style="--hc:${esc(hero(h.id).col || 'var(--ac)')}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><div><b>${esc(hero(h.id).n)}</b><span class="mono">${wrS(h)} <small>· берут ${h.pr.toFixed(1).replace('.', ',')}%</small></span><div class="ptags">${tagsHTML(heroTags(h, MM).slice(0, 3))}</div></div></a>`).join('')}</div>`;
       return;
     }
     const T = [['S', 53, '#ff5a1f'], ['A', 51, '#ffb020'], ['B', 49, '#e8d36a'], ['C', 47, '#8cc4ff'], ['D', 0, '#8e897f']];
     $('#tiers').innerHTML = '<div class="card">' + T.map(([t, lo], i) => { const hi = i ? T[i - 1][1] : 999, L = M.filter(h => h.wr >= lo && h.wr < hi); if (!L.length) return '';
-      return `<div class="tl"><div class="t" style="color:${T[i][2]}">${t}</div><div class="hs">${L.map(h => `<a class="hc" href="#h/${h.id}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><b>${esc(hero(h.id).n)}</b><span>${wrS(h)}<small>${h.pr.toFixed(1).replace('.', ',')}%</small></span></a>`).join('')}</div></div>`; }).join('') + '</div>';
+      return `<div class="tl"><div class="t" style="color:${T[i][2]}">${t}</div><div class="hs">${L.map(h => `<a class="hc" data-h="${h.id}" href="#h/${h.id}"><img src="${esc(hero(h.id).c || hero(h.id).i)}" alt="" loading="lazy" onerror="${noimg}"><b>${esc(hero(h.id).n)}</b><span>${wrS(h)}<small>${h.pr.toFixed(1).replace('.', ',')}%</small></span></a>`).join('')}</div></div>`; }).join('') + '</div>';
   } catch (e) { $('#tiers').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
 
@@ -1437,11 +1566,67 @@ async function viewMatch(mid) {
 // ---------- навигация ----------
 
 // ---------- три вида ----------
-const SKINS = [['labs', 'Labs', 'Чёрный и оранжевый, всё строго — как у Deadlock Labs'], ['city', 'Город', 'Как меню самой игры: латунь, кремовый, рамки ар-деко'], ['graphs', 'Графики', 'Как League of Graphs: глубокий синий, бирюза, золото рангов, меню слева']];
-function skinSet(s) { document.documentElement.dataset.skin = s; try { localStorage.setItem('rl-skin', s); localStorage.setItem('rl-skin-pick', '1'); } catch (e) {} $$('#skins button,.skpick button').forEach(b => b.classList.toggle('on', b.dataset.s === s)); }
+const SKINS = [
+  ['graphs', 'Графики', 'Как League of Graphs: глубокий синий, бирюза, золото рангов, меню слева'],
+  ['labs', 'Labs', 'Чёрный и оранжевый, всё строго — как у Deadlock Labs'],
+  ['city', 'Город', 'Как меню самой игры: латунь, кремовый, рамки ар-деко'],
+  ['inferno', 'Инферно', 'Уголь и огонь: жжёный чёрный, раскалённый оранжевый, острые углы'],
+  ['occult', 'Оккульт', 'Мистика: ночь, фиалка и магента, светящиеся рамки'],
+  ['midnight', 'Полночь', 'Чёрный лёд и электрик-синий, неон на линиях'],
+  ['forest', 'Джунгли', 'Тёмная зелень Айви и салатовый акцент, спокойный'],
+  ['rivals', 'Ривалс', 'Комикс Marvel Rivals: жирные рамки, жёлтый, жёсткие тени'],
+  ['arcade', 'Аркада', 'Ретро-неон: магента и циан, VHS-полосы'],
+  ['paper', 'Газета', '1930-е: бумага, чернила, красный штамп — единственная светлая']
+];
+const SKIN_BG = {graphs:'#0a1420', labs:'#070707', city:'#0e1512', inferno:'#0c0906', occult:'#0a0612', midnight:'#04060c', forest:'#0a110b', rivals:'#0f1322', arcade:'#08040f', paper:'#e9e2d2'};
+function skinSet(s) { document.documentElement.dataset.skin = s; try { localStorage.setItem('rl-skin', s); localStorage.setItem('rl-skin-pick', '1'); } catch (e) {} const _m = document.querySelector('meta[name=theme-color]'); if (_m && SKIN_BG[s]) _m.content = SKIN_BG[s]; $$('#skins button,.skpick button').forEach(b => b.classList.toggle('on', b.dataset.s === s)); }
 function skinPickHTML() { const c = document.documentElement.dataset.skin; return `<div class="skpick">${SKINS.map(([k, n, d]) => `<button data-s="${k}" class="${k === c ? 'on' : ''}"><div class="sw"></div><b>${n}</b><span>${d}</span></button>`).join('')}</div>`; }
 document.addEventListener('click', e => { const b = e.target.closest('#skins button,.skpick button'); if (b) skinSet(b.dataset.s); });
+const _sb = $('#skins'); if (_sb && !_sb.children.length) _sb.innerHTML = SKINS.map(([k, n]) => `<button data-s="${k}" title="${n}"><i></i></button>`).join('');
 skinSet(document.documentElement.dataset.skin || 'graphs');
+
+// ---------- карточка героя при наведении на иконку (как в Marvel Snap) ----------
+const HC = document.createElement('div'); HC.id = 'hcard'; HC.setAttribute('aria-hidden', 'true'); document.body.appendChild(HC);
+let HCt = 0, HCh = 0, HClp = 0, HCg = {}, HCgt = 0;
+function hcHide() { HCh = 0; clearTimeout(HCt); HC.classList.remove('on'); HC.innerHTML = ''; }
+async function hcGames() { if (!ME || Date.now() - HCgt < 300000) return; HCgt = Date.now(); HCg = {}; try { (await api('players/hero-stats?account_ids=' + ME.id)).forEach(r => HCg[r.hero_id] = r.matches_played || 0); } catch (e) {} }
+async function hcShow(id, t) {
+  if (!D.heroes[id]) return;
+  await hcGames();
+  if (HCh !== id) return;
+  const h = hero(id), n = HCg[id] || 0, L = lvOf(n);
+  HC.innerHTML = snapCard(id, n, null) + `<div class="hcc"><b>${esc(h.n)}</b>${esc(TYPE_RU[h.ty] || '')}${h.cx ? ' · сложность ' + h.cx + '/3' : ''} · ур. ${L} — ${esc(LVN[L - 1])}${n ? ` · у тебя ${nf(n)} ${pl(n, ['игра', 'игры', 'игр'])}` : ''}</div>`;
+  const r = t.getBoundingClientRect(), w = 176;
+  let x = r.right + 12; if (x + w > innerWidth - 8) x = r.left - w - 12; if (x < 8) x = Math.max(8, Math.min(innerWidth - w - 8, r.left));
+  HC.style.width = w + 'px'; HC.style.left = x + 'px'; HC.classList.add('on');
+  requestAnimationFrame(() => { HC.style.top = Math.max(8, Math.min(innerHeight - HC.offsetHeight - 8, r.top - 4)) + 'px'; });
+}
+document.addEventListener('pointerover', e => {
+  if (e.pointerType === 'touch' || e.target.closest('.sn,.sno,#hcard')) return;
+  const t = e.target.closest('[data-h]');
+  if (!t) { if (HCh) hcHide(); return; }
+  const id = +t.dataset.h; if (!D.heroes[id]) return;
+  if (HCh === id) return;
+  clearTimeout(HCt); HCh = id;
+  HCt = setTimeout(() => hcShow(id, t), 260);
+});
+document.addEventListener('pointermove', e => {
+  if (!HCh || !HC.classList.contains('on')) return;
+  const c = $('.sn', HC); if (!c) return;
+  const r = c.getBoundingClientRect();
+  if (e.clientX < r.left - 60 || e.clientX > r.right + 60 || e.clientY < r.top - 60 || e.clientY > r.bottom + 60) return;
+  const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+  c.style.setProperty('--rx', (-y * 14).toFixed(2) + 'deg'); c.style.setProperty('--ry', (x * 16).toFixed(2) + 'deg'); c.style.setProperty('--fx', (50 + x * 80).toFixed(1) + '%');
+});
+addEventListener('scroll', () => { if (HCh) hcHide(); }, {passive: true});
+addEventListener('blur', () => { if (HCh) hcHide(); });
+document.addEventListener('touchstart', e => {
+  const t = e.target.closest('[data-h]');
+  if (!t || e.target.closest('.sn,.sno')) { if (HCh) hcHide(); return; }
+  const id = +t.dataset.h; if (!D.heroes[id]) return;
+  clearTimeout(HClp); HClp = setTimeout(() => { HCh = id; hcShow(id, t); }, 420);
+}, {passive: true});
+['touchend', 'touchmove', 'touchcancel'].forEach(v => document.addEventListener(v, () => clearTimeout(HClp), {passive: true}));
 function V(html) { $('#v').innerHTML = html; }
 function route() {
   const h = location.hash.replace(/^#/, '') || 'home';
