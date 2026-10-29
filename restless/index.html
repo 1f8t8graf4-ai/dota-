@@ -88,6 +88,8 @@ img{display:block}
 .seg button.on{background:var(--s3);color:var(--tx)}
 .tag{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:5px;font:700 10.5px/1 var(--f);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;background:var(--s3);color:#d6d1c7}
 .tag.a{background:#3a2a07;color:var(--ac)}.tag.g{background:#0f3321;color:var(--win)}.tag.r{background:#3a1212;color:#ff8a80}.tag.b{background:#0f2440;color:#8cc4ff}.tag.h{background:var(--hot);color:#1a0800}
+#tagtip{position:fixed;z-index:60;max-width:290px;transform:translate(-50%,-100%);background:var(--bg);border:1px solid var(--ln2);border-radius:8px;color:var(--tx);font:500 12.5px/1.45 var(--f);letter-spacing:0;padding:8px 11px;pointer-events:none;box-shadow:0 10px 26px rgba(0,0,0,.5);text-transform:none;white-space:normal}
+#tagtip.dn{transform:translate(-50%,0)}
 .hi{width:40px;height:40px;border-radius:8px;object-fit:cover;background:var(--s3);flex:none}
 .hi.s{width:28px;height:28px;border-radius:6px}.hi.l{width:56px;height:56px;border-radius:12px}
 .rk{width:36px;height:36px;object-fit:contain;flex:none}
@@ -883,10 +885,10 @@ function profTags(H, HS, HA) {
   if (L20.length >= 15 && w20 / L20.length >= .65) T.push(['В ударе', 'g', `${w20} побед из ${L20.length} последних`]);
   else if (L20.length >= 15 && w20 / L20.length <= .35) T.push(['Чёрная полоса', 'r', `${w20} побед из ${L20.length} последних`]);
   const RD = L20.map(m => m.ranked_delta).filter(v => typeof v === 'number');
-  if (RD.length >= 5) { const s = RD.reduce((a, v) => a + v, 0); if (s > 0) T.push(['Растёт в ранге', 'g', `очки ранга за последние игры: +${s}`]); else if (s < 0) T.push(['Теряет ранг', 'r', `очки ранга за последние игры: ${s}`]); }
+  if (RD.length >= 5) { const s = RD.reduce((a, v) => a + v, 0); if (s > 0) T.push(['Подъём', 'g', `очки ранга за последние игры: +${s}`]); else if (s < 0) T.push(['Падение', 'r', `очки ранга за последние игры: ${s}`]); }
   const P = profPatterns(H), all = H.filter(won).length / Math.max(1, H.length), tl = P.find(x => x.n.startsWith('После двух'));
   if (tl && tl.d <= -10) T.push(['Тильтует', 'r', `после двух поражений подряд побеждает в ${Math.round(tl.wr)}% (обычно ${pct(all)}%)`]);
-  else if (tl && tl.d >= 8) T.push(['Не тильтует', 'g', `после двух поражений подряд побеждает в ${Math.round(tl.wr)}% (обычно ${pct(all)}%)`]);
+  else if (tl && tl.d >= 8) T.push(['Стабильный', 'g', `после двух поражений подряд побеждает в ${Math.round(tl.wr)}% (обычно ${pct(all)}%)`]);
   // герои
   const L30 = H.filter(m => m.start_time >= now() - 30 * 86400), cnt = {};
   L30.forEach(m => cnt[m.hero_id] = (cnt[m.hero_id] || 0) + 1);
@@ -896,12 +898,12 @@ function profTags(H, HS, HA) {
     else if (s >= .3) T.push([n + ' — моя любовь', 'b', `${pct(s)}% игр за 30 дней`]);
     const ha = HA[top[0]], tm = L30.filter(m => m.hero_id === +top[0]);
     if (ha && tm.length >= 10) { const r = tm.reduce((a, m) => a + m.net_worth, 0) / tm.length / ha.spm; if (r >= 1.2) T.push(['Миллионер на ' + n, 'g', `душ за матч на ${pct(r - 1)}% больше, чем обычно на этом герое`]); }
-    if (ha && s >= .25 && ha.pr && Object.values(HA).filter(x => x.pr < ha.pr).length / Object.keys(HA).length <= .25) T.push(['Необычный пик', 'b', `${n} берут редко — в ${ha.pr.toFixed(1).replace('.', ',')}% матчей`]); }
+    if (ha && s >= .25 && ha.pr && Object.values(HA).filter(x => x.pr < ha.pr).length / Object.keys(HA).length <= .25) T.push(['Экзотика', 'b', `${n} берут редко — в ${ha.pr.toFixed(1).replace('.', ',')}% матчей`]); }
   const byH = HS.slice().sort((a, b) => b.matches_played - a.matches_played), vet = byH[0];
   if (vet && vet.matches_played >= 300) T.push(['Ветеран ' + hero(vet.hero_id).n, 'a', `${nf(vet.matches_played)} игр на герое`]);
   else if (vet && vet.matches_played >= 100) T.push(['Мейн ' + hero(vet.hero_id).n, 'a', `${nf(vet.matches_played)} игр на герое — больше всех`]);
   const L50 = H.slice(0, 50), c50 = {}; L50.forEach(m => c50[m.hero_id] = (c50[m.hero_id] || 0) + 1);
-  const many = Object.values(c50).filter(v => v >= 3).length; if (L50.length >= 30 && many >= 8) T.push(['Мастер на все руки', 'b', `${many} героев по 3+ игры из последних ${L50.length}`]);
+  const many = Object.values(c50).filter(v => v >= 3).length; if (L50.length >= 30 && many >= 8) T.push(['Универсал', 'b', `${many} героев по 3+ игры из последних ${L50.length}`]);
   const last = H[0], hl = HS.find(h => h.hero_id === last.hero_id);
   if (hl && hl.matches_played < 10) T.push(['Учит ' + hero(last.hero_id).n, '', `всего ${games(hl.matches_played)} на герое`]);
   // стиль: последние 20 игр против среднего по тем же героям (по каждому матчу)
@@ -912,15 +914,15 @@ function profTags(H, HS, HA) {
       kil = r((m, a) => m.player_kills / Math.max(.1, a.kpm)), ast = r((m, a) => m.player_assists / Math.max(.1, a.apm)),
       lh = r((m, a) => m.last_hits / Math.max(1, a.lhm)), dn = r((m, a) => (m.denies || 0) / Math.max(.3, a.den));
     if (soul >= 1.15) T.push(['Фармила', 'g', `душ на ${pct(soul - 1)}% больше среднего по своим героям`]);
-    else if (soul <= .85) T.push(['Плохой фарм', 'r', `душ на ${pct(1 - soul)}% меньше среднего по своим героям`]);
+    else if (soul <= .85) T.push(['Голодает', 'r', `душ на ${pct(1 - soul)}% меньше среднего по своим героям`]);
     if (dth >= 1.3) T.push(['Кормит', 'r', `смертей на ${pct(dth - 1)}% больше среднего по героям`]);
     else if (dth <= .75) T.push(['Живучий', 'g', `смертей на ${pct(1 - dth)}% меньше среднего по героям`]);
     if (kil >= 1.3) T.push(['Убийца', 'g', `убийств на ${pct(kil - 1)}% больше среднего по героям`]);
     if (ast >= 1.3) T.push(['Командный', 'g', `помощи в убийствах на ${pct(ast - 1)}% больше среднего по героям`]);
-    if (kil <= .7 && ast <= .8) T.push(['Мало в драках', 'r', 'и убийств, и помощи меньше среднего по героям']);
+    if (kil <= .7 && ast <= .8) T.push(['Пассивный', 'r', 'и убийств, и помощи меньше среднего по героям']);
     if (lh >= 1.2) T.push(['Мастер добивания', 'g', `добиваний на ${pct(lh - 1)}% больше среднего по героям`]);
     else if (lh <= .8) T.push(['Не добивает', 'r', `добиваний на ${pct(1 - lh)}% меньше среднего по героям`]);
-    if (dn >= 1.5) T.push(['Отнимает души', 'g', 'отказов (денаев) в 1,5 раза больше среднего — не даёт сопернику добить']);
+    if (dn >= 1.5) T.push(['Жадина', 'g', 'отказов (денаев) в 1,5 раза больше среднего — не даёт сопернику добить']);
   }
   const lv = L30.filter(m => m.abandoned_time_s).length;
   if (lv) T.push([`Ливал ${lv} ${pl(lv, ['раз', 'раза', 'раз'])}`, 'r', 'вышел из матча за последние 30 дней']);
@@ -930,7 +932,7 @@ function profTags(H, HS, HA) {
   const d14 = new Set(H.filter(m => m.start_time >= now() - 14 * 86400).map(m => day(m).toDateString())).size;
   if (d14 >= 12) T.push(['Каждый день', 'b', `играл ${d14} дней из последних 14`]);
   const night = L30.filter(m => day(m).getHours() < 6).length;
-  if (L30.length >= 10 && night / L30.length >= .4) T.push(['Ночной игрок', 'b', `${pct(night / L30.length)}% игр с полуночи до 6 утра`]);
+  if (L30.length >= 10 && night / L30.length >= .4) T.push(['Полуночник', 'b', `${pct(night / L30.length)}% игр с полуночи до 6 утра`]);
   const wk = L30.filter(m => [0, 6].includes(day(m).getDay())).length;
   if (L30.length >= 15 && wk / L30.length >= .6) T.push(['По выходным', 'b', `${pct(wk / L30.length)}% игр — в субботу и воскресенье`]);
   if (H.length >= 2 && H[0].start_time - (H[1].start_time + H[1].match_duration_s) >= 14 * 86400) T.push(['Вернулся', 'b', `перерыв ${Math.round((H[0].start_time - H[1].start_time) / 86400)} дней перед последней игрой`]);
@@ -947,7 +949,7 @@ function profPatterns(H) {
   const N = {s1: 'Первый матч сессии', s2: 'Второй матч сессии', s3: 'Третий матч сессии', l2: 'После двух поражений подряд', long: 'Игры длиннее 35 минут'};
   return Object.entries(B).filter(([, v]) => v.length >= 12).map(([k, v]) => { const wr = v.filter(Boolean).length / v.length; return {n: N[k], d: 100 * (wr - all), wr: 100 * wr, c: v.length}; });
 }
-function tagsHTML(T) { return T.map(([s, c, h]) => `<span class="tag ${c}" title="${esc(h)}">${esc(s)}</span>`).join(''); }
+function tagsHTML(T) { return T.map(([s, c, h]) => `<span class="tag ${c}" data-tip="${esc(h)}">${esc(s)}</span>`).join(''); }
 function mtRow(m) {
   const w = m.player_team === m.match_result;
   return `<a class="mt" href="#m/${m.match_id}"><i class="st" style="background:${w ? 'var(--win)' : 'var(--loss)'}"></i>${heroImg(m.hero_id)}
@@ -1075,10 +1077,10 @@ async function viewLive() {
 function heroTags(x, M) {
   const h = hero(x.id), T = [], L = Object.values(M), q = (f, p) => { const s = L.map(f).sort((a, b) => a - b); return s[Math.floor(p * (s.length - 1))]; };
   if (TYPE_RU[h.ty]) T.push([TYPE_RU[h.ty], 'b', 'роль из файлов игры']);
-  if (x.wr >= 53) T.push(['Сильный сейчас', 'h', `${x.wr.toFixed(1).replace('.', ',')}% побед за период`]);
-  else if (x.wr < 47) T.push(['Слабый сейчас', 'r', `${x.wr.toFixed(1).replace('.', ',')}% побед за период`]);
-  if (x.pr >= q(y => y.pr, .75)) T.push(['Популярный', 'a', `берут в ${x.pr.toFixed(1).replace('.', ',')}% матчей`]);
-  else if (x.pr <= q(y => y.pr, .2)) T.push(['Редко берут', '', `берут в ${x.pr.toFixed(1).replace('.', ',')}% матчей`]);
+  if (x.wr >= 53) T.push(['Имба', 'h', `${x.wr.toFixed(1).replace('.', ',')}% побед за период`]);
+  else if (x.wr < 47) T.push(['Мимо', 'r', `${x.wr.toFixed(1).replace('.', ',')}% побед за период`]);
+  if (x.pr >= q(y => y.pr, .75)) T.push(['Народный', 'a', `берут в ${x.pr.toFixed(1).replace('.', ',')}% матчей`]);
+  else if (x.pr <= q(y => y.pr, .2)) T.push(['Экзотика', '', `берут в ${x.pr.toFixed(1).replace('.', ',')}% матчей`]);
   if (h.cx === 1) T.push(['Простой', 'g', 'сложность 1 из 3 — для начала']); else if (h.cx === 3) T.push(['Сложный', 'r', 'сложность 3 из 3']);
   if (x.kda >= q(y => y.kda, .8)) T.push(['Живучий', 'g', `KDA ${x.kda.toFixed(2).replace('.', ',')} — среди лучших`]);
   return T;
@@ -1430,35 +1432,35 @@ function mTags(mi, me, A, PT, opp) {
   const P = mi.players, dur = mi.duration_s, a = A.get(me), T = [], s = mLast(me);
   const mates = P.filter(p => p.team === me.team);
   if (opp) { const d = mAt(me, 600) - mAt(opp, 600), o = Math.max(1, mAt(opp, 600));
-    if (d / o >= .15) T.push(['Сильная линия', 'g', `к 10-й минуте на ${pc(d, o)}% душ больше соперника по линии`]);
-    else if (-d / o >= .15) T.push(['Тяжёлая линия', 'r', `к 10-й минуте на ${pc(-d, o)}% душ меньше соперника по линии`]); }
+    if (d / o >= .15) T.push(['Продавил', 'g', `к 10-й минуте на ${pc(d, o)}% душ больше соперника по линии`]);
+    else if (-d / o >= .15) T.push(['Давили', 'r', `к 10-й минуте на ${pc(-d, o)}% душ меньше соперника по линии`]); }
   const ld = (me.death_details || []).filter(d => d.game_time_s < 600).length;
-  if (ld >= 2) T.push(['Умирал на линии', 'r', `${ld} ${pl(ld, ['смерть', 'смерти', 'смертей'])} до 10-й минуты`]);
+  if (ld >= 2) T.push(['Наказан', 'r', `${ld} ${pl(ld, ['смерть', 'смерти', 'смертей'])} до 10-й минуты`]);
   if (dur > 1500) { const late = p => (p.net_worth - mAt(p, 1200)) / ((dur - 1200) / 60), tl = mates.reduce((x, p) => x + late(p), 0) / mates.length;
-    if (late(me) >= tl * 1.2) T.push(['Фарм в лейте', 'g', `после 20-й минуты ${nf(late(me))} душ/мин — больше, чем у своих (${nf(tl)})`]);
-    else if (late(me) <= tl * .75) T.push(['Перестал фармить', 'r', `после 20-й минуты ${nf(late(me))} душ/мин — меньше, чем у своих (${nf(tl)})`]); }
-  if (a.kda >= 4) T.push(['Высокий KDA', 'g', `(убийства + помощь) / смерти = ${a.kda.toFixed(1).replace('.', ',')}`]);
+    if (late(me) >= tl * 1.2) T.push(['Лейтфарм', 'g', `после 20-й минуты ${nf(late(me))} душ/мин — больше, чем у своих (${nf(tl)})`]);
+    else if (late(me) <= tl * .75) T.push(['Сдулся', 'r', `после 20-й минуты ${nf(late(me))} душ/мин — меньше, чем у своих (${nf(tl)})`]); }
+  if (a.kda >= 4) T.push(['Чисто', 'g', `(убийства + помощь) / смерти = ${a.kda.toFixed(1).replace('.', ',')}`]);
   if (me.deaths <= 2 && dur > 1500) T.push(['Живучий', 'g', `${me.deaths} ${pl(me.deaths, ['смерть', 'смерти', 'смертей'])} за ${Math.round(dur / 60)} минут`]);
-  if (a.kp >= .65) T.push(['Всегда в драке', 'g', `участие в ${Math.round(100 * a.kp)}% убийств команды`]);
-  else if (a.kp < .35 && P.filter(p => p.team === me.team).reduce((x, p) => x + p.kills, 0) >= 10) T.push(['Мало в драках', 'r', `участие только в ${Math.round(100 * a.kp)}% убийств команды`]);
+  if (a.kp >= .65) T.push(['В гуще', 'g', `участие в ${Math.round(100 * a.kp)}% убийств команды`]);
+  else if (a.kp < .35 && P.filter(p => p.team === me.team).reduce((x, p) => x + p.kills, 0) >= 10) T.push(['Пассивный', 'r', `участие только в ${Math.round(100 * a.kp)}% убийств команды`]);
   const tb = mates.reduce((x, p) => x + A.get(p).boss, 0);
-  if (tb > 0 && a.boss / tb >= .3) T.push(['Ломает башни', 'g', `${pc(a.boss, tb)}% урона команды по башням и боссам`]);
-  else if (tb > 0 && a.boss / tb <= .05) T.push(['Не бьёт башни', 'r', `только ${pc(a.boss, tb)}% урона команды по башням и боссам`]);
+  if (tb > 0 && a.boss / tb >= .3) T.push(['Таран', 'g', `${pc(a.boss, tb)}% урона команды по башням и боссам`]);
+  else if (tb > 0 && a.boss / tb <= .05) T.push(['Пацифист', 'r', `только ${pc(a.boss, tb)}% урона команды по башням и боссам`]);
   if (PT[me.player_slot]) { let al = 0, n = 0; const f = PT[me.player_slot];
     for (let t = 600; t < dur; t += 5) { const q = f(t); if (q.hp <= 0) continue; n++; if (!mates.some(p => p !== me && PT[p.player_slot] && mDist(PT[p.player_slot](t), q) < 3000)) al++; }
-    if (n > 60 && al / n >= .6) T.push(['Ходит один', 'a', `после 10-й минуты ${pc(al, n)}% времени без своих рядом — сплит-пуш или фарм в одиночку`]); }
-  if (a.acc != null) { const best = Math.max(...P.map(p => A.get(p).acc || 0)); if (a.acc >= best - .001) T.push(['Самый меткий', 'g', `точность ${Math.round(100 * a.acc)}% — лучшая в матче`]); }
+    if (n > 60 && al / n >= .6) T.push(['Одиночка', 'a', `после 10-й минуты ${pc(al, n)}% времени без своих рядом — сплит-пуш или фарм в одиночку`]); }
+  if (a.acc != null) { const best = Math.max(...P.map(p => A.get(p).acc || 0)); if (a.acc >= best - .001) T.push(['Снайпер', 'g', `точность ${Math.round(100 * a.acc)}% — лучшая в матче`]); }
   if ((s.headshot_kills || 0) >= 3) T.push(['Хедшотер', 'g', `${s.headshot_kills} убийств в голову`]);
   if (a.heal >= 5000) T.push(['Лекарь', 'g', `вылечил своих на ${nf(a.heal)}`]);
   // ещё как на League of Graphs
   const avgD = P.reduce((x, p) => x + p.deaths, 0) / P.length, avgDmg = P.reduce((x, p) => x + A.get(p).dmg, 0) / P.length, tnw = mates.reduce((x, p) => x + p.net_worth, 0) / mates.length;
   if (P.every(p => p === me || p.net_worth <= me.net_worth)) T.push(['Миллионер', 'g', `больше всех душ в матче: ${nf(me.net_worth)}`]);
-  else if (me.net_worth <= .75 * tnw) T.push(['Плохой фарм', 'r', `душ на ${pc(tnw - me.net_worth, tnw)}% меньше среднего в команде`]);
-  if (P.every(p => p === me || A.get(p).dmg <= a.dmg)) T.push([hero(me.hero_id).n + ' с высоким уроном', 'g', `больше всех урона по героям: ${nf(a.dmg)}`]);
-  else if (a.dmg <= .7 * avgDmg && a.heal < 8000) T.push(['Низкий урон', 'r', `урона на ${pc(avgDmg - a.dmg, avgDmg)}% меньше среднего в матче`]);
+  else if (me.net_worth <= .75 * tnw) T.push(['Голодает', 'r', `душ на ${pc(tnw - me.net_worth, tnw)}% меньше среднего в команде`]);
+  if (P.every(p => p === me || A.get(p).dmg <= a.dmg)) T.push(['Дамагер', 'g', `${hero(me.hero_id).n}: больше всех урона по героям — ${nf(a.dmg)}`]);
+  else if (a.dmg <= .7 * avgDmg && a.heal < 8000) T.push(['Пшик', 'r', `урона на ${pc(avgDmg - a.dmg, avgDmg)}% меньше среднего в матче`]);
   if (me.deaths >= Math.max(8, 1.5 * avgD)) T.push(['Кормил', 'r', `${me.deaths} смертей — в среднем в матче ${avgD.toFixed(1).replace('.', ',')}`]);
-  if (me.deaths === 0 && dur > 900) T.push(['Без смертей', 'g', 'ни разу не умер']);
-  if (P.every(p => p === me || p.last_hits <= me.last_hits)) T.push(['Мастер добивания', 'g', `больше всех добиваний: ${me.last_hits}`]);
+  if (me.deaths === 0 && dur > 900) T.push(['Бессмертный', 'g', `ни одной смерти за ${Math.round(dur / 60)} минут`]);
+  if (P.every(p => p === me || p.last_hits <= me.last_hits)) T.push(['Фармер', 'g', `больше всех добиваний (ластхитов): ${me.last_hits}`]);
   const tk = p => mLast(p).player_damage_taken || 0, tTk = mates.reduce((x, p) => x + tk(p), 0) / mates.length;
   if (mates.every(p => p === me || tk(p) <= tk(me)) && tk(me) >= 1.3 * tTk) T.push(['Танк', 'g', `принял больше всех урона в команде: ${nf(tk(me))}`]);
   const nc = s.gold_neutral_creep || 0; if (me.net_worth && nc / me.net_worth >= .25) T.push(['Лесник', 'b', `${pc(nc, me.net_worth)}% душ — с лагерей`]);
@@ -1472,7 +1474,7 @@ function mTags(mi, me, A, PT, opp) {
   const ts = [...new Set(P.flatMap(p => p.stats.map(x => x.time_stamp_s)))], df = ts.map(x => P.reduce((y, p) => y + (p.team === me.team ? 1 : -1) * mAt(p, x), 0));
   const lo = Math.min(0, ...df), hi = Math.max(0, ...df), won = mi.winning_team === me.team;
   if (won && lo <= -5000) T.push(['Камбэк', 'g', `выиграли, хотя отставали на ${nf(-lo)} душ`]);
-  if (!won && hi >= 5000) T.push(['Отдали игру', 'r', `проиграли, хотя были впереди на ${nf(hi)} душ`]);
+  if (!won && hi >= 5000) T.push(['Слили', 'r', `проиграли, хотя были впереди на ${nf(hi)} душ`]);
   return T;
 }
 function ring(v, max, lab, val, sub) {
@@ -1526,7 +1528,7 @@ async function viewMatch(mid) {
     const hasP = Object.keys(PT).length > 0;
     const dots = hasP ? P.map(p => `<i class="hd ${p.team === me.team ? 'us' : 'en'}${p === me ? ' me' : ''}" data-s="${p.player_slot}"><img src="${esc(hero(p.hero_id).i)}" alt="" onerror="${noimg}"></i>`).join('') : '';
     const vd = p => { const x = A.get(p); return `<span class="vd ${x.v[1]}" title="${esc(x.prob.join('; ') || 'вклад ' + x.score + ' из 100')}">${x.v[0]}</span>`; };
-    const md2 = p => MD.get(p).map(([n, h]) => `<span class="md" title="${esc(h)}">${n}</span>`).join('');
+    const md2 = p => MD.get(p).map(([n, h]) => `<span class="md" data-tip="${esc(h)}">${n}</span>`).join('');
     const sb = t => P.filter(p => p.team === t).sort((x, y) => A.get(y).score - A.get(x).score).map(p => `<tr class="${p === me ? 'me3' : ''}"><td><span class="row" style="gap:8px">${heroImg(p.hero_id, 's')}<span style="min-width:0"><b class="hn">${esc(hero(p.hero_id).n)}</b>${md2(p)}</span></span></td><td>${vd(p)}</td><td><span class="sc"><i style="width:${A.get(p).score}%"></i></span>${A.get(p).score}</td><td>${p.kills}/${p.deaths}/${p.assists}</td><td>${nf(p.net_worth)}</td><td>${nf(dmg(p))}</td></tr>`).join('');
     const best = (f) => Math.max(...P.map(f));
     const place = f => 1 + P.filter(p => f(p) > f(me)).length;
@@ -1648,9 +1650,22 @@ document.addEventListener('touchstart', e => {
   clearTimeout(HClp); HClp = setTimeout(() => { HCh = id; hcShow(id, t); }, 420);
 }, {passive: true});
 ['touchend', 'touchmove', 'touchcancel'].forEach(v => document.addEventListener(v, () => clearTimeout(HClp), {passive: true}));
+// ---------- подсказка меток: навёл на метку — узнал, за что она ----------
+const TT = document.createElement('div'); TT.id = 'tagtip'; TT.setAttribute('aria-hidden', 'true'); TT.hidden = true; document.body.appendChild(TT);
+document.addEventListener('pointerover', e => {
+  const t = e.target.closest('.tag[data-tip],.md[data-tip]');
+  if (!t) { TT.hidden = true; return; }
+  TT.textContent = t.dataset.tip; TT.hidden = false;
+  const r = t.getBoundingClientRect(), w = TT.offsetWidth;
+  TT.style.left = Math.max(w / 2 + 8, Math.min(innerWidth - w / 2 - 8, r.left + r.width / 2)) + 'px';
+  if (r.top < 76) { TT.classList.add('dn'); TT.style.top = r.bottom + 8 + 'px'; } else { TT.classList.remove('dn'); TT.style.top = r.top - 8 + 'px'; }
+});
+addEventListener('scroll', () => { TT.hidden = true; }, {passive: true});
+document.addEventListener('click', e => { if (!e.target.closest('.tag[data-tip],.md[data-tip]')) TT.hidden = true; });
 let VSEQ = 0; const vOk = s => s === VSEQ;
 function V(html) { $('#v').innerHTML = html; }
 function route() {
+  TT.hidden = true;
   const h = location.hash.replace(/^#/, '') || 'home';
   const [t, a] = h.split('/');
   const tab = {m: 'matches', h: 'heroes', who: 'home', now: 'live', builds: 'heroes', b: 'heroes', profile: 'home'}[t] || t;
