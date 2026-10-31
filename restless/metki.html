@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Метки Restless</title>
+<style>
+:root{--bg:#0d0c0a;--card:#17150f;--card2:#1f1c14;--ink:#f3ecdd;--ink2:#a89c84;--ink3:#7a705d;--acc:#f2b43c;--line:rgba(255,240,210,.09);
+--g:#4fd18b;--r:#ff6b6b;--a:#f2b43c;--b:#6fb7ff;--n:#a89c84;--h:#e9c46a}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f3eb;--card:#fff;--card2:#fbf8f1;--ink:#1b1811;--ink2:#6e675b;--ink3:#9c937f;--acc:#b57f1d;--line:rgba(0,0,0,.08);--g:#1fa05e;--r:#e0533d;--a:#b57f1d;--b:#2d7fd0}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:880px;margin:0 auto;padding:22px 16px 140px}
+h1{margin:0 0 6px;font-size:26px;letter-spacing:-.01em}
+.lead{margin:0 0 16px;color:var(--ink2);max-width:640px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.f{border:1px solid var(--line);background:var(--card);color:var(--ink2);border-radius:999px;padding:7px 12px;font:600 13px/1 inherit;cursor:pointer}
+.f.on{background:var(--acc);color:#1d1300;border-color:transparent}
+.cnt{margin-left:auto;font:600 12.5px/1.3 inherit;color:var(--ink2)}
+.grp{margin:22px 2px 10px;font:800 12px/1 inherit;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.t{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.t.dec-keep{border-color:color-mix(in srgb,var(--g) 45%,transparent)}
+.t.dec-del{opacity:.55}
+.t.dec-cond,.t.dec-name,.t.dec-redo{border-color:color-mix(in srgb,var(--acc) 55%,transparent)}
+.top{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:9px;font:800 14px/1 inherit;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);position:relative;cursor:help}
+.chip .tip{position:absolute;left:0;top:calc(100% + 8px);width:max-content;max-width:260px;padding:8px 10px;border-radius:10px;background:#000;color:#fff;font:500 12.5px/1.35 inherit;box-shadow:0 8px 24px rgba(0,0,0,.4);opacity:0;pointer-events:none;transform:translateY(-4px);transition:.15s;z-index:3}
+.chip:hover .tip,.chip:focus .tip{opacity:1;transform:none}
+.info{flex:1;min-width:220px}
+.cond{font-weight:600}
+.ex{color:var(--ink2);font-size:13.5px;margin-top:3px}
+.warn{margin-top:6px;font-size:12.5px;color:var(--acc)}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.acts button{border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:10px;padding:8px 11px;font:600 13px/1 inherit;cursor:pointer}
+.acts button.on{background:var(--ink);color:var(--bg)}
+.acts button[data-d="keep"].on{background:var(--g);color:#04210f}
+.acts button[data-d="del"].on{background:var(--r);color:#2a0606}
+.ed{display:none;margin-top:10px;gap:8px;flex-direction:column}
+.ed.show{display:flex}
+.ed label{font:600 12px/1 inherit;color:var(--ink2)}
+.ed input,.ed textarea{width:100%;border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:10px;padding:9px 11px;font:500 14px/1.35 inherit}
+.ed textarea{min-height:58px;resize:vertical}
+.new{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;background:var(--acc);color:#1d1300;font:800 10px/1.4 inherit;letter-spacing:.06em;vertical-align:middle}
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:9;background:color-mix(in srgb,var(--bg) 94%,transparent);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.foot .in{max-width:880px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.foot b{font-size:14px}.foot small{color:var(--ink2)}
+.go{margin-left:auto;border:0;background:var(--acc);color:#1d1300;border-radius:12px;padding:12px 16px;font:800 14.5px/1 inherit;cursor:pointer}
+.out{display:none;max-width:880px;margin:10px auto 0}
+.out.show{display:block}
+.out textarea{width:100%;min-height:160px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px;font:12.5px/1.4 ui-monospace,Menlo,monospace}
+.ok{color:var(--g);font-weight:700}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>Метки Restless</h1>
+<p class="lead">Все метки, которые сайт и мод вешают на игроков. Главное — <b>понятно по-русски</b> с первого взгляда, длина не важна; подробности — в подсказке (наведи на метку). Где было два варианта — короткий и длинный, — показаны оба: выбери или впиши свой. Жёлтым помечен сленг, который не все поймут. У каждой нажми: <b>оставить</b>, <b>удалить</b>, <b>изменить условие</b>, <b>переименовать</b> или <b>переделать</b>. Ответы сохраняются в этом браузере. В конце — «Скопировать ответы» и пришли мне текст.</p>
+<div class="bar" id="bar"></div>
+<div id="list"></div>
+</div>
+<div class="foot"><div class="in"><b id="done">0 из 0</b><small id="sum"></small><button class="go" id="copy">Скопировать ответы</button></div><div class="out" id="out"><textarea id="txt" readonly></textarea><p id="cpm"></p></div></div>
+<script>
+// g — хорошо, r — плохо, a — герой/мейн, b — нейтрально, h — сильный герой
+const T=[
+// ПРОФИЛЬ
+['p','Винстрик','g','3+ победы подряд','«5 побед подряд». Красная пара — Лузстрик (3+ поражения подряд)'],
+['p','Лузстрик','r','3+ поражения подряд','«4 поражения подряд»'],
+['p','Жарит','g','65%+ побед в последних 20 играх (минимум 15)','«14 побед из 20 последних — форма на пике»'],
+['p','Тонет','r','35% и меньше побед в последних 20 играх','«6 побед из 20 последних — ничего не заходит»'],
+['p','Подъём','g','ранг за последние игры в плюсе','«ранг растёт: +84 очка за последние игры»'],
+['p','Падение','r','ранг за последние игры в минусе','«ранг сыплется: −60 очков»'],
+['p','Накрыло','r','после двух поражений подряд побеждает на 10%+ реже обычного (тильт)','«после двух поражений побеждает в 31% (обычно 52%) — тильт»'],
+['p','Стабильный','g','после двух поражений подряд побеждает на 8%+ чаще обычного','«голову не теряет»'],
+['p','OTP','a','60%+ игр за 30 дней — на одном герое','«72% игр — на Венаторе»'],
+['p','Фанат','b','30–60% игр за 30 дней — на одном герое','«41% игр — на Рэм»'],
+['p','Миллионер','g','на главном герое души за матч на 20%+ выше среднего по игре (10+ игр)','«души на 26% выше обычного на Хейзе»','Имя совпадает с меткой матча «Миллионер» — может, назвать «Богач»?'],
+['p','Экзотика','b','главный герой (25%+ игр) — из самых редких в игре','«Виктора берут в 2,1% матчей»','Совпадает с меткой героя «Экзотика»'],
+['p','Ветеран','a','300+ игр на одном герое','«Ветеран Мо и Крилл — 412 игр»'],
+['p','Мейн','a','100–300 игр на одном герое','«Мейн Венатор — 140 игр»'],
+['p','Универсал','b','8+ героев по 3+ игры из последних 50','«9 героев по 3+ игры»'],
+['p','Стажёр','n','на герое последнего матча меньше 10 игр','«всего 4 игры на Селесте — только раскачивается»'],
+['p','Фармила','g','души на 15%+ больше среднего по тем же героям (последние 20)','«фармит на 22% больше душ, чем обычно»'],
+['p','Голодает','r','души на 15%+ меньше среднего','«души на 18% ниже обычного»','Совпадает с меткой матча «Голодает»'],
+['p','Кормит','r','смертей на 30%+ больше среднего по героям','«умирает на 41% чаще обычного»'],
+['p','Живучий','g','смертей на 25%+ меньше среднего по героям','«умирает на 30% реже обычного»','Это же имя у метки героя и метки матча — 3 разных «Живучий»'],
+['p','Убийца','g','убийств на 30%+ больше среднего по героям','«убивает на 35% чаще»'],
+['p','Командный','g','помощи в убийствах на 30%+ больше среднего','«ассистов на 40% больше»'],
+['p','Пассивный','r','и убийств −30%, и помощи −20% от среднего','«отсиживается»','Совпадает с меткой матча «Пассивный»'],
+['p','Добиватель','g','добиваний на 20%+ больше среднего','«лх на 24% больше»'],
+['p','Мажет','r','добиваний на 20%+ меньше среднего','«лх на 25% меньше»'],
+['p','Жадина','g','отказов (денаев) в 1,5 раза больше среднего','«отжимает линию»'],
+['p','Ливер','r','ливал хотя бы раз за 30 дней','«ливал 2 раза за 30 дней»'],
+['p','Марафонец','b','8+ игр за один день','«до 11 игр за день»'],
+['p','Ежедневно','b','играл 12+ дней из последних 14','«13 дней из 14»'],
+['p','Полуночник','b','40%+ игр с полуночи до 6 утра','«58% игр ночью»'],
+['p','Воскресник','b','60%+ игр — по выходным','«64% игр в субботу и воскресенье»'],
+['p','Вернулся','b','перерыв 14+ дней перед последней игрой','«перерыв 23 дня»'],
+// ГЕРОЙ (вкладка «Герои»)
+['h','Роль','b','роль героя из файлов игры (Танк, Убийца…)','«роль из файлов игры»'],
+['h','Имба','h','у героя 53%+ побед за период','«54,2% побед»'],
+['h','Мимо','r','у героя меньше 47% побед','«45,9% побед»'],
+['h','Народный','a','герой в 25% самых популярных','«берут в 18,4% матчей»'],
+['h','Экзотика','n','герой в 20% самых редких','«берут в 2,0% матчей»'],
+['h','Простой','g','сложность 1 из 3','«для начала»'],
+['h','Сложный','r','сложность 3 из 3',''],
+['h','Живучий','g','KDA героя в верхних 20%','«KDA 3,41 — среди лучших»'],
+// МАТЧ
+['m','Продавил','g','к 10-й минуте на 15%+ душ больше соперника по линии','«на 21% душ больше соперника»'],
+['m','Давили','r','к 10-й минуте на 15%+ душ меньше соперника по линии',''],
+['m','Наказан','r','2+ смерти до 10-й минуты','«3 смерти до 10-й минуты»'],
+['m','Лейтфарм','g','после 20-й минуты души/мин на 20%+ больше своих','«после 20-й 1450 душ/мин»'],
+['m','Сдулся','r','после 20-й минуты души/мин на 25%+ меньше своих',''],
+['m','Чисто','g','(убийства + помощь) / смерти ≥ 4','«KDA 5,2»'],
+['m','Живучий','g','2 смерти или меньше за матч дольше 25 минут','«1 смерть за 34 минуты»'],
+['m','Файтер','g','участие в 65%+ убийств команды','«вечно в драке»'],
+['m','Пассивный','r','участие меньше чем в 35% убийств команды',''],
+['m','Таран','g','30%+ урона команды по башням и боссам',''],
+['m','Пацифист','r','5% и меньше урона команды по башням и боссам',''],
+['m','Одиночка','a','после 10-й минуты 60%+ времени без своих рядом','«сплит-пуш или фарм в одиночку»'],
+['m','Снайпер','g','лучшая точность в матче','«точность 48% — лучшая в матче»'],
+['m','Хедшотер','g','3+ убийства в голову',''],
+['m','Лекарь','g','вылечил своих на 5000+',''],
+['m','Миллионер','g','больше всех душ в матче','«больше всех душ: 48 300»'],
+['m','Голодает','r','душ на 25%+ меньше среднего в команде',''],
+['m','Дамагер','g','больше всех урона по героям в матче',''],
+['m','Пшик','r','урона на 30%+ меньше среднего (и почти не лечил)',''],
+['m','Кормил','r','8+ смертей и в 1,5 раза больше среднего в матче','«11 смертей — в среднем 6,2»'],
+['m','Бессмертный','g','ни одной смерти за матч дольше 15 минут','«ни одной смерти за 31 минуту»'],
+['m','Фармер','g','больше всех добиваний в матче',''],
+['m','Танк','g','принял больше всех урона в команде (и на 30%+ выше среднего)',''],
+['m','Лесник','b','25%+ душ — с лагерей',''],
+['m','ФБ','g','первая кровь матча','«первая кровь на 3:12»'],
+['m','Тройное','g','3 убийства подряд (между каждым ≤ 12 с). Дальше: Четверное, Пятерное, Резня (6+)',''],
+['m','Камбэк','g','выиграли, хотя отставали на 5000+ душ',''],
+['m','Слили','r','проиграли, хотя вели на 5000+ душ',''],
+// НОВЫЕ — на решение
+['x','VAC','r','у аккаунта VAC-бан или игровой бан в Steam — это публичные данные Steam, не наша догадка','«VAC-бан 2 года назад»','Безопасно: это факт из Steam, не обвинение'],
+['x','Подозр.','r','на 10+ матчах точность/убийства в голову сильно выше нормы для его ранга','«в голову 71% урона при норме 22% на его ранге, 14 матчей»','Ты хочешь «Читер». Рекомендую «Подозр.»: на 10+ матчах, с цифрами в подсказке'],
+['x','Смурф','a','мало матчей на аккаунте, но ранг/винрейт как у сильного игрока','«31 матч, 74% побед, ранг Вечный»',''],
+['x','Пати','b','играет в группе с этими же людьми (3+ общих матча)','«5 матчей вместе с Крыса-LOVE»','Удобно в лобби: видно, кто играет стаком'],
+];
+// как названо сейчас на сайте (версия Зетки) — второй вариант названия
+const V4={Жарит:'В ударе',Тонет:'Чёрная полоса',Подъём:'Растёт в ранге',Падение:'Теряет ранг',Накрыло:'Тильтует',Стабильный:'Не тильтует',OTP:'OTP Венатор',Фанат:'Венатор — моя любовь',Миллионер:'Миллионер на Венаторе',Экзотика:'Необычный пик',Универсал:'Мастер на все руки',Стажёр:'Учит Селесту',Голодает:'Плохой фарм',Пассивный:'Мало в драках',Добиватель:'Мастер добивания',Мажет:'Не добивает',Жадина:'Отнимает души',Ливер:'Ливал 2 раза',Ежедневно:'Каждый день',Полуночник:'Ночной игрок',Воскресник:'По выходным'};
+// сленг — может быть непонятен
+const SL={OTP:'«OTP» — сленг (one trick pony). По-русски: «Играет только на Венаторе»?',ФБ:'«ФБ» — сленг. По-русски: «Первая кровь»',Хедшотер:'Сленг. По-русски: «Бьёт в голову»?',Лейтфарм:'Сленг. По-русски: «Раскачался к концу»?',Дамагер:'Сленг. По-русски: «Больше всех урона»?',Жадина:'«Денаи» — сленг. По-русски: «Отнимает души»',Мажет:'Звучит как про стрельбу, а речь про добивания. По-русски: «Не добивает»',Лесник:'Понятно не всем. «Фармит лагеря»?',Пшик:'Неочевидно. «Мало урона»?',Таран:'«Ломает башни»?',Танк:'Норм, но можно «Принял весь урон»'};
+const G={p:'Профиль игрока',h:'Вкладка «Герои»',m:'Метки за матч',x:'Новые — решить'};
+const C={g:'var(--g)',r:'var(--r)',a:'var(--a)',b:'var(--b)',n:'var(--n)',h:'var(--h)'};
+const D=[['keep','Оставить'],['del','Удалить'],['cond','Изменить условие'],['name','Переименовать'],['redo','Переделать']];
+let S={};try{S=JSON.parse(localStorage.getItem('rl-metki')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('rl-metki',JSON.stringify(S))}catch(e){}};
+let F='all';
+const id=(t,i)=>t[0]+i;
+function bar(){const b=document.getElementById('bar');b.innerHTML=[['all','Все'],['p',G.p],['h','Герои'],['m','Матч'],['x','Новые'],['todo','Без ответа']].map(([k,n])=>`<button class="f${F===k?' on':''}" data-f="${k}">${n}</button>`).join('')+'<span class="cnt" id="cnt"></span>';
+ b.querySelectorAll('.f').forEach(x=>x.onclick=()=>{F=x.dataset.f;bar();list()})}
+function list(){let h='',last='';T.forEach((t,i)=>{const k=id(t,i),s=S[k]||{};if(F!=='all'&&F!=='todo'&&t[0]!==F)return;if(F==='todo'&&s.d)return;
+ if(t[0]!==last){last=t[0];h+=`<div class="grp">${G[t[0]]}</div>`}
+ const need=s.d==='cond'||s.d==='name'||s.d==='redo';
+ h+=`<div class="t dec-${s.d||''}" data-k="${k}"><div class="top"><span class="chip" tabindex="0" style="--c:${C[t[2]]}">${t[1]}<span class="tip">${t[3]}${t[4]?'<br><br>'+t[4]:''}</span></span>
+  <div class="info"><div class="cond">${t[3]}${t[0]==='x'?'<span class="new">НОВОЕ</span>':''}</div>${t[4]?`<div class="ex">Подсказка: ${t[4]}</div>`:''}${t[0]==='p'&&V4[t[1]]?`<div class="ex">Второй вариант названия (сейчас на сайте): <b>«${V4[t[1]]}»</b></div>`:''}${SL[t[1]]?`<div class="warn">${SL[t[1]]}</div>`:''}${t[5]?`<div class="warn">${t[5]}</div>`:''}</div></div>
+  <div class="acts">${D.map(([d,n])=>`<button data-d="${d}" class="${s.d===d?'on':''}">${n}</button>`).join('')}</div>
+  <div class="ed${need?' show':''}">${s.d==='name'||s.d==='redo'?`<label>Новое название (понятно по-русски)</label><input data-in="nm" value="${(s.nm||'').replace(/"/g,'&quot;')}" placeholder="${t[1]}">`:''}${s.d==='cond'||s.d==='redo'?`<label>Когда давать</label><input data-in="cd" value="${(s.cd||'').replace(/"/g,'&quot;')}" placeholder="${t[3]}">`:''}<label>Комментарий</label><textarea data-in="cm" placeholder="что не так, как лучше">${s.cm||''}</textarea></div></div>`});
+ const L=document.getElementById('list');L.innerHTML=h||'<p class="ex">Всё отвечено.</p>';
+ L.querySelectorAll('.t').forEach(el=>{const k=el.dataset.k;el.querySelectorAll('.acts button').forEach(b=>b.onclick=()=>{S[k]=S[k]||{};S[k].d=S[k].d===b.dataset.d?'':b.dataset.d;save();list();stat()});
+  el.querySelectorAll('[data-in]').forEach(inp=>inp.oninput=()=>{S[k]=S[k]||{};S[k][inp.dataset.in]=inp.value;save();stat()})});
+ stat()}
+function stat(){const n=T.length,d=T.filter((t,i)=>(S[id(t,i)]||{}).d).length;document.getElementById('done').textContent=`${d} из ${n} отвечено`;
+ const c={};T.forEach((t,i)=>{const x=(S[id(t,i)]||{}).d;if(x)c[x]=(c[x]||0)+1});document.getElementById('sum').textContent=D.filter(([k])=>c[k]).map(([k,nm])=>`${nm.toLowerCase()}: ${c[k]}`).join(' · ');
+ const e=document.getElementById('cnt');if(e)e.textContent=`${n} меток`}
+function text(){const R={keep:[],del:[],cond:[],name:[],redo:[],none:[]};
+ T.forEach((t,i)=>{const s=S[id(t,i)]||{},g=G[t[0]].split(' ')[0],line=`${t[1]} (${g})`;const cm=s.cm?` — ${s.cm}`:'';
+  if(!s.d)R.none.push(line);else if(s.d==='keep')R.keep.push(line+cm);else if(s.d==='del')R.del.push(line+cm);
+  else if(s.d==='cond')R.cond.push(`${line}: давать, когда «${s.cd||'?'}»${cm}`);else if(s.d==='name')R.name.push(`${line} → «${s.nm||'?'}»${cm}`);else R.redo.push(`${line} → «${s.nm||'?'}», давать, когда «${s.cd||'?'}»${cm}`)});
+ const sec=(h,a)=>a.length?`\n${h} (${a.length}):\n- ${a.join('\n- ')}\n`:'';
+ return 'Метки Restless — мои ответы\n'+sec('Оставить',R.keep)+sec('Удалить',R.del)+sec('Изменить условие',R.cond)+sec('Переименовать',R.name)+sec('Переделать',R.redo)+sec('Пока без ответа',R.none)}
+document.getElementById('copy').onclick=async()=>{const o=document.getElementById('out'),ta=document.getElementById('txt'),m=document.getElementById('cpm');ta.value=text();o.classList.add('show');
+ try{await navigator.clipboard.writeText(ta.value);m.innerHTML='<span class="ok">Скопировано</span> — вставь в чат.'}catch(e){ta.focus();ta.select();m.textContent='Выдели текст выше и скопируй вручную.'}};
+bar();list();
+</script>
+</body>
+</html>
