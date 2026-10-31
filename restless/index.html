@@ -1988,6 +1988,13 @@ b.t0,em.t0,.qm-lead b.t0{color:var(--t0)}b.t1,em.t1,.qm-lead b.t1{color:var(--t1
 .q-pds span{display:grid;justify-items:center;padding:6px 10px;border-radius:9px;background:rgba(0,0,0,.42);min-width:64px}
 .q-pds b{font:700 15px/1.1 var(--m)}.q-pds small{font-size:10.5px;color:var(--mu)}
 .q-pd{padding-top:68px}
+/* фоновое обновление и объяснение долгой загрузки */
+.q-swr{position:fixed;right:16px;bottom:16px;z-index:60;padding:9px 14px 9px 34px;border-radius:12px;background:var(--s2);border:1px solid var(--ln2);color:var(--mu);font:600 12.5px/1.2 var(--f);box-shadow:0 10px 26px rgba(0,0,0,.45);opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s;pointer-events:none}
+.q-swr::before{content:"";position:absolute;left:12px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;border:2px solid var(--ln2);border-top-color:var(--q-am);animation:sp .8s linear infinite}
+.q-swr.on{opacity:1;transform:none}
+.q-swr.ok{color:var(--win);border-color:color-mix(in srgb,var(--win) 45%,var(--ln2))}.q-swr.ok::before{border-color:var(--win);animation:none}
+.load{flex-wrap:wrap}
+.ld-why{flex-basis:100%;max-width:560px;margin-top:6px;padding-left:28px;font-size:13px;line-height:1.5;color:var(--mu2);animation:qmFade .4s backwards}
 </style>
 </head>
 <body>
@@ -4419,19 +4426,44 @@ addEventListener('hashchange', () => { if (SAY) { SAY(); SAY = null; } });
 // матчи не меняются — неделя; сборки — сутки; аналитика — 3 часа; лидерборд — 30 минут; история и ранг — 2 минуты
 const PC_TTL = p => /^matches\/(metadata|\d+\/metadata)/.test(p) ? 7 * 86400 : /^builds\?/.test(p) ? 86400 : /^assets\//.test(p) ? 86400 : /^analytics\//.test(p) ? 3 * 3600 : /^leaderboard/.test(p) ? 1800 : /match-history|\/rank$|^players\/rank\?/.test(p) ? 120 : /^players\//.test(p) ? 900 : 0;
 let PCC = null;
+// что можно показать устаревшим, пока тянется свежее: всё про игроков, аналитика, лидеры — до 3 суток
+const SWR_MAX = 3 * 86400, SWR_OK = p => /^players\/|^analytics\/|^leaderboard/.test(p);
+let SWR_N = 0, SWR_T = 0, SWR_CH = false;
+function swrBusy(d) { SWR_N = Math.max(0, SWR_N + d); let el = document.getElementById('swr');
+  if (SWR_N && !el) { el = document.createElement('div'); el.id = 'swr'; el.className = 'q-swr'; document.body.appendChild(el); }
+  if (!el) return; if (SWR_N) { el.className = 'q-swr on'; el.textContent = 'Подтягиваю свежие данные…'; }
+  else if (!SWR_CH) { el.className = 'q-swr'; } }
+// свежие данные отличаются: история/ранг/герои этого игрока — тихо перерисовать текущий экран профиля, не сбивая прокрутку
+function swrChanged(p) {
+  const h = location.hash.replace(/^#/, '') || 'home', t = h.split('/')[0];
+  if (!ME || !/match-history|\/rank$|hero-stats\?account_ids=\d+$/.test(p) || !p.includes(String(ME.id)) || !/^(home|mine|form)$/.test(t)) return;
+  SWR_CH = true; clearTimeout(SWR_T);
+  SWR_T = setTimeout(() => { const ae = document.activeElement; if (ae && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName)) return;
+    const y = window.scrollY; Promise.resolve(route()).then(() => setTimeout(() => window.scrollTo(0, y), 60));
+    const el = document.getElementById('swr'); if (el) { el.className = 'q-swr on ok'; el.textContent = 'Обновлено — свежие матчи подтянулись'; setTimeout(() => { SWR_CH = false; el.className = 'q-swr'; }, 2600); } }, 350);
+}
 try { if (window.caches && /^https?:$/.test(location.protocol)) PCC = caches.open('rl-api-1').catch(() => null); } catch (e) {}
 { const api0 = api;
   api = function (p) {
     if (CACHE.has(p)) return CACHE.get(p);
     const ttl = PC_TTL(p); if (!ttl || !PCC) return api0(p);
     const key = 'https://rl-cache.local/' + encodeURIComponent(p);
-    const pr = PCC.then(async c => {
-      if (c) { const r = await c.match(key).catch(() => null); if (r && now() - (+r.headers.get('x-t') || 0) < ttl) return r.json(); }
+    const net = async c => {
       const res = await fetch(API + p);
       if (!res.ok) { const tx = await res.text().catch(() => ''); throw new Error(res.status + ' ' + (tx || res.statusText).slice(0, 140)); }
       const body = await res.text();
       if (c && body.length < 8e6) c.put(key, new Response(body, {headers: {'content-type': 'application/json', 'x-t': String(now())}})).catch(() => {});
-      return JSON.parse(body);
+      return {body, j: JSON.parse(body)};
+    };
+    const pr = PCC.then(async c => {
+      const r = c ? await c.match(key).catch(() => null) : null;
+      if (r) { const age = now() - (+r.headers.get('x-t') || 0);
+        if (age < ttl) return r.json();
+        // 01.11: устаревшее — показываем сразу, свежее тянем в фоне (API Deadlock на первом запросе отвечает 10–20 с)
+        if (age < SWR_MAX && SWR_OK(p)) { const old = await r.text(); swrBusy(1);
+          net(c).then(x => { CACHE.set(p, Promise.resolve(x.j)); if (x.body !== old) swrChanged(p); }).catch(() => {}).finally(() => swrBusy(-1));
+          return JSON.parse(old); } }
+      return (await net(c)).j;
     });
     CACHE.set(p, pr); pr.catch(() => CACHE.delete(p)); return pr;
   };
@@ -4927,6 +4959,12 @@ async function lbPod(n) {
   els.forEach(e => { const o = A[e.dataset.pda]; if (!o || !o.m) return; const wr = 100 * o.w / o.m;
     e.innerHTML = `<span><b data-cu="${o.m}">${nf(o.m)}</b><small>матчей</small></span><span><b class="${wrC(wr, o.m)}" data-cu="${wr.toFixed(1)}" data-cd="1" data-cs="%">${f1(wr)}%</b><small>побед</small></span><span><b>${f2((o.k + o.a) / Math.max(1, o.d))}</b><small>KDA</small></span>`; });
   mAnim($('.q-pod'));
+}
+
+// долгая загрузка: через 2,5 с объясняем, почему ждём (честно — это API, не сайт)
+{ const V0 = V; let LDT = 0;
+  V = function (h) { V0(h); clearTimeout(LDT);
+    if (/class="load"/.test(h)) LDT = setTimeout(() => { const el = document.querySelector('#v .load'); if (el && !el.querySelector('.ld-why')) el.insertAdjacentHTML('beforeend', '<span class="ld-why">Ждём открытый API Deadlock: первый раз он собирает данные игрока из Steam — бывает 10–20 секунд. Дальше этот профиль будет открываться сразу, а свежее подтянется в фоне.</span>'); }, 2500); };
 }
 window.addEventListener('hashchange', route);
 (async () => {
