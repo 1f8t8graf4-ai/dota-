@@ -4426,6 +4426,18 @@ addEventListener('hashchange', () => { if (SAY) { SAY(); SAY = null; } });
 // матчи не меняются — неделя; сборки — сутки; аналитика — 3 часа; лидерборд — 30 минут; история и ранг — 2 минуты
 const PC_TTL = p => /^matches\/(metadata|\d+\/metadata)/.test(p) ? 7 * 86400 : /^builds\?/.test(p) ? 86400 : /^assets\//.test(p) ? 86400 : /^analytics\//.test(p) ? 3 * 3600 : /^leaderboard/.test(p) ? 1800 : /match-history|\/rank$|^players\/rank\?/.test(p) ? 120 : /^players\//.test(p) ? 900 : 0;
 let PCC = null;
+// свой сервер Restless (bot/restless-worker.js): ответы по игрокам — из его базы сразу, свежие он тянет сам
+const RLP = 'https://restless.1f8t8graf4.workers.dev/v1/';
+const RLP_RX = /^players\/\d+\/(match-history|rank)$|^players\/(hero-stats|rank|steam)\?account_ids=[\d,]+$|^players\/\d+\/(mate|enemy)-stats\?min_matches_played=\d+$/;
+let RLP_ON = null;
+function rlpProbe() {
+  if (RLP_ON) return RLP_ON;
+  let c = null; try { c = JSON.parse(localStorage.getItem('rl-srv') || 'null'); } catch (e) {}
+  if (c && Date.now() - c.t < (c.ok ? 6 * 3600e3 : 600e3)) return (RLP_ON = Promise.resolve(c.ok));
+  RLP_ON = Promise.race([fetch(RLP.replace('/v1/', '/health'), {cache: 'no-store'}).then(r => r.ok ? r.json() : null).then(j => !!(j && j.ok && j.db)).catch(() => false), new Promise(r => setTimeout(() => r(false), 2500))])
+    .then(ok => { try { localStorage.setItem('rl-srv', JSON.stringify({ok, t: Date.now()})); } catch (e) {} return ok; });
+  return RLP_ON;
+}
 // что можно показать устаревшим, пока тянется свежее: всё про игроков, аналитика, лидеры — до 3 суток
 const SWR_MAX = 3 * 86400, SWR_OK = p => /^players\/|^analytics\/|^leaderboard/.test(p);
 let SWR_N = 0, SWR_T = 0, SWR_CH = false;
@@ -4449,21 +4461,26 @@ try { if (window.caches && /^https?:$/.test(location.protocol)) PCC = caches.ope
     const ttl = PC_TTL(p); if (!ttl || !PCC) return api0(p);
     const key = 'https://rl-cache.local/' + encodeURIComponent(p);
     const net = async c => {
-      const res = await fetch(API + p);
+      let res = null, srv = false;
+      // 01.11: свой сервер Restless держит ответы по игрокам — если он есть, сначала к нему
+      if (RLP_RX.test(p) && await rlpProbe()) { res = await fetch(RLP + p).catch(() => null); if (res && res.ok) srv = true; else res = null; }
+      if (!res) res = await fetch(API + p);
       if (!res.ok) { const tx = await res.text().catch(() => ''); throw new Error(res.status + ' ' + (tx || res.statusText).slice(0, 140)); }
-      const body = await res.text();
-      if (c && body.length < 8e6) c.put(key, new Response(body, {headers: {'content-type': 'application/json', 'x-t': String(now())}})).catch(() => {});
-      return {body, j: JSON.parse(body)};
+      const body = await res.text(), age = srv ? (+res.headers.get('x-rl-age') || 0) : 0;
+      if (c && body.length < 8e6) c.put(key, new Response(body, {headers: {'content-type': 'application/json', 'x-t': String(now() - age)}})).catch(() => {});
+      return {body, j: JSON.parse(body), stale: srv && res.headers.get('x-rl') === 'stale'};
     };
+    // сервер отдал старое и сам пошёл за свежим — спросим ещё раз чуть позже
+    const recheck = (c, old, n) => setTimeout(() => net(c).then(x => { if (x.body !== old) { CACHE.set(p, Promise.resolve(x.j)); swrChanged(p); } else if (x.stale && n < 2) recheck(c, old, n + 1); }).catch(() => {}), n ? 14000 : 7000);
     const pr = PCC.then(async c => {
       const r = c ? await c.match(key).catch(() => null) : null;
       if (r) { const age = now() - (+r.headers.get('x-t') || 0);
         if (age < ttl) return r.json();
         // 01.11: устаревшее — показываем сразу, свежее тянем в фоне (API Deadlock на первом запросе отвечает 10–20 с)
         if (age < SWR_MAX && SWR_OK(p)) { const old = await r.text(); swrBusy(1);
-          net(c).then(x => { CACHE.set(p, Promise.resolve(x.j)); if (x.body !== old) swrChanged(p); }).catch(() => {}).finally(() => swrBusy(-1));
+          net(c).then(x => { CACHE.set(p, Promise.resolve(x.j)); if (x.body !== old) swrChanged(p); else if (x.stale) recheck(c, old, 0); }).catch(() => {}).finally(() => swrBusy(-1));
           return JSON.parse(old); } }
-      return (await net(c)).j;
+      const x = await net(c); if (x.stale) recheck(c, x.body, 0); return x.j;
     });
     CACHE.set(p, pr); pr.catch(() => CACHE.delete(p)); return pr;
   };
