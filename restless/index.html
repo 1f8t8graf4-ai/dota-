@@ -1640,6 +1640,354 @@ body{background:transparent}
 .q-pd:not(:has(.bg)){background:radial-gradient(120% 90% at 50% 0,color-mix(in srgb,var(--md) 22%,transparent),#11141a 70%)}
 @media (max-width:1240px){.q-pl2{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:640px){.seg{flex-wrap:wrap;max-width:100%}.q-lbt th:last-child,.q-lbt td:last-child{display:none}.q-lbt .rkc span{display:none}.q-lbn{width:36px}.q-lbq{max-width:none;flex:1}}
+
+/* ==================== 01.11 · разбор матча по вкладкам: своё — янтарь против сапфира, всё оживает один раз при показе ==================== */
+:root{--t0:#ffb630;--t1:#5b8cff}
+.t0{--tc:var(--t0)}.t1{--tc:var(--t1)}
+b.t0,em.t0,.qm-lead b.t0{color:var(--t0)}b.t1,em.t1,.qm-lead b.t1{color:var(--t1)}
+/* шапка: счёт, 12 игроков, вкладки */
+.qm-head{margin:6px 0 12px}
+.qm-sb{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;margin:10px 0 12px;padding:14px 18px;border-radius:16px;border:1px solid var(--q-ln);
+  background:linear-gradient(90deg,rgba(255,182,48,.10),transparent 32%,transparent 68%,rgba(91,140,255,.10)),var(--q-bx);position:relative;overflow:hidden}
+.qm-sb::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 40%,rgba(255,255,255,.06) 50%,transparent 60%);transform:translateX(-100%);animation:qmSheen 1.6s .2s ease-out 1 forwards;pointer-events:none}
+@keyframes qmSheen{to{transform:translateX(100%)}}
+.qm-tn{display:flex;align-items:center;gap:10px;min-width:0}
+.qm-tn.t1{justify-content:flex-end}
+.qm-tn b{font:700 15px/1.1 var(--h);letter-spacing:.06em;text-transform:uppercase;color:var(--tc)}
+.qm-tn em{font:700 10px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;font-style:normal;padding:4px 7px;border-radius:5px;background:color-mix(in srgb,var(--tc) 18%,transparent);color:var(--tc)}
+.qm-tn .ri{width:30px;height:30px}
+.qm-sc{display:flex;align-items:center;gap:18px;text-align:center}
+.qm-sc>span{font:700 44px/1 var(--h);color:var(--tc);text-shadow:0 0 24px color-mix(in srgb,var(--tc) 40%,transparent)}
+.qm-sc>div b{display:block;font:700 16px/1.1 var(--h);letter-spacing:.06em;text-transform:uppercase}
+.qm-sc>div b.win{color:var(--win)}.qm-sc>div b.loss{color:var(--loss)}
+.qm-sc small{display:block;color:var(--mu);font-size:12px;margin-top:4px;white-space:nowrap}
+.qm-pp{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:10px}
+.qm-vs{align-self:center;font:700 13px/1 var(--h);color:var(--mu2);font-style:normal;letter-spacing:.1em}
+.qm-side{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.qm-pf{display:grid;justify-items:center;gap:5px;padding:7px 4px 6px;border-radius:12px;background:var(--q-bx);border:1px solid var(--q-ln);cursor:pointer;min-width:0;color:var(--tx);
+  transition:transform .18s cubic-bezier(.2,.8,.2,1),border-color .15s,background .15s;animation:qmPop .42s cubic-bezier(.2,.9,.25,1.2) backwards}
+.qm-side .qm-pf:nth-child(2){animation-delay:.04s}.qm-side .qm-pf:nth-child(3){animation-delay:.08s}.qm-side .qm-pf:nth-child(4){animation-delay:.12s}.qm-side .qm-pf:nth-child(5){animation-delay:.16s}.qm-side .qm-pf:nth-child(6){animation-delay:.2s}
+@keyframes qmPop{from{opacity:0;transform:translateY(10px) scale(.92)}}
+.qm-pf:hover{transform:translateY(-2px);border-color:var(--ln2)}
+.qm-pf.on{border-color:var(--tc);background:color-mix(in srgb,var(--tc) 13%,var(--q-bx));box-shadow:0 0 0 1px var(--tc),0 8px 22px color-mix(in srgb,var(--tc) 22%,transparent)}
+.qm-pf .q-fc{width:42px;height:42px}
+.qm-pf span{max-width:100%;font-size:11px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qm-pf.on span{color:var(--tx);font-weight:600}
+.qm-tabs{display:flex;gap:4px;margin:14px 0 2px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--q-ln);position:sticky;top:0;z-index:5;background:linear-gradient(var(--bg) 70%,rgba(11,13,18,.0))}
+.qm-tabs button{padding:12px 16px;font:600 14.5px/1 var(--f);color:var(--mu);border:0;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;cursor:pointer;transition:color .15s,border-color .15s}
+.qm-tabs button:hover{color:var(--tx)}
+.qm-tabs button.on{color:var(--q-am);border-bottom-color:var(--q-am)}
+/* тело вкладки: блоки выезжают по очереди */
+.qm-b{padding-top:12px}
+.qm-b.in>*{animation:qmUp .45s cubic-bezier(.2,.8,.2,1) backwards}
+.qm-b.in>*:nth-child(2){animation-delay:.06s}.qm-b.in>*:nth-child(3){animation-delay:.12s}.qm-b.in>*:nth-child(4){animation-delay:.18s}.qm-b.in>*:nth-child(5){animation-delay:.24s}.qm-b.in>*:nth-child(n+6){animation-delay:.3s}
+@keyframes qmUp{from{opacity:0;transform:translateY(14px)}}
+/* полоски: растут слева, чёрточка — среднее */
+.qm-bar{position:relative;height:8px;border-radius:5px;background:var(--s3);overflow:visible}
+.qm-bar i{position:absolute;left:0;top:0;bottom:0;width:var(--w);border-radius:5px;background:var(--q-am);transform-origin:left;animation:qmGrow .8s .15s cubic-bezier(.2,.8,.2,1) backwards}
+.qm-bar.g i{background:linear-gradient(90deg,color-mix(in srgb,var(--win) 55%,transparent),var(--win))}
+.qm-bar.r i{background:linear-gradient(90deg,color-mix(in srgb,var(--loss) 55%,transparent),var(--loss))}
+.qm-bar s{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--tx);opacity:.75;border-radius:2px;animation:qmFade .3s .7s backwards}
+@keyframes qmGrow{from{transform:scaleX(0)}}
+@keyframes qmFade{from{opacity:0}}
+/* Обзор */
+.qm-g2{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:12px;margin-bottom:12px}
+.qm-g2b{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.qm-grade{display:flex;gap:20px;align-items:center;padding:18px 20px;border-radius:16px;border:1px solid color-mix(in srgb,var(--gc) 40%,var(--q-ln));
+  background:radial-gradient(420px 200px at 0 50%,color-mix(in srgb,var(--gc) 16%,transparent),transparent 70%),var(--q-bx);position:relative;overflow:hidden}
+.qm-gl{flex:none;display:grid;place-items:center;width:112px;height:112px;border-radius:50%;font:700 52px/1 var(--h);color:var(--gc);
+  box-shadow:inset 0 0 0 3px var(--gc),0 0 40px color-mix(in srgb,var(--gc) 35%,transparent);background:color-mix(in srgb,var(--gc) 9%,transparent);animation:qmGrade .7s cubic-bezier(.2,1.4,.3,1) backwards}
+@keyframes qmGrade{from{opacity:0;transform:scale(.4) rotate(-14deg)}}
+.qm-gi{min-width:0;flex:1}
+.qm-gi>small{display:block;font:700 12px/1 var(--f);letter-spacing:.06em;text-transform:uppercase}
+.qm-gi>small.win{color:var(--win)}.qm-gi>small.loss{color:var(--loss)}
+.qm-who{display:flex;align-items:center;gap:10px;margin:10px 0 8px}
+.qm-who b{display:block;font-size:17px}.qm-who small{color:var(--mu);font-size:12.5px}
+.qm-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.qm-chips>span{padding:5px 9px;border-radius:7px;background:var(--s2);font:600 12.5px/1 var(--f)}
+.qm-res.w{background:color-mix(in srgb,var(--win) 16%,transparent)!important;color:var(--win)}.qm-res.l{background:color-mix(in srgb,var(--loss) 16%,transparent)!important;color:var(--loss)}
+.qm-kda i{font-style:normal}.qm-kda i.win{color:var(--win)}.qm-kda i.loss{color:var(--loss)}
+.qm-gi p{margin:10px 0 0;font-size:14.5px;line-height:1.5;color:var(--tx)}
+.qm-tags{margin-top:10px}
+.qm-sw{padding:14px;border-radius:16px;border:1px solid var(--q-ln);background:var(--q-bx);display:grid;gap:8px;align-content:start}
+.qm-swh{display:flex;align-items:baseline;gap:8px;margin-top:4px}
+.qm-swh b{font:700 13px/1 var(--h);letter-spacing:.06em;text-transform:uppercase}
+.qm-swh.g b{color:var(--win)}.qm-swh.r b{color:var(--loss)}
+.qm-swh small{color:var(--mu2);font-size:11.5px}
+.qm-si{padding:9px 12px;border-radius:10px;border-left:3px solid;background:var(--s2)}
+.qm-si.g{border-color:var(--win);background:linear-gradient(90deg,color-mix(in srgb,var(--win) 10%,transparent),var(--s2) 60%)}
+.qm-si.r{border-color:var(--loss);background:linear-gradient(90deg,color-mix(in srgb,var(--loss) 10%,transparent),var(--s2) 60%)}
+.qm-si b{display:block;font-size:14px}.qm-si span{color:var(--mu);font-size:12.5px}
+.qm-pts li{font-size:14px}
+.qm-dls{display:grid;gap:6px;margin-top:12px}
+.qm-dtr{display:grid;grid-template-columns:22px 44px auto minmax(0,1fr);align-items:center;gap:8px;padding:6px 8px;border-radius:9px;background:var(--s2)}
+.qm-dtr em{font:700 11px/1 var(--m);font-style:normal;color:var(--loss);display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:color-mix(in srgb,var(--loss) 16%,transparent)}
+.qm-dtr b{display:block;font-size:13px}.qm-dtr small{color:var(--mu);font-size:12px}
+.qm-verd{margin:-4px 0 14px;text-align:center;font-weight:600;font-size:14px;color:var(--mu)}.qm-verd.win{color:var(--win)}.qm-verd.loss{color:var(--loss)}
+.qm-ch text.t0l{fill:var(--t0);font:700 12px var(--f)}.qm-ch text.t1l{fill:var(--t1);font:700 12px var(--f)}
+.qm-crs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 22px}
+.qm-cr>div:first-child{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:2px 10px;margin-bottom:8px}
+.qm-cr span{color:var(--mu);font-size:12.5px}.qm-cr b{font:700 20px/1 var(--h)}
+.qm-cr small{grid-column:1/-1;color:var(--mu2);font-size:11.5px}.qm-cr small em{font-style:normal;font-weight:700}
+.qm-cr em.win{color:var(--win)}.qm-cr em.loss{color:var(--loss)}
+.qm-tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px}
+.qm-tr>div{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:4px 10px}
+.qm-tr>div>span{text-align:center;color:var(--mu);font-size:12.5px}
+.qm-tr>div>b{font:700 16px/1 var(--h)}
+.qm-tb{grid-column:1/-1;display:flex;gap:2px;height:7px;border-radius:5px;overflow:hidden;background:var(--s3)}
+.qm-tb i{display:block;width:var(--w);background:var(--tc);transform-origin:left;animation:qmGrow .8s .2s cubic-bezier(.2,.8,.2,1) backwards}
+.qm-tb i.t1{transform-origin:right}
+.qm-tt{margin-top:6px;overflow-x:auto}.qm-tt+.qm-tt{margin-top:14px}
+.qm-tth{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.qm-tth b{font:700 13px/1 var(--h);letter-spacing:.06em;text-transform:uppercase;color:var(--tc)}
+.qm-tth em{font:700 10px/1 var(--f);font-style:normal;letter-spacing:.06em;text-transform:uppercase;padding:3px 6px;border-radius:4px;background:color-mix(in srgb,var(--tc) 18%,transparent);color:var(--tc)}
+.qm-tth small{color:var(--mu2);font-size:12px}
+.qm-tbl tr.on td{background:color-mix(in srgb,var(--q-am) 9%,transparent)}
+.qm-tbl tr.on td:first-child{box-shadow:inset 3px 0 0 var(--q-am)}
+/* Игрок: досье */
+.qm-dos{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 24px;border-radius:18px;border:1px solid color-mix(in srgb,var(--hc) 40%,var(--q-ln));overflow:hidden;margin-bottom:12px;
+  background:linear-gradient(90deg,var(--q-bx) 30%,color-mix(in srgb,var(--hc) 14%,var(--q-bx)))}
+.qm-dos .bg{position:absolute;right:-2%;top:-30%;width:46%;height:180%;background-size:contain;background-repeat:no-repeat;background-position:right top;opacity:.42;
+  animation:qmArt .9s cubic-bezier(.2,.8,.2,1) backwards;pointer-events:none}
+.qm-dos::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--q-bx) 38%,transparent 80%);pointer-events:none;z-index:1}
+@keyframes qmArt{from{opacity:0;transform:translateX(40px) scale(1.04)}}
+.qm-dl,.qm-dg{position:relative;z-index:2}
+.qm-dl{display:flex;align-items:center;gap:16px;min-width:0}
+.qm-dl .q-fc{width:76px;height:76px;border-radius:16px}
+.qm-dl small{color:var(--mu);font-size:12px}
+.qm-dl h2{margin:2px 0;font:700 28px/1.05 var(--h);letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qm-dh{color:var(--hc);font-size:15px}
+.qm-dc{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.qm-dc>span{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:7px;background:rgba(0,0,0,.35);font-size:12.5px}
+.qm-dc .ri{width:22px;height:22px}
+.qm-dg{text-align:center;flex:none}
+.qm-dg b{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;font:700 40px/1 var(--h);color:var(--gc);box-shadow:inset 0 0 0 3px var(--gc),0 0 34px color-mix(in srgb,var(--gc) 35%,transparent);
+  background:rgba(0,0,0,.35);animation:qmGrade .7s .1s cubic-bezier(.2,1.4,.3,1) backwards}
+.qm-dg small{display:block;margin-top:6px;color:var(--mu);font-size:12px}
+.qm-kda3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:10px}
+.qm-kda3>div{position:relative;padding:14px 16px 16px;border-radius:14px;background:var(--q-bx);border:1px solid var(--q-ln);overflow:hidden}
+.qm-kda3 span{display:block;color:var(--mu);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.qm-kda3 b{display:block;font:700 46px/1.05 var(--h)}
+.qm-kda3 i{position:absolute;left:0;bottom:0;height:4px;width:var(--w);transform-origin:left;animation:qmGrow .8s .2s cubic-bezier(.2,.8,.2,1) backwards}
+.qm-kda3 i.g{background:var(--win)}.qm-kda3 i.r{background:var(--loss)}.qm-kda3 i.v{background:var(--q-sp)}
+.qm-kdr{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.qm-kdr span{padding:8px 12px;border-radius:10px;background:var(--s2);color:var(--mu);font-size:12.5px}
+.qm-kdr b{color:var(--tx);font-size:15px;margin-left:4px}
+.qm-skh{margin:14px 0 8px;font:600 13px/1 var(--f);color:var(--tx)}
+.qm-skh small{color:var(--mu2);font-weight:400;margin-left:6px}
+.qm-sk{overflow-x:auto}
+.qm-skr{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:10px;padding:4px 0}
+.qm-skr>span{display:flex;align-items:center;gap:8px;font-size:12.5px;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.qm-skr img{width:26px;height:26px;border-radius:6px;background:var(--s3);flex:none}
+.qm-skc{display:grid;grid-template-columns:repeat(var(--n),minmax(18px,1fr));gap:3px;min-height:24px;background:repeating-linear-gradient(90deg,var(--s2) 0 calc(100% / var(--n) - 3px),transparent 0 calc(100% / var(--n)));border-radius:5px}
+.qm-skc i{display:grid;place-items:center;height:24px;border-radius:5px;font:700 11px/1 var(--m);font-style:normal;background:var(--q-am);color:#1b1305;animation:qmPop .3s backwards}
+.qm-skc i.u{background:#2b3040;color:var(--q-am);box-shadow:inset 0 0 0 1px var(--q-am)}
+.qm-fin{display:flex;flex-wrap:wrap;gap:6px}
+.qm-it{position:relative;display:block;width:48px;height:48px;border-radius:10px;background:var(--s3);overflow:hidden;box-shadow:inset 0 0 0 1px var(--q-ln);animation:qmPop .35s backwards}
+.qm-it.weapon{box-shadow:inset 0 0 0 2px rgba(255,170,60,.65)}.qm-it.spirit{box-shadow:inset 0 0 0 2px rgba(178,124,255,.7)}.qm-it.vitality{box-shadow:inset 0 0 0 2px rgba(90,210,120,.65)}
+.qm-it img{width:100%;height:100%;object-fit:cover}
+.qm-it em{position:absolute;right:2px;bottom:2px;padding:1px 4px;border-radius:4px;background:rgba(0,0,0,.72);font:700 10px/1.2 var(--m);font-style:normal;color:#fff}
+.qm-it.s{width:36px;height:36px;border-radius:8px}
+.qm-it.s em{font-size:9px}
+.qm-fin .qm-it:nth-child(n+2){animation-delay:.04s}.qm-fin .qm-it:nth-child(n+4){animation-delay:.1s}.qm-fin .qm-it:nth-child(n+7){animation-delay:.16s}.qm-fin .qm-it:nth-child(n+10){animation-delay:.22s}
+.qm-tl{position:relative;height:62px;margin:6px 4px 4px;border-radius:10px;background:linear-gradient(var(--s2),var(--s2)) 0 30px/100% 3px no-repeat}
+.qm-tlm{position:absolute;top:10px;width:28px;height:28px;margin-left:-14px;border-radius:7px;overflow:hidden;box-shadow:0 0 0 2px var(--q-bx);background:var(--s3);animation:qmDrop .4s cubic-bezier(.2,1.3,.3,1) backwards;transition:transform .15s}
+.qm-tlm:nth-child(odd){top:-2px}
+.qm-tlm:hover{transform:scale(1.5);z-index:3}
+.qm-tlm img{width:100%;height:100%;object-fit:cover}
+.qm-tlm.sold{opacity:.38}
+@keyframes qmDrop{from{opacity:0;transform:translateY(-12px)}}
+.qm-tla{position:absolute;left:0;right:0;bottom:0;height:14px}
+.qm-tla i{position:absolute;transform:translateX(-50%);font:600 10.5px/1 var(--m);font-style:normal;color:var(--mu2)}
+.qm-tla i:first-child{transform:none}.qm-tla i:last-child{transform:translateX(-100%)}
+.qm-ph{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.qm-ph>div{padding:10px 12px;border-radius:12px;background:var(--s2)}
+.qm-ph b{font-size:13.5px}.qm-ph small{color:var(--mu2);font-size:11.5px;margin-left:6px}
+.qm-ph>div>div{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.qm-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.qm-card{padding:14px 16px;border-radius:16px;background:var(--q-bx);border:1px solid var(--q-ln);min-width:0;transition:transform .2s,border-color .2s}
+.qm-card:hover{transform:translateY(-2px);border-color:var(--ln2)}
+.qm-cdh{display:flex;justify-content:space-between;align-items:center}
+.qm-cdh b{font:700 15px/1 var(--h);letter-spacing:.05em;text-transform:uppercase}
+.qm-cdh em{font:700 11px/1 var(--m);font-style:normal;padding:4px 7px;border-radius:6px;background:var(--s2);color:var(--mu)}
+.qm-cdh em.top{background:color-mix(in srgb,var(--q-am) 18%,transparent);color:var(--q-am)}
+.qm-cdk{display:block;color:var(--mu2);font-size:11.5px;margin-top:10px}
+.qm-cdv b{font:700 32px/1.1 var(--h)}
+.qm-card>small{display:block;font-size:12px;margin:2px 0 8px}
+.qm-card>small.win{color:var(--win)}.qm-card>small.loss{color:var(--loss)}
+.qm-cdr{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--q-ln);font-size:12.5px}
+.qm-cdr:first-of-type{margin-top:10px}
+.qm-cdr>span{color:var(--mu)}
+.qm-cdr i.top{font-style:normal;font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;background:color-mix(in srgb,var(--q-am) 18%,transparent);color:var(--q-am);margin-left:4px}
+.qm-cdr>b{text-align:right}.qm-cdr>b small{display:block;font-weight:400;color:var(--mu2);font-size:11px}
+/* Линии */
+.qm-lnf{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.qm-lnf .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.qm-duel{border-top:3px solid var(--lc)}
+.qm-dt,.qm-et{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;text-align:center}
+.qm-dt>div small,.qm-et>div small,.qm-dmt small{display:block;color:var(--mu);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.qm-dt>div b,.qm-et>div b,.qm-dmt b{font:700 34px/1.1 var(--h);color:var(--tc)}
+.qm-et>div span,.qm-lead span{display:block;color:var(--mu2);font-size:12px}
+.qm-lead{padding:8px 16px;border-radius:12px;background:var(--s2)}
+.qm-lead b{font:700 22px/1.1 var(--h)!important}
+.qm-db{position:relative;height:10px;margin:12px 0 14px;border-radius:6px;background:var(--t1);overflow:hidden}
+.qm-db i{position:absolute;left:0;top:0;bottom:0;width:var(--w);background:var(--t0);transform-origin:left;animation:qmGrow .9s .15s cubic-bezier(.2,.8,.2,1) backwards}
+.qm-db::after{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:var(--bg)}
+.qm-drs{display:grid;gap:8px}
+.qm-drs .qm-dr{display:grid;grid-template-columns:minmax(0,1fr) 150px minmax(0,1fr);align-items:center;gap:12px}
+.qm-dr>span{text-align:center;color:var(--mu);font-size:12.5px}
+.qm-dr .l,.qm-dr .r{display:flex;align-items:center;gap:8px}
+.qm-dr .l{flex-direction:row-reverse}
+.qm-dr .l,.qm-dr .r{min-width:0}
+.qm-dr .l i,.qm-dr .r i{flex:none;display:block;height:8px;width:calc((100% - 58px) * var(--k));border-radius:5px;animation:qmGrow .8s .2s cubic-bezier(.2,.8,.2,1) backwards}
+.qm-dr .l i{background:var(--t0);transform-origin:right}.qm-dr .r i{background:var(--t1);transform-origin:left}
+.qm-dr b{font:700 14px/1 var(--m);min-width:48px}.qm-dr .l b{text-align:right}
+.qm-pg{display:grid;gap:8px}.qm-pg+.qm-pg{margin-top:14px}
+.qm-pc{display:grid;grid-template-columns:auto 180px minmax(0,1fr);align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:var(--s2);border-left:3px solid var(--tc);cursor:pointer;transition:background .15s}
+.qm-pc.on{background:color-mix(in srgb,var(--tc) 10%,var(--s2))}
+.qm-pcn b{display:block;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.qm-pcn small{color:var(--mu);font-size:12px}
+.qm-pcs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.qm-pcm span{display:block;color:var(--mu2);font-size:11px;white-space:nowrap}
+.qm-pcm span em{font-style:normal;margin-left:4px;font-size:9.5px;font-weight:700;padding:1px 4px;border-radius:3px;background:color-mix(in srgb,var(--q-am) 20%,transparent);color:var(--q-am)}
+.qm-pcm b{font:700 14px/1.3 var(--m)}
+.qm-pcm i{display:block;height:4px;border-radius:3px;width:var(--w);background:var(--tc);transform-origin:left;animation:qmGrow .7s .2s backwards}
+/* Экономика и графики */
+.qm-ef{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.qm-ef span{padding:7px 12px;border-radius:9px;background:var(--s2);color:var(--mu);font-size:12.5px}
+.qm-ef b{margin-left:4px}
+.qm-ch{display:block;width:100%;height:220px;overflow:visible}
+.qm-ch .ln{fill:none;stroke-width:2.6;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:qmDraw 1.2s .2s cubic-bezier(.4,0,.2,1) forwards}
+.qm-ch .ar{animation:qmFade .8s .7s backwards}
+.qm-ch .z{stroke:var(--ln2);stroke-dasharray:4 4;vector-effect:non-scaling-stroke}
+.qm-ch text{fill:var(--mu2);font:600 11px var(--m)}
+.qm-ch .lay{opacity:.85;animation:qmFade .6s backwards}
+.qm-ch .lay:nth-child(2){animation-delay:.08s}.qm-ch .lay:nth-child(3){animation-delay:.16s}.qm-ch .lay:nth-child(4){animation-delay:.24s}.qm-ch .lay:nth-child(n+5){animation-delay:.32s}
+@keyframes qmDraw{to{stroke-dashoffset:0}}
+.qm-src{display:flex;height:30px;border-radius:9px;overflow:hidden;gap:2px}
+.qm-src i{display:grid;place-items:center;font:600 11px/1 var(--f);font-style:normal;color:#0b0d12;white-space:nowrap;overflow:hidden;transform-origin:left;animation:qmGrow .8s .15s cubic-bezier(.2,.8,.2,1) backwards}
+.qm-srl{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 12px;font-size:12.5px;color:var(--mu)}
+.qm-srl i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.qm-spm{display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px;align-items:center}
+.qm-spc b{display:block;font:700 38px/1 var(--h);color:var(--q-am)}.qm-spc small{display:block;color:var(--mu);font-size:12px;margin-top:4px}.qm-spc span{display:block;color:var(--mu2);font-size:12px;margin-top:8px}
+.qm-inc+.qm-inc{margin-top:14px}
+.qm-ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.qm-ic{padding:10px 12px;border-radius:12px;background:var(--s2);border-top:3px solid var(--tc);cursor:pointer;transition:transform .15s,background .15s}
+.qm-ic:hover{transform:translateY(-2px)}.qm-ic.on{background:color-mix(in srgb,var(--tc) 10%,var(--s2))}
+.qm-ich{display:flex;align-items:center;gap:8px;margin-bottom:8px}.qm-ich b{flex:1;min-width:0;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.qm-ich>span{font:700 14px/1 var(--m);color:var(--q-am)}
+.qm-icr{display:grid;grid-template-columns:10px minmax(0,1fr) auto 36px;align-items:center;gap:8px;padding:3px 0;font-size:12px}
+.qm-icr i{width:10px;height:10px;border-radius:3px}.qm-icr span{color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.qm-icr small{color:var(--mu2);text-align:right}
+.qm-icr.loss b,.qm-icr.loss span{color:var(--loss)}.qm-icr.loss i{background:var(--loss)}
+/* Урон */
+.qm-dmt{display:flex;align-items:center;justify-content:center;gap:24px;text-align:center;margin-bottom:12px}
+.qm-dmt>i{color:var(--mu2);font:700 13px/1 var(--h);font-style:normal}
+.qm-rl{display:grid;gap:5px}
+.qm-rr{display:grid;grid-template-columns:24px auto minmax(110px,190px) minmax(0,1fr) 70px;align-items:center;gap:10px;padding:6px 10px;border-radius:10px;background:var(--s2);border-left:3px solid var(--tc);cursor:pointer;transition:background .15s}
+.qm-rr.on{background:color-mix(in srgb,var(--tc) 10%,var(--s2))}
+.qm-rr>em{font:700 12px/1 var(--m);font-style:normal;color:var(--mu2);text-align:center}
+.qm-rr span b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.qm-rr span small{color:var(--mu);font-size:11.5px}
+.qm-rr>b{font:700 14px/1 var(--m);text-align:right}
+.qm-rl .qm-rr:nth-child(n){animation:qmUp .4s backwards}.qm-rl .qm-rr:nth-child(n+4){animation-delay:.08s}.qm-rl .qm-rr:nth-child(n+8){animation-delay:.16s}
+.qm-srcr{display:grid;grid-template-columns:22px 32px minmax(0,1fr) 46px;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--q-ln)}
+.qm-srcr:first-of-type{border-top:0}
+.qm-srcr>em{font:700 12px/1 var(--m);font-style:normal;color:var(--mu2);text-align:center}
+.qm-srcr img,.qm-srcr i.k{width:32px;height:32px;border-radius:8px;background:var(--s3);object-fit:cover}
+.qm-srcr i.k.w{background:linear-gradient(135deg,#ffb630,#b46a12)}.qm-srcr i.k.a{background:linear-gradient(135deg,#b27cff,#5a3bb0)}.qm-srcr i.k.i{background:linear-gradient(135deg,#5b8cff,#2a4aa0)}.qm-srcr i.k.m{background:linear-gradient(135deg,#ff5d7a,#992a3e)}
+.qm-srcr span b{display:block;font-size:13px}.qm-srcr span small{color:var(--mu2);font-size:11px}
+.qm-sb2{display:block;height:4px;border-radius:3px;margin-top:5px;width:var(--w);background:var(--loss);transform-origin:left;animation:qmGrow .7s .2s backwards}
+.qm-srcr>b{font:700 15px/1 var(--m);text-align:right}
+/* Карта */
+.qm-rp{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,640px) minmax(0,1fr);gap:14px;align-items:start}
+.qm-rs{display:grid;gap:6px}
+.qm-rr2{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:11px;background:var(--q-bx);border:1px solid var(--q-ln);border-left:3px solid var(--tc);cursor:pointer;transition:background .15s}
+.qm-rr2.on{background:color-mix(in srgb,var(--tc) 12%,var(--q-bx))}
+.qm-rr2 span{min-width:0}.qm-rr2 b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.qm-rr2 small{font:600 12px/1.3 var(--m);color:var(--mu)}
+.qm-rm{min-width:0}
+.qm-rmh{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;text-align:center;margin-bottom:8px}
+.qm-rmh>b{font:700 30px/1 var(--h)}.qm-rmh>div b{display:block;font:700 22px/1 var(--m)}.qm-rmh>div small{color:var(--mu);font-size:12px}
+.qm-map{position:relative;aspect-ratio:1;container-type:size;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 50%,#1a2030,#0d1016);border:1px solid var(--q-ln)}
+.qm-map>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.9}
+.qm-dot{position:absolute;left:0;top:0;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 2px var(--tc),0 3px 8px rgba(0,0,0,.6);background:#111;transition:transform .16s linear,opacity .3s;will-change:transform;z-index:2}
+.qm-dot img{width:100%;height:100%;object-fit:cover}
+.qm-dot.me{width:34px;height:34px;margin:-17px 0 0 -17px;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--tc),0 3px 10px rgba(0,0,0,.6);z-index:3}
+.qm-dot.dead{opacity:.22;filter:grayscale(1)}
+.qm-dd2{position:absolute;transform:translate(-50%,-50%);color:var(--loss);font:700 16px/1 var(--f);font-style:normal;text-shadow:0 0 6px #000;animation:qmPop .3s backwards;z-index:4}
+.qm-ctl{display:flex;align-items:center;gap:10px;margin-top:10px}
+.qm-ctl input{flex:1;accent-color:var(--q-am)}
+.qm-obj{position:relative;height:14px;margin:6px 0 0}
+.qm-obj i{position:absolute;top:2px;width:8px;height:8px;margin-left:-4px;transform:rotate(45deg);background:var(--tc);border-radius:2px}
+.qm-obj i.b{background:#b27cff;width:10px;height:10px;margin-left:-5px}
+/* ширина: середина — колонкой */
+@media (max-width:1200px){.qm-g2,.qm-g2b{grid-template-columns:minmax(0,1fr)}.qm-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.qm-crs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .qm-rp{grid-template-columns:minmax(0,1fr)}.qm-rs{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}.qm-rm{order:-1}.qm-map{max-width:640px;margin:0 auto}
+  .qm-pc{grid-template-columns:auto minmax(0,1fr)}.qm-pcs{grid-column:1/-1;grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:760px){
+  .qm-rs{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px}.qm-rr2{padding:6px 8px;gap:7px}.qm-rr2 .q-fc{width:26px;height:26px}
+  .qm-ctl{flex-wrap:wrap}.qm-ctl input{order:3;flex-basis:100%}.qm-ctl .seg{margin-left:auto}
+  .qm-tbl .qh{display:none}.qm-tbl td,.qm-tbl th{padding-left:6px;padding-right:6px}
+  .qm-sb{grid-template-columns:minmax(0,1fr)!important;justify-items:center}.qm-tn{display:none}
+  .qm-dr b{min-width:40px;font-size:12.5px}.qm-dr .l i,.qm-dr .r i{width:calc((100% - 46px) * var(--k))}
+  .qm-sb{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);padding:10px 12px;gap:8px}.qm-tn b{font-size:11px}.qm-tn em,.qm-tn .ri{display:none}
+  .qm-sc{gap:10px}.qm-sc>span{font-size:30px}.qm-sc>div b{font-size:13px}.qm-sc small{white-space:normal;font-size:11px}
+  .qm-pp{grid-template-columns:minmax(0,1fr);gap:6px}.qm-vs{display:none}.qm-side{grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}.qm-pf{padding:5px 2px}.qm-pf .q-fc{width:34px;height:34px}.qm-pf span{font-size:9.5px}
+  .qm-tabs button{padding:11px 12px;font-size:13.5px}
+  .qm-grade{flex-direction:column;align-items:flex-start;padding:14px}.qm-gl{width:84px;height:84px;font-size:40px}
+  .qm-crs,.qm-tr,.qm-cards,.qm-ph{grid-template-columns:minmax(0,1fr)}
+  .qm-dos{padding:16px}.qm-dos .bg{width:70%;opacity:.25}.qm-dl .q-fc{width:56px;height:56px}.qm-dl h2{font-size:21px}.qm-dg b{width:62px;height:62px;font-size:28px}
+  .qm-kda3 b{font-size:34px}.qm-skr{grid-template-columns:110px minmax(0,1fr)}
+  .qm-drs .qm-dr{grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);gap:6px}.qm-dr>span{font-size:11px}
+  .qm-pcs{grid-template-columns:repeat(3,minmax(0,1fr))}.qm-pc{grid-template-columns:auto minmax(0,1fr)}
+  .qm-spm{grid-template-columns:minmax(0,1fr)}.qm-ch{height:170px}
+  .qm-rr{grid-template-columns:20px auto minmax(0,1fr) 58px}.qm-rr .qm-bar{display:none}
+  .qm-dt>div b,.qm-et>div b,.qm-dmt b{font-size:24px}.qm-lead b{font-size:17px!important}
+  .qm-dl2{display:none}}
+@media (prefers-reduced-motion:reduce){.qm-b.in>*,.qm-pf,.qm-bar i,.qm-bar s,.qm-tb i,.qm-gl,.qm-dg b,.qm-kda3 i,.qm-skc i,.qm-it,.qm-tlm,.qm-db i,.qm-dr i,.qm-pcm i,.qm-ch .ar,.qm-ch .lay,.qm-src i,.qm-rr,.qm-sb2,.qm-dos .bg,.qm-dd2,.qm-sb::after{animation:none!important}
+  .qm-ch .ln{animation:none;stroke-dashoffset:0}.qm-dot{transition:none}}
+/* профиль: активность, 7 дней, с кем играешь */
+.qa-hm{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px;align-items:stretch}
+.qa-dn{display:grid;grid-template-rows:repeat(7,1fr);gap:3px}
+.qa-dn span{font-size:10px;color:var(--mu2);line-height:1;align-self:center}
+.qa-g{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:3px}
+.qa-g i,.qa-lg i{display:block;aspect-ratio:1;border-radius:3px;background:var(--s2)}
+.qa-g i{animation:qaIn .35s calc(var(--i) * 5ms) cubic-bezier(.2,.9,.3,1.3) backwards}
+@keyframes qaIn{from{opacity:0;transform:scale(.3)}}
+.qa-g i.fu{opacity:.25}
+.qa-g i.w,.qa-lg i.w{background:var(--win)}.qa-g i.l,.qa-lg i.l{background:var(--loss)}.qa-g i.e,.qa-lg i:not(.w):not(.l):not(.lv0){background:var(--q-am)}
+.qa-g i.lv1,.qa-lg i.lv1{opacity:.35}.qa-g i.lv2,.qa-lg i.lv2{opacity:.55}.qa-g i.lv3,.qa-lg i.lv3{opacity:.78}.qa-g i.lv4,.qa-lg i.lv4{opacity:1}
+.qa-g i:hover{transform:scale(1.35);transition:transform .12s}
+.qa-lg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:11.5px;color:var(--mu)}
+.qa-lg span{display:inline-flex;align-items:center;gap:4px}.qa-lg i{width:10px}
+.qa-best{margin:8px 0 0;font-size:12.5px;color:var(--mu)}
+.qa-sep{border-top:1px solid var(--q-ln);margin-top:12px;padding-top:12px}
+.qa-7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center}
+.qa-up,.qa-dw{height:34px;display:flex;justify-content:center}
+.qa-up{align-items:flex-end;border-bottom:1px solid var(--ln2)}.qa-dw{align-items:flex-start}
+.qa-up i,.qa-dw i{display:block;width:60%;height:calc(100% * var(--k));border-radius:4px}
+.qa-up i{background:var(--win);transform-origin:bottom;animation:qaUp .7s .2s cubic-bezier(.2,.8,.2,1) backwards}
+.qa-dw i{background:var(--loss);transform-origin:top;animation:qaUp .7s .3s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes qaUp{from{transform:scaleY(0)}}
+.qa-7 b{display:block;font:700 12px/1.2 var(--m);margin-top:4px}.qa-7 span{font-size:10.5px;color:var(--mu2)}
+.qa-mr{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--q-ln);text-decoration:none;color:var(--tx)}
+.qa-mr:first-child{border-top:0}
+.qa-mr:hover b{color:var(--q-am)}
+.qa-mr img,.qa-av{width:30px;height:30px;border-radius:8px;object-fit:cover;background:var(--s3);display:block}
+.qa-mr span{min-width:0}.qa-mr span b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qa-mr em{font:700 9.5px/1 var(--f);font-style:normal;letter-spacing:.06em;padding:2px 5px;border-radius:4px;background:color-mix(in srgb,var(--q-sp) 22%,transparent);color:var(--q-sp);vertical-align:1px}
+.qa-mr small{color:var(--mu2);font-size:11.5px}
+.qa-mb{display:block;height:3px;margin-top:4px;border-radius:2px;width:calc(100% * var(--k));background:var(--ln2);transform-origin:left;animation:qmGrow .7s .1s backwards}
+.qa-mr>b{font:700 14px/1 var(--m)}
+.qm-map>img{filter:brightness(1.55) saturate(.8)}
+@media (prefers-reduced-motion:reduce){.qa-g i,.qa-up i,.qa-dw i,.qa-mb{animation:none!important}}
+.qa-g{grid-template-rows:repeat(7,13px)}.qa-dn{grid-template-rows:repeat(7,13px)}
+.qa-g i{aspect-ratio:auto;height:13px}
+@media (max-width:760px){.qa-g,.qa-dn{grid-template-rows:repeat(7,11px)}.qa-g i{height:11px}}
+.qa-box>.qa-hm,.qa-box>.qa-lg,.qa-box>.qa-best,.qa-box>.qa-7,.qa-box>#qamate{margin-left:16px;margin-right:16px}
+.qa-box{padding-bottom:12px}
+.qa-box>.qa-hm{margin-top:12px}.qa-box>.qa-7,.qa-box>#qamate,.qa-box>.qa-best{margin-top:10px}
+.qa-sep{margin-top:12px;padding-top:0}
+.q-pds{display:flex;gap:6px;margin:8px 0 2px;flex-wrap:wrap}
+.q-pds span{display:grid;justify-items:center;padding:6px 10px;border-radius:9px;background:rgba(0,0,0,.42);min-width:64px}
+.q-pds b{font:700 15px/1.1 var(--m)}.q-pds small{font-size:10.5px;color:var(--mu)}
+.q-pd{padding-top:68px}
 </style>
 </head>
 <body>
@@ -2943,10 +3291,11 @@ async function viewHome() {
       <select class="q-sel" id="hfm" aria-label="Режим"><option value="">Все режимы</option><option value="r"${PHF.mode === 'r' ? ' selected' : ''}>Ранговые</option><option value="u"${PHF.mode === 'u' ? ' selected' : ''}>Обычные</option></select></div>
     <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё</button></div>
     <p class="note">Лицо героя — из файлов игры: доволен — победа, на лоу хп — поражение · оценка S+…D− — против типичного игрока на этом герое твоего ранга · нажми на матч — полный разбор.</p>`;
-  V(`${ptabsHTML('home')}<div class="q-pl2"><aside>${rkBox}${heroBox}${tpBox}</aside><div class="q-plm">${histBox}
+  V(`${ptabsHTML('home')}<div class="q-pl2"><aside>${rkBox}${heroBox}${typeof actBox === 'function' ? actBox(H) : ''}${tpBox}</aside><div class="q-plm">${histBox}
     <div class="q-row q-pb2"><a class="btn live" href="#live/${id}" style="margin-top:0">Лайв-матч этого игрока →</a><div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b><small>что ты отложил «в профиль» и автоподбор</small></div><div class="pad" id="myb"></div></div></div></div></div></div>`);
   $$('.q-hbs button').forEach(b => b.onclick = e => { e.stopPropagation(); const box = $('.q-hb'); box.dataset.m = b.dataset.hm; $$('.q-hbs button').forEach(x => x.classList.toggle('on', x === b)); });
   heroRatings(n, id, [...new Set([...rAll, ...r30].map(x => x.hid))], 'data-rt');
+  if (typeof mateLoad === 'function') mateLoad(n, id);
   $('#v').onclick = e => { const tr = e.target.closest('[data-go]'); if (tr && !e.target.closest('a')) location.hash = tr.dataset.go; };
   $$('#hvw button').forEach(b => b.onclick = () => { PHF.view = b.dataset.v; try { localStorage.setItem('rl-hv', PHF.view); } catch (er) {} $$('#hvw button').forEach(x => x.classList.toggle('on', x === b)); drawHist(n); });
   $('#hfh').onchange = e => { PHF.hero = +e.target.value; HN = 20; drawHist(n); };
@@ -3688,7 +4037,7 @@ function route() {
   if (t === 'upd') return viewUpd(a);
   if (t === 'heroes' || t === 'builds') return viewHeroes();
   if ((t === 'h' || t === 'b') && a) return viewHero(a, b);
-  if (t === 'm' && a) return viewMatch(a);
+  if (t === 'm' && a) return viewMatch2(a, b);
   return viewHome();
 }
 
@@ -4175,7 +4524,7 @@ async function viewLb2() {
       const pod = !q && E.length >= 3 ? `<div class="q-pod">${[1, 0, 2].map(k => { const x = E[k], a = art(x);
         return `<div class="q-pd p${k + 1}" style="--md:${medal[k]}">${a ? `<i class="bg" style="background-image:url('${a}')"></i>` : ''}<span class="pl">${k + 1}</span>
           <div class="q-pdi"><b>${esc(x.e.account_name || 'Скрытый игрок')}</b><span class="rkc q-pdr" data-acc="${x.one || ''}">${x.one ? '…' : ''}</span>
-          <div class="his">${(x.e.top_hero_ids || []).slice(0, 3).map(h => face(h, 'g', 's', hero(h).n)).join('')}</div>${x.one ? `<a class="btn s" href="?id=${x.one}#home">Профиль ›</a>` : ''}</div></div>`; }).join('')}</div>` : '';
+          <div class="his">${(x.e.top_hero_ids || []).slice(0, 3).map(h => face(h, 'g', 's', hero(h).n)).join('')}</div>${x.one ? `<div class="q-pds" data-pda="${x.one}"></div>` : ''}${x.one ? `<a class="btn s" href="?id=${x.one}#home">Профиль ›</a>` : ''}</div></div>`; }).join('')}</div>` : '';
       const rows = (q ? F2 : F2.slice(3)).slice(0, LB2.n);
       put(n, '#lbb', `${pod}<div class="q-box q-lbt"><table class="q-tbl"><tr><th>#</th><th>Игрок</th><th>Ранг</th><th class="qh">Главные герои</th><th></th></tr>
         ${rows.map(x => `<tr id="lb2-${x.i}" class="${x.i === myI ? 'mine' : ''}${x.one ? ' lk' : ''}" ${x.one ? `data-go="?id=${x.one}#home"` : ''}><td class="q-lbn">${x.i + 1}</td>
@@ -4185,7 +4534,7 @@ async function viewLb2() {
           <td>${x.one ? '<span class="lnk">профиль ›</span>' : ''}</td></tr>`).join('') || '<tr><td colspan="5"><div class="empty">Никого не нашлось.</div></td></tr>'}</table>
         ${(q ? F2 : F2.slice(3)).length > LB2.n ? `<button class="btn g q-more" id="lbmore" type="button">Показать ещё</button>` : ''}</div>
         <p class="note">${E.length} в топе · ранг — сейчас, из профиля игрока · ${LB2.h ? `топ героя = общий топ-1000 региона, где ${esc(hero(LB2.h).n)} среди главных героев игрока` : 'нажми на строку — профиль'}</p>`);
-      lbRanks();
+      lbRanks(); if (typeof lbPod === 'function') lbPod(n);
       $('#lbb').onclick = e => { const t = e.target.closest('[data-go]'); if (t && !e.target.closest('a')) location.href = t.dataset.go; };
       const mb = $('#lbmore'); if (mb) mb.onclick = () => { LB2.n += 200; draw(); };
       $('#lbme2').onclick = () => { if (myI < 0) { alertBox(`Тебя нет в топе: ${esc(REGN[LB2.rg])}${LB2.h ? ' на этом герое' : ''}.`); return; } if (myI >= LB2.n + 3) { LB2.n = myI + 20; draw().then(() => { const r = $('#lb2-' + myI); if (r) r.scrollIntoView({block: 'center', behavior: 'smooth'}); }); return; } const r = $('#lb2-' + myI); if (r) r.scrollIntoView({block: 'center', behavior: 'smooth'}); else window.scrollTo({top: 0, behavior: 'smooth'}); };
@@ -4196,6 +4545,388 @@ async function viewLb2() {
   $('#lbh').onchange = e => { LB2.h = +e.target.value; LB2.n = 100; draw(); };
   $('#lbf2').oninput = e => { LB2.q = e.target.value.trim(); clearTimeout(LB2.t); LB2.t = setTimeout(draw, 250); };
   draw();
+}
+
+// ==================== 01.11 · разбор матча по вкладкам: визуал и подробность — как Deadlock Labs, понятность — как LoG, прямые слова — как Porofessor ====================
+const MZ = {mid: 0, slot: 0, tab: 'ov', win: 'all', lane: 0, dm: 'dmg', t: 0, play: 0};
+let MX = null;
+const MTABS = [['ov', 'Обзор'], ['pl', 'Игрок'], ['ln', 'Линии'], ['ec', 'Экономика'], ['dm', 'Урон'], ['map', 'Карта']];
+const LANEN = {1: ['Жёлтая', '#f5c542'], 4: ['Синяя', '#4f8dff'], 6: ['Зелёная', '#3fd17f']};
+const TEAMN = ['Янтарная рука', 'Сапфировое пламя'];
+const mLS = p => (p.stats || [])[(p.stats || []).length - 1] || {};
+const mAvg = (L, f) => L.reduce((a, x) => a + (+f(x) || 0), 0) / Math.max(1, L.length);
+const mPlace = (L, f, p, low) => 1 + L.filter(q => q !== p && (low ? f(q) < f(p) : f(q) > f(p))).length;
+const pname = p => (SN[p.account_id] || {}).n || 'Игрок';
+const kfm = v => Math.abs(v) >= 1000 ? (v / 1000).toFixed(Math.abs(v) >= 1e5 ? 0 : 1).replace('.', ',') + 'k' : String(Math.round(v));
+const gradeOf = s => GRS.find(x => s >= x[0])[1];
+const gradeCol = g => GCOL2[g[0]] || '#8e897f';
+// числа набегают, линии рисуются — один раз при показе
+function mAnim(root) {
+  if (!root || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const els = $$('[data-cu]', root); if (!els.length) return;
+  const t0 = performance.now(), D2 = 650;
+  const fmt = (el, v) => { const d = +el.dataset.cd || 0, sfx = el.dataset.cs || ''; el.textContent = (d ? v.toFixed(d).replace('.', ',') : nf(Math.round(v))) + sfx; };
+  const step = t => { const k = Math.min(1, (t - t0) / D2), e = 1 - Math.pow(1 - k, 3); els.forEach(el => fmt(el, (+el.dataset.cu) * e)); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+const cu = (v, d, sfx) => `<b data-cu="${v}"${d ? ` data-cd="${d}"` : ''}${sfx ? ` data-cs="${sfx}"` : ''}>${d ? (+v).toFixed(d).replace('.', ',') : nf(Math.round(v))}${sfx || ''}</b>`;
+
+// метрики игрока в матче
+function mMet(X, p) {
+  const s = mLS(p), dur = Math.max(60, X.dur), mn = dur / 60, T = X.P.filter(q => teamOf(q.team) === teamOf(p.team)), tk = T.reduce((a, q) => a + (q.kills || 0), 0);
+  const shots = (s.shots_hit || 0) + (s.shots_missed || 0);
+  return {k: p.kills || 0, d: p.deaths || 0, a: p.assists || 0, kda: ((p.kills || 0) + (p.assists || 0)) / Math.max(1, p.deaths || 0), nw: p.net_worth || 0, spm: (p.net_worth || 0) / mn,
+    dmg: s.player_damage || 0, dpm: (s.player_damage || 0) / mn, tak: s.player_damage_taken || 0, tpm: (s.player_damage_taken || 0) / mn, heal: s.player_healing || 0, theal: s.teammate_healing || 0, hpm: (s.player_healing || 0) / mn,
+    obj: s.boss_damage || 0, opm: (s.boss_damage || 0) / mn, acc: shots >= 150 ? (s.shots_hit || 0) / shots : null, crit: s.hero_bullets_hit ? (s.hero_bullets_hit_crit || 0) / s.hero_bullets_hit : null, hs: s.hero_bullets_hit_crit || 0,
+    lh: p.last_hits || 0, den: p.denies || 0, cs: s.possible_creeps ? (s.creep_kills || 0) / s.possible_creeps : null, kp: tk ? ((p.kills || 0) + (p.assists || 0)) / tk : 0, mit: s.damage_mitigated || 0, dmin: (p.deaths || 0) / mn,
+    hp: s.heal_prevented || 0, lvl: p.level || s.level || 0};
+}
+
+async function viewMatch2(mid, tab) {
+  mid = +mid; const n = vNew();
+  if (MZ.mid !== mid) { MZ.mid = mid; MZ.slot = 0; MZ.win = 'lane'; MZ.lane = 0; MZ.t = 0; }
+  if (tab && MTABS.some(x => x[0] === tab)) MZ.tab = tab;
+  V('<div class="load">Разбираю матч — все 12 игроков, линии, экономику и карту…</div>');
+  let md; try { md = await api('matches/' + mid + '/metadata'); } catch (e) { if (n === VQ) V(`<div class="err">Матч не загрузился: ${esc(e.message)}</div>`); return; }
+  if (n !== VQ) return;
+  const mi = md.match_info, P = mi.players.slice().sort((a, b) => teamOf(a.team) - teamOf(b.team) || a.player_slot - b.player_slot);
+  await steamNames(P.map(p => p.account_id)); if (n !== VQ) return;
+  const meP = ME ? P.find(p => p.account_id === ME.id) : null;
+  if (!MZ.slot || !P.some(p => p.player_slot === MZ.slot)) MZ.slot = (meP || P[0]).player_slot;
+  const GSN = {1: 'players', 2: 'lane_creeps', 3: 'neutrals', 4: 'bosses', 5: 'treasure', 6: 'assists', 7: 'denies', 8: 'team_bonus', 9: 'ability_assassinate', 10: 'item_trophy_collector', 11: 'item_cultist_sacrifice', 12: 'breakable', 13: 'item_goose_egg'};
+  P.forEach(p => (p.stats || []).forEach(st => (st.gold_sources || []).forEach(g => { const k = 'gold_source_' + (GSN[g.source] || 'src' + g.source); st[k + '_gold'] = g.gold || 0; st[k + '_gold_orbs'] = g.gold_orbs || 0; })));
+  const A = mAnalyze(mi);
+  MX = {n, mid, mi, P, A, dur: mi.duration_s || 0, win: teamOf(mi.winning_team), meP, M: new Map(P.map(p => [p, null])), PT: mPaths(mi), IS: {}};
+  P.forEach(p => MX.M.set(p, mMet(MX, p)));
+  mDraw();
+}
+const mSel = () => MX.P.find(p => p.player_slot === MZ.slot) || MX.P[0];
+function mHead() {
+  const X = MX, mi = X.mi, k0 = X.P.filter(p => teamOf(p.team) === 0).reduce((a, p) => a + p.kills, 0), k1 = X.P.filter(p => teamOf(p.team) === 1).reduce((a, p) => a + p.kills, 0);
+  const st = tsOf(mi.start_time), my = X.meP ? (teamOf(X.meP.team) === X.win ? ['Победа', 'win'] : ['Поражение', 'loss']) : [`Победа: ${TEAMN[X.win]}`, ''];
+  const side = t => `<div class="qm-side t${t}${X.win === t ? ' w' : ''}">${X.P.filter(p => teamOf(p.team) === t).map(p => `<button class="qm-pf${p.player_slot === MZ.slot ? ' on' : ''}" data-sl="${p.player_slot}" title="${esc(pname(p))} · ${esc(hero(p.hero_id).n)}">${face(p.hero_id, teamOf(p.team) === X.win ? 'g' : 'c', '')}<span>${esc(pname(p))}</span></button>`).join('')}</div>`;
+  return `<div class="qm-head"><a class="q-back" href="#home">‹ Профиль</a>
+    <div class="qm-sb"><div class="qm-tn t0"><b>${TEAMN[0]}</b>${X.win === 0 ? '<em>победа</em>' : ''}${mi.average_badge_team0 ? rankImg(mi.average_badge_team0, 'ri') : ''}</div>
+      <div class="qm-sc"><span class="t0">${cu(k0)}</span><div><b class="${my[1]}">${my[0]}</b><small>${mmss(X.dur)} · ${st ? esc(ago(st)) : ''} · ${esc(MODE({match_mode: mi.match_mode}))}</small></div><span class="t1">${cu(k1)}</span></div>
+      <div class="qm-tn t1">${mi.average_badge_team1 ? rankImg(mi.average_badge_team1, 'ri') : ''}${X.win === 1 ? '<em>победа</em>' : ''}<b>${TEAMN[1]}</b></div></div>
+    <div class="qm-pp">${side(0)}<i class="qm-vs">VS</i>${side(1)}</div>
+    <nav class="qm-tabs">${MTABS.map(([k, v]) => `<button data-mt="${k}" class="${MZ.tab === k ? 'on' : ''}">${v}</button>`).join('')}</nav></div>`;
+}
+function mDraw() {
+  const X = MX; if (!X || X.n !== VQ) return;
+  V(`${mHead()}<div id="qmb" class="qm-b"></div><p class="note">Матч ${X.mid} · данные игры через api.deadlock-api.com · нажми на любого игрока сверху — разбор переключится на него.</p>`);
+  mBody();
+  $('#v').onclick = e => {
+    const sl = e.target.closest('[data-sl]'); if (sl) { MZ.slot = +sl.dataset.sl; MZ.lane = 0; $$('.qm-pf').forEach(b => b.classList.toggle('on', +b.dataset.sl === MZ.slot)); mBody(); return; }
+    const tb = e.target.closest('[data-mt]'); if (tb) { MZ.tab = tb.dataset.mt; $$('.qm-tabs button').forEach(b => b.classList.toggle('on', b === tb)); try { history.replaceState(null, '', '#m/' + X.mid + '/' + MZ.tab); } catch (er) {} mBody(); return; }
+    const w = e.target.closest('[data-win]'); if (w) { MZ.win = w.dataset.win; mBody(); return; }
+    const ln = e.target.closest('[data-lane]'); if (ln) { MZ.lane = +ln.dataset.lane; mBody(); return; }
+    const dm = e.target.closest('[data-dmk]'); if (dm) { MZ.dm = dm.dataset.dmk; mBody(); return; }
+    const go = e.target.closest('[data-goacc]'); if (go) { location.href = '?id=' + go.dataset.goacc + '#home'; }
+  };
+  mAnim($('.qm-head'));
+}
+function mBody() {
+  const el = $('#qmb'); if (!el) return; cancelAnimationFrame(MZ.raf); MZ.play = 0;
+  el.innerHTML = ({ov: mOv, pl: mPl, ln: mLn, ec: mEc, dm: mDm, map: mMap})[MZ.tab]();
+  el.classList.remove('in'); void el.offsetWidth; el.classList.add('in');
+  mAnim(el);
+  if (MZ.tab === 'map') mMapBind();
+  if (MZ.tab === 'pl') mPlLoad();
+  if (MZ.tab === 'ov') mLate(mSel());
+}
+
+const mOpp = p => { const E = MX.P.filter(q => teamOf(q.team) !== teamOf(p.team)); return E.filter(q => q.assigned_lane === p.assigned_lane).sort((a, b) => b.net_worth - a.net_worth)[0] || E.slice().sort((a, b) => b.net_worth - a.net_worth)[0]; };
+// главное словами — как Porofessor: прямо, без цифр ради цифр
+function mPts(p) {
+  const X = MX, T = X.P.filter(q => teamOf(q.team) === teamOf(p.team)), opp = mOpp(p), rk = f => 1 + T.filter(q => f(q) > f(p)).length, dmg = q => mLS(q).player_damage || 0, R = [];
+  if (opp) { const a = mAt(p, 600), b = mAt(opp, 600); R.push(a >= b ? `Линию выиграл: к 10-й минуте <b class="win">+${nf(a - b)}</b> душ против ${esc(hero(opp.hero_id).n)}.` : `Линию проиграл: к 10-й минуте <b class="loss">−${nf(b - a)}</b> душ против ${esc(hero(opp.hero_id).n)}.`); }
+  R.push(`Души — <b>${rk(q => q.net_worth)}-й</b> в команде, урон по героям — <b>${rk(dmg)}-й</b>.`);
+  const avgD = mAvg(X.P, q => q.deaths); R.push(p.deaths > avgD * 1.3 ? `Смертей <b class="loss">${p.deaths}</b> — больше, чем в среднем в матче (${f1(avgD)}). Почему — справа.` : `Смертей ${p.deaths} — ${p.deaths <= avgD ? 'не больше' : 'чуть больше'} среднего в матче (${f1(avgD)}).`);
+  if (opp && typeof TIPS !== 'undefined' && TIPS[opp.hero_id]) R.push(`Против ${esc(hero(opp.hero_id).n)}: ${TIPS[opp.hero_id][2]}`);
+  return R;
+}
+// какие предметы купил позже, чем топы на этом герое — подгружаем
+function mLate(p) {
+  const X = MX, k = p.hero_id, el = () => $('#qmlate');
+  const go = IS => { const seen = new Set(), L = []; for (const it of p.items || []) { const I = item(it.item_id), a = IS[it.item_id]; if (!I || seen.has(it.item_id)) continue; seen.add(it.item_id); if (a && a.matches >= 30 && I.t >= 3 && it.game_time_s - a.avg_buy_time_s > 150) L.push([I, it.game_time_s - a.avg_buy_time_s]); }
+    L.sort((a, b) => b[1] - a[1]); const e = el(); if (e && L.length) { e.hidden = false; e.innerHTML = `${esc(L[0][0].n)} — на <b class="loss">${mmss(L[0][1])}</b> позже, чем покупают топы на этом герое${L[1] ? `; ${esc(L[1][0].n)} — на ${mmss(L[1][1])}` : ''}.`; } };
+  if (X.IS[k]) return go(X.IS[k]);
+  api(`analytics/item-stats?hero_id=${k}&min_average_badge=100&min_unix_timestamp=${now() - 30 * 86400 - now() % 3600}`).then(L => { const o = {}; (L || []).forEach(x => o[x.item_id] = x); X.IS[k] = o; if (MX === X && mSel() === p) go(o); }).catch(() => {});
+}
+// ----- Обзор: оценка, сильное и слабое против лобби, сравнения, все 12 игроков -----
+const MCMP = [
+  ['dmin', 'Редко умираешь', 'Часто умираешь', 'смертей в минуту', 1, v => v.toFixed(2).replace('.', ',')],
+  ['cs', 'Хорошо добиваешь крипов', 'Мало добиваешь крипов', 'добито крипов из возможных', 0, v => Math.round(100 * v) + '%'],
+  ['acc', 'Точная стрельба', 'Стрельба мимо', 'точность', 0, v => Math.round(100 * v) + '%'],
+  ['dpm', 'Много урона по героям', 'Мало урона по героям', 'урона в минуту', 0, v => nf(Math.round(v))],
+  ['spm', 'Отличный фарм', 'Слабый фарм', 'душ в минуту', 0, v => nf(Math.round(v))],
+  ['kp', 'В каждой драке', 'Мало участвуешь в драках', 'участие в убийствах команды', 0, v => Math.round(100 * v) + '%'],
+  ['opm', 'Ломаешь объекты', 'Мало урона по объектам', 'урона по объектам в минуту', 0, v => nf(Math.round(v))],
+  ['hpm', 'Много лечения', '', 'лечения в минуту', 0, v => nf(Math.round(v))],
+  ['den', 'Денаишь души', '', 'денаев', 0, v => nf(v)]];
+function mOv() {
+  const X = MX, p = mSel(), m = X.M.get(p), a = X.A.get(p), g = gradeOf(a.score), won = teamOf(p.team) === X.win;
+  const L = X.P.map(q => X.M.get(q));
+  const R = MCMP.map(([k, gd, bd, h, low, fmt]) => { const v = m[k]; if (v == null) return null; const vals = L.map(x => x[k]).filter(x => x != null), av = mAvg(vals, x => x); if (!av && !v) return null;
+    const pl = 1 + vals.filter(x => low ? x < v : x > v).length, pct = Math.round(100 * (pl - 1) / Math.max(1, vals.length - 1)), r = low ? (av + .01) / (v + .01) : (v + .01) / (av + .01);
+    return {k, gd, bd, h, v, av, pl, pct, r, fmt}; }).filter(Boolean);
+  const good = R.filter(x => x.r >= 1.15 && x.pl <= 4).sort((a2, b) => b.r - a2.r).slice(0, 3), bad = R.filter(x => x.bd && x.r <= .87 && x.pl >= 7).sort((a2, b) => a2.r - b.r).slice(0, 3);
+  const TG = typeof mTags === 'function' ? mTags(X.mi, p, X.A, X.PT, mOpp(p)) : [], DD = typeof mDeaths === 'function' ? mDeaths(X.mi, p, X.PT) : [];
+  const lbl = a.score >= 70 ? 'Тащил матч' : a.score >= 58 ? 'Выше среднего' : a.score >= 45 ? 'Средне' : a.score >= 35 ? 'Ниже среднего' : 'Тяжёлый матч';
+  const say = bad.length && !good.length ? 'Отстаёшь в ключевых местах — ниже по пунктам, что подтянуть.' : good.length && !bad.length ? 'Сыграл сильнее лобби — держи этот уровень.' : good.length ? `Сильнее всего: ${good[0].gd.toLowerCase()}. Слабее всего: ${bad[0].bd.toLowerCase()}.` : 'Ровный матч — ни сильно лучше, ни сильно хуже лобби.';
+  const cmp = [['Убийства', 'k'], ['Смерти', 'd', 1], ['Помощь', 'a'], ['KDA', 'kda'], ['Урон по героям', 'dmg'], ['Души', 'nw']].map(([nm, k, low]) => { const v = m[k], av = mAvg(L, x => x[k]), mx = Math.max(1e-9, ...L.map(x => x[k])), dd = av ? Math.round(100 * (v - av) / av) : 0, ok = low ? v <= av : v >= av;
+    return `<div class="qm-cr"><div><span>${nm}</span><b>${k === 'kda' ? f1(v) : kfm(v)}</b><small>в среднем ${k === 'kda' ? f1(av) : kfm(av)} · <em class="${ok ? 'win' : 'loss'}">${dd >= 0 ? '+' : ''}${dd}%</em></small></div><div class="qm-bar ${ok ? 'g' : 'r'}"><i style="--w:${Math.round(100 * v / mx)}%"></i><s style="left:${Math.round(100 * av / mx)}%"></s></div></div>`; }).join('');
+  const tsum = (t, f) => X.P.filter(q => teamOf(q.team) === t).reduce((s2, q) => s2 + f(q), 0);
+  const TR = [['Всего душ', q => q.net_worth || 0], ['Убийства', q => q.kills || 0], ['Смерти', q => q.deaths || 0], ['Крипы', q => mLS(q).creep_kills || 0], ['Денаи', q => q.denies || 0], ['Урон по героям', q => mLS(q).player_damage || 0], ['Урон по объектам', q => mLS(q).boss_damage || 0], ['Потеряно на смертях', q => mLS(q).gold_death_loss || 0]];
+  return `<div class="qm-g2">
+    <div class="qm-grade" style="--gc:${gradeCol(g)}"><div class="qm-gl">${g}</div><div class="qm-gi"><small class="${a.score >= 50 ? 'win' : 'loss'}">${lbl} · ${a.score} из 100</small>
+      <div class="qm-who">${face(p.hero_id, won ? 'g' : 'c', 'm')}<span><b>${esc(pname(p))}</b><small>${esc(hero(p.hero_id).n)}</small></span></div>
+      <div class="qm-chips"><span class="qm-res ${won ? 'w' : 'l'}">${won ? 'Победа' : 'Поражение'}</span><span class="qm-kda"><i class="win">${m.k}</i> / <i class="loss">${m.d}</i> / ${m.a}</span><span>${kfm(m.nw)} душ</span></div>
+      <p>${esc(say)}</p>${TG.length ? `<div class="ptags qm-tags">${tagsHTML(TG)}</div>` : ''}</div></div>
+    <div class="qm-sw"><div class="qm-swh g"><b>Сильные стороны</b><small>лучше лобби</small></div>${good.map(x => `<div class="qm-si g"><b>${x.gd}</b><span>${x.h}: ${x.fmt(x.v)} · в матче в среднем ${x.fmt(x.av)} · ${x.pl}-е место из 12</span></div>`).join('') || '<div class="empty">Ничего не выделяется сильно — ровно.</div>'}
+      <div class="qm-swh r"><b>Что подтянуть</b><small>хуже лобби</small></div>${bad.map(x => `<div class="qm-si r"><b>${x.bd}</b><span>${x.h}: ${x.fmt(x.v)} · в матче в среднем ${x.fmt(x.av)} · ${x.pl}-е место из 12</span></div>`).join('') || '<div class="empty">Слабых мест нет — хороший матч.</div>'}</div></div>
+    <div class="qm-g2b"><div class="qs-box"><div class="qs-bh"><b>Главное</b><small>коротко, что решило матч для тебя</small></div><ul class="pts qm-pts">${mPts(p).map(x => `<li>${x}</li>`).join('')}<li id="qmlate" hidden></li></ul></div>
+      <div class="qs-box"><div class="qs-bh"><b>Почему умирал · ${p.deaths}</b><small>по позициям всех 12 в момент смерти</small></div><ul class="pts qm-pts">${typeof mDeathSum === 'function' ? mDeathSum(DD, X.dur) : ''}</ul>
+        ${DD.length ? `<div class="qm-dls">${DD.map((d, i) => `<div class="qm-dtr"><em>${i + 1}</em><span class="q-num">${mmss(d.t)}</span>${d.k ? face(d.k.hero_id, '', 's') : ''}<span><b>${esc(d.k ? hero(d.k.hero_id).n : 'не герой')}</b><small>${esc(d.why.join(' · ') || 'обычная смерть в драке')}</small></span></div>`).join('')}</div>` : ''}</div></div>
+    <div class="qs-box"><div class="qs-bh"><b>Против лобби</b><small>чёрточка — среднее по 12 игрокам этого матча</small></div><div class="qm-crs">${cmp}</div></div>
+    <div class="qs-box"><div class="qs-bh"><b>Команды</b><small>${TEAMN[0]} против ${TEAMN[1]}</small></div>
+      <div class="qm-tr">${TR.map(([nm, f]) => { const a0 = tsum(0, f), a1 = tsum(1, f), s2 = Math.max(1, a0 + a1); return `<div><b class="t0">${kfm(a0)}</b><span>${nm}</span><b class="t1">${kfm(a1)}</b><div class="qm-tb"><i class="t0" style="--w:${(100 * a0 / s2).toFixed(1)}%"></i><i class="t1" style="--w:${(100 * a1 / s2).toFixed(1)}%"></i></div></div>`; }).join('')}</div></div>
+    <div class="qs-box"><div class="qs-bh"><b>Все 12 игроков</b><small>оценка 0–100 против лобби · нажми — разбор игрока</small></div>${mTable()}</div>`;
+}
+function mTable() {
+  const X = MX, MDL = typeof mMedals === 'function' ? mMedals(X.mi.players, X.A) : new Map();
+  return [0, 1].map(t => `<div class="qm-tt t${t}"><div class="qm-tth"><b>${TEAMN[t]}</b>${X.win === t ? '<em>победа</em>' : ''}</div><table class="q-tbl qm-tbl"><tr><th>Игрок</th><th>K / D / A</th><th class="qh">Души</th><th class="qh">Урон</th><th>Оценка</th></tr>
+    ${X.P.filter(p => teamOf(p.team) === t).map(p => { const m = X.M.get(p), a = X.A.get(p), g = gradeOf(a.score), md = MDL.get(p) || [];
+      return `<tr class="lk${p.player_slot === MZ.slot ? ' on' : ''}" data-sl="${p.player_slot}"><td><div class="q-hn">${face(p.hero_id, t === X.win ? 'g' : 'c', 's')}<span style="min-width:0"><b>${esc(pname(p))}</b><small>${esc(hero(p.hero_id).n)}${md.length ? ' · ' + md.map(x => esc(x[0])).join(', ') : ''}</small></span></div></td>
+        <td><span class="q-kda">${m.k} / <i>${m.d}</i> / ${m.a}</span></td><td class="qh q-num">${kfm(m.nw)}</td><td class="qh q-num">${kfm(m.dmg)}</td><td><span class="grd q-grd sm" style="--gc:${gradeCol(g)}" title="${a.score} из 100">${g}</span></td></tr>`; }).join('')}</table></div>`).join('');
+}
+
+// ----- Игрок: досье, K/D/A, сборка (умения по порядку, предметы по минутам и фазам), карточки -----
+function mPl() {
+  const X = MX, p = mSel(), m = X.M.get(p), a = X.A.get(p), g = gradeOf(a.score), T = X.P.filter(q => teamOf(q.team) === teamOf(p.team)), TM = T.map(q => X.M.get(q));
+  const h = hero(p.hero_id), rk = (p.player_rank_data || {}).initial_display_rank || 0;
+  const abIds = new Set((h.ab || []).map(x => +x.id)), abN = {}; (h.ab || []).forEach((x, i) => abN[x.id] = {n: x.n, i: x.i, k: i});
+  const its = (p.items || []).slice().sort((x, y) => x.game_time_s - y.game_time_s);
+  const sk = its.filter(x => abIds.has(+x.item_id)), shop = its.filter(x => item(x.item_id) && !abIds.has(+x.item_id));
+  const cnt = {}, cols = sk.map(x => { cnt[x.item_id] = (cnt[x.item_id] || 0) + 1; return {id: +x.item_id, c: cnt[x.item_id], t: x.game_time_s}; });
+  const skill = (h.ab || []).slice(0, 4).map(ab => `<div class="qm-skr"><span>${ab.i ? `<img src="${esc(ab.i)}" alt="" loading="lazy">` : ''}${esc(ab.n)}</span><div class="qm-skc" style="--n:${Math.max(16, cols.length)}">${cols.map((c, i) => c.id === +ab.id ? `<i class="${c.c === 1 ? 'u' : ''}" style="grid-column:${i + 1}" title="${c.c === 1 ? 'открыл' : 'улучшение ' + (c.c - 1)} · ${mmss(c.t)}">${c.c === 1 ? '◆' : c.c - 1}</i>` : '').join('')}</div></div>`).join('');
+  const fin = shop.filter(x => !x.sold_time_s), PH = [['Начало', 0, 600, 'до 10 мин'], ['Середина', 600, 1500, '10–25 мин'], ['Конец', 1500, 1e9, '25+ мин']];
+  const ico = (x, cls) => { const I = item(x.item_id); return `<span class="qm-it ${cls || ''} ${esc(I.s || '')}" title="${esc(I.n)} · ${mmss(x.game_time_s)}${x.sold_time_s ? ' · продан на ' + mmss(x.sold_time_s) : ''}"><img src="${esc(I.i)}" alt="" loading="lazy"><em>${Math.round(x.game_time_s / 60)}'</em></span>`; };
+  const card = (nm, main, vs, sub) => { const v = main[1], av = main[2], pl = main[3], up = main[4] ? v <= av : v >= av;
+    return `<div class="qm-card"><div class="qm-cdh"><b>${nm}</b><em class="${pl === 1 ? 'top' : ''}">#${pl} из ${T.length}</em></div><span class="qm-cdk">${main[0]}</span><div class="qm-cdv">${cu(v)}</div>
+      <small class="${up ? 'win' : 'loss'}">${v >= av ? '↑' : '↓'} ${nf(Math.abs(Math.round(v - av)))} ${v >= av ? 'выше' : 'ниже'} среднего по команде (${nf(Math.round(av))})</small><div class="qm-bar ${up ? 'g' : 'r'}"><i style="--w:${Math.min(100, Math.round(100 * v / Math.max(1, ...vs)))}%"></i><s style="left:${Math.min(100, Math.round(100 * av / Math.max(1, ...vs)))}%"></s></div>
+      ${sub.map(([k, val, tav, isTop]) => `<div class="qm-cdr"><span>${k}${isTop ? ' <i class="top">лучший</i>' : ''}</span><b>${val}<small>в команде ${tav}</small></b></div>`).join('')}</div>`; };
+  const top = (f, low) => mPlace(T, q => f(X.M.get(q)), p, low) === 1;
+  const at9 = (q, k) => mAt(q, 540, k), late = q => (mLS(q).player_damage || 0) - mAt(q, 1200, 'player_damage');
+  const cards = [
+    card('Урон', ['по героям за матч', m.dmg, mAvg(TM, x => x.dmg), mPlace(T, q => X.M.get(q).dmg, p)], TM.map(x => x.dmg), [['В минуту', nf(Math.round(m.dpm)), nf(Math.round(mAvg(TM, x => x.dpm))), top(x => x.dpm)], ['За одну жизнь', nf(Math.round(m.dmg / (m.d + 1))), nf(Math.round(mAvg(TM, x => x.dmg / (x.d + 1)))), top(x => x.dmg / (x.d + 1))], ['После 20 мин', nf(late(p)), nf(Math.round(mAvg(T, late))), mPlace(T, late, p) === 1], ['На 1 душу', f2(m.dmg / Math.max(1, m.nw)), f2(mAvg(TM, x => x.dmg / Math.max(1, x.nw))), top(x => x.dmg / Math.max(1, x.nw))]]),
+    card('Живучесть', ['получено урона', m.tak, mAvg(TM, x => x.tak), mPlace(T, q => X.M.get(q).tak, p, 1), 1], TM.map(x => x.tak), [['Смерти', nf(m.d), f1(mAvg(TM, x => x.d)), top(x => x.d, 1)], ['Смягчено урона', nf(m.mit), nf(Math.round(mAvg(TM, x => x.mit))), top(x => x.mit)], ['Получено в минуту', nf(Math.round(m.tpm)), nf(Math.round(mAvg(TM, x => x.tpm))), top(x => x.tpm, 1)]]),
+    card('Командная игра', ['участие в убийствах, %', Math.round(100 * m.kp), Math.round(100 * mAvg(TM, x => x.kp)), mPlace(T, q => X.M.get(q).kp, p)], TM.map(x => 100 * x.kp), [['Помощь', nf(m.a), f1(mAvg(TM, x => x.a)), top(x => x.a)], ['Лечение союзников', nf(m.theal), nf(Math.round(mAvg(TM, x => x.theal))), top(x => x.theal)], ['Срезано лечения врагам', nf(m.hp), nf(Math.round(mAvg(TM, x => x.hp))), top(x => x.hp)]]),
+    card('Экономика', ['душ в минуту', m.spm, mAvg(TM, x => x.spm), mPlace(T, q => X.M.get(q).spm, p)], TM.map(x => x.spm), [['Всего душ', nf(m.nw), nf(Math.round(mAvg(TM, x => x.nw))), top(x => x.nw)], ['Добивания', nf(m.lh), nf(Math.round(mAvg(TM, x => x.lh))), top(x => x.lh)], ['Денаи', nf(m.den), f1(mAvg(TM, x => x.den)), top(x => x.den)], ['Крипы из возможных', m.cs != null ? Math.round(100 * m.cs) + '%' : '—', Math.round(100 * mAvg(TM.filter(x => x.cs != null), x => x.cs)) + '%', top(x => x.cs || 0)]]),
+    card('Начало игры', ['урон по героям до 9:00', at9(p, 'player_damage'), mAvg(T, q => at9(q, 'player_damage')), mPlace(T, q => at9(q, 'player_damage'), p)], T.map(q => at9(q, 'player_damage')), [['Убийства до 9:00', nf(at9(p, 'kills')), f1(mAvg(T, q => at9(q, 'kills'))), mPlace(T, q => at9(q, 'kills'), p) === 1], ['Смерти до 9:00', nf(at9(p, 'deaths')), f1(mAvg(T, q => at9(q, 'deaths'))), mPlace(T, q => at9(q, 'deaths'), p, 1) === 1], ['Души к 9:00', nf(at9(p, 'net_worth')), nf(Math.round(mAvg(T, q => at9(q, 'net_worth')))), mPlace(T, q => at9(q, 'net_worth'), p) === 1]]),
+    card('Объекты', ['урон по стражам и боссам', m.obj, mAvg(TM, x => x.obj), mPlace(T, q => X.M.get(q).obj, p)], TM.map(x => x.obj), [['В минуту', nf(Math.round(m.opm)), nf(Math.round(mAvg(TM, x => x.opm))), top(x => x.opm)]])];
+  return `<div class="qm-dos" style="--hc:${esc(h.col || '#ffb630')}"><i class="bg" style="background-image:url('art/${p.hero_id}.webp')"></i>
+      <div class="qm-dl">${face(p.hero_id, teamOf(p.team) === X.win ? 'g' : 'c', 'l')}<div><small>${esc(TEAMN[teamOf(p.team)])} · уровень ${m.lvl}</small><h2>${esc(pname(p))}</h2><b class="qm-dh">${esc(h.n)}</b>
+        <div class="qm-dc">${rk ? `<span>${rankImg(rk, 'ri')}${esc(rankOf(rk).name)}</span>` : ''}<span id="qmhs">на герое: …</span>${p.account_id ? `<a class="lnk" href="?id=${p.account_id}#home">профиль ›</a>` : ''}</div></div></div>
+      <div class="qm-dg" style="--gc:${gradeCol(g)}"><b>${g}</b><small>оценка ${a.score}</small></div></div>
+    <div class="qm-kda3"><div><span>Убийства</span>${cu(m.k)}<i class="g" style="--w:${Math.min(100, 100 * m.k / Math.max(1, ...X.P.map(q => q.kills)))}%"></i></div><div><span>Смерти</span>${cu(m.d)}<i class="r" style="--w:${Math.min(100, 100 * m.d / Math.max(1, ...X.P.map(q => q.deaths)))}%"></i></div><div><span>Помощь</span>${cu(m.a)}<i class="v" style="--w:${Math.min(100, 100 * m.a / Math.max(1, ...X.P.map(q => q.assists)))}%"></i></div></div>
+    <div class="qm-kdr"><span>KDA <b>${f2(m.kda)}</b></span><span>Участие <b>${Math.round(100 * m.kp)}%</b></span><span>Точность <b>${m.acc != null ? Math.round(100 * m.acc) + '%' : '—'}</b></span><span>В голову <b>${nf(m.hs)}</b></span></div>
+    <div class="qs-box"><div class="qs-bh"><b>Сборка за матч</b><small>${shop.length} ${pl(shop.length, ['покупка', 'покупки', 'покупок'])} · ${sk.length} ${pl(sk.length, ['очко умений', 'очка умений', 'очков умений'])}</small></div>
+      ${sk.length ? `<div class="qm-sk"><div class="qm-skh">Порядок умений <small>◆ — открыл, цифра — улучшение; наведи — минута</small></div>${skill}</div>` : ''}
+      <div class="qm-skh">Финальная сборка <small>цифра — на какой минуте купил</small></div><div class="qm-fin">${fin.map(x => ico(x)).join('') || '<span class="sub">Нет данных о предметах.</span>'}</div>
+      <div class="qm-skh">Покупки по времени <small>каждая метка — предмет; бледные — потом продал</small></div>
+      <div class="qm-tl">${shop.map(x => `<span class="qm-tlm${x.sold_time_s ? ' sold' : ''}" style="left:${(100 * x.game_time_s / Math.max(1, X.dur)).toFixed(1)}%" title="${esc(item(x.item_id).n)} · ${mmss(x.game_time_s)}"><img src="${esc(item(x.item_id).i)}" alt="" loading="lazy"></span>`).join('')}<div class="qm-tla">${[0, .25, .5, .75, 1].map(f => `<i style="left:${f * 100}%">${mmss(f * X.dur)}</i>`).join('')}</div></div>
+      <div class="qm-skh">По фазам</div><div class="qm-ph">${PH.map(([nm, a0, b0, hh]) => { const L = shop.filter(x => x.game_time_s >= a0 && x.game_time_s < b0); return `<div><b>${nm}</b><small>${hh} · ${L.length}</small><div>${L.map(x => ico(x, 's')).join('') || '<span class="sub">—</span>'}</div></div>`; }).join('')}</div></div>
+    <div class="qm-cards">${cards.join('')}</div>`;
+}
+function mPlLoad() {
+  const p = mSel(); if (!p || !p.account_id) return;
+  api('players/hero-stats?account_ids=' + p.account_id).then(L => { const x = (L || []).find(r => r.hero_id === p.hero_id), el = $('#qmhs'); if (el) el.textContent = x ? `на герое: ${nf(x.matches_played)} ${pl(x.matches_played, ['игра', 'игры', 'игр'])} · ${Math.round(100 * x.wins / Math.max(1, x.matches_played))}% побед` : 'на герое: первая игра'; }).catch(() => {});
+}
+
+// ----- Линии: дуэт против дуэта по окнам времени -----
+const MWIN = [['lane', 'Линия · до 10 мин', 0, 600], ['all', 'Весь матч', 0, 1e9], ['0', '0–3 мин', 0, 180], ['3', '3–6', 180, 360], ['6', '6–9', 360, 540], ['9', '9–12', 540, 720], ['12', '12–15', 720, 900], ['15', '15–20', 900, 1200], ['20', '20+', 1200, 1e9]];
+function mLn() {
+  const X = MX, p = mSel(), lanes = [...new Set(X.P.map(q => q.assigned_lane))].filter(Boolean).sort((a, b) => a - b);
+  const ln = MZ.lane && lanes.includes(MZ.lane) ? MZ.lane : p.assigned_lane, W = MWIN.find(w => w[0] === MZ.win) || MWIN[0];
+  const t0 = W[2], t1 = Math.min(W[3], X.dur), d = (q, k) => (t1 >= X.dur ? (k === 'net_worth' ? q.net_worth : (mLS(q)[k] || 0)) : mAt(q, t1, k)) - (t0 ? mAt(q, t0, k) : 0);
+  const A0 = X.P.filter(q => q.assigned_lane === ln && teamOf(q.team) === 0), A1 = X.P.filter(q => q.assigned_lane === ln && teamOf(q.team) === 1);
+  const S = (L, k) => L.reduce((s, q) => s + d(q, k), 0), s0 = S(A0, 'net_worth'), s1 = S(A1, 'net_worth'), lead = s0 - s1;
+  const ROWS = [['Убийства', 'kills'], ['Смерти', 'deaths'], ['Урон по объектам', 'boss_damage'], ['Крипы', 'creep_kills'], ['Денаи', 'denies'], ['Урон по героям', 'player_damage'], ['Получено урона', 'player_damage_taken']];
+  const mine = teamOf(p.team) === 0 ? lead : -lead, ln2 = LANEN[ln] || ['Линия ' + ln, '#888'];
+  const who = X.meP && teamOf(X.meP.team) === teamOf(p.team) ? 'Твоя сторона' : 'Сторона ' + pname(p), verdict = (Math.abs(mine) < 600 ? `Ровно: разница ${nf(Math.abs(Math.round(mine)))} душ` : mine > 0 ? `Твоя сторона выиграла линию: +${nf(Math.round(mine))} душ` : `Твоя сторона проиграла линию: −${nf(Math.round(-mine))} душ`).replace('Твоя сторона', who);
+  const pc2 = (q, ks) => ks.map(([nm, k]) => { const v = d(q, k), L = [...A0, ...A1].map(z => d(z, k)), mx = Math.max(1, ...L), best = v === Math.max(...L) && v > 0;
+    return `<div class="qm-pcm"><span>${nm}${best ? '<em>макс.</em>' : ''}</span><b>${kfm(v)}</b><i style="--w:${Math.round(100 * v / mx)}%"></i></div>`; }).join('');
+  return `<div class="qm-lnf"><div class="seg">${lanes.map(l => `<button data-lane="${l}" class="${l === ln ? 'on' : ''}"><i class="dot" style="background:${(LANEN[l] || [0, '#888'])[1]}"></i>${(LANEN[l] || ['Линия ' + l])[0]}</button>`).join('')}</div>
+      <div class="seg">${MWIN.map(w => `<button data-win="${w[0]}" class="${w[0] === W[0] ? 'on' : ''}">${w[1]}</button>`).join('')}</div></div>
+    <div class="qs-box qm-duel" style="--lc:${ln2[1]}"><div class="qs-bh"><b>Дуэль на линии · ${ln2[0]}</b><small>${W[0] === 'all' ? 'за весь матч' : 'с ' + mmss(t0) + ' по ' + mmss(t1)}</small></div>
+      <div class="qm-dt"><div class="t0"><small>${TEAMN[0]}</small>${cu(s0)}</div><div class="qm-lead"><small>перевес</small><b class="${lead >= 0 ? 't0' : 't1'}">+${nf(Math.abs(Math.round(lead)))}</b><span>${TEAMN[lead >= 0 ? 0 : 1]}</span></div><div class="t1"><small>${TEAMN[1]}</small>${cu(s1)}</div></div>
+      <div class="qm-db"><i style="--w:${(100 * s0 / Math.max(1, s0 + s1)).toFixed(1)}%"></i></div><p class="qm-verd ${Math.abs(mine) < 600 ? '' : mine > 0 ? 'win' : 'loss'}">${esc(verdict)}</p>
+      <div class="qm-drs">${ROWS.map(([nm, k]) => { const a0 = S(A0, k), a1 = S(A1, k), mx = Math.max(1, a0, a1); return `<div class="qm-dr"><div class="l"><b>${kfm(a0)}</b><i style="--k:${(a0 / mx).toFixed(3)}"></i></div><span>${nm}</span><div class="r"><i style="--k:${(a1 / mx).toFixed(3)}"></i><b>${kfm(a1)}</b></div></div>`; }).join('')}</div></div>
+    <div class="qs-box"><div class="qs-bh"><b>Каждый на линии</b><small>макс. — лучший из четырёх</small></div>
+      ${[[A0, 0], [A1, 1]].map(([L, t]) => `<div class="qm-pg t${t}"><div class="qm-tth"><b>${TEAMN[t]}</b></div>${L.map(q => `<div class="qm-pc t${t}${q === p ? ' on' : ''}" data-sl="${q.player_slot}">${face(q.hero_id, '', 'm')}<div class="qm-pcn"><b>${esc(pname(q))}</b><small>${esc(hero(q.hero_id).n)} · ${d(q, 'kills')}/${d(q, 'deaths')}/${d(q, 'assists')}</small></div>
+        <div class="qm-pcs">${pc2(q, [['Души', 'net_worth'], ['Убийства', 'kills'], ['Объекты', 'boss_damage'], ['Крипы', 'creep_kills'], ['Денаи', 'denies'], ['Урон', 'player_damage'], ['Получено', 'player_damage_taken']])}</div></div>`).join('') || '<div class="empty">Никого на этой линии.</div>'}</div>`).join('')}</div>`;
+}
+
+// ----- Экономика: перевес команд по времени, души в минуту по источникам, доходы всех 12 -----
+function mTimes(X) { const T = new Set([0]); X.P.forEach(p => (p.stats || []).forEach(s => T.add(s.time_stamp_s))); return [...T].sort((a, b) => a - b).filter(t => t <= X.dur + 1); }
+function mChart(pts, o) {
+  o = o || {}; const W = 1000, Hh = o.h || 220, pad = 30, xs = pts.map(q => q[0]), x0 = Math.min(...xs), x1 = Math.max(...xs, x0 + 1), ys = pts.map(q => q[1]), mx = Math.max(1, ...ys.map(Math.abs));
+  const X2 = t => pad + (W - 2 * pad) * (t - x0) / (x1 - x0), Y2 = v => o.mid ? Hh / 2 - (Hh / 2 - 14) * v / mx : Hh - 14 - (Hh - 28) * v / mx;
+  const line = pts.map(q => `${X2(q[0]).toFixed(1)},${Y2(q[1]).toFixed(1)}`).join(' ');
+  const base = o.mid ? Hh / 2 : Hh - 14;
+  return `<svg class="qm-ch" viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="none" role="img">${o.mid ? `<line class="z" x1="${pad}" x2="${W - pad}" y1="${base}" y2="${base}"/>` : ''}
+    <defs><linearGradient id="${o.id || 'g1'}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${o.c1 || '#ffb630'}" stop-opacity=".5"/><stop offset="1" stop-color="${o.c2 || o.c1 || '#ffb630'}" stop-opacity=".02"/></linearGradient></defs>
+    ${o.split ? `<polygon class="ar" fill="rgba(255,182,48,.34)" points="${X2(x0)},${base} ${pts.map(q => `${X2(q[0]).toFixed(1)},${Y2(Math.max(0, q[1])).toFixed(1)}`).join(' ')} ${X2(x1)},${base}"/><polygon class="ar" fill="rgba(91,140,255,.34)" points="${X2(x0)},${base} ${pts.map(q => `${X2(q[0]).toFixed(1)},${Y2(Math.min(0, q[1])).toFixed(1)}`).join(' ')} ${X2(x1)},${base}"/><polyline class="ln" pathLength="1" points="${line}" stroke="#eef0f4"/><text x="${pad + 6}" y="16" text-anchor="start" class="t0l">${TEAMN[0]} впереди ↑</text><text x="${pad + 6}" y="${Hh - 22}" text-anchor="start" class="t1l">${TEAMN[1]} впереди ↓</text>` : `<polygon class="ar" fill="url(#${o.id || 'g1'})" points="${X2(x0)},${base} ${line} ${X2(x1)},${base}"/><polyline class="ln" pathLength="1" points="${line}" stroke="${o.c1 || '#ffb630'}"/>`}
+    ${(o.ticks || []).map(t => `<text x="${X2(t)}" y="${Hh - 1}" text-anchor="middle">${mmss(t)}</text>`).join('')}</svg>`;
+}
+function mEc() {
+  const X = MX, p = mSel(), T = mTimes(X), nw = (q, t) => t >= X.dur ? q.net_worth : (t ? mAt(q, t) : 0);
+  const team = (t, k) => X.P.filter(q => teamOf(q.team) === k).reduce((s, q) => s + nw(q, t), 0);
+  const LD = T.map(t => [t, team(t, 0) - team(t, 1)]), s0 = team(X.dur, 0), s1 = team(X.dur, 1), mn = Math.max(1, X.dur / 60);
+  const pk = LD.reduce((a, q) => Math.abs(q[1]) > Math.abs(a[1]) ? q : a, [0, 0]); let sw = 0; for (let i = 1; i < LD.length; i++) if (Math.sign(LD[i][1]) && Math.sign(LD[i - 1][1]) && Math.sign(LD[i][1]) !== Math.sign(LD[i - 1][1])) sw++;
+  const fin = s0 - s1, lead = fin >= 0 ? 0 : 1;
+  const ticks = [0, .25, .5, .75, 1].map(f => Math.round(f * X.dur));
+  // души в минуту выбранного игрока по источникам
+  const SR = [...SRC, ['tb', 'Командный бонус', '#e8d36a', ['team_bonus']], ['oth', 'Прочее', '#8b93a4', null]], sv = (st, keys) => keys ? srcOf(st, keys) : Math.max(0, srcOther(st) - srcOf(st, ['team_bonus']));
+  const PS = (p.stats || []).filter((x, i, L) => !(i === L.length - 2 && L.length > 2 && L[i + 1].time_stamp_s - x.time_stamp_s < 90)), SS = SR.map(x => x[0]), seg = []; let prev = {};
+  PS.forEach(s => { const dt = Math.max(1, s.time_stamp_s - (prev.time_stamp_s || 0)) / 60; const row = {t: s.time_stamp_s}; SR.forEach(([k, , , keys]) => { row[k] = Math.max(0, sv(s, keys) - (prev.time_stamp_s != null ? sv(prev, keys) : 0)) / dt; }); seg.push(row); prev = s; });
+  if (seg.length) seg.unshift(Object.assign({}, seg[0], {t: 0}));
+  const smx = Math.max(1, ...seg.map(r => SS.reduce((a, k) => a + r[k], 0)));
+  const stackW = 1000, stackH = 220, xs = t => 30 + (stackW - 60) * t / Math.max(1, X.dur), ys = v => stackH - 16 - (stackH - 30) * v / smx;
+  let acc = seg.map(() => 0); const layers = SR.map(([k, nm, col]) => { const lo = acc.slice(); acc = acc.map((v, i) => v + seg[i][k]); const up = acc.slice();
+    const top = seg.map((r, i) => `${xs(r.t).toFixed(1)},${ys(up[i]).toFixed(1)}`), bot = seg.map((r, i) => `${xs(r.t).toFixed(1)},${ys(lo[i]).toFixed(1)}`).reverse();
+    return `<polygon class="lay" fill="${col}" points="${top.concat(bot).join(' ')}"><title>${nm}</title></polygon>`; }).join('');
+  const tot = SR.map(([k, nm, col, keys]) => ({k, nm, col, v: sv(mLS(p), keys)})), tt = tot.reduce((a, x) => a + x.v, 0) || 1;
+  const spm = seg.map(r => SS.reduce((a, k) => a + r[k], 0)), peak = Math.max(...spm, 0);
+  return `<div class="qs-box qm-eh"><div class="qm-et"><div class="t0"><small>${TEAMN[0]}</small>${cu(s0)}<span>${nf(Math.round(s0 / mn))} душ/мин</span></div>
+      <div class="qm-lead"><small>итог</small><b class="${lead ? 't1' : 't0'}">+${nf(Math.abs(Math.round(fin)))}</b><span>${TEAMN[lead]}</span></div>
+      <div class="t1"><small>${TEAMN[1]}</small>${cu(s1)}<span>${nf(Math.round(s1 / mn))} душ/мин</span></div></div>
+      <div class="qm-db"><i style="--w:${(100 * s0 / Math.max(1, s0 + s1)).toFixed(1)}%"></i></div>
+      <div class="qm-ef"><span>Пик перевеса <b class="${pk[1] >= 0 ? 't0' : 't1'}">${TEAMN[pk[1] >= 0 ? 0 : 1]} +${kfm(Math.abs(pk[1]))}</b> на ${mmss(pk[0])}</span><span>Перевес менялся <b>${sw}</b> ${pl(sw, ['раз', 'раза', 'раз'])}</span><span>Итог <b class="${lead ? 't1' : 't0'}">${TEAMN[lead]} +${kfm(Math.abs(fin))}</b></span></div></div>
+    <div class="qs-box"><div class="qs-bh"><b>Перевес по душам</b><small>выше середины — ведёт ${TEAMN[0]}, ниже — ${TEAMN[1]}</small></div>${mChart(LD, {mid: true, id: 'gld', split: true, ticks})}</div>
+    <div class="qs-box"><div class="qs-bh"><b>Души в минуту · ${esc(pname(p))}</b><small>${esc(hero(p.hero_id).n)} · откуда приходили души · выбери другого игрока сверху</small></div>
+      <div class="qm-src">${tot.filter(x => x.v > 0).map(x => `<i style="flex:${x.v};background:${x.col}" title="${x.nm}: ${nf(x.v)}">${x.v / tt >= .07 ? `${x.nm} ${Math.round(100 * x.v / tt)}%` : ''}</i>`).join('')}</div>
+      <div class="qm-srl">${tot.filter(x => x.v > 0).map(x => `<span><i style="background:${x.col}"></i>${x.nm} ${kfm(x.v)}</span>`).join('')}</div>
+      <div class="qm-spm"><div class="qm-spc"><b>${nf(Math.round(m2(p).spm))}</b><small>душ в минуту в среднем</small><span>пик ${nf(Math.round(peak))} · всего ${kfm(p.net_worth)}</span></div>
+        <svg class="qm-ch st" viewBox="0 0 ${stackW} ${stackH}" preserveAspectRatio="none">${layers}${ticks.map(t => `<text x="${xs(t)}" y="${stackH - 2}" text-anchor="middle">${mmss(t)}</text>`).join('')}</svg></div></div>
+    <div class="qs-box"><div class="qs-bh"><b>Доходы всех 12</b><small>откуда пришли души у каждого · красным — потеряно на смертях</small></div>
+      ${[0, 1].map(t => `<div class="qm-inc"><div class="qm-tth"><b>${TEAMN[t]}</b><small>${kfm(team(X.dur, t))} всего</small></div><div class="qm-ig">${X.P.filter(q => teamOf(q.team) === t).sort((a, b) => b.net_worth - a.net_worth).map(q => { const S2 = SR.map(([k, nm, col, keys]) => ({nm, col, v: sv(mLS(q), keys)})).filter(x => x.v > 0).sort((a, b) => b.v - a.v), s3 = S2.reduce((a, x) => a + x.v, 0) || 1;
+        return `<div class="qm-ic${q === p ? ' on' : ''}" data-sl="${q.player_slot}"><div class="qm-ich">${face(q.hero_id, '', 's')}<b>${esc(pname(q))}</b><span>${kfm(q.net_worth)}</span></div>${S2.map(x => `<div class="qm-icr"><i style="background:${x.col}"></i><span>${x.nm}</span><b>${kfm(x.v)}</b><small>${Math.round(100 * x.v / s3)}%</small></div>`).join('')}${mLS(q).gold_death_loss ? `<div class="qm-icr loss"><i></i><span>Потеряно на смертях</span><b>−${kfm(mLS(q).gold_death_loss)}</b><small></small></div>` : ''}</div>`; }).join('')}</div></div>`).join('')}</div>`;
+}
+const m2 = p => MX.M.get(p);
+
+// ----- Урон: рейтинг 12 игроков по виду урона, у игрока — урон по времени и доли по источникам -----
+const DMK = [['dmg', 'Урон по героям', q => mLS(q).player_damage || 0, '#ff5d7a'], ['obj', 'Урон по объектам', q => mLS(q).boss_damage || 0, '#5b8cff'], ['heal', 'Лечение', q => mLS(q).player_healing || 0, '#33d6a6'], ['tak', 'Получено урона', q => mLS(q).player_damage_taken || 0, '#b07cff']];
+const srcNice = s => { const t = String(s || ''); if (/_crit$/.test(t)) return ['Попадания в голову', 'w']; if (/weapon|^Bullet$/i.test(t)) return ['Оружие', 'w']; if (/^Melee$|melee/i.test(t)) return ['Ближний бой', 'm'];
+  const nm = t.replace(/^(citadel_ability_|ability_|upgrade_|citadel_)/, '').replace(/_/g, ' ').trim(); const key = nm.replace(/\s/g, '').toLowerCase();
+  const it = Object.values(D.items).find(x => x.n && x.n.replace(/[^a-z]/gi, '').toLowerCase() === key); if (it) return [it.n, 'i', it.i];
+  return [nm ? nm[0].toUpperCase() + nm.slice(1) : 'Другое', /^upgrade_/.test(t) ? 'i' : 'a']; };
+function mDm() {
+  const X = MX, p = mSel(), K = DMK.find(x => x[0] === MZ.dm) || DMK[0], f = K[2];
+  const L = X.P.slice().sort((a, b) => f(b) - f(a)), mx = Math.max(1, ...L.map(f)), t0 = X.P.filter(q => teamOf(q.team) === 0).reduce((s, q) => s + f(q), 0), t1 = X.P.filter(q => teamOf(q.team) === 1).reduce((s, q) => s + f(q), 0);
+  const dm = X.mi.damage_matrix, src = {};
+  if (dm && dm.damage_dealers) { const st = dm.source_details.stat_type, nm = dm.source_details.source_name, dd = dm.damage_dealers.find(x => x.dealer_player_slot === p.player_slot), foes = new Set(X.P.filter(q => teamOf(q.team) !== teamOf(p.team)).map(q => q.player_slot));
+    (dd ? dd.damage_sources : []).forEach(s => { if (st[s.source_details_index] !== 0) return; const v = (s.damage_to_players || []).filter(z => foes.has(z.target_player_slot)).reduce((a, z) => a + ((z.damage || [])[z.damage.length - 1] || 0), 0); if (!v) return;
+      const [n2, kind, ic] = srcNice(nm[s.source_details_index]); const o = src[n2] = src[n2] || {n: n2, kind, ic, v: 0}; o.v += v; }); }
+  const SL = Object.values(src).sort((a, b) => b.v - a.v), ssum = SL.reduce((a, x) => a + x.v, 0) || 1;
+  const T = mTimes(X), DT = T.map(t => [t, t >= X.dur ? (mLS(p).player_damage || 0) : (t ? mAt(p, t, 'player_damage') : 0)]);
+  const KC = {w: 'Оружие', a: 'Умение', i: 'Предмет', m: 'Ближний'};
+  return `<div class="qs-box"><div class="qs-bh"><b>Команды · ${K[1].toLowerCase()}</b><div class="seg">${DMK.map(x => `<button data-dmk="${x[0]}" class="${x[0] === K[0] ? 'on' : ''}">${x[1]}</button>`).join('')}</div></div>
+      <div class="qm-dmt"><div class="t0"><small>${TEAMN[0]}</small>${cu(t0)}</div><i>vs</i><div class="t1"><small>${TEAMN[1]}</small>${cu(t1)}</div></div>
+      <div class="qm-rl">${L.map((q, i) => `<div class="qm-rr t${teamOf(q.team)}${q === p ? ' on' : ''}" data-sl="${q.player_slot}"><em>${i + 1}</em>${face(q.hero_id, '', 's')}<span><b>${esc(pname(q))}</b><small>${esc(hero(q.hero_id).n)}</small></span><div class="qm-bar"><i style="--w:${Math.round(100 * f(q) / mx)}%;background:var(--tc)"></i></div><b>${kfm(f(q))}</b></div>`).join('')}</div></div>
+    <div class="qm-g2b"><div class="qs-box"><div class="qs-bh"><b>Урон по героям по ходу матча · ${esc(pname(p))}</b><small>накопительно</small></div>${mChart(DT, {id: 'gdm', c1: '#ff5d7a', ticks: [0, .25, .5, .75, 1].map(x => Math.round(x * X.dur))})}
+        <div class="qm-kdr"><span>Всего <b>${kfm(m2(p).dmg)}</b></span><span>В минуту <b>${nf(Math.round(m2(p).dpm))}</b></span><span>Точность <b>${m2(p).acc != null ? Math.round(100 * m2(p).acc) + '%' : '—'}</b></span><span>Криты <b>${m2(p).crit != null ? Math.round(100 * m2(p).crit) + '%' : '—'}</b></span></div></div>
+      <div class="qs-box"><div class="qs-bh"><b>Чем бил</b><small>доли урона по источникам — по данным игры</small></div>${SL.slice(0, 7).map((x, i) => `<div class="qm-srcr"><em>${i + 1}</em>${x.ic ? `<img src="${esc(x.ic)}" alt="">` : `<i class="k ${x.kind}"></i>`}<span><b>${esc(x.n)}</b><small>${KC[x.kind] || ''}</small><i class="qm-sb2" style="--w:${Math.round(100 * x.v / SL[0].v)}%"></i></span><b>${Math.round(100 * x.v / ssum)}%</b></div>`).join('') || '<div class="empty">В этом матче игра не отдала разбивку урона.</div>'}</div></div>`;
+}
+
+// ----- Карта: повтор матча — где был каждый, смерти, с ползунком и «Играть» -----
+function mMap() {
+  const X = MX, PT = typeof mPaths === 'function' ? mPaths(X.mi) : {};
+  if (!Object.keys(PT).length) return '<div class="empty">Для этого матча игра не отдала позиции игроков — повтора нет.</div>';
+  MX.PT = PT; MZ.t = Math.min(MZ.t || 0, X.dur);
+  return `<div class="qm-rp"><div class="qm-rs t0">${X.P.filter(p => teamOf(p.team) === 0).map(mRow).join('')}</div>
+      <div class="qm-rm"><div class="qm-rmh"><b class="t0" id="rk0">0</b><div><b id="rtm">0:00</b><small id="rld">ровно</small></div><b class="t1" id="rk1">0</b></div>
+        <div class="qm-map" id="rmap">${D.map && D.map.img ? `<img src="${esc(D.map.img)}" alt="Карта" onerror="this.remove()">` : ''}${X.P.map(p => `<i class="qm-dot t${teamOf(p.team)}${p.player_slot === MZ.slot ? ' me' : ''}" data-ds="${p.player_slot}"><img src="${esc(hero(p.hero_id).i)}" alt="" loading="lazy"></i>`).join('')}<div id="rdx"></div></div>
+        <div class="qm-ctl"><button class="btn s" id="rpl" type="button">▶ Играть</button><input type="range" id="rsl" min="0" max="${X.dur}" step="1" value="${MZ.t}" aria-label="Время матча"><div class="seg" id="rsp"><button data-sp="8" class="on">×8</button><button data-sp="20">×20</button><button data-sp="40">×40</button></div></div>
+        <div class="qm-obj">${(X.mi.objectives || []).filter(o => o.destroyed_time_s).map(o => `<i class="t${teamOf(o.team) === 0 ? 1 : 0}" style="left:${(100 * o.destroyed_time_s / X.dur).toFixed(1)}%" title="${mmss(o.destroyed_time_s)} · пал объект ${TEAMN[teamOf(o.team)]}"></i>`).join('')}${(X.mi.mid_boss || []).map(o => `<i class="b" style="left:${(100 * o.destroyed_time_s / X.dur).toFixed(1)}%" title="${mmss(o.destroyed_time_s)} · Средний босс — ${TEAMN[teamOf(o.team_claimed)] || ''}"></i>`).join('')}</div></div>
+      <div class="qm-rs t1">${X.P.filter(p => teamOf(p.team) === 1).map(mRow).join('')}</div></div>`;
+}
+const mRow = p => `<div class="qm-rr2${p.player_slot === MZ.slot ? ' on' : ''}" data-sl="${p.player_slot}">${face(p.hero_id, '', 's')}<span><b>${esc(pname(p))}</b><small id="rkd${p.player_slot}">0/0/0 · 0</small></span></div>`;
+function mMapBind() {
+  const X = MX, map = $('#rmap'), sl = $('#rsl'); if (!map || !sl) return;
+  const R = (D.map && D.map.r) || 10752, dots = {}; $$('.qm-dot', map).forEach(d => dots[d.dataset.ds] = d);
+  const deaths = []; X.P.forEach(p => (p.death_details || []).forEach(dd => deaths.push({t: dd.game_time_s, p, k: X.P.find(q => q.player_slot === dd.killer_player_slot), pos: dd.death_pos})));
+  let sp = 8, last = 0;
+  const at = (p, t, k) => { let v = 0; for (const s of p.stats || []) { if (s.time_stamp_s <= t) v = s[k] || 0; else break; } return v; };
+  const paint = t => {
+    MZ.t = t; $('#rtm').textContent = mmss(t);
+    X.P.forEach(p => { const f = X.PT[p.player_slot], d = dots[p.player_slot]; if (!f || !d) return; const q = f(t), dead = !q.hp;
+      d.style.transform = `translate(${(100 * (q.x + R) / (2 * R)).toFixed(2)}cqw, ${(100 * (1 - (q.y + R) / (2 * R))).toFixed(2)}cqh)`; d.classList.toggle('dead', dead); });
+    const kd = p => { const k = deaths.filter(x => x.k === p && x.t <= t).length, dth = deaths.filter(x => x.p === p && x.t <= t).length; return [k, dth]; };
+    let k0 = 0, k1 = 0; X.P.forEach(p => { const [k, dth] = kd(p); if (teamOf(p.team) === 0) k0 += k; else k1 += k; const el = $('#rkd' + p.player_slot); if (el) el.textContent = `${k}/${dth} · ${kfm(at(p, t, 'net_worth'))}`; });
+    $('#rk0').textContent = k0; $('#rk1').textContent = k1;
+    const lead = X.P.reduce((s, p) => s + (teamOf(p.team) === 0 ? 1 : -1) * at(p, t, 'net_worth'), 0), el = $('#rld'); if (el) el.textContent = Math.abs(lead) < 500 ? 'ровно по душам' : `${lead > 0 ? TEAMN[0] : TEAMN[1]} +${kfm(Math.abs(lead))}`;
+    $('#rdx').innerHTML = deaths.filter(x => x.t <= t && x.t > t - 12 && x.pos).map(x => `<i class="qm-dd2" style="left:${(100 * (x.pos.x + R) / (2 * R)).toFixed(1)}%;top:${(100 * (1 - (x.pos.y + R) / (2 * R))).toFixed(1)}%" title="${esc(hero(x.p.hero_id).n)} убит ${x.k ? esc(hero(x.k.hero_id).n) : ''}">✕</i>`).join('');
+    sl.value = t;
+  };
+  const loop = ts => { if (!MZ.play) return; const dt = last ? (ts - last) / 1000 : 0; last = ts; let t = MZ.t + dt * sp; if (t >= X.dur) { t = X.dur; MZ.play = 0; $('#rpl').textContent = '▶ Играть'; } paint(t); if (MZ.play) MZ.raf = requestAnimationFrame(loop); };
+  $('#rpl').onclick = () => { MZ.play = !MZ.play; $('#rpl').textContent = MZ.play ? '❚❚ Пауза' : '▶ Играть'; if (MZ.play) { if (MZ.t >= X.dur) MZ.t = 0; last = 0; MZ.raf = requestAnimationFrame(loop); } };
+  sl.oninput = () => { paint(+sl.value); };
+  $$('#rsp button').forEach(b => b.onclick = () => { sp = +b.dataset.sp; $$('#rsp button').forEach(x => x.classList.toggle('on', x === b)); });
+  paint(MZ.t || 0);
+}
+addEventListener('hashchange', () => { MZ.play = 0; cancelAnimationFrame(MZ.raf); });
+
+// ==================== 01.11 · профиль: активность за 12 недель, винрейт по дням, с кем играешь ====================
+const DAYN = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+function actBox(H) {
+  const won = m => m.player_team === m.match_result, dk = t => { const d = new Date(t * 1000); return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); };
+  const C = {}; H.forEach(m => { const k = dk(m.start_time), o = C[k] = C[k] || {g: 0, w: 0}; o.g++; if (won(m)) o.w++; });
+  const today = new Date(); today.setHours(12, 0, 0, 0);
+  // 12 колонок-недель с понедельника, последняя — текущая
+  const end = new Date(today), dow = (today.getDay() + 6) % 7; end.setDate(end.getDate() + (6 - dow));
+  const first = new Date(end); first.setDate(first.getDate() - 83);
+  const cells = [], mx = Math.max(1, ...Object.values(C).map(o => o.g));
+  let tg = 0, tw = 0, days = 0, best = null;
+  for (let i = 0; i < 84; i++) { const d = new Date(first); d.setDate(first.getDate() + i); const k = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(), o = C[k] || {g: 0, w: 0}, fut = d > today;
+    if (!fut && o.g) { tg += o.g; tw += o.w; days++; if (!best || o.g > best.o.g) best = {d, o}; }
+    const lv = !o.g ? 0 : Math.min(4, 1 + Math.floor(3.99 * o.g / mx)), c = !o.g ? '' : o.w * 2 > o.g ? 'w' : o.w * 2 < o.g ? 'l' : 'e';
+    cells.push(`<i class="lv${lv} ${c}${fut ? ' fu' : ''}" style="--i:${i}" title="${d.getDate()}.${String(d.getMonth() + 1).padStart(2, '0')} · ${o.g ? `${o.g} ${pl(o.g, ['игра', 'игры', 'игр'])}, ${o.w} ${pl(o.w, ['победа', 'победы', 'побед'])}` : 'не играл'}"></i>`); }
+  const W7 = []; for (let i = 6; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); const k = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); W7.push({d, o: C[k] || {g: 0, w: 0}}); }
+  const m7 = Math.max(1, ...W7.map(x => Math.max(x.o.w, x.o.g - x.o.w))), g7 = W7.reduce((a, x) => a + x.o.g, 0), w7 = W7.reduce((a, x) => a + x.o.w, 0);
+  return `<div class="q-box qa-box"><div class="q-bh"><b>Активность</b><small>12 недель · ${tg} ${pl(tg, ['игра', 'игры', 'игр'])} · ${days} ${pl(days, ['день', 'дня', 'дней'])} в игре${tg ? ` · ${Math.round(100 * tw / tg)}% побед` : ''}</small></div>
+    <div class="qa-hm"><div class="qa-dn">${['Пн', '', 'Ср', '', 'Пт', '', 'Вс'].map(x => `<span>${x}</span>`).join('')}</div><div class="qa-g">${cells.join('')}</div></div>
+    <div class="qa-lg"><span><i class="lv3 w"></i>больше побед</span><span><i class="lv3 l"></i>больше поражений</span><span><i class="lv1"></i><i class="lv2"></i><i class="lv4"></i>чем ярче — тем больше игр</span></div>
+    ${best ? `<p class="qa-best">Самый плотный день — ${best.d.getDate()}.${String(best.d.getMonth() + 1).padStart(2, '0')}: ${best.o.g} ${pl(best.o.g, ['игра', 'игры', 'игр'])}, ${best.o.w} ${pl(best.o.w, ['победа', 'победы', 'побед'])}.</p>` : ''}
+    <div class="q-bh qa-sep"><b>Последние 7 дней</b><small>${g7 ? `${w7}–${g7 - w7} · ${Math.round(100 * w7 / g7)}% побед` : 'не играл'}</small></div>
+    ${!g7 ? `<p class="qa-best">За неделю ни одного матча${H[0] ? ` — последний был ${esc(ago(H[0].start_time))}` : ''}.</p>` : `<div class="qa-7">${W7.map(x => { const l = x.o.g - x.o.w; return `<div title="${x.o.g ? `${x.o.w} побед, ${l} поражений` : 'не играл'}"><div class="qa-up"><i style="--k:${(x.o.w / m7).toFixed(3)}"></i></div><div class="qa-dw"><i style="--k:${(l / m7).toFixed(3)}"></i></div><b class="${!x.o.g ? '' : x.o.w * 2 >= x.o.g ? 'win' : 'loss'}">${x.o.g ? Math.round(100 * x.o.w / x.o.g) + '%' : '—'}</b><span>${DAYN[x.d.getDay()]}</span></div>`; }).join('')}</div>`}
+    <div class="q-bh qa-sep"><b>С кем играешь</b><div class="seg qa-ms"><button data-mw="m" class="on">Вместе</button><button data-mw="e">Против</button></div></div>
+    <div id="qamate"><span class="sub">Считаю…</span></div></div>`;
+}
+async function mateLoad(n, id) {
+  const el = () => $('#qamate'); let mode = 'm';
+  const [M, E] = await Promise.all([api(`players/${id}/mate-stats?min_matches_played=3`).catch(() => []), api(`players/${id}/enemy-stats?min_matches_played=3`).catch(() => [])]);
+  if (n !== VQ || !el()) return;
+  const TM = (M || []).sort((a, b) => b.matches_played - a.matches_played).slice(0, 6), TE = (E || []).sort((a, b) => b.matches_played - a.matches_played).slice(0, 6);
+  await steamNames([...TM.map(x => x.mate_id), ...TE.map(x => x.enemy_id)]); if (n !== VQ || !el()) return;
+  const draw = () => { const L = mode === 'm' ? TM : TE, k = mode === 'm' ? 'mate_id' : 'enemy_id', mx = Math.max(1, ...L.map(x => x.matches_played));
+    el().innerHTML = L.length ? L.map(x => { const sn = SN[x[k]] || {}, wr = 100 * x.wins / Math.max(1, x.matches_played), duo = mode === 'm' && x.matches_played >= 50;
+      return `<a class="qa-mr" href="?id=${x[k]}#home">${sn.av ? `<img src="${esc(sn.av)}" alt="" loading="lazy">` : '<i class="qa-av"></i>'}<span><b>${esc(sn.n || 'Игрок ' + x[k])}${duo ? ' <em>ДУО</em>' : ''}</b><small>${nf(x.matches_played)} ${pl(x.matches_played, ['игра', 'игры', 'игр'])} ${mode === 'm' ? 'вместе' : 'против'}</small><i class="qa-mb" style="--k:${(x.matches_played / mx).toFixed(3)}"></i></span><b class="${wrC(wr, x.matches_played)}">${Math.round(wr)}%</b></a>`; }).join('')
+      : `<div class="empty">${mode === 'm' ? 'Нет игроков, с кем было 3+ матча вместе.' : 'Нет игроков, против кого было 3+ матча.'}</div>`; };
+  draw();
+  $$('.qa-ms button').forEach(b => b.onclick = e => { e.stopPropagation(); mode = b.dataset.mw; $$('.qa-ms button').forEach(x => x.classList.toggle('on', x === b)); draw(); });
+}
+
+// лидеры: у тройки — матчи, винрейт и KDA за всё время (по героям игрока)
+async function lbPod(n) {
+  const els = $$('[data-pda]'), ids = els.map(e => e.dataset.pda).filter(Boolean); if (!ids.length) return;
+  const L = await api('players/hero-stats?account_ids=' + ids.join(',')).catch(() => []); if (n !== VQ) return;
+  const A = {}; (L || []).forEach(x => { const o = A[x.account_id] = A[x.account_id] || {m: 0, w: 0, k: 0, d: 0, a: 0}; o.m += x.matches_played; o.w += x.wins; o.k += x.kills; o.d += x.deaths; o.a += x.assists; });
+  els.forEach(e => { const o = A[e.dataset.pda]; if (!o || !o.m) return; const wr = 100 * o.w / o.m;
+    e.innerHTML = `<span><b data-cu="${o.m}">${nf(o.m)}</b><small>матчей</small></span><span><b class="${wrC(wr, o.m)}" data-cu="${wr.toFixed(1)}" data-cd="1" data-cs="%">${f1(wr)}%</b><small>побед</small></span><span><b>${f2((o.k + o.a) / Math.max(1, o.d))}</b><small>KDA</small></span>`; });
+  mAnim($('.q-pod'));
 }
 window.addEventListener('hashchange', route);
 (async () => {
