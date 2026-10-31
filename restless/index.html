@@ -596,6 +596,73 @@ a.card span{display:block;color:var(--mu);font-size:13px;line-height:1.5}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+
+/* ==== 31.10 — починка по скринам: сетка героев, топ Европы, строки матчей, шапка на телефоне ==== */
+/* лицо героя и чип рейтинга — блоки (были inline: рамка рвалась, чип висел курсивом) */
+.hfw{display:block}
+.hf{display:block}
+.hfw .mr{position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);background:#161006;border:1px solid rgba(255,176,58,.55);color:#ffd68a;font:700 9px/1 var(--m);font-style:normal;padding:2.5px 5px;border-radius:7px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.5);z-index:1}
+/* «ник + ранг» в шапке — двумя строками */
+.me div b{display:block;font-weight:600}
+.me div span{display:block;font:500 11px/1.2 var(--f);color:var(--mu);margin-top:2px}
+/* сетка героев: карточка с портретом */
+.hgc{display:flex;flex-direction:column;min-width:0;background:var(--s1);border:1px solid var(--ln);border-radius:14px;overflow:hidden;text-decoration:none;color:var(--tx);transition:border-color .2s,transform .2s}
+.hgc:hover{border-color:var(--hc);transform:translateY(-3px)}
+.hgc>img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:50% 14%;background:radial-gradient(120% 90% at 50% 100%,color-mix(in srgb,var(--hc) 34%,transparent),var(--s2))}
+.hgc>div{display:grid;gap:5px;padding:9px 10px 11px;min-width:0}
+.hgc b{font:600 14.5px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hgc .mono{font-size:12.5px;color:var(--tx)}
+.hgc .mono small{font-size:11px;color:var(--mu2)}
+.hgc .ptags{gap:4px}
+.hgc .tag{font-size:10.5px;padding:2px 7px}
+/* топ Европы: место · ник и ранг · герои */
+.pc.lk{cursor:pointer}
+.pc>span small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .his a{display:block;line-height:0}
+.pc:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media (max-width:560px){
+  /* шапка: логотип · поиск · я · настройки, ниже вкладки во всю ширину */
+  .nav .in{gap:8px;padding-top:8px;padding-bottom:6px}
+  .logo{font-size:15px}
+  .logo small{font-size:7px;letter-spacing:.28em}
+  .nav .sp{display:none}
+  .srch{flex:1;min-width:0;width:auto}
+  .srch input{padding:8px 10px 8px 30px;font-size:13.5px}
+  .srch svg{left:10px}
+  .me{padding:4px;gap:0}
+  .me div,.me>img:not(.av){display:none}
+  .stg{width:36px;height:36px}
+  .tabs{gap:2px;justify-content:space-between;overflow:visible}
+  .tabs a{flex:1 1 0;min-width:0;flex-direction:column;gap:4px;padding:7px 2px;font-size:9.5px;letter-spacing:.03em;border-radius:10px}
+  .tabs a svg{width:17px;height:17px}
+  /* строка матча: лицо · имя/KDA/метки · оценка; итог матча — одной строкой снизу */
+  .mhrow{grid-template-columns:44px minmax(0,1fr) auto;column-gap:12px;row-gap:3px;align-items:start;padding:11px 12px 12px 14px}
+  .mhrow .hfw{grid-column:1;grid-row:1/5;align-self:start;margin-top:2px}
+  .mhrow .mhc{display:contents}
+  .mhrow .mhc .nm{grid-column:2;grid-row:1}
+  .mhrow .mhc .kd{grid-column:2;grid-row:2;margin-top:0}
+  .mhrow .mhc .ptags{grid-column:2/4;grid-row:3;margin-top:3px}
+  .mhrow .grd{grid-column:3;grid-row:1/3;align-self:center;width:36px;height:36px;font-size:15px}
+  .mhrow .mhr{grid-column:2/4;grid-row:4;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;text-align:left;margin-top:5px}
+  .mhrow .mhr small{font-size:11.5px}
+  /* про-матчи: итог под ником */
+  .mt{grid-template-columns:6px 40px minmax(0,1fr);gap:10px}
+  .mt .r{grid-column:3;display:flex;gap:8px;align-items:baseline;font-size:12px}
+  .pg{grid-template-columns:minmax(0,1fr);padding:10px}
+}
+
+@media (max-width:1500px) and (min-width:561px){
+  .srch{width:230px}
+  .tabs a{padding:9px 10px;gap:6px}
+}
+@media (max-width:560px){
+  .hg{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .hgc>div{padding:7px 7px 9px;gap:4px}
+  .hgc b{font-size:13px}
+  .hgc .mono{font-size:11px}
+  .hgc .mono small{display:block;font-size:10px}
+  .hgc .tag{font-size:9.5px;padding:1px 5px}
+}
 </style>
 </head>
 <body>
@@ -794,6 +861,7 @@ function paintMe() {
 
 // поиск игрока в шапке: ссылка / ID — сразу; ник — список
 let sT = 0;
+if (matchMedia('(max-width:560px)').matches) $('#sq').placeholder = 'Ник или ID';
 $('#sq').addEventListener('input', e => {
   clearTimeout(sT);
   const q = e.target.value.trim(), dd = $('#sd');
@@ -1599,16 +1667,16 @@ function mGrade(m) {
     : sc >= 42 ? ['C', 'слабо: по цифрам просел', '#8cc4ff']
     : ['D', 'плохо: худший свой матч по цифрам', '#ff5050'];
 }
-// мини-метки за матч — 1–2 штуки, честно из истории матчей
+// мини-метки за матч — 1–2 штуки, только то, что выделяет ЭТОТ матч (не «мейн» и не «фармила» в каждой строке)
 function mMiniTags(m, CNT) {
-  const T = [], dur = Math.max(300, m.match_duration_s), c = CNT[m.hero_id] || 0;
-  if (c >= 8) T.push(['Мейн', 'a', `${c} игр на ${hero(m.hero_id).n} за 30 дней`]);
-  else if (c === 1) T.push(['Дебют', 'b', `первая игра за ${hero(m.hero_id).n} в последних матчах`]);
-  const spm = m.net_worth / (dur / 60);
-  if (spm >= 800) T.push(['Фармила', 'g', `${nf(spm)} душ в минуту`]);
-  else if (spm <= 430) T.push(['Голодает', 'r', `${nf(spm)} душ в минуту`]);
-  if (m.player_deaths >= 11) T.push(['Кормил', 'r', `${m.player_deaths} смертей`]);
-  else if (m.player_deaths === 0 && dur > 900) T.push(['Без смертей', 'g', 'ни разу не умер']);
+  const T = [], dur = Math.max(300, m.match_duration_s), c = CNT[m.hero_id] || 0, A = CNT._avg || {};
+  const spm = m.net_worth / (dur / 60), d = m.player_deaths, kda = (m.player_kills + m.player_assists) / Math.max(1, d);
+  if (d === 0 && dur > 900) T.push(['Бессмертный', 'g', `ни одной смерти за ${Math.round(dur / 60)} минут`]);
+  else if (d >= Math.max(11, 2 * (A.d || 6))) T.push(['Кормил', 'r', `${d} смертей — обычно у тебя ${(A.d || 0).toFixed(1).replace('.', ',')}`]);
+  if (A.spm && spm >= 1.25 * A.spm) T.push(['Нафармил', 'g', `${nf(spm)} душ в минуту — обычно ${nf(A.spm)}`]);
+  else if (A.spm && spm <= .7 * A.spm) T.push(['Мало душ', 'r', `${nf(spm)} душ в минуту — обычно ${nf(A.spm)}`]);
+  if (kda >= 8 && d > 0) T.push(['Чисто', 'g', `(убийства + помощь) / смерти = ${kda.toFixed(1).replace('.', ',')}`]);
+  if (c === 1) T.push(['Первая на герое', 'b', `первая игра за ${hero(m.hero_id).n} в последних матчах`]);
   return T.slice(0, 2);
 }
 function mhRow(m, CNT, prev, MS) {
@@ -1649,7 +1717,7 @@ async function viewHome() {
     const ws = R && R.last_match ? R.last_match.player_rank_initial_win_streak : 0;
     const rd = H.slice(0, 30).filter(m => m.ranked_delta != null).reduce((a, m) => a + m.ranked_delta, 0);
     // счётчик игр на герое за 30 дней — для мини-меток в истории
-    const CNT = {}; H.filter(m => m.start_time >= now() - 30 * 86400).forEach(m => CNT[m.hero_id] = (CNT[m.hero_id] || 0) + 1);
+    const CNT = {}; H.filter(m => m.start_time >= now() - 30 * 86400).forEach(m => CNT[m.hero_id] = (CNT[m.hero_id] || 0) + 1); { const L = H.slice(0, 50); CNT._avg = {spm: L.reduce((x, m) => x + m.net_worth / (Math.max(300, m.match_duration_s) / 60), 0) / Math.max(1, L.length), d: L.reduce((x, m) => x + m.player_deaths, 0) / Math.max(1, L.length)}; }
     const MS = {}; HS.forEach(x => { MS[x.hero_id] = {g: x.matches_played, wr: pc(x.wins, x.matches_played), sc: mstyScore(x)}; });
     const grades = H.slice(0, 20).map(m => mGrade(m)[0]);
     const gMed = grades.length >= 5 ? grades.slice().sort((a, b) => gRank(a) - gRank(b))[Math.floor(grades.length / 2)] : null;
@@ -1873,7 +1941,7 @@ async function viewPro() {
     const E = (L.entries || []).slice(0, 10);
     $('#ptop').innerHTML = `<div class="pg">${E.map((e, i) => {
       const one = (e.possible_account_ids || []).length === 1 ? e.possible_account_ids[0] : null;
-      return `<${one ? `a href="?id=${one}#home"` : 'div'} class="pc"><b class="mono">#${i + 1}</b><span>${esc(e.account_name || 'Скрытый игрок')}</span><div class="his">${(e.top_hero_ids || []).slice(0, 3).map(h => `<a href="#h/${h}" title="${esc(hero(h).n)}" onclick="event.stopPropagation()">${heroImg(h, 's')}</a>`).join('')}</div><small>${esc(rankOf(e.rank).name)}</small></${one ? 'a' : 'div'}>`;
+      return `<div class="pc${one ? ' lk' : ''}"${one ? ` role="link" tabindex="0" title="Открыть профиль" onclick="location.href='?id=${+one}#home'" onkeydown="if(event.key==='Enter')this.click()"` : ''}><b class="mono">#${i + 1}</b><span>${esc(e.account_name || 'Скрытый игрок')}<small>${esc(rankOf(e.rank).name)}</small></span><div class="his">${(e.top_hero_ids || []).slice(0, 3).map(h => `<a href="#h/${h}" title="${esc(hero(h).n)}" onclick="event.stopPropagation()">${heroImg(h, 's')}</a>`).join('')}</div></div>`;
     }).join('')}</div>`;
     const six = (L.entries || []).filter(e => (e.possible_account_ids || []).length === 1).slice(0, 6);
     const HS2 = await Promise.all(six.map(e => api('players/' + e.possible_account_ids[0] + '/match-history').catch(() => [])));
@@ -1883,7 +1951,7 @@ async function viewPro() {
     $('#pmt').innerHTML = rows.slice(0, 14).map(({p, m}) => {
       const w = m.player_team === m.match_result, [g, , col] = mGrade(m);
       return `<a class="mt" href="#m/${m.match_id}"><i class="st" style="background:${w ? 'var(--win)' : 'var(--loss)'}"></i>${heroImg(m.hero_id)}
-        <div style="min-width:0"><div class="k">${m.player_kills} / ${m.player_deaths} / ${m.player_assists}<span class="grd s" style="--gc:${col}" title="Оценка за матч">${g}</span></div>
+        <div style="min-width:0"><div class="k">${m.player_kills} / ${m.player_deaths} / ${m.player_assists}<span class="grd sm${g === 'S' ? ' s' : ''}" style="--gc:${col}" title="Оценка за матч (S/A/B/C/D)">${g}</span></div>
         <div class="sub">${esc(p.account_name)} · ${esc(hero(m.hero_id).n)} · ${nf(m.net_worth)} душ</div></div>
         <div class="r"><b class="${w ? 'win' : 'loss'}">${w ? 'ПОБЕДА' : 'ПОРАЖЕНИЕ'}</b>${mmss(m.match_duration_s)} · ${ago(m.start_time)}</div></a>`;
     }).join('') || '<div class="empty">У топов недавно не было матчей.</div>';
