@@ -885,6 +885,100 @@ html[data-skin="paper"] .hh .vi{box-shadow:0 0 0 2px var(--hc,var(--ac))}
 html[data-skin="paper"] #hcard .hcc{background:rgba(245,239,226,.94);color:#4c463a}
 html[data-skin="paper"] #hcard .hcc b{color:#221f19}
 @keyframes flg{0%,40%{background:rgba(75,227,232,.13)}100%{background:transparent}}
+
+/* ==== 31.10 — «Форма» (Performance как у deadlocklabs): Score, кривая, где силён, когда получается, герои ==== */
+.ptabs{display:flex;gap:4px;margin:14px 0 4px;border-bottom:1px solid var(--ln)}
+.ptabs a{padding:10px 14px;font:700 13px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s}
+.ptabs a:hover{color:var(--tx)}
+.ptabs a.on{color:var(--ac);border-color:var(--ac)}
+.fm-top{gap:12px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.fm-g{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.5fr;gap:12px}
+.fm-sc{padding:16px 18px}
+.fm-k{font:700 11px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--ac)}
+.fm-n{display:flex;align-items:baseline;gap:6px;margin-top:8px}
+.fm-n b{font:700 56px/1 var(--h);letter-spacing:-.02em}
+.fm-n small{font:600 18px var(--h);color:var(--mu)}
+.fm-lb{font:700 14px/1.2 var(--f);margin-top:4px}
+.fm-gg{position:relative;height:6px;border-radius:4px;margin:16px 0 22px;background:linear-gradient(90deg,var(--loss),var(--ac) 50%,var(--win))}
+.fm-gg i{position:absolute;top:-6px;width:4px;height:18px;border-radius:2px;background:var(--tx);box-shadow:0 0 0 2px var(--s1);transform:translateX(-50%)}
+.fm-gg span{position:absolute;top:12px;font:500 10.5px var(--f);color:var(--mu2)}
+.fm-gg span:nth-of-type(1){left:0}.fm-gg span:nth-of-type(2){left:50%;transform:translateX(-50%);white-space:nowrap}.fm-gg span:nth-of-type(3){right:0}
+.fm-dl{margin:0;font-size:12.5px;color:var(--mu)}
+.fm-bg{text-decoration:none}
+.fm-ins{padding:12px 14px;display:grid;gap:8px;align-content:start}
+.fm-i{display:grid;gap:2px;padding:8px 10px;border-radius:10px;background:var(--s2);border-left:3px solid var(--mu2)}
+.fm-i b{font:700 10.5px/1 var(--f);letter-spacing:.12em;text-transform:uppercase}
+.fm-i span{font-size:13px}
+.fm-i.g{border-color:var(--win)}.fm-i.g b{color:var(--win)}
+.fm-i.r{border-color:var(--loss)}.fm-i.r b{color:var(--loss)}
+.fm-i.a{border-color:var(--ac)}.fm-i.a b{color:var(--ac)}
+.fm-cw{overflow-x:auto}
+.fm-cv{display:block;width:100%;min-width:520px;height:170px}
+.fm-cv line{stroke:var(--ln);stroke-width:1}
+.fm-cv line.m{stroke:var(--mu2);stroke-dasharray:4 4}
+.fm-cv rect.w{fill:var(--win);opacity:.85}
+.fm-cv rect.l{fill:var(--loss);opacity:.8}
+.fm-cv rect.b{stroke:var(--tx);stroke-width:1.5}
+.fm-cv a:hover rect{opacity:1}
+.fm-cv polyline{fill:none;stroke:var(--ac);stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.fm-cl{display:flex;justify-content:space-between;gap:10px;font-size:11.5px;color:var(--mu2);margin-top:6px}
+.fm-2{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+.fm-r{display:grid;grid-template-columns:150px minmax(0,1fr) 64px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--ln)}
+.fm-r:last-child{border-bottom:0}
+.fm-r b{font:600 13.5px/1.2 var(--f);display:block}
+.fm-r small{font-size:11.5px;color:var(--mu2)}
+.fm-r em{font:700 13px var(--m);font-style:normal;text-align:right}
+.fm-bar{position:relative;height:8px;border-radius:5px;background:var(--s3)}
+.fm-f{position:absolute;top:0;bottom:0;border-radius:5px}
+.fm-f.up{background:var(--win)}.fm-f.dn{background:var(--loss)}
+.fm-mid{position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:var(--tx);opacity:.6}
+.fm-d{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid var(--s1)}
+.fm-d.w{background:var(--win)}.fm-d.l{background:var(--loss)}
+.fm-bk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.fm-b{display:grid;gap:3px;text-align:center;padding:10px 6px;border-radius:12px;background:var(--s2)}
+.fm-b b{font:700 30px/1 var(--h)}
+.fm-b span{font:700 13px var(--f)}
+.fm-b small{font-size:11px;color:var(--mu2)}
+.fm-wk{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:8px}
+.fm-w{display:grid;gap:2px;text-align:center;padding:8px 4px;border-radius:10px;background:var(--s2);border:1px solid transparent}
+.fm-w.cur{border-color:var(--ac)}
+.fm-w b{font:700 22px/1 var(--h)}
+.fm-w em{font:700 11px var(--m);font-style:normal}
+.fm-w small{font-size:10.5px;color:var(--mu2)}
+.fm-hl{display:grid}
+.fm-h{display:grid;grid-template-columns:46px minmax(0,1fr) 120px 150px;gap:14px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--ln);text-decoration:none;color:var(--tx);transition:background .2s}
+.fm-h:last-child{border-bottom:0}
+.fm-h:hover{background:rgba(255,176,58,.045)}
+.fm-h .hi{width:46px;height:46px;border-radius:12px;object-fit:cover;background:var(--s3)}
+.fm-hn b{font:600 14.5px/1.2 var(--f);display:block}
+.fm-hn small{font-size:12px;color:var(--mu)}
+.fm-hn .ptags{margin-top:5px}
+.fm-hn .tag{font-size:10.5px;padding:1px 7px}
+.fm-hs{display:grid;justify-items:start}
+.fm-hs b{font:700 28px/1 var(--h)}
+.fm-hs small{font-size:11px;color:var(--mu)}
+.fm-mb{display:flex;align-items:flex-end;gap:3px;height:38px}
+.fm-mb i{flex:1;max-width:11px;border-radius:2px 2px 0 0}
+.fm-mb i.w{background:var(--win)}.fm-mb i.l{background:var(--loss)}
+.fm-how{margin-top:14px}
+.fm-how summary{cursor:pointer;font-weight:600}
+.fm-how p{color:var(--mu);font-size:13px;line-height:1.55;margin:10px 0 0}
+@media (max-width:1100px){.fm-g{grid-template-columns:repeat(2,minmax(0,1fr))}.fm-2{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){
+  .fm-g{grid-template-columns:minmax(0,1fr)}
+  .fm-n b{font-size:46px}
+  .fm-r{grid-template-columns:96px minmax(0,1fr) 52px;gap:8px}
+  .fm-r small{display:none}
+  .fm-h{grid-template-columns:40px minmax(0,1fr) 54px;gap:10px;padding:10px 12px}
+  .fm-h .hi{width:40px;height:40px}
+  .fm-mb{grid-column:2/4;height:24px}
+  .fm-hs b{font-size:22px}
+  .fm-hs small{display:none}
+  .fm-cv{min-width:0;height:140px}
+}
+.fm-g .stat{align-content:start}
+.fm-g .stat b{font:700 40px/1.05 var(--h);margin:6px 0 2px}
+@media (max-width:560px){.fm-g{grid-template-columns:repeat(2,minmax(0,1fr))}.fm-g .fm-sc,.fm-g .fm-ins{grid-column:1/-1}.fm-g .stat b{font-size:32px}}
 </style>
 </head>
 <body>
@@ -1952,6 +2046,7 @@ async function viewHome() {
         <div class="ptags">${tagsHTML(profTags(H, HS, HA))}</div><div style="margin-top:9px"><a class="btn s" href="#live">Кто в матче прямо сейчас →</a></div></div>
       <div class="rkb">${rankImg(R && R.badge)}<div><small>Ранг</small><b style="color:${esc(rk.color)}">${esc(rk.name)}</b>${ws >= 2 ? `<small>серия побед · ${ws}</small>` : (R && R.badge ? '<small>ранг сейчас</small>' : '<small>ранг скрыт</small>')}</div></div>
     </div>
+    ${ptabsHTML('home')}
     <div class="g5 st" style="margin-top:14px">
       <div class="card stat"><span>Победы · 20</span><b class="${w20 / Math.max(1, L20.length) >= .5 ? 'win' : 'loss'}">${pc(w20, L20.length)}%</b><small>${w20} из ${L20.length}</small></div>
       <div class="card stat"><span>KDA · 20</span><b>${kda.toFixed(2).replace('.', ',')}</b><small>${(sum(L20, 'player_kills') / Math.max(1, L20.length)).toFixed(1)} / ${(sum(L20, 'player_deaths') / Math.max(1, L20.length)).toFixed(1)} / ${(sum(L20, 'player_assists') / Math.max(1, L20.length)).toFixed(1)}</small></div>
@@ -2371,13 +2466,94 @@ document.addEventListener('touchstart', e => {
 
 // ---------- навигация v4 ----------
 function V(html) { $('#v').innerHTML = html; }
+// ---------- «Форма» — разбор игры как Performance у deadlocklabs: Restless Score, кривая формы, где силён, когда получается, форма на героях ----------
+// типичный игрок — тот же герой, твой ранг (±1 ступень), последние 30 дней (analytics/hero-stats); всё приводится к твоей средней длине матча
+const ptabsHTML = on => `<div class="ptabs" role="tablist">${[['home', 'Обзор'], ['form', 'Форма']].map(([k, n]) => `<a href="#${k}" role="tab" class="${on === k ? 'on' : ''}">${n}</a>`).join('')}</div>`;
+let FMN = 50;
+const fmL2 = r => Math.log(Math.max(.05, r)) / Math.LN2;
+const fmS = r => Math.max(0, Math.min(100, 50 + 32 * fmL2(r)));
+const fmLbl = s => s >= 70 ? ['Сильно выше среднего', 'win'] : s >= 57 ? ['Выше среднего', 'win'] : s >= 45 ? ['Средне', ''] : s >= 35 ? ['Чуть ниже среднего', 'loss'] : ['Ниже среднего', 'loss'];
+const fmCol = s => s >= 57 ? 'var(--win)' : s >= 45 ? 'var(--ac)' : 'var(--loss)';
+const FM_K = [['nw', 'Души за матч', 'сколько душ набрал'], ['ka', 'Убийства + помощь', 'участие в убийствах'], ['dt', 'Выживание', 'меньше смертей — лучше'], ['lh', 'Добивания', 'добитые крипы']];
+function fmOne(m, T, D) {
+  const t = T[m.hero_id], dur = Math.max(300, m.match_duration_s || 0);
+  if (!t || (m.abandoned_time_s && m.abandoned_time_s < dur - 60)) return null;
+  const k = D / dur, d = m.player_deaths * k;
+  const r = {nw: m.net_worth * k / t.nw, ka: (m.player_kills + m.player_assists) * k / Math.max(.5, t.ka), dt: Math.max(.5, t.d) / Math.max(.5, d), lh: (m.last_hits || 0) * k / Math.max(1, t.lh)};
+  return {m, r, w: m.player_team === m.match_result, s: Math.round(.3 * fmS(r.nw) + .3 * fmS(r.ka) + .25 * fmS(r.dt) + .15 * fmS(r.lh))};
+}
+const fmAvg = (L, f) => L.length ? L.reduce((a, x) => a + f(x), 0) / L.length : 0;
+const fmPct = r => { const p = Math.round(100 * (r - 1)); return (p > 0 ? '+' : '') + p + ' %'; };
+async function viewForm() {
+  if (!ME) return viewLanding();
+  V(`${ptabsHTML('form')}<div class="load">Считаю твою форму против типичных игроков на твоих героях…</div>`);
+  try {
+    const R = await api('players/' + ME.id + '/rank').catch(() => null);
+    const b = R && R.badge ? Math.floor(R.badge / 10) * 10 : 0;
+    const [H, S] = await Promise.all([api('players/' + ME.id + '/match-history'),
+      api(`analytics/hero-stats?min_unix_timestamp=${now() - 30 * 86400 - (now() % 3600)}${b ? `&min_average_badge=${Math.max(0, b - 10)}&max_average_badge=${b + 16}` : ''}`).catch(() => [])]);
+    const T = {}; S.forEach(x => { const n = Math.max(1, x.matches); if (x.matches >= 30) T[x.hero_id] = {nw: x.total_net_worth / n, ka: (x.total_kills + x.total_assists) / n, d: x.total_deaths / n, lh: x.total_last_hits / n, wr: 100 * x.wins / n}; });
+    const W = H.slice(0, FMN), D = fmAvg(W, m => Math.max(300, m.match_duration_s || 0)) || 1800;
+    const L = W.map(m => fmOne(m, T, D)).filter(Boolean);
+    if (L.length < 5) { V(`${ptabsHTML('form')}<div class="empty">Мало матчей для разбора формы — нужно хотя бы 5.</div>`); return; }
+    const sc = Math.round(fmAvg(L, x => x.s)), [lb, lc] = fmLbl(sc), L10 = L.slice(0, 10), Lr = L.slice(10);
+    const d10 = Lr.length ? fmAvg(L10, x => x.s) - fmAvg(Lr, x => x.s) : 0;
+    const wins = L.filter(x => x.w), losses = L.filter(x => !x.w), best = L.reduce((a, x) => x.s > a.s ? x : a, L[0]);
+    const RT = FM_K.map(([k, n, h]) => ({k, n, h, r: fmAvg(L, x => x.r[k]), rw: fmAvg(wins, x => x.r[k]), rl: fmAvg(losses, x => x.r[k])}));
+    const sRT = RT.slice().sort((a, b2) => b2.r - a.r), str = sRT[0], weak = sRT[sRT.length - 1];
+    const byH = {}; L.forEach(x => (byH[x.m.hero_id] = byH[x.m.hero_id] || []).push(x));
+    const HL = Object.entries(byH).map(([id, X]) => ({id: +id, X, s: fmAvg(X, x => x.s), w: X.filter(x => x.w).length})).sort((a, b2) => b2.X.length - a.X.length || b2.s - a.s);
+    const bh = HL.filter(h => h.X.length >= 3).sort((a, b2) => b2.s - a.s)[0];
+    // кривая формы: старые слева, свежие справа
+    const C = L.slice().reverse(), bw = 10, gp = 5, cw = C.length * (bw + gp) + gp, ch = 120;
+    const ma = C.map((x, i) => fmAvg(C.slice(Math.max(0, i - 4), i + 1), y => y.s));
+    const y = v => ch - v * ch / 100;
+    const curve = `<svg class="fm-cv" viewBox="0 0 ${cw} ${ch + 16}" preserveAspectRatio="none" role="img" aria-label="Оценка каждого матча">
+      ${[25, 50, 75].map(v => `<line x1="0" x2="${cw}" y1="${y(v)}" y2="${y(v)}" class="${v === 50 ? 'm' : ''}"/>`).join('')}
+      ${C.map((x, i) => `<a href="#m/${x.m.match_id}"><rect x="${gp + i * (bw + gp)}" y="${y(x.s)}" width="${bw}" height="${Math.max(2, ch - y(x.s))}" rx="2" class="${x.w ? 'w' : 'l'}${x === best ? ' b' : ''}"><title>${esc(hero(x.m.hero_id).n)} · ${x.w ? 'победа' : 'поражение'} · оценка ${x.s} · ${ago(x.m.start_time)}</title></rect></a>`).join('')}
+      <polyline points="${ma.map((v, i) => `${gp + i * (bw + gp) + bw / 2},${y(v)}`).join(' ')}"/></svg>`;
+    // когда получается: короткие / обычные / долгие
+    const BK = [['Короткие', 'до 25 мин', x => x.m.match_duration_s < 1500], ['Обычные', '25–35 мин', x => x.m.match_duration_s >= 1500 && x.m.match_duration_s < 2100], ['Долгие', '35+ мин', x => x.m.match_duration_s >= 2100]].map(([n, h, f]) => { const X = L.filter(f); return {n, h, X, s: X.length ? Math.round(fmAvg(X, x => x.s)) : null, w: X.filter(x => x.w).length}; });
+    // по неделям
+    const wk = {}; L.forEach(x => { const k = Math.floor((x.m.start_time + 3 * 86400) / 604800); (wk[k] = wk[k] || []).push(x); });
+    const WK = Object.entries(wk).sort((a, b2) => a[0] - b2[0]).slice(-6).map(([k, X]) => ({t: (+k) * 604800 - 3 * 86400, X, s: Math.round(fmAvg(X, x => x.s)), w: X.filter(x => x.w).length}));
+    const bar = (r, rw, rl) => { const p = v => Math.max(0, Math.min(100, 50 + 50 * fmL2(v))); return `<div class="fm-bar"><i class="fm-f ${r >= 1 ? 'up' : 'dn'}" style="${r >= 1 ? `left:50%;width:${p(r) - 50}%` : `left:${p(r)}%;width:${50 - p(r)}%`}"></i><i class="fm-mid"></i>${wins.length ? `<i class="fm-d w" style="left:${p(rw)}%" title="в победах: ${fmPct(rw)}"></i>` : ''}${losses.length ? `<i class="fm-d l" style="left:${p(rl)}%" title="в поражениях: ${fmPct(rl)}"></i>` : ''}</div>`; };
+    V(`${ptabsHTML('form')}
+    <div class="row fm-top"><div class="seg" id="fmn">${[20, 50, 100, 200].map(n => `<button data-n="${n}" class="${FMN === n ? 'on' : ''}">${n === 200 ? 'Все' : 'Последние ' + n}</button>`).join('')}</div>
+      <small class="sub">${L.length} ${pl(L.length, ['матч', 'матча', 'матчей'])} · сравнение с игроками ${b ? 'твоего ранга' : 'всех рангов'} на тех же героях за 30 дней</small></div>
+    <div class="fm-g">
+      <div class="card fm-sc"><span class="fm-k">Restless Score</span><div class="fm-n"><b>${sc}</b><small>/ 100</small></div><div class="fm-lb ${lc}">${lb}</div>
+        <div class="fm-gg"><i style="left:${sc}%"></i><span>0</span><span>типичный игрок · 50</span><span>100</span></div>
+        ${Lr.length ? `<p class="fm-dl">Последние 10 матчей: <b class="${d10 >= 0 ? 'win' : 'loss'}">${d10 >= 0 ? '+' : ''}${d10.toFixed(1).replace('.', ',')}</b> к прошлым</p>` : ''}</div>
+      <div class="card stat"><span>Победы</span><b class="${wins.length / L.length >= .5 ? 'win' : 'loss'}">${pc(wins.length, L.length)}%</b><small>${wins.length} побед · ${losses.length} поражений</small></div>
+      <a class="card stat fm-bg" href="#m/${best.m.match_id}"><span>Лучшая игра</span><b style="color:${fmCol(best.s)}">${best.s}</b><small>${esc(hero(best.m.hero_id).n)} · ${best.m.player_kills}/${best.m.player_deaths}/${best.m.player_assists} · ${ago(best.m.start_time)}</small></a>
+      <div class="card fm-ins"><div class="fm-i g"><b>Сильная сторона</b><span>${esc(str.n)}: ${fmPct(str.r)} к типичному</span></div><div class="fm-i r"><b>Слабое место</b><span>${esc(weak.n)}: ${fmPct(weak.r)} к типичному</span></div>${bh ? `<div class="fm-i a"><b>Лучший герой</b><span>${esc(hero(bh.id).n)} — оценка ${Math.round(bh.s)} в ${games(bh.X.length)}</span></div>` : ''}</div>
+    </div>
+    <div class="h2">Кривая формы<small>каждый столбик — матч (нажми — разбор) · зелёный — победа, красный — поражение · линия — среднее за 5 матчей · пунктир — типичный игрок (50)</small></div>
+    <div class="card pad fm-cw">${curve}<div class="fm-cl"><span>${ago(C[0].m.start_time)}</span><span>Лучшая игра — ${best.s} · ${esc(hero(best.m.hero_id).n)}</span><span>сейчас</span></div></div>
+    <div class="fm-2">
+      <div><div class="h2">Где ты силён<small>середина — типичный игрок на твоих героях · точки: зелёная — в победах, красная — в поражениях</small></div>
+        <div class="card pad fm-st">${RT.map(x => `<div class="fm-r"><div><b>${esc(x.n)}</b><small>${esc(x.h)}</small></div>${bar(x.r, x.rw, x.rl)}<em class="${x.r >= 1.03 ? 'win' : x.r <= .97 ? 'loss' : ''}">${fmPct(x.r)}</em></div>`).join('')}</div></div>
+      <div><div class="h2">Когда получается<small>оценка по длине матча</small></div>
+        <div class="card pad fm-bk">${BK.map(x => `<div class="fm-b"><b style="color:${x.s == null ? 'var(--mu2)' : fmCol(x.s)}">${x.s == null ? '—' : x.s}</b><span>${x.n}</span><small>${x.h} · ${x.X.length ? games(x.X.length) + ' · ' + pc(x.w, x.X.length) + '% побед' : 'нет матчей'}</small></div>`).join('')}</div>
+        ${WK.length >= 2 ? `<div class="h2" style="margin-top:18px">По неделям<small>средняя оценка за неделю</small></div><div class="card pad fm-wk">${WK.map((x, i) => `<div class="fm-w${i === WK.length - 1 ? ' cur' : ''}"><small>${new Date(x.t * 1000).toLocaleDateString('ru-RU', {day: 'numeric', month: 'short'})}</small><b style="color:${fmCol(x.s)}">${x.s}</b>${i ? `<em class="${x.s >= WK[i - 1].s ? 'win' : 'loss'}">${x.s >= WK[i - 1].s ? '+' : ''}${x.s - WK[i - 1].s}</em>` : '<em>&nbsp;</em>'}<small>${games(x.X.length)} · ${pc(x.w, x.X.length)}%</small></div>`).join('')}</div>` : ''}</div>
+    </div>
+    <div class="h2">Форма на героях<small>оценка на каждом герое против типичного игрока на нём · ▲ сильнее всего · ▼ слабее всего</small></div>
+    <div class="card fm-hl">${HL.slice(0, 8).map(h => { const rr = FM_K.map(([k, n]) => ({n, r: fmAvg(h.X, x => x.r[k])})).sort((a, b2) => b2.r - a.r); const s = Math.round(h.s), [l2] = fmLbl(s);
+      return `<a class="fm-h" href="#h/${h.id}">${heroImg(h.id)}<div class="fm-hn"><b>${esc(hero(h.id).n)}</b><small>${games(h.X.length)} · ${h.w}–${h.X.length - h.w}</small><div class="ptags"><span class="tag g" title="${fmPct(rr[0].r)} к типичному">▲ ${esc(rr[0].n)}</span>${h.X.length >= 2 ? `<span class="tag r" title="${fmPct(rr[rr.length - 1].r)} к типичному">▼ ${esc(rr[rr.length - 1].n)}</span>` : ''}</div></div>
+        <div class="fm-hs"><b style="color:${fmCol(s)}">${s}</b><small>${l2}</small></div><div class="fm-mb">${h.X.slice(0, 10).reverse().map(x => `<i class="${x.w ? 'w' : 'l'}" style="height:${Math.max(8, x.s)}%" title="${x.s}"></i>`).join('')}</div></a>`; }).join('')}</div>
+    <details class="card pad fm-how"><summary>Как считается Restless Score</summary><p>Каждый матч сравниваем с типичным игроком на том же герое ${b ? 'на твоём ранге' : ''} за последние 30 дней (открытые данные deadlock-api): души, убийства + помощь, смерти, добивания крипов. Цифры приводим к одной длине матча — долгая игра не даёт лишних очков. Вровень с типичным — 50, вдвое лучше — около 82, вдвое хуже — около 18. Вес: души 30 %, убийства + помощь 30 %, выживание 25 %, добивания 15 %. Точность и урон по героям в открытой истории матчей не отдаются — их добавим из разбора матча.</p></details>`);
+    $$('#fmn button').forEach(x => x.onclick = () => { FMN = +x.dataset.n; viewForm(); });
+  } catch (e) { V(`${ptabsHTML('form')}<div class="err">Не вышло: ${esc(e.message)}</div>`); }
+}
 function route() {
   const h = location.hash.replace(/^#/, '') || 'home';
   const [t, a] = h.split('/');
-  const tab = {m: 'matches', h: 'heroes', who: 'home', now: 'live', builds: 'heroes', b: 'heroes', profile: 'home', top: 'lb', leaderboard: 'lb'}[t] || t;
+  const tab = {m: 'matches', h: 'heroes', who: 'home', now: 'live', builds: 'heroes', b: 'heroes', profile: 'home', form: 'home', top: 'lb', leaderboard: 'lb'}[t] || t;
   $$('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.t === tab));
   window.scrollTo(0, 0);
   if (t === 'live' || t === 'now') return viewLive();
+  if (t === 'form') return viewForm();
   if (t === 'meta') return viewMeta();
   if (t === 'lb' || t === 'top' || t === 'leaderboard') return viewLb();
   if (t === 'pro') return viewPro();
