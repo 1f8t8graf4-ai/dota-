@@ -1185,6 +1185,47 @@ a.q-pc-n:hover .q-pnm{text-decoration:underline}
  .q-gb .q-gi{grid-row:2}
  .q-bs{grid-template-columns:1fr 1fr}.q-bs>div:first-child{grid-column:1/-1}
 }
+
+/* лайв-матч: 12 ч / 30 дн., последние матчи, его сборка, всплывашки */
+.q-per{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.q-pr{display:flex;align-items:center;gap:7px;text-align:left;padding:5px;border-radius:9px;background:#17171c;border:1px solid #24242c;min-width:0}
+.q-pr:not(:disabled):hover{border-color:#3a3a44}
+.q-pr:disabled{opacity:.55;cursor:default}
+.q-pr span{min-width:0}.q-pr span b{display:block;font:600 11px/1.1 var(--f);color:var(--tx)}
+.q-pr span small{display:block;font-size:10.5px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-rg{position:relative;display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:50%;background:conic-gradient(#5a5a66 calc(var(--p)*1%),#2a2a33 0)}
+.q-rg.w{background:conic-gradient(var(--win) calc(var(--p)*1%),#2a2a33 0)}.q-rg.l{background:conic-gradient(var(--loss) calc(var(--p)*1%),#2a2a33 0)}
+.q-rg::after{content:"";position:absolute;inset:4px;border-radius:50%;background:#17171c}
+.q-rg b{position:relative;z-index:1;font:700 9.5px/1 var(--m)}
+.q-rec{display:flex;align-items:center;gap:3px;flex-wrap:wrap;font-size:11px;color:var(--mu)}
+.q-rec>span{margin-right:2px}
+.q-rec a:not(.q-rm){display:block;width:22px;height:22px;border-radius:5px;overflow:hidden;background:#1d1d24;box-shadow:inset 0 -3px 0 var(--win)}
+.q-rec a.l{box-shadow:inset 0 -3px 0 var(--loss)}
+.q-rec a img{width:100%;height:100%;object-fit:cover}
+.q-rm{margin-left:auto;color:var(--q-am);text-decoration:none;font-weight:600}
+.q-pbld:empty{display:none}
+.q-pbb{display:flex;flex-direction:column;gap:5px;width:100%;text-align:left;padding:7px 8px;border-radius:9px;background:#1a1407;border:1px solid rgba(255,176,32,.35)}
+.q-pbb:hover{border-color:var(--q-am)}
+.q-pbb span{font-size:11.5px;color:#d9d3c8}.q-pbb b{color:var(--q-am)}
+.q-pbb .ic{display:flex;gap:3px}
+.q-pbb .ic img{width:22px;height:22px;border-radius:5px;background:#1d1d24}
+.q-pop{position:fixed;z-index:60;min-width:260px;max-width:min(420px,calc(100vw - 16px));max-height:70vh;overflow:auto;background:#17171c;border:1px solid #33333d;border-radius:12px;padding:12px 14px;box-shadow:0 18px 44px rgba(0,0,0,.65);display:flex;flex-direction:column;gap:8px}
+.q-px{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:#24242c;color:var(--mu);font-size:12px}
+.q-poh{padding-right:30px}.q-poh b{display:block;font-size:14px}.q-poh small{display:block;color:var(--mu);font-size:12px;margin-top:2px}
+.q-ptb td,.q-ptb th{padding:5px 6px;border-top:1px solid #24242c}
+.q-ptb .q-fc{width:28px;height:28px;border-radius:6px}
+.q-pbn{font-size:12.5px;line-height:1.45}
+@media (max-width:620px){.q-per{grid-template-columns:1fr}.q-pop{left:8px!important;right:8px;max-width:none}}
+
+.q-per{display:flex;gap:6px}
+.q-pr{flex:1;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:6px 4px}
+.q-pr span b{font-size:11px}.q-pr span small{font-size:10.5px}
+.q-rec>span{width:100%;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.q-rec a:not(.q-rm){width:20px;height:20px}
+.q-rm{font-size:11px}
+@media (max-width:620px){.q-per{flex-direction:row}}
+.q-pbb .ic{flex-wrap:wrap}
+@media (max-width:620px){.q-pbb .ic img{width:20px;height:20px}}
 </style>
 </head>
 <body>
@@ -2063,7 +2104,7 @@ let BSP = {};
 try { BSP = JSON.parse(localStorage.getItem('rl-bld') || '{}'); } catch (e) { BSP = {}; }
 const bldFlush = () => { try { localStorage.setItem('rl-bld', JSON.stringify(BSP)); } catch (e) {} };
 const autoOn = () => { try { return localStorage.getItem('rl-auto') === '1'; } catch (e) { return false; } };
-const CATN = {gun: 'Оружие', spirit: 'Дух', mix: 'Микс'};
+const CATN = {gun: 'Ган', spirit: 'Спирит', mix: 'Микс'};
 function bldCat(b) {
   let w = 0, s = 0;
   ((b.hero_build && b.hero_build.details && b.hero_build.details.mod_categories) || []).forEach(c => (c.mods || []).forEach(x => { const I = item(x.ability_id); if (!I) return; if (I.s === 'weapon') w++; else if (I.s === 'spirit') s++; }));
@@ -2671,7 +2712,7 @@ async function heroMyMatches(n, hid) {
 }
 
 // ---------- сборки: настоящие сборки с винрейтом + подбор Restless ----------
-const CATI = {gun: 'Оружие', spirit: 'Дух', mix: 'Микс'};
+const CATI = {gun: 'Ган', spirit: 'Спирит', mix: 'Микс'};
 function shelfName(c, k) {
   const s = String((c && c.name) || '').trim();
   if (s && s[0] !== '#') return s.slice(0, 26);
@@ -2796,8 +2837,14 @@ const live = p => fetch(API + p).then(async r => { if (!r.ok) throw new Error(r.
 async function scout2(players, ctx) {
   ctx = ctx || {};
   const ids = players.map(p => p.account_id).filter(Boolean), q = 'account_ids=' + ids.join(',');
-  const [ranks, hs, MT] = await Promise.all([api('players/rank?' + q).catch(() => []), api('players/hero-stats?' + q).catch(() => []),
-    Promise.all(ids.map(id => api(`players/${id}/mate-stats?same_party=true&min_matches_played=3&min_unix_timestamp=${now() - 90 * 86400 - (now() % 86400)}`).catch(() => []))), steamNames(ids)]);
+  const t12 = now() - 12 * 3600 - (now() % 60), t30d = now() - 30 * 86400 - (now() % 3600), t7 = now() - 7 * 86400 - (now() % 3600);
+  const [ranks, hs, MT, , H30, H12, REC] = await Promise.all([api('players/rank?' + q).catch(() => []), api('players/hero-stats?' + q).catch(() => []),
+    Promise.all(ids.map(id => api(`players/${id}/mate-stats?same_party=true&min_matches_played=3&min_unix_timestamp=${now() - 90 * 86400 - (now() % 86400)}`).catch(() => []))), steamNames(ids),
+    api(`players/hero-stats?${q}&min_unix_timestamp=${t30d}`).catch(() => []), api(`players/hero-stats?${q}&min_unix_timestamp=${t12}`).catch(() => []),
+    api(`matches/metadata?${q}&only_filtered_players=true&include_info=true&include_player_kda=true&min_unix_timestamp=${t7}&order_by=match_id&order_direction=desc&limit=150`).catch(() => [])]);
+  const per = L => { const o = {}; (L || []).forEach(h => { const x = o[h.account_id] = o[h.account_id] || {m: 0, w: 0, hs: []}; x.m += h.matches_played || 0; x.w += h.wins || 0; if (h.matches_played) x.hs.push({hid: h.hero_id, m: h.matches_played, w: h.wins || 0}); }); return o; };
+  const P30 = per(H30), P12 = per(H12), RC = {};
+  (REC || []).forEach(mm => (mm.players || []).forEach(pp => { const L = RC[pp.account_id] = RC[pp.account_id] || []; if (L.length < 6) L.push({mid: mm.match_id, hid: pp.hero_id, w: teamOf(pp.team) === teamOf(mm.winning_team), kda: `${pp.kills || 0}/${pp.deaths || 0}/${pp.assists || 0}`}); }));
   const R = {}, H = {}, T = {};
   (ranks || []).forEach(r => R[r.account_id] = r);
   (hs || []).forEach(h => { (H[h.account_id] = H[h.account_id] || {})[h.hero_id] = h; const t = T[h.account_id] = T[h.account_id] || {m: 0, w: 0}; t.m += h.matches_played || 0; t.w += h.wins || 0; });
@@ -2818,15 +2865,20 @@ async function scout2(players, ctx) {
     if (hm === 0 && t.m >= 30) tags.push(['r', 'Первый раз на герое', 'ни одной игры на этом герое в открытых данных']);
     else if (hm > 0 && hm <= 3 && t.m >= 30) tags.push(['r', 'Почти не играл', `всего ${games(hm)} на герое`]);
     if (t.m && t.m < 60) tags.push(['', 'Новичок', `всего ${games(t.m)}`]);
-    if (ws >= 3) tags.push(['g', 'Серия побед · ' + ws, 'побед подряд в ранговых']);
+    const rc = RC[id] || [], p30 = P30[id] || {m: 0, w: 0, hs: []}, p12 = P12[id] || {m: 0, w: 0, hs: []};
+    let st = 0; while (st < rc.length && rc[st].w === (rc[0] || {}).w) st++;
+    if (rc.length && st >= 3) tags.push(rc[0].w ? ['g', `Выиграл ${st} подряд`, 'последние матчи — победы'] : ['r', `Проиграл ${st} подряд`, 'последние матчи — поражения, может тильтовать']);
+    else if (ws >= 3) tags.push(['g', 'Серия побед · ' + ws, 'побед подряд в ранговых']);
+    if (!p12.m && p30.m >= 5 && !ctx.last) tags.push(['b', 'Первая игра за день', 'не играл последние 12 часов — ещё не разогрелся']);
     if (hm >= 15 && hw / hm >= .6) tags.push(['g', 'Сильный на герое', `${pc(hw, hm)}% побед на герое`]);
     if (hm >= 15 && hw / hm <= .4) tags.push(['r', 'Слабый на герое', `${pc(hw, hm)}% побед на герое`]);
     if (sn.m30 >= 120) tags.push(['b', 'Много играет', `${sn.m30} матчей за 30 дней`]);
     if (t.m && t.m < 200 && badge >= 100) tags.push(['r', 'Мало игр для ранга', `${games(t.m)} — и уже ${rankOf(badge).name}`]);
     if (pid[id]) tags.push(['h', `Друзья · ${pid[id].n}`, ctx.last ? 'друзья в Steam и в одной команде в этом матче — возможно, пати' : 'друзья в Steam, недавно играли в одной команде — возможно, пати']);
     const threat = hm >= 10 ? (hw / hm - .5) * Math.min(1, hm / 60) + (ws >= 3 ? .05 : 0) + badge / 1000 : badge / 1000 - .1;
-    const mood = ws >= 3 || (hm >= 15 && hw / hm >= .58) ? 'g' : (hm >= 15 && hw / hm <= .42) || (hm === 0 && t.m >= 30) ? 'c' : '';
-    return {id, hid, team: teamOf(p.team), name: sn.n || 'Скрытый игрок', av: sn.av, badge, hm, hw, tm: t.m, tw: t.w, kda: hm ? (h.kills + h.assists) / Math.max(1, h.deaths) : 0, tags, threat, mood, party: pid[id]};
+    const hot = rc.length && st >= 3 && rc[0].w, cold = rc.length && st >= 3 && !rc[0].w;
+    const mood = hot || ws >= 3 || (hm >= 15 && hw / hm >= .58) ? 'g' : cold || (hm >= 15 && hw / hm <= .42) || (hm === 0 && t.m >= 30) ? 'c' : '';
+    return {id, hid, team: teamOf(p.team), name: sn.n || 'Скрытый игрок', av: sn.av, badge, hm, hw, tm: t.m, tw: t.w, kda: hm ? (h.kills + h.assists) / Math.max(1, h.deaths) : 0, tags, threat, mood, party: pid[id], p30, p12, rc};
   });
 }
 function pCard(p, en, thr, meId) {
@@ -2836,6 +2888,10 @@ function pCard(p, en, thr, meId) {
       <div class="rkl">${rankImg(p.badge, 'rk')}<span>${esc(rankOf(p.badge).name)}</span></div>
       <div class="ln">На герое: <b>${p.hm ? games(p.hm) : 'нет игр'}</b>${p.hm ? ` · <b class="${wrC(wr, p.hm)}">${wr}%</b> · KDA ${f1(p.kda)}` : ''}</div>
       <div class="ln">Всего: ${p.tm ? `<b>${nf(p.tm)}</b> · ${pc(p.tw, p.tm)}%` : 'нет данных'}</div>
+      <div class="q-per">${[['12', '12 ч', p.p12], ['30', '30 дн.', p.p30]].map(([k, nm, o]) => { const wr = o && o.m ? Math.round(100 * o.w / o.m) : 0;
+        return `<button class="q-pr" type="button" data-per="${k}" data-acc="${p.id}" title="${o && o.m ? `${games(o.m)}, ${o.w} ${pl(o.w, ['победа', 'победы', 'побед'])} — нажми, на каких героях` : 'игр нет'}"${o && o.m ? '' : ' disabled'}><i class="q-rg ${o && o.m ? (wr >= 50 ? 'w' : 'l') : ''}" style="--p:${wr}"><b>${o && o.m ? wr + '%' : '—'}</b></i><span><b>${nm}</b><small>${o && o.m ? games(o.m) : 'не играл'}</small></span></button>`; }).join('')}</div>
+      ${p.rc && p.rc.length ? `<div class="q-rec"><span>Последние:</span>${p.rc.slice(0, 5).map(r => `<a href="#m/${r.mid}" class="${r.w ? 'w' : 'l'}" title="${esc(hero(r.hid).n)} · ${r.w ? 'победа' : 'поражение'} · ${r.kda} — разбор"><img src="${esc(hero(r.hid).i)}" alt="" loading="lazy" onerror="${noimg}"></a>`).join('')}${p.id ? `<a class="q-rm" href="?id=${p.id}#home" title="все матчи — профиль">все ›</a>` : ''}</div>` : ''}
+      <div class="q-pbld" id="pb-${p.id}"></div>
       <div class="tg">${thr ? '<span class="tag h" title="самый опасный по рангу и игре на герое">Главная угроза</span>' : ''}${p.cn ? `<span class="tag r" title="твой герой против него на линии побеждает реже">Контрит тебя · ${p.cn}%</span>` : ''}${p.tags.map(t => `<span class="tag ${t[0]}" title="${esc(t[2])}">${esc(t[1])}</span>`).join('')}</div></div></div>`;
 }
 async function liveLobby(n, players, aid, head, ctx) {
@@ -2851,8 +2907,78 @@ async function liveLobby(n, players, aid, head, ctx) {
     <div class="q-lob">${P.map(p => pCard(p, isEn, isEn && p === thr, aid)).join('')}</div></div>`;
   const first = mine ? [us, myTeam, false] : [L.filter(p => p.team === 0), 0, false], second = mine ? [en, 1 - myTeam, true] : [L.filter(p => p.team === 1), 1, true];
   put(n, '#lvb', `${head || ''}${team(first[0], first[1], !!mine && first[2])}${team(second[0], second[1], !!mine && second[2])}
+    ${myHero ? `<div class="q-sec"><b>Сборка на ${esc(hero(myHero).n)}</b><small>сначала · потом · в конце — без лишнего</small></div><div class="q-box" id="lvbld" style="padding:12px 14px;display:flex;flex-direction:column;gap:8px"><div class="load" style="padding:6px 0">…</div></div>` : ''}
     ${myHero ? `<div class="q-sec"><b>Против их состава</b><small>${esc(hero(myHero).n)} · ${esc(fName())}</small></div><div class="card" id="vsall"><div class="load" style="padding:16px">Считаю предметы против каждого врага…</div></div>` : ''}`);
+  LVL = L;
   if (myHero) vsAll(n, en, myHero);
+  pBuilds(n, L);
+  if (myHero) heroPhaseBuild(n, myHero);
+}
+// всплывашка: на каких героях играл за период, что в сборке
+let LVL = [];
+const PBD = {};
+const SUP = new Set(['Rescue Beam', 'Healing Nova', 'Restorative Locket', 'Guardian Ward', 'Divine Barrier', 'Heroic Aura', 'Healing Rite']);
+const PCAT = {gun: 'Ган', spirit: 'Спирит', sup: 'Саппорт', tank: 'Танк', mix: 'Микс'};
+function qPopClose() { const d = $('.q-pop'); if (d) d.remove(); document.removeEventListener('click', qPopOut, true); }
+function qPopOut(e) { if (!e.target.closest('.q-pop') && !e.target.closest('[data-per],[data-pb]')) qPopClose(); }
+function qPop(anchor, html) {
+  qPopClose();
+  const d = document.createElement('div'); d.className = 'q-pop'; d.innerHTML = `<button class="q-px" type="button" aria-label="Закрыть">✕</button>${html}`; document.body.appendChild(d);
+  const r = anchor.getBoundingClientRect(), w = d.offsetWidth, h = d.offsetHeight;
+  const x = Math.min(innerWidth - w - 8, Math.max(8, r.left)), y = r.bottom + 6 + h > innerHeight - 8 ? Math.max(8, r.top - h - 6) : r.bottom + 6;
+  d.style.left = x + 'px'; d.style.top = y + 'px';
+  $('.q-px', d).onclick = qPopClose;
+  setTimeout(() => document.addEventListener('click', qPopOut, true), 0);
+}
+addEventListener('keydown', e => { if (e.key === 'Escape') qPopClose(); });
+addEventListener('hashchange', qPopClose);
+addEventListener('scroll', () => { if ($('.q-pop') && innerWidth > 640) qPopClose(); }, {passive: true});
+function perHTML(p, k) {
+  const o = k === '12' ? p.p12 : p.p30; if (!o || !o.m) return '<div class="sub">Игр нет.</div>';
+  const L = o.hs.slice().sort((a, b) => b.m - a.m).slice(0, 8), mx = Math.max(1, ...L.map(x => x.m));
+  return `<div class="q-poh"><b>${esc(p.name)}</b><small>${k === '12' ? 'за 12 часов' : 'за 30 дней'} · ${games(o.m)} · ${Math.round(100 * o.w / o.m)}% побед</small></div>
+    <table class="q-tbl q-ptb"><tr><th></th><th>игр</th><th>винрейт</th></tr>${L.map(x => { const wr = Math.round(100 * x.w / x.m); return `<tr><td>${face(x.hid, '', 's', hero(x.hid).n)}</td><td><div class="q-bw"><span class="bar"><i style="width:${Math.round(100 * x.m / mx)}%;background:var(--win)"></i></span><b>${x.m}</b></div></td><td><div class="q-bw"><span class="bar"><i style="width:${wr}%;background:${wr >= 50 ? 'var(--win)' : 'var(--loss)'}"></i></span><b class="${wrC(wr, x.m)}">${wr}%</b></div></td></tr>`; }).join('')}</table>`;
+}
+// его сборка на этом герое: предметы, которые он берёт чаще всего, по фазам (сначала / середина / конец)
+async function pBuilds(n, L) {
+  const t90 = now() - 90 * 86400 - (now() % 86400);
+  await Promise.all(L.filter(p => p.id && p.hm > 5).map(async p => {
+    const S = await api(`analytics/item-stats?hero_id=${p.hid}&account_id=${p.id}&min_unix_timestamp=${t90}`).catch(() => []); if (n !== VQ) return;
+    const g = Math.max(0, ...S.map(s => s.matches || 0)); if (g < 3) return;
+    const bt = s => s.avg_buy_time_s || 0;
+    const early = S.filter(s => item(s.item_id) && bt(s) < 1500 && s.matches >= Math.max(2, .35 * g));
+    const late = S.filter(s => item(s.item_id) && bt(s) >= 1500 && s.matches >= Math.max(2, .18 * g)).sort((a, b) => b.matches - a.matches).slice(0, 6);
+    const core = early.concat(late).sort((a, b) => bt(a) - bt(b)).slice(0, 16);
+    if (core.length < 4) return;
+    let w = 0, sp = 0, v = 0, sup = 0; core.forEach(s => { const I = item(s.item_id), k = (I.p || 800) * s.matches / g; if (I.s === 'weapon') w += k; else if (I.s === 'spirit') sp += k; else v += k; if (SUP.has(I.n)) sup++; });
+    const top = Math.max(w, sp, v), cat = sup >= 2 ? 'sup' : top < .45 * (w + sp + v) ? 'mix' : top === w ? 'gun' : top === sp ? 'spirit' : 'tank';
+    const ph = [['Сначала', 0, 600], ['Середина', 600, 1500], ['Конец', 1500, 1e9]].map(([nm, a, b]) => ({nm, L: core.filter(s => (s.avg_buy_time_s || 0) >= a && (s.avg_buy_time_s || 0) < b)})).filter(x => x.L.length);
+    PBD[p.id] = {p, g, cat, ph, core};
+    put(n, '#pb-' + p.id, `<button class="q-pbb" type="button" data-pb="${p.id}" title="нажми — что в сборке"><span>Его сборка · <b>${PCAT[cat]}</b> · ${g} ${pl(g, ['игра', 'игры', 'игр'])}</span><span class="ic">${core.slice(-6).map(s => `<img src="${esc(item(s.item_id).i)}" alt="" title="${esc(item(s.item_id).n)}" loading="lazy" onerror="${noimg}">`).join('')}</span></button>`);
+  }));
+}
+function pbHTML(id) {
+  const X = PBD[id]; if (!X) return '';
+  return `<div class="q-poh"><b>${esc(X.p.name)} · ${esc(hero(X.p.hid).n)}</b><small>${PCAT[X.cat]} · что он берёт на этом герое за 90 дней · ${X.g} ${pl(X.g, ['игра', 'игры', 'игр'])}</small></div>
+    ${X.ph.map(f => `<div class="q-ph"><span>${f.nm}</span><div>${f.L.map(s => `<span class="q-pi" title="${esc(item(s.item_id).n)} · берёт в ${Math.round(100 * s.matches / X.g)}% игр · с ним ${Math.round(100 * s.wins / Math.max(1, s.matches))}% побед · в среднем на ${Math.round((s.avg_buy_time_s || 0) / 60)}-й минуте">${phIco(s.item_id)}<em>${Math.round(100 * s.matches / X.g)}%</em></span>`).join('')}</div></div>`).join('')}
+    <div class="q-pbn" id="pbn-${id}"><span class="sub">Ищу его сохранённую сборку…</span></div>
+    <p class="note" style="margin-top:8px">Под иконкой — в скольких его играх на герое есть предмет. Наведи — винрейт с ним и на какой минуте берёт.</p>`;
+}
+async function pbNamed(id) {
+  const X = PBD[id]; if (!X) return;
+  const B = await api(`analytics/hero-build-stats/${X.p.hid}?account_id=${id}&min_matches=1&min_unix_timestamp=${now() - 180 * 86400 - (now() % 86400)}`).catch(() => []);
+  const el = $('#pbn-' + id); if (!el) return;
+  const b = (B || []).slice().sort((a, c) => c.matches - a.matches)[0];
+  if (!b) { el.innerHTML = '<span class="sub">Сохранённой сборки в игре нет — собирает сам.</span>'; return; }
+  const r = await api(`builds?build_id=${b.hero_build_id}&only_latest=true`).catch(() => []); const el2 = $('#pbn-' + id); if (!el2) return;
+  const hb = r && r[0] && r[0].hero_build;
+  el2.innerHTML = hb ? `<span class="sub">Начинает матчи со сборкой <b style="color:var(--tx)">«${esc(hb.name || 'без названия')}»</b> — ${b.matches} ${pl(b.matches, ['раз', 'раза', 'раз'])}, ${Math.round(100 * b.wins / Math.max(1, b.matches))}% побед · <a class="lnk" href="#h/${X.p.hid}" >сборки героя ›</a></span>` : '<span class="sub">Сохранённая сборка не нашлась.</span>';
+}
+// стандартная сборка на героя: что чаще берут победители — сначала, потом, в конце
+async function heroPhaseBuild(n, hid) {
+  const el = $('#lvbld'); if (!el) return;
+  const RL = await restlessItems(hid).catch(() => null); if (n !== VQ) return;
+  put(n, '#lvbld', RL ? `${RL.ph.map(p => `<div class="q-ph"><span>${p.n}<br><small style="text-transform:none;letter-spacing:0">${p.h}</small></span><div>${p.L.slice(0, 5).map(x => `<span class="q-pi" title="${esc(item(x.id).n)} · ${x.d >= 0 ? '+' : ''}${f1(x.d)}% к победам героя · ${nf(x.m)} матчей">${phIco(x.id)}<em>${x.d >= 0 ? '+' : ''}${Math.round(x.d)}</em></span>`).join('')}</div></div>`).join('')}<p class="note">Что чаще берут победители на ${esc(hero(hid).n)} · ${esc(RL.rank)} · 30 дней. Полностью — <a class="lnk" href="#h/${hid}">на странице героя ›</a></p>` : '<div class="empty">Мало данных для сборки.</div>');
 }
 async function vsAll(n, en, myHero) {
   const base = await api(`analytics/item-stats?hero_id=${myHero}&${fq()}`).catch(() => []); if (n !== VQ) return;
@@ -2891,6 +3017,10 @@ async function viewLive(arg) {
   };
   $('#lvd').onclick = e => { const b = e.target.closest('[data-id]'); if (b) go(b.dataset.id); };
   const mb = $('#lvme'); if (mb) mb.onclick = () => go(ME.id);
+  $('#lvb').onclick = e => {
+    const pr = e.target.closest('[data-per]'); if (pr) { const p = LVL.find(x => String(x.id) === pr.dataset.acc); if (p) qPop(pr, perHTML(p, pr.dataset.per)); return; }
+    const pb = e.target.closest('[data-pb]'); if (pb) { qPop(pb, pbHTML(pb.dataset.pb)); pbNamed(pb.dataset.pb); }
+  };
   if (!isM && !aid) { put(n, '#lvb', '<div class="empty">Впиши ник или ID — найду его матч. Или открой любой из топ-матчей ниже.</div>'); liveList(n); return; }
   try {
     if (isM) {
