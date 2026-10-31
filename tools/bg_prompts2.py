@@ -5,7 +5,7 @@
 # Правила промтов: одна главная вещь крупно и резко, 2–4 предмета рядом, фон размыт; без людей, рук, лиц, надписей, логотипов,
 # марок и кадров из фильма; без дыма и тумана (пар, пыль, марево — можно); деньги — только мелко, свёрнутыми или в тени;
 # в оживлении двигается только перечисленное, у каждого движения видимая причина (ветер, вода, огонь, экран), конец = начало.
-import json, os
+import json, os, re
 
 PHOTO_TAIL = ('Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, '
               'real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background '
@@ -43,10 +43,7 @@ HERO_EXT = ('Edit this image of {name} from the game Deadlock. Keep the sharp pa
             'complete 16:9 illustration. No new characters, creatures, objects, text or logos. Keep the 16:9 format.')
 HERO2 = (HERO.replace('It is a finished 16:9 frame: the painted artwork in the middle and a soft blurred fill at the sides.', 'It is a finished 16:9 painted frame.')
          .replace('; the blurred sides stay soft and still', '; the background stays in place'))
-HERO_NEG = ('Avoid: turning to the camera, front view, camera pan up or down, tilt, crop, new pose, character redraw, re-centering, zoom, camera movement, '
-            'cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, '
-            'new animals, teleporting, a creature popping up in another place, a creature or object disappearing, two creatures merging into one, creatures multiplying, a creature turning into a picture, '
-            'text, watermark, flicker, glitch, blur, sudden movement, reversed motion, a held object turning into another object or into a creature, a small creature flying away or leaving its place, metal objects bending or swaying like cloth, the background getting brighter or repainted, colors changing, clouds turning white, a sad face, tails swinging, lifting or curling wildly, a character talking, mouth moving, a character turning to talk to a pet, a ghost or spirit turning into a solid real animal, a bird perching on a shoulder, magic swirls, glowing energy rings, portals, sparks appearing from nothing, light changing color, a belly or body swelling or inflating, breathing that makes the body grow, the face expression changing, a happy or laughing face when it is not drawn so, a held object falling or slipping out of the hand, a pillow falling, a bird or owl opening its beak, a creature freezing in the middle of a motion.')
+HERO_NEG = ('Avoid: turning to the camera, front view, camera pan up or down, tilt, crop, new pose, character redraw, re-centering, zoom, camera movement, cuts, morphing, warping, face change, extra limbs, extra fingers, melting, style change, 3D render look, new objects, new animals, teleporting, a creature popping up in another place, a creature or object disappearing, two creatures merging into one, creatures multiplying, a creature turning into a picture, text, watermark, flicker, glitch, blur, sudden movement, reversed motion, metal objects bending or swaying like cloth, the background getting brighter or repainted, colors changing, clouds turning white, a sad face, tails swinging, lifting or curling wildly, a character talking, mouth moving, magic swirls, glowing energy rings, portals, sparks appearing from nothing, light changing color, the face expression changing, a happy or laughing face when it is not drawn so, a creature freezing in the middle of a motion.')
 
 def photo(t, tail=PHOTO_TAIL): return t.strip() + ' ' + tail
 # 25.10, Андрей: «с фото ебал — давай без»: один текст сразу в видео (Veo / Flow «Текст в видео»), без шага с картинкой
@@ -294,7 +291,7 @@ IDLE = ('the chest rises and falls clearly with slow breathing, the shoulders sh
         'slightly, the eyes glance a little to the side and back, the head makes one small nod or tilt and returns, hair and clothing '
         'move a little, natural blinking.')
 IDLE_FIX = {
- 'rat-king': 'slow calm breathing shows only in the shoulders and the cape on them, which rise a little and settle back about once every three seconds, '
+ 'rat-king': 'the cape on the shoulders lifts slightly in a draft and settles, '
              'the chest and belly keep their exact shape and size, the nose sniffs, the whiskers tremble, '
              'natural slow blinking, the head stays where it is, the face keeps exactly its drawn expression.',
 }
@@ -361,28 +358,27 @@ ALT = {
 # даже с «never» они подталкивают модель именно к этому.
 MAIN = {
  'rat-king': ('Animate this painting for 8 seconds. Locked camera: no zoom, no pan, no cuts. Keep the picture exactly as painted: the same characters, '
-              'poses, faces, colors and painted style, at the same sizes and places. The big crowned rat on the pipe throne is alive like a resting '
-              'king: he breathes slowly, and the breath shows only in his shoulders and the cape on them, which rise a little and settle back; his chest '
-              'and belly keep their exact shape, his face keeps the same grin, he never talks and never turns his head. The amulet on his neck stays '
-              'hanging on his neck exactly as drawn the whole clip. His nose sniffs, his whiskers tremble, his ears twitch, he blinks once around '
-              'second 3. Around second 4 the long fingers of his right hand drum on the pipe once, one finger after another, and lie still. The gold '
-              'ring on his left hand catches a glint, the claws of his feet tighten on the pipes once and relax, his red cape sways slowly in a draft '
-              'and swings back, the light on his crown flickers like a candle. Around second 2 and again around second 5 the small white-faced rat '
-              'behind the pizza slice rises a little, sniffs and sinks back. The light brown rat on his back stays in place and only twitches its ears '
-              'and nose. The tip of the long tail on the left pipe sways a little around second 4 and again around second 6. All the other small rats '
-              'stay exactly where they are and only twitch their noses; the number of rats never changes. Nothing new appears, nothing disappears. From '
-              'second 7 to the end everything settles exactly as in the first frame, so the video loops seamlessly.'),
+              'poses, faces, colors and painted style, at the same sizes and places. The big crowned rat on the pipe throne sits perfectly still, like a carved '
+              'statue of a king: his body, chest, belly, face and grin stay exactly as drawn for the whole clip, and his head stays where it is. Only these '
+              'small parts of him move, one at a time: his nose sniffs, his whiskers tremble, his ears twitch, he blinks once around second 3, and around '
+              'second 4 the long fingers of his right hand tap the pipe once, one finger after another, and lie still. The amulet hangs on his neck exactly '
+              'as drawn. The gold ring on his left hand catches a glint. The red cape on his shoulders lifts slightly in a draft around second 2 and again '
+              'around second 6, and settles. The light on his crown flickers like a candle. The small white-faced rat behind the pizza slice rises a little, '
+              'sniffs and sinks back, around second 2 and again around second 5. The light brown rat on his back stays in its place and only twitches its '
+              'ears and nose. The tip of the long tail on the left pipe sways a little around second 4 and settles. All the other small rats stay exactly '
+              'where they are and only twitch their noses; the number of rats stays the same. From second 7 to the end everything settles exactly as in '
+              'the first frame, so the video loops seamlessly.'),
  'rem': ('Animate this painting for 8 seconds. Locked camera: no zoom, no pan, no cuts. Keep the picture exactly as painted: the same characters, '
-         'poses, faces, colors and painted style, at the same sizes and places. The dark-blue cloth at the very top edge of the picture, which he holds '
-         'with his raised arm, is a still part of the picture: it stays exactly as drawn at the top edge the whole clip. He keeps holding it with the '
-         'same raised arm and only sways a few pixels below it, slowly, like a pendulum. The candle on the small dish in his other hand burns with a '
-         'steady teal-green flame that flickers gently; its teal-green glow on his hand and face stays the same brightness. He blinks his big round '
-         'white eyes once around second 3. Around second 5 his long tail with the furry tip swings slowly and returns. The tip of his nightcap and his '
-         'pajama sleeve sway a little. The little dark imp with the pointed nightcap at his right side stays at exactly that spot and the same size '
-         'the whole clip: it only blinks its round eyes around second 2 and wiggles its tiny feet around second 6. The two small glowing eyes at the '
-         'lower left blink once. The teal sparks twinkle in place, the dark clouds at the bottom drift slowly in place, the moon and the city stay '
-         'still. Nothing new appears, nothing disappears. From second 7 to the end everything settles exactly as in the first frame, so the video '
-         'loops seamlessly.'),
+         'poses, faces, colors and painted style, at the same sizes and places. He hangs below a big dark-blue pillow that he holds above his head '
+         'with his raised arm. The pillow stays exactly where it is drawn at the top of the picture, the same shape and size, and his raised hand '
+         'stays on it for the whole clip. Below it his body sways a few pixels to the side and back, slowly, like a pendulum. The candle on the small '
+         'dish in his other hand burns with a steady teal-green flame that flickers gently; its glow on his hand and face keeps the same brightness. '
+         'He blinks his big round white eyes once around second 3. Around second 5 his long tail with the furry tip swings a little and returns. '
+         'The tip of his nightcap and his pajama sleeve stir a little. The little dark imp with the pointed nightcap stays at his right side, at '
+         'exactly that spot and the same size, for the whole clip: it only blinks its round eyes around second 2 and wiggles its tiny feet around '
+         'second 6. The two small glowing eyes at the lower left blink once. The teal sparks twinkle in place, the dark clouds at the bottom drift '
+         'slowly in place, the moon and the city stay still. From second 7 to the end everything settles exactly as in the first frame, so the '
+         'video loops seamlessly.'),
  'doorman': ('Animate this painting for 8 seconds. Locked camera: no zoom, no pan, no cuts. Keep the picture exactly as painted: the same character, '
              'pose, face, colors and painted style, at the same size and place. He keeps his leaping pose the whole clip; he does not land and does '
              'not turn. His wine-red uniform and dark trousers stay exactly as drawn. In his left gloved hand at the upper left he holds a ring of old '
@@ -390,24 +386,43 @@ MAIN = {
              'whole clip. Only the keys on the ring swing a little and settle, around second 2 and again around second 5. Around second 3 he blinks '
              'once; his sly half-smile stays the same. Around second 4 the fingers of his raised right hand flex a little once. Light glints travel '
              'slowly over the brass buttons and the key-shaped badge on his chest. He bobs up and down a few pixels, as if floating. The yellow '
-             'background with its rays only shimmers softly. No magic, no glow, no sparks; nothing new appears, nothing disappears. From second 7 '
+             'background with its rays only shimmers softly; everything else stays as drawn. From second 7 '
              'to the end everything settles exactly as in the first frame, so the video loops seamlessly.'),
 }
 
+# 31.10, Андрей: «промты не работают — артефакты, где-то копирайт; крыса раздувается». Две общие причины: 1) у 41 из 45 героев
+# «полный» промт начинался с «image of <имя> from the game Deadlock» — на это Gemini и отказывает; 2) общий idle «грудь заметно
+# поднимается при дыхании» — дыхание модель рисует раздуванием тела. Теперь имён и названия игры нет ни в одном промте,
+# а вместо дыхания — моргание, взгляд, пальцы, волосы и ткань; тело держит нарисованный размер.
+SAFE_IDLE = ('natural blinking, the eyes glance a little to the side and back, the fingers flex a little, hair and loose clothing '
+             'stir a little; the body keeps exactly its drawn size and outline, and the head stays where it is.')
 def hero_fix(hid, name, t):
     assert IDLE in t or not t.startswith('Animate'), 'шаблон HERO поменялся — поправь IDLE'
-    if hid in IDLE_FIX: t = t.replace(IDLE, IDLE_FIX[hid])
-    if hid in NONAME:
-        a, b = NONAME[hid]
-        t = t.replace(name + ' from the game Deadlock', a).replace('the ' + name, 'the character').replace('The ' + name, b).replace(name, 'the character')
+    t = t.replace(IDLE, IDLE_FIX.get(hid, SAFE_IDLE))
+    a, b = NONAME.get(hid, ('the painted character', 'The character'))
+    t = t.replace('image of ' + name + ' from the game Deadlock', 'painting').replace(name + ' from the game Deadlock', a)
+    t = re.sub(r'\bthe ' + re.escape(name) + r'\b', 'the character', t)
+    t = re.sub(r'\bThe ' + re.escape(name) + r'\b', b, t)
+    t = re.sub(r'\b' + re.escape(name) + r'\b', 'the character', t)
+    return nobreath(t)
+# дыхание в действиях героев — тоже нет: вместо него плечи чуть сдвигаются, шерсть колышется
+NOBREATH = [(', he breathes calmly,', ','), ('only calm breathing moves his shoulders a little', 'only his shoulders shift a little'),
+ ('with only small breathing on top', 'with only small idle motion on top'), ('only small breathing on top', 'only small idle motion on top'), ('like a very light breath of wind', 'like a very light wind'), ('with only small breathing', 'with only small idle motion'),
+ ('her shoulders rise once with a slow breath and fall', 'her shoulders shift once and settle'), ('her shoulders rise once with a slow breath', 'her shoulders shift once'),
+ ('he takes one slow visible breath', 'his shoulders shift once and settle'), ('takes one slow breath', 'shifts his shoulders once'),
+ ('it breathes calmly - its chest rises and falls slightly while its body keeps exactly its drawn shape and size - and', 'its body keeps exactly its drawn shape and size, and'),
+ ('the big armored creature breathes calmly and flexes', 'the big armored creature flexes'), ('it breathes calmly, its fur ripples slightly', 'its fur ripples slightly'),
+ ('the big wolf behind her breathes calmly, ripples its fur', 'the big wolf behind her ripples its fur'), ('with only calm breathing', 'with only small idle motion')]
+def nobreath(t):
+    for x, y in NOBREATH: t = t.replace(x, y)
     return t
 for hid, name, who, act in HEROES:
     ITEMS.append(dict(key=f'hero:deadlock:{hid}', kind='hero', game='deadlock', hero=hid, title=name, draft=False,
         art=f'кадр 16:9: ветка claude/hero-16x9 → heroes-16x9/{hid}.jpg (полный арт по центру, по бокам — размытое продолжение)',
         animate=hero_fix(hid, name, HERO.format(name=name, who=who, act=act)), neg=HERO_NEG,
         extend=hero_fix(hid, name, HERO_EXT.format(name=name)), animate2=hero_fix(hid, name, HERO2.format(name=name, who=who, act=act))))
-    if hid in ALT: ITEMS[-1]['animate_alt'] = ALT[hid]
-    if hid in MAIN: ITEMS[-1].update(animate=MAIN[hid], animate2=MAIN[hid]); ITEMS[-1].pop('animate_alt', None)
+    if hid in ALT: ITEMS[-1]['animate_alt'] = nobreath(ALT[hid])
+    if hid in MAIN: ITEMS[-1].update(animate=nobreath(MAIN[hid]), animate2=nobreath(MAIN[hid])); ITEMS[-1].pop('animate_alt', None)
 
 OUT = dict(v=1, updated='2026-10-27',
   how=['Без фото (25.10): поле video — один текст сразу в видео (Flow → «Текст в видео» / Veo, 9:16, 8 с). Поля photo и animate — запасной путь «фото → оживить».',
