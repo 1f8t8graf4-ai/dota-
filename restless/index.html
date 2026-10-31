@@ -6,6 +6,7 @@
 <title>Restless · Deadlock</title>
 <meta name="description" content="Restless — профиль с васянами и оценками матчей S/A/B/C/D, мета тир-лист, официальный топ, сборки с винрейтом и разбор каждого матча в Deadlock">
 <meta name="theme-color" content="#06080d">
+<script>try{var _s=localStorage.getItem('rl-skin');if(_s)document.documentElement.dataset.skin=_s}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -663,6 +664,227 @@ a.card span{display:block;color:var(--mu);font-size:13px;line-height:1.5}
   .hgc .mono small{display:block;font-size:10px}
   .hgc .tag{font-size:9.5px;padding:1px 5px}
 }
+
+/* ==== 31.10 — возвращены 10 видов сайта и карточка героя при наведении (были в 5f2e3ae, потерялись в v4) ====
+   вид — html[data-skin], выбор — Настройки → «Вид сайта», localStorage rl-skin; без вида — «Restless» (нынешний) */
+.skinpk{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:6px 0 4px}
+.skinpk button{text-align:left;padding:11px;border-radius:12px;border:1px solid var(--ln2);background:var(--s1);color:var(--tx);cursor:pointer;display:grid;gap:4px}
+.skinpk button.on{outline:2px solid var(--ac);outline-offset:1px}
+.skinpk .sw{height:30px;border-radius:7px;background:linear-gradient(90deg,#0b0d12 0 60%,#ffb03a 60% 64%,#2a2112 64%)}
+.skinpk b{font:700 14px/1.2 var(--f)}
+.skinpk span{font:500 11.5px/1.35 var(--f);color:var(--mu)}
+.setc{max-width:min(760px,94vw)}
+@media (max-width:560px){.skinpk{grid-template-columns:repeat(2,minmax(0,1fr))}.skinpk span{display:none}}
+.skinpk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.skinpk button{text-align:left;padding:14px;border-radius:14px;border:1px solid var(--ln2);background:var(--s1)}
+.skinpk button.on{outline:2px solid var(--ac)}
+.skinpk b{display:block;font:600 16px/1.1 var(--h);letter-spacing:.05em;text-transform:uppercase;margin:10px 0 4px}
+.skinpk span{font-size:12.5px;color:var(--mu)}
+.skinpk .sw{height:56px;border-radius:9px}
+.skinpk [data-s="labs"] .sw{background:linear-gradient(90deg,#0a0a0a 0 60%,#ff6a00 60% 64%,#161616 64%)}
+.skinpk [data-s="city"] .sw{background:linear-gradient(90deg,#14201b 0 60%,#d6b46a 60% 64%,#efe3c6 64%)}
+.skinpk [data-s="graphs"] .sw{background:linear-gradient(90deg,#2a3b58 0 22%,#3a5078 22% 60%,#4be3e8 60% 64%,#46608c 64%)}
+@media (max-width:640px){.skinpk{grid-template-columns:minmax(0,1fr)}.skinpk .sw{height:28px}}
+html[data-skin="labs"]{--bg:#070707;--s1:#0f0f0f;--s2:#151515;--s3:#1d1d1d;--ln:#232323;--ln2:#2e2e2e;--tx:#f5f5f5;--mu:#8a8a8a;--ac:#ff6a00;--acd:#160700;--hot:#ff2e2e;--r:4px}
+html[data-skin="labs"] .h1{font-size:44px;letter-spacing:.01em}
+html[data-skin="labs"] .tabs a{text-transform:uppercase;letter-spacing:.08em;font:700 13px/1 var(--h)}
+html[data-skin="labs"] .tabs a.on{border-bottom-width:3px}
+html[data-skin="labs"] .btn,html[data-skin="labs"] .seg,html[data-skin="labs"] .seg button,html[data-skin="labs"] .srch input,html[data-skin="labs"] .tag,html[data-skin="labs"] .hc,html[data-skin="labs"] .it{border-radius:3px}
+html[data-skin="labs"] .btn{text-transform:uppercase;letter-spacing:.06em}
+html[data-skin="labs"] .tag{background:transparent;border:1px solid currentColor;color:var(--ac)}
+html[data-skin="labs"] .tag.g{color:var(--win)}
+html[data-skin="labs"] .tag.r{color:var(--loss)}
+html[data-skin="labs"] .tag.b{color:#6fb6ff}
+html[data-skin="labs"] .tag.h{background:var(--ac);color:#000;border-color:var(--ac)}
+html[data-skin="labs"] .h2{border-left:3px solid var(--ac);padding-left:10px}
+html[data-skin="labs"] .land{background:linear-gradient(115deg,#0d0d0d 0 55%,#ff6a00 55% 55.4%,#120a04 55.4%);border-radius:4px}
+html[data-skin="labs"] .hh{border-radius:4px}
+html[data-skin="labs"] .hh .vi{box-shadow:none;border-bottom:4px solid var(--ac);border-radius:2px}
+html[data-skin="labs"] .hh .nm{font-size:clamp(46px,7vw,86px)}
+html[data-skin="city"]{--bg:#0e1512;--s1:#141e1a;--s2:#1a2722;--s3:#22332c;--ln:#2c3f37;--ln2:#3b5247;--tx:#efe3c6;--mu:#a49a80;--mu2:#7a735f;--ac:#d6b46a;--acd:#1b1406;--hot:#c8553d;--win:#8fcf8a;--loss:#e07a5f;--r:2px;
+ --h:'Cormorant SC','Cormorant Garamond',Georgia,serif;--f:'IBM Plex Sans',system-ui,sans-serif}
+html[data-skin="city"] body{background:radial-gradient(1200px 600px at 50% -10%,rgba(214,180,106,.10),transparent 70%),repeating-linear-gradient(90deg,rgba(214,180,106,.025) 0 1px,transparent 1px 64px),var(--bg)}
+html[data-skin="city"] .nav{background:rgba(14,21,18,.95);border-bottom:1px solid var(--ac);box-shadow:0 3px 0 -2px var(--ac)}
+html[data-skin="city"] .logo{font:700 28px/1 var(--h);letter-spacing:.16em}
+html[data-skin="city"] .tabs a{font:700 17px/1 var(--h);letter-spacing:.08em;text-transform:none}
+html[data-skin="city"] .tabs a.on{color:var(--ac)}
+html[data-skin="city"] .h1{font:700 44px/1 var(--h);letter-spacing:.04em;text-transform:none}
+html[data-skin="city"] .h2{font:700 21px/1 var(--h);letter-spacing:.06em;text-transform:none;justify-content:flex-start;gap:12px}
+html[data-skin="city"] .h2::before{content:"";width:22px;height:9px;background:linear-gradient(var(--ac),var(--ac)) 0 50%/100% 1px no-repeat,linear-gradient(45deg,transparent 40%,var(--ac) 40% 60%,transparent 60%) 50% 50%/9px 9px no-repeat;flex:none;align-self:center}
+html[data-skin="city"] .card{border:1px solid var(--ln2);outline:1px solid rgba(214,180,106,.18);outline-offset:3px;border-radius:2px}
+html[data-skin="city"] .btn{border-radius:0;background:var(--ac);clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%);padding:0 24px;font:700 15px/1 var(--h);letter-spacing:.08em}
+html[data-skin="city"] .btn.g{background:var(--s3);color:var(--tx);border:0}
+html[data-skin="city"] .tag{border-radius:0;background:#efe3c6;color:#2a2418;font:700 11.5px/1 var(--h);letter-spacing:.06em;text-transform:none}
+html[data-skin="city"] .tag.g{background:#cfe6c7;color:#173a17}
+html[data-skin="city"] .tag.r{background:#f0c9bd;color:#5a1d0f}
+html[data-skin="city"] .tag.b{background:#c9dbe6;color:#13324a}
+html[data-skin="city"] .tag.h{background:var(--hot);color:#fff}
+html[data-skin="city"] .seg,html[data-skin="city"] .seg button,html[data-skin="city"] .srch input,html[data-skin="city"] .hc,html[data-skin="city"] .it{border-radius:0}
+html[data-skin="city"] .land{border-radius:2px;border:1px solid var(--ac);background:radial-gradient(700px 400px at 80% 20%,rgba(214,180,106,.14),transparent 70%),linear-gradient(180deg,#16231e,#0e1512)}
+html[data-skin="city"] .land .h1{font-size:clamp(40px,5.4vw,66px)}
+html[data-skin="city"] .hh{border-radius:2px;border:1px solid var(--ac)}
+html[data-skin="city"] .hh .vi{border-radius:0;box-shadow:0 0 0 1px var(--ac),0 0 0 6px var(--bg),0 0 0 7px var(--ac)}
+html[data-skin="city"] .hh .nm{font-family:var(--h);text-transform:none;font-size:clamp(44px,6vw,74px)}
+html[data-skin="city"] .stat b,html[data-skin="city"] .hh .ss div b{color:var(--ac)}
+html[data-skin="city"] .prof .nm{font-family:var(--h);text-transform:none;font-size:34px}
+html[data-skin="graphs"]{--bg:#2a3b58;--s1:#3a4f73;--s2:#425a82;--s3:#4b6590;--ln:#4e678f;--ln2:#5a75a0;--tx:#f2f6fb;--mu:#b7c4d8;--mu2:#93a4bf;--ac:#4be3e8;--acd:#0b2a33;--hot:#ffd84b;--win:#4be3e8;--loss:#ff8fa3;--r:6px;--h:'Roboto',system-ui,sans-serif;--f:'Roboto',system-ui,sans-serif}
+html[data-skin="graphs"] .h1,html[data-skin="graphs"] .h2,html[data-skin="graphs"] .prof .nm,html[data-skin="graphs"] .hh .nm,html[data-skin="graphs"] .tabs a,html[data-skin="graphs"] .logo{text-transform:none;letter-spacing:0}
+html[data-skin="graphs"] .h1{font-weight:700}
+html[data-skin="graphs"] .h2{font-weight:700;font-size:16px;border-bottom:2px solid var(--ac);padding-bottom:8px;display:flex}
+html[data-skin="graphs"] .tag{background:transparent;border:1px solid var(--ac);color:var(--ac);border-radius:3px;text-transform:none;letter-spacing:0;font:500 12px/1 var(--f);height:24px;padding:0 9px}
+html[data-skin="graphs"] .tag.g{border-color:var(--ac);color:var(--ac)}
+html[data-skin="graphs"] .tag.r{border-color:var(--loss);color:var(--loss)}
+html[data-skin="graphs"] .tag.a,html[data-skin="graphs"] .tag.h{border-color:var(--hot);color:var(--hot);background:transparent}
+html[data-skin="graphs"] .btn{background:var(--ac);color:var(--acd);border-radius:4px}
+html[data-skin="graphs"] .card{border:0;box-shadow:0 2px 0 rgba(0,0,0,.12)}
+html[data-skin="graphs"] .mt .st{width:4px}
+html[data-skin="graphs"] .land{border:0;background:linear-gradient(90deg,rgba(42,59,88,.97) 40%,rgba(42,59,88,.55)),#2a3b58}
+@media (min-width:1100px){html[data-skin="graphs"] .nav{position:fixed;left:0;top:0;bottom:0;width:230px;border:0;background:#33476a;z-index:40}html[data-skin="graphs"] .nav .in{flex-direction:column;align-items:stretch;height:100%;gap:6px;padding:18px 0}html[data-skin="graphs"] .logo{padding:0 18px 12px;font-size:26px;color:#fff}html[data-skin="graphs"] .logo small{color:var(--ac)}html[data-skin="graphs"] .tabs{flex-direction:column;height:auto;gap:0}html[data-skin="graphs"] .tabs a{height:46px;padding:0 20px;border-bottom:0;border-left:3px solid transparent;font-size:15px;color:#dfe7f3}html[data-skin="graphs"] .tabs a.on{background:#3e5580;border-left-color:var(--ac);color:#fff}html[data-skin="graphs"] .srch{order:-1;width:auto;margin:0 14px 10px}html[data-skin="graphs"] .logo{order:-2}html[data-skin="graphs"] .nav .sp{flex:1}html[data-skin="graphs"] .me{margin:0 14px;max-width:none}html[data-skin="graphs"] .skins{margin:8px 14px 0;align-self:flex-start}html[data-skin="graphs"] .wrap,html[data-skin="graphs"] .ft{margin-left:230px;max-width:1180px}}
+html[data-skin="city"] .vd.h,html[data-skin="city"] .md{border-radius:0}
+html[data-skin="graphs"] .vd.h{background:var(--ac);color:#06201c}
+html[data-skin="graphs"]{--bg:#0a1420;--s1:#0e1b2b;--s2:#13253a;--s3:#1a2f47;--ln:#1e3450;--ln2:#2c4b6f;--mu:#8fa9c4;--mu2:#6c89a8;--us:#4da3ff;--en:#ff6a75}
+html[data-skin="graphs"] body{background:radial-gradient(1100px 480px at 72% -8%,rgba(75,227,232,.05),transparent 70%),var(--bg)}
+html[data-skin="graphs"] .nav{background:rgba(8,15,24,.97)}
+html[data-skin="graphs"] .logo{color:#fff}
+html[data-skin="graphs"] .card{background:var(--s1);border:1px solid var(--ln);box-shadow:none}
+html[data-skin="graphs"] .h2{color:#fff;font-size:15px;margin-top:30px}
+html[data-skin="graphs"] .stat b{color:#fff}
+html[data-skin="graphs"] .btn{background:var(--ac);color:#05242b}
+html[data-skin="graphs"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="graphs"] .seg{background:var(--s1);border-color:var(--ln)}
+html[data-skin="graphs"] .seg button.on{background:var(--s3);color:#fff}
+html[data-skin="graphs"] .srch input,html[data-skin="graphs"] .land input{background:#0b1624;border-color:var(--ln2)}
+html[data-skin="graphs"] .srch .dd{background:#0f2033;border-color:var(--ln2)}
+html[data-skin="graphs"] .me{background:var(--s1);border-color:var(--ln)}
+html[data-skin="graphs"] .rk{filter:drop-shadow(0 0 5px rgba(255,216,75,.28))}
+html[data-skin="graphs"] .prof .rkb b{color:var(--hot)}
+html[data-skin="graphs"] .lob tr.mine td{background:rgba(77,163,255,.09)}
+html[data-skin="graphs"] .lob tr.mine td:first-child{box-shadow:inset 3px 0 0 var(--us)}
+html[data-skin="graphs"] .lob tr.thr td{background:rgba(255,216,75,.07)}
+html[data-skin="graphs"] .lob tr.thr td:first-child{box-shadow:inset 3px 0 0 var(--hot)}
+html[data-skin="graphs"] .lob th{color:var(--mu2)}
+html[data-skin="graphs"] .nms .nm.me{background:rgba(77,163,255,.09)}
+html[data-skin="graphs"] .sb tr.me3 td{background:rgba(77,163,255,.09)}
+html[data-skin="graphs"] .traj a.w{background:rgba(75,227,232,.12)}
+html[data-skin="graphs"] .traj a.l{background:rgba(255,143,163,.12)}
+html[data-skin="graphs"] .so td.un{background:#11333f;color:var(--ac)}
+html[data-skin="graphs"] .vd.a{background:transparent;border:1px solid var(--hot);color:var(--hot)}
+html[data-skin="graphs"] .land{border:1px solid var(--ln);background:radial-gradient(900px 420px at 85% 0%,rgba(75,227,232,.10),transparent 60%),linear-gradient(180deg,#102134,#0a1420)}
+html[data-skin="graphs"] .land p{color:#b9cadf}
+html[data-skin="graphs"] .hh{background:#0c1a2b}
+html[data-skin="graphs"] .hh::after{background:linear-gradient(90deg,rgba(10,20,32,.96),rgba(10,20,32,.6) 60%,rgba(10,20,32,.25)),linear-gradient(0deg,rgba(10,20,32,.88),transparent 60%)}
+html[data-skin="graphs"] .md{background:var(--acd);color:var(--ac)}
+html[data-skin="graphs"] .it{background:var(--s2);border-color:var(--ln)}
+html[data-skin="graphs"] .cr.fl{animation-name:flg}
+@media (min-width:1100px){html[data-skin="graphs"] .nav{background:#0c1725;border-right:1px solid var(--ln)}html[data-skin="graphs"] .tabs a{color:#a7bcd4}html[data-skin="graphs"] .tabs a:hover{background:#10263d;color:#fff}html[data-skin="graphs"] .tabs a.on{background:#15304d;border-left-color:var(--ac);color:#fff}html[data-skin="graphs"] .me{background:var(--s1)}}
+.skinpk{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+@media (max-width:640px){.skinpk{grid-template-columns:repeat(2,minmax(0,1fr))}.skinpk b{font-size:13px}.skinpk span{font-size:11px}}
+.skinpk [data-s="inferno"] .sw{background:linear-gradient(90deg,#140e08 0 60%,#ff7a1a 60% 64%,#3a1f0c 64%)}
+.skinpk [data-s="occult"] .sw{background:linear-gradient(90deg,#110b1f 0 60%,#c95cff 60% 64%,#2a1846 64%)}
+.skinpk [data-s="midnight"] .sw{background:linear-gradient(90deg,#080d18 0 60%,#3d8bff 60% 64%,#101b30 64%)}
+.skinpk [data-s="forest"] .sw{background:linear-gradient(90deg,#101b11 0 60%,#8ce04a 60% 64%,#1d3320 64%)}
+.skinpk [data-s="rivals"] .sw{background:linear-gradient(90deg,#151b31 0 60%,#ffd51e 60% 64%,#ff4655 64%)}
+.skinpk [data-s="arcade"] .sw{background:linear-gradient(90deg,#120824 0 60%,#ff2ec4 60% 64%,#00e5ff 64%)}
+.skinpk [data-s="paper"] .sw{background:linear-gradient(90deg,#f5efe2 0 60%,#b02a1e 60% 64%,#221f19 64%)}
+html[data-skin="inferno"]{--bg:#0c0906;--s1:#140e08;--s2:#1b120a;--s3:#251810;--ln:#342314;--ln2:#4e3117;--tx:#f6eee1;--mu:#a5937c;--mu2:#7a6b58;--ac:#ff7a1a;--acd:#241208;--hot:#ff3d00;--r:6px}
+html[data-skin="inferno"] body{background:radial-gradient(1000px 500px at 80% -10%,rgba(255,90,10,.09),transparent 65%),var(--bg)}
+html[data-skin="inferno"] .logo{color:#ff9a2a}
+html[data-skin="inferno"] .h2{border-left:3px solid var(--ac);padding-left:10px}
+html[data-skin="inferno"] .btn{background:linear-gradient(135deg,#ff9a2a,#ff3d00);color:#1e0d02;border-radius:4px}
+html[data-skin="inferno"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="inferno"] .tag{border-radius:3px}
+html[data-skin="inferno"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 85% 0%,rgba(255,90,10,.13),transparent 60%),linear-gradient(180deg,#170f08,#0c0906)}
+html[data-skin="inferno"] .land p{color:#c6b39c}
+html[data-skin="inferno"] .hh{background:#130d07}
+html[data-skin="inferno"] .hh::after{background:linear-gradient(90deg,rgba(12,9,6,.95),rgba(12,9,6,.55) 60%,rgba(12,9,6,.2)),linear-gradient(0deg,rgba(12,9,6,.85),transparent 60%)}
+html[data-skin="inferno"] .srch input,html[data-skin="inferno"] .land input{background:#0f0a05;border-color:var(--ln2)}
+html[data-skin="occult"]{--bg:#0a0612;--s1:#110b1f;--s2:#171030;--s3:#201743;--ln:#2c1f52;--ln2:#43306e;--tx:#efe7ff;--mu:#a792cf;--mu2:#7c6aa4;--ac:#c95cff;--acd:#220b36;--hot:#8b5cf6;--r:10px}
+html[data-skin="occult"] body{background:radial-gradient(1000px 500px at 70% -10%,rgba(201,92,255,.10),transparent 65%),var(--bg)}
+html[data-skin="occult"] .card{border-color:#3a2a63;box-shadow:0 0 26px -16px rgba(201,92,255,.55)}
+html[data-skin="occult"] .h2::before{content:"";width:8px;height:8px;background:var(--ac);transform:rotate(45deg);flex:none;align-self:center;margin-right:2px}
+html[data-skin="occult"] .btn{background:var(--ac);color:#1d0630}
+html[data-skin="occult"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="occult"] .tabs a.on{color:var(--ac)}
+html[data-skin="occult"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 82% 0%,rgba(201,92,255,.14),transparent 60%),linear-gradient(180deg,#160c2b,#0a0612)}
+html[data-skin="occult"] .land p{color:#c3b4de}
+html[data-skin="occult"] .hh{background:#130b24}
+html[data-skin="occult"] .hh::after{background:linear-gradient(90deg,rgba(10,6,18,.95),rgba(10,6,18,.55) 60%,rgba(10,6,18,.2)),linear-gradient(0deg,rgba(10,6,18,.85),transparent 60%)}
+html[data-skin="occult"] .lob tr.mine td{background:rgba(201,92,255,.08)}
+html[data-skin="occult"] .rk{filter:drop-shadow(0 0 5px rgba(201,92,255,.35))}
+html[data-skin="midnight"]{--bg:#04060c;--s1:#090d17;--s2:#0d1322;--s3:#121b30;--ln:#19233c;--ln2:#28395e;--tx:#e7edf9;--mu:#8395b3;--mu2:#5e7090;--ac:#3d8bff;--acd:#071428;--hot:#39d1ff;--r:8px}
+html[data-skin="midnight"] .logo{text-shadow:0 0 14px rgba(61,139,255,.75)}
+html[data-skin="midnight"] .h2{border-bottom:1px solid var(--ln);padding-bottom:8px}
+html[data-skin="midnight"] .btn{background:var(--ac);color:#041226;box-shadow:0 0 18px -6px rgba(61,139,255,.8)}
+html[data-skin="midnight"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="midnight"] .tabs a.on{border-bottom-color:var(--ac);box-shadow:0 12px 16px -14px rgba(61,139,255,.9)}
+html[data-skin="midnight"] .card{box-shadow:0 0 30px -22px rgba(61,139,255,.5)}
+html[data-skin="midnight"] .land{border-color:var(--ln);background:radial-gradient(900px 420px at 80% 0%,rgba(61,139,255,.12),transparent 60%),linear-gradient(180deg,#0a1120,#04060c)}
+html[data-skin="midnight"] .land p{color:#b6c4dc}
+html[data-skin="midnight"] .hh{background:#070c16}
+html[data-skin="midnight"] .hh::after{background:linear-gradient(90deg,rgba(4,6,12,.95),rgba(4,6,12,.55) 60%,rgba(4,6,12,.2)),linear-gradient(0deg,rgba(4,6,12,.85),transparent 60%)}
+html[data-skin="forest"]{--bg:#0a110b;--s1:#101b11;--s2:#152416;--s3:#1c2f1e;--ln:#274228;--ln2:#3b633c;--tx:#eef6ec;--mu:#96b491;--mu2:#6f8d6c;--ac:#8ce04a;--acd:#12290a;--hot:#d9e021;--r:12px}
+html[data-skin="forest"] .h2{border-left:3px solid var(--ac);padding-left:10px}
+html[data-skin="forest"] .btn{background:var(--ac);color:#0d1f06}
+html[data-skin="forest"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="forest"] .tag{border-radius:999px}
+html[data-skin="forest"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 85% 0%,rgba(140,224,74,.10),transparent 60%),linear-gradient(180deg,#122112,#0a110b)}
+html[data-skin="forest"] .land p{color:#bccdb6}
+html[data-skin="forest"] .hh{background:#0f1a10}
+html[data-skin="forest"] .hh::after{background:linear-gradient(90deg,rgba(10,17,11,.95),rgba(10,17,11,.55) 60%,rgba(10,17,11,.2)),linear-gradient(0deg,rgba(10,17,11,.85),transparent 60%)}
+html[data-skin="rivals"]{--bg:#0f1322;--s1:#151b31;--s2:#1b2342;--s3:#253057;--ln:#334073;--ln2:#4b5c9e;--tx:#f4f6ff;--mu:#9ba7d6;--mu2:#7280b3;--ac:#ffd51e;--acd:#2a2000;--hot:#ff4655;--r:4px}
+html[data-skin="rivals"] .h1,html[data-skin="rivals"] .h2,html[data-skin="rivals"] .hh .nm{text-shadow:2px 2px 0 rgba(0,0,0,.85)}
+html[data-skin="rivals"] .h2{border-bottom:3px solid var(--ac);padding-bottom:8px}
+html[data-skin="rivals"] .btn{background:var(--ac);color:#12100a;border:1px solid #000;box-shadow:3px 3px 0 #000}
+html[data-skin="rivals"] .btn.g{background:var(--s2);color:var(--tx);box-shadow:3px 3px 0 #000}
+html[data-skin="rivals"] .card{border:1px solid #000;box-shadow:4px 4px 0 rgba(255,213,30,.22)}
+html[data-skin="rivals"] .tag{border:1px solid #000;box-shadow:2px 2px 0 rgba(0,0,0,.7)}
+html[data-skin="rivals"] .tabs a.on{border-bottom:3px solid var(--ac)}
+html[data-skin="rivals"] .land{border:1px solid #000;box-shadow:5px 5px 0 rgba(255,70,85,.35);background:radial-gradient(700px 400px at 80% 0%,rgba(255,213,30,.12),transparent 60%),linear-gradient(160deg,#1a2244,#0f1322)}
+html[data-skin="rivals"] .land p{color:#b9c3e2}
+html[data-skin="arcade"]{--bg:#08040f;--s1:#120824;--s2:#180c33;--s3:#221149;--ln:#331a66;--ln2:#503093;--tx:#f1eaff;--mu:#a78fd8;--mu2:#7d68a9;--ac:#ff2ec4;--acd:#2e0036;--hot:#00e5ff;--r:12px}
+html[data-skin="arcade"] body{background:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 3px),radial-gradient(1000px 500px at 75% -10%,rgba(255,46,196,.08),transparent 60%),var(--bg)}
+html[data-skin="arcade"] .logo{color:#ff2ec4;text-shadow:0 0 12px rgba(255,46,196,.8),0 0 30px rgba(255,46,196,.4)}
+html[data-skin="arcade"] .h2{border-bottom:2px solid #ff2ec4;border-image:linear-gradient(90deg,#ff2ec4,#00e5ff) 1;padding-bottom:8px}
+html[data-skin="arcade"] .btn{background:var(--ac);color:#fff;box-shadow:0 0 16px -4px rgba(255,46,196,.9)}
+html[data-skin="arcade"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="arcade"] .tabs a.on{border-bottom-color:#00e5ff;box-shadow:0 12px 16px -13px rgba(0,229,255,.9)}
+html[data-skin="arcade"] .card{border-color:rgba(255,46,196,.28);box-shadow:0 0 26px -18px rgba(255,46,196,.7)}
+html[data-skin="arcade"] .land{border-color:var(--ln2);background:radial-gradient(900px 420px at 82% 0%,rgba(255,46,196,.12),transparent 60%),linear-gradient(180deg,#160a30,#08040f)}
+html[data-skin="arcade"] .land p{color:#c9b8e6}
+html[data-skin="arcade"] .hh{background:#0e0620}
+html[data-skin="arcade"] .hh::after{background:linear-gradient(90deg,rgba(8,4,15,.95),rgba(8,4,15,.55) 60%,rgba(8,4,15,.2)),linear-gradient(0deg,rgba(8,4,15,.85),transparent 60%)}
+html[data-skin="paper"]{--bg:#e9e2d2;--s1:#f5efe2;--s2:#eee7d6;--s3:#e3dac4;--ln:#d0c5aa;--ln2:#b3a687;--tx:#221f19;--mu:#6c6452;--mu2:#93896f;--ac:#b02a1e;--acd:#f6e3df;--hot:#1f4fa3;--win:#2e7d32;--loss:#c62828;--r:2px;--h:'Times New Roman',Georgia,serif;color-scheme:light}
+html[data-skin="paper"] body{background:repeating-linear-gradient(0deg,rgba(34,31,25,.022) 0 1px,transparent 1px 26px),var(--bg)}
+html[data-skin="paper"] .nav{background:rgba(245,239,226,.95);border-bottom:3px double var(--tx)}
+html[data-skin="paper"] .tabs a{color:#4c463a}
+html[data-skin="paper"] .tabs a:hover{color:var(--tx)}
+html[data-skin="paper"] .tabs a.on{color:var(--tx)}
+html[data-skin="paper"] .logo{color:var(--ac)}
+html[data-skin="paper"] .h2{border-bottom:2px solid var(--tx);padding-bottom:8px}
+html[data-skin="paper"] .card{border:1px solid #b8ac8e;box-shadow:0 2px 6px rgba(34,31,25,.08)}
+html[data-skin="paper"] .btn{background:var(--ac);color:#f5efe2;border-radius:2px;letter-spacing:.05em;text-transform:uppercase;font-size:13px}
+html[data-skin="paper"] .btn.g{background:var(--s2);color:var(--tx);border:1px solid var(--ln2)}
+html[data-skin="paper"] .tag{background:transparent;border:1px solid currentColor;color:#4c463a}
+html[data-skin="paper"] .tag.g{color:#2e7d32}
+html[data-skin="paper"] .tag.r{color:#c62828}
+html[data-skin="paper"] .tag.h{background:var(--ac);border-color:var(--ac);color:#f5efe2}
+html[data-skin="paper"] .land{border:1px solid var(--tx);background:radial-gradient(700px 380px at 85% 0%,rgba(176,42,30,.06),transparent 60%),linear-gradient(180deg,#f2ecdd,#e7dfcb)}
+html[data-skin="paper"] .land p{color:#4c463a}
+html[data-skin="paper"] .land input,html[data-skin="paper"] .srch input,html[data-skin="paper"] .srch .dd{background:#fbf7ec;border-color:var(--ln2)}
+html[data-skin="paper"] .hh{background:#eee7d6}
+html[data-skin="paper"] .hh::after{background:linear-gradient(90deg,rgba(238,231,214,.96),rgba(238,231,214,.55) 60%,rgba(238,231,214,.2)),linear-gradient(0deg,rgba(238,231,214,.85),transparent 60%)}
+html[data-skin="paper"] .me{background:var(--s1)}
+html[data-skin="paper"] .hln{background:rgba(34,31,25,.05);border-color:var(--ln2)}
+html[data-skin="paper"] .hln .pl{color:#f5efe2}
+html[data-skin="paper"] .hh .vi{box-shadow:0 0 0 2px var(--hc,var(--ac))}
+#hcard{position:fixed;z-index:55;width:176px;pointer-events:none;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .16s ease,transform .16s ease;filter:drop-shadow(0 16px 32px rgba(0,0,0,.6))}
+#hcard.on{opacity:1;transform:none}
+#hcard .sn{width:100%}
+#hcard .hcc{margin-top:8px;background:rgba(8,8,12,.9);border:1px solid var(--ln2);border-radius:10px;padding:7px 9px;font-size:11px;line-height:1.35;color:var(--mu);text-align:center}
+#hcard .hcc b{display:block;font:700 12.5px/1.2 var(--h);letter-spacing:.04em;text-transform:uppercase;color:var(--tx);margin-bottom:2px}
+html[data-skin="paper"] #hcard .hcc{background:rgba(245,239,226,.94);color:#4c463a}
+html[data-skin="paper"] #hcard .hcc b{color:#221f19}
+@keyframes flg{0%,40%{background:rgba(75,227,232,.13)}100%{background:transparent}}
 </style>
 </head>
 <body>
@@ -782,7 +1004,7 @@ async function api(p) {
 }
 const TYPE_RU = {marksman: 'Стрелок', brawler: 'Боец', mystic: 'Мистик', assassin: 'Убийца'};
 const hero = id => D.heroes[id] || {n: 'Герой #' + id, i: '', c: '', ab: []};
-const heroImg = (id, cls = '') => `<img class="hi ${cls}" src="${esc(hero(id).i)}" alt="${esc(hero(id).n)}" title="${esc(hero(id).n)}" loading="lazy" onerror="${noimg}">`;
+const heroImg = (id, cls = '') => `<img class="hi ${cls}" data-h="${id}" src="${esc(hero(id).i)}" alt="${esc(hero(id).n)}" title="${esc(hero(id).n)}" loading="lazy" onerror="${noimg}">`;
 const item = id => D.items[id];
 const itImg = id => `<img src="${esc((item(id) || {}).i)}" alt="" loading="lazy" onerror="${noimg}">`;
 function rankOf(badge) {
@@ -1646,7 +1868,7 @@ async function exampleTop() {
 }
 // лицо ПЕРСОНАЖА с эмоцией, как в официальном ДД: победа — герой радуется, поражение — грустит
 function heroFace(id, w) {
-  return `<span class="hf ${w ? 'w' : 'l'}" title="${esc(hero(id).n)} ${w ? 'радуется победе' : 'грустит после поражения'}"><img src="${esc(hero(id).i)}" alt="" loading="lazy" onerror="${noimg}"><svg viewBox="0 0 44 44" aria-hidden="true">${w
+  return `<span class="hf ${w ? 'w' : 'l'}" data-h="${id}" title="${esc(hero(id).n)} ${w ? 'радуется победе' : 'грустит после поражения'}"><img src="${esc(hero(id).i)}" alt="" loading="lazy" onerror="${noimg}"><svg viewBox="0 0 44 44" aria-hidden="true">${w
     ? '<path d="M11.5 19.5q3.7-4.4 7.4 0"/><path d="M25.1 19.5q3.7-4.4 7.4 0"/><path d="M13.5 27q8.5 8.5 17 0"/>'
     : '<circle class="e" cx="15.5" cy="19.5" r="2.5"/><circle class="e" cx="28.5" cy="19.5" r="2.5"/><path d="M10.5 14.5l6.6 3M33.5 14.5l-6.6 3"/><path d="M13.5 31.5q8.5-8 17 0"/><path class="t" d="M31.8 22.5q3 5.2 0 8.2-3-3 0-8.2z"/>'}</svg></span>`;
 }
@@ -2063,6 +2285,7 @@ async function renderMyBuilds() {
 function settingsHTML() {
   return `<div class="sno" id="setm"><div class="sno-c setc"><h2 class="h2" style="margin-top:0">Настройки</h2>
     <div class="set"><label class="sw2"><input type="checkbox" id="autb" ${autoOn() ? 'checked' : ''}><span></span></label><div><b>Автоподбор билдов</b><small>в профиле у твоих героев сами появляются два билда с лучшим винрейтом — «Оружие» и «Дух». Каждый раз, когда открываешь профиль, берём свежие цифры.</small></div></div>
+    <div class="set" style="display:block"><b>Вид сайта</b><small>10 вариантов на выбор — нажми, сайт сразу перекрасится. Запоминается на этом устройстве.</small>${skinPickHTML()}</div>
     <p class="note">Билды и винрейты — открытые данные api.deadlock-api.com за последние 60 дней. «Про» — сборки, которыми играют Ascendant и выше.</p>
     <div class="row" style="gap:8px;margin-top:10px"><button class="btn" data-x>Готово</button></div></div></div>`;
 }
@@ -2077,6 +2300,74 @@ function settingsOpen() {
   addEventListener('keydown', kd);
 }
 $('#stg').onclick = settingsOpen;
+
+// ---------- 10 видов сайта (возвращены 31.10; '' — нынешний «Restless») ----------
+const SKINS = [
+  ['', 'Restless', 'Нынешний: тёмный амбер, по умолчанию'],
+  ['graphs', 'Графики', 'Как League of Graphs: глубокий синий, бирюза, золото рангов'],
+  ['labs', 'Labs', 'Чёрный и оранжевый, всё строго — как у Deadlock Labs'],
+  ['city', 'Город', 'Как меню самой игры: латунь, кремовый, рамки ар-деко'],
+  ['inferno', 'Инферно', 'Уголь и огонь: жжёный чёрный, раскалённый оранжевый'],
+  ['occult', 'Оккульт', 'Мистика: ночь, фиалка и магента, светящиеся рамки'],
+  ['midnight', 'Полночь', 'Чёрный лёд и электрик-синий, неон на линиях'],
+  ['forest', 'Джунгли', 'Тёмная зелень и салатовый акцент, спокойный'],
+  ['rivals', 'Ривалс', 'Комикс: жирные рамки, жёлтый, жёсткие тени'],
+  ['arcade', 'Аркада', 'Ретро-неон: магента и циан, VHS-полосы'],
+  ['paper', 'Газета', '1930-е: бумага, чернила, красный штамп — светлый']
+];
+const SKIN_BG = {'': '#06080d', graphs: '#0a1420', labs: '#070707', city: '#0e1512', inferno: '#0c0906', occult: '#0a0612', midnight: '#04060c', forest: '#0a110b', rivals: '#0f1322', arcade: '#08040f', paper: '#e9e2d2'};
+function skinSet(k) {
+  if (k) document.documentElement.dataset.skin = k; else delete document.documentElement.dataset.skin;
+  try { localStorage.setItem('rl-skin', k); } catch (e) {}
+  const m = $('meta[name=theme-color]'); if (m) m.content = SKIN_BG[k] || SKIN_BG[''];
+  $$('.skinpk button').forEach(b => b.classList.toggle('on', b.dataset.s === k));
+}
+function skinPickHTML() { const c = document.documentElement.dataset.skin || ''; return `<div class="skinpk">${SKINS.map(([k, n, d]) => `<button type="button" data-s="${k}" class="${k === c ? 'on' : ''}"><i class="sw" style="${k ? '' : ''}"></i><b>${n}</b><span>${d}</span></button>`).join('')}</div>`; }
+document.addEventListener('click', e => { const b = e.target.closest('.skinpk button'); if (b) skinSet(b.dataset.s); });
+{ const q = new URLSearchParams(location.search).get('skin'); if (q != null && SKINS.some(x => x[0] === q)) skinSet(q); }
+
+// ---------- карточка героя при наведении на иконку (как в Marvel Snap; на телефоне — долгое нажатие) ----------
+const HC = document.createElement('div'); HC.id = 'hcard'; HC.setAttribute('aria-hidden', 'true'); document.body.appendChild(HC);
+let HCt = 0, HCh = 0, HClp = 0, HCg = {}, HCgt = 0;
+function hcHide() { HCh = 0; clearTimeout(HCt); HC.classList.remove('on'); HC.innerHTML = ''; }
+async function hcGames() { if (!ME || Date.now() - HCgt < 300000) return; HCgt = Date.now(); HCg = {}; try { (await api('players/hero-stats?account_ids=' + ME.id)).forEach(r => HCg[r.hero_id] = r.matches_played || 0); } catch (e) {} }
+async function hcShow(id, t) {
+  if (!D.heroes[id]) return;
+  await hcGames();
+  if (HCh !== id) return;
+  const h = hero(id), n = HCg[id] || 0, L = lvOf(n);
+  HC.innerHTML = snapCard(id, n, null) + `<div class="hcc"><b>${esc(h.n)}</b>${esc(TYPE_RU[h.ty] || '')}${h.cx ? ' · сложность ' + h.cx + '/3' : ''} · ур. ${L} — ${esc(LVN[L - 1])}${n ? ` · у тебя ${nf(n)} ${pl(n, ['игра', 'игры', 'игр'])}` : ''}</div>`;
+  const r = t.getBoundingClientRect(), w = 176;
+  let x = r.right + 12; if (x + w > innerWidth - 8) x = r.left - w - 12; if (x < 8) x = Math.max(8, Math.min(innerWidth - w - 8, r.left));
+  HC.style.width = w + 'px'; HC.style.left = x + 'px'; HC.classList.add('on');
+  requestAnimationFrame(() => { HC.style.top = Math.max(8, Math.min(innerHeight - HC.offsetHeight - 8, r.top - 4)) + 'px'; });
+}
+document.addEventListener('pointerover', e => {
+  if (e.pointerType === 'touch' || e.target.closest('.sn,.sno,#hcard')) return;
+  const t = e.target.closest('[data-h]');
+  if (!t) { if (HCh) hcHide(); return; }
+  const id = +t.dataset.h; if (!D.heroes[id] || HCh === id) return;
+  clearTimeout(HCt); HCh = id; HCt = setTimeout(() => hcShow(id, t), 260);
+});
+document.addEventListener('pointermove', e => {
+  if (!HCh || !HC.classList.contains('on')) return;
+  const c = $('.sn', HC); if (!c) return;
+  const r = c.getBoundingClientRect();
+  if (e.clientX < r.left - 60 || e.clientX > r.right + 60 || e.clientY < r.top - 60 || e.clientY > r.bottom + 60) return;
+  const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+  c.style.setProperty('--rx', (-y * 14).toFixed(2) + 'deg'); c.style.setProperty('--ry', (x * 16).toFixed(2) + 'deg'); c.style.setProperty('--fx', (50 + x * 80).toFixed(1) + '%');
+});
+addEventListener('scroll', () => { if (HCh) hcHide(); }, {passive: true});
+addEventListener('blur', () => { if (HCh) hcHide(); });
+addEventListener('hashchange', () => { if (HCh) hcHide(); });
+document.addEventListener('touchstart', e => {
+  const t = e.target.closest('[data-h]');
+  if (!t || e.target.closest('.sn,.sno')) { if (HCh) hcHide(); return; }
+  const id = +t.dataset.h; if (!D.heroes[id]) return;
+  clearTimeout(HClp); HClp = setTimeout(() => { HCh = id; hcShow(id, t); }, 420);
+}, {passive: true});
+['touchend', 'touchmove', 'touchcancel'].forEach(v => document.addEventListener(v, () => clearTimeout(HClp), {passive: true}));
+
 
 // ---------- навигация v4 ----------
 function V(html) { $('#v').innerHTML = html; }
