@@ -1,4 +1,4 @@
-<title>Макеты v21</title>
+<title>Макеты v22</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@600;700&family=Unbounded:wght@700;900&family=Oswald:wght@500;700&family=Poiret+One&family=Bangers&family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=PT+Mono&family=Russo+One&display=swap">
 <style>
@@ -6249,11 +6249,124 @@ html.lite .h11 *{animation:none!important}
 .z21p .h3-w.ph:not(.z21-on) .eq i{animation-play-state:paused;transform:scaleY(.3)}
 .z21p .h3-w.ph .ff .w{transition:color .2s,opacity .2s}
 .z21p .h3-w.ph.z21-on .ff .w{opacity:.45}.z21p .h3-w.ph.z21-on .ff .w.lit{opacity:1;color:#fff}
+/* ===== v22 ===== */
+/* Versus · во весь рост */
+.v22a .y5vs-ar{left:0;right:0;top:0;bottom:0;height:auto}
+.v22a .y5vp{border-radius:0;width:50%;transition:filter .3s,transform .4s}
+.v22a .y5vp:not(.tk){filter:brightness(.62) saturate(.85)}
+.v22a .y5vp.tk{transform:scale(1.025);z-index:1}
+.v22a .y5vp .vg{background:linear-gradient(180deg,rgba(0,0,0,.45),transparent 22%,transparent 48%,rgba(0,0,0,.85) 72%)}
+.v22a .y5vs-sub{top:41%;bottom:auto;left:14px;right:14px}
+.v22a .y5vs-pn{top:auto;bottom:0;padding:18px 18px 26px;background:linear-gradient(180deg,rgba(8,9,12,0),rgba(8,9,12,.94) 14%);border-radius:22px 22px 0 0;z-index:4}
+.v22a .y5vs-pn .ck{margin-top:14px}
+.v22a .y5vp::after{border-radius:0}
+/* Versus · крупный план по очереди */
+.v22b .y5vs-ar{left:0;right:0;top:0;height:470px}
+.v22b .y5vp{transition:left .45s cubic-bezier(.2,.8,.2,1),right .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1),height .45s cubic-bezier(.2,.8,.2,1),top .45s,border-radius .45s,filter .3s}
+.v22b[data-big="l"] .y5vp.l,.v22b[data-big="r"] .y5vp.r{left:0;right:0;width:100%;height:100%;border-radius:0;z-index:1}
+.v22b[data-big="l"] .y5vp.r,.v22b[data-big="r"] .y5vp.l{top:356px;bottom:auto;width:88px;height:88px;border-radius:50%;z-index:3;box-shadow:0 0 0 3px var(--ac),0 10px 24px rgba(0,0,0,.6)}
+.v22b[data-big="l"] .y5vp.r{left:auto;right:14px}.v22b[data-big="r"] .y5vp.l{left:14px;right:auto}
+.v22b .y5vp .vg{background:linear-gradient(180deg,rgba(0,0,0,.4),transparent 25%,transparent 55%,rgba(0,0,0,.9))}
+.v22b .y5vs-sub{left:14px;right:116px;bottom:96px}
+.v22b[data-big="r"] .y5vs-sub{left:116px;right:14px}
+.v22b .y5vs-pn{top:452px;padding-top:14px;background:#0b0c0f;border-radius:20px 20px 0 0;z-index:4}
+.v22b .y5vp .dm{top:30%}
+/* Versus · диагональ */
+.v22c .y5vs-ar{left:0;right:0;top:0;bottom:0;height:auto}
+.v22c .y5vp{width:100%;border-radius:0;transition:filter .3s}
+.v22c .y5vp.l{left:0;clip-path:polygon(0 0,64% 0,36% 62%,0 62%)}
+.v22c .y5vp.r{right:0;clip-path:polygon(64% 0,100% 0,100% 62%,36% 62%)}
+.v22c .y5vp:not(.tk){filter:brightness(.6)}
+.v22c .y5vp::after{display:none}
+.v22c .y5vp.l video{object-position:22% 30%!important}
+.v22c .y5vp.r video{object-position:78% 30%!important}
+.v22c .y5vp .vg{background:linear-gradient(180deg,rgba(0,0,0,.45),transparent 25%,transparent 45%,rgba(0,0,0,.6) 62%)}
+.v22-seam{position:absolute;left:50%;top:0;height:62%;width:3px;background:linear-gradient(#FFD23F,#ff7a1a);transform:translateX(-50%) rotate(24deg);transform-origin:50% 0;left:64%;box-shadow:0 0 18px rgba(255,180,40,.7);z-index:2}
+.v22-vs{position:absolute;left:50%;top:29%;transform:translate(-50%,-50%) rotate(-8deg);font:800 46px/1 Oswald,Inter;color:#FFD23F;text-shadow:0 4px 0 #6b3c00,0 0 24px rgba(255,170,40,.6);z-index:3;letter-spacing:.02em}
+.v22c .y5vs-sub{top:auto;bottom:calc(38% + 10px)}
+.v22c .y5vs-pn{top:62%;padding-top:16px;background:#0b0c0f;z-index:4}
+.v22c .y5vp .dm{top:24%}
+/* Меню · «Сегодня» одним кружком */
+.z22m .q7-st{gap:0}
+.z22-one{position:relative;width:auto!important;padding:0 12px 0 4px!important;display:flex!important;align-items:center;gap:8px;border-radius:999px!important}
+.z22-one>span{width:34px;height:34px;display:grid;place-items:center;position:relative;z-index:1}
+.z22-one>em{font:700 12.5px/1 Inter,sans-serif;font-style:normal;color:#fff;letter-spacing:.02em}
+.z22-rg{position:absolute;left:0;top:50%;width:42px;height:42px;transform:translateY(-50%) rotate(-90deg);fill:none}
+.z22-rg circle{stroke:rgba(255,255,255,.35);stroke-width:2.6}
+.z22-rg circle.n{stroke:#FFD23F}
+/* «Что посмотреть» — список */
+.z22p{background:#0b0c0f;overflow:auto}
+.z22p-h{position:sticky;top:0;display:flex;align-items:center;gap:10px;padding:52px 14px 10px;background:linear-gradient(#0b0c0f 80%,rgba(11,12,15,0));z-index:2}
+.z22p-h b{flex:1;font:700 20px/1.1 Oswald,Inter;letter-spacing:.02em}
+.z22p-x{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08)}
+.z22p-feed{display:flex;align-items:center;gap:6px;height:34px;padding:0 13px;border-radius:999px;background:#FFD23F;color:#16110A;font-weight:700;font-size:13px}
+.z22p-feed .ic{width:14px;height:14px}
+.z22p-seg{display:flex;gap:6px;padding:0 14px 12px;overflow-x:auto}
+.z22p-seg button{flex:none;height:32px;padding:0 13px;border-radius:999px;background:rgba(255,255,255,.07);font-weight:600;font-size:13px;color:#cfc9bd}
+.z22p-seg button.on{background:#fff;color:#111}
+.z22p-l{display:grid;gap:8px;padding:0 12px 30px}
+.z22p-r{display:grid;grid-template-columns:118px minmax(0,1fr) 34px;gap:12px;align-items:center;text-align:left;padding:8px;border-radius:16px;background:rgba(255,255,255,.05)}
+.z22p-r>.img{display:block;width:118px;height:70px;border-radius:11px;background-size:cover;background-position:center}
+.z22p-r b{display:block;font-size:15px;font-weight:700}
+.z22p-r small{display:block;font-size:11.5px;color:#9c968b;margin-top:2px}
+.z22p-r em{display:block;font-style:normal;font-size:11.5px;color:#d8c48a;margin-top:5px}
+.z22p-r .go{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1)}
+.z22p-r .go .ic{width:14px;height:14px}
+/* После сцены — нажатые слова */
+.z22w{background:#0b0c0f;display:flex;flex-direction:column}
+.z22w-h{padding:58px 20px 8px}
+.z22w-h small{font:700 10.5px/1 Inter;letter-spacing:.14em;color:#FFD23F}
+.z22w-h b{display:block;font:700 23px/1.15 Oswald,Inter;margin:8px 0 6px}
+.z22w-h p{margin:0;color:#a7a196;font-size:13.5px;line-height:1.4}
+.z22w-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.z22w-all{display:flex;align-items:center;gap:9px;font-weight:700;font-size:14px;cursor:pointer}
+.z22w-all input,.z22w-r input{position:absolute;opacity:0;pointer-events:none}
+.z22w-all i,.z22w-r .cb{width:22px;height:22px;border-radius:7px;border:2px solid rgba(255,255,255,.3);display:grid;place-items:center;flex:none;transition:background .2s,border-color .2s}
+.z22w-all input:checked+i,.z22w-r input:checked+.cb{background:#FFD23F;border-color:#FFD23F}
+.z22w-all input:checked+i::after,.z22w-r input:checked+.cb::after{content:'';width:10px;height:5px;border:2.5px solid #16110A;border-top:0;border-right:0;transform:translateY(-2px) rotate(-45deg)}
+.z22w-all input:indeterminate+i{background:#FFD23F;border-color:#FFD23F}
+.z22w-all input:indeterminate+i::after{content:'';width:10px;height:2.5px;background:#16110A;border:0;transform:none}
+.z22w-n{font-size:12.5px;color:#9c968b;font-variant-numeric:tabular-nums}
+.z22w-l{flex:1;overflow:auto;padding:4px 12px}
+.z22w-r{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr) 34px;gap:12px;align-items:center;padding:11px 8px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer}
+.z22w-r b{font-size:16px;font-weight:700}
+.z22w-r em{font-style:normal;color:#FFD23F;font-size:13.5px;margin-left:8px}
+.z22w-r small{display:block;font:italic 400 12.5px/1.35 Lora,Georgia,serif;color:#9c968b;margin-top:3px}
+.z22w-r .pl{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08)}
+.z22w-r .pl .ic{width:14px;height:14px}
+.z22w-ft{padding:12px 16px 30px;display:grid;gap:6px}
+.z22w-go{height:52px;border-radius:15px;background:#FFD23F;color:#16110A;font-weight:800;font-size:16px;transition:opacity .2s}
+.z22w-go.off{background:rgba(255,255,255,.12);color:#fff}
+.z22w-sk{height:40px;font-weight:600;color:#a7a196}
+/* правки по скринам: способность, задание и субтитр не налезают */
+.v22 .y5pk{top:98px;right:12px}
+.v22 .y5vs-pn{bottom:0;padding-bottom:18px}
+.v22 .y5vs-pn .q{font-size:16px;margin:2px 0 10px;line-height:1.3}
+.v22 .y5vs-pn .sl5{min-height:34px;padding-bottom:8px}
+.v22 .y5vs-pn .sl5 i{height:32px;min-width:40px}
+.v22 .y5vs-pn .tl5{margin-top:10px;gap:6px}
+.v22 .y5vs-pn .tl5 button{height:34px;padding:0 11px}
+.v22 .y5vs-pn .op5 button{height:46px}
+.v22 .y5vs-pn .ck{height:46px;margin-top:auto}
+.v22a .y5vs-pn{top:418px;padding-top:16px;border-radius:22px 22px 0 0;background:linear-gradient(180deg,rgba(8,9,12,.55),rgba(8,9,12,.96) 40px)}
+.v22a .y5vs-sub{top:auto;bottom:346px}
+.v22b .y5vs-ar{height:404px}
+.v22b[data-big="l"] .y5vp.r,.v22b[data-big="r"] .y5vp.l{top:300px}
+.v22b .y5vs-sub{bottom:22px}
+.v22b .y5vs-pn{top:396px}
+.v22c .y5vp.l{clip-path:polygon(0 0,64% 0,36% 56%,0 56%)}
+.v22c .y5vp.r{clip-path:polygon(64% 0,100% 0,100% 56%,36% 56%)}
+.v22-seam{height:56%;transform:translateX(-50%) rotate(27deg)}
+.v22-vs{top:26%}
+.v22c .y5vs-sub{bottom:calc(44% + 8px)}
+.v22c .y5vs-pn{top:56%}
+.z22p-r{color:#fff}
+.z22w-sk{background:none}
 </style>
 
 <div class="wrap">
  <header>
-  <h1>v21 — по твоим заметкам к v20</h1>
+  <h1>v22 — по твоим заметкам к v21</h1>
   <p class="lead"><b>Ничего не потерялось:</b> v17–v19 трогали только главную, а радар, реплики, комикс и обучение лежали в v9–v15. Теперь всё в одном месте — 12 разделов приложения, в каждом то, что ты одобрил (твои слова — в «Откуда идея»). Вернул сонар, «кто про кого», реплики как в TikTok, углублённое обучение. Новое — «Сегодня в Deadlock» (чем заняться, как в приложении). Вкладки сверху: <b>«Итог»</b> — что будет в приложении и в каком виде + что решили в каждой версии; <b>«Вопросы»</b> — все открытые вопросы, отвечай кнопкой.</p>
   <div class="rm" id="rm">На этом устройстве включено <b>«Уменьшение движения»</b> (iPhone: Настройки → Универсальный доступ → Движение). Из-за него в приложении часть анимаций выключается — возможно, поэтому их «стало мало». Здесь показываю всё как есть.</div>
   <div class="pt" id="ptab"></div>
@@ -14268,9 +14381,71 @@ V.push({g:'y21',id:'z21v',n:'Versus · герой сначала говорит'
  if(x=S('Канал и бот')){x[1]+=' Канал — про-матчи и новости; сборки и прочее — в приложение и мод.'}
  Z20H.push(['v20–v21 · 28.10',['Главная — «Меню», «Каналы — точно нет»','«Что посмотреть» — не только лентой: сначала обычный выбор, TikTok — кнопкой','сторис — одним кружком (вопрос Андрея: «норм, что все показываешь?»)','радар — сонар v9: 3D-город «супер плохо»','«Сегодня в Deadlock» → просто «На сегодня»','профиль-бенто без фона внизу, любимую фразу — послушать','Versus — 2 варианта с большим портретом + 1 мой, дальше выбор','ролики TikTok — как у Дормена, со звуком-сопровождением','нажатые слова — после сцены выбираешь, какие в повторение, «Все» одной кнопкой','перевод реплики новичкам — никому; тема — как в Telegram; фоны из кадров — потом','премиум — и супер-углублённое обучение','Restless: первым мод; в игре всё настраивается (ящики, лагеря, урна, разломы, предметы соперников по линии и по цене, свои активные предметы на персонаже)','Overwolf — для Доты потом точно; в Deadlock поверх игры рисует мод','канал — только про-матчи']])}
 
+/* ================= v22 · по твоим заметкам к v21 ================= */
+// 1–3. Versus с большим портретом: тот же бой (z21v — герой сначала говорит), другая раскладка арены
+function vs22(R,ctx,k){y5Vs(R,ctx);R.classList.add('v22',k);
+ // «крупный план»: большой — тот, кто сейчас говорит; держим последнего говорившего
+ if(k==='v22b'){R.dataset.big='l';const tick=()=>{if(!R.isConnected)return;const t=$('.y5vp.tk',R);if(t)R.dataset.big=t.classList.contains('l')?'l':'r';ctx.t(tick,180)};tick()}
+ if(k==='v22c'){const a=$('.y5vs-ar',R);if(a&&!$('.v22-seam',a))a.insertAdjacentHTML('beforeend','<i class="v22-seam"></i><b class="v22-vs">VS</b>')}}
+const V22I={v22a:'Оба героя во весь рост, по половине экрана — как в бою в приложении (13.9.65). Задание — шторкой снизу поверх ног, субтитр — посередине. Говорит — светлее и ближе, молчит — в тени.',
+ v22b:'Крупный план по очереди: кто говорит — тот на весь экран; второй — кружком в углу и ждёт. Ответил — герой сменился. Как в катсценах файтингов: лицо видно целиком, ничего не обрезано.',
+ v22c:'Мой вариант — экран «VS» как в файтинге: экран режет диагональ, герои на всю высоту, каждый в своём треугольнике, на шве — VS. Попал — шов вспыхивает цветом твоего героя.'};
+[['v22a','Versus · во весь рост'],['v22b','Versus · крупный план по очереди'],['v22c','Versus · диагональ, как файтинг (мой)']].forEach(([id,n])=>V.push({g:'y22',id:'z22'+id.slice(3),n,
+ idea:V22I[id],moves:['герой сначала говорит, потом задание (как в v21)','урон — цифра над героем, полоска наверху','остальное — как в «Versus · герой сначала говорит»'],
+ from:'Ты к v21: «Versus — 2 варианта с большим портретом + 1 свой, сравним и определимся, заебался».',
+ minus:'Видео героев — твои петли (Венатор, Крыса). Раунды и подсчёт очков те же, что в приложении 13.9.75.',
+ mount(R,ctx){vs22(R,ctx,id)}}));
+
+// 4. Меню: сторис одним кружком «Сегодня» + «Что посмотреть» — сначала обычный выбор, лента кнопкой
+const LV22=['','Начинающий','Базовый','Средний','Выше среднего','Продвинутый'];
+const sc22Min=s=>Math.max(1,Math.round(s.eps.reduce((a,e)=>a+parseInt(e[1]),0)/60)),sc22Ph=s=>s.eps.reduce((a,e)=>a+(+e[2]||0),0);
+function z22Pick(R,ctx,from){g11Over(R,ctx,(pv,cc,cl)=>{pv.classList.add('z22p');
+  pv.innerHTML=`${SB(0)}<div class="z22p-h"><button class="z22p-x" aria-label="Назад">${ic('back')}</button><b>Что посмотреть</b><button class="z22p-feed">${ic('play')}Лентой</button></div>
+   <div class="z22p-seg">${['Все','Фильмы','Сериалы','Интервью'].map((n,i)=>`<button class="${i?'':'on'}" data-c="${i}">${n}</button>`).join('')}</div>
+   <div class="z22p-l">${SC4.map((s,j)=>`<button class="z22p-r" data-j="${j}"><i class="img" style="background-image:url(${IMG[s.img]})"></i><span><b>${s.t}</b><small>${s.yr}</small><em>${LV22[s.lv]||''} · ≈ ${sc22Min(s)} мин · ${sc22Ph(s)} фраз</em></span><i class="go">${ic('play')}</i></button>`).join('')}</div>`;
+  cc.on($('.z22p-x',pv),'click',cl);
+  cc.on($('.z22p-feed',pv),'click',e=>w4Feed(R,ctx,0,e.currentTarget));
+  cc.on($('.z22p-l',pv),'click',e=>{const b=e.target.closest('.z22p-r');if(b)w4Feed(R,ctx,+b.dataset.j,b)});
+  cc.on($('.z22p-seg',pv),'click',e=>{const b=e.target.closest('button');if(!b)return;$$('.z22p-seg button',pv).forEach(x=>x.classList.toggle('on',x===b));toast(R,'В макете все сцены в одном списке — в приложении фильтр по разделам')});
+  $$('.z22p-r',pv).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:80+i*45}))},null,from)}
+function z22Menu(R,ctx){q9Menu(R,ctx,'games');R.classList.add('z22m');
+ const st=$('.q7-st',R),B=$$('.q7-sti',R);B.forEach((b,i)=>{if(i)b.hidden=true});
+ if(B[0]){B[0].classList.add('z22-one');B[0].innerHTML=`<svg class="z22-rg" viewBox="0 0 44 44">${[0,1,2,3,4].map(i=>`<circle r="20" cx="22" cy="22" pathLength="100" stroke-dasharray="17 3" stroke-dashoffset="${-i*20}" class="${i<2?'n':''}"/>`).join('')}</svg><span>${ic('bell')}</span><em>Сегодня</em>`;B[0].title='Сегодня: новое, фраза дня, серия, цель'}
+ const w=$('.q7m-i[data-j="2"] small',R);if(w)w.textContent='6 фильмов и сериалов · 2 интервью';
+ ctx.on(R,'click',e=>{const b=e.target.closest('.q7m-i[data-j="2"]');if(!b)return;e.stopPropagation();z22Pick(R,ctx,b)},{capture:true})}
+V.push({g:'y22',id:'z22m',n:'Меню · «Сегодня» одним кружком, «Что посмотреть» — выбором',
+ idea:'Сверху вместо четырёх кружков — один «Сегодня»: внутри по очереди новое, фраза дня, серия и цель (то же, что было, только в одной истории). «Что посмотреть» открывает обычный список сцен — кадр, уровень словами, минуты и фразы. Лента как в TikTok — кнопкой «▶ Лентой» сверху; тап по сцене тоже открывает ленту с неё.',
+ moves:['кольцо «Сегодня» — сегментами, жёлтые — непросмотренные','список въезжает каскадом','«Лентой» — та же лента, что раньше'],
+ from:'Ты к v21: «сторис — норм, что все показываешь? мб в одно спрятать»; «Что посмотреть — сначала обычный выбор, TikTok-лента кнопкой».',
+ minus:'Фильтр «Фильмы / Сериалы / Интервью» в макете не фильтрует — в приложении будет.',
+ mount(R,ctx){z22Menu(R,ctx)}});
+
+// 5. После сцены — слова, которые ты нажимал: выбрать, какие в повторение, «Все»
+const W22=[['lifeboat','спасательная шлюпка','Get in the boat, Rose. — Садись в шлюпку, Роуз.',1],['survive','выжить','I\'ll survive. — Я выживу.',1],['promise','обещать','Promise me you\'ll survive. — Пообещай, что выживешь.',1],['hold on','держись','Hold on to me. — Держись за меня.',0],['freezing','ледяной','The water is freezing. — Вода ледяная.',0],['let go','отпустить','I\'ll never let go. — Я никогда не отпущу.',1]];
+function z22Words(R,ctx){R.className='scr z22w';
+ R.innerHTML=`${SB(0)}<div class="z22w-h"><small>ТИТАНИК · ЭПИЗОД 2 ПРОЙДЕН</small><b>Слова, которые ты нажимал</b><p>Отметь, какие учить, — они придут в повторение завтра.</p></div>
+  <div class="z22w-bar"><label class="z22w-all"><input type="checkbox" checked><i></i>Все</label><span class="z22w-n"></span></div>
+  <div class="z22w-l">${W22.map(([w,ru,ex],i)=>`<label class="z22w-r" data-i="${i}"><input type="checkbox" checked><i class="cb"></i><span><b>${w}</b><em>${ru}</em><small>${ex}</small></span><button class="pl" aria-label="Послушать">${ic('play')}</button></label>`).join('')}</div>
+  <div class="z22w-ft"><button class="z22w-go">В повторение</button><button class="z22w-sk">Не сейчас</button></div><i class="hb"></i>`;
+ const L=$$('.z22w-r input',R),A=$('.z22w-all input',R),N=$('.z22w-n',R),G=$('.z22w-go',R);
+ const upd=()=>{const n=L.filter(x=>x.checked).length;N.textContent=`${n} из ${L.length}`;A.checked=n===L.length;A.indeterminate=n>0&&n<L.length;G.textContent=n?`В повторение · ${n}`:'Ничего не учить';G.classList.toggle('off',!n)};
+ L.forEach(x=>ctx.on(x,'change',upd));ctx.on(A,'change',()=>{L.forEach(x=>x.checked=A.checked);upd()});
+ ctx.on($('.z22w-l',R),'click',e=>{const b=e.target.closest('.pl');if(!b)return;e.preventDefault();an(b,[{transform:'scale(.85)'},{transform:'none'}],{sp:SPb});toast(R,'▶ Слово — голосом героя из этой реплики')});
+ ctx.on(G,'click',()=>{const S=$$('.z22w-r',R).filter(r=>$('input',r).checked);S.forEach((r,i)=>an(r,[{opacity:1,transform:'none'},{opacity:0,transform:'translateY(30px) scale(.9)'}],{d:320,dl:i*60,e:EI,f:'forwards'}));
+  ctx.t(()=>toast(R,S.length?`${S.length} ${S.length===1?'слово':S.length<5?'слова':'слов'} в повторении — первое завтра`:'Ок, без повторения'),S.length*60+260)});
+ ctx.on($('.z22w-sk',R),'click',()=>toast(R,'Слова останутся в «Мои слова» — без повторения'));
+ $$('.z22w-r',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateX(-16px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:120+i*60}));upd()}
+V.push({g:'y22',id:'z22w',n:'После сцены · нажатые слова — что в повторение',
+ idea:'Досмотрел эпизод — список слов, которые ты нажимал. У каждого — перевод, реплика, где оно было, и ▶ — послушать. Галочки стоят у всех; сверху «Все» — снять или поставить разом. Внизу «В повторение · N» — придут завтра, по интервалам. «Не сейчас» — слова останутся в «Мои слова», без повторения.',
+ moves:['строки въезжают по одной','«В повторение» — отмеченные уезжают вниз, тост «придут завтра»','«Все» — галочка становится чертой, если отмечена часть'],
+ from:'Твой ответ на вопрос: «нажатые слова — после сцены список, выбрать какие в повторение, кнопка „Все“».',
+ minus:'Слова — из «Титаника», эпизод 2; в приложении — те, что ты нажимал в этом эпизоде.',
+ mount(R,ctx){z22Words(R,ctx)}});
+
 /* ================= каркас страницы ================= */
-const GN={y21:'По заметкам к v20',z1:'Главная · итог',z2:'Deadlock · итог',z3:'Радар · итог',z4:'Реплики героев · итог',z5:'Комикс · итог',z6:'Versus · итог',z7:'Сцена · путь · итог',z8:'Обучение · итог',z9:'Настройки и админка · итог',z10:'Канал и бот · итог',z11:'Restless · итог',z12:'Ролики TikTok · итог',h19:'Главная v19',h18:'Главная v18',h17:'Главная v17',d15:'Deadlock v15',r15:'Радар v15',k15:'Комикс v15',x15:'Restless v15',c15:'Канал v15',l15:'Обучение v15',m15:'Мод v15',s15:'Настройки v15',c14:'Канал v14',m14:'Мод в Deadlock v14',g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
-const VERS=[['v21','29.10 · по твоим заметкам к v20',[['y21','Радар, название, профиль, Versus · 4']]],
+const GN={y22:'По заметкам к v21',y21:'По заметкам к v20',z1:'Главная · итог',z2:'Deadlock · итог',z3:'Радар · итог',z4:'Реплики героев · итог',z5:'Комикс · итог',z6:'Versus · итог',z7:'Сцена · путь · итог',z8:'Обучение · итог',z9:'Настройки и админка · итог',z10:'Канал и бот · итог',z11:'Restless · итог',z12:'Ролики TikTok · итог',h19:'Главная v19',h18:'Главная v18',h17:'Главная v17',d15:'Deadlock v15',r15:'Радар v15',k15:'Комикс v15',x15:'Restless v15',c15:'Канал v15',l15:'Обучение v15',m15:'Мод v15',s15:'Настройки v15',c14:'Канал v14',m14:'Мод в Deadlock v14',g13:'Игры v13',k13:'Комикс v13',l13:'Обучение v13',s13:'Настройки v13',g12:'Игры v12',k12:'Комикс v12',l12:'Обучение v12',g11:'Игры v11',p11:'Сцена · путь v11',l11:'Обучение v11',x11:'Дизайн v11',s11:'Настройки v11',g10:'Игры v10',p10:'Сцена · путь v10',l10:'Обучение v10',x10:'Дизайн v10',h9:'Главная v9',s9:'Настройки',g8:'Игры v9',p8:'Сцена · путь v9',l8:'Обучение v9',x8:'Дизайн v8',home:'Главная v1',dd:'ДД v1',ob:'Первый запуск v1',h2:'Главная v2',d2:'ДД v2',o2:'Первый запуск v2',h4:'Главная v5',k4:'Комикс',x4:'Дизайн v4',x5:'Дизайн v5',h6:'Главная v6',x6:'Дизайн v6',h7:'Главная v7',p7:'Сцена · путь',k7:'Комикс и радар',x7:'Дизайн v7',h3:'Главная v3',d3:'ДД v3',k3:'Комикс v3',x3:'Дизайн v3'};
+const VERS=[['v22','31.10 · по твоим заметкам к v21',[['y22','Versus · 3, Меню, слова после сцены · 5']]],
+ ['v21','29.10 · по твоим заметкам к v20',[['y21','Радар, название, профиль, Versus · 4']]],
  ['v20','28.10 · всё в одном — по разделам, что ты одобрил',[['z1','Главная · 3'],['z2','Deadlock · 5'],['z3','Радар · 3'],['z4','Реплики героев · 4'],['z5','Комикс · 4'],['z6','Versus · 2'],['z7','Сцена · путь · 4'],['z8','Обучение · 8'],['z9','Настройки и админка · 2'],['z10','Канал и бот · 4'],['z11','Restless · 2'],['z12','Ролики TikTok · 2']]],
  ['v19','28.10 · игры в меню, Deadlock без комиксов',[['h19','Главная · 3'],['h18','Главная v18']]],
  ['v18','28.10 · Меню v2 и Каналы',[['h18','Главная · 2'],['h17','Главная v17']]],
@@ -14286,7 +14461,7 @@ const VERS=[['v21','29.10 · по твоим заметкам к v20',[['y21','�
  ['v5','',[['h4','Главная'],['x5','Дизайн']]],['v4','',[['x4','Дизайн']]],['v3','',[['h3','Главная'],['k3','Комикс'],['x3','Дизайн']]],
  ['v2','',[['h2','Главная'],['d2','ДД'],['o2','Запуск']]],['v1','',[['home','Главная'],['dd','ДД'],['ob','Запуск']]]];
 const VDET=(v,open)=>`<details${open?' open':''}><summary>${v[0]}${open?'<span class="nw">новое</span>':''}<small>${v[1]}</small></summary><div class="bs">${v[2].map(b=>`<button data-g="${b[0]}">${b[1]}</button>`).join('')}</div></details>`;
-$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v20 … v1 — нажми на версию, она раскроется</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
+$('#grp').innerHTML=VDET(VERS[0],1)+`<details class="olds"><summary>Прошлые версии<small>v21 … v1 — нажми на версию, она раскроется</small></summary><div class="ol">${VERS.slice(1).map(v=>VDET(v,0)).join('')}</div></details>`;
 // «Как было»: тот же экран в прошлых версиях
 const CMPV={'set-user':[['v15','s15u'],['v13','s13u'],['v11','s11u'],['v9','s9u']],'set-watch':[['v11','s11w'],['v9','s9u']],'set-adm':[['v15','s15a'],['v13','s13a'],['v11','s11a'],['v9','s9a']],
  'games-tab':[['v13','g13t'],['v12','g12t'],['v11','g11t'],['v10','g10a'],['v9','g8a']],'games-row':[['v11','g11c'],['v10','g10c'],['v9','g9c']],'hub':[['v15','d15h'],['v13','g13h'],['v12','g12h'],['v11','g11h'],['v10','g10a'],['v9','g8a']],
@@ -14296,7 +14471,7 @@ const CMPV={'set-user':[['v15','s15u'],['v13','s13u'],['v11','s11u'],['v9','s9u'
  'learn-check':[['v11','l11a'],['v10','l10a'],['v9','l8a']],'learn-after':[['v11','l11b'],['v10','l10b'],['v9','l8b']],'learn-deep':[['v15','l15d'],['v13','l13d'],['v12','l12d'],['v11','l11d'],['v10','l10d']],
  'design':[['v10','x10a'],['v10 · 2','x10b'],['v8','x8a']]};
 function cmpOf(id){for(const k in CMPV)if(CMPV[k].some(x=>x[1]===id))return CMPV[k];return null}
-let CTX=null,curV=null,curG='y21';
+let CTX=null,curV=null,curG='y22';
 const RMQ=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)')}catch(e){return null}})();
 if(RMQ&&RMQ.matches)$('#rm').classList.add('on');
 function fit(){const w=$('#devw').clientWidth;SCALE=Math.min(1,w/360);$('#dev').style.transform=`scale(${SCALE})`;$('#devw').style.height=(770*SCALE)+'px'}
@@ -14320,7 +14495,7 @@ function fbMount(v){const N=$('#notes');if(!N)return;let el=N.querySelector('.fb
   if(NDB){show('сохраняю…');NDB.doc(key).set({t:s,id:v.id,g:v.g,n:v.n,at:Date.now()}).then(()=>show('сохранено · Claude увидит')).catch(()=>show('не сохранилось в базе — осталось в браузере'))}else show('сохранено в браузере')};
  ta.oninput=()=>{clearTimeout(tm);tm=setTimeout(save,1200)};ta.onblur=save}
 function chips(){const L=V.filter(x=>x.g===curG);$('#vars').innerHTML=L.length>1?L.map((v,i)=>`<button data-id="${v.id}" class="${v===curV?'on':''}"><i>${i+1}</i>${v.n}</button>`).join(''):'';$$('#vars button').forEach(b=>b.onclick=()=>mount(V.find(x=>x.id===b.dataset.id)));$$('#grp button').forEach(b=>b.classList.toggle('on',b.dataset.g===curG));const gb=$('#grp button.on');if(gb){let d=gb.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details')}}const on=$('#vars .on');if(on&&on.scrollIntoView){const p=$('#vars');p.scrollTo({left:on.offsetLeft-p.clientWidth/2+on.clientWidth/2,behavior:'smooth'})}}
-function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd21',v.id)}catch(e){}}
+function mount(v){if(CTX)CTX.kill();try{hush();if(AUcur){AUcur.pause();AUcur=null}}catch(e){}const old=$('#scr'),R=old.cloneNode(false);old.replaceWith(R);R.removeAttribute('style');CTX=mkCtx();curV=v;curG=v.g;R._remount=()=>mount(v);try{v.mount(R,CTX)}catch(e){console.error(e);R.innerHTML=`<p style="padding:90px 24px">Ошибка: ${e.message}</p>`}notes(v);chips();try{localStorage.setItem('kd22',v.id)}catch(e){}}
 $$('#grp button').forEach(b=>b.onclick=()=>{curG=b.dataset.g;mount(V.find(x=>x.g===curG))});
 /* ===== v16: вкладка «Уже готово» — что уже в приложении (Андрей его не открывает), что ждёт «го», что ждёт выбора ===== */
 const DN_APP=[
@@ -14463,7 +14638,7 @@ $$('#ptab button').forEach(b=>b.onclick=()=>dnTab(b.dataset.p));
 addEventListener('hashchange',()=>{const p=PTH[location.hash];if(p)dnTab(p)});
 
 addEventListener('resize',fit);fit();
-let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd21'))}catch(e){}
+let start=null;try{const h=(location.hash||'').slice(1);start=V.find(x=>x.id===h)||V.find(x=>x.id===localStorage.getItem('kd22'))}catch(e){}
 mount(start||V.find(x=>x.g===curG));
 if(PTH[location.hash||''])dnTab(PTH[location.hash]);
 setTimeout(()=>{try{zqRender();$('#zq').hidden=!$('#ptab [data-p="q"]').classList.contains('on')}catch(e){}},1800);
