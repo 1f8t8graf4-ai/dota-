@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Три дизайна «Языков по кино»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="dev" id="dev">
+  <aside class="pick" id="pick" aria-label="Выбор дизайна">
+    <div class="pick-h">
+      <b>Языки по кино</b>
+      <span>тестовое приложение · три дизайна</span>
+    </div>
+    <div class="pick-l" id="pickL"></div>
+    <div class="pick-d"><b>Что взял из твоих заметок к макетам</b><ul>
+      <li>Главная — «Меню»: Продолжить, Игры, Что посмотреть</li>
+      <li>«Сегодня» — одним кружком, внутри истории по очереди</li>
+      <li>«Что посмотреть» списком, лента — кнопкой</li>
+      <li>Путь сцены у каждого фильма свой: вода, график, блокнот Мелфи, молекула</li>
+      <li>После эпизода 3 задания, потом «Хватит или ещё»</li>
+      <li>Итог: «Понимаешь %», кадр-награда, факт, нажатые слова с «Все»</li>
+      <li>Профиль-бенто — витрина для друзей, «Изменить» и «＋ Виджет»</li>
+      <li>Настройки разгружены, тема как в Telegram, игры — в самой игре</li>
+      <li>Deadlock: «На сегодня», герои, радар-сонар, Versus</li></ul></div>
+    <p class="pick-n">Всё нажимается: «Сегодня», «Смотреть», слова в субтитрах, задания, путь сцены, словарь, профиль, Deadlock, настройки. Видео настоящее в двух эпизодах: «Титаник» и «Волк», эпизод 1. Прогресс выдуманный, чтобы было что показать.</p>
+  </aside>
+  <div class="phone-wrap">
+    <div class="dstrip" id="dstrip" role="tablist" aria-label="Дизайн"></div>
+    <div class="phone">
+      <div id="app" data-d="studio" data-t="light">
+        <div class="sw" id="sw"></div>
+        <nav class="tabs" id="tabs" aria-label="Разделы"></nav>
+        <div class="ov" id="ov"></div>
+        <div class="sheet-wrap" id="sheetW"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+        <div class="toast" id="toast" role="status"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
