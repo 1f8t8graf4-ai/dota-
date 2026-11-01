@@ -7,7 +7,7 @@ git show c03b648:restless/index.html > restless/index.html
 python3 restless/src/splice.py
 ```
 
-`splice.py` вклеивает `lg.css … lg5.css` в главный `<style>` и `lg.js … lg5.js` перед `window.addEventListener('hashchange', route)`.
+`splice.py` вклеивает `lg.css … lg6.css` в главный `<style>` и `lg.js … lg6.js` перед `window.addEventListener('hashchange', route)`.
 Пути в `splice.py` — на `/home/user/work/lg/` (рабочая папка); при сборке из репо поправь `P`/пути на `restless/src/`.
 
 - `lg.js` — каркас как League of Graphs (профиль, герои, лайв, мета, лидеры, про, обновления)
@@ -15,3 +15,4 @@ python3 restless/src/splice.py
 - `lg3.js` — разбор матча по вкладкам, «Активность», подиум лидеров
 - `lg4.js` — виды сайта «Латунь» / «Сталь»
 - `lg5.js` — профиль «быстрый взгляд», «Статистика» по вкладкам, патчи по-русски (`restless/upd-ru.json`)
+- `lg6.js` — вкладка «Коуч» в разборе матча: оценка, главная ошибка с доказательствами, моменты смертей, «честно о картине», «сохрани», план и задание на 3 игры с проверкой по следующим матчам (`localStorage rl-task`). Считает по цифрам матча, без нейросети
