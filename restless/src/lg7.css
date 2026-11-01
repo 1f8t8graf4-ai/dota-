@@ -1,0 +1,55 @@
+/* ==================== 02.11 · «Коуч» подробно: текст слева, цифры справа ==================== */
+.co2 .co-ht h3{font-size:22px}
+.co2-who{margin:2px 0 0;font-size:13px;color:var(--mu)}
+.co2-g{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.co2-txt{min-width:0;padding:18px 22px 20px;border:1px solid var(--q-ln);border-radius:14px;background:var(--q-bx);display:grid;gap:14px}
+.co2-txt p{margin:0;font-size:15.5px;line-height:1.68;max-width:74ch}
+.co2-txt h4{margin:6px 0 -4px;font:800 11px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
+.co2-txt b.loss{color:var(--loss)}
+.co2-mo{list-style:none;margin:0;padding:12px 14px;display:grid;gap:10px;border-radius:12px;background:rgba(255,107,129,.06);border:1px solid rgba(255,107,129,.25);max-width:74ch}
+.co2-mo li{display:grid;grid-template-columns:50px minmax(0,1fr);gap:10px;font-size:14.5px;line-height:1.55}
+.co2-mo time{font:700 13.5px/1.55 var(--f);color:var(--q-am);font-variant-numeric:tabular-nums}
+.co2-late{color:var(--tx)}
+.co2-late:empty{display:none}
+.co2-pl{margin:0;padding-left:20px;display:grid;gap:8px;font-size:15px;line-height:1.6;max-width:74ch}
+.co2-task{display:block;margin-top:4px}
+.co2-tt{display:grid;gap:10px}
+.co2-tt>b{font:800 19px/1.25 var(--h)}
+.co2-td p{margin:0;font-size:14px;line-height:1.55}
+.co2-tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.co2-tr span{display:grid;gap:4px;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.18);font-size:13.5px;line-height:1.45}
+.co2-tr em{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mu)}
+.co2-why summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--q-am)}
+.co2-why p{margin:6px 0 0;font-size:13.5px;line-height:1.5}
+.co2-tb{display:flex;flex-wrap:wrap;gap:8px}
+.co-tb.alt{background:none;border:1px solid var(--q-ln);color:var(--tx)}
+.co2-nb{font-size:12px;color:var(--mu)}
+.co2-side{display:grid;gap:12px;min-width:0}
+.co2-sb{display:grid;gap:8px}
+.co2-dr{display:grid;grid-template-columns:30px minmax(0,1fr) 70px 34px;gap:8px;align-items:center}
+.co2-dr .q-fc,.co2-dr img{width:30px;height:30px}
+.co2-dr span{min-width:0}
+.co2-dr b{display:block;font-size:13px}
+.co2-dr small{display:block;font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.co2-dr>i{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
+.co2-dr>i>i{display:block;height:100%;background:var(--loss)}
+.co2-dr em{font-style:normal;font-size:12.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.co2-split{height:8px;border-radius:4px;background:#9b8cff;overflow:hidden;margin-top:4px}
+.co2-split i{display:block;height:100%;background:var(--q-am)}
+.co2-sl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mu)}
+.co2-fs{display:flex;flex-wrap:wrap;gap:6px}
+.co2-fs span{display:grid;justify-items:center;gap:1px;min-width:52px;padding:6px 6px 5px;border-radius:8px;border:1px solid var(--q-ln);font-size:11px;position:relative}
+.co2-fs span time{color:var(--mu);font-variant-numeric:tabular-nums}
+.co2-fs span b{font-size:13.5px;font-variant-numeric:tabular-nums}
+.co2-fs span i{position:absolute;top:-6px;right:-5px;font-style:normal;font-size:9.5px;font-weight:800;padding:1px 4px;border-radius:6px;background:var(--loss);color:#fff}
+.co2-fs span.w{border-color:var(--win);background:rgba(92,207,143,.08)}
+.co2-fs span.l{border-color:var(--loss);background:rgba(255,107,129,.08)}
+.co2-fs span.off{opacity:.45}
+.co2-lg{font-size:11.5px;line-height:1.4;color:var(--mu)}
+.co2-ln{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;text-align:center}
+.co2-ln span{display:grid;gap:2px;padding:8px 4px;border-radius:8px;background:rgba(0,0,0,.18)}
+.co2-ln small{font-size:10.5px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em}
+.co2-ln b{font-size:16px;font-variant-numeric:tabular-nums}
+.co2-ln em{font-style:normal;font-size:11.5px;color:var(--mu);font-variant-numeric:tabular-nums}
+@media (max-width:1100px){.co2-g{grid-template-columns:minmax(0,1fr)}.co2-side{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}}
+@media (max-width:700px){.co2-txt{padding:14px}.co2-txt p{font-size:15px}.co2-tr{grid-template-columns:minmax(0,1fr)}.co2-mo{padding:10px}.co2-mo li{grid-template-columns:44px minmax(0,1fr);font-size:14px}}
