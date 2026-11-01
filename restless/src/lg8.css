@@ -1,0 +1,18 @@
+/* ==================== 02.11 · вид сайта в настройках, коуч в профиле ==================== */
+.q-skin{display:none!important}
+.set.set-skin{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px}
+.set-skin .seg button{padding:7px 12px;font-size:12.5px}
+.qkc{display:grid;gap:10px;padding:14px 16px;margin:0 0 12px}
+.qkc-t{margin:0;font-size:13.5px;line-height:1.5;color:var(--mu)}
+.qkc-task{display:grid;gap:8px}
+.qkc-task>b{font:800 17px/1.25 var(--h)}
+.qkc-task .co-gs{margin:0}
+.qkc-task .co-gs span.run{border-style:solid;border-color:var(--q-am);color:var(--q-am)}
+.qkc-b{display:flex;gap:8px}
+.qkc-last{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;border:1px solid var(--q-ln);color:inherit;text-decoration:none;transition:border-color .15s,background .15s}
+.qkc-last:hover{border-color:var(--q-am);background:rgba(255,176,32,.06)}
+.qkc-last .hi{width:40px;height:40px;border-radius:8px;object-fit:cover}
+.qkc-last b{display:block;font-size:14px}
+.qkc-last small{display:block;font-size:12px;color:var(--mu)}
+.qkc-last em{font-style:normal;font-weight:800;font-size:13px;color:var(--q-am)}
+@media (max-width:700px){.qm-tabs{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}}

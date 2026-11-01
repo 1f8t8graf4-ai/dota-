@@ -227,7 +227,7 @@ function mCo() {
         <div class="co-gs">${(tr && myTask.k === tk.k ? tr : [null, null, null]).map((x, i) => `<span class="${x == null ? '' : x ? 'ok' : 'no'}">игра ${i + 1}${x == null ? '' : x ? ' ✓' : ' ✗'}</span>`).join('')}</div>
         <details class="co2-why"><summary>Почему это задание</summary><p>${whyTask}</p></details>
         <div class="co2-tb">${me ? (myTask && myTask.k === tk.k ? `<button class="co-tb on" data-cotask="off">Задание взято ✓</button>` : `<button class="co-tb" data-cotask="${esc(tk.k)}">Беру это задание</button>`) : ''}${PR.length > 1 ? `<button class="co-tb alt" data-coalt="1">Другие варианты</button>` : ''}</div>
-        <small class="co2-nb">${me ? 'Проверю в 3 следующих играх, которые ты откроешь на Restless, — итог увидишь в их разборе.' : 'Задание берёт сам игрок — в разборе своего матча.'}</small></div></div>` : ''}
+        <small class="co2-nb">${me ? 'Проверю сам по трём следующим матчам — итог увидишь в профиле, в карточке «Коуч Restless».' : 'Задание берёт сам игрок — в разборе своего матча.'}</small></div></div>` : ''}
       ${myTask && tr && (!tk || myTask.k !== tk.k) ? `<div class="co-box co-trk"><span class="co-k">Твоё задание: ${esc(myTask.n)}</span><div class="co-gs">${tr.map((x, i) => `<span class="${x == null ? '' : x ? 'ok' : 'no'}">игра ${i + 1}${x == null ? '' : x ? ' ✓' : ' ✗'}</span>`).join('')}</div></div>` : ''}
     </article><aside class="co2-side">${coSide(X, p, F, IN, FS0, LN)}</aside></div>
     <p class="co-nt">Разбор собран по данным матча: позиции всех 12 игроков по секундам, здоровье, урон и кто чем бил, души по минутам, драки и объекты; предметы — против топов на этом герое за 30 дней. Без нейросети: бесплатно и сразу.</p>
