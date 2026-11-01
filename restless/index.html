@@ -2296,6 +2296,226 @@ html[data-skin="brass"] .btn.live{background:linear-gradient(180deg,#EBC57E,#BC8
 .qkc-last small{display:block;font-size:12px;color:var(--mu)}
 .qkc-last em{font-style:normal;font-weight:800;font-size:13px;color:var(--q-am)}
 @media (max-width:700px){.qm-tabs{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}}
+
+/* ==== 02.11 · без перегруза: сводка, компактные матчи, «лицом к лицу» ==== */
+.r9-h2{display:flex;align-items:center;gap:10px;padding:12px 16px 10px}
+.r9-h2 b{font:700 15px/1.2 var(--f);color:var(--tx)}
+.r9-h2 small{color:var(--mu);font-size:12px}
+.r9-h2 a{margin-left:auto;font:600 12.5px/1 var(--f);color:var(--q-am);text-decoration:none}
+.r9-h2 .seg{margin-left:auto}
+.r9-h2 .seg + .q-sel{margin-left:0}
+
+/* сводка одной полосой */
+.r9-sum{display:grid;grid-template-columns:1.25fr 1.5fr 1fr 1.15fr 1.25fr;margin:14px 0 14px}
+.r9-sc{display:flex;align-items:center;gap:12px;padding:14px 18px;min-width:0;border-left:1px solid var(--q-ln)}
+.r9-sc:first-child{border-left:0}
+.r9-sc > span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.r9-sc small{font:600 11px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.r9-sc b{font:700 19px/1.15 var(--h);color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r9-sc em{font-style:normal;font-size:12.5px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r9-sc em a{color:var(--q-am);text-decoration:none}
+.r9-sc .rk{width:40px;height:40px;flex:none}
+.r9-sc.fm{flex-direction:column;align-items:stretch;gap:8px}
+.r9-dots{display:flex;gap:3px}
+.r9-dots i{flex:1;height:6px;border-radius:2px;background:var(--loss);opacity:.85}
+.r9-dots i.w{background:var(--win)}
+
+/* колонки: слева герои, справа коуч и матчи */
+.r9-cols{display:grid;grid-template-columns:300px minmax(0,1fr);gap:14px;align-items:start}
+.r9-side,.r9-main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.r9-hr{display:flex;align-items:center;gap:10px;padding:8px 16px;text-decoration:none;color:inherit;border-top:1px solid var(--q-ln)}
+.r9-hr:hover{background:var(--q-bh)}
+.r9-hr > span:not(.q-fc){display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.r9-hr .q-fc.s{width:36px;height:36px;border-radius:8px}
+.r9-hr small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r9-hr b{font:600 14px/1.2 var(--f);color:var(--tx)}
+.r9-hr small{font-size:12px;color:var(--mu)}
+.r9-hr em{font:700 14px/1 var(--f);font-style:normal}
+.r9-hs #qkmate{padding:0 0 4px}
+.r9-hs .qk-mt{display:flex;align-items:center;gap:10px;padding:8px 16px;border-top:1px solid var(--q-ln);text-decoration:none;color:inherit}
+.r9-hs .qk-mt img,.r9-hs .qk-mt > i{width:30px;height:30px;border-radius:50%;flex:none;background:var(--s3)}
+.r9-hs .qk-mt span{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.r9-hs .qk-mt b{font:600 13.5px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r9-hs .qk-mt small{font-size:12px;color:var(--mu)}
+.r9-hs .qk-none{padding:4px 16px 12px}
+
+/* коуч одной строкой */
+.r9-co{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--q-ln);border-radius:12px;background:linear-gradient(90deg,color-mix(in srgb,var(--q-am) 10%,var(--q-bx)),var(--q-bx) 60%);text-decoration:none;color:inherit}
+.r9-co > span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.r9-co b{font:700 14px/1.2 var(--f);color:var(--tx)}
+.r9-co small{font-size:12.5px;color:var(--mu)}
+.r9-co em{margin-left:auto;font:700 13px/1 var(--f);font-style:normal;color:var(--q-am);white-space:nowrap}
+.r9-co:hover em{text-decoration:underline}
+.r9-coi{flex:none}
+.r9-co.t .r9-cot{flex:1}
+.r9-co.t .r9-cot small{font:600 11px/1 var(--f);letter-spacing:.06em;text-transform:uppercase}
+.r9-cog{display:flex;gap:6px}
+.r9-cog i{display:grid;place-items:center;width:26px;height:26px;border-radius:7px;font:700 12px/1 var(--f);font-style:normal;color:var(--mu);background:var(--s3)}
+.r9-cog i.ok{background:color-mix(in srgb,var(--win) 22%,transparent);color:var(--win)}
+.r9-cog i.no{background:color-mix(in srgb,var(--loss) 22%,transparent);color:var(--loss)}
+.r9-cog i.run{box-shadow:inset 0 0 0 1px var(--q-am);color:var(--q-am)}
+.r9-cov{white-space:nowrap}
+.r9-cox{width:28px;height:28px;border-radius:8px;color:var(--mu);font-size:13px;flex:none}
+.r9-cox:hover{background:var(--s3);color:var(--tx)}
+
+/* матчи — одна строка */
+.r9-hi .r9-h2{border-bottom:1px solid var(--q-ln)}
+.q-gm.r9r{display:grid;grid-template-columns:120px minmax(150px,1.3fr) 118px 78px minmax(0,1fr) 36px 14px;gap:14px;align-items:center;padding:9px 16px 9px 18px;border-top:0;border-bottom:1px solid var(--q-ln);background:none;min-height:56px}
+.q-gm.r9r::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--loss)}
+.q-gm.r9r.w::before{background:var(--win)}
+.q-gm.r9r:hover{background:var(--q-bh)}
+.q-gm.r9r > span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.r9-rs b{font:700 13.5px/1.1 var(--f);color:var(--loss)}
+.r9r.w .r9-rs b{color:var(--win)}
+.r9-rs small,.r9-rh small,.r9-rk small,.r9-rn small{font-size:12px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-gm.r9r > .r9-rh{flex-direction:row;align-items:center;gap:10px}
+.r9-rh > span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.r9-rh b{font:600 14px/1.15 var(--f);color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r9-rh .q-fc.s{width:36px;height:36px;border-radius:8px}
+.r9-tg{font-weight:600}
+.r9-tg.r{color:var(--loss)}
+.r9-tg.g{color:var(--win)}
+.r9-tg.a,.r9-tg.h{color:var(--q-am)}
+.r9-tg.b{color:var(--q-sp)}
+.r9-rk b{font:700 15px/1.1 var(--h);color:var(--tx);white-space:nowrap}
+.r9-rk b i{font-style:normal;color:var(--loss)}
+.r9-rn b{font:700 14px/1.1 var(--f);color:var(--tx)}
+.q-gm.r9r > .r9-ri{flex-direction:row;gap:3px;flex-wrap:nowrap;overflow:hidden}
+.r9-ri .q-it{width:24px;height:24px;border-radius:5px}
+.r9-ri > i{width:24px;height:24px;border-radius:5px;background:var(--s2)}
+.q-gm.r9r .q-grd{grid-row:auto;grid-column:auto;width:32px;height:32px;font-size:13px}
+.r9-go{color:var(--mu);font-size:18px;justify-self:end}
+
+/* ---------- матч ---------- */
+.r9-mh .qm-pp{display:none}
+.r9-tb{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:6;margin:14px 0 2px;border-bottom:1px solid var(--q-ln);background:linear-gradient(var(--bg) 75%,transparent)}
+.r9-tb .qm-tabs{position:static;margin:0;border:0;background:none;flex:1;min-width:0}
+.r9-who{position:relative;flex:none}
+.r9-wb{display:flex;align-items:center;gap:8px;height:40px;padding:0 10px 0 5px;border:1px solid var(--q-ln);border-radius:10px;background:var(--q-bx);color:var(--tx)}
+.r9-wb:hover{border-color:var(--q-am)}
+.r9-wb span{display:flex;flex-direction:column;align-items:flex-start;gap:1px;max-width:150px}
+.r9-wb small{font:600 10px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.r9-wb b{font:600 13px/1.15 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
+.r9-wb i{font-style:normal;color:var(--mu);font-size:11px}
+.r9-wl{position:absolute;right:0;top:calc(100% + 6px);z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:4px;width:min(460px,92vw);padding:8px;border:1px solid var(--q-ln);border-radius:12px;background:var(--q-bh);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.r9-wl[hidden]{display:none}
+.r9-wl > div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.r9-wl em{font:700 11px/1 var(--f);font-style:normal;letter-spacing:.06em;text-transform:uppercase;padding:6px 8px}
+.r9-wl em.t0{color:var(--t0)}
+.r9-wl em.t1{color:var(--t1)}
+.r9-wl button{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;text-align:left;color:var(--tx);min-width:0}
+.r9-wl button:hover,.r9-wl button.on{background:var(--s3)}
+.r9-wl button span{display:flex;flex-direction:column;gap:1px;min-width:0}
+.r9-wl button b{font:600 13px/1.15 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r9-wl button small{font-size:11.5px;color:var(--mu)}
+
+.r9-ov{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(300px,1fr);gap:14px;align-items:start}
+.r9-bh{display:grid;grid-template-columns:1fr 64px 1fr;align-items:end;padding:14px 16px 10px;border-bottom:1px solid var(--q-ln)}
+.r9-bh > div{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.r9-bh .t1{justify-content:flex-end;text-align:right}
+.r9-bh b{font:700 15px/1.1 var(--h);letter-spacing:.04em;text-transform:uppercase}
+.r9-bh .t0 b{color:var(--t0)}
+.r9-bh .t1 b{color:var(--t1)}
+.r9-bh em{font:700 10.5px/1 var(--f);font-style:normal;letter-spacing:.06em;text-transform:uppercase;padding:3px 6px;border-radius:4px;background:color-mix(in srgb,var(--win) 18%,transparent);color:var(--win)}
+.r9-bh small{flex-basis:100%;font-size:12px;color:var(--mu)}
+.r9-bh > span{font:600 10.5px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu);text-align:center;padding-bottom:2px}
+.r9-br{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:center;padding:0 8px}
+.r9-br.gap{border-top:1px solid var(--q-ln)}
+.r9-ln{display:grid;place-items:center;font:700 11px/1 var(--f);color:var(--lc,var(--mu))}
+.r9-ln i{width:6px;height:6px;border-radius:50%;background:var(--lc)}
+.r9-pc{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:10px;text-align:left;color:var(--tx);min-width:0}
+.r9-pc.s1{flex-direction:row-reverse;text-align:right}
+.r9-pc:hover{background:var(--q-bh)}
+.r9-pc.on{background:var(--s3);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--q-am) 55%,transparent)}
+.r9-pc.e{visibility:hidden}
+.r9-pn{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.r9-pc.s1 .r9-pn{align-items:flex-end}
+.r9-pn b{font:600 13.5px/1.15 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.r9-pc.mine .r9-pn b{color:var(--q-am)}
+.r9-pn small{font-size:12px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.r9-pk{display:flex;flex-direction:column;gap:2px;align-items:flex-end;flex:none}
+.r9-pc.s1 .r9-pk{align-items:flex-start}
+.r9-pk b{font:700 14px/1.1 var(--h);white-space:nowrap}
+.r9-pk b i{font-style:normal;color:var(--loss)}
+.r9-pk small{font-size:12px;color:var(--mu)}
+.r9-pg{display:grid;place-items:center;width:30px;height:30px;flex:none;border-radius:50%;font:700 12.5px/1 var(--h);color:var(--gc);box-shadow:inset 0 0 0 2px var(--gc);background:color-mix(in srgb,var(--gc) 10%,transparent)}
+.r9-pg.big{width:52px;height:52px;font-size:19px;margin-left:auto}
+.r9-bf{margin:0;padding:10px 16px 12px;font-size:12px;color:var(--mu);border-top:1px solid var(--q-ln)}
+
+.r9-pl{padding:16px}
+.r9-plh{display:flex;align-items:center;gap:12px}
+.r9-plh > div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.r9-plh small{font:600 11px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.r9-plh b{font:700 18px/1.15 var(--h);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r9-plh > div > span{font-size:13px;color:var(--mu)}
+.r9-pts{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.r9-pts li{position:relative;padding-left:16px;font-size:14px;line-height:1.45;color:var(--tx)}
+.r9-pts li::before{content:"";position:absolute;left:2px;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--q-am)}
+.r9-its{display:flex;flex-wrap:wrap;gap:4px;margin:14px 0 0}
+.r9-its .q-it{width:30px;height:30px;border-radius:7px}
+.r9-pb{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.r9-pb .btn{margin:0}
+
+/* вкладка «Сборка»: только сборка; «Графики» — экономика и урон подряд */
+.qm-b .qm-kda3,.qm-b .qm-kdr,.qm-b .qm-cards{display:none}
+.r9-gr > * + *{margin-top:14px}
+#qmb ~ .note{display:none}
+
+/* телефон */
+@media (max-width:1100px){
+  .r9-sum{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .r9-sc:nth-child(4){border-left:0}
+  .r9-sc:nth-child(n+4){border-top:1px solid var(--q-ln)}
+  .r9-sc.fm{grid-column:span 2}
+  .r9-ov{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+  .r9-cols{grid-template-columns:minmax(0,1fr)}
+  .r9-side{order:2}
+  .q-gm.r9r{grid-template-columns:96px minmax(0,1fr) 92px 32px;gap:10px;padding:9px 12px 9px 14px}
+  .q-gm.r9r .r9-rn,.q-gm.r9r .r9-ri,.q-gm.r9r .r9-go{display:none}
+}
+@media (max-width:600px){
+  .r9-sum{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .r9-sc{padding:12px 14px;border-left:0}
+  .r9-sc:nth-child(even){border-left:1px solid var(--q-ln)}
+  .r9-sc:nth-child(n+2){border-top:1px solid var(--q-ln)}
+  .r9-sc.fm{grid-column:span 2;order:-1;border-top:0}
+  .r9-sc.fm ~ .r9-sc{border-left:0}
+  .r9-sum > .r9-sc:nth-child(1){border-top:1px solid var(--q-ln)}
+  .r9-sum > .r9-sc:nth-child(4){border-left:1px solid var(--q-ln)}
+  .r9-sc b{font-size:17px}
+  .r9-sc em{white-space:normal}
+  .q-chips > .tag:nth-child(n+4){display:none}
+  .r9-h2{flex-wrap:wrap}
+  .r9-hi .r9-h2 .seg{order:3;margin-left:0}
+  .r9-hi .r9-h2 .q-sel{order:4;margin-left:auto;max-width:48%}
+  .q-gm.r9r{grid-template-columns:minmax(0,1fr) 84px 30px;gap:8px}
+  .q-gm.r9r .r9-rs{display:none}
+  .r9-rh .q-fc.s{width:34px;height:34px}
+  .r9-rh b{font-size:13.5px}
+  .r9-rk b{font-size:14px}
+  .r9-co{flex-wrap:wrap;gap:8px 12px}
+  .r9-co.t .r9-cov{flex-basis:100%;order:5}
+  .r9-tb{gap:8px}
+  .r9-wb span{max-width:90px}
+  .r9-wb b{max-width:90px}
+  .r9-wb small{display:none}
+  .r9-wl{grid-template-columns:1fr;width:min(320px,92vw)}
+  .r9-bh{grid-template-columns:1fr 26px 1fr;padding:12px 10px 8px}
+  .r9-bh > span{font-size:0}
+  .r9-bh b{font-size:12.5px}
+  .r9-br{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);padding:0 4px}
+  .r9-ln b{font-size:0;width:6px;height:6px;border-radius:50%;background:var(--lc)}
+  .r9-pc{gap:6px;padding:6px 4px}
+  .r9-pc .q-fc.s{width:28px;height:28px}
+  .r9-pn small{display:none}
+  .r9-pn b{font-size:12.5px}
+  .r9-pk b{font-size:12.5px}
+  .r9-pk small{font-size:11px}
+  .r9-pg{width:24px;height:24px;font-size:10.5px}
+  .r9-pg.big{width:46px;height:46px;font-size:17px}
+}
 </style>
 </head>
 <body>
@@ -2370,7 +2590,7 @@ html[data-skin="brass"] .btn.live{background:linear-gradient(180deg,#EBC57E,#BC8
  <div class="q-nr"><a class="me hide" id="me" href="#home"></a>
  <button id="stg" class="stg" title="Настройки" aria-label="Настройки"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h0a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h0a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v0a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg></button></div>
 </div>
-<nav class="q-tabs" id="tabs" aria-label="Разделы"><a href="#home" data-t="home">Профиль</a><a href="#live" data-t="live">Лайв-матч</a><a href="#meta" data-t="meta">Мета</a><a href="#lb" data-t="lb">Лидеры</a><a href="#pro" data-t="pro">Про</a><a href="#upd" data-t="upd">Обновления</a></nav>
+<nav class="q-tabs" id="tabs" aria-label="Разделы"><a href="#home" data-t="home">Профиль</a><a href="#live" data-t="live">Лайв-матч</a><a href="#meta" data-t="meta">Герои</a><a href="#lb" data-t="lb">Лидеры</a><a href="#pro" data-t="pro">Про-игры</a><a href="#upd" data-t="upd">Патчи</a></nav>
 </header>
 <main class="wrap" id="v"></main>
 <p class="ft">Данные — открытый api.deadlock-api.com (матчи, ранги, винрейты, сборки). Restless не связан с Valve. Входить в Steam не нужно: профили и матчи в Deadlock открытые.</p>
@@ -6104,6 +6324,183 @@ function coProfDraw(id, H) {
     box.addEventListener('click', e => { const b = e.target.closest('[data-qkc]'); if (!b) return; if (b.dataset.qkc === 'drop') { coTaskSave(null); coProfDraw(id, H); } });
     coProfCheck(id, H);
   };
+}
+
+// ==================== 02.11 · Restless без перегруза — свой вид, не копия чужих сайтов ====================
+// Андрей: «ебейшая перегрузка интерфейса; нажимаю на матч — че за хуйню мне даёт; непонятно, что клацать».
+// Профиль: одна полоса «сводка», слева герои, справа коуч одной строкой и матчи в одну строку.
+// Матч: первым — «лицом к лицу» (игроки двух команд парами по линиям) и коротко про выбранного игрока; разбор — вкладкой.
+
+// ---------- матч: вкладки Обзор · Разбор · Сборка · Линии · Графики · Карта ----------
+{
+  const i = MTABS.findIndex(x => x[0] === 'co');
+  if (i >= 0) { const c = MTABS.splice(i, 1)[0]; c[1] = 'Разбор'; MTABS.splice(MTABS.findIndex(x => x[0] === 'ov') + 1, 0, c); }
+  const pl = MTABS.find(x => x[0] === 'pl'); if (pl) pl[1] = 'Сборка';
+  const ec = MTABS.findIndex(x => x[0] === 'ec'); if (ec >= 0) MTABS.splice(ec, 1, ['gr', 'Графики']);
+  const dm = MTABS.findIndex(x => x[0] === 'dm'); if (dm >= 0) MTABS.splice(dm, 1);
+  const VM9 = viewMatch2;
+  viewMatch2 = async function (mid, tab) { if (tab === 'ec' || tab === 'dm') tab = 'gr'; return VM9(mid, tab || 'ov'); };
+  const MB9 = mBody;
+  mBody = function () {
+    const el = $('#qmb');
+    if (el && MZ.tab === 'gr') { cancelAnimationFrame(MZ.raf); MZ.play = 0; el.innerHTML = `<div class="r9-gr">${mEc()}${mDm()}</div>`; el.classList.remove('in'); void el.offsetWidth; el.classList.add('in'); mAnim(el); }
+    else MB9();
+    $$('.qm-tabs button').forEach(b => b.classList.toggle('on', b.dataset.mt === MZ.tab));
+    const w = $('.r9-who'); if (w && MX) w.outerHTML = r9Who();
+  };
+}
+// шапка матча: счёт, вкладки и выбор игрока одной кнопкой (вместо ряда из 12 плиток)
+function mHead() {
+  const X = MX, mi = X.mi, k0 = X.P.filter(p => teamOf(p.team) === 0).reduce((a, p) => a + p.kills, 0), k1 = X.P.filter(p => teamOf(p.team) === 1).reduce((a, p) => a + p.kills, 0);
+  const st = tsOf(mi.start_time), my = X.meP ? (teamOf(X.meP.team) === X.win ? ['Победа', 'win'] : ['Поражение', 'loss']) : [`Победа: ${TEAMN[X.win]}`, ''];
+  return `<div class="qm-head r9-mh"><a class="q-back" href="#home">‹ Профиль</a>
+    <div class="qm-sb"><div class="qm-tn t0"><b>${TEAMN[0]}</b>${X.win === 0 ? '<em>победа</em>' : ''}${mi.average_badge_team0 ? rankImg(mi.average_badge_team0, 'ri') : ''}</div>
+      <div class="qm-sc"><span class="t0">${cu(k0)}</span><div><b class="${my[1]}">${my[0]}</b><small>${mmss(X.dur)} · ${st ? esc(ago(st)) : ''} · ${esc(MODE({match_mode: mi.match_mode}))}</small></div><span class="t1">${cu(k1)}</span></div>
+      <div class="qm-tn t1">${mi.average_badge_team1 ? rankImg(mi.average_badge_team1, 'ri') : ''}${X.win === 1 ? '<em>победа</em>' : ''}<b>${TEAMN[1]}</b></div></div>
+    <div class="r9-tb"><nav class="qm-tabs">${MTABS.map(([k, v]) => `<button data-mt="${k}" class="${MZ.tab === k ? 'on' : ''}">${v}</button>`).join('')}</nav>${r9Who()}</div></div>`;
+}
+function r9Who() {
+  const X = MX, p = mSel();
+  return `<div class="r9-who"><button type="button" class="r9-wb" aria-haspopup="true" title="Чей матч показывать">${face(p.hero_id, '', 's')}<span><small>${p === X.meP ? 'ты' : 'игрок'}</small><b>${esc(pname(p))}</b></span><i>▾</i></button>
+    <div class="r9-wl" hidden>${[0, 1].map(t => `<div><em class="t${t}">${TEAMN[t]}</em>${X.P.filter(q => teamOf(q.team) === t).map(q => `<button type="button" data-sl="${q.player_slot}" class="${q === p ? 'on' : ''}">${face(q.hero_id, '', 's')}<span><b>${esc(pname(q))}</b><small>${esc(hero(q.hero_id).n)}</small></span></button>`).join('')}</div>`).join('')}</div></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('.r9-wb');
+  if (b) { const l = b.nextElementSibling; if (l) l.hidden = !l.hidden; return; }
+  if (!e.target.closest('.r9-wl')) $$('.r9-wl').forEach(l => l.hidden = true);
+});
+
+// «Обзор» матча: лицом к лицу по линиям + коротко про выбранного игрока
+const R9_LO = {1: 0, 4: 1, 6: 2};
+function r9Board(X) {
+  const sel = mSel(), meId = X.meP ? X.meP.account_id : 0;
+  const team = t => X.P.filter(p => teamOf(p.team) === t).sort((a, b) => ((R9_LO[a.assigned_lane] ?? 3) - (R9_LO[b.assigned_lane] ?? 3)) || ((b.net_worth || 0) - (a.net_worth || 0)));
+  const A = team(0), B = team(1), n = Math.max(A.length, B.length);
+  const cell = (p, s) => { if (!p) return '<span class="r9-pc e"></span>';
+    const g = gradeOf((X.A.get(p) || {score: 50}).score);
+    return `<button type="button" class="r9-pc s${s}${p === sel ? ' on' : ''}${meId && p.account_id === meId ? ' mine' : ''}" data-sl="${p.player_slot}" title="${esc(pname(p))} · ${esc(hero(p.hero_id).n)}">
+      ${face(p.hero_id, teamOf(p.team) === X.win ? 'g' : 'c', 's')}<span class="r9-pn"><b>${esc(pname(p))}</b><small>${esc(hero(p.hero_id).n)}</small></span>
+      <span class="r9-pk"><b>${p.kills || 0}/<i>${p.deaths || 0}</i>/${p.assists || 0}</b><small>${kFmt(p.net_worth || 0)}</small></span><span class="r9-pg" style="--gc:${gradeCol(g)}">${g}</span></button>`; };
+  let prev = -1;
+  const rows = Array.from({length: n}, (_, i) => { const a = A[i], b = B[i], same = a && b && a.assigned_lane === b.assigned_lane, L = same ? LANEN[a.assigned_lane] : null;
+    const first = L && a.assigned_lane !== prev; if (L) prev = a.assigned_lane;
+    return `<div class="r9-br${first && i ? ' gap' : ''}">${cell(a, 0)}<span class="r9-ln"${L ? ` style="--lc:${L[1]}"` : ''}>${L ? (first ? `<b>${L[0]}</b>` : '<i></i>') : ''}</span>${cell(b, 1)}</div>`; }).join('');
+  const sum = T => `${T.reduce((s, p) => s + (p.kills || 0), 0)} убийств · ${kFmt(T.reduce((s, p) => s + (p.net_worth || 0), 0))} душ`;
+  return `<section class="q-box r9-bd"><div class="r9-bh"><div class="t0${X.win === 0 ? ' w' : ''}"><b>${TEAMN[0]}</b>${X.win === 0 ? '<em>победа</em>' : ''}<small>${sum(A)}</small></div><span>линия</span>
+    <div class="t1${X.win === 1 ? ' w' : ''}"><b>${TEAMN[1]}</b>${X.win === 1 ? '<em>победа</em>' : ''}<small>${sum(B)}</small></div></div>${rows}
+    <p class="r9-bf">Пары — кто с кем стоял на линии. Убийства/смерти/помощь, души и оценка за матч. Нажми на игрока — справа его игра.</p></section>`;
+}
+function mOv() {
+  const X = MX, p = mSel(), a = X.A.get(p) || {score: 50}, g = gradeOf(a.score), won = teamOf(p.team) === X.win, me = p === X.meP;
+  const pts = mPts(p).map(s => s.replace(/ ?Почему — справа\./, ''));
+  return `<div class="r9-ov">${r9Board(X)}
+    <section class="q-box r9-pl"><div class="r9-plh">${face(p.hero_id, won ? 'g' : 'c', 'm')}<div><small>${me ? 'Твоя игра' : 'Игра игрока'} · <span class="${won ? 'win' : 'loss'}">${won ? 'победа' : 'поражение'}</span></small><b>${esc(pname(p))}</b><span>${esc(hero(p.hero_id).n)} · ${p.kills || 0}/${p.deaths || 0}/${p.assists || 0}</span></div>
+      <span class="r9-pg big" style="--gc:${gradeCol(g)}" title="оценка ${a.score} из 100 против лобби">${g}</span></div>
+      <ul class="r9-pts">${pts.map(s => `<li>${s}</li>`).join('')}<li id="qmlate" hidden></li></ul>
+      <div class="r9-its">${finalItems(p).map(itIco).join('') || '<span class="sub">Предметов нет в данных.</span>'}</div>
+      <div class="r9-pb"><button type="button" class="btn s" data-mt="co">Подробный разбор ›</button><button type="button" class="btn g" data-mt="pl">Сборка по минутам</button>${p.account_id && !me ? `<a class="btn g" href="?id=${p.account_id}#home">Профиль</a>` : ''}</div></section></div>`;
+}
+
+// ---------- профиль ----------
+// коуч одной строкой: разбор последнего матча или задание с отметками игр
+function coProfHTML(id, H) {
+  const T = coTask(), mine = T && T.aid === id ? T : null, last = H[0];
+  if (!mine) { if (!last) return ''; const w = last.player_team === last.match_result;
+    return `<a class="r9-co" href="#m/${last.match_id}/co"><span class="r9-coi">${face(last.hero_id, w ? 'g' : 'c', 's')}</span><span><b>Коуч · разбор последнего матча</b><small>${esc(hero(last.hero_id).n)} · <span class="${w ? 'win' : 'loss'}">${w ? 'победа' : 'поражение'}</span> · ${last.player_kills}/${last.player_deaths}/${last.player_assists} · ${esc(ago(last.start_time))}</small></span><em>Открыть ›</em></a>`; }
+  const g = Object.values(mine.g || {}).slice(0, 3), ok = g.filter(Boolean).length, done = g.length >= 3;
+  const cells = [0, 1, 2].map(i => g[i] == null ? `<i class="${i === g.length && COP.busy ? 'run' : ''}" title="игра ${i + 1}">${i + 1}</i>` : `<i class="${g[i] ? 'ok' : 'no'}" title="игра ${i + 1}">${g[i] ? '✓' : '✗'}</i>`).join('');
+  const v = done ? (ok >= 2 ? `получилось в ${ok} из 3 — можно брать новое` : `получилось в ${ok} из 3 — возьми его ещё раз`) : COP.busy ? 'проверяю новые матчи…' : `сыграно ${g.length} из 3 — проверю сам`;
+  return `<div class="r9-co t"><span class="r9-cot"><small>Задание коуча</small><b>${esc(mine.n)}</b></span><span class="r9-cog">${cells}</span><small class="r9-cov">${v}</small>
+    <button type="button" class="r9-cox" data-qkc="drop" title="${done ? 'Убрать задание' : 'Отказаться'}">✕</button></div>`;
+}
+
+// строка матча — одна линия: результат, герой, У/С/П, души в минуту, предметы, оценка
+function gmRow(m) {
+  const w = m.player_team === m.match_result, d = m.ranked_delta, dur = Math.max(60, m.match_duration_s || 0);
+  const kda = (m.player_kills + m.player_assists) / Math.max(1, m.player_deaths), M = MD.get(m.match_id), me = M ? M.players.find(p => p.account_id === PROF.id) : null;
+  const its = me ? finalItems(me).slice(0, 6) : [], tg = mMiniTags(m, PROF.CNT)[0];
+  return `<div class="q-gm r9r ${w ? 'w' : 'l'}" data-m="${m.match_id}" tabindex="0" role="link" aria-label="${w ? 'Победа' : 'Поражение'}, ${esc(hero(m.hero_id).n)}, открыть матч">
+    <span class="r9-rs"><b>${w ? 'Победа' : 'Поражение'}</b><small>${esc(MODE(m))}${d ? ` <span class="${d > 0 ? 'win' : 'loss'}">${d > 0 ? '+' : ''}${d}</span>` : ''} · ${mmss(dur)}</small></span>
+    <span class="r9-rh">${face(m.hero_id, w ? 'g' : 'c', 's')}<span><b>${esc(hero(m.hero_id).n)}</b><small>${esc(ago(m.start_time))}${tg ? ` · <span class="r9-tg ${tg[1]}" title="${esc(tg[2])}">${esc(tg[0])}</span>` : ''}</small></span></span>
+    <span class="r9-rk"><b>${m.player_kills} / <i>${m.player_deaths}</i> / ${m.player_assists}</b><small>${f2(kda)} KDA</small></span>
+    <span class="r9-rn"><b>${nf(m.net_worth / (dur / 60))}</b><small>душ/мин</small></span>
+    <span class="r9-ri">${its.length ? its.map(itIco).join('') : (M === undefined ? '<i></i>'.repeat(6) : '')}</span>
+    ${grdHTML(m)}<span class="r9-go" aria-hidden="true">›</span></div>`;
+}
+
+async function viewHome() {
+  if (!ME) return viewLanding();
+  const n = vNew(), id = ME.id;
+  if (PHF.id !== id) { PHF.hero = 0; PHF.mode = ''; PHF.id = id; HN = 20; }
+  PHF.view = 'full';
+  V('<div class="load">Собираю профиль…</div>');
+  let H, HS, R, SS, HSt, ST;
+  try {
+    [H, HS, R, SS, HSt, ST] = await Promise.all([api('players/' + id + '/match-history'), api('players/hero-stats?account_ids=' + id).catch(() => []), api('players/' + id + '/rank').catch(() => null),
+      api('assets/ranked-seasons').catch(() => []), api('analytics/hero-stats?' + fq()).catch(() => []), api('players/steam?account_ids=' + id).catch(() => [])]);
+  } catch (e) { if (n === VQ) V(`<div class="err">Не вышло загрузить профиль: ${esc(e.message)}</div>`); return; }
+  if (n !== VQ) return;
+  const won = m => m.player_team === m.match_result, badge = (R && R.badge) || 0, st = (ST || [])[0] || {};
+  const c60 = {}; H.filter(m => m.start_time >= now() - 60 * 86400).forEach(m => c60[m.hero_id] = (c60[m.hero_id] || 0) + 1);
+  const pool = HS.slice().sort((a, b) => b.matches_played - a.matches_played);
+  const main = +((Object.entries(c60).sort((a, b) => b[1] - a[1])[0] || [])[0]) || (pool[0] || {}).hero_id || 0;
+  const ws = R && R.last_match && R.last_match.start_time > now() - 3 * 86400 ? R.last_match.player_rank_initial_win_streak || 0 : 0;
+  PBAN = banHTML({name: ME.name, av: ME.avatar, badge, main: D.heroes[main] ? main : 0, games: H.length, cc: st.countrycode, ws}); PBAN_ID = id;
+  if (!H.length) { V(`${ptabsHTML('home')}<div class="empty">У этого игрока нет матчей в открытых данных.</div>`); return; }
+  GD = (H.slice(0, 50).reduce((a, m) => a + Math.max(300, m.match_duration_s || 0), 0) / Math.max(1, Math.min(50, H.length))) || 1800;
+  const HA = {}, HTOT = HSt.reduce((a, x) => a + x.matches, 0) / 12 || 1;
+  HSt.forEach(x => { const k = Math.max(1, x.matches); HA[x.hero_id] = {spm: x.total_net_worth / k, dpm: x.total_deaths / k, kpm: x.total_kills / k, apm: x.total_assists / k, lhm: x.total_last_hits / k, den: (x.total_denies || 0) / k, pr: 100 * x.matches / HTOT}; });
+  const CNT = {}; H.filter(m => m.start_time >= now() - 30 * 86400).forEach(m => CNT[m.hero_id] = (CNT[m.hero_id] || 0) + 1);
+  { const L = H.slice(0, 50); CNT._avg = {spm: L.reduce((x, m) => x + m.net_worth / (Math.max(300, m.match_duration_s) / 60), 0) / Math.max(1, L.length), d: L.reduce((x, m) => x + m.player_deaths, 0) / Math.max(1, L.length)}; }
+  const MS = {}; HS.forEach(x => { MS[x.hero_id] = {g: x.matches_played, wr: pc(x.wins, x.matches_played), sc: mstyScore(x)}; });
+  PROF = {id, H, HS, CNT, MS, badge};
+
+  // сводка одной полосой
+  const ses = curSeason(SS), SH = H.filter(m => m.match_mode === 4 && m.start_time >= ses.start), sw = SH.filter(won).length, rk = rankOf(badge);
+  const F = qkForm(H), A = qkAct(H), wr20 = Math.round(100 * F.w / Math.max(1, F.L.length));
+  const cellRank = badge ? `<div class="r9-sc rk">${rankImg(badge, 'rk')}<span><small>Ранг</small><b style="color:${esc(rk.color)}">${esc(rk.name)}</b><em id="rtop">${SH.length ? `сезон ${sw}–${SH.length - sw}` : ''}</em></span></div>`
+    : `<div class="r9-sc"><span><small>Ранг</small><b>Без ранга</b><em>ранговых в сезоне нет</em></span></div>`;
+  const sum = `<section class="q-box r9-sum">${cellRank}
+    <div class="r9-sc fm"><span><small>Форма · ${F.L.length} игр</small><b class="${wrC(wr20, F.L.length)}">${wr20}%</b><em><span class="win">${F.w}В</span> <span class="loss">${F.L.length - F.w}П</span></em></span><i class="r9-dots" title="последние ${F.L.length}, слева — свежие">${F.L.map(m => `<i class="${won(m) ? 'w' : 'l'}"></i>`).join('')}</i></div>
+    <div class="r9-sc"><span><small>Серия</small><b class="${F.st >= 2 ? (F.r0 ? 'win' : 'loss') : ''}">${F.st} ${F.r0 ? pl(F.st, ['победа', 'победы', 'побед']) : pl(F.st, ['поражение', 'поражения', 'поражений'])}</b><em>${F.st >= 2 ? 'подряд' : 'последний матч'}</em></span></div>
+    <div class="r9-sc"><span><small>Средний матч</small><b>${f1(avg(F.L, m => m.player_kills))}/${f1(avg(F.L, m => m.player_deaths))}/${f1(avg(F.L, m => m.player_assists))}</b><em>${nf(avg(F.L, m => m.net_worth / (Math.max(300, m.match_duration_s || 0) / 60)))} душ/мин</em></span></div>
+    <div class="r9-sc"><span><small>Играет</small><b>${A.g7} за неделю</b><em>последний — ${esc(ago(A.last))} · <a href="#live/${id}">лайв ›</a></em></span></div></section>`;
+
+  // герои — топ-5 за 30 дней (мало игр — за всё время)
+  const R30 = {}; H.filter(m => m.start_time >= now() - 30 * 86400).forEach(m => { const o = R30[m.hero_id] = R30[m.hero_id] || {m: 0, w: 0, k: 0, d: 0, a: 0}; o.m++; if (won(m)) o.w++; o.k += m.player_kills; o.d += m.player_deaths; o.a += m.player_assists; });
+  let HL = Object.entries(R30).filter(([h]) => D.heroes[h]).sort((a, b) => b[1].m - a[1].m).slice(0, 5).map(([h, o]) => ({hid: +h, g: o.m, w: o.w, k: o.k / o.m, d: o.d / o.m, a: o.a / o.m})), per = '30 дней';
+  if (HL.reduce((a, x) => a + x.g, 0) < 8) { HL = pool.filter(x => D.heroes[x.hero_id]).slice(0, 5).map(x => ({hid: x.hero_id, g: x.matches_played, w: x.wins, k: x.kills / x.matches_played, d: x.deaths / x.matches_played, a: x.assists / x.matches_played})); per = 'всё время'; }
+  const heroes = `<section class="q-box r9-hs"><div class="r9-h2"><b>Герои</b><small>${per}</small><a href="#mine">все ›</a></div>
+    ${HL.map(x => { const wr = 100 * x.w / Math.max(1, x.g); return `<a class="r9-hr" href="#h/${x.hid}/me">${face(x.hid, moodOn(H, x.hid), 's')}<span><b>${esc(hero(x.hid).n)}</b><small>${games(x.g)} · ${f1(x.k)}/${f1(x.d)}/${f1(x.a)}</small></span><em class="${wrC(wr, x.g)}">${Math.round(wr)}%</em></a>`; }).join('') || '<div class="empty">Нет данных.</div>'}</section>
+    <section class="q-box r9-hs"><div class="r9-h2"><b>Чаще всего с</b><a href="#form/habits">привычки ›</a></div><div id="qkmate"><span class="sub">Считаю…</span></div></section>`;
+
+  // матчи
+  const hlist = [...new Set(H.slice(0, 300).map(m => m.hero_id))].filter(h => D.heroes[h]).sort((a, b) => hero(a).n.localeCompare(hero(b).n));
+  const hist = `<section class="q-box r9-hi" id="hist"><div class="r9-h2"><b>Матчи</b><span id="hsum" hidden></span><span class="sp" style="flex:1"></span>
+      <div class="seg r9-md" id="hfm2">${[['', 'Все'], ['r', 'Ранговые'], ['u', 'Обычные']].map(([k, nm]) => `<button type="button" data-md="${k}" class="${(PHF.mode || '') === k ? 'on' : ''}">${nm}</button>`).join('')}</div>
+      <select class="q-sel" id="hfh" aria-label="Герой"><option value="0">Все герои</option>${hlist.map(h => `<option value="${h}"${PHF.hero === h ? ' selected' : ''}>${esc(hero(h).n)}</option>`).join('')}</select></div>
+    <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё</button></section>`;
+
+  V(`${ptabsHTML('home')}${sum}<div class="r9-cols"><aside class="r9-side">${heroes}</aside><div class="r9-main"><div id="qkco"></div>${hist}</div></div>
+    <div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b></div><div class="pad" id="myb"></div></div></div>`);
+
+  // метки игрока — в шапку, под ник (не больше четырёх)
+  const T = profTags(H, HS, HA), pc2 = $('#pchips'); if (pc2 && T.length) pc2.insertAdjacentHTML('beforeend', tagsHTML(T.slice(0, 4)));
+  qkMates(n, id);
+  coProfDraw(id, H); const co = $('#qkco');
+  if (co) co.addEventListener('click', e => { const b = e.target.closest('[data-qkc]'); if (b && b.dataset.qkc === 'drop') { coTaskSave(null); coProfDraw(id, H); } });
+  coProfCheck(id, H);
+  $('#hfh').onchange = e => { PHF.hero = +e.target.value; HN = 20; drawHist(n); };
+  $$('#hfm2 button').forEach(b => b.onclick = () => { PHF.mode = b.dataset.md; HN = 20; $$('#hfm2 button').forEach(x => x.classList.toggle('on', x === b)); drawHist(n); });
+  $('#hmore').onclick = () => { HN += 20; drawHist(n); };
+  const rows = $('#hrows');
+  rows.onclick = e => { if (e.target.closest('a')) return; const r = e.target.closest('[data-m]'); if (r) location.hash = '#m/' + r.dataset.m; };
+  rows.onkeydown = e => { if (e.key !== 'Enter' || e.target.closest('a')) return; const r = e.target.closest('[data-m]'); if (r) location.hash = '#m/' + r.dataset.m; };
+  drawHist(n);
+  gradeBase(badge).then(T2 => { if (n !== VQ) return; GT = T2; drawRows(n); });
+  if (badge) api('players/rank/distribution').then(Dd => { if (n !== VQ) return; const tot = Dd.reduce((a, x) => a + (x.players || 0), 0), up = Dd.filter(x => x.badge >= badge).reduce((a, x) => a + (x.players || 0), 0); const el = $('#rtop'); if (el && tot) el.innerHTML = `топ ${f1(Math.max(.1, 100 * up / tot))}% игроков`; }).catch(() => {});
+  topPlaces(n, id, ME.name, st.countrycode, pool);
+  renderMyBuilds().then(() => { const b = $('#myb'), w = $('#mybw'); if (n === VQ && b && w && b.querySelector('a,img,.bch,.myc')) w.hidden = false; }).catch(() => {});
 }
 window.addEventListener('hashchange', route);
 (async () => {
