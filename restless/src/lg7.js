@@ -90,6 +90,15 @@ function coLane(X, p, opp) {
     nw20: mAt(p, 1200, 'net_worth'), nw20pl: X.dur > 1300 ? mPlace(X.P.filter(q => teamOf(q.team) === teamOf(p.team)), q => mAt(q, 1200, 'net_worth'), p) : null};
 }
 
+// отрезок, где игрок дольше всего лежал мёртвым: 3+ смерти подряд в пределах 10 минут
+function coDeadRun(p) {
+  const D = (p.death_details || []).map(d => ({t: d.game_time_s, u: d.death_duration_s || 0})).sort((a, b) => a.t - b.t); let best = null;
+  for (let i = 0; i < D.length; i++) for (let j = i + 2; j < D.length && D[j].t - D[i].t <= 600; j++) {
+    const sum = D.slice(i, j + 1).reduce((a, d) => a + d.u, 0), end = D[j].t + D[j].u;
+    if (sum >= 150 && (!best || sum > best.sum)) best = {t0: D[i].t, t1: end, sum, n: j - i + 1};
+  }
+  return best;
+}
 // подробности по каждой смерти
 function coDeathCtx(X, p, F) {
   const FT = coFights(X), my = teamOf(p.team);
@@ -206,6 +215,8 @@ function mCo() {
       <p>${P1.join(' ')}</p>
       <p>${P2.join(' ')}</p>
       ${moments.length ? `<ul class="co2-mo">${moments.map(c => `<li><time>${coT(c.t)}</time><span>${coMoText(c)}</span></li>`).join('')}</ul>` : ''}
+      ${(() => { const R = coDeadRun(p); if (!R) return ''; const span = R.t1 - R.t0, pc = Math.round(100 * R.sum / span);
+        return `<p>Посчитай время: с ${coT(R.t0)} по ${coT(R.t1)} ты пролежал мёртвым <b>${coS(R.sum)}</b> — ${pc >= 45 ? 'почти половину' : pc >= 30 ? 'треть' : `${pc}%`} этого отрезка, ${R.n} ${pl(R.n, ['смерть', 'смерти', 'смертей'])} подряд. Каждая такая минута — минус души и минус ты в драке.</p>`; })()}
       ${main ? `<p>${coWhy(F, main, OUT)}</p>` : ''}
       <p id="colate" class="co2-late">Сравниваю твои предметы с топами на ${hn}…</p>
       ${fair.length ? `<h4>Честно о картине</h4><p>${fair.join(' ')}</p>` : ''}
@@ -234,7 +245,9 @@ function coLate(p) {
     late.sort((a, b) => b[3] - a[3]); early.sort((a, b) => a[3] - b[3]);
     if (late.length) {
       const [I, t, a] = late[0];
-      el.innerHTML = `Вторая вещь — предметы. <b>${esc(I.n)}</b> у топов на ${coHn(k)} в среднем выходит на <b>${coT(a)}</b>, у тебя — на <b class="loss">${coT(t)}</b>.${late[1] ? ` ${esc(late[1][0].n)} — тоже позже: ${coT(late[1][1])} против ${coT(late[1][2])}.` : ''} ${early.length ? `Зато ${esc(early[0][0].n)} ты взял раньше топов (${coT(early[0][1])}).` : ''} Сравнение — с игроками высокого ранга за последние 30 дней.`;
+      const dw = it2 => (p.death_details || []).map(d => d.game_time_s).filter(x => x > it2[2] && x < it2[1]), d0 = dw(late[0]), d1 = late[1] ? dw(late[1]) : [];
+      const dj = L => L.slice(0, 3).map(coT).join(L.length === 2 ? ' и ' : ', '), why = d0.length ? ` Смерти на ${dj(d0)} случились ещё без ${esc(I.n)}.` : d1.length ? ` Смерти на ${dj(d1)} случились ещё без ${esc(late[1][0].n)}.` : '';
+      el.innerHTML = `Вторая вещь — предметы. <b>${esc(I.n)}</b> у топов на ${coHn(k)} в среднем выходит на <b>${coT(a)}</b>, у тебя — на <b class="loss">${coT(t)}</b>.${late[1] ? ` ${esc(late[1][0].n)} — тоже позже: ${coT(late[1][1])} против ${coT(late[1][2])}.` : ''}${why} ${early.length ? `Зато ${esc(early[0][0].n)} ты взял раньше топов (${coT(early[0][1])}).` : ''} Сравнение — с игроками высокого ранга за последние 30 дней.`;
       if (pli) { pli.hidden = false; pli.innerHTML = `${esc(I.n)} бери раньше: у топов на этом герое он выходит к ${coT(a)}. Посмотри порядок их покупок на странице героя.`; }
     } else el.innerHTML = early.length ? `По предметам ты не опаздываешь против топов на ${coHn(k)}, а ${esc(early[0][0].n)} взял даже раньше (${coT(early[0][1])} против ${coT(early[0][2])}).` : `По предметам ты идёшь в темпе топов на ${coHn(k)} — тут проблем нет.`;
   };
