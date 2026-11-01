@@ -9566,7 +9566,7 @@ function vs10(R,ctx){R.className='scr v8 vs8 vs9 vs10';
    const bk=$('.vs8-top .rd',R);bk.innerHTML='<b>K.O.</b><small>банк 200 — твой</small>';an(bk,[{transform:'scale(1.4)'},{transform:'none'}],{sp:SPb})},1100)}
  // раунды
  function r1(){rd=0;banner('СОБЕРИ');timer();const ANS=['You','can\'t','hide','from','a','Venator'],TK=['hide','You','a','from','Venator','can\'t','find','see'];let pk=[];
-  pn.innerHTML=`<b class="q">${VR10[0].q}</b><small>От Венатора не спрятаться.</small><div class="sl">${ANS.map(()=>'<i></i>').join('')}</div><div class="tl">${TK.map((w,j)=>`<button data-j="${j}">${w}</button>`).join('')}</div><button class="ck" disabled>Проверить</button>${X.say.hid?`<button class="re">${ic('play')}Ещё раз</button>`:''}`;
+  pn.innerHTML=`<b class="q">${VR10[0].q}</b><small>От Венатора не спрятаться.</small><div class="sl">${ANS.map(()=>'<i></i>').join('')}</div><div class="tl">${TK.map((w,j)=>`<button data-j="${j}">${w}</button>`).join('')}</div><button class="ck" disabled>Проверить</button>`;
   const SL=$$('.sl i',pn),TB=$$('.tl button',pn),ck=$('.ck',pn);$$('.v10-pn>*',R).forEach((x,i)=>an(x,[{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'none'}],{sp:SPs,dl:200+i*50}));
   const put=b=>{if(pk.length>=6||b.disabled)return;const s=SL[pk.length];pk.push(b.textContent);const a=rel(b,R),z=rel(s,R);b.disabled=true;s.textContent=b.textContent;s.className='f';an(s,[{transform:`translate(${a.x-z.x}px,${a.y-z.y}px)`},{transform:'none'}],{sp:SPs});ck.disabled=pk.length<6};
   TB.forEach(b=>ctx.on(b,'click',()=>{touched=true;put(b)}));
