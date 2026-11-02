@@ -444,11 +444,10 @@ function p11Heroes(H, HS, per) {
 }
 function p11HeroRows(L) {
   if (!L.length) return '<div class="empty">За этот период игр нет.</div>';
-  const mx = Math.max(...L.map(x => x.g));
-  return `<div class="p11-ht"><span>Герой</span><span>Место</span><span>Сыграно</span><span>Винрейт</span></div>${L.slice(0, 7).map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g);
-    return `<a class="p11-hr" href="#h/${x.hid}/me" style="--i:${i}">${face(x.hid, '', 'm')}<span class="p11-hn"><b>${esc(hero(x.hid).n)}</b><small><i class="k">${f1(x.k)}</i> / <i class="d">${f1(x.d)}</i> / <i class="a">${f1(x.a)}</i></small></span>
-      <span class="p11-pl" data-hrk="${x.hid}" role="button" title="Место на герое — нажми, покажу таблицу">${(() => { const o = HRR[PHF.id + '|' + x.hid]; return o ? hrkCell(o) : i < 4 ? '<small>…</small>' : '<small class="lk">узнать</small>'; })()}</span>
-      <span class="p11-bar"><i style="--w:${Math.round(100 * x.g / mx)}%"></i><b>${nf(x.g)}</b></span><span class="p11-bar wr ${wr >= 52 ? 'up' : wr <= 47 ? 'dn' : ''}"><i style="--w:${Math.round(wr)}%"></i><b>${f1(wr)}%</b></span></a>`; }).join('')}`;
+  return L.slice(0, 8).map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g), o = HRR[PHF.id + '|' + x.hid];
+    return `<a class="p12-h" href="#h/${x.hid}/me" style="--i:${i}">${face(x.hid, '', 'm')}<span class="n"><b>${esc(hero(x.hid).n)}</b><small><i class="k">${f1(x.k)}</i> / <i class="d">${f1(x.d)}</i> / <i class="a">${f1(x.a)}</i></small></span>
+      <span class="g"><b class="${wr >= 52 ? 'win' : wr <= 47 ? 'loss' : ''}">${f1(wr)}%</b><small>${games(x.g)}</small></span>
+      <span class="p11-pl" data-hrk="${x.hid}" role="button" title="Место на герое — нажми, покажу таблицу">${o ? hrkCell(o) : i < 4 ? '<small>считаю место…</small>' : '<small class="lk">узнать место ›</small>'}</span></a>`; }).join('');
 }
 async function viewHome() {
   if (!ME) return viewLanding();
@@ -489,7 +488,7 @@ async function viewHome() {
     <div class="p11-act"><span>${A.g7} за неделю</span><span>последний — ${esc(ago(A.last))}</span><a href="#live/${id}">лайв ›</a></div></section>`;
   const T = profTags(H, HS, HA), P2x = patterns2(H), lg = P2x.find(x => /долгих/.test(x.n));
   if (lg && lg.d <= -8) T.splice(1, 0, ['Сливает долгие игры', 'r', `игры 35+ мин выигрывает в ${Math.round(lg.wr)}%`]); else if (lg && lg.d >= 8) T.splice(1, 0, ['Тащит долгие игры', 'g', `игры 35+ мин выигрывает в ${Math.round(lg.wr)}%`]);
-  const know = T.length ? `<section class="q-box p11-kn"><div class="r9-h2"><b>Что знать</b></div><div class="p11-tg" id="p10kn">${T.slice(0, 6).map(([s2, c, h2], i) => `<div class="p10-t ${c || 'n'}" style="--i:${i}"><b>${esc(s2)}</b><small>${esc(h2)}</small></div>`).join('')}</div></section>` : '';
+  const know = T.length ? `<section class="q-box p11-kn"><div class="r9-h2"><b>Что знать</b></div><div class="p11-tg" id="p10kn">${T.slice(0, 8).map(([s2, c, h2], i) => `<div class="p10-t ${c || 'n'}" style="--i:${i}"><b>${esc(s2)}</b><small>${esc(h2)}</small></div>`).join('')}</div></section>` : '';
   const mates = `<section class="q-box r9-hs"><div class="r9-h2"><b>Чаще всего с</b><a href="#form/habits">привычки ›</a></div><div id="qkmate"><span class="sub">Считаю…</span></div></section>`;
   if (!P11.per) { const c30 = H.filter(m => m.start_time >= now() - 30 * 86400).length, c90 = H.filter(m => m.start_time >= now() - 90 * 86400).length; P11.per = c30 >= 10 ? '30' : c90 >= 10 ? '90' : 'all'; }
   const heroes = `<section class="q-box p11-hs"><div class="r9-h2"><b>Часто играет</b><div class="seg" id="p11per">${[['30', '30 дней'], ['90', '3 месяца'], ['all', 'Всё время']].map(([k, v]) => `<button type="button" data-p="${k}" class="${P11.per === k ? 'on' : ''}">${v}</button>`).join('')}</div><a href="#mine">все ›</a></div><div id="p11hl">${p11HeroRows(p11Heroes(H, HS, P11.per))}</div></section>`;
@@ -498,7 +497,7 @@ async function viewHome() {
       <div class="seg r9-md" id="hfm2">${[['', 'Все'], ['r', 'Ранговые'], ['u', 'Обычные']].map(([k, nm]) => `<button type="button" data-md="${k}" class="${(PHF.mode || '') === k ? 'on' : ''}">${nm}</button>`).join('')}</div>
       <select class="q-sel" id="hfh" aria-label="Герой"><option value="0">Все герои</option>${hlist.map(h => `<option value="${h}"${PHF.hero === h ? ' selected' : ''}>${esc(hero(h).n)}</option>`).join('')}</select></div>
     <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё 10</button></section>`;
-  V(`${ptabsHTML('home')}<div class="p11"><aside class="p11-l">${rank}${form}${know}${mates}<div id="qkco"></div></aside><div class="p11-r">${heroes}${hist}</div></div>
+  V(`${ptabsHTML('home')}<div class="p11 p12"><aside class="p11-l">${rank}${form}${know}${mates}<div id="qkco"></div></aside><div class="p11-c">${hist}</div><aside class="p11-r">${heroes}</aside></div>
     <div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b></div><div class="pad" id="myb"></div></div></div>`);
   $('#p11per').onclick = e => { const b = e.target.closest('[data-p]'); if (!b) return; P11.per = b.dataset.p; $$('#p11per button').forEach(x => x.classList.toggle('on', x === b)); put(n, '#p11hl', p11HeroRows(p11Heroes(H, HS, P11.per))); p11Rk(n, id, ME.name); };
   p11Rk(n, id, ME.name);
@@ -610,13 +609,27 @@ async function hmItems(n) {
 
 // ---------- место на герое в профиле: «#2 100 · мир · #12 EU», нажал — таблица с соседями выше и ниже ----------
 const RGS = {Europe: 'EU', NAmerica: 'NA', SAmerica: 'SA', Asia: 'Asia', Oceania: 'OCE'}, HRR = {};
-const hrkCell = o => o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b><small>мир${o.r ? ` · <em>#${o.r.pos} ${RGS[o.rg] || o.rg}</em>` : ''}</small>` : '<small>—</small>';
+const pctTop = (pos, tot) => { const p = 100 * pos / Math.max(1, tot); return 'топ ' + (p < 1 ? p.toFixed(1).replace('.', ',') : Math.max(1, Math.ceil(p))) + '%'; };
+const hrkCell = o => o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b><small>в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''}</small><em class="${o.r ? '' : 'no'}">${RGS[o.rg] || o.rg} ${o.r ? '#' + o.r.pos : '— вне топ-1000'}</em><i class="go">›</i>` : '<small>побед на герое пока нет</small>';
+// сколько всего игроков на герое (для «топ N%»): ищем последнюю строку таблицы вилкой, кэш на сутки
+const HTOT = {};
+function heroTotal(hid) {
+  if (HTOT[hid]) return HTOT[hid];
+  return (HTOT[hid] = (async () => {
+    try { const c = JSON.parse(localStorage.getItem('rl-ht') || '{}'); if (c[hid] && c[hid].t > Date.now() - 864e5) return c[hid].n; } catch (e) {}
+    const has = async st => { const r = await SBQ(`hero_id=${hid}&sort_by=wins&min_matches=1&start=${st}&limit=1`).catch(() => null); return !!(r && r.length); };
+    let lo = 0, hi = 50000; while (await has(hi) && hi < 8e6) { lo = hi; hi *= 2; }
+    while (hi - lo > 1000) { const m = Math.floor((lo + hi) / 2); if (await has(m)) lo = m; else hi = m; }
+    try { const c = JSON.parse(localStorage.getItem('rl-ht') || '{}'); c[hid] = {n: lo, t: Date.now()}; localStorage.setItem('rl-ht', JSON.stringify(c)); } catch (e) {}
+    return lo;
+  })().catch(() => 0));
+}
 async function hrkGet(hid, id, name) {
   const k = id + '|' + hid; if (HRR[k]) return HRR[k];
   const rg = await myReg(id).catch(() => 'Europe');
-  const [w, E] = await Promise.all([heroRating(hid, id).catch(() => null), api(`leaderboard/${rg}/${hid}`).then(L => L.entries || []).catch(() => [])]);
+  const [w, E, tot] = await Promise.all([heroRating(hid, id).catch(() => null), api(`leaderboard/${rg}/${hid}`).then(L => L.entries || []).catch(() => []), heroTotal(hid)]);
   const i = E.findIndex(e => lbHit(e, id, name));
-  return (HRR[k] = {w, r: i < 0 ? null : {pos: i + 1, n: E.length}, rg, E, i});
+  return (HRR[k] = {w, r: i < 0 ? null : {pos: i + 1, n: E.length}, rg, E, i, tot});
 }
 async function p11Rk(n, id, name) {
   for (const c of $$('#p11hl [data-hrk]').slice(0, 4)) {
@@ -627,7 +640,7 @@ async function p11Rk(n, id, name) {
 async function hrkOpen(hid, id, name) {
   const ov = document.createElement('div'); ov.className = 'hrk-ov';
   ov.innerHTML = `<div class="hrk"><header>${face(hid, '', 'm')}<div><b>${esc(hero(hid).n)} · рейтинг</b><small>${esc(name || '')}</small></div><button class="hrk-x" type="button" aria-label="Закрыть">✕</button></header>
-    <div class="seg" id="hrks"><button data-s="w" class="on" type="button">Мир · по победам</button><button data-s="r" type="button">Регион · топ-1000</button></div><div id="hrkb"><div class="load">Считаю место…</div></div></div>`;
+    <div class="seg" id="hrks"><button data-s="w" class="on" type="button">Мир</button><button data-s="r" type="button">Мой регион</button></div><div id="hrkb"><div class="load">Считаю место…</div></div></div>`;
   document.body.appendChild(ov); requestAnimationFrame(() => ov.classList.add('on'));
   const close = () => { ov.classList.remove('on'); setTimeout(() => ov.remove(), 200); removeEventListener('keydown', k1); removeEventListener('hashchange', close); };
   const k1 = e => { if (e.key === 'Escape') close(); };
@@ -637,18 +650,18 @@ async function hrkOpen(hid, id, name) {
   const draw = async () => {
     const b = $('#hrkb', ov); if (!b) return; b.innerHTML = '<div class="load">Загружаю…</div>';
     const o = await hrkGet(hid, id, name).catch(() => null); if (!ov.isConnected) return;
-    $$('#hrks button', ov).forEach(x => { x.classList.toggle('on', x.dataset.s === mode); if (x.dataset.s === 'r' && o) x.textContent = `${REGN[o.rg] || o.rg} · топ-1000`; });
+    $$('#hrks button', ov).forEach(x => { x.classList.toggle('on', x.dataset.s === mode); if (x.dataset.s === 'r' && o) x.textContent = REGN[o.rg] || o.rg; });
     let html = '';
     if (mode === 'w') {
       const me = o && o.w && o.w.pos ? o.w.pos : 1, st = Math.max(1, me - 7 + off);
       const L = (await SBQ(`hero_id=${hid}&sort_by=wins&min_matches=1&start=${st - 1}&limit=15`).catch(() => [])) || [];
       const S = L.length ? await api('players/steam?account_ids=' + L.map(x => x.account_id).join(',')).catch(() => []) : [], SM = {};
       (S || []).forEach(x => SM[x.account_id] = x);
-      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `Место <b>#${nf(o.w.pos)}</b> в мире — по числу побед на герое за всё время (${nf(o.w.v)} ${pl(o.w.v, ['победа', 'победы', 'побед'])}).` : 'Побед на этом герое пока нет.'}</p>
+      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b> в мире${o.tot ? ` из ${nf(o.tot)} игроков на герое · ${pctTop(o.w.pos, o.tot)}` : ''}<br><small>Место считается по числу побед на этом герое: у тебя ${nf(o.w.v)}.</small>` : 'Побед на этом герое пока нет.'}</p>
         ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${nf(x.value)} ${pl(x.value, ['победа', 'победы', 'побед'])} · ${nf(x.matches)} игр`, x.account_id === id)).join('')}`;
     } else {
       const E = o ? o.E : [], c = o && o.i >= 0 ? o.i : 0, a = Math.max(0, c - 7 + off);
-      html = `<p class="hrk-h">${o && o.r ? `Место <b>#${o.r.pos}</b> в официальном топе ${esc(REGN[o.rg] || o.rg)} на этом герое.` : `${esc(name || 'Игрока')} нет в топ-1000 региона на этом герое — показываю начало таблицы.`}</p>
+      html = `<p class="hrk-h">${o && o.r ? `<b>#${o.r.pos}</b> в ${esc(REGN[o.rg] || o.rg)} на этом герое<br><small>Официальная таблица игры: топ-1000 региона.</small>` : `${esc(name || 'Игрока')} пока нет в топ-1000 ${esc(REGN[o ? o.rg : 'Europe'] || '')} на этом герое<br><small>Ниже — начало таблицы региона.</small>`}</p>
         ${E.slice(a, a + 15).map((e, j) => { const one = (e.possible_account_ids || []).length === 1 ? e.possible_account_ids[0] : 0; return row(a + j + 1, one, e.account_name, '', one ? '' : 'аккаунт скрыт', a + j === (o ? o.i : -1)); }).join('') || '<div class="empty">Таблица пустая.</div>'}`;
     }
     b.innerHTML = `${html}<div class="hrk-nav"><button type="button" data-o="-15">▲ Выше</button><button type="button" data-o="0">К себе</button><button type="button" data-o="15">▼ Ниже</button></div>`;

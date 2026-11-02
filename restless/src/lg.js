@@ -349,12 +349,11 @@ async function heroStatsStrip(n, hid, me) {
     put(n, '#hst', `<div><span>Игр</span><b>${nf(g)}</b><small>последняя ${esc(ago(y.last_played))}</small></div>
       <div><span>Винрейт</span><b class="${wrC(wr, g)}">${f1(wr)}%</b>${x ? cmp(x.wr, v => f1(v) + '%') : ''}</div>
       <div><span>KDA</span><b>${f2(kda)}</b>${x ? cmp(x.kda, f2) : ''}</div>
-      <div class="q-hrt"><span>Рейтинг на герое</span><b id="hstrt">…</b><small><span id="hstrs">ищу место среди всех игроков…</span> <span id="hstlb"></span></small></div>
+      <div class="q-hrt" data-hrk2="${hid}" role="button" title="Нажми — таблица соседей"><span>Место на герое</span><b id="hstrt">…</b><small id="hstrs">считаю…</small></div>
       <div><span>Урон / мин</span><b>${nf(y.damage_per_min)}</b><small>души / мин ${nf(y.networth_per_min)}</small></div>
       ${y.accuracy != null ? `<div><span>Точность</span><b>${Math.round(100 * y.accuracy)}%</b><small>крит ${Math.round(100 * (y.crit_shot_rate || 0))}%</small></div>` : ''}`);
-    heroRating(hid, ME.id).then(r => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); if (v) v.textContent = r && r.pos ? '#' + nf(r.pos) : '—'; if (t) t.textContent = r && r.pos ? `в мире по победам на герое (${nf(r.v)} ${pl(r.v, ['победа', 'победы', 'побед'])})` : 'побед на герое пока нет'; }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
-    myReg(ME.id).then(rg => api(`leaderboard/${rg}/${hid}`).then(Lb => { if (n !== VQ) return; const E = Lb.entries || [], e = E.find(z => lbHit(z, ME.id, ME.name)), el = $('#hstlb');
-      if (el) el.textContent = e ? `(${REGN[rg]}: #${e.rank} из ${E.length} мейнов в топ-1000)` : `(${REGN[rg]})`; })).catch(() => {});
+    hrkGet(hid, ME.id, ME.name).then(o => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); if (v) v.textContent = o && o.w && o.w.pos ? '#' + nf(o.w.pos) : '—';
+      if (t) t.innerHTML = o && o.w && o.w.pos ? `в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''} · ${esc(REGN[o.rg] || o.rg)} ${o.r ? '#' + o.r.pos : '— вне топ-1000'} · <u>таблица ›</u>` : 'побед на этом герое пока нет'; }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
   } catch (e) { put(n, '#hst', `<div class="err" style="grid-column:1/-1">${esc(e.message)}</div>`); }
 }
 async function heroMyMatches(n, hid) {
@@ -539,6 +538,10 @@ async function scout2(players, ctx) {
     if (hm >= 15 && hw / hm <= .4) tags.push(['r', 'Слабый на герое', `${pc(hw, hm)}% побед на герое`]);
     if (sn.m30 >= 120) tags.push(['b', 'Много играет', `${sn.m30} матчей за 30 дней`]);
     if (t.m && t.m < 200 && badge >= 100) tags.push(['r', 'Мало игр для ранга', `${games(t.m)} — и уже ${rankOf(badge).name}`]);
+    if (p30 && p30.m >= 20 && p30.w / p30.m >= .58) tags.push(['g', 'В форме', `${pc(p30.w, p30.m)}% побед за 30 дней`]);
+    if (p30 && p30.m >= 20 && p30.w / p30.m <= .42) tags.push(['r', 'Не в форме', `${pc(p30.w, p30.m)}% побед за 30 дней`]);
+    if (p12 && p12.m >= 6) tags.push(['b', 'Марафон', `${games(p12.m)} за 12 часов`]);
+    if (p12 && p12.m >= 3 && !p12.w) tags.push(['r', 'Тильт сегодня', `0 побед в ${games(p12.m)} за 12 часов`]);
     if (pid[id]) tags.push(['h', `Друзья · ${pid[id].n}`, ctx.last ? 'друзья в Steam и в одной команде в этом матче — возможно, пати' : 'друзья в Steam, недавно играли в одной команде — возможно, пати']);
     const threat = hm >= 10 ? (hw / hm - .5) * Math.min(1, hm / 60) + (ws >= 3 ? .05 : 0) + badge / 1000 : badge / 1000 - .1;
     const hot = rc.length && st >= 3 && rc[0].w, cold = rc.length && st >= 3 && !rc[0].w;

@@ -3171,6 +3171,74 @@ a.hrk-r:hover{background:var(--q-bh)}
 .hm-hd{position:relative;z-index:3}
 .hm-tabs a{font-size:22px}
 .q-gm.r9r .q-grd,.q-grd{display:grid!important;place-items:center!important;flex-direction:row!important;padding:0!important;line-height:1!important;text-align:center}
+
+/* ===================== lg11 — 04.11, третьи скрины ===================== */
+/* профиль: три колонки — слева ранг и метки, в центре игры, справа герои */
+.p11.p12{grid-template-columns:300px minmax(0,1fr) 330px;grid-template-areas:"l c r"}
+.p11.p12 > .p11-l{grid-area:l}.p11.p12 > .p11-c{grid-area:c;min-width:0;display:grid;gap:14px}.p11.p12 > .p11-r{grid-area:r;order:0;min-width:0;display:grid;gap:14px;position:sticky;top:12px}
+@media (max-width:1360px) and (min-width:1001px){.p11.p12{grid-template-columns:300px minmax(0,1fr);grid-template-areas:"l c" "r c"}.p11.p12 > .p11-r{position:static}}
+@media (max-width:1000px){.p11.p12{display:flex;flex-direction:column}.p11.p12 > .p11-l,.p11.p12 > .p11-c,.p11.p12 > .p11-r{display:contents}}
+.p11-hs .r9-h2{flex-wrap:wrap;row-gap:8px}
+.p11-hs #p11per{order:3;width:100%}
+.p11-hs #p11per button{flex:1}
+/* герой справа: лицо, имя и KDA, винрейт, место — второй строкой */
+.p12-h{display:grid;grid-template-columns:36px minmax(0,1fr) auto;grid-template-areas:"f n g" "f p p";gap:2px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--q-ln);text-decoration:none;color:var(--tx);transition:background .15s;animation:u10In .35s backwards;animation-delay:calc(var(--i) * 40ms)}
+.p12-h:hover{background:var(--q-bh)}
+.p12-h > .q-fc{grid-area:f;width:36px;height:36px}
+.p12-h .n{grid-area:n;display:flex;flex-direction:column;min-width:0}.p12-h .n b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.p12-h .n small{font-size:11.5px;color:var(--mu)}
+.p12-h .n i{font-style:normal}.p12-h .n i.k{color:#7fb6ff}.p12-h .n i.d{color:#ff6b81}.p12-h .n i.a{color:var(--q-am)}
+.p12-h .g{grid-area:g;display:flex;flex-direction:column;align-items:flex-end}.p12-h .g b{font:700 15px/1 var(--h)}.p12-h .g small{font-size:11px;color:var(--mu)}
+.p12-h .p11-pl{grid-area:p;display:flex;flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:4px 8px;margin:4px 0 0 -6px;padding:4px 6px;border-radius:8px}
+.p12-h .p11-pl b{font:700 13.5px/1 var(--h);color:var(--q-am)}
+.p12-h .p11-pl small{font-size:11.5px}
+.p12-h .p11-pl em{font-style:normal;font-size:11.5px;font-weight:700;color:#7fb6ff}.p12-h .p11-pl em.no{color:var(--mu);font-weight:500}
+.p12-h .p11-pl .go{margin-left:auto;font-style:normal;color:var(--mu)}
+.q-hrt[data-hrk2]{cursor:pointer;transition:background .15s}.q-hrt[data-hrk2]:hover{background:var(--q-bh)}
+.q-hrt u{color:var(--q-am);text-decoration:none}
+.hrk-h small{display:block;margin-top:4px;color:var(--mu)}
+/* лайв: всплывашка по наведению — сплошной фон, не просвечивает */
+.q-pop{background:#15171d!important;opacity:1!important;backdrop-filter:none!important;box-shadow:0 22px 50px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.04)!important}
+.q-pop.hov{animation:none!important}
+/* лайв: карточка спокойнее — без полосы сверху, портрет и имя в линию */
+.q-pc.l10{background:var(--q-bx)}
+.q-pc.l10 .top{background:none!important;padding:12px 12px 0!important}
+.q-pc.l10 .top img.f.u11-pf{width:52px;height:52px;border-radius:12px;object-position:50% 12%}
+.q-pc.l10 .top .hn{font-size:12px!important;letter-spacing:.08em;color:var(--mu)}
+/* оверлей */
+body.ovm .q-nav,body.ovm .ft,body.ovm #tabs{display:none!important}
+body.ovm #v{max-width:480px;margin:0;padding:8px}
+.ov{display:flex;flex-direction:column;gap:8px;font-size:13px}
+.ov-h{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:#111318;border:1px solid var(--q-ln);position:sticky;top:0;z-index:5}
+.ov-lg{font:700 15px/1 var(--h);letter-spacing:.22em;background:linear-gradient(90deg,#ffcf6a,#e89c2c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ov-st{flex:1;color:var(--mu);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ov-dm{font-size:11px;font-weight:700;color:var(--q-am);padding:2px 7px;border-radius:6px;border:1px solid color-mix(in srgb,var(--q-am) 50%,transparent)}
+.ov-x{width:30px;height:30px;border-radius:9px;border:1px solid var(--q-ln);background:var(--q-bh);color:var(--tx);font:700 16px/1 var(--f);cursor:pointer}
+.ov.min .ov-b,.ov.min .ov-how{display:none}
+.ov-t{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:1px solid var(--q-ln);background:#111318}
+.ov-th{display:flex;align-items:center;gap:8px;padding:7px 12px;font:700 11px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--mu);border-bottom:1px solid var(--q-ln)}
+.ov-th i{width:8px;height:8px;border-radius:50%}
+.ov-p{display:grid;grid-template-columns:32px minmax(0,1fr) 26px 58px;grid-template-areas:"h n r s" "h t t t";gap:2px 10px;align-items:center;padding:8px 12px;border-top:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .12s}
+.ov-p:first-of-type{border-top:0}.ov-p:hover,.ov-p.on{background:var(--q-bh)}
+.ov-p.me{box-shadow:inset 3px 0 0 var(--q-am)}
+.ov-p .hi{grid-area:h;width:32px;height:32px;border-radius:8px}
+.ov-p .nm{grid-area:n;display:flex;flex-direction:column;min-width:0}.ov-p .nm b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ov-p .nm small{font-size:11px;color:var(--mu)}
+.ov-p .rk{grid-area:r}.ov-p .rk img{width:26px;height:26px}
+.ov-p .st{grid-area:s;display:flex;flex-direction:column;align-items:flex-end}.ov-p .st b{font:700 14px/1 var(--h)}.ov-p .st small{font-size:10.5px;color:var(--mu)}
+.ov-p .tg{grid-area:t;display:flex;flex-wrap:wrap;gap:4px}
+.ov-p .tg i,.ov-tg2 i{font-style:normal;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.06);color:var(--mu)}
+.ov-p .tg i.g,.ov-tg2 i.g{color:#33c98a;background:rgba(51,201,138,.12)}.ov-p .tg i.r,.ov-tg2 i.r{color:#ff5d73;background:rgba(255,93,115,.12)}
+.ov-p .tg i.a,.ov-tg2 i.a{color:var(--q-am);background:rgba(255,182,48,.12)}.ov-p .tg i.b,.ov-tg2 i.b{color:#7fb6ff;background:rgba(111,155,255,.12)}.ov-p .tg i.h,.ov-tg2 i.h{color:#c58cff;background:rgba(197,140,255,.12)}
+.ov-m{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;padding:8px;border-radius:10px;background:#0c0d11;animation:u10In .2s backwards}
+.ov-m > span{display:flex;flex-direction:column;min-width:70px}.ov-m small{font-size:10.5px;color:var(--mu)}.ov-m b{font:700 15px/1.1 var(--h)}.ov-m em{font-style:normal;font-size:10.5px;color:var(--mu)}
+.ov-rc{display:flex;gap:4px;width:100%}.ov-rc img{width:24px;height:24px;border-radius:6px;box-shadow:0 0 0 2px #33c98a}.ov-rc img.l{box-shadow:0 0 0 2px #ff5d73}
+.ov-tg2{display:flex;flex-wrap:wrap;gap:4px;width:100%}
+.ov-pf{margin-left:auto;align-self:center;color:var(--q-am);font-weight:700;text-decoration:none}
+.ov-e{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border-radius:12px;background:#111318;border:1px solid var(--q-ln);color:var(--mu)}
+.ov-how{padding:8px 12px;border-radius:12px;background:#111318;border:1px solid var(--q-ln);color:var(--mu)}
+.ov-how summary{cursor:pointer;font-weight:700;color:var(--tx)}
+.ov-how ol{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.ov-how code{display:block;margin:4px 0;padding:6px 8px;border-radius:8px;background:#0c0d11;font-size:11.5px;word-break:break-all;color:var(--tx)}
+.q-lvh #lvov{align-self:center}
 </style>
 </head>
 <body>
@@ -4637,12 +4705,11 @@ async function heroStatsStrip(n, hid, me) {
     put(n, '#hst', `<div><span>Игр</span><b>${nf(g)}</b><small>последняя ${esc(ago(y.last_played))}</small></div>
       <div><span>Винрейт</span><b class="${wrC(wr, g)}">${f1(wr)}%</b>${x ? cmp(x.wr, v => f1(v) + '%') : ''}</div>
       <div><span>KDA</span><b>${f2(kda)}</b>${x ? cmp(x.kda, f2) : ''}</div>
-      <div class="q-hrt"><span>Рейтинг на герое</span><b id="hstrt">…</b><small><span id="hstrs">ищу место среди всех игроков…</span> <span id="hstlb"></span></small></div>
+      <div class="q-hrt" data-hrk2="${hid}" role="button" title="Нажми — таблица соседей"><span>Место на герое</span><b id="hstrt">…</b><small id="hstrs">считаю…</small></div>
       <div><span>Урон / мин</span><b>${nf(y.damage_per_min)}</b><small>души / мин ${nf(y.networth_per_min)}</small></div>
       ${y.accuracy != null ? `<div><span>Точность</span><b>${Math.round(100 * y.accuracy)}%</b><small>крит ${Math.round(100 * (y.crit_shot_rate || 0))}%</small></div>` : ''}`);
-    heroRating(hid, ME.id).then(r => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); if (v) v.textContent = r && r.pos ? '#' + nf(r.pos) : '—'; if (t) t.textContent = r && r.pos ? `в мире по победам на герое (${nf(r.v)} ${pl(r.v, ['победа', 'победы', 'побед'])})` : 'побед на герое пока нет'; }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
-    myReg(ME.id).then(rg => api(`leaderboard/${rg}/${hid}`).then(Lb => { if (n !== VQ) return; const E = Lb.entries || [], e = E.find(z => lbHit(z, ME.id, ME.name)), el = $('#hstlb');
-      if (el) el.textContent = e ? `(${REGN[rg]}: #${e.rank} из ${E.length} мейнов в топ-1000)` : `(${REGN[rg]})`; })).catch(() => {});
+    hrkGet(hid, ME.id, ME.name).then(o => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); if (v) v.textContent = o && o.w && o.w.pos ? '#' + nf(o.w.pos) : '—';
+      if (t) t.innerHTML = o && o.w && o.w.pos ? `в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''} · ${esc(REGN[o.rg] || o.rg)} ${o.r ? '#' + o.r.pos : '— вне топ-1000'} · <u>таблица ›</u>` : 'побед на этом герое пока нет'; }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
   } catch (e) { put(n, '#hst', `<div class="err" style="grid-column:1/-1">${esc(e.message)}</div>`); }
 }
 async function heroMyMatches(n, hid) {
@@ -4827,6 +4894,10 @@ async function scout2(players, ctx) {
     if (hm >= 15 && hw / hm <= .4) tags.push(['r', 'Слабый на герое', `${pc(hw, hm)}% побед на герое`]);
     if (sn.m30 >= 120) tags.push(['b', 'Много играет', `${sn.m30} матчей за 30 дней`]);
     if (t.m && t.m < 200 && badge >= 100) tags.push(['r', 'Мало игр для ранга', `${games(t.m)} — и уже ${rankOf(badge).name}`]);
+    if (p30 && p30.m >= 20 && p30.w / p30.m >= .58) tags.push(['g', 'В форме', `${pc(p30.w, p30.m)}% побед за 30 дней`]);
+    if (p30 && p30.m >= 20 && p30.w / p30.m <= .42) tags.push(['r', 'Не в форме', `${pc(p30.w, p30.m)}% побед за 30 дней`]);
+    if (p12 && p12.m >= 6) tags.push(['b', 'Марафон', `${games(p12.m)} за 12 часов`]);
+    if (p12 && p12.m >= 3 && !p12.w) tags.push(['r', 'Тильт сегодня', `0 побед в ${games(p12.m)} за 12 часов`]);
     if (pid[id]) tags.push(['h', `Друзья · ${pid[id].n}`, ctx.last ? 'друзья в Steam и в одной команде в этом матче — возможно, пати' : 'друзья в Steam, недавно играли в одной команде — возможно, пати']);
     const threat = hm >= 10 ? (hw / hm - .5) * Math.min(1, hm / 60) + (ws >= 3 ? .05 : 0) + badge / 1000 : badge / 1000 - .1;
     const hot = rc.length && st >= 3 && rc[0].w, cold = rc.length && st >= 3 && !rc[0].w;
@@ -7077,10 +7148,10 @@ function coProfHTML(id, H) {
 function gmRow(m) {
   const w = m.player_team === m.match_result, d = m.ranked_delta, dur = Math.max(60, m.match_duration_s || 0);
   const kda = (m.player_kills + m.player_assists) / Math.max(1, m.player_deaths), M = MD.get(m.match_id), me = M ? M.players.find(p => p.account_id === PROF.id) : null;
-  const its = me ? finalItems(me).slice(0, 6) : [], tg = mMiniTags(m, PROF.CNT)[0];
+  const its = me ? finalItems(me).slice(0, 6) : [], tgs = mMiniTags(m, PROF.CNT).slice(0, 2);
   return `<div class="q-gm r9r ${w ? 'w' : 'l'}" data-m="${m.match_id}" tabindex="0" role="link" aria-label="${w ? 'Победа' : 'Поражение'}, ${esc(hero(m.hero_id).n)}, открыть матч">
     <span class="r9-rs"><b>${w ? 'Победа' : 'Поражение'}</b><small>${esc(MODE(m))}${d ? ` <span class="${d > 0 ? 'win' : 'loss'}">${d > 0 ? '+' : ''}${d}</span>` : ''} · ${mmss(dur)}</small></span>
-    <span class="r9-rh">${face(m.hero_id, w ? 'g' : 'c', 's')}<span><b>${esc(hero(m.hero_id).n)}</b><small>${esc(ago(m.start_time))}${tg ? ` · <span class="r9-tg ${tg[1]}" title="${esc(tg[2])}">${esc(tg[0])}</span>` : ''}</small></span></span>
+    <span class="r9-rh">${face(m.hero_id, w ? 'g' : 'c', 's')}<span><b>${esc(hero(m.hero_id).n)}</b><small>${esc(ago(m.start_time))}${tgs.map(tg => ` · <span class="r9-tg ${tg[1]}" title="${esc(tg[2])}">${esc(tg[0])}</span>`).join('')}</small></span></span>
     <span class="r9-rk"><b>${m.player_kills} / <i>${m.player_deaths}</i> / ${m.player_assists}</b><small>${f2(kda)} KDA</small></span>
     <span class="r9-rn"><b>${nf(m.net_worth / (dur / 60))}</b><small>душ/мин</small></span>
     <span class="r9-ri">${its.length ? its.map(itIco).join('') : (M === undefined ? '<i></i>'.repeat(6) : '')}</span>
@@ -7616,11 +7687,10 @@ function p11Heroes(H, HS, per) {
 }
 function p11HeroRows(L) {
   if (!L.length) return '<div class="empty">За этот период игр нет.</div>';
-  const mx = Math.max(...L.map(x => x.g));
-  return `<div class="p11-ht"><span>Герой</span><span>Место</span><span>Сыграно</span><span>Винрейт</span></div>${L.slice(0, 7).map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g);
-    return `<a class="p11-hr" href="#h/${x.hid}/me" style="--i:${i}">${face(x.hid, '', 'm')}<span class="p11-hn"><b>${esc(hero(x.hid).n)}</b><small><i class="k">${f1(x.k)}</i> / <i class="d">${f1(x.d)}</i> / <i class="a">${f1(x.a)}</i></small></span>
-      <span class="p11-pl" data-hrk="${x.hid}" role="button" title="Место на герое — нажми, покажу таблицу">${(() => { const o = HRR[PHF.id + '|' + x.hid]; return o ? hrkCell(o) : i < 4 ? '<small>…</small>' : '<small class="lk">узнать</small>'; })()}</span>
-      <span class="p11-bar"><i style="--w:${Math.round(100 * x.g / mx)}%"></i><b>${nf(x.g)}</b></span><span class="p11-bar wr ${wr >= 52 ? 'up' : wr <= 47 ? 'dn' : ''}"><i style="--w:${Math.round(wr)}%"></i><b>${f1(wr)}%</b></span></a>`; }).join('')}`;
+  return L.slice(0, 8).map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g), o = HRR[PHF.id + '|' + x.hid];
+    return `<a class="p12-h" href="#h/${x.hid}/me" style="--i:${i}">${face(x.hid, '', 'm')}<span class="n"><b>${esc(hero(x.hid).n)}</b><small><i class="k">${f1(x.k)}</i> / <i class="d">${f1(x.d)}</i> / <i class="a">${f1(x.a)}</i></small></span>
+      <span class="g"><b class="${wr >= 52 ? 'win' : wr <= 47 ? 'loss' : ''}">${f1(wr)}%</b><small>${games(x.g)}</small></span>
+      <span class="p11-pl" data-hrk="${x.hid}" role="button" title="Место на герое — нажми, покажу таблицу">${o ? hrkCell(o) : i < 4 ? '<small>считаю место…</small>' : '<small class="lk">узнать место ›</small>'}</span></a>`; }).join('');
 }
 async function viewHome() {
   if (!ME) return viewLanding();
@@ -7661,7 +7731,7 @@ async function viewHome() {
     <div class="p11-act"><span>${A.g7} за неделю</span><span>последний — ${esc(ago(A.last))}</span><a href="#live/${id}">лайв ›</a></div></section>`;
   const T = profTags(H, HS, HA), P2x = patterns2(H), lg = P2x.find(x => /долгих/.test(x.n));
   if (lg && lg.d <= -8) T.splice(1, 0, ['Сливает долгие игры', 'r', `игры 35+ мин выигрывает в ${Math.round(lg.wr)}%`]); else if (lg && lg.d >= 8) T.splice(1, 0, ['Тащит долгие игры', 'g', `игры 35+ мин выигрывает в ${Math.round(lg.wr)}%`]);
-  const know = T.length ? `<section class="q-box p11-kn"><div class="r9-h2"><b>Что знать</b></div><div class="p11-tg" id="p10kn">${T.slice(0, 6).map(([s2, c, h2], i) => `<div class="p10-t ${c || 'n'}" style="--i:${i}"><b>${esc(s2)}</b><small>${esc(h2)}</small></div>`).join('')}</div></section>` : '';
+  const know = T.length ? `<section class="q-box p11-kn"><div class="r9-h2"><b>Что знать</b></div><div class="p11-tg" id="p10kn">${T.slice(0, 8).map(([s2, c, h2], i) => `<div class="p10-t ${c || 'n'}" style="--i:${i}"><b>${esc(s2)}</b><small>${esc(h2)}</small></div>`).join('')}</div></section>` : '';
   const mates = `<section class="q-box r9-hs"><div class="r9-h2"><b>Чаще всего с</b><a href="#form/habits">привычки ›</a></div><div id="qkmate"><span class="sub">Считаю…</span></div></section>`;
   if (!P11.per) { const c30 = H.filter(m => m.start_time >= now() - 30 * 86400).length, c90 = H.filter(m => m.start_time >= now() - 90 * 86400).length; P11.per = c30 >= 10 ? '30' : c90 >= 10 ? '90' : 'all'; }
   const heroes = `<section class="q-box p11-hs"><div class="r9-h2"><b>Часто играет</b><div class="seg" id="p11per">${[['30', '30 дней'], ['90', '3 месяца'], ['all', 'Всё время']].map(([k, v]) => `<button type="button" data-p="${k}" class="${P11.per === k ? 'on' : ''}">${v}</button>`).join('')}</div><a href="#mine">все ›</a></div><div id="p11hl">${p11HeroRows(p11Heroes(H, HS, P11.per))}</div></section>`;
@@ -7670,7 +7740,7 @@ async function viewHome() {
       <div class="seg r9-md" id="hfm2">${[['', 'Все'], ['r', 'Ранговые'], ['u', 'Обычные']].map(([k, nm]) => `<button type="button" data-md="${k}" class="${(PHF.mode || '') === k ? 'on' : ''}">${nm}</button>`).join('')}</div>
       <select class="q-sel" id="hfh" aria-label="Герой"><option value="0">Все герои</option>${hlist.map(h => `<option value="${h}"${PHF.hero === h ? ' selected' : ''}>${esc(hero(h).n)}</option>`).join('')}</select></div>
     <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё 10</button></section>`;
-  V(`${ptabsHTML('home')}<div class="p11"><aside class="p11-l">${rank}${form}${know}${mates}<div id="qkco"></div></aside><div class="p11-r">${heroes}${hist}</div></div>
+  V(`${ptabsHTML('home')}<div class="p11 p12"><aside class="p11-l">${rank}${form}${know}${mates}<div id="qkco"></div></aside><div class="p11-c">${hist}</div><aside class="p11-r">${heroes}</aside></div>
     <div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b></div><div class="pad" id="myb"></div></div></div>`);
   $('#p11per').onclick = e => { const b = e.target.closest('[data-p]'); if (!b) return; P11.per = b.dataset.p; $$('#p11per button').forEach(x => x.classList.toggle('on', x === b)); put(n, '#p11hl', p11HeroRows(p11Heroes(H, HS, P11.per))); p11Rk(n, id, ME.name); };
   p11Rk(n, id, ME.name);
@@ -7782,13 +7852,27 @@ async function hmItems(n) {
 
 // ---------- место на герое в профиле: «#2 100 · мир · #12 EU», нажал — таблица с соседями выше и ниже ----------
 const RGS = {Europe: 'EU', NAmerica: 'NA', SAmerica: 'SA', Asia: 'Asia', Oceania: 'OCE'}, HRR = {};
-const hrkCell = o => o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b><small>мир${o.r ? ` · <em>#${o.r.pos} ${RGS[o.rg] || o.rg}</em>` : ''}</small>` : '<small>—</small>';
+const pctTop = (pos, tot) => { const p = 100 * pos / Math.max(1, tot); return 'топ ' + (p < 1 ? p.toFixed(1).replace('.', ',') : Math.max(1, Math.ceil(p))) + '%'; };
+const hrkCell = o => o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b><small>в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''}</small><em class="${o.r ? '' : 'no'}">${RGS[o.rg] || o.rg} ${o.r ? '#' + o.r.pos : '— вне топ-1000'}</em><i class="go">›</i>` : '<small>побед на герое пока нет</small>';
+// сколько всего игроков на герое (для «топ N%»): ищем последнюю строку таблицы вилкой, кэш на сутки
+const HTOT = {};
+function heroTotal(hid) {
+  if (HTOT[hid]) return HTOT[hid];
+  return (HTOT[hid] = (async () => {
+    try { const c = JSON.parse(localStorage.getItem('rl-ht') || '{}'); if (c[hid] && c[hid].t > Date.now() - 864e5) return c[hid].n; } catch (e) {}
+    const has = async st => { const r = await SBQ(`hero_id=${hid}&sort_by=wins&min_matches=1&start=${st}&limit=1`).catch(() => null); return !!(r && r.length); };
+    let lo = 0, hi = 50000; while (await has(hi) && hi < 8e6) { lo = hi; hi *= 2; }
+    while (hi - lo > 1000) { const m = Math.floor((lo + hi) / 2); if (await has(m)) lo = m; else hi = m; }
+    try { const c = JSON.parse(localStorage.getItem('rl-ht') || '{}'); c[hid] = {n: lo, t: Date.now()}; localStorage.setItem('rl-ht', JSON.stringify(c)); } catch (e) {}
+    return lo;
+  })().catch(() => 0));
+}
 async function hrkGet(hid, id, name) {
   const k = id + '|' + hid; if (HRR[k]) return HRR[k];
   const rg = await myReg(id).catch(() => 'Europe');
-  const [w, E] = await Promise.all([heroRating(hid, id).catch(() => null), api(`leaderboard/${rg}/${hid}`).then(L => L.entries || []).catch(() => [])]);
+  const [w, E, tot] = await Promise.all([heroRating(hid, id).catch(() => null), api(`leaderboard/${rg}/${hid}`).then(L => L.entries || []).catch(() => []), heroTotal(hid)]);
   const i = E.findIndex(e => lbHit(e, id, name));
-  return (HRR[k] = {w, r: i < 0 ? null : {pos: i + 1, n: E.length}, rg, E, i});
+  return (HRR[k] = {w, r: i < 0 ? null : {pos: i + 1, n: E.length}, rg, E, i, tot});
 }
 async function p11Rk(n, id, name) {
   for (const c of $$('#p11hl [data-hrk]').slice(0, 4)) {
@@ -7799,7 +7883,7 @@ async function p11Rk(n, id, name) {
 async function hrkOpen(hid, id, name) {
   const ov = document.createElement('div'); ov.className = 'hrk-ov';
   ov.innerHTML = `<div class="hrk"><header>${face(hid, '', 'm')}<div><b>${esc(hero(hid).n)} · рейтинг</b><small>${esc(name || '')}</small></div><button class="hrk-x" type="button" aria-label="Закрыть">✕</button></header>
-    <div class="seg" id="hrks"><button data-s="w" class="on" type="button">Мир · по победам</button><button data-s="r" type="button">Регион · топ-1000</button></div><div id="hrkb"><div class="load">Считаю место…</div></div></div>`;
+    <div class="seg" id="hrks"><button data-s="w" class="on" type="button">Мир</button><button data-s="r" type="button">Мой регион</button></div><div id="hrkb"><div class="load">Считаю место…</div></div></div>`;
   document.body.appendChild(ov); requestAnimationFrame(() => ov.classList.add('on'));
   const close = () => { ov.classList.remove('on'); setTimeout(() => ov.remove(), 200); removeEventListener('keydown', k1); removeEventListener('hashchange', close); };
   const k1 = e => { if (e.key === 'Escape') close(); };
@@ -7809,18 +7893,18 @@ async function hrkOpen(hid, id, name) {
   const draw = async () => {
     const b = $('#hrkb', ov); if (!b) return; b.innerHTML = '<div class="load">Загружаю…</div>';
     const o = await hrkGet(hid, id, name).catch(() => null); if (!ov.isConnected) return;
-    $$('#hrks button', ov).forEach(x => { x.classList.toggle('on', x.dataset.s === mode); if (x.dataset.s === 'r' && o) x.textContent = `${REGN[o.rg] || o.rg} · топ-1000`; });
+    $$('#hrks button', ov).forEach(x => { x.classList.toggle('on', x.dataset.s === mode); if (x.dataset.s === 'r' && o) x.textContent = REGN[o.rg] || o.rg; });
     let html = '';
     if (mode === 'w') {
       const me = o && o.w && o.w.pos ? o.w.pos : 1, st = Math.max(1, me - 7 + off);
       const L = (await SBQ(`hero_id=${hid}&sort_by=wins&min_matches=1&start=${st - 1}&limit=15`).catch(() => [])) || [];
       const S = L.length ? await api('players/steam?account_ids=' + L.map(x => x.account_id).join(',')).catch(() => []) : [], SM = {};
       (S || []).forEach(x => SM[x.account_id] = x);
-      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `Место <b>#${nf(o.w.pos)}</b> в мире — по числу побед на герое за всё время (${nf(o.w.v)} ${pl(o.w.v, ['победа', 'победы', 'побед'])}).` : 'Побед на этом герое пока нет.'}</p>
+      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b> в мире${o.tot ? ` из ${nf(o.tot)} игроков на герое · ${pctTop(o.w.pos, o.tot)}` : ''}<br><small>Место считается по числу побед на этом герое: у тебя ${nf(o.w.v)}.</small>` : 'Побед на этом герое пока нет.'}</p>
         ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${nf(x.value)} ${pl(x.value, ['победа', 'победы', 'побед'])} · ${nf(x.matches)} игр`, x.account_id === id)).join('')}`;
     } else {
       const E = o ? o.E : [], c = o && o.i >= 0 ? o.i : 0, a = Math.max(0, c - 7 + off);
-      html = `<p class="hrk-h">${o && o.r ? `Место <b>#${o.r.pos}</b> в официальном топе ${esc(REGN[o.rg] || o.rg)} на этом герое.` : `${esc(name || 'Игрока')} нет в топ-1000 региона на этом герое — показываю начало таблицы.`}</p>
+      html = `<p class="hrk-h">${o && o.r ? `<b>#${o.r.pos}</b> в ${esc(REGN[o.rg] || o.rg)} на этом герое<br><small>Официальная таблица игры: топ-1000 региона.</small>` : `${esc(name || 'Игрока')} пока нет в топ-1000 ${esc(REGN[o ? o.rg : 'Europe'] || '')} на этом герое<br><small>Ниже — начало таблицы региона.</small>`}</p>
         ${E.slice(a, a + 15).map((e, j) => { const one = (e.possible_account_ids || []).length === 1 ? e.possible_account_ids[0] : 0; return row(a + j + 1, one, e.account_name, '', one ? '' : 'аккаунт скрыт', a + j === (o ? o.i : -1)); }).join('') || '<div class="empty">Таблица пустая.</div>'}`;
     }
     b.innerHTML = `${html}<div class="hrk-nav"><button type="button" data-o="-15">▲ Выше</button><button type="button" data-o="0">К себе</button><button type="button" data-o="15">▼ Ниже</button></div>`;
@@ -7848,6 +7932,110 @@ addEventListener('pointermove', e => {
   tip.style.left = fx > .6 ? 'auto' : `calc(${(100 * fx).toFixed(1)}% + 12px)`; tip.style.right = fx > .6 ? `calc(${(100 - 100 * fx).toFixed(1)}% + 12px)` : 'auto';
 }, {passive: true});
 addEventListener('pointerleave', qcwHide);
+
+// ===================== lg11 — 04.11, третьи скрины: оверлей как Porofessor, больше меток, разбор без «воды» =====================
+
+// ---------- Оверлей: ?ov=1#ov — компактная панель матча для Steam-оверлея (Shift+Tab → Веб-браузер) или второго монитора ----------
+// Каждые 20 с проверяет, в матче ли игрок. Нашёлся матч — все 12: герой, ранг, винрейт на герое, метки; нажал — подробнее и профиль.
+// Матч кончился — ссылка на разбор. #ov/demo — пример на любом идущем сейчас матче.
+const OV = {mid: 0, t: 0, sel: 0, L: null, timer: 0, clk: 0, demo: false};
+function ovStatus(s) { const el = $('#ovst'); if (el) el.textContent = s; }
+function ovMore(p) {
+  const per = (nm, o) => `<span><small>${nm}</small><b class="${o && o.m ? (o.w / o.m >= .52 ? 'win' : o.w / o.m <= .46 ? 'loss' : '') : ''}">${o && o.m ? Math.round(100 * o.w / o.m) + '%' : '—'}</b><em>${o && o.m ? games(o.m) : 'не играл'}</em></span>`;
+  return `<div class="ov-m">${per('12 ч', p.p12)}${per('30 дн', p.p30)}<span><small>всего</small><b>${p.tm ? pc(p.tw, p.tm) + '%' : '—'}</b><em>${p.tm ? games(p.tm) : ''}</em></span>
+    ${p.rc && p.rc.length ? `<div class="ov-rc">${p.rc.slice(0, 6).map(r => `<img class="${r.w ? 'w' : 'l'}" src="${esc(hero(r.hid).i)}" alt="" title="${esc(hero(r.hid).n)} · ${r.w ? 'победа' : 'поражение'}">`).join('')}</div>` : ''}
+    ${(p.tags || []).length > 2 ? `<div class="ov-tg2">${p.tags.slice(2).map(x => `<i class="${x[0]}" title="${esc(x[2])}">${esc(x[1])}</i>`).join('')}</div>` : ''}
+    ${p.id ? `<a class="ov-pf" href="?id=${p.id}#home" target="_blank" rel="noopener">Открыть профиль ↗</a>` : ''}</div>`;
+}
+function ovDraw() {
+  const L = OV.L || [], me = ME && L.find(p => p.id === ME.id), mt = me ? me.team : 0;
+  const row = p => { const wr = p.hm ? Math.round(100 * p.hw / p.hm) : null, t = (p.tags || []).slice(0, 2);
+    return `<div class="ov-p${me && p.id === me.id ? ' me' : ''}${OV.sel === p.id ? ' on' : ''}" data-ovp="${p.id}" tabindex="0">
+      <img class="hi" src="${esc(hero(p.hid).i)}" alt="" title="${esc(hero(p.hid).n)}"><span class="nm"><b>${esc(p.name)}</b><small>${esc(hero(p.hid).n)}</small></span>
+      <span class="rk" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span>
+      <span class="st"><b class="${wr == null ? '' : wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}">${wr == null ? '—' : wr + '%'}</b><small>${p.hm ? games(p.hm) : 'нет игр'}</small></span>
+      <span class="tg">${t.map(x => `<i class="${x[0]}" title="${esc(x[2])}">${esc(x[1])}</i>`).join('')}</span>
+      ${OV.sel === p.id ? ovMore(p) : ''}</div>`; };
+  const team = (k, nm) => `<div class="ov-t"><div class="ov-th"><i style="background:${k ? 'var(--q-sp)' : 'var(--q-am)'}"></i>${nm}</div>${L.filter(p => p.team === k).map(row).join('')}</div>`;
+  const b = $('#ovb'); if (b) b.innerHTML = team(mt, me ? 'Твоя команда' : 'Янтарная рука') + team(1 - mt, me ? 'Противники' : 'Сапфировое пламя');
+}
+function ovToggle() { const o = $('#ov'); if (!o) return; o.classList.toggle('min'); const x = $('#ovx'); if (x) x.textContent = o.classList.contains('min') ? '+' : '–'; }
+async function viewOv() {
+  const n = vNew(); clearInterval(OV.timer); clearInterval(OV.clk); document.body.classList.add('ovm');
+  OV.demo = /^#ov\/demo/.test(location.hash); OV.mid = 0; OV.L = null; OV.sel = 0;
+  const link = `${location.origin}${location.pathname}?id=${ME ? ME.id : 'ТВОЙ_ID'}&ov=1#ov`;
+  V(`<div class="ov" id="ov"><header class="ov-h"><b class="ov-lg">RESTLESS</b><span class="ov-st" id="ovst">…</span>${OV.demo ? '<span class="ov-dm">пример</span>' : ''}<button class="ov-x" id="ovx" type="button" title="Скрыть / показать (H)" aria-label="Скрыть или показать">–</button></header>
+    <div class="ov-b" id="ovb"><div class="load">Проверяю матч…</div></div>
+    <details class="ov-how"><summary>Как открыть поверх игры</summary><ol>
+      <li>В Deadlock нажми <b>Shift+Tab</b> — откроется оверлей Steam.</li>
+      <li>Нажми <b>Веб-браузер</b> и вставь ссылку:<code id="ovln">${esc(link)}</code><button class="btn s g" id="ovcp" type="button">Скопировать</button></li>
+      <li>Нажми на булавку окна — оно останется поверх игры. <b>H</b> — скрыть и показать.</li>
+      <li>Или просто открой ссылку на втором мониторе.</li></ol></details></div>`);
+  $('#ovx').onclick = ovToggle;
+  $('#ovcp').onclick = e => { const b = e.currentTarget; if (navigator.clipboard) navigator.clipboard.writeText(link).then(() => { b.textContent = 'Скопировано ✓'; }).catch(() => {}); };
+  $('#ovb').onclick = e => { const r = e.target.closest('[data-ovp]'); if (!r || e.target.closest('a')) return; const id = +r.dataset.ovp; OV.sel = OV.sel === id ? 0 : id; ovDraw(); };
+  if (!ME && !OV.demo) { ovStatus('нет профиля'); put(n, '#ovb', '<div class="ov-e">Найди себя в поиске сверху на сайте — оверлей запомнит профиль и сам найдёт твой матч.<a class="btn" href="#ov/demo">Показать на примере</a></div>'); return; }
+  const check = async () => {
+    if (n !== VQ) { clearInterval(OV.timer); return; }
+    let m = null, ok = true;
+    try { const A = await live(OV.demo ? 'matches/active' : `matches/active?account_id=${ME.id}`); m = OV.demo ? ((OV.mid && (A || []).find(x => x.match_id === OV.mid)) || (A || [])[0] || null) : (A || [])[0] || null; } catch (e) { ok = false; }
+    if (n !== VQ) return;
+    if (!ok) { ovStatus('нет связи · повторю через 20 с'); return; }
+    if (!m) {
+      if (OV.mid && !OV.demo) { const mid = OV.mid; OV.mid = 0; OV.L = null; clearInterval(OV.clk); ovStatus('матч закончился'); put(n, '#ovb', `<div class="ov-e">Матч закончился.<a class="btn" href="#m/${mid}/co" target="_blank" rel="noopener">Разбор матча ↗</a></div>`); return; }
+      ovStatus('жду матч · проверяю каждые 20 с');
+      if (!OV.L) put(n, '#ovb', `<div class="ov-e">Сейчас ты не в матче. Как только найдётся — здесь появятся все 12 игроков.${OV.demo ? '' : '<a class="btn g" href="#ov/demo">Показать на примере</a>'}</div>`);
+      return;
+    }
+    if (m.match_id !== OV.mid) {
+      OV.mid = m.match_id; OV.t = m.start_time; OV.L = null; OV.sel = 0; ovStatus('матч найден · смотрю игроков…');
+      put(n, '#ovb', '<div class="load">Смотрю ранги, героев и серии всех 12…</div>');
+      const L = await scout2(m.players, {mid: m.match_id}).catch(() => null); if (n !== VQ) return;
+      if (!L) { put(n, '#ovb', '<div class="ov-e">Не вышло загрузить игроков. Попробую ещё раз через 20 с.</div>'); OV.mid = 0; return; }
+      OV.L = L; ovDraw();
+      clearInterval(OV.clk); const tickT = () => { if (n !== VQ) return clearInterval(OV.clk); if (OV.t) ovStatus(`${OV.demo ? 'идёт матч' : 'ты в матче'} · ${mmss(Math.max(0, now() - OV.t))}`); }; tickT(); OV.clk = setInterval(tickT, 1000);
+    }
+  };
+  check(); OV.timer = setInterval(check, 20000);
+}
+addEventListener('keydown', e => { if (!document.body.classList.contains('ovm') || /INPUT|TEXTAREA/.test((e.target || {}).tagName || '')) return; if (e.key === 'h' || e.key === 'H' || e.key === 'р' || e.key === 'Р') ovToggle(); });
+{ const R0 = route; route = function () { if (/^#ov(\/|$)/.test(location.hash)) return viewOv(); document.body.classList.remove('ovm'); clearInterval(OV.timer); clearInterval(OV.clk); return R0.apply(this, arguments); }; }
+// кнопка оверлея на лайв-матче
+{ const VL0 = viewLive; viewLive = async function () { const r = await VL0.apply(this, arguments); const h = $('.q-lvh'); if (h && !$('#lvov', h)) h.insertAdjacentHTML('beforeend', '<a class="btn g s" id="lvov" href="?ov=1#ov" target="_blank" rel="noopener" title="Компактная панель матча поверх игры">Оверлей ↗</a>'); return r; }; }
+
+// ---------- больше меток: профиль, строка матча ----------
+{ const PT0 = profTags; profTags = function (H, HS, HA) {
+  const T = PT0(H, HS, HA) || [], L = (H || []).slice(0, 60);
+  if (L.length >= 20) {
+    const hr = m => new Date(m.start_time * 1000).getHours(), night = L.filter(m => { const h = hr(m); return h >= 0 && h < 6; }).length;
+    if (night / L.length >= .35) T.push(['Ночной игрок', 'b', `${Math.round(100 * night / L.length)}% игр — с полуночи до 6 утра`]);
+    const days = new Set(L.filter(m => m.start_time > now() - 7 * 86400).map(m => new Date(m.start_time * 1000).toDateString()));
+    if (days.size >= 6) T.push(['Каждый день', 'b', `играл ${days.size} из последних 7 дней`]);
+    const byDay = {}; L.filter(m => m.start_time > now() - 30 * 86400).forEach(m => { const k = new Date(m.start_time * 1000).toDateString(); byDay[k] = (byDay[k] || 0) + 1; });
+    const dv = Object.values(byDay); if (dv.length >= 4 && dv.reduce((a, x) => a + x, 0) / dv.length >= 6) T.push(['Длинные сессии', 'b', `в среднем ${f1(dv.reduce((a, x) => a + x, 0) / dv.length)} игр за день, когда играет`]);
+    const rk = L.filter(m => /ранг/i.test(MODE(m))).length;
+    if (rk / L.length >= .7) T.push(['Играет ранговые', 'a', `${Math.round(100 * rk / L.length)}% последних игр — ранговые`]);
+    else if (rk === 0) T.push(['Только обычные', '', 'в последних играх ни одной ранговой']);
+    const lastW = L.slice(0, 10).filter(m => m.player_team === m.match_result).length;
+    if (L.length >= 10 && lastW >= 7) T.push(['Горячая рука', 'g', `${lastW} побед в последних 10`]);
+  }
+  return T; }; }
+{ const MT0 = mMiniTags; mMiniTags = function (m, CNT) {
+  const T = (MT0(m, CNT) || []).slice(), dur = (m.match_duration_s || 0) / 60;
+  if (m.player_kills >= 12) T.push(['Много убийств', 'g', `${m.player_kills} убийств`]);
+  if (m.player_assists >= 20) T.push(['Командный', 'g', `${m.player_assists} помощи`]);
+  if (dur >= 45) T.push(['Долгая игра', 'b', `${Math.round(dur)} минут`]);
+  else if (dur && dur < 22) T.push(['Быстрая игра', 'b', `${Math.round(dur)} минут`]);
+  return T; }; }
+
+// ---------- разбор без «воды»: убираем фразы-лозунги, оставляем факты и советы ----------
+const CO11_FLUFF = [/^Каждая такая минута[^.]*\.?$/i, /^Это сохрани\.?$/i, /\s*—?\s*это хорошо, не теряй это\.?/i, /\s*Это сохрани\.?/i, /\s*Увидел угрозу — вышел\.?/i];
+{ const CF0 = co10Fix; co10Fix = function (html) {
+  const out = CF0(html), t = document.createElement('template'); t.innerHTML = out;
+  t.content.querySelectorAll('.co10-r li').forEach(li => { let h = li.innerHTML; CO11_FLUFF.forEach(re => { h = h.replace(re, ''); }); h = h.trim(); if (!h.replace(/<[^>]+>/g, '').trim()) li.remove(); else li.innerHTML = h; });
+  t.content.querySelectorAll('.co10-r').forEach(ul => { if (!ul.children.length) { const p = ul.previousElementSibling; if (p && p.classList.contains('co10-h')) p.remove(); ul.remove(); } });
+  t.content.querySelectorAll('.co2-why, .co-nt').forEach(x => x.remove());
+  return t.innerHTML; }; }
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');
