@@ -361,3 +361,51 @@ function mOv() {
       <div class="r9-its">${finalItems(p).map(itIco).join('') || '<span class="sub">Предметов нет в данных.</span>'}</div>
       <div class="r9-pb"><button type="button" class="btn s" data-mt="co">Подробный разбор ›</button><button type="button" class="btn g" data-mt="pl">Сборка по минутам</button>${p.account_id && !me ? `<a class="btn g" href="?id=${p.account_id}#home">Профиль</a>` : ''}</div></section></div>`;
 }
+
+// ---------- матч по номеру: в поиске и в профиле; свой матч, открытый по номеру, остаётся в истории профиля ----------
+const XM_KEY = 'rl-xm';
+const xmAll = () => { try { return JSON.parse(localStorage.getItem(XM_KEY) || '{}') || {}; } catch (e) { return {}; } };
+function xmSave(aid, X) {
+  const p = X.P.find(q => q.account_id === aid); if (!p) return;
+  const mi = X.mi, row = {match_id: X.mid, start_time: tsOf(mi.start_time) || now(), hero_id: p.hero_id, player_team: teamOf(p.team), match_result: teamOf(mi.winning_team),
+    player_kills: p.kills || 0, player_deaths: p.deaths || 0, player_assists: p.assists || 0, net_worth: p.net_worth || 0, match_duration_s: mi.duration_s || 0, match_mode: mi.match_mode, hero_level: p.level || 0, last_hits: p.last_hits || 0, denies: p.denies || 0, xm: 1};
+  const A = xmAll(), L = (A[aid] || []).filter(r => r.match_id !== row.match_id && r.start_time > now() - 21 * 86400);
+  A[aid] = [row, ...L].slice(0, 30); try { localStorage.setItem(XM_KEY, JSON.stringify(A)); } catch (e) {}
+}
+function xmMerge(aid, H) {
+  const L = (xmAll()[aid] || []).filter(r => !H.some(m => m.match_id === r.match_id));
+  return L.length ? L.concat(H).sort((a, b) => b.start_time - a.start_time) : H;
+}
+{
+  const VM10 = viewMatch2;
+  viewMatch2 = async function (mid, tab) { await VM10(mid, tab); try { if (MX && MX.mid === +mid && ME && MX.P.some(p => p.account_id === ME.id)) xmSave(ME.id, MX); } catch (e) {} };
+}
+const xmGo = mid => { const v = String(mid || '').replace(/\D/g, ''); if (v.length >= 5) location.hash = '#m/' + v; };
+// шапка: просто число — спросить, это матч или игрок; «матч 123…» — сразу матч
+{
+  const sq = $('#sq'), dd = $('#sd');
+  const isNum = q => /^\d{6,11}$/.test(q), isM = q => /^(матч|match|m|#m\/)\s*№?\s*(\d{5,11})$/i.exec(q);
+  const choice = q => { dd.classList.remove('hide'); dd.innerHTML = `<button type="button" data-mid="${q}"><span class="x10-ic">⚔</span><span><b>Матч № ${q}</b><small>открыть разбор этого матча</small></span></button><button type="button" data-id="${q}"><span class="x10-ic">👤</span><span><b>Игрок с ID ${q}</b><small>открыть профиль</small></span></button>`; };
+  if (sq && dd) {
+    sq.addEventListener('input', () => { const q = sq.value.trim(); if (isNum(q)) choice(q); else if (isM(q)) choice(isM(q)[2]); });
+    document.addEventListener('submit', e => { if (!e.target || e.target.id !== 'sf') return; const q = sq.value.trim(), m = isM(q);
+      if (m) { e.preventDefault(); e.stopPropagation(); sq.value = ''; dd.classList.add('hide'); xmGo(m[2]); return; }
+      if (isNum(q)) { e.preventDefault(); e.stopPropagation(); choice(q); } }, true);
+    dd.addEventListener('click', e => { const b = e.target.closest('[data-mid]'); if (!b) return; e.stopPropagation(); dd.classList.add('hide'); sq.value = ''; xmGo(b.dataset.mid); }, true);
+  }
+}
+// профиль: «Матч по номеру» в шапке списка матчей
+{
+  const VH10 = viewHome;
+  viewHome = async function () {
+    await VH10.apply(this, arguments);
+    const h = $('#hist .r9-h2'); if (!h || $('#xmB', h)) return;
+    h.insertAdjacentHTML('beforeend', `<button type="button" class="btn g x10-b" id="xmB" title="Только что сыграл, а матча нет? Вставь номер матча из игры">＋ Матч по номеру</button>`);
+    $('#xmB').onclick = () => {
+      if ($('#xmF')) { $('#xmF').remove(); return; }
+      h.insertAdjacentHTML('afterend', `<form class="x10-f" id="xmF" autocomplete="off"><input id="xmQ" inputmode="numeric" placeholder="Номер матча из игры, например 129303386" aria-label="Номер матча"><button class="btn s" type="submit">Открыть</button></form>`);
+      $('#xmQ').focus();
+      $('#xmF').onsubmit = e => { e.preventDefault(); xmGo($('#xmQ').value); };
+    };
+  };
+}

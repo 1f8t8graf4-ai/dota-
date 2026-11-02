@@ -112,6 +112,7 @@ async function viewHome() {
       api('assets/ranked-seasons').catch(() => []), api('analytics/hero-stats?' + fq()).catch(() => []), api('players/steam?account_ids=' + id).catch(() => [])]);
   } catch (e) { if (n === VQ) V(`<div class="err">Не вышло загрузить профиль: ${esc(e.message)}</div>`); return; }
   if (n !== VQ) return;
+  if (typeof xmMerge === 'function') H = xmMerge(id, H);
   const won = m => m.player_team === m.match_result, badge = (R && R.badge) || 0, st = (ST || [])[0] || {};
   const c60 = {}; H.filter(m => m.start_time >= now() - 60 * 86400).forEach(m => c60[m.hero_id] = (c60[m.hero_id] || 0) + 1);
   const pool = HS.slice().sort((a, b) => b.matches_played - a.matches_played);

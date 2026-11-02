@@ -380,3 +380,14 @@ body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#3
 .r10-late{margin:10px 0 0;font-size:12.5px;color:var(--mu)}
 .r10-late b{color:var(--loss)}
 @media (max-width:600px){.r10-ts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* ==== матч по номеру ==== */
+.x10-b{height:34px;padding:0 12px;font-size:12.5px}
+.x10-f{display:flex;gap:8px;padding:10px 16px;border-bottom:1px solid var(--q-ln);background:var(--q-bh);animation:u10In .25s backwards}
+.x10-f input{flex:1;min-width:0;height:38px;padding:0 12px;border-radius:9px;border:1px solid var(--q-ln);background:var(--q-bx);color:var(--tx);font:500 14px/1 var(--f)}
+.x10-f input:focus{outline:none;border-color:var(--q-am)}
+.x10-ic{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--s3);font-size:14px;flex:none}
+.x10-nf{display:flex;flex-direction:column;gap:8px;max-width:560px;margin:30px auto;padding:22px;text-align:center;align-items:center}
+.x10-nf b{font:700 20px/1.2 var(--h);text-transform:uppercase;letter-spacing:.03em}
+.x10-nf span{font-size:14px;color:var(--mu)}
+.x10-nb{display:flex;gap:8px;margin-top:6px}
+@media (max-width:600px){.x10-b{order:5;margin-left:auto}}

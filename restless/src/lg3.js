@@ -38,7 +38,7 @@ async function viewMatch2(mid, tab) {
   if (MZ.mid !== mid) { MZ.mid = mid; MZ.slot = 0; MZ.win = 'lane'; MZ.lane = 0; MZ.t = 0; }
   if (tab && MTABS.some(x => x[0] === tab)) MZ.tab = tab;
   V('<div class="load">Разбираю матч — все 12 игроков, линии, экономику и карту…</div>');
-  let md; try { md = await api('matches/' + mid + '/metadata'); } catch (e) { if (n === VQ) V(`<div class="err">Матч не загрузился: ${esc(e.message)}</div>`); return; }
+  let md; try { md = await api('matches/' + mid + '/metadata'); } catch (e) { if (n === VQ) V(`<div class="q-box x10-nf"><b>Матч № ${mid} пока не нашёлся</b><span>Если игра только что закончилась — подожди пару минут и нажми «Ещё раз».</span><span class="x10-nb"><button class="btn s" type="button" onclick="route()">Ещё раз</button><a class="btn g" href="#home">В профиль</a></span></div>`); return; }
   if (n !== VQ) return;
   const mi = md.match_info, P = mi.players.slice().sort((a, b) => teamOf(a.team) - teamOf(b.team) || a.player_slot - b.player_slot);
   await steamNames(P.map(p => p.account_id)); if (n !== VQ) return;

@@ -2899,6 +2899,17 @@ body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#3
 .r10-late{margin:10px 0 0;font-size:12.5px;color:var(--mu)}
 .r10-late b{color:var(--loss)}
 @media (max-width:600px){.r10-ts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* ==== матч по номеру ==== */
+.x10-b{height:34px;padding:0 12px;font-size:12.5px}
+.x10-f{display:flex;gap:8px;padding:10px 16px;border-bottom:1px solid var(--q-ln);background:var(--q-bh);animation:u10In .25s backwards}
+.x10-f input{flex:1;min-width:0;height:38px;padding:0 12px;border-radius:9px;border:1px solid var(--q-ln);background:var(--q-bx);color:var(--tx);font:500 14px/1 var(--f)}
+.x10-f input:focus{outline:none;border-color:var(--q-am)}
+.x10-ic{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--s3);font-size:14px;flex:none}
+.x10-nf{display:flex;flex-direction:column;gap:8px;max-width:560px;margin:30px auto;padding:22px;text-align:center;align-items:center}
+.x10-nf b{font:700 20px/1.2 var(--h);text-transform:uppercase;letter-spacing:.03em}
+.x10-nf span{font-size:14px;color:var(--mu)}
+.x10-nb{display:flex;gap:8px;margin-top:6px}
+@media (max-width:600px){.x10-b{order:5;margin-left:auto}}
 </style>
 </head>
 <body>
@@ -5540,7 +5551,7 @@ async function viewMatch2(mid, tab) {
   if (MZ.mid !== mid) { MZ.mid = mid; MZ.slot = 0; MZ.win = 'lane'; MZ.lane = 0; MZ.t = 0; }
   if (tab && MTABS.some(x => x[0] === tab)) MZ.tab = tab;
   V('<div class="load">Разбираю матч — все 12 игроков, линии, экономику и карту…</div>');
-  let md; try { md = await api('matches/' + mid + '/metadata'); } catch (e) { if (n === VQ) V(`<div class="err">Матч не загрузился: ${esc(e.message)}</div>`); return; }
+  let md; try { md = await api('matches/' + mid + '/metadata'); } catch (e) { if (n === VQ) V(`<div class="q-box x10-nf"><b>Матч № ${mid} пока не нашёлся</b><span>Если игра только что закончилась — подожди пару минут и нажми «Ещё раз».</span><span class="x10-nb"><button class="btn s" type="button" onclick="route()">Ещё раз</button><a class="btn g" href="#home">В профиль</a></span></div>`); return; }
   if (n !== VQ) return;
   const mi = md.match_info, P = mi.players.slice().sort((a, b) => teamOf(a.team) - teamOf(b.team) || a.player_slot - b.player_slot);
   await steamNames(P.map(p => p.account_id)); if (n !== VQ) return;
@@ -6823,6 +6834,7 @@ async function viewHome() {
       api('assets/ranked-seasons').catch(() => []), api('analytics/hero-stats?' + fq()).catch(() => []), api('players/steam?account_ids=' + id).catch(() => [])]);
   } catch (e) { if (n === VQ) V(`<div class="err">Не вышло загрузить профиль: ${esc(e.message)}</div>`); return; }
   if (n !== VQ) return;
+  if (typeof xmMerge === 'function') H = xmMerge(id, H);
   const won = m => m.player_team === m.match_result, badge = (R && R.badge) || 0, st = (ST || [])[0] || {};
   const c60 = {}; H.filter(m => m.start_time >= now() - 60 * 86400).forEach(m => c60[m.hero_id] = (c60[m.hero_id] || 0) + 1);
   const pool = HS.slice().sort((a, b) => b.matches_played - a.matches_played);
@@ -7255,6 +7267,54 @@ function mOv() {
       ${r10Sum(X, p)}<p class="r10-late" id="qmlate" hidden></p>
       <div class="r9-its">${finalItems(p).map(itIco).join('') || '<span class="sub">Предметов нет в данных.</span>'}</div>
       <div class="r9-pb"><button type="button" class="btn s" data-mt="co">Подробный разбор ›</button><button type="button" class="btn g" data-mt="pl">Сборка по минутам</button>${p.account_id && !me ? `<a class="btn g" href="?id=${p.account_id}#home">Профиль</a>` : ''}</div></section></div>`;
+}
+
+// ---------- матч по номеру: в поиске и в профиле; свой матч, открытый по номеру, остаётся в истории профиля ----------
+const XM_KEY = 'rl-xm';
+const xmAll = () => { try { return JSON.parse(localStorage.getItem(XM_KEY) || '{}') || {}; } catch (e) { return {}; } };
+function xmSave(aid, X) {
+  const p = X.P.find(q => q.account_id === aid); if (!p) return;
+  const mi = X.mi, row = {match_id: X.mid, start_time: tsOf(mi.start_time) || now(), hero_id: p.hero_id, player_team: teamOf(p.team), match_result: teamOf(mi.winning_team),
+    player_kills: p.kills || 0, player_deaths: p.deaths || 0, player_assists: p.assists || 0, net_worth: p.net_worth || 0, match_duration_s: mi.duration_s || 0, match_mode: mi.match_mode, hero_level: p.level || 0, last_hits: p.last_hits || 0, denies: p.denies || 0, xm: 1};
+  const A = xmAll(), L = (A[aid] || []).filter(r => r.match_id !== row.match_id && r.start_time > now() - 21 * 86400);
+  A[aid] = [row, ...L].slice(0, 30); try { localStorage.setItem(XM_KEY, JSON.stringify(A)); } catch (e) {}
+}
+function xmMerge(aid, H) {
+  const L = (xmAll()[aid] || []).filter(r => !H.some(m => m.match_id === r.match_id));
+  return L.length ? L.concat(H).sort((a, b) => b.start_time - a.start_time) : H;
+}
+{
+  const VM10 = viewMatch2;
+  viewMatch2 = async function (mid, tab) { await VM10(mid, tab); try { if (MX && MX.mid === +mid && ME && MX.P.some(p => p.account_id === ME.id)) xmSave(ME.id, MX); } catch (e) {} };
+}
+const xmGo = mid => { const v = String(mid || '').replace(/\D/g, ''); if (v.length >= 5) location.hash = '#m/' + v; };
+// шапка: просто число — спросить, это матч или игрок; «матч 123…» — сразу матч
+{
+  const sq = $('#sq'), dd = $('#sd');
+  const isNum = q => /^\d{6,11}$/.test(q), isM = q => /^(матч|match|m|#m\/)\s*№?\s*(\d{5,11})$/i.exec(q);
+  const choice = q => { dd.classList.remove('hide'); dd.innerHTML = `<button type="button" data-mid="${q}"><span class="x10-ic">⚔</span><span><b>Матч № ${q}</b><small>открыть разбор этого матча</small></span></button><button type="button" data-id="${q}"><span class="x10-ic">👤</span><span><b>Игрок с ID ${q}</b><small>открыть профиль</small></span></button>`; };
+  if (sq && dd) {
+    sq.addEventListener('input', () => { const q = sq.value.trim(); if (isNum(q)) choice(q); else if (isM(q)) choice(isM(q)[2]); });
+    document.addEventListener('submit', e => { if (!e.target || e.target.id !== 'sf') return; const q = sq.value.trim(), m = isM(q);
+      if (m) { e.preventDefault(); e.stopPropagation(); sq.value = ''; dd.classList.add('hide'); xmGo(m[2]); return; }
+      if (isNum(q)) { e.preventDefault(); e.stopPropagation(); choice(q); } }, true);
+    dd.addEventListener('click', e => { const b = e.target.closest('[data-mid]'); if (!b) return; e.stopPropagation(); dd.classList.add('hide'); sq.value = ''; xmGo(b.dataset.mid); }, true);
+  }
+}
+// профиль: «Матч по номеру» в шапке списка матчей
+{
+  const VH10 = viewHome;
+  viewHome = async function () {
+    await VH10.apply(this, arguments);
+    const h = $('#hist .r9-h2'); if (!h || $('#xmB', h)) return;
+    h.insertAdjacentHTML('beforeend', `<button type="button" class="btn g x10-b" id="xmB" title="Только что сыграл, а матча нет? Вставь номер матча из игры">＋ Матч по номеру</button>`);
+    $('#xmB').onclick = () => {
+      if ($('#xmF')) { $('#xmF').remove(); return; }
+      h.insertAdjacentHTML('afterend', `<form class="x10-f" id="xmF" autocomplete="off"><input id="xmQ" inputmode="numeric" placeholder="Номер матча из игры, например 129303386" aria-label="Номер матча"><button class="btn s" type="submit">Открыть</button></form>`);
+      $('#xmQ').focus();
+      $('#xmF').onsubmit = e => { e.preventDefault(); xmGo($('#xmQ').value); };
+    };
+  };
 }
 window.addEventListener('hashchange', route);
 (async () => {
