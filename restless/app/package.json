@@ -1,0 +1,24 @@
+{
+  "name": "restless-overlay",
+  "productName": "Restless Overlay",
+  "version": "0.1.0",
+  "description": "Restless — панель матча поверх Deadlock",
+  "main": "main.js",
+  "author": "Restless",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable --publish never"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "app.restless.overlay",
+    "productName": "Restless Overlay",
+    "files": ["main.js", "setup.html", "icon.png"],
+    "win": { "target": "portable", "icon": "icon.png" },
+    "portable": { "artifactName": "Restless-Overlay.exe" }
+  }
+}

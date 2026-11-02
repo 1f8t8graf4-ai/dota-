@@ -91,3 +91,10 @@ body.ovm .q-lob{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))!import
 .p13-best > span{display:flex;align-items:center;gap:10px}.p13-best > span > span{display:flex;flex-direction:column;flex:1}.p13-best em{font-style:normal;font-size:12.5px;color:var(--mu)}
 .p13-best .go{color:var(--mu)}
 @media (max-width:1000px){.p13-av{order:5}.p13-best{order:5}}
+/* сборки героя: пикрейт и винрейт под веткой, Restless-сборка */
+.b10-cs{display:flex;gap:16px;margin:8px 0 2px}
+.b10-cs > span{display:flex;flex-direction:column;gap:2px}
+.b10-cs small{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.b10-cs b{font:700 17px/1 var(--h)}
+.b10-rs{margin-top:14px;padding:14px;border-radius:16px;border:1px solid color-mix(in srgb,#7fb6ff 40%,var(--q-ln));background:color-mix(in srgb,#7fb6ff 5%,var(--q-bx))}
+.b10-rs .b10-rl span{color:#9cc4ff}

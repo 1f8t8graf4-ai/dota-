@@ -1,0 +1,32 @@
+name: Restless Overlay (Windows)
+on:
+  push:
+    branches: [main]
+    paths: ['restless/app/**', '.github/workflows/restless-app.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: restless/app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - run: npm run dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Restless-Overlay
+          path: restless/app/dist/Restless-Overlay.exe
+      - name: Release overlay-latest
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view overlay-latest >/dev/null 2>&1 || gh release create overlay-latest --title "Restless Overlay" --notes "Программа поверх Deadlock. Скачай Restless-Overlay.exe и запусти." --latest=false
+          gh release upload overlay-latest dist/Restless-Overlay.exe --clobber
