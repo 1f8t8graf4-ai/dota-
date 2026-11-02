@@ -2516,6 +2516,351 @@ html[data-skin="brass"] .btn.live{background:linear-gradient(180deg,#EBC57E,#BC8
   .r9-pg{width:24px;height:24px;font-size:10.5px}
   .r9-pg.big{width:46px;height:46px;font-size:17px}
 }
+
+/* ==== 03.11 · патчи иконками ==== */
+.u10-hd{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.u10-hd .seg{margin-left:auto}
+.u10-pk{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0 6px;margin-bottom:16px}
+.u10-pk a{flex:none;display:flex;flex-direction:column;gap:4px;padding:10px 14px;min-width:150px;max-width:230px;border:1px solid var(--q-ln);border-radius:12px;background:var(--q-bx);text-decoration:none;color:var(--tx);transition:transform .18s,border-color .18s}
+.u10-pk a:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--q-am) 50%,var(--q-ln))}
+.u10-pk a.on{border-color:var(--q-am);background:linear-gradient(160deg,color-mix(in srgb,var(--q-am) 16%,var(--q-bx)),var(--q-bx) 70%)}
+.u10-pk small{font:600 11px/1 var(--f);letter-spacing:.05em;text-transform:uppercase;color:var(--q-am)}
+.u10-pk b{font:600 13px/1.25 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.u10-ph{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:0 0 18px}
+.u10-ph > div:first-child{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 320px}
+.u10-ph small{font-size:12.5px;color:var(--mu)}
+.u10-ph h2{margin:0;font:700 26px/1.1 var(--h);letter-spacing:.02em;text-transform:uppercase}
+.u10-sum{display:flex;gap:8px;flex-wrap:wrap}
+.u10-sum span{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:84px;padding:8px 12px;border-radius:12px;background:var(--q-bx);border:1px solid var(--q-ln);font-size:11.5px;color:var(--mu)}
+.u10-sum b{font:700 22px/1 var(--h);color:var(--tx)}
+.u10-sum .up b{color:var(--win)}
+.u10-sum .dn b{color:var(--loss)}
+.u10-sum .a b{color:var(--q-am)}
+.u10-lg{display:flex;gap:2px;padding:3px;border-radius:9px;background:var(--q-bx);border:1px solid var(--q-ln)}
+.u10-lg button{padding:6px 9px;border-radius:6px;font:700 11.5px/1 var(--f);color:var(--mu)}
+.u10-lg button.on{background:var(--s3);color:var(--tx)}
+.u10-blk{margin:0 0 22px}
+.u10-bh{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font:700 18px/1 var(--h);letter-spacing:.04em;text-transform:uppercase}
+.u10-bh small{font:500 12.5px/1 var(--f);letter-spacing:0;text-transform:none;color:var(--mu)}
+.u10-sec{margin:0 0 16px;padding:14px 16px 16px;border:1px solid var(--q-ln);border-radius:14px;background:var(--q-bx);position:relative;overflow:hidden}
+.u10-sec::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--uc)}
+.u10-sec.u{--uc:var(--win)}
+.u10-sec.d{--uc:var(--loss)}
+.u10-sec.a{--uc:var(--q-am)}
+.u10-sh{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+.u10-sk{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:color-mix(in srgb,var(--uc) 18%,transparent);color:var(--uc);font:700 13px/1 var(--f)}
+.u10-sh b{font:700 16px/1 var(--h);letter-spacing:.05em;text-transform:uppercase;color:var(--uc)}
+.u10-sh small{font:600 12px/1 var(--f);color:var(--mu);padding:3px 7px;border-radius:6px;background:var(--s3)}
+.u10-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.u10-grid.it{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+.u10-t{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 6px 9px;border-radius:12px;border:1px solid var(--q-ln);background:var(--q-bh);color:var(--tx);text-align:center;transition:transform .2s cubic-bezier(.2,.8,.2,1.2),border-color .2s,box-shadow .2s;animation:u10In .45s backwards;animation-delay:calc(var(--i,0) * 22ms)}
+.u10-t:hover{transform:translateY(-4px) scale(1.03);border-color:var(--uc);box-shadow:0 10px 26px -12px var(--uc)}
+.u10-tf{display:block;width:72px;height:72px;border-radius:12px;overflow:hidden;background:#1d1d24;box-shadow:0 0 0 2px color-mix(in srgb,var(--uc) 70%,transparent)}
+.u10-tf img{width:100%;height:100%;object-fit:cover;transform:scale(1.06)}
+.u10-ti{display:grid;place-items:center;width:56px;height:56px;border-radius:12px;background:#1d1d24;box-shadow:0 0 0 2px color-mix(in srgb,var(--uc) 60%,transparent)}
+.u10-ti img{width:46px;height:46px;object-fit:contain}
+.u10-t b{font:600 12.5px/1.15 var(--f);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.u10-t em{display:flex;gap:6px;font:700 11.5px/1 var(--f);font-style:normal;color:var(--mu)}
+.u10-t .up,.u10-ms .up{color:var(--win)}
+.u10-t .dn,.u10-ms .dn{color:var(--loss)}
+.u10-wr{position:absolute;top:6px;right:6px;padding:2px 5px;border-radius:5px;font:700 10px/1 var(--f);font-style:normal;background:rgba(0,0,0,.6)}
+.u10-wr.up{color:var(--win)}
+.u10-wr.dn{color:var(--loss)}
+.u10-t s{position:absolute;top:6px;left:6px;padding:2px 5px;border-radius:5px;font:700 9.5px/1 var(--f);text-decoration:none;text-transform:uppercase;letter-spacing:.05em;background:var(--q-am);color:#16120a}
+.u10-t.mine{border-color:color-mix(in srgb,var(--q-am) 55%,var(--q-ln))}
+.u10-sec .u10-t{--uc:inherit}
+.u10-sec.u .u10-t{--uc:var(--win)}
+.u10-sec.d .u10-t{--uc:var(--loss)}
+.u10-sec.a .u10-t{--uc:var(--q-am)}
+@keyframes u10In{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+.u10-gen{margin:0 0 22px}
+.u10-gen summary{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;font:700 15px/1 var(--f);list-style:none}
+.u10-gen summary::-webkit-details-marker{display:none}
+.u10-gen summary::after{content:"▾";margin-left:auto;color:var(--mu);transition:transform .2s}
+.u10-gen[open] summary::after{transform:rotate(180deg)}
+.u10-gen summary small{font:600 12px/1 var(--f);color:var(--mu);padding:3px 7px;border-radius:6px;background:var(--s3)}
+.u10-gen .u10-ml{padding:0 16px 16px}
+/* окно героя */
+.u10-ov{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(5,6,9,.72);opacity:0;transition:opacity .22s}
+.u10-ov.on{opacity:1}
+.u10-md{position:relative;width:min(640px,100%);max-height:88vh;overflow:auto;border-radius:18px;border:1px solid var(--q-ln);background:var(--q-bx);box-shadow:0 30px 80px rgba(0,0,0,.6);transform:translateY(16px) scale(.97);transition:transform .28s cubic-bezier(.2,.8,.2,1.15)}
+.u10-ov.on .u10-md{transform:none}
+.u10-md.u{--uc:var(--win)}
+.u10-md.d{--uc:var(--loss)}
+.u10-md.a{--uc:var(--q-am)}
+.u10-bg{position:absolute;inset:0 0 auto;height:200px;background:center 20%/cover no-repeat;opacity:.28;-webkit-mask-image:linear-gradient(#000 30%,transparent);mask-image:linear-gradient(#000 30%,transparent);pointer-events:none}
+.u10-mh{position:relative;display:flex;align-items:center;gap:14px;padding:22px 22px 12px}
+.u10-mh > div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.u10-mh small{font:600 11.5px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.u10-mh b{font:700 30px/1 var(--h);letter-spacing:.02em;text-transform:uppercase}
+.u10-mh .q-fc{box-shadow:0 0 0 3px var(--uc)}
+.u10-mi{display:grid;place-items:center;width:72px;height:72px;border-radius:14px;background:#1d1d24;box-shadow:0 0 0 3px var(--uc)}
+.u10-mi img{width:60px;height:60px;object-fit:contain}
+.u10-x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,.4);color:var(--tx);font-size:15px}
+.u10-x:hover{background:var(--s3)}
+.u10-ms{position:relative;display:flex;flex-wrap:wrap;gap:8px;padding:0 22px 14px}
+.u10-ms span{padding:5px 9px;border-radius:8px;background:var(--s3);font:600 12px/1 var(--f)}
+.u10-tag.u{background:color-mix(in srgb,var(--win) 20%,transparent)!important;color:var(--win)}
+.u10-tag.d{background:color-mix(in srgb,var(--loss) 20%,transparent)!important;color:var(--loss)}
+.u10-tag.a{background:color-mix(in srgb,var(--q-am) 20%,transparent)!important;color:var(--q-am)}
+.u10-ml{position:relative;display:flex;flex-direction:column;gap:10px;padding:4px 22px 18px}
+.u10-g{border:1px solid var(--q-ln);border-radius:12px;background:var(--q-bh);overflow:hidden}
+.u10-gh{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--q-ln);background:color-mix(in srgb,var(--s3) 50%,transparent)}
+.u10-gh img,.u10-gh i{width:30px;height:30px;border-radius:8px;background:#0e0e12;object-fit:contain;flex:none}
+.u10-gh b{font:700 14px/1.2 var(--f)}
+.u10-r{display:flex;gap:10px;padding:10px 12px}
+.u10-r + .u10-r{border-top:1px solid var(--q-ln)}
+.u10-ri{display:grid;place-items:center;width:22px;height:22px;flex:none;border-radius:6px;background:var(--s3);font:700 11px/1 var(--f);color:var(--mu)}
+.u10-r.u .u10-ri{background:color-mix(in srgb,var(--win) 20%,transparent);color:var(--win)}
+.u10-r.d .u10-ri{background:color-mix(in srgb,var(--loss) 20%,transparent);color:var(--loss)}
+.u10-r.f .u10-ri{color:var(--q-sp)}
+.u10-r p{margin:0;font-size:14px;line-height:1.45;color:var(--tx)}
+.u10-r small{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:var(--mu)}
+.u10-go{display:block;margin:0 22px 20px;padding:12px;border-radius:12px;text-align:center;font:700 14px/1 var(--f);text-decoration:none;color:#16120a;background:var(--q-am)}
+.u10-art{padding:0 0 20px}
+.u10-art header{padding:20px 22px 10px}
+.u10-art header small{color:var(--q-am);font:600 12px/1 var(--f);text-transform:uppercase;letter-spacing:.05em}
+.u10-art h2{margin:6px 0 0;font:700 24px/1.15 var(--h);text-transform:uppercase}
+.u10-art > img{display:block;width:100%;max-height:360px;object-fit:cover}
+.u10-tx{display:flex;flex-direction:column;gap:10px;padding:16px 22px 0;max-width:760px}
+.u10-tx p{margin:0;font-size:15px;line-height:1.55}
+.u10-tx h3{margin:10px 0 0;font:700 16px/1.2 var(--f);color:var(--q-am)}
+@media (max-width:600px){
+  .u10-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
+  .u10-tf{width:58px;height:58px}
+  .u10-sec{padding:12px}
+  .u10-ph h2{font-size:21px}
+  .u10-sum span{min-width:0;flex:1}
+  .u10-ov{padding:0;align-items:end}
+  .u10-md{border-radius:18px 18px 0 0;max-height:90vh}
+  .u10-mh b{font-size:24px}
+}
+/* ==== 03.11 · лайв-матч компактно ==== */
+.q-pc.l10 .top{height:78px}
+.q-pc.l10 .top img.f{object-position:50% 16%;transition:transform .5s}
+.q-pc.l10:hover .top img.f{transform:scale(1.06)}
+.q-pc.l10 .top .hn{font-size:11px}
+.l10-rk{position:absolute;right:6px;bottom:4px;z-index:1}
+.l10-rk .rk{width:30px;height:30px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+.q-pc.l10 .q-pb{gap:7px;padding:7px 10px 10px}
+.q-pc.l10 .q-pnm{font-size:13.5px}
+.l10-rn{margin-top:-5px;font-size:11.5px;color:var(--mu)}
+.l10-st{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.l10-st span,.l10-pr{display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:8px;background:var(--q-bh);min-width:0}
+.l10-st small,.l10-pr small{font:600 9.5px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.l10-st b{font:700 12.5px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l10-st em{font-style:normal}
+.l10-per{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.l10-pr{align-items:flex-start;text-align:left;border:1px solid transparent;color:var(--tx);cursor:help;transition:border-color .15s,background .15s}
+.l10-pr:not(.off):hover{border-color:var(--q-am);background:color-mix(in srgb,var(--q-am) 8%,var(--q-bh))}
+.l10-pr b{font:700 14px/1.1 var(--h)}
+.l10-pr i{font-style:normal;font-size:10.5px;color:var(--mu)}
+.l10-pr.off{opacity:.55;cursor:default}
+.l10-rc{display:flex;gap:3px}
+.l10-rc a{position:relative;width:26px;height:26px;border-radius:6px;overflow:hidden;background:#1d1d24;transition:transform .15s}
+.l10-rc a:hover{transform:translateY(-2px)}
+.l10-rc a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--loss)}
+.l10-rc a.w::after{background:var(--win)}
+.l10-rc img{width:100%;height:100%;object-fit:cover}
+.q-pc.l10 .q-pbld:empty{display:none}
+.q-pc.l10 .q-pbb{padding:6px 8px;font-size:11px}
+.q-pc.l10 .tg{gap:3px}
+.q-pc.l10 .tg .tag{height:18px;padding:0 5px;font-size:9.5px}
+.q-lvh > p.sub,.q-lvh + p.sub,.q-lvh ~ p.sub,#lvb .q-mh + .note,#lvb > .note{display:none}
+.q-pc.l10 .q-pc-n{text-decoration:none}
+.q-pop.hov{animation:l10Pop .16s ease-out backwards}
+@keyframes l10Pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+/* ==== 03.11 · сборки героя ==== */
+.q-hp{grid-template-columns:clamp(340px,36%,520px) minmax(0,1fr)!important}
+.q-hcol{height:min(calc(100vh - 140px),860px)!important}
+.b10-h{display:flex;align-items:baseline;gap:8px;font:700 16px/1 var(--h);letter-spacing:.04em;text-transform:uppercase;margin:4px 0 10px}
+.b10-h small{font:600 12px/1 var(--f);color:var(--mu);padding:3px 7px;border-radius:6px;background:var(--s3);letter-spacing:0}
+.b10-g{margin-top:0!important}
+.b10-cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0 0 14px}
+.b10-cat{display:flex;flex-direction:column;align-items:stretch;gap:7px;padding:12px 14px;border-radius:14px;border:1px solid var(--q-ln);background:var(--q-bx);text-align:left;color:var(--tx);transition:transform .18s,border-color .18s,box-shadow .18s}
+.b10-cat:hover{transform:translateY(-2px)}
+.b10-cat.c-gun{--cc:#ff8a3d}.b10-cat.c-spirit{--cc:#8a7cff}.b10-cat.c-mix{--cc:#e8d36a}
+.b10-cat.on{border-color:var(--cc);box-shadow:0 0 0 1px var(--cc),0 12px 30px -16px var(--cc);background:linear-gradient(160deg,color-mix(in srgb,var(--cc) 14%,var(--q-bx)),var(--q-bx) 70%)}
+.b10-cn{display:flex;align-items:baseline;justify-content:space-between}
+.b10-cn b{font:700 17px/1 var(--h);letter-spacing:.05em;text-transform:uppercase;color:var(--cc)}
+.b10-cn em{font:700 20px/1 var(--h);font-style:normal}
+.b10-bar{display:block;height:5px;border-radius:3px;background:var(--s3);overflow:hidden}
+.b10-bar i{display:block;height:100%;background:var(--cc);border-radius:3px;animation:b10Bar .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes b10Bar{from{width:0!important}}
+.b10-cat small{font-size:12px;color:var(--mu)}
+.b10-cat .ic{display:flex;gap:3px}
+.b10-cat .ic img{width:24px;height:24px;border-radius:5px;background:#1d1d24}
+.b10-warn{display:flex;flex-direction:column;gap:3px;margin:-4px 0 14px;padding:10px 14px;border-radius:12px;border:1px solid color-mix(in srgb,var(--q-am) 40%,var(--q-ln));background:color-mix(in srgb,var(--q-am) 8%,var(--q-bx))}
+.b10-warn b{font:700 13.5px/1.2 var(--f);color:var(--q-am)}
+.b10-warn span{font-size:12.5px;color:var(--mu)}
+.b10-rec{position:relative;margin:0 0 18px;padding:12px;border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--q-am) 22%,transparent),transparent 60%);border:1px solid color-mix(in srgb,var(--q-am) 55%,var(--q-ln))}
+.b10-rec::before{content:"";position:absolute;inset:-1px;border-radius:16px;padding:1px;background:linear-gradient(110deg,transparent 30%,rgba(255,215,130,.9) 50%,transparent 70%) 0 0/250% 100%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:b10Shine 3.5s linear infinite;pointer-events:none}
+@keyframes b10Shine{from{background-position:150% 0}to{background-position:-100% 0}}
+.b10-rl{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 2px 10px}
+.b10-rl span{font:700 13px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--q-am)}
+.b10-rl small{font-size:12.5px;color:var(--mu)}
+.b10-rl small b{color:var(--win)}
+.b10-rec .q-bc{margin:0}
+.b10-tb{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.b10-tb .b10-h{margin:0}
+.b10-tb .seg{margin-left:auto}
+.b10-more{margin-top:12px}
+.q-btabs,.q-bflt{display:none}
+@media (max-width:860px){.q-hp{grid-template-columns:minmax(0,1fr)!important}.q-hcol{height:auto!important}}
+/* ==== 03.11 · профиль: что знать, герои карточками, шапка ярче ==== */
+.q-ban{min-height:210px}
+.q-ban .bg{opacity:.9;background-position:right 22%;animation:p10Kb 30s ease-in-out infinite alternate}
+@keyframes p10Kb{from{transform:scale(1.02)}to{transform:scale(1.1) translateX(-1%)}}
+.q-ban .q-bin{padding:26px 26px 24px}
+.q-pn h1{font-size:44px;background:linear-gradient(100deg,#fff 0%,#f3e6c8 40%,#fff 60%,#f3e6c8 100%) 0 0/200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:p10Nm 6s linear infinite}
+@keyframes p10Nm{to{background-position:-200% 0}}
+.q-av img,.q-av i{width:104px;height:104px;box-shadow:0 10px 30px -10px rgba(255,176,32,.6)}
+.p10-kn{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:14px 0 0}
+.p10-t{display:flex;flex-direction:column;gap:4px;padding:11px 14px;border-radius:12px;border:1px solid var(--q-ln);border-left:3px solid var(--tc);background:linear-gradient(100deg,color-mix(in srgb,var(--tc) 12%,var(--q-bx)),var(--q-bx) 70%);text-decoration:none;color:inherit;animation:u10In .45s backwards;animation-delay:calc(var(--i,0) * 50ms)}
+.p10-t b{font:700 14px/1.2 var(--f);color:var(--tc)}
+.p10-t small{font-size:12px;line-height:1.35;color:var(--mu)}
+.p10-t.g{--tc:var(--win)}.p10-t.r{--tc:var(--loss)}.p10-t.a{--tc:var(--q-am)}.p10-t.b{--tc:var(--q-sp)}.p10-t.h{--tc:#ff9a6a}.p10-t.n{--tc:#d6d1c7}
+.p10-hs{margin:0 0 14px}
+.p10-h{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font:700 18px/1 var(--h);letter-spacing:.04em;text-transform:uppercase}
+.p10-h small{font:500 12.5px/1 var(--f);letter-spacing:0;text-transform:none;color:var(--mu)}
+.p10-h a{margin-left:auto;font:600 12.5px/1 var(--f);letter-spacing:0;text-transform:none;color:var(--q-am);text-decoration:none}
+.p10-hg{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.p10-hc{display:flex;flex-direction:column;gap:8px;padding:0 0 12px;border-radius:14px;border:1px solid var(--q-ln);background:var(--q-bx);overflow:hidden;text-decoration:none;color:var(--tx);transition:transform .22s cubic-bezier(.2,.8,.2,1.2),border-color .2s,box-shadow .2s;animation:u10In .5s backwards;animation-delay:calc(var(--i,0) * 60ms)}
+.p10-hc:hover{transform:translateY(-5px);border-color:var(--hc);box-shadow:0 16px 34px -18px var(--hc)}
+.p10-hi{position:relative;display:block;height:120px;overflow:hidden;background:radial-gradient(120% 90% at 50% 20%,color-mix(in srgb,var(--hc) 35%,#111),#0c0c10)}
+.p10-hi img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.p10-hc:hover .p10-hi img{transform:scale(1.07)}
+.p10-hi::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--q-bx),transparent 45%)}
+.p10-hi em{position:absolute;top:8px;right:8px;z-index:1;padding:3px 7px;border-radius:7px;background:rgba(0,0,0,.6);font:700 11px/1 var(--f);font-style:normal;color:#fff}
+.p10-hc > b{padding:0 12px;font:700 16px/1.1 var(--h);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p10-hn{display:grid;grid-template-columns:auto auto 1fr;gap:10px;padding:0 12px}
+.p10-hn > span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.p10-hn i{font:700 14px/1.1 var(--f);font-style:normal;white-space:nowrap}
+.p10-hn small{font-size:10.5px;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+.p10-hn > span:last-child{text-align:right;align-items:flex-end}
+@media (max-width:1100px){.p10-hg{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:600px){
+  .p10-kn{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .p10-t{padding:9px 10px}
+  .p10-t b{font-size:13px}
+  .p10-t small{font-size:11.5px}
+  .p10-hg{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .p10-hi{height:96px}
+  .q-pn h1{font-size:28px}
+  .q-av img,.q-av i{width:70px;height:70px}
+  .q-ban{min-height:160px}
+}
+/* ==== 03.11 · про-игры и лидеры ==== */
+.pr10 .p10-h{margin-top:20px}
+.pr10-top{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.pr10-p{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;border:1px solid var(--q-ln);background:var(--q-bx);text-decoration:none;color:var(--tx);transition:transform .18s,border-color .18s;animation:u10In .4s backwards;animation-delay:calc(var(--i) * 35ms)}
+.pr10-p:hover{transform:translateY(-2px);border-color:var(--q-am)}
+.pr10-p.on{border-color:color-mix(in srgb,var(--win) 60%,var(--q-ln));background:linear-gradient(100deg,color-mix(in srgb,var(--win) 10%,var(--q-bx)),var(--q-bx) 70%)}
+.pr10-p.x{opacity:.55}
+.pr10-p > span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pr10-p b{font:700 13px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr10-p small{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--mu)}
+.pr10-p.on small{color:var(--win)}
+.pr10-p small i{width:7px;height:7px;border-radius:50%;background:var(--win);box-shadow:0 0 0 0 var(--win);animation:pr10Pulse 1.6s infinite}
+@keyframes pr10Pulse{0%{box-shadow:0 0 0 0 rgba(54,214,195,.6)}100%{box-shadow:0 0 0 8px rgba(54,214,195,0)}}
+.pr10-live{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}
+.pr10-lv{display:grid;grid-template-columns:1fr auto 1fr;gap:8px 10px;align-items:center;padding:12px 14px;border-radius:14px;border:1px solid var(--q-ln);background:var(--q-bx);text-decoration:none;color:var(--tx);transition:transform .2s,border-color .2s;animation:u10In .45s backwards;animation-delay:calc(var(--i) * 60ms)}
+.pr10-lv:hover{transform:translateY(-3px);border-color:var(--q-am)}
+.pr10-lh{grid-column:1/-1;display:flex;align-items:center;gap:8px}
+.pr10-lh .live{padding:3px 6px;border-radius:5px;background:var(--loss);color:#fff;font:700 10px/1 var(--f);letter-spacing:.06em;animation:pr10Blink 1.4s ease-in-out infinite}
+@keyframes pr10Blink{50%{opacity:.55}}
+.pr10-lh b{font:700 14px/1 var(--h)}
+.pr10-lh small{font-size:12px;color:var(--mu)}
+.pr10-tm{display:flex;gap:3px;flex-wrap:wrap}
+.pr10-tm.t1{justify-content:flex-end}
+.pr10-tm img{width:28px;height:28px;border-radius:6px;background:#1d1d24;box-shadow:inset 0 -2px 0 var(--tc)}
+.pr10-tm.t0{--tc:var(--t0)}.pr10-tm.t1{--tc:var(--t1)}
+.pr10-tm img.pro{box-shadow:0 0 0 2px var(--q-am)}
+.pr10-vs{font:700 11px/1 var(--h);font-style:normal;color:var(--mu)}
+.pr10-pp{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
+.pr10-pp span{padding:3px 7px;border-radius:6px;background:color-mix(in srgb,var(--q-am) 16%,transparent);color:var(--q-am);font:700 11px/1.2 var(--f)}
+.pr10-pp small{font-size:11.5px;color:var(--mu)}
+.pr10-ml{display:flex;flex-direction:column}
+.pr10-m{display:grid;grid-template-columns:minmax(220px,1.3fr) minmax(0,1fr) minmax(0,1fr) 70px 14px;gap:14px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--q-ln);text-decoration:none;color:var(--tx);transition:background .15s;animation:u10In .4s backwards;animation-delay:calc(var(--i) * 30ms)}
+.pr10-m:hover{background:var(--q-bh)}
+.pr10-who{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pr10-pw{display:flex;align-items:center;gap:8px;min-width:0}
+.pr10-pw > span{display:flex;flex-direction:column;gap:1px;min-width:0}
+.pr10-pw b{font:700 13px/1.2 var(--f);color:var(--q-am);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr10-pw small{font-size:11.5px}
+.pr10-m .pr10-tm{opacity:.75}
+.pr10-m .pr10-tm.w{opacity:1}
+.pr10-m .pr10-tm img{width:26px;height:26px}
+.pr10-mt{display:flex;flex-direction:column;gap:2px;align-items:flex-end}
+.pr10-mt b{font:700 13px/1 var(--h)}
+.pr10-mt small{font-size:11.5px;color:var(--mu);white-space:nowrap}
+.lb10-f{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.lb10-f .q-lbq{flex:1;min-width:180px;max-width:320px}
+.lb10-pod{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:12px;align-items:end;margin:0 0 16px}
+.lb10-pd{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:190px;padding:16px;border-radius:16px;border:1px solid var(--q-ln);border-top:3px solid var(--md);overflow:hidden;background:var(--q-bx);text-decoration:none;color:var(--tx);transition:transform .25s cubic-bezier(.2,.8,.2,1.2),box-shadow .25s;animation:u10In .55s backwards;animation-delay:calc(var(--i) * 90ms)}
+.lb10-pd.p1{min-height:240px;box-shadow:0 18px 50px -24px var(--md)}
+a.lb10-pd:hover{transform:translateY(-5px)}
+.lb10-pd .bg{position:absolute;inset:0;background:center 20%/cover no-repeat;opacity:.55;transition:transform .6s}
+.lb10-pd:hover .bg{transform:scale(1.06)}
+.lb10-pd .bg.none{background:radial-gradient(90% 90% at 70% 10%,color-mix(in srgb,var(--md) 30%,transparent),transparent)}
+.lb10-pd .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--q-bx) 10%,transparent 70%)}
+.lb10-pd .pl{position:absolute;top:10px;left:14px;font:700 54px/1 var(--h);color:var(--md);text-shadow:0 4px 18px rgba(0,0,0,.6)}
+.lb10-pi{position:relative;display:flex;flex-direction:column;gap:6px}
+.lb10-pi b{font:700 22px/1.1 var(--h);letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb10-pi .his{display:flex;gap:4px}
+.lb10-l{display:flex;flex-direction:column}
+.lb10-r{display:grid;grid-template-columns:44px minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr) 14px;gap:12px;align-items:center;min-height:50px;padding:6px 16px;border-bottom:1px solid var(--q-ln);text-decoration:none;color:var(--tx);transition:background .15s;animation:u10In .35s backwards;animation-delay:calc(var(--i) * 18ms)}
+a.lb10-r:hover{background:var(--q-bh)}
+.lb10-r.x{opacity:.5}
+.lb10-r.mine{background:color-mix(in srgb,var(--q-am) 10%,transparent);box-shadow:inset 3px 0 0 var(--q-am)}
+.lb10-n{font:700 15px/1 var(--h);color:var(--mu)}
+.lb10-n.t10{color:var(--q-am)}
+.lb10-nm{display:flex;align-items:center;gap:8px;min-width:0}
+.lb10-nm b{font:600 14px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb10-nm em{font:700 10px/1 var(--f);font-style:normal;padding:3px 6px;border-radius:5px;background:var(--q-am);color:#16120a;text-transform:uppercase}
+.lb10-r .rkc{display:flex;align-items:center;gap:6px;font-size:12.5px;min-width:0;white-space:nowrap;overflow:hidden}
+.lb10-r .rkc img{width:24px;height:24px}
+.lb10-r .his{display:flex;gap:3px}
+@media (max-width:860px){.pr10-m{grid-template-columns:minmax(0,1fr) 60px 14px}.pr10-m .pr10-tm{display:none}.lb10-r{grid-template-columns:36px minmax(0,1fr) auto 14px}.lb10-r .his{display:none}}
+@media (max-width:600px){.lb10-pd{padding-top:66px}.lb10-pd .pl{font-size:44px}.lb10-pod{grid-template-columns:1fr;}.lb10-pd,.lb10-pd.p1{min-height:150px}.lb10-pd.p1{order:-1}.pr10-live{grid-template-columns:1fr}}
+/* ==== 03.11 · логотип переливается золотом; VIP — градиентом ==== */
+.q-lw{background:linear-gradient(100deg,#8f5b10 0%,#e7a52a 14%,#ffe08a 24%,#fff6d6 30%,#ffd36b 36%,#c98a1c 50%,#8f5b10 62%,#e7a52a 76%,#ffe08a 86%,#8f5b10 100%) 0 0/300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;animation:lgShine 6s linear infinite;filter:drop-shadow(0 2px 10px rgba(255,176,32,.25))}
+.q-lw i{color:transparent!important;animation:none!important;transform:none!important}
+@keyframes lgShine{to{background-position:-300% 0}}
+body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#38d6ff 32%,#7dffb0 48%,#ffe08a 64%,#ff7a59 80%,#ff4fd8 100%);animation-duration:4s;filter:drop-shadow(0 2px 12px rgba(139,92,255,.45))}
+@media (prefers-reduced-motion:reduce){.q-lw{animation:none}}
+/* ==== подсказки-пояснения убраны: одна мысль — один блок ==== */
+.note,.q-sec small,.st2-what,#fmsub,.q-leg,.qs-how,.st2-next,h1.h1 + p.sub,.q-lbh .sub,.qk-deep{display:none!important}
+/* ==== статистика: свой тёмный стиль вместо «бумаги» ==== */
+.qs-paper{transform:none;background:radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--q-am) 22%,var(--q-bx)),var(--q-bx) 65%);color:var(--tx);border:1px solid color-mix(in srgb,var(--q-am) 45%,var(--q-ln));border-radius:16px;box-shadow:0 18px 40px -24px rgba(255,176,32,.6);animation:u10In .5s backwards}
+.qs-paper .qs-pk{transform:none;border-radius:6px}
+.qs-paper .qs-pn small,.qs-paper p,.qs-paper .qs-gg span{color:var(--mu)}
+.qs-paper .qs-pn b{background:linear-gradient(180deg,#fff,#ffd98a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.qs-paper .qs-gg i{background:#fff;box-shadow:0 0 10px rgba(255,255,255,.6)}
+.qs-paperbox{background:var(--q-bx);color:var(--tx);border-color:var(--q-ln)}
+.qs-paperbox .qs-bh small,.qs-pr>div:first-child small,.qs-pv small{color:var(--mu)}
+.qs-pr{border-bottom-color:var(--q-ln)}
+.qs-pb{background:var(--s3)}
+.qs-pb .f{background:linear-gradient(90deg,color-mix(in srgb,var(--q-am) 60%,transparent),var(--q-am))}
+.qs-pb .m{background:#fff;opacity:.6}
+.qs-pb .d{border-color:var(--q-bx)}
+.qs-c{transition:transform .2s,border-color .2s;animation:u10In .45s backwards}
+.qs-c:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--q-am) 45%,var(--q-ln))}
+.qs-cs > :nth-child(2){animation-delay:60ms}.qs-cs > :nth-child(3){animation-delay:120ms}.qs-cs > :nth-child(4){animation-delay:180ms}
+.qs-is > *{animation:u10In .45s backwards}.qs-is > :nth-child(2){animation-delay:80ms}.qs-is > :nth-child(3){animation-delay:160ms}
+/* ==== анимации по сайту: появление страницы, нажатия ==== */
+#v > *{animation:u10In .4s backwards}
+#v > :nth-child(2){animation-delay:40ms}#v > :nth-child(3){animation-delay:80ms}#v > :nth-child(4){animation-delay:120ms}#v > :nth-child(5){animation-delay:160ms}#v > :nth-child(n+6){animation-delay:200ms}
+.btn,.seg button,.q-tabs a,.r9r,.r9-pc{transition:transform .12s,background .15s,color .15s,border-color .15s}
+.btn:active,.seg button:active,.r9-pc:active,.u10-t:active,.p10-hc:active{transform:scale(.97)}
+.q-tabs a{position:relative}
+.q-tabs a.on::after{content:"";position:absolute;left:20%;right:20%;bottom:-2px;height:2px;border-radius:2px;background:var(--q-am);box-shadow:0 0 12px var(--q-am);animation:tabGlow .35s ease-out both}
+@keyframes tabGlow{from{transform:scaleX(0)}to{transform:none}}
+.lb10-r.x b,.pr10-p.x b{color:var(--mu)}
+.r9-side .r9-co{flex-wrap:wrap}
+.r9-side .r9-co em{margin-left:0}
+@media (prefers-reduced-motion:reduce){#v > *,.u10-t,.p10-t,.p10-hc,.qs-c,.qs-is > *{animation:none!important}}
+.qs-paperbox .qs-bh small{display:none}
 </style>
 </head>
 <body>
@@ -3951,7 +4296,7 @@ async function viewHero(hid, mode) {
   hid = +hid;
   if (!D.heroes[hid]) { vNew(); V('<div class="empty">Такого героя нет.</div>'); return; }
   const n = vNew(), h = hero(hid), me = !!ME && mode === 'me';
-  const back = me ? ['#mine', 'Герои игрока'] : ['#meta', 'Мета'];
+  const back = me ? ['#mine', 'Герои игрока'] : ['#meta', 'Герои'];
   V(`<a class="q-back" href="${back[0]}">‹ ${back[1]}</a>
     <div class="q-hp"><div class="q-hcol" style="--hc:${esc(h.col || '#ffb020')}"><div class="q-art">${artHTML(hid)}<div class="q-say" id="hsay"></div><div class="q-artn"><small>${esc(TYPE_RU[h.ty] || 'Герой')}${h.cx ? ' · сложность ' + h.cx + ' из 3' : ''}</small><b>${esc(h.n)}</b></div></div></div>
       <div style="min-width:0"><div class="q-tog">${ME ? `<div class="seg q-sw" id="hsw"><button data-m="me" class="${me ? 'on' : ''}" title="Твоя статистика на герое">${ME.avatar ? `<img class="q-swa" src="${esc(ME.avatar)}" alt="" onerror="this.remove()">` : ''}<span>${esc(ME.name)}</span></button><button data-m="all" class="${me ? '' : 'on'}">Все игроки</button></div>` : ''}${me ? '' : fltHTML()}</div>
@@ -4520,16 +4865,16 @@ async function viewLanding() {
   const n = vNew();
   V(`<section class="land q-land">
       <h1 class="h1">Твой Deadlock — <em>как на ладони</em></h1>
-      <p>Профиль как в League of Graphs: ранг, частые герои, паттерны и каждый матч с предметами и всеми 12 игроками. Лайв-матч как Porofessor, мета, лидеры, настоящие сборки с винрейтом и что поменяли в патче — для твоих героев. Входить в Steam не нужно.</p>
+      <p>Профиль игрока за минуту, разбор каждого матча, лайв-матч, сборки и патчи — по-русски. Входить в Steam не нужно.</p>
       <form id="lf"><input id="lq" placeholder="Ссылка на профиль Steam, ник или ID" autocomplete="off" aria-label="Игрок"><button class="btn" type="submit">Найти себя</button></form>
       <div class="ex">Или посмотри на примере: <button id="lx" type="button">топ-1 Европы</button></div>
       <div class="art">${[65, 84, 79].map(id => `<img src="art/${id}.webp" alt="" onerror="this.remove()">`).join('')}</div>
     </section>
     <div class="g4 feat" style="margin-top:14px">
       <a class="card" href="#live"><b>Лайв-матч</b><span>Найди игрока по нику — его матч: ранги, пати, мейны, серии, главная угроза.</span></a>
-      <a class="card" href="#meta"><b>Мета</b><span>Тир-лист по винрейту на твоём ранге. Нажми на героя — портрет и настоящие сборки.</span></a>
+      <a class="card" href="#meta"><b>Герои</b><span>Кто сейчас сильный и с какой сборкой.</span></a>
       <a class="card" href="#lb"><b>Лидеры</b><span>Официальный топ по регионам — найдёшь себя, докрутит к твоей строке.</span></a>
-      <a class="card" href="#upd"><b>Обновления</b><span>Патчноуты: коротко, что поменяли твоим героям, и весь текст.</span></a>
+      <a class="card" href="#upd"><b>Патчи</b><span>Кого усилили и ослабили — иконками.</span></a>
     </div>
     <div class="q-sec"><b>Сейчас сильнее всех</b><small>${esc(fName())}</small></div><div class="card" id="top5"><div class="load" style="padding:18px">Считаю мету…</div></div>`);
   $('#lf').onsubmit = async e => { e.preventDefault(); const q = $('#lq').value.trim(), id = idFrom(q); if (id) { await setMe(id); location.hash = '#home'; route(); } else { $('#sq').value = q; $('#sq').focus(); $('#sq').dispatchEvent(new Event('input')); } };
@@ -6466,13 +6811,22 @@ async function viewHome() {
     <div class="r9-sc"><span><small>Средний матч</small><b>${f1(avg(F.L, m => m.player_kills))}/${f1(avg(F.L, m => m.player_deaths))}/${f1(avg(F.L, m => m.player_assists))}</b><em>${nf(avg(F.L, m => m.net_worth / (Math.max(300, m.match_duration_s || 0) / 60)))} душ/мин</em></span></div>
     <div class="r9-sc"><span><small>Играет</small><b>${A.g7} за неделю</b><em>последний — ${esc(ago(A.last))} · <a href="#live/${id}">лайв ›</a></em></span></div></section>`;
 
-  // герои — топ-5 за 30 дней (мало игр — за всё время)
+  // герои — крупными карточками: топ-6 за 30 дней (мало игр — за всё время)
   const R30 = {}; H.filter(m => m.start_time >= now() - 30 * 86400).forEach(m => { const o = R30[m.hero_id] = R30[m.hero_id] || {m: 0, w: 0, k: 0, d: 0, a: 0}; o.m++; if (won(m)) o.w++; o.k += m.player_kills; o.d += m.player_deaths; o.a += m.player_assists; });
-  let HL = Object.entries(R30).filter(([h]) => D.heroes[h]).sort((a, b) => b[1].m - a[1].m).slice(0, 5).map(([h, o]) => ({hid: +h, g: o.m, w: o.w, k: o.k / o.m, d: o.d / o.m, a: o.a / o.m})), per = '30 дней';
-  if (HL.reduce((a, x) => a + x.g, 0) < 8) { HL = pool.filter(x => D.heroes[x.hero_id]).slice(0, 5).map(x => ({hid: x.hero_id, g: x.matches_played, w: x.wins, k: x.kills / x.matches_played, d: x.deaths / x.matches_played, a: x.assists / x.matches_played})); per = 'всё время'; }
-  const heroes = `<section class="q-box r9-hs"><div class="r9-h2"><b>Герои</b><small>${per}</small><a href="#mine">все ›</a></div>
-    ${HL.map(x => { const wr = 100 * x.w / Math.max(1, x.g); return `<a class="r9-hr" href="#h/${x.hid}/me">${face(x.hid, moodOn(H, x.hid), 's')}<span><b>${esc(hero(x.hid).n)}</b><small>${games(x.g)} · ${f1(x.k)}/${f1(x.d)}/${f1(x.a)}</small></span><em class="${wrC(wr, x.g)}">${Math.round(wr)}%</em></a>`; }).join('') || '<div class="empty">Нет данных.</div>'}</section>
-    <section class="q-box r9-hs"><div class="r9-h2"><b>Чаще всего с</b><a href="#form/habits">привычки ›</a></div><div id="qkmate"><span class="sub">Считаю…</span></div></section>`;
+  let HL = Object.entries(R30).filter(([h]) => D.heroes[h]).sort((a, b) => b[1].m - a[1].m).slice(0, 6).map(([h, o]) => ({hid: +h, g: o.m, w: o.w, k: o.k / o.m, d: o.d / o.m, a: o.a / o.m})), per = '30 дней';
+  if (HL.reduce((a, x) => a + x.g, 0) < 8) { HL = pool.filter(x => D.heroes[x.hero_id]).slice(0, 6).map(x => ({hid: x.hero_id, g: x.matches_played, w: x.wins, k: x.kills / x.matches_played, d: x.deaths / x.matches_played, a: x.assists / x.matches_played})); per = 'всё время'; }
+  const totG = HL.reduce((a, x) => a + x.g, 0) || 1, allG = per === '30 дней' ? Object.values(R30).reduce((a, o) => a + o.m, 0) || 1 : totG;
+  const heroes = HL.length ? `<section class="p10-hs"><div class="p10-h">Его герои<small>${per}</small><a href="#mine">все герои ›</a></div><div class="p10-hg">${HL.map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g), sh = Math.round(100 * x.g / allG);
+      return `<a class="p10-hc" href="#h/${x.hid}/me" style="--i:${i};--hc:${esc(hero(x.hid).col || '#ffb020')}"><span class="p10-hi"><img src="${esc(faceUrl(x.hid, wr >= 55 ? 'g' : wr <= 42 ? 'c' : ''))}" alt="" loading="lazy" style="object-position:${FACEP[x.hid] || '50% 12%'}" onerror="this.onerror=null;this.src='${esc(hero(x.hid).i)}'"><em>${sh}%</em></span>
+        <b>${esc(hero(x.hid).n)}</b><span class="p10-hn"><span><i class="${wrC(wr, x.g)}">${Math.round(wr)}%</i><small>побед</small></span><span><i>${x.g}</i><small>${pl(x.g, ['игра', 'игры', 'игр'])}</small></span><span><i>${f1(x.k)}/${f1(x.d)}/${f1(x.a)}</i><small>У/С/П</small></span></span></a>`; }).join('')}</div></section>` : '';
+  const side = `<div id="qkco"></div><section class="q-box r9-hs"><div class="r9-h2"><b>Чаще всего с</b><a href="#form/habits">привычки ›</a></div><div id="qkmate"><span class="sub">Считаю…</span></div></section>`;
+
+  // что знать о нём — метки крупно: на ком играет, в чём силён, где сливает
+  const T = profTags(H, HS, HA), P2x = patterns2(H), lg = P2x.find(x => /долгих/.test(x.n)), sh = P2x.find(x => /коротких/.test(x.n));
+  if (lg && lg.d <= -8) T.splice(1, 0, ['Сливает долгие игры', 'r', `в играх 35+ мин побеждает в ${Math.round(lg.wr)}% — на ${f1(-lg.d)}% реже обычного`]);
+  else if (lg && lg.d >= 8) T.splice(1, 0, ['Тащит долгие игры', 'g', `в играх 35+ мин побеждает в ${Math.round(lg.wr)}% — на ${f1(lg.d)}% чаще обычного`]);
+  if (sh && sh.d <= -8) T.push(['Слабое начало', 'r', `короткие игры (до 25 мин) выигрывает в ${Math.round(sh.wr)}%`]);
+  const know = T.length ? `<section class="p10-kn" id="p10kn">${T.slice(0, 8).map(([s, c, h], i) => `<div class="p10-t ${c || 'n'}" style="--i:${i}"><b>${esc(s)}</b><small>${esc(h)}</small></div>`).join('')}</section>` : '';
 
   // матчи
   const hlist = [...new Set(H.slice(0, 300).map(m => m.hero_id))].filter(h => D.heroes[h]).sort((a, b) => hero(a).n.localeCompare(hero(b).n));
@@ -6481,11 +6835,9 @@ async function viewHome() {
       <select class="q-sel" id="hfh" aria-label="Герой"><option value="0">Все герои</option>${hlist.map(h => `<option value="${h}"${PHF.hero === h ? ' selected' : ''}>${esc(hero(h).n)}</option>`).join('')}</select></div>
     <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё</button></section>`;
 
-  V(`${ptabsHTML('home')}${sum}<div class="r9-cols"><aside class="r9-side">${heroes}</aside><div class="r9-main"><div id="qkco"></div>${hist}</div></div>
+  V(`${ptabsHTML('home')}${know}${sum}${heroes}<div class="r9-cols"><aside class="r9-side">${side}</aside><div class="r9-main">${hist}</div></div>
     <div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b></div><div class="pad" id="myb"></div></div></div>`);
 
-  // метки игрока — в шапку, под ник (не больше четырёх)
-  const T = profTags(H, HS, HA), pc2 = $('#pchips'); if (pc2 && T.length) pc2.insertAdjacentHTML('beforeend', tagsHTML(T.slice(0, 4)));
   qkMates(n, id);
   coProfDraw(id, H); const co = $('#qkco');
   if (co) co.addEventListener('click', e => { const b = e.target.closest('[data-qkc]'); if (b && b.dataset.qkc === 'drop') { coTaskSave(null); coProfDraw(id, H); } });
@@ -6501,6 +6853,282 @@ async function viewHome() {
   if (badge) api('players/rank/distribution').then(Dd => { if (n !== VQ) return; const tot = Dd.reduce((a, x) => a + (x.players || 0), 0), up = Dd.filter(x => x.badge >= badge).reduce((a, x) => a + (x.players || 0), 0); const el = $('#rtop'); if (el && tot) el.innerHTML = `топ ${f1(Math.max(.1, 100 * up / tot))}% игроков`; }).catch(() => {});
   topPlaces(n, id, ME.name, st.countrycode, pool);
   renderMyBuilds().then(() => { const b = $('#myb'), w = $('#mybw'); if (n === VQ && b && w && b.querySelector('a,img,.bch,.myc')) w.hidden = false; }).catch(() => {});
+}
+
+// ==================== 03.11 · Restless: патчи иконками, лайв компактно, сборки с рекомендацией, профиль, лидеры, про, логотип ====================
+// Андрей: «никогда не давай кучу инфы текстом — всегда разграничивай». Здесь каждая мысль — своя строка или плитка.
+
+// ---------- патчи: кто усилен, кто ослаблен — иконками; нажал на героя — что поменяли ----------
+const U10 = {P: null, tab: 'p', X: null, wr: {}, my: null, idx: 0};
+const u10Txt = x => upTr(x.s) || x.s;
+const u10Kind = L => { const u = L.filter(x => x.k === 'u').length, d = L.filter(x => x.k === 'd').length; return u > d ? 'u' : d > u ? 'd' : 'a'; };
+const U10K = {u: ['Усилены', '▲'], d: ['Ослаблены', '▼'], a: ['Изменены', '≈']};
+function u10Group(X) {
+  const H = {}, I = {}, G = [];
+  X.out.filter(x => x.t === 'l').forEach(x => { if (x.h) (H[x.h] = H[x.h] || []).push(x); else if (x.i) (I[x.i] = I[x.i] || []).push(x); else G.push(x); });
+  return {H, I, G};
+}
+// одна строка изменения: иконка умения (если узнали), что поменяли, оригинал мелко
+function u10Rows(L, hid) {
+  const h = hid ? hero(hid) : null, AB = (h && h.ab) || [];
+  const rows = L.map(x => {
+    let t = u10Txt(x), o = t !== x.s ? x.s : '';
+    if (h) { const nm = (x.hn || h.n).replace(/[.*+?^${}()|[\]\\&]/g, '\\$&'); t = t.replace(new RegExp('^' + nm + '\\s*:?\\s*', 'i'), ''); o = o.replace(new RegExp('^' + nm + '\\s*:?\\s*', 'i'), ''); }
+    const lt = t.toLowerCase(), ab = AB.slice().sort((a, b) => b.n.length - a.n.length).find(a => lt.startsWith(a.n.toLowerCase()));
+    let name = '', body = t;
+    if (ab) { name = ab.n; body = t.slice(ab.n.length).replace(/^\s*[—:-]\s*/, ''); }
+    else { const m = t.match(/^(.{2,40}?)\s+—\s+(.+)$/); if (m) { name = m[1]; body = m[2]; } }
+    return {k: x.k || '', name, body: body.charAt(0).toUpperCase() + body.slice(1), o, ab};
+  });
+  const out = []; rows.forEach(r => { const last = out[out.length - 1]; if (last && r.name && last.name === r.name) last.L.push(r); else out.push({name: r.name, ab: r.ab, L: [r]}); });
+  return out.map(g => `<div class="u10-g">${g.name ? `<div class="u10-gh">${g.ab && g.ab.i ? `<img src="${esc(g.ab.i)}" alt="" loading="lazy">` : '<i></i>'}<b>${esc(g.name)}</b></div>` : ''}
+    ${g.L.map(r => `<div class="u10-r ${r.k}"><span class="u10-ri">${r.k === 'u' ? '▲' : r.k === 'd' ? '▼' : r.k === 'f' ? '✓' : '•'}</span><div><p>${esc(r.body)}</p>${r.o ? `<small>${esc(r.o)}</small>` : ''}</div></div>`).join('')}</div>`).join('');
+}
+function u10Tile(id, L, isItem, j) {
+  const k = u10Kind(L), u = L.filter(x => x.k === 'u').length, d = L.filter(x => x.k === 'd').length, mine = U10.my && (isItem ? U10.my.items.has(+id) : U10.my.heroes.has(+id));
+  const w = !isItem && U10.wr[id] != null ? U10.wr[id] : null;
+  const pic = isItem ? `<span class="u10-ti"><img src="${esc(item(id).i)}" alt="" loading="lazy" onerror="${noimg}"></span>` : `<span class="u10-tf"><img src="${esc(faceUrl(+id, k === 'u' ? 'g' : k === 'd' ? 'c' : ''))}" alt="" loading="lazy" style="object-position:${FACEP[id] || '50% 12%'}" onerror="this.onerror=null;this.src='${esc(hero(id).i)}'"></span>`;
+  return `<button type="button" class="u10-t ${k}${isItem ? ' it' : ''}${mine ? ' mine' : ''}" data-u${isItem ? 'i' : 'h'}="${id}" style="--i:${j || 0}" title="${esc(isItem ? item(id).n : hero(id).n)} — что поменяли">${pic}
+    <b>${esc(isItem ? item(id).n : hero(id).n)}</b><em>${u ? `<span class="up">▲${u}</span>` : ''}${d ? `<span class="dn">▼${d}</span>` : ''}${!u && !d ? `<span>${L.length}</span>` : ''}</em>${w != null ? `<i class="u10-wr ${w >= 0 ? 'up' : 'dn'}" title="винрейт до и после патча">${w >= 0 ? '+' : '−'}${f1(Math.abs(w))}%</i>` : ''}${mine ? '<s>твой</s>' : ''}</button>`;
+}
+function u10Sec(map, isItem) {
+  const B = {u: [], d: [], a: []};
+  Object.entries(map).forEach(([id, L]) => B[u10Kind(L)].push([id, L]));
+  const mine = id => U10.my && (isItem ? U10.my.items.has(+id) : U10.my.heroes.has(+id));
+  return ['u', 'd', 'a'].filter(k => B[k].length).map(k => `<section class="u10-sec ${k}"><div class="u10-sh"><span class="u10-sk">${U10K[k][1]}</span><b>${U10K[k][0]}</b><small>${B[k].length}</small></div>
+    <div class="u10-grid${isItem ? ' it' : ''}">${B[k].sort((a, b) => (mine(b[0]) - mine(a[0])) || b[1].length - a[1].length).map(([id, L], j) => u10Tile(id, L, isItem, j)).join('')}</div></section>`).join('');
+}
+function u10Open(id, isItem) {
+  const X = U10.X, G = u10Group(X), L = (isItem ? G.I : G.H)[id]; if (!L) return;
+  const k = u10Kind(L), u = L.filter(x => x.k === 'u').length, d = L.filter(x => x.k === 'd').length, w = !isItem ? U10.wr[id] : null;
+  const head = isItem ? `<span class="u10-mi"><img src="${esc(item(id).i)}" alt=""></span><div><small>Предмет${item(id).p ? ' · ' + nf(item(id).p) + ' душ' : ''}</small><b>${esc(item(id).n)}</b></div>`
+    : `${face(+id, k === 'u' ? 'g' : k === 'd' ? 'c' : '', 'xl')}<div><small>${esc(TYPE_RU[hero(id).ty] || 'Герой')}</small><b>${esc(hero(id).n)}</b></div>`;
+  const ov = document.createElement('div'); ov.className = 'u10-ov';
+  ov.innerHTML = `<div class="u10-md ${k}" role="dialog" aria-label="Что поменяли">${!isItem ? `<i class="u10-bg" style="background-image:url('art/${id}.webp')"></i>` : ''}
+    <header class="u10-mh">${head}<button type="button" class="u10-x" aria-label="Закрыть">✕</button></header>
+    <div class="u10-ms"><span class="u10-tag ${k}">${U10K[k][1]} ${U10K[k][0].replace(/ы$/, '')}</span>${u ? `<span class="up">▲ ${u} ${pl(u, ['усиление', 'усиления', 'усилений'])}</span>` : ''}${d ? `<span class="dn">▼ ${d} ${pl(d, ['ослабление', 'ослабления', 'ослаблений'])}</span>` : ''}${w != null ? `<span class="${w >= 0 ? 'up' : 'dn'}">винрейт ${w >= 0 ? '+' : '−'}${f1(Math.abs(w))}% после патча</span>` : ''}</div>
+    <div class="u10-ml">${u10Rows(L, isItem ? 0 : +id)}</div>
+    ${!isItem ? `<a class="u10-go" href="#h/${id}">Страница героя и сборки ›</a>` : ''}</div>`;
+  document.body.appendChild(ov);
+  requestAnimationFrame(() => ov.classList.add('on'));
+  const close = () => { ov.classList.remove('on'); setTimeout(() => ov.remove(), 220); removeEventListener('keydown', esc1); removeEventListener('hashchange', close); };
+  const esc1 = e => { if (e.key === 'Escape') close(); };
+  ov.onclick = e => { if (e.target === ov || e.target.closest('.u10-x') || e.target.closest('.u10-go')) close(); };
+  addEventListener('keydown', esc1); addEventListener('hashchange', close);
+}
+async function u10View(sel) {
+  const n = vNew(); U10.wr = {};
+  V(`<div class="u10"><div class="u10-hd"><h1 class="h1">Пат<em>чи</em></h1><div class="seg" id="utab"><button data-t="p" class="${U10.tab === 'p' ? 'on' : ''}">Патчи</button><button data-t="n" class="${U10.tab === 'n' ? 'on' : ''}">Новости</button></div></div><div id="upw"><div class="load">Загружаю патчноуты…</div></div></div>`);
+  let P;
+  try { P = U10.P || await apiU(API2 + 'patches'); } catch (e) { put(n, '#upw', `<div class="err">Не вышло: ${esc(e.message)}</div>`); return; }
+  if (n !== VQ) return;
+  P = U10.P = (P || []).slice().sort((a, b) => Date.parse(b.pub_date) - Date.parse(a.pub_date)).slice(0, 30);
+  const idx = P.map((p, i) => i), isP = i => parsePatch(P[i]).patch;
+  if (sel != null && sel !== '' && P[+sel]) U10.tab = isP(+sel) ? 'p' : 'n';
+  const list = idx.filter(i => U10.tab === 'p' ? isP(i) : !isP(i)).slice(0, 12);
+  if (!list.length) { put(n, '#upw', '<div class="empty">Пусто.</div>'); return; }
+  let i = sel != null && sel !== '' && list.includes(+sel) ? +sel : list[0];
+  const p = P[i], X = U10.X = parsePatch(p), t = Math.floor(Date.parse(p.pub_date) / 1000);
+  const chips = `<div class="u10-pk">${list.map(k => `<a class="${k === i ? 'on' : ''}" href="#upd/${k}"><small>${esc(dmy(Math.floor(Date.parse(P[k].pub_date) / 1000)))}</small><b>${esc(upTr(P[k].title) || P[k].title || 'Без названия')}</b></a>`).join('')}</div>`;
+  const ttl = upTr(p.title) || p.title || 'Обновление';
+  if (!X.patch) {
+    const paras = X.out.map(x => x.t === 'h' ? `<h3>${esc(upTr(x.s) || x.s)}</h3>` : `<p>${esc(upTr(x.s) || x.s)}</p>`).join('');
+    put(n, '#upw', `${chips}<article class="q-box u10-art"><header><small>${esc(dmy(t))}</small><h2>${esc(ttl)}</h2></header>${X.imgs[0] ? `<img src="${esc(X.imgs[0])}" alt="" loading="lazy">` : ''}<div class="u10-tx">${paras}</div></article>`);
+    $('#utab').onclick = u10Tab; return;
+  }
+  const G = u10Group(X), nh = Object.keys(G.H).length, ni = Object.keys(G.I).length;
+  const cnt = M => { const o = {u: 0, d: 0, a: 0}; Object.values(M).forEach(L => o[u10Kind(L)]++); return o; }, CH = cnt(G.H);
+  const draw = () => {
+    put(n, '#upw', `${chips}<div class="u10-ph"><div><small>${esc(dmy(t))} · ${p.source === 'forum' ? 'форум разработчиков' : 'новости Steam'}</small><h2>${esc(ttl)}</h2></div>
+      <div class="u10-sum"><span class="up"><b>${CH.u}</b>усилены</span><span class="dn"><b>${CH.d}</b>ослаблены</span><span class="a"><b>${CH.a}</b>изменены</span>${ni ? `<span><b>${ni}</b>предметов</span>` : ''}</div>
+      <div class="u10-lg" id="uplang"><button data-l="ru" class="${upLang() === 'ru' ? 'on' : ''}">RU</button><button data-l="en" class="${upLang() === 'en' ? 'on' : ''}">EN</button></div></div>
+      ${nh ? `<div class="u10-blk"><div class="u10-bh">Герои<small>нажми на героя — что именно поменяли</small></div>${u10Sec(G.H, false)}</div>` : ''}
+      ${ni ? `<div class="u10-blk"><div class="u10-bh">Предметы</div>${u10Sec(G.I, true)}</div>` : ''}
+      ${G.G.length ? `<details class="q-box u10-gen"><summary>Общие изменения<small>${G.G.length}</small></summary><div class="u10-ml">${u10Rows(G.G, 0)}</div></details>` : ''}`);
+    $('#utab').onclick = u10Tab;
+  };
+  draw();
+  $('#upw').onclick = e => {
+    const h = e.target.closest('[data-uh]'); if (h) { u10Open(h.dataset.uh, false); return; }
+    const it = e.target.closest('[data-ui]'); if (it) { u10Open(it.dataset.ui, true); return; }
+    const lg = e.target.closest('#uplang [data-l]'); if (lg) { try { localStorage.setItem('rl-plang', lg.dataset.l); } catch (er) {} upLoad().then(draw); }
+  };
+  if (ME) myStuff().then(M => { if (n !== VQ || !M) return; U10.my = M; draw(); }).catch(() => {});
+  if (nh && now() - t > 12 * 3600) {
+    const h0 = t - (t % 3600), hb = h0 - 7 * 86400, ha = Math.min(now() - (now() % 3600), h0 + 7 * 86400);
+    Promise.all([api(`analytics/hero-stats?min_unix_timestamp=${hb}&max_unix_timestamp=${h0}`), api(`analytics/hero-stats?min_unix_timestamp=${h0}&max_unix_timestamp=${ha}`)]).then(([B, A]) => {
+      if (n !== VQ) return; const bb = {}, aa = {}; B.forEach(x => bb[x.hero_id] = x); A.forEach(x => aa[x.hero_id] = x); U10.wr = {};
+      Object.keys(G.H).forEach(h => { const b = bb[h], a = aa[h]; if (b && a && b.matches > 200 && a.matches > 200) U10.wr[h] = 100 * (a.wins / a.matches - b.wins / b.matches); });
+      draw();
+    }).catch(() => {});
+  }
+}
+function u10Tab(e) { const b = e.target.closest('[data-t]'); if (!b) return; U10.tab = b.dataset.t; const P = U10.P || []; const k = P.findIndex(p => (U10.tab === 'p') === !!parsePatch(p).patch); location.hash = '#upd/' + Math.max(0, k); }
+viewUpd = async function (sel) { await upLoad(); return u10View(sel); };
+
+// ---------- лайв-матч: карточки компактнее, больше меток; игры за 12 ч / 30 дней и его сборка — по наведению ----------
+function pCard(p, en, thr, meId) {
+  const wr = pc(p.hw, p.hm), per = (k, nm, o) => { const w = o && o.m ? Math.round(100 * o.w / o.m) : null;
+    return `<button class="l10-pr${w == null ? ' off' : ''}" type="button" data-per="${k}" data-acc="${p.id}"${w == null ? ' disabled' : ''}><small>${nm}</small><b class="${w == null ? '' : w >= 50 ? 'win' : 'loss'}">${w == null ? '—' : w + '%'}</b><i>${o && o.m ? games(o.m) : 'не играл'}</i></button>`; };
+  const tags = [thr ? ['h', 'Главная угроза', 'самый опасный по рангу и игре на герое'] : null, p.cn ? ['r', `Контрит тебя · ${p.cn}%`, 'твой герой против него побеждает реже'] : null, ...p.tags].filter(Boolean);
+  return `<div class="q-pc l10${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
+    <div class="top"><img class="f" src="${esc(faceUrl(p.hid, p.mood))}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
+      <span class="l10-rk" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span></div>
+    <div class="q-pb">${p.id ? `<a class="q-pc-n" href="?id=${p.id}#home"><span class="q-pnm">${esc(p.name)}</span></a>` : `<span class="q-pnm">${esc(p.name)}</span>`}<span class="l10-rn">${esc(rankOf(p.badge).name)}</span>
+      <div class="l10-st"><span><small>на герое</small><b>${p.hm ? nf(p.hm) : '0'}${p.hm ? ` · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : ''}</b></span><span><small>всего</small><b>${p.tm ? `${nf(p.tm)} · ${pc(p.tw, p.tm)}%` : '—'}</b></span></div>
+      <div class="l10-per">${per('12', '12 ч', p.p12)}${per('30', '30 дн', p.p30)}</div>
+      ${p.rc && p.rc.length ? `<div class="l10-rc">${p.rc.slice(0, 6).map(r => `<a href="#m/${r.mid}" class="${r.w ? 'w' : 'l'}" title="${esc(hero(r.hid).n)} · ${r.w ? 'победа' : 'поражение'} · ${r.kda}"><img src="${esc(hero(r.hid).i)}" alt="" loading="lazy" onerror="${noimg}"></a>`).join('')}</div>` : ''}
+      <div class="q-pbld" id="pb-${p.id}"></div>
+      <div class="tg">${tags.map(t => `<span class="tag ${t[0]}" title="${esc(t[2])}">${esc(t[1])}</span>`).join('')}</div></div></div>`;
+}
+// наведение мышью открывает ту же всплывашку, что и нажатие (на телефоне — нажатие)
+{
+  const HOV = matchMedia('(hover:hover) and (pointer:fine)');
+  let tmr = 0, cur = null;
+  document.addEventListener('mouseover', e => {
+    if (!HOV.matches) return;
+    const a = e.target.closest('#lvb [data-per]:not([disabled]), #lvb [data-pb]');
+    if (a) { clearTimeout(tmr); if (a === cur && $('.q-pop')) return; tmr = setTimeout(() => {
+      cur = a;
+      if (a.dataset.per) { const p = LVL.find(x => String(x.id) === a.dataset.acc); if (p) qPop(a, perHTML(p, a.dataset.per)); }
+      else { qPop(a, pbHTML(a.dataset.pb)); pbNamed(a.dataset.pb); }
+      const d = $('.q-pop'); if (d) d.classList.add('hov');
+    }, 140); return; }
+    if (e.target.closest('.q-pop')) { clearTimeout(tmr); return; }
+    if (cur && $('.q-pop.hov')) { clearTimeout(tmr); tmr = setTimeout(() => { if ($('.q-pop.hov')) qPopClose(); cur = null; }, 260); }
+  });
+}
+
+// ---------- сборки героя: одна рекомендуемая сверху, доля ветки (ган/спирит/микс), 6 сборок и «показать ещё» ----------
+let HBM = 6;
+function drawBuilds2(hid) {
+  const el = $('#hbl'), X = HB2[hid]; if (!el || !X) return;
+  const {L, RL, me} = X, withSt = L.filter(x => x.m >= 10 || x.pm >= 10), tot = withSt.reduce((a, x) => a + x.m, 0) || 1;
+  const cats = ['gun', 'spirit', 'mix'].map(c => { const CL = withSt.filter(x => x.cat === c); return {c, L: CL, m: CL.reduce((a, x) => a + x.m, 0)}; }).filter(x => x.L.length);
+  let html = '';
+  if (me) {
+    const cur = L.filter(x => x.sr).sort((a, b) => b.sr.matches - a.sr.matches)[0] || L.filter(x => x.sm).sort((a, b) => b.sm.matches - a.sm.matches)[0];
+    const made = L.filter(x => x.made && x !== cur);
+    if (cur || made.length) html += `<div class="b10-h">Твои сборки</div><div class="q-bcs b10-g">${cur ? bCard(cur, cur.sr ? 'cur' : 'me') : ''}${made.slice(0, 3).map(x => bCard(x, 'made')).join('')}</div>`;
+  }
+  if (!cats.length) {
+    html += `<div class="empty">Сборок с нормальной выборкой за 30 дней нет.</div>${RL ? `<div class="q-bcs b10-g">${rlCard(hid, RL, '')}</div>` : ''}`;
+    el.innerHTML = html; bindB(hid); return;
+  }
+  if (!HBC || !cats.some(x => x.c === HBC)) HBC = cats.slice().sort((a, b) => b.m - a.m)[0].c;
+  const cur = cats.find(x => x.c === HBC), share = c => Math.round(100 * c.m / tot);
+  const SRT = {pop: (a, b) => b.m - a.m || b.pm - a.pm, wr: (a, b) => (b.wl || b.pwl) - (a.wl || a.pwl), pro: (a, b) => b.pm - a.pm || b.pwl - a.pwl};
+  const pool = cur.L.filter(x => x.m >= Math.max(40, .04 * cur.m)), rec = (pool.length ? pool : cur.L).slice().sort((a, b) => (b.wl || b.pwl) - (a.wl || a.pwl))[0];
+  const CL = cur.L.filter(x => x !== rec && (HBS !== 'pro' || x.pm >= 10)).sort(SRT[HBS] || SRT.pop), shown = CL.slice(0, HBM);
+  const rst = rec.st || rec.sp, rwr = rst ? 100 * rst.wins / rst.matches : 0;
+  html += `<div class="b10-cats">${cats.map(c => { const s = share(c), b0 = c.L.slice().sort((a, b) => (b.wl || b.pwl) - (a.wl || a.pwl))[0];
+      return `<button type="button" class="b10-cat c-${c.c}${HBC === c.c ? ' on' : ''}" data-c="${c.c}"><span class="b10-cn"><b>${CATI[c.c]}</b><em>${s}%</em></span><i class="b10-bar"><i style="width:${Math.max(3, s)}%"></i></i>
+        <small>${s < 10 ? 'редкая ветка — мало кто так играет' : `${c.L.length} ${pl(c.L.length, ['сборка', 'сборки', 'сборок'])}`}</small><span class="ic">${b0.items.slice(0, 6).map(id => `<img src="${esc(item(id).i)}" alt="" loading="lazy" onerror="${noimg}">`).join('')}</span></button>`; }).join('')}</div>
+    ${share(cur) < 10 ? `<div class="b10-warn"><b>${CATI[HBC]} собирают только ${share(cur)}% игроков</b><span>Сборок мало, винрейт может врать — смотри с осторожностью.</span></div>` : ''}
+    <div class="b10-rec c-${HBC}"><div class="b10-rl"><span>★ Рекомендуем</span><small>${rst ? `лучший винрейт среди популярных: <b>${f1(rwr)}%</b> на ${nf(rst.matches)} ${pl(rst.matches, ['игре', 'играх', 'играх'])}` : 'лучшая по винрейту'}</small></div>${bCard(rec, '')}</div>
+    <div class="b10-tb"><div class="b10-h">Другие ${CATI[HBC].toLowerCase()}-сборки<small>${CL.length}</small></div><div class="seg" id="hbs">${[['pop', 'Популярные'], ['wr', 'Винрейт'], ['pro', 'У прошников']].map(([k, nm]) => `<button data-s="${k}" class="${HBS === k ? 'on' : ''}">${nm}</button>`).join('')}</div></div>
+    <div class="q-bcs b10-g">${shown.map(x => bCard(x, HBS === 'pro' ? 'pro' : '')).join('') || '<div class="empty">Других нет.</div>'}</div>
+    ${CL.length > HBM ? `<button type="button" class="btn g q-more b10-more" data-bmore="1">Показать ещё ${Math.min(6, CL.length - HBM)} из ${CL.length - HBM}</button>` : ''}`;
+  el.innerHTML = html; bindB(hid);
+  if (!el._b10) { el._b10 = 1; el.addEventListener('click', e => { if (e.target.closest('[data-bmore]')) { HBM += 6; drawBuilds2(hid); } else if (e.target.closest('[data-c]')) HBM = 6; }, true); }
+}
+{ const VH10 = viewHero; viewHero = async function (hid, mode) { HBM = 6; return VH10(hid, mode); }; }
+
+// ---------- профиль: напарник по пати — тоже метка «что знать» ----------
+{
+  const QM10 = qkMates;
+  qkMates = async function (n, id) {
+    await QM10(n, id);
+    const M = await api(`players/${id}/mate-stats?min_matches_played=3`).catch(() => []); if (n !== VQ) return;
+    const top = (M || []).filter(x => x.matches_played >= 40).sort((a, b) => b.matches_played - a.matches_played)[0], box = $('#p10kn');
+    if (!top || !box || $('.p10-t.pty', box)) return;
+    const nm = (SN[top.mate_id] || {}).n || 'другом', wr = Math.round(100 * top.wins / Math.max(1, top.matches_played));
+    box.insertAdjacentHTML('beforeend', `<a class="p10-t b pty" href="?id=${top.mate_id}#home" style="--i:8"><b>Играет в пати · ${esc(nm)}</b><small>${nf(top.matches_played)} ${pl(top.matches_played, ['игра', 'игры', 'игр'])} вместе · ${wr}% побед</small></a>`);
+  };
+}
+
+// ---------- про-игры: кто из топов играет сейчас, топ-матчи мира, последние матчи топов ----------
+const PR10 = {h: 0, MM: [], PRO: {}};
+async function viewPro() {
+  const n = vNew();
+  V(`<div class="pr10"><div class="u10-hd"><h1 class="h1">Про-<em>игры</em></h1></div>
+    <div class="p10-h">Топ Европы<small>кто сейчас в игре</small><a href="#lb">весь топ ›</a></div><div class="pr10-top" id="prt"><div class="load">Загружаю топ…</div></div>
+    <div class="p10-h">Идут прямо сейчас<small>самые высокие матчи мира</small></div><div class="pr10-live" id="prl"><div class="load">Смотрю, кто играет…</div></div>
+    <div class="p10-h">Последние матчи топов<span id="prf" style="margin-left:auto"></span></div><div id="prm"><div class="load">Тяну матчи топов…</div></div></div>`);
+  let L, A;
+  try { [L, A] = await Promise.all([api('leaderboard/Europe'), live('matches/active').catch(() => [])]); } catch (e) { put(n, '#prt', `<div class="err">${esc(e.message)}</div>`); return; }
+  if (n !== VQ) return;
+  const E = (L.entries || []), PRO = {}; E.slice(0, 200).forEach((e, k) => { if ((e.possible_account_ids || []).length === 1) PRO[e.possible_account_ids[0]] = {k: k + 1, nm: e.account_name}; });
+  const inGame = {}; (A || []).forEach(m => (m.players || []).forEach(p => { if (PRO[p.account_id]) inGame[p.account_id] = {m, hid: p.hero_id}; }));
+  put(n, '#prt', E.slice(0, 12).map((e, i) => { const one = (e.possible_account_ids || []).length === 1 ? e.possible_account_ids[0] : null, g = one && inGame[one], h = g ? g.hid : (e.top_hero_ids || [])[0];
+    return `<a class="pr10-p${g ? ' on' : ''}${one ? '' : ' x'}" ${one ? `href="${g ? `#live/m${g.m.match_id}` : `?id=${one}#home`}"` : ''} style="--i:${i}">${h ? face(h, '', 'm') : '<span class="q-fc m"></span>'}<span><b>#${i + 1} ${esc(e.account_name || 'Скрытый')}</b><small>${g ? `<i></i>в игре · ${esc(hero(g.hid).n)}` : one ? 'не в игре' : 'аккаунт скрыт'}</small></span></a>`; }).join(''));
+  const top = (A || []).filter(m => (m.players || []).length >= 12 && /citadel|normal/i.test(m.game_mode_parsed || '') && !/street/i.test(m.game_mode_parsed || '')).sort((a, b) => (b.match_score || 0) - (a.match_score || 0)).slice(0, 6);
+  put(n, '#prl', top.length ? top.map((m, i) => { const P = m.players, pros = P.filter(p => PRO[p.account_id]);
+    const tm = k => `<span class="pr10-tm t${k}">${P.filter(p => teamOf(p.team) === k).map(p => `<img src="${esc(hero(p.hero_id).i)}" alt="" title="${esc(hero(p.hero_id).n)}" loading="lazy" onerror="${noimg}"${PRO[p.account_id] ? ' class="pro"' : ''}>`).join('')}</span>`;
+    return `<a class="pr10-lv" href="#live/m${m.match_id}" style="--i:${i}"><div class="pr10-lh"><span class="live">LIVE</span><b>${mmss(now() - m.start_time)}</b><small>${m.match_mode_parsed === 'Ranked' ? 'ранговый' : 'обычный'} · зрителей ${m.spectators || 0}</small></div>
+      ${tm(0)}<i class="pr10-vs">VS</i>${tm(1)}<div class="pr10-pp">${pros.slice(0, 3).map(p => `<span>#${PRO[p.account_id].k} ${esc(PRO[p.account_id].nm || '')}</span>`).join('') || '<small>топов из Европы нет</small>'}</div></a>`; }).join('') : '<div class="empty">Сейчас топ-матчей нет.</div>');
+  const six = E.filter(e => (e.possible_account_ids || []).length === 1).slice(0, 8);
+  const HS2 = await Promise.all(six.map(e => api('players/' + e.possible_account_ids[0] + '/match-history').catch(() => []))); if (n !== VQ) return;
+  const rows = []; HS2.forEach(H => (H || []).slice(0, 4).forEach(m => rows.push(m)));
+  rows.sort((a, b) => b.start_time - a.start_time);
+  const seen = new Set(), U = rows.filter(m => !seen.has(m.match_id) && seen.add(m.match_id)).slice(0, 14);
+  await metaLite(U.map(m => m.match_id)); if (n !== VQ) return;
+  PR10.MM = U.map(m => ML.get(m.match_id)).filter(Boolean); PR10.PRO = PRO;
+  await steamNames(PR10.MM.flatMap(m => m.players.map(p => p.account_id))); if (n !== VQ) return;
+  pr10Draw(n);
+}
+function pr10Draw(n) {
+  const X = PR10, hs = [...new Set(X.MM.flatMap(m => m.players.filter(p => X.PRO[p.account_id]).map(p => p.hero_id)))].filter(h => D.heroes[h]).sort((a, b) => hero(a).n.localeCompare(hero(b).n));
+  put(n, '#prf', `<select class="q-sel" id="prh" aria-label="Герой"><option value="0">Все герои</option>${hs.map(h => `<option value="${h}"${X.h === h ? ' selected' : ''}>${esc(hero(h).n)}</option>`).join('')}</select>`);
+  const L = X.MM.filter(m => !X.h || m.players.some(p => X.PRO[p.account_id] && p.hero_id === X.h));
+  put(n, '#prm', `<div class="q-box pr10-ml">${L.map((m, i) => { const pros = m.players.filter(p => X.PRO[p.account_id]).sort((a, b) => X.PRO[a.account_id].k - X.PRO[b.account_id].k), w = teamOf(m.winning_team);
+    const tm = k => `<span class="pr10-tm t${k}${w === k ? ' w' : ''}">${m.players.filter(p => teamOf(p.team) === k).map(p => `<img src="${esc(hero(p.hero_id).i)}" alt="" title="${esc((SN[p.account_id] || {}).n || 'Игрок')} · ${esc(hero(p.hero_id).n)}" loading="lazy" onerror="${noimg}"${X.PRO[p.account_id] ? ' class="pro"' : ''}>`).join('')}</span>`;
+    return `<a class="pr10-m" href="#m/${m.match_id}" style="--i:${i}"><span class="pr10-who">${pros.slice(0, 2).map(p => { const won = teamOf(p.team) === w; return `<span class="pr10-pw">${face(p.hero_id, won ? 'g' : 'c', 's')}<span><b>#${X.PRO[p.account_id].k} ${esc(X.PRO[p.account_id].nm || '')}</b><small class="${won ? 'win' : 'loss'}">${won ? 'победа' : 'поражение'} · ${p.kills || 0}/${p.deaths || 0}/${p.assists || 0}</small></span></span>`; }).join('')}</span>
+      ${tm(0)}${tm(1)}<span class="pr10-mt"><b>${mmss(m.duration_s || 0)}</b><small>${esc(ago(tsOf(m.start_time)))}</small></span><span class="r9-go">›</span></a>`; }).join('') || '<div class="empty">Матчей нет.</div>'}</div>`);
+  const sel = $('#prh'); if (sel) sel.onchange = e => { X.h = +e.target.value; pr10Draw(n); };
+}
+
+// ---------- лидеры: подиум, строки-карточки, скрытые аккаунты — тише ----------
+async function viewLb2() {
+  const n = vNew();
+  const opts = Object.entries(D.heroes).map(([id, h]) => [+id, h.n]).sort((a, b) => a[1].localeCompare(b[1]));
+  V(`<div class="lb10"><div class="u10-hd"><h1 class="h1">Лиде<em>ры</em></h1><div class="seg" id="lbrg">${Object.entries(REGN).map(([k, v]) => `<button data-r="${k}" class="${LB2.rg === k ? 'on' : ''}">${v}</button>`).join('')}</div></div>
+    <div class="lb10-f"><select class="q-sel" id="lbh" aria-label="Герой"><option value="0">Все герои</option>${opts.map(([id, nm]) => `<option value="${id}"${LB2.h === id ? ' selected' : ''}>${esc(nm)}</option>`).join('')}</select>
+      <input id="lbf2" class="inp q-lbq" placeholder="Найти по нику…" aria-label="Найти по нику" value="${esc(LB2.q)}">${ME ? '<button class="btn s" id="lbme2" type="button">Где я?</button>' : ''}</div>
+    <div id="lbb"><div class="load">Загружаю…</div></div></div>`);
+  if (LB2.n > 50 && !LB2.keep) LB2.n = 50;
+  const draw = async () => {
+    put(n, '#lbb', '<div class="load">Загружаю…</div>');
+    try {
+      const E = ((await api('leaderboard/' + LB2.rg + (LB2.h ? '/' + LB2.h : ''))).entries || []).map((e, i) => ({e, i, one: (e.possible_account_ids || []).length === 1 ? e.possible_account_ids[0] : null})); if (n !== VQ) return;
+      const myI = ME ? E.findIndex(x => lbHit(x.e, ME.id, ME.name)) : -1, q = LB2.q.toLowerCase(), F2 = E.filter(x => !q || String(x.e.account_name || '').toLowerCase().includes(q));
+      const medal = ['#ffcf4a', '#c9d3df', '#e09b5e'];
+      const pod = !q && E.length >= 3 ? `<div class="lb10-pod">${[1, 0, 2].map(k => { const x = E[k], h = (x.e.top_hero_ids || [])[0] || LB2.h;
+        return `<${x.one ? `a href="?id=${x.one}#home"` : 'div'} class="lb10-pd p${k + 1}" style="--md:${medal[k]};--i:${k}">${h ? `<i class="bg" style="background-image:url('art/${h}.webp')"></i>` : '<i class="bg none"></i>'}<span class="pl">${k + 1}</span>
+          <span class="lb10-pi"><b>${esc(x.e.account_name || 'Скрытый игрок')}</b><span class="rkc" data-acc="${x.one || ''}">${x.one ? '…' : '<span class="sub">аккаунт скрыт</span>'}</span><span class="his">${(x.e.top_hero_ids || []).slice(0, 3).map(h2 => face(h2, '', 's', hero(h2).n)).join('')}</span></span></${x.one ? 'a' : 'div'}>`; }).join('')}</div>` : '';
+      const rows = (q ? F2 : F2.slice(3)).slice(0, LB2.n), more = (q ? F2 : F2.slice(3)).length - rows.length;
+      put(n, '#lbb', `${pod}<div class="q-box lb10-l">${rows.map((x, j) => `<${x.one ? `a href="?id=${x.one}#home"` : 'div'} id="lb2-${x.i}" class="lb10-r${x.i === myI ? ' mine' : ''}${x.one ? '' : ' x'}" style="--i:${Math.min(j, 20)}"><span class="lb10-n${x.i < 10 ? ' t10' : ''}">${x.i + 1}</span>
+          <span class="lb10-nm"><b>${esc(x.e.account_name || 'Скрытый игрок')}</b>${x.i === myI ? '<em>это ты</em>' : ''}</span>
+          <span class="rkc" data-acc="${x.one || ''}">${x.one ? '<span class="sub">…</span>' : '<span class="sub">аккаунт скрыт</span>'}</span>
+          <span class="his">${(x.e.top_hero_ids || []).slice(0, 4).map(h => face(h, '', 's', hero(h).n)).join('')}</span><span class="r9-go">${x.one ? '›' : ''}</span></${x.one ? 'a' : 'div'}>`).join('') || '<div class="empty">Никого не нашлось.</div>'}</div>
+        ${more > 0 ? `<button class="btn g q-more" id="lbmore" type="button">Показать ещё ${Math.min(50, more)}</button>` : ''}`);
+      lbRanks();
+      const mb = $('#lbmore'); if (mb) mb.onclick = () => { LB2.n += 50; LB2.keep = 1; draw(); };
+      const me2 = $('#lbme2'); if (me2) me2.onclick = () => { if (myI < 0) { alertBox(`Тебя нет в топе: ${esc(REGN[LB2.rg])}${LB2.h ? ' на этом герое' : ''}.`); return; } if (myI >= LB2.n + 3) { LB2.n = myI + 20; LB2.keep = 1; draw().then(() => { const r = $('#lb2-' + myI); if (r) r.scrollIntoView({block: 'center', behavior: 'smooth'}); }); return; } const r = $('#lb2-' + myI); if (r) r.scrollIntoView({block: 'center', behavior: 'smooth'}); };
+    } catch (err) { put(n, '#lbb', `<div class="err">${esc(err.message)}</div>`); }
+  };
+  $$('#lbrg button').forEach(b => b.onclick = () => { $$('#lbrg button').forEach(x => x.classList.toggle('on', x === b)); LB2.rg = b.dataset.r; LB2.n = 50; draw(); });
+  $('#lbh').onchange = e => { LB2.h = +e.target.value; LB2.n = 50; draw(); };
+  $('#lbf2').oninput = e => { LB2.q = e.target.value.trim(); clearTimeout(LB2.t); LB2.t = setTimeout(draw, 250); };
+  draw();
+}
+
+// ---------- VIP: логотип градиентом. Пока включается ссылкой ?vip=1 (выключить — ?vip=0), запоминается ----------
+{
+  try { const v = new URLSearchParams(location.search).get('vip'); if (v === '1') localStorage.setItem('rl-vip', '1'); if (v === '0') localStorage.removeItem('rl-vip'); } catch (e) {}
+  let vip = false; try { vip = localStorage.getItem('rl-vip') === '1'; } catch (e) {}
+  document.body.classList.toggle('vip', vip);
+  const w = $('.q-lw'); if (w) w.title = vip ? 'Restless VIP' : 'Restless';
 }
 window.addEventListener('hashchange', route);
 (async () => {

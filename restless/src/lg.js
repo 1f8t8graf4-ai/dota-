@@ -318,7 +318,7 @@ async function viewHero(hid, mode) {
   hid = +hid;
   if (!D.heroes[hid]) { vNew(); V('<div class="empty">Такого героя нет.</div>'); return; }
   const n = vNew(), h = hero(hid), me = !!ME && mode === 'me';
-  const back = me ? ['#mine', 'Герои игрока'] : ['#meta', 'Мета'];
+  const back = me ? ['#mine', 'Герои игрока'] : ['#meta', 'Герои'];
   V(`<a class="q-back" href="${back[0]}">‹ ${back[1]}</a>
     <div class="q-hp"><div class="q-hcol" style="--hc:${esc(h.col || '#ffb020')}"><div class="q-art">${artHTML(hid)}<div class="q-say" id="hsay"></div><div class="q-artn"><small>${esc(TYPE_RU[h.ty] || 'Герой')}${h.cx ? ' · сложность ' + h.cx + ' из 3' : ''}</small><b>${esc(h.n)}</b></div></div></div>
       <div style="min-width:0"><div class="q-tog">${ME ? `<div class="seg q-sw" id="hsw"><button data-m="me" class="${me ? 'on' : ''}" title="Твоя статистика на герое">${ME.avatar ? `<img class="q-swa" src="${esc(ME.avatar)}" alt="" onerror="this.remove()">` : ''}<span>${esc(ME.name)}</span></button><button data-m="all" class="${me ? '' : 'on'}">Все игроки</button></div>` : ''}${me ? '' : fltHTML()}</div>
@@ -887,16 +887,16 @@ async function viewLanding() {
   const n = vNew();
   V(`<section class="land q-land">
       <h1 class="h1">Твой Deadlock — <em>как на ладони</em></h1>
-      <p>Профиль как в League of Graphs: ранг, частые герои, паттерны и каждый матч с предметами и всеми 12 игроками. Лайв-матч как Porofessor, мета, лидеры, настоящие сборки с винрейтом и что поменяли в патче — для твоих героев. Входить в Steam не нужно.</p>
+      <p>Профиль игрока за минуту, разбор каждого матча, лайв-матч, сборки и патчи — по-русски. Входить в Steam не нужно.</p>
       <form id="lf"><input id="lq" placeholder="Ссылка на профиль Steam, ник или ID" autocomplete="off" aria-label="Игрок"><button class="btn" type="submit">Найти себя</button></form>
       <div class="ex">Или посмотри на примере: <button id="lx" type="button">топ-1 Европы</button></div>
       <div class="art">${[65, 84, 79].map(id => `<img src="art/${id}.webp" alt="" onerror="this.remove()">`).join('')}</div>
     </section>
     <div class="g4 feat" style="margin-top:14px">
       <a class="card" href="#live"><b>Лайв-матч</b><span>Найди игрока по нику — его матч: ранги, пати, мейны, серии, главная угроза.</span></a>
-      <a class="card" href="#meta"><b>Мета</b><span>Тир-лист по винрейту на твоём ранге. Нажми на героя — портрет и настоящие сборки.</span></a>
+      <a class="card" href="#meta"><b>Герои</b><span>Кто сейчас сильный и с какой сборкой.</span></a>
       <a class="card" href="#lb"><b>Лидеры</b><span>Официальный топ по регионам — найдёшь себя, докрутит к твоей строке.</span></a>
-      <a class="card" href="#upd"><b>Обновления</b><span>Патчноуты: коротко, что поменяли твоим героям, и весь текст.</span></a>
+      <a class="card" href="#upd"><b>Патчи</b><span>Кого усилили и ослабили — иконками.</span></a>
     </div>
     <div class="q-sec"><b>Сейчас сильнее всех</b><small>${esc(fName())}</small></div><div class="card" id="top5"><div class="load" style="padding:18px">Считаю мету…</div></div>`);
   $('#lf').onsubmit = async e => { e.preventDefault(); const q = $('#lq').value.trim(), id = idFrom(q); if (id) { await setMe(id); location.hash = '#home'; route(); } else { $('#sq').value = q; $('#sq').focus(); $('#sq').dispatchEvent(new Event('input')); } };

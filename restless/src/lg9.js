@@ -138,13 +138,22 @@ async function viewHome() {
     <div class="r9-sc"><span><small>Средний матч</small><b>${f1(avg(F.L, m => m.player_kills))}/${f1(avg(F.L, m => m.player_deaths))}/${f1(avg(F.L, m => m.player_assists))}</b><em>${nf(avg(F.L, m => m.net_worth / (Math.max(300, m.match_duration_s || 0) / 60)))} душ/мин</em></span></div>
     <div class="r9-sc"><span><small>Играет</small><b>${A.g7} за неделю</b><em>последний — ${esc(ago(A.last))} · <a href="#live/${id}">лайв ›</a></em></span></div></section>`;
 
-  // герои — топ-5 за 30 дней (мало игр — за всё время)
+  // герои — крупными карточками: топ-6 за 30 дней (мало игр — за всё время)
   const R30 = {}; H.filter(m => m.start_time >= now() - 30 * 86400).forEach(m => { const o = R30[m.hero_id] = R30[m.hero_id] || {m: 0, w: 0, k: 0, d: 0, a: 0}; o.m++; if (won(m)) o.w++; o.k += m.player_kills; o.d += m.player_deaths; o.a += m.player_assists; });
-  let HL = Object.entries(R30).filter(([h]) => D.heroes[h]).sort((a, b) => b[1].m - a[1].m).slice(0, 5).map(([h, o]) => ({hid: +h, g: o.m, w: o.w, k: o.k / o.m, d: o.d / o.m, a: o.a / o.m})), per = '30 дней';
-  if (HL.reduce((a, x) => a + x.g, 0) < 8) { HL = pool.filter(x => D.heroes[x.hero_id]).slice(0, 5).map(x => ({hid: x.hero_id, g: x.matches_played, w: x.wins, k: x.kills / x.matches_played, d: x.deaths / x.matches_played, a: x.assists / x.matches_played})); per = 'всё время'; }
-  const heroes = `<section class="q-box r9-hs"><div class="r9-h2"><b>Герои</b><small>${per}</small><a href="#mine">все ›</a></div>
-    ${HL.map(x => { const wr = 100 * x.w / Math.max(1, x.g); return `<a class="r9-hr" href="#h/${x.hid}/me">${face(x.hid, moodOn(H, x.hid), 's')}<span><b>${esc(hero(x.hid).n)}</b><small>${games(x.g)} · ${f1(x.k)}/${f1(x.d)}/${f1(x.a)}</small></span><em class="${wrC(wr, x.g)}">${Math.round(wr)}%</em></a>`; }).join('') || '<div class="empty">Нет данных.</div>'}</section>
-    <section class="q-box r9-hs"><div class="r9-h2"><b>Чаще всего с</b><a href="#form/habits">привычки ›</a></div><div id="qkmate"><span class="sub">Считаю…</span></div></section>`;
+  let HL = Object.entries(R30).filter(([h]) => D.heroes[h]).sort((a, b) => b[1].m - a[1].m).slice(0, 6).map(([h, o]) => ({hid: +h, g: o.m, w: o.w, k: o.k / o.m, d: o.d / o.m, a: o.a / o.m})), per = '30 дней';
+  if (HL.reduce((a, x) => a + x.g, 0) < 8) { HL = pool.filter(x => D.heroes[x.hero_id]).slice(0, 6).map(x => ({hid: x.hero_id, g: x.matches_played, w: x.wins, k: x.kills / x.matches_played, d: x.deaths / x.matches_played, a: x.assists / x.matches_played})); per = 'всё время'; }
+  const totG = HL.reduce((a, x) => a + x.g, 0) || 1, allG = per === '30 дней' ? Object.values(R30).reduce((a, o) => a + o.m, 0) || 1 : totG;
+  const heroes = HL.length ? `<section class="p10-hs"><div class="p10-h">Его герои<small>${per}</small><a href="#mine">все герои ›</a></div><div class="p10-hg">${HL.map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g), sh = Math.round(100 * x.g / allG);
+      return `<a class="p10-hc" href="#h/${x.hid}/me" style="--i:${i};--hc:${esc(hero(x.hid).col || '#ffb020')}"><span class="p10-hi"><img src="${esc(faceUrl(x.hid, wr >= 55 ? 'g' : wr <= 42 ? 'c' : ''))}" alt="" loading="lazy" style="object-position:${FACEP[x.hid] || '50% 12%'}" onerror="this.onerror=null;this.src='${esc(hero(x.hid).i)}'"><em>${sh}%</em></span>
+        <b>${esc(hero(x.hid).n)}</b><span class="p10-hn"><span><i class="${wrC(wr, x.g)}">${Math.round(wr)}%</i><small>побед</small></span><span><i>${x.g}</i><small>${pl(x.g, ['игра', 'игры', 'игр'])}</small></span><span><i>${f1(x.k)}/${f1(x.d)}/${f1(x.a)}</i><small>У/С/П</small></span></span></a>`; }).join('')}</div></section>` : '';
+  const side = `<div id="qkco"></div><section class="q-box r9-hs"><div class="r9-h2"><b>Чаще всего с</b><a href="#form/habits">привычки ›</a></div><div id="qkmate"><span class="sub">Считаю…</span></div></section>`;
+
+  // что знать о нём — метки крупно: на ком играет, в чём силён, где сливает
+  const T = profTags(H, HS, HA), P2x = patterns2(H), lg = P2x.find(x => /долгих/.test(x.n)), sh = P2x.find(x => /коротких/.test(x.n));
+  if (lg && lg.d <= -8) T.splice(1, 0, ['Сливает долгие игры', 'r', `в играх 35+ мин побеждает в ${Math.round(lg.wr)}% — на ${f1(-lg.d)}% реже обычного`]);
+  else if (lg && lg.d >= 8) T.splice(1, 0, ['Тащит долгие игры', 'g', `в играх 35+ мин побеждает в ${Math.round(lg.wr)}% — на ${f1(lg.d)}% чаще обычного`]);
+  if (sh && sh.d <= -8) T.push(['Слабое начало', 'r', `короткие игры (до 25 мин) выигрывает в ${Math.round(sh.wr)}%`]);
+  const know = T.length ? `<section class="p10-kn" id="p10kn">${T.slice(0, 8).map(([s, c, h], i) => `<div class="p10-t ${c || 'n'}" style="--i:${i}"><b>${esc(s)}</b><small>${esc(h)}</small></div>`).join('')}</section>` : '';
 
   // матчи
   const hlist = [...new Set(H.slice(0, 300).map(m => m.hero_id))].filter(h => D.heroes[h]).sort((a, b) => hero(a).n.localeCompare(hero(b).n));
@@ -153,11 +162,9 @@ async function viewHome() {
       <select class="q-sel" id="hfh" aria-label="Герой"><option value="0">Все герои</option>${hlist.map(h => `<option value="${h}"${PHF.hero === h ? ' selected' : ''}>${esc(hero(h).n)}</option>`).join('')}</select></div>
     <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё</button></section>`;
 
-  V(`${ptabsHTML('home')}${sum}<div class="r9-cols"><aside class="r9-side">${heroes}</aside><div class="r9-main"><div id="qkco"></div>${hist}</div></div>
+  V(`${ptabsHTML('home')}${know}${sum}${heroes}<div class="r9-cols"><aside class="r9-side">${side}</aside><div class="r9-main">${hist}</div></div>
     <div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b></div><div class="pad" id="myb"></div></div></div>`);
 
-  // метки игрока — в шапку, под ник (не больше четырёх)
-  const T = profTags(H, HS, HA), pc2 = $('#pchips'); if (pc2 && T.length) pc2.insertAdjacentHTML('beforeend', tagsHTML(T.slice(0, 4)));
   qkMates(n, id);
   coProfDraw(id, H); const co = $('#qkco');
   if (co) co.addEventListener('click', e => { const b = e.target.closest('[data-qkc]'); if (b && b.dataset.qkc === 'drop') { coTaskSave(null); coProfDraw(id, H); } });
