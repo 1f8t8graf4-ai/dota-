@@ -71,7 +71,7 @@ new_header = f'''<header class="q-nav"><div class="q-in">
  <div class="q-nr"><a class="me hide" id="me" href="#home"></a>
  {gear}</div>
 </div>
-<nav class="q-tabs" id="tabs" aria-label="Разделы"><a href="#home" data-t="home">Профиль</a><a href="#live" data-t="live">Лайв-матч</a><a href="#heroes" data-t="meta">Герои</a><a href="#lb" data-t="lb">Лидеры</a><a href="#pro" data-t="pro">Про-игры</a><a href="#upd" data-t="upd">Патчи</a></nav>
+<nav class="q-tabs" id="tabs" aria-label="Разделы"><a href="#home" data-t="home">Профиль</a><a href="#live" data-t="live">Лайв-матч</a><a href="#heroes" data-t="meta">Герои</a><a href="#meta/tier" data-t="mt">Мета</a><a href="#lb" data-t="lb">Лидеры</a><a href="#pro" data-t="pro">Про-игры</a><a href="#upd" data-t="upd">Патчи</a></nav>
 </header>'''
 s = s[:h0] + new_header + s[h1:]
 

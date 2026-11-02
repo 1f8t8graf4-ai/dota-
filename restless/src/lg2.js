@@ -309,7 +309,7 @@ const SBQ = q => api('analytics/scoreboards/players?' + q);
 function heroRating(hid, id) {
   const k = hid + '|' + id; if (HRC[k]) return HRC[k];
   HRC[k] = (async () => {
-    const base = `hero_id=${hid}&sort_by=wins`, me = ((await SBQ(`${base}&account_ids=${id}`).catch(() => [])) || [])[0];
+    const base = `hero_id=${hid}&sort_by=wins&min_matches=1`, me = ((await SBQ(`${base}&account_ids=${id}`).catch(() => [])) || [])[0];
     if (!me || !me.value) return {pos: 0, v: me ? me.value : 0, m: me ? me.matches : 0};
     const v = me.value, probe = async s => { const r = await SBQ(`${base}&start=${s}&limit=1`).catch(() => null); return r ? (r[0] ? {r: r[0].rank, v: r[0].value} : {r: s, v: -1}) : null; };
     let lo = {r: 0, v: Infinity}, hi = null, pts = [1000, 10000, 50000, 150000, 400000];

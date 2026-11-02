@@ -59,6 +59,19 @@ function u10Open(id, isItem) {
   ov.onclick = e => { if (e.target === ov || e.target.closest('.u10-x') || e.target.closest('.u10-go')) close(); };
   addEventListener('keydown', esc1); addEventListener('hashchange', close);
 }
+// вид записи: Большое обновление / Обновление / Мелкое / Хотфикс; null — не патч (новость, итоги события)
+const PK = {};
+function pKind(p) {
+  const key = p.pub_date + '|' + p.title; if (key in PK) return PK[key];
+  const X = parsePatch(p), G = u10Group(X), nh = Object.keys(G.H).length, ni = Object.keys(G.I).length, t = String(p.title || '');
+  let k = null;
+  if (!nh && !ni && (X.nL < 4 || !/update|patch|hotfix|обновлен/i.test(t))) k = null;
+  else if (/hotfix/i.test(t)) k = ['hot', 'Хотфикс'];
+  else if (/minor/i.test(t) || (nh + ni <= 3 && X.nL <= 10)) k = nh + ni <= 3 && X.nL <= 6 ? ['hot', 'Хотфикс'] : ['min', 'Мелкое обновление'];
+  else if (nh >= 18 || X.nL >= 120 || /gameplay update/i.test(t)) k = ['big', 'Большое обновление'];
+  else k = ['upd', 'Обновление'];
+  return (PK[key] = k);
+}
 async function u10View(sel) {
   const n = vNew(); U10.wr = {};
   V(`<div class="u10"><div class="u10-hd"><h1 class="h1">Пат<em>чи</em></h1><div class="seg" id="utab"><button data-t="p" class="${U10.tab === 'p' ? 'on' : ''}">Патчи</button><button data-t="n" class="${U10.tab === 'n' ? 'on' : ''}">Новости</button></div></div><div id="upw"><div class="load">Загружаю патчноуты…</div></div></div>`);
@@ -66,15 +79,15 @@ async function u10View(sel) {
   try { P = U10.P || await apiU(API2 + 'patches'); } catch (e) { put(n, '#upw', `<div class="err">Не вышло: ${esc(e.message)}</div>`); return; }
   if (n !== VQ) return;
   P = U10.P = (P || []).slice().sort((a, b) => Date.parse(b.pub_date) - Date.parse(a.pub_date)).slice(0, 30);
-  const idx = P.map((p, i) => i), isP = i => parsePatch(P[i]).nL >= 4;
+  const idx = P.map((p, i) => i), isP = i => !!pKind(P[i]);
   if (sel != null && sel !== '' && P[+sel]) U10.tab = isP(+sel) ? 'p' : 'n';
   const list = idx.filter(i => U10.tab === 'p' ? isP(i) : !isP(i)).slice(0, 12);
   if (!list.length) { put(n, '#upw', '<div class="empty">Пусто.</div>'); return; }
   let i = sel != null && sel !== '' && list.includes(+sel) ? +sel : list[0];
   const p = P[i], X = U10.X = parsePatch(p), t = Math.floor(Date.parse(p.pub_date) / 1000);
-  const chips = `<div class="u10-pk">${list.map(k => `<a class="${k === i ? 'on' : ''}" href="#upd/${k}"><small>${esc(dmy(Math.floor(Date.parse(P[k].pub_date) / 1000)))}</small><b>${esc(upTr(P[k].title) || P[k].title || 'Без названия')}</b></a>`).join('')}</div>`;
+  const chips = `<div class="u10-pk">${list.map(k => `<a class="${k === i ? 'on' : ''}" href="#upd/${k}"><small>${esc(dmy(Math.floor(Date.parse(P[k].pub_date) / 1000)))}${pKind(P[k]) ? ` · <i class="pk-${pKind(P[k])[0]}">${pKind(P[k])[1]}</i>` : ''}</small><b>${esc(upTr(P[k].title) || P[k].title || 'Без названия')}</b></a>`).join('')}</div>`;
   const ttl = upTr(p.title) || p.title || 'Обновление';
-  if (X.nL < 4) {
+  if (!pKind(p)) {
     const paras = X.out.map(x => x.t === 'h' ? `<h3>${esc(upTr(x.s) || x.s)}</h3>` : `<p>${esc(upTr(x.s) || x.s)}</p>`).join('');
     put(n, '#upw', `${chips}<article class="q-box u10-art"><header><small>${esc(dmy(t))}</small><h2>${esc(ttl)}</h2></header>${X.imgs[0] ? `<img src="${esc(X.imgs[0])}" alt="" loading="lazy">` : ''}<div class="u10-tx">${paras}</div></article>`);
     $('#utab').onclick = u10Tab; return;
@@ -82,7 +95,7 @@ async function u10View(sel) {
   const G = u10Group(X), nh = Object.keys(G.H).length, ni = Object.keys(G.I).length;
   const cnt = M => { const o = {u: 0, d: 0, a: 0}; Object.values(M).forEach(L => o[u10Kind(L)]++); return o; }, CH = cnt(G.H);
   const draw = () => {
-    put(n, '#upw', `${chips}<div class="u10-ph"><div><small>${esc(dmy(t))} · ${p.source === 'forum' ? 'форум разработчиков' : 'новости Steam'}</small><h2>${esc(ttl)}</h2></div>
+    put(n, '#upw', `${chips}<div class="u10-ph"><div><small>${pKind(p) ? `<i class="u11-pk pk-${pKind(p)[0]}">${pKind(p)[1]}</i>` : ''}${esc(dmy(t))} · ${p.source === 'forum' ? 'форум разработчиков' : 'новости Steam'}</small><h2>${esc(ttl)}</h2></div>
       <div class="u10-sum"><span class="up"><b>${CH.u}</b>усилены</span><span class="dn"><b>${CH.d}</b>ослаблены</span><span class="a"><b>${CH.a}</b>изменены</span>${ni ? `<span><b>${ni}</b>предметов</span>` : ''}</div>
       <div class="u10-lg" id="uplang"><button data-l="ru" class="${upLang() === 'ru' ? 'on' : ''}">RU</button><button data-l="en" class="${upLang() === 'en' ? 'on' : ''}">EN</button></div></div>
       ${nh ? `<div class="u10-blk"><div class="u10-bh">Герои<small>нажми на героя — что именно поменяли</small></div>${u10Sec(G.H, false)}</div>` : ''}
@@ -106,7 +119,7 @@ async function u10View(sel) {
     }).catch(() => {});
   }
 }
-function u10Tab(e) { const b = e.target.closest('[data-t]'); if (!b) return; U10.tab = b.dataset.t; const P = U10.P || []; const k = P.findIndex(p => (U10.tab === 'p') === (parsePatch(p).nL >= 4)); location.hash = '#upd/' + Math.max(0, k); }
+function u10Tab(e) { const b = e.target.closest('[data-t]'); if (!b) return; U10.tab = b.dataset.t; const P = U10.P || []; const k = P.findIndex(p => (U10.tab === 'p') === !!pKind(p)); location.hash = '#upd/' + Math.max(0, k); }
 viewUpd = async function (sel) { await upLoad(); return u10View(sel); };
 
 // ---------- лайв-матч: карточки компактнее, больше меток; игры за 12 ч / 30 дней и его сборка — по наведению ----------
@@ -115,7 +128,7 @@ function pCard(p, en, thr, meId) {
     return `<button class="l10-pr${w == null ? ' off' : ''}" type="button" data-per="${k}" data-acc="${p.id}"${w == null ? ' disabled' : ''}><small>${nm}</small><b class="${w == null ? '' : w >= 50 ? 'win' : 'loss'}">${w == null ? '—' : w + '%'}</b><i>${o && o.m ? games(o.m) : 'не играл'}</i></button>`; };
   const tags = [thr ? ['h', 'Главная угроза', 'самый опасный по рангу и игре на герое'] : null, p.cn ? ['r', `Контрит тебя · ${p.cn}%`, 'твой герой против него побеждает реже'] : null, ...p.tags].filter(Boolean);
   return `<div class="q-pc l10${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
-    <div class="top"><img class="f" src="${esc(faceUrl(p.hid, p.mood))}" alt="" loading="lazy" style="object-position:${FACEP[p.hid] || '50% 14%'}" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
+    <div class="top"><img class="f u11-pf" src="${esc(hero(p.hid).v || hero(p.hid).c || hero(p.hid).i)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
       <span class="l10-rk" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span></div>
     <div class="q-pb">${p.id ? `<a class="q-pc-n" href="?id=${p.id}#home"><span class="q-pnm">${esc(p.name)}</span></a>` : `<span class="q-pnm">${esc(p.name)}</span>`}<span class="l10-rn">${esc(rankOf(p.badge).name)}</span>
       <div class="l10-st"><span><small>на герое</small><b>${p.hm ? nf(p.hm) : '0'}${p.hm ? ` · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : ''}</b></span><span><small>всего</small><b>${p.tm ? `${nf(p.tm)} · ${pc(p.tw, p.tm)}%` : '—'}</b></span></div>
@@ -184,7 +197,7 @@ function drawBuilds2(hid) {
     await QM10(n, id);
     const M = await api(`players/${id}/mate-stats?min_matches_played=3`).catch(() => []); if (n !== VQ) return;
     const top = (M || []).filter(x => x.matches_played >= 40).sort((a, b) => b.matches_played - a.matches_played)[0], box = $('#p10kn');
-    if (!top || !box || $('.p10-t.pty', box)) return;
+    return; // пати-метку убрали (04.11): Андрей — «эта инфа тут не нужна»
     const nm = (SN[top.mate_id] || {}).n || 'другом', wr = Math.round(100 * top.wins / Math.max(1, top.matches_played));
     box.insertAdjacentHTML('beforeend', `<a class="p10-t b pty" href="?id=${top.mate_id}#home" style="--i:8"><b>Играет в пати · ${esc(nm)}</b><small>${nf(top.matches_played)} ${pl(top.matches_played, ['игра', 'игры', 'игр'])} вместе · ${wr}% побед</small></a>`);
   };
@@ -253,7 +266,7 @@ async function viewLb2() {
       put(n, '#lbb', `${pod}<div class="q-box lb10-l">${rows.map((x, j) => `<${x.one ? `a href="?id=${x.one}#home"` : 'div'} id="lb2-${x.i}" class="lb10-r${x.i === myI ? ' mine' : ''}${x.one ? '' : ' x'}" style="--i:${Math.min(j, 20)}"><span class="lb10-n${x.i < 10 ? ' t10' : ''}">${x.i + 1}</span>
           <span class="lb10-nm"><b>${esc(x.e.account_name || 'Скрытый игрок')}</b>${x.i === myI ? '<em>это ты</em>' : ''}</span>
           <span class="rkc" data-acc="${x.one || ''}">${x.one ? '<span class="sub">…</span>' : '<span class="sub">аккаунт скрыт</span>'}</span>
-          <span class="his">${(x.e.top_hero_ids || []).slice(0, 4).map(h => face(h, '', 's', hero(h).n)).join('')}</span><span class="r9-go">${x.one ? '›' : ''}</span></${x.one ? 'a' : 'div'}>`).join('') || '<div class="empty">Никого не нашлось.</div>'}</div>
+          <span class="his">${(x.e.top_hero_ids || []).slice(0, 4).map(h => face(h, '', 'm', hero(h).n)).join('')}</span><span class="r9-go">${x.one ? '›' : ''}</span></${x.one ? 'a' : 'div'}>`).join('') || '<div class="empty">Никого не нашлось.</div>'}</div>
         ${more > 0 ? `<button class="btn g q-more" id="lbmore" type="button">Показать ещё ${Math.min(50, more)}</button>` : ''}`);
       lbRanks();
       const mb = $('#lbmore'); if (mb) mb.onclick = () => { LB2.n += 50; LB2.keep = 1; draw(); };
@@ -432,8 +445,9 @@ function p11Heroes(H, HS, per) {
 function p11HeroRows(L) {
   if (!L.length) return '<div class="empty">За этот период игр нет.</div>';
   const mx = Math.max(...L.map(x => x.g));
-  return `<div class="p11-ht"><span>Герой</span><span>Сыграно</span><span>Винрейт</span></div>${L.slice(0, 7).map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g);
+  return `<div class="p11-ht"><span>Герой</span><span>Место</span><span>Сыграно</span><span>Винрейт</span></div>${L.slice(0, 7).map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g);
     return `<a class="p11-hr" href="#h/${x.hid}/me" style="--i:${i}">${face(x.hid, '', 'm')}<span class="p11-hn"><b>${esc(hero(x.hid).n)}</b><small><i class="k">${f1(x.k)}</i> / <i class="d">${f1(x.d)}</i> / <i class="a">${f1(x.a)}</i></small></span>
+      <span class="p11-pl" data-hrk="${x.hid}" role="button" title="Место на герое — нажми, покажу таблицу">${(() => { const o = HRR[PHF.id + '|' + x.hid]; return o ? hrkCell(o) : i < 4 ? '<small>…</small>' : '<small class="lk">узнать</small>'; })()}</span>
       <span class="p11-bar"><i style="--w:${Math.round(100 * x.g / mx)}%"></i><b>${nf(x.g)}</b></span><span class="p11-bar wr ${wr >= 52 ? 'up' : wr <= 47 ? 'dn' : ''}"><i style="--w:${Math.round(wr)}%"></i><b>${f1(wr)}%</b></span></a>`; }).join('')}`;
 }
 async function viewHome() {
@@ -486,7 +500,9 @@ async function viewHome() {
     <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё 10</button></section>`;
   V(`${ptabsHTML('home')}<div class="p11"><aside class="p11-l">${rank}${form}${know}${mates}<div id="qkco"></div></aside><div class="p11-r">${heroes}${hist}</div></div>
     <div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b></div><div class="pad" id="myb"></div></div></div>`);
-  $('#p11per').onclick = e => { const b = e.target.closest('[data-p]'); if (!b) return; P11.per = b.dataset.p; $$('#p11per button').forEach(x => x.classList.toggle('on', x === b)); put(n, '#p11hl', p11HeroRows(p11Heroes(H, HS, P11.per))); };
+  $('#p11per').onclick = e => { const b = e.target.closest('[data-p]'); if (!b) return; P11.per = b.dataset.p; $$('#p11per button').forEach(x => x.classList.toggle('on', x === b)); put(n, '#p11hl', p11HeroRows(p11Heroes(H, HS, P11.per))); p11Rk(n, id, ME.name); };
+  p11Rk(n, id, ME.name);
+  $('#p11hl').addEventListener('click', e => { const c = e.target.closest('[data-hrk]'); if (!c) return; e.preventDefault(); e.stopPropagation(); hrkOpen(+c.dataset.hrk, id, ME.name); }, true);
   qkMates(n, id);
   coProfDraw(id, H); const co = $('#qkco');
   if (co) co.addEventListener('click', e => { const b = e.target.closest('[data-qkc]'); if (b && b.dataset.qkc === 'drop') { coTaskSave(null); coProfDraw(id, H); } });
@@ -556,6 +572,7 @@ viewHeroes = async function () {
   const best = Object.values(M).sort((a, b) => b.wr - a.wr)[0]; pv(best ? best.id : ids[0]);
 };
 viewMeta = async function () {
+  setTimeout(() => $$('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.t === 'mt')), 0);
   HM.tab = 'meta'; const sub = (location.hash.split('/')[1] || HM.sub); HM.sub = HM_SUB.some(x => x[0] === sub) ? sub : 'tier';
   const n = vNew();
   V(`${hmTabs()}<nav class="hm-sub">${HM_SUB.map(([k, v]) => `<a href="#meta/${k}" class="${HM.sub === k ? 'on' : ''}">${v}</a>`).join('')}</nav><div id="hmb"><div class="load">Считаю…</div></div>`);
@@ -589,3 +606,73 @@ async function hmItems(n) {
   put(n, '#hmb', `<div class="hm-items">${G.map(([k, nm, col]) => { const X = S.filter(x => item(x.id).s === k).sort((a, b) => b.wr - a.wr).slice(0, 8);
     return `<section class="q-box hm-ig" style="--tc:${col}"><div class="r9-h2"><b style="color:${col}">${nm}</b><small>лучший винрейт</small></div>${X.map((x, i) => `<div class="hm-ir" style="--i:${i}"><img src="${esc(item(x.id).i)}" alt="" loading="lazy"><span><b>${esc(item(x.id).n)}</b><small>${nf(item(x.id).p || 0)} душ · ${nf(x.m)} покупок</small></span><em class="${wrC(x.wr)}">${f1(x.wr)}%</em></div>`).join('')}</section>`; }).join('')}</div>`);
 }
+
+
+// ---------- место на герое в профиле: «#2 100 · мир · #12 EU», нажал — таблица с соседями выше и ниже ----------
+const RGS = {Europe: 'EU', NAmerica: 'NA', SAmerica: 'SA', Asia: 'Asia', Oceania: 'OCE'}, HRR = {};
+const hrkCell = o => o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b><small>мир${o.r ? ` · <em>#${o.r.pos} ${RGS[o.rg] || o.rg}</em>` : ''}</small>` : '<small>—</small>';
+async function hrkGet(hid, id, name) {
+  const k = id + '|' + hid; if (HRR[k]) return HRR[k];
+  const rg = await myReg(id).catch(() => 'Europe');
+  const [w, E] = await Promise.all([heroRating(hid, id).catch(() => null), api(`leaderboard/${rg}/${hid}`).then(L => L.entries || []).catch(() => [])]);
+  const i = E.findIndex(e => lbHit(e, id, name));
+  return (HRR[k] = {w, r: i < 0 ? null : {pos: i + 1, n: E.length}, rg, E, i});
+}
+async function p11Rk(n, id, name) {
+  for (const c of $$('#p11hl [data-hrk]').slice(0, 4)) {
+    const o = await hrkGet(+c.dataset.hrk, id, name).catch(() => null); if (n !== VQ) return;
+    if (o && c.isConnected) c.innerHTML = hrkCell(o);
+  }
+}
+async function hrkOpen(hid, id, name) {
+  const ov = document.createElement('div'); ov.className = 'hrk-ov';
+  ov.innerHTML = `<div class="hrk"><header>${face(hid, '', 'm')}<div><b>${esc(hero(hid).n)} · рейтинг</b><small>${esc(name || '')}</small></div><button class="hrk-x" type="button" aria-label="Закрыть">✕</button></header>
+    <div class="seg" id="hrks"><button data-s="w" class="on" type="button">Мир · по победам</button><button data-s="r" type="button">Регион · топ-1000</button></div><div id="hrkb"><div class="load">Считаю место…</div></div></div>`;
+  document.body.appendChild(ov); requestAnimationFrame(() => ov.classList.add('on'));
+  const close = () => { ov.classList.remove('on'); setTimeout(() => ov.remove(), 200); removeEventListener('keydown', k1); removeEventListener('hashchange', close); };
+  const k1 = e => { if (e.key === 'Escape') close(); };
+  addEventListener('keydown', k1); addEventListener('hashchange', close);
+  let mode = 'w', off = 0;
+  const row = (rank, aid, nm, av, sub, mine) => `<${aid ? `a href="?id=${aid}#home"` : 'div'} class="hrk-r${mine ? ' mine' : ''}${aid ? '' : ' x'}"><span class="n">${nf(rank)}</span>${av ? `<img src="${esc(av)}" alt="" loading="lazy">` : '<i></i>'}<b>${esc(nm || 'Скрытый игрок')}</b><small>${sub}</small><span class="go">${aid ? '›' : ''}</span></${aid ? 'a' : 'div'}>`;
+  const draw = async () => {
+    const b = $('#hrkb', ov); if (!b) return; b.innerHTML = '<div class="load">Загружаю…</div>';
+    const o = await hrkGet(hid, id, name).catch(() => null); if (!ov.isConnected) return;
+    $$('#hrks button', ov).forEach(x => { x.classList.toggle('on', x.dataset.s === mode); if (x.dataset.s === 'r' && o) x.textContent = `${REGN[o.rg] || o.rg} · топ-1000`; });
+    let html = '';
+    if (mode === 'w') {
+      const me = o && o.w && o.w.pos ? o.w.pos : 1, st = Math.max(1, me - 7 + off);
+      const L = (await SBQ(`hero_id=${hid}&sort_by=wins&min_matches=1&start=${st - 1}&limit=15`).catch(() => [])) || [];
+      const S = L.length ? await api('players/steam?account_ids=' + L.map(x => x.account_id).join(',')).catch(() => []) : [], SM = {};
+      (S || []).forEach(x => SM[x.account_id] = x);
+      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `Место <b>#${nf(o.w.pos)}</b> в мире — по числу побед на герое за всё время (${nf(o.w.v)} ${pl(o.w.v, ['победа', 'победы', 'побед'])}).` : 'Побед на этом герое пока нет.'}</p>
+        ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${nf(x.value)} ${pl(x.value, ['победа', 'победы', 'побед'])} · ${nf(x.matches)} игр`, x.account_id === id)).join('')}`;
+    } else {
+      const E = o ? o.E : [], c = o && o.i >= 0 ? o.i : 0, a = Math.max(0, c - 7 + off);
+      html = `<p class="hrk-h">${o && o.r ? `Место <b>#${o.r.pos}</b> в официальном топе ${esc(REGN[o.rg] || o.rg)} на этом герое.` : `${esc(name || 'Игрока')} нет в топ-1000 региона на этом герое — показываю начало таблицы.`}</p>
+        ${E.slice(a, a + 15).map((e, j) => { const one = (e.possible_account_ids || []).length === 1 ? e.possible_account_ids[0] : 0; return row(a + j + 1, one, e.account_name, '', one ? '' : 'аккаунт скрыт', a + j === (o ? o.i : -1)); }).join('') || '<div class="empty">Таблица пустая.</div>'}`;
+    }
+    b.innerHTML = `${html}<div class="hrk-nav"><button type="button" data-o="-15">▲ Выше</button><button type="button" data-o="0">К себе</button><button type="button" data-o="15">▼ Ниже</button></div>`;
+  };
+  ov.onclick = e => {
+    if (e.target === ov || e.target.closest('.hrk-x')) return close();
+    const s2 = e.target.closest('#hrks [data-s]'); if (s2) { mode = s2.dataset.s; off = 0; return draw(); }
+    const nv = e.target.closest('.hrk-nav [data-o]'); if (nv) { off = +nv.dataset.o ? off + +nv.dataset.o : 0; return draw(); }
+  };
+  draw();
+}
+
+// ---------- графики: наведение (на телефоне — касание) показывает время и цифры ----------
+let QCW = null;
+function qcwHide() { if (!QCW) return; $$('.qm-cur,.qm-tip', QCW).forEach(x => x.hidden = true); QCW = null; }
+addEventListener('pointermove', e => {
+  const w = e.target.closest && e.target.closest('.qm-chw'); if (QCW && QCW !== w) qcwHide(); if (!w) return; QCW = w;
+  const r = w.getBoundingClientRect(), fx = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), cur = $('.qm-cur', w), tip = $('.qm-tip', w); if (!cur || !tip) return;
+  let html = '';
+  if (w.dataset.ld) { const o = w._d || (w._d = JSON.parse(w.dataset.ld)), t = Math.max(0, (fx - .03) / .94) * o.d, q = o.p.reduce((a, x) => Math.abs(x[0] - t) < Math.abs(a[0] - t) ? x : a, o.p[0]);
+    html = `<small>${mmss(q[0])}</small>${q[1] ? `<b class="${q[1] > 0 ? 't0' : 't1'}">${esc(TEAMN[q[1] > 0 ? 0 : 1])} +${nf(Math.abs(q[1]))}</b>` : '<b>ровно</b>'}`; }
+  else { const o = w._d || (w._d = JSON.parse(w.dataset.st)), t = Math.max(0, (fx * 1000 - 30) / 940) * o.d, q = o.r.reduce((a, x) => Math.abs(x[0] - t) < Math.abs(a[0] - t) ? x : a, o.r[0]);
+    html = `<small>${mmss(q[0])} · душ в минуту</small>${o.g.map((g, i) => `<span><i style="background:${g[1]}"></i>${esc(g[0])}<b>${nf(q[i + 1])}</b></span>`).join('')}<span class="sum">Всего<b>${nf(q.slice(1).reduce((a, x) => a + x, 0))}</b></span>`; }
+  cur.hidden = false; cur.style.left = (100 * fx) + '%'; tip.hidden = false; tip.innerHTML = html;
+  tip.style.left = fx > .6 ? 'auto' : `calc(${(100 * fx).toFixed(1)}% + 12px)`; tip.style.right = fx > .6 ? `calc(${(100 - 100 * fx).toFixed(1)}% + 12px)` : 'auto';
+}, {passive: true});
+addEventListener('pointerleave', qcwHide);
