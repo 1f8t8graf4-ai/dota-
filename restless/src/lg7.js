@@ -250,6 +250,7 @@ function coLate(p) {
       el.innerHTML = `Вторая вещь — предметы. <b>${esc(I.n)}</b> у топов на ${coHn(k)} в среднем выходит на <b>${coT(a)}</b>, у тебя — на <b class="loss">${coT(t)}</b>.${late[1] ? ` ${esc(late[1][0].n)} — тоже позже: ${coT(late[1][1])} против ${coT(late[1][2])}.` : ''}${why} ${early.length ? `Зато ${esc(early[0][0].n)} ты взял раньше топов (${coT(early[0][1])}).` : ''} Сравнение — с игроками высокого ранга за последние 30 дней.`;
       if (pli) { pli.hidden = false; pli.innerHTML = `${esc(I.n)} бери раньше: у топов на этом герое он выходит к ${coT(a)}. Посмотри порядок их покупок на странице героя.`; }
     } else el.innerHTML = early.length ? `По предметам ты не опаздываешь против топов на ${coHn(k)}, а ${esc(early[0][0].n)} взял даже раньше (${coT(early[0][1])} против ${coT(early[0][2])}).` : `По предметам ты идёшь в темпе топов на ${coHn(k)} — тут проблем нет.`;
+    if (typeof co10Late === 'function') co10Late(el);
   };
   if (X.IS[k]) return go(X.IS[k]);
   api(`analytics/item-stats?hero_id=${k}&min_average_badge=100&min_unix_timestamp=${now() - 30 * 86400 - now() % 3600}`).then(L => { const o = {}; (L || []).forEach(x => o[x.item_id] = x); X.IS[k] = o; go(o); })

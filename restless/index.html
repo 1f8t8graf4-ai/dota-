@@ -264,7 +264,7 @@ img{display:block}
 .sb td:first-child{font-family:var(--f)}
 .sb tr.me3 td{background:rgba(255,176,32,.07)}
 .ft{max-width:1280px;margin:0 auto;padding:0 max(18px,env(safe-area-inset-right,0px)) 40px max(18px,env(safe-area-inset-left,0px));color:var(--mu2);font-size:12px}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
 
 /* ==== компоненты (лобби, разбор матча, герой, сборки, мета, топ, настройки) ==== */
 /* ---------- список матчей / про ---------- */
@@ -837,7 +837,7 @@ html,body{overflow-x:clip}
 @keyframes qIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes qWave{0%,12%,100%{color:var(--q-am);transform:none;text-shadow:none}5%{color:#fff1c9;transform:translateY(-2px);text-shadow:0 0 14px rgba(255,190,70,.55)}}
 .q-logo:hover .q-lw i{animation:qIn .5s both,qWave 1.2s ease-in-out infinite;animation-delay:0s,calc(var(--i)*60ms)}
-@media (prefers-reduced-motion:reduce){.q-lw i{animation:none!important}}
+
 .q-tabs{display:flex;justify-content:center;gap:4px;height:44px;border-top:1px solid #18181d;max-width:1240px;margin:0 auto;padding:0 12px;overflow-x:auto;scrollbar-width:none}
 .q-tabs::-webkit-scrollbar{display:none}
 .q-tabs a{display:flex;align-items:center;padding:0 16px;text-decoration:none;font:600 14px/1 var(--f);color:var(--mu);border-bottom:2px solid transparent;white-space:nowrap}
@@ -1473,7 +1473,7 @@ a.q-pc-n:hover .q-pnm{text-decoration:underline}
 .q-bc,.q-cat,.q-box{transition:transform .15s ease,border-color .15s}
 .q-bc:hover,.q-cat:hover{transform:translateY(-2px)}
 .q-tabs a{transition:color .15s}
-@media (prefers-reduced-motion:reduce){.q-box,.qs-c,.qs-i,.qs-paper,.qs-box,.q-bc,.q-cat,.qs-lc,.q-pm,.qs-ib i,.qs-bar,.qs-bars span,.qs-sb i,.qs-pb .f{animation:none!important}.q-bc:hover,.q-cat:hover,.qs-lc:hover{transform:none}}
+
 /* ==================== 31.10 (поздняя ночь) · рейтинг на герое, говорящий герой, один блок героев ==================== */
 /* герой говорит поверх портрета — как в макете «Реплики · кто про кого» */
 .q-say{position:absolute;left:16px;right:16px;bottom:92px;z-index:2;display:flex;flex-direction:column;gap:8px;pointer-events:none}
@@ -1940,8 +1940,7 @@ b.t0,em.t0,.qm-lead b.t0{color:var(--t0)}b.t1,em.t1,.qm-lead b.t1{color:var(--t1
   .qm-rr{grid-template-columns:20px auto minmax(0,1fr) 58px}.qm-rr .qm-bar{display:none}
   .qm-dt>div b,.qm-et>div b,.qm-dmt b{font-size:24px}.qm-lead b{font-size:17px!important}
   .qm-dl2{display:none}}
-@media (prefers-reduced-motion:reduce){.qm-b.in>*,.qm-pf,.qm-bar i,.qm-bar s,.qm-tb i,.qm-gl,.qm-dg b,.qm-kda3 i,.qm-skc i,.qm-it,.qm-tlm,.qm-db i,.qm-dr i,.qm-pcm i,.qm-ch .ar,.qm-ch .lay,.qm-src i,.qm-rr,.qm-sb2,.qm-dos .bg,.qm-dd2,.qm-sb::after{animation:none!important}
-  .qm-ch .ln{animation:none;stroke-dashoffset:0}.qm-dot{transition:none}}
+
 /* профиль: активность, 7 дней, с кем играешь */
 .qa-hm{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px;align-items:stretch}
 .qa-dn{display:grid;grid-template-rows:repeat(7,1fr);gap:3px}
@@ -1976,7 +1975,7 @@ b.t0,em.t0,.qm-lead b.t0{color:var(--t0)}b.t1,em.t1,.qm-lead b.t1{color:var(--t1
 .qa-mb{display:block;height:3px;margin-top:4px;border-radius:2px;width:calc(100% * var(--k));background:var(--ln2);transform-origin:left;animation:qmGrow .7s .1s backwards}
 .qa-mr>b{font:700 14px/1 var(--m)}
 .qm-map>img{filter:brightness(1.55) saturate(.8)}
-@media (prefers-reduced-motion:reduce){.qa-g i,.qa-up i,.qa-dw i,.qa-mb{animation:none!important}}
+
 .qa-g{grid-template-rows:repeat(7,13px)}.qa-dn{grid-template-rows:repeat(7,13px)}
 .qa-g i{aspect-ratio:auto;height:13px}
 @media (max-width:760px){.qa-g,.qa-dn{grid-template-rows:repeat(7,11px)}.qa-g i{height:11px}}
@@ -2828,7 +2827,7 @@ a.lb10-r:hover{background:var(--q-bh)}
 .q-lw i{color:transparent!important;animation:none!important;transform:none!important}
 @keyframes lgShine{to{background-position:-300% 0}}
 body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#38d6ff 32%,#7dffb0 48%,#ffe08a 64%,#ff7a59 80%,#ff4fd8 100%);animation-duration:4s;filter:drop-shadow(0 2px 12px rgba(139,92,255,.45))}
-@media (prefers-reduced-motion:reduce){.q-lw{animation:none}}
+
 /* ==== подсказки-пояснения убраны: одна мысль — один блок ==== */
 .note,.q-sec small,.st2-what,#fmsub,.q-leg,.qs-how,.st2-next,h1.h1 + p.sub,.q-lbh .sub,.qk-deep{display:none!important}
 /* ==== статистика: свой тёмный стиль вместо «бумаги» ==== */
@@ -2859,7 +2858,7 @@ body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#3
 .lb10-r.x b,.pr10-p.x b{color:var(--mu)}
 .r9-side .r9-co{flex-wrap:wrap}
 .r9-side .r9-co em{margin-left:0}
-@media (prefers-reduced-motion:reduce){#v > *,.u10-t,.p10-t,.p10-hc,.qs-c,.qs-is > *{animation:none!important}}
+
 .qs-paperbox .qs-bh small{display:none}
 /* ==== 03.11 · фраза героя → бот ==== */
 #hsay .q-sy-cap .all,#hsay .q-sy-ru{cursor:pointer}
@@ -2913,6 +2912,167 @@ body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#3
 /* выпадашка поиска поверх строки разделов (на телефоне её закрывали вкладки) */
 .q-nav .q-in{position:relative;z-index:40}
 .q-nav #sd{z-index:41}
+/* ==== 03.11 ночь · подсказка слова фразы героя ==== */
+#hsay .q-sy-cap u{cursor:pointer}
+.q10-wt{position:fixed;z-index:130;display:flex;flex-direction:column;gap:2px;padding:7px 10px;border-radius:9px;background:#111216;border:1px solid color-mix(in srgb,var(--q-am) 50%,var(--q-ln));box-shadow:0 10px 26px rgba(0,0,0,.55);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s;max-width:260px}
+.q10-wt.on{opacity:1;transform:none}
+.q10-wt b{font:700 13px/1.2 var(--f);color:var(--q-am)}
+.q10-wt span{font-size:12.5px;color:var(--tx)}
+/* ==== лайв: арт по лицу, повыше ==== */
+.q-pc.l10 .top{height:92px}
+/* ==== лидеры: номер места не налезает на ник; без арта — красиво ==== */
+.lb10-pd .pl{top:auto;bottom:10px;left:auto;right:16px;font-size:82px;opacity:.95;line-height:.9}
+.lb10-pd.p1 .pl{font-size:104px}
+.lb10-pi{padding-right:90px}
+.lb10-pd .bg.none{background:radial-gradient(70% 90% at 85% 100%,color-mix(in srgb,var(--md) 35%,transparent),transparent 70%),repeating-linear-gradient(135deg,rgba(255,255,255,.025) 0 2px,transparent 2px 14px)}
+.lb10-f .q-lbq{height:36px;padding:0 12px;border-radius:9px;border:1px solid var(--q-ln);background:var(--q-bx);color:var(--tx);font:500 13px/1 var(--f)}
+.lb10-f .q-lbq:focus{outline:none;border-color:var(--q-am)}
+@media (max-width:600px){.lb10-pd{padding-top:16px}.lb10-pd .pl{font-size:56px}.lb10-pd.p1 .pl{font-size:64px}}
+/* ==== профиль как League of Graphs ==== */
+.q-ban{min-height:168px}
+.q-pn h1{font-size:38px}
+.p11{display:grid;grid-template-columns:360px minmax(0,1fr);gap:14px;align-items:start;margin-top:14px}
+.p11-l,.p11-r{display:flex;flex-direction:column;gap:14px;min-width:0}
+.p11-rk{padding:18px}
+.p11-rkm{display:flex;align-items:center;gap:16px}
+.p11-rkm .rk{width:104px;height:104px;flex:none;filter:drop-shadow(0 8px 20px rgba(0,0,0,.5));animation:p11Rk .7s cubic-bezier(.2,.8,.2,1.3) backwards}
+@keyframes p11Rk{from{opacity:0;transform:scale(.6) rotate(-8deg)}}
+.p11-nr{display:grid;place-items:center;width:96px;height:96px;flex:none;border-radius:50%;border:2px dashed var(--q-ln);font:700 34px/1 var(--h);font-style:normal;color:var(--mu)}
+.p11-rkm > div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.p11-rkm small{font:600 11px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.p11-rkm > div > b{font:700 28px/1.05 var(--h);letter-spacing:.02em}
+.p11-rkm span{font-size:13px;color:var(--mu)}
+.p11-rkm span b{color:var(--tx)}
+.p11-rkm i{font-style:normal;font-weight:700}
+.p11-en{margin-top:16px;padding-top:14px;border-top:1px solid var(--q-ln);display:flex;flex-direction:column;gap:8px}
+.p11-en small{font:600 11px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.p11-en .q-en{display:flex;align-items:center;gap:10px}
+.p11-en .q-en .rk{width:46px;height:46px}
+.p11-en .q-en b{font:700 16px/1.1 var(--f)}
+.p11-en .q-en small{display:none}
+.p11-fm{padding-bottom:14px}
+.p11-fm .r9-dots{padding:0 16px}
+.p11-fr{display:flex;align-items:baseline;gap:12px;padding:0 16px 10px}
+.p11-fr > b{font:700 28px/1 var(--h)}
+.p11-fr span{font-size:13px}
+.p11-fr i{font-style:normal;font-weight:700}
+.p11-fr em{font-style:normal;font-size:12.5px;margin-left:auto}
+.p11-act{display:flex;gap:10px;flex-wrap:wrap;padding:12px 16px 0;font-size:12.5px;color:var(--mu)}
+.p11-act a{margin-left:auto;color:var(--q-am);text-decoration:none;font-weight:600}
+.p11-tg{display:flex;flex-direction:column;gap:8px;padding:0 14px 14px}
+.p11-tg .p10-t{padding:9px 12px}
+.p11-hs .r9-h2 .seg{margin-left:auto}
+.p11-hs .r9-h2 a{margin-left:10px}
+.p11-ht{display:grid;grid-template-columns:minmax(0,1.4fr) 1fr 1fr;gap:14px;padding:6px 16px 6px 64px;font:700 10.5px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu);border-top:1px solid var(--q-ln)}
+.p11-hr{display:grid;grid-template-columns:38px minmax(0,1.4fr) 1fr 1fr;gap:12px 14px;align-items:center;padding:8px 16px;border-top:1px solid var(--q-ln);text-decoration:none;color:var(--tx);transition:background .15s;animation:u10In .35s backwards;animation-delay:calc(var(--i) * 40ms)}
+.p11-hr:hover{background:var(--q-bh)}
+.p11-hn{display:flex;flex-direction:column;gap:3px;min-width:0}
+.p11-hn b{font:600 14px/1.15 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p11-hn small{font:600 12.5px/1 var(--f)}
+.p11-hn i{font-style:normal}
+.p11-hn .k{color:#6fd3ff}.p11-hn .d{color:var(--loss)}.p11-hn .a{color:#f5d36a}
+.p11-bar{display:flex;align-items:center;gap:10px}
+.p11-bar > i{flex:1;height:7px;border-radius:4px;background:var(--s3);overflow:hidden;position:relative}
+.p11-bar > i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);border-radius:4px;background:#6fd3ff;animation:b10Bar .8s cubic-bezier(.2,.8,.2,1) backwards}
+.p11-bar.wr > i::after{background:#8e897f}.p11-bar.wr.up > i::after{background:var(--win)}.p11-bar.wr.dn > i::after{background:var(--loss)}
+.p11-bar b{min-width:46px;text-align:right;font:700 13.5px/1 var(--f)}
+.p11-bar.wr.up b{color:var(--win)}.p11-bar.wr.dn b{color:var(--loss)}
+@media (max-width:1000px){.p11{grid-template-columns:minmax(0,1fr)}.p11-r{order:-1}}
+@media (max-width:600px){.p11-ht{display:none}.p11-hr{grid-template-columns:34px minmax(0,1fr) 92px;}.p11-hr .p11-bar:not(.wr){display:none}.q-pn h1{font-size:26px}}
+/* ==== разбор блоками ==== */
+.co10-h{margin:18px 0 8px;font:700 13px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--q-am)}
+.co10-r{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.co10-r li{position:relative;padding:9px 12px 9px 30px;border-radius:10px;background:var(--q-bh);border:1px solid var(--q-ln);font-size:14px;line-height:1.45;animation:u10In .35s backwards}
+.co10-r li::before{content:"";position:absolute;left:12px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--q-am)}
+.co10-r.ok li{border-color:color-mix(in srgb,var(--win) 35%,var(--q-ln))}
+.co10-r.ok li::before{content:"✓";width:auto;height:auto;background:none;top:9px;left:11px;color:var(--win);font-weight:700}
+.co10-c{margin:12px 0 0}
+.co10-c.r li{border-color:color-mix(in srgb,var(--loss) 40%,var(--q-ln));background:color-mix(in srgb,var(--loss) 7%,var(--q-bh))}
+.co10-c.r li::before{background:var(--loss)}
+.co2-txt > p.co2-late,#colate{padding:10px 12px;border-radius:10px;background:var(--q-bh);border:1px solid var(--q-ln)}
+.co2-mo li{animation:u10In .35s backwards}
+.co-ht h3{font-size:22px!important;line-height:1.2}
+/* ==== раздел «Герои»: выбор героя как в игре + превью ==== */
+.hm-hd{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0 16px}
+.hm-tabs{display:flex;gap:6px}
+.hm-tabs a{padding:10px 20px;border-radius:12px;font:700 20px/1 var(--h);letter-spacing:.05em;text-transform:uppercase;color:var(--mu);text-decoration:none;border:1px solid transparent;transition:color .15s,border-color .15s,background .15s}
+.hm-tabs a:hover{color:var(--tx)}
+.hm-tabs a.on{color:var(--q-am);border-color:color-mix(in srgb,var(--q-am) 45%,var(--q-ln));background:color-mix(in srgb,var(--q-am) 8%,var(--q-bx))}
+.hm-sel{display:grid;grid-template-columns:minmax(300px,34%) minmax(0,1fr);gap:16px;align-items:start}
+.hm-pv{position:sticky;top:12px;height:min(calc(100vh - 160px),640px);min-height:420px;border-radius:18px;overflow:hidden;border:1px solid var(--q-ln);background:radial-gradient(120% 90% at 50% 30%,color-mix(in srgb,var(--hc) 40%,#111),#0b0b0e)}
+.hm-bg{position:absolute;inset:0;background:center/cover no-repeat;opacity:.35;filter:saturate(1.2)}
+.hm-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 15%}
+.hm-pv::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,8,11,.95) 8%,transparent 55%)}
+.hm-pv.in .hm-art{animation:hmIn .45s cubic-bezier(.2,.8,.2,1.1)}
+.hm-pv.in .hm-inf{animation:u10In .4s .08s backwards}
+@keyframes hmIn{from{opacity:0;transform:translateX(-30px) scale(1.06)}}
+.hm-inf{position:absolute;left:0;right:0;bottom:0;z-index:1;display:flex;flex-direction:column;gap:8px;padding:20px}
+.hm-inf small{font:600 12px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:color-mix(in srgb,var(--hc) 60%,#fff)}
+.hm-inf b{font:700 44px/1 var(--h);letter-spacing:.02em;text-transform:uppercase;text-shadow:0 4px 22px rgba(0,0,0,.6)}
+.hm-st{display:flex;gap:18px}
+.hm-st span{display:flex;flex-direction:column;gap:2px}
+.hm-st i{font:700 20px/1 var(--h);font-style:normal}
+.hm-st small{font-size:10.5px;color:var(--mu);letter-spacing:.04em}
+.hm-inf .btn{align-self:flex-start;margin-top:4px}
+.hm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;perspective:900px}
+.hm-c{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:var(--tx);animation:u10In .4s backwards;animation-delay:calc(var(--i) * 12ms)}
+.hm-ci{display:block;width:100%;aspect-ratio:3/4.4;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--hc) 30%,#15151a),#0d0d10);border:2px solid color-mix(in srgb,var(--hc) 30%,var(--q-ln));transition:transform .28s cubic-bezier(.2,.8,.2,1.4),box-shadow .28s,border-color .2s,filter .2s;transform-origin:50% 90%}
+.hm-ci img{width:100%;height:100%;object-fit:cover;object-position:50% 10%;transition:transform .35s}
+.hm-c b{font:600 12px/1.15 var(--f);text-align:center;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hm-c em{font:700 11px/1 var(--f);font-style:normal}
+.hm-grid:hover .hm-ci{filter:brightness(.7) saturate(.8)}
+.hm-c:hover{z-index:2}
+.hm-c:hover .hm-ci,.hm-c:focus-visible .hm-ci{filter:none;transform:translateY(-10px) scale(1.22) rotateX(6deg);border-color:var(--hc);box-shadow:0 22px 40px -14px var(--hc),0 0 0 2px var(--hc)}
+.hm-c:hover .hm-ci img{transform:scale(1.08)}
+.hm-sub{display:flex;gap:4px;margin:0 0 16px;border-bottom:1px solid var(--q-ln);overflow-x:auto;scrollbar-width:none}
+.hm-sub a{padding:12px 16px;font:600 14px/1 var(--f);color:var(--mu);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+.hm-sub a.on{color:var(--tx);border-bottom-color:var(--q-am)}
+.hm-f{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;width:84px;text-decoration:none;color:var(--tx);transition:transform .2s cubic-bezier(.2,.8,.2,1.3)}
+.hm-f:hover{transform:translateY(-4px) scale(1.06)}
+.hm-f img{width:76px;height:76px;border-radius:12px;object-fit:cover;object-position:50% 12%;background:#1d1d24;box-shadow:0 0 0 2px color-mix(in srgb,var(--hc) 55%,transparent)}
+.hm-f b{font:600 11.5px/1.15 var(--f);text-align:center;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hm-f em{font:700 11px/1 var(--f);font-style:normal}
+.hm-tier{display:flex;flex-direction:column;gap:10px}
+.hm-tr{display:grid;grid-template-columns:72px minmax(0,1fr);border-radius:14px;overflow:hidden;border:1px solid var(--q-ln);background:var(--q-bx);animation:u10In .45s backwards;animation-delay:calc(var(--i) * 70ms)}
+.hm-tt{display:grid;place-items:center;font:700 34px/1 var(--h);color:#111;background:var(--tc)}
+.hm-th{display:flex;flex-wrap:wrap;gap:12px;padding:12px}
+.hm-duo{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}
+.hm-d{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;border:1px solid var(--q-ln);background:var(--q-bx);animation:u10In .4s backwards;animation-delay:calc(var(--i) * 30ms)}
+.hm-dn{font:700 18px/1 var(--h);color:var(--mu);width:26px}
+.hm-plus{font:700 20px/1 var(--h);font-style:normal;color:var(--q-am)}
+.hm-dv{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.hm-dv b{font:700 20px/1 var(--h)}
+.hm-dv small{font-size:11.5px;color:var(--mu)}
+.hm-cnt{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:10px}
+.hm-cr{display:grid;grid-template-columns:84px 1fr 1fr;gap:10px;align-items:center;padding:12px;border-radius:14px;border:1px solid var(--q-ln);background:var(--q-bx);animation:u10In .4s backwards;animation-delay:calc(var(--i) * 20ms)}
+.hm-cv{display:flex;flex-direction:column;gap:6px}
+.hm-cv small{font:600 10px/1 var(--f);letter-spacing:.05em;text-transform:uppercase;color:var(--mu)}
+.hm-mu{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--tx)}
+.hm-mu img{width:30px;height:30px;border-radius:7px;background:#1d1d24}
+.hm-mu b{font:700 13px/1 var(--f)}
+.hm-mu.loss b{color:var(--loss)}.hm-mu.win b{color:var(--win)}
+.hm-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.hm-ig{border-top:3px solid var(--tc)}
+.hm-ir{display:flex;align-items:center;gap:10px;padding:8px 16px;border-top:1px solid var(--q-ln);animation:u10In .35s backwards;animation-delay:calc(var(--i) * 30ms)}
+.hm-ir img{width:36px;height:36px;border-radius:8px;background:#1d1d24}
+.hm-ir span{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.hm-ir b{font:600 13.5px/1.2 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hm-ir small{font-size:11.5px;color:var(--mu)}
+.hm-ir em{font:700 14px/1 var(--f);font-style:normal}
+@media (max-width:1000px){.hm-items{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.hm-sel{grid-template-columns:minmax(0,1fr)}.hm-pv{position:relative;top:0;height:300px;min-height:0}.hm-inf b{font-size:30px}.hm-grid{grid-template-columns:repeat(auto-fill,minmax(78px,1fr))}}
+@media (max-width:600px){.hm-cr{grid-template-columns:72px 1fr 1fr}.hm-f{width:72px}.hm-f img{width:62px;height:62px}.hm-duo,.hm-cnt{grid-template-columns:minmax(0,1fr)}}
+
+/* подиум: у скрытого аккаунта — эмблема Eternus вместо пустоты */
+.lb10-pd .bg.none{display:grid;place-items:center end;padding-right:96px}
+.lb10-pd .bg.none .lbx{width:46%;max-width:150px;opacity:.28;filter:drop-shadow(0 0 30px var(--md));transform:rotate(-8deg)}
+.lb10-pd.p1 .bg.none .lbx{opacity:.38}
+@media (max-width:600px){.lb10-pd .bg.none .lbx{width:110px}}
+
+.co10-n{display:block;margin:-2px 0 14px 2px;color:var(--mu);font-size:11.5px}
+/* профиль на телефоне: ранг и «что знать» сверху, потом герои и игры */
+@media (max-width:1000px){.p11{display:flex;flex-direction:column}.p11-l,.p11-r{display:contents}
+.p11-rk{order:1}.p11-kn{order:2}.p11-hs{order:3}#hist{order:4}.p11-fm{order:5}.p11 aside > *:not(.p11-rk):not(.p11-kn):not(.p11-fm){order:6}}
 </style>
 </head>
 <body>
@@ -2987,7 +3147,7 @@ body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#3
  <div class="q-nr"><a class="me hide" id="me" href="#home"></a>
  <button id="stg" class="stg" title="Настройки" aria-label="Настройки"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h0a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h0a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v0a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg></button></div>
 </div>
-<nav class="q-tabs" id="tabs" aria-label="Разделы"><a href="#home" data-t="home">Профиль</a><a href="#live" data-t="live">Лайв-матч</a><a href="#meta" data-t="meta">Герои</a><a href="#lb" data-t="lb">Лидеры</a><a href="#pro" data-t="pro">Про-игры</a><a href="#upd" data-t="upd">Патчи</a></nav>
+<nav class="q-tabs" id="tabs" aria-label="Разделы"><a href="#home" data-t="home">Профиль</a><a href="#live" data-t="live">Лайв-матч</a><a href="#heroes" data-t="meta">Герои</a><a href="#lb" data-t="lb">Лидеры</a><a href="#pro" data-t="pro">Про-игры</a><a href="#upd" data-t="upd">Патчи</a></nav>
 </header>
 <main class="wrap" id="v"></main>
 <p class="ft">Данные — открытый api.deadlock-api.com (матчи, ранги, винрейты, сборки). Restless не связан с Valve. Входить в Steam не нужно: профили и матчи в Deadlock открытые.</p>
@@ -4348,7 +4508,7 @@ async function viewHero(hid, mode) {
   hid = +hid;
   if (!D.heroes[hid]) { vNew(); V('<div class="empty">Такого героя нет.</div>'); return; }
   const n = vNew(), h = hero(hid), me = !!ME && mode === 'me';
-  const back = me ? ['#mine', 'Герои игрока'] : ['#meta', 'Герои'];
+  const back = me ? ['#mine', 'Герои игрока'] : ['#heroes', 'Герои'];
   V(`<a class="q-back" href="${back[0]}">‹ ${back[1]}</a>
     <div class="q-hp"><div class="q-hcol" style="--hc:${esc(h.col || '#ffb020')}"><div class="q-art">${artHTML(hid)}<div class="q-say" id="hsay"></div><div class="q-artn"><small>${esc(TYPE_RU[h.ty] || 'Герой')}${h.cx ? ' · сложность ' + h.cx + ' из 3' : ''}</small><b>${esc(h.n)}</b></div></div></div>
       <div style="min-width:0"><div class="q-tog">${ME ? `<div class="seg q-sw" id="hsw"><button data-m="me" class="${me ? 'on' : ''}" title="Твоя статистика на герое">${ME.avatar ? `<img class="q-swa" src="${esc(ME.avatar)}" alt="" onerror="this.remove()">` : ''}<span>${esc(ME.name)}</span></button><button data-m="all" class="${me ? '' : 'on'}">Все игроки</button></div>` : ''}${me ? '' : fltHTML()}</div>
@@ -5529,7 +5689,7 @@ const gradeOf = s => GRS.find(x => s >= x[0])[1];
 const gradeCol = g => GCOL2[g[0]] || '#8e897f';
 // числа набегают, линии рисуются — один раз при показе
 function mAnim(root) {
-  if (!root || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if (!root) return;
   const els = $$('[data-cu]', root); if (!els.length) return;
   const t0 = performance.now(), D2 = 650;
   const fmt = (el, v) => { const d = +el.dataset.cd || 0, sfx = el.dataset.cs || ''; el.textContent = (d ? v.toFixed(d).replace('.', ',') : nf(Math.round(v))) + sfx; };
@@ -6631,6 +6791,7 @@ function coLate(p) {
       el.innerHTML = `Вторая вещь — предметы. <b>${esc(I.n)}</b> у топов на ${coHn(k)} в среднем выходит на <b>${coT(a)}</b>, у тебя — на <b class="loss">${coT(t)}</b>.${late[1] ? ` ${esc(late[1][0].n)} — тоже позже: ${coT(late[1][1])} против ${coT(late[1][2])}.` : ''}${why} ${early.length ? `Зато ${esc(early[0][0].n)} ты взял раньше топов (${coT(early[0][1])}).` : ''} Сравнение — с игроками высокого ранга за последние 30 дней.`;
       if (pli) { pli.hidden = false; pli.innerHTML = `${esc(I.n)} бери раньше: у топов на этом герое он выходит к ${coT(a)}. Посмотри порядок их покупок на странице героя.`; }
     } else el.innerHTML = early.length ? `По предметам ты не опаздываешь против топов на ${coHn(k)}, а ${esc(early[0][0].n)} взял даже раньше (${coT(early[0][1])} против ${coT(early[0][2])}).` : `По предметам ты идёшь в темпе топов на ${coHn(k)} — тут проблем нет.`;
+    if (typeof co10Late === 'function') co10Late(el);
   };
   if (X.IS[k]) return go(X.IS[k]);
   api(`analytics/item-stats?hero_id=${k}&min_average_badge=100&min_unix_timestamp=${now() - 30 * 86400 - now() % 3600}`).then(L => { const o = {}; (L || []).forEach(x => o[x.item_id] = x); X.IS[k] = o; go(o); })
@@ -6976,7 +7137,7 @@ async function u10View(sel) {
   try { P = U10.P || await apiU(API2 + 'patches'); } catch (e) { put(n, '#upw', `<div class="err">Не вышло: ${esc(e.message)}</div>`); return; }
   if (n !== VQ) return;
   P = U10.P = (P || []).slice().sort((a, b) => Date.parse(b.pub_date) - Date.parse(a.pub_date)).slice(0, 30);
-  const idx = P.map((p, i) => i), isP = i => parsePatch(P[i]).patch;
+  const idx = P.map((p, i) => i), isP = i => parsePatch(P[i]).nL >= 4;
   if (sel != null && sel !== '' && P[+sel]) U10.tab = isP(+sel) ? 'p' : 'n';
   const list = idx.filter(i => U10.tab === 'p' ? isP(i) : !isP(i)).slice(0, 12);
   if (!list.length) { put(n, '#upw', '<div class="empty">Пусто.</div>'); return; }
@@ -6984,7 +7145,7 @@ async function u10View(sel) {
   const p = P[i], X = U10.X = parsePatch(p), t = Math.floor(Date.parse(p.pub_date) / 1000);
   const chips = `<div class="u10-pk">${list.map(k => `<a class="${k === i ? 'on' : ''}" href="#upd/${k}"><small>${esc(dmy(Math.floor(Date.parse(P[k].pub_date) / 1000)))}</small><b>${esc(upTr(P[k].title) || P[k].title || 'Без названия')}</b></a>`).join('')}</div>`;
   const ttl = upTr(p.title) || p.title || 'Обновление';
-  if (!X.patch) {
+  if (X.nL < 4) {
     const paras = X.out.map(x => x.t === 'h' ? `<h3>${esc(upTr(x.s) || x.s)}</h3>` : `<p>${esc(upTr(x.s) || x.s)}</p>`).join('');
     put(n, '#upw', `${chips}<article class="q-box u10-art"><header><small>${esc(dmy(t))}</small><h2>${esc(ttl)}</h2></header>${X.imgs[0] ? `<img src="${esc(X.imgs[0])}" alt="" loading="lazy">` : ''}<div class="u10-tx">${paras}</div></article>`);
     $('#utab').onclick = u10Tab; return;
@@ -7016,7 +7177,7 @@ async function u10View(sel) {
     }).catch(() => {});
   }
 }
-function u10Tab(e) { const b = e.target.closest('[data-t]'); if (!b) return; U10.tab = b.dataset.t; const P = U10.P || []; const k = P.findIndex(p => (U10.tab === 'p') === !!parsePatch(p).patch); location.hash = '#upd/' + Math.max(0, k); }
+function u10Tab(e) { const b = e.target.closest('[data-t]'); if (!b) return; U10.tab = b.dataset.t; const P = U10.P || []; const k = P.findIndex(p => (U10.tab === 'p') === (parsePatch(p).nL >= 4)); location.hash = '#upd/' + Math.max(0, k); }
 viewUpd = async function (sel) { await upLoad(); return u10View(sel); };
 
 // ---------- лайв-матч: карточки компактнее, больше меток; игры за 12 ч / 30 дней и его сборка — по наведению ----------
@@ -7025,7 +7186,7 @@ function pCard(p, en, thr, meId) {
     return `<button class="l10-pr${w == null ? ' off' : ''}" type="button" data-per="${k}" data-acc="${p.id}"${w == null ? ' disabled' : ''}><small>${nm}</small><b class="${w == null ? '' : w >= 50 ? 'win' : 'loss'}">${w == null ? '—' : w + '%'}</b><i>${o && o.m ? games(o.m) : 'не играл'}</i></button>`; };
   const tags = [thr ? ['h', 'Главная угроза', 'самый опасный по рангу и игре на герое'] : null, p.cn ? ['r', `Контрит тебя · ${p.cn}%`, 'твой герой против него побеждает реже'] : null, ...p.tags].filter(Boolean);
   return `<div class="q-pc l10${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
-    <div class="top"><img class="f" src="${esc(faceUrl(p.hid, p.mood))}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
+    <div class="top"><img class="f" src="${esc(faceUrl(p.hid, p.mood))}" alt="" loading="lazy" style="object-position:${FACEP[p.hid] || '50% 14%'}" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
       <span class="l10-rk" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span></div>
     <div class="q-pb">${p.id ? `<a class="q-pc-n" href="?id=${p.id}#home"><span class="q-pnm">${esc(p.name)}</span></a>` : `<span class="q-pnm">${esc(p.name)}</span>`}<span class="l10-rn">${esc(rankOf(p.badge).name)}</span>
       <div class="l10-st"><span><small>на герое</small><b>${p.hm ? nf(p.hm) : '0'}${p.hm ? ` · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : ''}</b></span><span><small>всего</small><b>${p.tm ? `${nf(p.tm)} · ${pc(p.tw, p.tm)}%` : '—'}</b></span></div>
@@ -7157,7 +7318,7 @@ async function viewLb2() {
       const myI = ME ? E.findIndex(x => lbHit(x.e, ME.id, ME.name)) : -1, q = LB2.q.toLowerCase(), F2 = E.filter(x => !q || String(x.e.account_name || '').toLowerCase().includes(q));
       const medal = ['#ffcf4a', '#c9d3df', '#e09b5e'];
       const pod = !q && E.length >= 3 ? `<div class="lb10-pod">${[1, 0, 2].map(k => { const x = E[k], h = (x.e.top_hero_ids || [])[0] || LB2.h;
-        return `<${x.one ? `a href="?id=${x.one}#home"` : 'div'} class="lb10-pd p${k + 1}" style="--md:${medal[k]};--i:${k}">${h ? `<i class="bg" style="background-image:url('art/${h}.webp')"></i>` : '<i class="bg none"></i>'}<span class="pl">${k + 1}</span>
+        return `<${x.one ? `a href="?id=${x.one}#home"` : 'div'} class="lb10-pd p${k + 1}" style="--md:${medal[k]};--i:${k}">${h ? `<i class="bg" style="background-image:url('art/${h}.webp')"></i>` : `<i class="bg none">${rankImg(116, 'lbx')}</i>`}<span class="pl">${k + 1}</span>
           <span class="lb10-pi"><b>${esc(x.e.account_name || 'Скрытый игрок')}</b><span class="rkc" data-acc="${x.one || ''}">${x.one ? '…' : '<span class="sub">аккаунт скрыт</span>'}</span><span class="his">${(x.e.top_hero_ids || []).slice(0, 3).map(h2 => face(h2, '', 's', hero(h2).n)).join('')}</span></span></${x.one ? 'a' : 'div'}>`; }).join('')}</div>` : '';
       const rows = (q ? F2 : F2.slice(3)).slice(0, LB2.n), more = (q ? F2 : F2.slice(3)).length - rows.length;
       put(n, '#lbb', `${pod}<div class="q-box lb10-l">${rows.map((x, j) => `<${x.one ? `a href="?id=${x.one}#home"` : 'div'} id="lb2-${x.i}" class="lb10-r${x.i === myI ? ' mine' : ''}${x.one ? '' : ' x'}" style="--i:${Math.min(j, 20)}"><span class="lb10-n${x.i < 10 ? ' t10' : ''}">${x.i + 1}</span>
@@ -7192,7 +7353,7 @@ function sayPop(box, h) {
   if (pop) pop.remove();
   const en = ($('.q-sy-cap .all', box) || {}).textContent || '', ru = ($('.q-sy-ru', box) || {}).textContent || '';
   if (!en.trim()) return null;
-  const kw = [...new Map($$('.q-sy-cap u[title]', box).map(u => u.title.split(' — ')).filter(x => x[1]).map(x => [x[0].toLowerCase(), x])).values()];
+  const kw = [...new Map($$('.q-sy-cap u[data-t]', box).map(u => u.dataset.t.split(' — ')).filter(x => x[1]).map(x => [x[0].toLowerCase(), x])).values()];
   pop = document.createElement('div'); pop.className = 'q10-sp'; pop._box = box;
   pop.innerHTML = `<small>Перевод</small>${ru ? `<p class="ru">${esc(ru)}</p>` : ''}
     ${kw.length ? `<small>В этой фразе</small><div class="q10-kw">${kw.map(([a, b]) => `<span><b>${esc(a)}</b><i>${esc(b)}</i></span>`).join('')}</div>` : ''}
@@ -7212,7 +7373,7 @@ const sayPopClose = () => { const p = $('.q10-sp'); if (p) { p.classList.remove(
   heroSay = async function (n, h) {
     await HS10(n, h);
     const box = $('#hsay'); if (!box || box._b10) return; box._b10 = 1;
-    const fix = () => { const a = $('.q-sy-lb', box); if (a && !a.dataset.bot) { a.dataset.bot = 1; a.href = botLink(h); a.textContent = 'Больше — в боте ›'; } };
+    const fix = () => { const a = $('.q-sy-lb', box); if (a && !a.dataset.bot) { a.dataset.bot = 1; a.href = botLink(h); a.textContent = 'Больше — в боте ›'; } $$('.q-sy-cap u[title]', box).forEach(u => { u.dataset.t = u.title; u.removeAttribute('title'); }); };
     fix(); new MutationObserver(fix).observe(box, {childList: true, subtree: true});
     const HOV = matchMedia('(hover:hover) and (pointer:fine)');
     let t = 0;
@@ -7318,6 +7479,186 @@ const xmGo = mid => { const v = String(mid || '').replace(/\D/g, ''); if (v.leng
       $('#xmF').onsubmit = e => { e.preventDefault(); xmGo($('#xmQ').value); };
     };
   };
+}
+
+// ---------- слово фразы героя: навёл — сразу перевод над словом (вместо «знака вопроса») ----------
+{
+  let tip = null;
+  const show = u => { if (!tip) { tip = document.createElement('div'); tip.className = 'q10-wt'; document.body.appendChild(tip); }
+    const [a, b] = (u.dataset.t || '').split(' — '); tip.innerHTML = `<b>${esc(a || '')}</b>${b ? `<span>${esc(b)}</span>` : ''}`;
+    const r = u.getBoundingClientRect(); tip.style.left = Math.max(8, Math.min(innerWidth - tip.offsetWidth - 8, r.left + r.width / 2 - tip.offsetWidth / 2)) + 'px'; tip.style.top = Math.max(8, r.top - tip.offsetHeight - 8) + 'px'; tip.classList.add('on'); };
+  document.addEventListener('mouseover', e => { const u = e.target.closest && e.target.closest('#hsay u[data-t]'); if (u) show(u); else if (tip) tip.classList.remove('on'); });
+  addEventListener('scroll', () => { if (tip) tip.classList.remove('on'); }, {passive: true});
+}
+
+// ---------- профиль заново, как League of Graphs: слева ранг, форма, метки, напарники; справа герои за период и 10 последних игр ----------
+const P11 = {per: ''};
+function p11Heroes(H, HS, per) {
+  const won = m => m.player_team === m.match_result;
+  if (per === 'all') return HS.filter(x => D.heroes[x.hero_id] && x.matches_played).sort((a, b) => b.matches_played - a.matches_played).map(x => ({hid: x.hero_id, g: x.matches_played, w: x.wins, k: x.kills / x.matches_played, d: x.deaths / x.matches_played, a: x.assists / x.matches_played}));
+  const t = now() - (per === '90' ? 90 : 30) * 86400, R = {};
+  H.filter(m => m.start_time >= t).forEach(m => { const o = R[m.hero_id] = R[m.hero_id] || {m: 0, w: 0, k: 0, d: 0, a: 0}; o.m++; if (won(m)) o.w++; o.k += m.player_kills; o.d += m.player_deaths; o.a += m.player_assists; });
+  return Object.entries(R).filter(([h]) => D.heroes[h]).sort((a, b) => b[1].m - a[1].m).map(([h, o]) => ({hid: +h, g: o.m, w: o.w, k: o.k / o.m, d: o.d / o.m, a: o.a / o.m}));
+}
+function p11HeroRows(L) {
+  if (!L.length) return '<div class="empty">За этот период игр нет.</div>';
+  const mx = Math.max(...L.map(x => x.g));
+  return `<div class="p11-ht"><span>Герой</span><span>Сыграно</span><span>Винрейт</span></div>${L.slice(0, 7).map((x, i) => { const wr = 100 * x.w / Math.max(1, x.g);
+    return `<a class="p11-hr" href="#h/${x.hid}/me" style="--i:${i}">${face(x.hid, '', 'm')}<span class="p11-hn"><b>${esc(hero(x.hid).n)}</b><small><i class="k">${f1(x.k)}</i> / <i class="d">${f1(x.d)}</i> / <i class="a">${f1(x.a)}</i></small></span>
+      <span class="p11-bar"><i style="--w:${Math.round(100 * x.g / mx)}%"></i><b>${nf(x.g)}</b></span><span class="p11-bar wr ${wr >= 52 ? 'up' : wr <= 47 ? 'dn' : ''}"><i style="--w:${Math.round(wr)}%"></i><b>${f1(wr)}%</b></span></a>`; }).join('')}`;
+}
+async function viewHome() {
+  if (!ME) return viewLanding();
+  const n = vNew(), id = ME.id;
+  if (PHF.id !== id) { PHF.hero = 0; PHF.mode = ''; PHF.id = id; HN = 10; P11.per = ''; }
+  PHF.view = 'full';
+  V('<div class="load">Собираю профиль…</div>');
+  let H, HS, R, SS, HSt, ST;
+  try {
+    [H, HS, R, SS, HSt, ST] = await Promise.all([api('players/' + id + '/match-history'), api('players/hero-stats?account_ids=' + id).catch(() => []), api('players/' + id + '/rank').catch(() => null),
+      api('assets/ranked-seasons').catch(() => []), api('analytics/hero-stats?' + fq()).catch(() => []), api('players/steam?account_ids=' + id).catch(() => [])]);
+  } catch (e) { if (n === VQ) V(`<div class="err">Не вышло загрузить профиль: ${esc(e.message)}</div>`); return; }
+  if (n !== VQ) return;
+  H = xmMerge(id, H);
+  const won = m => m.player_team === m.match_result, badge = (R && R.badge) || 0, st = (ST || [])[0] || {};
+  const c60 = {}; H.filter(m => m.start_time >= now() - 60 * 86400).forEach(m => c60[m.hero_id] = (c60[m.hero_id] || 0) + 1);
+  const pool = HS.slice().sort((a, b) => b.matches_played - a.matches_played);
+  const main = +((Object.entries(c60).sort((a, b) => b[1] - a[1])[0] || [])[0]) || (pool[0] || {}).hero_id || 0;
+  const ws = R && R.last_match && R.last_match.start_time > now() - 3 * 86400 ? R.last_match.player_rank_initial_win_streak || 0 : 0;
+  PBAN = banHTML({name: ME.name, av: ME.avatar, badge, main: D.heroes[main] ? main : 0, games: H.length, cc: st.countrycode, ws}); PBAN_ID = id;
+  if (!H.length) { V(`${ptabsHTML('home')}<div class="empty">У этого игрока нет матчей в открытых данных.</div>`); return; }
+  GD = (H.slice(0, 50).reduce((a, m) => a + Math.max(300, m.match_duration_s || 0), 0) / Math.max(1, Math.min(50, H.length))) || 1800;
+  const HA = {}, HTOT = HSt.reduce((a, x) => a + x.matches, 0) / 12 || 1;
+  HSt.forEach(x => { const k = Math.max(1, x.matches); HA[x.hero_id] = {spm: x.total_net_worth / k, dpm: x.total_deaths / k, kpm: x.total_kills / k, apm: x.total_assists / k, lhm: x.total_last_hits / k, den: (x.total_denies || 0) / k, pr: 100 * x.matches / HTOT}; });
+  const CNT = {}; H.filter(m => m.start_time >= now() - 30 * 86400).forEach(m => CNT[m.hero_id] = (CNT[m.hero_id] || 0) + 1);
+  { const L = H.slice(0, 50); CNT._avg = {spm: L.reduce((x, m) => x + m.net_worth / (Math.max(300, m.match_duration_s) / 60), 0) / Math.max(1, L.length), d: L.reduce((x, m) => x + m.player_deaths, 0) / Math.max(1, L.length)}; }
+  const MS = {}; HS.forEach(x => { MS[x.hero_id] = {g: x.matches_played, wr: pc(x.wins, x.matches_played), sc: mstyScore(x)}; });
+  PROF = {id, H, HS, CNT, MS, badge};
+
+  const ses = curSeason(SS), SH = H.filter(m => m.match_mode === 4 && m.start_time >= ses.start), sw = SH.filter(won).length, rk = rankOf(badge);
+  const F = qkForm(H), A = qkAct(H), wr20 = Math.round(100 * F.w / Math.max(1, F.L.length));
+  const rank = `<section class="q-box p11-rk"><div class="p11-rkm">${badge ? rankImg(badge, 'rk') : '<i class="p11-nr">?</i>'}<div><small>Ранг сейчас</small><b style="${badge ? `color:${esc(rk.color)}` : ''}">${badge ? esc(rk.name) : 'Без ранга'}</b>
+      <span id="rtop">${badge ? 'считаю место…' : ''}</span>${SH.length ? `<span>Сезон: <i class="win">${sw}</i> — <i class="loss">${SH.length - sw}</i> · <b class="${wrC(100 * sw / SH.length, SH.length)}">${Math.round(100 * sw / SH.length)}%</b></span>` : '<span>ранговых в этом сезоне нет</span>'}</div></div>
+    <div class="p11-en"><small>Средний ранг врагов · последние 10</small><div id="enr" class="q-en"><span class="sub">считаю…</span></div></div></section>`;
+  const form = `<section class="q-box p11-fm"><div class="r9-h2"><b>Форма</b><small>последние ${F.L.length}</small></div>
+    <div class="p11-fr"><b class="${wrC(wr20, F.L.length)}">${wr20}%</b><span><i class="win">${F.w}В</i> <i class="loss">${F.L.length - F.w}П</i></span><em class="${F.st >= 2 ? (F.r0 ? 'win' : 'loss') : ''}">${F.st >= 2 ? `${F.st} ${F.r0 ? pl(F.st, ['победа', 'победы', 'побед']) : pl(F.st, ['поражение', 'поражения', 'поражений'])} подряд` : ''}</em></div>
+    <i class="r9-dots">${F.L.map(m => `<i class="${won(m) ? 'w' : 'l'}"></i>`).join('')}</i>
+    <div class="p11-act"><span>${A.g7} за неделю</span><span>последний — ${esc(ago(A.last))}</span><a href="#live/${id}">лайв ›</a></div></section>`;
+  const T = profTags(H, HS, HA), P2x = patterns2(H), lg = P2x.find(x => /долгих/.test(x.n));
+  if (lg && lg.d <= -8) T.splice(1, 0, ['Сливает долгие игры', 'r', `игры 35+ мин выигрывает в ${Math.round(lg.wr)}%`]); else if (lg && lg.d >= 8) T.splice(1, 0, ['Тащит долгие игры', 'g', `игры 35+ мин выигрывает в ${Math.round(lg.wr)}%`]);
+  const know = T.length ? `<section class="q-box p11-kn"><div class="r9-h2"><b>Что знать</b></div><div class="p11-tg" id="p10kn">${T.slice(0, 6).map(([s2, c, h2], i) => `<div class="p10-t ${c || 'n'}" style="--i:${i}"><b>${esc(s2)}</b><small>${esc(h2)}</small></div>`).join('')}</div></section>` : '';
+  const mates = `<section class="q-box r9-hs"><div class="r9-h2"><b>Чаще всего с</b><a href="#form/habits">привычки ›</a></div><div id="qkmate"><span class="sub">Считаю…</span></div></section>`;
+  if (!P11.per) { const c30 = H.filter(m => m.start_time >= now() - 30 * 86400).length, c90 = H.filter(m => m.start_time >= now() - 90 * 86400).length; P11.per = c30 >= 10 ? '30' : c90 >= 10 ? '90' : 'all'; }
+  const heroes = `<section class="q-box p11-hs"><div class="r9-h2"><b>Часто играет</b><div class="seg" id="p11per">${[['30', '30 дней'], ['90', '3 месяца'], ['all', 'Всё время']].map(([k, v]) => `<button type="button" data-p="${k}" class="${P11.per === k ? 'on' : ''}">${v}</button>`).join('')}</div><a href="#mine">все ›</a></div><div id="p11hl">${p11HeroRows(p11Heroes(H, HS, P11.per))}</div></section>`;
+  const hlist = [...new Set(H.slice(0, 300).map(m => m.hero_id))].filter(h => D.heroes[h]).sort((a, b) => hero(a).n.localeCompare(hero(b).n));
+  const hist = `<section class="q-box r9-hi" id="hist"><div class="r9-h2"><b>Последние игры</b><span id="hsum" hidden></span><span class="sp" style="flex:1"></span>
+      <div class="seg r9-md" id="hfm2">${[['', 'Все'], ['r', 'Ранговые'], ['u', 'Обычные']].map(([k, nm]) => `<button type="button" data-md="${k}" class="${(PHF.mode || '') === k ? 'on' : ''}">${nm}</button>`).join('')}</div>
+      <select class="q-sel" id="hfh" aria-label="Герой"><option value="0">Все герои</option>${hlist.map(h => `<option value="${h}"${PHF.hero === h ? ' selected' : ''}>${esc(hero(h).n)}</option>`).join('')}</select></div>
+    <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё 10</button></section>`;
+  V(`${ptabsHTML('home')}<div class="p11"><aside class="p11-l">${rank}${form}${know}${mates}<div id="qkco"></div></aside><div class="p11-r">${heroes}${hist}</div></div>
+    <div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b></div><div class="pad" id="myb"></div></div></div>`);
+  $('#p11per').onclick = e => { const b = e.target.closest('[data-p]'); if (!b) return; P11.per = b.dataset.p; $$('#p11per button').forEach(x => x.classList.toggle('on', x === b)); put(n, '#p11hl', p11HeroRows(p11Heroes(H, HS, P11.per))); };
+  qkMates(n, id);
+  coProfDraw(id, H); const co = $('#qkco');
+  if (co) co.addEventListener('click', e => { const b = e.target.closest('[data-qkc]'); if (b && b.dataset.qkc === 'drop') { coTaskSave(null); coProfDraw(id, H); } });
+  coProfCheck(id, H);
+  $('#hfh').onchange = e => { PHF.hero = +e.target.value; HN = 10; drawHist(n); };
+  $$('#hfm2 button').forEach(b => b.onclick = () => { PHF.mode = b.dataset.md; HN = 10; $$('#hfm2 button').forEach(x => x.classList.toggle('on', x === b)); drawHist(n); });
+  $('#hmore').onclick = () => { HN += 10; drawHist(n); };
+  const rows = $('#hrows');
+  rows.onclick = e => { if (e.target.closest('a')) return; const r = e.target.closest('[data-m]'); if (r) location.hash = '#m/' + r.dataset.m; };
+  rows.onkeydown = e => { if (e.key !== 'Enter' || e.target.closest('a')) return; const r = e.target.closest('[data-m]'); if (r) location.hash = '#m/' + r.dataset.m; };
+  drawHist(n);
+  gradeBase(badge).then(T2 => { if (n !== VQ) return; GT = T2; drawRows(n); });
+  if (badge) api('players/rank/distribution').then(Dd => { if (n !== VQ) return; const tot = Dd.reduce((a, x) => a + (x.players || 0), 0), up = Dd.filter(x => x.badge >= badge).reduce((a, x) => a + (x.players || 0), 0); const el = $('#rtop'); if (el && tot) el.innerHTML = `Топ <b>${f1(Math.max(.1, 100 * up / tot))}%</b> игроков`; }).catch(() => {});
+  topPlaces(n, id, ME.name, st.countrycode, pool);
+  renderMyBuilds().then(() => { const b = $('#myb'), w = $('#mybw'); if (n === VQ && b && w && b.querySelector('a,img,.bch,.myc')) w.hidden = false; }).catch(() => {});
+}
+
+// ---------- разбор (коуч) блоками: каждая мысль — своя строка, разделы с заголовками ----------
+function co10Fix(html) {
+  const t = document.createElement('template'); t.innerHTML = html; const R = t.content, art = R.querySelector('.co2-txt'); if (!art) return html;
+  const split = h => h.split(/(?<=[.!?])\s+(?=[А-ЯЁA-Z«<])/).map(x => x.trim()).filter(Boolean).reduce((a, x) => { if (a.length && x.replace(/<[^>]+>/g, '').length < 30) a[a.length - 1] += ' ' + x; else a.push(x); return a; }, []);
+  const rows = (h, cls) => `<ul class="co10-r${cls ? ' ' + cls : ''}">${split(h).map(x => `<li>${x}</li>`).join('')}</ul>`;
+  const P = [...art.children].filter(el => el.tagName === 'P' && !el.id);
+  const head = R.querySelector('.co-ht h3');
+  if (P[0]) { const S = split(P[0].innerHTML), last = S.length > 2 ? S.pop() : ''; if (last && head) head.innerHTML = last.replace(/<[^>]+>/g, '');
+    P[0].outerHTML = `<h4 class="co10-h">Картина игры</h4><ul class="co10-r">${S.map(x => `<li>${x}</li>`).join('')}</ul>`; }
+  if (P[1]) P[1].outerHTML = `<h4 class="co10-h">Как это происходит</h4>${rows(P[1].innerHTML)}`;
+  const mo = art.querySelector('.co2-mo'); if (mo) mo.insertAdjacentHTML('beforebegin', '<h4 class="co10-h">Смерти</h4>');
+  P.slice(2).forEach(p => { if (!p.parentNode) return; const pv = p.previousElementSibling; if (pv && pv.tagName === 'H4' && !pv.classList.contains('co10-h')) return; const h = p.innerHTML;
+    if (/Посчитай время/.test(h)) p.outerHTML = `<div class="co10-c r">${rows(h)}</div>`;
+    else p.outerHTML = `<h4 class="co10-h">Почему так</h4>${rows(h)}`; });
+  art.querySelectorAll('h4:not(.co10-h)').forEach(h => { h.classList.add('co10-h'); const nx = h.nextElementSibling; if (nx && nx.tagName === 'P') nx.outerHTML = rows(nx.innerHTML, /Честно/.test(h.textContent) ? 'ok' : ''); if (/Честно/.test(h.textContent)) h.textContent = 'Что получилось'; });
+  const late = art.querySelector('#colate'); if (late) late.insertAdjacentHTML('beforebegin', '<h4 class="co10-h">Предметы</h4>');
+  return t.innerHTML;
+}
+function co10Late(el) {
+  if (!el || !el.parentNode) return;
+  const h = el.innerHTML.replace(/^\s*Вторая вещь — предметы\.\s*/, '').replace(/\s*Сравнение — с игроками[^.]*\.\s*$/, '');
+  const S = h.split(/(?<=[.!?)])\s+(?=[А-ЯЁA-Z«<])/).map(x => x.trim()).filter(Boolean);
+  el.outerHTML = `<ul class="co10-r">${S.map(x => `<li>${x}</li>`).join('')}</ul><small class="co10-n">сравнение — с игроками высокого ранга за 30 дней</small>`;
+}
+{ const M7 = mCo; mCo = function () { return co10Fix(M7()); }; }
+
+// ---------- раздел «Герои»: вкладки «Герои» (как выбор героя в игре) и «Мета» (тир-лист, дуо, контрпики, предметы) ----------
+const HM = {tab: 'heroes', sub: 'tier', hov: 0};
+const HM_SUB = [['tier', 'Тир-лист'], ['duo', 'Сильные дуо'], ['counter', 'Контрпики'], ['items', 'Предметы']];
+function hmTabs() { return `<div class="hm-hd"><div class="hm-tabs"><a href="#heroes" class="${HM.tab === 'heroes' ? 'on' : ''}">Герои</a><a href="#meta/${HM.sub}" class="${HM.tab === 'meta' ? 'on' : ''}">Мета</a></div><span class="sp" style="flex:1"></span>${fltHTML()}</div>`; }
+viewHeroes = async function () {
+  HM.tab = 'heroes'; const n = vNew();
+  V(`${hmTabs()}<div class="hm-sel"><div class="hm-pv" id="hmpv"></div><div class="hm-grid" id="hmg"><div class="load">Собираю героев…</div></div></div>`);
+  fltBind(viewHeroes);
+  let M = {}; try { M = await heroStats(); } catch (e) {}
+  if (n !== VQ) return;
+  const ids = Object.keys(D.heroes).map(Number).filter(id => D.heroes[id].v || D.heroes[id].c).sort((a, b) => hero(a).n.localeCompare(hero(b).n));
+  const pv = id => { const h = hero(id), x = M[id] || {}; HM.hov = id; const box = $('#hmpv'); if (!box) return;
+    box.style.setProperty('--hc', h.col || '#ffb020');
+    box.innerHTML = `<i class="hm-bg" style="background-image:url('${esc(h.bg || '')}')"></i><img class="hm-art" src="art/${id}.webp" alt="" onerror="this.src='${esc(h.v || h.c)}'">
+      <div class="hm-inf"><small>${esc(TYPE_RU[h.ty] || 'Герой')}${h.cx ? ' · сложность ' + h.cx + ' из 3' : ''}</small><b>${esc(h.n)}</b>
+      <div class="hm-st">${x.wr != null ? `<span><i class="${wrC(x.wr)}">${f1(x.wr)}%</i><small>побед</small></span><span><i>${f1(x.pr)}%</i><small>берут</small></span><span><i>${f2(x.kda)}</i><small>KDA</small></span>` : ''}</div>
+      <a class="btn" href="#h/${id}">Сборки и всё о герое ›</a></div>`;
+    box.classList.remove('in'); void box.offsetWidth; box.classList.add('in'); };
+  put(n, '#hmg', ids.map((id, i) => { const h = hero(id), x = M[id] || {};
+    return `<a class="hm-c" href="#h/${id}" data-h2="${id}" style="--hc:${esc(h.col || '#ffb020')};--i:${i}"><span class="hm-ci"><img src="${esc(h.v || h.c)}" alt="" loading="lazy" onerror="this.src='${esc(h.c || h.i)}'"></span><b>${esc(h.n)}</b>${x.wr != null ? `<em class="${wrC(x.wr)}">${f1(x.wr)}%</em>` : ''}</a>`; }).join(''));
+  const g = $('#hmg'); if (!g) return;
+  g.addEventListener('mouseover', e => { const c = e.target.closest('[data-h2]'); if (c && +c.dataset.h2 !== HM.hov) pv(+c.dataset.h2); });
+  g.addEventListener('focusin', e => { const c = e.target.closest('[data-h2]'); if (c) pv(+c.dataset.h2); });
+  const best = Object.values(M).sort((a, b) => b.wr - a.wr)[0]; pv(best ? best.id : ids[0]);
+};
+viewMeta = async function () {
+  HM.tab = 'meta'; const sub = (location.hash.split('/')[1] || HM.sub); HM.sub = HM_SUB.some(x => x[0] === sub) ? sub : 'tier';
+  const n = vNew();
+  V(`${hmTabs()}<nav class="hm-sub">${HM_SUB.map(([k, v]) => `<a href="#meta/${k}" class="${HM.sub === k ? 'on' : ''}">${v}</a>`).join('')}</nav><div id="hmb"><div class="load">Считаю…</div></div>`);
+  fltBind(viewMeta);
+  try { await ({tier: hmTier, duo: hmDuo, counter: hmCounter, items: hmItems})[HM.sub](n); } catch (e) { put(n, '#hmb', `<div class="err">${esc(e.message)}</div>`); }
+};
+const hmFace = (id, sub) => `<a class="hm-f" href="#h/${id}" style="--hc:${esc(hero(id).col || '#ffb020')}" title="${esc(hero(id).n)}"><img src="${esc(hero(id).c || hero(id).i)}" alt="" loading="lazy" onerror="${noimg}"><b>${esc(hero(id).n)}</b>${sub || ''}</a>`;
+async function hmTier(n) {
+  const M = await heroStats(); if (n !== VQ) return; const all = Object.values(M);
+  put(n, '#hmb', `<div class="hm-tier">${MT.map(([t, lo, col], i) => { const hi = i ? MT[i - 1][1] : 999, L = all.filter(h => h.wr >= lo && h.wr < hi).sort((a, b) => b.wr - a.wr); if (!L.length) return '';
+    return `<div class="hm-tr" style="--tc:${col};--i:${i}"><div class="hm-tt">${t}</div><div class="hm-th">${L.map(h => hmFace(h.id, `<em class="${wrC(h.wr)}">${f1(h.wr)}%</em>`)).join('')}</div></div>`; }).join('')}</div>`);
+}
+async function hmDuo(n) {
+  const L = await api('analytics/hero-synergy-stats?' + fq()); if (n !== VQ) return;
+  const R = (L || []).filter(x => D.heroes[x.hero_id1] && D.heroes[x.hero_id2] && x.matches_played >= 200).map(x => ({a: x.hero_id1, b: x.hero_id2, m: x.matches_played, wr: 100 * x.wins / x.matches_played})).sort((a, b) => b.wr - a.wr);
+  const cnt = {}; const R2 = R.filter(x => { if ((cnt[x.a] || 0) >= 2 || (cnt[x.b] || 0) >= 2) return false; cnt[x.a] = (cnt[x.a] || 0) + 1; cnt[x.b] = (cnt[x.b] || 0) + 1; return true; }).slice(0, 24); R.length = 0; R.push(...R2);
+  put(n, '#hmb', R.length ? `<div class="hm-duo">${R.map((x, i) => `<div class="hm-d" style="--i:${i}"><span class="hm-dn">${i + 1}</span>${hmFace(x.a)}<i class="hm-plus">+</i>${hmFace(x.b)}<span class="hm-dv"><b class="${wrC(x.wr)}">${f1(x.wr)}%</b><small>${nf(x.m)} игр вместе</small></span></div>`).join('')}</div>` : '<div class="empty">Мало данных за этот период.</div>');
+}
+async function hmCounter(n) {
+  const L = await counterStats(); if (n !== VQ) return;
+  const by = {}; (L || []).forEach(x => { if (!D.heroes[x.hero_id] || !D.heroes[x.enemy_hero_id] || x.matches_played < 150) return; (by[x.hero_id] = by[x.hero_id] || []).push({e: x.enemy_hero_id, wr: 100 * x.wins / x.matches_played, m: x.matches_played}); });
+  const ids = Object.keys(by).map(Number).sort((a, b) => hero(a).n.localeCompare(hero(b).n));
+  put(n, '#hmb', `<div class="hm-cnt">${ids.map((id, i) => { const S = by[id].slice().sort((a, b) => a.wr - b.wr), bad = S.slice(0, 2), good = S.slice(-2).reverse();
+    return `<div class="hm-cr" style="--i:${Math.min(i, 30)}">${hmFace(id)}<div class="hm-cv"><small>тяжело против</small>${bad.map(x => `<a href="#h/${x.e}" class="hm-mu loss" title="${esc(hero(x.e).n)}"><img src="${esc(hero(x.e).i)}" alt="" loading="lazy"><b>${f1(x.wr)}%</b></a>`).join('')}</div>
+      <div class="hm-cv"><small>легко против</small>${good.map(x => `<a href="#h/${x.e}" class="hm-mu win" title="${esc(hero(x.e).n)}"><img src="${esc(hero(x.e).i)}" alt="" loading="lazy"><b>${f1(x.wr)}%</b></a>`).join('')}</div></div>`; }).join('')}</div>`);
+}
+async function hmItems(n) {
+  const L = await api('analytics/item-stats?' + fq()); if (n !== VQ) return;
+  const S = (L || []).filter(x => item(x.item_id) && x.matches >= 2000).map(x => ({id: x.item_id, wr: 100 * x.wins / x.matches, m: x.matches}));
+  const G = [['weapon', 'Оружие', '#ff9a3d'], ['vitality', 'Живучесть', '#5fd17f'], ['spirit', 'Дух', '#a07cff']];
+  put(n, '#hmb', `<div class="hm-items">${G.map(([k, nm, col]) => { const X = S.filter(x => item(x.id).s === k).sort((a, b) => b.wr - a.wr).slice(0, 8);
+    return `<section class="q-box hm-ig" style="--tc:${col}"><div class="r9-h2"><b style="color:${col}">${nm}</b><small>лучший винрейт</small></div>${X.map((x, i) => `<div class="hm-ir" style="--i:${i}"><img src="${esc(item(x.id).i)}" alt="" loading="lazy"><span><b>${esc(item(x.id).n)}</b><small>${nf(item(x.id).p || 0)} душ · ${nf(x.m)} покупок</small></span><em class="${wrC(x.wr)}">${f1(x.wr)}%</em></div>`).join('')}</section>`; }).join('')}</div>`);
 }
 window.addEventListener('hashchange', route);
 (async () => {

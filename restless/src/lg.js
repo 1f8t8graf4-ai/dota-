@@ -318,7 +318,7 @@ async function viewHero(hid, mode) {
   hid = +hid;
   if (!D.heroes[hid]) { vNew(); V('<div class="empty">Такого героя нет.</div>'); return; }
   const n = vNew(), h = hero(hid), me = !!ME && mode === 'me';
-  const back = me ? ['#mine', 'Герои игрока'] : ['#meta', 'Герои'];
+  const back = me ? ['#mine', 'Герои игрока'] : ['#heroes', 'Герои'];
   V(`<a class="q-back" href="${back[0]}">‹ ${back[1]}</a>
     <div class="q-hp"><div class="q-hcol" style="--hc:${esc(h.col || '#ffb020')}"><div class="q-art">${artHTML(hid)}<div class="q-say" id="hsay"></div><div class="q-artn"><small>${esc(TYPE_RU[h.ty] || 'Герой')}${h.cx ? ' · сложность ' + h.cx + ' из 3' : ''}</small><b>${esc(h.n)}</b></div></div></div>
       <div style="min-width:0"><div class="q-tog">${ME ? `<div class="seg q-sw" id="hsw"><button data-m="me" class="${me ? 'on' : ''}" title="Твоя статистика на герое">${ME.avatar ? `<img class="q-swa" src="${esc(ME.avatar)}" alt="" onerror="this.remove()">` : ''}<span>${esc(ME.name)}</span></button><button data-m="all" class="${me ? '' : 'on'}">Все игроки</button></div>` : ''}${me ? '' : fltHTML()}</div>

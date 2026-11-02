@@ -71,7 +71,7 @@ new_header = f'''<header class="q-nav"><div class="q-in">
  <div class="q-nr"><a class="me hide" id="me" href="#home"></a>
  {gear}</div>
 </div>
-<nav class="q-tabs" id="tabs" aria-label="Разделы"><a href="#home" data-t="home">Профиль</a><a href="#live" data-t="live">Лайв-матч</a><a href="#meta" data-t="meta">Герои</a><a href="#lb" data-t="lb">Лидеры</a><a href="#pro" data-t="pro">Про-игры</a><a href="#upd" data-t="upd">Патчи</a></nav>
+<nav class="q-tabs" id="tabs" aria-label="Разделы"><a href="#home" data-t="home">Профиль</a><a href="#live" data-t="live">Лайв-матч</a><a href="#heroes" data-t="meta">Герои</a><a href="#lb" data-t="lb">Лидеры</a><a href="#pro" data-t="pro">Про-игры</a><a href="#upd" data-t="upd">Патчи</a></nav>
 </header>'''
 s = s[:h0] + new_header + s[h1:]
 
@@ -129,5 +129,8 @@ s = s.replace(a, "const t = e.target.closest('[data-hc]');")
 a = "    V(`${ptabsHTML('form')}\n    <div class=\"row fm-top\">"
 assert s.count(a) == 1, 'fm-top'
 s = s.replace(a, "    V(`${ptabsHTML('form')}${stTabs('')}\n    <div class=\"row fm-top\">")
+# 03.11: «меньше движения» в Windows гасил ВСЕ анимации сайта — у Андрея так и было («анимаций вообще нет»). Убираем эти правила.
+s = re.sub(r'@media \(prefers-reduced-motion:\s*reduce\)\s*\{(?:[^{}]|\{[^{}]*\})*\}', '', s)
+s = s.replace("if (!root || matchMedia('(prefers-reduced-motion:reduce)').matches) return;", "if (!root) return;")
 open(P, 'w', encoding='utf-8').write(s)
 print('готово, строк', s.count('\n') + 1)
