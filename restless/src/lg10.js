@@ -273,3 +273,91 @@ async function viewLb2() {
   document.body.classList.toggle('vip', vip);
   const w = $('.q-lw'); if (w) w.title = vip ? 'Restless VIP' : 'Restless';
 }
+
+// ---------- фраза героя: навёл — разбор слов и кнопка «Разобрать в боте» (бот сразу открывает этого героя) ----------
+const BOT_APP = 'https://t.me/languagegamesbot/languagedota2';
+const botLink = h => `${BOT_APP}?startapp=dl_${hSlug(h)}`;
+function sayPop(box, h) {
+  let pop = $('.q10-sp'); if (pop && pop._box === box) return pop;
+  if (pop) pop.remove();
+  const en = ($('.q-sy-cap .all', box) || {}).textContent || '', ru = ($('.q-sy-ru', box) || {}).textContent || '';
+  if (!en.trim()) return null;
+  const kw = [...new Map($$('.q-sy-cap u[title]', box).map(u => u.title.split(' — ')).filter(x => x[1]).map(x => [x[0].toLowerCase(), x])).values()];
+  pop = document.createElement('div'); pop.className = 'q10-sp'; pop._box = box;
+  pop.innerHTML = `<small>Перевод</small>${ru ? `<p class="ru">${esc(ru)}</p>` : ''}
+    ${kw.length ? `<small>В этой фразе</small><div class="q10-kw">${kw.map(([a, b]) => `<span><b>${esc(a)}</b><i>${esc(b)}</i></span>`).join('')}</div>` : ''}
+    <a class="q10-bt" href="${esc(botLink(h))}" target="_blank" rel="noopener"><span>Больше — в боте</span><em>›</em></a>`;
+  document.body.appendChild(pop);
+  const r = box.getBoundingClientRect(), w = pop.offsetWidth, hh = pop.offsetHeight;
+  let x, y;
+  if (innerWidth - r.right >= w + 24) { x = r.right + 12; y = Math.max(8, Math.min(innerHeight - hh - 8, r.bottom - hh)); }
+  else { x = Math.max(8, Math.min(innerWidth - w - 8, r.left)); y = r.top - hh - 8; if (y < 8) y = Math.min(innerHeight - hh - 8, r.bottom + 8); }
+  pop.style.left = x + 'px'; pop.style.top = y + 'px';
+  requestAnimationFrame(() => pop.classList.add('on'));
+  return pop;
+}
+const sayPopClose = () => { const p = $('.q10-sp'); if (p) { p.classList.remove('on'); setTimeout(() => p.remove(), 160); } };
+{
+  const HS10 = heroSay;
+  heroSay = async function (n, h) {
+    await HS10(n, h);
+    const box = $('#hsay'); if (!box || box._b10) return; box._b10 = 1;
+    const fix = () => { const a = $('.q-sy-lb', box); if (a && !a.dataset.bot) { a.dataset.bot = 1; a.href = botLink(h); a.textContent = 'Больше — в боте ›'; } };
+    fix(); new MutationObserver(fix).observe(box, {childList: true, subtree: true});
+    const HOV = matchMedia('(hover:hover) and (pointer:fine)');
+    let t = 0;
+    box.addEventListener('mouseover', e => { if (!HOV.matches || !e.target.closest('.q-sy-cap .all, .q-sy-ru')) return; clearTimeout(t); t = setTimeout(() => sayPop(box, h), 120); });
+    box.addEventListener('mouseout', e => { if (!HOV.matches) return; clearTimeout(t); t = setTimeout(() => { if (!$('.q10-sp:hover')) sayPopClose(); }, 300); });
+    box.addEventListener('click', e => { if (!e.target.closest('.q-sy-cap .all, .q-sy-ru')) return; if ($('.q10-sp')) sayPopClose(); else sayPop(box, h); });
+  };
+  document.addEventListener('mouseout', e => { const p = e.target.closest && e.target.closest('.q10-sp'); if (p && !p.contains(e.relatedTarget) && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('#hsay'))) setTimeout(() => { if (!$('.q10-sp:hover')) sayPopClose(); }, 250); });
+  document.addEventListener('click', e => { if ($('.q10-sp') && !e.target.closest('.q10-sp') && !e.target.closest('#hsay')) sayPopClose(); });
+  addEventListener('hashchange', sayPopClose);
+  addEventListener('scroll', () => { if ($('.q10-sp')) sayPopClose(); }, {passive: true});
+}
+
+// ---------- «Обзор» матча: сводка — как отыграл (вердикт, плитки, лучшие моменты), без простыни текста ----------
+function r10Sum(X, p) {
+  const a = X.A.get(p) || {score: 50}, m = X.M.get(p) || mMet(X, p), mine = q => teamOf(q.team) === teamOf(p.team), T = X.P.filter(mine), rk = f => 1 + T.filter(q => f(q) > f(p)).length;
+  const dead = (p.death_details || []).reduce((s, d) => s + (d.death_duration_s || 0), 0);
+  const kt = X.P.filter(q => !mine(q)).flatMap(q => (q.death_details || []).filter(d => d.killer_player_slot === p.player_slot).map(d => d.game_time_s)).sort((x, y) => x - y);
+  let best = kt.length ? 1 : 0, bt = kt[0] || 0, cur = 1;
+  for (let i = 1; i < kt.length; i++) { if (kt[i] - kt[i - 1] <= 12) { cur++; if (cur > best) { best = cur; bt = kt[i - cur + 1]; } } else cur = 1; }
+  const dt = (p.death_details || []).map(d => d.game_time_s).sort((x, y) => x - y); let spree = 0, c = 0, j = 0;
+  kt.forEach(t => { while (j < dt.length && dt[j] < t) { j++; c = 0; } c++; spree = Math.max(spree, c); });
+  const allD = X.P.flatMap(q => (q.death_details || []).map(d => ({t: d.game_time_s, k: d.killer_player_slot}))).sort((x, y) => x.t - y.t);
+  const fb = allD[0] && allD[0].k === p.player_slot ? allD[0].t : null;
+  const opp = mOpp(p), lane = opp ? mAt(p, 600) - mAt(opp, 600) : null;
+  const tile = (k, v, note, cls) => `<div class="r10-t ${cls || ''}"><small>${k}</small><b>${v}</b><span>${note}</span></div>`;
+  const rkC = r => r <= 2 ? 'g' : r >= 5 ? 'r' : '';
+  const nwR = rk(q => q.net_worth || 0), dmR = rk(q => (X.M.get(q) || mMet(X, q)).dmg), obR = rk(q => (X.M.get(q) || mMet(X, q)).obj), kpR = rk(q => (X.M.get(q) || mMet(X, q)).kp);
+  const deadPct = Math.round(100 * dead / Math.max(60, X.dur));
+  const tiles = [
+    lane != null ? tile('Линия к 10:00', `${lane >= 0 ? '+' : '−'}${nf(Math.abs(lane))}`, `душ против ${esc(hero(opp.hero_id).n)}`, lane >= 0 ? 'g' : 'r') : '',
+    tile('Души', `${nwR}-й`, `в команде · ${nf(Math.round(m.spm))}/мин`, rkC(nwR)),
+    tile('Урон по героям', `${dmR}-й`, `${kFmt(m.dmg)} за матч`, rkC(dmR)),
+    tile('Драки', `${Math.round(100 * m.kp)}%`, `участие · ${kpR}-й в команде`, rkC(kpR)),
+    tile('Смерти', `${p.deaths || 0}`, `мёртвым ${mmss(dead)} · ${deadPct}% матча`, deadPct >= 15 ? 'r' : deadPct <= 6 ? 'g' : ''),
+    tile('Объекты', `${obR}-й`, `${kFmt(m.obj)} урона по стражам`, rkC(obR))].filter(Boolean);
+  const MK = {2: 'Двойное убийство', 3: 'Тройное убийство', 4: 'Четыре за раз', 5: 'Пять за раз', 6: 'Вся команда'};
+  const hl = [];
+  if (best >= 2) hl.push(['g', `${MK[Math.min(6, best)]}`, mmss(bt)]);
+  if (spree >= 4) hl.push(['g', `${spree} убийств без смерти`, 'серия']);
+  if (fb != null) hl.push(['a', 'Первая кровь', mmss(fb)]);
+  if (deadPct >= 15) hl.push(['r', `Лежал мёртвым ${mmss(dead)}`, `${deadPct}% матча`]);
+  if (!(p.deaths || 0)) hl.push(['g', 'Ни разу не умер', '']);
+  const S = [['линия', lane != null ? (lane >= 0 ? 1 : 6) : 3.5], ['фарм', nwR], ['урон', dmR], ['драки', kpR], ['объекты', obR]];
+  const good = S.filter(x => x[1] <= 2).map(x => x[0]), bad = S.filter(x => x[1] >= 5).map(x => x[0]);
+  const vd = a.score >= 65 ? ['Отыграл отлично', 'g'] : a.score >= 54 ? ['Отыграл хорошо', 'g'] : a.score >= 44 ? ['Отыграл средне', 'a'] : ['Отыграл слабо', 'r'];
+  return `<div class="r10-vd ${vd[1]}"><b>${vd[0]}</b>${good.length ? `<span class="g">сильно: ${good.join(', ')}</span>` : ''}${bad.length ? `<span class="r">слабо: ${bad.join(', ')}</span>` : ''}</div>
+    <div class="r10-ts">${tiles.join('')}</div>${hl.length ? `<div class="r10-hl">${hl.map(([c2, t, s]) => `<span class="${c2}"><b>${t}</b>${s ? `<i>${s}</i>` : ''}</span>`).join('')}</div>` : ''}`;
+}
+function mOv() {
+  const X = MX, p = mSel(), a = X.A.get(p) || {score: 50}, g = gradeOf(a.score), won = teamOf(p.team) === X.win, me = p === X.meP;
+  return `<div class="r9-ov">${r9Board(X)}
+    <section class="q-box r9-pl"><div class="r9-plh">${face(p.hero_id, won ? 'g' : 'c', 'm')}<div><small>${me ? 'Твоя игра' : 'Игра игрока'} · <span class="${won ? 'win' : 'loss'}">${won ? 'победа' : 'поражение'}</span></small><b>${esc(pname(p))}</b><span>${esc(hero(p.hero_id).n)} · ${p.kills || 0}/${p.deaths || 0}/${p.assists || 0}</span></div>
+      <span class="r9-pg big" style="--gc:${gradeCol(g)}" title="оценка ${a.score} из 100 против лобби">${g}</span></div>
+      ${r10Sum(X, p)}<p class="r10-late" id="qmlate" hidden></p>
+      <div class="r9-its">${finalItems(p).map(itIco).join('') || '<span class="sub">Предметов нет в данных.</span>'}</div>
+      <div class="r9-pb"><button type="button" class="btn s" data-mt="co">Подробный разбор ›</button><button type="button" class="btn g" data-mt="pl">Сборка по минутам</button>${p.account_id && !me ? `<a class="btn g" href="?id=${p.account_id}#home">Профиль</a>` : ''}</div></section></div>`;
+}

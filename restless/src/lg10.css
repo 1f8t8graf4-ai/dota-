@@ -342,3 +342,41 @@ body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#3
 .r9-side .r9-co em{margin-left:0}
 @media (prefers-reduced-motion:reduce){#v > *,.u10-t,.p10-t,.p10-hc,.qs-c,.qs-is > *{animation:none!important}}
 .qs-paperbox .qs-bh small{display:none}
+/* ==== 03.11 · фраза героя → бот ==== */
+#hsay .q-sy-cap .all,#hsay .q-sy-ru{cursor:pointer}
+#hsay .q-sy-cap .all:hover{text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--q-am) 60%,transparent);text-underline-offset:5px}
+.q10-sp{position:fixed;z-index:120;width:min(360px,calc(100vw - 16px));padding:14px 16px;border-radius:14px;border:1px solid color-mix(in srgb,var(--q-am) 45%,var(--q-ln));background:var(--q-bh);box-shadow:0 20px 50px rgba(0,0,0,.6);opacity:0;transform:translateY(6px);transition:opacity .16s,transform .16s;display:flex;flex-direction:column;gap:8px}
+.q10-sp.on{opacity:1;transform:none}
+.q10-sp > small{font:700 10.5px/1 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--q-am)}
+.q10-sp .en{margin:0;font:700 16px/1.35 var(--f);color:var(--tx)}
+.q10-sp .ru{margin:0 0 4px;font:600 16px/1.4 var(--f);color:var(--tx)}
+.q10-kw{display:flex;flex-wrap:wrap;gap:6px}
+.q10-kw span{display:flex;flex-direction:column;gap:2px;padding:6px 9px;border-radius:9px;background:var(--s3)}
+.q10-kw b{font:700 13px/1.1 var(--f);color:var(--tx)}
+.q10-kw i{font-style:normal;font-size:12px;color:var(--mu)}
+.q10-bt{display:flex;align-items:center;justify-content:space-between;margin-top:2px;padding:11px 14px;border-radius:11px;background:linear-gradient(100deg,#2aabee,#229ed9);color:#fff;text-decoration:none;font:700 14px/1 var(--f);transition:transform .15s,filter .15s}
+.q10-bt:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.q10-bt em{font-style:normal;font-size:18px}
+.q10-ft{font-size:11.5px;color:var(--mu)}
+/* ==== сводка матча ==== */
+.r10-vd{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:14px 0 10px}
+.r10-vd b{font:700 18px/1.1 var(--h);letter-spacing:.03em;text-transform:uppercase}
+.r10-vd.g b{color:var(--win)}.r10-vd.a b{color:var(--q-am)}.r10-vd.r b{color:var(--loss)}
+.r10-vd span{font-size:12.5px;color:var(--mu)}
+.r10-vd span.g::first-letter,.r10-vd span.r::first-letter{text-transform:uppercase}
+.r10-ts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.r10-t{display:flex;flex-direction:column;gap:3px;padding:9px 11px;border-radius:10px;background:var(--q-bh);border:1px solid var(--q-ln);border-top:2px solid var(--tc,var(--q-ln));min-width:0;animation:u10In .4s backwards}
+.r10-t:nth-child(2){animation-delay:40ms}.r10-t:nth-child(3){animation-delay:80ms}.r10-t:nth-child(4){animation-delay:120ms}.r10-t:nth-child(5){animation-delay:160ms}.r10-t:nth-child(6){animation-delay:200ms}
+.r10-t.g{--tc:var(--win)}.r10-t.r{--tc:var(--loss)}
+.r10-t small{font:600 10px/1.1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.r10-t b{font:700 19px/1.1 var(--h)}
+.r10-t.g b{color:var(--win)}.r10-t.r b{color:var(--loss)}
+.r10-t span{font-size:11.5px;line-height:1.3;color:var(--mu)}
+.r10-hl{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.r10-hl span{display:flex;align-items:baseline;gap:6px;padding:6px 10px;border-radius:9px;background:color-mix(in srgb,var(--hc2) 14%,transparent);border:1px solid color-mix(in srgb,var(--hc2) 35%,transparent)}
+.r10-hl span.g{--hc2:var(--win)}.r10-hl span.r{--hc2:var(--loss)}.r10-hl span.a{--hc2:var(--q-am)}
+.r10-hl b{font:700 12.5px/1.2 var(--f);color:var(--hc2)}
+.r10-hl i{font-style:normal;font-size:11.5px;color:var(--mu)}
+.r10-late{margin:10px 0 0;font-size:12.5px;color:var(--mu)}
+.r10-late b{color:var(--loss)}
+@media (max-width:600px){.r10-ts{grid-template-columns:repeat(2,minmax(0,1fr))}}

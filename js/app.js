@@ -1032,7 +1032,7 @@ const clipNotesHTML=s=>{const n=CLIPNOTES&&CLIPNOTES[s.id];if(!n)return '';
   return `<div class="clip-notes sc-card"><b>О треке</b>${n.about?`<p>${esc(n.about)}</p>`:''}${(n.slang||[]).length?`<div class="cn-sl">${n.slang.map(x=>`<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div>`:''}</div>`;};
 /* ================= 7.9.2: проверка установки (админка) ================= */
 // Одной кнопкой проверяет, что всё залито: свежий код, темы, маскот и видео/обложки/музыка каждой сцены.
-const APP_V='13.9.76';
+const APP_V='13.9.77';
 // z-ai-version: короткие эпизоды, короткие задания, вкладки «Словарь · Сцены · Профиль», тема styles/zai.css (флаг — в начале файла)
 // 13.9.21: название — в одном месте (заставки, витрина заставок в магазине). Переименуешь — поменяй ещё <title> в index.html и имя бота в BotFather
 const APP_NAME='Языки по кино';
@@ -4824,6 +4824,7 @@ try{const own=(store.shop&&store.shop.own)||{},n=Object.keys(own).filter(k=>/^hm
 ensureTabbar();splash();
 if(/^kv_[A-Za-z0-9]{5}$/.test(START)){if(flagOf('kino')!=='on'){if(store.onboarded)renderHome();else startOnboarding();}else kvJoin(START.slice(3).toUpperCase());}   // 11.0: дуэль по сцене
 else if(START==='rev'&&store.onboarded){renderHome();setTimeout(startRevChain,600);}
+else if(/^dl_[a-z0-9-]+$/.test(START)){setTimeout(()=>{try{renderGameScreen('deadlock');const hh=gmHeroes().find(x=>x.id===START.slice(3));if(hh){GM.hero=hh;gmMount();}}catch(e){if(store.onboarded)renderHome();else renderStart();}},0);}   // 03.11: сайт Restless, фраза героя → «Больше — в боте»: сразу Deadlock с этим героем
 else if(/^dp_[a-z0-9-]+_\d+_\d+$/.test(START)&&dpOpen(START,true)){}   // 13.9.17: «Фраза дня» от бота → этот момент из фильма
 else if(START==='kino'&&store.onboarded)renderTab('kino');   // 13.6.3: закрытый Кинозал renderTab покажет сам (gateLink смотрел флаг игр)
 else if(store.onboarded)renderHome();else renderStart();   // 13.9.19: новичок — сразу выбор сцены (обучение — в настройках)
