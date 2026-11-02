@@ -391,3 +391,6 @@ body.vip .q-lw{background-image:linear-gradient(100deg,#ff4fd8 0%,#8b5cff 16%,#3
 .x10-nf span{font-size:14px;color:var(--mu)}
 .x10-nb{display:flex;gap:8px;margin-top:6px}
 @media (max-width:600px){.x10-b{order:5;margin-left:auto}}
+/* выпадашка поиска поверх строки разделов (на телефоне её закрывали вкладки) */
+.q-nav .q-in{position:relative;z-index:40}
+.q-nav #sd{z-index:41}
