@@ -98,3 +98,7 @@ body.ovm .q-lob{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))!import
 .b10-cs b{font:700 17px/1 var(--h)}
 .b10-rs{margin-top:14px;padding:14px;border-radius:16px;border:1px solid color-mix(in srgb,#7fb6ff 40%,var(--q-ln));background:color-mix(in srgb,#7fb6ff 5%,var(--q-bx))}
 .b10-rs .b10-rl span{color:#9cc4ff}
+.ov-f{display:flex;gap:8px;width:100%}.ov-f input{flex:1;min-width:0;padding:9px 11px;border-radius:10px;border:1px solid var(--q-ln);background:#0c0d11;color:var(--tx);font:inherit}
+#ovr{display:flex;flex-direction:column;gap:6px;width:100%}
+.ov-pick{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;border:1px solid var(--q-ln);background:#0c0d11;color:var(--tx);cursor:pointer;text-align:left}.ov-pick:hover{border-color:var(--q-am)}
+.ov-pick img{width:32px;height:32px;border-radius:8px}.ov-pick span{display:flex;flex-direction:column}.ov-pick small{color:var(--mu);font-size:11px}

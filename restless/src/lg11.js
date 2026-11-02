@@ -37,7 +37,17 @@ async function viewOv() {
   $('#ovcp').onclick = e => { const b = e.currentTarget; if (navigator.clipboard) navigator.clipboard.writeText(link).then(() => { b.textContent = 'Скопировано ✓'; }).catch(() => {}); };
   $('#ovb').onclick = e => { const pr = e.target.closest('[data-per]'); if (pr) { const p = LVL.find(x => String(x.id) === pr.dataset.acc); if (p) qPop(pr, perHTML(p, pr.dataset.per)); return; }
     const pb = e.target.closest('[data-pb]'); if (pb) { qPop(pb, pbHTML(pb.dataset.pb)); pbNamed(pb.dataset.pb); } };
-  if (!ME && !OV.demo) { ovStatus('нет профиля'); put(n, '#ovb', '<div class="ov-e">Найди себя в поиске сверху на сайте — оверлей запомнит профиль и сам найдёт твой матч.<a class="btn" href="#ov/demo">Показать на примере</a></div>'); return; }
+  if (!ME && !OV.demo) { ovStatus('кто ты?');
+    put(n, '#ovb', `<div class="ov-e"><b style="color:var(--tx)">Найди себя — оверлей запомнит и сам найдёт твой матч</b>
+      <form id="ovf" class="ov-f" autocomplete="off"><input id="ovq" placeholder="Ник, ссылка Steam или ID" aria-label="Ник, ссылка Steam или ID"><button class="btn" type="submit">Найти</button></form><div id="ovr"></div>
+      <a class="btn g" href="#ov/demo">Показать на примере</a></div>`);
+    $('#ovf').onsubmit = async e => { e.preventDefault(); const q = $('#ovq').value.trim(); if (!q) return; const id = idFrom(q); if (id) { await setMe(id); return viewOv(); }
+      const r = $('#ovr'); r.innerHTML = '<div class="load">Ищу…</div>';
+      try { const L = await api('players/steam-search?limit=6&search_query=' + encodeURIComponent(q));
+        r.innerHTML = L.length ? L.map(x => `<button type="button" class="ov-pick" data-id="${x.account_id}"><img src="${esc(x.avatarmedium || x.avatar || '')}" alt=""><span><b>${esc(x.personaname)}</b><small>ID ${x.account_id}</small></span></button>`).join('') : '<small>Никого не нашёл — попробуй ссылку Steam или ID.</small>';
+      } catch (er) { r.innerHTML = '<small>Поиск не ответил — попробуй ещё раз.</small>'; } };
+    $('#ovr').onclick = async e => { const b2 = e.target.closest('[data-id]'); if (!b2) return; await setMe(+b2.dataset.id); viewOv(); };
+    return; }
   const check = async () => {
     if (n !== VQ) { clearInterval(OV.timer); return; }
     let m = null, ok = true;
