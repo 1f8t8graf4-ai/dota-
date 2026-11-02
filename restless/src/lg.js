@@ -542,6 +542,9 @@ async function scout2(players, ctx) {
     if (p30 && p30.m >= 20 && p30.w / p30.m <= .42) tags.push(['r', 'Не в форме', `${pc(p30.w, p30.m)}% побед за 30 дней`]);
     if (p12 && p12.m >= 6) tags.push(['b', 'Марафон', `${games(p12.m)} за 12 часов`]);
     if (p12 && p12.m >= 3 && !p12.w) tags.push(['r', 'Тильт сегодня', `0 побед в ${games(p12.m)} за 12 часов`]);
+    if (!p30.m && t.m >= 50) tags.push(['b', 'Давно не играл', 'ни одной игры за 30 дней — может «заржаветь»']);
+    if (rc.length >= 4 && rc.slice(0, 4).every(r => r.hid === hid)) tags.push(['a', 'Спамит героя', `последние ${Math.min(rc.length, rc.filter(r => r.hid === hid).length)} игр — на этом же герое`]);
+    if (badge >= 100) tags.push(['a', 'Высокий ранг', rankOf(badge).name]);
     if (pid[id]) tags.push(['h', `Друзья · ${pid[id].n}`, ctx.last ? 'друзья в Steam и в одной команде в этом матче — возможно, пати' : 'друзья в Steam, недавно играли в одной команде — возможно, пати']);
     const threat = hm >= 10 ? (hw / hm - .5) * Math.min(1, hm / 60) + (ws >= 3 ? .05 : 0) + badge / 1000 : badge / 1000 - .1;
     const hot = rc.length && st >= 3 && rc[0].w, cold = rc.length && st >= 3 && !rc[0].w;

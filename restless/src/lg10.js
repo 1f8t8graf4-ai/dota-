@@ -497,7 +497,7 @@ async function viewHome() {
       <div class="seg r9-md" id="hfm2">${[['', 'Все'], ['r', 'Ранговые'], ['u', 'Обычные']].map(([k, nm]) => `<button type="button" data-md="${k}" class="${(PHF.mode || '') === k ? 'on' : ''}">${nm}</button>`).join('')}</div>
       <select class="q-sel" id="hfh" aria-label="Герой"><option value="0">Все герои</option>${hlist.map(h => `<option value="${h}"${PHF.hero === h ? ' selected' : ''}>${esc(hero(h).n)}</option>`).join('')}</select></div>
     <div id="hrows"></div><button class="btn g q-more" id="hmore" type="button">Показать ещё 10</button></section>`;
-  V(`${ptabsHTML('home')}<div class="p11 p12"><aside class="p11-l">${rank}${form}${know}${mates}<div id="qkco"></div></aside><div class="p11-c">${hist}</div><aside class="p11-r">${heroes}</aside></div>
+  V(`${ptabsHTML('home')}<div class="p11 p12"><aside class="p11-l">${rank}${form}${typeof p13Side === 'function' ? p13Side(H) : ''}${mates}<div id="qkco"></div></aside><div class="p11-c">${know}${hist}</div><aside class="p11-r">${heroes}</aside></div>
     <div id="mybw" hidden><div class="q-box"><div class="q-bh"><b>Сохранённые сборки</b></div><div class="pad" id="myb"></div></div></div>`);
   $('#p11per').onclick = e => { const b = e.target.closest('[data-p]'); if (!b) return; P11.per = b.dataset.p; $$('#p11per button').forEach(x => x.classList.toggle('on', x === b)); put(n, '#p11hl', p11HeroRows(p11Heroes(H, HS, P11.per))); p11Rk(n, id, ME.name); };
   p11Rk(n, id, ME.name);

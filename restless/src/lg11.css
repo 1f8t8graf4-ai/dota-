@@ -65,3 +65,29 @@ body.ovm #v{max-width:480px;margin:0;padding:8px}
 .ov-how ol{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
 .ov-how code{display:block;margin:4px 0;padding:6px 8px;border-radius:8px;background:#0c0d11;font-size:11.5px;word-break:break-all;color:var(--tx)}
 .q-lvh #lvov{align-self:center}
+/* оверлей — карточки как на лайв-матче */
+body.ovm #v{max-width:none;padding:10px 14px}
+body.ovm .ov{max-width:1680px}
+body.ovm .ov-h,body.ovm .ov-how{max-width:620px}
+body.ovm .q-lob{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))!important}
+/* метки игрока в разборе */
+.r11-tg{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.r11-tg .tag{font-size:11.5px}
+/* повтор матча */
+.rp{display:flex;flex-direction:column;gap:10px;max-width:380px}.rp b{font:700 15px/1.2 var(--h)}
+.rp ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:var(--mu);font-size:12.5px}
+.rp code{padding:1px 5px;border-radius:5px;background:#0c0d11;color:var(--tx);font-size:11.5px;word-break:break-all}
+.rp small{color:var(--mu)}
+/* профиль: «Что знать» над играми — плитками в ряд */
+.p11-c > .p11-kn .p11-tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.p11-c > .p11-kn{padding-bottom:12px}
+/* слева: средние и лучший матч */
+.p13-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 14px}
+.p13-g > span{display:flex;flex-direction:column;gap:3px;padding:9px 10px;border-radius:10px;background:var(--q-bh)}
+.p13-g small{font-size:11px;color:var(--mu)}.p13-g b{font:700 16px/1.1 var(--h)}
+.p13-g i,.p13-best i{font-style:normal}.p13-g i.k,.p13-best i.k{color:#7fb6ff}.p13-g i.d,.p13-best i.d{color:#ff6b81}.p13-g i.a,.p13-best i.a{color:var(--q-am)}
+.p13-best{display:flex;flex-direction:column;gap:8px;padding:12px 14px;text-decoration:none;color:var(--tx);transition:background .15s}.p13-best:hover{background:var(--q-bh)}
+.p13-best > small{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.p13-best > span{display:flex;align-items:center;gap:10px}.p13-best > span > span{display:flex;flex-direction:column;flex:1}.p13-best em{font-style:normal;font-size:12.5px;color:var(--mu)}
+.p13-best .go{color:var(--mu)}
+@media (max-width:1000px){.p13-av{order:5}.p13-best{order:5}}

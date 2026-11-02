@@ -13,16 +13,13 @@ function ovMore(p) {
     ${p.id ? `<a class="ov-pf" href="?id=${p.id}#home" target="_blank" rel="noopener">Открыть профиль ↗</a>` : ''}</div>`;
 }
 function ovDraw() {
-  const L = OV.L || [], me = ME && L.find(p => p.id === ME.id), mt = me ? me.team : 0;
-  const row = p => { const wr = p.hm ? Math.round(100 * p.hw / p.hm) : null, t = (p.tags || []).slice(0, 2);
-    return `<div class="ov-p${me && p.id === me.id ? ' me' : ''}${OV.sel === p.id ? ' on' : ''}" data-ovp="${p.id}" tabindex="0">
-      <img class="hi" src="${esc(hero(p.hid).i)}" alt="" title="${esc(hero(p.hid).n)}"><span class="nm"><b>${esc(p.name)}</b><small>${esc(hero(p.hid).n)}</small></span>
-      <span class="rk" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span>
-      <span class="st"><b class="${wr == null ? '' : wr >= 52 ? 'win' : wr <= 46 ? 'loss' : ''}">${wr == null ? '—' : wr + '%'}</b><small>${p.hm ? games(p.hm) : 'нет игр'}</small></span>
-      <span class="tg">${t.map(x => `<i class="${x[0]}" title="${esc(x[2])}">${esc(x[1])}</i>`).join('')}</span>
-      ${OV.sel === p.id ? ovMore(p) : ''}</div>`; };
-  const team = (k, nm) => `<div class="ov-t"><div class="ov-th"><i style="background:${k ? 'var(--q-sp)' : 'var(--q-am)'}"></i>${nm}</div>${L.filter(p => p.team === k).map(row).join('')}</div>`;
-  const b = $('#ovb'); if (b) b.innerHTML = team(mt, me ? 'Твоя команда' : 'Янтарная рука') + team(1 - mt, me ? 'Противники' : 'Сапфировое пламя');
+  const L = OV.L || [], me = ME && L.find(p => p.id === ME.id), mt = me ? me.team : 0, en = L.filter(p => p.team !== mt), us = L.filter(p => p.team === mt);
+  const thr = en.slice().sort((a, b) => b.threat - a.threat)[0];
+  const team = (P, k, isEn) => `<div class="q-team"><div class="q-th"><i style="background:${k ? 'var(--q-sp)' : 'var(--q-am)'}"></i><b>${k ? 'Сапфировое пламя' : 'Янтарная рука'}</b><small>${me ? (isEn ? 'противники' : 'твоя команда') : ''}</small></div><div class="q-lob">${P.map(p => pCard(p, isEn, isEn && p === thr, me ? me.id : 0)).join('')}</div></div>`;
+  const b = $('#ovb'); if (!b) return;
+  b.innerHTML = `<div id="lvb">${team(us, mt, false)}${team(en, 1 - mt, true)}</div>`;
+  $$('#ovb a[href^="?id="]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+  LVL = L; try { pBuilds(VQ, L); } catch (e) {}
 }
 function ovToggle() { const o = $('#ov'); if (!o) return; o.classList.toggle('min'); const x = $('#ovx'); if (x) x.textContent = o.classList.contains('min') ? '+' : '–'; }
 async function viewOv() {
@@ -38,7 +35,8 @@ async function viewOv() {
       <li>Или просто открой ссылку на втором мониторе.</li></ol></details></div>`);
   $('#ovx').onclick = ovToggle;
   $('#ovcp').onclick = e => { const b = e.currentTarget; if (navigator.clipboard) navigator.clipboard.writeText(link).then(() => { b.textContent = 'Скопировано ✓'; }).catch(() => {}); };
-  $('#ovb').onclick = e => { const r = e.target.closest('[data-ovp]'); if (!r || e.target.closest('a')) return; const id = +r.dataset.ovp; OV.sel = OV.sel === id ? 0 : id; ovDraw(); };
+  $('#ovb').onclick = e => { const pr = e.target.closest('[data-per]'); if (pr) { const p = LVL.find(x => String(x.id) === pr.dataset.acc); if (p) qPop(pr, perHTML(p, pr.dataset.per)); return; }
+    const pb = e.target.closest('[data-pb]'); if (pb) { qPop(pb, pbHTML(pb.dataset.pb)); pbNamed(pb.dataset.pb); } };
   if (!ME && !OV.demo) { ovStatus('нет профиля'); put(n, '#ovb', '<div class="ov-e">Найди себя в поиске сверху на сайте — оверлей запомнит профиль и сам найдёт твой матч.<a class="btn" href="#ov/demo">Показать на примере</a></div>'); return; }
   const check = async () => {
     if (n !== VQ) { clearInterval(OV.timer); return; }
@@ -101,3 +99,86 @@ const CO11_FLUFF = [/^Каждая такая минута[^.]*\.?$/i, /^Это 
   t.content.querySelectorAll('.co10-r').forEach(ul => { if (!ul.children.length) { const p = ul.previousElementSibling; if (p && p.classList.contains('co10-h')) p.remove(); ul.remove(); } });
   t.content.querySelectorAll('.co2-why, .co-nt').forEach(x => x.remove());
   return t.innerHTML; }; }
+
+// ===================== lg11 · вторая часть (04.11, четвёртые скрины) =====================
+// ---------- метки игрока в разборе матча: считаем против всех 12 и своей команды ----------
+function mTags(X, p) {
+  const P = X.P, mine = P.filter(q => teamOf(q.team) === teamOf(p.team)), won = teamOf(p.team) === X.win, ls = q => mLS(q), dur = X.dur / 60, T = [];
+  const v = (q, k) => k === 'nw' ? (q.net_worth || 0) : k === 'k' ? (q.kills || 0) : k === 'd' ? (q.deaths || 0) : k === 'a' ? (q.assists || 0) : (ls(q)[k] || 0);
+  const top = (L, k) => L.every(q => q === p || v(q, k) <= v(p, k)) && v(p, k) > 0, low = (L, k) => L.every(q => q === p || v(q, k) >= v(p, k));
+  const tk = mine.reduce((s, q) => s + v(q, 'k'), 0), kp = tk ? Math.round(100 * (v(p, 'k') + v(p, 'a')) / tk) : 0, kda = (v(p, 'k') + v(p, 'a')) / Math.max(1, v(p, 'd'));
+  if (top(P, 'nw')) T.push(['Больше всех душ', 'a', `самый богатый в матче: ${kfm(v(p, 'nw'))}`]);
+  else if (top(mine, 'nw')) T.push(['Самый богатый в команде', 'a', `${kfm(v(p, 'nw'))} душ`]);
+  if (top(P, 'player_damage')) T.push(['Больше всех урона', 'a', `${kfm(v(p, 'player_damage'))} урона по героям — больше всех`]);
+  if (top(P, 'boss_damage')) T.push(['Ломал объекты', 'b', `${kfm(v(p, 'boss_damage'))} урона по объектам — больше всех`]);
+  if (top(P, 'player_healing') && v(p, 'player_healing') > 2000) T.push(['Лучший лекарь', 'g', `${kfm(v(p, 'player_healing'))} лечения — больше всех`]);
+  if (top(P, 'player_damage_taken')) T.push(['Танк матча', 'b', `${kfm(v(p, 'player_damage_taken'))} урона принял — больше всех`]);
+  if (top(P, 'k')) T.push(['Главный убийца', 'g', `${v(p, 'k')} убийств — больше всех`]);
+  if (top(P, 'a')) T.push(['Лучший помощник', 'g', `${v(p, 'a')} помощи — больше всех`]);
+  if (top(P, 'denies') && v(p, 'denies') >= 10) T.push(['Денаил', 'b', `${v(p, 'denies')} денаев — больше всех`]);
+  if (kp >= 70) T.push(['В каждой драке', 'g', `участие в убийствах команды — ${kp}%`]);
+  else if (tk >= 10 && kp <= 30) T.push(['Почти не дрался', 'r', `участие в убийствах команды — ${kp}%`]);
+  if (!v(p, 'd') && dur >= 15) T.push(['Без смертей', 'g', `ни одной смерти за ${Math.round(dur)} минут`]);
+  else if (P.every(q => q === p || v(q, 'd') <= v(p, 'd')) && v(p, 'd') >= 8) T.push(['Больше всех смертей', 'r', `${v(p, 'd')} смертей — больше всех в матче`]);
+  if (kda >= 6 && v(p, 'd')) T.push(['Высокий KDA', 'g', `(убийства + помощь) / смерти = ${f1(kda)}`]);
+  if (dur >= 20 && low(mine, 'player_damage')) T.push(['Мало урона', 'r', 'меньше всех урона по героям в команде']);
+  const opp = P.filter(q => q.assigned_lane === p.assigned_lane && teamOf(q.team) !== teamOf(p.team)), mate = P.filter(q => q.assigned_lane === p.assigned_lane && teamOf(q.team) === teamOf(p.team));
+  if (opp.length && X.dur > 600) { const d10 = mate.reduce((s, q) => s + mAt(q, 600), 0) - opp.reduce((s, q) => s + mAt(q, 600), 0);
+    if (d10 >= 1200) T.push(['Выиграл линию', 'g', `+${nf(Math.round(d10))} душ к 10-й минуте`]); else if (d10 <= -1200) T.push(['Проиграл линию', 'r', `${nf(Math.round(d10))} душ к 10-й минуте`]); }
+  if (!won && top(mine, 'nw')) T.push(['Тащил проигранную', 'g', 'самый богатый в проигравшей команде']);
+  if (won && low(mine, 'nw') && dur >= 20) T.push(['Затащили', 'b', 'победа при самых малых душах в команде']);
+  if (dur >= 15 && v(p, 'creep_kills') / dur >= 9) T.push(['Фармила', 'g', `${f1(v(p, 'creep_kills') / dur)} крипов в минуту`]);
+  const rk = k => 1 + P.filter(q => v(q, k) > v(p, k)).length, avgD = P.reduce((s2, q) => s2 + v(q, 'd'), 0) / P.length;
+  if (!top(P, 'player_damage') && rk('player_damage') <= 3) T.push(['Топ-3 по урону', 'g', `${rk('player_damage')}-й по урону из ${P.length}`]);
+  if (!top(P, 'nw') && !top(mine, 'nw') && rk('nw') <= 3) T.push(['Топ-3 по душам', 'a', `${rk('nw')}-й по душам из ${P.length}`]);
+  if (low(P, 'nw') && dur >= 15) T.push(['Меньше всех душ', 'r', 'самый бедный в матче']);
+  if (!v(p, 'k') && dur >= 15) T.push(['Без убийств', 'r', `0 убийств за ${Math.round(dur)} минут`]);
+  if (v(p, 'a') >= 8 && v(p, 'a') >= 3 * Math.max(1, v(p, 'k'))) T.push(['Играл от помощи', 'b', `${v(p, 'a')} помощи при ${v(p, 'k')} убийствах`]);
+  if (dur >= 20 && v(p, 'd') > 0 && v(p, 'd') <= 2) T.push(['Мало смертей', 'g', `всего ${v(p, 'd')} за игру`]);
+  else if (v(p, 'd') >= 6 && v(p, 'd') >= 1.4 * avgD && !T.some(t => t[0] === 'Больше всех смертей')) T.push(['Много смертей', 'r', `${v(p, 'd')} смертей — в среднем в матче ${f1(avgD)}`]);
+  return T;
+}
+const mTagsHTML = (X, p) => { const T = mTags(X, p); return T.length ? `<div class="r11-tg">${T.slice(0, 10).map(([s, c, h]) => `<span class="tag ${c}" title="${esc(h)}">${esc(s)}</span>`).join('')}</div>` : ''; };
+{ const R10 = r10Sum; r10Sum = function (X, p) { return mTagsHTML(X, p) + R10(X, p); }; }
+
+// ---------- больше меток в строке матча (до 20 правил), показываем до 3 ----------
+{ const MT1 = mMiniTags; mMiniTags = function (m, CNT) {
+  const T = (MT1(m, CNT) || []).slice(), dur = (m.match_duration_s || 0) / 60, k = m.player_kills || 0, d = m.player_deaths || 0, a = m.player_assists || 0;
+  if (dur >= 20 && d > 0 && d <= 2) T.push(['Мало смертей', 'g', `всего ${d} за ${Math.round(dur)} минут`]);
+  if (dur >= 20 && !k) T.push(['Без убийств', 'r', `0 убийств за ${Math.round(dur)} минут`]);
+  if (dur >= 25 && a <= 3) T.push(['Мало помощи', 'r', `всего ${a} помощи`]);
+  if (k + a >= 25) T.push(['Тащил', 'g', `${k + a} убийств и помощи`]);
+  if (dur >= 15 && (m.last_hits || 0) / dur >= 9) T.push(['Фармил крипов', 'g', `${f1(m.last_hits / dur)} добиваний в минуту`]);
+  if ((m.denies || 0) >= 25) T.push(['Денаил', 'b', `${m.denies} денаев`]);
+  if (m.ranked_delta > 0) T.push(['Поднял ранг', 'g', `+${m.ranked_delta} очков ранга`]);
+  else if (m.ranked_delta < 0) T.push(['Потерял ранг', 'r', `${m.ranked_delta} очков ранга`]);
+  if (m.ranked_calibration_match) T.push(['Калибровка', 'b', 'матч калибровки ранга']);
+  if (m.ranked_used_demotion_protection) T.push(['Спасла защита', 'r', 'сработала защита от понижения ранга']);
+  if (m.abandoned_time_s) T.push(['Вышел из игры', 'r', `покинул матч на ${mmss(m.abandoned_time_s)}`]);
+  return T; }; }
+// ---------- повтор матча: файл .dem из Valve (ссылку даёт API) ----------
+async function rpOpen(btn, mid) {
+  qPop(btn, '<div class="load" style="padding:8px">Ищу файл повтора…</div>');
+  let s = null; try { s = await api('matches/' + mid + '/salts'); } catch (e) {}
+  const url = s && s.demo_url ? s.demo_url.replace(/^http:/, 'https:') : '';
+  qPop(btn, url ? `<div class="rp"><b>Повтор матча № ${mid}</b>
+    <a class="btn" href="${esc(url)}" target="_blank" rel="noopener">Скачать повтор (.dem.bz2) ↗</a>
+    <ol><li>Распакуй архив (7-Zip или WinRAR) — получится файл <code>.dem</code>.</li><li>Положи его в <code>Steam\\steamapps\\common\\Deadlock\\game\\citadel\\replays\\</code></li><li>В игре открой консоль и введи <code>playdemo replays/${mid}_…</code> (имя файла без .dem).</li></ol>
+    <small>2D-повтор прямо на сайте — вкладка «Карта».</small></div>`
+    : `<div class="rp"><b>Повтора пока нет</b><small>Valve отдаёт файл не для всех матчей. Попробуй через час. 2D-повтор — вкладка «Карта».</small></div>`);
+}
+{ const MO11 = mOv; mOv = function () { return MO11().replace('<div class="r9-pb">', `<div class="r9-pb"><button type="button" class="btn g" data-rp="${MX.mid}">Повтор матча ⬇</button>`); }; }
+document.addEventListener('click', e => { const b = e.target.closest('[data-rp]'); if (!b) return; e.preventDefault(); e.stopPropagation(); rpOpen(b, b.dataset.rp); }, true);
+
+// ---------- профиль: «Что знать» — наверх над играми; слева — средние за 20 игр и лучший матч ----------
+function p13Side(H) {
+  const L = (H || []).slice(0, 20); if (L.length < 5) return '';
+  const n = L.length, s = f => L.reduce((a, m) => a + f(m), 0) / n, mins = m => Math.max(1, (m.match_duration_s || 0) / 60);
+  const k = s(m => m.player_kills), d = s(m => m.player_deaths), a = s(m => m.player_assists), spm = s(m => m.net_worth / mins(m)), lh = s(m => (m.last_hits || 0) / mins(m)), dur = s(m => mins(m));
+  const best = L.slice().sort((x, y) => (y.player_kills + y.player_assists) / Math.max(1, y.player_deaths) - (x.player_kills + x.player_assists) / Math.max(1, x.player_deaths))[0], bw = best.player_team === best.match_result;
+  return `<section class="q-box p13-av"><div class="r9-h2"><b>Средние</b><small>последние ${n}</small></div>
+    <div class="p13-g"><span><small>K / D / A</small><b><i class="k">${f1(k)}</i> / <i class="d">${f1(d)}</i> / <i class="a">${f1(a)}</i></b></span><span><small>KDA</small><b>${f2((k + a) / Math.max(.5, d))}</b></span>
+    <span><small>Души в минуту</small><b>${nf(Math.round(spm))}</b></span><span><small>Крипы в минуту</small><b>${f1(lh)}</b></span>
+    <span><small>Длина игры</small><b>${Math.round(dur)} мин</b></span><span><small>Смертей за игру</small><b class="${d >= 7 ? 'loss' : d <= 4 ? 'win' : ''}">${f1(d)}</b></span></div></section>
+    <a class="q-box p13-best" href="#m/${best.match_id}"><small>Лучший матч · последние ${n}</small><span>${face(best.hero_id, bw ? 'g' : 'c', 'm')}<span><b>${esc(hero(best.hero_id).n)}</b><em><i class="k">${best.player_kills}</i> / <i class="d">${best.player_deaths}</i> / <i class="a">${best.player_assists}</i> · <span class="${bw ? 'win' : 'loss'}">${bw ? 'победа' : 'поражение'}</span></em></span><i class="go">›</i></span></a>`;
+}

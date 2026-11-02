@@ -90,7 +90,7 @@ function coProfHTML(id, H) {
 function gmRow(m) {
   const w = m.player_team === m.match_result, d = m.ranked_delta, dur = Math.max(60, m.match_duration_s || 0);
   const kda = (m.player_kills + m.player_assists) / Math.max(1, m.player_deaths), M = MD.get(m.match_id), me = M ? M.players.find(p => p.account_id === PROF.id) : null;
-  const its = me ? finalItems(me).slice(0, 6) : [], tgs = mMiniTags(m, PROF.CNT).slice(0, 2);
+  const its = me ? finalItems(me).slice(0, 6) : [], tgs = mMiniTags(m, PROF.CNT).slice(0, 3);
   return `<div class="q-gm r9r ${w ? 'w' : 'l'}" data-m="${m.match_id}" tabindex="0" role="link" aria-label="${w ? 'Победа' : 'Поражение'}, ${esc(hero(m.hero_id).n)}, открыть матч">
     <span class="r9-rs"><b>${w ? 'Победа' : 'Поражение'}</b><small>${esc(MODE(m))}${d ? ` <span class="${d > 0 ? 'win' : 'loss'}">${d > 0 ? '+' : ''}${d}</span>` : ''} · ${mmss(dur)}</small></span>
     <span class="r9-rh">${face(m.hero_id, w ? 'g' : 'c', 's')}<span><b>${esc(hero(m.hero_id).n)}</b><small>${esc(ago(m.start_time))}${tgs.map(tg => ` · <span class="r9-tg ${tg[1]}" title="${esc(tg[2])}">${esc(tg[0])}</span>`).join('')}</small></span></span>
