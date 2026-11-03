@@ -182,6 +182,15 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
 {tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10),tot=all(hud).length;
  console.log('нагрузка: перебор '+vps+' панелей в секунду (всего в HUD заглушки '+tot+')');
  ok(vps<tot,'в матче мод перебирает меньше одного HUD в секунду: '+vps+' < '+tot+' (0.13 — 1867)');}
+// 0.15: напоминания о событиях по часам матча
+{const gt=add(hud,P('Label','GameTime',{text:'1:44'}));const E=()=>F('RestlessEvt');
+ tick(8);ok(!E()||E().style.visibility==='collapse','1:44 — до малых лагерей 16 с, напоминания ещё нет');
+ gt.text='1:50';tick(4);ok(E()&&E().style.visibility==='visible'&&E().text==='Через 10 с: малые лагеря','1:50 — «'+(E()&&E().text)+'»');
+ gt.text='2:02';tick(4);ok(E().style.visibility==='visible'&&E().text==='Появились: малые лагеря','2:02 — «'+E().text+'»');
+ gt.text='4:47';tick(4);ok(E().text==='Через 13 с: средние лагеря · ящики в тоннелях и на Колокольне','4:47 — «'+E().text+'»');
+ gt.text='2:30';tick(4);ok(E().style.visibility==='collapse','2:30 — между событиями пусто');
+ gt.text='1:50';tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);ok(vps<all(hud).length,'с часами матча нагрузка та же: '+vps+' панелей в секунду');
+ hud.SetAttributeString('RESTLESS_EVT','0');gt.text='1:51';tick(4);ok(E().style.visibility==='collapse','выключил напоминания — пропали');hud.SetAttributeString('RESTLESS_EVT','1');}
 // бот
 F('RestlessSiteBtn').ev.onactivate();ok(msgs.includes('URL https://1f8t8graf4-ai.github.io/dota-/restless/'),'кнопка «Мой Restless» открывает сайт');
 F('RestlessBotBtn').ev.onactivate();ok(msgs.includes('URL https://t.me/languagegamesbot'),'кнопка бота открывает ссылку');

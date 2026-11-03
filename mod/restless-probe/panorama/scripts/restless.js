@@ -1,4 +1,6 @@
-// Restless 0.13.
+// Restless 0.15.
+// 0.15: напоминания о событиях по часам матча (лагеря 2:00 / 5:00 / 8:00, ящики и статуи 3:00 / 5:00 / 10:00 — по deadlock.wiki):
+//       за 15 с — «Через N с: …», потом 5 с — «Появились: …». Часы матча читаем раз в секунду, панель ищем раз в 2 с.
 // 0.13: связь с программой Restless (оверлей поверх игры): кто в матче — картинкой на 127.0.0.1, как QoL Lock переводит чат;
 //       ID игроков — из профилей в меню Esc; старые плашки пробника 27.10 (Венатор с таймером) убираем.
 // 0.12: копию меню Esc из пака убрали — кнопку ставит скрипт в любое меню.
@@ -15,7 +17,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.14';
+	var VER = '0.15';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -45,6 +47,9 @@
 			settings: 'настройки мода · ' + VER, inGame: 'В ИГРЕ',
 			ultT: 'КД ульты в верхней панели', ultS: 'секунды поверх значка ульты у каждого игрока — в матче',
 			markT: 'Надпись RESTLESS', markS: 'слева сверху — видно, что мод работает',
+			evtT: 'Напоминания о событиях', evtS: 'за 15 с до лагерей, ящиков и статуй — по часам матча',
+			evIn: 'Через ', evSec: ' с: ', evNow: 'Появились: ',
+			ev1: 'малые лагеря', ev2: 'ящики и золотые статуи', ev3: 'средние лагеря · ящики в тоннелях и на Колокольне', ev4: 'большие лагеря', ev5: 'ящики и статуи под Times Square',
 			linkT: 'Связь с программой Restless', linkS: 'кто в матче — в окно поверх игры; ID берёт из профилей, пока открыто Esc',
 			lk: 'Программа: ', lkN: 'отправлено ', lkP: ' · игроков ', lkI: ' · с ID ', lkH: ' · с героем ', lk0: 'Программа: в укрытии не отправляю — зайди в матч', lkOff: 'Программа: связь выключена',
 			yes: 'ВКЛ', no: 'ВЫКЛ', lang: 'Язык мода', soon: 'СКОРО',
@@ -59,6 +64,9 @@
 			settings: 'mod settings · ' + VER, inGame: 'IN GAME',
 			ultT: 'Ult cooldown in the top bar', ultS: 'seconds over every player\'s ult icon — in a match',
 			markT: 'RESTLESS label', markS: 'top left — shows the mod is running',
+			evtT: 'Event reminders', evtS: '15 s before camps, crates and statues — by the match clock',
+			evIn: 'In ', evSec: ' s: ', evNow: 'Spawned: ',
+			ev1: 'small camps', ev2: 'crates and golden statues', ev3: 'medium camps · tunnel and Bell Tower crates', ev4: 'large camps', ev5: 'Times Square crates and statues',
 			linkT: 'Link to the Restless app', linkS: 'who is in the match — to the window over the game; IDs come from profiles while Esc is open',
 			lk: 'App: ', lkN: 'sent ', lkP: ' · players ', lkI: ' · with ID ', lkH: ' · with hero ', lk0: 'App: not sending in the hideout — join a match', lkOff: 'App: link is off',
 			yes: 'ON', no: 'OFF', lang: 'Mod language', soon: 'COMING SOON',
@@ -171,6 +179,7 @@
 		toggle('ULT');
 		toggle('MARK');
 		toggle('LINK');
+		toggle('EVT');
 
 		var lr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '12px 0px 12px 0px' });
 		P.lang = lab(lr, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '19px', color: INK });
@@ -223,7 +232,7 @@
 		setText(P.site, T('site')); setText(P.bot, T('bot')); setText(P.close, T('close')); setText(P.note, T('note'));
 		for (var j = 0; j < 3; j++) setText(P.s[j], '·  ' + T('s' + (j + 1)));
 		setText(P.seeH, T('seeH'));
-		var keys = [['ULT', 'ultT', 'ultS'], ['MARK', 'markT', 'markS'], ['LINK', 'linkT', 'linkS']];
+		var keys = [['ULT', 'ultT', 'ultS'], ['MARK', 'markT', 'markS'], ['LINK', 'linkT', 'linkS'], ['EVT', 'evtT', 'evtS']];
 		for (var i = 0; i < keys.length; i++) {
 			var q = P[keys[i][0]], v = on(keys[i][0]);
 			setText(q.t, T(keys[i][1])); setText(q.s, T(keys[i][2])); setText(q.l, v ? T('yes') : T('no'));
@@ -466,6 +475,31 @@
 		});
 	}
 
+	// ---------- напоминания о событиях (0.15): только первые появления по часам матча — их время одно и то же в каждом матче ----------
+	// Повторы (лагерь, ящик) считаются от того, когда их убили или разбили, — этого по часам не узнать, поэтому их нет.
+	var EV = [[120, 'ev1'], [180, 'ev2'], [300, 'ev3'], [480, 'ev4'], [600, 'ev5']], EVL = null, EVS = -1, EVF = 0;
+	function evtTick() {
+		var lb = ok(EVL) ? EVL : null;   // свою надпись помним; ищем по HUD, только когда надо показать
+		if (!on('EVT')) { if (ok(lb)) setVis(lb, false); return; }
+		if (!ok(GT)) { if (EVF-- > 0) return; EVF = 40; GT = HUD.FindChildTraverse('GameTime'); if (!ok(GT)) { if (ok(lb)) setVis(lb, false); return; } }
+		var m = /(-?)(\d+):(\d\d)/.exec(txt(GT) || ''), s = m ? (m[1] ? -1 : 1) * (+m[2] * 60 + +m[3]) : -1;
+		if (s === EVS) return;
+		EVS = s;
+		var msg = '';
+		for (var i = 0; i < EV.length && !msg; i++) {
+			var d = EV[i][0] - s;
+			if (d > 0 && d <= 15) msg = T('evIn') + d + T('evSec') + T(EV[i][1]);
+			else if (d <= 0 && d > -5) msg = T('evNow') + T(EV[i][1]);
+		}
+		if (!ok(lb)) {
+			if (!msg) return;
+			lb = EVL = HUD.FindChildTraverse('RestlessEvt');
+			if (!ok(lb)) lb = EVL = lab(HUD, 'RestlessEvt', { horizontalAlign: 'center', verticalAlign: 'top', marginTop: '118px', padding: '8px 18px 8px 18px',
+				backgroundColor: '#121014e6', border: '1px solid #ffc83d73', borderRadius: '10px', fontSize: '20px', fontWeight: 'bold', color: A, zIndex: '60' });
+		}
+		setText(lb, msg); setVis(lb, !!msg);
+	}
+
 	// ---------- общий такт ----------
 	function tick() {
 		if (!ok(ctx)) return;
@@ -474,6 +508,7 @@
 			try { menuTick(); } catch (e) { $.Msg('[Restless] меню: ' + e); }
 			try { winTick(); } catch (e) { $.Msg('[Restless] окно: ' + e); }
 			try { ultTick(); } catch (e) { $.Msg('[Restless] ульта: ' + e); }
+			try { evtTick(); } catch (e) { $.Msg('[Restless] события: ' + e); }
 			try { lkTick(); } catch (e) { $.Msg('[Restless] связь: ' + e); }
 			try { lkProbe(); } catch (e) { $.Msg('[Restless] профили: ' + e); }
 			try { oldTick(); } catch (e) { $.Msg('[Restless] старое: ' + e); }
