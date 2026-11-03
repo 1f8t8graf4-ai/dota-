@@ -160,10 +160,11 @@ async function l13Ratings() {
         const o = await hrkGet(hid, id, nm).catch(() => null), w = o && o.w;
         $$(`[data-hr="${hid}|${id}"]`).forEach(x => { x.dataset.ok = '1';
           if (w && w.pos) {
-            x.innerHTML = `#${nf(w.pos)} <i>${esc(hero(hid).n)}</i>${o.r ? ` <em>${esc(RGS[o.rg] || o.rg)} #${o.r.pos}</em>` : ''}`;
-            x.classList.toggle('top', w.pos <= 100); x.classList.toggle('hi', w.pos > 100 && w.pos <= 1000);
-            x.title = `Рейтинг героя: #${nf(w.pos)} в мире${o.tot ? ' из ' + nf(o.tot) : ''} — по очкам рейтинга: ранг, винрейт и KDA на ${hero(hid).n}, как в League of Graphs (${HL_MIN}+ игр за ${HL_DAYS} дней).${o.r ? ` ${RGS[o.rg] || o.rg} #${o.r.pos} — официальный топ героя в регионе.` : ''}`;
-          } else { x.textContent = 'вне рейтинга'; x.classList.add('no'); x.title = 'Рейтинг героя: ' + hrWhy(w); }
+            const b = hrBig(w, o.tot);
+            x.innerHTML = `${b.t} <i>${esc(hero(hid).n)}</i>${o.r ? ` <em>${esc(RGS[o.rg] || o.rg)} #${o.r.pos}</em>` : ''}`;
+            x.classList.toggle('top', !!b.top); x.classList.toggle('hi', !!b.ex && !b.top);
+            x.title = `Рейтинг героя: ${b.ex ? b.t + ' в мире' : b.t + ' на герое'}${o.tot ? ' (в рейтинге ' + nf(o.tot) + ')' : ''}. ${hrNext(w)} — по очкам рейтинга: ранг, винрейт и KDA на ${hero(hid).n}, как в League of Graphs (${HL_MIN}+ игр за ${HL_DAYS} дней).${o.r ? ` ${RGS[o.rg] || o.rg} #${o.r.pos} — официальный топ героя в регионе.` : ''}`;
+          } else { x.textContent = hrShort(w) || 'вне рейтинга'; x.classList.add('no'); x.title = 'Рейтинг героя: ' + hrWhy(w); }
         });
       }));
     }

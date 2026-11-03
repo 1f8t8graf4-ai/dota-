@@ -334,8 +334,26 @@ function heroRating(hid, id) {
   HRC[k].catch(() => delete HRC[k]);
   return HRC[k];
 }
-const hrWhy = r => !r ? '' : r.why === 'idle' ? 'не играл на герое 30 дней — в рейтинге только те, кто играет сейчас' : r.why === 'rank' ? 'нет ранга — рейтинг героя только у тех, кто играет ранговые' : `нужно ${HL_MIN} игр на герое за ${HL_DAYS} дней${r.m ? ` — сейчас ${r.m}` : ''}`;
-const rtCell = r => r && r.pos ? `<b class="q-rtn${r.pos <= 100 ? ' top' : r.pos <= 1000 ? ' hi' : ''}" title="Рейтинг героя: место в мире по очкам рейтинга — ранг, винрейт и KDA на герое, как в League of Graphs (у тебя ${nf(r.m)} игр за ${HL_DAYS} дней)">#${nf(r.pos)}</b><small>в мире</small>` : `<span class="sub" title="${esc(hrWhy(r))}">—</span>`;
+// вне рейтинга — не «нельзя», а что сделать (03.11, Андрей: «показывай, что сделать»)
+const hrWhy = r => { if (!r) return ''; if (r.why === 'idle') return 'не играл на герое 30 дней — сыграй, и место вернётся'; if (r.why === 'rank') return 'нет ранга — сыграй ранговые, и попадёшь в рейтинг';
+  const d = HL_MIN - (r.m || 0); return d > 0 ? `ещё ${d} ${pl(d, ['игра', 'игры', 'игр'])} на герое за ${HL_DAYS} дней${r.nr ? ' и ранговые' : ''} — и ты в рейтинге` : `нужно ${HL_MIN} игр на герое за ${HL_DAYS} дней`; };
+const hrShort = r => !r ? '' : r.why === 'idle' ? 'не играл 30 дн.' : r.why === 'rank' ? 'нет ранга' : (HL_MIN - (r.m || 0) > 0 ? `ещё ${HL_MIN - (r.m || 0)} ${pl(HL_MIN - (r.m || 0), ['игра', 'игры', 'игр'])}` : 'вне рейтинга');
+// как показывать место: точный номер — до топ-1000 и только посчитанный по очкам (lg16), дальше — «топ X %» (Андрей, 03.11: «#8 412 никого не мотивирует»)
+const HR_EXACT = 1000;
+function hrBig(w, tot) {
+  if (!w || !w.pos) return null; tot = tot || w.tot || 0;
+  if (w.lg && w.pos <= HR_EXACT) return {t: '#' + nf(w.pos), ex: 1, top: w.pos <= 100};
+  if (!tot) return {t: '~#' + nf(w.pos), ex: 0};
+  const p = Math.min(100, 100 * w.pos / tot);
+  return {t: 'топ ' + (p < 1 ? f1(p) : Math.max(1, Math.ceil(p))) + ' %', ex: 0};
+}
+// следующая цель: до топ-1 / 10 / 100 / 1000
+function hrNext(w) {
+  if (!w || !w.pos) return ''; const p = w.pos; if (p === 1) return 'ты топ-1 мира — держи место';
+  const nx = p > 1000 ? 1000 : p > 100 ? 100 : p > 10 ? 10 : 1, d = p - nx, ex = w.lg && p <= HR_EXACT;
+  return `до топ-${nx} — ${ex ? '' : '~'}${nf(d)} ${pl(d, ['место', 'места', 'мест'])}`;
+}
+const rtCell = r => { const b = hrBig(r); return b ? `<b class="q-rtn${b.top ? ' top' : b.ex ? ' hi' : ''}" title="Рейтинг героя: ${b.ex ? 'место в мире' : b.t + ' на герое'} по очкам — ранг, винрейт и KDA, как в League of Graphs (у тебя ${nf(r.m)} игр за ${HL_DAYS} дней). ${esc(hrNext(r))}">${b.t}</b><small>${b.ex ? 'в мире' : 'на герое'}</small>` : `<span class="sub" title="${esc(hrWhy(r))}">${esc(hrShort(r)) || '—'}</span>`; };
 async function heroRatings(n, id, hids, attr) {
   for (const hid of hids) {
     const r = await heroRating(hid, id).catch(() => null); if (n !== VQ) return;

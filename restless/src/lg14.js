@@ -76,7 +76,8 @@ async function l14Player(n, hid, id) {
     api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t90}&min_matches=1&account_id=${id}`).catch(() => []), api(`players/${id}/rank`).catch(() => null)]);
   if (n !== VQ) return;
   const h = (HS || []).find(x => x.hero_id === hid) || {}, g = h.matches_played || 0, w = h.wins || 0, g90 = o && o.w ? o.w.m || 0 : 0, badge = (RK && RK.badge) || (o && o.w && o.w.badge) || 0;
-  const place = o && o.w && o.w.pos ? `<b class="l14-pl2${o.w.pos <= 100 ? ' top' : ''}">#${nf(o.w.pos)} ${esc(hero(hid).n)}</b><small>в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''}${o.r ? ` · ${esc(RGS[o.rg] || o.rg)} #${o.r.pos}` : ''}</small>` : `<b class="l14-pl2 no">вне рейтинга</b><small>${esc(hrWhy(o && o.w))}</small>`;
+  const pb = o && hrBig(o.w, o.tot);
+  const place = pb ? `<b class="l14-pl2${pb.top ? ' top' : ''}">${pb.t} ${esc(hero(hid).n)}</b><small>${pb.ex ? 'в мире' : 'на герое'}${o.r ? ` · ${esc(RGS[o.rg] || o.rg)} #${o.r.pos}` : ''}</small>` : `<b class="l14-pl2 no">вне рейтинга</b><small>${esc(hrWhy(o && o.w))}</small>`;
   let bld = '';
   const top = (BS || []).slice().sort((a, b) => b.matches - a.matches)[0];
   if (g90 < HL_MIN) bld = `<div class="empty">Его сборку показываем от ${HL_MIN} игр на герое за ${HL_DAYS} дней — у него ${g90}. Меньше — это ещё не его стиль, а проба.</div>`;
@@ -117,6 +118,6 @@ const L14B = {};
       sec.insertAdjacentHTML('beforebegin', `<div class="l14-goal no" id="l14goal"><div><small>Рейтинг героя</small><b>Пока вне рейтинга</b><span>${esc(hrWhy(o0 && o0.w) || 'нужен ранг и 20 игр на герое за 90 дней')}. Попадёшь — увидишь своё место в мире и в регионе.</span></div></div>`);
       return;
     }
-    const b = L.sort((a, c) => a.o.w.pos - c.o.w.pos)[0], p = b.o.w.pos, nx = p > 1000 ? 1000 : p > 100 ? 100 : p > 10 ? 10 : 1;
-    sec.insertAdjacentHTML('beforebegin', `<a class="l14-goal" id="l14goal" href="#h/${b.h}/me">${face(b.h, '', 'm')}<div><small>Рейтинг героя · лучшее место</small><b>#${nf(p)} ${esc(hero(b.h).n)}${b.o.r ? ` <em>${esc(RGS[b.o.rg] || b.o.rg)} #${b.o.r.pos}</em>` : ''}</b><span>${p === 1 ? 'Ты топ-1 мира на этом герое — держи место.' : `До топ-${nx} — ${nf(p - nx)} ${pl(p - nx, ['место', 'места', 'мест'])}`}${b.o.tot ? ` · ${pctTop(p, b.o.tot)}` : ''}</span></div><i class="l14-go">›</i></a>`);
+    const b = L.sort((a, c) => a.o.w.pos - c.o.w.pos)[0], p = b.o.w.pos, hb = hrBig(b.o.w, b.o.tot);
+    sec.insertAdjacentHTML('beforebegin', `<a class="l14-goal" id="l14goal" href="#h/${b.h}/me">${face(b.h, '', 'm')}<div><small>Рейтинг героя · лучшее место</small><b>${hb.t} ${esc(hero(b.h).n)}${b.o.r ? ` <em>${esc(RGS[b.o.rg] || b.o.rg)} #${b.o.r.pos}</em>` : ''}</b><span>${esc(hrNext(b.o.w))}</span></div><i class="l14-go">›</i></a>`);
   }; }

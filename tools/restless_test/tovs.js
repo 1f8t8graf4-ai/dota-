@@ -120,7 +120,7 @@ async function page(b, w, h, app) {
   await p.evaluate(h => { const c = document.createElement('small'); c.className = 'l13-hr'; c.dataset.hr = `${h}|930626915`; c.id = 'hrt'; document.querySelector('#v').appendChild(c); }, m0.hero_id);
   await p.waitForFunction(() => { const c = document.getElementById('hrt'); return !c || c.textContent.trim(); }, null, {timeout: 120000}).catch(() => {});
   const hr = await p.evaluate(() => (document.getElementById('hrt') || {}).textContent || 'убрано');
-  ok(/^(#[\d\s ]+ \S.*|вне рейтинга)$/.test(hr) && await p.$eval('#hrt', e => /Рейтинг героя/.test(e.title)), 'рейтинг героя на карточке: ' + hr + ' — ' + await p.$eval('#hrt', e => e.title));
+  ok(/^((#|топ )[\d\s ,%]+ \S.*|вне рейтинга|нет ранга|ещё \d+ игр\S*|не играл 30 дн\.)$/.test(hr) && await p.$eval('#hrt', e => /Рейтинг героя/.test(e.title)), 'рейтинг героя на карточке: ' + hr + ' — ' + await p.$eval('#hrt', e => e.title));
   // матч (#ov) в программе — шапка и вкладки на месте
   await p.evaluate(() => { location.hash = '#ov'; }); await p.waitForSelector('#ov', {timeout: 30000}); await p.waitForTimeout(600);
   ok(await p.evaluate(() => getComputedStyle(document.querySelector('#tabs')).display === 'flex' && getComputedStyle(document.querySelector('.q-nav')).display !== 'none'), 'матч в программе: шапка и вкладки остаются');

@@ -613,7 +613,7 @@ async function hmItems(n) {
 // ---------- место на герое в профиле: «#2 100 · мир · #12 EU», нажал — таблица с соседями выше и ниже ----------
 const RGS = {Europe: 'EU', NAmerica: 'NA', SAmerica: 'SA', Asia: 'Asia', Oceania: 'OCE'}, HRR = {};
 const pctTop = (pos, tot) => { const p = 100 * pos / Math.max(1, tot); return 'топ ' + (p < .1 ? String(+p.toPrecision(1)).replace('.', ',') : p < 1 ? p.toFixed(1).replace('.', ',') : Math.max(1, Math.ceil(p))) + '%'; };
-const hrkCell = o => o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b><small>в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''}</small><em class="${o.r ? '' : 'no'}">${RGS[o.rg] || o.rg} ${o.r ? '#' + o.r.pos : '— вне топ-1000'}</em><i class="go">›</i>` : `<small title="${esc(hrWhy(o.w))}">${o.w && o.w.why === 'rank' ? 'нет ранга' : 'нужно 20 игр'}</small>`;
+const hrkCell = o => { const b = o && hrBig(o.w, o.tot); return b ? `<b>${b.t}</b><small>${b.ex ? 'в мире' : 'на герое'}</small><em class="${o.r ? '' : 'no'}">${RGS[o.rg] || o.rg} ${o.r ? '#' + o.r.pos : '— вне топ-1000'}</em><i class="go">›</i>` : `<small title="${esc(hrWhy(o && o.w))}">${esc(hrShort(o && o.w)) || 'вне рейтинга'}</small>`; };
 // сколько всего игроков на герое (для «топ N%»): ищем последнюю строку таблицы вилкой, кэш на сутки
 const HTOT = {};
 function heroTotal(hid) {
@@ -660,7 +660,8 @@ async function hrkOpen(hid, id, name) {
       const L = await hlRows(hid, st, 15).catch(() => []);
       const S = L.length ? await api('players/steam?account_ids=' + L.map(x => x.account_id).join(',')).catch(() => []) : [], SM = {};
       (S || []).forEach(x => SM[x.account_id] = x);
-      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b> в мире${o.tot ? ` из ${nf(o.tot)} в рейтинге героя · ${pctTop(o.w.pos, o.tot)}` : ''}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}<br><small>Как в League of Graphs: ранг, винрейт и KDA на герое; ${HL_MIN}+ игр за ${HL_DAYS} дней и хоть одна за 30 дней. Нажми на игрока — его сборка.</small></p>
+      const hb = o && hrBig(o.w, o.tot);
+      html = `<p class="hrk-h">${hb ? `<b>${hb.t}</b> ${hb.ex ? 'в мире' : 'на герое'}${o.tot ? ` · в рейтинге ${nf(o.tot)}` : ''} · ${esc(hrNext(o.w))}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}<br><small>Как в League of Graphs: ранг, винрейт и KDA на герое; ${HL_MIN}+ игр за ${HL_DAYS} дней и хоть одна за 30 дней. Нажми на игрока — его сборка.</small></p>
         ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${esc(rankOf(x.badge).name)} · ${nf(x.matches)} ${pl(x.matches, ['игра', 'игры', 'игр'])}${x.wr != null ? ` · ${f1(x.wr)}% · KDA ${f1(x.kda)}` : ''}${x.R ? ` · ${nf(x.R)} очков` : ''}`, x.account_id === id, x.badge)).join('')}`;
     } else {
       const E = o ? o.E : [], c = o && o.i >= 0 ? o.i : 0, a = Math.max(0, c - 7 + off);

@@ -352,8 +352,8 @@ async function heroStatsStrip(n, hid, me) {
       <div class="q-hrt" data-hrk2="${hid}" role="button" title="Нажми — таблица соседей"><span>Место на герое</span><b id="hstrt">…</b><small id="hstrs">считаю…</small></div>
       <div><span>Урон / мин</span><b>${nf(y.damage_per_min)}</b><small>души / мин ${nf(y.networth_per_min)}</small></div>
       ${y.accuracy != null ? `<div><span>Точность</span><b>${Math.round(100 * y.accuracy)}%</b><small>крит ${Math.round(100 * (y.crit_shot_rate || 0))}%</small></div>` : ''}`);
-    hrkGet(hid, ME.id, ME.name).then(o => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); if (v) v.textContent = o && o.w && o.w.pos ? '#' + nf(o.w.pos) : '—';
-      if (t) t.innerHTML = o && o.w && o.w.pos ? `в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''} · ${esc(REGN[o.rg] || o.rg)} ${o.r ? '#' + o.r.pos : '— вне топ-1000'} · <u>таблица ›</u>` : esc('вне рейтинга — ' + hrWhy(o && o.w)); }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
+    hrkGet(hid, ME.id, ME.name).then(o => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); const b = o && hrBig(o.w, o.tot); if (v) v.textContent = b ? b.t : '—';
+      if (t) t.innerHTML = b ? `${b.ex ? 'в мире' : 'на герое'} · ${esc(hrNext(o.w))} · ${esc(REGN[o.rg] || o.rg)} ${o.r ? '#' + o.r.pos : '— вне топ-1000'} · <u>таблица ›</u>` : esc('вне рейтинга — ' + hrWhy(o && o.w)); }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
   } catch (e) { put(n, '#hst', `<div class="err" style="grid-column:1/-1">${esc(e.message)}</div>`); }
 }
 async function heroMyMatches(n, hid) {

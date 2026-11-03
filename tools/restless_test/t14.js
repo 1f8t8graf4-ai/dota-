@@ -38,7 +38,7 @@ async function page(b, w, h, id) {
     if (L.length > 5) { await p.click('#l14more'); ok(await vis() === L.length, `${n}: «Ещё 5» — весь топ-10`); }
     await p.waitForFunction(() => { const m = document.querySelector('#l14me'); return !m || !/считаю/.test(m.textContent); }, null, {timeout: 150000}).catch(() => {});
     const me = await p.evaluate(() => (document.querySelector('#l14me') || {}).textContent || '');
-    ok(/^Ты · (вне рейтинга|#)/.test(me), `${n}: строка «Ты» под топом — ${me}`);
+    ok(/^Ты · (вне рейтинга|#|топ )/.test(me) && /(ещё \d+ игр|нет ранга|не играл|до топ-|топ-1)/.test(me), `${n}: строка «Ты» под топом — место или что сделать: ${me}`);
     // эмблема: наведение — название ранга и доля игроков
     const im = await p.$('#l14lb .l14-r .l14-rk img'); await im.scrollIntoViewIfNeeded(); await im.hover();
     await p.waitForFunction(() => /(выше, чем у|топ) [\d,]+ % игроков/.test(document.querySelector('#l14lb .l14-r .l14-rk img').title), null, {timeout: 60000}).catch(() => {});
@@ -61,6 +61,21 @@ async function page(b, w, h, id) {
     ok(!p.errs.length, `${n}: консоль чистая ` + p.errs.slice(0, 3).join(' | '));
     await p.close();
   }
+  // показ места: точный номер до топ-1000, дальше «топ X %», цель и «что сделать»
+  { const p = await page(b, 1440, 900, 930626915); await p.goto(BASE + '?dev=vasyan2026#heroes'); await p.waitForTimeout(1500);
+    const u = await p.evaluate(() => ({a: hrBig({pos: 37, lg: 1}), b: hrBig({pos: 640, lg: 1}), c: hrBig({pos: 1500, ap: 1, tot: 9533}), d: hrBig({pos: 300, ap: 1, tot: 9533}), e: hrBig({pos: 40, lg: 1, tot: 9533}),
+      n1: hrNext({pos: 640, lg: 1}), n2: hrNext({pos: 1500, ap: 1}), n3: hrNext({pos: 1, lg: 1}), w1: hrWhy({m: 16}), w2: hrWhy({why: 'rank'}), w3: hrWhy({why: 'idle'}), s1: hrShort({m: 16})}));
+    ok(u.a.t === '#37' && u.a.top && u.b.t === '#640' && u.b.ex && !u.b.top, `номер до топ-1000: ${u.a.t}, ${u.b.t}`);
+    ok(u.c.t === 'топ 16 %' && !u.c.ex && u.d.t === 'топ 4 %', `дальше — процент: ${u.c.t}; место не по очкам — тоже процент: ${u.d.t}`);
+    ok(u.n1 === 'до топ-100 — 540 мест' && u.n2 === 'до топ-1000 — ~500 мест' && /топ-1/.test(u.n3), `цель: «${u.n1}», «${u.n2}», «${u.n3}»`);
+    ok(/^ещё 4 игры/.test(u.w1) && /сыграй ранговые/.test(u.w2) && /сыграй, и место вернётся/.test(u.w3) && u.s1 === 'ещё 4 игры', `что сделать: «${u.w1}» · «${u.w2}» · «${u.w3}» · коротко «${u.s1}»`);
+    // настоящие игроки Rat King: из топ-500 по рангу — номер, из 1200-х — номер или процент, дальше — процент
+    const API = id => p.evaluate(async id => { const o = await hrkGet(84, id, ''); const b = hrBig(o.w, o.tot); return {t: b && b.t, ex: b && b.ex, nx: hrNext(o.w), lg: !!(o.w && o.w.lg)}; }, id);
+    const r1 = await API(1543350624), r2 = await API(1048576787);
+    ok(r1.lg && /^#\d/.test(r1.t), `топ-500 по рангу на Rat King — точное место по очкам: ${r1.t} · ${r1.nx}`);
+    ok(/^(#\d|топ \d)/.test(r2.t) && (r2.ex ? /^#/.test(r2.t) : /^топ /.test(r2.t)), `1200-й по рангу — ${r2.t} · ${r2.nx}`);
+    ok(!p.errs.length, 'показ места: консоль чистая ' + p.errs.slice(0, 3).join(' | '));
+    await p.close(); }
   // профиль: цель — рейтинг героя (у топ-1 — «#1 …», у игрока без ранга — «Пока вне рейтинга»)
   for (const [id, want, nm] of [[TOP[0].account_id, /^Рейтинг героя · лучшее место#1 /i, 'топ-1'], [930626915, /Пока вне рейтинга/, 'без ранга']]) {
     const p = await page(b, 1440, 900, id);
