@@ -346,7 +346,26 @@ async function heroRatings(n, id, hids, attr) {
 
 // ---------- герой говорит — как в макете «Реплики · кто про кого»: слова крупно по одному поверх портрета, волна голоса, потом вся фраза с переводом ----------
 let SAY = null;
+let WTU = null;
+const ultWT = () => WTU || (WTU = fetch('../data/dd-ult-wt.json').then(r => r.ok ? r.json() : {}).catch(() => ({})));
+// начало каждого слова в секундах
+function sayTimes(x, W, a) {
+  return ultWT().then(M => {
+    const e = M[x.a], nw = w => w.toLowerCase().replace(/[^a-z0-9']/g, '');
+    if (e && e.length) {
+      if (e.length === W.length) return e.map(z => z[0]);
+      let k = 0; const S = W.map(w => { for (let j = k; j < e.length; j++) if (nw(e[j][2]) === nw(w)) { k = j + 1; return e[j][0]; } return null; });
+      if (S.filter(v => v != null).length >= W.length * .7) { for (let i = 0; i < S.length; i++) if (S[i] == null) S[i] = i ? S[i - 1] + .15 : 0; return S; }
+    }
+    const dur = a.duration && isFinite(a.duration) ? a.duration : 2.4, lead = Math.min(.18, dur * .08), tail = Math.min(.3, dur * .12);
+    const syl = w => { const c = w.toLowerCase().replace(/[^a-z]/g, ''); if (!c) return .6; const m = c.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '').replace(/^y/, '').match(/[aeiouy]{1,2}/g); return Math.max(1, m ? m.length : 1); };
+    const pau = (w, i) => i === W.length - 1 ? 0 : /[.!?…]["»”]?$/.test(w) ? 1.6 : /[,;:—–]$/.test(w) || w === '-' ? .9 : 0;
+    const wt = W.map(w => syl(w) + .35), pt = W.map(pau), tot = wt.reduce((p, q) => p + q, 0) + pt.reduce((p, q) => p + q, 0), k = Math.max(.05, dur - lead - tail) / tot;
+    let t = lead; return W.map((w, i) => { const v = t; t += (wt[i] + pt[i]) * k; return v; });
+  });
+}
 async function heroSay(n, h) {
+  ultWT();
   const box = $('#hsay'); if (!box) return;
   const U = await ultLines(); if (n !== VQ || !box.isConnected) return;
   const L = U[hSlug(h)] || []; if (!L.length) { box.remove(); return; }
@@ -368,13 +387,19 @@ async function heroSay(n, h) {
     box.classList.remove('done');
     if (!play) { full(); box.classList.add('hint'); return; }
     box.classList.remove('hint');
-    au = new Audio(x.a); const a0 = au; let started = false;
-    const run = () => { if (started || au !== a0) return; started = true; box.classList.add('say');
-      const d = (au.duration && isFinite(au.duration) ? au.duration : 2.4) * 1000, len = W.reduce((s2, w) => s2 + w.length + 2, 0); let t = 120;
-      W.forEach(w => { tm.push(setTimeout(() => { cap.innerHTML = `<b class="w1">${word(w, x)}</b>`; }, t)); t += d * (w.length + 2) / len; });
-      tm.push(setTimeout(() => { full(); box.classList.remove('say'); }, t + 300)); };
-    au.addEventListener('loadedmetadata', run, {once: true});
-    au.play().then(() => setTimeout(run, 350)).catch(() => { if (au === a0) { au = null; full(); box.classList.add('hint'); } });
+    // слова — по настоящему времени звука (currentTime), а не по таймерам: звук мог стартовать позже, буферизоваться.
+    // Время слов: точное из data/dd-ult-wt.json (Зетка распознаёт голос), иначе — по слогам и паузам на знаках препинания.
+    au = new Audio(x.a); const a0 = au;
+    const run = () => { if (a0._run || au !== a0) return; a0._run = 1; box.classList.add('say');
+      sayTimes(x, W, a0).then(S => { let i = -1;
+        const tick = () => { if (au !== a0) return; const t = a0.currentTime;
+          let j = i; while (j + 1 < W.length && t >= S[j + 1]) j++;
+          if (j !== i) { i = j; cap.innerHTML = `<b class="w1">${word(W[i], x)}</b>`; }
+          if (a0.ended) return; requestAnimationFrame(tick); };
+        tick(); }); };
+    au.addEventListener('playing', run, {once: true});
+    au.addEventListener('ended', () => { if (au !== a0) return; tm.push(setTimeout(() => { if (au !== a0) return; full(); box.classList.remove('say'); }, 250)); }, {once: true});
+    au.play().catch(() => { if (au === a0) { au = null; full(); box.classList.add('hint'); } });
   };
   const ua = navigator.userActivation;
   show(VOK() && (!ua || ua.hasBeenActive));

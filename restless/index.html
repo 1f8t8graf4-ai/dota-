@@ -3506,6 +3506,48 @@ button:disabled,[disabled]{cursor:default}
 .l14-goal.no b{font-size:16px}
 /* в таблице соседей — эмблема ранга */
 .hrk-rk{width:22px;height:18px;object-fit:contain;vertical-align:-4px;margin-right:5px}
+
+/* ===================== lg15 — герой: все реплики, живой арт ===================== */
+/* у героев без петли арт «дышит»: медленный наезд и блик — только transform/opacity, на видеокарте */
+.q-art img{transform-origin:50% 30%;animation:l15kb 22s ease-in-out infinite alternate;will-change:transform}
+.q-art::before{content:"";position:absolute;inset:-20%;z-index:1;pointer-events:none;background:radial-gradient(40% 30% at 30% 20%,color-mix(in srgb,var(--hc,#ffb020) 30%,transparent),transparent 70%);mix-blend-mode:screen;opacity:.35;animation:l15gl 9s ease-in-out infinite alternate}
+.q-art:has(video)::before{display:none}
+@keyframes l15kb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.1) translate(-1.6%,-1.2%)}}
+@keyframes l15gl{from{transform:translate(-6%,-4%);opacity:.2}to{transform:translate(8%,6%);opacity:.45}}
+
+
+/* все реплики героя */
+.l15-ln{margin:12px 0;background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:14px;overflow:clip}
+.l15-ln>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:baseline;gap:4px 12px;padding:13px 16px}
+.l15-ln>summary::-webkit-details-marker{display:none}
+.l15-ln>summary b{font:700 14px/1 var(--h,var(--f,system-ui));letter-spacing:.08em;text-transform:uppercase}
+.l15-ln>summary small{color:var(--mu,#8e897f);font-size:12.5px}
+.l15-ln>summary:hover{background:#171a22}
+.l15-ln>summary:focus-visible{outline:2px solid var(--q-am,#ffb020);outline-offset:-2px}
+.l15-ch{color:var(--mu,#8e897f);transition:transform .2s}
+.l15-ln[open] .l15-ch{transform:rotate(180deg)}
+.l15-gs{padding:2px 12px 6px;max-height:min(70vh,640px);overflow:auto;overscroll-behavior:contain}
+.l15-g h4{margin:12px 4px 6px;font:700 11.5px/1 var(--f,system-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--q-am,#ffb020)}
+.l15-g h4 small{color:var(--mu,#8e897f);font-weight:600;margin-left:4px}
+.l15-r{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start;padding:8px 6px;border-radius:10px}
+.l15-r+.l15-r{border-top:1px solid var(--ln,#26262e)}
+.l15-r:hover{background:#161922}
+.l15-r.on{background:rgba(255,176,32,.07)}
+.l15-pl{all:unset;box-sizing:border-box;cursor:pointer;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#20242e;color:var(--tx,#f2ede4);font-size:12px;padding-left:2px}
+.l15-pl:hover{background:var(--q-am,#ffb020);color:#1a1204}
+.l15-pl:focus-visible{outline:2px solid var(--q-am,#ffb020);outline-offset:2px}
+.l15-r.on .l15-pl{background:var(--q-am,#ffb020);color:#1a1204}
+.l15-tx p{margin:0}
+.l15-en{font-size:15px;font-weight:600;line-height:1.35}
+.l15-en i{font-style:normal;transition:color .12s}
+.l15-en i[data-k]{text-decoration:underline dotted color-mix(in srgb,var(--q-am,#ffb020) 70%,transparent);text-underline-offset:3px;cursor:help}
+.l15-r.on .l15-en i{color:var(--mu,#8e897f)}
+.l15-r.on .l15-en i.done{color:var(--tx,#f2ede4)}
+.l15-r.on .l15-en i.now{color:var(--q-am,#ffb020)}
+.l15-ru{color:var(--mu,#8e897f);font-size:13.5px;margin-top:2px!important}
+.l15-kw{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:5px!important;font-size:12px;color:var(--mu,#8e897f)}
+.l15-kw b{color:var(--tx,#f2ede4);font-weight:600}
+.l15-nt{margin:0;padding:8px 16px 12px;color:var(--mu,#8e897f);font-size:12px;border-top:1px solid var(--ln,#26262e)}
 </style>
 </head>
 <body>
@@ -5913,7 +5955,26 @@ async function heroRatings(n, id, hids, attr) {
 
 // ---------- герой говорит — как в макете «Реплики · кто про кого»: слова крупно по одному поверх портрета, волна голоса, потом вся фраза с переводом ----------
 let SAY = null;
+let WTU = null;
+const ultWT = () => WTU || (WTU = fetch('../data/dd-ult-wt.json').then(r => r.ok ? r.json() : {}).catch(() => ({})));
+// начало каждого слова в секундах
+function sayTimes(x, W, a) {
+  return ultWT().then(M => {
+    const e = M[x.a], nw = w => w.toLowerCase().replace(/[^a-z0-9']/g, '');
+    if (e && e.length) {
+      if (e.length === W.length) return e.map(z => z[0]);
+      let k = 0; const S = W.map(w => { for (let j = k; j < e.length; j++) if (nw(e[j][2]) === nw(w)) { k = j + 1; return e[j][0]; } return null; });
+      if (S.filter(v => v != null).length >= W.length * .7) { for (let i = 0; i < S.length; i++) if (S[i] == null) S[i] = i ? S[i - 1] + .15 : 0; return S; }
+    }
+    const dur = a.duration && isFinite(a.duration) ? a.duration : 2.4, lead = Math.min(.18, dur * .08), tail = Math.min(.3, dur * .12);
+    const syl = w => { const c = w.toLowerCase().replace(/[^a-z]/g, ''); if (!c) return .6; const m = c.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '').replace(/^y/, '').match(/[aeiouy]{1,2}/g); return Math.max(1, m ? m.length : 1); };
+    const pau = (w, i) => i === W.length - 1 ? 0 : /[.!?…]["»”]?$/.test(w) ? 1.6 : /[,;:—–]$/.test(w) || w === '-' ? .9 : 0;
+    const wt = W.map(w => syl(w) + .35), pt = W.map(pau), tot = wt.reduce((p, q) => p + q, 0) + pt.reduce((p, q) => p + q, 0), k = Math.max(.05, dur - lead - tail) / tot;
+    let t = lead; return W.map((w, i) => { const v = t; t += (wt[i] + pt[i]) * k; return v; });
+  });
+}
 async function heroSay(n, h) {
+  ultWT();
   const box = $('#hsay'); if (!box) return;
   const U = await ultLines(); if (n !== VQ || !box.isConnected) return;
   const L = U[hSlug(h)] || []; if (!L.length) { box.remove(); return; }
@@ -5935,13 +5996,19 @@ async function heroSay(n, h) {
     box.classList.remove('done');
     if (!play) { full(); box.classList.add('hint'); return; }
     box.classList.remove('hint');
-    au = new Audio(x.a); const a0 = au; let started = false;
-    const run = () => { if (started || au !== a0) return; started = true; box.classList.add('say');
-      const d = (au.duration && isFinite(au.duration) ? au.duration : 2.4) * 1000, len = W.reduce((s2, w) => s2 + w.length + 2, 0); let t = 120;
-      W.forEach(w => { tm.push(setTimeout(() => { cap.innerHTML = `<b class="w1">${word(w, x)}</b>`; }, t)); t += d * (w.length + 2) / len; });
-      tm.push(setTimeout(() => { full(); box.classList.remove('say'); }, t + 300)); };
-    au.addEventListener('loadedmetadata', run, {once: true});
-    au.play().then(() => setTimeout(run, 350)).catch(() => { if (au === a0) { au = null; full(); box.classList.add('hint'); } });
+    // слова — по настоящему времени звука (currentTime), а не по таймерам: звук мог стартовать позже, буферизоваться.
+    // Время слов: точное из data/dd-ult-wt.json (Зетка распознаёт голос), иначе — по слогам и паузам на знаках препинания.
+    au = new Audio(x.a); const a0 = au;
+    const run = () => { if (a0._run || au !== a0) return; a0._run = 1; box.classList.add('say');
+      sayTimes(x, W, a0).then(S => { let i = -1;
+        const tick = () => { if (au !== a0) return; const t = a0.currentTime;
+          let j = i; while (j + 1 < W.length && t >= S[j + 1]) j++;
+          if (j !== i) { i = j; cap.innerHTML = `<b class="w1">${word(W[i], x)}</b>`; }
+          if (a0.ended) return; requestAnimationFrame(tick); };
+        tick(); }); };
+    au.addEventListener('playing', run, {once: true});
+    au.addEventListener('ended', () => { if (au !== a0) return; tm.push(setTimeout(() => { if (au !== a0) return; full(); box.classList.remove('say'); }, 250)); }, {once: true});
+    au.play().catch(() => { if (au === a0) { au = null; full(); box.classList.add('hint'); } });
   };
   const ua = navigator.userActivation;
   show(VOK() && (!ua || ua.hasBeenActive));
@@ -8791,6 +8858,45 @@ const L14B = {};
     const b = L.sort((a, c) => a.o.w.pos - c.o.w.pos)[0], p = b.o.w.pos, nx = p > 1000 ? 1000 : p > 100 ? 100 : p > 10 ? 10 : 1;
     sec.insertAdjacentHTML('beforebegin', `<a class="l14-goal" id="l14goal" href="#h/${b.h}/me">${face(b.h, '', 'm')}<div><small>Рейтинг героя · лучшее место</small><b>#${nf(p)} ${esc(hero(b.h).n)}${b.o.r ? ` <em>${esc(RGS[b.o.rg] || b.o.rg)} #${b.o.r.pos}</em>` : ''}</b><span>${p === 1 ? 'Ты топ-1 мира на этом герое — держи место.' : `До топ-${nx} — ${nf(p - nx)} ${pl(p - nx, ['место', 'места', 'мест'])}`}${b.o.tot ? ` · ${pctTop(p, b.o.tot)}` : ''}</span></div><i class="l14-go">›</i></a>`);
   }; }
+
+// ===================== lg15 — 03.11, ночь: герой — все реплики с переводом, живой фон у всех =====================
+// Андрей: «не правильный тайминг показа фраз, плюс не все фразы показываются, чтобы почекать перевод; не везде стоит анимированный фон».
+// Тайминг — в lg2 (sayTimes: по currentTime звука, точное время слов — data/dd-ult-wt.json от Зетки, иначе по слогам).
+
+// живые петли из R2: Венатор, Крысиный король, Виктор. Остальные — арт «дышит» (медленный наезд и свет, слой lg15.css)
+LOOP[66] = ['victor', .5];
+
+// ---------- все реплики героя: по группам (ульта, убийство…), английский + перевод, ▶ — слова загораются по голосу ----------
+{ const VH15 = viewHero; viewHero = function (hid, mode) { const r = VH15(hid, mode), n = VQ; hid = +hid; if (D.heroes[hid]) l15Lines(n, hid); return r; }; }
+let L15A = null;
+function l15Stop() { if (L15A) { L15A.pause(); L15A = null; } $$('.l15-r.on').forEach(r => { r.classList.remove('on'); $$('.l15-en i', r).forEach(w => w.className = ''); }); }
+addEventListener('hashchange', l15Stop);
+async function l15Lines(n, hid) {
+  const h = hero(hid), U = await ultLines(); if (n !== VQ) return;
+  const L = U[hSlug(h)] || []; if (!L.length || $('#l15ln')) return;
+  const at = $('.q-g2'); if (!at) return;
+  const G = []; L.forEach((x, i) => { const t = x.tag || 'реплика'; let g = G.find(z => z[0] === t); if (!g) G.push(g = [t, []]); g[1].push([x, i]); });
+  const nz = t => String(t).toLowerCase().replace(/[^a-z' ]/g, '').trim(), kwOf = x => (x.kw || []).filter(z => nz(z[0]) !== nz(x.en)); // слово = вся фраза — не повторяем
+  const wd = (w, x) => { const c = w.toLowerCase().replace(/[^a-z']/g, ''), kw = kwOf(x).find(z => z[0].toLowerCase().split(/\s+/).map(v => v.replace(/[^a-z']/g, '')).includes(c)); return `<i${kw ? ` data-k="1" title="${esc(kw[0])} — ${esc(kw[1])}"` : ''}>${esc(w)}</i>`; };
+  at.insertAdjacentHTML('beforebegin', `<details class="l15-ln" id="l15ln"><summary><b>Все реплики · ${L.length}</b><small>английский и перевод — ▶ послушать, слова загораются по голосу</small><span class="l15-ch" aria-hidden="true">▾</span></summary>
+    <div class="l15-gs">${G.map(([t, R]) => `<section class="l15-g"><h4>${esc(t)} <small>${R.length}</small></h4>${R.map(([x, i]) => `<div class="l15-r" data-i="${i}">
+      <button type="button" class="l15-pl" aria-label="Послушать">▶</button><div class="l15-tx"><p class="l15-en" lang="en">${x.en.split(/\s+/).map(w => wd(w, x)).join(' ')}</p><p class="l15-ru">${esc(x.ru)}</p>
+      ${kwOf(x).length ? `<p class="l15-kw">${kwOf(x).map(z => `<span><b>${esc(z[0])}</b> — ${esc(z[1])}</span>`).join('')}</p>` : ''}</div></div>`).join('')}</section>`).join('')}</div>
+    <p class="l15-nt">Нашёл кривой перевод — напиши, поправим. Время слов пока по слогам; точное по голосу — от Зетки.</p></details>`);
+  $('#l15ln').addEventListener('click', e => {
+    const b = e.target.closest('.l15-pl'); if (!b) return;
+    const row = b.closest('.l15-r'), x = L[+row.dataset.i];
+    if (row.classList.contains('on')) { l15Stop(); return; }
+    l15Stop(); if (SAY) SAY();
+    const a = new Audio(x.a); L15A = a; row.classList.add('on');
+    const W = $$('.l15-en i', row);
+    a.addEventListener('playing', () => sayTimes(x, W.map(w => w.textContent), a).then(S => {
+      const tick = () => { if (L15A !== a) return; const t = a.currentTime; W.forEach((w, j) => { w.className = t >= S[j] ? (j + 1 < S.length && t < S[j + 1] ? 'now' : 'done') : ''; }); if (!a.ended) requestAnimationFrame(tick); };
+      tick(); }), {once: true});
+    a.addEventListener('ended', () => setTimeout(() => { if (L15A === a) l15Stop(); }, 400), {once: true});
+    a.play().catch(() => { if (L15A === a) l15Stop(); });
+  });
+}
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');

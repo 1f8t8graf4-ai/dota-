@@ -1,0 +1,41 @@
+/* ===================== lg15 — герой: все реплики, живой арт ===================== */
+/* у героев без петли арт «дышит»: медленный наезд и блик — только transform/opacity, на видеокарте */
+.q-art img{transform-origin:50% 30%;animation:l15kb 22s ease-in-out infinite alternate;will-change:transform}
+.q-art::before{content:"";position:absolute;inset:-20%;z-index:1;pointer-events:none;background:radial-gradient(40% 30% at 30% 20%,color-mix(in srgb,var(--hc,#ffb020) 30%,transparent),transparent 70%);mix-blend-mode:screen;opacity:.35;animation:l15gl 9s ease-in-out infinite alternate}
+.q-art:has(video)::before{display:none}
+@keyframes l15kb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.1) translate(-1.6%,-1.2%)}}
+@keyframes l15gl{from{transform:translate(-6%,-4%);opacity:.2}to{transform:translate(8%,6%);opacity:.45}}
+@media (prefers-reduced-motion:reduce){.q-art img,.q-art::before{animation:none}}
+
+/* все реплики героя */
+.l15-ln{margin:12px 0;background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:14px;overflow:clip}
+.l15-ln>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:baseline;gap:4px 12px;padding:13px 16px}
+.l15-ln>summary::-webkit-details-marker{display:none}
+.l15-ln>summary b{font:700 14px/1 var(--h,var(--f,system-ui));letter-spacing:.08em;text-transform:uppercase}
+.l15-ln>summary small{color:var(--mu,#8e897f);font-size:12.5px}
+.l15-ln>summary:hover{background:#171a22}
+.l15-ln>summary:focus-visible{outline:2px solid var(--q-am,#ffb020);outline-offset:-2px}
+.l15-ch{color:var(--mu,#8e897f);transition:transform .2s}
+.l15-ln[open] .l15-ch{transform:rotate(180deg)}
+.l15-gs{padding:2px 12px 6px;max-height:min(70vh,640px);overflow:auto;overscroll-behavior:contain}
+.l15-g h4{margin:12px 4px 6px;font:700 11.5px/1 var(--f,system-ui);letter-spacing:.12em;text-transform:uppercase;color:var(--q-am,#ffb020)}
+.l15-g h4 small{color:var(--mu,#8e897f);font-weight:600;margin-left:4px}
+.l15-r{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start;padding:8px 6px;border-radius:10px}
+.l15-r+.l15-r{border-top:1px solid var(--ln,#26262e)}
+.l15-r:hover{background:#161922}
+.l15-r.on{background:rgba(255,176,32,.07)}
+.l15-pl{all:unset;box-sizing:border-box;cursor:pointer;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#20242e;color:var(--tx,#f2ede4);font-size:12px;padding-left:2px}
+.l15-pl:hover{background:var(--q-am,#ffb020);color:#1a1204}
+.l15-pl:focus-visible{outline:2px solid var(--q-am,#ffb020);outline-offset:2px}
+.l15-r.on .l15-pl{background:var(--q-am,#ffb020);color:#1a1204}
+.l15-tx p{margin:0}
+.l15-en{font-size:15px;font-weight:600;line-height:1.35}
+.l15-en i{font-style:normal;transition:color .12s}
+.l15-en i[data-k]{text-decoration:underline dotted color-mix(in srgb,var(--q-am,#ffb020) 70%,transparent);text-underline-offset:3px;cursor:help}
+.l15-r.on .l15-en i{color:var(--mu,#8e897f)}
+.l15-r.on .l15-en i.done{color:var(--tx,#f2ede4)}
+.l15-r.on .l15-en i.now{color:var(--q-am,#ffb020)}
+.l15-ru{color:var(--mu,#8e897f);font-size:13.5px;margin-top:2px!important}
+.l15-kw{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:5px!important;font-size:12px;color:var(--mu,#8e897f)}
+.l15-kw b{color:var(--tx,#f2ede4);font-weight:600}
+.l15-nt{margin:0;padding:8px 16px 12px;color:var(--mu,#8e897f);font-size:12px;border-top:1px solid var(--ln,#26262e)}
