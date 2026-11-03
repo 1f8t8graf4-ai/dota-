@@ -233,7 +233,7 @@ async function enrich(n, S) {
   const el = $('#enr'); if (!el || el.dataset.ok) return;
   const B = []; PROF.H.slice(0, 10).forEach(m => { const M = MD.get(m.match_id); if (!M) return; const me = M.players.find(p => p.account_id === PROF.id); if (!me) return;
     M.players.filter(p => teamOf(p.team) !== teamOf(me.team)).forEach(p => { if (p.player_rank_initial_display_rank) B.push(p.player_rank_initial_display_rank); }); });
-  if (B.length < 6) { if (PROF.H.slice(0, 10).every(m => MD.has(m.match_id))) { el.dataset.ok = 1; el.innerHTML = '<span class="sub">В последних матчах у врагов нет ранга в данных — посчитать не из чего.</span>'; } return; }
+  if (B.length < 6) { if (PROF.H.slice(0, 10).every(m => MD.has(m.match_id))) { el.dataset.ok = 1; el.innerHTML = PROF && PROF.id ? `<span class="l20-rk est" data-est="${PROF.id}"><b>—</b></span>` : '<span class="sub">—</span>'; } return; }
   if (B.length >= 6) { el.dataset.ok = 1; const b = Math.round(B.reduce((a, x) => a + x, 0) / B.length), r = rankOf(b); el.innerHTML = `${rankImg(b, 'rk')}<span><b style="color:${esc(r.color)}">${esc(r.name)}</b><small>средний ранг врагов за последние 10 матчей</small></span>`; }
 }
 function teamsHTML(P, meId) {
@@ -353,7 +353,7 @@ async function heroStatsStrip(n, hid, me) {
       <div><span>Урон / мин</span><b>${nf(y.damage_per_min)}</b><small>души / мин ${nf(y.networth_per_min)}</small></div>
       ${y.accuracy != null ? `<div><span>Точность</span><b>${Math.round(100 * y.accuracy)}%</b><small>крит ${Math.round(100 * (y.crit_shot_rate || 0))}%</small></div>` : ''}`);
     hrkGet(hid, ME.id, ME.name).then(o => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); const b = o && hrBig(o.w, o.tot); if (v) v.textContent = b ? b.t : '—';
-      if (t) t.innerHTML = b ? `${b.ex ? 'в мире' : 'на герое'} · ${esc(hrNext(o.w))} · ${esc(REGN[o.rg] || o.rg)} ${o.r ? '#' + o.r.pos : '— вне топ-1000'} · <u>таблица ›</u>` : esc('вне рейтинга — ' + hrWhy(o && o.w)); }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
+      if (t) t.innerHTML = b ? `${b.ex ? 'в мире' : 'на герое'} · ${esc(hrNext(o.w))} · ${esc(REGN[o.rg] || o.rg)} ${o.r ? '#' + o.r.pos : '— вне топ-1000'} · <u>таблица ›</u>` : 'вне рейтинга'; }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
   } catch (e) { put(n, '#hst', `<div class="err" style="grid-column:1/-1">${esc(e.message)}</div>`); }
 }
 async function heroMyMatches(n, hid) {

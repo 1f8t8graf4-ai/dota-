@@ -164,7 +164,7 @@ async function l13Ratings() {
             x.innerHTML = `${b.t} <i>${esc(hero(hid).n)}</i>${o.r ? ` <em>${esc(RGS[o.rg] || o.rg)} #${o.r.pos}</em>` : ''}`;
             x.classList.toggle('top', !!b.top); x.classList.toggle('hi', !!b.hi && !b.top);
             x.title = `Рейтинг героя: ${b.ex ? b.t + ' в мире' : b.t + ' на герое'}${o.tot ? ' (в рейтинге ' + nf(o.tot) + ')' : ''}. ${hrNext(w)} — по очкам рейтинга: ранг, винрейт и KDA на ${hero(hid).n}, как в League of Graphs (${HL_MIN}+ игр за ${HL_DAYS} дней).${o.r ? ` ${RGS[o.rg] || o.rg} #${o.r.pos} — официальный топ героя в регионе.` : ''}`;
-          } else { x.textContent = hrShort(w) || 'вне рейтинга'; x.classList.add('no'); x.title = 'Рейтинг героя: ' + hrWhy(w); }
+          } else { x.textContent = ''; x.classList.add('no'); x.removeAttribute('title'); }
         });
       }));
     }

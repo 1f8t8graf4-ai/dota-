@@ -111,5 +111,5 @@ l14Ladder = async function (n, hid) {
     const e = o && o.w && o.w.sc;
     const hb = o && hrBig(o.w, o.tot);
     m.innerHTML = hb ? `<b>Ты · ${hb.t} ${hb.ex ? 'в мире' : 'на герое'}</b><small>${e ? `${nf(e.R)} очков · ${f1(e.wr)}% побед · KDA ${f1(e.kda)} · ` : ''}${esc(hrNext(o.w))} · ${o.r ? `${esc(RGS[o.rg] || o.rg)} #${o.r.pos}` : `${esc(RGS[o.rg] || o.rg)} — вне топ-1000`}</small>`
-      : `<b>Ты · вне рейтинга</b><small>${esc(hrWhy(o && o.w))}</small>`;
+      : `<b>Ты · вне рейтинга</b>`;
 };

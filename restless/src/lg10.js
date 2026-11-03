@@ -613,7 +613,7 @@ async function hmItems(n) {
 // ---------- место на герое в профиле: «#2 100 · мир · #12 EU», нажал — таблица с соседями выше и ниже ----------
 const RGS = {Europe: 'EU', NAmerica: 'NA', SAmerica: 'SA', Asia: 'Asia', Oceania: 'OCE'}, HRR = {};
 const pctTop = (pos, tot) => { const p = 100 * pos / Math.max(1, tot); return 'топ ' + (p < .1 ? String(+p.toPrecision(1)).replace('.', ',') : p < 1 ? p.toFixed(1).replace('.', ',') : Math.max(1, Math.ceil(p))) + '%'; };
-const hrkCell = o => { const b = o && hrBig(o.w, o.tot); return b ? `<b>${b.t}</b><small>${b.ex ? 'в мире' : 'на герое'}</small><em class="${o.r ? '' : 'no'}">${RGS[o.rg] || o.rg} ${o.r ? '#' + o.r.pos : '— вне топ-1000'}</em><i class="go">›</i>` : `<small title="${esc(hrWhy(o && o.w))}">${esc(hrShort(o && o.w)) || 'вне рейтинга'}</small>`; };
+const hrkCell = o => { const b = o && hrBig(o.w, o.tot); return b ? `<b>${b.t}</b><small>${b.ex ? 'в мире' : 'на герое'}</small><em class="${o.r ? '' : 'no'}">${RGS[o.rg] || o.rg} ${o.r ? '#' + o.r.pos : '— вне топ-1000'}</em><i class="go">›</i>` : ''; };
 // сколько всего игроков на герое (для «топ N%»): ищем последнюю строку таблицы вилкой, кэш на сутки
 const HTOT = {};
 function heroTotal(hid) {

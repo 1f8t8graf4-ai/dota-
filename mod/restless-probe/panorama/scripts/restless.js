@@ -1,4 +1,6 @@
-// Restless 0.17.
+// Restless 0.18.
+// 0.18: КД ульты над героем в мире — секунды на месте значка «ульта готова» над полосой здоровья; таймеры лагерей сами
+//       запоминают настоящее время возрождения (первое увиденное, дальше — самое короткое): в вики 1:25, у Андрея «вроде 2 минуты».
 // 0.17: функции из пресетов Lite / Medium (сайт → «Оверлей»): ранги игроков под портретами, средний ранг команд, таймеры лагерей
 //       на мини-карте, пропавшие враги, цвет здоровья на портретах, «В бою», незащищённые души; в окне — набор Lite / Medium.
 //       Ранг — картинкой с api.deadlock-api.com по ID игрока (как ранги друзей у QoL Lite): только чтение, в API ничего не шлём, кроме ID.
@@ -21,7 +23,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.17';
+	var VER = '0.18';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -65,7 +67,7 @@
 			shop: 'Магазин: ячеек ', shop0: 'Магазин: пусто — открой магазин, потом снова Esc → RESTLESS', first: ' · первые: ',
 			camp: 'Лагеря на миникарте: ', campOn: ' · сейчас живы: ', camp0: 'Лагеря на миникарте: не нашёл',
 			rankT: 'Ранги игроков', lrkT: 'Средний ранг команд', campT: 'Таймеры лагерей', missT: 'Пропавшие враги', thpT: 'Здоровье на портретах',
-			cmbT: '«В бою»', unsT: 'Незащищённые души', pre: 'Набор', cmbOn: 'В БОЮ', cmbOff: 'ВНЕ БОЯ', unsL: 'Незащищённые души: ',
+			cmbT: '«В бою»', unsT: 'Незащищённые души', ultwT: 'КД ульты над героем', sUw: 'Ульта над героями: полос ', sUwN: ' · с секундами ', pre: 'Набор', cmbOn: 'В БОЮ', cmbOff: 'ВНЕ БОЯ', unsL: 'Незащищённые души: ',
 			sRank: 'Ранги: показано ', sLrk: ' · средний ранг: свои ', sLrkE: ', враги ', sCamp: ' · таймеров лагерей: ', sHp: 'Здоровье читается у ', sMiss: ' · пропавших врагов: ',
 			sCmb: ' · «в бою»: ', sCmbY: 'да', sCmbN: 'нет', sCmb0: 'не нашёл', sUns: ' · незащищённых: '
 		},
@@ -86,7 +88,7 @@
 			shop: 'Shop: cells ', shop0: 'Shop: empty — open the shop, then Esc → RESTLESS again', first: ' · first: ',
 			camp: 'Camps on the minimap: ', campOn: ' · alive now: ', camp0: 'Camps on the minimap: not found',
 			rankT: 'Player ranks', lrkT: 'Team average rank', campT: 'Camp timers', missT: 'Missing enemies', thpT: 'Health on portraits',
-			cmbT: '"In combat"', unsT: 'Unsecured souls', pre: 'Preset', cmbOn: 'IN COMBAT', cmbOff: 'OUT OF COMBAT', unsL: 'Unsecured souls: ',
+			cmbT: '"In combat"', unsT: 'Unsecured souls', ultwT: 'Ult cooldown over heroes', sUw: 'Ult over heroes: bars ', sUwN: ' · with seconds ', pre: 'Preset', cmbOn: 'IN COMBAT', cmbOff: 'OUT OF COMBAT', unsL: 'Unsecured souls: ',
 			sRank: 'Ranks: shown ', sLrk: ' · average rank: allies ', sLrkE: ', enemies ', sCamp: ' · camp timers: ', sHp: 'Health readable for ', sMiss: ' · missing enemies: ',
 			sCmb: ' · "in combat": ', sCmbY: 'yes', sCmbN: 'no', sCmb0: 'not found', sUns: ' · unsecured: '
 		}
@@ -206,7 +208,7 @@
 
 		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '16px', marginBottom: '2px' });
 		P.see = [];
-		for (var q = 0; q < 8; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
+		for (var q = 0; q < 9; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
 
 		var f = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
 		var site = mk('Button', f, 'RestlessSiteBtn', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
@@ -223,10 +225,10 @@
 	}
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
 	var TG = [['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
-		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT']];
+		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки. Надпись и связь не трогаем.
-	var PRE = { lite: ['ULT', 'EVT', 'RANK', 'LRK', 'CAMP'], mid: ['ULT', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS'] };
-	var PREK = ['ULT', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS'];
+	var PRE = { lite: ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP'], mid: ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS'] };
+	var PREK = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS'];
 	function preset(n) { for (var i = 0; i < PREK.length; i++) set(PREK[i], PRE[n].indexOf(PREK[i]) >= 0 ? '1' : '0'); paint(); }
 	function presetNow() {
 		for (var n in PRE) { var okp = true; for (var i = 0; i < PREK.length; i++) if (on(PREK[i]) !== (PRE[n].indexOf(PREK[i]) >= 0)) { okp = false; break; } if (okp) return n; }
@@ -377,6 +379,7 @@
 		out.push(camps ? T('camp') + camps + T('campOn') + alive : T('camp0'));
 		out.push(T('sRank') + RKN + T('sLrk') + LRKN[0] + T('sLrkE') + LRKN[1] + T('sCamp') + CMN);
 		out.push(T('sHp') + HPN + T('sMiss') + MISSN + T('sCmb') + (CMBF < 0 ? '—' : !CMBF ? T('sCmb0') : CMBW ? T('sCmbY') : T('sCmbN')) + T('sUns') + UNV);
+		out.push(T('sUw') + UW.n + T('sUwN') + UW.on + (ok(UW.box) ? '' : ' · ищу'));
 		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
 		for (var j = 0; j < P.see.length; j++) setText(P.see[j], out[j] || '');
 		if (log) $.Msg('[Restless] видит: ' + out.join(' | '));
@@ -602,6 +605,13 @@
 	// таймеры лагерей: метка лагеря на миникарте гаснет (класс active) — лагерь убит; возрождение — от смерти последнего
 	// монстра (deadlock.wiki, данные Зетки zai/map): малый 1:25, средний 4:50, большой 5:35. Отсчёт — над меткой.
 	var MM = null, MMF = 0, MMM = 0, CMP = [], CMS = 0, CMN = 0, CRS = { neutral_weak: 85, neutral_medium: 290, neutral_large: 335 };
+	// своё время возрождения: первое увиденное заменяет число из вики, дальше берём самое короткое (метку могли увидеть позже)
+	function campRs(cl) { var v = +get('CRS_' + cl, '0'); return v > 30 && v < 900 ? v : CRS[cl] || 0; }
+	function campLearn(cl, d) {
+		if (!cl || !(d > 30 && d < 900)) return;
+		var cur = +get('CRS_' + cl, '0');
+		if (!(cur > 0) || d < cur) { set('CRS_' + cl, String(Math.round(d))); $.Msg('[Restless] лагерь ' + cl + ': возрождение ' + Math.round(d) + ' с'); }
+	}
 	function campHide() { for (var i = 0; i < CMP.length; i++) if (ok(CMP[i].lb)) setVis(CMP[i].lb, false); }
 	function campTick() {
 		CMN = 0;
@@ -614,10 +624,11 @@
 			CMP = [];
 			for (var i = 0; i < L.length; i++) {
 				var b = L[i]; if (!b.BHasClass('map_button')) continue;
-				var rs = 0; for (var c in CRS) if (b.BHasClass(c)) rs = CRS[c];
+				var rs = 0; for (var c in CRS) if (b.BHasClass(c)) rs = campRs(c);
 				if (!rs) continue;
 				var x = null; for (var j = 0; j < old.length; j++) if (old[j].b === b) x = old[j];
-				CMP.push(x || { b: b, rs: rs, was: b.BHasClass('active'), dead: -1, lb: null });
+				var cl = ''; for (var c2 in CRS) if (b.BHasClass(c2)) cl = c2;
+				CMP.push(x || { b: b, cl: cl, rs: rs, was: b.BHasClass('active'), dead: -1, lb: null });
 			}
 			for (var k = 0; k < old.length; k++) if (CMP.indexOf(old[k]) < 0 && ok(old[k].lb)) old[k].lb.DeleteAsync(0);
 		}
@@ -627,9 +638,10 @@
 			if (!ok(q.b)) { CMS = 0; continue; }
 			var act = q.b.BHasClass('active');
 			if (q.was && !act && s >= 0) q.dead = s;
+			if (act && q.dead >= 0 && s > q.dead) campLearn(q.cl, s - q.dead);
 			if (act) q.dead = -1;
 			q.was = act;
-			var left = q.dead >= 0 && s >= 0 ? q.dead + q.rs - s : -1;
+			var left = q.dead >= 0 && s >= 0 ? q.dead + campRs(q.cl) - s : -1;
 			if (left <= 0) { if (ok(q.lb)) setVis(q.lb, false); continue; }
 			var par = q.b.GetParent();
 			if (!ok(q.lb)) q.lb = lab(par, '', { width: '44px', textAlign: 'center', align: 'left top', fontSize: '13px', fontWeight: 'bold', color: '#ffffff',
@@ -704,9 +716,59 @@
 			backgroundColor: '#121014d0', borderRadius: '8px', fontSize: '22px', fontWeight: 'bold', color: '#ff9a3b', zIndex: '40' });
 		setText(UNL, T('unsL') + txt(DG)); setVis(UNL, true);
 	}
+	// ---------- 0.18: КД ульты над героем в мире ----------
+	// Над каждым героем игра рисует полосу здоровья (unit_status_overlay_v2: подпись name и значок «ульта готова» в unit_info_bg).
+	// Пока ульта на перезарядке, значка нет — в его место ставим секунды из верхней панели (та же переменная ult_cooldown).
+	// Полосы ищем раз в 4 с (сначала по всему интерфейсу, потом только в их общей панели), подписи меняем раз в 0,5 с.
+	var UW = { c: [], scan: 0, miss: 0, box: null, n: 0, on: 0 };
+	function uwHide() { for (var i = 0; i < UW.c.length; i++) if (ok(UW.c[i].lb)) setVis(UW.c[i].lb, false); }
+	function uwScan() {
+		var from = ok(UW.box) ? UW.box : ROOT, L = [];
+		try { L = from.FindChildrenWithClassTraverse('WindowRoot') || []; } catch (e) {}
+		var old = UW.c; UW.c = [];
+		for (var i = 0; i < L.length; i++) {
+			var w = L[i], info = kid(w, 'unit_info_bg'), nl = kid(w, 'name');
+			if (!ok(info) || !ok(nl)) continue;
+			var x = null; for (var j = 0; j < old.length; j++) if (old[j].w === w) x = old[j];
+			UW.c.push(x || { w: w, info: info, nl: nl, lb: kid(info, 'RestlessUltW') });
+		}
+		// общая панель всех полос — чтобы дальше не обходить весь интерфейс
+		if (!ok(UW.box) && UW.c.length >= 2) {
+			var a = [], p = UW.c[0].w; while (ok(p)) { a.push(p); p = p.GetParent(); }
+			var q = UW.c[1].w; while (ok(q) && a.indexOf(q) < 0) q = q.GetParent();
+			if (ok(q) && q !== ROOT) UW.box = q;
+		}
+	}
+	function uwTick() {
+		UW.n = 0; UW.on = 0;
+		if (!on('ULTW') || HIDE) { uwHide(); return; }
+		if (UW.scan-- <= 0) { UW.scan = UW.c.length ? 8 : (UW.miss++ < 15 ? 8 : 40); uwScan(); }
+		if (!UW.c.length) return;
+		var V = {};
+		for (var i = 0; i < ULT.length; i++) {
+			var u = ULT[i]; if (!u.pl || !ok(u.src)) continue;
+			var x = null; for (var j = 0; j < PLY.length; j++) if (PLY[j].pl === u.pl) { x = PLY[j]; break; }
+			if (!x) continue;
+			var v = ultVal(u), r = u.pl.BHasClass && u.pl.BHasClass('UltimateCooldownReady'), s = v && v !== '0' && !r ? v : '';
+			V[x.k] = s; if (x.h) V[lc(x.h)] = s;
+		}
+		for (var k = 0; k < UW.c.length; k++) {
+			var c = UW.c[k];
+			if (!ok(c.w) || !ok(c.info)) { UW.scan = 0; continue; }
+			var nm = lc(txt(c.nl)), sv = nm && nm.indexOf('{') < 0 && V.hasOwnProperty(nm) ? V[nm] : null;
+			if (sv === null) { if (ok(c.lb)) setVis(c.lb, false); continue; }
+			UW.n++;
+			if (!sv) { if (ok(c.lb)) setVis(c.lb, false); continue; }
+			if (!ok(c.lb)) c.lb = lab(c.info, 'RestlessUltW', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '15px', fontWeight: 'bold',
+				color: '#ffffff', textShadow: '0px 0px 3px 2.0 #000000', zIndex: '10' });
+			var fz = sv.length > 2 ? '11px' : '15px'; if (c.fz !== fz) { c.fz = fz; try { c.lb.style.fontSize = fz; } catch (e) {} }
+			setText(c.lb, sv); setVis(c.lb, true); UW.on++;
+		}
+	}
+
 	function f17Tick() {
 		plyScan();
-		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); }
+		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); }
 		if (NT % 4 === 1) { rankTick(); campTick(); }
 		if (NT % 8 === 3) lrkTick();
 	}

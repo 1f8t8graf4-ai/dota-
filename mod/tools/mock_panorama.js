@@ -198,7 +198,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
  const pp=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px');ok(pp.length===2&&pp[0].ch[0].text==='Lite'&&pp[0].style.backgroundColor==='#ffc83d','набор: Lite выбран по умолчанию');
  ok(texts().includes('Ранги игроков')&&texts().includes('Таймеры лагерей')&&texts().includes('Пропавшие враги'),'новые переключатели в окне');
- const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===11,'переключателей 11: '+tg.length);
+ const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===12,'переключателей 12: '+tg.length);
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(12);
  // ранги: значок под портретом у кого есть ID (11 из 12 — из профилей и account_id)
  const RI=TP.map(p=>p.FindChildTraverse('RestlessRank'));
@@ -246,6 +246,27 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  // Lite обратно
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();pp[0].ev.onactivate();tick(2);shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(8);
  ok(MS(6).style.visibility==='collapse'&&cb.style.visibility==='collapse','набор Lite — Medium-функции выключены и спрятаны');}
+// 0.18: КД ульты над героем в мире, лагерь сам запоминает время
+{const wp=add(hud,P('Panel','WorldPanels'));const OV=[];
+ ['Андрей','Rat','E1','крип'].forEach((n,i)=>{const w=add(wp,P('Panel','',{class:'WindowRoot'}));add(w,P('Label','name',{text:n}));const us=add(w,P('Panel','UnitStatus'));const ih=add(us,P('Panel','InfoHealthContainer'));const ip=add(ih,P('Panel','',{class:'unit_info_panel'}));OV.push(add(ip,P('Panel','unit_info_bg')))});
+ const U=i=>OV[i].FindChildTraverse('RestlessUltW');
+ TP[0].dv.ult_cooldown=42;TP[5].dv.ult_cooldown=0;TP[6].dv.ult_cooldown=118;
+ // ульта в верхней панели у TP — нужны UltimateStatus внутри их панелей
+ TP.forEach(p=>{if(!p.FindChildTraverse('UltimateStatus')){const sr=add(p,P('Panel','StatusRow'));const us=add(sr,P('Panel','UltimateStatus',{class:'UltimateStatus'}));add(us,P('Panel','UltimateStatusBG',{class:'UltimateStatusBG'}))}});
+ tick(80);
+ ok(U(0)&&U(0).style.visibility==='visible'&&U(0).text==='42','над героем: «42» на месте значка ульты ('+(U(0)&&U(0).text)+')');
+ ok(!U(1)||U(1).style.visibility==='collapse','ульта готова (0) — пусто');
+ ok(U(2)&&U(2).text==='118'&&U(2).style.fontSize==='11px','3 цифры — мельче');
+ ok(!U(3),'крип (нет такого игрока) — ничего');
+ TP[0].dv.ult_cooldown=41;tick(2);ok(U(0).text==='41','секунды идут');
+ hud.SetAttributeString('RESTLESS_ULTW','0');tick(4);ok(U(0).style.visibility==='collapse','выключил — пропало');hud.SetAttributeString('RESTLESS_ULTW','1');tick(4);
+ // лагерь: метка вернулась через 2:00 — дальше отсчёт с 2:00
+ const gt=F('GameTime'),c3=F('camp3');gt.text='20:00';tick(8);c3.cls.add('active');tick(8);c3.cls.delete('active');tick(8);
+ gt.text='22:00';tick(4);c3.cls.add('active');tick(8);
+ ok(hud.GetAttributeString('RESTLESS_CRS_neutral_weak','')==='120','малый лагерь вернулся через 2:00 — запомнили 120 с');
+ c3.cls.delete('active');tick(8);ok(c3.par.ch.some(x=>x.type==='Label'&&x.text==='2:00'&&x.style.visibility==='visible'),'следующий раз отсчёт с 2:00');
+ gt.text='24:10';tick(4);c3.cls.add('active');tick(8);ok(hud.GetAttributeString('RESTLESS_CRS_neutral_weak','')==='120','вернулся позже (2:10) — оставили короче');
+ tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.18: '+vps+' панелей в секунду');ok(vps<all(hud).length,'с ультой над героями нагрузка меньше одного HUD: '+vps);}
 // бот
 F('RestlessSiteBtn').ev.onactivate();ok(msgs.includes('URL https://1f8t8graf4-ai.github.io/dota-/restless/'),'кнопка «Мой Restless» открывает сайт');
 F('RestlessBotBtn').ev.onactivate();ok(msgs.includes('URL https://t.me/languagegamesbot'),'кнопка бота открывает ссылку');

@@ -62,7 +62,7 @@ async function hrMiss(hid, id, d) {
   }
   if (!x) return {pos: 0, why: 'few', m: 0, ld: 1};
   if (!x.ns) return {pos: 0, why: 'idle', m: Math.round(x.gw), sd: HR_SD};
-  if (x.gw >= HL_MIN) return {pos: 0, why: 'soon', m: Math.floor(x.gw)};
+  // 20+ игр, но в таблице ещё нет (таблица — раз в сутки): то же место по гистограмме, а не «считаем»
   if (!x.tc || !d.hk) return {pos: 0, why: 'few', m: Math.floor(x.gw), ld: 1};
   const p = hrPts(x, d), pos = hrAllPos(d, p);
   if (pos > HR_TOPALL) return {pos: 0, why: 'few', m: Math.floor(x.gw), ld: 1, ap: pos};

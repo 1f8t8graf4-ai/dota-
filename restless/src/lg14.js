@@ -64,7 +64,7 @@ async function l14Ladder(n, hid) {
   const o = await hrkGet(hid, ME.id, ME.name).catch(() => null); if (n !== VQ) return;
   const m = $('#l14me'); if (!m) return;
   m.innerHTML = o && o.w && o.w.pos ? `<b>Ты · #${nf(o.w.pos)} в мире</b><small>${o.tot ? pctTop(o.w.pos, o.tot) + ' · ' : ''}${o.r ? `${esc(RGS[o.rg] || o.rg)} #${o.r.pos}` : `${esc(RGS[o.rg] || o.rg)} — вне топ-1000`}${o.w.pos > 100 ? ` · до топ-100 — ${nf(o.w.pos - 100)} ${pl(o.w.pos - 100, ['место', 'места', 'мест'])}` : ''}</small>`
-    : `<b>Ты · вне рейтинга</b><small>${esc(hrWhy(o && o.w))}</small>`;
+    : `<b>Ты · вне рейтинга</b>`;
 }
 async function l14Player(n, hid, id) {
   const st = $('#hst'); if (!st || $('#l14pl')) return;
@@ -77,7 +77,7 @@ async function l14Player(n, hid, id) {
   if (n !== VQ) return;
   const h = (HS || []).find(x => x.hero_id === hid) || {}, g = h.matches_played || 0, w = h.wins || 0, g90 = o && o.w ? o.w.m || 0 : 0, badge = (RK && RK.badge) || (o && o.w && o.w.badge) || 0;
   const pb = o && hrBig(o.w, o.tot);
-  const place = pb ? `<b class="l14-pl2${pb.top ? ' top' : ''}">${pb.t} ${esc(hero(hid).n)}</b><small>${pb.ex ? 'в мире' : 'на герое'}${o.r ? ` · ${esc(RGS[o.rg] || o.rg)} #${o.r.pos}` : ''}</small>` : `<b class="l14-pl2 no">вне рейтинга</b><small>${esc(hrWhy(o && o.w))}</small>`;
+  const place = pb ? `<b class="l14-pl2${pb.top ? ' top' : ''}">${pb.t} ${esc(hero(hid).n)}</b><small>${pb.ex ? 'в мире' : 'на герое'}${o.r ? ` · ${esc(RGS[o.rg] || o.rg)} #${o.r.pos}` : ''}</small>` : `<b class="l14-pl2 no">вне рейтинга</b>`;
   let bld = '';
   const top = (BS || []).slice().sort((a, b) => b.matches - a.matches)[0];
   if (g90 < HL_MIN) bld = `<div class="empty">Его сборку показываем от ${HL_MIN} игр на герое за ${HL_DAYS} дней — у него ${g90}. Меньше — это ещё не его стиль, а проба.</div>`;
@@ -115,7 +115,7 @@ const L14B = {};
     const sec = $('#p11hl') && $('#p11hl').closest('section'); if (!sec) return;
     if (!L.length) {
       const o0 = await hrkGet(hids[0], id, name).catch(() => null); if (n !== VQ) return;
-      sec.insertAdjacentHTML('beforebegin', `<div class="l14-goal no" id="l14goal"><div><small>Рейтинг героя</small><b>Пока вне рейтинга</b><span>${esc(hrWhy(o0 && o0.w) || 'нужен ранг и 20 игр на герое за 90 дней')}</span></div></div>`);
+      void o0;
       return;
     }
     const b = L.sort((a, c) => a.o.w.pos - c.o.w.pos)[0], p = b.o.w.pos, hb = hrBig(b.o.w, b.o.tot);

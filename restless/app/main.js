@@ -1,3 +1,4 @@
+// Restless Overlay 0.4.5 — мод обновляется сам (pak42 с сайта); о новой программе — подсказка в трее.
 // Restless Overlay 0.3.1 — твой профиль Restless поверх Deadlock (как Porofessor).
 // Одна клавиша — Ctrl+Alt+H (Андрей, 03.11: «зачем Ctrl+X, если всё на Ctrl+H»): открыть / закрыть окно, и в игре, и без неё.
 // В окне сайт целиком — профиль, лайв-матч, герои, вкладка «Оверлей». Нашёлся матч — окно само на 12 игроках, значок в трее «оживает» (LIVE).
@@ -8,7 +9,7 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.4.4';
+const VER = '0.4.5';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
@@ -112,6 +113,7 @@ function menu() {
     {label: 'Клавиша', submenu: KEY_OPTS.map(k => ({label: nice(k), type: 'radio', checked: cfg.key === k, click: () => { cfg.key = k; save(); regKeys(); menu(); push(); }}))},
     {label: (MODTXT[MOD.status] || MOD.status) + (MOD.status === 'error' ? (MOD.err || '') : MOD.file ? ' · ' + MOD.file : ''), enabled: false},
     {label: recent ? (G.s === 'm' ? `Игра на связи: матч, игроков ${G.players.length}` : G.s === 'b' ? 'Игра на связи: матч с ботами — не показываю' : 'Игра на связи: укрытие') : bridgeErr ? 'Связь с игрой: ' + bridgeErr : 'Связь с игрой: жду (нужен мод 0.13+)', enabled: false},
+    ...(NEWVER ? [{label: `Скачать новую версию (${NEWVER})`, click: () => shell.openExternal(REL_URL)}] : []),
     {label: 'Поставить мод заново', click: () => setupMod(true)},
     {label: 'FPS в игре', submenu: [['off', 'Как в игре'], ['light', 'Лёгкий'], ['mid', 'Средний'], ['max', 'Максимум']].map(([k, nm]) => ({label: nm, type: 'radio', checked: cfg.fps === k, click: () => setFps(k)}))},
     {label: 'Открыть папку модов', enabled: !!MOD.dir, click: () => MOD.dir && shell.openPath(path.join(MOD.dir, 'game', 'citadel', 'addons'))},
@@ -123,11 +125,39 @@ function menu() {
     {label: `Выйти (версия ${VER})`, click: () => { app.quitting = true; app.quit(); }}
   ]));
 }
+// 0.4.5: мод обновляется сам — свежий pak42 берём с сайта (тот же файл, что в репо), новую программу качать не нужно.
+// Скачанный кладём в папку программы; ставим тот, у которого версия мода выше (скачанный или встроенный).
+const PAK_URL = SITE + 'app/pak42_dir.vpk', PKG_URL = SITE + 'app/package.json', REL_URL = 'https://github.com/1f8t8graf4-ai/dota-/releases/tag/overlay-latest';
+const PAK_FILE = path.join(app.getPath('userData'), 'pak42_dir.vpk');
+let NEWVER = '';
+const isPak = b => b && b.length > 1000 && b.length < 20e6 && b.readUInt32LE(0) === 0x55AA1234;
+const pakVer = b => { const m = /var VER = '([\d.]+)'/.exec(b.toString('latin1')); return m ? m[1] : '0'; };
+const newer = (a, b) => { const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < Math.max(x.length, y.length); i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
+function pakBuf() {
+  let own = null, dl = null;
+  try { own = fs.readFileSync(path.join(__dirname, 'pak42_dir.vpk')); } catch (e) {}
+  try { dl = fs.readFileSync(PAK_FILE); } catch (e) {}
+  if (!isPak(dl)) return own;
+  if (!isPak(own)) return dl;
+  return newer(pakVer(dl), pakVer(own)) ? dl : own;
+}
+async function pakUpdate() {
+  try {
+    const r = await fetch(PAK_URL + '?t=' + Date.now(), {cache: 'no-store'});
+    if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); let cur = null; try { cur = fs.readFileSync(PAK_FILE); } catch (e) {}
+      if (isPak(b) && !(cur && cur.equals(b))) { fs.writeFileSync(PAK_FILE, b); setupMod(); } }
+  } catch (e) {}
+  try {
+    const r = await fetch(PKG_URL + '?t=' + Date.now(), {cache: 'no-store'});
+    if (r.ok) { const j = await r.json(); if (j && j.version && newer(j.version, VER) && NEWVER !== j.version) { NEWVER = j.version; menu();
+      tray && tray.displayBalloon && tray.displayBalloon({title: 'Restless', content: `Есть программа ${NEWVER} — меню в трее → «Скачать новую версию».`}); } }
+  } catch (e) {}
+}
 // мод: найти игру, включить папку модов, убрать старые паки Restless, положить свежий
 function setupMod(force) {
   if (proc && !force && !TEST_PROC) { MOD = Object.assign({}, MOD, {status: 'busy'}); menu(); push(); return; }
   let buf = null;
-  try { buf = fs.readFileSync(path.join(__dirname, 'pak42_dir.vpk')); } catch (e) { MOD = {status: 'error', err: 'нет pak в программе'}; menu(); return; }
+  try { buf = pakBuf(); if (!buf) throw new Error('нет pak'); } catch (e) { MOD = {status: 'error', err: 'нет pak в программе'}; menu(); return; }
   MOD = inst.install(inst.findDeadlock(), buf, {fps: inst.FPS_LEVELS.includes(cfg.fps) ? cfg.fps : 'off'});
   if (MOD.status === 'installed' || MOD.status === 'cleaned') tray && tray.displayBalloon && tray.displayBalloon({title: 'Restless', content: MOD.status === 'installed' ? `Мод Restless поставлен (${MOD.file}). Запусти игру.` : `Старые файлы Restless убраны: ${MOD.moved.join(', ')}`});
   if (MOD.status === 'nogame') tray && tray.displayBalloon && tray.displayBalloon({title: 'Restless', content: 'Не нашёл Deadlock. Положи pak42_dir.vpk в game/citadel/addons вручную.'});
@@ -179,6 +209,7 @@ app.whenReady().then(() => {
   iconTick(); menu();
   setInterval(iconTick, 1000);
   setTimeout(() => setupMod(), 1500);
+  setTimeout(pakUpdate, 6000); setInterval(pakUpdate, 3 * 3600e3);
   watchGame();
 });
 app.on('will-quit', () => globalShortcut.unregisterAll());
