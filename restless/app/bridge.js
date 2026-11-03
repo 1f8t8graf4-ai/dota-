@@ -13,7 +13,10 @@ function parse(url) {
     const [t, n, h, hid, a] = x.split('~');
     return {t: t === 'e' ? 'e' : 'f', n: dec(n).slice(0, 64), h: dec(h).slice(0, 48), hid: +hid > 0 && +hid < 1000 ? +hid : 0, a: /^\d{3,10}$/.test(a || '') ? +a : 0};
   }).slice(0, 16);
-  return {v: q('v').slice(0, 12), s: q('s') === 'm' ? 'm' : 'h', gt: q('gt').slice(0, 12), n: +q('n') || 0, players, at: Date.now()};
+  // лобби с ботами (Андрей, 04.11: «находит матч, когда мы в лобби с ботом»): бот зовётся как его герой — два таких и больше → не матч
+  const bots = players.filter(p => p.n && p.h && p.n.trim().toLowerCase() === p.h.trim().toLowerCase()).length;
+  const s = q('s') !== 'm' ? 'h' : bots >= 2 ? 'b' : 'm';
+  return {v: q('v').slice(0, 12), s, bots, gt: q('gt').slice(0, 12), n: +q('n') || 0, players, at: Date.now()};
 }
 function dec(s) { try { return decodeURIComponent(s || ''); } catch (e) { return String(s || ''); } }
 

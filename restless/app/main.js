@@ -8,7 +8,7 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.4.2';
+const VER = '0.4.3';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
@@ -111,7 +111,7 @@ function menu() {
     {type: 'separator'},
     {label: 'Клавиша', submenu: KEY_OPTS.map(k => ({label: nice(k), type: 'radio', checked: cfg.key === k, click: () => { cfg.key = k; save(); regKeys(); menu(); push(); }}))},
     {label: (MODTXT[MOD.status] || MOD.status) + (MOD.status === 'error' ? (MOD.err || '') : MOD.file ? ' · ' + MOD.file : ''), enabled: false},
-    {label: recent ? (G.s === 'm' ? `Игра на связи: матч, игроков ${G.players.length}` : 'Игра на связи: укрытие') : bridgeErr ? 'Связь с игрой: ' + bridgeErr : 'Связь с игрой: жду (нужен мод 0.13+)', enabled: false},
+    {label: recent ? (G.s === 'm' ? `Игра на связи: матч, игроков ${G.players.length}` : G.s === 'b' ? 'Игра на связи: матч с ботами — не показываю' : 'Игра на связи: укрытие') : bridgeErr ? 'Связь с игрой: ' + bridgeErr : 'Связь с игрой: жду (нужен мод 0.13+)', enabled: false},
     {label: 'Поставить мод заново', click: () => setupMod(true)},
     {label: 'FPS в игре', submenu: [['off', 'Как в игре'], ['light', 'Лёгкий'], ['mid', 'Средний'], ['max', 'Максимум']].map(([k, nm]) => ({label: nm, type: 'radio', checked: cfg.fps === k, click: () => setFps(k)}))},
     {label: 'Открыть папку модов', enabled: !!MOD.dir, click: () => MOD.dir && shell.openPath(path.join(MOD.dir, 'game', 'citadel', 'addons'))},

@@ -135,7 +135,7 @@ function pCard(p, en, thr, meId) {
       <div class="l10-per">${per('12', '12 ч', p.p12)}${per('30', '30 дн', p.p30)}</div>
       ${p.rc && p.rc.length ? `<div class="l10-rc">${p.rc.slice(0, 6).map(r => `<a href="#m/${r.mid}" class="${r.w ? 'w' : 'l'}" title="${esc(hero(r.hid).n)} · ${r.w ? 'победа' : 'поражение'} · ${r.kda}"><img src="${esc(hero(r.hid).i)}" alt="" loading="lazy" onerror="${noimg}"></a>`).join('')}</div>` : ''}
       <div class="q-pbld" id="pb-${p.id}"></div>
-      <div class="tg">${tags.map(t => `<span class="tag ${t[0]}" title="${esc(t[2])}">${esc(t[1])}</span>`).join('')}</div></div></div>`;
+      <div class="tg">${tags.slice(0, 8).map(t => `<span class="tag ${t[0]}" title="${esc(t[2])}">${esc(t[1])}</span>`).join('')}</div></div></div>`;
 }
 // наведение мышью открывает ту же всплывашку, что и нажатие (на телефоне — нажатие)
 {
