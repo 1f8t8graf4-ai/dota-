@@ -75,7 +75,7 @@ async function hlRows(hid, start, n) {
         if (e) w = e.idle ? {pos: 0, why: 'idle', m: e.g} : e.few ? {pos: 0, why: 'few', m: Math.floor(e.gw)} : {pos: e.pos, v: e.R, m: e.g, badge: e.badge, sc: e, lg: 1};
         else w = Object.assign({}, r0, {pos: Math.max(r0.pos, P.filter(x => x.pos).length + 1), ap: 1});
       } else if (r0 && r0.pos) w = Object.assign({}, r0, {ap: 1});
-      if (w && w.pos && !(w.lg && w.pos <= HR_EXACT)) w.tot = await heroTotal(hid).catch(() => 0);
+      if (w && w.pos) w.tot = await heroTotal(hid).catch(() => 0);
       // мало игр и при этом нет ранга — сказать обе вещи сразу
       if (w && w.why === 'few') { const rk = await api('players/rank?account_ids=' + id).then(L => L && L[0]).catch(() => null); if (rk && !rk.badge) w.nr = 1; }
       return w;
