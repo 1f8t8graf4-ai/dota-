@@ -15,7 +15,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.13';
+	var VER = '0.14';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -91,11 +91,14 @@
 	}
 
 	// ---------- надпись RESTLESS ----------
+	// 0.14 (как QoL Lite): найденные панели помним и проверяем ok(), по всему HUD ищем, только если панель пропала
+	var MARK = null, SUB = null, CH = null, GT = null;
 	function markTick() {
-		var m = HUD.FindChildTraverse('RestlessMark');
+		var m = ok(MARK) ? MARK : (MARK = HUD.FindChildTraverse('RestlessMark'));
 		if (!ok(m)) {
 			m = lab(HUD, 'RestlessMark', { horizontalAlign: 'left', verticalAlign: 'top', marginLeft: '24px', marginTop: '8px',
 				fontSize: '20px', fontWeight: 'bold', color: A, zIndex: '50' });
+			MARK = m;
 		}
 		setVis(m, on('MARK'));
 		setText(m, T('mark') + (get('BTN', '') === '1' ? T('markMenu') : ''));
@@ -111,7 +114,7 @@
 	function menuTick() {
 		if (!ok(EM)) EM = ROOT.FindChildTraverse('EscapeMenu');
 		if (!ok(EM)) return;
-		var sub = EM.FindChildTraverse('SubOptions');
+		var sub = ok(SUB) ? SUB : (SUB = EM.FindChildTraverse('SubOptions'));
 		if (!ok(sub)) return;
 		if (!ok(BTN)) {
 			BTN = EM.FindChildTraverse('RestlessMenuBtn');
@@ -135,7 +138,7 @@
 	// «Сменить героя» стоит на своём отступе снизу, столбик под ним растёт вверх. Наша строка его подняла бы —
 	// если «Сменить героя» налезает на столбик, поднимаем её на столько, сколько не хватает (в экранных px → в px разметки).
 	function fitHero(sub) {
-		var ch = EM.FindChildTraverse('changehero'), menu = ch && ch.GetParent ? ch.GetParent() : null;
+		var ch = ok(CH) ? CH : (CH = EM.FindChildTraverse('changehero')), menu = ch && ch.GetParent ? ch.GetParent() : null;
 		if (!ok(ch) || !ok(menu) || !(ch.actuallayoutheight > 0) || !(sub.actuallayoutheight > 0)) return;
 		var sc = EM.actualuiscale_y > 0 ? EM.actualuiscale_y : 1;
 		var bottom = ch.actualyoffset + ch.actuallayoutheight, gap = sub.actualyoffset - bottom, need = 6 * sc;
@@ -283,7 +286,7 @@
 		var want = on('ULT') && ok(tb) && !(tb.BHasClass && tb.BHasClass('InHideout'));
 		if (!want) { ultClear(); return; }
 		if (ultScan-- <= 0 || !ULT.length) {
-			ultScan = 4;
+			ultScan = 16;
 			ULT = [];
 			var n = tb.FindChildrenWithClassTraverse ? tb.FindChildrenWithClassTraverse('UltimateStatus') : [];
 			for (var j = 0; j < n.length; j++) {
@@ -351,7 +354,7 @@
 	// ID: переменная account_id у панели игрока, если игра её даёт; иначе — из профиля игрока (Esc → список игроков):
 	// пока открыто меню Esc, мод сам открывает профили по очереди и запоминает «ник → ID», как QoL Lock показывает ранги.
 	var LK = { url: 'http://127.0.0.1:27515/rl.png?', img: null, last: '', at: 0, seq: 0, sent: 0, n: 0, ids: 0, hs: 0, hide: true,
-		acc: {}, hero: {}, tried: {}, pr: null, skip: 0 };
+		acc: {}, hero: {}, tried: {}, pr: null, skip: 0, wait: 0 };
 	function lc(s) { return String(s || '').replace(/\s+/g, ' ').trim().toLowerCase(); }
 	function num(v, a, b) { v = String(v == null ? '' : v).replace(/[^0-9]/g, ''); return v.length >= a && v.length <= b && +v > 0 ? v : ''; }
 	function up(p, type) { var d = 0; try { while (ok(p) && d < 12 && p.paneltype !== type) { p = p.GetParent(); d++; } } catch (e) { return null; } return ok(p) && p.paneltype === type ? p : null; }
@@ -378,6 +381,8 @@
 	// меню Esc открыто: список игроков — ник, герой (hero_id), ID (account_id); у кого ID не нашёлся — открываем его профиль
 	function lkProbe() {
 		if (!on('LINK') || LK.hide || !ok(EM) || !menuShown() || open) { if (LK.pr) { lkDismiss(); LK.pr = null; } return; }
+		if (LK.wait-- > 0) return;
+		LK.wait = 1;
 		var rows = []; try { rows = EM.FindChildrenWithClassTraverse('PlayerName') || []; } catch (e) {}
 		var E = [];
 		for (var i = 0; i < rows.length; i++) {
@@ -390,7 +395,7 @@
 		// одинаковый account_id у всех — это ID из общей панели (обычно свой), ему не верим
 		var same = E.length > 1 && E.every(function (x) { return x.a && x.a === E[0].a; });
 		E.forEach(function (x) { if (x.a && !same) LK.acc[x.nm] = x.a; });
-		lkCards();
+		if (LK.pr) lkCards();
 		if (LK.pr) {
 			if (LK.acc[LK.pr] || Date.now() - LK.prT > 2500) { if (!LK.acc[LK.pr]) LK.tried[LK.pr] = (LK.tried[LK.pr] || 0) + 1; lkDismiss(); LK.pr = null; }
 			return;
@@ -404,6 +409,7 @@
 			LK.pr = x.nm; LK.prT = Date.now();
 			return;
 		}
+		LK.wait = 7;   // открывать больше некого — следующая проверка через 2 с
 	}
 	// 12 игроков из верхней панели: своя команда / враги, ник, герой, ID
 	function lkPlayers() {
@@ -431,7 +437,7 @@
 		LK.hide = !ok(TB) || !!(TB.BHasClass && TB.BHasClass('InHideout'));
 		if (!on('LINK')) return;
 		if (LK.skip-- > 0) return;
-		LK.skip = 3;
+		LK.skip = 7;
 		var L = LK.hide ? [] : lkPlayers();
 		LK.n = L.length; LK.ids = 0; LK.hs = 0;
 		var enc = function (v) { return encodeURIComponent(String(v || '').replace(/[~|]/g, ' ')); };
@@ -440,7 +446,7 @@
 		var now = Date.now();
 		if (q === LK.last && now - LK.at < 15000) return;
 		if (q !== LK.last && now - LK.at < 2000) return;
-		var gt = ''; try { var g = HUD.FindChildTraverse('GameTime'); gt = g ? txt(g) : ''; } catch (e) {}
+		var gt = ''; try { if (!ok(GT)) GT = HUD.FindChildTraverse('GameTime'); gt = ok(GT) ? txt(GT) : ''; } catch (e) {}
 		if (!ok(LK.img)) {
 			LK.img = HUD.FindChildTraverse('RestlessLink');
 			if (!ok(LK.img)) LK.img = mk('Image', HUD, 'RestlessLink', { width: '2px', height: '2px', opacity: '0.02', horizontalAlign: 'left', verticalAlign: 'bottom' }, { hittest: 'false' });
@@ -450,10 +456,10 @@
 		if (LK.seq === 1 || q.length !== (LK.lenLog || 0)) { LK.lenLog = q.length; $.Msg('[Restless] программе: ' + (LK.hide ? 'укрытие' : 'игроков ' + LK.n + ', с ID ' + LK.ids + ', с героем ' + LK.hs)); }
 	}
 	// плашка пробника 27.10 («Restless работает · картинка из интернета · таймер идёт») — от старого файла, если он ещё стоит
-	var OLD = 0;
+	var OLD = 0, OLDN = 0;
 	function oldTick() {
 		if (OLD-- > 0) return;
-		OLD = 8;
+		OLD = (OLDN++ < 30) ? 8 : 40;
 		['RestlessProbe', 'RestlessProbeHud', 'RestlessProbeMenu'].forEach(function (id) {
 			var p = null; try { p = ROOT.FindChildTraverse(id); } catch (e) {}
 			if (ok(p)) { try { p.DeleteAsync(0); $.Msg('[Restless] убрал старую плашку пробника: ' + id); } catch (e) {} }

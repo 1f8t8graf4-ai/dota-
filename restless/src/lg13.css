@@ -1,0 +1,88 @@
+/* ===================== lg13 — 03.11: вкладка «Оверлей», полоса окна программы, LIVE ===================== */
+/* вкладка «Оверлей» — не очередная: справа, отделена чертой, янтарная рамка, точка; в матче — красная LIVE */
+.q-tabs{align-items:center}
+.q-tabs a.q-ovt{margin-left:auto;display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px;border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 55%,transparent);border-radius:999px;color:var(--q-am,#ffb020);background:color-mix(in srgb,var(--q-am,#ffb020) 9%,transparent);position:relative}
+.q-tabs a.q-ovt::before{content:"";position:absolute;left:-12px;top:6px;bottom:6px;width:1px;background:var(--ln,#26262e)}
+.q-tabs a.q-ovt.on{background:var(--q-am,#ffb020);color:#1a1204;border-color:var(--q-am,#ffb020)}
+.q-tabs a.q-ovt.on::after{display:none}
+.q-ovd{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.75;flex-shrink:0}
+.q-ovl{display:none;font:700 10px/1 var(--f,system-ui);letter-spacing:.08em;background:#ff3b4e;color:#fff;border-radius:4px;padding:3px 5px}
+.q-tabs a.q-ovt.live{border-color:#ff3b4e;color:#ff6b78;background:rgba(255,59,78,.1)}
+.q-tabs a.q-ovt.live .q-ovl{display:inline-block}
+.q-tabs a.q-ovt.live .q-ovd{background:#ff3b4e;opacity:1;animation:ovPulse 1.2s ease-in-out infinite}
+@keyframes ovPulse{50%{transform:scale(1.6);opacity:.4}}
+@media (max-width:760px){.q-tabs a.q-ovt{margin-left:6px}.q-tabs a.q-ovt::before{display:none}}
+
+/* полоса окна программы (рамки у окна нет): тянуть за неё; кнопки нажимаются */
+.rl-bar{display:none}
+.rl-app .rl-bar{display:flex;align-items:center;gap:10px;height:32px;padding:0 6px 0 4px;background:#07080b;border-bottom:1px solid var(--ln,#26262e);-webkit-app-region:drag;user-select:none;position:sticky;top:0;z-index:60}
+.rl-bar button,.rl-bar a{-webkit-app-region:no-drag}
+.rl-bk,.rl-x{width:30px;height:26px;border:0;border-radius:6px;background:none;color:var(--mu,#8e897f);font-size:16px;line-height:1;cursor:pointer}
+.rl-bk:hover{background:#15171d;color:var(--tx,#f2ede4)}
+.rl-x{margin-left:auto}
+.rl-x:hover{background:#e5384a;color:#fff}
+.rl-lg{font:700 12px/1 var(--f,system-ui);letter-spacing:.22em;color:var(--q-am,#ffb020)}
+.rl-live{display:none;font:700 11px/1 var(--f,system-ui);letter-spacing:.06em;color:#fff;background:#ff3b4e;border-radius:5px;padding:4px 7px;text-decoration:none;animation:ovPulse2 1.6s ease-in-out infinite}
+.rl-bar.live .rl-live{display:inline-block}
+@keyframes ovPulse2{50%{opacity:.6}}
+.rl-k{font-size:12px;color:var(--mu,#8e897f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* шапка сайта в окне — под полосой; в матче (#ov) шапка и вкладки остаются */
+.rl-app .q-nav{top:32px}
+.rl-app body.ovm .q-nav{display:block!important}
+.rl-app body.ovm #tabs{display:flex!important}
+.rl-app .ov-h{-webkit-app-region:no-drag;cursor:default}
+
+/* страница «Оверлей» */
+.ovs{max-width:1100px;margin:0 auto;display:grid;gap:14px}
+.ovs-h h1{font:700 30px/1 var(--h,var(--f,system-ui));letter-spacing:.04em;text-transform:uppercase;margin:6px 0 6px;color:var(--q-am,#ffb020)}
+.ovs-h p{margin:0;color:var(--mu,#8e897f)}
+.ovs-st{display:grid;gap:10px}
+.ovs-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.ovs-r{background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.ovs-r small{color:var(--mu,#8e897f);font-size:12px}
+.ovs-r b{font-weight:600;font-size:14px}
+.ovs-r.live{border-color:#ff3b4e}
+.ovs-r.live b{color:#ff6b78}
+.ovs-go{justify-self:start}
+.ovs-dl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:color-mix(in srgb,var(--q-am,#ffb020) 8%,var(--q-bx,#12151c));border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 40%,transparent);border-radius:12px;padding:14px 16px}
+.ovs-dl div{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 260px}
+.ovs-dl small{color:var(--mu,#8e897f)}
+.ovs-how{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.ovs-how>div{display:flex;gap:10px;align-items:flex-start;background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:10px;padding:12px}
+.ovs-how b{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--q-am,#ffb020);color:#1a1204;display:grid;place-items:center;font-size:13px}
+.ovs-how span{font-size:14px;line-height:1.45}
+.ovs kbd{font:600 12px/1 var(--f,system-ui);border:1px solid var(--ln,#26262e);border-bottom-width:2px;border-radius:5px;padding:2px 6px;background:#0b0c10}
+.ovs-lv{font-style:normal;font-weight:700;font-size:11px;color:#fff;background:#ff3b4e;border-radius:4px;padding:1px 5px}
+.ovs-g{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:900px){.ovs-g{grid-template-columns:1fr 1fr}}
+.ovs-c{background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ovs-c h2{font:700 14px/1 var(--f,system-ui);letter-spacing:.12em;text-transform:uppercase;margin:0;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.ovs-c h2 small{font-weight:400;letter-spacing:0;text-transform:none;color:var(--mu,#8e897f);font-size:12.5px}
+.ovs-keys{display:flex;flex-wrap:wrap;gap:6px}
+.ovs-keys button{font:600 13px var(--f,system-ui);border:1px solid var(--ln,#26262e);background:#0b0c10;color:var(--tx,#f2ede4);border-radius:8px;padding:7px 11px;cursor:pointer;min-height:34px}
+.ovs-keys button.on{background:var(--q-am,#ffb020);color:#1a1204;border-color:var(--q-am,#ffb020)}
+.ovs-off{color:var(--mu,#8e897f);font-size:13.5px}
+.ovs-n{margin:0;font-size:13px;color:var(--mu,#8e897f);line-height:1.5}
+.ovs-t{display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer}
+.ovs-t input{width:18px;height:18px;accent-color:var(--q-am,#ffb020)}
+.ovs-t input:disabled+span{color:var(--mu,#8e897f)}
+.ovs-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ovs-l li{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px dashed var(--ln,#26262e);border-radius:8px;padding:9px 11px;font-size:14px;color:var(--mu,#8e897f)}
+.ovs-l em{font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu,#8e897f);border:1px solid var(--ln,#26262e);border-radius:5px;padding:2px 6px;flex-shrink:0}
+/* наглядно: экран игры схемой */
+.ovs-pv{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.ovs-scr{position:relative;width:min(300px,100%);aspect-ratio:16/9;border-radius:8px;background:linear-gradient(160deg,#1c2230,#0e1118);border:1px solid var(--ln,#26262e);overflow:hidden;flex-shrink:0}
+.ovs-tb{position:absolute;top:6px;left:50%;transform:translateX(-50%);display:flex;gap:3px}
+.ovs-tb u{width:12px;height:12px;border-radius:3px;background:#2d3444;position:relative}
+.ovs-tb u:nth-child(-n+6){background:#3b3322}
+.ovs-tb u::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--q-am,#ffb020);opacity:.85}
+.ovs-tb u:nth-child(6)::after{margin-right:4px}
+.ovs-pn{position:absolute;right:6px;top:24px;bottom:8px;width:34%;border-radius:5px;background:rgba(9,10,14,.92);border:1px solid var(--q-am,#ffb020);display:flex;flex-direction:column;gap:4px;padding:5px}
+.ovs-pn s{height:9px;border-radius:2px;background:#232838}
+.ovs-cr{position:absolute;left:33%;top:50%;width:8px;height:8px;margin:-4px;border:1px solid #fff8;border-radius:50%}
+.ovs-pv ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13px;color:var(--mu,#8e897f);flex:1 1 180px}
+.ovs-pv li{display:flex;gap:8px;align-items:center}
+.ovs-pv li i{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.ovs-pv .d1{background:var(--q-am,#ffb020)}
+.ovs-pv .d2{border:1px solid var(--q-am,#ffb020);background:#0b0c10}
+@media (prefers-reduced-motion:reduce){.q-tabs a.q-ovt.live .q-ovd,.rl-live{animation:none}}
