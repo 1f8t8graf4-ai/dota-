@@ -8,7 +8,7 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.4.3';
+const VER = '0.4.4';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)

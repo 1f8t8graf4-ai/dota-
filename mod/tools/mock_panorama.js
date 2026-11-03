@@ -49,7 +49,7 @@ const top=add(hud,P('CitadelHudTopBar','TopBar'));const topCtx=top;
 {const gc=add(hud,P('Panel','hudGoldContainer'));add(gc,P('Label','hudCurGoldLabel',{class:'CurrencyLabel',text:'7,250'}));
  const sh=add(hud,P('CitadelHudHeroShop','HeroShop'));const shop=add(sh,P('Panel','Shop'));
  ['Headshot Booster','High-Velocity Mag','Monster Rounds'].forEach((n,i)=>{const m=add(shop,P('CitadelShopMod','m'+i,{class:'mod_view'}));const a=add(m,P('Panel','',{class:'mod_name_area'}));add(a,P('Label','',{class:'modName',text:n}))});
- const mm=add(hud,P('Panel','Minimap'));for(let i=0;i<5;i++)add(mm,P('Button','camp'+i,{class:'map_button neutral'+(i<3?' active':'')}));add(mm,P('Button','x',{class:'map_button neutral_spawn'}));}
+ const mm=add(hud,P('HudMinimap','hud_minimap'));for(let i=0;i<5;i++)add(mm,P('Button','camp'+i,{class:'map_button neutral '+['neutral_weak','neutral_medium','neutral_large','neutral_weak','neutral_vault'][i]+(i<3?' active':'')}));add(mm,P('Button','x',{class:'map_button neutral_spawn'}));}
 const players=[];for(let i=0;i<4;i++){const pl=add(topCtx,P('CitadelHudTopBarPlayer','TopBarPlayer'+i));const sr=add(pl,P('Panel','StatusRow'));
  const us=add(sr,P('Panel','UltimateStatus',{class:'UltimateStatus'}));add(us,P('Panel','UltimateStatusBG',{class:'UltimateStatusBG'}));players.push(pl)}
 // плашка пробника 27.10 от старого файла — должна исчезнуть
@@ -58,6 +58,7 @@ add(hud,P('Panel','RestlessProbeHud'));
 const NAMES=['Андрей','Kolya','zxc','Mila','Pete~|x','Rat','E1','E2','E3','E4','E5','E6'],HEROES=['Венатор','Абрамс','Пелена','Мина','Швейцар','Крысиный король','Инфернус','Семь','Виндикта','Леди Гайст','Тень','Макгиннис'];
 const TP=[];{const tc=add(top,P('Panel','TeamsContainer'));const tf=add(tc,P('CitadelHudTopBarTeam','TeamFriendly')),te=add(tc,P('CitadelHudTopBarTeam','TeamEnemy'));
  NAMES.forEach((n,i)=>{const pl=add(i<6?tf:te,P('CitadelHudTopBarPlayer','tp'+i));pl.dv={hero_id:[65,6,13,63,69,84,1,2,3,4,7,8][i]};if(i===0)pl.dv.account_id=930626915;if(i===6)pl.dv.account_id=111222333;
+  const hc=add(pl,P('Panel','HeroContents'));add(hc,P('Panel','HeroImageArea'));const hi=add(hc,P('Panel','HeroInnerContent'));const hb=add(hi,P('Panel','HealthBar'));const hbc=add(hb,P('Panel','HealthBar_Contents'));add(hbc,P('Panel','HealthBar_Fill'));
   const nw=add(pl,P('Panel','PlayerNameNWContainer'));add(nw,P('Label','',{class:'PlayerName',text:n}));add(nw,P('Label','',{class:'HeroName',text:HEROES[i]}));TP.push(pl)});}
 // панели созданы, но ещё не вставлены в HUD — скрипты уже запускаются
 const subs=P('CitadelHudSubtitles','HudSubtitles');parse(L('citadel_hud_subtitles.xml'),subs);
@@ -191,6 +192,60 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  gt.text='2:30';tick(4);ok(E().style.visibility==='collapse','2:30 — между событиями пусто');
  gt.text='1:50';tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);ok(vps<all(hud).length,'с часами матча нагрузка та же: '+vps+' панелей в секунду');
  hud.SetAttributeString('RESTLESS_EVT','0');gt.text='1:51';tick(4);ok(E().style.visibility==='collapse','выключил напоминания — пропали');hud.SetAttributeString('RESTLESS_EVT','1');}
+// 0.17: функции из наборов Lite / Medium
+{const W=()=>F('RestlessWindow'),A0=()=>all(W());
+ // набор Lite по умолчанию: ранги, средний ранг, лагеря — вкл; Medium-функции выкл
+ em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
+ const pp=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px');ok(pp.length===2&&pp[0].ch[0].text==='Lite'&&pp[0].style.backgroundColor==='#ffc83d','набор: Lite выбран по умолчанию');
+ ok(texts().includes('Ранги игроков')&&texts().includes('Таймеры лагерей')&&texts().includes('Пропавшие враги'),'новые переключатели в окне');
+ const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===11,'переключателей 11: '+tg.length);
+ shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(12);
+ // ранги: значок под портретом у кого есть ID (11 из 12 — из профилей и account_id)
+ const RI=TP.map(p=>p.FindChildTraverse('RestlessRank'));
+ ok(RI.filter(x=>x&&x.style.visibility==='visible').length===11&&RI[0].par.id==='HeroImageArea'&&RI[0].img==='https://api.deadlock-api.com/v1/players/930626915/rank/image','ранги: 11 значков под портретами, картинка по ID: '+(RI[0]&&RI[0].img));
+ ok(!RI[2]||RI[2].style.visibility!=='visible','у кого ID нет — значка нет');
+ const lr=F('RestlessLrk');ok(lr&&lr.style.visibility==='visible'&&/rank\/image\?account_ids=930626915,/.test(F('RestlessLrkF').img)&&/account_ids=111222333,/.test(F('RestlessLrkE').img),'средний ранг: свои и враги — '+F('RestlessLrkF').img.slice(-40));
+ // лагеря: метка погасла — отсчёт возрождения
+ const gt=F('GameTime');gt.text='9:00';const c0=F('camp0'),c1=F('camp1'),c4=F('camp4');Object.assign(c0,{actualxoffset:100,actualyoffset:200,actuallayoutwidth:24,actuallayoutheight:24});
+ tick(8);c0.cls.delete('active');c1.cls.delete('active');tick(8);
+ const lb0=c0.par.ch.find(x=>x.type==='Label'&&x.text==='1:25');ok(lb0&&lb0.style.visibility==='visible'&&lb0.style.x==='90px'&&lb0.style.y==='203px','малый лагерь убит — «1:25» над меткой ('+(lb0&&lb0.style.x+','+lb0.style.y)+')');
+ ok(c1.par.ch.some(x=>x.type==='Label'&&x.text==='4:50'),'средний — «4:50»');
+ gt.text='9:30';tick(8);ok(lb0.text==='0:55','через 30 с — «0:55»');
+ c0.cls.add('active');tick(8);ok(lb0.style.visibility==='collapse','лагерь вернулся — отсчёта нет');
+ gt.text='10:40';tick(8);ok(c1.par.ch.some(x=>x.type==='Label'&&x.text==='3:10'&&x.style.visibility==='visible'),'средний через 100 с — «3:10»');
+ ok(!c4.par.ch.some(x=>x.type==='Label'&&x.text==='?'),'неизвестный лагерь (vault) — без таймера');
+ c4.cls.delete('active');tick(8);
+ // Medium: пропавшие враги, здоровье, «в бою», незащищённые души
+ const ga=add(hud,P('CitadelHudGameAnnouncements','CitadelHudGameAnnouncements'));const dgc=add(hud,P('Panel','hudDeathGoldContainer'));const dg=add(dgc,P('Label','hudDeathGoldLabel',{text:'0'}));
+ em.cls.add('ShowEscapeMenu');btn.ev.onactivate();pp[1].ev.onactivate();tick(1);ok(pp[1].style.backgroundColor==='#ffc83d'&&hud.GetAttributeString('RESTLESS_MISS','')==='1','набор Medium включил пропавших врагов и остальное');shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
+ TP[7].cls.add('HealthVisible');TP[8].cls.add('Dead');tick(8);
+ const MS=i=>TP[i].FindChildTraverse('RestlessMiss');
+ ok(MS(6)&&MS(6).style.visibility==='visible','враг не виден (нет HealthVisible) — портрет темнеет');
+ ok(!MS(7)||MS(7).style.visibility==='collapse','враг виден — портрет обычный');
+ ok(!MS(8)||MS(8).style.visibility==='collapse','мёртвый — не трогаем');
+ ok(!MS(1)||MS(1).style.visibility==='collapse','свои — не темнеют');
+ const HB=i=>TP[i].FindChildTraverse('HealthBar'),HF=i=>TP[i].FindChildTraverse('HealthBar_Fill'),HR=i=>TP[i].FindChildTraverse('RestlessHp');
+ HB(1).actuallayoutheight=100;HF(1).actuallayoutheight=50;TP[1].FindChildTraverse('HealthBar_Contents').actuallayoutheight=100;tick(4);
+ ok(HR(1)&&HR(1).style.visibility==='visible'&&HR(1).style.border==='3px solid #ff9a3b','свой на 50 % — оранжевое кольцо');
+ HF(1).actuallayoutheight=20;tick(4);ok(HR(1).style.border==='3px solid #ff3b3b','20 % — красное');
+ HF(1).actuallayoutheight=70;tick(4);ok(HR(1).style.border==='3px solid #ffd23b','70 % — жёлтое');
+ HF(1).actuallayoutheight=90;tick(4);ok(HR(1).style.visibility==='collapse','90 % — без кольца');
+ HB(6).actuallayoutheight=100;HF(6).actuallayoutheight=30;tick(4);ok(!HR(6)||HR(6).style.visibility==='collapse','невидимый враг — здоровье не угадываем');
+ ga.cls.add('gInCombat');tick(4);
+ const cb=F('RestlessCmb');ok(cb&&cb.style.visibility==='visible'&&cb.text==='В БОЮ','«В БОЮ», пока игра держит gInCombat');
+ ga.cls.delete('gInCombat');tick(2);ok(cb.text==='ВНЕ БОЯ','вышел из боя — «ВНЕ БОЯ»');tick(12);ok(cb.style.visibility==='collapse','через 2 с — пусто');
+ dg.text='1,250';tick(4);
+ const un=F('RestlessUns');ok(un&&un.style.visibility==='visible'&&un.text==='Незащищённые души: 1,250','незащищённые души крупно: «'+(un&&un.text)+'»');
+ dg.text='0';tick(2);ok(un.style.visibility==='collapse','0 — пусто');dg.text='300';
+ // укрытие: всё прячем
+ top.cls.add('InHideout');tick(8);
+ ok([F('RestlessLrk'),cb,un,MS(6),RI[0]].every(x=>x.style.visibility==='collapse')&&!c1.par.ch.some(x=>x.type==='Label'&&x.style.visibility==='visible'),'в укрытии всё новое спрятано');
+ top.cls.delete('InHideout');tick(8);
+ // нагрузка со всеми функциями
+ tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.17 (Medium): '+vps+' панелей в секунду');ok(vps<all(hud).length,'Medium: нагрузка меньше одного HUD в секунду: '+vps);
+ // Lite обратно
+ em.cls.add('ShowEscapeMenu');btn.ev.onactivate();pp[0].ev.onactivate();tick(2);shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(8);
+ ok(MS(6).style.visibility==='collapse'&&cb.style.visibility==='collapse','набор Lite — Medium-функции выключены и спрятаны');}
 // бот
 F('RestlessSiteBtn').ev.onactivate();ok(msgs.includes('URL https://1f8t8graf4-ai.github.io/dota-/restless/'),'кнопка «Мой Restless» открывает сайт');
 F('RestlessBotBtn').ev.onactivate();ok(msgs.includes('URL https://t.me/languagegamesbot'),'кнопка бота открывает ссылку');

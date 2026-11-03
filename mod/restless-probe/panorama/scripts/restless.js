@@ -1,4 +1,7 @@
-// Restless 0.16.
+// Restless 0.17.
+// 0.17: функции из пресетов Lite / Medium (сайт → «Оверлей»): ранги игроков под портретами, средний ранг команд, таймеры лагерей
+//       на мини-карте, пропавшие враги, цвет здоровья на портретах, «В бою», незащищённые души; в окне — набор Lite / Medium.
+//       Ранг — картинкой с api.deadlock-api.com по ID игрока (как ранги друзей у QoL Lite): только чтение, в API ничего не шлём, кроме ID.
 // 0.16: в окне RESTLESS без пояснений (Андрей, 04.11: «убери объяснения»): нет подписей под переключателями, «Скоро» и строки про настройки.
 // 0.15: напоминания о событиях по часам матча (лагеря 2:00 / 5:00 / 8:00, ящики и статуи 3:00 / 5:00 / 10:00 — по deadlock.wiki):
 //       за 15 с — «Через N с: …», потом 5 с — «Появились: …». Часы матча читаем раз в секунду, панель ищем раз в 2 с.
@@ -18,7 +21,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.16';
+	var VER = '0.17';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -39,7 +42,9 @@
 		v = String(v); MEM[k] = v;
 		try { if (ROOT.SetAttributeString) ROOT.SetAttributeString('RESTLESS_' + k, v); } catch (e) {}
 	}
-	function on(k) { return get(k, '1') === '1'; }
+	// 0.17: новые функции Medium по умолчанию выключены (набор Lite)
+	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0' };
+	function on(k) { return get(k, DEF[k] || '1') === '1'; }
 	function lang() { return get('LANG', 'ru') === 'en' ? 'en' : 'ru'; }
 
 	var TX = {
@@ -58,7 +63,11 @@
 			site: 'Мой Restless — разбор матчей', bot: 'Бот', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.',
 			seeH: 'ЧТО ВИДИТ МОД', souls: 'Души: ', pl: 'Игроков в верхней панели: ', plU: ' · КД ульты в секундах: ',
 			shop: 'Магазин: ячеек ', shop0: 'Магазин: пусто — открой магазин, потом снова Esc → RESTLESS', first: ' · первые: ',
-			camp: 'Лагеря на миникарте: ', campOn: ' · сейчас живы: ', camp0: 'Лагеря на миникарте: не нашёл'
+			camp: 'Лагеря на миникарте: ', campOn: ' · сейчас живы: ', camp0: 'Лагеря на миникарте: не нашёл',
+			rankT: 'Ранги игроков', lrkT: 'Средний ранг команд', campT: 'Таймеры лагерей', missT: 'Пропавшие враги', thpT: 'Здоровье на портретах',
+			cmbT: '«В бою»', unsT: 'Незащищённые души', pre: 'Набор', cmbOn: 'В БОЮ', cmbOff: 'ВНЕ БОЯ', unsL: 'Незащищённые души: ',
+			sRank: 'Ранги: показано ', sLrk: ' · средний ранг: свои ', sLrkE: ', враги ', sCamp: ' · таймеров лагерей: ', sHp: 'Здоровье читается у ', sMiss: ' · пропавших врагов: ',
+			sCmb: ' · «в бою»: ', sCmbY: 'да', sCmbN: 'нет', sCmb0: 'не нашёл', sUns: ' · незащищённых: '
 		},
 		en: {
 			mark: 'RESTLESS ' + VER + ' · running', markMenu: ' · Esc button',
@@ -75,7 +84,11 @@
 			site: 'My Restless — match breakdowns', bot: 'Bot', close: 'Close', note: 'Settings last until you quit the game.',
 			seeH: 'WHAT THE MOD SEES', souls: 'Souls: ', pl: 'Players in the top bar: ', plU: ' · ult cooldown in seconds: ',
 			shop: 'Shop: cells ', shop0: 'Shop: empty — open the shop, then Esc → RESTLESS again', first: ' · first: ',
-			camp: 'Camps on the minimap: ', campOn: ' · alive now: ', camp0: 'Camps on the minimap: not found'
+			camp: 'Camps on the minimap: ', campOn: ' · alive now: ', camp0: 'Camps on the minimap: not found',
+			rankT: 'Player ranks', lrkT: 'Team average rank', campT: 'Camp timers', missT: 'Missing enemies', thpT: 'Health on portraits',
+			cmbT: '"In combat"', unsT: 'Unsecured souls', pre: 'Preset', cmbOn: 'IN COMBAT', cmbOff: 'OUT OF COMBAT', unsL: 'Unsecured souls: ',
+			sRank: 'Ranks: shown ', sLrk: ' · average rank: allies ', sLrkE: ', enemies ', sCamp: ' · camp timers: ', sHp: 'Health readable for ', sMiss: ' · missing enemies: ',
+			sCmb: ' · "in combat": ', sCmbY: 'yes', sCmbN: 'no', sCmb0: 'not found', sUns: ' · unsecured: '
 		}
 	};
 	function T(k) { return (TX[lang()] || TX.ru)[k]; }
@@ -162,7 +175,7 @@
 		SHADE = mk('Button', EM, 'RestlessShade', { width: '100%', height: '100%', backgroundColor: '#000000b4', zIndex: '4900', visibility: 'collapse' });
 		SHADE.SetPanelEvent('onactivate', function () { show(false); });
 		WIN = mk('Panel', EM, 'RestlessWindow', {
-			width: '640px', flowChildren: 'down', padding: '26px 30px 24px 30px', horizontalAlign: 'center', verticalAlign: 'center',
+			width: '780px', flowChildren: 'down', padding: '24px 30px 22px 30px', horizontalAlign: 'center', verticalAlign: 'center',
 			backgroundColor: '#121014fa', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '5000', visibility: 'collapse'
 		}, { hittest: 'true' });
 		WIN.SetPanelEvent('onactivate', function () {});
@@ -177,10 +190,12 @@
 		x.SetPanelEvent('onactivate', function () { show(false); });
 
 		P.secGame = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '4px' });
-		toggle('ULT');
-		toggle('MARK');
-		toggle('LINK');
-		toggle('EVT');
+		var pr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '6px 0px 8px 0px' });
+		P.pre = lab(pr, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '17px', color: MUTED });
+		P.lite = pill(pr, 'Lite', function () { preset('lite'); }, '16px');
+		P.mid = pill(pr, 'Medium', function () { preset('mid'); }, '16px');
+		P.grid = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right-wrap' });
+		for (var ti = 0; ti < TG.length; ti++) toggle(TG[ti][0]);
 
 		var lr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '12px 0px 12px 0px' });
 		P.lang = lab(lr, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '19px', color: INK });
@@ -191,7 +206,7 @@
 
 		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '16px', marginBottom: '2px' });
 		P.see = [];
-		for (var q = 0; q < 5; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
+		for (var q = 0; q < 8; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
 
 		var f = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
 		var site = mk('Button', f, 'RestlessSiteBtn', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
@@ -206,18 +221,30 @@
 
 		P.diag = lab(WIN, '', { fontSize: '11px', color: '#a89f9099', marginTop: '6px' });
 	}
+	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
+	var TG = [['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
+		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT']];
+	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки. Надпись и связь не трогаем.
+	var PRE = { lite: ['ULT', 'EVT', 'RANK', 'LRK', 'CAMP'], mid: ['ULT', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS'] };
+	var PREK = ['ULT', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS'];
+	function preset(n) { for (var i = 0; i < PREK.length; i++) set(PREK[i], PRE[n].indexOf(PREK[i]) >= 0 ? '1' : '0'); paint(); }
+	function presetNow() {
+		for (var n in PRE) { var okp = true; for (var i = 0; i < PREK.length; i++) if (on(PREK[i]) !== (PRE[n].indexOf(PREK[i]) >= 0)) { okp = false; break; } if (okp) return n; }
+		return '';
+	}
 	function toggle(key) {
-		var r = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '12px 0px 12px 0px' });
+		var cell = mk('Panel', P.grid, '', { width: '50%', flowChildren: 'down' });
+		var r = mk('Panel', cell, '', { width: '100%', flowChildren: 'right', padding: '9px 14px 9px 0px' });
 		var c = mk('Panel', r, '', { width: 'fill-parent-flow(1.0)', flowChildren: 'down', verticalAlign: 'center' });
-		var t = lab(c, '', { fontSize: '19px', color: INK });
-		var b = mk('Button', r, '', { width: '104px', height: '38px', borderRadius: '19px', verticalAlign: 'center' });
-		var bl = lab(b, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '16px', fontWeight: 'bold' });
+		var t = lab(c, '', { fontSize: '17px', color: INK });
+		var b = mk('Button', r, '', { width: '104px', height: '36px', borderRadius: '18px', verticalAlign: 'center' });
+		var bl = lab(b, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '15px', fontWeight: 'bold' });
 		b.SetPanelEvent('onactivate', function () { set(key, on(key) ? '0' : '1'); paint(); markTick(); });
-		mk('Panel', WIN, '', { width: '100%', height: '1px', backgroundColor: OFF });
+		mk('Panel', cell, '', { width: '96%', height: '1px', backgroundColor: OFF });
 		P[key] = { t: t, b: b, l: bl };
 	}
-	function pill(parent, text, fn) {
-		var b = mk('Button', parent, '', { padding: '8px 18px 8px 18px', marginLeft: '8px', borderRadius: '17px', verticalAlign: 'center', backgroundColor: OFF });
+	function pill(parent, text, fn, rad) {
+		var b = mk('Button', parent, '', { padding: '8px 18px 8px 18px', marginLeft: '8px', borderRadius: rad || '17px', verticalAlign: 'center', backgroundColor: OFF });
 		var l = lab(b, '', { fontSize: '16px', fontWeight: 'bold', color: INK });
 		setText(l, text);
 		b.SetPanelEvent('onactivate', fn);
@@ -227,12 +254,15 @@
 		setText(P.sub, T('settings')); setText(P.secGame, T('inGame')); setText(P.lang, T('lang'));
 		setText(P.site, T('site')); setText(P.bot, T('bot')); setText(P.close, T('close'));
 		setText(P.seeH, T('seeH'));
-		var keys = [['ULT', 'ultT', 'ultS'], ['MARK', 'markT', 'markS'], ['LINK', 'linkT', 'linkS'], ['EVT', 'evtT', 'evtS']];
-		for (var i = 0; i < keys.length; i++) {
-			var q = P[keys[i][0]], v = on(keys[i][0]);
-			setText(q.t, T(keys[i][1])); setText(q.l, v ? T('yes') : T('no'));
+		for (var i = 0; i < TG.length; i++) {
+			var q = P[TG[i][0]], v = on(TG[i][0]);
+			setText(q.t, T(TG[i][1])); setText(q.l, v ? T('yes') : T('no'));
 			q.b.style.backgroundColor = v ? A : OFF; q.l.style.color = v ? DARK : INK;
 		}
+		var pn = presetNow();
+		setText(P.pre, T('pre'));
+		P.lite.b.style.backgroundColor = pn === 'lite' ? A : OFF; P.lite.l.style.color = pn === 'lite' ? DARK : INK;
+		P.mid.b.style.backgroundColor = pn === 'mid' ? A : OFF; P.mid.l.style.color = pn === 'mid' ? DARK : INK;
 		var ru = lang() === 'ru';
 		P.ru.b.style.backgroundColor = ru ? A : OFF; P.ru.l.style.color = ru ? DARK : INK;
 		P.en.b.style.backgroundColor = ru ? OFF : A; P.en.l.style.color = ru ? INK : DARK;
@@ -345,6 +375,8 @@
 		var nb = HUD.FindChildrenWithClassTraverse ? HUD.FindChildrenWithClassTraverse('neutral') : [], camps = 0, alive = 0;
 		for (var k = 0; k < nb.length; k++) if (nb[k].BHasClass && nb[k].BHasClass('map_button')) { camps++; if (nb[k].BHasClass('active')) alive++; }
 		out.push(camps ? T('camp') + camps + T('campOn') + alive : T('camp0'));
+		out.push(T('sRank') + RKN + T('sLrk') + LRKN[0] + T('sLrkE') + LRKN[1] + T('sCamp') + CMN);
+		out.push(T('sHp') + HPN + T('sMiss') + MISSN + T('sCmb') + (CMBF < 0 ? '—' : !CMBF ? T('sCmb0') : CMBW ? T('sCmbY') : T('sCmbN')) + T('sUns') + UNV);
 		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
 		for (var j = 0; j < P.see.length; j++) setText(P.see[j], out[j] || '');
 		if (log) $.Msg('[Restless] видит: ' + out.join(' | '));
@@ -384,7 +416,7 @@
 	}
 	// меню Esc открыто: список игроков — ник, герой (hero_id), ID (account_id); у кого ID не нашёлся — открываем его профиль
 	function lkProbe() {
-		if (!on('LINK') || LK.hide || !ok(EM) || !menuShown() || open) { if (LK.pr) { lkDismiss(); LK.pr = null; } return; }
+		if (!(on('LINK') || on('RANK') || on('LRK')) || LK.hide || !ok(EM) || !menuShown() || open) { if (LK.pr) { lkDismiss(); LK.pr = null; } return; }
 		if (LK.wait-- > 0) return;
 		LK.wait = 1;
 		var rows = []; try { rows = EM.FindChildrenWithClassTraverse('PlayerName') || []; } catch (e) {}
@@ -415,26 +447,10 @@
 		}
 		LK.wait = 7;   // открывать больше некого — следующая проверка через 2 с
 	}
-	// 12 игроков из верхней панели: своя команда / враги, ник, герой, ID
+	// 12 игроков из верхней панели: своя команда / враги, ник, герой, ID (0.17: из общего списка PLY — верхнюю панель обходим один раз)
 	function lkPlayers() {
-		var out = [], seen = {}, T2 = [['f', 'TeamFriendly'], ['e', 'TeamEnemy']];
-		for (var t = 0; t < 2; t++) {
-			var tp = null; try { tp = TB.FindChildTraverse(T2[t][1]); } catch (e) {}
-			if (!ok(tp)) continue;
-			var ls = []; try { ls = tp.FindChildrenWithClassTraverse('PlayerName') || []; } catch (e) {}
-			for (var i = 0; i < ls.length; i++) {
-				var pl = up(ls[i], 'CitadelHudTopBarPlayer'), nm = txt(ls[i]), k = lc(nm);
-				if (!pl || !k || nm.indexOf('{') >= 0 || seen[k]) continue;
-				seen[k] = 1;
-				var hl = []; try { hl = pl.FindChildrenWithClassTraverse('HeroName') || []; } catch (e) {}
-				var h = hl.length ? txt(hl[0]) : '';
-				if (h.indexOf('{') >= 0) h = '';
-				out.push({ t: T2[t][0], n: nm, k: k, h: h, hid: dv(pl, 'hero_id', 1, 3) || LK.hero[k] || '', a: dv(pl, 'account_id', 3, 10) });
-			}
-		}
-		var same = out.length > 1 && out.every(function (x) { return x.a && x.a === out[0].a; });
-		out.forEach(function (x) { if (same || !x.a) x.a = LK.acc[x.k] || ''; });
-		return out;
+		plyScan(); plyIds();
+		return PLY.map(function (x) { return { t: x.t, n: x.n, k: x.k, h: x.h, hid: x.hid || LK.hero[x.k] || '', a: x.a }; });
 	}
 	function lkTick() {
 		if (!ok(TB)) TB = HUD.FindChildTraverse('TopBar');
@@ -489,16 +505,217 @@
 		if (!ok(lb)) {
 			if (!msg) return;
 			lb = EVL = HUD.FindChildTraverse('RestlessEvt');
-			if (!ok(lb)) lb = EVL = lab(HUD, 'RestlessEvt', { horizontalAlign: 'center', verticalAlign: 'top', marginTop: '118px', padding: '8px 18px 8px 18px',
+			if (!ok(lb)) lb = EVL = lab(HUD, 'RestlessEvt', { horizontalAlign: 'center', verticalAlign: 'top', marginTop: '124px', padding: '8px 18px 8px 18px',
 				backgroundColor: '#121014e6', border: '1px solid #ffc83d73', borderRadius: '10px', fontSize: '20px', fontWeight: 'bold', color: A, zIndex: '60' });
 		}
 		setText(lb, msg); setVis(lb, !!msg);
+	}
+
+	// ---------- 0.17: функции из наборов Lite / Medium ----------
+	// Всё по найденным панелям: игроки верхней панели — раз в 4 с, лагеря миникарты — раз в 10 с; дальше только классы и размеры.
+	// Выключенная функция ничего не ищет и прячет своё.
+	var HIDE = true, NT = 0, CLK = -1, CLKT = -1;
+	function hideTick() { if (!ok(TB)) TB = HUD.FindChildTraverse('TopBar'); HIDE = !ok(TB) || !!(TB.BHasClass && TB.BHasClass('InHideout')); NT++; }
+	// часы матча в секундах (один раз за такт; GameTime ищем раз в 10 с, если пропал)
+	var GTF = 0;
+	function clock() {
+		if (CLKT === NT) return CLK;
+		CLKT = NT;
+		if (!ok(GT)) { if (GTF-- > 0) return (CLK = -1); GTF = 40; GT = HUD.FindChildTraverse('GameTime'); if (!ok(GT)) return (CLK = -1); }
+		var m = /(-?)(\d+):(\d\d)/.exec(txt(GT) || '');
+		return (CLK = m ? (m[1] ? -1 : 1) * (+m[2] * 60 + +m[3]) : -1);
+	}
+	function kid(p, id) { try { return ok(p) ? p.FindChildTraverse(id) : null; } catch (e) { return null; } }
+
+	// игроки верхней панели: команда, ник, ID, панели портрета (HeroImageArea, HealthBar…)
+	var PLY = [], PLS = 0;
+	function plyScan() {
+		if (PLS-- > 0 && PLY.length) return;
+		PLS = 16;
+		var keep = {}; for (var o = 0; o < PLY.length; o++) if (ok(PLY[o].pl)) keep[PLY[o].k] = PLY[o];
+		PLY = [];
+		var T2 = [['f', 'TeamFriendly'], ['e', 'TeamEnemy']];
+		for (var t = 0; t < 2; t++) {
+			var tp = kid(TB, T2[t][1]); if (!ok(tp)) continue;
+			var ls = []; try { ls = tp.FindChildrenWithClassTraverse('PlayerName') || []; } catch (e) {}
+			for (var i = 0; i < ls.length; i++) {
+				var pl = up(ls[i], 'CitadelHudTopBarPlayer'), k = lc(txt(ls[i]));
+				if (!pl || !k || k.indexOf('{') >= 0) continue;
+				var x = keep[k] && keep[k].pl === pl ? keep[k] : { pl: pl, k: k };
+				x.t = T2[t][0]; x.n = txt(ls[i]); x.da = dv(pl, 'account_id', 3, 10);
+				if (!x.h) { var hl = []; try { hl = pl.FindChildrenWithClassTraverse('HeroName') || []; } catch (e) {} x.h = hl.length ? txt(hl[0]) : ''; if (x.h.indexOf('{') >= 0) x.h = ''; }
+				if (!x.hid) x.hid = dv(pl, 'hero_id', 1, 3);
+				if (!ok(x.area)) x.area = kid(pl, 'HeroImageArea') || pl;
+				if (!ok(x.hb)) { x.hb = kid(pl, 'HealthBar'); x.hc = kid(pl, 'HealthBar_Contents'); x.hf = kid(pl, 'HealthBar_Fill'); }
+				PLY.push(x);
+			}
+		}
+		// одинаковый account_id у всех — общая панель (свой ID), не верим; иначе — из профилей в Esc
+		var same = PLY.length > 1 && PLY.every(function (y) { return y.da && y.da === PLY[0].da; });
+		PLY.forEach(function (y) { y.a = (!same && y.da) || LK.acc[y.k] || ''; });
+	}
+	function plyIds() { for (var i = 0; i < PLY.length; i++) if (!PLY[i].a && LK.acc[PLY[i].k]) PLY[i].a = LK.acc[PLY[i].k]; }
+
+	// ранги игроков: значок под портретом — картинка с api.deadlock-api.com по ID (как ранги друзей у QoL Lite)
+	var RK_URL = 'https://api.deadlock-api.com/v1/players/', RKN = 0;
+	function rankTick() {
+		var want = on('RANK') && !HIDE; RKN = 0;
+		for (var i = 0; i < PLY.length; i++) {
+			var x = PLY[i], im = ok(x.rk) ? x.rk : null;
+			if (!want || !x.a) { if (im) setVis(im, false); continue; }
+			if (!im) {
+				im = kid(x.area, 'RestlessRank');
+				if (!ok(im)) im = mk('Image', x.area, 'RestlessRank', { width: '30px', height: '24px', horizontalAlign: 'right', verticalAlign: 'bottom',
+					marginRight: '-8px', marginBottom: '-6px', zIndex: '20' }, { hittest: 'false', scaling: 'stretch-to-fit-preserve-aspect' });
+				x.rk = im; x.rid = '';
+			}
+			if (x.rid !== x.a) { x.rid = x.a; try { im.SetImage(RK_URL + x.a + '/rank/image'); } catch (e) { $.Msg('[Restless] ранг: ' + e); } }
+			setVis(im, true); RKN++;
+		}
+	}
+	// средний ранг команд: два значка под часами (у кого ID нашлись — от 2 в каждой команде)
+	var LRK = null, LRKF = '', LRKE = '', LRKN = [0, 0];
+	function lrkTick() {
+		var f = [], e = [];
+		for (var i = 0; i < PLY.length; i++) if (PLY[i].a) (PLY[i].t === 'f' ? f : e).push(PLY[i].a);
+		LRKN = [f.length, e.length];
+		var want = on('LRK') && !HIDE && f.length >= 2 && e.length >= 2;
+		if (!want) { if (ok(LRK)) setVis(LRK, false); return; }
+		if (!ok(LRK)) {
+			LRK = HUD.FindChildTraverse('RestlessLrk');
+			if (!ok(LRK)) {
+				LRK = mk('Panel', HUD, 'RestlessLrk', { horizontalAlign: 'center', verticalAlign: 'top', marginTop: '84px', flowChildren: 'right', zIndex: '55' }, { hittest: 'false' });
+				var st = { width: '40px', height: '32px', margin: '0px 70px 0px 70px' };
+				mk('Image', LRK, 'RestlessLrkF', st, { hittest: 'false', scaling: 'stretch-to-fit-preserve-aspect' });
+				mk('Image', LRK, 'RestlessLrkE', st, { hittest: 'false', scaling: 'stretch-to-fit-preserve-aspect' });
+			}
+			LRKF = LRKE = '';
+		}
+		var fs = f.slice(0, 6).join(','), es = e.slice(0, 6).join(',');
+		try {
+			if (fs !== LRKF) { LRKF = fs; LRK.FindChildTraverse('RestlessLrkF').SetImage(RK_URL + 'rank/image?account_ids=' + fs); }
+			if (es !== LRKE) { LRKE = es; LRK.FindChildTraverse('RestlessLrkE').SetImage(RK_URL + 'rank/image?account_ids=' + es); }
+		} catch (er) { $.Msg('[Restless] средний ранг: ' + er); }
+		setVis(LRK, true);
+	}
+
+	// таймеры лагерей: метка лагеря на миникарте гаснет (класс active) — лагерь убит; возрождение — от смерти последнего
+	// монстра (deadlock.wiki, данные Зетки zai/map): малый 1:25, средний 4:50, большой 5:35. Отсчёт — над меткой.
+	var MM = null, MMF = 0, MMM = 0, CMP = [], CMS = 0, CMN = 0, CRS = { neutral_weak: 85, neutral_medium: 290, neutral_large: 335 };
+	function campHide() { for (var i = 0; i < CMP.length; i++) if (ok(CMP[i].lb)) setVis(CMP[i].lb, false); }
+	function campTick() {
+		CMN = 0;
+		if (!on('CAMP') || HIDE) { campHide(); return; }
+		if (!ok(MM)) { if (MMF-- > 0) return; MMF = 40 * Math.min(6, ++MMM); MM = HUD.FindChildTraverse('hud_minimap'); if (!ok(MM)) { campHide(); return; } }
+		if (CMS-- <= 0 || !CMP.length) {
+			CMS = 40;
+			var old = CMP, L = [];
+			try { L = MM.FindChildrenWithClassTraverse('neutral') || []; } catch (e) {}
+			CMP = [];
+			for (var i = 0; i < L.length; i++) {
+				var b = L[i]; if (!b.BHasClass('map_button')) continue;
+				var rs = 0; for (var c in CRS) if (b.BHasClass(c)) rs = CRS[c];
+				if (!rs) continue;
+				var x = null; for (var j = 0; j < old.length; j++) if (old[j].b === b) x = old[j];
+				CMP.push(x || { b: b, rs: rs, was: b.BHasClass('active'), dead: -1, lb: null });
+			}
+			for (var k = 0; k < old.length; k++) if (CMP.indexOf(old[k]) < 0 && ok(old[k].lb)) old[k].lb.DeleteAsync(0);
+		}
+		var s = clock();
+		for (var n = 0; n < CMP.length; n++) {
+			var q = CMP[n];
+			if (!ok(q.b)) { CMS = 0; continue; }
+			var act = q.b.BHasClass('active');
+			if (q.was && !act && s >= 0) q.dead = s;
+			if (act) q.dead = -1;
+			q.was = act;
+			var left = q.dead >= 0 && s >= 0 ? q.dead + q.rs - s : -1;
+			if (left <= 0) { if (ok(q.lb)) setVis(q.lb, false); continue; }
+			var par = q.b.GetParent();
+			if (!ok(q.lb)) q.lb = lab(par, '', { width: '44px', textAlign: 'center', align: 'left top', fontSize: '13px', fontWeight: 'bold', color: '#ffffff',
+				textShadow: '0px 0px 3px 2.0 #000000', zIndex: '30' });
+			var sx = q.b.actualuiscale_x > 0 ? q.b.actualuiscale_x : 1, sy = q.b.actualuiscale_y > 0 ? q.b.actualuiscale_y : 1;
+			var px = Math.round((q.b.actualxoffset + q.b.actuallayoutwidth / 2) / sx - 22) + 'px', py = Math.round((q.b.actualyoffset + q.b.actuallayoutheight / 2) / sy - 9) + 'px';
+			if (q.px !== px || q.py !== py) { q.px = px; q.py = py; sty(q.lb, { x: px, y: py }); }
+			setText(q.lb, Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2));
+			setVis(q.lb, true); CMN++;
+		}
+	}
+
+	// пропавшие враги (портрет темнеет, пока героя не видно — у панели нет HealthVisible) и цвет здоровья: 75 / 65 / 25 %
+	var MISSN = 0, HPN = 0;
+	function hpOf(x) {
+		var h = ok(x.hb) ? x.hb.actuallayoutheight : 0;
+		if (!(h > 0)) return -1;
+		var r = 1;
+		if (ok(x.hf) && x.hf.actuallayoutheight >= 0) r = Math.min(r, x.hf.actuallayoutheight / h);
+		if (ok(x.hc) && x.hc.actuallayoutheight >= 0) r = Math.min(r, x.hc.actuallayoutheight / h);
+		return r;
+	}
+	function portTick() {
+		MISSN = 0; HPN = 0;
+		var wm = on('MISS') && !HIDE, wh = on('THP') && !HIDE;
+		for (var i = 0; i < PLY.length; i++) {
+			var x = PLY[i], pl = x.pl;
+			if (!ok(pl)) continue;
+			var dead = pl.BHasClass('Dead'), seen = pl.BHasClass('HealthVisible');
+			var miss = wm && x.t === 'e' && !dead && !seen;
+			if (miss || ok(x.ms)) {
+				if (!ok(x.ms)) x.ms = mk('Panel', x.area, 'RestlessMiss', { width: '100%', height: '100%', borderRadius: '50%', backgroundColor: '#000000b0', zIndex: '15' }, { hittest: 'false' });
+				setVis(x.ms, miss);
+			}
+			if (miss) MISSN++;
+			var r = wh && !dead && (x.t === 'f' || seen) ? hpOf(x) : -1;
+			if (r >= 0 && r < 0.98) HPN++;
+			var col = r < 0 || r >= 0.75 ? '' : r < 0.25 ? '#ff3b3b' : r < 0.65 ? '#ff9a3b' : '#ffd23b';
+			if (col || ok(x.hr)) {
+				if (!ok(x.hr)) { x.hr = mk('Panel', x.area, 'RestlessHp', { width: '100%', height: '100%', borderRadius: '50%', zIndex: '16' }, { hittest: 'false' }); x.hcol = ''; }
+				if (col && x.hcol !== col) { x.hcol = col; x.hr.style.border = '3px solid ' + col; }
+				setVis(x.hr, !!col);
+			}
+		}
+	}
+
+	// «В бою»: глобальный класс gInCombat у объявлений HUD (игра так подсвечивает баффы в бою); вышел — «ВНЕ БОЯ» на 2 с
+	var GA = null, GAF = 0, GAM = 0, CMB = null, CMBW = false, CMBX = 0, CMBF = -1;
+	function cmbTick() {
+		if (!on('CMB') || HIDE) { if (ok(CMB)) setVis(CMB, false); CMBW = false; return; }
+		if (!ok(GA)) { if (GAF-- > 0) return; GAF = 40 * Math.min(6, ++GAM); GA = HUD.FindChildTraverse('CitadelHudGameAnnouncements'); CMBF = ok(GA) ? 1 : 0; if (!ok(GA)) return; }
+		var inC = GA.BHasClass('gInCombat');
+		if (CMBW && !inC) CMBX = 4;
+		CMBW = inC;
+		var msg = inC ? T('cmbOn') : CMBX-- > 0 ? T('cmbOff') : '';
+		if (!msg) { if (ok(CMB)) setVis(CMB, false); return; }
+		if (!ok(CMB)) CMB = HUD.FindChildTraverse('RestlessCmb');
+		if (!ok(CMB)) CMB = lab(HUD, 'RestlessCmb', { horizontalAlign: 'center', verticalAlign: 'center', marginTop: '170px', fontSize: '15px', fontWeight: 'bold',
+			letterSpacing: '1px', textShadow: '0px 0px 4px 2.0 #000000', zIndex: '40' });
+		setText(CMB, msg); CMB.style.color = inC ? '#ff6b5b' : '#5be08a'; setVis(CMB, true);
+	}
+	// незащищённые души: число игры ({i:hud_death_gold_penalty}) крупно над умениями, пока оно больше нуля
+	var DG = null, DGF = 0, DGM = 0, UNL = null, UNV = 0;
+	function unsTick() {
+		UNV = 0;
+		if (!on('UNS') || HIDE) { if (ok(UNL)) setVis(UNL, false); return; }
+		if (!ok(DG)) { if (DGF-- > 0) return; DGF = 40 * Math.min(6, ++DGM); DG = HUD.FindChildTraverse('hudDeathGoldLabel'); if (!ok(DG)) return; }
+		var t = txt(DG).replace(/[^0-9]/g, ''); UNV = t ? +t : 0;
+		if (!(UNV > 0)) { if (ok(UNL)) setVis(UNL, false); return; }
+		if (!ok(UNL)) UNL = HUD.FindChildTraverse('RestlessUns');
+		if (!ok(UNL)) UNL = lab(HUD, 'RestlessUns', { horizontalAlign: 'center', verticalAlign: 'bottom', marginBottom: '200px', padding: '6px 16px 6px 16px',
+			backgroundColor: '#121014d0', borderRadius: '8px', fontSize: '22px', fontWeight: 'bold', color: '#ff9a3b', zIndex: '40' });
+		setText(UNL, T('unsL') + txt(DG)); setVis(UNL, true);
+	}
+	function f17Tick() {
+		plyScan();
+		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); }
+		if (NT % 4 === 1) { rankTick(); campTick(); }
+		if (NT % 8 === 3) lrkTick();
 	}
 
 	// ---------- общий такт ----------
 	function tick() {
 		if (!ok(ctx)) return;
 		if (mine()) {
+			try { hideTick(); } catch (e) { $.Msg('[Restless] укрытие: ' + e); }
 			try { markTick(); } catch (e) { $.Msg('[Restless] надпись: ' + e); }
 			try { menuTick(); } catch (e) { $.Msg('[Restless] меню: ' + e); }
 			try { winTick(); } catch (e) { $.Msg('[Restless] окно: ' + e); }
@@ -507,6 +724,7 @@
 			try { lkTick(); } catch (e) { $.Msg('[Restless] связь: ' + e); }
 			try { lkProbe(); } catch (e) { $.Msg('[Restless] профили: ' + e); }
 			try { oldTick(); } catch (e) { $.Msg('[Restless] старое: ' + e); }
+			try { f17Tick(); } catch (e) { $.Msg('[Restless] 0.17: ' + e); }
 			try { seeTick(false); } catch (e) { $.Msg('[Restless] проверка: ' + e); }
 			$.Schedule(0.25, tick);
 		} else {
