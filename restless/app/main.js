@@ -8,14 +8,14 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.3.1';
+const VER = '0.4.0';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
 const KEY_OPTS = ['Control+Alt+H', 'Control+Shift+H', 'Alt+H', 'Control+Shift+F10'];
 const THRU_KEYS = ['Control+Alt+T', 'Control+Shift+F11'];   // клики сквозь окно
 const CFG = path.join(app.getPath('userData'), 'restless.json');
-let cfg = {v: 3, x: null, y: null, w: 1180, h: 820, auto: true, through: false, seen: false, key: 'Control+Alt+H'};
+let cfg = {v: 3, x: null, y: null, w: 1180, h: 820, auto: true, through: false, seen: false, key: 'Control+Alt+H', fps: 'off'};
 try { const c = JSON.parse(fs.readFileSync(CFG, 'utf8')); if (!c.v || c.v < 3) { delete c.x; delete c.y; delete c.w; delete c.h; c.v = 3; } Object.assign(cfg, c); } catch (e) {}
 if (!KEY_OPTS.includes(cfg.key)) cfg.key = 'Control+Alt+H';   // 0.3 ставила Ctrl+X — теперь одна клавиша
 const save = () => { try { fs.writeFileSync(CFG, JSON.stringify(cfg)); } catch (e) {} };
@@ -113,6 +113,7 @@ function menu() {
     {label: (MODTXT[MOD.status] || MOD.status) + (MOD.status === 'error' ? (MOD.err || '') : MOD.file ? ' · ' + MOD.file : ''), enabled: false},
     {label: recent ? (G.s === 'm' ? `Игра на связи: матч, игроков ${G.players.length}` : 'Игра на связи: укрытие') : bridgeErr ? 'Связь с игрой: ' + bridgeErr : 'Связь с игрой: жду (нужен мод 0.13+)', enabled: false},
     {label: 'Поставить мод заново', click: () => setupMod(true)},
+    {label: 'FPS в игре', submenu: [['off', 'Как в игре'], ['light', 'Лёгкий'], ['mid', 'Средний'], ['max', 'Максимум']].map(([k, nm]) => ({label: nm, type: 'radio', checked: cfg.fps === k, click: () => setFps(k)}))},
     {label: 'Открыть папку модов', enabled: !!MOD.dir, click: () => MOD.dir && shell.openPath(path.join(MOD.dir, 'game', 'citadel', 'addons'))},
     {type: 'separator'},
     {label: 'Настройки оверлея', click: () => { if (win) win.webContents.executeJavaScript(`location.hash='#ovs'`).catch(() => {}); open(true); }},
@@ -127,7 +128,7 @@ function setupMod(force) {
   if (proc && !force && !TEST_PROC) { MOD = Object.assign({}, MOD, {status: 'busy'}); menu(); push(); return; }
   let buf = null;
   try { buf = fs.readFileSync(path.join(__dirname, 'pak42_dir.vpk')); } catch (e) { MOD = {status: 'error', err: 'нет pak в программе'}; menu(); return; }
-  MOD = inst.install(inst.findDeadlock(), buf);
+  MOD = inst.install(inst.findDeadlock(), buf, {fps: inst.FPS_LEVELS.includes(cfg.fps) ? cfg.fps : 'off'});
   if (MOD.status === 'installed' || MOD.status === 'cleaned') tray && tray.displayBalloon && tray.displayBalloon({title: 'Restless', content: MOD.status === 'installed' ? `Мод Restless поставлен (${MOD.file}). Запусти игру.` : `Старые файлы Restless убраны: ${MOD.moved.join(', ')}`});
   if (MOD.status === 'nogame') tray && tray.displayBalloon && tray.displayBalloon({title: 'Restless', content: 'Не нашёл Deadlock. Положи pak42_dir.vpk в game/citadel/addons вручную.'});
   menu(); push();
@@ -153,6 +154,7 @@ function onGame(g) {
   }
   iconTick(); push(); menu();
 }
+function setFps(k) { if (!inst.FPS_LEVELS.includes(k)) return; cfg.fps = k; save(); setupMod(true); }
 // ---------- страница → программа (preload.js) ----------
 ipcMain.on('rl', (e, cmd, val) => {
   const u = e.senderFrame && e.senderFrame.url || '';
@@ -162,6 +164,7 @@ ipcMain.on('rl', (e, cmd, val) => {
   else if (cmd === 'auto') { cfg.auto = !!val; save(); menu(); push(); }
   else if (cmd === 'through') setThrough(!!val);
   else if (cmd === 'mod') setupMod(true);
+  else if (cmd === 'fps') setFps(String(val || ''));
 });
 
 if (!app.requestSingleInstanceLock()) app.quit();

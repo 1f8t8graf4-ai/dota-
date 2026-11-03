@@ -1,0 +1,35 @@
+# Рейтинг героев Restless (как League of Graphs) — раз в сутки считает tools/hr_build.py
+# из открытой базы deadlock-api и кладёт готовые таблицы в ветку hr-data (одна свежая версия, без истории).
+# Сайт читает: https://raw.githubusercontent.com/1f8t8graf4-ai/dota-/hr-data/hr/<hero_id>.json
+name: hero-rating
+on:
+  schedule:
+    - cron: '17 4 * * *'      # 04:17 UTC каждый день
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: hero-rating
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Считаю рейтинг
+        run: python3 tools/hr_build.py out
+      - name: Кладу в ветку hr-data
+        run: |
+          cd out
+          git init -q -b hr-data
+          git config user.name "restless-bot"
+          git config user.email "restless-bot@users.noreply.github.com"
+          git add hr
+          git commit -q -m "Рейтинг героев $(date -u +%F)"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" hr-data

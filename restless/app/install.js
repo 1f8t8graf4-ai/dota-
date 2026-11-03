@@ -33,6 +33,47 @@ function fixGameinfo(text) {
   return {text: L.join(nl), changed: true, added: add.concat(addCore).map(x => x.trim().replace(/\s+/g, ' '))};
 }
 
+// ---------- FPS: настройки движка в блоке ConVars файла gameinfo.gi (в мод VPK их не положить — игра читает их только отсюда) ----------
+// Наш набор — только то, что не мешает играть: видимость врагов, обводки, урон и звук не трогаем.
+// Что за что отвечает — по описаниям OptimizationLock (github.com/Sqooky/OptimizationLock); набор и уровни — свои.
+// Каждая наша строка помечена «// restless-fps», заменённая игровая — закомментирована «//restless-fps-orig » и вернётся при «Как в игре».
+const FPS_L = {
+  light: [['cl_show_splashes', '0'], ['fx_drawmetalspark', 'false'], ['r_depth_of_field', '0'], ['cl_retire_low_priority_lights', '1'],
+    ['cl_particle_fallback_base', '5'], ['cl_particle_fallback_multiplier', '10'], ['citadel_camera_wobble_disable', 'true']],
+  mid: [['r_ssao', '0'], ['csm_max_num_cascades_override', '2'], ['csm_viewmodel_shadows', 'false'], ['lb_dynamic_shadow_penumbra', 'false'],
+    ['lb_csm_draw_translucent', '0'], ['lb_csm_draw_alpha_tested', '0'], ['cl_ragdoll_limit', '0'], ['enable_boneflex', '0'], ['cloth_sim_on_tick', '0'],
+    ['r_citadel_enable_pano_world_blur', 'false']],
+  max: [['lb_dynamic_shadow_resolution_base', '16'], ['lb_enable_shadow_casting', '0'], ['lb_enable_stationary_lights', 'false'],
+    ['lb_enable_dynamic_lights', 'false'], ['lb_barnlight_shadowmap_scale', '0']]
+};
+const FPS_LEVELS = ['off', 'light', 'mid', 'max'];
+const fpsVars = lv => lv === 'max' ? FPS_L.light.concat(FPS_L.mid, FPS_L.max) : lv === 'mid' ? FPS_L.light.concat(FPS_L.mid) : lv === 'light' ? FPS_L.light.slice() : [];
+function fpsGameinfo(text, level) {
+  if (!FPS_LEVELS.includes(level)) return {text, changed: false, err: 'нет такого уровня'};
+  const nl = text.includes('\r\n') ? '\r\n' : '\n';
+  // 1) убрать прошлое наше и вернуть игровые строки
+  let L = text.split(/\r?\n/).filter(l => !/\/\/ restless-fps\s*$/.test(l)).map(l => l.replace(/^(\s*)\/\/restless-fps-orig /, '$1'));
+  const back = L.join(nl);
+  const vars = fpsVars(level);
+  if (!vars.length) return {text: back, changed: back !== text, n: 0};
+  const s = L.findIndex(l => /^\s*ConVars\s*$/i.test(l));
+  if (s < 0) return {text, changed: false, err: 'нет блока ConVars'};
+  const o = L.findIndex((l, i) => i > s && /^\s*\{/.test(l));
+  if (o < 0) return {text, changed: false, err: 'нет { у ConVars'};
+  let e = o, depth = 0;
+  for (; e < L.length; e++) { const c = L[e].split('//')[0]; depth += (c.match(/\{/g) || []).length - (c.match(/\}/g) || []).length; if (depth <= 0 && e > o) break; }
+  const ind = ((L[o].match(/^\s*/) || [''])[0]) + '\t', add = [];
+  for (const [k, v] of vars) {
+    const rx = new RegExp('^\\s*"?' + k.replace(/\./g, '\\.') + '"?\\s');
+    const i = L.findIndex((l, j) => j > o && j < e && rx.test(l));
+    const line = ind + `"${k}"\t\t"${v}"\t// restless-fps`;
+    if (i >= 0) { L.splice(i, 1, L[i].replace(/^(\s*)/, '$1//restless-fps-orig '), line); e++; }
+    else add.push(line);
+  }
+  L.splice(o + 1, 0, ...add);
+  return {text: L.join(nl), changed: true, n: vars.length};
+}
+
 // Дерево VPK (v1/v2) — только имена файлов: по ним видно, наш ли это пак.
 function vpkTree(file) {
   let fd;
@@ -90,6 +131,11 @@ function install(dir, buf, opt) {
       if (!fs.existsSync(bak)) fs.writeFileSync(bak, t);
       fs.writeFileSync(gi, f.text); r.gameinfo = 'добавил: ' + f.added.join(', ');
     } else r.gameinfo = 'ok';
+    if (opt.fps) {   // FPS-набор — после папки модов; файл перечитываем: его могли только что поправить
+      const t2 = fs.readFileSync(gi, 'utf8'), p = fpsGameinfo(t2, opt.fps);
+      if (p.err) r.fps = 'не понял gameinfo.gi: ' + p.err;
+      else { if (p.changed) { const bak = gi + '.restless.bak'; if (!fs.existsSync(bak)) fs.writeFileSync(bak, t2); fs.writeFileSync(gi, p.text); } r.fps = opt.fps; }
+    }
   } catch (e) { r.status = e.code === 'EBUSY' || e.code === 'EPERM' ? 'busy' : 'error'; r.err = 'gameinfo.gi: ' + e.message; return r; }
   try {
     fs.mkdirSync(addons, {recursive: true});
@@ -119,4 +165,4 @@ function install(dir, buf, opt) {
   return r;
 }
 
-module.exports = {fixGameinfo, vpkTree, isRestless, findDeadlock, libraries, install};
+module.exports = {fixGameinfo, fpsGameinfo, fpsVars, FPS_LEVELS, vpkTree, isRestless, findDeadlock, libraries, install};
