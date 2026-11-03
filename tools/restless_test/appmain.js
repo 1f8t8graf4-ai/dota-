@@ -1,5 +1,5 @@
 // Программа Restless 0.3.1 (restless/app/main.js) без Electron: подменяем модуль electron и проверяем логику —
-// клавиша только пока запущена игра, матч → окно само на #ov + LIVE в трее, страница → программа (preload), чужой сайт игнорируется.
+// клавиша только пока запущена игра, матч → окно само на «Лайв-матч» (#live) + LIVE в трее, страница → программа (preload), чужой сайт игнорируется.
 // node tools/restless_test/appmain.js
 const Module = require('module'), path = require('path'), fs = require('fs'), os = require('os'), http = require('http');
 const A = path.join(__dirname, '..', '..', 'restless', 'app') + '/';
@@ -48,12 +48,12 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   ok(L.shown === 1 && L.focus === 1, 'первый запуск — окно открыто сразу');
   L.keys['Control+Alt+H']();
   ok(!winObj.vis, 'Ctrl+Alt+H — скрыть');
-  // матч из мода → LIVE, окно само на #ov без фокуса
+  // матч из мода → LIVE, окно само на #live без фокуса
   const ps = Array.from({length: 12}, (_, i) => `${i < 6 ? 'f' : 'e'}~P${i}~Hero~${i + 1}~${100000 + i}`).join('|');
   await send('v=0.14&s=m&gt=01:00&n=1&p=' + encodeURIComponent(ps).replace(/%7E/g, '~').replace(/%7C/g, '|'));
   await wait(450);
   ok(winObj.vis && L.inactive === 1, 'нашёлся матч — окно открылось само и без фокуса (игра не теряет управление), хотя его закрывали');
-  ok(L.js.some(j => j.includes("location.hash='#ov'")), 'окно само перешло на 12 игроков (#ov)');
+  ok(L.js.some(j => j.includes("location.hash='#live'")), 'окно само перешло на «Лайв-матч» — 12 игроков из игры (#live)');
   ok(/^live\d\.png$/.test(L.img[L.img.length - 1]), 'значок в трее — живой LIVE: ' + L.img.slice(-3).join(' '));
   ok(/LIVE/.test(L.tip) && L.balloon.some(b => /LIVE/.test(b.title)), 'подсказка трея и всплывашка: LIVE');
   ok(L.js.some(j => j.includes('"live":true')), 'страница знает про LIVE (rlApp.live)');

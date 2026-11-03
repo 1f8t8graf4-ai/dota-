@@ -1,7 +1,7 @@
 {
   "name": "restless-overlay",
   "productName": "Restless Overlay",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Restless — твой профиль и матч поверх Deadlock",
   "main": "main.js",
   "author": "Restless",

@@ -1,3 +1,4 @@
+// Restless Overlay 0.4.6 — сайт в окне всегда свежий (без старого кэша), матч нашёлся — окно на «Лайв-матче» (игроки из игры).
 // Restless Overlay 0.4.5 — мод обновляется сам (pak42 с сайта); о новой программе — подсказка в трее.
 // Restless Overlay 0.3.1 — твой профиль Restless поверх Deadlock (как Porofessor).
 // Одна клавиша — Ctrl+Alt+H (Андрей, 03.11: «зачем Ctrl+X, если всё на Ctrl+H»): открыть / закрыть окно, и в игре, и без неё.
@@ -9,7 +10,7 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.4.5';
+const VER = '0.4.6';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
@@ -42,7 +43,9 @@ function create() {
     webPreferences: {contextIsolation: true, sandbox: true, preload: path.join(__dirname, 'preload.js')}
   });
   win.setAlwaysOnTop(true, 'screen-saver'); win.setVisibleOnAllWorkspaces(true);
-  win.loadURL(URL0);
+  // 0.4.6: старый кэш сайта не держим — у Андрея окно показывало версию сайта трёхчасовой давности
+  const ses = win.webContents.session;
+  (ses && ses.clearCache ? ses.clearCache() : Promise.resolve()).catch(() => {}).finally(() => win.loadURL(URL0, {extraHeaders: 'pragma: no-cache\ncache-control: no-cache\n'}));
   // свой сайт — в этом окне; профиль другого игрока и всё чужое — в обычном браузере (иначе сайт запомнит его как «тебя»)
   win.webContents.setWindowOpenHandler(({url}) => { shell.openExternal(url); return {action: 'deny'}; });
   win.webContents.on('will-navigate', (e, url) => { if (!url.startsWith(SITE)) { e.preventDefault(); shell.openExternal(url); } });
@@ -74,7 +77,7 @@ function open(focus) {
 }
 function hide(byUser) { if (!win) return; win.hide(); if (byUser) userHidden = true; menu(); }
 function toggle() { if (!win) return; if (win.isVisible()) hide(true); else open(true); }
-function goLive() { if (win) win.webContents.executeJavaScript(`if(!/^#ov(\\/|$)/.test(location.hash))location.hash='#ov'`).catch(() => {}); }
+function goLive() { if (win) win.webContents.executeJavaScript(`if(!/^#live\\/?$/.test(location.hash))location.hash='#live'`).catch(() => {}); }
 
 // ---------- клавиши: «открыть / скрыть» — одна, всегда; занята — берём следующую из списка ----------
 function regKeys() {
