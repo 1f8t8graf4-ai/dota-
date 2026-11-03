@@ -1,0 +1,63 @@
+{
+ "0": {
+  "name": "Obscurus",
+  "ru": "Obscurus",
+  "color": "#333333"
+ },
+ "1": {
+  "name": "Initiate",
+  "ru": "Initiate",
+  "color": "#6A3E1E"
+ },
+ "2": {
+  "name": "Seeker",
+  "ru": "Seeker",
+  "color": "#882355"
+ },
+ "3": {
+  "name": "Acolyte",
+  "ru": "Acolyte",
+  "color": "#5C6DAB"
+ },
+ "4": {
+  "name": "Sentinel",
+  "ru": "Sentinel",
+  "color": "#719C47"
+ },
+ "5": {
+  "name": "Mystic",
+  "ru": "Mystic",
+  "color": "#DDA326"
+ },
+ "6": {
+  "name": "Ritualist",
+  "ru": "Ritualist",
+  "color": "#EE4F57"
+ },
+ "7": {
+  "name": "Emissary",
+  "ru": "Emissary",
+  "color": "#B47FEB"
+ },
+ "8": {
+  "name": "Oracle",
+  "ru": "Oracle",
+  "color": "#955138"
+ },
+ "9": {
+  "name": "Phantom",
+  "ru": "Phantom",
+  "color": "#7C7C7C"
+ },
+ "10": {
+  "name": "Ascendant",
+  "ru": "Ascendant",
+  "color": "#C39751"
+ },
+ "11": {
+  "name": "Eternus",
+  "ru": "Eternus",
+  "color": "#5CE9A9"
+ },
+ "_note": "ru: официального файла русской локализации в GameTracking-Deadlock нет (трекается только pak01_dir с английскими модулями resource/localization/citadel_*). Пока стоят английские имена. Когда появится файл (или скрины RU-клиента от Андрея) — заменить."
+}
