@@ -1,4 +1,6 @@
-// Restless 0.12.
+// Restless 0.13.
+// 0.13: связь с программой Restless (оверлей поверх игры): кто в матче — картинкой на 127.0.0.1, как QoL Lock переводит чат;
+//       ID игроков — из профилей в меню Esc; старые плашки пробника 27.10 (Венатор с таймером) убираем.
 // 0.12: копию меню Esc из пака убрали — кнопку ставит скрипт в любое меню.
 // 0.11: 3-значные КД (100+ с) рисуем сами, мельче двузначных.
 // 0.10: в окне RESTLESS — блок «Что видит мод»: души, игроки и ульты, ячейки магазина, лагеря.
@@ -10,9 +12,10 @@
 // Скрипт подключён к нескольким файлам: HUD — субтитры, скорость, чат; главное меню — dashboard (надпись «работает»).
 // Работает одна копия — «хозяин» отмечается в атрибуте корневой панели; вторая ждёт и подхватит, если хозяин пропал.
 // КД ульты: игра сама кладёт секунды в верхнюю панель ({i:ult_cooldown}), но не показывает — выводим их поверх значка.
-// Память игры не читает, ничего не отправляет. Настройки держатся до выхода из игры.
+// Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
+// Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.12';
+	var VER = '0.13';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -42,6 +45,8 @@
 			settings: 'настройки мода · ' + VER, inGame: 'В ИГРЕ',
 			ultT: 'КД ульты в верхней панели', ultS: 'секунды поверх значка ульты у каждого игрока — в матче',
 			markT: 'Надпись RESTLESS', markS: 'слева сверху — видно, что мод работает',
+			linkT: 'Связь с программой Restless', linkS: 'кто в матче — в окно поверх игры; ID берёт из профилей, пока открыто Esc',
+			lk: 'Программа: ', lkN: 'отправлено ', lkP: ' · игроков ', lkI: ' · с ID ', lkH: ' · с героем ', lk0: 'Программа: в укрытии не отправляю — зайди в матч', lkOff: 'Программа: связь выключена',
 			yes: 'ВКЛ', no: 'ВЫКЛ', lang: 'Язык мода', soon: 'СКОРО',
 			s1: 'Сборки с винрейтом прямо в магазине', s2: 'Кто в матче и сборки — прямо в окне мода', s3: 'Двуязычные субтитры реплик героев',
 			site: 'Мой Restless — разбор матчей', bot: 'Бот', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.',
@@ -54,6 +59,8 @@
 			settings: 'mod settings · ' + VER, inGame: 'IN GAME',
 			ultT: 'Ult cooldown in the top bar', ultS: 'seconds over every player\'s ult icon — in a match',
 			markT: 'RESTLESS label', markS: 'top left — shows the mod is running',
+			linkT: 'Link to the Restless app', linkS: 'who is in the match — to the window over the game; IDs come from profiles while Esc is open',
+			lk: 'App: ', lkN: 'sent ', lkP: ' · players ', lkI: ' · with ID ', lkH: ' · with hero ', lk0: 'App: not sending in the hideout — join a match', lkOff: 'App: link is off',
 			yes: 'ON', no: 'OFF', lang: 'Mod language', soon: 'COMING SOON',
 			s1: 'Builds with win rate right in the shop', s2: 'Who\'s in the match and builds — right in this window', s3: 'Bilingual hero voice-line subtitles',
 			site: 'My Restless — match breakdowns', bot: 'Bot', close: 'Close', note: 'Settings last until you quit the game.',
@@ -160,6 +167,7 @@
 		P.secGame = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '4px' });
 		toggle('ULT');
 		toggle('MARK');
+		toggle('LINK');
 
 		var lr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '12px 0px 12px 0px' });
 		P.lang = lab(lr, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '19px', color: INK });
@@ -173,7 +181,7 @@
 
 		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '16px', marginBottom: '2px' });
 		P.see = [];
-		for (var q = 0; q < 4; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
+		for (var q = 0; q < 5; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
 
 		var f = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
 		var site = mk('Button', f, 'RestlessSiteBtn', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
@@ -212,7 +220,7 @@
 		setText(P.site, T('site')); setText(P.bot, T('bot')); setText(P.close, T('close')); setText(P.note, T('note'));
 		for (var j = 0; j < 3; j++) setText(P.s[j], '·  ' + T('s' + (j + 1)));
 		setText(P.seeH, T('seeH'));
-		var keys = [['ULT', 'ultT', 'ultS'], ['MARK', 'markT', 'markS']];
+		var keys = [['ULT', 'ultT', 'ultS'], ['MARK', 'markT', 'markS'], ['LINK', 'linkT', 'linkS']];
 		for (var i = 0; i < keys.length; i++) {
 			var q = P[keys[i][0]], v = on(keys[i][0]);
 			setText(q.t, T(keys[i][1])); setText(q.s, T(keys[i][2])); setText(q.l, v ? T('yes') : T('no'));
@@ -330,8 +338,126 @@
 		var nb = HUD.FindChildrenWithClassTraverse ? HUD.FindChildrenWithClassTraverse('neutral') : [], camps = 0, alive = 0;
 		for (var k = 0; k < nb.length; k++) if (nb[k].BHasClass && nb[k].BHasClass('map_button')) { camps++; if (nb[k].BHasClass('active')) alive++; }
 		out.push(camps ? T('camp') + camps + T('campOn') + alive : T('camp0'));
+		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
 		for (var j = 0; j < P.see.length; j++) setText(P.see[j], out[j] || '');
 		if (log) $.Msg('[Restless] видит: ' + out.join(' | '));
+	}
+
+	// ---------- 0.13: связь с программой Restless (оверлей поверх игры) ----------
+	// Открытый API знает только ~150 топ-матчей — обычного матча там нет. Кто в матче, говорит сама игра: мод «грузит картинку»
+	// с http://127.0.0.1:27515/rl.png, в адресе — команда, ник, герой и ID каждого из 12. Программа Restless на этом же компьютере
+	// отвечает пустой картинкой и рисует карточки игроков. Так же QoL Lock переводит чат (127.0.0.1:8765).
+	// Отправляем, когда что-то поменялось (не чаще раза в 2 с), иначе раз в 15 с — программа видит, что игра идёт.
+	// ID: переменная account_id у панели игрока, если игра её даёт; иначе — из профиля игрока (Esc → список игроков):
+	// пока открыто меню Esc, мод сам открывает профили по очереди и запоминает «ник → ID», как QoL Lock показывает ранги.
+	var LK = { url: 'http://127.0.0.1:27515/rl.png?', img: null, last: '', at: 0, seq: 0, sent: 0, n: 0, ids: 0, hs: 0, hide: true,
+		acc: {}, hero: {}, tried: {}, pr: null, skip: 0 };
+	function lc(s) { return String(s || '').replace(/\s+/g, ' ').trim().toLowerCase(); }
+	function num(v, a, b) { v = String(v == null ? '' : v).replace(/[^0-9]/g, ''); return v.length >= a && v.length <= b && +v > 0 ? v : ''; }
+	function up(p, type) { var d = 0; try { while (ok(p) && d < 12 && p.paneltype !== type) { p = p.GetParent(); d++; } } catch (e) { return null; } return ok(p) && p.paneltype === type ? p : null; }
+	function dv(p, k, a, b) { try { return num($.Localize('{d:' + k + '}', p), a, b); } catch (e) { return ''; } }
+	// текст панели или первой подписи внутри (CitadelUserName — не подпись, ник у неё внутри)
+	function ptxt(p) {
+		var q = [p], i = 0;
+		while (i < q.length && i < 40) { var c = q[i++]; var t = ok(c) ? txt(c) : ''; if (t && t.indexOf('{') < 0) return t;
+			try { for (var j = 0; j < c.GetChildCount(); j++) q.push(c.GetChild(j)); } catch (e) {} }
+		return '';
+	}
+	// открытые сейчас профили игроков: ник → ID («Account ID: 123…» у подписи AccountID в карточке)
+	function lkCards() {
+		var L = []; try { L = ROOT.FindChildrenWithClassTraverse('AccountID') || []; } catch (e) {}
+		for (var i = 0; i < L.length; i++) {
+			var id = num(txt(L[i]), 3, 10), c = up(L[i], 'CitadelProfileCard'); if (!id || !c) continue;
+			var nm = lc(ptxt(c.FindChildTraverse('UserName')));
+			if (nm) LK.acc[nm] = id;
+		}
+	}
+	function lkDismiss() {
+		try { if (typeof DismissAllContextMenus === 'function') DismissAllContextMenus(); else $.DispatchEvent('DismissAllContextMenus'); } catch (e) {}
+	}
+	// меню Esc открыто: список игроков — ник, герой (hero_id), ID (account_id); у кого ID не нашёлся — открываем его профиль
+	function lkProbe() {
+		if (!on('LINK') || LK.hide || !ok(EM) || !menuShown() || open) { if (LK.pr) { lkDismiss(); LK.pr = null; } return; }
+		var rows = []; try { rows = EM.FindChildrenWithClassTraverse('PlayerName') || []; } catch (e) {}
+		var E = [];
+		for (var i = 0; i < rows.length; i++) {
+			var e = up(rows[i], 'CitadelPlayersListEntry'), nm = lc(txt(rows[i]));
+			if (!e || !nm) continue;
+			var h = dv(e, 'hero_id', 1, 3), a = dv(e, 'account_id', 3, 10);
+			if (h) LK.hero[nm] = h;
+			E.push({ e: e, nm: nm, a: a });
+		}
+		// одинаковый account_id у всех — это ID из общей панели (обычно свой), ему не верим
+		var same = E.length > 1 && E.every(function (x) { return x.a && x.a === E[0].a; });
+		E.forEach(function (x) { if (x.a && !same) LK.acc[x.nm] = x.a; });
+		lkCards();
+		if (LK.pr) {
+			if (LK.acc[LK.pr] || Date.now() - LK.prT > 2500) { if (!LK.acc[LK.pr]) LK.tried[LK.pr] = (LK.tried[LK.pr] || 0) + 1; lkDismiss(); LK.pr = null; }
+			return;
+		}
+		for (var k = 0; k < E.length; k++) {
+			var x = E[k];
+			if (LK.acc[x.nm] || (LK.tried[x.nm] || 0) >= 2) continue;
+			var mc = x.e.FindChildTraverse('MainContents') || x.e;
+			lkDismiss();
+			try { $.DispatchEvent('Activated', mc, 'mouse'); } catch (er) { LK.tried[x.nm] = 9; continue; }
+			LK.pr = x.nm; LK.prT = Date.now();
+			return;
+		}
+	}
+	// 12 игроков из верхней панели: своя команда / враги, ник, герой, ID
+	function lkPlayers() {
+		var out = [], seen = {}, T2 = [['f', 'TeamFriendly'], ['e', 'TeamEnemy']];
+		for (var t = 0; t < 2; t++) {
+			var tp = null; try { tp = TB.FindChildTraverse(T2[t][1]); } catch (e) {}
+			if (!ok(tp)) continue;
+			var ls = []; try { ls = tp.FindChildrenWithClassTraverse('PlayerName') || []; } catch (e) {}
+			for (var i = 0; i < ls.length; i++) {
+				var pl = up(ls[i], 'CitadelHudTopBarPlayer'), nm = txt(ls[i]), k = lc(nm);
+				if (!pl || !k || nm.indexOf('{') >= 0 || seen[k]) continue;
+				seen[k] = 1;
+				var hl = []; try { hl = pl.FindChildrenWithClassTraverse('HeroName') || []; } catch (e) {}
+				var h = hl.length ? txt(hl[0]) : '';
+				if (h.indexOf('{') >= 0) h = '';
+				out.push({ t: T2[t][0], n: nm, k: k, h: h, hid: dv(pl, 'hero_id', 1, 3) || LK.hero[k] || '', a: dv(pl, 'account_id', 3, 10) });
+			}
+		}
+		var same = out.length > 1 && out.every(function (x) { return x.a && x.a === out[0].a; });
+		out.forEach(function (x) { if (same || !x.a) x.a = LK.acc[x.k] || ''; });
+		return out;
+	}
+	function lkTick() {
+		if (!ok(TB)) TB = HUD.FindChildTraverse('TopBar');
+		LK.hide = !ok(TB) || !!(TB.BHasClass && TB.BHasClass('InHideout'));
+		if (!on('LINK')) return;
+		if (LK.skip-- > 0) return;
+		LK.skip = 3;
+		var L = LK.hide ? [] : lkPlayers();
+		LK.n = L.length; LK.ids = 0; LK.hs = 0;
+		var enc = function (v) { return encodeURIComponent(String(v || '').replace(/[~|]/g, ' ')); };
+		var ps = L.map(function (x) { if (x.a) LK.ids++; if (x.hid || x.h) LK.hs++; return [x.t, enc(x.n), enc(x.h), x.hid, x.a].join('~'); }).join('|');
+		var q = 'v=' + VER + '&s=' + (LK.hide ? 'h' : 'm') + '&p=' + ps;
+		var now = Date.now();
+		if (q === LK.last && now - LK.at < 15000) return;
+		if (q !== LK.last && now - LK.at < 2000) return;
+		var gt = ''; try { var g = HUD.FindChildTraverse('GameTime'); gt = g ? txt(g) : ''; } catch (e) {}
+		if (!ok(LK.img)) {
+			LK.img = HUD.FindChildTraverse('RestlessLink');
+			if (!ok(LK.img)) LK.img = mk('Image', HUD, 'RestlessLink', { width: '2px', height: '2px', opacity: '0.02', horizontalAlign: 'left', verticalAlign: 'bottom' }, { hittest: 'false' });
+		}
+		LK.last = q; LK.at = now; LK.seq++;
+		try { LK.img.SetImage(LK.url + q + '&gt=' + enc(gt) + '&n=' + LK.seq); LK.sent++; } catch (e) { $.Msg('[Restless] связь: ' + e); }
+		if (LK.seq === 1 || q.length !== (LK.lenLog || 0)) { LK.lenLog = q.length; $.Msg('[Restless] программе: ' + (LK.hide ? 'укрытие' : 'игроков ' + LK.n + ', с ID ' + LK.ids + ', с героем ' + LK.hs)); }
+	}
+	// плашка пробника 27.10 («Restless работает · картинка из интернета · таймер идёт») — от старого файла, если он ещё стоит
+	var OLD = 0;
+	function oldTick() {
+		if (OLD-- > 0) return;
+		OLD = 8;
+		['RestlessProbe', 'RestlessProbeHud', 'RestlessProbeMenu'].forEach(function (id) {
+			var p = null; try { p = ROOT.FindChildTraverse(id); } catch (e) {}
+			if (ok(p)) { try { p.DeleteAsync(0); $.Msg('[Restless] убрал старую плашку пробника: ' + id); } catch (e) {} }
+		});
 	}
 
 	// ---------- общий такт ----------
@@ -342,6 +468,9 @@
 			try { menuTick(); } catch (e) { $.Msg('[Restless] меню: ' + e); }
 			try { winTick(); } catch (e) { $.Msg('[Restless] окно: ' + e); }
 			try { ultTick(); } catch (e) { $.Msg('[Restless] ульта: ' + e); }
+			try { lkTick(); } catch (e) { $.Msg('[Restless] связь: ' + e); }
+			try { lkProbe(); } catch (e) { $.Msg('[Restless] профили: ' + e); }
+			try { oldTick(); } catch (e) { $.Msg('[Restless] старое: ' + e); }
 			try { seeTick(false); } catch (e) { $.Msg('[Restless] проверка: ' + e); }
 			$.Schedule(0.25, tick);
 		} else {

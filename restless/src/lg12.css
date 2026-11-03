@@ -1,0 +1,9 @@
+/* ===================== lg12 — 03.11: оверлей в программе (матч из игры) ===================== */
+.ov-app{display:flex;flex-wrap:wrap;gap:6px 14px;padding:6px 14px 8px;font-size:12px;color:var(--mu,#9aa1ad);border-bottom:1px solid rgba(255,255,255,.06)}
+.ov-app span{white-space:nowrap}
+.ov-app span.on{color:#33d6a6}
+.ov-app span.on::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:#33d6a6;margin-right:6px;vertical-align:1px}
+.ov-why{margin:10px 0 12px;padding-left:18px;display:grid;gap:6px;font-size:13px;line-height:1.45}
+/* окно программы без рамки — тянуть за шапку, кнопки и ссылки нажимаются */
+.rl-app .ov-h{-webkit-app-region:drag;cursor:move}
+.rl-app .ov-h button,.rl-app .ov-h a,.rl-app .ov-app{-webkit-app-region:no-drag}
