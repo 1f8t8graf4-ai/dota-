@@ -1,0 +1,249 @@
+<title>Что взять у QoL Lock</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Раскладка: липкая полоса со счётом и фильтром → разделы как в окне настроек QoL Lock → карточки функций с «Да / Нет / Потом». Тёмный, как сайт Restless. */
+:root{
+  --bg:#0b0d12; --panel:#12151c; --panel2:#171b24; --line:#242a37; --fg:#e9e6df; --mut:#8c92a3;
+  --amber:#ffb630; --amber-ink:#1a1204; --yes:#33d6a6; --no:#ff5d7a; --later:#7aa7ff;
+  --f-disp:"Oswald","Arial Narrow",Impact,sans-serif; --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.45 var(--f-body);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+h1{font:600 clamp(28px,6vw,44px)/1 var(--f-disp);letter-spacing:.02em;text-transform:uppercase;margin:6px 0 10px;text-wrap:balance}
+h1 b{color:var(--amber);font-weight:600}
+.lead{color:var(--mut);margin:0;max-width:62ch}
+.have{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px;font-size:13px}
+.have span{border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--fg)}
+.have span::before{content:"✓ ";color:var(--yes)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:16px 0 0;padding:10px 0;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.prog{display:flex;align-items:center;gap:10px;min-width:220px;flex:1}
+.prog b{font:600 22px/1 var(--f-disp);font-variant-numeric:tabular-nums}
+.prog small{color:var(--mut)}
+.track{flex:1;height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;min-width:80px}
+.track i{display:block;height:100%;background:var(--amber);width:0;transition:width .3s}
+.flt{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px var(--f-body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;min-height:34px}
+.chip[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink);border-color:var(--amber)}
+.chip:focus-visible,.ans button:focus-visible,.note:focus-visible,.copy:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.copy{font:500 13px var(--f-body);color:var(--amber);background:none;border:1px solid var(--amber);border-radius:8px;padding:7px 12px;cursor:pointer;min-height:34px}
+.save{font-size:12px;color:var(--mut);min-width:9ch}
+.sec{margin-top:28px}
+.sec h2{font:600 18px/1.1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;display:flex;gap:10px;align-items:baseline}
+.sec h2 small{font:400 13px var(--f-body);letter-spacing:0;text-transform:none;color:var(--mut)}
+.grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;border-left:3px solid var(--line)}
+.card[data-a="yes"]{border-left-color:var(--yes)}
+.card[data-a="no"]{border-left-color:var(--no);opacity:.72}
+.card[data-a="later"]{border-left-color:var(--later)}
+.top{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.nm{font-weight:600;font-size:15.5px;min-width:0}
+.tags{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.tag{font-size:11.5px;border-radius:5px;padding:2px 7px;white-space:nowrap;border:1px solid var(--line);color:var(--mut)}
+.tag.us-yes{color:var(--yes);border-color:color-mix(in srgb,var(--yes) 45%,transparent)}
+.tag.us-part{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 45%,transparent)}
+.ds{color:var(--mut);font-size:14px;margin:0}
+.ds b{color:var(--fg);font-weight:500}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ans{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ans button{font:600 13.5px var(--f-body);background:var(--panel2);color:var(--fg);border:0;padding:0 14px;min-height:38px;cursor:pointer;border-right:1px solid var(--line)}
+.ans button:last-child{border-right:0}
+.ans button[aria-pressed="true"][data-v="yes"]{background:var(--yes);color:#04140e}
+.ans button[aria-pressed="true"][data-v="no"]{background:var(--no);color:#1c0409}
+.ans button[aria-pressed="true"][data-v="later"]{background:var(--later);color:#050c1c}
+.note{flex:1;min-width:140px;font:14px var(--f-body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:38px}
+.note::placeholder{color:var(--mut)}
+.warn{margin-top:12px;font-size:13px;color:var(--amber)}
+.empty{color:var(--mut);padding:30px 0;text-align:center}
+@media (prefers-reduced-motion:reduce){.track i{transition:none}}
+</style>
+
+<div class="wrap">
+  <h1>Что взять у <b>QoL Lock</b></h1>
+  <p class="lead">Все <span id="tot">60</span> функций мода QoL Lock 4.0.5, по разделам его окна настроек. У каждой: что делает, есть ли уже у Restless и сколько работы. Жми «Да», «Нет» или «Потом», ответы сохраняются сами.</p>
+  <div class="have" aria-label="Уже есть у Restless"><span>КД ультов в верхней панели</span><span>Кнопка RESTLESS в меню Esc</span><span>Кто в матче — в программу поверх игры</span><span>Русский и английский</span></div>
+  <p class="warn" id="warn" hidden></p>
+
+  <div class="bar">
+    <div class="prog"><b id="cnt">0/0</b><div class="track" aria-hidden="true"><i id="bar"></i></div><small id="sum"></small></div>
+    <div class="flt" role="group" aria-label="Показать">
+      <button class="chip" data-f="all" aria-pressed="true">Все</button>
+      <button class="chip" data-f="none" aria-pressed="false">Без ответа</button>
+      <button class="chip" data-f="yes" aria-pressed="false">Да</button>
+      <button class="chip" data-f="later" aria-pressed="false">Потом</button>
+      <button class="chip" data-f="no" aria-pressed="false">Нет</button>
+    </div>
+    <button class="copy" id="copy" type="button">Скопировать ответы</button>
+    <span class="save" id="save" aria-live="polite"></span>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<script>
+// us: что у Restless уже есть: yes — есть, part — частично, иначе нет. w: сколько работы: 1 легко, 2 средне, 3 сложно.
+const SECS=[
+ ["Верхняя панель",[
+  ["ult","КД ультов у всех игроков","Секунды до ульты на портрете каждого в верхней панели.","yes",1],
+  ["rank","Ранги игроков","Значок ранга у каждого в верхней панели и в списке игроков по Esc. ID игроков мод 0.13 уже собирает.","",2],
+  ["nick","Ники над портретами","Ник игрока всегда виден над его героем в верхней панели.","",1],
+  ["thp","Предупреждение о здоровье","Портрет врага или союзника меняет цвет при 75, 65 и 25 % здоровья.","",1],
+  ["miss","Пропавшие герои","Портрет врага бледнеет, когда его не видно на карте.","",1],
+  ["omap","Карта строений","Сверху видно, какие башни и стражи ещё живы.","",2],
+  ["odmg","Урон по строениям","У каждого игрока — сколько урона он нанёс по строениям.","",2],
+  ["urnd","Разница урн","Сколько урн сдала каждая команда и кто впереди.","",2],
+  ["rift","Таймер урны и разлома","Отсчёт до появления урны и разлома под счётом команд.","",2],
+  ["spm","Души в минуту","Души в минуту у команды и у каждого игрока.","",2],
+  ["unsp","Непотраченные души","Сколько душ у игрока лежит неистраченными.","",2],
+  ["blur","Без размытия под никами","Убирает мутную подложку под именами в верхней панели.","",1],
+  ["tbl","Верхняя панель: вид","Прозрачность, масштаб и сдвиг всей верхней панели.","",1]
+ ]],
+ ["Прицел",[
+  ["ammo","Патроны у прицела","Патроны рядом с прицелом, можно спрятать магазин внизу.","",2],
+  ["rld","Перезарядка у прицела","Круг или таймер перезарядки возле прицела.","",2],
+  ["icd","КД предметов у прицела","Кулдауны своих предметов у прицела. Фильтры: защитные или атакующие, пассивные или активные.","",3],
+  ["sig","Вспышка умения на КД","Значок умения вспыхивает, если жмёшь его, пока оно на перезарядке.","",1],
+  ["xst","Баффы и дебаффы у прицела","Скорострельность, замедления и другие эффекты строкой у прицела.","",3],
+  ["imp","Эффект попадания","Размер и прозрачность вспышки, когда попадаешь.","",1],
+  ["dnum","Числа урона","Прятать мелкие числа и урон по крипам, показывать суммарный урон.","",2],
+  ["stam","Выносливость","Угол и цвет зарядов выносливости.","",1],
+  ["cmb","Индикатор «в бою»","Сколько секунд до выхода из боя (когда начнётся реген).","",2],
+  ["tgt","Метки целей","Размер и прозрачность меток над целями, красный ромб.","",1]
+ ]],
+ ["Полоса здоровья",[
+  ["hpc","Цвет здоровья по порогам","Полоса здоровья меняет цвет при 75, 65 и 25 %, своя и у врагов.","",1],
+  ["hpt","Вид полосы здоровья","Несколько стилей полосы (минимализм, «сердечки»), размер и цвет.","",2]
+ ]],
+ ["Нижняя панель и HUD",[
+  ["bbar","Нижняя панель: вид","Способности и активные предметы: масштаб, сдвиг, цвет.","",1],
+  ["abi","Простые значки умений","Значки без косметики, без подсказок и лишних стаков.","",1],
+  ["itm","Предметы: вид","Прозрачность, сдвиг и цвет панели предметов.","",1],
+  ["sls","Души: вид","Прозрачность и сдвиг счётчика душ.","",1],
+  ["uns","Незащищённые души","Крупнее и с таймером: когда души сгорят, если не дойти до базы.","",2],
+  ["stb","Бонусы золотых статуй","Список, что дали статуи: скорострельность, КД, дух, урон, здоровье.","",2],
+  ["stp","Статистика игрока: место","Блок статов слева или справа, прятать в обычном виде и на табло.","",1],
+  ["drep","Отчёт об уроне после смерти","Выключить или сдвинуть окно «кто и чем тебя убил».","",1],
+  ["cfl","Без «не удалось применить»","Прячет красную надпись, когда умение не сработало.","",1],
+  ["asp","Экраны 16:10, 4:3, 21:9","HUD под нестандартный экран, сдвиг для стрима.","",2]
+ ]],
+ ["Миникарта",[
+  ["mmz","Зум и вид миникарты","Зум по Alt или Tab, размер, минималистичный вид, прозрачность, размер значков.","",2],
+  ["mmt","Таймеры на миникарте","Бафф на мосту, мид-босс, руна лечения — отсчёт прямо на карте. У нас в плане: таймеры лагерей.","part",2],
+  ["rjv","Плашки «Бафф» и «Rejuv»","Сверху отсчёт до баффа и руны лечения, кто взял.","",2],
+  ["vox","Голосовые напоминания","Диктор напоминает про бафф и события матча, с подписью на экране.","",3]
+ ]],
+ ["Магазин",[
+  ["shop","Вид магазина","Статы, герой, минимализм, прозрачность, сдвиг, без 3D-героя.","",2],
+  ["qbuy","Быстрая покупка","Больше слотов, нажатием — сообщить команде, что копишь.","",2],
+  ["rbuy","Кто что купил","Недавние покупки и всплывашки: что купили свои и враги.","",2],
+  ["bid","ID сборки на экране","Номер и название сборки в углу (для стримов).","",1]
+ ]],
+ ["Чат",[
+  ["cimg","Картинки в чате","Ссылка на картинку показывается прямо в чате.","",2],
+  ["ctr","Перевод чата","Сообщения на другом языке переводятся через программу на компьютере. Тот же мост, что у нашего оверлея.","",3]
+ ]],
+ ["Оверлей",[
+  ["kbd","Клавиатура на экране","Видно, какие клавиши жмёшь, — для стрима и обучения.","",2],
+  ["zip","Буст на канате","Готов ли буст на канате и сколько до него.","",2],
+  ["cmp","Компас и скорость","Стороны света и твоя скорость сверху.","",2],
+  ["cur","Свой курсор","Свой курсор мыши в магазине, на табло и в меню.","",2]
+ ]],
+ ["Меню и игра",[
+  ["stat","Кнопка «Статистика» в профиле","В профиле любого игрока кнопка → его страница на сайте. У QoL ведёт на statlocker.gg, у нас — на Restless.","",1],
+  ["cesc","Меню Esc по центру","Меню Esc и список друзей по центру экрана.","",1],
+  ["lane","Линия «с пати» сама","При поиске матча сама выбирается линия «с пати».","",1],
+  ["tst","Тестовые инструменты","Включить или спрятать тестовые инструменты, спрятать Behavior Summary.","",1],
+  ["arc","Мини-игры, пока мёртв","Сапёр, блэкджек, flappy, тренировка, «прибей Рэм» — пока ждёшь возрождения.","",3],
+  ["perf","Счётчик нагрузки","FPS, тики и память — сколько ест мод.","",1]
+ ]],
+ ["Окно настроек мода",[
+  ["pre","Пресеты и обмен настройками","Готовые наборы настроек, экспорт и импорт одной строкой.","",2],
+  ["thm","Темы и язык окна","Темы оформления окна настроек. Русский и английский у нас уже есть.","part",1],
+  ["srch","Поиск и разделы","Разделы слева, поиск по всем настройкам, подсказка «влияет ли на FPS».","",2],
+  ["prv","Предпросмотр","Видно изменение сразу, пока двигаешь ползунок.","",2],
+  ["pos","Свои сдвиги и масштаб","У каждого элемента: прозрачность, масштаб, сдвиг по X и Y, цвет из палитры.","",2]
+ ]]
+];
+const W=["","легко","средне","сложно"];
+const ALL=SECS.flatMap(([s,L])=>L.map(x=>({sec:s,id:x[0],nm:x[1],ds:x[2],us:x[3],w:x[4]})));
+let ANS={}, FIL="all", db=null, local=false;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function card(f){
+  const a=(ANS[f.id]||{}).a||"", n=(ANS[f.id]||{}).note||"";
+  const us=f.us==="yes"?'<span class="tag us-yes">у нас есть</span>':f.us==="part"?'<span class="tag us-part">у нас частично</span>':'<span class="tag">у нас нет</span>';
+  return `<article class="card" data-id="${f.id}" data-a="${a}">
+   <div class="top"><div class="nm">${esc(f.nm)}</div><div class="tags">${us}<span class="tag">${W[f.w]}</span></div></div>
+   <p class="ds">${esc(f.ds)}</p>
+   <div class="row"><div class="ans" role="group" aria-label="Ответ">${[["yes","Да"],["no","Нет"],["later","Потом"]].map(([v,t])=>`<button type="button" data-v="${v}" aria-pressed="${a===v}">${t}</button>`).join("")}</div>
+   <input class="note" id="n-${f.id}" placeholder="Комментарий (если надо)" value="${esc(n)}" aria-label="Комментарий: ${esc(f.nm)}"></div>
+  </article>`;
+}
+function show(f){const a=(ANS[f.id]||{}).a||"";return FIL==="all"||(FIL==="none"?!a:a===FIL)}
+function render(){
+  const act=document.activeElement, keep=act&&act.classList.contains("note")?act.id:null, cur=keep?act.value:null;
+  let h="";
+  for(const [s] of SECS){const L=ALL.filter(f=>f.sec===s&&show(f)); if(!L.length)continue;
+    const done=ALL.filter(f=>f.sec===s&&(ANS[f.id]||{}).a).length, tot=ALL.filter(f=>f.sec===s).length;
+    h+=`<section class="sec"><h2>${esc(s)}<small>${done} из ${tot}</small></h2><div class="grid">${L.map(card).join("")}</div></section>`;}
+  $("#list").innerHTML=h||'<p class="empty">Тут пусто — выбери другой фильтр.</p>';
+  if(keep){const el=document.getElementById(keep); if(el){el.value=cur; el.focus();}}
+  counts();
+}
+function counts(){
+  const c={yes:0,no:0,later:0}; ALL.forEach(f=>{const a=(ANS[f.id]||{}).a; if(c[a]!=null)c[a]++;});
+  const d=c.yes+c.no+c.later; $("#cnt").textContent=d+"/"+ALL.length; $("#bar").style.width=(100*d/ALL.length)+"%";
+  $("#sum").textContent=`да ${c.yes} · потом ${c.later} · нет ${c.no}`;
+}
+// одна запись за раз на функцию
+const Q={};
+function save(id){
+  const body=Object.assign({a:"",note:""},ANS[id],{t:Date.now()});
+  $("#save").textContent="сохраняю…";
+  if(local||!db){try{localStorage.setItem("qol-pick",JSON.stringify(ANS))}catch(e){} $("#save").textContent=local?"на этом устройстве":"сохранено"; return;}
+  Q[id]=(Q[id]||Promise.resolve()).then(()=>db.collection("qol").doc(id).set(body)).then(()=>{$("#save").textContent="сохранено"},e=>{$("#save").textContent="не сохранилось";$("#warn").hidden=false;$("#warn").textContent="Ответ не сохранился: "+(e&&e.message||"нет связи")+". Нажми «Скопировать ответы» и пришли текстом."});
+}
+$("#list").addEventListener("click",e=>{
+  const b=e.target.closest(".ans button"); if(!b)return;
+  const id=b.closest(".card").dataset.id, v=b.dataset.v, o=ANS[id]||{};
+  ANS[id]=Object.assign({},o,{a:o.a===v?"":v}); render(); save(id);
+});
+let NT={};
+$("#list").addEventListener("input",e=>{
+  if(!e.target.classList.contains("note"))return;
+  const id=e.target.closest(".card").dataset.id; ANS[id]=Object.assign({},ANS[id],{note:e.target.value});
+  clearTimeout(NT[id]); NT[id]=setTimeout(()=>{delete NT[id];save(id)},900);
+});
+document.querySelector(".flt").addEventListener("click",e=>{
+  const b=e.target.closest(".chip"); if(!b)return; FIL=b.dataset.f;
+  document.querySelectorAll(".flt .chip").forEach(x=>x.setAttribute("aria-pressed",x===b)); render();
+});
+$("#copy").addEventListener("click",()=>{
+  const T={yes:"ДА",no:"НЕТ",later:"ПОТОМ"};
+  const txt=ALL.filter(f=>(ANS[f.id]||{}).a||(ANS[f.id]||{}).note).map(f=>`${T[(ANS[f.id]||{}).a]||"—"} · ${f.nm}${(ANS[f.id]||{}).note?" — "+ANS[f.id].note:""}`).join("\n")||"Пока нет ответов";
+  const b=$("#copy");
+  const done=()=>{b.textContent="Скопировано ✓";setTimeout(()=>b.textContent="Скопировать ответы",1600)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,()=>fallback(txt))}else fallback(txt);
+  function fallback(t){const ta=document.createElement("textarea");ta.value=t;ta.style.cssText="position:fixed;left:-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done()}catch(e){}ta.remove();}
+});
+$("#tot").textContent=ALL.length;
+render();
+(async()=>{
+  try{db=window.claude&&window.claude.use?await window.claude.use("db"):null}catch(e){db=null}
+  if(!db){local=true; try{ANS=JSON.parse(localStorage.getItem("qol-pick")||"{}")||{}}catch(e){}
+    $("#warn").hidden=false; $("#warn").textContent="Ответы сохраняются только на этом устройстве. Когда закончишь — «Скопировать ответы» и пришли текстом."; render(); return;}
+  let got=false; const tm=setTimeout(()=>{if(!got){$("#save").textContent="жду базу…"}},10000);
+  db.collection("qol").onSnapshot(s=>{
+    if(!s.metadata.fromCache){got=true;clearTimeout(tm);if($("#save").textContent==="жду базу…")$("#save").textContent="";}
+    const m={}; s.docs.forEach(d=>{const x=d.data()||{}; m[d.id]={a:x.a||"",note:x.note||""};});
+    // своё недосохранённое не затираем
+    for(const k in ANS){if(NT[k])m[k]=ANS[k];}
+    ANS=m; render();
+  },e=>{clearTimeout(tm);$("#warn").hidden=false;$("#warn").textContent="База ответов недоступна. Нажми «Скопировать ответы» и пришли текстом.";});
+})();
+</script>
