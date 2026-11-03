@@ -128,7 +128,7 @@ function pCard(p, en, thr, meId) {
     return `<button class="l10-pr${w == null ? ' off' : ''}" type="button" data-per="${k}" data-acc="${p.id}"${w == null ? ' disabled' : ''}><small>${nm}</small><b class="${w == null ? '' : w >= 50 ? 'win' : 'loss'}">${w == null ? '—' : w + '%'}</b><i>${o && o.m ? games(o.m) : 'не играл'}</i></button>`; };
   const tags = [thr ? ['h', 'Главная угроза', 'самый опасный по рангу и игре на герое'] : null, p.cn ? ['r', `Контрит тебя · ${p.cn}%`, 'твой герой против него побеждает реже'] : null, ...p.tags].filter(Boolean);
   return `<div class="q-pc l10${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
-    <div class="top"><img class="f u11-pf" src="${esc(hero(p.hid).v || hero(p.hid).c || hero(p.hid).i)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}${p.id && p.hm ? `<small class="l13-hr" data-hr="${p.hid}|${p.id}" title="Место в мире среди всех игроков на ${esc(hero(p.hid).n)} — по числу побед на нём">место на герое…</small>` : ''}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
+    <div class="top"><img class="f u11-pf" src="${esc(hero(p.hid).v || hero(p.hid).c || hero(p.hid).i)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}${p.id && p.hm ? `<small class="l13-hr" data-hr="${p.hid}|${p.id}" data-nm="${esc(p.name || '')}" title="Место в мире среди всех игроков на ${esc(hero(p.hid).n)} — по числу побед на нём">место на герое…</small>` : ''}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
       <span class="l10-rk" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span></div>
     <div class="q-pb">${p.id ? `<a class="q-pc-n" href="?id=${p.id}#home"><span class="q-pnm">${esc(p.name)}</span></a>` : `<span class="q-pnm">${esc(p.name)}</span>`}<span class="l10-rn">${esc(rankOf(p.badge).name)}</span>
       <div class="l10-st"><span><small>на герое</small><b>${p.hm ? nf(p.hm) : '0'}${p.hm ? ` · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : ''}</b></span><span><small>всего</small><b>${p.tm ? `${nf(p.tm)} · ${pc(p.tw, p.tm)}%` : '—'}</b></span></div>
@@ -612,18 +612,18 @@ async function hmItems(n) {
 
 // ---------- место на герое в профиле: «#2 100 · мир · #12 EU», нажал — таблица с соседями выше и ниже ----------
 const RGS = {Europe: 'EU', NAmerica: 'NA', SAmerica: 'SA', Asia: 'Asia', Oceania: 'OCE'}, HRR = {};
-const pctTop = (pos, tot) => { const p = 100 * pos / Math.max(1, tot); return 'топ ' + (p < 1 ? p.toFixed(1).replace('.', ',') : Math.max(1, Math.ceil(p))) + '%'; };
-const hrkCell = o => o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b><small>в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''}</small><em class="${o.r ? '' : 'no'}">${RGS[o.rg] || o.rg} ${o.r ? '#' + o.r.pos : '— вне топ-1000'}</em><i class="go">›</i>` : '<small>побед на герое пока нет</small>';
+const pctTop = (pos, tot) => { const p = 100 * pos / Math.max(1, tot); return 'топ ' + (p < .1 ? String(+p.toPrecision(1)).replace('.', ',') : p < 1 ? p.toFixed(1).replace('.', ',') : Math.max(1, Math.ceil(p))) + '%'; };
+const hrkCell = o => o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b><small>в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''}</small><em class="${o.r ? '' : 'no'}">${RGS[o.rg] || o.rg} ${o.r ? '#' + o.r.pos : '— вне топ-1000'}</em><i class="go">›</i>` : `<small title="${esc(hrWhy(o.w))}">${o.w && o.w.why === 'rank' ? 'нет ранга' : 'нужно 20 игр'}</small>`;
 // сколько всего игроков на герое (для «топ N%»): ищем последнюю строку таблицы вилкой, кэш на сутки
 const HTOT = {};
 function heroTotal(hid) {
   if (HTOT[hid]) return HTOT[hid];
   return (HTOT[hid] = (async () => {
-    try { const c = JSON.parse(localStorage.getItem('rl-ht') || '{}'); if (c[hid] && c[hid].t > Date.now() - 864e5) return c[hid].n; } catch (e) {}
-    const has = async st => { const r = await SBQ(`hero_id=${hid}&sort_by=wins&min_matches=1&start=${st}&limit=1`).catch(() => null); return !!(r && r.length); };
-    let lo = 0, hi = 50000; while (await has(hi) && hi < 8e6) { lo = hi; hi *= 2; }
-    while (hi - lo > 1000) { const m = Math.floor((lo + hi) / 2); if (await has(m)) lo = m; else hi = m; }
-    try { const c = JSON.parse(localStorage.getItem('rl-ht') || '{}'); c[hid] = {n: lo, t: Date.now()}; localStorage.setItem('rl-ht', JSON.stringify(c)); } catch (e) {}
+    try { const c = JSON.parse(localStorage.getItem('rl-ht2') || '{}'); if (c[hid] && c[hid].t > Date.now() - 864e5) return c[hid].n; } catch (e) {}
+    const has = async st => { const r = await SBQ(`${HLQ(hid)}&start=${st}&limit=1`).catch(() => null); return !!(r && r.length); };
+    let lo = 0, hi = 4000; while (await has(hi) && hi < 8e6) { lo = hi; hi *= 2; }
+    while (hi - lo > 40) { const m = Math.floor((lo + hi) / 2); if (await has(m)) lo = m; else hi = m; }
+    try { const c = JSON.parse(localStorage.getItem('rl-ht2') || '{}'); c[hid] = {n: lo, t: Date.now()}; localStorage.setItem('rl-ht2', JSON.stringify(c)); } catch (e) {}
     return lo;
   })().catch(() => 0));
 }
@@ -649,7 +649,7 @@ async function hrkOpen(hid, id, name) {
   const k1 = e => { if (e.key === 'Escape') close(); };
   addEventListener('keydown', k1); addEventListener('hashchange', close);
   let mode = 'w', off = 0;
-  const row = (rank, aid, nm, av, sub, mine) => `<${aid ? `a href="?id=${aid}#home"` : 'div'} class="hrk-r${mine ? ' mine' : ''}${aid ? '' : ' x'}"><span class="n">${nf(rank)}</span>${av ? `<img src="${esc(av)}" alt="" loading="lazy">` : '<i></i>'}<b>${esc(nm || 'Скрытый игрок')}</b><small>${sub}</small><span class="go">${aid ? '›' : ''}</span></${aid ? 'a' : 'div'}>`;
+  const row = (rank, aid, nm, av, sub, mine, bg) => `<${aid ? `a href="${bg != null ? `#h/${hid}/p${aid}` : `?id=${aid}#home`}"` : 'div'} class="hrk-r${mine ? ' mine' : ''}${aid ? '' : ' x'}"><span class="n">${nf(rank)}</span>${av ? `<img src="${esc(av)}" alt="" loading="lazy">` : '<i></i>'}<b>${esc(nm || 'Скрытый игрок')}</b><small>${bg ? rankImg(bg, 'rk hrk-rk') : ''}${sub}</small><span class="go">${aid ? '›' : ''}</span></${aid ? 'a' : 'div'}>`;
   const draw = async () => {
     const b = $('#hrkb', ov); if (!b) return; b.innerHTML = '<div class="load">Загружаю…</div>';
     const o = await hrkGet(hid, id, name).catch(() => null); if (!ov.isConnected) return;
@@ -657,11 +657,11 @@ async function hrkOpen(hid, id, name) {
     let html = '';
     if (mode === 'w') {
       const me = o && o.w && o.w.pos ? o.w.pos : 1, st = Math.max(1, me - 7 + off);
-      const L = (await SBQ(`hero_id=${hid}&sort_by=wins&min_matches=1&start=${st - 1}&limit=15`).catch(() => [])) || [];
+      const L = (await SBQ(`${HLQ(hid)}&start=${st}&limit=15`).catch(() => [])) || [];
       const S = L.length ? await api('players/steam?account_ids=' + L.map(x => x.account_id).join(',')).catch(() => []) : [], SM = {};
       (S || []).forEach(x => SM[x.account_id] = x);
-      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b> в мире${o.tot ? ` из ${nf(o.tot)} игроков на герое · ${pctTop(o.w.pos, o.tot)}` : ''}<br><small>Место считается по числу побед на этом герое: у тебя ${nf(o.w.v)}.</small>` : 'Побед на этом герое пока нет.'}</p>
-        ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${nf(x.value)} ${pl(x.value, ['победа', 'победы', 'побед'])} · ${nf(x.matches)} игр`, x.account_id === id)).join('')}`;
+      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b> в мире${o.tot ? ` из ${nf(o.tot)} в рейтинге героя · ${pctTop(o.w.pos, o.tot)}` : ''}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}<br><small>Честно: место по рангу среди тех, кто сыграл на герое ${HL_MIN}+ игр за ${HL_DAYS} дней. Нажми на игрока — его сборка на этом герое.</small></p>
+        ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${esc(rankOf(x.badge).name)} · ${nf(x.matches)} ${pl(x.matches, ['игра', 'игры', 'игр'])} на герое`, x.account_id === id, x.badge)).join('')}`;
     } else {
       const E = o ? o.E : [], c = o && o.i >= 0 ? o.i : 0, a = Math.max(0, c - 7 + off);
       html = `<p class="hrk-h">${o && o.r ? `<b>#${o.r.pos}</b> в ${esc(REGN[o.rg] || o.rg)} на этом герое<br><small>Официальная таблица игры: топ-1000 региона.</small>` : `${esc(name || 'Игрока')} пока нет в топ-1000 ${esc(REGN[o ? o.rg : 'Europe'] || '')} на этом герое<br><small>Ниже — начало таблицы региона.</small>`}</p>

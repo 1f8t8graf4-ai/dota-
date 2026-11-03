@@ -37,42 +37,21 @@ button:disabled,[disabled]{cursor:default}
 .rl-app body.ovm #tabs{display:flex!important}
 .rl-app .ov-h{-webkit-app-region:no-drag}
 
-/* страница «Оверлей»: одна карточка — слева превью, справа статус и одна настройка */
-.ovs{max-width:980px;margin:6px auto 0;display:grid;gap:16px}
+/* страница «Оверлей»: статус одной строкой, ниже — пресеты на скриншоте игры */
+.ovs{max-width:1180px;margin:6px auto 0;display:grid;gap:14px}
 .ovs-h h1{font:700 30px/1 var(--h,var(--f,system-ui));letter-spacing:.04em;text-transform:uppercase;margin:4px 0 6px}
 .ovs-h p{margin:0;color:var(--mu,#8e897f)}
-.ovs-main{display:grid;grid-template-columns:1fr;gap:0;background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:16px;overflow:hidden}
-@media (min-width:820px){.ovs-main{grid-template-columns:1.25fr 1fr}}
-.ovs-pv{padding:18px;display:flex;flex-direction:column;gap:12px;background:radial-gradient(120% 90% at 20% 0%,color-mix(in srgb,var(--q-am,#ffb020) 10%,transparent),transparent 60%),#0d0f14}
-.ovs-pv small{color:var(--mu,#8e897f);font-size:13px;line-height:1.45}
-.ovs-scr{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:1px solid #232733;background:linear-gradient(180deg,#273041 0%,#1a202c 45%,#12161e 100%)}
-.ovs-scr::before{content:"";position:absolute;left:8%;right:44%;bottom:0;height:46%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.35));clip-path:polygon(0 100%,18% 30%,40% 55%,62% 20%,100% 100%)}
-.ovs-tb{position:absolute;top:7px;left:50%;transform:translateX(-50%);display:flex;gap:3px;align-items:center}
-.ovs-tb u{width:13px;height:13px;border-radius:3px;background:#3a3120;box-shadow:inset 0 0 0 1px #6b5526}
-.ovs-tb u:nth-child(n+8){background:#1f2a3c;box-shadow:inset 0 0 0 1px #33507a}
-.ovs-tb b{width:26px;height:9px;border-radius:2px;background:#0b0d12;margin:0 3px}
-.ovs-win{position:absolute;right:4%;top:15%;bottom:7%;width:40%;border-radius:8px;background:rgba(10,12,17,.94);border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 70%,transparent);box-shadow:0 10px 30px -8px #000,0 0 0 4px rgba(255,176,32,.06);padding:6px;display:flex;flex-direction:column;gap:5px}
-.ovs-wh{display:flex;align-items:center;justify-content:space-between}
-.ovs-wh b{font:700 7.5px/1 var(--f,system-ui);letter-spacing:.2em;color:var(--q-am,#ffb020)}
-.ovs-wh span{font:700 6.5px/1 var(--f,system-ui);color:#fff;background:#ff3b4e;border-radius:3px;padding:2px 3px}
-.ovs-wl{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;flex:1}
-.ovs-wl i{border-radius:4px;background:#171b24;border-top:2px solid #6b5526;display:flex;flex-direction:column;gap:2px;padding:3px;animation:ovsIn .5s var(--d) ease-out both}
-.ovs-wl.e i{border-top-color:#33507a}
-.ovs-wl u{width:44%;aspect-ratio:1;border-radius:3px;background:#2a3040}
-.ovs-wl s{height:3px;border-radius:2px;background:#2a3040;width:80%}
-.ovs-wl em{height:3px;border-radius:2px;background:#33d6a6;width:50%;opacity:.7}
-.ovs-wl.e i:nth-child(2n) em{background:#ff6b81;width:35%}
-@keyframes ovsIn{from{opacity:0;transform:translateY(4px)}}
-.ovs-st{padding:20px;display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:0}
-.ovs-r{display:grid;grid-template-columns:10px 76px 1fr;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--ln,#26262e)}
+.ovs-st{display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px;padding:12px 16px;background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:14px;min-width:0}
+.ovs-st:empty{display:none}
+.ovs-r{display:flex;align-items:center;gap:8px;min-width:0}
 .ovs-r i{width:8px;height:8px;border-radius:50%;background:#3a3f4c}
 .ovs-r i.ok{background:#33d6a6}
 .ovs-r i.bad{background:#ff6b81}
 .ovs-r i.live{background:#ff3b4e;box-shadow:0 0 0 0 rgba(255,59,78,.6);animation:ovRing 1.6s ease-out infinite}
 .ovs-r small{color:var(--mu,#8e897f);font-size:12.5px}
 .ovs-r b{font-weight:600;font-size:14.5px;min-width:0;overflow-wrap:anywhere}
-.ovs-go{align-self:flex-start;margin-top:4px}
-.ovs-sw{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:14px}
+.ovs-go{height:34px;padding:0 12px;font-size:13px}
+.ovs-sw{display:flex;align-items:center;gap:10px;margin-left:auto;font-size:13.5px;color:var(--mu,#8e897f);cursor:pointer}
 .ovs-sw input{position:absolute;opacity:0;width:1px;height:1px}
 .ovs-sw .tr{flex-shrink:0;width:38px;height:22px;border-radius:11px;background:#2a2f3a;position:relative;transition:background .2s}
 .ovs-sw .tr::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#cfd3dc;transition:transform .2s}
@@ -80,9 +59,9 @@ button:disabled,[disabled]{cursor:default}
 .ovs-sw input:checked+.tr::after{transform:translateX(16px);background:#1a1204}
 .ovs-sw input:focus-visible+.tr{outline:2px solid var(--q-am,#ffb020);outline-offset:2px}
 .ovs-sw input:disabled+.tr{opacity:.5}
-.ovs-t1{margin:0;font-size:15px;line-height:1.5}
-.ovs-dlb{align-self:flex-start}
-.ovs-n{color:var(--mu,#8e897f);font-size:12.5px}
+.ovs-t1{margin:0;font-size:14.5px;line-height:1.45;flex:1 1 320px}
+.ovs-dlb{height:38px}
+.ovs-n{color:var(--mu,#8e897f);font-size:12.5px;flex-basis:100%}
 .ovs-soon{margin:0;color:var(--mu,#8e897f);font-size:13px;text-align:center}
 
 /* «12 ч» — сами игры */
@@ -108,7 +87,73 @@ button:disabled,[disabled]{cursor:default}
 
 /* место на герое под названием героя на карточке */
 .q-pc.l10 .top .hn{display:flex;flex-direction:column;gap:3px}
-.l13-hr{font:600 11px/1.1 var(--f,system-ui);letter-spacing:0;text-transform:none;color:var(--mu,#8e897f)}
-.l13-hr:not([data-ok]){opacity:.5}
-.l13-hr.top{color:var(--q-am,#ffb020)}
-@media (prefers-reduced-motion:reduce){.q-tabs a[data-t="live"].live .q-lvb,.q-tabs a[data-t="live"].live::before,.rl-live,.ovs-r i.live,.ovs-wl i,.l13-sk{animation:none}}
+.l13-hr{font:700 12px/1.15 var(--f,system-ui);letter-spacing:0;text-transform:none;color:var(--tx,#f2ede4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.l13-hr i{font-style:normal;font-weight:500;color:var(--mu,#8e897f)}
+.l13-hr em{font-style:normal;font-weight:700;color:#7fb4ff;margin-left:2px}
+.l13-hr:not([data-ok]){opacity:.5;font-weight:500;color:var(--mu,#8e897f)}
+.l13-hr.no{font-weight:500;color:var(--mu,#8e897f);opacity:.7}
+.l13-hr.hi{color:#ffd47a}
+.l13-hr.top{color:var(--q-am,#ffb020);text-shadow:0 0 10px rgba(255,176,32,.35)}
+.l13-hr.top::before{content:"★ "}
+@media (prefers-reduced-motion:reduce){.q-tabs a[data-t="live"].live .q-lvb,.q-tabs a[data-t="live"].live::before,.rl-live,.ovs-r i.live,.l13-sk{animation:none}.ovp-m,.ovp-m.on{transition:none}}
+
+/* пресеты оверлея: Лайт · Медиум · Энчантед · Свой */
+.ovp{background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:16px;overflow:clip}
+.ovp-tabs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--ln,#26262e)}
+.ovp-tabs button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:13px 16px 11px;border-bottom:2px solid transparent;min-width:0}
+.ovp-tabs button b{font:700 15px/1 var(--h,var(--f,system-ui));letter-spacing:.06em;text-transform:uppercase;color:var(--tx,#f2ede4)}
+.ovp-tabs button small{color:var(--mu,#8e897f);font-size:12px;line-height:1.3}
+.ovp-tabs button:hover{background:#171a22}
+.ovp-tabs button[aria-selected="true"]{border-bottom-color:var(--q-am,#ffb020);background:linear-gradient(180deg,transparent,rgba(255,176,32,.07))}
+.ovp-tabs button[aria-selected="true"] b{color:var(--q-am,#ffb020)}
+.ovp-tabs button:focus-visible{outline:2px solid var(--q-am,#ffb020);outline-offset:-2px}
+.ovp-main{display:grid;grid-template-columns:1fr}
+@media (min-width:900px){.ovp-main{grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr)}}
+.ovp-stage{position:relative;margin:14px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:1px solid #232733;background:#141821;container-type:inline-size}
+@media (min-width:900px){.ovp-stage{position:sticky;top:120px;align-self:start}}
+.ovp-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* схема экрана Deadlock, пока нет настоящего скриншота: сверху 12 игроков и время, внизу здоровье, умения, предметы, карта справа */
+.ovp-sch{position:absolute;inset:0;background:linear-gradient(180deg,#2c3446 0%,#222a39 38%,#1a1f29 62%,#14171e 100%)}
+.ovp-sch i{position:absolute;display:flex;gap:.5cqw;align-items:center}
+.ovp-sch i:not(.fg){z-index:1}
+.ovp-sch .fg{inset:auto 0 0 0;height:52%;background:linear-gradient(180deg,#1b2029,#101319);clip-path:polygon(0 100%,0 46%,7% 46%,7% 30%,13% 30%,13% 52%,22% 52%,22% 18%,27% 18%,27% 40%,36% 40%,40% 62%,60% 62%,64% 36%,72% 36%,72% 12%,78% 12%,78% 44%,88% 44%,88% 28%,94% 28%,94% 48%,100% 48%,100% 100%)}
+.ovp-sch .tb{top:1.6cqw;left:50%;transform:translateX(-50%)}
+.ovp-sch .tb u{width:2.5cqw;height:2.5cqw;border-radius:.5cqw;background:#3a3120;box-shadow:inset 0 0 0 1px #6b5526}
+.ovp-sch .tb u:nth-child(n+8){background:#1f2a3c;box-shadow:inset 0 0 0 1px #33507a}
+.ovp-sch .tb b{width:6cqw;height:2cqw;border-radius:.4cqw;background:#0b0d12;margin:0 .8cqw}
+.ovp-sch .hp{left:3cqw;bottom:3cqw;width:22cqw;height:1.6cqw;border-radius:.4cqw;background:#0b0d12;overflow:hidden}
+.ovp-sch .hp s{display:block;width:72%;height:100%;background:#3fbf7f}
+.ovp-sch .ab{left:50%;bottom:2.6cqw;transform:translateX(-50%)}
+.ovp-sch .ab u{width:4.2cqw;height:4.2cqw;border-radius:.8cqw;background:#262c3a;box-shadow:inset 0 0 0 1px #3c4457}
+.ovp-sch .it{left:64cqw;bottom:2.6cqw}
+.ovp-sch .it u{width:2.6cqw;height:2.6cqw;border-radius:.4cqw;background:#2a2238;box-shadow:inset 0 0 0 1px #4a3c66}
+.ovp-sch .mm{right:1.6cqw;bottom:1.6cqw;width:14cqw;aspect-ratio:1;border-radius:1cqw;border:1px solid #3c4457;background:linear-gradient(90deg,transparent 30%,#3a4252 30% 33%,transparent 33% 67%,#3a4252 67% 70%,transparent 70%),linear-gradient(0deg,transparent 48%,#3a4252 48% 52%,transparent 52%),#151a23}
+.ovp-sch .cr{left:50%;top:50%;width:1.6cqw;height:1.6cqw;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.55);border-radius:50%}
+/* значки того, что добавит Restless */
+.ovp-m{position:absolute;z-index:2;display:flex;align-items:center;gap:.6cqw;padding:.35cqw .9cqw .35cqw .35cqw;border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 70%,transparent);border-radius:999px;background:rgba(10,12,17,.9);color:var(--tx,#f2ede4);font:600 clamp(9px,1.25cqw,12.5px)/1 var(--f,system-ui);white-space:nowrap;box-shadow:0 4px 14px -4px #000;cursor:default;opacity:0;transform:translate(-50%,-50%) scale(.55);pointer-events:none;transition:opacity .25s,transform .35s cubic-bezier(.3,1.5,.5,1),left .35s,top .35s}
+.ovp-m.on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+.ovp-m i{display:grid;place-items:center;width:clamp(16px,2.2cqw,22px);aspect-ratio:1;border-radius:50%;background:var(--q-am,#ffb020);color:#1a1204;font:800 clamp(9px,1.2cqw,12px)/1 var(--f,system-ui);font-style:normal}
+.ovp-m:focus-visible{outline:2px solid var(--q-am,#ffb020);outline-offset:2px}
+@container (max-width:560px){.ovp-m span{display:none}.ovp-m{padding:.35cqw}}
+.ovp-stage.edit .ovp-m.on{cursor:grab;touch-action:none;border-style:dashed}
+.ovp-stage.edit .ovp-m.drag{cursor:grabbing;transition:none;z-index:3;box-shadow:0 0 0 3px rgba(255,176,32,.3),0 8px 22px -6px #000}
+.ovp-side{padding:16px 18px 18px;border-top:1px solid var(--ln,#26262e);display:flex;flex-direction:column;gap:12px;min-width:0}
+@media (min-width:900px){.ovp-side{border-top:0;border-left:1px solid var(--ln,#26262e)}}
+.ovp-d{margin:0;font-size:14px;line-height:1.45;color:var(--mu,#8e897f)}
+.ovp-d b{color:var(--tx,#f2ede4)}
+.ovp-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.ovp-l li{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:8px;padding:6px 4px;border-radius:8px;opacity:.5}
+.ovp-l li.on{opacity:1}
+.ovp-l li>i{font-style:normal;color:var(--mu,#8e897f);text-align:center}
+.ovp-l li.on>i{color:var(--q-am,#ffb020);font-weight:700}
+.ovp-l li>span{font-size:14px;font-weight:600}
+.ovp-l li small{grid-column:2;color:var(--mu,#8e897f);font-size:12px}
+.ovp-l label{grid-column:1/-1;display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:8px;align-items:center;cursor:pointer;font-size:14px;font-weight:600}
+.ovp-l label input{accent-color:var(--q-am,#ffb020);width:16px;height:16px;margin:0;cursor:pointer}
+.ovp-l li:has(label){opacity:1}
+.ovp-l li:has(label):hover{background:#171a22}
+.ovp-l li:has(input:not(:checked)) span{color:var(--mu,#8e897f)}
+.ovp-b{display:flex;flex-wrap:wrap;gap:8px}
+.ovp-msg{margin:0;min-height:1.2em;color:#33d6a6;font-size:12.5px;overflow-wrap:anywhere}
+.ovp-side>.btn{align-self:flex-start}
+@media (max-width:620px){.ovp-tabs{grid-template-columns:repeat(2,1fr)}.ovp-tabs button{padding:11px 12px 9px}.ovp-stage{margin:10px}.ovs-sw{margin-left:0}}

@@ -306,27 +306,36 @@ function stFight(G) {
 // место ищем вилкой (несколько точечных запросов limit=1), потом одной страницей до 10 000 строк. При равенстве — лучшее место из равных.
 const HRC = {}, RTH = {};
 const SBQ = q => api('analytics/scoreboards/players?' + q);
+// 03.11 (Андрей: «топ-1 Рэм не должна быть нищего ранга, должно быть справедливо»): рейтинг героя Restless — место в мире
+// среди тех, кто сыграл на герое 20+ игр за 90 дней, по рангу (scoreboards sort_by=rank: value — очки ранга). Без ранга в таблицу не попадаешь.
+const HL_MIN = 20, HL_DAYS = 90;
+const HLQ = hid => `hero_id=${hid}&sort_by=rank&min_matches=${HL_MIN}&min_unix_timestamp=${now() - HL_DAYS * 86400 - (now() % 86400)}`;
 function heroRating(hid, id) {
   const k = hid + '|' + id; if (HRC[k]) return HRC[k];
   HRC[k] = (async () => {
-    const base = `hero_id=${hid}&sort_by=wins&min_matches=1`, me = ((await SBQ(`${base}&account_ids=${id}`).catch(() => [])) || [])[0];
-    if (!me || !me.value) return {pos: 0, v: me ? me.value : 0, m: me ? me.matches : 0};
-    const v = me.value, probe = async s => { const r = await SBQ(`${base}&start=${s}&limit=1`).catch(() => null); return r ? (r[0] ? {r: r[0].rank, v: r[0].value} : {r: s, v: -1}) : null; };
-    let lo = {r: 0, v: Infinity}, hi = null, pts = [1000, 10000, 50000, 150000, 400000];
-    for (let d = 0; d < 5; d++) {
-      (await Promise.all(pts.map(probe))).filter(Boolean).forEach(p => { if (p.v > v && p.r > lo.r) lo = p; if (p.v <= v && (!hi || p.r < hi.r)) hi = p; });
-      if (!hi) hi = {r: lo.r + 10000};
-      if (hi.r - lo.r <= 10000) break;
-      const step = (hi.r - lo.r) / 7; pts = [1, 2, 3, 4, 5, 6].map(i => Math.round(lo.r + step * i));
+    const base = HLQ(hid), me = ((await SBQ(`${base}&account_ids=${id}`).catch(() => [])) || [])[0];
+    if (!me || !me.value) {
+      const t = now() - HL_DAYS * 86400 - (now() % 86400);
+      const a = ((await SBQ(`hero_id=${hid}&sort_by=matches&min_matches=1&min_unix_timestamp=${t}&account_ids=${id}`).catch(() => [])) || [])[0];
+      return {pos: 0, v: 0, m: a ? a.matches : 0, why: a && a.matches >= HL_MIN ? 'rank' : 'few'};
     }
-    const L = await SBQ(`${base}&start=${lo.r}&limit=${Math.max(1, Math.min(10000, hi.r - lo.r + 1))}`).catch(() => []);
-    const f = (L || []).find(x => x.value <= v);
-    return {pos: f ? f.rank : hi.r, v, m: me.matches};
+    // первая строка таблицы, где очки ранга не выше моих: вилкой (параллельно по 6 точек), потом одной страницей
+    const v = me.value, at = async st => { const r = await SBQ(`${base}&start=${st}&limit=1`).catch(() => null); return r ? (r[0] ? r[0].value : -1) : null; };
+    let lo = 0, hi = 0, pts = [1, 60, 400, 2000, 8000, 30000];
+    for (let d = 0; d < 7; d++) {
+      (await Promise.all(pts.map(async st => [st, await at(st)]))).forEach(([st, x]) => { if (x == null) return; if (x > v && st > lo) lo = st; if (x <= v && (!hi || st < hi)) hi = st; });
+      if (!hi) hi = Math.max(...pts) * 2;
+      if (hi - lo <= 1) break;
+      if (hi - lo <= 600) { const L = await SBQ(`${base}&start=${lo + 1}&limit=${hi - lo}`).catch(() => []); const f = (L || []).find(x => x.value <= v); if (f) hi = f.rank; break; }
+      const step = (hi - lo) / 7; pts = [1, 2, 3, 4, 5, 6].map(i => Math.round(lo + step * i));
+    }
+    return {pos: hi, v, m: me.matches, badge: me.badge};
   })();
   HRC[k].catch(() => delete HRC[k]);
   return HRC[k];
 }
-const rtCell = r => r && r.pos ? `<b class="q-rtn${r.pos <= 100 ? ' top' : r.pos <= 1000 ? ' hi' : ''}" title="Место в мире среди всех игроков на герое по числу побед: ${nf(r.v)} ${pl(r.v, ['победа', 'победы', 'побед'])} за ${nf(r.m)} ${pl(r.m, ['игру', 'игры', 'игр'])}">#${nf(r.pos)}</b><small>в мире</small>` : '<span class="sub" title="побед на герое пока нет">—</span>';
+const hrWhy = r => !r ? '' : r.why === 'rank' ? 'нет ранга — рейтинг героя только у тех, кто играет ранговые' : `нужно ${HL_MIN} игр на герое за ${HL_DAYS} дней${r.m ? ` — сейчас ${r.m}` : ''}`;
+const rtCell = r => r && r.pos ? `<b class="q-rtn${r.pos <= 100 ? ' top' : r.pos <= 1000 ? ' hi' : ''}" title="Рейтинг героя: место в мире по рангу среди тех, кто сыграл на герое ${HL_MIN}+ игр за ${HL_DAYS} дней (у тебя ${nf(r.m)})">#${nf(r.pos)}</b><small>в мире</small>` : `<span class="sub" title="${esc(hrWhy(r))}">—</span>`;
 async function heroRatings(n, id, hids, attr) {
   for (const hid of hids) {
     const r = await heroRating(hid, id).catch(() => null); if (n !== VQ) return;

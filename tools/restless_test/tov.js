@@ -36,7 +36,7 @@ let fail=0;const ok=(c,t)=>{console.log((c?'PASS ':'FAIL ')+t);if(!c)fail++};
  ok(names.some(x=>x===P[3].n||x===P[3].n+' ?'),'игрок без ID найден по нику: '+P[3].n);
  ok(names.some(x=>x.startsWith('нет_такого_ника')),'ник не нашёлся — подписан ником из игры');
  ok(searches>=2,'поиск по нику — для тех, у кого нет ID: '+searches);
- ok(await p.$$eval('#ovb .q-pc .hn',L=>L.some(e=>e.textContent==='Venator')),'герой по русскому имени «Венатор» → Venator');
+ ok(await p.$$eval('#ovb .q-pc .hn',L=>L.some(e=>e.firstChild.textContent==='Venator'||e.textContent.startsWith('Venator'))),'герой по русскому имени «Венатор» → Venator');
  ok(await p.$$eval('#ovb .q-team',L=>L.length===2),'две команды');
  ok(/укрытие|игроков 12/.test(await p.$eval('#ovapp',e=>e.innerText)),'строка программы: игра на связи');
  await p.screenshot({path:`${O}/ov-match.png`,fullPage:true});
