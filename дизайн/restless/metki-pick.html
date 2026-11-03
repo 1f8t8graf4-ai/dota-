@@ -1,0 +1,193 @@
+<title>Метки Restless</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Раскладка: заголовок → три карточки «как читать» → «Lite или Lock» → липкая полоса со счётом и фильтрами → разделы по месту на экране → карточки функций с «Да / Нет / Потом». Тёмный, как сайт Restless. */
+:root{
+  --bg:#0b0d12; --panel:#12151c; --panel2:#171b24; --line:#242a37; --fg:#e9e6df; --mut:#8c92a3;
+  --amber:#ffb630; --amber-ink:#1a1204; --yes:#33d6a6; --no:#ff5d7a; --later:#7aa7ff; --lite:#5fd3ea; --lock:#b99bff;
+  --f-disp:"Oswald","Arial Narrow",Impact,sans-serif; --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.45 var(--f-body);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+h1{font:600 clamp(28px,6vw,44px)/1 var(--f-disp);letter-spacing:.02em;text-transform:uppercase;margin:6px 0 10px;text-wrap:balance}
+h1 b{color:var(--amber);font-weight:600}
+.lead{color:var(--mut);margin:0;max-width:62ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:16px 0 0;padding:10px 0;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.prog{display:flex;align-items:center;gap:10px;min-width:220px;flex:1}
+.prog b{font:600 22px/1 var(--f-disp);font-variant-numeric:tabular-nums}
+.prog small{color:var(--mut)}
+.track{flex:1;height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;min-width:80px}
+.track i{display:block;height:100%;background:var(--amber);width:0;transition:width .3s}
+.flt{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px var(--f-body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;min-height:34px}
+.chip[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink);border-color:var(--amber)}
+.chip:focus-visible,.ans button:focus-visible,.note:focus-visible,.copy:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.copy{font:500 13px var(--f-body);color:var(--amber);background:none;border:1px solid var(--amber);border-radius:8px;padding:7px 12px;cursor:pointer;min-height:34px}
+.save{font-size:12px;color:var(--mut);min-width:9ch}
+.sec{margin-top:28px}
+.sec h2{font:600 18px/1.1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;display:flex;gap:10px;align-items:baseline}
+.sec h2 small{font:400 13px var(--f-body);letter-spacing:0;text-transform:none;color:var(--mut)}
+.grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:860px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;border-left:3px solid var(--line)}
+.card[data-a="yes"]{border-left-color:var(--yes)}
+.card[data-a="no"]{border-left-color:var(--no);opacity:.72}
+.card[data-a="later"]{border-left-color:var(--later)}
+.top{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.nm{font-weight:600;font-size:15.5px;min-width:0}
+.tags{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.tag{font-size:11.5px;border-radius:5px;padding:2px 7px;white-space:nowrap;border:1px solid var(--line);color:var(--mut)}
+.tag.us-yes{color:var(--yes);border-color:color-mix(in srgb,var(--yes) 45%,transparent)}
+.tag.us-part{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 45%,transparent)}
+.ds{color:var(--mut);font-size:14px;margin:0}
+.ds b{color:var(--fg);font-weight:500}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ans{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ans button{font:600 13.5px var(--f-body);background:var(--panel2);color:var(--fg);border:0;padding:0 14px;min-height:38px;cursor:pointer;border-right:1px solid var(--line)}
+.ans button:last-child{border-right:0}
+.ans button[aria-pressed="true"][data-v="yes"]{background:var(--yes);color:#04140e}
+.ans button[aria-pressed="true"][data-v="no"]{background:var(--no);color:#1c0409}
+.ans button[aria-pressed="true"][data-v="later"]{background:var(--later);color:#050c1c}
+.note{flex:1;min-width:140px;font:14px var(--f-body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:38px}
+.note::placeholder{color:var(--mut)}
+.warn{margin-top:12px;font-size:13px;color:var(--amber)}
+.how{display:grid;grid-template-columns:1fr;gap:10px;margin:18px 0 0}
+@media (min-width:860px){.how{grid-template-columns:1fr 1fr 1fr}}
+.how>div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.how h3{font:600 14px/1 var(--f-disp);letter-spacing:.08em;text-transform:uppercase;margin:0;color:var(--mut)}
+.how p{margin:0;font-size:14px}
+.how ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:14px}
+.how li{display:flex;gap:8px;align-items:baseline}
+.how li .tag{flex-shrink:0}
+.k{display:inline-block;min-width:54px;text-align:center;font:600 12.5px var(--f-body);border-radius:6px;padding:3px 0;flex-shrink:0}
+.k.yes{background:var(--yes);color:#04140e}.k.no{background:var(--no);color:#1c0409}.k.later{background:var(--later);color:#050c1c}
+.vs{margin:10px 0 0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:860px){.vs{grid-template-columns:1fr 1fr 1.2fr}}
+.vs h3{font:600 16px/1 var(--f-disp);letter-spacing:.04em;text-transform:uppercase;margin:0 0 8px;display:flex;gap:8px;align-items:center}
+.vs ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px;color:var(--mut)}
+.vs ul b{color:var(--fg);font-weight:500}
+.vs .us{border-top:1px solid var(--line);padding-top:12px}
+@media (min-width:860px){.vs .us{border-top:0;border-left:1px solid var(--line);padding:0 0 0 14px}}
+.vs .us h3{color:var(--amber)}
+.tag.m-l{color:var(--lite);border-color:color-mix(in srgb,var(--lite) 45%,transparent)}
+.tag.m-k{color:var(--lock);border-color:color-mix(in srgb,var(--lock) 45%,transparent)}
+.tag.w1{color:var(--fg)}
+.flt+.flt{border-left:1px solid var(--line);padding-left:10px}
+.sec h2 .wh{font:400 13px var(--f-body);letter-spacing:0;text-transform:none;color:var(--mut)}
+.sec h2 .wh::before{content:"· "}
+@media (max-width:640px){.sec h2{flex-wrap:wrap}.sec h2 .wh{order:3;flex-basis:100%}.sec h2 .wh::before{content:""}}
+.empty{color:var(--mut);padding:30px 0;text-align:center}
+@media (prefers-reduced-motion:reduce){.track i{transition:none}}
+
+.lbl{display:inline-flex;align-items:center;gap:6px;font:600 13.5px/1 var(--f-body);border-radius:999px;padding:6px 11px;border:1px solid color-mix(in srgb,var(--c) 55%,transparent);color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);white-space:nowrap}
+.tag.nw{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 55%,transparent)}
+.ex{margin:0;font-size:13px;color:var(--mut)}
+.nt{margin:0;font-size:13px;color:var(--later)}
+.cs{--g:#33d6a6;--r:#ff5d7a;--a:#ffb630;--b:#9aa4b8;--n:#7aa7ff;--h:#f7d154}
+</style>
+<div class="wrap cs">
+  <h1>Метки <b>Restless</b></h1>
+  <p class="lead">Все <span id="tot">134</span> меток: что уже на сайте и <b style="color:var(--amber)">49 новых</b> — в каждой категории. На каждую жми «Да», «Нет» или «Потом». Ответы сохраняются сами — я их прочитаю.</p>
+  <div class="how">
+    <div><h3>Как отвечать</h3>
+      <ul><li><span class="k yes">Да</span>оставить / сделать</li><li><span class="k later">Потом</span>не сейчас</li><li><span class="k no">Нет</span>убрать / не делать</li></ul>
+      <p style="color:var(--mut)">Другое имя или условие — напиши в комментарий.</p></div>
+    <div><h3>Цвет метки</h3>
+      <ul><li><span class="lbl" style="--c:var(--g)">хорошая</span><span class="lbl" style="--c:var(--r)">плохая</span></li><li><span class="lbl" style="--c:var(--a)">герой</span><span class="lbl" style="--c:var(--h)">топ</span><span class="lbl" style="--c:var(--b)">нейтральная</span></li></ul></div>
+    <div><h3>Пометки</h3>
+      <ul><li><span class="tag nw">новая</span>предлагаю добавить</li><li><span class="tag us-yes">на сайте</span>уже показывается</li></ul>
+      <p style="color:var(--mut)">Наведи на метку — увидишь, когда её дают.</p></div>
+  </div>
+  <p class="warn" id="warn" hidden></p>
+  <div class="bar">
+    <div class="prog"><b id="cnt">0/0</b><div class="track" aria-hidden="true"><i id="bar"></i></div><small id="sum"></small></div>
+    <div class="flt" role="group" aria-label="Показать" id="fa">
+      <button class="chip" data-f="all" aria-pressed="true">Все</button><button class="chip" data-f="none" aria-pressed="false">Без ответа</button>
+      <button class="chip" data-f="yes" aria-pressed="false">Да</button><button class="chip" data-f="later" aria-pressed="false">Потом</button><button class="chip" data-f="no" aria-pressed="false">Нет</button>
+    </div>
+    <div class="flt" role="group" aria-label="Какие" id="fm">
+      <button class="chip" data-m="all" aria-pressed="true">Все метки</button><button class="chip" data-m="new" aria-pressed="false">Только новые</button><button class="chip" data-m="old" aria-pressed="false">Что на сайте</button>
+    </div>
+    <button class="copy" id="copy" type="button">Скопировать ответы</button>
+    <span class="save" id="save" aria-live="polite"></span>
+  </div>
+  <div id="list"></div>
+</div>
+<script>
+const ALL=[{"id":"p-vinstrik","c":"p","nm":"Винстрик","col":"g","cond":"3+ победы подряд","ex":"«5 побед подряд». Красная пара — Лузстрик (3+ поражения подряд)","note":"","new":false},{"id":"p-luzstrik","c":"p","nm":"Лузстрик","col":"r","cond":"3+ поражения подряд","ex":"«4 поражения подряд»","note":"","new":false},{"id":"p-zharit","c":"p","nm":"Жарит","col":"g","cond":"65%+ побед в последних 20 играх (минимум 15)","ex":"«14 побед из 20 последних — форма на пике»","note":"","new":false},{"id":"p-tonet","c":"p","nm":"Тонет","col":"r","cond":"35% и меньше побед в последних 20 играх","ex":"«6 побед из 20 последних — ничего не заходит»","note":"","new":false},{"id":"p-podem","c":"p","nm":"Подъём","col":"g","cond":"ранг за последние игры в плюсе","ex":"«ранг растёт: +84 очка за последние игры»","note":"","new":false},{"id":"p-padenie","c":"p","nm":"Падение","col":"r","cond":"ранг за последние игры в минусе","ex":"«ранг сыплется: −60 очков»","note":"","new":false},{"id":"p-nakrylo","c":"p","nm":"Накрыло","col":"r","cond":"после двух поражений подряд побеждает на 10%+ реже обычного (тильт)","ex":"«после двух поражений побеждает в 31% (обычно 52%) — тильт»","note":"","new":false},{"id":"p-stabilnyi","c":"p","nm":"Стабильный","col":"g","cond":"после двух поражений подряд побеждает на 8%+ чаще обычного","ex":"«голову не теряет»","note":"","new":false},{"id":"p-otp","c":"p","nm":"OTP","col":"a","cond":"60%+ игр за 30 дней — на одном герое","ex":"«72% игр — на Венаторе»","note":"","new":false},{"id":"p-fanat","c":"p","nm":"Фанат","col":"b","cond":"30–60% игр за 30 дней — на одном герое","ex":"«41% игр — на Рэм»","note":"","new":false},{"id":"p-millioner","c":"p","nm":"Миллионер","col":"g","cond":"на главном герое души за матч на 20%+ выше среднего по игре (10+ игр)","ex":"«души на 26% выше обычного на Хейзе»","note":"Имя совпадает с меткой матча «Миллионер» — может, назвать «Богач»?","new":false},{"id":"p-ekzotika","c":"p","nm":"Экзотика","col":"b","cond":"главный герой (25%+ игр) — из самых редких в игре","ex":"«Виктора берут в 2,1% матчей»","note":"Совпадает с меткой героя «Экзотика»","new":false},{"id":"p-veteran","c":"p","nm":"Ветеран","col":"a","cond":"300+ игр на одном герое","ex":"«Ветеран Мо и Крилл — 412 игр»","note":"","new":false},{"id":"p-mein","c":"p","nm":"Мейн","col":"a","cond":"100–300 игр на одном герое","ex":"«Мейн Венатор — 140 игр»","note":"","new":false},{"id":"p-universal","c":"p","nm":"Универсал","col":"b","cond":"8+ героев по 3+ игры из последних 50","ex":"«9 героев по 3+ игры»","note":"","new":false},{"id":"p-stazher","c":"p","nm":"Стажёр","col":"n","cond":"на герое последнего матча меньше 10 игр","ex":"«всего 4 игры на Селесте — только раскачивается»","note":"","new":false},{"id":"p-farmila","c":"p","nm":"Фармила","col":"g","cond":"души на 15%+ больше среднего по тем же героям (последние 20)","ex":"«фармит на 22% больше душ, чем обычно»","note":"","new":false},{"id":"p-golodaet","c":"p","nm":"Голодает","col":"r","cond":"души на 15%+ меньше среднего","ex":"«души на 18% ниже обычного»","note":"Совпадает с меткой матча «Голодает»","new":false},{"id":"p-kormit","c":"p","nm":"Кормит","col":"r","cond":"смертей на 30%+ больше среднего по героям","ex":"«умирает на 41% чаще обычного»","note":"","new":false},{"id":"p-zhivuchii","c":"p","nm":"Живучий","col":"g","cond":"смертей на 25%+ меньше среднего по героям","ex":"«умирает на 30% реже обычного»","note":"Это же имя у метки героя и метки матча — 3 разных «Живучий»","new":false},{"id":"p-ubiica","c":"p","nm":"Убийца","col":"g","cond":"убийств на 30%+ больше среднего по героям","ex":"«убивает на 35% чаще»","note":"","new":false},{"id":"p-komandnyi","c":"p","nm":"Командный","col":"g","cond":"помощи в убийствах на 30%+ больше среднего","ex":"«ассистов на 40% больше»","note":"","new":false},{"id":"p-passivnyi","c":"p","nm":"Пассивный","col":"r","cond":"и убийств −30%, и помощи −20% от среднего","ex":"«отсиживается»","note":"Совпадает с меткой матча «Пассивный»","new":false},{"id":"p-dobivatel","c":"p","nm":"Добиватель","col":"g","cond":"добиваний на 20%+ больше среднего","ex":"«лх на 24% больше»","note":"","new":false},{"id":"p-mazhet","c":"p","nm":"Мажет","col":"r","cond":"добиваний на 20%+ меньше среднего","ex":"«лх на 25% меньше»","note":"","new":false},{"id":"p-zhadina","c":"p","nm":"Жадина","col":"g","cond":"отказов (денаев) в 1,5 раза больше среднего","ex":"«отжимает линию»","note":"","new":false},{"id":"p-liver","c":"p","nm":"Ливер","col":"r","cond":"ливал хотя бы раз за 30 дней","ex":"«ливал 2 раза за 30 дней»","note":"","new":false},{"id":"p-marafonec","c":"p","nm":"Марафонец","col":"b","cond":"8+ игр за один день","ex":"«до 11 игр за день»","note":"","new":false},{"id":"p-ezhednevno","c":"p","nm":"Ежедневно","col":"b","cond":"играл 12+ дней из последних 14","ex":"«13 дней из 14»","note":"","new":false},{"id":"p-polunochnik","c":"p","nm":"Полуночник","col":"b","cond":"40%+ игр с полуночи до 6 утра","ex":"«58% игр ночью»","note":"","new":false},{"id":"p-voskresnik","c":"p","nm":"Воскресник","col":"b","cond":"60%+ игр — по выходным","ex":"«64% игр в субботу и воскресенье»","note":"","new":false},{"id":"p-vernulsya","c":"p","nm":"Вернулся","col":"b","cond":"перерыв 14+ дней перед последней игрой","ex":"«перерыв 23 дня»","note":"","new":false},{"id":"p-razogrevaetsya","c":"p","nm":"Разогревается","col":"b","cond":"первая игра за день — на 10%+ побед хуже, дальше лучше","ex":"«первая игра дня — 38% побед, потом 55%»","note":"","new":true},{"id":"p-ustaet","c":"p","nm":"Устаёт","col":"r","cond":"после 4-й игры за день побед на 10%+ меньше","ex":"«после 4-й игры — 39% побед»","note":"","new":true},{"id":"p-rannyaya-ptashka","c":"p","nm":"Ранняя пташка","col":"b","cond":"40%+ игр с 6 до 12 утра","ex":"«47% игр утром»","note":"Пара к «Полуночнику»","new":true},{"id":"p-rastet","c":"p","nm":"Растёт","col":"g","cond":"KDA за последние 20 игр на 25%+ выше, чем за 20 до них","ex":"«KDA 3,8 — было 2,9»","note":"","new":true},{"id":"p-novyi-mein","c":"p","nm":"Новый мейн","col":"a","cond":"главный герой за 30 дней — не тот, что за всё время","ex":"«раньше Венатор, теперь Рэм»","note":"","new":true},{"id":"p-agressor","c":"p","nm":"Агрессор","col":"b","cond":"и убийств, и смертей на 25%+ больше среднего на тех же героях","ex":"«убивает и умирает чаще всех»","note":"","new":true},{"id":"p-ostorozhnyi","c":"p","nm":"Осторожный","col":"b","cond":"и убийств, и смертей на 25%+ меньше среднего","ex":"«не лезет — и не умирает»","note":"","new":true},{"id":"p-duet","c":"p","nm":"Дуэт","col":"a","cond":"30%+ игр — с одним и тем же другом","ex":"«чаще всего с Крыса-LOVE: 41 игра»","note":"По «С кем играешь»","new":true},{"id":"p-schastlivyi-drug","c":"p","nm":"Счастливый друг","col":"g","cond":"с одним другом побед на 12%+ больше, чем без него (15+ игр вместе)","ex":"«с Ice — 64%, без — 49%»","note":"","new":true},{"id":"p-solo","c":"p","nm":"Соло","col":"b","cond":"80%+ игр без друзей в группе","ex":"","note":"","new":true},{"id":"p-novichok","c":"p","nm":"Новичок","col":"n","cond":"меньше 50 матчей на аккаунте","ex":"«всего 31 матч»","note":"","new":true},{"id":"p-bystrye-matchi","c":"p","nm":"Быстрые матчи","col":"g","cond":"его победы на 15%+ короче обычных для ранга","ex":"«закрывает за 26 минут»","note":"","new":true},{"id":"p-zatyazhnye-matchi","c":"p","nm":"Затяжные матчи","col":"b","cond":"его матчи на 15%+ длиннее обычных для ранга","ex":"","note":"","new":true},{"id":"p-top-geroya","c":"p","nm":"Топ героя","col":"h","cond":"в рейтинге героя — топ-100 мира (20+ игр за 90 дней, по рангу)","ex":"«#37 Rat King · EU #9»","note":"Новый честный рейтинг","new":true},{"id":"p-ohotnik-za-reitingom","c":"p","nm":"Охотник за рейтингом","col":"g","cond":"за неделю поднялся в рейтинге героя на 50+ мест","ex":"«+84 места на Рэм за неделю»","note":"","new":true},{"id":"l-vysokii-rang","c":"l","nm":"Высокий ранг","col":"a","cond":"ранг выше среднего в лобби","ex":"«Eternus 2 — выше всех в лобби»","note":"","new":false},{"id":"l-mein-geroya","c":"l","nm":"Мейн героя","col":"a","cond":"100+ игр на герое этого матча","ex":"«Мейн Венатор — 140 игр»","note":"","new":false},{"id":"l-spamit-geroya","c":"l","nm":"Спамит героя","col":"a","cond":"последние 4+ игры подряд — на этом же герое","ex":"«последние 6 игр подряд — на Рэм»","note":"","new":false},{"id":"l-veteran-geroya","c":"l","nm":"Ветеран героя","col":"b","cond":"300+ игр на герое","ex":"«412 игр на Мо и Крилле»","note":"","new":false},{"id":"l-davno-ne-igral","c":"l","nm":"Давно не играл","col":"b","cond":"перерыв 14+ дней перед этой игрой","ex":"«перерыв 23 дня»","note":"","new":false},{"id":"l-marafon","c":"l","nm":"Марафон","col":"b","cond":"8+ игр сегодня","ex":"«это его 9-я игра за день»","note":"","new":false},{"id":"l-mnogo-igraet","c":"l","nm":"Много играет","col":"b","cond":"5+ игр в день в среднем за неделю","ex":"","note":"","new":false},{"id":"l-pervaya-igra-za-den","c":"l","nm":"Первая игра за день","col":"b","cond":"до этой — ни одной игры сегодня","ex":"","note":"","new":false},{"id":"l-v-forme","c":"l","nm":"В форме","col":"g","cond":"7+ побед из последних 10","ex":"«8 побед из 10»","note":"","new":false},{"id":"l-seriya-pobed","c":"l","nm":"Серия побед","col":"g","cond":"3+ победы подряд","ex":"«4 победы подряд»","note":"","new":false},{"id":"l-silnyi-na-geroe","c":"l","nm":"Сильный на герое","col":"g","cond":"на этом герое 58%+ побед (20+ игр)","ex":"«61% побед на Хейзе, 45 игр»","note":"","new":false},{"id":"l-malo-igr-dlya-ranga","c":"l","nm":"Мало игр для ранга","col":"r","cond":"ранг высокий, а игр на аккаунте мало — может быть смурф","ex":"«Phantom, всего 40 матчей»","note":"","new":false},{"id":"l-ne-v-forme","c":"l","nm":"Не в форме","col":"r","cond":"3 и меньше побед из последних 10","ex":"","note":"","new":false},{"id":"l-pervyi-raz-na-geroe","c":"l","nm":"Первый раз на герое","col":"r","cond":"на этом герое 0–2 игры","ex":"«впервые на Селесте»","note":"","new":false},{"id":"l-pochti-ne-igral","c":"l","nm":"Почти не играл","col":"r","cond":"на герое меньше 10 игр","ex":"","note":"","new":false},{"id":"l-slabyi-na-geroe","c":"l","nm":"Слабый на герое","col":"r","cond":"на этом герое 42% побед и меньше (20+ игр)","ex":"","note":"","new":false},{"id":"l-tilt-segodnya","c":"l","nm":"Тильт сегодня","col":"r","cond":"3+ поражения подряд сегодня","ex":"«3 поражения подряд за вечер»","note":"","new":false},{"id":"l-top-geroya","c":"l","nm":"Топ героя","col":"h","cond":"в рейтинге героя топ-100 мира","ex":"«#12 Рэм в мире»","note":"","new":true},{"id":"l-seriya-porazhenii","c":"l","nm":"Серия поражений","col":"r","cond":"3+ поражения подряд (не обязательно сегодня)","ex":"«4 поражения подряд»","note":"","new":true},{"id":"l-pati","c":"l","nm":"Пати","col":"a","cond":"в одной команде с другом из Steam / 3+ общих матча","ex":"«с Ice — 12 игр вместе»","note":"Уже есть «Друзья · N» на карточке","new":true},{"id":"l-vyigryvaet-liniyu","c":"l","nm":"Выигрывает линию","col":"g","cond":"выиграл линию к 10-й в 60%+ последних игр","ex":"«линия: 7 из 10 в плюс»","note":"Нужны подробности матчей — дольше грузится","new":true},{"id":"l-proigryvaet-liniyu","c":"l","nm":"Проигрывает линию","col":"r","cond":"проиграл линию в 60%+ последних игр","ex":"","note":"То же","new":true},{"id":"l-novyi-akkaunt","c":"l","nm":"Новый аккаунт","col":"n","cond":"меньше 50 матчей","ex":"«31 матч»","note":"","new":true},{"id":"l-nochnoi-marafon","c":"l","nm":"Ночной марафон","col":"b","cond":"5+ игр подряд после полуночи","ex":"«5-я игра с полуночи»","note":"","new":true},{"id":"l-livaet","c":"l","nm":"Ливает","col":"r","cond":"ливал из матча за 30 дней","ex":"«ливал 2 раза»","note":"","new":true},{"id":"l-protiv-svoego-meina","c":"l","nm":"Против своего мейна","col":"b","cond":"играет против героя, на котором у него 100+ игр — знает его как свои пять","ex":"«100 игр на Венаторе — играет против Венатора»","note":"","new":true},{"id":"l-znaet-tebya","c":"l","nm":"Знает тебя","col":"b","cond":"вы встречались 3+ раза за 30 дней","ex":"«уже играли: 4 раза, 3 победы его»","note":"По «С кем играешь»","new":true},{"id":"h-rol","c":"h","nm":"Роль","col":"b","cond":"роль героя из файлов игры (Танк, Убийца…)","ex":"«роль из файлов игры»","note":"","new":false},{"id":"h-imba","c":"h","nm":"Имба","col":"h","cond":"у героя 53%+ побед за период","ex":"«54,2% побед»","note":"","new":false},{"id":"h-mimo","c":"h","nm":"Мимо","col":"r","cond":"у героя меньше 47% побед","ex":"«45,9% побед»","note":"","new":false},{"id":"h-narodnyi","c":"h","nm":"Народный","col":"a","cond":"герой в 25% самых популярных","ex":"«берут в 18,4% матчей»","note":"","new":false},{"id":"h-ekzotika","c":"h","nm":"Экзотика","col":"n","cond":"герой в 20% самых редких","ex":"«берут в 2,0% матчей»","note":"","new":false},{"id":"h-prostoi","c":"h","nm":"Простой","col":"g","cond":"сложность 1 из 3","ex":"«для начала»","note":"","new":false},{"id":"h-slozhnyi","c":"h","nm":"Сложный","col":"r","cond":"сложность 3 из 3","ex":"","note":"","new":false},{"id":"h-zhivuchii","c":"h","nm":"Живучий","col":"g","cond":"KDA героя в верхних 20%","ex":"«KDA 3,41 — среди лучших»","note":"","new":false},{"id":"h-usilili","c":"h","nm":"Усилили","col":"g","cond":"в последнем патче — усиления героя","ex":"«усилили 31.10»","note":"Из «Патчей»","new":true},{"id":"h-oslabili","c":"h","nm":"Ослабили","col":"r","cond":"в последнем патче — ослабления","ex":"","note":"","new":true},{"id":"h-rastet-posle-patcha","c":"h","nm":"Растёт после патча","col":"g","cond":"винрейт за неделю после патча на 1,5%+ выше, чем до","ex":"«+2,1% после патча»","note":"","new":true},{"id":"h-pozdnii","c":"h","nm":"Поздний","col":"b","cond":"в матчах дольше 35 минут побеждает на 3%+ чаще","ex":"«к концу сильнее»","note":"","new":true},{"id":"h-rannii","c":"h","nm":"Ранний","col":"b","cond":"в матчах до 25 минут побеждает на 3%+ чаще","ex":"","note":"","new":true},{"id":"h-vybor-topov","c":"h","nm":"Выбор топов","col":"h","cond":"в Eternus берут в 1,5 раза чаще, чем в среднем","ex":"«в Eternus — 18% матчей»","note":"","new":true},{"id":"h-lovushka","c":"h","nm":"Ловушка","col":"r","cond":"в низких рангах побеждает на 3%+ реже, чем у топов","ex":"«новичкам сложно»","note":"","new":true},{"id":"h-ganner-spiriter","c":"h","nm":"Ганнер / Спиритер","col":"b","cond":"ветка, которую берут в 60%+ сборок","ex":"«Спирит — 72% сборок»","note":"","new":true},{"id":"h-dlya-linii","c":"h","nm":"Для линии","col":"g","cond":"выигрывает линию у 60%+ героев","ex":"","note":"По «Тяжело / легко против»","new":true},{"id":"m-prodavil","c":"m","nm":"Продавил","col":"g","cond":"к 10-й минуте на 15%+ душ больше соперника по линии","ex":"«на 21% душ больше соперника»","note":"","new":false},{"id":"m-davili","c":"m","nm":"Давили","col":"r","cond":"к 10-й минуте на 15%+ душ меньше соперника по линии","ex":"","note":"","new":false},{"id":"m-nakazan","c":"m","nm":"Наказан","col":"r","cond":"2+ смерти до 10-й минуты","ex":"«3 смерти до 10-й минуты»","note":"","new":false},{"id":"m-leitfarm","c":"m","nm":"Лейтфарм","col":"g","cond":"после 20-й минуты души/мин на 20%+ больше своих","ex":"«после 20-й 1450 душ/мин»","note":"","new":false},{"id":"m-sdulsya","c":"m","nm":"Сдулся","col":"r","cond":"после 20-й минуты души/мин на 25%+ меньше своих","ex":"","note":"","new":false},{"id":"m-chisto","c":"m","nm":"Чисто","col":"g","cond":"(убийства + помощь) / смерти ≥ 4","ex":"«KDA 5,2»","note":"","new":false},{"id":"m-zhivuchii","c":"m","nm":"Живучий","col":"g","cond":"2 смерти или меньше за матч дольше 25 минут","ex":"«1 смерть за 34 минуты»","note":"","new":false},{"id":"m-faiter","c":"m","nm":"Файтер","col":"g","cond":"участие в 65%+ убийств команды","ex":"«вечно в драке»","note":"","new":false},{"id":"m-passivnyi","c":"m","nm":"Пассивный","col":"r","cond":"участие меньше чем в 35% убийств команды","ex":"","note":"","new":false},{"id":"m-taran","c":"m","nm":"Таран","col":"g","cond":"30%+ урона команды по башням и боссам","ex":"","note":"","new":false},{"id":"m-pacifist","c":"m","nm":"Пацифист","col":"r","cond":"5% и меньше урона команды по башням и боссам","ex":"","note":"","new":false},{"id":"m-odinochka","c":"m","nm":"Одиночка","col":"a","cond":"после 10-й минуты 60%+ времени без своих рядом","ex":"«сплит-пуш или фарм в одиночку»","note":"","new":false},{"id":"m-snaiper","c":"m","nm":"Снайпер","col":"g","cond":"лучшая точность в матче","ex":"«точность 48% — лучшая в матче»","note":"","new":false},{"id":"m-hedshoter","c":"m","nm":"Хедшотер","col":"g","cond":"3+ убийства в голову","ex":"","note":"","new":false},{"id":"m-lekar","c":"m","nm":"Лекарь","col":"g","cond":"вылечил своих на 5000+","ex":"","note":"","new":false},{"id":"m-millioner","c":"m","nm":"Миллионер","col":"g","cond":"больше всех душ в матче","ex":"«больше всех душ: 48 300»","note":"","new":false},{"id":"m-golodaet","c":"m","nm":"Голодает","col":"r","cond":"душ на 25%+ меньше среднего в команде","ex":"","note":"","new":false},{"id":"m-damager","c":"m","nm":"Дамагер","col":"g","cond":"больше всех урона по героям в матче","ex":"","note":"","new":false},{"id":"m-pshik","c":"m","nm":"Пшик","col":"r","cond":"урона на 30%+ меньше среднего (и почти не лечил)","ex":"","note":"","new":false},{"id":"m-kormil","c":"m","nm":"Кормил","col":"r","cond":"8+ смертей и в 1,5 раза больше среднего в матче","ex":"«11 смертей — в среднем 6,2»","note":"","new":false},{"id":"m-bessmertnyi","c":"m","nm":"Бессмертный","col":"g","cond":"ни одной смерти за матч дольше 15 минут","ex":"«ни одной смерти за 31 минуту»","note":"","new":false},{"id":"m-farmer","c":"m","nm":"Фармер","col":"g","cond":"больше всех добиваний в матче","ex":"","note":"","new":false},{"id":"m-tank","c":"m","nm":"Танк","col":"g","cond":"принял больше всех урона в команде (и на 30%+ выше среднего)","ex":"","note":"","new":false},{"id":"m-lesnik","c":"m","nm":"Лесник","col":"b","cond":"25%+ душ — с лагерей","ex":"","note":"","new":false},{"id":"m-fb","c":"m","nm":"ФБ","col":"g","cond":"первая кровь матча","ex":"«первая кровь на 3:12»","note":"","new":false},{"id":"m-troinoe","c":"m","nm":"Тройное","col":"g","cond":"3 убийства подряд (между каждым ≤ 12 с). Дальше: Четверное, Пятерное, Резня (6+)","ex":"","note":"","new":false},{"id":"m-kambek","c":"m","nm":"Камбэк","col":"g","cond":"выиграли, хотя отставали на 5000+ душ","ex":"","note":"","new":false},{"id":"m-slili","c":"m","nm":"Слили","col":"r","cond":"проиграли, хотя вели на 5000+ душ","ex":"","note":"","new":false},{"id":"m-mvp","c":"m","nm":"MVP","col":"h","cond":"лучшая оценка в матче","ex":"«оценка S — лучшая из 12»","note":"","new":true},{"id":"m-tashil","c":"m","nm":"Тащил","col":"g","cond":"35%+ убийств команды — его","ex":"«14 из 37 убийств команды»","note":"","new":true},{"id":"m-vytashili","c":"m","nm":"Вытащили","col":"b","cond":"выиграли, а у него худшая оценка в команде","ex":"«команда вытащила»","note":"","new":true},{"id":"m-dolgo-lezhal","c":"m","nm":"Долго лежал","col":"r","cond":"мёртвым 20%+ матча","ex":"«мёртвым 7:40 — 22% матча»","note":"","new":true},{"id":"m-pervym-v-draku","c":"m","nm":"Первым в драку","col":"r","cond":"в 3+ драках умер первым","ex":"","note":"Из разбора «почему умирал»","new":true},{"id":"m-snoubol","c":"m","nm":"Сноубол","col":"g","cond":"к 15-й на 5000+ душ больше соперника по линии","ex":"","note":"","new":true},{"id":"m-urny-i-yashiki","c":"m","nm":"Урны и ящики","col":"b","cond":"10%+ душ — с урн, ящиков и статуй","ex":"«2 урны, 9 ящиков»","note":"","new":true},{"id":"m-ohotnik-za-golovami","c":"m","nm":"Охотник за головами","col":"g","cond":"3+ убийства самого богатого врага","ex":"","note":"","new":true},{"id":"m-pozdnii-predmet","c":"m","nm":"Поздний предмет","col":"r","cond":"ключевой предмет на 5+ минут позже, чем у топов","ex":"«Spirit Resilience на 8 минут позже»","note":"Уже есть в коуче","new":true},{"id":"m-rovnaya-igra","c":"m","nm":"Ровная игра","col":"g","cond":"оценка B и выше и на линии, и в середине, и в конце","ex":"","note":"","new":true},{"id":"m-strazhnik","c":"m","nm":"Стражник","col":"g","cond":"больше всех урона по стражам и объектам","ex":"","note":"Пара к «Таран»","new":true},{"id":"x-vac","c":"x","nm":"VAC","col":"r","cond":"у аккаунта VAC-бан или игровой бан в Steam — это публичные данные Steam, не наша догадка","ex":"«VAC-бан 2 года назад»","note":"Безопасно: это факт из Steam, не обвинение","new":true},{"id":"x-podozr","c":"x","nm":"Подозр.","col":"r","cond":"на 10+ матчах точность/убийства в голову сильно выше нормы для его ранга","ex":"«в голову 71% урона при норме 22% на его ранге, 14 матчей»","note":"Ты хочешь «Читер». Рекомендую «Подозр.»: на 10+ матчах, с цифрами в подсказке","new":true},{"id":"x-smurf","c":"x","nm":"Смурф","col":"a","cond":"мало матчей на аккаунте, но ранг/винрейт как у сильного игрока","ex":"«31 матч, 74% побед, ранг Вечный»","note":"","new":true},{"id":"x-pati","c":"x","nm":"Пати","col":"b","cond":"играет в группе с этими же людьми (3+ общих матча)","ex":"«5 матчей вместе с Крыса-LOVE»","note":"Удобно в лобби: видно, кто играет стаком","new":true}], SECS=[["p", "Профиль игрока", "метки в шапке профиля и «Что знать»"], ["l", "Лайв-матч", "на карточке каждого из 12 игроков"], ["h", "Герой", "вкладка «Герои» и страница героя"], ["m", "За матч", "строка матча и разбор"], ["x", "Новые с прошлого раза", "обсуждали, не решили"]], COLN={"g": "хорошая", "r": "плохая", "a": "герой / мейн", "b": "нейтральная", "n": "новичок", "h": "топ"};
+let ANS={}, FIL="all", FM="all", db=null, local=false;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function card(f){
+  const a=(ANS[f.id]||{}).a||"", n=(ANS[f.id]||{}).note||"";
+  return `<article class="card" data-id="${f.id}" data-a="${a}">
+   <div class="top"><span class="lbl" style="--c:var(--${f.col})" title="${esc(f.cond)}">${esc(f.nm)}</span><div class="tags">${f.new?'<span class="tag nw">новая</span>':'<span class="tag us-yes">на сайте</span>'}<span class="tag">${COLN[f.col]||""}</span></div></div>
+   <p class="ds"><b>Когда:</b> ${esc(f.cond)}</p>${f.ex?`<p class="ex">Подсказка: ${esc(f.ex)}</p>`:""}${f.note?`<p class="nt">${esc(f.note)}</p>`:""}
+   <div class="row"><div class="ans" role="group" aria-label="Ответ">${[["yes","Да"],["no","Нет"],["later","Потом"]].map(([v,t])=>`<button type="button" data-v="${v}" aria-pressed="${a===v}">${t}</button>`).join("")}</div>
+   <input class="note" id="n-${f.id}" placeholder="Комментарий: имя, условие…" value="${esc(n)}" aria-label="Комментарий: ${esc(f.nm)}"></div>
+  </article>`;
+}
+function show(f){const a=(ANS[f.id]||{}).a||"";return (FM==="all"||(FM==="new"?f.new:!f.new))&&(FIL==="all"||(FIL==="none"?!a:a===FIL))}
+function render(){
+  const act=document.activeElement, keep=act&&act.classList.contains("note")?act.id:null, cur=keep?act.value:null;
+  let h="";
+  for(const [s,nm,wh] of SECS){const L=ALL.filter(f=>f.c===s&&show(f)); if(!L.length)continue;
+    const done=ALL.filter(f=>f.c===s&&(ANS[f.id]||{}).a).length, tot=ALL.filter(f=>f.c===s).length, nw=ALL.filter(f=>f.c===s&&f.new).length;
+    h+=`<section class="sec"><h2>${esc(nm)}<span class="wh">${esc(wh)}${nw&&s!=="x"?" · новых "+nw:""}</span><small>${done} из ${tot}</small></h2><div class="grid">${L.map(card).join("")}</div></section>`;}
+  $("#list").innerHTML=h||'<p class="empty">Тут пусто — выбери другой фильтр.</p>';
+  if(keep){const el=document.getElementById(keep); if(el){el.value=cur; el.focus();}}
+  counts();
+}
+function counts(){
+  const c={yes:0,no:0,later:0}; ALL.forEach(f=>{const a=(ANS[f.id]||{}).a; if(c[a]!=null)c[a]++;});
+  const d=c.yes+c.no+c.later; $("#cnt").textContent=d+"/"+ALL.length; $("#bar").style.width=(100*d/ALL.length)+"%";
+  $("#sum").textContent=`да ${c.yes} · потом ${c.later} · нет ${c.no}`;
+}
+const Q={};
+function save(id){
+  const body=Object.assign({a:"",note:""},ANS[id],{t:Date.now()});
+  $("#save").textContent="сохраняю…";
+  if(local||!db){try{localStorage.setItem("metki-pick",JSON.stringify(ANS))}catch(e){} $("#save").textContent=local?"на этом устройстве":"сохранено"; return;}
+  Q[id]=(Q[id]||Promise.resolve()).then(()=>db.collection("metki").doc(id).set(body)).then(()=>{$("#save").textContent="сохранено"},e=>{$("#save").textContent="не сохранилось";$("#warn").hidden=false;$("#warn").textContent="Ответ не сохранился: "+(e&&e.message||"нет связи")+". Нажми «Скопировать ответы» и пришли текст."});
+}
+$("#list").addEventListener("click",e=>{
+  const b=e.target.closest(".ans button"); if(!b)return;
+  const id=b.closest(".card").dataset.id, v=b.dataset.v, o=ANS[id]||{};
+  ANS[id]=Object.assign({},o,{a:o.a===v?"":v}); render(); save(id);
+});
+let NT={};
+$("#list").addEventListener("input",e=>{
+  if(!e.target.classList.contains("note"))return;
+  const id=e.target.closest(".card").dataset.id; ANS[id]=Object.assign({},ANS[id],{note:e.target.value});
+  clearTimeout(NT[id]); NT[id]=setTimeout(()=>{delete NT[id];save(id)},900);
+});
+for(const [g,k,set] of [["#fa","f",v=>FIL=v],["#fm","m",v=>FM=v]])$(g).addEventListener("click",e=>{
+  const b=e.target.closest(".chip"); if(!b)return; set(b.dataset[k]);
+  document.querySelectorAll(g+" .chip").forEach(x=>x.setAttribute("aria-pressed",x===b)); render();
+});
+$("#copy").addEventListener("click",()=>{
+  const T={yes:"ДА",no:"НЕТ",later:"ПОТОМ"}, G=Object.fromEntries(SECS.map(s=>[s[0],s[1]]));
+  const txt=ALL.filter(f=>(ANS[f.id]||{}).a||(ANS[f.id]||{}).note).map(f=>`${T[(ANS[f.id]||{}).a]||"—"} · ${f.nm} (${G[f.c]}${f.new?", новая":""})${(ANS[f.id]||{}).note?" — "+ANS[f.id].note:""}`).join("\n")||"Пока нет ответов";
+  const b=$("#copy"), done=()=>{b.textContent="Скопировано ✓";setTimeout(()=>b.textContent="Скопировать ответы",1600)};
+  const fb=t=>{const ta=document.createElement("textarea");ta.value=t;ta.style.cssText="position:fixed;left:-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done()}catch(e){}ta.remove();};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,()=>fb(txt));else fb(txt);
+});
+render();
+(async()=>{
+  try{db=window.claude&&window.claude.use?await window.claude.use("db"):null}catch(e){db=null}
+  if(!db){local=true; try{ANS=JSON.parse(localStorage.getItem("metki-pick")||"{}")||{}}catch(e){}
+    $("#warn").hidden=false; $("#warn").textContent="Ответы сохраняются только на этом устройстве. Когда закончишь — «Скопировать ответы» и пришли текстом."; render(); return;}
+  let got=false; const tm=setTimeout(()=>{if(!got)$("#save").textContent="жду базу…"},10000);
+  db.collection("metki").onSnapshot(s=>{
+    if(!s.metadata.fromCache){got=true;clearTimeout(tm);if($("#save").textContent==="жду базу…")$("#save").textContent="";}
+    const m={}; s.docs.forEach(d=>{const x=d.data()||{}; m[d.id]={a:x.a||"",note:x.note||""};});
+    for(const k in ANS){if(NT[k])m[k]=ANS[k];}
+    ANS=m; render();
+  },e=>{clearTimeout(tm);$("#warn").hidden=false;$("#warn").textContent="База ответов недоступна. Нажми «Скопировать ответы» и пришли текстом.";});
+})();
+</script>

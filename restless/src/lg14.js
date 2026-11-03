@@ -11,6 +11,18 @@ const rkDist = () => RKD || (RKD = api('players/rank/distribution').then(L => {
   (L || []).slice().sort((a, b) => a.badge - b.badge).forEach(x => { M[x.badge] = {below: below / Math.max(1, tot), p: x.players / Math.max(1, tot)}; below += x.players || 0; });
   return M;
 }).catch(() => ({})));
+// «очки ранга» — сколько у игрока прогресса ранга по Valve (последний ранговый матч). Это не MMR (его API больше не считает), но честная цифра
+// той же природы: растёт с победами, падает с поражениями. Запросы — пачкой по всем, кого навели/показали за 60 мс.
+const RKP = {}; let RKQ = null;
+function rkPts(aid) {
+  if (RKP[aid]) return RKP[aid];
+  return (RKP[aid] = new Promise(res => {
+    if (!RKQ) RKQ = {ids: [], cb: {}, t: setTimeout(async () => { const q = RKQ; RKQ = null;
+      const L = await api('players/rank?account_ids=' + q.ids.join(',')).catch(() => []);
+      q.ids.forEach(id => { const r = (L || []).find(z => z.account_id === id); q.cb[id](r && r.last_match && r.last_match.player_rank_final_flat_progress || null); }); }, 60)};
+    RKQ.ids.push(aid); RKQ.cb[aid] = res;
+  }));
+}
 let RKN = null;
 function rkByName(nm) {
   if (!RKN) { RKN = {}; for (let t = 1; t <= 11; t++) for (let s = 1; s <= 6; s++) { const b = t * 10 + s; RKN[rankOf(b).name] = b; } }
@@ -21,11 +33,12 @@ document.addEventListener('mouseover', async e => {
   if (!im || im.dataset.rkt) return;
   im.dataset.rkt = '1';
   const b = rkByName(im.alt || ''); if (!b) return;
-  const M = await rkDist(), x = M[b];
+  const host = im.closest('[data-aid]'), aid = host && +host.dataset.aid;
+  const [M, fp] = await Promise.all([rkDist(), aid ? rkPts(aid) : null]), x = M[b], pts = fp ? ` · ${nf(fp)} очков ранга` : '';
   const nm = rankOf(b).name;
   // у верхних рангов «выше 100 %» и «0,0 %» ничего не говорят — там «топ 0,04 % игроков»
   const pc = v => (v >= 10 ? Math.round(v) : v >= 1 ? f1(v) : String(+v.toPrecision(1)).replace('.', ','));
-  im.title = !x ? nm : x.below >= .9 ? `${nm} · топ ${pc(100 * (1 - x.below))} % игроков · на этом ранге ${pc(100 * x.p)} %` : `${nm} · выше, чем у ${Math.round(100 * x.below)} % игроков · на этом ранге ${pc(100 * x.p)} %`;
+  im.title = !x ? nm + pts : x.below >= .9 ? `${nm}${pts} · топ ${pc(100 * (1 - x.below))} % игроков · на этом ранге ${pc(100 * x.p)} %` : `${nm}${pts} · выше, чем у ${Math.round(100 * x.below)} % игроков · на этом ранге ${pc(100 * x.p)} %`;
 }, {passive: true});
 
 // ---------- страница героя: «Рейтинг героя · мир» (топ-10) и сборка конкретного игрока (#h/<герой>/p<id>) ----------
@@ -42,8 +55,9 @@ async function l14Ladder(n, hid) {
     <div class="q-box l14-lb" id="l14lb"><div class="load" style="padding:14px">Считаю топ…</div></div></section>`);
   const L = (await SBQ(`${HLQ(hid)}&start=1&limit=10`).catch(() => [])) || []; if (n !== VQ) return;
   await steamNames(L.map(x => x.account_id)); if (n !== VQ) return;
-  const row = (x, mine) => `<a class="l14-r${mine ? ' mine' : ''}${x.rank <= 3 ? ' p' + x.rank : ''}${x.rank > 5 && !mine ? ' l14-x' : ''}" href="#h/${hid}/p${x.account_id}"><span class="l14-n">${x.rank <= 3 ? ['', '🥇', '🥈', '🥉'][x.rank] : '#' + nf(x.rank)}</span>${(SN[x.account_id] || {}).av ? `<img class="l14-av" src="${esc(SN[x.account_id].av)}" alt="" loading="lazy">` : '<i class="l14-av"></i>'}<b>${esc((SN[x.account_id] || {}).n || 'Скрытый игрок')}</b><span class="l14-rk">${rankImg(x.badge, 'rk')}<small>${esc(rankOf(x.badge).name)}</small></span><small class="l14-g">${nf(x.matches)} ${pl(x.matches, ['игра', 'игры', 'игр'])}</small><span class="l14-go">›</span></a>`;
+  const row = (x, mine) => `<a data-aid="${x.account_id}" class="l14-r${mine ? ' mine' : ''}${x.rank <= 3 ? ' p' + x.rank : ''}${x.rank > 5 && !mine ? ' l14-x' : ''}" href="#h/${hid}/p${x.account_id}"><span class="l14-n">${x.rank <= 3 ? ['', '🥇', '🥈', '🥉'][x.rank] : '#' + nf(x.rank)}</span>${(SN[x.account_id] || {}).av ? `<img class="l14-av" src="${esc(SN[x.account_id].av)}" alt="" loading="lazy">` : '<i class="l14-av"></i>'}<b>${esc((SN[x.account_id] || {}).n || 'Скрытый игрок')}</b><span class="l14-rk">${rankImg(x.badge, 'rk')}<small>${esc(rankOf(x.badge).name)}</small></span><small class="l14-g">${nf(x.matches)} ${pl(x.matches, ['игра', 'игры', 'игр'])}</small><span class="l14-go">›</span></a>`;
   let html = L.length ? L.map(x => row(x, ME && x.account_id === ME.id)).join('') + (L.length > 5 ? '<button type="button" class="l14-more" id="l14more">Ещё 5 ›</button>' : '') : '<div class="empty">Пока никого: в рейтинг попадают с рангом и 20+ играми на герое за 90 дней.</div>';
+  L.forEach(x => rkPts(x.account_id));
   put(n, '#l14lb', html + (ME ? '<div class="l14-me" id="l14me"><small>Ты · считаю место…</small></div>' : ''));
   { const mb = $('#l14more'); if (mb) mb.onclick = () => { $('#l14lb').classList.add('open'); mb.remove(); }; }
   if (!ME || L.some(x => x.account_id === ME.id)) { const m = $('#l14me'); if (m && L.some(x => x.account_id === ME.id)) m.remove(); return; }
@@ -76,7 +90,7 @@ async function l14Player(n, hid, id) {
       bld = `<div class="q-bcs l14-bcs">${bCard(x, 'cur').replace('играешь сейчас', 'играет сейчас').replace('ты начинал с ней за 30 дней', `сыграно с ней за ${HL_DAYS} дней:`)}</div><p class="l14-how">В игре: <b>Сборки</b> → поиск → вставь ID. Кнопка «ID …» на карточке копирует его.</p>`;
     } else bld = '<div class="empty">Сборка не нашлась — возможно, автор её удалил.</div>';
   }
-  put(n, '#l14pl', `<div class="l14-ph">${s.av ? `<img class="l14-av" src="${esc(s.av)}" alt="">` : '<i class="l14-av"></i>'}<div class="l14-nm"><small>Игрок на ${esc(hero(hid).n)}</small><b>${esc(nm)}</b><span class="l14-rk">${badge ? rankImg(badge, 'rk') : ''}<small>${esc(rankOf(badge).name)}</small></span></div>
+  put(n, '#l14pl', `<div class="l14-ph" data-aid="${id}">${s.av ? `<img class="l14-av" src="${esc(s.av)}" alt="">` : '<i class="l14-av"></i>'}<div class="l14-nm"><small>Игрок на ${esc(hero(hid).n)}</small><b>${esc(nm)}</b><span class="l14-rk">${badge ? rankImg(badge, 'rk') : ''}<small>${esc(rankOf(badge).name)}</small></span></div>
       <div class="l14-pr">${place}</div><a class="btn s g" href="?id=${id}#home" target="_blank" rel="noopener">Профиль ↗</a></div>
     <div class="l14-ps"><span><small>Игр на герое</small><b>${nf(g)}</b></span><span><small>Побед</small><b class="${g ? (w / g >= .52 ? 'win' : w / g <= .47 ? 'loss' : '') : ''}">${g ? f1(100 * w / g) + '%' : '—'}</b></span><span><small>За ${HL_DAYS} дней</small><b>${nf(g90)}</b></span></div>
     <div class="q-sec" style="margin-top:12px"><b>Его сборка</b><small>на какой играет чаще всего за ${HL_DAYS} дней</small></div>${bld}`);

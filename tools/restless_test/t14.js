@@ -39,7 +39,8 @@ async function page(b, w, h, id) {
     // эмблема: наведение — название ранга и доля игроков
     const im = await p.$('#l14lb .l14-r .l14-rk img'); await im.scrollIntoViewIfNeeded(); await im.hover();
     await p.waitForFunction(() => /(выше, чем у|топ) [\d,]+ % игроков/.test(document.querySelector('#l14lb .l14-r .l14-rk img').title), null, {timeout: 60000}).catch(() => {});
-    const tt = await p.$eval('#l14lb .l14-r .l14-rk img', e => e.title); ok(/^\S.* · (выше, чем у|топ) [\d,]+ % игроков · на этом ранге [\d,]+ %$/.test(tt), `${n}: эмблема при наведении — «${tt}»`);
+    const tt = await p.$eval('#l14lb .l14-r .l14-rk img', e => e.title); ok(/^\S.* (· [\d\s ]+ очков ранга )?· (выше, чем у|топ) [\d,]+ % игроков · на этом ранге [\d,]+ %$/.test(tt), `${n}: эмблема при наведении — «${tt}»`);
+    ok(/[\d\s ]+ очков ранга/.test(tt), `${n}: у игрока из топа — очки ранга Valve в подсказке`);
     await p.screenshot({path: `${O}/t14-ladder-${n}.png`, fullPage: false});
     // страница игрока — его сборка
     await p.click('#l14lb .l14-r'); await p.waitForSelector('#l14pl .l14-ph', {timeout: 150000}).catch(() => {});

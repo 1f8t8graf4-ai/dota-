@@ -129,7 +129,7 @@ function pCard(p, en, thr, meId) {
   const tags = [thr ? ['h', 'Главная угроза', 'самый опасный по рангу и игре на герое'] : null, p.cn ? ['r', `Контрит тебя · ${p.cn}%`, 'твой герой против него побеждает реже'] : null, ...p.tags].filter(Boolean);
   return `<div class="q-pc l10${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
     <div class="top"><img class="f u11-pf" src="${esc(hero(p.hid).v || hero(p.hid).c || hero(p.hid).i)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}${p.id && p.hm ? `<small class="l13-hr" data-hr="${p.hid}|${p.id}" data-nm="${esc(p.name || '')}" title="Место в мире среди всех игроков на ${esc(hero(p.hid).n)} — по числу побед на нём">место на герое…</small>` : ''}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
-      <span class="l10-rk" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span></div>
+      <span class="l10-rk" data-aid="${p.id || ''}" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span></div>
     <div class="q-pb">${p.id ? `<a class="q-pc-n" href="?id=${p.id}#home"><span class="q-pnm">${esc(p.name)}</span></a>` : `<span class="q-pnm">${esc(p.name)}</span>`}<span class="l10-rn">${esc(rankOf(p.badge).name)}</span>
       <div class="l10-st"><span><small>на герое</small><b>${p.hm ? nf(p.hm) : '0'}${p.hm ? ` · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : ''}</b></span><span><small>всего</small><b>${p.tm ? `${nf(p.tm)} · ${pc(p.tw, p.tm)}%` : '—'}</b></span></div>
       <div class="l10-per">${per('12', '12 ч', p.p12)}${per('30', '30 дн', p.p30)}</div>
@@ -482,7 +482,7 @@ async function viewHome() {
 
   const ses = curSeason(SS), SH = H.filter(m => m.match_mode === 4 && m.start_time >= ses.start), sw = SH.filter(won).length, rk = rankOf(badge);
   const F = qkForm(H), A = qkAct(H), wr20 = Math.round(100 * F.w / Math.max(1, F.L.length));
-  const rank = `<section class="q-box p11-rk"><div class="p11-rkm">${badge ? rankImg(badge, 'rk') : '<i class="p11-nr">?</i>'}<div><small>Ранг сейчас</small><b style="${badge ? `color:${esc(rk.color)}` : ''}">${badge ? esc(rk.name) : 'Без ранга'}</b>
+  const rank = `<section class="q-box p11-rk"><div class="p11-rkm" data-aid="${id}">${badge ? rankImg(badge, 'rk') : '<i class="p11-nr">?</i>'}<div><small>Ранг сейчас</small><b style="${badge ? `color:${esc(rk.color)}` : ''}">${badge ? esc(rk.name) : 'Без ранга'}</b>
       <span id="rtop">${badge ? 'считаю место…' : ''}</span>${SH.length ? `<span>Сезон: <i class="win">${sw}</i> — <i class="loss">${SH.length - sw}</i> · <b class="${wrC(100 * sw / SH.length, SH.length)}">${Math.round(100 * sw / SH.length)}%</b></span>` : '<span>ранговых в этом сезоне нет</span>'}</div></div>
     <div class="p11-en"><small>Средний ранг врагов · последние 10</small><div id="enr" class="q-en"><span class="sub">считаю…</span></div></div></section>`;
   const form = `<section class="q-box p11-fm"><div class="r9-h2"><b>Форма</b><small>последние ${F.L.length}</small></div>
@@ -649,7 +649,7 @@ async function hrkOpen(hid, id, name) {
   const k1 = e => { if (e.key === 'Escape') close(); };
   addEventListener('keydown', k1); addEventListener('hashchange', close);
   let mode = 'w', off = 0;
-  const row = (rank, aid, nm, av, sub, mine, bg) => `<${aid ? `a href="${bg != null ? `#h/${hid}/p${aid}` : `?id=${aid}#home`}"` : 'div'} class="hrk-r${mine ? ' mine' : ''}${aid ? '' : ' x'}"><span class="n">${nf(rank)}</span>${av ? `<img src="${esc(av)}" alt="" loading="lazy">` : '<i></i>'}<b>${esc(nm || 'Скрытый игрок')}</b><small>${bg ? rankImg(bg, 'rk hrk-rk') : ''}${sub}</small><span class="go">${aid ? '›' : ''}</span></${aid ? 'a' : 'div'}>`;
+  const row = (rank, aid, nm, av, sub, mine, bg) => `<${aid ? `a href="${bg != null ? `#h/${hid}/p${aid}` : `?id=${aid}#home`}"` : 'div'} class="hrk-r${mine ? ' mine' : ''}${aid ? '' : ' x'}" data-aid="${aid || ''}"><span class="n">${nf(rank)}</span>${av ? `<img src="${esc(av)}" alt="" loading="lazy">` : '<i></i>'}<b>${esc(nm || 'Скрытый игрок')}</b><small>${bg ? rankImg(bg, 'rk hrk-rk') : ''}${sub}</small><span class="go">${aid ? '›' : ''}</span></${aid ? 'a' : 'div'}>`;
   const draw = async () => {
     const b = $('#hrkb', ov); if (!b) return; b.innerHTML = '<div class="load">Загружаю…</div>';
     const o = await hrkGet(hid, id, name).catch(() => null); if (!ov.isConnected) return;
