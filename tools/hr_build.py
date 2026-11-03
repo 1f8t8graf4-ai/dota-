@@ -43,7 +43,7 @@ def sql(q, tries=5):
 # ранг (11…116: тир×10 + ступень) → тир дробью: 7.0 — Ritualist 1, 11.83 — Eternus 6
 TIER = '(floor({x}/10) + ({x}%10 - 1)/6.0)'
 
-Q = '''
+CTE = '''
 WITH R AS (SELECT account_id, arg_max(player_rank_initial_display_rank, start_time) rk FROM match_player
            WHERE start_time > now() - INTERVAL {D} DAY AND match_mode='Ranked' AND player_rank_initial_display_rank > 0 GROUP BY 1),
 m AS (SELECT match_id, account_id, team, match_mode='Ranked' AS r, (team=winning_team)::INT w, kills k, deaths d, assists a,
@@ -58,7 +58,8 @@ eu AS (SELECT p.match_id, p.team, avg({T2}) t FROM match_player p JOIN R ON R.ac
 g AS (SELECT m.*, coalesce(er.t, eu.t) et FROM m
       LEFT JOIN er ON er.match_id = m.match_id AND er.team <> m.team
       LEFT JOIN eu ON eu.match_id = m.match_id AND eu.team <> m.team)
-SELECT g.account_id id, any_value(R.rk) b, count(*) FILTER (WHERE r) nr, count(*) n,
+'''
+Q = CTE + '''SELECT g.account_id id, any_value(R.rk) b, count(*) FILTER (WHERE r) nr, count(*) n,
   sum(wt) gw, sum(wt*w) ww, sum(wt*k) kw, sum(wt*d) dw, sum(wt*a) aw,
   sum(wt*et) FILTER (WHERE et IS NOT NULL) tw, sum(wt) FILTER (WHERE et IS NOT NULL) tc,
   coalesce(sum(wt) FILTER (WHERE s), 0) gs, coalesce(sum(wt*w) FILTER (WHERE s), 0) ws,
@@ -66,6 +67,27 @@ SELECT g.account_id id, any_value(R.rk) b, count(*) FILTER (WHERE r) nr, count(*
 FROM g LEFT JOIN R ON R.account_id = g.account_id
 GROUP BY 1 HAVING sum(wt) >= {MG} AND count(*) FILTER (WHERE s) >= 1
 '''
+
+# все, кто играл героя за 14 дней (и меньше 20 игр): очки — тем же счётом, недостающие до 20 игры считаем средними;
+# из них — только гистограмма очков (по 10), по ней сайт находит место игрока с малым числом игр («~#N»)
+HIST = CTE + '''
+, a AS (SELECT g.account_id, sum(wt) gw, sum(wt*w) ww, sum(wt*k) kw, sum(wt*d) dw, sum(wt*a) aw,
+    sum(wt*et) FILTER (WHERE et IS NOT NULL) / sum(wt) FILTER (WHERE et IS NOT NULL) T,
+    coalesce(sum(wt*et) FILTER (WHERE s AND et IS NOT NULL) / sum(wt) FILTER (WHERE s AND et IS NOT NULL), 0) Ts,
+    coalesce(sum(wt) FILTER (WHERE s), 0) gs, coalesce(sum(wt*w) FILTER (WHERE s), 0) ws
+  FROM g GROUP BY 1 HAVING count(*) FILTER (WHERE s) >= 1 AND sum(wt) FILTER (WHERE et IS NOT NULL) > 0),
+b AS (SELECT *, CASE WHEN Ts > 0 THEN Ts ELSE T END T2,
+    (ww + greatest(0, {MG} - gw) * {AW}) / greatest(gw, {MG}) wr,
+    ((kw + aw) / greatest(1, dw) * least(gw, {MG}) + greatest(0, {MG} - gw) * {AK}) / greatest(gw, {MG}) kda,
+    CASE WHEN gs > 0 THEN (ws + greatest(0, {MG} - gw) * {AW}) / (gs + greatest(0, {MG} - gw)) ELSE NULL END wrs FROM a),
+c AS (SELECT round(1000 * (
+    .75 * ({F1}) + .25 * ({F2})
+    + CASE WHEN gw < {FG} THEN ln(greatest(.2, 1 - ({FG} - gw) / 100)) ELSE 0 END
+    + CASE WHEN gs < {RG} THEN ln(.5) * ({RG} - gs) ELSE 0 END) / ln(5)) p FROM b)
+SELECT floor(p / 10)::INT k, count(*) n FROM c GROUP BY 1 ORDER BY 1
+'''
+# счёт окна в SQL — то же, что score() ниже
+FX = '{T} * ln(5) + pow(.6, greatest(0, {EM} - {T})) * (ln(2) * ln(least(2, greatest(.5, {wr} / {AW}))) / ln(1.5) + ln(3) * ln(least(4, greatest(.25, {kda} / {AK}))) / ln(2))'
 
 AVG = '''SELECT sum((team=winning_team)::INT)/count(*) wr, (sum(kills)+sum(assists))/greatest(1,sum(deaths)) kda, count(*) n
 FROM match_player WHERE start_time > now() - INTERVAL {D} DAY AND hero_id={H} AND match_mode IN ('Ranked','Unranked')'''
@@ -100,6 +122,10 @@ def hero(h):
             S += math.log(.5) * (REC_G - gs)                     # меньше 5 игр за 14 дней — ×0,5 за каждую
         out.append((S, x, T, wr, kda))
     out.sort(key=lambda e: -e[0])
+    aw, ak = A['wr'], A['kda']
+    hq = HIST.format(D=DAYS, S=SHORT, H=h, MG=MIN_G, FG=FULL_G, RG=REC_G, AW=aw, AK=ak, T1=TIER.format(x='player_rank_initial_display_rank'), T2=TIER.format(x='R.rk'),
+                     F1=FX.format(T='T', EM=EM, wr='wr', kda='kda', AW=aw, AK=ak), F2=FX.format(T='T2', EM=EM, wr='coalesce(wrs, wr)', kda='kda', AW=aw, AK=ak))
+    H = sql(hq)
     f1 = lambda v: round(v, 1)
     d = {'v': 1, 'hero': h, 't': int(time.time()), 'days': DAYS, 'short': SHORT, 'n': len(out),
          'avg': {'wr': round(100 * A['wr'], 2), 'kda': round(A['kda'], 2), 'games': A['n']},
@@ -109,7 +135,9 @@ def hero(h):
          'g': [f1(e[1]['gw']) for e in out],                     # игр с учётом 0,4 за обычные
          'r': [e[1]['nr'] for e in out],                         # из них ранговых
          'wr': [f1(100 * e[3]) for e in out], 'kda': [round(e[4], 2) for e in out],
-         'et': [round(e[2], 2) for e in out]}                    # средний тир врагов
+         'et': [round(e[2], 2) for e in out],                    # средний тир врагов
+         'hk': [x['k'] for x in H], 'hn': [x['n'] for x in H],   # гистограмма очков всех, кто играл за 14 дней: корзина = очки // 10
+         'all': sum(x['n'] for x in H)}
     print(f'герой {h}: {len(out)} в рейтинге из {len(rows)}, {time.time() - t0:.0f} с', flush=True)
     return d
 

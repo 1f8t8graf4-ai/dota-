@@ -125,17 +125,13 @@ viewOvs = function () {
   $$('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.t === 'ovs'));
   window.scrollTo(0, 0); O18F = '';
   V(`<section class="ovs">
-    <header class="ovs-h"><h1>Оверлей</h1><p>Restless поверх игры: профиль по клавише, матч — сам. Выбери, сколько показывать. Нажми на зону экрана — увидишь её функции.</p></header>
+    <header class="ovs-h"><h1>Оверлей</h1></header>
     <div class="ovs-st" id="ovsst"></div>
     <div class="ovp">
       <div class="ovp-tabs" id="ovptabs" role="tablist">${Object.entries(O18P).map(([k, [nm, d]]) => `<button type="button" role="tab" data-p="${k}"><b>${nm}</b><small>${d}</small></button>`).join('')}</div>
       <div class="ovp-main"><div class="ovp-stage o18-st" id="ovpst" aria-label="Экран игры: где что покажет Restless"></div><div class="ovp-side" id="ovpside"></div></div>
     </div>
     ${o18Fps()}
-    <section class="o18-more"><div class="q-sec"><b>Потом</b><small>ты сказал «потом» — не забыто</small></div><p>${O18_LATER.map(x => esc(x[1])).join(' · ')}</p>
-      <div class="q-sec"><b>Не делаем</b><small>ты сказал «нет»</small></div><p>${O18_NO.map(esc).join(' · ')}</p>
-      <div class="q-sec"><b>Голос</b><small>напоминания голосом</small></div><p>Робот — кринж, подписка — дорого. Проверю, какие фразы есть у диктора в файлах самой игры, — их и возьмём; чего у него нет, покажем подписью на экране.</p></section>
-    <p class="ovs-soon">Сейчас в моде (0.15) работают «КД ультов», «напоминания о событиях», кнопка Restless в профиле и «выключил — не грузит». Остальное включается по мере готовности — сначала Lite.</p>
   </section>`);
   ovsPaint(); o18Draw(); o18Bind(); o18FpsBind();
 };
@@ -144,9 +140,9 @@ const O18FPS = [['off', 'Как в игре', 'ничего не меняем'],
 const o18FpsCur = () => { try { return localStorage.getItem('rl-fps') || 'off'; } catch (e) { return 'off'; } };
 function o18Fps() {
   const c = o18FpsCur(), host = !!(window.rlHost && rlHost.setFps);
-  return `<section class="o18-fps"><div class="q-sec"><b>FPS в игре</b><small>${host ? 'программа сама поправит gameinfo.gi и вернёт как было' : 'ставит программа Restless — на сайте только выбор'}</small></div>
+  return `<section class="o18-fps"><div class="q-sec"><b>FPS в игре</b></div>
     <div class="o18-fb" id="o18fps">${O18FPS.map(([k, nm, d]) => `<button type="button" data-f="${k}" aria-pressed="${c === k}"><b>${nm}</b><small>${d}</small></button>`).join('')}</div>
-    <p class="sub" id="o18fm">Видимость врагов, обводки и урон не трогаем — только то, что не мешает играть. Перезапусти игру после смены.</p></section>`;
+    <p class="sub" id="o18fm"></p></section>`;
 }
 function o18FpsBind() {
   const el = $('#o18fps'); if (!el) return;

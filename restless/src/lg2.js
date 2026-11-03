@@ -343,11 +343,12 @@ const hrShort = r => !r ? '' : r.why === 'idle' ? `не играл ${r.sd || 30}
 const HR_EXACT = 1000;
 function hrBig(w, tot) {
   if (!w || !w.pos) return null;
-  return {t: '#' + nf(w.pos), ex: 1, top: w.pos <= 100, hi: w.pos <= HR_EXACT};
+  return {t: (w.apx ? '~#' : '#') + nf(w.pos), ex: 1, top: !w.apx && w.pos <= 100, hi: !w.apx && w.pos <= HR_EXACT};
 }
 // вместо цели — доля: «топ 3 % в рейтинге героя»
 function hrNext(w) {
   if (!w || !w.pos) return ''; const t = w.tot || 0; if (w.pos === 1) return 'лучший в мире';
+  if (w.apx) { const q = Math.min(100, 100 * w.pos / (t || w.pos)), n = HL_MIN - (w.m || 0); return 'топ ' + (q < 1 ? f1(Math.max(.1, q)) : Math.ceil(q)) + ' % всех на герое' + (n > 0 ? ` · ещё ${n} ${pl(n, ['игра', 'игры', 'игр'])} — точное место` : ''); }
   if (!t) return 'в рейтинге героя';
   const p = Math.min(100, 100 * w.pos / t);
   return 'топ ' + (p < 1 ? f1(Math.max(.1, p)) : Math.ceil(p)) + ' % в рейтинге героя';

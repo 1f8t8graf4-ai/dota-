@@ -5996,11 +5996,12 @@ const hrShort = r => !r ? '' : r.why === 'idle' ? `не играл ${r.sd || 30}
 const HR_EXACT = 1000;
 function hrBig(w, tot) {
   if (!w || !w.pos) return null;
-  return {t: '#' + nf(w.pos), ex: 1, top: w.pos <= 100, hi: w.pos <= HR_EXACT};
+  return {t: (w.apx ? '~#' : '#') + nf(w.pos), ex: 1, top: !w.apx && w.pos <= 100, hi: !w.apx && w.pos <= HR_EXACT};
 }
 // вместо цели — доля: «топ 3 % в рейтинге героя»
 function hrNext(w) {
   if (!w || !w.pos) return ''; const t = w.tot || 0; if (w.pos === 1) return 'лучший в мире';
+  if (w.apx) { const q = Math.min(100, 100 * w.pos / (t || w.pos)), n = HL_MIN - (w.m || 0); return 'топ ' + (q < 1 ? f1(Math.max(.1, q)) : Math.ceil(q)) + ' % всех на герое' + (n > 0 ? ` · ещё ${n} ${pl(n, ['игра', 'игры', 'игр'])} — точное место` : ''); }
   if (!t) return 'в рейтинге героя';
   const p = Math.min(100, 100 * w.pos / t);
   return 'топ ' + (p < 1 ? f1(Math.max(.1, p)) : Math.ceil(p)) + ' % в рейтинге героя';
@@ -8930,7 +8931,7 @@ const L14B = {};
     const sec = $('#p11hl') && $('#p11hl').closest('section'); if (!sec) return;
     if (!L.length) {
       const o0 = await hrkGet(hids[0], id, name).catch(() => null); if (n !== VQ) return;
-      sec.insertAdjacentHTML('beforebegin', `<div class="l14-goal no" id="l14goal"><div><small>Рейтинг героя</small><b>Пока вне рейтинга</b><span>${esc(hrWhy(o0 && o0.w) || 'нужен ранг и 20 игр на герое за 90 дней')}. Попадёшь — увидишь своё место в мире и в регионе.</span></div></div>`);
+      sec.insertAdjacentHTML('beforebegin', `<div class="l14-goal no" id="l14goal"><div><small>Рейтинг героя</small><b>Пока вне рейтинга</b><span>${esc(hrWhy(o0 && o0.w) || 'нужен ранг и 20 игр на герое за 90 дней')}</span></div></div>`);
       return;
     }
     const b = L.sort((a, c) => a.o.w.pos - c.o.w.pos)[0], p = b.o.w.pos, hb = hrBig(b.o.w, b.o.tot);
@@ -8956,7 +8957,7 @@ async function l15Lines(n, hid) {
   const G = []; L.forEach((x, i) => { const t = x.tag || 'реплика'; let g = G.find(z => z[0] === t); if (!g) G.push(g = [t, []]); g[1].push([x, i]); });
   const nz = t => String(t).toLowerCase().replace(/[^a-z' ]/g, '').trim(), kwOf = x => (x.kw || []).filter(z => nz(z[0]) !== nz(x.en)); // слово = вся фраза — не повторяем
   const wd = (w, x) => { const c = w.toLowerCase().replace(/[^a-z']/g, ''), kw = kwOf(x).find(z => z[0].toLowerCase().split(/\s+/).map(v => v.replace(/[^a-z']/g, '')).includes(c)); return `<i${kw ? ` data-k="1" title="${esc(kw[0])} — ${esc(kw[1])}"` : ''}>${esc(w)}</i>`; };
-  at.insertAdjacentHTML('beforebegin', `<details class="l15-ln" id="l15ln"><summary><b>Все реплики · ${L.length}</b><small>английский и перевод — ▶ послушать, слова загораются по голосу</small><span class="l15-ch" aria-hidden="true">▾</span></summary>
+  at.insertAdjacentHTML('beforebegin', `<details class="l15-ln" id="l15ln"><summary><b>Все реплики · ${L.length}</b><span class="l15-ch" aria-hidden="true">▾</span></summary>
     <div class="l15-gs">${G.map(([t, R]) => `<section class="l15-g"><h4>${esc(t)} <small>${R.length}</small></h4>${R.map(([x, i]) => `<div class="l15-r" data-i="${i}">
       <button type="button" class="l15-pl" aria-label="Послушать">▶</button><div class="l15-tx"><p class="l15-en" lang="en">${x.en.split(/\s+/).map(w => wd(w, x)).join(' ')}</p><p class="l15-ru">${esc(x.ru)}</p>
       ${kwOf(x).length ? `<p class="l15-kw">${kwOf(x).map(z => `<span><b>${esc(z[0])}</b> — ${esc(z[1])}</span>`).join('')}</p>` : ''}</div></div>`).join('')}</section>`).join('')}</div>
@@ -9074,7 +9075,7 @@ function hlHow(hid) {
 // ---------- топ мира на странице героя: по очкам рейтинга, с винрейтом и KDA ----------
 l14Ladder = async function (n, hid) {
     const g = $('#hst'); if (!g || $('#l14lb')) return;
-    g.insertAdjacentHTML('afterend', `<section class="l14-lad"><div class="q-sec"><b>Рейтинг героя · топ мира</b><small>ранг, винрейт и KDA на ${esc(hero(hid).n)} — нажми на игрока, увидишь его сборку</small></div>${hlHow(hid)}
+    g.insertAdjacentHTML('afterend', `<section class="l14-lad"><div class="q-sec"><b>Рейтинг героя · топ мира</b></div>
       <div class="q-box l14-lb" id="l14lb"><div class="load" style="padding:14px">Считаю топ…</div></div></section>`);
     const L = await hlRows(hid, 1, 10).catch(() => []); if (n !== VQ) return;
     await steamNames(L.map(x => x.account_id)); if (n !== VQ) return;
@@ -9107,22 +9108,67 @@ function hrData(hid) {
 }
 const hrRow = (d, i) => ({pos: i + 1, v: d.p[i], m: Math.round(d.g[i]), badge: d.b[i], lg: 1, tot: d.n, dt: d.t,
   sc: {R: d.p[i], wr: d.wr[i], kda: d.kda[i], et: d.et[i], r: d.r[i], g: d.g[i]}});
-// не в таблице — почему: давно не играл / мало игр / ещё не пересчитали
-async function hrMiss(hid, id) {
-  const day = now() - (now() % 86400), q = (t, rk) => SBQ(`hero_id=${hid}&sort_by=matches&min_matches=1&min_unix_timestamp=${t}&account_ids=${id}${rk ? '&match_mode=ranked' : ''}`).then(L => ((L || [])[0] || {}).matches || 0).catch(() => 0);
-  const [g, r, s] = await Promise.all([q(day - HR_LD * 86400), q(day - HR_LD * 86400, 1), q(day - HR_SD * 86400)]);
-  const gw = r + .4 * Math.max(0, g - r);
-  if (!g) return {pos: 0, why: 'few', m: 0, ld: 1};
-  if (!s) return {pos: 0, why: 'idle', m: g, sd: HR_SD};
-  if (gw < HL_MIN) return {pos: 0, why: 'few', m: Math.floor(gw), ld: 1};
-  return {pos: 0, why: 'soon', m: Math.floor(gw)};
+// не в таблице (меньше 20 игр) — 04.11, Андрей: «убери ограничение в 20 игр, если вошёл в топ-100 тысяч мира».
+// Один SQL на все герои игрока (~10 с, ответ помним 6 ч): те же правила, недостающие до 20 игры считаем средними,
+// место — по гистограмме очков всех, кто играл героя за 14 дней (`hk`/`hn` в таблице героя). Показываем «~#N», если N ≤ 100 000.
+const HR_TOPALL = 100000, HRQC = {};
+const hrQSql = id => `WITH R AS (SELECT account_id, arg_max(player_rank_initial_display_rank, start_time) rk FROM match_player WHERE start_time > now() - INTERVAL ${HR_LD} DAY AND match_mode='Ranked' AND player_rank_initial_display_rank > 0 GROUP BY 1),
+m AS (SELECT match_id, hero_id, team, match_mode='Ranked' AS r, (team=winning_team)::INT w, kills k, deaths d, assists a, start_time > now() - INTERVAL ${HR_SD} DAY AS s, CASE WHEN match_mode='Ranked' THEN 1.0 ELSE 0.4 END wt FROM match_player WHERE start_time > now() - INTERVAL ${HR_LD} DAY AND account_id=${+id} AND match_mode IN ('Ranked','Unranked')),
+er AS (SELECT match_id, team, avg(floor(player_rank_initial_display_rank/10) + (player_rank_initial_display_rank%10 - 1)/6.0) t FROM match_player WHERE start_time > now() - INTERVAL ${HR_LD} DAY AND match_mode='Ranked' AND player_rank_initial_display_rank > 0 AND match_id IN (SELECT match_id FROM m WHERE r) GROUP BY 1,2),
+eu AS (SELECT p.match_id, p.team, avg(floor(R.rk/10) + (R.rk%10 - 1)/6.0) t FROM match_player p JOIN R ON R.account_id = p.account_id WHERE p.start_time > now() - INTERVAL ${HR_LD} DAY AND p.match_mode='Unranked' AND p.match_id IN (SELECT match_id FROM m WHERE NOT r) GROUP BY 1,2),
+g AS (SELECT m.*, coalesce(er.t, eu.t) et FROM m LEFT JOIN er ON er.match_id = m.match_id AND er.team <> m.team LEFT JOIN eu ON eu.match_id = m.match_id AND eu.team <> m.team)
+SELECT hero_id h, sum(wt) gw, sum(wt*w) ww, sum(wt*k) kw, sum(wt*d) dw, sum(wt*a) aw, sum(wt*et) FILTER (WHERE et IS NOT NULL) tw, sum(wt) FILTER (WHERE et IS NOT NULL) tc,
+ coalesce(sum(wt) FILTER (WHERE s), 0) gs, coalesce(sum(wt*w) FILTER (WHERE s), 0) ws, sum(wt*et) FILTER (WHERE s AND et IS NOT NULL) ts, sum(wt) FILTER (WHERE s AND et IS NOT NULL) tcs, count(*) FILTER (WHERE s) ns FROM g GROUP BY 1`;
+function hrQuick(id) {
+  if (HRQC[id]) return HRQC[id];
+  const K = 'rl-hrq-' + id;
+  try { const c = JSON.parse(localStorage.getItem(K) || 'null'); if (c && c.t > Date.now() - 6 * 3600e3) return (HRQC[id] = Promise.resolve(c.L)); } catch (e) {}
+  return (HRQC[id] = (async () => {
+    for (let i = 0; i < 3; i++) {
+      try { const r = await fetch('https://api.deadlock-api.com/v1/sql?query=' + encodeURIComponent(hrQSql(id))); if (r.ok) { const L = await r.json(); if (Array.isArray(L)) { try { localStorage.setItem(K, JSON.stringify({t: Date.now(), L})); } catch (e) {} return L; } } } catch (e) {}
+      await new Promise(f => setTimeout(f, 4000 * (i + 1)));
+    }
+    delete HRQC[id]; return null;
+  })());
+}
+// счёт как в tools/hr_build.py (HIST): окно — тир ×5, винрейт 1,5× → ×2, KDA 2× → ×3, ×0,6 за тир ниже Eternus
+const hrWin = (T, wr, kda, A) => T * Math.log(5) + Math.pow(.6, Math.max(0, 11 - T)) * (Math.log(2) * Math.log(Math.min(2, Math.max(.5, wr / A.wr))) / Math.log(1.5) + Math.log(3) * Math.log(Math.min(4, Math.max(.25, kda / A.kda))) / Math.log(2));
+function hrPts(x, d) {
+  const A = {wr: d.avg.wr / 100, kda: d.avg.kda}, MG = HL_MIN, gw = x.gw, f = Math.max(0, MG - gw), T = x.tw / x.tc, Ts = x.tcs ? x.ts / x.tcs : T;
+  const wr = (x.ww + f * A.wr) / Math.max(gw, MG), kda = ((x.kw + x.aw) / Math.max(1, x.dw) * Math.min(gw, MG) + f * A.kda) / Math.max(gw, MG);
+  const wrs = x.gs > 0 ? (x.ws + f * A.wr) / (x.gs + f) : wr;
+  let S = .75 * hrWin(T, wr, kda, A) + .25 * hrWin(Ts, wrs, kda, A);
+  if (gw < 80) S += Math.log(Math.max(.2, 1 - (80 - gw) / 100));
+  if (x.gs < 5) S += Math.log(.5) * (5 - x.gs);
+  return Math.round(1000 * S / Math.log(5));
+}
+// место среди всех по гистограмме: выше — все корзины старше, плюс часть своей
+function hrAllPos(d, p) {
+  const k0 = Math.floor(p / 10); let up = 0;
+  for (let i = 0; i < d.hk.length; i++) { if (d.hk[i] > k0) up += d.hn[i]; else if (d.hk[i] === k0) up += d.hn[i] * (1 - (p - k0 * 10) / 10); }
+  return Math.max(1, Math.round(up) + 1);
+}
+async function hrMiss(hid, id, d) {
+  const L = await hrQuick(id), x = L && L.find(r => r.h === hid);
+  if (!L) {    // SQL не ответил — как раньше, по scoreboard
+    const day = now() - (now() % 86400), q = (t, rk) => SBQ(`hero_id=${hid}&sort_by=matches&min_matches=1&min_unix_timestamp=${t}&account_ids=${id}${rk ? '&match_mode=ranked' : ''}`).then(R => ((R || [])[0] || {}).matches || 0).catch(() => 0);
+    const [g, r, s] = await Promise.all([q(day - HR_LD * 86400), q(day - HR_LD * 86400, 1), q(day - HR_SD * 86400)]), gw = r + .4 * Math.max(0, g - r);
+    return !g ? {pos: 0, why: 'few', m: 0, ld: 1} : !s ? {pos: 0, why: 'idle', m: g, sd: HR_SD} : gw < HL_MIN ? {pos: 0, why: 'few', m: Math.floor(gw), ld: 1} : {pos: 0, why: 'soon', m: Math.floor(gw)};
+  }
+  if (!x) return {pos: 0, why: 'few', m: 0, ld: 1};
+  if (!x.ns) return {pos: 0, why: 'idle', m: Math.round(x.gw), sd: HR_SD};
+  if (x.gw >= HL_MIN) return {pos: 0, why: 'soon', m: Math.floor(x.gw)};
+  if (!x.tc || !d.hk) return {pos: 0, why: 'few', m: Math.floor(x.gw), ld: 1};
+  const p = hrPts(x, d), pos = hrAllPos(d, p);
+  if (pos > HR_TOPALL) return {pos: 0, why: 'few', m: Math.floor(x.gw), ld: 1, ap: pos};
+  return {pos, apx: 1, v: p, m: Math.floor(x.gw), tot: d.all, lg: 0, sc: {R: p, wr: 100 * x.ww / x.gw, kda: (x.kw + x.aw) / Math.max(1, x.dw), et: x.tw / x.tc, g: x.gw}};
 }
 { const HR1 = heroRating; heroRating = function (hid, id) {
     const k = 'd' + hid + '|' + id; if (HRL[k]) return HRL[k];
     return (HRL[k] = (async () => {
       const d = await hrData(hid); if (!d) return HR1(hid, id);
       const i = d.at.get(+id);
-      return i != null ? hrRow(d, i) : hrMiss(hid, id);
+      return i != null ? hrRow(d, i) : hrMiss(hid, id, d);
     })());
   }; }
 { const HL1 = hlRows; hlRows = async function (hid, start, n) {
@@ -9131,18 +9177,8 @@ async function hrMiss(hid, id) {
     return L;
   }; }
 { const HT1 = heroTotal; heroTotal = hid => hrData(hid).then(d => d ? d.n : HT1(hid)); }
-// как считаем — по правилам League of Graphs, с датой пересчёта
-hlHow = function (hid) {
-  return `<details class="l16-how"><summary>Как считаем — как League of Graphs</summary><ul>
-    <li><b>Ранг игры</b> — средний ранг врагов в этом матче. Тир выше = ×5 к очкам</li>
-    <li>В обычной игре ранга нет — берём ранги врагов с их аккаунтов. Обычная игра = 0,4 ранговой</li>
-    <li><b>Винрейт</b> на ${esc(hero(hid).n)} в 1,5 раза выше среднего = ×2</li>
-    <li><b>KDA</b> вдвое выше среднего = ×3</li>
-    <li>Чем ниже ранг, тем меньше весят винрейт и KDA: каждый тир ниже Eternus — ×0,6</li>
-    <li>Нужно 20+ игр за месяц и хоть одна за ${HR_SD} дней. До 80 игр — небольшой штраф; меньше 5 за ${HR_SD} дней — ×0,5 за каждую</li>
-    <li>Два счёта: за месяц и за ${HR_SD} дней, месяц весит 3/4</li>
-    <li class="sub">Пересчёт раз в сутки${hrDate(hid)}</li></ul></details>`;
-};
+// «Как считаем» убрано (Андрей, 04.11: «убери всякие объяснения и впредь не добавляй»)
+hlHow = () => '';
 function hrDate(hid) { const d = HRD[hid] && HRD[hid].v; return d && d.t ? ' · последний — ' + new Date(d.t * 1000).toLocaleString('ru-RU', {day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'}) : ''; }
 
 // ===================== lg18 — 04.11: пресеты оверлея по ответам Андрея (страница QoL: 64 «да», 5 «потом», 5 «нет») =====================
@@ -9272,17 +9308,13 @@ viewOvs = function () {
   $$('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.t === 'ovs'));
   window.scrollTo(0, 0); O18F = '';
   V(`<section class="ovs">
-    <header class="ovs-h"><h1>Оверлей</h1><p>Restless поверх игры: профиль по клавише, матч — сам. Выбери, сколько показывать. Нажми на зону экрана — увидишь её функции.</p></header>
+    <header class="ovs-h"><h1>Оверлей</h1></header>
     <div class="ovs-st" id="ovsst"></div>
     <div class="ovp">
       <div class="ovp-tabs" id="ovptabs" role="tablist">${Object.entries(O18P).map(([k, [nm, d]]) => `<button type="button" role="tab" data-p="${k}"><b>${nm}</b><small>${d}</small></button>`).join('')}</div>
       <div class="ovp-main"><div class="ovp-stage o18-st" id="ovpst" aria-label="Экран игры: где что покажет Restless"></div><div class="ovp-side" id="ovpside"></div></div>
     </div>
     ${o18Fps()}
-    <section class="o18-more"><div class="q-sec"><b>Потом</b><small>ты сказал «потом» — не забыто</small></div><p>${O18_LATER.map(x => esc(x[1])).join(' · ')}</p>
-      <div class="q-sec"><b>Не делаем</b><small>ты сказал «нет»</small></div><p>${O18_NO.map(esc).join(' · ')}</p>
-      <div class="q-sec"><b>Голос</b><small>напоминания голосом</small></div><p>Робот — кринж, подписка — дорого. Проверю, какие фразы есть у диктора в файлах самой игры, — их и возьмём; чего у него нет, покажем подписью на экране.</p></section>
-    <p class="ovs-soon">Сейчас в моде (0.15) работают «КД ультов», «напоминания о событиях», кнопка Restless в профиле и «выключил — не грузит». Остальное включается по мере готовности — сначала Lite.</p>
   </section>`);
   ovsPaint(); o18Draw(); o18Bind(); o18FpsBind();
 };
@@ -9291,9 +9323,9 @@ const O18FPS = [['off', 'Как в игре', 'ничего не меняем'],
 const o18FpsCur = () => { try { return localStorage.getItem('rl-fps') || 'off'; } catch (e) { return 'off'; } };
 function o18Fps() {
   const c = o18FpsCur(), host = !!(window.rlHost && rlHost.setFps);
-  return `<section class="o18-fps"><div class="q-sec"><b>FPS в игре</b><small>${host ? 'программа сама поправит gameinfo.gi и вернёт как было' : 'ставит программа Restless — на сайте только выбор'}</small></div>
+  return `<section class="o18-fps"><div class="q-sec"><b>FPS в игре</b></div>
     <div class="o18-fb" id="o18fps">${O18FPS.map(([k, nm, d]) => `<button type="button" data-f="${k}" aria-pressed="${c === k}"><b>${nm}</b><small>${d}</small></button>`).join('')}</div>
-    <p class="sub" id="o18fm">Видимость врагов, обводки и урон не трогаем — только то, что не мешает играть. Перезапусти игру после смены.</p></section>`;
+    <p class="sub" id="o18fm"></p></section>`;
 }
 function o18FpsBind() {
   const el = $('#o18fps'); if (!el) return;

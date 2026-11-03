@@ -31,11 +31,13 @@ const HR = process.argv[2], O = process.argv[3]; let ok = true; const chk = (c, 
     // рейтинг из таблицы
     const r = await p.evaluate(async () => { const a = await heroRating(84, 1543350624), x = await heroRating(84, 930626915), L = await hlRows(84, 1, 3), t = await heroTotal(84); return {a, x, L, t}; });
     chk(r.a.lg && r.a.pos > 0 && r.a.sc && r.a.sc.et > 0, `${n}: место из таблицы #${r.a.pos} · ${r.a.v} очков · враги тир ${r.a.sc.et}`);
-    chk(!r.x.pos && ['few', 'idle', 'soon'].includes(r.x.why), `${n}: не в таблице — почему: ${r.x.why}, ${r.x.m} игр`);
+    chk(r.x.apx ? r.x.pos > 0 && r.x.pos <= 100000 : ['few', 'idle', 'soon'].includes(r.x.why), `${n}: меньше 20 игр — ${r.x.apx ? 'место среди всех ~#' + r.x.pos + ' · ' + r.x.v + ' очков · ' + r.x.m + ' игр' : r.x.why + ', ' + r.x.m + ' игр'}`);
+    const lbl = await p.evaluate(async () => { const w = await heroRating(84, 930626915); const b = hrBig(w); return b ? b.t + ' · ' + hrNext(w) : hrShort(w); });
+    chk(/^~#\d|ещё|не играл|считаем/.test(lbl), `${n}: подпись: ${lbl}`);
     chk(r.L.length === 3 && r.L[0].rank === 1 && r.L[0].R >= r.L[1].R && r.t > 1000, `${n}: топ из таблицы, всего ${r.t}`);
     await p.goto('http://localhost:8095/restless/?dev=vasyan2026#h/84'); await p.waitForSelector('#l14lb .l16-r', {timeout: 90000}).catch(() => {});
     await p.waitForTimeout(1500); const rows = await p.$$eval('#l14lb .l16-r', L => L.length), how = await p.$eval('.l16-how', e => e.textContent).catch(() => '');
-    chk(rows >= 5 && /средний ранг врагов/.test(how) && /раз в сутки/.test(how), `${n}: страница героя — топ ${rows} строк, «Как считаем» про ранг врагов`);
+    chk(rows >= 5 && !how, `${n}: страница героя — топ ${rows} строк, без «Как считаем»`);
     await p.screenshot({path: `${O}/hero-${n}.png`});
     chk(!errs.length, `${n}: консоль чистая ${errs.slice(0, 2).join(' | ')}`);
     await p.close();

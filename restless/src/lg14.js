@@ -115,7 +115,7 @@ const L14B = {};
     const sec = $('#p11hl') && $('#p11hl').closest('section'); if (!sec) return;
     if (!L.length) {
       const o0 = await hrkGet(hids[0], id, name).catch(() => null); if (n !== VQ) return;
-      sec.insertAdjacentHTML('beforebegin', `<div class="l14-goal no" id="l14goal"><div><small>Рейтинг героя</small><b>Пока вне рейтинга</b><span>${esc(hrWhy(o0 && o0.w) || 'нужен ранг и 20 игр на герое за 90 дней')}. Попадёшь — увидишь своё место в мире и в регионе.</span></div></div>`);
+      sec.insertAdjacentHTML('beforebegin', `<div class="l14-goal no" id="l14goal"><div><small>Рейтинг героя</small><b>Пока вне рейтинга</b><span>${esc(hrWhy(o0 && o0.w) || 'нужен ранг и 20 игр на герое за 90 дней')}</span></div></div>`);
       return;
     }
     const b = L.sort((a, c) => a.o.w.pos - c.o.w.pos)[0], p = b.o.w.pos, hb = hrBig(b.o.w, b.o.tot);

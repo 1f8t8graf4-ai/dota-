@@ -96,7 +96,7 @@ function hlHow(hid) {
 // ---------- топ мира на странице героя: по очкам рейтинга, с винрейтом и KDA ----------
 l14Ladder = async function (n, hid) {
     const g = $('#hst'); if (!g || $('#l14lb')) return;
-    g.insertAdjacentHTML('afterend', `<section class="l14-lad"><div class="q-sec"><b>Рейтинг героя · топ мира</b><small>ранг, винрейт и KDA на ${esc(hero(hid).n)} — нажми на игрока, увидишь его сборку</small></div>${hlHow(hid)}
+    g.insertAdjacentHTML('afterend', `<section class="l14-lad"><div class="q-sec"><b>Рейтинг героя · топ мира</b></div>
       <div class="q-box l14-lb" id="l14lb"><div class="load" style="padding:14px">Считаю топ…</div></div></section>`);
     const L = await hlRows(hid, 1, 10).catch(() => []); if (n !== VQ) return;
     await steamNames(L.map(x => x.account_id)); if (n !== VQ) return;

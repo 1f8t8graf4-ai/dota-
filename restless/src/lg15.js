@@ -17,7 +17,7 @@ async function l15Lines(n, hid) {
   const G = []; L.forEach((x, i) => { const t = x.tag || 'реплика'; let g = G.find(z => z[0] === t); if (!g) G.push(g = [t, []]); g[1].push([x, i]); });
   const nz = t => String(t).toLowerCase().replace(/[^a-z' ]/g, '').trim(), kwOf = x => (x.kw || []).filter(z => nz(z[0]) !== nz(x.en)); // слово = вся фраза — не повторяем
   const wd = (w, x) => { const c = w.toLowerCase().replace(/[^a-z']/g, ''), kw = kwOf(x).find(z => z[0].toLowerCase().split(/\s+/).map(v => v.replace(/[^a-z']/g, '')).includes(c)); return `<i${kw ? ` data-k="1" title="${esc(kw[0])} — ${esc(kw[1])}"` : ''}>${esc(w)}</i>`; };
-  at.insertAdjacentHTML('beforebegin', `<details class="l15-ln" id="l15ln"><summary><b>Все реплики · ${L.length}</b><small>английский и перевод — ▶ послушать, слова загораются по голосу</small><span class="l15-ch" aria-hidden="true">▾</span></summary>
+  at.insertAdjacentHTML('beforebegin', `<details class="l15-ln" id="l15ln"><summary><b>Все реплики · ${L.length}</b><span class="l15-ch" aria-hidden="true">▾</span></summary>
     <div class="l15-gs">${G.map(([t, R]) => `<section class="l15-g"><h4>${esc(t)} <small>${R.length}</small></h4>${R.map(([x, i]) => `<div class="l15-r" data-i="${i}">
       <button type="button" class="l15-pl" aria-label="Послушать">▶</button><div class="l15-tx"><p class="l15-en" lang="en">${x.en.split(/\s+/).map(w => wd(w, x)).join(' ')}</p><p class="l15-ru">${esc(x.ru)}</p>
       ${kwOf(x).length ? `<p class="l15-kw">${kwOf(x).map(z => `<span><b>${esc(z[0])}</b> — ${esc(z[1])}</span>`).join('')}</p>` : ''}</div></div>`).join('')}</section>`).join('')}</div>
