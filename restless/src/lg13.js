@@ -69,7 +69,7 @@ const OVE = [
   ['box', 'Ящики и статуи', 'на мини-карте', 84, 88, '▣'],
   ['adv', 'Перевес по рангам', 'у какой команды ранги выше', 50, 3, '⇅']];
 const OVP = {lite: ['ult', 'tmr'], mid: ['ult', 'tmr', 'rnk', 'ntf', 'lob', 'buy'], ench: OVE.map(x => x[0])};
-const OVPN = {lite: ['Лайт', 'только главное — почти не грузит'], mid: ['Медиум', 'главное + кто в матче и покупки'], ench: ['Энчантед', 'всё, что умеет Restless'], my: ['Свой', 'выбираешь и двигаешь сам']};
+const OVPN = {lite: ['Lite', 'только главное — почти не грузит'], mid: ['Medium', 'главное + кто в матче и покупки'], ench: ['Enchanted', 'всё, что умеет Restless'], my: ['Custom', 'выбираешь и двигаешь сам']};
 const ovpT = y => `clamp(12px,${y}%,calc(100% - 12px))`; // по высоте значок не уходит за край маленького скриншота (телефон)
 const ovpGet = () => { try { return JSON.parse(localStorage.getItem('rl-ovp') || 'null') || {p: 'mid'}; } catch (e) { return {p: 'mid'}; } };
 const ovpSet = o => { try { localStorage.setItem('rl-ovp', JSON.stringify(o)); } catch (e) {} };
@@ -99,7 +99,7 @@ function ovpBind() {
   $('#ovpside').onclick = e => {
     const o = ovpState(), msg = t => { const m = $('#ovpmsg'); if (m) m.textContent = t; };
     if (e.target.id === 'ovpcp') { o.my = {on: OVP[o.p].slice(), pos: {}}; o.p = 'my'; ovpSet(o); ovpDraw(true); return; }
-    if (e.target.id === 'ovpsv') { ovpSet(o); msg('Сохранено — твой пресет «Свой».'); return; }
+    if (e.target.id === 'ovpsv') { ovpSet(o); msg('Сохранено — твой пресет Custom.'); return; }
     if (e.target.id === 'ovpsh') { const code = 'RL1-' + btoa(unescape(encodeURIComponent(JSON.stringify(o.my)))); (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(() => msg('Код скопирован — кинь другу, он вставит у себя.')).catch(() => msg(code)); return; }
     if (e.target.id === 'ovpim') { const c = prompt('Вставь код пресета (начинается с RL1-)'); if (!c) return;
       try { const my = JSON.parse(decodeURIComponent(escape(atob(c.trim().replace(/^RL1-/, ''))))); if (!my || !Array.isArray(my.on)) throw 0; my.on = my.on.filter(id => OVE.some(x => x[0] === id)); my.pos = my.pos || {}; o.my = my; o.p = 'my'; ovpSet(o); ovpDraw(true); msg('Пресет вставлен.'); } catch (er) { msg('Код не подошёл.'); } }
@@ -162,7 +162,7 @@ async function l13Ratings() {
           if (w && w.pos) {
             x.innerHTML = `#${nf(w.pos)} <i>${esc(hero(hid).n)}</i>${o.r ? ` <em>${esc(RGS[o.rg] || o.rg)} #${o.r.pos}</em>` : ''}`;
             x.classList.toggle('top', w.pos <= 100); x.classList.toggle('hi', w.pos > 100 && w.pos <= 1000);
-            x.title = `Рейтинг героя: #${nf(w.pos)} в мире${o.tot ? ' из ' + nf(o.tot) : ''} — по рангу среди тех, кто сыграл на ${hero(hid).n} ${HL_MIN}+ игр за ${HL_DAYS} дней.${o.r ? ` ${RGS[o.rg] || o.rg} #${o.r.pos} — официальный топ героя в регионе.` : ''}`;
+            x.title = `Рейтинг героя: #${nf(w.pos)} в мире${o.tot ? ' из ' + nf(o.tot) : ''} — по очкам рейтинга: ранг, винрейт и KDA на ${hero(hid).n}, как в League of Graphs (${HL_MIN}+ игр за ${HL_DAYS} дней).${o.r ? ` ${RGS[o.rg] || o.rg} #${o.r.pos} — официальный топ героя в регионе.` : ''}`;
           } else { x.textContent = 'вне рейтинга'; x.classList.add('no'); x.title = 'Рейтинг героя: ' + hrWhy(w); }
         });
       }));

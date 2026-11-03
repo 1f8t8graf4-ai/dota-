@@ -26,8 +26,11 @@ async function page(b, w, h, id) {
     const p = await page(b, w, h, 930626915);
     await p.goto(BASE + `?dev=vasyan2026#h/${HID}`);
     await p.waitForSelector('#l14lb .l14-r', {timeout: 120000}).catch(() => {});
-    const L = await p.$$eval('#l14lb .l14-r', R => R.map(r => ({h: r.getAttribute('href'), b: r.querySelector('b').textContent, rk: !!r.querySelector('.l14-rk img'), n: r.querySelector('.l14-n').textContent})));
-    ok(L.length === Math.min(10, TOP.length) && L[0].h === `#h/${HID}/p${TOP[0].account_id}`, `${n}: топ мира на странице героя — ${L.length} строк, №1 ведёт на его страницу (${L[0] && L[0].h})`);
+    const L = await p.$$eval('#l14lb .l14-r', R => R.map(r => ({h: r.getAttribute('href'), b: r.querySelector('b').textContent, rk: !!r.querySelector('.l14-rk img'), n: r.querySelector('.l14-n').textContent,
+      pt: +(r.querySelector('.l16-pt') || {textContent: '0'}).textContent.replace(/\D/g, ''), wr: (r.querySelector('.l16-st b') || {}).textContent || ''})));
+    ok(L.length === Math.min(10, TOP.length) && /^#h\/\d+\/p\d+$/.test(L[0].h), `${n}: топ мира на странице героя — ${L.length} строк, №1 ведёт на его страницу (${L[0] && L[0].h})`);
+    ok(L.every((x, i) => !i || x.pt <= L[i - 1].pt) && L[0].pt > 0 && L.every(x => /%$/.test(x.wr)), `${n}: как League of Graphs — по очкам рейтинга, у каждого винрейт и KDA (${L.slice(0, 3).map(x => x.pt + ' ' + x.wr).join(' · ')})`);
+    ok(await p.$('#l14lb').then(e => e.evaluate(x => !!x.closest('section').querySelector('.l16-how'))), `${n}: «Как считаем — как League of Graphs»`);
     ok(L.every(x => x.rk) && L[0].n === '🥇', `${n}: у каждого эмблема ранга, у первых трёх медали`);
     const vis = async () => p.$$eval('#l14lb .l14-r', R => R.filter(r => r.offsetParent).length);
     const v0 = await vis(); const top = await p.$eval('#l14lb', e => e.closest('section').previousElementSibling && e.closest('section').previousElementSibling.id);

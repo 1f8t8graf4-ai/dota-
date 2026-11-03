@@ -34,19 +34,19 @@ async function page(b, w, h, app) {
     // пресеты: Лайт · Медиум · Энчантед · Свой — на скриншоте видно, что меняется
     const on = () => p.$$eval('#ovpst .ovp-m.on', L => L.map(x => x.dataset.m));
     const tb = await p.$$eval('#ovptabs button', L => L.map(x => x.querySelector('b').textContent + (x.getAttribute('aria-selected') === 'true' ? '*' : '')));
-    ok(tb.join(',') === 'Лайт,Медиум*,Энчантед,Свой', `${n}: 4 пресета, по умолчанию «Медиум» (${tb})`);
+    ok(tb.join(',') === 'Lite,Medium*,Enchanted,Custom', `${n}: 4 пресета, по умолчанию Medium (${tb})`);
     ok((await on()).length === 6, `${n}: «Медиум» — 6 значков на экране игры`);
     await p.click('#ovptabs [data-p="lite"]'); await p.waitForTimeout(450);
-    const L1 = await on(); ok(L1.join() === 'ult,tmr', `${n}: «Лайт» — только КД ультов и таймеры (${L1})`);
+    const L1 = await on(); ok(L1.join() === 'ult,tmr', `${n}: Lite — только КД ультов и таймеры (${L1})`);
     const hid = await p.$eval('#ovpst .ovp-m[data-m="rnk"]', e => +getComputedStyle(e).opacity); ok(hid < .05, `${n}: выключенный значок спрятан (${hid})`);
-    await p.click('#ovptabs [data-p="ench"]'); await p.waitForTimeout(450); ok((await on()).length === 10, `${n}: «Энчантед» — все 10`);
+    await p.click('#ovptabs [data-p="ench"]'); await p.waitForTimeout(450); ok((await on()).length === 10, `${n}: Enchanted — все 10`);
     const inside = await p.evaluate(() => { const s = document.querySelector('#ovpst').getBoundingClientRect(); return [...document.querySelectorAll('#ovpst .ovp-m.on')].every(m => { const r = m.getBoundingClientRect(); return r.left >= s.left - 1 && r.right <= s.right + 1 && r.top >= s.top - 1 && r.bottom <= s.bottom + 1; }); });
     ok(inside, `${n}: значки не вылезают за скриншот`);
     await p.screenshot({path: `${O}/ovs-ench-${n}.png`});
     await p.click('#ovpcp'); await p.waitForTimeout(450);
-    ok(await p.$eval('#ovpst', e => e.classList.contains('edit')) && (await on()).length === 10, `${n}: «Сделать свой на основе» → «Свой», те же 10, можно двигать`);
+    ok(await p.$eval('#ovpst', e => e.classList.contains('edit')) && (await on()).length === 10, `${n}: «Сделать свой на основе» → Custom, те же 10, можно двигать`);
     await p.click('#ovpside [data-t="adv"]'); await p.waitForTimeout(350);
-    ok(!(await on()).includes('adv'), `${n}: «Свой»: снял галочку — значок пропал`);
+    ok(!(await on()).includes('adv'), `${n}: Custom: снял галочку — значок пропал`);
     await p.$eval('#ovpst', e => e.scrollIntoView({block: 'center'})); await p.waitForTimeout(200);
     const m = await p.$('#ovpst .ovp-m[data-m="ult"]'), bb = await m.boundingBox(), sb = await (await p.$('#ovpst')).boundingBox();
     await p.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2); await p.mouse.down(); await p.mouse.move(sb.x + sb.width * .2, sb.y + sb.height * .3, {steps: 6}); await p.mouse.up();
@@ -54,7 +54,7 @@ async function page(b, w, h, app) {
     ok(sv.p === 'my' && sv.my.pos.ult && Math.abs(sv.my.pos.ult[0] - 20) < 3 && Math.abs(sv.my.pos.ult[1] - 30) < 3 && !sv.my.on.includes('adv'), `${n}: перетащил «КД ультов» — место запомнилось (${sv.my.pos.ult})`);
     await p.reload(); await p.waitForSelector('#ovpst .ovp-m', {timeout: 30000}); await p.waitForTimeout(500);
     const left = await p.$eval('#ovpst .ovp-m[data-m="ult"]', e => e.style.left);
-    ok(left === sv.my.pos.ult[0] + '%' && (await p.$eval('#ovptabs [data-p="my"]', e => e.getAttribute('aria-selected'))) === 'true', `${n}: после перезагрузки — «Свой», значок на своём месте (${left})`);
+    ok(left === sv.my.pos.ult[0] + '%' && (await p.$eval('#ovptabs [data-p="my"]', e => e.getAttribute('aria-selected'))) === 'true', `${n}: после перезагрузки — Custom, значок на своём месте (${left})`);
     await p.screenshot({path: `${O}/ovs-my-${n}.png`});
     // поделиться кодом → вставить у «друга»
     const code = await p.evaluate(() => 'RL1-' + btoa(unescape(encodeURIComponent(JSON.stringify(JSON.parse(localStorage.getItem('rl-ovp')).my)))));

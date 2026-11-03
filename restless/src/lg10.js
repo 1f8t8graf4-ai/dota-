@@ -657,11 +657,11 @@ async function hrkOpen(hid, id, name) {
     let html = '';
     if (mode === 'w') {
       const me = o && o.w && o.w.pos ? o.w.pos : 1, st = Math.max(1, me - 7 + off);
-      const L = (await SBQ(`${HLQ(hid)}&start=${st}&limit=15`).catch(() => [])) || [];
+      const L = await hlRows(hid, st, 15).catch(() => []);
       const S = L.length ? await api('players/steam?account_ids=' + L.map(x => x.account_id).join(',')).catch(() => []) : [], SM = {};
       (S || []).forEach(x => SM[x.account_id] = x);
-      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b> в мире${o.tot ? ` из ${nf(o.tot)} в рейтинге героя · ${pctTop(o.w.pos, o.tot)}` : ''}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}<br><small>Честно: место по рангу среди тех, кто сыграл на герое ${HL_MIN}+ игр за ${HL_DAYS} дней. Нажми на игрока — его сборка на этом герое.</small></p>
-        ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${esc(rankOf(x.badge).name)} · ${nf(x.matches)} ${pl(x.matches, ['игра', 'игры', 'игр'])} на герое`, x.account_id === id, x.badge)).join('')}`;
+      html = `<p class="hrk-h">${o && o.w && o.w.pos ? `<b>#${nf(o.w.pos)}</b> в мире${o.tot ? ` из ${nf(o.tot)} в рейтинге героя · ${pctTop(o.w.pos, o.tot)}` : ''}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}<br><small>Как в League of Graphs: ранг, винрейт и KDA на герое; ${HL_MIN}+ игр за ${HL_DAYS} дней и хоть одна за 30 дней. Нажми на игрока — его сборка.</small></p>
+        ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${esc(rankOf(x.badge).name)} · ${nf(x.matches)} ${pl(x.matches, ['игра', 'игры', 'игр'])}${x.wr != null ? ` · ${f1(x.wr)}% · KDA ${f1(x.kda)}` : ''}${x.R ? ` · ${nf(x.R)} очков` : ''}`, x.account_id === id, x.badge)).join('')}`;
     } else {
       const E = o ? o.E : [], c = o && o.i >= 0 ? o.i : 0, a = Math.max(0, c - 7 + off);
       html = `<p class="hrk-h">${o && o.r ? `<b>#${o.r.pos}</b> в ${esc(REGN[o.rg] || o.rg)} на этом герое<br><small>Официальная таблица игры: топ-1000 региона.</small>` : `${esc(name || 'Игрока')} пока нет в топ-1000 ${esc(REGN[o ? o.rg : 'Europe'] || '')} на этом герое<br><small>Ниже — начало таблицы региона.</small>`}</p>

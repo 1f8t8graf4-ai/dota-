@@ -334,8 +334,8 @@ function heroRating(hid, id) {
   HRC[k].catch(() => delete HRC[k]);
   return HRC[k];
 }
-const hrWhy = r => !r ? '' : r.why === 'rank' ? 'нет ранга — рейтинг героя только у тех, кто играет ранговые' : `нужно ${HL_MIN} игр на герое за ${HL_DAYS} дней${r.m ? ` — сейчас ${r.m}` : ''}`;
-const rtCell = r => r && r.pos ? `<b class="q-rtn${r.pos <= 100 ? ' top' : r.pos <= 1000 ? ' hi' : ''}" title="Рейтинг героя: место в мире по рангу среди тех, кто сыграл на герое ${HL_MIN}+ игр за ${HL_DAYS} дней (у тебя ${nf(r.m)})">#${nf(r.pos)}</b><small>в мире</small>` : `<span class="sub" title="${esc(hrWhy(r))}">—</span>`;
+const hrWhy = r => !r ? '' : r.why === 'idle' ? 'не играл на герое 30 дней — в рейтинге только те, кто играет сейчас' : r.why === 'rank' ? 'нет ранга — рейтинг героя только у тех, кто играет ранговые' : `нужно ${HL_MIN} игр на герое за ${HL_DAYS} дней${r.m ? ` — сейчас ${r.m}` : ''}`;
+const rtCell = r => r && r.pos ? `<b class="q-rtn${r.pos <= 100 ? ' top' : r.pos <= 1000 ? ' hi' : ''}" title="Рейтинг героя: место в мире по очкам рейтинга — ранг, винрейт и KDA на герое, как в League of Graphs (у тебя ${nf(r.m)} игр за ${HL_DAYS} дней)">#${nf(r.pos)}</b><small>в мире</small>` : `<span class="sub" title="${esc(hrWhy(r))}">—</span>`;
 async function heroRatings(n, id, hids, attr) {
   for (const hid of hids) {
     const r = await heroRating(hid, id).catch(() => null); if (n !== VQ) return;
