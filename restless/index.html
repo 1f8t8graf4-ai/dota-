@@ -3594,50 +3594,47 @@ button:disabled,[disabled]{cursor:default}
 @media (max-width:700px){.o18-fb{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 
-/* ===================== lg20 — лайв-матч строками ===================== */
-.q-lob:has(> .l20-r){display:flex!important;flex-direction:column;gap:5px;grid-template-columns:none}
-.l20-r{display:grid;grid-template-columns:minmax(150px,200px) minmax(170px,240px) 118px 70px 70px 160px minmax(0,1fr);align-items:center;gap:10px;
-  padding:7px 12px 7px 8px;background:var(--q-bx);border:1px solid var(--q-ln);border-radius:12px;min-height:58px}
-.l20-r.mine{border-color:rgba(255,176,32,.55);background:linear-gradient(90deg,rgba(255,176,32,.08),var(--q-bx) 40%)}
-.l20-r.thr{border-color:rgba(255,107,129,.55)}
-.l20-h{display:flex;align-items:center;gap:9px;min-width:0;position:relative}
-.l20-h .f{width:46px;height:46px;border-radius:10px;object-fit:cover;object-position:50% 18%;background:#0d0d11;flex:none}
-.l20-h span{display:flex;flex-direction:column;min-width:0}
-.l20-h b{font:600 12px/1.2 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu,#a3a3ad);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.l20-h small.l13-hr{font:700 12px/1.3 var(--f);color:var(--q-am)}.l20-h small.l13-hr:empty{display:none}
-.l20-h .pty{position:absolute;left:36px;top:-2px;width:11px;height:11px;border-radius:50%;border:2px solid var(--q-bx)}
-.l20-n{display:flex;flex-direction:column;gap:3px;min-width:0}
-.l20-n>a,.l20-n>span{font:700 15px/1.2 var(--f);color:var(--tx);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.l20-n>a:hover{color:var(--q-am)}
+/* ===================== lg20 — «≈ ранг» (строки лайва убраны 04.11, ночь 2) ===================== */
 .l20-rk{display:flex;align-items:center;gap:5px;min-width:0}
 .l20-rk .rk{width:22px;height:22px;object-fit:contain;flex:none}
 .l20-rk b{font:500 12.5px/1.2 var(--f);color:var(--mu,#a3a3ad);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .l20-rk.est.on .rk{opacity:.8}.l20-rk.est.on b{color:#cfc6b3}
-.l20-hs{display:flex;flex-direction:column;gap:1px;min-width:0}
-.l20-hs small,.l20-pr small{font:600 10px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--mu,#8b8b95)}
-.l20-hs b{font:700 14px/1.25 var(--f);color:var(--tx);white-space:nowrap}.l20-hs b em{font-style:normal}
-.l20-hs i{font:500 11.5px/1.2 var(--f);font-style:normal;color:var(--mu,#8b8b95)}
-.l20-pr{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:4px 6px;border-radius:8px;background:none;border:0;color:inherit;cursor:pointer;text-align:left}
-.l20-pr:hover:not([disabled]){background:var(--q-bh)}.l20-pr[disabled]{cursor:default}
-.l20-pr b{font:700 14px/1.25 var(--f);color:var(--tx)}.l20-pr i{font:500 11px/1.2 var(--f);font-style:normal;color:var(--mu,#8b8b95)}
-.l20-pr.off b{color:#555561}
-.l20-rc{display:flex;gap:3px}
-.l20-rc a{display:block;width:22px;height:22px;border-radius:5px;overflow:hidden;border-bottom:3px solid #555}
-.l20-rc a.w{border-color:var(--win)}.l20-rc a.l{border-color:var(--loss)}
-.l20-rc img{width:100%;height:100%;object-fit:cover;display:block}
-.l20-tg{display:flex;flex-wrap:wrap;gap:4px;min-width:0;align-items:center}
-.l20-tg .tag{font-size:11px;padding:3px 7px}
-.l20-tg{max-height:56px;overflow:hidden}
-.l20-tg .q-pbld:empty{display:none}.l20-tg .q-pbld{flex:none;display:inline-flex;padding:0;background:none;border:0;min-height:0}
-.l20-tg .q-pbb{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 7px;border-radius:7px;background:#1b1b22;border:1px solid var(--q-ln);color:var(--mu,#a3a3ad);font:500 11px/1 var(--f);white-space:nowrap;cursor:pointer;width:auto;min-height:0}
-.l20-tg .q-pbb:hover{border-color:var(--q-am)}.l20-tg .q-pbb .ic{display:inline-flex;gap:2px}.l20-tg .q-pbb .ic img{width:16px;height:16px;border-radius:3px}
-@media (max-width:1180px){.l20-r{grid-template-columns:minmax(140px,180px) minmax(150px,1fr) 110px 64px 64px;grid-auto-rows:auto}.l20-rc{grid-column:1/3}.l20-tg{grid-column:3/-1}}
-@media (max-width:640px){.l20-r{grid-template-columns:1fr 1fr;gap:6px 10px}.l20-h,.l20-n{grid-column:auto}.l20-hs{grid-column:1}.l20-rc,.l20-tg{grid-column:1/-1}}
 
 /* ===================== lg21 — лайв-матч из игры ===================== */
 .l21-mh #ovst:empty{display:none}
 .l21-mh{margin:6px 0 10px}
 .rl-app #lvov{display:none}
+
+/* ===================== lg22 — лайв-матч: карточки как было, команда в один ряд ===================== */
+.q-lob{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:8px!important}
+@media (max-width:899px){.q-lob{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media (max-width:560px){.q-lob{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}}
+#lvb .q-team,#ovb .q-team{margin-top:8px}
+#lvb .q-th,#ovb .q-th{margin-bottom:6px}
+.q-pc.l10 .top{padding:8px 9px 0!important;gap:8px}
+.q-pc.l10 .top img.f.u11-pf{width:40px;height:40px;border-radius:10px}
+.q-pc.l10 .top .hn{font-size:11px!important;padding-bottom:2px;min-width:0;gap:2px}
+.q-pc.l10 .top .hn small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-pc.l10 .top .l10-rk{padding-bottom:2px}
+.q-pc.l10 .top .l10-rk .rk{width:26px;height:26px}
+.q-pc.l10 .q-pb{gap:5px;padding:5px 9px 8px}
+.q-pc.l10 .q-pnm{font-size:13px}
+.l10-rn{margin-top:-3px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l10-rn.est.on{display:flex;align-items:center;gap:4px;color:#cfc6b3}
+.l10-rn.est .rk{width:16px;height:16px;flex:none;opacity:.85}
+.l10-rn.est b{font-weight:500;overflow:hidden;text-overflow:ellipsis}
+.l10-st,.l10-per{gap:4px}
+.l10-st span,.l10-pr{padding:4px 6px;gap:1px}
+.l10-st b{font-size:12px}
+.l10-pr b{font-size:13px}
+.l10-pr i{font-size:10px;white-space:nowrap}
+.l10-rc{gap:2px}
+.l10-rc a{flex:0 1 22px;min-width:0;width:auto;height:22px;border-radius:5px}
+.q-pc.l10 .q-pbb{padding:4px 7px;font-size:10.5px}
+.q-pc.l10 .tg{max-height:41px;overflow:hidden}
+.l22-bot{margin-top:14px}
+.rl-app .q-lvh .h1{font-size:30px;margin:0}
+.rl-app .l21-mh{margin:4px 0 6px}
 </style>
 </head>
 <body>
@@ -7838,7 +7835,7 @@ function pCard(p, en, thr, meId) {
   return `<div class="q-pc l10${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
     <div class="top"><img class="f u11-pf" src="${esc(hero(p.hid).v || hero(p.hid).c || hero(p.hid).i)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}${p.id && p.hm ? `<small class="l13-hr" data-hr="${p.hid}|${p.id}" data-nm="${esc(p.name || '')}" title="Место в мире среди всех игроков на ${esc(hero(p.hid).n)} — по числу побед на нём">место на герое…</small>` : ''}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
       <span class="l10-rk" data-aid="${p.id || ''}" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span></div>
-    <div class="q-pb">${p.id ? `<a class="q-pc-n" href="?id=${p.id}#home"><span class="q-pnm">${esc(p.name)}</span></a>` : `<span class="q-pnm">${esc(p.name)}</span>`}<span class="l10-rn">${esc(rankOf(p.badge).name)}</span>
+    <div class="q-pb">${p.id ? `<a class="q-pc-n" href="?id=${p.id}#home"><span class="q-pnm">${esc(p.name)}</span></a>` : `<span class="q-pnm">${esc(p.name)}</span>`}${p.badge ? `<span class="l10-rn">${esc(rankOf(p.badge).name)}</span>` : p.id ? `<span class="l10-rn est" data-est="${p.id}">без ранга</span>` : '<span class="l10-rn">нет профиля</span>'}
       <div class="l10-st"><span><small>на герое</small><b>${p.hm ? nf(p.hm) : '0'}${p.hm ? ` · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : ''}</b></span><span><small>всего</small><b>${p.tm ? `${nf(p.tm)} · ${pc(p.tw, p.tm)}%` : '—'}</b></span></div>
       <div class="l10-per">${per('12', '12 ч', p.p12)}${per('30', '30 дн', p.p30)}</div>
       ${p.rc && p.rc.length ? `<div class="l10-rc">${p.rc.slice(0, 6).map(r => `<a href="#m/${r.mid}" class="${r.w ? 'w' : 'l'}" title="${esc(hero(r.hid).n)} · ${r.w ? 'победа' : 'поражение'} · ${r.kda}"><img src="${esc(hero(r.hid).i)}" alt="" loading="lazy" onerror="${noimg}"></a>`).join('')}</div>` : ''}
@@ -9483,23 +9480,7 @@ function moreTags(p) {
 }
 { const S0 = scout2; scout2 = async function (players, ctx) { const L = await S0(players, ctx); (L || []).forEach(p => { try { moreTags(p); } catch (e) {} }); return L; }; }
 
-// ---------- лайв-матч: одна строка на игрока, все 12 на одном экране ----------
-pCard = function (p, en, thr, meId) {
-  const h = hero(p.hid), wr = pc(p.hw, p.hm);
-  const per = (k, nm, o) => { const w = o && o.m ? Math.round(100 * o.w / o.m) : null;
-    return `<button class="l20-pr${w == null ? ' off' : ''}" type="button" data-per="${k}" data-acc="${p.id}"${w == null ? ' disabled' : ''}><small>${nm}</small><b class="${w == null ? '' : w >= 50 ? 'win' : 'loss'}">${w == null ? '—' : w + '%'}</b><i>${o && o.m ? nf(o.m) : ''}</i></button>`; };
-  const tags = [thr ? ['h', 'Главная угроза', 'самый опасный по рангу и игре на герое'] : null, p.cn ? ['r', `Контрит тебя · ${p.cn}%`, 'твой герой против него побеждает реже'] : null, ...(p.tags || [])].filter(Boolean);
-  const rk = p.badge ? `<span class="l20-rk" title="${esc(rankOf(p.badge).name)}">${rankImg(p.badge, 'rk')}<b>${esc(rankOf(p.badge).name)}</b></span>`
-    : p.id ? `<span class="l20-rk est" data-est="${p.id}"><b>без ранга</b></span>` : '<span class="l20-rk"><b>нет профиля</b></span>';
-  return `<div class="l20-r${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
-    <div class="l20-h"><img class="f" src="${esc(faceUrl(p.hid, p.mood))}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(h.i)}'">${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
-      <span><b>${esc(h.n)}</b>${p.id && p.hm ? `<small class="l13-hr" data-hr="${p.hid}|${p.id}" data-nm="${esc(p.name || '')}"></small>` : ''}</span></div>
-    <div class="l20-n">${p.id ? `<a href="?id=${p.id}#home">${esc(p.name)}</a>` : `<span>${esc(p.name)}</span>`}${rk}</div>
-    <div class="l20-hs"><small>на герое</small><b>${p.hm ? `${nf(p.hm)} · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : '0'}</b><i>${p.hm ? 'KDA ' + f1(p.kda) : ''}</i></div>
-    ${per('30', '30 дн', p.p30)}${per('12', '12 ч', p.p12)}
-    <div class="l20-rc">${(p.rc || []).slice(0, 6).map(r => `<a href="#m/${r.mid}" class="${r.w ? 'w' : 'l'}" title="${esc(hero(r.hid).n)} · ${r.w ? 'победа' : 'поражение'} · ${r.kda}"><img src="${esc(hero(r.hid).i)}" alt="" loading="lazy" onerror="${noimg}"></a>`).join('')}</div>
-    <div class="l20-tg">${tags.slice(0, 6).map(t => `<span class="tag ${t[0]}" title="${esc(t[2])}">${esc(t[1])}</span>`).join('')}<div class="q-pbld" id="pb-${p.id}"></div></div></div>`;
-};
+// 04.11 (ночь 2): строки лайв-матча убраны — Андрей: «верни как было» (карточки lg10, компактнее — lg22)
 
 // ---------- сайт сам обновляется: вышла новая версия — перезагрузить (окно программы живёт часами) ----------
 { let tag0 = null;
@@ -9575,6 +9556,27 @@ function mhMerge(id, L) {
     if (!m || !ME || +m[1] !== ME.id) return pr;
     return pr.then(L => mhMerge(+m[1], L));
   }; }
+
+// ===================== lg22 — 04.11 (ночь 2): лайв-матч снова карточками (lg10), вся команда — в один ряд =====================
+// Андрей на строки lg20: «че за бред, верни как было, но чтобы умещались 5 героев в одной строчке, а лучше сразу 10».
+// Карточки — прежние (pCard из lg10), ниже ростом: 6 в ряд от 900 px, обе команды — на одном экране окна программы (0.4.7: окно шире).
+
+// ---------- лобби с ботами — не лайв-матч (Андрей: «энивей кидает лайв матч бота»). Программа 0.4.3+ отсекает их сама,
+// а у старой (0.3) — отсекает сайт: бот зовётся как его герой («Инфернус» на Инфернусе) — два таких и больше → не матч ----------
+const lgBot = p => { const n = ovlc(p && p.n).replace(/\s*\?$/, ''); if (!n) return false; if (p.h && n === ovlc(p.h)) return true;
+  const k = heroByName(n); return !!k && k === (p.hid || heroByName(p.h)); };
+const lgBots = g => !!(g && g.s === 'm' && (g.players || []).filter(lgBot).length >= 2);
+const lgBotOff = () => { if (OV.app && OV.G && OV.G.s === 'b') OV.app.live = false; };
+{ const G22 = window.rlGame; window.rlGame = g => { G22(lgBots(g) ? Object.assign({}, g, {s: 'b'}) : g); lgBotOff(); if (typeof ovTabLive === 'function') ovTabLive();
+    // открыт свой «Лайв-матч» (последний матч из API), а пришло лобби с ботами — показать «Матч с ботами»
+    if (RL_APP && OV.G && OV.G.s === 'b' && /^#live\/?$/.test(location.hash) && !document.querySelector('.l22-bot')) route(); }; }
+{ const A22 = window.rlApp; window.rlApp = s => { A22(s); lgBotOff(); if (typeof ovTabLive === 'function') ovTabLive(); }; }
+{ const VL22 = viewLive; viewLive = async function (arg) {
+    if (!(RL_APP && lgOwn(arg) && gameLive() && OV.G.s === 'b')) return VL22.apply(this, arguments);
+    const n = vNew(); clearInterval(LVT); clearInterval(OV.timer);
+    V(`<div class="q-lvh"><h1 class="h1">Лайв-<em>матч</em></h1></div><div class="empty l22-bot">Матч с ботами</div>`);
+    const k = () => { if (n !== VQ) { clearInterval(iv); return; } if (!(gameLive() && OV.G.s === 'b')) { clearInterval(iv); viewLive(arg); } }, iv = setInterval(k, 3000);
+    OV.kick = k; }; }
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');

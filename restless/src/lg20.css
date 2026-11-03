@@ -1,39 +1,5 @@
-/* ===================== lg20 — лайв-матч строками ===================== */
-.q-lob:has(> .l20-r){display:flex!important;flex-direction:column;gap:5px;grid-template-columns:none}
-.l20-r{display:grid;grid-template-columns:minmax(150px,200px) minmax(170px,240px) 118px 70px 70px 160px minmax(0,1fr);align-items:center;gap:10px;
-  padding:7px 12px 7px 8px;background:var(--q-bx);border:1px solid var(--q-ln);border-radius:12px;min-height:58px}
-.l20-r.mine{border-color:rgba(255,176,32,.55);background:linear-gradient(90deg,rgba(255,176,32,.08),var(--q-bx) 40%)}
-.l20-r.thr{border-color:rgba(255,107,129,.55)}
-.l20-h{display:flex;align-items:center;gap:9px;min-width:0;position:relative}
-.l20-h .f{width:46px;height:46px;border-radius:10px;object-fit:cover;object-position:50% 18%;background:#0d0d11;flex:none}
-.l20-h span{display:flex;flex-direction:column;min-width:0}
-.l20-h b{font:600 12px/1.2 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--mu,#a3a3ad);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.l20-h small.l13-hr{font:700 12px/1.3 var(--f);color:var(--q-am)}.l20-h small.l13-hr:empty{display:none}
-.l20-h .pty{position:absolute;left:36px;top:-2px;width:11px;height:11px;border-radius:50%;border:2px solid var(--q-bx)}
-.l20-n{display:flex;flex-direction:column;gap:3px;min-width:0}
-.l20-n>a,.l20-n>span{font:700 15px/1.2 var(--f);color:var(--tx);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.l20-n>a:hover{color:var(--q-am)}
+/* ===================== lg20 — «≈ ранг» (строки лайва убраны 04.11, ночь 2) ===================== */
 .l20-rk{display:flex;align-items:center;gap:5px;min-width:0}
 .l20-rk .rk{width:22px;height:22px;object-fit:contain;flex:none}
 .l20-rk b{font:500 12.5px/1.2 var(--f);color:var(--mu,#a3a3ad);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .l20-rk.est.on .rk{opacity:.8}.l20-rk.est.on b{color:#cfc6b3}
-.l20-hs{display:flex;flex-direction:column;gap:1px;min-width:0}
-.l20-hs small,.l20-pr small{font:600 10px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--mu,#8b8b95)}
-.l20-hs b{font:700 14px/1.25 var(--f);color:var(--tx);white-space:nowrap}.l20-hs b em{font-style:normal}
-.l20-hs i{font:500 11.5px/1.2 var(--f);font-style:normal;color:var(--mu,#8b8b95)}
-.l20-pr{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:4px 6px;border-radius:8px;background:none;border:0;color:inherit;cursor:pointer;text-align:left}
-.l20-pr:hover:not([disabled]){background:var(--q-bh)}.l20-pr[disabled]{cursor:default}
-.l20-pr b{font:700 14px/1.25 var(--f);color:var(--tx)}.l20-pr i{font:500 11px/1.2 var(--f);font-style:normal;color:var(--mu,#8b8b95)}
-.l20-pr.off b{color:#555561}
-.l20-rc{display:flex;gap:3px}
-.l20-rc a{display:block;width:22px;height:22px;border-radius:5px;overflow:hidden;border-bottom:3px solid #555}
-.l20-rc a.w{border-color:var(--win)}.l20-rc a.l{border-color:var(--loss)}
-.l20-rc img{width:100%;height:100%;object-fit:cover;display:block}
-.l20-tg{display:flex;flex-wrap:wrap;gap:4px;min-width:0;align-items:center}
-.l20-tg .tag{font-size:11px;padding:3px 7px}
-.l20-tg{max-height:56px;overflow:hidden}
-.l20-tg .q-pbld:empty{display:none}.l20-tg .q-pbld{flex:none;display:inline-flex;padding:0;background:none;border:0;min-height:0}
-.l20-tg .q-pbb{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 7px;border-radius:7px;background:#1b1b22;border:1px solid var(--q-ln);color:var(--mu,#a3a3ad);font:500 11px/1 var(--f);white-space:nowrap;cursor:pointer;width:auto;min-height:0}
-.l20-tg .q-pbb:hover{border-color:var(--q-am)}.l20-tg .q-pbb .ic{display:inline-flex;gap:2px}.l20-tg .q-pbb .ic img{width:16px;height:16px;border-radius:3px}
-@media (max-width:1180px){.l20-r{grid-template-columns:minmax(140px,180px) minmax(150px,1fr) 110px 64px 64px;grid-auto-rows:auto}.l20-rc{grid-column:1/3}.l20-tg{grid-column:3/-1}}
-@media (max-width:640px){.l20-r{grid-template-columns:1fr 1fr;gap:6px 10px}.l20-h,.l20-n{grid-column:auto}.l20-hs{grid-column:1}.l20-rc,.l20-tg{grid-column:1/-1}}

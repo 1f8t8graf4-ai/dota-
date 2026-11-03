@@ -72,23 +72,7 @@ function moreTags(p) {
 }
 { const S0 = scout2; scout2 = async function (players, ctx) { const L = await S0(players, ctx); (L || []).forEach(p => { try { moreTags(p); } catch (e) {} }); return L; }; }
 
-// ---------- лайв-матч: одна строка на игрока, все 12 на одном экране ----------
-pCard = function (p, en, thr, meId) {
-  const h = hero(p.hid), wr = pc(p.hw, p.hm);
-  const per = (k, nm, o) => { const w = o && o.m ? Math.round(100 * o.w / o.m) : null;
-    return `<button class="l20-pr${w == null ? ' off' : ''}" type="button" data-per="${k}" data-acc="${p.id}"${w == null ? ' disabled' : ''}><small>${nm}</small><b class="${w == null ? '' : w >= 50 ? 'win' : 'loss'}">${w == null ? '—' : w + '%'}</b><i>${o && o.m ? nf(o.m) : ''}</i></button>`; };
-  const tags = [thr ? ['h', 'Главная угроза', 'самый опасный по рангу и игре на герое'] : null, p.cn ? ['r', `Контрит тебя · ${p.cn}%`, 'твой герой против него побеждает реже'] : null, ...(p.tags || [])].filter(Boolean);
-  const rk = p.badge ? `<span class="l20-rk" title="${esc(rankOf(p.badge).name)}">${rankImg(p.badge, 'rk')}<b>${esc(rankOf(p.badge).name)}</b></span>`
-    : p.id ? `<span class="l20-rk est" data-est="${p.id}"><b>без ранга</b></span>` : '<span class="l20-rk"><b>нет профиля</b></span>';
-  return `<div class="l20-r${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
-    <div class="l20-h"><img class="f" src="${esc(faceUrl(p.hid, p.mood))}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(h.i)}'">${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
-      <span><b>${esc(h.n)}</b>${p.id && p.hm ? `<small class="l13-hr" data-hr="${p.hid}|${p.id}" data-nm="${esc(p.name || '')}"></small>` : ''}</span></div>
-    <div class="l20-n">${p.id ? `<a href="?id=${p.id}#home">${esc(p.name)}</a>` : `<span>${esc(p.name)}</span>`}${rk}</div>
-    <div class="l20-hs"><small>на герое</small><b>${p.hm ? `${nf(p.hm)} · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : '0'}</b><i>${p.hm ? 'KDA ' + f1(p.kda) : ''}</i></div>
-    ${per('30', '30 дн', p.p30)}${per('12', '12 ч', p.p12)}
-    <div class="l20-rc">${(p.rc || []).slice(0, 6).map(r => `<a href="#m/${r.mid}" class="${r.w ? 'w' : 'l'}" title="${esc(hero(r.hid).n)} · ${r.w ? 'победа' : 'поражение'} · ${r.kda}"><img src="${esc(hero(r.hid).i)}" alt="" loading="lazy" onerror="${noimg}"></a>`).join('')}</div>
-    <div class="l20-tg">${tags.slice(0, 6).map(t => `<span class="tag ${t[0]}" title="${esc(t[2])}">${esc(t[1])}</span>`).join('')}<div class="q-pbld" id="pb-${p.id}"></div></div></div>`;
-};
+// 04.11 (ночь 2): строки лайв-матча убраны — Андрей: «верни как было» (карточки lg10, компактнее — lg22)
 
 // ---------- сайт сам обновляется: вышла новая версия — перезагрузить (окно программы живёт часами) ----------
 { let tag0 = null;

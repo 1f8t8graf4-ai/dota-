@@ -21,8 +21,8 @@ const ME = 930626915, MID = 130008912;
     await p.waitForTimeout(1500);
     const game = s => p.evaluate(([s, pl]) => { window.rlApp({ver: '0.4.6', live: s === 'm', proc: true, keys: ['Ctrl+Alt+H']}); window.rlGame(s ? {s, at: Date.now(), gt: '27:11', players: s === 'm' ? pl : []} : null); }, [s, players]);
     await game('m');
-    await p.waitForSelector('#ovb .l20-r', {timeout: 90000}).catch(() => {});
-    const R = await p.$$eval('#ovb .l20-r', L => L.length);
+    await p.waitForSelector('#ovb .q-pc', {timeout: 90000}).catch(() => {});
+    const R = await p.$$eval('#ovb .q-pc', L => L.length);
     const head = await p.evaluate(() => (document.querySelector('.q-mh') || {}).innerText || '');
     chk(R >= 12, `${n}: «Лайв-матч» — игроки из игры строками (${R})`);
     chk(/идёт матч/.test(head) && !/последний матч/i.test(head), `${n}: шапка «идёт матч», не «последний матч» (${head.replace(/\s+/g, ' ').slice(0, 60)})`);
@@ -32,7 +32,7 @@ const ME = 930626915, MID = 130008912;
     // ---- #ov (авто-открытие на матч) → та же вкладка ----
     await p.evaluate(() => { location.hash = '#ov'; }); await p.waitForTimeout(1500);
     const hs = await p.evaluate(() => location.hash);
-    chk(hs === '#live' && await p.$('#ovb .l20-r') !== null, `${n}: #ov в программе → «Лайв-матч» (${hs})`);
+    chk(hs === '#live' && await p.$('#ovb .q-pc') !== null, `${n}: #ov в программе → «Лайв-матч» (${hs})`);
     const lv = await p.evaluate(() => (document.querySelector('.rl-live') || {}).getAttribute ? document.querySelector('.rl-live').getAttribute('href') : '');
     chk(lv === '#live', `${n}: «● LIVE» в полосе окна ведёт на «Лайв-матч» (${lv})`);
     // ---- матч кончился: «Матч закончился», а не прошлый матч ----
@@ -45,8 +45,8 @@ const ME = 930626915, MID = 130008912;
     const t2 = await p.evaluate(() => document.body.innerText);
     chk(/последний матч/i.test(t2), `${n}: игра закрыта — обычный лайв`);
     // ---- матч снова начался, пока открыт обычный лайв ----
-    await game('m'); await p.waitForSelector('#ovb .l20-r', {timeout: 60000}).catch(() => {});
-    chk(await p.$('#ovb .l20-r') !== null, `${n}: матч начался — «Лайв-матч» сам переключился на игру`);
+    await game('m'); await p.waitForSelector('#ovb .q-pc', {timeout: 60000}).catch(() => {});
+    chk(await p.$('#ovb .q-pc') !== null, `${n}: матч начался — «Лайв-матч» сам переключился на игру`);
     // ---- обычный браузер (не программа): лайв как раньше ----
     const p2 = await ctx.newPage(); await p2.route('https://api.deadlock-api.com/**', r => { try { r.fulfill({status: 200, contentType: 'application/json', headers: {'access-control-allow-origin': '*'}, body: execFileSync('curl', ['-sS', '-m', '90', r.request().url()], {maxBuffer: 256 << 20}).toString()}); } catch (e) { r.abort(); } });
     await p2.route(/assets-bucket|avatars|fonts\.|steamstatic|restless\.1f8t8graf4|workers\.dev|raw\.githubusercontent|jsdelivr/, r => r.abort());

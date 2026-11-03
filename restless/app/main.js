@@ -1,3 +1,4 @@
+// Restless Overlay 0.4.7 — окно шире (1600×960, на маленьком экране — почти во весь), чтобы команда стояла в один ряд, а обе команды — на экране.
 // Restless Overlay 0.4.6 — сайт в окне всегда свежий (без старого кэша), матч нашёлся — окно на «Лайв-матче» (игроки из игры).
 // Restless Overlay 0.4.5 — мод обновляется сам (pak42 с сайта); о новой программе — подсказка в трее.
 // Restless Overlay 0.3.1 — твой профиль Restless поверх Deadlock (как Porofessor).
@@ -10,15 +11,16 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.4.6';
+const VER = '0.4.7';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
 const KEY_OPTS = ['Control+Alt+H', 'Control+Shift+H', 'Alt+H', 'Control+Shift+F10'];
 const THRU_KEYS = ['Control+Alt+T', 'Control+Shift+F11'];   // клики сквозь окно
 const CFG = path.join(app.getPath('userData'), 'restless.json');
-let cfg = {v: 3, x: null, y: null, w: 1180, h: 820, auto: true, through: false, seen: false, key: 'Control+Alt+H', fps: 'off'};
-try { const c = JSON.parse(fs.readFileSync(CFG, 'utf8')); if (!c.v || c.v < 3) { delete c.x; delete c.y; delete c.w; delete c.h; c.v = 3; } Object.assign(cfg, c); } catch (e) {}
+// v 4 (0.4.7): окно шире — старый размер окна сбрасывается один раз
+let cfg = {v: 4, x: null, y: null, w: 1600, h: 960, auto: true, through: false, seen: false, key: 'Control+Alt+H', fps: 'off'};
+try { const c = JSON.parse(fs.readFileSync(CFG, 'utf8')); if (!c.v || c.v < 4) { delete c.x; delete c.y; delete c.w; delete c.h; c.v = 4; } Object.assign(cfg, c); } catch (e) {}
 if (!KEY_OPTS.includes(cfg.key)) cfg.key = 'Control+Alt+H';   // 0.3 ставила Ctrl+X — теперь одна клавиша
 const save = () => { try { fs.writeFileSync(CFG, JSON.stringify(cfg)); } catch (e) {} };
 const nice = k => String(k || '').replace(/Control/g, 'Ctrl');

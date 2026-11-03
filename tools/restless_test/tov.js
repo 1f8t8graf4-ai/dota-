@@ -29,20 +29,20 @@ let fail=0;const ok=(c,t)=>{console.log((c?'PASS ':'FAIL ')+t);if(!c)fail++};
  // игра прислала матч
  const a0=actives;
  await p.evaluate(P=>window.rlGame({v:'0.13',s:'m',gt:'03:12',players:P,at:Date.now()}),P);
- await p.waitForFunction(()=>document.querySelectorAll('#ovb .l20-r').length===12,null,{timeout:150000}).catch(()=>{});
- const n=await p.$$eval('#ovb .l20-r',L=>L.length);ok(n===12,'12 игроков из игры строками: '+n);
+ await p.waitForFunction(()=>document.querySelectorAll('#ovb .q-pc').length===12,null,{timeout:150000}).catch(()=>{});
+ const n=await p.$$eval('#ovb .q-pc',L=>L.length);ok(n===12,'12 карточек игроков из игры: '+n);
  ok(/ты в матче · 03:12/.test(await p.$eval('#ovst',e=>e.textContent)),'статус: '+await p.$eval('#ovst',e=>e.textContent));
- const names=await p.$$eval('#ovb .l20-r .l20-n > :first-child',L=>L.map(e=>e.textContent));
+ const names=await p.$$eval('#ovb .q-pc .q-pnm',L=>L.map(e=>e.textContent));
  ok(names.some(x=>x===P[3].n||x===P[3].n+' ?'),'игрок без ID найден по нику: '+P[3].n);
  ok(names.some(x=>x.startsWith('нет_такого_ника')),'ник не нашёлся — подписан ником из игры');
  ok(searches>=2,'поиск по нику — для тех, у кого нет ID: '+searches);
- ok(await p.$$eval('#ovb .l20-r .l20-h b',L=>L.some(e=>/^Venator/i.test(e.textContent.trim()))),'герой по русскому имени «Венатор» → Venator');
+ ok(await p.$$eval('#ovb .q-pc .hn',L=>L.some(e=>e.firstChild.textContent==='Venator'||e.textContent.startsWith('Venator'))),'герой по русскому имени «Венатор» → Venator');
  ok(await p.$$eval('#ovb .q-team',L=>L.length===2),'две команды');
  ok(/укрытие|игроков 12/.test(await p.$eval('#ovapp',e=>e.innerText)),'строка программы: игра на связи');
  await p.screenshot({path:`${O}/ov-match.png`,fullPage:true});
  // тот же матч ещё раз (сигнал раз в 15 с) — не перерисовывает
  const s0=searches;await p.evaluate(P=>window.rlGame({v:'0.13',s:'m',gt:'03:27',players:P,at:Date.now()}),P);await p.waitForTimeout(6000);
- ok(searches===s0&&await p.$$eval('#ovb .l20-r',L=>L.length)===12,'«живой» сигнал того же матча — без повторной загрузки');
+ ok(searches===s0&&await p.$$eval('#ovb .q-pc',L=>L.length)===12,'«живой» сигнал того же матча — без повторной загрузки');
  ok(actives===a0||actives<=a0+1,'пока игра на связи — API топ-матчей не дёргаем: '+(actives-a0));
  // матч кончился
  await p.evaluate(()=>window.rlGame({v:'0.13',s:'h',gt:'',players:[],at:Date.now()}));await p.waitForTimeout(6000);
