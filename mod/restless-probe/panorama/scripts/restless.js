@@ -1,4 +1,5 @@
-// Restless 0.15.
+// Restless 0.16.
+// 0.16: в окне RESTLESS без пояснений (Андрей, 04.11: «убери объяснения»): нет подписей под переключателями, «Скоро» и строки про настройки.
 // 0.15: напоминания о событиях по часам матча (лагеря 2:00 / 5:00 / 8:00, ящики и статуи 3:00 / 5:00 / 10:00 — по deadlock.wiki):
 //       за 15 с — «Через N с: …», потом 5 с — «Появились: …». Часы матча читаем раз в секунду, панель ищем раз в 2 с.
 // 0.13: связь с программой Restless (оверлей поверх игры): кто в матче — картинкой на 127.0.0.1, как QoL Lock переводит чат;
@@ -17,7 +18,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки держатся до выхода из игры.
 (function () {
-	var VER = '0.15';
+	var VER = '0.16';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -55,7 +56,7 @@
 			yes: 'ВКЛ', no: 'ВЫКЛ', lang: 'Язык мода', soon: 'СКОРО',
 			s1: 'Сборки с винрейтом прямо в магазине', s2: 'Кто в матче и сборки — прямо в окне мода', s3: 'Двуязычные субтитры реплик героев',
 			site: 'Мой Restless — разбор матчей', bot: 'Бот', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.',
-			seeH: 'ЧТО ВИДИТ МОД · пришли фото этого блока', souls: 'Души: ', pl: 'Игроков в верхней панели: ', plU: ' · КД ульты в секундах: ',
+			seeH: 'ЧТО ВИДИТ МОД', souls: 'Души: ', pl: 'Игроков в верхней панели: ', plU: ' · КД ульты в секундах: ',
 			shop: 'Магазин: ячеек ', shop0: 'Магазин: пусто — открой магазин, потом снова Esc → RESTLESS', first: ' · первые: ',
 			camp: 'Лагеря на миникарте: ', campOn: ' · сейчас живы: ', camp0: 'Лагеря на миникарте: не нашёл'
 		},
@@ -72,7 +73,7 @@
 			yes: 'ON', no: 'OFF', lang: 'Mod language', soon: 'COMING SOON',
 			s1: 'Builds with win rate right in the shop', s2: 'Who\'s in the match and builds — right in this window', s3: 'Bilingual hero voice-line subtitles',
 			site: 'My Restless — match breakdowns', bot: 'Bot', close: 'Close', note: 'Settings last until you quit the game.',
-			seeH: 'WHAT THE MOD SEES · send a photo of this block', souls: 'Souls: ', pl: 'Players in the top bar: ', plU: ' · ult cooldown in seconds: ',
+			seeH: 'WHAT THE MOD SEES', souls: 'Souls: ', pl: 'Players in the top bar: ', plU: ' · ult cooldown in seconds: ',
 			shop: 'Shop: cells ', shop0: 'Shop: empty — open the shop, then Esc → RESTLESS again', first: ' · first: ',
 			camp: 'Camps on the minimap: ', campOn: ' · alive now: ', camp0: 'Camps on the minimap: not found'
 		}
@@ -187,9 +188,6 @@
 		P.en = pill(lr, 'English', function () { set('LANG', 'en'); paint(); });
 		mk('Panel', WIN, '', { width: '100%', height: '1px', backgroundColor: OFF });
 
-		P.secSoon = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '16px', marginBottom: '4px' });
-		P.s = [];
-		for (var j = 1; j <= 3; j++) P.s.push(lab(WIN, '', { fontSize: '15px', color: '#f3ebdd8c', marginTop: '4px' }));
 
 		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '16px', marginBottom: '2px' });
 		P.see = [];
@@ -206,19 +204,17 @@
 		P.close = lab(cl, '', { fontSize: '16px', color: INK });
 		cl.SetPanelEvent('onactivate', function () { show(false); });
 
-		P.note = lab(WIN, '', { fontSize: '13px', color: MUTED, marginTop: '14px' });
 		P.diag = lab(WIN, '', { fontSize: '11px', color: '#a89f9099', marginTop: '6px' });
 	}
 	function toggle(key) {
 		var r = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '12px 0px 12px 0px' });
 		var c = mk('Panel', r, '', { width: 'fill-parent-flow(1.0)', flowChildren: 'down', verticalAlign: 'center' });
 		var t = lab(c, '', { fontSize: '19px', color: INK });
-		var s = lab(c, '', { fontSize: '14px', color: MUTED, marginTop: '2px' });
 		var b = mk('Button', r, '', { width: '104px', height: '38px', borderRadius: '19px', verticalAlign: 'center' });
 		var bl = lab(b, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '16px', fontWeight: 'bold' });
 		b.SetPanelEvent('onactivate', function () { set(key, on(key) ? '0' : '1'); paint(); markTick(); });
 		mk('Panel', WIN, '', { width: '100%', height: '1px', backgroundColor: OFF });
-		P[key] = { t: t, s: s, b: b, l: bl };
+		P[key] = { t: t, b: b, l: bl };
 	}
 	function pill(parent, text, fn) {
 		var b = mk('Button', parent, '', { padding: '8px 18px 8px 18px', marginLeft: '8px', borderRadius: '17px', verticalAlign: 'center', backgroundColor: OFF });
@@ -228,14 +224,13 @@
 		return { b: b, l: l };
 	}
 	function paint() {
-		setText(P.sub, T('settings')); setText(P.secGame, T('inGame')); setText(P.lang, T('lang')); setText(P.secSoon, T('soon'));
-		setText(P.site, T('site')); setText(P.bot, T('bot')); setText(P.close, T('close')); setText(P.note, T('note'));
-		for (var j = 0; j < 3; j++) setText(P.s[j], '·  ' + T('s' + (j + 1)));
+		setText(P.sub, T('settings')); setText(P.secGame, T('inGame')); setText(P.lang, T('lang'));
+		setText(P.site, T('site')); setText(P.bot, T('bot')); setText(P.close, T('close'));
 		setText(P.seeH, T('seeH'));
 		var keys = [['ULT', 'ultT', 'ultS'], ['MARK', 'markT', 'markS'], ['LINK', 'linkT', 'linkS'], ['EVT', 'evtT', 'evtS']];
 		for (var i = 0; i < keys.length; i++) {
 			var q = P[keys[i][0]], v = on(keys[i][0]);
-			setText(q.t, T(keys[i][1])); setText(q.s, T(keys[i][2])); setText(q.l, v ? T('yes') : T('no'));
+			setText(q.t, T(keys[i][1])); setText(q.l, v ? T('yes') : T('no'));
 			q.b.style.backgroundColor = v ? A : OFF; q.l.style.color = v ? DARK : INK;
 		}
 		var ru = lang() === 'ru';
