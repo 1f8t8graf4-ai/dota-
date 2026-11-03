@@ -508,7 +508,7 @@ async function scout2(players, ctx) {
     api(`matches/metadata?${q}&only_filtered_players=true&include_info=true&include_player_kda=true&min_unix_timestamp=${t7}&order_by=match_id&order_direction=desc&limit=150`).catch(() => [])]);
   const per = L => { const o = {}; (L || []).forEach(h => { const x = o[h.account_id] = o[h.account_id] || {m: 0, w: 0, hs: []}; x.m += h.matches_played || 0; x.w += h.wins || 0; if (h.matches_played) x.hs.push({hid: h.hero_id, m: h.matches_played, w: h.wins || 0}); }); return o; };
   const P30 = per(H30), P12 = per(H12), RC = {};
-  (REC || []).forEach(mm => (mm.players || []).forEach(pp => { const L = RC[pp.account_id] = RC[pp.account_id] || []; if (L.length < 6) L.push({mid: mm.match_id, hid: pp.hero_id, w: teamOf(pp.team) === teamOf(mm.winning_team), kda: `${pp.kills || 0}/${pp.deaths || 0}/${pp.assists || 0}`}); }));
+  (REC || []).forEach(mm => (mm.players || []).forEach(pp => { const L = RC[pp.account_id] = RC[pp.account_id] || []; if (L.length < 20) L.push({mid: mm.match_id, hid: pp.hero_id, w: teamOf(pp.team) === teamOf(mm.winning_team), kda: `${pp.kills || 0}/${pp.deaths || 0}/${pp.assists || 0}`, t: mm.start_time || 0, d: mm.duration_s || 0}); }));
   const R = {}, H = {}, T = {};
   (ranks || []).forEach(r => R[r.account_id] = r);
   (hs || []).forEach(h => { (H[h.account_id] = H[h.account_id] || {})[h.hero_id] = h; const t = T[h.account_id] = T[h.account_id] || {m: 0, w: 0}; t.m += h.matches_played || 0; t.w += h.wins || 0; });
@@ -543,7 +543,7 @@ async function scout2(players, ctx) {
     if (p12 && p12.m >= 6) tags.push(['b', 'Марафон', `${games(p12.m)} за 12 часов`]);
     if (p12 && p12.m >= 3 && !p12.w) tags.push(['r', 'Тильт сегодня', `0 побед в ${games(p12.m)} за 12 часов`]);
     if (!p30.m && t.m >= 50) tags.push(['b', 'Давно не играл', 'ни одной игры за 30 дней — может «заржаветь»']);
-    if (rc.length >= 4 && rc.slice(0, 4).every(r => r.hid === hid)) tags.push(['a', 'Спамит героя', `последние ${Math.min(rc.length, rc.filter(r => r.hid === hid).length)} игр — на этом же герое`]);
+    { let sp = 0; while (sp < rc.length && rc[sp].hid === hid) sp++; if (sp >= 4) tags.push(['a', 'Спамит героя', `последние ${sp} игр подряд — на этом же герое`]); }
     if (badge >= 100) tags.push(['a', 'Высокий ранг', rankOf(badge).name]);
     if (pid[id]) tags.push(['h', `Друзья · ${pid[id].n}`, ctx.last ? 'друзья в Steam и в одной команде в этом матче — возможно, пати' : 'друзья в Steam, недавно играли в одной команде — возможно, пати']);
     const threat = hm >= 10 ? (hw / hm - .5) * Math.min(1, hm / 60) + (ws >= 3 ? .05 : 0) + badge / 1000 : badge / 1000 - .1;

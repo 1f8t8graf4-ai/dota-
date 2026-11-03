@@ -1,4 +1,4 @@
-// Программа Restless 0.3 (restless/app/main.js) без Electron: подменяем модуль electron и проверяем логику —
+// Программа Restless 0.3.1 (restless/app/main.js) без Electron: подменяем модуль electron и проверяем логику —
 // клавиша только пока запущена игра, матч → окно само на #ov + LIVE в трее, страница → программа (preload), чужой сайт игнорируется.
 // node tools/restless_test/appmain.js
 const Module = require('module'), path = require('path'), fs = require('fs'), os = require('os'), http = require('http');
@@ -29,7 +29,7 @@ const load0 = Module._load;
 Module._load = function (req, ...a) { if (req === 'electron') return fake; return load0.call(this, req, ...a); };
 const PROC = process.argv[2] === 'proc';
 process.env.RL_TEST_PROC = PROC ? '1' : '';
-if (PROC) L.taken.add('Control+Alt+X');
+if (PROC) L.taken.add('Control+Alt+H');
 require(A + 'main.js');
 readyFn();
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
@@ -40,7 +40,7 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   if (PROC) return procTests();
   ok(L.url === SITE + '?app=1&dev=vasyan2026#home', 'окно открывает сайт целиком — профиль (?app=1#home, ключ замка): ' + L.url);
   ok(!!L.keys['Control+Alt+H'] && !!L.keys['Control+Alt+T'], 'Ctrl+Alt+H (всегда) и Ctrl+Alt+T заняты');
-  ok(!L.keys['Control+X'], 'игры нет — Ctrl+X не занят (вырезать текст в других программах работает)');
+  ok(!L.keys['Control+X'], 'Ctrl+X не занимаем — «вырезать» в других программах работает');
   ok(L.img[L.img.length - 1] === 'idle.png', 'игры нет — серый значок в трее');
   // «игра запустилась»: без tasklist — через ipc нельзя, поэтому дёргаем то же, что watchGame: proc меняется только на Windows.
   // Для проверки клавиши — перезапуск с RL_TEST_PROC=1 ниже. Сначала — первый запуск: окно показано с фокусом
@@ -64,11 +64,11 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   L.ipc(ev(SITE + '?app=1#ovs'), 'hide');
   ok(!winObj.vis, 'страница: ✕ / Esc → окно спрятано');
   L.ipc(ev('https://evil.example/'), 'auto', false);
-  L.ipc(ev(SITE), 'key', 'Control+Shift+X');
+  L.ipc(ev(SITE), 'key', 'Control+Shift+H');
   L.ipc(ev(SITE), 'key', 'Control+Delete');
   const cfg = JSON.parse(fs.readFileSync(path.join(UD, 'restless.json'), 'utf8'));
   ok(cfg.auto === true, 'чужой сайт не может ничего поменять');
-  ok(cfg.key === 'Control+Shift+X', 'клавиша меняется со страницы, только из списка (Ctrl+Delete — нет)');
+  ok(cfg.key === 'Control+Shift+H' && !!L.keys['Control+Shift+H'] && !L.keys['Control+Alt+H'], 'клавиша меняется (только из списка, Ctrl+Delete — нет): старая отпущена, новая занята');
   L.ipc(ev(SITE), 'auto', false);
   ok(JSON.parse(fs.readFileSync(path.join(UD, 'restless.json'), 'utf8')).auto === false, '«открывать само» выключается со страницы');
   const r = require('child_process').spawnSync(process.execPath, [__filename, 'proc'], {encoding: 'utf8'});
@@ -78,15 +78,13 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
 })();
 function procTests() {
   const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/', ev = {senderFrame: {url: SITE}};
-  ok(!!L.keys['Control+X'], 'игра запущена — Ctrl+X занят (открыть профиль)');
+  ok(!L.keys['Control+X'], 'игра запущена — Ctrl+X всё равно не занят');
   ok(L.img[L.img.length - 1] === 'tray.png', 'игра запущена — обычный значок');
-  L.keys['Control+X']();
-  ok(winObj.vis && L.focus >= 1, 'Ctrl+X — окно открыто с фокусом (можно листать профиль)');
-  L.keys['Control+X']();
-  ok(!winObj.vis, 'Ctrl+X ещё раз — спрятано');
-  L.ipc(ev, 'key', 'Control+Shift+X');
-  ok(!L.keys['Control+X'] && !!L.keys['Control+Shift+X'], 'сменил клавишу — старая отпущена, новая занята');
-  L.ipc(ev, 'key', 'Control+Alt+X');
-  ok(!L.keys['Control+Alt+X'] && L.js.some(j => j.includes('"gameErr":"занята другой программой"')), 'занятая клавиша — страница узнаёт «занята другой программой»');
+  ok(!L.keys['Control+Alt+H'] && !!L.keys['Control+Shift+H'], 'Ctrl+Alt+H занята другой программой — взял следующую из списка (Ctrl+Shift+H)');
+  ok(L.js.some(j => j.includes('"show":"Ctrl+Shift+H"')), 'страница знает, какая клавиша досталась');
+  L.keys['Control+Shift+H']();
+  ok(winObj.vis && L.focus >= 1, 'клавиша — окно открыто с фокусом (можно листать профиль)');
+  L.keys['Control+Shift+H']();
+  ok(!winObj.vis, 'ещё раз — спрятано');
   process.exit(fail ? 1 : 0);
 }

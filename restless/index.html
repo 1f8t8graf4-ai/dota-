@@ -3287,93 +3287,119 @@ body.ovm .q-lob{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))!import
 .rl-app .ov-h{-webkit-app-region:drag;cursor:move}
 .rl-app .ov-h button,.rl-app .ov-h a,.rl-app .ov-app{-webkit-app-region:no-drag}
 
-/* ===================== lg13 — 03.11: вкладка «Оверлей», полоса окна программы, LIVE ===================== */
-/* вкладка «Оверлей» — не очередная: справа, отделена чертой, янтарная рамка, точка; в матче — красная LIVE */
+/* ===================== lg13 — 03.11: «Лайв-матч» горит в матче, «Оверлей» тихо, полоса окна программы, 12 ч — игры ===================== */
+/* курсор: везде обычная стрелка, рука — там, где нажимается, «палка» — только в полях ввода (Андрей: «как будто выделяешь») */
+body{cursor:default}
+a,button,summary,label,select,[role="button"],[data-per],[data-pb],[data-h],[data-mt],[data-t],.q-pc .top,.btn,.seg button,.tag[title]{cursor:pointer}
+input,textarea,[contenteditable="true"]{cursor:text}
+button:disabled,[disabled]{cursor:default}
+.tag,.q-tabs a,.btn,.l10-pr,.rl-bar,.l13-g{-webkit-user-select:none;user-select:none}
+
+/* вкладки: «Оверлей» — справа, тихий значок + слово; «Лайв-матч» в матче — красный с LIVE */
 .q-tabs{align-items:center}
-.q-tabs a.q-ovt{margin-left:auto;display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px;border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 55%,transparent);border-radius:999px;color:var(--q-am,#ffb020);background:color-mix(in srgb,var(--q-am,#ffb020) 9%,transparent);position:relative}
-.q-tabs a.q-ovt::before{content:"";position:absolute;left:-12px;top:6px;bottom:6px;width:1px;background:var(--ln,#26262e)}
-.q-tabs a.q-ovt.on{background:var(--q-am,#ffb020);color:#1a1204;border-color:var(--q-am,#ffb020)}
-.q-tabs a.q-ovt.on::after{display:none}
-.q-ovd{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.75;flex-shrink:0}
-.q-ovl{display:none;font:700 10px/1 var(--f,system-ui);letter-spacing:.08em;background:#ff3b4e;color:#fff;border-radius:4px;padding:3px 5px}
-.q-tabs a.q-ovt.live{border-color:#ff3b4e;color:#ff6b78;background:rgba(255,59,78,.1)}
-.q-tabs a.q-ovt.live .q-ovl{display:inline-block}
-.q-tabs a.q-ovt.live .q-ovd{background:#ff3b4e;opacity:1;animation:ovPulse 1.2s ease-in-out infinite}
-@keyframes ovPulse{50%{transform:scale(1.6);opacity:.4}}
-@media (max-width:760px){.q-tabs a.q-ovt{margin-left:6px}.q-tabs a.q-ovt::before{display:none}}
+.q-tabs a.q-ovt{margin-left:auto;display:inline-flex;align-items:center;gap:6px;color:var(--mu,#8e897f)}
+.q-tabs a.q-ovt svg{opacity:.8;flex-shrink:0}
+.q-tabs a.q-ovt:hover{color:var(--tx,#f2ede4)}
+.q-tabs a.q-ovt.on{color:var(--tx,#f2ede4)}
+.q-lvb{display:none;margin-left:6px;font:700 9.5px/1 var(--f,system-ui);letter-spacing:.08em;background:#ff3b4e;color:#fff;border-radius:4px;padding:3px 5px;vertical-align:2px}
+.q-tabs a[data-t="live"].live{color:#ff6b78}
+.q-tabs a[data-t="live"].live .q-lvb{display:inline-block;animation:ovPulse2 1.6s ease-in-out infinite}
+.q-tabs a[data-t="live"].live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff3b4e;margin-right:7px;vertical-align:1px;box-shadow:0 0 0 0 rgba(255,59,78,.6);animation:ovRing 1.6s ease-out infinite}
+@keyframes ovPulse2{50%{opacity:.55}}
+@keyframes ovRing{70%{box-shadow:0 0 0 7px rgba(255,59,78,0)}100%{box-shadow:0 0 0 0 rgba(255,59,78,0)}}
+@media (max-width:760px){.q-tabs a.q-ovt{margin-left:4px}.q-tabs a.q-ovt span{display:none}}
 
 /* полоса окна программы (рамки у окна нет): тянуть за неё; кнопки нажимаются */
 .rl-bar{display:none}
-.rl-app .rl-bar{display:flex;align-items:center;gap:10px;height:32px;padding:0 6px 0 4px;background:#07080b;border-bottom:1px solid var(--ln,#26262e);-webkit-app-region:drag;user-select:none;position:sticky;top:0;z-index:60}
+.rl-app .rl-bar{display:flex;align-items:center;gap:10px;height:32px;padding:0 6px 0 4px;background:#07080b;border-bottom:1px solid var(--ln,#26262e);-webkit-app-region:drag;position:sticky;top:0;z-index:60}
 .rl-bar button,.rl-bar a{-webkit-app-region:no-drag}
-.rl-bk,.rl-x{width:30px;height:26px;border:0;border-radius:6px;background:none;color:var(--mu,#8e897f);font-size:16px;line-height:1;cursor:pointer}
+.rl-bk,.rl-x{width:30px;height:26px;border:0;border-radius:6px;background:none;color:var(--mu,#8e897f);font-size:16px;line-height:1}
 .rl-bk:hover{background:#15171d;color:var(--tx,#f2ede4)}
 .rl-x{margin-left:auto}
 .rl-x:hover{background:#e5384a;color:#fff}
 .rl-lg{font:700 12px/1 var(--f,system-ui);letter-spacing:.22em;color:var(--q-am,#ffb020)}
 .rl-live{display:none;font:700 11px/1 var(--f,system-ui);letter-spacing:.06em;color:#fff;background:#ff3b4e;border-radius:5px;padding:4px 7px;text-decoration:none;animation:ovPulse2 1.6s ease-in-out infinite}
 .rl-bar.live .rl-live{display:inline-block}
-@keyframes ovPulse2{50%{opacity:.6}}
 .rl-k{font-size:12px;color:var(--mu,#8e897f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* шапка сайта в окне — под полосой; в матче (#ov) шапка и вкладки остаются */
 .rl-app .q-nav{top:32px}
 .rl-app body.ovm .q-nav{display:block!important}
 .rl-app body.ovm #tabs{display:flex!important}
-.rl-app .ov-h{-webkit-app-region:no-drag;cursor:default}
+.rl-app .ov-h{-webkit-app-region:no-drag}
 
-/* страница «Оверлей» */
-.ovs{max-width:1100px;margin:0 auto;display:grid;gap:14px}
-.ovs-h h1{font:700 30px/1 var(--h,var(--f,system-ui));letter-spacing:.04em;text-transform:uppercase;margin:6px 0 6px;color:var(--q-am,#ffb020)}
+/* страница «Оверлей»: одна карточка — слева превью, справа статус и одна настройка */
+.ovs{max-width:980px;margin:6px auto 0;display:grid;gap:16px}
+.ovs-h h1{font:700 30px/1 var(--h,var(--f,system-ui));letter-spacing:.04em;text-transform:uppercase;margin:4px 0 6px}
 .ovs-h p{margin:0;color:var(--mu,#8e897f)}
-.ovs-st{display:grid;gap:10px}
-.ovs-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
-.ovs-r{background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
-.ovs-r small{color:var(--mu,#8e897f);font-size:12px}
-.ovs-r b{font-weight:600;font-size:14px}
-.ovs-r.live{border-color:#ff3b4e}
-.ovs-r.live b{color:#ff6b78}
-.ovs-go{justify-self:start}
-.ovs-dl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:color-mix(in srgb,var(--q-am,#ffb020) 8%,var(--q-bx,#12151c));border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 40%,transparent);border-radius:12px;padding:14px 16px}
-.ovs-dl div{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 260px}
-.ovs-dl small{color:var(--mu,#8e897f)}
-.ovs-how{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
-.ovs-how>div{display:flex;gap:10px;align-items:flex-start;background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:10px;padding:12px}
-.ovs-how b{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--q-am,#ffb020);color:#1a1204;display:grid;place-items:center;font-size:13px}
-.ovs-how span{font-size:14px;line-height:1.45}
-.ovs kbd{font:600 12px/1 var(--f,system-ui);border:1px solid var(--ln,#26262e);border-bottom-width:2px;border-radius:5px;padding:2px 6px;background:#0b0c10}
-.ovs-lv{font-style:normal;font-weight:700;font-size:11px;color:#fff;background:#ff3b4e;border-radius:4px;padding:1px 5px}
-.ovs-g{display:grid;grid-template-columns:1fr;gap:12px}
-@media (min-width:900px){.ovs-g{grid-template-columns:1fr 1fr}}
-.ovs-c{background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.ovs-c h2{font:700 14px/1 var(--f,system-ui);letter-spacing:.12em;text-transform:uppercase;margin:0;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
-.ovs-c h2 small{font-weight:400;letter-spacing:0;text-transform:none;color:var(--mu,#8e897f);font-size:12.5px}
-.ovs-keys{display:flex;flex-wrap:wrap;gap:6px}
-.ovs-keys button{font:600 13px var(--f,system-ui);border:1px solid var(--ln,#26262e);background:#0b0c10;color:var(--tx,#f2ede4);border-radius:8px;padding:7px 11px;cursor:pointer;min-height:34px}
-.ovs-keys button.on{background:var(--q-am,#ffb020);color:#1a1204;border-color:var(--q-am,#ffb020)}
-.ovs-off{color:var(--mu,#8e897f);font-size:13.5px}
-.ovs-n{margin:0;font-size:13px;color:var(--mu,#8e897f);line-height:1.5}
-.ovs-t{display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer}
-.ovs-t input{width:18px;height:18px;accent-color:var(--q-am,#ffb020)}
-.ovs-t input:disabled+span{color:var(--mu,#8e897f)}
-.ovs-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.ovs-l li{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px dashed var(--ln,#26262e);border-radius:8px;padding:9px 11px;font-size:14px;color:var(--mu,#8e897f)}
-.ovs-l em{font-style:normal;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu,#8e897f);border:1px solid var(--ln,#26262e);border-radius:5px;padding:2px 6px;flex-shrink:0}
-/* наглядно: экран игры схемой */
-.ovs-pv{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-.ovs-scr{position:relative;width:min(300px,100%);aspect-ratio:16/9;border-radius:8px;background:linear-gradient(160deg,#1c2230,#0e1118);border:1px solid var(--ln,#26262e);overflow:hidden;flex-shrink:0}
-.ovs-tb{position:absolute;top:6px;left:50%;transform:translateX(-50%);display:flex;gap:3px}
-.ovs-tb u{width:12px;height:12px;border-radius:3px;background:#2d3444;position:relative}
-.ovs-tb u:nth-child(-n+6){background:#3b3322}
-.ovs-tb u::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--q-am,#ffb020);opacity:.85}
-.ovs-tb u:nth-child(6)::after{margin-right:4px}
-.ovs-pn{position:absolute;right:6px;top:24px;bottom:8px;width:34%;border-radius:5px;background:rgba(9,10,14,.92);border:1px solid var(--q-am,#ffb020);display:flex;flex-direction:column;gap:4px;padding:5px}
-.ovs-pn s{height:9px;border-radius:2px;background:#232838}
-.ovs-cr{position:absolute;left:33%;top:50%;width:8px;height:8px;margin:-4px;border:1px solid #fff8;border-radius:50%}
-.ovs-pv ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13px;color:var(--mu,#8e897f);flex:1 1 180px}
-.ovs-pv li{display:flex;gap:8px;align-items:center}
-.ovs-pv li i{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.ovs-pv .d1{background:var(--q-am,#ffb020)}
-.ovs-pv .d2{border:1px solid var(--q-am,#ffb020);background:#0b0c10}
+.ovs-main{display:grid;grid-template-columns:1fr;gap:0;background:var(--q-bx,#12151c);border:1px solid var(--ln,#26262e);border-radius:16px;overflow:hidden}
+@media (min-width:820px){.ovs-main{grid-template-columns:1.25fr 1fr}}
+.ovs-pv{padding:18px;display:flex;flex-direction:column;gap:12px;background:radial-gradient(120% 90% at 20% 0%,color-mix(in srgb,var(--q-am,#ffb020) 10%,transparent),transparent 60%),#0d0f14}
+.ovs-pv small{color:var(--mu,#8e897f);font-size:13px;line-height:1.45}
+.ovs-scr{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:1px solid #232733;background:linear-gradient(180deg,#273041 0%,#1a202c 45%,#12161e 100%)}
+.ovs-scr::before{content:"";position:absolute;left:8%;right:44%;bottom:0;height:46%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.35));clip-path:polygon(0 100%,18% 30%,40% 55%,62% 20%,100% 100%)}
+.ovs-tb{position:absolute;top:7px;left:50%;transform:translateX(-50%);display:flex;gap:3px;align-items:center}
+.ovs-tb u{width:13px;height:13px;border-radius:3px;background:#3a3120;box-shadow:inset 0 0 0 1px #6b5526}
+.ovs-tb u:nth-child(n+8){background:#1f2a3c;box-shadow:inset 0 0 0 1px #33507a}
+.ovs-tb b{width:26px;height:9px;border-radius:2px;background:#0b0d12;margin:0 3px}
+.ovs-win{position:absolute;right:4%;top:15%;bottom:7%;width:40%;border-radius:8px;background:rgba(10,12,17,.94);border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 70%,transparent);box-shadow:0 10px 30px -8px #000,0 0 0 4px rgba(255,176,32,.06);padding:6px;display:flex;flex-direction:column;gap:5px}
+.ovs-wh{display:flex;align-items:center;justify-content:space-between}
+.ovs-wh b{font:700 7.5px/1 var(--f,system-ui);letter-spacing:.2em;color:var(--q-am,#ffb020)}
+.ovs-wh span{font:700 6.5px/1 var(--f,system-ui);color:#fff;background:#ff3b4e;border-radius:3px;padding:2px 3px}
+.ovs-wl{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;flex:1}
+.ovs-wl i{border-radius:4px;background:#171b24;border-top:2px solid #6b5526;display:flex;flex-direction:column;gap:2px;padding:3px;animation:ovsIn .5s var(--d) ease-out both}
+.ovs-wl.e i{border-top-color:#33507a}
+.ovs-wl u{width:44%;aspect-ratio:1;border-radius:3px;background:#2a3040}
+.ovs-wl s{height:3px;border-radius:2px;background:#2a3040;width:80%}
+.ovs-wl em{height:3px;border-radius:2px;background:#33d6a6;width:50%;opacity:.7}
+.ovs-wl.e i:nth-child(2n) em{background:#ff6b81;width:35%}
+@keyframes ovsIn{from{opacity:0;transform:translateY(4px)}}
+.ovs-st{padding:20px;display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:0}
+.ovs-r{display:grid;grid-template-columns:10px 76px 1fr;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--ln,#26262e)}
+.ovs-r i{width:8px;height:8px;border-radius:50%;background:#3a3f4c}
+.ovs-r i.ok{background:#33d6a6}
+.ovs-r i.bad{background:#ff6b81}
+.ovs-r i.live{background:#ff3b4e;box-shadow:0 0 0 0 rgba(255,59,78,.6);animation:ovRing 1.6s ease-out infinite}
+.ovs-r small{color:var(--mu,#8e897f);font-size:12.5px}
+.ovs-r b{font-weight:600;font-size:14.5px;min-width:0;overflow-wrap:anywhere}
+.ovs-go{align-self:flex-start;margin-top:4px}
+.ovs-sw{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:14px}
+.ovs-sw input{position:absolute;opacity:0;width:1px;height:1px}
+.ovs-sw .tr{flex-shrink:0;width:38px;height:22px;border-radius:11px;background:#2a2f3a;position:relative;transition:background .2s}
+.ovs-sw .tr::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#cfd3dc;transition:transform .2s}
+.ovs-sw input:checked+.tr{background:var(--q-am,#ffb020)}
+.ovs-sw input:checked+.tr::after{transform:translateX(16px);background:#1a1204}
+.ovs-sw input:focus-visible+.tr{outline:2px solid var(--q-am,#ffb020);outline-offset:2px}
+.ovs-sw input:disabled+.tr{opacity:.5}
+.ovs-t1{margin:0;font-size:15px;line-height:1.5}
+.ovs-dlb{align-self:flex-start}
+.ovs-n{color:var(--mu,#8e897f);font-size:12.5px}
+.ovs-soon{margin:0;color:var(--mu,#8e897f);font-size:13px;text-align:center}
+
+/* «12 ч» — сами игры */
+.l13-gl{display:flex;flex-direction:column;gap:2px;margin-top:8px;min-width:min(380px,calc(100vw - 48px))}
+.l13-g{display:grid;grid-template-columns:30px minmax(0,1fr) auto auto 34px 10px;align-items:center;gap:9px;padding:6px 8px;border-radius:8px;text-decoration:none;color:var(--tx,#f2ede4);border-left:3px solid #ff6b81;background:rgba(255,107,129,.05)}
+.l13-g.w{border-left-color:#33d6a6;background:rgba(51,214,166,.05)}
+.l13-g:hover{background:#1d2029}
+.l13-g .q-fc{width:30px;height:30px;border-radius:7px}
+.l13-g .n{display:flex;flex-direction:column;min-width:0}
+.l13-g .n b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l13-g .n small{color:var(--mu,#8e897f);font-size:11.5px;white-space:nowrap}
+.l13-g .k{font:700 14px/1 var(--h,var(--f,system-ui));white-space:nowrap}
+.l13-g .k i{color:var(--mu,#8e897f);font-style:normal;margin:0 1px}
+.l13-g .k em{color:#ff6b81;font-style:normal}
+.l13-g .r{font-size:12px;font-weight:600;color:#ff6b81;white-space:nowrap}
+.l13-g.w .r{color:#33d6a6}
+.l13-g .gr{display:flex;justify-content:center}
+.l13-g .gr .grd{width:30px;height:30px;font-size:12px}
+.l13-g .go{color:var(--mu,#8e897f)}
+.l13-sk{display:block;width:26px;height:26px;border-radius:50%;background:#22262f;animation:ovPulse2 1s ease-in-out infinite}
+.l13-ng{color:var(--mu,#8e897f)}
+@media (max-width:520px){.l13-g{grid-template-columns:28px minmax(0,1fr) auto 30px;}.l13-g .r,.l13-g .go{display:none}}
+
+/* место на герое под названием героя на карточке */
+.q-pc.l10 .top .hn{display:flex;flex-direction:column;gap:3px}
+.l13-hr{font:600 11px/1.1 var(--f,system-ui);letter-spacing:0;text-transform:none;color:var(--mu,#8e897f)}
+.l13-hr:not([data-ok]){opacity:.5}
+.l13-hr.top{color:var(--q-am,#ffb020)}
 
 </style>
 </head>
@@ -5000,7 +5026,7 @@ async function scout2(players, ctx) {
     api(`matches/metadata?${q}&only_filtered_players=true&include_info=true&include_player_kda=true&min_unix_timestamp=${t7}&order_by=match_id&order_direction=desc&limit=150`).catch(() => [])]);
   const per = L => { const o = {}; (L || []).forEach(h => { const x = o[h.account_id] = o[h.account_id] || {m: 0, w: 0, hs: []}; x.m += h.matches_played || 0; x.w += h.wins || 0; if (h.matches_played) x.hs.push({hid: h.hero_id, m: h.matches_played, w: h.wins || 0}); }); return o; };
   const P30 = per(H30), P12 = per(H12), RC = {};
-  (REC || []).forEach(mm => (mm.players || []).forEach(pp => { const L = RC[pp.account_id] = RC[pp.account_id] || []; if (L.length < 6) L.push({mid: mm.match_id, hid: pp.hero_id, w: teamOf(pp.team) === teamOf(mm.winning_team), kda: `${pp.kills || 0}/${pp.deaths || 0}/${pp.assists || 0}`}); }));
+  (REC || []).forEach(mm => (mm.players || []).forEach(pp => { const L = RC[pp.account_id] = RC[pp.account_id] || []; if (L.length < 20) L.push({mid: mm.match_id, hid: pp.hero_id, w: teamOf(pp.team) === teamOf(mm.winning_team), kda: `${pp.kills || 0}/${pp.deaths || 0}/${pp.assists || 0}`, t: mm.start_time || 0, d: mm.duration_s || 0}); }));
   const R = {}, H = {}, T = {};
   (ranks || []).forEach(r => R[r.account_id] = r);
   (hs || []).forEach(h => { (H[h.account_id] = H[h.account_id] || {})[h.hero_id] = h; const t = T[h.account_id] = T[h.account_id] || {m: 0, w: 0}; t.m += h.matches_played || 0; t.w += h.wins || 0; });
@@ -5035,7 +5061,7 @@ async function scout2(players, ctx) {
     if (p12 && p12.m >= 6) tags.push(['b', 'Марафон', `${games(p12.m)} за 12 часов`]);
     if (p12 && p12.m >= 3 && !p12.w) tags.push(['r', 'Тильт сегодня', `0 побед в ${games(p12.m)} за 12 часов`]);
     if (!p30.m && t.m >= 50) tags.push(['b', 'Давно не играл', 'ни одной игры за 30 дней — может «заржаветь»']);
-    if (rc.length >= 4 && rc.slice(0, 4).every(r => r.hid === hid)) tags.push(['a', 'Спамит героя', `последние ${Math.min(rc.length, rc.filter(r => r.hid === hid).length)} игр — на этом же герое`]);
+    { let sp = 0; while (sp < rc.length && rc[sp].hid === hid) sp++; if (sp >= 4) tags.push(['a', 'Спамит героя', `последние ${sp} игр подряд — на этом же герое`]); }
     if (badge >= 100) tags.push(['a', 'Высокий ранг', rankOf(badge).name]);
     if (pid[id]) tags.push(['h', `Друзья · ${pid[id].n}`, ctx.last ? 'друзья в Steam и в одной команде в этом матче — возможно, пати' : 'друзья в Steam, недавно играли в одной команде — возможно, пати']);
     const threat = hm >= 10 ? (hw / hm - .5) * Math.min(1, hm / 60) + (ws >= 3 ? .05 : 0) + badge / 1000 : badge / 1000 - .1;
@@ -7510,7 +7536,7 @@ function pCard(p, en, thr, meId) {
     return `<button class="l10-pr${w == null ? ' off' : ''}" type="button" data-per="${k}" data-acc="${p.id}"${w == null ? ' disabled' : ''}><small>${nm}</small><b class="${w == null ? '' : w >= 50 ? 'win' : 'loss'}">${w == null ? '—' : w + '%'}</b><i>${o && o.m ? games(o.m) : 'не играл'}</i></button>`; };
   const tags = [thr ? ['h', 'Главная угроза', 'самый опасный по рангу и игре на герое'] : null, p.cn ? ['r', `Контрит тебя · ${p.cn}%`, 'твой герой против него побеждает реже'] : null, ...p.tags].filter(Boolean);
   return `<div class="q-pc l10${p.id === meId ? ' mine' : ''}${thr ? ' thr' : ''}">
-    <div class="top"><img class="f u11-pf" src="${esc(hero(p.hid).v || hero(p.hid).c || hero(p.hid).i)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
+    <div class="top"><img class="f u11-pf" src="${esc(hero(p.hid).v || hero(p.hid).c || hero(p.hid).i)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(hero(p.hid).i)}'"><span class="hn">${esc(hero(p.hid).n)}${p.id && p.hm ? `<small class="l13-hr" data-hr="${p.hid}|${p.id}" title="Место в мире среди всех игроков на ${esc(hero(p.hid).n)} — по числу побед на нём">место на герое…</small>` : ''}</span>${p.party ? `<i class="pty" style="background:${p.party.c}" title="друзья в Steam в одной команде — возможно, пати"></i>` : ''}
       <span class="l10-rk" title="${esc(rankOf(p.badge).name)}">${p.badge ? rankImg(p.badge, 'rk') : ''}</span></div>
     <div class="q-pb">${p.id ? `<a class="q-pc-n" href="?id=${p.id}#home"><span class="q-pnm">${esc(p.name)}</span></a>` : `<span class="q-pnm">${esc(p.name)}</span>`}<span class="l10-rn">${esc(rankOf(p.badge).name)}</span>
       <div class="l10-st"><span><small>на герое</small><b>${p.hm ? nf(p.hm) : '0'}${p.hm ? ` · <em class="${wrC(wr, p.hm)}">${wr}%</em>` : ''}</b></span><span><small>всего</small><b>${p.tm ? `${nf(p.tm)} · ${pc(p.tw, p.tm)}%` : '—'}</b></span></div>
@@ -8368,22 +8394,26 @@ async function ovFromApi(n) {
     OV.kick = t; t(); OV.timer = setInterval(t, RL_APP ? 5000 : 20000);
     return r; }; }
 
-// ===================== lg13 — 03.11: вкладка «Оверлей», окно программы = весь сайт (профиль по Ctrl+X), LIVE =====================
-// Андрей: «Ctrl+X — открывается твой профиль, можно полазить как на сайте; есть вкладка оверлея, где всё настраивается — в лобби
-// и в игре; нашёлся матч — оверлей сам открывается и показывает всех; закрывается легко». Программа 0.3 грузит сайт ?app=1#home,
-// window.rlHost (preload.js) — спрятать окно, сменить клавишу, «открывать само». В браузере вкладка тоже есть — со ссылкой на программу.
+// ===================== lg13 — 03.11: окно программы = весь сайт, «Оверлей» — настройки, LIVE — на «Лайв-матче» =====================
+// Андрей (03.11, вечер): «выделяться должен Лайв-матч, а не Оверлей, и только когда матч идёт»; «оверлей перегружен»;
+// «зачем Ctrl+X, если всё на Ctrl+H» — одна клавиша; «12 ч — покажи сами игры: Грейвс 21/1/14, поражение, оценка, переход в матч»;
+// «показывай рейтинг васянов»; «курсор как будто выделяешь текст». Программа 0.3.1 грузит сайт ?app=1#home, window.rlHost — preload.js.
 const OVS_DL = 'https://github.com/1f8t8graf4-ai/dota-/releases/download/overlay-latest/Restless-Overlay.exe';
 const RLH = window.rlHost || null;
 const ovLive = () => !!(OV.app && OV.app.live) || (gameLive() && OV.G && OV.G.s === 'm');
 
-// ---------- вкладка «Оверлей» — отдельно от остальных, справа, с точкой LIVE ----------
+// ---------- вкладки: «Оверлей» — тихо справа; «Лайв-матч» горит красным с LIVE, только пока идёт матч ----------
 (() => {
   const t = $('#tabs'); if (!t || $('#tabs [data-t="ovs"]')) return;
-  t.insertAdjacentHTML('beforeend', `<a href="#ovs" data-t="ovs" class="q-ovt" title="Оверлей поверх игры: настройки и матч"><i class="q-ovd" aria-hidden="true"></i><span>Оверлей</span><b class="q-ovl">LIVE</b></a>`);
+  t.insertAdjacentHTML('beforeend', `<a href="#ovs" data-t="ovs" class="q-ovt" title="Оверлей поверх игры: настройки"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><rect x="12" y="7" width="6" height="7" rx="1"/><path d="M8 21h8"/></svg><span>Оверлей</span></a>`);
+  const lv = $('#tabs [data-t="live"]'); if (lv && !$('.q-lvb', lv)) lv.insertAdjacentHTML('beforeend', '<b class="q-lvb">LIVE</b>');
 })();
-function ovTabLive() { const a = $('#tabs [data-t="ovs"]'); if (a) a.classList.toggle('live', ovLive()); const b = $('#rlbar'); if (b) b.classList.toggle('live', ovLive()); }
+function ovTabLive() {
+  const on = ovLive(), a = $('#tabs [data-t="live"]'); if (a) a.classList.toggle('live', on);
+  const b = $('#rlbar'); if (b) b.classList.toggle('live', on);
+}
 
-// ---------- полоса окна программы: тянуть окно, ‹ назад, LIVE, подсказка клавиши, ✕ ----------
+// ---------- полоса окна программы: тянуть окно, ‹ назад, LIVE, клавиша, ✕ ----------
 if (RL_APP) {
   document.body.insertAdjacentHTML('afterbegin', `<div class="rl-bar" id="rlbar"><button type="button" class="rl-bk" id="rlbk" title="Назад" aria-label="Назад">‹</button><b class="rl-lg">RESTLESS</b><a class="rl-live" href="#ov" title="Открыть матч">● LIVE</a><span class="rl-k" id="rlkey"></span><button type="button" class="rl-x" id="rlx" title="Скрыть (Esc)" aria-label="Скрыть">✕</button></div>`);
   $('#rlbk').onclick = () => history.back();
@@ -8395,65 +8425,87 @@ if (RL_APP) {
     RLH.hide();
   });
 }
-function rlKeyLine() {
-  const a = OV.app || {}, h = a.hk || {}, el = $('#rlkey'); if (!el) return;
-  const k = a.proc ? (h.game || '') : (h.show || '');
-  el.textContent = k ? `${k} — скрыть` : '';
-}
+const rlKey = () => { const a = OV.app || {}, h = a.hk || {}; return h.show || (a.keys && a.keys[0]) || 'Ctrl+Alt+H'; };
+function rlKeyLine() { const el = $('#rlkey'); if (el) el.textContent = OV.app ? `${rlKey()} — скрыть` : ''; }
 { const A0 = window.rlApp; window.rlApp = s => { A0(s); ovTabLive(); rlKeyLine(); if (/^#ovs/.test(location.hash)) ovsPaint(); }; }
 { const G0 = window.rlGame; window.rlGame = g => { G0(g); ovTabLive(); if (/^#ovs/.test(location.hash)) ovsPaint(); }; }
 setInterval(ovTabLive, 5000);
 
-// ---------- страница «Оверлей» (#ovs) ----------
+// ---------- страница «Оверлей» (#ovs): слева — как это выглядит, справа — статус и одна настройка ----------
 function ovsPaint() {
   const b = $('#ovsst'); if (!b) return;
   const a = OV.app, live = ovLive(), g = gameLive() ? OV.G : null, m = a && a.mod || {};
-  const modTxt = {installed: 'поставлен ✓ — перезапусти игру', cleaned: 'на месте ✓', ok: 'на месте ✓', busy: 'поставлю, когда закроешь игру', nogame: 'не нашёл Deadlock', error: 'ошибка', wait: 'проверяю…'}[m.status] || '—';
-  const row = (k, v, cls) => `<div class="ovs-r ${cls || ''}"><small>${k}</small><b>${v}</b></div>`;
-  b.innerHTML = !a ? `<div class="ovs-dl"><div><b>Нужна программа Restless Overlay</b><small>Она открывает этот сайт поверх игры по клавише и сама показывает матч. Windows, без установки.</small></div><a class="btn" href="${OVS_DL}">Скачать .exe</a></div>`
-    : `<div class="ovs-rows">${row('Игра', live ? '● LIVE — матч, игроков ' + (g ? g.players.length : 12) : g ? 'на связи · укрытие' : a.proc ? 'запущена · жду матч' : 'не запущена', live ? 'live' : '')}
-       ${row('Мод', esc(modTxt))}${row('Клавиша', esc(a.proc ? (a.hk && a.hk.game || (a.hk && a.hk.gameErr ? 'занята — выбери другую' : '—')) : (a.hk && a.hk.cur ? a.hk.cur.replace(/Control/g, 'Ctrl') + ' — заработает, когда запустишь игру' : '—')))}${row('Версия программы', esc(a.ver || '0.2'))}</div>
-       ${live ? '<a class="btn ovs-go" href="#ov">Открыть матч — все 12 игроков ›</a>' : ''}`;
-  // клавиша и «само»
-  const k = $('#ovsk'); if (k && a && a.hk) {
-    k.innerHTML = a.hk.opts.map(([v, t]) => `<button type="button" data-k="${esc(v)}" class="${a.hk.cur === v ? 'on' : ''}">${esc(t)}</button>`).join('');
-    k.onclick = e => { const x = e.target.closest('[data-k]'); if (x && RLH) RLH.setKey(x.dataset.k); };
+  if (!a) {
+    b.innerHTML = `<p class="ovs-t1">Нужна программа <b>Restless Overlay</b> — она открывает сайт поверх игры и сама показывает матч.</p>
+      <a class="btn ovs-dlb" href="${OVS_DL}">Скачать для Windows</a><small class="ovs-n">Без установки. Игра — в режиме «Оконный без рамки».</small>`;
+    return;
   }
-  const au = $('#ovsau'); if (au && a) { au.checked = !!a.auto; au.disabled = !RLH; au.onchange = () => RLH && RLH.setAuto(au.checked); }
-  const lk = $('#ovslk'); if (lk) lk.hidden = !!a;
+  const modOk = /^(ok|cleaned|installed)$/.test(m.status), modTx = {installed: 'поставлен — перезапусти игру', cleaned: 'на месте', ok: 'на месте', busy: 'поставлю, когда закроешь игру', nogame: 'не нашёл Deadlock', error: 'ошибка', wait: 'проверяю…'}[m.status] || '—';
+  const row = (k, v, st) => `<div class="ovs-r"><i class="${st}"></i><small>${k}</small><b>${v}</b></div>`;
+  b.innerHTML = `${row('Игра', live ? 'LIVE · матч' + (g ? ', игроков ' + g.players.length : '') : g ? 'на связи · укрытие' : a.proc ? 'запущена · жду матч' : 'не запущена', live ? 'live' : g || a.proc ? 'ok' : '')}
+    ${row('Мод', esc(modTx), modOk ? 'ok' : m.status === 'error' || m.status === 'nogame' ? 'bad' : '')}
+    ${row('Клавиша', esc(rlKey()), 'ok')}
+    ${live ? '<a class="btn ovs-go" href="#ov">Открыть матч ›</a>' : ''}
+    <label class="ovs-sw"><input type="checkbox" id="ovsau"${a.auto ? ' checked' : ''}${RLH ? '' : ' disabled'}><span class="tr"></span><span>Открывать само, когда нашёлся матч</span></label>`;
+  const au = $('#ovsau'); if (au) au.onchange = () => RLH && RLH.setAuto(au.checked);
 }
 function viewOvs() {
   vNew(); document.body.classList.remove('ovm'); clearInterval(OV.timer); clearInterval(OV.clk);
   $$('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.t === 'ovs'));
   window.scrollTo(0, 0);
-  const soon = L => `<ul class="ovs-l">${L.map(x => `<li><span>${x}</span><em>скоро</em></li>`).join('')}</ul>`;
+  const pl6 = Array.from({length: 6}, (_, i) => `<i style="--d:${i * 60}ms"><u></u><s></s><em></em></i>`).join('');
   V(`<section class="ovs">
-    <header class="ovs-h"><div><h1>Оверлей</h1><p>Restless поверх игры: твой профиль по клавише, матч — сам, когда он нашёлся.</p></div></header>
-    <div class="ovs-st" id="ovsst"></div>
-    <div class="ovs-how">
-      <div><b>1</b><span><kbd>Ctrl</kbd>+<kbd>X</kbd> в игре — открыть свой профиль. Тут всё как на сайте.</span></div>
-      <div><b>2</b><span>Нашёлся матч — окно открывается само: все 12 игроков, ранги, угрозы. Игра не теряет управление. Значок в трее загорается <i class="ovs-lv">LIVE</i>.</span></div>
-      <div><b>3</b><span>Закрыть — та же клавиша, <kbd>Esc</kbd> или ✕ сверху.</span></div>
+    <header class="ovs-h"><h1>Оверлей</h1><p>Restless поверх игры: профиль по клавише, матч — сам.</p></header>
+    <div class="ovs-main">
+      <div class="ovs-pv" aria-label="Как это выглядит в игре">
+        <div class="ovs-scr"><div class="ovs-tb">${'<u></u>'.repeat(6)}<b></b>${'<u></u>'.repeat(6)}</div><div class="ovs-win"><div class="ovs-wh"><b>RESTLESS</b><span>LIVE</span></div><div class="ovs-wl">${pl6}</div><div class="ovs-wl e">${pl6}</div></div></div>
+        <small>Нашёлся матч — окно с 12 игроками появляется само. Закрыть — ${esc(rlKey())}, Esc или ✕.</small></div>
+      <div class="ovs-st" id="ovsst"></div>
     </div>
-    <div class="ovs-g">
-      <div class="ovs-c"><h2>Клавиша</h2>
-        <div class="ovs-keys" id="ovsk"><span class="ovs-off" id="ovslk">Выбирается в программе Restless Overlay.</span></div>
-        <p class="ovs-n">Работает, пока запущен Deadlock — в других программах <kbd>Ctrl</kbd>+<kbd>X</kbd> вырезает как обычно. В Deadlock <kbd>Ctrl</kbd> — присесть, <kbd>X</kbd> — второй предмет: если мешает, возьми <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>.</p>
-        <label class="ovs-t"><input type="checkbox" id="ovsau" checked disabled><span>Открывать само, когда нашёлся матч</span></label></div>
-      <div class="ovs-c"><h2>Наглядно</h2>
-        <div class="ovs-pv" aria-label="Где что на экране игры">
-          <div class="ovs-scr"><i class="ovs-tb">${'<u></u>'.repeat(12)}</i><i class="ovs-pn"><s></s><s></s><s></s><s></s></i><i class="ovs-cr"></i></div>
-          <ul><li><i class="d1"></i>верхняя панель — секунды до ульт (мод)</li><li><i class="d2"></i>окно Restless — поверх игры, сбоку или где поставишь</li></ul>
-        </div></div>
-    </div>
-    <div class="ovs-g">
-      <div class="ovs-c"><h2>В лобби <small>пока ищется и грузится матч</small></h2>${soon(['Кто в матче: ранги, винрейт, мейны', 'Главная угроза и кто тебя контрит', 'Сборка против их состава'])}</div>
-      <div class="ovs-c"><h2>В игре <small>поверх матча</small></h2>${soon(['Что показывать в окне матча', 'Где окно и какого размера', 'Таймеры лагерей и событий карты'])}</div>
-    </div>
+    <p class="ovs-soon">Скоро здесь: что показывать в лобби и в игре, где окно и какого размера.</p>
   </section>`);
   ovsPaint();
 }
 { const R1 = route; route = function () { if (/^#ovs(\/|$)/.test(location.hash)) return viewOvs(); return R1.apply(this, arguments); }; }
+
+// ---------- «12 ч» на карточке игрока — сами игры: герой, K/D/A, итог, оценка, переход в матч ----------
+{ const PH0 = perHTML; perHTML = function (p, k) {
+    if (k !== '12') return PH0(p, k);
+    const t12 = now() - 12 * 3600, L = (p.rc || []).filter(r => r.t && r.t >= t12);
+    if (!L.length) return PH0(p, k);
+    const w = L.filter(r => r.w).length;
+    setTimeout(() => l13Grades(p), 0);
+    return `<div class="q-poh"><b>${esc(p.name)}</b><small>за 12 часов · ${games(L.length)} · ${w} ${pl(w, ['победа', 'победы', 'побед'])}, ${L.length - w} ${pl(L.length - w, ['поражение', 'поражения', 'поражений'])}</small></div>
+      <div class="l13-gl">${L.map(r => { const [k1, d1, a1] = String(r.kda).split('/');
+        return `<a class="l13-g ${r.w ? 'w' : 'l'}" href="#m/${r.mid}" title="Разбор матча">${face(r.hid, r.w ? 'g' : 'c', 's')}<span class="n"><b>${esc(hero(r.hid).n)}</b><small>${ago(r.t)}${r.d ? ' · ' + mmss(r.d) : ''}</small></span><span class="k">${k1}<i>/</i><em>${d1}</em><i>/</i>${a1}</span><span class="r">${r.w ? 'Победа' : 'Поражение'}</span><span class="gr" data-g="${r.mid}"><i class="l13-sk"></i></span><span class="go">›</span></a>`; }).join('')}</div>`;
+  }; }
+// оценка S+…D− — по истории матчей игрока (души, добивания, длина матча есть только там)
+async function l13Grades(p) {
+  if (!p.id) return;
+  const H = await api(`players/${p.id}/match-history`).catch(() => null);
+  const M = {}; (H || []).forEach(m => { M[m.match_id] = m; });
+  $$('.q-pop [data-g]').forEach(c => { const m = M[+c.dataset.g]; c.innerHTML = m ? grdHTML(m) : '<span class="l13-ng" title="Матча ещё нет в истории игрока">—</span>'; });
+}
+
+// ---------- место на герое у каждого игрока на карточке (как «Рейтинг на герое» в профиле) ----------
+let HRQ = false;
+async function l13Ratings() {
+  if (HRQ) return; HRQ = true;
+  try {
+    for (;;) {
+      const L = $$('[data-hr]:not([data-ok])').slice(0, 2); if (!L.length) break;
+      await Promise.all(L.map(async c => {
+        c.dataset.ok = '1'; const [hid, id] = c.dataset.hr.split('|').map(Number);
+        const r = await heroRating(hid, id).catch(() => null);
+        $$(`[data-hr="${hid}|${id}"]`).forEach(x => { x.dataset.ok = '1';
+          if (r && r.pos) { x.textContent = `#${nf(r.pos)} в мире`; x.classList.toggle('top', r.pos <= 1000); x.title = `Место в мире среди всех игроков на ${hero(hid).n} по числу побед: ${nf(r.v)} ${pl(r.v, ['победа', 'победы', 'побед'])} на нём`; }
+          else x.remove(); });
+      }));
+    }
+  } finally { HRQ = false; }
+}
+{ let tm = 0; new MutationObserver(() => { clearTimeout(tm); tm = setTimeout(() => { if ($('[data-hr]:not([data-ok])')) l13Ratings(); }, 400); }).observe(document.body, {childList: true, subtree: true}); }
+
 ovTabLive();
 window.addEventListener('hashchange', route);
 (async () => {
