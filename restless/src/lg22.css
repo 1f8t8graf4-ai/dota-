@@ -1,0 +1,30 @@
+/* ===================== lg22 — лайв-матч: карточки как было, команда в один ряд ===================== */
+.q-lob{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:8px!important}
+@media (max-width:899px){.q-lob{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media (max-width:560px){.q-lob{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}}
+#lvb .q-team,#ovb .q-team{margin-top:8px}
+#lvb .q-th,#ovb .q-th{margin-bottom:6px}
+.q-pc.l10 .top{padding:8px 9px 0!important;gap:8px}
+.q-pc.l10 .top img.f.u11-pf{width:40px;height:40px;border-radius:10px}
+.q-pc.l10 .top .hn{font-size:11px!important;padding-bottom:2px;min-width:0;gap:2px}
+.q-pc.l10 .top .hn small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-pc.l10 .top .l10-rk{padding-bottom:2px}
+.q-pc.l10 .top .l10-rk .rk{width:26px;height:26px}
+.q-pc.l10 .q-pb{gap:5px;padding:5px 9px 8px}
+.q-pc.l10 .q-pnm{font-size:13px}
+.l10-rn{margin-top:-3px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l10-rn.est.on{display:flex;align-items:center;gap:4px;color:#cfc6b3}
+.l10-rn.est .rk{width:16px;height:16px;flex:none;opacity:.85}
+.l10-rn.est b{font-weight:500;overflow:hidden;text-overflow:ellipsis}
+.l10-st,.l10-per{gap:4px}
+.l10-st span,.l10-pr{padding:4px 6px;gap:1px}
+.l10-st b{font-size:12px}
+.l10-pr b{font-size:13px}
+.l10-pr i{font-size:10px;white-space:nowrap}
+.l10-rc{gap:2px}
+.l10-rc a{flex:0 1 22px;min-width:0;width:auto;height:22px;border-radius:5px}
+.q-pc.l10 .q-pbb{padding:4px 7px;font-size:10.5px}
+.q-pc.l10 .tg{max-height:41px;overflow:hidden}
+.l22-bot{margin-top:14px}
+.rl-app .q-lvh .h1{font-size:30px;margin:0}
+.rl-app .l21-mh{margin:4px 0 6px}

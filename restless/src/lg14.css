@@ -1,0 +1,59 @@
+/* ===================== lg14 — 03.11, ночь: рейтинг героя — топ мира, игрок и его сборка, цель в профиле ===================== */
+.l14-lad{margin:12px 0 4px}
+.l14-lb:not(.open) .l14-x{display:none}
+.l14-more{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:8px;border-radius:8px;color:var(--mu,#8e897f);font-size:13px;font-weight:600}
+.l14-more:hover{background:#1a1d26;color:var(--tx,#f2ede4)}
+.l14-more:focus-visible{outline:2px solid var(--q-am,#ffb020)}
+.l14-lb{padding:6px!important;display:flex;flex-direction:column;gap:2px}
+.l14-r{display:grid;grid-template-columns:44px 32px minmax(0,1fr) auto auto 12px;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;text-decoration:none;color:var(--tx,#f2ede4)}
+.l14-r:hover{background:#1a1d26}
+.l14-r .l14-n{font:700 15px/1 var(--h,var(--f,system-ui));color:var(--mu,#8e897f);text-align:center}
+.l14-r.p1 .l14-n,.l14-r.p2 .l14-n,.l14-r.p3 .l14-n{font-size:20px}
+.l14-r.p1{background:linear-gradient(90deg,rgba(255,182,48,.14),transparent 70%)}
+.l14-r.mine{outline:1px solid var(--q-am,#ffb020)}
+.l14-r .l14-av,.l14-ph .l14-av{width:32px;height:32px;border-radius:8px;object-fit:cover;background:#222631;display:block}
+.l14-r b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l14-r .l14-rk,.l14-ph .l14-rk{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.l14-r .l14-rk img,.l14-ph .l14-rk img{width:30px;height:24px;object-fit:contain}
+.l14-r .l14-rk small,.l14-ph .l14-rk small{color:var(--mu,#8e897f);font-size:12px}
+.l14-r .l14-g{color:var(--mu,#8e897f);font-size:12px;white-space:nowrap}
+.l14-r .l14-go{color:var(--mu,#8e897f)}
+.l14-me{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:10px 12px;margin-top:4px;border-top:1px dashed var(--ln,#26262e)}
+.l14-me b{color:var(--q-am,#ffb020);font-size:14px}
+.l14-me small{color:var(--mu,#8e897f);font-size:12.5px}
+@media (max-width:620px){.l14-r{grid-template-columns:36px 28px minmax(0,1fr) auto 10px}.l14-r .l14-rk small,.l14-r .l14-g{display:none}}
+
+/* игрок на странице героя */
+.l14-pl{background:linear-gradient(180deg,color-mix(in srgb,var(--q-am,#ffb020) 8%,var(--q-bx,#12151c)),var(--q-bx,#12151c));border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 35%,var(--ln,#26262e));border-radius:14px;padding:14px;margin-bottom:12px}
+.l14-ph{display:grid;grid-template-columns:48px minmax(0,1fr) auto auto;align-items:center;gap:12px}
+.l14-ph .l14-av{width:48px;height:48px;border-radius:12px}
+.l14-ph .l14-nm{display:flex;flex-direction:column;gap:2px;min-width:0}
+.l14-ph .l14-nm small{color:var(--mu,#8e897f);font-size:12px}
+.l14-ph .l14-nm b{font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l14-ph .l14-pr{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right}
+.l14-ph .l14-pr .l14-pl2{font:800 20px/1 var(--h,var(--f,system-ui));color:var(--tx,#f2ede4)}
+.l14-ph .l14-pr .l14-pl2.top{color:var(--q-am,#ffb020)}
+.l14-ph .l14-pr .l14-pl2.no{font-size:14px;color:var(--mu,#8e897f)}
+.l14-ph .l14-pr small{color:var(--mu,#8e897f);font-size:12px}
+@media (max-width:620px){.l14-ph{grid-template-columns:44px minmax(0,1fr)}.l14-ph .l14-pr{grid-column:1/-1;align-items:flex-start;text-align:left}.l14-ph .btn{grid-column:1/-1;justify-self:start}}
+.l14-ps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.l14-ps span{background:#0d0f14;border:1px solid var(--ln,#26262e);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.l14-ps small{color:var(--mu,#8e897f);font-size:11.5px}
+.l14-ps b{font-size:16px}
+.l14-bcs{margin-top:6px}
+.l14-how{margin:8px 2px 0;color:var(--mu,#8e897f);font-size:12.5px}
+
+/* профиль: цель — рейтинг героя */
+.l14-goal{display:grid;grid-template-columns:48px minmax(0,1fr) 12px;align-items:center;gap:12px;padding:12px 14px;margin-bottom:12px;border-radius:14px;text-decoration:none;color:var(--tx,#f2ede4);background:linear-gradient(90deg,rgba(255,182,48,.16),rgba(255,182,48,.04) 60%,transparent),var(--q-bx,#12151c);border:1px solid color-mix(in srgb,var(--q-am,#ffb020) 40%,transparent)}
+.l14-goal .q-fc{width:48px;height:48px;border-radius:12px}
+.l14-goal div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.l14-goal small{color:var(--q-am,#ffb020);font:700 11px/1 var(--f,system-ui);letter-spacing:.1em;text-transform:uppercase}
+.l14-goal b{font:800 20px/1.1 var(--h,var(--f,system-ui))}
+.l14-goal b em{font-style:normal;color:#7fb4ff;font-size:15px;margin-left:4px}
+.l14-goal span{color:var(--mu,#8e897f);font-size:13px}
+.l14-goal .l14-go{color:var(--mu,#8e897f);font-style:normal}
+.l14-goal.no{grid-template-columns:1fr;background:var(--q-bx,#12151c);border-style:dashed}
+.l14-goal.no small{color:var(--mu,#8e897f)}
+.l14-goal.no b{font-size:16px}
+/* в таблице соседей — эмблема ранга */
+.hrk-rk{width:22px;height:18px;object-fit:contain;vertical-align:-4px;margin-right:5px}

@@ -233,7 +233,7 @@ async function enrich(n, S) {
   const el = $('#enr'); if (!el || el.dataset.ok) return;
   const B = []; PROF.H.slice(0, 10).forEach(m => { const M = MD.get(m.match_id); if (!M) return; const me = M.players.find(p => p.account_id === PROF.id); if (!me) return;
     M.players.filter(p => teamOf(p.team) !== teamOf(me.team)).forEach(p => { if (p.player_rank_initial_display_rank) B.push(p.player_rank_initial_display_rank); }); });
-  if (B.length < 6) { if (PROF.H.slice(0, 10).every(m => MD.has(m.match_id))) { el.dataset.ok = 1; el.innerHTML = '<span class="sub">В последних матчах у врагов нет ранга в данных — посчитать не из чего.</span>'; } return; }
+  if (B.length < 6) { if (PROF.H.slice(0, 10).every(m => MD.has(m.match_id))) { el.dataset.ok = 1; el.innerHTML = PROF && PROF.id ? `<span class="l20-rk est" data-est="${PROF.id}"><b>—</b></span>` : '<span class="sub">—</span>'; } return; }
   if (B.length >= 6) { el.dataset.ok = 1; const b = Math.round(B.reduce((a, x) => a + x, 0) / B.length), r = rankOf(b); el.innerHTML = `${rankImg(b, 'rk')}<span><b style="color:${esc(r.color)}">${esc(r.name)}</b><small>средний ранг врагов за последние 10 матчей</small></span>`; }
 }
 function teamsHTML(P, meId) {
@@ -352,8 +352,8 @@ async function heroStatsStrip(n, hid, me) {
       <div class="q-hrt" data-hrk2="${hid}" role="button" title="Нажми — таблица соседей"><span>Место на герое</span><b id="hstrt">…</b><small id="hstrs">считаю…</small></div>
       <div><span>Урон / мин</span><b>${nf(y.damage_per_min)}</b><small>души / мин ${nf(y.networth_per_min)}</small></div>
       ${y.accuracy != null ? `<div><span>Точность</span><b>${Math.round(100 * y.accuracy)}%</b><small>крит ${Math.round(100 * (y.crit_shot_rate || 0))}%</small></div>` : ''}`);
-    hrkGet(hid, ME.id, ME.name).then(o => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); if (v) v.textContent = o && o.w && o.w.pos ? '#' + nf(o.w.pos) : '—';
-      if (t) t.innerHTML = o && o.w && o.w.pos ? `в мире${o.tot ? ' · ' + pctTop(o.w.pos, o.tot) : ''} · ${esc(REGN[o.rg] || o.rg)} ${o.r ? '#' + o.r.pos : '— вне топ-1000'} · <u>таблица ›</u>` : 'побед на этом герое пока нет'; }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
+    hrkGet(hid, ME.id, ME.name).then(o => { if (n !== VQ) return; const v = $('#hstrt'), t = $('#hstrs'); const b = o && hrBig(o.w, o.tot); if (v) v.textContent = b ? b.t : '—';
+      if (t) t.innerHTML = b ? `${b.ex ? 'в мире' : 'на герое'} · ${esc(hrNext(o.w))} · ${esc(REGN[o.rg] || o.rg)} ${o.r ? '#' + o.r.pos : '— вне топ-1000'} · <u>таблица ›</u>` : 'вне рейтинга'; }).catch(() => { const t = $('#hstrs'); if (t) t.textContent = 'не вышло посчитать'; });
   } catch (e) { put(n, '#hst', `<div class="err" style="grid-column:1/-1">${esc(e.message)}</div>`); }
 }
 async function heroMyMatches(n, hid) {
@@ -508,7 +508,7 @@ async function scout2(players, ctx) {
     api(`matches/metadata?${q}&only_filtered_players=true&include_info=true&include_player_kda=true&min_unix_timestamp=${t7}&order_by=match_id&order_direction=desc&limit=150`).catch(() => [])]);
   const per = L => { const o = {}; (L || []).forEach(h => { const x = o[h.account_id] = o[h.account_id] || {m: 0, w: 0, hs: []}; x.m += h.matches_played || 0; x.w += h.wins || 0; if (h.matches_played) x.hs.push({hid: h.hero_id, m: h.matches_played, w: h.wins || 0}); }); return o; };
   const P30 = per(H30), P12 = per(H12), RC = {};
-  (REC || []).forEach(mm => (mm.players || []).forEach(pp => { const L = RC[pp.account_id] = RC[pp.account_id] || []; if (L.length < 6) L.push({mid: mm.match_id, hid: pp.hero_id, w: teamOf(pp.team) === teamOf(mm.winning_team), kda: `${pp.kills || 0}/${pp.deaths || 0}/${pp.assists || 0}`}); }));
+  (REC || []).forEach(mm => (mm.players || []).forEach(pp => { const L = RC[pp.account_id] = RC[pp.account_id] || []; if (L.length < 20) L.push({mid: mm.match_id, hid: pp.hero_id, w: teamOf(pp.team) === teamOf(mm.winning_team), kda: `${pp.kills || 0}/${pp.deaths || 0}/${pp.assists || 0}`, t: mm.start_time || 0, d: mm.duration_s || 0}); }));
   const R = {}, H = {}, T = {};
   (ranks || []).forEach(r => R[r.account_id] = r);
   (hs || []).forEach(h => { (H[h.account_id] = H[h.account_id] || {})[h.hero_id] = h; const t = T[h.account_id] = T[h.account_id] || {m: 0, w: 0}; t.m += h.matches_played || 0; t.w += h.wins || 0; });
@@ -543,7 +543,17 @@ async function scout2(players, ctx) {
     if (p12 && p12.m >= 6) tags.push(['b', 'Марафон', `${games(p12.m)} за 12 часов`]);
     if (p12 && p12.m >= 3 && !p12.w) tags.push(['r', 'Тильт сегодня', `0 побед в ${games(p12.m)} за 12 часов`]);
     if (!p30.m && t.m >= 50) tags.push(['b', 'Давно не играл', 'ни одной игры за 30 дней — может «заржаветь»']);
-    if (rc.length >= 4 && rc.slice(0, 4).every(r => r.hid === hid)) tags.push(['a', 'Спамит героя', `последние ${Math.min(rc.length, rc.filter(r => r.hid === hid).length)} игр — на этом же герое`]);
+    { let sp = 0; while (sp < rc.length && rc[sp].hid === hid) sp++; if (sp >= 4) tags.push(['a', 'Спамит героя', `последние ${sp} игр подряд — на этом же герое`]); }
+    // 04.11, Андрей: «мало тегов — максимум 6 или 8»: ещё метки со страницы «Метки» (ответ «да»), по последним 20 матчам
+    { const n = rc.length, wn = rc.filter(x => x.w).length, K = rc.map(x => String(x.kda || '').split('/').map(Number)), av = j => n ? K.reduce((a, x) => a + (x[j] || 0), 0) / n : 0;
+      const oh = (p30.hs || []).find(x => x.hid === hid);
+      if (oh && p30.m >= 10 && oh.m / p30.m >= .6) tags.push(['a', 'OTP', `${pc(oh.m, p30.m)}% игр за 30 дней — на этом герое`]);
+      if (n >= 15 && wn / n >= .65) tags.push(['g', 'В ударе', `${wn} побед из ${n} последних`]);
+      else if (n >= 15 && wn / n <= .35) tags.push(['r', 'Чёрная полоса', `${wn} побед из ${n} последних`]);
+      if (n >= 10 && av(0) >= 9) tags.push(['g', 'Убийца', `${f1(av(0))} убийств за игру`]);
+      if (n >= 10 && av(1) >= 8) tags.push(['r', 'Кормит', `${f1(av(1))} смертей за игру`]);
+      else if (n >= 10 && av(1) <= 3) tags.push(['g', 'Живучий', `${f1(av(1))} смертей за игру`]);
+      if (n >= 10 && rc.reduce((a, x) => a + (x.d || 0), 0) / n >= 2400) tags.push(['b', 'Затяжные матчи', `в среднем ${Math.round(rc.reduce((a, x) => a + (x.d || 0), 0) / n / 60)} мин`]); }
     if (badge >= 100) tags.push(['a', 'Высокий ранг', rankOf(badge).name]);
     if (pid[id]) tags.push(['h', `Друзья · ${pid[id].n}`, ctx.last ? 'друзья в Steam и в одной команде в этом матче — возможно, пати' : 'друзья в Steam, недавно играли в одной команде — возможно, пати']);
     const threat = hm >= 10 ? (hw / hm - .5) * Math.min(1, hm / 60) + (ws >= 3 ? .05 : 0) + badge / 1000 : badge / 1000 - .1;

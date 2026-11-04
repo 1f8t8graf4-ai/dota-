@@ -306,27 +306,55 @@ function stFight(G) {
 // место ищем вилкой (несколько точечных запросов limit=1), потом одной страницей до 10 000 строк. При равенстве — лучшее место из равных.
 const HRC = {}, RTH = {};
 const SBQ = q => api('analytics/scoreboards/players?' + q);
+// 03.11 (Андрей: «топ-1 Рэм не должна быть нищего ранга, должно быть справедливо»): рейтинг героя Restless — место в мире
+// среди тех, кто сыграл на герое 20+ игр за 90 дней, по рангу (scoreboards sort_by=rank: value — очки ранга). Без ранга в таблицу не попадаешь.
+const HL_MIN = 20, HL_DAYS = 90;
+const HLQ = hid => `hero_id=${hid}&sort_by=rank&min_matches=${HL_MIN}&min_unix_timestamp=${now() - HL_DAYS * 86400 - (now() % 86400)}`;
 function heroRating(hid, id) {
   const k = hid + '|' + id; if (HRC[k]) return HRC[k];
   HRC[k] = (async () => {
-    const base = `hero_id=${hid}&sort_by=wins&min_matches=1`, me = ((await SBQ(`${base}&account_ids=${id}`).catch(() => [])) || [])[0];
-    if (!me || !me.value) return {pos: 0, v: me ? me.value : 0, m: me ? me.matches : 0};
-    const v = me.value, probe = async s => { const r = await SBQ(`${base}&start=${s}&limit=1`).catch(() => null); return r ? (r[0] ? {r: r[0].rank, v: r[0].value} : {r: s, v: -1}) : null; };
-    let lo = {r: 0, v: Infinity}, hi = null, pts = [1000, 10000, 50000, 150000, 400000];
-    for (let d = 0; d < 5; d++) {
-      (await Promise.all(pts.map(probe))).filter(Boolean).forEach(p => { if (p.v > v && p.r > lo.r) lo = p; if (p.v <= v && (!hi || p.r < hi.r)) hi = p; });
-      if (!hi) hi = {r: lo.r + 10000};
-      if (hi.r - lo.r <= 10000) break;
-      const step = (hi.r - lo.r) / 7; pts = [1, 2, 3, 4, 5, 6].map(i => Math.round(lo.r + step * i));
+    const base = HLQ(hid), me = ((await SBQ(`${base}&account_ids=${id}`).catch(() => [])) || [])[0];
+    if (!me || !me.value) {
+      const t = now() - HL_DAYS * 86400 - (now() % 86400);
+      const a = ((await SBQ(`hero_id=${hid}&sort_by=matches&min_matches=1&min_unix_timestamp=${t}&account_ids=${id}`).catch(() => [])) || [])[0];
+      return {pos: 0, v: 0, m: a ? a.matches : 0, why: a && a.matches >= HL_MIN ? 'rank' : 'few'};
     }
-    const L = await SBQ(`${base}&start=${lo.r}&limit=${Math.max(1, Math.min(10000, hi.r - lo.r + 1))}`).catch(() => []);
-    const f = (L || []).find(x => x.value <= v);
-    return {pos: f ? f.rank : hi.r, v, m: me.matches};
+    // первая строка таблицы, где очки ранга не выше моих: вилкой (параллельно по 6 точек), потом одной страницей
+    const v = me.value, at = async st => { const r = await SBQ(`${base}&start=${st}&limit=1`).catch(() => null); return r ? (r[0] ? r[0].value : -1) : null; };
+    let lo = 0, hi = 0, pts = [1, 60, 400, 2000, 8000, 30000];
+    for (let d = 0; d < 7; d++) {
+      (await Promise.all(pts.map(async st => [st, await at(st)]))).forEach(([st, x]) => { if (x == null) return; if (x > v && st > lo) lo = st; if (x <= v && (!hi || st < hi)) hi = st; });
+      if (!hi) hi = Math.max(...pts) * 2;
+      if (hi - lo <= 1) break;
+      if (hi - lo <= 600) { const L = await SBQ(`${base}&start=${lo + 1}&limit=${hi - lo}`).catch(() => []); const f = (L || []).find(x => x.value <= v); if (f) hi = f.rank; break; }
+      const step = (hi - lo) / 7; pts = [1, 2, 3, 4, 5, 6].map(i => Math.round(lo + step * i));
+    }
+    return {pos: hi, v, m: me.matches, badge: me.badge};
   })();
   HRC[k].catch(() => delete HRC[k]);
   return HRC[k];
 }
-const rtCell = r => r && r.pos ? `<b class="q-rtn${r.pos <= 100 ? ' top' : r.pos <= 1000 ? ' hi' : ''}" title="Место в мире среди всех игроков на герое по числу побед: ${nf(r.v)} ${pl(r.v, ['победа', 'победы', 'побед'])} за ${nf(r.m)} ${pl(r.m, ['игру', 'игры', 'игр'])}">#${nf(r.pos)}</b><small>в мире</small>` : '<span class="sub" title="побед на герое пока нет">—</span>';
+// вне рейтинга — не «нельзя», а что сделать (03.11, Андрей: «показывай, что сделать»)
+const hrWhy = r => { if (!r) return ''; if (r.why === 'idle') return `не играл на герое ${r.sd || 30} дней — сыграй, и место вернётся`; if (r.why === 'soon') return 'место посчитаем при пересчёте — раз в сутки'; if (r.why === 'rank') return 'нет ранга — сыграй ранговые, и попадёшь в рейтинг';
+  const d = HL_MIN - (r.m || 0); return d > 0 ? `ещё ${d} ${pl(d, ['игра', 'игры', 'игр'])} на герое за ${r.ld ? 'месяц' : HL_DAYS + ' дней'}${r.nr ? ' и ранговые' : ''} — и ты в рейтинге` : `нужно ${HL_MIN} игр на герое за ${HL_DAYS} дней`; };
+// 04.11 (ночь), Андрей: «пишется ещё 18 игр или ещё чет» — вне рейтинга ничего не пишем, место — только если оно есть
+const hrShort = r => '';
+// как показывать место (Андрей, 03.11 ночь: «пиши номер и раньше топ-1000 — долго ждать», «цель „до топ-100“ убери»):
+// номер — у всех: в топ-1500 по рангу — по очкам (как League of Graphs), ниже — по рангу; рядом «топ X %» от тех, кто в рейтинге героя
+const HR_EXACT = 1000;
+function hrBig(w, tot) {
+  if (!w || !w.pos) return null;
+  return {t: (w.apx ? '~#' : '#') + nf(w.pos), ex: 1, top: !w.apx && w.pos <= 100, hi: !w.apx && w.pos <= HR_EXACT};
+}
+// вместо цели — доля: «топ 3 % в рейтинге героя»
+function hrNext(w) {
+  if (!w || !w.pos) return ''; const t = w.tot || 0; if (w.pos === 1) return 'лучший в мире';
+  if (w.apx) { const q = Math.min(100, 100 * w.pos / (t || w.pos)), n = HL_MIN - (w.m || 0); void n; return 'топ ' + (q < 1 ? f1(Math.max(.1, q)) : Math.ceil(q)) + ' % всех на герое'; }
+  if (!t) return 'в рейтинге героя';
+  const p = Math.min(100, 100 * w.pos / t);
+  return 'топ ' + (p < 1 ? f1(Math.max(.1, p)) : Math.ceil(p)) + ' % в рейтинге героя';
+}
+const rtCell = r => { const b = hrBig(r); return b ? `<b class="q-rtn${b.top ? ' top' : b.hi ? ' hi' : ''}" title="Рейтинг героя: ${b.ex ? 'место в мире' : b.t + ' на герое'} по очкам — ранг, винрейт и KDA, как в League of Graphs (у тебя ${nf(r.m)} игр за ${HL_DAYS} дней). ${esc(hrNext(r))}">${b.t}</b><small>${b.ex ? 'в мире' : 'на герое'}</small>` : `<span class="sub" title="${esc(hrWhy(r))}">${esc(hrShort(r)) || '—'}</span>`; };
 async function heroRatings(n, id, hids, attr) {
   for (const hid of hids) {
     const r = await heroRating(hid, id).catch(() => null); if (n !== VQ) return;
@@ -337,7 +365,26 @@ async function heroRatings(n, id, hids, attr) {
 
 // ---------- герой говорит — как в макете «Реплики · кто про кого»: слова крупно по одному поверх портрета, волна голоса, потом вся фраза с переводом ----------
 let SAY = null;
+let WTU = null;
+const ultWT = () => WTU || (WTU = fetch('../data/dd-ult-wt.json').then(r => r.ok ? r.json() : {}).catch(() => ({})));
+// начало каждого слова в секундах
+function sayTimes(x, W, a) {
+  return ultWT().then(M => {
+    const e = M[x.a], nw = w => w.toLowerCase().replace(/[^a-z0-9']/g, '');
+    if (e && e.length) {
+      if (e.length === W.length) return e.map(z => z[0]);
+      let k = 0; const S = W.map(w => { for (let j = k; j < e.length; j++) if (nw(e[j][2]) === nw(w)) { k = j + 1; return e[j][0]; } return null; });
+      if (S.filter(v => v != null).length >= W.length * .7) { for (let i = 0; i < S.length; i++) if (S[i] == null) S[i] = i ? S[i - 1] + .15 : 0; return S; }
+    }
+    const dur = a.duration && isFinite(a.duration) ? a.duration : 2.4, lead = Math.min(.18, dur * .08), tail = Math.min(.3, dur * .12);
+    const syl = w => { const c = w.toLowerCase().replace(/[^a-z]/g, ''); if (!c) return .6; const m = c.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '').replace(/^y/, '').match(/[aeiouy]{1,2}/g); return Math.max(1, m ? m.length : 1); };
+    const pau = (w, i) => i === W.length - 1 ? 0 : /[.!?…]["»”]?$/.test(w) ? 1.6 : /[,;:—–]$/.test(w) || w === '-' ? .9 : 0;
+    const wt = W.map(w => syl(w) + .35), pt = W.map(pau), tot = wt.reduce((p, q) => p + q, 0) + pt.reduce((p, q) => p + q, 0), k = Math.max(.05, dur - lead - tail) / tot;
+    let t = lead; return W.map((w, i) => { const v = t; t += (wt[i] + pt[i]) * k; return v; });
+  });
+}
 async function heroSay(n, h) {
+  ultWT();
   const box = $('#hsay'); if (!box) return;
   const U = await ultLines(); if (n !== VQ || !box.isConnected) return;
   const L = U[hSlug(h)] || []; if (!L.length) { box.remove(); return; }
@@ -359,13 +406,19 @@ async function heroSay(n, h) {
     box.classList.remove('done');
     if (!play) { full(); box.classList.add('hint'); return; }
     box.classList.remove('hint');
-    au = new Audio(x.a); const a0 = au; let started = false;
-    const run = () => { if (started || au !== a0) return; started = true; box.classList.add('say');
-      const d = (au.duration && isFinite(au.duration) ? au.duration : 2.4) * 1000, len = W.reduce((s2, w) => s2 + w.length + 2, 0); let t = 120;
-      W.forEach(w => { tm.push(setTimeout(() => { cap.innerHTML = `<b class="w1">${word(w, x)}</b>`; }, t)); t += d * (w.length + 2) / len; });
-      tm.push(setTimeout(() => { full(); box.classList.remove('say'); }, t + 300)); };
-    au.addEventListener('loadedmetadata', run, {once: true});
-    au.play().then(() => setTimeout(run, 350)).catch(() => { if (au === a0) { au = null; full(); box.classList.add('hint'); } });
+    // слова — по настоящему времени звука (currentTime), а не по таймерам: звук мог стартовать позже, буферизоваться.
+    // Время слов: точное из data/dd-ult-wt.json (Зетка распознаёт голос), иначе — по слогам и паузам на знаках препинания.
+    au = new Audio(x.a); const a0 = au;
+    const run = () => { if (a0._run || au !== a0) return; a0._run = 1; box.classList.add('say');
+      sayTimes(x, W, a0).then(S => { let i = -1;
+        const tick = () => { if (au !== a0) return; const t = a0.currentTime;
+          let j = i; while (j + 1 < W.length && t >= S[j + 1]) j++;
+          if (j !== i) { i = j; cap.innerHTML = `<b class="w1">${word(W[i], x)}</b>`; }
+          if (a0.ended) return; requestAnimationFrame(tick); };
+        tick(); }); };
+    au.addEventListener('playing', run, {once: true});
+    au.addEventListener('ended', () => { if (au !== a0) return; tm.push(setTimeout(() => { if (au !== a0) return; full(); box.classList.remove('say'); }, 250)); }, {once: true});
+    au.play().catch(() => { if (au === a0) { au = null; full(); box.classList.add('hint'); } });
   };
   const ua = navigator.userActivation;
   show(VOK() && (!ua || ua.hasBeenActive));

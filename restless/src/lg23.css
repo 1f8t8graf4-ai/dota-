@@ -1,0 +1,7 @@
+/* lg23 — «Оверлей» на настоящем кадре из игры (04.11, ночь 3) */
+.o18-st .ovp-sch{opacity:1;background:linear-gradient(180deg,rgba(8,10,14,.16),rgba(8,10,14,.4)),url(ovs-game.webp) center/cover no-repeat,#141821}
+.o18-st .ovp-sch .fg{display:none}
+.o18-st .ovp-sch i:not(.cr){opacity:.4}
+.o18-st .ovp-sch .cr{border-color:rgba(255,255,255,.8)}
+.o18-z{background:rgba(10,12,17,.55)}
+.o18-z.on{background:rgba(10,12,17,.78)}

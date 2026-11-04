@@ -1,8 +1,8 @@
 {
   "name": "restless-overlay",
   "productName": "Restless Overlay",
-  "version": "0.1.0",
-  "description": "Restless — панель матча поверх Deadlock",
+  "version": "0.4.8",
+  "description": "Restless — твой профиль и матч поверх Deadlock",
   "main": "main.js",
   "author": "Restless",
   "license": "UNLICENSED",
@@ -17,8 +17,22 @@
   "build": {
     "appId": "app.restless.overlay",
     "productName": "Restless Overlay",
-    "files": ["main.js", "setup.html", "icon.png"],
-    "win": { "target": "portable", "icon": "icon.png" },
-    "portable": { "artifactName": "Restless-Overlay.exe" }
+    "files": [
+      "main.js",
+      "preload.js",
+      "bridge.js",
+      "install.js",
+      "pak42_dir.vpk",
+      "setup.html",
+      "icon.png",
+      "ic/**"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "icon.png"
+    },
+    "portable": {
+      "artifactName": "Restless-Overlay.exe"
+    }
   }
 }

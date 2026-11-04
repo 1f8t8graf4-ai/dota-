@@ -1,0 +1,5 @@
+/* ===================== lg20 — «≈ ранг» (строки лайва убраны 04.11, ночь 2) ===================== */
+.l20-rk{display:flex;align-items:center;gap:5px;min-width:0}
+.l20-rk .rk{width:22px;height:22px;object-fit:contain;flex:none}
+.l20-rk b{font:500 12.5px/1.2 var(--f);color:var(--mu,#a3a3ad);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l20-rk.est.on .rk{opacity:.8}.l20-rk.est.on b{color:#cfc6b3}

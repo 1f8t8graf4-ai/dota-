@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Собирает новый restless/index.html: шапка, CSS-слой, новые вью вместо старых (31.10 вечер)."""
 import re, sys
-P = '/home/user/wtm/restless/index.html'
+import os
+SRC = os.path.dirname(os.path.abspath(__file__))
+# база — index.html из коммита c03b648: git show c03b648:restless/index.html > restless/index.html, потом этот скрипт
+P = os.environ.get('RL_INDEX') or os.path.join(SRC, '..', 'index.html')
+LAYERS = ['lg', 'lg2', 'lg3', 'lg4', 'lg5', 'lg6', 'lg7', 'lg8', 'lg9', 'lg10', 'lg11', 'lg12', 'lg13', 'lg14', 'lg15', 'lg16', 'lg17', 'lg18', 'lg19', 'lg20', 'lg21', 'lg22', 'lg23', 'lg24', 'lg25']
 s = open(P, encoding='utf-8').read()
 L = s.split('\n')
 
@@ -76,13 +80,13 @@ new_header = f'''<header class="q-nav"><div class="q-in">
 s = s[:h0] + new_header + s[h1:]
 
 # CSS-слой в конец главного <style>
-css = open('/home/user/work/lg/lg.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg2.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg3.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg4.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg5.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg6.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg7.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg8.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg9.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg10.css', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg11.css', encoding='utf-8').read()
+css = '\n'.join(open(os.path.join(SRC, x + '.css'), encoding='utf-8').read() for x in LAYERS)
 st0 = s.index('<style>')
 st1 = s.index('</style>', st0)
 s = s[:st1] + css.rstrip() + '\n' + s[st1:]
 
 # новые вью перед запуском
-js = open('/home/user/work/lg/lg.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg2.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg3.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg4.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg5.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg6.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg7.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg8.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg9.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg10.js', encoding='utf-8').read() + '\n' + open('/home/user/work/lg/lg11.js', encoding='utf-8').read()
+js = '\n'.join(open(os.path.join(SRC, x + '.js'), encoding='utf-8').read() for x in LAYERS)
 anchor = "window.addEventListener('hashchange', route);"
 assert s.count(anchor) == 1
 s = s.replace(anchor, js.strip() + '\n' + anchor)

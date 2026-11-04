@@ -1,0 +1,36 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>RL</title>
+<!--
+  Память настроек мода Restless (0.19). Мод открывает эту страницу невидимо (CitadelHTMLPanel, 2×2 px) — как QoL Lock свою bridge.html.
+  Настройки лежат в localStorage браузера игры на этом компьютере; никуда не отправляются.
+  Ответ — заголовком страницы (мод слушает событие HTMLTitle):
+    при загрузке   RL_CFG:<метка>:<encodeURIComponent("ULT=1;MARK=0;LANG=ru;…")>
+    запись         адрес …#{"q":N,"f":"set","v":"…"}  →  RL_OK:N
+    чтение         адрес …#{"q":N,"f":"get"}         →  RL_CFG:N:<…>
+    ошибка         RL_ERR:<текст>
+-->
+<script>
+(function () {
+  var K = 'restless_mod_v1', last = '';
+  function rd() { try { return localStorage.getItem(K) || ''; } catch (e) { return ''; } }
+  function ok(v) { return typeof v === 'string' && v.length < 4000 && /^[\w.=;-]*$/.test(v); }
+  function say(t) { document.title = t; }
+  function go(load) {
+    var h = location.hash.slice(1), m = null;
+    if (h && h !== last) {
+      last = h;
+      try { m = JSON.parse(decodeURIComponent(h)); } catch (e) { say('RL_ERR:' + String(e.message || e).slice(0, 50)); return; }
+      if (m && m.f === 'set') {
+        if (!ok(m.v)) { say('RL_ERR:bad value'); return; }
+        try { localStorage.setItem(K, m.v); } catch (e) { say('RL_ERR:' + String(e.message || e).slice(0, 50)); return; }
+        if (!load) { say('RL_OK:' + (+m.q || 0)); return; }
+      } else if (m && m.f === 'get' && !load) { say('RL_CFG:' + (+m.q || 0) + ':' + encodeURIComponent(rd())); return; }
+    }
+    if (load) say('RL_CFG:L' + Date.now() % 1e6 + ':' + encodeURIComponent(rd()));
+  }
+  window.addEventListener('hashchange', function () { go(false); });
+  go(true);
+})();
+</script>
