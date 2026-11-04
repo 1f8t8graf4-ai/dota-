@@ -1,0 +1,33 @@
+/* lg29 — «Патчи · Новости» крупным переключателем, новости карточками */
+.u29-sw{position:relative;display:inline-flex;gap:0;padding:4px;border-radius:14px;background:var(--s1);border:1px solid var(--ln);box-shadow:0 8px 30px rgba(0,0,0,.35) inset}
+.u29-sw button{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding:11px 22px;font-size:15px;font-weight:700;letter-spacing:.02em;border:0;background:none;color:var(--mu);border-radius:10px;cursor:pointer;transition:color .25s}
+.u29-sw button.on{color:#14100a;background:none}
+.u29-sw button:not(.on):hover{color:var(--tx)}
+.u29-ic{display:inline-flex}
+.u29-th{position:absolute;z-index:0;top:4px;left:4px;bottom:4px;border-radius:10px;background:linear-gradient(135deg,#ffd27a,var(--ac));box-shadow:0 6px 22px rgba(255,182,48,.35)}
+.u29-th.go{transition:transform .45s var(--u26e,cubic-bezier(.16,1,.3,1)),width .45s var(--u26e,cubic-bezier(.16,1,.3,1))}
+.u29-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.u29-c{position:relative;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--s1);border:1px solid var(--ln);color:var(--tx);text-decoration:none;
+  opacity:0;transform:translateY(18px) scale(.98);animation:u29in .6s var(--u26e,cubic-bezier(.16,1,.3,1)) var(--d) forwards;transition:border-color .25s,box-shadow .3s}
+.u29-c.big{grid-column:1/-1;flex-direction:row;min-height:300px}
+.u29-c:hover{border-color:rgba(255,182,48,.55);box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 0 1px rgba(255,182,48,.25)}
+.u29-im{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(135deg,#1d2330,#12151c)}
+.u29-c.big .u29-im{aspect-ratio:auto;flex:1.4;min-height:300px}
+.u29-im.no::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(255,182,48,.25),transparent 60%)}
+.u29-im img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02);transition:transform .9s var(--u26e,cubic-bezier(.16,1,.3,1))}
+.u29-c:hover .u29-im img{transform:scale(1.08)}
+.u29-gl{position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(11,13,18,.85));pointer-events:none}
+.u29-c.big .u29-gl{background:linear-gradient(90deg,transparent 55%,var(--s1))}
+.u29-tx{display:flex;flex-direction:column;gap:8px;padding:16px 18px 20px}
+.u29-c.big .u29-tx{flex:1;justify-content:center;padding:28px 32px}
+.u29-tx small{color:var(--ac);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.u29-tx b{font-size:19px;line-height:1.25}
+.u29-c.big .u29-tx b{font-size:clamp(24px,2.4vw,34px)}
+.u29-tx span{color:var(--mu);font-size:14px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.u29-bk{display:inline-block;margin:0 0 12px;color:var(--ac);font-weight:700;text-decoration:none}
+.u29-art{animation:u29in .5s var(--u26e,cubic-bezier(.16,1,.3,1)) both}
+.u29-art img{border-radius:14px;width:100%;max-height:420px;object-fit:cover}
+.u29-art h2{font-size:clamp(24px,2.6vw,36px)}
+@keyframes u29in{to{opacity:1;transform:none}}
+@media (max-width:720px){.u29-c.big{flex-direction:column}.u29-c.big .u29-im{min-height:200px}.u29-sw button{padding:10px 16px}.u29-c.big .u29-gl{background:linear-gradient(180deg,transparent 45%,rgba(11,13,18,.85))}}
+@media (prefers-reduced-motion:reduce){.u29-c,.u29-art{animation:none;opacity:1;transform:none}}

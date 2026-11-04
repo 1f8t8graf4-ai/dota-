@@ -3836,6 +3836,45 @@ details.l16-how,.r9-bf{display:none!important}
 .u27-wp{position:fixed;z-index:9999;max-width:280px;padding:10px 14px;border-radius:12px;background:#151821;border:1px solid #2a2f3b;box-shadow:0 18px 40px -16px #000;display:flex;flex-direction:column;gap:2px;opacity:0;transform:translateY(4px);transition:opacity .18s,transform .25s cubic-bezier(.16,1,.3,1)}
 .u27-wp.on{opacity:1;transform:none}
 .u27-wp b{font-size:16px;color:var(--q-am,#ffb630)}.u27-wp small{font-size:12px;color:var(--mu)}.u27-wp span{font-size:14.5px;color:var(--tx,#eef0f4)}
+
+/* lg28 — страница лайв-матча внутри игры (мод 0.23) */
+html.rl-embed .q-hd,html.rl-embed .q-nav,html.rl-embed #tabs,html.rl-embed .q-tabs,html.rl-embed p.ft,html.rl-embed #swr{display:none!important}
+html.rl-embed body{background:#0b0d12}
+html.rl-embed .wrap{max-width:none;padding:8px 12px}
+
+/* lg29 — «Патчи · Новости» крупным переключателем, новости карточками */
+.u29-sw{position:relative;display:inline-flex;gap:0;padding:4px;border-radius:14px;background:var(--s1);border:1px solid var(--ln);box-shadow:0 8px 30px rgba(0,0,0,.35) inset}
+.u29-sw button{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;padding:11px 22px;font-size:15px;font-weight:700;letter-spacing:.02em;border:0;background:none;color:var(--mu);border-radius:10px;cursor:pointer;transition:color .25s}
+.u29-sw button.on{color:#14100a;background:none}
+.u29-sw button:not(.on):hover{color:var(--tx)}
+.u29-ic{display:inline-flex}
+.u29-th{position:absolute;z-index:0;top:4px;left:4px;bottom:4px;border-radius:10px;background:linear-gradient(135deg,#ffd27a,var(--ac));box-shadow:0 6px 22px rgba(255,182,48,.35)}
+.u29-th.go{transition:transform .45s var(--u26e,cubic-bezier(.16,1,.3,1)),width .45s var(--u26e,cubic-bezier(.16,1,.3,1))}
+.u29-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.u29-c{position:relative;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--s1);border:1px solid var(--ln);color:var(--tx);text-decoration:none;
+  opacity:0;transform:translateY(18px) scale(.98);animation:u29in .6s var(--u26e,cubic-bezier(.16,1,.3,1)) var(--d) forwards;transition:border-color .25s,box-shadow .3s}
+.u29-c.big{grid-column:1/-1;flex-direction:row;min-height:300px}
+.u29-c:hover{border-color:rgba(255,182,48,.55);box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 0 1px rgba(255,182,48,.25)}
+.u29-im{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(135deg,#1d2330,#12151c)}
+.u29-c.big .u29-im{aspect-ratio:auto;flex:1.4;min-height:300px}
+.u29-im.no::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(255,182,48,.25),transparent 60%)}
+.u29-im img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02);transition:transform .9s var(--u26e,cubic-bezier(.16,1,.3,1))}
+.u29-c:hover .u29-im img{transform:scale(1.08)}
+.u29-gl{position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(11,13,18,.85));pointer-events:none}
+.u29-c.big .u29-gl{background:linear-gradient(90deg,transparent 55%,var(--s1))}
+.u29-tx{display:flex;flex-direction:column;gap:8px;padding:16px 18px 20px}
+.u29-c.big .u29-tx{flex:1;justify-content:center;padding:28px 32px}
+.u29-tx small{color:var(--ac);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.u29-tx b{font-size:19px;line-height:1.25}
+.u29-c.big .u29-tx b{font-size:clamp(24px,2.4vw,34px)}
+.u29-tx span{color:var(--mu);font-size:14px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.u29-bk{display:inline-block;margin:0 0 12px;color:var(--ac);font-weight:700;text-decoration:none}
+.u29-art{animation:u29in .5s var(--u26e,cubic-bezier(.16,1,.3,1)) both}
+.u29-art img{border-radius:14px;width:100%;max-height:420px;object-fit:cover}
+.u29-art h2{font-size:clamp(24px,2.6vw,36px)}
+@keyframes u29in{to{opacity:1;transform:none}}
+@media (max-width:720px){.u29-c.big{flex-direction:column}.u29-c.big .u29-im{min-height:200px}.u29-sw button{padding:10px 16px}.u29-c.big .u29-gl{background:linear-gradient(180deg,transparent 45%,rgba(11,13,18,.85))}}
+
 </style>
 </head>
 <body>
@@ -10221,6 +10260,77 @@ document.addEventListener('click', e => {
 addEventListener('hashchange', () => document.querySelectorAll('.u27-wp').forEach(x => x.remove()));
 { const fix4 = () => document.querySelectorAll('.q-sy-cap .all').forEach(a => { if (!a.dataset.u27w && a.textContent.trim()) { u27Gloss(); u27Wrap(a); } });
   new MutationObserver(fix4).observe(document.body, {childList: true, subtree: true}); }
+
+// ===================== lg28 — 04.11 (ночь 7): лайв-матч внутри игры, без программы =====================
+// Мод 0.23 открывает эту страницу во встроенном браузере игры: ?app=1&embed=1#g=<кто в матче>. Формат #g= — как у программы
+// (v=…&s=m|h&gt=…&p=f~ник~герой~hero_id~account_id|e~…). Новый состав — мод меняет только #…, страница не перезагружается.
+const RL_EMBED = /[?&]embed=1/.test(location.search);
+if (RL_EMBED) document.documentElement.classList.add('rl-embed');
+function u28Parse(h) {
+  let q; try { q = new URLSearchParams(decodeURIComponent(h.replace(/^#g=/, ''))); } catch (e) { return null; }
+  const dec = v => { try { return decodeURIComponent(v || ''); } catch (e) { return v || ''; } };
+  const players = (q.get('p') || '').split('|').filter(Boolean).map(x => { const [t, n, hh, hid, a] = x.split('~');
+    return {t: t === 'e' ? 'e' : 'f', n: dec(n).slice(0, 64), h: dec(hh).slice(0, 48), hid: +hid > 0 && +hid < 1000 ? +hid : 0, a: /^\d{3,10}$/.test(a || '') ? +a : 0}; }).slice(0, 16);
+  const bots = players.filter(p => p.n && p.h && p.n.trim().toLowerCase() === p.h.trim().toLowerCase()).length;
+  const s = q.get('s') !== 'm' || !players.length ? 'h' : bots >= 2 ? 'b' : 'm';
+  return {v: (q.get('v') || '').slice(0, 12), s, bots, gt: (q.get('gt') || '').slice(0, 12), players, at: Date.now()};
+}
+function u28Take() {
+  if (!/^#g=/.test(location.hash)) return false;
+  const g = u28Parse(location.hash), k0 = OV.gk2; if (g && window.rlGame) window.rlGame(g);
+  if (OV.gk2 !== k0) OV.L = null;   // новый состав — заново, иначе новая страница покажет старых игроков
+  history.replaceState(null, '', location.pathname + location.search + '#live');
+  return true;
+}
+{ const R28 = route; route = function () { u28Take(); return R28.apply(this, arguments); }; }
+u28Take();
+// игра не шлёт ничего, пока состав тот же — держим «свежим», чтобы лайв не решил, что матч кончился
+if (RL_EMBED) setInterval(() => { if (OV.G) OV.G.at = Date.now(); }, 10000);
+
+// ===================== lg29 — 04.11 (ночь 7): «Патчи · Новости» крупным переключателем, новости — большими карточками =====================
+// #upd/n — сетка новостей (картинка, дата, заголовок, первые строки). Нажал — та же статья, что раньше (#upd/<номер>), сверху «‹ Все новости».
+function u29Seg() {
+  const s = $('#utab'); if (!s || s.dataset.u29) return; s.dataset.u29 = 1; s.classList.add('u29-sw');
+  s.querySelectorAll('[data-t]').forEach(b => { b.innerHTML = `<i class="u29-ic">${b.dataset.t === 'p' ? U29IC.p : U29IC.n}</i>${b.textContent}`; });
+  s.insertAdjacentHTML('afterbegin', '<span class="u29-th" aria-hidden="true"></span>');
+  const th = s.querySelector('.u29-th'), on = s.querySelector('.on'), was = s.querySelector(`[data-t="${U29.last}"]`) || on;
+  const at = b => { th.style.transform = `translateX(${b.offsetLeft - 4}px)`; th.style.width = b.offsetWidth + 'px'; };
+  if (on) { at(was); if (was !== on) requestAnimationFrame(() => requestAnimationFrame(() => { th.classList.add('go'); at(on); })); else th.classList.add('go'); U29.last = on.dataset.t; }
+}
+const U29 = {last: ''};
+const U29IC = {
+  p: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M4 12h16M4 17h7"/><path d="M17 4l3 3-3 3"/></svg>',
+  n: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h8"/></svg>'
+};
+function u29Lead(X) { const p = X.out.find(x => x.t === 'p' && x.s.length > 40); return p ? (upTr(p.s) || p.s) : ''; }
+async function u29News() {
+  const n = vNew(); U10.tab = 'n';
+  V(`<div class="u10 u29"><div class="u10-hd"><h1 class="h1">Пат<em>чи</em></h1><div class="seg" id="utab"><button data-t="p">Патчи</button><button data-t="n" class="on">Новости</button></div></div><div id="upw"><div class="load">Загружаю новости…</div></div></div>`);
+  u29Seg(); $('#utab').onclick = u10Tab;
+  let P;
+  try { P = U10.P || await apiU(API2 + 'patches'); } catch (e) { put(n, '#upw', `<div class="err">Не вышло: ${esc(e.message)}</div>`); return; }
+  if (n !== VQ) return;
+  P = U10.P = (P || []).slice().sort((a, b) => Date.parse(b.pub_date) - Date.parse(a.pub_date)).slice(0, 30);
+  const L = P.map((p, i) => i).filter(i => !pKind(P[i])).slice(0, 12);
+  if (!L.length) { put(n, '#upw', '<div class="empty">Пусто.</div>'); return; }
+  const card = (i, k) => { const p = P[i], X = parsePatch(p), t = Math.floor(Date.parse(p.pub_date) / 1000), img = X.imgs[0];
+    return `<a class="u29-c${k === 0 ? ' big' : ''}" href="#upd/${i}" style="--d:${Math.min(k, 8) * 60}ms">
+      <span class="u29-im">${img ? `<img src="${esc(img)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('no');this.remove()">` : ''}<span class="u29-gl"></span></span>
+      <span class="u29-tx"><small>${esc(dmy(t))} · ${p.source === 'forum' ? 'форум' : 'Steam'}</small><b>${esc(upTr(p.title) || p.title || 'Без названия')}</b><span>${esc(u29Lead(X).slice(0, 180))}</span></span></a>`; };
+  put(n, '#upw', `<div class="u29-g">${L.map(card).join('')}</div>`);
+}
+{ const UV29 = u10View; u10View = async function (sel) {
+    if (sel === 'n') return u29News();
+    const r = await UV29.apply(this, arguments); u29Seg();
+    const p = U10.P && sel != null && sel !== '' && U10.P[+sel];
+    if (p && !pKind(p) && $('.u10-art') && !$('.u29-bk')) {
+      $('.u10-art').insertAdjacentHTML('beforebegin', '<a class="u29-bk" href="#upd/n">‹ Все новости</a>'); $('.u10-art').classList.add('u29-art');
+      const ch = $('#upw .u10-pk'); if (ch) ch.remove();
+    }
+    return r; }; }
+u10Tab = function (e) { const b = e.target.closest('[data-t]'); if (!b || b.classList.contains('on')) return; U10.tab = b.dataset.t;
+  if (U10.tab === 'n') { location.hash = '#upd/n'; return; }
+  const P = U10.P || []; const k = P.findIndex(p => !!pKind(p)); location.hash = '#upd/' + Math.max(0, k); };
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');

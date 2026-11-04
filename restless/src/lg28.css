@@ -1,0 +1,4 @@
+/* lg28 — страница лайв-матча внутри игры (мод 0.23) */
+html.rl-embed .q-hd,html.rl-embed .q-nav,html.rl-embed #tabs,html.rl-embed .q-tabs,html.rl-embed p.ft,html.rl-embed #swr{display:none!important}
+html.rl-embed body{background:#0b0d12}
+html.rl-embed .wrap{max-width:none;padding:8px 12px}

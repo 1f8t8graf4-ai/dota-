@@ -91,7 +91,7 @@ ok(hud.FindChildrenWithClassTraverse('SettingsRow').filter(r=>r.id==='RestlessRo
 const btn=F('RestlessMenuBtn'),row=btn.par,sub=row.par;
 ok(sub.id==='SubOptions','кнопка — в столбике под «Сменить героя»');
 const order=sub.ch.map(c=>c.id||[...c.cls].join('.')||c.type);
-ok(order.indexOf('RestlessRow')===order.indexOf('FeedbackRow')+1&&sub.ch[order.indexOf('RestlessRow')+1].FindChildTraverse('settings'),'порядок: Отзыв игрока → RESTLESS → Настройки ('+order.join(', ')+')');
+ok(order.indexOf('RestlessLiveRow')===order.indexOf('FeedbackRow')+1&&order.indexOf('RestlessRow')===order.indexOf('RestlessLiveRow')+1&&sub.ch[order.indexOf('RestlessRow')+1].FindChildTraverse('settings'),'порядок: Отзыв игрока → LIVE → RESTLESS → Настройки ('+order.join(', ')+')');
 ok(btn.cls.has('nav_menu_item')&&btn.cls.has('minor')&&!Object.keys(btn.style).length,'класс как у кнопок игры, без своих стилей');
 const bl=btn.ch[0];ok(bl.text==='RESTLESS'&&bl.cls.has('menuButtonLabel')&&!Object.keys(bl.style).length,'подпись RESTLESS тем же шрифтом');
 const mark=F('RestlessMark');ok(mark&&mark.par===hud&&mark.style.visibility==='visible'&&/RESTLESS \d+\.\d+ · работает · кнопка в Esc/.test(mark.text),'надпись: «'+(mark&&mark.text)+'»');
@@ -287,6 +287,13 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  c3.cls.delete('active');tick(8);ok(c3.par.ch.some(x=>x.type==='Label'&&x.text==='2:00'&&x.style.visibility==='visible'),'следующий раз отсчёт с 2:00');
  gt.text='24:10';tick(4);c3.cls.add('active');tick(8);ok(hud.GetAttributeString('RESTLESS_CRS_neutral_weak','')==='120','вернулся позже (2:10) — оставили короче');
  tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.18: '+vps+' панелей в секунду');ok(vps<all(hud).length,'с ультой над героями нагрузка меньше одного HUD: '+vps);}
+// 0.23: лайв-матч в игре — кнопка LIVE в Esc, сайт во встроенном браузере игры
+{em.cls.add('ShowEscapeMenu');tick(2);const lb=F('RestlessLiveBtn');ok(lb&&/^LIVE/.test(LT(lb)),'0.23: в Esc кнопка «'+(lb?LT(lb):'')+'»');
+ lb.ev.onactivate();const w=F('RestlessLiveWeb');const u=w&&decodeURIComponent(w.url||'');
+ ok(w&&w.paneltype==='CitadelHTMLPanel'&&/restless\/\?app=1&embed=1/.test(w.url)&&/#g=/.test(w.url),'окно лайва: страница сайта с составом: '+(w?w.url.slice(0,80):''));
+ ok(/v=0\.23/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
+ lb.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'второе нажатие — закрыл');
+ lb.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveWeb'),'меню закрыли — лайв закрылся');}
 // 0.19: набор Enchanted и память настроек
 {const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px');
  const se=add(hud,P('Panel','StatusEffects'));const zb=add(hud,P('Panel','citadel_ability_zipline_boost_',{class:'citadel_ability_zipline_boost active'}));const zc=add(zb,P('Label','context_label',{text:''}));
@@ -360,7 +367,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  // отчёт программе
- tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.22&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.23&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
  // с сайта: надпись выкл и ползунок мода = 2
  PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);
  ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');

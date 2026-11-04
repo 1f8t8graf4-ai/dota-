@@ -1,3 +1,8 @@
+// Restless 0.23.
+// 0.23: лайв-матч без программы (Андрей: «12 игроков — кор-фича, QoL же делает»). В меню Esc — кнопка «LIVE · 12 ИГРОКОВ»:
+//       окно поверх меню, в нём встроенный браузер игры (CitadelHTMLPanel, как у store.html) с нашей страницей лайв-матча;
+//       кто в матче (команда, ник, герой, ID) — в адресе после #g=, как программе. Состав поменялся — меняем только #…, страница
+//       не перезагружается. Браузер живёт, только пока окно открыто (закрыл — удаляем, ничего не грузит).
 // Restless 0.22.
 // 0.22: по скринам Андрея (FPS, «урон по строениям убери», «ящики не меняются», «КД ульты над самой моделькой»):
 //       урона по строениям больше нет; ящики — значками игры по типам (обычные / крепкие / статуи, обычные по умолчанию выключены:
@@ -45,7 +50,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.22';
+	var VER = '0.23';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -201,6 +206,16 @@
 			BTN.SetPanelEvent('onactivate', function () { try { show(!open); } catch (e) { $.Msg('[Restless] окно: ' + e); } });
 			set('BTN', '1');
 		}
+		if (!ok(LV.btn)) {
+			LV.btn = EM.FindChildTraverse('RestlessLiveBtn');
+			if (!ok(LV.btn) && ok(ROW)) {
+				var lr = $.CreatePanel('Panel', sub, 'RestlessLiveRow'); lr.AddClass('SettingsRow');
+				LV.btn = $.CreatePanel('Button', lr, 'RestlessLiveBtn'); LV.btn.AddClass('nav_menu_item'); LV.btn.AddClass('minor');
+				LV.lb = $.CreatePanel('Label', LV.btn, '', { text: 'LIVE · 12' }); LV.lb.AddClass('menuButtonLabel');
+				try { if (sub.MoveChildBefore) sub.MoveChildBefore(lr, ROW); } catch (e) {}
+			}
+			if (ok(LV.btn)) LV.btn.SetPanelEvent('onactivate', function () { try { liveShow(!LV.open); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
+		}
 		if (menuShown()) fitHero(sub);
 	}
 	// «Сменить героя» стоит на своём отступе снизу, столбик под ним растёт вверх. Наша строка его подняла бы —
@@ -214,6 +229,42 @@
 		var cur = menu.actuallayoutheight - bottom;
 		ch.style.marginBottom = Math.round((cur + need - gap) / sc) + 'px';
 		$.Msg('[Restless] «Сменить героя» поднята: ' + Math.round((need - gap) / sc) + ' px');
+	}
+
+	// ---------- 0.23: лайв-матч в игре ----------
+	var LV = { btn: null, lb: null, win: null, html: null, open: false, base: '', hash: '' };
+	var LIVE_URL = SITE + '?app=1&embed=1&dev=vasyan2026';
+	function liveHash() {
+		var L = LK.hide ? [] : lkPlayers();
+		var enc = function (v) { return encodeURIComponent(String(v || '').replace(/[~|]/g, ' ')); };
+		var gt = ''; try { if (!ok(GT)) GT = HUD.FindChildTraverse('GameTime'); gt = ok(GT) ? txt(GT) : ''; } catch (e) {}
+		return '#g=' + encodeURIComponent('v=' + VER + '&s=' + (LK.hide || !L.length ? 'h' : 'm') + '&gt=' + enc(gt) + '&p=' +
+			L.map(function (x) { return [x.t, enc(x.n), enc(x.h), x.hid, x.a].join('~'); }).join('|'));
+	}
+	function liveShow(v) {
+		LV.open = v;
+		if (!v) { if (ok(LV.win)) LV.win.DeleteAsync(0); LV.win = LV.html = null; return; }
+		if (open) show(false);
+		var o = EM.FindChildTraverse('RestlessLive'); if (ok(o)) o.DeleteAsync(0);
+		LV.win = mk('Panel', EM, 'RestlessLive', { width: '92%', height: '88%', flowChildren: 'down', horizontalAlign: 'center', verticalAlign: 'center',
+			backgroundColor: '#0b0d12fc', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '5100' }, { hittest: 'true' });
+		var head = mk('Panel', LV.win, '', { width: '100%', height: '48px', flowChildren: 'right', padding: '8px 14px 0px 18px' });
+		setText(lab(head, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '20px', fontWeight: 'bold', color: A, letterSpacing: '2px' }), 'RESTLESS · LIVE');
+		var x = mk('Button', head, '', { width: '36px', height: '36px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF });
+		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '22px', color: INK }), '×');
+		x.SetPanelEvent('onactivate', function () { liveShow(false); });
+		try { LV.html = mk('CitadelHTMLPanel', LV.win, 'RestlessLiveWeb', { width: '100%', height: 'fill-parent-flow(1.0)', margin: '6px 8px 8px 8px' }); } catch (e) { LV.html = null; }
+		LV.hash = liveHash();
+		if (ok(LV.html)) { try { LV.html.SetURL(LIVE_URL + LV.hash); } catch (e) { $.Msg('[Restless] лайв: ' + e); } }
+		$.Msg('[Restless] лайв-матч открыт: ' + LV.hash.length + ' символов');
+	}
+	function liveTick() {
+		if (ok(LV.lb)) { var n = LK.hide ? 0 : PLY.length; setText(LV.lb, n ? 'LIVE · ' + n : 'LIVE'); }
+		if (!LV.open) return;
+		if (!ok(LV.win) || !menuShown()) { liveShow(false); return; }
+		if (NT % 8) return;
+		var h = liveHash();
+		if (h !== LV.hash && ok(LV.html)) { LV.hash = h; try { LV.html.SetURL(LIVE_URL + h); } catch (e) {} }
 	}
 
 	// ---------- окно настроек ----------
@@ -359,6 +410,7 @@
 			build();
 		}
 		if (!ok(WIN)) return;
+		if (v && LV.open) liveShow(false);
 		open = v;
 		setVis(WIN, v); setVis(SHADE, v);
 		if (!v) return;
@@ -1392,6 +1444,7 @@
 			try { hideTick(); } catch (e) { $.Msg('[Restless] укрытие: ' + e); }
 			try { markTick(); } catch (e) { $.Msg('[Restless] надпись: ' + e); }
 			try { menuTick(); } catch (e) { $.Msg('[Restless] меню: ' + e); }
+			try { liveTick(); } catch (e) { $.Msg('[Restless] лайв: ' + e); }
 			try { winTick(); } catch (e) { $.Msg('[Restless] окно: ' + e); }
 			try { ultTick(); } catch (e) { $.Msg('[Restless] ульта: ' + e); }
 			try { evtTick(); } catch (e) { $.Msg('[Restless] события: ' + e); }
