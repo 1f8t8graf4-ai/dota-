@@ -3659,6 +3659,64 @@ button:disabled,[disabled]{cursor:default}
 .o18-z span.ok::before{content:'✓ ';color:#33d6a6;font-weight:700}
 .o18-z span.no{background:rgba(255,255,255,.06);color:var(--mu,#8e897f)}
 .o18-z b em.all{background:#33d6a6}
+
+/* lg25 — «Оверлей»: функции на кадре игры, «В игре», моды рядом; лайв без старого матча; рекомендованный билд */
+.o18-st .l25-fx,.o18-st .l25-vw{display:none}
+.o18-st.l25-look .l25-fx{display:block;position:absolute;inset:0;z-index:2;pointer-events:none;font-family:inherit}
+.o18-st.l25-look .l25-vw,.o18-st .l25-vw{display:block;position:absolute;right:1cqw;top:1cqw;z-index:4;font-size:max(11px,1.1cqw);padding:.4cqw .9cqw;border-radius:.6cqw;border:1px solid rgba(255,255,255,.25);background:rgba(10,12,17,.75);color:#f3ebdd;cursor:pointer}
+.o18-st.l25-look .ovp-sch i{display:none}
+.o18-st.l25-look .o18-z{background:transparent;border-color:transparent;box-shadow:none}
+.o18-st.l25-look .o18-z>*{opacity:0;transition:opacity .15s}
+.o18-st.l25-look .o18-z:hover{background:rgba(10,12,17,.55);border-color:rgba(255,182,48,.5)}
+.o18-st.l25-look .o18-z:hover>*{opacity:1}
+.l25-tb{position:absolute;top:.8cqw;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.35cqw}
+.l25-p{position:relative;width:3.3cqw;height:3.3cqw;border-radius:50%;background:#20180c;box-shadow:0 0 0 .18cqw #c88f2a}
+.l25-p.e{box-shadow:0 0 0 .18cqw #4f7fd0;background:#0e1626}
+.l25-p>img:first-child{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.l25-p.miss>img:first-child{filter:brightness(.3) grayscale(.6)}
+.l25-p.hp65{box-shadow:0 0 0 .3cqw #ff9a3b}.l25-p.hp25{box-shadow:0 0 0 .3cqw #ff3b3b}
+.l25-p .u{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:1.3cqw;color:#fff;text-shadow:0 0 .4cqw #000,0 0 .2cqw #000;background:rgba(0,0,0,.35);border-radius:50%}
+.l25-p .rk{position:absolute;right:-.7cqw;bottom:-.8cqw;width:1.9cqw;height:1.9cqw;object-fit:contain}
+.l25-p .od{position:absolute;left:-.3cqw;bottom:-.2cqw;font-style:normal;font-size:.75cqw;font-weight:700;color:#ffb46b;background:rgba(0,0,0,.75);border-radius:.3cqw;padding:0 .25cqw}
+.l25-p .by{position:absolute;left:50%;top:-1.9cqw;transform:translateX(-50%);width:2cqw;height:2cqw;border-radius:.35cqw;border:.15cqw solid #6fa8ff;background:#121014}
+.l25-tb .clk{font-size:1.3cqw;color:#fff;background:rgba(0,0,0,.6);border-radius:.4cqw;padding:.2cqw .8cqw;margin:0 .6cqw}
+.l25-lrk{position:absolute;top:5.3cqw;left:50%;transform:translateX(-50%);display:flex;gap:8cqw}.l25-lrk .rk{width:2.4cqw;height:2.4cqw;object-fit:contain}
+.l25-om{position:absolute;top:5.4cqw;left:25%;display:flex;gap:.25cqw;align-items:center}
+.l25-om u{width:.7cqw;height:.7cqw;border-radius:.15cqw;background:#c88f2a}.l25-om u.x{background:#333}.l25-om s{width:1.2cqw;height:.15cqw;background:#666;margin:0 .3cqw}
+.l25-pill{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:700;font-size:1.05cqw;color:#f3ebdd;background:rgba(18,16,20,.82);border-radius:.6cqw;padding:.3cqw .9cqw}
+.l25-pill.rift{top:8.3cqw}
+.l25-pill.evt{top:10.8cqw;color:#ffc83d;border:1px solid rgba(255,200,61,.45);font-size:1.25cqw}
+.l25-pill.zip{left:auto;right:2cqw;transform:none;top:15cqw;color:#5be08a}
+.l25-pill.uns{top:auto;bottom:9.5cqw;color:#ff9a3b;font-size:1.4cqw}
+.l25-perf{position:absolute;left:1.6cqw;top:2.6cqw;font-size:.85cqw;color:#a89f90}
+.l25-cr{position:absolute;left:50%;top:50%;width:1.5cqw;height:1.5cqw;transform:translate(-50%,-50%);border:.12cqw solid rgba(255,255,255,.85);border-radius:50%}
+.l25-am{position:absolute;left:50%;top:54.5%;transform:translateX(-50%);font-weight:800;font-size:1.25cqw;color:#fff;text-shadow:0 0 .3cqw #000}.l25-am small{font-size:.8em;opacity:.8}
+.l25-rl{position:absolute;left:50%;top:58.5%;transform:translateX(-50%);font-weight:800;font-size:1cqw;letter-spacing:.1cqw;color:#ffc83d;text-shadow:0 0 .3cqw #000}
+.l25-cmb{position:absolute;left:50%;top:62.5%;transform:translateX(-50%);font-weight:800;font-size:1cqw;letter-spacing:.1cqw;color:#ff6b5b;text-shadow:0 0 .3cqw #000}
+.l25-spd{position:absolute;left:50%;bottom:7.6cqw;transform:translateX(-50%);font-size:.9cqw;color:#fff;background:rgba(0,0,0,.5);border-radius:.3cqw;padding:0 .4cqw}
+.l25-hp{position:absolute;left:2.4cqw;bottom:2.6cqw;width:20cqw;height:1.3cqw;border-radius:.3cqw;background:rgba(0,0,0,.6);overflow:hidden}.l25-hp s{display:block;width:72%;height:100%;background:#3fbf7f}
+.l25-ab{position:absolute;left:50%;bottom:2cqw;transform:translateX(-50%);display:flex;gap:.5cqw}.l25-ab u{width:3.8cqw;height:3.8cqw;border-radius:.7cqw;background:rgba(25,29,40,.85);box-shadow:inset 0 0 0 1px #3c4457}
+.l25-mm{position:absolute;right:1.4cqw;bottom:1.4cqw;width:15cqw;aspect-ratio:1;border-radius:.8cqw;overflow:hidden;background:rgba(14,18,26,.9);box-shadow:0 0 0 1px #3c4457}
+.l25-mm .map{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.l25-mm i{position:absolute;width:.35cqw;height:.35cqw;border-radius:50%;transform:translate(-50%,-50%);background:#e8e8e8}
+.l25-mm i.g{background:#ffc83d;width:.5cqw;height:.5cqw}
+.l25-mm .t{position:absolute;transform:translate(-50%,-50%);font-size:.85cqw;color:#fff;text-shadow:0 0 .25cqw #000,0 0 .15cqw #000}
+/* «В игре» и моды рядом */
+.l25-mod{margin:6px 14px 14px}
+.l25-mod .q-sec{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.l25-ml{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.l25-ml .q-box{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.l25-ml ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.l25-ml li{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.l25-tg,.l25-sl button{border:1px solid #3a3f4c;background:#1b1f28;color:#f3ebdd;border-radius:14px;padding:3px 12px;font-weight:700;cursor:pointer}
+.l25-tg.on{background:#ffb630;color:#1a1408;border-color:#ffb630}
+.l25-sl{display:inline-flex;align-items:center;gap:6px}.l25-sl b{min-width:18px;text-align:center}
+/* лайв: нет матча */
+.l25-none{display:flex;flex-direction:column;gap:6px;align-items:flex-start}.l25-none span{color:var(--mu,#a89f90)}
+/* рекомендованный билд */
+.l25-rec{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.l25-rh{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.l25-rh small{color:var(--mu,#a89f90)}
+.l25-rb{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.l25-rb span{color:var(--mu,#a89f90);font-size:13px}
 </style>
 </head>
 <body>
@@ -9648,6 +9706,160 @@ o18Side = function (o, zf) {
       : `<button class="btn s g" type="button" id="o18cp">Сделать свой на основе «${O18P[o.p][0]}»</button>`}`;
 };
 { const B24 = o18Bind; o18Bind = function () { B24.apply(this, arguments); const sd = $('#ovpside'); if (sd) sd.addEventListener('click', e => { const b = e.target.closest('[data-sf]'); if (!b) return; O18S = b.dataset.sf; o18Draw(); }); }; }
+
+// ===================== lg25 — 04.11: «Оверлей» управляет модом, кадр показывает функции, моды рядом; лайв без старого матча; рекомендованный билд =====================
+// Андрей: «управление не работает через сам оверлей — только через настройки RESTLESS» → набор с сайта уходит программе (0.4.8),
+// программа отдаёт его моду (0.21) страницей 127.0.0.1:27515/cfg.html; мод присылает, что у него включено и какие моды рядом.
+// «на скрине, который ты показываешь, не видно функций — просто скрин по приколу» → на кадре нарисованы сами функции, как в игре.
+// «показывает старый матч в лайве — если не видит, не показывает» → свой «Лайв-матч» без живого матча: пусто, без прошлого матча.
+// «кент взял героя впервые и не знал, что брать» → в лайве у своего героя — «Рекомендованный билд» с ID для поиска в игре.
+
+// какие ключи мода у функции сайта
+const L25K = {ult: ['ULT', 'ULTW'], rank: ['RANK'], lrk: ['LRK'], miss: ['MISS'], thp: ['THP'], cmb: ['CMB'], uns: ['UNS'], levt: ['EVT'], mmt: ['CAMP'],
+  odmg: ['OBJ'], zip: ['ZIP'], cmp: ['SPD'], perf: ['PERF'], ammo: ['AMMO'], rld: ['RLD'], omap: ['OMAP'], rbuy: ['RBUY'], rift: ['RIFT'], lmmo: ['BOX']};
+O18.forEach(f => {
+  if (f[0] === 'rift') { f[1] = 'Урна, разлом, мост'; f[6] = 'урна: через сколько и у кого · разлом: точный отсчёт 20 с · бафф на мосту'; f[7] = 1; }
+  if (f[0] === 'lmmo') { f[1] = 'Ящики и статуи'; f[6] = 'где стоят ящики и золотые статуи — точками на мини-карте'; f[7] = 1; }
+  if (f[0] === 'ammo') f[6] = 'родное число патронов игры у прицела — без дубля';
+});
+function l25Cfg(o) { const on = o18On(o), a = []; Object.entries(L25K).forEach(([id, ks]) => ks.forEach(k => a.push(k + '=' + (on.has(id) ? 1 : 0)))); return a; }
+function l25Merge(base, adds) {
+  const M = new Map();
+  String(base || '').split(';').concat(adds).forEach(p => { const i = p.indexOf('='); if (i > 0) M.set(p.slice(0, i), p.slice(i + 1)); });
+  return [...M].map(([k, v]) => k + '=' + v).join(';');
+}
+const l25Host = () => !!(window.rlHost && rlHost.setModCfg);
+function l25Send(adds) {
+  if (!l25Host()) { l25Note('Настройки уходят в игру из программы Restless'); return false; }
+  const v = l25Merge((OV.app && OV.app.modsent) || '', adds);
+  rlHost.setModCfg(v); if (OV.app) OV.app.modsent = v;
+  l25Note('Отправлено в игру'); return true;
+}
+function l25Note(t) { const m = $('#l25msg'); if (!m) return; m.textContent = t; clearTimeout(m._t); m._t = setTimeout(() => { m.textContent = ''; }, 4000); }
+
+// ---------- сайт → мод: выбор набора и галочки «Custom» ----------
+{ const B25 = o18Bind; o18Bind = function () { B25.apply(this, arguments);
+    const go = () => setTimeout(() => l25Send(l25Cfg(o18State())), 0);
+    $('#ovptabs').addEventListener('click', e => { if (e.target.closest('[data-p]')) go(); });
+    $('#ovpside').addEventListener('change', e => { if (e.target.closest('[data-t]')) go(); });
+    $('#ovpside').addEventListener('click', e => { if (e.target.id === 'o18cp' || e.target.id === 'o18im') go(); });
+    $('#ovpst').addEventListener('click', e => { const b = e.target.closest('[data-l25v]'); if (!b) return; e.stopPropagation(); L25V = L25V === 'look' ? 'zones' : 'look'; o18Draw(); }, true);
+  }; }
+
+// ---------- кадр: как выглядит в игре ----------
+let L25V = 'look';
+const L25C = '83,321;119,343;149,726;199,771;209,404;227,567;244,748;266,416;275,812;279,395;289,351;307,555;323,245;329,521;344,353;356,621;368,254;387,552;416,660;433,519;443,423;456,334;475,390;488,589;498,544;505,296;525,691;544,575;556,577;566,710;584,626;614,312;625,647;639,353;647,388;673,532;677,450;689,328;705,316;716,243;728,438;735,581;749,400;784,374;791,237;837,252;879,595'.split(';').map(p => p.split(',').map(Number));
+const L25G = '68,363;151,346;229,595;254,431;280,405;296,592;305,381;329,464;343,381;354,561;386,274;421,279;462,604;491,489;505,505;525,630;584,607;634,562;644,613;647,696;675,528;694,361;704,408;722,347;737,775;756,563;806,500;880,624'.split(';').map(p => p.split(',').map(Number));
+const L25MM = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap_midtown_mid.png';
+const L25H = [65, 6, 13, 63, 69, 84, 1, 2, 3, 4, 7, 8];
+function l25Look(o) {
+  const on = o18On(o), h = id => on.has(id), H = window.RL_DATA ? RL_DATA.heroes : {}, im = k => (H[k] || {}).i || '';
+  const items = window.RL_DATA ? Object.values(RL_DATA.items) : [], buy = (items.find(x => x.n === 'Mystic Shot') || items[0] || {}).i || '';
+  const rk = (a, b) => `<img class="rk" src="rk/${a}-${b}@64.webp" alt="">`;
+  const port = (k, i) => {
+    const en = i >= 6, cls = [en ? 'e' : 'f', h('miss') && i === 9 ? 'miss' : '', h('thp') && (i === 2 || i === 10) ? (i === 2 ? 'hp65' : 'hp25') : ''].join(' ');
+    return `<span class="l25-p ${cls}"><img src="${esc(im(k))}" alt="" onerror="${noimg}">
+      ${h('ult') && [1, 4, 8, 11].includes(i) ? `<em class="u">${[37, 12, 104, 58][[1, 4, 8, 11].indexOf(i)]}</em>` : ''}
+      ${h('rank') ? rk([7, 9, 8, 6, 10, 7, 9, 8, 11, 7, 6, 9][i], 1 + i % 6) : ''}
+      ${h('odmg') && (i === 0 || i === 7) ? `<em class="od">${i ? '830' : '12.5k'}</em>` : ''}
+      ${h('rbuy') && i === 7 && buy ? `<img class="by" src="${esc(buy)}" alt="">` : ''}</span>`;
+  };
+  const mm = `<span class="l25-mm"><img class="map" src="${L25MM}" alt="" onerror="this.remove()">
+      ${h('lmmo') ? L25C.map(([x, y]) => `<i class="c" style="left:${x / 10}%;top:${y / 10}%"></i>`).join('') + L25G.map(([x, y]) => `<i class="g" style="left:${x / 10}%;top:${y / 10}%"></i>`).join('') : ''}
+      ${h('mmt') ? `<b class="t" style="left:28%;top:41%">1:12</b><b class="t" style="left:66%;top:63%">3:40</b>` : ''}</span>`;
+  return `<div class="l25-fx" aria-hidden="true">
+    <div class="l25-tb">${L25H.slice(0, 6).map(port).join('')}<b class="clk">12:34</b>${L25H.slice(6).map((k, i) => port(k, i + 6)).join('')}</div>
+    ${h('lrk') ? `<div class="l25-lrk">${rk(8, 3)}${rk(9, 1)}</div>` : ''}
+    ${h('omap') ? `<div class="l25-om">${'<u></u>'.repeat(5)}<s></s>${'<u class="x"></u>'.repeat(2)}${'<u></u>'.repeat(3)}</div>` : ''}
+    ${h('rift') ? '<div class="l25-pill rift">Урна через 3:20 · Разлом ~11:20–13:20 · Мост ~1:40</div>' : ''}
+    ${h('levt') ? '<div class="l25-pill evt">Через 12 с: ящики и золотые статуи</div>' : ''}
+    ${h('perf') ? '<div class="l25-perf">Restless: 0.4 мс в секунду</div>' : ''}
+    ${h('zip') ? '<div class="l25-pill zip">Буст на канате · готов</div>' : ''}
+    <i class="l25-cr"></i>
+    ${h('ammo') ? '<div class="l25-am">23 <small>/ 40</small></div>' : ''}
+    ${h('rld') ? '<div class="l25-rl">ПЕРЕЗАРЯДКА</div>' : ''}
+    ${h('cmb') ? '<div class="l25-cmb">В БОЮ</div>' : ''}
+    ${h('uns') ? '<div class="l25-pill uns">Незащищённые души: 1 240</div>' : ''}
+    ${h('cmp') ? '<div class="l25-spd">7.4 m/s</div>' : ''}
+    <div class="l25-hp"><s></s></div><div class="l25-ab">${'<u></u>'.repeat(4)}</div>
+    ${mm}
+  </div><button type="button" class="l25-vw" data-l25v="1">${L25V === 'look' ? 'Зоны' : 'Как в игре'}</button>`;
+}
+{ const S25 = o18Stage; o18Stage = function (o) { return S25.apply(this, arguments) + l25Look(o); }; }
+{ const D25 = o18Draw; o18Draw = function () { D25.apply(this, arguments); const st = $('#ovpst'); if (st) st.classList.toggle('l25-look', L25V === 'look'); }; }
+
+// ---------- «В игре»: что у мода сейчас и моды рядом ----------
+const L25ON = c => { const M = {}; String(c || '').split(';').forEach(p => { const i = p.indexOf('='); if (i > 0) M[p.slice(0, i)] = p.slice(i + 1); }); return M; };
+function l25ModHTML() {
+  const a = OV.app || null, mc = a && a.modcfg, fresh = mc && Date.now() - mc.at < 90000;
+  if (!l25Host()) return '';
+  const M = L25ON(mc && mc.c), k = Object.values(L25K).flat(), n = k.filter(x => M[x] === '1').length;
+  const st = !mc ? '<span class="tag">мод не на связи — зайди в игру</span>' : `<span class="tag ${fresh ? 'g' : ''}">мод ${esc(mc.v || '')} ${fresh ? 'на связи' : 'был на связи'}</span><span class="sub">включено ${n} из ${k.length}</span>`;
+  const mods = (mc && mc.mods) || [], oth = (mc && mc.others) || [];
+  const row = (m, s) => { const [key, t, lb, v, mn, mx] = s, onv = t === 't' ? v === 1 : true;
+    return `<li><span>${esc(lb)}</span>${t === 't' ? `<button type="button" class="l25-tg${onv ? ' on' : ''}" data-um="${esc(m.id)}" data-k="${esc(key)}" data-v="${onv ? 0 : 1}">${onv ? 'ВКЛ' : 'ВЫКЛ'}</button>`
+      : `<span class="l25-sl"><button type="button" data-um="${esc(m.id)}" data-k="${esc(key)}" data-v="${Math.max(mn, v - (s[6] || 1))}">−</button><b>${v}</b><button type="button" data-um="${esc(m.id)}" data-k="${esc(key)}" data-v="${Math.min(mx, v + (s[6] || 1))}">+</button></span>`}</li>`; };
+  return `<div class="l25-mod"><div class="q-sec"><b>В игре</b>${st}</div>
+    ${mods.length || oth.length ? `<div class="q-sec"><b>Моды рядом</b></div><div class="l25-ml">${mods.map(m => `<div class="q-box"><b>${esc(m.n)}</b><ul>${m.s.map(s => row(m, s)).join('')}</ul></div>`).join('')}
+      ${oth.map(x => `<div class="q-box"><b>${esc(x)}</b><small>${x === 'Deadlock Utils' ? 'урна, разлом и мост — у него, Restless не дублирует' : 'стоит рядом'}</small></div>`).join('')}</div>` : ''}
+    <p class="ovp-msg" id="l25msg" aria-live="polite"></p></div>`;
+}
+function l25ModPaint() { const el = $('#l25mod'); if (el) el.innerHTML = l25ModHTML(); }
+{ const VO25 = viewOvs; viewOvs = function () { VO25.apply(this, arguments);
+    const p = $('.ovs .ovp'); if (!p) return;
+    p.insertAdjacentHTML('afterend', '<div id="l25mod"></div>'); l25ModPaint();
+    $('#l25mod').onclick = e => { const b = e.target.closest('[data-um]'); if (!b) return;
+      const id = b.dataset.um, k = b.dataset.k, v = +b.dataset.v, mc = OV.app && OV.app.modcfg;
+      if (!/^[a-z0-9_]{1,32}$/.test(id) || !/^[a-z0-9_]{1,32}$/.test(k)) return;
+      if (l25Send(['U.' + id + '.' + k + '=' + v]) && mc) { (mc.mods || []).forEach(m => { if (m.id === id) m.s.forEach(s => { if (s[0] === k) s[3] = v; }); }); l25ModPaint(); l25Note('Отправлено в игру'); } };
+  }; }
+{ const A25 = window.rlApp; window.rlApp = s => { A25(s); if ($('#l25mod')) l25ModPaint(); }; }
+
+// ---------- свой «Лайв-матч» без живого матча — пусто, без прошлого матча ----------
+{ const VL25 = viewLive; viewLive = async function (arg) {
+    const own = ME && (!arg || +arg === ME.id);
+    if (!own) return VL25.apply(this, arguments);
+    if (RL_APP && gameLive() && OV.G && (OV.G.s === 'm' || OV.G.s === 'b')) return VL25.apply(this, arguments);
+    const n = vNew(); clearInterval(LVT); clearInterval(OV.timer);
+    V(`<div class="q-lvh"><h1 class="h1">Лайв-<em>матч</em></h1></div><div id="lvb"><div class="load">Ищу живой матч…</div></div><div id="lvl"></div>`);
+    const act = await live(`matches/active?account_id=${ME.id}`).catch(() => []); if (n !== VQ) return;
+    if (act && act.length) return VL25.apply(this, arguments);
+    put(n, '#lvb', `<div class="empty l25-none"><b>Сейчас ты не в матче</b>${RL_APP ? '<span>Матч начнётся — здесь появятся все 12 игроков</span>' : ''}</div>`);
+    liveList(n, 'Идут прямо сейчас');
+    if (RL_APP) { const k = () => { if (n !== VQ) { clearInterval(iv); return; } if (gameLive() && OV.G && OV.G.s === 'm') { clearInterval(iv); viewLive(arg); } }, iv = setInterval(k, 3000); OV.kick = k; }
+  }; }
+
+// ---------- рекомендованный билд на своего героя ----------
+const L25R = {};
+async function l25Rec(n, hid, host, after) {
+  if (!hid || !host) return;
+  host.insertAdjacentHTML(after ? 'afterend' : 'beforeend', `<div id="l25rec"><div class="q-sec"><b>Рекомендованный билд · ${esc(hero(hid).n)}</b></div><div class="q-box l25-rec"><div class="load" style="padding:6px 0">…</div></div></div>`);
+  try {
+    let r = L25R[hid];
+    if (!r) {
+      const S = await api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t30()}&min_matches=30`).catch(() => []);
+      const top = S.slice().sort((a, b) => b.matches - a.matches).slice(0, 12).sort((a, b) => wil(b.wins, b.matches) - wil(a.wins, a.matches))[0];
+      const b = top ? await api(`builds?build_id=${top.hero_build_id}&only_latest=true`).then(x => x && x[0]).catch(() => null) : null;
+      r = L25R[hid] = b ? {id: top.hero_build_id, name: b.hero_build.name || 'Сборка #' + top.hero_build_id, m: top.matches, wr: 100 * top.wins / top.matches, cat: bldCat(b),
+        ph: ((b.hero_build.details || {}).mod_categories || []).filter(c => (c.mods || []).some(y => item(y.ability_id))).slice(0, 3)} : {none: 1};
+    }
+    if (n !== VQ) return;
+    const box = $('#l25rec .l25-rec'); if (!box) return;
+    if (r.none) { $('#l25rec').remove(); return; }
+    box.innerHTML = `<div class="l25-rh"><span class="tag q-ct c-${r.cat}">${CATI[r.cat]}</span><b>${esc(r.name)}</b><small>${nf(r.m)} игр · ${f1(r.wr)}% побед</small></div>
+      ${r.ph.map((c, k) => `<div class="q-ph"><span>${esc(shelfName(c, k))}</span><div>${(c.mods || []).filter(y => item(y.ability_id)).slice(0, 7).map(y => phIco(y.ability_id)).join('')}</div></div>`).join('')}
+      <div class="l25-rb"><button type="button" class="btn s" data-l25cp="${r.id}">ID ${r.id} · скопировать</button><span>Магазин → Сборки → поиск по ID</span></div>`;
+    box.onclick = e => { const b = e.target.closest('[data-l25cp]'); if (!b) return; const v = b.dataset.l25cp;
+      (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(() => { b.textContent = 'ID скопирован ✓'; }).catch(() => { b.textContent = v; }); };
+  } catch (e) { const el = $('#l25rec'); if (el) el.remove(); }
+}
+{ const HP25 = heroPhaseBuild; heroPhaseBuild = async function (n, hid) {
+    const el = $('#lvbld'); if (el && !$('#l25rec')) l25Rec(n, hid, el.previousElementSibling || el, false).catch(() => {});
+    return HP25.apply(this, arguments); }; }
+// игроки из игры (программа): свой герой — по ID или нику
+{ const OD25 = ovDraw; ovDraw = function () { OD25.apply(this, arguments);
+    const L = OV.L || [], me = ME && L.find(p => p.id === ME.id), b = $('#ovb');
+    if (me && me.hid && b && !$('#l25rec', b)) l25Rec(VQ, me.hid, b, false).catch(() => {}); }; }
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');

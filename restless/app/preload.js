@@ -9,6 +9,7 @@ if (location.href.startsWith(SITE)) {
     setAuto: on => ipcRenderer.send('rl', 'auto', !!on),
     setThrough: on => ipcRenderer.send('rl', 'through', !!on),
     reinstall: () => ipcRenderer.send('rl', 'mod'),
-    setFps: lv => ipcRenderer.send('rl', 'fps', String(lv || ''))
+    setFps: lv => ipcRenderer.send('rl', 'fps', String(lv || '')),
+    setModCfg: v => ipcRenderer.send('rl', 'modcfg', String(v || ''))
   });
 }

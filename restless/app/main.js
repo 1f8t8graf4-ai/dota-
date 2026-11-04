@@ -1,4 +1,5 @@
-// Restless Overlay 0.4.7 — окно шире (1600×960, на маленьком экране — почти во весь), чтобы команда стояла в один ряд, а обе команды — на экране.
+// Restless Overlay 0.4.8 — настройки мода с сайта («Оверлей» → мод в игре через 127.0.0.1/cfg.html) и «Моды рядом» (настройки модов с протоколом UMM).
+// 0.4.7 — окно шире (1600×960, на маленьком экране — почти во весь), чтобы команда стояла в один ряд, а обе команды — на экране.
 // Restless Overlay 0.4.6 — сайт в окне всегда свежий (без старого кэша), матч нашёлся — окно на «Лайв-матче» (игроки из игры).
 // Restless Overlay 0.4.5 — мод обновляется сам (pak42 с сайта); о новой программе — подсказка в трее.
 // Restless Overlay 0.3.1 — твой профиль Restless поверх Deadlock (как Porofessor).
@@ -11,7 +12,7 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.4.7';
+const VER = '0.4.8';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
@@ -19,7 +20,8 @@ const KEY_OPTS = ['Control+Alt+H', 'Control+Shift+H', 'Alt+H', 'Control+Shift+F1
 const THRU_KEYS = ['Control+Alt+T', 'Control+Shift+F11'];   // клики сквозь окно
 const CFG = path.join(app.getPath('userData'), 'restless.json');
 // v 4 (0.4.7): окно шире — старый размер окна сбрасывается один раз
-let cfg = {v: 4, x: null, y: null, w: 1600, h: 960, auto: true, through: false, seen: false, key: 'Control+Alt+H', fps: 'off'};
+let cfg = {v: 4, x: null, y: null, w: 1600, h: 960, auto: true, through: false, seen: false, key: 'Control+Alt+H', fps: 'off', mod: null};
+let UMR = null;   // последний отчёт мода: его настройки, моды рядом
 try { const c = JSON.parse(fs.readFileSync(CFG, 'utf8')); if (!c.v || c.v < 4) { delete c.x; delete c.y; delete c.w; delete c.h; c.v = 4; } Object.assign(cfg, c); } catch (e) {}
 if (!KEY_OPTS.includes(cfg.key)) cfg.key = 'Control+Alt+H';   // 0.3 ставила Ctrl+X — теперь одна клавиша
 const save = () => { try { fs.writeFileSync(CFG, JSON.stringify(cfg)); } catch (e) {} };
@@ -63,7 +65,8 @@ function create() {
 // состояние программы и данные игры — в страницу (сайт ?app=1: вкладка «Оверлей», LIVE, 12 игроков)
 function state() {
   return {ver: VER, mod: MOD, keys: [K.show, K.thru], bridge: bridgeErr, proc, live: isLive(), auto: cfg.auto, through: cfg.through,
-    hk: {show: K.show, cur: cfg.key, opts: KEY_OPTS.map(k => [k, nice(k)])}};
+    hk: {show: K.show, cur: cfg.key, opts: KEY_OPTS.map(k => [k, nice(k)])},
+    modcfg: UMR ? {c: UMR.c, v: UMR.v, at: UMR.at, mods: UMR.m, others: UMR.o} : null, modsent: cfg.mod ? cfg.mod.v : ''};
 }
 function push() {
   if (!win) return;
@@ -200,6 +203,8 @@ ipcMain.on('rl', (e, cmd, val) => {
   else if (cmd === 'through') setThrough(!!val);
   else if (cmd === 'mod') setupMod(true);
   else if (cmd === 'fps') setFps(String(val || ''));
+  // настройки мода с сайта: ULT=1;MARK=0;U.<мод>.<настройка>=3 — мод заберёт со страницы cfg.html (метка — чтобы применил один раз)
+  else if (cmd === 'modcfg' && typeof val === 'string' && val.length < 1500 && /^[\w.=;-]*$/.test(val)) { cfg.mod = {s: Date.now().toString(36), v: val}; save(); push(); }
 });
 
 if (!app.requestSingleInstanceLock()) app.quit();
@@ -210,7 +215,8 @@ app.whenReady().then(() => {
   tray = new Tray(IC.idle);
   tray.on('click', toggle);
   regKeys();
-  bridge.start(onGame, e => { bridgeErr = e.code === 'EADDRINUSE' ? 'порт 27515 занят (второй экземпляр?)' : e.message; menu(); push(); });
+  bridge.start(onGame, e => { bridgeErr = e.code === 'EADDRINUSE' ? 'порт 27515 занят (второй экземпляр?)' : e.message; menu(); push(); },
+    {um: r => { const ch = !UMR || UMR.c !== r.c || JSON.stringify(UMR.m) !== JSON.stringify(r.m) || UMR.o.join() !== r.o.join(); UMR = r; if (ch) push(); }, cfg: () => cfg.mod});
   iconTick(); menu();
   setInterval(iconTick, 1000);
   setTimeout(() => setupMod(), 1500);

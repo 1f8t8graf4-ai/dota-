@@ -1,0 +1,57 @@
+/* lg25 — «Оверлей»: функции на кадре игры, «В игре», моды рядом; лайв без старого матча; рекомендованный билд */
+.o18-st .l25-fx,.o18-st .l25-vw{display:none}
+.o18-st.l25-look .l25-fx{display:block;position:absolute;inset:0;z-index:2;pointer-events:none;font-family:inherit}
+.o18-st.l25-look .l25-vw,.o18-st .l25-vw{display:block;position:absolute;right:1cqw;top:1cqw;z-index:4;font-size:max(11px,1.1cqw);padding:.4cqw .9cqw;border-radius:.6cqw;border:1px solid rgba(255,255,255,.25);background:rgba(10,12,17,.75);color:#f3ebdd;cursor:pointer}
+.o18-st.l25-look .ovp-sch i{display:none}
+.o18-st.l25-look .o18-z{background:transparent;border-color:transparent;box-shadow:none}
+.o18-st.l25-look .o18-z>*{opacity:0;transition:opacity .15s}
+.o18-st.l25-look .o18-z:hover{background:rgba(10,12,17,.55);border-color:rgba(255,182,48,.5)}
+.o18-st.l25-look .o18-z:hover>*{opacity:1}
+.l25-tb{position:absolute;top:.8cqw;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.35cqw}
+.l25-p{position:relative;width:3.3cqw;height:3.3cqw;border-radius:50%;background:#20180c;box-shadow:0 0 0 .18cqw #c88f2a}
+.l25-p.e{box-shadow:0 0 0 .18cqw #4f7fd0;background:#0e1626}
+.l25-p>img:first-child{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.l25-p.miss>img:first-child{filter:brightness(.3) grayscale(.6)}
+.l25-p.hp65{box-shadow:0 0 0 .3cqw #ff9a3b}.l25-p.hp25{box-shadow:0 0 0 .3cqw #ff3b3b}
+.l25-p .u{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:1.3cqw;color:#fff;text-shadow:0 0 .4cqw #000,0 0 .2cqw #000;background:rgba(0,0,0,.35);border-radius:50%}
+.l25-p .rk{position:absolute;right:-.7cqw;bottom:-.8cqw;width:1.9cqw;height:1.9cqw;object-fit:contain}
+.l25-p .od{position:absolute;left:-.3cqw;bottom:-.2cqw;font-style:normal;font-size:.75cqw;font-weight:700;color:#ffb46b;background:rgba(0,0,0,.75);border-radius:.3cqw;padding:0 .25cqw}
+.l25-p .by{position:absolute;left:50%;top:-1.9cqw;transform:translateX(-50%);width:2cqw;height:2cqw;border-radius:.35cqw;border:.15cqw solid #6fa8ff;background:#121014}
+.l25-tb .clk{font-size:1.3cqw;color:#fff;background:rgba(0,0,0,.6);border-radius:.4cqw;padding:.2cqw .8cqw;margin:0 .6cqw}
+.l25-lrk{position:absolute;top:5.3cqw;left:50%;transform:translateX(-50%);display:flex;gap:8cqw}.l25-lrk .rk{width:2.4cqw;height:2.4cqw;object-fit:contain}
+.l25-om{position:absolute;top:5.4cqw;left:25%;display:flex;gap:.25cqw;align-items:center}
+.l25-om u{width:.7cqw;height:.7cqw;border-radius:.15cqw;background:#c88f2a}.l25-om u.x{background:#333}.l25-om s{width:1.2cqw;height:.15cqw;background:#666;margin:0 .3cqw}
+.l25-pill{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:700;font-size:1.05cqw;color:#f3ebdd;background:rgba(18,16,20,.82);border-radius:.6cqw;padding:.3cqw .9cqw}
+.l25-pill.rift{top:8.3cqw}
+.l25-pill.evt{top:10.8cqw;color:#ffc83d;border:1px solid rgba(255,200,61,.45);font-size:1.25cqw}
+.l25-pill.zip{left:auto;right:2cqw;transform:none;top:15cqw;color:#5be08a}
+.l25-pill.uns{top:auto;bottom:9.5cqw;color:#ff9a3b;font-size:1.4cqw}
+.l25-perf{position:absolute;left:1.6cqw;top:2.6cqw;font-size:.85cqw;color:#a89f90}
+.l25-cr{position:absolute;left:50%;top:50%;width:1.5cqw;height:1.5cqw;transform:translate(-50%,-50%);border:.12cqw solid rgba(255,255,255,.85);border-radius:50%}
+.l25-am{position:absolute;left:50%;top:54.5%;transform:translateX(-50%);font-weight:800;font-size:1.25cqw;color:#fff;text-shadow:0 0 .3cqw #000}.l25-am small{font-size:.8em;opacity:.8}
+.l25-rl{position:absolute;left:50%;top:58.5%;transform:translateX(-50%);font-weight:800;font-size:1cqw;letter-spacing:.1cqw;color:#ffc83d;text-shadow:0 0 .3cqw #000}
+.l25-cmb{position:absolute;left:50%;top:62.5%;transform:translateX(-50%);font-weight:800;font-size:1cqw;letter-spacing:.1cqw;color:#ff6b5b;text-shadow:0 0 .3cqw #000}
+.l25-spd{position:absolute;left:50%;bottom:7.6cqw;transform:translateX(-50%);font-size:.9cqw;color:#fff;background:rgba(0,0,0,.5);border-radius:.3cqw;padding:0 .4cqw}
+.l25-hp{position:absolute;left:2.4cqw;bottom:2.6cqw;width:20cqw;height:1.3cqw;border-radius:.3cqw;background:rgba(0,0,0,.6);overflow:hidden}.l25-hp s{display:block;width:72%;height:100%;background:#3fbf7f}
+.l25-ab{position:absolute;left:50%;bottom:2cqw;transform:translateX(-50%);display:flex;gap:.5cqw}.l25-ab u{width:3.8cqw;height:3.8cqw;border-radius:.7cqw;background:rgba(25,29,40,.85);box-shadow:inset 0 0 0 1px #3c4457}
+.l25-mm{position:absolute;right:1.4cqw;bottom:1.4cqw;width:15cqw;aspect-ratio:1;border-radius:.8cqw;overflow:hidden;background:rgba(14,18,26,.9);box-shadow:0 0 0 1px #3c4457}
+.l25-mm .map{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.l25-mm i{position:absolute;width:.35cqw;height:.35cqw;border-radius:50%;transform:translate(-50%,-50%);background:#e8e8e8}
+.l25-mm i.g{background:#ffc83d;width:.5cqw;height:.5cqw}
+.l25-mm .t{position:absolute;transform:translate(-50%,-50%);font-size:.85cqw;color:#fff;text-shadow:0 0 .25cqw #000,0 0 .15cqw #000}
+/* «В игре» и моды рядом */
+.l25-mod{margin:6px 14px 14px}
+.l25-mod .q-sec{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.l25-ml{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.l25-ml .q-box{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.l25-ml ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.l25-ml li{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.l25-tg,.l25-sl button{border:1px solid #3a3f4c;background:#1b1f28;color:#f3ebdd;border-radius:14px;padding:3px 12px;font-weight:700;cursor:pointer}
+.l25-tg.on{background:#ffb630;color:#1a1408;border-color:#ffb630}
+.l25-sl{display:inline-flex;align-items:center;gap:6px}.l25-sl b{min-width:18px;text-align:center}
+/* лайв: нет матча */
+.l25-none{display:flex;flex-direction:column;gap:6px;align-items:flex-start}.l25-none span{color:var(--mu,#a89f90)}
+/* рекомендованный билд */
+.l25-rec{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.l25-rh{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.l25-rh small{color:var(--mu,#a89f90)}
+.l25-rb{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.l25-rb span{color:var(--mu,#a89f90);font-size:13px}

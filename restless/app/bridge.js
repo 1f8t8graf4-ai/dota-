@@ -18,11 +18,42 @@ function parse(url) {
   const s = q('s') !== 'm' ? 'h' : bots >= 2 ? 'b' : 'm';
   return {v: q('v').slice(0, 12), s, bots, gt: q('gt').slice(0, 12), n: +q('n') || 0, players, at: Date.now()};
 }
+// 0.4.8: отчёт мода — его настройки (c), моды рядом с протоколом UMM и их настройки (m), что ещё стоит (o)
+// v=0.21&c=ULT=1;MARK=0;…&m=[{id,n,s:[[key,t|s,label,val,min,max,step]]}]&o=Deadlock Utils|QoL Lock
+function parseUm(url) {
+  const u = new URL(url, 'http://127.0.0.1');
+  const q = k => u.searchParams.get(k) || '';
+  const c = q('c').slice(0, 2000);
+  let m = [];
+  try { m = JSON.parse(q('m') || '[]'); } catch (e) { m = []; }
+  const id = x => /^[a-z0-9_]{1,32}$/.test(String(x || ''));
+  m = (Array.isArray(m) ? m : []).filter(x => x && id(x.id)).slice(0, 12).map(x => ({
+    id: x.id, n: String(x.n || x.id).slice(0, 40),
+    s: (Array.isArray(x.s) ? x.s : []).filter(r => Array.isArray(r) && id(r[0])).slice(0, 16)
+      .map(r => [r[0], r[1] === 's' ? 's' : 't', String(r[2] || r[0]).slice(0, 40), +r[3] || 0, +r[4] || 0, +r[5] || 0, +r[6] > 0 ? +r[6] : 1])
+  }));
+  const o = q('o').split('|').map(x => x.trim()).filter(x => /^[\w ]{2,30}$/.test(x)).slice(0, 8);
+  return {v: q('v').slice(0, 12), c: /^[\w.=;-]*$/.test(c) ? c : '', m, o, at: Date.now()};
+}
 function dec(s) { try { return decodeURIComponent(s || ''); } catch (e) { return String(s || ''); } }
 
 // onData(g) — на каждый запрос мода. Возвращает сервер (или null, если порт занят — тогда onErr).
-function start(onData, onErr) {
+// 0.4.8: h.um(отчёт мода), h.cfg() → {s, v} — настройки с сайта для мода: страница с заголовком RL_SET:<метка>:<настройки>
+function start(onData, onErr, h) {
+  h = h || {};
   const srv = http.createServer((req, res) => {
+    if (req.url.startsWith('/um.png')) {
+      try { h.um && h.um(parseUm(req.url)); } catch (e) {}
+      res.writeHead(200, {'Content-Type': 'image/png', 'Content-Length': PNG.length, 'Cache-Control': 'no-store'});
+      return res.end(PNG);
+    }
+    if (req.url.startsWith('/cfg.html')) {
+      let c = null; try { c = h.cfg && h.cfg(); } catch (e) {}
+      const s = c && /^[0-9a-z]{1,12}$/.test(c.s || '') ? c.s : '0', v = c && /^[\w.=;-]*$/.test(c.v || '') ? c.v : '';
+      const body = '<!doctype html><meta charset="utf-8"><title>RL_SET:' + s + ':' + encodeURIComponent(v) + '</title>';
+      res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store'});
+      return res.end(body);
+    }
     if (req.url.startsWith('/rl.png')) {
       try { onData(parse(req.url)); } catch (e) {}
       res.writeHead(200, {'Content-Type': 'image/png', 'Content-Length': PNG.length, 'Cache-Control': 'no-store'});
@@ -36,4 +67,4 @@ function start(onData, onErr) {
   return srv;
 }
 
-module.exports = {PORT, parse, start};
+module.exports = {PORT, parse, parseUm, start};

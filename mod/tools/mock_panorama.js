@@ -28,18 +28,20 @@ function parse(xml,top){
   const at={};rest.replace(/([\w-]+)="([^"]*)"/g,(_,k,v)=>{at[k]=v.replace(/&amp;/g,'&').replace(/&apos;/g,"'")});
   const p=add(st[st.length-1],P(tag,at.id,at));if(!self)st.push(p)}
  return top.ch[top.ch.length-1]}
-let sched=[];const msgs=[];const props=[];let CLOCK=Date.now();const FD={now:()=>CLOCK};const acts=[];
+const UNH={},FIRE=[];let sched=[];const msgs=[];const props=[];let CLOCK=Date.now();const FD={now:()=>CLOCK};const acts=[];
 function run(ctxp){const $={GetContextPanel:()=>ctxp,CreatePanel:(t,par,id,pr)=>{const p=add(par,P(t,id,pr||{}));props.push(pr||{});return p},
  Msg:m=>msgs.push(m),Schedule:(d,f)=>sched.push(f),RegisterEventHandler:(e,p,f)=>{(p.h||(p.h={}))[e]=f},
+ RegisterForUnhandledEvent:(e,f)=>{(UNH[e]||(UNH[e]=[])).push(f)},
  // как в игре: {i:имя} ищется в переменных панели и выше
  Localize:(s,p)=>s.replace(/\{[ids]:(\w+)\}/g,(m,k)=>{for(let q=p;q;q=q.par)if(q.dv&&k in q.dv)return String(q.dv[k]);return m}),
- DispatchEvent:(e,a)=>{if(e==='ExternalBrowserGoToURL')msgs.push('URL '+a);if(e==='Activated')acts.push(a);if(e==='DismissAllContextMenus')cards.splice(0).forEach(c=>c.DeleteAsync())}};
+ DispatchEvent:(e,a)=>{if(e==='ClientUI_FireOutput'){FIRE.push(a);(UNH[e]||[]).slice().forEach(f=>f(a))}if(e==='ExternalBrowserGoToURL')msgs.push('URL '+a);if(e==='Activated')acts.push(a);if(e==='DismissAllContextMenus')cards.splice(0).forEach(c=>c.DeleteAsync())}};
  vm.runInNewContext(src,{$,SteamOverlayAPI:{OpenURL:u=>msgs.push('URL '+u)},Date:FD,Math,String});return $}
 const cards=[];
 // страница store.html (браузер игры): отвечает заголовком на следующем такте; localStorage общий — переживает «перезапуск игры»
 const LSO={},PAGES=new Map();let pageQ=[],PAGE_HOLD=false,PAGE_DOWN=false;
 const STORE_JS=(fs.readFileSync(path.join(__dirname,'../../restless/store.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)||[])[1];
-global.onURL=(p,u)=>{if(PAGE_DOWN)return;const i=u.indexOf('#'),base=i<0?u:u.slice(0,i),h=i<0?'':u.slice(i);let pg=PAGES.get(p);
+let PROG_TITLE=null;
+global.onURL=(p,u)=>{if(/^http:\/\/127\.0\.0\.1:27515\/cfg\.html/.test(u)){if(PROG_TITLE)pageQ.push(()=>{if(p.valid&&p.h&&p.h.HTMLTitle)p.h.HTMLTitle(p,PROG_TITLE)});return}if(PAGE_DOWN)return;const i=u.indexOf('#'),base=i<0?u:u.slice(0,i),h=i<0?'':u.slice(i);let pg=PAGES.get(p);
  const fire=t=>pageQ.push(()=>{if(p.valid&&p.h&&p.h.HTMLTitle)p.h.HTMLTitle(p,t)});
  if(pg&&pg.base===base&&h){if(pg.loc.hash!==h){pg.loc.hash=h;pageQ.push(()=>pg.hc.forEach(f=>f()))}return}
  pg={base,loc:{hash:h},hc:[]};PAGES.set(p,pg);
@@ -115,7 +117,7 @@ ok(shade.style.width==='1920px'&&shade.style.height==='1080px','подложка
 ok(/по центру|поправлено/.test(texts().join(' ')),'строка проверки в окне');
 {const tx=texts().join(' / ');ok(/ЧТО ВИДИТ МОД/.test(tx)&&/Души: 7,250/.test(tx),'«Что видит мод»: души — '+(tx.match(/Души: [^/]*/)||[''])[0]);
  ok(/Магазин: ячеек 3 · первые: Headshot Booster, High-Velocity Mag, Monster Rounds/.test(tx),'магазин: ячейки и названия');
- ok(/Лагеря на миникарте: 5 · сейчас живы: 3/.test(tx),'лагеря: всего и живы (neutral_spawn не считаем)');
+ ok(/Мини-карта: меток \d+ · лагерей 4 · сейчас живы: 3/.test(tx),'лагеря с таймером: всего и живы (neutral_spawn и сейф без таймера не считаем): '+(tx.match(/Мини-карта:[^/]*/)||[''])[0]);
  ok(msgs.some(m=>/\[Restless\] видит: Души: 7,250/.test(m)),'то же в консоль при открытии окна');}
 // переключатели
 const btns=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');
@@ -208,7 +210,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
  const pp=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px');ok(pp.length===3&&pp[2].ch[0].text==='Enchanted'&&pp[0].ch[0].text==='Lite'&&pp[0].style.backgroundColor==='#ffc83d','набор: Lite выбран по умолчанию');
  ok(texts().includes('Ранги игроков')&&texts().includes('Таймеры лагерей')&&texts().includes('Пропавшие враги'),'новые переключатели в окне');
- const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===20,'переключателей 20: '+tg.length);
+ const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===22,'переключателей 22: '+tg.length);
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(12);
  // ранги: значок под портретом у кого есть ID (11 из 12 — из профилей и account_id)
  const RI=TP.map(p=>p.FindChildTraverse('RestlessRank'));
@@ -281,7 +283,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
 {const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px');
  const se=add(hud,P('Panel','StatusEffects'));const zb=add(hud,P('Panel','citadel_ability_zipline_boost_',{class:'citadel_ability_zipline_boost active'}));const zc=add(zb,P('Label','context_label',{text:''}));
  TP[0].dv.objective_damage=12450;TP[1].dv.objective_damage=830;ms.dv={movement_speed:'7.4 m/s'};
- const sp=all(hud).filter(x=>x.paneltype==='CitadelHTMLPanel');
+ const sp=all(hud).filter(x=>x.paneltype==='CitadelHTMLPanel'&&/store\.html/.test(x.url||''));
  ok(sp.length===1&&/^https:\/\/1f8t8graf4-ai\.github\.io\/dota-\/restless\/store\.html\?v=1/.test(sp[0].url)&&sp[0].style.width==='2px'&&sp[0].style.opacity==='0.01','память: скрытая страница store.html одна, 2×2 px: '+(sp[0]&&sp[0].url.slice(0,70)));
  ok(msgs.some(m=>/память настроек: загружено/.test(m)),'память: страница ответила — загружено');
  ok(/MARK=1/.test(LSO.restless_mod_v1||'')&&/LANG=ru/.test(LSO.restless_mod_v1||''),'что меняли в тестах выше — уже записано: '+LSO.restless_mod_v1);
@@ -317,21 +319,62 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  const row=(nm,tr,cl)=>{const r=add(rpc,P('Panel','',{class:'recentPurchase '+(cl||'')}));add(r,P('Label','',{class:'recentTimePurchased',text:'12:01'}));add(r,P('Label','',{class:'recentModPurchaseName',text:nm}));add(r,P('Label','',{class:'recentModTierCost',text:tr}));return r};
  row('Extra Stamina','T1','isTeam1Purchase');row('Monster Rounds','T1','isTeam2Purchase');
  tick(140);
- const am=F('RestlessAmmo');ok(am&&am.style.visibility==='visible'&&am.text==='23 / 40'&&am.style.color==='#ffffff','патроны под прицелом: «'+(am&&am.text)+'»');
- ac.text='8';tick(1);ok(am.text==='8 / 40'&&am.style.color==='#ff5b4b','мало патронов (≤ четверти) — красным');
- rb.cls.add('has_active_reload');tick(1);ok(am.text==='ПЕРЕЗАРЯДКА'&&am.style.color==='#ffc83d','перезарядка: «'+am.text+'»');rb.cls.delete('has_active_reload');ac.text='40';tick(1);
+ ok(!F('RestlessAmmo')||F('RestlessAmmo').style.visibility==='collapse','0.21: своих цифр патронов нет (дубль родных)');
+ ok(ap.style.visibility==='visible','0.21: родные патроны игры у прицела держим видимыми');
+ rb.cls.add('has_active_reload');tick(1);const am=F('RestlessAmmo');ok(am&&am.style.visibility==='visible'&&am.text==='ПЕРЕЗАРЯДКА'&&am.style.color==='#ffc83d','перезарядка: «'+(am&&am.text)+'»');rb.cls.delete('has_active_reload');tick(1);
+ ok(am.style.visibility==='collapse','перезарядка кончилась — надписи нет');
  ok(om.style.visibility==='visible'&&oc.style.visibility==='visible','карта строений игры показана (ObjectivesMap и ObjectiveCtn)');
  const B=()=>F('RestlessBuy');ok(!B()||B().style.visibility==='collapse','старые покупки не показываем — только новые');
  row('Mystic Shot','T3 · 3000','isTeam2Purchase');tick(4);
- const b0=B()&&B().GetChild(0);ok(B()&&B().style.visibility==='visible'&&b0.text==='Купили: Mystic Shot · T3 · 3000'&&b0.style.color==='#6fa8ff','новая покупка — справа: «'+(b0&&b0.text)+'»');
- row('Spirit Strike','T2','isTeam1Purchase');tick(2);ok(B().GetChild(0).text==='Купили: Spirit Strike · T2'&&B().GetChild(1).text==='Купили: Mystic Shot · T3 · 3000','свежая — сверху, до трёх');
+ const b0=B()&&B().GetChild(0).GetChild(1);ok(B()&&B().style.visibility==='visible'&&b0.text==='Купили: Mystic Shot · T3 · 3000'&&b0.style.color==='#6fa8ff','новая покупка — справа: «'+(b0&&b0.text)+'»');
+ row('Spirit Strike','T2','isTeam1Purchase');tick(2);ok(B().GetChild(0).GetChild(1).text==='Купили: Spirit Strike · T2'&&B().GetChild(1).GetChild(1).text==='Купили: Mystic Shot · T3 · 3000','свежая — сверху, до трёх');
  tick(36);ok(B().style.visibility==='collapse','через 8 с — пусто');
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
- {const tx=texts().join(' / ');ok(/Патроны: 40\/40 · карта строений: показана · покупок в магазине: 4/.test(tx),'«Что видит мод»: '+(tx.match(/Патроны:[^/]*/)||[''])[0]);}
+ {const tx=texts().join(' / ');ok(/Патроны: у прицела \(игра\), держим видимыми · карта строений: показана · покупок в магазине: 4/.test(tx),'«Что видит мод»: '+(tx.match(/Патроны:[^/]*/)||[''])[0]);}
  const pp=all(F('RestlessWindow')).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px');pp[0].ev.onactivate();tick(8);
- ok(am.style.visibility==='collapse'&&om.style.visibility===null&&oc.style.visibility===null,'Lite — патронов нет, карта строений снова как у игры');
+ ok(am.style.visibility==='collapse'&&ap.style.visibility===null&&om.style.visibility===null&&oc.style.visibility===null,'Lite — патронов нет, карта строений снова как у игры');
  pp[2].ev.onactivate();tick(2);shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.20 (Enchanted): '+vps+' панелей в секунду');ok(vps<all(hud).length,'0.20: нагрузка меньше одного HUD: '+vps);}
+// 0.21: моды рядом (UMM), настройки с сайта, урна/разлом, ящики на мини-карте, Deadlock Utils
+{const mm=F('hud_minimap'),gt=F('GameTime');gt.text='3:30';
+ // Enhanced Quickbuy: на hello отвечает register, на set — меняет своё
+ const EQ={};$EQ=(a)=>{let o;try{o=JSON.parse(a)}catch(e){return}if(o.t==='hello')FIRE_EQ();if(o.t==='set'&&o.id==='enhanced_quickbuy')EQ[o.key]=o.value};
+ const FIRE_EQ=()=>(UNH.ClientUI_FireOutput||[]).slice().forEach(f=>f(JSON.stringify({umm:1,t:'register',id:'enhanced_quickbuy',name:'Enhanced Quickbuy',settings:[{id:'enabled',type:'toggle',label:'Enabled',default:true},{type:'group',label:'Display'},{id:'preview_count',type:'slider',label:'Items shown',min:1,max:5,step:1,default:3}]})));
+ (UNH.ClientUI_FireOutput||(UNH.ClientUI_FireOutput=[])).push($EQ);
+ tick(80);
+ ok(FIRE.some(a=>/"t":"hello"/.test(a)),'моды рядом: Restless позвал (hello)');
+ ok(msgs.some(m=>/мод рядом: Enhanced Quickbuy · настроек 2/.test(m)),'Enhanced Quickbuy зарегистрировался: 2 настройки (группа — не настройка)');
+ em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
+ {const tx=texts().join(' / ');ok(/МОДЫ РЯДОМ/.test(tx)&&/Enhanced Quickbuy/.test(tx)&&/Items shown/.test(tx),'в окне — «МОДЫ РЯДОМ» с его настройками');}
+ const ub=all(F('RestlessWindow')).filter(x=>x.type==='Button'&&x.style.width==='92px');ok(ub.length===2,'две кнопки настроек мода: '+ub.length);
+ ub[0].ev.onactivate();tick(1);ok(EQ.enabled===false,'выключил в окне — мод получил set enabled=false');
+ ub[1].ev.onactivate();tick(1);ok(EQ.preview_count===4,'ползунок 3 → 4: '+EQ.preview_count);
+ tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
+ shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
+ // отчёт программе
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.21&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ // с сайта: надпись выкл и ползунок мода = 2
+ PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);
+ ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');
+ const before=FIRE.length;tick(130);ok(!FIRE.slice(before).some(a=>/"t":"set"/.test(a)),'та же метка — второй раз не применяем');
+ PROG_TITLE=null;hud.SetAttributeString('RESTLESS_MARK','1');
+ // мод перезапустился (новый матч) — Restless сам отдаёт сохранённое
+ EQ.enabled=true;FIRE_EQ();ok(EQ.enabled===false&&EQ.preview_count===2,'мод зарегистрировался заново — получил сохранённое');
+ // урна, разлом, мост
+ hud.SetAttributeString('RESTLESS_RIFT','1');gt.text='12:00';const cp=add(mm,P('Button','koth',{class:'map_button capture_point koth_warning'}));tick(8);
+ const R=()=>F('RestlessRift');ok(R()&&/Разлом через 0:[12]\d/.test(R().text),'разлом: koth_warning — точный отсчёт 20 с: «'+(R()&&R().text)+'»');
+ cp.cls.delete('koth_warning');const km=add(hud,P('Panel','KothCashInMeter',{class:'capturing'}));add(km,P('Label','KothCashInTeamLabel1',{text:'37'}));tick(90);
+ ok(/Разлом открыт · 37%/.test(R().text),'разлом идёт — с прогрессом: «'+R().text+'»');
+ const pb=add(mm,P('Button','pb',{class:'map_button player PlayerIsHoldingIdol enemy'}));tick(30);ok(/^Урну несут враги/.test(R().text)&&R().style.color==='#ff6b5b','урну несут враги (PlayerIsHoldingIdol): «'+R().text+'»');
+ pb.DeleteAsync();tick(30);ok(/Урна ~5:0\d|Урна ~4:5\d/.test(R().text),'урну сдали — следующая ~через 5:00: «'+R().text+'»');
+ add(mm,P('Button','bf',{class:'map_button powerup_spawn powerup_gun'}));tick(30);ok(/Бафф на мосту/.test(R().text),'бафф на мосту: «'+R().text+'»');
+ hud.SetAttributeString('DeadlockUtils_Instancia','normal');tick(30);ok(R().style.visibility==='collapse','Deadlock Utils рядом — урну и разлом не дублируем');
+ hud.SetAttributeString('DeadlockUtils_Instancia','');
+ // ящики на мини-карте
+ hud.SetAttributeString('RESTLESS_BOX','1');Object.assign(mm,{actuallayoutwidth:410,actuallayoutheight:410});tick(8);const bx=F('RestlessBoxes');
+ ok(bx&&bx.par===mm&&bx.ch.length===669&&bx.style.visibility==='visible'&&bx.style.preTransformScale2d==='0.5','ящики и статуи: слой в hud_minimap, 669 точек, масштаб под карту: '+(bx&&bx.ch.length)+' · '+(bx&&bx.style.preTransformScale2d));
+ gt.text='2:00';tick(8);ok(bx.style.visibility==='collapse','до 2:45 ящиков нет — точки спрятаны');gt.text='12:00';
+ VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.21 (всё вкл.): '+vps+' панелей в секунду');ok(vps<all(hud).length,'0.21: нагрузка меньше одного HUD (точки ящиков не перебираем): '+vps+' < '+all(hud).length);}
 // бот
 F('RestlessSiteBtn').ev.onactivate();ok(msgs.includes('URL https://1f8t8graf4-ai.github.io/dota-/restless/'),'кнопка «Мой Restless» открывает сайт');
 F('RestlessBotBtn').ev.onactivate();ok(msgs.includes('URL https://t.me/languagegamesbot'),'кнопка бота открывает ссылку');
