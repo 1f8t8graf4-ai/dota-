@@ -2,12 +2,14 @@
 """Restless мод 0.22: слои мини-карты одной картинкой (вместо 670 панелей — 3 картинки, FPS).
 Позиции — BXD из mod/.../restless.js (deadlock-api /v1/assets/map, ×1000 от размера мини-карты).
 Выход: restless/mm/c.png (обычные ящики), t.png (крепкие), g.png (золотые статуи), 820×820 ×2.
-Значки нарисованы здесь (не из игры): ящик — доска с перекрестьем, крепкий — с железными уголками, статуя — золотой силуэт."""
+Значки — из restless/mm/icons/{c,t,g}.png (64×64, нарисованы Зеткой 04.11, свои); если файла нет —
+фолбэк на рисование кодом ниже (ящик — доска с перекрестьем, крепкий — с железными полосами, статуя — золотой силуэт)."""
 import re, os
 from PIL import Image, ImageDraw, ImageFilter
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JS = os.path.join(ROOT, 'mod/restless-probe/panorama/scripts/restless.js')
 OUT = os.path.join(ROOT, 'restless/mm')
+ICONS = os.path.join(OUT, 'icons')
 S = 2            # картинка ×2 к слою 820 px — чётче
 W = 820 * S
 SS = 4           # сглаживание значка
@@ -40,6 +42,14 @@ def glow(icon):
     sh = Image.new('RGBA', icon.size, (0, 0, 0, 0)); sh.putalpha(a.point(lambda v: min(255, int(v * 1.2))))
     out = Image.new('RGBA', icon.size, (0, 0, 0, 0)); out.alpha_composite(sh); out.alpha_composite(icon); return out
 
+def png_icon(k):
+    """Значок Зетки из restless/mm/icons/ (64 или 32), None — если файлов нет."""
+    for name in (k + '.png', k + '-32.png'):
+        p = os.path.join(ICONS, name)
+        if os.path.exists(p):
+            return Image.open(p).convert('RGBA')
+    return None
+
 def main():
     s = open(JS, encoding='utf-8').read()
     m = re.search(r"var BXD = \{ c: '([^']*)', t: '([^']*)', g: '([^']*)'", s)
@@ -48,7 +58,8 @@ def main():
     spec = {'c': (9, lambda z: crate(z)), 't': (13, lambda z: crate(z, True)), 'g': (13, statue)}
     for k, (z, fn) in spec.items():
         zz = z * S
-        ic = glow(fn(zz)).resize((zz, zz), Image.LANCZOS)
+        src = png_icon(k)                     # свои PNG — приоритет
+        ic = glow(src if src is not None else fn(zz)).resize((zz, zz), Image.LANCZOS)
         im = Image.new('RGBA', (W, W), (0, 0, 0, 0)); n = 0
         for p in data[k].split(';'):
             a = p.split(',')
