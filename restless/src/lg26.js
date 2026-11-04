@@ -136,9 +136,9 @@ viewOvs = function () {
   window.scrollTo(0, 0);
   const o = u26LGet();
   V(`<section class="ovs u26-lb">
-    <header class="ovs-h"><h1>Лобби</h1></header>
+    <header class="ovs-h"><h1>Оверлей</h1></header>
     <div class="ovs-st" id="ovsst"></div>
-    <section class="u26-lbs"><div class="q-sec"><b>Карточки игроков в лайв-матче</b></div>
+    <section class="u26-lbs"><div class="q-sec"><b>Лобби · карточки игроков</b></div>
       <div class="u26-lbg" id="u26lb">${U26L.map(([k, nm]) => `<label class="u26-sw"><input type="checkbox" data-k="${k}"${o[k] === 0 ? '' : ' checked'}><span class="tr"></span><b>${nm}</b></label>`).join('')}
         <label class="u26-sw"><input type="checkbox" data-k="cmp"${o.cmp ? ' checked' : ''}><span class="tr"></span><b>Компактнее</b></label></div>
       <p class="u26-gm">Мод в игре — <b>Esc → RESTLESS</b></p></section>
@@ -149,5 +149,5 @@ viewOvs = function () {
     if (c.dataset.k === 'cmp' && !c.checked) delete s.cmp; try { localStorage.setItem('rl-lobby', JSON.stringify(s)); } catch (er) {} u26LApply(); };
 };
 // подпись вкладки
-{ const fix = () => { const a = document.querySelector('#tabs [data-t="ovs"]'); if (a && !a.dataset.u26) { a.dataset.u26 = 1; a.title = 'Лобби: что показывать в лайв-матче'; const sv = a.querySelector('svg'); a.textContent = ''; if (sv) a.append(sv); a.append(' Лобби'); } };
+{ const fix = () => { const a = document.querySelector('#tabs [data-t="ovs"]'); if (a && !a.dataset.u26) { a.dataset.u26 = 1; } };
   new MutationObserver(fix).observe(document.body, {childList: true, subtree: true}); fix(); }

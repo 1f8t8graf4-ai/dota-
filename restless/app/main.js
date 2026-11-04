@@ -1,3 +1,4 @@
+// Restless Overlay 0.4.9 — мод проверяется каждые 20 мин и сразу после выхода из игры; Restless новее нашего в папке модов не заменяем старым.
 // Restless Overlay 0.4.8 — настройки мода с сайта («Оверлей» → мод в игре через 127.0.0.1/cfg.html) и «Моды рядом» (настройки модов с протоколом UMM).
 // 0.4.7 — окно шире (1600×960, на маленьком экране — почти во весь), чтобы команда стояла в один ряд, а обе команды — на экране.
 // Restless Overlay 0.4.6 — сайт в окне всегда свежий (без старого кэша), матч нашёлся — окно на «Лайв-матче» (игроки из игры).
@@ -12,7 +13,7 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.4.8';
+const VER = '0.4.9';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
@@ -153,7 +154,8 @@ async function pakUpdate() {
   try {
     const r = await fetch(PAK_URL + '?t=' + Date.now(), {cache: 'no-store'});
     if (r.ok) { const b = Buffer.from(await r.arrayBuffer()); let cur = null; try { cur = fs.readFileSync(PAK_FILE); } catch (e) {}
-      if (isPak(b) && !(cur && cur.equals(b))) { fs.writeFileSync(PAK_FILE, b); setupMod(); } }
+      if (isPak(b) && !(cur && cur.equals(b))) { fs.writeFileSync(PAK_FILE, b); setupMod();
+        if (proc && !TEST_PROC) tray && tray.displayBalloon && tray.displayBalloon({title: 'Restless', content: `Скачал мод ${pakVer(b)} — закрой игру, поставлю сам. Новый мод заработает со следующего запуска игры.`}); } }
   } catch (e) {}
   try {
     const r = await fetch(PKG_URL + '?t=' + Date.now(), {cache: 'no-store'});
@@ -176,7 +178,7 @@ function watchGame() {
   if (process.platform === 'win32') setInterval(() => exec('tasklist /FO CSV /NH', {windowsHide: true, maxBuffer: 4 * 1024 * 1024}, (err, out) => {
     const on = !err && /"(project8|deadlock)\.exe"/i.test(out || '');
     if (on === proc) return; proc = on;
-    if (!on) { if (MOD.status === 'busy') setupMod(); userHidden = false; if (cfg.auto && win) win.hide(); }
+    if (!on) { pakUpdate().then(() => setupMod()); userHidden = false; if (cfg.auto && win) win.hide(); }
     iconTick(); menu(); push();
   }), 5000);
   // окно поверх игры: Windows иногда кладёт игру выше — поднимаем раз в 3 с
@@ -220,7 +222,7 @@ app.whenReady().then(() => {
   iconTick(); menu();
   setInterval(iconTick, 1000);
   setTimeout(() => setupMod(), 1500);
-  setTimeout(pakUpdate, 6000); setInterval(pakUpdate, 3 * 3600e3);
+  setTimeout(pakUpdate, 6000); setInterval(pakUpdate, 20 * 60e3);
   watchGame();
 });
 app.on('will-quit', () => globalShortcut.unregisterAll());

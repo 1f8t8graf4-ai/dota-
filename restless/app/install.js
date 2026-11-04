@@ -88,6 +88,8 @@ function vpkTree(file) {
   } catch (e) { return null; } finally { if (fd !== undefined) try { fs.closeSync(fd); } catch (e) {} }
 }
 // наш пак: скрипт restless (0.4+) или restless_probe (пробник 27.10)
+const pakVerOf = b => { const m = /var VER = '([\d.]+)'/.exec(b ? b.toString('latin1') : ''); return m ? m[1] : '0'; };
+const newerVer = (a, b) => { const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < Math.max(x.length, y.length); i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); return false; };
 const isRestless = tree => !!tree && /\0restless(_probe)?\0/.test(tree);
 
 function steamRoots() {
@@ -145,6 +147,8 @@ function install(dir, buf, opt) {
       const p = path.join(addons, n), tr = vpkTree(p);
       if (!isRestless(tr)) continue;
       if (!same && fs.statSync(p).size === buf.length && fs.readFileSync(p).equals(buf)) { same = n; continue; }
+      // 0.4.9: в папке уже стоит Restless новее нашего (поставил руками / скачала другая программа) — старым не заменяем
+      if (!same && newerVer(pakVerOf(fs.readFileSync(p)), pakVerOf(buf))) { same = n; continue; }
       mine.push(n);
     }
     // старые паки Restless — в game/citadel/restless_old (игра их оттуда не грузит), не удаляем
@@ -165,4 +169,4 @@ function install(dir, buf, opt) {
   return r;
 }
 
-module.exports = {fixGameinfo, fpsGameinfo, fpsVars, FPS_LEVELS, vpkTree, isRestless, findDeadlock, libraries, install};
+module.exports = {pakVerOf, newerVer, fixGameinfo, fpsGameinfo, fpsVars, FPS_LEVELS, vpkTree, isRestless, findDeadlock, libraries, install};
