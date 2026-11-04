@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>RL</title>
+<!--
+  Restless 0.25: лучшая сборка на героя для мода (кнопка «★ Restless» в окне сборок игры).
+  Мод открывает страницу невидимо: bld.html?h=<hero_id или имя героя> → заголовок RL_BLD:<hero_id>:<номер сборки>[:p], p — выбрана на сайте.
+  Сначала — сборка, которую игрок выбрал на сайте внутри игры (localStorage restless_build, 30 минут); иначе — как «Рекомендованный билд»
+  на сайте: из 12 самых популярных за 30 дней (от 30 игр) — лучшая по винрейту с поправкой на выборку.
+-->
+<script>
+(function () {
+  var N = {"infernus": 1, "seven": 2, "vindicta": 3, "lady geist": 4, "abrams": 6, "wraith": 7, "mcginnis": 8, "paradox": 10, "dynamo": 11, "kelvin": 12, "haze": 13, "holliday": 14, "bebop": 15, "calico": 16, "grey talon": 17, "mo & krill": 18, "shiv": 19, "ivy": 20, "warden": 25, "yamato": 27, "lash": 31, "viscous": 35, "pocket": 50, "mirage": 52, "vyper": 58, "sinclair": 60, "mina": 63, "drifter": 64, "venator": 65, "victor": 66, "paige": 67, "the doorman": 69, "billy": 72, "graves": 76, "apollo": 77, "deadman danny": 78, "rem": 79, "silver": 80, "celeste": 81, "rat king": 84, "solomon": 85, "violet": 86, "nurse harrow": 87, "baba": 88, "инфернус": 1, "семь": 2, "виндикта": 3, "леди гайст": 4, "абрамс": 6, "тень": 7, "макгиннис": 8, "парадокс": 10, "динамо": 11, "кельвин": 12, "пелена": 13, "холлидей": 14, "бибоп": 15, "калико": 16, "серый коготь": 17, "мо и мелкий": 18, "заточка": 19, "плющик": 20, "дозорный": 25, "ямато": 27, "хлыст": 31, "вязкус": 35, "карман": 50, "мираж": 52, "гадюка": 58, "синклер": 60, "мина": 63, "скиталец": 64, "венатор": 65, "виктор": 66, "пейдж": 67, "швейцар": 69, "билли": 72, "грейвс": 76, "аполлон": 77, "дохлый дэнни": 78, "дрём": 79, "сильвер": 80, "селеста": 81, "крысиный король": 84, "соломон": 85, "виолетта": 86, "сестра хэрроу": 87, "буся": 88};
+  function say(t) { document.title = t; }
+  var q = new URLSearchParams(location.search), h = (q.get('h') || '').trim(), hid = /^\d{1,3}$/.test(h) ? +h : N[h.toLowerCase()] || 0;
+  if (!hid) { say('RL_BLD:0:0'); return; }
+  try { var p = JSON.parse(localStorage.getItem('restless_build') || 'null'); if (p && +p.h === hid && Date.now() - p.t < 1800000 && /^\d{3,9}$/.test(String(p.id))) { say('RL_BLD:' + hid + ':' + p.id + ':p'); return; } } catch (e) {}
+  var t = Math.floor(Date.now() / 1000) - 30 * 86400;
+  function wil(w, m) { if (!m) return 0; var z = 1.96, p = w / m; return (p + z * z / (2 * m) - z * Math.sqrt((p * (1 - p) + z * z / (4 * m)) / m)) / (1 + z * z / m); }
+  fetch('https://api.deadlock-api.com/v1/analytics/hero-build-stats/' + hid + '?min_unix_timestamp=' + t + '&min_matches=30').then(function (r) { return r.json(); }).then(function (S) {
+    var top = (S || []).slice().sort(function (a, b) { return b.matches - a.matches; }).slice(0, 12).sort(function (a, b) { return wil(b.wins, b.matches) - wil(a.wins, a.matches); })[0];
+    say('RL_BLD:' + hid + ':' + (top ? top.hero_build_id : 0));
+  }).catch(function () { say('RL_BLD:' + hid + ':0'); });
+})();
+</script>

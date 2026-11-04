@@ -41,7 +41,7 @@ const cards=[];
 const LSO={},PAGES=new Map();let pageQ=[],PAGE_HOLD=false,PAGE_DOWN=false;
 const STORE_JS=(fs.readFileSync(path.join(__dirname,'../../restless/store.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)||[])[1];
 let PROG_TITLE=null;
-global.onURL=(p,u)=>{if(/^http:\/\/127\.0\.0\.1:27515\/cfg\.html/.test(u)){if(PROG_TITLE)pageQ.push(()=>{if(p.valid&&p.h&&p.h.HTMLTitle)p.h.HTMLTitle(p,PROG_TITLE)});return}if(PAGE_DOWN)return;const i=u.indexOf('#'),base=i<0?u:u.slice(0,i),h=i<0?'':u.slice(i);let pg=PAGES.get(p);
+global.BLD_URLS=[];global.onURL=(p,u)=>{if(/\/bld\.html\?h=/.test(u)){BLD_URLS.push(u);const h=decodeURIComponent((/h=([^&]+)/.exec(u)||[])[1]||'');pageQ.push(()=>{if(p.valid&&p.h&&p.h.HTMLTitle)p.h.HTMLTitle(p,'RL_BLD:'+(/^\d+$/.test(h)?h:65)+':449466')});return}if(/^http:\/\/127\.0\.0\.1:27515\/cfg\.html/.test(u)){if(PROG_TITLE)pageQ.push(()=>{if(p.valid&&p.h&&p.h.HTMLTitle)p.h.HTMLTitle(p,PROG_TITLE)});return}if(PAGE_DOWN)return;const i=u.indexOf('#'),base=i<0?u:u.slice(0,i),h=i<0?'':u.slice(i);let pg=PAGES.get(p);
  const fire=t=>pageQ.push(()=>{if(p.valid&&p.h&&p.h.HTMLTitle)p.h.HTMLTitle(p,t)});
  if(pg&&pg.base===base&&h){if(pg.loc.hash!==h){pg.loc.hash=h;pageQ.push(()=>pg.hc.forEach(f=>f()))}return}
  pg={base,loc:{hash:h},hc:[]};PAGES.set(p,pg);
@@ -214,7 +214,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
  const pp=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px'&&x.ch[0]&&/^(Lite|Medium|Enchanted)$/.test(x.ch[0].text));ok(pp.length===3&&pp[2].ch[0].text==='Enchanted'&&pp[0].ch[0].text==='Lite'&&pp[0].style.backgroundColor==='#ffc83d','набор: Lite выбран по умолчанию');
  ok(texts().includes('Ранги игроков')&&texts().includes('Таймеры лагерей')&&texts().includes('Пропавшие враги'),'новые переключатели в окне');
- const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===21,'переключателей 21 (0.22: урона по строениям нет): '+tg.length);
+ const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===23,'переключателей 23 (0.25: + активные предметы, меню песочницы): '+tg.length);
  ok(!texts().includes('Урон по строениям'),'0.22: «Урон по строениям» убран');
  ok(all(win).filter(x=>x.type==='Image'&&/minimap|zipline|mm\/zip/.test(x.attrs.src||'')).length>=5,'0.22: у функций — значки игры');
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(12);
@@ -291,7 +291,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
 {em.cls.add('ShowEscapeMenu');tick(2);const lb=F('RestlessLiveBtn');ok(lb&&/^LIVE/.test(LT(lb)),'0.23: в Esc кнопка «'+(lb?LT(lb):'')+'»');
  lb.ev.onactivate();const w=F('RestlessLiveWeb');const u=w&&decodeURIComponent(w.url||'');
  ok(w&&w.paneltype==='CitadelHTMLPanel'&&/restless\/\?app=1&embed=1/.test(w.url)&&/#g=/.test(w.url),'окно лайва: страница сайта с составом: '+(w?w.url.slice(0,80):''));
- ok(/v=0\.24/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
+ ok(/v=0\.25/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
  lb.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'второе нажатие — закрыл');
  lb.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveWeb'),'меню закрыли — лайв закрылся');}
 // 0.19: набор Enchanted и память настроек
@@ -368,7 +368,7 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  // отчёт программе
- tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.24&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.25&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
  // с сайта: надпись выкл и ползунок мода = 2
  PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);
  ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');
@@ -400,6 +400,28 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  gt.text='3:05';tick(8);ok(F('RestlessBoxT').text==='Ящики на карте','3:05 — «Ящики на карте»');gt.text='12:00';tick(8);ok(F('RestlessBoxT').style.visibility==='collapse','дальше отсчёта нет');
  hud.SetAttributeString('RESTLESS_BOXV','ico');hud.SetAttributeString('RESTLESS_BXC','0');hud.SetAttributeString('RESTLESS_BXG','1');tick(8);ok(bx.style.visibility==='visible','снова значки');
  VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.21 (всё вкл.): '+vps+' панелей в секунду');ok(vps<all(hud).length,'0.21: нагрузка меньше одного HUD (точки ящиков не перебираем): '+vps+' < '+all(hud).length);}
+// 0.25: Alt через родителя слушателя, активные предметы у прицела, меню песочницы в укрытии
+{const gcl=F('RestlessGCL');gcl.cls.delete('gDetailView');gcl.par.cls.add('gDetailView');tick(4);
+ hud.SetAttributeString('RESTLESS_ALTM','1');hud.SetAttributeString('RESTLESS_PERF','1');tick(4);const pf2=F('RestlessPerf');ok(pf2&&pf2.style.visibility==='visible','0.25: Alt у родителя слушателя (как ставит игра) — считается (нагрузка видна)');
+ gcl.par.cls.delete('gDetailView');tick(40);ok(pf2.style.visibility==='collapse','отпустил Alt — нагрузка спрятана');gcl.par.cls.add('gDetailView');
+ const am=add(hud,P('Panel','ActiveAbilitiesMenu'));const b1=add(am,P('CitadelHudAbilityButton','upgrade_warp_stone_'));const b2=add(am,P('CitadelHudAbilityButton','upgrade_magic_carpet_',{class:'inCooldown'}));b2.dv={cooldown_sec:'23'};add(am,P('CitadelHudAbilityButton','citadel_ability_zipline_boost_'));
+ hud.SetAttributeString('RESTLESS_AIT','1');tick(20);const ar=F('RestlessAit');
+ ok(ar&&ar.style.visibility==='visible'&&ar.ch.length===2,'0.25: у прицела 2 активных предмета (буст каната не предмет): '+(ar&&ar.ch.length));
+ ok(/items\/vitality\/warp_stone_psd/.test(ar.ch[0].ch[0].img)&&/items\/spirit\/magic_carpet_psd/.test(ar.ch[1].ch[0].img),'картинки из файлов игры: '+ar.ch.map(c=>c.ch[0].img.split('/').pop()).join(' '));
+ ok(ar.ch[0].style.border.indexOf('#ffc83d')>=0&&ar.ch[0].ch[1].text===''&&ar.ch[1].ch[0].style.opacity==='0.38'&&ar.ch[1].ch[1].text==='23','готов — рамка, на КД — тускло и «23»');
+ b2.cls.delete('inCooldown');tick(4);ok(ar.ch[1].ch[0].style.opacity==='1'&&ar.ch[1].ch[1].text==='','перезарядился — ярко');
+ hud.SetAttributeString('RESTLESS_AIT','0');tick(4);ok(ar.style.visibility==='collapse','выключил — пропали');
+ hud.SetAttributeString('RESTLESS_SBX','1');const sb=add(hud,P('CitadelHudHeroTesting','',{class:'hud_hero_testing_root'}));top.cls.add('InHideout');tick(30); 
+ ok(sb.style.visibility==='visible','0.25: в укрытии меню песочницы показано (как QoL Lite)');
+ sb.cls.add('gShopOpen');tick(10);ok(sb.style.visibility===null,'открыт магазин — меню отдали игре');
+ sb.cls.delete('gShopOpen');tick(10);hud.SetAttributeString('RESTLESS_SBX','0');tick(10);ok(sb.style.visibility===null,'выключил — как у игры');
+ hud.SetAttributeString('RESTLESS_SBX','1');top.cls.delete('InHideout');tick(10);ok(sb.style.visibility===null,'в матче не трогаем');}
+// 0.25: сборка одной кнопкой — в окне сборок игры кнопка «★ RESTLESS», номер лучшей сборки на своего героя — в поиск игры
+{const tp0=all(top).find(x=>x.type==='CitadelHudTopBarPlayer'&&all(x).some(y=>y.cls&&y.cls.has('PlayerName')));tp0.cls.add('LocalPlayer');
+ const shop=add(hud,P('Panel','BuildSelector'));const sc=add(shop,P('Panel','SearchContainer'));const sbx=add(sc,P('Panel','SearchBox'));const se=add(sbx,P('TextEntry','SearchTextEntry'));se.text='';const rb=add(sc,P('Panel','RefreshButton'));
+ F('RestlessGCL').par.cls.add('gShopOpen');const a0=acts.length;tick(40);const bb=F('RestlessBldBtn');ok(bb&&bb.par===sc,'0.25: в окне сборок игры — кнопка «★ RESTLESS»: '+(bb&&bb.ch[0].text));
+ ok(BLD_URLS.length>=1&&/restless\/bld\.html\?h=/.test(BLD_URLS[0]),'страница сборки спрошена по своему герою: '+(BLD_URLS[0]||'').split('/').pop());
+ const OA=global.onAct,A1=[];global.onAct=()=>{while(acts.length)A1.push(acts.shift())};bb.ev.onactivate();tick(6);global.onAct=OA;ok(se.text==='449466'&&A1.includes(rb),'нажал — номер сборки в поиске игры и поиск запущен: «'+se.text+'»');}
 // бот
 F('RestlessSiteBtn').ev.onactivate();ok(msgs.includes('URL https://1f8t8graf4-ai.github.io/dota-/restless/'),'кнопка «Мой Restless» открывает сайт');
 F('RestlessBotBtn').ev.onactivate();ok(msgs.includes('URL https://t.me/languagegamesbot'),'кнопка бота открывает ссылку');

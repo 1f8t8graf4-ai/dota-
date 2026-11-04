@@ -31,6 +31,6 @@
 		</snippet>
 	</snippets>
 	<CitadelHudSubtitles class="WindowRoot">
-		<GlobalClassListener id="RestlessGCL" hittest="false" classes="gDetailView gScoreboardOpen" />
+		<GlobalClassListener id="RestlessGCL" hittest="false" classes="gDetailView gScoreboardOpen gShopOpen" />
 	</CitadelHudSubtitles>
 </root>

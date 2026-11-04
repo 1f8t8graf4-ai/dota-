@@ -50,7 +50,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.24';
+	var VER = '0.25';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -74,7 +74,7 @@
 		if (!quiet && keep(k)) stDirty(k);
 	}
 	// 0.17: функции Medium и Enchanted по умолчанию выключены (набор Lite)
-	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0', RIFT: '0', BOX: '0', BXC: '0', BXT: '1', BXG: '1', ALTM: '1',
+	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0', RIFT: '0', BOX: '0', BXC: '0', BXT: '1', BXG: '1', ALTM: '1', AIT: '0', SBX: '1',
 		LBR: '1', LBH: '1', LBS: '1', LBP: '1', LBC: '1', LBB: '1', LBT: '1', LBK: '0' };
 	function on(k) { return get(k, DEF[k] || '1') === '1'; }
 	function lang() { return get('LANG', 'ru') === 'en' ? 'en' : 'ru'; }
@@ -108,7 +108,7 @@
 			brOn: 'на мосту', brAt: 'через ', riftIn: 'откроется через ', urnAt: 'примерно через ', bxV: 'Ящики на мини-карте', bxIco: 'Значки', bxTm: 'Время', bxC: 'Обычные', bxT: 'Крепкие', bxG: 'Статуи', bxIn: 'Ящики через ', bxNow: 'Ящики на карте', changed: ' · изменено: ', sCampH: ' — меток лагерей игра не дала (в песочнице их нет), проверь в матче с ботами', uwW: ' · жду полосы', amG: 'у прицела (игра)', amM: 'перенесены к прицелу', amV: ', держим видимыми',
 			riftT: 'Урна, разлом, мост', urnIn: 'через ', urnOn: 'на карте', urnEn: 'несут враги', urnFr: 'несут свои', riftAt: 'в ', riftSoon: 'через 20 с', riftOn: 'открыт',
 			sMm: 'Мини-карта: меток ', sMmC: ' · лагерей ', sMmK: ' · есть: ', sMm0: 'Мини-карта: не нашёл', sBuyP: ' · на портрете ', sSet: ' · с сайта: ', sSetY: 'на связи', sSetN: 'нет связи', sSetA: ', применено ',
-			ammoT: 'Патроны у прицела', rldT: 'Перезарядка у прицела', omapT: 'Карта строений', rbuyT: 'Кто что купил', rld: 'ПЕРЕЗАРЯДКА', buy: 'Купили: ',
+			aitT: 'Активные предметы у прицела', bldB: '★ RESTLESS · лучшая сборка', bldP: '★ RESTLESS · сборка с сайта', bldW: '★ RESTLESS · ищу…', bldN: '★ RESTLESS · сборки нет',  sbxT: 'Меню песочницы в укрытии', sbNo: 'меню песочницы: нет (не укрытие)', sbOn: 'меню песочницы: показано', sbOff: 'меню песочницы: выключено', sbMatch: 'меню песочницы: в матче не трогаем', ammoT: 'Патроны у прицела', rldT: 'Перезарядка у прицела', omapT: 'Карта строений', rbuyT: 'Кто что купил', rld: 'ПЕРЕЗАРЯДКА', buy: 'Купили: ',
 			sAm: 'Патроны: ', sAm0: 'не нашёл', sOm: ' · карта строений: ', sOmY: 'показана', sOm0: 'не нашёл', sRb: ' · покупок в магазине: ',
 			mem: 'Память настроек: ', memOk: 'загружена', memN: ' · своих настроек ', memS: ' · сохранено ', memW: 'жду страницу', memE: 'нет связи со страницей — настройки до выхода из игры'
 		},
@@ -140,7 +140,7 @@
 			brOn: 'on the bridge', brAt: 'in ', riftIn: 'opens in ', urnAt: 'about ', bxV: 'Crates on the minimap', bxIco: 'Icons', bxTm: 'Timer', bxC: 'Normal', bxT: 'Tough', bxG: 'Statues', bxIn: 'Crates in ', bxNow: 'Crates are up', changed: ' · changed: ', sCampH: ' — the game gave no camp markers (none in the sandbox), check in a bot match', uwW: ' · waiting for bars', amG: 'at the crosshair (game)', amM: 'moved to the crosshair', amV: ', kept visible',
 			riftT: 'Urn, rift, bridge', urnIn: 'in ', urnOn: 'on the map', urnEn: 'enemies carry it', urnFr: 'allies carry it', riftAt: 'at ', riftSoon: 'in 20 s', riftOn: 'open',
 			sMm: 'Minimap: markers ', sMmC: ' · camps ', sMmK: ' · has: ', sMm0: 'Minimap: not found', sBuyP: ' · on portrait ', sSet: ' · from site: ', sSetY: 'linked', sSetN: 'no link', sSetA: ', applied ',
-			ammoT: 'Ammo at crosshair', rldT: 'Reload at crosshair', omapT: 'Objectives map', rbuyT: 'Who bought what', rld: 'RELOADING', buy: 'Bought: ',
+			aitT: 'Active items at crosshair', bldB: '★ RESTLESS · best build', bldP: '★ RESTLESS · build from the site', bldW: '★ RESTLESS · looking…', bldN: '★ RESTLESS · no build',  sbxT: 'Sandbox menu in the hideout', sbNo: 'sandbox menu: none (not the hideout)', sbOn: 'sandbox menu: shown', sbOff: 'sandbox menu: off', sbMatch: 'sandbox menu: left to the game in a match', ammoT: 'Ammo at crosshair', rldT: 'Reload at crosshair', omapT: 'Objectives map', rbuyT: 'Who bought what', rld: 'RELOADING', buy: 'Bought: ',
 			sAm: 'Ammo: ', sAm0: 'not found', sOm: ' · objectives map: ', sOmY: 'shown', sOm0: 'not found', sRb: ' · shop purchases: ',
 			mem: 'Settings memory: ', memOk: 'loaded', memN: ' · saved settings ', memS: ' · saves ', memW: 'waiting for the page', memE: 'no link to the page — settings last until you quit'
 		}
@@ -348,9 +348,9 @@
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
 	var TG = [['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
 		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
-		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['RIFT', 'riftT'], ['BOX', 'boxT'], ['ALTM', 'altmT']];
+		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['RIFT', 'riftT'], ['BOX', 'boxT'], ['AIT', 'aitT'], ['SBX', 'sbxT'], ['ALTM', 'altmT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
-	var LITE = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX']);
+	var LITE = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
 	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['ZIP', 'SPD', 'PERF']) };
 	var PREK = PRE.ench;
 	function preset(n) {
@@ -532,6 +532,7 @@
 		out.push(T('sRank') + RKN + T('sLrk') + LRKN[0] + T('sLrkE') + LRKN[1] + T('sCamp') + CMN);
 		out.push(T('sHp') + HPN + T('sMiss') + MISSN + T('sCmb') + (CMBF < 0 ? '—' : !CMBF ? T('sCmb0') : CMBW ? T('sCmbY') : T('sCmbN')) + T('sUns') + UNV);
 		out.push(T('sUw') + UW.n + T('sUwN') + UW.on + (UW.n ? '' : T('uwW')) + T('uwSaw') + UW.hn + (UW.hc ? ' (' + UW.hc + ')' : '') + ' · ' + T('sAlt') + (ALT.found ? (ALT.on ? T('altOn') : T('altOff')) : T('altNo')));
+		out.push((lang() === 'en' ? 'Active items: ' : 'Активные предметы: ') + (AI.st || '—') + ' · ' + (SB.st || '—') + ' · ' + (lang() === 'en' ? 'build: ' : 'сборка: ') + (BL.st || (BL.id ? BL.id + (BL.hid ? ' / ' + BL.hid : '') : BL.hid ? '…' : '—')));
 		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
 		out.push(T('zipT') + ': ' + (ZB.st || T('sZip0')) + T('sSpd') + (SPDV || '—') + T('sPerf') + PF.v.toFixed(1) + T('ms'));
 		out.push(T('sAm') + (AM.st || T('sAm0')) + T('sOm') + (OM.st || T('sOm0')) + T('sRb') + RB.n + T('sBuyP') + RB.pn);
@@ -927,18 +928,130 @@
 	// 0.24: Alt. Пока Alt зажат, игра ставит глобальный класс gDetailView всем GlobalClassListener (подписи умений, мини-карта).
 	// Свой слушатель — в нашей копии citadel_hud_subtitles.xml (RestlessGCL), запасной — minimap_persp из hud.xml.
 	// «Мелочи — только по Alt» (ALTM): буст на канате, нагрузка мода и урна / разлом / мост, пока до них больше 2 минут.
-	var ALT = { L: [], f: 0, on: false, found: false };
+	var ALT = { L: [], f: 0, on: false, found: false, shop: false };
 	function altTick() {
 		if (ALT.f-- <= 0 && ALT.L.length < 2) { ALT.f = 40; ALT.L = []; ['RestlessGCL', 'minimap_persp'].forEach(function (id) { var x = HUD.FindChildTraverse(id); if (ok(x)) ALT.L.push(x); }); ALT.found = ALT.L.length > 0; }
-		var v = false; for (var i = 0; i < ALT.L.length; i++) try { if (ok(ALT.L[i]) && ALT.L[i].BHasClass('gDetailView')) v = true; } catch (e) {}
-		ALT.on = v;
+		// GlobalClassListener ставит класс своему РОДИТЕЛЮ (CitadelZiplineBoostIcon.gDetailView, .gShopOpen.hud_hero_testing_root) — смотрим и туда
+		var v = false, sh = false;
+		for (var i = 0; i < ALT.L.length; i++) { var x = ALT.L[i]; if (!ok(x)) continue; var pp = null; try { pp = x.GetParent(); } catch (e) {}
+			try { if (x.BHasClass('gDetailView') || (ok(pp) && pp.BHasClass('gDetailView'))) v = true; if (x.BHasClass('gShopOpen') || (ok(pp) && pp.BHasClass('gShopOpen'))) sh = true; } catch (e) {} }
+		ALT.on = v; ALT.shop = sh;
 	}
 	function quiet() { return on('ALTM') && !ALT.on; }
+	// 0.25: меню песочницы в укрытии (как QoL Lite; Андрей: «настройки лобби — добавить врага, союзника»). Меню игры CitadelHudHeroTesting
+	// в укрытии есть, но стиль игры его прячет (.connectedToHideout .hud_hero_testing_root { collapse }). Показываем стилем на самой панели;
+	// открыт магазин — прячем (у меню свой слушатель gShopOpen). Выключено или вышли в матч — отдаём игре.
+	var SB = { p: null, f: 0, set: false, st: '' };
+	function sbxTick() {
+		if (HIDE && !SB.h) SB.f = 0;   // зашли в укрытие — искать сразу
+		SB.h = HIDE;
+		if (!HIDE && !SB.set) { SB.st = T('sbMatch'); return; }   // меню песочницы бывает только в укрытии — в матче не ищем
+		if (!ok(SB.p) && SB.f-- <= 0) { SB.f = 20; var L = []; try { L = HUD.FindChildrenWithClassTraverse('hud_hero_testing_root') || []; } catch (e) {} SB.p = L[0] || null; }
+		if (!ok(SB.p)) { SB.st = T('sbNo'); return; }
+		var shop = false; try { shop = SB.p.BHasClass('gShopOpen'); } catch (e) {}
+		var want = on('SBX') && HIDE && !shop;
+		SB.st = want ? T('sbOn') : HIDE ? T('sbOff') : T('sbMatch');
+		if (want) { try { SB.p.style.visibility = 'visible'; } catch (e) {} SB.set = true; }
+		else if (SB.set) { try { SB.p.style.visibility = null; } catch (e) {} SB.set = false; }
+	}
+	// 0.25: активные предметы у прицела (Андрей: «активные предметы по центру — лучше даже когда в КД?» — да, всегда).
+	// Кнопки предметов — CitadelHudAbilityButton в #ActiveAbilitiesMenu (слоты item_1…4), id = имя предмета + «_» (как у буста на канате).
+	// На перезарядке у кнопки класс inCooldown, секунды — {s:cooldown_sec}. Картинка — из файлов игры по таблице AIT (deadlock-api, 53 активных).
+	// Готов — ярко с жёлтой рамкой, на перезарядке — тускло с секундами.
+	var AIT = {"upgrade_non_player_bonus_sacrifice":"w/cultist_sacrifice","upgrade_capacitor":"w/capacitor","upgrade_dps_aura":"w/heroic_aura","upgrade_targeted_silence":"s/silence_glyph","upgrade_haunting_scream":"b/haunting_scream","upgrade_silencer":"w/silencer","upgrade_reduce_debuff_duration":"v/debuff_remover","upgrade_metal_skin":"v/metal_skin","upgrade_grit":"v/grit","upgrade_return_fire":"v/return_fire","upgrade_shadow_step":"b/shadow_step","upgrade_containment":"s/slowing_hex","upgrade_spirit_sap":"s/spirit_sap","upgrade_focus_lens":"s/focus_lens","upgrade_withering_whip":"s/rusted_barrel","upgrade_greater_withering_whip":"s/disarming_hex","upgrade_rescue_beam":"v/rescue_beam","upgrade_rupture":"s/decay","upgrade_discord":"s/scourge","upgrade_target_stun":"s/knockdown","upgrade_phantom_strike":"v/phantom_strike","upgrade_warp_stone":"v/warp_stone","upgrade_aoe_root":"s/vortex_web","upgrade_ability_refresher":"s/refresher","upgrade_ability_power_shard":"s/echo_shard","upgrade_cloaking_device_active":"w/shadow_weave","upgrade_rocket_booster":"v/majestic_leap","upgrade_health_nova":"v/healing_nova","upgrade_restorative_locket":"v/restorative_locket","upgrade_health_stimpak":"v/healing_rite","upgrade_shrink_ray":"b/shrink_ray","upgrade_infuser":"v/infuser","upgrade_guardian_ward":"v/guardian_ward","upgrade_divine_barrier":"v/divine_barrier","upgrade_thermal_detonator":"w/alchemical_fire","upgrade_blood_tribute":"w/blood_tribute","upgrade_fleetfoot_boots":"w/fleetfoot","upgrade_unstoppable":"v/unstoppable","upgrade_colossus":"v/colossus","upgrade_cold_front":"s/cold_front","upgrade_arctic_blast":"s/arctic_blast","upgrade_self_bubble":"s/ethereal_shift","upgrade_glitch":"s/curse","upgrade_fury_trance":"v/fury_trance","upgrade_surging_power":"v/vampiric_burst","upgrade_split_shot":"w/split_shot","upgrade_magic_carpet":"s/magic_carpet","upgrade_mystical_piano":"b/mystical_piano","upgrade_nullification_aura":"b/nullification_aura","upgrade_celestial_guidance":"b/celestial_guidance","upgrade_prism_blast":"b/prism_blast","upgrade_unstable_concoction":"b/unstable_concoction","upgrade_goose_egg":"s/goose_egg"};
+	var AI = { menu: null, f: 0, B: [], sig: '', row: null, cells: [], st: '' };
+	function aitFind() {
+		if (!ok(AI.menu)) AI.menu = HUD.FindChildTraverse('ActiveAbilitiesMenu');
+		var L = [], walk = function (p, d) { if (!ok(p) || d > 4) return; var n = 0; try { n = p.GetChildCount(); } catch (e) {} for (var i = 0; i < n; i++) { var c = p.GetChild(i); if (!ok(c)) continue; if (c.paneltype === 'CitadelHudAbilityButton') L.push(c); else walk(c, d + 1); } };
+		walk(AI.menu, 0);
+		AI.B = L;
+	}
+	function aitKey(b) {
+		var id = String(b.id || '').replace(/_+$/, '');
+		if (AIT[id]) return id;
+		for (var k in AIT) try { if (b.BHasClass(k)) return k; } catch (e) {}
+		return '';
+	}
+	function aitTick() {
+		if (!on('AIT') || HM) { if (ok(AI.row)) setVis(AI.row, false); AI.st = ''; return; }
+		if (AI.f-- <= 0) { AI.f = 8; aitFind(); }
+		var L = [];
+		for (var i = 0; i < AI.B.length; i++) { var b = AI.B[i]; if (!ok(b)) continue; var k = aitKey(b); if (!k) continue;
+			var cd = false; try { cd = b.BHasClass('inCooldown'); } catch (e) {}
+			var sec = ''; if (cd) { try { sec = $.Localize('{s:cooldown_sec}', b); } catch (e) {} if (!sec || sec.indexOf('{') >= 0) { var cl = null; try { cl = (b.FindChildrenWithClassTraverse('cooldownSeconds') || [])[0]; } catch (e) {} sec = cl ? txt(cl) : ''; } }
+			L.push({ k: k, cd: cd, sec: String(sec || '').replace(/[^0-9.:]/g, '').replace(/\.\d+$/, '') }); }
+		AI.st = L.length + (L.length ? ' (' + L.map(function (x) { return x.cd ? x.sec || 'КД' : '✓'; }).join(' ') + ')' : '');
+		if (!L.length) { if (ok(AI.row)) setVis(AI.row, false); return; }
+		var sig = L.map(function (x) { return x.k; }).join(',');
+		if (!ok(AI.row) || sig !== AI.sig) {
+			var o = HUD.FindChildTraverse('RestlessAit'); if (ok(o)) o.DeleteAsync(0);
+			AI.row = mk('Panel', HUD, 'RestlessAit', { horizontalAlign: 'center', verticalAlign: 'center', marginTop: '170px', flowChildren: 'right', zIndex: '40' }, { hittest: 'false', hittestchildren: 'false' });
+			AI.cells = L.map(function (x) {
+				var c = mk('Panel', AI.row, '', { width: '36px', height: '36px', marginLeft: '3px', marginRight: '3px', borderRadius: '7px', border: '2px solid #00000000', backgroundColor: '#121014c0' });
+				var im = mk('Image', c, '', { width: '100%', height: '100%' }, { hittest: 'false', scaling: 'stretch-to-fit-preserve-aspect' });
+				var it = AIT[x.k]; try { im.SetImage(IMG + 'items/' + ITF[it.charAt(0)] + '/' + it.slice(2) + '_psd.vtex'); } catch (e) {}
+				var l = lab(c, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '15px', fontWeight: 'bold', color: '#ffffff', textShadow: '0px 0px 3px 2.0 #000000' });
+				return { c: c, im: im, l: l, cd: null };
+			});
+			AI.sig = sig;
+		}
+		for (var j = 0; j < L.length; j++) { var q = AI.cells[j], x = L[j]; if (!q) continue;
+			if (q.cd !== x.cd) { q.cd = x.cd; q.im.style.opacity = x.cd ? '0.38' : '1'; q.c.style.border = x.cd ? '2px solid #00000000' : '2px solid ' + A; }
+			setText(q.l, x.cd ? x.sec : ''); }
+		setVis(AI.row, true);
+	}
+	// 0.25: сборка одной кнопкой (Андрей: «чтобы чел нажимал 1 кнопку и у него билд сразу выбирался, а не код копировать»).
+	// В окне сборок игры (citadel_ui_build_selector: поле SearchTextEntry, кнопка RefreshButton) — наша кнопка «★ RESTLESS».
+	// Нажал — номер лучшей сборки на своего героя (свой — CitadelHudTopBarPlayer.LocalPlayer) вписывается в поиск игры и поиск запускается.
+	// Номер даёт страница сайта bld.html (скрытый CitadelHTMLPanel, ответ заголовком RL_BLD:<герой>:<номер>[:p]): сначала сборка,
+	// выбранная на сайте внутри игры (LIVE · 12), иначе — как «Рекомендованный билд» на сайте.
+	var BL = { se: null, rb: null, btn: null, lb: null, p: null, hid: '', id: '', fromSite: false, want: false, f: 0, st: '', n: 0 };
+	function bldHero() { for (var i = 0; i < PLY.length; i++) try { if (ok(PLY[i].pl) && PLY[i].pl.BHasClass('LocalPlayer')) return String(PLY[i].hid || LK.hero[PLY[i].k] || PLY[i].h || ''); } catch (e) {} return ''; }
+	function bldTitle(a, b) {
+		var t = typeof b === 'string' ? b : typeof a === 'string' ? a : '', m = /^RL_BLD:(\d+):(\d+)(:p)?$/.exec(t);
+		if (!m) return;
+		BL.id = m[2] !== '0' ? m[2] : ''; BL.fromSite = !!m[3];
+		bldPaint();
+		if (BL.want) bldApply();
+	}
+	function bldLoad(h) {
+		if (!h) return;
+		if (!ok(BL.p)) { try { BL.p = mk('CitadelHTMLPanel', HUD, 'RestlessBld' + TOKEN, { width: '2px', height: '2px', opacity: '0.01', horizontalAlign: 'left', verticalAlign: 'bottom' });
+			$.RegisterEventHandler('HTMLTitle', BL.p, bldTitle); } catch (e) { BL.p = null; return; } }
+		BL.hid = h; BL.id = ''; BL.n++;
+		try { BL.p.SetURL(SITE + 'bld.html?h=' + encodeURIComponent(h) + '&n=' + BL.n); } catch (e) {}
+	}
+	function bldApply() {
+		if (!BL.id || !ok(BL.se)) return;
+		BL.want = false;
+		try { BL.se.text = BL.id; } catch (e) {}
+		try { $.DispatchEvent('Activated', ok(BL.rb) ? BL.rb : BL.se, 'mouse'); } catch (e) {}
+		BL.st = (lang() === 'en' ? 'build ' : 'сборка ') + BL.id + (BL.fromSite ? (lang() === 'en' ? ' (from the site)' : ' (с сайта)') : '');
+		$.Msg('[Restless] сборка в поиске: ' + BL.id);
+	}
+	function bldPaint() { if (ok(BL.lb)) setText(BL.lb, BL.want && !BL.id ? T('bldW') : BL.id ? (BL.fromSite ? T('bldP') : T('bldB')) : BL.hid ? T('bldN') : T('bldB')); }
+	function bldTick() {
+		var h0 = bldHero(); if (h0 && h0 !== BL.hid) bldLoad(h0);
+		if (!ALT.shop) return;   // окно сборок бывает только в магазине — иначе не ищем
+		if (!ok(BL.se) && BL.f-- <= 0) { BL.f = 2; BL.se = HUD.FindChildTraverse('SearchTextEntry'); BL.rb = ok(BL.se) ? (function () { var c = BL.se.GetParent(); for (var i = 0; i < 3 && ok(c); i++, c = c.GetParent()) { var r = kid(c, 'RefreshButton'); if (ok(r)) return r; } return null; })() : null; }
+		if (!ok(BL.se)) return;
+		var box = BL.se.GetParent(); if (!ok(box)) return;
+		var host = box.GetParent() || box;
+		if (!ok(BL.btn)) {
+			var o = host.FindChildTraverse('RestlessBldBtn'); if (ok(o)) o.DeleteAsync(0);
+			BL.btn = mk('Button', host, 'RestlessBldBtn', { padding: '6px 14px 6px 14px', marginLeft: '8px', borderRadius: '6px', backgroundColor: A, verticalAlign: 'center' });
+			BL.lb = lab(BL.btn, '', { fontSize: '14px', fontWeight: 'bold', color: DARK });
+			BL.btn.SetPanelEvent('onactivate', function () { BL.want = true; if (BL.id) bldApply(); else { bldLoad(bldHero() || BL.hid); } bldPaint(); });
+		}
+		bldPaint();
+	}
 	function f17Tick() {
 		altTick();
+		if (NT % 4 === 3) { try { bldTick(); } catch (e) { $.Msg('[Restless] сборка: ' + e); } }
+		if (NT % 4 === 2) sbxTick();
 		plyScan();
 		amTick();
-		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); zipTick(); rbTick(); riftTick(); }
+		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); zipTick(); rbTick(); riftTick(); aitTick(); }
 		if (NT % 4 === 1) { rankTick(); campTick(); spdTick(); omapTick(); boxTick(); }
 		if (NT % 8 === 3) lrkTick();
 	}
@@ -1411,7 +1524,7 @@
 	// RL_OK:<номер> после записи. Пишем, сменив только #… адреса (страница не перезагружается). Храним только свои переключатели, язык, время лагерей.
 	// Что поменял до загрузки памяти, пока страница грузилась, — не затираем (список в RESTLESS_DIRTY). Нет связи — всё как в 0.18, до выхода из игры.
 	var STORE = SITE + 'store.html?v=1';
-	var KEEPK = ['ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'RIFT', 'BOX', 'BOXV', 'BXC', 'BXT', 'BXG', 'ALTM', 'LBR', 'LBH', 'LBS', 'LBP', 'LBC', 'LBB', 'LBT', 'LBK', 'LANG', 'SETS',
+	var KEEPK = ['ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'RIFT', 'BOX', 'BOXV', 'BXC', 'BXT', 'BXG', 'ALTM', 'AIT', 'SBX', 'LBR', 'LBH', 'LBS', 'LBP', 'LBC', 'LBB', 'LBT', 'LBK', 'LANG', 'SETS',
 		'CRS_neutral_weak', 'CRS_neutral_medium', 'CRS_neutral_large'];
 	function keep(k) { return KEEPK.indexOf(k) >= 0 || UMRX.test(k); }
 	var ST = { p: null, at: 0, tries: 0, ok: false, n: 0, q: 0, dirty: 0, sent: 0, sentQ: 0, sentFor: 0, saved: 0, err: '' };

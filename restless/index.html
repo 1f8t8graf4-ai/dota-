@@ -10446,7 +10446,23 @@ function u30Lobby() {
     if (f[0] === 'rift') { f[6] = 'под счётом: за 2 мин до появления — всегда, раньше — по Alt'; }
     if (f[0] === 'zip') f[6] = 'по Alt: готов ли и сколько до него';
   });
-  O18.push(['alt', 'Мелочи — только по Alt', 'over', 1, 1, 'k', 'буст, нагрузка, урна и разлом раньше 2 мин — пока зажат Alt', 1]); }
+  O18.push(['alt', 'Мелочи — только по Alt', 'over', 1, 1, 'k', 'буст, нагрузка, урна и разлом раньше 2 мин — пока зажат Alt', 1]);
+  O18.push(['aitm', 'Активные предметы у прицела', 'cross', 2, 1, 'k', 'готов — ярко, на перезарядке — тускло с секундами', 1]);
+  O18.push(['sbx', 'Меню песочницы в укрытии', 'menu', 1, 1, 'l', 'добавить врага, союзника, крипов — прямо в укрытии', 1]);
+  O18.push(['bld1', 'Сборка одной кнопкой', 'shop', 1, 1, 'k', 'Магазин → Сборки → ★ RESTLESS: лучшая сборка на твоего героя сама в поиске', 1]);
+  L25K.aitm = ['AIT']; L25K.sbx = ['SBX']; }
+// 0.25: сборка одной кнопкой. В игре — кнопка «★ RESTLESS» в окне сборок (мод), номер берёт со страницы bld.html.
+// Нажал на сайте «ID … скопировать» — запоминаем выбор (localStorage restless_build, 30 минут): если сайт открыт в игре
+// (Esc → LIVE · 12), кнопка в магазине подставит именно эту сборку. В обычном браузере — как раньше, копия ID.
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-cp],[data-l25cp]'); if (!b) return;
+  const id = +(b.dataset.cp || b.dataset.l25cp); if (!id) return;
+  let h = +((/^#h\/(\d+)/.exec(location.hash) || [])[1] || 0);
+  if (!h && typeof L25R === 'object') for (const k in L25R) if (L25R[k] && +L25R[k].id === id) h = +k;
+  if (h) try { localStorage.setItem('restless_build', JSON.stringify({id, h, t: Date.now()})); } catch (er) {}
+}, true);
+{ const T30 = () => document.querySelectorAll('[data-cp],[data-l25cp]').forEach(x => { if (!/RESTLESS/.test(x.title || '')) x.title = 'В игре: Магазин → Сборки → ★ RESTLESS'; });
+  new MutationObserver(T30).observe(document.body, {childList: true, subtree: true}); }
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');
