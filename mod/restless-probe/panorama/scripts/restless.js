@@ -1,4 +1,6 @@
-// Restless 0.19.
+// Restless 0.20.
+// 0.20: ещё функции из наборов (Андрей: «там же больше гораздо функций»): патроны и перезарядка у прицела, карта строений
+//       (своя карта игры в верхней панели — игра её прячет), «кто что купил» — из списка покупок магазина игры. Окно — в три колонки.
 // 0.19: настройки сохраняются (Андрей: «нажал не показывать — после перезахода опять показывает»): как QoL Lock — скрытая страница
 //       браузера игры (CitadelHTMLPanel) с нашего сайта, restless/store.html, держит их в localStorage игры на этом компьютере.
 //       Набор Enchanted: урон по строениям под портретами, буст на канате, скорость (спидометр самой игры), нагрузка мода.
@@ -27,7 +29,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.19';
+	var VER = '0.20';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -51,7 +53,7 @@
 		if (!quiet && keep(k)) stDirty(k);
 	}
 	// 0.17: функции Medium и Enchanted по умолчанию выключены (набор Lite)
-	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0' };
+	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0' };
 	function on(k) { return get(k, DEF[k] || '1') === '1'; }
 	function lang() { return get('LANG', 'ru') === 'en' ? 'en' : 'ru'; }
 
@@ -79,6 +81,8 @@
 			objT: 'Урон по строениям', zipT: 'Буст на канате', spdT: 'Скорость', perfT: 'Нагрузка мода',
 			zip: 'Буст на канате · ', zipR: 'готов', zipA: 'идёт ', sec: ' с', perf: 'Restless: ', ms: ' мс в секунду', mx: ' · самый долгий такт ',
 			sObj: 'Урон по строениям: у ', sZip: ' · буст: ', sZip0: 'не нашёл', sSpd: ' · скорость: ', sPerf: ' · нагрузка: ',
+			ammoT: 'Патроны у прицела', rldT: 'Перезарядка у прицела', omapT: 'Карта строений', rbuyT: 'Кто что купил', rld: 'ПЕРЕЗАРЯДКА', buy: 'Купили: ',
+			sAm: 'Патроны: ', sAm0: 'не нашёл', sOm: ' · карта строений: ', sOmY: 'показана', sOm0: 'не нашёл', sRb: ' · покупок в магазине: ',
 			mem: 'Память настроек: ', memOk: 'загружена', memN: ' · своих настроек ', memS: ' · сохранено ', memW: 'жду страницу', memE: 'нет связи со страницей — настройки до выхода из игры'
 		},
 		en: {
@@ -104,6 +108,8 @@
 			objT: 'Objective damage', zipT: 'Zipline boost', spdT: 'Speedometer', perfT: 'Mod load',
 			zip: 'Zip boost · ', zipR: 'ready', zipA: 'active ', sec: ' s', perf: 'Restless: ', ms: ' ms per second', mx: ' · longest tick ',
 			sObj: 'Objective damage: for ', sZip: ' · boost: ', sZip0: 'not found', sSpd: ' · speed: ', sPerf: ' · load: ',
+			ammoT: 'Ammo at crosshair', rldT: 'Reload at crosshair', omapT: 'Objectives map', rbuyT: 'Who bought what', rld: 'RELOADING', buy: 'Bought: ',
+			sAm: 'Ammo: ', sAm0: 'not found', sOm: ' · objectives map: ', sOmY: 'shown', sOm0: 'not found', sRb: ' · shop purchases: ',
 			mem: 'Settings memory: ', memOk: 'loaded', memN: ' · saved settings ', memS: ' · saves ', memW: 'waiting for the page', memE: 'no link to the page — settings last until you quit'
 		}
 	};
@@ -191,7 +197,7 @@
 		SHADE = mk('Button', EM, 'RestlessShade', { width: '100%', height: '100%', backgroundColor: '#000000b4', zIndex: '4900', visibility: 'collapse' });
 		SHADE.SetPanelEvent('onactivate', function () { show(false); });
 		WIN = mk('Panel', EM, 'RestlessWindow', {
-			width: '780px', flowChildren: 'down', padding: '24px 30px 22px 30px', horizontalAlign: 'center', verticalAlign: 'center',
+			width: '980px', flowChildren: 'down', padding: '24px 30px 22px 30px', horizontalAlign: 'center', verticalAlign: 'center',
 			backgroundColor: '#121014fa', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '5000', visibility: 'collapse'
 		}, { hittest: 'true' });
 		WIN.SetPanelEvent('onactivate', function () {});
@@ -223,7 +229,7 @@
 
 		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '16px', marginBottom: '2px' });
 		P.see = [];
-		for (var q = 0; q < 11; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
+		for (var q = 0; q < 12; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
 
 		var f = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
 		var site = mk('Button', f, 'RestlessSiteBtn', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
@@ -241,10 +247,10 @@
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
 	var TG = [['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
 		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
-		['OBJ', 'objT'], ['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT']];
+		['OBJ', 'objT'], ['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['OMAP', 'omapT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
-	var LITE = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS']);
-	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['OBJ', 'ZIP', 'SPD', 'PERF']) };
+	var LITE = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY']);
+	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['OBJ', 'ZIP', 'SPD', 'PERF', 'OMAP']) };
 	var PREK = PRE.ench;
 	function preset(n) { for (var i = 0; i < PREK.length; i++) set(PREK[i], PRE[n].indexOf(PREK[i]) >= 0 ? '1' : '0'); paint(); }
 	function presetNow() {
@@ -252,7 +258,7 @@
 		return '';
 	}
 	function toggle(key) {
-		var cell = mk('Panel', P.grid, '', { width: '50%', flowChildren: 'down' });
+		var cell = mk('Panel', P.grid, '', { width: '33.3%', flowChildren: 'down' });
 		var r = mk('Panel', cell, '', { width: '100%', flowChildren: 'right', padding: '6px 14px 6px 0px' });
 		var c = mk('Panel', r, '', { width: 'fill-parent-flow(1.0)', flowChildren: 'down', verticalAlign: 'center' });
 		var t = lab(c, '', { fontSize: '17px', color: INK });
@@ -398,6 +404,7 @@
 		out.push(T('sUw') + UW.n + T('sUwN') + UW.on + (ok(UW.box) ? '' : ' · ищу'));
 		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
 		out.push(T('sObj') + OBJN + T('sZip') + (ZB.st || T('sZip0')) + T('sSpd') + (SPDV || '—') + T('sPerf') + PF.v.toFixed(1) + T('ms'));
+		out.push(T('sAm') + (AM.st || T('sAm0')) + T('sOm') + (OM.st || T('sOm0')) + T('sRb') + RB.n);
 		out.push(T('mem') + (ST.ok ? T('memOk') + T('memN') + ST.n + T('memS') + ST.saved : ST.tries >= 4 || ST.err ? T('memE') + (ST.err ? ' (' + ST.err + ')' : '') : T('memW')));
 		for (var j = 0; j < P.see.length; j++) setText(P.see[j], out[j] || '');
 		if (log) $.Msg('[Restless] видит: ' + out.join(' | '));
@@ -786,8 +793,9 @@
 
 	function f17Tick() {
 		plyScan();
-		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); zipTick(); }
-		if (NT % 4 === 1) { rankTick(); campTick(); objTick(); spdTick(); }
+		amTick();
+		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); zipTick(); rbTick(); }
+		if (NT % 4 === 1) { rankTick(); campTick(); objTick(); spdTick(); omapTick(); }
 		if (NT % 8 === 3) lrkTick();
 	}
 
@@ -869,13 +877,82 @@
 		setText(PF.lb, T('perf') + PF.v.toFixed(1) + T('ms') + T('mx') + PF.m + ' ' + (lang() === 'en' ? 'ms' : 'мс')); setVis(PF.lb, true);
 	}
 
+	// ---------- 0.20: патроны и перезарядка у прицела, карта строений, кто что купил ----------
+	// Патроны: числа самой игры weapon_ammo / weapon_ammo_max в ammo_panel (как у QoL Lock); перезарядка — у attack_delayed_progress_bar
+	// (в reticle_status) класс has_active_reload. Подпись под прицелом; сами панели ищем раз в 2 с, пока не нашли, дальше реже.
+	var AM = { gh: null, cur: null, max: null, rb: null, f: 0, fm: 0, lb: null, st: '', col: '' };
+	function dg(t) { var m = /\d+/.exec(t || ''); return m ? m[0] : ''; }
+	// ищем только то, что включено и ещё не найдено
+	function amFind(wa, wr) {
+		if (!ok(AM.gh)) AM.gh = HUD.FindChildTraverse('gameplay_hud') || HUD;
+		var gh = AM.gh;
+		if (wa && !ok(AM.cur)) { var ap = gh.FindChildTraverse('ammo_panel'); if (ok(ap)) { var c = ap.FindChildrenWithClassTraverse('weapon_ammo') || [], m = ap.FindChildrenWithClassTraverse('weapon_ammo_max') || []; AM.cur = c[0] || null; AM.max = m[0] || null; } }
+		if (wr && !ok(AM.rb)) { var rs = gh.FindChildTraverse('reticle_status'); AM.rb = ok(rs) ? rs.FindChildTraverse('attack_delayed_progress_bar') : null; }
+	}
+	function amTick() {
+		var wa = on('AMMO') && !HIDE, wr = on('RLD') && !HIDE;
+		if (!wa && !wr) { if (ok(AM.lb)) setVis(AM.lb, false); AM.st = ''; return; }
+		if (((wa && !ok(AM.cur)) || (wr && !ok(AM.rb))) && AM.f-- <= 0) { AM.f = 16 * Math.min(8, ++AM.fm); amFind(wa, wr); }
+		var rel = false; try { rel = wr && ok(AM.rb) && AM.rb.BHasClass('has_active_reload'); } catch (e) {}
+		var cur = ok(AM.cur) ? dg(txt(AM.cur)) : '', mx = ok(AM.max) ? dg(txt(AM.max)) : '';
+		var msg = rel ? T('rld') : wa && cur ? cur + (mx ? ' / ' + mx : '') : '';
+		AM.st = cur ? cur + (mx ? '/' + mx : '') + (rel ? ' · ' + T('rld') : '') : rel ? T('rld') : '';
+		if (!msg) { if (ok(AM.lb)) setVis(AM.lb, false); return; }
+		if (!ok(AM.lb)) AM.lb = HUD.FindChildTraverse('RestlessAmmo');
+		if (!ok(AM.lb)) AM.lb = lab(HUD, 'RestlessAmmo', { horizontalAlign: 'center', verticalAlign: 'center', marginTop: '70px', fontSize: '17px', fontWeight: 'bold',
+			textShadow: '0px 0px 4px 2.0 #000000', zIndex: '40' });
+		var col = rel ? A : mx && +cur <= Math.ceil(+mx / 4) ? '#ff5b4b' : '#ffffff';
+		if (AM.col !== col) { AM.col = col; AM.lb.style.color = col; }
+		setText(AM.lb, msg); setVis(AM.lb, true);
+	}
+	// Карта строений: у верхней панели игры есть своя ObjectivesMap (башни и стражи), в матче стиль её прячет — показываем.
+	var OM = { p: null, f: 0, on: false, st: '' };
+	function omapTick() {
+		var want = on('OMAP') && !HIDE;
+		if (!ok(OM.p)) { OM.st = ''; if (!want || OM.f-- > 0) return; OM.f = 10; OM.p = ok(TB) ? kid(TB, 'ObjectivesMap') : null; if (!ok(OM.p)) return; OM.on = false; }
+		OM.st = want ? T('sOmY') : '';
+		if (want === OM.on) return;
+		OM.on = want;
+		var L = [OM.p]; try { L = L.concat(OM.p.FindChildrenWithClassTraverse('ObjectiveCtn') || []); } catch (e) {}
+		for (var i = 0; i < L.length; i++) try { L[i].style.visibility = want ? 'visible' : null; } catch (e) {}
+	}
+	// Кто что купил: строки «последних покупок» в магазине игры (RecentPurchasesContainer: время, предмет, ступень; цвет — команда).
+	// Новая строка — 8 с справа, до трёх сразу. Обновляет ли игра список при закрытом магазине — видно в «Что видит мод».
+	var RB = { box: null, f: 0, fm: 0, seen: null, L: [], p: null, n: 0 };
+	function rbRow(r) {
+		var t = function (c) { var a = []; try { a = r.FindChildrenWithClassTraverse(c) || []; } catch (e) {} return a.length ? txt(a[0]) : ''; };
+		var nm = t('recentModPurchaseName'), tr = t('recentModTierCost');
+		var col = r.BHasClass('isTeam1Purchase') ? '#ffb630' : r.BHasClass('isTeam2Purchase') ? '#6fa8ff' : INK;
+		return nm && nm.indexOf('{') < 0 ? { s: T('buy') + nm + (tr && tr.indexOf('{') < 0 ? ' · ' + tr : ''), c: col, t: Date.now() } : null;
+	}
+	function rbTick() {
+		var want = on('RBUY') && !HIDE;
+		if (!want) { if (ok(RB.p)) setVis(RB.p, false); RB.seen = null; RB.L = []; return; }
+		if (!ok(RB.box)) { if (RB.f-- > 0) return; RB.f = 10 * Math.min(8, ++RB.fm); RB.box = HUD.FindChildTraverse('RecentPurchasesContainer'); if (!ok(RB.box)) return; RB.seen = null; }
+		var K = [], n = RB.box.GetChildCount();
+		for (var i = 0; i < n; i++) K.push(RB.box.GetChild(i));
+		RB.n = n;
+		if (RB.seen) for (var j = 0; j < K.length; j++) if (RB.seen.indexOf(K[j]) < 0) { var e = rbRow(K[j]); if (e) RB.L.unshift(e); }
+		RB.seen = K;
+		var now = Date.now();
+		RB.L = RB.L.filter(function (x) { return now - x.t < 8000; }).slice(0, 3);
+		if (!RB.L.length) { if (ok(RB.p)) setVis(RB.p, false); return; }
+		if (!ok(RB.p)) RB.p = HUD.FindChildTraverse('RestlessBuy');
+		if (!ok(RB.p)) {
+			RB.p = mk('Panel', HUD, 'RestlessBuy', { horizontalAlign: 'right', verticalAlign: 'top', marginTop: '272px', marginRight: '26px', flowChildren: 'down', zIndex: '40' }, { hittest: 'false' });
+			for (var q = 0; q < 3; q++) lab(RB.p, '', { horizontalAlign: 'right', marginTop: '4px', padding: '4px 10px 4px 10px', backgroundColor: '#121014c8', borderRadius: '7px', fontSize: '14px', fontWeight: 'bold' });
+		}
+		for (var k = 0; k < 3; k++) { var l = RB.p.GetChild(k), x = RB.L[k]; if (!ok(l)) continue; setVis(l, !!x); if (x) { setText(l, x.s); if (l.__c !== x.c) { l.__c = x.c; l.style.color = x.c; } } }
+		setVis(RB.p, true);
+	}
+
 	// ---------- 0.19: память настроек ----------
 	// У модов Deadlock нет своего хранилища. Как QoL Lock: скрытая страница браузера игры (CitadelHTMLPanel) — restless/store.html на нашем сайте;
 	// она держит настройки в localStorage этого браузера (на этом компьютере) и отвечает заголовком страницы: RL_CFG:…:<настройки> при загрузке,
 	// RL_OK:<номер> после записи. Пишем, сменив только #… адреса (страница не перезагружается). Храним только свои переключатели, язык, время лагерей.
 	// Что поменял до загрузки памяти, пока страница грузилась, — не затираем (список в RESTLESS_DIRTY). Нет связи — всё как в 0.18, до выхода из игры.
 	var STORE = SITE + 'store.html?v=1';
-	var KEEPK = ['ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'OBJ', 'ZIP', 'SPD', 'PERF', 'LANG',
+	var KEEPK = ['ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'OBJ', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'LANG',
 		'CRS_neutral_weak', 'CRS_neutral_medium', 'CRS_neutral_large'];
 	function keep(k) { return KEEPK.indexOf(k) >= 0; }
 	var ST = { p: null, at: 0, tries: 0, ok: false, n: 0, q: 0, dirty: 0, sent: 0, sentQ: 0, sentFor: 0, saved: 0, err: '' };

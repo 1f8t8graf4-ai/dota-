@@ -208,7 +208,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
  const pp=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px');ok(pp.length===3&&pp[2].ch[0].text==='Enchanted'&&pp[0].ch[0].text==='Lite'&&pp[0].style.backgroundColor==='#ffc83d','набор: Lite выбран по умолчанию');
  ok(texts().includes('Ранги игроков')&&texts().includes('Таймеры лагерей')&&texts().includes('Пропавшие враги'),'новые переключатели в окне');
- const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===16,'переключателей 16: '+tg.length);
+ const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===20,'переключателей 20: '+tg.length);
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(12);
  // ранги: значок под портретом у кого есть ID (11 из 12 — из профилей и account_id)
  const RI=TP.map(p=>p.FindChildTraverse('RestlessRank'));
@@ -309,6 +309,29 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  ok(/MARK=0/.test(LSO.restless_mod_v1)&&/OBJ=1/.test(LSO.restless_mod_v1)&&/CRS_neutral_weak=120/.test(LSO.restless_mod_v1),'записано: надпись выкл, Enchanted, время лагеря: '+LSO.restless_mod_v1);
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.19 (Enchanted): '+vps+' панелей в секунду');ok(vps<all(hud).length,'Enchanted: нагрузка меньше одного HUD: '+vps);}
+// 0.20: патроны и перезарядка у прицела, карта строений, кто что купил (Enchanted включён выше)
+{const ap=add(hud,P('Panel','ammo_panel'));const ac=add(ap,P('Label','',{class:'weapon_ammo',text:'23'}));add(ap,P('Label','',{class:'weapon_ammo_max',text:'40'}));
+ const rs=add(hud,P('Panel','reticle_status'));const rb=add(rs,P('Panel','attack_delayed_progress_bar'));
+ const om=add(top,P('CitadelObjectivesMap','ObjectivesMap'));const oc=add(om,P('Panel','',{class:'ObjectiveCtn'}));
+ const sh=F('HeroShop');const rpc=add(sh,P('Panel','RecentPurchasesContainer'));
+ const row=(nm,tr,cl)=>{const r=add(rpc,P('Panel','',{class:'recentPurchase '+(cl||'')}));add(r,P('Label','',{class:'recentTimePurchased',text:'12:01'}));add(r,P('Label','',{class:'recentModPurchaseName',text:nm}));add(r,P('Label','',{class:'recentModTierCost',text:tr}));return r};
+ row('Extra Stamina','T1','isTeam1Purchase');row('Monster Rounds','T1','isTeam2Purchase');
+ tick(140);
+ const am=F('RestlessAmmo');ok(am&&am.style.visibility==='visible'&&am.text==='23 / 40'&&am.style.color==='#ffffff','патроны под прицелом: «'+(am&&am.text)+'»');
+ ac.text='8';tick(1);ok(am.text==='8 / 40'&&am.style.color==='#ff5b4b','мало патронов (≤ четверти) — красным');
+ rb.cls.add('has_active_reload');tick(1);ok(am.text==='ПЕРЕЗАРЯДКА'&&am.style.color==='#ffc83d','перезарядка: «'+am.text+'»');rb.cls.delete('has_active_reload');ac.text='40';tick(1);
+ ok(om.style.visibility==='visible'&&oc.style.visibility==='visible','карта строений игры показана (ObjectivesMap и ObjectiveCtn)');
+ const B=()=>F('RestlessBuy');ok(!B()||B().style.visibility==='collapse','старые покупки не показываем — только новые');
+ row('Mystic Shot','T3 · 3000','isTeam2Purchase');tick(4);
+ const b0=B()&&B().GetChild(0);ok(B()&&B().style.visibility==='visible'&&b0.text==='Купили: Mystic Shot · T3 · 3000'&&b0.style.color==='#6fa8ff','новая покупка — справа: «'+(b0&&b0.text)+'»');
+ row('Spirit Strike','T2','isTeam1Purchase');tick(2);ok(B().GetChild(0).text==='Купили: Spirit Strike · T2'&&B().GetChild(1).text==='Купили: Mystic Shot · T3 · 3000','свежая — сверху, до трёх');
+ tick(36);ok(B().style.visibility==='collapse','через 8 с — пусто');
+ em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
+ {const tx=texts().join(' / ');ok(/Патроны: 40\/40 · карта строений: показана · покупок в магазине: 4/.test(tx),'«Что видит мод»: '+(tx.match(/Патроны:[^/]*/)||[''])[0]);}
+ const pp=all(F('RestlessWindow')).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px');pp[0].ev.onactivate();tick(8);
+ ok(am.style.visibility==='collapse'&&om.style.visibility===null&&oc.style.visibility===null,'Lite — патронов нет, карта строений снова как у игры');
+ pp[2].ev.onactivate();tick(2);shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
+ tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.20 (Enchanted): '+vps+' панелей в секунду');ok(vps<all(hud).length,'0.20: нагрузка меньше одного HUD: '+vps);}
 // бот
 F('RestlessSiteBtn').ev.onactivate();ok(msgs.includes('URL https://1f8t8graf4-ai.github.io/dota-/restless/'),'кнопка «Мой Restless» открывает сайт');
 F('RestlessBotBtn').ev.onactivate();ok(msgs.includes('URL https://t.me/languagegamesbot'),'кнопка бота открывает ссылку');
