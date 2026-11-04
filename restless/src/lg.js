@@ -51,7 +51,7 @@ function mGrade(m) {
   const g = GRS.find(x => s >= x[0])[1];
   return [g, `Оценка ${g}: ${s} из 100 (50 — как типичный игрок) — ${how}`, GCOL2[g[0]], s];
 }
-const grdHTML = m => { const [g, tip, col] = mGrade(m); return `<span class="grd q-grd" style="--gc:${col}" title="${esc(tip)}">${g}</span>`; };
+let grdHTML = m => { const [g, tip, col] = mGrade(m); return `<span class="grd q-grd" style="--gc:${col}" title="${esc(tip)}">${g}</span>`; };
 async function gradeBase(badge) {
   const b = badge ? Math.floor(badge / 10) * 10 : 0;
   const S = await api(`analytics/hero-stats?min_unix_timestamp=${now() - 30 * 86400 - (now() % 3600)}${b ? `&min_average_badge=${Math.max(0, b - 10)}&max_average_badge=${b + 16}` : ''}`).catch(() => []);

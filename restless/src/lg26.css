@@ -1,0 +1,105 @@
+/* ===================== lg26 — 04.11 (ночь 5): проще и читабельнее, анимации качеством (как у Deadlock Labs) ===================== */
+/* Принцип: меньше рамок и коробок, крупнее и светлее текст, одно движение входа на всё (подъём + проявление, мягкая кривая),
+   наведение — плавный подъём с тенью. Только transform/opacity — без filter/blur на больших слоях (FPS). */
+:root{--u26e:cubic-bezier(.16,1,.3,1);--u26s:cubic-bezier(.34,1.56,.64,1)}
+body{font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+:root{--mu:#a2a9b6;--mu2:#7b8392}
+.sub,.q-box small,.r10-t span{color:var(--mu)}
+
+/* меньше рамок: коробки — заливкой, без обводки; разделители — тонкой линией */
+.q-box,.u10-sec,.r10-t,.co10-r li,.q-pc,.b10-cat{border-color:transparent}
+.q-box{background:color-mix(in srgb,var(--q-bx) 92%,#fff 2%);box-shadow:0 1px 0 rgba(255,255,255,.03) inset,0 10px 30px -22px rgba(0,0,0,.8)}
+.co10-r{gap:2px}
+.co10-r li{background:none;border-radius:8px;padding:8px 10px 8px 28px;font-size:15px;line-height:1.5;border-bottom:1px solid rgba(255,255,255,.04)}
+.co10-r li::before{left:11px;top:16px;width:6px;height:6px}
+.co10-r.ok li::before{top:8px}
+.co10-h{margin:20px 0 8px;font-size:12px;letter-spacing:.12em;color:var(--mu)}
+
+/* одно движение входа */
+@keyframes u26In{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:none}}
+@keyframes u26Pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
+#view>section,.q-box,.r10-t,.co10-r li,.u26-d,.hm-c,.q-gm,.r9-br{animation:u26In .55s var(--u26e) backwards}
+.q-gm:nth-child(2),.r9-br:nth-child(3),.hm-c:nth-child(2),.u26-d:nth-child(2),.co10-r li:nth-child(2),.r10-t:nth-child(2){animation-delay:35ms}
+.q-gm:nth-child(3),.r9-br:nth-child(4),.hm-c:nth-child(3),.u26-d:nth-child(3),.co10-r li:nth-child(3),.r10-t:nth-child(3){animation-delay:70ms}
+.q-gm:nth-child(4),.r9-br:nth-child(5),.hm-c:nth-child(4),.u26-d:nth-child(4),.co10-r li:nth-child(4),.r10-t:nth-child(4){animation-delay:105ms}
+.q-gm:nth-child(5),.r9-br:nth-child(6),.hm-c:nth-child(5),.u26-d:nth-child(5),.co10-r li:nth-child(5),.r10-t:nth-child(5){animation-delay:140ms}
+.q-gm:nth-child(n+6),.r9-br:nth-child(n+7),.hm-c:nth-child(n+6),.u26-d:nth-child(n+6),.co10-r li:nth-child(n+6),.r10-t:nth-child(n+6){animation-delay:175ms}
+.hm-c:nth-child(n+12){animation-delay:220ms}.hm-c:nth-child(n+24){animation-delay:260ms}
+
+/* наведение — подъём с тенью, без рывков */
+.q-gm,.hm-c,.q-pc,.r9-pc,.b10-cat,.r10-t{transition:transform .25s var(--u26e),box-shadow .25s var(--u26e),background-color .2s}
+@media (hover:hover){
+  .q-gm:hover{transform:translate3d(0,-2px,0);box-shadow:0 14px 30px -18px rgba(0,0,0,.9)}
+  .hm-c:hover{transform:translate3d(0,-4px,0) scale(1.03);box-shadow:0 18px 34px -18px color-mix(in srgb,var(--hc,#ffb020) 60%,#000)}
+  .r9-pc:hover{transform:translate3d(0,-1px,0)}
+  .r10-t:hover{transform:translate3d(0,-2px,0)}
+}
+.q-tabs a{position:relative;border-bottom-color:transparent!important}
+.q-tabs a::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;border-radius:2px;background:var(--q-am);transform:scaleX(0);transform-origin:50% 50%;transition:transform .35s var(--u26e)}
+.q-tabs a.on::after{transform:scaleX(1)}
+.q-tabs a.q-ovt::after{display:none}
+
+/* оценка: одна буква везде; пока ждём матч — бледная, пришла — «впрыгивает» */
+.u26-wait{opacity:.35}
+.u26-pop{animation:u26Pop .45s var(--u26e)}
+.u26-g{flex:none;width:76px;height:76px;border-radius:50%;display:grid;place-content:center;text-align:center;background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--gc) 28%,#15161c),#101116);box-shadow:0 0 0 2px var(--gc) inset,0 0 26px -6px var(--gc);animation:u26Pop .5s var(--u26e)}
+.u26-g b{font:800 30px/1 var(--h);color:var(--gc)}
+.u26-g small{font-size:11px;color:var(--mu);margin-top:2px}
+
+/* «Обзор»: ник — ссылка на профиль */
+.r9-pn b.u26-nm{cursor:pointer;text-decoration:underline transparent;text-underline-offset:3px;transition:text-decoration-color .2s,color .2s}
+.r9-pn b.u26-nm:hover{color:var(--q-am);text-decoration-color:currentColor}
+
+/* разбор сводкой */
+.u26-sum{margin:0 0 6px}
+.u26-sum .r10-ts{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.u26-sum .r10-t b{font-size:22px}
+.u26-dl{display:flex;flex-direction:column;gap:2px}
+.u26-d{display:grid;grid-template-columns:56px minmax(0,1fr) auto 64px;align-items:center;gap:10px;padding:7px 10px;border-radius:9px;background:rgba(255,255,255,.025)}
+.u26-d time{font:700 14px/1 var(--h);color:var(--q-am);font-variant-numeric:tabular-nums}
+.u26-d .k{display:flex;align-items:center;gap:8px;min-width:0}
+.u26-d .k img,.u26-d .k .face{width:28px;height:28px;border-radius:7px;flex:none}
+.u26-d .k b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.u26-d .w{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.u26-d .w i{font-style:normal;font-size:11.5px;padding:2px 7px;border-radius:999px;background:color-mix(in srgb,var(--loss) 16%,transparent);color:color-mix(in srgb,var(--loss) 80%,#fff)}
+.u26-d .u{text-align:right;font:700 14px/1 var(--h);font-variant-numeric:tabular-nums}
+.u26-ds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 4px}
+.u26-ds span{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.035);min-width:0}
+.u26-ds small{font:600 10.5px/1.1 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
+.u26-ds b{font:700 20px/1.15 var(--h)}
+.u26-ds span.kl b{font:600 14px/1.35 var(--f)}
+.u26-ds em{font-style:normal;font-size:12px;color:var(--mu)}
+.u26-ds b.r{color:var(--loss)}.u26-ds b.g{color:var(--win)}
+.u26-ds.g b{color:var(--win)}
+.u26-more{margin:10px 0}
+.u26-more summary{cursor:pointer;list-style:none;font:600 12px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--mu);padding:8px 0}
+.u26-more summary::before{content:"▸ ";transition:transform .2s;display:inline-block}
+.u26-more[open] summary::before{transform:rotate(90deg)}
+@media (max-width:700px){.u26-ds{grid-template-columns:repeat(2,minmax(0,1fr))}.u26-d{grid-template-columns:48px minmax(0,1fr) 54px}.u26-d .w{display:none}.u26-sum .r10-ts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* «Герои»: живая карта героя как в Marvel Snap — наклон за мышью, слои на своей глубине, блик */
+.hm-sel{perspective:1100px}
+.hm-pv.u26-card{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;transition:transform .6s var(--u26e),box-shadow .6s var(--u26e);will-change:transform}
+.hm-pv.u26-card.tilt{transition:transform .12s linear,box-shadow .3s;box-shadow:0 40px 80px -40px color-mix(in srgb,var(--hc) 55%,#000)}
+.hm-pv.u26-card .hm-bg{transform:translate3d(calc(var(--px,0) * 10px),calc(var(--py,0) * 10px),0) scale(1.1);transition:transform .6s var(--u26e)}
+.hm-pv.u26-card .hm-art{transform:translate3d(calc(var(--px,0) * -16px),calc(var(--py,0) * -12px),0) scale(1.06);transition:transform .6s var(--u26e)}
+.hm-pv.u26-card .hm-inf{transform:translate3d(calc(var(--px,0) * -24px),calc(var(--py,0) * -14px),0);transition:transform .6s var(--u26e)}
+.hm-pv.u26-card.tilt .hm-bg,.hm-pv.u26-card.tilt .hm-art,.hm-pv.u26-card.tilt .hm-inf{transition-duration:.15s}
+.hm-art.u26-live video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.u26-gl{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(40% 50% at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.18),transparent 70%);mix-blend-mode:soft-light}
+.hm-pv.tilt .u26-gl{opacity:1}
+@keyframes u26Breath{0%,100%{scale:1}50%{scale:1.018;translate:0 -4px}}
+.hm-pv.u26-card img.hm-art{animation:u26Breath 6s ease-in-out infinite}
+
+/* «Лобби» */
+.u26-lbs{margin:16px 0}
+.u26-lbg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.u26-sw{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--q-bx);cursor:pointer;transition:background-color .2s}
+.u26-sw:hover{background:var(--q-bh)}
+.u26-sw input{position:absolute;opacity:0;pointer-events:none}
+.u26-sw .tr{flex:none;width:36px;height:20px;border-radius:999px;background:#2b2f39;position:relative;transition:background-color .25s var(--u26e)}
+.u26-sw .tr::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#cfd3db;transition:transform .3s var(--u26s)}
+.u26-sw input:checked+.tr{background:var(--q-am)}
+.u26-sw input:checked+.tr::after{transform:translateX(16px);background:#1a1408}
+.u26-sw b{font-weight:600}
+.u26-gm{margin:10px 2px 0;color:var(--mu);font-size:14px}
