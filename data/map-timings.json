@@ -1,0 +1,60 @@
+{
+  "map": "dl_midtown",
+  "game": "Deadlock",
+  "updated": "2026-11-04",
+  "source_repo": "https://github.com/SteamDatabase/GameTracking-Deadlock (game/citadel/scripts)",
+  "sure_legend": "1 = подтверждено файлами игры (vdata), 0 = вики/форум/не найдено",
+  "events": {
+    "urn": {
+      "name": "Урна / Soul Urn (gold idol)",
+      "first": null,
+      "respawn": null,
+      "rule": null,
+      "src": "spawn-время в vdata НЕ найдено. misc.vdata: citadel_item_pickup_idol — только класс; modifier_citadel_idol_walkback: m_flWaitTimeLimit=180.0 (урна-«walkback» ждёт 180 с); generic_data.vdata m_IdolParams: m_flIdolDropDuration=12.5, m_flIdolDropHeight=1400 (только анимация сброса). Ожидаемые 10:00/правило «от сдачи» НЕ подтверждены.",
+      "date": "2026-11-04",
+      "sure": 0
+    },
+    "koth": {
+      "name": "Разлом / Midtown Boss (koth)",
+      "first": null,
+      "respawn": null,
+      "rule": null,
+      "src": "misc.vdata: citadel_item_koth_spawner — без таймингов; generic_data.vdata m_KothParams — только m_flKothRadius=20.0, партиклы/звуки (Koth.Pre.Spawn.Lp и т.п.). Ожидаемые 12:20 / окно / период 7:00 НЕ подтверждены.",
+      "date": "2026-11-04",
+      "sure": 0
+    },
+    "bridge_buff": {
+      "name": "Пауэрап на мосту (bridge powerup spawner)",
+      "first": 300,
+      "respawn": 300,
+      "rule": "по часам",
+      "src": "misc.vdata → citadel_item_powerup_spawner: m_flInitialSpawnTime = 300; m_flSpawnInterval = 300 (плюс тестовые m_flInitialSpawnTimeTest=1.0, m_flRespawnTimeTest=10.0)",
+      "date": "2026-11-04",
+      "sure": 1
+    },
+    "camps": {
+      "name": "Лагеря нейтральных крипов (jungle camps)",
+      "first": null,
+      "respawn": null,
+      "rule": null,
+      "src": "misc.vdata подключает scripts/misc/neutral_camps.vdata_inc, но файла НЕТ в GameTracking-репо (raw 404). generic_data.vdata: m_flNeutralCampRespawnTimerShowDistance=15.0, m_flNeutralCampRespawnTimerHeight=2.5 — только UI-таймер респавна. Ожидаемые 1:25 / 4:50 / 5:35 НЕ подтверждены.",
+      "date": "2026-11-04",
+      "sure": 0
+    },
+    "crates": {
+      "name": "Ящики/статуи (breakable props)",
+      "first": 180,
+      "respawn": 180,
+      "rule": "по часам",
+      "src": "misc.vdata → citadel_breakable_prop_drop_powerups: m_flInitialSpawnTime = 180.0, m_flRespawnTime = 180.0; generic_data.vdata → m_BreakableSpawnTimeDesc = [{180/180},{300/300},{600/180},{300/180}] — 4 тира по карте",
+      "date": "2026-11-04",
+      "sure": 1
+    }
+  },
+  "extra_confirmed": {
+    "idol_walkback_wait": "misc.vdata → modifier_citadel_idol_walkback: m_flWaitTimeLimit = 180.0",
+    "idol_drop_anim": "generic_data.vdata → m_IdolParams: m_flIdolDropDuration = 12.5",
+    "souls_rune_once": "misc.vdata → citadel_item_powerup_spawner_bounty_runes: m_flInitialSpawnTime = -1, m_flRespawnTime = 9999999 (не на цикле)",
+    "rejuv_buff": "generic_data.vdata: m_flRejuvinatorBuffDuration = 180"
+  }
+}
