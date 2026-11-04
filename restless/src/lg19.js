@@ -9,6 +9,12 @@
 // живые портреты: Селеста и Дэнни (ветка zai/hero-loops, лицо — по fx Зетки), лежат рядом с сайтом
 LOOP[81] = ['celeste', .56, 'loops/'];
 LOOP[78] = ['deadman-danny', .41, 'loops/'];
+// 04.11, партия №2 Зетки (zai/hero-loops 18d0d07): швы проверены — шов не больше двух обычных шагов кадра
+LOOP[58] = ['vyper', .47, 'loops/'];
+LOOP[7] = ['wraith', .50, 'loops/'];
+LOOP[64] = ['drifter', .53, 'loops/'];
+LOOP[76] = ['graves', .53, 'loops/'];
+LOOP[11] = ['dynamo', .60, 'loops/'];
 { const AH = artHTML; artHTML = function (hid) {
     const L = LOOP[hid]; if (!L || !L[2]) return AH(hid);
     const h = hero(hid);
