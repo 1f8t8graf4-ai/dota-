@@ -1,4 +1,8 @@
-// Restless 0.18.
+// Restless 0.19.
+// 0.19: настройки сохраняются (Андрей: «нажал не показывать — после перезахода опять показывает»): как QoL Lock — скрытая страница
+//       браузера игры (CitadelHTMLPanel) с нашего сайта, restless/store.html, держит их в localStorage игры на этом компьютере.
+//       Набор Enchanted: урон по строениям под портретами, буст на канате, скорость (спидометр самой игры), нагрузка мода.
+//       Души в минуту и непотраченные души — нет: модераторы GameBanana запретили их QoL Lock.
 // 0.18: КД ульты над героем в мире — секунды на месте значка «ульта готова» над полосой здоровья; таймеры лагерей сами
 //       запоминают настоящее время возрождения (первое увиденное, дальше — самое короткое): в вики 1:25, у Андрея «вроде 2 минуты».
 // 0.17: функции из пресетов Lite / Medium (сайт → «Оверлей»): ранги игроков под портретами, средний ранг команд, таймеры лагерей
@@ -21,9 +25,9 @@
 // Работает одна копия — «хозяин» отмечается в атрибуте корневой панели; вторая ждёт и подхватит, если хозяин пропал.
 // КД ульты: игра сама кладёт секунды в верхнюю панель ({i:ult_cooldown}), но не показывает — выводим их поверх значка.
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
-// Настройки держатся до выхода из игры.
+// Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.18';
+	var VER = '0.19';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -40,12 +44,14 @@
 		if (!v && MEM[k]) v = MEM[k];
 		return v ? String(v) : def;
 	}
-	function set(k, v) {
+	// quiet — из памяти (store.html): сохранять не надо
+	function set(k, v, quiet) {
 		v = String(v); MEM[k] = v;
 		try { if (ROOT.SetAttributeString) ROOT.SetAttributeString('RESTLESS_' + k, v); } catch (e) {}
+		if (!quiet && keep(k)) stDirty(k);
 	}
-	// 0.17: новые функции Medium по умолчанию выключены (набор Lite)
-	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0' };
+	// 0.17: функции Medium и Enchanted по умолчанию выключены (набор Lite)
+	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0' };
 	function on(k) { return get(k, DEF[k] || '1') === '1'; }
 	function lang() { return get('LANG', 'ru') === 'en' ? 'en' : 'ru'; }
 
@@ -62,14 +68,18 @@
 			lk: 'Программа: ', lkN: 'отправлено ', lkP: ' · игроков ', lkI: ' · с ID ', lkH: ' · с героем ', lk0: 'Программа: в укрытии не отправляю — зайди в матч', lkOff: 'Программа: связь выключена',
 			yes: 'ВКЛ', no: 'ВЫКЛ', lang: 'Язык мода', soon: 'СКОРО',
 			s1: 'Сборки с винрейтом прямо в магазине', s2: 'Кто в матче и сборки — прямо в окне мода', s3: 'Двуязычные субтитры реплик героев',
-			site: 'Мой Restless — разбор матчей', bot: 'Бот', close: 'Закрыть', note: 'Настройки держатся до выхода из игры.',
+			site: 'Мой Restless — разбор матчей', bot: 'Бот', close: 'Закрыть',
 			seeH: 'ЧТО ВИДИТ МОД', souls: 'Души: ', pl: 'Игроков в верхней панели: ', plU: ' · КД ульты в секундах: ',
 			shop: 'Магазин: ячеек ', shop0: 'Магазин: пусто — открой магазин, потом снова Esc → RESTLESS', first: ' · первые: ',
 			camp: 'Лагеря на миникарте: ', campOn: ' · сейчас живы: ', camp0: 'Лагеря на миникарте: не нашёл',
 			rankT: 'Ранги игроков', lrkT: 'Средний ранг команд', campT: 'Таймеры лагерей', missT: 'Пропавшие враги', thpT: 'Здоровье на портретах',
 			cmbT: '«В бою»', unsT: 'Незащищённые души', ultwT: 'КД ульты над героем', sUw: 'Ульта над героями: полос ', sUwN: ' · с секундами ', pre: 'Набор', cmbOn: 'В БОЮ', cmbOff: 'ВНЕ БОЯ', unsL: 'Незащищённые души: ',
 			sRank: 'Ранги: показано ', sLrk: ' · средний ранг: свои ', sLrkE: ', враги ', sCamp: ' · таймеров лагерей: ', sHp: 'Здоровье читается у ', sMiss: ' · пропавших врагов: ',
-			sCmb: ' · «в бою»: ', sCmbY: 'да', sCmbN: 'нет', sCmb0: 'не нашёл', sUns: ' · незащищённых: '
+			sCmb: ' · «в бою»: ', sCmbY: 'да', sCmbN: 'нет', sCmb0: 'не нашёл', sUns: ' · незащищённых: ',
+			objT: 'Урон по строениям', zipT: 'Буст на канате', spdT: 'Скорость', perfT: 'Нагрузка мода',
+			zip: 'Буст на канате · ', zipR: 'готов', zipA: 'идёт ', sec: ' с', perf: 'Restless: ', ms: ' мс в секунду', mx: ' · самый долгий такт ',
+			sObj: 'Урон по строениям: у ', sZip: ' · буст: ', sZip0: 'не нашёл', sSpd: ' · скорость: ', sPerf: ' · нагрузка: ',
+			mem: 'Память настроек: ', memOk: 'загружена', memN: ' · своих настроек ', memS: ' · сохранено ', memW: 'жду страницу', memE: 'нет связи со страницей — настройки до выхода из игры'
 		},
 		en: {
 			mark: 'RESTLESS ' + VER + ' · running', markMenu: ' · Esc button',
@@ -83,14 +93,18 @@
 			lk: 'App: ', lkN: 'sent ', lkP: ' · players ', lkI: ' · with ID ', lkH: ' · with hero ', lk0: 'App: not sending in the hideout — join a match', lkOff: 'App: link is off',
 			yes: 'ON', no: 'OFF', lang: 'Mod language', soon: 'COMING SOON',
 			s1: 'Builds with win rate right in the shop', s2: 'Who\'s in the match and builds — right in this window', s3: 'Bilingual hero voice-line subtitles',
-			site: 'My Restless — match breakdowns', bot: 'Bot', close: 'Close', note: 'Settings last until you quit the game.',
+			site: 'My Restless — match breakdowns', bot: 'Bot', close: 'Close',
 			seeH: 'WHAT THE MOD SEES', souls: 'Souls: ', pl: 'Players in the top bar: ', plU: ' · ult cooldown in seconds: ',
 			shop: 'Shop: cells ', shop0: 'Shop: empty — open the shop, then Esc → RESTLESS again', first: ' · first: ',
 			camp: 'Camps on the minimap: ', campOn: ' · alive now: ', camp0: 'Camps on the minimap: not found',
 			rankT: 'Player ranks', lrkT: 'Team average rank', campT: 'Camp timers', missT: 'Missing enemies', thpT: 'Health on portraits',
 			cmbT: '"In combat"', unsT: 'Unsecured souls', ultwT: 'Ult cooldown over heroes', sUw: 'Ult over heroes: bars ', sUwN: ' · with seconds ', pre: 'Preset', cmbOn: 'IN COMBAT', cmbOff: 'OUT OF COMBAT', unsL: 'Unsecured souls: ',
 			sRank: 'Ranks: shown ', sLrk: ' · average rank: allies ', sLrkE: ', enemies ', sCamp: ' · camp timers: ', sHp: 'Health readable for ', sMiss: ' · missing enemies: ',
-			sCmb: ' · "in combat": ', sCmbY: 'yes', sCmbN: 'no', sCmb0: 'not found', sUns: ' · unsecured: '
+			sCmb: ' · "in combat": ', sCmbY: 'yes', sCmbN: 'no', sCmb0: 'not found', sUns: ' · unsecured: ',
+			objT: 'Objective damage', zipT: 'Zipline boost', spdT: 'Speedometer', perfT: 'Mod load',
+			zip: 'Zip boost · ', zipR: 'ready', zipA: 'active ', sec: ' s', perf: 'Restless: ', ms: ' ms per second', mx: ' · longest tick ',
+			sObj: 'Objective damage: for ', sZip: ' · boost: ', sZip0: 'not found', sSpd: ' · speed: ', sPerf: ' · load: ',
+			mem: 'Settings memory: ', memOk: 'loaded', memN: ' · saved settings ', memS: ' · saves ', memW: 'waiting for the page', memE: 'no link to the page — settings last until you quit'
 		}
 	};
 	function T(k) { return (TX[lang()] || TX.ru)[k]; }
@@ -196,6 +210,7 @@
 		P.pre = lab(pr, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '17px', color: MUTED });
 		P.lite = pill(pr, 'Lite', function () { preset('lite'); }, '16px');
 		P.mid = pill(pr, 'Medium', function () { preset('mid'); }, '16px');
+		P.ench = pill(pr, 'Enchanted', function () { preset('ench'); }, '16px');
 		P.grid = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right-wrap' });
 		for (var ti = 0; ti < TG.length; ti++) toggle(TG[ti][0]);
 
@@ -208,7 +223,7 @@
 
 		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '16px', marginBottom: '2px' });
 		P.see = [];
-		for (var q = 0; q < 9; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
+		for (var q = 0; q < 11; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
 
 		var f = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
 		var site = mk('Button', f, 'RestlessSiteBtn', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
@@ -225,10 +240,12 @@
 	}
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
 	var TG = [['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
-		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT']];
-	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки. Надпись и связь не трогаем.
-	var PRE = { lite: ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP'], mid: ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS'] };
-	var PREK = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS'];
+		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
+		['OBJ', 'objT'], ['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT']];
+	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
+	var LITE = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS']);
+	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['OBJ', 'ZIP', 'SPD', 'PERF']) };
+	var PREK = PRE.ench;
 	function preset(n) { for (var i = 0; i < PREK.length; i++) set(PREK[i], PRE[n].indexOf(PREK[i]) >= 0 ? '1' : '0'); paint(); }
 	function presetNow() {
 		for (var n in PRE) { var okp = true; for (var i = 0; i < PREK.length; i++) if (on(PREK[i]) !== (PRE[n].indexOf(PREK[i]) >= 0)) { okp = false; break; } if (okp) return n; }
@@ -236,10 +253,10 @@
 	}
 	function toggle(key) {
 		var cell = mk('Panel', P.grid, '', { width: '50%', flowChildren: 'down' });
-		var r = mk('Panel', cell, '', { width: '100%', flowChildren: 'right', padding: '9px 14px 9px 0px' });
+		var r = mk('Panel', cell, '', { width: '100%', flowChildren: 'right', padding: '6px 14px 6px 0px' });
 		var c = mk('Panel', r, '', { width: 'fill-parent-flow(1.0)', flowChildren: 'down', verticalAlign: 'center' });
 		var t = lab(c, '', { fontSize: '17px', color: INK });
-		var b = mk('Button', r, '', { width: '104px', height: '36px', borderRadius: '18px', verticalAlign: 'center' });
+		var b = mk('Button', r, '', { width: '104px', height: '32px', borderRadius: '16px', verticalAlign: 'center' });
 		var bl = lab(b, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '15px', fontWeight: 'bold' });
 		b.SetPanelEvent('onactivate', function () { set(key, on(key) ? '0' : '1'); paint(); markTick(); });
 		mk('Panel', cell, '', { width: '96%', height: '1px', backgroundColor: OFF });
@@ -263,8 +280,7 @@
 		}
 		var pn = presetNow();
 		setText(P.pre, T('pre'));
-		P.lite.b.style.backgroundColor = pn === 'lite' ? A : OFF; P.lite.l.style.color = pn === 'lite' ? DARK : INK;
-		P.mid.b.style.backgroundColor = pn === 'mid' ? A : OFF; P.mid.l.style.color = pn === 'mid' ? DARK : INK;
+		['lite', 'mid', 'ench'].forEach(function (n) { var q = P[n]; q.b.style.backgroundColor = pn === n ? A : OFF; q.l.style.color = pn === n ? DARK : INK; });
 		var ru = lang() === 'ru';
 		P.ru.b.style.backgroundColor = ru ? A : OFF; P.ru.l.style.color = ru ? DARK : INK;
 		P.en.b.style.backgroundColor = ru ? OFF : A; P.en.l.style.color = ru ? INK : DARK;
@@ -381,6 +397,8 @@
 		out.push(T('sHp') + HPN + T('sMiss') + MISSN + T('sCmb') + (CMBF < 0 ? '—' : !CMBF ? T('sCmb0') : CMBW ? T('sCmbY') : T('sCmbN')) + T('sUns') + UNV);
 		out.push(T('sUw') + UW.n + T('sUwN') + UW.on + (ok(UW.box) ? '' : ' · ищу'));
 		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
+		out.push(T('sObj') + OBJN + T('sZip') + (ZB.st || T('sZip0')) + T('sSpd') + (SPDV || '—') + T('sPerf') + PF.v.toFixed(1) + T('ms'));
+		out.push(T('mem') + (ST.ok ? T('memOk') + T('memN') + ST.n + T('memS') + ST.saved : ST.tries >= 4 || ST.err ? T('memE') + (ST.err ? ' (' + ST.err + ')' : '') : T('memW')));
 		for (var j = 0; j < P.see.length; j++) setText(P.see[j], out[j] || '');
 		if (log) $.Msg('[Restless] видит: ' + out.join(' | '));
 	}
@@ -768,15 +786,159 @@
 
 	function f17Tick() {
 		plyScan();
-		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); }
-		if (NT % 4 === 1) { rankTick(); campTick(); }
+		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); zipTick(); }
+		if (NT % 4 === 1) { rankTick(); campTick(); objTick(); spdTick(); }
 		if (NT % 8 === 3) lrkTick();
+	}
+
+	// ---------- 0.19: набор Enchanted ----------
+	// Урон по строениям: игра считает его у каждого игрока ({i:objective_damage} в верхней панели), показывает только по Tab — пишем под портретом.
+	var OBJN = 0;
+	function kfmt(v) { v = +v || 0; return v >= 1000 ? (Math.round(v / 100) / 10 + 'k').replace('.0k', 'k') : String(v); }
+	function objTick() {
+		OBJN = 0;
+		var want = on('OBJ') && !HIDE;
+		for (var i = 0; i < PLY.length; i++) {
+			var x = PLY[i], lb = ok(x.ob) ? x.ob : null;
+			if (!want || !ok(x.pl)) { if (lb) setVis(lb, false); continue; }
+			var v = ''; try { v = digits($.Localize('{i:objective_damage}', x.pl)); } catch (e) { v = ''; }
+			if (!v || v === '0') { if (lb) setVis(lb, false); continue; }
+			if (!lb) {
+				lb = kid(x.area, 'RestlessObj');
+				if (!ok(lb)) lb = lab(x.area, 'RestlessObj', { horizontalAlign: 'center', verticalAlign: 'bottom', marginBottom: '-17px', fontSize: '11px', fontWeight: 'bold',
+					color: '#ffb46b', textShadow: '0px 0px 3px 2.0 #000000', zIndex: '21' });
+				x.ob = lb;
+			}
+			setText(lb, kfmt(v)); setVis(lb, true); OBJN++;
+		}
+	}
+	// Буст на канате: значок умения citadel_ability_zipline_boost (классы on_cooldown / in_use, секунды — в context_label) и бафф в StatusEffects.
+	// Секунд нет — считаем сами, как QoL Lock: бафф 32 с, перезарядка 6 минут с начала.
+	var ZB = { src: null, se: null, f: 0, fm: 0, lb: null, use: false, end: 0, cd: 0, st: '' };
+	function zipFind() {
+		var gh = HUD.FindChildTraverse('gameplay_hud') || HUD, s = gh.FindChildTraverse('citadel_ability_zipline_boost_') || gh.FindChildTraverse('citadel_ability_zipline_boost');
+		if (!ok(s)) { var L = []; try { L = gh.FindChildrenWithClassTraverse('citadel_ability_zipline_boost') || []; } catch (e) {} s = L[0] || null; }
+		ZB.src = ok(s) ? s : null;
+		if (!ok(ZB.se)) ZB.se = gh.FindChildTraverse('StatusEffects');
+	}
+	function zipSec(p) {
+		var L = [p], c = kid(p, 'context_label'); if (ok(c)) L.unshift(c);
+		for (var i = 0; i < L.length; i++) { var m = /(\d{1,3})(?:\.\d+)?/.exec(txt(L[i])); if (m && +m[1] > 0 && +m[1] <= 600) return +m[1]; }
+		return 0;
+	}
+	function zipTick() {
+		if (!on('ZIP') || HIDE) { if (ok(ZB.lb)) setVis(ZB.lb, false); ZB.st = ''; return; }
+		if (!ok(ZB.src) && ZB.f-- <= 0) { ZB.f = 12 * Math.min(10, ++ZB.fm); zipFind(); }
+		var now = Date.now(), s = ZB.src, cls = function (c) { try { return !!(s && s.BHasClass(c)); } catch (e) { return false; } };
+		var buff = ok(ZB.se) ? ok(kid(ZB.se, 'status_citadel_ability_zipline_boost')) : false;
+		var use = buff || cls('in_use'), cd = cls('on_cooldown') || cls('cooling_down');
+		if (use && !ZB.use) { ZB.end = now + 32000; ZB.cd = now + 360000; }
+		ZB.use = use;
+		if (cd) { var sec = zipSec(s); if (sec) ZB.cd = now + sec * 1000; else if (ZB.cd <= now) ZB.cd = now + 360000; }
+		else if (!use && cls('active')) ZB.cd = 0;
+		var msg = '', col = '#5be08a';
+		if (use) { msg = T('zipA') + Math.max(0, Math.ceil((ZB.end - now) / 1000)) + T('sec'); col = A; }
+		else if (ZB.cd > now) { var l = Math.ceil((ZB.cd - now) / 1000); msg = Math.floor(l / 60) + ':' + ('0' + l % 60).slice(-2); col = MUTED; }
+		else if (s) msg = T('zipR');
+		ZB.st = msg;
+		if (!msg) { if (ok(ZB.lb)) setVis(ZB.lb, false); return; }
+		if (!ok(ZB.lb)) ZB.lb = HUD.FindChildTraverse('RestlessZip');
+		if (!ok(ZB.lb)) ZB.lb = lab(HUD, 'RestlessZip', { horizontalAlign: 'right', verticalAlign: 'top', marginTop: '230px', marginRight: '26px', padding: '5px 12px 5px 12px',
+			backgroundColor: '#121014c8', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', zIndex: '40' });
+		setText(ZB.lb, T('zip') + msg); if (ZB.col !== col) { ZB.col = col; ZB.lb.style.color = col; } setVis(ZB.lb, true);
+	}
+	// Скорость: у игры есть свой спидометр (hud_movement_speed: класс SpeedometerEnabled у родителя показывает число без графика) — включаем его.
+	var SP = null, SPF = 0, SPON = false, SPDV = '';
+	function spdTick() {
+		if (!ok(SP)) { if (SPF-- > 0) return; SPF = 10; SP = HUD.FindChildTraverse('MovementSpeedPanel'); if (!ok(SP)) { SPDV = ''; return; } SPON = false; }
+		var par = SP.GetParent(), want = on('SPD');
+		if (ok(par) && want !== SPON) { try { if (want) par.AddClass('SpeedometerEnabled'); else par.RemoveClass('SpeedometerEnabled'); } catch (e) {} SPON = want; }
+		var v = ''; try { v = $.Localize('{s:movement_speed}', SP); } catch (e) {}
+		if (!v || v.indexOf('{') >= 0) { var l = kid(SP, 'MovementSpeedLabel'); v = l ? txt(l) : ''; }
+		SPDV = want && v && v.indexOf('{') < 0 ? v.replace(/<[^>]*>/g, '').trim() : '';
+	}
+	// Нагрузка мода: сколько миллисекунд в секунду занимает такт скрипта (замер Date.now вокруг такта), раз в 4 с — в углу под надписью.
+	var PF = { ms: 0, mx: 0, t0: 0, v: 0, m: 0, lb: null };
+	function perfTick() {
+		var now = Date.now();
+		if (!PF.t0) PF.t0 = now;
+		if (now - PF.t0 >= 4000) { PF.v = PF.ms * 1000 / (now - PF.t0); PF.m = PF.mx; PF.ms = 0; PF.mx = 0; PF.t0 = now; }
+		if (!on('PERF')) { if (ok(PF.lb)) setVis(PF.lb, false); return; }
+		if (!ok(PF.lb)) PF.lb = HUD.FindChildTraverse('RestlessPerf');
+		if (!ok(PF.lb)) PF.lb = lab(HUD, 'RestlessPerf', { horizontalAlign: 'left', verticalAlign: 'top', marginLeft: '24px', marginTop: '34px', fontSize: '13px', color: '#a89f90', zIndex: '50' });
+		setText(PF.lb, T('perf') + PF.v.toFixed(1) + T('ms') + T('mx') + PF.m + ' ' + (lang() === 'en' ? 'ms' : 'мс')); setVis(PF.lb, true);
+	}
+
+	// ---------- 0.19: память настроек ----------
+	// У модов Deadlock нет своего хранилища. Как QoL Lock: скрытая страница браузера игры (CitadelHTMLPanel) — restless/store.html на нашем сайте;
+	// она держит настройки в localStorage этого браузера (на этом компьютере) и отвечает заголовком страницы: RL_CFG:…:<настройки> при загрузке,
+	// RL_OK:<номер> после записи. Пишем, сменив только #… адреса (страница не перезагружается). Храним только свои переключатели, язык, время лагерей.
+	// Что поменял до загрузки памяти, пока страница грузилась, — не затираем (список в RESTLESS_DIRTY). Нет связи — всё как в 0.18, до выхода из игры.
+	var STORE = SITE + 'store.html?v=1';
+	var KEEPK = ['ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'OBJ', 'ZIP', 'SPD', 'PERF', 'LANG',
+		'CRS_neutral_weak', 'CRS_neutral_medium', 'CRS_neutral_large'];
+	function keep(k) { return KEEPK.indexOf(k) >= 0; }
+	var ST = { p: null, at: 0, tries: 0, ok: false, n: 0, q: 0, dirty: 0, sent: 0, sentQ: 0, sentFor: 0, saved: 0, err: '' };
+	function stDirty(k) {
+		var d = get('DIRTY', '');
+		if ((',' + d + ',').indexOf(',' + k + ',') < 0) set('DIRTY', d ? d + ',' + k : k, true);
+		ST.dirty = Date.now();
+	}
+	function stLoad(raw) {
+		var s = ''; try { s = decodeURIComponent(raw || ''); } catch (e) { s = ''; }
+		var d = ',' + get('DIRTY', '') + ',', n = 0, L = s.split(';');
+		for (var i = 0; i < L.length; i++) {
+			var j = L[i].indexOf('='); if (j < 1) continue;
+			var k = L[i].slice(0, j), v = L[i].slice(j + 1);
+			if (!keep(k) || !/^[\w.-]{1,12}$/.test(v)) continue;
+			n++;
+			if (d.indexOf(',' + k + ',') < 0) set(k, v, true);
+		}
+		ST.ok = true; ST.n = n; ST.err = '';
+		if (d !== ',,') ST.dirty = Date.now();
+		$.Msg('[Restless] память настроек: загружено ' + n);
+		try { if (open) paint(); } catch (e) {}
+	}
+	function stTitle(a, b) {
+		var t = typeof b === 'string' ? b : typeof a === 'string' ? a : '';
+		var m = /^RL_CFG:[^:]*:(.*)$/.exec(t);
+		if (m) { if (!ST.ok) stLoad(m[1]); return; }
+		m = /^RL_OK:(\d+)/.exec(t);
+		if (m) { if (+m[1] === ST.sentQ && ST.sentFor) { ST.saved++; if (ST.sentFor === ST.dirty) { ST.dirty = 0; set('DIRTY', '', true); } ST.sentFor = 0; } return; }
+		if (/^RL_ERR/.test(t)) ST.err = t.slice(7, 60);
+	}
+	function stStr() { var a = []; for (var i = 0; i < KEEPK.length; i++) { var v = get(KEEPK[i], ''); if (v) a.push(KEEPK[i] + '=' + v); } return a.join(';'); }
+	function storeTick(parent) {
+		var now = Date.now();
+		if (!ok(ST.p)) {
+			if (ST.at && now - ST.at < 5000) return;
+			ST.at = now; ST.ok = false;
+			try { var o = get('STP', ''); o = o ? ROOT.FindChildTraverse(o) : null; if (ok(o)) o.DeleteAsync(0); } catch (e) {}
+			try {
+				var id = 'RestlessStore' + TOKEN;
+				ST.p = mk('CitadelHTMLPanel', parent, id, { width: '2px', height: '2px', opacity: '0.01', horizontalAlign: 'left', verticalAlign: 'bottom', visibility: 'visible' });
+				set('STP', id, true);
+				$.RegisterEventHandler('HTMLTitle', ST.p, stTitle);
+				ST.p.SetURL(STORE);
+			} catch (e) { ST.err = String(e).slice(0, 60); $.Msg('[Restless] память настроек: ' + e); }
+			return;
+		}
+		if (!ST.ok) {
+			if (now - ST.at > 12000 && ST.tries < 4) { ST.tries++; ST.at = now; try { ST.p.SetURL(STORE); } catch (e) {} }
+			return;
+		}
+		if (ST.dirty && now - ST.dirty >= 800 && (ST.sentFor !== ST.dirty || now - ST.sent > 5000)) {
+			ST.q++; ST.sentQ = ST.q; ST.sentFor = ST.dirty; ST.sent = now;
+			try { ST.p.SetURL(STORE + '#' + encodeURIComponent(JSON.stringify({ q: ST.q, f: 'set', v: stStr() }))); } catch (e) { ST.err = String(e).slice(0, 60); }
+		}
 	}
 
 	// ---------- общий такт ----------
 	function tick() {
 		if (!ok(ctx)) return;
 		if (mine()) {
+			var t0 = Date.now();
+			try { storeTick(HUD); } catch (e) { $.Msg('[Restless] память: ' + e); }
 			try { hideTick(); } catch (e) { $.Msg('[Restless] укрытие: ' + e); }
 			try { markTick(); } catch (e) { $.Msg('[Restless] надпись: ' + e); }
 			try { menuTick(); } catch (e) { $.Msg('[Restless] меню: ' + e); }
@@ -788,6 +950,8 @@
 			try { oldTick(); } catch (e) { $.Msg('[Restless] старое: ' + e); }
 			try { f17Tick(); } catch (e) { $.Msg('[Restless] 0.17: ' + e); }
 			try { seeTick(false); } catch (e) { $.Msg('[Restless] проверка: ' + e); }
+			try { perfTick(); } catch (e) { $.Msg('[Restless] нагрузка: ' + e); }
+			var dt = Date.now() - t0; PF.ms += dt; if (dt > PF.mx) PF.mx = dt;
 			$.Schedule(0.25, tick);
 		} else {
 			$.Schedule(1.0, tick);
@@ -804,6 +968,8 @@
 					fontSize: '18px', fontWeight: 'bold', color: A, zIndex: '50' });
 				$.Msg('[Restless] надпись в главном меню');
 			}
+			storeTick(r);
+			setVis(m, on('MARK'));
 			setText(m, lang() === 'en' ? 'RESTLESS ' + VER + ' · running · Esc button is in a match' : 'RESTLESS ' + VER + ' · работает · кнопка — в матче по Esc');
 		} catch (e) { $.Msg('[Restless] надпись меню: ' + e); }
 		$.Schedule(2.0, function () { menuMarkTick(r); });

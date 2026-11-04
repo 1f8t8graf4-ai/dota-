@@ -3635,6 +3635,14 @@ button:disabled,[disabled]{cursor:default}
 .l22-bot{margin-top:14px}
 .rl-app .q-lvh .h1{font-size:30px;margin:0}
 .rl-app .l21-mh{margin:4px 0 6px}
+
+/* lg23 — «Оверлей» на настоящем кадре из игры (04.11, ночь 3) */
+.o18-st .ovp-sch{opacity:1;background:linear-gradient(180deg,rgba(8,10,14,.16),rgba(8,10,14,.4)),url(ovs-game.webp) center/cover no-repeat,#141821}
+.o18-st .ovp-sch .fg{display:none}
+.o18-st .ovp-sch i:not(.cr){opacity:.4}
+.o18-st .ovp-sch .cr{border-color:rgba(255,255,255,.8)}
+.o18-z{background:rgba(10,12,17,.55)}
+.o18-z.on{background:rgba(10,12,17,.78)}
 </style>
 </head>
 <body>
@@ -9577,6 +9585,19 @@ const lgBotOff = () => { if (OV.app && OV.G && OV.G.s === 'b') OV.app.live = fal
     V(`<div class="q-lvh"><h1 class="h1">Лайв-<em>матч</em></h1></div><div class="empty l22-bot">Матч с ботами</div>`);
     const k = () => { if (n !== VQ) { clearInterval(iv); return; } if (!(gameLive() && OV.G.s === 'b')) { clearInterval(iv); viewLive(arg); } }, iv = setInterval(k, 3000);
     OV.kick = k; }; }
+
+// ===================== lg23 — 04.11 (ночь 3): «Оверлей» на настоящем кадре из Deadlock; функции мода 0.19 =====================
+// Андрей: «там нету реального скрина (в оверлее)». Вместо нарисованной схемы — настоящий кадр игры 16:9 (restless/ovs-game.webp,
+// из открытого Deadlock Mod Manager, GPL-3: packages/crosshair/public/backgrounds/bg-1.jpg). Интерфейса игры на кадре нет —
+// где верхняя панель, мини-карта и умения, показывают бледные контуры, зоны Restless — поверх.
+// Мод 0.19: настройки сохраняются; в Enchanted — урон по строениям, буст на канате, скорость (спидометр игры), нагрузка мода.
+// Души в минуту и непотраченные души модераторы GameBanana запретили QoL Lock — убраны из списка, строка в «нет».
+{ const F = id => O18.find(x => x[0] === id);
+  [['odmg', 'у каждого под портретом — сколько нанёс по строениям'], ['zip', 'готов ли и сколько до него'], ['perf', 'сколько миллисекунд в секунду ест мод']]
+    .forEach(([id, d]) => { const f = F(id); if (f) { f[6] = d; f[7] = 1; } });
+  const c = F('cmp'); if (c) { c[1] = 'Скорость'; c[6] = 'спидометр самой игры'; c[7] = 1; }
+  ['spm', 'unsp'].forEach(id => { const i = O18.findIndex(x => x[0] === id); if (i >= 0) O18.splice(i, 1); });
+  if (!O18_NO.some(x => /GameBanana/.test(x))) O18_NO.push('Души в минуту и непотраченные души — запрещены на GameBanana'); }
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');

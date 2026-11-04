@@ -1,4 +1,5 @@
-// Заглушка Panorama для проверки скрипта Restless без игры (0.13: + связь с программой, профили, старая плашка; 0.14: замер нагрузки VIS).
+// Заглушка Panorama для проверки скрипта Restless без игры (0.13: + связь с программой, профили, старая плашка; 0.14: замер нагрузки VIS;
+// 0.19: + память настроек — настоящая restless/store.html крутится тут же в vm, «перезапуск игры» — новый HUD с тем же localStorage).
 // HUD: корень Hud → верхняя панель (ванильная), субтитры, скорость, меню по Esc (наши файлы со скриптом).
 // Как в игре: скрипт файла запускается раньше, чем панель вставлена в HUD, — он должен дождаться, а не выключиться.
 // Второй прогон: меню по Esc — чужое (ванильная копия без скрипта) — кнопку всё равно ставит скрипт из субтитров/скорости.
@@ -14,7 +15,7 @@ function P(type,id,attrs){const p={type,paneltype:type,id:id||'',attrs:attrs||{}
  GetParent(){return this.par},IsValid(){return this.valid},GetChildCount(){return this.ch.length},GetChild(i){return this.ch[i]},
  FindChildTraverse(i){for(const c of this.ch){VIS++;if(c.id===i)return c;const r=c.FindChildTraverse(i);if(r)return r}return null},
  FindChildrenWithClassTraverse(k,a=[]){for(const c of this.ch){VIS++;if(c.cls.has(k))a.push(c);c.FindChildrenWithClassTraverse(k,a)}return a},
- SetPanelEvent(e,f){this.ev[e]=f},SetImage(u){this.img=u},BHasClass(c){return this.cls.has(c)},AddClass(c){this.cls.add(c)},RemoveClass(c){this.cls.delete(c)},
+ SetPanelEvent(e,f){this.ev[e]=f},SetImage(u){this.img=u},SetURL(u){this.url=u;if(typeof onURL==='function')onURL(this,u)},BHasClass(c){return this.cls.has(c)},AddClass(c){this.cls.add(c)},RemoveClass(c){this.cls.delete(c)},
  SetAttributeString(k,v){(this.at||(this.at={}))[k]=String(v)},GetAttributeString(k,d){return this.at&&k in this.at?this.at[k]:d},
  MoveChildBefore(a,b){const i=this.ch.indexOf(a);this.ch.splice(i,1);this.ch.splice(this.ch.indexOf(b),0,a)},
  DeleteAsync(){this.valid=false;if(this.par)this.par.ch.splice(this.par.ch.indexOf(this),1)},
@@ -29,13 +30,22 @@ function parse(xml,top){
  return top.ch[top.ch.length-1]}
 let sched=[];const msgs=[];const props=[];let CLOCK=Date.now();const FD={now:()=>CLOCK};const acts=[];
 function run(ctxp){const $={GetContextPanel:()=>ctxp,CreatePanel:(t,par,id,pr)=>{const p=add(par,P(t,id,pr||{}));props.push(pr||{});return p},
- Msg:m=>msgs.push(m),Schedule:(d,f)=>sched.push(f),
+ Msg:m=>msgs.push(m),Schedule:(d,f)=>sched.push(f),RegisterEventHandler:(e,p,f)=>{(p.h||(p.h={}))[e]=f},
  // как в игре: {i:имя} ищется в переменных панели и выше
  Localize:(s,p)=>s.replace(/\{[ids]:(\w+)\}/g,(m,k)=>{for(let q=p;q;q=q.par)if(q.dv&&k in q.dv)return String(q.dv[k]);return m}),
  DispatchEvent:(e,a)=>{if(e==='ExternalBrowserGoToURL')msgs.push('URL '+a);if(e==='Activated')acts.push(a);if(e==='DismissAllContextMenus')cards.splice(0).forEach(c=>c.DeleteAsync())}};
  vm.runInNewContext(src,{$,SteamOverlayAPI:{OpenURL:u=>msgs.push('URL '+u)},Date:FD,Math,String});return $}
 const cards=[];
-const tick=(n=1)=>{for(let i=0;i<n;i++){CLOCK+=250;const s=sched;sched=[];s.forEach(f=>f());if(typeof onAct==='function')onAct()}};
+// страница store.html (браузер игры): отвечает заголовком на следующем такте; localStorage общий — переживает «перезапуск игры»
+const LSO={},PAGES=new Map();let pageQ=[],PAGE_HOLD=false,PAGE_DOWN=false;
+const STORE_JS=(fs.readFileSync(path.join(__dirname,'../../restless/store.html'),'utf8').match(/<script>([\s\S]*?)<\/script>/)||[])[1];
+global.onURL=(p,u)=>{if(PAGE_DOWN)return;const i=u.indexOf('#'),base=i<0?u:u.slice(0,i),h=i<0?'':u.slice(i);let pg=PAGES.get(p);
+ const fire=t=>pageQ.push(()=>{if(p.valid&&p.h&&p.h.HTMLTitle)p.h.HTMLTitle(p,t)});
+ if(pg&&pg.base===base&&h){if(pg.loc.hash!==h){pg.loc.hash=h;pageQ.push(()=>pg.hc.forEach(f=>f()))}return}
+ pg={base,loc:{hash:h},hc:[]};PAGES.set(p,pg);
+ pageQ.push(()=>vm.runInNewContext(STORE_JS,{location:pg.loc,localStorage:{getItem:k=>k in LSO?LSO[k]:null,setItem:(k,v)=>{LSO[k]=String(v)}},
+  document:{set title(t){fire(t)}},window:{addEventListener:(e,f)=>{if(e==='hashchange')pg.hc.push(f)}},Date:FD,JSON,String,encodeURIComponent,decodeURIComponent}))};
+const tick=(n=1)=>{for(let i=0;i<n;i++){CLOCK+=250;if(!PAGE_HOLD){const q=pageQ;pageQ=[];q.forEach(f=>f())}const s=sched;sched=[];s.forEach(f=>f());if(typeof onAct==='function')onAct()}};
 let fail=0;const ok=(c,t)=>{console.log((c?'PASS ':'FAIL ')+t);if(!c)fail++};
 // HUD
 const L=f=>fs.readFileSync(path.join(dir,'layout/'+f),'utf8');
@@ -196,9 +206,9 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
 {const W=()=>F('RestlessWindow'),A0=()=>all(W());
  // набор Lite по умолчанию: ранги, средний ранг, лагеря — вкл; Medium-функции выкл
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
- const pp=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px');ok(pp.length===2&&pp[0].ch[0].text==='Lite'&&pp[0].style.backgroundColor==='#ffc83d','набор: Lite выбран по умолчанию');
+ const pp=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px');ok(pp.length===3&&pp[2].ch[0].text==='Enchanted'&&pp[0].ch[0].text==='Lite'&&pp[0].style.backgroundColor==='#ffc83d','набор: Lite выбран по умолчанию');
  ok(texts().includes('Ранги игроков')&&texts().includes('Таймеры лагерей')&&texts().includes('Пропавшие враги'),'новые переключатели в окне');
- const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===12,'переключателей 12: '+tg.length);
+ const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===16,'переключателей 16: '+tg.length);
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(12);
  // ранги: значок под портретом у кого есть ID (11 из 12 — из профилей и account_id)
  const RI=TP.map(p=>p.FindChildTraverse('RestlessRank'));
@@ -267,6 +277,38 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  c3.cls.delete('active');tick(8);ok(c3.par.ch.some(x=>x.type==='Label'&&x.text==='2:00'&&x.style.visibility==='visible'),'следующий раз отсчёт с 2:00');
  gt.text='24:10';tick(4);c3.cls.add('active');tick(8);ok(hud.GetAttributeString('RESTLESS_CRS_neutral_weak','')==='120','вернулся позже (2:10) — оставили короче');
  tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.18: '+vps+' панелей в секунду');ok(vps<all(hud).length,'с ультой над героями нагрузка меньше одного HUD: '+vps);}
+// 0.19: набор Enchanted и память настроек
+{const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px');
+ const se=add(hud,P('Panel','StatusEffects'));const zb=add(hud,P('Panel','citadel_ability_zipline_boost_',{class:'citadel_ability_zipline_boost active'}));const zc=add(zb,P('Label','context_label',{text:''}));
+ TP[0].dv.objective_damage=12450;TP[1].dv.objective_damage=830;ms.dv={movement_speed:'7.4 m/s'};
+ const sp=all(hud).filter(x=>x.paneltype==='CitadelHTMLPanel');
+ ok(sp.length===1&&/^https:\/\/1f8t8graf4-ai\.github\.io\/dota-\/restless\/store\.html\?v=1/.test(sp[0].url)&&sp[0].style.width==='2px'&&sp[0].style.opacity==='0.01','память: скрытая страница store.html одна, 2×2 px: '+(sp[0]&&sp[0].url.slice(0,70)));
+ ok(msgs.some(m=>/память настроек: загружено/.test(m)),'память: страница ответила — загружено');
+ ok(/MARK=1/.test(LSO.restless_mod_v1||'')&&/LANG=ru/.test(LSO.restless_mod_v1||''),'что меняли в тестах выше — уже записано: '+LSO.restless_mod_v1);
+ em.cls.add('ShowEscapeMenu');btn.ev.onactivate();pp[2].ev.onactivate();tick(2);
+ ok(['OBJ','ZIP','SPD','PERF','MISS','RANK'].every(k=>hud.GetAttributeString('RESTLESS_'+k,'')==='1')&&pp[2].style.backgroundColor==='#ffc83d','Enchanted включил всё и горит');
+ ok(texts().includes('Урон по строениям')&&texts().includes('Буст на канате')&&texts().includes('Скорость')&&texts().includes('Нагрузка мода'),'новые переключатели в окне');
+ shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(16);
+ const OB=i=>TP[i].FindChildTraverse('RestlessObj');
+ ok(OB(0)&&OB(0).style.visibility==='visible'&&OB(0).text==='12.5k'&&OB(0).par.id==='HeroImageArea','урон по строениям под портретом: «'+(OB(0)&&OB(0).text)+'»');
+ ok(OB(1)&&OB(1).text==='830','меньше 1000 — как есть');ok(!OB(2)||OB(2).style.visibility==='collapse','урона нет — пусто');
+ const Z=()=>F('RestlessZip');ok(Z()&&Z().style.visibility==='visible'&&Z().text==='Буст на канате · готов','буст: «'+(Z()&&Z().text)+'»');
+ zb.cls.add('on_cooldown');zc.text='245';tick(4);ok(Z().text==='Буст на канате · 4:05','буст на перезарядке: «'+Z().text+'»');
+ zc.text='';tick(4);ok(/^Буст на канате · 4:0[34]$/.test(Z().text),'секунд игра не дала — считаем сами: «'+Z().text+'»');
+ zb.cls.delete('on_cooldown');add(se,P('Panel','status_citadel_ability_zipline_boost'));tick(2);ok(/^Буст на канате · идёт 3\d с$/.test(Z().text),'бафф идёт: «'+Z().text+'»');
+ se.ch.splice(0).forEach(c=>c.valid=false);zb.cls.add('on_cooldown');tick(2);ok(Z().text==='Буст на канате · 6:00'||/^Буст на канате · 5:5\d$/.test(Z().text),'бафф кончился — перезарядка 6 минут: «'+Z().text+'»');
+ ok(hud.cls.has('SpeedometerEnabled'),'скорость: спидометр игры включён (класс SpeedometerEnabled у родителя)');
+ const pf=F('RestlessPerf');ok(pf&&pf.style.visibility==='visible'&&/^Restless: \d+\.\d мс в секунду · самый долгий такт \d+ мс$/.test(pf.text),'нагрузка мода: «'+(pf&&pf.text)+'»');
+ em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
+ {const tx=texts().join(' / ');ok(/Урон по строениям: у 2 · буст: [^/]* · скорость: 7\.4 m\/s · нагрузка: /.test(tx),'«Что видит мод»: '+(tx.match(/Урон по строениям: у[^/]*/)||[''])[0]);
+  ok(/Память настроек: загружена · своих настроек \d+ · сохранено \d+/.test(tx),'«Что видит мод»: '+(tx.match(/Память настроек[^/]*/)||[''])[0]);}
+ pp[0].ev.onactivate();tick(4);ok(!hud.cls.has('SpeedometerEnabled')&&F('RestlessPerf').style.visibility==='collapse'&&OB(0).style.visibility==='collapse'&&Z().style.visibility==='collapse','набор Lite — Enchanted выключен и спрятан');
+ pp[2].ev.onactivate();tick(1);
+ // выключил надпись — через 0,8 с записано
+ const tgm=all(W).filter(x=>x.type==='Button'&&x.style.width==='104px')[1];tgm.ev.onactivate();tick(2);ok(!/MARK=0/.test(LSO.restless_mod_v1),'сразу не пишем — ждём 0,8 с');tick(4);
+ ok(/MARK=0/.test(LSO.restless_mod_v1)&&/OBJ=1/.test(LSO.restless_mod_v1)&&/CRS_neutral_weak=120/.test(LSO.restless_mod_v1),'записано: надпись выкл, Enchanted, время лагеря: '+LSO.restless_mod_v1);
+ shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
+ tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.19 (Enchanted): '+vps+' панелей в секунду');ok(vps<all(hud).length,'Enchanted: нагрузка меньше одного HUD: '+vps);}
 // бот
 F('RestlessSiteBtn').ev.onactivate();ok(msgs.includes('URL https://1f8t8graf4-ai.github.io/dota-/restless/'),'кнопка «Мой Restless» открывает сайт');
 F('RestlessBotBtn').ev.onactivate();ok(msgs.includes('URL https://t.me/languagegamesbot'),'кнопка бота открывает ссылку');
@@ -277,5 +319,24 @@ ok(!all(pop).some(x=>/^Restless/.test(x.id)),'в окне настроек иг�
 {const hud2=P('CitadelHud','Hud');const em2=add(hud2,P('CitadelHudEscapeMenu','EscapeMenu'));parse(fs.readFileSync(escXml,'utf8'),em2);
  const ms2=add(hud2,P('CitadelHudMovementSpeed','m'));parse(L('hud_movement_speed.xml'),ms2);run(ms2.ch[0]);tick(3);
  const b2=hud2.FindChildTraverse('RestlessMenuBtn');ok(b2&&b2.par.par.id==='SubOptions','чужое меню по Esc — кнопку ставит скрипт из файла скорости');}
+// 0.19: перезапуск игры — новый HUD, тот же localStorage браузера игры
+{subs.ch[0].valid=false;ms.ch[0].valid=false;
+ const h3=P('CitadelHud','Hud');const s3=P('CitadelHudSubtitles','HudSubtitles');parse(L('citadel_hud_subtitles.xml'),s3);const e3=add(h3,P('CitadelHudEscapeMenu','EscapeMenu'));parse(fs.readFileSync(escXml,'utf8'),e3);
+ add(h3,s3);run(s3.ch[0]);tick(8);
+ const m3=h3.FindChildTraverse('RestlessMark');
+ ok(h3.GetAttributeString('RESTLESS_MARK','')==='0'&&m3&&m3.style.visibility==='collapse','перезапуск: надпись выключена — так и осталась');
+ ok(h3.GetAttributeString('RESTLESS_OBJ','')==='1'&&h3.GetAttributeString('RESTLESS_CRS_neutral_weak','')==='120','перезапуск: Enchanted и время лагеря на месте');
+ // страница грузится долго, а игрок уже нажал — его выбор не затираем
+ const h4=P('CitadelHud','Hud');const s4=P('CitadelHudSubtitles','HudSubtitles');parse(L('citadel_hud_subtitles.xml'),s4);const e4=add(h4,P('CitadelHudEscapeMenu','EscapeMenu'));parse(fs.readFileSync(escXml,'utf8'),e4);
+ s3.ch[0].valid=false;PAGE_HOLD=true;add(h4,s4);run(s4.ch[0]);tick(4);e4.cls.add('ShowEscapeMenu');tick(2);
+ h4.FindChildTraverse('RestlessMenuBtn').ev.onactivate();const w4=h4.FindChildTraverse('RestlessWindow');
+ const t4=all(w4).filter(x=>x.type==='Button'&&x.style.width==='104px')[1];ok(t4.ch[0].text==='ВКЛ','страница ещё не ответила — надпись по умолчанию ВКЛ');
+ t4.ev.onactivate();t4.ev.onactivate();tick(1);ok(h4.GetAttributeString('RESTLESS_DIRTY','')==='MARK','нажатие до загрузки помечено');
+ PAGE_HOLD=false;tick(8);
+ ok(h4.GetAttributeString('RESTLESS_MARK','')==='1'&&h4.GetAttributeString('RESTLESS_OBJ','')==='1','загрузилось: надпись — как нажал (вкл), остальное — из памяти');
+ ok(/MARK=1/.test(LSO.restless_mod_v1)&&h4.GetAttributeString('RESTLESS_DIRTY','')==='','и записано обратно: '+LSO.restless_mod_v1.slice(0,40));
+ // страницы нет вовсе — работает как раньше, до выхода из игры
+ const h5=P('CitadelHud','Hud');const s5=P('CitadelHudSubtitles','HudSubtitles');parse(L('citadel_hud_subtitles.xml'),s5);parse(fs.readFileSync(escXml,'utf8'),add(h5,P('CitadelHudEscapeMenu','EscapeMenu')));s4.ch[0].valid=false;PAGE_DOWN=true;add(h5,s5);run(s5.ch[0]);tick(260);
+ ok(h5.FindChildTraverse('RestlessMark').style.visibility==='visible'&&msgs.filter(m=>/Restless\] .*ошибк|TypeError/.test(m)).length===0,'страница недоступна — мод работает, настройки по умолчанию, без ошибок');PAGE_DOWN=false;}
 console.log('\nконсоль:',msgs.filter(m=>m.startsWith('[Restless]')).join(' | '));
 console.log(fail?`\nКРАСНЫХ: ${fail}`:'\nвсё PASS');process.exit(fail?1:0);
