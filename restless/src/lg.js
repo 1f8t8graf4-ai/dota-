@@ -686,7 +686,6 @@ async function viewLive(arg) {
   const isM = !!arg && /^m\d+$/.test(arg), aid = isM ? 0 : (+arg || (ME ? ME.id : 0));
   V(`<div class="q-lvh"><h1 class="h1">Лайв-<em>матч</em></h1>
     <form class="q-lvf" id="lvf" autocomplete="off"><input id="lvq" placeholder="Ник, ссылка Steam или ID игрока" aria-label="Игрок" value="${aid && !(ME && aid === ME.id) ? esc(String(aid)) : ''}"><button class="btn" type="submit">Найти матч</button>${ME ? '<button class="btn g" type="button" id="lvme">Мой матч</button>' : ''}<div class="dd hide" id="lvd"></div></form></div>
-    <p class="sub" style="margin:8px 0 0">Как в Porofessor: ранг, игры и винрейт на герое у всех 12, кто с кем дружит (возможная пати), кто на серии, кто первый раз на герое и кто главная угроза. Нажми на игрока — его профиль.</p>
     <div id="lvb"><div class="load">${isM ? 'Открываю лобби…' : aid ? 'Ищу живой матч…' : ''}</div></div><div id="lvl"></div>`);
   const go = id => { location.hash = '#live/' + id; };
   $('#lvf').onsubmit = async e => {

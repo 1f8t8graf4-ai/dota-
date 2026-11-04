@@ -661,7 +661,7 @@ async function hrkOpen(hid, id, name) {
       const S = L.length ? await api('players/steam?account_ids=' + L.map(x => x.account_id).join(',')).catch(() => []) : [], SM = {};
       (S || []).forEach(x => SM[x.account_id] = x);
       const hb = o && hrBig(o.w, o.tot);
-      html = `<p class="hrk-h">${hb ? `<b>${hb.t}</b> ${hb.ex ? 'в мире' : 'на герое'}${o.tot ? ` · в рейтинге ${nf(o.tot)}` : ''} · ${esc(hrNext(o.w))}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}<br><small>Как в League of Graphs: ранг, винрейт и KDA на герое; ${HL_MIN}+ игр за ${HL_DAYS} дней и хоть одна за 30 дней. Нажми на игрока — его сборка.</small></p>
+      html = `<p class="hrk-h">${hb ? `<b>${hb.t}</b> ${hb.ex ? 'в мире' : 'на герое'}${o.tot ? ` · в рейтинге ${nf(o.tot)}` : ''} · ${esc(hrNext(o.w))}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}</p>
         ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${esc(rankOf(x.badge).name)} · ${nf(x.matches)} ${pl(x.matches, ['игра', 'игры', 'игр'])}${x.wr != null ? ` · ${f1(x.wr)}% · KDA ${f1(x.kda)}` : ''}${x.R ? ` · ${nf(x.R)} очков` : ''}`, x.account_id === id, x.badge)).join('')}`;
     } else {
       const E = o ? o.E : [], c = o && o.i >= 0 ? o.i : 0, a = Math.max(0, c - 7 + off);

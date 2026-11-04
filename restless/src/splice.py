@@ -5,7 +5,7 @@ import os
 SRC = os.path.dirname(os.path.abspath(__file__))
 # база — index.html из коммита c03b648: git show c03b648:restless/index.html > restless/index.html, потом этот скрипт
 P = os.environ.get('RL_INDEX') or os.path.join(SRC, '..', 'index.html')
-LAYERS = ['lg', 'lg2', 'lg3', 'lg4', 'lg5', 'lg6', 'lg7', 'lg8', 'lg9', 'lg10', 'lg11', 'lg12', 'lg13', 'lg14', 'lg15', 'lg16', 'lg17', 'lg18', 'lg19', 'lg20', 'lg21', 'lg22', 'lg23', 'lg24', 'lg25', 'lg26']
+LAYERS = ['lg', 'lg2', 'lg3', 'lg4', 'lg5', 'lg6', 'lg7', 'lg8', 'lg9', 'lg10', 'lg11', 'lg12', 'lg13', 'lg14', 'lg15', 'lg16', 'lg17', 'lg18', 'lg19', 'lg20', 'lg21', 'lg22', 'lg23', 'lg24', 'lg25', 'lg26', 'lg27']
 s = open(P, encoding='utf-8').read()
 L = s.split('\n')
 
@@ -102,7 +102,7 @@ a = 'Нажми на героя — его страница.</p>'
 assert a in s
 s = s.replace(a, 'Нажми на героя — его страница: портрет и настоящие сборки. <a class="lnk" href="#heroes">Все герои карточками ›</a></p>', 1)
 s = s.replace('<meta name="description" content="Restless — профиль с васянами и оценками матчей S/A/B/C/D, мета тир-лист, официальный топ, сборки с винрейтом и разбор каждого матча в Deadlock">',
-              '<meta name="description" content="Restless — статистика Deadlock как League of Graphs: профиль, матчи с предметами и всеми игроками, оценки S+…D−, лайв-матч как Porofessor, мета, лидеры, сборки с винрейтом, патчноуты">')
+              '<meta name="description" content="Restless — статистика Deadlock: профиль, матчи с предметами и всеми игроками, оценки S+…D−, лайв-матч, мета, лидеры, сборки с винрейтом, патчноуты">')
 
 # метки матча — понятными словами, без сленга (Андрей: короткие — кринж)
 for a, b in [("['Кормил', 'r'", "['Много смертей', 'r'"), ("['Нафармил', 'g'", "['Хороший фарм', 'g'"), ("['Мало душ', 'r'", "['Плохой фарм', 'r'"),

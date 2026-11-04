@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Restless · Deadlock</title>
-<meta name="description" content="Restless — статистика Deadlock как League of Graphs: профиль, матчи с предметами и всеми игроками, оценки S+…D−, лайв-матч как Porofessor, мета, лидеры, сборки с винрейтом, патчноуты">
+<meta name="description" content="Restless — статистика Deadlock: профиль, матчи с предметами и всеми игроками, оценки S+…D−, лайв-матч, мета, лидеры, сборки с винрейтом, патчноуты">
 <meta name="theme-color" content="#09090b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3823,6 +3823,9 @@ body{font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased;text-r
 .u26-sw input:checked+.tr::after{transform:translateX(16px);background:#1a1408}
 .u26-sw b{font-weight:600}
 .u26-gm{margin:10px 2px 0;color:var(--mu);font-size:14px}
+
+/* lg27 — без пояснений (прячется скриптом) */
+details.l16-how,.r9-bf{display:none!important}
 </style>
 </head>
 <body>
@@ -5626,7 +5629,6 @@ async function viewLive(arg) {
   const isM = !!arg && /^m\d+$/.test(arg), aid = isM ? 0 : (+arg || (ME ? ME.id : 0));
   V(`<div class="q-lvh"><h1 class="h1">Лайв-<em>матч</em></h1>
     <form class="q-lvf" id="lvf" autocomplete="off"><input id="lvq" placeholder="Ник, ссылка Steam или ID игрока" aria-label="Игрок" value="${aid && !(ME && aid === ME.id) ? esc(String(aid)) : ''}"><button class="btn" type="submit">Найти матч</button>${ME ? '<button class="btn g" type="button" id="lvme">Мой матч</button>' : ''}<div class="dd hide" id="lvd"></div></form></div>
-    <p class="sub" style="margin:8px 0 0">Как в Porofessor: ранг, игры и винрейт на герое у всех 12, кто с кем дружит (возможная пати), кто на серии, кто первый раз на герое и кто главная угроза. Нажми на игрока — его профиль.</p>
     <div id="lvb"><div class="load">${isM ? 'Открываю лобби…' : aid ? 'Ищу живой матч…' : ''}</div></div><div id="lvl"></div>`);
   const go = id => { location.hash = '#live/' + id; };
   $('#lvf').onsubmit = async e => {
@@ -8554,7 +8556,7 @@ async function hrkOpen(hid, id, name) {
       const S = L.length ? await api('players/steam?account_ids=' + L.map(x => x.account_id).join(',')).catch(() => []) : [], SM = {};
       (S || []).forEach(x => SM[x.account_id] = x);
       const hb = o && hrBig(o.w, o.tot);
-      html = `<p class="hrk-h">${hb ? `<b>${hb.t}</b> ${hb.ex ? 'в мире' : 'на герое'}${o.tot ? ` · в рейтинге ${nf(o.tot)}` : ''} · ${esc(hrNext(o.w))}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}<br><small>Как в League of Graphs: ранг, винрейт и KDA на герое; ${HL_MIN}+ игр за ${HL_DAYS} дней и хоть одна за 30 дней. Нажми на игрока — его сборка.</small></p>
+      html = `<p class="hrk-h">${hb ? `<b>${hb.t}</b> ${hb.ex ? 'в мире' : 'на герое'}${o.tot ? ` · в рейтинге ${nf(o.tot)}` : ''} · ${esc(hrNext(o.w))}` : esc(hrWhy(o && o.w) || 'Пока не в рейтинге героя.')}</p>
         ${L.map(x => row(x.rank, x.account_id, (SM[x.account_id] || {}).personaname || '#' + x.account_id, (SM[x.account_id] || {}).avatar, `${esc(rankOf(x.badge).name)} · ${nf(x.matches)} ${pl(x.matches, ['игра', 'игры', 'игр'])}${x.wr != null ? ` · ${f1(x.wr)}% · KDA ${f1(x.kda)}` : ''}${x.R ? ` · ${nf(x.R)} очков` : ''}`, x.account_id === id, x.badge)).join('')}`;
     } else {
       const E = o ? o.E : [], c = o && o.i >= 0 ? o.i : 0, a = Math.max(0, c - 7 + off);
@@ -9045,7 +9047,7 @@ async function l13Ratings() {
             const b = hrBig(w, o.tot);
             x.innerHTML = `${b.t} <i>${esc(hero(hid).n)}</i>${o.r ? ` <em>${esc(RGS[o.rg] || o.rg)} #${o.r.pos}</em>` : ''}`;
             x.classList.toggle('top', !!b.top); x.classList.toggle('hi', !!b.hi && !b.top);
-            x.title = `Рейтинг героя: ${b.ex ? b.t + ' в мире' : b.t + ' на герое'}${o.tot ? ' (в рейтинге ' + nf(o.tot) + ')' : ''}. ${hrNext(w)} — по очкам рейтинга: ранг, винрейт и KDA на ${hero(hid).n}, как в League of Graphs (${HL_MIN}+ игр за ${HL_DAYS} дней).${o.r ? ` ${RGS[o.rg] || o.rg} #${o.r.pos} — официальный топ героя в регионе.` : ''}`;
+            x.title = `Рейтинг героя: ${b.ex ? b.t + ' в мире' : b.t + ' на герое'}${o.tot ? ' (в рейтинге ' + nf(o.tot) + ')' : ''}. ${hrNext(w)} — по очкам рейтинга: ранг, винрейт и KDA на ${hero(hid).n}.${o.r ? ` ${RGS[o.rg] || o.rg} #${o.r.pos} — официальный топ героя в регионе.` : ''}`;
           } else { x.textContent = ''; x.classList.add('no'); x.removeAttribute('title'); }
         });
       }));
@@ -10126,6 +10128,20 @@ viewOvs = function () {
 // подпись вкладки
 { const fix = () => { const a = document.querySelector('#tabs [data-t="ovs"]'); if (a && !a.dataset.u26) { a.dataset.u26 = 1; a.title = 'Лобби: что показывать в лайв-матче'; const sv = a.querySelector('svg'); a.textContent = ''; if (sv) a.append(sv); a.append(' Лобби'); } };
   new MutationObserver(fix).observe(document.body, {childList: true, subtree: true}); fix(); }
+
+// ===================== lg27 — 04.11 (ночь 6): без пояснений на сайте =====================
+// Андрей: «убери в срочном порядке все эти надписи как в League of Graphs и т. д.» (правило: на сайте — без пояснений).
+// Прячем подписи-пояснения под заголовками, «как считаем», сноски; из подсказок при наведении убираем ссылки на чужие сайты.
+const U27RX = /(League of Graphs|LoG\b|Porofessor|Deadlock Labs|ResoAI|нажми|Нажми|наведи|Наведи|как считаем|Как считаем|столбик —|▲ —|— из файлов игры|открытые данные|данные игры через)/;
+const U27T = /,?\s*(как|Как) (в )?(League of Graphs|Porofessor|Deadlock Labs|LoG)[^.;)]*[.;)]?/g;
+function u27Sweep(root) {
+  (root || document).querySelectorAll('small, p.note, p.sub, .note, .q-pop p, details.l16-how').forEach(el => {
+    if (el.dataset.u27) return; el.dataset.u27 = 1;
+    if (el.matches('details.l16-how') || U27RX.test(el.textContent || '')) el.style.display = 'none';
+  });
+  (root || document).querySelectorAll('[title]').forEach(el => { const t = el.getAttribute('title'); if (t && U27T.test(t)) el.setAttribute('title', t.replace(U27T, '').replace(/\s{2,}/g, ' ').trim()); U27T.lastIndex = 0; });
+}
+{ let tm = 0; new MutationObserver(() => { clearTimeout(tm); tm = setTimeout(() => u27Sweep(), 60); }).observe(document.body, {childList: true, subtree: true}); u27Sweep(); }
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');
