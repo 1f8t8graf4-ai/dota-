@@ -1,0 +1,24 @@
+/* lg30 — «Оверлей» тремя вкладками: В игре · Лобби · LIVE 12 · FPS */
+.u30-tabs{position:relative;display:flex;gap:0;margin:6px 0 20px;padding:5px;border-radius:16px;background:var(--s1);border:1px solid var(--ln);max-width:720px;box-shadow:0 10px 30px rgba(0,0,0,.35) inset}
+.u30-tabs a{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px;border-radius:12px;color:var(--mu);font-weight:800;font-size:16px;letter-spacing:.01em;text-decoration:none;transition:color .25s}
+.u30-tabs a svg{flex:none;transition:transform .45s var(--u26e,cubic-bezier(.16,1,.3,1))}
+.u30-tabs a:hover{color:var(--tx)}
+.u30-tabs a:hover svg{transform:translateY(-2px) scale(1.08)}
+.u30-tabs a.on{color:#14100a}
+.u30-th{position:absolute;z-index:0;top:5px;bottom:5px;left:0;border-radius:12px;background:linear-gradient(135deg,#ffd27a,var(--ac));box-shadow:0 8px 26px rgba(255,182,48,.35)}
+.u30-th.go{transition:transform .5s var(--u26e,cubic-bezier(.16,1,.3,1)),width .5s var(--u26e,cubic-bezier(.16,1,.3,1))}
+.u30-in .u30-tabs~*{animation:u30up .55s var(--u26e,cubic-bezier(.16,1,.3,1)) both}
+.u30-in .u30-tabs~*:nth-child(4){animation-delay:.05s}.u30-in .u30-tabs~*:nth-child(5){animation-delay:.1s}.u30-in .u30-tabs~*:nth-child(6){animation-delay:.15s}
+@keyframes u30up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.u30-lb{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);gap:28px;align-items:start}
+.u30-lbg{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.u30-pv{position:sticky;top:90px}
+.u30-pvc .q-lob{display:block}
+.u30-pvc .q-pc{max-width:380px;transition:box-shadow .3s}
+.u30-pvc .q-pc.u30-blink{animation:u30bl .6s var(--u26e,cubic-bezier(.16,1,.3,1))}
+@keyframes u30bl{0%{box-shadow:0 0 0 0 rgba(255,182,48,.6)}100%{box-shadow:0 0 0 14px rgba(255,182,48,0)}}
+.u30-pvc .q-pc *{transition:opacity .25s}
+.u30-bld{display:flex;align-items:center;gap:8px;margin:8px 0}
+.u30-bld small{color:var(--mu)}
+@media (max-width:860px){.u30-lb{grid-template-columns:1fr}.u30-pv{position:static}.u30-lbg{grid-template-columns:1fr!important}.u30-tabs a{padding:12px 8px;font-size:14px;gap:6px}}
+@media (max-width:480px){.u30-tabs a b{font-size:13px}}

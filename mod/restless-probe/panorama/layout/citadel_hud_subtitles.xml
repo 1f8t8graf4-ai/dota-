@@ -30,5 +30,7 @@
 			</Panel>
 		</snippet>
 	</snippets>
-	<CitadelHudSubtitles class="WindowRoot" />
+	<CitadelHudSubtitles class="WindowRoot">
+		<GlobalClassListener id="RestlessGCL" hittest="false" classes="gDetailView gScoreboardOpen" />
+	</CitadelHudSubtitles>
 </root>

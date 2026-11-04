@@ -130,6 +130,7 @@ function u26LApply() {
   st.textContent = css;
 }
 u26LApply();
+const VO_PRE26 = viewOvs;   // 04.11 ночь 7: прежний «Оверлей» (кадр игры с функциями) — в lg30 он снова вкладка «В игре»
 viewOvs = function () {
   vNew(); document.body.classList.remove('ovm'); clearInterval(OV.timer); clearInterval(OV.clk);
   $$('#tabs a').forEach(x => x.classList.toggle('on', x.dataset.t === 'ovs'));

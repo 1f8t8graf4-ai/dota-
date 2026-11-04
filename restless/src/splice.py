@@ -5,7 +5,7 @@ import os
 SRC = os.path.dirname(os.path.abspath(__file__))
 # база — index.html из коммита c03b648: git show c03b648:restless/index.html > restless/index.html, потом этот скрипт
 P = os.environ.get('RL_INDEX') or os.path.join(SRC, '..', 'index.html')
-LAYERS = ['lg', 'lg2', 'lg3', 'lg4', 'lg5', 'lg6', 'lg7', 'lg8', 'lg9', 'lg10', 'lg11', 'lg12', 'lg13', 'lg14', 'lg15', 'lg16', 'lg17', 'lg18', 'lg19', 'lg20', 'lg21', 'lg22', 'lg23', 'lg24', 'lg25', 'lg26', 'lg27', 'lg28', 'lg29']
+LAYERS = ['lg', 'lg2', 'lg3', 'lg4', 'lg5', 'lg6', 'lg7', 'lg8', 'lg9', 'lg10', 'lg11', 'lg12', 'lg13', 'lg14', 'lg15', 'lg16', 'lg17', 'lg18', 'lg19', 'lg20', 'lg21', 'lg22', 'lg23', 'lg24', 'lg25', 'lg26', 'lg27', 'lg28', 'lg29', 'lg30']
 s = open(P, encoding='utf-8').read()
 L = s.split('\n')
 

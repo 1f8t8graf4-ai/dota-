@@ -50,7 +50,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.23';
+	var VER = '0.24';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -74,7 +74,8 @@
 		if (!quiet && keep(k)) stDirty(k);
 	}
 	// 0.17: функции Medium и Enchanted по умолчанию выключены (набор Lite)
-	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0', RIFT: '0', BOX: '0', BXC: '0', BXT: '1', BXG: '1' };
+	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0', RIFT: '0', BOX: '0', BXC: '0', BXT: '1', BXG: '1', ALTM: '1',
+		LBR: '1', LBH: '1', LBS: '1', LBP: '1', LBC: '1', LBB: '1', LBT: '1', LBK: '0' };
 	function on(k) { return get(k, DEF[k] || '1') === '1'; }
 	function lang() { return get('LANG', 'ru') === 'en' ? 'en' : 'ru'; }
 
@@ -99,7 +100,8 @@
 			cmbT: '«В бою»', unsT: 'Незащищённые души', ultwT: 'КД ульты над героем', sUw: 'Ульта над героями: полос ', sUwN: ' · с секундами ', pre: 'Набор', cmbOn: 'В БОЮ', cmbOff: 'ВНЕ БОЯ', unsL: 'Незащищённые души: ',
 			sRank: 'Ранги: показано ', sLrk: ' · средний ранг: свои ', sLrkE: ', враги ', sCamp: ' · таймеров лагерей: ', sHp: 'Здоровье читается у ', sMiss: ' · пропавших врагов: ',
 			sCmb: ' · «в бою»: ', sCmbY: 'да', sCmbN: 'нет', sCmb0: 'не нашёл', sUns: ' · незащищённых: ',
-			objT: 'Урон по строениям', zipT: 'Буст на канате', spdT: 'Скорость', perfT: 'Нагрузка мода',
+			objT: 'Урон по строениям', altmT: 'Мелочи — только по Alt', lbH: 'ЛОББИ · LIVE 12 — ЧТО ПОКАЗЫВАТЬ У ИГРОКОВ', seeBtn: 'Что видит мод ▸', seeHide: 'Скрыть ▾',
+			lbR: 'Ранг', lbHr: 'Место на герое', lbS: 'Игры и винрейт', lbP: 'Форма 12 ч / 30 дн', lbC: 'Последние матчи', lbB: 'Сборка', lbT: 'Метки', lbK: 'Компактнее', sAlt: 'Alt: ', altOn: 'зажат', altOff: 'отпущен', altNo: 'не нашёл', uwSaw: ' · полосы ответили: ', zipT: 'Буст на канате', spdT: 'Скорость', perfT: 'Нагрузка мода',
 			zip: '', zipR: 'готов', zipA: 'идёт ', sec: ' с', perf: 'Restless: ', ms: ' мс в секунду', mx: ' · самый долгий такт ',
 			sObj: 'Урон по строениям: у ', sZip: ' · буст: ', sZip0: 'не нашёл', sSpd: ' · скорость: ', sPerf: ' · нагрузка: ',
 			boxT: 'Ящики и статуи на мини-карте', ummH: 'МОДЫ РЯДОМ', ummN: 'настроек у мода нет', sUm: 'Моды рядом: ', sUm0: 'других модов не вижу', sBox: ' · на мини-карте точек ', duNo: 'урна и разлом — у Deadlock Utils',
@@ -130,7 +132,8 @@
 			cmbT: '"In combat"', unsT: 'Unsecured souls', ultwT: 'Ult cooldown over heroes', sUw: 'Ult over heroes: bars ', sUwN: ' · with seconds ', pre: 'Preset', cmbOn: 'IN COMBAT', cmbOff: 'OUT OF COMBAT', unsL: 'Unsecured souls: ',
 			sRank: 'Ranks: shown ', sLrk: ' · average rank: allies ', sLrkE: ', enemies ', sCamp: ' · camp timers: ', sHp: 'Health readable for ', sMiss: ' · missing enemies: ',
 			sCmb: ' · "in combat": ', sCmbY: 'yes', sCmbN: 'no', sCmb0: 'not found', sUns: ' · unsecured: ',
-			objT: 'Objective damage', zipT: 'Zipline boost', spdT: 'Speedometer', perfT: 'Mod load',
+			objT: 'Objective damage', altmT: 'Small info — only on Alt', lbH: 'LOBBY · LIVE 12 — WHAT TO SHOW FOR PLAYERS', seeBtn: 'What the mod sees ▸', seeHide: 'Hide ▾',
+			lbR: 'Rank', lbHr: 'Hero rating', lbS: 'Games & winrate', lbP: 'Form 12h / 30d', lbC: 'Last matches', lbB: 'Build', lbT: 'Tags', lbK: 'Compact', sAlt: 'Alt: ', altOn: 'held', altOff: 'released', altNo: 'not found', uwSaw: ' · bars answered: ', zipT: 'Zipline boost', spdT: 'Speedometer', perfT: 'Mod load',
 			zip: '', zipR: 'ready', zipA: 'active ', sec: ' s', perf: 'Restless: ', ms: ' ms per second', mx: ' · longest tick ',
 			sObj: 'Objective damage: for ', sZip: ' · boost: ', sZip0: 'not found', sSpd: ' · speed: ', sPerf: ' · load: ',
 			boxT: 'Crates and statues on the minimap', ummH: 'MODS NEARBY', ummN: 'this mod has no settings', sUm: 'Mods nearby: ', sUm0: 'no other mods seen', sBox: ' · minimap dots ', duNo: 'urn and rift — by Deadlock Utils',
@@ -238,7 +241,8 @@
 		var L = LK.hide ? [] : lkPlayers();
 		var enc = function (v) { return encodeURIComponent(String(v || '').replace(/[~|]/g, ' ')); };
 		var gt = ''; try { if (!ok(GT)) GT = HUD.FindChildTraverse('GameTime'); gt = ok(GT) ? txt(GT) : ''; } catch (e) {}
-		return '#g=' + encodeURIComponent('v=' + VER + '&s=' + (LK.hide || !L.length ? 'h' : 'm') + '&gt=' + enc(gt) + '&p=' +
+		var lb = []; for (var k in LBMAP) lb.push(LBMAP[k] + ':' + (on(k) ? 1 : 0));
+		return '#g=' + encodeURIComponent('v=' + VER + '&lb=' + lb.join(',') + '&s=' + (LK.hide || !L.length ? 'h' : 'm') + '&gt=' + enc(gt) + '&p=' +
 			L.map(function (x) { return [x.t, enc(x.n), enc(x.h), x.hid, x.a].join('~'); }).join('|'));
 	}
 	function liveShow(v) {
@@ -311,9 +315,17 @@
 		P.umBox = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right-wrap', visibility: 'collapse' });
 		UM.sig = '';
 
-		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '16px', marginBottom: '2px' });
+		// 0.24: лобби (что видно у 12 игроков в LIVE · 12) — прямо здесь, как остальные переключатели
+		setText(lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '12px' }), T('lbH'));
+		var lbr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right-wrap', padding: '6px 0px 4px 0px' });
+		LBX.forEach(function (x) { var q = pill(lbr, '', function () { set(x[0], on(x[0]) ? '0' : '1'); paint(); }, '16px'); q.b.style.marginLeft = '0px'; q.b.style.marginRight = '8px'; q.b.style.marginBottom = '8px'; P['p' + x[0]] = q; });
+		// 0.24: «Что видит мод» свёрнуто (Андрей: «хуй сломит, что где»), открывается кнопкой
+		var sr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '8px' });
+		P.seeB = pill(sr, '', function () { SEEO = !SEEO; for (var i = 0; i < P.see.length; i++) setVis(P.see[i], SEEO); setVis(P.seeH, SEEO); paint(); if (SEEO) { SEE = 0; seeTick(true); } }, '8px');
+		P.seeB.b.style.marginLeft = '0px';
+		P.seeH = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: A, letterSpacing: '1px', marginTop: '10px', marginBottom: '2px', visibility: SEEO ? 'visible' : 'collapse' });
 		P.see = [];
-		for (var q = 0; q < 13; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px' }));
+		for (var q = 0; q < 14; q++) P.see.push(lab(WIN, '', { fontSize: '14px', color: INK, marginTop: '3px', visibility: SEEO ? 'visible' : 'collapse' }));
 
 		var f = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginTop: '22px' });
 		var site = mk('Button', f, 'RestlessSiteBtn', { padding: '11px 22px 11px 22px', borderRadius: '8px', backgroundColor: A });
@@ -330,16 +342,16 @@
 	}
 	// 0.22: значки самой игры (пути — из hud_minimap.css и ability-иконок датамайна)
 	var IMG = 's2r://panorama/images/', ICO = { CAMP: IMG + 'minimap/neutral_medium_psd.vtex', BOX: IMG + 'minimap/item_crate_spawn_psd.vtex',
-		RIFT: IMG + 'minimap/minimap_icon_koth_png.vtex', ZIP: IMG + 'hud/zipline_icon_psd.vtex', EVT: IMG + 'minimap/gold_crate_marker_psd.vtex' };
+		RIFT: IMG + 'minimap/minimap_icon_koth_png.vtex', ZIP: SITE + 'mm/zip.png?v=1', EVT: IMG + 'minimap/gold_crate_marker_psd.vtex' };
 	var I_URN = IMG + 'minimap/soul_jar_marker_psd.vtex', I_BR = IMG + 'minimap/powerup_souls_png.vtex', I_CR = ICO.BOX, I_ST = ICO.EVT,
 		I_CS = IMG + 'minimap/neutral_small_psd.vtex', I_CL = IMG + 'minimap/neutral_large_psd.vtex';
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
 	var TG = [['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
 		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
-		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['OMAP', 'omapT'], ['RIFT', 'riftT'], ['BOX', 'boxT']];
+		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['RIFT', 'riftT'], ['BOX', 'boxT'], ['ALTM', 'altmT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
 	var LITE = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX']);
-	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['ZIP', 'SPD', 'PERF', 'OMAP']) };
+	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['ZIP', 'SPD', 'PERF']) };
 	var PREK = PRE.ench;
 	function preset(n) {
 		var ch = [];
@@ -347,7 +359,10 @@
 		paint(); flash(ch);
 	}
 	// 0.22: набор подсвечивает, что он поменял (Андрей: «не всегда видно, что изменилось») — рамкой на 1,6 с и числом рядом с «Набор»
-	var FL = 0;
+	var FL = 0, SEEO = false;
+	var LBX = [['LBR', 'lbR'], ['LBH', 'lbHr'], ['LBS', 'lbS'], ['LBP', 'lbP'], ['LBC', 'lbC'], ['LBB', 'lbB'], ['LBT', 'lbT'], ['LBK', 'lbK']];
+	// ключи сайта (rl-lobby): rank hr st per rc bld tg cmp
+	var LBMAP = { LBR: 'rank', LBH: 'hr', LBS: 'st', LBP: 'per', LBC: 'rc', LBB: 'bld', LBT: 'tg', LBK: 'cmp' };
 	function flash(ch) {
 		var id = ++FL;
 		for (var i = 0; i < ch.length; i++) { var q = P[ch[i]]; if (q && ok(q.b)) try { q.b.style.border = '2px solid #ffffff'; q.t.style.color = A; } catch (e) {} }
@@ -397,7 +412,9 @@
 		setText(P.bxV, T('bxV')); setText(P.bxIco.l, T('bxIco')); setText(P.bxTm.l, T('bxTm'));
 		P.bxIco.b.style.backgroundColor = bv ? OFF : A; P.bxIco.l.style.color = bv ? INK : DARK;
 		P.bxTm.b.style.backgroundColor = bv ? A : OFF; P.bxTm.l.style.color = bv ? DARK : INK;
-		['BXC', 'BXT', 'BXG'].forEach(function (k) { var q = P['p' + k], v = on(k); setText(q.l, T('bx' + k.charAt(2))); q.b.style.backgroundColor = v && !bv ? '#ffffff30' : OFF; q.l.style.color = v && !bv ? INK : MUTED; });
+		['BXC', 'BXT', 'BXG'].forEach(function (k) { var q = P['p' + k], v = on(k); setText(q.l, T('bx' + k.charAt(2))); var w = v && !bv; q.b.style.backgroundColor = w ? '#3b3527' : '#24221f'; q.b.style.border = w ? '1px solid ' + A : '1px solid #24221f'; q.l.style.color = w ? A : MUTED; });
+		LBX.forEach(function (x) { var q = P['p' + x[0]], v = on(x[0]); if (!q) return; setText(q.l, T(x[1])); q.b.style.backgroundColor = v ? A : '#24221f'; q.l.style.color = v ? DARK : MUTED; });
+		if (ok(P.seeB)) setText(P.seeB.l, SEEO ? T('seeHide') : T('seeBtn'));
 		var ru = lang() === 'ru';
 		P.ru.b.style.backgroundColor = ru ? A : OFF; P.ru.l.style.color = ru ? DARK : INK;
 		P.en.b.style.backgroundColor = ru ? OFF : A; P.en.l.style.color = ru ? INK : DARK;
@@ -514,7 +531,7 @@
 		out.push(!ok(MM) ? T('sMm0') : T('sMm') + MMS.n + T('sMmC') + CMP.length + (CMP.length ? T('campOn') + alive : T('sCampH')) + (MMS.cls ? T('sMmK') + MMS.cls : ''));
 		out.push(T('sRank') + RKN + T('sLrk') + LRKN[0] + T('sLrkE') + LRKN[1] + T('sCamp') + CMN);
 		out.push(T('sHp') + HPN + T('sMiss') + MISSN + T('sCmb') + (CMBF < 0 ? '—' : !CMBF ? T('sCmb0') : CMBW ? T('sCmbY') : T('sCmbN')) + T('sUns') + UNV);
-		out.push(T('sUw') + UW.n + T('sUwN') + UW.on + (UW.n ? '' : T('uwW')));
+		out.push(T('sUw') + UW.n + T('sUwN') + UW.on + (UW.n ? '' : T('uwW')) + T('uwSaw') + UW.hn + (UW.hc ? ' (' + UW.hc + ')' : '') + ' · ' + T('sAlt') + (ALT.found ? (ALT.on ? T('altOn') : T('altOff')) : T('altNo')));
 		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
 		out.push(T('zipT') + ': ' + (ZB.st || T('sZip0')) + T('sSpd') + (SPDV || '—') + T('sPerf') + PF.v.toFixed(1) + T('ms'));
 		out.push(T('sAm') + (AM.st || T('sAm0')) + T('sOm') + (OM.st || T('sOm0')) + T('sRb') + RB.n + T('sBuyP') + RB.pn);
@@ -881,10 +898,15 @@
 	// Теперь у полосы свой маленький скрипт (restless_uw.js, подключён к копии unit_status_overlay_v2.xml): он слушает событие
 	// ClientUI_FireOutput, а мы раз в 0,5 с шлём {rl:1, t:'ultw', v:{ник или герой: секунды}} (пусто — ульта готова).
 	// Полоса, нашедшая своего героя, отвечает {rl:1, t:'uwack', n} — так видно, сколько полос нас слышат.
-	var UW = { last: '', at: 0, n: 0, on: 0, ack: {}, reg: false };
+	var UW = { last: '', at: 0, n: 0, on: 0, ack: {}, reg: false, hn: 0, hc: '' };
 	function uwAck(payload) {
-		if (typeof payload !== 'string' || payload.indexOf('"uwack"') < 0) return;
-		try { var o = JSON.parse(payload); if (o && o.rl === 1 && o.t === 'uwack' && o.n) UW.ack[String(o.n).slice(0, 40)] = Date.now(); } catch (e) {}
+		if (typeof payload !== 'string' || (payload.indexOf('"uwack"') < 0 && payload.indexOf('"uwhi"') < 0)) return;
+		try {
+			var o = JSON.parse(payload); if (!o || o.rl !== 1) return;
+			if (o.t === 'uwack' && o.n) UW.ack[String(o.n).slice(0, 40)] = Date.now();
+			// 0.24: каждая полоса с именем один раз говорит о себе — сколько их и какие классы (чтобы понять, почему «полос 0»)
+			if (o.t === 'uwhi') { UW.hn++; var c = String(o.c || '-').slice(0, 40); if (UW.hc.indexOf(c) < 0 && UW.hc.length < 60) UW.hc += (UW.hc ? '; ' : '') + c; }
+		} catch (e) {}
 	}
 	function uwTick() {
 		if (!UW.reg) { UW.reg = true; try { $.RegisterForUnhandledEvent('ClientUI_FireOutput', uwAck); } catch (e) {} }
@@ -902,7 +924,18 @@
 		for (var k in UW.ack) { if (now - UW.ack[k] < 8000) UW.n++; else delete UW.ack[k]; }
 	}
 
+	// 0.24: Alt. Пока Alt зажат, игра ставит глобальный класс gDetailView всем GlobalClassListener (подписи умений, мини-карта).
+	// Свой слушатель — в нашей копии citadel_hud_subtitles.xml (RestlessGCL), запасной — minimap_persp из hud.xml.
+	// «Мелочи — только по Alt» (ALTM): буст на канате, нагрузка мода и урна / разлом / мост, пока до них больше 2 минут.
+	var ALT = { L: [], f: 0, on: false, found: false };
+	function altTick() {
+		if (ALT.f-- <= 0 && ALT.L.length < 2) { ALT.f = 40; ALT.L = []; ['RestlessGCL', 'minimap_persp'].forEach(function (id) { var x = HUD.FindChildTraverse(id); if (ok(x)) ALT.L.push(x); }); ALT.found = ALT.L.length > 0; }
+		var v = false; for (var i = 0; i < ALT.L.length; i++) try { if (ok(ALT.L[i]) && ALT.L[i].BHasClass('gDetailView')) v = true; } catch (e) {}
+		ALT.on = v;
+	}
+	function quiet() { return on('ALTM') && !ALT.on; }
 	function f17Tick() {
+		altTick();
 		plyScan();
 		amTick();
 		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); zipTick(); rbTick(); riftTick(); }
@@ -940,7 +973,7 @@
 		else if (ZB.cd > now) { var l = Math.ceil((ZB.cd - now) / 1000); msg = Math.floor(l / 60) + ':' + ('0' + l % 60).slice(-2); col = MUTED; }
 		else if (s) msg = T('zipR');
 		ZB.st = msg;
-		if (!msg) { if (ZB.c) setVis(ZB.c.p, false); return; }
+		if (!msg || (quiet() && !use)) { if (ZB.c) setVis(ZB.c.p, false); return; }
 		if (!ZB.c || !ok(ZB.c.p)) { var o = HUD.FindChildTraverse('RestlessZip'); if (ok(o)) o.DeleteAsync(0);
 			ZB.c = chip(HUD, 'RestlessZip', ICO.ZIP, 15, { horizontalAlign: 'right', verticalAlign: 'top', marginTop: '230px', marginRight: '26px', zIndex: '40' }); }
 		chipSet(ZB.c, msg, col);
@@ -961,7 +994,7 @@
 		var now = Date.now();
 		if (!PF.t0) PF.t0 = now;
 		if (now - PF.t0 >= 4000) { PF.v = PF.ms * 1000 / (now - PF.t0); PF.m = PF.mx; PF.ms = 0; PF.mx = 0; PF.t0 = now; }
-		if (!on('PERF') || MENU) { if (ok(PF.lb)) setVis(PF.lb, false); return; }
+		if (!on('PERF') || MENU || quiet()) { if (ok(PF.lb)) setVis(PF.lb, false); return; }
 		if (!ok(PF.lb)) PF.lb = HUD.FindChildTraverse('RestlessPerf');
 		if (!ok(PF.lb)) PF.lb = lab(HUD, 'RestlessPerf', { horizontalAlign: 'left', verticalAlign: 'top', marginLeft: '24px', marginTop: '34px', fontSize: '13px', color: '#a89f90', zIndex: '50' });
 		setText(PF.lb, T('perf') + PF.v.toFixed(1) + T('ms') + T('mx') + PF.m + ' ' + (lang() === 'en' ? 'ms' : 'мс')); setVis(PF.lb, true);
@@ -1022,7 +1055,7 @@
 	// Карта строений: у верхней панели игры есть своя ObjectivesMap (башни и стражи), в матче стиль её прячет — показываем.
 	var OM = { p: null, f: 0, on: false, st: '' };
 	function omapTick() {
-		var want = on('OMAP') && !HIDE;
+		var want = false;   // 0.24: карту строений убрали (Андрей: «убери её»), прежнее показанное — вернуть игре
 		if (!ok(OM.p)) { OM.st = ''; if (!want || OM.f-- > 0) return; OM.f = 10; OM.p = ok(TB) ? kid(TB, 'ObjectivesMap') : null; if (!ok(OM.p)) return; OM.on = false; }
 		OM.st = want ? T('sOmY') : '';
 		if (want === OM.on) return;
@@ -1159,23 +1192,28 @@
 		var inPlay = sp || fr || en;
 		if (RU.inPlay && !inPlay && s >= 0) RU.end = s;
 		RU.inPlay = inPlay;
+		var uS = s < 0 ? 1e9 : s < 600 ? 600 - s : RU.end >= 0 && RU.end + 300 > s ? RU.end + 300 - s : cycle(s, 600, 300);
 		var u = en ? T('urnEn') : fr ? T('urnFr') : sp ? T('urnOn') : s >= 0 && s < 600 ? T('urnIn') + mmss(600 - s) :
-			s >= 0 ? T('urnAt') + mmss(RU.end >= 0 && RU.end + 300 > s ? RU.end + 300 - s : cycle(s, 600, 300)) : '';
+			s >= 0 ? T('urnAt') + mmss(uS) : '';
+		var uNow = en || fr || sp || uS <= 120, rNow = false, gNow = false;
 		if (!ok(RU.km) && RU.kmf-- <= 0) { RU.kmf = 40; RU.km = HUD.FindChildTraverse('KothCashInMeter'); }
 		var disp = false; if (ok(RU.km)) for (var c = 0; c < 3; c++) if (RU.km.BHasClass(['capturing', 'contested', 'captured'][c])) disp = true;
 		var r = '';
-		if (cp && cp.BHasClass('koth_warning')) { if (RU.kw < 0) RU.kw = s; r = T('riftIn') + mmss(20 - (s - RU.kw)); }
+		if (cp && cp.BHasClass('koth_warning')) { if (RU.kw < 0) RU.kw = s; r = T('riftIn') + mmss(20 - (s - RU.kw)); rNow = true; }
 		else {
 			RU.kw = -1;
-			if (disp) { var pr = ''; try { var a1 = digits(txt(kid(RU.km, 'KothCashInTeamLabel1'))), a2 = digits(txt(kid(RU.km, 'KothCashInTeamLabel2'))); if (a1 || a2) pr = ' · ' + Math.max(+a1 || 0, +a2 || 0) + '%'; } catch (e) {} r = T('riftOn') + pr; }
-			else if (s >= 0) { var I = 740, R = 420, nx = s < I ? I : I + Math.ceil((s - I) / R) * R; if (nx - s < 1) nx += R; r = T('riftAt') + mmss(nx - 60) + '–' + mmss(nx + 60); }
+			if (disp) { rNow = true; var pr = ''; try { var a1 = digits(txt(kid(RU.km, 'KothCashInTeamLabel1'))), a2 = digits(txt(kid(RU.km, 'KothCashInTeamLabel2'))); if (a1 || a2) pr = ' · ' + Math.max(+a1 || 0, +a2 || 0) + '%'; } catch (e) {} r = T('riftOn') + pr; }
+			else if (s >= 0) { var I = 740, R = 420, nx = s < I ? I : I + Math.ceil((s - I) / R) * R; if (nx - s < 1) nx += R; r = T('riftAt') + mmss(nx - 60) + '–' + mmss(nx + 60); rNow = nx - 60 - s <= 120; }
 		}
 		var g = bf ? T('brOn') : s >= 0 ? T('brAt') + mmss(cycle(s, 300, 300)) : '';
+		gNow = bf || (s >= 0 && cycle(s, 300, 300) <= 120);
 		RU.st = [u && 'урна ' + u, r && 'разлом ' + r, g && 'мост ' + g].filter(Boolean).join(' · ');
+		// 0.24: за 2 минуты до появления (и пока идёт) — всегда; раньше — только по Alt
+		if (quiet()) { if (!uNow) u = ''; if (!rNow) r = ''; if (!gNow) g = ''; }
 		if (!u && !r && !g) { if (ok(RU.row)) setVis(RU.row, false); return; }
 		if (!ok(RU.row)) {
 			var o = HUD.FindChildTraverse('RestlessRift'); if (ok(o)) o.DeleteAsync(0);
-			RU.row = mk('Panel', HUD, 'RestlessRift', { horizontalAlign: 'center', verticalAlign: 'top', marginTop: '118px', flowChildren: 'right', zIndex: '45' }, { hittest: 'false' });
+			RU.row = mk('Panel', HUD, 'RestlessRift', { horizontalAlign: 'center', verticalAlign: 'top', marginTop: '92px', flowChildren: 'right', zIndex: '45' }, { hittest: 'false' });
 			RU.c = [chip(RU.row, '', I_URN, 14, { marginRight: '6px' }), chip(RU.row, '', ICO.RIFT, 14, { marginRight: '6px' }), chip(RU.row, '', I_BR, 14, {})];
 		}
 		chipSet(RU.c[0], u, en ? '#ff6b5b' : fr ? '#5be08a' : sp ? A : INK);
@@ -1373,7 +1411,7 @@
 	// RL_OK:<номер> после записи. Пишем, сменив только #… адреса (страница не перезагружается). Храним только свои переключатели, язык, время лагерей.
 	// Что поменял до загрузки памяти, пока страница грузилась, — не затираем (список в RESTLESS_DIRTY). Нет связи — всё как в 0.18, до выхода из игры.
 	var STORE = SITE + 'store.html?v=1';
-	var KEEPK = ['ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'RIFT', 'BOX', 'BOXV', 'BXC', 'BXT', 'BXG', 'LANG', 'SETS',
+	var KEEPK = ['ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'RIFT', 'BOX', 'BOXV', 'BXC', 'BXT', 'BXG', 'ALTM', 'LBR', 'LBH', 'LBS', 'LBP', 'LBC', 'LBB', 'LBT', 'LBK', 'LANG', 'SETS',
 		'CRS_neutral_weak', 'CRS_neutral_medium', 'CRS_neutral_large'];
 	function keep(k) { return KEEPK.indexOf(k) >= 0 || UMRX.test(k); }
 	var ST = { p: null, at: 0, tries: 0, ok: false, n: 0, q: 0, dirty: 0, sent: 0, sentQ: 0, sentFor: 0, saved: 0, err: '' };

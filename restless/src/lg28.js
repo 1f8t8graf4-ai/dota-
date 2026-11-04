@@ -10,11 +10,15 @@ function u28Parse(h) {
     return {t: t === 'e' ? 'e' : 'f', n: dec(n).slice(0, 64), h: dec(hh).slice(0, 48), hid: +hid > 0 && +hid < 1000 ? +hid : 0, a: /^\d{3,10}$/.test(a || '') ? +a : 0}; }).slice(0, 16);
   const bots = players.filter(p => p.n && p.h && p.n.trim().toLowerCase() === p.h.trim().toLowerCase()).length;
   const s = q.get('s') !== 'm' || !players.length ? 'h' : bots >= 2 ? 'b' : 'm';
-  return {v: (q.get('v') || '').slice(0, 12), s, bots, gt: (q.get('gt') || '').slice(0, 12), players, at: Date.now()};
+  // 0.24: настройки лобби из мода (Esc → RESTLESS → Лобби): lb=rank:1,hr:0,…
+  const lb = {}; (q.get('lb') || '').split(',').forEach(x => { const m = /^(rank|hr|st|per|rc|bld|tg|cmp):([01])$/.exec(x); if (m) lb[m[1]] = +m[2]; });
+  return {lb, v: (q.get('v') || '').slice(0, 12), s, bots, gt: (q.get('gt') || '').slice(0, 12), players, at: Date.now()};
 }
 function u28Take() {
   if (!/^#g=/.test(location.hash)) return false;
-  const g = u28Parse(location.hash), k0 = OV.gk2; if (g && window.rlGame) window.rlGame(g);
+  const g = u28Parse(location.hash), k0 = OV.gk2;
+  if (g && Object.keys(g.lb).length && typeof u26LApply === 'function') { const o = {}; Object.entries(g.lb).forEach(([k, v]) => { if (k === 'cmp') { if (v) o.cmp = 1; } else if (!v) o[k] = 0; });
+    try { localStorage.setItem('rl-lobby', JSON.stringify(o)); } catch (e) {} u26LApply(); } if (g && window.rlGame) window.rlGame(g);
   if (OV.gk2 !== k0) OV.L = null;   // новый состав — заново, иначе новая страница покажет старых игроков
   history.replaceState(null, '', location.pathname + location.search + '#live');
   return true;

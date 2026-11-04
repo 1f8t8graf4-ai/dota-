@@ -40,8 +40,8 @@ function ovsPaint() {
   const b = $('#ovsst'); if (!b) return;
   const a = OV.app, live = ovLive(), g = gameLive() ? OV.G : null, m = a && a.mod || {};
   if (!a) {
-    b.innerHTML = `<p class="ovs-t1">Нужна программа <b>Restless Overlay</b> — она открывает сайт поверх игры и сама показывает матч.</p>
-      <a class="btn ovs-dlb" href="${OVS_DL}">Скачать для Windows</a><small class="ovs-n">Без установки. Игра — в режиме «Оконный без рамки».</small>`;
+    b.innerHTML = `<p class="ovs-t1"><b>Мод</b> — всё в игре: Esc → <b>LIVE · 12</b> и <b>RESTLESS</b>. <b>Программа</b> — FPS и мод обновляется сам.</p>
+      <a class="btn g ovs-dlb" href="app/pak42_dir.vpk">Мод · .vpk</a><a class="btn ovs-dlb" href="${OVS_DL}">Программа для Windows</a>`;
     return;
   }
   const modOk = /^(ok|cleaned|installed)$/.test(m.status), modTx = {installed: 'поставлен — перезапусти игру', cleaned: 'на месте', ok: 'на месте', busy: 'поставлю, когда закроешь игру', nogame: 'не нашёл Deadlock', error: 'ошибка', wait: 'проверяю…'}[m.status] || '—';
