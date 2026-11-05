@@ -119,13 +119,13 @@ ok(shade.style.width==='1920px'&&shade.style.height==='1080px','подложка
 ok(/по центру|поправлено/.test(texts().join(' ')),'строка проверки в окне');
 {const tx=texts().join(' / ');ok(/ЧТО ВИДИТ МОД/.test(tx)&&/Души: 7,250/.test(tx),'«Что видит мод»: души — '+(tx.match(/Души: [^/]*/)||[''])[0]);
  ok(/Магазин: ячеек 3 · первые: Headshot Booster, High-Velocity Mag, Monster Rounds/.test(tx),'магазин: ячейки и названия');
- ok(/Мини-карта: меток \d+ · лагерей 4 · сейчас живы: 3/.test(tx),'лагеря с таймером: всего и живы (neutral_spawn и сейф без таймера не считаем): '+(tx.match(/Мини-карта:[^/]*/)||[''])[0]);
+ ok(/Мини-карта:/.test(tx),'0.26: лагеря выключены, строка мини-карты есть: '+(tx.match(/Мини-карта:[^/]*/)||[''])[0]);
  ok(msgs.some(m=>/\[Restless\] видит: Души: 7,250/.test(m)),'то же в консоль при открытии окна');}
 // переключатели
 const btns=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');
-btns[1].ev.onactivate();tick(1);
-ok(mark.style.visibility==='collapse'&&btns[1].ch[0].text==='ВЫКЛ','надпись выключена — пропала');
-btns[1].ev.onactivate();tick(1);ok(mark.style.visibility==='visible','включил — вернулась');
+btns[2].ev.onactivate();tick(1);
+ok(mark.style.visibility==='collapse'&&btns[2].ch[0].text==='ВЫКЛ','надпись выключена — пропала');
+btns[2].ev.onactivate();tick(1);ok(mark.style.visibility==='visible','включил — вернулась');
 // язык
 const pills=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='17px');pills[1].ev.onactivate();tick(1);
 ok(texts().includes('Ult cooldown in the top bar')&&/running/.test(mark.text),'английский: окно и надпись');
@@ -152,7 +152,7 @@ delete players[3].dv;S(3).text='25';tick(1);ok(T(3).text==='25','перемен�
 // баг 0.9: другая копия скрипта спрятала число — эта не трогала, потому что помнила «показано»
 t0.style.visibility='collapse';tick(1);ok(t0.style.visibility==='visible'&&t0.text==='36','число спрятала другая копия — на следующем такте снова видно');
 for(let i=0;i<8;i++){players[0].dv.ult_cooldown=30-i;tick(1)}ok(t0.text==='23','секунды идут каждый такт: '+t0.text);
-const ub=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px')[0];ub.ev.onactivate();tick(1);
+const ub=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px')[1];ub.ev.onactivate();tick(1);
 ok(t0.text==='','КД ульты выключен — числа нет');ub.ev.onactivate();tick(1);ok(t0.text==='23','включил — есть');
 top.cls.add('InHideout');tick(1);ok(t0.text==='','в укрытии не показываем');top.cls.delete('InHideout');tick(1);
 // игрок зашёл посреди матча — новая панель находится сама
@@ -190,7 +190,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  ok(!r.P.some(x=>x[4]==='777'),'одинаковый ID у всех — не принимаем');TP.forEach((p,i)=>{if(keep[i])p.dv.account_id=keep[i];else delete p.dv.account_id});
  // укрытие и выключатель
  top.cls.add('InHideout');tick(12);r=q();ok(r.s==='h'&&!r.P.length,'в укрытии: s=h, игроков нет');top.cls.delete('InHideout');tick(12);ok(q().s==='m','снова матч: s=m');
- btn.ev.onactivate();const lb=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px')[2];ok(!!lb,'в окне — переключатель «Связь с программой»');
+ btn.ev.onactivate();const lb=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px')[3];ok(!!lb,'в окне — переключатель «Связь с программой»');
  ok(texts().some(t=>/^Программа: отправлено \d+ · игроков 12 · с ID 11 · с героем 12$/.test(t)),'в «Что видит мод» — строка связи: '+texts().find(t=>/^Программа/.test(t)));
  lb.ev.onactivate();const n2=q().n;tick(80);ok(q().n===n2,'связь выключена — не шлём');lb.ev.onactivate();btn.ev.onactivate();em.cls.delete('ShowEscapeMenu');}
 // нагрузка: обычный матч, меню и окно закрыты — сколько панелей в секунду перебирает мод (0.13: 1867 в секунду — весь HUD ~7 раз; 0.14: панели помним)
@@ -213,10 +213,10 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  // набор Lite по умолчанию: ранги, средний ранг, лагеря — вкл; Medium-функции выкл
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();tick(1);
  const pp=all(win).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px'&&x.ch[0]&&/^(Lite|Medium|Enchanted)$/.test(x.ch[0].text));ok(pp.length===3&&pp[2].ch[0].text==='Enchanted'&&pp[0].ch[0].text==='Lite'&&pp[0].style.backgroundColor==='#ffc83d','набор: Lite выбран по умолчанию');
- ok(texts().includes('Ранги игроков')&&texts().includes('Таймеры лагерей')&&texts().includes('Пропавшие враги'),'новые переключатели в окне');
+ ok(texts().includes('Ранги игроков')&&!texts().includes('Таймеры лагерей')&&texts().includes('LIVE · 12 сам в меню Esc')&&texts().includes('Пропавшие враги'),'новые переключатели в окне (0.26: лагерей нет, LIVE сам)');
  const tg=all(win).filter(x=>x.type==='Button'&&x.style.width==='104px');ok(tg.length===23,'переключателей 23 (0.25: + активные предметы, меню песочницы): '+tg.length);
  ok(!texts().includes('Урон по строениям'),'0.22: «Урон по строениям» убран');
- ok(all(win).filter(x=>x.type==='Image'&&/minimap|zipline|mm\/zip/.test(x.attrs.src||'')).length>=5,'0.22: у функций — значки игры');
+ ok(all(win).filter(x=>x.type==='Image'&&/minimap|zipline|mm\/zip/.test(x.attrs.src||'')).length>=4,'0.22: у функций — значки игры');
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(12);
  // ранги: значок под портретом у кого есть ID (11 из 12 — из профилей и account_id)
  const RI=TP.map(p=>p.FindChildTraverse('RestlessRank'));
@@ -226,13 +226,8 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  // лагеря: метка погасла — отсчёт возрождения
  const gt=F('GameTime');gt.text='9:00';const c0=F('camp0'),c1=F('camp1'),c4=F('camp4');Object.assign(c0,{actualxoffset:100,actualyoffset:200,actuallayoutwidth:24,actuallayoutheight:24});
  tick(8);c0.cls.delete('active');c1.cls.delete('active');tick(8);
- const lb0=c0.par.ch.find(x=>x.type==='Label'&&x.text==='1:25');ok(lb0&&lb0.style.visibility==='visible'&&lb0.style.x==='90px'&&lb0.style.y==='203px','малый лагерь убит — «1:25» над меткой ('+(lb0&&lb0.style.x+','+lb0.style.y)+')');
- ok(c1.par.ch.some(x=>x.type==='Label'&&x.text==='4:50'),'средний — «4:50»');
- gt.text='9:30';tick(8);ok(lb0.text==='0:55','через 30 с — «0:55»');
- c0.cls.add('active');tick(8);ok(lb0.style.visibility==='collapse','лагерь вернулся — отсчёта нет');
- gt.text='10:40';tick(8);ok(c1.par.ch.some(x=>x.type==='Label'&&x.text==='3:10'&&x.style.visibility==='visible'),'средний через 100 с — «3:10»');
- ok(!c4.par.ch.some(x=>x.type==='Label'&&x.text==='?'),'неизвестный лагерь (vault) — без таймера');
- c4.cls.delete('active');tick(8);
+ ok(!c0.par.ch.some(x=>x.type==='Label'&&/^\d+:\d\d$/.test(x.text||'')&&x.style.visibility==='visible'),'0.26: таймеров лагерей нет (в живом матче игра не даёт меток лагерей)');
+ c0.cls.add('active');c1.cls.add('active');
  // Medium: пропавшие враги, здоровье, «в бою», незащищённые души
  const ga=add(hud,P('CitadelHudGameAnnouncements','CitadelHudGameAnnouncements'));const dgc=add(hud,P('Panel','hudDeathGoldContainer'));const dg=add(dgc,P('Label','hudDeathGoldLabel',{text:'0'}));
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();pp[1].ev.onactivate();tick(1);ok(pp[1].style.backgroundColor==='#ffc83d'&&hud.GetAttributeString('RESTLESS_MISS','')==='1','набор Medium включил пропавших врагов и остальное');shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
@@ -249,9 +244,12 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  HF(1).actuallayoutheight=70;tick(4);ok(HR(1).style.border==='3px solid #ffd23b','70 % — жёлтое');
  HF(1).actuallayoutheight=90;tick(4);ok(HR(1).style.visibility==='collapse','90 % — без кольца');
  HB(6).actuallayoutheight=100;HF(6).actuallayoutheight=30;tick(4);ok(!HR(6)||HR(6).style.visibility==='collapse','невидимый враг — здоровье не угадываем');
- ga.cls.add('gInCombat');tick(4);
- const cb=F('RestlessCmb');ok(cb&&cb.style.visibility==='visible'&&cb.text==='В БОЮ','«В БОЮ», пока игра держит gInCombat');
- ga.cls.delete('gInCombat');tick(2);ok(cb.text==='ВНЕ БОЯ','вышел из боя — «ВНЕ БОЯ»');tick(12);ok(cb.style.visibility==='collapse','через 2 с — пусто');
+ const gp=F('RestlessGCL').par;ga.cls.add('gInCombat');tick(4);ok(!F('RestlessCmb')||F('RestlessCmb').style.visibility!=='visible','0.26: класс у чужого корня — не наш сигнал');ga.cls.delete('gInCombat');
+ gp.cls.add('gInCombat');tick(4);
+ const cb=F('RestlessCmb');ok(cb&&cb.style.visibility==='visible'&&cb.text==='В БОЮ','«В БОЮ», пока игра держит gInCombat (у родителя нашего слушателя)');
+ gp.cls.delete('gInCombat');tick(2);ok(cb.text==='В БОЮ','0.26: секунду после боя — ещё «В БОЮ» (не мигает)');
+ gp.cls.add('gInCombat');tick(2);gp.cls.delete('gInCombat');tick(6);ok(cb.text==='В БОЮ','мигание класса — надпись держится');
+ tick(4);ok(cb.text==='ВНЕ БОЯ','2 с без боя — «ВНЕ БОЯ»');tick(12);ok(cb.style.visibility==='collapse','ещё через 2 с — пусто');
  dg.text='1,250';tick(4);
  const un=F('RestlessUns');ok(un&&un.style.visibility==='visible'&&un.text==='Незащищённые души: 1,250','незащищённые души крупно: «'+(un&&un.text)+'»');
  dg.text='0';tick(2);ok(un.style.visibility==='collapse','0 — пусто');dg.text='300';
@@ -280,27 +278,23 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  ok(!U(3),'крип (нет такого игрока) — ничего');
  TP[0].dv.ult_cooldown=41;tick(2);ok(U(0).text==='41','секунды идут');
  hud.SetAttributeString('RESTLESS_ULTW','0');tick(4);ok(U(0).style.visibility==='collapse','выключил — пропало');hud.SetAttributeString('RESTLESS_ULTW','1');tick(4);
- // лагерь: метка вернулась через 2:00 — дальше отсчёт с 2:00
- const gt=F('GameTime'),c3=F('camp3');gt.text='20:00';tick(8);c3.cls.add('active');tick(8);c3.cls.delete('active');tick(8);
- gt.text='22:00';tick(4);c3.cls.add('active');tick(8);
- ok(hud.GetAttributeString('RESTLESS_CRS_neutral_weak','')==='120','малый лагерь вернулся через 2:00 — запомнили 120 с');
- c3.cls.delete('active');tick(8);ok(c3.par.ch.some(x=>x.type==='Label'&&x.text==='2:00'&&x.style.visibility==='visible'),'следующий раз отсчёт с 2:00');
- gt.text='24:10';tick(4);c3.cls.add('active');tick(8);ok(hud.GetAttributeString('RESTLESS_CRS_neutral_weak','')==='120','вернулся позже (2:10) — оставили короче');
  tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.18: '+vps+' панелей в секунду');ok(vps<all(hud).length,'с ультой над героями нагрузка меньше одного HUD: '+vps);}
 // 0.23: лайв-матч в игре — кнопка LIVE в Esc, сайт во встроенном браузере игры
 {em.cls.add('ShowEscapeMenu');tick(2);const lb=F('RestlessLiveBtn');ok(lb&&/^LIVE/.test(LT(lb)),'0.23: в Esc кнопка «'+(lb?LT(lb):'')+'»');
- lb.ev.onactivate();const w=F('RestlessLiveWeb');const u=w&&decodeURIComponent(w.url||'');
- ok(w&&w.paneltype==='CitadelHTMLPanel'&&/restless\/\?app=1&embed=1/.test(w.url)&&/#g=/.test(w.url),'окно лайва: страница сайта с составом: '+(w?w.url.slice(0,80):''));
- ok(/v=0\.25/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
- lb.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'второе нажатие — закрыл');
- lb.ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveWeb'),'меню закрыли — лайв закрылся');}
+ const w=F('RestlessLiveWeb');const u=w&&decodeURIComponent(w.url||'');
+ ok(w&&w.paneltype==='CitadelHTMLPanel'&&/restless\/\?app=1&embed=1/.test(w.url)&&/#g=/.test(w.url),'0.26: открыл Esc в матче — LIVE · 12 сам: '+(w?w.url.slice(0,80):''));
+ ok(F('RestlessLive').style.width==='46%','0.26: LIVE сбоку от меню, не на весь экран');
+ ok(/v=0\.26/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
+ lb.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'кнопка LIVE — закрыл');tick(6);ok(!F('RestlessLiveWeb'),'закрыл — сам не возвращается, пока Esc открыт');
+ em.cls.delete('ShowEscapeMenu');tick(2);em.cls.add('ShowEscapeMenu');tick(2);ok(!!F('RestlessLiveWeb'),'Esc заново — LIVE снова сам');
+ em.cls.delete('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveWeb'),'меню закрыли — лайв закрылся (браузера нет — FPS не ест)');}
 // 0.19: набор Enchanted и память настроек
 {const gcl=F('RestlessGCL');ok(gcl&&gcl.type==='GlobalClassListener','0.24: свой слушатель Alt (gDetailView) в разметке');gcl.cls.add('gDetailView');
 const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px'&&x.ch[0]&&/^(Lite|Medium|Enchanted)$/.test(x.ch[0].text));
  const se=add(hud,P('Panel','StatusEffects'));const zb=add(hud,P('Panel','citadel_ability_zipline_boost_',{class:'citadel_ability_zipline_boost active'}));const zc=add(zb,P('Label','context_label',{text:''}));
  TP[0].dv.objective_damage=12450;TP[1].dv.objective_damage=830;ms.dv={movement_speed:'7.4 m/s'};
  const sp=all(hud).filter(x=>x.paneltype==='CitadelHTMLPanel'&&/store\.html/.test(x.url||''));
- ok(sp.length===1&&/^https:\/\/1f8t8graf4-ai\.github\.io\/dota-\/restless\/store\.html\?v=1/.test(sp[0].url)&&sp[0].style.width==='2px'&&sp[0].style.opacity==='0.01','память: скрытая страница store.html одна, 2×2 px: '+(sp[0]&&sp[0].url.slice(0,70)));
+ ok(sp.length===0,'0.26: память загрузилась — скрытый браузер закрыт (не держим его весь матч): '+sp.length);
  ok(msgs.some(m=>/память настроек: загружено/.test(m)),'память: страница ответила — загружено');
  ok(/MARK=1/.test(LSO.restless_mod_v1||'')&&/LANG=ru/.test(LSO.restless_mod_v1||''),'что меняли в тестах выше — уже записано: '+LSO.restless_mod_v1);
  em.cls.add('ShowEscapeMenu');btn.ev.onactivate();pp[2].ev.onactivate();
@@ -323,8 +317,8 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  pp[0].ev.onactivate();tick(4);ok(!hud.cls.has('SpeedometerEnabled')&&F('RestlessPerf').style.visibility==='collapse'&&Z().style.visibility==='collapse','набор Lite — Enchanted выключен и спрятан');
  pp[2].ev.onactivate();tick(1);
  // выключил надпись — через 0,8 с записано
- const tgm=all(W).filter(x=>x.type==='Button'&&x.style.width==='104px')[1];tgm.ev.onactivate();tick(2);ok(!/MARK=0/.test(LSO.restless_mod_v1),'сразу не пишем — ждём 0,8 с');tick(4);
- ok(/MARK=0/.test(LSO.restless_mod_v1)&&/ZIP=1/.test(LSO.restless_mod_v1)&&/CRS_neutral_weak=120/.test(LSO.restless_mod_v1),'записано: надпись выкл, Enchanted, время лагеря: '+LSO.restless_mod_v1);
+ const tgm=all(W).filter(x=>x.type==='Button'&&x.style.width==='104px')[2];tgm.ev.onactivate();tick(2);ok(!/MARK=0/.test(LSO.restless_mod_v1),'сразу не пишем — ждём 0,8 с');tick(4);
+ ok(/MARK=0/.test(LSO.restless_mod_v1)&&/ZIP=1/.test(LSO.restless_mod_v1),'записано: надпись выкл, Enchanted: '+LSO.restless_mod_v1);
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.19 (Enchanted): '+vps+' панелей в секунду');ok(vps<900,'Enchanted: нагрузка меньше 900 панелей в секунду (0.21 — 1107): '+vps);}
 // 0.20: патроны и перезарядка у прицела, карта строений, кто что купил (Enchanted включён выше)
@@ -368,11 +362,11 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  // отчёт программе
- tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.25&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.26&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
  // с сайта: надпись выкл и ползунок мода = 2
- PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);
+ PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);em.cls.add('ShowEscapeMenu');tick(130);em.cls.delete('ShowEscapeMenu');
  ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');
- const before=FIRE.length;tick(130);ok(!FIRE.slice(before).some(a=>/"t":"set"/.test(a)),'та же метка — второй раз не применяем');
+ const before=FIRE.length;em.cls.add('ShowEscapeMenu');tick(130);em.cls.delete('ShowEscapeMenu');ok(!FIRE.slice(before).some(a=>/"t":"set"/.test(a)),'та же метка — второй раз не применяем');
  PROG_TITLE=null;hud.SetAttributeString('RESTLESS_MARK','1');
  // мод перезапустился (новый матч) — Restless сам отдаёт сохранённое
  EQ.enabled=true;FIRE_EQ();ok(EQ.enabled===false&&EQ.preview_count===2,'мод зарегистрировался заново — получил сохранённое');
@@ -396,8 +390,8 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  hud.SetAttributeString('RESTLESS_BXC','1');tick(8);ok(vis().length===3&&/mm\/c\.png/.test(vis()[2].img),'включил обычные — третья картинка');
  hud.SetAttributeString('RESTLESS_BXG','0');tick(8);ok(vis().length===2&&!vis().some(x=>/g\.png/.test(x.img)),'выключил статуи — их картинки нет');
  gt.text='2:00';tick(8);ok(bx.style.visibility==='collapse'&&F('RestlessBoxT')&&F('RestlessBoxT').text==='Ящики через 1:00','до 2:45 значков нет, над картой — «'+(F('RestlessBoxT')&&F('RestlessBoxT').text)+'»');
- hud.SetAttributeString('RESTLESS_BOXV','tm');gt.text='2:50';tick(8);ok(bx.style.visibility==='collapse'&&F('RestlessBoxT').text==='Ящики через 0:10','режим «Время»: без значков, только отсчёт');
- gt.text='3:05';tick(8);ok(F('RestlessBoxT').text==='Ящики на карте','3:05 — «Ящики на карте»');gt.text='12:00';tick(8);ok(F('RestlessBoxT').style.visibility==='collapse','дальше отсчёта нет');
+ hud.SetAttributeString('RESTLESS_BOXV','tm');gt.text='2:50';tick(8);ok(bx.style.visibility==='visible','0.26: режима «Время» нет — с 2:45 значки, даже если раньше выбрал «Время»');
+ gt.text='3:05';tick(8);ok(bx.style.visibility==='visible','3:05 — значки на карте');gt.text='12:00';tick(8);ok(F('RestlessBoxT').style.visibility==='collapse','дальше отсчёта нет');
  hud.SetAttributeString('RESTLESS_BOXV','ico');hud.SetAttributeString('RESTLESS_BXC','0');hud.SetAttributeString('RESTLESS_BXG','1');tick(8);ok(bx.style.visibility==='visible','снова значки');
  VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.21 (всё вкл.): '+vps+' панелей в секунду');ok(vps<all(hud).length,'0.21: нагрузка меньше одного HUD (точки ящиков не перебираем): '+vps+' < '+all(hud).length);}
 // 0.25: Alt через родителя слушателя, активные предметы у прицела, меню песочницы в укрытии
@@ -438,12 +432,12 @@ ok(!all(pop).some(x=>/^Restless/.test(x.id)&&x.id!=='RestlessGCL'),'в окне 
  add(h3,s3);run(s3.ch[0]);tick(8);
  const m3=h3.FindChildTraverse('RestlessMark');
  ok(h3.GetAttributeString('RESTLESS_MARK','')==='0'&&m3&&m3.style.visibility==='collapse','перезапуск: надпись выключена — так и осталась');
- ok(h3.GetAttributeString('RESTLESS_ZIP','')==='1'&&h3.GetAttributeString('RESTLESS_CRS_neutral_weak','')==='120','перезапуск: Enchanted и время лагеря на месте');
+ ok(h3.GetAttributeString('RESTLESS_ZIP','')==='1'&&true,'перезапуск: Enchanted на месте');
  // страница грузится долго, а игрок уже нажал — его выбор не затираем
  const h4=P('CitadelHud','Hud');const s4=P('CitadelHudSubtitles','HudSubtitles');parse(L('citadel_hud_subtitles.xml'),s4);const e4=add(h4,P('CitadelHudEscapeMenu','EscapeMenu'));parse(fs.readFileSync(escXml,'utf8'),e4);
  s3.ch[0].valid=false;PAGE_HOLD=true;add(h4,s4);run(s4.ch[0]);tick(4);e4.cls.add('ShowEscapeMenu');tick(2);
  h4.FindChildTraverse('RestlessMenuBtn').ev.onactivate();const w4=h4.FindChildTraverse('RestlessWindow');
- const t4=all(w4).filter(x=>x.type==='Button'&&x.style.width==='104px')[1];ok(t4.ch[0].text==='ВКЛ','страница ещё не ответила — надпись по умолчанию ВКЛ');
+ const t4=all(w4).filter(x=>x.type==='Button'&&x.style.width==='104px')[2];ok(t4.ch[0].text==='ВКЛ','страница ещё не ответила — надпись по умолчанию ВКЛ');
  t4.ev.onactivate();t4.ev.onactivate();tick(1);ok(h4.GetAttributeString('RESTLESS_DIRTY','')==='MARK','нажатие до загрузки помечено');
  PAGE_HOLD=false;tick(8);
  ok(h4.GetAttributeString('RESTLESS_MARK','')==='1'&&h4.GetAttributeString('RESTLESS_ZIP','')==='1','загрузилось: надпись — как нажал (вкл), остальное — из памяти');

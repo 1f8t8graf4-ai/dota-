@@ -50,7 +50,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.25';
+	var VER = '0.26';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -74,7 +74,7 @@
 		if (!quiet && keep(k)) stDirty(k);
 	}
 	// 0.17: функции Medium и Enchanted по умолчанию выключены (набор Lite)
-	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0', RIFT: '0', BOX: '0', BXC: '0', BXT: '1', BXG: '1', ALTM: '1', AIT: '0', SBX: '1',
+	var DEF = { LVA: '1', MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0', RIFT: '0', BOX: '0', BXC: '0', BXT: '1', BXG: '1', ALTM: '1', AIT: '0', SBX: '1',
 		LBR: '1', LBH: '1', LBS: '1', LBP: '1', LBC: '1', LBB: '1', LBT: '1', LBK: '0' };
 	function on(k) { return get(k, DEF[k] || '1') === '1'; }
 	function lang() { return get('LANG', 'ru') === 'en' ? 'en' : 'ru'; }
@@ -83,7 +83,7 @@
 		ru: {
 			mark: 'RESTLESS ' + VER + ' · работает', markMenu: ' · кнопка в Esc',
 			settings: 'настройки мода · ' + VER, inGame: 'В ИГРЕ',
-			ultT: 'КД ульты в верхней панели', ultS: 'секунды поверх значка ульты у каждого игрока — в матче',
+			lvaT: 'LIVE · 12 сам в меню Esc', lvaS: 'открыл Esc в матче — все 12 игроков рядом с меню', ultT: 'КД ульты в верхней панели', ultS: 'секунды поверх значка ульты у каждого игрока — в матче',
 			markT: 'Надпись RESTLESS', markS: 'слева сверху — видно, что мод работает',
 			evtT: 'Напоминания о событиях', evtS: 'за 15 с до лагерей, ящиков и статуй — по часам матча',
 			evIn: 'через ', evSec: ' с', evNow: 'появились',
@@ -115,7 +115,7 @@
 		en: {
 			mark: 'RESTLESS ' + VER + ' · running', markMenu: ' · Esc button',
 			settings: 'mod settings · ' + VER, inGame: 'IN GAME',
-			ultT: 'Ult cooldown in the top bar', ultS: 'seconds over every player\'s ult icon — in a match',
+			lvaT: 'LIVE · 12 in the Esc menu', lvaS: 'open Esc in a match — all 12 players next to the menu', ultT: 'Ult cooldown in the top bar', ultS: 'seconds over every player\'s ult icon — in a match',
 			markT: 'RESTLESS label', markS: 'top left — shows the mod is running',
 			evtT: 'Event reminders', evtS: '15 s before camps, crates and statues — by the match clock',
 			evIn: 'in ', evSec: ' s', evNow: 'spawned',
@@ -217,7 +217,7 @@
 				LV.lb = $.CreatePanel('Label', LV.btn, '', { text: 'LIVE · 12' }); LV.lb.AddClass('menuButtonLabel');
 				try { if (sub.MoveChildBefore) sub.MoveChildBefore(lr, ROW); } catch (e) {}
 			}
-			if (ok(LV.btn)) LV.btn.SetPanelEvent('onactivate', function () { try { liveShow(!LV.open); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
+			if (ok(LV.btn)) LV.btn.SetPanelEvent('onactivate', function () { try { if (LV.open) LV.shut = true; liveShow(!LV.open); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
 		}
 		if (menuShown()) fitHero(sub);
 	}
@@ -235,7 +235,7 @@
 	}
 
 	// ---------- 0.23: лайв-матч в игре ----------
-	var LV = { btn: null, lb: null, win: null, html: null, open: false, base: '', hash: '' };
+	var LV = { btn: null, lb: null, win: null, html: null, open: false, side: false, shut: false, base: '', hash: '' };
 	var LIVE_URL = SITE + '?app=1&embed=1&dev=vasyan2026';
 	function liveHash() {
 		var L = LK.hide ? [] : lkPlayers();
@@ -245,18 +245,21 @@
 		return '#g=' + encodeURIComponent('v=' + VER + '&lb=' + lb.join(',') + '&s=' + (LK.hide || !L.length ? 'h' : 'm') + '&gt=' + enc(gt) + '&p=' +
 			L.map(function (x) { return [x.t, enc(x.n), enc(x.h), x.hid, x.a].join('~'); }).join('|'));
 	}
-	function liveShow(v) {
-		LV.open = v;
+	// 0.26 (Андрей: «зачем лайв в настройках — показывай его в самом оверлее»): открыл Esc в матче — LIVE · 12 сам встаёт между меню
+	// и списком игроков; × — убрать до следующего открытия Esc. Браузер живёт, только пока открыт Esc (FPS в игре не трогает).
+	function liveShow(v, side) {
+		LV.open = v; LV.side = !!side;
 		if (!v) { if (ok(LV.win)) LV.win.DeleteAsync(0); LV.win = LV.html = null; return; }
-		if (open) show(false);
+		if (open && !side) show(false);
 		var o = EM.FindChildTraverse('RestlessLive'); if (ok(o)) o.DeleteAsync(0);
-		LV.win = mk('Panel', EM, 'RestlessLive', { width: '92%', height: '88%', flowChildren: 'down', horizontalAlign: 'center', verticalAlign: 'center',
+		LV.win = mk('Panel', EM, 'RestlessLive', side ? { width: '46%', height: '86%', flowChildren: 'down', horizontalAlign: 'left', verticalAlign: 'center', marginLeft: '29%',
+			backgroundColor: '#0b0d12f0', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '4800' } : { width: '92%', height: '88%', flowChildren: 'down', horizontalAlign: 'center', verticalAlign: 'center',
 			backgroundColor: '#0b0d12fc', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '5100' }, { hittest: 'true' });
 		var head = mk('Panel', LV.win, '', { width: '100%', height: '48px', flowChildren: 'right', padding: '8px 14px 0px 18px' });
 		setText(lab(head, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '20px', fontWeight: 'bold', color: A, letterSpacing: '2px' }), 'RESTLESS · LIVE');
 		var x = mk('Button', head, '', { width: '36px', height: '36px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF });
 		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '22px', color: INK }), '×');
-		x.SetPanelEvent('onactivate', function () { liveShow(false); });
+		x.SetPanelEvent('onactivate', function () { LV.shut = true; liveShow(false); });
 		try { LV.html = mk('CitadelHTMLPanel', LV.win, 'RestlessLiveWeb', { width: '100%', height: 'fill-parent-flow(1.0)', margin: '6px 8px 8px 8px' }); } catch (e) { LV.html = null; }
 		LV.hash = liveHash();
 		if (ok(LV.html)) { try { LV.html.SetURL(LIVE_URL + LV.hash); } catch (e) { $.Msg('[Restless] лайв: ' + e); } }
@@ -264,8 +267,12 @@
 	}
 	function liveTick() {
 		if (ok(LV.lb)) { var n = LK.hide ? 0 : PLY.length; setText(LV.lb, n ? 'LIVE · ' + n : 'LIVE'); }
+		var ms = menuShown();
+		if (!ms) LV.shut = false;
+		if (!LV.open && ms && !LK.hide && !HIDE && on('LVA') && !LV.shut && !open && PLY.length >= 2) liveShow(true, true);
+		if (LV.open && LV.side && open) { liveShow(false); LV.shut = true; return; }
 		if (!LV.open) return;
-		if (!ok(LV.win) || !menuShown()) { liveShow(false); return; }
+		if (!ok(LV.win) || !ms) { liveShow(false); return; }
 		if (NT % 8) return;
 		var h = liveHash();
 		if (h !== LV.hash && ok(LV.html)) { LV.hash = h; try { LV.html.SetURL(LIVE_URL + h); } catch (e) {} }
@@ -346,11 +353,11 @@
 	var I_URN = IMG + 'minimap/soul_jar_marker_psd.vtex', I_BR = IMG + 'minimap/powerup_souls_png.vtex', I_CR = ICO.BOX, I_ST = ICO.EVT,
 		I_CS = IMG + 'minimap/neutral_small_psd.vtex', I_CL = IMG + 'minimap/neutral_large_psd.vtex';
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
-	var TG = [['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
+	var TG = [['LVA', 'lvaT'], ['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'],
 		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
 		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['RIFT', 'riftT'], ['BOX', 'boxT'], ['AIT', 'aitT'], ['SBX', 'sbxT'], ['ALTM', 'altmT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
-	var LITE = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
+	var LITE = ['LVA', 'ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
 	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['ZIP', 'SPD', 'PERF']) };
 	var PREK = PRE.ench;
 	function preset(n) {
@@ -408,7 +415,7 @@
 		var pn = presetNow();
 		if (!FL || P.pre.text.indexOf('·') < 0) setText(P.pre, T('pre'));
 		['lite', 'mid', 'ench'].forEach(function (n) { var q = P[n]; q.b.style.backgroundColor = pn === n ? A : OFF; q.l.style.color = pn === n ? DARK : INK; });
-		var bv = get('BOXV', 'ico') === 'tm';
+		var bv = false; setVis(P.bxIco.b, false); setVis(P.bxTm.b, false);
 		setText(P.bxV, T('bxV')); setText(P.bxIco.l, T('bxIco')); setText(P.bxTm.l, T('bxTm'));
 		P.bxIco.b.style.backgroundColor = bv ? OFF : A; P.bxIco.l.style.color = bv ? INK : DARK;
 		P.bxTm.b.style.backgroundColor = bv ? A : OFF; P.bxTm.l.style.color = bv ? DARK : INK;
@@ -530,7 +537,7 @@
 		var alive = 0; for (var k = 0; k < CMP.length; k++) if (ok(CMP[k].b) && CMP[k].b.BHasClass('active')) alive++;
 		out.push(!ok(MM) ? T('sMm0') : T('sMm') + MMS.n + T('sMmC') + CMP.length + (CMP.length ? T('campOn') + alive : T('sCampH')) + (MMS.cls ? T('sMmK') + MMS.cls : ''));
 		out.push(T('sRank') + RKN + T('sLrk') + LRKN[0] + T('sLrkE') + LRKN[1] + T('sCamp') + CMN);
-		out.push(T('sHp') + HPN + T('sMiss') + MISSN + T('sCmb') + (CMBF < 0 ? '—' : !CMBF ? T('sCmb0') : CMBW ? T('sCmbY') : T('sCmbN')) + T('sUns') + UNV);
+		out.push(T('sHp') + HPN + T('sMiss') + MISSN + T('sCmb') + (!ALT.found ? T('sCmb0') : ALT.cmb ? T('sCmbY') : T('sCmbN')) + T('sUns') + UNV);
 		out.push(T('sUw') + UW.n + T('sUwN') + UW.on + (UW.n ? '' : T('uwW')) + T('uwSaw') + UW.hn + (UW.hc ? ' (' + UW.hc + ')' : '') + ' · ' + T('sAlt') + (ALT.found ? (ALT.on ? T('altOn') : T('altOff')) : T('altNo')));
 		out.push((lang() === 'en' ? 'Active items: ' : 'Активные предметы: ') + (AI.st || '—') + ' · ' + (SB.st || '—') + ' · ' + (lang() === 'en' ? 'build: ' : 'сборка: ') + (BL.st || (BL.id ? BL.id + (BL.hid ? ' / ' + BL.hid : '') : BL.hid ? '…' : '—')));
 		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
@@ -792,7 +799,8 @@
 	function campHide() { for (var i = 0; i < CMP.length; i++) if (ok(CMP[i].lb)) setVis(CMP[i].lb, false); }
 	function campTick() {
 		CMN = 0;
-		if (!on('CAMP') || HIDE) { campHide(); return; }
+		// 0.26: в живом матче игра не даёт меток лагерей на мини-карте (скрин Андрея: «лагерей 0») — таймеры выключены, пока не найдём другой способ
+		if (true || !on('CAMP') || HIDE) { campHide(); return; }
 		if (!mmEnsure()) { campHide(); return; }
 		if (CMS-- <= 0 || !CMP.length) {
 			CMS = 40;
@@ -866,15 +874,19 @@
 		}
 	}
 
-	// «В бою»: глобальный класс gInCombat у объявлений HUD (игра так подсвечивает баффы в бою); вышел — «ВНЕ БОЯ» на 2 с
-	var GA = null, GAF = 0, GAM = 0, CMB = null, CMBW = false, CMBX = 0, CMBF = -1;
+	// «В бою»: класс игры gInCombat (по нему игра сама не даёт покупать вдали от магазина).
+	// 0.25 и раньше искали его у корня объявлений, а слушатель ставит класс СВОЕМУ РОДИТЕЛЮ — надпись мигала и врала.
+	// 0.26: слушаем gInCombat своим слушателем (RestlessGCL, как Alt); бой держим ещё 2 с после последнего сигнала (без мигания),
+	// «ВНЕ БОЯ» — 2 с, когда игра 2 с подряд считает, что боя нет.
+	var CMB = null, CMBS = { on: false, last: 0, off: 0 };
 	function cmbTick() {
-		if (!on('CMB') || HM) { if (ok(CMB)) setVis(CMB, false); CMBW = false; return; }
-		if (!ok(GA)) { if (GAF-- > 0) return; GAF = 40 * Math.min(6, ++GAM); GA = HUD.FindChildTraverse('CitadelHudGameAnnouncements'); CMBF = ok(GA) ? 1 : 0; if (!ok(GA)) return; }
-		var inC = GA.BHasClass('gInCombat');
-		if (CMBW && !inC) CMBX = 4;
-		CMBW = inC;
-		var msg = inC ? T('cmbOn') : CMBX-- > 0 ? T('cmbOff') : '';
+		if (!on('CMB') || HM) { if (ok(CMB)) setVis(CMB, false); CMBS.on = false; return; }
+		var now = Date.now(), raw = !!ALT.cmb;
+		if (raw) CMBS.last = now;
+		var inC = raw || (CMBS.on && now - CMBS.last < 2000);
+		if (CMBS.on && !inC) CMBS.off = now;
+		CMBS.on = inC;
+		var msg = inC ? T('cmbOn') : CMBS.off && now - CMBS.off < 2000 ? T('cmbOff') : '';
 		if (!msg) { if (ok(CMB)) setVis(CMB, false); return; }
 		if (!ok(CMB)) CMB = HUD.FindChildTraverse('RestlessCmb');
 		if (!ok(CMB)) CMB = lab(HUD, 'RestlessCmb', { horizontalAlign: 'center', verticalAlign: 'center', marginTop: '170px', fontSize: '15px', fontWeight: 'bold',
@@ -928,14 +940,15 @@
 	// 0.24: Alt. Пока Alt зажат, игра ставит глобальный класс gDetailView всем GlobalClassListener (подписи умений, мини-карта).
 	// Свой слушатель — в нашей копии citadel_hud_subtitles.xml (RestlessGCL), запасной — minimap_persp из hud.xml.
 	// «Мелочи — только по Alt» (ALTM): буст на канате, нагрузка мода и урна / разлом / мост, пока до них больше 2 минут.
-	var ALT = { L: [], f: 0, on: false, found: false, shop: false };
+	var ALT = { L: [], f: 0, on: false, found: false, shop: false, cmb: false };
 	function altTick() {
 		if (ALT.f-- <= 0 && ALT.L.length < 2) { ALT.f = 40; ALT.L = []; ['RestlessGCL', 'minimap_persp'].forEach(function (id) { var x = HUD.FindChildTraverse(id); if (ok(x)) ALT.L.push(x); }); ALT.found = ALT.L.length > 0; }
 		// GlobalClassListener ставит класс своему РОДИТЕЛЮ (CitadelZiplineBoostIcon.gDetailView, .gShopOpen.hud_hero_testing_root) — смотрим и туда
-		var v = false, sh = false;
+		var v = false, sh = false, cb = false;
 		for (var i = 0; i < ALT.L.length; i++) { var x = ALT.L[i]; if (!ok(x)) continue; var pp = null; try { pp = x.GetParent(); } catch (e) {}
-			try { if (x.BHasClass('gDetailView') || (ok(pp) && pp.BHasClass('gDetailView'))) v = true; if (x.BHasClass('gShopOpen') || (ok(pp) && pp.BHasClass('gShopOpen'))) sh = true; } catch (e) {} }
-		ALT.on = v; ALT.shop = sh;
+			try { if (x.BHasClass('gDetailView') || (ok(pp) && pp.BHasClass('gDetailView'))) v = true; if (x.BHasClass('gShopOpen') || (ok(pp) && pp.BHasClass('gShopOpen'))) sh = true;
+				if (x.BHasClass('gInCombat') || (ok(pp) && pp.BHasClass('gInCombat'))) cb = true; } catch (e) {} }
+		ALT.on = v; ALT.shop = sh; ALT.cmb = cb;
 	}
 	function quiet() { return on('ALTM') && !ALT.on; }
 	// 0.25: меню песочницы в укрытии (как QoL Lite; Андрей: «настройки лобби — добавить врага, союзника»). Меню игры CitadelHudHeroTesting
@@ -1010,7 +1023,7 @@
 	function bldTitle(a, b) {
 		var t = typeof b === 'string' ? b : typeof a === 'string' ? a : '', m = /^RL_BLD:(\d+):(\d+)(:p)?$/.exec(t);
 		if (!m) return;
-		BL.id = m[2] !== '0' ? m[2] : ''; BL.fromSite = !!m[3];
+		BL.id = m[2] !== '0' ? m[2] : ''; BL.fromSite = !!m[3]; webKill(BL);
 		bldPaint();
 		if (BL.want) bldApply();
 	}
@@ -1343,7 +1356,7 @@
 	// Обычные ящики (их 423) по умолчанию выключены. «Время» — без значков: до 3:00 над мини-картой «Ящики через 0:42».
 	var BX = { lay: null, mm: null, key: '', n: 0, typ: '', im: {}, tl: null }, BXT = 820, BXU = SITE + 'mm/', BXN = { c: 423, t: 78, g: 168 };
 	function boxTick() {
-		var s = clock(), tm = get('BOXV', 'ico') === 'tm', base = on('BOX') && !HIDE && mmEnsure();
+		var s = clock(), tm = false, base = on('BOX') && !HIDE && mmEnsure();
 		var typ = ['c', 't', 'g'].filter(function (k) { return on('BX' + k.toUpperCase()); }).join('');
 		var want = base && !tm && typ && (s < 0 || s >= 165);
 		// время до появления (оба режима: в «Значках» — пока значков ещё нет)
@@ -1489,13 +1502,13 @@
 	}
 	// Настройки с сайта: вкладка «Оверлей» (в программе Restless) отдаёт набор программе, программа — на http://127.0.0.1:27515/cfg.html
 	// заголовком RL_SET:<метка>:<настройки>. Мод раз в 8 с открывает эту страницу скрытым CitadelHTMLPanel; новая метка — применить и сохранить.
-	var SS = { p: null, n: 0, got: 0, ap: 0, miss: 0, wait: 0 };
+	var SS = { p: null, t0: 0, n: 0, got: 0, ap: 0, miss: 0, wait: 0 };
 	var SET_URL = 'http://127.0.0.1:27515/cfg.html';
 	function spTitle(a, b) {
 		var t = typeof b === 'string' ? b : typeof a === 'string' ? a : '';
 		var m = /^RL_SET:([0-9a-z]{1,12}):(.*)$/.exec(t);
 		if (!m) return;
-		SS.got++; SS.miss = 0;
+		SS.got++; SS.miss = 0; webKill(SS);
 		if (m[1] === '0' || m[1] === get('SETS', '')) return;
 		var v = ''; try { v = decodeURIComponent(m[2] || ''); } catch (e) { return; }
 		var L = v.split(';'), n = 0;
@@ -1507,14 +1520,19 @@
 		$.Msg('[Restless] настройки с сайта: ' + n);
 		try { if (open) paint(); markTick(); } catch (e) {}
 	}
+	// 0.26: скрытый браузер игры стоит FPS (0.19–0.25 держали его открытым весь матч и перезагружали каждые 8 с) —
+	// теперь только в укрытии или в меню Esc, на секунду: открыл, прочитал заголовок, закрыл
+	function webKill(o) { if (o && ok(o.p)) { try { o.p.DeleteAsync(0); } catch (e) {} } if (o) { o.p = null; o.t0 = 0; } }
 	function setTick() {
+		if (ok(SS.p) && SS.t0 && Date.now() - SS.t0 > 6000) webKill(SS);
+		if (!HM) return;
 		if (SS.wait-- > 0) return;
 		SS.wait = SS.miss > 3 ? 120 : 32;
 		if (!ok(SS.p)) {
 			try { SS.p = mk('CitadelHTMLPanel', HUD, 'RestlessSet' + TOKEN, { width: '2px', height: '2px', opacity: '0.01', horizontalAlign: 'left', verticalAlign: 'bottom', visibility: 'visible' });
 				$.RegisterEventHandler('HTMLTitle', SS.p, spTitle); } catch (e) { SS.p = null; return; }
 		}
-		SS.miss++; SS.n++;
+		SS.miss++; SS.n++; SS.t0 = Date.now();
 		try { SS.p.SetURL(SET_URL + '?n=' + SS.n); } catch (e) {}
 	}
 
@@ -1523,11 +1541,11 @@
 	// она держит настройки в localStorage этого браузера (на этом компьютере) и отвечает заголовком страницы: RL_CFG:…:<настройки> при загрузке,
 	// RL_OK:<номер> после записи. Пишем, сменив только #… адреса (страница не перезагружается). Храним только свои переключатели, язык, время лагерей.
 	// Что поменял до загрузки памяти, пока страница грузилась, — не затираем (список в RESTLESS_DIRTY). Нет связи — всё как в 0.18, до выхода из игры.
-	var STORE = SITE + 'store.html?v=1';
-	var KEEPK = ['ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'RIFT', 'BOX', 'BOXV', 'BXC', 'BXT', 'BXG', 'ALTM', 'AIT', 'SBX', 'LBR', 'LBH', 'LBS', 'LBP', 'LBC', 'LBB', 'LBT', 'LBK', 'LANG', 'SETS',
+	var STORE = SITE + 'store.html?v=2';
+	var KEEPK = ['LVA', 'ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'RIFT', 'BOX', 'BOXV', 'BXC', 'BXT', 'BXG', 'ALTM', 'AIT', 'SBX', 'LBR', 'LBH', 'LBS', 'LBP', 'LBC', 'LBB', 'LBT', 'LBK', 'LANG', 'SETS',
 		'CRS_neutral_weak', 'CRS_neutral_medium', 'CRS_neutral_large'];
 	function keep(k) { return KEEPK.indexOf(k) >= 0 || UMRX.test(k); }
-	var ST = { p: null, at: 0, tries: 0, ok: false, n: 0, q: 0, dirty: 0, sent: 0, sentQ: 0, sentFor: 0, saved: 0, err: '' };
+	var ST = { p: null, t0: 0, at: 0, tries: 0, ok: false, n: 0, q: 0, dirty: 0, sent: 0, sentQ: 0, sentFor: 0, saved: 0, err: '' };
 	function stDirty(k) {
 		var d = get('DIRTY', '');
 		if ((',' + d + ',').indexOf(',' + k + ',') < 0) set('DIRTY', d ? d + ',' + k : k, true);
@@ -1553,35 +1571,31 @@
 	function stTitle(a, b) {
 		var t = typeof b === 'string' ? b : typeof a === 'string' ? a : '';
 		var m = /^RL_CFG:[^:]*:(.*)$/.exec(t);
-		if (m) { if (!ST.ok) stLoad(m[1]); return; }
+		if (m) { if (!ST.ok) { stLoad(m[1]); webKill(ST); } return; }
 		m = /^RL_OK:(\d+)/.exec(t);
-		if (m) { if (+m[1] === ST.sentQ && ST.sentFor) { ST.saved++; if (ST.sentFor === ST.dirty) { ST.dirty = 0; set('DIRTY', '', true); } ST.sentFor = 0; } return; }
-		if (/^RL_ERR/.test(t)) ST.err = t.slice(7, 60);
+		if (m) { webKill(ST); if (+m[1] === ST.sentQ && ST.sentFor) { ST.saved++; if (ST.sentFor === ST.dirty) { ST.dirty = 0; set('DIRTY', '', true); } ST.sentFor = 0; } return; }
+		if (/^RL_ERR/.test(t)) { ST.err = t.slice(7, 60); webKill(ST); }
 	}
 	function stStr() { var a = [], K = KEEPK.concat(umKeys()); for (var i = 0; i < K.length; i++) { var v = get(K[i], ''); if (v) a.push(K[i] + '=' + v); } return a.join(';'); }
 	function storeTick(parent) {
 		var now = Date.now();
-		if (!ok(ST.p)) {
-			if (ST.at && now - ST.at < 5000) return;
-			ST.at = now; ST.ok = false;
-			try { var o = get('STP', ''); o = o ? ROOT.FindChildTraverse(o) : null; if (ok(o)) o.DeleteAsync(0); } catch (e) {}
-			try {
-				var id = 'RestlessStore' + TOKEN;
-				ST.p = mk('CitadelHTMLPanel', parent, id, { width: '2px', height: '2px', opacity: '0.01', horizontalAlign: 'left', verticalAlign: 'bottom', visibility: 'visible' });
-				set('STP', id, true);
-				$.RegisterEventHandler('HTMLTitle', ST.p, stTitle);
-				ST.p.SetURL(STORE);
-			} catch (e) { ST.err = String(e).slice(0, 60); $.Msg('[Restless] память настроек: ' + e); }
-			return;
-		}
-		if (!ST.ok) {
-			if (now - ST.at > 12000 && ST.tries < 4) { ST.tries++; ST.at = now; try { ST.p.SetURL(STORE); } catch (e) {} }
-			return;
-		}
-		if (ST.dirty && now - ST.dirty >= 800 && (ST.sentFor !== ST.dirty || now - ST.sent > 5000)) {
-			ST.q++; ST.sentQ = ST.q; ST.sentFor = ST.dirty; ST.sent = now;
-			try { ST.p.SetURL(STORE + '#' + encodeURIComponent(JSON.stringify({ q: ST.q, f: 'set', v: stStr() }))); } catch (e) { ST.err = String(e).slice(0, 60); }
-		}
+		// 0.26: браузер памяти не живёт весь матч — открыли, прочитали / записали, закрыли (FPS)
+		if (ok(ST.p) && ST.t0 && now - ST.t0 > 9000) { webKill(ST); if (!ST.ok) ST.tries++; }
+		var save = ST.ok && ST.dirty && now - ST.dirty >= 800 && (ST.sentFor !== ST.dirty || now - ST.sent > 5000);
+		if (ST.ok && !save) return;
+		if (!ST.ok && (ST.tries >= 4 || (ST.at && now - ST.at < 5000) || ok(ST.p))) return;
+		if (ok(ST.p)) return;
+		ST.at = now;
+		try { var o = get('STP', ''); o = o ? ROOT.FindChildTraverse(o) : null; if (ok(o)) o.DeleteAsync(0); } catch (e) {}
+		var url = STORE;
+		if (save) { ST.q++; ST.sentQ = ST.q; ST.sentFor = ST.dirty; ST.sent = now; url = STORE + '#' + encodeURIComponent(JSON.stringify({ q: ST.q, f: 'set', v: stStr() })); }
+		try {
+			var id = 'RestlessStore' + TOKEN;
+			ST.p = mk('CitadelHTMLPanel', parent, id, { width: '2px', height: '2px', opacity: '0.01', horizontalAlign: 'left', verticalAlign: 'bottom', visibility: 'visible' });
+			set('STP', id, true); ST.t0 = now;
+			$.RegisterEventHandler('HTMLTitle', ST.p, stTitle);
+			ST.p.SetURL(url);
+		} catch (e) { ST.err = String(e).slice(0, 60); $.Msg('[Restless] память настроек: ' + e); }
 	}
 
 	// ---------- общий такт ----------

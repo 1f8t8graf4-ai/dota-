@@ -25,7 +25,7 @@
       if (m && m.f === 'set') {
         if (!ok(m.v)) { say('RL_ERR:bad value'); return; }
         try { localStorage.setItem(K, m.v); } catch (e) { say('RL_ERR:' + String(e.message || e).slice(0, 50)); return; }
-        if (!load) { say('RL_OK:' + (+m.q || 0)); return; }
+        say('RL_OK:' + (+m.q || 0)); return; // 0.26: мод открывает страницу сразу с #set и закрывает после ответа
       } else if (m && m.f === 'get' && !load) { say('RL_CFG:' + (+m.q || 0) + ':' + encodeURIComponent(rd())); return; }
     }
     if (load) say('RL_CFG:L' + Date.now() % 1e6 + ':' + encodeURIComponent(rd()));
