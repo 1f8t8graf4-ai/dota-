@@ -3900,6 +3900,126 @@ html.rl-embed .wrap{max-width:none;padding:8px 12px}
 .u30-bld small{color:var(--mu)}
 @media (max-width:860px){.u30-lb{grid-template-columns:1fr}.u30-pv{position:static}.u30-lbg{grid-template-columns:1fr!important}.u30-tabs a{padding:12px 8px;font-size:14px;gap:6px}}
 @media (max-width:480px){.u30-tabs a b{font-size:13px}}
+
+/* ==================== lg31 — 05.11 · новый дизайн: одна палитра, ясная иерархия, анимации ==================== */
+/* Андрей: «супер уёбищно», «нельзя разобраться». Раскладку и функции не трогаем — меняем вид:
+   1 акцент (янтарь) + 2 цвета смысла (победа / поражение), всё остальное — оттенки графита;
+   поверхности в 3 уровня, заголовки одного вида, активное — заметно, анимации только transform/opacity. */
+:root{
+  --bg:#07080c;--s1:#0f1118;--s2:#151823;--s3:#1d2130;--ln:#20263a;--ln2:#2c3449;
+  --tx:#eef0f6;--mu:#949cb0;--mu2:#646c82;--ac:#ffb03a;--acd:#1a1004;--win:#2fd6a0;--loss:#ff5f7e;
+  --q-bx:#0f1118;--q-bh:#141824;--q-ln:#1e2436;--q-am:#ffb03a;--q-sp:#6f8dff;
+  --r31:16px;--e31:cubic-bezier(.16,1,.3,1);--s31:cubic-bezier(.34,1.45,.64,1);
+  --g31:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.02) 40%,rgba(255,255,255,0));
+}
+html{background:
+  radial-gradient(1200px 460px at 50% -180px,rgba(255,176,58,.09),transparent 70%),
+  radial-gradient(900px 700px at 105% 10%,rgba(111,141,255,.06),transparent 60%),
+  radial-gradient(700px 600px at -10% 60%,rgba(47,214,160,.035),transparent 60%),
+  #07080c}
+body{color:var(--tx);letter-spacing:.005em}
+::selection{background:rgba(255,176,58,.32);color:#fff}
+
+/* шапка: сплошная, с тонкой светящейся линией снизу */
+.q-nav{background:rgba(8,9,13,.97)!important;border-bottom:0!important;box-shadow:0 1px 0 rgba(255,255,255,.04),0 18px 40px -30px rgba(0,0,0,.9)}
+.q-nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,176,58,.35) 30%,rgba(111,141,255,.25) 70%,transparent);pointer-events:none}
+.q-nav{position:sticky}
+/* вкладки: подсветка под курсором + бегущая полоска (lg31.js) */
+.q-tabs{position:relative;border-top-color:rgba(255,255,255,.04)!important}
+.q-tabs a{position:relative;border-radius:10px;margin:6px 0;transition:color .2s,background-color .2s}
+.q-tabs a:hover{background:rgba(255,255,255,.045);color:var(--tx)}
+.q-tabs a.on{color:#fff}
+html.r31 .q-tabs a::after{display:none}
+html.r31 .q-tabs a.on{border-bottom-color:transparent!important}
+.r31-ind{position:absolute;left:0;bottom:0;height:3px;width:40px;border-radius:3px 3px 0 0;background:linear-gradient(90deg,#ffcf6e,var(--ac));box-shadow:0 0 14px rgba(255,176,58,.65),0 -4px 18px rgba(255,176,58,.25);transform:translateX(var(--x,0));transition:transform .45s var(--e31),width .45s var(--e31),opacity .2s;pointer-events:none;opacity:0}
+.r31-ind.on{opacity:1}
+
+/* поверхности: градиентная грань вместо плоской рамки */
+.q-box,.qs-c,.qs-i,.qs-box{
+  background:linear-gradient(var(--q-bx),var(--q-bx)) padding-box,linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03) 45%,rgba(255,255,255,.05)) border-box!important;
+  border:1px solid transparent!important;border-radius:var(--r31)!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 18px 40px -28px rgba(0,0,0,.95)!important}
+.q-box .q-box{background:linear-gradient(var(--s2),var(--s2)) padding-box,linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)) border-box!important;box-shadow:none!important}
+a.q-box:hover,button.q-box:hover,.q-box[data-go]:hover{transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 24px 46px -26px rgba(0,0,0,1),0 0 0 1px rgba(255,176,58,.18)!important}
+
+/* заголовки секций одного вида: крупно, без подчёркиваний, с янтарной чертой */
+.q-sec{margin:26px 0 12px}
+.q-sec>b,.q-sec>h2,.q-box>header>b,.q-box>h2,.q-box>h3{font-weight:800;letter-spacing:.01em}
+.q-sec>b,.q-sec>h2{position:relative;padding-left:14px;font-size:17px}
+.q-sec>b::before,.q-sec>h2::before{content:"";position:absolute;left:0;top:.18em;bottom:.18em;width:4px;border-radius:4px;background:linear-gradient(180deg,#ffd27a,var(--ac));box-shadow:0 0 12px rgba(255,176,58,.45)}
+h1,h2,h3{text-wrap:balance}
+
+/* сегменты: активное — янтарная «таблетка» */
+.seg{background:rgba(255,255,255,.025)!important;border:1px solid rgba(255,255,255,.07)!important;border-radius:12px!important;padding:3px!important}
+.seg button{border-radius:9px!important;transition:background-color .2s,color .2s,transform .15s var(--s31)}
+.seg button:hover{color:var(--tx);background:rgba(255,255,255,.04)}
+.seg button.on{background:linear-gradient(180deg,rgba(255,176,58,.22),rgba(255,176,58,.12))!important;color:#ffd58a!important;box-shadow:0 0 0 1px rgba(255,176,58,.35) inset,0 6px 16px -10px rgba(255,176,58,.6)}
+.seg button:active{transform:scale(.96)}
+
+/* кнопки */
+.btn{background:linear-gradient(180deg,#ffc45e,var(--ac))!important;color:#1a1004!important;border-radius:12px!important;box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 10px 24px -12px rgba(255,176,58,.75);transition:transform .2s var(--s31),box-shadow .2s,filter .2s}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 16px 30px -12px rgba(255,176,58,.9)}
+.btn:active{transform:translateY(0) scale(.97)}
+button,a{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid rgba(255,176,58,.8);outline-offset:2px;border-radius:8px}
+
+/* поле поиска */
+.q-nav input[type=search],.q-nav input[type=text]{background:rgba(255,255,255,.035)!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:12px!important;transition:border-color .2s,box-shadow .2s,background-color .2s}
+.q-nav input[type=search]:focus,.q-nav input[type=text]:focus{border-color:rgba(255,176,58,.55)!important;background:rgba(255,255,255,.05)!important;box-shadow:0 0 0 4px rgba(255,176,58,.12)}
+
+/* цвета смысла — одинаковые везде */
+.w,.win,.q-w{color:var(--win)}
+.l,.loss,.q-l{color:var(--loss)}
+
+/* сломанная картинка (CDN не ответил) — без «битого» значка и текста */
+img{color:transparent}
+img:not([src]),img[src=""]{visibility:hidden}
+
+/* таблицы: мягкие строки, подсветка под курсором */
+.q-tbl tr{transition:background-color .15s}
+.q-tbl tbody tr:hover{background:rgba(255,255,255,.035)}
+.q-tbl th{color:var(--mu2);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+
+/* полоса прокрутки */
+*{scrollbar-color:#2a3146 transparent;scrollbar-width:thin}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#262c3f;border-radius:10px;border:2px solid #07080c}
+::-webkit-scrollbar-thumb:hover{background:#343c55}
+
+/* загрузка — мерцающая полоса вместо голого кольца */
+.r31-sh{position:relative;overflow:hidden}
+.r31-sh::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.06) 50%,transparent 80%);transform:translateX(-100%);animation:r31sh 1.4s var(--e31) infinite}
+@keyframes r31sh{to{transform:translateX(100%)}}
+
+/* анимации: смена страницы — мягкий вход; блоки — каскадом; цифры — «пружина» */
+@keyframes r31page{from{opacity:0;transform:translate3d(0,10px,0) scale(.995)}to{opacity:1;transform:none}}
+html.r31 #v.r31-go{animation:r31page .5s var(--e31) both}
+@keyframes r31rise{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
+html.r31 .r31-st>*{animation:r31rise .6s var(--e31) both;animation-delay:calc(var(--i,0) * 55ms)}
+@keyframes r31pop{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.05);opacity:1}100%{transform:none}}
+.r31-pop{display:inline-block;animation:r31pop .55s var(--s31) both}
+/* карточки героев: подъём и свечение под курсором */
+.q-gm,.hm-c,.q-pc,.r9-pc,.b10-cat{will-change:auto}
+.q-gm:hover,.hm-c:hover,.b10-cat:hover{transform:translateY(-3px)}
+
+html.lite .r31-sh::after{animation:none}
+@media (max-width:640px){
+  .q-tabs a{margin:4px 0}
+  .q-sec>b,.q-sec>h2{font-size:16px}
+  .q-box,.qs-c,.qs-i,.qs-box{border-radius:14px!important}
+}
+
+/* lg32 — английская версия: кнопка RU / EN, пока словарь грузится — страница не мигает русским */
+html.l32w #v,html.l32w .q-tabs{opacity:0}
+#v,.q-tabs{transition:opacity .25s}
+.l32b{display:inline-flex;align-items:center;gap:2px;height:36px;padding:3px;border-radius:11px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-right:8px;font:800 11.5px/1 var(--f);letter-spacing:.06em}
+.l32b span{display:grid;place-items:center;height:28px;padding:0 8px;border-radius:8px;color:var(--mu);transition:background-color .2s,color .2s}
+.l32b span.on{background:linear-gradient(180deg,rgba(255,176,58,.24),rgba(255,176,58,.12));color:#ffd58a;box-shadow:0 0 0 1px rgba(255,176,58,.35) inset}
+.l32b:hover span:not(.on){color:var(--tx)}
+@media (max-width:640px){.l32b{height:32px;margin-right:4px}.l32b span{height:24px;padding:0 6px}}
+
+/* в английском режиме русские переводы реплик героев не нужны — оригинал и так на экране */
+html[lang=en] .l15-ru,html[lang=en] .l15-g,html[lang=en] .l15-gs,html[lang=en] .l15-nt{display:none}
 </style>
 </head>
 <body>
@@ -10463,6 +10583,126 @@ document.addEventListener('click', e => {
 }, true);
 { const T30 = () => document.querySelectorAll('[data-cp],[data-l25cp]').forEach(x => { if (!/RESTLESS/.test(x.title || '')) x.title = 'В игре: Магазин → Сборки → ★ RESTLESS'; });
   new MutationObserver(T30).observe(document.body, {childList: true, subtree: true}); }
+
+// ===================== lg31 — 05.11: новый дизайн — бегущая полоска под вкладками, вход страницы, каскад блоков =====================
+document.documentElement.classList.add('r31');
+{ // полоска под активной вкладкой: едет к нажатой
+  let ind = null;
+  const put = () => {
+    const bar = document.getElementById('tabs'); if (!bar) return;
+    if (!ind || !ind.isConnected) { ind = document.createElement('i'); ind.className = 'r31-ind'; ind.setAttribute('aria-hidden', 'true'); bar.appendChild(ind); }
+    const a = bar.querySelector('a.on');
+    if (!a) { if (ind.classList.contains('on')) ind.classList.remove('on'); return; }
+    const w = Math.max(18, a.offsetWidth - 24);
+    ind.style.width = w + 'px';
+    ind.style.setProperty('--x', (a.offsetLeft + (a.offsetWidth - w) / 2) + 'px');
+    if (!ind.classList.contains('on')) ind.classList.add('on');
+  };
+  const bar = document.getElementById('tabs');
+  if (bar) new MutationObserver(ms => { if (ms.some(m => m.target !== ind)) put(); }).observe(bar, {subtree: true, attributes: true, attributeFilter: ['class']});
+  addEventListener('resize', put); addEventListener('hashchange', () => setTimeout(put, 30));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(put);
+  setTimeout(put, 60);
+}
+{ // смена страницы — мягкий вход; тихое обновление тех же данных — без анимации
+  let last = '';
+  const key = () => (location.hash || '#home').split(/[?&]/)[0].replace(/\/(\d+|m\d+|p\d+)$/, '');
+  const V31 = V;
+  V = function (html) {
+    V31.apply(this, arguments);
+    const k = key(), v = document.getElementById('v');
+    if (!v || k === last) return;
+    last = k;
+    v.classList.remove('r31-go'); void v.offsetWidth; v.classList.add('r31-go');
+  };
+}
+
+// ===================== lg32 — 05.11: английская версия сайта =====================
+// Андрей: «полную английскую версию сайта». Названия героев, предметов и умений в данных и так английские (data.js).
+// Интерфейс переводим словарём restless/i18n/en.json, без правки сотен функций: проходим по тексту страницы
+// (и по title / placeholder / aria-label), числа подставляем в шаблон «# побед из #» → «# wins of last #».
+// Язык: ?lang=en|ru → localStorage rl-lang → язык браузера (не русский — английский). Кнопка RU / EN в шапке.
+const L32 = (() => {
+  const q = /[?&]lang=(en|ru)\b/.exec(location.search);
+  if (q) { try { localStorage.setItem('rl-lang', q[1]); } catch (e) {} return q[1]; }
+  let v = ''; try { v = localStorage.getItem('rl-lang') || ''; } catch (e) {}
+  if (v === 'en' || v === 'ru') return v;
+  return /^(ru|uk|be|kk)/i.test(navigator.language || 'ru') ? 'ru' : 'en';
+})();
+const I32 = {d: null, n: 0, on: L32 === 'en'};
+const CYR32 = /[А-Яа-яЁё]/;
+const NUM32 = /[+−-]?\d(?:[\d.,:]|[\s  ](?=\d))*/g;
+function n32(m) { // число по-английски: 1 074 → 1,074; 64,7 → 64.7
+  return m.replace(/(\d),(\d)/g, '$1.$2').replace(/(\d)[\s  ](?=\d{3}\b)/g, '$1,');
+}
+const C32 = new Map();
+function t32(s) {
+  if (!s || !CYR32.test(s)) return s;
+  const c = C32.get(s); if (c !== undefined) return c;
+  const r = t32x(s); if (C32.size < 20000) C32.set(s, r); return r;
+}
+function t32x(s) {
+  const D = I32.d; if (!D) return s;
+  const lead = /^\s*/.exec(s)[0], tail = /\s*$/.exec(s)[0], v = s.trim();
+  if (Object.prototype.hasOwnProperty.call(D, v)) return lead + D[v] + tail;
+  const nums = [], k = v.replace(NUM32, m => { nums.push(m); return '#'; });
+  if (nums.length && Object.prototype.hasOwnProperty.call(D, k)) { let i = 0; return lead + D[k].replace(/#/g, () => n32(nums[i++] || '')) + tail; }
+  if (!I32.wc) I32.wc = Object.keys(D).filter(x => x.includes('*')).map(x => [new RegExp('^' + x.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '([^А-Яа-яЁё]+?)') + '$'), D[x]]);
+  for (const [rx, to] of I32.wc) { const m = rx.exec(k); if (m) { let i = 0, j = 1; return lead + to.replace(/\*/g, () => m[j++] || '').replace(/#/g, () => n32(nums[i++] || '')) + tail; } }
+  const lo = v.toLowerCase();
+  if (Object.prototype.hasOwnProperty.call(D, lo)) { const r = D[lo]; return lead + r.charAt(0).toUpperCase() + r.slice(1) + tail; }
+  const parts = v.split(/(\s·\s|\s—\s|\s\/\s|:\s|\s\|\s)/);
+  if (parts.length > 1) {
+    let ch = false; const out = parts.map((p, i) => { if (i % 2) return p; const r = t32(p); if (r !== p) ch = true; return r; });
+    if (ch) return lead + out.join('') + tail;
+  }
+  const sp = v.split(/(?<=[.!?])\s+(?=[А-ЯЁA-Z])/);
+  if (sp.length > 1) { let ch = false; const out = sp.map(p => { const r = t32(p); if (r !== p) ch = true; return r; }); if (ch) return lead + out.join(' ') + tail; }
+  const ed = /^([·—:\s]*)(.*?)([·—:\s]*)$/.exec(v);
+  if (ed && (ed[1] || ed[3]) && ed[2] && ed[2] !== v) { const r = t32(ed[2]); if (r !== ed[2]) return lead + ed[1] + r + ed[3] + tail; }
+  return s;
+}
+function w32(root) {
+  if (!I32.on || !I32.d || !root) return;
+  if (root.nodeType === 3) { const pe = root.parentNode; if (pe && pe.closest && pe.closest('[data-l32no],script,style,textarea')) return; const v = root.nodeValue, r = t32(v); if (r !== v) root.nodeValue = r; return; }
+  if (root.nodeType !== 1 || root.closest && root.closest('[data-l32no],script,style,textarea')) return;
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: n => CYR32.test(n.nodeValue) && !(n.parentNode && n.parentNode.closest && n.parentNode.closest('[data-l32no],script,style,textarea')) ? 1 : 3});
+  const L = []; let n; while ((n = w.nextNode())) L.push(n);
+  for (const x of L) { const r = t32(x.nodeValue); if (r !== x.nodeValue) x.nodeValue = r; }
+  const at = el => { for (const a of ['title', 'placeholder', 'aria-label', 'data-tip']) { const v = el.getAttribute && el.getAttribute(a); if (v && CYR32.test(v)) { const r = t32(v); if (r !== v) el.setAttribute(a, r); } } };
+  at(root); root.querySelectorAll('[title],[placeholder],[aria-label],[data-tip]').forEach(at);
+}
+function go32() {
+  document.documentElement.lang = 'en';
+  w32(document.body);
+  if (CYR32.test(document.title)) document.title = t32(document.title);
+  new MutationObserver(ms => {
+    for (const m of ms) {
+      if (m.type === 'characterData') w32(m.target);
+      else if (m.type === 'attributes') { if (m.target.getAttribute) { const v = m.target.getAttribute(m.attributeName); if (v && CYR32.test(v)) { const r = t32(v); if (r !== v) m.target.setAttribute(m.attributeName, r); } } }
+      else m.addedNodes.forEach(w32);
+    }
+  }).observe(document.body, {childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['title', 'placeholder', 'aria-label', 'data-tip']});
+  document.documentElement.classList.remove('l32w');
+}
+if (I32.on) {
+  try { if (!localStorage.getItem('rl-plang')) localStorage.setItem('rl-plang', 'en'); } catch (e) {}
+  document.documentElement.classList.add('l32w');
+  const fin = () => { if (!I32.d) I32.d = {}; go32(); };
+  const tm = setTimeout(fin, 2500);
+  fetch('i18n/en.json?v=' + (window.RL_V || Date.now() >> 20)).then(r => r.ok ? r.json() : {}).then(d => { clearTimeout(tm); I32.d = d || {}; I32.n = Object.keys(I32.d).length; go32(); }).catch(() => { clearTimeout(tm); fin(); });
+}
+{ // кнопка RU / EN в шапке
+  const nr = document.querySelector('.q-nr');
+  if (nr && !document.getElementById('l32b')) {
+    const b = document.createElement('button');
+    b.id = 'l32b'; b.type = 'button'; b.className = 'l32b'; b.setAttribute('data-l32no', '');
+    b.innerHTML = `<span class="${L32 === 'ru' ? 'on' : ''}">RU</span><span class="${L32 === 'en' ? 'on' : ''}">EN</span>`;
+    b.title = L32 === 'en' ? 'Language' : 'Язык';
+    b.onclick = () => { const nl = L32 === 'en' ? 'ru' : 'en'; try { localStorage.setItem('rl-lang', nl); localStorage.setItem('rl-plang', nl); } catch (e) {} const u = new URL(location.href); u.searchParams.delete('lang'); location.replace(u.toString()); };
+    nr.insertBefore(b, document.getElementById('stg'));
+  }
+}
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');

@@ -1,0 +1,11 @@
+/* lg32 — английская версия: кнопка RU / EN, пока словарь грузится — страница не мигает русским */
+html.l32w #v,html.l32w .q-tabs{opacity:0}
+#v,.q-tabs{transition:opacity .25s}
+.l32b{display:inline-flex;align-items:center;gap:2px;height:36px;padding:3px;border-radius:11px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);cursor:pointer;margin-right:8px;font:800 11.5px/1 var(--f);letter-spacing:.06em}
+.l32b span{display:grid;place-items:center;height:28px;padding:0 8px;border-radius:8px;color:var(--mu);transition:background-color .2s,color .2s}
+.l32b span.on{background:linear-gradient(180deg,rgba(255,176,58,.24),rgba(255,176,58,.12));color:#ffd58a;box-shadow:0 0 0 1px rgba(255,176,58,.35) inset}
+.l32b:hover span:not(.on){color:var(--tx)}
+@media (max-width:640px){.l32b{height:32px;margin-right:4px}.l32b span{height:24px;padding:0 6px}}
+
+/* в английском режиме русские переводы реплик героев не нужны — оригинал и так на экране */
+html[lang=en] .l15-ru,html[lang=en] .l15-g,html[lang=en] .l15-gs,html[lang=en] .l15-nt{display:none}
