@@ -1,3 +1,11 @@
+// Restless 0.31.
+// 0.31 (Зетка, 05.11 вечер): по схеме Андрея («есть вкладка рестлесс чисто тестовая, а есть ctrl alt h — там сайт»).
+//       Кнопка RESTLESS в Esc снова открывает ОКНО НАСТРОЕК (тестовая вкладка: «Что видит мод» — можно показать скрином),
+//       а сайт — кнопкой САЙТ в шапке окна (тумблер) или Ctrl+Alt+H программы (модам клавиши игра не даёт — проверено
+//       по всей коллекции Hantu: ни один мод не ловит хоткеи). Никаких автопоказов: то, что «мегало» — это стак
+//       двух окон (мод сам открывал сайт при Esc + программа сама распахивалась при найденном матче) — теперь мод
+//       ничего не открывает сам, программе выключили auto. ФПС: открытое окно сайта в матче — это браузер игры
+//       (рендер страницы + опрос API), закрыл × — не висит; настройки открываются только по кнопке.
 // Restless 0.30.
 // 0.30 (Зетка, 05.11): автопоказ LIVE вырезан насовсем (Андрей: «показывается энивей лайв меню ебучее»).
 //       Открыл Esc — чистое меню игры, наше окно не выскакивает само. Сайт лайв-матча — только по кнопке
@@ -75,7 +83,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.30';
+	var VER = '0.31';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -231,7 +239,7 @@
 				try { if (ok(stRow) && stRow.GetParent() === sub && sub.MoveChildBefore) sub.MoveChildBefore(ROW, stRow); } catch (e) { $.Msg('[Restless] место кнопки: ' + e); }
 				$.Msg('[Restless] кнопка в меню поставлена');
 			} else ROW = BTN.GetParent();
-			BTN.SetPanelEvent('onactivate', function () { try { if (LV.open) LV.shut = true; liveShow(!LV.open); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
+			BTN.SetPanelEvent('onactivate', function () { try { show(!open); } catch (e) { $.Msg('[Restless] окно: ' + e); } });
 			set('BTN', '1');
 		}
 		// 0.28: отдельной строки «LIVE · N» больше нет (Андрей: «вместо обычной менюшки рестлесс — наш сайт
@@ -316,6 +324,10 @@
 		var x = mk('Button', head, '', { width: '44px', height: '44px', borderRadius: '22px', verticalAlign: 'center', backgroundColor: OFF });
 		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '26px', color: INK }), '×');
 		x.SetPanelEvent('onactivate', function () { show(false); });
+		// 0.31: сайт (лайв-матч) — кнопкой в шапке окна настроек; Ctrl+Alt+H — программа, в игре модам клавиши не даются
+		var web = mk('Button', head, 'RestlessWebBtn', { width: 'auto', height: '44px', borderRadius: '22px', verticalAlign: 'center', backgroundColor: OFF, marginRight: '10px', padding: '0px 18px 0px 18px' });
+		setText(lab(web, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '17px', fontWeight: 'bold', color: INK, letterSpacing: '1px' }), lang() === 'en' ? 'LIVE' : 'САЙТ');
+		web.SetPanelEvent('onactivate', function () { try { show(false); liveShow(true, false); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
 
 		P.secGame = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '4px' });
 		var pr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '6px 0px 8px 0px' });

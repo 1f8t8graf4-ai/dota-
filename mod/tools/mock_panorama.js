@@ -89,7 +89,7 @@ ok(owners.length===2,'вставили в HUD — скрипт запустил�
 const F=i=>hud.FindChildTraverse(i);
 ok(hud.FindChildrenWithClassTraverse('SettingsRow').filter(r=>r.id==='RestlessRow').length===1,'кнопка одна, хотя скриптов два');
 const btn=F('RestlessMenuBtn'),row=btn.par,sub=row.par;
-const stOpen=()=>{if(!F('RestlessGear'))btn.ev.onactivate();F('RestlessGear').ev.onactivate();};
+const vis=p=>p&&p.style.visibility==='visible';const stOpen=()=>{if(!vis(F('RestlessWindow')))btn.ev.onactivate();};
 ok(sub.id==='SubOptions','кнопка — в столбике под «Сменить героя»');
 const order=sub.ch.map(c=>c.id||[...c.cls].join('.')||c.type);
 ok(order.indexOf('RestlessRow')===order.indexOf('FeedbackRow')+1&&!order.includes('RestlessLiveRow')&&sub.ch[order.indexOf('RestlessRow')+1].FindChildTraverse('settings'),'0.28: порядок: Отзыв игрока → RESTLESS → Настройки, строки LIVE нет ('+order.join(', ')+')');
@@ -135,7 +135,7 @@ pills[0].ev.onactivate();
 shade.ev.onactivate();ok(win.style.visibility==='collapse','клик мимо окна закрывает');
 stOpen();all(win).find(x=>x.type==='Button'&&x.style.width==='44px').ev.onactivate();ok(win.style.visibility==='collapse','× закрывает');
 stOpen();em.cls.delete('ShowEscapeMenu');tick(1);ok(win.style.visibility==='collapse','меню закрыли (Esc) — окно закрылось само');
-em.cls.add('ShowEscapeMenu');stOpen();ok(F('RestlessWindow')===win&&win.style.visibility==='visible','открылось снова, окно то же');
+em.cls.add('ShowEscapeMenu');stOpen();ok(vis(F('RestlessWindow')),'открылось снова, окно то же');
 // КД ульты
 tick(2);
 const srcs=hud.FindChildrenWithClassTraverse?null:null;
@@ -280,19 +280,19 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  TP[0].dv.ult_cooldown=41;tick(2);ok(U(0).text==='41','секунды идут');
  hud.SetAttributeString('RESTLESS_ULTW','0');tick(4);ok(U(0).style.visibility==='collapse','выключил — пропало');hud.SetAttributeString('RESTLESS_ULTW','1');tick(4);
  tick(40);VIS=0;tick(40);const vps=Math.round(VIS/10);console.log('нагрузка 0.18: '+vps+' панелей в секунду');ok(vps<all(hud).length,'с ультой над героями нагрузка меньше одного HUD: '+vps);}
-// 0.23: лайв-матч в игре — сайт во встроенном браузере игры; 0.28: кнопка RESTLESS — тумблер; 0.30: автопоказа нет
-{em.cls.add('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveBtn'),'0.28: строки LIVE в меню нет — вместо неё кнопка RESTLESS');
- tick(4);ok(!F('RestlessLive')&&!F('RestlessLiveWeb'),'0.30: открыл Esc — лайв сам не выскакивает (Андрей: «показывается энивей»)');
- btn.ev.onactivate();ok(F('RestlessLive')&&F('RestlessGear'),'0.30: RESTLESS — открыл окно сайта с шестерёнкой ⚙');
+// 0.31: по схеме Андрея — Esc → RESTLESS = тестовая вкладка настроек, сайт — кнопкой САЙТ; автопоказа нет нигде
+{em.cls.add('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveBtn'),'0.28: строки LIVE в меню нет');
+ tick(4);ok(!vis(F('RestlessLive'))&&!vis(F('RestlessWindow')),'0.31: открыл Esc — ничего само не открывается (ни сайт, ни окно)');
+ btn.ev.onactivate();tick(1);ok(vis(F('RestlessWindow')),'0.31: RESTLESS — настройки (тестовая вкладка, «Что видит мод» на месте)');
+ ok(F('RestlessWebBtn'),'0.31: в шапке окна кнопка САЙТ');
+ F('RestlessWebBtn').ev.onactivate();tick(2);ok(!vis(F('RestlessWindow'))&&!!F('RestlessLiveWeb'),'0.31: САЙТ — окно сайта открылось, настройки закрылись');
  const w=F('RestlessLiveWeb');const u=w&&decodeURIComponent(w.url||'');
  ok(w&&w.paneltype==='CitadelHTMLPanel'&&/restless\/\?app=1&embed=1/.test(w.url)&&/#g=/.test(w.url),'окно сайта во встроенном браузере игры: '+(w?w.url.slice(0,80):''));
- ok(/v=0\.30/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
- btn.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'0.30: RESTLESS — закрыл окно сайта');tick(6);ok(!F('RestlessLiveWeb'),'закрыл — сам не возвращается, пока Esc открыт');
- em.cls.delete('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveWeb'),'меню закрыли — лайв закрылся (браузера нет — FPS не ест)');
- em.cls.add('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveWeb'),'0.30: Esc заново — лайв всё равно сам не выскакивает');
- btn.ev.onactivate();ok(F('RestlessLive')&&F('RestlessGear'),'снова открыл кнопкой');
- F('RestlessGear').ev.onactivate();tick(1);ok(F('RestlessWindow')&&F('RestlessWindow').style.visibility==='visible'&&!F('RestlessLive'),'0.28: ⚙ — настройки, сайт закрылся');
- F('RestlessShade').ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(2);}
+ ok(/v=0\.31/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
+ btn.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'0.31: RESTLESS закрывает и окно сайта');tick(6);ok(!F('RestlessLiveWeb'),'закрыл — сам не возвращается');
+ F('RestlessWebBtn').ev.onactivate();tick(2);const gear=F('RestlessGear');ok(gear&&F('RestlessLiveWeb'),'0.28: ⚙ в шапке сайта вернулся к настройкам');
+ F('RestlessGear').ev.onactivate();tick(1);ok(vis(F('RestlessWindow'))&&!vis(F('RestlessLive')),'0.31: ⚙ — настройки, сайт закрылся');
+ F('RestlessShade').ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveWeb'),'меню закрыли — лайв закрылся (браузера нет — FPS не ест)');}
 // 0.19: набор Enchanted и память настроек
 {const gcl=F('RestlessGCL');ok(gcl&&gcl.type==='GlobalClassListener','0.24: свой слушатель Alt (gDetailView) в разметке');gcl.cls.add('gDetailView');
 const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borderRadius==='16px'&&x.style.width!=='104px'&&x.ch[0]&&/^(Lite|Medium|Enchanted)$/.test(x.ch[0].text));
@@ -367,7 +367,7 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  // отчёт программе
- tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.30&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.31&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
  // с сайта: надпись выкл и ползунок мода = 2
  PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);em.cls.add('ShowEscapeMenu');tick(130);em.cls.delete('ShowEscapeMenu');
  ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');
@@ -447,7 +447,7 @@ ok(!all(pop).some(x=>/^Restless/.test(x.id)&&x.id!=='RestlessGCL'),'в окне 
  // страница грузится долго, а игрок уже нажал — его выбор не затираем
  const h4=P('CitadelHud','Hud');const s4=P('CitadelHudSubtitles','HudSubtitles');parse(L('citadel_hud_subtitles.xml'),s4);const e4=add(h4,P('CitadelHudEscapeMenu','EscapeMenu'));parse(fs.readFileSync(escXml,'utf8'),e4);
  s3.ch[0].valid=false;PAGE_HOLD=true;add(h4,s4);run(s4.ch[0]);tick(4);e4.cls.add('ShowEscapeMenu');tick(2);
- h4.FindChildTraverse('RestlessMenuBtn').ev.onactivate();h4.FindChildTraverse('RestlessGear').ev.onactivate();const w4=h4.FindChildTraverse('RestlessWindow');
+ h4.FindChildTraverse('RestlessMenuBtn').ev.onactivate();const w4=h4.FindChildTraverse('RestlessWindow');
  const t4=all(w4).filter(x=>x.type==='Button'&&x.style.width==='104px')[1];ok(t4.ch[0].text==='ВКЛ','страница ещё не ответила — надпись по умолчанию ВКЛ');
  t4.ev.onactivate();t4.ev.onactivate();tick(1);ok(h4.GetAttributeString('RESTLESS_DIRTY','')==='MARK','нажатие до загрузки помечено');
  PAGE_HOLD=false;tick(8);
