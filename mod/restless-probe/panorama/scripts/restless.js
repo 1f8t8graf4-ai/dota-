@@ -1,3 +1,9 @@
+// Restless 0.32.
+// 0.32 (Зетка, 05.11 ночь): лайв-меню снова само открывается сбоку при Esc (Андрей: «я хочу чтобы открывалось меню —
+//       ты же лайв матч сделал, в чём проблема двигаться в этом направлении»). Мигало раньше не само окно, а СТАК:
+//       мод открывал своё сбоку + программа поверх распахивалась на весь экран — теперь программа не распахивается
+//       (auto выключен в restless.json), окно одно, страница грузится на тёмном фоне. Переключатель LVA вернулся
+//       (набор Lite), надоест — выключишь в настройках. Закрыл крестиком — до переоткрытия меню не вернётся.
 // Restless 0.31.
 // 0.31 (Зетка, 05.11 вечер): по схеме Андрея («есть вкладка рестлесс чисто тестовая, а есть ctrl alt h — там сайт»).
 //       Кнопка RESTLESS в Esc снова открывает ОКНО НАСТРОЕК (тестовая вкладка: «Что видит мод» — можно показать скрином),
@@ -83,7 +89,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.31';
+	var VER = '0.32';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -107,7 +113,7 @@
 		if (!quiet && keep(k)) stDirty(k);
 	}
 	// 0.17: функции Medium и Enchanted по умолчанию выключены (набор Lite)
-	var DEF = { MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0', RIFT: '0', BOX: '0', BXC: '0', BXT: '1', BXG: '1', ALTM: '1', AIT: '0', SBX: '1',
+	var DEF = { LVA: '1', MISS: '0', THP: '0', CMB: '0', UNS: '0', OBJ: '0', ZIP: '0', SPD: '0', PERF: '0', AMMO: '0', RLD: '0', OMAP: '0', RBUY: '0', RIFT: '0', BOX: '0', BXC: '0', BXT: '1', BXG: '1', ALTM: '1', AIT: '0', SBX: '1',
 		LBR: '1', LBH: '1', LBS: '1', LBP: '1', LBC: '1', LBB: '1', LBT: '1', LBK: '0' };
 	function on(k) { return get(k, DEF[k] || '1') === '1'; }
 	function lang() { return get('LANG', 'ru') === 'en' ? 'en' : 'ru'; }
@@ -116,7 +122,7 @@
 		ru: {
 			mark: 'RESTLESS ' + VER + ' · работает', markMenu: ' · кнопка в Esc',
 			settings: 'настройки мода · ' + VER, inGame: 'В ИГРЕ',
-			ultT: 'КД ульты в верхней панели', ultS: 'секунды поверх значка ульты у каждого игрока — в матче',
+			lvaT: 'LIVE · 12 сам в меню Esc', lvaS: 'открыл Esc в матче — все 12 игроков рядом с меню', ultT: 'КД ульты в верхней панели', ultS: 'секунды поверх значка ульты у каждого игрока — в матче',
 			markT: 'Надпись RESTLESS', markS: 'слева сверху — видно, что мод работает',
 			evtT: 'Напоминания о событиях', evtS: 'за 15 с до лагерей, ящиков и статуй — по часам матча',
 			evIn: 'через ', evSec: ' с', evNow: 'появились',
@@ -148,7 +154,7 @@
 		en: {
 			mark: 'RESTLESS ' + VER + ' · running', markMenu: ' · Esc button',
 			settings: 'mod settings · ' + VER, inGame: 'IN GAME',
-			ultT: 'Ult cooldown in the top bar', ultS: 'seconds over every player\'s ult icon — in a match',
+			lvaT: 'LIVE · 12 in the Esc menu', lvaS: 'open Esc in a match — all 12 players next to the menu', ultT: 'Ult cooldown in the top bar', ultS: 'seconds over every player\'s ult icon — in a match',
 			markT: 'RESTLESS label', markS: 'top left — shows the mod is running',
 			evtT: 'Event reminders', evtS: '15 s before camps, crates and statues — by the match clock',
 			evIn: 'in ', evSec: ' s', evNow: 'spawned',
@@ -297,7 +303,10 @@
 	function liveTick() {
 		if (ok(LV.lb)) { var n = LK.hide ? 0 : PLY.length; setText(LV.lb, n ? 'LIVE · ' + n : 'LIVE'); }
 		var ms = menuShown();
-		// 0.30: автопоказа при Esc больше нет (Андрей: «показывается энивей лайв меню») — окно только по кнопке RESTLESS
+		// 0.32: автопоказ вернули (Андрей: «я хочу чтобы открывалось меню») — сбоку, одним окном (программа больше не распахивается поверх, стак и мигание ушли)
+		if (!ms) LV.shut = false;
+		if (NT % 8 === 0) $.Msg('[dbg] ms=' + ms + ' lkhide=' + LK.hide + ' HIDE=' + HIDE + ' lva=' + on('LVA') + ' shut=' + LV.shut + ' open=' + open + ' ply=' + PLY.length + ' lv=' + LV.open);
+		if (!LV.open && ms && !LK.hide && !HIDE && on('LVA') && !LV.shut && !open && PLY.length >= 2) liveShow(true, true);
 		if (LV.open && open) { liveShow(false); return; }
 		if (!LV.open) return;
 		if (!ok(LV.win) || !ms) { liveShow(false); return; }
@@ -385,11 +394,11 @@
 	var I_URN = IMG + 'minimap/soul_jar_marker_psd.vtex', I_BR = IMG + 'minimap/powerup_souls_png.vtex', I_CR = ICO.BOX, I_ST = ICO.EVT,
 		I_CS = IMG + 'minimap/neutral_small_psd.vtex', I_CL = IMG + 'minimap/neutral_large_psd.vtex';
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
-	var TG = [['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
+	var TG = [['LVA', 'lvaT'], ['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
 		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
 		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['RIFT', 'riftT'], ['BOX', 'boxT'], ['AIT', 'aitT'], ['SBX', 'sbxT'], ['ALTM', 'altmT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
-	var LITE = ['ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
+	var LITE = ['LVA', 'ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
 	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['ZIP', 'SPD', 'PERF']) };
 	var PREK = PRE.ench;
 	function preset(n) {
