@@ -1,3 +1,8 @@
+// Restless 0.28.
+// 0.28 (Зетка, 05.11 ночь): меню настроек из Esc убрано (Андрей: «ты не убрал это меню, оно лагает — вместо
+//       менюшки рестлесс наш сайт с лайв-матчем»). Кнопка RESTLESS в Esc теперь открывает окно с сайтом (как LIVE · 12),
+//       отдельной строки «LIVE · N» больше нет. Настройки — шестерёнкой ⚙ в шапке окна сайта (окно настроек прежнее:
+//       наборы, переключатели, «Что видит мод»). Автопоказ LIVE при открытии Esc (LVA) остался.
 // Restless 0.27.
 // 0.27 (Зетка, 05.11 ночь): лагеря вернулись. Андрей: «динамические лагеря 21 20 19 на карте — если да, делай».
 //       Механизм подтверждён чужим рабочим модом jungle_timer (Hantu-Raya, открытый код): метки кемпов — .map_button
@@ -57,7 +62,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.27';
+	var VER = '0.28';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -213,19 +218,11 @@
 				try { if (ok(stRow) && stRow.GetParent() === sub && sub.MoveChildBefore) sub.MoveChildBefore(ROW, stRow); } catch (e) { $.Msg('[Restless] место кнопки: ' + e); }
 				$.Msg('[Restless] кнопка в меню поставлена');
 			} else ROW = BTN.GetParent();
-			BTN.SetPanelEvent('onactivate', function () { try { show(!open); } catch (e) { $.Msg('[Restless] окно: ' + e); } });
+			BTN.SetPanelEvent('onactivate', function () { try { if (LV.open) LV.shut = true; liveShow(!LV.open); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
 			set('BTN', '1');
 		}
-		if (!ok(LV.btn)) {
-			LV.btn = EM.FindChildTraverse('RestlessLiveBtn');
-			if (!ok(LV.btn) && ok(ROW)) {
-				var lr = $.CreatePanel('Panel', sub, 'RestlessLiveRow'); lr.AddClass('SettingsRow');
-				LV.btn = $.CreatePanel('Button', lr, 'RestlessLiveBtn'); LV.btn.AddClass('nav_menu_item'); LV.btn.AddClass('minor');
-				LV.lb = $.CreatePanel('Label', LV.btn, '', { text: 'LIVE · 12' }); LV.lb.AddClass('menuButtonLabel');
-				try { if (sub.MoveChildBefore) sub.MoveChildBefore(lr, ROW); } catch (e) {}
-			}
-			if (ok(LV.btn)) LV.btn.SetPanelEvent('onactivate', function () { try { if (LV.open) LV.shut = true; liveShow(!LV.open); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
-		}
+		// 0.28: отдельной строки «LIVE · N» больше нет (Андрей: «вместо обычной менюшки рестлесс — наш сайт
+		// с вкладкой лайв-матч»): кнопка RESTLESS открывает окно с сайтом, настройки — шестерёнкой в его шапке.
 		if (menuShown()) fitHero(sub);
 	}
 	// «Сменить героя» стоит на своём отступе снизу, столбик под ним растёт вверх. Наша строка его подняла бы —
@@ -264,6 +261,10 @@
 			backgroundColor: '#0b0d12fc', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '5100' }, { hittest: 'true' });
 		var head = mk('Panel', LV.win, '', { width: '100%', height: '48px', flowChildren: 'right', padding: '8px 14px 0px 18px' });
 		setText(lab(head, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '20px', fontWeight: 'bold', color: A, letterSpacing: '2px' }), 'RESTLESS · LIVE');
+		// 0.28: настройки мода — отсюда (само меню из Esc убрано): ⚙ открывает окно настроек, сайт при этом закрывается
+		var gear = mk('Button', head, 'RestlessGear', { width: '36px', height: '36px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF, marginRight: '8px' });
+		setText(lab(gear, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '17px', color: INK }), '⚙');
+		gear.SetPanelEvent('onactivate', function () { try { show(true); } catch (e) { $.Msg('[Restless] окно: ' + e); } });
 		var x = mk('Button', head, '', { width: '36px', height: '36px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF });
 		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '22px', color: INK }), '×');
 		x.SetPanelEvent('onactivate', function () { LV.shut = true; liveShow(false); });
