@@ -423,6 +423,10 @@ NOBREATH = [(', he breathes calmly,', ','), ('only calm breathing moves his shou
 def nobreath(t):
     for x, y in NOBREATH: t = t.replace(x, y)
     return t
+# 05.11: все, у кого ещё нет живой петли, — по образцу Рэм (tools/bg_rem.py)
+import sys as _s; _s.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from bg_rem import REM5
+MAIN.update(REM5)
 for hid, name, who, act in HEROES:
     ITEMS.append(dict(key=f'hero:deadlock:{hid}', kind='hero', game='deadlock', hero=hid, title=name, draft=False,
         art=f'кадр 16:9: ветка claude/hero-16x9 → heroes-16x9/{hid}.jpg (полный арт по центру, по бокам — размытое продолжение)',
@@ -431,7 +435,7 @@ for hid, name, who, act in HEROES:
     if hid in ALT: ITEMS[-1]['animate_alt'] = nobreath(ALT[hid])
     if hid in MAIN: ITEMS[-1].update(animate=nobreath(MAIN[hid]), animate2=nobreath(MAIN[hid])); ITEMS[-1].pop('animate_alt', None)
 
-OUT = dict(v=1, updated='2026-10-27',
+OUT = dict(v=1, updated='2026-11-05',
   how=['Без фото (25.10): поле video — один текст сразу в видео (Flow → «Текст в видео» / Veo, 9:16, 8 с). Поля photo и animate — запасной путь «фото → оживить».',
        'Фото (не для героев): Gemini или Google Flow (labs.google/flow), формат 9:16, 3–4 варианта — выбери один, где всё на месте и нет пластмассы.',
        'Оживить: Flow → «Кадры в видео»; первый кадр и последний кадр — это же фото (у героя — арт с вики), 8 секунд.',

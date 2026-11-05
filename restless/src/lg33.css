@@ -1,0 +1,14 @@
+/* lg33 — лайв-матч: игры за 12 ч строками — герой, счёт, оценка, итог */
+.l33-g{display:flex;flex-direction:column;gap:4px;margin-top:8px;min-width:300px}
+.l33-r{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto auto;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;text-decoration:none;color:var(--tx);background:rgba(255,255,255,.03);border-left:3px solid var(--loss);transition:background-color .15s,transform .15s}
+.l33-r.w{border-left-color:var(--win)}
+.l33-r:hover{background:rgba(255,255,255,.06);transform:translateX(2px)}
+.l33-h{display:flex;flex-direction:column;min-width:0}
+.l33-h b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l33-h small{color:var(--mu);font-size:11px}
+.l33-k{font:600 13px/1 var(--m,monospace);white-space:nowrap}
+.l33-k i{color:var(--loss);font-style:normal}
+.l33-res{font-weight:800;font-size:12px;min-width:74px;text-align:right}
+.l33-r.w .l33-res{color:var(--win)}.l33-r.l .l33-res{color:var(--loss)}
+.l33-gr{min-width:30px;text-align:center}
+@media (max-width:640px){.l33-g{min-width:0}.l33-r{grid-template-columns:auto minmax(0,1fr) auto auto;gap:7px}.l33-res{display:none}}

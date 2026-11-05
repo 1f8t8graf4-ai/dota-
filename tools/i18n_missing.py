@@ -13,7 +13,7 @@ import json, os, re, sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SRC = os.path.join(ROOT, 'restless', 'src')
 D = json.load(open(os.path.join(ROOT, 'restless', 'i18n', 'en.json'), encoding='utf-8'))
-NUM = re.compile(r'[+−-]?\d(?:[\d.,:]|[\s  ](?=\d))*')
+NUM = re.compile(r'#?[+−-]?\d(?:[\d.,:]|[\s  ](?=\d))*')
 SPL = re.compile(r'\s·\s|\s—\s|\s/\s|:\s|\s\|\s')
 CYR = re.compile('[А-Яа-яЁё]')
 WILD = [re.compile('^' + re.escape(k).replace(r'\*', '([^А-Яа-яЁё]+?)') + '$') for k in D if '*' in k]
@@ -26,16 +26,17 @@ def known(p):
 
 
 miss = {}
-for fn in sorted(os.listdir(SRC)):
-    if not re.match(r'lg\d*\.js$', fn):
-        continue
-    s = open(os.path.join(SRC, fn), encoding='utf-8').read()
+# 05.11: и база сайта (собранный restless/index.html: там старый код, которого нет в lg*.js; Зетка нашла 592 куска)
+FILES = [os.path.join(SRC, f) for f in sorted(os.listdir(SRC)) if re.match(r'lg\d*\.js$', f)] + [os.path.join(ROOT, 'restless', 'index.html')]
+for path in FILES:
+    fn = os.path.basename(path)
+    s = open(path, encoding='utf-8').read()
     s = re.sub(r'^\s*//.*$', '', s, flags=re.M)  # комментарии не переводим
     for m in re.finditer(r"'((?:[^'\\\n]|\\.)*)'|\"((?:[^\"\\\n]|\\.)*)\"|`((?:[^`\\]|\\.)*)`", s):
         t = m.group(1) or m.group(2) or m.group(3) or ''
         for part in re.split(r'\$\{[^}]*\}|<[^>]*>', t):
             part = part.strip()
-            if not CYR.search(part) or len(part) > 240:
+            if not CYR.search(part) or len(part) > 240 or re.search(r'[;{}=]|//|=>', part):
                 continue
             k = NUM.sub('#', part)
             if known(k):
