@@ -1,0 +1,2801 @@
+{
+ "heroes": {
+  "Infernus": {
+   "en": "Infernus",
+   "ru": "Инфернус",
+   "key_en": "hero_inferno:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/infernus-infernus"
+  },
+  "Seven": {
+   "en": "Seven",
+   "ru": "Семь",
+   "key_en": "hero_gigawatt:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/seven-sem"
+  },
+  "Vindicta": {
+   "en": "Vindicta",
+   "ru": "Виндикта",
+   "key_en": "hero_hornet:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/vindicta-vindikta"
+  },
+  "Lady Geist": {
+   "en": "Lady Geist",
+   "ru": "Леди Гайст",
+   "key_en": "hero_ghost:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/lady-geist-ledi-gayst"
+  },
+  "Abrams": {
+   "en": "Abrams",
+   "ru": "Абрамс",
+   "key_en": "hero_atlas:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/abrams-abrams"
+  },
+  "Wraith": {
+   "en": "Wraith",
+   "ru": "Тень",
+   "key_en": "hero_wraith:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/wraith-ten"
+  },
+  "McGinnis": {
+   "en": "McGinnis",
+   "ru": "Макгиннис",
+   "key_en": "hero_forge:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/mcginnis-makginnis"
+  },
+  "Paradox": {
+   "en": "Paradox",
+   "ru": "Парадокс",
+   "key_en": "hero_chrono:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/paradox-paradoks"
+  },
+  "Dynamo": {
+   "en": "Dynamo",
+   "ru": "Динамо",
+   "key_en": "hero_dynamo:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/dynamo-dinamo"
+  },
+  "Kelvin": {
+   "en": "Kelvin",
+   "ru": "Кельвин",
+   "key_en": "hero_kelvin:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/kelvin-kelvin"
+  },
+  "Haze": {
+   "en": "Haze",
+   "ru": "Пелена",
+   "key_en": "hero_haze:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/haze-pelena"
+  },
+  "Holliday": {
+   "en": "Holliday",
+   "ru": "Холлидей",
+   "key_en": "hero_astro:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/holliday-khollidey"
+  },
+  "Bebop": {
+   "en": "Bebop",
+   "ru": "Бибоп",
+   "key_en": "hero_bebop:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/bebop-bibop"
+  },
+  "Calico": {
+   "en": "Calico",
+   "ru": "Калико",
+   "key_en": "hero_nano:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/calico-kaliko"
+  },
+  "Grey Talon": {
+   "en": "Grey Talon",
+   "ru": "Серый Коготь",
+   "key_en": "hero_orion:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/grey-talon-seryy-kogot"
+  },
+  "Mo & Krill": {
+   "en": "Mo & Krill",
+   "ru": "Мо и Мелкий",
+   "key_en": "hero_krill:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/mo-krill-mo-i-melkiy"
+  },
+  "Shiv": {
+   "en": "Shiv",
+   "ru": "Заточка",
+   "key_en": "hero_shiv:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/shiv-zatochka"
+  },
+  "Ivy": {
+   "en": "Ivy",
+   "ru": "Плющик",
+   "key_en": "hero_tengu:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/ivy-plyushchik"
+  },
+  "Warden": {
+   "en": "Warden",
+   "ru": "Дозорный",
+   "key_en": "hero_warden:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/warden-dozornyy"
+  },
+  "Yamato": {
+   "en": "Yamato",
+   "ru": "Ямато",
+   "key_en": "hero_yamato:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/yamato-yamato"
+  },
+  "Lash": {
+   "en": "Lash",
+   "ru": "Хлыст",
+   "key_en": "hero_lash:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/lash-khlyst"
+  },
+  "Viscous": {
+   "en": "Viscous",
+   "ru": "Вязкус",
+   "key_en": "hero_viscous:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/viscous-vyazkus"
+  },
+  "Pocket": {
+   "en": "Pocket",
+   "ru": "Карман",
+   "key_en": "hero_synth:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/pocket-karman"
+  },
+  "Mirage": {
+   "en": "Mirage",
+   "ru": "Мираж",
+   "key_en": "hero_mirage:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/mirage-mirazh"
+  },
+  "Vyper": {
+   "en": "Vyper",
+   "ru": "Гадюка",
+   "key_en": "hero_viper:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/vyper-gadyuka"
+  },
+  "Sinclair": {
+   "en": "Sinclair",
+   "ru": "Синклер",
+   "key_en": "hero_magician:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/sinclair-sinkler"
+  },
+  "Mina": {
+   "en": "Mina",
+   "ru": "Мина",
+   "key_en": "hero_vampirebat:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/mina-mina"
+  },
+  "Drifter": {
+   "en": "Drifter",
+   "ru": "Скиталец",
+   "key_en": "hero_drifter:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/drifter-skitalec"
+  },
+  "Venator": {
+   "en": "Venator",
+   "ru": "Венатор",
+   "key_en": "hero_priest:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/venator-venator"
+  },
+  "Victor": {
+   "en": "Victor",
+   "ru": "Виктор",
+   "key_en": "hero_frank:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/victor-viktor"
+  },
+  "Paige": {
+   "en": "Paige",
+   "ru": "Пейдж",
+   "key_en": "hero_bookworm:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/paige-peydzh"
+  },
+  "The Doorman": {
+   "en": "The Doorman",
+   "ru": "Швейцар",
+   "key_en": "hero_doorman:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/doorman-shveycar"
+  },
+  "Billy": {
+   "en": "Billy",
+   "ru": "Билли",
+   "key_en": "hero_punkgoat:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/billy-billi"
+  },
+  "Graves": {
+   "en": "Graves",
+   "ru": "Грейвс",
+   "key_en": "hero_necro:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/graves-greyvs"
+  },
+  "Apollo": {
+   "en": "Apollo",
+   "ru": "Аполлон",
+   "key_en": "hero_fencer:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/apollo-apollon"
+  },
+  "Deadman Danny": {
+   "en": "Deadman Danny",
+   "ru": "Дохлый Дэнни",
+   "key_en": "hero_deadpack:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/deadman-danny-dokhlyy-denni"
+  },
+  "Rem": {
+   "en": "Rem",
+   "ru": "Дрём",
+   "key_en": "hero_familiar:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/rem-dryom"
+  },
+  "Silver": {
+   "en": "Silver",
+   "ru": "Сильвер",
+   "key_en": "hero_werewolf:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/silver-silver"
+  },
+  "Celeste": {
+   "en": "Celeste",
+   "ru": "Селеста",
+   "key_en": "hero_unicorn:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/celeste-selesta"
+  },
+  "Rat King": {
+   "en": "Rat King",
+   "ru": "Крысиный король",
+   "key_en": "hero_ratking:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/rat-king-krysinyy-korol"
+  },
+  "Solomon": {
+   "en": "Solomon",
+   "ru": "Соломон",
+   "key_en": "hero_chessmaster:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/solomon-solomon"
+  },
+  "Violet": {
+   "en": "Violet",
+   "ru": "Виолетта",
+   "key_en": "hero_artist:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/violet-violetta"
+  },
+  "Nurse Harrow": {
+   "en": "Nurse Harrow",
+   "ru": "Сестра Хэрроу",
+   "key_en": "hero_nurse:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/nurse-harrow-sestra-kherrou"
+  },
+  "Baba": {
+   "en": "Baba",
+   "ru": "Буся",
+   "key_en": "hero_baba:n",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_gc_hero_names/citadel_gc_hero_names_english.txt",
+   "ru_src": "https://deadlock.one/personazhi/baba-busya"
+  }
+ },
+ "items": {
+  "Extended Magazine": {
+   "en": "Extended Magazine",
+   "ru": "Увеличенный магазин",
+   "key_en": "upgrade_clip_size_fixed",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Monster Rounds": {
+   "en": "Monster Rounds",
+   "ru": "Чудовищные патроны",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Cultist Sacrifice": {
+   "en": "Cultist Sacrifice",
+   "ru": "Жертвенный ритуал",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Tesla Bullets": {
+   "en": "Tesla Bullets",
+   "ru": "Тесла-пули",
+   "key_en": "upgrade_chain_lightning",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Capacitor": {
+   "en": "Capacitor",
+   "ru": "Конденсатор",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Hollow Point": {
+   "en": "Hollow Point",
+   "ru": "Разрывник",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Opening Rounds": {
+   "en": "Opening Rounds",
+   "ru": "Вскрывающие патроны",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "High-Velocity Rounds": {
+   "en": "High-Velocity Rounds",
+   "ru": "Скоростные патроны",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Melee Lifesteal": {
+   "en": "Melee Lifesteal",
+   "ru": "Ударная кража здоровья",
+   "key_en": "upgrade_lifestrike_gauntlets",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Rebuttal": {
+   "en": "Rebuttal",
+   "ru": "Отпор",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Counterspell": {
+   "en": "Counterspell",
+   "ru": "Контрчары",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Weighted Shots": {
+   "en": "Weighted Shots",
+   "ru": "Утяжелённые выстрелы",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Close Quarters": {
+   "en": "Close Quarters",
+   "ru": "Ближняя дистанция",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Long Range": {
+   "en": "Long Range",
+   "ru": "Дальняя дистанция",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Slowing Bullets": {
+   "en": "Slowing Bullets",
+   "ru": "Замедляющие пули",
+   "key_en": "upgrade_slowing_bullets",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Inhibitor": {
+   "en": "Inhibitor",
+   "ru": "Ограничитель",
+   "key_en": "upgrade_inhibitor",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Shredder": {
+   "en": "Spirit Shredder",
+   "ru": "Душегубные пули",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Heroic Aura": {
+   "en": "Heroic Aura",
+   "ru": "Героическая аура",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Silence Wave": {
+   "en": "Silence Wave",
+   "ru": "Волна безмолвия",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Silencer": {
+   "en": "Silencer",
+   "ru": "Глушитель",
+   "key_en": "upgrade_silencer",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Berserker": {
+   "en": "Berserker",
+   "ru": "Берсерк",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Frenzy": {
+   "en": "Frenzy",
+   "ru": "Ярость",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Siphon Bullets": {
+   "en": "Siphon Bullets",
+   "ru": "Вытягивающие пули",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Headshot Booster": {
+   "en": "Headshot Booster",
+   "ru": "Усилитель выстрелов в голову",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Weakening Headshot": {
+   "en": "Weakening Headshot",
+   "ru": "Ослабляющий выстрел в голову",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Sharpshooter": {
+   "en": "Sharpshooter",
+   "ru": "Прицельная стрельба",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Headhunter": {
+   "en": "Headhunter",
+   "ru": "Охотник за головами",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Rend": {
+   "en": "Spirit Rend",
+   "ru": "Спиритический разрыв",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Crippling Headshot": {
+   "en": "Crippling Headshot",
+   "ru": "Калечащий выстрел в голову",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystic Shot": {
+   "en": "Mystic Shot",
+   "ru": "Мистический выстрел",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Lucky Shot": {
+   "en": "Lucky Shot",
+   "ru": "Удачный выстрел",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Point Blank": {
+   "en": "Point Blank",
+   "ru": "Стрельба в упор",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Toxic Bullets": {
+   "en": "Toxic Bullets",
+   "ru": "Токсичные пули",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Ricochet": {
+   "en": "Ricochet",
+   "ru": "Рикошет",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Extra Health": {
+   "en": "Extra Health",
+   "ru": "Добавочное здоровье",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Bullet Lifesteal": {
+   "en": "Bullet Lifesteal",
+   "ru": "Пулевая кража здоровья",
+   "key_en": "upgrade_vampire",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Debuff Reducer": {
+   "en": "Debuff Reducer",
+   "ru": "Уменьшитель эффектов",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Dispel Magic": {
+   "en": "Dispel Magic",
+   "ru": "Развеивание магии",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Resilience": {
+   "en": "Spirit Resilience",
+   "ru": "Спиритическая стойкость",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Bullet Resilience": {
+   "en": "Bullet Resilience",
+   "ru": "Пулевая стойкость",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Metal Skin": {
+   "en": "Metal Skin",
+   "ru": "Металлическая кожа",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Healing Booster": {
+   "en": "Healing Booster",
+   "ru": "Усилитель лечения",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Fortitude": {
+   "en": "Fortitude",
+   "ru": "Выдержка",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Leech": {
+   "en": "Leech",
+   "ru": "Кровопийца",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Sprint Boots": {
+   "en": "Sprint Boots",
+   "ru": "Беговые ботинки",
+   "key_en": "upgrade_sprint_booster",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Trophy Collector": {
+   "en": "Trophy Collector",
+   "ru": "Собиратель трофеев",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Enduring Speed": {
+   "en": "Enduring Speed",
+   "ru": "Скоростная стойкость",
+   "key_en": "upgrade_cardio_calibrator",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Stamina Mastery": {
+   "en": "Stamina Mastery",
+   "ru": "Превосходная выносливость",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Rapid Rounds": {
+   "en": "Rapid Rounds",
+   "ru": "Спешная стрельба",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Extra Stamina": {
+   "en": "Extra Stamina",
+   "ru": "Добавочная выносливость",
+   "key_en": "upgrade_improved_stamina",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Hunter's Aura": {
+   "en": "Hunter's Aura",
+   "ru": "Аура охотника",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Grit": {
+   "en": "Grit",
+   "ru": "Крепость",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Weapon Shielding": {
+   "en": "Weapon Shielding",
+   "ru": "Оружейная защита",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Shielding": {
+   "en": "Spirit Shielding",
+   "ru": "Спиритическая защита",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Battle Vest": {
+   "en": "Battle Vest",
+   "ru": "Боевой жилет",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Enchanter's Emblem": {
+   "en": "Enchanter's Emblem",
+   "ru": "Эмблема заклинателя",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Extra Spirit": {
+   "en": "Extra Spirit",
+   "ru": "Добавочный спиритизм",
+   "key_en": "upgrade_improved_spirit",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystic Regeneration": {
+   "en": "Mystic Regeneration",
+   "ru": "Мистическое восстановление",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Improved Spirit": {
+   "en": "Improved Spirit",
+   "ru": "Улучшенный спиритизм",
+   "key_en": "upgrade_soaring_spirit",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spiritual Overflow": {
+   "en": "Spiritual Overflow",
+   "ru": "Спиритическое переполнение",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Return Fire": {
+   "en": "Return Fire",
+   "ru": "Обратный огонь",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Greater Expansion": {
+   "en": "Greater Expansion",
+   "ru": "Усиленное расширение",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystic Expansion": {
+   "en": "Mystic Expansion",
+   "ru": "Мистическое расширение",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Extra Charge": {
+   "en": "Extra Charge",
+   "ru": "Добавочные заряды",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Lifesteal": {
+   "en": "Spirit Lifesteal",
+   "ru": "Спиритическая кража здоровья",
+   "key_en": "upgrade_health_stealing_magic",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Bullet Resist Shredder": {
+   "en": "Bullet Resist Shredder",
+   "ru": "Измельчитель пулестойкости",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystic Reverb": {
+   "en": "Mystic Reverb",
+   "ru": "Мистический отзвук",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystic Burst": {
+   "en": "Mystic Burst",
+   "ru": "Мистический импульс",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Tankbuster": {
+   "en": "Tankbuster",
+   "ru": "Гроза танков",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystic Vulnerability": {
+   "en": "Mystic Vulnerability",
+   "ru": "Мистическая уязвимость",
+   "key_en": "upgrade_magic_vulnerability",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Healbane": {
+   "en": "Healbane",
+   "ru": "Гроза целителей",
+   "key_en": "upgrade_healbane",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystic Slow": {
+   "en": "Mystic Slow",
+   "ru": "Мистическое замедление",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Escalating Exposure": {
+   "en": "Escalating Exposure",
+   "ru": "Растущее воздействие",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Rapid Recharge": {
+   "en": "Rapid Recharge",
+   "ru": "Спешные заряды",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Omnicharge Signet": {
+   "en": "Omnicharge Signet",
+   "ru": "Всезарядная печать",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Compress Cooldown": {
+   "en": "Compress Cooldown",
+   "ru": "Сжатая перезарядка умения",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Superior Cooldown": {
+   "en": "Superior Cooldown",
+   "ru": "Превосходная перезарядка умений",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Transcendent Cooldown": {
+   "en": "Transcendent Cooldown",
+   "ru": "Трансцендентная перезарядка",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Slowing Hex": {
+   "en": "Slowing Hex",
+   "ru": "Замедляющие чары",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Sap": {
+   "en": "Spirit Sap",
+   "ru": "Спиритическое истощение",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Focus Lens": {
+   "en": "Focus Lens",
+   "ru": "Фокусная линза",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Rusted Barrel": {
+   "en": "Rusted Barrel",
+   "ru": "Ржавый ствол",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Disarming Hex": {
+   "en": "Disarming Hex",
+   "ru": "Чары обезоруживания",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Rescue Beam": {
+   "en": "Rescue Beam",
+   "ru": "Спасательный луч",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Decay": {
+   "en": "Decay",
+   "ru": "Разложение",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Scourge": {
+   "en": "Scourge",
+   "ru": "Кара",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Knockdown": {
+   "en": "Knockdown",
+   "ru": "Нокдаун",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Phantom Strike": {
+   "en": "Phantom Strike",
+   "ru": "Фантомный удар",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Warp Stone": {
+   "en": "Warp Stone",
+   "ru": "Камень переноса",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Vortex Web": {
+   "en": "Vortex Web",
+   "ru": "Паутинный вихрь",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Refresher": {
+   "en": "Refresher",
+   "ru": "Обновитель",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Echo Shard": {
+   "en": "Echo Shard",
+   "ru": "Осколок эха",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Torment Pulse": {
+   "en": "Torment Pulse",
+   "ru": "Терзающий пульс",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Cheat Death": {
+   "en": "Cheat Death",
+   "ru": "Обман смерти",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Shadow Weave": {
+   "en": "Shadow Weave",
+   "ru": "Сплетение теней",
+   "key_en": "upgrade_cloaking_device_active",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Majestic Leap": {
+   "en": "Majestic Leap",
+   "ru": "Грациозный скачок",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Healing Nova": {
+   "en": "Healing Nova",
+   "ru": "Вспышка исцеления",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Restorative Locket": {
+   "en": "Restorative Locket",
+   "ru": "Живительный медальон",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Healing Rite": {
+   "en": "Healing Rite",
+   "ru": "Обряд лечения",
+   "key_en": "upgrade_health_stimpak",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Shrink Ray": {
+   "en": "Shrink Ray",
+   "ru": "Луч уменьшения",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Infuser": {
+   "en": "Infuser",
+   "ru": "Насытитель",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Guardian Ward": {
+   "en": "Guardian Ward",
+   "ru": "Заслон стража",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Divine Barrier": {
+   "en": "Divine Barrier",
+   "ru": "Божественный барьер",
+   "key_en": "upgrade_savior",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Alchemical Fire": {
+   "en": "Alchemical Fire",
+   "ru": "Алхимический огонь",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Blood Tribute": {
+   "en": "Blood Tribute",
+   "ru": "Кровавая дань",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Fleetfoot": {
+   "en": "Fleetfoot",
+   "ru": "Проворная поступь",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Kinetic Dash": {
+   "en": "Kinetic Dash",
+   "ru": "Кинетический рывок",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Arcane Surge": {
+   "en": "Arcane Surge",
+   "ru": "Колдовской порыв",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Unstoppable": {
+   "en": "Unstoppable",
+   "ru": "Неудержимость",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Colossus": {
+   "en": "Colossus",
+   "ru": "Колосс",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Cold Front": {
+   "en": "Cold Front",
+   "ru": "Холодный фронт",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Arctic Blast": {
+   "en": "Arctic Blast",
+   "ru": "Арктический взрыв",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Ethereal Shift": {
+   "en": "Ethereal Shift",
+   "ru": "Развоплощение",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Cursed Relic": {
+   "en": "Cursed Relic",
+   "ru": "Проклятая реликвия",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Duration Extender": {
+   "en": "Duration Extender",
+   "ru": "Увеличитель длительности",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Superior Duration": {
+   "en": "Superior Duration",
+   "ru": "Превосходная длительность",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Glass Cannon": {
+   "en": "Glass Cannon",
+   "ru": "Стеклянная пушка",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Fury Trance": {
+   "en": "Fury Trance",
+   "ru": "Яростный экстаз",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Vampiric Burst": {
+   "en": "Vampiric Burst",
+   "ru": "Порыв вампиризма",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Lifestrike": {
+   "en": "Lifestrike",
+   "ru": "Витальный удар",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Strike": {
+   "en": "Spirit Strike",
+   "ru": "Спиритический удар",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Snatch": {
+   "en": "Spirit Snatch",
+   "ru": "Похищение спиритизма",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Melee Charge": {
+   "en": "Melee Charge",
+   "ru": "Удар с зарядом",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Crushing Fists": {
+   "en": "Crushing Fists",
+   "ru": "Сокрушительные кулаки",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Diviner's Kevlar": {
+   "en": "Diviner's Kevlar",
+   "ru": "Доспех прорицателя",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Radiant Regeneration": {
+   "en": "Radiant Regeneration",
+   "ru": "Сияющее восстановление",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Boundless Spirit": {
+   "en": "Boundless Spirit",
+   "ru": "Безграничный спиритизм",
+   "key_en": "upgrade_mega_spirit",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Burst Fire": {
+   "en": "Burst Fire",
+   "ru": "Шквальный огонь",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Extra Regen": {
+   "en": "Extra Regen",
+   "ru": "Добавочное восстановление",
+   "key_en": "upgrade_endurance",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/pak01_dir/resource/localization/items_english.txt (токены предметов — upgrade_* в citadel_common_english.txt того же репо)",
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Surge of Power": {
+   "en": "Surge of Power",
+   "ru": "Прилив мощи",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Suppressor": {
+   "en": "Suppressor",
+   "ru": "Подавитель",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Quicksilver Reload": {
+   "en": "Quicksilver Reload",
+   "ru": "Ртутная перезарядка",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mercurial Magnum": {
+   "en": "Mercurial Magnum",
+   "ru": "Ртутный Магнум",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Intensifying Magazine": {
+   "en": "Intensifying Magazine",
+   "ru": "Усиливающий магазин",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Escalating Resilience": {
+   "en": "Escalating Resilience",
+   "ru": "Растущая стойкость",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Swift Striker": {
+   "en": "Swift Striker",
+   "ru": "Быстрый стрелок",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Veil Walker": {
+   "en": "Veil Walker",
+   "ru": "Незримый покров",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Reactive Barrier": {
+   "en": "Reactive Barrier",
+   "ru": "Барьерная реакция",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Indomitable": {
+   "en": "Indomitable",
+   "ru": "Непреклонность",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Restorative Shot": {
+   "en": "Restorative Shot",
+   "ru": "Живительный выстрел",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Titanic Magazine": {
+   "en": "Titanic Magazine",
+   "ru": "Титанический магазин",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Split Shot": {
+   "en": "Split Shot",
+   "ru": "Веерный выстрел",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Active Reload": {
+   "en": "Active Reload",
+   "ru": "Активная перезарядка",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Magic Carpet": {
+   "en": "Magic Carpet",
+   "ru": "Ковёр-самолёт",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spirit Burn": {
+   "en": "Spirit Burn",
+   "ru": "Спиритический ожог",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Lightning Scroll": {
+   "en": "Lightning Scroll",
+   "ru": "Свиток молнии",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Witchmail": {
+   "en": "Witchmail",
+   "ru": "Ведьмовской доспех",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Healing Tempo": {
+   "en": "Healing Tempo",
+   "ru": "Целебный темп",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Armor Piercer": {
+   "en": "Armor Piercer",
+   "ru": "Бронебой",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Infinite Rounds": {
+   "en": "Infinite Rounds",
+   "ru": "Бесконечные патроны",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Plated Armor": {
+   "en": "Plated Armor",
+   "ru": "Латная броня",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spellbreaker": {
+   "en": "Spellbreaker",
+   "ru": "Разрушитель чар",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Juggernaut": {
+   "en": "Juggernaut",
+   "ru": "Громила",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Spellslinger": {
+   "en": "Spellslinger",
+   "ru": "Метатель чар",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Stalker": {
+   "en": "Stalker",
+   "ru": "Преследователь",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Express Shot": {
+   "en": "Express Shot",
+   "ru": "Экспресс-выстрел",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Seraphim Wings": {
+   "en": "Seraphim Wings",
+   "ru": "Крылья серафима",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystical Piano": {
+   "en": "Mystical Piano",
+   "ru": "Мистическое фортепиано",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Nullification Burst": {
+   "en": "Nullification Burst",
+   "ru": "Обнуляющий импульс",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Celestial Blessing": {
+   "en": "Celestial Blessing",
+   "ru": "Небесное благословение",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Eternal Gift": {
+   "en": "Eternal Gift",
+   "ru": "Вечный дар",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Mystic Conduit": {
+   "en": "Mystic Conduit",
+   "ru": "Мистическая связь",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Haunting Shot": {
+   "en": "Haunting Shot",
+   "ru": "Терзающий выстрел",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Cloak of Opportunity": {
+   "en": "Cloak of Opportunity",
+   "ru": "Плащ возможностей",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Runed Gauntlets": {
+   "en": "Runed Gauntlets",
+   "ru": "Рунные рукавицы",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Electric Slippers": {
+   "en": "Electric Slippers",
+   "ru": "Электротапки",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Prism Blast": {
+   "en": "Prism Blast",
+   "ru": "Призматический взрыв",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Unstable Concoction": {
+   "en": "Unstable Concoction",
+   "ru": "Нестабильный отвар",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Frostbite Charm": {
+   "en": "Frostbite Charm",
+   "ru": "Морозящий амулет",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Shadow Strike": {
+   "en": "Shadow Strike",
+   "ru": "Теневой удар",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Ballistic Enchantment": {
+   "en": "Ballistic Enchantment",
+   "ru": "Баллистические чары",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Recharging Rush": {
+   "en": "Recharging Rush",
+   "ru": "Прилив перезарядки",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  },
+  "Golden Goose Egg": {
+   "en": "Golden Goose Egg",
+   "ru": "Золотое гусиное яйцо",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://deadlock.one/predmety"
+  }
+ },
+ "abilities": {
+  "Siphon Life": {
+   "en": "Siphon Life",
+   "ru": "Переливание жизни",
+   "key_en": "citadel_ability_bull_heal",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Shoulder Charge": {
+   "en": "Shoulder Charge",
+   "ru": "Плечом вперёд",
+   "key_en": "citadel_ability_bull_charge",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Infernal Resilience": {
+   "en": "Infernal Resilience",
+   "ru": "Адская устойчивость",
+   "key_en": "citadel_ability_passive_beefy",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Seismic Impact": {
+   "en": "Seismic Impact",
+   "ru": "Сейсмический удар",
+   "key_en": "citadel_ability_bull_leap",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Disengaging Sigil": {
+   "en": "Disengaging Sigil",
+   "ru": "Высвобождающий сигил",
+   "key_en": "ability_fencer_throwblade",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Riposte": {
+   "en": "Riposte",
+   "ru": "Рипост",
+   "key_en": "ability_fencer_riposte",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Flawless Advance": {
+   "en": "Flawless Advance",
+   "ru": "Безупречное наступление",
+   "key_en": "ability_fencer_lunge",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Itani Lo Sahn": {
+   "en": "Itani Lo Sahn",
+   "ru": "Итани Ло Сан",
+   "key_en": "ability_fencer_ultimate",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Threadsap": {
+   "en": "Threadsap",
+   "ru": "Истощающая нить",
+   "key_en": "ability_baba_bubbling_brew",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Granny Long Legs": {
+   "en": "Granny Long Legs",
+   "ru": "Длинноногая бабуся",
+   "key_en": "ability_baba_bench_run",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Baba's Brew": {
+   "en": "Baba's Brew",
+   "ru": "Бусин отвар",
+   "key_en": "ability_baba_hexing_brew",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Feed The Birds": {
+   "en": "Feed The Birds",
+   "ru": "Птичий корм",
+   "key_en": "ability_baba_ultimate_2",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Exploding Uppercut": {
+   "en": "Exploding Uppercut",
+   "ru": "Взрывной апперкот",
+   "key_en": "citadel_ability_uppercut",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Sticky Bomb": {
+   "en": "Sticky Bomb",
+   "ru": "Бомба-липучка",
+   "key_en": "citadel_ability_sticky_bomb",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Grapple Arm": {
+   "en": "Grapple Arm",
+   "ru": "Рука-захват",
+   "key_en": "citadel_ability_hook",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Hyper Beam": {
+   "en": "Hyper Beam",
+   "ru": "Гиперлуч",
+   "key_en": "citadel_ability_bebop_laser_beam",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Bashdown": {
+   "en": "Bashdown",
+   "ru": "Разгром",
+   "key_en": "ability_punkgoat_ult",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Rising Ram": {
+   "en": "Rising Ram",
+   "ru": "Рогатый таран",
+   "key_en": "ability_punkgoat_goatflip",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Blasted": {
+   "en": "Blasted",
+   "ru": "В стельку",
+   "key_en": "ability_punkgoat_blasted",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Chain Gang": {
+   "en": "Chain Gang",
+   "ru": "Цепная банда",
+   "key_en": "ability_punkgoat_tether",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Gloom Bombs": {
+   "en": "Gloom Bombs",
+   "ru": "Бомбы мрака",
+   "key_en": "ability_nano_clustergrenade",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Leaping Slash": {
+   "en": "Leaping Slash",
+   "ru": "Рассекающий рывок",
+   "key_en": "ability_nano_dash",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Ava": {
+   "en": "Ava",
+   "ru": "Ава",
+   "key_en": "ability_nano_catform",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Return to Shadows": {
+   "en": "Return to Shadows",
+   "ru": "Возвращение в тени",
+   "key_en": "ability_nano_shadow_pulse",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Light Eater": {
+   "en": "Light Eater",
+   "ru": "Дыхание светом",
+   "key_en": "ability_unicorn_radiantblast",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Dazzling Trick": {
+   "en": "Dazzling Trick",
+   "ru": "Ослепительный трюк",
+   "key_en": "ability_unicorn_prismaticguard",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Radiant Daggers": {
+   "en": "Radiant Daggers",
+   "ru": "Лучезарные кинжалы",
+   "key_en": "ability_unicorn_luminousstrike",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Shining Wonder": {
+   "en": "Shining Wonder",
+   "ru": "Сияющее чудо",
+   "key_en": "ability_unicorn_dazzlingorb",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Strix Salvo": {
+   "en": "Strix Salvo",
+   "ru": "Стригийский залп",
+   "key_en": "ability_deadpack_chargeblast",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Chimera Mk1": {
+   "en": "Chimera Mk1",
+   "ru": "Химера М1",
+   "key_en": "ability_deadpack_rocketeer",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Jettison Fuel": {
+   "en": "Jettison Fuel",
+   "ru": "Сброс топлива",
+   "key_en": "ability_deadpack_flamethrower",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Close The Deal": {
+   "en": "Close The Deal",
+   "ru": "Закрыть сделку",
+   "key_en": "ability_deadpack_ultimate",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Rend": {
+   "en": "Rend",
+   "ru": "Раздирание",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Stalker's Mark": {
+   "en": "Stalker's Mark",
+   "ru": "Метка преследователя",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Bloodscent": {
+   "en": "Bloodscent",
+   "ru": "Запах крови",
+   "key_en": "ability_drifter_hunger",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Eternal Night": {
+   "en": "Eternal Night",
+   "ru": "Вечная ночь",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Kinetic Pulse": {
+   "en": "Kinetic Pulse",
+   "ru": "Кинетический импульс",
+   "key_en": "citadel_ability_stomp",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Quantum Entanglement": {
+   "en": "Quantum Entanglement",
+   "ru": "Квантовое запутывание",
+   "key_en": "citadel_ability_void_sphere",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Rejuvenating Aurora": {
+   "en": "Rejuvenating Aurora",
+   "ru": "Восстановительное сияние",
+   "key_en": "citadel_ability_nikuman",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Singularity": {
+   "en": "Singularity",
+   "ru": "Сингулярность",
+   "key_en": "citadel_ability_self_vacuum",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Jar of Dead": {
+   "en": "Jar of Dead",
+   "ru": "Банка мёртвых",
+   "key_en": "ability_necro_hauntingskull",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Grasping Hands": {
+   "en": "Grasping Hands",
+   "ru": "Хватка смерти",
+   "key_en": "ability_necro_zombiewall",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Essence Theft": {
+   "en": "Essence Theft",
+   "ru": "Хищение эссенции",
+   "key_en": "ability_necro_fear",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Borrowed Decree": {
+   "en": "Borrowed Decree",
+   "ru": "Загробный договор",
+   "key_en": "ability_necro_gravestone",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Charged Shot": {
+   "en": "Charged Shot",
+   "ru": "Заряженный выстрел",
+   "key_en": "ability_charged_shot",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Rain of Arrows": {
+   "en": "Rain of Arrows",
+   "ru": "Дождь из стрел",
+   "key_en": "ability_power_jump",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Spirit Snare": {
+   "en": "Spirit Snare",
+   "ru": "Спиритическая ловушка",
+   "key_en": "ability_immobilize_trap",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Guided Owl": {
+   "en": "Guided Owl",
+   "ru": "Управляемая сова",
+   "key_en": "ability_guided_arrow",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Sleep Dagger": {
+   "en": "Sleep Dagger",
+   "ru": "Усыпляющий кинжал",
+   "key_en": "ability_sleep_dagger",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Smoke Bomb": {
+   "en": "Smoke Bomb",
+   "ru": "Дымовая шашка",
+   "key_en": "ability_smoke_bomb",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Fixation": {
+   "en": "Fixation",
+   "ru": "Пристальный взгляд",
+   "key_en": "ability_stacking_damage",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Bullet Dance": {
+   "en": "Bullet Dance",
+   "ru": "Танец пуль",
+   "key_en": "ability_bullet_flurry",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Powder Keg": {
+   "en": "Powder Keg",
+   "ru": "Пороховая бочка",
+   "key_en": "ability_explosive_barrel",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Bounce Pad": {
+   "en": "Bounce Pad",
+   "ru": "Трамплин",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Crackshot": {
+   "en": "Crackshot",
+   "ru": "Меткий глаз",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Spirit Lasso": {
+   "en": "Spirit Lasso",
+   "ru": "Спиритическое лассо",
+   "key_en": "ability_gravity_lasso",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Napalm": {
+   "en": "Napalm",
+   "ru": "Напалм",
+   "key_en": "ability_incendiary_projectile",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Flame Dash": {
+   "en": "Flame Dash",
+   "ru": "Пламенный рывок",
+   "key_en": "ability_flame_dash",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Afterburn": {
+   "en": "Afterburn",
+   "ru": "Тление",
+   "key_en": "ability_afterburn",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Concussive Combustion": {
+   "en": "Concussive Combustion",
+   "ru": "Сотрясающий взрыв",
+   "key_en": "ability_fire_bomb",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Entangling Thorns": {
+   "en": "Entangling Thorns",
+   "ru": "Опутывающие терния",
+   "key_en": "citadel_ability_tengu_urn",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Kudzu Connection": {
+   "en": "Kudzu Connection",
+   "ru": "Кудзу-связь",
+   "key_en": "citadel_ability_tangotether",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Stone Form": {
+   "en": "Stone Form",
+   "ru": "Каменный облик",
+   "key_en": "citadel_ability_tengu_stone_form",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Air Drop": {
+   "en": "Air Drop",
+   "ru": "Поддержка с воздуха",
+   "key_en": "citadel_ability_tengu_airlift",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Frost Grenade": {
+   "en": "Frost Grenade",
+   "ru": "Леденящая граната",
+   "key_en": "ability_ice_grenade",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Ice Path": {
+   "en": "Ice Path",
+   "ru": "Ледяная дорожка",
+   "key_en": "ability_icepath",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Arctic Beam": {
+   "en": "Arctic Beam",
+   "ru": "Арктический луч",
+   "key_en": "ability_icebeam",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Frozen Shelter": {
+   "en": "Frozen Shelter",
+   "ru": "Ледяное укрытие",
+   "key_en": "ability_ice_dome",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Essence Bomb": {
+   "en": "Essence Bomb",
+   "ru": "Бомба квинтэссенции",
+   "key_en": "ability_blood_bomb",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Life Drain": {
+   "en": "Life Drain",
+   "ru": "Высасывание жизни",
+   "key_en": "ability_life_drain",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Malice": {
+   "en": "Malice",
+   "ru": "Порча",
+   "key_en": "ability_blood_shards",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Soul Exchange": {
+   "en": "Soul Exchange",
+   "ru": "Обмен душами",
+   "key_en": "ability_health_swap",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Ground Strike": {
+   "en": "Ground Strike",
+   "ru": "Удар по земле",
+   "key_en": "citadel_ability_lash_down_strike",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Grapple": {
+   "en": "Grapple",
+   "ru": "Сцепка",
+   "key_en": "citadel_ability_lash",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Flog": {
+   "en": "Flog",
+   "ru": "Порка",
+   "key_en": "ability_lash_flog",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Death Slam": {
+   "en": "Death Slam",
+   "ru": "Смертельный бросок",
+   "key_en": "citadel_ability_lash_ultimate",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Mini Turret": {
+   "en": "Mini Turret",
+   "ru": "Мини-турель",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Medicinal Specter": {
+   "en": "Medicinal Specter",
+   "ru": "Лечебный призрак",
+   "key_en": "citadel_ability_mobile_resupply",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Spectral Wall": {
+   "en": "Spectral Wall",
+   "ru": "Призрачная стена",
+   "key_en": "citadel_ability_fissure_wall",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Heavy Barrage": {
+   "en": "Heavy Barrage",
+   "ru": "Тяжёлый обстрел",
+   "key_en": "citadel_ability_rocket_barrage",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Scorn": {
+   "en": "Scorn",
+   "ru": "Презрение",
+   "key_en": "ability_intimidate",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Burrow": {
+   "en": "Burrow",
+   "ru": "Зарывание",
+   "key_en": "ability_burrow",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Sand Blast": {
+   "en": "Sand Blast",
+   "ru": "Песочная волна",
+   "key_en": "ability_throw_sand",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Combo": {
+   "en": "Combo",
+   "ru": "Комбо",
+   "key_en": "ability_ult_combo",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Bookwyrm": {
+   "en": "Bookwyrm",
+   "ru": "Книжный змей",
+   "key_en": "ability_bookworm_dragonfire",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Plot Armor": {
+   "en": "Plot Armor",
+   "ru": "Сюжетная броня",
+   "key_en": "ability_bookworm_knightbarrier",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Captivating Read": {
+   "en": "Captivating Read",
+   "ru": "Пленяющее чтиво",
+   "key_en": "ability_bookworm_aoemagic",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Rallying Charge": {
+   "en": "Rallying Charge",
+   "ru": "Единящее наступление",
+   "key_en": "ability_bookworm_knightcharge",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Pulse Grenade": {
+   "en": "Pulse Grenade",
+   "ru": "Пульсирующая граната",
+   "key_en": "citadel_ability_chrono_pulse_grenade",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Time Wall": {
+   "en": "Time Wall",
+   "ru": "Стена времени",
+   "key_en": "citadel_ability_chrono_time_wall",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Kinetic Carbine": {
+   "en": "Kinetic Carbine",
+   "ru": "Кинетический карабин",
+   "key_en": "citadel_ability_chrono_kinetic_carbine",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Paradoxical Swap": {
+   "en": "Paradoxical Swap",
+   "ru": "Парадоксальная перестановка",
+   "key_en": "citadel_ability_chrono_swap",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Barrage": {
+   "en": "Barrage",
+   "ru": "Шквал",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Flying Cloak": {
+   "en": "Flying Cloak",
+   "ru": "Летающий плащ",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Enchanter's Satchel": {
+   "en": "Enchanter's Satchel",
+   "ru": "Чемодан заклинателя",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Affliction": {
+   "en": "Affliction",
+   "ru": "Недуг",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Pillow Toss": {
+   "en": "Pillow Toss",
+   "ru": "Бой подушками",
+   "key_en": "ability_familiar_ability02",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Tag Along": {
+   "en": "Tag Along",
+   "ru": "Приятная компания",
+   "key_en": "ability_familiar_attach",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Lil Helpers": {
+   "en": "Lil Helpers",
+   "ru": "Маленькие помощники",
+   "key_en": "ability_familiar_helpinghands",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Naptime": {
+   "en": "Naptime",
+   "ru": "Тихий час",
+   "key_en": "ability_familiar_ability01",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Lightning Ball": {
+   "en": "Lightning Ball",
+   "ru": "Шаровая молния",
+   "key_en": "citadel_ability_lightning_ball",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Static Charge": {
+   "en": "Static Charge",
+   "ru": "Статический заряд",
+   "key_en": "citadel_ability_static_charge",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Power Surge": {
+   "en": "Power Surge",
+   "ru": "Скачок напряжения",
+   "key_en": "ability_power_surge",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Storm Cloud": {
+   "en": "Storm Cloud",
+   "ru": "Грозовое облако",
+   "key_en": "citadel_ability_storm_cloud",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Serrated Knives": {
+   "en": "Serrated Knives",
+   "ru": "Зазубренные ножи",
+   "key_en": "citadel_ability_shiv_dagger",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Slice and Dice": {
+   "en": "Slice and Dice",
+   "ru": "Режущий рывок",
+   "key_en": "citadel_ability_shiv_dash",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Bloodletting": {
+   "en": "Bloodletting",
+   "ru": "Кровопускание",
+   "key_en": "citadel_ability_shiv_defer_damage",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Killing Blow": {
+   "en": "Killing Blow",
+   "ru": "Добивающий удар",
+   "key_en": "citadel_ability_shiv_killing_blow",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Slam Fire": {
+   "en": "Slam Fire",
+   "ru": "Скоростной огонь",
+   "key_en": "ability_werewolf_unloadgun",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Boot Kick": {
+   "en": "Boot Kick",
+   "ru": "Пинок",
+   "key_en": "ability_werewolf_kickflip",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Entangling Bola": {
+   "en": "Entangling Bola",
+   "ru": "Опутывающая бола",
+   "key_en": "ability_werewolf_netshot",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Lycan Curse": {
+   "en": "Lycan Curse",
+   "ru": "Ликантропия",
+   "key_en": "ability_werewolf_transformation",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "yakuza_shakedown_target": {
+   "en": "yakuza_shakedown_target",
+   "ru": "yakuza_shakedown_target",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "yakuza_kobun": {
+   "en": "yakuza_kobun",
+   "ru": "yakuza_kobun",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "yakuza_protection_racket": {
+   "en": "yakuza_protection_racket",
+   "ru": "yakuza_protection_racket",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "yakuza_setting_sun": {
+   "en": "yakuza_setting_sun",
+   "ru": "yakuza_setting_sun",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Stake": {
+   "en": "Stake",
+   "ru": "Кол",
+   "key_en": "citadel_ability_hornet_chain",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Flight": {
+   "en": "Flight",
+   "ru": "Полёт",
+   "key_en": "citadel_ability_hornet_leap",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Crow Familiar": {
+   "en": "Crow Familiar",
+   "ru": "Ворон-фамильяр",
+   "key_en": "citadel_ability_hornet_sting",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Assassinate": {
+   "en": "Assassinate",
+   "ru": "Контрольный выстрел",
+   "key_en": "citadel_ability_hornet_snipe",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Splatter": {
+   "en": "Splatter",
+   "ru": "Брызги",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "The Cube": {
+   "en": "The Cube",
+   "ru": "Куб",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Puddle Punch": {
+   "en": "Puddle Punch",
+   "ru": "Удар из лужи",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Goo Ball": {
+   "en": "Goo Ball",
+   "ru": "Шар из слизи",
+   "key_en": null,
+   "file_en": null,
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Screwjab Dagger": {
+   "en": "Screwjab Dagger",
+   "ru": "Вертящийся кинжал",
+   "key_en": "ability_viper_debuffdagger",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Lethal Venom": {
+   "en": "Lethal Venom",
+   "ru": "Смертельный яд",
+   "key_en": "ability_viper_venom",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Slither": {
+   "en": "Slither",
+   "ru": "Ползание",
+   "key_en": "ability_viper_snakedash",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Petrifying Bola": {
+   "en": "Petrifying Bola",
+   "ru": "Бола окаменения",
+   "key_en": "ability_viper_petrifybola",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Alchemical Flask": {
+   "en": "Alchemical Flask",
+   "ru": "Алхимическая колба",
+   "key_en": "ability_warden_crowd_control",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Willpower": {
+   "en": "Willpower",
+   "ru": "Сила воли",
+   "key_en": "ability_warden_high_alert",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Binding Word": {
+   "en": "Binding Word",
+   "ru": "Сковывающее слово",
+   "key_en": "ability_warden_lock_down",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Last Stand": {
+   "en": "Last Stand",
+   "ru": "Последний бой",
+   "key_en": "ability_warden_riot_protocol",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Card Trick": {
+   "en": "Card Trick",
+   "ru": "Карточный трюк",
+   "key_en": "citadel_ability_card_toss",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Project Mind": {
+   "en": "Project Mind",
+   "ru": "Проекция разума",
+   "key_en": "citadel_ability_projectmind",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Full Auto": {
+   "en": "Full Auto",
+   "ru": "Сверхбыстрая стрельба",
+   "key_en": "citadel_ability_wraith_rapidfire",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Telekinesis": {
+   "en": "Telekinesis",
+   "ru": "Телекинез",
+   "key_en": "citadel_ability_psychic_lift",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Power Slash": {
+   "en": "Power Slash",
+   "ru": "Мощное рассечение",
+   "key_en": "citadel_ability_power_slash",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Flying Slash": {
+   "en": "Flying Slash",
+   "ru": "Рассечение в полёте",
+   "key_en": "citadel_ability_flying_strike",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Crimson Slash": {
+   "en": "Crimson Slash",
+   "ru": "Багровое рассечение",
+   "key_en": "citadel_ability_healing_slash",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  },
+  "Shadow Transformation": {
+   "en": "Shadow Transformation",
+   "ru": "Превращение в тень",
+   "key_en": "citadel_ability_infinity_slash",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): game/citadel/resource/localization/citadel_heroes/citadel_heroes_english.txt",
+   "ru_src": "https://app.blitz.gg/ru/deadlock/heroes"
+  }
+ },
+ "map_objects": {
+  "Soul Urn": {
+   "en": "Soul Urn",
+   "ru": "Урна душ",
+   "key_en_note": "citadel_main_english.txt: AbilityButtonHint_DropIdol «Бросить урну»",
+   "ru_src": [
+    "https://undeadlock.com/ru/game/urn",
+    "https://lvl.su/wiki/deadlock/post/dl-guide-objectives"
+   ],
+   "conf": "подтверждено"
+  },
+  "Rejuvenator": {
+   "en": "Rejuvenator",
+   "ru": "Воодушевитель",
+   "key_en_note": "русская локализация игры (по снипетам/гайдам)",
+   "ru_src": [
+    "https://lvl.su/wiki/deadlock/post/dl-guide-objectives"
+   ],
+   "conf": "один источник"
+  },
+  "Mid-Boss": {
+   "en": "Mid-Boss",
+   "ru": "Мидбосс",
+   "key_en_note": "употребление в русских переводах патчей",
+   "ru_src": [
+    "https://lvl.su/wiki/deadlock/post/dl-guide-objectives"
+   ],
+   "conf": "варианты: «Мидбосс», офиц. «Центральный босс»"
+  },
+  "Patron": {
+   "en": "Patron",
+   "ru": "Покровитель",
+   "key_en_note": "термин сайта Restless (ru-интерфейс)",
+   "ru_src": [
+    "https://deadlockgid.ru"
+   ],
+   "conf": "варианты: «Покровитель», сообщ. «Патрон»"
+  },
+  "Guardian": {
+   "en": "Guardian",
+   "ru": "Страж",
+   "key_en_note": "русская локализация (ранги/объекты)",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_4 «Страж»)",
+    "https://deadlock.one/personazhi"
+   ],
+   "conf": "подтверждено"
+  },
+  "Walker": {
+   "en": "Walker",
+   "ru": "Ходячий",
+   "key_en_note": "употребление в ru-интерфейсе Restless («Ходока»)",
+   "ru_src": [
+    "https://lvl.su/wiki/deadlock/post/dl-guide-objectives"
+   ],
+   "conf": "не подтверждено"
+  },
+  "Shrine": {
+   "en": "Shrine",
+   "ru": "Святилище",
+   "key_en_note": "употребление в ru-гайдах",
+   "ru_src": [
+    "https://lvl.su/wiki/deadlock/post/dl-guide-objectives"
+   ],
+   "conf": "не подтверждено"
+  },
+  "Zipline": {
+   "en": "Zipline",
+   "ru": "Трос",
+   "key_en_note": "русская локализация: «запрыгнуть на трос»",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (AbilityButtonHint_ClimbRope)"
+   ],
+   "conf": "подтверждено"
+  },
+  "Bridge": {
+   "en": "Bridge",
+   "ru": "Мост",
+   "key_en_note": "ru-интерфейс Restless",
+   "ru_src": [
+    "https://lvl.su/wiki/deadlock/post/dl-guide-objectives"
+   ],
+   "conf": "подтверждено"
+  },
+  "Rift": {
+   "en": "Rift",
+   "ru": "Разлом",
+   "key_en_note": "ru-гайды",
+   "ru_src": [
+    "https://lvl.su/wiki/deadlock/post/dl-guide-objectives"
+   ],
+   "conf": "подтверждено"
+  },
+  "Supply Crates": {
+   "en": "Supply Crates",
+   "ru": "Ящики",
+   "key_en_note": "ru-интерфейс Restless («Объекты и ящики»)",
+   "ru_src": [
+    "https://deadlockgid.ru"
+   ],
+   "conf": "не подтверждено"
+  },
+  "Neutral Camps": {
+   "en": "Neutral Camps",
+   "ru": "Лагеря нейтралов",
+   "key_en_note": "ru-интерфейс Restless",
+   "ru_src": [
+    "https://deadlockgid.ru"
+   ],
+   "conf": "не подтверждено"
+  },
+  "Golden Statues": {
+   "en": "Golden Statues",
+   "ru": "Статуи",
+   "key_en_note": "ru-интерфейс Restless",
+   "ru_src": [
+    "https://deadlockgid.ru"
+   ],
+   "conf": "не подтверждено"
+  },
+  "Troopers": {
+   "en": "Troopers",
+   "ru": "Солдаты",
+   "key_en_note": "ru-употребление",
+   "ru_src": [],
+   "conf": "не подтверждено"
+  }
+ },
+ "ranks": {
+  "Obscurus": {
+   "en": "Obscurus",
+   "ru": "Обскурус",
+   "key_en": "Citadel_ranks_0",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Initiate": {
+   "en": "Initiate",
+   "ru": "Послушник",
+   "key_en": "Citadel_ranks_1",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Seeker": {
+   "en": "Seeker",
+   "ru": "Искатель",
+   "key_en": "Citadel_ranks_2",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Acolyte": {
+   "en": "Acolyte",
+   "ru": "Аколит",
+   "key_en": "Citadel_ranks_3",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Sentinel": {
+   "en": "Sentinel",
+   "ru": "Страж",
+   "key_en": "Citadel_ranks_4",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Mystic": {
+   "en": "Mystic",
+   "ru": "Мистик",
+   "key_en": "Citadel_ranks_5",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Ritualist": {
+   "en": "Ritualist",
+   "ru": "Ритуалист",
+   "key_en": "Citadel_ranks_6",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Emissary": {
+   "en": "Emissary",
+   "ru": "Эмиссар",
+   "key_en": "Citadel_ranks_7",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Oracle": {
+   "en": "Oracle",
+   "ru": "Оракул",
+   "key_en": "Citadel_ranks_8",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Phantom": {
+   "en": "Phantom",
+   "ru": "Фантом",
+   "key_en": "Citadel_ranks_9",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Ascendant": {
+   "en": "Ascendant",
+   "ru": "Владыка",
+   "key_en": "Citadel_ranks_10",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  },
+  "Eternus": {
+   "en": "Eternus",
+   "ru": "Этернус",
+   "key_en": "Citadel_ranks_11",
+   "file_en": "SteamDatabase/GameTracking-Deadlock (master): citadel_main_english.txt",
+   "ru_src": [
+    "https://deadlock.wiki/Data:Lang_ru.json (Citadel_ranks_N, официальная русская локализация игры)",
+    "https://cyber.sports.ru/deadlock/blogs/3274604.html"
+   ],
+   "conf": "подтверждено (2 источника)"
+  }
+ },
+ "_meta": {
+  "what": "официальные названия героев, предметов, умений, объектов карты и рангов Deadlock (EN + RU)",
+  "made": "05.11, Зетка (задание 2 из ТЗ-ZAI-05.11.md)",
+  "en_source": "SteamDatabase/GameTracking-Deadlock (github.com/SteamDatabase/GameTracking-Deadlock, ветка master) — файлы локализации игры; ключи указаны в key_en каждого элемента. Русских файлов в этом датамайне нет (дампится только english) — русский собран из вторичных источников ниже.",
+  "ru_source": "deadlock.one (герои, предметы), app.blitz.gg/ru (умения), deadlock.wiki/Data:Lang_ru.json — официальная рус. локализация по снипетам (ранги, трос, урна), cyber.sports.ru (ранги), lvl.su + undeadlock.com (объекты карты). Достоверность каждой записи — в поле conf.",
+  "ru_source_warning": "Русские файлы citadel_*_russian.txt существуют в Steam-депоте 1422456, но не дампятся в git; поэтому RU-строки не дословные из файлов игры, кроме тех, что видны в снипетах wiki.",
+  "heroes_total": 44,
+  "items_total": 173,
+  "abilities_total": 140,
+  "missing_ru_heroes": [],
+  "missing_ru_items": [],
+  "missing_key_en_abilities": [
+   "Rend",
+   "Stalker's Mark",
+   "Eternal Night",
+   "Bounce Pad",
+   "Crackshot",
+   "Mini Turret",
+   "Barrage",
+   "Flying Cloak",
+   "Enchanter's Satchel",
+   "Affliction",
+   "yakuza_shakedown_target",
+   "yakuza_kobun",
+   "yakuza_protection_racket",
+   "yakuza_setting_sun",
+   "Splatter",
+   "The Cube",
+   "Puddle Punch",
+   "Goo Ball"
+  ]
+ }
+}
