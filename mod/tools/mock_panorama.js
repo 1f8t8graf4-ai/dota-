@@ -289,7 +289,7 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  btn.ev.onactivate();ok(F('RestlessLive')&&F('RestlessGear'),'0.28: RESTLESS снова — сайт с шестерёнкой ⚙');
  F('RestlessGear').ev.onactivate();tick(1);ok(F('RestlessWindow')&&F('RestlessWindow').style.visibility==='visible'&&!F('RestlessLive'),'0.28: ⚙ — настройки, сайт закрылся');
  F('RestlessShade').ev.onactivate();
- ok(/v=0\.28/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
+ ok(/v=0\.29/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
  btn.ev.onactivate();ok(!!F('RestlessLiveWeb'),'0.28: RESTLESS — открыл окно сайта');btn.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'0.28: RESTLESS — закрыл окно сайта');tick(6);ok(!F('RestlessLiveWeb'),'закрыл — сам не возвращается, пока Esc открыт');
  em.cls.delete('ShowEscapeMenu');tick(2);em.cls.add('ShowEscapeMenu');tick(2);ok(!!F('RestlessLiveWeb'),'Esc заново — LIVE снова сам');
  em.cls.delete('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveWeb'),'меню закрыли — лайв закрылся (браузера нет — FPS не ест)');}
@@ -367,7 +367,7 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  // отчёт программе
- tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.28&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.29&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
  // с сайта: надпись выкл и ползунок мода = 2
  PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);em.cls.add('ShowEscapeMenu');tick(130);em.cls.delete('ShowEscapeMenu');
  ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');
@@ -403,12 +403,18 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
 {const gcl=F('RestlessGCL');gcl.cls.delete('gDetailView');gcl.par.cls.add('gDetailView');tick(4);
  hud.SetAttributeString('RESTLESS_ALTM','1');hud.SetAttributeString('RESTLESS_PERF','1');tick(4);const pf2=F('RestlessPerf');ok(pf2&&pf2.style.visibility==='visible','0.25: Alt у родителя слушателя (как ставит игра) — считается (нагрузка видна)');
  gcl.par.cls.delete('gDetailView');tick(40);ok(pf2.style.visibility==='collapse','отпустил Alt — нагрузка спрятана');gcl.par.cls.add('gDetailView');
- const am=add(hud,P('Panel','ActiveAbilitiesMenu'));const b1=add(am,P('CitadelHudAbilityButton','upgrade_warp_stone_'));const b2=add(am,P('CitadelHudAbilityButton','upgrade_magic_carpet_',{class:'inCooldown'}));b2.dv={cooldown_sec:'23'};add(am,P('CitadelHudAbilityButton','citadel_ability_zipline_boost_'));
+ const am=add(hud,P('Panel','ActiveAbilitiesMenu'));
+ const b1=add(am,P('Panel','upgrade_warp_stone_',{class:'ability_container'}));
+ const b2=add(am,P('Panel','upgrade_magic_carpet_',{class:'ability_container'}));const cd2=add(b2,P('Label','',{class:'cooldown_timer'}));cd2.text='23';
+ add(am,P('Panel','citadel_ability_zipline_boost_'));
  hud.SetAttributeString('RESTLESS_AIT','1');tick(20);const ar=F('RestlessAit');
- ok(ar&&ar.style.visibility==='visible'&&ar.ch.length===2,'0.25: у прицела 2 активных предмета (буст каната не предмет): '+(ar&&ar.ch.length));
+ ok(ar&&ar.style.visibility==='visible'&&ar.ch.length===2,'0.29: у прицела 2 активных предмета (записи ability_container, буст каната не предмет): '+(ar&&ar.ch.length));
  ok(/items\/vitality\/warp_stone_psd/.test(ar.ch[0].ch[0].img)&&/items\/spirit\/magic_carpet_psd/.test(ar.ch[1].ch[0].img),'картинки из файлов игры: '+ar.ch.map(c=>c.ch[0].img.split('/').pop()).join(' '));
- ok(ar.ch[0].style.border.indexOf('#ffc83d')>=0&&ar.ch[0].ch[1].text===''&&ar.ch[1].ch[0].style.opacity==='0.38'&&ar.ch[1].ch[1].text==='23','готов — рамка, на КД — тускло и «23»');
- b2.cls.delete('inCooldown');tick(4);ok(ar.ch[1].ch[0].style.opacity==='1'&&ar.ch[1].ch[1].text==='','перезарядился — ярко');
+ ok(ar.ch[0].style.border.indexOf('#ffc83d')>=0&&ar.ch[0].ch[1].text===''&&ar.ch[1].ch[0].style.opacity==='0.38'&&ar.ch[1].ch[1].text==='23','готов — рамка, на КД (cooldown_timer «23») — тускло и «23»');
+ cd2.text='';tick(4);ok(ar.ch[1].ch[0].style.opacity==='1'&&ar.ch[1].ch[1].text==='','перезарядился — ярко');
+ em.cls.add('ShowEscapeMenu');stOpen();tick(4);{const tx=texts().join(' / ');ok(/Активные предметы: 2 \(✓ ✓\)/.test(tx),'«Что видит мод»: '+(tx.match(/Активные предметы:[^/]*/)||[''])[0]);}F('RestlessShade').ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(2);
+ b1.DeleteAsync();b2.DeleteAsync();add(am,P('Panel','item_slot_unknown_1'));add(am,P('Panel','item_slot_unknown_2'));tick(20);
+ em.cls.add('ShowEscapeMenu');stOpen();tick(4);{const tx=texts().join(' / ');ok(/Активные предметы: 0 \[/.test(tx),'0.29: имена не совпали — «Что видит мод» покажет id детей: '+(tx.match(/Активные предметы:[^/]*/)||[''])[0]);}F('RestlessShade').ev.onactivate();em.cls.delete('ShowEscapeMenu');tick(2);
  hud.SetAttributeString('RESTLESS_AIT','0');tick(4);ok(ar.style.visibility==='collapse','выключил — пропали');
  hud.SetAttributeString('RESTLESS_SBX','1');const sb=add(hud,P('CitadelHudHeroTesting','',{class:'hud_hero_testing_root'}));top.cls.add('InHideout');tick(30); 
  ok(sb.style.visibility==='visible','0.25: в укрытии меню песочницы показано (как QoL Lite)');

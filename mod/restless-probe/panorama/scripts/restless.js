@@ -1,3 +1,11 @@
+// Restless 0.29.
+// 0.29 (Зетка, 05.11): активные предметы у прицела починены (Андрей: «предметы по центру не отображались»).
+//       По файлам игры (hud.xml, hud_abilities_entry.xml): записи в #ActiveAbilitiesMenu — не CitadelHudAbilityButton
+//       (тип был угадан в 0.25, в матче совпадений 0), а обычные панели ability_container, имя предмета — в id панели
+//       или в классе. Теперь ищем так: любой потомок, чей id/класс есть в таблице 53 предметов. Секунды — с родной
+//       метки cooldown_timer (в ней {s:cooldown_sec}). Если всё равно 0 — «Что видит мод» покажет id первых детей
+//       панели, следующий скрин сразу даст верные имена. Строку диагноза считаем и при открытом Esc (раньше всегда «—»). В «есть:» добавлены классы-кандидаты коробок (crate,
+//       item_crate, loot, chest) — если игра даёт коробкам свои метки, увидим их на скрине из матча и сделаем трекинг.
 // Restless 0.28.
 // 0.28 (Зетка, 05.11 ночь): меню настроек из Esc убрано (Андрей: «ты не убрал это меню, оно лагает — вместо
 //       менюшки рестлесс наш сайт с лайв-матчем»). Кнопка RESTLESS в Esc теперь открывает окно с сайтом (как LIVE · 12),
@@ -62,7 +70,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.28';
+	var VER = '0.29';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -998,32 +1006,45 @@
 		else if (SB.set) { try { SB.p.style.visibility = null; } catch (e) {} SB.set = false; }
 	}
 	// 0.25: активные предметы у прицела (Андрей: «активные предметы по центру — лучше даже когда в КД?» — да, всегда).
-	// Кнопки предметов — CitadelHudAbilityButton в #ActiveAbilitiesMenu (слоты item_1…4), id = имя предмета + «_» (как у буста на канате).
-	// На перезарядке у кнопки класс inCooldown, секунды — {s:cooldown_sec}. Картинка — из файлов игры по таблице AIT (deadlock-api, 53 активных).
+	// Кнопки предметов — дети #ActiveAbilitiesMenu (hud.xml: slots item_1…4). По hud_abilities_entry.xml запись — это
+	// панель ability_container (не CitadelHudAbilityButton — тот тип был угадан в 0.25 и в матче не совпадал ни разу):
+	// имя предмета — id панели (с «_» на конце, как у буста на канате) или класс; секунды — родная метка cooldown_timer
+	// ({s:cooldown_sec}), на перезарядке — класс inCooldown. Картинка — из файлов игры по таблице AIT (deadlock-api, 53 активных).
 	// Готов — ярко с жёлтой рамкой, на перезарядке — тускло с секундами.
 	var AIT = {"upgrade_non_player_bonus_sacrifice":"w/cultist_sacrifice","upgrade_capacitor":"w/capacitor","upgrade_dps_aura":"w/heroic_aura","upgrade_targeted_silence":"s/silence_glyph","upgrade_haunting_scream":"b/haunting_scream","upgrade_silencer":"w/silencer","upgrade_reduce_debuff_duration":"v/debuff_remover","upgrade_metal_skin":"v/metal_skin","upgrade_grit":"v/grit","upgrade_return_fire":"v/return_fire","upgrade_shadow_step":"b/shadow_step","upgrade_containment":"s/slowing_hex","upgrade_spirit_sap":"s/spirit_sap","upgrade_focus_lens":"s/focus_lens","upgrade_withering_whip":"s/rusted_barrel","upgrade_greater_withering_whip":"s/disarming_hex","upgrade_rescue_beam":"v/rescue_beam","upgrade_rupture":"s/decay","upgrade_discord":"s/scourge","upgrade_target_stun":"s/knockdown","upgrade_phantom_strike":"v/phantom_strike","upgrade_warp_stone":"v/warp_stone","upgrade_aoe_root":"s/vortex_web","upgrade_ability_refresher":"s/refresher","upgrade_ability_power_shard":"s/echo_shard","upgrade_cloaking_device_active":"w/shadow_weave","upgrade_rocket_booster":"v/majestic_leap","upgrade_health_nova":"v/healing_nova","upgrade_restorative_locket":"v/restorative_locket","upgrade_health_stimpak":"v/healing_rite","upgrade_shrink_ray":"b/shrink_ray","upgrade_infuser":"v/infuser","upgrade_guardian_ward":"v/guardian_ward","upgrade_divine_barrier":"v/divine_barrier","upgrade_thermal_detonator":"w/alchemical_fire","upgrade_blood_tribute":"w/blood_tribute","upgrade_fleetfoot_boots":"w/fleetfoot","upgrade_unstoppable":"v/unstoppable","upgrade_colossus":"v/colossus","upgrade_cold_front":"s/cold_front","upgrade_arctic_blast":"s/arctic_blast","upgrade_self_bubble":"s/ethereal_shift","upgrade_glitch":"s/curse","upgrade_fury_trance":"v/fury_trance","upgrade_surging_power":"v/vampiric_burst","upgrade_split_shot":"w/split_shot","upgrade_magic_carpet":"s/magic_carpet","upgrade_mystical_piano":"b/mystical_piano","upgrade_nullification_aura":"b/nullification_aura","upgrade_celestial_guidance":"b/celestial_guidance","upgrade_prism_blast":"b/prism_blast","upgrade_unstable_concoction":"b/unstable_concoction","upgrade_goose_egg":"s/goose_egg"};
 	var AI = { menu: null, f: 0, B: [], sig: '', row: null, cells: [], st: '' };
 	function aitFind() {
 		if (!ok(AI.menu)) AI.menu = HUD.FindChildTraverse('ActiveAbilitiesMenu');
-		var L = [], walk = function (p, d) { if (!ok(p) || d > 4) return; var n = 0; try { n = p.GetChildCount(); } catch (e) {} for (var i = 0; i < n; i++) { var c = p.GetChild(i); if (!ok(c)) continue; if (c.paneltype === 'CitadelHudAbilityButton') L.push(c); else walk(c, d + 1); } };
+		// 0.29: тип панели не угадываем — берём любого потомка, у которого id или класс есть в таблице AIT
+		var L = [], walk = function (p, d) { if (!ok(p) || d > 5) return; var n = 0; try { n = p.GetChildCount(); } catch (e) {} for (var i = 0; i < n; i++) { var c = p.GetChild(i); if (!ok(c)) continue; if (aitKey(c)) L.push(c); else walk(c, d + 1); } };
 		walk(AI.menu, 0);
 		AI.B = L;
 	}
 	function aitKey(b) {
-		var id = String(b.id || '').replace(/_+$/, '');
+		var id = String(b.id || '').replace(/^_+|_+$/g, '');
 		if (AIT[id]) return id;
 		for (var k in AIT) try { if (b.BHasClass(k)) return k; } catch (e) {}
 		return '';
 	}
 	function aitTick() {
-		if (!on('AIT') || HM) { if (ok(AI.row)) setVis(AI.row, false); AI.st = ''; return; }
-		if (AI.f-- <= 0) { AI.f = 8; aitFind(); }
+		// 0.29: st считаем и при открытом меню (Esc прятал картинку — а с ним и строку «Что видит мод», всегда «—»);
+		// прячем при выключенном AIT или открытом меню только сам ряд у прицела
+		var run = on('AIT');
+		if (run && AI.f-- <= 0) { AI.f = 8; aitFind(); }
 		var L = [];
-		for (var i = 0; i < AI.B.length; i++) { var b = AI.B[i]; if (!ok(b)) continue; var k = aitKey(b); if (!k) continue;
-			var cd = false; try { cd = b.BHasClass('inCooldown'); } catch (e) {}
-			var sec = ''; if (cd) { try { sec = $.Localize('{s:cooldown_sec}', b); } catch (e) {} if (!sec || sec.indexOf('{') >= 0) { var cl = null; try { cl = (b.FindChildrenWithClassTraverse('cooldownSeconds') || [])[0]; } catch (e) {} sec = cl ? txt(cl) : ''; } }
+		if (run) for (var i = 0; i < AI.B.length; i++) { var b = AI.B[i]; if (!ok(b)) continue; var k = aitKey(b); if (!k) continue;
+			// 0.29: секунды — с родной метки cooldown_timer записи (в ней {s:cooldown_sec}); пустая/скрытая — готово
+			var cd = false, sec = '';
+			try { var cl = (b.FindChildrenWithClassTraverse('cooldown_timer') || [])[0]; if (cl) sec = String(txt(cl) || ''); } catch (e) {}
+			if (/^\d/.test(sec)) cd = true;
+			else { sec = ''; try { cd = b.BHasClass('inCooldown'); } catch (e) {} if (cd) { try { sec = $.Localize('{s:cooldown_sec}', b); } catch (e) {} } }
 			L.push({ k: k, cd: cd, sec: String(sec || '').replace(/[^0-9.:]/g, '').replace(/\.\d+$/, '') }); }
-		AI.st = L.length + (L.length ? ' (' + L.map(function (x) { return x.cd ? x.sec || 'КД' : '✓'; }).join(' ') + ')' : '');
+		if (run) {
+			AI.st = L.length ? String(L.length) + ' (' + L.map(function (x) { return x.cd ? x.sec || 'КД' : '✓'; }).join(' ') + ')' : '';
+			// 0.29: ничего не нашли — покажем в «Что видит мод» id первых детей панели: следующий скрин даст верные имена
+			if (!L.length && ok(AI.menu)) { var ids = [], n2 = 0; try { n2 = AI.menu.GetChildCount(); } catch (e) {} for (var j3 = 0; j3 < n2 && ids.length < 3; j3++) { var c3 = null; try { c3 = AI.menu.GetChild(j3); } catch (e) {} if (ok(c3) && c3.id) ids.push(String(c3.id).slice(0, 24)); } AI.st = ids.length ? '0 [' + ids.join(', ') + ']' : '0'; }
+		} else AI.st = '';
+		if (!run || HM) { if (ok(AI.row)) setVis(AI.row, false); return; }
 		if (!L.length) { if (ok(AI.row)) setVis(AI.row, false); return; }
 		var sig = L.map(function (x) { return x.k; }).join(',');
 		if (!ok(AI.row) || sig !== AI.sig) {
@@ -1310,8 +1331,8 @@
 		MMS.L = L; MMS.n = L.length;
 		if (diag) {
 			var seen = {}, out = [];
-			for (var i = 0; i < L.length && out.length < 8; i++) {
-				['neutral', 'neutral_weak', 'neutral_medium', 'neutral_large', 'capture_point', 'koth_warning', 'idol_spawn', 'idol_return_friendly', 'idol_return_enemy', 'idol_dropping', 'powerup_spawn', 'mid_boss', 'boss', 'player'].forEach(function (c) {
+			for (var i = 0; i < L.length && out.length < 12; i++) {
+				['neutral', 'neutral_weak', 'neutral_medium', 'neutral_large', 'capture_point', 'koth_warning', 'idol_spawn', 'idol_return_friendly', 'idol_return_enemy', 'idol_dropping', 'powerup_spawn', 'mid_boss', 'boss', 'player', 'crate', 'item_crate', 'loot', 'chest'].forEach(function (c) {
 					if (!seen[c] && L[i].BHasClass(c)) { seen[c] = 1; out.push(c); } });
 			}
 			MMS.cls = out.join(', ');
