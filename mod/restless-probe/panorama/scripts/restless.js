@@ -1,3 +1,10 @@
+// Restless 0.27.
+// 0.27 (Зетка, 05.11 ночь): лагеря вернулись. Андрей: «динамические лагеря 21 20 19 на карте — если да, делай».
+//       Механизм подтверждён чужим рабочим модом jungle_timer (Hantu-Raya, открытый код): метки кемпов — .map_button
+//       neutral_weak/medium/large/vault, игра сама снимает/ставит класс active (зачистили кем угодно / возродился);
+//       респаун 85 / 290 / 335 / 300 с. В 0.26 было «меток 0», потому что искали только внутри hud_minimap — теперь
+//       раз в 20 с ищем по всему корню HUD (кеш, полный обход дорог), таймер живёт даже если игра пересоздала панель
+//       (узнаём по типу и месту). Коробки/статуи так пока не ловятся: у боксов нет active-метки (см. ОТЧЁТ, зона Клауда).
 // Restless 0.23.
 // 0.23: лайв-матч без программы (Андрей: «12 игроков — кор-фича, QoL же делает»). В меню Esc — кнопка «LIVE · 12 ИГРОКОВ»:
 //       окно поверх меню, в нём встроенный браузер игры (CitadelHTMLPanel, как у store.html) с нашей страницей лайв-матча;
@@ -50,7 +57,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.26';
+	var VER = '0.27';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -353,11 +360,11 @@
 	var I_URN = IMG + 'minimap/soul_jar_marker_psd.vtex', I_BR = IMG + 'minimap/powerup_souls_png.vtex', I_CR = ICO.BOX, I_ST = ICO.EVT,
 		I_CS = IMG + 'minimap/neutral_small_psd.vtex', I_CL = IMG + 'minimap/neutral_large_psd.vtex';
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
-	var TG = [['LVA', 'lvaT'], ['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'],
+	var TG = [['LVA', 'lvaT'], ['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
 		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
 		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['RIFT', 'riftT'], ['BOX', 'boxT'], ['AIT', 'aitT'], ['SBX', 'sbxT'], ['ALTM', 'altmT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
-	var LITE = ['LVA', 'ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
+	var LITE = ['LVA', 'ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
 	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['ZIP', 'SPD', 'PERF']) };
 	var PREK = PRE.ench;
 	function preset(n) {
@@ -788,7 +795,7 @@
 
 	// таймеры лагерей: метка лагеря на миникарте гаснет (класс active) — лагерь убит; возрождение — от смерти последнего
 	// монстра (deadlock.wiki, данные Зетки zai/map): малый 1:25, средний 4:50, большой 5:35. Отсчёт — над меткой.
-	var MM = null, MMF = 0, MMM = 0, CMP = [], CMS = 0, CMN = 0, CRS = { neutral_weak: 85, neutral_medium: 290, neutral_large: 335 };
+	var MM = null, MMF = 0, MMM = 0, CMP = [], CMS = 0, CMN = 0, CRS = { neutral_weak: 85, neutral_medium: 290, neutral_large: 335, neutral_vault: 300 };
 	// своё время возрождения: первое увиденное заменяет число из вики, дальше берём самое короткое (метку могли увидеть позже)
 	function campRs(cl) { var v = +get('CRS_' + cl, '0'); return v > 30 && v < 900 ? v : CRS[cl] || 0; }
 	function campLearn(cl, d) {
@@ -799,40 +806,62 @@
 	function campHide() { for (var i = 0; i < CMP.length; i++) if (ok(CMP[i].lb)) setVis(CMP[i].lb, false); }
 	function campTick() {
 		CMN = 0;
-		// 0.26: в живом матче игра не даёт меток лагерей на мини-карте (скрин Андрея: «лагерей 0») — таймеры выключены, пока не найдём другой способ
-		if (true || !on('CAMP') || HIDE) { campHide(); return; }
+		// 0.27: лагеря вернулись (Андрей, 05.11: «динамические лагеря 21 20 19 на карте — делай»). Механизм тот же — класс active
+		// у метки кемпа (.map_button neutral_weak/medium/large/vault), как у jungle_timer (Hantu-Raya, открытый код):
+		// active снялся — кемп зачистили (кем угодно), появился — возродился. Числа подтверждены его кодом: 85 / 290 / 335 / 300 с.
+		// Почему в 0.26 было «меток 0»: искали только внутри hud_minimap, а кнопки кемпов живут и в соседних ветках
+		// (minimap_container / HudMinimapContainer / выше) — теперь раз в 20 с ищем по всему корню HUD, список кешируем
+		// (полный обход недёшево — реже раза в 20 с нельзя, это и съедало FPS в старых версиях).
+		if (!on('CAMP') || HIDE) { campHide(); return; }
 		if (!mmEnsure()) { campHide(); return; }
-		if (CMS-- <= 0 || !CMP.length) {
-			CMS = 40;
-			var old = CMP, L = mmScan(false);
+		if (CMS-- <= 0) {
+			CMS = 20;
+			var old = CMP, L = mmScan(false).slice(), seenMap = {}, hasN = false;
+			for (var pn = 0; pn < L.length && !hasN; pn++) if (ok(L[pn]) && L[pn].BHasClass('neutral')) hasN = true;
+			// меток нет внутри мини-карты (как в живом матче у Андрея) — ищем по всему корню, но не чаще раза в 20 с (дорого)
+			try { if (!hasN && ok(ROOT)) { var R = ROOT.FindChildrenWithClassTraverse('map_button') || []; for (var ri = 0; ri < R.length; ri++) L.push(R[ri]); } } catch (e) {}
 			CMP = [];
 			for (var i = 0; i < L.length; i++) {
-				var b = L[i]; if (!ok(b) || !b.BHasClass('neutral')) continue;
+				var b = L[i]; if (!ok(b) || !b.BHasClass('neutral') || seenMap[b.id + '|' + b.actualxoffset + '|' + b.actualyoffset]) continue;
 				var rs = 0; for (var c in CRS) if (b.BHasClass(c)) rs = campRs(c);
 				if (!rs) continue;
-				var x = null; for (var j = 0; j < old.length; j++) if (old[j].b === b) x = old[j];
+				seenMap[b.id + '|' + b.actualxoffset + '|' + b.actualyoffset] = 1;
 				var cl = ''; for (var c2 in CRS) if (b.BHasClass(c2)) cl = c2;
+				// та же метка вернулась новой панелью (игра пересоздаёт кнопки) — узнаём по типу и месту, таймер продолжается
+				var x = null; for (var j = 0; j < old.length; j++) if (old[j].b === b) x = old[j];
+				if (!x) for (var j2 = 0; j2 < old.length; j2++) { var o2 = old[j2];
+					if (o2.cl === cl && o2.lx != null && Math.abs(o2.lx - b.actualxoffset) < 40 && Math.abs(o2.ly - b.actualyoffset) < 40) { x = o2; break; } }
+				if (x) x.b = b;
 				CMP.push(x || { b: b, cl: cl, rs: rs, was: b.BHasClass('active'), dead: -1, lb: null });
 			}
-			for (var k = 0; k < old.length; k++) if (CMP.indexOf(old[k]) < 0 && ok(old[k].lb)) old[k].lb.DeleteAsync(0);
+			// метка пропала, а таймер идёт (панель удалили, кемп ещё не возродился) — держим на последнем месте
+			for (var k = 0; k < old.length; k++) if (CMP.indexOf(old[k]) < 0) {
+				if (old[k].dead >= 0 && old[k].lastLeft > 0) { old[k].b = null; CMP.push(old[k]); }
+				else if (ok(old[k].lb)) old[k].lb.DeleteAsync(0);
+			}
 		}
 		var s = clock();
 		for (var n = 0; n < CMP.length; n++) {
-			var q = CMP[n];
-			if (!ok(q.b)) { CMS = 0; continue; }
-			var act = q.b.BHasClass('active');
-			if (q.was && !act && s >= 0) q.dead = s;
-			if (act && q.dead >= 0 && s > q.dead) campLearn(q.cl, s - q.dead);
-			if (act) q.dead = -1;
-			q.was = act;
+			var q = CMP[n], hasB = ok(q.b);
+			if (hasB) {
+				q.lx = q.b.actualxoffset; q.ly = q.b.actualyoffset;
+				var act = q.b.BHasClass('active');
+				if (q.was && !act && s >= 0) q.dead = s;
+				if (act && q.dead >= 0 && s > q.dead) campLearn(q.cl, s - q.dead);
+				if (act) q.dead = -1;
+				q.was = act;
+			} else if (q.dead < 0) continue;
 			var left = q.dead >= 0 && s >= 0 ? q.dead + campRs(q.cl) - s : -1;
+			q.lastLeft = left;
 			if (left <= 0) { if (ok(q.lb)) setVis(q.lb, false); continue; }
-			var par = q.b.GetParent();
+			var par = hasB ? q.b.GetParent() : (ok(q.lb) ? q.lb.GetParent() : MM);
 			if (!ok(q.lb)) q.lb = lab(par, '', { width: '44px', textAlign: 'center', align: 'left top', fontSize: '13px', fontWeight: 'bold', color: '#ffffff',
 				textShadow: '0px 0px 3px 2.0 #000000', zIndex: '30' });
-			var sx = q.b.actualuiscale_x > 0 ? q.b.actualuiscale_x : 1, sy = q.b.actualuiscale_y > 0 ? q.b.actualuiscale_y : 1;
-			var px = Math.round((q.b.actualxoffset + q.b.actuallayoutwidth / 2) / sx - 22) + 'px', py = Math.round((q.b.actualyoffset + q.b.actuallayoutheight / 2) / sy - 9) + 'px';
-			if (q.px !== px || q.py !== py) { q.px = px; q.py = py; sty(q.lb, { x: px, y: py }); }
+			if (hasB) {
+				var sx = q.b.actualuiscale_x > 0 ? q.b.actualuiscale_x : 1, sy = q.b.actualuiscale_y > 0 ? q.b.actualuiscale_y : 1;
+				var px = Math.round((q.b.actualxoffset + q.b.actuallayoutwidth / 2) / sx - 22) + 'px', py = Math.round((q.b.actualyoffset + q.b.actuallayoutheight / 2) / sy - 9) + 'px';
+				if (q.px !== px || q.py !== py) { q.px = px; q.py = py; sty(q.lb, { x: px, y: py }); }
+			} else if (q.px && ok(q.lb)) sty(q.lb, { x: q.px, y: q.py });
 			var inv = ok(MM) && MM.BHasClass('invert_map');
 			if (q.inv !== inv) { q.inv = inv; try { q.lb.style.transform = inv ? 'scaleY(-1) scaleX(-1)' : 'none'; } catch (e) {} }
 			setText(q.lb, Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2));
