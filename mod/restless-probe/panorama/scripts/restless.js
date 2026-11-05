@@ -1,3 +1,9 @@
+// Restless 0.33.
+// 0.33 (Зетка, 05.11 ночь 2): МИГАНИЕ лайв-окна найдено и убрано (Андрей: «оно мигает постоянно, че за хуйня»).
+//       Адрес страницы содержал время матча (gt=) — в матче оно растёт каждые 2 с, мод звал SetURL на каждый чих,
+//       а у окна игры это ПЕРЕЗАГРУЗКА страницы (не смена #…, как думали в 0.23) — вот и мигало и жрало ФПС.
+//       Теперь SetURL только при реальной смене (состав/набор/кто прятал), время матча странице больше не мешает.
+//       Окно настроек компактнее (Андрей: «компактнее сделай рестлесс меню»): 820 px, тумблеры в 4 колонки, мельче.
 // Restless 0.32.
 // 0.32 (Зетка, 05.11 ночь): лайв-меню снова само открывается сбоку при Esc (Андрей: «я хочу чтобы открывалось меню —
 //       ты же лайв матч сделал, в чём проблема двигаться в этом направлении»). Мигало раньше не само окно, а СТАК:
@@ -89,7 +95,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.32';
+	var VER = '0.33';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -296,7 +302,7 @@
 		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '22px', color: INK }), '×');
 		x.SetPanelEvent('onactivate', function () { LV.shut = true; liveShow(false); });
 		try { LV.html = mk('CitadelHTMLPanel', LV.win, 'RestlessLiveWeb', { width: '100%', height: 'fill-parent-flow(1.0)', margin: '6px 8px 8px 8px' }); } catch (e) { LV.html = null; }
-		LV.hash = liveHash();
+		LV.hash = liveHash(); LV.hashc = LV.hash.replace(/gt=[^&]*/, 'gt=');
 		if (ok(LV.html)) { try { LV.html.SetURL(LIVE_URL + LV.hash); } catch (e) { $.Msg('[Restless] лайв: ' + e); } }
 		$.Msg('[Restless] лайв-матч открыт: ' + LV.hash.length + ' символов');
 	}
@@ -312,7 +318,9 @@
 		if (!ok(LV.win) || !ms) { liveShow(false); return; }
 		if (NT % 8) return;
 		var h = liveHash();
-		if (h !== LV.hash && ok(LV.html)) { LV.hash = h; try { LV.html.SetURL(LIVE_URL + h); } catch (e) {} }
+		// 0.33: сравнение БЕЗ gt (время матча растёт каждые 2 с — SetURL перезагружал страницу, окно мигало)
+		var hc = h.replace(/gt=[^&]*/, 'gt=');
+		if (hc !== LV.hashc && ok(LV.html)) { LV.hashc = hc; LV.hash = h; try { LV.html.SetURL(LIVE_URL + h); } catch (e) {} }
 	}
 
 	// ---------- окно настроек ----------
@@ -320,22 +328,22 @@
 		SHADE = mk('Button', EM, 'RestlessShade', { width: '100%', height: '100%', backgroundColor: '#000000b4', zIndex: '4900', visibility: 'collapse' });
 		SHADE.SetPanelEvent('onactivate', function () { show(false); });
 		WIN = mk('Panel', EM, 'RestlessWindow', {
-			width: '980px', flowChildren: 'down', padding: '24px 30px 22px 30px', horizontalAlign: 'center', verticalAlign: 'center',
+			width: '820px', flowChildren: 'down', padding: '14px 22px 12px 22px', horizontalAlign: 'center', verticalAlign: 'center',
 			backgroundColor: '#121014fa', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '5000', visibility: 'collapse'
 		}, { hittest: 'true' });
 		WIN.SetPanelEvent('onactivate', function () {});
 
-		var head = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginBottom: '12px' });
-		mk('Panel', head, '', { width: '5px', height: '46px', backgroundColor: A, borderRadius: '2px', marginRight: '14px', verticalAlign: 'center' });
+		var head = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginBottom: '8px' });
+		mk('Panel', head, '', { width: '4px', height: '34px', backgroundColor: A, borderRadius: '2px', marginRight: '10px', verticalAlign: 'center' });
 		var hc = mk('Panel', head, '', { width: 'fill-parent-flow(1.0)', flowChildren: 'down', verticalAlign: 'center' });
-		setText(lab(hc, '', { fontSize: '32px', fontWeight: 'bold', color: A, letterSpacing: '2px' }), 'RESTLESS');
-		P.sub = lab(hc, '', { fontSize: '15px', color: MUTED });
-		var x = mk('Button', head, '', { width: '44px', height: '44px', borderRadius: '22px', verticalAlign: 'center', backgroundColor: OFF });
-		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '26px', color: INK }), '×');
+		setText(lab(hc, '', { fontSize: '24px', fontWeight: 'bold', color: A, letterSpacing: '2px' }), 'RESTLESS');
+		P.sub = lab(hc, '', { fontSize: '13px', color: MUTED });
+		var x = mk('Button', head, '', { width: '34px', height: '34px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF });
+		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '20px', color: INK }), '×');
 		x.SetPanelEvent('onactivate', function () { show(false); });
 		// 0.31: сайт (лайв-матч) — кнопкой в шапке окна настроек; Ctrl+Alt+H — программа, в игре модам клавиши не даются
-		var web = mk('Button', head, 'RestlessWebBtn', { width: 'auto', height: '44px', borderRadius: '22px', verticalAlign: 'center', backgroundColor: OFF, marginRight: '10px', padding: '0px 18px 0px 18px' });
-		setText(lab(web, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '17px', fontWeight: 'bold', color: INK, letterSpacing: '1px' }), lang() === 'en' ? 'LIVE' : 'САЙТ');
+		var web = mk('Button', head, 'RestlessWebBtn', { width: 'auto', height: '32px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF, marginRight: '8px', padding: '0px 14px 0px 14px' });
+		setText(lab(web, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '14px', fontWeight: 'bold', color: INK, letterSpacing: '1px' }), lang() === 'en' ? 'LIVE' : 'САЙТ');
 		web.SetPanelEvent('onactivate', function () { try { show(false); liveShow(true, false); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
 
 		P.secGame = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '4px' });
@@ -426,13 +434,13 @@
 		return '';
 	}
 	function toggle(key) {
-		var cell = mk('Panel', P.grid, '', { width: '33.3%', flowChildren: 'down' });
-		var r = mk('Panel', cell, '', { width: '100%', flowChildren: 'right', padding: '6px 14px 6px 0px' });
-		if (ICO[key]) mk('Image', r, '', { width: '22px', height: '22px', marginRight: '8px', verticalAlign: 'center' }, { src: ICO[key], hittest: 'false', scaling: 'stretch-to-fit-preserve-aspect' });
+		var cell = mk('Panel', P.grid, '', { width: '25%', flowChildren: 'down' });
+		var r = mk('Panel', cell, '', { width: '100%', flowChildren: 'right', padding: '4px 10px 4px 0px' });
+		if (ICO[key]) mk('Image', r, '', { width: '17px', height: '17px', marginRight: '6px', verticalAlign: 'center' }, { src: ICO[key], hittest: 'false', scaling: 'stretch-to-fit-preserve-aspect' });
 		var c = mk('Panel', r, '', { width: 'fill-parent-flow(1.0)', flowChildren: 'down', verticalAlign: 'center' });
-		var t = lab(c, '', { fontSize: '17px', color: INK });
-		var b = mk('Button', r, '', { width: '104px', height: '32px', borderRadius: '16px', verticalAlign: 'center' });
-		var bl = lab(b, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '15px', fontWeight: 'bold' });
+		var t = lab(c, '', { fontSize: '14px', color: INK });
+		var b = mk('Button', r, '', { width: '84px', height: '26px', borderRadius: '13px', verticalAlign: 'center' });
+		var bl = lab(b, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '13px', fontWeight: 'bold' });
 		b.SetPanelEvent('onactivate', function () { set(key, on(key) ? '0' : '1'); paint(); markTick(); });
 		mk('Panel', cell, '', { width: '96%', height: '1px', backgroundColor: OFF });
 		P[key] = { t: t, b: b, l: bl };
