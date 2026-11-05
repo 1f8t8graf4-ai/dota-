@@ -15,7 +15,7 @@ const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
 const VER = '0.4.9';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
-const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
+const URL0 = SITE + '?app=1&dev=vasyan2026#live';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы; Андрей (05.11): окно открывать сразу на «Лайв-матч»
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
 const KEY_OPTS = ['Control+Alt+H', 'Control+Shift+H', 'Alt+H', 'Control+Shift+F10'];
 const THRU_KEYS = ['Control+Alt+T', 'Control+Shift+F11'];   // клики сквозь окно
