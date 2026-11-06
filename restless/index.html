@@ -3838,7 +3838,10 @@ details.l16-how,.r9-bf{display:none!important}
 .u27-wp b{font-size:16px;color:var(--q-am,#ffb630)}.u27-wp small{font-size:12px;color:var(--mu)}.u27-wp span{font-size:14.5px;color:var(--tx,#eef0f4)}
 
 /* lg28 — страница лайв-матча внутри игры (мод 0.23) */
-html.rl-embed .q-hd,html.rl-embed .q-nav,html.rl-embed #tabs,html.rl-embed .q-tabs,html.rl-embed p.ft,html.rl-embed #swr{display:none!important}
+html.rl-embed .q-hd,html.rl-embed .q-nav,html.rl-embed .q-tabs,html.rl-embed p.ft,html.rl-embed #swr{display:none!important}
+/* 0.33 (Андрей: «оно же может показывать и профиль и т.д.»): вкладки в окне игры видны — профиль/героев/про-игры открывают прямо там */
+html.rl-embed #tabs{display:flex!important;position:sticky;top:0;z-index:30;background:#0b0d12;height:36px;border-top-color:transparent}
+html.rl-embed #tabs a{padding:0 12px;font-size:13px}
 html.rl-embed body{background:#0b0d12}
 html.rl-embed .wrap{max-width:none;padding:8px 12px}
 
@@ -10427,6 +10430,8 @@ addEventListener('hashchange', () => document.querySelectorAll('.u27-wp').forEac
 // (v=…&s=m|h&gt=…&p=f~ник~герой~hero_id~account_id|e~…). Новый состав — мод меняет только #…, страница не перезагружается.
 const RL_EMBED = /[?&]embed=1/.test(location.search);
 if (RL_EMBED) document.documentElement.classList.add('rl-embed');
+// маркер жизни для мода (0.34): заголовок = RL_SITE_OK — мод узнаёт через HTMLTitle, что сайт живой и свежий
+if (RL_EMBED) document.title = 'RL_SITE_OK ' + (document.querySelector('meta[name=v]') || {}).content || '';
 function u28Parse(h) {
   let q; try { q = new URLSearchParams(decodeURIComponent(h.replace(/^#g=/, ''))); } catch (e) { return null; }
   const dec = v => { try { return decodeURIComponent(v || ''); } catch (e) { return v || ''; } };

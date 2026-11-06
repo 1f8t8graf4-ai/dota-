@@ -1,4 +1,7 @@
 /* lg28 — страница лайв-матча внутри игры (мод 0.23) */
-html.rl-embed .q-hd,html.rl-embed .q-nav,html.rl-embed #tabs,html.rl-embed .q-tabs,html.rl-embed p.ft,html.rl-embed #swr{display:none!important}
+html.rl-embed .q-hd,html.rl-embed .q-nav,html.rl-embed .q-tabs,html.rl-embed p.ft,html.rl-embed #swr{display:none!important}
+/* 0.33 (Андрей: «оно же может показывать и профиль и т.д.»): вкладки в окне игры видны — профиль/героев/про-игры открывают прямо там */
+html.rl-embed #tabs{display:flex!important;position:sticky;top:0;z-index:30;background:#0b0d12;height:36px;border-top-color:transparent}
+html.rl-embed #tabs a{padding:0 12px;font-size:13px}
 html.rl-embed body{background:#0b0d12}
 html.rl-embed .wrap{max-width:none;padding:8px 12px}

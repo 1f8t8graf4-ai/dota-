@@ -1,3 +1,61 @@
+// Restless 0.35.
+// 0.35 (Зетка, 06.11): ЧИСТО VPK (Андрей: «приложение и до этого работало нормально, хочу чисто через vpk»).
+//       Локальный сервер и его автозагрузка убраны, программа осталась прежняя 0.4.9. SITE снова сразу
+//       GitHub Pages. Что это значит: мод-фичи (лагеря, предметы у прицела, чистый Esc, автопоказ только
+//       в настоящем матче, без gt-мигания) работают чисто от vpk. Вкладки сайта в окне появятся, когда
+//       Клауд вольёт zai/mod-camps в main — Pages обновится сам и без всяких серверов.
+// Restless 0.34.
+// 0.34 (Зетка, 06.11): сайт в окне игры — СВЕЖИЙ, не ждём влива ветки (Андрей: «ты говорил будет меню как на
+//       сайте, ещё и эта поебота мигает»). Причина: игра грузит сайт с GitHub Pages (main), а вкладки/фиксы
+//       мигания жили только в ветке. Теперь лайв-окно грузит сайт с локального сервера 127.0.0.1:8092 (на его
+//       машине, отдаёт свежий файл без кеша); страница в embed отдаёт заголовок RL_SITE_OK — если за 8 с не
+//       пришёл, молча переключаемся на Pages (как раньше). Автопоказ — только если в матче есть ХОТЬ 2 игрока
+//       с реальными ID (в лобби с ботами ID нет — окно само больше не выскакивает с пустым «Матч с ботами»).
+// Restless 0.33.
+// 0.33 (Зетка, 05.11 ночь 2): МИГАНИЕ лайв-окна найдено и убрано (Андрей: «оно мигает постоянно, че за хуйня»).
+//       Адрес страницы содержал время матча (gt=) — в матче оно растёт каждые 2 с, мод звал SetURL на каждый чих,
+//       а у окна игры это ПЕРЕЗАГРУЗКА страницы (не смена #…, как думали в 0.23) — вот и мигало и жрало ФПС.
+//       Теперь SetURL только при реальной смене (состав/набор/кто прятал), время матча странице больше не мешает.
+//       Окно настроек компактнее (Андрей: «компактнее сделай рестлесс меню»): 820 px, тумблеры в 4 колонки, мельче.
+// Restless 0.32.
+// 0.32 (Зетка, 05.11 ночь): лайв-меню снова само открывается сбоку при Esc (Андрей: «я хочу чтобы открывалось меню —
+//       ты же лайв матч сделал, в чём проблема двигаться в этом направлении»). Мигало раньше не само окно, а СТАК:
+//       мод открывал своё сбоку + программа поверх распахивалась на весь экран — теперь программа не распахивается
+//       (auto выключен в restless.json), окно одно, страница грузится на тёмном фоне. Переключатель LVA вернулся
+//       (набор Lite), надоест — выключишь в настройках. Закрыл крестиком — до переоткрытия меню не вернётся.
+// Restless 0.31.
+// 0.31 (Зетка, 05.11 вечер): по схеме Андрея («есть вкладка рестлесс чисто тестовая, а есть ctrl alt h — там сайт»).
+//       Кнопка RESTLESS в Esc снова открывает ОКНО НАСТРОЕК (тестовая вкладка: «Что видит мод» — можно показать скрином),
+//       а сайт — кнопкой САЙТ в шапке окна (тумблер) или Ctrl+Alt+H программы (модам клавиши игра не даёт — проверено
+//       по всей коллекции Hantu: ни один мод не ловит хоткеи). Никаких автопоказов: то, что «мегало» — это стак
+//       двух окон (мод сам открывал сайт при Esc + программа сама распахивалась при найденном матче) — теперь мод
+//       ничего не открывает сам, программе выключили auto. ФПС: открытое окно сайта в матче — это браузер игры
+//       (рендер страницы + опрос API), закрыл × — не висит; настройки открываются только по кнопке.
+// Restless 0.30.
+// 0.30 (Зетка, 05.11): автопоказ LIVE вырезан насовсем (Андрей: «показывается энивей лайв меню ебучее»).
+//       Открыл Esc — чистое меню игры, наше окно не выскакивает само. Сайт лайв-матча — только по кнопке
+//       RESTLESS (тумблер), настройки — ⚙ в шапке окна. Переключатель LVA и его строка убраны из окна.
+//       Оговорка на будущее: окно сайта живёт только пока открыт Esc — без меню игру не перекрывает (FPS).
+// Restless 0.29.
+// 0.29 (Зетка, 05.11): активные предметы у прицела починены (Андрей: «предметы по центру не отображались»).
+//       По файлам игры (hud.xml, hud_abilities_entry.xml): записи в #ActiveAbilitiesMenu — не CitadelHudAbilityButton
+//       (тип был угадан в 0.25, в матче совпадений 0), а обычные панели ability_container, имя предмета — в id панели
+//       или в классе. Теперь ищем так: любой потомок, чей id/класс есть в таблице 53 предметов. Секунды — с родной
+//       метки cooldown_timer (в ней {s:cooldown_sec}). Если всё равно 0 — «Что видит мод» покажет id первых детей
+//       панели, следующий скрин сразу даст верные имена. Строку диагноза считаем и при открытом Esc (раньше всегда «—»). В «есть:» добавлены классы-кандидаты коробок (crate,
+//       item_crate, loot, chest) — если игра даёт коробкам свои метки, увидим их на скрине из матча и сделаем трекинг.
+// Restless 0.28.
+// 0.28 (Зетка, 05.11 ночь): меню настроек из Esc убрано (Андрей: «ты не убрал это меню, оно лагает — вместо
+//       менюшки рестлесс наш сайт с лайв-матчем»). Кнопка RESTLESS в Esc теперь открывает окно с сайтом (как LIVE · 12),
+//       отдельной строки «LIVE · N» больше нет. Настройки — шестерёнкой ⚙ в шапке окна сайта (окно настроек прежнее:
+//       наборы, переключатели, «Что видит мод»). Автопоказ LIVE при открытии Esc (LVA) остался.
+// Restless 0.27.
+// 0.27 (Зетка, 05.11 ночь): лагеря вернулись. Андрей: «динамические лагеря 21 20 19 на карте — если да, делай».
+//       Механизм подтверждён чужим рабочим модом jungle_timer (Hantu-Raya, открытый код): метки кемпов — .map_button
+//       neutral_weak/medium/large/vault, игра сама снимает/ставит класс active (зачистили кем угодно / возродился);
+//       респаун 85 / 290 / 335 / 300 с. В 0.26 было «меток 0», потому что искали только внутри hud_minimap — теперь
+//       раз в 20 с ищем по всему корню HUD (кеш, полный обход дорог), таймер живёт даже если игра пересоздала панель
+//       (узнаём по типу и месту). Коробки/статуи так пока не ловятся: у боксов нет active-метки (см. ОТЧЁТ, зона Клауда).
 // Restless 0.23.
 // 0.23: лайв-матч без программы (Андрей: «12 игроков — кор-фича, QoL же делает»). В меню Esc — кнопка «LIVE · 12 ИГРОКОВ»:
 //       окно поверх меню, в нём встроенный браузер игры (CitadelHTMLPanel, как у store.html) с нашей страницей лайв-матча;
@@ -50,7 +108,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.26';
+	var VER = '0.35';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -209,16 +267,8 @@
 			BTN.SetPanelEvent('onactivate', function () { try { show(!open); } catch (e) { $.Msg('[Restless] окно: ' + e); } });
 			set('BTN', '1');
 		}
-		if (!ok(LV.btn)) {
-			LV.btn = EM.FindChildTraverse('RestlessLiveBtn');
-			if (!ok(LV.btn) && ok(ROW)) {
-				var lr = $.CreatePanel('Panel', sub, 'RestlessLiveRow'); lr.AddClass('SettingsRow');
-				LV.btn = $.CreatePanel('Button', lr, 'RestlessLiveBtn'); LV.btn.AddClass('nav_menu_item'); LV.btn.AddClass('minor');
-				LV.lb = $.CreatePanel('Label', LV.btn, '', { text: 'LIVE · 12' }); LV.lb.AddClass('menuButtonLabel');
-				try { if (sub.MoveChildBefore) sub.MoveChildBefore(lr, ROW); } catch (e) {}
-			}
-			if (ok(LV.btn)) LV.btn.SetPanelEvent('onactivate', function () { try { if (LV.open) LV.shut = true; liveShow(!LV.open); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
-		}
+		// 0.28: отдельной строки «LIVE · N» больше нет (Андрей: «вместо обычной менюшки рестлесс — наш сайт
+		// с вкладкой лайв-матч»): кнопка RESTLESS открывает окно с сайтом, настройки — шестерёнкой в его шапке.
 		if (menuShown()) fitHero(sub);
 	}
 	// «Сменить героя» стоит на своём отступе снизу, столбик под ним растёт вверх. Наша строка его подняла бы —
@@ -236,7 +286,7 @@
 
 	// ---------- 0.23: лайв-матч в игре ----------
 	var LV = { btn: null, lb: null, win: null, html: null, open: false, side: false, shut: false, base: '', hash: '' };
-	var LIVE_URL = SITE + '?app=1&embed=1&dev=vasyan2026';
+	var liveUrl = function () { return SITE + '?app=1&embed=1&dev=vasyan2026'; };
 	function liveHash() {
 		var L = LK.hide ? [] : lkPlayers();
 		var enc = function (v) { return encodeURIComponent(String(v || '').replace(/[~|]/g, ' ')); };
@@ -257,25 +307,34 @@
 			backgroundColor: '#0b0d12fc', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '5100' }, { hittest: 'true' });
 		var head = mk('Panel', LV.win, '', { width: '100%', height: '48px', flowChildren: 'right', padding: '8px 14px 0px 18px' });
 		setText(lab(head, '', { width: 'fill-parent-flow(1.0)', verticalAlign: 'center', fontSize: '20px', fontWeight: 'bold', color: A, letterSpacing: '2px' }), 'RESTLESS · LIVE');
+		// 0.28: настройки мода — отсюда (само меню из Esc убрано): ⚙ открывает окно настроек, сайт при этом закрывается
+		var gear = mk('Button', head, 'RestlessGear', { width: '36px', height: '36px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF, marginRight: '8px' });
+		setText(lab(gear, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '17px', color: INK }), '⚙');
+		gear.SetPanelEvent('onactivate', function () { try { show(true); } catch (e) { $.Msg('[Restless] окно: ' + e); } });
 		var x = mk('Button', head, '', { width: '36px', height: '36px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF });
 		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '22px', color: INK }), '×');
 		x.SetPanelEvent('onactivate', function () { LV.shut = true; liveShow(false); });
 		try { LV.html = mk('CitadelHTMLPanel', LV.win, 'RestlessLiveWeb', { width: '100%', height: 'fill-parent-flow(1.0)', margin: '6px 8px 8px 8px' }); } catch (e) { LV.html = null; }
-		LV.hash = liveHash();
-		if (ok(LV.html)) { try { LV.html.SetURL(LIVE_URL + LV.hash); } catch (e) { $.Msg('[Restless] лайв: ' + e); } }
+		LV.hash = liveHash(); LV.hashc = LV.hash.replace(/gt=[^&]*/, 'gt=');
+		if (ok(LV.html)) { try { LV.html.SetURL(liveUrl() + LV.hash); } catch (e) { $.Msg('[Restless] лайв: ' + e); } }
 		$.Msg('[Restless] лайв-матч открыт: ' + LV.hash.length + ' символов');
 	}
 	function liveTick() {
 		if (ok(LV.lb)) { var n = LK.hide ? 0 : PLY.length; setText(LV.lb, n ? 'LIVE · ' + n : 'LIVE'); }
 		var ms = menuShown();
+		// 0.32: автопоказ вернули (Андрей: «я хочу чтобы открывалось меню») — сбоку, одним окном (программа больше не распахивается поверх, стак и мигание ушли)
 		if (!ms) LV.shut = false;
-		if (!LV.open && ms && !LK.hide && !HIDE && on('LVA') && !LV.shut && !open && PLY.length >= 2) liveShow(true, true);
-		if (LV.open && LV.side && open) { liveShow(false); LV.shut = true; return; }
+		if (NT % 8 === 0) $.Msg('[dbg] ms=' + ms + ' lkhide=' + LK.hide + ' HIDE=' + HIDE + ' lva=' + on('LVA') + ' shut=' + LV.shut + ' open=' + open + ' ply=' + PLY.length + ' lv=' + LV.open);
+		var real = 0; for (var rq = 0; rq < PLY.length; rq++) if (PLY[rq].a) real++;
+		if (!LV.open && ms && !LK.hide && !HIDE && on('LVA') && !LV.shut && !open && real >= 2) liveShow(true, true);
+		if (LV.open && open) { liveShow(false); return; }
 		if (!LV.open) return;
 		if (!ok(LV.win) || !ms) { liveShow(false); return; }
 		if (NT % 8) return;
 		var h = liveHash();
-		if (h !== LV.hash && ok(LV.html)) { LV.hash = h; try { LV.html.SetURL(LIVE_URL + h); } catch (e) {} }
+		// 0.33: сравнение БЕЗ gt (время матча растёт каждые 2 с — SetURL перезагружал страницу, окно мигало)
+		var hc = h.replace(/gt=[^&]*/, 'gt=');
+		if (hc !== LV.hashc && ok(LV.html)) { LV.hashc = hc; LV.hash = h; try { LV.html.SetURL(LIVE_URL + h); } catch (e) {} }
 	}
 
 	// ---------- окно настроек ----------
@@ -283,19 +342,23 @@
 		SHADE = mk('Button', EM, 'RestlessShade', { width: '100%', height: '100%', backgroundColor: '#000000b4', zIndex: '4900', visibility: 'collapse' });
 		SHADE.SetPanelEvent('onactivate', function () { show(false); });
 		WIN = mk('Panel', EM, 'RestlessWindow', {
-			width: '980px', flowChildren: 'down', padding: '24px 30px 22px 30px', horizontalAlign: 'center', verticalAlign: 'center',
+			width: '820px', flowChildren: 'down', padding: '14px 22px 12px 22px', horizontalAlign: 'center', verticalAlign: 'center',
 			backgroundColor: '#121014fa', border: '1px solid #ffc83d73', borderRadius: '12px', zIndex: '5000', visibility: 'collapse'
 		}, { hittest: 'true' });
 		WIN.SetPanelEvent('onactivate', function () {});
 
-		var head = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginBottom: '12px' });
-		mk('Panel', head, '', { width: '5px', height: '46px', backgroundColor: A, borderRadius: '2px', marginRight: '14px', verticalAlign: 'center' });
+		var head = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', marginBottom: '8px' });
+		mk('Panel', head, '', { width: '4px', height: '34px', backgroundColor: A, borderRadius: '2px', marginRight: '10px', verticalAlign: 'center' });
 		var hc = mk('Panel', head, '', { width: 'fill-parent-flow(1.0)', flowChildren: 'down', verticalAlign: 'center' });
-		setText(lab(hc, '', { fontSize: '32px', fontWeight: 'bold', color: A, letterSpacing: '2px' }), 'RESTLESS');
-		P.sub = lab(hc, '', { fontSize: '15px', color: MUTED });
-		var x = mk('Button', head, '', { width: '44px', height: '44px', borderRadius: '22px', verticalAlign: 'center', backgroundColor: OFF });
-		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '26px', color: INK }), '×');
+		setText(lab(hc, '', { fontSize: '24px', fontWeight: 'bold', color: A, letterSpacing: '2px' }), 'RESTLESS');
+		P.sub = lab(hc, '', { fontSize: '13px', color: MUTED });
+		var x = mk('Button', head, '', { width: '34px', height: '34px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF });
+		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '20px', color: INK }), '×');
 		x.SetPanelEvent('onactivate', function () { show(false); });
+		// 0.31: сайт (лайв-матч) — кнопкой в шапке окна настроек; Ctrl+Alt+H — программа, в игре модам клавиши не даются
+		var web = mk('Button', head, 'RestlessWebBtn', { width: 'auto', height: '32px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF, marginRight: '8px', padding: '0px 14px 0px 14px' });
+		setText(lab(web, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '14px', fontWeight: 'bold', color: INK, letterSpacing: '1px' }), lang() === 'en' ? 'LIVE' : 'САЙТ');
+		web.SetPanelEvent('onactivate', function () { try { show(false); liveShow(true, false); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
 
 		P.secGame = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '4px' });
 		var pr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '6px 0px 8px 0px' });
@@ -353,11 +416,11 @@
 	var I_URN = IMG + 'minimap/soul_jar_marker_psd.vtex', I_BR = IMG + 'minimap/powerup_souls_png.vtex', I_CR = ICO.BOX, I_ST = ICO.EVT,
 		I_CS = IMG + 'minimap/neutral_small_psd.vtex', I_CL = IMG + 'minimap/neutral_large_psd.vtex';
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
-	var TG = [['LVA', 'lvaT'], ['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'],
+	var TG = [['LVA', 'lvaT'], ['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
 		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
 		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['RIFT', 'riftT'], ['BOX', 'boxT'], ['AIT', 'aitT'], ['SBX', 'sbxT'], ['ALTM', 'altmT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
-	var LITE = ['LVA', 'ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
+	var LITE = ['LVA', 'ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'BOX', 'AIT']);
 	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['ZIP', 'SPD', 'PERF']) };
 	var PREK = PRE.ench;
 	function preset(n) {
@@ -385,13 +448,13 @@
 		return '';
 	}
 	function toggle(key) {
-		var cell = mk('Panel', P.grid, '', { width: '33.3%', flowChildren: 'down' });
-		var r = mk('Panel', cell, '', { width: '100%', flowChildren: 'right', padding: '6px 14px 6px 0px' });
-		if (ICO[key]) mk('Image', r, '', { width: '22px', height: '22px', marginRight: '8px', verticalAlign: 'center' }, { src: ICO[key], hittest: 'false', scaling: 'stretch-to-fit-preserve-aspect' });
+		var cell = mk('Panel', P.grid, '', { width: '25%', flowChildren: 'down' });
+		var r = mk('Panel', cell, '', { width: '100%', flowChildren: 'right', padding: '4px 10px 4px 0px' });
+		if (ICO[key]) mk('Image', r, '', { width: '17px', height: '17px', marginRight: '6px', verticalAlign: 'center' }, { src: ICO[key], hittest: 'false', scaling: 'stretch-to-fit-preserve-aspect' });
 		var c = mk('Panel', r, '', { width: 'fill-parent-flow(1.0)', flowChildren: 'down', verticalAlign: 'center' });
-		var t = lab(c, '', { fontSize: '17px', color: INK });
-		var b = mk('Button', r, '', { width: '104px', height: '32px', borderRadius: '16px', verticalAlign: 'center' });
-		var bl = lab(b, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '15px', fontWeight: 'bold' });
+		var t = lab(c, '', { fontSize: '14px', color: INK });
+		var b = mk('Button', r, '', { width: '84px', height: '26px', borderRadius: '13px', verticalAlign: 'center' });
+		var bl = lab(b, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '13px', fontWeight: 'bold' });
 		b.SetPanelEvent('onactivate', function () { set(key, on(key) ? '0' : '1'); paint(); markTick(); });
 		mk('Panel', cell, '', { width: '96%', height: '1px', backgroundColor: OFF });
 		P[key] = { t: t, b: b, l: bl };
@@ -788,7 +851,7 @@
 
 	// таймеры лагерей: метка лагеря на миникарте гаснет (класс active) — лагерь убит; возрождение — от смерти последнего
 	// монстра (deadlock.wiki, данные Зетки zai/map): малый 1:25, средний 4:50, большой 5:35. Отсчёт — над меткой.
-	var MM = null, MMF = 0, MMM = 0, CMP = [], CMS = 0, CMN = 0, CRS = { neutral_weak: 85, neutral_medium: 290, neutral_large: 335 };
+	var MM = null, MMF = 0, MMM = 0, CMP = [], CMS = 0, CMN = 0, CRS = { neutral_weak: 85, neutral_medium: 290, neutral_large: 335, neutral_vault: 300 };
 	// своё время возрождения: первое увиденное заменяет число из вики, дальше берём самое короткое (метку могли увидеть позже)
 	function campRs(cl) { var v = +get('CRS_' + cl, '0'); return v > 30 && v < 900 ? v : CRS[cl] || 0; }
 	function campLearn(cl, d) {
@@ -799,40 +862,62 @@
 	function campHide() { for (var i = 0; i < CMP.length; i++) if (ok(CMP[i].lb)) setVis(CMP[i].lb, false); }
 	function campTick() {
 		CMN = 0;
-		// 0.26: в живом матче игра не даёт меток лагерей на мини-карте (скрин Андрея: «лагерей 0») — таймеры выключены, пока не найдём другой способ
-		if (true || !on('CAMP') || HIDE) { campHide(); return; }
+		// 0.27: лагеря вернулись (Андрей, 05.11: «динамические лагеря 21 20 19 на карте — делай»). Механизм тот же — класс active
+		// у метки кемпа (.map_button neutral_weak/medium/large/vault), как у jungle_timer (Hantu-Raya, открытый код):
+		// active снялся — кемп зачистили (кем угодно), появился — возродился. Числа подтверждены его кодом: 85 / 290 / 335 / 300 с.
+		// Почему в 0.26 было «меток 0»: искали только внутри hud_minimap, а кнопки кемпов живут и в соседних ветках
+		// (minimap_container / HudMinimapContainer / выше) — теперь раз в 20 с ищем по всему корню HUD, список кешируем
+		// (полный обход недёшево — реже раза в 20 с нельзя, это и съедало FPS в старых версиях).
+		if (!on('CAMP') || HIDE) { campHide(); return; }
 		if (!mmEnsure()) { campHide(); return; }
-		if (CMS-- <= 0 || !CMP.length) {
-			CMS = 40;
-			var old = CMP, L = mmScan(false);
+		if (CMS-- <= 0) {
+			CMS = 20;
+			var old = CMP, L = mmScan(false).slice(), seenMap = {}, hasN = false;
+			for (var pn = 0; pn < L.length && !hasN; pn++) if (ok(L[pn]) && L[pn].BHasClass('neutral')) hasN = true;
+			// меток нет внутри мини-карты (как в живом матче у Андрея) — ищем по всему корню, но не чаще раза в 20 с (дорого)
+			try { if (!hasN && ok(ROOT)) { var R = ROOT.FindChildrenWithClassTraverse('map_button') || []; for (var ri = 0; ri < R.length; ri++) L.push(R[ri]); } } catch (e) {}
 			CMP = [];
 			for (var i = 0; i < L.length; i++) {
-				var b = L[i]; if (!ok(b) || !b.BHasClass('neutral')) continue;
+				var b = L[i]; if (!ok(b) || !b.BHasClass('neutral') || seenMap[b.id + '|' + b.actualxoffset + '|' + b.actualyoffset]) continue;
 				var rs = 0; for (var c in CRS) if (b.BHasClass(c)) rs = campRs(c);
 				if (!rs) continue;
-				var x = null; for (var j = 0; j < old.length; j++) if (old[j].b === b) x = old[j];
+				seenMap[b.id + '|' + b.actualxoffset + '|' + b.actualyoffset] = 1;
 				var cl = ''; for (var c2 in CRS) if (b.BHasClass(c2)) cl = c2;
+				// та же метка вернулась новой панелью (игра пересоздаёт кнопки) — узнаём по типу и месту, таймер продолжается
+				var x = null; for (var j = 0; j < old.length; j++) if (old[j].b === b) x = old[j];
+				if (!x) for (var j2 = 0; j2 < old.length; j2++) { var o2 = old[j2];
+					if (o2.cl === cl && o2.lx != null && Math.abs(o2.lx - b.actualxoffset) < 40 && Math.abs(o2.ly - b.actualyoffset) < 40) { x = o2; break; } }
+				if (x) x.b = b;
 				CMP.push(x || { b: b, cl: cl, rs: rs, was: b.BHasClass('active'), dead: -1, lb: null });
 			}
-			for (var k = 0; k < old.length; k++) if (CMP.indexOf(old[k]) < 0 && ok(old[k].lb)) old[k].lb.DeleteAsync(0);
+			// метка пропала, а таймер идёт (панель удалили, кемп ещё не возродился) — держим на последнем месте
+			for (var k = 0; k < old.length; k++) if (CMP.indexOf(old[k]) < 0) {
+				if (old[k].dead >= 0 && old[k].lastLeft > 0) { old[k].b = null; CMP.push(old[k]); }
+				else if (ok(old[k].lb)) old[k].lb.DeleteAsync(0);
+			}
 		}
 		var s = clock();
 		for (var n = 0; n < CMP.length; n++) {
-			var q = CMP[n];
-			if (!ok(q.b)) { CMS = 0; continue; }
-			var act = q.b.BHasClass('active');
-			if (q.was && !act && s >= 0) q.dead = s;
-			if (act && q.dead >= 0 && s > q.dead) campLearn(q.cl, s - q.dead);
-			if (act) q.dead = -1;
-			q.was = act;
+			var q = CMP[n], hasB = ok(q.b);
+			if (hasB) {
+				q.lx = q.b.actualxoffset; q.ly = q.b.actualyoffset;
+				var act = q.b.BHasClass('active');
+				if (q.was && !act && s >= 0) q.dead = s;
+				if (act && q.dead >= 0 && s > q.dead) campLearn(q.cl, s - q.dead);
+				if (act) q.dead = -1;
+				q.was = act;
+			} else if (q.dead < 0) continue;
 			var left = q.dead >= 0 && s >= 0 ? q.dead + campRs(q.cl) - s : -1;
+			q.lastLeft = left;
 			if (left <= 0) { if (ok(q.lb)) setVis(q.lb, false); continue; }
-			var par = q.b.GetParent();
+			var par = hasB ? q.b.GetParent() : (ok(q.lb) ? q.lb.GetParent() : MM);
 			if (!ok(q.lb)) q.lb = lab(par, '', { width: '44px', textAlign: 'center', align: 'left top', fontSize: '13px', fontWeight: 'bold', color: '#ffffff',
 				textShadow: '0px 0px 3px 2.0 #000000', zIndex: '30' });
-			var sx = q.b.actualuiscale_x > 0 ? q.b.actualuiscale_x : 1, sy = q.b.actualuiscale_y > 0 ? q.b.actualuiscale_y : 1;
-			var px = Math.round((q.b.actualxoffset + q.b.actuallayoutwidth / 2) / sx - 22) + 'px', py = Math.round((q.b.actualyoffset + q.b.actuallayoutheight / 2) / sy - 9) + 'px';
-			if (q.px !== px || q.py !== py) { q.px = px; q.py = py; sty(q.lb, { x: px, y: py }); }
+			if (hasB) {
+				var sx = q.b.actualuiscale_x > 0 ? q.b.actualuiscale_x : 1, sy = q.b.actualuiscale_y > 0 ? q.b.actualuiscale_y : 1;
+				var px = Math.round((q.b.actualxoffset + q.b.actuallayoutwidth / 2) / sx - 22) + 'px', py = Math.round((q.b.actualyoffset + q.b.actuallayoutheight / 2) / sy - 9) + 'px';
+				if (q.px !== px || q.py !== py) { q.px = px; q.py = py; sty(q.lb, { x: px, y: py }); }
+			} else if (q.px && ok(q.lb)) sty(q.lb, { x: q.px, y: q.py });
 			var inv = ok(MM) && MM.BHasClass('invert_map');
 			if (q.inv !== inv) { q.inv = inv; try { q.lb.style.transform = inv ? 'scaleY(-1) scaleX(-1)' : 'none'; } catch (e) {} }
 			setText(q.lb, Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2));
@@ -968,32 +1053,45 @@
 		else if (SB.set) { try { SB.p.style.visibility = null; } catch (e) {} SB.set = false; }
 	}
 	// 0.25: активные предметы у прицела (Андрей: «активные предметы по центру — лучше даже когда в КД?» — да, всегда).
-	// Кнопки предметов — CitadelHudAbilityButton в #ActiveAbilitiesMenu (слоты item_1…4), id = имя предмета + «_» (как у буста на канате).
-	// На перезарядке у кнопки класс inCooldown, секунды — {s:cooldown_sec}. Картинка — из файлов игры по таблице AIT (deadlock-api, 53 активных).
+	// Кнопки предметов — дети #ActiveAbilitiesMenu (hud.xml: slots item_1…4). По hud_abilities_entry.xml запись — это
+	// панель ability_container (не CitadelHudAbilityButton — тот тип был угадан в 0.25 и в матче не совпадал ни разу):
+	// имя предмета — id панели (с «_» на конце, как у буста на канате) или класс; секунды — родная метка cooldown_timer
+	// ({s:cooldown_sec}), на перезарядке — класс inCooldown. Картинка — из файлов игры по таблице AIT (deadlock-api, 53 активных).
 	// Готов — ярко с жёлтой рамкой, на перезарядке — тускло с секундами.
 	var AIT = {"upgrade_non_player_bonus_sacrifice":"w/cultist_sacrifice","upgrade_capacitor":"w/capacitor","upgrade_dps_aura":"w/heroic_aura","upgrade_targeted_silence":"s/silence_glyph","upgrade_haunting_scream":"b/haunting_scream","upgrade_silencer":"w/silencer","upgrade_reduce_debuff_duration":"v/debuff_remover","upgrade_metal_skin":"v/metal_skin","upgrade_grit":"v/grit","upgrade_return_fire":"v/return_fire","upgrade_shadow_step":"b/shadow_step","upgrade_containment":"s/slowing_hex","upgrade_spirit_sap":"s/spirit_sap","upgrade_focus_lens":"s/focus_lens","upgrade_withering_whip":"s/rusted_barrel","upgrade_greater_withering_whip":"s/disarming_hex","upgrade_rescue_beam":"v/rescue_beam","upgrade_rupture":"s/decay","upgrade_discord":"s/scourge","upgrade_target_stun":"s/knockdown","upgrade_phantom_strike":"v/phantom_strike","upgrade_warp_stone":"v/warp_stone","upgrade_aoe_root":"s/vortex_web","upgrade_ability_refresher":"s/refresher","upgrade_ability_power_shard":"s/echo_shard","upgrade_cloaking_device_active":"w/shadow_weave","upgrade_rocket_booster":"v/majestic_leap","upgrade_health_nova":"v/healing_nova","upgrade_restorative_locket":"v/restorative_locket","upgrade_health_stimpak":"v/healing_rite","upgrade_shrink_ray":"b/shrink_ray","upgrade_infuser":"v/infuser","upgrade_guardian_ward":"v/guardian_ward","upgrade_divine_barrier":"v/divine_barrier","upgrade_thermal_detonator":"w/alchemical_fire","upgrade_blood_tribute":"w/blood_tribute","upgrade_fleetfoot_boots":"w/fleetfoot","upgrade_unstoppable":"v/unstoppable","upgrade_colossus":"v/colossus","upgrade_cold_front":"s/cold_front","upgrade_arctic_blast":"s/arctic_blast","upgrade_self_bubble":"s/ethereal_shift","upgrade_glitch":"s/curse","upgrade_fury_trance":"v/fury_trance","upgrade_surging_power":"v/vampiric_burst","upgrade_split_shot":"w/split_shot","upgrade_magic_carpet":"s/magic_carpet","upgrade_mystical_piano":"b/mystical_piano","upgrade_nullification_aura":"b/nullification_aura","upgrade_celestial_guidance":"b/celestial_guidance","upgrade_prism_blast":"b/prism_blast","upgrade_unstable_concoction":"b/unstable_concoction","upgrade_goose_egg":"s/goose_egg"};
 	var AI = { menu: null, f: 0, B: [], sig: '', row: null, cells: [], st: '' };
 	function aitFind() {
 		if (!ok(AI.menu)) AI.menu = HUD.FindChildTraverse('ActiveAbilitiesMenu');
-		var L = [], walk = function (p, d) { if (!ok(p) || d > 4) return; var n = 0; try { n = p.GetChildCount(); } catch (e) {} for (var i = 0; i < n; i++) { var c = p.GetChild(i); if (!ok(c)) continue; if (c.paneltype === 'CitadelHudAbilityButton') L.push(c); else walk(c, d + 1); } };
+		// 0.29: тип панели не угадываем — берём любого потомка, у которого id или класс есть в таблице AIT
+		var L = [], walk = function (p, d) { if (!ok(p) || d > 5) return; var n = 0; try { n = p.GetChildCount(); } catch (e) {} for (var i = 0; i < n; i++) { var c = p.GetChild(i); if (!ok(c)) continue; if (aitKey(c)) L.push(c); else walk(c, d + 1); } };
 		walk(AI.menu, 0);
 		AI.B = L;
 	}
 	function aitKey(b) {
-		var id = String(b.id || '').replace(/_+$/, '');
+		var id = String(b.id || '').replace(/^_+|_+$/g, '');
 		if (AIT[id]) return id;
 		for (var k in AIT) try { if (b.BHasClass(k)) return k; } catch (e) {}
 		return '';
 	}
 	function aitTick() {
-		if (!on('AIT') || HM) { if (ok(AI.row)) setVis(AI.row, false); AI.st = ''; return; }
-		if (AI.f-- <= 0) { AI.f = 8; aitFind(); }
+		// 0.29: st считаем и при открытом меню (Esc прятал картинку — а с ним и строку «Что видит мод», всегда «—»);
+		// прячем при выключенном AIT или открытом меню только сам ряд у прицела
+		var run = on('AIT');
+		if (run && AI.f-- <= 0) { AI.f = 8; aitFind(); }
 		var L = [];
-		for (var i = 0; i < AI.B.length; i++) { var b = AI.B[i]; if (!ok(b)) continue; var k = aitKey(b); if (!k) continue;
-			var cd = false; try { cd = b.BHasClass('inCooldown'); } catch (e) {}
-			var sec = ''; if (cd) { try { sec = $.Localize('{s:cooldown_sec}', b); } catch (e) {} if (!sec || sec.indexOf('{') >= 0) { var cl = null; try { cl = (b.FindChildrenWithClassTraverse('cooldownSeconds') || [])[0]; } catch (e) {} sec = cl ? txt(cl) : ''; } }
+		if (run) for (var i = 0; i < AI.B.length; i++) { var b = AI.B[i]; if (!ok(b)) continue; var k = aitKey(b); if (!k) continue;
+			// 0.29: секунды — с родной метки cooldown_timer записи (в ней {s:cooldown_sec}); пустая/скрытая — готово
+			var cd = false, sec = '';
+			try { var cl = (b.FindChildrenWithClassTraverse('cooldown_timer') || [])[0]; if (cl) sec = String(txt(cl) || ''); } catch (e) {}
+			if (/^\d/.test(sec)) cd = true;
+			else { sec = ''; try { cd = b.BHasClass('inCooldown'); } catch (e) {} if (cd) { try { sec = $.Localize('{s:cooldown_sec}', b); } catch (e) {} } }
 			L.push({ k: k, cd: cd, sec: String(sec || '').replace(/[^0-9.:]/g, '').replace(/\.\d+$/, '') }); }
-		AI.st = L.length + (L.length ? ' (' + L.map(function (x) { return x.cd ? x.sec || 'КД' : '✓'; }).join(' ') + ')' : '');
+		if (run) {
+			AI.st = L.length ? String(L.length) + ' (' + L.map(function (x) { return x.cd ? x.sec || 'КД' : '✓'; }).join(' ') + ')' : '';
+			// 0.29: ничего не нашли — покажем в «Что видит мод» id первых детей панели: следующий скрин даст верные имена
+			if (!L.length && ok(AI.menu)) { var ids = [], n2 = 0; try { n2 = AI.menu.GetChildCount(); } catch (e) {} for (var j3 = 0; j3 < n2 && ids.length < 3; j3++) { var c3 = null; try { c3 = AI.menu.GetChild(j3); } catch (e) {} if (ok(c3) && c3.id) ids.push(String(c3.id).slice(0, 24)); } AI.st = ids.length ? '0 [' + ids.join(', ') + ']' : '0'; }
+		} else AI.st = '';
+		if (!run || HM) { if (ok(AI.row)) setVis(AI.row, false); return; }
 		if (!L.length) { if (ok(AI.row)) setVis(AI.row, false); return; }
 		var sig = L.map(function (x) { return x.k; }).join(',');
 		if (!ok(AI.row) || sig !== AI.sig) {
@@ -1032,7 +1130,7 @@
 		if (!ok(BL.p)) { try { BL.p = mk('CitadelHTMLPanel', HUD, 'RestlessBld' + TOKEN, { width: '2px', height: '2px', opacity: '0.01', horizontalAlign: 'left', verticalAlign: 'bottom' });
 			$.RegisterEventHandler('HTMLTitle', BL.p, bldTitle); } catch (e) { BL.p = null; return; } }
 		BL.hid = h; BL.id = ''; BL.n++;
-		try { BL.p.SetURL(SITE + 'bld.html?h=' + encodeURIComponent(h) + '&n=' + BL.n); } catch (e) {}
+		try { BL.p.SetURL(SITE + 'bld.html?h=' + encodeURIComponent(h) + '&n=' + BL.n); } catch (e) {} // SITE уже динамический
 	}
 	function bldApply() {
 		if (!BL.id || !ok(BL.se)) return;
@@ -1280,8 +1378,8 @@
 		MMS.L = L; MMS.n = L.length;
 		if (diag) {
 			var seen = {}, out = [];
-			for (var i = 0; i < L.length && out.length < 8; i++) {
-				['neutral', 'neutral_weak', 'neutral_medium', 'neutral_large', 'capture_point', 'koth_warning', 'idol_spawn', 'idol_return_friendly', 'idol_return_enemy', 'idol_dropping', 'powerup_spawn', 'mid_boss', 'boss', 'player'].forEach(function (c) {
+			for (var i = 0; i < L.length && out.length < 12; i++) {
+				['neutral', 'neutral_weak', 'neutral_medium', 'neutral_large', 'capture_point', 'koth_warning', 'idol_spawn', 'idol_return_friendly', 'idol_return_enemy', 'idol_dropping', 'powerup_spawn', 'mid_boss', 'boss', 'player', 'crate', 'item_crate', 'loot', 'chest'].forEach(function (c) {
 					if (!seen[c] && L[i].BHasClass(c)) { seen[c] = 1; out.push(c); } });
 			}
 			MMS.cls = out.join(', ');
@@ -1541,7 +1639,7 @@
 	// она держит настройки в localStorage этого браузера (на этом компьютере) и отвечает заголовком страницы: RL_CFG:…:<настройки> при загрузке,
 	// RL_OK:<номер> после записи. Пишем, сменив только #… адреса (страница не перезагружается). Храним только свои переключатели, язык, время лагерей.
 	// Что поменял до загрузки памяти, пока страница грузилась, — не затираем (список в RESTLESS_DIRTY). Нет связи — всё как в 0.18, до выхода из игры.
-	var STORE = SITE + 'store.html?v=2';
+		var STORE = SITE + 'store.html?v=2';
 	var KEEPK = ['LVA', 'ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'RIFT', 'BOX', 'BOXV', 'BXC', 'BXT', 'BXG', 'ALTM', 'AIT', 'SBX', 'LBR', 'LBH', 'LBS', 'LBP', 'LBC', 'LBB', 'LBT', 'LBK', 'LANG', 'SETS',
 		'CRS_neutral_weak', 'CRS_neutral_medium', 'CRS_neutral_large'];
 	function keep(k) { return KEEPK.indexOf(k) >= 0 || UMRX.test(k); }
