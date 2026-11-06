@@ -2,10 +2,10 @@
 # Полный тест-видос «как в примере из ТТ» (Зетка, 05.11; Андрей: «полностью видос тестовый посмотрю как будет»)
 # История (текст ниже) → нейроголос Пайпер (локальный, бесплатно) → караоке-сабы по таймингам whisper
 # → атмосферные арты из heroes-16x9 с зумом, виньеткой и зерном → вертикальный 1080×1920 в Downloads.
-#   python tools/story_video.py            # тестовая история
-#   python tools/story_video.py story.txt  # свой текст
-# Менять голос: VOICE= путь к другой модели piper (ru: dmitri, irina, denis, ruslan).
-import json, os, subprocess, sys, tempfile, wave
+#   python tools/story_video.py                    # тестовая история (Дедлок, арты героев)
+#   python tools/story_video.py story.txt          # свой текст
+#   python tools/story_video.py story.txt img.txt  # + свои картинки (URL или пути, по одной на бит)
+import json, os, subprocess, sys, tempfile, urllib.request, wave
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VOICE = os.path.join(os.environ.get('TEMP', tempfile.gettempdir()), 'ru_RU-dmitri-medium.onnx')
@@ -86,14 +86,25 @@ def main():
     sh('ffmpeg', '-y', '-v', 'error', '-i', wav, '-af', 'loudnorm=I=-16:TP=-1.5', '-ar', '44100',
        '-c:a', 'aac', '-b:a', '128k', aud)
 
-    # арт на каждый бит истории: зум туда-обратно, виньетка + зерно + приглушение цвета
-    parts, n = [], len(ARTS)
-    d = (total + 1.0) / n
-    for i, hero in enumerate(ARTS):
-        r = subprocess.run(['git', 'show', f'origin/claude/hero-16x9:heroes-16x9/{hero}.jpg'],
-                           capture_output=True, cwd=ROOT)
-        if r.returncode: sys.exit(f'нет арта {hero}')
-        img = os.path.join(tmp, f'a{i}.jpg'); open(img, 'wb').write(r.stdout)
+    # картинки: свой список (URL/пути) или арты героев из ветки
+    parts = []
+    srcs = [l.strip() for l in open(sys.argv[2], encoding='utf-8') if l.strip()] if len(sys.argv) > 2 else None
+    cnt = len(srcs) if srcs else len(ARTS)
+    d = (total + 1.0) / cnt
+    for i in range(cnt):
+        if srcs:
+            s = srcs[i]
+            img = os.path.join(tmp, f'a{i}' + os.path.splitext(s)[1])
+            if s.startswith('http'):
+                req = urllib.request.Request(s, headers={'User-Agent': 'Mozilla/5.0'})
+                open(img, 'wb').write(urllib.request.urlopen(req, timeout=30).read())
+            else:
+                img = s
+        else:
+            r = subprocess.run(['git', 'show', f'origin/claude/hero-16x9:heroes-16x9/{ARTS[i]}.jpg'],
+                               capture_output=True, cwd=ROOT)
+            if r.returncode: sys.exit(f'нет арта {ARTS[i]}')
+            img = os.path.join(tmp, f'a{i}.jpg'); open(img, 'wb').write(r.stdout)
         z = f"1+{0.12*round(d*FPS)}/on" if i % 2 == 0 else f"1.12-{0.12*round(d*FPS)}/on"
         vf = (f"scale={W*2}:{H*2}:force_original_aspect_ratio=increase,crop={W*2}:{H*2},"
               f"zoompan=z='{z}':x='(iw-iw/zoom)/2':y='(ih-ih/zoom)/2':d={round(d*FPS)}:s={W}x{H}:fps={FPS},"
@@ -107,7 +118,8 @@ def main():
     open(vtxt, 'w').write('\n'.join(f"file '{p}'" for p in parts) + '\n')
 
     build_ass(os.path.join(tmp, 'subs.ass'), words, total + 1.0)
-    out = os.path.join(os.path.expanduser('~'), 'Downloads', 'тест-история-дедлок.mp4')
+    stem = os.path.splitext(os.path.basename(sys.argv[1]))[0] if len(sys.argv) > 1 else 'тест-история-дедлок'
+    out = os.path.join(os.path.expanduser('~'), 'Downloads', stem + '.mp4')
     cwd = os.getcwd(); os.chdir(tmp)
     try:
         sh('ffmpeg', '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', 'v.txt', '-i', 'a.m4a',
