@@ -3,6 +3,8 @@
 // (v=…&s=m|h&gt=…&p=f~ник~герой~hero_id~account_id|e~…). Новый состав — мод меняет только #…, страница не перезагружается.
 const RL_EMBED = /[?&]embed=1/.test(location.search);
 if (RL_EMBED) document.documentElement.classList.add('rl-embed');
+// маркер жизни для мода (0.34): заголовок = RL_SITE_OK — мод узнаёт через HTMLTitle, что сайт живой и свежий
+if (RL_EMBED) document.title = 'RL_SITE_OK ' + (document.querySelector('meta[name=v]') || {}).content || '';
 function u28Parse(h) {
   let q; try { q = new URLSearchParams(decodeURIComponent(h.replace(/^#g=/, ''))); } catch (e) { return null; }
   const dec = v => { try { return decodeURIComponent(v || ''); } catch (e) { return v || ''; } };

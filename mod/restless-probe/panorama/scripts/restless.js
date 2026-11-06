@@ -1,3 +1,10 @@
+// Restless 0.34.
+// 0.34 (Зетка, 06.11): сайт в окне игры — СВЕЖИЙ, не ждём влива ветки (Андрей: «ты говорил будет меню как на
+//       сайте, ещё и эта поебота мигает»). Причина: игра грузит сайт с GitHub Pages (main), а вкладки/фиксы
+//       мигания жили только в ветке. Теперь лайв-окно грузит сайт с локального сервера 127.0.0.1:8092 (на его
+//       машине, отдаёт свежий файл без кеша); страница в embed отдаёт заголовок RL_SITE_OK — если за 8 с не
+//       пришёл, молча переключаемся на Pages (как раньше). Автопоказ — только если в матче есть ХОТЬ 2 игрока
+//       с реальными ID (в лобби с ботами ID нет — окно само больше не выскакивает с пустым «Матч с ботами»).
 // Restless 0.33.
 // 0.33 (Зетка, 05.11 ночь 2): МИГАНИЕ лайв-окна найдено и убрано (Андрей: «оно мигает постоянно, че за хуйня»).
 //       Адрес страницы содержал время матча (gt=) — в матче оно растёт каждые 2 с, мод звал SetURL на каждый чих,
@@ -95,8 +102,8 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.33';
-	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
+	var VER = '0.34';
+	var BOT = 'https://t.me/languagegamesbot', SITE = 'http://127.0.0.1:8092/restless/', PAGES = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
 	if (!ctx) return;
@@ -273,7 +280,7 @@
 
 	// ---------- 0.23: лайв-матч в игре ----------
 	var LV = { btn: null, lb: null, win: null, html: null, open: false, side: false, shut: false, base: '', hash: '' };
-	var LIVE_URL = SITE + '?app=1&embed=1&dev=vasyan2026';
+	var liveUrl = function () { return SITE + '?app=1&embed=1&dev=vasyan2026'; };
 	function liveHash() {
 		var L = LK.hide ? [] : lkPlayers();
 		var enc = function (v) { return encodeURIComponent(String(v || '').replace(/[~|]/g, ' ')); };
@@ -303,7 +310,11 @@
 		x.SetPanelEvent('onactivate', function () { LV.shut = true; liveShow(false); });
 		try { LV.html = mk('CitadelHTMLPanel', LV.win, 'RestlessLiveWeb', { width: '100%', height: 'fill-parent-flow(1.0)', margin: '6px 8px 8px 8px' }); } catch (e) { LV.html = null; }
 		LV.hash = liveHash(); LV.hashc = LV.hash.replace(/gt=[^&]*/, 'gt=');
-		if (ok(LV.html)) { try { LV.html.SetURL(LIVE_URL + LV.hash); } catch (e) { $.Msg('[Restless] лайв: ' + e); } }
+		if (ok(LV.html)) { try {
+			LV.ok = false; LV.t0 = NT; LV.try = 0;
+			$.RegisterEventHandler('HTMLTitle', LV.html, function (t) { if (String(t || '').indexOf('RL_SITE_OK') >= 0) LV.ok = true; });
+			LV.html.SetURL(liveUrl() + LV.hash);
+		} catch (e) { $.Msg('[Restless] лайв: ' + e); } }
 		$.Msg('[Restless] лайв-матч открыт: ' + LV.hash.length + ' символов');
 	}
 	function liveTick() {
@@ -312,7 +323,13 @@
 		// 0.32: автопоказ вернули (Андрей: «я хочу чтобы открывалось меню») — сбоку, одним окном (программа больше не распахивается поверх, стак и мигание ушли)
 		if (!ms) LV.shut = false;
 		if (NT % 8 === 0) $.Msg('[dbg] ms=' + ms + ' lkhide=' + LK.hide + ' HIDE=' + HIDE + ' lva=' + on('LVA') + ' shut=' + LV.shut + ' open=' + open + ' ply=' + PLY.length + ' lv=' + LV.open);
-		if (!LV.open && ms && !LK.hide && !HIDE && on('LVA') && !LV.shut && !open && PLY.length >= 2) liveShow(true, true);
+		var real = 0; for (var rq = 0; rq < PLY.length; rq++) if (PLY[rq].a) real++;
+		if (!LV.open && ms && !LK.hide && !HIDE && on('LVA') && !LV.shut && !open && real >= 2) liveShow(true, true);
+		if (LV.open && !LV.ok && LV.try === 0 && NT - LV.t0 > 32) {
+			LV.try = 1; SITE = PAGES;
+			try { LV.html.SetURL(liveUrl() + LV.hash); } catch (e) {}
+			$.Msg('[Restless] лайв: локальный сайт молчит — перешёл на Pages');
+		}
 		if (LV.open && open) { liveShow(false); return; }
 		if (!LV.open) return;
 		if (!ok(LV.win) || !ms) { liveShow(false); return; }
@@ -1116,7 +1133,7 @@
 		if (!ok(BL.p)) { try { BL.p = mk('CitadelHTMLPanel', HUD, 'RestlessBld' + TOKEN, { width: '2px', height: '2px', opacity: '0.01', horizontalAlign: 'left', verticalAlign: 'bottom' });
 			$.RegisterEventHandler('HTMLTitle', BL.p, bldTitle); } catch (e) { BL.p = null; return; } }
 		BL.hid = h; BL.id = ''; BL.n++;
-		try { BL.p.SetURL(SITE + 'bld.html?h=' + encodeURIComponent(h) + '&n=' + BL.n); } catch (e) {}
+		try { BL.p.SetURL(SITE + 'bld.html?h=' + encodeURIComponent(h) + '&n=' + BL.n); } catch (e) {} // SITE уже динамический
 	}
 	function bldApply() {
 		if (!BL.id || !ok(BL.se)) return;
@@ -1625,7 +1642,7 @@
 	// она держит настройки в localStorage этого браузера (на этом компьютере) и отвечает заголовком страницы: RL_CFG:…:<настройки> при загрузке,
 	// RL_OK:<номер> после записи. Пишем, сменив только #… адреса (страница не перезагружается). Храним только свои переключатели, язык, время лагерей.
 	// Что поменял до загрузки памяти, пока страница грузилась, — не затираем (список в RESTLESS_DIRTY). Нет связи — всё как в 0.18, до выхода из игры.
-	var STORE = SITE + 'store.html?v=2';
+	var STORE = function () { return SITE + 'store.html?v=2'; };
 	var KEEPK = ['LVA', 'ULT', 'ULTW', 'MARK', 'LINK', 'EVT', 'RANK', 'LRK', 'CAMP', 'MISS', 'THP', 'CMB', 'UNS', 'ZIP', 'SPD', 'PERF', 'AMMO', 'RLD', 'OMAP', 'RBUY', 'RIFT', 'BOX', 'BOXV', 'BXC', 'BXT', 'BXG', 'ALTM', 'AIT', 'SBX', 'LBR', 'LBH', 'LBS', 'LBP', 'LBC', 'LBB', 'LBT', 'LBK', 'LANG', 'SETS',
 		'CRS_neutral_weak', 'CRS_neutral_medium', 'CRS_neutral_large'];
 	function keep(k) { return KEEPK.indexOf(k) >= 0 || UMRX.test(k); }
@@ -1671,8 +1688,8 @@
 		if (ok(ST.p)) return;
 		ST.at = now;
 		try { var o = get('STP', ''); o = o ? ROOT.FindChildTraverse(o) : null; if (ok(o)) o.DeleteAsync(0); } catch (e) {}
-		var url = STORE;
-		if (save) { ST.q++; ST.sentQ = ST.q; ST.sentFor = ST.dirty; ST.sent = now; url = STORE + '#' + encodeURIComponent(JSON.stringify({ q: ST.q, f: 'set', v: stStr() })); }
+		var url = STORE();
+		if (save) { ST.q++; ST.sentQ = ST.q; ST.sentFor = ST.dirty; ST.sent = now; url = STORE() + '#' + encodeURIComponent(JSON.stringify({ q: ST.q, f: 'set', v: stStr() })); }
 		try {
 			var id = 'RestlessStore' + TOKEN;
 			ST.p = mk('CitadelHTMLPanel', parent, id, { width: '2px', height: '2px', opacity: '0.01', horizontalAlign: 'left', verticalAlign: 'bottom', visibility: 'visible' });
