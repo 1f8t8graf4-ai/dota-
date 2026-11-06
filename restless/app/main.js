@@ -14,8 +14,20 @@ const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
 const VER = '0.4.9';
-const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
-const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
+// 0.5.0: сайт — с локального сервера 127.0.0.1:8092 (свежий, с вкладками; его поднимает Restless Site Server в автозагрузке),
+// не ответил за 1.5 с — откат на GitHub Pages. SITE меняется после выбора: will-navigate пускает оба хоста.
+const PAGES = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
+const LOCAL = 'http://127.0.0.1:8092/restless/';
+let SITE = LOCAL;
+const http = require('http');
+function pickSite() {
+  return new Promise((res) => {
+    const q = http.get(LOCAL + 'index.html', {timeout: 1500}, (r) => { q.destroy(); res(r.statusCode === 200 ? LOCAL : PAGES); });
+    q.on('timeout', () => { q.destroy(); res(PAGES); });
+    q.on('error', () => res(PAGES));
+  });
+}
+const URL0 = () => SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
 const KEY_OPTS = ['Control+Alt+H', 'Control+Shift+H', 'Alt+H', 'Control+Shift+F10'];
 const THRU_KEYS = ['Control+Alt+T', 'Control+Shift+F11'];   // клики сквозь окно
@@ -50,10 +62,13 @@ function create() {
   win.setAlwaysOnTop(true, 'screen-saver'); win.setVisibleOnAllWorkspaces(true);
   // 0.4.6: старый кэш сайта не держим — у Андрея окно показывало версию сайта трёхчасовой давности
   const ses = win.webContents.session;
-  (ses && ses.clearCache ? ses.clearCache() : Promise.resolve()).catch(() => {}).finally(() => win.loadURL(URL0, {extraHeaders: 'pragma: no-cache\ncache-control: no-cache\n'}));
+  (ses && ses.clearCache ? ses.clearCache() : Promise.resolve()).catch(() => {}).finally(async () => {
+    SITE = await pickSite();
+    win.loadURL(URL0(), {extraHeaders: 'pragma: no-cache\ncache-control: no-cache\n'});
+  });
   // свой сайт — в этом окне; профиль другого игрока и всё чужое — в обычном браузере (иначе сайт запомнит его как «тебя»)
   win.webContents.setWindowOpenHandler(({url}) => { shell.openExternal(url); return {action: 'deny'}; });
-  win.webContents.on('will-navigate', (e, url) => { if (!url.startsWith(SITE)) { e.preventDefault(); shell.openExternal(url); } });
+  win.webContents.on('will-navigate', (e, url) => { if (!url.startsWith(PAGES) && !url.startsWith(LOCAL)) { e.preventDefault(); shell.openExternal(url); } });
   win.webContents.on('did-finish-load', push);
   const keep = () => { const b = win.getBounds(); cfg.x = b.x; cfg.y = b.y; cfg.w = b.width; cfg.h = b.height; save(); };
   win.on('moved', keep); win.on('resized', keep);
@@ -128,7 +143,7 @@ function menu() {
     {label: 'Открыть папку модов', enabled: !!MOD.dir, click: () => MOD.dir && shell.openPath(path.join(MOD.dir, 'game', 'citadel', 'addons'))},
     {type: 'separator'},
     {label: 'Настройки оверлея', click: () => { if (win) win.webContents.executeJavaScript(`location.hash='#ovs'`).catch(() => {}); open(true); }},
-    {label: 'Открыть сайт в браузере', click: () => shell.openExternal(SITE)},
+    {label: 'Открыть сайт в браузере', click: () => shell.openExternal(PAGES)},
     {label: 'Обновить окно', click: () => win && win.reload()},
     {type: 'separator'},
     {label: `Выйти (версия ${VER})`, click: () => { app.quitting = true; app.quit(); }}
@@ -198,7 +213,7 @@ function setFps(k) { if (!inst.FPS_LEVELS.includes(k)) return; cfg.fps = k; save
 // ---------- страница → программа (preload.js) ----------
 ipcMain.on('rl', (e, cmd, val) => {
   const u = e.senderFrame && e.senderFrame.url || '';
-  if (!String(u).startsWith(SITE)) return;
+  if (!String(u).startsWith(PAGES) && !String(u).startsWith(LOCAL)) return;
   if (cmd === 'hide') hide(true);
   else if (cmd === 'key' && KEY_OPTS.includes(val)) { cfg.key = val; save(); regKeys(); menu(); push(); }
   else if (cmd === 'auto') { cfg.auto = !!val; save(); menu(); push(); }
