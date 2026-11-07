@@ -4395,6 +4395,12 @@ html[lang=en] .l15-ru,html[lang=en] .l15-g,html[lang=en] .l15-gs,html[lang=en] .
 
 /* 07.11: в английской версии русский перевод фразы героя не нужен */
 html[lang="en"] .q-sy-ru{display:none}
+
+/* lg37 — сайт во встроенном окне игры: всё сразу в конечном виде, ничего не движется само, без размытий */
+/* не animation:none — у многих блоков старт с opacity:0, без анимации они бы так и остались невидимыми */
+html.rl-lite *,html.rl-lite *::before,html.rl-lite *::after{animation-duration:0s!important;animation-delay:0s!important;animation-iteration-count:1!important;
+  transition-duration:0s!important;transition-delay:0s!important;scroll-behavior:auto!important;backdrop-filter:none!important}
+html.rl-lite .q-wv{display:none!important}
 </style>
 </head>
 <body>
@@ -11637,6 +11643,38 @@ function z36Src(p) {
   if (!SL.length) return '<div class="empty">В этом матче игра не отдала разбивку урона.</div>';
   return `<div class="z36-sh">${esc(pname(p))} · ${esc(h.n)} · всего ${kfm(sum)}</div>${SL.slice(0, 8).map((x, i) => `<div class="z36-src"><em>${i + 1}</em>${x.ic ? `<img src="${esc(x.ic)}" alt="" loading="lazy">` : '<i></i>'}<span><b>${esc(x.n)}</b><small>${KC[x.kind] || ''} · ${kfm(x.v)}</small><i><u style="--w:${(x.v / SL[0].v).toFixed(3)}"></u></i></span><b>${Math.round(100 * x.v / sum)}%</b></div>`).join('')}`;
 }
+
+// ===================== lg37 (07.11) — сайт во встроенном окне игры (мод, Ctrl+Alt+H): легче и с копированием =====================
+// Андрей: «менюшка открывается, но лагает — 0 FPS; нельзя писать, копировать билды».
+// Во встроенном браузере игры (?embed=1): без анимаций, переходов и живых видео — браузер игры перерисовывал страницу
+// каждый кадр. Копирование: navigator.clipboard там часто запрещён — запасной путь через выделение текста и execCommand.
+(() => {
+  // копирование — везде, не только во встроенном окне
+  const fallback = t => new Promise((res, rej) => {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = String(t); ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, ta.value.length);
+      const ok = document.execCommand('copy'); ta.remove();
+      ok ? res() : rej(new Error('copy'));
+    } catch (e) { rej(e); }
+  });
+  try {
+    const cb = navigator.clipboard, orig = cb && cb.writeText ? cb.writeText.bind(cb) : null;
+    const wt = t => (orig ? orig(t) : Promise.reject(new Error('no clipboard'))).catch(() => fallback(t));
+    if (cb) { try { cb.writeText = wt; } catch (e) { Object.defineProperty(navigator, 'clipboard', {value: {writeText: wt}, configurable: true}); } }
+    else Object.defineProperty(navigator, 'clipboard', {value: {writeText: wt}, configurable: true});
+  } catch (e) {}
+
+  if (typeof RL_EMBED === 'undefined' || !RL_EMBED) return;
+  document.documentElement.classList.add('rl-lite');
+  // живые видео (петли героев, фоны) — стоп на первом кадре
+  const still = v => { try { v.autoplay = false; v.removeAttribute('autoplay'); v.loop = false; v.preload = 'metadata'; v.pause(); } catch (e) {} };
+  const scan = root => { if (!root || root.nodeType !== 1) return; if (root.tagName === 'VIDEO') still(root); else root.querySelectorAll && root.querySelectorAll('video').forEach(still); };
+  scan(document.body);
+  new MutationObserver(ms => { for (const m of ms) m.addedNodes.forEach(scan); }).observe(document.body, {childList: true, subtree: true});
+  document.addEventListener('play', e => { if (e.target && e.target.tagName === 'VIDEO') still(e.target); }, true);
+})();
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');

@@ -108,7 +108,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.38';
+	var VER = '0.39';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -353,6 +353,13 @@
 		try { $.DispatchEvent('DropInputFocus'); } catch (e) {}
 	}
 	function hkGo(t) { HK.tab = t; if (ok(HK.html)) { try { HK.html.SetURL(hkUrl()); } catch (e) {} } hkPaint(); }
+	// 0.39: чтобы в окне сайта можно было печатать (поиск, ник) — клавиатурный фокус встроенному браузеру
+	function hkFocus() {
+		if (!ok(HK.html)) return;
+		try { if (HK.html.SetAcceptsFocus) HK.html.SetAcceptsFocus(true); } catch (e) {}
+		try { HK.html.SetFocus(); } catch (e) {}
+		try { HK.html.SetPanelEvent('onmouseover', function () { try { if (ok(HK.html)) HK.html.SetFocus(); } catch (e) {} }); } catch (e) {}
+	}
 	function hkPaint() {
 		if (!ok(HK.win)) return;
 		for (var k in HK.tb) { var b = HK.tb[k]; if (!ok(b)) continue; b.style.backgroundColor = k === HK.tab ? A : OFF; b.GetChild(0).style.color = k === HK.tab ? DARK : INK; }
@@ -373,12 +380,16 @@
 			HK.tb[t[0]] = b;
 		});
 		mk('Panel', head, '', { width: 'fill-parent-flow(1.0)', height: '10px' });
+		// 0.39: настройки оверлея — прямо отсюда (раньше только Esc → RESTLESS)
+		var gs = mk('Button', head, 'RestlessHkSet', { height: '32px', padding: '0px 14px 0px 14px', borderRadius: '16px', verticalAlign: 'center', marginRight: '10px', backgroundColor: OFF });
+		lab(gs, '', { verticalAlign: 'center', fontSize: '14px', fontWeight: 'bold', color: INK }).text = lang() === 'en' ? '⚙ Overlay settings' : '⚙ Настройки оверлея';
+		gs.SetPanelEvent('onactivate', function () { var h = HK.host; hkClose(); setIn(h); });
 		setText(lab(head, '', { verticalAlign: 'center', fontSize: '13px', color: MUTED, marginRight: '12px' }), 'Ctrl+Alt+H');
 		var x = mk('Button', head, '', { width: '36px', height: '36px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF });
 		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '22px', color: INK }), '×');
 		x.SetPanelEvent('onactivate', hkClose);
 		try { HK.html = mk('CitadelHTMLPanel', HK.win, 'RestlessHotkeyWeb', { width: '100%', height: 'fill-parent-flow(1.0)', margin: '6px 10px 10px 10px' }); } catch (e) { HK.html = null; }
-		if (ok(HK.html)) { try { HK.html.SetURL(hkUrl()); } catch (e) { $.Msg('[Restless] окно: ' + e); } }
+		if (ok(HK.html)) { try { HK.html.SetURL(hkUrl()); } catch (e) { $.Msg('[Restless] окно: ' + e); } hkFocus(); }
 		try { $.RegisterKeyBind(HK.win, 'key_escape', hkClose); } catch (e) {}
 		hkPaint();
 		if (HUD && !menuShown()) { cc('hud_free_cursor 1'); HK.cur = true; }
@@ -590,6 +601,17 @@
 		P.en.b.style.backgroundColor = ru ? OFF : A; P.en.l.style.color = ru ? INK : DARK;
 		try { umPaint(); } catch (e) { $.Msg('[Restless] моды рядом: ' + e); }
 	}
+	// 0.39: открыть окно настроек там, где ты сейчас (в матче без Esc — поверх HUD, мышь свободна)
+	var SETCUR = false;
+	function setIn(host) {
+		show(true); if (!ok(WIN)) return;
+		if (ok(host) && host !== EM && !menuShown()) {
+			try { WIN.SetParent(host); SHADE.SetParent(host); } catch (e) {}
+			seen = false; WIN.__fix = 0;
+			if (!SETCUR) { cc('hud_free_cursor 1'); SETCUR = true; }
+			try { $.RegisterKeyBind(WIN, 'key_escape', function () { show(false); }); } catch (e) {}
+		}
+	}
 	function show(v) {
 		if (v && !ok(WIN)) {
 			// окно могла построить прошлая копия скрипта — убираем и строим своё (ссылки на подписи нужны этой копии)
@@ -601,7 +623,7 @@
 		if (v && ok(HK.win)) hkClose();
 		open = v;
 		setVis(WIN, v); setVis(SHADE, v);
-		if (!v) return;
+		if (!v) { if (ok(EM) && WIN.GetParent() !== EM) { try { WIN.SetParent(EM); SHADE.SetParent(EM); } catch (e) {} } if (SETCUR) { cc('hud_free_cursor -1'); SETCUR = false; } return; }
 		paint();
 		seen = menuShown();
 		WIN.__fix = 0;
@@ -612,9 +634,9 @@
 		if (!ok(WIN)) { open = false; return; }
 		if (!open) return;
 		if (seen && !menuShown()) { show(false); return; }
-		var W = EM.actuallayoutwidth, H = EM.actuallayoutheight, w = WIN.actuallayoutwidth, h = WIN.actuallayoutheight;
+		var PR = WIN.GetParent() || EM, W = PR.actuallayoutwidth, H = PR.actuallayoutheight, w = WIN.actuallayoutwidth, h = WIN.actuallayoutheight;
 		if (!(W > 0) || !(w > 0)) return;
-		var sx = EM.actualuiscale_x > 0 ? EM.actualuiscale_x : 1, sy = EM.actualuiscale_y > 0 ? EM.actualuiscale_y : 1;
+		var sx = PR.actualuiscale_x > 0 ? PR.actualuiscale_x : 1, sy = PR.actualuiscale_y > 0 ? PR.actualuiscale_y : 1;
 		var cx = (W - w) / 2, cy = (H - h) / 2, dx = Math.abs(WIN.actualxoffset - cx), dy = Math.abs(WIN.actualyoffset - cy);
 		if ((dx > 24 || dy > 24) && WIN.__fix < 3) {
 			sty(WIN, { horizontalAlign: 'left', verticalAlign: 'top', align: 'left top', x: Math.round(cx / sx) + 'px', y: Math.round(cy / sy) + 'px' });
@@ -699,7 +721,7 @@
 		out.push(cells.length ? T('shop') + cells.length + (names.length ? T('first') + names.join(', ') : '') : T('shop0'));
 		mmScan(true);
 		var alive = 0, cmpN = 0; for (var k in CAMP2.st) { cmpN++; if (CAMP2.st[k].was) alive++; }
-		out.push(!ok(MM) ? T('sMm0') : T('sMm') + MMS.n + T('sMmC') + cmpN + (cmpN ? T('campOn') + alive : T('sCampH')) + (MMS.cls ? T('sMmK') + MMS.cls : ''));
+		out.push((!ok(MM) ? T('sMm0') : T('sMm') + MMS.n + T('sMmC') + cmpN + (cmpN ? T('campOn') + alive : T('sCampH')) + (MMS.cls ? T('sMmK') + MMS.cls : '')) + (lang() === 'en' ? ' · cleared seen: ' : ' · зачисток увидел: ') + CAMP2.tr + (lang() === 'en' ? ' · timers: ' : ' · таймеров: ') + CMN);
 		out.push(T('sRank') + RKN + T('sLrk') + LRKN[0] + T('sLrkE') + LRKN[1] + T('sCamp') + CMN);
 		out.push(T('sHp') + HPN + T('sMiss') + MISSN + T('sCmb') + (!ALT.found ? T('sCmb0') : ALT.cmb ? T('sCmbY') : T('sCmbN')) + T('sUns') + UNV);
 		out.push(T('sUw') + UW.n + T('sUwN') + UW.on + (UW.n ? '' : T('uwW')) + T('uwSaw') + UW.hn + (UW.hc ? ' (' + UW.hc + ')' : '') + ' · ' + T('sAlt') + (ALT.found ? (ALT.on ? T('altOn') : T('altOff')) : T('altNo')));
@@ -962,7 +984,7 @@
 		var cur = +get('CRS_' + cl, '0');
 		if (!(cur > 0) || d < cur) { set('CRS_' + cl, String(Math.round(d))); $.Msg('[Restless] лагерь ' + cl + ': возрождение ' + Math.round(d) + ' с'); }
 	}
-	var CAMP2 = { mm: null, box: null, cont: null, lay: null, L: null, lt: 0, f: 0, st: {}, inv: null, n: 0 };
+	var CAMP2 = { mm: null, box: null, cont: null, lay: null, L: null, lt: 0, f: 0, st: {}, inv: null, n: 0, act: 0, tr: 0 };
 	function campHide() { for (var k in CAMP2.st) if (ok(CAMP2.st[k].lb)) setVis(CAMP2.st[k].lb, false); }
 	function campTick() {
 		// 0.36: по схеме рабочего мода jungle_timer (Hantu-Raya, Apache 2.0, github.com/Hantu-Raya/Deadlock-mods-collection):
@@ -988,7 +1010,7 @@
 			C.inv = null;
 		}
 		if (C.inv !== inv) { C.inv = inv; try { C.lay.style.transform = inv ? 'scaleY(-1) scaleX(-1)' : 'none'; C.lay.style.transformOrigin = '50% 50%'; } catch (e) {} for (var k0 in C.st) if (ok(C.st[k0].lb)) C.st[k0].lb.style.transform = inv ? 'scaleY(-1) scaleX(-1)' : 'none'; }
-		var seen = {};
+		var seen = {}; C.act = 0;
 		for (var i = 0; i < C.L.length; i++) {
 			var b = C.L[i]; if (!ok(b)) continue;
 			var cl = ''; for (var c in CRS) if (b.BHasClass(c)) { cl = c; break; }
@@ -996,11 +1018,12 @@
 			var x = b.actualxoffset, y = b.actualyoffset, w = b.actuallayoutwidth || 24, h = b.actuallayoutheight || 24;
 			if (!(isFinite(x) && isFinite(y))) continue;
 			var px = (x + ox + w / 2) / bw * 100, py = (y + oy + h) / bh * 100;
-			var key = cl + '@' + Math.round(px) + ',' + Math.round(py);
+			var key = cl + '@' + Math.round(px / 2) + ',' + Math.round(py / 2);
 			var q = C.st[key]; if (!q) q = C.st[key] = { cl: cl, was: b.BHasClass('active'), end: -1, endMs: 0, lb: null };
 			seen[key] = 1; q.px = px; q.py = py; q.w = w;
 			var act = b.BHasClass('active');
-			if (q.was && !act) { var rs = campRs(cl); q.end = s >= 0 ? s + rs : -1; q.endMs = now + rs * 1000; q.dead = s; }
+			if (act) C.act++;
+			if (q.was && !act) { C.tr++; var rs = campRs(cl); q.end = s >= 0 ? s + rs : -1; q.endMs = now + rs * 1000; q.dead = s; }
 			if (act && !q.was && q.dead >= 0 && s > q.dead) campLearn(cl, s - q.dead);
 			if (act) { q.end = -1; q.endMs = 0; q.dead = -1; }
 			q.was = act;
@@ -1262,16 +1285,19 @@
 		bldPaint();
 	}
 	function f17Tick() {
-		altTick();
-		if (NT % 4 === 3) { try { bldTick(); } catch (e) { $.Msg('[Restless] сборка: ' + e); } }
-		if (NT % 4 === 2) sbxTick();
-		plyScan();
-		amTick();
-		if (NT % 2 === 0) { plyIds(); portTick(); cmbTick(); unsTick(); uwTick(); zipTick(); rbTick(); riftTick(); aitTick(); }
-		if (NT % 2 === 1) campTick();
-		if (NT % 4 === 1) { rankTick(); spdTick(); omapTick(); boxTick(); }
-		if (NT % 8 === 3) lrkTick();
+		// 0.39: каждая часть — в своём try (раньше ошибка в одной — например, в покупках — останавливала и лагеря, и всё после неё)
+		var T = function (f, nm) { try { f(); } catch (e) { if (!T.e[nm]) { T.e[nm] = 1; $.Msg('[Restless] ' + nm + ': ' + e); } } };
+		T.e = F17E;
+		T(altTick, 'alt');
+		if (NT % 4 === 3) T(bldTick, 'сборка');
+		if (NT % 4 === 2) T(sbxTick, 'песочница');
+		T(plyScan, 'игроки'); T(amTick, 'патроны');
+		if (NT % 2 === 0) { T(plyIds, 'id'); T(portTick, 'портреты'); T(cmbTick, 'в бою'); T(unsTick, 'души'); T(uwTick, 'ульта над героем'); T(zipTick, 'канат'); T(rbTick, 'покупки'); T(riftTick, 'разлом'); T(aitTick, 'предметы'); }
+		if (NT % 2 === 1) T(campTick, 'лагеря');
+		if (NT % 4 === 1) { T(rankTick, 'ранги'); T(spdTick, 'скорость'); T(omapTick, 'карта'); T(boxTick, 'ящики'); }
+		if (NT % 8 === 3) T(lrkTick, 'ранг команд');
 	}
+	var F17E = {};
 
 	// ---------- 0.19: набор Enchanted ----------
 	// Буст на канате: значок умения citadel_ability_zipline_boost (классы on_cooldown / in_use, секунды — в context_label) и бафф в StatusEffects.

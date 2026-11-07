@@ -1,0 +1,5 @@
+/* lg37 — сайт во встроенном окне игры: всё сразу в конечном виде, ничего не движется само, без размытий */
+/* не animation:none — у многих блоков старт с opacity:0, без анимации они бы так и остались невидимыми */
+html.rl-lite *,html.rl-lite *::before,html.rl-lite *::after{animation-duration:0s!important;animation-delay:0s!important;animation-iteration-count:1!important;
+  transition-duration:0s!important;transition-delay:0s!important;scroll-behavior:auto!important;backdrop-filter:none!important}
+html.rl-lite .q-wv{display:none!important}

@@ -17,6 +17,7 @@ function P(type,id,attrs){const p={type,paneltype:type,id:id||'',attrs:attrs||{}
  FindChildrenWithClassTraverse(k,a=[]){for(const c of this.ch){VIS++;if(c.cls.has(k))a.push(c);c.FindChildrenWithClassTraverse(k,a)}return a},
  SetPanelEvent(e,f){this.ev[e]=f},SetImage(u){this.img=u},SetURL(u){this.url=u;if(typeof onURL==='function')onURL(this,u)},BHasClass(c){return this.cls.has(c)},AddClass(c){this.cls.add(c)},RemoveClass(c){this.cls.delete(c)},
  SetAttributeString(k,v){(this.at||(this.at={}))[k]=String(v)},GetAttributeString(k,d){return this.at&&k in this.at?this.at[k]:d},
+ SetParent(np){if(this.par)this.par.ch.splice(this.par.ch.indexOf(this),1);np.ch.push(this);this.par=np},SetFocus(){this.focused=true},SetAcceptsFocus(v){this.af=v},
  MoveChildBefore(a,b){const i=this.ch.indexOf(a);this.ch.splice(i,1);this.ch.splice(this.ch.indexOf(b),0,a)},
  DeleteAsync(){this.valid=false;if(this.par)this.par.ch.splice(this.par.ch.indexOf(this),1)},
  RemoveAndDeleteChildren(){this.ch.forEach(c=>c.valid=false);this.ch=[]}};return p}
@@ -238,7 +239,12 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
   ok(CC.includes('hud_free_cursor -1'),'0.36: мышь вернулась');
   {const fs=[...new Set(kb.map(k=>k[2]))];ok(fs.length>=2,'0.38: клавишу регистрируют обе копии: '+fs.length);
    fs.forEach((f,i)=>{CLOCK+=1000;f();tick(2);const w=F('RestlessHotkey');ok(w&&w.valid!==false,'0.38: нажатие через копию №'+(i+1)+' открывает окно');
-     CLOCK+=1000;f();tick(2);ok(!F('RestlessHotkey')||!F('RestlessHotkey').valid,'0.38: и закрывает');});}}
+     CLOCK+=1000;f();tick(2);ok(!F('RestlessHotkey')||!F('RestlessHotkey').valid,'0.38: и закрывает');});}
+  {CLOCK+=1000;kb[0][2]();tick(2);const hw=F('RestlessHotkeyWeb');ok(hw&&hw.focused,'0.39: окно сайта получило фокус клавиатуры (печатать)');
+   const gs=F('RestlessHkSet');ok(gs,'0.39: в окне Ctrl+Alt+H — «Настройки оверлея»');CC.length=0;gs.ev.onactivate();tick(2);
+   const W=F('RestlessWindow');ok(W&&vis(W)&&W.par&&W.par.id!=='EscapeMenu'&&!F('RestlessHotkey'),'0.39: настройки открылись поверх матча (без Esc), окно сайта закрылось');
+   ok(CC.includes('hud_free_cursor 1'),'0.39: мышь свободна в настройках');
+   CC.length=0;F('RestlessShade').ev.onactivate();tick(2);ok(!vis(F('RestlessWindow'))&&F('RestlessWindow').par.id==='EscapeMenu'&&CC.includes('hud_free_cursor -1'),'0.39: закрыл — окно вернулось в меню Esc, мышь отдана игре');}}
  // Medium: пропавшие враги, здоровье, «в бою», незащищённые души
  const ga=add(hud,P('CitadelHudGameAnnouncements','CitadelHudGameAnnouncements'));const dgc=add(hud,P('Panel','hudDeathGoldContainer'));const dg=add(dgc,P('Label','hudDeathGoldLabel',{text:'0'}));
  em.cls.add('ShowEscapeMenu');stOpen();pp[1].ev.onactivate();tick(1);ok(pp[1].style.backgroundColor==='#ffc83d'&&hud.GetAttributeString('RESTLESS_MISS','')==='1','набор Medium включил пропавших врагов и остальное');shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
@@ -294,13 +300,13 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
 {em.cls.add('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveBtn'),'0.28: строки LIVE в меню нет');
  ok(F('RestlessLive')&&F('RestlessLive').style.width==='46%','0.32: открыл Esc в матче — LIVE сам, сбоку от меню');
  ok(!vis(F('RestlessWindow')),'0.32: окно настроек само не открывается');
- ok(/v=0\.38/.test(decodeURIComponent(F('RestlessLiveWeb').url)),'в адресе — версия 0.38');
+ ok(/v=0\.39/.test(decodeURIComponent(F('RestlessLiveWeb').url)),'в адресе — версия 0.39');
  btn.ev.onactivate();tick(1);ok(vis(F('RestlessWindow'))&&!F('RestlessLive'),'0.31: RESTLESS — настройки, лайв закрылся (не висят вместе)');
  ok(F('RestlessWebBtn'),'0.31: в шапке окна кнопка САЙТ');
  F('RestlessWebBtn').ev.onactivate();tick(2);ok(!vis(F('RestlessWindow'))&&!!F('RestlessHotkeyWeb')&&!F('RestlessLive'),'0.38: САЙТ — то же окно, что Ctrl+Alt+H (вкладки), настройки закрылись, второго браузера нет');
  const w=F('RestlessHotkeyWeb');const u=w&&decodeURIComponent(w.url||'');
  ok(w&&w.paneltype==='CitadelHTMLPanel'&&/restless\/\?app=1&embed=1/.test(w.url)&&/#g=/.test(w.url),'окно сайта во встроенном браузере игры: '+(w?w.url.slice(0,80):''));
- ok(/v=0\.38/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
+ ok(/v=0\.39/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
  {const u0=w.url;tick(40);ok(F('RestlessHotkeyWeb')&&F('RestlessHotkeyWeb').url===u0,'0.38: окно не перезагружается само (не мигает)');}
  tick(8);ok(!F('RestlessLive'),'0.38: пока открыто окно — LIVE сбоку сам не лезет');
  btn.ev.onactivate();tick(1);ok(vis(F('RestlessWindow')),'RESTLESS — настройки');
@@ -383,7 +389,7 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  // отчёт программе
- tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.38&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.39&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
  // с сайта: надпись выкл и ползунок мода = 2
  PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);em.cls.add('ShowEscapeMenu');tick(130);em.cls.delete('ShowEscapeMenu');
  ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');
