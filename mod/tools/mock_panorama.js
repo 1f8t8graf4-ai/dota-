@@ -291,13 +291,13 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
 {em.cls.add('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveBtn'),'0.28: строки LIVE в меню нет');
  ok(F('RestlessLive')&&F('RestlessLive').style.width==='46%','0.32: открыл Esc в матче — LIVE сам, сбоку от меню');
  ok(!vis(F('RestlessWindow')),'0.32: окно настроек само не открывается');
- ok(/v=0\.36/.test(decodeURIComponent(F('RestlessLiveWeb').url)),'в адресе — версия 0.36');
+ ok(/v=0\.37/.test(decodeURIComponent(F('RestlessLiveWeb').url)),'в адресе — версия 0.37');
  btn.ev.onactivate();tick(1);ok(vis(F('RestlessWindow'))&&!F('RestlessLive'),'0.31: RESTLESS — настройки, лайв закрылся (не висят вместе)');
  ok(F('RestlessWebBtn'),'0.31: в шапке окна кнопка САЙТ');
  F('RestlessWebBtn').ev.onactivate();tick(2);ok(!vis(F('RestlessWindow'))&&!!F('RestlessLiveWeb')&&F('RestlessLive').style.width!=='46%','0.31: САЙТ — сайт по центру, настройки закрылись');
  const w=F('RestlessLiveWeb');const u=w&&decodeURIComponent(w.url||'');
  ok(w&&w.paneltype==='CitadelHTMLPanel'&&/restless\/\?app=1&embed=1/.test(w.url)&&/#g=/.test(w.url),'окно сайта во встроенном браузере игры: '+(w?w.url.slice(0,80):''));
- ok(/v=0\.36/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
+ ok(/v=0\.37/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
  btn.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'0.31: RESTLESS закрывает и окно сайта');F('RestlessShade').ev.onactivate();tick(4);ok(F('RestlessLive')&&F('RestlessLive').style.width==='46%','0.32: настройки закрыл — лайв вернулся сам сбоку (Esc ещё открыт, LVA)');btn.ev.onactivate();tick(1);
  F('RestlessWebBtn').ev.onactivate();tick(2);const gear=F('RestlessGear');ok(gear&&F('RestlessLiveWeb'),'0.28: ⚙ в шапке сайта вернулся к настройкам');
  F('RestlessGear').ev.onactivate();tick(1);ok(vis(F('RestlessWindow'))&&!vis(F('RestlessLive')),'0.31: ⚙ — настройки, сайт закрылся');
@@ -380,7 +380,7 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  // отчёт программе
- tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.36&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.37&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
  // с сайта: надпись выкл и ползунок мода = 2
  PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);em.cls.add('ShowEscapeMenu');tick(130);em.cls.delete('ShowEscapeMenu');
  ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');

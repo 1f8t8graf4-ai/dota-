@@ -1,5 +1,13 @@
 # Мод Restless для Deadlock
 
+## Сейчас — 0.37 (`build/pak42_dir.vpk`, 07.11) — Claude: проход по всем функциям
+- Все имена панелей и классов, которые ищет мод, сверены с датамайном игры (06.11) — все есть. Копии игровых layout (`citadel_hud_subtitles`, `hud_movement_speed`, `unit_status_overlay_v2`, `dashboard`, окно пати) совпадают с игрой, кроме наших строк.
+- **Буст на канате** искался не там: значок буста в игре — `CitadelZiplineBoostIcon` (`citadel_hud_zipline_boost_icon.xml`), находим через `ZipLineBinding`, секунды — метка `cooldown_timer`, готов — класс `off_cooldown`.
+- **Кто что купил:** контейнер `RecentPurchasesContainer` живёт в окне магазина и появляется после первого открытия магазина — ищем его постоянно (раз в 20 с, и в HUD, и в корне), а не с растущей паузой.
+- **Здоровье на портретах:** кроме высоты полосы читаем и стиль `height: N%` / `clip` у `HealthBar_Fill` — игра может задавать полосу так.
+- Заглушка: всё PASS (229). vpk v2, 240 293 байт.
+- Список всех функций со статусом — на сайте, Оверлей → «В игре» (lg35).
+
 ## Сейчас — 0.36 (`build/pak42_dir.vpk`, 07.11) — Claude: чисто vpk, Ctrl+Alt+H без программы
 - **Ctrl+Alt+H** — окно Restless прямо в игре (Лайв-матч · Профиль · Герои · Патчи), программа не нужна. Клавиша Panorama:
   `$.RegisterKeyBind('', 'mod_ctrl+mod_alt+key_h', fn)` (формат модификаторов — `ParseModifier` в `panorama/input/uiinput.cpp`;

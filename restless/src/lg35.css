@@ -1,0 +1,82 @@
+/* lg35 — «Оверлей → В игре»: функции мода на кадре игры и по пунктам */
+.z35{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:14px}
+.z35-key{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:12px 16px;border-radius:14px;background:var(--q-bx,#12151c);border:1px solid var(--q-ln,#1e2436)}
+.z35-key b{padding:5px 10px;border-radius:8px;background:rgba(255,182,48,.14);color:var(--q-am,#ffb630);font-size:14px;letter-spacing:.03em}
+.z35-key span{font-size:14px;color:var(--tx,#eef0f4);margin-right:10px}
+.z35-f{position:relative;width:100%;max-width:1240px;margin:0 auto;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;container-type:inline-size;border:1px solid var(--q-ln,#1e2436)}
+.z35-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.78)}
+.z35-ui,.z35-pins{position:absolute;inset:0}
+.z35-ui *{box-sizing:border-box}
+.z35-m{position:absolute;inset:0;transition:opacity .25s}
+.z35-chip,.z35-txt,.z35-ultw,.z35-its{inset:auto;transform:translate(-50%,-50%);white-space:nowrap}
+.z35-chip{padding:.35cqw .8cqw;border-radius:.6cqw;background:#121014d9;color:#f3ebdd;font-size:1.05cqw;font-weight:700}
+.z35-chip b{color:#ffc83d}.z35-chip.a{color:#ffc83d}.z35-chip.o{color:#ff9a3b;font-size:1.4cqw}
+.z35-txt{font-size:1.15cqw;font-weight:800;color:#fff;text-shadow:0 0 .3cqw #000,0 0 .3cqw #000}
+.z35-txt.r{color:#ff6b5b}.z35-txt.a{color:#ffc83d}
+.z35-pt{position:absolute;top:1.2%;width:2.6%;aspect-ratio:1;border-radius:50%;background:#3a4a62;border:.18cqw solid #8fb4ff}
+.z35-pt.e{border-color:#ff7a7a;background:#5a2e2e}
+.z35-clk{position:absolute;left:50%;top:2.2%;transform:translateX(-50%);font-size:1.1cqw;color:#fff;font-weight:800;text-shadow:0 0 .3cqw #000}
+.z35-ul{position:absolute;top:6.6%;width:2.6%;text-align:center;font-size:.95cqw;font-weight:800;color:#fff;text-shadow:0 0 .3cqw #000}
+.z35-rk{position:absolute;top:9.6%;width:1.4%;aspect-ratio:1;background:linear-gradient(135deg,#c79bff,#6f4ad6);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.z35-ring{position:absolute;top:1.2%;width:2.6%;aspect-ratio:1;border-radius:50%;border:.3cqw solid #ff9a3b}
+.z35-dark{position:absolute;top:1.2%;width:2.6%;aspect-ratio:1;border-radius:50%;background:#000000c0}
+.z35-ultw{display:flex;flex-direction:column;align-items:center;gap:.2cqw}
+.z35-ultw i{width:5cqw;height:.5cqw;border-radius:.3cqw;background:#ff5656}
+.z35-ultw b{font-size:.95cqw;color:#ffc83d;font-weight:800;text-shadow:0 0 .3cqw #000}
+.z35-cross{position:absolute;width:1.2cqw;height:1.2cqw;transform:translate(-50%,-50%);border:.15cqw solid #fff;border-radius:50%}
+.z35-its{display:flex;gap:.4cqw}
+.z35-its i{width:2.2cqw;height:2.2cqw;border-radius:.4cqw;background:#2b3b2e;border:.12cqw solid #7be38f}
+.z35-its i.cd{background:#22262e;border-color:#555;color:#ccc;font-size:.9cqw;font-style:normal;display:grid;place-items:center;font-weight:800}
+.z35-ab{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);display:flex;gap:.6cqw}
+.z35-ab i{width:3.6cqw;height:3.6cqw;border-radius:.5cqw;border:.12cqw solid #ffffff55;background:#0008}
+.z35-hp{position:absolute;left:3%;bottom:4%;width:17%;height:1.4%;border-radius:.4cqw;background:#0009;overflow:hidden}
+.z35-hp i{display:block;width:72%;height:100%;background:#5be08a}
+.z35-mm{position:absolute;right:1.5%;bottom:3%;width:15%;aspect-ratio:1;border-radius:.6cqw;background:#0b1018d0;border:.12cqw solid #ffffff40}
+.z35-mm .z35-m b{position:absolute;transform:translate(-50%,-50%);font-size:1cqw;font-weight:800;color:#c8f5b4;text-shadow:0 0 .3cqw #000}
+.z35-mm .z35-m b:nth-child(2){color:#ffd9a0}.z35-mm .z35-m b:nth-child(3){color:#5be08a}
+.z35-dots i{position:absolute;width:.55cqw;height:.55cqw;border-radius:50%;background:#e7b84e}
+.z35-win{inset:auto;display:flex;flex-direction:column;gap:.5cqw;padding:1cqw;border-radius:.8cqw;background:#0b0d12f2;border:.12cqw solid #ffc83d80;font-size:1cqw;color:#f3ebdd}
+.z35-win b{color:#ffc83d;letter-spacing:.1em;font-size:1.05cqw}
+.z35-win b em{font-style:normal;color:#a89f90;letter-spacing:0;margin-left:1cqw;font-weight:600}
+.z35-win span{display:flex;align-items:center;gap:.6cqw;padding:.4cqw .5cqw;border-radius:.4cqw;background:#ffffff0d}
+.z35-win span i{width:1.6cqw;height:1.6cqw;border-radius:50%;background:#3a4a62;flex:none}
+.z35-win span u{height:.6cqw;flex:1;border-radius:.3cqw;background:#ffffff1a}
+.z35-win small{margin-top:auto;color:#a89f90}
+.z35-win.s span{background:#ffc83d1a}
+/* окна и точки ящиков — только когда выбраны */
+.z35-m[data-m="hk"],.z35-m[data-m="lva"],.z35-m[data-m="sbx"],.z35-m[data-m="box"],.z35-m[data-m="alt"]{opacity:0;pointer-events:none}
+.z35-f.sel .z35-m{opacity:.16}
+.z35-f .z35-m[data-m="hk"]:not(.z35-hi),.z35-f .z35-m[data-m="lva"]:not(.z35-hi),.z35-f .z35-m[data-m="sbx"]:not(.z35-hi),.z35-f .z35-m[data-m="box"]:not(.z35-hi),.z35-f .z35-m[data-m="alt"]:not(.z35-hi){opacity:0}
+.z35-f.sel .z35-m.z35-hi{opacity:1}
+.z35-f.sel .z35-chip.z35-hi,.z35-f.sel .z35-txt.z35-hi,.z35-f.sel .z35-win.z35-hi{box-shadow:0 0 0 .2cqw #ffb630,0 0 2cqw #ffb63099}
+.z35-pin{position:absolute;transform:translate(-50%,-50%);width:max(18px,1.6cqw);height:max(18px,1.6cqw);border-radius:50%;border:2px solid #0b0d12;font-family:inherit;font-weight:800;font-size:max(11px,.95cqw);line-height:1;color:#0b0d12;cursor:pointer;display:grid;place-items:center;padding:0;
+  background:#ffb630;box-shadow:0 2px 8px #0009;transition:transform .2s,opacity .2s}
+.z35-pin.s-ok{background:#33d6a6}.z35-pin.s-no{background:#ff5d7a}
+.z35-pin:hover{transform:translate(-50%,-50%) scale(1.18)}
+.z35-f.sel .z35-pin{opacity:.25}
+.z35-f.sel .z35-pin.z35-hi{opacity:1;transform:translate(-50%,-50%) scale(1.3);animation:z35p 1.2s ease-in-out infinite}
+@keyframes z35p{50%{transform:translate(-50%,-50%) scale(1.1)}}
+.z35-side{min-width:0}
+.z35-ff{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.z35-ff button{padding:6px 11px;border-radius:999px;border:1px solid var(--q-ln,#1e2436);background:var(--q-bx,#12151c);color:var(--tx,#eef0f4);font-family:inherit;font-weight:600;font-size:13px;cursor:pointer}
+.z35-ff button b{margin-left:6px;color:var(--mu,#8b93a7)}
+.z35-ff button.on{border-color:var(--q-am,#ffb630);color:var(--q-am,#ffb630)}
+.z35-h{margin:14px 2px 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu,#8b93a7)}
+.z35-l{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:8px}
+.z35-side{max-width:1240px;width:100%;margin:0 auto}
+.z35-r{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;text-align:left;padding:10px 12px;border-radius:12px;border:1px solid var(--q-ln,#1e2436);
+  background:var(--q-bx,#12151c);color:inherit;font:inherit;cursor:pointer;transition:border-color .2s,background .2s,transform .15s}
+.z35-r:hover{border-color:#ffffff30}
+.z35-r.on{border-color:var(--q-am,#ffb630);background:rgba(255,182,48,.08)}
+.z35-n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;color:#0b0d12;background:#ffb630}
+.s-ok .z35-n{background:#33d6a6}.s-no .z35-n{background:#ff5d7a}
+.z35-t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.z35-t b{font-size:14.5px}
+.z35-t small{font-size:12.5px;line-height:1.4;color:var(--mu,#8b93a7)}
+.z35-st{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.z35-st em{font-style:normal;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap;background:rgba(255,182,48,.14);color:#ffb630}
+.s-ok .z35-st em{background:rgba(51,214,166,.14);color:#33d6a6}.s-no .z35-st em{background:rgba(255,93,122,.14);color:#ff5d7a}
+.z35-st i{font-style:normal;font-size:11.5px;color:var(--mu,#8b93a7);white-space:nowrap}
+@media (max-width:560px){.z35-l{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.z35-r{grid-template-columns:26px minmax(0,1fr)}.z35-st{grid-column:2;flex-direction:row;align-items:center;justify-content:flex-start}.z35-key span{margin-right:0;width:100%}}
+@media (prefers-reduced-motion:reduce){.z35-f.sel .z35-pin.z35-hi{animation:none}}

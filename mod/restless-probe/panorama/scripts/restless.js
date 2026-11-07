@@ -108,7 +108,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.36';
+	var VER = '0.37';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -1012,6 +1012,9 @@
 		var r = 1;
 		if (ok(x.hf) && x.hf.actuallayoutheight >= 0) r = Math.min(r, x.hf.actuallayoutheight / h);
 		if (ok(x.hc) && x.hc.actuallayoutheight >= 0) r = Math.min(r, x.hc.actuallayoutheight / h);
+		// 0.37: игра может задавать полосу не высотой, а стилем (height: 63% или clip) — читаем и его
+		try { var sh = ok(x.hf) ? String(x.hf.style.height || '') : '', m = /([\d.]+)%/.exec(sh); if (m) r = Math.min(r, +m[1] / 100);
+			var cp = ok(x.hf) ? String(x.hf.style.clip || '') : '', m2 = /rect\(\s*([\d.]+)%/.exec(cp); if (m2) r = Math.min(r, 1 - +m2[1] / 100); } catch (e) {}
 		return r;
 	}
 	function portTick() {
@@ -1252,13 +1255,17 @@
 	// Секунд нет — считаем сами, как QoL Lock: бафф 32 с, перезарядка 6 минут с начала.
 	var ZB = { c: null, src: null, se: null, f: 0, fm: 0, lb: null, use: false, end: 0, cd: 0, st: '' };
 	function zipFind() {
-		var gh = HUD.FindChildTraverse('gameplay_hud') || HUD, s = gh.FindChildTraverse('citadel_ability_zipline_boost_') || gh.FindChildTraverse('citadel_ability_zipline_boost');
+		var gh = HUD.FindChildTraverse('gameplay_hud') || HUD, s = null;
+		// 0.37: значок буста в игре — CitadelZiplineBoostIcon (citadel_hud_zipline_boost_icon.xml): внутри ZipLineBinding и метка cooldown_timer
+		try { var zb = gh.FindChildTraverse('ZipLineBinding') || HUD.FindChildTraverse('ZipLineBinding'); if (ok(zb)) s = up(zb, 'CitadelZiplineBoostIcon'); } catch (e) {}
+		if (!ok(s)) s = gh.FindChildTraverse('citadel_ability_zipline_boost_') || gh.FindChildTraverse('citadel_ability_zipline_boost');
 		if (!ok(s)) { var L = []; try { L = gh.FindChildrenWithClassTraverse('citadel_ability_zipline_boost') || []; } catch (e) {} s = L[0] || null; }
 		ZB.src = ok(s) ? s : null;
 		if (!ok(ZB.se)) ZB.se = gh.FindChildTraverse('StatusEffects');
 	}
 	function zipSec(p) {
 		var L = [p], c = kid(p, 'context_label'); if (ok(c)) L.unshift(c);
+		try { var ct = p.FindChildrenWithClassTraverse('cooldown_timer') || []; if (ct[0]) L.unshift(ct[0]); } catch (e) {}
 		for (var i = 0; i < L.length; i++) { var m = /(\d{1,3})(?:\.\d+)?/.exec(txt(L[i])); if (m && +m[1] > 0 && +m[1] <= 600) return +m[1]; }
 		return 0;
 	}
@@ -1267,11 +1274,11 @@
 		if (!ok(ZB.src) && ZB.f-- <= 0) { ZB.f = 12 * Math.min(10, ++ZB.fm); zipFind(); }
 		var now = Date.now(), s = ZB.src, cls = function (c) { try { return !!(s && s.BHasClass(c)); } catch (e) { return false; } };
 		var buff = ok(ZB.se) ? ok(kid(ZB.se, 'status_citadel_ability_zipline_boost')) : false;
-		var use = buff || cls('in_use'), cd = cls('on_cooldown') || cls('cooling_down');
+		var use = buff || cls('in_use'), cd = (cls('on_cooldown') || cls('cooling_down')) && !cls('off_cooldown');
 		if (use && !ZB.use) { ZB.end = now + 32000; ZB.cd = now + 360000; }
 		ZB.use = use;
 		if (cd) { var sec = zipSec(s); if (sec) ZB.cd = now + sec * 1000; else if (ZB.cd <= now) ZB.cd = now + 360000; }
-		else if (!use && cls('active')) ZB.cd = 0;
+		else if (!use && (cls('active') || cls('off_cooldown'))) ZB.cd = 0;
 		var msg = '', col = '#5be08a';
 		if (use) { msg = T('zipA') + Math.max(0, Math.ceil((ZB.end - now) / 1000)) + T('sec'); col = A; }
 		else if (ZB.cd > now) { var l = Math.ceil((ZB.cd - now) / 1000); msg = Math.floor(l / 60) + ':' + ('0' + l % 60).slice(-2); col = MUTED; }
@@ -1405,7 +1412,7 @@
 		var want = on('RBUY') && !HIDE, now0 = Date.now();
 		for (var z = 0; z < PLY.length; z++) if (ok(PLY[z].bi) && (!want || now0 > (PLY[z].bt || 0))) setVis(PLY[z].bi, false);
 		if (!want || MENU) { if (ok(RB.p)) setVis(RB.p, false); if (!want) { RB.seen = null; RB.L = []; } return; }
-		if (!ok(RB.box)) { if (RB.f-- > 0) return; RB.f = 10 * Math.min(8, ++RB.fm); RB.box = HUD.FindChildTraverse('RecentPurchasesContainer'); if (!ok(RB.box)) return; RB.seen = null; }
+		if (!ok(RB.box)) { if (RB.f-- > 0) return; RB.f = 80; RB.box = HUD.FindChildTraverse('RecentPurchasesContainer') || (ok(ROOT) ? ROOT.FindChildTraverse('RecentPurchasesContainer') : null); if (!ok(RB.box)) return; RB.seen = null; }
 		var K = [], n = RB.box.GetChildCount();
 		for (var i = 0; i < n; i++) K.push(RB.box.GetChild(i));
 		RB.n = n;
