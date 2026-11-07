@@ -211,3 +211,6 @@
 .z36-src>span i{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden}
 .z36-src>span i u{display:block;height:100%;background:var(--q-am,#ffb020);transform-origin:left;transform:scaleX(0);animation:z36w .7s cubic-bezier(.2,.8,.2,1) forwards}
 .z36-src>b{text-align:right;font-variant-numeric:tabular-nums}
+
+/* 07.11: в английской версии русский перевод фразы героя не нужен */
+html[lang="en"] .q-sy-ru{display:none}

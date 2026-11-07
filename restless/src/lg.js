@@ -382,9 +382,9 @@ function shelfName(c, k) {
 const HB2 = {}, RLC = {}, AR = {};
 let HBC = '', HBS = 'pop';
 async function restlessItems(hid) {
-  const k = hid + '|' + F.b; if (RLC[k]) return RLC[k];
+  const k = hid + '|0'; if (RLC[k]) return RLC[k];
   RLC[k] = (async () => {
-    const bq = F.b ? '&min_average_badge=' + F.b : '', t = t30();
+    const bq = '', t = t30(); // 07.11: Restless-сборка одна на все ранги
     const PH = [[0, 600, 'Сначала', 'до 10 мин'], [600, 1500, 'Потом', '10–25 мин'], [1500, 0, 'В конце', '25+ мин']];
     const [HSx, ...PL] = await Promise.all([api(`analytics/hero-stats?min_unix_timestamp=${t}${bq}`), ...PH.map(([a, b]) => api(`analytics/item-stats?hero_id=${hid}&min_unix_timestamp=${t}${bq}&min_bought_at_s=${a}${b ? '&max_bought_at_s=' + b : ''}`))]);
     const hb = HSx.find(x => x.hero_id === hid); if (!hb || hb.matches < 300) return null;
@@ -396,7 +396,7 @@ async function restlessItems(hid) {
       C.forEach(x => used.add(x.id));
       return {n: PH[i][2], h: PH[i][3], L: C};
     });
-    return {ph, wr: 100 * bw, m: hb.matches, rank: (BADGES.find(x => x[1] === F.b) || BADGES[0])[0]};
+    return {ph, wr: 100 * bw, m: hb.matches, rank: BADGES[0][0]};
   })();
   RLC[k].catch(() => delete RLC[k]);
   return RLC[k];
@@ -404,24 +404,26 @@ async function restlessItems(hid) {
 async function heroBuilds2(n, hid, me) {
   try {
     const t = t30(), bq = F.b ? `&min_average_badge=${F.b}` : '', t180 = now() - 180 * 86400 - (now() % 3600);
-    const [BS, BP, BM, BR, BA] = await Promise.all([
+    const [BS, BP, BM, BR, BA, BALL] = await Promise.all([
       api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t}&min_matches=${F.b >= 100 ? 10 : 30}${bq}`).catch(() => []),
       api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t}&min_matches=10&min_average_badge=105`).catch(() => []),
       me ? api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t180}&min_matches=1&account_id=${ME.id}`).catch(() => []) : [],
       me ? api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t}&min_matches=1&account_id=${ME.id}`).catch(() => []) : [],
-      me ? api(`builds?author_id=${ME.id}&hero_id=${hid}&only_latest=true`).catch(() => []) : []]);
+      me ? api(`builds?author_id=${ME.id}&hero_id=${hid}&only_latest=true`).catch(() => []) : [],
+      F.b ? api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t}&min_matches=30`).catch(() => []) : null]);
+    const BAL = BALL || BS; // 07.11: «★ Рекомендуем» — по всем рангам, одна и та же при любом фильтре ранга
     if (n !== VQ) return;
     const top = (L, k) => L.slice().sort((a, b) => b.matches - a.matches).slice(0, k);
     const have = {}; (BA || []).forEach(b => { if (b && b.hero_build) have[b.hero_build.hero_build_id] = b; });
-    const ids = [...new Set([...top(BS, 40), ...top(BP, 10), ...top(BM, 6), ...top(BR, 3)].map(x => x.hero_build_id))].filter(id => !have[id]);
+    const ids = [...new Set([...top(BS, 40), ...top(BAL, 40), ...top(BP, 10), ...top(BM, 6), ...top(BR, 3)].map(x => x.hero_build_id))].filter(id => !have[id]);
     const raw = (await Promise.all(ids.map(id => api(`builds?build_id=${id}&only_latest=true`).then(r => r && r[0]).catch(() => null)))).concat(Object.values(have));
     if (n !== VQ) return;
-    const by = L => { const o = {}; L.forEach(x => o[x.hero_build_id] = x); return o; }, S1 = by(BS), S2 = by(BP), S3 = by(BM), S4 = by(BR);
+    const by = L => { const o = {}; L.forEach(x => o[x.hero_build_id] = x); return o; }, S1 = by(BS), S2 = by(BP), S3 = by(BM), S4 = by(BR), S5 = by(BAL);
     const auth = raw.filter(Boolean).map(b => b.hero_build.author_account_id).filter(Boolean);
     await Promise.all([steamNames(auth), authRanks(auth)]); if (n !== VQ) return;
     const L = raw.filter(b => b && b.hero_build && b.hero_build.hero_id === hid).map(b => {
       const id = b.hero_build.hero_build_id, st = S1[id], sp = S2[id], sm = S3[id];
-      return {id, b, name: b.hero_build.name || 'Сборка #' + id, author: (SN[b.hero_build.author_account_id] || {}).n || '', aid: b.hero_build.author_account_id, cat: bldCat(b), items: itemsOfBuild(b), st, sp, sm, sr: S4[id],
+      return {id, b, name: b.hero_build.name || 'Сборка #' + id, author: (SN[b.hero_build.author_account_id] || {}).n || '', aid: b.hero_build.author_account_id, cat: bldCat(b), items: itemsOfBuild(b), st, sp, sm, sr: S4[id], al: S5[id], am: S5[id] ? S5[id].matches : 0, awl: S5[id] ? wil(S5[id].wins, S5[id].matches) : 0,
         made: me && b.hero_build.author_account_id === ME.id,
         m: st ? st.matches : 0, wr: st ? 100 * st.wins / st.matches : 0, wl: st ? wil(st.wins, st.matches) : 0, pm: sp ? sp.matches : 0, pwl: sp ? wil(sp.wins, sp.matches) : 0};
     }).filter(x => x.items.length >= 4);

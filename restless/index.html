@@ -4392,6 +4392,9 @@ html[lang=en] .l15-ru,html[lang=en] .l15-g,html[lang=en] .l15-gs,html[lang=en] .
 .z36-src>span i{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden}
 .z36-src>span i u{display:block;height:100%;background:var(--q-am,#ffb020);transform-origin:left;transform:scaleX(0);animation:z36w .7s cubic-bezier(.2,.8,.2,1) forwards}
 .z36-src>b{text-align:right;font-variant-numeric:tabular-nums}
+
+/* 07.11: в английской версии русский перевод фразы героя не нужен */
+html[lang="en"] .q-sy-ru{display:none}
 </style>
 </head>
 <body>
@@ -5891,9 +5894,9 @@ function shelfName(c, k) {
 const HB2 = {}, RLC = {}, AR = {};
 let HBC = '', HBS = 'pop';
 async function restlessItems(hid) {
-  const k = hid + '|' + F.b; if (RLC[k]) return RLC[k];
+  const k = hid + '|0'; if (RLC[k]) return RLC[k];
   RLC[k] = (async () => {
-    const bq = F.b ? '&min_average_badge=' + F.b : '', t = t30();
+    const bq = '', t = t30(); // 07.11: Restless-сборка одна на все ранги
     const PH = [[0, 600, 'Сначала', 'до 10 мин'], [600, 1500, 'Потом', '10–25 мин'], [1500, 0, 'В конце', '25+ мин']];
     const [HSx, ...PL] = await Promise.all([api(`analytics/hero-stats?min_unix_timestamp=${t}${bq}`), ...PH.map(([a, b]) => api(`analytics/item-stats?hero_id=${hid}&min_unix_timestamp=${t}${bq}&min_bought_at_s=${a}${b ? '&max_bought_at_s=' + b : ''}`))]);
     const hb = HSx.find(x => x.hero_id === hid); if (!hb || hb.matches < 300) return null;
@@ -5905,7 +5908,7 @@ async function restlessItems(hid) {
       C.forEach(x => used.add(x.id));
       return {n: PH[i][2], h: PH[i][3], L: C};
     });
-    return {ph, wr: 100 * bw, m: hb.matches, rank: (BADGES.find(x => x[1] === F.b) || BADGES[0])[0]};
+    return {ph, wr: 100 * bw, m: hb.matches, rank: BADGES[0][0]};
   })();
   RLC[k].catch(() => delete RLC[k]);
   return RLC[k];
@@ -5913,24 +5916,26 @@ async function restlessItems(hid) {
 async function heroBuilds2(n, hid, me) {
   try {
     const t = t30(), bq = F.b ? `&min_average_badge=${F.b}` : '', t180 = now() - 180 * 86400 - (now() % 3600);
-    const [BS, BP, BM, BR, BA] = await Promise.all([
+    const [BS, BP, BM, BR, BA, BALL] = await Promise.all([
       api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t}&min_matches=${F.b >= 100 ? 10 : 30}${bq}`).catch(() => []),
       api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t}&min_matches=10&min_average_badge=105`).catch(() => []),
       me ? api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t180}&min_matches=1&account_id=${ME.id}`).catch(() => []) : [],
       me ? api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t}&min_matches=1&account_id=${ME.id}`).catch(() => []) : [],
-      me ? api(`builds?author_id=${ME.id}&hero_id=${hid}&only_latest=true`).catch(() => []) : []]);
+      me ? api(`builds?author_id=${ME.id}&hero_id=${hid}&only_latest=true`).catch(() => []) : [],
+      F.b ? api(`analytics/hero-build-stats/${hid}?min_unix_timestamp=${t}&min_matches=30`).catch(() => []) : null]);
+    const BAL = BALL || BS; // 07.11: «★ Рекомендуем» — по всем рангам, одна и та же при любом фильтре ранга
     if (n !== VQ) return;
     const top = (L, k) => L.slice().sort((a, b) => b.matches - a.matches).slice(0, k);
     const have = {}; (BA || []).forEach(b => { if (b && b.hero_build) have[b.hero_build.hero_build_id] = b; });
-    const ids = [...new Set([...top(BS, 40), ...top(BP, 10), ...top(BM, 6), ...top(BR, 3)].map(x => x.hero_build_id))].filter(id => !have[id]);
+    const ids = [...new Set([...top(BS, 40), ...top(BAL, 40), ...top(BP, 10), ...top(BM, 6), ...top(BR, 3)].map(x => x.hero_build_id))].filter(id => !have[id]);
     const raw = (await Promise.all(ids.map(id => api(`builds?build_id=${id}&only_latest=true`).then(r => r && r[0]).catch(() => null)))).concat(Object.values(have));
     if (n !== VQ) return;
-    const by = L => { const o = {}; L.forEach(x => o[x.hero_build_id] = x); return o; }, S1 = by(BS), S2 = by(BP), S3 = by(BM), S4 = by(BR);
+    const by = L => { const o = {}; L.forEach(x => o[x.hero_build_id] = x); return o; }, S1 = by(BS), S2 = by(BP), S3 = by(BM), S4 = by(BR), S5 = by(BAL);
     const auth = raw.filter(Boolean).map(b => b.hero_build.author_account_id).filter(Boolean);
     await Promise.all([steamNames(auth), authRanks(auth)]); if (n !== VQ) return;
     const L = raw.filter(b => b && b.hero_build && b.hero_build.hero_id === hid).map(b => {
       const id = b.hero_build.hero_build_id, st = S1[id], sp = S2[id], sm = S3[id];
-      return {id, b, name: b.hero_build.name || 'Сборка #' + id, author: (SN[b.hero_build.author_account_id] || {}).n || '', aid: b.hero_build.author_account_id, cat: bldCat(b), items: itemsOfBuild(b), st, sp, sm, sr: S4[id],
+      return {id, b, name: b.hero_build.name || 'Сборка #' + id, author: (SN[b.hero_build.author_account_id] || {}).n || '', aid: b.hero_build.author_account_id, cat: bldCat(b), items: itemsOfBuild(b), st, sp, sm, sr: S4[id], al: S5[id], am: S5[id] ? S5[id].matches : 0, awl: S5[id] ? wil(S5[id].wins, S5[id].matches) : 0,
         made: me && b.hero_build.author_account_id === ME.id,
         m: st ? st.matches : 0, wr: st ? 100 * st.wins / st.matches : 0, wl: st ? wil(st.wins, st.matches) : 0, pm: sp ? sp.matches : 0, pwl: sp ? wil(sp.wins, sp.matches) : 0};
     }).filter(x => x.items.length >= 4);
@@ -6882,10 +6887,13 @@ async function heroSay(n, h) {
     au.addEventListener('ended', () => { if (au !== a0) return; tm.push(setTimeout(() => { if (au !== a0) return; full(); box.classList.remove('say'); }, 250)); }, {once: true});
     au.play().catch(() => { if (au === a0) { au = null; full(); box.classList.add('hint'); } });
   };
-  const ua = navigator.userActivation;
-  show(VOK() && (!ua || ua.hasBeenActive));
+  const ua = navigator.userActivation, hk = (/^#h\/(\d+)/.exec(location.hash) || [])[1] || hSlug(h);
+  // 07.11 (Андрей): сменил сборку / «ник ↔ все игроки» на том же герое — фразу заново не запускаем
+  const again = SAYH === hk; SAYH = hk;
+  show(!again && VOK() && (!ua || ua.hasBeenActive));
 }
-addEventListener('hashchange', () => { if (SAY) { SAY(); SAY = null; } });
+let SAYH = '';
+addEventListener('hashchange', () => { const hk = (/^#h\/(\d+)/.exec(location.hash) || [])[1] || ''; if (hk && hk === SAYH) return; SAYH = hk ? SAYH : ''; if (SAY) { SAY(); SAY = null; } });
 
 // ---------- кэш ответов API в браузере (Cache Storage): второй заход и переходы — без ожидания ----------
 // матчи не меняются — неделя; сборки — сутки; аналитика — 3 часа; лидерборд — 30 минут; история и ранг — 2 минуты
@@ -8635,21 +8643,24 @@ function drawBuilds2(hid) {
   if (!HBC || !cats.some(x => x.c === HBC)) HBC = cats.slice().sort((a, b) => b.m - a.m)[0].c;
   const cur = cats.find(x => x.c === HBC), share = c => Math.round(100 * c.m / tot);
   const SRT = {pop: (a, b) => b.m - a.m || b.pm - a.pm, wr: (a, b) => (b.wl || b.pwl) - (a.wl || a.pwl), pro: (a, b) => b.pm - a.pm || b.pwl - a.pwl};
-  const pool = cur.L.filter(x => x.m >= Math.max(40, .04 * cur.m)), rec = (pool.length ? pool : cur.L).slice().sort((a, b) => (b.wl || b.pwl) - (a.wl || a.pwl))[0];
+  // 07.11 (Андрей: «рекомендованный зависит от ранга — нет единого»): одна сборка на героя — как в лайве (l25Rec):
+  // 12 самых популярных за 30 дней по всем рангам → лучшая по винрейту с поправкой на выборку. От ранга и ветки не зависит.
+  const apool = L.filter(x => x.am > 0).sort((a, b) => b.am - a.am).slice(0, 12);
+  const pool = cur.L.filter(x => x.m >= Math.max(40, .04 * cur.m)), rec = apool.length ? apool.slice().sort((a, b) => b.awl - a.awl)[0] : (pool.length ? pool : cur.L).slice().sort((a, b) => (b.wl || b.pwl) - (a.wl || a.pwl))[0];
   const CL = cur.L.filter(x => x !== rec && (HBS !== 'pro' || x.pm >= 10)).sort(SRT[HBS] || SRT.pop), shown = CL.slice(0, HBM);
-  const rst = rec.st || rec.sp, rwr = rst ? 100 * rst.wins / rst.matches : 0;
+  const rst = rec.al || rec.st || rec.sp, rwr = rst ? 100 * rst.wins / rst.matches : 0;
   html += `<div class="b10-cats">${cats.map(c => { const s = share(c), b0 = c.L.slice().sort((a, b) => (b.wl || b.pwl) - (a.wl || a.pwl))[0];
       return `<button type="button" class="b10-cat c-${c.c}${HBC === c.c ? ' on' : ''}" data-c="${c.c}"><span class="b10-cn"><b>${CATI[c.c]}</b><em>${s}%</em></span><i class="b10-bar"><i style="width:${Math.max(3, s)}%"></i></i>
         ${(() => { const cw = c.L.reduce((o, x) => { const st = x.st || x.sp; if (st && st.matches) { o.w += st.wins; o.m += st.matches; } return o; }, {w: 0, m: 0}), wr = cw.m ? 100 * cw.w / cw.m : null;
           return `<span class="b10-cs"><span><small>пикрейт</small><b>${s}%</b></span><span><small>винрейт</small><b class="${wr == null ? '' : wr >= 52 ? 'win' : wr <= 48 ? 'loss' : ''}">${wr == null ? '—' : f1(wr) + '%'}</b></span><span><small>сборок</small><b>${c.L.length}</b></span></span>`; })()}
         ${s < 10 ? '<small>редкая ветка — мало кто так играет</small>' : ''}<span class="ic">${b0.items.slice(0, 6).map(id => `<img src="${esc(item(id).i)}" alt="" loading="lazy" onerror="${noimg}">`).join('')}</span></button>`; }).join('')}</div>
     ${share(cur) < 10 ? `<div class="b10-warn"><b>${CATI[HBC]} собирают только ${share(cur)}% игроков</b><span>Сборок мало, винрейт может врать — смотри с осторожностью.</span></div>` : ''}
-    <div class="b10-rec c-${HBC}"><div class="b10-rl"><span>★ Рекомендуем</span><small>${rst ? `лучший винрейт среди популярных: <b>${f1(rwr)}%</b> на ${nf(rst.matches)} ${pl(rst.matches, ['игре', 'играх', 'играх'])}` : 'лучшая по винрейту'}</small></div>${bCard(rec, '')}</div>
+    <div class="b10-rec c-${rec.cat || HBC}"><div class="b10-rl"><span>★ Рекомендуем</span><small>${rst ? `лучший винрейт среди популярных · все ранги: <b>${f1(rwr)}%</b> на ${nf(rst.matches)} ${pl(rst.matches, ['игре', 'играх', 'играх'])}` : 'лучшая по винрейту'}</small></div>${bCard(rec, '')}</div>
     ${RL ? `<div class="b10-rs"><div class="b10-rl"><span>◆ Restless-сборка</span><small>собрал сайт сам: в каждой фазе — предметы с лучшим винрейтом на этом герое</small></div><div class="q-bcs b10-g">${rlCard(hid, RL, '')}</div></div>` : ''}
     <div class="b10-tb"><div class="b10-h">Другие ${CATI[HBC].toLowerCase()}-сборки<small>${CL.length}</small></div><div class="seg" id="hbs">${[['pop', 'Популярные'], ['wr', 'Винрейт'], ['pro', 'У прошников']].map(([k, nm]) => `<button data-s="${k}" class="${HBS === k ? 'on' : ''}">${nm}</button>`).join('')}</div></div>
     <div class="q-bcs b10-g">${shown.map(x => bCard(x, HBS === 'pro' ? 'pro' : '')).join('') || '<div class="empty">Других нет.</div>'}</div>
     ${CL.length > HBM ? `<button type="button" class="btn g q-more b10-more" data-bmore="1">Показать ещё ${Math.min(6, CL.length - HBM)} из ${CL.length - HBM}</button>` : ''}`;
-  el.innerHTML = html; bindB(hid);
+  el.innerHTML = html; { const r = el.querySelector('.b10-rec'), c = el.querySelector('.b10-cats'); if (r && c) c.before(r); } bindB(hid);
   if (!el._b10) { el._b10 = 1; el.addEventListener('click', e => { if (e.target.closest('[data-bmore]')) { HBM += 6; drawBuilds2(hid); } else if (e.target.closest('[data-c]')) HBM = 6; }, true); }
 }
 { const VH10 = viewHero; viewHero = async function (hid, mode) { HBM = 6; return VH10(hid, mode); }; }

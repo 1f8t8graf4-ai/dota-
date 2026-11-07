@@ -420,10 +420,13 @@ async function heroSay(n, h) {
     au.addEventListener('ended', () => { if (au !== a0) return; tm.push(setTimeout(() => { if (au !== a0) return; full(); box.classList.remove('say'); }, 250)); }, {once: true});
     au.play().catch(() => { if (au === a0) { au = null; full(); box.classList.add('hint'); } });
   };
-  const ua = navigator.userActivation;
-  show(VOK() && (!ua || ua.hasBeenActive));
+  const ua = navigator.userActivation, hk = (/^#h\/(\d+)/.exec(location.hash) || [])[1] || hSlug(h);
+  // 07.11 (Андрей): сменил сборку / «ник ↔ все игроки» на том же герое — фразу заново не запускаем
+  const again = SAYH === hk; SAYH = hk;
+  show(!again && VOK() && (!ua || ua.hasBeenActive));
 }
-addEventListener('hashchange', () => { if (SAY) { SAY(); SAY = null; } });
+let SAYH = '';
+addEventListener('hashchange', () => { const hk = (/^#h\/(\d+)/.exec(location.hash) || [])[1] || ''; if (hk && hk === SAYH) return; SAYH = hk ? SAYH : ''; if (SAY) { SAY(); SAY = null; } });
 
 // ---------- кэш ответов API в браузере (Cache Storage): второй заход и переходы — без ожидания ----------
 // матчи не меняются — неделя; сборки — сутки; аналитика — 3 часа; лидерборд — 30 минут; история и ранг — 2 минуты

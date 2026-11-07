@@ -1,0 +1,581 @@
+ПРОМТЫ «МИКРОДВИЖЕНИЕ» — 07.11
+
+КАК
+
+• Герой: Flow → «Кадры в видео», ПЕРВЫЙ и ПОСЛЕДНИЙ кадр — один и тот же арт 16:9 (кнопка «Кадр»), 8 с, 16:9.
+• Фон: сначала «Фото» (Gemini / Flow, 9:16, выбери лучший из 3–4), потом «Оживить» с этим фото первым и последним кадром.
+• Негатив — в поле Negative prompt, если оно есть; нет — не страшно.
+• Не вышло 2 раза — не дописывай: скинь кадр Claude.
+
+============================================================
+ГЕРОИ (34) — Flow → «Кадры в видео», первый и последний кадр — один арт
+============================================================
+
+■ Rem — двигается: пламя свечи, моргает, кончик колпака
+
+PROMPT:
+Animate this exact painting of Rem from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. He hangs below the big dark-blue pillow he holds above his head: the pillow, his raised arm and his whole body stay exactly in place. The little dark imp at his side stays perfectly still, like painted. The clouds, the moon and the city stay still. The only motion is tiny (a few pixels), slow and smooth: the teal-green candle flame in his other hand flickers gently; it is already burning in the first frame; he blinks once around second 4; the tip of his nightcap stirs slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Grey Talon — двигается: дышит, моргает, коса чуть качается; сова стоит
+
+PROMPT:
+Animate this exact painting of Grey Talon from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The long bow is rigid wood and stays perfectly still. The ghostly green owl at the top right stays perfectly still at its place and size, like painted. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; his long white braid sways a few pixels. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Abrams — двигается: дышит, моргает, воротник
+
+PROMPT:
+Animate this exact painting of Abrams from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The huge revolver is rigid metal and stays perfectly still. The orange shards stay exactly where they are painted. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; the edge of his coat collar stirs slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Apollo — двигается: дышит, моргает, пряди
+
+PROMPT:
+Animate this exact painting of Apollo from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The thin rapier is rigid metal and stays perfectly still and straight. The red slashes are flat painted strokes and stay exactly as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; a few strands of his hair stir slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Baba — двигается: пар из чашки, дышит, моргает; птицы стоят
+
+PROMPT:
+Animate this exact painting of Baba from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. She sits on the bench exactly as drawn and holds the teacup still. The dark bird on her shoulder and every pink pigeon stay perfectly still, like painted. The only motion is tiny (a few pixels), slow and smooth: a thin wisp of steam rises slowly from the teacup; slow, shallow breathing lifts her chest and shoulders very slightly; she blinks once behind her glasses around second 4. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Bebop — двигается: глаза-лампы мягко пульсируют, тряпка на поясе
+
+PROMPT:
+Animate this exact painting of Bebop from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The big robot stands like a statue: his armored body, arms, legs and the big cannon keep their exact shape and place. The only motion is tiny (a few pixels), slow and smooth: the green eye lights and the lamp on his head glow with a soft, slow pulse and never switch off; the rope and the cloth panel at his waist sway a few pixels. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Billy — двигается: дышит, моргает, уши дёрнулись
+
+PROMPT:
+Animate this exact painting of Billy from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The spiked bat on his shoulder is rigid and stays perfectly still. The graffiti behind him stays exactly as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks his glowing yellow eyes once around second 4; his long ears twitch slightly once around second 6. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Calico — двигается: дышит, свечение у руки, серьга; кошка стоит
+
+PROMPT:
+Animate this exact painting of Calico from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The pale cat on her shoulder stays perfectly still, like painted. Her round white goggles keep the same glow. The pink circle behind her stays as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts her chest and shoulders very slightly; the purple glow at her hand pulses softly and slowly; her round earring sways a few pixels. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Doorman — двигается: моргает, блик на пуговицах, пальцы; ключи и кафтан стоят
+
+PROMPT:
+Animate this exact painting of Doorman from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. He keeps his leaping pose: he does not land and does not turn. The key ring in his raised hand stays still with the same number of keys. His wine-red uniform keeps its shape and does not flutter. The yellow rays behind him stay as drawn. The only motion is tiny (a few pixels), slow and smooth: he blinks once around second 4; a soft glint slides once over the brass buttons on his chest around second 6; the fingers of his other raised hand flex very slightly once. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Haze — двигается: дышит, пряди; лицо и маска стоят, без бликов
+
+PROMPT:
+Animate this exact painting of Haze from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. She stands with her back half turned, exactly as drawn; her face and mask stay exactly as painted. The gun is rigid metal and stays perfectly still. The knives on her belt stay as drawn. The pale-yellow circle stays as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts her shoulders very slightly; a few strands of her hair stir slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Holliday — двигается: дышит, моргает, концы шарфа
+
+PROMPT:
+Animate this exact painting of Holliday from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The revolver pointing up is rigid metal and stays perfectly still. Her wide hat keeps its shape. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts her chest and shoulders very slightly; she blinks once around second 4; the ends of her plaid scarf stir slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Infernus — двигается: огонь дрожит на месте, дышит
+
+PROMPT:
+Animate this exact painting of Infernus from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. He keeps his crouching pose, his arm pointing to the left. His red hat keeps its shape. The orange flame shapes stay where they are painted: they never spread, never grow and never fill the picture. The only motion is tiny (a few pixels), slow and smooth: the orange flame shapes flicker slightly in place; slow, shallow breathing lifts his shoulders very slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Ivy — двигается: дышит, моргает, края крыльев
+
+PROMPT:
+Animate this exact painting of Ivy from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. She keeps her crouching pose. The big gun in her hands is rigid metal and stays perfectly still. Her wings stay spread exactly as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts her chest and shoulders very slightly; she blinks once around second 4; the thin edges of her wings flex a few pixels. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Kelvin — двигается: дышит, моргает, мех воротника
+
+PROMPT:
+Animate this exact painting of Kelvin from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The ice gun is rigid metal and stays perfectly still; its blue glow keeps the same size and never becomes a beam. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; the fur of his collar ripples slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Lady Geist — двигается: зелёные струйки у пальцев, дышит, моргает
+
+PROMPT:
+Animate this exact painting of Lady Geist from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. Her pale sculpted hair and the dark fur stole keep their shape. The green glow at her raised hand keeps the same size: it never grows and never shoots out. The only motion is tiny (a few pixels), slow and smooth: thin green wisps curl slowly in place around her fingers; slow, shallow breathing lifts her chest and shoulders very slightly; she blinks slowly once around second 4. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Lash — двигается: дышит, моргает, кулон
+
+PROMPT:
+Animate this exact painting of Lash from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. His body and fists stay exactly as drawn, the same size and outline. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; the pendant on his chest sways a few pixels. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ McGinnis — двигается: дышит, моргает, концы повязки
+
+PROMPT:
+Animate this exact painting of McGinnis from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The machine-gun turret beside her is rigid metal: its barrels never spin. Her goggles stay on her head and her salute stays exactly as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts her chest and shoulders very slightly; she blinks once around second 4; the ends of her red headband stir slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Mina — двигается: дышит, моргает, волосы; зонт и мыши стоят
+
+PROMPT:
+Animate this exact painting of Mina from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The big red umbrella over her shoulder is stiff and stays exactly as drawn: it never closes and never flies. The small red bat shapes are flat painted shapes and never fly. The gun in her hand is rigid metal and stays perfectly still. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts her chest and shoulders very slightly; she blinks once around second 4; her short hair stirs slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Mirage — двигается: дышит, моргает, кисточка и борода
+
+PROMPT:
+Animate this exact painting of Mirage from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The raised pistol is rigid metal and stays perfectly still. The ornate lamp at the right stays exactly as drawn. The purple light stays the same. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; the tassel of his hat and his beard stir slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Mo & Krill — двигается: большой дышит, пыль плывёт; наездник и цепь стоят
+
+PROMPT:
+Animate this exact painting of Mo & Krill from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The big armored figure keeps its leaping pose; its body and claws keep their exact shape and size. The small rider at the top left stays perfectly still, like painted. The heavy chain stays exactly as drawn. The only motion is tiny (a few pixels), slow and smooth: the big figure breathes slowly, its back rising very slightly; the dust behind them drifts very slowly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Nurse Harrow — двигается: лента колышется, моргает
+
+PROMPT:
+Animate this exact painting of Nurse Harrow from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The long dart at the top right is rigid metal and stays perfectly still. The orange ribbon keeps its place and shape. The glowing bag keeps the same brightness. The only motion is tiny (a few pixels), slow and smooth: the orange ribbon ripples gently along its length; she blinks once behind her glasses around second 4. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Paige — двигается: кристаллы пульсируют, моргает, края страниц
+
+PROMPT:
+Animate this exact painting of Paige from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The stack of books keeps its shape and number; the open book stays open; the green crystals keep their place and size. The only motion is tiny (a few pixels), slow and smooth: the green crystals glow with a soft, slow pulse; she blinks once behind her round glasses around second 4; the edges of the open pages flutter slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Paradox — двигается: щель шлема пульсирует, дышит; без бликов
+
+PROMPT:
+Animate this exact painting of Paradox from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The long rifle is rigid metal and stays perfectly still. Her black helmet keeps its shape and stays exactly as painted. The clock shapes behind her are flat painted shapes and never turn. The only motion is tiny (a few pixels), slow and smooth: the pink slit on the helmet glows with a soft, slow pulse; slow, shallow breathing lifts her shoulders very slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Pocket — двигается: шарф качается, моргает
+
+PROMPT:
+Animate this exact painting of Pocket from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The case in his hand is stiff and stays perfectly still. The yellow-green glow at the right keeps its size. The only motion is tiny (a few pixels), slow and smooth: his long scarf sways a few pixels; he blinks once around second 4. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Seven — двигается: свечение на груди, ремни; без искр
+
+PROMPT:
+Animate this exact painting of Seven from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The big figure keeps its pose and size. The round metal ring on top is rigid and stays perfectly still. The yellow burst behind it stays as drawn. The only motion is tiny (a few pixels), slow and smooth: the yellow glow on its chest pulses softly and slowly; the straps on its arms sway a few pixels. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Shiv — двигается: дышит, моргает, волосы
+
+PROMPT:
+Animate this exact painting of Shiv from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. He keeps his lunging pose. The big cleaver blade is rigid metal and stays perfectly still. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; his hair stirs slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Silver — двигается: дышит, моргает, волосы; волк стоит
+
+PROMPT:
+Animate this exact painting of Silver from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The big wolf behind her stays perfectly still, like painted: it never moves and never opens its mouth. The red circle stays as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts her chest and shoulders very slightly; she blinks once around second 4; her long white hair sways a few pixels. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Sinclair — двигается: дышит, фалды, пальцы
+
+PROMPT:
+Animate this exact painting of Sinclair from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The raised wand is a stiff stick and stays perfectly still. His top hat keeps its shape. The white circle behind him stays as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; the tails of his coat stir slightly; his white gloved fingers flex very slightly once. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Solomon — двигается: дышит, моргает, свечение за головой
+
+PROMPT:
+Animate this exact painting of Solomon from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The chess board and every chess piece stay exactly where they are; no piece moves. The ring of chess pieces behind his head stays as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; the soft glow behind his head pulses slowly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Vindicta — двигается: волосы плывут, моргает
+
+PROMPT:
+Animate this exact painting of Vindicta from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The long rifle is rigid metal and stays perfectly still. The only motion is tiny (a few pixels), slow and smooth: her long pale-blue hair drifts slowly a few pixels; she blinks once around second 4. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Violet — двигается: дышит, моргает, края листов
+
+PROMPT:
+Animate this exact painting of Violet from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The papers around her stay exactly where they are painted and never fly. The purple brush stroke stays as drawn. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts her chest and shoulders very slightly; she blinks once around second 4; the edges of the papers flutter slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Viscous — двигается: пузырьки внутри, моргает
+
+PROMPT:
+Animate this exact painting of Viscous from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. His green body and round helmet keep their exact shape and size: the body never melts, stretches or wobbles. The gun is rigid metal and stays perfectly still. The green dots stay exactly as drawn. The only motion is tiny (a few pixels), slow and smooth: a few small bubbles drift slowly upward inside his green body; he blinks his two black eyes once around second 4. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Warden — двигается: дышит, моргает, кисти шнура
+
+PROMPT:
+Animate this exact painting of Warden from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. He stands like a statue. The big metal case on his shoulder, the braided cord and his helmet with the badge keep their exact shape. The only motion is tiny (a few pixels), slow and smooth: slow, shallow breathing lifts his chest and shoulders very slightly; he blinks once around second 4; the tassels of the cord stir slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+■ Yamato — двигается: свечение клинка, моргает, капюшон
+
+PROMPT:
+Animate this exact painting of Yamato from the game Deadlock for 8 seconds as a living portrait with only micro-motion: it should look almost like a still image that is quietly alive. Locked camera: no zoom, no pan, no tilt, no cuts. Keep the whole 16:9 frame exactly as painted: the same framing, character, pose, face, expression, colors and painted style; nothing is redrawn, cropped, extended or moved, and the soft blurred sides stay still. The long sword is rigid metal and stays perfectly still. Her golden armor keeps its shape. The red circle stays as drawn. The only motion is tiny (a few pixels), slow and smooth: the blue glow along the blade pulses softly and slowly; she blinks once around second 4; the fabric of her tall hood stirs slightly. Nothing else moves at all. No new objects, creatures, sparkles, particles or effects; the light and colors stay exactly the same; no talking, the mouth stays as drawn. In the last second everything settles back to exactly the first frame, so the clip loops seamlessly.
+
+NEGATIVE:
+camera movement, zoom, pan, tilt, crop, new pose, head turning, turning to the camera, talking, mouth moving, face change, expression change, smiling, morphing, warping, melting, extra limbs or fingers, new objects, new creatures, a creature moving or flying, sparkles, magic effects, glowing rings, light changes, color changes, style change, 3D render look, text, watermark, flicker, fast movement, weapons bending or moving
+
+------------------------------------------------------------
+
+============================================================
+ФОНЫ (15) — сначала «Фото», потом «Оживить»
+============================================================
+
+■ Волк с Уолл-стрит — двигается: рыбка плавает
+
+ФОТО (9:16):
+A round glass fishbowl with one orange goldfish and an open champagne bottle with a half-full glass on the nearest desk, on the left of the frame. Behind them the camera looks deep into a huge trading floor of a 1990s brokerage firm at night right after a wild office party, nobody there: long rows of desks going far back, hundreds of boxy monitors glowing with small green digits, confetti and streamers on the desks and the carpet, loosened ties and suit jackets thrown over chairs, a long green ticker band on the far wall. Camera at seated eye level. Light: warm brass desk lamps and the green glow of the screens. Mood: money, excess and a hangover. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text or logos; only small blurry green digits on the screens.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the goldfish swims slowly in its bowl. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A round glass fishbowl with one orange goldfish and an open champagne bottle with a half-full glass on the nearest desk, on the left of the frame. Behind them the camera looks deep into a huge trading floor of a 1990s brokerage firm at night right after a wild office party, nobody there: long rows of desks going far back, hundreds of boxy monitors glowing with small green digits, confetti and streamers on the desks and the carpet, loosened ties and suit jackets thrown over chairs, a long green ticker band on the far wall. Camera at seated eye level. Light: warm brass desk lamps and the green glow of the screens. Mood: money, excess and a hangover. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the goldfish swims slowly in its bowl. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Американский психопат — двигается: пластинка крутится
+
+ФОТО (9:16):
+A white Manhattan penthouse apartment in 1987 at night, nobody there, seen at eye level from the back of the living room. The whole white floor and the long white leather sofa are carefully covered with spread newspapers, as if someone prepared the room for something messy. On a low white cabinet on the left: a silver stereo with glowing green level meters and a record turntable with a vinyl record on it. A transparent plastic raincoat is thrown over the arm of the sofa. On the newspapers on the floor in front of the sofa lies one ordinary fire axe: a single red steel head with one blade and a long plain wooden handle, lying flat. Behind the sofa, tall windows show the Manhattan skyline at night. Light: one warm floor lamp in the room and the cool city glow; clean dry glass. Mood: perfect, sterile, expensive, and something horrible is about to happen. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the vinyl record spins slowly on the turntable. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A white Manhattan penthouse apartment in 1987 at night, nobody there, seen at eye level from the back of the living room. The whole white floor and the long white leather sofa are carefully covered with spread newspapers, as if someone prepared the room for something messy. On a low white cabinet on the left: a silver stereo with glowing green level meters and a record turntable with a vinyl record on it. A transparent plastic raincoat is thrown over the arm of the sofa. On the newspapers on the floor in front of the sofa lies one ordinary fire axe: a single red steel head with one blade and a long plain wooden handle, lying flat. Behind the sofa, tall windows show the Manhattan skyline at night. Light: one warm floor lamp in the room and the cool city glow; clean dry glass. Mood: perfect, sterile, expensive, and something horrible is about to happen. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the vinyl record spins slowly on the turntable. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Таксист — двигается: пар из люка
+
+ФОТО (9:16):
+A street in 1970s New York at night right after the rain, seen from the sidewalk at eye level, nobody around. On the left, a yellow 1970s taxi cab stands at the curb with its headlights on. The street goes far into the distance between old buildings with glowing red and pink neon signs of movie theaters and bars, all unreadable and blurry. Thick steam rises from a manhole in the middle of the street. The wet asphalt mirrors all the neon. Light: neon and old street lamps. Mood: dirty, lonely and feverish. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: steam rises slowly from the manhole. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A street in 1970s New York at night right after the rain, seen from the sidewalk at eye level, nobody around. On the left, a yellow 1970s taxi cab stands at the curb with its headlights on. The street goes far into the distance between old buildings with glowing red and pink neon signs of movie theaters and bars, all unreadable and blurry. Thick steam rises from a manhole in the middle of the street. The wet asphalt mirrors all the neon. Light: neon and old street lamps. Mood: dirty, lonely and feverish. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: steam rises slowly from the manhole. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Титаник — двигается: море и блики
+
+ФОТО (9:16):
+The bow of a huge 1912 four-funnel ocean liner at sunset, seen from the water slightly ahead and to the side, the camera low near the waves. The sharp black bow with its white railing at the very tip cuts through the sea toward the camera; behind it the long black hull and white superstructure stretch back, with the four tall buff funnels with black tops against a golden-orange sky. The decks are empty. Light: low golden sunset light from behind the ship, the sea glittering. Shot like a frame from a 1990s film, nothing glossy. Mood: grandeur and romance, the most famous moment on the ship. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the sea moves gently: small waves and golden glints on the water; the ship stays exactly in place. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: The bow of a huge 1912 four-funnel ocean liner at sunset, seen from the water slightly ahead and to the side, the camera low near the waves. The sharp black bow with its white railing at the very tip cuts through the sea toward the camera; behind it the long black hull and white superstructure stretch back, with the four tall buff funnels with black tops against a golden-orange sky. The decks are empty. Light: low golden sunset light from behind the ship, the sea glittering. Shot like a frame from a 1990s film, nothing glossy. Mood: grandeur and romance, the most famous moment on the ship. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the sea moves gently: small waves and golden glints on the water; the ship stays exactly in place. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Бункер — двигается: отсвет огня на стенах
+
+ФОТО (9:16):
+The wide main avenue in the center of Berlin at dusk in April 1945, seen at eye level from the rubble, nobody around. On both sides, the burned-out shells of big old stone buildings with empty window holes; broken bricks and twisted metal on the road; fires glow orange inside some of the ruins. At the far end of the avenue stands the damaged Brandenburg Gate with its columns. A dark red sky above. No flags, symbols or insignia. Light: fire glow only. Mood: red, black and ash grey; the end of everything. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the fire glow flickers softly on the broken walls. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: The wide main avenue in the center of Berlin at dusk in April 1945, seen at eye level from the rubble, nobody around. On both sides, the burned-out shells of big old stone buildings with empty window holes; broken bricks and twisted metal on the road; fires glow orange inside some of the ruins. At the far end of the avenue stands the damaged Brandenburg Gate with its columns. A dark red sky above. No flags, symbols or insignia. Light: fire glow only. Mood: red, black and ash grey; the end of everything. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the fire glow flickers softly on the broken walls. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Клан Сопрано — двигается: рябь, утки покачиваются
+
+ФОТО (9:16):
+The backyard of a big suburban New Jersey house on a spring morning, nobody around, seen from the edge of the swimming pool at eye level. On the water: a wild mallard duck and three ducklings. On the stone edge of the pool: a lounge chair with a white bathrobe and a folded newspaper, and a plate with slices of white bread for the ducks. Behind: a wide green lawn, tall old trees and the big white two-storey house. Light: soft morning sun through the trees. Mood: a calm family morning that feels fragile. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the water ripples gently with sun glints; the ducks float, rocking very slightly in place. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: The backyard of a big suburban New Jersey house on a spring morning, nobody around, seen from the edge of the swimming pool at eye level. On the water: a wild mallard duck and three ducklings. On the stone edge of the pool: a lounge chair with a white bathrobe and a folded newspaper, and a plate with slices of white bread for the ducks. Behind: a wide green lawn, tall old trees and the big white two-storey house. Light: soft morning sun through the trees. Mood: a calm family morning that feels fragile. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the water ripples gently with sun glints; the ducks float, rocking very slightly in place. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Клан Сопрано — двигается: пыль в луче лампы
+
+ФОТО (9:16):
+A small old wooden horse barn in the New Jersey countryside at night, nobody around, seen at eye level down the aisle. In the foreground stall, sharp: a beautiful bay racehorse mare with a white blaze, standing calmly with her head over the half-door. A single bulb in a metal cage hangs above the stall door. Stacked hay bales along the wooden wall, and in the corner next to the hay an old electric space heater with glowing orange coils. A horse blanket and a bridle hang on nails. Behind, out of focus: the dark aisle and an open barn door with the night outside. Light: the warm bulb and the orange glow of the heater. Mood: warm and quiet, loved and fragile, as if something bad will happen tonight. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: fine hay dust drifts slowly in the beam of the bulb; the mare stands perfectly still. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A small old wooden horse barn in the New Jersey countryside at night, nobody around, seen at eye level down the aisle. In the foreground stall, sharp: a beautiful bay racehorse mare with a white blaze, standing calmly with her head over the half-door. A single bulb in a metal cage hangs above the stall door. Stacked hay bales along the wooden wall, and in the corner next to the hay an old electric space heater with glowing orange coils. A horse blanket and a bridle hang on nails. Behind, out of focus: the dark aisle and an open barn door with the night outside. Light: the warm bulb and the orange glow of the heater. Mood: warm and quiet, loved and fragile, as if something bad will happen tonight. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: fine hay dust drifts slowly in the beam of the bulb; the mare stands perfectly still. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Клан Сопрано — двигается: пар над кофе
+
+ФОТО (9:16):
+Inside a small old New Jersey diner at night, nobody there, seen from a booth at seated eye level. On the table in the foreground: a basket of onion rings, a white mug of coffee and a small chrome tabletop jukebox selector with glowing song cards that cannot be read. Behind: the long counter with round chrome stools and, at the far end, the glass entrance door with a small bell above it and red neon outside in the dark. Light: warm diner lamps. Mood: an ordinary family evening that feels like the last one. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: a thin wisp of steam rises slowly from the coffee cup. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: Inside a small old New Jersey diner at night, nobody there, seen from a booth at seated eye level. On the table in the foreground: a basket of onion rings, a white mug of coffee and a small chrome tabletop jukebox selector with glowing song cards that cannot be read. Behind: the long counter with round chrome stools and, at the far end, the glass entrance door with a small bell above it and red neon outside in the dark. Light: warm diner lamps. Mood: an ordinary family evening that feels like the last one. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: a thin wisp of steam rises slowly from the coffee cup. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Во все тяжкие — двигается: брюки и трава на ветру
+
+ФОТО (9:16):
+The New Mexico desert at golden hour, nobody around, seen at eye level from a dirt road. In the middle distance: an old 1980s white motorhome with faded brown stripes parked on the dirt road, its side door open, a yellow protective suit thrown on the metal step. In the near right corner: a pair of khaki trousers caught on a dry desert shrub. Around: endless flat desert, red mesas on the horizon and a huge sky with tall clouds. Light: low warm sun, long shadows. Mood: sun-baked yellow; a small man in a huge dangerous land. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the khaki trousers and the dry grass sway slightly in the hot wind. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: The New Mexico desert at golden hour, nobody around, seen at eye level from a dirt road. In the middle distance: an old 1980s white motorhome with faded brown stripes parked on the dirt road, its side door open, a yellow protective suit thrown on the metal step. In the near right corner: a pair of khaki trousers caught on a dry desert shrub. Around: endless flat desert, red mesas on the horizon and a huge sky with tall clouds. Light: low warm sun, long shadows. Mood: sun-baked yellow; a small man in a huge dangerous land. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the khaki trousers and the dry grass sway slightly in the hot wind. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Во все тяжкие — двигается: блики в бассейне
+
+ФОТО (9:16):
+A backyard swimming pool in Albuquerque at dawn, nobody around, seen at eye level from the patio. On the water, a little off center: a pink plush teddy bear, half burned and missing one eye, floating face up. Behind the pool: a low stucco wall, the flat roofs of the suburb and the long Sandia mountains glowing pink in the distance. Light: cold pale dawn, the pool glowing softly. Mood: quiet; something terrible has happened. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: light patterns move gently on the pool walls and the water ripples softly; the teddy bear floats, rocking very slightly in place. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A backyard swimming pool in Albuquerque at dawn, nobody around, seen at eye level from the patio. On the water, a little off center: a pink plush teddy bear, half burned and missing one eye, floating face up. Behind the pool: a low stucco wall, the flat roofs of the suburb and the long Sandia mountains glowing pink in the distance. Light: cold pale dawn, the pool glowing softly. Mood: quiet; something terrible has happened. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: light patterns move gently on the pool walls and the water ripples softly; the teddy bear floats, rocking very slightly in place. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Во все тяжкие — двигается: пар из клапана
+
+ФОТО (9:16):
+A huge underground industrial lab, nobody there, seen at eye level from the entrance. Rows of tall polished stainless-steel tanks and pipes go far back, with metal catwalks above. On the left, close: yellow protective suits with gas masks hanging on hooks. On a steel table in the middle: shallow metal trays filled with broken sky-blue crystal. Light: bright cold work lamps and small green and red indicator lights. Mood: clean, cold, enormous and secret. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: thin steam rises slowly from one valve on a tank. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A huge underground industrial lab, nobody there, seen at eye level from the entrance. Rows of tall polished stainless-steel tanks and pipes go far back, with metal catwalks above. On the left, close: yellow protective suits with gas masks hanging on hooks. On a steel table in the middle: shallow metal trays filled with broken sky-blue crystal. Light: bright cold work lamps and small green and red indicator lights. Mood: clean, cold, enormous and secret. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: thin steam rises slowly from one valve on a tank. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Во все тяжкие — двигается: трава на ветру
+
+ФОТО (9:16):
+A big junkyard in the New Mexico desert at dusk, nobody around, seen at eye level. In the middle: an open box truck with a huge round industrial electromagnet inside, cables hanging from it, and a tall work light on a pole. Rows and stacks of rusty crushed cars go far back toward blue mountains under a pink sky; a radio tower with a red light far away. Light: the last pink daylight and one cold work light. Mood: tired, tough and dangerous. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the dry grass waves gently in the wind. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A big junkyard in the New Mexico desert at dusk, nobody around, seen at eye level. In the middle: an open box truck with a huge round industrial electromagnet inside, cables hanging from it, and a tall work light on a pole. Rows and stacks of rusty crushed cars go far back toward blue mountains under a pink sky; a radio tower with a red light far away. Light: the last pink daylight and one cold work light. Mood: tired, tough and dangerous. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the dry grass waves gently in the wind. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Павел Дуров — двигается: занавеска
+
+ФОТО (9:16):
+A tall open window high up in an old building in the center of St. Petersburg during the white nights, the room empty. In the foreground, sharp, on the wide stone windowsill: a row of small paper airplanes folded from worn orange-red banknotes, their noses pointing out of the window, and one plain white paper airplane in the center, a little ahead of the others; a sheer white curtain at the side. Far below, out of focus: a wide old avenue with tiny glowing street lamps and a cathedral with a curved stone colonnade under a pale blue-pink sky. Light: the pale white-night sky and warm lamps below. Mood: young, free and defiant. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the sheer curtain sways slowly in the breeze. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A tall open window high up in an old building in the center of St. Petersburg during the white nights, the room empty. In the foreground, sharp, on the wide stone windowsill: a row of small paper airplanes folded from worn orange-red banknotes, their noses pointing out of the window, and one plain white paper airplane in the center, a little ahead of the others; a sheer white curtain at the side. Far below, out of focus: a wide old avenue with tiny glowing street lamps and a cathedral with a curved stone colonnade under a pale blue-pink sky. Light: the pale white-night sky and warm lamps below. Mood: young, free and defiant. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the sheer curtain sways slowly in the breeze. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Clavicular — двигается: пальмы за окном
+
+ФОТО (9:16):
+The bathroom of a Miami high-rise apartment at night, turned into a looksmaxxing station, empty. In the foreground, sharp, on a white marble counter: a glass bowl of ice cubes, a microneedling derma roller, a silicone jaw exerciser and a few skincare bottles with no labels; a smartphone on a small tripod with a glowing ring light. Behind, out of focus: a big mirror framed with round bulbs reflecting only the dark room and a small window with Miami towers, palm trees and pink-purple neon. Light: warm mirror bulbs, the ring light and pink-purple neon. Mood: clinical white and hot pink; obsession with the mirror. Vertical 9:16. A real 35mm film photograph: natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: the palm trees outside the small window sway slowly in the wind. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: The bathroom of a Miami high-rise apartment at night, turned into a looksmaxxing station, empty. In the foreground, sharp, on a white marble counter: a glass bowl of ice cubes, a microneedling derma roller, a silicone jaw exerciser and a few skincare bottles with no labels; a smartphone on a small tripod with a glowing ring light. Behind, out of focus: a big mirror framed with round bulbs reflecting only the dark room and a small window with Miami towers, palm trees and pink-purple neon. Light: warm mirror bulbs, the ring light and pink-purple neon. Mood: clinical white and hot pink; obsession with the mirror. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: the palm trees outside the small window sway slowly in the wind. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------
+
+■ Клан Сопрано · кухня Ральфа — двигается: пар из кастрюли
+
+ФОТО (9:16):
+A suburban New Jersey kitchen in 2002 at night, right after a fight, nobody there, seen at eye level from the doorway. On the beige tile floor, sharp: a kitchen chair knocked over on its side, a frying pan upside down, a yellow spray can of bug spray with no label, and a man's dark hairpiece lying on the tiles. On the stove behind: a pot of pasta sauce simmering with a little steam. A round clock on the wall, a dripping faucet over the sink, cabinets of light wood. Light: the cold ceiling light of the kitchen and the dark window. Mood: sudden silence after something terrible; ordinary home, wrong at once. Vertical 9:16. Looks like a frame from a 1990s film shot on 35mm: light from real lamps and the sky, rich contrast, slightly faded colors, visible film grain, deep focus, real-world scale. Not CGI, not a 3D render, not a miniature, not a stock photo, not an interior-design render; nothing is arranged for display; no perfect symmetry. No people, no hands, no faces, no text, letters, numbers or logos anywhere.
+
+ОЖИВИТЬ:
+Animate this exact image for 8 seconds as a cinemagraph: only one thing moves, everything else is frozen like a photograph. Locked camera: no zoom, no pan, no cuts. Only this moves, slowly and continuously: a thin wisp of steam rises slowly from the pot on the stove. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears; no people. The last frame is identical to the first frame, so the video loops seamlessly. No smoke, fog or mist.
+
+NEGATIVE:
+people, hands, faces, camera movement, zoom, pan, cuts, objects moving, objects appearing or disappearing, light changes, flicker, smoke, fog, mist, rain on glass, text, logos, letters, CGI, 3D render, plastic look
+
+файл: An 8-second vertical 9:16 video, one continuous shot. The camera is locked off: no zoom, no pan, no cuts. The scene: A suburban New Jersey kitchen in 2002 at night, right after a fight, nobody there, seen at eye level from the doorway. On the beige tile floor, sharp: a kitchen chair knocked over on its side, a frying pan upside down, a yellow spray can of bug spray with no label, and a man's dark hairpiece lying on the tiles. On the stove behind: a pot of pasta sauce simmering with a little steam. A round clock on the wall, a dripping faucet over the sink, cabinets of light wood. Light: the cold ceiling light of the kitchen and the dark window. Mood: sudden silence after something terrible; ordinary home, wrong at once. This is a cinemagraph, like a photograph that is quietly alive: only one thing moves, slowly and continuously: a thin wisp of steam rises slowly from the pot on the stove. Everything else stays perfectly still. The light does not change. Nothing new appears and nothing disappears. The last frame is identical to the first frame, so the video loops seamlessly. Look: real 35mm film footage, natural light, soft film grain, real materials with small imperfections, real-world sizes; not CGI, not a 3D render, not glossy. Shallow depth of field: the foreground is sharp, the background is softly out of focus. No people, no hands, no faces, no text, letters or logos anywhere. No smoke, fog or mist. No rain streaks or water drops on any window glass. No music, no voices.
+
+------------------------------------------------------------

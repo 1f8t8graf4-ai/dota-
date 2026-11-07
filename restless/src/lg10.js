@@ -174,21 +174,24 @@ function drawBuilds2(hid) {
   if (!HBC || !cats.some(x => x.c === HBC)) HBC = cats.slice().sort((a, b) => b.m - a.m)[0].c;
   const cur = cats.find(x => x.c === HBC), share = c => Math.round(100 * c.m / tot);
   const SRT = {pop: (a, b) => b.m - a.m || b.pm - a.pm, wr: (a, b) => (b.wl || b.pwl) - (a.wl || a.pwl), pro: (a, b) => b.pm - a.pm || b.pwl - a.pwl};
-  const pool = cur.L.filter(x => x.m >= Math.max(40, .04 * cur.m)), rec = (pool.length ? pool : cur.L).slice().sort((a, b) => (b.wl || b.pwl) - (a.wl || a.pwl))[0];
+  // 07.11 (Андрей: «рекомендованный зависит от ранга — нет единого»): одна сборка на героя — как в лайве (l25Rec):
+  // 12 самых популярных за 30 дней по всем рангам → лучшая по винрейту с поправкой на выборку. От ранга и ветки не зависит.
+  const apool = L.filter(x => x.am > 0).sort((a, b) => b.am - a.am).slice(0, 12);
+  const pool = cur.L.filter(x => x.m >= Math.max(40, .04 * cur.m)), rec = apool.length ? apool.slice().sort((a, b) => b.awl - a.awl)[0] : (pool.length ? pool : cur.L).slice().sort((a, b) => (b.wl || b.pwl) - (a.wl || a.pwl))[0];
   const CL = cur.L.filter(x => x !== rec && (HBS !== 'pro' || x.pm >= 10)).sort(SRT[HBS] || SRT.pop), shown = CL.slice(0, HBM);
-  const rst = rec.st || rec.sp, rwr = rst ? 100 * rst.wins / rst.matches : 0;
+  const rst = rec.al || rec.st || rec.sp, rwr = rst ? 100 * rst.wins / rst.matches : 0;
   html += `<div class="b10-cats">${cats.map(c => { const s = share(c), b0 = c.L.slice().sort((a, b) => (b.wl || b.pwl) - (a.wl || a.pwl))[0];
       return `<button type="button" class="b10-cat c-${c.c}${HBC === c.c ? ' on' : ''}" data-c="${c.c}"><span class="b10-cn"><b>${CATI[c.c]}</b><em>${s}%</em></span><i class="b10-bar"><i style="width:${Math.max(3, s)}%"></i></i>
         ${(() => { const cw = c.L.reduce((o, x) => { const st = x.st || x.sp; if (st && st.matches) { o.w += st.wins; o.m += st.matches; } return o; }, {w: 0, m: 0}), wr = cw.m ? 100 * cw.w / cw.m : null;
           return `<span class="b10-cs"><span><small>пикрейт</small><b>${s}%</b></span><span><small>винрейт</small><b class="${wr == null ? '' : wr >= 52 ? 'win' : wr <= 48 ? 'loss' : ''}">${wr == null ? '—' : f1(wr) + '%'}</b></span><span><small>сборок</small><b>${c.L.length}</b></span></span>`; })()}
         ${s < 10 ? '<small>редкая ветка — мало кто так играет</small>' : ''}<span class="ic">${b0.items.slice(0, 6).map(id => `<img src="${esc(item(id).i)}" alt="" loading="lazy" onerror="${noimg}">`).join('')}</span></button>`; }).join('')}</div>
     ${share(cur) < 10 ? `<div class="b10-warn"><b>${CATI[HBC]} собирают только ${share(cur)}% игроков</b><span>Сборок мало, винрейт может врать — смотри с осторожностью.</span></div>` : ''}
-    <div class="b10-rec c-${HBC}"><div class="b10-rl"><span>★ Рекомендуем</span><small>${rst ? `лучший винрейт среди популярных: <b>${f1(rwr)}%</b> на ${nf(rst.matches)} ${pl(rst.matches, ['игре', 'играх', 'играх'])}` : 'лучшая по винрейту'}</small></div>${bCard(rec, '')}</div>
+    <div class="b10-rec c-${rec.cat || HBC}"><div class="b10-rl"><span>★ Рекомендуем</span><small>${rst ? `лучший винрейт среди популярных · все ранги: <b>${f1(rwr)}%</b> на ${nf(rst.matches)} ${pl(rst.matches, ['игре', 'играх', 'играх'])}` : 'лучшая по винрейту'}</small></div>${bCard(rec, '')}</div>
     ${RL ? `<div class="b10-rs"><div class="b10-rl"><span>◆ Restless-сборка</span><small>собрал сайт сам: в каждой фазе — предметы с лучшим винрейтом на этом герое</small></div><div class="q-bcs b10-g">${rlCard(hid, RL, '')}</div></div>` : ''}
     <div class="b10-tb"><div class="b10-h">Другие ${CATI[HBC].toLowerCase()}-сборки<small>${CL.length}</small></div><div class="seg" id="hbs">${[['pop', 'Популярные'], ['wr', 'Винрейт'], ['pro', 'У прошников']].map(([k, nm]) => `<button data-s="${k}" class="${HBS === k ? 'on' : ''}">${nm}</button>`).join('')}</div></div>
     <div class="q-bcs b10-g">${shown.map(x => bCard(x, HBS === 'pro' ? 'pro' : '')).join('') || '<div class="empty">Других нет.</div>'}</div>
     ${CL.length > HBM ? `<button type="button" class="btn g q-more b10-more" data-bmore="1">Показать ещё ${Math.min(6, CL.length - HBM)} из ${CL.length - HBM}</button>` : ''}`;
-  el.innerHTML = html; bindB(hid);
+  el.innerHTML = html; { const r = el.querySelector('.b10-rec'), c = el.querySelector('.b10-cats'); if (r && c) c.before(r); } bindB(hid);
   if (!el._b10) { el._b10 = 1; el.addEventListener('click', e => { if (e.target.closest('[data-bmore]')) { HBM += 6; drawBuilds2(hid); } else if (e.target.closest('[data-c]')) HBM = 6; }, true); }
 }
 { const VH10 = viewHero; viewHero = async function (hid, mode) { HBM = 6; return VH10(hid, mode); }; }
