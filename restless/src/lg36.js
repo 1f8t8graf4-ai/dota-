@@ -110,7 +110,7 @@ function z36Gr() {
   const tabs = [['time', 'По ходу матча'], ['who', 'Кто кого бил'], ['src', 'Чем бил']];
   let right;
   if (Z36.gm === 'who') right = z36Who();
-  else if (Z36.gm === 'src') { const h = mDm(), m = h.match(/<div class="qs-box"><div class="qs-bh"><b>Чем бил<\/b>[\s\S]*$/); right = m ? m[0].replace(/<\/div><\/div>\s*$/, '</div>') : '<div class="empty">Нет разбивки урона.</div>'; }
+  else if (Z36.gm === 'src') right = z36Src(sel);
   else right = `<div class="z36-ct"><b>${K[1]}</b><div class="seg sm">${[['pl', 'Игроки'], ['tm', 'Команды']].map(([k, n]) => `<button type="button" data-z36g="${k}" class="${Z36.gt === k ? 'on' : ''}">${n}</button>`).join('')}</div></div>
     ${z36Chart('m', S, {h: 430, name: K[1]})}<div class="z36-ct sm"><b>Перевес по душам</b><span class="t0">${TEAMN[0]} ↑</span><span class="t1">${TEAMN[1]} ↓</span></div>${z36Chart('ld', [LD], {h: 150, mid: 1, nox: 1, name: 'Перевес'})}`;
   return `<div class="z36-gr">${z36Table()}<section class="q-box z36-rt"><nav class="z36-tabs">${tabs.map(([k, n]) => `<button type="button" data-z36m="${k}" class="${Z36.gm === k ? 'on' : ''}">${n}</button>`).join('')}</nav>${right}</section></div>`;
@@ -202,3 +202,26 @@ document.addEventListener('click', e => {
   const g = e.target.closest('[data-z36g]'); if (g) { Z36.gt = g.dataset.z36g; mBody(); return; }
   const t = e.target.closest('[data-z36t]'); if (t && Z36.lpaint && $('#z36sl')) { z36Stop(); const pb = $('#z36pl'); if (pb) pb.textContent = '▶'; Z36.lpaint(+t.dataset.z36t); }
 });
+
+// «Чем бил»: у умений не было значков — ищем значок умения героя по словам имени (bebop_laser_beam ↔ bebop_hyper_beam), иначе — лицо героя
+function z36SrcName(src, h) {
+  const r = srcNice(src); if (r[2] || r[1] === 'i' || !h) return r;
+  if (r[1] === 'w' || r[1] === 'm') return [r[0], r[1], h.i || ''];
+  const toks = t => String(t || '').toLowerCase().replace(/^(citadel_ability_|citadel_weapon_|ability_|upgrade_|citadel_)/, '').split(/[_\s/]+/).filter(w => w.length >= 3 && !/^(set|crit|melee|ability|citadel)$/.test(w));
+  const hn = String(h.n || '').toLowerCase().split(/\s+/), T = toks(src).filter(w => !hn.includes(w));
+  let best = null, bs = 0;
+  (h.ab || []).forEach(a => { const A = toks((a.i || '').split('/').pop().replace('.webp', '')).concat(toks(a.n)).filter(w => !hn.includes(w));
+    const sc = T.reduce((n, w) => n + (A.some(x => x === w || (w.length >= 4 && x.length >= 4 && (x.startsWith(w.slice(0, 5)) || w.startsWith(x.slice(0, 5))))) ? 1 : 0), 0);
+    if (sc > bs) { bs = sc; best = a; } });
+  if (best) return [best.n, 'a', best.i];
+  return [r[0] === 'Ability' ? 'Другие умения' : r[0], 'a', h.i || ''];
+}
+function z36Src(p) {
+  const X = MX, dm = X.mi.damage_matrix, src = {}, h = hero(p.hero_id);
+  if (dm && dm.damage_dealers) { const st = dm.source_details.stat_type, nm = dm.source_details.source_name, dd = dm.damage_dealers.find(x => x.dealer_player_slot === p.player_slot), foes = new Set(X.P.filter(q => teamOf(q.team) !== teamOf(p.team)).map(q => q.player_slot));
+    (dd ? dd.damage_sources : []).forEach(s => { if (st[s.source_details_index] !== 0) return; const v = (s.damage_to_players || []).filter(z => foes.has(z.target_player_slot)).reduce((a, z) => a + ((z.damage || [])[z.damage.length - 1] || 0), 0); if (!v) return;
+      const [n2, kind, ic] = z36SrcName(nm[s.source_details_index], h); const o = src[n2] = src[n2] || {n: n2, kind, ic, v: 0}; o.v += v; }); }
+  const SL = Object.values(src).sort((a, b) => b.v - a.v), sum = SL.reduce((a, x) => a + x.v, 0) || 1, KC = {w: 'Оружие', a: 'Умение', i: 'Предмет', m: 'Ближний бой'};
+  if (!SL.length) return '<div class="empty">В этом матче игра не отдала разбивку урона.</div>';
+  return `<div class="z36-sh">${esc(pname(p))} · ${esc(h.n)} · всего ${kfm(sum)}</div>${SL.slice(0, 8).map((x, i) => `<div class="z36-src"><em>${i + 1}</em>${x.ic ? `<img src="${esc(x.ic)}" alt="" loading="lazy">` : '<i></i>'}<span><b>${esc(x.n)}</b><small>${KC[x.kind] || ''} · ${kfm(x.v)}</small><i><u style="--w:${(x.v / SL[0].v).toFixed(3)}"></u></i></span><b>${Math.round(100 * x.v / sum)}%</b></div>`).join('')}`;
+}
