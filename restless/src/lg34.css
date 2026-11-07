@@ -1,0 +1,56 @@
+/* lg34 — разбор матча плитками: числа у любого из 12, таблица всех игроков, анимации */
+.z34-lc{display:flex;flex-direction:column;gap:14px;min-width:0}
+.z34-tl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0 4px}
+.z34-t{position:relative;padding:11px 12px 10px;border-radius:12px;background:var(--q-bh,#141824);border:1px solid var(--q-ln,#1e2436);display:flex;flex-direction:column;gap:3px;
+  opacity:0;transform:translateY(8px);animation:z34in .42s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i,0)*45ms)}
+.z34-t small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu,#8b93a7);font-weight:700}
+.z34-t b{font-size:24px;line-height:1.1;font-weight:800;color:var(--tx,#eef0f4);font-variant-numeric:tabular-nums}
+.z34-t span{font-size:12.5px;color:var(--mu,#8b93a7)}
+.z34-t span em{font-style:normal;font-weight:700;color:var(--tx,#eef0f4)}
+.z34-t.g{border-color:rgba(51,214,166,.35)}.z34-t.g span em{color:#33d6a6}
+.z34-t.r{border-color:rgba(255,93,122,.35)}.z34-t.r span em{color:#ff5d7a}
+.z34-t .z34-n{font-size:11.5px;opacity:.8}
+.z34-bar{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden;margin:3px 0 2px}
+.z34-bar u,.z34-cb u{display:block;height:100%;width:100%;border-radius:inherit;background:var(--q-am,#ffb03a);transform-origin:left;transform:scaleX(0);
+  animation:z34w .8s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i,0)*45ms + 120ms)}
+.z34-t.g .z34-bar u{background:#33d6a6}.z34-t.r .z34-bar u{background:#ff5d7a}
+@keyframes z34in{to{opacity:1;transform:none}}
+@keyframes z34w{to{transform:scaleX(var(--w,0))}}
+
+.z34-tb{padding:12px 12px 8px}
+.z34-tbh{display:flex;align-items:baseline;gap:10px;margin:2px 4px 8px}
+.z34-tbh b{font-size:15px;letter-spacing:.04em;text-transform:uppercase}
+.z34-tbh small{font-size:12px;color:var(--mu,#8b93a7)}
+.z34-tr{display:grid;grid-template-columns:minmax(150px,1.6fr) repeat(6,minmax(0,1fr));gap:8px;align-items:center;width:100%;padding:6px 8px;border:0;border-radius:10px;
+  background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;border-left:3px solid transparent;
+  opacity:0;animation:z34in .35s ease-out forwards;animation-delay:calc(var(--i,0)*28ms)}
+.z34-tr.t0{border-left-color:rgba(255,176,58,.55)}.z34-tr.t1{border-left-color:rgba(111,141,255,.6)}
+.z34-tr:hover{background:rgba(255,255,255,.04)}
+.z34-tr.on{background:rgba(255,176,58,.1);box-shadow:inset 0 0 0 1px rgba(255,176,58,.35)}
+.z34-tr.z34-hd{cursor:default;opacity:1;animation:none;border-left-color:transparent;padding-top:2px;padding-bottom:6px;border-bottom:1px solid var(--q-ln,#1e2436);border-radius:0}
+.z34-hd span,.z34-hd button{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mu,#8b93a7);background:none;border:0;padding:0;text-align:left;cursor:pointer;font-family:inherit}
+.z34-hd button.on{color:var(--q-am,#ffb03a)}
+.z34-hd button:hover{color:var(--tx,#eef0f4)}
+.z34-who{display:flex;align-items:center;gap:8px;min-width:0}
+.z34-who img,.z34-who .face{flex:0 0 auto}
+.z34-who span{display:flex;flex-direction:column;min-width:0}
+.z34-who b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.z34-who small{font-size:11.5px;color:var(--mu,#8b93a7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.z34-tr.z34-me .z34-who b{color:var(--q-am,#ffb03a)}
+.z34-c{display:flex;flex-direction:column;gap:3px;min-width:0}
+.z34-c b{font-size:13.5px;font-variant-numeric:tabular-nums}
+.z34-c b i{font-style:normal;color:#ff5d7a}
+.z34-cb{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.07);overflow:hidden}
+.z34-tr.t1 .z34-cb u{background:var(--q-sp,#6f8dff)}
+.z34-re .z34-tr:not(.z34-hd){animation-duration:.25s}
+
+@media (max-width:760px){
+  .z34-tr{grid-template-columns:minmax(96px,1.4fr) repeat(4,minmax(0,1fr));gap:6px;padding:6px 4px}
+  .z34-tr>:nth-child(4),.z34-tr>:nth-child(6){display:none}
+  .z34-who>:first-child{display:none}
+  .z34-c b{font-size:12px}
+  .z34-hd span,.z34-hd button{font-size:10px;letter-spacing:0}
+  .z34-tl{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.z34-t{padding:9px 9px 8px}.z34-t .z34-n{display:none}
+  .z34-t b{font-size:21px}
+}
+@media (prefers-reduced-motion:reduce){.z34-t,.z34-tr{animation:none;opacity:1;transform:none}.z34-bar u,.z34-cb u{animation:none;transform:scaleX(var(--w,0))}}
