@@ -29,12 +29,13 @@ function parse(xml,top){
   const p=add(st[st.length-1],P(tag,at.id,at));if(!self)st.push(p)}
  return top.ch[top.ch.length-1]}
 const UNH={},FIRE=[];let sched=[];const msgs=[];const props=[];let CLOCK=Date.now();const FD={now:()=>CLOCK};const acts=[];
+const KB=[],CC=[];
 function run(ctxp,code){const $={GetContextPanel:()=>ctxp,CreatePanel:(t,par,id,pr)=>{const p=add(par,P(t,id,pr||{}));props.push(pr||{});return p},
- Msg:m=>msgs.push(m),Schedule:(d,f)=>sched.push(f),RegisterEventHandler:(e,p,f)=>{(p.h||(p.h={}))[e]=f},
+ Msg:m=>msgs.push(m),RegisterKeyBind:(p,k,f)=>{KB.push([p,k,f])},Schedule:(d,f)=>sched.push(f),RegisterEventHandler:(e,p,f)=>{(p.h||(p.h={}))[e]=f},
  RegisterForUnhandledEvent:(e,f)=>{(UNH[e]||(UNH[e]=[])).push(f)},
  // как в игре: {i:имя} ищется в переменных панели и выше
  Localize:(s,p)=>s.replace(/\{[ids]:(\w+)\}/g,(m,k)=>{for(let q=p;q;q=q.par)if(q.dv&&k in q.dv)return String(q.dv[k]);return m}),
- DispatchEvent:(e,a)=>{if(e==='ClientUI_FireOutput'){FIRE.push(a);(UNH[e]||[]).slice().forEach(f=>f(a))}if(e==='ExternalBrowserGoToURL')msgs.push('URL '+a);if(e==='Activated')acts.push(a);if(e==='DismissAllContextMenus')cards.splice(0).forEach(c=>c.DeleteAsync())}};
+ DispatchEvent:(e,a)=>{if(e==='CitadelConCommand')CC.push(a);if(e==='ClientUI_FireOutput'){FIRE.push(a);(UNH[e]||[]).slice().forEach(f=>f(a))}if(e==='ExternalBrowserGoToURL')msgs.push('URL '+a);if(e==='Activated')acts.push(a);if(e==='DismissAllContextMenus')cards.splice(0).forEach(c=>c.DeleteAsync())}};
  vm.runInNewContext(code||src,{$,SteamOverlayAPI:{OpenURL:u=>msgs.push('URL '+u)},Date:FD,Math,String});return $}
 const cards=[];
 // страница store.html (браузер игры): отвечает заголовком на следующем такте; localStorage общий — переживает «перезапуск игры»
@@ -225,10 +226,16 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
  ok(!RI[2]||RI[2].style.visibility!=='visible','у кого ID нет — значка нет');
  const lr=F('RestlessLrk');ok(lr&&lr.style.visibility==='visible'&&/rank\/image\?account_ids=930626915,/.test(F('RestlessLrkF').img)&&/account_ids=111222333,/.test(F('RestlessLrkE').img),'средний ранг: свои и враги — '+F('RestlessLrkF').img.slice(-40));
  // лагеря: метка погасла — отсчёт возрождения
- const gt=F('GameTime');gt.text='9:00';const c0=F('camp0'),c1=F('camp1'),c4=F('camp4');Object.assign(c0,{actualxoffset:100,actualyoffset:200,actuallayoutwidth:24,actuallayoutheight:24});
+ const gt=F('GameTime');gt.text='9:00';const c0=F('camp0'),c1=F('camp1'),c4=F('camp4');Object.assign(c0,{actualxoffset:100,actualyoffset:200,actuallayoutwidth:24,actuallayoutheight:24});Object.assign(c1,{actualxoffset:300,actualyoffset:420,actuallayoutwidth:24,actuallayoutheight:24});Object.assign(F('hud_minimap').GetParent(),{actuallayoutwidth:800,actuallayoutheight:800});
  tick(8);c0.cls.delete('active');c1.cls.delete('active');tick(8);
  const ctl=all(hud).filter(x=>x.type==='Label'&&/^\d+:\d\d$/.test(x.text||'')&&x.style.visibility==='visible');ok(ctl.length===2&&ctl.some(x=>x.text==='1:25')&&ctl.some(x=>x.text==='4:50'),'0.27: метки погасли — таймеры 1:25 и 4:50: '+ctl.map(x=>x.text).join(','));
  c0.cls.add('active');c1.cls.add('active');
+ // 0.36: Ctrl+Alt+H — клавиша Panorama, окно Restless в матче, мышь освобождается и возвращается
+ {const kb=KB.filter(k=>k[1]==='mod_ctrl+mod_alt+key_h');ok(kb.length>=1,'0.36: Ctrl+Alt+H зарегистрирована: '+kb.length);
+  CC.length=0;kb[0][2]();tick(1);const hw=F('RestlessHotkey');ok(hw&&F('RestlessHotkeyWeb')&&/embed=1/.test(F('RestlessHotkeyWeb').url||''),'0.36: Ctrl+Alt+H открывает окно с сайтом');
+  ok(CC.includes('hud_free_cursor 1'),'0.36: мышь освобождена в матче');
+  CLOCK+=1000;const t0=Date.now;Date.now=()=>t0()+5000;kb[0][2]();Date.now=t0;tick(1);ok(!F('RestlessHotkey')||!F('RestlessHotkey').valid,'0.36: второй Ctrl+Alt+H закрывает');
+  ok(CC.includes('hud_free_cursor -1'),'0.36: мышь вернулась');}
  // Medium: пропавшие враги, здоровье, «в бою», незащищённые души
  const ga=add(hud,P('CitadelHudGameAnnouncements','CitadelHudGameAnnouncements'));const dgc=add(hud,P('Panel','hudDeathGoldContainer'));const dg=add(dgc,P('Label','hudDeathGoldLabel',{text:'0'}));
  em.cls.add('ShowEscapeMenu');stOpen();pp[1].ev.onactivate();tick(1);ok(pp[1].style.backgroundColor==='#ffc83d'&&hud.GetAttributeString('RESTLESS_MISS','')==='1','набор Medium включил пропавших врагов и остальное');shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
@@ -284,13 +291,13 @@ ok(hud.GetAttributeString('RESTLESS_OWN','').split(':')[0]!=='zzz','хозяин
 {em.cls.add('ShowEscapeMenu');tick(2);ok(!F('RestlessLiveBtn'),'0.28: строки LIVE в меню нет');
  ok(F('RestlessLive')&&F('RestlessLive').style.width==='46%','0.32: открыл Esc в матче — LIVE сам, сбоку от меню');
  ok(!vis(F('RestlessWindow')),'0.32: окно настроек само не открывается');
- ok(/v=0\.35/.test(decodeURIComponent(F('RestlessLiveWeb').url)),'в адресе — версия 0.32');
+ ok(/v=0\.36/.test(decodeURIComponent(F('RestlessLiveWeb').url)),'в адресе — версия 0.36');
  btn.ev.onactivate();tick(1);ok(vis(F('RestlessWindow'))&&!F('RestlessLive'),'0.31: RESTLESS — настройки, лайв закрылся (не висят вместе)');
  ok(F('RestlessWebBtn'),'0.31: в шапке окна кнопка САЙТ');
  F('RestlessWebBtn').ev.onactivate();tick(2);ok(!vis(F('RestlessWindow'))&&!!F('RestlessLiveWeb')&&F('RestlessLive').style.width!=='46%','0.31: САЙТ — сайт по центру, настройки закрылись');
  const w=F('RestlessLiveWeb');const u=w&&decodeURIComponent(w.url||'');
  ok(w&&w.paneltype==='CitadelHTMLPanel'&&/restless\/\?app=1&embed=1/.test(w.url)&&/#g=/.test(w.url),'окно сайта во встроенном браузере игры: '+(w?w.url.slice(0,80):''));
- ok(/v=0\.35/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
+ ok(/v=0\.36/.test(u)&&/&lb=rank:1,hr:1,st:1,per:1,rc:1,bld:1,tg:1,cmp:0/.test(u)&&/&p=[fe]~/.test(u),'в адресе — версия и игроки: '+(u||'').slice(0,120));
  btn.ev.onactivate();tick(1);ok(!F('RestlessLiveWeb'),'0.31: RESTLESS закрывает и окно сайта');F('RestlessShade').ev.onactivate();tick(4);ok(F('RestlessLive')&&F('RestlessLive').style.width==='46%','0.32: настройки закрыл — лайв вернулся сам сбоку (Esc ещё открыт, LVA)');btn.ev.onactivate();tick(1);
  F('RestlessWebBtn').ev.onactivate();tick(2);const gear=F('RestlessGear');ok(gear&&F('RestlessLiveWeb'),'0.28: ⚙ в шапке сайта вернулся к настройкам');
  F('RestlessGear').ev.onactivate();tick(1);ok(vis(F('RestlessWindow'))&&!vis(F('RestlessLive')),'0.31: ⚙ — настройки, сайт закрылся');
@@ -373,7 +380,7 @@ const W=F('RestlessWindow'),pp=all(W).filter(x=>x.type==='Button'&&x.style.borde
  tick(6);ok(/U\.enhanced_quickbuy\.enabled=0/.test(LSO.restless_mod_v1)&&/U\.enhanced_quickbuy\.preview_count=4/.test(LSO.restless_mod_v1),'настройки мода записаны в нашу память: '+LSO.restless_mod_v1.slice(-70));
  shade.ev.onactivate();em.cls.delete('ShowEscapeMenu');
  // отчёт программе
- tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.35&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
+ tick(10);const um=F('RestlessUm');ok(um&&/^http:\/\/127\.0\.0\.1:27515\/um\.png\?v=0\.36&c=/.test(um.img)&&/enhanced_quickbuy/.test(decodeURIComponent(um.img)),'программе: наши настройки и моды рядом (um.png)');
  // с сайта: надпись выкл и ползунок мода = 2
  PROG_TITLE='RL_SET:k9:'+encodeURIComponent('MARK=0;U.enhanced_quickbuy.preview_count=2;EVIL=1');tick(130);em.cls.add('ShowEscapeMenu');tick(130);em.cls.delete('ShowEscapeMenu');
  ok(hud.GetAttributeString('RESTLESS_MARK','')==='0'&&EQ.preview_count===2&&hud.GetAttributeString('RESTLESS_EVIL','')==='','с сайта: надпись выкл, мод получил 2, чужой ключ не принят');
