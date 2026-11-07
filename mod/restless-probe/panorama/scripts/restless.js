@@ -108,7 +108,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.37';
+	var VER = '0.38';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -315,7 +315,7 @@
 		setText(lab(x, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '22px', color: INK }), '×');
 		x.SetPanelEvent('onactivate', function () { LV.shut = true; liveShow(false); });
 		try { LV.html = mk('CitadelHTMLPanel', LV.win, 'RestlessLiveWeb', { width: '100%', height: 'fill-parent-flow(1.0)', margin: '6px 8px 8px 8px' }); } catch (e) { LV.html = null; }
-		LV.hash = liveHash(); LV.hashc = LV.hash.replace(/gt=[^&]*/, 'gt=');
+		LV.hash = liveHash(); LV.hashc = LV.hash.replace(/gt=[^&]*/, 'gt='); LV.su = Date.now();
 		if (ok(LV.html)) { try { LV.html.SetURL(liveUrl() + LV.hash); } catch (e) { $.Msg('[Restless] лайв: ' + e); } }
 		$.Msg('[Restless] лайв-матч открыт: ' + LV.hash.length + ' символов');
 	}
@@ -325,7 +325,7 @@
 		// 0.32: автопоказ вернули (Андрей: «я хочу чтобы открывалось меню») — сбоку, одним окном (программа больше не распахивается поверх, стак и мигание ушли)
 		if (!ms) LV.shut = false;
 		var real = 0; for (var rq = 0; rq < PLY.length; rq++) if (PLY[rq].a) real++;
-		if (!LV.open && ms && !LK.hide && !HIDE && on('LVA') && !LV.shut && !open && real >= 2) liveShow(true, true);
+		if (!LV.open && ms && !LK.hide && !HIDE && on('LVA') && !LV.shut && !open && !ok(HK.win) && real >= 2) liveShow(true, true);
 		if (LV.open && open) { liveShow(false); return; }
 		if (!LV.open) return;
 		if (!ok(LV.win) || !ms) { liveShow(false); return; }
@@ -333,13 +333,13 @@
 		var h = liveHash();
 		// 0.33: сравнение БЕЗ gt (время матча растёт каждые 2 с — SetURL перезагружал страницу, окно мигало)
 		var hc = h.replace(/gt=[^&]*/, 'gt=');
-		if (hc !== LV.hashc && ok(LV.html)) { LV.hashc = hc; LV.hash = h; try { LV.html.SetURL(liveUrl() + h); } catch (e) {} }
+		if (hc !== LV.hashc && ok(LV.html) && Date.now() - (LV.su || 0) > 12000) { LV.hashc = hc; LV.hash = h; LV.su = Date.now(); try { LV.html.SetURL(liveUrl() + h); } catch (e) {} }
 	}
 
 	// ---------- 0.36: Ctrl+Alt+H — окно Restless прямо в игре, без программы ----------
 	// $.RegisterKeyBind('', 'mod_ctrl+mod_alt+key_h', …) — глобальная клавиша Panorama (формат модификаторов — ParseModifier в uiinput.cpp,
 	// так же сделан мод Predi-i «Press-M-To-Play-Google-Snake»). Мышь освобождаем консольной командой hud_free_cursor 1, закрыли — -1.
-	var HK = { win: null, html: null, cur: false, t: 0, host: null, tab: 'live' };
+	var HK = { win: null, html: null, cur: false, t: 0, host: null, tab: 'live', q: 0, n: 0, reg: 0, regN: 0, su: 0 };
 	function cc(c) { try { $.DispatchEvent('CitadelConCommand', c); } catch (e) { $.Msg('[Restless] команда: ' + e); } }
 	function hkUrl() {
 		var base = liveUrl();
@@ -384,37 +384,57 @@
 		if (HUD && !menuShown()) { cc('hud_free_cursor 1'); HK.cur = true; }
 		$.Msg('[Restless] Ctrl+Alt+H — окно открыто');
 	}
-	function hkToggle() {
+	// 0.38: клавишу регистрирует каждая копия скрипта — Panorama держит одну на клавишу, побеждает последняя (InsertOrReplace).
+	// Раньше «чужая» копия выходила (!mine()) и окно не открывалось. Теперь любая копия только оставляет запрос на общем корне,
+	// а хозяин (тот, кто рисует всё остальное) открывает окно на следующем тике.
+	function hkTop() { try { var t = climb(); return t && t.SetAttributeString ? t : null; } catch (e) { return null; } }
+	function hkPress() {
 		var now = Date.now();
 		if (now - HK.t < 350) return;
-		HK.t = now;
+		HK.t = now; HK.n++;
+		try { set('HKQ', String(now), true); } catch (e) {}
+		try { var t = hkTop(); if (t) { t.SetAttributeString('RESTLESS_HKQ', String(now)); t.SetAttributeString('RESTLESS_HKN', String((+t.GetAttributeString('RESTLESS_HKN', '0') || 0) + 1)); } } catch (e) {}
+		if (menuOn) hkToggle();
+	}
+	function hkToggle() {
 		if (menuOn) {
 			try { if (ROOT && ROOT.visible === false) return; } catch (e) {}
 			if (ok(HK.win)) hkClose(); else hkOpen(ROOT);
 			return;
 		}
-		if (!ROOT || !HUD || !mine()) return;
+		if (!ROOT || !HUD) return;
 		if (ok(HK.win)) { hkClose(); return; }
 		var ms = menuShown();
 		if (ms && open) show(false);
 		hkOpen(ms && ok(EM) ? EM : HUD);
 	}
+	function hkReq() {
+		var q = +get('HKQ', '0') || 0;
+		try { var t = hkTop(); if (t) q = Math.max(q, +t.GetAttributeString('RESTLESS_HKQ', '0') || 0); } catch (e) {}
+		if (q > HK.q) { var fresh = Date.now() - q < 2000; HK.q = q; if (fresh && HK.q0) hkToggle(); }
+		HK.q0 = 1;
+		// хозяин перерегистрирует клавишу раз в 15 с: его функция живая (копия из прошлого матча могла умереть)
+		if (Date.now() - HK.reg > 15000) hkReg(true);
+	}
 	function hkTick() {
+		hkReq();
 		if (!ok(HK.win)) return;
 		// открыли Esc поверх — окно уезжает в меню (иначе меню перекрывает), закрыли Esc — назад в HUD
 		var ms = menuShown(), want = ms && ok(EM) ? EM : HUD;
 		if (want && HK.win.GetParent() !== want) { try { HK.win.SetParent(want); } catch (e) {} if (!ms && !HK.cur) { cc('hud_free_cursor 1'); HK.cur = true; } if (ms && HK.cur) { cc('hud_free_cursor -1'); HK.cur = false; } }
-		if (HK.tab === 'live' && NT % 8 === 0 && ok(HK.html)) { var u = hkUrl(), uc = u; try { uc = decodeURIComponent(u).replace(/gt=[^&]*/, ''); } catch (e) {} if (uc !== HK.uc) { var first = !HK.uc; HK.uc = uc; if (!first) try { HK.html.SetURL(u); } catch (e) {} } }
+		if (HK.tab === 'live' && NT % 8 === 0 && ok(HK.html)) { var u = hkUrl(), uc = u; try { uc = decodeURIComponent(u).replace(/gt=[^&]*/, ''); } catch (e) {} if (uc !== HK.uc && Date.now() - HK.su > 12000) { var first = !HK.uc; HK.uc = uc; if (!first) { HK.su = Date.now(); try { HK.html.SetURL(u); } catch (e) {} } } }
 	}
-	var HK_REG = false;
-	function hkReg() {
-		if (HK_REG) return; HK_REG = true;
-		var keys = ['mod_ctrl+mod_alt+key_h'];
+	function hkReg(again) {
+		HK.reg = Date.now();
+		var keys = ['mod_ctrl+mod_alt+key_h'], n = 0;
 		for (var i = 0; i < keys.length; i++) {
-			try { $.RegisterKeyBind('', keys[i], hkToggle); } catch (e) { $.Msg('[Restless] клавиша ' + keys[i] + ': ' + e); }
-			try { $.RegisterKeyBind(ctx, keys[i], hkToggle); } catch (e) {}
+			try { $.RegisterKeyBind('', keys[i], hkPress); n++; } catch (e) { if (!again) $.Msg('[Restless] клавиша ' + keys[i] + ': ' + e); }
+			try { $.RegisterKeyBind(ctx, keys[i], hkPress); } catch (e) {}
+			try { if (ok(HUD) && HUD !== ctx) $.RegisterKeyBind(HUD, keys[i], hkPress); } catch (e) {}
+			try { if (ok(EM)) $.RegisterKeyBind(EM, keys[i], hkPress); } catch (e) {}
 		}
-		$.Msg('[Restless] Ctrl+Alt+H зарегистрирована (' + HOOK + ')');
+		HK.regN = n;
+		if (!again) $.Msg('[Restless] Ctrl+Alt+H зарегистрирована (' + HOOK + ')');
 	}
 
 	// ---------- окно настроек ----------
@@ -438,7 +458,7 @@
 		// 0.31: сайт (лайв-матч) — кнопкой в шапке окна настроек; Ctrl+Alt+H — программа, в игре модам клавиши не даются
 		var web = mk('Button', head, 'RestlessWebBtn', { width: 'auto', height: '32px', borderRadius: '18px', verticalAlign: 'center', backgroundColor: OFF, marginRight: '8px', padding: '0px 14px 0px 14px' });
 		setText(lab(web, '', { horizontalAlign: 'center', verticalAlign: 'center', fontSize: '14px', fontWeight: 'bold', color: INK, letterSpacing: '1px' }), lang() === 'en' ? 'LIVE' : 'САЙТ');
-		web.SetPanelEvent('onactivate', function () { try { show(false); liveShow(true, false); } catch (e) { $.Msg('[Restless] лайв: ' + e); } });
+		web.SetPanelEvent('onactivate', function () { try { show(false); liveShow(false); hkOpen(menuShown() && ok(EM) ? EM : HUD); } catch (e) { $.Msg('[Restless] сайт: ' + e); } });
 
 		P.secGame = lab(WIN, '', { fontSize: '13px', fontWeight: 'bold', color: MUTED, letterSpacing: '1px', marginTop: '4px' });
 		var pr = mk('Panel', WIN, '', { width: '100%', flowChildren: 'right', padding: '6px 0px 8px 0px' });
@@ -578,6 +598,7 @@
 		}
 		if (!ok(WIN)) return;
 		if (v && LV.open) liveShow(false);
+		if (v && ok(HK.win)) hkClose();
 		open = v;
 		setVis(WIN, v); setVis(SHADE, v);
 		if (!v) return;
@@ -685,6 +706,8 @@
 		out.push((lang() === 'en' ? 'Active items: ' : 'Активные предметы: ') + (AI.st || '—') + ' · ' + (SB.st || '—') + ' · ' + (lang() === 'en' ? 'build: ' : 'сборка: ') + (BL.st || (BL.id ? BL.id + (BL.hid ? ' / ' + BL.hid : '') : BL.hid ? '…' : '—')));
 		out.push(!on('LINK') ? T('lkOff') : LK.hide ? T('lk0') : T('lk') + T('lkN') + LK.sent + T('lkP') + LK.n + T('lkI') + LK.ids + T('lkH') + LK.hs);
 		out.push(T('zipT') + ': ' + (ZB.st || T('sZip0')) + T('sSpd') + (SPDV || '—') + T('sPerf') + PF.v.toFixed(1) + T('ms'));
+		var hkn = 0; try { var tp = hkTop(); hkn = tp ? (+tp.GetAttributeString('RESTLESS_HKN', '0') || 0) : 0; } catch (e) {}
+		out.push('Ctrl+Alt+H: ' + (HK.regN ? (lang() === 'en' ? 'registered' : 'зарегистрирована') : (lang() === 'en' ? 'NOT registered' : 'НЕ зарегистрирована')) + ' · ' + (lang() === 'en' ? 'presses reached the mod: ' : 'нажатий дошло до мода: ') + hkn);
 		out.push(T('sAm') + (AM.st || T('sAm0')) + T('sOm') + (OM.st || T('sOm0')) + T('sRb') + RB.n + T('sBuyP') + RB.pn);
 		out.push(T('mem') + (ST.ok ? T('memOk') + T('memN') + ST.n + T('memS') + ST.saved : ST.tries >= 4 || ST.err ? T('memE') + (ST.err ? ' (' + ST.err + ')' : '') : T('memW')) +
 			T('sSet') + (SS.got ? T('sSetY') + T('sSetA') + SS.ap : T('sSetN')));
