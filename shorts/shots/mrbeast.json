@@ -1,0 +1,19 @@
+{
+ "palette": "deep navy blue, slate blue-grey, warm off-white cream, electric blue accent, coral red accent, a touch of gold for money.",
+ "shots": [
+  {"id": "title", "prompt": "Low-angle view of a young man with short brown hair and a light beard, wearing a blue hoodie, standing confidently on top of a huge mountain of green banknotes and gold coins at night; behind him a giant glowing round screen rises like a moon; at the foot of the money mountain a tiny crowd of people looks up."},
+  {"id": "money", "prompt": "Close-up of two hands from the bottom of the frame throwing a fan of plain green banknotes into the air; banknotes fly and spin across the whole frame with soft shadows on a warm cream background."},
+  {"id": "claim", "prompt": "Planet Earth floating in deep blue space with soft rim light and stars; on the very top of the planet a tiny figure in a blue hoodie plants a small coral red flag; thin orbit lines around the planet."},
+  {"id": "subs", "prompt": "An enormous stadium seen from high above at dusk, filled with thousands of tiny people holding up glowing phones, rows of seats curving away into the distance, a big empty dark screen hanging over the field."},
+  {"id": "usa", "prompt": "A big wooden desk seen from directly above with a large paper world map spread on it, a brass magnifying glass, pins, and small paper figures of people crowded on North America and on Russia; soft warm desk-lamp light."},
+  {"id": "rank", "prompt": "A winners podium with three steps on a dark stage under three spotlights, plus a lower fourth step; the third step glows coral red; confetti falling; heavy curtains in the background; the steps are empty."},
+  {"id": "legend", "prompt": "A small cozy teenager's bedroom at night: an eighteen-year-old boy in a blue hoodie sits at a desk talking to a webcam on a tripod, desk lamp glow, a window with a dark blue night sky, posters on the wall, an analog wall clock, empty snack wrappers; warm lamp light against cool night tones."},
+  {"id": "forest", "prompt": "Wide rolling green hills covered with long neat rows of freshly planted young trees, small volunteers with shovels in the distance, soft blue sky with a few clouds, fresh morning light."},
+  {"id": "games", "prompt": "A huge outdoor game field seen from above with hundreds of tiny contestants in identical teal tracksuits standing in neat rows; above them hangs a giant transparent piggy bank filled with banknotes, glowing softly."},
+  {"id": "pass", "prompt": "An open passport lying on a wooden table under warm light, the photo page has an empty photo frame and blank lines, a wooden rubber stamp and an ink pad lie next to it."},
+  {"id": "earth", "prompt": "Sixteen different people standing in four rows facing the viewer in a soft studio space; exactly one person in the middle wears a coral red sweater, smiles and holds up a small blue passport."},
+  {"id": "anthem", "prompt": "A vintage cash register on a shop counter, its drawer sliding open, gold coins jumping out in arcs, musical notes floating in the air above it, a soft spotlight from above."},
+  {"id": "holiday", "prompt": "A city at night celebrating: colorful fireworks over the rooftops, people on the street with sparklers and small flags, warm windows; on the side of one building hangs a giant calendar page with one day circled in red."},
+  {"id": "next", "prompt": "A coral red flag on top of a green hill at sunrise, seen from low in the grass, a small happy crowd walking up the hill towards it, long morning shadows."}
+ ]
+}

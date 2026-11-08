@@ -405,3 +405,12 @@ function bust(x, y, o = {}) {
 // точки скруглённого прямоугольника (центр 0,0) и перенос/поворот набора точек → d
 D_.rrp = (w, h, r, n = 6) => { const p = [], c = [[w / 2 - r, -h / 2 + r, -90], [w / 2 - r, h / 2 - r, 0], [-w / 2 + r, h / 2 - r, 90], [-w / 2 + r, -h / 2 + r, 180]]; for (const [x, y, a0] of c) for (let i = 0; i <= n; i++) { const a = (a0 + i * 90 / n) * Math.PI / 180; p.push([x + Math.cos(a) * r, y + Math.sin(a) * r]) } return p };
 D_.tf = (p, x, y, a = 0, s = 1) => { const c = Math.cos(a * Math.PI / 180), si = Math.sin(a * Math.PI / 180); return D_.poly(p.map(([u, v]) => [x + (u * c - v * si) * s, y + (u * si + v * c) * s])) };
+
+// картинка-кадр во весь экран (иллюстрация нейросетью 9:16) с медленной камерой: наезд z0→z1 вокруг (fx,fy), сдвиг (x0,y0)→(x1,y1)
+function pic(src, t, T, o = {}) {
+  const k = EZ.io(P01(t, T.a, T.b - T.a + .6)), z = lerp(o.z0 ?? 1.03, o.z1 ?? 1.13, k);
+  const dx = lerp(o.x0 || 0, o.x1 || 0, k), dy = lerp(o.y0 || 0, o.y1 || 0, k);
+  return `<rect width="${W}" height="${H}" fill="${o.bg || P.bg}"/><image href="${src}" x="0" y="0" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice" transform="translate(${R(dx)} ${R(dy)}) ${about(o.fx ?? 540, o.fy ?? 860, z)}"/>`
+}
+// затемнение снизу/сверху для читаемости
+const shade = (y0, y1, c = '#000', a = .55) => { const id = uid(); return `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity="0"/><stop offset="1" stop-color="${c}" stop-opacity="${a}"/></linearGradient><rect x="0" y="${y0}" width="${W}" height="${y1 - y0}" fill="url(#${id})"/>` };
