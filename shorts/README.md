@@ -43,3 +43,10 @@
 ## Проверка кадров
 - Важное — между y 260 и 1250; субтитры 1330–1500; ниже — интерфейс TikTok.
 - Подписи `L('en', 'ru')` — в русской версии проверить длину (капс `cap()` широкий).
+
+## Картинки нейросетью (08.11, ночь) — следующий шаг
+Андрей: v2 (рисовка кодом) «гораздо хуже оригиналов». Решение — иллюстрации нейросетью + анимация поверх (`lib.js: pic()`, `ep/mrbeast2.js`, промты `shots/mrbeast.json`, стиль `img.py: STYLE`).
+- **Gemini API** — ключ есть (Network secret `x-goog-api-key` на generativelanguage.googleapis.com), но картинки только с оплатой, а оплата у Андрея не проходит (OR_BACR2_59). Не использовать.
+- **Работает бесплатно: Cloudflare Workers AI** (≈10 000 «нейронов» в сутки, 100+ картинок). Токен — Network secret на api.cloudflare.com (Bearer, прокси подставляет сам; в коде `Authorization: Bearer proxy-injected`). Account ID: `30e726a49a27820ac532f8ab97954d0c`.
+  `POST https://api.cloudflare.com/client/v4/accounts/<ID>/ai/run/@cf/black-forest-labs/flux-1-schnell` `{"prompt": …, "steps": 8}` → `result.image` (base64 JPEG 1024×1024, ~3 с). Проверено: стиль и детали хорошие.
+- TODO: бэкенд Cloudflare в `img.py` (вертикаль — модель с width/height, например `@cf/leonardo/phoenix-1.0`, или кроп/растяжка квадрата); сгенерировать 14 кадров MrBeast; `cp out/mrbeast-en/{timeline.json,voice.wav} out/mrbeast2-en/ && ./make.sh mrbeast2-en`; показать Андрею; потом остальные 11 так же.
