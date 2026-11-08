@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="lib.css">
+<!-- Стиль 2 · взрослый плоский: вектор, тёмно-синяя гамма, тёплый свет, люди со взрослыми пропорциями. -->
+<style>.pill,.pulse{background:rgba(14,18,40,.78)}</style></head><body>
+<svg id="sv" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<div class="pill"><b></b><span id="clock"></span></div>
+<div class="pulse" id="pulse">ПУЛЬС<div id="bpm">72</div></div>
+<div class="card" id="card"><div class="l">ДОСЬЕ<span>ПЯТНИЦА</span></div><div class="n">ДИМА</div><div class="s">23 года · студент · первый раз</div></div>
+<div class="cap" id="cap"></div>
+<div class="style">СТИЛЬ 2 · ВЗРОСЛЫЙ ПЛОСКИЙ</div>
+<script src="lib.js"></script>
+<script>
+const D=`<linearGradient id="fsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f1430"/><stop offset="1" stop-color="#262c58"/></linearGradient>
+ <linearGradient id="fwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2148"/><stop offset="1" stop-color="#262b57"/></linearGradient>
+ <linearGradient id="ffloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2f5c"/><stop offset="1" stop-color="#0d1024"/></linearGradient>
+ <linearGradient id="fcone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffcf87" stop-opacity=".55"/><stop offset="1" stop-color="#ffcf87" stop-opacity="0"/></linearGradient>
+ <linearGradient id="fwin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd59a"/><stop offset="1" stop-color="#ff9fc8"/></linearGradient>
+ <pattern id="fgrid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60,0 H0 V60" fill="none" stroke="#fff" stroke-opacity=".04" stroke-width="2"/></pattern>`;
+
+function exterior(t){
+  let s=`<rect width="1080" height="1300" fill="url(#fsky)"/><circle cx="700" cy="420" r="40" fill="#f2efe6"/><circle cx="700" cy="420" r="110" fill="#f2efe6" opacity=".08"/>`;
+  for(let i=0;i<30;i++)s+=`<circle cx="${rnd(i+1)*1080}" cy="${rnd(i+40)*520}" r="${1.4+rnd(i+80)*1.6}" fill="#fff" opacity="${.35+.3*Math.sin(t*1.5+i)}"/>`;
+  // дальние дома
+  for(let i=0;i<8;i++){const x=i*140-30, w=128, h=300+rnd(i+5)*260, y=1180-h; s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#1a1f42"/>`;
+    for(let r=0;r<h/60-1;r++)for(let c=0;c<3;c++)if(rnd(i*31+r*7+c)>.5)s+=`<rect x="${x+16+c*38}" y="${y+22+r*60}" width="22" height="30" rx="3" fill="#ffd38a" opacity="${.35+rnd(i+r+c)*.4}"/>`;}
+  // клуб
+  s+=`<rect x="130" y="560" width="820" height="620" fill="#232955"/><rect x="130" y="560" width="820" height="14" fill="#323a72"/>`;
+  s+=`<rect x="180" y="760" width="300" height="250" rx="6" fill="url(#fwin)" opacity=".85"/><rect x="180" y="760" width="300" height="250" rx="6" fill="none" stroke="#151a38" stroke-width="10"/>`;
+  for(let i=0;i<6;i++){const x=200+i*46, y=900+Math.sin(t*3+i)*4; s+=`<circle cx="${x}" cy="${y-50}" r="13" fill="#3a2a55" opacity=".55"/><rect x="${x-14}" y="${y-36}" width="28" height="80" rx="12" fill="#3a2a55" opacity=".55"/>`;}
+  const fl=(t%2.6>1.9&&t%2.6<1.95)?.4:1;
+  s+=`<g opacity="${fl}"><rect x="330" y="610" width="420" height="110" rx="20" fill="#191d40"/><text x="540" y="694" text-anchor="middle" font-family="M" font-weight="900" font-size="82" fill="#ff7ab8" letter-spacing="10" filter="url(#glow)">NIGHT</text></g>`;
+  s+=`<rect x="600" y="830" width="150" height="350" rx="6" fill="#ff9fc8"/><rect x="608" y="838" width="134" height="342" rx="4" fill="#ffd2e6" opacity=".55"/><circle cx="728" cy="1010" r="7" fill="#232955"/>`;
+  s+=`<path d="M600,1182 L750,1182 L860,1420 L500,1420 Z" fill="#ffb6d6" opacity=".22"/>`;
+  s+=`<rect x="0" y="1180" width="1080" height="110" fill="#2e3566"/><rect x="0" y="1180" width="1080" height="8" fill="#3c447e"/><rect x="0" y="1290" width="1080" height="630" fill="#13172f"/>`;
+  // фонарь
+  s+=`<rect x="1000" y="700" width="14" height="590" fill="#151a38"/><rect x="972" y="690" width="70" height="20" rx="8" fill="#151a38"/><path d="M978,710 L1036,710 L1110,1290 L900,1290 Z" fill="url(#fcone)"/>`;
+  s+=rain(t,80,'#c9d3ff',.22);
+  s+=person({...DIMA,x:880,y:1270,s:1.02,look:-1,mood:'n',br:breath(t,0),blink:blinkAt(t,.5),shOp:.6});
+  return s;
+}
+function bar(t){
+  let s=`<rect width="1080" height="1920" fill="url(#fwall)"/><rect width="1080" height="1920" fill="url(#fgrid)"/>`;
+  // полки с бутылками
+  const cols=['#e8a13a','#3fa06a','#9fc6dc','#c7503a','#e8c25a'];
+  s+=`<rect x="80" y="420" width="920" height="420" rx="10" fill="#171b3c"/>`;
+  for(let r=0;r<3;r++){const y=540+r*120; s+=`<rect x="100" y="${y}" width="880" height="10" rx="4" fill="#3a3f72"/>`;
+    for(let i=0;i<17;i++){const x=118+i*51, c=cols[(i*3+r)%5], h=58+((i+r)%3)*12; s+=`<rect x="${x}" y="${y-h}" width="26" height="${h}" rx="7" fill="${c}"/><rect x="${x+9}" y="${y-h-18}" width="8" height="20" rx="3" fill="${c}"/><rect x="${x+5}" y="${y-h+8}" width="5" height="${h-16}" rx="2" fill="#fff" opacity=".3"/>`;}}
+  // лампы
+  for(const x of [270,540,810]){const sw=Math.sin(t*1.2+x)*3; s+=`<rect x="${x-2}" y="0" width="4" height="230" fill="#11142c"/><path d="M${x-50+sw},230 L${x+50+sw},230 L${x+30+sw},200 L${x-30+sw},200 Z" fill="#11142c"/>`+
+    `<ellipse cx="${x+sw}" cy="232" rx="40" ry="8" fill="#ffe2a8"/><path d="M${x-40+sw},234 L${x+40+sw},234 L${x+230},1180 L${x-230},1180 Z" fill="url(#fcone)" opacity=".7"/>`;}
+  // толпа (мягко, в цвете)
+  for(let i=0;i<9;i++){const x=40+i*125, y=1080-Math.abs(Math.sin(t*Math.PI*2+i*1.3))*10, c=['#3b3f78','#4a3f7a','#33467a'][i%3];
+    s+=`<g opacity=".7"><circle cx="${x}" cy="${y-150}" r="30" fill="${c}"/><rect x="${x-46}" y="${y-118}" width="92" height="160" rx="36" fill="${c}"/></g>`;}
+  // стойка
+  s+=`<rect x="0" y="1010" width="1080" height="40" rx="6" fill="#59406a"/><rect x="0" y="1046" width="1080" height="260" fill="#2b2148"/><rect x="0" y="1010" width="1080" height="6" fill="#ffcf87" opacity=".5"/>`;
+  s+=`<rect x="0" y="1180" width="1080" height="740" fill="url(#ffloor)"/>`;
+  return s;
+}
+function shot1(t,lt,k,d){return `<g transform="${camT(560,1000,540,980,mix(1.0,1.12,sm(k)))}">${exterior(t)}</g>`}
+function shot2(t,lt,k,d){
+  const r=sm(cl(k*2));
+  let s=`<g transform="${camT(560,820,540,860,mix(1.3,1.36,k))}">${bar(t)}`;
+  s+=person({...DRUG,x:790,y:1330,s:1.15,pose:'reach',k:r,bag:1,look:-1,mood:'s',br:breath(t,2),blink:blinkAt(t,1.1)});
+  s+=person({...DIMA,x:330,y:1340,s:1.18,look:k>.3?1:0,mood:k>.45?'w':'n',br:breath(t,1),blink:blinkAt(t,.3)});
+  s+=`</g>`;
+  if(k>.3){const p=ease(cl((k-.3)*4));s+=`<g transform="translate(700,262) scale(${p})"><path d="M-230,-62 h460 a24,24 0 0 1 24,24 v76 a24,24 0 0 1 -24,24 h-150 l34,56 l-70,-56 h-274 a24,24 0 0 1 -24,-24 v-76 a24,24 0 0 1 24,-24z" fill="#fff"/>`+
+    `<text y="16" text-anchor="middle" font-family="M" font-weight="900" font-size="50" fill="#15182e">ДА ОДИН РАЗ!</text></g>`;}
+  return s;
+}
+function shot3(t,lt,k,d){
+  const bpm=mix(110,131,sm(k)), ph=(t*bpm/60)%1, th=Math.exp(-ph*9), punch=.1*ease(cl((k-wordK(SCRIPT[2],1))/.08));
+  let s=`<g filter="url(#dof)" opacity=".85"><g transform="${camT(540,800,540,800,1.5)}">${bar(t)}</g></g><rect width="1080" height="1920" fill="#120a20" opacity=".3"/>`;
+  const sc=2.6*(1+punch)*(1+th*.012);
+  s+=person({...DIMA,id:'dc',x:520,y:560+748*sc,s:sc,pose:'chest',mood:'t',pup:5.6,sweat:cl((k-.1)*2),br:breath(t,1),noShadow:1});
+  let path='M0,60'; for(let x=0;x<=560;x+=4){const u=(x/560*2.4+t*1.8*bpm/80)%1;const y=u>.42&&u<.46?60-90*Math.sin((u-.42)/.04*Math.PI):u>.46&&u<.5?60+34*Math.sin((u-.46)/.04*Math.PI):60+Math.sin(x*.08)*1.5;path+=` L${x},${y}`;}
+  s+=`<g transform="translate(260,300) scale(.9)"><rect x="-24" y="-30" width="608" height="170" rx="20" fill="#0e1124" opacity=".9"/><text x="0" y="-2" font-family="J" font-weight="700" font-size="22" fill="#ff8a96" letter-spacing="3">ПУЛЬС · ${Math.round(bpm)}</text>`+
+     `<path d="${path}" stroke="#ff3b4e" stroke-width="9" fill="none" opacity=".4" filter="url(#b8)"/><path d="${path}" stroke="#ff8a96" stroke-width="4" fill="none"/></g>`;
+  s+=`<rect width="1080" height="1920" fill="url(#redv)" opacity="${.15+.5*th*k}"/>`;
+  return s;
+}
+function shot4(t,lt,k,d){
+  const ph=(t*136/60)%1, th=Math.exp(-ph*8), p=ease(cl((lt-.1)/.5));
+  let s=`<rect width="1080" height="1920" fill="#141935"/><rect width="1080" height="1920" fill="url(#fgrid)"/>`;
+  s+=`<g transform="translate(540,${mix(1100,720,p)}) rotate(${mix(6,-2,p)})" opacity="${p}"><rect x="-330" y="-380" width="660" height="700" rx="36" fill="#000" opacity=".35" transform="translate(0,22)" filter="url(#b16)"/><rect x="-330" y="-380" width="660" height="700" rx="36" fill="#f6f2ec"/>`+
+     `<rect x="-330" y="-380" width="660" height="90" rx="36" fill="#e8344a"/><rect x="-330" y="-320" width="660" height="30" fill="#e8344a"/><text y="-320" text-anchor="middle" font-family="M" font-weight="900" font-size="40" fill="#fff" letter-spacing="3">РИСК ИНФАРКТА</text>`+
+     `<g transform="translate(0,-120) scale(${.75*(1+th*.07)})"><path d="${HEART}" fill="url(#heartG)"/><path d="M-60,-120 C-90,-110 -112,-80 -110,-50" stroke="#fff" stroke-width="12" stroke-linecap="round" fill="none" opacity=".45"/></g>`+
+     `<text y="190" text-anchor="middle" font-family="M" font-weight="900" font-size="230" fill="#e8344a">×24</text>`+
+     `<text y="262" text-anchor="middle" font-family="J" font-weight="700" font-size="28" fill="#6b6475" letter-spacing="3">В ПЕРВЫЙ ЧАС ПОСЛЕ ДОЗЫ</text></g>`;
+  s+=`<text x="540" y="1175" text-anchor="middle" font-family="J" font-weight="500" font-size="22" fill="#fff" opacity=".4">Mittleman et al., Circulation, 1999</text>`;
+  return s;
+}
+run(beats([shot1,shot2,shot3,shot4]),{defs:D,top:()=>`<rect width="1080" height="1920" fill="url(#vig)" opacity=".7"/><rect y="1150" width="1080" height="770" fill="url(#low)"/>`});
+</script></body></html>

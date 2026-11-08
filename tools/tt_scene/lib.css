@@ -1,0 +1,25 @@
+@font-face{font-family:M;src:url(../tt_demo_fonts/Montserrat%5Bwght%5D.ttf);font-weight:100 900}
+@font-face{font-family:J;src:url(../tt_demo_fonts/JetBrainsMono%5Bwght%5D.ttf);font-weight:100 800}
+@font-face{font-family:O;src:url(../tt_demo_fonts/Oswald%5Bwght%5D.ttf);font-weight:200 700}
+@font-face{font-family:R;src:url(../tt_demo_fonts/Rubik%5Bwght%5D.ttf);font-weight:300 900}
+@font-face{font-family:U;src:url(../tt_demo_fonts/Unbounded%5Bwght%5D.ttf);font-weight:200 900}
+html,body{margin:0;background:#05040a;width:1080px;height:1920px;overflow:hidden}
+svg{position:absolute;left:0;top:0}
+.cap{position:absolute;left:90px;right:90px;top:1300px;text-align:center;font:900 80px/1.1 M;text-transform:uppercase;letter-spacing:-1px;color:#fff;
+  text-shadow:0 5px 0 rgba(0,0,0,.55),0 0 34px rgba(0,0,0,.75)}
+.cap i{font-style:normal;color:rgba(255,255,255,.26)}
+.cap i.on{color:#fff}.cap i.on.y{color:#ffd23f}.cap i.on.r{color:#ff3b4e}
+.pill{position:absolute;left:56px;top:118px;display:flex;align-items:center;gap:14px;padding:12px 20px;border-radius:12px;
+  background:rgba(12,8,22,.72);border:1.5px solid rgba(255,255,255,.14);font:700 30px J;color:#fff;letter-spacing:1px}
+.pill b{width:14px;height:14px;border-radius:50%;background:#ff3b4e;box-shadow:0 0 12px #ff3b4e}
+.pulse{position:absolute;right:56px;top:104px;width:190px;padding:10px 0 12px;border-radius:14px;text-align:center;background:rgba(12,8,22,.75);
+  border:2px solid rgba(255,255,255,.16);font:700 22px J;color:rgba(255,255,255,.7);letter-spacing:2px}
+.pulse div{font:900 66px/1 M;color:#fff;letter-spacing:0;margin-top:6px}
+.pulse.hot{border-color:#ff3b4e;box-shadow:0 0 26px rgba(255,59,78,.45)}.pulse.hot div{color:#ff3b4e}
+.card{position:absolute;left:56px;top:220px;width:400px;padding:22px 26px 24px;border-radius:16px;background:#f5f1ea;color:#16131c;
+  box-shadow:0 18px 50px rgba(0,0,0,.55);transform-origin:0 0;opacity:0}
+.card .l{display:flex;justify-content:space-between;font:700 20px J;color:#8b8494;letter-spacing:2px}
+.card .l span{background:#e8344a;color:#fff;padding:4px 10px;border-radius:6px;letter-spacing:1px}
+.card .n{font:900 78px/1 M;margin:10px 0 6px;letter-spacing:-1px}
+.card .s{font:700 26px M;color:#4a4453}
+.style{position:absolute;left:0;right:0;bottom:70px;text-align:center;font:700 26px J;color:rgba(255,255,255,.35);letter-spacing:6px}

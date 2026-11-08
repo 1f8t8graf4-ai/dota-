@@ -1,0 +1,120 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="lib.css">
+<!-- Стиль 4 · изометрия: клуб — комната-диорама, маленькие люди, метки над героями, башня из 24 кубиков. -->
+<style>.pill,.pulse{background:rgba(16,14,34,.8)}</style></head><body>
+<svg id="sv" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<div class="pill"><b></b><span id="clock"></span></div>
+<div class="pulse" id="pulse">ПУЛЬС<div id="bpm">72</div></div>
+<div class="cap" id="cap"></div>
+<div class="style">СТИЛЬ 4 · ИЗОМЕТРИЯ</div>
+<script src="lib.js"></script>
+<script>
+const U=60, CX=540, CY=430;
+const P=(x,y,z)=>[CX+(x-y)*.866*U, CY+(x+y)*.5*U-z*U];
+const pts=a=>a.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ');
+const poly=(a,f,ex)=>`<polygon points="${pts(a)}" fill="${f}" ${ex||''}/>`;
+function box(x,y,z,w,d,h,c){ // c=[верх, левый перед, правый перед]
+  return poly([P(x,y,z+h),P(x+w,y,z+h),P(x+w,y+d,z+h),P(x,y+d,z+h)],c[0])+
+         poly([P(x,y+d,z),P(x+w,y+d,z),P(x+w,y+d,z+h),P(x,y+d,z+h)],c[1])+
+         poly([P(x+w,y,z),P(x+w,y+d,z),P(x+w,y+d,z+h),P(x+w,y,z+h)],c[2]);
+}
+const shade=(hex,k)=>{const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;r=Math.round(r*k);g=Math.round(g*k);b=Math.round(b*k);return `rgb(${Math.min(255,r)},${Math.min(255,g)},${Math.min(255,b)})`};
+// человечек: тело-капсула и голова
+function guyI(x,y,col,t,i,o){
+  o=o||{}; const [px,py]=P(x,y,0), bob=o.still?0:-Math.abs(Math.sin(t*Math.PI*2.1+i*1.3))*6, op=o.op==null?1:o.op;
+  const h=U*1.25, w=U*.42, top=py-h+bob;
+  let s=`<g opacity="${op}"><ellipse cx="${px}" cy="${py}" rx="${U*.36}" ry="${U*.18}" fill="#000" opacity=".4"/>`;
+  s+=`<rect x="${px-w*.36}" y="${py-U*.55}" width="${w*.3}" height="${U*.55}" rx="5" fill="#222536"/><rect x="${px+w*.06}" y="${py-U*.55}" width="${w*.3}" height="${U*.55}" rx="5" fill="#1a1c2a"/>`;
+  s+=`<rect x="${px-w/2}" y="${top+U*.38}" width="${w}" height="${U*.72}" rx="${w*.42}" fill="${col}"/><rect x="${px}" y="${top+U*.38}" width="${w/2}" height="${U*.72}" rx="${w*.3}" fill="#000" opacity=".2"/>`;
+  if(o.up){const wv=Math.sin(t*9+i)*4;s+=`<path d="M${px-w*.45},${top+U*.5} L${px-w*.7+wv},${top+U*.05} M${px+w*.45},${top+U*.5} L${px+w*.7-wv},${top+U*.05}" stroke="${col}" stroke-width="${U*.13}" stroke-linecap="round"/>`;}
+  s+=`<circle cx="${px}" cy="${top+U*.22}" r="${U*.2}" fill="${o.skin||'#efc39e'}"/><path d="M${px-U*.2},${top+U*.2} A${U*.2},${U*.2} 0 0 1 ${px+U*.2},${top+U*.2} L${px+U*.17},${top+U*.12} Q${px},${top-U*.04} ${px-U*.17},${top+U*.12}Z" fill="${o.hair||'#2a1c18'}"/>`;
+  return s+'</g>';
+}
+function label(x,y,z,txt,col,sc){const [px,py]=P(x,y,z);
+  return `<g transform="translate(${px},${py}) scale(${sc})"><rect x="-120" y="-92" width="240" height="64" rx="16" fill="${col}"/><path d="M-14,-30 L0,-10 L14,-30Z" fill="${col}"/>`+
+    `<text y="-48" text-anchor="middle" font-family="M" font-weight="900" font-size="32" fill="#14111a">${txt}</text></g>`;}
+const CROWD=[];for(let i=0;i<16;i++)CROWD.push([3.4+rnd(i+3)*5.6,3.4+rnd(i+30)*5.6,['#7a5cff','#ff6fa8','#4fd1c5','#ffb84a','#9fa8da','#e57373'][i%6],rnd(i+60)>.55]);
+function room(t,o){
+  o=o||{}; const red=o.red||0, dim=o.dim==null?1:o.dim;
+  let s=`<ellipse cx="${CX}" cy="${P(10,10,0)[1]-120}" rx="560" ry="140" fill="#000" opacity=".5" filter="url(#b30)"/>`;
+  s+=box(-.3,-.3,-.5,10.6,10.6,.5,['#2b2550','#1d1838','#16122c']);
+  // стены
+  const wl=red?mix(0,1,red):0;
+  s+=poly([P(0,0,0),P(0,10,0),P(0,10,6),P(0,0,6)],red?'#4a1426':'#2c2552')+poly([P(0,0,0),P(10,0,0),P(10,0,6),P(0,0,6)],red?'#3a0f1e':'#231d45');
+  s+=poly([P(-.3,-.3,6),P(0,0,6),P(0,10,6),P(-.3,10,6)],'#3a3366')+poly([P(-.3,-.3,6),P(10,-.3,6),P(10,0,6),P(0,0,6)],'#3a3366');
+  // окно с ночным городом на левой стене (плоскость x=0: координаты y,z)
+  const mL=`matrix(${-.866*U},${.5*U},0,${-U},${CX},${CY})`, mR=`matrix(${.866*U},${.5*U},0,${-U},${CX},${CY})`;
+  s+=`<g transform="${mL}"><rect x="6" y="2.4" width="3" height="2.6" fill="#0d1030"/>`;
+  for(let i=0;i<10;i++)s+=`<rect x="${6.2+i*.27}" y="2.4" width=".2" height="${.6+rnd(i)*1.2}" fill="#1a1f4a"/>`;
+  for(let i=0;i<8;i++)s+=`<rect x="${6.25+rnd(i+20)*2.6}" y="${2.6+rnd(i+30)*1}" width=".08" height=".12" fill="#ffd38a"/>`;
+  s+=`<rect x="6" y="2.4" width="3" height="2.6" fill="none" stroke="#3a3366" stroke-width=".12"/>`;
+  // полки бара
+  for(let r=0;r<2;r++){s+=`<rect x="1" y="${1.9+r*.9}" width="4" height=".06" fill="#4a4280"/>`;for(let i=0;i<12;i++)s+=`<rect x="${1.1+i*.32}" y="${1.96+r*.9}" width=".16" height="${.4+rnd(i+r*12)*.2}" fill="${['#e8a13a','#3fa06a','#9fc6dc','#c7503a'][(i+r)%4]}"/>`;}
+  s+=`</g>`;
+  // неон на правой стене
+  const fl=(t%2.4>1.8&&t%2.4<1.85)?.3:1;
+  s+=`<g transform="${mR}" opacity="${fl}"><g transform="translate(5,4.2) scale(1,-1)"><text text-anchor="middle" font-family="M" font-weight="800" font-style="italic" font-size="1.5" fill="none" stroke="#ff4fb5" stroke-width=".35" opacity=".6" filter="url(#b8)">NIGHT</text>`+
+     `<text text-anchor="middle" font-family="M" font-weight="800" font-style="italic" font-size="1.5" fill="none" stroke="#ffd0ea" stroke-width=".1">NIGHT</text></g></g>`;
+  // пол и танцпол
+  for(let i=0;i<10;i++)for(let j=0;j<10;j++){const dance=i>=3&&j>=3; let c=dance?['#5b3fd6','#ff4fb5','#2ec4d6','#2a2560'][(i+j+Math.floor(t*3))%4]:((i+j)%2?'#2b2754':'#262248');
+    if(red&&dance)c=['#ff2a4a','#7a1020','#ff5a6a','#3a0a14'][(i+j+Math.floor(t*4))%4];
+    s+=poly([P(i,j,0),P(i+1,j,0),P(i+1,j+1,0),P(i,j+1,0)],c,`opacity="${dance?.9*dim:1}" stroke="#14112a" stroke-width="2"`);}
+  // световые пятна
+  for(let i=0;i<3;i++){const x=6+Math.sin(t*.9+i*2)*2.5, y=6+Math.cos(t*.7+i*2)*2.5, [px,py]=P(x,y,0);
+    s+=`<ellipse cx="${px}" cy="${py}" rx="${U*1.4}" ry="${U*.7}" fill="${red?'#ff2a4a':['#ff4fb5','#3fe0ff','#9d6bff'][i]}" opacity=".35" filter="url(#b8)" style="mix-blend-mode:screen"/>`;}
+  // мебель и люди по глубине
+  const items=[];
+  items.push([1.6+6, ()=>box(.4,3,0,1.2,6,1.3,['#5b3f74','#3a2850','#2e2042'])+box(.3,2.9,1.3,1.4,6.2,.12,['#ffcf87','#c99a5a','#a07a44'])]);
+  items.push([5+1.2, ()=>box(4,.4,0,2.2,1.2,1.4,['#3a3366','#28234a','#1f1b3a'])+box(4.3,.6,1.4,.8,.5,.15,['#4fd1c5','#2e8f88','#256f6a'])]);
+  items.push([5.2+1.4, ()=>guyI(5.2,1.4,'#2b2b2b',t,99)]);
+  CROWD.forEach((c,i)=>{if(o.skipCrowd)return;items.push([c[0]+c[1],()=>guyI(c[0],c[1],c[2],t,i,{up:c[3],op:o.crowdOp})])});
+  items.push([2.6+5.2,()=>guyI(2.6,5.2,'#3e59b5',t,40,{still:o.still,op:1})]);
+  items.push([2.6+6.6,()=>guyI(2.6,6.6,'#b8394a',t,41,{still:1,hair:'#141215',skin:'#dcae88'})]);
+  items.sort((a,b)=>a[0]-b[0]).forEach(it=>s+=it[1]());
+  return s;
+}
+function shot1(t,lt,k,d){
+  let s=`<rect width="1080" height="1920" fill="#0e0c1e"/>`;
+  s+=`<g transform="${camT(540,700,540,760,mix(1.08,1.18,sm(k)))}">${room(t)}`;
+  const lp=ease(cl((lt-.6)/.4)); if(lp>0)s+=label(2.6,5.2,2.1,'ДИМА · 23','#ffd23f',lp);
+  return s+`</g>`;
+}
+function shot2(t,lt,k,d){
+  const z=mix(1.03,2.3,ease(cl(lt/.7)));
+  let s=`<rect width="1080" height="1920" fill="#0e0c1e"/><g transform="${camT(...P(2.6,5.9,1),540,780,z)}">${room(t,{still:1})}`;
+  const bp=ease(cl((lt-.8)/.35)), [bx,by]=P(2.6,6.1,1.6);
+  if(bp>0)s+=`<g transform="translate(${bx},${by-40}) scale(${bp*.5})"><circle r="80" fill="#fff" opacity=".25" filter="url(#b16)"/>${bagS(0,0,-8,.8)}</g>`;
+  s+=`</g>`;
+  const p=ease(cl((k-.35)*4));
+  if(p>0)s+=`<g transform="translate(700,300) scale(${p})"><path d="M-220,-60 h440 a22,22 0 0 1 22,22 v76 a22,22 0 0 1 -22,22 h-140 l-60,58 l20,-58 h-260 a22,22 0 0 1 -22,-22 v-76 a22,22 0 0 1 22,-22z" fill="#fff"/>`+
+    `<text y="16" text-anchor="middle" font-family="M" font-weight="900" font-size="48" fill="#14111a">ДА ОДИН РАЗ!</text></g>`;
+  return s;
+}
+function shot3(t,lt,k,d){
+  const bpm=mix(110,131,sm(k)), ph=(t*bpm/60)%1, th=Math.exp(-ph*9), red=ease(cl(lt/.6));
+  let s=`<rect width="1080" height="1920" fill="${red>.5?'#1a060c':'#0e0c1e'}"/><g transform="${camT(...P(2.6,5.2,1),540,860,1.9)}">${room(t,{red,crowdOp:mix(1,.25,red),still:1})}`;
+  const [px,py]=P(2.6,5.2,0);
+  for(let i=0;i<3;i++){const r=(ph+i/3)%1;s+=`<ellipse cx="${px}" cy="${py}" rx="${U*(.4+r*2.2)}" ry="${U*(.2+r*1.1)}" fill="none" stroke="#ff2a4a" stroke-width="5" opacity="${1-r}"/>`;}
+  const [hx,hy]=P(2.6,5.2,2.6);
+  s+=`<g transform="translate(${hx},${hy}) scale(${.42*(1+th*.12)})"><path d="${HEART}" fill="#ff2a4a" opacity=".6" filter="url(#b16)"/><path d="${HEART}" fill="url(#heartG)"/></g>`;
+  s+=`</g><rect width="1080" height="1920" fill="url(#redv)" opacity="${.15+.45*th*red}"/>`;
+  return s;
+}
+function shot4(t,lt,k,d){
+  let s=`<rect width="1080" height="1920" fill="#120c18"/>`;
+  const c=ease(cl((lt-.2)/1.4)), n=Math.max(1,Math.round(1+23*c)), done=n>=24, pop=done?Math.exp(-(lt-1.6)*5):0;
+  const Q=(x,y,z)=>[540+(x-y)*.866*46, 1060+(x+y)*.5*46-z*46*.42];
+  const bx=(x,y,z,w,dd,h,cl3)=>{const A=(a,b,cc)=>Q(a,b,cc); return poly([A(x,y,z+h),A(x+w,y,z+h),A(x+w,y+dd,z+h),A(x,y+dd,z+h)],cl3[0])+poly([A(x,y+dd,z),A(x+w,y+dd,z),A(x+w,y+dd,z+h),A(x,y+dd,z+h)],cl3[1])+poly([A(x+w,y,z),A(x+w,y+dd,z),A(x+w,y+dd,z+h),A(x+w,y,z+h)],cl3[2]);};
+  s+=bx(-4,-4,-1,8,8,1,['#2b2550','#1d1838','#16122c']);
+  s+=bx(-3,0.2,0,1.6,1.6,.92,['#8f96c7','#5c6396','#474d7a']);
+  for(let i=0;i<n;i++)s+=bx(.6,-2.4,i*1.0,1.6,1.6,.92,[i===n-1&&done?'#ff8a96':'#ff5a6a','#c22a3a','#9a1e2c']);
+  const [lx,ly]=Q(-2.2,1,0), [rx,ry]=Q(1.4,-1.6,0);
+  s+=`<text x="${lx-30}" y="${ly+70}" text-anchor="middle" font-family="J" font-weight="700" font-size="26" fill="#aab0e0" letter-spacing="2">ОБЫЧНО</text>`;
+  s+=`<text x="${rx+60}" y="${ry+60}" text-anchor="middle" font-family="J" font-weight="700" font-size="26" fill="#ffb3bb" letter-spacing="2">1-Й ЧАС</text>`;
+  const [tx,ty]=Q(1.4,-1.6,n*1.0);
+  s+=`<g transform="translate(${tx+pop*8*Math.sin(t*70)},${Math.max(400,ty-50)}) scale(${1+pop*.25})"><text text-anchor="middle" font-family="M" font-weight="900" font-size="170" fill="#ff1f3d" opacity=".55" filter="url(#b16)">×${n}</text><text text-anchor="middle" font-family="M" font-weight="900" font-size="170" fill="${done?'#ff3b4e':'#ffd0d4'}">×${n}</text></g>`;
+  s+=`<text x="540" y="1175" text-anchor="middle" font-family="J" font-weight="500" font-size="22" fill="#fff" opacity=".4">риск инфаркта · Mittleman et al., Circulation, 1999</text>`;
+  return s;
+}
+run(beats([shot1,shot2,shot3,shot4]),{top:()=>`<rect width="1080" height="1920" fill="url(#vig)" opacity=".6"/><rect y="1150" width="1080" height="770" fill="url(#low)"/>`});
+</script></body></html>

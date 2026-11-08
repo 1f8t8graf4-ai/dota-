@@ -1,0 +1,112 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="lib.css">
+<!-- Стиль 3 · комикс: страницы с панелями, чёрный контур, растр, пузыри, звукоподражания. -->
+<style>
+html,body{background:#efe3c6}
+.cap{top:1330px;left:80px;right:80px;padding:22px 26px 26px;background:#fffdf6;border:7px solid #14110f;box-shadow:12px 12px 0 #14110f;transform-origin:50% 50%;
+  font:900 italic 70px/1.08 R;color:#14110f;text-shadow:none;letter-spacing:0}
+.cap i{color:#b9ad97}.cap i.on{color:#14110f}.cap i.on.y{color:#14110f;background:#ffd23f;padding:0 6px}.cap i.on.r{color:#e8202f}
+.pill,.pulse{background:#fffdf6;border:5px solid #14110f;border-radius:6px;box-shadow:7px 7px 0 #14110f;color:#14110f}
+.pill{font:800 28px R}.pill b{box-shadow:none}
+.pulse{color:#6b5e4a;font:800 20px R}.pulse div{color:#14110f;font:900 italic 64px/1 R}
+.pulse.hot{border-color:#14110f;box-shadow:7px 7px 0 #e8202f}.pulse.hot div{color:#e8202f}
+.style{color:rgba(20,17,15,.45)}
+</style></head><body>
+<svg id="sv" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<div class="pill"><b></b><span id="clock"></span></div>
+<div class="pulse" id="pulse">ПУЛЬС<div id="bpm">72</div></div>
+<div class="cap" id="cap"></div>
+<div class="style">СТИЛЬ 3 · КОМИКС</div>
+<script src="lib.js"></script>
+<script>
+const INK='#14110f';
+const D=`<pattern id="ht" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="2.8" fill="#14110f" opacity=".16"/></pattern>
+ <pattern id="htR" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="4" fill="#e8202f" opacity=".35"/></pattern>
+ <pattern id="htW" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="2.6" fill="#fff" opacity=".35"/></pattern>`;
+const paper=()=>`<rect width="1080" height="1920" fill="#efe3c6"/><rect width="1080" height="1920" fill="url(#ht)" opacity=".5"/>`;
+function panel(id,x,y,w,h,inner,rot){
+  return `<g transform="rotate(${rot||0} ${x+w/2} ${y+h/2})"><clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/></clipPath><rect x="${x+12}" y="${y+12}" width="${w}" height="${h}" fill="${INK}"/>`+
+    `<g clip-path="url(#${id})">${inner}</g><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="${INK}" stroke-width="9"/></g>`;
+}
+function box(x,y,txt,sz,bg){const w=txt.length*sz*.62+44;
+  return `<g transform="translate(${x},${y}) rotate(-2)"><rect x="0" y="0" width="${w}" height="${sz+30}" fill="${bg||'#ffd23f'}" stroke="${INK}" stroke-width="6"/><text x="${w/2}" y="${sz+6}" text-anchor="middle" font-family="R" font-weight="900" font-style="italic" font-size="${sz}" fill="${INK}">${txt}</text></g>`;}
+function balloon(x,y,sc,txt){
+  return `<g transform="translate(${x},${y}) scale(${sc})"><path d="M-250,0 C-250,-90 -130,-120 0,-120 C130,-120 250,-90 250,0 C250,80 140,110 40,112 L80,190 L-20,110 C-150,104 -250,76 -250,0 Z" fill="#fffdf6" stroke="${INK}" stroke-width="8"/>`+
+    `<text y="22" text-anchor="middle" font-family="R" font-weight="900" font-style="italic" font-size="54" fill="${INK}">${txt}</text></g>`;}
+function sfx(x,y,txt,sz,rot,sc){
+  return `<g transform="translate(${x},${y}) rotate(${rot}) scale(${sc})"><text text-anchor="middle" font-family="R" font-weight="900" font-style="italic" font-size="${sz}" fill="#e8202f" transform="translate(10,10)">${txt}</text>`+
+    `<text text-anchor="middle" font-family="R" font-weight="900" font-style="italic" font-size="${sz}" fill="#ffd23f" stroke="${INK}" stroke-width="10" paint-order="stroke">${txt}</text></g>`;}
+function focusLines(cx,cy,t,col){let s='';for(let i=0;i<72;i++){const a=i/72*Math.PI*2+rnd(i)*.05, r0=300+rnd(i+9)*120+Math.sin(t*20+i)*14, w=.012+rnd(i+30)*.02;
+  s+=`<path d="M${cx+Math.cos(a)*r0},${cy+Math.sin(a)*r0} L${cx+Math.cos(a-w)*1600},${cy+Math.sin(a-w)*1600} L${cx+Math.cos(a+w)*1600},${cy+Math.sin(a+w)*1600} Z" fill="${col}"/>`;}return s}
+
+function streetC(t){
+  let s=`<rect x="0" y="0" width="1080" height="1100" fill="#2b3a7a"/><rect x="0" y="0" width="1080" height="1100" fill="url(#htW)" opacity=".5"/><circle cx="830" cy="260" r="60" fill="#fff6d0" stroke="${INK}" stroke-width="6"/>`;
+  for(let i=0;i<6;i++){const x=i*190-20, h=260+rnd(i+3)*200; s+=`<rect x="${x}" y="${760-h}" width="170" height="${h+40}" fill="#1c2656" stroke="${INK}" stroke-width="5"/>`;
+    for(let r=0;r<h/70;r++)for(let c=0;c<3;c++)if(rnd(i*9+r*3+c)>.45)s+=`<rect x="${x+20+c*48}" y="${760-h+24+r*70}" width="26" height="36" fill="#ffd23f" stroke="${INK}" stroke-width="3"/>`;}
+  s+=`<rect x="150" y="430" width="780" height="420" fill="#4b2d73" stroke="${INK}" stroke-width="7"/><rect x="150" y="430" width="780" height="420" fill="url(#ht)"/>`;
+  s+=`<rect x="320" y="470" width="440" height="110" rx="12" fill="${INK}"/><text x="540" y="555" text-anchor="middle" font-family="R" font-weight="900" font-style="italic" font-size="86" fill="#ff7ab8" stroke="#fff" stroke-width="3" paint-order="stroke" letter-spacing="8">NIGHT</text>`;
+  s+=`<rect x="470" y="640" width="140" height="210" fill="#ff9fc8" stroke="${INK}" stroke-width="7"/>`;
+  s+=`<rect x="0" y="850" width="1080" height="260" fill="#3a3550" stroke="${INK}" stroke-width="6"/>`;
+  for(let i=0;i<40;i++){const x=(rnd(i+5)*1200+t*-200)%1200, y=(rnd(i+70)*900+t*1100)%900; s+=`<path d="M${(x+1200)%1200-60},${y} l-10,40" stroke="#fff" stroke-width="4" stroke-linecap="round"/>`;}
+  s+=person({...DIMA,x:800,y:930,s:.5,look:-1,ink:3,inkF:'ink2',br:breath(t,0),noShadow:1});
+  return s;
+}
+function shot1(t,lt,k,d){
+  const pan=sm(cl((k-.42)/.3)), z=mix(1.0,1.05,k);
+  let pg=paper();
+  pg+=panel('p1',40,150,1000,600,`<g transform="translate(40,150) scale(.926) translate(0,-300)">${streetC(t)}</g>`+box(70,180,'ПЯТНИЦА. 23:12',40),-.6);
+  const face=`<rect x="40" y="790" width="1000" height="460" fill="#ffd23f"/>`+focusLines(560,1020,t,'#fff4b8')+
+    person({...DIMA,id:'dz',x:560,y:740+748*2.3,s:2.3,look:-.6,mood:'s',ink:1.4,inkF:'ink2',blink:blinkAt(t,.4),noShadow:1});
+  pg+=panel('p2',40,790,1000,460,face,.5);
+  return `<g transform="${camT(540,mix(470,1010,pan),540,mix(560,900,pan),z)}">${pg}</g>`;
+}
+function handC(t,k){
+  const sk='#e2b088', sk2='#c48d68';
+  let s=`<g filter="url(#ink)">`;
+  s+=`<g transform="rotate(-9 900 930)"><rect x="740" y="830" width="460" height="200" rx="90" fill="#c53a4b"/><rect x="726" y="826" width="70" height="208" rx="32" fill="#8e2634"/></g>`;
+  s+=`<ellipse cx="672" cy="918" rx="128" ry="98" fill="${sk}"/>`;
+  for(let i=0;i<3;i++)s+=`<rect x="${560-i*4}" y="${930+i*40}" width="128" height="46" rx="23" fill="${sk}" stroke="${INK}" stroke-width="5"/>`;
+  s+=`<rect x="520" y="842" width="160" height="52" rx="26" fill="${sk}" stroke="${INK}" stroke-width="5"/>`;
+  s+=bagS(470,850,-12,1.15);
+  s+=`<path d="M690,850 Q610,792 528,808" stroke="${sk}" stroke-width="58" stroke-linecap="round" fill="none"/></g>`;
+  s+=`<path d="M440,760 l-30,-40 M520,740 l0,-50 M380,820 l-48,-10" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`;
+  return s;
+}
+function shot2(t,lt,k,d){
+  const sl=1-ease(cl(lt/.32)); let pg=paper();
+  const inner=`<rect x="0" y="0" width="1080" height="1920" fill="#7a3fb0"/><rect width="1080" height="1920" fill="url(#htR)"/>`+focusLines(560,860,t,'#9a5fd0')+
+    `<g transform="translate(560,880) scale(${mix(1.45,1.6,k)}) translate(-600,-880)">${handC(t,k)}</g>`;
+  pg+=panel('q1',40,150,1000,1110,inner,-.4);
+  pg+=balloon(560,330,ease(cl((k-.15)*4)),'ДА ОДИН РАЗ!');
+  const ins=`<rect x="0" y="0" width="1080" height="1920" fill="#9fd3ff"/>`+person({...DIMA,id:'dw',x:830,y:960+748*1.5,s:1.5,mood:'w',look:1,ink:1.6,inkF:'ink2',noShadow:1,sweat:.8});
+  const ip=ease(cl((k-.45)*4));
+  pg+=`<g opacity="${ip}" transform="translate(${(1-ip)*80},0)">`+panel('q2',620,880,400,330,ins,3)+`</g>`;
+  return under(1,t,sl)+`<g transform="translate(${sl*1100},0)">${pg}</g>`;
+}
+function shot3(t,lt,k,d){
+  const sl=1-ease(cl(lt/.3)), bpm=mix(110,131,sm(k)), ph=(t*bpm/60)%1, th=Math.exp(-ph*9), punch=.1*ease(cl((k-wordK(SCRIPT[2],1))/.08));
+  let pg=paper();
+  const sc=3.0*(1+punch)*(1+th*.015);
+  const inner=`<rect width="1080" height="1920" fill="#fff4e0"/>`+focusLines(540,760,t,INK)+`<rect width="1080" height="1920" fill="url(#htR)" opacity="${.3+.6*th}"/>`+
+    person({...DIMA,id:'dt',x:540,y:520+748*sc,s:sc,mood:'t',pup:5.8,sweat:1,ink:1.1,inkF:'ink2',noShadow:1});
+  pg+=panel('r1',40,150,1000,1110,inner,0);
+  pg+=sfx(250,330,'ТУК!',150,-14,1+th*.25)+sfx(820,1110,'ТУК!',130,10,1+Math.exp(-((ph+.5)%1)*9)*.2);
+  return under(2,t,sl)+`<g transform="translate(${sl*1100},0)">${pg}</g>`;
+}
+function shot4(t,lt,k,d){
+  const sl=1-ease(cl(lt/.3)), ph=(t*136/60)%1, th=Math.exp(-ph*8), pop=ease(cl((lt-.35)/.35));
+  let pg=paper();
+  let star='M0,-300'; for(let i=1;i<=24;i++){const a=i/24*Math.PI*2-Math.PI/2, r=i%2?190+rnd(i)*40:300+rnd(i+3)*60; star+=` L${Math.cos(a)*r},${Math.sin(a)*r}`;} star+='Z';
+  const inner=`<rect width="1080" height="1920" fill="#e8202f"/><rect width="1080" height="1920" fill="url(#ht)"/>`+focusLines(540,700,t,'#ff5a64')+
+    `<g transform="translate(540,470) scale(${1.05*(1+th*.06)})"><path d="${HEART}" fill="#ff8a96" stroke="${INK}" stroke-width="10"/><path d="M-60,-120 C-90,-110 -112,-80 -110,-50" stroke="#fff" stroke-width="14" stroke-linecap="round" fill="none"/></g>`+
+    `<g transform="translate(540,900) scale(${.4+.6*pop}) rotate(${(1-pop)*-20})"><path d="${star}" fill="#ffd23f" stroke="${INK}" stroke-width="10"/>`+
+    `<text y="70" text-anchor="middle" font-family="R" font-weight="900" font-style="italic" font-size="220" fill="#e8202f" stroke="${INK}" stroke-width="10" paint-order="stroke">×24</text></g>`;
+  pg+=panel('s1',40,150,1000,1110,inner,.4);
+  pg+=box(90,190,'РИСК ИНФАРКТА · 1-Й ЧАС',36,'#fffdf6');
+  pg+=`<text x="540" y="1235" text-anchor="middle" font-family="J" font-weight="700" font-size="22" fill="#fff" opacity=".8">Mittleman et al., Circulation, 1999</text>`;
+  return under(3,t,sl)+`<g transform="translate(${sl*1100},0)">${pg}</g>`;
+}
+const BB=beats([shot1,shot2,shot3,shot4],[{},{tin:'none'},{tin:'none'},{tin:'none'}]);
+function under(i,t,sl){if(sl<=0)return '';const b=BB[i-1];return `<g transform="translate(${-(1-sl)*260},0)" opacity="${.5+.5*sl}">${b.f(t,b.d,1,b.d)}</g>`}
+run(BB,{defs:D});
+</script></body></html>
