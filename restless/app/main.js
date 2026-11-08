@@ -1,3 +1,5 @@
+// Restless Overlay 0.5.0 — Ctrl+Alt+H теперь у мода (окно Restless прямо в игре): программа её не берёт (своя — Ctrl+Shift+H) и сама на матче не открывается —
+// у Андрея на Ctrl+Alt+H вылезали два окна сразу, программа — со старым матчем, и грузила систему.
 // Restless Overlay 0.4.9 — мод проверяется каждые 20 мин и сразу после выхода из игры; Restless новее нашего в папке модов не заменяем старым.
 // Restless Overlay 0.4.8 — настройки мода с сайта («Оверлей» → мод в игре через 127.0.0.1/cfg.html) и «Моды рядом» (настройки модов с протоколом UMM).
 // 0.4.7 — окно шире (1600×960, на маленьком экране — почти во весь), чтобы команда стояла в один ряд, а обе команды — на экране.
@@ -13,18 +15,18 @@ const {app, BrowserWindow, Tray, Menu, globalShortcut, screen, nativeImage, shel
 const {exec} = require('child_process');
 const path = require('path'), fs = require('fs');
 const bridge = require('./bridge'), inst = require('./install');
-const VER = '0.4.9';
+const VER = '0.5.0';
 const SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 const URL0 = SITE + '?app=1&dev=vasyan2026#home';   // сайт пока закрыт замком разработки — ключ открывает его в окне программы
 // одна клавиша, всегда (Ctrl+X не берём: в других программах это «вырезать», в Deadlock — присесть + второй предмет)
-const KEY_OPTS = ['Control+Alt+H', 'Control+Shift+H', 'Alt+H', 'Control+Shift+F10'];
+const KEY_OPTS = ['Control+Shift+H', 'Control+Shift+F10'];   // 0.5.0: Ctrl+Alt+H — у мода
 const THRU_KEYS = ['Control+Alt+T', 'Control+Shift+F11'];   // клики сквозь окно
 const CFG = path.join(app.getPath('userData'), 'restless.json');
 // v 4 (0.4.7): окно шире — старый размер окна сбрасывается один раз
-let cfg = {v: 4, x: null, y: null, w: 1600, h: 960, auto: true, through: false, seen: false, key: 'Control+Alt+H', fps: 'off', mod: null};
+let cfg = {v: 5, x: null, y: null, w: 1600, h: 960, auto: false, through: false, seen: false, key: 'Control+Shift+H', fps: 'off', mod: null};
 let UMR = null;   // последний отчёт мода: его настройки, моды рядом
-try { const c = JSON.parse(fs.readFileSync(CFG, 'utf8')); if (!c.v || c.v < 4) { delete c.x; delete c.y; delete c.w; delete c.h; c.v = 4; } Object.assign(cfg, c); } catch (e) {}
-if (!KEY_OPTS.includes(cfg.key)) cfg.key = 'Control+Alt+H';   // 0.3 ставила Ctrl+X — теперь одна клавиша
+try { const c = JSON.parse(fs.readFileSync(CFG, 'utf8')); if (!c.v || c.v < 4) { delete c.x; delete c.y; delete c.w; delete c.h; c.v = 4; } if (c.v < 5) { c.auto = false; c.key = 'Control+Shift+H'; c.v = 5; } Object.assign(cfg, c); } catch (e) {}
+if (!KEY_OPTS.includes(cfg.key)) cfg.key = 'Control+Shift+H';   // 0.3 ставила Ctrl+X, до 0.5 — Ctrl+Alt+H (теперь у мода)
 const save = () => { try { fs.writeFileSync(CFG, JSON.stringify(cfg)); } catch (e) {} };
 const nice = k => String(k || '').replace(/Control/g, 'Ctrl');
 const TEST_PROC = process.env.RL_TEST_PROC === '1';   // проверка без Windows: «игра запущена»

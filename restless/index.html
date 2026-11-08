@@ -11293,13 +11293,13 @@ document.addEventListener('click', e => {
 // Статус честный: «работает» — видели в матче; «проверь в матче» — сделано по файлам игры, в матче ещё не подтверждено; «пока не работает».
 // [ключ, название, что делает, набор, статус, группа: g — на экране игры, m — в меню и магазине]
 const F35 = [
-  ['hk', 'Ctrl+Alt+H — окно Restless', 'Окно сайта: лайв-матч, профиль, герои, патчи. То же окно — кнопкой «САЙТ» в окне RESTLESS. Закрыть — снова Ctrl+Alt+H, × или Esc', 'всегда', 'chk', 'g'],
+  ['hk', 'Ctrl+Alt+H — окно Restless', 'Окно сайта: лайв-матч, профиль, герои, патчи. То же окно — кнопкой «САЙТ» в окне RESTLESS. Закрыть — снова Ctrl+Alt+H, × или Esc', 'всегда', 'ok', 'g'],
   ['lva', 'LIVE · 12 в меню Esc', 'Открыл Esc в матче — сбоку все 12 игроков: ранг, винрейт на герое, метки', 'Lite', 'ok', 'g'],
   ['ult', 'КД ульты в верхней панели', 'Секунды до ульты под портретом каждого игрока', 'Lite', 'ok', 'g'],
   ['rank', 'Ранги игроков', 'Значок ранга под портретом каждого', 'Lite', 'chk', 'g'],
   ['lrk', 'Средний ранг команд', 'Под часами — средний ранг своей команды и врагов', 'Lite', 'chk', 'g'],
   ['evt', 'Напоминания о событиях', 'За 10 с до лагерей, ящиков и статуй — плашка под часами', 'Lite', 'chk', 'g'],
-  ['camp', 'Таймеры лагерей', 'Лагерь зачистили (кто угодно) — на мини-карте отсчёт до возрождения: 1:25 / 4:50 / 5:35', 'Lite', 'chk', 'g'],
+  ['camp', 'Таймеры лагерей', 'Игра показывает их сама — у лагеря, когда подходишь. На мини-карту игра лагеря больше не отдаёт, поэтому мод их не видит', 'Lite', 'no', 'g'],
   ['ultw', 'КД ульты над героем', 'Секунды до ульты над полоской здоровья героя в мире', 'Lite', 'no', 'g'],
   ['miss', 'Пропавшие враги', 'Портрет врага темнеет, пока его не видно', 'Medium', 'chk', 'g'],
   ['thp', 'Здоровье на портретах', 'Кольцо на портрете: жёлтое ниже 75 %, оранжевое ниже 65 %, красное ниже 25 %', 'Medium', 'chk', 'g'],
@@ -11675,6 +11675,31 @@ function z36Src(p) {
   new MutationObserver(ms => { for (const m of ms) m.addedNodes.forEach(scan); }).observe(document.body, {childList: true, subtree: true});
   document.addEventListener('play', e => { if (e.target && e.target.tagName === 'VIDEO') still(e.target); }, true);
 })();
+
+// ===================== lg38 (07.11) — «12 ч» в лайв-матче: игры берём из истории игрока =====================
+// Андрей: на плитке «12 ч · 80 % · 5 игр», а во всплывашке «Игр за 12 часов нет». Цифра на плитке — из статистики героев
+// (там все игры), а список — из базы разобранных матчей, которая отстаёт на часы. Если списка нет, а игры есть —
+// берём их из истории матчей игрока (players/<id>/match-history: она полная и свежая).
+{ const PH1 = perHTML; perHTML = function (p, k) {
+    const out = String(PH1.apply(this, arguments));
+    if (k !== '12' || !p || !p.id || p._l38 || !(p.p12 && p.p12.m) || out.indexOf('Игр за 12 часов нет') < 0) return out;
+    setTimeout(() => l38Fill(p), 0);
+    return `<div class="q-poh"><b>${esc(p.name)}</b><small>за 12 часов · ${games(p.p12.m)}</small></div><div class="sub" data-l38="${p.id}">Загружаю игры…</div>`;
+  }; }
+async function l38Fill(p) {
+  const H = await api('players/' + p.id + '/match-history').catch(() => []);
+  const t12 = now() - 12 * 3600, have = new Set((p.rc || []).map(x => x.mid));
+  const add = (H || []).filter(m => (m.start_time || 0) >= t12 && !have.has(m.match_id)).map(m => ({mid: m.match_id, hid: m.hero_id,
+    w: m.player_team === m.match_result, kda: `${m.player_kills || 0}/${m.player_deaths || 0}/${m.player_assists || 0}`, t: m.start_time || 0, d: m.match_duration_s || 0}));
+  p.rc = (p.rc || []).concat(add).sort((a, b) => (b.t || 0) - (a.t || 0));
+  p._l38 = 1;
+  const html = perHTML(p, '12');
+  document.querySelectorAll(`[data-l38="${p.id}"]`).forEach(el => {
+    const box = el.parentElement; if (!box) return;
+    const head = box.querySelector('.q-poh'); if (head) head.remove();
+    el.outerHTML = html;
+  });
+}
 window.addEventListener('hashchange', route);
 (async () => {
   const q = new URLSearchParams(location.search).get('id');

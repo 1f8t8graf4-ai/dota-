@@ -108,7 +108,7 @@
 // Память игры не читает. В интернет ничего не отправляет: кто в матче — только своей программе Restless на этом же компьютере (127.0.0.1).
 // Настройки — в localStorage браузера игры (страница store.html нашего сайта): только наши переключатели, язык и время лагерей.
 (function () {
-	var VER = '0.39';
+	var VER = '0.40';
 	var BOT = 'https://t.me/languagegamesbot', SITE = 'https://1f8t8graf4-ai.github.io/dota-/restless/';
 	var A = '#ffc83d', INK = '#f3ebdd', MUTED = '#a89f90', DARK = '#1a1408', OFF = '#ffffff14';
 	var ctx = $.GetContextPanel();
@@ -163,7 +163,7 @@
 			zip: '', zipR: 'готов', zipA: 'идёт ', sec: ' с', perf: 'Restless: ', ms: ' мс в секунду', mx: ' · самый долгий такт ',
 			sObj: 'Урон по строениям: у ', sZip: ' · буст: ', sZip0: 'не нашёл', sSpd: ' · скорость: ', sPerf: ' · нагрузка: ',
 			boxT: 'Где могут быть ящики (не все появляются)', ummH: 'МОДЫ РЯДОМ', ummN: 'настроек у мода нет', sUm: 'Моды рядом: ', sUm0: 'других модов не вижу', sBox: ' · на мини-карте точек ', duNo: 'урна и разлом — у Deadlock Utils',
-			brOn: 'на мосту', brAt: 'через ', riftIn: 'откроется через ', urnAt: 'примерно через ', bxV: 'Ящики на мини-карте', bxIco: 'Значки', bxTm: 'Время', bxC: 'Обычные', bxT: 'Крепкие', bxG: 'Статуи', bxIn: 'Ящики через ', bxNow: 'Ящики на карте', changed: ' · изменено: ', sCampH: ' — меток лагерей игра не дала (в песочнице их нет), проверь в матче с ботами', uwW: ' · жду полосы', amG: 'у прицела (игра)', amM: 'перенесены к прицелу', amV: ', держим видимыми',
+			brOn: 'на мосту', brAt: 'через ', riftIn: 'откроется через ', urnAt: 'примерно через ', bxV: 'Ящики на мини-карте', bxIco: 'Значки', bxTm: 'Время', bxC: 'Обычные', bxT: 'Крепкие', bxG: 'Статуи', bxIn: 'Ящики через ', bxNow: 'Ящики на карте', changed: ' · изменено: ', sCampH: ' — лагерей на мини-карте игра больше не отдаёт (таймеры рисует сама у лагеря)', uwW: ' · жду полосы', amG: 'у прицела (игра)', amM: 'перенесены к прицелу', amV: ', держим видимыми',
 			riftT: 'Урна, разлом, мост', urnIn: 'через ', urnOn: 'на карте', urnEn: 'несут враги', urnFr: 'несут свои', riftAt: 'в ', riftSoon: 'через 20 с', riftOn: 'открыт',
 			sMm: 'Мини-карта: меток ', sMmC: ' · лагерей ', sMmK: ' · есть: ', sMm0: 'Мини-карта: не нашёл', sBuyP: ' · на портрете ', sSet: ' · с сайта: ', sSetY: 'на связи', sSetN: 'нет связи', sSetA: ', применено ',
 			aitT: 'Активные предметы у прицела', bldB: '★ RESTLESS · лучшая сборка', bldP: '★ RESTLESS · сборка с сайта', bldW: '★ RESTLESS · ищу…', bldN: '★ RESTLESS · сборки нет',  sbxT: 'Меню песочницы в укрытии', sbNo: 'меню песочницы: нет (не укрытие)', sbOn: 'меню песочницы: показано', sbOff: 'меню песочницы: выключено', sbMatch: 'меню песочницы: в матче не трогаем', ammoT: 'Патроны у прицела', rldT: 'Перезарядка у прицела', omapT: 'Карта строений', rbuyT: 'Кто что купил', rld: 'ПЕРЕЗАРЯДКА', buy: 'Купили: ',
@@ -195,7 +195,7 @@
 			zip: '', zipR: 'ready', zipA: 'active ', sec: ' s', perf: 'Restless: ', ms: ' ms per second', mx: ' · longest tick ',
 			sObj: 'Objective damage: for ', sZip: ' · boost: ', sZip0: 'not found', sSpd: ' · speed: ', sPerf: ' · load: ',
 			boxT: 'Possible crate spots (not all spawn)', ummH: 'MODS NEARBY', ummN: 'this mod has no settings', sUm: 'Mods nearby: ', sUm0: 'no other mods seen', sBox: ' · minimap dots ', duNo: 'urn and rift — by Deadlock Utils',
-			brOn: 'on the bridge', brAt: 'in ', riftIn: 'opens in ', urnAt: 'about ', bxV: 'Crates on the minimap', bxIco: 'Icons', bxTm: 'Timer', bxC: 'Normal', bxT: 'Tough', bxG: 'Statues', bxIn: 'Crates in ', bxNow: 'Crates are up', changed: ' · changed: ', sCampH: ' — the game gave no camp markers (none in the sandbox), check in a bot match', uwW: ' · waiting for bars', amG: 'at the crosshair (game)', amM: 'moved to the crosshair', amV: ', kept visible',
+			brOn: 'on the bridge', brAt: 'in ', riftIn: 'opens in ', urnAt: 'about ', bxV: 'Crates on the minimap', bxIco: 'Icons', bxTm: 'Timer', bxC: 'Normal', bxT: 'Tough', bxG: 'Statues', bxIn: 'Crates in ', bxNow: 'Crates are up', changed: ' · changed: ', sCampH: ' — the game no longer puts camps on the minimap (it draws camp timers itself, at the camp)', uwW: ' · waiting for bars', amG: 'at the crosshair (game)', amM: 'moved to the crosshair', amV: ', kept visible',
 			riftT: 'Urn, rift, bridge', urnIn: 'in ', urnOn: 'on the map', urnEn: 'enemies carry it', urnFr: 'allies carry it', riftAt: 'at ', riftSoon: 'in 20 s', riftOn: 'open',
 			sMm: 'Minimap: markers ', sMmC: ' · camps ', sMmK: ' · has: ', sMm0: 'Minimap: not found', sBuyP: ' · on portrait ', sSet: ' · from site: ', sSetY: 'linked', sSetN: 'no link', sSetA: ', applied ',
 			aitT: 'Active items at crosshair', bldB: '★ RESTLESS · best build', bldP: '★ RESTLESS · build from the site', bldW: '★ RESTLESS · looking…', bldN: '★ RESTLESS · no build',  sbxT: 'Sandbox menu in the hideout', sbNo: 'sandbox menu: none (not the hideout)', sbOn: 'sandbox menu: shown', sbOff: 'sandbox menu: off', sbMatch: 'sandbox menu: left to the game in a match', ammoT: 'Ammo at crosshair', rldT: 'Reload at crosshair', omapT: 'Objectives map', rbuyT: 'Who bought what', rld: 'RELOADING', buy: 'Bought: ',
@@ -527,11 +527,11 @@
 	var I_URN = IMG + 'minimap/soul_jar_marker_psd.vtex', I_BR = IMG + 'minimap/powerup_souls_png.vtex', I_CR = ICO.BOX, I_ST = ICO.EVT,
 		I_CS = IMG + 'minimap/neutral_small_psd.vtex', I_CL = IMG + 'minimap/neutral_large_psd.vtex';
 	// 0.17: переключатели в две колонки; порядок создания прежний (старые сначала), новые — в конце
-	var TG = [['LVA', 'lvaT'], ['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'], ['CAMP', 'campT'],
+	var TG = [['LVA', 'lvaT'], ['ULT', 'ultT'], ['MARK', 'markT'], ['LINK', 'linkT'], ['EVT', 'evtT'], ['RANK', 'rankT'], ['LRK', 'lrkT'],
 		['MISS', 'missT'], ['THP', 'thpT'], ['CMB', 'cmbT'], ['UNS', 'unsT'], ['ULTW', 'ultwT'],
 		['ZIP', 'zipT'], ['SPD', 'spdT'], ['PERF', 'perfT'], ['AMMO', 'ammoT'], ['RLD', 'rldT'], ['RBUY', 'rbuyT'], ['RIFT', 'riftT'], ['BOX', 'boxT'], ['AIT', 'aitT'], ['SBX', 'sbxT'], ['ALTM', 'altmT']];
 	// наборы как на сайте («Оверлей»): Lite — главное и почти не грузит, Medium — ещё подсказки, Enchanted — всё. Надпись и связь не трогаем.
-	var LITE = ['LVA', 'ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'CAMP', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'AIT']);
+	var LITE = ['LVA', 'ULT', 'ULTW', 'EVT', 'RANK', 'LRK', 'SBX'], MID = LITE.concat(['MISS', 'THP', 'CMB', 'UNS', 'AMMO', 'RLD', 'RBUY', 'RIFT', 'AIT']);
 	var PRE = { lite: LITE, mid: MID, ench: MID.concat(['ZIP', 'SPD', 'PERF']) };
 	var PREK = PRE.ench;
 	function preset(n) {
@@ -992,7 +992,8 @@
 		// Отсчёт — в своём слое внутри minimap_container, позиция в % (смещения hud_minimap и HudMinimapContainer учтены),
 		// перевёрнутая карта — тем же поворотом слоя. 0.27–0.35 вешали подпись на родителя метки по пикселям — у Андрея не было видно.
 		CMN = 0;
-		if (!on('CAMP') || HIDE) { campHide(); return; }
+		// 0.40: игра убрала метки лагерей с мини-карты (своя система CCitadelNeutralCampTimerSystem рисует таймер у лагеря) — выключено
+		if (true || !on('CAMP') || HIDE) { campHide(); return; }
 		var C = CAMP2;
 		if (!ok(C.mm)) { if (C.f-- > 0) { campHide(); return; } C.f = 8; try { C.mm = ROOT.FindChildTraverse('hud_minimap'); } catch (e) { C.mm = null; } if (!ok(C.mm)) { campHide(); return; } }
 		if (!ok(C.box)) { try { C.box = ROOT.FindChildTraverse('minimap_container'); C.cont = ROOT.FindChildTraverse('HudMinimapContainer'); } catch (e) {} }
