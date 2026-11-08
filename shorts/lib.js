@@ -370,7 +370,8 @@ function bust(x, y, o = {}) {
   let s = '';
   s += ink('M-270 0C-262 -168 -178 -236 -66 -256L66 -256C178 -236 262 -168 270 0Z', { f: f0, c, w: 8 });
   s += dots('M-270 0C-262 -168 -178 -236 -66 -256L66 -256C178 -236 262 -168 270 0Z', { c: P.ink, step: 15, x0: -270, y0: -40, x1: 0, y1: -200, op: .35, bb: [-280, -260, 560, 270] });
-  s += line('M-128 -246C-118 -320 118 -320 128 -246', 1, { c, w: 7 }) + line('M-34 -236L-40 -120M34 -236L40 -120', 1, { c, w: 6 }) + `<circle cx="-40" cy="-112" r="9" fill="${c}"/><circle cx="40" cy="-112" r="9" fill="${c}"/>`;
+  if (!o.plain) s += line('M-128 -246C-118 -320 118 -320 128 -246', 1, { c, w: 7 }) + line('M-34 -236L-40 -120M34 -236L40 -120', 1, { c, w: 6 }) + `<circle cx="-40" cy="-112" r="9" fill="${c}"/><circle cx="40" cy="-112" r="9" fill="${c}"/>`;
+  if (o.under) s += o.under;
   s += ink(D_.rr(-46, -320, 92, 90, 20), { f: sk, c, w: 7, dx: 0, dy: 0 }) + fill('M-46 -270C-20 -250 20 -250 46 -270V-240H-46Z', P.ink, .25);
   s += ink(D_.ell(-122, -440, 26, 36), { f: sk, c, w: 7, dx: 5, dy: 4 }) + ink(D_.ell(122, -440, 26, 36), { f: sk, c, w: 7, dx: 5, dy: 4 });
   const head = D_.ell(0, -450, 122, 148);
@@ -449,4 +450,27 @@ function genEP(SPEC) {
   }
   window.EP = { P: C, D, tr: SPEC.tr || {}, trAt: SPEC.trAt || {}, trCol: SPEC.trCol || {}, trDef: SPEC.trDef || 'push', cap: { hi: C.a3, st: C.ink } };
   P = C;
+}
+
+// ---------- свет и объём (v4): градиенты, свечение, мягкая тень, луч прожектора ----------
+function lgrad(stops, x1 = 0, y1 = 0, x2 = 0, y2 = 1, user = false) { const id = uid(); return [id, `<linearGradient id="${id}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"${user ? ' gradientUnits="userSpaceOnUse"' : ''}>${stops.map(([o, c, a]) => `<stop offset="${o}" stop-color="${c}"${a != null ? ` stop-opacity="${a}"` : ''}/>`).join('')}</linearGradient>`] }
+function rgrad(stops) { const id = uid(); return [id, `<radialGradient id="${id}">${stops.map(([o, c, a]) => `<stop offset="${o}" stop-color="${c}"${a != null ? ` stop-opacity="${a}"` : ''}/>`).join('')}</radialGradient>`] }
+const sky = (c1, c2, y0 = 0, y1 = H) => { const [id, d] = lgrad([[0, c1], [1, c2]], 0, y0, 0, y1, true); return d + `<rect width="${W}" height="${H}" fill="url(#${id})"/>` };
+const gfill = (dd, c1, c2, x1 = 0, y1 = 0, x2 = 0, y2 = 1, op = 1) => { const [id, d] = lgrad([[0, c1], [1, c2]], x1, y1, x2, y2); return d + `<path d="${dd}" fill="url(#${id})"${op < 1 ? ` opacity="${op}"` : ''}/>` };
+const glow = (x, y, r, c, a = .5) => { const [id, d] = rgrad([[0, c, a], [1, c, 0]]); return d + `<circle cx="${R(x)}" cy="${R(y)}" r="${R(r)}" fill="url(#${id})"/>` };
+const softShadow = (x, y, rx, ry, a = .35, c = '#000') => { const [id, d] = rgrad([[0, c, a], [1, c, 0]]); return d + `<ellipse cx="${R(x)}" cy="${R(y)}" rx="${R(rx)}" ry="${R(ry)}" fill="url(#${id})"/>` };
+function cone(x, y, ang, spread, len, c, a = .2) {
+  const r = Math.PI / 180, a1 = (ang - spread / 2) * r, a2 = (ang + spread / 2) * r, ex = x + Math.cos(ang * r) * len, ey = y + Math.sin(ang * r) * len;
+  const [id, d] = lgrad([[0, c, a], [1, c, 0]], x, y, ex, ey, true);
+  return d + `<path d="${D_.poly([[x, y], [x + Math.cos(a1) * len, y + Math.sin(a1) * len], [x + Math.cos(a2) * len, y + Math.sin(a2) * len]])}" fill="url(#${id})"/>`
+}
+const stars = (t, n = 40, y1 = 900, c = '#FFFFFF') => { let s = ''; for (let i = 0; i < n; i++) s += `<circle cx="${R(rnd(i) * 1080)}" cy="${R(rnd(i + 50) * y1)}" r="${R(1.5 + rnd(i + 9) * 2.5)}" fill="${c}" opacity="${R((.35 + .45 * (.5 + .5 * Math.sin(t * (1 + rnd(i + 3) * 2) + i))) * 100) / 100}"/>`; return s };
+// куча денег: ряды пачек, от дальних к ближним
+function moneyPile(cx, base, w, h, o = {}) {
+  let s = ''; const rows = o.rows || 9, cols = ['#3E9A62', '#4DB37A', '#5FC48A', '#2F8A57'];
+  for (let r = 0; r < rows; r++) {
+    const u = r / (rows - 1), y = base - h + u * h, half = w / 2 * (.12 + .88 * u), n = Math.max(1, Math.round(half * 2 / 88));
+    for (let i = 0; i < n; i++) { const x = cx - half + (i + .5) * (half * 2 / n) + (rnd(r * 31 + i) - .5) * 30, rot = (rnd(r * 17 + i) - .5) * 30, c0 = cols[(r + i) % 4]; s += g(fill(D_.rr(-48, -24, 96, 48, 6), c0) + line(D_.rr(-48, -24, 96, 48, 6), 1, { c: o.c || P.ink, w: 3.5 }) + line('M-36 -12H36M-36 12H36', 1, { c: o.c || P.ink, w: 2.5, op: .5 }) + `<circle r="9" fill="none" stroke="${o.c || P.ink}" stroke-width="2.5" opacity=".6"/>`, at(x, y + (rnd(r * 7 + i) - .5) * 14, 1, rot)) }
+  }
+  return s
 }
