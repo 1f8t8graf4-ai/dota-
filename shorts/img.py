@@ -11,7 +11,7 @@ import requests
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 API = 'https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent'
-MODELS = [os.environ.get('IMG_MODEL') or 'gemini-2.5-flash-image', 'gemini-3.1-flash-image-preview', 'gemini-3-pro-image-preview']
+MODELS = [os.environ.get('IMG_MODEL') or 'gemini-nano-banana-2.1', 'gemini-2.5-flash-image', 'gemini-3.1-flash-image-preview', 'gemini-3-pro-image-preview']
 CA = '/root/.ccr/ca-bundle.crt'
 
 STYLE = ("Flat 2D vector illustration in the style of a premium 2016 explainer motion-design studio "
