@@ -1,0 +1,6 @@
+out/
+*.mp4
+*.wav
+render.log
+out_voice*.log
+__pycache__/
