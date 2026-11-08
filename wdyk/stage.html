@@ -1,0 +1,160 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:P;font-weight:700;src:url(fonts/poppins-latin-700-normal.woff2)}
+@font-face{font-family:P;font-weight:800;src:url(fonts/poppins-latin-800-normal.woff2)}
+@font-face{font-family:P;font-weight:900;src:url(fonts/poppins-latin-900-normal.woff2)}
+@font-face{font-family:N;font-weight:800;src:url(fonts/nunito-latin-800-normal.woff2)}
+@font-face{font-family:N;font-weight:900;src:url(fonts/nunito-latin-900-normal.woff2)}
+html,body{margin:0;padding:0;background:#000;overflow:hidden}
+#root{position:relative;width:1080px;height:1920px;overflow:hidden}
+svg{position:absolute;left:0;top:0}
+text{font-family:P;font-weight:900}
+#cap{position:absolute;left:60px;width:900px;top:1290px;height:210px;display:flex;flex-wrap:wrap;
+  justify-content:center;align-content:center;gap:6px 30px;font-family:P;font-weight:900;font-size:80px;
+  line-height:1.1;text-transform:uppercase;letter-spacing:.5px}
+#cap span{position:relative;display:inline-block;color:#fff;-webkit-text-stroke:13px var(--ink,#141022);paint-order:stroke fill;
+  text-shadow:0 7px 0 rgba(0,0,0,.35)}
+#cap span.y{color:var(--y,#FFD23F)}#cap span.r{color:var(--r,#FF4D5E)}
+#cap span.on{color:var(--ink,#141022);-webkit-text-stroke:0;text-shadow:none}
+#cap span.on::before{content:'';position:absolute;left:-14px;right:-14px;top:3px;bottom:-2px;border-radius:20px;z-index:-1;background:#fff;
+  box-shadow:0 7px 0 rgba(0,0,0,.35)}
+#cap span.on.y::before{background:var(--y,#FFD23F)}#cap span.on.r::before{background:var(--r,#FF4D5E)}
+#grain{position:absolute;inset:-64px;opacity:.07;mix-blend-mode:overlay;pointer-events:none}
+#vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,rgba(0,0,0,0) 58%,rgba(0,0,0,.28) 100%)}
+</style></head>
+<body><div id="root"><svg id="st" width="1080" height="1920"></svg><div id="vig"></div><div id="grain"></div><div id="cap"></div></div>
+<script src="art.js"></script>
+<script>
+// ===================== движок =====================
+// Кадр — чистая функция времени: render(t). Сцены — EP.D[key](t,S,T), рисуют весь кадр 1080×1920 (фон тоже).
+let TL, SC = [], CHUNKS = [], EP;
+const TR = .5;  // длительность перехода между сценами, с
+
+function init(tl) {
+  TL = tl; EP = window.EP; SC = [];
+  for (const s of tl.sent) {
+    const last = SC[SC.length - 1];
+    if (last && last.key === s.scene) { last.sents.push(s); last.words.push(...s.words) }
+    else SC.push({ key: s.scene, sents: [s], words: [...s.words] })
+  }
+  SC.forEach((s, i) => {
+    s.i = i; s.a = i ? s.sents[0].a - .22 : 0; s.b = i < SC.length - 1 ? SC[i + 1].sents[0].a - .22 : tl.dur;
+    s.e = s.sents[s.sents.length - 1].b
+  });
+  CHUNKS = [];
+  for (const s of tl.sent) {
+    let cur = []; const L = () => cur.reduce((a, w) => a + w.d.length + 1, 0);
+    s.words.forEach((w, i) => {
+      if (cur.length && L() + w.d.length > 16) { CHUNKS.push(cur); cur = [] }
+      cur.push(w);
+      if (/[.,?!…:]$/.test(w.d) || cur.length >= 3 || i === s.words.length - 1) { CHUNKS.push(cur); cur = [] }
+    })
+  }
+  const r = document.documentElement.style;
+  for (const [k, v] of Object.entries(EP.cap || {})) r.setProperty('--' + k, v);
+  grainInit();
+}
+
+const cueNorm = w => w.toLowerCase().replace(/[^a-z0-9%$×+–'-]/g, '');
+function cueOf(S, w, n = 0) {
+  const k = cueNorm(w); let m = 0;
+  for (const x of S.words) {
+    const d = cueNorm(x.d);
+    if (d.startsWith(k)) { if (m === n) return x.a; m++ }
+  }
+  return S.a + .3
+}
+function envAt(t) { const i = Math.floor(t * TL.fps); return TL.env[Math.max(0, Math.min(TL.env.length - 1, i))] || 0 }
+
+function camera(S, t) {
+  // медленный наезд — кадр никогда не стоит; масштаб ≥ 1, края фона не видны
+  const k = clamp((t - S.a) / Math.max(1, S.b - S.a));
+  const z = 1 + .045 * eio(k) + (EP.cam && EP.cam[S.key] || 0) * eio(k);
+  const cx = 540, cy = 820;
+  return `translate(${cx} ${cy}) scale(${z.toFixed(4)}) translate(${-cx} ${-cy})`
+}
+
+function drawScene(S, t) {
+  const T = { talk: envAt(t), lt: t - S.a, c: (w, n) => cueOf(S, w, n), S };
+  const f = EP.D[S.key];
+  if (!f) return `<rect width="1080" height="1920" fill="#f0f"/><text x="540" y="900" font-size="60" text-anchor="middle">${S.key}?</text>`;
+  return `<g transform="${camera(S, t)}">${f(t, S, T)}</g>`
+}
+
+function transition(kind, k, prev, cur, S) {
+  const e = eio(k);
+  const col = (EP.trCol && EP.trCol[S.key]) || EP.trColor || '#fff';
+  if (kind === 'slide' || kind === 'slideR') {
+    const d = kind === 'slide' ? 1 : -1;
+    return `<g transform="translate(${(-d * 1080 * e).toFixed(1)} 0)">${prev}</g><g transform="translate(${(d * 1080 * (1 - e)).toFixed(1)} 0)">${cur}</g>`
+  }
+  if (kind === 'up') {
+    return `<g transform="translate(0 ${(-1920 * e).toFixed(1)})">${prev}</g><g transform="translate(0 ${(1920 * (1 - e)).toFixed(1)})">${cur}</g>`
+  }
+  if (kind === 'zoom') {
+    const s1 = 1 + e * 2.2, s2 = .7 + .3 * e;
+    return `<g opacity="${(1 - e).toFixed(3)}" transform="translate(540 820) scale(${s1.toFixed(3)}) translate(-540 -820)">${prev}</g>` +
+      `<g opacity="${clamp(e * 1.6).toFixed(3)}" transform="translate(540 820) scale(${s2.toFixed(3)}) translate(-540 -820)">${cur}</g>`
+  }
+  if (kind === 'wipe') {
+    const x = -700 + e * 2500;
+    return `${prev}<defs><clipPath id="trc"><polygon points="${x - 900},0 ${x},0 ${x - 600},1920 ${x - 1500},1920"/></clipPath></defs>
+      <g clip-path="url(#trc)">${cur}</g><path d="M${x},0 L${x - 600},1920" stroke="${col}" stroke-width="${(40 * (1 - e) + 8).toFixed(1)}"/>`
+  }
+  if (kind === 'flash') {
+    return `${k < .5 ? prev : cur}<rect width="1080" height="1920" fill="${col}" opacity="${(1 - Math.abs(k - .5) * 2).toFixed(3)}"/>`
+  }
+  // iris: круг растёт из точки
+  const c = (EP.trAt && EP.trAt[S.key]) || [540, 820];
+  const r = (e * e) * 1650;
+  return `${prev}<defs><clipPath id="trc"><circle cx="${c[0]}" cy="${c[1]}" r="${r.toFixed(1)}"/></clipPath></defs>
+    <g clip-path="url(#trc)">${cur}</g><circle cx="${c[0]}" cy="${c[1]}" r="${r.toFixed(1)}" fill="none" stroke="${col}" stroke-width="${(36 * (1 - e) + 4).toFixed(1)}"/>`
+}
+
+function captions(t) {
+  const cap = document.getElementById('cap');
+  let ch = null;
+  for (const c of CHUNKS) { if (t >= c[0].a - .06 && t < c[c.length - 1].b + .32) ch = c }
+  // между фразами держим последний кусок, пока не начнётся следующий (не дольше 0,6 с)
+  if (!ch) { for (const c of CHUNKS) if (c[c.length - 1].b <= t && t - c[c.length - 1].b < .6) ch = c }
+  const hide = EP.noCap && EP.noCap(t);
+  if (!ch || hide) { cap.innerHTML = ''; return }
+  cap.innerHTML = ch.map(w => {
+    const on = t >= w.a - .03 && t < w.b + .05;
+    return `<span class="${w.c || ''}${on ? ' on' : ''}">${w.d.replace(/[“”"]/g, '')}</span>`
+  }).join('');
+  // лёгкий «вдох» куска при появлении
+  const k = clamp((t - ch[0].a + .06) / .18);
+  cap.style.transform = `scale(${(.9 + .1 * eo(k)).toFixed(3)})`;
+}
+
+let GRAIN_N = 0;
+function grainInit() {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const x = c.getContext('2d'), d = x.createImageData(256, 256);
+  for (let i = 0; i < d.data.length; i += 4) { const v = Math.floor(R(i, 3) * 255); d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255 }
+  x.putImageData(d, 0, 0);
+  const g = document.getElementById('grain');
+  g.style.backgroundImage = `url(${c.toDataURL()})`; g.style.backgroundSize = '256px 256px';
+}
+
+function render(t) {
+  let i = 0; while (i < SC.length - 1 && t >= SC[i + 1].a) i++;
+  const S = SC[i];
+  const kind = (EP.tr && EP.tr[S.key]) || EP.trDefault || 'iris';
+  const k = i > 0 ? clamp((t - S.a) / TR) : 1;
+  let svg = DEFS + (EP.defs || '');
+  if (k < 1) svg += transition(kind, k, drawScene(SC[i - 1], t), drawScene(S, t), S);
+  else svg += drawScene(S, t);
+  if (EP.over) svg += EP.over(t, S);
+  document.getElementById('st').innerHTML = svg;
+  captions(t);
+  const f = Math.floor(t * 8);
+  document.getElementById('grain').style.transform = `translate(${Math.floor(R(f, 1) * 64)}px,${Math.floor(R(f, 2) * 64)}px)`;
+}
+
+window.init = init; window.render = render;
+window.loadEp = ep => new Promise((ok, no) => { const s = document.createElement('script'); s.src = `ep/${ep}.js`; s.onload = ok; s.onerror = no; document.head.appendChild(s) });
+</script>
+</body></html>
