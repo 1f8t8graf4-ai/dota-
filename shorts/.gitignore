@@ -4,3 +4,4 @@ out/
 render.log
 out_voice*.log
 __pycache__/
+img/_*
