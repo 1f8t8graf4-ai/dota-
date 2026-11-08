@@ -414,3 +414,39 @@ function pic(src, t, T, o = {}) {
 }
 // затемнение снизу/сверху для читаемости
 const shade = (y0, y1, c = '#000', a = .55) => { const id = uid(); return `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity="0"/><stop offset="1" stop-color="${c}" stop-opacity="${a}"/></linearGradient><rect x="0" y="${y0}" width="${W}" height="${y1 - y0}" fill="url(#${id})"/>` };
+
+// ---------- ролик из картинок по описанию (window.SPEC) ----------
+// SPEC = { dir: 'nicotine', pal: {bg, ink, paper, a1, a2, a3}, tr: {...}, trAt: {...},
+//   scenes: { key: { img: ['a', 'b'] | 'a', sw: 'слово' (когда сменить картинку), cam: [z0, z1, fx, fy, dx0, dx1, dy0, dy1],
+//                    motes: 'цвет', ov: [ {t:'label'|'title'|'big'|'count'|'chip'|'stamp'|'ring'|'flash', …} ] } } }
+// у оверлея: cue — слово (когда появиться), n — какое по счёту вхождение, y/x — место, text — строка или {en, ru}
+function genEP(SPEC) {
+  const C = Object.assign({ bg: '#101820', ink: '#0B1020', paper: '#F3EDE2', line: '#F3EDE2', a1: '#3D8BFF', a2: '#FF4E6A', a3: '#FFC53D' }, SPEC.pal || {});
+  const T_ = v => v == null ? '' : typeof v === 'string' || typeof v === 'number' ? String(v) : (LANG === 'ru' && v.ru != null ? v.ru : v.en);
+  const src = id => 'img/' + SPEC.dir + '/' + id + '.jpg';
+  const motes = (t, col) => { let s = ''; for (let i = 0; i < 16; i++) { const ph = (t * (.04 + rnd(i) * .05) + rnd(i + 3)) % 1, x = 80 + rnd(i + 7) * 920 + Math.sin(t * .7 + i) * 20, y = 1300 - ph * 1100; s += `<circle cx="${R(x)}" cy="${R(y)}" r="${R(2 + rnd(i + 11) * 4)}" fill="${col}" opacity="${R(Math.sin(ph * Math.PI) * 55) / 100}"/>` } return s };
+  const D = {};
+  for (const [key, sc] of Object.entries(SPEC.scenes)) {
+    D[key] = (t, S, T) => {
+      const imgs = Array.isArray(sc.img) ? sc.img : [sc.img || key], c = sc.cam || [], cam = { z0: c[0] ?? 1.02, z1: c[1] ?? 1.16, fx: c[2] ?? 540, fy: c[3] ?? 860, x0: c[4] || 0, x1: c[5] || 0, y0: c[6] || 0, y1: c[7] || 0, bg: C.bg };
+      let s = pic(src(imgs[0]), t, T, cam);
+      for (let i = 1; i < imgs.length; i++) { const sw0 = Array.isArray(sc.sw) ? sc.sw[i - 1] : sc.sw, sw = sw0 && typeof sw0 === 'object' ? T_(sw0) : sw0, ts = sw ? T.c(sw, 0, (T.e - T.v) * i / imgs.length) : T.v + (T.e - T.v) * i / imgs.length; const k = E(t, ts - .35, .7, 'io'); if (k > 0) s += g(pic(src(imgs[i]), t, T, cam), '', k) }
+      if (sc.motes) s += motes(t, sc.motes);
+      for (const o of sc.ov || []) {
+        const t0 = o.at != null ? T.v + o.at : o.cue ? T.c(T_(o.cue), o.n || 0, o.def ?? 0) - .12 : T.v + (o.d ?? 0), y = o.y ?? 330, x = o.x ?? 540, col = C[o.c] || o.c || C.paper;
+        if (o.until && t > T.c(T_(o.until), 0, 99) - .1) continue;
+        if (o.t === 'label') s += cap(T_(o.text), x, y, { c: col, st: C.ink, s: o.s || 30, op: E(t, t0, .4) });
+        else if (o.t === 'title') s += rise(T_(o.text), x, y, t, t0, { f: 'U', w: 800, s: o.s || (LANG === 'ru' ? 84 : 96), c: col, st: C.ink, sw: 16 });
+        else if (o.t === 'big') { const k = E(t, t0, .45, 'back'); if (k > 0) s += g(tx(T_(o.text), 0, 0, { f: 'O', s: o.s || 100, w: 700, c: col, st: C.ink, sw: 16 }), at(x, y, k, o.r || 0)) }
+        else if (o.t === 'count') { const t1 = o.cue1 ? T.c(T_(o.cue1), 0, 3) : t0 + (o.dur || 1.4), k = E(t, t0, Math.max(.6, t1 - t0), 'o5'), v = lerp(o.from || 0, o.to, k), s0 = o.s || 100, w0 = o.w || 760; if (t > t0 - .2) s += g(fill(D_.rr(x - w0 / 2, y - s0 * .9, w0, s0 * 1.5, s0 * .75), C.ink, .86) + odo(v, x, y + s0 * .32, { s: s0, c: col, pre: o.pre || '', post: o.post || '', sep: o.sep ?? ',' }) + (o.sub ? cap(T_(o.sub), x, y + s0 * .62, { c: C[o.subc] || C.a3, s: 22 }) : ''), '', E(t, t0 - .2, .3)) }
+        else if (o.t === 'chip') { const k = E(t, t0, .45, 'back'); if (k > 0) { const str = T_(o.text), s0 = o.s || 58, w0 = tw(str, { f: 'O', w: 700, s: s0 }) + 80; s += g(fill(D_.rr(-w0 / 2, -s0 * .95, w0, s0 * 1.9, s0 * .95), C[o.bgc] || C.a2) + tx(str, 0, s0 * .36, { f: 'O', s: s0, w: 700, c: col }), at(x, y, k, o.r ?? -3)) } }
+        else if (o.t === 'stamp') s += stamp(T_(o.text), x, y, t, t0, { c: col === C.paper ? C.a2 : col, s: o.s || 80, r: o.r ?? -10 });
+        else if (o.t === 'ring') s += ringWave(x, y, t, t0, { c: col, r1: o.r1 || 600 }) + burst(x, y, t, t0, { c: C.a3, r0: 120, r1: 260 });
+        else if (o.t === 'flash') { const k = P01(t, t0, .35); if (k > 0 && k < 1) s += `<rect width="${W}" height="${H}" fill="${col}" opacity="${R((1 - k) * 60) / 100}"/>` }
+      }
+      return s
+    }
+  }
+  window.EP = { P: C, D, tr: SPEC.tr || {}, trAt: SPEC.trAt || {}, trCol: SPEC.trCol || {}, trDef: SPEC.trDef || 'push', cap: { hi: C.a3, st: C.ink } };
+  P = C;
+}

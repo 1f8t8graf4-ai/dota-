@@ -1,0 +1,73 @@
+{
+ "palette": "deep navy, dusty blue, warm cream, awareness-ribbon red accent, soft teal for hope.",
+ "shots": [
+  {
+   "id": "title",
+   "prompt": "A single red awareness ribbon floating above a sleeping city at night, soft red glow on the rooftops, deep navy sky with stars."
+  },
+  {
+   "id": "eighties",
+   "prompt": "A cozy 1980s living room at night: an old box TV glows with a blank news-studio picture, a family on a patterned couch watching, retro wallpaper and a standing lamp."
+  },
+  {
+   "id": "claim",
+   "prompt": "An old brass pocket watch lying open on a hand-drawn map of central Africa without any labels, its hands blurred as if spinning backwards, warm light and dust in the air."
+  },
+  {
+   "id": "forest",
+   "prompt": "Dense tropical rainforest at dawn, mist between giant trees and vines, a chimpanzee sitting on a high branch calmly looking at the viewer."
+  },
+  {
+   "id": "hunter",
+   "prompt": "Close-up of a hunter's hand with a small fresh cut on one finger, a single drop of blood falling onto a big jungle leaf, dark green tones."
+  },
+  {
+   "id": "kin",
+   "prompt": "Kinshasa in the 1920s: a growing river town on the wide Congo river, paddle steamboats at a wooden pier, a small steam train leaving along a new railway into the hills, warm evening light."
+  },
+  {
+   "id": "sample",
+   "prompt": "A vintage 1950s laboratory: glass test tubes with red blood samples in a wooden rack, an old brass microscope, a green desk lamp, blank labels."
+  },
+  {
+   "id": "la",
+   "prompt": "Los Angeles in 1981 at dusk: palm trees and a hospital building, in the foreground a doctor's desk with an old typewriter and a short typed report with blank lines."
+  },
+  {
+   "id": "zero",
+   "prompt": "A dark room with a single file folder on a table under a hanging lamp, a blank silhouette photo clipped to it, long dramatic shadows."
+  },
+  {
+   "id": "o",
+   "prompt": "Close-up of an old typed document on a desk with a big round circle drawn in the middle, a magnifying glass over it, dramatic side light, no readable letters."
+  },
+  {
+   "id": "dna",
+   "prompt": "A glowing DNA double helix rising above a dark ocean at night, a dotted travel line arcing from a small Caribbean island to a city skyline on the horizon."
+  },
+  {
+   "id": "pill",
+   "prompt": "A single white pill held between two fingers in front of a window with soft morning light, a calm bedroom, hopeful mood."
+  },
+  {
+   "id": "uu",
+   "prompt": "Two people holding hands walking in a sunny park, seen from behind, warm hopeful light, a small red ribbon pinned to one jacket."
+  },
+  {
+   "id": "shot",
+   "prompt": "A friendly doctor giving a small injection in the upper arm of a young adult in a bright modern clinic, a wall calendar with two days circled."
+  },
+  {
+   "id": "count",
+   "prompt": "A huge crowd of diverse people seen from above filling a big city square, many of them holding small red ribbons."
+  },
+  {
+   "id": "end",
+   "prompt": "A smiling grandmother with grey hair and round glasses sitting in an armchair with a cup of tea, a small red ribbon on her cardigan, cozy living room."
+  },
+  {
+   "id": "end2",
+   "prompt": "An evening city street corner with a blank arrow signpost pointing to the warmly lit door of a small clinic, inviting atmosphere."
+  }
+ ]
+}

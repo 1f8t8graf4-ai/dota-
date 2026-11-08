@@ -1,0 +1,57 @@
+{
+ "palette": "night navy, electric yellow accent, cool silver, a little red.",
+ "shots": [
+  {
+   "id": "title",
+   "prompt": "A single unbranded blue energy drink can standing on a wet street at night, lightning in the sky, neon reflections on the asphalt."
+  },
+  {
+   "id": "can",
+   "prompt": "A teenager's desk at three in the morning: an unbranded energy drink can, scattered sugar cubes, a laptop glow, an alarm clock, tired lamp light."
+  },
+  {
+   "id": "claim",
+   "prompt": "A big powerful bull standing in a dark arena under a single spotlight, steam from its nostrils, dramatic."
+  },
+  {
+   "id": "bile",
+   "prompt": "A 19th-century German laboratory: two scientists in old coats examining a glass flask of greenish-yellow liquid, candles and old books."
+  },
+  {
+   "id": "myth",
+   "prompt": "A phone lying on a table with a glowing screen full of shocked cartoon faces, an unbranded can next to it, dramatic light."
+  },
+  {
+   "id": "thai",
+   "prompt": "A Thai highway at night in the 1970s: a colorfully decorated truck with bright headlights, a roadside stall with small brown glass bottles."
+  },
+  {
+   "id": "austria",
+   "prompt": "An airplane flying over the snowy Austrian Alps at sunrise, a tired businessman looking out of the window holding a small bottle."
+  },
+  {
+   "id": "cans",
+   "prompt": "A gigantic mountain of unbranded blue and silver cans reaching into the clouds, tiny people at its foot."
+  },
+  {
+   "id": "caff",
+   "prompt": "A cup of black coffee and an unbranded energy drink can side by side on a cafe table, steam rising from the coffee, morning light."
+  },
+  {
+   "id": "sugar",
+   "prompt": "Sugar cubes falling into an open can, a tall stack of seven sugar cubes next to it, bright clean kitchen."
+  },
+  {
+   "id": "ban",
+   "prompt": "A British corner shop counter with a row of unbranded energy drink cans, the cashier checking a teenager's ID card."
+  },
+  {
+   "id": "end",
+   "prompt": "A bull, a decorated Thai truck and a giant can standing together on a road at sunset like a strange family photo."
+  },
+  {
+   "id": "end2",
+   "prompt": "A bull sitting at an office desk next to an empty mailbox, waiting, a wall clock, humorous cozy scene."
+  }
+ ]
+}

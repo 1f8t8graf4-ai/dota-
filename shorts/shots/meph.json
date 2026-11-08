@@ -1,0 +1,65 @@
+{
+ "palette": "violet-black, deep purple, neon pink and cyan accents, pale lavender highlights.",
+ "shots": [
+  {
+   "id": "title",
+   "prompt": "A small pile of white crystals glowing violet on a black glossy surface under neon club light, sparkles, mysterious and dangerous mood."
+  },
+  {
+   "id": "names",
+   "prompt": "A neon-lit nightclub with a dancing crowd, a glowing neon sign shaped like a cat's face above the bar, pink and cyan light."
+  },
+  {
+   "id": "claim",
+   "prompt": "A cute houseplant in a terracotta pot on a sunny windowsill next to a small plain paper sachet decorated with a simple green leaf icon."
+  },
+  {
+   "id": "y1929",
+   "prompt": "An old 1929 chemistry lab: a chemist in a white coat drawing hexagon ring shapes on a chalkboard, glass flasks, warm lamp light."
+  },
+  {
+   "id": "shop",
+   "prompt": "A laptop on a messy desk at night showing an online shop page with rows of small plain packets, the screen glow on the wall."
+  },
+  {
+   "id": "small",
+   "prompt": "Extreme close-up of a small plain paper sachet with a line of tiny unreadable print at the bottom, a magnifying glass over it."
+  },
+  {
+   "id": "plants",
+   "prompt": "A sunny room full of thriving houseplants on wooden shelves; one small unopened sachet sits on a shelf covered in dust and a cobweb."
+  },
+  {
+   "id": "survey",
+   "prompt": "A crowded club dance floor seen from above with colored spotlights; about half of the dancers glow pink."
+  },
+  {
+   "id": "redose",
+   "prompt": "A side silhouette of a person's head with a glowing pink brain that is dimming fast, a wall clock behind, dark room with pink neon."
+  },
+  {
+   "id": "body",
+   "prompt": "Close-up of a young person's tense face at a party at night: wide pupils, clenched jaw, sweat on the forehead, a red glow pulsing on the chest."
+  },
+  {
+   "id": "drop",
+   "prompt": "A lonely young person sitting on the edge of a bed at grey dawn with head in hands, rain on the window, cold blue light."
+  },
+  {
+   "id": "ban",
+   "prompt": "A wooden judge's gavel striking its block next to a small plain sachet, a ring of twelve golden stars glowing in the dark background."
+  },
+  {
+   "id": "russia",
+   "prompt": "A huge pile of confiscated plain packets in a police evidence warehouse, a big industrial scale with a heavy weight, harsh overhead lights."
+  },
+  {
+   "id": "end",
+   "prompt": "An old 1929 chemistry book lying open next to a houseplant on a sunny windowsill."
+  },
+  {
+   "id": "end2",
+   "prompt": "A happy blooming houseplant wearing tiny cool sunglasses on a sunny windowsill, an untouched sachet lying on the floor below."
+  }
+ ]
+}

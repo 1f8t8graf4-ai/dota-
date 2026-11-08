@@ -1,0 +1,57 @@
+{
+ "palette": "warm paper cream, ink navy, red accent, teal accent; bright and clean editorial look.",
+ "shots": [
+  {
+   "id": "hook",
+   "prompt": "Four closed red envelopes and one teal envelope lying on a wooden table under a spotlight."
+  },
+  {
+   "id": "m1",
+   "prompt": "A big mosquito about to land on a person's arm, macro view, evening light."
+  },
+  {
+   "id": "m1f",
+   "prompt": "A mosquito flying away from a person reading calmly under a lamp, safe cozy mood."
+  },
+  {
+   "id": "m2",
+   "prompt": "A couple hugging on a city street in warm evening light."
+  },
+  {
+   "id": "m2f",
+   "prompt": "Two friends laughing and sharing one glass of lemonade at a cafe table."
+  },
+  {
+   "id": "m3",
+   "prompt": "A row of different healthy-looking smiling people standing side by side facing the viewer."
+  },
+  {
+   "id": "m3f",
+   "prompt": "A simple self-test kit on a bathroom counter next to a phone with a timer glowing, morning light."
+  },
+  {
+   "id": "m4",
+   "prompt": "A gloomy empty 1980s hospital corridor with old beds and flickering lights."
+  },
+  {
+   "id": "m4f",
+   "prompt": "A healthy grey-haired man jogging through a park in the morning, smiling."
+  },
+  {
+   "id": "uu",
+   "prompt": "Two people holding hands in a sunny park, seen from behind."
+  },
+  {
+   "id": "true",
+   "prompt": "A teal envelope opening on a wooden table with soft light pouring out of it."
+  },
+  {
+   "id": "pep",
+   "prompt": "A pharmacy counter with a small box of pills, a big wall clock, a pharmacist explaining something kindly to a young person."
+  },
+  {
+   "id": "end",
+   "prompt": "A hand holding a phone with a glowing bookmark-shaped icon on the screen, cozy evening room."
+  }
+ ]
+}

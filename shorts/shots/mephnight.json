@@ -1,0 +1,61 @@
+{
+ "palette": "night violet, neon pink and cyan; later scenes turn grey and desaturated.",
+ "shots": [
+  {
+   "id": "hook",
+   "prompt": "A neon-lit nightclub entrance at night with a line of young people waiting, Saturday-night energy, pink and cyan neon."
+  },
+  {
+   "id": "t1115",
+   "prompt": "Inside a crowded club: a young person in the center laughing with friends, everyone glowing in pink light, euphoric."
+  },
+  {
+   "id": "t0000",
+   "prompt": "Extreme close-up of a young person's eye with a huge dilated pupil reflecting neon club lights."
+  },
+  {
+   "id": "t0040",
+   "prompt": "A young person standing alone at the edge of the dance floor while the colors around them fade to grey."
+  },
+  {
+   "id": "t0300",
+   "prompt": "A messy apartment kitchen at three in the morning: empty glasses, people still talking, harsh light, tired faces."
+  },
+  {
+   "id": "t0500",
+   "prompt": "A bedroom at dawn: a young person lying awake in bed with wide-open eyes, birds outside the window, pale light."
+  },
+  {
+   "id": "t0700",
+   "prompt": "Top-down view of a young person lying on a bed staring at the ceiling with a hand on the chest, morning light through blinds."
+  },
+  {
+   "id": "t0900",
+   "prompt": "A phone on a pillow with a glowing screen full of message bubbles, a hand reaching for it, morning light."
+  },
+  {
+   "id": "sun",
+   "prompt": "A young person sitting at a kitchen table in front of an untouched plate of food, grey Sunday afternoon light."
+  },
+  {
+   "id": "mon",
+   "prompt": "A grey rainy city street on a Monday morning, a young person walking alone under an umbrella, desaturated colors."
+  },
+  {
+   "id": "tue",
+   "prompt": "A young person writing in a notebook at a desk at night under a small lamp, determined face."
+  },
+  {
+   "id": "study",
+   "prompt": "A balance scale with two identical glass jars perfectly balanced in a dark room under a spotlight."
+  },
+  {
+   "id": "next",
+   "prompt": "A polaroid photo of a happy party moment pinned on a bedroom wall above an empty bed, moody night light."
+  },
+  {
+   "id": "help",
+   "prompt": "A warm helping hand reaching out to a young person sitting on outdoor stairs at dawn, hopeful light."
+  }
+ ]
+}

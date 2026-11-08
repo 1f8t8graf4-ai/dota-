@@ -1,0 +1,18 @@
+{
+ "palette": "deep tobacco green, dark bottle green, warm amber, warm off-white cream, a little warning red.",
+ "shots": [
+  {"id": "title", "prompt": "A huge single tobacco leaf glowing softly in a dark greenhouse at night, dew drops on it, mysterious green light from inside its veins, a tiny person standing below it looking up."},
+  {"id": "vape", "prompt": "A cigarette and a sleek unbranded disposable vape lying side by side on a dark wooden table, a thin curl of smoke and a soft cloud of vapor rising and mixing, moody amber lamp light."},
+  {"id": "claim", "prompt": "A tall tobacco plant standing alone in a dark field at night like a fortress, its broad leaves like armored shields, a faint green glow inside the stem, small beetles turning around and walking away from it."},
+  {"id": "bite", "prompt": "Macro close-up: a green caterpillar biting the edge of a big tobacco leaf, frozen mid-bite, tiny yellow electric sparks around its body, dark soft background."},
+  {"id": "farm", "prompt": "A seventeenth-century kitchen garden: a gardener in old-fashioned clothes sprinkles brown tobacco water from a wooden bucket onto rows of cabbages, a wattle fence, soft morning light."},
+  {"id": "bottle", "prompt": "A vintage brown glass poison bottle with a plain paper label showing only a black leaf and a skull symbol, standing on a dusty wooden barn shelf, sunbeams through the planks."},
+  {"id": "neo_a", "prompt": "A tractor spraying a wide golden crop field, a pale chemical mist drifting across the field, a few bees flying away from the mist, late afternoon light."},
+  {"id": "neo_b", "prompt": "Close-up of honeybees on bright wildflowers in a meadow, peaceful sunny day, soft bokeh background."},
+  {"id": "brain", "prompt": "Side view silhouette of a teenager's head in the dark, the brain inside glowing warm orange with tiny sparks, a thin wisp of vapor leaving the lips."},
+  {"id": "pod", "prompt": "An old brass balance scale on a dark background under a spotlight: on one pan a single small vape pod, on the other pan a whole pack of cigarettes, the scale perfectly balanced."},
+  {"id": "toll", "prompt": "A giant hourglass standing in an empty dark space under cold blue light, sand pouring down, the falling grains forming tiny human silhouettes."},
+  {"id": "end", "prompt": "A tobacco plant in a field at sunset, a line of small beetles walking away from it towards the horizon, long golden shadows."},
+  {"id": "end2", "prompt": "An unbranded disposable vape and a fresh mango slice on a dark table, a sweet orange vapor cloud curling upwards and forming the shape of a fishing hook."}
+ ]
+}

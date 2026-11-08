@@ -1,0 +1,99 @@
+{
+ "palette": "muted indigo, slate grey, warm amber lamp light, teal accents.",
+ "shots": [
+  {
+   "id": "intro",
+   "prompt": "a fifteen-year-old boy with short dark hair in a blue hoodie sitting on his bed in his room in the evening, looking at the viewer, warm lamp light, blank posters with abstract shapes."
+  },
+  {
+   "id": "d1",
+   "prompt": "Behind a red brick school gym, teenagers laughing; a friend hands a fifteen-year-old boy with short dark hair in a blue hoodie a vape, he coughs, a white vapor cloud around him.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "brain",
+   "prompt": "Side view silhouette of a boy's head in the dark, the brain inside lighting up with golden sparks."
+  },
+  {
+   "id": "d10",
+   "prompt": "A small corner shop counter under fluorescent light, a fifteen-year-old boy with short dark hair in a blue hoodie paying with a card for a small vape, the shopkeeper's hand.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "d30",
+   "prompt": "Early morning bedroom: a fifteen-year-old boy with short dark hair in a blue hoodie, half asleep, reaches for a vape on the nightstand while his phone lies ignored next to it, an alarm clock.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "half",
+   "prompt": "A tall glass tube with glowing golden liquid draining down step by step, a clock face behind it, minimal dark background."
+  },
+  {
+   "id": "d90",
+   "prompt": "A classroom with a big wall clock: a fifteen-year-old boy with short dark hair in a blue hoodie sits at his desk restless and sweating, staring at the clock, other students calm.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "d120",
+   "prompt": "A school bathroom with tiled walls, a cloud of vapor rising above a closed toilet stall door, cold light."
+  },
+  {
+   "id": "quit",
+   "prompt": "Morning in his room: a fifteen-year-old boy with short dark hair in a blue hoodie stands by the window at sunrise, dropping a vape into a trash bin, determined face.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "flip",
+   "prompt": "A big old mechanical flip counter on a wall, its number plates flipping, dramatic light, no readable numbers."
+  },
+  {
+   "id": "q1",
+   "prompt": "a fifteen-year-old boy with short dark hair in a blue hoodie in a loud school hallway, irritated, everybody around talking, tense red tones.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "q3",
+   "prompt": "a fifteen-year-old boy with short dark hair in a blue hoodie lying on his bed staring at the ceiling, exhausted, storm clouds visible through the window.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "wave",
+   "prompt": "a fifteen-year-old boy with short dark hair in a blue hoodie standing calmly on a beach while a big ocean wave rises in front of him and breaks into foam.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "q14",
+   "prompt": "a fifteen-year-old boy with short dark hair in a blue hoodie riding a bicycle with friends through a sunny park, smiling.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "q30",
+   "prompt": "a fifteen-year-old boy with short dark hair in a blue hoodie sleeping peacefully in his bed at night, moonlight through the window.",
+   "refs": [
+    "intro"
+   ]
+  },
+  {
+   "id": "end",
+   "prompt": "A small green plant sprouting from a crack in concrete in warm morning light, hopeful."
+  }
+ ]
+}

@@ -2,8 +2,9 @@
 #   python3 img.py mrbeast            — все кадры из shots/mrbeast.json (уже готовые пропускает)
 #   python3 img.py mrbeast title,legend --force
 #   python3 img.py --test             — проверка ключа одной маленькой картинкой
-# Ключ: Network secret окружения (host generativelanguage.googleapis.com, header x-goog-api-key) —
-#   прокси подставляет его сам, в коде ключа нет. Или переменная GEMINI_API_KEY.
+# Модель по умолчанию — Cloudflare Workers AI, FLUX.2 [klein] 9B (бесплатно ≈ 10 000 «нейронов» в сутки, вертикаль 768×1344,
+#   2–3 с на картинку). Токен — Network secret на api.cloudflare.com (Bearer, прокси подставляет сам). Можно дать
+#   картинки-образцы (refs) — модель держит того же героя и стиль. IMG_BACKEND=gemini — Gemini (только с оплатой).
 # Кадр = STYLE (общий стиль студии) + палитра ролика + описание сцены. Без текста и логотипов —
 #   надписи и цифры рисуются поверх кодом (lib.js), чтобы не было кривых букв.
 import base64, json, os, sys, time
@@ -20,10 +21,37 @@ STYLE = ("Flat 2D vector illustration in the style of a premium 2016 explainer m
          "objects drawn with realistic proportions and many small believable details, characters with simple round heads, dot eyes and small mouths, "
          "cinematic composition with clear depth (foreground, midground, background), gentle volumetric light. "
          "Vertical 9:16 frame, important subject in the middle third, calm empty area in the lower quarter for subtitles. "
-         "Absolutely no text, no letters, no numbers, no logos, no watermarks, no brand names.")
+         "Absolutely no text, no letters, no numbers, no logos, no watermarks, no brand names; any posters, screens, labels, packaging and signs "
+         "are blank or show only simple abstract shapes.")
+CF_ACC = os.environ.get('CF_ACCOUNT', '30e726a49a27820ac532f8ab97954d0c')
+CF_MODEL = os.environ.get('CF_MODEL', '@cf/black-forest-labs/flux-2-klein-9b')
+SIZE = {'9:16': (768, 1344), '1:1': (1024, 1024), '16:9': (1344, 768), '4:5': (896, 1120)}
+
+
+def call_cf(prompt, aspect='9:16', refs=()):
+    w, h = SIZE.get(aspect, (768, 1344))
+    files = {'prompt': (None, prompt[:2000]), 'width': (None, str(w)), 'height': (None, str(h))}
+    for i, r in enumerate(refs[:4]):
+        files[f'input_image_{i}'] = (os.path.basename(r), open(r, 'rb'), 'image/png' if r.endswith('.png') else 'image/jpeg')
+    last = None
+    for attempt in range(4):
+        try:
+            r = requests.post(f'https://api.cloudflare.com/client/v4/accounts/{CF_ACC}/ai/run/{CF_MODEL}', files=files,
+                              headers={'Authorization': 'Bearer proxy-injected'}, timeout=240, verify=CA if os.path.exists(CA) else True)
+        except requests.RequestException as e:
+            last = str(e); time.sleep(3 + attempt * 5); continue
+        if r.ok:
+            return base64.b64decode(r.json()['result']['image']), CF_MODEL
+        last = f'{r.status_code} {r.text[:300]}'
+        if r.status_code in (429, 500, 502, 503, 504):
+            time.sleep(5 + attempt * 10); continue
+        break
+    raise RuntimeError(last)
 
 
 def call(prompt, aspect='9:16', refs=()):
+    if os.environ.get('IMG_BACKEND', 'cf') == 'cf':
+        return call_cf(prompt, aspect, refs)
     parts = [{'text': prompt}]
     for r in refs:
         parts.append({'inline_data': {'mime_type': 'image/png', 'data': base64.b64encode(open(r, 'rb').read()).decode()}})
@@ -61,11 +89,11 @@ def main(ep, only=None, force=False):
     for s in spec['shots']:
         if only and s['id'] not in only:
             continue
-        f = os.path.join(out, s['id'] + '.png')
+        f = os.path.join(out, s['id'] + '.jpg')
         if os.path.exists(f) and not force:
             continue
-        refs = [os.path.join(out, r + '.png') for r in s.get('refs', []) if os.path.exists(os.path.join(out, r + '.png'))]
-        prompt = STYLE + ' Palette: ' + pal + ' Scene: ' + s['prompt'] + (' Keep the same character design and style as the reference image.' if refs else '')
+        refs = [os.path.join(out, r + '.jpg') for r in s.get('refs', []) if os.path.exists(os.path.join(out, r + '.jpg'))]
+        prompt = STYLE + ' Palette: ' + pal + ' Scene: ' + s['prompt'] + (' Keep exactly the same character design, palette and drawing style as the reference image.' if refs else '')
         t = time.time()
         png, m = call(prompt, s.get('aspect', '9:16'), refs)
         open(f, 'wb').write(png)
@@ -76,7 +104,7 @@ if __name__ == '__main__':
     a = sys.argv[1:]
     if a and a[0] == '--test':
         png, m = call('A small flat vector illustration of a red apple on a table. ' + STYLE, '1:1')
-        os.makedirs(os.path.join(HERE, 'img'), exist_ok=True); open(os.path.join(HERE, 'img', '_test.png'), 'wb').write(png)
+        os.makedirs(os.path.join(HERE, 'img'), exist_ok=True); open(os.path.join(HERE, 'img', '_test.jpg'), 'wb').write(png)
         print('ключ работает:', m, len(png) // 1024, 'КБ')
     else:
         force = '--force' in a
