@@ -128,7 +128,7 @@ def porno():
         return v
 
     def bot(g, p, lt):
-        phone(g, 540, 470, 1.6, glow=True, lines=[("I'm fine.", '#0b0b0d', 26), ('Really.', '#0b0b0d', 26), ('Я в норме. Правда.', '#0b0b0d', 13)])
+        phone(g, 540, 470, 1.6, glow=True, lines=[("I'm fine.", '#0b0b0d', 26), ('Really.', '#0b0b0d', 26), ('Я в норме. Правда.', '#0b0b0d', 11)])
 
     return dict(style='stick', beats=[
         B('Макс думал, что просто смотрит видео перед сном.', lambda g, p, lt: bedscene(g, p, lt), hl=['перед', 'сном'], key='bed'),
