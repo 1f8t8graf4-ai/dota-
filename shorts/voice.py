@@ -185,7 +185,58 @@ def squeeze(x, cap, sr=SR, thr=0.012):
     return np.concatenate(out)
 
 
+# 09.11 (v10): «естественный» режим своей записи — без нарезки на фразы и склейки: запись целиком (44,1 кГц), паузы как у диктора,
+#   только слишком длинные (> N с) ужимаются до N. Тайминг слов — Vosk по всему файлу. Так голос не звучит «роботом»
+#   (робота давали: растяжка темпа, 24 кГц, одинаковые паузы между фразами, выравнивание громкости фраз).
+NATURAL = {'nicsa-ru': .4, 'nicsb-ru': .4, 'nicsc-ru': .4}
+
+
+def natural(ep, audio):
+    import subprocess
+    from wt_vosk import align, toks as wtoks
+    sr = 44100
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', audio, '-ac', '1', '-ar', str(sr), '-f', 'f32le', '-'], capture_output=True, check=True).stdout
+    y = np.frombuffer(raw, np.float32).copy()
+    y = squeeze(y, NATURAL[ep], sr=sr)
+    idx = np.where(np.abs(y) > 0.01 * np.max(np.abs(y)))[0]
+    y = y[max(0, idx[0] - int(.04 * sr)):idx[-1] + int(.25 * sr)]
+    lead = .15
+    y = np.concatenate([np.zeros(int(lead * sr), np.float32), y, np.zeros(int(1.2 * sr), np.float32)])
+    y = y / (np.max(np.abs(y)) or 1) * .9
+    out = os.path.join(HERE, 'out', ep)
+    wav = os.path.join(out, 'voice.wav')
+    sf.write(wav, y, sr)
+    L = EPISODES[ep]
+    says = [parse(x)[0].lstrip('.… ') for _, x in L]
+    W, q = align(os.path.join(M, 'vosk-' + ep.rsplit('-', 1)[1]), wav, ' '.join(says))
+    print(f'слова по всему файлу: распознано {q:.0%}')
+    T, j = [], 0
+    for i, (scene, s0) in enumerate(L):
+        text, tk = parse(s0)
+        n = len(wtoks(says[i]))
+        seg = W[j:j + n]
+        j += n
+        words, k = [], 0
+        for t0 in tk:
+            ws = seg[k:k + len(t0['sp'])] or [seg[-1]]
+            k += len(t0['sp'])
+            words.append({'d': t0['d'], 'c': t0['c'], 'a': round(ws[0][0], 3), 'b': round(ws[-1][1], 3)})
+        a0, b0 = max(0, seg[0][0] - .04), seg[-1][1] + .06
+        T.append({'i': i, 'scene': scene, 'a': round(a0, 3), 'b': round(b0, 3), 'q': round(q, 2), 'text': text, 'words': words})
+        print(f'{i:02d} {scene:8s} {a0:6.2f}–{b0:6.2f} {text}')
+    total = len(y) / sr
+    hop = sr // 30
+    env = [float(np.sqrt(np.mean(y[i:i + hop] ** 2))) for i in range(0, len(y), hop)]
+    mx = max(env) or 1
+    json.dump({'ep': ep, 'lang': ep.rsplit('-', 1)[1], 'dur': round(total, 3), 'fps': 30, 'voice': 'own', 'natural': True,
+               'sent': T, 'env': [round(min(1, e / mx * 1.8), 3) for e in env]},
+              open(os.path.join(out, 'timeline.json'), 'w'), ensure_ascii=False, indent=1)
+    print(ep, 'итого', round(total, 2), 'с (естественный режим)')
+
+
 def main(ep, audio=None):
+    if audio and ep in NATURAL:
+        return natural(ep, audio)
     lang = ep.rsplit('-', 1)[1]
     L = EPISODES[ep]
     out = os.path.join(HERE, 'out', ep)

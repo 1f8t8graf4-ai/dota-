@@ -75,11 +75,12 @@ EL_VOICE = {'ru': '2OdNfs9Z4GCMvoFiCavC',  # Max — Clear, Engaging and Profess
 EL_SET = {'stability': .55, 'similarity_boost': .75}
 
 
-def el_text(ep, L):
-    """Текст для синтеза: режиссёрские пометки по фразам (scripts.DIRECT) и ударения (scripts.SAY). На экран это не попадает."""
+def el_text(ep, L, tags=True):
+    """Текст для синтеза: режиссёрские пометки по фразам (scripts.DIRECT) и ударения (scripts.SAY). На экран это не попадает.
+    tags=False — без пометок (модели multilingual/turbo/flash читают их вслух; у v4 без пометок голос ровнее и «живее»)."""
     import re
     import scripts
-    d, rep = getattr(scripts, 'DIRECT', {}).get(ep, {}), getattr(scripts, 'SAY', {}).get(ep, {})
+    d, rep = (getattr(scripts, 'DIRECT', {}).get(ep, {}) if tags else {}), getattr(scripts, 'SAY', {}).get(ep, {})
     out = []
     for i, t in enumerate(L):
         for x, y in rep.items():
@@ -88,9 +89,9 @@ def el_text(ep, L):
     return '\n'.join(out)
 
 
-def el_say(text, voice, lang, model='eleven_v4', stab=None, seed=None):
-    """→ mp3 (байты) ElevenLabs. Повтор при 5xx/сети."""
-    body = {'text': text, 'model_id': model, 'language_code': lang, 'voice_settings': dict(EL_SET, **({'stability': stab} if stab is not None else {}))}
+def el_say(text, voice, lang, model='eleven_v4', stab=None, seed=None, extra=None):
+    """→ mp3 (байты) ElevenLabs. Повтор при 5xx/сети. extra — ещё настройки голоса (style, speed — только у multilingual/turbo)."""
+    body = {'text': text, 'model_id': model, 'language_code': lang, 'voice_settings': dict(EL_SET, **({'stability': stab} if stab is not None else {}), **(extra or {}))}
     if seed is not None:
         body['seed'] = seed
     last = ''
@@ -139,14 +140,16 @@ def main():
             f = os.path.join(out, f'{v}.mp3'); save(pcm, f); files.append(f)
             print(v, m, f)
         return
-    vals = {a[i + 1] for i, x in enumerate(a[:-1]) if x in ('--voice', '--model', '--stab', '--seed', '--voices', '--tempo')}
+    vals = {a[i + 1] for i, x in enumerate(a[:-1]) if x in ('--voice', '--model', '--stab', '--seed', '--voices', '--tempo', '--style', '--speed')}
     for ep in [x for x in a if not x.startswith('--') and x not in vals]:
         out = os.path.join(HERE, 'out', ep); os.makedirs(out, exist_ok=True)
         L = lines(ep)
         if '--el' in a:
             lang = ep.rsplit('-', 1)[1]; v = opt('--voice', EL_VOICE[lang]); m = model or 'eleven_v4'
             stab, seed = opt('--stab'), opt('--seed')
-            mp3 = os.path.join(out, 'tts.mp3'); open(mp3, 'wb').write(el_say(el_text(ep, L), v, lang, m, float(stab) if stab else None, int(seed) if seed else None))
+            tags = '--notags' not in a and m in ('eleven_v3', 'eleven_v4')
+            extra = {k: float(opt('--' + k)) for k in ('style', 'speed') if opt('--' + k)}
+            mp3 = os.path.join(out, 'tts.mp3'); open(mp3, 'wb').write(el_say(el_text(ep, L, tags), v, lang, m, float(stab) if stab else None, int(seed) if seed else None, extra))
             dst = os.path.join(out, 'tts.wav')
             tempo = float(opt('--tempo', '1'))  # чуть быстрее без смены высоты (у оригиналов 2,0–2,6 слова в секунду)
             subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', mp3] + (['-af', f'rubberband=tempo={tempo}'] if abs(tempo - 1) > 1e-3 else []) + ['-ac', '1', '-ar', '24000', dst], check=True)
