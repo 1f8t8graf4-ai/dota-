@@ -159,8 +159,8 @@
   D.wings = (t, S, T) => {
     const tt = T.c('тесно') - .2, tw0 = T.c('крылья') - .25, tg = T.c('Армия') - .2;
     const fly = E(t, tg, 1.6, 'io');
-    let s = BG(lerp(0, 1, fly) > .5 ? C.sky2 : '#CFE6B5');
-    s += sh(D_.rr(-100, -100, 1280, 2120, 0), '#F7B267', { op: fly }) + sh(D_.circ(540, 1500 - fly * 300, 380), '#F28C5B', { op: fly });
+    let s = BG('#CFE6B5') + envLeaves(t, { f1: '#B3D48F', f2: '#A6CC80' });
+    if (fly > 0) s += g(envSky(t, { bands: ['#F7B267', '#F4A160', '#F28C5B'], sunC: '#FFE08A', sx: 540, sy: 1500 - fly * 360, sr: 260, c: C.ink, cy: 300 }), '', clamp(fly * 2.5));
     let w = '';
     const N = 40, sq = t > tt ? Math.sin((t - tt) * 30) * 4 * (1 - fly) : 0;
     for (let i = 0; i < N; i++) {
@@ -295,7 +295,7 @@
   // ===== 16. «Тля не курит»: сок с трубочкой, табличка «не курить», моргает =====
   D.nosmoke = (t, S, T) => {
     const tk = T.c('курит') - .2;
-    let s = BG('#CFE6B5') + rays(540, 900, 18, '#C2DEA3', t * 6) + sh(D_.circ(540, 900, 380), '#BEDDA0');
+    let s = BG('#CFE6B5') + envLeaves(t, { f1: '#B3D48F', f2: '#A6CC80' }) + sh(D_.circ(540, 900, 380), '#BEDDA0');
     s += g(leafT({ len: 900, w: 340, c: C.ink, ow: 6, vw: 5, f: '#8CC66A', f2: '#6FAF55', dots: false }), at(300, 1560, 1, 62));
     s += aphidX(t, { x: 470, y: 1020, s: 2.4, juice: true, mood: 'calm', c: C.ink, lid: t > tk + .3 ? .5 : 0 });
     s += pop(noSmoke(0, 0, 1), 760, 430, t, T.a + .05, { r: 8 });
@@ -306,7 +306,7 @@
   // ===== 17. «Подписывайтесь, пока тля не удалила это видео»: тля за ноутбуком тащит ролик в корзину =====
   D.end = (t, S, T) => {
     const tp = T.c('пока') - .2, td = T.c('удалила') - .2;
-    let s = BG(C.bg) + rays(540, 700, 18, C.bg2, t * 6);
+    let s = BG(C.bg) + envCity(t, { c1: C.bg2, c2: C.bg3, win: '#FFD23F', y: 1000 }) + sh(D_.rr(-100, 830, 1280, 1200, 0), '#4A3424', { c: C.ink, w: 7 }) + sh(D_.rr(-100, 830, 1280, 30, 0), '#5E432F', { c: C.ink, w: 7 });
     const pr = clamp((t - td) / 2.2);
     const inner = cork(80, 40, { f: '#C68B59' }) + g(polaroid(aphidX(t, { x: 20, y: 80, s: 1.1, glasses: true, c: C.ink }), 0, 0, { bg: '#CFE6B5' }), at(0, -120, .62)) + sh(D_.rr(-240, -40, 480, 50, 25), C.ink) + sh(D_.rr(-236, -36, 472 * pr + 1, 42, 21), C.a2) + tx(pr > 0 ? 'Удаляю видео… ' + Math.floor(pr * 100) + '%' : '▶ Что вы знаете о никотине?', 0, -64, { f: 'M', w: 800, s: 28, c: C.ink });
     s += laptop(t, { x: 540, y: 720, s: 1.2, inner: g(inner, 'translate(0 -100)') });
@@ -315,7 +315,7 @@
     if (t > td) cue(td, 'click', .7);
     const kf = P01(t, tp, .5);
     if (kf > 0) { s += g(sh(D_.rr(-260, -60, 520, 120, 60), C.a2, { c: C.ink, w: 6 }) + tx('ПОДПИСАТЬСЯ', 0, 15, { f: 'M', w: 800, s: 42, c: C.paper, ls: 4 }), at(540, 280, EZ.back(kf) * (1 + .04 * Math.sin(t * 8)))); cue(tp, 'pop', .8) }
-    s += cap('это шутка · факты настоящие', 540, 1270, { c: '#A9A3C8', s: 26, ls: 4, op: E(t, T.b - 1.6, .4) });
+    s += cap('это шутка · факты настоящие', 540, 915, { c: '#E6D3B8', s: 28, ls: 4, op: E(t, T.v + .3, .4) });
     return s
   };
 

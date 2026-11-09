@@ -67,16 +67,31 @@ function stripes(c, w = 60, gap = 160, ang = 30, off = 0) {
   for (let x = -2600 + (off % gap + gap) % gap; x < 3600; x += gap) d += `M${R(x)} -200L${R(x + w)} -200L${R(x + w - tn)} 2200L${R(x - tn)} 2200Z`;
   return `<path d="${d}" fill="${c}"/>`
 }
-// пробковая доска: крапинки двух тонов; ox, oy — сдвиг (камера едет по доске)
+// пробковая доска: крапинки двух тонов + «завал» на заднем плане (вырезки, стикеры с «?», фотки, нитки — как стена заговора);
+// ox, oy — сдвиг (камера едет по доске)
 function cork(ox = 0, oy = 0, o = {}) {
-  const c1 = o.c1 || '#B97E4E', c2 = o.c2 || '#D49B67'; let a = '', b = '';
+  const c1 = o.c1 || '#B97E4E', c2 = o.c2 || '#D49B67'; let a = '', b = '', junk = '', thr = '';
   const x0 = Math.floor((ox - 200) / 600), y0 = Math.floor((oy - 200) / 600);
-  for (let gx = x0; gx < x0 + 4; gx++) for (let gy = y0; gy < y0 + 5; gy++) for (let i = 0; i < 26; i++) {
-    const sd = gx * 131 + gy * 977 + i * 7, x = gx * 600 + rnd(sd) * 600 - ox, y = gy * 600 + rnd(sd + 3) * 600 - oy, r = 4 + rnd(sd + 5) * 9;
-    if (x < -40 || x > 1120 || y < -40 || y > 1960) continue;
-    (i % 2 ? (a += D_.ell(x, y, r * 1.3, r)) : (b += D_.ell(x, y, r, r * .8)));
+  for (let gx = x0; gx < x0 + 4; gx++) for (let gy = y0; gy < y0 + 5; gy++) {
+    for (let i = 0; i < 26; i++) {
+      const sd = gx * 131 + gy * 977 + i * 7, x = gx * 600 + rnd(sd) * 600 - ox, y = gy * 600 + rnd(sd + 3) * 600 - oy, r = 4 + rnd(sd + 5) * 9;
+      if (x < -40 || x > 1120 || y < -40 || y > 1960) continue;
+      (i % 2 ? (a += D_.ell(x, y, r * 1.3, r)) : (b += D_.ell(x, y, r, r * .8)));
+    }
+    if (o.clutter === false) continue;
+    // одна вещь на клетку 600×600 — бледнее переднего плана
+    const sd = gx * 53 + gy * 211, x = gx * 600 + 80 + rnd(sd) * 440 - ox, y = gy * 600 + 80 + rnd(sd + 1) * 440 - oy, kind = Math.floor(rnd(sd + 2) * 4), r = (rnd(sd + 3) - .5) * 16;
+    if (x < -260 || x > 1340 || y < -300 || y > 2220) continue;
+    let it = '';
+    if (kind === 0) { it = sh(D_.rr(-110, -140, 220, 280, 4), '#E8DCC2', { c: '#9C7350', w: 3 }); for (let l = 0; l < 7; l++) it += line(`M-86 ${-104 + l * 32}H${l === 0 ? 40 : 86}`, 1, { c: l ? '#B9A88A' : '#7A6A55', w: l ? 6 : 12 }) }
+    else if (kind === 1) it = sh(D_.rr(-90, -90, 180, 180, 4), '#E8C64A', { c: '#9C7350', w: 3 }) + tx('?', 0, 40, { f: 'U', w: 800, s: 110, c: '#A8852A' });
+    else if (kind === 2) it = sh(D_.rr(-100, -120, 200, 240, 4), '#EFE8DA', { c: '#9C7350', w: 3 }) + sh(D_.rr(-80, -100, 160, 150, 2), '#7E8A9C') + sh(D_.circ(-20, -40, 26), '#A9B4C4') + sh('M-80 50L-30 0L10 30L50 -20L80 10V50Z', '#5F6B7D');
+    else { it = sh(D_.rr(-140, -60, 280, 120, 4), '#E8DCC2', { c: '#9C7350', w: 3 }) + tx('?!', -70, 26, { f: 'U', w: 800, s: 64, c: '#B4524A' }) + line('M0 -20H110M0 10H90M0 36H100', 1, { c: '#B9A88A', w: 6 }) }
+    it += sh(D_.circ(0, kind === 3 ? -54 : kind === 1 ? -76 : -112, 12), '#B4524A', { c: '#6B4A33', w: 3 });
+    junk += g(it, at(x, y, .9, r));
+    if (rnd(sd + 9) < .55) thr += `M${R(x)} ${R(y - 100)}Q${R(x + 300)} ${R(y + 60)} ${R(x + 600)} ${R(y - 40 + (rnd(sd + 11) - .5) * 300)}`;
   }
-  return BG(o.f || '#C68B59') + `<path d="${a}" fill="${c1}"/><path d="${b}" fill="${c2}"/>`
+  return BG(o.f || '#C68B59') + `<path d="${a}" fill="${c1}"/><path d="${b}" fill="${c2}"/>` + junk + (thr ? `<path d="${thr}" fill="none" stroke="#B4524A" stroke-width="5" stroke-linecap="round"/>` : '')
 }
 
 // ---------- проявление, удар, скорость ----------
@@ -309,3 +324,96 @@ function face2(t, o = {}) {
 }
 // РАСТУЩЕЕ ЧИСЛО с подписью (счётчик)
 const counter = (v, x, y, o = {}) => odo(v, x, y, { s: o.s || 130, c: o.c || P.paper, sep: o.sep ?? ' ', post: o.post || '' });
+
+// ---------- окружение: фоны со слоями (Андрей, 09.11: «улучши фон анимации») ----------
+// Плоско, без дымки: дальний слой едет медленнее камеры (px — сдвиг камеры по x), всё чуть шевелится.
+// небо полосами + солнце + облака
+function envSky(t, o = {}) {
+  const b = o.bands || ['#FBE3B8', '#F7D09A', '#F2BD80'], px = o.px || 0, h = o.h ?? 1150, c = o.c;
+  let s = BG(b[0]);
+  b.slice(1).forEach((col, i) => { s += sh(D_.rr(-300, h * (i + 1) / b.length, 1680, 2600, 0), col) });
+  if (o.sun !== false) s += sh(D_.circ((o.sx ?? 810) - px * .04, o.sy ?? 400, o.sr ?? 120), o.sunC || '#FFE08A', { c, w: 6 }) + (o.sunRing !== false ? `<circle cx="${R((o.sx ?? 810) - px * .04)}" cy="${o.sy ?? 400}" r="${R((o.sr ?? 120) + 34 + Math.sin(t * 2) * 6)}" fill="none" stroke="${o.sunC || '#FFE08A'}" stroke-width="10" stroke-dasharray="18 26"/>` : '');
+  for (let i = 0; i < (o.clouds ?? 3); i++) { const x = ((i * 520 + t * (12 + i * 5) - px * .12) % 1700 + 1700) % 1700 - 300; s += cloud(x, (o.cy ?? 250) + i * 95, .4 + i * .12, { f: o.cf || '#FFFFFF', c, w: 9 }) }
+  return s
+}
+// холмы слоями (ближний — темнее, едет быстрее); на дальнем — ряды кустиков-силуэтов
+function envHills(t, o = {}) {
+  const px = o.px || 0, H0 = o.y ?? 980, cols = o.cols || ['#8CC66A', '#6FAF55', '#4C8A50'], c = o.c;
+  let s = '';
+  cols.forEach((col, i) => {
+    const k = .15 + i * .22, y = H0 + i * 120, len = 1000 - i * 160;
+    s += sh(D_.wave(-300, 1400, y, 34 + i * 6, len, (-px * k) / len * 2 * PI + i * 1.7, 20) + 'L1400 2600L-300 2600Z', col, { c, w: 6 });
+    if (i === 0 && o.rows !== false) for (let j = 0; j < 18; j++) { const x = ((j * 84 - px * k) % 1512 + 1512) % 1512 - 216; s += g(sh('M0 0C-8 -24 -6 -52 0 -70C6 -52 8 -24 0 0Z', cols[cols.length - 1]) + sh('M0 -26C-30 -34 -42 -54 -40 -64C-16 -60 -4 -46 0 -26ZM0 -38C30 -46 42 -66 40 -76C16 -72 4 -58 0 -38Z', cols[cols.length - 1]), at(x, y - 34 + Math.sin(x / 160) * 20 + Math.sin(t * 1.4 + j) * 2, .9 + rnd(j) * .4)) }
+  });
+  return s
+}
+// комната: обои, окно со шторами и небом, рамка на стене, лампа, плинтус, пол
+function envRoom(t, o = {}) {
+  const wall = o.wall || '#F2E3C6', wall2 = o.wall2 || '#E9D5B0', fl = o.floor || '#C99B5F', fy = o.fy ?? 1180, c = o.c ?? P.ink, px = o.px || 0;
+  let s = BG(wall) + stripes(wall2, 56, 150, 0, -px * .3);
+  if (o.win !== false) {
+    const wx = (o.wx ?? 820) - px * .3, wy = o.wy ?? 430, sw = Math.sin(t * .9) * 8;
+    s += sh(D_.rr(wx - 150, wy - 190, 300, 380, 10), o.sky || '#9FC4E8', { c, w: 8 }) + clip(D_.rr(wx - 150, wy - 190, 300, 380, 10), cloud(wx - 60 + ((t * 16) % 300), wy - 70, .3, { c, w: 12 }) + sh(D_.circ(wx + 70, wy + 100, 50), o.sun || '#FFE08A', { c, w: 6 })) + line(`M${wx} ${wy - 190}V${wy + 190}M${wx - 150} ${wy}H${wx + 150}`, 1, { c, w: 8 });
+    s += sh(`M${wx - 196} ${wy - 222}H${wx - 112}Q${wx - 100 + sw} ${wy} ${wx - 132 + sw} ${wy + 232}H${wx - 200}Z`, o.cur || '#E2574C', { c, w: 6 }) + sh(`M${wx + 196} ${wy - 222}H${wx + 112}Q${wx + 100 - sw} ${wy} ${wx + 132 - sw} ${wy + 232}H${wx + 200}Z`, o.cur || '#E2574C', { c, w: 6 }) + line(`M${wx - 230} ${wy - 222}H${wx + 230}`, 1, { c, w: 10 });
+  }
+  if (o.frame !== false) { const fx = (o.fx ?? 210) - px * .3; s += sh(D_.rr(fx - 90, 300, 180, 220, 8), '#FFFFFF', { c, w: 7 }) + sh(D_.rr(fx - 70, 320, 140, 180, 4), o.art || '#7FC48A') + sh(D_.circ(fx, 400, 40), o.art2 || '#FFB238') + sh(`M${fx - 70} 500L${fx - 20} 440L${fx + 20} 480L${fx + 70} 430V500Z`, o.art3 || '#3F7A45') }
+  if (o.lamp !== false) { const lx = (o.lx ?? 540) - px * .2, sw = Math.sin(t * 1.3) * 5; s += line(`M${lx} -40L${R(lx + sw)} 160`, 1, { c, w: 5 }) + g(sh('M-100 0Q0 -100 100 0Z', o.lampC || '#2B2F3A', { c, w: 6 }) + sh(D_.ell(0, 6, 28, 14), '#FFE08A', { c, w: 4 }), at(lx + sw, 210, 1, sw * .6)) }
+  s += sh(D_.rr(-300, fy - 40, 1680, 40, 0), o.skirt || '#FFFFFF', { c, w: 6 }) + sh(D_.rr(-300, fy, 1680, 1400, 0), fl, { c, w: 6 });
+  for (let i = 1; i < 6; i++) s += line(`M-300 ${fy + i * 70}H1380`, 1, { c, w: 4, op: .2 });
+  return s
+}
+// плитка (кухня): шахматка, полка с банками, столешница
+function envTiles(t, o = {}) {
+  const c1 = o.c1 || '#3A2552', c2 = o.c2 || '#45305F', st = o.st || 120, fy = o.fy ?? 1240, px = o.px || 0, c = o.c ?? P.ink;
+  let s = BG(c1), d = '';
+  const ox = ((-px * .3) % (st * 2) + st * 2) % (st * 2);
+  for (let x = -st * 2 + ox; x < 1300; x += st) for (let y = -st; y < fy; y += st) if (((Math.round((x - ox) / st) + Math.round(y / st)) % 2 + 2) % 2) d += D_.rr(x + 5, y + 5, st - 10, st - 10, 12);
+  s += `<path d="${d}" fill="${c2}"/>`;
+  if (o.shelf !== false) { const sy = o.sy ?? 330, sx = (o.shx ?? 160) - px * .3; s += sh(D_.rr(sx - 120, sy, 380, 26, 6), o.wood || '#B57A45', { c, w: 6 }); [[0, '#E2574C', 90], [110, '#FFB238', 70], [210, '#7FC48A', 100]].forEach(([dx, col, h]) => { s += sh(D_.rr(sx - 90 + dx, sy - h, 80, h, 14), col, { c, w: 6 }) + sh(D_.rr(sx - 96 + dx, sy - h - 18, 92, 24, 8), '#F2ECDD', { c, w: 5 }) }) }
+  s += sh(D_.rr(-300, fy, 1680, 44, 0), o.edge || '#C99B5F', { c, w: 6 }) + sh(D_.rr(-300, fy + 44, 1680, 1400, 0), o.counter || '#8A5A33', { c, w: 6 });
+  return s
+}
+// сеть нейронов: узлы, связи, по связям бегут сигналы
+const NEU = [], NEL = [];
+(function () {
+  for (let i = 0; i < 24; i++) NEU.push([-80 + rnd(i * 3 + 1) * 1240, -60 + rnd(i * 5 + 2) * 2040]);
+  NEU.forEach((a, i) => { const d = NEU.map((b, j) => [Math.hypot(a[0] - b[0], a[1] - b[1]), j]).sort((p, q) => p[0] - q[0]); for (const [, j] of d.slice(1, 3)) if (!NEL.some(([p, q]) => (p === i && q === j) || (p === j && q === i))) NEL.push([i, j]) });
+})();
+function envNeurons(t, o = {}) {
+  const c = o.c || '#4A3066', c2 = o.c2 || '#5A3D7A', sig = o.sig || '#FFB238', ink = o.ink ?? P.ink;
+  const P0 = NEU.map(([x, y], i) => [x + Math.sin(t * .6 + i) * 14, y + Math.cos(t * .5 + i * 2) * 14]);
+  let s = BG(o.bg || '#2B1B3D'), d = '';
+  NEL.forEach(([a, b]) => { d += `M${R(P0[a][0])} ${R(P0[a][1])}Q${R((P0[a][0] + P0[b][0]) / 2 + 40)} ${R((P0[a][1] + P0[b][1]) / 2 - 30)} ${R(P0[b][0])} ${R(P0[b][1])}` });
+  s += `<path d="${d}" stroke="${c}" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+  NEL.forEach(([a, b], i) => { if (rnd(i + 7) < .55) { const k = (t * (.35 + rnd(i) * .3) + rnd(i + 3)) % 1, x = lerp(P0[a][0], P0[b][0], k) + Math.sin(k * PI) * 20, y = lerp(P0[a][1], P0[b][1], k) - Math.sin(k * PI) * 15; s += sh(D_.circ(x, y, 9), sig, { c: ink, w: 3 }) } });
+  P0.forEach(([x, y], i) => { s += sh(D_.circ(x, y, 18 + rnd(i) * 16), c2, { c, w: 7 }) });
+  return s
+}
+// большие листья по краям кадра (сад), покачиваются
+function envLeaves(t, o = {}) {
+  const f1 = o.f1 || '#3F7A45', f2 = o.f2 || '#356B3C', c = o.c ?? null;
+  const LL = o.at || [[-70, 1950, 32, 1.15], [1150, 1750, -28, 1.05], [-110, 640, 66, .85], [1190, 260, -118, .95], [260, -160, 168, .75]];
+  let s = '';
+  LL.forEach(([x, y, a, sc], i) => { s += g(leafT({ len: 900 * sc, w: 330 * sc, c, f: i % 2 ? f1 : f2, f2: i % 2 ? f2 : f1, ow: 6, vw: 4, dots: false, k: c ? 1 : 0 }), at(x + Math.sin(t * .7 + i) * 12, y, 1, a + Math.sin(t * .9 + i * 2) * 3)) });
+  return s
+}
+// узор значков: плывёт по диагонали (как фоны «Что вы знаете о»); icon(x, y, seed) → строка
+function envPattern(t, icon, o = {}) {
+  const st = o.step || 230, sp = o.sp ?? 20, off = ((t * sp) % st + st) % st;
+  let s = o.bg ? BG(o.bg) : '';
+  for (let r = -2; r < 1920 / (st * .87) + 2; r++) for (let c0 = -2; c0 < 1080 / st + 2; c0++) s += icon(c0 * st + (r % 2 ? st / 2 : 0) + off, r * st * .87 - off * .6, r * 7 + c0 * 13);
+  return s
+}
+// город ночью: силуэты домов, окна горят и гаснут
+function envCity(t, o = {}) {
+  const c1 = o.c1 || '#2A2540', c2 = o.c2 || '#36304F', win = o.win || '#FFD23F', y0 = o.y ?? 1180, px = o.px || 0;
+  let s = '';
+  [[c1, .2, 0], [c2, .4, 1]].forEach(([col, k, L]) => {
+    for (let i = 0; i < 9; i++) {
+      const w = 110 + rnd(i * 5 + L) * 90, h = 260 + rnd(i * 7 + L) * 420, x = ((i * 150 + L * 70 - px * k) % 1350 + 1350) % 1350 - 140, y = y0 - h + L * 120;
+      s += sh(D_.rr(x, y, w, h + 1000, 4), col);
+      if (L) for (let r = 0; r < 6; r++) for (let q = 0; q < 3; q++) { const on = rnd(i * 31 + r * 7 + q + Math.floor(t * .5 + rnd(i + r))) < .45; if (on) s += sh(D_.rr(x + 16 + q * (w - 32) / 3, y + 30 + r * 60, (w - 32) / 3 - 14, 34, 4), win) }
+    }
+  });
+  return s
+}

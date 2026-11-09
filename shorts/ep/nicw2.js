@@ -173,6 +173,7 @@
       s += g(A, `translate(0 ${R(-1700 * ex)})`);
     }
     if (ex > 0) {
+      s += g(envSky(t, { bands: ['#F2ECDD', '#EFDDB9', '#E8C994'], sunC: C.a1, sx: 820, sy: 360, c: C.ink }) + envHills(t, { y: 900, cols: ['#7FB06A', '#5E9E5A', '#3F7A45'], c: C.ink, px: t * 30, rows: true }), `translate(0 ${R(1700 * (1 - ex))})`);
       const up = E(t, tu, 1.3, 'io'), camY = lerp(1560, 860, up), z = lerp(1.2, .82, up);
       const W0 = plantRoots(t, 540, 1300, { roots: E(t, tr + .4, .7, 'o5'), flow: t > tr + .5 ? (t - tr - .5) * .42 : null });
       s += g(W0, `translate(0 ${R(1700 * (1 - ex))}) translate(540 ${CY}) scale(${R(z * 1000) / 1000}) translate(-540 ${R(-camY)})`);
@@ -185,7 +186,7 @@
   // ===== 5. жук кусает лист → молнии по нервам → замирает → на спину =====
   D.bite = (t, S, T) => {
     const tb = T.c(L('bites', 'кусает')) - .1, tz = T.c(L('nerves', 'нервам')) - .2, tf = T.c(L('freezes', 'замирает')) - .1;
-    let s = BG(C.bg3) + motes(t, MOT, 8);
+    let s = BG(C.bg3) + envLeaves(t, { f1: '#2F5A49', f2: '#264C3E' }) + motes(t, MOT, 8);
     const edge = 'M-200 1000Q540 966 1280 1014L1280 2200L-200 2200Z';
     let leafS = sh(edge, C.leaf) + sh('M520 982Q900 970 1280 1014L1280 2200L700 2200Z', C.leaf2) + line('M-200 1300Q300 1150 1280 1240M200 930Q260 1100 120 1400M700 912Q760 1100 900 1500', 1, { c: C.ink, w: 5, op: .35 }) + line(edge, 1, { c: C.ink, w: 7 });
     const kb = P01(t, tb + .2, .35), nb = kb > 0 ? 58 * EZ.back(kb) : 0, nb2 = P01(t, tb + .6, .3) > 0 ? 40 * EZ.back(P01(t, tb + .6, .3)) : 0;
@@ -204,7 +205,7 @@
   D.reply = (t, S, T) => {
     const ta = T.c('ответ') - .2, tb = T.c('больше') - .25;
     const rate = t2 => .3 * t2 + 1.1 * Math.max(0, t2 - ta) + .4 * Math.max(0, t2 - tb);
-    let s = BG(C.bg3) + rays(540, 500, 22, C.bg2, -t * 8);
+    let s = envSky(t, { bands: ['#F2ECDD', '#EFDDB9', '#E8C994'], sunC: C.a1, sx: 860, sy: 330, c: C.ink }) + envHills(t, { y: 960, cols: ['#7FB06A', '#5E9E5A', '#3F7A45'], c: C.ink, px: t * 20 });
     const x = 540, y = 1180, h = 900, lv = E(t, ta + .2, 1.6, 'io');
     let w = sh(D_.rr(-600, y, 2280, 900, 0), '#4A3424') + sh(D_.rr(-600, y, 2280, 26, 0), '#6B4A33');
     w += tobaccoPlant(t, { x, y, h, roots: 1, c: C.ink, rc: '#E8C9A0', sway: 3, flowers: true, leaves: [] });
@@ -246,7 +247,8 @@
 
   const GX0 = 300;
   function garden(t, T, camx, yr, pour, kill, extra = '') {
-    let s = BG(C.paper2) + corner('#D9C9A6', 1);
+    let s = envSky(t, { bands: ['#F2ECDD', '#EFDDB9', '#E8C994'], sunC: C.a1, sx: 900, sy: 300, sr: 90, c: C.ink, px: camx, cy: 200 });
+    s += g(line('M-200 860H2600', 1, { c: C.ink, w: 7 }) + [...Array(18)].map((_, i) => sh(D_.rr(-180 + i * 150, 760, 26, 160, 8), C.wood, { c: C.ink, w: 5 })).join('') + sh(D_.rr(-200, 790, 2800, 20, 6), C.wood, { c: C.ink, w: 5 }), `translate(${R(-camx * .5)} 0)`);
     let w = bed(t, GX0, kill, { aphid: 3 });
     w += extra;
     s += g(g(w, `translate(${R(-camx)} 0)`), about(540, 1000, 1.12));
@@ -279,7 +281,7 @@
   // ===== 9. «Тля выдохнула» =====
   D.aphid = (t, S, T) => {
     const tx0 = T.c(L('exhaled', 'выдохнула')) - .1, kp = P01(t, tx0, .8);
-    let s = BG('#CFE6B5') + sh(D_.circ(540, CY, 420), '#BEDDA0') + corner('#B3D48F', 1);
+    let s = BG('#CFE6B5') + envLeaves(t, { f1: '#B3D48F', f2: '#A6CC80' }) + sh(D_.circ(540, CY, 420), '#BEDDA0');
     s += g(leafT({ len: 900, w: 340, c: C.ink, ow: 6, vw: 5, f: '#8CC66A', f2: '#6FAF55', dots: false }), at(300, 1500, 1, 62));
     s += aphid(t, { x: 520, y: 980, s: 2.6, mood: kp > .05 ? 'relief' : 'calm', puff: kp > 0 && kp < 1 ? kp : 0, sweat: P01(t, tx0 + .2, .7), c: C.ink });
     return g(s, drift(t, T, .08, 560, 900))
@@ -290,7 +292,7 @@
   const MG = 'M-90 10C-100 -60 -20 -96 40 -80C100 -64 120 0 90 40C60 84 -10 90 -50 70C-76 58 -86 38 -90 10Z';
   D.exhale = (t, S, T) => {
     const tv = T.c('выдыхаете') - .2, tc = T.c('облаком') - .15, tm = T.c('манго') - .2;
-    let s = BG(C.bg) + rays(760, 720, 20, C.bg2, t * 9) + sh(D_.circ(760, 720, 330), C.bg2) + motes(t, MOT, 10);
+    let s = envRoom(t, { wall: C.bg2, wall2: '#193329', floor: '#10201B', skirt: C.bg3, sky: '#2F5C4C', sun: C.paper, cur: C.a2, lamp: false, frame: false, wx: 820, wy: 460, fy: 1300, c: C.ink }) + motes(t, MOT, 8);
     const kc = P01(t, tv + .1, 1.4), kg = E(t, tc, .5, 'back'), km = E(t, tm, .5, 'io');
     if (kc > 0 && kc < .3) cue(tv + .1, 'puff', .8);
     s += face2(t, { x: 210, y: 880, s: 1.45, puff: kc > 0 && kc < .7 ? Math.sin(kc / .7 * PI) : 0, relax: kc > .2 && kc < .8, c: C.ink });
@@ -316,7 +318,7 @@
   }
   D.recep = (t, S, T) => {
     const tb = T.c('мозге') - .25, tj = T.c('жука') - .2, tn = T.c('никотиновые') - .15;
-    let s = BG(C.bg2) + rays(540, 900, 20, C.bg3, t * 6) + motes(t, MOT, 8);
+    let s = envNeurons(t, { bg: C.bg2, c: '#244A3D', c2: C.bg3, sig: C.a1, ink: C.ink });
     // мозг слева, жук справа, «=» между, над каждым — один и тот же рецептор в кругу
     s += pop(brainF(t, { c: C.ink, face: { mood: 'calm', look: .4 } }), 280, 1040, t, T.a, { s: 1.38 });
     s += pop(beetle(t, { c: C.ink, look: true }), 780, 1120, t, tj, { s: 1.2 });
@@ -349,7 +351,7 @@
   // ===== 13. дофамин: капли падают в мозг, мозг рад; полароид с одноразкой прикалывается =====
   D.dopa = (t, S, T) => {
     const td = T.c(L('dopamine', 'дофамина')) - .2, tm = T.c(L('remembers', 'запоминает')) - .15;
-    let s = BG(C.bg) + sh(D_.circ(540, CY, 430), C.bg2) + motes(t, MOT, 8);
+    let s = envNeurons(t, { bg: C.bg, c: '#1F3D33', c2: C.bg2, sig: C.a1, ink: C.ink }) + sh(D_.circ(540, CY, 430), C.bg2, { c: C.bg3, w: 10 });
     const kd = P01(t, td, 1.6);
     for (let i = 0; i < 9; i++) { const ph = clamp((t - td - i * .12) / .7); if (ph > 0 && ph < 1) s += sh(D_.drop(330 + (i % 5) * 100 + (i > 4 ? 50 : 0), lerp(220, 640, EZ.i(ph)), 30), C.star, { c: C.ink, w: 5 }) }
     const hap = kd > .25;
@@ -368,7 +370,7 @@
   const cupMini = (x, y, s0, op = 1) => g(sh('M-22 0C-22 32 22 32 22 0L13 0C13 20 -13 20 -13 0Z', C.a1, { c: C.ink, w: 4 }), at(x, y, s0), op);
   D.grow = (t, S, T) => {
     const tt = T.c('табаком') - .25, tz = T.c('затяжки') - .2, tb = T.c('больше') - .2;
-    let s = BG(C.bg) + rays(600, 760, 22, C.bg2, t * 8);
+    let s = envNeurons(t, { bg: C.bg, c: '#1F3D33', c2: C.bg2, sig: C.a1, ink: C.ink });
     // слева вверху — куст из 6-й сцены, листья в янтаре, стрелка вверх
     const kp = P01(t, tt, .5);
     if (kp > 0) s += g(sh(D_.circ(0, 0, 170), C.bg3, { c: C.paper, w: 5 }) + clip(D_.circ(0, 0, 166), g(leafT({ len: 300, w: 120, c: C.ink, ow: 5, vw: 3, dots: false }) + clip(leafPath(300, 120), sh(D_.rr(-140, -200, 280, 220, 0), C.a1)) + line(leafPath(300, 120), 1, { c: C.ink, w: 5 }), at(-20, 120, 1, 10))) + sh('M110 -40L150 0H128V60H92V0H70Z', C.a1, { c: C.ink, w: 5 }), at(210, 360, EZ.back(kp)));
@@ -385,7 +387,7 @@
   // ===== 16. «И каждый просит ещё»: из каждого рецептора — «ещё!» =====
   D.more = (t, S, T) => {
     const tm = T.c('каждый') - .15;
-    let s = BG(C.bg) + rays(600, 760, 22, C.bg2, t * 8 + 30);
+    let s = envNeurons(t, { bg: C.bg, c: '#1F3D33', c2: C.bg2, sig: C.a2, ink: C.ink });
     s += g(brainF(t, { c: C.ink, face: { mood: 'want', look: -.3 } }), at(600 + shake(t, tm + .3, 10, .7), 780, 2.25 * squash(t, tm + .3, .06)));
     RCP.forEach((p, i) => { s += cupMini(p[0] + 60, p[1] + 20, 1.3) });
     const B = [[230, 380, -8, .8], [820, 330, 6, .9], [540, 260, -2, 1], [150, 700, -10, .7], [930, 620, 8, .75], [300, 1130, -6, .7], [860, 1120, 6, .8], [560, 1230, 0, .65]];

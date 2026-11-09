@@ -16,6 +16,7 @@ KEYS = {'mrbeast': 57, 'nicotine': 52, 'aids': 50, 'meph': 54, 'nicstory': 55, '
         'nicw': 52, 'nicmax': 55, 'nictyaga': 57, 'nicme': 50, 'howto': 53}  # тоника
 BPM = {'mephnight': 116, 'energy': 104, 'aidsmyth': 100, 'nicmax': 98, 'nicme': 118, 'nictyaga': 90, 'howto': 108}
 # когда входит бит (сцена-поворот) и когда уходит; удары — на каких сценах
+QUIET = {'nicw1': ('toll', 'grudge'), 'nicw2': ('toll',), 'nicw3': ('toll',)}
 TURN = {'nicstory': 'd1', 'aidsmyth': 'm1f', 'mephnight': 't1115', 'nicmax': 'd1', 'nictyaga': 'go', 'nicme': 'go'}
 STOP = {'mephnight': 'sun', 'nicstory': 'quit', 'nicmax': 'quit', 'nictyaga': 'breath', 'nicme': 'quit'}
 BOOM = {'aidsmyth': ['m1f', 'm2f', 'm3f', 'm4f', 'true'], 'nicstory': ['flip'], 'mephnight': ['sun'],
@@ -138,6 +139,156 @@ def sfx(T, SC, DUR, rng):
     return x * .9
 
 
+# ---------- v6 (09.11): музыка щипком и маримбой, свой стиль на ролик; звуки по событиям из cues.json ----------
+import sfxlib
+_KS = {}
+
+
+def ks(f, dur, damp=.996, bright=4500, seed=0):
+    """Щипок струны (Карплус — Стронг): шумовой всплеск в линии задержки с усреднением. Кэш по (нота, длина)."""
+    key = (round(f, 1), round(dur, 2), damp, bright, seed)
+    if key in _KS:
+        return _KS[key]
+    L = int(dur * SR); N = max(2, int(SR / f)); y = np.zeros(L + N)
+    rng = np.random.default_rng(seed)
+    y[:N] = lp(rng.standard_normal(N * 4), hi=bright)[:N]
+    for st in range(N, L + N, N):
+        en = min(st + N, L + N)
+        a = y[st - N:en - N]
+        b = np.concatenate([[0.0], y[st - N:en - N - 1]]) if st - N - 1 < 0 else y[st - N - 1:en - N - 1]
+        y[st:en] = damp * (a + b) / 2
+    y = y[:L] * np.minimum(1, np.arange(L) / (SR * .002)) * np.minimum(1, (L - np.arange(L)) / (SR * .03))
+    _KS[key] = y / (np.max(np.abs(y)) or 1)
+    return _KS[key]
+
+
+def marimba(f, dur=.9):
+    key = ('m', round(f, 1), dur)
+    if key in _KS:
+        return _KS[key]
+    t = np.arange(int(dur * SR)) / SR
+    y = np.sin(2 * np.pi * f * t) * np.exp(-t * 5) + .45 * np.sin(2 * np.pi * f * 3.93 * t) * np.exp(-t * 14) + .12 * np.sin(2 * np.pi * f * 9.2 * t) * np.exp(-t * 30)
+    y *= np.minimum(1, t / .0015)
+    _KS[key] = y / np.max(np.abs(y))
+    return _KS[key]
+
+
+def drum(kind, rng):
+    if kind == 'kick':
+        tt = np.arange(int(.35 * SR)) / SR
+        return np.sin(2 * np.pi * np.cumsum(46 + 110 * np.exp(-tt * 28)) / SR) * np.exp(-tt * 9)
+    if kind == 'snare':
+        tt = np.arange(int(.22 * SR)) / SR
+        return lp(rng.standard_normal(len(tt)), hi=7000, lo=1200) * np.exp(-tt * 20) * .6 + np.sin(2 * np.pi * 190 * tt) * np.exp(-tt * 30) * .5
+    if kind == 'snap':
+        tt = np.arange(int(.12 * SR)) / SR
+        return lp(rng.standard_normal(len(tt)), hi=5000, lo=1500) * np.exp(-tt * 45)
+    if kind == 'hat':
+        tt = np.arange(int(.05 * SR)) / SR
+        return lp(rng.standard_normal(len(tt)), lo=7000) * np.exp(-tt * 90)
+    if kind == 'shaker':
+        tt = np.arange(int(.09 * SR)) / SR
+        return lp(rng.standard_normal(len(tt)), hi=9000, lo=3500) * np.sin(np.pi * tt / tt[-1]) ** 2
+
+
+# стили: темп, тоника, гармония, рисунок. nicw1 — «шпионский» щипок со щелчками, nicw2 — загадка, nicw3 — бит, петля
+STY = {
+    'nicw1': {'bpm': 112, 'key': 50, 'prog': [[0, 3, 7], [-2, 2, 5], [-4, 0, 3], [-5, -1, 2]], 'riff': 'heist', 'hit': 'snap'},
+    'nicw2': {'bpm': 96, 'key': 52, 'prog': [[0, 3, 7], [-4, 0, 3], [-7, -4, 0], [-5, -1, 2]], 'riff': 'arp', 'hit': 'snare'},
+    'nicw3': {'bpm': 120, 'key': 53, 'prog': [[0, 3, 7], [-4, 0, 3], [3, 7, 10], [-2, 2, 5]], 'riff': 'mar', 'hit': 'snare', 'four': True, 'loop': True},
+}
+
+
+def music6(ep, DUR, t_claim, rng, quiet=()):
+    st = STY[ep]; N = int((DUR + 2) * SR); m = np.zeros((N, 2))
+    root = st['key']; beat = 60 / st['bpm']; bar = beat * 4
+    for b in range(int(DUR / bar) + 2):
+        t0 = b * bar; ch = st['prog'][b % 4]; full = t0 >= t_claim - .05
+        q = any(a - .05 <= t0 < e for a, e in quiet)
+        # щипок: арпеджио (восьмые до поворота, шестнадцатые после)
+        steps = 16 if full and not q else 8
+        for e in range(steps):
+            if st['riff'] == 'heist' and e % 4 == 2 and full:
+                continue
+            n = ch[[0, 1, 2, 1, 2, 0, 1, 2][e % 8]] + 12 + (12 if e % 8 == 3 else 0)
+            v = (.17 if full else .13) * (1 if e % 4 == 0 else .62)
+            put(m, ks(midi(root + n), .55 if st['riff'] != 'heist' else .28, damp=.994), t0 + e * bar / steps, v, .35 if e % 2 else -.35)
+        # маримба-мотив (nicw3) / акценты (остальные)
+        if st['riff'] == 'mar' and full and not q:
+            for k, (ofs, n) in enumerate([(0, 0), (.75, 7), (1.5, 3), (2, 12), (2.75, 10), (3.25, 7)]):
+                put(m, marimba(midi(root + 12 + ch[0] + n)), t0 + ofs * beat, .2, -.15 if k % 2 else .15)
+        elif full and not q:
+            put(m, marimba(midi(root + 12 + ch[0])), t0, .14, .1)
+        if full and not q:
+            # бас: щипок низко, «шагами» у шпионского стиля
+            bl = [0, 0, 7, 5] if st['riff'] == 'heist' else [0, 0, 0, 0]
+            for k in range(4):
+                if st['riff'] != 'heist' and k % 2:
+                    continue
+                put(m, ks(midi(root - 12 + ch[0] + bl[k]), beat * 1.6, damp=.997, bright=900), t0 + k * beat, .42)
+            for k in range(4):
+                bt = t0 + k * beat
+                if st.get('four') or k in (0, 2):
+                    put(m, drum('kick', rng), bt, .45)
+                if k in (1, 3):
+                    put(m, drum(st['hit'], rng), bt, .2 if st['hit'] == 'snap' else .16, .1)
+                for h in (0, .5):
+                    put(m, drum('hat', rng), bt + h * beat, .05, .3)
+                put(m, drum('shaker', rng), bt + .75 * beat, .03, -.3)
+        else:
+            # до поворота / в тишине: мягкая подложка — две ноты
+            tb = np.arange(int(bar * SR)) / SR; env = np.minimum(1, tb / .5) * np.minimum(1, (bar - tb) / .5)
+            pad = sum(np.sin(2 * np.pi * midi(root + n) * tb + rng.random() * 6) for n in ch[:2]) * env * .03
+            put(m, lp(pad, hi=1800), t0, 1, -.2); put(m, lp(pad, hi=1800), t0 + .02, 1, .2)
+    fi = np.minimum(1, np.arange(N) / (SR * .15))
+    fo = np.ones(N) if st.get('loop') else np.clip((DUR + .3 - np.arange(N) / SR) / 1.2, 0, 1)
+    m *= (fi * fo)[:, None]
+    return m / (np.max(np.abs(m)) or 1) * .7
+
+
+def ext_music(path, DUR, loop=False):
+    """Своя музыка Андрея (любой mp3/wav): по кругу до длины ролика, плавно в начале и (если не петля) в конце."""
+    r = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True, check=True)
+    x = np.frombuffer(r.stdout, np.float32).astype(np.float64).reshape(-1, 2)
+    N = int((DUR + 1) * SR); x = np.tile(x, (N // len(x) + 1, 1))[:N]
+    fi = np.minimum(1, np.arange(N) / (SR * .3)); fo = np.ones(N) if loop else np.clip((DUR + .3 - np.arange(N) / SR) / 1.5, 0, 1)
+    x *= (fi * fo)[:, None]
+    return x / (np.max(np.abs(x)) or 1) * .7
+
+
+def sfx6(T, SC, DUR, rng, cues, loop=False):
+    N = int((DUR + 2) * SR); x = np.zeros((N, 2)); last = {}
+    KINO = {}
+    times = [c[0] for c in cues]
+    for t0, name, g0, pan in cues:
+        if name.startswith('tr_'):
+            name = sfxlib.TR.get(name[3:])
+            if not name:
+                continue
+        if t0 - last.get(name, -9) < .07:
+            continue
+        last[name] = t0
+        if name.startswith('kino:') or sfxlib.FN.get(name, 0) is None:
+            nm = name.split(':')[-1]
+            if nm not in KINO:
+                KINO[nm] = load(nm)
+            arr, gain = KINO[nm], sfxlib.GAIN.get(nm, .25)
+        else:
+            arr, gain = sfxlib.snd(name, rng)
+            if arr is None:
+                continue
+        dense = sum(1 for u in times if abs(u - t0) < .12)
+        put(x, arr, t0, gain * g0 / max(1, dense) ** .35, pan * .5)
+    SEL = load('sel'); lw = -1
+    for s in T['sent']:
+        for w in s['words']:
+            if w['c'] and w['a'] - lw > .3:
+                put(x, SEL, w['a'], .1, (rng.random() - .5) * .4); lw = w['a']
+    if not loop:
+        put(x, load('reward'), SC[-1]['a'] + .6, .18)
+    return x
+
+
 def main(ep):
     global EPB
     EPB = ep.rsplit('-', 1)[0]
@@ -146,8 +297,18 @@ def main(ep):
     DUR = T['dur']; SC = scenes(T); rng = np.random.default_rng(11)
     t_claim = next((s['a'] for s in SC if s['key'] == TURN.get(EPB, 'claim')), 0)
     t_stop = next((s['a'] for s in SC if s['key'] == STOP.get(EPB)), 1e9)
-    sf.write(os.path.join(out, 'music.wav'), music(EPB, DUR, t_claim, rng, t_stop).astype(np.float32), SR)
-    sf.write(os.path.join(out, 'sfx.wav'), sfx(T, SC, DUR, rng).astype(np.float32), SR)
+    cf = os.path.join(out, 'cues.json'); loop = STY.get(EPB, {}).get('loop', False)
+    mf = os.environ.get('MUSIC') or next((f for f in (os.path.join(HERE, 'music', EPB + e) for e in ('.mp3', '.wav', '.m4a')) if os.path.exists(f)), None)
+    if mf:
+        M = ext_music(mf, DUR, loop); print(ep, 'музыка:', mf)
+    elif EPB in STY:
+        quiet = [(s['a'], (SC[i + 1]['a'] if i + 1 < len(SC) else DUR)) for i, s in enumerate(SC) if s['key'] in QUIET.get(EPB, ())]
+        M = music6(EPB, DUR, t_claim, rng, quiet)
+    else:
+        M = music(EPB, DUR, t_claim, rng, t_stop)
+    sf.write(os.path.join(out, 'music.wav'), M.astype(np.float32), SR)
+    X = sfx6(T, SC, DUR, rng, json.load(open(cf)), loop) if os.path.exists(cf) else sfx(T, SC, DUR, rng)
+    sf.write(os.path.join(out, 'sfx.wav'), X.astype(np.float32), SR)
     if os.environ.get('NOVOICE'):  # v5: голос будет потом (ElevenLabs) — сейчас музыка + эффекты, −14 LUFS
         tmp = os.path.join(out, 'mix.raw.wav')
         subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(out, 'music.wav'), '-i', os.path.join(out, 'sfx.wav'), '-filter_complex',

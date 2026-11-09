@@ -15,12 +15,16 @@
 
   // ===== 1. заголовок: «ЧТО ВЫ ЗНАЕТЕ О» уже напечатано (с ним кончается ролик), «НИКОТИНЕ?» падает; камера — в «О» =====
   function band(t, typed, k = 1) {
+    if (k <= .001) return '';
     let s = sh(D_.rr(lerp(-1100, 0, k), CY - 230, 1080, 440, 0), C.paper) + sh(D_.rr(lerp(-1100, 0, k), CY + 200, 1080, 12, 0), C.a1);
     if (typed > 0) s += cap('Что вы знаете о'.slice(0, Math.ceil(typed * 15)), 540, CY - 70, { c: C.ink, s: 34, ls: 9 });
     return s
   }
+  // фон заголовка и петли: лучи + плывущий узор из баклажанов и листьев (в конце ролика — тот же кадр, что в начале)
+  const ICO = (x, y, sd) => sd % 2 ? g(sh(EGG, C.bg3), at(x, y, .16, 30 + (sd % 5) * 12)) : g(sh(leafPath(300, 110), C.bg3), at(x, y + 60, .7, -20 + (sd % 7) * 9));
+  const bgTitle = tt => BG(C.bg) + rays(540, CY, 18, C.bg2, tt * RAYV) + envPattern(tt, ICO, { step: 250, sp: 24 });
   D.title = (t, S, T) => {
-    let s = BG(C.bg) + rays(540, CY, 18, C.bg2, t * RAYV) + band(t, 1, 1);
+    let s = bgTitle(t) + band(t, 1, 1);
     s += dropWord(titleWord, 540, CY + 80, t, .72, { s: TS, c: C.egg2, stag: .05 });
     return s
   };
@@ -29,8 +33,8 @@
   const CP = { x: 540, y: 1360, h: 1100 };
   D.common = (t, S, T) => {
     const tt = T.c('табаке') - .2;
-    let s = BG(C.field) + rays(540, 700, 20, C.field2, t * 6);
-    s += sh('M-100 1360Q540 1300 1180 1360V2100H-100Z', '#24472F');
+    let s = envSky(t, { bands: ['#FBE3B8', '#F7D09A', '#F2BD80'], sx: 820, sy: 400, c: C.ink }) + envHills(t, { y: 1020, cols: ['#8CC66A', '#6FAF55', '#4C8A50'], c: C.ink, px: t * 60 });
+    s += sh('M-100 1360Q540 1300 1180 1360V2100H-100Z', '#3F7A45', { c: C.ink, w: 7 });
     s += tobaccoPlant(t, { x: CP.x, y: CP.y, h: CP.h, c: C.ink, sway: 3, leaves: [[.28, -64, 1.05], [.44, 60, 1], [.6, -60, .85], [.76, 58, .7], [.88, -52, .5]] });
     s += pop(molecule(t, { s: 1, mood: 'sly', c: C.ink, f: C.a1, f2: '#E8901F', look: -.5 }), 360, 940, t, tt, { s: .62, r0: 30 });
     return g(s, `translate(0 0) ` + about(362, 955, 1 + .12 * E(t, T.a, T.b - T.a + .3, 'io')))
@@ -57,7 +61,7 @@
   const EGF = [540, 700, .82];
   D.family = (t, S, T) => {
     const t1 = T.c('Табак') - .15, t2 = T.c('помидор') - .15, t3 = T.c('картошка') - .15, t4 = T.c('перец') - .15, tf = T.c('семья') - .3, tp = T.c('Паслёновые') - .15;
-    let s = BG('#F2E3C6') + stripes('#E9D5B0', 60, 150, 0, 0);
+    let s = envRoom(t, { fy: 1180, wx: 860, wy: 520, lx: 540, fx: 190, c: C.ink, cur: '#B98BEF', art: '#7FC48A', art2: '#E2574C' });
     s += drawOn(D_.rr(90, 300, 900, 960, 30), t, tf, { d: .6, c: '#B8862E', w: 26 }) + drawOn(D_.rr(120, 330, 840, 900, 20), t, tf + .1, { d: .6, c: '#E0B04A', w: 10 });
     s += sh(D_.rr(0, 1180, 1080, 800, 0), '#C99B5F') + line('M0 1180H1080', 1, { c: C.ink, w: 7 });
     s += pop(g(leafT({ len: 760, w: 270, c: C.ink, ow: 6, vw: 4, dots: false }) + faceOn(t, { face: { mood: 'smile', look: .4 }, c: C.ink }, 0, -400), ''), 230, 1180, t, t1, { r: -8, r0: -20 });
@@ -86,9 +90,9 @@
     const tc = T.c('сигареты') - .25, te = T.c('съесть') - .2, t10 = T.c('десяти') - .2, tk = T.c('килограммов') - .1;
     const n = Math.min(10, Math.floor(clamp((t - te) / (t10 - te + .3)) * 10) + (t > te ? 1 : 0));
     const ang = lerp(-16, 0, EZ.io(clamp(n / 10)));
-    let s = BG(C.bg) + rays(540, 700, 20, C.bg2, t * 8);
+    let s = '';
     const cig = P01(t, tc, .35) > 0 ? g(cigarette(t, { len: 200, h: 34, c: C.ink }), at(0, lerp(-500, -18, EZ.i(P01(t, tc, .35))))) : '';
-    let w = scales(t, { x: SC0.x, y: SC0.y, ang, c: C.ink, left: cig, right: eggPile(t, 10, te, (t10 - te + .3) / 10) + g(eggplant(t, { c: C.ink }), at(0, -36, .16, 90)) });
+    let w = envTiles(t, { c1: C.bg, c2: '#352048', fy: 1040, c: C.ink, sy: 300, shx: 170 }) + scales(t, { x: SC0.x, y: SC0.y, ang, c: C.ink, left: cig, right: eggPile(t, 10, te, (t10 - te + .3) / 10) + g(eggplant(t, { c: C.ink }), at(0, -36, .16, 90)) });
     if (P01(t, tc, .35) >= 1) cue(tc + .35, 'thud', .5);
     const z = lerp(3, 1, E(t, T.a, 1.3, 'io5')), fx = lerp(857, SC0.x, E(t, T.a, 1.3, 'io5')), fy = lerp(650, SC0.y + 300, E(t, T.a, 1.3, 'io5'));
     s += g(w, `translate(540 ${CY}) scale(${R(z * 1000) / 1000}) translate(${R(-fx)} ${R(-fy)})`);
@@ -105,7 +109,7 @@
   const PILE = []; for (let r = 0; r < 9; r++) for (let c0 = 0; c0 < 14 - r; c0++) PILE.push([(c0 - (13 - r) / 2) * 76 + (r % 2) * 10, -r * 48]);
   D.pack = (t, S, T) => {
     const tp = T.c('Пачка') - .2, ts = T.c('сотни') - .3, tk = T.c('Каждый') - .2;
-    let s = BG(C.paper) + rays(540, 520, 20, C.paper2, -t * 8);
+    let s = envSky(t, { bands: ['#F2ECDD', '#EEDDBD', '#E8CC9F'], sx: 160, sy: 640, sr: 90, c: C.ink, cy: 560 }) + sh(D_.rr(-300, 1250, 1680, 900, 0), '#C99B5F', { c: C.ink, w: 7 });
     const kp = P01(t, tp, .4), sq = squash(t, tp + .4, .2);
     if (kp > 0) s += g(cigPack(t, { c: C.ink, f: '#FFFFFF', f2: C.a2 }), `translate(540 ${R(lerp(-300, 470, EZ.i(kp)))}) scale(${R(1 / sq * 1000) / 1000} ${R(sq * 1000) / 1000})`);
     if (kp >= 1) cue(tp + .4, 'thud', .7);
@@ -125,7 +129,7 @@
   const CELLS = []; for (let r = 0; r < 6; r++) for (let c0 = 0; c0 < 5; c0++) CELLS.push([(c0 - 2) * 110 + (r % 2) * 55, (r - 2.5) * 96]);
   D.leaf = (t, S, T) => {
     const tk = T.c('копит') - .2, tj = T.c('жуков') - .2, ty = T.c('яд') - .15;
-    let s = BG(C.leaf2) + rays(540, CY, 22, '#4C8A50', t * 6);
+    let s = BG(C.leaf2) + envLeaves(t, { f1: '#356B3C', f2: '#2F5E35' });
     s += g(leafT({ len: 1700, w: 640, c: C.ink, ow: 8, vw: 6, dots: false }), at(560, 1900, 1, -8));
     // лупа-разрез: клетки наполняются молекулами
     let cells = sh(D_.circ(0, 0, 330), '#A6D86B', { c: C.ink, w: 10 });
@@ -141,7 +145,7 @@
   // ===== 8. «Укус — и жук замирает: никотин бьёт ему по нервам» =====
   D.bite = (t, S, T) => {
     const tb = T.c('Укус') - .1, tf = T.c('замирает') - .15, tn = T.c('нервам') - .4;
-    let s = BG(C.leaf2) + rays(540, CY, 22, '#4C8A50', t * 6);
+    let s = BG(C.leaf2) + envLeaves(t, { f1: '#356B3C', f2: '#2F5E35' });
     const edge = 'M-200 1000Q540 966 1280 1014L1280 2200L-200 2200Z';
     let leafS = sh(edge, C.leaf) + sh('M520 982Q900 970 1280 1014L1280 2200L700 2200Z', '#4E8C4C') + line(edge, 1, { c: C.ink, w: 7 });
     const kb = P01(t, tb + .15, .3), nb = kb > 0 ? 64 * EZ.back(kb) : 0;
@@ -196,7 +200,7 @@
   }
   D.brain = (t, S, T) => {
     const tb = T.c('мозге') - .25, tj = T.c('жука') - .2, tn = T.c('никотиновые') - .15;
-    let s = BG(C.bg) + rays(540, 900, 20, C.bg2, t * 6) + motes(t, MOT, 8);
+    let s = envNeurons(t, { bg: C.bg, c: C.bg2, c2: C.bg3, sig: C.a1, ink: C.ink });
     s += pop(brainF(t, { c: C.ink, face: { mood: 'calm', look: .4 } }), 280, 1040, t, T.a + .05, { s: 1.38 });
     s += pop(beetle(t, { c: C.ink, look: true }), 780, 1120, t, tj, { s: 1.2 });
     s += pop(tx('=', 0, 0, { f: 'O', w: 700, s: 170, c: C.a1 }), 570, 1100, t, tj + .25, {});
@@ -211,7 +215,7 @@
   // ===== 11. «Затяжка — и примерно через 10 секунд никотин уже там»: секундомер, точка бежит от одноразки к мозгу =====
   D.ten = (t, S, T) => {
     const tp = T.c('Затяжка') - .15, tth = T.c('там') - .1;
-    let s = BG(C.paper) + rays(540, 640, 20, C.paper2, -t * 8);
+    let s = BG(C.paper) + stripes(C.paper2, 70, 180, 35, -t * 160 * (1 + 2 * E(t, T.c('Затяжка'), 1, 'io')));
     const run = E(t, tp + .2, tth - tp - .2, 'io');
     s += stopwatch(540, 640, 10 * run, { r: 260, c: C.ink, f: '#FFFFFF', face: C.paper, fill: C.a1, hand: C.a2, unit: ' с' });
     const path = 'M190 1120C260 900 420 1180 560 1050S860 960 890 1100';
@@ -229,7 +233,7 @@
   // ===== 12. «Мозг получает дофамин и запоминает: хочу ещё» =====
   D.dopa = (t, S, T) => {
     const td = T.c('дофамин') - .2, th = T.c('хочу') - .15;
-    let s = BG(C.bg) + rays(540, CY, 20, C.bg2, t * 8) + sh(D_.circ(540, CY, 430), C.bg2);
+    let s = envNeurons(t, { bg: C.bg, c: C.bg2, c2: C.bg3, sig: C.a1, ink: C.ink }) + sh(D_.circ(540, CY, 430), C.bg2, { c: C.bg3, w: 10 });
     for (let i = 0; i < 9; i++) { const ph = clamp((t - td - i * .12) / .7); if (ph > 0 && ph < 1) s += sh(D_.drop(330 + (i % 5) * 100 + (i > 4 ? 50 : 0), lerp(220, 640, EZ.i(ph)), 30), C.star, { c: C.ink, w: 5 }); if (ph > .95 && ph < 1) cue(td + i * .12 + .7, 'drip', .4) }
     const hap = t > td + .4 && t < th;
     s += g(brainF(t, { c: C.ink, face: { mood: t > th ? 'want' : hap ? 'happy' : 'calm' } }), at(540, 880 + bob(t, 6, .8), 2.3 * squash(t, td + .4, .1)));
@@ -258,7 +262,7 @@
   const TOWER = [[0, 0], [-70, -6], [70, -4], [-36, -60], [36, -62], [0, -118], [-60, -120], [60, -116], [0, -176], [0, -236]];
   D.eat = (t, S, T) => {
     const tb = T.c('баклажан') - .25, t10 = T.c('Десять') - .2;
-    let s = BG(C.paper) + rays(540, 600, 20, C.paper2, t * 6);
+    let s = envRoom(t, { fy: 1500, wx: 820, wy: 470, lx: 300, frame: false, c: C.ink, cur: '#B98BEF' });
     const sk = shake(t, t10 + .9, 12, .6);
     s += sh(D_.rr(-100, 1060, 1280, 900, 0), C.wood, { c: C.ink, w: 7 }) + sh(D_.rr(-100, 1060, 1280, 40, 0), C.wood2);
     s += g(sh(D_.ell(0, 0, 330, 70), '#FFFFFF', { c: C.ink, w: 7 }) + sh(D_.ell(0, -6, 250, 48), '#EFE8DA', { c: C.ink, w: 4 }), at(540 + sk, 1080));
@@ -277,7 +281,8 @@
   D.loop = (t, S, T) => {
     const tw0 = T.c('что') - .25, kb = E(t, tw0 - .5, .5, 'o5');
     const ty = clamp((t - tw0) / (T.c('о') + .2 - tw0));
-    return BG(C.bg) + rays(540, CY, 18, C.bg2, (t - DUR) * RAYV) + band(t, ty, kb) + (ty > 0 ? '' : '') + (cue(tw0, 'type', .6), '')
+    cue(tw0, 'type', .6);
+    return bgTitle(t - DUR) + band(t, ty, kb)
   };
 
   window.EP = {
@@ -293,7 +298,7 @@
     trAt: { title: [540, CY], common: [362, 955], claim: [540, CY + 60], family: [EGF[0], EGF[1] + 40], tiny: [210, 802], pack: [779, 866], bite: [540, CY], years: [540, 660], brain: [540, CY], ten: [900, 1150], dopa: [555, 963], toll: [540, 766], eat: [540, 510] },
     trTo: { claim: [EGF[0], EGF[1] + 20], bite: [540, 760], brain: [900, 1150] },
     trR: { title: 18, common: 60, family: 120, tiny: 40, pack: 22, years: 120, ten: 60, dopa: 26, toll: 14, eat: 60 },
-    trBg: { title: C.field, common: C.leaf2, claim: '#F2E3C6', family: C.bg, tiny: C.paper, pack: C.leaf2, years: C.bg, ten: C.bg, dopa: C.dark, toll: C.paper, eat: C.bg },
+    trBg: { title: '#F7D09A', common: C.leaf2, claim: C.bg, family: C.bg, tiny: C.paper, pack: C.leaf2, years: C.bg, ten: C.bg, dopa: C.dark, toll: C.paper, eat: C.bg },
     trCol: { title: C.ink, common: C.ink, claim: C.paper, family: C.ink, tiny: C.ink, pack: C.ink, bite: C.paper, years: C.ink, brain: C.ink, ten: C.ink, dopa: C.ink, toll: C.paper, eat: C.ink },
     trRing: { title: 0 },
     cap: { hi: C.a1, st: C.ink },
