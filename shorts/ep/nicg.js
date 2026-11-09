@@ -190,14 +190,14 @@
 
   window.EP = {
     P, D, clean: true, lead: .2, defs: V8DEFS,
-    cap: { size: 58, top: 1360, hi: '#C9AEF5', st: C.night },
+    cap: { size: 58, top: 1360, hi: '#C3A3FF', st: C.night },
     tr: { hook: 'cut', intro: 'panL', poison: 'wave', survive: 'cut', blood: 'cut', spider: 'zc', named: 'wave', plant: 'cut', pct: 'zc', flowers: 'cut', why: 'panL', moth: 'wave', war: 'cut', humans: 'zc' },
     trAt: { spider: [600, 760], pct: [540, 760], humans: [520, 1000] },
     trCol: { spider: '#FFFFFF', pct: NIGHT, humans: C.night },
     trCols: { poison: [C.amber, C.paper, C.navy3], named: [C.navy3, C.paper, C.navy2], moth: [C.amber, C.paper, C.navy3] },
     init() {
       const st = document.createElement('style');
-      st.textContent = `#cap{font-weight:800!important;letter-spacing:0!important;text-shadow:0 0 2px ${C.night},0 3px 0 ${C.night},0 0 14px rgba(23,51,39,.85),2px 2px 0 ${C.night},-2px 2px 0 ${C.night},2px -2px 0 ${C.night},-2px -2px 0 ${C.night}!important}#cap .u{color:#FFFDF4!important;opacity:.6}`;
+      st.textContent = `#cap{font-weight:800!important;letter-spacing:0!important;text-shadow:4px 0px 0 ${C.night},-4px 0px 0 ${C.night},0px 4px 0 ${C.night},0px -4px 0 ${C.night},3px 3px 0 ${C.night},-3px 3px 0 ${C.night},3px -3px 0 ${C.night},-3px -3px 0 ${C.night},2px 4px 0 ${C.night},-2px 4px 0 ${C.night},4px 2px 0 ${C.night},-4px 2px 0 ${C.night},2px -4px 0 ${C.night},-2px -4px 0 ${C.night},4px -2px 0 ${C.night},-4px -2px 0 ${C.night},0 6px 16px rgba(23,51,39,.6)!important}#cap .u{color:#E4E1D3!important;opacity:1}`;
       document.head.appendChild(st);
     }
   };
