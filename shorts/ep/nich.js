@@ -190,12 +190,12 @@
   };
   // 10. «В 1986 году ему вставили ген светлячка — и он засветился.» — темнота, светлячок, куст табака загорается
   D.glow = (t, S, T) => {
-    const tf = T.c('светлячка') - .6, tz = T.c('засветился') - .4, kz = E(t, tz, .8, 'io');
+    const tf = T.c('светлячка') - .9, tz = T.c('засветился') - 1.0, kz = E(t, tz, .6, 'io');
     let s = BG(C.night);
     if (kz > 0) s += F(D_.circ(540, 760, 520 * kz), C.yellow, { op: .08 }) + F(D_.circ(540, 760, 360 * kz), C.yellow, { op: .1 });
     s += plant8(t, { x: 540, y: 1220, h: 820, roots: 0 }).replace(/#5DB36A/g, kz > .5 ? '#E9F27A' : '#2C6B3D').replace(/#3E9152/g, kz > .5 ? '#C8DA4E' : '#1F4D2C');
     s += F(D_.rr(-200, 1220, 1480, 800, 0), C.soil);
-    const kf = E(t, tf, 1.3, 'io');
+    const kf = E(t, tf, 1.0, 'io');
     if (t > tf) s += firefly8(t, lerp(1250, 560, kf) + Math.sin(t * 3) * 20, lerp(300, 520, kf) + Math.sin(t * 5) * 14, 1.3);
     s += num8('1986', 540, 300, t, T.c('1986') - .3, { s: 110, c: C.amber3 });
     if (t > tz) cue(tz, 'shimmer', .6);
