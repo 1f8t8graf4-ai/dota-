@@ -15,6 +15,8 @@ RT = {
     'nicb-ru': [('pause', 2, .3), ('pause', 4, .2), ('pause', 9, .4), ('pause', 15, .2), ('pause', 18, .4)],
     'nich-ru': [('pause', 2, .3), ('pause', 12, .4), ('pause', 13, .4)],
     'nicg-ru': [('pause', 0, .3), ('pause', 6, .3), ('pause', 13, .4)],
+    'nics-ru': [('pause', 1, .12), ('pause', 2, .38), ('pause', 3, .35), ('pause', 5, .12), ('pause', 9, .2), ('pause', 10, .3), ('pause', 14, .15),
+                ('pause', 15, .2), ('pause', 17, .28), ('pause', 18, .35), ('pause', 20, .3), ('pause', 21, .45)],
     'nicw3-ru': [('pause', 2, .4), ('pause', 3, .2), ('pause', 5, .2), ('pause', 12, .3)],
     'howto-ru': [('pause', 0, .2), ('pause', 2, .8), ('pause', 3, .8), ('pause', 4, .6), ('pause', 5, .3), ('pause', 6, 1.8)],
 }

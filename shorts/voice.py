@@ -17,6 +17,7 @@ M = '/home/user/wdyk/models' if os.path.isdir('/home/user/wdyk/models') else os.
 VOICE = os.environ.get('SV_VOICE', 'af_heart')
 SPEED = float(os.environ.get('SV_SPEED', '0.95'))
 GAP_IN, GAP_SCENE = 0.16, 0.30
+GAPS = {'nics-ru': 0.17}  # у оригиналов диктор говорит почти без остановок — между фразами короче
 SR = 24000
 
 
@@ -152,6 +153,38 @@ def split_by_words(path, says, vosk):
     return [trim(y[pts[i]:pts[i + 1]], SR) for i in range(len(says))], q
 
 
+LEVEL = {'nics-ru': 0.6}  # своя запись: громкость фраз ближе к средней (шёпот слышно на телефоне), 0 — как есть, 1 — все одинаково
+CAP = {'nics-ru': 0.38}  # своя запись: паузы внутри фразы длиннее этого — ужать (режиссёрские пометки растягивают их до секунды)
+
+
+def squeeze(x, cap, sr=SR, thr=0.012):
+    """Тишину внутри фразы длиннее cap секунд укоротить до cap: вырезаем середину, края склеиваем наплывом 10 мс."""
+    hop = sr // 200
+    e = np.array([np.sqrt(np.mean(x[i:i + hop] ** 2)) for i in range(0, len(x) - hop, hop)])
+    quiet = e < thr * max(1e-6, np.max(e)) * 4
+    out, i, n, f = [], 0, len(quiet), int(sr * 0.01)
+    pos = 0
+    while i < n:
+        if quiet[i]:
+            j = i
+            while j < n and quiet[j]:
+                j += 1
+            if 0 < i and j < n and (j - i) * hop > cap * sr:
+                keep = int(cap * sr / 2)
+                a, b = i * hop + keep, j * hop - keep
+                seg = x[pos:a].copy()
+                seg[-f:] *= np.linspace(1, 0, f)
+                out.append(seg)
+                pos = b
+                head = x[pos:pos + f] * np.linspace(0, 1, f)
+                x = np.concatenate([x[:pos], head, x[pos + f:]])
+            i = j
+        else:
+            i += 1
+    out.append(x[pos:])
+    return np.concatenate(out)
+
+
 def main(ep, audio=None):
     lang = ep.rsplit('-', 1)[1]
     L = EPISODES[ep]
@@ -176,6 +209,14 @@ def main(ep, audio=None):
     if audio and clips is None:
         clips = split_audio(audio, len(L), exp)
     syn = None if clips else Synth(lang)
+    LV = [1.0] * len(L)
+    if clips and ep in LEVEL:
+        def vr(c):
+            e = np.array([np.sqrt(np.mean(c[i:i + SR // 50] ** 2)) for i in range(0, max(1, len(c) - SR // 50), SR // 50)])
+            return float(np.sqrt(np.mean(e[e > np.max(e) * .1] ** 2))) if len(e) else 1e-3
+        rm = [vr(c) for c in clips]; med = float(np.median(rm))
+        LV = [float(np.clip((med / max(r, 1e-6)) ** LEVEL[ep], .7, 2.5)) for r in rm]
+        print('громкость фраз:', ' '.join(f'{v:.2f}' for v in LV))
     if exact:
         from wt_vosk import align
     # свой голос режется и собирается заново с паузами GAP_* — паузы-шутки из retime.RT ставим сами
@@ -188,8 +229,12 @@ def main(ep, audio=None):
         text, toks = parse(s)
         say = text.lstrip('.… ')
         x = clips[i] if clips else trim(syn(say), SR)
+        if clips and ep in CAP:
+            x = squeeze(x, CAP[ep])
+        if clips and ep in LEVEL:
+            x = x * LV[i]
         if prev is not None:
-            t += (GAP_SCENE if scene != prev else GAP_IN) + extra.get(i - 1, 0)
+            t += (GAPS.get(ep, GAP_SCENE) if scene != prev else GAP_IN) + extra.get(i - 1, 0)
         dur = len(x) / SR
         q = 1.0
         if exact:

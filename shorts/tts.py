@@ -75,9 +75,24 @@ EL_VOICE = {'ru': '2OdNfs9Z4GCMvoFiCavC',  # Max — Clear, Engaging and Profess
 EL_SET = {'stability': .55, 'similarity_boost': .75}
 
 
-def el_say(text, voice, lang, model='eleven_v4'):
+def el_text(ep, L):
+    """Текст для синтеза: режиссёрские пометки по фразам (scripts.DIRECT) и ударения (scripts.SAY). На экран это не попадает."""
+    import re
+    import scripts
+    d, rep = getattr(scripts, 'DIRECT', {}).get(ep, {}), getattr(scripts, 'SAY', {}).get(ep, {})
+    out = []
+    for i, t in enumerate(L):
+        for x, y in rep.items():
+            t = re.sub(rf'(?<!\w){re.escape(x)}(?!\w)', y, t)
+        out.append((d[i] + ' ' if i in d else '') + t)
+    return '\n'.join(out)
+
+
+def el_say(text, voice, lang, model='eleven_v4', stab=None, seed=None):
     """→ mp3 (байты) ElevenLabs. Повтор при 5xx/сети."""
-    body = {'text': text, 'model_id': model, 'language_code': lang, 'voice_settings': EL_SET}
+    body = {'text': text, 'model_id': model, 'language_code': lang, 'voice_settings': dict(EL_SET, **({'stability': stab} if stab is not None else {}))}
+    if seed is not None:
+        body['seed'] = seed
     last = ''
     for a in range(4):
         try:
@@ -124,14 +139,17 @@ def main():
             f = os.path.join(out, f'{v}.mp3'); save(pcm, f); files.append(f)
             print(v, m, f)
         return
-    for ep in [x for x in a if not x.startswith('--') and x not in (voice, model)]:
+    vals = {a[i + 1] for i, x in enumerate(a[:-1]) if x in ('--voice', '--model', '--stab', '--seed', '--voices', '--tempo')}
+    for ep in [x for x in a if not x.startswith('--') and x not in vals]:
         out = os.path.join(HERE, 'out', ep); os.makedirs(out, exist_ok=True)
         L = lines(ep)
         if '--el' in a:
             lang = ep.rsplit('-', 1)[1]; v = opt('--voice', EL_VOICE[lang]); m = model or 'eleven_v4'
-            mp3 = os.path.join(out, 'tts.mp3'); open(mp3, 'wb').write(el_say('\n'.join(L), v, lang, m))
+            stab, seed = opt('--stab'), opt('--seed')
+            mp3 = os.path.join(out, 'tts.mp3'); open(mp3, 'wb').write(el_say(el_text(ep, L), v, lang, m, float(stab) if stab else None, int(seed) if seed else None))
             dst = os.path.join(out, 'tts.wav')
-            subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', mp3, '-ac', '1', '-ar', '24000', dst], check=True)
+            tempo = float(opt('--tempo', '1'))  # чуть быстрее без смены высоты (у оригиналов 2,0–2,6 слова в секунду)
+            subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', mp3] + (['-af', f'rubberband=tempo={tempo}'] if abs(tempo - 1) > 1e-3 else []) + ['-ac', '1', '-ar', '24000', dst], check=True)
             json.dump({'engine': 'elevenlabs', 'voice': v, 'model': m, 'settings': EL_SET, 'lines': L}, open(os.path.join(out, 'tts.json'), 'w'), ensure_ascii=False, indent=1)
             print(ep, 'ElevenLabs', v, m, '→', dst)
             continue
