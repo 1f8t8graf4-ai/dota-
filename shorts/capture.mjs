@@ -25,7 +25,13 @@ async function page() {
   await p.evaluate(tl => window.init(tl), TL);
   return p
 }
-if (mode === 'shots') {
+if (mode === 'cues') {
+  // звуки по событиям: пройти все кадры без снимков (быстро) и собрать cue() → out/<ep>/cues.json
+  const p = await page(), fps = Number(arg || 20), N = Math.ceil(TL.dur * fps);
+  const cues = await p.evaluate(([N, fps]) => { for (let i = 0; i <= N; i++) window.render(i / fps); return Object.values(window.CUES || {}).sort((a, b) => a[0] - b[0]) }, [N, fps]);
+  fs.writeFileSync(path.join(OUT, 'cues.json'), JSON.stringify(cues));
+  console.log(ep, 'звуков по событиям:', cues.length);
+} else if (mode === 'shots') {
   const p = await page();
   const dir = path.join(OUT, 'shots'); fs.mkdirSync(dir, { recursive: true });
   for (const t of arg.split(',').map(Number)) {
