@@ -289,6 +289,26 @@ def sfx6(T, SC, DUR, rng, cues, loop=False):
     return x
 
 
+# v8 (09.11): звуки — набор ElevenLabs Sound Effects (sfx8/*.mp3), мало и тихо; без щелчков на словах и «награды» в конце
+SFX8_EPS = {'nicb'}
+SFX8_GAIN = {'impact': .55, 'dive': .32, 'wave': .32, 'whoosh': .26, 'drip': .4, 'stamp': .35, 'thud': .3, 'chomp': .3, 'zap': .28,
+             'ding': .3, 'shimmer': .3, 'pin': .3, 'tick': .25, 'heart': .45, 'swish': .25}
+
+
+def sfx8(DUR, cues):
+    N = int((DUR + 2) * SR); x = np.zeros((N, 2)); cache = {}; last = {}
+    for t0, name, g0, pan in cues:
+        f = os.path.join(HERE, 'sfx8', name + '.mp3')
+        if not os.path.exists(f) or t0 - last.get(name, -9) < .25:
+            continue
+        last[name] = t0
+        if name not in cache:
+            r = subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True, check=True)
+            cache[name] = np.frombuffer(r.stdout, np.float32).astype(np.float64)
+        put(x, cache[name], t0, SFX8_GAIN.get(name, .3) * g0, pan * .4)
+    return x
+
+
 def main(ep):
     global EPB
     EPB = ep.rsplit('-', 1)[0]
@@ -307,7 +327,10 @@ def main(ep):
     else:
         M = music(EPB, DUR, t_claim, rng, t_stop)
     sf.write(os.path.join(out, 'music.wav'), M.astype(np.float32), SR)
-    X = sfx6(T, SC, DUR, rng, json.load(open(cf)), loop) if os.path.exists(cf) else sfx(T, SC, DUR, rng)
+    if EPB in SFX8_EPS:
+        X = sfx8(DUR, json.load(open(cf)))
+    else:
+        X = sfx6(T, SC, DUR, rng, json.load(open(cf)), loop) if os.path.exists(cf) else sfx(T, SC, DUR, rng)
     sf.write(os.path.join(out, 'sfx.wav'), X.astype(np.float32), SR)
     if os.environ.get('NOVOICE'):  # v5: голос будет потом (ElevenLabs) — сейчас музыка + эффекты, −14 LUFS
         tmp = os.path.join(out, 'mix.raw.wav')

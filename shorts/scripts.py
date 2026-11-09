@@ -469,6 +469,9 @@ S['howto'] = {'ru': [
     ("done",   "А человек написал мне одно слово: *«го»."),
 ]}
 
+# v8 (09.11): тот же текст nicw2, рисовка заново — как у оригиналов (палитра, без лиц и обводок, переходы-камера), голос ElevenLabs
+S['nicb'] = S['nicw2']
+
 EPISODES = {f'{ep}-{lang}': lines for ep, by in S.items() for lang, lines in by.items()}
 
 

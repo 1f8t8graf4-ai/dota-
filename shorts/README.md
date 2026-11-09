@@ -1,3 +1,29 @@
+# Ролики v8 — никотин заново «как у оригиналов» + ElevenLabs (09.11.2026)
+
+Андрей на v7: «музыку поменяй, переходы ебанутые, анимация сомнительная, у них супер качественная рисовка». Пробный ролик —
+`nicb` (текст nicw2): `/home/user/wdyk/deliver8/nicb-ru.mp4`, 70 с.
+
+- **Голос — ElevenLabs** (`tts.py <ep> --el`): Max `2OdNfs9Z4GCMvoFiCavC` (×2 кредита за символ), модель `eleven_v4`,
+  stability .55 / similarity .75 (`EL_SET`). Немецкий — Christian `xQSqobBprMpWWqHzx3I4`, английский — Mark. Ключ — Network secret
+  `xi-api-key` на `api.elevenlabs.io`. Голос из общей библиотеки сначала добавить к себе (`POST /v1/voices/add/<owner>/<id>`).
+  Дальше как раньше: `python3 voice.py nicb-ru --audio out/nicb-ru/tts.wav`.
+- **Музыка — Eleven Music** (`POST /v1/music`, `music_v2_5`, `composition_plan` = `{"chunks":[{text, duration_ms, positive_styles,
+  negative_styles}]}` — формат берём из `POST /v1/music/plan`). По разбору Gemini у оригиналов фон — тёмный синтвейв / киношная
+  электроника ~115 BPM с ударами на смене сцен. Трек: интро → удар на «А знаете ли вы» → мрачнее с «мозга» → тихий финал;
+  обрезан с 2,6 с, чтобы бит вошёл на 4,9 с → `music/nicb.mp3`.
+- **Звуки — ElevenLabs Sound Effects** (`/v1/sound-generation`) → `sfx8/*.mp3` (15 шт.), `audio.py` → `sfx8()`: ~30 тихих звуков, без щелчков
+  на словах.
+- **Рисовка — `v8.js`** (после `v5.js`):
+  - палитра `K8`: ночь/синий/бумага + янтарь (никотин), красный — только «опасно»;
+  - без обводок и лиц: тень — плоская копия формы; объём — полутон-точки (`ht`), фон — косая полоса света (`bgDiag`);
+  - история — светлые сцены (`bgLight`);
+  - переходы — камера: `dive` (влёт в предмет, следующая сцена внутри), `into`/`out`, `zc`, `wave` (волна как у Coca-Cola).
+  - Предметы: `cig8 vape8 euRing8 ban8 spray8 aphid8 leaf8 plant8 soil8 beetle8 head8 cloud8 mango8 brain8 rec8 pocket8 man8 jar8 can8 cab8 ring8 pin8`.
+- Всё: `python3 tts.py nicb-ru --el && python3 voice.py nicb-ru --audio out/nicb-ru/tts.wav && node capture.mjs nicb-ru cues 20 &&
+  VOICE=1 python3 audio.py nicb-ru && node capture.mjs nicb-ru video 30 4` + склейка (как в `make6.sh`).
+
+---
+
 # Ролики v7 — никотин ×3 с голосом нейросетью (09.11.2026)
 
 Андрей прислал 13 оригиналов «Что вы знаете о…» («Знакомьтесь, Боб», 1080p). Замер и вывод — `../ролики-оригиналы-09.11.md`:

@@ -4,6 +4,10 @@
 #   python3 tts.py --samples                      → пробы голосов на одной фразе (out/_voices/*.mp3 + все подряд)
 # Дальше как с записью ElevenLabs: python3 voice.py nicw2-ru --audio out/nicw2-ru/tts.wav && VOICE=1 ./make6.sh nicw2-ru
 #
+# ElevenLabs (09.11, решение Андрея): python3 tts.py nicb-ru --el [--voice <id>] [--model eleven_v4]
+#   Ключ — Network secret xi-api-key на api.elevenlabs.io (прокси подставляет сам). Голос по умолчанию — Max (EL_VOICE).
+#   Голоса из общей библиотеки сначала добавить к себе: POST /v1/voices/add/<public_owner_id>/<voice_id>.
+#
 # Ключ — Network secret x-goog-api-key на generativelanguage.googleapis.com (прокси подставляет сам).
 # Как задавать манеру: текст «Прочитай спокойно: …» модель читает вслух, systemInstruction у TTS выключен —
 # работает только разметка «# AUDIO PROFILE … ### DIRECTOR'S NOTES … #### TRANSCRIPT» (читается только TRANSCRIPT).
@@ -65,6 +69,31 @@ def say(text, voice=VOICE, models=None, style=BASE):
     sys.exit('не озвучилось: ' + last)
 
 
+EL_VOICE = {'ru': '2OdNfs9Z4GCMvoFiCavC',  # Max — Clear, Engaging and Professional (выбрал Андрей; цена ×2 за символ)
+            'de': 'xQSqobBprMpWWqHzx3I4',  # Christian — лучший немецкий на пробе 09.11 (Gemini: 9.5/10)
+            'en': 'WTUK291rZZ9CLPCiFTfh'}  # Mark
+EL_SET = {'stability': .55, 'similarity_boost': .75}
+
+
+def el_say(text, voice, lang, model='eleven_v4'):
+    """→ mp3 (байты) ElevenLabs. Повтор при 5xx/сети."""
+    body = {'text': text, 'model_id': model, 'language_code': lang, 'voice_settings': EL_SET}
+    last = ''
+    for a in range(4):
+        try:
+            r = requests.post(f'https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=mp3_44100_192',
+                              headers={'xi-api-key': 'proxy-injected'}, json=body, timeout=600)
+        except requests.RequestException as e:
+            last = str(e); time.sleep(5 + 5 * a); continue
+        if r.status_code == 200:
+            return r.content
+        last = f'{r.status_code} {r.text[:200]}'
+        if r.status_code < 500:
+            break
+        time.sleep(5 + 5 * a)
+    sys.exit('ElevenLabs: ' + last)
+
+
 TEMPO = float(os.environ.get('TEMPO', '1.06'))  # Gemini говорит на ~6 % медленнее диктора оригиналов — ускоряем без смены высоты
 
 
@@ -98,6 +127,14 @@ def main():
     for ep in [x for x in a if not x.startswith('--') and x not in (voice, model)]:
         out = os.path.join(HERE, 'out', ep); os.makedirs(out, exist_ok=True)
         L = lines(ep)
+        if '--el' in a:
+            lang = ep.rsplit('-', 1)[1]; v = opt('--voice', EL_VOICE[lang]); m = model or 'eleven_v4'
+            mp3 = os.path.join(out, 'tts.mp3'); open(mp3, 'wb').write(el_say('\n'.join(L), v, lang, m))
+            dst = os.path.join(out, 'tts.wav')
+            subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', mp3, '-ac', '1', '-ar', '24000', dst], check=True)
+            json.dump({'engine': 'elevenlabs', 'voice': v, 'model': m, 'settings': EL_SET, 'lines': L}, open(os.path.join(out, 'tts.json'), 'w'), ensure_ascii=False, indent=1)
+            print(ep, 'ElevenLabs', v, m, '→', dst)
+            continue
         pcm, m = say('\n'.join(L), voice, models, STYLE.get(ep.rsplit('-', 1)[0], BASE))
         open(os.path.join(out, 'tts.raw.pcm'), 'wb').write(pcm)  # как пришло — пересобрать с другим темпом без запроса
         dst = os.path.join(out, 'tts.wav'); save(pcm, dst, TEMPO)
