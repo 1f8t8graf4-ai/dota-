@@ -39,8 +39,9 @@
       if (km < .2) cue(tv, 'swish', .6);
     } else {
       const side = [[-360, .62, .18], [-190, .78, .1], [190, .78, .14], [360, .62, .22]];
-      side.forEach(([dx, sc, dl], i) => { s += rise8(vape8(t, { f: C.navy, led: P01(t, tv + .75 + dl, .2), shadow: false }), VC[0] + dx, VC[1] + 70 - sc * 40, t, tv + .35 + dl, { s: sc, dy: 140 }) });
-      s += vape8(t, { x: VC[0], y: VC[1], f: C.night, led: P01(t, tv + .5, .25) });
+      const VCOL = [C.mint, C.berry, C.blue, C.purple];
+      side.forEach(([dx, sc, dl], i) => { s += rise8(vape8(t, { f: VCOL[i], mc: '#FFFFFF', led: P01(t, tv + .75 + dl, .2), shadow: false }), VC[0] + dx, VC[1] + 70 - sc * 40, t, tv + .35 + dl, { s: sc, dy: 140 }) });
+      s += vape8(t, { x: VC[0], y: VC[1], f: C.night, mc: '#FFFFFF', led: P01(t, tv + .5, .25) });
     }
     if (t > tm) { const v = Math.round(1e9 * E(t, tm, 1.2, 'o')); s += g(tx(v.toLocaleString('ru-RU').replace(/\u00a0/g, ' ') + (v >= 1e9 ? '+' : ''), 540, 330, { f: 'M', w: 800, s: 92, c: C.night }), '', E(t, tm, .3)) }
     return g(s, push8(t, T, .05, LED[0], LED[1]))
@@ -62,7 +63,7 @@
     // лист снизу и тля
     const ly = lerp(1700, 1240, down);
     const lp = `M-200 ${ly}Q300 ${ly - 60} 1280 ${ly + 40}L1280 3000L-200 3000Z`;
-    s += F(lp, C.navy3) + ht(lp, 'n', 'v', .5) + Ln(`M-200 ${ly + 120}Q500 ${ly + 60} 1280 ${ly + 200}M300 ${ly - 20}Q340 ${ly + 200} 260 ${ly + 500}M800 ${ly - 10}Q860 ${ly + 220} 980 ${ly + 520}`, 1, { c: C.paper, w: 3, op: .4 });
+    s += F(lp, C.green) + ht(lp, 'n', 'v', .35) + Ln(`M-200 ${ly + 120}Q500 ${ly + 60} 1280 ${ly + 200}M300 ${ly - 20}Q340 ${ly + 200} 260 ${ly + 500}M800 ${ly - 10}Q860 ${ly + 220} 980 ${ly + 520}`, 1, { c: C.paper, w: 3, op: .4 });
     const ka = P01(t, tl + .25, .6);
     s += aphid8(t, { x: APH3[0], y: ly - 70, s: .9 * EZ.o(ka), op: clamp(ka * 3) });
     // лупа
@@ -97,7 +98,7 @@
     const tb = T.c('кусает') - .1, tn = T.c('нервам') - .35, tf = T.c('замирает') - .1;
     let s = bgDiag({ off: -t * 15 });
     const edge = 'M-200 1020Q520 960 1280 1030L1280 2400L-200 2400Z';
-    let lf = F(edge, C.navy3) + F('M520 990Q900 980 1280 1030L1280 2400L700 2400Z', C.navy2) + ht(edge, 'n', 'v', .5);
+    let lf = F(edge, C.green) + F('M520 990Q900 980 1280 1030L1280 2400L700 2400Z', C.green2) + ht(edge, 'n', 'v', .35);
     lf += Ln('M-200 1320Q300 1160 1280 1260M200 960Q260 1120 120 1420M700 980Q760 1140 900 1520', 1, { c: C.paper, w: 3, op: .4 });
     lf += Ln('M-200 1320Q300 1160 1280 1260', E(t, tb + .3, .8), { c: C.amber, w: 4 });
     const k1 = P01(t, tb + .2, .3), k2 = P01(t, tb + .55, .3);
@@ -129,27 +130,27 @@
   // 7. «Люди заметили это ещё к 1690 году.» — банка с табачной водой: листья падают, вода желтеет
   D.y1690 = (t, S, T) => {
     let s = bgLight();
-    s += F(D_.rr(-200, 1110, 1480, 900, 0), C.navy) + Ln('M-200 1110H1280', 1, { c: C.navy3, w: 4 });
+    s += F(D_.rr(-200, 1110, 1480, 900, 0), C.soil) + F(D_.rr(-200, 1110, 1480, 24, 0), C.soil2);
     const kl = E(t, T.c('заметили') - .2, 1.2, 'io');
-    s += jar8(t, { x: 540, y: 880, s: 1.05, level: lerp(.15, .8, kl), lc: C.navy, bf: C.paper2, lid: C.navy3, shc: C.navy2 });
+    s += jar8(t, { x: 540, y: 880, s: 1.05, level: lerp(.15, .8, kl), lc: C.navy, bf: '#CFE3EA', lid: C.berry, shc: C.navy2 });
     for (let i = 0; i < 3; i++) { const q = P01(t, T.c('заметили') - .5 + i * .18, .6); if (q > 0 && q < 1) s += leaf8({ len: 200, w: 80, x: 460 + i * 80, y: lerp(380, 820, EZ.i(q)), r: -30 + i * 30 + q * 90, op: 1 - clamp((q - .8) * 5) }) }
     return g(s, push8(t, T, .04))
   };
   // 8–9. «И триста лет травили им вредителей на грядках. Пока в 2009 Евросоюз его не запретил.» — грядка, лейка поливает, жуки падают;
   //      камера едет вдоль грядки; на «Евросоюз» — кольцо звёзд, на «запретил» — красный запрет, лейка падает
-  const cab8b = (x, y, s = 1) => { let q = ''; [[-1, 0], [1, 0], [-.5, -.5], [.5, -.5], [0, -.8]].forEach(([dx, dy], i) => { const d = D_.ell(dx * 70, dy * 70, 90, 66); q += F(d, i < 2 ? C.navy3 : i < 4 ? '#3E55A0' : '#5068B6') + Ln(`M${dx * 70} ${dy * 70 + 40}Q${dx * 70 + 10} ${dy * 70} ${dx * 70 + dx * 40} ${dy * 70 - 40}`, 1, { c: C.paper, w: 3, op: .5 }) }); return g(SH(D_.ell(0, 10, 160, 80), { op: .3 }) + q, at(x, y, s)) };
+  const cab8b = (x, y, s = 1) => { let q = ''; [[-1, 0], [1, 0], [-.5, -.5], [.5, -.5], [0, -.8]].forEach(([dx, dy], i) => { const d = D_.ell(dx * 70, dy * 70, 90, 66); q += F(d, i < 2 ? C.green3 : i < 4 ? C.green2 : C.green) + Ln(`M${dx * 70} ${dy * 70 + 40}Q${dx * 70 + 10} ${dy * 70} ${dx * 70 + dx * 40} ${dy * 70 - 40}`, 1, { c: C.paper, w: 3, op: .5 }) }); return g(SH(D_.ell(0, 10, 160, 80), { op: .3 }) + q, at(x, y, s)) };
   function garden(t, T, tBan, tStop) {
     const X = (t - T.a) * 170; // камера едет вправо
     let w = '';
-    w += F(D_.rr(-400, 1080, 4400, 1000, 0), C.navy) + Ln('M-400 1080H4000', 1, { c: C.navy3, w: 4 });
+    w += F(D_.rr(-400, 1080, 4400, 1000, 0), C.soil) + F(D_.rr(-400, 1080, 4400, 24, 0), C.soil2);
     for (let i = 0; i < 9; i++) {
       const cx = 140 + i * 360; w += cab8b(cx, 1030, 1.1);
       const kd = P01(t, T.a + .5 + i * .32, .6);
-      if (kd < 1) w += beetle8(t, { x: cx + 20, y: 930 + EZ.i(kd) * 240, s: .55, f: C.navy, r: kd * 140, op: 1 - clamp((kd - .6) * 2.5) });
+      if (kd < 1) w += beetle8(t, { x: cx + 20, y: 930 + EZ.i(kd) * 240, s: .55, r: kd * 140, op: 1 - clamp((kd - .6) * 2.5) });
     }
     // лейка идёт вместе с камерой
     const fall = E(t, tStop + .2, .6, 'i'), cxw = 540 + X - 120, cyw = 640 + fall * 900;
-    w += can8({ x: cxw, y: cyw, r: 18 + fall * 60, f: C.navy3, f2: C.navy2, lc: C.paper, shc: C.navy, shOp: .25 });
+    w += can8({ x: cxw, y: cyw, r: 18 + fall * 60, f: C.blue, f2: '#3A6BC4', lc: C.paper, shc: C.navy, shOp: .25 });
     if (fall < .2) for (let i = 0; i < 10; i++) { const ph = (t * 1.8 + i / 10) % 1; w += F(D_.drop(cxw + 300 + ph * 50 + Math.sin(i) * 10, cyw - 50 + ph * 330, 12), C.amber) }
     if (tBan) {
       const ke = P01(t, tBan, .9);
@@ -167,7 +168,7 @@
   D.aphid = (t, S, T) => {
     let s = bgDiag({ off: 40 });
     const lp = 'M-200 1000Q520 930 1280 1000L1280 2400L-200 2400Z';
-    s += F(lp, C.navy3) + ht(lp, 'n', 'v', .5) + Ln('M-200 1200Q500 1120 1280 1180', 1, { c: C.paper, w: 3, op: .35 });
+    s += F(lp, C.green) + ht(lp, 'n', 'v', .35) + Ln('M-200 1200Q500 1120 1280 1180', 1, { c: C.vein, w: 3, op: .5 });
     const br = 1 + Math.sin(P01(t, T.v, 1.2) * PI) * .05;
     s += g(aphid8(t, { puff: P01(t, T.c('выдохнула'), 1.3) }), `translate(540 900) scale(${R(1.6 * br * 1000) / 1000} ${R(1.6 / br * 1000) / 1000})`);
     return g(s, push8(t, T, .06, 600, 860))
@@ -214,7 +215,7 @@
     let s = bgDiag({ off: -t * 12 });
     s += brain8(t, { x: bx, y: by, s: bs }) + g(RECS.map(([x, y]) => rec8(x, y, 1, { full: t > tth + .1 })).join(''), at(bx, by, bs));
     const kv = E(t, T.a + .3, .7, 'o5');
-    s += vape8(t, { x: 260, y: lerp(1500, 1000, kv), s: .62, f: C.navy3, led: t > tp ? 1 : .2 });
+    s += vape8(t, { x: 260, y: lerp(1500, 1000, kv), s: .62, f: C.mint, mc: '#fff', led: t > tp ? 1 : .2 });
     const path = `M300 820C300 600 420 560 ${bx - 120} ${by + 60}`;
     s += Ln(path, E(t, tp + .1, .6, 'io'), { c: C.paper, w: 4, da: '2 14' });
     const kd = clamp((t - tt) / (tth - tt));
@@ -239,7 +240,7 @@
     if (t > td) cue(td, 'shimmer', .6);
     const path = `M540 ${by + 180}C540 900 300 900 300 1110`;
     s += Ln(path, E(t, tz + .2, .8, 'io'), { c: C.paper, w: 4, da: '2 14' });
-    s += rise8(vape8(t, { s: .42, f: C.navy3 }), 300, 1170, t, tz + .5, { dy: 60 });
+    s += rise8(vape8(t, { s: .42, f: C.mint, mc: '#fff' }), 300, 1170, t, tz + .5, { dy: 60 });
     const kp = P01(t, tz + 1, .45);
     if (kp > 0) { s += pin8(300, lerp(860, 1040, EZ.back(kp)), 1, { op: clamp(kp * 3) }); cue(tz + 1.3, 'pin', .6) }
     return s
@@ -286,7 +287,7 @@
   // ===== 17. «Так оружие табака переехало к вам в карман.» — лист-оружие превращается в одноразку и уходит в карман джинсов =====
   D.pocket = (t, S, T) => {
     const tw = T.c('переехало') - .3, tk = T.c('карман') - .3;
-    let s = BG(C.navy2) + pocket8(1000);
+    let s = BG(C.denim) + pocket8(1000);
     const km = E(t, tw, .6, 'io'), kin = E(t, tk, .7, 'io');
     const y = lerp(560, 1180, kin), clipY = 1000;
     const id = uid();
@@ -302,7 +303,8 @@
     const z = lerp(3.2, .55, E(t, T.a, T.e - T.a + .4, 'io')), tn = T.c('миллионов') - .6;
     let s = bgDiag({ off: -t * 10 });
     let w = '';
-    CROWD.forEach(([x, y, r]) => { const off = t > tn + r * 1.4; w += man8(x, y, 1, off ? C.navy3 : C.paper, off ? .7 : 1) });
+    const MC = [C.paper, C.mint, C.yellow, C.pink, C.blue, C.amber3];
+    CROWD.forEach(([x, y, r], i) => { const off = t > tn + r * 1.4; w += man8(x, y, 1, off ? C.navy3 : MC[i % MC.length], off ? .7 : 1) });
     s += g(w, `translate(540 ${CY}) scale(${R(z * 1000) / 1000}) translate(-540 -760)`);
     const v = Math.round(7e6 * E(t, tn, 1.4, 'o'));
     if (t > tn) s += tx(v.toLocaleString('ru-RU').replace(/\u00a0/g, ' ') + (v >= 7e6 ? '+' : ''), 540, 385, { f: 'M', w: 800, s: 112, c: C.night, st: C.night, sw: 30 }) + tx(v.toLocaleString('ru-RU').replace(/ /g, ' ') + (v >= 7e6 ? '+' : ''), 540, 385, { f: 'M', w: 800, s: 112, c: C.red });
@@ -317,13 +319,13 @@
     const id = uid();
     const lv = .45 + .55 * (t > tz ? 1 : .5 + .5 * Math.sin(t * 3));
     s += F(D_.circ(540, 974, 90), C.amber, { op: .08 * lv }) + F(D_.circ(540, 974, 50), C.amber, { op: .12 * lv });
-    s += `<clipPath id="${id}"><path d="M-200 -400H1280V1006H-200Z"/></clipPath><g clip-path="url(#${id})">${vape8(t, { x: 540, y: 1180, f: C.navy, led: lv, shadow: false })}</g>`;
+    s += `<clipPath id="${id}"><path d="M-200 -400H1280V1006H-200Z"/></clipPath><g clip-path="url(#${id})">${vape8(t, { x: 540, y: 1180, f: C.mint, mc: '#fff', led: lv, shadow: false })}</g>`;
     if (t > tz) { const q = P01(t, tz, 1.2); s += Ln(D_.circ(540, 974, lerp(30, 260, EZ.o(q))), 1, { c: C.amber, w: 4 * (1 - q), op: 1 - q }) }
     return g(s, push8(t, T, .08, 540, 974))
   };
 
   // ===== 20. «В профиле — как никотином откачивали утопленников и почему гусеница парит.» =====
-  D.cta = (t, S, T) => cta8(t, T, [{ k: 'thames', t: ['Как откачивали', 'утопленников'] }, { k: 'cat', t: ['Гусеница,', 'которая парит'] }]);
+  D.cta = (t, S, T) => cta8(t, T, [{ k: 'brain', t: ['Мозг, подписанный', 'никотином'] }, { k: 'cat', t: ['Гусеница,', 'которая парит'] }]);
 
   // год 1690 → 2009 поверх сцен истории
   function over(t) {

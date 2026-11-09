@@ -250,7 +250,7 @@ def ext_music(path, DUR, loop=False):
     """Своя музыка Андрея (любой mp3/wav): по кругу до длины ролика, плавно в начале и (если не петля) в конце."""
     r = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True, check=True)
     x = np.frombuffer(r.stdout, np.float32).astype(np.float64).reshape(-1, 2)
-    N = int((DUR + 1) * SR); x = np.tile(x, (N // len(x) + 1, 1))[:N]
+    N = int((DUR + 1) * SR); x = np.tile(x, (N // len(x) + 1, 1))[:N] if loop else np.concatenate([x, np.zeros((max(0, N - len(x)), 2))])[:N]
     fi = np.minimum(1, np.arange(N) / (SR * .3)); fo = np.ones(N) if loop else np.clip((DUR + .3 - np.arange(N) / SR) / 1.5, 0, 1)
     x *= (fi * fo)[:, None]
     return x / (np.max(np.abs(x)) or 1) * .7

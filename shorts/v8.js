@@ -12,7 +12,8 @@ window.V8 = true;
 const PI = Math.PI;
 const K8 = {
   night: '#0B1028', navy: '#16214B', navy2: '#22316A', navy3: '#32478B', line: '#8DA1D6',
-  paper: '#F4EFE6', paper2: '#D9D2C6', amber: '#F4A63C', amber2: '#C97B22', amber3: '#FFD08A', red: '#E9474F'
+  paper: '#F4EFE6', paper2: '#D9D2C6', amber: '#F4A63C', amber2: '#C97B22', amber3: '#FFD08A', red: '#E9474F',
+  green: '#5DB36A', green2: '#3E9152', green3: '#2C6B3D', vein: '#E6F4CF', soil: '#5B3A26', soil2: '#7A5236', pink: '#F29CAB', pink2: '#C9657C', skin: '#E9B48F', skin2: '#C98F6A', beetle: '#2FA37E', beetle2: '#1F7558', aphidC: '#B5E06B', blue: '#4F86E8', eu: '#2F56A6', purple: '#9B6BDF', berry: '#E2577A', mint: '#6FD3B1', yellow: '#F6D365', denim: '#3D5E8E', denim2: '#2E4A73'
 };
 const BG = c => `<rect x="-4000" y="-4000" width="9080" height="9920" fill="${c}"/>`;
 
@@ -125,8 +126,8 @@ function vape8(t, o = {}) {
 }
 // ЗВЁЗДЫ ЕС: кольцо из 12, появляются по k (0..1)
 function euRing8(x, y, r, k = 1, o = {}) {
-  let s = Ln(D_.circ(0, 0, r), E(k, .0, .6), { c: K8.line, w: 3, op: .5 });
-  for (let i = 0; i < 12; i++) { const q = clamp(k * 14 - i * .9); if (q <= 0) continue; const a = -PI / 2 + i * PI / 6; s += F(D_.star(Math.cos(a) * r, Math.sin(a) * r, 30 * EZ.back(q), 13 * EZ.back(q)), o.c || K8.amber) }
+  let s = F(D_.circ(0, 0, r + 60), K8.eu, { op: clamp(k * 2) * (o.disc ?? 1) }) + Ln(D_.circ(0, 0, r), E(k, .0, .6), { c: K8.line, w: 3, op: .5 });
+  for (let i = 0; i < 12; i++) { const q = clamp(k * 14 - i * .9); if (q <= 0) continue; const a = -PI / 2 + i * PI / 6; s += F(D_.star(Math.cos(a) * r, Math.sin(a) * r, 30 * EZ.back(q), 13 * EZ.back(q)), o.c || K8.yellow) }
   return g(s, at(x, y, o.s || 1, o.rot || 0), o.op ?? 1)
 }
 // ЗАПРЕТ: красный круг с чертой рисуется по k
@@ -135,13 +136,13 @@ const ban8 = (x, y, r, k, o = {}) => g(Ln(D_.circ(0, 0, r), E(k, 0, .65), { c: K
 function spray8(t, o = {}) {
   const b = 'M-80 -110H80V190C80 214 62 230 38 230H-38C-62 230 -80 214 -80 190Z';
   let s = SH(b) + F(b, K8.paper) + F('M-80 60H80V190C80 214 62 230 38 230H-38C-62 230 -80 214 -80 190Z', K8.amber) + ht(b, 'n', 'r', .35);
-  s += F(D_.rr(-40, -160, 80, 56, 10), K8.navy3) + F('M-46 -228H38L58 -160H-56Z', K8.navy3) + F('M38 -222H118V-196H38Z', K8.navy3) + Ln('M-70 30H70', 1, { c: K8.navy, w: 3, op: .4 });
+  s += F(D_.rr(-40, -160, 80, 56, 10), K8.berry) + F('M-46 -228H38L58 -160H-56Z', K8.berry) + F('M38 -222H118V-196H38Z', K8.berry) + Ln('M-70 30H70', 1, { c: K8.navy, w: 3, op: .4 });
   if (o.mist) { const k = clamp(o.mist); for (let i = 0; i < 9; i++) { const a = (i - 4) * .09, d = 40 + k * (140 + i * 26); s += F(D_.circ(130 + Math.cos(a) * d, -210 + Math.sin(a) * d * 1.4, 7 - i * .4), K8.amber, { op: (1 - k) * .9 }) } }
   return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
 }
 // ТЛЯ: бумажный силуэт без лица; walk — ножки, puff — выдох (0..1)
 function aphid8(t, o = {}) {
-  const f = o.f || K8.paper, body = 'M-70 10C-74 -40 -36 -66 6 -64C52 -62 84 -30 80 12C76 52 40 66 0 64C-40 62 -66 46 -70 10Z';
+  const f = o.f || K8.aphidC, body = 'M-70 10C-74 -40 -36 -66 6 -64C52 -62 84 -30 80 12C76 52 40 66 0 64C-40 62 -66 46 -70 10Z';
   let s = '', st = o.walk ? Math.sin(t * 14) : 0;
   for (let i = 0; i < 3; i++) { const bx = -34 + i * 34, ph = (i % 2 ? 1 : -1) * st * 10; s += Ln(`M${bx} 40L${R(bx - 14 + ph)} 74L${R(bx - 24 + ph)} 82`, 1, { c: f, w: 6 }) }
   s += F(body, f) + F(D_.circ(96, -12, 30), f) + ht(body, 'n', 'v', .4);
@@ -152,14 +153,14 @@ function aphid8(t, o = {}) {
 }
 // ЛИСТ: основание (0,0), вверх. charge — янтарь поднимается от основания (0..1), veins — жилки рисуются
 function leaf8(o = {}) {
-  const len = o.len || 700, w = o.w || 260, d = leafPath(len, w), f = o.f || K8.navy3, f2 = o.f2 || K8.navy2;
+  const len = o.len || 700, w = o.w || 260, d = leafPath(len, w), f = o.f || K8.green, f2 = o.f2 || K8.green2;
   const half = `M0 0C${R(w * .95)} ${R(-len * .12)} ${R(w * .9)} ${R(-len * .7)} 0 ${-len}Z`;
   let s = (o.shadow ? SH(d, { op: .4 }) : '') + F(d, f) + F(half, f2);
   if (o.charge) { const id = uid(), y = lerp(40, -len - 20, clamp(o.charge)); s += `<clipPath id="${id}"><path d="${d}"/></clipPath><g clip-path="url(#${id})">${F(D_.rr(-w, y, w * 2, len + 60, 0), K8.amber, { op: .9 })}${F(D_.rr(-w, y, w * 2, 18, 0), K8.amber3, { op: .8 })}</g>` }
   if (o.dots !== false) s += ht(d, 'n', 'v', .4);
   let v = `M0 0L0 ${-len * .97}`;
   for (let i = 1; i <= 6; i++) { const u = i / 7.2, y = -len * u, l = w * .78 * Math.sin(Math.min(1, u * 1.15) * PI) + 20; v += `M0 ${R(y)}Q${R(l * .55)} ${R(y - 30)} ${R(l)} ${R(y - 90)}M0 ${R(y)}Q${R(-l * .55)} ${R(y - 30)} ${R(-l)} ${R(y - 90)}` }
-  s += Ln(v, o.veins ?? 1, { c: o.vc || K8.paper, w: o.vw || 4, op: o.vo ?? .75 });
+  s += Ln(v, o.veins ?? 1, { c: o.vc || K8.vein, w: o.vw || 4, op: o.vo ?? .75 });
   return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
 }
 // РАСТЕНИЕ ТАБАКА с корнями. charge — янтарь в листьях, roots — корни рисуются, flow — бегущие точки по стеблю (фаза)
@@ -173,17 +174,17 @@ function plant8(t, o = {}) {
     const RT = ['M-150 210C-90 120 -20 70 0 0', 'M20 290C0 170 10 90 0 0', 'M170 190C100 110 30 60 0 0'];
     for (let i = 0; i < 9; i++) { const p = (o.flow * (o.speed || 1) + i / 9) % 1, P0 = pts(RT[i % 3], 60)[Math.min(59, Math.floor(p * 59))]; s += F(D_.circ(P0[0], P0[1], 9 * Math.sin(p * PI) + 2), K8.amber) }
   }
-  s += F(`M-14 0C-12 ${-h * .4} -8 ${-h * .8} -3 ${-h}H3C8 ${-h * .8} 12 ${-h * .4} 14 0Z`, K8.navy3);
+  s += F(`M-14 0C-12 ${-h * .4} -8 ${-h * .8} -3 ${-h}H3C8 ${-h * .8} 12 ${-h * .4} 14 0Z`, K8.green2);
   if (o.charge) s += F(`M-6 0C-5 ${-h * .4} -4 ${-h * .8 * clamp(o.charge * 1.4)} -2 ${-h * clamp(o.charge * 1.4)}H2C4 ${-h * .8 * clamp(o.charge * 1.4)} 5 ${-h * .4} 6 0Z`, K8.amber);
   PLANT_L.forEach(([u, a, sc], i) => { s += leaf8({ len: 520 * sc, w: 200 * sc, x: 0, y: -h * u, r: a + fl(t, sw, .25, i * .3), charge: o.charge ? clamp(o.charge * 1.5 - i * .12) : 0, veins: 1, vo: .6 }) });
-  s += F(D_.circ(0, -h - 10, 24), K8.paper) + F(D_.circ(-30, -h + 14, 18), K8.paper2) + F(D_.circ(28, -h + 18, 16), K8.paper2);
+  s += F('M0 0C-6 -30 -10 -50 -22 -70H22C10 -50 6 -30 0 0Z', K8.pink, { tr: `translate(0 ${-h + 6})` }) + F(D_.star(0, -h - 70, 30, 14, 5), K8.pink) + F('M0 0C-6 -26 -8 -44 -18 -60H18C8 -44 6 -26 0 0Z', K8.pink2, { tr: `translate(-30 ${-h + 24}) rotate(-24)` }) + F('M0 0C-6 -26 -8 -44 -18 -60H18C8 -44 6 -26 0 0Z', K8.pink2, { tr: `translate(30 ${-h + 24}) rotate(24)` });
   return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
 }
 // почва в разрезе: полоса со слоями и полутоном (верх — y)
-const soil8 = (y, o = {}) => F(D_.rr(-1600, y, 4300, 1700, 0), o.c || K8.navy) + ht(D_.rr(-1600, y, 4300, 900, 0), 'b', 'u', .6) + Ln(`M-1600 ${y}H2700`, 1, { c: K8.line, w: 4, op: .6 }) + Ln(`M-1600 ${y + 240}H2700`, 1, { c: K8.line, w: 2, op: .25, da: '4 18' });
+const soil8 = (y, o = {}) => F(D_.rr(-1600, y, 4300, 1700, 0), o.c || K8.soil) + F(D_.rr(-1600, y, 4300, 26, 0), o.c2 || K8.soil2) + ht(D_.rr(-1600, y, 4300, 900, 0), 'n', 'u', .35) + Ln(`M-1600 ${y + 240}H2700`, 1, { c: K8.soil2, w: 3, op: .5, da: '4 18' });
 // ЖУК: бумажный силуэт; nerve — янтарные «нервы» по телу (0..1), stiff — замер (ножки прямые), ghost — остался контур, flip — на спину
 function beetle8(t, o = {}) {
-  const st = o.stiff || 0, step = o.walk ? Math.sin(t * 15) : 0, f = o.f || K8.paper;
+  const st = o.stiff || 0, step = o.walk ? Math.sin(t * 15) : 0, f = o.f || K8.beetle;
   const body = 'M-110 -6C-112 -92 -40 -126 30 -112C82 -100 104 -62 104 -10C104 22 70 36 0 36C-70 36 -108 26 -110 -6Z';
   let s = '';
   for (const sd of [-1, 1]) for (let i = 0; i < 3; i++) {
@@ -194,7 +195,7 @@ function beetle8(t, o = {}) {
   const gk = clamp(o.ghost || 0);
   s += F(body, f, { op: 1 - gk }) + F(D_.ell(102, -20, 34, 30), f, { op: 1 - gk });
   if (gk > 0) s += Ln(body, 1, { c: K8.paper, w: 4, op: gk }) + Ln(D_.ell(102, -20, 34, 30), 1, { c: K8.paper, w: 4, op: gk });
-  s += ht(body, 'n', 'v', .4 * (1 - gk)) + Ln('M-6 -116C-10 -60 -6 -10 0 34', 1, { c: K8.navy, w: 4, op: .5 * (1 - gk) }) + Ln('M-90 -40C-50 -70 40 -76 90 -50', 1, { c: K8.navy, w: 3, op: .3 * (1 - gk) });
+  s += ht(body, 'n', 'v', .35 * (1 - gk)) + Ln('M-6 -116C-10 -60 -6 -10 0 34', 1, { c: K8.beetle2, w: 5, op: (1 - gk) }) + Ln('M-90 -40C-50 -70 40 -76 90 -50', 1, { c: '#fff', w: 5, op: .35 * (1 - gk) });
   if (o.nerve) {
     const NV = 'M110 -18C60 -24 30 -44 0 -60M0 -60C-30 -50 -60 -40 -90 -20M0 -60C10 -20 20 0 30 24M0 -60C-20 -20 -40 0 -60 22M30 24L40 60M-60 22L-70 60M-90 -20L-100 30';
     s += Ln(NV, clamp(o.nerve), { c: K8.amber, w: 5 });
@@ -206,7 +207,7 @@ function beetle8(t, o = {}) {
 // ГОЛОВА в профиль (смотрит вправо): силуэт без лица, контровой свет по краю
 const HEAD8 = 'M-130 200C-160 120 -176 40 -168 -60C-158 -180 -60 -250 50 -240C150 -230 204 -160 204 -60C204 -30 212 -6 236 34C244 48 232 60 216 62C214 86 218 104 206 116C214 128 210 146 196 150C198 176 186 196 156 200L110 204L110 300L-130 300Z';
 function head8(o = {}) {
-  let s = F(HEAD8, o.f || K8.navy3) + ht(HEAD8, 'n', 'l', .45) + Ln('M50 -240C150 -230 204 -160 204 -60C204 -30 212 -6 236 34C244 48 232 60 216 62C214 86 218 104 206 116C214 128 210 146 196 150C198 176 186 196 156 200', 1, { c: K8.paper, w: 4, op: .8 });
+  let s = F(HEAD8, o.f || K8.skin) + ht(HEAD8, 'n', 'l', .3) + Ln('M50 -240C150 -230 204 -160 204 -60C204 -30 212 -6 236 34C244 48 232 60 216 62C214 86 218 104 206 116C214 128 210 146 196 150C198 176 186 196 156 200', 1, { c: K8.paper, w: 4, op: .8 });
   if (o.inner) s += o.inner;
   return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
 }
@@ -219,13 +220,12 @@ function cloud8(x, y, s, o = {}) {
   return g(q + (o.inner || ''), at(x, y, s), o.op ?? 1)
 }
 // МАНГО: контур янтарём
-const mango8 = (x, y, s = 1, o = {}) => { const d = 'M-10 -150C80 -160 150 -80 140 20C130 120 40 170 -40 150C-120 130 -150 40 -120 -40C-100 -100 -70 -140 -10 -150Z'; return g(F(d, K8.amber, { op: o.fillOp ?? 1 }) + F('M30 -140C90 -120 130 -70 136 0C110 -40 70 -90 30 -140Z', K8.amber3, { op: .6 }) + ht(d, 'n', 'x', .3) + F('M-10 -150C-20 -190 0 -210 30 -220C30 -190 20 -170 -10 -150Z', K8.navy3), at(x, y, s, o.r || 0), o.op ?? 1) };
+const mango8 = (x, y, s = 1, o = {}) => { const d = 'M-10 -150C80 -160 150 -80 140 20C130 120 40 170 -40 150C-120 130 -150 40 -120 -40C-100 -100 -70 -140 -10 -150Z'; return g(F(d, K8.amber, { op: o.fillOp ?? 1 }) + F('M30 -140C90 -120 130 -70 136 0C110 -40 70 -90 30 -140Z', K8.amber3, { op: .6 }) + ht(d, 'n', 'x', .3) + F('M-10 -150C-20 -190 0 -210 30 -220C30 -190 20 -170 -10 -150Z', K8.green), at(x, y, s, o.r || 0), o.op ?? 1) };
 // МОЗГ: силуэт + извилины (линии), рецепторы — янтарные «чашечки» по списку точек
 const BR8 = 'M-150 30C-190 10 -190 -70 -140 -95C-140 -150 -70 -175 -30 -150C0 -185 80 -180 100 -140C150 -150 195 -95 175 -50C205 -10 180 60 130 60C110 95 50 100 20 80C-20 105 -90 100 -100 60C-130 70 -150 50 -150 30Z';
 const BR8_IN = 'M-120 -40C-90 -60 -60 -30 -80 -5M-40 -120C-30 -90 -60 -70 -40 -40C-20 -15 10 -40 0 -70M40 -130C60 -100 30 -80 50 -50M100 -100C80 -70 120 -50 110 -20M-110 20C-70 30 -40 0 -10 25C20 50 60 20 80 40M130 -60C100 -40 140 0 120 20M-60 70C-50 50 -20 50 -10 70M60 -20C40 -10 30 10 50 20';
 function brain8(t, o = {}) {
-  let s = (o.shadow !== false ? SH(BR8, { op: .45, dx: 8, dy: 10 }) : '') + F(BR8, o.f || K8.navy3) + ht(BR8, 'n', 'v', .45) + Ln(BR8_IN, o.lines ?? 1, { c: K8.paper, w: 2.6, op: .75 }) + Ln(BR8, o.edge ?? 1, { c: K8.paper, w: 2.6, op: .9 });
-  s += F('M10 80C14 110 20 130 34 150H6C0 130 -2 110 -4 84Z', o.f || K8.navy3);
+  let s = (o.shadow !== false ? SH(BR8, { op: .45, dx: 8, dy: 10 }) : '') + F('M10 80C14 110 20 130 34 150H6C0 130 -2 110 -4 84Z', o.f2 || K8.pink2) + F(BR8, o.f || K8.pink) + ht(BR8, 'r', 'v', .35) + Ln(BR8_IN, o.lines ?? 1, { c: o.lc || K8.pink2, w: 3, op: .95 }) + Ln(BR8, o.edge ?? 1, { c: '#fff', w: 2.6, op: .5 });
   return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
 }
 // РЕЦЕПТОР: чашечка (U), full — внутри молекула-точка
@@ -233,8 +233,8 @@ const rec8 = (x, y, s = 1, o = {}) => g(F(D_.rr(-15, -14, 11, 30, 5.5), o.c || K
 // КАРМАН ДЖИНСОВ: верх кармана y
 function pocket8(y, o = {}) {
   const pk = `M220 ${y}C220 ${y + 400} 290 ${y + 540} 540 ${y + 620}C790 ${y + 540} 860 ${y + 400} 860 ${y}`;
-  let s = F(D_.rr(-200, y - 500, 1480, 2400, 0), K8.navy2) + ht(D_.rr(-200, y - 500, 1480, 2400, 0), 'b', 'r', .6);
-  s += F(pk + 'Z', K8.navy) + Ln(`M196 ${y - 24}H884`, 1, { c: K8.amber, w: 4, da: '16 12' }) + Ln(pk.replace('M220', 'M244').replace(/C220/, 'C244'), 1, { c: K8.amber, w: 4, da: '16 12', op: .9 });
+  let s = F(D_.rr(-200, y - 500, 1480, 2400, 0), K8.denim) + ht(D_.rr(-200, y - 500, 1480, 2400, 0), 'n', 'r', .3);
+  s += F(pk + 'Z', K8.denim2) + Ln(`M196 ${y - 24}H884`, 1, { c: K8.amber, w: 4, da: '16 12' }) + Ln(pk.replace('M220', 'M244').replace(/C220/, 'C244'), 1, { c: K8.amber, w: 4, da: '16 12', op: .9 });
   s += F(D_.circ(222, y + 6, 13), K8.paper2) + F(D_.circ(858, y + 6, 13), K8.paper2);
   return s
 }
@@ -246,7 +246,7 @@ function jar8(t, o = {}) {
   let s = SH(b, { op: .4, c: o.shc }) + F(b, o.bf || K8.navy2, { op: .6 });
   const id = uid();
   s += `<clipPath id="${id}"><path d="${b}"/></clipPath><g clip-path="url(#${id})">${F(D_.wave(-200, 200, wy, 8, 160, t * 3) + 'L200 400L-200 400Z', K8.amber, { op: .9 })}${ht(D_.rr(-160, wy, 320, 300, 0), 'n', 'v', .45)}`;
-  for (let i = 0; i < 3; i++) s += leaf8({ len: 240, w: 90, x: -60 + i * 60, y: 230, r: -22 + i * 22 + fl(t, 3, .3, i), f: K8.navy3, f2: K8.navy2, vo: .4, vw: 3 });
+  for (let i = 0; i < 3; i++) s += leaf8({ len: 240, w: 90, x: -60 + i * 60, y: 230, r: -22 + i * 22 + fl(t, 3, .3, i), vo: .5, vw: 3 });
   s += '</g>' + Ln(b, 1, { c: o.lc || K8.paper, w: 5 }) + F(D_.rr(-170, -200, 340, 44, 14), o.lid || K8.paper2) + Ln('M-110 -120V150', 1, { c: '#fff', w: 8, op: .3 });
   return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
 }
@@ -290,9 +290,9 @@ function yearRoll(v, x, y, o = {}) {
 // своя палитра у каждого ролика (как у оригиналов: Coca-Cola — синий/коралл, Google — сталь/красный, WoT — лаванда/оранжевый)
 const pal8 = p => Object.assign(K8, p);
 const PAL8 = {
-  navy: { night: '#0B1028', navy: '#16214B', navy2: '#22316A', navy3: '#32478B', line: '#8DA1D6', paper: '#F4EFE6', paper2: '#D9D2C6', amber: '#F4A63C', amber2: '#C97B22', amber3: '#FFD08A', red: '#E9474F' },
-  wine: { night: '#170A11', navy: '#2C111C', navy2: '#401A29', navy3: '#5C283C', line: '#C9A27F', paper: '#F2E6CF', paper2: '#D9C6A4', amber: '#E3B04B', amber2: '#B0812A', amber3: '#F6D68E', red: '#E43B3B' },
-  leaf: { night: '#173327', navy: '#24503B', navy2: '#2F6649', navy3: '#43855E', line: '#93B79C', paper: '#FFFDF4', paper2: '#E4E0CF', amber: '#9A6ADE', amber2: '#7247B6', amber3: '#CBB0F6', red: '#E5534B' },
+  navy: { night: '#0B1028', navy: '#16214B', navy2: '#22316A', navy3: '#32478B', line: '#8DA1D6', paper: '#F4EFE6', paper2: '#D9D2C6', amber: '#F4A63C', amber2: '#C97B22', amber3: '#FFD08A', red: '#E9474F' , green: '#5DB36A', green2: '#3E9152', green3: '#2C6B3D', vein: '#E6F4CF', soil: '#5B3A26', soil2: '#7A5236', pink: '#F29CAB', pink2: '#C9657C', skin: '#E9B48F', skin2: '#C98F6A', beetle: '#2FA37E', beetle2: '#1F7558', aphidC: '#B5E06B', blue: '#4F86E8', eu: '#2F56A6', purple: '#9B6BDF', berry: '#E2577A', mint: '#6FD3B1', yellow: '#F6D365', denim: '#3D5E8E', denim2: '#2E4A73' },
+  wine: { night: '#170A11', navy: '#2C111C', navy2: '#401A29', navy3: '#5C283C', line: '#C9A27F', paper: '#F2E6CF', paper2: '#D9C6A4', amber: '#E3B04B', amber2: '#B0812A', amber3: '#F6D68E', red: '#E43B3B' , green: '#5DB36A', green2: '#3E9152', green3: '#2C6B3D', vein: '#E6F4CF', soil: '#5B3A26', soil2: '#7A5236', pink: '#F29CAB', pink2: '#C9657C', skin: '#E9B48F', skin2: '#C98F6A', beetle: '#2FA37E', beetle2: '#1F7558', aphidC: '#B5E06B', blue: '#4F86E8', eu: '#2F56A6', purple: '#9B6BDF', berry: '#E2577A', mint: '#6FD3B1', yellow: '#F6D365', denim: '#3D5E8E', denim2: '#2E4A73' },
+  leaf: { night: '#173327', navy: '#24503B', navy2: '#2F6649', navy3: '#43855E', line: '#93B79C', paper: '#FFFDF4', paper2: '#E4E0CF', amber: '#9A6ADE', amber2: '#7247B6', amber3: '#CBB0F6', red: '#E5534B' , green: '#5DB36A', green2: '#3E9152', green3: '#2C6B3D', vein: '#E6F4CF', soil: '#5B3A26', soil2: '#7A5236', pink: '#F29CAB', pink2: '#C9657C', skin: '#E9B48F', skin2: '#C98F6A', beetle: '#2FA37E', beetle2: '#1F7558', aphidC: '#B5E06B', blue: '#4F86E8', eu: '#2F56A6', purple: '#9B6BDF', berry: '#E2577A', mint: '#6FD3B1', yellow: '#F6D365', denim: '#3D5E8E', denim2: '#2E4A73' },
 };
 // светлый фон (история / день): бумага и косая полоса чуть темнее
 const bgPaper = (c0, c1, dc = 'l', a = .35) => { const band = D_.poly([[620, -400], [1380, -400], [-120, 2400], [-880, 2400]]); return BG(c0) + F(band, c1) + ht(band, dc, 'r', a) };
@@ -473,6 +473,7 @@ const CARD8 = {
   bugs: t => BG(K8.navy) + leaf8({ len: 420, w: 160, x: 170, y: 420, r: 70, veins: 1, vo: .5 }) + beetle8(t, { x: 190, y: 190, s: .7, walk: true }),
   thames: t => BG(K8.night) + F(D_.circ(300, 90, 46), K8.paper, { op: .9 }) + london8(250, { c: K8.navy2 }) + F(D_.rr(-20, 250, 440, 300, 0), K8.navy) + bellows8(t, { x: 150, y: 330, s: .55, pump: .5 + .5 * Math.sin(t * 6), tube: 260 }),
   cat: t => BG('#2C5A43') + leaf8({ len: 520, w: 200, x: 200, y: 520, r: -60, f: '#43855E', f2: '#2F6649', veins: 1, vo: .5 }) + caterpillar8(t, { x: 200, y: 230, s: .42, crawl: t * .6, puff: t * .8 }).replace(/#9A6ADE|#F4A63C|#E3B04B/g, '#B48CF0'),
+  brain: t => BG('#2C111C') + brain8(t, { x: 220, y: 270, s: .95 }) + Ln('M226 352C230 400 250 430 270 440', 1, { c: '#E3B04B', w: 4 }) + g(F(D_.rr(-90, -30, 180, 60, 12), '#E3B04B') + F(D_.circ(-70, 0, 8), '#2C111C') + tx('NICOTINE', 10, 12, { f: 'M', w: 800, s: 26, c: '#2C111C' }), at(280, 470, 1, -8)),
   aphid: t => BG(K8.navy2) + F('M-20 300Q200 260 420 300L420 600L-20 600Z', K8.navy3) + aphid8(t, { x: 200, y: 250, s: .9, puff: (t * .5) % 1 }),
 };
 function cta8(t, T, cards, o = {}) {
