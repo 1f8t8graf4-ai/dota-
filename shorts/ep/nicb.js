@@ -350,7 +350,7 @@
     trDur: { title: .7, reply: .95, toll: .8 },
     init() {
       const st = document.createElement('style');
-      st.textContent = '#cap{font-weight:800!important;letter-spacing:0!important;text-shadow:0 0 2px #0B1028,0 3px 0 #0B1028,0 0 14px rgba(11,16,40,.85),2px 2px 0 #0B1028,-2px 2px 0 #0B1028,2px -2px 0 #0B1028,-2px -2px 0 #0B1028!important}#cap .u{color:#F4EFE6!important;opacity:.55}';
+      st.textContent = `#cap{font-weight:800!important;letter-spacing:0!important;text-shadow:4px 0px 0 #0B1028,-4px 0px 0 #0B1028,0px 4px 0 #0B1028,0px -4px 0 #0B1028,3px 3px 0 #0B1028,-3px 3px 0 #0B1028,3px -3px 0 #0B1028,-3px -3px 0 #0B1028,2px 4px 0 #0B1028,-2px 4px 0 #0B1028,4px 2px 0 #0B1028,-4px 2px 0 #0B1028,2px -4px 0 #0B1028,-2px -4px 0 #0B1028,4px -2px 0 #0B1028,-4px -2px 0 #0B1028,0 6px 16px rgba(0,0,0,.45)!important}#cap .u{color:#E6E1D6!important;opacity:1}`;
       document.head.appendChild(st);
     }
   };
