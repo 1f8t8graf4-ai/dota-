@@ -9,7 +9,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, 'eleven')
 TITLE = {'mrbeast': 'What do you know about MrBeast?', 'nicotine': 'Что вы знаете о никотине / nicotine', 'aids': 'What do you know about AIDS?',
          'meph': 'Что вы знаете о мефедроне / mephedrone', 'nicstory': 'Макс и счётчик / Max and the counter', 'aidsmyth': '4 myths about HIV',
-         'mephnight': 'Представь: суббота, 23:00 / Picture this', 'energy': 'What do you know about energy drinks?'}
+         'mephnight': 'Представь: суббота, 23:00 / Picture this', 'energy': 'What do you know about energy drinks?',
+         'tabak': 'Что вы знаете о табаке? (пилот v4)', 'nicw': 'Никотин 1 — «Что вы знаете о никотине?» один в один',
+         'nicmax': 'Никотин 2 — как популярные: Макс и таймер', 'nictyaga': 'Никотин 3 — смесь: «Не закрывай» + таймер тяги',
+         'nicme': 'Никотин 4 — свой: «Я — никотин»'}
 DESC = {
     'mrbeast-en': 'MrBeast is technically the 3rd biggest country on Earth 🌍 #mrbeast #facts #didyouknow #youtube — parody / satire, not affiliated with MrBeast.',
     'nicotine-en': 'Nicotine was made to kill bugs 🐛 #nicotine #vape #facts #didyouknow #quitvaping',
@@ -23,6 +26,10 @@ DESC = {
     'mephnight-en': 'Picture this: Saturday, 11 PM 🕚 #drugawareness #story — help: findahelpline.com',
     'mephnight-ru': 'Представь: суббота, 23:00 🕚 #зависимость #история — помощь: 8-800-2000-122 (бесплатно, анонимно)',
     'energy-en': 'The bull in your energy drink is real (kind of) 🐂 #energydrink #facts #didyouknow',
+    'nicw-ru': 'В Евросоюзе никотином нельзя травить даже тлю 🐛 #никотин #вейп #факты #чтовызнаете — бросить: 8-800-200-0-200 (бесплатно)',
+    'nicmax-ru': 'Сколько продержался бы ты? ⏱️ #вейп #одноразка #какбросить #никотин — бросить: 8-800-200-0-200 (бесплатно)',
+    'nictyaga-ru': 'Тяга проходит за 3–5 минут. Посмотри 3 раза ⏳ #какбросить #вейп #никотин #бросилкурить — помощь: 8-800-200-0-200',
+    'nicme-ru': 'Мне нужно 10 секунд 🧠 #никотин #вейп #мозг #факты — бросить: 8-800-200-0-200 (бесплатно)',
 }
 os.makedirs(OUT, exist_ok=True)
 md = ['# Тексты для ElevenLabs и описания к постам\n',

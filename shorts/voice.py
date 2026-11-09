@@ -75,8 +75,9 @@ class Synth:
         return resample(x, ch[0].sample_rate)
 
 
-def split_audio(path, n):
-    """Своя запись → n фраз по самым длинным паузам."""
+def split_audio(path, n, expect=None):
+    """Своя запись → n фраз. Есть expect (ожидаемая длина каждой фразы) — режем по паузам так, чтобы доли фраз
+    совпали с ожидаемыми (паузы внутри фразы — счёт «раз, два…» — не путают); нет — по n−1 самым длинным паузам."""
     import subprocess
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'],
                          capture_output=True, check=True).stdout
@@ -95,7 +96,31 @@ def split_audio(path, n):
             i = j
         else:
             i += 1
-    cut = sorted(sorted(gaps, reverse=True)[:n - 1], key=lambda g: g[1])
+    if expect is None or n < 2:
+        cut = sorted(sorted(gaps, reverse=True)[:n - 1], key=lambda g: g[1])
+    else:
+        cand = sorted([g for g in gaps if g[0] >= 8], key=lambda g: g[1])
+        if len(cand) < n - 1:
+            sys.exit(f'в записи нашлось {len(cand) + 1} фраз, а в тексте {n}')
+        tot = len(on); ex = np.cumsum(np.array(expect, float) / sum(expect))[:-1] * tot
+        pos = np.array([(a + b) / 2 for _, a, b in cand]); gl = np.log(np.array([g[0] for g in cand], float))
+        P_ = len(cand); INF = 1e18
+        dp = np.full((n - 1, P_), INF); bk = np.zeros((n - 1, P_), int)
+        for k in range(n - 1):
+            c = ((pos - ex[k]) / tot) ** 2 * 400 - gl * .35
+            if k == 0:
+                dp[0] = c
+            else:
+                best, arg = INF, -1
+                for j in range(P_):
+                    if j - 1 >= 0 and dp[k - 1][j - 1] < best:
+                        best, arg = dp[k - 1][j - 1], j - 1
+                    if arg >= 0:
+                        dp[k][j] = best + c[j]; bk[k][j] = arg
+        j = int(np.argmin(dp[n - 2])); idx = [j]
+        for k in range(n - 2, 0, -1):
+            j = bk[k][j]; idx.append(j)
+        cut = [cand[j] for j in reversed(idx)]
     if len(cut) < n - 1:
         sys.exit(f'в записи нашлось {len(cut) + 1} фраз, а в тексте {n}')
     pts = [0] + [((a + b) // 2) * hop for _, a, b in cut] + [len(y)]
@@ -107,7 +132,15 @@ def main(ep, audio=None):
     L = EPISODES[ep]
     out = os.path.join(HERE, 'out', ep)
     os.makedirs(out, exist_ok=True)
-    clips = split_audio(audio, len(L)) if audio else None
+    exp = None
+    if audio:  # ожидаемые длины фраз: прошлый тайминг (если есть), иначе по числу букв
+        try:
+            tl0 = json.load(open(os.path.join(out, 'timeline.piper.json' if os.path.exists(os.path.join(out, 'timeline.piper.json')) else 'timeline.json')))
+            exp = [max(.3, x['b'] - x['a']) for x in tl0['sent']] if len(tl0['sent']) == len(L) else None
+        except Exception:
+            exp = None
+        exp = exp or [len(parse(s)[0]) + 8 for _, s in L]
+    clips = split_audio(audio, len(L), exp) if audio else None
     syn = None if clips else Synth(lang)
     if lang == 'en':
         from wt_vosk import align

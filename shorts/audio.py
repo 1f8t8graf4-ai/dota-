@@ -12,12 +12,14 @@ import tt_audio
 SND = os.path.join(HERE, '..', 'snd', 'kino')
 EPB = ''
 SR = 48000
-KEYS = {'mrbeast': 57, 'nicotine': 52, 'aids': 50, 'meph': 54, 'nicstory': 55, 'aidsmyth': 53, 'mephnight': 49, 'energy': 56}  # тоника
-BPM = {'mephnight': 116, 'energy': 104, 'aidsmyth': 100}
+KEYS = {'mrbeast': 57, 'nicotine': 52, 'aids': 50, 'meph': 54, 'nicstory': 55, 'aidsmyth': 53, 'mephnight': 49, 'energy': 56,
+        'nicw': 52, 'nicmax': 55, 'nictyaga': 57, 'nicme': 50, 'howto': 53}  # тоника
+BPM = {'mephnight': 116, 'energy': 104, 'aidsmyth': 100, 'nicmax': 98, 'nicme': 118, 'nictyaga': 90, 'howto': 108}
 # когда входит бит (сцена-поворот) и когда уходит; удары — на каких сценах
-TURN = {'nicstory': 'd1', 'aidsmyth': 'm1f', 'mephnight': 't1115'}
-STOP = {'mephnight': 'sun', 'nicstory': 'quit'}
-BOOM = {'aidsmyth': ['m1f', 'm2f', 'm3f', 'm4f', 'true'], 'nicstory': ['flip'], 'mephnight': ['sun']}
+TURN = {'nicstory': 'd1', 'aidsmyth': 'm1f', 'mephnight': 't1115', 'nicmax': 'd1', 'nictyaga': 'go', 'nicme': 'go'}
+STOP = {'mephnight': 'sun', 'nicstory': 'quit', 'nicmax': 'quit', 'nictyaga': 'breath', 'nicme': 'quit'}
+BOOM = {'aidsmyth': ['m1f', 'm2f', 'm3f', 'm4f', 'true'], 'nicstory': ['flip'], 'mephnight': ['sun'],
+        'nicmax': ['hook2', 'flip'], 'nictyaga': ['hook', 'fact'], 'nicme': ['hook', 'brain'], 'howto': ['hook', 'done']}
 
 
 def midi(n):
@@ -146,9 +148,18 @@ def main(ep):
     t_stop = next((s['a'] for s in SC if s['key'] == STOP.get(EPB)), 1e9)
     sf.write(os.path.join(out, 'music.wav'), music(EPB, DUR, t_claim, rng, t_stop).astype(np.float32), SR)
     sf.write(os.path.join(out, 'sfx.wav'), sfx(T, SC, DUR, rng).astype(np.float32), SR)
-    tt_audio.BED_DB = -16
-    tt_audio.master(os.path.join(out, 'voice.wav'), os.path.join(out, 'mix.wav'), DUR,
-                    bed=os.path.join(out, 'music.wav'), extra=os.path.join(out, 'sfx.wav'))
+    if os.environ.get('NOVOICE'):  # v5: голос будет потом (ElevenLabs) — сейчас музыка + эффекты, −14 LUFS
+        tmp = os.path.join(out, 'mix.raw.wav')
+        subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(out, 'music.wav'), '-i', os.path.join(out, 'sfx.wav'), '-filter_complex',
+                        f'[0:a]volume=0.9[a];[1:a]volume=1.0[b];[a][b]amix=inputs=2:normalize=0,atrim=0:{DUR:.3f}[m]', '-map', '[m]', '-c:a', 'pcm_s16le', tmp], check=True)
+        L, _ = tt_audio._lufs(tmp)
+        subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', tmp, '-af', f'volume={-14 - L:.2f}dB,alimiter=limit=0.89:level=disabled', '-c:a', 'pcm_s16le',
+                        os.path.join(out, 'mix.wav')], check=True)
+        os.remove(tmp)
+    else:
+        tt_audio.BED_DB = -16
+        tt_audio.master(os.path.join(out, 'voice.wav'), os.path.join(out, 'mix.wav'), DUR,
+                        bed=os.path.join(out, 'music.wav'), extra=os.path.join(out, 'sfx.wav'))
     print(ep, 'mix', tt_audio.report(os.path.join(out, 'mix.wav')))
 
 

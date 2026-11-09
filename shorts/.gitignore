@@ -5,3 +5,5 @@ render.log
 out_voice*.log
 __pycache__/
 img/
+out_v5*
+render_*.log

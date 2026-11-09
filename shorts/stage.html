@@ -32,7 +32,8 @@ let TL = null, SC = [], CH = [], EP = null;
 const svg = document.getElementById('S'), capEl = document.getElementById('cap'), grainEl = document.getElementById('grain');
 
 window.loadEp = function (name) {
-  return new Promise(r => { const s = document.createElement('script'); s.src = 'ep/' + name + '.js'; s.onload = r; document.body.appendChild(s) })
+  const add = src => new Promise(r => { const s = document.createElement('script'); s.src = src; s.onload = r; document.body.appendChild(s) });
+  return (window.V5 || !/^(nic(w|max|tyaga|me)|howto)$/.test(name) ? Promise.resolve() : add('v5.js')).then(() => add('ep/' + name + '.js'))
 };
 
 function cueNorm(w) { return String(w).toLowerCase().replace(/[^a-zа-яё0-9%$×+'-]/g, '') }
@@ -60,7 +61,13 @@ window.init = function (tl) {
     flush();
   }
   CH.forEach((c, i) => { c.e = i < CH.length - 1 ? Math.min(CH[i + 1].a, c.b + .9) : c.b + .9 });
-  if (EP.init) EP.init(TL, SC);
+  // v5: чистая картинка — без зерна и виньетки; размер и место субтитров — из EP.cap
+  document.getElementById('grain').style.display = EP.clean ? 'none' : '';
+  document.getElementById('vig').style.display = EP.clean ? 'none' : '';
+  if (EP.cap && EP.cap.size) capEl.style.fontSize = EP.cap.size + 'px';
+  if (EP.cap && EP.cap.top) capEl.style.top = EP.cap.top + 'px';
+  if (EP.cap && EP.cap.font) capEl.style.fontFamily = EP.cap.font;
+  if (EP.init) return EP.init(TL, SC);  // может вернуть промис (предзагрузка картинок) — capture.mjs его дождётся
 };
 
 function mkT(S) {
