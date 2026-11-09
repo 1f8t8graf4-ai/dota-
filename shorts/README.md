@@ -11,6 +11,7 @@
   `vosk-model-small-ru-0.22` с alphacephei.com; `pip install --no-deps vosk` + заглушка `srt.py`), время слов в субтитрах —
   по голосу; паузы-шутки `retime.RT` ставятся и под настоящий голос.
 - Всё: `python3 tts.py nicw2-ru && python3 voice.py nicw2-ru --audio out/nicw2-ru/tts.wav && VOICE=1 ./make6.sh nicw2-ru`.
+- **Дальше — ElevenLabs** (решение Андрея 09.11): гайд и план — https://claude.ai/artifact/8RtPHo3awmzzRXoTdoykEC. Gemini остаётся запасным.
 
 | Ролик | Длина с голосом |
 |---|---|
