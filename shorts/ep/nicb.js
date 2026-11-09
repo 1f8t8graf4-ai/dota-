@@ -16,7 +16,7 @@
     if (k < 1) s += F(D_.drop(DROP[0], lerp(-120, DROP[1], EZ.i(k)), 44), C.amber);
     else {
       cue(land, 'drip', .9);
-      for (let i = 0; i < 3; i++) { const q = P01(t, land + i * .16, 1.1); if (q > 0 && q < 1) s += Ln(D_.ell(DROP[0], DROP[1] + 10, lerp(40, 420, EZ.o(q)), lerp(12, 120, EZ.o(q))), 1, { c: C.paper, w: 4 * (1 - q) + 1, op: 1 - q }) }
+      for (let i = 0; i < 4; i++) { const q = P01(t, land + i * .14, 1.2); if (q > 0 && q < 1) s += Ln(D_.circ(DROP[0], DROP[1], lerp(50, 230, EZ.o(q))), 1, { c: i % 2 ? C.amber : C.paper, w: 5 * (1 - q) + 1, op: (1 - q) * .9 }) }
       s += F(D_.circ(DROP[0], DROP[1], 46 * EZ.back(P01(t, land, .35))), C.amber) + F(D_.circ(DROP[0] - 14, DROP[1] - 14, 12), C.amber3, { op: .8 });
     }
     { const k = E(t, T.a + .15, .6, 'o5'), id = uid(); s += `<clipPath id="${id}"><rect x="0" y="752" width="1080" height="62"/></clipPath>` + g(cap8('что вы знаете о', 540, 800 + (1 - k) * 60, { s: 38, c: C.line, ls: 12 }), '', 1, `clip-path="url(#${id})"`) }
@@ -28,7 +28,7 @@
   // ===== 2. «…в сигаретах и в каждой одноразке?» — фон янтарь; сигарета въезжает, превращается в одноразку, ряд одноразок; влёт в диод =====
   const CIGD = D_.rr(-380, -48, 760, 96, 10), VAPED = VAPE_P(200, 520), VC = [540, 800], LED = [540, 800 + 206];
   D.common = (t, S, T) => {
-    const tc = T.c('сигаретах') - .3, tv = T.c('одноразке') - .3, km = E(t, tv, .5, 'io');
+    const tc = T.a + .15, tv = T.c('больше') - .3, tm = T.c('миллиарда') - .4, km = E(t, tv, .5, 'io');
     let s = bgDiag({ c0: C.amber, c1: '#E99A33', dc: 'n', off: t * 25 });
     s += disc(540, 780, 330, '#EC9E36');
     if (km <= 0) {
@@ -42,6 +42,7 @@
       side.forEach(([dx, sc, dl], i) => { s += rise8(vape8(t, { f: C.navy, led: P01(t, tv + .75 + dl, .2), shadow: false }), VC[0] + dx, VC[1] + 70 - sc * 40, t, tv + .35 + dl, { s: sc, dy: 140 }) });
       s += vape8(t, { x: VC[0], y: VC[1], f: C.night, led: P01(t, tv + .5, .25) });
     }
+    if (t > tm) { const v = Math.round(1e9 * E(t, tm, 1.2, 'o')); s += g(tx(v.toLocaleString('ru-RU').replace(/\u00a0/g, ' ') + (v >= 1e9 ? '+' : ''), 540, 330, { f: 'M', w: 800, s: 92, c: C.night }), '', E(t, tm, .3)) }
     return g(s, push8(t, T, .05, LED[0], LED[1]))
   };
 
@@ -136,14 +137,15 @@
   };
   // 8–9. «И триста лет травили им вредителей на грядках. Пока в 2009 Евросоюз его не запретил.» — грядка, лейка поливает, жуки падают;
   //      камера едет вдоль грядки; на «Евросоюз» — кольцо звёзд, на «запретил» — красный запрет, лейка падает
+  const cab8b = (x, y, s = 1) => { let q = ''; [[-1, 0], [1, 0], [-.5, -.5], [.5, -.5], [0, -.8]].forEach(([dx, dy], i) => { const d = D_.ell(dx * 70, dy * 70, 90, 66); q += F(d, i < 2 ? C.navy3 : i < 4 ? '#3E55A0' : '#5068B6') + Ln(`M${dx * 70} ${dy * 70 + 40}Q${dx * 70 + 10} ${dy * 70} ${dx * 70 + dx * 40} ${dy * 70 - 40}`, 1, { c: C.paper, w: 3, op: .5 }) }); return g(SH(D_.ell(0, 10, 160, 80), { op: .3 }) + q, at(x, y, s)) };
   function garden(t, T, tBan, tStop) {
     const X = (t - T.a) * 170; // камера едет вправо
     let w = '';
     w += F(D_.rr(-400, 1080, 4400, 1000, 0), C.navy) + Ln('M-400 1080H4000', 1, { c: C.navy3, w: 4 });
     for (let i = 0; i < 9; i++) {
-      const cx = 140 + i * 360; w += cab8(cx, 1040, 1);
+      const cx = 140 + i * 360; w += cab8b(cx, 1030, 1.1);
       const kd = P01(t, T.a + .5 + i * .32, .6);
-      if (kd < 1) w += beetle8(t, { x: cx + 20, y: 960 + EZ.i(kd) * 220, s: .42, f: C.navy, flip: kd > 0 ? .5 * kd : 0, op: 1 - clamp((kd - .6) * 2.5) });
+      if (kd < 1) w += beetle8(t, { x: cx + 20, y: 930 + EZ.i(kd) * 240, s: .55, f: C.navy, r: kd * 140, op: 1 - clamp((kd - .6) * 2.5) });
     }
     // лейка идёт вместе с камерой
     const fall = E(t, tStop + .2, .6, 'i'), cxw = 540 + X - 120, cyw = 640 + fall * 900;
@@ -264,16 +266,21 @@
   };
 
   // ===== 16. «И каждый просит ещё.» — крупно поверхность мозга: пустые рецепторы пульсируют всё чаще =====
-  const SOCK = []; for (let r = 0; r < 7; r++) for (let c = 0; c < 5; c++) SOCK.push([150 + c * 195 + (r % 2) * 95, 380 + r * 135]);
+  const BADGE = []; for (let i = 0; i < 26; i++) { const a = rnd(i * 5 + 2) * 2 * PI, r = Math.sqrt(rnd(i * 5 + 3)); BADGE.push([Math.cos(a) * r * 150, Math.sin(a) * r * 95 - 30]) }
   D.more = (t, S, T) => {
     let s = bgDiag({ c1: C.navy2, off: -t * 30 });
-    const tq = T.c('ещё') - .2, sp = 2 + E(t, T.a, T.b - T.a, 'i') * 7;
-    SOCK.forEach(([x, y], i) => {
-      const ph = (t * sp + rnd(i) * 3) % 1, pul = Math.max(0, Math.sin(ph * PI));
-      s += rec8(x, y, 2.2 + pul * .5, { c: pul > .7 && t > tq ? C.red : C.amber, op: .5 + pul * .5 });
+    const tq = T.c('ещё') - .2;
+    let br = brain8(t, {}) + g(RECS.map(([x, y]) => rec8(x, y, 1, { full: true })).join(''), '');
+    s += g(br, at(540, 780, 2.3 + E(t, T.a, T.b - T.a, 'io') * .3));
+    // уведомления: появляются всё чаще (как на телефоне), числа растут; на «ещё» — 99+
+    BADGE.forEach(([x, y], i) => {
+      const ta = T.a + .05 + Math.pow(i / BADGE.length, .6) * (tq - T.a + .3), k = P01(t, ta, .3); if (k <= 0) return;
+      const n = t > tq + .1 ? '99+' : String(1 + Math.floor((t - ta) * (3 + i))), w = n.length > 2 ? 86 : n.length > 1 ? 66 : 50;
+      s += g(F(D_.rr(-w / 2, -25, w, 50, 25), C.red) + tx(n, 0, 11, { f: 'M', w: 800, s: 30, c: '#fff' }), at(540 + x * 2.5, 780 + y * 2.5, EZ.back(k) * (1 + .1 * Math.sin((t - ta) * 9))));
+      if (i % 5 === 0) cue(ta, 'tick', .35);
     });
     if (t > tq) cue(tq, 'heart', .7);
-    return g(s, push8(t, T, .12, 540, 820))
+    return g(s, push8(t, T, .1, 540, 780))
   };
 
   // ===== 17. «Так оружие табака переехало к вам в карман.» — лист-оружие превращается в одноразку и уходит в карман джинсов =====
@@ -312,9 +319,11 @@
     s += F(D_.circ(540, 974, 90), C.amber, { op: .08 * lv }) + F(D_.circ(540, 974, 50), C.amber, { op: .12 * lv });
     s += `<clipPath id="${id}"><path d="M-200 -400H1280V1006H-200Z"/></clipPath><g clip-path="url(#${id})">${vape8(t, { x: 540, y: 1180, f: C.navy, led: lv, shadow: false })}</g>`;
     if (t > tz) { const q = P01(t, tz, 1.2); s += Ln(D_.circ(540, 974, lerp(30, 260, EZ.o(q))), 1, { c: C.amber, w: 4 * (1 - q), op: 1 - q }) }
-    const fo = E(t, T.e + .6, .8);
-    return g(s, push8(t, T, .08, 540, 974)) + (fo > 0 ? BG(C.night).replace('<rect', `<rect opacity="${R(fo * 100) / 100}"`) : '')
+    return g(s, push8(t, T, .08, 540, 974))
   };
+
+  // ===== 20. «В профиле — как никотином откачивали утопленников и почему гусеница парит.» =====
+  D.cta = (t, S, T) => cta8(t, T, [{ k: 'thames', t: ['Как откачивали', 'утопленников'] }, { k: 'cat', t: ['Гусеница,', 'которая парит'] }]);
 
   // год 1690 → 2009 поверх сцен истории
   function over(t) {
@@ -329,8 +338,8 @@
   window.EP = {
     P, D, clean: true, lead: .2, defs: V8DEFS, over,
     cap: { size: 58, top: 1360, hi: C.amber, st: '#0B1028' },
-    tr: { title: 'zc', common: 'dive', claim: 'into', leaf: 'dive', bite: 'into', reply: 'wave', y1690: 'cut', garden: 'cut', ban: 'dive', aphid: 'zc', exhale: 'dive', recep: 'cut', ten: 'out', dopa: 'out', grow: 'dive', more: 'wave', pocket: 'into', toll: 'zc' },
-    trCols: { more: [C.navy3, C.amber, C.navy] },
+    tr: { title: 'zc', common: 'dive', claim: 'into', leaf: 'dive', bite: 'into', reply: 'wave', y1690: 'cut', garden: 'cut', ban: 'dive', aphid: 'zc', exhale: 'dive', recep: 'cut', ten: 'out', dopa: 'out', grow: 'dive', more: 'wave', pocket: 'into', toll: 'zc', end: 'wave' },
+    trCols: { more: [C.navy3, C.amber, C.navy], end: [C.amber, C.paper, C.navy3] },
     trAt: { dopa: [540, 520], title: DROP, common: LED, claim: [APH3[0], 1170], leaf: [700, 520], bite: [700, 990], ban: [1040, 1030], aphid: PUFF, exhale: [330, 760], ten: [720, 460], grow: [720, 1010], pocket: [540, 1000], toll: [540, 760] },
     trR: { common: 15, leaf: 90, ban: 70, exhale: 120, grow: 110 },
     trTo: { claim: APH4, bite: [700, 520], pocket: [540, 760] },

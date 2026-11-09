@@ -261,7 +261,7 @@ function can8(o = {}) {
 // КОЧАН: розетка бумажными линиями на тёмном
 const cab8 = (x, y, s = 1, o = {}) => g(F(D_.ell(0, 0, 120, 84), o.f || K8.navy3) + ht(D_.ell(0, 0, 120, 84), 'n', 'v', .45) + Ln('M-90 10C-60 -60 60 -60 90 10M-60 20C-40 -30 40 -30 60 20M-110 30C-100 70 100 70 110 30', 1, { c: K8.paper, w: 3.5, op: .7 }), at(x, y, s));
 // таймер-кольцо: k — заполнение, val — число
-const ring8 = (x, y, r, k, o = {}) => g(Ln(D_.circ(0, 0, r), 1, { c: K8.line, w: 6, op: .3 }) + (k > 0 ? Ln(D_.arc(0, 0, r, -90, -90 + 359.9 * clamp(k)), 1, { c: o.c || K8.amber, w: 10 }) : '') + (o.val != null ? tx(o.val, 0, 26, { f: 'M', w: 800, s: o.vs || 84, c: K8.paper }) : ''), at(x, y, o.s || 1), o.op ?? 1);
+const ring8 = (x, y, r, k, o = {}) => g(Ln(D_.circ(0, 0, r), 1, { c: K8.line, w: 6, op: .3 }) + (k > 0 ? Ln(D_.arc(0, 0, r, -90, -90 + 359.9 * clamp(k)), 1, { c: o.c || K8.amber, w: 10 }) : '') + (o.val != null ? tx(o.val, 0, R((o.vs || 84) * .36), { f: 'M', w: 800, s: o.vs || 84, c: o.tc || K8.paper }) : ''), at(x, y, o.s || 1), o.op ?? 1);
 // метка на карте
 const pin8 = (x, y, s = 1, o = {}) => g(F('M0 0C-14 -30 -46 -50 -46 -84A46 46 0 1 1 46 -84C46 -50 14 -30 0 0Z', o.c || K8.red) + F(D_.circ(0, -86, 18), K8.paper), at(x, y, s), o.op ?? 1);
 // подпись-улика: разреженные заглавные
@@ -284,4 +284,203 @@ function yearRoll(v, x, y, o = {}) {
     s += tx(String(d), x0 + wch * (i + .5), y - roll * s0, { f: 'M', w: 800, s: s0, c: o.c || K8.paper }) + tx(String((d + 1) % 10), x0 + wch * (i + .5), y + (1 - roll) * s0, { f: 'M', w: 800, s: s0, c: o.c || K8.paper });
   }
   return s + '</g>'
+}
+
+// ======================= v8.1 (09.11, «три рисовки»): палитра на ролик, новые предметы, концовка с соседними роликами =======================
+// своя палитра у каждого ролика (как у оригиналов: Coca-Cola — синий/коралл, Google — сталь/красный, WoT — лаванда/оранжевый)
+const pal8 = p => Object.assign(K8, p);
+const PAL8 = {
+  navy: { night: '#0B1028', navy: '#16214B', navy2: '#22316A', navy3: '#32478B', line: '#8DA1D6', paper: '#F4EFE6', paper2: '#D9D2C6', amber: '#F4A63C', amber2: '#C97B22', amber3: '#FFD08A', red: '#E9474F' },
+  wine: { night: '#170A11', navy: '#2C111C', navy2: '#401A29', navy3: '#5C283C', line: '#C9A27F', paper: '#F2E6CF', paper2: '#D9C6A4', amber: '#E3B04B', amber2: '#B0812A', amber3: '#F6D68E', red: '#E43B3B' },
+  leaf: { night: '#173327', navy: '#24503B', navy2: '#2F6649', navy3: '#43855E', line: '#93B79C', paper: '#FFFDF4', paper2: '#E4E0CF', amber: '#9A6ADE', amber2: '#7247B6', amber3: '#CBB0F6', red: '#E5534B' },
+};
+// светлый фон (история / день): бумага и косая полоса чуть темнее
+const bgPaper = (c0, c1, dc = 'l', a = .35) => { const band = D_.poly([[620, -400], [1380, -400], [-120, 2400], [-880, 2400]]); return BG(c0) + F(band, c1) + ht(band, dc, 'r', a) };
+// подпись мелко (капс, разрядка) — цвет и размер
+const lab8 = (s, x, y, o = {}) => cap8(s, x, y, { s: o.s || 30, c: o.c || K8.line, ls: o.ls ?? 8, op: o.op, a: o.a });
+
+// КОРОНА
+const crown8 = (x, y, s = 1, o = {}) => { const d = 'M-110 40L-130 -60L-60 0L0 -90L60 0L130 -60L110 40Z'; return g(SH(d, { op: .4 }) + F(d, o.c || K8.amber) + F(D_.rr(-118, 34, 236, 34, 8), o.c2 || K8.amber2) + F(D_.circ(0, -96, 14), o.c2 || K8.amber2) + F(D_.circ(-134, -66, 11), o.c2 || K8.amber2) + F(D_.circ(134, -66, 11), o.c2 || K8.amber2) + F(D_.circ(0, 52, 9), K8.red) + F(D_.circ(-60, 52, 7), K8.paper) + F(D_.circ(60, 52, 7), K8.paper), at(x, y, s, o.r || 0), o.op ?? 1) };
+// МЕХА с трубкой: pump 0..1 — сжаты; tube — длина трубки вправо
+function bellows8(t, o = {}) {
+  const p = o.pump || 0, a = lerp(18, 4, p), L0 = o.tube ?? 360;
+  let s = Ln(`M150 0C${150 + L0 * .4} 0 ${150 + L0 * .5} ${o.tdy ?? 60} ${150 + L0} ${o.tdy ?? 60}`, 1, { c: K8.paper2, w: 14 }) + F(D_.rr(150 + L0 - 6, (o.tdy ?? 60) - 12, 50, 24, 8), K8.amber2);
+  s += g(F('M-150 -14L120 -8L120 8L-150 14Z', K8.amber2) + F(`M-150 -14L120 -8L-150 ${R(-14 - a * 5)}Z`, K8.navy3) + F(`M-150 14L120 8L-150 ${R(14 + a * 5)}Z`, K8.navy3), '');
+  s += F(D_.rr(-230, -24, 90, 48, 20), K8.amber2) + F(`M-150 ${R(-20 - a * 5)}L120 -10L118 -16L-150 ${R(-28 - a * 5)}Z`, K8.amber) + F(`M-150 ${R(20 + a * 5)}L120 10L118 16L-150 ${R(28 + a * 5)}Z`, K8.amber);
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// ЛЕЖАЩИЙ ЧЕЛОВЕК (силуэт без лица): ноги вправо
+const lying8 = (x, y, s = 1, o = {}) => { const d = 'M-260 -30C-260 -70 -200 -80 -180 -50L160 -44C220 -44 260 -30 260 -10C260 10 220 22 160 22L-180 30C-200 60 -260 50 -260 10Z'; return g(SH(d, { op: .4 }) + F(d, o.f || K8.navy3) + F(D_.circ(-300, -6, 46), o.f || K8.navy3) + ht(d, 'n', 'v', .4), at(x, y, s, o.r || 0), o.op ?? 1) };
+// ГОРОД XVIII века (силуэт: купол собора Святого Павла, шпили, дома) на линии y
+function london8(y, o = {}) {
+  const c = o.c || K8.navy2;
+  let d = `M-200 ${y}V${y - 120}H40V${y - 180}H120V${y - 140}H200V${y - 230}H230L245 ${y - 330}L260 ${y - 230}H300V${y - 150}H380V${y - 170}`;
+  d += `C400 ${y - 330} 560 ${y - 330} 580 ${y - 170}`; // купол
+  d += `V${y - 150}H660V${y - 260}H680L692 ${y - 380}L704 ${y - 260}H730V${y - 130}H860V${y - 200}H940V${y - 120}H1280V${y}Z`;
+  return F(d, c) + F(D_.rr(474, y - 372, 12, 44, 4), c) + F(D_.circ(480, y - 378, 10), c) + (o.win ? [[60, y - 100], [150, y - 110], [420, y - 120], [520, y - 110], [780, y - 90], [900, y - 80]].map(([wx, wy], i) => F(D_.rr(wx, wy, 18, 26, 3), K8.amber, { op: .6 + .4 * Math.sin(i * 7 + (o.t || 0)) })).join('') : '')
+}
+// ПРОФИЛЬ (бюст, смотрит вправо): кто — 'nicot' (шляпа, воротник-жабо), 'james' (корона), 'peter' (усы, мундир), 'lord' (парик), 'plain'
+function bust8(o = {}) {
+  const f = o.f || K8.navy3, k = o.who || 'plain';
+  let s = F(HEAD8, f) + ht(HEAD8, 'n', 'l', .4);
+  if (k === 'nicot') s += F('M-190 -170C-150 -300 150 -310 230 -190L250 -150H-200Z', K8.night) + F('M-120 250C-60 200 80 200 140 250C150 300 -130 300 -120 250Z', K8.paper) + Ln('M-110 262C-60 236 80 236 130 262', 1, { c: K8.paper2, w: 4 });
+  if (k === 'james') s += g(crown8(0, 0, .7), at(40, -280));
+  if (k === 'peter') s += Ln('M170 92C190 84 214 88 226 98', 1, { c: K8.night, w: 9 }) + F('M-150 -60C-160 -200 -40 -260 60 -250C140 -244 190 -200 200 -150C120 -190 0 -200 -100 -120Z', K8.night) + F('M-130 230H140L160 300H-150Z', K8.amber2);
+  if (k === 'lord') { let q = ''; for (let i = 0; i < 7; i++) q += D_.circ(-160 + i * 18, -180 + i * 70, 56); s += F(q, K8.paper2) + F('M-170 -170C-120 -280 120 -300 200 -190C120 -230 0 -230 -120 -160Z', K8.paper2) }
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// КНИГА (обложка): title — строки на обложке
+function book8(o = {}) {
+  const w = o.w || 360, h = o.h || 480, d = D_.rr(-w / 2, -h / 2, w, h, 14);
+  let s = SH(d, { op: .45 }) + F(D_.rr(-w / 2 + 14, -h / 2 + 14, w, h, 14), K8.paper2) + F(d, o.f || K8.navy3) + ht(d, 'n', 'r', .35) + F(D_.rr(-w / 2, -h / 2, 26, h, 8), K8.night, { op: .35 });
+  s += Ln(D_.rr(-w / 2 + 40, -h / 2 + 30, w - 70, h - 60, 8), 1, { c: K8.amber, w: 3, op: .7 });
+  (o.title || []).forEach((ln, i) => s += tx(ln, 14, -h / 2 + 110 + i * 46, { f: 'M', w: 800, s: o.ts || 30, c: K8.amber, ls: 2 }));
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// МОНЕТА (сбоку — эллипс) / столбик монет n
+const coins8 = (x, y, n, o = {}) => { let s = ''; for (let i = 0; i < n; i++) { const yy = y - i * 16; s += F(D_.ell(x, yy + 8, 70, 22), K8.amber2) + F(D_.ell(x, yy, 70, 22), K8.amber) + Ln(D_.ell(x, yy, 50, 14), 1, { c: K8.amber2, w: 3, op: .6 }) } return s };
+// КОЛБА: liquid — цвет жидкости
+function flask8(o = {}) {
+  const d = 'M-40 -260H40V-90C140 -50 180 30 160 110C140 200 60 240 0 240C-60 240 -140 200 -160 110C-180 30 -140 -50 -40 -90Z';
+  let s = SH(d, { op: .35 }) + F(d, K8.navy2, { op: .7 });
+  const id = uid(); s += `<clipPath id="${id}"><path d="${d}"/></clipPath><g clip-path="url(#${id})">${F(D_.wave(-200, 200, o.ly ?? 40, 10, 180, (o.t || 0) * 3) + 'L200 400L-200 400Z', o.liquid || K8.amber)}${ht(D_.rr(-200, 40, 400, 220, 0), 'n', 'v', .4)}</g>`;
+  s += Ln(d, 1, { c: K8.paper, w: 5 }) + Ln('M-90 -40C-120 0 -130 60 -110 120', 1, { c: '#fff', w: 8, op: .3 });
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// ЧЕРЕП-значок (символ «яд»)
+const skull8 = (x, y, s = 1, o = {}) => g(F('M0 -70C60 -70 90 -30 86 14C84 40 70 52 56 58V84H-56V58C-70 52 -84 40 -86 14C-90 -30 -60 -70 0 -70Z', o.c || K8.paper) + F(D_.circ(-32, 6, 18), o.bg || K8.night) + F(D_.circ(32, 6, 18), o.bg || K8.night) + F('M0 30L10 50H-10Z', o.bg || K8.night) + Ln('M-30 84V64M0 84V64M30 84V64', 1, { c: o.bg || K8.night, w: 5 }), at(x, y, s), o.op ?? 1);
+// МАСКА ЧУМНОГО ДОКТОРА (клюв)
+const plague8 = (x, y, s = 1, o = {}) => { const d = 'M-120 -60C-120 -150 40 -170 80 -90C150 -60 260 -10 300 40C220 40 120 40 60 60C10 110 -120 90 -120 -60Z'; return g(SH(d, { op: .4 }) + F(d, o.f || K8.navy3) + ht(d, 'n', 'v', .4) + F(D_.circ(-20, -60, 34), K8.paper2) + F(D_.circ(-20, -60, 18), K8.night) + F('M-140 -110C-80 -230 120 -220 160 -110H-160Z', K8.night) + F(D_.rr(-200, -126, 380, 24, 10), K8.night), at(x, y, s, o.r || 0), o.op ?? 1) };
+// АПТЕЧНАЯ БАНКА с надписью
+const apo8 = (x, y, label, o = {}) => { const d = 'M-70 -110H70V100C70 120 56 130 40 130H-40C-56 130 -70 120 -70 100Z'; return g(SH(d, { op: .35 }) + F(d, o.f || K8.navy3) + F(D_.rr(-84, -140, 168, 40, 10), K8.night) + F(D_.rr(-58, -40, 116, 70, 6), K8.paper) + tx(label, 0, 6, { f: 'M', w: 800, s: 20, c: K8.night, ls: 2 }) + leaf8({ len: 70, w: 30, x: 0, y: 80, r: 0, f: K8.amber, f2: K8.amber2, vo: .5, vw: 2, dots: false }), at(x, y, o.s || 1, o.r || 0), o.op ?? 1) };
+// ШАПКА МОНОМАХА (значок)
+const monomakh8 = (x, y, s = 1, o = {}) => g(F('M-110 20C-110 -90 110 -90 110 20Z', K8.amber) + ht('M-110 20C-110 -90 110 -90 110 20Z', 'n', 'r', .35) + F(D_.rr(-124, 10, 248, 54, 26), K8.paper2) + ht(D_.rr(-124, 10, 248, 54, 26), 'n', 'v', .35) + F(D_.rr(-6, -150, 12, 70, 4), K8.amber) + F(D_.rr(-26, -130, 52, 12, 4), K8.amber) + F(D_.circ(0, -40, 14), K8.red) + F(D_.circ(-56, -20, 9), K8.paper) + F(D_.circ(56, -20, 9), K8.paper), at(x, y, s), o.op ?? 1);
+// СВИТОК с печатью
+const scroll8 = (x, y, s = 1, o = {}) => g(SH(D_.rr(-170, -110, 340, 220, 10), { op: .35 }) + F(D_.rr(-170, -110, 340, 220, 10), K8.paper) + F(D_.rr(-186, -124, 32, 248, 14), K8.paper2) + F(D_.rr(154, -124, 32, 248, 14), K8.paper2) + Ln('M-120 -60H120M-120 -20H120M-120 20H60', 1, { c: K8.navy3, w: 6, op: .5 }) + F(D_.circ(90, 70, 34), K8.red) + Ln(D_.circ(90, 70, 22), 1, { c: '#fff', w: 3, op: .4 }), at(x, y, s, o.r || 0), o.op ?? 1);
+// КОРАБЛЬ (силуэт)
+const ship8 = (x, y, s = 1, o = {}) => g(F('M-200 0H200L160 60H-160Z', o.c || K8.navy2) + F('M-6 -260H6V0H-6Z', o.c || K8.navy2) + F('M10 -240C90 -200 110 -100 100 -20H10Z', o.s1 || K8.paper2) + F('M-10 -220C-80 -180 -100 -100 -96 -30H-10Z', o.s1 || K8.paper2) + F('M8 -262L60 -248L8 -236Z', K8.red), at(x, y, s), o.op ?? 1);
+// КРАСНЫЕ ГЛАЗА в темноте (как у оригиналов): open 0..1, sq — прищур 0..1
+function eyes8(x, y, s, open, sq = 0) {
+  const h = 40 * open * (1 - sq * .65); if (h < 1) return '';
+  const e = cx => `M${cx - 90} 0C${cx - 40} ${-h} ${cx + 40} ${-h} ${cx + 90} 0C${cx + 40} ${h} ${cx - 40} ${h} ${cx - 90} 0Z`;
+  return g(F(e(-150), K8.red) + F(e(150), K8.red) + F(D_.circ(-150, 0, Math.min(h * .7, 22)), K8.night) + F(D_.circ(150, 0, Math.min(h * .7, 22)), K8.night) + F(D_.circ(-140, -8, 6), '#fff', { op: .8 }) + F(D_.circ(160, -8, 6), '#fff', { op: .8 }), at(x, y, s))
+}
+// НИТКА заговора: от (x0,y0) к (x1,y1), провисает, рисуется по k
+const thread8 = (x0, y0, x1, y1, k = 1, o = {}) => Ln(`M${x0} ${y0}Q${(x0 + x1) / 2} ${Math.max(y0, y1) + 90} ${x1} ${y1}`, k, { c: o.c || K8.red, w: o.w || 5 }) + (k >= 1 ? F(D_.circ(x0, y0, 10), K8.red) + F(D_.circ(x1, y1, 10), K8.red) : '');
+// РУКА с вытянутым пальцем (палец вправо, запястье — (0,0))
+const finger8 = (x, y, s = 1, o = {}) => g(F(D_.rr(-260, -46, 200, 92, 30), o.sl || K8.navy2) + F(D_.rr(-80, -44, 130, 88, 36), o.f || K8.paper2) + F(D_.rr(20, -40, 150, 34, 17), o.f || K8.paper2) + F('M-10 0C10 30 50 44 70 30L60 10Z', o.f || K8.paper2) + ht(D_.rr(-80, -44, 250, 88, 36), 'n', 'v', .3), at(x, y, s, o.r || 0), o.op ?? 1);
+// ГАЛОЧКА
+const check8 = (x, y, s, k, c) => g(Ln('M-60 0L-15 45L70 -50', E(k, 0, 1), { c: c || K8.amber, w: 18 }), at(x, y, s));
+
+// ---- природа (nicg) ----
+// ГУСЕНИЦА ТАБАЧНОГО БРАЖНИКА (бок, голова вправо): зелёная, белые косые полоски, чёрные дыхальца, красный рог на хвосте.
+//   crawl — фаза ползания, chew — жуёт (0..1), puff — облачка никотина из дыхалец (фаза или null), xray — тело полупрозрачное, kD — точки никотина
+const CAT_C = { body: '#A6D64B', body2: '#7DB035', head: '#6E9E2F', stripe: '#F7F8EE', spir: '#16251B', horn: '#E5534B' };
+function caterpillar8(t, o = {}) {
+  const n = 10, cr = o.crawl ?? 0, xr = o.xray || 0, segs = [];
+  for (let i = 0; i < n; i++) {
+    const u = i / (n - 1), r = i === n - 1 ? 40 : lerp(30, 50, Math.sin(Math.min(1, u * 1.25) * PI * .5)) * (i > n - 3 ? .92 : 1);
+    const hump = Math.max(0, Math.sin((cr * 2 * PI) - i * .7)) * 22;
+    segs.push([-320 + i * 66 + (o.stretch || 0) * i, -hump, r]);
+  }
+  let s = '';
+  // ножки
+  segs.forEach(([x, y, r], i) => { if (i > 1 && i < n - 1) s += F(D_.rr(x - 12, y + r - 14, 24, 26, 10), i > n - 4 ? CAT_C.spir : CAT_C.body2, { op: 1 - xr * .5 }) });
+  // рог на хвосте
+  const [hx, hy, hr] = segs[0]; s += F(`M${hx - 6} ${hy - hr + 6}C${hx - 20} ${hy - hr - 40} ${hx - 50} ${hy - hr - 60} ${hx - 70} ${hy - hr - 64}C${hx - 40} ${hy - hr - 40} ${hx - 12} ${hy - hr - 20} ${hx + 10} ${hy - hr + 4}Z`, CAT_C.horn, { op: 1 - xr * .4 });
+  // тело
+  segs.forEach(([x, y, r], i) => { const c = i === n - 1 ? CAT_C.head : CAT_C.body; s += F(D_.circ(x, y, r), c, { op: 1 - xr * .62 }) + F(`M${x - r} ${y}A${r} ${r} 0 0 0 ${x + r} ${y}Z`, CAT_C.body2, { op: (1 - xr * .62) * .55 }) });
+  if (xr > 0) s += Ln(segs.map(([x, y], i) => (i ? 'L' : 'M') + R(x) + ' ' + R(y + 4)).join(''), 1, { c: K8.night, w: 22, op: .18 * xr }) + segs.map(([x, y, r]) => Ln(D_.circ(x, y, r), 1, { c: K8.night, w: 3, op: .35 * xr })).join('');
+  // полоски и дыхальца
+  segs.forEach(([x, y, r], i) => {
+    if (i > 0 && i < n - 2) s += Ln(`M${R(x - r * .55)} ${R(y + r * .45)}L${R(x + r * .45)} ${R(y - r * .6)}`, 1, { c: CAT_C.stripe, w: 7, op: 1 - xr * .5 });
+    if (i > 0 && i < n - 1) s += F(D_.ell(x - r * .1, y + r * .05, 6, 9), CAT_C.spir, { op: 1 - xr * .3 });
+  });
+  // голова: жвалы
+  const [qx, qy, qr] = segs[n - 1], ch = (o.chew || 0) * Math.max(0, Math.sin(t * 14));
+  s += F(D_.circ(qx + qr * .7, qy + qr * .4 + ch * 6, 11), CAT_C.spir);
+  // никотин внутри (рентген): точки по кишке; kD 0..1 — сколько прошло
+  if (o.dots) s += o.dots(segs);
+  if (o.puff != null) segs.forEach(([x, y, r], i) => { if (i < 1 || i > n - 2) return; for (let j = 0; j < 2; j++) { const p = (o.puff * .8 + i * .13 + j * .5) % 1; s += F(D_.circ(x - r * .1 + p * 30, y - p * 150 - r * .2, 6 + p * 22), K8.amber, { op: (1 - p) * .55 * (o.puffOp ?? 1) }) } });
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// ПАУК-ВОЛК (сверху/сбоку): walk — фаза, legsUp — испуг (лапы вверх)
+function spider8(t, o = {}) {
+  const f = o.f || K8.night, w = o.walk ?? 0, up = o.up || 0;
+  let s = '';
+  for (const sd of [-1, 1]) for (let i = 0; i < 4; i++) {
+    const a = (-60 + i * 40) * PI / 180, ph = Math.sin(w * 2 * PI + i * 1.6 + (sd > 0 ? PI : 0)) * 14;
+    const kx = Math.cos(a) * 120 + ph, ky = sd * (60 + i * 6) - up * 50 * sd * 0, fx = Math.cos(a) * 220 + ph * 1.4, fy = sd * (120 - up * 70);
+    s += Ln(`M${R(Math.cos(a) * 30)} ${sd * 10}L${R(kx)} ${R(sd * (ky * .6) - 40 - up * 40)}L${R(fx)} ${R(fy)}`, 1, { c: f, w: 9, op: sd < 0 ? .7 : 1 });
+  }
+  s += F(D_.ell(-90, 0, 100, 70), f) + F(D_.ell(50, -6, 70, 56), f) + ht(D_.ell(-90, 0, 100, 70), 'l', 'u', .35);
+  [[100, -24, 9], [100, 8, 9], [88, -40, 5], [88, 24, 5], [110, -8, 5], [80, -8, 4]].forEach(([x, y, r]) => s += F(D_.circ(x, y, r), K8.paper, { op: .9 }));
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// ХИЩНЫЙ КЛОП (большеглазка): wing — летит
+function bug8(t, o = {}) {
+  const f = o.f || K8.night;
+  let s = '';
+  if (o.wing) { const k = Math.abs(Math.sin(t * 40)); s += F(D_.ell(-10, -40 - k * 10, 60, 20 + k * 10), K8.paper, { op: .45 }) }
+  for (let i = 0; i < 3; i++) s += Ln(`M${-30 + i * 30} 10L${-44 + i * 30} 46`, 1, { c: f, w: 6 });
+  s += F(D_.ell(-10, 0, 70, 34), f) + F(D_.ell(56, -4, 26, 24), f) + F(D_.circ(66, -22, 14), K8.paper) + F(D_.circ(66, 14, 14), K8.paper) + F(D_.circ(70, -22, 6), f) + F(D_.circ(70, 14, 6), f) + Ln('M76 -20C100 -50 120 -60 140 -64M76 12C100 40 120 50 140 54', 1, { c: f, w: 4 });
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// ЦВЕТОК ТАБАКА: длинная трубка и звёздочка из 5 лепестков; open 0..1
+function flower8(o = {}) {
+  const op = clamp(o.open ?? 1), c = o.c || K8.paper;
+  let s = F('M-10 0C-8 -120 -14 -200 -20 -260H20C14 -200 8 -120 10 0Z', c) + ht('M-10 0C-8 -120 -14 -200 -20 -260H20C14 -200 8 -120 10 0Z', 'n', 'r', .25);
+  for (let i = 0; i < 5; i++) { const a = -90 + (i - 2) * lerp(8, 40, op); s += F(leafPath(lerp(40, 90, op), lerp(14, 46, op)), c, { tr: `translate(0 -258) rotate(${R(a + 90)})` }) }
+  s += F(D_.circ(0, -262, lerp(8, 14, op)), K8.paper2);
+  return g(F('M-6 40C-4 20 -4 10 -8 0H8C4 10 4 20 6 40Z', K8.navy3) + s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.o ?? 1)
+}
+// БРАЖНИК (бабочка, висит в воздухе): крылья размыты дугами
+function moth8(t, o = {}) {
+  const f = o.f || '#7A6B5A', k = Math.sin(t * 50);
+  let s = '';
+  for (const a of [-1, 1]) s += F(`M0 0L${R(-150)} ${R(a * (60 + k * 30))}L${R(-60)} ${R(a * 10)}Z`, f, { op: .35 }) + F(`M0 0L${R(-140)} ${R(a * (40 - k * 30))}L${R(-50)} ${R(a * 8)}Z`, f, { op: .6 });
+  s += F('M-120 0C-100 -26 40 -30 80 -10C96 0 96 10 80 16C40 30 -100 26 -120 0Z', f) + Ln('M-90 -12V12M-60 -16V16M-30 -18V18', 1, { c: K8.paper, w: 4, op: .5 }) + F(D_.circ(90, 2, 18), f);
+  if (o.tongue) s += Ln(`M104 8C140 ${R(30 + k * 2)} 180 40 ${R(200 + o.tongue * 40)} 60`, 1, { c: f, w: 3 });
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// КОЛИБРИ (сбоку, клюв вправо)
+function bird8(t, o = {}) {
+  const f = o.f || '#2E9E7A', k = Math.sin(t * 60);
+  let s = F(`M-20 -20L${R(-120)} ${R(-120 - k * 40)}L${R(-40)} -10Z`, f, { op: .3 }) + F(`M-20 -20L${R(-100)} ${R(-80 + k * 50)}L${R(-30)} -6Z`, f, { op: .55 });
+  s += F('M-110 30L-160 70L-150 20Z', f) + F('M-110 20C-100 -30 10 -40 50 -20C70 -10 70 20 40 30C0 50 -90 50 -110 20Z', f) + F(D_.circ(50, -26, 26), f) + F('M70 -30L190 -20L70 -18Z', K8.night) + F('M30 -6C40 10 56 14 64 6C60 20 40 26 30 20Z', o.throat || K8.red) + F(D_.circ(58, -32, 5), K8.night);
+  return g(s, at(o.x || 0, o.y || 0, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// МОЛЕКУЛА НИКОТИНА (скелетная формула): шестиугольник пиридина + пятиугольник пирролидина, N-метил
+function nicMol8(x, y, s = 1, o = {}) {
+  const c = o.c || K8.amber, hx = (cx, cy, r, n, rot) => [...Array(n)].map((_, i) => { const a = (rot + i * 360 / n) * PI / 180; return [cx + Math.cos(a) * r, cy + Math.sin(a) * r] });
+  const A = hx(-80, 0, 80, 6, 30), B = hx(98, -12, 66, 5, 198);
+  let d = 'M' + A.map(p => R(p[0]) + ' ' + R(p[1])).join('L') + 'Z' + 'M' + B.map(p => R(p[0]) + ' ' + R(p[1])).join('L') + 'Z' + `M${R(A[0][0])} ${R(A[0][1])}L${R(B[3][0])} ${R(B[3][1])}`;
+  d += `M${R(B[1][0])} ${R(B[1][1])}L${R(B[1][0] + 40)} ${R(B[1][1] + 60)}`;
+  let q = Ln(d, o.k ?? 1, { c, w: o.w || 9 }) + Ln(`M${R(lerp(A[1][0], A[2][0], .2))} ${R(lerp(A[1][1], A[2][1], .2) - 14)}L${R(lerp(A[1][0], A[2][0], .8))} ${R(lerp(A[1][1], A[2][1], .8) - 14)}`, o.k ?? 1, { c, w: 6 });
+  if ((o.k ?? 1) >= 1) q += tx('N', A[4][0], A[4][1] + 14, { f: 'M', w: 800, s: 40, c: o.nc || K8.paper, st: o.bg || K8.night, sw: 14 }) + tx('N', B[1][0], B[1][1] + 14, { f: 'M', w: 800, s: 40, c: o.nc || K8.paper, st: o.bg || K8.night, sw: 14 });
+  return g(q, at(x, y, s, o.r || 0), o.op ?? 1)
+}
+
+// ---- концовка: «В профиле — …» две карточки соседних роликов (формула оригиналов: в конце — два ролика) ----
+function card8(x, y, w, h, inner, title, o = {}) {
+  const d = D_.rr(-w / 2, -h / 2, w, h, 28), id = uid();
+  let s = SH(d, { op: .5, dx: 14, dy: 18 }) + F(d, o.bg || K8.navy2) + `<clipPath id="${id}"><path d="${d}"/></clipPath><g clip-path="url(#${id})"><g transform="translate(${-w / 2} ${-h / 2})">${inner}</g></g>` + Ln(d, 1, { c: o.edge || K8.paper, w: 4, op: .5 });
+  s += F(D_.rr(-w / 2, h / 2 - 110, w, 110, 0), K8.night, { op: .78, tr: '' }).replace('<path', `<path clip-path="url(#${id})"`) + tx(title[0], 0, h / 2 - 64, { f: 'M', w: 800, s: 34, c: K8.paper }) + (title[1] ? tx(title[1], 0, h / 2 - 24, { f: 'M', w: 800, s: 34, c: K8.paper }) : '');
+  return g(s, at(x, y, o.s || 1, o.r || 0), o.op ?? 1)
+}
+// мини-сцены для карточек (рисуются в палитре текущего ролика)
+const CARD8 = {
+  bugs: t => BG(K8.navy) + leaf8({ len: 420, w: 160, x: 170, y: 420, r: 70, veins: 1, vo: .5 }) + beetle8(t, { x: 190, y: 190, s: .7, walk: true }),
+  thames: t => BG(K8.night) + F(D_.circ(300, 90, 46), K8.paper, { op: .9 }) + london8(250, { c: K8.navy2 }) + F(D_.rr(-20, 250, 440, 300, 0), K8.navy) + bellows8(t, { x: 150, y: 330, s: .55, pump: .5 + .5 * Math.sin(t * 6), tube: 260 }),
+  cat: t => BG('#2C5A43') + leaf8({ len: 520, w: 200, x: 200, y: 520, r: -60, f: '#43855E', f2: '#2F6649', veins: 1, vo: .5 }) + caterpillar8(t, { x: 200, y: 230, s: .42, crawl: t * .6, puff: t * .8 }).replace(/#9A6ADE|#F4A63C|#E3B04B/g, '#B48CF0'),
+  aphid: t => BG(K8.navy2) + F('M-20 300Q200 260 420 300L420 600L-20 600Z', K8.navy3) + aphid8(t, { x: 200, y: 250, s: .9, puff: (t * .5) % 1 }),
+};
+function cta8(t, T, cards, o = {}) {
+  const k1 = E(t, T.a + .1, .6, 'o5'), k2 = E(t, T.a + .3, .6, 'o5'), tl = T.c(o.word || 'профиле');
+  let s = bgDiag({ off: -t * 10 });
+  s += lab8('в профиле', 540, 300, { s: 34, c: K8.amber, ls: 14, op: E(t, T.a, .5) }) + Ln('M420 330H660', E(t, T.a + .1, .5, 'o5'), { c: K8.amber, w: 4 });
+  s += card8(lerp(-400, 290, k1), 760 + fl(t, 6, .3), 440, 640, CARD8[cards[0].k](t), cards[0].t, { r: -3 });
+  s += card8(lerp(1480, 790, k2), 790 + fl(t, 6, .3, .5), 440, 640, CARD8[cards[1].k](t), cards[1].t, { r: 3 });
+  const fo = E(t, T.e + .5, .8);
+  return s + (fo > 0 ? BG(K8.night).replace('<rect', `<rect opacity="${R(fo * 100) / 100}"`) : '')
 }

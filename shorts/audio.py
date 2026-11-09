@@ -290,9 +290,11 @@ def sfx6(T, SC, DUR, rng, cues, loop=False):
 
 
 # v8 (09.11): звуки — набор ElevenLabs Sound Effects (sfx8/*.mp3), мало и тихо; без щелчков на словах и «награды» в конце
-SFX8_EPS = {'nicb'}
+SFX8_EPS = {'nicb', 'nich', 'nicg'}
 SFX8_GAIN = {'impact': .55, 'dive': .32, 'wave': .32, 'whoosh': .26, 'drip': .4, 'stamp': .35, 'thud': .3, 'chomp': .3, 'zap': .28,
-             'ding': .3, 'shimmer': .3, 'pin': .3, 'tick': .25, 'heart': .45, 'swish': .25}
+             'ding': .3, 'shimmer': .3, 'pin': .3, 'tick': .25, 'heart': .45, 'swish': .25,
+             'bellows': .4, 'quill': .3, 'coins': .4, 'seal': .45, 'whip': .4, 'river': .25, 'bell': .3, 'eyes': .55, 'munch': .35, 'puff': .3,
+             'scuttle': .35, 'whirr': .3, 'flutter': .3, 'buzz': .3, 'sniff': .3}
 
 
 def sfx8(DUR, cues):

@@ -33,7 +33,7 @@ const svg = document.getElementById('S'), capEl = document.getElementById('cap')
 
 window.loadEp = function (name) {
   const add = src => new Promise(r => { const s = document.createElement('script'); s.src = src; s.onload = r; document.body.appendChild(s) });
-  const v8 = /^nicb$/.test(name), v5 = v8 || /^(nic(w\d?|max|tyaga|me)|howto)$/.test(name), v6 = /^nicw\d$/.test(name);
+  const v8 = /^nic[bhg]$/.test(name), v5 = v8 || /^(nic(w\d?|max|tyaga|me)|howto)$/.test(name), v6 = /^nicw\d$/.test(name);
   return (window.V5 || !v5 ? Promise.resolve() : add('v5.js')).then(() => window.V6 || !v6 ? 0 : add('v6.js')).then(() => window.V8 || !v8 ? 0 : add('v8.js')).then(() => add('ep/' + name + '.js'))
 };
 
