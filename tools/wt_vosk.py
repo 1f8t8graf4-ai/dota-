@@ -1,4 +1,4 @@
-# Время слов реплики по голосу — Vosk (27.10). Когда faster-whisper не поставить (в облаке закрыт huggingface).
+# Время слов реплики по голосу — Vosk (27.10; 09.11 — и русский: модель vosk-model-small-ru-0.22 с alphacephei.com). Когда faster-whisper не поставить (в облаке закрыт huggingface).
 # Текст реплики известен — распознаём с «грамматикой» из её же слов и сопоставляем по порядку,
 # слова, которых нет в словаре модели (имена, редкие), — по соседям.
 # Модель: vosk-model-small-en-us-0.15 (есть в npm-пакете transcribe2texts — registry.npmjs.org из облака открыт),
@@ -13,13 +13,23 @@ _M = {}
 def toks(text):
     # слова как на экране: «[Breaks into laughter]» — ремарка, не слово
     text = re.sub(r'\[[^\]]*\]', ' ', text)
-    return [w for w in re.split(r'\s+', text.replace('…', '... ').strip()) if re.search(r'[A-Za-z0-9]', w)]
+    return [w for w in re.split(r'\s+', text.replace('…', '... ').strip()) if re.search(r'[A-Za-z0-9А-Яа-яЁё]', w)]
 
 
 def norm(w):
-    w = w.lower().replace('’', "'")
-    w = re.sub(r"[^a-z0-9']", '', w)
+    w = w.lower().replace('’', "'").replace('ё', 'е')
+    w = re.sub(r"[^a-z0-9а-я']", '', w)
     return w.strip("'")
+
+
+def yo(words):
+    # 09.11, русский: в тексте «еще», а в словаре модели «ещё» — даём оба (одна «ё» на слово), лишние Vosk пропустит
+    out = set(words)
+    for w in words:
+        for i, ch in enumerate(w):
+            if ch == 'е':
+                out.add(w[:i] + 'ё' + w[i + 1:])
+    return out
 
 
 def pcm(mp3):
@@ -32,7 +42,7 @@ def recognize(model_dir, mp3, vocab):
     SetLogLevel(-1)
     if model_dir not in _M:
         _M[model_dir] = Model(model_dir)
-    rec = KaldiRecognizer(_M[model_dir], 16000, json.dumps(sorted(set(vocab)) + ['[unk]']))
+    rec = KaldiRecognizer(_M[model_dir], 16000, json.dumps(sorted(yo(set(vocab))) + ['[unk]'], ensure_ascii=False))
     rec.SetWords(True)
     data, out = pcm(mp3), []
     for i in range(0, len(data), 8000):
@@ -46,7 +56,7 @@ def align(model_dir, mp3, text):
     T = toks(text)
     N = [norm(w) for w in T]
     R = recognize(model_dir, mp3, [n for n in N if n])
-    sm = difflib.SequenceMatcher(a=N, b=[r[0] for r in R], autojunk=False)
+    sm = difflib.SequenceMatcher(a=N, b=[norm(r[0]) for r in R], autojunk=False)
     tm = [None] * len(T)
     for a, b, n in sm.get_matching_blocks():
         for k in range(n):

@@ -1,7 +1,8 @@
 # Озвучка → out/<ep>-<lang>/voice.wav + timeline.json (время каждого слова).
 #   python3 voice.py mrbeast-en nicotine-ru …        (без аргументов — все)
 #   EN: Kokoro af_heart (Apache 2.0), время слов — Vosk (../tools/wt_vosk.py).
-#   RU: Piper ru_RU-dmitri-medium (MIT, датасет CC0), время слов — по слогам внутри фразы.
+#   RU: Piper ru_RU-dmitri-medium (MIT, датасет CC0), время слов — Vosk ru (models/vosk-ru), без модели — по слогам.
+#   Голос нейросетью: python3 tts.py <ep> (Gemini) → python3 voice.py <ep> --audio out/<ep>/tts.wav
 #   Свой голос (ElevenLabs): python3 voice.py nicotine-ru --audio eleven.mp3 — режет запись по паузам на фразы,
 #   число фраз должно совпасть со scripts.py (иначе подскажет, где расходится).
 import json, os, re, sys
@@ -127,6 +128,30 @@ def split_audio(path, n, expect=None):
     return [trim(y[pts[i]:pts[i + 1]], SR) for i in range(n)]
 
 
+def split_by_words(path, says, vosk):
+    """09.11: своя запись → фразы по словам (Vosk), а не по паузам: длинная пауза внутри фразы («Совпадение? … Не думаю.»)
+    больше не режет её пополам. Граница — самое тихое место между последним словом фразы и первым словом следующей."""
+    import subprocess
+    from wt_vosk import align, toks
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'],
+                         capture_output=True, check=True).stdout
+    y = np.frombuffer(raw, dtype=np.float32)
+    W, q = align(vosk, path, ' '.join(says))
+    hop = SR // 100
+    e = np.array([np.sqrt(np.mean(y[i:i + hop] ** 2)) for i in range(0, len(y) - hop, hop)])
+    e = np.convolve(e, np.ones(3) / 3, 'same')
+    ends = np.cumsum([len(toks(x)) for x in says])
+    pts = [0]
+    for k in range(len(says) - 1):
+        a, b = W[ends[k] - 1][1], W[ends[k]][0]
+        lo, hi = (a, b) if b > a + 0.05 else (b - 0.3, a + 0.3)
+        i0, i1 = max(int(lo * 100), pts[-1] // hop + 1), max(int(hi * 100) + 1, pts[-1] // hop + 2)
+        j = i0 + int(np.argmin(e[i0:i1])) if i1 <= len(e) and i1 > i0 else i0
+        pts.append(j * hop)
+    pts.append(len(y))
+    return [trim(y[pts[i]:pts[i + 1]], SR) for i in range(len(says))], q
+
+
 def main(ep, audio=None):
     lang = ep.rsplit('-', 1)[1]
     L = EPISODES[ep]
@@ -140,23 +165,37 @@ def main(ep, audio=None):
         except Exception:
             exp = None
         exp = exp or [len(parse(s)[0]) + 8 for _, s in L]
-    clips = split_audio(audio, len(L), exp) if audio else None
+    vosk = os.path.join(M, 'vosk-' + lang)
+    exact = os.path.isdir(vosk)  # 09.11: русский тоже по голосу (Vosk ru), без модели — по слогам
+    clips = None
+    if audio and exact:
+        clips, q0 = split_by_words(audio, [parse(x)[0].lstrip('.… ') for _, x in L], vosk)
+        print(f'фразы по словам: распознано {q0:.0%}')
+        if q0 < 0.6:
+            clips = None
+    if audio and clips is None:
+        clips = split_audio(audio, len(L), exp)
     syn = None if clips else Synth(lang)
-    if lang == 'en':
+    if exact:
         from wt_vosk import align
+    # свой голос режется и собирается заново с паузами GAP_* — паузы-шутки из retime.RT ставим сами
+    extra = {}
+    if audio:
+        from retime import RT
+        extra = {op[1]: op[2] for op in RT.get(ep, []) if op[0] == 'pause'}
     parts, T, t, prev = [], [], 0.15, None
     for i, (scene, s) in enumerate(L):
         text, toks = parse(s)
         say = text.lstrip('.… ')
         x = clips[i] if clips else trim(syn(say), SR)
         if prev is not None:
-            t += GAP_SCENE if scene != prev else GAP_IN
+            t += (GAP_SCENE if scene != prev else GAP_IN) + extra.get(i - 1, 0)
         dur = len(x) / SR
         q = 1.0
-        if lang == 'en':
+        if exact:
             wav = os.path.join(out, f's{i:02d}.wav')
             sf.write(wav, x, SR)
-            W, q = align(os.path.join(M, 'vosk-en'), wav, say)
+            W, q = align(vosk, wav, say)
             j, words = 0, []
             for tk in toks:
                 seg = W[j:j + len(tk['sp'])] or [W[-1]]
