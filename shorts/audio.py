@@ -291,7 +291,8 @@ def sfx6(T, SC, DUR, rng, cues, loop=False):
 
 # v8 (09.11): звуки — набор ElevenLabs Sound Effects (sfx8/*.mp3), мало и тихо; без щелчков на словах и «награды» в конце
 SFX8_EPS = {'nicb', 'nich', 'nicg', 'nics', 'nicsa', 'nicsb', 'nicsc'}
-BED8 = {'nics': -8, 'nicsa': -8, 'nicsb': -8, 'nicsc': -8}  # музыка относительно голоса, LU: у оригиналов музыка слышна всё время (замер 09.11)
+DIR11 = {'nicf'}  # v11: звук по сюжету — sound11.py
+BED8 = {'nics': -8, 'nicsa': -8, 'nicsb': -8, 'nicsc': -8, 'nicf': -9}  # музыка относительно голоса, LU: у оригиналов музыка слышна всё время (замер 09.11)
 SFX8_GAIN = {'impact': .55, 'dive': .32, 'wave': .32, 'whoosh': .26, 'drip': .4, 'stamp': .35, 'thud': .3, 'chomp': .3, 'zap': .28,
              'ding': .3, 'shimmer': .3, 'pin': .3, 'tick': .25, 'heart': .45, 'swish': .25,
              'bellows': .4, 'quill': .3, 'coins': .4, 'seal': .45, 'whip': .4, 'river': .25, 'bell': .3, 'eyes': .55, 'munch': .35, 'puff': .3,
@@ -322,7 +323,11 @@ def main(ep):
     t_stop = next((s['a'] for s in SC if s['key'] == STOP.get(EPB)), 1e9)
     cf = os.path.join(out, 'cues.json'); loop = STY.get(EPB, {}).get('loop', False)
     mf = os.environ.get('MUSIC') or next((f for f in (os.path.join(HERE, 'music', EPB + e) for e in ('.mp3', '.wav', '.m4a')) if os.path.exists(f)), None)
-    if mf:
+    if EPB in DIR11:  # v11: музыка идёт за сюжетом (sound11.py) — тот же трек, но с поворотами, провалами и ударами
+        import sound11
+        M, an11, _ = sound11.music(EPB, T); M = M[:int((DUR + 1) * SR)]
+        print(ep, 'музыка v11, опорные точки:', {k: round(v, 2) for k, v in an11.items()})
+    elif mf:
         M = ext_music(mf, DUR, loop); print(ep, 'музыка:', mf)
     elif EPB in STY:
         quiet = [(s['a'], (SC[i + 1]['a'] if i + 1 < len(SC) else DUR)) for i, s in enumerate(SC) if s['key'] in QUIET.get(EPB, ())]
@@ -330,7 +335,9 @@ def main(ep):
     else:
         M = music(EPB, DUR, t_claim, rng, t_stop)
     sf.write(os.path.join(out, 'music.wav'), M.astype(np.float32), SR)
-    if EPB in SFX8_EPS:
+    if EPB in DIR11:
+        X = sound11.sfx(T, json.load(open(cf)), SFX8_GAIN)
+    elif EPB in SFX8_EPS:
         X = sfx8(DUR, json.load(open(cf)))
     else:
         X = sfx6(T, SC, DUR, rng, json.load(open(cf)), loop) if os.path.exists(cf) else sfx(T, SC, DUR, rng)
