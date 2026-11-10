@@ -53,6 +53,11 @@ def sent(tl, scene, n=0):
 
 
 def anchors(tl):
+    if any(s['scene'] == 'pharma' for s in tl['sent']):   # v13 nicv: «Что вы знаете об одноразках?»
+        q = sent(tl, 'you', 1)
+        return {'claim': max(.3, sent(tl, 'claim')['a']), 'tob': word(tl, 'claim', 'табачные'), 'stamp': word(tl, 'safe', 'отправили') + .25,
+                'open': word(tl, 'archive', 'открыть'), 'home': word(tl, 'deal', 'мальборо'), 'you': sent(tl, 'you')['a'],
+                's73': max(sent(tl, 'you')['a'] + .2, q['a'] - 1.2), 'q': q['a'], 'qe': q['b'], 'dur': tl['dur']}
     return {'claim': max(.3, sent(tl, 'hook')['a']), 'tob': sent(tl, 'hook', 1)['a'], 'stamp': word(tl, 'safe', 'засекретили'),
             'open': word(tl, 'archive', 'открыть'), 'home': word(tl, 'deal', 'домой'), 'you': sent(tl, 'you')['a'],
             's73': word(tl, 'you', 'семьдесят'), 'q': sent(tl, 'you', 3)['a'], 'qe': sent(tl, 'you', 3)['b'], 'dur': tl['dur']}
@@ -74,6 +79,9 @@ def _lp(x, hi=None, lo=None):
 def arrange(ep, an):
     """Куски трека по тактам: вступление до тезиса, бас входит ровно на «В табачной компании», удар трека — ровно на «домой»."""
     raw = os.path.join(HERE, 'music', ep + '-raw.mp3')
+    if ep == 'nicv' and os.path.exists(raw):   # свой трек под этот ролик (el13.py music): идёт как есть, без перестановки кусков
+        x = _load(raw); n = int((an['dur'] + 1) * SR); y = np.zeros((n, 2)); y[:min(n, len(x))] = x[:n]
+        return y, [(0, len(x) / SR, 0, 1.0, 0)]
     x = _load(raw if os.path.exists(raw) else os.path.join(HERE, 'music', 'nics-raw.mp3'))
     tob, home, dur = an['tob'] - .04, an['home'] - .04, an['dur']
     plan = [(max(.3, D0 - tob), D0, max(0, tob - D0 + .3), 1.5, .3)]
@@ -153,7 +161,9 @@ def sfx(tl, cues, gains):
     """Звуки по событиям из рисовки (cues.json): главные — в полную, остальные — вполголоса и не чаще раза в 0,3 с."""
     N = int((tl['dur'] + 2) * SR); x = np.zeros((N, 2)); cache = {}; last_f = -9; n_h = n_f = 0
     for t0, name, g0, pan in sorted(cues):
-        f = os.path.join(HERE, 'sfx8', name + '.mp3')
+        f = os.path.join(HERE, 'sfx13', name + '.mp3')   # новые звуки v13 (el13.py sfx), иначе старые
+        if not os.path.exists(f):
+            f = os.path.join(HERE, 'sfx8', name + '.mp3')
         if not os.path.exists(f):
             continue
         hero = name in HERO and g0 >= .7
