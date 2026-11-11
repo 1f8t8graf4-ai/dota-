@@ -84,7 +84,9 @@
       clouds: '#ffffff',
     },
   };
-  const LOOK = { v16i: 'insta', v16d: 'davinci', v16t: 'tinder' }[window.V16NAME] || 'cola';
+  // свой выбор по сценам, без одной палитры: сегодня — ночь («Инстаграм»), 1973 — тёплый янтарь, архив — синий с прожектором, финал — красный
+  LOOKS.mix = Object.assign({}, LOOKS.insta, Object.fromEntries(['bg2', 'sun2', 'gnd2', 'bld', 'bldD', 'bldT', 'winOff', 'winOn', 'ink2'].map(k => [k, R0[k]])), { stars2: 0 });
+  const LOOK = { v16i: 'insta', v16d: 'davinci', v16t: 'tinder', v16m: 'mix' }[window.V16NAME] || 'cola';
   const R = Object.assign({}, R0, LOOKS[LOOK] || {});
   const T = {
     morph: 1.45, morphE: 2.1, zoom: 3.75, zoomE: 4.55, cnt: 4.2, cntE: 4.95,
@@ -446,7 +448,7 @@
   function shot2(c, t) {
     c.fillStyle = R.bg2; c.fillRect(0, 0, WW, HH);
     const K = cam2(t); c.save(); cam(c, K.s, K.x, K.y);
-    if (R.stars) stars(c, t, 60, 9, R.sun2);
+    if (R.stars2 ?? R.stars) stars(c, t, 60, 9, R.sun2);
     if (R.clouds) banks(c, t, R.clouds, 13);
     const ks = spr(at(t, 4.85, 5.35));
     if (ks > 0) {
