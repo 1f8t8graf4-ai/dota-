@@ -311,6 +311,8 @@ def sfx8(DUR, cues):
         if name not in cache:
             r = subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True, check=True)
             cache[name] = np.frombuffer(r.stdout, np.float32).astype(np.float64)
+            if EPB == 'v145m' and name == 'vape':   # v14.5: шипение 0,8 с, потом глитч и реплика [14]
+                h = cache[name][:int(.8 * SR)].copy(); n = int(.2 * SR); h[-n:] *= np.linspace(1, 0, n); cache[name] = h
         put(x, cache[name], t0, SFX8_GAIN.get(name, .3) * g0, pan * .4)
     return x
 
