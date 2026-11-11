@@ -256,7 +256,7 @@
       const u = t - q.pozzhe, dk = E(t, q.elek - .3, 1.1), plug = E(t, q.flesh - .1, .7, 'io'), al = E(t, q.ozh - .2, .6);
       const ST = 'M-170 -40H150V40H-170ZM150 -24H206V24H150ZM-120 -40V40';
       ov += tx(L.stanfordU, 0, -390, { f: 'O', w: 700, s: 44, c: C.ivory, ls: 10, op: clamp(u * 3) }) + draw('M-330 -360H330', clamp(u * 2), C.ivory, 3, false, 'opacity=".4"');
-      let m = ico('f', 'open-file-folder', -330, 90, VERT ? 420 : 540, { s: sp(t, q.pozzhe - .05, .7), r: -6 }) + tx(L.project, -330, VERT ? 300 : 360, { f: 'O', w: 700, s: 32, c: C.ivory, ls: 5, op: clamp(u * 2 - .6) }) + crystal(-330, 50, .42 * sp(t, q.pozzhe + .3, .6));
+      let m = ico('f', 'open-file-folder', VERT ? -235 : -330, 90, VERT ? 400 : 540, { s: sp(t, q.pozzhe - .05, .7), r: -6 }) + tx(L.project, VERT ? -235 : -330, VERT ? 290 : 360, { f: 'O', w: 700, s: 32, c: C.ivory, ls: 5, op: clamp(u * 2 - .6) }) + crystal(VERT ? -235 : -330, 50, .42 * sp(t, q.pozzhe + .3, .6));
       m += draw('M-230 20C-150 -120 -60 -180 10 -150', dk * 2, C.gold, 4, true, 'stroke-dasharray=".02 .02"');
       const sx = lerp(40, VERT ? 120 : 150, plug), sy = lerp(-170, VERT ? 96 : 120, plug);
       m += ico('f', 'laptop', VERT ? 340 : 400, 110, VERT ? 400 : 540, { s: sp(t, q.flesh - .7, .6) });
