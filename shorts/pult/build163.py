@@ -79,13 +79,21 @@ SHORT = {**{s['id']: s['short'] for s in SCENES}, 's11': 'Ещё'}
 
 
 def tabs_html():
-    # Кнопки, не ссылки: просмотрщик Claude может перехватывать нажатия на <a href="#…">, и тогда «вкладка не открывается».
+    # Не ссылки-якоря: просмотрщик Claude может перехватывать нажатия на <a href="#…"> — «вкладка не открывается».
+    # Вкладка = скрытый переключатель + подпись: раздел показывает CSS (:has), даже если код страницы не запустился.
     b = ''
     for s in SCENES + [{'id': 's11', 'short': 'Ещё', 'qs': None}]:
         cnt = f' <i>0/{len(s["qs"])}</i>' if s['qs'] else ''
-        b += (f'<button type="button" class="tab" role="tab" id="tab_{s["id"]}" data-s="{s["id"]}" aria-controls="{s["id"]}"'
-              f' aria-selected="false">{E(s["short"])}{cnt}</button>')
-    return f'<div id="tabsTop"></div><div class="tabs" role="tablist" aria-label="Разделы пульта">{b}</div>'
+        chk = ' checked' if s['id'] == ORDER[0] else ''
+        b += (f'<input type="radio" class="tabr" name="pult_tab" id="tr_{s["id"]}" value="{s["id"]}"{chk}>'
+              f'<label class="tab" for="tr_{s["id"]}" data-s="{s["id"]}">{E(s["short"])}{cnt}</label>')
+    return f'<div id="tabsTop"></div><div class="tabs" role="radiogroup" aria-label="Разделы пульта">{b}</div>'
+
+
+def tabs_css():
+    show = ',\n'.join(f'.wrap:has(#tr_{i}:checked) #{i}' for i in ORDER)
+    return ('.wrap:has(.tabr:checked) section.scene { display: none; }\n'
+            f'{show} {{ display: grid; }}\n')
 
 
 def pager_html(sid):
@@ -151,17 +159,19 @@ h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(28px, 7vw
 .head-act { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
 .head-act .hint { color: var(--muted); font-size: 13px; }
 #tabsTop { height: 0; scroll-margin-top: env(safe-area-inset-top, 0px); }
-.tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0 10px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.tabs { position: relative; display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0 10px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.tabr { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
 @media (min-width: 760px) {
   .tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 8px max(16px, env(safe-area-inset-left, 0px)) 10px; }
 }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-.tab { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--fg); font-size: 13.5px; font-weight: 600; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.tab { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--fg); font-size: 13.5px; font-weight: 600; line-height: 1.2; cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .tab i { font-style: normal; font-family: var(--f-mono); font-size: 11px; font-weight: 500; color: var(--muted); }
 .tab.done { border-color: var(--ok); }
 .tab.done i { color: var(--ok); }
-.tab.on { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
-.tab.on i { color: var(--on-accent); }
+.tab.on, .tabr:checked + .tab { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
+.tab.on i, .tabr:checked + .tab i { color: var(--on-accent); }
+.tabr:focus-visible + .tab { outline: 2px solid var(--accent); outline-offset: 2px; }
 .scene { display: grid; gap: 12px; min-width: 0; }
 .scene[hidden] { display: none !important; }
 .sc-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 4px; }
@@ -415,7 +425,7 @@ JS = r'''
   if (draft && draft.s) applyState(draft.s);
   refresh(false);
 
-  document.addEventListener("change", function (e) { if (e.target.matches("input")) refresh(true); });
+  document.addEventListener("change", function (e) { if (e.target.matches("input") && !e.target.classList.contains("tabr")) refresh(true); });
   document.addEventListener("input", function (e) { if (e.target.matches(".note")) refresh(true); });
   $("btnRec").addEventListener("click", fillRec);
   $("btnRecTop").addEventListener("click", fillRec);
@@ -432,25 +442,16 @@ JS = r'''
   function show(id, force) {
     if (!panels.some(function (p) { return p.id === id; })) id = panels[0].id;
     cur = id;
+    var r = $("tr_" + id); if (r && !r.checked) r.checked = true;
     panels.forEach(function (p) { p.hidden = p.id !== id; });
-    tabs.forEach(function (t) {
-      var on = t.getAttribute("data-s") === id;
-      t.classList.toggle("on", on); t.setAttribute("aria-selected", on ? "true" : "false"); t.tabIndex = on ? 0 : -1;
-    });
+    tabs.forEach(function (t) { t.classList.toggle("on", t.getAttribute("data-s") === id); });
     try { localStorage.setItem(TAB_KEY, id); } catch (e) {}
     bringTop(force);
   }
-  tabs.forEach(function (t) { t.addEventListener("click", function () { show(t.getAttribute("data-s"), true); }); });
+  qs(".tabr").forEach(function (r) { r.addEventListener("change", function () { if (r.checked) show(r.value, true); }); });
+  tabs.forEach(function (t) { t.addEventListener("click", function () { if (t.getAttribute("data-s") === cur) bringTop(true); }); });
   qs("[data-go]").forEach(function (b) { b.addEventListener("click", function () { show(b.getAttribute("data-go"), true); }); });
   qs("[data-act=save]").forEach(function (b) { b.addEventListener("click", save); });
-  var tl = document.querySelector(".tabs");
-  if (tl) tl.addEventListener("keydown", function (e) {
-    var k = tabs.map(function (t) { return t.getAttribute("data-s"); }).indexOf(cur), n = tabs.length, to = -1;
-    if (e.key === "ArrowRight") to = (k + 1) % n; else if (e.key === "ArrowLeft") to = (k - 1 + n) % n;
-    else if (e.key === "Home") to = 0; else if (e.key === "End") to = n - 1;
-    if (to < 0) return;
-    e.preventDefault(); show(tabs[to].getAttribute("data-s"), true); tabs[to].focus({ preventScroll: true });
-  });
   var last = ""; try { last = localStorage.getItem(TAB_KEY) || ""; } catch (e) {}
   show(last || panels[0].id, false);
 
@@ -482,7 +483,7 @@ def page():
     body = (
         '<div class="wrap">'
         '<header>'
-        '<div class="eyebrow">«Что вы знаете об одноразках?» · v16.2 → v16.3 и большой ролик</div>'
+        '<div class="eyebrow">«Что вы знаете об одноразках?» · v16.2 → v16.3 и большой ролик · версия 4</div>'
         '<h1>Пульт v16.3</h1>'
         f'<p class="lead">{nq} пункт{("" if nq % 10 == 1 and nq % 100 != 11 else "а" if 2 <= nq % 10 <= 4 and not 12 <= nq % 100 <= 14 else "ов")}: картинка v16.2, текст голоса, голос и звуки, площадки и большой ролик. Разделы — вкладками, внизу каждого — «Дальше». '
         '«Совет» — мой выбор, кадр нажми — откроется крупно. Отметь своё и нажми «Сохранить» — я прочитаю сам.</p>'
@@ -510,7 +511,7 @@ def page():
     )
     doc = ('<title>Пульт v16.3</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;700&family=JetBrains+Mono:wght@500&display=swap">\n'
-           f'<style>{CSS}</style>\n{body}\n<script>{JS}</script>\n')
+           f'<style>{CSS}{tabs_css()}</style>\n{body}\n<script>{JS}</script>\n')
     def img(m):
         p = os.path.join(HERE, 'img', m.group(1) + '.jpg')
         return 'data:image/jpeg;base64,' + base64.b64encode(open(p, 'rb').read()).decode()
