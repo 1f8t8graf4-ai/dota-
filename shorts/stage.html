@@ -35,6 +35,7 @@ window.loadEp = function (name) {
   const add = src => new Promise(r => { const s = document.createElement('script'); s.src = src; s.onload = r; document.body.appendChild(s) });
   const v8 = /^nic([bhgs]|s[abc])$/.test(name), v5 = v8 || /^(nic(w\d?|max|tyaga|me)|howto)$/.test(name), v6 = /^nicw\d$/.test(name), n9 = /^nics[abc]$/.test(name);
   if (/^v145/.test(name)) { window.V14NAME = name; return add('ep/v145-map.js').then(() => add('ep/v14-icons.js')).then(() => add('ep/v145.js')) }
+  if (/^v163/.test(name)) return add('ep/v163.js');   // v16.3 (12.11): ответы Андрея из пульта v16.3; v163 — шортс (доска, петля), v163f — глава фильма
   if (/^v162/.test(name)) return add('ep/v162.js');   // v16.2 (11.11): правки по посекундному разбору v16.1, пульт решений v16.2
   if (/^v161/.test(name)) return add('ep/v161.js');   // v16.1 (11.11): правки Андрея и Gemini; v161e1 / v161e2 — концовка отдельным файлом
   if (/^v16f/.test(name)) return add('ep/v16f.js');   // v16 полный (11.11): весь ролик со звуком
