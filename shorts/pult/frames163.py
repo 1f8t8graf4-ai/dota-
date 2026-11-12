@@ -15,6 +15,10 @@ SHOTS = {  # имя: (файл, секунда, рамка в 1920×1080 или 
     'stud': (M, 57.5, None), 'disp': (M, 62.5, None), 'salt': (M, 63.5, None), 'teens': (M, 70.5, None),
     'plates': (M, 75.5, None), 'dark': (M, 84.5, None), 'zoom': (M, 87.4, None), 'cloud': (M, 88.5, None),
     'board': (A, 1.2, None), 'tail': (B, 90.6, None),
+    # правки Gemini (12.11)
+    'sky': (M, 2.0, (600, 0, 1360, 427)), 'smoke': (M, 18.2, None), 'ovals': (M, 29.5, None), 'table': (M, 33.0, None),
+    'meter': (M, 37.6, None), 'tower': (M, 54.6, (960, 240, 1760, 690)), 'puffs': (M, 75.6, None), 'band': (M, 78.0, None),
+    'memo': (M, 82.4, None),
 }
 tot = 0
 for k, (f, t, box) in SHOTS.items():
