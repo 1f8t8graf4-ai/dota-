@@ -30,13 +30,14 @@ def q_html(q):
         attrs = f' data-text="{E(text)}"' + (' data-rec="1"' if o.get('rec') else '') + (f' data-cost="{o["cost"]}"' if o.get('cost') else '')
         typ = 'checkbox' if q.get('multi') else 'radio'
         opts += (f'<label class="opt{" rec" if o.get("rec") else ""}"><input type="{typ}" class="{"mo" if q.get("multi") else "ro"}" name="{g}" id="{o["id"]}"{attrs}>'
-                 f'<span class="o-txt"><b>{sw}{E(o["h"])}</b>' + (f'<small>{E(o["s"])}</small>' if o['s'] else '') + '</span>'
+                 f'<span class="o-txt"><b>{sw}{E(o["h"])}</b>' + (f'<small>{E(o["s"])}</small>' if o['s'] else '')
+                 + (f'<span class="o-d">{o["d"]}</span>' if o.get('d') else '') + '</span>'
                  + ('<em class="badge">совет</em>' if o.get('rec') else '') + '</label>')
     foot = f'<p class="q-foot">{E(q["foot"])}</p>' if q.get('foot') else ''
     ph = q.get('ph', 'Комментарий — необязательно')
     note = f'<input type="text" class="note" id="n_{q["id"]}" placeholder="{E(ph)}" aria-label="Комментарий: {E(q["label"])}">'
     return (f'<article class="q" data-g="{g}" data-label="{E(q["label"])}">{top}'
-            f'<div class="opts n{min(len(q["opts"]), 3)}" role="{"group" if q.get("multi") else "radiogroup"}" aria-labelledby="t_{q["id"]}">{opts}</div>{foot}{note}</article>')
+            f'<div class="opts n{1 if q.get("wide") else min(len(q["opts"]), 3)}" role="{"group" if q.get("multi") else "radiogroup"}" aria-labelledby="t_{q["id"]}">{opts}</div>{foot}{note}</article>')
 
 
 def fixes_html(sc):
@@ -233,6 +234,16 @@ textarea.note { min-height: 104px; resize: vertical; }
 .pay-row b { font-size: 15.5px; }
 .pay-row small { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; }
 #cost { font-family: var(--f-mono); }
+.o-d { display: grid; gap: 7px; margin-top: 6px; font-size: 13.4px; line-height: 1.45; color: var(--fg); }
+.o-d ol { margin: 0; padding-left: 22px; display: grid; gap: 3px; }
+.o-d ol b, .o-d p b { font-size: inherit; line-height: inherit; }
+.o-d p { margin: 0; }
+.o-d .k { display: inline-block; margin-right: 7px; font-family: var(--f-mono); font-size: 10.5px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+.o-d .p .k { color: var(--ok); }
+.o-d .m .k { color: var(--err); }
+.o-d .f .k { color: var(--accent); }
+.o-d .my .k { color: var(--fg); font-weight: 700; }
+.o-d .tx { font-weight: 700; }
 .pager { display: flex; gap: 8px; margin-top: 2px; }
 .pager > * { flex: 1 1 0; min-width: 0; }
 .pg-next.btn-alt { border-color: var(--opt-on-line); color: var(--fg); background: var(--card); }
@@ -483,7 +494,7 @@ def page():
     body = (
         '<div class="wrap">'
         '<header>'
-        '<div class="eyebrow">«Что вы знаете об одноразках?» · v16.2 → v16.3 и большой ролик · версия 5</div>'
+        '<div class="eyebrow">«Что вы знаете об одноразках?» · v16.2 → v16.3 и большой ролик · версия 6</div>'
         '<h1>Пульт v16.3</h1>'
         f'<p class="lead">{nq} пункт{("" if nq % 10 == 1 and nq % 100 != 11 else "а" if 2 <= nq % 10 <= 4 and not 12 <= nq % 100 <= 14 else "ов")}: картинка v16.2, текст голоса, голос и звуки, площадки и большой ролик. Разделы — вкладками, внизу каждого — «Дальше». '
         '«Совет» — мой выбор, кадр нажми — откроется крупно. Отметь своё и нажми «Сохранить» — я прочитаю сам.</p>'
