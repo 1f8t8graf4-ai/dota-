@@ -70,13 +70,33 @@ def scene_html(sc):
     tc = f'<span class="tc">{E(sc["tc"])}</span>' if sc.get('tc') else ''
     lead = f'<p class="sc-lead">{E(sc["lead"])}</p>' if sc.get('lead') else ''
     body = ''.join(q_html(q) for q in sc['qs']) + fixes_html(sc) + (PAY if sc.get('pay') else '')
-    return (f'<section class="scene" id="{sc["id"]}" data-name="{E(sc["name"])}" data-tc="{E(sc.get("tc", ""))}" aria-labelledby="h_{sc["id"]}">'
-            f'<div class="sc-head"><h2 id="h_{sc["id"]}">{E(sc["name"])}</h2>{tc}</div>{lead}{body}</section>')
+    return (f'<section class="scene" id="{sc["id"]}" role="tabpanel" data-name="{E(sc["name"])}" data-tc="{E(sc.get("tc", ""))}" aria-labelledby="h_{sc["id"]}">'
+            f'<div class="sc-head"><h2 id="h_{sc["id"]}">{E(sc["name"])}</h2>{tc}</div>{lead}{body}{pager_html(sc["id"])}</section>')
 
 
-def toc_html():
-    a = ''.join(f'<a href="#{s["id"]}" data-s="{s["id"]}">{E(s["short"])} <i>0/{len(s["qs"])}</i></a>' for s in SCENES)
-    return f'<nav class="toc" aria-label="Сцены">{a}<a href="#s11">Ещё</a></nav>'
+ORDER = [s['id'] for s in SCENES] + ['s11']
+SHORT = {**{s['id']: s['short'] for s in SCENES}, 's11': 'Ещё'}
+
+
+def tabs_html():
+    # Кнопки, не ссылки: просмотрщик Claude может перехватывать нажатия на <a href="#…">, и тогда «вкладка не открывается».
+    b = ''
+    for s in SCENES + [{'id': 's11', 'short': 'Ещё', 'qs': None}]:
+        cnt = f' <i>0/{len(s["qs"])}</i>' if s['qs'] else ''
+        b += (f'<button type="button" class="tab" role="tab" id="tab_{s["id"]}" data-s="{s["id"]}" aria-controls="{s["id"]}"'
+              f' aria-selected="false">{E(s["short"])}{cnt}</button>')
+    return f'<div id="tabsTop"></div><div class="tabs" role="tablist" aria-label="Разделы пульта">{b}</div>'
+
+
+def pager_html(sid):
+    k = ORDER.index(sid); out = ''
+    if k > 0:
+        out += f'<button type="button" class="btn-alt pg-prev" data-go="{ORDER[k - 1]}">← {E(SHORT[ORDER[k - 1]])}</button>'
+    if k + 1 < len(ORDER):
+        out += f'<button type="button" class="btn-alt pg-next" data-go="{ORDER[k + 1]}">Дальше: {E(SHORT[ORDER[k + 1]])} →</button>'
+    else:
+        out += '<button type="button" class="btn-main pg-next" data-act="save">Сохранить ответы</button>'
+    return f'<div class="pager">{out}</div>'
 
 
 CSS = r'''
@@ -123,25 +143,28 @@ header { display: grid; gap: 12px; }
 .eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(28px, 7vw, 40px); line-height: 1.08; margin: 0; }
 .lead { margin: 0; color: var(--muted); max-width: 68ch; }
-.flow { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; counter-reset: f; }
-.flow li { counter-increment: f; display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; padding: 4px 10px 4px 5px; border-radius: 99px; background: var(--chip); }
-.flow li::before { content: counter(f); display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: var(--card); color: var(--muted); font-family: var(--f-mono); font-size: 11px; }
-.flow li.pay { background: var(--rec-bg); color: var(--rec); }
+.flow-w { display: grid; gap: 4px; }
+.flow-k { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.flow { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; row-gap: 2px; font-size: 13px; color: var(--muted); }
+.flow li + li::before { content: "→"; margin: 0 7px; }
+.flow li.fl-pay { color: var(--rec); font-weight: 700; }
 .head-act { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
 .head-act .hint { color: var(--muted); font-size: 13px; }
-.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 8px max(16px, env(safe-area-inset-left, 0px)); background: var(--bg); border-bottom: 1px solid var(--line); }
-.toc::-webkit-scrollbar { display: none; }
+#tabsTop { height: 0; scroll-margin-top: env(safe-area-inset-top, 0px); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0 10px; background: var(--bg); border-bottom: 1px solid var(--line); }
+@media (min-width: 760px) {
+  .tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 8px max(16px, env(safe-area-inset-left, 0px)) 10px; }
+}
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-.toc a { display: inline-flex; align-items: baseline; gap: 6px; font-size: 13px; color: var(--fg); text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 5px 11px; }
-.toc a i { font-style: normal; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
-.toc a.done { border-color: var(--ok); }
-.toc a.done i { color: var(--ok); }
-.toc a { flex: none; }
-.toc a.on { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
-.toc a.on i { color: var(--on-accent); }
-.scene { scroll-margin-top: 64px; }
-.scene { display: grid; gap: 12px; min-width: 0; scroll-margin-top: 12px; }
-.sc-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 16px; }
+.tab { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--fg); font-size: 13.5px; font-weight: 600; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.tab i { font-style: normal; font-family: var(--f-mono); font-size: 11px; font-weight: 500; color: var(--muted); }
+.tab.done { border-color: var(--ok); }
+.tab.done i { color: var(--ok); }
+.tab.on { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
+.tab.on i { color: var(--on-accent); }
+.scene { display: grid; gap: 12px; min-width: 0; }
+.scene[hidden] { display: none !important; }
+.sc-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 4px; }
 .sc-head h2 { font-family: var(--f-display); font-weight: 500; font-size: 21px; line-height: 1.2; margin: 0; }
 .tc { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
 .sc-lead { margin: 0; color: var(--muted); font-size: 14px; max-width: 70ch; }
@@ -200,6 +223,13 @@ textarea.note { min-height: 104px; resize: vertical; }
 .pay-row b { font-size: 15.5px; }
 .pay-row small { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; }
 #cost { font-family: var(--f-mono); }
+.pager { display: flex; gap: 8px; margin-top: 2px; }
+.pager > * { flex: 1 1 0; min-width: 0; }
+.pg-next.btn-alt { border-color: var(--opt-on-line); color: var(--fg); background: var(--card); }
+.facts { display: grid; gap: 4px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
+.facts b { font-size: 14.5px; }
+.facts span { color: var(--muted); font-size: 12.5px; }
+.facts ul { margin: 6px 0 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
 details.box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
 details.box summary { cursor: pointer; font-weight: 700; }
 details.box ul { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
@@ -226,10 +256,9 @@ dialog#lb { width: 100%; max-width: min(1200px, 94vw); padding: 0; border: 0; ba
 dialog#lb::backdrop { background: var(--scrim); }
 #lb img { display: block; width: 100%; height: auto; border-radius: 12px; }
 #lb p { margin: 8px 2px 0; font-family: var(--f-mono); font-size: 12.5px; }
-input:focus-visible, button:focus-visible, textarea:focus-visible, summary:focus-visible, .shot:focus-visible, .toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+input:focus-visible, button:focus-visible, textarea:focus-visible, summary:focus-visible, .shot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
-  .opt, .q, .toc a { transition: background-color .15s, border-color .15s, box-shadow .15s; }
+  .opt, .q, .tab { transition: background-color .15s, border-color .15s, box-shadow .15s; }
 }
 '''
 
@@ -275,11 +304,12 @@ JS = r'''
     var done = 0;
     GROUPS.forEach(function (g) { if (checked(g)) done++; });
     $("prog").textContent = "Выбрано " + done + " из " + GROUPS.length;
-    qs(".toc a[data-s]").forEach(function (a) {
-      var gs = qs(".q[data-g]", $(a.getAttribute("data-s")));
+    qs(".tab[data-s]").forEach(function (t) {
+      var i = t.querySelector("i"); if (!i) return;
+      var gs = qs(".q[data-g]", $(t.getAttribute("data-s")));
       var d = gs.filter(function (q) { return checked(q.getAttribute("data-g")); }).length;
-      a.querySelector("i").textContent = d + "/" + gs.length;
-      a.classList.toggle("done", d === gs.length);
+      i.textContent = d + "/" + gs.length;
+      t.classList.toggle("done", d === gs.length);
     });
     qs(".q[data-g]").forEach(function (q) { q.classList.toggle("answered", !!checked(q.getAttribute("data-g"))); });
     qs(".opt").forEach(function (l) { l.classList.toggle("on", l.querySelector("input").checked); });
@@ -392,29 +422,37 @@ JS = r'''
   $("btnSave").addEventListener("click", save);
   $("btnCopy").addEventListener("click", copy);
 
-  var toc = document.querySelector(".toc"), chips = qs(".toc a"), secs = qs("section.scene"), ticking = false;
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function setOn(id) {
-    chips.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + id); });
-    var a = toc && toc.querySelector('a[href="#' + id + '"]');
-    if (a) { var l = a.offsetLeft - 16, r = a.offsetLeft + a.offsetWidth + 16;
-      if (l < toc.scrollLeft) toc.scrollLeft = l; else if (r > toc.scrollLeft + toc.clientWidth) toc.scrollLeft = r - toc.clientWidth; }
+  // Вкладки: открыт один раздел. Без ссылок-якорей и без прокрутки к якорю — работает в любом просмотрщике.
+  var TAB_KEY = "pult-v16-3-tab", tabs = qs(".tab[data-s]"), panels = qs("section.scene"), cur = "";
+  function bringTop(force) {
+    var el = $("tabsTop"); if (!el) return;
+    if (!force && el.getBoundingClientRect().top >= 0) return;
+    try { el.scrollIntoView({ block: "start", inline: "nearest" }); } catch (e) { try { el.scrollIntoView(true); } catch (e2) {} }
   }
-  function goTo(id) {
-    var el = $(id); if (!el) return;
-    var top = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - (toc ? toc.offsetHeight + 10 : 10);
-    var h = document.documentElement, prev = h.style.scrollBehavior;
-    h.style.scrollBehavior = "auto"; window.scrollTo(0, Math.max(0, top)); h.style.scrollBehavior = prev;
-    setOn(id);
+  function show(id, force) {
+    if (!panels.some(function (p) { return p.id === id; })) id = panels[0].id;
+    cur = id;
+    panels.forEach(function (p) { p.hidden = p.id !== id; });
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("data-s") === id;
+      t.classList.toggle("on", on); t.setAttribute("aria-selected", on ? "true" : "false"); t.tabIndex = on ? 0 : -1;
+    });
+    try { localStorage.setItem(TAB_KEY, id); } catch (e) {}
+    bringTop(force);
   }
-  chips.forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); goTo(a.getAttribute("href").slice(1)); }); });
-  function onScroll() {
-    ticking = false; var cur = secs.length ? secs[0].id : "", lim = (toc ? toc.offsetHeight : 0) + 40;
-    secs.forEach(function (sc) { if (sc.getBoundingClientRect().top <= lim) cur = sc.id; });
-    setOn(cur);
-  }
-  window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
-  onScroll();
+  tabs.forEach(function (t) { t.addEventListener("click", function () { show(t.getAttribute("data-s"), true); }); });
+  qs("[data-go]").forEach(function (b) { b.addEventListener("click", function () { show(b.getAttribute("data-go"), true); }); });
+  qs("[data-act=save]").forEach(function (b) { b.addEventListener("click", save); });
+  var tl = document.querySelector(".tabs");
+  if (tl) tl.addEventListener("keydown", function (e) {
+    var k = tabs.map(function (t) { return t.getAttribute("data-s"); }).indexOf(cur), n = tabs.length, to = -1;
+    if (e.key === "ArrowRight") to = (k + 1) % n; else if (e.key === "ArrowLeft") to = (k - 1 + n) % n;
+    else if (e.key === "Home") to = 0; else if (e.key === "End") to = n - 1;
+    if (to < 0) return;
+    e.preventDefault(); show(tabs[to].getAttribute("data-s"), true); tabs[to].focus({ preventScroll: true });
+  });
+  var last = ""; try { last = localStorage.getItem(TAB_KEY) || ""; } catch (e) {}
+  show(last || panels[0].id, false);
 
   setStatus("Подключаю сохранение…");
   var useP = (window.claude && typeof window.claude.use === "function") ? window.claude.use("db") : Promise.resolve(null);
@@ -438,7 +476,7 @@ JS = r'''
 
 
 def page():
-    flow = ''.join(('<li class="' + c + '">' if c else '<li>') + E(t) + '</li>' for t, c in FLOW)
+    flow = ''.join(('<li class="fl-' + c + '">' if c else '<li>') + E(t) + '</li>' for t, c in FLOW)
     facts = ''.join(f'<li>{E(f)}</li>' for f in FACTS)
     nq = sum(len(s['qs']) for s in SCENES)
     body = (
@@ -446,19 +484,20 @@ def page():
         '<header>'
         '<div class="eyebrow">«Что вы знаете об одноразках?» · v16.2 → v16.3 и большой ролик</div>'
         '<h1>Пульт v16.3</h1>'
-        f'<p class="lead">{nq} пункт{("" if nq % 10 == 1 and nq % 100 != 11 else "а" if 2 <= nq % 10 <= 4 and not 12 <= nq % 100 <= 14 else "ов")} : картинка v16.2, текст голоса, голос и звуки, площадки и большой ролик. У каждого — кадр из v16.2 (нажми — откроется крупно) и варианты, '
-        '«совет» — мой выбор. Отметь своё, допиши, если надо, и нажми «Сохранить» — я прочитаю сам. Не сохранится — «Текстом», и пришли в чат.</p>'
-        f'<ol class="flow" aria-label="Порядок работы">{flow}</ol>'
+        f'<p class="lead">{nq} пункт{("" if nq % 10 == 1 and nq % 100 != 11 else "а" if 2 <= nq % 10 <= 4 and not 12 <= nq % 100 <= 14 else "ов")}: картинка v16.2, текст голоса, голос и звуки, площадки и большой ролик. Разделы — вкладками, внизу каждого — «Дальше». '
+        '«Совет» — мой выбор, кадр нажми — откроется крупно. Отметь своё и нажми «Сохранить» — я прочитаю сам.</p>'
+        f'<div class="flow-w"><span class="flow-k">Порядок</span><ol class="flow" aria-label="Порядок работы">{flow}</ol></div>'
         '<div class="head-act"><button type="button" class="btn-alt" id="btnRecTop">Поставить мои советы во все пустые пункты</button>'
         '<span class="hint">Твои выборы не трогает.</span></div>'
         '</header>'
-        f'{toc_html()}'
+        f'{tabs_html()}'
         + ''.join(scene_html(s) for s in SCENES) +
-        '<section class="scene" id="s11" data-name="Ещё" data-tc="" aria-labelledby="h_s11">'
+        '<section class="scene" id="s11" role="tabpanel" data-name="Ещё" data-tc="" aria-labelledby="h_s11">'
         '<div class="sc-head"><h2 id="h_s11">Ещё</h2></div>'
         '<textarea class="note" id="n_extra" placeholder="Что ещё поправить или добавить — необязательно" aria-label="Что ещё поправить или добавить"></textarea>'
+        f'<div class="facts"><b>Где Gemini неточен · {len(FACTS)}</b><span>для справки, выбирать тут ничего не надо</span><ul>{facts}</ul></div>'
+        f'{pager_html("s11")}'
         '</section>'
-        f'<details class="box"><summary>Где Gemini неточен · {len(FACTS)}</summary><ul>{facts}</ul></details>'
         '<details class="box" id="outbox"><summary>Текст ответов</summary><textarea class="out" id="output" readonly aria-label="Текст ответов"></textarea></details>'
         '</div>'
         '<div class="bar"><div class="bar-in">'
