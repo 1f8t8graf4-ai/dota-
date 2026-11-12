@@ -290,9 +290,9 @@ def sfx6(T, SC, DUR, rng, cues, loop=False):
 
 
 # v8 (09.11): звуки — набор ElevenLabs Sound Effects (sfx8/*.mp3), мало и тихо; без щелчков на словах и «награды» в конце
-SFX8_EPS = {'nicb', 'nich', 'nicg', 'nics', 'nicsa', 'nicsb', 'nicsc', 'v14m', 'v14a', 'v145m', 'v16f', 'v161', 'v161e1', 'v161e2'}
+SFX8_EPS = {'nicb', 'nich', 'nicg', 'nics', 'nicsa', 'nicsb', 'nicsc', 'v14m', 'v14a', 'v145m', 'v16f', 'v161', 'v161e1', 'v161e2', 'v162', 'v162a', 'v162b', 'v162t'}
 DIR11 = {'nicf', 'nicv'}  # v11: звук по сюжету — sound11.py
-BED8 = {'nics': -8, 'nicsa': -8, 'nicsb': -8, 'nicsc': -8, 'nicf': -9, 'nicv': -9, 'v14m': -16, 'v14a': -16, 'v145m': -18, 'v16f': -11, 'v161': -11, 'v161e1': -11, 'v161e2': -11}  # музыка относительно голоса, LU: у оригиналов музыка слышна всё время (замер 09.11)
+BED8 = {'nics': -8, 'nicsa': -8, 'nicsb': -8, 'nicsc': -8, 'nicf': -9, 'nicv': -9, 'v14m': -16, 'v14a': -16, 'v145m': -18, 'v16f': -11, 'v161': -11, 'v161e1': -11, 'v161e2': -11, 'v162': -11, 'v162a': -11, 'v162b': -11, 'v162t': -11}  # музыка относительно голоса, LU: у оригиналов музыка слышна всё время (замер 09.11)
 SFX8_GAIN = {'impact': .55, 'dive': .32, 'wave': .32, 'whoosh': .26, 'drip': .4, 'stamp': .35, 'thud': .3, 'chomp': .3, 'zap': .28,
              'ding': .3, 'shimmer': .3, 'pin': .3, 'tick': .25, 'heart': .45, 'swish': .25,
              'bellows': .4, 'quill': .3, 'coins': .4, 'seal': .45, 'whip': .4, 'river': .25, 'bell': .3, 'eyes': .55, 'munch': .35, 'puff': .3,
