@@ -1,6 +1,6 @@
 # Данные пульта v16.3 (вставляются в build163.py вместо SCENES/FACTS/FLOW пульта v16.2)
 O = lambda id, h, s='', **k: dict(id=id, h=h, s=s, **k)
-from plot_data import CLOSE, NAME3, RETRO, GRID, STAMP, REDACT, KREUGER, PLAN6
+from plot_data import CLOSE, NAME3, RETRO, GRID, STAMP, REDACT, KREUGER, PLAN6, TEASER
 T = lambda id, head, old, new, why: (id, f'{head}: «{new}»', dict(head=head, old=old, new=new, why=why))
 
 SCENES = [
@@ -276,7 +276,7 @@ SCENES = [
   ]),
  dict(id='s13', name='Шортсы: сетка и концовки', short='Шортсы', tc='тизеры к фильму',
   lead='Шортс — тизер: хук, 1–2 жёстких факта, открытый вопрос. В конце — доска: открыта карточка этого шортса, остальные закрашены. Переворот доски в шортсы не идёт никогда.',
-  qs=[GRID, STAMP, REDACT, KREUGER]),
+  qs=[GRID, TEASER, STAMP, REDACT, KREUGER]),
 ]
 
 FACTS = ['Казино в Shorts «живёт нормально» — нет: правило YouTube про казино действует и для Shorts, TikTok такое режет.',
