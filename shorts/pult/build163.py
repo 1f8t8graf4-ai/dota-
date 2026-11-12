@@ -129,11 +129,17 @@ h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(28px, 7vw
 .flow li.pay { background: var(--rec-bg); color: var(--rec); }
 .head-act { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
 .head-act .hint { color: var(--muted); font-size: 13px; }
-.toc { display: flex; flex-wrap: wrap; gap: 6px; }
+.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; display: flex; flex-wrap: nowrap; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 8px max(16px, env(safe-area-inset-left, 0px)); background: var(--bg); border-bottom: 1px solid var(--line); }
+.toc::-webkit-scrollbar { display: none; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
 .toc a { display: inline-flex; align-items: baseline; gap: 6px; font-size: 13px; color: var(--fg); text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 5px 11px; }
 .toc a i { font-style: normal; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
 .toc a.done { border-color: var(--ok); }
 .toc a.done i { color: var(--ok); }
+.toc a { flex: none; }
+.toc a.on { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--on-accent); }
+.toc a.on i { color: var(--on-accent); }
+.scene { scroll-margin-top: 64px; }
 .scene { display: grid; gap: 12px; min-width: 0; scroll-margin-top: 12px; }
 .sc-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 16px; }
 .sc-head h2 { font-family: var(--f-display); font-weight: 500; font-size: 21px; line-height: 1.2; margin: 0; }
@@ -386,6 +392,30 @@ JS = r'''
   $("btnSave").addEventListener("click", save);
   $("btnCopy").addEventListener("click", copy);
 
+  var toc = document.querySelector(".toc"), chips = qs(".toc a"), secs = qs("section.scene"), ticking = false;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function setOn(id) {
+    chips.forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + id); });
+    var a = toc && toc.querySelector('a[href="#' + id + '"]');
+    if (a) { var l = a.offsetLeft - 16, r = a.offsetLeft + a.offsetWidth + 16;
+      if (l < toc.scrollLeft) toc.scrollLeft = l; else if (r > toc.scrollLeft + toc.clientWidth) toc.scrollLeft = r - toc.clientWidth; }
+  }
+  function goTo(id) {
+    var el = $(id); if (!el) return;
+    var top = el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - (toc ? toc.offsetHeight + 10 : 10);
+    var h = document.documentElement, prev = h.style.scrollBehavior;
+    h.style.scrollBehavior = "auto"; window.scrollTo(0, Math.max(0, top)); h.style.scrollBehavior = prev;
+    setOn(id);
+  }
+  chips.forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); goTo(a.getAttribute("href").slice(1)); }); });
+  function onScroll() {
+    ticking = false; var cur = secs.length ? secs[0].id : "", lim = (toc ? toc.offsetHeight : 0) + 40;
+    secs.forEach(function (sc) { if (sc.getBoundingClientRect().top <= lim) cur = sc.id; });
+    setOn(cur);
+  }
+  window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
   setStatus("Подключаю сохранение…");
   var useP = (window.claude && typeof window.claude.use === "function") ? window.claude.use("db") : Promise.resolve(null);
   withTimeout(useP, 12000).then(function (ns) {
@@ -421,8 +451,8 @@ def page():
         f'<ol class="flow" aria-label="Порядок работы">{flow}</ol>'
         '<div class="head-act"><button type="button" class="btn-alt" id="btnRecTop">Поставить мои советы во все пустые пункты</button>'
         '<span class="hint">Твои выборы не трогает.</span></div>'
-        f'{toc_html()}'
         '</header>'
+        f'{toc_html()}'
         + ''.join(scene_html(s) for s in SCENES) +
         '<section class="scene" id="s11" data-name="Ещё" data-tc="" aria-labelledby="h_s11">'
         '<div class="sc-head"><h2 id="h_s11">Ещё</h2></div>'
