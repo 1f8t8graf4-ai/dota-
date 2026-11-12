@@ -25,6 +25,36 @@ SFX = {  # имя (как в cue() рисовки) → (описание, дли
     'bubble': ('liquid bubbling and fizzing in a glass laboratory flask, chemical reaction, close-up', 1.6),
 }
 
+SFX16 = {  # v16.4 (12.11 ночь, «да» Андрея на звуки): то, чего нет в sfx13/sfx8 — город, заводы, машинка, архив, школа, маркер
+    'typing':   ('vintage mechanical typewriter typing steadily, crisp key strikes, close-up, dry room, no bell, no music', 4.0),
+    'carriage': ('typewriter carriage return lever pushed, ratchet slide and a single small bell ding', 1.3),
+    'city':     ('busy night city street ambience, steady traffic, cars passing on wet asphalt, distant horn, no music, no voices', 5.0),
+    'carby':    ('single car passing by quickly on a wet street at night, smooth doppler swoosh', 1.6),
+    'bin':      ('cigarette pack tossed into a metal street trash bin, light hollow clang', 0.8),
+    'factory':  ('1970s tobacco factory ambience, heavy machinery hum, conveyor rattle, distant steam whistle, no music', 3.5),
+    'pour':     ('clear liquid poured into a glass laboratory flask, then gentle fizzing reaction', 2.0),
+    'glass':    ('two glass laboratory beakers clink softly', 0.6),
+    'drawer':   ('heavy metal filing cabinet drawer slides shut with a solid clunk', 1.0),
+    'vault':    ('massive steel bank vault door swings shut, deep metallic boom and bolts locking', 2.0),
+    'vaultopen':('massive steel bank vault door unlocks and creaks open, heavy hinges', 2.0),
+    'papers':   ('a pile of paper documents flying out and fluttering in the air, rustling', 1.5),
+    'marker':   ('black felt tip marker scribbling hard back and forth over paper, squeaky', 1.5),
+    'school':   ('high school hallway ambience, teenagers chatting indistinctly, a locker door slams, no music', 3.5),
+    'keys':     ('fast typing on a laptop keyboard, soft plastic clicks', 1.2),
+    'deep':     ('soft deep cinematic whoosh, low and smooth, short', 0.9),
+    'xray':     ('x-ray film light box switching on, fluorescent tube flicker and soft electrical hum', 1.2),
+}
+
+def sfx16(names=None):
+    d = os.path.join(HERE, 'sfx16'); os.makedirs(d, exist_ok=True)
+    for name, (text, dur) in SFX16.items():
+        if names and name not in names: continue
+        f = os.path.join(d, name + '.mp3')
+        if os.path.exists(f): continue
+        r = post('/v1/sound-generation', {'text': text, 'duration_seconds': dur, 'prompt_influence': .55})
+        print('  стоимость:', {k: v for k, v in r.headers.items() if 'char' in k.lower() or 'cost' in k.lower()})
+        open(f, 'wb').write(r.content); print('звук', name, len(r.content) // 1024, 'КБ')
+
 def opt(a, k, d=None): return a[a.index(k) + 1] if k in a else d
 
 def post(path, body, tries=3):
@@ -48,7 +78,8 @@ def voice(ep, a):
     body = {'text': text, 'model_id': model, 'voice_settings': vs}
     if opt(a, '--seed'): body['seed'] = int(opt(a, '--seed'))
     print(ep, 'знаков:', len(text), 'голос', vid, model, vs)
-    j = post(f'/v1/text-to-speech/{vid}/with-timestamps?output_format=mp3_44100_192', body).json()
+    r = post(f'/v1/text-to-speech/{vid}/with-timestamps?output_format=mp3_44100_192', body); j = r.json()
+    print('стоимость (заголовки ответа):', {k: v for k, v in r.headers.items() if 'char' in k.lower() or 'cost' in k.lower()})
     out = os.path.join(HERE, 'out', ep); os.makedirs(out, exist_ok=True)
     open(os.path.join(out, 'tts.mp3'), 'wb').write(base64.b64decode(j['audio_base64'])); json.dump(j.get('alignment'), open(os.path.join(out, 'tts.align.json'), 'w'), ensure_ascii=False)
     build(ep)
@@ -92,6 +123,7 @@ def sfx():
         f = os.path.join(d, name + '.mp3')
         if os.path.exists(f): continue
         r = post('/v1/sound-generation', {'text': text, 'duration_seconds': dur, 'prompt_influence': .5})
+        print('  стоимость:', {k: v for k, v in r.headers.items() if 'char' in k.lower() or 'cost' in k.lower()})
         open(f, 'wb').write(r.content); print('звук', name, len(r.content) // 1024, 'КБ')
 
 def music(ep):
@@ -123,4 +155,4 @@ def demon(ep):
 
 if __name__ == '__main__':
     a = sys.argv[1:]
-    {'voice': lambda: voice(a[1], a), 'build': lambda: build(a[1]), 'sfx': sfx, 'music': lambda: music(a[1]), 'demon': lambda: demon(a[1])}[a[0]]()
+    {'voice': lambda: voice(a[1], a), 'build': lambda: build(a[1]), 'sfx': sfx, 'sfx16': lambda: sfx16(a[1:] or None), 'music': lambda: music(a[1]), 'demon': lambda: demon(a[1])}[a[0]]()
