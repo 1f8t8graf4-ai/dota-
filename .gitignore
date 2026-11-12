@@ -22,3 +22,9 @@ __pycache__/
 дизайн/макеты-24.10/pub/
 дизайн/tiktok-проба/
 дизайн/restless/restless-ui.html
+
+# пульт v16.3: собранная страница, кадры и файлы тестов
+shorts/pult/pult-v16-3.html
+shorts/pult/img/
+shorts/pult/tests/T_*.html
+shorts/pult/tests/*.png
