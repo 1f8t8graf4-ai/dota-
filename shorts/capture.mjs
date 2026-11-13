@@ -41,9 +41,11 @@ if (mode === 'cues') {
     await p.screenshot({ path: path.join(dir, `f${t.toFixed(2).padStart(6, '0')}.png`) });
   }
 } else {
-  const fps = Number(arg || 30), N = Math.ceil(TL.dur * fps), K = Number(tabsArg || 4);
+  // v16.6: RANGE='44.9-55.4,73.6-88.9' — только эти отрезки подряд (пробы), иначе весь ролик
+  const fps = Number(arg || 30), TS = process.env.RANGE ? process.env.RANGE.split(',').flatMap(r => { const [a, b] = r.split('-').map(Number), o = []; for (let i = Math.round(a * fps); i < Math.round(b * fps); i++) o.push(i / fps); return o }) : null;
+  const N = TS ? TS.length : Math.ceil(TL.dur * fps), K = Number(tabsArg || 4);
   const P = await Promise.all([...Array(K)].map(page));
-  const outf = path.join(OUT, `video${process.env.FMT ? '-' + process.env.FMT : ''}.mp4`);
+  const outf = path.join(OUT, `video${process.env.FMT ? '-' + process.env.FMT : ''}${TS ? '-range' : ''}.mp4`);
   const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18',
     '-pix_fmt', 'yuv420p', '-r', String(fps), outf], { stdio: ['pipe', 'inherit', 'inherit'] });
   const t0 = Date.now();
@@ -51,7 +53,7 @@ if (mode === 'cues') {
   for (let i = 0; i < N; i += K) {
     const bufs = await Promise.all(P.map(async (p, j) => {
       const f = i + j; if (f >= N) return null;
-      await p.evaluate(t => window.render(t), f / fps);
+      await p.evaluate(t => window.render(t), TS ? TS[f] : f / fps);
       return p.screenshot({ type: 'jpeg', quality: 92 })
     }));
     for (const buf of bufs) if (buf && !ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
