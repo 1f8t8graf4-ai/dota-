@@ -38,7 +38,7 @@ if (mode === 'cues') {
   const dir = path.join(OUT, 'shots'); fs.mkdirSync(dir, { recursive: true });
   for (const t of arg.split(',').map(Number)) {
     await p.evaluate(t => window.render(t), t);
-    await p.screenshot({ path: path.join(dir, `f${t.toFixed(2).padStart(6, '0')}.png`) });
+    await p.screenshot({ path: path.join(dir, `f${t.toFixed(2).padStart(6, '0')}.png`), timeout: 240000 });
   }
 } else {
   // v16.6: RANGE='44.9-55.4,73.6-88.9' — только эти отрезки подряд (пробы), иначе весь ролик
@@ -54,7 +54,7 @@ if (mode === 'cues') {
     const bufs = await Promise.all(P.map(async (p, j) => {
       const f = i + j; if (f >= N) return null;
       await p.evaluate(t => window.render(t), TS ? TS[f] : f / fps);
-      return p.screenshot({ type: 'jpeg', quality: 92 })
+      return p.screenshot({ type: 'jpeg', quality: 92, timeout: 240000 })
     }));
     for (const buf of bufs) if (buf && !ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
     if (i % 300 < K) console.log(`${ep}: кадр ${i}/${N}  ${((Date.now() - t0) / 1000).toFixed(0)} с`);

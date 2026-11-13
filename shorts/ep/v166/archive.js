@@ -212,7 +212,6 @@
       { a: t0, scene: A.S, cam: A.cam, upd: updArchive, fx: fxA },
       { a: tCourt, scene: Ct.S, cam: Ct.cam, upd: updCourt, fx: fxC },
       { a: tBack, scene: A.S, cam: A.cam, upd: updArchive, fx: fxA },
-      { a: K.cal + .8, scene: A.S, cam: A.cam, upd: updArchive, fx: t => Object.assign(fxA(t), { fade: 1 - at(t, K.cal + .8, K.cal + 1.1) }) },
     ];
   });
 })();
