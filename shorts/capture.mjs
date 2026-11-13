@@ -45,7 +45,7 @@ if (mode === 'cues') {
   const fps = Number(arg || 30), TS = process.env.RANGE ? process.env.RANGE.split(',').flatMap(r => { const [a, b] = r.split('-').map(Number), o = []; for (let i = Math.round(a * fps); i < Math.round(b * fps); i++) o.push(i / fps); return o }) : null;
   const N = TS ? TS.length : Math.ceil(TL.dur * fps), K = Number(tabsArg || 4);
   const P = await Promise.all([...Array(K)].map(page));
-  const outf = path.join(OUT, `video${process.env.FMT ? '-' + process.env.FMT : ''}${TS ? '-range' : ''}.mp4`);
+  const outf = process.env.OUTF ? path.join(OUT, process.env.OUTF) : path.join(OUT, `video${process.env.FMT ? '-' + process.env.FMT : ''}${TS ? '-range' : ''}.mp4`);   // OUTF — своё имя (куски рендера)
   const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18',
     '-pix_fmt', 'yuv420p', '-r', String(fps), outf], { stdio: ['pipe', 'inherit', 'inherit'] });
   const t0 = Date.now();
