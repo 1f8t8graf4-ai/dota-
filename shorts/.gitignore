@@ -9,3 +9,6 @@ out_v5*
 render_*.log
 render6.log
 render6b.log
+node_modules/
+package.json
+package-lock.json
