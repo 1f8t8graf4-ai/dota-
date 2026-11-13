@@ -16,9 +16,10 @@ import tt_audio  # noqa: E402
 SR = 48000
 GAIN = {'boom': .5, 'stamp': .5, 'thud': .42, 'impact': .45, 'vault': .55, 'vaultopen': .45, 'papers': .4, 'drawer': .42, 'vape': .5, 'puff': .5,
         'whoosh': .26, 'dive': .32, 'ding': .3, 'pin': .3, 'tick': .25, 'heart': .45, 'swish': .25, 'coins': .4, 'typing': .34, 'carriage': .3,
-        'city': .26 * .35, 'carby': .3 * .4, 'bin': .32, 'factory': .26, 'pour': .3, 'glass': .26, 'marker': .3, 'school': .22, 'keys': .26, 'deep': .3, 'xray': .26}
+        'city': .26 * .35 * .28, 'carby': .3 * .4 * .28, 'bin': .32, 'factory': .26, 'pour': .3, 'glass': .26, 'marker': .3, 'school': .22, 'keys': .26, 'deep': .3, 'xray': .26}
 DIRS = ('sfx17', 'sfx16', 'sfx13', 'sfx8')
 SPEED_AB = .92          # пробы А и Б: трек медленнее и ниже тоном
+# 13.11 вечер: машины ещё на 11 дБ тише (× .28), чтобы не мешали первым словам
 SPEED_C = 1.07          # проба В: ролик быстрее
 
 
