@@ -2965,6 +2965,279 @@
     c.restore();
   }
   function vFirst(c) { const k = K; vS1(c, 0); return k }   // кадр 0 = первый кадр ролика (город и «МАНГО»)
+
+  // ================= v16.5 · версии 2 и 3: та же раскадровка, поверх — слой реализма (свет, воздух, фактуры, дым, дождь, отражения) =================
+  // STY: 'bob' — версия 1; 'day' — версия 2 «реализм, день / интерьер» (ночь — только интро и спальня); 'neon' — версия 3 «ночной неон», без размытия.
+  // Слой рисуется после каждой сцены в её же системе координат (rig) — поэтому сдвиги, пролёты и круги-переходы несут свет вместе со сценой.
+  let STY = 'bob', RG = null, RGR = null;
+  const Rh2 = (i, j) => H1(i * 57.31 + j * 131.71);
+  function Rvn(x, y) { const xi = Math.floor(x), yi = Math.floor(y), u = x - xi, v = y - yi, su = u * u * (3 - 2 * u), sv = v * v * (3 - 2 * v); return lp(lp(Rh2(xi, yi), Rh2(xi + 1, yi), su), lp(Rh2(xi, yi + 1), Rh2(xi + 1, yi + 1), su), sv) }
+  function Rfbm(x, y, o = 4) { let s = 0, a = .5, f = 1; for (let i = 0; i < o; i++) { s += a * Rvn(x * f, y * f); a *= .5; f *= 2.03 } return s }
+  const RCA = new Map(), Rcache = (k, w, h, fn) => { let c = RCA.get(k); if (!c) { c = mk(w, h); fn(c.getContext('2d'), w, h); RCA.set(k, c) } return c };
+  const Rrgba = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${n >> 8 & 255},${n & 255},${a})` };
+  // фактуры (серый fbm на весь кадр с запасом под живую камеру): бумага — мелкая, дерево — вытянутые волокна, «облака» — крупные пятна света
+  function Rtex(kind) {
+    const P = { paper: [7, 7, 5], wood: [110, 4, 4], cloud: [170, 170, 5] }[kind], W = 1200, H = 2100;
+    return Rcache('tx' + kind, W, H, (x) => { const im = x.createImageData(W, H), d = im.data; for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) { const v = Rfbm(i / P[0] + 3.3, j / P[1] + 7.7, P[2]), q = (j * W + i) * 4; d[q] = d[q + 1] = d[q + 2] = v * 255; d[q + 3] = 255 } x.putImageData(im, 0, 0) });
+  }
+  function RtexOver(c, kind, mode, a, clip) { if (a <= 0) return; c.save(); if (clip) { clip(c); c.clip('evenodd') } c.globalCompositeOperation = mode; c.globalAlpha *= a; c.drawImage(Rtex(kind), -60, -90); c.restore() }
+  function Rfill(c, col, mode, a = 1) { if (a <= 0) return; c.save(); c.globalCompositeOperation = mode; c.globalAlpha *= a; c.fillStyle = col; c.fillRect(-400, -400, WW + 800, HH + 800); c.restore() }
+  function RgradV(c, y0, y1, c0, c1, mode, a = 1) { if (a <= 0) return; c.save(); c.globalCompositeOperation = mode; c.globalAlpha *= a; const g = c.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, c0); g.addColorStop(1, c1); c.fillStyle = g; c.fillRect(-400, -400, WW + 800, HH + 800); c.restore() }
+  // свет пятном (screen), темнота вокруг пятна (source-over), свечение точки
+  function Rpool(c, x, y, rx, ry, col, a) { if (a <= 0) return; c.save(); c.globalCompositeOperation = 'screen'; c.globalAlpha *= a; c.translate(x, y); c.scale(1, ry / rx); const g = c.createRadialGradient(0, 0, 0, 0, 0, rx); g.addColorStop(0, Rrgba(col, .55)); g.addColorStop(.45, Rrgba(col, .2)); g.addColorStop(1, Rrgba(col, 0)); c.fillStyle = g; c.fillRect(-rx, -rx, 2 * rx, 2 * rx); c.restore() }
+  function Rspot(c, x, y, r0, r1, a, col = '4,6,16', sy = 1) { if (a <= 0) return; c.save(); c.globalAlpha *= a; c.translate(x, y); c.scale(1, sy); const g = c.createRadialGradient(0, 0, r0, 0, 0, r1); g.addColorStop(0, `rgba(${col},0)`); g.addColorStop(1, `rgba(${col},1)`); c.fillStyle = g; c.fillRect(-3000, -3000, 6000, 6000); c.restore() }
+  function Rglow(c, x, y, r, col, a = 1) { if (a <= 0) return; c.save(); c.globalCompositeOperation = 'screen'; c.globalAlpha *= cl(a, 0, 3); const g = c.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, Rrgba(col, 1)); g.addColorStop(.22, Rrgba(col, .45)); g.addColorStop(1, Rrgba(col, 0)); c.fillStyle = g; c.fillRect(x - r, y - r, 2 * r, 2 * r); c.restore() }
+  // конус света без размытия: 16 вложенных клиньев с убывающей яркостью
+  function Rcone(len, spread, col) {
+    const half = Math.tan(spread / 2) * len, w = Math.ceil(half * 2 + 40), h = Math.ceil(len);
+    return Rcache(`cn${len | 0}|${spread.toFixed(3)}|${col}`, w, h, (x) => {
+      for (let i = 0; i < 16; i++) { const k = 1 - i / 16, hh = half * (.18 + .82 * k), g = x.createLinearGradient(0, 0, 0, len); g.addColorStop(0, Rrgba(col, .085)); g.addColorStop(.35, Rrgba(col, .04)); g.addColorStop(1, Rrgba(col, 0)); x.beginPath(); x.moveTo(w / 2 - 4 * k, 0); x.lineTo(w / 2 + 4 * k, 0); x.lineTo(w / 2 + hh, len); x.lineTo(w / 2 - hh, len); x.closePath(); x.fillStyle = g; x.fill() }
+    });
+  }
+  function Rbeam(c, x, y, ang, spread, len, col, a = 1) { if (a <= 0) return; const s = Rcone(len, spread, col); c.save(); c.translate(x, y); c.rotate(ang); c.globalCompositeOperation = 'screen'; c.globalAlpha *= a; c.drawImage(s, -s.width / 2, 0); c.restore() }
+  // пылинки в конусе (из v15)
+  function Rdust(c, t, x, y, ang, spread, len, n, seed = 1, a = 1) {
+    c.save(); c.translate(x, y); c.rotate(ang); c.globalCompositeOperation = 'screen'; c.fillStyle = '#fff'; const tn = Math.tan(spread / 2), a0 = c.globalAlpha;
+    for (let i = 0; i < n; i++) {
+      const d = ((H1(seed + i * 3.17) + t * (.006 + .012 * H1(i * 1.9 + seed))) % 1), al = d * len, w = tn * al, ac = (H1(seed + i * 7.73) * 2 - 1) * w * .85 + Math.sin(t * .6 + i) * 8, r = 1 + H1(i * 1.31 + seed) * 2.6;
+      const k = a * (.25 + .75 * H1(i * 9.1 + seed)) * Math.sin(Math.PI * d) * (1 - Math.abs(ac) / (w + 1)) * (.6 + .4 * Math.sin(t * 2 + i));
+      if (k <= .01) continue; c.globalAlpha = a0 * k; c.fillRect(ac - r / 2, al - r / 2, r, r);
+    }
+    c.restore();
+  }
+  // дым и пар — спрайты из fbm (объём без размытия, из v15)
+  let RSMK = null;
+  function RsmokeSpr() {
+    if (RSMK) return RSMK; RSMK = []; const S = 160;
+    for (let v = 0; v < 4; v++) { const c = mk(S, S), x = c.getContext('2d'), im = x.createImageData(S, S), d = im.data; for (let j = 0; j < S; j++) for (let i = 0; i < S; i++) { const dx = (i - S / 2) / (S / 2), dy = (j - S / 2) / (S / 2), r = Math.sqrt(dx * dx + dy * dy), m = Math.max(0, 1 - r), n = Rfbm(i / 34 + v * 11.3, j / 34 + v * 7.1, 4), q = (j * S + i) * 4; d[q] = d[q + 1] = d[q + 2] = 255; d[q + 3] = cl(Math.pow(m, 1.5) * (n * 2 - .5)) * 255 } x.putImageData(im, 0, 0); RSMK.push(c) }
+    return RSMK;
+  }
+  const Rn1 = x => { const i = Math.floor(x), f = x - i; return lp(H1(i), H1(i + 1), f * f * (3 - 2 * f)) * 2 - 1 };
+  function Rsmoke(c, t, x, y, o = {}) {
+    const S = RsmokeSpr(), n = o.n || 18, life = o.life || 4, seed = o.seed || 1, a0 = c.globalAlpha;
+    c.save(); c.globalCompositeOperation = o.op || 'screen';
+    for (let i = 0; i < n; i++) {
+      const age = (((t + (o.t0 || 0)) / life + H1(seed + i * 1.37)) % 1 + 1) % 1; if (o.from != null && t - o.from < age * life) continue;
+      const rise = (o.rise || 420) * Math.pow(age, .85), sway = Rn1(i * 3.7 + t * .35 + seed) * (o.sway || 40) * age + (o.drift || 0) * age * age;
+      const px = x + sway + (H1(seed + i * 9.1) - .5) * (o.spread || 20) * (1 + age * 2), py = y - rise, r = lp(o.r0 || 30, o.r1 || 180, Math.pow(age, .8)), a = (o.a ?? .5) * Math.pow(Math.sin(Math.PI * Math.min(1, age * 1.12)), 1.3);
+      if (a <= .003) continue; c.globalAlpha = a0 * a; c.save(); c.translate(px, py); c.rotate(H1(seed + i) * TAU + t * .15 * (H1(i * 2.3) - .5)); c.drawImage(S[i % 4], -r, -r, 2 * r, 2 * r); c.restore();
+    }
+    c.restore();
+  }
+  function Rrain(c, t, a, col = '#d8e6ff') {
+    if (a <= 0) return; c.save(); c.strokeStyle = col; c.lineCap = 'round'; const a0 = c.globalAlpha * a, tg = .2;
+    for (let i = 0; i < 150; i++) { const sp = 1500 + 900 * H1(i * 3.1), L = 36 + 54 * H1(i * 7.3), y = ((H1(i * 5.9) * 2400 + t * sp) % 2400) - 240, x = -150 + 1400 * H1(i * 1.7) - tg * y; c.globalAlpha = a0 * (.3 + .5 * H1(i * 2.2)); c.lineWidth = 1 + 1.6 * H1(i * 4.4); c.beginPath(); c.moveTo(x, y); c.lineTo(x - tg * L, y + L); c.stroke() }
+    c.restore();
+  }
+  // глянец пластика: полоса блика слева и цветной контур справа (в координатах вейпа)
+  function Rgloss(c, w, h, rim, a = 1) {
+    c.save(); c.globalCompositeOperation = 'screen'; c.globalAlpha *= a;
+    const g = c.createLinearGradient(-w / 2 + 8, 0, -w / 2 + 70, 0); g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(.5, 'rgba(255,255,255,.32)'); g.addColorStop(1, 'rgba(255,255,255,0)'); c.fillStyle = g; rr(c, -w / 2 + 6, -h / 2 + 30, 70, h - 60, 30); c.fill();
+    if (rim) { c.save(); c.beginPath(); c.rect(w / 2 - 40, -h, 80, 2 * h); c.clip(); c.strokeStyle = rim; c.lineWidth = 7; rr(c, -w / 2, -h / 2, w, h, 58); c.stroke(); c.restore() }
+    c.restore();
+  }
+  function Rdir(c, a = 1, col = '255,236,200', sh = '40,30,60') {
+    if (a <= 0) return; c.save(); c.globalAlpha *= a;
+    let g = c.createLinearGradient(0, 0, WW, HH); g.addColorStop(0, `rgba(${col},.35)`); g.addColorStop(.55, `rgba(${col},0)`); c.globalCompositeOperation = 'screen'; c.fillStyle = g; c.fillRect(-400, -400, WW + 800, HH + 800);
+    g = c.createLinearGradient(0, 0, WW, HH); g.addColorStop(.45, `rgba(${sh},0)`); g.addColorStop(1, `rgba(${sh},.38)`); c.globalCompositeOperation = 'multiply'; c.fillStyle = g; c.fillRect(-400, -400, WW + 800, HH + 800);
+    c.restore();
+  }
+  // окно дня в комнате студентов: небо, облака, холмы, башня Гувера при солнце
+  function RwinDay(c, t) {
+    const W = { x: 86, y: 236, w: 344, h: 400 };
+    c.save(); c.beginPath(); c.rect(W.x, W.y, W.w, W.h); c.clip();
+    const sk = c.createLinearGradient(0, W.y, 0, W.y + W.h); sk.addColorStop(0, '#6fb6ec'); sk.addColorStop(1, '#d9effc'); c.fillStyle = sk; c.fillRect(W.x, W.y, W.w, W.h);
+    Rglow(c, W.x + W.w * .18, W.y + W.h * .2, 160, '#fff6d8', .8);
+    for (let i = 0; i < 3; i++) cloud(c, W.x + ((60 + i * 130 + t * 6) % (W.w + 160)) - 60, W.y + 70 + 40 * i, .5 + .15 * i, .95, i * 4, '#ffffff');
+    c.save(); c.translate(W.x + W.w * .68, W.y + W.h * .86); c.scale(.4, .4); campus(c, 0, 0, 1); c.restore();
+    c.fillStyle = '#7fae6b'; c.beginPath(); c.moveTo(W.x, W.y + W.h); for (let x = 0; x <= W.w; x += 16) c.lineTo(W.x + x, W.y + W.h * .86 - 22 * Math.sin(x * .013 + 1) - 9 * Math.sin(x * .05)); c.lineTo(W.x + W.w, W.y + W.h); c.closePath(); c.fill();
+    c.restore();
+  }
+  // углы записки на экране — для фактур «дерево вокруг / бумага внутри»
+  function RmemoPath(c, Q) {
+    const P = [[0, 0], [MW, 0], [MW, MH], [0, MH]].map(([lx, ly]) => { const [x, y] = rot((lx - MW / 2) * MEMV.s, (ly - MH / 2) * MEMV.s, MEMV.r); return [CX + Q.s * (MEMV.x + x - Q.x), CY + Q.s * (MEMV.y + y - Q.y)] });
+    c.moveTo(P[0][0], P[0][1]); for (let i = 1; i < 4; i++) c.lineTo(P[i][0], P[i][1]); c.closePath();
+  }
+  // плавный вход/выход слоя света на пролётах (там, где сцена видна внутри другой)
+  function rigA(t, id) {
+    if (id === 's1') return 1 - ss(K.liq - .1, K.zoomE - .05, t);
+    if (id === 's2') return ss(K.zoomE, K.zoomE + .4, t) * (1 - eio(at(t, K.prep, K.prep + .38)));
+    if (id === 's3') return ss(K.prep + .38, K.prep + .8, t);
+    if (id === 's7') return 1 - eio(at(t, PZ0(), PZ1()));
+    if (id === 's8') return ss(PZ1(), PZ1() + .35, t);
+    return 1;
+  }
+  function rig(c, t, id) {
+    if (STY === 'bob' || window.__RIGOFF) return; const N = STY === 'neon', A = rigA(t, id); if (A <= 0) return;
+    c.save(); c.globalAlpha = A;
+    switch (id) {
+      case 's1': {   // ночной город (ночь в обеих версиях): мокрый асфальт, конусы фонарей, свечение неона, дождь, глянец вейпа
+        const K1 = vCam1(t);
+        c.save(); cam(c, K1.s, K1.x, K1.y, K1.r);
+        for (const [x, y, col, , s] of VNEON) {
+          Rglow(c, x, y, 170 * s, col, N ? .6 : .38);
+          c.save(); c.globalCompositeOperation = 'screen'; const g = c.createLinearGradient(0, 1450, 0, 1900); g.addColorStop(0, Rrgba(col, N ? .55 : .3)); g.addColorStop(1, Rrgba(col, 0)); c.fillStyle = g;
+          for (let k = 0; k < 7; k++) { const w = 12 + 12 * H1(k + x), xx = x + (k - 3) * 10 + Math.sin(t * 3 + k + x) * 4; c.fillRect(xx - w / 2, 1450, w, 450) } c.restore();
+        }
+        for (const lx of [66, 1014]) { Rbeam(c, lx, 890, 0, .95, 560, N ? '#ffd9a8' : '#ffc77a', .75); Rglow(c, lx, 884, 110, '#ffe2a8', .7); Rdust(c, t, lx, 890, 0, .95, 540, 26, lx, .5); Rpool(c, lx, 1452, 230, 40, '#ffc77a', .5) }
+        { const bob = Math.sin(TAU * t / 3.2) * 6; c.save(); c.translate(HV.x, HV.y + bob); c.rotate(HV.r); c.scale(HV.s, HV.s); Rgloss(c, 230, 640, N ? 'rgba(90,240,255,.6)' : 'rgba(255,190,140,.45)'); c.restore() }
+        c.restore();
+        Rrain(c, t, N ? .55 : .4);
+        RgradV(c, 820, 1500, 'rgba(0,0,0,0)', N ? 'rgba(150,60,230,.2)' : 'rgba(255,150,90,.15)', 'screen');
+        break;
+      }
+      case 's2': {
+        if (t < K.giants) { RtexOver(c, 'cloud', 'soft-light', .6); Rpool(c, CX, 760, 700, 900, '#fff0b8', N ? .25 : .45); break }   // внутри жидкости — каустика
+        if (N) {   // ночь 1973: небо темнеет, прожекторы с башни, окна и вывески светятся, мокрая дорога
+          RgradV(c, 0, 1380, 'rgba(14,20,70,.82)', 'rgba(40,24,70,.35)', 'multiply');
+          Rglow(c, 856, 318, 230, '#dce8ff', .45);
+          for (const s of [-1, 1]) Rbeam(c, TOWER.x, 470, Math.PI + s * (.42 + .22 * Math.sin(t * .6 + s * 1.3)), .16, 1600, '#d6e8ff', .55);
+          Rglow(c, TOWER.x, 900, 320, '#ffcf7a', .3); Rpool(c, CX, 1480, 700, 90, '#ffb35a', .35);
+        } else {   // день: «золотой час» — лучи солнца, тёплая дымка у земли
+          for (let i = 0; i < 5; i++) Rbeam(c, 856, 318, .25 + i * .26 + .04 * Math.sin(t * .4 + i), .1, 1800, '#fff1c8', .4);
+          Rglow(c, 856, 318, 300, '#fff6d8', .55);
+          RgradV(c, 950, 1420, 'rgba(255,220,160,0)', 'rgba(255,214,150,.3)', 'screen');
+        }
+        RtexOver(c, 'cloud', 'soft-light', .35);
+        break;
+      }
+      case 's3': case 's14': {   // стол: день — свет из окна и тени рамы; ночь — настольная лампа, остальное в темноте, дым сигареты
+        const Q = id === 's3' ? camDesk(t) : (() => { const k = eio(at(t, K.planPan, K.worked + 1.2)), [, my] = memoVW(320, 520); return { s: lp(1, 1.03, k), x: CX, y: lp(CY, my, k * .5) } })();
+        const wood = g => { g.beginPath(); g.rect(-400, -400, WW + 800, HH + 800); RmemoPath(g, Q) }, paper = g => { g.beginPath(); RmemoPath(g, Q) };
+        RtexOver(c, 'wood', 'overlay', N ? .3 : .45, wood); RtexOver(c, 'paper', 'multiply', .12, paper);
+        const [mx, my] = (() => { const [x, y] = memoVW(320, 440); return [CX + Q.s * (x - Q.x), CY + Q.s * (y - Q.y)] })();
+        const [ax, ay] = [CX + Q.s * (1060 - Q.x), CY + Q.s * (1228 - Q.y)];
+        if (N) {
+          Rspot(c, mx, my, 250, 760, .9, '6,4,8', 1.3);
+          Rbeam(c, 40, 120, -.62, .7, 1500, '#ffd59a', .7); Rdust(c, t, 40, 120, -.62, .7, 1400, 40, 7, .7);
+          Rpool(c, mx, my, 520, 640, '#ffcf8a', .38);
+          Rsmoke(c, t, ax, ay, { n: 16, life: 4.5, rise: 520, r0: 14, r1: 120, a: .32, sway: 50, drift: -60, seed: 3 });
+        } else {
+          Rfill(c, 'rgba(255,214,160,.3)', 'soft-light'); Rdir(c, 1);
+          Rpool(c, 150, 260, 1150, 1000, '#fff4dc', .4);
+          c.save(); c.globalCompositeOperation = 'multiply'; c.globalAlpha *= .1; c.fillStyle = '#3a2410'; c.translate(CX, CY); c.rotate(.5); for (const dx of [-380, -60, 260]) c.fillRect(dx, -1600, 54, 3200); c.restore();
+          Rsmoke(c, t, ax, ay, { n: 12, life: 4.5, rise: 480, r0: 12, r1: 100, a: .18, sway: 50, drift: -60, seed: 3, op: 'source-over' });
+        }
+        break;
+      }
+      case 's4': case 's11': {   // рентген: день — светлый кабинет; ночь — тёмная комната, светится только негатоскоп, дым сигареты
+        if (N) {
+          Rspot(c, XS.x, XS.y, 470, 960, .72, '2,4,14', 1.25);
+          Rpool(c, XS.x, XS.y, 540, 640, id === 's4' ? '#9fd6ff' : '#7ff5d8', .35);
+          if (id === 's4') { const b = eo(at(t, K.acrid - .1, K.tear)); Rpool(c, XS.x, XS.y - 60, 260, 520, '#ff3b5c', .55 * b); Rsmoke(c, t, 363, 225, { n: 14, life: 3.5, rise: 380, r0: 10, r1: 90, a: .3, drift: -50, seed: 9, from: K.usual }) }
+          else Rglow(c, XENT()[0], XENT()[1] + 30, 140, '#c9fff2', .45);
+        } else {
+          Rfill(c, 'rgba(225,240,255,.35)', 'soft-light');
+          Rpool(c, XS.x, XS.y, 620, 720, '#e9f6ff', .3);
+          c.save(); c.globalCompositeOperation = 'screen'; c.globalAlpha *= .08; c.translate(XS.x, XS.y); c.rotate(-.5); c.fillStyle = '#ffffff'; c.fillRect(-60, -900, 120, 1800); c.restore();
+          if (id === 's4') Rsmoke(c, t, 363, 225, { n: 12, life: 3.5, rise: 360, r0: 10, r1: 80, a: .2, drift: -50, seed: 9, from: K.usual, op: 'source-over' });
+        }
+        break;
+      }
+      case 's5': {   // лаборатория: день — светло, свет из окна справа; ночь — лучи подвесных ламп, светится жидкость, пар над колбой
+        const [nx, ny] = LBM();
+        if (N) {
+          Rspot(c, CX, 980, 300, 940, .66, '2,4,16', 1.3);
+          for (const lx of [250, 830]) { Rbeam(c, lx, 632, 0, .85, 760, '#ffe7b0', .7); Rdust(c, t, lx, 632, 0, .85, 720, 22, lx, .55) }
+          Rglow(c, LB.x, LB.y - 90, 280, '#ffb347', .5); Rpool(c, CX, 382, 520, 210, '#4ff3ff', .22);
+          Rsmoke(c, t, nx, ny - 10, { n: 12, life: 3.2, rise: 300, r0: 16, r1: 100, a: .26, seed: 5, from: K.got - .2 });
+        } else {
+          Rfill(c, 'rgba(240,248,255,.3)', 'soft-light'); Rdir(c, .8, '255,250,240', '20,30,70'); Rpool(c, 1020, 520, 900, 1200, '#ffffff', .22);
+          Rsmoke(c, t, nx, ny - 10, { n: 10, life: 3.2, rise: 300, r0: 16, r1: 100, a: .16, seed: 5, from: K.got - .2, op: 'source-over' });
+        }
+        break;
+      }
+      case 's6a': {   // архив: день — холодный люминесцентный свет; ночь — темнее, красная дымка тревоги, пыль
+        RtexOver(c, 'cloud', 'soft-light', .35);
+        if (N) { Rspot(c, VCV.x, VCV.y, VCV.r * .7, VCV.r * 2.2, .6, '6,2,6'); RgradV(c, 300, 1300, 'rgba(255,40,60,0)', 'rgba(255,40,60,.12)', 'screen'); Rdust(c, t, VCV.x, VCV.y - 420, 0, 1.1, 900, 30, 4, .6) }
+        else { Rfill(c, 'rgba(230,240,255,.3)', 'soft-light'); Rpool(c, VCV.x, VCV.y - 200, 700, 600, '#eef6ff', .25) }
+        break;
+      }
+      case 's6c': {   // суд: день — тёплые лучи из окна; ночь — свет ламп сверху, пыль
+        if (N) { Rspot(c, CX, 780, 300, 900, .68, '8,3,0', 1.2); for (const lx of [200, 540, 880]) { Rbeam(c, lx, 200, 0, .7, 1100, '#ffe7b0', .55); Rdust(c, t, lx, 200, 0, .7, 1000, 18, lx, .5) } }
+        else { Rfill(c, 'rgba(255,214,160,.28)', 'soft-light'); for (let i = 0; i < 3; i++) Rbeam(c, -80 + i * 90, 120, -.42, .2, 1700, '#fff1c8', .5); Rdust(c, t, 0, 120, -.42, .5, 1500, 30, 2, .6) }
+        break;
+      }
+      case 's7': {   // карта: день — бумага на столе при дневном свете; ночь — лампа над картой в тёмной комнате
+        RtexOver(c, 'paper', 'multiply', .14);
+        if (N) { Rspot(c, CX, 860, 270, 820, .84, '6,4,2', 1.3); Rpool(c, CX, 820, 520, 640, '#ffd59a', .3) }
+        else { Rdir(c, .9); Rpool(c, 300, 300, 1000, 1000, '#fff4dc', .16); RgradV(c, 1500, 1920, 'rgba(60,40,20,0)', 'rgba(60,40,20,.25)', 'multiply') }
+        break;
+      }
+      case 's8': {   // комната студентов: день — солнце в окне, комната светлая; ночь — свет только от ноутбука
+        const Q = camRoom(t), S2 = (x, y) => [CX + Q.s * (x - Q.x), CY + Q.s * (y - Q.y)], [lx, ly] = S2(LT.x, LT.y);
+        if (N) {
+          Rspot(c, lx, ly, 200 * Q.s, 300 + 420 * Q.s, .8, '2,4,20', 1.25); Rpool(c, lx, ly, 600 * Q.s, 600 * Q.s, '#7fd0ff', .45);
+          const [wx, wy] = S2(258, 600); Rpool(c, wx, wy, 300 * Q.s, 140 * Q.s, '#ff4fa3', .3);
+        } else {
+          c.save(); cam(c, Q.s, Q.x, Q.y); RwinDay(c, t); c.restore();
+          const [wx, wy] = S2(258, 436); Rfill(c, 'rgba(255,240,220,.12)', 'screen'); Rfill(c, 'rgba(255,236,210,.22)', 'soft-light'); Rdir(c, .7);
+          Rpool(c, wx, wy, 760 * Q.s, 900 * Q.s, '#fff3dc', .5); Rbeam(c, wx, wy, -.75, .45, 1500 * Q.s, '#fff6e0', .5);
+        }
+        break;
+      }
+      case 's9': {   // чертёж: день — синька на столе; ночь — светится как экран
+        RtexOver(c, 'paper', 'overlay', .28);
+        if (N) { Rspot(c, CX, 760, 300, 880, .72, '0,6,22', 1.3); Rpool(c, JCX, 730, 380, 520, '#7fe0ff', .3); c.save(); c.globalAlpha *= .06; c.fillStyle = '#000'; for (let y = 0; y < HH; y += 6) c.fillRect(-60, y, WW + 120, 2); c.restore() }
+        else { Rdir(c, .7, '255,246,225', '0,20,50'); Rpool(c, 160, 240, 1000, 1000, '#fff6e0', .22); RgradV(c, 1400, 1920, 'rgba(0,0,0,0)', 'rgba(0,10,30,.25)', 'multiply') }
+        break;
+      }
+      case 's10': {   // коврик: день — свет из окна; ночь — лампа над картриджем и сигаретами
+        if (N) { Rspot(c, 600, 800, 300, 840, .78, '2,8,6', 1.3); Rpool(c, 620, 780, 560, 600, '#ffd9a0', .35); Rglow(c, POD1V.x, POD1V.y + 40, 200, '#ffb347', .35) }
+        else { Rdir(c, .85); Rpool(c, 200, 280, 1100, 1100, '#fff8e8', .3); c.save(); c.globalCompositeOperation = 'multiply'; c.globalAlpha *= .08; c.fillStyle = '#0a2a20'; c.translate(CX, CY); c.rotate(.45); for (const dx of [-300, 40, 360]) c.fillRect(dx, -1600, 50, 3200); c.restore() }
+        RtexOver(c, 'paper', 'soft-light', .3);
+        break;
+      }
+      case 's12': {   // школа: день — солнечные лучи из окон, пыль; ночь — дежурный свет ламп, красный отсвет у «каждого четвёртого»
+        if (N) {
+          Rfill(c, 'rgba(30,36,90,.55)', 'multiply');
+          for (const lx of [180, 540, 900]) { Rbeam(c, lx, 246, 0, 1.15, 900, '#e8f4ff', .5); Rpool(c, lx, 1030, 280, 60, '#e8f4ff', .35) }
+          REDV.forEach((i, ri) => { const p = TEENV[i], k = eo(at(t, K.every4 + ri * .15, K.every4 + ri * .15 + .3)); Rglow(c, p.x, p.y - 300 * p.s, 260 * p.s, '#ff2a4a', .55 * k) });
+        } else {
+          for (let i = 0; i < 3; i++) Rbeam(c, 1160, 150 + i * 120, .95, .2, 1900, '#fff1c8', .5);
+          Rdust(c, t, 1160, 260, .95, .5, 1700, 40, 3, .7);
+          RgradV(c, 1000, 1500, 'rgba(255,230,180,0)', 'rgba(255,230,180,.18)', 'screen'); c.save(); c.scale(-1, 1); c.translate(-WW, 0); Rdir(c, .7); c.restore();
+        }
+        break;
+      }
+      case 's13': {   // «Мальборо»: луч сверху, пыль; ночь — красное свечение доли
+        Rbeam(c, CX, -80, 0, .78, 1500, N ? '#ffd0e0' : '#fff1e0', N ? .55 : .7); Rdust(c, t, CX, -80, 0, .78, 1400, 36, 6, .6);
+        if (N) { const k = eio(at(t, K.bought - .05, K.bought + .35)); Rglow(c, PIEV.x + 110, PIEV.y - 90, 300, '#ff2a4a', .55 * k); Rspot(c, CX, 760, 520, 1300, .4, '4,0,8', 1.2) }
+        else Rfill(c, 'rgba(255,230,210,.14)', 'screen');
+        break;
+      }
+      case 's15': {   // ночная комната (ночь в обеих версиях): неон города в окне, красный индикатор, пар
+        const Q = camRoomN(t), S2 = (x, y) => [CX + Q.s * (x - Q.x), CY + Q.s * (y - Q.y)], [wx, wy] = S2(WINV.x + WINV.w / 2, WINV.y + WINV.h), [lx, ly] = S2(VR.x, VR.y + 250 * VR.s);
+        Rpool(c, wx - 200 * Q.s, wy, 380 * Q.s, 200 * Q.s, '#ff4fa3', N ? .4 : .28); Rpool(c, wx + 220 * Q.s, wy, 380 * Q.s, 200 * Q.s, '#4ff3ff', N ? .35 : .22);
+        const lg = ss(K.want - .12, K.want + .08, t); Rglow(c, lx, ly, 260 * Q.s, '#ff1f3a', (N ? .7 : .55) * lg);
+        if (t > K.want) { const [mx, my] = S2(VR.x, VR.y - 470 * VR.s); Rsmoke(c, t, mx, my, { n: 12, life: 3, rise: 380 * Q.s, r0: 14, r1: 120, a: .3, seed: 8, from: K.want }) }
+        { const ki = spr(at(t, K.adm - .1, K.adm + .55)), vx = lp(VR.x + 900, VR.x, ki), vr = lp(.25, 0, eo(at(t, K.adm - .1, K.adm + .65))), fl = eo(at(t, K.adm, K.adm + 1)) * Math.sin(t * 2.4) * 12 * (1 - .7 * eio(at(t, K.adm + .3, K.dragE)));
+          c.save(); cam(c, Q.s, Q.x, Q.y); c.translate(vx, VR.y + fl); c.rotate(vr); c.scale(VR.s, VR.s); Rgloss(c, 230, 640, N ? 'rgba(90,240,255,.5)' : 'rgba(255,170,190,.4)', .9); c.restore() }   // глянец корпуса и цветной контур
+        if (N) Rspot(c, lx, ly - 260, 520, 1250, .3, '6,0,10', 1.3);
+        break;
+      }
+      case 's16': {   // доска: день — тёплый свет сверху; ночь — одно пятно света, остальное в темноте
+        if (N) { Rspot(c, CX, 760, 330, 900, .75, '10,4,0', 1.25); Rbeam(c, CX, -60, 0, .8, 1500, '#ffe0b0', .45) }
+        else { Rfill(c, 'rgba(255,220,170,.25)', 'soft-light'); Rdir(c, .7); Rpool(c, CX, 520, 900, 900, '#fff2d8', .28) }
+        break;
+      }
+    }
+    c.restore();
+  }
+  // после сцены: общая тонировка версии, плёночное зерно, виньетка (субтитры — поверх, чистые)
+  function Rpost(c, t) {
+    if (window.__POSTOFF) return;
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
+    if (!RG) RG = mk(WW, HH); const g = RG.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'copy'; g.drawImage(c.canvas, 0, 0);
+    c.globalCompositeOperation = 'copy'; c.filter = STY === 'neon' ? 'brightness(.96) contrast(1.14) saturate(1.22)' : 'brightness(1.03) contrast(1.06) saturate(1.08)'; c.drawImage(RG, 0, 0); c.filter = 'none'; c.globalCompositeOperation = 'source-over';
+    if (!RGR) { RGR = mk(256, 256); const x = RGR.getContext('2d'), im = x.createImageData(256, 256), d = im.data; for (let i = 0; i < 65536; i++) { const v = 128 + (H1(i * 1.37 + 5) - .5) * 200; d[4 * i] = d[4 * i + 1] = d[4 * i + 2] = v; d[4 * i + 3] = 255 } x.putImageData(im, 0, 0) }
+    const f = Math.floor(t * 30), ox = Math.floor(H1(f * 3.1) * 256), oy = Math.floor(H1(f * 7.7) * 256);
+    c.globalCompositeOperation = 'soft-light'; c.globalAlpha = STY === 'neon' ? .22 : .26; c.drawImage(Rtex('cloud'), -60, -90); c.globalAlpha = .1; c.globalCompositeOperation = 'overlay'; c.drawImage(Rtex('paper'), -60, -90);
+    if (STY === 'neon') { const g2 = c.createLinearGradient(0, 0, 0, HH); g2.addColorStop(0, 'rgba(40,190,255,.16)'); g2.addColorStop(1, 'rgba(255,40,160,.14)'); c.globalCompositeOperation = 'soft-light'; c.globalAlpha = 1; c.fillStyle = g2; c.fillRect(0, 0, WW, HH) }
+    c.globalCompositeOperation = 'overlay'; c.globalAlpha = STY === 'neon' ? .1 : .07; c.translate(-ox, -oy); c.fillStyle = c.createPattern(RGR, 'repeat'); c.fillRect(0, 0, WW + 256, HH + 256);
+    c.restore();
+    vignette(c, STY === 'neon' ? .42 : .2);
+  }
   // ---------- переходы без размытия: сдвиг экрана (как у Боба — камера едет) ----------
   // k 0..1; dir 'up' — старое уходит вверх, новое приходит снизу; 'left' — старое влево, новое справа
   function pushTr(c, k, A, B, dir = 'left') {
@@ -3478,10 +3751,11 @@
   }
   function vS6(c, t) {
     const ca = at(t, K.court - .32, K.court + .08), cb = at(t, K.secrets - .34, K.secrets - .04);
-    if (ca <= 0 || cb >= 1) { vArchive(c, t); return }
-    if (ca < 1) { pushTr(c, ca, () => vArchive(c, t), () => vCourt(c, t), 'left'); return }
-    if (cb > 0) { pushTr(c, cb, () => vCourt(c, t), () => vArchive(c, t), 'right'); return }
-    vCourt(c, t);
+    const Ar = () => { vArchive(c, t); rig(c, t, 's6a') }, Co = () => { vCourt(c, t); rig(c, t, 's6c') };   // v16.5: свет версий 2–3 едет вместе со своей половиной
+    if (ca <= 0 || cb >= 1) { Ar(); return }
+    if (ca < 1) { pushTr(c, ca, Ar, Co, 'left'); return }
+    if (cb > 0) { pushTr(c, cb, Co, Ar, 'right'); return }
+    Co();
   }
 
   // ---------- 7. карта залива (вертикаль): полуостров Сан-Франциско стоит вертикально — UCSF вверху, Стэнфорд внизу ----------
@@ -3729,7 +4003,7 @@
     const Q = camRoom(t), R = ROWW(), e = eio(ke);
     const sx = CX + Q.s * (R.x - Q.x), sy = CY + Q.s * (R.y - Q.y), sw = R.w * Q.s, sh = R.h * Q.s;
     const x0 = lp(sx, -200, e), y0 = lp(sy, -200, e), x1 = lp(sx + sw, WW + 200, e), y1 = lp(sy + sh, HH + 200, e);
-    c.save(); rr(c, x0, y0, x1 - x0, y1 - y0, lp(10 * Q.s * LT.s, 0, e)); c.clip(); vS9(c, t); c.restore();
+    c.save(); rr(c, x0, y0, x1 - x0, y1 - y0, lp(10 * Q.s * LT.s, 0, e)); c.clip(); vS9(c, t); rig(c, t, 's9'); c.restore();
   }
 
   // ---------- 9. чертёж JUUL — вертикально: картридж сверху, аккумулятор, индикатор; «похожа на флешку»; соль 1979 влетает в камеру ----------
@@ -4023,7 +4297,7 @@
   function nightRoomV(c, t) {
     c.fillStyle = '#151a33'; c.fillRect(-400, -400, WW + 800, HH + 800);
     c.fillStyle = 'rgba(255,255,255,.025)'; for (let x = -45; x < WW + 45; x += 90) c.fillRect(x, -400, 44, HH + 800);
-    const W = WINV; c.save(); rr(c, W.x, W.y, W.w, W.h, 6); c.clip(); c.drawImage(blurLayer('nightV', W.w, W.h, 7, g => nightCity(g, W.w, W.h)), W.x, W.y); c.restore();
+    const W = WINV; c.save(); rr(c, W.x, W.y, W.w, W.h, 6); c.clip(); c.drawImage(STY === 'neon' ? Rcache('nightVs', W.w, W.h, g => nightCity(g, W.w, W.h)) : blurLayer('nightV', W.w, W.h, 7, g => nightCity(g, W.w, W.h)), W.x, W.y); c.restore();   // версия 3 — город в окне без размытия
     c.fillStyle = '#05060f'; c.fillRect(W.x - 26, W.y - 26, W.w + 52, 26); c.fillRect(W.x - 26, W.y + W.h, W.w + 52, 34); c.fillRect(W.x - 26, W.y, 26, W.h); c.fillRect(W.x + W.w, W.y, 26, W.h);
     c.fillRect(W.x + W.w / 2 - 11, W.y, 22, W.h); c.fillRect(W.x, W.y + W.h * .45 - 11, W.w, 22);
     c.fillStyle = '#16192f'; c.fillRect(W.x - 60, W.y + W.h + 24, W.w + 120, 22);
@@ -4114,8 +4388,8 @@
   }
   function vS16(c, t) {
     const kw = eo(at(t, K.whip, K.endT)), D = WW + 160;
-    if (kw < 1) { c.save(); c.translate(-D * kw, 0); boardV(c, t); c.restore() }
-    if (kw > 0) { const x0 = D * (1 - kw); c.save(); c.beginPath(); c.rect(x0 - 120, -400, WW + 800, HH + 800); c.clip(); c.translate(x0, 0); vFirst(c); c.restore() }
+    if (kw < 1) { c.save(); c.translate(-D * kw, 0); boardV(c, t); rig(c, t, 's16'); c.restore() }
+    if (kw > 0) { const x0 = D * (1 - kw); c.save(); c.beginPath(); c.rect(x0 - 120, -400, WW + 800, HH + 800); c.clip(); c.translate(x0, 0); vFirst(c); rig(c, 0, 's1'); c.restore() }   // кадр 0 — с тем же светом, что в начале ролика
   }
   // ---------- кадр, субтитры, метка года (вертикаль) ----------
   function subsV(c, t) {
@@ -4138,31 +4412,32 @@
     else if (t >= K.create && t < K.third) tagDraw(c, t, [2015, 2019], [0, K.y19 + .35], TAGX, TAGY, .38 * spr(at(t, K.create, K.create + .4)));
   }
   function frameV(c, t) {
-    if (t < K.zoomE) vS1(c, t);
-    else if (t < K.prep + .38) vS2(c, t);
-    else if (t < K.prob - .02) vS3(c, t);
-    else if (t < K.prob + .42) pushTr(c, at(t, K.prob - .02, K.prob + .42), () => vS3(c, t), () => vS4(c, t), 'up');
-    else if (t < K.chemPan) vS4(c, t);
-    else if (t < K.chemPan + .45) pushTr(c, at(t, K.chemPan, K.chemPan + .45), () => vS4(c, t), () => vS5(c, t), 'left');
-    else if (t < K.secr) vS5(c, t);
-    else if (t < K.secr + .45) { pushTr(c, at(t, K.secr, K.secr + .45), () => vS5(c, t), () => vS6(c, t), 'left'); vFolderFly(c, t) }
+    const W = (id, f) => () => { f(); rig(c, t, id) };   // сцена + её свет (в версии 1 rig ничего не рисует)
+    if (t < K.zoomE) W('s1', () => vS1(c, t))();
+    else if (t < K.prep + .38) W('s2', () => vS2(c, t))();
+    else if (t < K.prob - .02) W('s3', () => vS3(c, t))();
+    else if (t < K.prob + .42) pushTr(c, at(t, K.prob - .02, K.prob + .42), W('s3', () => vS3(c, t)), W('s4', () => vS4(c, t)), 'up');
+    else if (t < K.chemPan) W('s4', () => vS4(c, t))();
+    else if (t < K.chemPan + .45) pushTr(c, at(t, K.chemPan, K.chemPan + .45), W('s4', () => vS4(c, t)), W('s5', () => vS5(c, t)), 'left');
+    else if (t < K.secr) W('s5', () => vS5(c, t))();
+    else if (t < K.secr + .45) { pushTr(c, at(t, K.secr, K.secr + .45), W('s5', () => vS5(c, t)), () => vS6(c, t), 'left'); vFolderFly(c, t) }
     else if (t < K.bzoom) { vS6(c, t); vFolderFly(c, t) }
-    else if (t < K.bzoom + .45) { pushTr(c, at(t, K.bzoom, K.bzoom + .45), () => vS6(c, t), () => vS7(c, t), 'left'); vCardFly(c, t) }
-    else if (t < PZ1()) vS7(c, t);
-    else if (t < K.create + .05) { vS8(c, t); rowOpen(c, t) }
-    else if (t < K.podGo + .05) vS9(c, t);
-    else if (t < K.podGo + .55) { pushTr(c, at(t, K.podGo + .05, K.podGo + .55), () => vS9(c, t), () => vS10(c, t), 'up'); vPodFly(c, t) }
-    else if (t < K.softv - .45) vS10(c, t);
-    else if (t < K.softv + .05) pushTr(c, at(t, K.softv - .45, K.softv + .05), () => vS10(c, t), () => vS11(c, t), 'left');
-    else if (t < K.kids - .3) vS11(c, t);
-    else if (t < K.kids + .2) pushTr(c, at(t, K.kids - .3, K.kids + .2), () => vS11(c, t), () => vS12(c, t), 'up');
-    else if (t < K.third - .1) vS12(c, t);
-    else if (t < K.third + .3) { vS12(c, t); irisV(c, t, () => vS13(c, t)) }
-    else if (t < K.planPan - .1) vS13(c, t);
-    else if (t < K.planPan + .35) pushTr(c, at(t, K.planPan - .1, K.planPan + .35), () => vS13(c, t), () => vS14(c, t), 'left');
-    else if (t < K.adm - .45) vS14(c, t);
-    else if (t < K.adm + .05) pushTr(c, at(t, K.adm - .45, K.adm + .05), () => vS14(c, t), () => vS15(c, t), 'left');
-    else if (t < K.b0) vS15(c, t);
+    else if (t < K.bzoom + .45) { pushTr(c, at(t, K.bzoom, K.bzoom + .45), () => vS6(c, t), W('s7', () => vS7(c, t)), 'left'); vCardFly(c, t) }
+    else if (t < PZ1()) W('s7', () => vS7(c, t))();
+    else if (t < K.create + .05) { W('s8', () => vS8(c, t))(); rowOpen(c, t) }
+    else if (t < K.podGo + .05) W('s9', () => vS9(c, t))();
+    else if (t < K.podGo + .55) { pushTr(c, at(t, K.podGo + .05, K.podGo + .55), W('s9', () => vS9(c, t)), W('s10', () => vS10(c, t)), 'up'); vPodFly(c, t) }
+    else if (t < K.softv - .45) W('s10', () => vS10(c, t))();
+    else if (t < K.softv + .05) pushTr(c, at(t, K.softv - .45, K.softv + .05), W('s10', () => vS10(c, t)), W('s11', () => vS11(c, t)), 'left');
+    else if (t < K.kids - .3) W('s11', () => vS11(c, t))();
+    else if (t < K.kids + .2) pushTr(c, at(t, K.kids - .3, K.kids + .2), W('s11', () => vS11(c, t)), W('s12', () => vS12(c, t)), 'up');
+    else if (t < K.third - .1) W('s12', () => vS12(c, t))();
+    else if (t < K.third + .3) { W('s12', () => vS12(c, t))(); irisV(c, t, W('s13', () => vS13(c, t))) }
+    else if (t < K.planPan - .1) W('s13', () => vS13(c, t))();
+    else if (t < K.planPan + .35) pushTr(c, at(t, K.planPan - .1, K.planPan + .35), W('s13', () => vS13(c, t)), W('s14', () => vS14(c, t)), 'left');
+    else if (t < K.adm - .45) W('s14', () => vS14(c, t))();
+    else if (t < K.adm + .05) pushTr(c, at(t, K.adm - .45, K.adm + .05), W('s14', () => vS14(c, t)), W('s15', () => vS15(c, t)), 'left');
+    else if (t < K.b0) W('s15', () => vS15(c, t))();
     else vS16(c, t);
   }
   // <<< v16.5 вертикаль <<<
@@ -4202,6 +4477,7 @@
     X.__t = t; c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     liveCam(c, MODE === 'main' && t > K.b0 ? t - K.endT : MODE !== 'main' && MODE !== 'film' && t > K.whip + .2 ? 0 : t);   // v16.3: последний кадр шортса = кадр 0 (живая камера в той же фазе)
     if (MODE === 'end') shotEnd(c, t); else if (MODE === 'tail') tailFrame(c, t); else { frameV(c, t); tagV(c, t) }   // v16.5: вертикаль
+    if (STY !== 'bob') Rpost(c, t);   // v16.5: версии 2–3 — тонировка, зерно, виньетка
     if (SUBS) subsV(c, t);
   }
   window.EP = {
@@ -4209,7 +4485,8 @@
     init(tl, SC) {
       TLW = tl.sent.flatMap(s => s.words); LANG = tl.lang || 'ru'; TLX = { b0: tl.b0, endT: tl.endT, dragE: tl.dragE };
       const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');   // v162 — ролик, v162a — концовка A, v162b — хвост B; v161e1/e2 — старые концовки
-      MODE = /^v16[34]f/.test(ep) ? 'film' : /^v16[45][ab]$/.test(ep) ? 'main' : /e[12]$/.test(ep) || /\da$/.test(ep) ? 'end' : /\db$/.test(ep) ? 'tail' : 'main'; VAR = /e2$/.test(ep) ? 'brain' : /\da$/.test(ep) ? 'A' : 'lens';
+      MODE = /^v16[34]f/.test(ep) ? 'film' : /^v16[45][abc]$/.test(ep) ? 'main' : /e[12]$/.test(ep) || /\da$/.test(ep) ? 'end' : /\db$/.test(ep) ? 'tail' : 'main'; VAR = /e2$/.test(ep) ? 'brain' : /\da$/.test(ep) ? 'A' : 'lens';
+      STY = /^v165b$/.test(ep) ? 'day' : /^v165c$/.test(ep) ? 'neon' : 'bob';   // v16.5: версия 2 — «реализм, день», версия 3 — «ночной неон»
       HERO.label = tt('mango'); BGV[0].label = tt('mint'); BGV[1].label = tt('berry');
       K = MODE === 'end' ? keysEnd() : MODE === 'tail' ? keysTail() : keysMain(); window.__K = K; cues();
       CHUNKS = buildChunks();
