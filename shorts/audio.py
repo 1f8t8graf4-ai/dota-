@@ -290,22 +290,24 @@ def sfx6(T, SC, DUR, rng, cues, loop=False):
 
 
 # v8 (09.11): звуки — набор ElevenLabs Sound Effects (sfx8/*.mp3), мало и тихо; без щелчков на словах и «награды» в конце
-SFX8_EPS = {'nicb', 'nich', 'nicg', 'nics', 'nicsa', 'nicsb', 'nicsc', 'v14m', 'v14a', 'v145m', 'v16f', 'v161', 'v161e1', 'v161e2', 'v162', 'v162a', 'v162b', 'v162t', 'v163', 'v163f'}
+SFX8_EPS = {'v164a', 'v164b', 'nicb', 'nich', 'nicg', 'nics', 'nicsa', 'nicsb', 'nicsc', 'v14m', 'v14a', 'v145m', 'v16f', 'v161', 'v161e1', 'v161e2', 'v162', 'v162a', 'v162b', 'v162t', 'v163', 'v163f'}
 DIR11 = {'nicf', 'nicv'}  # v11: звук по сюжету — sound11.py
-BED8 = {'nics': -8, 'nicsa': -8, 'nicsb': -8, 'nicsc': -8, 'nicf': -9, 'nicv': -9, 'v14m': -16, 'v14a': -16, 'v145m': -18, 'v16f': -11, 'v161': -11, 'v161e1': -11, 'v161e2': -11, 'v162': -11, 'v162a': -11, 'v162b': -11, 'v162t': -11, 'v163': -11, 'v163f': -11}  # музыка относительно голоса, LU: у оригиналов музыка слышна всё время (замер 09.11)
+BED8 = {'v164a': -12, 'v164b': -12, 'nics': -8, 'nicsa': -8, 'nicsb': -8, 'nicsc': -8, 'nicf': -9, 'nicv': -9, 'v14m': -16, 'v14a': -16, 'v145m': -18, 'v16f': -11, 'v161': -11, 'v161e1': -11, 'v161e2': -11, 'v162': -11, 'v162a': -11, 'v162b': -11, 'v162t': -11, 'v163': -11, 'v163f': -11}  # музыка относительно голоса, LU: у оригиналов музыка слышна всё время (замер 09.11)
 SFX8_GAIN = {'impact': .55, 'dive': .32, 'wave': .32, 'whoosh': .26, 'drip': .4, 'stamp': .35, 'thud': .3, 'chomp': .3, 'zap': .28,
              'ding': .3, 'shimmer': .3, 'pin': .3, 'tick': .25, 'heart': .45, 'swish': .25,
              'bellows': .4, 'quill': .3, 'coins': .4, 'seal': .45, 'whip': .4, 'river': .25, 'bell': .3, 'eyes': .55, 'munch': .35, 'puff': .3,
-             'scuttle': .35, 'whirr': .3, 'flutter': .3, 'buzz': .3, 'sniff': .3}
+             'scuttle': .35, 'whirr': .3, 'flutter': .3, 'buzz': .3, 'sniff': .3,
+             # v16.4: новые звуки ElevenLabs (sfx16/)
+             'typing': .34, 'carriage': .3, 'city': .26, 'carby': .3, 'bin': .32, 'factory': .26, 'pour': .3, 'glass': .26, 'drawer': .34,
+             'vault': .4, 'vaultopen': .36, 'papers': .32, 'marker': .3, 'school': .22, 'keys': .26, 'deep': .3, 'xray': .26}
 
 
 def sfx8(DUR, cues):
     N = int((DUR + 2) * SR); x = np.zeros((N, 2)); cache = {}; last = {}
     for t0, name, g0, pan in cues:
-        f = os.path.join(HERE, 'sfx13', name + '.mp3')
-        if not os.path.exists(f):
-            f = os.path.join(HERE, 'sfx8', name + '.mp3')
-        if not os.path.exists(f) or t0 - last.get(name, -9) < (.07 if name == 'tick' else .25):
+        name, _, cut = name.partition(':')   # v16.4: «typing:3.1» — звук обрезается до 3,1 с с плавным хвостом
+        f = next((p for p in (os.path.join(HERE, d, name + '.mp3') for d in ('sfx16', 'sfx13', 'sfx8')) if os.path.exists(p)), '')
+        if not f or t0 - last.get(name, -9) < (.07 if name == 'tick' else .25):
             continue
         last[name] = t0
         if name not in cache:
@@ -314,7 +316,12 @@ def sfx8(DUR, cues):
             cut = {'v145m': .8, 'v16f': 1.3, 'v163': 1.2}.get(EPB)
             if cut and name == 'vape':   # v14.5 / v16: шипение затяжки обрезано, дальше — следующая сцена
                 h = cache[name][:int(cut * SR)].copy(); n = int(.2 * SR); h[-n:] *= np.linspace(1, 0, n); cache[name] = h
-        put(x, cache[name], t0, SFX8_GAIN.get(name, .3) * g0, pan * .4)
+        snd = cache[name]
+        if cut:
+            snd = snd[:int(float(cut) * SR)].copy(); n = min(len(snd) // 3, int(.25 * SR)); snd[-n:] *= np.linspace(1, 0, n)
+        if EPB in ('v164a', 'v164b'):   # v16.4: плавные края у каждого звука — без щелчков на входе и выходе (Андрей: «убери все артефакты»)
+            snd = snd.copy(); a, b = min(len(snd) // 4, int(.004 * SR)), min(len(snd) // 4, int(.03 * SR)); snd[:a] *= np.linspace(0, 1, a); snd[-b:] *= np.linspace(1, 0, b)
+        put(x, snd, t0, SFX8_GAIN.get(name, .3) * g0, pan * .4)
     return x
 
 
