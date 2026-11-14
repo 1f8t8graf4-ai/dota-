@@ -331,9 +331,9 @@
     out.forEach((ch, i) => { const nx = out[i + 1], e = ch.ws[ch.ws.length - 1].b; ch.e = nx ? Math.min(nx.a - .02, e + .5) : e + .6 });
     CAPS = out;
   }
-  let NOCAP = () => false;
+  let NOCAP = () => false, CAPSKIP = null;   // CAPSKIP — субтитры пропущенной в пробе середины не показываем
   function capsR(c, t, cy) {
-    const ch = CAPS.find(x => t >= x.a - .06 && t < x.e); if (!ch || NOCAP(t)) return;
+    const ch = CAPS.find(x => t >= x.a - .06 && t < x.e); if (!ch || NOCAP(t) || (CAPSKIP && ch.a > CAPSKIP[0] && ch.a < CAPSKIP[1])) return;
     const k = eo((t - ch.a + .06) / .1), lh = CAPF * 1.02, y0 = cy - (ch.lines.length - 1) * lh / 2 + CAPF * .37;
     c.save(); font(c, { f: 'O', w: 700, s: CAPF, ls: .5 }); c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.lineJoin = 'round';
     ch.lines.forEach((ln, j) => {
@@ -1531,6 +1531,7 @@
     sh(q.q1v - .45, 'blur', S_('loop'), 1210);
     HITS.push(q.y73 + .1, q.sekr + .02, q.deret, q.arhiv + .05, q.marl + .05, q.ideal, q.yt + .08);
     sounds(q);
+    CAPSKIP = [q.s8 - .3, q.s12 - .05];   // проба: середина (суд → школьники) ещё не нарисована
     buildCaps(tl);
   }
 
