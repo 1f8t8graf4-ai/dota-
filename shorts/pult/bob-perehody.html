@@ -1,0 +1,649 @@
+<title>Переходы и анимации Боба</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500;700&family=Unbounded:wght@600;800&display=swap">
+<style>
+/* Раскладка: шапка с растровым «солнцем» → коротко → фильтры (липкие) → переходы → анимации → наш ролик по фразам.
+   Цвета — из роликов Боба: тёмно-синий, коралл, бумага. */
+:root{
+  --bg:#f4f2ec; --surface:#fbfaf6; --ink:#0d1936; --ink2:#4b5576; --line:#dad5c8;
+  --accent:#e85a56; --accent-ink:#ffffff; --dot:#cdc7b8;
+  --easy:#1d7f62; --easy-bg:#dcefe6; --can:#94600a; --can-bg:#f5e7c8; --hard:#9a2b2b; --hard-bg:#f4d9d4;
+  --sel:#0d1936; --sel-ink:#f7f6f2; --chip:#ece8de;
+  --f-display:'Unbounded','Arial Black',system-ui,sans-serif;
+  --f-body:'Golos Text',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1430; --surface:#111c3c; --ink:#f2efe6; --ink2:#a6afcb; --line:#25335d;
+    --accent:#ff6e69; --accent-ink:#1c0c0c; --dot:#2d3b68;
+    --easy:#62d3ad; --easy-bg:#123532; --can:#f1bb53; --can-bg:#372d16; --hard:#ff8b7d; --hard-bg:#3d1b24;
+    --sel:#f2efe6; --sel-ink:#0b1430; --chip:#18244a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1430; --surface:#111c3c; --ink:#f2efe6; --ink2:#a6afcb; --line:#25335d;
+  --accent:#ff6e69; --accent-ink:#1c0c0c; --dot:#2d3b68;
+  --easy:#62d3ad; --easy-bg:#123532; --can:#f1bb53; --can-bg:#372d16; --hard:#ff8b7d; --hard-bg:#3d1b24;
+  --sel:#f2efe6; --sel-ink:#0b1430; --chip:#18244a; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 72px}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* шапка */
+.hero{position:relative;overflow:hidden;padding-block:18px 8px}
+.hero::before{content:"";position:absolute;right:-60px;top:-70px;width:300px;height:300px;border-radius:50%;
+  background-image:radial-gradient(var(--accent) 1.3px,transparent 1.8px);background-size:8px 8px;
+  -webkit-mask-image:radial-gradient(circle,#000 30%,transparent 68%);mask-image:radial-gradient(circle,#000 30%,transparent 68%);opacity:.55;pointer-events:none}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin:0 0 10px;position:relative}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,6.4vw,56px);line-height:1.02;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance;position:relative;max-width:14ch}
+.lead{max-width:62ch;margin:0;color:var(--ink);position:relative}
+.main{max-width:62ch;margin:14px 0 0;position:relative;font-size:15.5px}
+.main b{color:var(--accent)}
+
+/* коротко */
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;margin-top:22px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.box h2{font-family:var(--f-mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin:0 0 10px}
+.favs{display:flex;flex-wrap:wrap;gap:6px}
+.fav{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:var(--chip);text-decoration:none;font-size:13.5px;font-weight:500}
+.fav::before{content:"★";color:var(--accent)}
+.legend{display:grid;gap:8px;margin:0;padding:0;list-style:none;font-size:14px}
+.legend li{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:start}
+.legend .k{justify-self:start}
+.scale{font-family:var(--f-display);font-weight:800;font-size:14px}
+.mine{font-size:14px;margin:0}
+.mine b{font-family:var(--f-display);font-weight:800}
+.mine .off{color:var(--ink2)}
+
+/* фильтры */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-top:22px;padding-block:10px}
+.flt{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.flt::-webkit-scrollbar{display:none}
+.fb{flex:none;font:inherit;font-size:13.5px;font-weight:500;color:var(--ink);background:var(--chip);border:1px solid transparent;border-radius:999px;padding:6px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
+.fb small{font-family:var(--f-mono);font-size:11px;color:var(--ink2)}
+.fb[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink)}
+.fb[aria-pressed="true"] small{color:inherit;opacity:.7}
+.jump{display:flex;gap:14px;margin-top:8px;font-size:13px;color:var(--ink2);flex-wrap:wrap}
+.jump a{text-decoration:none;border-bottom:1px solid var(--line)}
+.dbnote{font-size:12.5px;color:var(--ink2);margin:6px 0 0}
+.dbnote:empty{display:none}
+
+/* разделы */
+section{margin-top:34px}
+.sh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:14px}
+.sh h2{font-family:var(--f-display);font-weight:800;font-size:clamp(22px,4vw,30px);margin:0;letter-spacing:-.01em}
+.sh p{margin:0;color:var(--ink2);font-size:14px;max-width:60ch}
+.empty{color:var(--ink2);font-size:14px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,500px),1fr));gap:12px}
+
+/* карточка */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;grid-template-columns:46px minmax(0,1fr);grid-template-areas:"sc hd" "bd bd";gap:10px 12px;scroll-margin-top:118px;transition:border-color .2s,opacity .2s}
+.card.hasdemo{grid-template-columns:46px minmax(0,1fr) 150px;grid-template-areas:"sc hd demo" "bd bd bd"}
+.card.is-take{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.card.is-skip{opacity:.55}
+.card.flash{animation:flash 1.2s ease}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+.sc{grid-area:sc;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.sc b{font-family:var(--f-display);font-weight:800;font-size:28px;line-height:1;font-variant-numeric:tabular-nums}
+.sc.hi{color:var(--accent)} .sc.mid{color:var(--ink)} .sc.lo{color:var(--ink2)}
+.dots{display:grid;grid-template-columns:repeat(5,5px);gap:2px}
+.dots i{width:5px;height:5px;border-radius:50%;background:var(--dot)}
+.dots i.on{background:currentColor}
+.card header{grid-area:hd;min-width:0}
+.card h3{font-family:var(--f-body);font-weight:600;font-size:18px;line-height:1.25;margin:0 0 7px;text-wrap:balance}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.dch,.star,.tag,.have{font-size:12px;line-height:1;padding:5px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.dch{font-weight:600}
+.dch::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.dch.easy{background:var(--easy-bg);color:var(--easy)}
+.dch.can{background:var(--can-bg);color:var(--can)}
+.dch.can::before{background:linear-gradient(90deg,currentColor 50%,transparent 50%);box-shadow:inset 0 0 0 1.2px currentColor}
+.dch.hard{color:var(--hard);border:1px solid var(--hard);background:repeating-linear-gradient(-45deg,var(--hard-bg) 0 4px,transparent 4px 8px)}
+.dch.hard::before{border-radius:1px;transform:rotate(45deg)}
+.star{color:var(--accent);font-weight:600;background:transparent;border:1px solid var(--accent)}
+.tag{border:1px dashed var(--ink2);color:var(--ink2)}
+.have{font-family:var(--f-mono);font-size:11px;color:var(--ink2);border:1px solid var(--line)}
+.demo{grid-area:demo;width:100%;aspect-ratio:16/9;max-width:100%;border-radius:6px;background:#0d1936;display:block;cursor:pointer;align-self:start}
+.bd{grid-area:bd;display:grid;gap:9px;min-width:0}
+.w{margin:0;font-size:15px}
+.row{display:grid;grid-template-columns:64px minmax(0,1fr);gap:8px;align-items:start}
+.lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);padding-top:3px}
+.refs{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:13.5px}
+.refs b{font-weight:600}
+time{font-family:var(--f-mono);font-size:11.5px;font-weight:500;color:var(--ink2);background:var(--chip);padding:1px 5px;border-radius:4px;white-space:nowrap}
+.ours{margin:0;font-size:14px}
+.note{margin:0;font-size:13px;color:var(--ink2)}
+.pick{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.pk,.cm{font:inherit;font-size:13.5px;font-weight:500;border-radius:8px;padding:7px 12px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.pk[data-v="take"][aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pk[data-v="skip"][aria-pressed="true"]{background:var(--ink2);border-color:var(--ink2);color:var(--surface)}
+.cm{margin-left:auto;color:var(--ink2)}
+.cm.has{color:var(--ink);border-color:var(--ink2)}
+.nt{width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;resize:vertical;min-height:58px}
+body.nodb .pick,body.nodb .nt{display:none}
+
+/* наш ролик по фразам */
+.tl{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.tl li{display:grid;grid-template-columns:58px minmax(0,1fr);gap:4px 12px;padding-block:14px;border-bottom:1px solid var(--line)}
+.tl .t{font-family:var(--f-mono);font-weight:700;font-size:14px;color:var(--accent);padding-top:2px;font-variant-numeric:tabular-nums}
+.tl q{display:block;font-size:15px;font-style:italic;quotes:"«" "»";margin-bottom:8px}
+.mvs{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px}
+.mvs .k{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2)}
+.mv{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;text-decoration:none;font-weight:500;background:var(--chip)}
+.mv.tr{box-shadow:inset 0 0 0 1px var(--ink)}
+.mv.st::after{content:"★";color:var(--accent);font-size:11px}
+.tl .c{margin:8px 0 0;font-size:13.5px;color:var(--ink2)}
+
+.foot{margin-top:34px;display:grid;gap:8px;font-size:13.5px;color:var(--ink2);max-width:72ch}
+.foot p{margin:0}
+
+@media (max-width:560px){
+  .card.hasdemo{grid-template-columns:40px minmax(0,1fr) 116px}
+  .sc b{font-size:24px}
+  .card h3{font-size:16.5px}
+  .row{grid-template-columns:1fr;gap:3px}
+  .legend li{grid-template-columns:70px 1fr}
+  .tl li{grid-template-columns:48px minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .card.flash{animation:none}
+}
+</style>
+
+<div class="wrap">
+  <div class="hero">
+    <p class="eyebrow">«Знакомьтесь, Боб» → «Что вы знаете об одноразках?»</p>
+    <h1>Переходы и анимации Боба</h1>
+    <p class="lead">Всё из 9 разобранных роликов. Переходы — как одна сцена становится другой. Анимации — что двигается внутри сцены. У каждого приёма — оценка, сколько мне возни и куда он встанет в нашем ролике. Квадратик справа — живой пример, нажми, чтобы остановить.</p>
+    <p class="main"><b>Главное.</b> Сами переходы — это код, почти все лёгкие. Трудное у меня — рисовка: переход выглядит дорого, только если оба предмета нарисованы хорошо.</p>
+  </div>
+
+  <div class="sum">
+    <div class="box">
+      <h2>Хочу сам</h2>
+      <div class="favs" id="favs"></div>
+    </div>
+    <div class="box">
+      <h2>Как читать</h2>
+      <ul class="legend">
+        <li><span class="k scale">1–10</span><span>насколько приём поднимет наш ролик</span></li>
+        <li><span class="k dch easy">Легко</span><span>без гемора: код простой, часть уже есть в движке</span></li>
+        <li><span class="k dch can">Могу</span><span>повожусь: рисовку надо подгонять под переход</span></li>
+        <li><span class="k dch hard">Заёб</span><span>долго, и легко выйдет дёшево</span></li>
+        <li><span class="k tag">резкий</span><span>дёргает глаз — в этом ролике по разу</span></li>
+      </ul>
+    </div>
+    <div class="box">
+      <h2>Твои отметки</h2>
+      <p class="mine" id="mine"><span class="off">Жми «Беру» или «Не надо» на карточках — я увижу отметки сам.</span></p>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="flt" id="flt" role="toolbar" aria-label="Фильтр"></div>
+    <div class="jump"><a href="#sec-tr">Переходы</a><a href="#sec-an">Анимации</a><a href="#sec-tl">Наш ролик по фразам</a></div>
+    <p class="dbnote" id="dbnote"></p>
+  </div>
+
+  <section id="sec-tr">
+    <div class="sh"><h2>Переходы</h2><p>Как одна сцена становится другой. От лучших к слабым.</p></div>
+    <div class="grid" id="g-tr"></div>
+    <p class="empty" id="e-tr" hidden>Под этот фильтр переходов нет.</p>
+  </section>
+
+  <section id="sec-an">
+    <div class="sh"><h2>Анимации</h2><p>Что двигается внутри одной сцены.</p></div>
+    <div class="grid" id="g-an"></div>
+    <p class="empty" id="e-an" hidden>Под этот фильтр анимаций нет.</p>
+  </section>
+
+  <section id="sec-tl">
+    <div class="sh"><h2>Наш ролик по фразам</h2><p>Время — по нынешнему голосу. На фразу один-два приёма, чтобы ролик не дёргался. Рамка — переход, без рамки — анимация, ★ — хочу сам.</p></div>
+    <ol class="tl" id="tl"></ol>
+  </section>
+
+  <div class="foot">
+    <p>Gemini обещал 13 роликов, а разобрал 9. Нет Tinder, Мадонны, Хованского и Соболева — их видео у меня сейчас нет. Пришлёшь — допишу.</p>
+    <p>Таймкоды «У Боба» взяты из разбора Gemini, кадры я по ним не пересматривал.</p>
+  </div>
+</div>
+
+<script>
+/* ---------- данные ---------- */
+const DIFF={easy:'Легко',can:'Могу',hard:'Заёб'};
+const ITEMS=[
+/* ПЕРЕХОДЫ */
+{id:'zoomout',k:'tr',n:'Отъезд-раскрытие',w:'Камера отъезжает — и весь кадр оказывается маленькой частью большого: экраном, фото на доске, окном.',
+ b:[['Google','0:00','окно поиска → крыша здания Google'],['Instagram','0:00','замок → пост в ленте'],['Coca-Cola','0:28','волна → внутри сердца'],['Санта','0:09','дом → стеклянный шар'],['MDK','1:00','счётчик → пульт рубки']],
+ o:'1:27 «Старый план сработал идеально» — школьный коридор отъезжает: это фото на доске рядом с запиской 1973-го, дальше вся доска-досье.',s:10,d:'easy',st:1,demo:'zoomout'},
+{id:'morph',k:'tr',n:'Морф по форме',w:'Предмет перетекает в другой похожей формы: контур плавно меняется, цвет — следом.',
+ b:[['Coca-Cola','0:05','солнце → банка'],['Google','0:09','обод лупы → «0» в 2015'],['Starbucks','0:00','ободок стакана → крыша кофейни'],['Apple','0:47','яблоко → очки Джобса']],
+ o:'0:13 «Вернёмся в 1973 год» — вейп вытягивается в башню «Рейнольдс». 1:09 — картридж раздувается в пачку сигарет. 1:03 — флешка перетекает в Juul.',s:10,d:'easy',st:1,have:'морф был в v16',note:'Простые контуры — легко. Контуры с дырками и мелкими деталями — уже «могу».',demo:'morph'},
+{id:'follow',k:'tr',n:'Следить за предметом',w:'Один предмет сам перелетает из сцены в сцену, камера летит за ним — так главы сшиваются в одну историю.',
+ b:[['Google','0:32–0:49','папка ПЛАН: стол → архив → портфель → рентген'],['Coca-Cola','0:02','точка падает в стакан'],['Starbucks','0:12','два зерна падают в глазницы черепа'],['Starbucks','0:28','ноты ведут к кораблю']],
+ o:'Папка «СОЛЬ» проходит весь сюжет: стол химиков 0:32 → архив 0:41 → суд 0:47 → стол студентов 0:55 → чертёж Juul 1:03.',s:10,d:'can',st:1,note:'У Боба папку передают руки. Рук у нас нет — папка прыгает сама.',demo:'follow'},
+{id:'zoomin',k:'tr',n:'Влёт внутрь',w:'Камера влетает в окно, дыру или круг — деталь заливает экран, и мы уже в новой сцене.',
+ b:[['Coca-Cola','0:05','в красное солнце'],['Starbucks','0:04','в окно кофейни'],['Да Винчи','0:03','сквозь витраж собора'],['Apple','1:11','внутрь чипа']],
+ o:'0:07 «жидкость внутри них» — влёт в мундштук, внутри бак с жидкостью. 0:20 — влёт в горящее окно башни, внутри кабинет.',s:9,d:'easy',have:'наезд уже есть',demo:'zoomin'},
+{id:'flip',k:'tr',n:'Поворот плоскости',w:'Плоский предмет или весь кадр поворачивается — с другой стороны уже другое.',
+ b:[['Starbucks','0:39','логотип вверх ногами — русалка становится Бафометом'],['Санта','0:13','мир переворачивается на 180°'],['Instagram','0:37','вывеска ложится в изометрию']],
+ o:'0:00 твоя заставка: красная плашка «ЧТО ВЫ ЗНАЕТЕ ОБ ОДНОРАЗКАХ?» поворачивается ребром и становится корпусом вейпа. 1:34 «Захотите бросить» — коробка «бросить» переворачивается, на обороте тот же знак.',s:9,d:'easy',st:1,demo:'flip'},
+{id:'recursion',k:'tr',n:'Ролик в ролике',w:'В конце камера влетает в экран, а там на паузе — этот же ролик.',
+ b:[['Google','1:10','в ноутбуке YouTube с кадром из этого же ролика']],
+ o:'1:42 «Так… о чём это я?» — влёт в ноутбук, на паузе первый кадр нашего ролика, и петля в начало.',s:9,d:'easy',st:1,demo:'recursion'},
+{id:'chain',k:'tr',n:'Цепочка морфов',w:'3–6 превращений подряд без единой склейки: каждый предмет становится следующим.',
+ b:[['Coca-Cola','0:43–0:50','макушка → холм → мак → лампочка → планета → печать']],
+ o:'0:03 «…паром со вкусом манго и мяты?» — облако пара → манго → лист мяты → капля жидкости.',s:9,d:'can',note:'Каждый шаг рисуется в паре с соседним — отсюда «могу».',demo:'chain'},
+{id:'shrink',k:'tr',n:'Сжать в предмет',w:'Весь кадр сжимается в лист или фото и падает в новую сцену.',
+ b:[['Coca-Cola','0:25','экран ноутбука → бумажка в 30-метровой волне'],['Instagram','0:54','селфи → иконка в галерее']],
+ o:'0:47 «четырнадцать миллионов секретных документов» — кабинет 1973-го сжимается в один лист и падает в гору документов.',s:8,d:'easy',demo:'shrink'},
+{id:'tube',k:'tr',n:'Полёт вдоль трубки',w:'Камера несётся вдоль трубки, провода или змеевика, по которому бежит капля.',
+ b:[['Coca-Cola','0:54','за каплей по змеевику'],['Instagram','0:25','вдоль трубки с кровью'],['Apple','0:27','по проводам к компьютеру']],
+ o:'0:27 «дерёт горло» — дым летит по горлу и царапает. 1:03 — по USB-кабелю от ноутбука студентов прямо в Juul.',s:8,d:'can',demo:'tube'},
+{id:'liquid',k:'tr',n:'Жидкость заливает экран',w:'Жидкость поднимается волной, закрывает кадр и уходит — за ней уже другая сцена.',
+ b:[['MDK','0:14','вода топит церковь'],['Apple','0:16','футболка плавится и стекает вверх'],['Coca-Cola','1:04','кола разливается в ночной океан']],
+ o:'0:07 — жидкость «манго» заливает экран, сходит, и мы в янтарном кабинете 1973-го: цвет тот же, склейки не видно.',s:8,d:'easy',note:'Волна — легко. Предмет плавится и стекает каплями — «могу».',demo:'liquid'},
+{id:'iris',k:'tr',n:'Круглая дверь, диафрагма',w:'Кадр закрывается или открывается кругом: люк, сейф, лепестки объектива.',
+ b:[['MDK','0:20','лепестки объектива вокруг Ноя'],['Да Винчи','0:51','круглый шлюз захлопывается'],['Да Винчи','0:37','белый круг открывает АЭС']],
+ o:'0:41 «спрятали в архив» — круглая дверь сейфа закрывает кадр. 0:47 «суд заставил раскрыть» — та же дверь открывается в 1998-м.',s:8,d:'easy',note:'Круг — легко. Лепестки диафрагмы — «могу».',demo:'iris'},
+{id:'through',k:'tr',n:'Сквозь пол',w:'Камера уходит вниз сквозь пол или воду — и поверхность оказывается потолком новой сцены.',
+ b:[['Apple','0:39','сквозь асфальт на стол улик'],['World of Tanks','0:27','под воду — а это потолок зала'],['Instagram','0:55','телефон проламывает пол']],
+ o:'0:41 «спрятали в архив» — камера проваливается сквозь пол лаборатории в подвал с полками.',s:8,d:'easy',demo:'through'},
+{id:'calendar',k:'tr',n:'Отрывной календарь',w:'Листки с годами слетают один за другим, последний срывается и открывает новую эпоху.',
+ b:[['Google','0:21','календарь 1790 срывается и открывает тюрьму']],
+ o:'0:47 «В 1998 году…» — годы бегут с 1973-го, листок 1998 срывается, за ним зал суда. Так же 2015 → 2019 на «через четыре года».',s:8,d:'easy',have:'прокрутка года уже есть',demo:'calendar'},
+{id:'pan',k:'tr',n:'Длинная панорама',w:'Камера едет по одному столу или стене от улики к улике без единой склейки.',
+ b:[['MDK','0:29','по столу мимо графиков к бейджу'],['Instagram','0:47','со стола к кувшину и в зал'],['Starbucks','0:20','мимо окон к автомату']],
+ o:'1:27 — проезд по доске-досье: записка 1973 → колба с солью → ключ архива → решение суда → Juul.',s:8,d:'easy',demo:'pan'},
+{id:'negative',k:'tr',n:'Негатив-вспышка',w:'Белая вспышка — и та же сцена становится своим злым двойником.',
+ b:[['Санта','0:47','гостиная → чёрная месса'],['Coca-Cola','0:09','пузырьки → глаза в темноте']],
+ o:'0:03 — яркий киоск со вкусами, вспышка, те же полки — а на них пачки сигарет 70-х.',s:8,d:'easy',tag:'резкий',have:'вспышка уже есть',note:'Один раз на ролик.',demo:'negative'},
+{id:'turn3d',k:'tr',n:'Поворот предмета в 3D',w:'Предмет разворачивается к зрителю другой стороной, как настоящий объём.',
+ b:[['Coca-Cola','0:07','банка поворачивается крышкой в лицо']],
+ o:'0:07 — вейп разворачивается мундштуком в камеру, и мы влетаем в мундштук.',s:7,d:'can',note:'Обманкой (сжать в ребро → подменить на вид сверху) — «могу». Плавно, как в 3D, на детальном предмете — заёб.'},
+{id:'wipe',k:'tr',n:'Шторка предметом',w:'Предмет переднего плана проезжает через кадр — за ним уже другая сцена.',
+ b:[['Google','0:32','крышка стола накатывает'],['Coca-Cola','0:19','крышка ноутбука снизу вверх'],['Instagram','0:14','ствол дерева'],['Apple','0:11','прохожий — за ним витрина уже другая']],
+ o:'1:09 «школьники тянули его без остановки» — дверца шкафчика проезжает через кадр. 0:07 — подросток (со спины) проходит перед витриной, за ним витрина уже 1973-го.',s:7,d:'easy',have:'шторка была в v16',demo:'wipe'},
+{id:'swirl',k:'tr',n:'Вихрь',w:'Кадр закручивается спиралью в одну точку.',
+ b:[['Coca-Cola','0:35','капля закручивает экран в вихрь, он распадается на медальоны']],
+ o:'1:29 «…захотелось… затянуться?» — затяжка всасывает весь кадр спиралью в мундштук.',s:7,d:'can',demo:'swirl'},
+{id:'peel',k:'tr',n:'Отогнуть уголок',w:'Угол кадра отгибается, как страница журнала, а под ним — следующая сцена.',
+ b:[['MDK','0:48','звёздное небо отгибается, под ним Эдем — разворот Библии']],
+ o:'1:09 — уголок чертежа Juul отгибается, под ним школьный коридор, где его уже тянут.',s:7,d:'can',note:'Ровный сгиб — легко. Мягкий изогнутый лист — «могу».',demo:'peel'},
+{id:'blink',k:'tr',n:'Моргнуть',w:'Тёмный экран открывается веками, как будто глаз проснулся.',
+ b:[['MDK','1:05','веки открывают спасённый ковчег']],
+ o:'1:29 «Признайтесь…» — веки медленно опускаются и поднимаются, как на затяжке.',s:7,d:'easy',demo:'blink'},
+{id:'cards',k:'tr',n:'Листаем карточки',w:'Карточки пролистываются, как в телефоне, — за последней открывается сцена.',
+ b:[['World of Tanks','1:00','карточки внутри прицела → ангар'],['Apple','0:53','список контактов листается'],['Instagram','0:40','карты-смартфоны веером']],
+ o:'0:03 — лента как в TikTok: рекламы вейпов уезжают вверх, последняя карточка — записка 1973-го.',s:7,d:'easy',demo:'cards'},
+{id:'doors',k:'tr',n:'Двери одна за другой',w:'Решётка, люк, дверь — каждая открывается за предыдущей.',
+ b:[['Google','1:01','решётка → люк бункера → дверь → ноутбук']],
+ o:'0:47 «суд заставил раскрыть тайны» — решётка архива → дверь сейфа → дверь зала суда.',s:6,d:'can'},
+{id:'shutter',k:'tr',n:'Вспышка фотоаппарата',w:'Вспышка — и мы смотрим через экран камеры: фото наводится на резкость и улетает в галерею.',
+ b:[['Instagram','0:51','селфи на троне']],
+ o:'0:55 — студенты фотографируют документ: кадр наводится на резкость и улетает в галерею.',s:5,d:'easy'},
+{id:'glitch',k:'tr',n:'Глитч, пиксели',w:'Предмет рассыпается на квадратики и пропадает.',
+ b:[['Да Винчи','0:12','машина времени рассыпается на пиксели']],
+ o:'Для этого ролика не беру — дёшево и дёргано.',s:4,d:'easy',tag:'резкий',have:'есть с v15'},
+
+/* АНИМАЦИИ */
+{id:'box',k:'an',n:'Из коробки',w:'Коробка открывается, вейп медленно выезжает — текст на коробке успевают прочитать.',
+ b:[['—','','твоя просьба, у Боба такого нет']],
+ o:'0:00 «Что вы знаете об одноразках?» — сразу после плашки. Коробка в кадре не меньше 1,5–2 секунд.',s:9,d:'easy',demo:'box'},
+{id:'truth',k:'an',n:'Мигнуть правдой',w:'Обычный предмет на полсекунды показывает свою «правду» и возвращается обратно.',
+ b:[['Санта','0:36','камин на миг становится вратами с черепами'],['Санта','0:42','голова оленя → Бафомет']],
+ o:'0:03 «с безобидным паром» — вейп и розовое облако на миг становятся сигаретой и серым дымом, потом обратно.',s:9,d:'easy',st:1,demo:'truth'},
+{id:'scan',k:'an',n:'Сканер, рентген',w:'Полоса света проезжает по предмету и проявляет то, что внутри.',
+ b:[['Google','0:47','рентген проявляет чертёж в портфеле'],['MDK','0:22','лазер проявляет надпись на доске']],
+ o:'1:03 «внутри которой оживает та самая соль» — зелёный рентген просвечивает Juul, внутри кристалл соли.',s:9,d:'easy',st:1,demo:'scan'},
+{id:'cutaway',k:'an',n:'Разрез здания',w:'Стена здания срезается по диагонали — видно, что на каждом этаже.',
+ b:[['World of Tanks','0:36','разрез небоскрёба — люди за ноутбуками']],
+ o:'1:18 «каждый четвёртый старшеклассник» — разрез школы: в каждом ряду из четырёх окон в одном облако пара. Люди — силуэтами.',s:9,d:'can',st:1,demo:'cutaway'},
+{id:'unwrap',k:'an',n:'Снять обёртку',w:'С предмета снимается наклейка или маска — под ней другое.',
+ b:[['Да Винчи','0:00','Мона Лиза снимает лицо — под ним череп']],
+ o:'0:07 «изобрели табачные гиганты» — наклейка «манго» отклеивается, под ней старая этикетка 1973-го, без настоящих марок.',s:9,d:'can',note:'Сползает плоско — легко. Отгибается с изгибом — «могу».',demo:'unwrap'},
+{id:'stars',k:'an',n:'Точки соединяются',w:'Точки по очереди соединяются линией и складываются в цифру или путь.',
+ b:[['MDK','0:47','звёзды складываются в «7,8 МЛН»'],['Starbucks','0:49','пять кофеен на глобусе → пентаграмма']],
+ o:'0:55 «по соседству со Стэнфордом» — точки-документы на карте Калифорнии соединяются дорожкой до Стэнфорда.',s:8,d:'easy',demo:'stars'},
+{id:'draw',k:'an',n:'Линия рисует предмет',w:'Линия бежит и вычерчивает контур, потом он заливается цветом.',
+ b:[['Apple','0:00','линия рисует яблоко'],['Coca-Cola','0:18','мазок кисти под логотипом']],
+ o:'1:03 «создают электронную сигарету» — линия чертит Juul на синем чертеже. 0:00 — так же рисуется силуэт вейпа.',s:8,d:'easy',demo:'draw'},
+{id:'type',k:'an',n:'Печать текста',w:'Буквы появляются по одной, как на машинке или в строке поиска.',
+ b:[['Google','0:01','«Что такое гугл»'],['Apple','0:29','«>I’M JOB» на кинескопе'],['Instagram','0:17','переписка в чате']],
+ o:'0:22 «Мы должны получить свою долю молодёжного рынка» — машинка 1973-го печатает в такт голосу. 1:34 — строка поиска «как бросить парить».',s:8,d:'easy',demo:'type'},
+{id:'count',k:'an',n:'Счётчик-барабан',w:'Цифры крутятся, как в счётчике, и встают на число.',
+ b:[['MDK','0:54','барабан до 7 800 000'],['World of Tanks','1:06','«УСТАНОВКА 100%»']],
+ o:'0:47 «четырнадцать миллионов» → 14 000 000. 1:18 «тринадцать миллиардов» → $13 000 000 000. 0:07 «пятьдесят лет назад» → 50.',s:8,d:'easy',have:'золотые цифры уже есть',demo:'count'},
+{id:'assemble',k:'an',n:'Собирается из деталей',w:'Детали слетаются и собираются в предмет.',
+ b:[['Google','0:56','схема складывается в логотип Chrome'],['Да Винчи','0:14','из церкви выдвигаются кольца криптекса']],
+ o:'1:03 «похожую на флешку» — корпус, плата, картридж и мундштук слетаются с чертежа в Juul.',s:8,d:'easy',demo:'assemble'},
+{id:'receipt',k:'an',n:'Лента чека',w:'Из кассы ползёт волнистая лента, в конце — сумма.',
+ b:[['Starbucks','0:07','чек и табло 6.66']],
+ o:'1:18 «за тринадцать миллиардов долларов» — ползёт чек, в конце $13 000 000 000.',s:8,d:'easy',demo:'receipt'},
+{id:'beam',k:'an',n:'Луч фонаря ищет',w:'В темноте пятно света шарит по стене и находит нужное.',
+ b:[['MDK','0:00','луч ищет логотип на стене'],['Google','0:29','прожектор вышки сканирует тюрьму']],
+ o:'0:41 — тёмный архив, луч ползёт по полкам и находит коробку «СОЛЬ».',s:7,d:'easy',have:'прожектор был в v16',demo:'beam'},
+{id:'slosh',k:'an',n:'Жидкость качается',w:'В сосуде качается живая волна с пузырьками.',
+ b:[['Coca-Cola','0:03','кола в стакане'],['Coca-Cola','0:52','раствор в колбах над огнём']],
+ o:'0:07 — жидкость в баке вейпа. 0:32 — раствор в колбе химиков.',s:7,d:'easy'},
+{id:'shadows',k:'an',n:'Тени в окне',w:'В освещённом окне спорят силуэты людей.',
+ b:[['Санта','0:27','тени Николая и чёрта в окне']],
+ o:'0:13 «готовит секретный отчёт» — в окне башни силуэты директоров над бумагой.',s:7,d:'easy'},
+{id:'eyes',k:'an',n:'Глаза в темноте',w:'В темноте открываются глаза и следят.',
+ b:[['Google','0:19','живой глаз из чертежа'],['Coca-Cola','0:10','красные глаза'],['Starbucks','0:36','глаза в небе']],
+ o:'1:29 «Признайтесь…» — в темноте открываются глаза и смотрят прямо на зрителя.',s:7,d:'easy',note:'Это уже лицо. Лица ты пока не разрешал — скажи, можно ли глаза.'},
+{id:'lights',k:'an',n:'Огоньки волной',w:'Окна, лампочки или индикаторы загораются по очереди.',
+ b:[['Санта','0:08','гирлянда бежит по крыше'],['Instagram','0:30','бегущие индикаторы']],
+ o:'0:13 «Табачная империя «Рейнольдс»» — окна башни загораются снизу вверх.',s:6,d:'easy'},
+{id:'redden',k:'an',n:'Свет наливается цветом',w:'Окно или лампа медленно наливаются красным.',
+ b:[['Санта','0:28','окно наливается кровавым светом']],
+ o:'0:22 «…долю молодёжного рынка» — янтарный кабинет медленно краснеет.',s:6,d:'easy'},
+{id:'polaroid',k:'an',n:'Фото проявляется',w:'Снимок медленно проступает из белого.',
+ b:[['Google','0:53','фото отца и маленького Брина']],
+ o:'0:55 «находят два студента» — проявляется снимок: двое со спины над стопкой бумаг.',s:6,d:'easy'},
+{id:'ui',k:'an',n:'Интерфейс',w:'Тумблер щёлкает, список листается, всплывает карточка.',
+ b:[['Google','0:14','тумблер «USA connection»'],['Apple','0:55','контакты листаются до «нет контактов»']],
+ o:'1:34 «Захотите бросить» — поиск и список товаров.',s:6,d:'easy'},
+{id:'particles',k:'an',n:'Пузырьки, пар, брызги',w:'Мелкие частицы вылетают, лопаются и разлетаются.',
+ b:[['Coca-Cola','0:09','пузырьки из банки'],['Starbucks','0:58','зёрна падают в чашку с брызгами']],
+ o:'Пар из вейпа, пузырьки в баке, капля падает в картридж с брызгами.',s:6,d:'easy',have:'уже есть'},
+{id:'flame',k:'an',n:'Пламя',w:'Двухслойный живой огонь.',
+ b:[['Санта','0:33','жидкое пламя на весь экран'],['Coca-Cola','0:52','спиртовка под колбами']],
+ o:'0:32 — горелка под колбой химиков.',s:5,d:'easy'},
+{id:'shake',k:'an',n:'Удар и тряска',w:'Резкий удар, кадр вздрагивает, летит пыль.',
+ b:[['World of Tanks','0:55','взрыв над городом'],['World of Tanks','0:58','танк стреляет с отдачей']],
+ o:'0:47 «суд заставил» — один удар судейского молотка.',s:5,d:'easy',tag:'резкий'},
+{id:'hands',k:'an',n:'Руки в кадре',w:'Руки передают, кладут, нажимают.',
+ b:[['Google','0:33','папку передают из рук в руки'],['Apple','0:20','руки вставляют чип'],['World of Tanks','0:01','руки на клавиатуре']],
+ o:'Не берём: у тебя правило «рук не рисовать». Вместо рук предмет двигается сам.',s:3,d:'hard'},
+{id:'actors',k:'an',n:'Персонаж играет сцену',w:'Герой ходит, говорит, корчит рожи.',
+ b:[['Санта','0:31','Санта с мешком'],['Instagram','1:00','селфи вампира'],['Да Винчи','0:24','Леонардо выглядывает из-за могилы']],
+ o:'Не берём: люди у нас только со спины и силуэтами.',s:3,d:'hard'}
+];
+const TL=[
+ ['0:00','Что вы знаете об одноразках?',['flip'],['box'],'Плашка поворачивается и становится вейпом, вейп медленно выезжает из коробки.'],
+ ['0:03','Что это модная замена сигаретам с безобидным паром со вкусом манго и мяты?',['chain'],['truth'],'Пар → манго → мята → капля. На «безобидным» вейп на миг — сигарета с серым дымом.'],
+ ['0:07','А знаете ли вы, что жидкость внутри них изобрели табачные гиганты ещё пятьдесят лет назад?',['zoomin'],['unwrap','count'],'Влёт в мундштук. Наклейка «манго» слезает — под ней этикетка 1973-го. «50» барабаном.'],
+ ['0:13','Вернёмся в 1973 год. Табачная империя «Рейнольдс», создатель сигарет Camel и Winston, готовит секретный отчёт.',['morph'],['lights','shadows'],'Вейп вытягивается в башню, окна загораются снизу вверх, в одном — силуэты над бумагой.'],
+ ['0:20','Главная цель документа звучала прямо: «Мы должны получить свою долю молодёжного рынка».',['zoomin'],['type','redden'],'Влёт в окно. Машинка печатает фразу в такт голосу, свет в кабинете краснеет.'],
+ ['0:27','Но вот проблема: обычный табачный дым слишком едкий и сильно дерёт горло подросткам.',['tube'],[],'Дым летит по горлу и царапает.'],
+ ['0:32','Тогда химики смешали никотин с особой кислотой и получили никотиновую соль, которая заходит мягко даже в убойной дозе.',['morph'],['slosh','flame'],'Горло-трубка перетекает в пробирку. Колба качается над горелкой.'],
+ ['0:41','Но электронных сигарет тогда ещё не продавали — заливать эту жидкость было не во что. И секретную формулу спрятали в архив.',['follow','through','iris'],[],'Папка «СОЛЬ» прыгает со стола, проваливается сквозь пол в архив, круглая дверь сейфа закрывается.'],
+ ['0:47','В 1998 году суд заставил табачников раскрыть свои тайны, и четырнадцать миллионов секретных документов опубликовали в Калифорнии.',['calendar','iris'],['count'],'Годы бегут до 1998-го, дверь сейфа открывается — внутри гора документов, барабан до 14 000 000.'],
+ ['0:55','По странному стечению обстоятельств прямо по соседству со Стэнфордским университетом, где эти бумаги вскоре находят два студента.',['zoomout'],['stars','polaroid'],'Гора документов отъезжает в точку на карте, точки соединяются дорожкой до Стэнфорда, проявляется снимок студентов со спины.'],
+ ['1:03','Позже они создают электронную сигарету, похожую на флешку, внутри которой оживает та самая соль.',['morph'],['draw','scan'],'Линия чертит флешку, она перетекает в Juul, рентген находит внутри ту самую соль.'],
+ ['1:09','Один картридж заменял целую пачку сигарет, а раз мягкий пар больше не обжигал горло, школьники тянули его без остановки и подсаживались в разы быстрее.',['morph','wipe'],['particles'],'Картридж раздувается в пачку. Дверца шкафчика проезжает через кадр — мы в школе.'],
+ ['1:18','Уже через четыре года в США парил каждый четвёртый старшеклассник, а треть новой компании за тринадцать миллиардов долларов выкупил производитель «Мальборо».',['zoomout'],['cutaway','receipt'],'Камера отъезжает из коридора — разрез школы, в каждом ряду одно окно из четырёх в пару. Потом ползёт чек.'],
+ ['1:27','Старый план сработал идеально.',['zoomout','pan'],[],'Чек оказывается приколот к доске рядом с запиской 1973-го, проезд по доске.'],
+ ['1:29','Признайтесь… вам ведь и сейчас захотелось… затянуться?',['swirl'],[],'Затяжка всасывает кадр в мундштук. Спокойнее — «Моргнуть».'],
+ ['1:34','Захотите бросить — вам и это продадут. Причём одни и те же люди… А вот кто именно — смотрите на YouTube.',['flip'],['type'],'Поиск «как бросить парить». Коробка «бросить» переворачивается — на обороте тот же знак.'],
+ ['1:42','Так… о чём это я? А, точно!',['recursion'],[],'Влёт в ноутбук, на паузе первый кадр ролика — и сначала.']
+];
+
+/* ---------- отрисовка страницы ---------- */
+const byId={};ITEMS.forEach(it=>byId[it.id]=it);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const tm=s=>esc(s).replace(/(\d:\d\d(?:–\d:\d\d)?)/g,'<time>$1</time>');
+function cardHTML(it){
+  const sc=it.s>=9?'hi':it.s>=7?'mid':'lo';
+  return `<article class="card${it.demo?' hasdemo':''}" id="${it.id}" data-id="${it.id}">
+  <div class="sc ${sc}" title="Оценка ${it.s} из 10"><b>${it.s}</b><span class="dots" aria-hidden="true">${'<i class="on"></i>'.repeat(it.s)}${'<i></i>'.repeat(10-it.s)}</span></div>
+  <header><h3>${esc(it.n)}</h3><div class="chips"><span class="dch ${it.d}">${DIFF[it.d]}</span>${it.st?'<span class="star">★ хочу</span>':''}${it.tag?`<span class="tag">${it.tag}</span>`:''}${it.have?`<span class="have">${esc(it.have)}</span>`:''}</div></header>
+  ${it.demo?`<canvas class="demo" data-demo="${it.demo}" role="img" aria-label="Живой пример: ${esc(it.n)}. Нажми, чтобы остановить"></canvas>`:''}
+  <div class="bd">
+    <p class="w">${esc(it.w)}</p>
+    <div class="row"><span class="lbl">У Боба</span><ul class="refs">${it.b.map(r=>`<li><b>${esc(r[0])}</b>${r[1]?` <time>${r[1]}</time>`:''} ${esc(r[2])}</li>`).join('')}</ul></div>
+    <div class="row"><span class="lbl">У нас</span><p class="ours">${tm(it.o)}</p></div>
+    ${it.note?`<p class="note">${esc(it.note)}</p>`:''}
+    <div class="pick"><button type="button" class="pk" data-v="take" aria-pressed="false">Беру</button><button type="button" class="pk" data-v="skip" aria-pressed="false">Не надо</button><button type="button" class="cm" aria-expanded="false" aria-controls="nt-${it.id}">Коммент</button></div>
+    <textarea class="nt" id="nt-${it.id}" rows="2" placeholder="Что поменять, куда поставить…" hidden></textarea>
+  </div>
+</article>`;
+}
+const sortS=(a,b)=>b.s-a.s;
+document.getElementById('g-tr').innerHTML=ITEMS.filter(i=>i.k==='tr').sort(sortS).map(cardHTML).join('');
+document.getElementById('g-an').innerHTML=ITEMS.filter(i=>i.k==='an').sort(sortS).map(cardHTML).join('');
+document.getElementById('favs').innerHTML=ITEMS.filter(i=>i.st).sort(sortS).map(i=>`<a class="fav" href="#${i.id}" data-go="${i.id}">${esc(i.n)}</a>`).join('');
+const mv=(id)=>{const it=byId[id];return `<a class="mv ${it.k}${it.st?' st':''}" href="#${id}" data-go="${id}">${esc(it.n)}</a>`};
+document.getElementById('tl').innerHTML=TL.map(r=>`<li><span class="t">${r[0]}</span><div><q>${esc(r[1])}</q><div class="mvs">${r[2].length?`<span class="k">переход</span>${r[2].map(mv).join('')}`:''}${r[3].length?`<span class="k">анимация</span>${r[3].map(mv).join('')}`:''}</div><p class="c">${esc(r[4])}</p></div></li>`).join('');
+
+/* ---------- фильтр ---------- */
+let FILTER='all', PICKS={};
+const FL=[['all','Все'],['star','★ Хочу сам'],['easy','Легко'],['can','Могу'],['hard','Заёб'],['take','Беру'],['skip','Не надо']];
+function match(it,f){const p=(PICKS[it.id]||{}).v;
+  return f==='all'||(f==='star'&&it.st)||(f===it.d)||(f==='take'&&p==='take')||(f==='skip'&&p==='skip');}
+function drawFilters(){
+  document.getElementById('flt').innerHTML=FL.map(([f,l])=>`<button type="button" class="fb" data-f="${f}" aria-pressed="${f===FILTER}">${l} <small>${ITEMS.filter(i=>match(i,f)).length}</small></button>`).join('');
+}
+function applyFilter(){
+  ['tr','an'].forEach(k=>{let n=0;
+    ITEMS.filter(i=>i.k===k).forEach(it=>{const el=document.getElementById(it.id);const ok=match(it,FILTER);el.hidden=!ok;if(ok)n++;});
+    document.getElementById('e-'+k).hidden=n>0;});
+  drawFilters(); wakeDemos();
+}
+document.getElementById('flt').addEventListener('click',e=>{const b=e.target.closest('.fb');if(!b)return;FILTER=b.dataset.f;applyFilter();});
+document.addEventListener('click',e=>{const a=e.target.closest('[data-go]');if(!a)return;e.preventDefault();
+  const id=a.dataset.go,it=byId[id];if(!match(it,FILTER)){FILTER='all';applyFilter();}
+  const el=document.getElementById(id);el.scrollIntoView({block:'start'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');
+  try{history.replaceState(null,'','#'+id)}catch(_){}});
+drawFilters();
+
+/* ---------- мини-примеры ---------- */
+const P={navy:'#0d1936',navy2:'#1c2b58',navy3:'#2b3b6e',paper:'#f7f6f2',coral:'#e85a56',mint:'#5bc0a5',amber:'#f2b34a',orange:'#ef8f3a',grey:'#8b8f9a',pink:'#f3a9a3',dark:'#070d1f',back:'#e2dccb'};
+const W=160,H=90,TAU=Math.PI*2;let X;
+const cl=x=>x<0?0:x>1?1:x, sg=(t,a,b)=>cl((t-a)/(b-a)), lerp=(a,b,k)=>a+(b-a)*k;
+const eio=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2}, eo=x=>1-Math.pow(1-cl(x),3), ei=x=>Math.pow(cl(x),3);
+const hx=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));
+const mix=(a,b,k)=>{const A=hx(a),B=hx(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*cl(k))).join(',')+')'};
+function rrp(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));X.beginPath();X.moveTo(x+r,y);X.arcTo(x+w,y,x+w,y+h,r);X.arcTo(x+w,y+h,x,y+h,r);X.arcTo(x,y+h,x,y,r);X.arcTo(x,y,x+w,y,r);X.closePath();}
+function fr(x,y,w,h,c,r){if(r){rrp(x,y,w,h,r);X.fillStyle=c;X.fill();}else{X.fillStyle=c;X.fillRect(x,y,w,h);}}
+function bg(c){X.fillStyle=c;X.fillRect(0,0,W,H);}
+function dot(x,y,r,c){X.beginPath();X.arc(x,y,r,0,TAU);X.fillStyle=c;X.fill();}
+function poly(pts,c){X.beginPath();pts.forEach((p,i)=>i?X.lineTo(p[0],p[1]):X.moveTo(p[0],p[1]));X.closePath();X.fillStyle=c;X.fill();}
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const supR=(th,a,b,p,rot)=>{const c=Math.cos(th-rot),s=Math.sin(th-rot);return 1/Math.pow(Math.pow(Math.abs(c/a),p)+Math.pow(Math.abs(s/b),p),1/p)};
+function shapePts(cx,cy,rf,n){const o=[];for(let i=0;i<n;i++){const th=i/n*TAU,r=rf(th);o.push([cx+r*Math.cos(th),cy+r*Math.sin(th)]);}return o;}
+const lerpP=(A,B,k)=>A.map((p,i)=>[lerp(p[0],B[i][0],k),lerp(p[1],B[i][1],k)]);
+function txt(s,x,y,size,c,w,al,font){X.font=(w||700)+' '+size+'px '+(font||"'Golos Text',system-ui,sans-serif");X.fillStyle=c;X.textAlign=al||'center';X.textBaseline='middle';X.fillText(s,x,y);}
+
+/* предметы и сцены (поле 160×90) */
+function vape(cx,cy,s,col){const w=16*s,h=50*s;fr(cx-w/2,cy-h/2,w,h,col||P.coral,4*s);fr(cx-w*.3,cy-h/2-7*s,w*.6,8*s,P.paper,2*s);
+  X.globalAlpha=.18;fr(cx-w/2+2*s,cy-h/2+5*s,2.5*s,h-10*s,'#ffffff');X.globalAlpha=1;dot(cx,cy+h/2-7*s,1.8*s,P.mint);}
+function sKiosk(){bg(P.navy);fr(0,72,W,18,P.navy2);vape(80,44,1);}
+function sTower(){bg(P.paper);dot(124,24,11,P.amber);fr(62,22,36,68,P.navy);fr(68,12,24,11,P.navy);fr(77,4,6,9,P.navy);
+  for(let r=0;r<7;r++)for(let c=0;c<4;c++){const lit=(r*4+c)%3===0||(r===2&&c===2);fr(66+c*8,27+r*8,4,5,lit?P.amber:P.navy3);}fr(0,86,W,4,P.navy2);}
+function sOffice(){bg(P.amber);fr(0,0,W,46,'#e3a23e');dot(132,18,9,'#fff3d6');fr(0,64,W,26,P.navy);
+  X.save();X.translate(80,74);X.rotate(-.06);fr(-20,-9,40,18,P.paper);for(let i=0;i<3;i++)fr(-16,-5+i*4.5,i===2?18:32,1.4,P.navy);fr(8,2,8,5,P.coral);X.restore();}
+function sBoard(){bg(P.navy2);seed=11;const ph=[[10,10,30,20],[124,14,26,18],[16,60,30,20],[118,58,30,22]];
+  X.strokeStyle=P.coral;X.lineWidth=.8;X.beginPath();X.moveTo(25,10);X.lineTo(80,18);X.lineTo(137,14);X.moveTo(80,18);X.lineTo(31,60);X.moveTo(80,18);X.lineTo(133,58);X.stroke();
+  ph.forEach(([x,y,w,h],i)=>{fr(x,y,w,h,P.paper);fr(x+2,y+2,w-4,h-6,[P.navy3,P.amber,P.mint,P.coral][i]);dot(x+w/2,y,1.6,P.coral);});}
+const SL={x:52,y:18,w:56,h:31.5};
+function sPile(){bg(P.navy);seed=5;for(let i=0;i<46;i++){const x=rnd()*170-5,y=56+rnd()*40,r=(rnd()-.5)*1.2;X.save();X.translate(x,y);X.rotate(r);fr(-9,-6,18,12,i%5?P.paper:P.back);X.restore();}}
+function sLab(){bg(P.paper);fr(0,80,W,10,'#e7e2d4');X.lineWidth=2;X.strokeStyle=P.navy;
+  X.save();X.beginPath();X.arc(80,46,13,0,TAU);X.clip();fr(60,48,40,20,P.amber);X.restore();
+  X.beginPath();X.arc(80,46,13,-Math.PI/2+.42,-Math.PI/2-.42+TAU);X.stroke();X.beginPath();X.moveTo(75,34);X.lineTo(75,18);X.moveTo(85,34);X.lineTo(85,18);X.stroke();fr(73,16,14,3,P.navy);}
+function sDevice(){bg(P.navy);fr(0,82,W,8,P.navy2);fr(73,38,14,18,'rgba(242,179,74,.85)',2);fr(73,55,14,26,P.coral,3);dot(80,74,1.6,P.mint);X.strokeStyle=P.paper;X.globalAlpha=.4;X.lineWidth=1;rrp(73,38,14,18,2);X.stroke();X.globalAlpha=1;}
+function sArchive(){bg(P.navy);seed=3;for(let r=0;r<4;r++){const y=14+r*20;fr(8,y+12,144,2,P.navy3);for(let c=0;c<9;c++){const w=10+rnd()*5;fr(12+c*16,y+12-10-rnd()*3,w,10+rnd()*2,c%4?P.amber:P.back);}}}
+function sCourt(){bg(P.navy);X.fillStyle=P.paper;X.beginPath();X.moveTo(30,30);X.lineTo(80,10);X.lineTo(130,30);X.closePath();X.fill();fr(30,30,100,4,P.paper);
+  for(let i=0;i<5;i++)fr(36+i*20,36,8,38,P.paper);fr(26,74,108,5,P.paper);dot(80,22,4.5,P.coral);}
+function sMemo(){bg(P.paper);fr(26,8,108,74,'#ffffff');for(let i=0;i<7;i++)fr(36,20+i*8,i%3===2?60:88,1.6,P.navy);
+  X.save();X.translate(112,66);X.rotate(-.2);X.strokeStyle=P.coral;X.lineWidth=1.5;rrp(-18,-7,36,14,2);X.stroke();txt('1973',0,.5,9,P.coral,800,'center',"'JetBrains Mono',monospace");X.restore();}
+function sDesk(){bg(P.navy);fr(0,70,W,20,P.navy2);fr(RS.x-3,RS.y-3,RS.w+6,RS.h+6,P.paper,2);X.fillStyle=P.back;X.beginPath();X.moveTo(RS.x-8,RS.y+RS.h+3);X.lineTo(RS.x+RS.w+8,RS.y+RS.h+3);X.lineTo(RS.x+RS.w+14,RS.y+RS.h+8);X.lineTo(RS.x-14,RS.y+RS.h+8);X.closePath();X.fill();}
+const RS={x:44,y:20,w:72,h:40.5};
+function sLockers(){bg(P.navy2);for(let c=0;c<6;c++){fr(6+c*25,10,22,70,P.mint,1);fr(9+c*25,14,16,1.4,P.navy2);fr(9+c*25,17,16,1.4,P.navy2);fr(23+c*25,44,2,7,P.navy2);}fr(0,80,W,10,P.navy3);}
+function sBlue(){bg('#1a3a80');X.strokeStyle='rgba(247,246,242,.12)';X.lineWidth=.6;X.beginPath();for(let x=0;x<=W;x+=10){X.moveTo(x,0);X.lineTo(x,H);}for(let y=0;y<=H;y+=10){X.moveTo(0,y);X.lineTo(W,y);}X.stroke();
+  X.strokeStyle=P.paper;X.lineWidth=1.2;rrp(36,38,84,14,3);X.stroke();rrp(120,40,10,10,2);X.stroke();X.beginPath();X.moveTo(46,45);X.lineTo(56,45);X.stroke();}
+function sEvil(){bg('#4a1414');for(let y of [30,55,80])fr(0,y,W,3,'#1a0707');
+  for(let r=0;r<3;r++)for(let c=0;c<6;c++){const x=14+c*24,y=12+r*25;fr(x,y,14,17,P.paper);fr(x,y+5,14,4,P.navy);dot(x+7,y+13,1.3,P.coral);}
+  X.globalAlpha=.35;for(let i=0;i<5;i++)dot(30+i*28,20+(i%2)*30,10,P.grey);X.globalAlpha=1;}
+function sBright(){bg(P.navy);for(let y of [30,55,80])fr(0,y,W,3,P.navy3);const cs=[P.coral,P.mint,P.amber,P.pink,P.paper,P.mint];
+  for(let r=0;r<3;r++)for(let c=0;c<6;c++){const x=17+c*24,y=11+r*25;fr(x,y,8,18,cs[(c+r)%6],2);fr(x+2,y-3,4,4,P.paper,1);}}
+
+/* сами примеры: t — фаза 0…1, k — кадр для «стоп» */
+const DEMO={
+zoomout:{k:.62,f(t){const k=eio(sg(t,.28,.78));const S0=W/SL.w,S=Math.exp(lerp(Math.log(S0),0,k));const Fx=SL.x*S0/(S0-1),Fy=SL.y*S0/(S0-1);
+  X.save();X.translate(Fx*(1-S),Fy*(1-S));X.scale(S,S);sBoard();X.save();X.beginPath();X.rect(SL.x,SL.y,SL.w,SL.h);X.clip();X.translate(SL.x,SL.y);X.scale(SL.w/W,SL.h/H);sOffice();X.restore();
+  X.globalAlpha=k;X.strokeStyle=P.paper;X.lineWidth=1.6;X.strokeRect(SL.x,SL.y,SL.w,SL.h);dot(80,SL.y,1.8,P.coral);X.globalAlpha=1;X.restore();}},
+morph:{k:.55,f(t){const k=eio(sg(t,.3,.7));bg(mix(P.navy,P.paper,k));X.globalAlpha=k;dot(124,24,11,P.amber);X.globalAlpha=1;fr(0,86,W,4,P.navy2);
+  const A=shapePts(80,47,th=>supR(th,8,25,8,0),96),B=shapePts(80,56,th=>supR(th,18,34,12,0),96);poly(lerpP(A,B,k),mix(P.coral,P.navy,k));
+  X.globalAlpha=1-k;fr(75,15,10,8,P.paper,2);X.globalAlpha=k;fr(68,12,24,11,P.navy);fr(77,4,6,9,P.navy);
+  X.globalAlpha=sg(k,.8,1);for(let r=0;r<7;r++)for(let c=0;c<4;c++)fr(66+c*8,27+r*8,4,5,(r*4+c)%3===0?P.amber:P.navy3);X.globalAlpha=1;}},
+follow:{k:.5,f(t){const k=sg(t,.18,.72),dy=lerp(60,128,ei(k)),cam=cl((dy-62)/66)*90;X.save();X.translate(0,-cam);sLab();X.translate(0,90);sDevice();X.restore();
+  if(t>=.18&&t<.73)dot(80,dy-cam,3,P.amber);if(t>=.72&&t<.86){const u=sg(t,.72,.86);for(let i=0;i<6;i++){const a=-Math.PI*(i+.5)/6;dot(80+Math.cos(a)*u*11,128-cam+Math.sin(a)*u*9,1.3*(1-u),P.amber);}}}},
+zoomin:{k:.5,f(t){const k=eio(sg(t,.25,.72)),s=Math.exp(Math.log(44)*k),wx=84+0,wy=45.5;
+  X.save();X.translate(wx,wy);X.scale(s,s);X.translate(-wx,-wy);sTower();X.restore();
+  const hw=2*s,hh=2.5*s;X.save();X.beginPath();X.rect(wx-hw,wy-hh,2*hw,2*hh);X.clip();const so=Math.max(.05,Math.min(1,2*hw/W));X.translate(lerp(wx,80,k),lerp(wy,45,k));X.scale(so,so);X.translate(-80,-45);X.globalAlpha=cl(k*2);sOffice();X.restore();X.globalAlpha=1;}},
+flip:{k:.4,f(t){bg(P.navy);fr(0,76,W,14,P.navy2);const a=eio(sg(t,.22,.45)),g=eio(sg(t,.45,.72));
+  if(t<.45){X.save();X.translate(80,44);X.scale(Math.max(1-a,.03),1);fr(-62,-15,124,30,P.coral,3);txt('ЧТО ВЫ ЗНАЕТЕ',0,-4,10,P.paper,800,'center',"'Unbounded','Arial Black',sans-serif");txt('ОБ ОДНОРАЗКАХ?',0,7,7.5,P.paper,800,'center',"'Unbounded','Arial Black',sans-serif");X.restore();}
+  else{const w=lerp(3.7,16,g),h=lerp(30,50,g);fr(80-w/2,45-h/2,w,h,P.coral,lerp(1,4,g));X.globalAlpha=sg(g,.6,1);fr(75.2,13,9.6,8,P.paper,2);dot(80,63,1.8,P.mint);
+    const v=sg(t,.75,1);if(v>0){X.globalAlpha=.55*(1-v);dot(80+v*8,10-v*14,3+v*7,P.pink);}X.globalAlpha=1;}}},
+recursion:{k:.35,f(t){const r=RS.w/W,Fx=RS.x/(1-r),Fy=RS.y/(1-r),z=Math.exp(Math.log(1/r)*t);X.save();X.translate(Fx*(1-z),Fy*(1-z));X.scale(z,z);recur(0);X.restore();}},
+chain:{k:.2,f(t){bg(P.navy);const S=[{x:80,y:44,f:th=>15*(1+.13*Math.sin(5*th)),c:P.paper},{x:80,y:46,f:th=>supR(th,15,12,2.2,-.5),c:P.amber},{x:80,y:45,f:th=>supR(th,19,7,1.4,.6),c:P.mint},{x:80,y:47,f:th=>12.5*(1+.32*Math.sin(th)),c:P.coral}];
+  const q=t*4,i=Math.floor(q)%4,u=q-Math.floor(q),k=eio(sg(u,.5,1)),a=S[i],b=S[(i+1)%4];
+  poly(shapePts(lerp(a.x,b.x,k),lerp(a.y,b.y,k),th=>lerp(a.f(th),b.f(th),k),96),mix(a.c,b.c,k));}},
+shrink:{k:.5,f(t){sPile();const k1=eio(sg(t,.18,.55)),k2=ei(sg(t,.55,.78)),w=lerp(W,22,k1),h=lerp(H,28,k1),cx=80,cy=lerp(45,30,k1)+lerp(0,38,k2),rot=lerp(0,.25,k1)+k2*.5;
+  X.save();X.translate(cx,cy);X.rotate(rot);X.beginPath();X.rect(-w/2,-h/2,w,h);X.clip();X.translate(-w/2,-h/2);X.scale(w/W,h/H);sOffice();X.restore();
+  X.save();X.translate(cx,cy);X.rotate(rot);X.globalAlpha=cl((k1-.45)*2);fr(-w/2,-h/2,w,h,P.paper);for(let i=0;i<4;i++)fr(-w/2+3,-h/2+5+i*5,w-6-(i===3?7:0),1.3,P.navy);X.restore();X.globalAlpha=1;}},
+tube:{k:.5,f(t){bg(P.navy);const k=eio(sg(t,.04,.88)),cx=lerp(0,400,k),yf=x=>45+16*Math.sin(x/34);X.save();X.translate(-cx,0);X.lineCap='round';
+  const path=()=>{X.beginPath();for(let x=cx-20;x<=Math.min(cx+180,512);x+=3){x===cx-20||x<cx-19?X.moveTo(x,yf(x)):X.lineTo(x,yf(x));}};
+  path();X.lineWidth=15;X.strokeStyle=P.navy3;X.stroke();path();X.lineWidth=10;X.strokeStyle='#22346a';X.stroke();path();X.lineWidth=1.4;X.strokeStyle='rgba(247,246,242,.35)';X.stroke();
+  fr(510,yf(510)-22,22,44,P.coral,4);fr(514,yf(510)-30,14,9,P.paper,2);
+  const dx=cx+60+50*k;for(let j=5;j>0;j--){X.globalAlpha=.12*(6-j);dot(dx-j*3,yf(dx-j*3),3.4-j*.4,P.coral);}X.globalAlpha=1;dot(dx,yf(dx),3.4,P.coral);X.restore();}},
+liquid:{k:.45,f(t){const up=eio(sg(t,.15,.45)),dn=eio(sg(t,.55,.86)),B=t>=.5;B?sOffice():sKiosk();const L=B?lerp(-14,98,dn):lerp(98,-14,up);
+  X.beginPath();X.moveTo(0,H+2);for(let x=0;x<=W+4;x+=4)X.lineTo(x,L+3*Math.sin(x/11+t*22));X.lineTo(W+4,H+2);X.closePath();X.fillStyle=P.orange;X.fill();
+  X.beginPath();for(let x=0;x<=W+4;x+=4){const y=L+3*Math.sin(x/11+t*22);x?X.lineTo(x,y):X.moveTo(x,y);}X.strokeStyle='#ffd18a';X.lineWidth=1.4;X.stroke();
+  seed=9;X.globalAlpha=.55;for(let i=0;i<10;i++){const bx=rnd()*W,by=L+10+((rnd()*90+(1-t)*120)%90);if(by<H)dot(bx,by,1+rnd()*1.4,'#ffd9a0');}X.globalAlpha=1;}},
+iris:{k:.44,f(t){const c=eio(sg(t,.15,.45)),o=eio(sg(t,.55,.85)),B=t>=.5;B?sCourt():sLab();const R=B?lerp(0,96,o):lerp(96,0,c);
+  X.beginPath();X.rect(0,0,W,H);X.arc(80,45,Math.max(R,.01),0,TAU);X.fillStyle=P.dark;X.fill('evenodd');
+  if(R<92){X.beginPath();X.arc(80,45,R+3,0,TAU);X.strokeStyle='#59607a';X.lineWidth=6;X.stroke();for(let i=0;i<10;i++){const a=i/10*TAU+t*2;dot(80+Math.cos(a)*(R+3),45+Math.sin(a)*(R+3),1.2,P.paper);}}}},
+through:{k:.5,f(t){const k=eio(sg(t,.25,.75)),cam=lerp(0,100,k);X.save();X.translate(0,-cam);sLab();fr(0,88,W,12,'#3a4466');X.strokeStyle='rgba(247,246,242,.25)';X.lineWidth=.8;X.beginPath();for(let x=-12;x<W;x+=6){X.moveTo(x,100);X.lineTo(x+12,88);}X.stroke();X.translate(0,100);sArchive();X.restore();}},
+calendar:{k:.7,f(t){sCourt();const k=eio(sg(t,.06,.55)),yr=Math.round(lerp(1973,1998,k)),tear=eio(sg(t,.62,.88));if(tear>=1)return;
+  X.save();X.translate(80+tear*40,tear*130);X.rotate(tear*.6);X.translate(-80,0);bg(P.paper);fr(0,0,W,15,P.coral);for(let i=0;i<6;i++)dot(20+i*24,7.5,2.4,P.navy);
+  txt(String(yr),80,56,32,P.navy,700,'center',"'JetBrains Mono',monospace");const fl=(k*25)%1;if(k<1&&k>0){X.globalAlpha=.25*(1-fl);fr(0,15+fl*60,W,3,P.navy);X.globalAlpha=1;}X.restore();}},
+pan:{k:.45,f(t){const k=eio(sg(t,.05,.95)),cx=lerp(0,330,k);X.save();X.translate(-cx,0);strip();X.restore();}},
+negative:{k:.3,f(t){t>=.46?sEvil():sBright();const f=1-cl(Math.abs(t-.46)/.06);if(f>0){X.globalAlpha=f;bg('#ffffff');X.globalAlpha=1;}}},
+wipe:{k:.5,f(t){const k=eio(sg(t,.25,.75)),ox=lerp(190,-30,k);X.save();X.beginPath();X.rect(ox,0,W,H);X.clip();sTower();X.restore();X.save();X.beginPath();X.rect(0,0,Math.max(0,ox),H);X.clip();sKiosk();X.restore();
+  fr(ox-24,-2,48,94,P.navy3);for(let i=0;i<4;i++)fr(ox-14,8+i*4,28,1.6,'rgba(247,246,242,.35)');fr(ox+14,46,3,10,P.coral,1);}},
+swirl:{k:.42,f(t){const k=ei(sg(t,.12,.7)),cx=80,cy=17;bg(P.dark);if(k<1){X.save();X.translate(cx,cy);X.rotate(k*TAU*1.4);X.scale(1-k,1-k);X.translate(-cx,-cy);sKiosk();X.restore();}
+  X.strokeStyle=P.paper;X.lineWidth=.8;X.globalAlpha=.45*Math.sin(Math.PI*k);for(let i=0;i<7;i++){X.beginPath();for(let j=0;j<34;j++){const a=i/7*TAU+j*.17+k*9,r=(1-j/34)*95*(1-k*.5);j?X.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.75):X.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.75);}X.stroke();}X.globalAlpha=1;
+  if(t>.66){const p=sg(t,.66,1);X.globalAlpha=.8*(1-p);dot(cx,cy,2+p*10,P.coral);X.globalAlpha=1;}}},
+peel:{k:.5,f(t){const d=lerp(0,262,eio(sg(t,.18,.82))),L=250-d;sLockers();const F=[[0,0],[W,0],[W,H],[0,H]],g=p=>p[0]+p[1]-L;
+  const A=clipHP(F,p=>g(p)<=0,g);if(A.length>2){X.save();X.beginPath();A.forEach((p,i)=>i?X.lineTo(p[0],p[1]):X.moveTo(p[0],p[1]));X.closePath();X.clip();sBlue();X.restore();}
+  const Bp=clipHP(F,p=>g(p)>=0,g);if(Bp.length>2&&d>0){const R=Bp.map(p=>[L-p[1],L-p[0]]);X.save();X.shadowColor='rgba(0,0,0,.45)';X.shadowBlur=6;poly(R,P.back);X.restore();
+    const gr=X.createLinearGradient(L/2,L/2,L/2-12,L/2-12);gr.addColorStop(0,'rgba(0,0,0,.18)');gr.addColorStop(1,'rgba(0,0,0,0)');poly(R,gr);}}},
+blink:{k:.48,f(t){sTower();const c=t<.5?eio(sg(t,.25,.47)):1-eio(sg(t,.55,.8)),h=lerp(-14,50,c);X.fillStyle=P.dark;
+  X.beginPath();X.moveTo(0,0);X.lineTo(W,0);X.lineTo(W,h);X.quadraticCurveTo(80,h+16,0,h);X.closePath();X.fill();
+  X.beginPath();X.moveTo(0,H);X.lineTo(W,H);X.lineTo(W,H-h);X.quadraticCurveTo(80,H-h-16,0,H-h);X.closePath();X.fill();}},
+cards:{k:.4,f(t){sMemo();const cs=[P.coral,P.mint,P.amber];for(let i=2;i>=0;i--){const u=eio(sg(t,.12+i*.2,.3+i*.2));if(u>=1)continue;X.save();X.translate(0,lerp(0,-112,u)+i*2.5);fr(44,7,72,76,cs[i],7);vape(80,45,.62,P.paper);fr(52,70,56,4,'rgba(13,25,54,.35)',2);X.restore();}}},
+box:{k:.72,f(t){bg(P.navy);fr(0,80,W,10,P.navy2);const lid=eio(sg(t,.06,.26)),up=eio(sg(t,.3,.86));X.save();X.beginPath();X.rect(0,0,W,42.5);X.clip();vape(80,lerp(70,30,up),.85);X.restore();
+  fr(56,42,48,40,P.paper,2);fr(56,72,48,4,P.coral);txt('ОДНОРАЗКА',80,52,7,P.navy,800);txt('вкус: манго · 20 мг/мл',80,62,4.6,P.navy,500);
+  X.save();X.translate(56,42);X.rotate(-lid*1.2);fr(0,-6,48,6,P.back,1.5);X.restore();}},
+truth:{k:.52,f(t){bg(P.navy);fr(0,78,W,12,P.navy2);const e=cl(1-Math.abs(t-.53)/.08)*1;const on=e>0.01;
+  if(on&&e>.5){fr(20,52,40,6,P.paper,1);fr(20,52,10,6,P.amber,1);dot(60.5,55,2.2,P.coral);}else{X.save();X.translate(36,56);X.rotate(.5);vape(0,0,.5);X.restore();}
+  for(let i=0;i<7;i++){const ph=(t*1.2+i/7)%1,x=48+ph*90,y=46-ph*30+Math.sin(ph*9+i)*3,r=5+ph*10;X.globalAlpha=.85*(1-ph);dot(x,y,r,mix(P.pink,P.grey,e));}X.globalAlpha=1;
+  if(e>.3){X.globalAlpha=e*.5;X.strokeStyle='#3a3d48';X.lineWidth=1.2;X.beginPath();X.moveTo(62,50);X.bezierCurveTo(80,30,100,50,120,22);X.stroke();X.globalAlpha=1;}}},
+scan:{k:.58,f(t){bg(P.navy);const on=t>.12&&t<.92,bx=lerp(36,124,eio(sg(t,.12,.66)));fr(40,38,80,14,P.navy3,3);fr(118,40,10,10,P.navy3,2);
+  if(on){X.save();X.beginPath();X.rect(0,0,bx,H);X.clip();fr(0,0,W,H,'#0c3a35');X.strokeStyle=P.mint;X.lineWidth=1;rrp(40,38,80,14,3);X.stroke();rrp(118,40,10,10,2);X.stroke();
+    rrp(44,41,34,8,1.5);X.stroke();fr(82,42,7,6,P.mint);rrp(93,40,22,10,2);X.stroke();X.fillStyle=P.coral;X.beginPath();X.moveTo(104,41.5);X.lineTo(108,45);X.lineTo(104,48.5);X.lineTo(100,45);X.closePath();X.fill();
+    txt('СОЛЬ',104,60,6,P.mint,700,'center',"'JetBrains Mono',monospace");X.restore();
+    X.globalAlpha=.25;fr(bx-5,8,10,74,P.mint);X.globalAlpha=1;fr(bx-1,8,2,74,P.mint);}}},
+cutaway:{k:.72,f(t){bg('#cfd7e6');fr(0,82,W,8,P.navy2);const k=eio(sg(t,.12,.55)),Lv=lerp(-10,280,k),vape=[2,0,3],pulse=t>.6?.5+.5*Math.sin((t-.6)*30):0;
+  const room=(c,r)=>{const x=30+c*25,y=24+r*19;fr(x,y,23,17,'#efe9da');dot(x+7,y+7,2,P.navy);fr(x+5,y+9.5,4,6,P.navy);dot(x+15,y+7,2,P.navy);fr(x+13,y+9.5,4,6,P.navy);
+    if(vape[r]===c){X.globalAlpha=.85;dot(x+10,y+5,3.5,P.pink);dot(x+13,y+3,2.6,P.pink);X.globalAlpha=1;if(pulse){X.strokeStyle=P.coral;X.lineWidth=1.4;X.globalAlpha=pulse;X.strokeRect(x+.5,y+.5,22,16);X.globalAlpha=1;}}};
+  X.save();X.beginPath();X.moveTo(0,0);X.lineTo(Lv,0);X.lineTo(Lv-1.2*H,H);X.lineTo(0,H);X.closePath();X.clip();fr(28,20,104,62,P.navy3);for(let r=0;r<3;r++)for(let c=0;c<4;c++)room(c,r);X.restore();
+  X.save();X.beginPath();X.moveTo(Lv,0);X.lineTo(W+200,0);X.lineTo(W+200,H);X.lineTo(Lv-1.2*H,H);X.closePath();X.clip();fr(28,20,104,62,P.navy);for(let r=0;r<3;r++)for(let c=0;c<4;c++)fr(34+c*25,28+r*19,15,9,P.navy3);X.restore();
+  fr(24,14,112,7,P.navy);fr(66,6,28,8,P.coral,1);}},
+unwrap:{k:.55,f(t){bg(P.navy);fr(62,10,36,76,P.navy3,6);fr(70,4,20,8,P.paper,2);fr(64,28,32,38,P.paper);fr(64,30,32,6,P.amber);for(let i=0;i<4;i++)fr(67,42+i*5,i===3?14:26,1.3,P.navy);txt('1973',80,33,5,P.navy,800,'center',"'JetBrains Mono',monospace");
+  const k=eio(sg(t,.28,.74)),px=lerp(96,63,k);if(px>64){X.save();X.beginPath();X.rect(64,28,px-64,38);X.clip();fr(64,28,32,38,P.coral);dot(80,44,8,P.amber);X.fillStyle=P.mint;X.beginPath();X.ellipse(86,36,5,2.2,-.6,0,TAU);X.fill();txt('МАНГО',80,59,6.5,P.paper,800);X.restore();}
+  if(k>0&&k<1){const fw=Math.min(14,96-px)*.9;X.save();X.shadowColor='rgba(0,0,0,.4)';X.shadowBlur=4;X.fillStyle=P.back;X.beginPath();X.moveTo(px,28);X.lineTo(px+fw,24);X.lineTo(px+fw,62);X.lineTo(px,66);X.closePath();X.fill();X.restore();}}},
+stars:{k:.82,f(t){bg(P.dark);seed=21;for(let i=0;i<30;i++){X.globalAlpha=.25+rnd()*.3;dot(rnd()*W,rnd()*H,.6,P.paper);}X.globalAlpha=1;
+  const pts=STAR,n=pts.length,ns=Math.floor(sg(t,.04,.32)*n+.999),kl=sg(t,.34,.78)*(n-1);
+  if(kl>0){X.strokeStyle=P.coral;X.lineWidth=1.4;X.beginPath();X.moveTo(pts[0][0],pts[0][1]);const f=Math.floor(kl);for(let i=1;i<=f;i++)X.lineTo(pts[i][0],pts[i][1]);if(f<n-1){const a=pts[f],b=pts[f+1],u=kl-f;X.lineTo(lerp(a[0],b[0],u),lerp(a[1],b[1],u));}X.stroke();}
+  for(let i=0;i<n;i++)if(i<ns||t>.32){X.globalAlpha=.3;dot(pts[i][0],pts[i][1],3,P.paper);X.globalAlpha=1;dot(pts[i][0],pts[i][1],1.4,P.paper);}}},
+draw:{k:.62,f(t){sBlue2();const k=eio(sg(t,.06,.6)),f=eio(sg(t,.6,.8));const p=new Path2D();rpath(p,36,38,84,14,3);rpath(p,120,40,10,10,2);p.moveTo(46,45);p.lineTo(56,45);
+  X.setLineDash([260,260]);X.lineDashOffset=260*(1-k);X.strokeStyle=P.paper;X.lineWidth=1.4;X.stroke(p);X.setLineDash([]);
+  if(f>0){X.globalAlpha=f;const b=new Path2D();rpath(b,36,38,84,14,3);X.fillStyle=P.coral;X.fill(b);const m=new Path2D();rpath(m,120,40,10,10,2);X.fillStyle=P.paper;X.fill(m);X.globalAlpha=1;}}},
+type:{k:.8,f(t){bg(P.amber);fr(22,6,116,84,P.paper);const L=['МЫ ДОЛЖНЫ ПОЛУЧИТЬ','СВОЮ ДОЛЮ','МОЛОДЁЖНОГО РЫНКА'],tot=L.join('').length,n=Math.floor(sg(t,.06,.78)*tot);let left=n,y=30,lastX=30,lastY=30;
+  for(const s of L){const part=s.slice(0,Math.max(0,Math.min(s.length,left)));left-=s.length;X.font="700 7.6px 'JetBrains Mono',monospace";X.fillStyle=P.navy;X.textAlign='left';X.textBaseline='middle';X.fillText(part,30,y);if(part.length){lastX=30+X.measureText(part).width;lastY=y;}y+=13;if(left<0)break;}
+  if(Math.floor(t*12)%2===0)fr(lastX+1,lastY-4,1.4,8,P.coral);}},
+count:{k:.9,f(t){bg(P.navy);const k=eo(sg(t,.06,.74)),v=14e6*k,cw=13,ch=20,gap=5,tw=8*cw+2*gap,x0=80-tw/2,y0=35;
+  for(let i=0;i<8;i++){const pl=Math.pow(10,7-i),pos=v/pl,d=Math.floor(pos)%10,fp=pos%1,fr2=i===7?fp:cl((fp-.9)*10),x=x0+i*cw+(i>=2?gap:0)+(i>=5?gap:0);
+    fr(x,y0,cw-2,ch,P.navy3,2);X.save();X.beginPath();X.rect(x,y0,cw-2,ch);X.clip();X.font="700 14px 'JetBrains Mono',monospace";X.textAlign='center';X.textBaseline='middle';X.fillStyle=P.paper;
+    X.fillText(String(d),x+(cw-2)/2,y0+ch/2-fr2*ch);X.fillText(String((d+1)%10),x+(cw-2)/2,y0+ch/2+ch-fr2*ch);X.restore();}
+  fr(x0,y0+ch+4,tw-2,2,P.coral);txt('документов',80,y0+ch+14,6.5,P.paper,500);}},
+assemble:{k:.66,f(t){sBlue();X.globalAlpha=.0;X.globalAlpha=1;const parts=[[75,12,10,9,P.paper,-60,-20,-1.2],[73,21,14,15,'rgba(242,179,74,.9)',200,-10,1.4],[73,36,14,40,P.coral,-50,110,.9],[78,66,4,3,P.mint,210,100,-2]];
+  const fade=1-sg(t,.9,1);fr(0,0,W,H,'rgba(26,58,128,.55)');parts.forEach((p,i)=>{const u=eio(sg(t,.1+i*.1,.38+i*.1));X.save();X.globalAlpha=fade;X.translate(lerp(p[5],p[0]+p[2]/2,u),lerp(p[6],p[1]+p[3]/2,u));X.rotate(lerp(p[7],0,u));fr(-p[2]/2,-p[3]/2,p[2],p[3],p[4],2);X.restore();});X.globalAlpha=1;}},
+receipt:{k:.86,f(t){bg(P.navy);fr(46,6,68,20,P.navy3,3);fr(54,10,36,8,'#0a1022',1);txt('$',58,14,5,P.coral,700,'left',"'JetBrains Mono',monospace");fr(56,25,48,2,P.dark);
+  const k=eio(sg(t,.08,.8)),len=lerp(0,60,k);if(len>0){X.beginPath();X.moveTo(60,26);X.lineTo(100,26);for(let y=26;y<=26+len;y+=2)X.lineTo(100+1.6*Math.sin(y/4+t*6),y);for(let y=26+len;y>=26;y-=2)X.lineTo(60+1.6*Math.sin(y/4+t*6+1),y);X.closePath();X.fillStyle=P.paper;X.fill();
+    X.save();X.beginPath();X.rect(56,26,48,len);X.clip();for(let i=0;i<9;i++)fr(64,30+i*5,i%3===2?20:30,1.1,'rgba(13,25,54,.45)');if(len>50){txt('$13 000 000 000',80,26+len-6,5.8,P.coral,800,'center',"'JetBrains Mono',monospace");}X.restore();}}},
+beam:{k:.84,f(t){bg('#050a18');X.globalAlpha=.16;sShelves(false);X.globalAlpha=1;const tg=[118,50],a=t*TAU*1.3,lx=80+50*Math.sin(a),ly=44+20*Math.sin(a*1.7),m=eio(sg(t,.7,.82)),bx=lerp(lx,tg[0],m),by=lerp(ly,tg[1],m);
+  X.save();X.beginPath();X.arc(bx,by,18,0,TAU);X.clip();sShelves(true);X.restore();const g=X.createRadialGradient(bx,by,8,bx,by,22);g.addColorStop(0,'rgba(255,246,214,0)');g.addColorStop(1,'rgba(5,10,24,.8)');X.fillStyle=g;X.beginPath();X.arc(bx,by,22,0,TAU);X.fill();}}
+};
+const STAR=(()=>{const L=[[94,78],[94,14],[54,58],[110,58]];let tot=0;const seg=[];for(let i=0;i<3;i++){const d=Math.hypot(L[i+1][0]-L[i][0],L[i+1][1]-L[i][1]);seg.push(d);tot+=d;}
+  const o=[];const n=14;for(let j=0;j<n;j++){let s=j/(n-1)*tot,i=0;while(i<2&&s>seg[i]){s-=seg[i];i++;}const u=Math.min(1,s/seg[i]);o.push([lerp(L[i][0],L[i+1][0],u),lerp(L[i][1],L[i+1][1],u)]);}return o;})();
+function rpath(p,x,y,w,h,r){p.moveTo(x+r,y);p.arcTo(x+w,y,x+w,y+h,r);p.arcTo(x+w,y+h,x,y+h,r);p.arcTo(x,y+h,x,y,r);p.arcTo(x,y,x+w,y,r);p.closePath();}
+function sBlue2(){bg('#1a3a80');X.strokeStyle='rgba(247,246,242,.12)';X.lineWidth=.6;X.beginPath();for(let x=0;x<=W;x+=10){X.moveTo(x,0);X.lineTo(x,H);}for(let y=0;y<=H;y+=10){X.moveTo(0,y);X.lineTo(W,y);}X.stroke();}
+function sShelves(lit){seed=17;for(let r=0;r<4;r++){const y=8+r*21;fr(6,y+15,148,2,lit?'#5a6a9c':P.navy3);for(let c=0;c<9;c++){const w=11+rnd()*4,h=11+rnd()*3,x=10+c*16;const salt=(r===2&&c===6);fr(x,y+15-h,w,h,salt?P.coral:(c%3?P.amber:P.back));if(salt&&lit)txt('СОЛЬ',x+w/2,y+15-h/2,3.6,P.paper,800);}}}
+function recur(d){sDesk();if(d<5){X.save();X.beginPath();X.rect(RS.x,RS.y,RS.w,RS.h);X.clip();X.translate(RS.x,RS.y);X.scale(RS.w/W,RS.h/H);recur(d+1);X.restore();}
+  else fr(RS.x,RS.y,RS.w,RS.h,P.navy);fr(RS.x+4,RS.y+RS.h-4,RS.w*.36,1.6,P.coral);fr(RS.x+RS.w*.36+4,RS.y+RS.h-4,RS.w*.6-8,1.6,'rgba(247,246,242,.3)');fr(78,38,1.6,5,P.paper);fr(81,38,1.6,5,P.paper);}
+function strip(){fr(0,0,500,H,'#24345f');const pins=[[60,16],[150,20],[240,14],[330,18],[420,16]];X.strokeStyle=P.coral;X.lineWidth=.9;X.beginPath();pins.forEach((p,i)=>i?X.lineTo(p[0],p[1]):X.moveTo(p[0],p[1]));X.stroke();
+  fr(38,18,44,56,P.paper);for(let i=0;i<6;i++)fr(43,26+i*7,i%3===2?20:34,1.3,P.navy);txt('1973',68,66,6,P.coral,800,'center',"'JetBrains Mono',monospace");
+  X.lineWidth=2;X.strokeStyle=P.paper;X.save();X.beginPath();X.arc(150,52,15,0,TAU);X.clip();fr(130,52,40,20,P.amber);X.restore();X.beginPath();X.arc(150,52,15,0,TAU);X.stroke();fr(145,24,10,14,'rgba(247,246,242,.0)');X.beginPath();X.moveTo(145,37);X.lineTo(145,26);X.moveTo(155,37);X.lineTo(155,26);X.stroke();
+  X.beginPath();X.arc(232,44,8,0,TAU);X.lineWidth=3;X.stroke();fr(239,42,22,4,P.paper);fr(254,46,3,6,P.paper);fr(259,46,2,5,P.paper);
+  dot(330,50,18,P.coral);X.beginPath();X.arc(330,50,13,0,TAU);X.lineWidth=1.4;X.stroke();txt('1998',330,50,6.5,P.paper,800,'center',"'JetBrains Mono',monospace");
+  fr(414,26,13,48,P.coral,3);fr(416.5,20,8,7,P.paper,2);dot(420.5,68,1.5,P.mint);pins.forEach(p=>dot(p[0],p[1],2,P.paper));}
+function clipHP(pts,inside,g){const o=[];for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length],ia=inside(a),ib=inside(b);if(ia)o.push(a);if(ia!==ib){const ga=g(a),gb=g(b),u=ga/(ga-gb);o.push([lerp(a[0],b[0],u),lerp(a[1],b[1],u)]);}}return o;}
+
+/* движок: рисуем только видимые, 30 кадров в секунду, «стоп» по нажатию */
+const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const CV=[...document.querySelectorAll('canvas.demo')].map(c=>({c,ctx:c.getContext('2d'),d:DEMO[c.dataset.demo],vis:false,play:!RM,t0:performance.now()-Math.random()*3000,frozen:null}));
+const PER=4200;
+function size(o){const r=o.c.getBoundingClientRect();if(!r.width)return false;const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.round(r.width*dpr),h=Math.round(r.width*9/16*dpr);if(o.c.width!==w||o.c.height!==h){o.c.width=w;o.c.height=h;}return true;}
+function paint(o,t){if(!o.d||!size(o))return;X=o.ctx;X.setTransform(o.c.width/W,0,0,o.c.width/W,0,0);X.globalAlpha=1;X.lineCap='butt';X.setLineDash([]);try{o.d.f(t);}catch(e){}X.globalAlpha=1;}
+function phase(o,now){return ((now-o.t0)%PER)/PER;}
+let last=0;
+function loop(now){requestAnimationFrame(loop);if(now-last<33)return;last=now;CV.forEach(o=>{if(o.vis&&o.play&&!o.c.closest('[hidden]'))paint(o,phase(o,now));});}
+const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{const o=CV.find(x=>x.c===e.target);if(o){o.vis=e.isIntersecting;if(o.vis&&!o.play)paint(o,o.frozen!=null?o.frozen:o.d.k);}}),{rootMargin:'120px'}):null;
+CV.forEach(o=>{if(io)io.observe(o.c);else o.vis=true;paint(o,o.d?o.d.k:0);if(!o.play)o.c.setAttribute('aria-label',o.c.getAttribute('aria-label').replace('остановить','запустить'));
+  o.c.addEventListener('click',()=>{if(o.play){o.frozen=phase(o,performance.now());o.play=false;paint(o,o.frozen);o.c.setAttribute('aria-label',o.c.getAttribute('aria-label').replace('остановить','запустить'));}
+    else{o.play=true;o.t0=performance.now()-(o.frozen||0)*PER;o.frozen=null;o.c.setAttribute('aria-label',o.c.getAttribute('aria-label').replace('запустить','остановить'));}});});
+function wakeDemos(){CV.forEach(o=>{if(!o.play&&o.vis)paint(o,o.frozen!=null?o.frozen:o.d.k);});}
+requestAnimationFrame(loop);
+let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>CV.forEach(o=>paint(o,o.play?phase(o,performance.now()):(o.frozen!=null?o.frozen:o.d.k))),150);});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>CV.forEach(o=>{if(!o.play)paint(o,o.frozen!=null?o.frozen:o.d.k);}));
+
+/* ---------- отметки «Беру / Не надо» (база страницы) ---------- */
+let DB=null;const CHAIN={},TIM={};
+const note=s=>{document.getElementById('dbnote').textContent=s||'';};
+function mineHTML(){const v=Object.values(PICKS);const t=v.filter(p=>p.v==='take').length,s=v.filter(p=>p.v==='skip').length,c=v.filter(p=>p.note).length;
+  document.getElementById('mine').innerHTML=(t||s||c)?`Беру: <b>${t}</b> · Не надо: <b>${s}</b>${c?` · Комментов: <b>${c}</b>`:''}`:'<span class="off">Жми «Беру» или «Не надо» на карточках — я увижу отметки сам.</span>';}
+function applyPick(id){const el=document.getElementById(id);if(!el)return;const p=PICKS[id]||{};
+  el.classList.toggle('is-take',p.v==='take');el.classList.toggle('is-skip',p.v==='skip');
+  el.querySelectorAll('.pk').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===p.v)));
+  const ta=el.querySelector('.nt'),cm=el.querySelector('.cm');if(document.activeElement!==ta&&ta.value!==(p.note||''))ta.value=p.note||'';
+  cm.classList.toggle('has',!!p.note);cm.textContent=p.note?'Коммент ✓':'Коммент';if(p.note&&ta.hidden){ta.hidden=false;cm.setAttribute('aria-expanded','true');}}
+function applyAll(){ITEMS.forEach(i=>applyPick(i.id));mineHTML();if(FILTER==='take'||FILTER==='skip')applyFilter();else drawFilters();}
+function save(id,patch){if(!DB)return;const cur=Object.assign({},PICKS[id]||{},patch,{t:Date.now()});PICKS[id]=cur;applyPick(id);mineHTML();drawFilters();
+  CHAIN[id]=(CHAIN[id]||Promise.resolve()).then(()=>DB.collection('picks').doc(id).set(cur)).catch(e=>note('Не сохранилось ('+((e&&e.code)||'ошибка')+') — попробуй ещё раз.'));}
+document.addEventListener('click',e=>{const b=e.target.closest('.pk,.cm');if(!b)return;const card=b.closest('.card'),id=card.dataset.id;
+  if(b.classList.contains('cm')){const ta=card.querySelector('.nt');ta.hidden=!ta.hidden;b.setAttribute('aria-expanded',String(!ta.hidden));if(!ta.hidden)ta.focus();return;}
+  const cur=(PICKS[id]||{}).v;save(id,{v:cur===b.dataset.v?'':b.dataset.v});});
+document.addEventListener('input',e=>{const ta=e.target.closest('.nt');if(!ta)return;const id=ta.closest('.card').dataset.id;clearTimeout(TIM[id]);TIM[id]=setTimeout(()=>save(id,{note:ta.value.trim()}),900);});
+document.addEventListener('focusout',e=>{const ta=e.target.closest&&e.target.closest('.nt');if(!ta)return;const id=ta.closest('.card').dataset.id;clearTimeout(TIM[id]);const v=ta.value.trim();if(v!==((PICKS[id]||{}).note||''))save(id,{note:v});});
+(async()=>{let db=null;try{db=window.claude&&window.claude.use?await window.claude.use('db'):null;}catch(_){db=null;}
+  if(!db){document.body.classList.add('nodb');document.getElementById('mine').innerHTML='<span class="off">Отметки «Беру / Не надо» работают, когда страница открыта в Claude.</span>';return;}
+  DB=db;const timer=setTimeout(()=>note('Отметки пока не загрузились — проверь интернет. Нажатия сохранятся, когда связь появится.'),10000);
+  DB.collection('picks').onSnapshot(s=>{if(!s.metadata.fromCache){clearTimeout(timer);note('');}const m={};s.docs.forEach(d=>{m[d.id]=d.data();});
+    ITEMS.forEach(i=>{if(!(i.id in m))delete PICKS[i.id];});Object.keys(m).forEach(k=>{PICKS[k]=Object.assign({},m[k]);});applyAll();},
+    e=>{clearTimeout(timer);note('Отметки сейчас недоступны.');});
+})();
+</script>
