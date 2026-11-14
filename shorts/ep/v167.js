@@ -904,8 +904,17 @@
     const sk = .5 + .5 * Math.sin(t * 3); c.globalAlpha = a * sk; c.strokeStyle = '#fff'; c.lineWidth = 3; c.beginPath(); c.moveTo(-30, -40); c.lineTo(30, -40); c.moveTo(0, -70); c.lineTo(0, -10); c.stroke();
     c.restore(); glowDot(c, x, y - 20 * s, 80 * s, '#ffcf6a', .5 * a);
   }
+  let S6K = null;
   function s6Lab(c, t, u) {
-    const q = Q, k = eio(cl(u / 9)), C = look([lp(-6, 6, k), lp(26, 24, k), lp(-92, -80, k)], [0, 16, 24], 1250);
+    const q = Q; if (!S6K) S6K = [
+      { t: q.s6 - .15, p: [-8, 30, -104], g: [0, 17, 24], f: 1180 },
+      { t: q.nikot - .3, p: [-4, 27, -92], g: [0, 16, 24], f: 1220 },
+      { t: q.kisl + .5, p: [5, 20, -66], g: [0, 14, 20], f: 1320 },
+      { t: q.nikot2 + .2, p: [2, 21, -50], g: [0, 16, 18], f: 1420 },
+      { t: q.myagko - .3, p: [-3, 26, -86], g: [0, 16, 24], f: 1260 },
+      { t: q.s7 + .2, p: [2, 27, -104], g: [3, 19, 24], f: 1120 },
+      { t: q.sekr7, p: [5, 26, -100], g: [5, 18, 24], f: 1140 }];
+    const C = camPath(S6K, t);
     const E = { amb: [.42, .45, .5], ls: [{ dir: nrm3([.2, -1, .5]), col: [.95, .98, 1], k: .7 }, { pos: [-80, 120, -40], col: [1, .98, .94], k: 1, r: 200 }], rim: { dir: nrm3([0, -.2, -1]), col: [.8, .9, 1], k: .5 } };
     c.fillStyle = '#dfe6ec'; c.fillRect(0, 0, WW, HH);
     const far = lay('far', .5), FF = [];
@@ -931,7 +940,7 @@
       if (pourR > .4) stream(c, rx - h * .45 * Math.sin(-rotR), pR[1] - h * .95 * Math.cos(rotR) - 18 * sc * pourR, pB[0] + h * .05, pB[1] - h * .4, '#9fe0ff', 7, t, cl((pourR - .4) / .3));
     }
     if (pB) {
-      const cx = pB[0] + 120 * sc * tilt * .25, cy = pB[1] - 28 * sc * tilt, rot = 1.25 * tilt, liqC = salt > .5 ? '#ffb43a' : mixK > .3 ? '#d8e070' : '#ffffff';
+      const cx = pB[0] - h * .22 * tilt, cy = pB[1] - 28 * sc * tilt, rot = 1.25 * tilt, liqC = salt > .5 ? '#ffb43a' : mixK > .3 ? '#d8e070' : '#ffffff';
       flask2(c, cx, cy, h * 1.1, { col: liqC, lv: lp(.15, .7, mixK) * (1 - .55 * ss(q.s7 + .4, q.zaliv + .8, t)), bub: mixK > .1 }, rot, salt > .5 ? 'СОЛЬ' : '', t);
       if (tilt < .2) crystal(c, cx, cy - h * .38, sc * .2, t, salt * (1 - tilt * 5));
       // жидкость льётся сквозь пустой пунктирный силуэт вейпа — заливать было не во что
@@ -1366,6 +1375,8 @@
     for (let i = 0; i < 60; i++) { const x = -120 + 240 * H1(i * 3.3), y = 90 + 140 * H1(i * 5.1); quad(FF, C, [[x, y + 3, 158], [x + 3, y + 3, 158], [x + 3, y, 158], [x, y, 158]], H1(i) > .5 ? '#ffcf8a' : '#8fc0ff', { glow: lay('glow', .5), ga: .8 }) }
     draw3(far, FF); comp(c, 'far', 14);
     const F = [];
+    for (const x of [-130, 0, 130]) box(F, C, E, { p: [x, 160, 150], s: [7, 160, 6], m: { col: '#0b0d14', edge: .12 } });
+    for (const y of [80, 240]) box(F, C, E, { p: [0, y, 150], s: [267, 7, 6], m: { col: '#0b0d14', edge: .12 } });
     box(F, C, E, { p: [0, 30, 30], s: [50, 60, 40], m: { col: '#3a2a20', gloss: .8, edge: .15 }, mf: { f: { col: '#2e2018', edge: .25 } } });
     box(F, C, E, { p: [0, 22, 9.7], s: [40, 1.2, .6], m: { col: '#b8944a', gloss: 2 } });
     draw3(c, F);
@@ -1398,7 +1409,7 @@
     });
   }
   function s16Board(c, t, u) {
-    const q = Q, k = eio(cl(u / 9)), C = look([lp(-8, 6, k), lp(2, -2, k), lp(-150, -128, k)], [0, 0, 0], 1250);
+    const q = Q, k = eio(cl(u / 9)), C = look([lp(-6, 4, k), lp(4, -2, k), lp(-122, -104, k)], [0, 2, 0], 1250);
     const E = { amb: [.12, .1, .09], ls: [{ pos: [0, 120, -60], col: [1, .85, .62], k: 2.4, r: 170, aim: nrm3([0, -1, .45]), spot: [.25, .85] }], rim: { dir: nrm3([0, 0, 1]), col: [1, .6, .3], k: .5 } };
     c.fillStyle = '#060506'; c.fillRect(0, 0, WW, HH);
     const F = [];
