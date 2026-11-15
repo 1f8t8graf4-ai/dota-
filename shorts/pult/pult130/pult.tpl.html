@@ -9,7 +9,7 @@
 :root{
   --bg:#0a1330;--panel:#0f1b3d;--raise:#15234c;--hover:#1b2c5c;--line:#22346a;--line2:#2e4486;
   --fg:#f5f3ee;--mute:#9aa6c8;--dim:#6b79a3;--black:#03060f;
-  --acc:#ff6b5d;--acc-ink:#1a0a08;--anim:#62c8ff;--easy:#37cf89;--mid:#f2bf48;--hard:#ff5468;--fire:#ff8a3d;--star:#ffd36b;
+  --acc:#ff6b5d;--acc-ink:#1a0a08;--anim:#62c8ff;--art:#c89bff;--easy:#37cf89;--mid:#f2bf48;--hard:#ff5468;--fire:#ff8a3d;--star:#ffd36b;
   --f-d:'Unbounded',ui-sans-serif,system-ui,sans-serif;
   --f-b:'Golos Text',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --f-m:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
@@ -53,7 +53,9 @@ button{cursor:pointer}
 
 /* метки */
 .kind{font:600 10px/1 var(--f-m);letter-spacing:.08em;padding:4px 6px;border-radius:4px;border:1px solid currentColor;white-space:nowrap}
-.kind.tr{color:var(--acc)}.kind.an{color:var(--anim)}
+.kind.tr{color:var(--acc)}.kind.an{color:var(--anim)}.kind.el{color:var(--art)}
+.kinds{display:inline-flex;gap:4px;flex-wrap:wrap}
+.tst{font:600 10px/1 var(--f-m);letter-spacing:.06em;padding:4px 6px;border-radius:4px;background:var(--easy);color:var(--acc-ink);white-space:nowrap}
 .diff{display:inline-flex;align-items:center;gap:5px;font:700 10.5px/1 var(--f-b);letter-spacing:.06em;padding:4px 7px 4px 6px;border-radius:999px;background:var(--raise);white-space:nowrap}
 .diff::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 0 2px color-mix(in srgb,currentColor 25%,transparent)}
 .diff.E{color:var(--easy)}.diff.M{color:var(--mid)}.diff.H{color:var(--hard)}
@@ -70,7 +72,9 @@ button{cursor:pointer}
 .chip:hover{color:var(--fg);border-color:var(--dim)}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .chip.fire[aria-pressed="true"]{background:var(--fire);border-color:var(--fire);color:var(--acc-ink)}
-.chip.star[aria-pressed="true"]{background:var(--star);border-color:var(--star);color:var(--acc-ink)}
+.chip.kt[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.chip.ka[aria-pressed="true"]{background:var(--anim);border-color:var(--anim);color:var(--acc-ink)}
+.chip.ke[aria-pressed="true"]{background:var(--art);border-color:var(--art);color:var(--acc-ink)}
 .chip.dd::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:0;background:var(--c)}
 .chip.dd.E{--c:var(--easy)}.chip.dd.M{--c:var(--mid)}.chip.dd.H{--c:var(--hard)}
 .chip.dd[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:var(--acc-ink)}
@@ -91,7 +95,7 @@ button{cursor:pointer}
 .it:focus-visible{outline:2px solid var(--dim);outline-offset:1px}
 .th{width:96px;height:54px;border-radius:5px;background-color:var(--black);background-image:url("thumbs.jpg");background-size:960px 702px;background-repeat:no-repeat}
 .it-b{display:flex;flex-direction:column;gap:2px;min-width:0}
-.it-1{display:flex;align-items:center;gap:6px;font:600 12px/1.2 var(--f-m);color:var(--mute)}
+.it-1{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font:600 12px/1.2 var(--f-m);color:var(--mute)}
 .it-1 .kind{font-size:9px;padding:3px 4px}
 .it-n{font-weight:600;font-size:13.5px;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .it-s{font-size:11.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -157,6 +161,8 @@ button{cursor:pointer}
 .bar i.on{background:var(--acc)}
 .card h3{margin:0 0 4px;font:600 10.5px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 .card p{margin:0;max-width:62ch}
+.tech{border-left:3px solid var(--anim);padding:2px 0 2px 12px}
+.tech p{font-size:14px;color:var(--fg)}
 .c-meta{font-size:12px;color:var(--mute)}
 .ours{background:var(--raise);border-left:3px solid var(--acc);padding:10px 12px;border-radius:0 8px 8px 0}
 .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -176,14 +182,14 @@ button{cursor:pointer}
   <header class="hd">
     <div>
       <h1>Пульт приёмов <i>Боба</i></h1>
-      <p>130 переходов и анимаций из 13 роликов «Знакомьтесь, Боб». Клип — сам момент плюс по 0,3 с до и после. <span class="kb">←</span> <span class="kb">→</span> кадр, <span class="kb">Пробел</span> пауза, <span class="kb">↑</span> <span class="kb">↓</span> соседний приём.</p>
+      <p>130 переходов, анимаций и художественных элементов из 13 роликов «Знакомьтесь, Боб» — по 10 на ролик. Клип — сам момент плюс по 0,3 с до и после. <span class="kb">←</span> <span class="kb">→</span> кадр, <span class="kb">Пробел</span> пауза, <span class="kb">↑</span> <span class="kb">↓</span> соседний приём.</p>
     </div>
     <div class="stats" id="stats"></div>
   </header>
 
   <aside class="cat" aria-label="Каталог приёмов">
     <label class="srch"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Номер или слово: 17, окно, шар…" autocomplete="off" aria-label="Поиск по номеру или слову"></label>
+      <input id="q" type="search" placeholder="Номер или слово: 13, ветка, шар, clip…" autocomplete="off" aria-label="Поиск по номеру или слову"></label>
     <div class="chips" id="fKind"></div>
     <div class="chips" id="fMark"></div>
     <div class="lbl">Ролики</div>
@@ -220,13 +226,13 @@ button{cursor:pointer}
     </section>
 
     <article class="card" id="card" aria-live="polite">
-      <div class="c-top"><span class="id" id="cId">#—</span><span class="kind" id="cKind"></span><span class="diff" id="cDiff"></span></div>
+      <div class="c-top"><span class="id" id="cId">#—</span><span class="kinds" id="cKind"></span><span class="diff" id="cDiff"></span><span class="tst" id="cTst" hidden></span></div>
       <div class="score"><div class="big" id="cScore">—<small>/10</small></div><div class="bar" id="cBar" aria-hidden="true"></div></div>
       <div class="c-meta" id="cMeta"></div>
-      <div><h3>Что в кадре</h3><p id="cWhat"></p></div>
-      <div><h3 id="cWhyH">Почему</h3><p id="cWhy"></p></div>
-      <div class="ours"><h3>Как применить у нас в ролике</h3><p id="cOurs"></p></div>
-      <div class="acts needdb"><button class="b want" id="bWant" type="button" aria-pressed="false">🔥 Хочу</button><span class="tag" id="cStar" hidden>★ советую</span></div>
+      <div><h3>Что в кадре (покадрово)</h3><p id="cWhat"></p></div>
+      <div class="tech"><h3 id="cWhyH">Техника кода (как повторить на Canvas)</h3><p id="cWhy"></p></div>
+      <div class="ours"><h3>Применение у нас в ролике</h3><p id="cOurs"></p></div>
+      <div class="acts needdb"><button class="b want" id="bWant" type="button" aria-pressed="false">🔥 Хочу</button></div>
       <div class="acts"><button class="b pri" id="bCopy" type="button">📋 Скопировать штамп в ТЗ</button></div>
       <pre class="stamp" id="stamp"></pre>
       <label class="note needdb"><h3>Твоя заметка к приёму</h3><textarea id="note" placeholder="Например: беру в сцену с архивом, только быстрее"></textarea><small id="dbnote">Я увижу заметки и 🔥 сам.</small></label>
@@ -237,43 +243,45 @@ button{cursor:pointer}
 
 <script>
 const FX=/*DATA*/[];
-const VORD=['santa','cola','google','insta','apple','starbucks','davinci','wot','mdk','tinder','madonna','sobolev','hovan'];
-const DIFF={E:'ИЗИ',M:'СРЕДНЕ',H:'ЗАЁБ'},KIND={T:'ПЕРЕХОД',A:'АНИМАЦИЯ'};
+const VORD=['cola','starbucks','santa','google','apple','insta','davinci','wot','mdk','tinder','madonna','sobolev','hovan'];
+const DIFF={E:'ИЗИ',M:'СРЕДНЕ',H:'ЗАЁБ'},KIND={T:'ПЕРЕХОД',A:'АНИМАЦИЯ',E:'🎨 ХУД. ЭЛЕМЕНТ'},KCLS={T:'tr',A:'an',E:'el'},TAGK={'ПЕРЕХОД':'T','АНИМАЦИЯ':'A','ХУД. ЭЛЕМЕНТ':'E'};
 const $=s=>document.getElementById(s);
-const V=$('vid'),BYID={};FX.forEach((x,i)=>{x.i=i;BYID[x.id]=x;});
-let F={q:'',k:'',d:'',v:'',fire:false,star:false,sort:'num'},CUR=null,SHOWN=[],RATE=1,CROP='169',MX=.5;
+const V=$('vid'),BYID={};FX.forEach((x,i)=>{x.i=i;x.ks=(x.tags||[]).map(t=>TAGK[t]).filter(Boolean);BYID[x.id]=x;});
+const kindsHTML=x=>x.ks.map(k=>`<span class="kind ${KCLS[k]}">${KIND[k]}</span>`).join('');
+let F={q:'',k:'',d:'',v:'',fire:false,sort:'num'},CUR=null,SHOWN=[],RATE=1,CROP='169',MX=.5;
 const ST={};let DB=null;
 const lo=s=>(s||'').toLowerCase().replace(/ё/g,'е');
-function load(){try{const s=JSON.parse(localStorage.getItem('bobfx')||'{}');if(s.F)Object.assign(F,s.F,{q:''});if(s.r)RATE=s.r;if(s.c)CROP=s.c;if(typeof s.mx==='number')MX=s.mx;return s.id;}catch(_){return null}}
-function keep(){try{localStorage.setItem('bobfx',JSON.stringify({F,r:RATE,c:CROP,mx:MX,id:CUR&&CUR.id}))}catch(_){}}
-const isWant=id=>!!(ST[id]&&ST[id].want);
+function load(){try{const s=JSON.parse(localStorage.getItem('bobfx2')||'{}');if(s.F)Object.assign(F,s.F,{q:''});if(s.r)RATE=s.r;if(s.c)CROP=s.c;if(typeof s.mx==='number')MX=s.mx;return s.id;}catch(_){return null}}
+function keep(){try{localStorage.setItem('bobfx2',JSON.stringify({F,r:RATE,c:CROP,mx:MX,id:CUR&&CUR.id}))}catch(_){}}
+const isWant=id=>(ST[id]&&'want' in ST[id])?!!ST[id].want:!!(BYID[id]&&BYID[id].hot);   // 🔥 из списка, пока сам не переключишь
 const stamp=x=>`[Использовать приём #${x.id} из файла ${x.file} (Ролик: ${x.vn}, таймкод: ${x.tc}) — разложи этот клип по кадрам и перенеси механику 1-в-1 в сцену]`;
 const pl=(n,a,b,c)=>{const m=n%10,h=n%100;return m===1&&h!==11?a:(m>=2&&m<=4&&(h<12||h>14)?b:c)};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function stats(){const t=FX.filter(x=>x.k==='T').length,a=FX.length-t,c=k=>FX.filter(x=>x.d===k).length,w=FX.filter(x=>isWant(x.id)).length;
-  $('stats').innerHTML=`<span class="stat"><b>${t}</b> переходов</span><span class="stat"><b>${a}</b> анимаций</span><span class="stat"><span class="diff E">ИЗИ</span><b>${c('E')}</b></span><span class="stat"><span class="diff M">СРЕДНЕ</span><b>${c('M')}</b></span><span class="stat"><span class="diff H">ЗАЁБ</span><b>${c('H')}</b></span><span class="stat">🔥 <b>${w}</b></span>`;}
+const nk=k=>FX.filter(x=>x.ks.includes(k)).length;
+function stats(){const c=k=>FX.filter(x=>x.d===k).length,w=FX.filter(x=>isWant(x.id)).length;
+  $('stats').innerHTML=`<span class="stat"><b>${nk('T')}</b> переходов</span><span class="stat"><b>${nk('A')}</b> анимаций</span><span class="stat"><b>${nk('E')}</b> худ. элементов</span><span class="stat"><span class="diff E">ИЗИ</span><b>${c('E')}</b></span><span class="stat"><span class="diff M">СРЕДНЕ</span><b>${c('M')}</b></span>${c('H')?`<span class="stat"><span class="diff H">ЗАЁБ</span><b>${c('H')}</b></span>`:''}<span class="stat">🔥 <b>${w}</b></span>`;}
 function chip(attr,val,label,n,on,cls){return `<button type="button" class="chip${cls?' '+cls:''}" data-${attr}="${val}" aria-pressed="${on}">${label}${n!=null?`<small>${n}</small>`:''}</button>`}
 function drawFilters(){
   const base=FX.filter(x=>match(x,{v:1}));
-  $('fKind').innerHTML=chip('k','','Все',null,!F.k)+chip('k','T','ПЕРЕХОД',FX.filter(x=>x.k==='T').length,F.k==='T')+chip('k','A','АНИМАЦИЯ',FX.filter(x=>x.k==='A').length,F.k==='A');
-  $('fMark').innerHTML=chip('fire','1','🔥 Хочу',FX.filter(x=>isWant(x.id)).length,F.fire,'fire')+chip('star','1','★ Советую',FX.filter(x=>x.want).length,F.star,'star')
-    +['E','M','H'].map(k=>chip('d',k,DIFF[k],FX.filter(x=>x.d===k).length,F.d===k,'dd '+k)).join('');
+  $('fKind').innerHTML=chip('k','','Все',null,!F.k)+['T','A','E'].map(k=>chip('k',k,KIND[k],nk(k),F.k===k,'k'+KCLS[k][0])).join('');
+  $('fMark').innerHTML=chip('fire','1','🔥 Хочу',FX.filter(x=>isWant(x.id)).length,F.fire,'fire')
+    +['E','M','H'].filter(k=>FX.some(x=>x.d===k)).map(k=>chip('d',k,DIFF[k],FX.filter(x=>x.d===k).length,F.d===k,'dd '+k)).join('');
   $('fVid').innerHTML=chip('v','','Все ролики',base.length,!F.v)+VORD.map(v=>{const n=base.filter(x=>x.v===v).length;const nm=(FX.find(x=>x.v===v)||{}).vn||v;return chip('v',v,esc(nm),n,F.v===v)}).join('');
   $('sort').value=F.sort;
 }
 function match(x,skip){skip=skip||{};
-  if(F.k&&x.k!==F.k)return false;if(F.d&&x.d!==F.d)return false;if(!skip.v&&F.v&&x.v!==F.v)return false;
-  if(F.fire&&!isWant(x.id))return false;if(F.star&&!x.want)return false;
+  if(F.k&&!x.ks.includes(F.k))return false;if(F.d&&x.d!==F.d)return false;if(!skip.v&&F.v&&x.v!==F.v)return false;
+  if(F.fire&&!isWant(x.id))return false;
   const q=F.q.trim();if(!q)return true;
   const m=q.match(/^#?(\d{1,3})$/);if(m)return x.id===m[1].padStart(3,'0');
-  const h=lo([x.id,x.n,x.w,x.why,x.ours,x.vn,KIND[x.k],DIFF[x.d],x.tc].join(' '));
+  const h=lo([x.id,x.n,x.w,x.tech,x.ours,x.vn,(x.tags||[]).join(' '),'худ художественный',DIFF[x.d],x.tc,x.x||''].join(' '));
   return lo(q).split(/\s+/).every(w=>h.includes(w));
 }
 function itemHTML(x){const c=x.i%10,r=Math.floor(x.i/10);
   return `<button type="button" class="it" role="listitem" data-id="${x.id}" aria-current="${CUR&&CUR.id===x.id}">
 <span class="th" style="background-position:${-96*c}px ${-54*r}px" aria-hidden="true"></span>
-<span class="it-b"><span class="it-1">#${x.id} <span class="kind ${x.k==='T'?'tr':'an'}">${KIND[x.k]}</span>${isWant(x.id)?'<span class="mk">🔥</span>':''}${x.want?'<span class="mk st" title="советую">★</span>':''}</span>
+<span class="it-b"><span class="it-1">#${x.id} ${kindsHTML(x)}${isWant(x.id)?'<span class="mk">🔥</span>':''}${x.x?'<span class="mk" title="'+esc(x.x)+'">🧪</span>':''}</span>
 <span class="it-n">${esc(x.n)}</span><span class="it-s">${esc(x.vn)} · ${x.tc}</span></span>
 <span class="it-r"><span class="sc">${x.s}<small>/10</small></span><span class="diff ${x.d}">${DIFF[x.d]}</span></span></button>`;}
 function drawList(){
@@ -296,12 +304,12 @@ function open(id,o){o=o||{};const x=BYID[id];if(!x)return;CUR=x;keep();
   if(o.top&&innerWidth<780)$('vbox').scrollIntoView({block:'start',behavior:'smooth'});
 }
 function card(x){
-  $('cId').textContent='#'+x.id;const k=$('cKind');k.textContent=KIND[x.k];k.className='kind '+(x.k==='T'?'tr':'an');
+  $('cId').textContent='#'+x.id;$('cKind').innerHTML=kindsHTML(x);const ts=$('cTst');ts.hidden=!x.x;ts.textContent=x.x?'🧪 '+x.x.toLowerCase():'';
   const d=$('cDiff');d.textContent=DIFF[x.d];d.className='diff '+x.d;
   $('cScore').innerHTML=`${x.s}<small>/10</small>`;$('cBar').innerHTML=Array.from({length:10},(_,i)=>`<i class="${i<x.s?'on':''}"></i>`).join('');
   $('cMeta').textContent=`${x.vn} · ${x.tc} · клип ${(x.dur||0).toFixed(1)} с, ${x.frames||'—'} ${pl(x.frames||0,'кадр','кадра','кадров')}, ${x.fps} к/с`;
-  $('cWhat').textContent=x.w;$('cWhyH').textContent=`Почему ${DIFF[x.d]} для нашего кода`;$('cWhy').textContent=x.why;$('cOurs').textContent=x.ours;
-  $('cStar').hidden=!x.want;$('stamp').textContent=stamp(x);paintMark();
+  $('cWhat').textContent=x.w;$('cWhy').textContent=x.tech;$('cOurs').textContent=x.ours;
+  $('stamp').textContent=stamp(x);paintMark();
 }
 function paintMark(){if(!CUR)return;const s=ST[CUR.id]||{};$('bWant').setAttribute('aria-pressed',String(!!s.want));$('bWant').textContent=s.want?'🔥 Хочу — отмечено':'🔥 Хочу';
   const ta=$('note');if(document.activeElement!==ta)ta.value=s.note||'';}
@@ -354,8 +362,8 @@ $('bBulk').addEventListener('click',()=>{if(SHOWN.length)copy(SHOWN.map(stamp).j
 document.addEventListener('click',e=>{
   const it=e.target.closest('.it');if(it){open(it.dataset.id,{top:true});return;}
   const c=e.target.closest('.chip');if(c){const ds=c.dataset;
-    if('k' in ds)F.k=ds.k;else if('d' in ds)F.d=F.d===ds.d?'':ds.d;else if('v' in ds)F.v=ds.v;else if('fire' in ds)F.fire=!F.fire;else if('star' in ds)F.star=!F.star;
-    if(c.id==='reset'){F={q:'',k:'',d:'',v:'',fire:false,star:false,sort:F.sort};$('q').value='';}
+    if('k' in ds)F.k=ds.k;else if('d' in ds)F.d=F.d===ds.d?'':ds.d;else if('v' in ds)F.v=ds.v;else if('fire' in ds)F.fire=!F.fire;
+    if(c.id==='reset'){F={q:'',k:'',d:'',v:'',fire:false,sort:F.sort};$('q').value='';}
     keep();drawFilters();drawList();return;}
   const r=e.target.closest('#rates button');if(r){setRate(+r.dataset.r);return;}
   const cr=e.target.closest('#crops button');if(cr){setCrop(cr.dataset.c);return;}
