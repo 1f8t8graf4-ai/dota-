@@ -12,7 +12,7 @@ SR = 48000
 DIRS = ('sfx18', 'sfx17', 'sfx16', 'sfx13', 'sfx8')
 BAN = {'ding', 'tick', 'pin', 'swish', 'carriage', 'typing'}
 GAIN = dict(VS.GAIN, icecrack=.42, snowroof=.4, neon=.22, truck=.5, blade=.55, splash=.42, chain=.3, scroll=.4, conveyor=.28, wave=.45, plop=.45,
-            pageflip=.35, glassbulb=.32, leaves=.3, register=.5, counter=.32, receipt=.28, city=.2, cryptex=.45, lipstick=.45, coins=.22, bubble=.3)
+            pageflip=.35, glassbulb=.32, leaves=.3, register=.5, counter=.32, receipt=.28, city=.2, cryptex=.45, lipstick=.45, train=.5, coins=.22, bubble=.3)
 
 
 def sfx_track(cues, dur):

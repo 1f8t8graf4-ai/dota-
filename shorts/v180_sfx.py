@@ -25,6 +25,7 @@ SFX18 = {
     'city':     ('quiet night city ambience, distant traffic, soft wind, no music, no voices', 3.0),
     'cryptex':  ('heavy brass combination lock rings rotating with soft low clicks, then a solid unlocking clunk', 1.8),
     'lipstick': ('metal lipstick case cap pulled off with a soft pop, then lipstick twisted up, close-up', 1.2),
+    'train':    ('fast metro monorail train rushing past very close from right to left, strong air whoosh, rail clatter, doppler, no horn, no bell', 1.6),
 }
 if __name__ == '__main__':
     d = os.path.join(HERE, 'sfx18'); os.makedirs(d, exist_ok=True)
