@@ -131,7 +131,7 @@
   }
   function shot3(c, t) {
     if (t >= K.zoom1) { factoryShot(c, t); return }
-    const s = t > K.zoom0 ? zoomS(t) : 1;
+    const s = (1 + .05 * eio(at(t, K.s3 + 1.6, K.zoom0))) * (t > K.zoom0 ? zoomS(t) : 1);   // лёгкий наезд ещё до нырка — кадр не стоит
     const zt = () => { c.translate(540, 960); c.scale(s, s); c.translate(-540, -960) };
     c.save(); zt(); hallShot(c, t); c.restore();
     // валики раскатывают указ поверх зала
