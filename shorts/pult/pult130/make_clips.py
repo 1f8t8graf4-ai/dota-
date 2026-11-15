@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""130 приёмов Боба (список Gemini, сверен по кадрам 15.11): нарезка клипов + fx130.json.
+"""195 приёмов Боба (списки Gemini 15.11: 130 + ещё 65, сверены по кадрам): нарезка клипов + fx195.json.
 python3 make_clips.py [--only 001,002] [--no-cut] [--crf 20] [--out out]
-Исходник списка — bob130.json (id, ролик, a–b, теги, что в кадре, техника, применение, оценка, сложность, 🔥 из списка).
+Исходник списка — bob195.json (id, ролик, a–b, теги, что в кадре, техника, применение, оценка, сложность, 🔥 из списка).
 """
 import json, os, subprocess, sys
 from concurrent.futures import ThreadPoolExecutor
@@ -23,8 +23,8 @@ CRF = opt('--crf', '20')
 ONLY = set(opt('--only', '').split(',')) - {''}
 NOCUT = '--no-cut' in args
 
-rows = json.load(open(os.path.join(HERE, 'bob130.json'), encoding='utf-8'))
-assert len(rows) == 130 and [r['id'] for r in rows] == [f'{i:03d}' for i in range(1, 131)]
+rows = json.load(open(os.path.join(HERE, 'bob195.json'), encoding='utf-8'))
+assert len(rows) == 195 and [r['id'] for r in rows] == [f'{i:03d}' for i in range(1, 196)]
 DUR = {}
 def vdur(v):
     if v not in DUR:
@@ -63,5 +63,5 @@ for r in rows:
     r['dur'] = round(float(o[0]), 3); r['frames'] = int(o[1]); r['kb'] = os.path.getsize(p) // 1024; tot += r['kb']
 print('всего МБ', round(tot / 1024, 1), 'самый большой КБ', max(r.get('kb', 0) for r in rows))
 keep = ['id', 'v', 'vn', 'tags', 'n', 'w', 'tech', 'ours', 's', 'd', 'hot', 'x', 'a', 'b', 'tc', 'fps', 'ca', 'cb', 'file', 'dur', 'frames', 'kb']
-json.dump([{k: r.get(k) for k in keep} for r in rows], open(os.path.join(OUT, 'fx130.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
+json.dump([{k: r.get(k) for k in keep} for r in rows], open(os.path.join(OUT, 'fx195.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
 print('json ok')

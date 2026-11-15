@@ -1,7 +1,7 @@
 import json,subprocess,os,numpy as np
 from PIL import Image
 from concurrent.futures import ThreadPoolExecutor
-OUT='out';d=json.load(open(f'{OUT}/fx130.json'))
+OUT='out';d=json.load(open(f'{OUT}/fx195.json'))
 os.makedirs(f'{OUT}/th2',exist_ok=True)
 def best(r):
     p=f"{OUT}/{r['file']}";cands=[]
@@ -16,7 +16,7 @@ def best(r):
     a=max(cands,key=lambda c:c[0])[1]
     Image.fromarray(a.astype(np.uint8)).save(f"{OUT}/th2/{r['id']}.jpg",quality=88)
 with ThreadPoolExecutor(4) as ex: list(ex.map(best,d))
-sp=Image.new('RGB',(1920,1404))
+sp=Image.new('RGB',(1920,108*((len(d)+9)//10)))
 for i,r in enumerate(d):
     sp.paste(Image.open(f"{OUT}/th2/{r['id']}.jpg"),((i%10)*192,(i//10)*108))
 sp.save(f'{OUT}/thumbs.jpg',quality=82,optimize=True,progressive=True)
