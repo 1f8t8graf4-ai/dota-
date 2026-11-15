@@ -3066,7 +3066,8 @@
     const kin = eo(at(t, K.cig - .1, K.cig + .35)), kout = eio(at(t, K.cross + .95, K.cross + 1.55));
     const land = VPACKS.map(p => K.cross + .62 + p[5]), sq = land.reduce((m, a) => Math.max(m, Math.sin(Math.PI * at(t, a, a + .22)) * .05), 0);
     const bx = VBIN.x, by = VBIN.y + (1 - kin) * 560 + kout * 760, br = .06 * kout;
-    if (kin > 0 && kout < 1) shLayer(c, c => {
+    if (VARIANT === 1) v1ClawSeq(c, t);   // v17.0 вариант 1: пачки уносит клешня
+    else if (kin > 0 && kout < 1) shLayer(c, c => {
       c.save(); c.translate(bx, by); c.rotate(br); c.scale(1 + sq * .4, 1 - sq); c.translate(-bx, -by);
       vBinBack(c, bx, by, VBIN.s); vBinRimBack(c, bx, by, VBIN.s);
       const my = by - 308 * VBIN.s;
@@ -3080,7 +3081,7 @@
       c.restore();
     });
     // пачки веером — до броска
-    VPACKS.forEach(([fn, x0, y0, s0, r0, d], j) => {
+    if (VARIANT !== 1) VPACKS.forEach(([fn, x0, y0, s0, r0, d], j) => {
       const kp = spr(at(t, K.cig - .12 + d * .5, K.cig + .3 + d * .5)), kfl = at(t, K.cross + .22 + d, K.cross + .62 + d);
       if (kp <= 0 || kfl > 0) return;
       shLayer(c, c => fn(c, x0, y0 + Math.sin(t * 2 + j) * 5, kp * s0, r0 + Math.sin(t * 2.2 + j) * .03));
@@ -3108,6 +3109,7 @@
       if (t0 < sideOut) continue;
       const b = SV[i], [qx, qy] = [b.x, SCY - 470 * b.s]; puff(c, t, t0, qx, qy, i ? -1 : 1, .56);
     }
+    if (VARIANT === 1) v1Spot(c, t);   // v17.0 вариант 1: прожектор по коробкам
     c.restore();
     vFlySides(c, t);
   }
@@ -3268,8 +3270,9 @@
           for (const s of [-1, 1]) Rbeam(c, TOWER.x, 470, Math.PI + s * (.42 + .22 * Math.sin(t * .6 + s * 1.3)), .16, 1600, '#d6e8ff', .55);
           Rglow(c, TOWER.x, 900, 320, '#ffcf7a', .3); Rpool(c, CX, 1480, 700, 90, '#ffb35a', .35);
         } else {   // день: «золотой час» — лучи солнца, тёплая дымка у земли
-          for (let i = 0; i < 5; i++) Rbeam(c, 856, 318, .25 + i * .26 + .04 * Math.sin(t * .4 + i), .1, 1800, '#fff1c8', .4);
-          Rglow(c, 856, 318, 300, '#fff6d8', .55);
+          const sm = VARIANT === 1 ? 1 - at(t, K.rey + .3, K.camel - .6) : 1;   // v17.0 вариант 1: смог закрыл солнце — лучей нет
+          for (let i = 0; i < 5; i++) Rbeam(c, 856, 318, .25 + i * .26 + .04 * Math.sin(t * .4 + i), .1, 1800, '#fff1c8', .4 * sm);
+          Rglow(c, 856, 318, 300, '#fff6d8', .55 * sm);
           RgradV(c, 950, 1420, 'rgba(255,220,160,0)', 'rgba(255,214,150,.3)', 'screen');
         }
         RtexOver(c, 'cloud', 'soft-light', .35);
@@ -3313,7 +3316,7 @@
         if (N) {
           Rspot(c, CX, 980, 300, 940, .66, '2,4,16', 1.3);
           for (const lx of [250, 830]) { Rbeam(c, lx, 632, 0, .85, 760, '#ffe7b0', .7); Rdust(c, t, lx, 632, 0, .85, 720, 22, lx, .55) }
-          Rglow(c, LB.x, LB.y - 90, 280, '#ffb347', .5); Rpool(c, CX, 382, 520, 210, '#4ff3ff', .22);
+          Rglow(c, LB.x, LB.y + LB.f - 90, 280, '#ffb347', .5); Rpool(c, CX, 382, 520, 210, '#4ff3ff', .22);
           Rsmoke(c, t, nx, ny - 10, { n: 12, life: 3.2, rise: 300, r0: 16, r1: 100, a: .26, seed: 5, from: K.got - .2 });
         } else {
           Rfill(c, 'rgba(240,248,255,.3)', 'soft-light'); Rdir(c, .8, '255,250,240', '20,30,70'); Rpool(c, 1020, 520, 900, 1200, '#ffffff', .22);
@@ -3502,6 +3505,7 @@
     c.save(); c.translate(x, y); c.scale(s, s); yearDrum(c, k, [n1, n0], [0, 1], 0, 0, { s: 200, c: C.white, dir: -1, d: 1 }); c.restore();
   }
   function drumV(c, t) {
+    if (VARIANT === 1) { v1Thread(c, t); return }   // v17.0 вариант 1: нить времени вместо барабана
     if (t < K.drum0 || t > K.y73go + .46) return;
     const a = spr(at(t, K.drum0, K.drum0 + .35)), e = eio(at(t, K.y73go, K.y73go + .45)), hk = at(t, K.y73, K.y73 + .3), sc = (1 + .08 * Math.sin(Math.PI * hk)) * a;
     const x = lp(CX, TAGX, e), y = lp(600, TAGY, e), s = lp(1, .38, e) * sc;
@@ -3533,8 +3537,10 @@
     SMOKE_GATE = null; SMOKE_CAP = null;
     // подпись на башне
     const kl = spr(at(t, K.rey, K.rey + .4)) * (1 - at(t, K.camel - .3, K.camel)); if (kl > 0) plate(c, 'R.J. REYNOLDS TOBACCO', CX, 1296, kl, { s: 32, bg: C.n0, c: C.white, ls: 5 });
+    if (VARIANT === 1) v1Smog(c, t);   // v17.0 вариант 1: труба в смог
     // пачки: большие, на переднем плане, без кругов-подложек; v16.5 вечер (правка 6): появляются уже на «создатель сигарет» и стоят до перехода
     PK2.forEach(([fn, x, y, s, r, w]) => {
+      if (VARIANT === 1) { const F = v1PackFall(t, w, x, y, r); if (F.on) shLayer(c, c => { const yb = F.y + 190 * s; c.save(); c.translate(F.x, yb); c.scale(1 + F.sq, 1 - F.sq); c.translate(-F.x, -yb); fn(c, F.x, F.y, s, F.r); c.restore() }, { b: 44, dx: 18, dy: 30 }); return }   // падают из смога
       const t0 = K[w] - .85, k = spr(at(t, t0, t0 + .55)); if (k <= 0) return;
       shLayer(c, c => fn(c, x + (w === 'camel' ? -1 : 1) * (1 - eo(at(t, t0, t0 + .4))) * 420, y, s * lp(.6, 1, k), r + Math.sin(t * 1.8 + x) * .02), { b: 44, dx: 18, dy: 30 });
     });
@@ -3557,7 +3563,8 @@
     MEMV_LINES.forEach((L, i) => tx(c, L, 56, 262 + i * 34, { f: 'J', w: i < 2 ? 700 : 500, s: i < 2 ? 22 : 23, ls: i < 2 ? 1 : 0, c: i < 2 ? C.n1 : '#3a4268', al: 'left' }));
     const fs = qLayout(c), sp = tw(c, ' ', { s: fs });
     let wi = 0;
-    QL.forEach((L, i) => {
+    if (VARIANT === 1) v1Quote(c, t, F);   // v17.0 вариант 1: цитату проявляет лазер
+    else QL.forEach((L, i) => {
       const y = 482 + i * fs * 1.25;
       if (i >= 1) { const m = F ? 1 : eio(at(t, (i === 1 ? K.qt[3] : K.q4) - .05, (i === 1 ? K.qtB[4] : K.q5 + .3))); if (m > 0) { const w = (tw(c, L.join(' '), { f: 'J', w: 700, s: fs }) + 28) * m; poly(c, [44, y - fs * .52, 44 + w, y - fs * .56, 44 + w - 6, y + fs * .52, 40, y + fs * .5]); fill(c, C.mk) } }
       let x = 56;
@@ -3579,7 +3586,8 @@
     for (let i = 0; i <= 70; i++) { const u = i / 70, px = 60 + u * 220, py = 712 + Math.sin(u * 17) * 15 * (1 - u * .5) - u * 10 + Math.sin(u * 5) * 6; i ? c.lineTo(px, py) : c.moveTo(px, py) }
     c.stroke(); c.restore();
     tx(c, 'К. ТИГ · ОТДЕЛ ИССЛЕДОВАНИЙ', 60, 758, { f: 'J', w: 500, s: 17, ls: 1, c: C.n2, al: 'left' });
-    stampBox(c, 'СЕКРЕТНО', 482, 672, F ? 1 : at(t, K.secret, K.secret + .26), C.red, -.14, 34);
+    if (VARIANT === 1) { v1Seal(c, t, F); if (!F) v1Laser(c, t) }   // v17.0 вариант 1: круглая печать и лазер
+    else stampBox(c, 'СЕКРЕТНО', 482, 672, F ? 1 : at(t, K.secret, K.secret + .26), C.red, -.14, 34);
     if (o.done) stampBox(c, 'ПЛАН ВЫПОЛНЕН', 240, 760, o.done, '#1f9b7c', .06, 38, 'rgba(255,255,255,.95)');
   }
   function deskBg(c, t) {
@@ -3665,19 +3673,19 @@
     const pb = 1 + .06 * Math.sin(Math.PI * at(t, K.teens - .05, K.teens + .35));
     scan(c, t, XS.x + cough + Math.sin(t * 47) * 6 * spasm, XS.y, XS.s, { calm: C.sky2, irr: irr * (.82 + .18 * Math.sin(t * 9)), flow: eio(at(t, K.smoke - .2, K.smoke + 1.6)), fcol: '#b8b0a6', burn: eo(at(t, K.acrid - .1, K.tear)), spasm, flash: at(t, K.tear, K.tear + .5), patient: pb > 1.001 ? 'ПАЦИЕНТ · 16 ЛЕТ' : 'ПАЦИЕНТ · 16 ЛЕТ' });
     // сигарета (v16.5, правка Андрея): уголёк — у входа в трахею, фильтр — сверху-слева; дым — от уголька вверх
-    const [ex, ey] = XENT(), ck = eo(at(t, K.usual - .2, K.usual + .3)), L = 300, r = -2.2;
+    const [ex, ey] = XENT(), ck = VARIANT === 1 ? 1 : eo(at(t, K.usual - .2, K.usual + .3)), L = 300, r = -2.2, lit = VARIANT === 1 ? at(t, K.prob + .4, K.prob + .55) : 1;
     if (ck > 0) {
       const off = (1 - ck) * 700, fx = ex + cough - Math.cos(r) * -off, fy = ey - 8 + Math.sin(r) * off;
       const cxg = fx + Math.cos(r) * L / 2, cyg = fy + Math.sin(r) * L / 2, tipx = fx + Math.cos(r) * L, tipy = fy + Math.sin(r) * L;
       // v16.5 вечер (правка 10): без шара-ореола — плоский ярко-красный уголёк и серый кончик пепла у входа в трахею
-      const gl = Math.max(pulse(t, K.smoke - .2), .45 + .35 * Math.sin(t * 2.4)), th = 40;
+      const gl = Math.max(pulse(t, K.smoke - .2), .45 + .35 * Math.sin(t * 2.4)) * lit + 1.2 * pulse(t, K.prob + .48) * (VARIANT === 1 ? 1 : 0), th = 40;
       shLayer(c, c => cig(c, cxg, cyg, L, th, r + Math.PI, {}), { b: 20, dx: 8, dy: 16 });
       c.save(); c.translate(cxg, cyg); c.rotate(r + Math.PI);
       const ea = L / 2 - th * .62, eg = c.createLinearGradient(ea, 0, L / 2, 0); eg.addColorStop(0, '#c4261c'); eg.addColorStop(.45, mixc('#ff3b2f', '#ffb03a', gl)); eg.addColorStop(1, '#ff5a2a');
-      rr(c, ea, -th / 2, th * .42, th, 2); c.fillStyle = eg; c.fill();
+      rr(c, ea, -th / 2, th * .42, th, 2); c.fillStyle = eg; c.fill(); if (lit < 1) { c.save(); c.globalAlpha *= 1 - lit; rr(c, ea, -th / 2, th * .42, th, 2); fill(c, '#5a3a2e'); c.restore() }
       rr(c, L / 2 - th * .24, -th / 2, th * .24, th, [0, th * .24, th * .24, 0]); fill(c, '#9a95a6');
       c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(L / 2 - th * .2, -th * .32, th * .08, th * .5);
-      c.save(); c.globalCompositeOperation = 'lighter'; for (let i = 0; i < 4; i++) { const ph = (t * 1.7 + i * .27) % 1; c.globalAlpha = .7 * (1 - ph) * gl; circ(c, ea + th * .1 + H1(i * 3.7 + Math.floor(t * 1.7)) * th * .3, -th * .5 - ph * 26, 2.5, '#ffb03a') } c.restore();
+      c.save(); c.globalCompositeOperation = 'lighter'; for (let i = 0; i < 4; i++) { const ph = (t * 1.7 + i * .27) % 1; c.globalAlpha = .7 * (1 - ph) * Math.min(1, gl) * lit; circ(c, ea + th * .1 + H1(i * 3.7 + Math.floor(t * 1.7)) * th * .3, -th * .5 - ph * 26, 2.5, '#ffb03a') } c.restore();
       c.restore();
       // дым выходит из уголька и втягивается внутрь горла: струйка от кончика вниз по трубке, тает
       if (t > K.usual) for (let m = 0; m < 7; m++) {
@@ -3690,7 +3698,7 @@
   }
 
   // ---------- 5. лаборатория 1979 (без наложений и обрезов): таблица Менделеева сверху, колбы льют в колбу Эрленмейера ----------
-  const LB = { x: 540, y: 1262, s: 1.02 }, LBM = () => [LB.x, LB.y - (EF.ch + EF.nk) * LB.s];   // горло колбы
+  const LB = { x: 540, y: 1262, s: 1.02, f: 0 }, LBM = () => [LB.x, LB.y + LB.f - (EF.ch + EF.nk) * LB.s];   // горло колбы; f — колба над столом (вариант 1: на треножнике над спиртовкой)
   function vPendant(c, x, y, by) {
     c.save(); c.globalAlpha = .07; poly(c, [x - 56, y + 40, x + 56, y + 40, x + 300, by, x - 300, by]); fill(c, '#ffe7b0'); c.restore();
     c.save(); c.globalAlpha = .18; c.beginPath(); c.ellipse(x, by + 6, 300, 20, 0, 0, TAU); fill(c, '#ffe7b0'); c.restore();
@@ -3766,10 +3774,11 @@
     shLayer(c, c => vRack(c, t, 200, LB.y), { b: 26, dx: 10, dy: 14 });
     // колба Эрленмейера: жидкость, реакция, свечение; на «не во что» наклоняется к пунктирному вейпу и льёт — жидкость проходит насквозь
     const kb = spr(at(t, K.mixw - .05, K.mixw + .35)), lvN = .3 * eio(at(t, K.nic + .4, K.nic + .95)), lvA = .3 * eio(at(t, K.acid + .4, K.acid + .95));
-    const sk = eio(at(t, K.salt - .25, K.salt + .2)), tilt = eio(at(t, K.vop + 1.1, K.vop + 1.6)) * (1 - eio(at(t, K.fail - 1.0, K.fail - .5)));
+    const sk = eio(at(t, K.salt - .25, K.salt + .2)), tilt = VARIANT === 1 ? 0 : eio(at(t, K.vop + 1.1, K.vop + 1.6)) * (1 - eio(at(t, K.fail - 1.0, K.fail - .5)));
     const lvl = (lvN + lvA) * (1 - sk * .6) * (1 - .5 * at(t, K.vop + 1.6, K.vop + 3.0));
-    c.save(); c.translate(LB.x + EF.bw * LB.s, LB.y); c.rotate(.62 * tilt); c.translate(-(LB.x + EF.bw * LB.s), -LB.y);
-    shLayer(c, c => beaker(c, t, LB.x, LB.y + (1 - kb) * 700, Math.max(kb, .001) * LB.s, { tilt: .62 * tilt, level: lvl, liq: mixc(C.am, C.yel, at(t, K.acid + .5, K.got + .3)), bub: at(t, K.got - .1, K.got + .3) - at(t, K.salt + .3, K.salt + .7), swirl: t > K.got && t < K.salt + .3,
+    if (VARIANT === 1) { v1Burner(c, t, 1); v1Coil(c, t, false) }   // v17.0 вариант 1: спиртовка, треножник, змеевик (задние витки)
+    c.save(); c.translate(LB.x + EF.bw * LB.s, LB.y + LB.f); c.rotate(.62 * tilt); c.translate(-(LB.x + EF.bw * LB.s), -(LB.y + LB.f));
+    shLayer(c, c => beaker(c, t, LB.x, LB.y + LB.f + (VARIANT === 1 ? -1 : 1) * (1 - kb) * 700, Math.max(kb, .001) * LB.s, { tilt: .62 * tilt, level: lvl, liq: mixc(C.am, C.yel, at(t, K.acid + .5, K.got + .3)), bub: at(t, K.got - .1, K.got + .3) - at(t, K.salt + .3, K.salt + .7), swirl: t > K.got && t < K.salt + .3,
       glow: (at(t, K.acid + .5, K.got + .2) - at(t, K.salt + .2, K.salt + .7)) * (.8 + .2 * Math.sin(t * 9)) }), { b: 30, dx: 12, dy: 12 });
     c.restore();
     for (const [t0, side, col, lab] of [[K.nic, -1, C.am, 'НИКОТИН'], [K.acid, 1, C.mint, 'КИСЛОТА']]) {
@@ -3794,11 +3803,12 @@
       c.restore();
     }
     // «но электронных сигарет тогда ещё не продавали»: пунктирный вейп на столе справа; колба льёт — жидкость проходит насквозь; красный крест
-    const kg = at(t, K.vop + .1, K.vop + .5) * (1 - eio(at(t, K.fail - .9, K.fail - .5)));
-    // v17.0 (правка 6): маленький пунктирный вейп «?» убран — жидкость просто льётся на стол
+    const kg = at(t, K.vop + .45, K.vop + .85) * (1 - eio(at(t, K.fail - .9, K.fail - .5)));
+    ghostVape(c, VARIANT === 1 ? V1CO.x : 822, LB.y - 300 * .64 - 6, .64, kg, at(t, K.vop + 2.9, K.vop + 3.3));
+    if (VARIANT === 1) { v1Coil(c, t, true); v1Splash(c, t); v1Drop(c, t) }   // вариант 1: передние витки, капля, лужица   // v17.0 (правка 6): один пунктирный вейп — крупный, под струёй; появляется, когда «мягкий пар» уже ушёл (раньше мелкий бледный висел под ним)
     const kp = at(t, K.vop + 1.55, K.vop + 1.75) - at(t, K.vop + 2.7, K.vop + 2.9);
-    if (kp > 0) {
-      const [dx, dy] = rot(-EF.bw * LB.s, -(EF.ch + EF.nk) * LB.s, .62), mx = LB.x + EF.bw * LB.s + dx, my = LB.y + dy;
+    if (kp > 0 && VARIANT !== 1) {
+      const [dx, dy] = rot(-EF.bw * LB.s, -(EF.ch + EF.nk) * LB.s, .62), mx = LB.x + EF.bw * LB.s + dx, my = LB.y + LB.f + dy;
       pourStream(c, mx + 6, my + 4, 822, LB.y - 6, kp, C.yel);
       const kpu = at(t, K.vop + 1.8, K.vop + 3.0); if (kpu > 0) { c.save(); c.globalAlpha = .9; c.beginPath(); c.ellipse(822, LB.y + 2, 40 + 130 * eo(kpu), 9 + 6 * eo(kpu), 0, 0, TAU); fill(c, C.yel); c.restore() }
     }
@@ -4660,6 +4670,7 @@
   // ---------- кадр, субтитры, метка года (вертикаль) ----------
   function subsV(c, t) {
     if (t < K.tw[0] - .12) return;
+    if (VARIANT === 1 && t < V1I[1] + .1) return;   // вариант 1: на заставке те же слова — крупным титром
     if (t > K.qt[0] - .15 && t < K.qEnd + .35) return;   // цитата печатается на бумаге — субтитр её не повторяет
     if (t > K.whip - .02) return;
     const ch = CHUNKS.find(x => t >= x.a - .05 && t < x.e); if (!ch) return;
@@ -4677,16 +4688,422 @@
     else if (t >= K.y98go && t < K.n14 - .1) tagDraw(c, t, [1979, 1998], [0, K.y98 + .05], TAGX, TAGY, .38 * (1 - ss(K.n14 - .35, K.n14 - .1, t)));
     else if (t >= K.create && t < K.third) tagDraw(c, t, [2015, 2019], [0, K.y19 + .35], TAGX, TAGY, .38 * spr(at(t, K.create, K.create + .4)));
   }
+  // ================= v17.0 · вариант 1 «Morph» (ТЗ Андрея и Gemini; какие приёмы пульта — shorts/ep/v170-fx.md) =================
+  // 0:00–0:02,6 — заставка-молния (#001 + #002): красная полоса, кольцо-бегунок прорезает капсулу с янтарной жидкостью и пузырьками,
+  // текст расходится по бокам; кольцо внизу пружинно раскрывается кругом — в круге прилавок, капсула садится в окошко вейпа «МАНГО».
+  // Кадр 0 — красная полоса и кольцо сверху: в него же приходит конец ролика (петля).
+  const V1Z = { x: 392, top: 600, bot: 1250, w: 124, ring: 330, b0: 150, b1: 1770 };   // капсула левее центра: справа длинное «ОДНОРАЗКАХ?»
+  const V1I = [2.02, 2.36, 2.66];   // круг: раскрылся иллюминатором — пошёл на весь кадр — закрыл всё
+  const V1W = (() => { const s = HS, cy = HCY - 40 * s; return { x: HV.x, y0: cy - 135 * s, y1: cy + 135 * s, w: 124 * s, r: 46 * s } })();   // окошко вейпа «МАНГО» в кадре прилавка
+  function v1Band(c, t) {
+    c.fillStyle = '#0c1440'; c.fillRect(-300, -300, WW + 600, HH + 600);
+    const g = c.createLinearGradient(0, V1Z.b0, 0, V1Z.b1); g.addColorStop(0, '#ee5466'); g.addColorStop(1, '#dd3f53');
+    c.fillStyle = g; c.fillRect(-300, V1Z.b0, WW + 600, V1Z.b1 - V1Z.b0);
+    c.save(); c.globalAlpha = .07; c.fillStyle = '#ffffff';   // мелкий растр, как у Боба
+    for (let y = V1Z.b0 + 30; y < V1Z.b1; y += 34) for (let x = (y / 34 % 2) * 17 + 10; x < WW; x += 34) { c.beginPath(); c.arc(x, y, 2.6, 0, TAU); c.fill() }
+    c.restore();
+    c.fillStyle = 'rgba(0,0,0,.16)'; c.fillRect(-300, V1Z.b1 - 10, WW + 600, 10); c.fillStyle = 'rgba(255,255,255,.12)'; c.fillRect(-300, V1Z.b0, WW + 600, 6);
+  }
+  function v1Ring(c, x, y, r, a = 1, lw = 8) { if (a <= 0 || r <= 0) return; c.save(); c.globalAlpha *= a; c.beginPath(); c.arc(x, y, r, 0, TAU); c.strokeStyle = '#fff6ee'; c.lineWidth = lw; c.stroke(); c.restore() }
+  // капсула: тёмная рамка, янтарь с волной, пузырьки поднимаются; видна только выше линии молнии y < rev
+  function v1Capsule(c, t, x, y0, y1, w, rev, a = 1, rad, flat = 0) {   // flat → 1: без тени и подкраски — один в один окошко
+    if (a <= 0 || rev <= y0) return;
+    const h = y1 - y0, R = rad ?? w / 2, k = w / 124;
+    c.save(); c.globalAlpha *= a; c.beginPath(); c.rect(-400, -400, WW + 800, rev + 400); c.clip();
+    c.save(); c.globalAlpha *= .35 * (1 - flat); rr(c, x - w / 2 + 10 * k, y0 + 14 * k, w, h, R); fill(c, '#5a0f1c'); c.restore();
+    rr(c, x - w / 2, y0, w, h, R); fill(c, C.rim);
+    const p = 12 * k, iw = w - 2 * p, ih = h - 2 * p, ir = Math.max(4, R - p * .85);
+    rr(c, x - iw / 2, y0 + p, iw, ih, ir); fill(c, C.glass);
+    c.save(); rr(c, x - iw / 2, y0 + p, iw, ih, ir); c.clip();
+    const lv = y0 + h * (83 / 270);   // уровень как в окошке вейпа (level −52 из 270)
+    c.beginPath(); c.moveTo(x - iw, lv); for (let q = -iw; q <= iw; q += 6) c.lineTo(x + q, lv + Math.sin(q * .07 / k + t * 3.4) * 5 * k); c.lineTo(x + iw, y1 + 10); c.lineTo(x - iw, y1 + 10); c.closePath(); fill(c, C.am);
+    const lg = c.createLinearGradient(x - iw / 2, 0, x + iw / 2, 0); lg.addColorStop(0, 'rgba(255,240,200,.28)'); lg.addColorStop(.4, 'rgba(255,240,200,0)'); lg.addColorStop(1, 'rgba(120,50,0,.28)'); c.save(); c.globalAlpha *= 1 - flat; c.fillStyle = lg; c.fillRect(x - iw / 2, lv - 10, iw, ih); c.restore();
+    for (let i = 0; i < 16; i++) {   // шипящие пузырьки: крупные янтарные и мелкие белые
+      const ph = (t * (.42 + .3 * H1(i * 2.3)) + H1(i * 3.1)) % 1, by = lp(y1 - p - 8 * k, lv + 10 * k, ph), bx = x - iw * .36 + iw * .72 * H1(i * 7.7) + Math.sin(t * 2.4 + i) * 5 * k;
+      c.beginPath(); c.arc(bx, by, (i % 3 ? 3 + 4 * H1(i * 1.3) : 2 + 2 * H1(i)) * k, 0, TAU); fill(c, i % 3 ? C.am3 : 'rgba(255,255,255,.85)');
+    }
+    c.restore();
+    rr(c, x - w * (36 / 124), y0 + h * (27 / 270), w * (10 / 124), h * (120 / 270), 5 * k); fill(c, 'rgba(255,255,255,.35)');
+    c.restore();
+  }
+  // растворение целой картинки (а не по слоям — иначе тёмная рамка просвечивает сквозь светлое)
+  let V1OFF = null;
+  function v1Fade(c, a, fn) {
+    if (a <= 0) return; if (a >= 1) { fn(c); return }
+    if (!V1OFF) V1OFF = mk(c.canvas.width, c.canvas.height);
+    const x = V1OFF.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = 1; x.globalCompositeOperation = 'source-over'; x.clearRect(0, 0, V1OFF.width, V1OFF.height);
+    x.setTransform(c.getTransform()); fn(x);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.drawImage(V1OFF, 0, 0); c.restore();
+  }
+  function v1Intro(c, t, scene) {
+    v1Band(c, t);
+    const kd = spr(at(t, .16, .7)), kz = eio(at(t, .9, 1.62)), ki1 = at(t, V1I[0], V1I[1]), ki2 = at(t, V1I[1] - .06, V1I[2]);
+    const ry = t < .9 ? lp(V1Z.ring, V1Z.top, kd) : lp(V1Z.top, V1Z.bot, kz);
+    // текст: «ЧТО ВЫ / ЗНАЕТЕ» слева, «ОБ / ОДНОРАЗКАХ?» справа; капсула раздвигает их, на раскрытии круга — разлетаются
+    const push = 46 * (1 - spr(at(t, 1.0, 1.7))), fly = ei(at(t, V1I[0] + .05, V1I[1] + .1)), fa = 1 - at(t, V1I[0] + .1, V1I[1] + .05);
+    const xl = V1Z.x - V1Z.w / 2 - 38 + push - 700 * fly, xr = V1Z.x + V1Z.w / 2 + 38 - push + 700 * fly, o = { f: 'M', w: 800, s: 56, ls: 2 };
+    const W = [['ЧТО ВЫ', xl, 'right', .34, -1], ['ЗНАЕТЕ', xl, 'right', .68, -1], ['ОБ', xr, 'left', 1.14, 1], ['ОДНОРАЗКАХ?', xr, 'left', 1.3, 1]];
+    W.forEach(([s, x, al, t0, d], i) => {
+      const k = spr(at(t, t0, t0 + .42)), a = at(t, t0, t0 + .12) * fa; if (a <= 0) return;
+      const y = V1Z.top + (V1Z.bot - V1Z.top) * .5 + (i % 2 ? 40 : -40);
+      c.save(); c.translate(x - d * (1 - k) * 60, y); c.scale(lp(.8, 1, k), lp(.8, 1, k));
+      tx(c, s, 3, 5, { ...o, al, c: 'rgba(90,10,26,.45)', a }); tx(c, s, 0, 0, { ...o, al, c: '#fff6ee', a }); c.restore();
+    });
+    // круг-иллюминатор: внутри — прилавок; сначала пружинно до 380, потом на весь кадр
+    const R = 26 + 360 * spr(ki1) + 1500 * eio(ki2);
+    if (ki1 > 0) { c.save(); c.beginPath(); c.arc(V1Z.x, V1Z.bot, R, 0, TAU); c.clip(); scene(); c.restore() }
+    // капсула: молния до кольца; на раскрытии круга садится в окошко вейпа и растворяется в нём
+    const km = eio(at(t, V1I[0] + .1, V1I[1] + .1)), am = 1 - at(t, V1I[1] + .08, V1I[1] + .16);   // садится в окошко, пока круг его открывает, и сразу тает
+    v1Fade(c, am, c => v1Capsule(c, t, lp(V1Z.x, V1W.x, km), lp(V1Z.top, V1W.y0, km), lp(V1Z.bot, V1W.y1, km), lp(V1Z.w, V1W.w, km), ki1 > 0 ? 1e4 : t < .9 ? V1Z.top : ry + 4, 1, lp(V1Z.w / 2, V1W.r, km), km));
+    // кольцо-бегунок: падает в верх капсулы, едет вниз (молния), внизу «щёлкает» и раскрывается краем круга
+    const click = t > 1.62 && t < V1I[0] ? Math.sin(Math.PI * at(t, 1.66, 1.9)) * .3 : 0;
+    if (ki1 <= 0) { v1Ring(c, V1Z.x, ry, 24 * (1 + click), 1, 8); if (t > .9 && t < 1.62) { c.save(); c.globalAlpha = .5; circ(c, V1Z.x, ry, 9, '#ffffff'); c.restore() } }
+    else v1Ring(c, V1Z.x, V1Z.bot, R, 1 - ki2, lp(10, 22, ki1) * (1 - ki2) + 2);
+  }
+  // 0:03,5–0:05 — механическая клешня (#110): рельс выезжает сверху, клешня спускается к пачкам, сжимает их, везёт к урне и роняет
+  // (пачки уже в урне, когда выпрыгивают «МЯТА» и «КОЛА» — не падают сквозь коробку)
+  const V1CL = { rail: 236, gx: 252, gy: 452, dx: 112, dy: 404, S: 1.45 };   // рельс, где хватает, куда везёт, масштаб клешни
+  function v1ClawT(t) { const c0 = K.cig; return { rail: c0 - .08, down: c0 + .2, grab: c0 + .46, lift: c0 + .54, drop: c0 + .94, up: c0 + 1.08, binOut: c0 + 1.72 } }
+  function v1Rail(c, t, y) {
+    c.save(); c.translate(0, y);
+    c.fillStyle = '#232a48'; c.fillRect(-200, -30, WW + 400, 60); c.fillStyle = '#56639a'; c.fillRect(-200, -30, WW + 400, 10); c.fillStyle = '#12162c'; c.fillRect(-200, 22, WW + 400, 8);
+    c.fillStyle = '#3a4470'; c.fillRect(-200, -6, WW + 400, 6);
+    for (let x = -60; x < WW + 100; x += 128) { circ(c, x, 8, 7, '#5d6a9c'); circ(c, x - 2, 6, 2.8, '#b3bde6') }
+    c.restore();
+  }
+  // клешня: (x, y) — центр головки, open 0 — сжата, 1 — раскрыта; part 'back' — задний коготь (за пачками)
+  function v1Claw(c, x, y, open, part) {
+    const S = V1CL.S;
+    c.save(); c.translate(x, y); c.scale(S, S);
+    if (part === 'back') { c.translate(0, 24); c.beginPath(); c.moveTo(-8, 0); c.lineTo(8, 0); c.lineTo(11, 110); c.quadraticCurveTo(4, 128, -2, 132); c.lineTo(-11, 112); c.closePath(); fill(c, '#6f7a9c'); c.restore(); return }
+    const ang = lp(-.1, .66, open);
+    for (const side of [-1, 1]) {
+      c.save(); c.translate(side * 24, 22); c.rotate(side * ang);
+      c.beginPath(); c.moveTo(-10, 0); c.lineTo(10, 0); c.quadraticCurveTo(side * 38 + 10, 66, side * 22 + 8, 126); c.quadraticCurveTo(side * 10, 150, side * -10, 152); c.lineTo(side * -2, 136); c.quadraticCurveTo(side * 8, 128, side * 6 - 4, 122); c.quadraticCurveTo(side * 22 - 10, 70, -10, 0); c.closePath();
+      fill(c, '#d3dbec'); c.save(); c.clip(); c.fillStyle = 'rgba(28,34,70,.4)'; c.fillRect(side > 0 ? 2 : -70, -10, 70, 180); c.restore();
+      circ(c, 0, 0, 11, '#3c4778'); circ(c, -2, -2, 4.5, '#d6ddf2');
+      c.restore();
+    }
+    rr(c, -48, -34, 96, 60, 16); fill(c, '#343e6c'); rr(c, -48, -34, 96, 20, [16, 16, 0, 0]); fill(c, '#5f6ca3');
+    volume(c, () => rr(c, -48, -34, 96, 60, 16), -48, -34, 48, 26);
+    circ(c, 0, 2, 10, C.red); circ(c, -3, -1, 3.6, 'rgba(255,255,255,.85)');
+    c.restore();
+  }
+  function v1Carriage(c, x, y) {
+    c.save(); c.translate(x, y); c.scale(1.25, 1.25);
+    rr(c, -64, 6, 128, 46, 10); fill(c, '#2e3760'); rr(c, -64, 6, 128, 14, [10, 10, 0, 0]); fill(c, '#5a679b');
+    for (const dx of [-36, 36]) { circ(c, dx, -8, 16, '#151a35'); circ(c, dx, -8, 6.5, '#8995c4') }
+    volume(c, () => rr(c, -64, 6, 128, 46, 10), -64, 6, 64, 52);
+    c.restore();
+  }
+  // урна, пачки и клешня (в варианте 1 вместо броска пачек дугой)
+  function v1ClawSeq(c, t) {
+    const T = v1ClawT(t), S = V1CL.S;
+    const kin = eo(at(t, K.cig - .1, K.cig + .35)), kout = eio(at(t, T.binOut, T.binOut + .55));
+    const ret = 620 * ei(at(t, T.up, T.up + .45)), ryIn = lp(-140, V1CL.rail, eo(at(t, T.rail, T.rail + .36))), ry = ryIn - ret;
+    const kdn = eio(at(t, T.rail + .22, T.down)), kc = eio(at(t, T.down, T.grab)), kl = eio(at(t, T.lift, T.drop - .05)), ko = eo(at(t, T.drop, T.drop + .1));
+    const sw = Math.sin((t - T.lift) * 10) * .1 * at(t, T.lift, T.lift + .1) * (1 - at(t, T.drop - .1, T.drop + .15));   // пачки качаются на ходу
+    const cx = lp(V1CL.gx, V1CL.dx, kl), hy = lp(ryIn + 100, V1CL.gy, kdn) - (V1CL.gy - V1CL.dy) * kl - 46 * Math.sin(Math.PI * kl) - ret;
+    const open = t < T.down ? 1 : t < T.drop ? 1 - kc : ko;
+    const land = VPACKS.map((p, j) => T.drop + .27 + j * .045), sq = land.reduce((m, a) => Math.max(m, Math.sin(Math.PI * at(t, a, a + .22)) * .05), 0);
+    const bx = VBIN.x, by = VBIN.y + (1 - kin) * 560 + kout * 760, my = by - 308 * VBIN.s;
+    const drawPacks = inBin => VPACKS.forEach(([fn, x0, y0, s0, r0, d], j) => {
+      const kp = spr(at(t, K.cig - .12 + d * .5, K.cig + .3 + d * .5)); if (kp <= 0) return;
+      const hx = cx + (j - 1) * 28 * S, hy2 = hy + (88 + (j === 1 ? -6 : 8)) * S, hr = (j - 1) * .16 + sw;   // в когтях
+      const fall = at(t, T.drop + .02 + j * .035, T.drop + .27 + j * .045), kd2 = eo(at(t, land[j], land[j] + .18));
+      let x, y, s, r;
+      if (t < T.down) { x = x0; y = y0 + Math.sin(t * 2 + j) * 5; s = kp * s0; r = r0 + Math.sin(t * 2.2 + j) * .03 }
+      else if (t < T.drop) { const g = kc; x = lp(x0, hx, g); y = lp(y0, hy2, g); s = lp(s0, .34, g); r = lp(r0, hr, g) }
+      else { const e = ei(fall); x = lp(cx + (j - 1) * 28 * S, bx + (j - 1) * 34, e); y = lp(hy + 88 * S, my - 46, e) + kd2 * 58; s = lp(.34, .3, e); r = hr + (j % 2 ? -1 : 1) * 2.4 * e }
+      if ((t >= T.drop && fall >= 1) !== inBin) return;
+      shLayer(c, c => fn(c, x, y, s, r), { b: 26, dx: 10, dy: 14 });
+    });
+    if (kin > 0 && kout < 1) {
+      c.save(); c.translate(bx, by); c.scale(1 + sq * .4, 1 - sq); c.translate(-bx, -by);
+      vBinBack(c, bx, by, VBIN.s); vBinRimBack(c, bx, by, VBIN.s); drawPacks(true); vBinFront(c, bx, by, VBIN.s, -1); c.restore();
+    }
+    const vis = ry > -120;
+    if (vis) {
+      v1Rail(c, t, ry);
+      c.save(); c.strokeStyle = '#141933'; c.lineWidth = 8; c.beginPath(); c.moveTo(cx, ry + 50); c.lineTo(cx, hy - 30 * S); c.stroke(); c.strokeStyle = 'rgba(160,172,220,.5)'; c.lineWidth = 2.5; c.beginPath(); c.moveTo(cx - 2, ry + 50); c.lineTo(cx - 2, hy - 30 * S); c.stroke(); c.restore();
+      v1Claw(c, cx, hy, open, 'back');
+    }
+    drawPacks(false);
+    if (vis) { v1Claw(c, cx, hy, open); v1Carriage(c, cx, ry) }
+  }
+  // 0:05,4–0:07,5 — луч прожектора (#035): неоновый прожектор сверху справа по очереди подсвечивает «МАНГО», «МЯТУ», «КОЛУ», потом — окошко вейпа
+  const V1SP = { x: 990, y: 150 };
+  function v1SpotAim(t) {
+    const P = [[K.mango - .62, 540, 1010], [K.mint - .18, 206, 1086], [K.mint + .34, 874, 1086], [K.push - .25, 540, 660]];
+    let x = P[0][1], y = P[0][2];
+    for (let i = 1; i < P.length; i++) { const e = eio(at(t, P[i][0] - .28, P[i][0])); x = lp(x, P[i][1], e); y = lp(y, P[i][2], e) }
+    return [x, y];
+  }
+  function v1Spot(c, t) {
+    const on = at(t, K.mango - .78, K.mango - .62), off = at(t, K.push + .2, K.liq - .2); if (on <= 0 || off >= 1) return;
+    const fl = (H1(Math.floor(t * 30)) > .25 || t > K.mango - .5 ? 1 : .2) * on * (1 - off);
+    const [ax, ay] = v1SpotAim(t), dx = ax - V1SP.x, dy = ay - V1SP.y, L = Math.hypot(dx, dy), ang = Math.atan2(-dx, dy);
+    const narrow = eio(at(t, K.push - .5, K.push - .2)), spread = lp(.34, .2, narrow);
+    if (LUX()) {
+      Rbeam(c, V1SP.x, V1SP.y, ang, spread, L + 160, '#ffcfe9', 2.2 * fl); Rbeam(c, V1SP.x, V1SP.y, ang, spread * .45, L + 120, '#fff2f9', 1.4 * fl);
+      Rpool(c, ax, ay + 70, lp(200, 130, narrow), 52, '#ffe3f4', 1.5 * fl);
+      Rglow(c, ax, ay - 10, lp(250, 170, narrow), '#ffd2ea', .7 * fl);
+    } else { c.save(); c.globalAlpha = .18 * fl; c.translate(V1SP.x, V1SP.y); c.rotate(ang); const h = Math.tan(spread / 2) * L; poly(c, [-8, 0, 8, 0, h, L, -h, L]); fill(c, '#ffe3f4'); c.restore() }
+    // сам прожектор на кронштейне: «банка» поворачивается за лучом
+    c.save(); c.fillStyle = '#1b2140'; c.fillRect(V1SP.x - 9, -60, 18, V1SP.y + 20); c.translate(V1SP.x, V1SP.y); c.scale(1.35, 1.35); c.rotate(ang);
+    rr(c, -40, -54, 80, 74, 16); fill(c, '#2a3150'); rr(c, -40, -54, 80, 20, [16, 16, 0, 0]); fill(c, '#46527f');
+    c.beginPath(); c.ellipse(0, 22, 34, 11, 0, 0, TAU); fill(c, fl > .5 ? '#fff4fb' : '#9aa3c8');
+    c.restore();
+  }
+  // 0:11,4–0:14,9 — вертикальная нить времени (#126) вместо барабана лет: камера летит вниз вдоль красной линии, узлы
+  // 2026 → 2018 → 2015 → 1998 → 1979 → 1973 поднимаются; 1973 встаёт там, где потом загорится огонёк на шпиле небоскрёба R.J. Reynolds
+  const V1T = [[2026, 'СЕЙЧАС'], [2018, 'MARLBORO × JUUL'], [2015, 'JUUL'], [1998, 'СУД · АРХИВ'], [1979, 'СОЛЬ НИКОТИНА'], [1973, 'ЗАПИСКА']];
+  const V1TY = 300, V1TS = 262;   // где встаёт узел 1973 (шпиль башни), шаг узлов
+  function v1ThreadP(t) { const u = at(t, K.drum0 + .1, K.y73 - .14); return 5 * (1 - Math.pow(1 - ss(0, 1, u), 2.3)) }
+  function v1Thread(c, t) {
+    if (t < K.drum0 - .05 || t > K.emp + .7) return;
+    const kin = eo(at(t, K.drum0 - .05, K.drum0 + .3)), kout = 1 - at(t, K.y73go - .1, K.y73go + .3), p = v1ThreadP(t), a = kin * kout;
+    if (a > 0) {
+      // линия: сверху до горизонта, рисуется сверху вниз на входе
+      const yb = lp(-100, 1040, kin);
+      c.save(); c.globalAlpha *= a; c.lineCap = 'round';
+      c.strokeStyle = 'rgba(120,30,20,.25)'; c.lineWidth = 14; c.beginPath(); c.moveTo(CX + 4, -100); c.lineTo(CX + 4, yb); c.stroke();
+      c.strokeStyle = C.red; c.lineWidth = 9; c.beginPath(); c.moveTo(CX, -100); c.lineTo(CX, yb); c.stroke();
+      c.restore();
+      V1T.forEach(([yr, ev], i) => {
+        const y = V1TY + (i - p) * V1TS; if (y < -80 || y > 1120) return;
+        if (i === V1T.length - 1 && t > K.y73go - .02) return;   // 1973 улетел в метку года
+        const f = Math.max(0, 1 - Math.abs(i - p) * 1.6), fade = (1 - ss(860, 1080, y)) * (1 - ss(40, -80, y)), ap = a * fade;
+        if (ap <= 0) return;
+        const last = i === V1T.length - 1, pu = last ? Math.sin(TAU * t * 1.6) * .5 + .5 : 0;
+        c.save(); c.globalAlpha *= ap;
+        if (f > 0) { c.beginPath(); c.arc(CX, y, 18 + 22 * f + 10 * pu, 0, TAU); c.strokeStyle = Rrgba(C.red, .35 * f); c.lineWidth = 6; c.stroke() }
+        circ(c, CX, y, 16 + 6 * f, f > .3 ? C.red : C.n0); circ(c, CX, y, 6, f > .3 ? '#ffd9de' : C.n2);
+        const s = lp(46, 78, f);
+        tx(c, String(yr), CX + 48 + 3, y + 4, { f: 'M', w: 800, s, ls: 2, al: 'left', c: 'rgba(110,40,0,.3)' });
+        tx(c, String(yr), CX + 48, y, { f: 'M', w: 800, s, ls: 2, al: 'left', c: C.n0 });
+        tx(c, ev, CX - 48, y + 2, { f: 'M', w: 800, s: lp(28, 40, f), ls: 1, al: 'right', c: Rrgba(C.n0, lp(.55, 1, f)) });
+        c.restore();
+      });
+    }
+    // 1973 улетает в метку года слева сверху; красный узел ждёт шпиль и становится его огоньком
+    const e = eio(at(t, K.y73go, K.y73go + .45));
+    if (t > K.y73go - .02 && e < 1) {
+      const x = lp(CX + 48 + 116, TAGX, e), y = lp(V1TY, TAGY, e), s = lp(.36, .38, e);
+      yearPlate(c, x, y, s, at(e, 0, .35)); c.save(); c.translate(x, y); c.scale(s, s); yearDrum(c, 0, [1973], [0], 0, 0, { s: 200, c: lp(0, 1, e) > .3 ? C.white : C.n0 }); c.restore();
+    }
+    const kn = 1 - at(t, K.emp + .35, K.emp + .6); if (t > K.y73go - .1 && kn > 0) { const pu = Math.sin(TAU * t * 1.6) * .5 + .5; c.save(); c.globalAlpha *= kn; c.beginPath(); c.arc(CX, V1TY, 26 + 12 * pu, 0, TAU); c.strokeStyle = Rrgba(C.red, .35); c.lineWidth = 6; c.stroke(); circ(c, CX, V1TY, 20, C.red); circ(c, CX, V1TY, 7, '#ffd9de'); c.restore() }
+  }
+  // 0:16–0:18 — труба вытягивается вверх в облако смога (#115), из облака на передний план падают CAMEL и WINSTON
+  const V1CH = { x: 355, y: 970, top: 250 };   // труба левого завода: где кончается сейчас и куда вытягивается
+  function v1Smog(c, t) {
+    const kc = eio(at(t, K.rey - .1, K.rey + .45)); if (kc <= 0) return;
+    const y1 = lp(V1CH.y, V1CH.top, kc), r = 24;
+    c.save(); c.fillStyle = C.n1; c.fillRect(V1CH.x - r, y1, 2 * r, V1CH.y - y1 + 4); c.fillStyle = C.n2; c.fillRect(V1CH.x - r + 6, y1, 8, V1CH.y - y1 + 4); c.fillStyle = C.n0; c.fillRect(V1CH.x + r - 12, y1, 12, V1CH.y - y1 + 4);
+    for (let yy = y1 + 60; yy < V1CH.y; yy += 90) { c.fillStyle = 'rgba(10,14,40,.35)'; c.fillRect(V1CH.x - r, yy, 2 * r, 6) }
+    c.fillStyle = C.red; c.fillRect(V1CH.x - r, y1 + 26, 2 * r, 15); c.beginPath(); c.ellipse(V1CH.x, y1, r + 7, (r + 7) * .28, 0, 0, TAU); fill(c, C.n0); c.restore();
+    // смог: тёмные клубы из трубы расползаются по всему верху кадра
+    const ks = at(t, K.rey + .2, K.camel - .55);
+    if (ks > 0) for (let i = 0; i < 26; i++) {
+      const u = i / 25, d = Math.abs(lp(-.1, 1.1, u) * WW - V1CH.x) / WW, k = eo(at(ks, d * .7, d * .7 + .45));
+      if (k <= 0) continue;
+      const x = lp(-60, WW + 60, u) + Math.sin(t * .7 + i) * 14, y = 150 + 170 * H1(i * 3.3) + Math.cos(t * .6 + i * 1.7) * 10 + (1 - k) * (V1CH.top - 150);
+      cloud(c, lp(V1CH.x, x, k), y, (1.6 + 1.1 * H1(i * 5.1)) * k, .92, i * 7, mixc('#5a4652', '#3a2c34', H1(i * 2.1)));
+    }
+    if (ks > 0) for (let m = 0; m < 4; m++) { const ph = (t * .6 + m / 4) % 1; cloud(c, V1CH.x + 20 * ph, y1 - 40 - 220 * ph, lp(.5, 1.4, ph), .9 * (1 - ph * .3), m * 5 + 3, '#4a3a44') }
+  }
+  // пачки падают из смога на свои места (в варианте 1 вместо въезда с боков)
+  function v1PackFall(t, w, x, y, r) {
+    const t1 = K[w] - .2, t0 = t1 - .48, k = at(t, t0, t1), e = ei(k), b = at(t, t1, t1 + .3);
+    return { on: t >= t0, x: lp(x + (w === 'camel' ? 60 : -60), x, e), y: lp(260, y, e) - Math.sin(Math.PI * b) * 40 * (1 - b), r: r + (w === 'camel' ? -1 : 1) * (1 - e) * 1.4, sq: Math.sin(Math.PI * at(t, t1, t1 + .16)) * .12 };
+  }
+  // 0:20,5–0:26 — красный лазер-сканер (#083) идёт по записке сверху вниз; цитата «МЫ ДОЛЖНЫ ПОЛУЧИТЬ СВОЮ ДОЛЮ МОЛОДЁЖНОГО РЫНКА»
+  // проявляется под ним с жёлтым маркером (строка — когда её читают); потом в центр листа падает круглая печать «СЕКРЕТНО» (#010)
+  function v1LaserY(t) {   // y лазера в координатах записки
+    const P = [[K.goal + .1, 40], [K.qt[0] - .15, 440], [K.qt[0] + .25, 508], [K.qt[3] + .1, 566], [K.q4 + .2, 628], [K.qEnd - .1, 790]];
+    if (t <= P[0][0]) return P[0][1];
+    for (let i = 1; i < P.length; i++) if (t <= P[i][0]) return lp(P[i - 1][1], P[i][1], ss(0, 1, at(t, P[i - 1][0], P[i][0])));
+    return P[P.length - 1][1];
+  }
+  const V1SEAL = { x: 452, y: 676, r: 104 };   // печать в координатах записки: ниже цитаты, на подписи
+  function v1Laser(c, t) {
+    const a = at(t, K.goal - .05, K.goal + .15) * (1 - at(t, K.qEnd - .15, K.qEnd + .05)); if (a <= 0) return;
+    const y = v1LaserY(t);
+    c.save(); c.globalAlpha *= a;
+    // свечение на бумаге — красной краской (на белом «светом» не видно), сверху — тонкая яркая нить
+    const g = c.createLinearGradient(0, y - 40, 0, y + 40); g.addColorStop(0, 'rgba(255,40,60,0)'); g.addColorStop(.5, 'rgba(255,40,60,.34)'); g.addColorStop(1, 'rgba(255,40,60,0)');
+    c.fillStyle = g; c.fillRect(-4, y - 40, MW + 8, 80);
+    c.fillStyle = '#ff2a44'; c.fillRect(-4, y - 3.5, MW + 8, 7); c.fillStyle = '#ffd6dc'; c.fillRect(-4, y - 1, MW + 8, 2);
+    for (let i = 0; i < 6; i++) { const ph = (t * 3 + i / 6) % 1, x = (H1(i * 3.3 + Math.floor(t * 3 + i / 6)) * .9 + .05) * MW; c.globalAlpha = a * (1 - ph) * .9; circ(c, x, y - 6 - ph * 30, 3.5, i % 2 ? '#ff4a5e' : '#ffb000') }
+    c.globalAlpha = a;
+    for (const x of [-26, MW + 26]) { rr(c, x - 22, y - 18, 44, 36, 8); fill(c, '#3b4260'); rr(c, x - 22, y - 18, 44, 11, [8, 8, 0, 0]); fill(c, '#6d769c'); circ(c, x, y + 4, 6, '#ff2a44') }
+    c.restore();
+  }
+  // цитата: строки целиком, видны выше лазера; жёлтый маркер, у свежего «ожога» — ярче
+  function v1Quote(c, t, F) {
+    const fs = qLayout(c), sp = tw(c, ' ', { s: fs }), ly = F ? 1e4 : v1LaserY(t);
+    QL.forEach((L, i) => {
+      const y = 482 + i * fs * 1.25, s = L.join(' ') + (i === 2 ? '.' : ''), w = tw(c, s, { f: 'J', w: 700, s: fs });
+      const rv = F ? 1 : at(ly, y - fs * .6, y + fs * .6); if (rv <= 0) return;
+      c.save(); c.beginPath(); c.rect(-50, -50, MW + 100, ly + 50); c.clip();
+      poly(c, [44, y - fs * .56, 56 + w + 16, y - fs * .6, 56 + w + 10, y + fs * .54, 40, y + fs * .52]); fill(c, mixc('#fff7c2', C.yel, rv));
+      tx(c, s, 56, y, { f: 'J', w: 700, s: fs, c: C.ink, al: 'left' });
+      c.restore();
+      if (!F && ly < y + fs * 1.4 && ly > y - fs) { c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = .35 * (1 - at(ly, y, y + fs * 1.4)); c.fillStyle = '#ff6070'; c.fillRect(40, y - fs * .6, w + 32, fs * 1.2); c.restore() }
+    });
+  }
+  // круглая печать: падает сверху, удар, оттиск; dot — красная точка в центре (потом улетает в сигарету)
+  function v1Seal(c, t, F) {
+    const t0 = K.qEnd - .02, k = F ? 1 : at(t, t0, t0 + .22); if (k <= 0) return;
+    const e = ei(k), sc = lp(2.3, 1, e), al = lp(.2, 1, e), hit = Math.sin(Math.PI * at(t, t0 + .22, t0 + .42)) * (1 - (F ? 1 : 0));
+    const { x, y, r } = V1SEAL;
+    c.save(); c.translate(x, y); c.rotate(-.16); c.scale(sc * (1 + hit * .06), sc * (1 - hit * .04)); c.globalAlpha *= al;
+    c.globalCompositeOperation = 'multiply';
+    c.beginPath(); c.arc(0, 0, r, 0, TAU); c.lineWidth = 12; c.strokeStyle = '#d8303f'; c.stroke();
+    c.beginPath(); c.arc(0, 0, r - 26, 0, TAU); c.lineWidth = 4; c.stroke();
+    const txt = 'СЕКРЕТНО · R.J. REYNOLDS · 1973 · ', n = txt.length; c.font = FNT({ s: 22, w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    for (let q = 0; q < n; q++) { const an = -Math.PI / 2 + q / n * TAU; c.save(); c.rotate(an + Math.PI / 2); c.fillText(txt[q], 0, -(r - 13)); c.restore() }
+    tx(c, 'СЕКРЕТНО', 0, 2, { s: 30, w: 800, ls: 2, c: '#d8303f' });
+    c.globalCompositeOperation = 'source-over';
+    const dotOn = t < K.prob - .04; if (dotOn) { circ(c, 0, 44, 15, '#e8283c'); circ(c, -4, 40, 5, 'rgba(255,255,255,.6)') }
+    c.restore();
+    if (!F && k >= 1 && hit > 0) { c.save(); c.globalAlpha = .5 * hit; c.beginPath(); c.arc(x, y, r * (1.1 + .5 * (1 - hit)), 0, TAU); c.strokeStyle = '#d8303f'; c.lineWidth = 6; c.stroke(); c.restore() }
+  }
+  const v1SealDotW = () => { const [lx, ly] = rot(0, 44, -.16); return memoVW(V1SEAL.x + lx, V1SEAL.y + ly) };   // точка печати в мире стола
+  // 0:26,9–0:27,3 — красная точка с печати падает огоньком в кончик сигареты у негатоскопа (#092)
+  const V1D = { land: 0 };
+  function v1DotFall(c, t, k) {   // поверх перехода «вверх»: стол уезжает вверх, снимок въезжает снизу
+    const e = eio(k), D3 = camDesk(t), [wx, wy] = v1SealDotW();
+    const sx = CX + D3.s * (wx - D3.x), sy = CY + D3.s * (wy - D3.y) - e * HH;
+    const [ex, ey] = XENT(), tx2 = ex, ty2 = ey - 8 + (1 - e) * HH;
+    const q = ei(k), x = lp(sx, tx2, q) + Math.sin(Math.PI * k) * 60, y = lp(sy, ty2, q), r = lp(18 * D3.s * MEMV.s, 11, q);
+    c.save(); c.globalCompositeOperation = 'lighter';
+    for (let i = 1; i <= 6; i++) { const kk = Math.max(0, k - i * .035), qq = ei(kk), px = lp(sx + 0, tx2, qq) + Math.sin(Math.PI * kk) * 60, py = lp(sy, ty2, qq); c.globalAlpha = .22 * (1 - i / 7); circ(c, px, py, r * (1 - i * .08), '#ff5a3a') }
+    c.restore(); circ(c, x, y, r, '#ff3b2f'); circ(c, x - r * .3, y - r * .3, r * .35, '#ffd0b8');
+  }
+  // стена пламени (#027): жёлто-оранжевая масса с языками сверху, красные потёки сверху вниз, светлые пузыри; top — верх огня (экран)
+  function v1Fire(c, t, top) {
+    if (top > HH + 150) return;
+    c.save();
+    const tongue = (i, h, sh) => { const x = -40 + i * 52 + sh, ph = t * 7 + i * 1.9; return [x, top - h * (.75 + .25 * Math.sin(ph)) * (.65 + .35 * H1(i * 3.1 + sh))] };
+    c.fillStyle = '#e8475a'; for (let i = 0; i < 24; i++) { const [x, y] = tongue(i, 190, 26); rr(c, x - 30, y, 60, HH + 400 - y, 30); c.fill() }   // красная кромка
+    c.fillStyle = '#ffb53e'; c.fillRect(-60, top + 40, WW + 120, HH + 300); for (let i = 0; i < 24; i++) { const [x, y] = tongue(i, 140, 0); rr(c, x - 34, y + 30, 68, HH + 400 - y, 34); c.fill() }
+    c.save(); c.beginPath(); c.rect(-60, top - 20, WW + 120, HH + 400); c.clip();
+    for (let i = 0; i < 22; i++) {   // светлые пятна плывут вверх
+      const ph = (t * (.25 + .2 * H1(i)) + H1(i * 3.7)) % 1, x = H1(i * 9.1) * (WW + 200) - 100 + Math.sin(t * 2 + i) * 30, y = lp(HH + 200, top + 80, ph), r = 50 + 110 * H1(i * 4.4);
+      c.beginPath(); c.ellipse(x, y, r, r * .62, 0, 0, TAU); fill(c, i % 3 ? '#ffd36e' : '#ffe9b0');
+    }
+    for (let i = 0; i < 17; i++) {   // красные потёки сверху вниз
+      const x = -10 + i * 66 + 24 * H1(i * 2.2), y0 = top + 10 + 90 * H1(i * 5.5) + Math.sin(t * 4 + i) * 16, L = 120 + 300 * H1(i * 7.1), w = 16 + 16 * H1(i * 1.3);
+      rr(c, x - w / 2, y0, w, L, w / 2); fill(c, i % 3 ? '#e8475a' : '#b8263a');
+    }
+    c.restore();
+    for (let i = 0; i < 14; i++) { const ph = (t * (.8 + .5 * H1(i * 2)) + H1(i * 5.3)) % 1, x = H1(i * 6.7) * WW + Math.sin(t * 3 + i) * 20, y = top - 120 - ph * 360; c.save(); c.globalAlpha = 1 - ph; circ(c, x, y, 6 + 6 * H1(i), i % 2 ? '#ffd36e' : '#e8475a'); c.restore() }
+    c.restore();
+  }
+  // спиртовка и треножник под колбой (вариант 1: колба стоит на сетке, под ней — живой огонь)
+  const V1BURN = () => ({ x: LB.x, y: LB.y - 150 });   // середина пламени
+  function v1Flame(c, t, x, y, s = 1, a = 1) {
+    if (a <= 0) return;
+    const f = 1 + .08 * Math.sin(t * 23) + .05 * Math.sin(t * 37), sw = Math.sin(t * 9) * 4;
+    c.save(); c.globalAlpha *= a; c.translate(x, y + 34 * s); c.scale(s, s * f);
+    const tongue = (w, h, col) => { c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(w, -h * .25, w * .7, -h * .7, sw, -h); c.bezierCurveTo(-w * .7, -h * .7, -w, -h * .25, 0, 0); fill(c, col) };
+    tongue(30, 92, '#ff7a2a'); tongue(22, 74, '#ffc74f'); tongue(13, 46, '#fff2c4'); c.beginPath(); c.ellipse(0, -4, 10, 8, 0, 0, TAU); fill(c, '#5aa8ff');
+    c.restore();
+    if (LUX()) Rglow(c, x, y, 150 * s, '#ffb347', .6 * a);
+  }
+  function v1Burner(c, t, flameA) {
+    const tb = LB.y, gy = LB.y + LB.f, x = LB.x;
+    c.save();
+    c.strokeStyle = '#2a2f4a'; c.lineWidth = 12; c.lineCap = 'round'; c.beginPath(); c.moveTo(x, gy + 6); c.lineTo(x + 6, tb - 4); c.stroke();   // задняя нога
+    // спиртовка: стеклянный пузырёк со спиртом, латунный колпачок, фитиль
+    c.beginPath(); c.ellipse(x, tb - 4, 74, 12, 0, 0, TAU); fill(c, 'rgba(0,0,0,.25)');
+    c.beginPath(); c.moveTo(x - 66, tb - 6); c.quadraticCurveTo(x - 76, tb - 82, x - 30, tb - 96); c.lineTo(x + 30, tb - 96); c.quadraticCurveTo(x + 76, tb - 82, x + 66, tb - 6); c.closePath(); fill(c, 'rgba(190,220,255,.35)');
+    c.save(); c.clip(); c.fillStyle = 'rgba(150,120,255,.55)'; c.fillRect(x - 80, tb - 58, 160, 60); c.restore();
+    rr(c, x - 26, tb - 112, 52, 20, 6); fill(c, C.gold); c.fillStyle = '#f2d39a'; c.fillRect(x - 22, tb - 110, 14, 4);
+    c.fillStyle = '#e9e2d0'; c.fillRect(x - 4, tb - 126, 8, 16);
+    // треножник: передние ноги и сетка
+    for (const d of [-1, 1]) { c.beginPath(); c.moveTo(x + d * 104, gy + 4); c.lineTo(x + d * 132, tb - 4); c.stroke() }
+    c.lineWidth = 10; c.beginPath(); c.moveTo(x - 118, gy + 2); c.lineTo(x + 118, gy + 2); c.stroke();
+    rr(c, x - 108, gy - 6, 216, 10, 3); fill(c, '#9aa3b8'); c.fillStyle = 'rgba(40,46,74,.6)'; for (let q = -100; q < 100; q += 12) c.fillRect(x + q, gy - 6, 2, 10);
+    c.restore();
+    v1Flame(c, t, x, LB.y - 150, 1, flameA);
+  }
+  function v1FireMorph(c, t, W) {   // 0:32,4–0:33 — огонь на весь кадр сжимается в пламя спиртовки (#028), камера отъезжает
+    const k = at(t, K.chemPan, K.chemPan + .6), e = eio(k), F = V1BURN(), Z = zoomCam(1 - e, F.x, F.y, 1, 3.4);
+    c.save(); cam(c, Z.s, Z.x, Z.y); W('s5', () => vS5(c, t))(); c.restore();
+    const fx = CX + Z.s * (F.x - Z.x), fy = CY + Z.s * (F.y - Z.y), q = ss(0, 1, k);
+    const rx = lp(1250, 34 * Z.s, q), ry = lp(1500, 62 * Z.s, q), cy = lp(CY, fy - 10 * Z.s, q), cx = lp(CX, fx, q);   // огненный шар сжимается в пламя
+    const a = 1 - at(k, .74, .98); if (a <= 0) return;
+    c.save(); c.globalAlpha *= a; c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); c.clip(); v1Fire(c, t, cy - ry - lp(0, 60, q)); c.restore();
+  }
+  // 0:41–0:43,5 — стеклянный змеевик (#010, вторая половина): из горла колбы трубка уходит в спираль; крупная янтарная капля бежит
+  // по виткам вниз (камера летит за ней), срывается с кончика и пролетает сквозь пустой пунктирный вейп «?» на стол
+  const V1CO = { x: 800, y0: 430, y1: 690, R: 64, ry: 16, n: 4, top: 352, tip: 742 };
+  function v1CoilT() { const v = K.vop; return { draw: v + .3, form: v + .62, run: v + .78, end: v + 1.86, fall: v + 2.0, land: v + 2.3 } }
+  function v1Helix(u) { const th = u * TAU * V1CO.n; return [V1CO.x + V1CO.R * Math.sin(th), lp(V1CO.y0, V1CO.y1, u) + V1CO.ry * Math.cos(th), Math.cos(th)] }   // z > 0 — передний виток
+  function v1TubePts() {
+    const [mx, my] = LBM(), P = [];
+    for (let i = 0; i <= 10; i++) P.push([mx, lp(my, V1CO.top + 40, i / 10)]);
+    for (let i = 0; i <= 12; i++) { const a = Math.PI + i / 12 * Math.PI / 2; P.push([mx + 40 + 40 * Math.cos(a), V1CO.top + 40 + 40 * Math.sin(a)]) }
+    for (let i = 0; i <= 10; i++) P.push([lp(mx + 40, V1CO.x - 40, i / 10), V1CO.top]);
+    for (let i = 0; i <= 12; i++) { const a = -Math.PI / 2 + i / 12 * Math.PI / 2; P.push([V1CO.x - 40 + 40 * Math.cos(a), V1CO.top + 40 + 40 * Math.sin(a)]) }
+    return P;
+  }
+  function v1Coil(c, t, front) {
+    const T = v1CoilT(), k = at(t, T.draw, T.draw + .45), out = 1 - at(t, K.fail - .7, K.fail - .3); if (k <= 0 || out <= 0) return;
+    c.save(); c.globalAlpha *= out; c.lineCap = 'round'; c.lineJoin = 'round';
+    const glass = (pts, w) => { c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); c.strokeStyle = 'rgba(190,225,255,.32)'; c.lineWidth = w; c.stroke(); c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 3; c.stroke() };
+    if (!front) {
+      const P = v1TubePts(), n = Math.max(2, Math.round(P.length * k)); glass(P.slice(0, n), 20);
+      if (k >= 1) { const B = []; for (let i = 0; i <= 160; i++) { const u = i / 160, [x, y, z] = v1Helix(u); if (z < 0) B.push([x, y]); else if (B.length) { glass(B, 16); B.length = 0 } } if (B.length) glass(B, 16) }
+      // подставка змеевика: стойка и лапка
+      c.fillStyle = '#2a2f4a'; c.fillRect(V1CO.x + V1CO.R + 40, V1CO.top - 10, 12, LB.y - V1CO.top + 4); rr(c, V1CO.x + V1CO.R + 4, V1CO.y0 + 40, 54, 12, 5); fill(c, '#454c70');
+    } else if (k >= 1) {
+      const F = []; for (let i = 0; i <= 160; i++) { const u = i / 160, [x, y, z] = v1Helix(u); if (z >= 0) F.push([x, y]); else if (F.length) { glass(F, 20); F.length = 0 } } if (F.length) glass(F, 20);
+      glass([[V1CO.x, V1CO.y0 - 16], [V1CO.x, V1CO.top + 40]], 20); glass([[V1CO.x, V1CO.y1 + 16], [V1CO.x, V1CO.tip]], 18);
+    }
+    c.restore();
+  }
+  function v1DropPos(t) {
+    const T = v1CoilT();
+    if (t < T.run) return [V1CO.x, V1CO.top + 46, 0];
+    if (t < T.end) { const [x, y, z] = v1Helix(ss(0, 1, at(t, T.run, T.end))); return [x, y, z] }
+    if (t < T.fall) return [V1CO.x, lp(V1CO.y1 + 20, V1CO.tip + 8, at(t, T.end, T.fall)), 1];
+    return [V1CO.x, lp(V1CO.tip + 8, LB.y - 14, ei(at(t, T.fall, T.land))), 1];
+  }
+  function v1Drop(c, t) {
+    const T = v1CoilT(); if (t < T.form || t > T.land + .02) return;
+    const [x, y, z] = v1DropPos(t), sw = t > T.end && t < T.fall ? 1 + .35 * at(t, T.end, T.fall) : 1, s = spr(at(t, T.form, T.form + .3)) * sw;
+    const st = t > T.fall ? 1 + .6 * at(t, T.fall, T.fall + .12) : 1;   // в падении вытягивается
+    c.save(); c.translate(x, y); c.scale(s, s * st); c.globalAlpha *= z < 0 ? .7 : 1;
+    c.beginPath(); c.moveTo(0, -30); c.bezierCurveTo(14, -12, 22, 0, 22, 10); c.arc(0, 10, 22, 0, Math.PI); c.bezierCurveTo(-22, 0, -14, -12, 0, -30); fill(c, C.am);
+    c.beginPath(); c.ellipse(-8, 6, 5, 9, -.3, 0, TAU); fill(c, 'rgba(255,255,255,.75)'); c.restore();
+    if (LUX()) Rglow(c, x, y, 70, '#ffb347', .5 * (z < 0 ? .5 : 1));
+  }
+  function v1Splash(c, t) {
+    const T = v1CoilT(), k = at(t, T.land, T.land + .5), out = 1 - at(t, K.fail - .9, K.fail - .5); if (k <= 0 || out <= 0) return;
+    c.save(); c.globalAlpha *= out; c.beginPath(); c.ellipse(V1CO.x, LB.y + 2, 30 + 110 * eo(k), 8 + 6 * eo(k), 0, 0, TAU); fill(c, C.am);
+    for (let i = 0; i < 7; i++) { const a = -Math.PI * (.15 + .7 * i / 6), d = 30 + 120 * eo(k), h = Math.sin(Math.PI * k) * (60 + 40 * H1(i)); c.globalAlpha = out * (1 - k); circ(c, V1CO.x + Math.cos(a) * d, LB.y - h, 7 * (1 - k * .5), C.am) }
+    c.restore();
+  }
+  function v1CoilCam(t) {
+    const T = v1CoilT(), f = ss(T.run - .25, T.run + .1, t) * (1 - ss(T.end + .05, T.fall + .15, t)); if (f <= 0) return { s: 1, x: CX, y: CY };
+    const [x, y] = v1DropPos(t), s = 1 + .8 * f;
+    return { s, x: lp(CX, V1CO.x - 40, f), y: lp(CY, y + 60, f) };   // камера идёт вниз за каплей, вбок не качается
+  }
   function frameV(c, t) {
     const W = (id, f) => () => { f(); rig(c, t, id) };   // сцена + её свет (в версии 1 rig ничего не рисует)
+    if (VARIANT === 1 && t < V1I[2]) { v1Intro(c, t, W('s1', () => vS1(c, t))); return }   // v17.0 вариант 1: заставка-молния → прилавок
     if (t < K.zoomE) W('s1', () => vS1(c, t))();
     else if (t < K.prep - .05) W('s2', () => vS2(c, t))();
     else if (t < K.prep + .4) pushTr(c, at(t, K.prep - .05, K.prep + .4), W('s2', () => vS2(c, t)), W('s3', () => vS3(c, t)), 'up');   // v16.5 вечер: к столу — сдвигом
     else if (t < K.prob - .02) W('s3', () => vS3(c, t))();
-    else if (t < K.prob + .42) pushTr(c, at(t, K.prob - .02, K.prob + .42), W('s3', () => vS3(c, t)), W('s4', () => vS4(c, t)), 'up');
-    else if (t < K.chemPan) W('s4', () => vS4(c, t))();
+    else if (t < K.prob + .42) { pushTr(c, at(t, K.prob - .02, K.prob + .42), W('s3', () => vS3(c, t)), W('s4', () => vS4(c, t)), 'up'); if (VARIANT === 1) v1DotFall(c, t, at(t, K.prob - .02, K.prob + .42)) }
+    else if (t < K.chemPan) { W('s4', () => vS4(c, t))(); if (VARIANT === 1) v1Fire(c, t, lp(HH + 160, -260, eio(at(t, K.teens + .2, K.chemPan - .05)))) }   // вариант 1: стена пламени
+    else if (VARIANT === 1 && t < K.chemPan + .6) v1FireMorph(c, t, W);   // вариант 1: огонь сжимается в спиртовку
     else if (t < K.chemPan + .45) pushTr(c, at(t, K.chemPan, K.chemPan + .45), W('s4', () => vS4(c, t)), W('s5', () => vS5(c, t)), 'left');
-    else if (t < K.secr) W('s5', () => vS5(c, t))();
+    else if (t < K.secr) { const Q = VARIANT === 1 ? v1CoilCam(t) : null; if (Q) { c.save(); cam(c, Q.s, Q.x, Q.y) } W('s5', () => vS5(c, t))(); if (Q) c.restore() }   // вариант 1: камера летит за каплей
     else if (t < K.secr + .45) { pushTr(c, at(t, K.secr, K.secr + .45), W('s5', () => vS5(c, t)), () => vS6(c, t), 'left'); vFolderFly(c, t) }
     else if (t < K.bzoom) { vS6(c, t); vFolderFly(c, t) }
     else if (t < K.bzoom + .45) { pushTr(c, at(t, K.bzoom, K.bzoom + .45), () => vS6(c, t), W('s7', () => vS7(c, t)), 'left'); vCardFly(c, t) }
@@ -4755,6 +5172,7 @@
       MODE = 'main'; VAR = 'lens';   // v17.0 (14.11): один шортс, три варианта переходов
       STY = 'cine'; VARIANT = /^v170a$/.test(ep) ? 1 : /^v170b$/.test(ep) ? 2 : /^v170c$/.test(ep) ? 3 : 0;   // v17.0: база «2.5D Cinema»; 1 — Morph, 2 — Detective, 3 — Thriller, 0 — только правки базы
       HERO.label = tt('mango'); BGV[0].label = tt('mint'); BGV[1].label = tt('berry');
+      LB.f = VARIANT === 1 ? -190 : 0;
       K = MODE === 'end' ? keysEnd() : MODE === 'tail' ? keysTail() : keysMain(); window.__K = K; cues();
       CHUNKS = buildChunks();
       if (MODE === 'tail' || (MODE === 'end' && VAR !== 'A')) CHUNKS.push({ a: K.q1, e: K.q2 - .05, s: 'Так… о чём это я?' }, { a: K.q2, e: K.whip + .1, s: 'А, точно!' });
