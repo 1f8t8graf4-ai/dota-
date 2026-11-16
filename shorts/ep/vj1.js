@@ -298,8 +298,8 @@
   const E1 = { x: 776, y: 1267 }; let W1K = null, TAB = 0, T1 = {};
   function w1Init() {
     const p = PH; TAB = p[1].b + .06;
-    T1 = { pan0: Wd('знаешь') - .25, on: Wd('станешь') - .2, off: TAB - .34 };
-    W1K = [KY(0, 540, 990, 1), KY(p[0].b, 600, 1050, 1.2), KY(T1.pan0 + .25, 700, 1180, 2.6), KY(T1.pan0 + .8, 772, 1262, 24), KY(T1.pan0 + 1.25, 775.6, 1266.6, 70), KY(TAB - .32, 776, 1267, 92), KY(TAB, 776, 1267, 200)];
+    T1 = { pan0: Wd('знаешь') - .25, on: Wd('станешь') - .2, off: TAB - .22 };
+    W1K = [KY(0, 520, 900, .78), KY(1.6, 575, 1020, 1.04), KY(p[0].b, 625, 1090, 1.32), KY(T1.pan0 + .25, 700, 1180, 2.6), KY(T1.pan0 + .8, 772, 1262, 24), KY(T1.pan0 + 1.25, 775.6, 1266.6, 70), KY(TAB - .32, 776, 1267, 92), KY(TAB, 776, 1267, 200)];
   }
   function palm(c, x, y, h, lean, t) {
     c.beginPath(); c.moveTo(x - 9, y); c.quadraticCurveTo(x + lean * .5, y - h * .5, x + lean, y - h); c.lineTo(x + lean + 8, y - h); c.quadraticCurveTo(x + lean * .5 + 12, y - h * .5, x + 9, y); c.closePath(); fill(c, '#141830');
