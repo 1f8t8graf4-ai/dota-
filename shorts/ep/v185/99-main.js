@@ -33,11 +33,22 @@
     else if (t < K.s8 + .3) { c.save(); c.setTransform(1, 0, 0, 1, 0, -240 * ei(at(t, K.s8 - .25, K.s8 + .3))); yearPill(c, 2023, 2023, 1, 1, true); c.restore() }
   }
   function firstFrame(c) { shot1(c, 0); hud(c, 0) }   // кадр 0 — без субтитров
+  // v18.5: размытие движения: затвор 270° (на перевороте монеты — 360°), кадр = среднее 8–12 моментов (мир 1)
+  let MBC = null;
+  function sceneMB(c, t) {
+    const fl = t > TF0 - .05 && t < TF1 + .05, n = fl ? 12 : 8, sh = fl ? 1 / 30 : 1 / 40; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
+    for (let j = 0; j < n; j++) {
+      const tj = t + (j / (n - 1) - .5) * sh;
+      if (j === 0) { scene(c, tj); continue }
+      g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, WW, HH); scene(g, tj);
+      c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
+    }
+  }
   function frame(t) {
     const c = X; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (t >= K.b0) { if (MODE === 's') endA(c, t); else { endB(c, t); const kZ = at(t, K.nezh - .2, K.ledi + 1.6); if (kZ > .7 && kZ < 1) ep3Pill(c, at(kZ, .7, 1)) } }
-    else { scene(c, t); hud(c, t) }
+    else { if (t < W1END()) sceneMB(c, t); else scene(c, t); hud(c, t) }
     subs(c, t);
   }
   // ================= звуки (только мягкие: без ding / tick / pin / swish) =================
@@ -46,9 +57,9 @@
     if (!WK) w1Init(); const k = WK;   // v18.5: звуки мира 1 (0…21 с)
     Q(.1, 'icecrack', .45); Q(k.ice - .05, 'icecrack', .8); Q(k.ice + .25, 'shimmer', .35); Q(k.i + .05, 'whoosh', .55); Q(k.prod - .38, 'neon', .6);
     for (let i = 0; i < 4; i++) Q(k.prod - .15 + i * .14, 'plop', .38, -.4 + i * .27);
-    Q(k.vk - .1, 'bubble', .3); Q(4.4, 'truck', .22, -.5); Q(k.am, 'city', .35); Q(k.zap, 'deep', .5); Q(k.zap + .12, 'whoosh', .7); Q(k.y20 + .3, 'flutter', .4, .3);
+    Q(k.vk - .1, 'bubble', .3); Q(4.4, 'truck', .22, -.5); Q(k.vk - .02, 'whoosh', .6); Q(TF0, 'deep', .5); Q(TF0 + .12, 'flutter', .5); Q(TF1 - .05, 'whoosh', .6); Q(k.y20, 'city', .35); Q(k.y20 + .3, 'flutter', .4, .3);
     Q(k.vse - .05, 'dive', .7); Q(k.vse + .55, 'papers', .4); Q(k.odn, 'typing', .25); Q(k.zab, 'marker', .5); Q(k.zak - .03, 'stamp', 1); Q(k.zak, 'impact', .45);
-    Q(k.jan - .2, 'pageflip', .7); Q(k.y20b, 'marker', .55); Q(k.sk - .55, 'whoosh', .5); Q(k.sk, 'stamp', .6); Q(k.juul, 'plop', .5); Q(k.vl - .25, 'whoosh', .5); Q(k.usa, 'deep', .4);
+    Q(k.jan - .2, 'pageflip', .7); Q(k.jan, 'whoosh', .35); Q(k.y20b, 'stamp', .45); Q(k.sk - .55, 'whoosh', .5); Q(k.sk, 'stamp', .6); Q(k.juul, 'plop', .5); Q(k.vl - .2, 'whoosh', .5); Q(k.vl + .45, 'thud', .5); Q(k.usa, 'deep', .4);
     Q(k.rub - .16, 'blade', .8); Q(k.rub, 'thud', .6); k.fl.forEach((tf, i) => { Q(tf - .05, 'plop', .6, -.45 + i * .3); Q(tf, 'bubble', .3, -.45 + i * .3) }); Q(k.vk2 + .2, 'plop', .3, -.6); Q(k.vk2 + .35, 'plop', .3, .6);
     Q(k.pod - .12, 'blade', 1); Q(k.pod + .1, 'impact', .9); Q(k.pod + .12, 'splash', .9); Q(k.pod + .4, 'whoosh', .4);
     Q(K.scr0, 'whoosh', .6); Q(K.scr0 + .75, 'thud', .6); Q(K.scr0 + .95, 'scroll', .9); Q(K.s3 + 1.9, 'marker', .6); Q(K.cart - .05, 'stamp', .7); Q(K.whole - .1, 'deep', .5); Q(K.zoom0 + .1, 'whoosh', .5); Q(K.zoom1 - .4, 'dive', .5);
