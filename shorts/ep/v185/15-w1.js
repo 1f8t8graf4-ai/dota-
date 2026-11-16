@@ -34,6 +34,7 @@
       L(k.fl[0] - .05, 470, 1258, 8.15, -0.004), L(k.fl[3] + .1, 530, 1272, 8.4, 0.003), L(k.pod, 505, 1284, 8.6, 0.0), L(k.nozh + .8, 500, 1300, 9.15, 0.004),
     ];
     SA = (camAt(KA, TF0)[2] - camAt(KA, TF0 - .01)[2]) / .01; SB = (camAt(KB, TF1 + .01)[2] - camAt(KB, TF1)[2]) / .01;   // скорость зума на входе и выходе
+    w2Words(); KB = KB.concat(w2Keys());
     KEYS1 = KB;
     TIN = 99;   // с этого кадра камера внутри окна: рисуем только интерьер (окно уже закрыло весь экран — шва нет)
     for (let f = Math.floor(k.vse * 30); f < (k.odn + 1) * 30; f++) {
@@ -220,7 +221,7 @@
     const r = v || { x0: CWIN.x - 200, x1: CWIN.x + 200, y0: CWIN.y - 260, y1: CWIN.y + 260 };
     c.fillStyle = W1.inBg; c.fillRect(r.x0 - 10, r.y0 - 10, r.x1 - r.x0 + 20, r.y1 - r.y0 + 20);
     glow(c, CWIN.x, CWIN.y - 40, 220, W1.warm, .16);
-    c.save(); c.translate(CWIN.x, CWIN.y); c.scale(SHS, SHS); c.translate(-500, -750); sheetW(c, t); c.restore();
+    c.save(); c.translate(CWIN.x, CWIN.y); c.scale(SHS, SHS); c.translate(-500, -750); sheetW(c, t); scrollW(c, t); c.restore();
   }
   const CAL = { x: 60, y: 680, w: 400, h: 370 }, JU = { x: 745, y: 850, w: 360, h: 300 }, RIG = { l: 230, r: 770, top: 990, base: 1405 };
   const CARTS = [{ u: 105, n: 'ТАБАК', c: '#a8835a', side: 1 }, { u: 290, n: 'МАНГО', c: '#f97316' }, { u: 430, n: 'ФРУКТЫ', c: '#ec4899' }, { u: 570, n: 'ДЕСЕРТЫ', c: '#eab308' }, { u: 710, n: 'МЯТА', c: '#22c55e' }, { u: 895, n: 'МЕНТОЛ', c: '#67c7d9', side: 1 }];

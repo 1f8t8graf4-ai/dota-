@@ -62,7 +62,7 @@
   function shot8(c, t) {
     // 75.5–76.5: касса уезжает вниз, монета летит по дуге и становится Луной; город поднимается снизу; общежитие въезжает справа
     const p = eio(at(t, K.s8 - .57, K.s8 + .43));
-    const kp = 1 + .18 * eio(at(t, K.s8 + .5, K.b0));
+    const kp = 1 + .2 * eo(at(t, K.s8 + .5, K.b0 + 2));   // v18.5: наезд не встаёт к доске
     const kc = eo(at(t, K.s8 - .2, K.s8 + .8)), kc2 = eo(at(t, K.s8 + .05, K.s8 + 1));
     c.save(); c.translate(620, 1010); c.scale(kp, kp); c.translate(-620, -1010);
     c.fillStyle = S8.bg; c.fillRect(-500, -500, WW + 1000, HH + 1000);
@@ -74,7 +74,7 @@
     const kd = bo(at(t, K.s8 + .43, K.s8 + 1.3)); if (kd > 0) dorm(c, t, lp(1460, 600, kd));
     c.restore();
     if (p < 1) {   // касса уезжает вниз целиком (без растворения), монета летит в Луну
-      c.save(); c.translate(0, 1950 * p); c.beginPath(); c.rect(-200, -200, WW + 400, HH + 400); c.clip(); shot7(c, t); c.restore();
+      c.save(); c.translate(0, 1950 * p); c.beginPath(); c.rect(-200, -200, WW + 400, HH + 400); c.clip(); shotD(c, t); c.restore();
       const x = lp(540, MOON.x, p), y = lp(850, MOON.y, p) - Math.sin(Math.PI * p) * 140, r = lp(36, MOON.r, p);
       if (p > .6) moon8(c, x, y, r, mixc('#f59e0b', '#f8fafc', ss(.6, 1, p))); else { circ(c, x, y, r, mixc('#f59e0b', '#f8fafc', p)); ring(c, x, y, r * .76, rgba('#b45309', 1 - p), 4) }
     }

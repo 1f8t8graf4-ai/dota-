@@ -135,7 +135,8 @@
     const drawAll = cc => { board(cc, t, boardS(t)); stampYT(cc, t); deskWorld(cc, t) };
     if (t < K.zo1) { zoomOutTo2020(c, t, drawAll); return }
     const Fy = lp(960, LAP.y, kd), z = Math.exp(lp(0, Math.log(HH / LAP.vh), kz));
-    c.save(); c.translate(540 + shx, 960 + shy); c.scale(z, z); c.translate(-540, -Fy); drawAll(c); c.restore();
+    const u = at(t, K.zo1, K.zA0), dz = 1 + .07 * Math.sin(Math.PI * u) ** 2, dx = 60 * Math.sin(2 * Math.PI * u) * Math.sin(Math.PI * u);   // v18.5: доска не стоит — медленный дрейф
+    c.save(); c.translate(540 + shx, 960 + shy); c.scale(z * dz, z * dz); c.translate(-540 - dx, -Fy); drawAll(c); c.restore();
     vignette(c, .35 * (1 - kz));
   }
   function stampYT(c, t) {
@@ -168,12 +169,13 @@
   function endB(c, t) {
     const kz1 = eio(at(t, K.b0 + 1.45, K.b0 + 2.6));   // доска → карточка 1924
     const kZ = eio(at(t, K.nezh - .2, K.ledi + 1.6));    // карточка → фото 3-й главы
-    if (kZ >= 1) { ep3Frame(c, t); ep3Pill(c, 1); return }
+    if (kZ >= 1) { const m = 1 + .12 * (1 - at(t, K.ledi + 1.6, K.endT)); c.save(); c.translate(540, 960); c.scale(m, m); c.translate(-540, -960); ep3Frame(c, t); c.restore(); ep3Pill(c, 1); return }   // v18.5: последний кадр — мостик, но не стоит
     const p = PH / 1080, [pcx, pcy] = photoC(C24);
     const zc = 2.6, Fc = [540, C24.y + 5];
     const zE = 1 / p, FE = [pcx - p * 0, pcy + p * 100];
     let z = Math.exp(lp(0, Math.log(zc), kz1)), F = [lp(540, Fc[0], kz1), lp(960, Fc[1], kz1)];
     if (kZ > 0) { z = Math.exp(lp(Math.log(zc), Math.log(zE), kZ)); const u = (1 / z - 1 / zc) / (1 / zE - 1 / zc); F = [lp(Fc[0], FE[0], u), lp(Fc[1], FE[1], u)] }
+    else { const u = at(t, K.b0 + 2.6, K.nezh - .2); z *= 1 + .06 * Math.sin(Math.PI * u) ** 2; F = [F[0] + 50 * Math.sin(2 * Math.PI * u) * Math.sin(Math.PI * u), F[1]] }   // v18.5: доска не стоит
     const wipe = at(t, K.vyv - .2, K.vyv + .7);
     const ops = { card: { '1924': { ep3: true, wipe: wipe > 0 ? wipe : undefined, noPin: t > K.vperv - .9, sub: 'МЯГКИЕ, КАК МАЙ · 1924', subA: at(t, K.vyv + .5, K.vyv + .9) } } };
     if (t < K.zo1) { zoomOutTo2020(c, t, cc => board(cc, t, {})); return }

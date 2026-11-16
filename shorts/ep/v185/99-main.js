@@ -17,12 +17,11 @@
     return k;
   }
   function scene(c, t) {
-    if (t < W1END()) shot1(c, t);   // v18.5: мир 1 — 0…21 с одной камерой (бывшие сцены 1–2)
-    else if (t < K.s4 - .49) shot3(c, t);
-    else if (t < K.s5 - .25) shot4(c, t);
-    else if (t < K.s6 - .23) shot5(c, t);
-    else if (t < K.s7 - .1) shot6(c, t);
-    else if (t < K.s8 - .57) shot7(c, t);
+    if (!KEYS1) w1Init(); if (TINW.B > 98) tinInit();
+    if (t < TINW.B) shot1(c, t);   // v18.5: мир 1 и лист закона с указом — одной камерой
+    else if (t < TINW.C) shotB(c, t);   // мир B: полка → океан → Шэньчжэнь → волна → ×11
+    else if (t < TINW.D) shotC(c, t);   // мир C: WS-23 → рецепторы → картридж = пачка → одноразка → 16 картриджей
+    else if (t < K.s8 - .57) shotD(c, t);   // мир D: колба → пробирка → касса → корпорации
     else shot8(c, t);
   }
   function hud(c, t) {   // плашка года
@@ -48,7 +47,7 @@
     const c = X; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (t >= K.b0) { if (MODE === 's') endA(c, t); else { endB(c, t); const kZ = at(t, K.nezh - .2, K.ledi + 1.6); if (kZ > .7 && kZ < 1) ep3Pill(c, at(kZ, .7, 1)) } }
-    else { if (t < W1END()) sceneMB(c, t); else scene(c, t); hud(c, t) }
+    else { sceneMB(c, t); hud(c, t) }
     subs(c, t);
   }
   // ================= звуки (только мягкие: без ding / tick / pin / swish) =================
@@ -62,12 +61,19 @@
     Q(k.jan - .2, 'pageflip', .7); Q(k.jan, 'whoosh', .35); Q(k.y20b, 'stamp', .45); Q(k.sk - .55, 'whoosh', .5); Q(k.sk, 'stamp', .6); Q(k.juul, 'plop', .5); Q(k.vl - .2, 'whoosh', .5); Q(k.vl + .45, 'thud', .5); Q(k.usa, 'deep', .4);
     Q(k.rub - .16, 'blade', .8); Q(k.rub, 'thud', .6); k.fl.forEach((tf, i) => { Q(tf - .05, 'plop', .6, -.45 + i * .3); Q(tf, 'bubble', .3, -.45 + i * .3) }); Q(k.vk2 + .2, 'plop', .3, -.6); Q(k.vk2 + .35, 'plop', .3, .6);
     Q(k.pod - .12, 'blade', 1); Q(k.pod + .1, 'impact', .9); Q(k.pod + .12, 'splash', .9); Q(k.pod + .4, 'whoosh', .4);
-    Q(K.scr0, 'whoosh', .6); Q(K.scr0 + .75, 'thud', .6); Q(K.scr0 + .95, 'scroll', .9); Q(K.s3 + 1.9, 'marker', .6); Q(K.cart - .05, 'stamp', .7); Q(K.whole - .1, 'deep', .5); Q(K.zoom0 + .1, 'whoosh', .5); Q(K.zoom1 - .4, 'dive', .5);
-    Q(K.juul2 - .3, 'whoosh', .4); Q(K.juul2 + .32, 'impact', .8); Q(K.juul2 + .35, 'thud', .6); Q(K.juul2 + .5, 'whoosh', .4); Q(K.shen - .1, 'whoosh', .5); Q(K.shen + .5, 'conveyor', .7);
-    Q(K.s4 - .49, 'conveyor', .3); Q(K.s4 - .3, 'wave', 1); Q(K.puff, 'thud', .35, -.3); Q(K.hqd, 'thud', .35); Q(K.elf, 'thud', .35, .3); Q(K.vsego, 'whoosh', .7); Q(K.vsego + .45, 'papers', .5); Q(K.par, 'thud', .4, -.3); Q(K.vyr - .1, 'boom', .7);
-    Q(K.s5 - .25, 'whoosh', .6); Q(K.s5 + 1.2, 'plop', .9); Q(K.s5 + 1.25, 'bubble', .5); Q(K.s5 + 1.35, 'leaves', .4); Q(K.liq - .2, 'whoosh', .6); Q(K.liq + .1, 'chain', .45); Q(K.ws, 'deep', .6); Q(K.ws, 'pour', .4); Q(K.ws + .2, 'whoosh', .6); Q(K.fool, 'bubble', .4); Q(K.fool + .55, 'whoosh', .5); Q(K.fool + 1.2, 'whoosh', .6); Q(K.ice - .55, 'whoosh', .4); Q(K.ice - .05, 'icecrack', .9); Q(K.ice + .3, 'deep', .5);
-    Q(K.s6 - .1, 'whoosh', .7); Q(K.grew - .1, 'chain', .5); Q(K.s6 - .2, 'whoosh', .5); Q(K.s6 + .1, 'chain', .4); Q(K.mesh - .45, 'chain', .5); Q(K.puffs - .45, 'chain', .5); Q(K.nicot - .25, 'pageflip', .7); Q(K.nicot + .25, 'whoosh', .6); Q(K.n16 - .05, 'thud', .5); Q(K.n16, 'coins', .35);
-    Q(K.s7 - .1, 'whoosh', .4); Q(K.s7 + .15, 'snowroof', .5); Q(K.when - .55, 'whoosh', .5); Q(K.tube - .05, 'deep', .7); Q(K.tube, 'glassbulb', .6); Q(K.noleaf, 'leaves', .5); Q(K.s7 + .8, 'leaves', .3); Q(K.when - .2, 'pour', .5); Q(K.when + .05, 'whoosh', .4); Q(K.bill - .55, 'plop', .6); Q(K.bill - .36, 'whoosh', .7); Q(K.corp + .1, 'coins', .35); Q(K.bill - .05, 'register', 1); Q(K.bill + .05, 'counter', .8); Q(K.market - .3, 'receipt', .6);
+    // v18.5: звуки миров 2–4 (лист с указом → карта → жидкость → колба)
+    w3Words(); w4Words(); const m = W2, n = W3, o = W4;
+    Q(m.razv - .05, 'scroll', .9); Q(m.doc, 'papers', .4); Q(m.zap, 'typing', .3); Q(m.only - .1, 'marker', .6); Q(m.veip, 'marker', .4); Q(m.smen, 'plop', .6); Q(m.cart + .2, 'thud', .45);
+    Q(m.cel, 'marker', .4); Q(m.upom - .05, 'stamp', .9); Q(m.upom, 'impact', .4); Q(m.poka - .4, 'whoosh', .5); Q(m.poka, 'dive', .7);
+    for (let i = 0; i < 7; i++) Q(m.ubir + .15 + i * .12, 'plop', .3, -.5 + i * .17);
+    Q(m.shen - .1, 'whoosh', .7); Q(m.zapusk - .2, 'conveyor', .8); Q(m.uzhe, 'city', .3); Q(m.puff, 'thud', .5, -.4); Q(m.hqd, 'thud', .5); Q(m.elf, 'thud', .5, .4);
+    Q(m.odn - .3, 'wave', 1); Q(m.voln, 'splash', .9); Q(m.voln + .1, 'impact', .5); Q(m.vsego, 'whoosh', .5); Q(m.vsego + .1, 'bubble', .4); Q(m.vyr - .1, 'pour', .6); Q(m.x11 + .1, 'stamp', .8); Q(43.4, 'dive', .7);
+    Q(n.eto, 'bubble', .5); Q(n.zhid - .1, 'whoosh', .5); Q(n.sint, 'icecrack', 1); Q(n.hol, 'shimmer', .5); Q(n.ws, 'plop', .4); Q(n.obm, 'whoosh', .5); Q(n.rec - .2, 'thud', .4); Q(n.led, 'icecrack', .6); Q(n.nik, 'deep', .5);
+    Q(n.pomn - .2, 'whoosh', .7); Q(n.zam, 'thud', .5); Q(n.pach, 'plop', .4); Q(n.odn, 'whoosh', .6); Q(n.razr, 'chain', .5); Q(n.t13, 'pour', .5); Q(n.dv - .2, 'thud', .4); Q(n.set, 'chain', .4); Q(n.tys, 'counter', .6);
+    Q(n.ponik - .1, 'whoosh', .5); for (let i = 0; i < 8; i++) Q(n.ponik + .4 + i * .14, 'plop', .28, -.5 + i * .14); Q(n.kart16, 'stamp', .6); Q(63.55, 'dive', .7);
+    Q(o.nach, 'bubble', .6); Q(o.var, 'pour', .4); Q(o.prob, 'glassbulb', .6); Q(o.bez, 'leaves', .5); Q(o.list - .1, 'marker', .6); Q(o.tab, 'stamp', .7);
+    Q(o.kogda - .3, 'whoosh', .5); Q(o.kogda, 'pour', .5); Q(o.prin, 'conveyor', .5); Q(o.mlrd - .05, 'register', 1); Q(o.mlrd + .05, 'counter', .8); Q(o.doll, 'coins', .5); Q(o.god, 'thud', .3);
+    Q(o.rynok - .3, 'whoosh', .6); Q(o.star - .2, 'boom', .4); Q(o.tabn - .2, 'thud', .4); Q(o.corp - .2, 'boom', .4); Q(o.corp + .1, 'coins', .35);
     Q(K.s8 - .57, 'whoosh', .7); Q(K.s8 + .4, 'city', .6); Q(K.s8 + .5, 'thud', .4);
     Q(K.b0, 'whoosh', .6);
     if (MODE === 's') { for (let i = 0; i < 3; i++) Q(K.th0 + i * 1.2, 'papers', .3, -.3 + i * .3); Q(K.stamp, 'stamp', 1); Q(K.stamp + .02, 'impact', .5); Q(K.down0, 'whoosh', .6); Q(K.zA0 + .3, 'dive', .7) }
