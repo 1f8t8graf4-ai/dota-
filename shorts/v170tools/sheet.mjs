@@ -5,7 +5,7 @@ const { chromium } = require(require.resolve('playwright', { paths: [...(process
 const here = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
 const [ep, ts, out, colsA, wA, fl] = process.argv.slice(2);
 const TL = JSON.parse(fs.readFileSync(path.join(here, 'out', ep, 'timeline.json'), 'utf8'));
-const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
+const b = await chromium.launch({ args: ['--allow-file-access-from-files'] }); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
 const errs = []; p.on('pageerror', e => errs.push(String(e))); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()) });
 await p.goto('file://' + path.join(here, 'stage.html'));
 await p.evaluate(f => { for (const k of (f || '').split(',').filter(Boolean)) window[k] = true }, fl);
