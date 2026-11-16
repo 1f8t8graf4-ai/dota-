@@ -41,6 +41,7 @@ window.loadEp = function (name) {
   if (/^v168/.test(name)) return add('ep/v15-map.js').then(() => add('ep/v168.js'));   // v16.8 (14.11): «чисто по референсам» — один предмет на план, чистая 2D-рисовка, 9:16
   if (/^v167/.test(name)) return add('ep/v15-map.js').then(() => add('ep/v167.js'));   // v16.7 (13.11, ночь): тёмная версия в стиле референсов — мини-3D на canvas, 9:16
   if (/^v18[ab]$/.test(name)) return add('ep/v18.js');   // v18 (15.11, ночь): выпуск 2 «2020 · Лазейка одноразок» — v18a шортс (петля через ноутбук), v18b мостик в главу 3
+  if (/^v183[sy]$/.test(name)) return add('ep/v183.js');   // v18.3 (16.11): проба — сцены 1, 3, 5, 7 выпуска 2 по самим роликам-референсам Gemini
   if (/^v180[sy]$/.test(name)) return add('ep/v180.js');   // v18.0 (15.11): выпуск 2 «2020 · Лазейка одноразок» — v180s шортс, v180y мостик в 3-ю главу
   if (/^v170[a-e]?$/.test(name)) return add('ep/v170.js');   // v17.0 (15.11): три финальные версии на базе 2.5D Cinema — v170a Morph, v170b Detective, v170c Thriller, v170 — только правки базы
   if (/^v165[a-f]/.test(name)) return add('ep/v165.js');   // v16.5 (13.11): версия 1 «Боб» — доработанный A, вертикаль 9:16
