@@ -8,7 +8,7 @@ stab .4, style .25) уже сказал верную фразу в дубле д
 Порядок: el13.py build v18-ru и v180-ru (из voice/, без трат) → python3 v18_fix.py → python3 v18_voice.py."""
 import json, os, shutil
 import numpy as np, soundfile as sf
-from v164_voice import quiet, speech_rms, fade
+from v164_voice import speech_rms, fade
 HERE = os.path.dirname(os.path.abspath(__file__)); SR = 44100
 OUT = lambda ep: os.path.join(HERE, 'out', ep)
 
@@ -24,9 +24,19 @@ def find(S, word):
     raise SystemExit('нет фразы со словом ' + word)
 
 
-def cut(y, S, i):   # границы фразы i по самым тихим местам в паузах до и после неё
-    a, _ = quiet(y, S[i - 1]['words'][-1]['b'] - .05, S[i]['words'][0]['a'] + .01)
-    b, _ = quiet(y, S[i]['words'][-1]['b'] - .02, S[i + 1]['words'][0]['a'] + .01) if i + 1 < len(S) else (min(len(y) / SR, S[i]['words'][-1]['b'] + .3), 0)
+def gap(y, lo, hi, thr=-50):   # середина самой длинной тишины в [lo, hi] (время слов ElevenLabs отстаёт от голоса на 0,1–0,2 с — режем по громкости)
+    st = .01; ts = np.arange(lo, hi, st); e = [20 * np.log10(np.sqrt(np.mean(y[int(t * SR):int((t + st) * SR)] ** 2)) + 1e-9) for t in ts]
+    best, run = (0, None), None
+    for t, v in zip(ts, e):
+        if v < thr: run = run if run is not None else t; best = max(best, (t + st - run, (run + t + st) / 2), key=lambda q: q[0])
+        else: run = None
+    if best[1] is None: raise SystemExit(f'нет тишины в {lo:.2f}–{hi:.2f}')
+    return best[1]
+
+
+def cut(y, S, i):   # границы фразы i — в тишине до и после неё
+    a = gap(y, S[i - 1]['words'][-1]['b'] - .6, S[i]['words'][0]['a'] + .05)
+    b = gap(y, S[i]['words'][-1]['b'] - .6, S[i + 1]['words'][0]['a'] + .05)
     return a, b
 
 
