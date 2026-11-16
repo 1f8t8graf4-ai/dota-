@@ -67,8 +67,8 @@
     k.shen = W('шэньчжэне'); k.conv = W('конвейеры'); k.puff = W('puff'); k.hqd = W('hqd'); k.elf = W('elf'); k.wave = W('волной'); k.year = W('всего'); k.teens = W('старшеклассников');
     k.grew = W('выросла'); k.x11 = W('одиннадцать'); k.flav = W('это'); k.flavE = WB('вкусы'); k.liq = W('жидкость'); k.synth = W('синтетический'); k.ws = W('ws-23'); k.fool = W('обманывает');
     k.ice = W('лёд'); k.tear = W('дерёт'); k.rem = W('помните'); k.pack = W('пачку'); k.grow2 = W('разрослись'); k.ml = W('тринадцать'); k.mesh = W('двойная'); k.puffs = W('тысячи');
-    k.nic = W('никотину'); k.n16 = W('шестнадцать'); k.bypass = W('обойти'); k.tube = W('пробирке'); k.noleaf = W('без'); k.tabak = W('табака'); k.sales = W('продажи');
-    k.ten = W('десять'); k.bil = W('миллиардов'); k.corp = W('зашли'); k.old = W('старые'); k.corpE = WB('корпорации'); k.ban = W('запретом'); k.icepar = W('ледяной');
+    k.nic = W('никотину'); k.n16 = W('шестнадцать'); k.bypass = W('обойти'); k.tube = W('пробирке'); k.noleaf = W('без'); k.tabak = W('табака'); k.sales = W('стали');   // v18.2: «И когда одноразки стали приносить миллиарды долларов в год…» (вставка из дубля v18.1)
+    k.ten = W('приносить'); k.bil = W('миллиарды'); k.corp = W('зашли'); k.old = W('старые'); k.corpE = WB('корпорации'); k.ban = W('запретом'); k.icepar = W('ледяной');
     k.tanks = W('гигантские'); k.endE = WB('пробирки');
     k.b0 = TLX.b0; k.endT = TLX.endT;
     if (!BR) { k.card2 = W('вторую'); k.three = W('трёх'); k.yt = W('youtube'); k.next = W('следующий'); k.ask = W('спросите'); k.askE = WB('себя') }
@@ -148,7 +148,7 @@
     const hl = c.createLinearGradient(-w / 2, 0, w / 2, 0); hl.addColorStop(0, 'rgba(255,255,255,.28)'); hl.addColorStop(.25, 'rgba(255,255,255,0)'); hl.addColorStop(.8, 'rgba(0,0,0,0)'); hl.addColorStop(1, 'rgba(0,0,0,.22)');
     rr(c, -w / 2, -h / 2, w, h, 36 * w / 180); fill(c, hl);
     rr(c, -w * .36, -h * .02, w * .72, h * .2, 10 * w / 180); fill(c, 'rgba(255,255,255,.95)');
-    tx(c, o.label || 'MANGO ICE', 0, h * .08, { s: 26 * w / 180, w: 800, ls: 2, c: C.ink, max: w * .66 });
+    tx(c, o.label || 'МАНГО-ЛЁД', 0, h * .08, { s: 26 * w / 180, w: 800, ls: 2, c: C.ink, max: w * .66 });
     rr(c, -w * .12, -h * .38, w * .24, h * .26, 12 * w / 180); fill(c, 'rgba(255,255,255,.22)');   // окошко жидкости
     if (o.frost !== false) {   // 6 кристаллов инея по краям
       const P = [[-.5, -.36], [.5, -.18], [-.5, .12], [.5, .3], [-.42, .44], [.44, -.44]];
@@ -205,7 +205,7 @@
     c.beginPath(); c.rect(CX - 370, top, 740, H); c.clip(); c.translate(0, top - 790);
     rr(c, CX - 300, 812, 600, 70, 14); fill(c, '#0b1324');   // вывеска
     const fl = .82 + .18 * Math.sin(t * 9) * Math.sin(t * 2.3);
-    glow(c, CX, 846, 260, '#2dd4bf', .35 * fl); tx(c, 'VAPE 24/7', CX, 848, { s: 58, w: 800, ls: 6, c: '#5eead4', st: rgba('#14b8a6', .6 * fl), sw: 10 });
+    glow(c, CX, 846, 260, '#2dd4bf', .35 * fl); tx(c, 'ВЕЙПЫ 24/7', CX, 848, { s: 58, w: 800, ls: 6, c: '#5eead4', st: rgba('#14b8a6', .6 * fl), sw: 10 });
     rr(c, CX - 320, 904, 640, 340, 10); fill(c, '#0c1a2e');   // окно
     for (let r = 0; r < 3; r++) for (let q = 0; q < 8; q++) {
       const bx = CX - 320 + 22 + q * 75, by = 904 + 14 + r * 108; c.fillStyle = 'rgba(255,255,255,.08)'; c.fillRect(bx - 6, by + 95, 70, 6);
@@ -294,7 +294,7 @@
     for (const sx of [-1, 1]) { const x = G.x + sx * (G.w / 2 - 40); rr(c, x - 40, G.top - 20, 80, G.bot - G.top + 40, 8); fill(c, '#5b3418'); c.fillStyle = '#7c4a24'; c.fillRect(x - 40, G.top - 20, 14, G.bot - G.top + 40); c.fillStyle = '#94a3b8'; c.fillRect(x + (sx < 0 ? 24 : -32), G.top, 8, G.bot - G.top) }
     rr(c, G.x - G.w / 2 - 20, G.top - 40, G.w + 40, 90, 10); fill(c, '#4a2a12');
     circ(c, G.x, G.top + 4, 62, '#b8862b'); circ(c, G.x, G.top + 4, 52, C.gold); c.save(); c.strokeStyle = '#8a6420'; c.lineWidth = 3; c.setLineDash([6, 5]); c.beginPath(); c.arc(G.x, G.top + 4, 44, 0, TAU); c.stroke(); c.restore();
-    tx(c, 'FDA', G.x, G.top - 6, { s: 30, w: 800, c: '#3b2a0a' }); tx(c, 'U.S.A.', G.x, G.top + 24, { s: 16, w: 800, ls: 2, c: '#3b2a0a' });
+    tx(c, 'FDA', G.x, G.top - 6, { s: 30, w: 800, c: '#3b2a0a' }); tx(c, 'США', G.x, G.top + 24, { s: 16, w: 800, ls: 2, c: '#3b2a0a' });
     tx(c, 'FDA · 2 ЯНВАРЯ 2020', G.x, 700, { s: 34, w: 800, ls: 3, c: '#1e293b' });   // ниже лезвия — не закрывается
     tx(c, 'ПРИОРИТЕТЫ ЗАПРЕТА', G.x, 748, { s: 22, w: 800, ls: 4, c: '#7c2d12' });
   }
@@ -371,7 +371,7 @@
     c.save(); c.beginPath(); c.rect(CX - 410, top, 820, bot - top); c.clip();
     c.fillStyle = C.paper; c.fillRect(CX - 410, 220, 820, 1260);
     c.fillStyle = 'rgba(160,130,90,.12)'; for (let y = 300; y < 1400; y += 44) c.fillRect(CX - 360, y, 720, 2);
-    tx(c, 'FDA GUIDANCE · JAN 2020', CX, 380, { f: 'J', s: 34, w: 700, ls: 3, c: '#1e293b' });
+    tx(c, 'УКАЗ FDA · ЯНВАРЬ 2020', CX, 380, { f: 'J', s: 34, w: 700, ls: 3, c: '#1e293b' });
     c.fillStyle = '#1e293b'; c.fillRect(CX - 330, 412, 660, 4);
     for (let i = 0; i < 4; i++) { c.fillStyle = 'rgba(30,41,59,.28)'; c.fillRect(CX - 330, 450 + i * 34, i === 3 ? 400 : 660, 12) }
     tx(c, 'ЗАПРЕТ РАСПРОСТРАНЯЕТСЯ ТОЛЬКО НА:', CX, 640, { s: 34, w: 800, ls: 1, c: '#0f172a', max: 720 });
@@ -399,12 +399,12 @@
   // за дырой: табличка JUUL, крест падает и сбивает её, шлейф застывает первой одноразкой, конвейер Шэньчжэня
   const BELT = { y: 1220, h: 120 };
   function boxDisp(c, x, y, i, lit = 1) {   // коробка одноразки 150×360, низ — y
-    const cols = [['#fb923c', '#f43f5e'], ['#38bdf8', '#6366f1'], ['#a3e635', '#14b8a6'], ['#f472b6', '#a855f7'], ['#facc15', '#f97316']][i % 5], labs = ['MANGO ICE', 'BLUE RAZZ', 'MINT ICE', 'GRAPE ICE', 'BANANA ICE'];
+    const cols = [['#fb923c', '#f43f5e'], ['#38bdf8', '#6366f1'], ['#a3e635', '#14b8a6'], ['#f472b6', '#a855f7'], ['#facc15', '#f97316']][i % 5], labs = ['МАНГО-ЛЁД', 'ЧЕРНИКА', 'МЯТА-ЛЁД', 'ВИНОГРАД', 'БАНАН-ЛЁД'];
     c.save(); c.translate(x, y - 180);
     shadow(c, 'rgba(0,0,0,.5)', 26, 10, 16); const g = c.createLinearGradient(0, -180, 0, 180); g.addColorStop(0, cols[0]); g.addColorStop(1, cols[1]); rr(c, -75, -180, 150, 360, 12); fill(c, g); noShadow(c);
     rr(c, -24, -150, 48, 150, 18); fill(c, 'rgba(255,255,255,.22)'); rr(c, -14, -168, 28, 30, 8); fill(c, 'rgba(255,255,255,.35)');
-    rr(c, -60, 30, 120, 70, 8); fill(c, 'rgba(255,255,255,.92)'); tx(c, labs[i % 5], 0, 52, { s: 17, w: 800, c: C.ink, max: 108 }); tx(c, '5000 PUFFS', 0, 80, { f: 'J', s: 13, w: 700, c: '#475569' });
-    rr(c, -60, 116, 120, 44, 6); stroke(c, 'rgba(255,255,255,.7)', 3); tx(c, 'WARNING', 0, 138, { s: 14, w: 800, c: '#fff' });
+    rr(c, -60, 30, 120, 70, 8); fill(c, 'rgba(255,255,255,.92)'); tx(c, labs[i % 5], 0, 52, { s: 17, w: 800, c: C.ink, max: 108 }); tx(c, '5000 ЗАТЯЖЕК', 0, 80, { f: 'J', s: 13, w: 700, c: '#475569' });
+    rr(c, -60, 116, 120, 44, 6); stroke(c, 'rgba(255,255,255,.7)', 3); tx(c, 'ВНИМАНИЕ', 0, 138, { s: 14, w: 800, c: '#fff' });
     if (lit < 1) { c.fillStyle = `rgba(9,13,22,${.55 * (1 - lit)})`; rr(c, -75, -180, 150, 360, 12); c.fill() }
     c.restore();
   }
@@ -496,7 +496,7 @@
     shadow(c, 'rgba(0,0,0,.5)', 40, 10, 20); c.fillStyle = '#ffffff'; c.fillRect(-420, 0, 840, 1020); noShadow(c);
     c.fillStyle = 'rgba(15,23,42,.12)'; for (let i = 0; i < 3; i++) c.fillRect(-360, 40 + i * 26, i === 2 ? 380 : 720, 10);
     c.restore();
-    tx(c, 'ОПРОС ШКОЛЬНИКОВ США · CDC', CX, 365, { s: 30, w: 800, ls: 2, c: '#fff', a: ss(.6, 1, ks), max: 800 });
+    tx(c, 'ОПРОС ШКОЛЬНИКОВ США', CX, 365, { s: 30, w: 800, ls: 2, c: '#fff', a: ss(.6, 1, ks), max: 800 });
     if (ks < 1) return;
     c.save(); c.translate(CX, 410); c.rotate(-.052); c.translate(-CX, -410);
     c.fillStyle = '#0f172a'; c.fillRect(220, 1180, 640, 6);
@@ -623,7 +623,7 @@
     c.restore();
     tx(c, '1 КАРТРИДЖ = 1 ПАЧКА', x, y + 190 * s, { s: 36, w: 800, ls: 2, c: '#e0f2fe' });
   }
-  const SHEETS = ['БАК: 13 МЛ (В 18 РАЗ БОЛЬШЕ JUUL)', 'ДВОЙНАЯ СЕТКА MESH COIL', 'АККУМУЛЯТОР 650 mAh'];
+  const SHEETS = ['БАК: 13 МЛ (В 18 РАЗ БОЛЬШЕ JUUL)', '2 СЕТКИ НАГРЕВА', 'АККУМУЛЯТОР 650 мА·ч'];
   function sheetDraw(c, i, t) {   // лист 760×680, центр (0, 0): разрез огромной одноразки и подпись
     shadow(c, 'rgba(0,0,0,.4)', 30, 10, 16); c.fillStyle = '#f8fafc'; c.fillRect(-380, -340, 760, 680); noShadow(c);
     c.strokeStyle = 'rgba(29,78,216,.15)'; c.lineWidth = 2; c.beginPath(); for (let x = -360; x <= 360; x += 30) { c.moveTo(x, -320); c.lineTo(x, 320) } for (let y = -320; y <= 320; y += 30) { c.moveTo(-360, y); c.lineTo(360, y) } c.stroke();
@@ -723,7 +723,7 @@
     const kb = ss(K.noleaf + .1, K.noleaf + .45, t);
     [[400, tops[0]], [680, tops[2]]].forEach(([x, y]) => { if (y) { c.save(); c.globalAlpha *= 1 - kf; circ(c, x, y - 14, 22 * ss(.6, 1, kg), '#dc2626'); c.restore() } });
     if (tops[1] && !under) { if (kb < 1) circ(c, CX, BULB.y + 40, 30 * ss(.7, 1, kg) * (1 - kb), '#dc2626'); bulbDraw(c, BULB.x, BULB.y, BULB.r, kb, t) }
-    const kp = spr(at(t, K.tabak - .2, K.tabak + .3)) * (under ? 0 : 1); if (kp > 0) { c.save(); c.translate(CX, 240); c.scale(kp, kp); rr(c, -360, -40, 720, 80, 20); fill(c, '#0b1324'); rr(c, -360, -40, 720, 80, 20); stroke(c, '#fbbf24', 4); tx(c, 'СИНТЕТИЧЕСКИЙ НИКОТИН (TOBACCO-FREE)', 0, 2, { s: 28, w: 800, c: '#fde68a', max: 680 }); c.restore() }
+    const kp = spr(at(t, K.tabak - .2, K.tabak + .3)) * (under ? 0 : 1); if (kp > 0) { c.save(); c.translate(CX, 240); c.scale(kp, kp); rr(c, -360, -40, 720, 80, 20); fill(c, '#0b1324'); rr(c, -360, -40, 720, 80, 20); stroke(c, '#fbbf24', 4); tx(c, 'СИНТЕТИЧЕСКИЙ НИКОТИН · БЕЗ ТАБАКА', 0, 2, { s: 28, w: 800, c: '#fde68a', max: 680 }); c.restore() }
   }
   const COIL = { x: 540, r: 160, y0: 520, y1: 1180, n: 5 };
   const helix = u => { const a = u * TAU * COIL.n; return [COIL.x + COIL.r * Math.sin(a), lp(COIL.y0, COIL.y1, u) + 18 * Math.cos(a), Math.cos(a)] };
@@ -750,8 +750,8 @@
     poly(c, [x - w / 2, y + h / 2, x + w / 2, y + h / 2, x + w / 2 - 30, top + 120, x - w / 2 + 30, top + 120]); fill(c, '#0e7490'); noShadow(c);
     rr(c, x - w / 2 + 40, top, w - 80, 140, [24, 24, 6, 6]); fill(c, '#155e75');
     rr(c, x - 220, top + 22, 440, 96, 14); fill(c, '#0b1020');
-    const kn = at(t, K.ten - .05, K.bil + .55), v = Math.round(1e10 * eo(kn) / 1e6) * 1e6, s = '$' + String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    if (kn > 0) { glow(c, x, top + 70, 300, '#f97316', .35 * ss(0, .3, kn)); tx(c, s, x, top + 72, { f: 'J', s: 50, w: 700, c: '#fb923c', st: rgba('#f97316', .35), sw: 8, max: 410 }) }
+    const kn = at(t, K.ten - .05, K.bil + .55), v = Math.round(3.2e9 * eo(kn) / 1e6) * 1e6, s = '$' + String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    if (kn > 0) { glow(c, x, top + 70, 300, '#f97316', .35 * ss(0, .3, kn)); tx(c, s, x, top + 72, { f: 'J', s: 50, w: 700, c: '#fb923c', st: rgba('#f97316', .35), sw: 8, max: 410 }); tx(c, 'ОДНОРАЗКИ · США · ЗА ГОД', x, top + 138, { s: 20, w: 800, ls: 2, c: '#a5f3fc', a: ss(.6, 1, kn) }) }
     c.fillStyle = 'rgba(255,255,255,.06)'; for (let r = 0; r < 4; r++) for (let q = 0; q < 6; q++) { rr(c, x - 220 + q * 76, top + 190 + r * 56, 60, 40, 8); c.fill() }
     for (let r = 0; r < 4; r++) for (let q = 0; q < 6; q++) { rr(c, x - 220 + q * 76, top + 184 + r * 56, 60, 40, 8); fill(c, r === 3 && q > 3 ? '#f59e0b' : '#e2e8f0') }
     rr(c, x - w / 2 + 10, y + h / 2 - 60, w - 20, 60, 8); fill(c, '#164e63'); rr(c, x - 50, y + h / 2 - 40, 100, 14, 7); fill(c, '#0b1020');
@@ -762,7 +762,7 @@
     const top = REG.y - REG.h / 2 - 8, N = 40;
     const P = []; for (let i = 0; i <= N; i++) { const u = i / N, yy = top - u * L; P.push([REG.x + 34 * Math.sin(u * 5 + t * 2) * u, yy]) }
     c.save(); shadow(c, 'rgba(0,0,0,.35)', 18, 6, 8); c.beginPath(); P.forEach(([px, py], i) => i ? c.lineTo(px - 130, py) : c.moveTo(px - 130, py)); for (let i = N; i >= 0; i--) c.lineTo(P[i][0] + 130, P[i][1]); c.closePath(); fill(c, '#fbfaf6'); noShadow(c); c.restore();
-    const lines = [['• VUSE GO (BAT)', K.corp], ['• NJOY / MARLBORO', K.old], ['• РЫНОК ОДНОРАЗОК', K.corpE - .2]];
+    const lines = [['• VUSE GO — BAT', K.corp], ['• NJOY — ALTRIA («МАЛЬБОРО»)', K.old], ['• РЫНОК ОДНОРАЗОК', K.corpE - .2]];
     lines.forEach(([s, tk], i) => { const yy = top - 90 - i * 90, ka = ss(tk - .1, tk + .2, t); if (top - yy > L - 30 || ka <= 0) return; const u = (top - yy) / Math.max(1, L), px = REG.x + 34 * Math.sin(u * 5 + t * 2) * u; tx(c, s, px, yy, { f: 'J', s: 26, w: 700, c: '#0f172a', a: ka, max: 240 }) });
   }
   function regScene(c, t) {
@@ -977,7 +977,7 @@
     // помада: стёрто то, что левее-выше линии мазка
     const ksw = eio(at(t, K.ago - .1, K.ago + .8)), lip = at(t, K.brut - .15, K.brut + .45);
     const erase = ksw > 0 ? (cc => { const d = lp(-260, 260, ksw); cc.beginPath(); cc.moveTo(-1000, -1000); cc.lineTo(d + 1000, -1000); cc.lineTo(d - 1000, 1000); cc.lineTo(-1000, 1000); cc.closePath(); cc.rect(-1000, -1000, 2000, 2000); cc.clip('evenodd') }) : null;
-    board(c, t, { f2: cc => dormScene(cc, K.b0 - .4), noPin: t > K.lead - .9 ? [2] : [], cards: { 2: { f: ksw > 0 ? ch3Frame0 : null, erase, cap2: 'MILD AS MAY · 1924', cap2a: ss(.6, 1, ksw) } } });
+    board(c, t, { f2: cc => dormScene(cc, K.b0 - .4), noPin: t > K.lead - .9 ? [2] : [], cards: { 2: { f: ksw > 0 ? ch3Frame0 : null, erase, cap2: 'МЯГКИЕ, КАК МАЙ · 1924', cap2a: ss(.6, 1, ksw) } } });
     const fa = 1 - ss(0, .25, kf); if (ksw > 0 && fa > 0) { c.save(); c.translate(B.x, B.y); c.rotate(B.r); c.save(); c.beginPath(); c.rect(PH.x, PH.y, PH.w, PH.h); c.clip(); c.globalAlpha *= fa; c.strokeStyle = 'rgba(225,29,72,.85)'; c.lineWidth = 16; c.lineCap = 'round'; const d = lp(-260, 260, ksw); c.beginPath(); c.moveTo(PH.x - 10, lp(PH.y + 40, PH.y + PH.h + 40, 0)); c.lineTo(Math.min(d, 240) * .5, Math.min(d, 240) * .5); c.stroke(); c.restore(); c.restore() }   // росчерк помады гаснет до зума — последний кадр = кадр 0 главы 3
     // криптекс → футляр помады
     const t0 = K.lead - .9, open = t >= K.brut - .3;
