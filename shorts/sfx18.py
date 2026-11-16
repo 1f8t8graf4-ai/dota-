@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v18 (15.11, ночь, «да» Андрея — ElevenLabs до 5 000 кредитов): звуки выпуска 2 и мостика выпуска 1 → sfx18/*.mp3 (готовые не перезаписывает)."""
+"""v18 (15.11, ночь, «да» Андрея — ElevenLabs до 5 000 кредитов): звуки выпуска 2 и мостика выпуска 1 → sfx18x/*.mp3 (готовые не перезаписывает)."""
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from el13 import post
@@ -20,7 +20,7 @@ SFX18 = {
     'truck':    ('big truck driving past at night, engine rumble with doppler, no music', 2.4),
     'icewind':  ('cold icy wind gust with a frosty shimmer, short whoosh, no music', 1.2),
 }
-d = os.path.join(HERE, 'sfx18'); os.makedirs(d, exist_ok=True)
+d = os.path.join(HERE, 'sfx18x'); os.makedirs(d, exist_ok=True)
 for name, (text, dur) in SFX18.items():
     f = os.path.join(d, name + '.mp3')
     if os.path.exists(f): continue

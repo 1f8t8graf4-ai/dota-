@@ -11,7 +11,7 @@ import v165_sound as V
 import tt_audio
 SR = 48000
 BAN = {'ding', 'tick', 'pin', 'swish'}
-DIRS = ('sfx18',) + V.DIRS
+DIRS = ('sfx18x',) + V.DIRS   # v18: свои звуки (папка sfx18 — у выпуска 2 v18.1 другой сессии)
 GAIN = dict(V.GAIN, frost=.5, icecrack=.55, blade=.55, splash=.4, conveyor=.3, wave=.45, pop=.4, register=.5, scroll=.4, drip=.45, cryptex=.5, lipstick=.45, truck=.35, icewind=.4, bubble=.35)
 
 
