@@ -1,45 +1,27 @@
   // ================= СЦЕНА 2: электричка-шторка → зал FDA и гильотина =================
   // v18.1: вместо чёрной стены фуры — быстрый вагон монорельса во всю высоту (0,75 с), без щелей; гильотина пустая,
   // лезвие качается на верёвке; картриджи впрыгивают по одному; лезвие падает и остаётся внизу, половинки и сок — в замедлении.
-  const TRN = { len: 1760 };
-  const trainX = t => lp(1120, -1820, eio(at(t, K.train0, K.train1)));   // нос вагона (левый край) едет справа налево
+  // шторка: граница splitX едет справа налево (9.0–10.2), по ней — ночной вагон метро шириной 260
+  const splitX = t => lp(1180, -100, eio(at(t, K.train0, K.train1)));
   function train(c, x, t) {
-    const L = TRN.len, x1 = x + L;
-    beam(c, x + 50, 1240, x - 760, 1320, 34, 240, '#fde68a', .3);
-    // корпус с обтекаемым носом
-    c.save(); c.beginPath(); c.moveTo(x + 280, -80); c.lineTo(x1, -80); c.lineTo(x1, 2000); c.lineTo(x + 30, 2000); c.lineTo(x + 30, 1340);
-    c.quadraticCurveTo(x - 10, 980, x + 90, 560); c.quadraticCurveTo(x + 160, 180, x + 280, -80); c.closePath();
-    const g = c.createLinearGradient(0, -80, 0, 2000); g.addColorStop(0, '#e2e8f0'); g.addColorStop(.35, '#cbd5e1'); g.addColorStop(.62, '#94a3b8'); g.addColorStop(1, '#334155');
-    c.fillStyle = g; c.fill(); c.clip();
-    c.fillStyle = 'rgba(15,23,42,.55)'; c.fillRect(x, -80, L + 40, 150);   // крыша
-    c.fillStyle = '#1d4ed8'; c.fillRect(x, 1170, L + 40, 90); c.fillStyle = '#ef4444'; c.fillRect(x, 1268, L + 40, 14);   // синяя полоса и красная линия
-    c.fillStyle = '#1e293b'; c.fillRect(x, 1520, L + 40, 480);   // юбка
-    // лобовое стекло
-    c.beginPath(); c.moveTo(x + 120, 560); c.quadraticCurveTo(x + 180, 300, x + 300, 160); c.lineTo(x + 330, 160); c.lineTo(x + 330, 960); c.lineTo(x + 70, 960); c.quadraticCurveTo(x + 70, 760, x + 120, 560); c.closePath();
-    const gw = c.createLinearGradient(x, 160, x + 330, 960); gw.addColorStop(0, '#0f172a'); gw.addColorStop(.5, '#1e3a5f'); gw.addColorStop(1, '#0b1220'); c.fillStyle = gw; c.fill();
-    poly(c, [x + 150, 520, x + 230, 300, x + 260, 300, x + 180, 520]); fill(c, 'rgba(255,255,255,.18)');
-    circ(c, x + 70, 1240, 26, '#fef9c3'); glow(c, x + 70, 1240, 90, '#fde68a', .9);
-    // окна салона и двери
-    for (let i = 0; i < 7; i++) {
-      const wx = x + 380 + i * 196, door = i === 2 || i === 5;
-      if (door) { rr(c, wx, 300, 176, 1210, 10); fill(c, '#64748b'); c.fillStyle = '#334155'; c.fillRect(wx + 86, 300, 4, 1210);
-        [wx + 18, wx + 100].forEach(dx => { rr(c, dx, 380, 60, 600, 10); fill(c, '#fde68a'); rr(c, dx, 380, 60, 600, 10); stroke(c, '#1e293b', 4) });
-        c.fillStyle = '#ef4444'; c.fillRect(wx + 10, 1060, 156, 10); continue }
-      rr(c, wx, 520, 176, 560, 18); const gl = c.createLinearGradient(0, 520, 0, 1080); gl.addColorStop(0, '#fef3c7'); gl.addColorStop(1, '#fbbf24'); c.fillStyle = gl; c.fill();
-      c.save(); rr(c, wx, 520, 176, 560, 18); c.clip();
-      c.fillStyle = '#b45309'; c.fillRect(wx, 880, 176, 200);   // спинки сидений
-      for (let j = 0; j < 2; j++) { rr(c, wx + 14 + j * 84, 820, 70, 120, 12); fill(c, '#92400e') }
-      c.fillStyle = '#78716c'; c.fillRect(wx + 84, 520, 8, 560); c.fillRect(wx, 600, 176, 6);   // поручни
-      poly(c, [wx + 20, 520, wx + 60, 520, wx - 40, 1080, wx - 80, 1080]); fill(c, 'rgba(255,255,255,.25)');
-      c.restore(); rr(c, wx, 520, 176, 560, 18); stroke(c, '#334155', 6);
+    const L = x - 130, W = 260;
+    beam(c, L + 10, 1240, L - 600, 1300, 26, 200, '#fde68a', .28);
+    c.save(); c.beginPath(); c.rect(L, -80, W, 2100); c.clip();
+    const g = c.createLinearGradient(L, 0, L + W, 0); g.addColorStop(0, '#64748b'); g.addColorStop(.18, '#cbd5e1'); g.addColorStop(.7, '#94a3b8'); g.addColorStop(1, '#334155');
+    c.fillStyle = g; c.fillRect(L, -80, W, 2100);
+    c.fillStyle = '#0f172a'; c.fillRect(L, -80, W, 150);   // крыша
+    for (let k = 0; k < 2; k++) {   // два окна салона одно над другим, свет внутри
+      const wy = 300 + k * 420; rr(c, L + 34, wy, W - 68, 330, 16); const gl = c.createLinearGradient(0, wy, 0, wy + 330); gl.addColorStop(0, '#fef3c7'); gl.addColorStop(1, '#fbbf24'); c.fillStyle = gl; c.fill();
+      c.save(); rr(c, L + 34, wy, W - 68, 330, 16); c.clip(); c.fillStyle = '#b45309'; c.fillRect(L + 34, wy + 210, W - 68, 120); c.fillStyle = '#78716c'; c.fillRect(L + W / 2 - 4, wy, 8, 330);
+      poly(c, [L + 60, wy, L + 100, wy, L + 20, wy + 330, L - 20, wy + 330]); fill(c, 'rgba(255,255,255,.25)'); c.restore();
+      rr(c, L + 34, wy, W - 68, 330, 16); stroke(c, '#334155', 6);
     }
-    // тележки с колёсами
-    [x + 320, x + 560, x1 - 520, x1 - 280].forEach(wx => { circ(c, wx, 1810, 112, '#0b0f19'); circ(c, wx, 1810, 60, '#475569'); c.save(); c.translate(wx, 1810); c.rotate(-t * 24); c.fillStyle = '#94a3b8'; c.fillRect(-56, -6, 112, 12); c.restore() });
-    c.fillStyle = '#0f172a'; c.fillRect(x, 1640, L + 40, 46);
-    // хвост: тёмный переход и красные огни
-    c.fillStyle = '#0f172a'; c.fillRect(x1 - 40, -80, 40, 2080); c.fillStyle = '#ef4444'; c.fillRect(x1 - 30, 1200, 18, 80); glow(c, x1 - 20, 1240, 70, '#ef4444', .6);
-    // полосы скорости по корпусу
-    for (let i = 0; i < 14; i++) { const yy = 200 + H1(i * 3.7) * 1500, w = 300 + H1(i * 5.1) * 600, xx = x + 200 + H1(i * 9.3) * (L - 400); c.fillStyle = 'rgba(255,255,255,.16)'; c.fillRect(xx, yy, w, 4) }
+    c.fillStyle = '#1d4ed8'; c.fillRect(L, 1170, W, 90); c.fillStyle = '#ef4444'; c.fillRect(L, 1268, W, 14);
+    circ(c, L + 30, 1225, 20, '#fef9c3'); glow(c, L + 30, 1225, 80, '#fde68a', .9);
+    c.fillStyle = '#1e293b'; c.fillRect(L, 1520, W, 480); c.fillStyle = '#0f172a'; c.fillRect(L, 1640, W, 46);
+    circ(c, L + W / 2, 1810, 100, '#0b0f19'); circ(c, L + W / 2, 1810, 52, '#475569'); c.save(); c.translate(L + W / 2, 1810); c.rotate(-t * 24); c.fillStyle = '#94a3b8'; c.fillRect(-50, -6, 100, 12); c.restore();
+    c.fillStyle = 'rgba(15,23,42,.9)'; c.fillRect(L, -80, 10, 2100); c.fillRect(L + W - 10, -80, 10, 2100);
+    for (let i = 0; i < 12; i++) { const yy = 120 + H1(i * 3.7) * 1700, w = 60 + H1(i * 5.1) * 160; c.fillStyle = 'rgba(255,255,255,.18)'; c.fillRect(L + H1(i * 9.3) * (W - w), yy, w, 4) }
     c.restore();
   }
   function hallBg(c, t) {   // правительственный зал: стены, панели, пилястры, печать, софиты, помост
@@ -92,8 +74,7 @@
     stampOK(c, x, y - 10, at(t, t0 + .45, t0 + .7), x < 540 ? -.2 : .2);
   }
   // лезвие: опускается на верёвке и качается; в «рубят» падает за 5 кадров и остаётся внизу
-  const bladeIn = t => eo(at(t, K.train1 + .35, K.train1 + 1.15));
-  const bladeY = t => K.chop <= t ? lp(470, 1010, Math.pow(at(t, K.chop, K.chop + 5 / 30), 2)) : lp(-420, 470, bladeIn(t));
+  const bladeY = t => K.chop <= t ? lp(470, 1010, Math.pow(at(t, K.chop, K.chop + 5 / 30), 2)) : 470;   // лезвие висит с самого начала, падает за 5 кадров
   const bladeR = t => t >= K.chop ? 0 : .045 * Math.sin(t * 2.1) * (1 - at(t, K.chop - .35, K.chop));
   function blade(c, y0, rot = 0, sh = 0) {   // лезвие 620 шириной: низ скошен (слева выше), белая заточка, надпись
     const L = 230, R = 850, hl = 160, hr = 280;
@@ -112,19 +93,19 @@
     const fl = 1 - at(t, t0 + .5, t0 + .9); if (k >= 1 && fl > 0) glow(c, p.x, 1190, 120, p.col, .5 * fl);
   }
   function guillotine(c, t) {   // рама, бланк с заголовком, лезвие, колодка с картриджами
-    const kf = bo(at(t, K.train0 + .55, K.train1 + .45));   // рама встаёт из помоста
-    c.save(); if (kf < 1) { c.beginPath(); c.rect(-200, -200, WW + 400, 1578); c.clip() } c.translate(0, 1100 * (1 - kf));
+    c.save();   // рама, бланк и лезвие собраны сразу — за шторкой ничего не достраивается
     [200, 880].forEach(px => { vgrad(c, px - 26, 300, 52, 1060, ['#5b3a24', '#3d2616']); c.fillStyle = '#94a3b8'; c.fillRect(px + (px < 540 ? 22 : -30), 340, 8, 960) });
     rr(c, 150, 270, 780, 70, 12); fill(c, '#4a2f1d');
-    const kb = eo(at(t, K.train1 + .2, K.train1 + .7));   // бланк разворачивается вниз
-    c.save(); c.beginPath(); c.rect(232, 345, 616, 100 * kb); c.clip(); rr(c, 232, 345, 616, 100, 8); fill(c, '#f1ead8'); tx(c, 'FDA · 2 ЯНВАРЯ 2020', 540, 397, { f: 'O', w: 700, s: 46, c: '#1e293b', ls: 2 }); c.restore();
+    c.save(); rr(c, 232, 345, 616, 100, 8); fill(c, '#f1ead8'); tx(c, 'FDA · 2 ЯНВАРЯ 2020', 540, 397, { f: 'O', w: 700, s: 46, c: '#1e293b', ls: 2 }); c.restore();
     circ(c, 540, 280, 58, '#d4a017'); circ(c, 540, 280, 46, '#f5d061'); tx(c, 'FDA', 540, 282, { f: 'U', w: 800, s: 26, c: '#7c5a07' });
-    const by = bladeY(t), rot = bladeR(t), cutDone = t > K.chop + 4 / 30, sh = t > K.chop && t < K.chop + .6 ? Math.sin((t - K.chop) * 80) * 6 * (1 - at(t, K.chop, K.chop + .6)) : 0;
+    const by = bladeY(t), rot = bladeR(t), cutDone = t > K.chop + 5 / 30, sh = t > K.chop && t < K.chop + .6 ? Math.sin((t - K.chop) * 80) * 6 * (1 - at(t, K.chop, K.chop + .6)) : 0;
     c.strokeStyle = '#a8a29e'; c.lineWidth = 6; c.beginPath(); c.moveTo(540, 300); c.lineTo(540 + Math.sin(rot) * (by - 300), Math.max(300, by)); c.stroke();
-    CART.forEach((p, i) => {
-      if (!cutDone) cartJump(c, t, i);
-      else cartridge(c, p.x, 1165, 110, 210, p.col, { y0: CUT, cut: 'bot' });
-    });
+    if (t < K.chop) CART.forEach((p, i) => cartJump(c, t, i));
+    else {   // всё, что выше нижней кромки лезвия, срезано и исчезает
+      const e = x => by + 160 + 120 * (x - 230) / 620;
+      c.save(); poly(c, [200, e(200), 880, e(880), 880, 1400, 200, 1400]); c.clip(); CART.forEach(p => cartridge(c, p.x, 1165, 110, 210, p.col)); c.restore();
+      if (cutDone) CART.forEach(p => { c.save(); c.strokeStyle = p.col; c.lineWidth = 6; c.beginPath(); c.moveTo(p.x - 51, e(p.x - 51)); c.lineTo(p.x + 51, e(p.x + 51)); c.stroke(); c.restore() });
+    }
     // колодка с полукруглыми вырезами и подписями
     c.fillStyle = '#5b3a24'; c.beginPath(); c.moveTo(225, 1270); c.lineTo(225, 1192); CART.forEach(p => { c.lineTo(p.x - 64, 1192); c.arc(p.x, 1192, 64, Math.PI, 0, true) }); c.lineTo(855, 1192); c.lineTo(855, 1270); c.closePath(); c.fill();
     c.fillStyle = '#3d2616'; c.fillRect(225, 1270, 630, 72);
@@ -145,17 +126,13 @@
       c.save(); c.translate(p.x, 1400); c.scale(1, .22); circ(c, 0, 0, Math.min(90, 10 + k * 70), rgba(p.col, .85)); c.restore();
     });
   }
-  const HALF = CART.map((p, i) => { const dir = p.x < 540 ? -1 : 1; return { vx: dir * (260 + (i % 2) * 140), vy: -620 - (i === 1 || i === 2 ? 160 : 0), dir } });
-  function cutFX(c, t) {   // разлёт верхних половинок и сок (после удара) — в замедлении до конца сцены
-    const k = (t - K.chop - 4 / 30) * SLO; if (k < 0) return;
-    const g = 1300, FL = 1395;
-    CART.forEach((p, i) => {   // верхняя половинка с мундштуком: летит, падает на помост и откатывается
-      const h = HALF[i], tl = (-h.vy + Math.sqrt(h.vy * h.vy + 4 * g * (FL - 1110))) / (2 * g);
-      let x, y, r;
-      if (k < tl) { x = p.x + h.vx * k; y = 1110 + h.vy * k + g * k * k; r = h.dir * k * (5 + i) }
-      else { const xl = p.x + h.vx * tl, rl = h.dir * tl * (5 + i), e = 1 - Math.exp(-(k - tl) * 3); x = xl + h.vx * .3 * e; y = FL; const tg = h.dir * Math.PI / 2 + Math.round((rl - h.dir * Math.PI / 2) / Math.PI) * Math.PI; r = rl + (tg - rl) * (1 - Math.exp(-(k - tl) * 6)) }
-      c.save(); c.translate(x, y); c.rotate(r); cartridge(c, 0, 55, 110, 210, p.col, { y0: -50, y1: CUT - 1165 + 55, cut: 'top' }); c.restore();
+  function cutFX(c, t) {   // отрубленные верхушки падают по параболе вниз за кадр, сок — в замедлении
+    const dt = t - K.chop - 5 / 30; if (dt < 0) return;
+    CART.forEach((p, i) => {
+      const dir = p.x < 540 ? -1 : 1, x = p.x + dir * (120 + (i % 2) * 90) * dt, y = 1100 + 1800 * dt * dt; if (y > 2150) return;
+      c.save(); c.translate(x, y); c.rotate(dir * dt * (4 + i)); cartridge(c, 0, 55, 110, 210, p.col, { y0: -50, y1: CUT - 1165 + 55, cut: 'top' }); c.restore();
     });
+    const k = dt * SLO;
     for (let i = 0; i < 28; i++) {   // капли и струи сока — вверх веером, медленно
       const p = CART[i % 4], ang = -Math.PI / 2 + (H1(i * 3.1) - .5) * 2.2, v = 700 + H1(i * 7) * 600, x = p.x + Math.cos(ang) * v * k, y = CUT + Math.sin(ang) * v * k + 1500 * k * k;
       if (y > 1420 || k > 1.6) continue; const r = 9 + H1(i) * 12, vyNow = Math.sin(ang) * v + 3000 * k, ln = Math.min(60, Math.hypot(Math.cos(ang) * v, vyNow) * .04);
@@ -169,11 +146,11 @@
     hallBg(c, t); smallCart(c, 115, 1200, 'ТАБАК', t); smallCart(c, 965, 1200, 'МЕНТОЛ', t); guillotine(c, t); cutFX(c, t);
     c.restore(); vignette(c, .5);
   }
-  function shot2(c, t) {   // вагон-шторка: слева от носа — магазин, справа от хвоста — зал FDA
+  function shot2(c, t) {   // шторка: слева от splitX — магазин, справа — уже собранный зал FDA, по линии разреза — вагон
     if (t < K.train1) {
-      const x = trainX(t);
-      c.save(); c.beginPath(); c.rect(-200, -200, x + 240, HH + 400); c.clip(); shot1(c, t); c.restore();
-      c.save(); c.beginPath(); c.rect(x + TRN.len - 20, -200, WW + 400, HH + 400); c.clip(); hallShot(c, t); c.restore();
+      const x = splitX(t);
+      c.save(); c.beginPath(); c.rect(-200, -200, x + 200, HH + 400); c.clip(); shot1(c, t); c.restore();
+      c.save(); c.beginPath(); c.rect(x, -200, WW + 400, HH + 400); c.clip(); hallShot(c, t); c.restore();
       train(c, x, t);
     } else hallShot(c, t);
   }

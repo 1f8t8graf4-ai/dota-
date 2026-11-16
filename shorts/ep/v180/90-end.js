@@ -100,17 +100,13 @@
   }
   // ---------- переход от общежития к карточке 2020 (отъезд камеры) ----------
   function zoomOutTo2020(c, t, drawBoard) {
-    const k = eio(at(t, K.b0, K.zo1)), p = PH / 1040, [pcx, pcy] = photoC(CARDS[1]);
-    const z = Math.exp(lp(Math.log(1 / p), 0, k)), F0 = [pcx - p * 80, pcy + p * 80], F = [lp(F0[0], 540, k), lp(F0[1], 960, k)];
-    // если z меняется по экспоненте, а F — линейно, точка фото «плывёт»; поправка: держим фото там, где оно было бы при чистом отъезде
-    c.save(); c.translate(540, 960); c.scale(z, z); c.translate(-F[0], -F[1]);
-    drawBoard(c);
-    const kc = at(k, 0, .45);   // фото: от всего кадра 8-й сцены до квадрата
-    if (kc < 1) {
-      const fx0 = pcx - 620 * p, fy0 = pcy - 880 * p, w0 = WW * p, h0 = HH * p, R = [lp(fx0, pcx - PH / 2, kc), lp(fy0, pcy - PH / 2, kc), lp(w0, PH, kc), lp(h0, PH, kc)];
-      c.save(); c.beginPath(); c.rect(...R); c.clip(); c.translate(pcx, pcy); c.scale(p, p); c.translate(-620, -880); shot8(c, t); c.restore();
-    }
-    c.restore();
+    // отъезд: окно фото карточки 2020 сначала больше экрана, потом сжимается в свою рамку; дом виден ТОЛЬКО внутри окна фото
+    const k = eio(at(t, K.b0, K.zo1)), [pcx, pcy] = photoC(CARDS[1]);
+    const z = Math.exp(lp(Math.log(HH / PH), 0, k)), Px = lp(540, pcx, k), Py = lp(960, pcy, k), side = PH * z;
+    c.save(); c.translate(Px, Py); c.scale(z, z); c.translate(-pcx, -pcy); drawBoard(c); c.restore();
+    const span = Math.exp(lp(Math.log(HH), Math.log(1040), k)), sc = side / span, Cx = lp(540, 620, k), Cy = lp(960, 880, k);
+    c.save(); c.beginPath(); c.rect(Px - side / 2, Py - side / 2, side, side); c.clip();
+    c.translate(Px, Py); c.scale(sc, sc); c.translate(-Cx, -Cy); shot8(c, t); c.restore();
   }
   // ---------- концовка А (шортс): штамп, спуск к ноутбуку, зум в кадр 0 ----------
   const LAP = { x: 540, y: 2360, vw: 180, vh: 320 };   // прямоугольник видео на экране ноутбука (мир)
@@ -127,7 +123,8 @@
     rr(c, x - SW / 2 - 18, y - SH / 2 - 18, SW + 36, SH + 36, 18); fill(c, '#111827');
     frame0In(c, x - vw / 2, y - vh / 2, vw, vh, x - SW / 2, y - SH / 2, SW, SH);
     c.fillStyle = '#18181b'; c.fillRect(x - SW / 2, y - SH / 2, SW, 30); circ(c, x - SW / 2 + 20, y - SH / 2 + 15, 6, '#ef4444');
-    c.fillStyle = '#3f3f46'; c.fillRect(x - SW / 2 + 20, y + SH / 2 - 22, SW - 40, 6); c.fillStyle = '#ef4444'; c.fillRect(x - SW / 2 + 20, y + SH / 2 - 22, (SW - 40) * .96, 6);
+    const ba = MODE === 's' ? cl(1 - (t - (K.zA0 + .9)) / .5) : 1;   // полоса плеера гаснет до того, как дойдёт до субтитров
+    if (ba > 0) { c.save(); c.globalAlpha = ba; c.fillStyle = '#3f3f46'; c.fillRect(x - SW / 2 + 20, y + SH / 2 - 22, SW - 40, 6); c.fillStyle = '#ef4444'; c.fillRect(x - SW / 2 + 20, y + SH / 2 - 22, (SW - 40) * .96, 6); c.restore() }
     poly(c, [x - SW / 2 - 60, y + SH / 2 + 18, x + SW / 2 + 60, y + SH / 2 + 18, x + SW / 2 + 140, y + SH / 2 + 110, x - SW / 2 - 140, y + SH / 2 + 110]); fill(c, '#374151');
     // силуэт со спины (капюшон, плечи) — слева, не заслоняет экран
     c.fillStyle = '#05060a'; c.beginPath(); c.ellipse(x - 420, y + 210, 230, 300, 0, Math.PI, TAU); c.fill(); c.fillRect(x - 650, y + 210, 460, 600); c.beginPath(); c.ellipse(x - 420, y - 40, 120, 140, 0, 0, TAU); c.fill();
@@ -147,8 +144,8 @@
     const k = at(t, K.stamp - .25, K.stamp); if (k <= 0) return;
     const s = lp(2.6, 1, ei(k));
     c.save(); c.translate(540, 1075); c.rotate(-.05); c.scale(s, s);
-    rr(c, -330, -48, 660, 96, 14); fill(c, 'rgba(220,38,38,.12)'); rr(c, -330, -48, 660, 96, 14); stroke(c, '#dc2626', 7);
-    tx(c, '▶ ТОЛЬКО НА YOUTUBE', 0, 3, { f: 'U', w: 800, s: 44, c: '#dc2626' }); c.restore();
+    rr(c, -330, -48, 660, 96, 14); fill(c, 'rgba(153,27,27,0.92)'); rr(c, -330, -48, 660, 96, 14); stroke(c, '#ef4444', 5);
+    tx(c, '▶ ТОЛЬКО НА YOUTUBE', 0, 3, { f: 'U', w: 800, s: 44, c: '#ffffff' }); c.restore();
   }
   // ---------- концовка Б (мостик в 3-ю главу): криптекс 1·9·2·4 → помада → фото 1924 → зум ----------
   const C24 = CARDS[3];
