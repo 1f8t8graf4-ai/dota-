@@ -6,7 +6,7 @@
     c.save(); c.globalAlpha = .35; [[110, 1350], [970, 1350]].forEach(([x, b]) => { c.fillStyle = '#334155'; c.fillRect(x - 6, b - 760, 12, 760); c.fillRect(x - 70, b - 10, 140, 14); c.fillRect(x, b - 600, 70, 8); c.fillRect(x, b - 420, 70, 8) }); c.restore();
     glow(c, 540, 700, 700, '#3b82f6', .12); vignette(c, .5);
   }
-  const PL = [{ x: 540, by: 1095, ty: 420, s: 1 }, { x: 330, by: 1120, ty: 650, s: .8 }, { x: 750, by: 1120, ty: 650, s: .8 }];
+  const PL = [{ x: 540, by: 805, ty: 380, s: 1 }, { x: 330, by: 840, ty: 600, s: .8 }, { x: 750, by: 840, ty: 600, s: .8 }];   // стебли растут из купола холма
   function tobacco(c, t, p, i, kg, kw) {   // растение: стебель, большие листья, розово-красные бутоны; kw — увядание
     const top = lp(p.by, p.ty, kg); if (kg <= 0) return;
     c.strokeStyle = mixc('#15803d', '#78716c', kw); c.lineWidth = 9 * p.s; c.lineCap = 'round'; c.beginPath(); c.moveTo(p.x, p.by); c.quadraticCurveTo(p.x + 18 * Math.sin(i + 1), (p.by + top) / 2, p.x, top); c.stroke();
@@ -32,7 +32,7 @@
     rr(c, 480, 1230, 120, 80, 18); fill(c, 'rgba(186,230,253,.35)'); rr(c, 480, 1230, 120, 80, 18); stroke(c, '#e0f2fe', 3);   // спиртовка
     const fl = 1 + .12 * Math.sin(t * 17); c.save(); c.translate(540, 1228); c.scale(1, fl); c.beginPath(); c.moveTo(0, -70); c.quadraticCurveTo(26, -22, 0, 0); c.quadraticCurveTo(-26, -22, 0, -70); fill(c, '#3b82f6'); c.beginPath(); c.moveTo(0, -46); c.quadraticCurveTo(13, -16, 0, 0); c.quadraticCurveTo(-13, -16, 0, -46); fill(c, '#93c5fd'); c.restore(); c.restore();
     const nP = Math.floor(400 * at(ka, .2, 1)); if (nP < 2) { c.restore(); return }
-    const path = () => { c.beginPath(); for (let i = 0; i <= nP; i++) c[i ? 'lineTo' : 'moveTo'](COIL[i][0], COIL[i][1]) };
+    const path = () => { c.beginPath(); c.moveTo(540, 465); for (let i = 0; i <= nP; i++) c.lineTo(COIL[i][0], COIL[i][1]) };   // трубка растёт из низа колбы
     c.lineCap = 'round'; c.lineJoin = 'round';
     path(); stroke(c, 'rgba(255,255,255,.75)', 28); path(); stroke(c, 'rgba(15,23,42,.85)', 20); path(); stroke(c, 'rgba(186,230,253,.18)', 20);
     if (kd > 0) { const n = Math.floor(kd * 400), a = Math.max(0, n - 60); c.beginPath(); for (let i = a; i <= n; i++) c[i > a ? 'lineTo' : 'moveTo'](COIL[i][0], COIL[i][1]); stroke(c, '#fbbf24', 12); if (kd < 1) { const p = COIL[n]; glow(c, p[0], p[1], 60, '#fde68a', .9); circ(c, p[0], p[1], 14, '#fde047') } }
@@ -81,40 +81,38 @@
     lines.forEach(([s, tt0], i) => { if (t < tt0) return; const d = i ? L - recL(tt0) + 34 : L - 26; if (d > L - 14 || d < 20) return; const p = pt(d); tx(c, s, p[0], p[1], { f: 'J', w: 700, s: 27, c: '#1c1917', mw: W - 24 }) });
     rr(c, -170, y0 - 8, 340, 16, 6); fill(c, '#1c1917');   // щель
   }
-  function hillShape(c, kh, kl) {   // круг торца опускается и расползается в белый холм
-    const hy = lp(860, 1300, kh) + 1400 * kl, rx = lp(230, 760, kh), ry = lp(230, 300, kh), lo = lp(230, 0, kh);
-    c.beginPath(); c.ellipse(540, hy, rx, ry, 0, Math.PI, TAU); c.lineTo(540 + rx, hy + 700 * kh); c.lineTo(540 - rx, hy + 700 * kh); c.closePath();
-    if (kh < 1) { c.moveTo(540 + rx, hy); c.ellipse(540, hy, rx, lo, 0, 0, Math.PI) }
-    const g = c.createLinearGradient(0, hy - ry, 0, hy + 200); g.addColorStop(0, mixc('#fbbf24', '#f1f5f9', kh)); g.addColorStop(1, mixc('#d97706', '#94a3b8', kh)); c.fillStyle = g; c.fill();
+  function hillShape(c, kh) {   // круг торца опускается и растёт в купол белого холма: y 860 → 1520, R 230 → 720
+    const hy = lp(860, 1520, kh), R = lp(230, 720, kh);
+    const g = c.createLinearGradient(0, hy - R, 0, hy); g.addColorStop(0, mixc('#fbbf24', '#f1f5f9', kh)); g.addColorStop(1, mixc('#f59e0b', '#94a3b8', kh));
+    c.beginPath(); c.arc(540, hy, R, 0, TAU); c.fillStyle = g; c.fill();
     return hy;
   }
   function shot7(c, t) {
     const kq = eio(at(t, K.s7 - .1, K.s7 + .2));      // надпись и картриджи втягиваются
-    const kh = eio(at(t, K.s7 + .1, K.s7 + .8));      // торец опускается и становится холмом
-    const kp = at(t, K.s7 + .6, K.s7 + 1.9);          // табак растёт
+    const kh = eio(at(t, K.s7 - .07, K.s7 + .73));    // 64.0–64.8: торец → купол холма
+    const kp = at(t, K.s7 + .73, K.s7 + 1.9);         // табак растёт из купола
     const kb = spr(at(t, K.tube - .1, K.tube + .4)), kw = eio(at(t, K.noleaf, K.leaf + .5));
-    const kl = eio(at(t, K.when - .55, K.when + .1));  // холм со стеблями уходит вниз до змеевика
-    const kc = at(t, K.when - .2, K.when + .4), kd = at(t, K.when + .1, K.bill - .25);
+    const kl = eio(at(t, K.when - .75, K.when + .05)); // 68.8–69.6: холм со стеблями уходит вниз, колба и плашка стоят
+    const kc = at(t, K.when - .55, K.when + .05), kd = at(t, K.when + .1, K.bill - .25);
     const pR = 900 * eio(at(t, K.bill - .55, K.bill - .05)), pan = 350 * ss(0, 1, kd) + pR;
-    // фон: тёмный чертёж → лаборатория раскрывается кругом из торца → (панорама вниз) витрина за кассой
-    if (kh < 1) blueprintBg(c, t, 1);
-    if (kh > 0 && pR < 900) { c.save(); if (kh < 1) { c.beginPath(); c.arc(540, lp(860, 1300, kh), lp(230, 2300, kh), 0, TAU); c.clip() } c.translate(0, -pan * .6); labBlue(c, t); c.restore() }
+    // фон: тёмный чертёж плавно уходит в такую же тёмную лабораторию, потом панорама вниз к витрине
+    if (pR < 900) { c.save(); c.translate(0, -pan * .6); labBlue(c, t); c.restore(); if (kh < 1) { c.save(); c.globalAlpha = 1 - kh; blueprintBg(c, t, 1); c.restore() } }
     if (pR > 0) { c.save(); c.translate(0, 2100 * (1 - pR / 900)); storeBg(c, t); vgrad(c, -200, -120, WW + 400, 120, ['#0b0712', '#1c1426']); c.restore() }
     c.save(); c.translate(0, -pan);
     if (kl < 1 && pan < 1200) {
-      const hy = hillShape(c, kh, kl);
-      if (kh < 1) { c.save(); c.translate(540, hy); c.scale(1 - kh, (1 - kh) * lp(1, .6, kh)); capFace(c, 230); c.restore() }
-      if (kh <= 0) endFace(c, t, 1, kq);
-      c.save(); c.translate(0, 1400 * kl);
+      c.save(); c.translate(0, 1380 * kl);
+      const hy = hillShape(c, kh);
+      if (kh < 1) { c.save(); c.translate(540, hy); c.scale(1 - kh, 1 - kh); capFace(c, 230); c.restore() }
+      if (kq < 1) endFace(c, t, 1, kq, hy, true);
       PL.forEach((p, i) => tobacco(c, t, p, i, eo(at(kp, i * .12, .7 + i * .12)), i === 0 ? kw : Math.max(kw, ss(.5, 1, kw))));
       bud(c, PL[1].x, PL[1].ty, spr(at(kp, .7, 1)), kw); bud(c, PL[2].x, PL[2].ty, spr(at(kp, .75, 1)), kw);
-      bud(c, 540, 420, spr(at(kp, .65, .95)) * (1 - kb), 0);
+      bud(c, 540, PL[0].ty, spr(at(kp, .65, .95)) * (1 - kb), 0);
       c.restore();
     }
     if (pan < 1200) {
       coil(c, t, kc, kd);
-      bulb(c, 540, 420, kb, t);
-      const kpl = spr(at(t, K.tube + .2, K.tube + .7)); if (kpl > 0) plate(c, 'СИНТЕТИЧЕСКИЙ НИКОТИН · БЕЗ ТАБАКА', 540, 270, kpl, { s: 30, bg: '#fbbf24', c: '#1c1917' });
+      bulb(c, 540, 380, kb, t);
+      const kpl = spr(at(t, K.tube + .2, K.tube + .7)); if (kpl > 0) plate(c, 'СИНТЕТИЧЕСКИЙ НИКОТИН · БЕЗ ТАБАКА', 540, 232, kpl, { s: 30, bg: '#fbbf24', c: '#1c1917' });
     }
     // капля падает с конца змеевика на кассу
     const kfall = at(t, K.bill - .55, K.bill - .02); if (kfall > 0 && kfall < 1) { const y = lp(1180, 1250 + 848, kfall * kfall); glow(c, 540, y, 50, '#fde68a', .9); circ(c, 540, y, 16, '#fde047') }
@@ -124,7 +122,7 @@
       const kt = eio(at(t, K.bill - .05, K.bill + .7)) * (1 - eio(at(t, K.market - .7, K.market - .1)));
       if (kt > 0) { c.translate(540, 740); c.rotate(-.10 * kt); c.scale(lp(1, 1.4, kt), lp(1, 1.4, kt)); c.translate(-540, -740) }
       billFan(c, at(t, K.bill + .1, K.bill + .9));
-      register(c, t, { disp: regDisplay(c, t), coin: spr(at(t, K.bill - .05, K.bill + .3)) * (t < K.s8 - .25 ? 1 : 0), after: () => receipt(c, t) });
+      register(c, t, { disp: regDisplay(c, t), coin: spr(at(t, K.bill - .05, K.bill + .3)) * (t < K.s8 - .57 ? 1 : 0), after: () => receipt(c, t) });
       c.restore();
     }
   }

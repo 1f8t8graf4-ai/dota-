@@ -40,21 +40,22 @@
     c.save(); c.beginPath(); c.moveTo(R, T); c.lineTo(L, B); c.strokeStyle = '#9a3412'; c.lineWidth = 22; c.stroke(); c.strokeStyle = '#c2410c'; c.lineWidth = 8; c.stroke(); c.restore();   // срез стены
     c.fillStyle = '#44403c'; c.fillRect(L - 20, T - 30, DM.w + 40, 34);   // крыша
   }
+  const MOON = { x: 220, y: 340, r: 95 };
   function shot8(c, t) {
-    const kin = eio(at(t, K.s8 - .25, K.s8 + .55)), D = 1920 * kin;   // камера взлетает за монетой: касса уходит вниз, сверху ночное небо
-    if (kin < 1) { c.save(); c.translate(0, D); shot7(c, t); c.restore() }
+    // 75.5–76.5: касса с чеком, деньгами и полками уезжает вниз и гаснет, а золотая монета с кассы летит по дуге и становится Луной
+    const p = eio(at(t, K.s8 - .57, K.s8 + .43));
     const kp = 1 + .18 * eio(at(t, K.s8 + .5, K.b0));   // медленный наезд на разрез общежития
-    c.save(); c.translate(0, D - 1920);
-    c.save(); c.beginPath(); c.rect(-200, -200, WW + 400, HH + 200); c.clip();
-    c.translate(620, 1010); c.scale(kp, kp); c.translate(-620, -1010);
+    c.save(); c.translate(620, 1010); c.scale(kp, kp); c.translate(-620, -1010);
     nightSky(c, t, { clouds: true }); skylineLayer(c, 21, 1420, 260, 700, '#141c35', .45, '#fde68a', t);
     vgrad(c, -400, 1400, WW + 800, 900, ['#1e293b', '#0f172a']); c.fillStyle = '#334155'; c.fillRect(-400, 1400, WW + 800, 12); lamp(c, 980, 1406, 520);
-    const mm = { x: 230, y: 340, r: 95 }; glow(c, mm.x, mm.y, mm.r * 3, '#e0f2fe', .35); circ(c, mm.x, mm.y, mm.r, '#f8fafc'); circ(c, mm.x - mm.r * .3, mm.y - mm.r * .2, mm.r * .2, 'rgba(148,163,184,.3)'); circ(c, mm.x + mm.r * .3, mm.y + mm.r * .25, mm.r * .14, 'rgba(148,163,184,.25)');
-    const kd = bo(at(t, K.s8 + .2, K.s8 + 1.2)); if (kd > 0) dorm(c, t, lp(1460, 620, kd));
-    c.restore(); c.restore();
-    if (kin < 1) {   // золотая монета из кассы летит вверх и становится Луной
-      const k = kin, x = lp(540, 230, ss(0, 1, k)), y = lp(848 + D * 0, 340, k) - Math.sin(Math.PI * k) * 120, r = lp(34, 95, k);
-      glow(c, x, y, r * 3, mixc('#fbbf24', '#e0f2fe', k), .45); circ(c, x, y, r, mixc('#fbbf24', '#f8fafc', k)); ring(c, x, y, r * .76, rgba('#b45309', 1 - k), 4);
+    if (p >= 1) { const mm = MOON; glow(c, mm.x, mm.y, mm.r * 3, '#e0f2fe', .35); circ(c, mm.x, mm.y, mm.r, '#f8fafc'); circ(c, mm.x - mm.r * .3, mm.y - mm.r * .2, mm.r * .2, 'rgba(148,163,184,.3)'); circ(c, mm.x + mm.r * .3, mm.y + mm.r * .25, mm.r * .14, 'rgba(148,163,184,.25)') }
+    const kd = bo(at(t, K.s8 + .43, K.s8 + 1.3)); if (kd > 0) dorm(c, t, lp(1460, 600, kd));
+    c.restore();
+    if (p < 1) {
+      c.save(); c.globalAlpha = 1 - p; c.translate(0, 1400 * p); shot7(c, t); c.restore();
+      const x = lp(540, MOON.x, p), y = lp(850, MOON.y, p) - Math.sin(Math.PI * p) * 140, r = lp(36, MOON.r, p);
+      glow(c, x, y, r * 3, mixc('#f59e0b', '#e0f2fe', p), .45); circ(c, x, y, r, mixc('#f59e0b', '#f8fafc', p)); ring(c, x, y, r * .76, rgba('#b45309', 1 - p), 4);
+      if (p > .7) { circ(c, x - r * .3, y - r * .2, r * .2, rgba('#94a3b8', .3 * ss(.7, 1, p))); circ(c, x + r * .3, y + r * .25, r * .14, rgba('#94a3b8', .25 * ss(.7, 1, p))) }
     }
     vignette(c, .45);
   }

@@ -14,12 +14,12 @@
   function wave(c, t, A, base, cx, o = {}) {   // красно-синяя волна: гребень красный, толща синяя, пунктир течений
     const pts = []; for (let x = -60; x <= WW + 60; x += 20) pts.push([x, waveY(t, x, A, base, cx)]);
     c.save(); c.beginPath(); c.moveTo(-60, HH + 100); pts.forEach(p => c.lineTo(p[0], p[1])); c.lineTo(WW + 60, HH + 100); c.closePath();
-    const g = c.createLinearGradient(0, base - A, 0, HH); g.addColorStop(0, '#1d4ed8'); g.addColorStop(1, '#1e3a8a'); c.fillStyle = g; c.fill(); c.clip();
-    c.setLineDash([18, 14]); c.lineDashOffset = -t * 60; c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 5;
+    const g = c.createLinearGradient(0, base - A, 0, HH); g.addColorStop(0, o.b0 || '#1d4ed8'); g.addColorStop(1, o.b1 || '#1e3a8a'); c.fillStyle = g; c.fill(); c.clip();
+    c.setLineDash([18, 14]); c.lineDashOffset = -t * 60; c.strokeStyle = `rgba(255,255,255,${.55 * (o.da ?? 1)})`; c.lineWidth = 5;
     [110, 230, 360, 500].forEach(off => { c.beginPath(); pts.forEach((p, i) => c[i ? 'lineTo' : 'moveTo'](p[0], p[1] + off)); c.stroke() });
     c.restore();
-    c.save(); c.beginPath(); pts.forEach((p, i) => c[i ? 'lineTo' : 'moveTo'](p[0], p[1])); c.strokeStyle = '#ef4444'; c.lineWidth = o.cw || 48; c.lineJoin = 'round'; c.stroke();
-    c.beginPath(); pts.forEach((p, i) => c[i ? 'lineTo' : 'moveTo'](p[0], p[1] - (o.cw || 48) * .3)); c.strokeStyle = 'rgba(255,255,255,.35)'; c.lineWidth = 6; c.stroke(); c.restore();
+    c.save(); c.beginPath(); pts.forEach((p, i) => c[i ? 'lineTo' : 'moveTo'](p[0], p[1])); c.strokeStyle = o.cc || '#ef4444'; c.lineWidth = o.cw || 48; c.lineJoin = 'round'; c.stroke();
+    c.beginPath(); pts.forEach((p, i) => c[i ? 'lineTo' : 'moveTo'](p[0], p[1] - (o.cw || 48) * .3)); c.strokeStyle = `rgba(255,255,255,${.35 * (o.hl ?? 1)})`; c.lineWidth = 6; c.stroke(); c.restore();
   }
   function ship(c, x, y, r, t) {   // контейнеровоз 340×160 с контейнерами PUFF / HQD / ELF
     c.save(); c.translate(x, y); c.rotate(r);
@@ -40,8 +40,8 @@
     c.save(); c.translate(80, 360); c.rotate(-.12); rr(c, -60, -60, 120, 120, 6); fill(c, '#fde047'); c.restore();   // стикер
     glow(c, 540, 820, 900, '#fde68a', .10); vignette(c, .55, '10,5,2');
   }
-  const RP = { x: 540, y: 830, w: 840, h: 1020, r: -.0524 };   // лист отчёта: -3°
-  function report(c, t, ku) {   // ku — лист разворачивается вниз из шапки
+  const RP = { x: 540, y: 830, w: 840, h: 980, r: -.0524 };   // шапка 260–340, лист 340–1320   // лист отчёта: -3°
+  function report(c, t, ku, o = {}) {   // ku — лист разворачивается вниз из шапки
     c.save(); c.translate(RP.x, RP.y); c.rotate(RP.r);
     const top = -RP.h / 2, hh = RP.h * ku;
     c.save(); c.translate(10, 14); rr(c, -RP.w / 2, top, RP.w, hh, 8); fill(c, 'rgba(0,0,0,.35)'); c.restore();
@@ -60,38 +60,43 @@
     };
     if (ku > .9) {
       bar(x19, 75, '#64748b', Math.max(.02, k19), '2019', '2,4%', at(t, K.par + .2, K.par + .5));
-      const ty = bar(x20, 720, '#ef4444', Math.max(.02, k20), '2020', '', 0);
+      const ty = o.hideBar ? BY - 720 : bar(x20, 720, '#ef4444', Math.max(.02, k20), '2020', '', 0);
       const kl = spr(at(t, K.x11 - .1, K.x11 + .4));
       if (kl > 0) { c.save(); c.translate(x20 - 250, ty + 40); c.scale(kl, kl); rr(c, -150, -70, 300, 140, 16); fill(c, '#ef4444'); tx(c, '26,5%', 0, -20, { f: 'U', w: 800, s: 50, c: '#fff' }); tx(c, 'РОСТ ×11', 0, 34, { f: 'O', w: 700, s: 34, c: '#fee2e2', ls: 2 }); c.restore() }
     }
     tx(c, 'ОФИЦИАЛЬНЫЙ ОТЧЁТ США', 0, top + RP.h - 50, { f: 'O', w: 500, s: 24, c: '#94a3b8', ls: 2, a: ku > .95 ? 1 : 0 });
     c.restore();
     // шапка — бывшая волна: красно-синяя полоса 840×90
-    rr(c, -RP.w / 2, top - 90, RP.w, 90, 10); fill(c, '#1d4ed8'); c.fillStyle = '#ef4444'; c.fillRect(-RP.w / 2, top - 90, RP.w, 34);
-    const kt = spr(at(t, K.vsego + .35, K.vsego + .75)); if (kt > 0) { c.save(); c.translate(0, top - 42); c.scale(kt, kt); tx(c, 'ОПРОС ШКОЛЬНИКОВ США', 0, 4, { f: 'O', w: 700, s: 32, c: '#fff', ls: 3 }); c.restore() }
+    if (!o.noHead) { rr(c, -RP.w / 2, top - 80, RP.w, 80, 10); fill(c, '#1d4ed8'); c.fillStyle = '#ef4444'; c.fillRect(-RP.w / 2, top - 80, RP.w, 34) }
+    const kt = spr(at(t, K.vsego + .2, K.vsego + .6)); if (kt > 0) { c.save(); c.translate(0, top - 37); c.scale(kt, kt); tx(c, 'ОПРОС ШКОЛЬНИКОВ США', 0, 4, { f: 'O', w: 700, s: 32, c: '#fff', ls: 3 }); c.restore() }
     c.restore();
   }
-  function deskShot(c, t) { const s = 1 + .05 * at(t, K.vsego + .5, K.s5); c.save(); c.translate(540, 830); c.scale(s, s); c.translate(-540, -830); deskBg(c, t); report(c, t, eo(at(t, K.vsego + .45, K.vsego + 1.05))); c.restore() }
+  const FL0 = () => K.vsego - .39;   // 38.4: волна начинает сжиматься в шапку
+  const kSheet = t => eo(at(t, FL0() + .15, FL0() + 1));
+  const deskS = t => 1 + .05 * at(t, FL0() + 1, K.s5);
+  function deskShot(c, t, o = {}) { const s = deskS(t); c.save(); c.translate(540, 830); c.scale(s, s); c.translate(-540, -830); deskBg(c, t); report(c, t, kSheet(t), o); c.restore() }
   function rain(c, t) { c.save(); c.strokeStyle = 'rgba(186,230,253,.25)'; c.lineWidth = 3; c.beginPath(); for (let i = 0; i < 60; i++) { const x = (H1(i * 2.3) * 1400 + t * 120) % 1300 - 100, y = (H1(i * 5.9) * 1300 + t * 1400) % 1300 - 100; c.moveTo(x, y); c.lineTo(x - 14, y + 46) } c.stroke(); c.restore() }
   function shot4(c, t) {
-    const kf = eio(at(t, K.vsego - .3, K.vsego + .5));   // волна выпрямляется в шапку листа (без растворения)
-    const up = t < K.s4 + .4, kr = ei(at(t, K.s4 - .1, K.s4 + .4)), kd = eo(at(t, K.s4 + .4, K.s4 + 1.2));
-    const amp = (up ? 220 : lp(220, 380, kd)) * (1 - kf), cx = lp(300, 640, at(t, K.s4, K.vsego));
+    const T0 = K.s4 - .49, pc = at(t, T0, T0 + 1);   // 33.5–34.5: лента конвейера поднимается и становится гребнем волны
+    const kf = eio(at(t, FL0(), FL0() + 1));        // 38.4–39.4: волна сжимается в шапку листа
+    const kd = eo(at(t, T0 + 1, T0 + 1.7)), cx = lp(300, 640, at(t, K.s4, K.vsego));
+    const amp = (pc < 1 ? lp(0, 260, pc) : lp(260, 380, kd)) * (1 - kf), base = pc < 1 ? lp(1220, 650, pc) : lp(650, 1060, kd);
     if (kf >= 1) { deskShot(c, t); return }
-    if (kf <= 0) {   // волна встаёт выше кадра, заливает цех, отступает — за ней штормовое море
-      const base = up ? lp(1220, -260, kr) : lp(-260, 1060, kd);
-      if (up) factoryShot(c, t); else { stormBg(c, t); rain(c, t) }
-      wave(c, t, amp, base, cx);
-      const u = at(t, K.s4 + .45, K.vsego - .35), sx = -220 + 1570 * (1 - Math.pow(1 - u, 2.5));
-      if (!up && u < 1) { const sy = waveY(t, sx, amp, base, cx) - 46, d = waveY(t, sx + 10, amp, base, cx) - waveY(t, sx - 10, amp, base, cx); ship(c, sx, sy, Math.atan2(d, 20), t) }
+    if (kf <= 0) {
+      stormBg(c, t); rain(c, t);
+      if (pc < 1) { c.save(); c.translate(0, -1200 * pc); c.beginPath(); c.rect(-200, -400, WW + 400, 1620); c.clip(); factoryShot(c, t); c.restore() }   // потолок цеха и пачки уезжают вверх
+      wave(c, t, amp, base, cx, pc < 1 ? { cc: mixc('#475569', '#ef4444', pc), b0: mixc('#1f2937', '#1d4ed8', pc), b1: mixc('#0b0f19', '#1e3a8a', pc), da: pc } : {});
+      const u = at(t, T0 + 1, K.vsego - .35), sx = -220 + 1570 * (1 - Math.pow(1 - u, 2.5));
+      if (pc >= 1 && u < 1) { const sy = waveY(t, sx, amp, base, cx) - 46, d = waveY(t, sx + 10, amp, base, cx) - waveY(t, sx - 10, amp, base, cx); ship(c, sx, sy, Math.atan2(d, 20), t) }
       return;
     }
-    // выпрямление: небо уходит в линию сверху, толща — снизу, гребень становится красной полосой шапки
-    deskBg(c, t);
-    const yS = lp(1060, 247, kf), yTop = lp(-300, 230, kf), yBot = lp(HH + 300, 320, kf), xL = lp(-200, 120, kf), xR = lp(WW + 200, 960, kf);
-    c.save(); c.translate(540, 275); c.rotate(RP.r * kf); c.translate(-540, -275);
+    // волна не исчезает: амплитуда в 0, ширина 1080 → 840, верх → 260, низ воды 1920 → 340 — это шапка «ОПРОС ШКОЛЬНИКОВ США»;
+    // одновременно из-под неё разворачивается лист
+    deskShot(c, t, { noHead: true });
+    const yS = lp(base, 277, kf), yTop = lp(-300, 260, kf), yBot = lp(HH + 300, 340, kf), xL = lp(-200, 120, kf), xR = lp(WW + 200, 960, kf), s = deskS(t);
+    c.save(); c.translate(540, 830); c.scale(s, s); c.translate(-540, -830); c.translate(540, 830); c.rotate(RP.r * kf); c.translate(-540, -830);
     c.beginPath(); c.rect(xL, yTop, xR - xL, yBot - yTop); c.clip();
     stormBg(c, t); rain(c, t);
-    wave(c, t, amp, yS, cx, { cw: lp(48, 34, kf) });
+    wave(c, t, amp, yS, cx, { cw: lp(48, 34, kf), hl: 1 - kf, da: 1 - kf });
     c.restore();
   }

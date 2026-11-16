@@ -14,12 +14,12 @@
   }
   const TK = { x: 540, y: 860, w: 420, h: 680 };
   function tank(c, t, o = {}) {   // бак одноразки в разрезе: сверху манго, снизу лёд, волны в противофазе
-    const { x, y, w, h } = TK, k = o.k ?? 1, L = x - w / 2, T = y - h / 2;
-    c.save(); if (o.a !== undefined) c.globalAlpha *= o.a;
-    rr(c, L, T, w, h, 60); fill(c, 'rgba(186,230,253,.08)');
+    const { x, y, w, h } = TK, k = o.k ?? 1, L = x - w / 2, T = y - h / 2, dr = o.draw ?? 1;
+    c.save();
+    if (dr >= 1) { rr(c, L, T, w, h, 60); fill(c, 'rgba(186,230,253,.08)') }
     if (k > 0) {
       c.save(); rr(c, L + 10, T + 10, w - 20, h - 20, 52); c.clip();
-      const lv = T + h * lp(.95, .22, k), mid = T + h * .56, wv = (ph, amp) => x0 => Math.sin(x0 * .018 + t * 3.2 + ph) * amp;
+      const lv = T + h - 10 - 420 * k, mid = T + h * .56, wv = (ph, amp) => x0 => Math.sin(x0 * .018 + t * 3.2 + ph) * amp;
       const top = wv(0, 16 * k), md = wv(Math.PI, 14 * k);
       c.beginPath(); c.moveTo(L, HH); for (let xx = L; xx <= L + w; xx += 10) c.lineTo(xx, Math.max(lv, mid) + md(xx) * (lv < mid ? 1 : 0)); c.lineTo(L + w, HH); c.closePath();
       const gb = c.createLinearGradient(0, mid, 0, T + h); gb.addColorStop(0, '#22d3ee'); gb.addColorStop(1, '#0891b2'); c.fillStyle = gb; c.fill();
@@ -28,8 +28,9 @@
       for (let i = 0; i < 10; i++) { const by = T + h - ((t * 120 + i * 70) % (h * .5)); if (by > lv + 12) circ(c, L + 40 + H1(i) * (w - 80), by, 5 + H1(i * 3) * 5, 'rgba(255,255,255,.45)') }
       c.restore();
     }
-    rr(c, L, T, w, h, 60); stroke(c, 'rgba(224,242,254,.85)', 8); c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(L + 30, T + 60, 18, h - 120);
-    rr(c, x - 60, T - 70, 120, 74, 14); fill(c, '#111827');
+    c.save(); if (dr < 1) { const per = 2 * (w + h) - 100; c.setLineDash([per * dr, per]) } rr(c, L, T, w, h, 60); stroke(c, 'rgba(224,242,254,.85)', 8); c.restore();
+    if (dr >= 1) { c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(L + 30, T + 60, 18, h - 120) }
+    c.save(); c.translate(x, T - 33); c.scale(dr, dr); rr(c, -60, -37, 120, 74, 14); fill(c, '#111827'); c.restore();
     c.restore();
   }
   function mintLeaf(c, x, y, s, r) { c.save(); c.translate(x, y); c.rotate(r); c.scale(s, s); c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(50, -46, 110, 0); c.quadraticCurveTo(50, 46, 0, 0); fill(c, '#10b981'); c.strokeStyle = '#d1fae5'; c.lineWidth = 3; c.beginPath(); c.moveTo(4, 0); c.lineTo(104, 0); c.stroke(); for (let i = 1; i < 5; i++) { c.beginPath(); c.moveTo(i * 22, 0); c.lineTo(i * 22 + 14, -16); c.moveTo(i * 22, 0); c.lineTo(i * 22 + 14, 16); c.stroke() } c.restore() }
@@ -64,14 +65,18 @@
     tx(c, 'АНАЛИЗАТОР', 0, -182, { f: 'O', w: 700, s: 24, c: '#334155', ls: 4 });
     c.restore();
   }
-  function medallion(c, t, x, y, R, kf) {   // круг: зелёная «природная мята» → честный поворот на 180° → синий «синтетический лёд»
-    if (R <= 0) return; c.save(); c.translate(x, y); c.rotate(Math.PI * eio(kf));
-    const m = ss(.3, .7, kf), col = mixc('#10b981', '#0284c7', m); circ(c, 0, 0, R, col); ring(c, 0, 0, R - 14, 'rgba(255,255,255,.55)', 6);
+  function medallion(c, t, x, y, R, kf) {   // круг честно поворачивается в 3D (scale по X = cos): мята → ребро → лёд
+    if (R <= 0) return; const ang = eio(kf) * Math.PI, cs = Math.cos(ang), off = R * .2 * Math.sin(ang), ice = eio(kf) >= .5;
+    if (Math.abs(off) > .5) {   // ребро монеты: в момент поворота видно толщину, а не пустоту
+      const rim = ice ? '#075985' : '#047857', ax = Math.abs(cs) * R;
+      c.save(); c.translate(x, y); c.fillStyle = rim; c.beginPath(); c.ellipse(-off / 2, 0, Math.max(ax, .5), R, 0, 0, TAU); c.fill(); c.fillRect(-off / 2, -R, off, 2 * R);
+      c.strokeStyle = 'rgba(255,255,255,.22)'; c.lineWidth = 3; for (let i = -6; i <= 6; i++) { const yy = i * R / 7; c.beginPath(); c.moveTo(-off / 2, yy); c.lineTo(off / 2, yy); c.stroke() } c.restore() }
+    c.save(); c.translate(x + off / 2, y); c.scale(cs, 1); circ(c, 0, 0, R, ice ? '#0284c7' : '#10b981'); ring(c, 0, 0, R - 14, 'rgba(255,255,255,.55)', 6);
     c.lineCap = 'round';
-    if (m < 1) { c.save(); c.rotate(-.75); const L = R * .78 * (1 - m * .35), Wd2 = R * .42 * (1 - m); c.beginPath(); c.moveTo(0, L); c.bezierCurveTo(Wd2 * 1.3, L * .4, Wd2 * 1.1, -L * .7, 0, -L); c.bezierCurveTo(-Wd2 * 1.1, -L * .7, -Wd2 * 1.3, L * .4, 0, L); fill(c, '#f0fdf4');
-      c.strokeStyle = mixc('#10b981', '#f0f9ff', m); c.lineWidth = 9 + 5 * m; c.beginPath(); c.moveTo(0, L * .95); c.lineTo(0, -L * .8); c.stroke(); c.restore() }
-    if (m > 0) { c.strokeStyle = '#f0f9ff'; c.lineWidth = 14;   // лучи снежинки вырастают из жилок
-      for (let i = 0; i < 6; i++) { c.save(); c.rotate(i * TAU / 6); const L = R * .78 * m; c.beginPath(); c.moveTo(0, 0); c.lineTo(0, -L); c.moveTo(0, -L * .58); c.lineTo(-R * .16 * m, -L * .77); c.moveTo(0, -L * .58); c.lineTo(R * .16 * m, -L * .77); c.stroke(); c.restore() } circ(c, 0, 0, 22 * m, '#f0f9ff') }
+    if (!ice) { c.save(); c.rotate(-.75); const L = R * .78, Wd2 = R * .42; c.beginPath(); c.moveTo(0, L); c.bezierCurveTo(Wd2 * 1.3, L * .4, Wd2 * 1.1, -L * .7, 0, -L); c.bezierCurveTo(-Wd2 * 1.1, -L * .7, -Wd2 * 1.3, L * .4, 0, L); fill(c, '#f0fdf4');
+      c.strokeStyle = '#10b981'; c.lineWidth = 9; c.beginPath(); c.moveTo(0, L * .95); c.lineTo(0, -L * .8); c.stroke(); for (let i = 0; i < 4; i++) { const y0 = L * .5 - i * L * .38; c.beginPath(); c.moveTo(0, y0); c.lineTo(Wd2 * .7, y0 - L * .22); c.moveTo(0, y0); c.lineTo(-Wd2 * .7, y0 - L * .22); c.stroke() } c.restore() }
+    else { c.strokeStyle = '#f0f9ff'; c.lineWidth = 14;
+      for (let i = 0; i < 6; i++) { c.save(); c.rotate(i * TAU / 6); c.beginPath(); c.moveTo(0, 0); c.lineTo(0, -R * .78); c.moveTo(0, -R * .45); c.lineTo(-R * .16, -R * .6); c.moveTo(0, -R * .45); c.lineTo(R * .16, -R * .6); c.stroke(); c.restore() } circ(c, 0, 0, 22, '#f0f9ff') }
     c.restore();
   }
   function meter(c, x, y, lab, val, col, k, arrow) {
@@ -80,31 +85,37 @@
     tx(c, lab + ': ' + Math.round(100 * v) + '% ' + arrow, x, y + 2, { f: 'M', w: 800, s: 30, c: '#fff' });
   }
   function flipLabel(c, s0, s1, x, y, k, o0, o1, ka) {   // подпись переворачивается по горизонтальной оси (без растворения)
-    if (ka <= 0) return; const a = Math.cos(Math.PI * k), sy = Math.abs(a) * ka;
+    if (ka <= 0) return; const a = Math.cos(Math.PI * eio(k)), sy = Math.abs(a) * ka;
     c.save(); c.translate(x, y); c.scale(ka, Math.max(.001, sy)); tx(c, a >= 0 ? s0 : s1, 0, 0, a >= 0 ? o0 : o1); c.restore();
   }
   const LABY = 1920;   // лаборатория — этажом ниже стола
   function shot5(c, t) {
-    const hit = K.s5 + .55;
-    const u = at(t, K.s5 - .15, hit), yd = lp(432, LABY + 1150, Math.pow(u, 1.7)), camD = 1920 * ss(560, 2560, yd);   // камера летит за каплей вниз
-    const pan = eio(at(t, K.liq - .1, K.liq + 1.0)) * 1400;   // потом поднимается от бака к пакетам
+    // 43.0–43.6: лист и стол уезжают вниз, красный столбик 2020 сжимается в каплю (540, 560), проступает контур пустого бака;
+    // 43.6–44.0: капля падает на дно; 43.9–44.8: жидкость поднимается со дна
+    const T0 = K.s5 - .25, p = at(t, T0, T0 + .6), pe = eio(p), hit = T0 + 1;
+    const pan = eio(at(t, K.liq - .1, K.liq + 1.0)) * 1400;   // потом камера поднимается от бака к пакетам
     const kz = eio(at(t, K.fool - .3, K.fool + .5));           // наезд в экран анализатора
     window.__T = t;
-    if (camD < 1920) { c.save(); c.translate(0, -camD); deskShot(c, t); c.restore() }
-    c.save(); c.translate(0, LABY - camD); c.beginPath(); c.rect(-200, -40, WW + 400, 4400); c.clip(); labBg(c, t, pan);
-    if (camD < 1920) { vgrad(c, -200, -40, WW + 400, 80, ['#1e293b', '#334155', '#0f172a']); [300, 780].forEach(lx => { rr(c, lx - 90, 40, 180, 26, 8); fill(c, '#e2e8f0') }) }   // потолок лаборатории
-    c.restore();
-    // мир лаборатории: бак, листья мяты, капля
-    c.save(); c.translate(0, LABY - camD + pan);
+    labBg(c, t, pan);
+    c.save(); c.translate(0, pan);
     if (pan < 1300) {
-      const km = bo(at(t, hit + .3, hit + .9)), sw = Math.sin(t * 1.6) * .06;
+      const km = bo(at(t, hit + .2, hit + .8)), sw = Math.sin(t * 1.6) * .06;
       if (km > 0) { mintLeaf(c, 330, 760, 1.45 * km, Math.PI + .35 + sw); mintLeaf(c, 750, 820, 1.45 * km, -.35 - sw); mintLeaf(c, 335, 1010, 1.1 * km, Math.PI - .25 - sw) }
-      tank(c, t, { k: eo(at(t, hit, hit + 1.1)) });
-      const ks = at(t, hit, hit + .6); if (ks > 0 && ks < 1) { c.save(); c.translate(540, LABY + 1150 - LABY); c.scale(1, .3); ring(c, 0, 0, 30 + ks * 150, rgba('#e0f2fe', 1 - ks), 6); c.restore() }
+      tank(c, t, { k: eo(at(t, T0 + .9, T0 + 1.8)), draw: eo(p) });
+      const ks = at(t, hit, hit + .6); if (ks > 0 && ks < 1) { c.save(); c.translate(540, 1185); c.scale(1, .3); ring(c, 0, 0, 30 + ks * 150, rgba('#e0f2fe', 1 - ks), 6); c.restore() }
     }
     c.restore();
-    if (u > 0 && u < 1) { const dx = lp(708, 540, ss(0, .6, u)), dy = yd - camD; c.beginPath(); c.ellipse(dx, dy, 26, 34, 0, 0, TAU); fill(c, '#ef4444'); circ(c, dx - 8, dy - 10, 8, 'rgba(255,255,255,.6)') }
-    if (t < hit + .2) return;
+    if (pe < 1) { c.save(); c.translate(0, 1600 * pe); deskShot(c, t, { hideBar: true }); c.restore() }   // стол уезжает вниз и открывает бак
+    if (t < hit) {
+      if (p < 1) {   // столбик → капля
+        const sd = deskS(t), r = RP.r, x0 = 540 + sd * (Math.cos(r) * 180 + Math.sin(r) * 10), y0 = 830 + sd * (Math.sin(r) * 180 - Math.cos(r) * 10);
+        const w = lp(160 * sd, 44, pe), h = lp(720 * sd, 56, pe), cx2 = lp(x0, 540, pe), cy2 = lp(y0, 560, pe);
+        c.save(); c.translate(cx2, cy2); c.rotate(r * (1 - pe)); rr(c, -w / 2, -h / 2, w, h, lp(10, 22, pe)); fill(c, '#ef4444');
+        const R0 = 48 * sd * (1 - pe); if (R0 > 1) { circ(c, 0, -h / 2, R0, '#ef4444'); circ(c, 0, -h / 2, R0 * .83, '#fff'); c.save(); c.translate(0, -h / 2); c.scale(1 - pe, 1 - pe); tx(c, '2020', 0, 2, { f: 'O', w: 700, s: 30, c: '#b91c1c' }); c.restore() }
+        circ(c, -w * .18, -h * .2, 8 * pe, 'rgba(255,255,255,.6)'); c.restore();
+      } else { const dy = lp(560, 1160, ei(at(t, T0 + .6, hit))); c.beginPath(); c.ellipse(540, dy, 22, 28, 0, 0, TAU); fill(c, '#ef4444'); circ(c, 532, dy - 8, 7, 'rgba(255,255,255,.6)') }
+    }
+    if (t < K.liq - .2) return;
     // штанга с пакетами въезжает слева, качается маятником; трубка в анализатор с пульсирующими каплями
     c.save(); c.translate(0, pan);
     const RY = -1400 + 200, ks = eo(at(t, K.liq + .4, K.ws - .2)), xs = lp(-1150, 0, ks), tS = K.ws - .2;
@@ -119,11 +130,11 @@
       if (kt >= 1) for (let j = 0; j < 4; j++) { const ph = ((t - K.ws) * 1.4 + j / 4) % 1, yy = lp(TY0, TY1, ph); glow(c, 540, yy, 40, '#22d3ee', .9); circ(c, 540, yy, 11, '#e0f2fe') } }
     c.restore();
     // анализатор: молекула собирается, атомы сходятся в кольцо — из них вырастает медальон
-    const ay = -1400 + 1130 + pan, km2 = at(t, K.ws + .7, K.fool), conv = eio(at(t, K.fool + .2, K.fool + .8)), flip = at(t, K.ice - .35, K.ice + .45);
+    const ay = -1400 + 1130 + pan, km2 = at(t, K.ws + .7, K.fool), ms = 1 - eio(at(t, K.fool - .1, K.fool + .1)), mr = bo(at(t, K.fool + .11, K.fool + .51)), flip = at(t, K.ice - .51, K.ice + .29);
     c.save(); if (kz > 0) { const s = lp(1, 1.6, kz); c.translate(540, lp(ay, 820, kz)); c.scale(s, s); c.translate(-540, -ay) }
     analyzer(c, t, 540, ay, () => {
-      if (conv > 0) medallion(c, t, 0, 0, 140 * bo(conv), flip);
-      if (conv < 1) molecule(c, t, -30 * (1 - conv), 0, .9 + .1 * conv, km2, conv);
+      if (ms > 0) molecule(c, t, -30, 0, .9 * ms, km2, 0);   // молекула гаснет (сжимается в точку) до появления круга
+      if (mr > 0) medallion(c, t, 0, 0, 140 * mr, flip);
     });
     c.restore();
     if (kz > 0) {   // подписи и шкалы — поверх, ровно

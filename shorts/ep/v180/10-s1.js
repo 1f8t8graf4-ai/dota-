@@ -3,9 +3,10 @@
   // «диафрагмой» — ледяная студия сжимается в круг, который становится Луной; витрина загорается волной, снег, неон мигает,
   // две машины с фарами, камера медленно наезжает.
   const VP = { x: 540, y: 860, w: 180, h: 460 };
-  function iceBg(c, t) {   // ледяная студия (рисуется с запасом — её видно и на экране ноутбука во всю ширину)
-    const g = c.createRadialGradient(540, 860, 0, 540, 860, 980); g.addColorStop(0, '#0ea5e9'); g.addColorStop(.36, '#1e293b'); g.addColorStop(1, '#0f172a');
-    c.fillStyle = g; c.fillRect(-2500, -2500, WW + 5000, HH + 5000);
+  function iceBg(c, t, base) {   // ледяная студия (рисуется с запасом — её видно и на экране ноутбука во всю ширину)
+    if (base !== false) { c.fillStyle = '#0f172a'; c.fillRect(-2500, -2500, WW + 5000, HH + 5000) }   // общий фон с ночным городом
+    const g = c.createRadialGradient(540, 860, 0, 540, 860, 980); g.addColorStop(0, '#0ea5e9'); g.addColorStop(.36, '#1e293b'); g.addColorStop(1, 'rgba(15,23,42,0)');
+    c.fillStyle = g; c.beginPath(); c.arc(540, 860, 980, 0, TAU); c.fill();
     for (let i = 0; i < 4; i++) { const x0 = 120 + i * 300 + Math.sin(t * .4 + i) * 8; beam(c, x0, -60, 540 + (x0 - 540) * .25, 980, 40, 150, '#bae6fd', .07) }
     [300, 430, 580].forEach((r, i) => ring(c, 540, 860, r + Math.sin(t * .9 + i) * 3, rgba('#7dd3fc', .16 - i * .035), 3));
     c.save(); c.translate(540, 1150); c.scale(1, .22); const fg = c.createRadialGradient(0, 0, 0, 0, 0, 520); fg.addColorStop(0, 'rgba(186,230,253,.30)'); fg.addColorStop(1, 'rgba(186,230,253,0)');
@@ -77,7 +78,7 @@
     }
   }
   function nightSky(c, t, o = {}) {
-    vgrad(c, -400, -400, WW + 800, HH + 800, ['#070b1a', '#0f1d3d', '#1e2b4f']);
+    vgrad(c, -400, -400, WW + 800, HH + 800, o.base ? ['#0f172a', '#0f1d3d', '#1e2b4f'] : ['#070b1a', '#0f1d3d', '#1e2b4f']);
     for (let i = 0; i < 70; i++) { const sx = H1(i * 3.3) * WW, sy = H1(i * 7.7) * 900, tw2 = .4 + .6 * Math.abs(Math.sin(t * (1 + H1(i)) + i)); circ(c, sx, sy, 1.2 + H1(i * 2) * 1.8, rgba('#ffffff', .55 * tw2)) }
     if (o.moon) { const { x, y, r } = o.moon; glow(c, x, y, r * 3.2, '#e0f2fe', .35); circ(c, x, y, r, '#f8fafc'); circ(c, x - r * .3, y - r * .2, r * .18, 'rgba(148,163,184,.25)'); circ(c, x + r * .25, y + r * .3, r * .12, 'rgba(148,163,184,.2)') }
     if (o.clouds) for (let i = 0; i < 4; i++) { const cx = ((H1(i * 5) * 1400 + t * 26 * (1 + i * .3)) % 1500) - 200, cy = 220 + i * 150; c.save(); c.globalAlpha = .22; [0, 70, 140].forEach((dx, j) => circ(c, cx + dx, cy + (j === 1 ? -22 : 0), 60 + j * 4, '#334155')); c.restore() }
@@ -124,15 +125,16 @@
   function vapeBox(c, x, y, w, h, col, o = {}) {
     c.save(); c.translate(x, y); if (o.r) c.rotate(o.r);
     rr(c, -w / 2, -h / 2, w, h, Math.min(10, w * .14)); fill(c, col); c.save(); c.clip(); c.fillStyle = 'rgba(255,255,255,.22)'; c.fillRect(-w / 2, -h / 2, w * .3, h); c.fillStyle = 'rgba(0,0,0,.16)'; c.fillRect(w * .28, -h / 2, w * .22, h); c.restore();
+    const ki = o.inner ?? 1; if (ki <= 0) { c.restore(); return }
+    if (ki < 1) { c.translate(0, h * .1); c.scale(ki, ki); c.translate(0, -h * .1) }
     rr(c, -w * .22, -h * .32, w * .44, h * .56, w * .12); fill(c, 'rgba(255,255,255,.85)'); rr(c, -w * .12, -h * .26, w * .24, h * .44, w * .08); fill(c, col);
     if (o.label) { rr(c, -w * .46, h * .3, w * .92, h * .15, 6); fill(c, 'rgba(15,23,42,.55)'); tx(c, o.label, 0, h * .375, { f: 'O', w: 700, s: Math.max(10, w * .17), c: '#fff', mw: w * .84 }) }
     c.restore();
   }
-  function shop(c, t, k, roofH, roofY) {   // фасад растёт из-под крыши; витрина загорается волной слева направо
-    if (k <= 0) return;
-    const top = roofY + roofH / 2 - 4, H = 1310 - top, h = H * k;
-    c.save(); c.beginPath(); c.rect(150, top, 780, h); c.clip();
-    c.translate(0, -(1 - k) * H * .25);
+  function shop(c, t, kc, roofH, roofY) {   // фасад разворачивается вниз из-под кромки крыши; витрина загорается волной
+    if (kc <= 0) return;
+    const top = roofY + roofH / 2 - 4, H = 1310 - top;
+    c.save(); c.beginPath(); c.rect(150, top, 780, lp(0, 700, kc)); c.clip();
     vgrad(c, 170, top, 740, H, ['#1e293b', '#172033']);
     for (let i = 0; i < 14; i++) { c.fillStyle = 'rgba(255,255,255,.035)'; c.fillRect(170, top + 30 + i * 40, 740, 2) }
     const t0 = K.shopSign, fl = t < t0 ? 0 : t < t0 + .35 ? (Math.sin(t * 90) > 0 ? 1 : .25) : ((t - t0) % 2.3 < .18 ? (Math.sin(t * 70) > 0 ? 1 : .35) : 1);
@@ -150,45 +152,37 @@
     rr(c, 180, 1290, 720, 20, 4); fill(c, '#475569');
     c.restore();
   }
-  function cityScene(c, t, kI) {   // город с камерой: небо, дома, улица, фонарь, стела, машины, кусты, магазин, крыша
-    const s = 1 + .12 * eio(at(t, K.morph0 + 1.0, K.train1));
-    c.save(); c.translate(540, 1000); c.scale(s, s); c.translate(-540, -1000);
-    nightSky(c, t, { moon: { x: 880, y: 300, r: 74 }, clouds: true });
-    const rise = 300 * (1 - eo(kI));
-    c.save(); c.translate(0, rise); skylineLayer(c, 3, 1320, 380, 900, '#16213d', .45, '#fde68a', t); c.restore();
-    c.save(); c.translate(0, rise * 1.5); skylineLayer(c, 11, 1320, 220, 560, '#1d2a4a', .7, '#fde68a', t); c.restore();
+  const ROOF = { y: 560, w: 760, h: 110 };
+  function cityScene(c, t, off) {   // ночной город: небо того же цвета, что фон студии, дома, улица, фонарь, стела, машины, кусты, магазин
+    c.save(); c.translate(0, off);
+    nightSky(c, t, { moon: { x: 880, y: 300, r: 74 }, clouds: true, base: true });
+    skylineLayer(c, 3, 1320, 380, 900, '#16213d', .45, '#fde68a', t);
+    skylineLayer(c, 11, 1320, 220, 560, '#1d2a4a', .7, '#fde68a', t);
     street(c, t); lamp(c, 100, 1316, 560); stele24(c, 975, 1316, t);
     [[K.morph0 + 2.45, -1, '#be123c'], [K.morph0 + 4.45, 1, '#1d4ed8']].forEach(([t0, dir, col]) => { const k = at(t, t0, t0 + 1.7); if (k > 0 && k < 1) car(c, dir < 0 ? lp(1350, -350, k) : lp(-350, 1350, k), dir < 0 ? 1455 : 1470, dir, col) });
-    const kr = spr(at(t, K.morph0 + .8, K.morph0 + 1.4)), kf = eio(at(t, K.morph0 + .3, K.morph0 + .9));
     bush(c, 140, 1250, .9 * bo(at(t, K.shopBox + .2, K.shopBox + .6))); bush(c, 940, 1250, .9 * bo(at(t, K.shopBox + .3, K.shopBox + .7)));
-    shop(c, t, kr, lp(95, 110, kf), 680);
+    shop(c, t, eoB(at(t, K.tr1b, K.tr1b + .5)), ROOF.h, ROOF.y);
+    snow(c, t);
     c.restore();
-    return s;
   }
+  const eoB = k => k <= 0 ? 0 : bo(k);
   function shot1(c, t) {
-    const kI = eio(at(t, K.iris0, K.iris1));   // диафрагма: ледяная студия сжимается в Луну
-    const s = 1 + .12 * eio(at(t, K.morph0 + 1.0, K.train1));
-    if (kI > 0) cityScene(c, t, kI);
-    if (kI < 1) {
-      const cx = lp(540, 880, kI), cy = lp(860, 300, kI), R = Math.exp(lp(Math.log(1700), Math.log(74), kI));
-      c.save(); if (kI > 0) { c.beginPath(); c.arc(cx, cy, R, 0, TAU); c.clip() }
-      iceBg(c, t);
-      // одноразка и «?» уходят вниз, под ледяной пол
-      const kS = ei(at(t, K.morph0, K.morph0 + .42)), dy = 780 * kS;
-      c.save(); c.beginPath(); c.rect(-200, -200, WW + 400, 1158 + 200); c.clip();
-      disposable(c, VP.x, VP.y + dy);
-      const kq = bo(at(t, .7, 1.25)); qIce(c, 540, lp(640, 470, kq) + dy, lp(.2, 1, Math.min(1, kq)) * (t > .7 ? 1 : 0), Math.sin(t * 2.2) * .06);
+    // 2.4–3.2: фон тот же (#0f172a); город с дорогой выезжает снизу вверх, вейп со свечением студии уезжает вниз,
+    // колпачок растёт в крышу; 3.2–3.7 — из-под кромки крыши вниз разворачивается фасад «ВЕЙПЫ 24/7»
+    const pu = (t - K.tr1a) / .8, p = cl(pu), s = 1 + .12 * eio(at(t, K.morph0 + 1.0, K.train1));
+    c.fillStyle = '#0f172a'; c.fillRect(-2500, -2500, WW + 5000, HH + 5000);
+    c.save(); c.translate(540, 1000); c.scale(s, s); c.translate(-540, -1000);
+    if (p > 0) cityScene(c, t, 1600 * (1 - eo(p)));
+    const dy = 1090 * Math.max(0, pu);   // vapeY = lerp(860, 1950, p) — и дальше вниз за кадр
+    if (dy < 2100) {
+      c.save(); c.translate(0, dy); iceBg(c, t, false);
+      disposable(c, VP.x, VP.y);
+      const kq = bo(at(t, .7, 1.25)); qIce(c, 540, lp(640, 470, kq), lp(.2, 1, Math.min(1, kq)) * (t > .7 ? 1 : 0), Math.sin(t * 2.2) * .06);
       c.restore();
       confetti(c, t, .72, 540, 600);
-      c.restore();
-      if (kI > 0) { ring(c, cx, cy, R, 'rgba(224,242,254,.85)', 5); if (kI > .85) circ(c, cx, cy, R, rgba('#f8fafc', ss(.85, 1, kI))) }
     }
-    // колпачок → крыша (в координатах камеры города)
-    const kp = bo(at(t, .5, 1.3)), kf = eio(at(t, K.morph0 + .3, K.morph0 + .9));
-    const cy = lp(lp(585, 340, kp), 680, kf), cw = lp(140, 780, kf), ch = lp(95, 110, kf);
-    c.save(); c.translate(540, 1000); c.scale(s, s); c.translate(-540, -1000);
-    capShape(c, 540, cy, cw, ch, { k: ss(0, .25, kf) });
-    if (kI > 0) snow(c, t);
+    const kp = bo(at(t, .5, 1.3)), cy = lp(lp(585, 340, kp), ROOF.y, p), cw = lp(140, ROOF.w, p), ch = lp(95, ROOF.h, p);
+    capShape(c, 540, cy, cw, ch, { k: ss(0, .25, p) });
     c.restore();
-    if (kI > 0) vignette(c, .45 * kI);
+    if (p > 0) vignette(c, .45 * p);
   }
