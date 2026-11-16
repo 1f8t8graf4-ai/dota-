@@ -6303,9 +6303,11 @@
       c.strokeStyle = '#ffffff'; c.lineWidth = 3; for (let q = 0; q < 4; q++) { const a = q * Math.PI / 4 + t * 3; c.beginPath(); c.moveTo(fx - Math.cos(a) * 16 * f, fy - Math.sin(a) * 16 * f); c.lineTo(fx + Math.cos(a) * 16 * f, fy + Math.sin(a) * 16 * f); c.stroke() } }
     c.restore();
   }
-  function brPhoto(c) {   // кадр 0 выпуска 2 в окне фото: по высоте, по бокам — продолжение краёв кадра
-    const s = BPH.h / HH, iw = WW * s, sw = (BPH.w - iw) / 2 + 1;
-    c.drawImage(IMG18, 0, 0, 2, HH, BPH.x, BPH.y, sw, BPH.h); c.drawImage(IMG18, WW - 2, 0, 2, HH, iw / 2 - 1, BPH.y, sw, BPH.h);
+  let BRBL = null;
+  function brPhoto(c) {   // кадр 0 выпуска 2 в окне фото: по высоте; по бокам — тот же кадр, размытый и приглушённый (как вертикальное видео в горизонтальной рамке)
+    const s = BPH.h / HH, iw = WW * s;
+    if (!BRBL) { BRBL = mk(270, 480); const g = BRBL.getContext('2d'); g.filter = 'blur(9px) brightness(.4) saturate(.8)'; g.drawImage(IMG18, -20, -36, 310, 552) }
+    const ch = BPH.w * 480 / 270; c.drawImage(BRBL, BPH.x, BPH.y + BPH.h / 2 - ch / 2, BPH.w, ch);
     c.drawImage(IMG18, -iw / 2, BPH.y, iw, BPH.h);
   }
   function brIce(c, t, kz, kc) {   // лёд поверх маркера: растёт от кнопки вниз; kc — трещины
@@ -6894,7 +6896,7 @@
       if (!document.getElementById('v162')) { const st = document.createElement('style'); st.id = 'v162'; st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join(''); document.head.appendChild(st) }
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
       X = cv.getContext('2d'); MA = MB = null; CORK = null; OFF = null; for (const k in BLUR) delete BLUR[k];
-      if (BRIDGE && !IMG18) { IMG18 = new Image(); IMG18.src = 'ep/v18-f0.png' }   // v18: кадр 0 выпуска 2 (v18-f0.png — node v170tools/frame.mjs v18a-ru 0 ep/v18-f0.png)
+      if (BRIDGE && !IMG18) { IMG18 = new Image(); IMG18.src = 'ep/v180-f0.png' }   // v18: кадр 0 выпуска 2 v18.1 (ep/v180) — снять заново, если выпуск 2 поменялся: node v170tools/frame.mjs v180s-ru 0 ep/v180-f0.png
       return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px "Liberation Serif"'].map(f => document.fonts.load(f, 'АЯaz09')).concat(BRIDGE ? [IMG18.decode()] : [])).then(() => { qLayout(X); return 0 });
     },
   };
