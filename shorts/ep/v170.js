@@ -6094,7 +6094,8 @@
         let h = v * R.px;
         if (red) h *= eo(at(t, K.usa - .1, K.usa + .45)) * .82 + .18 * spr(at(t, tb - .04, tb + .3));   // на «каждый четвёртый» добирает до 27,5
         else h *= eo(at(t, T0, T0 + .45));
-        if (h > 1) { rr(c, x - 34, R.base - h, 68, h, [12, 12, 0, 0]); fill(c, red ? '#e0233c' : '#bccae2'); c.fillStyle = 'rgba(255,255,255,.28)'; c.fillRect(x - 24, R.base - h + 10, 10, Math.max(0, h - 18)) }
+        const gone = red && t >= K.third - .4;   // красный столбик улетает шевроном пачки (v1BarToPack) — в графике его больше нет, двух красных не видно
+        if (h > 1 && !gone) { rr(c, x - 34, R.base - h, 68, h, [12, 12, 0, 0]); fill(c, red ? '#e0233c' : '#bccae2'); c.fillStyle = 'rgba(255,255,255,.28)'; c.fillRect(x - 24, R.base - h + 10, 10, Math.max(0, h - 18)) }
         const ky = spr(at(t, T0 - .05, T0 + .3)); if (ky > 0) tx(c, String(yr), x, R.base + 30, { f: 'J', w: 700, s: 22, c: red ? '#e0233c' : C.ink, a: Math.min(1, ky) });
         if (h > 24) { const n = (h / R.px).toFixed(1).replace('.', ','); tx(c, red ? n + ' %' : n, x, R.base - h - (red ? 30 : 24), red ? { s: 40, w: 800, c: '#e0233c', a: at(h, 24, 50) } : { f: 'J', w: 700, s: 30, c: C.n0, a: at(h, 24, 50) }) }
       });
