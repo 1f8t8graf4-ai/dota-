@@ -11,7 +11,7 @@ from v180_sound import sfx_track, bed  # noqa: E402
 
 if __name__ == '__main__':
     track, od = sys.argv[1:3]; os.makedirs(od, exist_ok=True)
-    o = os.path.join(HERE, 'out', 'vj1s-ru'); T = json.load(open(os.path.join(o, 'timeline.json'))); dur = np.ceil(T['dur'] * 30) / 30
+    o = os.path.join(HERE, 'out', os.environ.get('EP', 'vj1s-ru')); T = json.load(open(os.path.join(o, 'timeline.json'))); dur = np.ceil(T['dur'] * 30) / 30
     sw = os.path.join(od, 'sfx.wav'); VS.wav(sfx_track(json.load(open(os.path.join(o, 'cues.json'))), dur), sw)
     bw = os.path.join(od, 'bed.wav'); VS.wav(bed(track, dur, 0, 2.0), bw)
     raw = os.path.join(od, 'raw.wav'); mix = os.path.join(od, 'mix.wav')
