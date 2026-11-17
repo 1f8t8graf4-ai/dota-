@@ -3547,7 +3547,7 @@
   function sky73(c, t, kd) {
     c.fillStyle = C.am; c.fillRect(-400, -400, WW + 800, HH + 800);
     const V1Z = VARIANT === 1; if (V1Z && t < v1TN() - .15) return;   // v18 (ТЗ Gemini, п. 1): город уже стоит — проступает под шпилем на «1973», потом отъезд камеры
-    c.save(); if (V1Z) c.globalAlpha *= ss(v1TN() - .15, v1TN() + .15, t);
+    c.save(); if (V1Z) { const yw = lp(TOWER.y - 976 * TOWER.s, 2100, eio(at(t, v1TN() - .05, v1TN() + .7))); c.beginPath(); c.rect(-400, -400, WW + 800, yw + 400); c.clip() }   // v19.1: без проявления — башня раскрывается вниз из-под шпиля, как штора
     const G0 = VARIANT === 1 ? v1TN() - 10 : K.giants;   // v17.0 вариант 1 (Gemini): пока бежит нить времени — чистый янтарь; город и заводы вырастают снизу только на «1973»
     const ks = spr(at(t, G0, G0 + .5)); if (ks > 0) { circ(c, 856, 318, 128 * ks, C.am3); circ(c, 856, 318, 90 * ks, C.am4) }
     const kc = eo(at(t, G0, G0 + .6));
@@ -4861,8 +4861,7 @@
   function v1Marker(c, i, k = 1) {   // v17.1 (Gemini): закрашено жирным чёрным маркером — диагональные мазки со следами кисти по краям, силуэты не видны
     const { x, y, w, h } = BPH;
     c.save(); c.beginPath(); for (let q = 0; q <= 24; q++) { const u = q / 24; c.lineTo(x - 6 + (w + 12) * u, y - 6 - 5 * H1(i * 11 + q)) } for (let q = 0; q <= 24; q++) { const u = 1 - q / 24; c.lineTo(x - 6 + (w + 12) * u, y + h + 6 + 5 * H1(i * 13 + q)) } c.closePath(); c.clip();
-    c.globalAlpha *= k; c.fillStyle = '#6b655c'; c.fillRect(x - 20, y - 20, w + 40, h + 40);   // v17.2 (мастер-ТЗ, ошибка 15): под маркером — тёмный силуэт предмета
-    v1Sil(c, i, x + w / 2, y + h / 2 + 6);
+    c.globalAlpha *= k; c.fillStyle = '#1a181d'; c.fillRect(x - 20, y - 20, w + 40, h + 40);   // v19.1 (Андрей): под маркером ничего не видно — глухо, без силуэтов
     c.lineCap = 'round';
     const strokeM = (ax, ay, bx, by, wd, sd) => { const P = []; for (let q = 0; q <= 16; q++) { const u = q / 16; P.push(lp(ax, bx, u) + Math.sin(u * 9 + sd) * 4, lp(ay, by, u) + Math.cos(u * 7 + sd) * 4) }
       c.strokeStyle = '#08070a'; c.lineWidth = wd; c.beginPath(); for (let q = 0; q < P.length; q += 2) q ? c.lineTo(P[q], P[q + 1]) : c.moveTo(P[q], P[q + 1]); c.stroke();
@@ -4891,7 +4890,7 @@
     else if (o.red >= 1) { c.fillStyle = '#080808'; c.fillRect(BPH.x - 6, BPH.y - 6, BPH.w + 12, BPH.h + 12) }
     else { c.save(); c.beginPath(); c.rect(BPH.x, BPH.y, BPH.w, BPH.h); c.clip(); bcArt(c, i, t); c.restore(); c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 2; c.strokeRect(BPH.x, BPH.y, BPH.w, BPH.h) }
     tx(c, B.yr, 0, 88, { f: 'J', w: 700, s: 44, ls: 3, c: C.ink });
-    tx(c, B.cap, 0, 132, { s: B.cap.length > 12 ? 24 : 29, w: 800, ls: 2, c: C.n1 });
+    if (!(o.red >= 1)) tx(c, B.cap, 0, 132, { s: B.cap.length > 12 ? 24 : 29, w: 800, ls: 2, c: C.n1 });   // v19.1: на закрытой карточке — только год
     if (o.red > 0 && VARIANT !== 1) { c.save(); c.beginPath(); c.rect(BPH.x - 6, BPH.y - 6, BPH.w + 12, BPH.h + 12); c.clip(); redact(c, o.red, i, true); c.restore() }   // v17.2: в варианте 1 маркер уже нарисован крест-накрест (v1Marker)   // v17.0 (правка 11): маркер — ровно по окну фото, год и подпись чистые
     if (!o.noPin) { c.save(); c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = 7; c.shadowOffsetX = 6; c.shadowOffsetY = 9; circ(c, 0, -BCH / 2 + 22, 15, C.red); c.shadowColor = 'transparent'; circ(c, -4, -BCH / 2 + 18, 5, C.red3); c.restore() }
     c.restore();
@@ -5194,25 +5193,26 @@
   function v1ThreadP(t) { const u = at(t, K.zoomE + .2, v1TN()); return 5 * (.55 * u + .45 * ss(0, 1, u)) }   // ровно, без мёртвой паузы   // v17.0 (Gemini): нить бежит по чистому янтарю с 0:09,4 до 0:13,6
   function v1Thread(c, t) {
     if (t < K.zoomE - .05 || t > K.emp + .7) return;
-    const TN = v1TN(), kin = eo(at(t, K.zoomE - .05, K.zoomE + .35)), kout = 1 - at(t, TN + .02, TN + .38), p = v1ThreadP(t), a = kin * kout;
+    const TN = v1TN(), kin = eo(at(t, K.zoomE - .05, K.zoomE + .35)), kout = 1, p = v1ThreadP(t), a = kin * kout;
+    const ytop = lp(-100, V1TY, eio(at(t, TN - .15, TN + .3)));   // v19.1: нить спускается вниз — верх уходит в узел 1973
     // v17.2 (мастер-ТЗ, переход 2): точка пришла в «1973» — верх нити и остальные годы гаснут, а отрезок ПОД узлом остаётся по центру,
     // дотягивается до земли, темнеет до стального и становится осью/шпилем башни R.J. Reynolds — вокруг него раскрывается фасад
-    const ya = lp(-100, 1040, kin), kc = eio(at(t, TN - .3, TN)), aa = kin * (1 - at(t, TN + .02, TN + .2));   // v18: ниже узла нить темнеет до стали и толщины шпиля под зумом 2,6× — и гаснет, когда проступила башня
+    const ks = eio(at(t, TN - .55, TN - .05)), ya = lp(lp(-100, 1040, kin), V1TY + 208, ks), kc = ks, aa = t < TN + .12 ? kin : 0;   // v19.1: нижний отрезок сжимается в острый шпиль (сверху тонко, снизу 26) и ложится на корону   // v18: ниже узла нить темнеет до стали и толщины шпиля под зумом 2,6× — и гаснет, когда проступила башня
     if (aa > 0) {
       c.save(); c.globalAlpha *= aa; c.lineCap = 'butt';
       c.strokeStyle = Rrgba('#78221a', .25 * (1 - kc)); c.lineWidth = 14; c.beginPath(); c.moveTo(CX + 4, V1TY); c.lineTo(CX + 4, ya); c.stroke();
-      c.strokeStyle = mixc(C.red, '#1c2456', kc); c.lineWidth = lp(9, 26, kc); c.beginPath(); c.moveTo(CX, V1TY); c.lineTo(CX, ya); c.stroke();
+      const w0 = lp(9, 3, kc) / 2, w1 = lp(9, 26, kc) / 2; poly(c, [CX - w0, V1TY, CX + w0, V1TY, CX + w1, ya, CX - w1, ya]); fill(c, mixc(C.red, '#1c2456', kc));
       c.restore();
     }
     if (a > 0) {
       c.save(); c.globalAlpha *= a; c.lineCap = 'round';
-      c.strokeStyle = 'rgba(120,30,20,.25)'; c.lineWidth = 14; c.beginPath(); c.moveTo(CX + 4, -100); c.lineTo(CX + 4, V1TY); c.stroke();
-      c.strokeStyle = C.red; c.lineWidth = 9; c.beginPath(); c.moveTo(CX, -100); c.lineTo(CX, V1TY); c.stroke();
+      if (ytop < V1TY - 2) { c.strokeStyle = 'rgba(120,30,20,.25)'; c.lineWidth = 14; c.beginPath(); c.moveTo(CX + 4, ytop); c.lineTo(CX + 4, V1TY); c.stroke();
+      c.strokeStyle = C.red; c.lineWidth = 9; c.beginPath(); c.moveTo(CX, ytop); c.lineTo(CX, V1TY); c.stroke() }
       c.restore();
       V1T.forEach(([yr, ev], i) => {
         const y = V1TY + (i - p) * V1TS; if (y < -80 || y > 1120) return;
         if (i === V1T.length - 1 && t > TN + .06) return;   // 1973 улетел в метку года
-        const f = Math.max(0, 1 - Math.abs(i - p) * 1.6), fade = (1 - ss(860, 1080, y)) * (1 - ss(40, -80, y)), ap = (i === V1T.length - 1 ? kin * (1 - at(t, TN + .02, TN + .1)) : a) * fade;
+        const f = Math.max(0, 1 - Math.abs(i - p) * 1.6), fade = (1 - ss(860, 1080, y)) * (1 - ss(40, -80, y)) * (y < ytop - 10 ? 0 : 1), ap = (i === V1T.length - 1 ? kin * (1 - at(t, TN + .02, TN + .1)) : a) * fade;
         if (ap <= 0) return;
         const last = i === V1T.length - 1, pu = last ? Math.sin(TAU * t * 1.6) * .5 + .5 : 0;
         c.save(); c.globalAlpha *= ap;
@@ -5431,15 +5431,15 @@
     c.restore();
   }
   function v1BoxOn(u) { return u < 0 ? 0 : u < .05 ? .7 : u < .1 ? .12 : u < .14 ? .85 : u < .19 ? .35 : Math.min(1, .35 + (u - .19) * 7) }   // лампа негатоскопа: вспыхнула, мигнула, загорелась
-  function v1CigFly(c, t, W) {
-    const a0 = K.prob - .45, dark = (a, f) => { if (a <= 0) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.fillStyle = `rgba(5,6,15,${a})`; c.fillRect(0, 0, WW, HH); c.restore() };
-    const sw = eio(at(t, a0 + .08, a0 + .62));   // v17.1 (Gemini): без чёрной дыры — дубовый стол прямо растворяется в бордово-синюю сетку негатоскопа
-    if (sw < 1) { c.save(); c.globalAlpha = 1; W('s3', () => vS3(c, t))(); c.restore() }
-    if (sw > 0) v1Fade(c, sw, cc => { (vS4(cc, t), rig(cc, t, 's4')) });
-    const A = v1CigDesk(t), B = v1CigS4(), e = eio(at(t, a0 + .1, a0 + .7)), u = 1 - e;
-    const cx = 1010, cy = Math.min(A.y, B.y) + 120;   // дуга: вверх вдоль правого края, потом влево ко входу горла
-    const x = u * u * A.x + 2 * u * e * cx + e * e * B.x, y = u * u * A.y + 2 * u * e * cy + e * e * B.y;
-    v1XrCig(c, x, y, lp(A.L, B.L, e), lp(A.th, B.th, e), lp(A.a, B.a, e) + Math.sin(Math.PI * e) * .5, .55 + .35 * Math.sin(t * 2.4));
+  function v1CigFly(c, t, W) {   // v19.1 (Coca-Cola #003, «круг → круг»): камера ныряет в дно пепельницы — круг растёт и становится снимком горла, без растворения
+    const a0 = K.prob - .45, e = eio(at(t, a0 + .05, a0 + .8));
+    const D3 = camDesk(t), ax = CX + D3.s * (828 - D3.x), ay = CY + D3.s * (1286 - D3.y), ar = 86 * .66 * D3.s, Rend = 1250;
+    const Rs = ar * Math.pow(Rend / ar, e), z = Math.pow(Rend / ar, e), cxs = lp(ax, XS.x, e), cys = lp(ay, XS.y, e);
+    if (e < .999) { c.save(); c.translate(cxs, cys); c.scale(z, z); c.translate(-ax, -ay); W('s3', () => vS3(c, t))(); c.restore() }
+    c.save(); c.beginPath(); c.arc(cxs, cys, Rs, 0, TAU); c.clip(); c.fillStyle = '#0b1026'; c.fillRect(0, 0, WW, HH);
+    const m = Rs / Rend; c.translate(cxs, cys); c.scale(m, m); c.translate(-XS.x, -XS.y); vS4(c, t); rig(c, t, 's4');
+    const B = v1CigS4(); v1XrCig(c, B.x, B.y, B.L, B.th, B.a, .55 + .35 * Math.sin(t * 2.4)); c.restore();
+    if (e < .999) { c.save(); c.beginPath(); c.arc(cxs, cys, Rs + 17 * .66 * D3.s * z, 0, TAU); c.lineWidth = 34 * .66 * D3.s * z; c.strokeStyle = '#9fb3c8'; c.stroke(); c.restore() }   // обод пепельницы уходит за края кадра
   }
   // 0:31,3–0:32,9 — переход 5 (#027 + #028): ожог в трахее вспыхивает пламенем на весь кадр, и это же пламя за секунду сжимается
   // в живой язычок спиртовки под колбой; вокруг из темноты проявляется синяя лаборатория 1979-го
@@ -6353,7 +6353,7 @@
     c.save(); c.shadowColor = 'rgba(8,3,0,.7)'; c.shadowBlur = 26; c.shadowOffsetX = 8 + (B.x - CX) * .014; c.shadowOffsetY = 16 + (B.y - 250) * .012; c.fillStyle = '#f4efe4'; c.fillRect(-BCW / 2, -BCH / 2, BCW, BCH); c.restore();
     { const g = c.createLinearGradient(-BCW / 2, -BCH / 2, BCW / 2, BCH / 2); g.addColorStop(0, 'rgba(255,255,255,.18)'); g.addColorStop(.6, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(90,60,30,.16)'); c.fillStyle = g; c.fillRect(-BCW / 2, -BCH / 2, BCW, BCH) }
     if (kz > 0) { for (const [cx, cy] of [[-BCW / 2, -BCH / 2], [BCW / 2, -BCH / 2], [-BCW / 2, BCH / 2], [BCW / 2, BCH / 2]]) { const g = c.createRadialGradient(cx, cy, 0, cx, cy, 130); g.addColorStop(0, `rgba(240,249,255,${.75 * kz})`); g.addColorStop(1, 'rgba(240,249,255,0)'); c.fillStyle = g; c.fillRect(-BCW / 2, -BCH / 2, BCW, BCH) } }   // изморозь по углам карточки
-    tx(c, B.yr, 0, 88, { f: 'J', w: 700, s: 44, ls: 3, c: C.ink }); tx(c, B.cap, 0, 132, { s: 24, w: 800, ls: 2, c: C.n1 });
+    tx(c, B.yr, 0, 88, { f: 'J', w: 700, s: 44, ls: 3, c: C.ink }); if (ks > 0) { c.save(); c.translate(0, 132); c.scale(1, eo(cl(ks * 3))); tx(c, B.cap, 0, 0, { s: 24, w: 800, ls: 2, c: C.n1 }); c.restore() }   // v19.1: подпись 2020 — только когда маркер треснул
     c.save(); c.beginPath(); c.rect(BPH.x, BPH.y, BPH.w, BPH.h); c.clip(); if (ks > 0) brPhoto(c); c.restore();
     const shard = (q, k) => {   // один осколок: маркер + лёд, вырезан многоугольником
       c.save(); if (k > 0) { const dx = (q.cx - BRF.c0[0]) / (q.d || 1), dy = (q.cy - BRF.c0[1]) / (q.d || 1), e = eo(k); c.translate(q.cx + dx * 300 * e + q.sp * 30 * e, q.cy + dy * 120 * e + 520 * k * k); c.rotate(q.sp * k); c.scale(1 - .35 * k, 1 - .35 * k); c.translate(-q.cx, -q.cy); c.globalAlpha *= 1 - ss(.45, 1, k) }
