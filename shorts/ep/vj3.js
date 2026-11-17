@@ -265,7 +265,7 @@
     segs.forEach(([col, s0, s1]) => { c.beginPath(); c.arc(x, y, r * .78, lp(a0, a1, s0), lp(a0, a1, s1)); lnW(c, r * .12, col) });
     for (let i = 0; i <= 8; i++) { const a = lp(a0, a1, i / 8); c.beginPath(); c.moveTo(x + Math.cos(a) * r * .9, y + Math.sin(a) * r * .9); c.lineTo(x + Math.cos(a) * r * .98, y + Math.sin(a) * r * .98); lnW(c, 4, PJ.inkP) }
     const a = lp(a0, a1, cl(v)); c.beginPath(); c.moveTo(x, y); c.lineTo(x + Math.cos(a) * r * .72, y + Math.sin(a) * r * .72); lnW(c, 9, PJ.inkP); circ(c, x, y, 13, PJ.inkP);
-    tx(c, lab, x, y + 48, { f: 'U', w: 800, s: 30, c: PJ.inkP, mw: r * 2.2 });
+    tx(c, lab, x, y + 48, { f: 'U', w: 800, s: 30, c: PJ.inkP, mw: r * (o.mw || 2.2) });
   }
   // красный штамп по кругу
   function stampC(c, x, y, r, k, top, mid, o = {}) {
@@ -643,7 +643,7 @@
   }
   function gauges(c, t) {
     const v1 = lp(.88, .07, eio(at(t, T2.der - .25, T2.der + .35))) + .02 * Math.sin(t * 23), v2 = lp(.3, .96, bo(at(t, T2.sil - .3, T2.sil + .3))) + .015 * Math.sin(t * 19);
-    dialJ(c, 372, 3330, 140, v1, 'ЖЖЕНИЕ 0 %'); dialJ(c, 708, 3330, 140, v2, 'УДАР В КРОВЬ');
+    dialJ(c, 390, 3330, 140, v1, 'ЖЖЕНИЕ 0 %', { mw: 1.8 }); dialJ(c, 690, 3330, 140, v2, 'УДАР В КРОВЬ', { mw: 1.8 });
   }
   // ноутбук: экран (свой мир 680×425), основание, порт слева
   function laptop(c, t, dx) {

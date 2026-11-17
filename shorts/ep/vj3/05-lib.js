@@ -89,7 +89,7 @@
     segs.forEach(([col, s0, s1]) => { c.beginPath(); c.arc(x, y, r * .78, lp(a0, a1, s0), lp(a0, a1, s1)); lnW(c, r * .12, col) });
     for (let i = 0; i <= 8; i++) { const a = lp(a0, a1, i / 8); c.beginPath(); c.moveTo(x + Math.cos(a) * r * .9, y + Math.sin(a) * r * .9); c.lineTo(x + Math.cos(a) * r * .98, y + Math.sin(a) * r * .98); lnW(c, 4, PJ.inkP) }
     const a = lp(a0, a1, cl(v)); c.beginPath(); c.moveTo(x, y); c.lineTo(x + Math.cos(a) * r * .72, y + Math.sin(a) * r * .72); lnW(c, 9, PJ.inkP); circ(c, x, y, 13, PJ.inkP);
-    tx(c, lab, x, y + 48, { f: 'U', w: 800, s: 30, c: PJ.inkP, mw: r * 2.2 });
+    tx(c, lab, x, y + 48, { f: 'U', w: 800, s: 30, c: PJ.inkP, mw: r * (o.mw || 2.2) });
   }
   // красный штамп по кругу
   function stampC(c, x, y, r, k, top, mid, o = {}) {
