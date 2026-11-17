@@ -5821,13 +5821,17 @@
   }
   function v192Arch(c, t, W) {
     const base = c.getTransform(), zz = v192Cam(t), e = v192Pull(t);
-    const ko = eio(at(t, K.pub - .05, K.pub + .3)), kh = eio(at(t, K.pub + .28, K.bzoom + .75));
-    const sF = V192F.s, Fx = V192F.x, Fy = V192F.y, Hx = Fx, Hy = Fy - 10 * sF, R0 = 52 * sF, Z = Math.pow(18, kh);   // круг-окно и нырок в него
-    c.save(); c.translate(Hx, Hy); c.scale(Z, Z); c.translate(-Hx, -Hy);
+    const ko = eio(at(t, K.pub - .05, K.pub + .3)), kh = eio(at(t, K.pub + .2, K.bzoom + .78));
+    const sF = V192F.s, Fx = V192F.x, Fy = V192F.y, Hx = Fx, Hy = Fy - 10 * sF, R0 = 52 * sF, R1 = 1380, Z = 1 + .55 * kh;   // лист мягко наезжает, а круг-окно растёт до краёв кадра (#003): площадь круга — ровно по времени, без рывка
+    const RH = Math.sqrt(R0 * R0 + (R1 * R1 - R0 * R0) * kh) / Z;   // радиус круга в координатах листа (на экране = RH * Z)
+    const ZA = 1 + .25 * kh;   // параллакс: дальний архив приближается слабее, чем лист перед камерой
+    c.save(); c.translate(Hx, Hy); c.scale(ZA, ZA); c.translate(-Hx, -Hy);
     c.save(); c.translate(CX, CY); c.scale(zz, zz); c.translate(-CX, -CY);
     V192.our = true; V192.gap = e > 0; V18ARCH = true; vS6(c, t); V18ARCH = false; V192.our = V192.gap = false;
     c.restore();
     v192Docs(c, t);
+    c.restore();
+    c.save(); c.translate(Hx, Hy); c.scale(Z, Z); c.translate(-Hx, -Hy);
     if (e > 0 && ko <= 0) {   // папка выезжает из ниши к камере целиком и ровно, поворачиваясь лицом (корешок уходит вправо)
       const SX = CX + (v1SlotX() - VCV.x) * zz, SY = CY, h0 = V1SH.h * zz, h1 = 310 * sF, h = h0 * Math.pow(h1 / h0, e);
       const bot = lp(SY, Fy + 155 * sF, e), cx = lp(SX, Fx, e), cy = bot - h / 2, s = h / 310;
@@ -5837,14 +5841,15 @@
     }
     if (ko > 0) {   // на «опубликовали» обложка открывается вправо, как у книги, — под ней лист сайта, в круге уже карта
       shLayer(c, cc => v192Page(cc, Fx, Fy, sF, t, W, base), { b: 36, dx: 14, dy: 24 });
-      c.save(); c.beginPath(); c.arc(Hx, Hy, R0, 0, TAU); c.setTransform(base); c.clip();
-      const mz = lp(1.12, 1, kh); c.translate(CX, CY); c.scale(mz, mz); c.translate(-CX, -CY); W('s7', () => vS7(c, t))(); c.restore();
-      c.save(); c.beginPath(); c.arc(Hx, Hy, R0, 0, TAU); c.setTransform(base); c.strokeStyle = '#3a2a10'; c.lineWidth = 7; c.stroke(); c.restore();
-      const cs = Math.cos(Math.PI * ko), hx = Fx + 120 * sF;   // петля обложки — по правому краю
-      c.save(); c.translate(hx, Fy); c.scale(cs, 1); c.translate(-hx, -Fy);
-      if (cs > .002) shLayer(c, cc => v192Folder(cc, Fx, Fy, sF), { b: 30, dx: 10, dy: 20 });
-      else if (cs < -.002) { c.save(); c.translate(Fx, Fy); c.scale(sF, sF); rr(c, -120, -155, 240, 310, 12); fill(c, '#d9b048'); c.fillStyle = 'rgba(120,80,20,.14)'; c.fillRect(-120, -155, 240, 14); c.restore() }   // изнанка обложки
-      c.restore();
+      const hole = () => { c.save(); c.beginPath(); c.arc(Hx, Hy, RH, 0, TAU); c.setTransform(base); c.clip();
+        const mz = lp(1.12, 1, kh); c.translate(CX, CY); c.scale(mz, mz); c.translate(-CX, -CY); W('s7', () => vS7(c, t))(); c.restore();
+        c.save(); c.beginPath(); c.arc(Hx, Hy, RH, 0, TAU); c.setTransform(base); c.strokeStyle = '#3a2a10'; c.lineWidth = 7; c.stroke(); c.restore() };
+      const cover = () => { const cs = Math.cos(Math.PI * ko), hx = Fx + 120 * sF;   // петля обложки — по правому краю
+        c.save(); c.translate(hx, Fy); c.scale(cs, 1); c.translate(-hx, -Fy);
+        if (cs > .002) shLayer(c, cc => v192Folder(cc, Fx, Fy, sF), { b: 30, dx: 10, dy: 20 });
+        else if (cs < -.002) { c.save(); c.translate(Fx, Fy); c.scale(sF, sF); rr(c, -120, -155, 240, 310, 12); fill(c, '#d9b048'); c.fillStyle = 'rgba(120,80,20,.14)'; c.fillRect(-120, -155, 240, 14); c.restore() }   // изнанка обложки
+        c.restore() };
+      if (ko < .5) { hole(); cover() } else { cover(); hole() }   // пока обложка закрывает лист — круг под ней; открылась — круг растёт поверх всего (и поверх раскрытой обложки)
     }
     c.restore();
     // счётчик — поверх кадра, как раньше; на «опубликовали» сжимается в точку
