@@ -58,5 +58,5 @@ if __name__ == '__main__':
     o = os.path.join(HERE, 'out', ep); T = json.load(open(os.path.join(o, 'timeline.json'))); dur = (np.ceil(T['dur'] * 30)) / 30
     os.makedirs(od, exist_ok=True)
     sw = os.path.join(od, 'sfx.wav'); VS.wav(sfx_track(json.load(open(os.path.join(o, 'cues.json'))), dur), sw)
-    bw = os.path.join(od, 'bed.wav'); VS.wav(bed(track, dur, off, .25 if ep[:5] in ('v180s', 'v183s', 'v184s', 'v185s') else 1.4), bw)
+    bw = os.path.join(od, 'bed.wav'); VS.wav(bed(track, dur, off, .25 if ep[:5] in ('v180s', 'v183s', 'v184s', 'v185s', 'v190s') else 1.4), bw)
     final(os.path.join(o, 'voice.wav'), sw, bw, os.path.join(od, 'mix.wav'), dur)
