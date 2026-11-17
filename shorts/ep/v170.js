@@ -3310,6 +3310,7 @@
   }
   // плавный вход/выход слоя света на пролётах (там, где сцена видна внутри другой)
   function rigA(t, id) {
+    if (id === 's6a' && VARIANT === 1) return ss(K.secr + 1.9, K.secr + 2.6, t);   // v19.2 (отзыв 17.11): свет архива проявляется после закрытия сейфа — в v19.1 включался на 0:47,25 одним кадром
     if (id === 's16' && BRIDGE) return 1 - ss(K.cold + .2, K.endT - .4, t);   // v18: мостик — свет доски уходит в зуме
     if (id === 's1') return 1 - ss(K.liq - .1, K.zoomE - .05, t);
     if (id === 's2') return ss(K.zoomE, K.zoomE + .4, t) * (1 - eio(at(t, K.prep, K.prep + .38)));
@@ -4073,7 +4074,7 @@
     const shoot = (side, j, r) => { const d = (j * .06 + r * .025 + (side > 0 ? .03 : 0)); return spr(at(t, K.secrets + .1 + d, K.secrets + .42 + d)) * (j < 6 ? 1 : 0) };
     const alarm = at(t, K.hid - .3, K.hid) * (1 - .7 * at(t, K.arch + .6, K.arch + 1.2)) + (t > K.secrets - .1 ? .5 * (1 - at(t, K.secrets + .6, K.secrets + 1.6)) : 0);
     c.save(); c.beginPath(); c.arc(VCV.x, VCV.y, VCV.r + 2, 0, TAU); c.clip();
-    if (VARIANT === 1) v1Shelves(c, t, {}); else archCorrV(c, t, { tgt: kt, tgtCol: '#2457a6', shoot: t > K.secrets ? shoot : null, alarm, lampA: 1 - .6 * at(t, K.arch + .6, K.arch + 1.2) * (1 - at(t, K.secrets, K.secrets + .3)) });   // v17.2: в варианте 1 внутри — те же полки с папками
+    if (VARIANT === 1) v1Shelves(c, t, { gap: V192.gap, our: V192.our }); else archCorrV(c, t, { tgt: kt, tgtCol: '#2457a6', shoot: t > K.secrets ? shoot : null, alarm, lampA: 1 - .6 * at(t, K.arch + .6, K.arch + 1.2) * (1 - at(t, K.secrets, K.secrets + .3)) });   // v17.2: в варианте 1 внутри — те же полки с папками
     c.restore();
     vaultWall(c, t);
     // дверь: открыта → захлопывается на «архив» (вентиль крутится) → на «тайны» распахивается
@@ -4141,7 +4142,7 @@
   }
   function vS6(c, t) {
     const ca = at(t, K.court - .32, K.court + .08), cb = at(t, K.secrets - .34, K.secrets - .04);
-    if (VARIANT === 1) { const z = v1CourtZ(t), Ts = K.tob, sh = (1 - at(t, Ts, Ts + .3)) * (t > Ts ? 1 : 0); c.save(); c.translate(Math.sin(t * 71) * 9 * sh, Math.cos(t * 59) * 7 * sh); if (z < 1) { v1Steel(c); cam(c, z, VCV.x, VCV.y + 40) } vArchive(c, t); rig(c, t, 's6a'); c.restore(); v1Court(c, t); return }   // v17.2 (мастер-ТЗ, переход 7): суд перед закрытым сейфом — колонны, трибуна, удар, трещина, газеты
+    if (VARIANT === 1) { const z = v1CourtZ(t), Ts = K.tob, sh = (1 - at(t, Ts, Ts + .3)) * (t > Ts ? 1 : 0); c.save(); c.translate(Math.sin(t * 71) * 9 * sh, Math.cos(t * 59) * 7 * sh); v1Steel(c); cam(c, z, VCV.x, VCV.y + 40 * (1 - z) / .14); vArchive(c, t); rig(c, t, 's6a'); c.restore(); v1Court(c, t); return }   // v17.2 (мастер-ТЗ, переход 7): суд перед закрытым сейфом — колонны, трибуна, удар, трещина, газеты
     const Ar = () => { vArchive(c, t); rig(c, t, 's6a') }, Co = () => { vCourt(c, t); rig(c, t, 's6c') };   // v16.5: свет версий 2–3 едет вместе со своей половиной
     if (ca <= 0 || cb >= 1) { Ar(); return }
     if (ca < 1) { pushTr(c, ca, Ar, Co, 'left'); return }
@@ -4690,7 +4691,9 @@
       }
     });
   }
-  function steamV(c, t) {   // v19.0: пар над силуэтами школьников — контурные кружки поднимаются и тают
+  function steamV(c, t) {   // v19.2 (отзыв 17.11: «рыганина в виде кружочков»): в варианте 1 без контурных кружков — над двумя «парящими» школьниками по одному мягкому облачку, тем же рисунком, что большой пар (v1SoftPuff)
+    if (VARIANT === 1) { REDV.forEach((i, k) => { const p = TEENV[i], hx = p.x + 30 * p.s, hy = p.y - 560 * p.s, w = t * .34 + k * .43, u = w % 1;
+      c.save(); c.globalAlpha *= Math.sin(Math.PI * u) * .9; v1SoftPuff(c, hx + u * 50 * p.s, hy - u * 240 * p.s, (.5 + .6 * u) * p.s, i * 7 + Math.floor(w) * 11); c.restore() }); return }
     TEENV.forEach((p, i) => { if (i % 2 && !REDV.includes(i)) return; const hx = p.x + 30 * p.s, hy = p.y - 560 * p.s;
       for (let j = 0; j < 4; j++) { const u = ((t * .38 + j / 4 + i * .17) % 1), r = (16 + 40 * u) * p.s * 2; c.beginPath(); c.arc(hx + Math.sin(u * 5 + i) * 18 * p.s + u * 40 * p.s, hy - u * 260 * p.s, r, 0, TAU); c.strokeStyle = `rgba(240,248,255,${.8 * (1 - u)})`; c.lineWidth = 6; c.stroke() } });
   }
@@ -5646,6 +5649,14 @@
     rr(c, -w / 2 + 6, -78, w - 12, 46, 4); fill(c, '#c6343f'); c.fillStyle = '#fff3f3'; c.fillRect(-w / 2 + 10, -60, w - 20, 4); c.fillRect(-w / 2 + 10, -50, w - 26, 3);
     c.restore();
   }
+  function v1SlotX() { return VCV.x + V1SH.slot[1] * V1SH.step + (V1SH.slot[0] % 2 ? V1SH.step / 2 : 0) }   // v19.2: x ниши — с полушагом нечётной полки (в v19.1 папка вставала на 26 px левее ниши и наезжала на соседнюю)
+  function v1SpineOur(c, x, y, s = 1, a = 1) {   // v19.2: корешок нашей папки — как у соседних, но этикетка белая и красная печать
+    v1Spine(c, x, y, s, 0, a); const w = V1SH.w;
+    c.save(); c.translate(x, y); c.scale(s, s); c.globalAlpha *= a;
+    rr(c, -w / 2 + 6, -78, w - 12, 46, 4); fill(c, '#fbf7ee'); c.fillStyle = '#c42b3a'; c.fillRect(-w / 2 + 10, -60, w - 20, 4); c.fillRect(-w / 2 + 10, -50, w - 26, 3);
+    c.beginPath(); c.arc(0, -17, 11, 0, TAU); c.strokeStyle = '#d8303f'; c.lineWidth = 3.5; c.stroke(); circ(c, 0, -17, 4, '#d8303f');
+    c.restore();
+  }
   function v1Shelves(c, t, o = {}) {   // интерьер сейфа в мире VCV; o.gap — ниша пустая; o.lamp — свет
     const X = VCV.x, Y = VCV.y;
     c.fillStyle = '#141a2b'; c.fillRect(X - 700, Y - 700, 1400, 1400);
@@ -5654,7 +5665,7 @@
       const py = Y + d;
       for (let i = -12; i <= 12; i++) {
         const x = X + i * V1SH.step + (si % 2 ? V1SH.step / 2 : 0);
-        if (si === V1SH.slot[0] && i === V1SH.slot[1] && o.gap) continue;
+        if (si === V1SH.slot[0] && i === V1SH.slot[1] && (o.gap || o.our)) { if (!o.gap) v1SpineOur(c, x, py); continue }   // v19.2: наша папка в нише — того же размера и цвета, что соседние; отличаются этикетка и печать
         v1Spine(c, x, py, 1 - .06 * H1(i * 3.1 + si), (H1(i * 7.3 + si * 2.2) - .5) * .05);
       }
       c.fillStyle = '#4b5672'; c.fillRect(X - 700, py, 1400, 18); c.fillStyle = '#8692ae'; c.fillRect(X - 700, py, 1400, 4); c.fillStyle = 'rgba(0,0,0,.35)'; c.fillRect(X - 700, py + 18, 1400, 10);
@@ -5694,19 +5705,19 @@
   function v1ArchiveIn(c, t, W) {
     const kA = ss(K.fail - .72, K.fail - .5, t), z = lp(3.1, 1, eio(at(t, K.fail - .75, K.secr + .3)));   // v18 (ТЗ Gemini, п. 3): лаборатория гаснет за 0,2 с — пробирки и крест сквозь стеллажи не видны
     if (kA < 1) { W('s5', () => vS5(c, t))(); c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.fillStyle = `rgba(4,6,22,${eio(at(t, K.fail - 1.05, K.fail - .6)) * .84})`; c.fillRect(0, 0, WW, HH); c.restore() }
-    const ks = v1FolderSlot(t), sx0 = V1SH.slot[1] * V1SH.step + VCV.x, sy0 = VCV.y + V1SH.d[V1SH.slot[0]];
-    if (kA > 0) v1Fade(c, kA, cc => v1VaultScene(cc, t, z, { gap: ks < 1, open: v1VaultClose(t), inner: ks >= 1 ? cc => v1Spine(cc, sx0, sy0) : null }));
+    const ks = v1FolderSlot(t), sx0 = v1SlotX(), sy0 = VCV.y + V1SH.d[V1SH.slot[0]];   // v19.2: ниша — v1SlotX()
+    if (kA > 0) v1Fade(c, kA, cc => v1VaultScene(cc, t, z, { gap: ks < 1, open: v1VaultClose(t), inner: ks >= 1 ? cc => v1SpineOur(cc, sx0, sy0) : null }));
     if (ks >= 1) return;
-    // папка — на экране: из центра в нишу (в нише камера уже на общем плане, z = 1)
-    const P = folderPose(t), x = lp(P.x, sx0, ks), y = lp(P.y, sy0 - V1SH.h / 2, ks) - 120 * Math.sin(Math.PI * ks), fx = lp(1, V1SH.w / (240 * V18FS), ks) * lp(1, .55, Math.sin(Math.PI * ks)), fy = lp(1, V1SH.h / (310 * V18FS), ks);   // v18: папка поворачивается корешком (сжимается по ширине) и ровно встаёт в нишу
-    const fall = at(t, K.secr - .12, K.secr + .1), hit = Math.sin(Math.PI * at(t, K.secr + .1, K.secr + .28));
-    const front = c => { c.save(); c.translate(x, y); c.scale(fx, fy); c.translate(-P.x, -P.y);
-      v18Folder(c, P.x, P.y, V18FS, P.r * (1 - ks));
-      if (fall > 0) { const ef = ei(fall); c.save(); c.globalAlpha *= lp(.2, 1, ef); v1SealInk(c, V1VM.x, V1VM.y, V1VM.r * lp(2.3, 1, ef) * (1 + hit * .05), 1); c.restore() }
-      c.restore() };
-    const kx = ss(.78, .95, ks);
-    if (kx < 1) { c.save(); c.globalAlpha *= 1 - kx; shLayer(c, front, { b: 36, dx: 14, dy: 24 }); c.restore() }
-    if (kx > 0) v1Spine(c, x, y + V1SH.h / 2, 1, 0, kx);
+    // v19.2 (отзыв 17.11: «в архив кладётся как попало, выпирает»): папка не взлетает над полкой — по прямой садится низом на линию полки перед нишей,
+    // уменьшается до высоты соседних корешков и поворачивается к нам корешком (лицо уходит вбок, корешок выходит справа); в конце — ровно в нише, как соседние
+    const P = folderPose(t), e = eio(ks), SX = WW / 2 + (sx0 - VCV.x) * z, SY = HH / 2 + (sy0 - VCV.y) * z;   // ниша на экране (камера v1VaultScene: центр проёма — в центре кадра)
+    const h = lp(310 * V18FS, V1SH.h * z, e), bot = lp(P.y + 155 * V18FS, SY, e), cx = lp(P.x, SX, e), cy = bot - h / 2, sF = h / 310, q = sF / V18FS;
+    const th = Math.PI / 2 * ss(.3, 1, ks), wf = 240 * sF * Math.cos(th), ws = V1SH.w * (h / V1SH.h) * Math.sin(th), xl = cx - (wf + ws) / 2, r = P.r * (1 - e);
+    const fall = at(t, K.secr - .12, K.secr + .1), hit = Math.sin(Math.PI * at(t, K.secr + .1, K.secr + .28)), ef = ei(fall);
+    if (wf > .5) { c.save(); c.translate(xl + wf / 2, cy); c.rotate(r); c.scale(Math.cos(th), 1);
+      shLayer(c, cc => { v18Folder(cc, 0, 0, sF, 0); if (fall > 0) { cc.save(); cc.globalAlpha *= lp(.2, 1, ef); v1SealInk(cc, 0, (V1VM.y - FOLD.y) * q, V1VM.r * q * lp(2.3, 1, ef) * (1 + hit * .05), 1); cc.restore() } }, { b: 36, dx: 14, dy: 24 });
+      c.restore() }
+    if (ws > .5) { c.save(); c.translate(xl + wf + ws / 2, bot); c.rotate(r); c.scale(Math.max(Math.sin(th), .001), 1); v1SpineOur(c, 0, 0, h / V1SH.h); c.restore() }
     if (hit > 0 && ks <= 0) { c.save(); c.globalAlpha = .5 * hit; c.beginPath(); c.arc(V1VM.x, V1VM.y, V1VM.r * (1.1 + .5 * (1 - hit)), 0, TAU); c.strokeStyle = '#d8303f'; c.lineWidth = 6; c.stroke(); c.restore() }
   }
   // ================= v18 (15.11, ночь) · ТЗ Gemini по выпуску 1, п. 3: папка и архив =================
@@ -5772,10 +5783,78 @@
     const kn = eo(at(t, K.n14, K.n14 + .25)) * (1 - eio(at(t, K.pub - .1, K.pub + .2)));
     if (kn > 0) { c.save(); c.setTransform(base); c.globalAlpha = kn; rr(c, CX - 440 + 12, 330 - 96 + 14, 880, 192, 36); fill(c, 'rgba(4,10,42,.35)'); rr(c, CX - 440, 330 - 96, 880, 192, 36); fill(c, C.n0); num(c, fmt(Math.round(14e6 * eo(at(t, K.n14 + .05, K.n14 + .85)))), CX, 336, { s: 128, c: C.white }); c.restore() }
   }
+  // ================= v19.2 (17.11, отзыв Андрея на v19.1) · 0:50,9–0:55,0: сейф открылся → одинаковые листы ровным веером → наша папка выезжает из ниши →
+  // раскрывается листом сайта → камера ныряет в круг с картой. Одна камера: центр проёма — в центре кадра, как у суда; медленный наезд, без зума в надпись
+  const V192 = { gap: false, our: false };
+  const V192F = { x: CX, y: 1000, s: 1.4 };   // где папка встаёт перед камерой: надпись читается, кадр не заполняет
+  const v192Pull = t => eio(at(t, K.docs - .6, K.pub - .08));   // 0 — корешок в нише, 1 — лицом к камере
+  const v192Cam = t => 1 + .05 * eio(at(t, K.secrets + .2, K.docs - .6)) + .07 * eio(at(t, K.docs - .6, K.pub));   // наезд на сейф: камера не стоит
+  function v192Sheet(c, x, y, s, r) {   // один и тот же лист: бумага, строки, красный гриф
+    c.save(); c.translate(x, y); c.rotate(r); c.scale(s, s);
+    c.fillStyle = 'rgba(6,10,30,.3)'; c.fillRect(-50 + 8, -64 + 10, 100, 128);
+    rr(c, -50, -64, 100, 128, 4); fill(c, '#fbfaf6');
+    c.fillStyle = '#1b2a5c'; c.fillRect(-38, -50, 56, 8);
+    c.fillStyle = 'rgba(40,52,96,.32)'; for (let q = 0; q < 6; q++) c.fillRect(-38, -30 + q * 13, q % 3 === 2 ? 44 : 76, 5);
+    rr(c, 2, 38, 38, 15, 3); fill(c, '#c6343f');
+    c.restore();
+  }
+  function v192Docs(c, t) {   // 12 одинаковых листов по очереди, через 0,1 с — двумя ровными дорожками к краям кадра (влево-вправо через раз), у каждой дорожки один наклон
+    const N = 12, t0 = K.secrets + .14, gap = .1, dur = .72, L = [];
+    for (let i = 0; i < N; i++) { const u = at(t, t0 + i * gap, t0 + i * gap + dur); if (u > 0 && u < 1) L.push([i, u]) }
+    L.sort((a, b) => a[1] - b[1]);   // ближние к камере — сверху
+    for (const [i, u] of L) {
+      const sd = i % 2 ? 1 : -1, e = Math.pow(u, 1.3);
+      v192Sheet(c, lp(CX + sd * 24, CX + sd * 780, e), lp(925, 560, e), .42 * Math.pow(6, u), sd * .12);
+    }
+  }
+  function v192Folder(c, x, y, s, q) {   // папка лицом к камере (тот же рисунок, что в лаборатории) + печать, поставленная в архиве
+    v18Folder(c, x, y, s, 0); v1SealInk(c, x, y + (V1VM.y - FOLD.y) / V18FS * s, V1VM.r / V18FS * s, 1);
+  }
+  function v192Page(c, x, y, s, t, W, base) {   // лист сайта внутри папки: строка браузера, заголовок, круг-окно с картой
+    c.save(); c.translate(x, y); c.scale(s, s);
+    rr(c, -120, -155, 240, 310, 12); fill(c, '#e2b950');   // задняя половина папки
+    rr(c, -110, -146, 220, 292, 6); fill(c, '#fbf7ee'); c.fillStyle = '#e4dccb'; c.fillRect(-110, -146, 220, 20);
+    for (let i = 0; i < 3; i++) circ(c, -96 + i * 12, -136, 3.5, ['#e86a5c', '#e8b84c', '#6cc070'][i]);
+    tx(c, 'НИКОТИНОВАЯ СОЛЬ · 1979', 0, -104, { s: 14, w: 800, ls: 1, c: C.ink });
+    c.fillStyle = 'rgba(60,70,110,.25)'; for (let q = 0; q < 4; q++) c.fillRect(-90, 92 + q * 12, q === 3 ? 90 : 180, 4);
+    c.restore();
+  }
+  function v192Arch(c, t, W) {
+    const base = c.getTransform(), zz = v192Cam(t), e = v192Pull(t);
+    const ko = eio(at(t, K.pub - .05, K.pub + .3)), kh = eio(at(t, K.pub + .28, K.bzoom + .75));
+    const sF = V192F.s, Fx = V192F.x, Fy = V192F.y, Hx = Fx, Hy = Fy - 10 * sF, R0 = 52 * sF, Z = Math.pow(18, kh);   // круг-окно и нырок в него
+    c.save(); c.translate(Hx, Hy); c.scale(Z, Z); c.translate(-Hx, -Hy);
+    c.save(); c.translate(CX, CY); c.scale(zz, zz); c.translate(-CX, -CY);
+    V192.our = true; V192.gap = e > 0; V18ARCH = true; vS6(c, t); V18ARCH = false; V192.our = V192.gap = false;
+    c.restore();
+    v192Docs(c, t);
+    if (e > 0 && ko <= 0) {   // папка выезжает из ниши к камере целиком и ровно, поворачиваясь лицом (корешок уходит вправо)
+      const SX = CX + (v1SlotX() - VCV.x) * zz, SY = CY, h0 = V1SH.h * zz, h1 = 310 * sF, h = h0 * Math.pow(h1 / h0, e);
+      const bot = lp(SY, Fy + 155 * sF, e), cx = lp(SX, Fx, e), cy = bot - h / 2, s = h / 310;
+      const th = Math.PI / 2 * (1 - ss(.12, .82, e)), wf = 240 * s * Math.cos(th), ws = V1SH.w * (h / V1SH.h) * Math.sin(th), xl = cx - (wf + ws) / 2;
+      if (wf > .5) { c.save(); c.translate(xl + wf / 2, cy); c.scale(Math.cos(th), 1); shLayer(c, cc => v192Folder(cc, 0, 0, s), { b: 36, dx: 14, dy: 24 }); c.restore() }
+      if (ws > .5) { c.save(); c.translate(xl + wf + ws / 2, bot); c.scale(Math.max(Math.sin(th), .001), 1); v1SpineOur(c, 0, 0, h / V1SH.h); c.restore() }
+    }
+    if (ko > 0) {   // на «опубликовали» обложка открывается вправо, как у книги, — под ней лист сайта, в круге уже карта
+      shLayer(c, cc => v192Page(cc, Fx, Fy, sF, t, W, base), { b: 36, dx: 14, dy: 24 });
+      c.save(); c.beginPath(); c.arc(Hx, Hy, R0, 0, TAU); c.setTransform(base); c.clip();
+      const mz = lp(1.12, 1, kh); c.translate(CX, CY); c.scale(mz, mz); c.translate(-CX, -CY); W('s7', () => vS7(c, t))(); c.restore();
+      c.save(); c.beginPath(); c.arc(Hx, Hy, R0, 0, TAU); c.setTransform(base); c.strokeStyle = '#3a2a10'; c.lineWidth = 7; c.stroke(); c.restore();
+      const cs = Math.cos(Math.PI * ko), hx = Fx + 120 * sF;   // петля обложки — по правому краю
+      c.save(); c.translate(hx, Fy); c.scale(cs, 1); c.translate(-hx, -Fy);
+      if (cs > .002) shLayer(c, cc => v192Folder(cc, Fx, Fy, sF), { b: 30, dx: 10, dy: 20 });
+      else if (cs < -.002) { c.save(); c.translate(Fx, Fy); c.scale(sF, sF); rr(c, -120, -155, 240, 310, 12); fill(c, '#d9b048'); c.fillStyle = 'rgba(120,80,20,.14)'; c.fillRect(-120, -155, 240, 14); c.restore() }   // изнанка обложки
+      c.restore();
+    }
+    c.restore();
+    // счётчик — поверх кадра, как раньше; на «опубликовали» сжимается в точку
+    const kn = eo(at(t, K.n14, K.n14 + .25)), kq = 1 - eio(at(t, K.pub - .1, K.pub + .2));
+    if (kn > 0 && kq > 0) { c.save(); c.setTransform(base); c.globalAlpha = kn; c.translate(CX, 330); c.scale(kq, kq); c.translate(-CX, -330); rr(c, CX - 440 + 12, 330 - 96 + 14, 880, 192, 36); fill(c, 'rgba(4,10,42,.35)'); rr(c, CX - 440, 330 - 96, 880, 192, 36); fill(c, C.n0); num(c, fmt(Math.round(14e6 * eo(at(t, K.n14 + .05, K.n14 + .85)))), CX, 336, { s: 128, c: C.white }); c.restore() }
+  }
   // 0:47,4–0:51,0 — переход 7: суд Миннесоты 1998 перед закрытым сейфом — колонны, трибуна с весами, молоток бьёт по подставке,
   // кадр вздрагивает, по двери бежит трещина, гриф «СЕКРЕТНО» раскалывается, газеты «ВЕСТНИК · 1998» веером разлетаются; трибуна уходит вниз
   const V1PAD = { x: 760, y: 1236 };
-  function v1CourtK(t) { return { kin: eo(at(t, K.y98 - .25, K.court + .05)), kout: eio(at(t, K.secrets - .6, K.secrets - .05)) } }
+  function v1CourtK(t) { return { kin: eo(at(t, K.y98 - .25, K.court + .05)), kout: eio(at(t, K.secrets - .62, K.secrets + .12)) } }   // v19.2: выход — наезд камеры на дверь, до K.secrets + .12 (в v19.1 всё уезжало вниз и пропадало на 0:50,94)
   function v1CourtZ(t) { const { kin, kout } = v1CourtK(t); return lp(1, .86, kin * (1 - kout)) }
   function v1Column(c, x, y0, w) {
     c.fillStyle = '#e8e4dc'; c.fillRect(x - w / 2, y0 + 70, w, 2200);
@@ -5787,10 +5866,11 @@
     const { kin, kout } = v1CourtK(t); if (kin <= 0 || kout >= 1) return;
     const Ts = K.tob, sh = (1 - at(t, Ts, Ts + .3)) * (t > Ts ? 1 : 0), shx = Math.sin(t * 71) * 9 * sh, shy = Math.cos(t * 59) * 7 * sh;
     c.save(); c.translate(shx, shy);
-    const cy = (1 - kin) * 2000 + kout * 2000;   // колонны поднимаются снизу, уходят вниз
-    v1Column(c, 70, -140 + cy, 120); v1Column(c, WW - 70, -140 + cy, 120);
-    const by = 1236 + (1 - kin) * 760 + kout * 900;   // трибуна судьи
-    c.save(); c.translate(0, by - 1236);
+    const pz = n => { const s = 1 + n * kout; c.translate(CX, CY); c.scale(s, s); c.translate(-CX, -CY) };   // v19.2: наезд — ближний план растёт быстрее дальнего и уходит за края кадра
+    const cy = (1 - kin) * 2000;   // колонны поднимаются снизу; уходят — наездом
+    c.save(); pz(2.7); v1Column(c, 70, -140 + cy, 120); v1Column(c, WW - 70, -140 + cy, 120); c.restore();
+    const by = 1236 + (1 - kin) * 760;   // трибуна судьи
+    c.save(); pz(3.4); c.translate(0, by - 1236);
     c.fillStyle = 'rgba(0,0,0,.35)'; c.fillRect(-40, 1214, WW + 80, 30);
     c.fillStyle = '#5a2a10'; c.fillRect(-40, 1236, WW + 80, 900); c.fillStyle = '#7a3f15'; c.fillRect(-40, 1230, WW + 80, 22);
     for (let i = 0; i < 5; i++) { rr(c, 40 + i * 206, 1330, 176, 460, 10); stroke(c, '#3b1c07', 6) }
@@ -5806,13 +5886,13 @@
     }
     c.restore();
     c.restore();
-    // газеты веером разлетаются от удара, потом уносятся за края кадра
-    const ks = ei(at(t, K.secrets - .45, K.secrets + .2)); if (ks >= 1) return;
+    // газеты веером разлетаются от удара; на «тайны» по очереди пролетают мимо камеры за края кадра (растут и уходят — ни одна не пропадает на месте)
     V1NP.forEach((P, i) => {
       const k = at(t, Ts + .04 + i * .07, Ts + .5 + i * .07); if (k <= 0) return;
-      const e = eo(k), [, , x1, y1, r1, , , , fx, fy, fr] = P;
-      const x = lp(V1PAD.x, x1, e) + fx * ks, y = lp(V1PAD.y - 60, y1, e) - 140 * Math.sin(Math.PI * k) + fy * ks, r = lp((i - 1) * .6, r1, e) + fr * ks;
-      shLayer(c, c => v1Paper(c, P, x, y, lp(.12, .6, e) * (1 + .15 * ks), r), { b: 28, dx: 12, dy: 20 });
+      const ks = ei(at(t, K.secrets - .62 + i * .05, K.secrets - .02 + i * .05)); if (ks >= 1) return;
+      const e = eo(k), [, , x1, y1, r1, , , , fx, fy, fr] = P, g = 1 + 1.6 * ks;
+      const x = CX + (lp(V1PAD.x, x1, e) - CX) * g + fx * ks, y = CY + (lp(V1PAD.y - 60, y1, e) - 140 * Math.sin(Math.PI * k) - CY) * g + fy * ks, r = lp((i - 1) * .6, r1, e) + fr * .6 * ks;
+      shLayer(c, c => v1Paper(c, P, x, y, lp(.12, .6, e) * g, r), { b: 28, dx: 12, dy: 20 });
     });
   }
   function v1FolderShape(c, x, y, r, s) {   // папка-близнец в полёте (вместо разных бумажек)
@@ -5993,40 +6073,30 @@
   // 1:15,8–1:21,9 — отчёт над шкафчиками: кривая «ЗАВИСИМОСТЬ»; на «через четыре года» — 4 круглых значка-года, из них вырастают столбики (#109);
   // красный 2019-й («каждый четвёртый», 27,5 %) на «каждый четвёртый» пробивает верх отчёта вместе с кривой
   const V1RB = [[2016, 11.3], [2017, 11.7], [2018, 20.8], [2019, 27.5]];   // старшеклассники США, парившие за последние 30 дней, % (NYTS, CDC)
-  const V1RC = { x: 540, y: 512, w: 700, h: 400, base: 136, px: 8.4 };   // v17.1: выше и больше — столбик 2019, стрелка и выноска внутри белого поля
-  function v1Report(c, t) {
+  const V1RC = { x: 540, y: 512, w: 700, h: 400, base: 136, px: 7.0 };   // v19.2: столбики чуть ниже — над красным помещаются «27,5 %» и «КАЖДЫЙ 4-Й»   // v17.1: выше и больше — столбик 2019, стрелка и выноска внутри белого поля
+  function v1Report(c, t) {   // v19.2 (отзыв 17.11: «забагованный график»): один график (#109) — 4 столбика растут под голос, над каждым крупная цифра,
+    // 2019 — красный, «КАЖДЫЙ 4-Й» над красным столбиком; без кривой, стрелки и кружков годов
     const R = V1RC, kg = spr(at(t, K.hooked - .1, K.hooked + .3)) * (1 - eio(at(t, K.third - .4, K.third - .1))); if (kg <= 0) return;
     const hw = R.w / 2, hh = R.h / 2, tb = K.every4, shk = t > tb + .02 ? 1 - at(t, tb + .02, tb + .42) : 0;
     shLayer(c, c => {
       c.save(); c.translate(R.x + shk * 9 * Math.sin(t * 93), R.y + shk * 7 * Math.cos(t * 71)); c.scale(kg, kg);
       rr(c, -hw, -hh, R.w, R.h, 26); fill(c, C.white);
       tx(c, 'ЗАВИСИМОСТЬ', -hw + 32, -hh + 38, { s: 28, ls: 3, c: C.ink, al: 'left' });
-      tx(c, 'СТАРШЕКЛАССНИКИ США · %', -hw + 32, -hh + 72, { s: 18, w: 600, ls: 2, c: C.n2, al: 'left', a: at(t, K.y19 - .3, K.y19) });   // левее столбика 2018
+      tx(c, 'СТАРШЕКЛАССНИКИ США · %', -hw + 32, -hh + 72, { s: 18, w: 600, ls: 2, c: C.n2, al: 'left' });
       c.strokeStyle = C.n2; c.lineWidth = 5; c.lineCap = 'round'; c.beginPath(); c.moveTo(-hw + 32, -hh + 96); c.lineTo(-hw + 32, R.base); c.lineTo(hw - 26, R.base); c.stroke();
       V1RB.forEach(([yr, v], i) => {
-        const x = -180 + i * 124, red = i === 3, kz = spr(at(t, K.y19 - .55 + i * .12, K.y19 - .15 + i * .12));
+        const x = -180 + i * 124, red = i === 3, T0 = red ? K.usa - .1 : [K.hooked + .15, K.hooked + .45, K.faster - .05][i];   // 2016–2017 — на «подсаживались», 2018 — на «в разы быстрее», 2019 — на «в США»
         let h = v * R.px;
-        if (red) h *= eo(at(t, K.usa - .1, K.usa + .45)) * .82 + .18 * spr(at(t, tb - .04, tb + .3));   // v17.1: растёт внутри поля, на «каждый четвёртый» добирает до 27,5
-        else h *= eo(at(t, K.y19 + .05 + i * .16, K.y19 + .5 + i * .16));
+        if (red) h *= eo(at(t, K.usa - .1, K.usa + .45)) * .82 + .18 * spr(at(t, tb - .04, tb + .3));   // на «каждый четвёртый» добирает до 27,5
+        else h *= eo(at(t, T0, T0 + .45));
         if (h > 1) { rr(c, x - 34, R.base - h, 68, h, [12, 12, 0, 0]); fill(c, red ? '#e0233c' : '#bccae2'); c.fillStyle = 'rgba(255,255,255,.28)'; c.fillRect(x - 24, R.base - h + 10, 10, Math.max(0, h - 18)) }
-        if (!red && h > 30) tx(c, String(v).replace('.', ','), x, R.base - h - 20, { f: 'J', w: 700, s: 20, c: C.n2, a: at(h, 30, 60) });
-        if (kz > 0) { c.save(); c.translate(x, R.base + 34); c.scale(kz, kz); circ(c, 0, 0, 27, C.white); c.beginPath(); c.arc(0, 0, 27, 0, TAU); stroke(c, red ? '#e0233c' : '#8d9bb8', 5); tx(c, String(yr), 0, 1, { f: 'J', w: 700, s: 16, c: red ? '#e0233c' : C.ink }); c.restore() }
+        const ky = spr(at(t, T0 - .05, T0 + .3)); if (ky > 0) tx(c, String(yr), x, R.base + 30, { f: 'J', w: 700, s: 22, c: red ? '#e0233c' : C.ink, a: Math.min(1, ky) });
+        if (h > 24) { const n = (h / R.px).toFixed(1).replace('.', ','); tx(c, red ? n + ' %' : n, x, R.base - h - (red ? 30 : 24), red ? { s: 40, w: 800, c: '#e0233c', a: at(h, 24, 50) } : { f: 'J', w: 700, s: 30, c: C.n0, a: at(h, 24, 50) }) }
       });
-      // кривая зависимости: дорисовывается до верха на «подсаживались», пробивает его вместе с красным столбиком
-      const P = []; for (let i = 0; i <= 44; i++) { const u = i / 44; P.push(-hw + 60 + 540 * u, R.base - 12 - (R.base + hh - 96) * (Math.exp(3 * u) - 1) / (Math.exp(3) - 1)) }   // v17.1: кривая не пробивает верх
-      const kc = lp(0, .9, at(t, K.hooked + .05, K.faster)) + .1 * at(t, tb - .02, tb + .22);
-      c.strokeStyle = '#e0233c'; c.lineWidth = 10; c.lineJoin = 'round'; drawOn(c, P, kc);
-      const ka = spr(at(t, tb + .12, tb + .4)); if (ka > 0) { const n = P.length, ang = Math.atan2(P[n - 1] - P[n - 3], P[n - 2] - P[n - 4]); c.save(); c.translate(P[n - 2], P[n - 1]); c.rotate(ang + Math.PI / 2); c.scale(ka, ka); poly(c, [0, -30, 26, 16, -26, 16]); fill(c, '#e0233c'); c.restore() }
-      // трещина в верхнем крае и клочки бумаги
-      const kk = at(t, tb + .02, tb + .2), xr = -180 + 3 * 124;
-      if (kk > 0 && false) { c.save(); c.strokeStyle = C.n2; c.lineWidth = 3; c.lineCap = 'round'; for (const [dx, a, l] of [[-46, 2.2, 54], [40, 1.0, 62], [-20, 1.9, 34], [56, 1.35, 30]]) { const x0 = xr + dx * .6, y0 = -hh; drawOn(c, [x0, y0, x0 + Math.cos(a) * l * .5, y0 + Math.sin(a) * l * .55, x0 + Math.cos(a) * l, y0 + Math.sin(a) * l], kk) } c.restore() }
-      for (let i = 0; i < 7 && false; i++) { const kp = at(t, tb + .02, tb + .8 + .1 * H1(i)); if (kp <= 0 || kp >= 1) continue; const vx = (H1(i * 3.1) - .5) * 300, vy = -260 - 200 * H1(i * 5.7); c.save(); c.translate(xr + vx * kp, -hh + vy * kp + 520 * kp * kp); c.rotate(kp * 8 * (H1(i) - .5)); c.globalAlpha = 1 - kp; poly(c, [-10, -7, 12, -3, -2, 9]); fill(c, C.white); c.restore() }
       c.restore();
     }, { b: 30, dx: 10, dy: 20 });
-    // подпись над красным столбиком
     const kl = spr(at(t, tb + .15, tb + .5)) * kg, top = R.y + R.base - V1RB[3][1] * R.px;
-    if (kl > 0) { const cx2 = R.x - 112, cy2 = R.y - 26;   // v17.2 (мастер-ТЗ, ошибка 12): над короткими столбиками 2016–2017, не над «20,8»
-      plate(c, 'КАЖДЫЙ 4-Й', cx2, cy2 + 4, kl, { s: 30, bg: '#e0233c', c: C.white, ls: 3, r: -.03 }); tx(c, '27,5 %', cx2, cy2 - 56, { s: 50, c: '#e0233c', a: kl }) }   // v17.1: выноска внутри белого поля, левее столбика   // v17.0 (Gemini): левее острия стрелки
+    if (kl > 0) plate(c, 'КАЖДЫЙ 4-Й', R.x - 180 + 3 * 124 - 10, top - 82, kl, { s: 28, bg: '#e0233c', c: C.white, ls: 3, r: -.03 });   // над красным столбиком и его цифрой, внутри белого поля
   }
   // 1:21,9–1:26 — на столе крупная открытая пачка «Мальборо» (как в прототипе v16) с длинной тенью; на «новой компании» сверху
   // в один ряд с сигаретами падает и втыкается стик Juul, от его кончика пунктирной дугой рисуется доля 35 % на круге
@@ -6831,7 +6901,7 @@
     else if (t < K.secr) { W('s5', () => vS5(c, t))(); if (VARIANT === 1) v1LabFold(c, t) }   // вариант 1: камера стоит; папка — поверх затемнённой лаборатории
     else if (VARIANT === 2 && t >= K.secr && t < K.secr + .95) { if (t < K.secr + .5) W('s5', () => vS5(c, t))(); else pushTr(c, at(t, K.secr + .5, K.secr + .95), W('s5', () => vS5(c, t)), () => vS6(c, t), 'left'); v2CaseFly(c, t) }   // вариант 2: крышка захлопывается — потом в архив
     else if (t < K.secr + .45) { pushTr(c, at(t, K.secr, K.secr + .45), W('s5', () => vS5(c, t)), () => vS6(c, t), 'left'); vFolderFly(c, t) }
-    else if (VARIANT === 1 && t >= K.secrets - .05 && t < K.bzoom + .8) v18ArchZoom(c, t, W);   // v18 (ТЗ Gemini, п. 3): письма летят в камеру, дальняя папка «СОЛЬ · 1979» — зум сквозь письма, папка раскрывается, в круглом проёме — карта
+    else if (VARIANT === 1 && t >= K.secrets - .05 && t < K.bzoom + .8) v192Arch(c, t, W);   // v19.2 (отзыв 17.11): одинаковые листы ровным веером, папка выезжает из ниши целиком и раскрывается листом сайта, нырок в круг — вместо зума в надпись   // v18 (ТЗ Gemini, п. 3): письма летят в камеру, дальняя папка «СОЛЬ · 1979» — зум сквозь письма, папка раскрывается, в круглом проёме — карта
     else if (VARIANT === 1 && t >= K.bzoom - .3 && t < K.bzoom + .8) v1VaultMap(c, t, W);   // вариант 1: круг сейфа → радар → залив
     else if (t < K.bzoom) { vS6(c, t); vFolderFly(c, t) }
     else if (t < K.bzoom + .45) { pushTr(c, at(t, K.bzoom, K.bzoom + .45), () => vS6(c, t), W('s7', () => vS7(c, t)), 'left'); vCardFly(c, t) }

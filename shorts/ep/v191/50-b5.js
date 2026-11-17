@@ -27,7 +27,7 @@
     c.beginPath(); c.moveTo(540 - ex, 660 - ey); c.lineTo(540 + ex, 660 + ey); lnB(c, 10, B2.ink); circ(c, 540, 660, 16, B2.red);
     [[-1, 'cart'], [1, 'pack']].forEach(([s, what]) => { const px = 540 + s * ex, py = 660 + s * ey; c.beginPath(); c.moveTo(px, py); c.lineTo(px - 90, py + 230); c.moveTo(px, py); c.lineTo(px + 90, py + 230); lnB(c, 4, B2.ink);
       c.beginPath(); c.ellipse(px, py + 236, 120, 22, 0, 0, TAU); fill(c, B2.steel); lnB(c, 4, B2.ink);
-      if (what === 'pack') pack5(c, px, py + 226); else if (t < T5.wipe + .05) cart5(c, px, py + 226) });
+      if (what === 'pack') pack5(c, px, py + 226); else if (t < T5.wipe - .12) cart5(c, px, py + 226) });   // v19.2: на перевороте диска картридж уже снят с чаши (его рисует device5)
     const ke = bo(at(t, T5.pach - .05, T5.pach + .25)); if (ke > 0) { c.save(); c.translate(540, 760); c.scale(ke, ke); tx(c, '=', 0, 0, { f: 'U', w: 800, s: 130, c: B2.red }); c.restore() }
     tx(c, '1 КАРТРИДЖ', 540 - ex, 660 - ey + 330, { f: 'M', w: 800, s: 30, c: B2.ink }); tx(c, '20 СИГАРЕТ', 540 + ex, 660 + ey + 330, { f: 'M', w: 800, s: 30, c: B2.ink });
     c.restore();
@@ -43,8 +43,8 @@
     c.beginPath(); for (let x = Math.floor(v.x0 / 60) * 60; x < v.x1; x += 60) { c.moveTo(x, v.y0); c.lineTo(x, v.y1) } for (let y = Math.floor(v.y0 / 60) * 60; y < v.y1; y += 60) { c.moveTo(v.x0, y); c.lineTo(v.x1, y) } lnB(c, 1.5, 'rgba(255,255,255,.12)');
   }
   function device5(c, t) {   // одноразка в разрезе; k — поворот торцом (0 — сбоку, 1 — торец круг R 210)
-    const kg = t < T5.wipe ? 0 : spr(at(t, T5.razr - .45, T5.razr + .4)), km = eio(at(t, T5.wipe, T5.wipe + .45)), kr = eio(at(t, T5.rot, T5.rot + .7));
-    const s = lp(lp(.2, .35, km), 1, kg), cx = lp(lp(540 - 300, 540, km), ORB.x, kr), cy0 = lp(lp(805, DEV.y, km), ORB.y, kr);
+    const kg = t < T5.wipe ? 0 : spr(at(t, T5.razr - .45, T5.razr + .4)), km = eio(at(t, T5.wipe - .12, T5.wipe + .38)), kr = eio(at(t, T5.rot, T5.rot + .7));   // v19.2: картридж слетает с чаши вместе с переворотом диска
+    const s = lp(km < .5 ? .2 : lp(.2, .35, (km - .5) * 2), 1, kg), cx = lp(lp(540 - 300, 540, km), ORB.x, kr), cy0 = lp(lp(805, DEV.y, km), ORB.y, kr) - 90 * Math.sin(Math.PI * km);   // v19.2: в момент смены картридж → корпус одного размера; подскок дугой
     const w = lp(DEV.w * s, ORB.R * 2, kr), hl = DEV.h * s / 2 * Math.cos(kr * Math.PI / 2), ry = ORB.R * Math.sin(kr * Math.PI / 2) + w * .12 * (1 - kr), top = cy0 - hl;
     if (km < .5) { cart5(c, cx, cy0 + 75, 1); return { cx, top: cy0 - 75, s } }   // пока шторка не прошла — это ещё картридж с весов
     if (kr > .3) castCirc(c, cx, cy0, ORB.R * Math.min(1, kr * 1.2), 520 * at(kr, .3, 1), { st: 17 });
@@ -85,13 +85,17 @@
       c.restore() }
     const kp = bo(at(t, T5.k16 - .05, T5.k16 + .3)); if (kp > 0) plate(c, '= 16 КАРТРИДЖЕЙ', 540, 1330, kp, { s: 46, bg: B2.mango, c: B2.ink });
   }
-  function b5World(c, t, q) {
+  function b5World(c, t, q) {   // v19.2 (отзыв 17.11: «переход уебищный» — косая шторка): белый диск весов честно переворачивается (#019, формула Андрея «медальон поворачивается»),
+    // на обороте — синий чертёж; диск разрастается до краёв кадра, в нём уже балка с лебёдками; картридж в это время слетает с чаши в центр
     c.fillStyle = B2.ice2; c.fillRect(-2000, -2000, 5000, 6000);
-    if (t < T5.wipe + .6) scale5(c, t);
-    const kw = eio(at(t, T5.wipe, T5.wipe + .45));   // косая шторка чертежа
-    if (kw > 0) { c.save(); const v = viewRect(q), d = (v.y1 - v.y0) + (v.x1 - v.x0); poly(c, [v.x0 - 50, v.y1 + 50, v.x0 - 50 + d * 1.3 * kw, v.y1 + 50, v.x0 - 50 + d * 1.3 * kw - 900, v.y0 - 50, v.x0 - 50, v.y0 - 50]); c.clip(); blueprint5(c, t, q); cranes5(c, t); c.restore();
-      if (kw < 1) { c.save(); const v = viewRect(q), d = (v.y1 - v.y0) + (v.x1 - v.x0), X = v.x0 - 50 + d * 1.3 * kw; c.beginPath(); c.moveTo(X, v.y1 + 50); c.lineTo(X - 900, v.y0 - 50); lnB(c, 14, '#ffffff'); c.restore() } }
-    if (t > T5.wipe - .05) { device5(c, t); callouts5(c, t); orbit16(c, t) }
+    const kf = eio(at(t, T5.wipe - .12, T5.wipe + .3)), kd = eio(at(t, T5.wipe + .2, T5.wipe + .75)), v = viewRect(q);
+    const Rend = Math.max(...[[v.x0, v.y0], [v.x1, v.y0], [v.x0, v.y1], [v.x1, v.y1]].map(([x, y]) => Math.hypot(x - 540, y - 900))) + 60, R = 430 * Math.pow(Rend / 430, kd);
+    if (kf < .5) { const sx = Math.max(.002, Math.cos(Math.PI * kf)); c.save(); c.translate(540, 0); c.scale(sx, 1); c.translate(-540, 0); scale5(c, t); c.restore() }   // лицо диска: весы
+    else if (kd < 1) { const sx = Math.max(.002, -Math.cos(Math.PI * kf));   // оборот диска: синий чертёж; потом диск растёт до кадра
+      c.save(); c.beginPath(); c.ellipse(540, 900, R * sx, R, 0, 0, TAU); c.clip(); blueprint5(c, t, q); cranes5(c, t); c.restore();
+      c.beginPath(); c.ellipse(540, 900, R * sx, R, 0, 0, TAU); lnB(c, 5, B2.ln) }
+    else { blueprint5(c, t, q); cranes5(c, t) }
+    if (t > T5.wipe - .12) { device5(c, t); callouts5(c, t); orbit16(c, t) }
   }
   function b5Shot(c, t) {
     if (!T5) b5Init(); const q = camObj(camAt(K5, t)); c.save(); c.translate(540, 960); c.rotate(q.r); c.scale(q.z, q.z); c.translate(-q.x, -q.y); b5World(c, t, q); c.restore();
