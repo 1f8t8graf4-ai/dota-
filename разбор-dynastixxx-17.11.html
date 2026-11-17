@@ -1,0 +1,557 @@
+<title>Разбор dynastixxx</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Oswald:wght@500;600&display=swap">
+<style>
+/* Лист расследования: один столбец текста, сверху полоса как HUD в их роликах, разделы подписаны плашкой «● метка · тема», цитаты из роликов — кадром с субтитром */
+:root{
+  --bg:#EDF0F5; --card:#FFFFFF; --ink:#141B2D; --mute:#566075; --line:#D3D9E4;
+  --acc:#C24E15;
+  --film:#111827; --film-2:#1B2436; --film-ink:#F3F5F9; --film-mute:#98A2B6; --film-acc:#FF8A3D;
+  --ok:#1C7A51; --ok-bg:#DFF1E7; --warn:#93600F; --warn-bg:#F6EAD3; --no:#AE3824; --no-bg:#F8E1DB;
+  --have:#3B4DBE; --have-bg:#E3E7FA; --opt:#556074; --opt-bg:#E7EAF0;
+  --bar:#B8C0CF;
+  --f-disp:"Oswald","Arial Narrow","Roboto Condensed",Impact,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B101A; --card:#131A27; --ink:#E5E9F1; --mute:#97A1B5; --line:#243047;
+  --acc:#FF8A3D;
+  --film:#060A12; --film-2:#121A2A; --film-ink:#F3F5F9; --film-mute:#8C96AA; --film-acc:#FF8A3D;
+  --ok:#5CC995; --ok-bg:#132A1E; --warn:#E3AC4C; --warn-bg:#2E230E; --no:#F08470; --no-bg:#371812;
+  --have:#9BA8FF; --have-bg:#1B2145; --opt:#A2ABBE; --opt-bg:#1C2436;
+  --bar:#3A465F;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B101A; --card:#131A27; --ink:#E5E9F1; --mute:#97A1B5; --line:#243047;
+  --acc:#FF8A3D;
+  --film:#060A12; --film-2:#121A2A; --film-ink:#F3F5F9; --film-mute:#8C96AA; --film-acc:#FF8A3D;
+  --ok:#5CC995; --ok-bg:#132A1E; --warn:#E3AC4C; --warn-bg:#2E230E; --no:#F08470; --no-bg:#371812;
+  --have:#9BA8FF; --have-bg:#1B2145; --opt:#A2ABBE; --opt-bg:#1C2436;
+  --bar:#3A465F;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 56px}
+.wrap{max-width:1000px;margin:0 auto}
+.prose{max-width:68ch}
+a{color:var(--acc)}
+a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* HUD сверху */
+.hud{display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--film);color:var(--film-ink);
+  border-radius:10px;padding:12px 16px;font-family:var(--f-mono);font-size:12px;letter-spacing:.07em;text-transform:uppercase}
+.hud .l{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}
+.hud .l em{font-style:normal;color:var(--film-acc)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--film-acc);flex:none}
+@media (prefers-reduced-motion:no-preference){.dot{animation:rec 1.8s ease-in-out infinite alternate}}
+@keyframes rec{from{opacity:1}to{opacity:.35}}
+.hud .r{text-align:right;flex:none}
+.clk{font-size:22px;font-weight:600;letter-spacing:.02em;font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.hud .r small{display:block;color:var(--film-mute);font-size:10px;letter-spacing:.09em}
+
+h1{font-family:var(--f-disp);font-weight:600;text-transform:uppercase;font-size:clamp(40px,9vw,68px);line-height:1;letter-spacing:.005em;margin:28px 0 14px;text-wrap:balance}
+h1 .hl{color:var(--acc)}
+.lead{font-size:18px;margin:0}
+
+section{margin-top:52px}
+.eb{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:8px;margin:0 0 6px}
+.eb::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none}
+.eb em{font-style:normal;color:var(--acc)}
+h2{font-family:var(--f-disp);font-weight:600;text-transform:uppercase;font-size:clamp(26px,5vw,34px);line-height:1.08;letter-spacing:.01em;margin:0 0 16px;text-wrap:balance}
+h3{font-family:var(--f-disp);font-weight:500;text-transform:uppercase;font-size:21px;letter-spacing:.02em;margin:30px 0 10px}
+ul,ol{margin:0;padding-left:1.2em}
+li{margin:.45em 0}
+li::marker{color:var(--acc)}
+p{margin:.6em 0}
+.mute{color:var(--mute)}
+.small{font-size:14px}
+b,strong{font-weight:600}
+
+/* Итог */
+.sum{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.sum ol{padding-left:1.4em}
+.sum li{margin:.6em 0}
+
+/* Кадр с субтитром */
+.sub{background:var(--film);color:var(--film-ink);border-radius:8px;padding:10px 14px;font-weight:500;font-size:15.5px;line-height:1.45}
+.sub b{color:var(--film-acc);font-weight:600}
+.k{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 4px}
+
+/* Карточки */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card .nm{font-family:var(--f-disp);font-weight:600;font-size:21px;text-transform:uppercase;letter-spacing:.01em;line-height:1.1}
+.card .mt{font-family:var(--f-mono);font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.card .who{font-size:15px;color:var(--mute);margin:-4px 0 0}
+.card dl{margin:0;display:grid;gap:10px}
+.card dt{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.card dd{margin:2px 0 0;font-size:15px}
+
+/* Таблицы */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.grp td{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);background:var(--bg);padding:7px 12px}
+.t-hud{min-width:640px}
+.t-hud td{font-family:var(--f-mono);font-size:12.5px}
+.t-hud td:first-child{font-family:var(--f-body);font-size:14.5px;white-space:nowrap}
+.t-num{min-width:720px}
+.bar{display:inline-flex;align-items:center;gap:8px}
+.bar i{display:inline-block;width:64px;height:6px;border-radius:3px;background:var(--bg);position:relative;overflow:hidden;flex:none}
+.bar i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--bar)}
+.bar.hot i::after{background:var(--acc)}
+
+/* Мини-HUD */
+.mhud{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--film);color:var(--film-ink);border-radius:7px;padding:8px 12px;
+  font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+.mhud .l{display:flex;align-items:center;gap:7px;min-width:0}
+.mhud .l em{font-style:normal;color:var(--film-acc)}
+.mhud .r{font-size:16px;font-weight:600;letter-spacing:.02em;text-align:right;flex:none}
+.mhud .r small{display:block;font-size:9.5px;font-weight:400;color:var(--film-mute);letter-spacing:.08em}
+
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px}
+.box .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+
+/* Хронометраж формулы */
+.tl{list-style:none;padding:0;margin:0;display:grid;gap:2px;max-width:76ch}
+.tl li{display:grid;grid-template-columns:118px 1fr;gap:12px;margin:0;padding:9px 0;border-bottom:1px dashed var(--line)}
+.tl li:last-child{border-bottom:0}
+.tl .tc{font-family:var(--f-mono);font-size:13px;color:var(--acc);font-variant-numeric:tabular-nums;padding-top:2px}
+@media (max-width:520px){.tl li{grid-template-columns:1fr;gap:2px}}
+
+/* Чипы */
+.chip{display:inline-block;font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:4px 7px;border-radius:5px;white-space:nowrap;line-height:1}
+.chip.ok{color:var(--ok);background:var(--ok-bg)}
+.chip.warn{color:var(--warn);background:var(--warn-bg)}
+.chip.have{color:var(--have);background:var(--have-bg)}
+.chip.opt{color:var(--opt);background:var(--opt-bg)}
+.chip.no{color:var(--no);background:var(--no-bg)}
+
+/* Строки «берём» */
+.rows{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.rows li{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
+.rows .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rows .what{font-weight:600}
+.rows .src{font-size:14px;color:var(--mute)}
+.rows .ours{font-size:15px}
+
+/* Скелет промо */
+.scn{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.scn > li{margin:0;display:grid;grid-template-columns:92px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.scn .tc{font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;color:var(--acc);line-height:1.35}
+.scn .tc span{display:block;color:var(--mute);font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+.scn .bd{display:grid;gap:9px;min-width:0}
+.scn .pic{font-size:15px;margin:0}
+@media (max-width:560px){.scn > li{grid-template-columns:1fr;gap:8px}}
+
+.facts{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.facts li{margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.facts .chip{margin-top:3px}
+
+.ask{counter-reset:a;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.ask li{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px 12px 50px;position:relative}
+.ask li::before{counter-increment:a;content:counter(a);position:absolute;left:14px;top:11px;width:24px;height:24px;border-radius:50%;background:var(--film);color:var(--film-acc);
+  font-family:var(--f-mono);font-size:12px;font-weight:600;display:grid;place-items:center}
+
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:13.5px;color:var(--mute);max-width:76ch}
+</style>
+
+<div class="wrap">
+
+<div class="hud" role="banner">
+  <div class="l"><span class="dot" aria-hidden="true"></span><span>Разбор · <em>6 dynastixxx + 5 tiktok</em></span></div>
+  <div class="r"><span class="clk" id="clk" aria-label="Текущее время">00:00:00</span><small>как их часы · 17.11.2026</small></div>
+</div>
+
+<h1>Разбор <span class="hl">dynastixxx</span></h1>
+<p class="lead prose">6 роликов dynastixxx и 5 тиктоков, которые ты прислал. Задача: адаптировать, а не копировать. Понять, что у dynastixxx работает, почему тиктоки попроще набирают больше, и собрать на этом наше промо про «Джул».</p>
+
+<section>
+  <p class="eb">Итог · <em>коротко</em></p>
+  <div class="sum prose">
+    <ol>
+      <li><b>По картинке и темпу мы уже на уровне dynastixxx.</b> Кадр почти не стоит, в голосе нет пауз, громкость та же. Отстаём в сюжете и концовке.</li>
+      <li><b>Тиктоки набирают больше не картинкой.</b> У них тема из жизни зрителя, один герой и одно чувство, счётчик через весь ролик, вопрос в конце и «Часть 2».</li>
+      <li><b>Формат у них тот же.</b> Три тиктока из пяти начинаются тем же «Представь», с теми же плашками и цифрами. Тема массовее, рисовка проще, просмотров больше. Значит, решают тема и концовка.</li>
+      <li><b>У dynastixxx берём ремесло:</b> «ты» с первой фразы, цифру к 3-й секунде, плашку-якорь, финал, который переворачивает смысл.</li>
+      <li><b>У тиктоков берём то, что даёт комментарии и пересылки:</b> «ты» — это сам зритель, счётчик через весь ролик, вопрос в конце, серию.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <p class="eb">Плашка · <em>«год · место»</em></p>
+  <h2>«Год · место» — моя ошибка</h2>
+  <ul class="prose">
+    <li>Строки «год · место» у них нет. Схема другая: слева <b>«● когда или о чём · что сейчас»</b>, справа <b>большие часы с секундами</b>. У «Александра» вместо часов год.</li>
+    <li>Часы тикают по-настоящему, секунда в секунду. При смене сцены прыгают на её время. От этого кажется, что всё происходит прямо сейчас.</li>
+    <li>Место там иногда есть: ОФИС, ЦЕХ А, ГАВГАМЕЛЫ, АККРА · ГАНА · СЕРВЕРНАЯ. Чаще стоит событие: ЗАЯВЛЕНИЕ, ДЕЛО №2, BACKDOOR, РАССЫЛКА ОБНОВЛЕНИЯ.</li>
+  </ul>
+  <h3>Что написано в плашках</h3>
+  <div class="tw">
+    <table class="t-hud">
+      <thead><tr><th>Ролик</th><th>Слева</th><th>Справа</th></tr></thead>
+      <tbody>
+        <tr><td>Bybit</td><td>● ДЕНЬ −30 · ОФИС<br>● 21.02.2025 · ХОЛОДНЫЙ КОШЕЛЁК<br>● 26.02.2025 · ЗАЯВЛЕНИЕ</td><td>02:41:08<br>14:13:44<br>18:00:09</td></tr>
+        <tr><td>Джонатан Джеймс</td><td>● ПОДКЛЮЧЕНИЕ…<br>● BACKDOOR<br>● СИСТЕМА ЖИЗНЕОБЕСПЕЧЕНИЯ<br>(посередине, часы под надписью)</td><td>23:47:14<br>…</td></tr>
+        <tr><td>Stuxnet</td><td>ДЕЛО №07 · АРХИВ<br>ГДЕ-ТО · НОЧЬ<br>АТАКА · ЦЕХ А<br>СЕЙЧАС · ДОМА</td><td>02:14:08<br>02:40:03<br>15:02:08<br>23:48:01</td></tr>
+        <tr><td>ZachXBT</td><td>ДОСЬЕ ZACHXBT · СЕЙЧАС<br>ДОСЬЕ ZACHXBT · 2018<br>ДОСЬЕ ZACHXBT · ДЕЛО №1 · NFT<br>ДОСЬЕ ZACHXBT · СЕГОДНЯ LIVE</td><td>03:14:04<br>23:58:00<br>01:32:01<br>04:30:01<br>(под часами подпись)</td></tr>
+        <tr><td>NotPetya</td><td>● NOTPETYA · ЛАБОРАТОРИЯ<br>● NOTPETYA · РАССЫЛКА ОБНОВЛЕНИЯ<br>● NOTPETYA · АККРА · ГАНА · СЕРВЕРНАЯ<br>● NOTPETYA · ПЛАНЕТА</td><td>03:12:46<br>10:30:13<br>19:44:54<br>10:44:59</td></tr>
+        <tr><td>Александр</td><td>● 1 ОКТЯБРЯ · ГАВГАМЕЛЫ<br>● ТАКТИКА · КЛИН ГЕТАЙРОВ<br>● МЕМФИС · ЕГИПЕТ<br>● ГАДЕС · ИСПАНИЯ</td><td>331 ДО Н.Э.<br>331 ДО Н.Э.<br>332 ДО Н.Э.<br>69 ДО Н.Э.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box" style="margin-top:14px">
+    <span class="lbl">Для нас</span>
+    <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №2 · <em>Записка</em></span></span><span class="r">1973</span></div>
+    <p style="margin:0">Слева номер улики и что это, справа год. Номер растёт от сцены к сцене, поэтому плашка работает и якорем, и счётчиком. Это наша доска расследования. Часы с секундами не берём: это их знак.</p>
+  </div>
+</section>
+
+<section>
+  <p class="eb">Замер · <em>11 роликов и 2 наших</em></p>
+  <h2>Цифры</h2>
+  <div class="tw">
+    <table class="t-num">
+      <thead><tr><th>Ролик</th><th>Длина</th><th>Склеек в мин</th><th>Кадр стоит</th><th>Громкость</th><th>Концовка</th></tr></thead>
+      <tbody>
+        <tr class="grp"><td colspan="6">dynastixxx</td></tr>
+        <tr><td>Bybit</td><td class="n">1:56</td><td class="n">11,9</td><td class="n"><span class="bar"><i style="--w:1%"></i>0,8 %</span></td><td class="n">−12,5</td><td>фраза-переворот</td></tr>
+        <tr><td>Джонатан Джеймс</td><td class="n">1:48</td><td class="n">8,3</td><td class="n"><span class="bar"><i style="--w:4%"></i>3,0 %</span></td><td class="n">−12,5</td><td>фраза + петля в первый кадр</td></tr>
+        <tr><td>Stuxnet</td><td class="n">2:00</td><td class="n">7,5</td><td class="n"><span class="bar"><i style="--w:2%"></i>1,9 %</span></td><td class="n">−12,6</td><td>фраза-переворот</td></tr>
+        <tr><td>ZachXBT</td><td class="n">2:02</td><td class="n">3,9</td><td class="n"><span class="bar"><i style="--w:4%"></i>3,5 %</span></td><td class="n">−12,7</td><td>фразу договаривает титр «Легенда»</td></tr>
+        <tr><td>NotPetya</td><td class="n">1:55</td><td class="n">1,6</td><td class="n"><span class="bar"><i style="--w:6%"></i>4,6 %</span></td><td class="n">−12,8</td><td>фраза + титр с датой</td></tr>
+        <tr><td>Александр</td><td class="n">2:06</td><td class="n">6,2</td><td class="n"><span class="bar"><i style="--w:6%"></i>4,6 %</span></td><td class="n">−12,1</td><td>раскрытие имени</td></tr>
+        <tr class="grp"><td colspan="6">TikTok</td></tr>
+        <tr><td>«Идеальная девушка»</td><td class="n">2:31</td><td class="n">2,8</td><td class="n"><span class="bar hot"><i style="--w:54%"></i>43 %</span></td><td class="n">−16,3</td><td>поворот: «тоже не моргает»</td></tr>
+        <tr><td>«Миллиард в кубе»</td><td class="n">1:22</td><td class="n">16,2</td><td class="n"><span class="bar"><i style="--w:3%"></i>2,1 %</span></td><td class="n">−21,1</td><td>вопрос + «Часть 2»</td></tr>
+        <tr><td>«Чат класса»</td><td class="n">2:32</td><td class="n">16,2</td><td class="n"><span class="bar hot"><i style="--w:78%"></i>63 %</span></td><td class="n">−15,4</td><td>выбор + «Часть 2»</td></tr>
+        <tr><td>«Капитан»</td><td class="n">1:04</td><td class="n">0</td><td class="n"><span class="bar hot"><i style="--w:90%"></i>72 %</span></td><td class="n">−15,0</td><td>«Узнал капитана?»</td></tr>
+        <tr><td>«Нож отца»</td><td class="n">1:43</td><td class="n">5,8</td><td class="n"><span class="bar hot"><i style="--w:53%"></i>42 %</span></td><td class="n">−15,3</td><td>«А ты бы продал?»</td></tr>
+        <tr class="grp"><td colspan="6">Мы</td></tr>
+        <tr><td>«Боб», мостик выпуска 1</td><td class="n">1:48</td><td class="n">0,6</td><td class="n"><span class="bar"><i style="--w:1%"></i>0,4 %</span></td><td class="n">−12,5</td><td>петля в выпуск 2</td></tr>
+        <tr><td>«Лёд», шортс (без музыки)</td><td class="n">1:37</td><td class="n">0</td><td class="n"><span class="bar"><i style="--w:4%"></i>3,3 %</span></td><td class="n">—</td><td>петля в первый кадр</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="prose" style="margin-top:14px">
+    <li><b>Кадр стоит</b> — доля времени, когда картинка почти не меняется (наш <code>ref/prof.py</code>). <b>Склейки</b> — резкие смены кадра. <b>Громкость</b> — LUFS: чем ближе к нулю, тем громче.</li>
+    <li>У четырёх тиктоков кадр стоит 42–72 % времени. По сути это слайд-шоу с субтитрами, и просмотров у них больше.</li>
+    <li>Пауз в голосе нет ни у кого: тишины длиннее 0,35 с нет ни в одном из 11 роликов. У нас тоже.</li>
+    <li>Громкость ни при чём: dynastixxx и мы на −12,5, тиктоки тише, а смотрят их больше.</li>
+    <li>dynastixxx режет резко на ударных словах: у Bybit 23 склейки за ролик. У нас одна. Если захочешь пожёстче — 3–5 склеек на ударах, остальное плавно.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="eb">dynastixxx · <em>6 роликов</em></p>
+  <h2>Как устроен их ролик</h2>
+  <ol class="tl">
+    <li><span class="tc">0–5 с</span><span>«Представь, ты…»: кто ты и что на кону. К 3-й секунде крутится большая цифра.</span></li>
+    <li><span class="tc">5–50 с</span><span>Как это сделано: 6–8 коротких сцен, у каждой своя плашка и своё время.</span></li>
+    <li><span class="tc">52–60 с</span><span>Реклама: красная плашка VPN или сайта со скинами CS. Есть во всех шести.</span></li>
+    <li><span class="tc">60–95 с</span><span>Масштаб: карта мира, сумма ущерба, «Разыскивается», газеты.</span></li>
+    <li><span class="tc">95–110 с</span><span>Что стало с «тобой»: ни ареста, ни наград, первый подросток в истории.</span></li>
+    <li><span class="tc">последние 5–8 с</span><span>Фраза, которая переворачивает смысл всего ролика. Иногда её договаривает титр.</span></li>
+  </ol>
+
+  <div class="grid" style="margin-top:18px">
+    <article class="card">
+      <div class="hd"><span class="nm">Bybit</span><span class="mt">1:56</span></div>
+      <p class="who">Ты — хакер, который увёл у биржи полтора миллиарда.</p>
+      <div><p class="k">Начало</p><div class="sub">Представь, ты сидишь в <b>тёмном</b> офисе, где-то очень далеко от всех бирж мира.</div></div>
+      <div><p class="k">Конец</p><div class="sub">Биржу мира никто не <b>взламывал</b>. Её просто вежливо попросили подписать перевод.</div></div>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">Джонатан Джеймс</span><span class="mt">1:48</span></div>
+      <p class="who">Ты — школьник, который влез в Пентагон и НАСА.</p>
+      <div><p class="k">Начало</p><div class="sub">Представь, тебе <b>15</b> лет. 1999 год, Майами.</div></div>
+      <div><p class="k">Конец</p><div class="sub">Тебе шестнадцать, и об этом говорит весь мир. Ты обыграл Пентагон и НАСА, просто сидя у себя в <b>комнате</b>.</div><p class="small mute" style="margin:6px 0 0">Последний кадр — та же комната, что в начале.</p></div>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">Stuxnet</span><span class="mt">2:00</span></div>
+      <p class="who">Ты — тайный автор вируса, который сломал центрифуги.</p>
+      <div><p class="k">Начало</p><div class="sub">Представь, ты один из тех, кого <b>официально</b> никогда не существовало. 2007 год.</div></div>
+      <div><p class="k">Конец</p><div class="sub">Твоё имя не появится ни в одном учебнике. Но ты знаешь, что остановил <b>целую страну</b>, не сделав ни одного выстрела.</div></div>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">ZachXBT</span><span class="mt">2:02</span></div>
+      <p class="who">Ты — анонимный сыщик, которого боятся хакеры.</p>
+      <div><p class="k">Начало</p><div class="sub">Представь, ты — тот, кого <b>боятся хакеры</b>, которых боится весь мир. У тебя нет лица, нет имени.</div></div>
+      <div><p class="k">Конец</p><div class="sub">Ты стал её самым страшным <b>кошмаром</b>. Ты потерял всё, чтобы стать…</div><p class="small mute" style="margin:6px 0 0">Фразу договаривает титр «ЛЕГЕНДА ZACHXBT».</p></div>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">NotPetya</span><span class="mt">1:55</span></div>
+      <p class="who">Ты — автор кибератаки на весь мир.</p>
+      <div><p class="k">Начало</p><div class="sub">Представь: ты сидишь в комнате, где рождаются не программы, а <b>оружие</b>. Июнь 2017 года.</div></div>
+      <div><p class="k">Конец</p><div class="sub">Это не кража. Это была демонстрация <b>силы</b>.</div><p class="small mute" style="margin:6px 0 0">Титр «NOTPETYA · 27 июня 2017».</p></div>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">Александр</span><span class="mt">2:06</span></div>
+      <p class="who">Ты — полководец перед битвой при Гавгамелах.</p>
+      <div><p class="k">Начало</p><div class="sub">Представь, ты ведёшь за собой войско. За твоей спиной <b>сорок тысяч</b> человек.</div></div>
+      <div><p class="k">Конец</p><div class="sub">Тебя звали Александр. А мир назвал тебя Александр <b>Великий</b>.</div><p class="small mute" style="margin:6px 0 0">Перед этим рассказ переходит к Цезарю у статуи: «Ты уже покорил мир, а я ещё ничего не добился».</p></div>
+    </article>
+  </div>
+
+  <h3>Что общего</h3>
+  <ul class="prose">
+    <li>«Ты» всегда сильнее всех: хакер, сыщик, полководец. Зритель восхищается, но себя не узнаёт.</li>
+    <li>Финал закрытый, как точка. Написать в комментариях почти нечего, кроме «жёстко».</li>
+    <li>Четыре финала из шести держатся на противопоставлении: «никто не взламывал — попросили подписать», «это не кража — демонстрация силы». Ты запретил «не X, а Y» ещё 08.11, так что переворот нам нужен другой.</li>
+    <li>Раскрытие имени сработало один раз из шести: у Александра, потому что его имя знают все.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="eb">TikTok · <em>5 роликов</em></p>
+  <h2>Почему тиктоки попроще набирают больше</h2>
+  <ul class="prose">
+    <li>TikTok сам объясняет, от чего зависит показ: досмотрели ли до конца, лайкнули, прокомментировали, переслали, подписались. Красоты рисовки в этом списке нет.</li>
+    <li>Все пять роликов сделаны под эти действия. Разбор по одному:</li>
+  </ul>
+
+  <div class="grid" style="margin-top:16px">
+    <article class="card">
+      <div class="hd"><span class="nm">Идеальная девушка</span><span class="mt">@need_2_survive · 2:31</span></div>
+      <div><p class="k">Начало</p><div class="sub">Представь: твоя девушка <b>третий час</b> выбирает, какой стороной губ сниматься. А ты, блять, тайком…</div></div>
+      <dl>
+        <div><dt>Дальше</dt><dd>Просишь нейросеть сделать идеальную девушку. В дверь стучат.</dd></div>
+        <div><dt>Счётчик</dt><dd>Бесплатные запросы 3/3 → 0/3 → «Ошибка 402» → 999 ₽ в месяц.</dd></div>
+      </dl>
+      <div><p class="k">Конец</p><div class="sub">У девушки та же нейросеть, к ней пришёл «идеальный парень». И он, сука, тоже <b>не моргает</b>.</div></div>
+      <dl>
+        <div><dt>Почему смотрят</dt><dd>Отношения, нейросети и страшилка. Себя узнаёшь с первой фразы. Говорят как живые люди, с матом.</dd></div>
+        <div><dt>Перешлют</dt><dd>Своей девушке или парню.</dd></div>
+      </dl>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">Миллиард в кубе</span><span class="mt">@tocoeditss · 1:22</span></div>
+      <div><p class="k">Начало</p><div class="sub">Тебя закрыли со ста самыми <b>жадными</b> людьми планеты.</div><p class="small mute" style="margin:6px 0 0">К 4-й секунде сумма докручивается до $1 000 000 000.</p></div>
+      <dl>
+        <div><dt>Счётчик</dt><dd>24 часа на таймере, голоса 0/99 → 99/99.</dd></div>
+      </dl>
+      <div><p class="k">Конец</p><div class="sub">Тихий парень что-то написал, и все 99 наперегонки отдают ему голоса. <b>Что он написал?</b></div><p class="small mute" style="margin:6px 0 0">«Пиши догадку в комментариях» и кнопка «Часть 2».</p></div>
+      <dl>
+        <div><dt>Почему смотрят</dt><dd>Деньги и жадность, вопрос «а ты бы как?», загадка без ответа.</dd></div>
+        <div><dt>Перешлют</dt><dd>Другу, чтобы поспорить.</dd></div>
+      </dl>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">Чат класса</span><span class="mt">@dontscreambequiet · 2:32</span></div>
+      <div><p class="k">Начало</p><div class="sub">Если в чате класса написали: завтра сбор у автобуса, а не в школе — <b>проверь</b>, кто это написал.</div></div>
+      <dl>
+        <div><dt>Счётчик</dt><dd>«Буду» 4 → 17 → 22 из 26. По ходу три правила: новый номер — проверь старый; просят молчать — скажи родителям; спорь вживую, а не в чате.</dd></div>
+      </dl>
+      <div><p class="k">Конец</p><div class="sub">Автобус уедет через минуту. Сесть? Или <b>остаться</b>?</div><p class="small mute" style="margin:6px 0 0">«Голосуй в комментариях» и «Часть 2».</p></div>
+      <dl>
+        <div><dt>Почему смотрят</dt><dd>Страх за ребёнка и за себя. И польза: правила хочется сохранить.</dd></div>
+        <div><dt>Перешлют</dt><dd>Родители детям, дети в чат класса.</dd></div>
+      </dl>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">Капитан</span><span class="mt">@hahaghauwhu · 1:04</span></div>
+      <div><p class="k">Начало</p><div class="sub">Представь: ты капитан тир-один команды. Тебе давно <b>за тридцать</b>.</div></div>
+      <dl>
+        <div><dt>Счётчик</dt><dd>Счёт 11:12, «1 против 3», «2 патрона».</dd></div>
+      </dl>
+      <div><p class="k">Конец</p><div class="sub">Ты улыбаешься в камеру, а дрожащие руки прячешь под столом. <b>Узнал капитана?</b></div></div>
+      <dl>
+        <div><dt>Почему смотрят</dt><dd>Для фанатов CS: обида («старика пора кикать») и реванш. В конце викторина, ответ пишут ником в комментарии.</dd></div>
+        <div><dt>Картинка</dt><dd>Почти слайд-шоу: кадр стоит 72 % времени, склеек нет.</dd></div>
+        <div><dt>Перешлют</dt><dd>Другу, который смотрит CS.</dd></div>
+      </dl>
+    </article>
+    <article class="card">
+      <div class="hd"><span class="nm">Нож отца</span><span class="mt">@hort1x1 · 1:43</span></div>
+      <div><p class="k">Начало</p><div class="sub">Представь, ты находишь старый аккаунт отца, а в инвентаре нож, который сейчас стоит <b>как машина</b>.</div><p class="small mute" style="margin:6px 0 0">Цена за 4 секунды растёт с $90 до $18 450.</p></div>
+      <dl>
+        <div><dt>Дальше</dt><dd>Отец когда-то отказался от финала ради сына. Впервые за 12 лет садится играть: «руки всё помнят».</dd></div>
+      </dl>
+      <div><p class="k">Конец</p><div class="sub">А ты бы <b>продал</b>?</div><p class="small mute" style="margin:6px 0 0">Кнопки «Продать» и «Оставить».</p></div>
+      <dl>
+        <div><dt>Почему смотрят</dt><dd>Деньги, отец и сын, ностальгия по CS 2014.</dd></div>
+        <div><dt>Перешлют</dt><dd>Отцу или другу.</dd></div>
+      </dl>
+    </article>
+  </div>
+
+  <h3>Что общего</h3>
+  <ul class="prose">
+    <li><b>Тема из жизни зрителя:</b> девушка, школьный чат, отцовский аккаунт, киберспорт, деньги. У dynastixxx истории далёкие: биржа, Stuxnet, ZachXBT. Интересно, но «не про меня».</li>
+    <li><b>Один герой и одно чувство:</b> ревность, жадность, страх за ребёнка, обида, любовь к отцу.</li>
+    <li><b>Счётчик идёт через весь ролик</b> и держит вопрос «чем кончится?». У dynastixxx цифра крутится один раз, для красоты.</li>
+    <li><b>Конец открытый:</b> вопрос, выбор, «Часть 2». Зритель пишет в комментарии и идёт в профиль за продолжением.</li>
+    <li><b>Есть кому переслать.</b> dynastixxx пересылают как «просто интересное», тиктоки — конкретному человеку.</li>
+    <li><b>Простая рисовка не мешает.</b> На телефоне всё читается, держит история. И делать такое в разы быстрее.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="eb">Берём · <em>12 приёмов</em></p>
+  <h2>Что адаптируем</h2>
+  <ul class="rows">
+    <li><div class="top"><span class="chip ok">берём</span><span class="what">«Ты» с первой фразы</span></div><span class="src">Все 11 роликов.</span><span class="ours">У нас «ты» — сам зритель: подросток с «флешкой». Изобретателем «ты» не делаем.</span></li>
+    <li><div class="top"><span class="chip ok">берём</span><span class="what">Цифра к 3-й секунде</span></div><span class="src">Bybit, «Александр», «Миллиард», «Нож отца».</span><span class="ours">Счётчик затяжек: 0 → 200.</span></li>
+    <li><div class="top"><span class="chip ok">берём</span><span class="what">Счётчик через весь ролик</span></div><span class="src">«Идеальная девушка», «Миллиард», «Чат класса».</span><span class="ours">Номер улики растёт №1 → №5, затяжки доходят до 200 = пачка.</span></li>
+    <li><div class="top"><span class="chip warn">с переделкой</span><span class="what">Плашка-якорь</span></div><span class="src">Все шесть dynastixxx.</span><span class="ours">«● УЛИКА №N · ЧТО» и год справа. Часов с секундами нет.</span></li>
+    <li><div class="top"><span class="chip have">уже есть</span><span class="what">Кадр не стоит, голос без пауз, громко</span></div><span class="src">dynastixxx: кадр стоит 0,8–4,6 %, −12,5.</span><span class="ours">У нас 0,4–3,3 %, пауз нет, −12,5.</span></li>
+    <li><div class="top"><span class="chip opt">по желанию</span><span class="what">Резкая склейка на ударном слове</span></div><span class="src">Bybit — 23 за ролик, Stuxnet — 15.</span><span class="ours">3–5 на ролик, остальное плавно.</span></li>
+    <li><div class="top"><span class="chip warn">с переделкой</span><span class="what">Финал переворачивает смысл</span></div><span class="src">Все шесть dynastixxx.</span><span class="ours">«Тебя выбрали в 1973-м». Переворот через факт, без «не X, а Y».</span></li>
+    <li><div class="top"><span class="chip have">уже есть</span><span class="what">Петля в первый кадр</span></div><span class="src">Джонатан Джеймс.</span><span class="ours">Наши ролики так и кончаются.</span></li>
+    <li><div class="top"><span class="chip ok">берём</span><span class="what">Вопрос в конце</span></div><span class="src">«Миллиард», «Чат класса», «Капитан», «Нож отца».</span><span class="ours">«Угадай, кто вложил в эту флешку почти тринадцать миллиардов?»</span></li>
+    <li><div class="top"><span class="chip ok">берём</span><span class="what">«Часть 2»</span></div><span class="src">«Миллиард», «Чат класса».</span><span class="ours">Шортсы — главы фильма. Каждая кончается вопросом, ответ — в следующей.</span></li>
+    <li><div class="top"><span class="chip ok">берём</span><span class="what">Есть кому переслать</span></div><span class="src">Все пять тиктоков.</span><span class="ours">Ролик про того, кого зритель знает: друга, который парит, младшего брата.</span></li>
+    <li><div class="top"><span class="chip warn">с переделкой</span><span class="what">Живой язык</span></div><span class="src">«Идеальная девушка».</span><span class="ours">Короткие фразы, как говорят в жизни. Мат — решать тебе.</span></li>
+  </ul>
+</section>
+
+<section>
+  <p class="eb">Не берём · <em>7 пунктов</em></p>
+  <h2>Что не копируем</h2>
+  <ul class="prose">
+    <li><b>«Тебя звали X. А мир назвал…»</b> Работает, только когда имя знают все, как Александра. Боуэна и Монсиса не знает никто, а «Джул» они назвали сами.</li>
+    <li><b>«Представь,» первым словом.</b> Это их подпись, её уже копируют: три тиктока из пяти начинаются так же. Мы начинаем сразу с картинки и факта.</li>
+    <li><b>Часы с секундами в углу.</b> Их узнаваемый знак. У нас год и номер улики.</li>
+    <li><b>Финал «не X — а Y».</b> Ты такое запретил.</li>
+    <li><b>«Ты» — злодей-победитель</b> («ешь рамен и смеёшься», «ни ареста»). На теме вейпа это читается как реклама вейпа.</li>
+    <li><b>Реклама на 52–60-й секунде.</b> Нам пока не нужна. Если появится, VPN можно. Сайты со скинами и кейсами CS — нет, это азарт.</li>
+    <li><b>Подросток, который парит, крупным планом.</b> У TikTok строгие правила про подростков и никотин. Проверить до выкладки: в выпуске 1 у нас пар у школьников. «Флешка» в кадре — улика, а не крутая вещь.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="eb">Промо · <em>«Джул»</em></p>
+  <h2>Промо «Джул»: что поменять</h2>
+
+  <h3>Что не так в таблице</h3>
+  <ul class="prose">
+    <li><b>«Ты теряешь почти всё» — неправда.</b> Минус 96 % — это «Мальборо»: доля стоила 12,8 млрд $, осталось 450 млн. Основатели на этой сделке разбогатели.</li>
+    <li><b>«Мир назвал „Джул“».</b> Название дала сама компания.</li>
+    <li><b>«Тебя звали Адам Боуэн» в финале не сработает.</b> Имя никто не знает. И «звали» звучит так, будто он умер, а он жив.</li>
+    <li><b>Тайны нет уже с 0:36.</b> «Флешку», 2015 год и Стэнфорд узнают сразу.</li>
+  </ul>
+
+  <h3>Кто «ты»</h3>
+  <ul class="prose">
+    <li><b>Советую: «ты» — подросток с «флешкой».</b> Это история самого зрителя, её пересылают другу, который парит.</li>
+    <li>Запасной вариант: «ты» — табачник в 1973-м («Твои курильщики стареют. Тебе нужны новые, молодые»). Сильная история злодея, как Bybit и NotPetya, но себя в нём никто не узнает.</li>
+  </ul>
+
+  <h3>Скелет · ≈ 60 с</h3>
+  <p class="prose mute small">Около 140 слов: при нашем темпе это ≈ 60 с. В таблице было 81 с. Короче лучше: «подача долгая» — главный риск.</p>
+  <ol class="scn">
+    <li>
+      <div class="tc">0:00–0:03<span>крючок</span></div>
+      <div class="bd">
+        <div class="sub">Тебе пятнадцать. В кармане <b>флешка</b>. Она пахнет манго.</div>
+        <p class="pic">Рюкзак, крупно стик без логотипа, из него тянется сладкий пар. Учитель проходит мимо и не замечает.</p>
+        <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №1 · <em>Флешка</em></span></span><span class="r">2018<small>затяжек: 0</small></span></div>
+      </div>
+    </li>
+    <li>
+      <div class="tc">0:03–0:11<span>ощущение</span></div>
+      <div class="bd">
+        <div class="sub">Учитель думает, что это флешка. Мама тоже. Горло не дерёт, табаком не пахнет. Через неделю без неё ты <b>злой</b>.</div>
+        <p class="pic">Урок, перемена, кровать ночью. Счётчик затяжек бежит: 12 → 87 → 160.</p>
+        <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №1 · <em>Флешка</em></span></span><span class="r">2018<small>затяжек: 160</small></span></div>
+      </div>
+    </li>
+    <li>
+      <div class="tc">0:11–0:18<span>цифра</span></div>
+      <div class="bd">
+        <div class="sub">Двести затяжек — один картридж. Никотина в нём — как в <b>пачке сигарет</b>. Так пишет сама компания.</div>
+        <p class="pic">Счётчик упирается в 200, картридж складывается в пачку из 20 сигарет.</p>
+        <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №1 · <em>Флешка</em></span></span><span class="r">2018<small>затяжек: 200</small></span></div>
+      </div>
+    </li>
+    <li>
+      <div class="tc">0:18–0:28<span>поворот</span></div>
+      <div class="bd">
+        <div class="sub">Думаешь, это новая штука? Идее <b>сорок пять лет</b>. 1973 год. Табачная компания пишет у себя в записке: чтобы выжить, нам нужна молодёжь.</div>
+        <p class="pic">Пар уходит в щель стола, под ним лист 1973 года. Машинка допечатывает строку, её обводят красным.</p>
+        <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №2 · <em>Записка</em></span></span><span class="r">1973</span></div>
+      </div>
+    </li>
+    <li>
+      <div class="tc">0:28–0:36<span>что мешает</span></div>
+      <div class="bd">
+        <div class="sub">Мешает одно: новичок кашляет и бросает. Табачники ищут, как сделать дым мягче, и находят <b>соль</b>. Не дерёт — значит, можно больше.</div>
+        <p class="pic">Кашель, на листе выступают кристаллы соли, пар становится ровным и мягким.</p>
+        <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №3 · <em>Соль</em></span></span><span class="r">1979</span></div>
+      </div>
+    </li>
+    <li>
+      <div class="tc">0:36–0:46<span>студенты</span></div>
+      <div class="bd">
+        <div class="sub">Потом двое выпускников Стэнфорда открывают архивы табачников. Делают флешку, добавляют соль и манго. Через три года у них <b>три четверти</b> рынка США.</div>
+        <p class="pic">Стопки архивных папок, стик собирается из листов, карта США заливается цветом.</p>
+        <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №4 · <em>Студенты</em></span></span><span class="r">2015</span></div>
+      </div>
+    </li>
+    <li>
+      <div class="tc">0:46–0:56<span>переворот</span></div>
+      <div class="bd">
+        <div class="sub">В 2019-м парит каждый четвёртый старшеклассник США. Тебе пятнадцать. Тебя выбрали <b>в 1973-м</b>, за тридцать лет до того, как ты родился.</div>
+        <p class="pic">Школьный коридор, шкафчики, и обратно в рюкзак из первого кадра. На «флешке» проступает «1973».</p>
+        <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №1 · <em>Флешка</em></span></span><span class="r">2019</span></div>
+      </div>
+    </li>
+    <li>
+      <div class="tc">0:56–1:00<span>вопрос</span></div>
+      <div class="bd">
+        <div class="sub">Угадай, кто вложил в эту флешку почти <b>тринадцать миллиардов</b>?</div>
+        <p class="pic">Доска: карточки 1973, 1979, 2015, красная нить к пустой карточке «?» с суммой $12 800 000 000. В TikTok — «Часть 2 →», в мостике — «Целиком на YouTube».</p>
+        <div class="mhud"><span class="l"><span class="dot" aria-hidden="true"></span><span>Улика №5 · <em>?</em></span></span><span class="r">2018</span></div>
+      </div>
+    </li>
+  </ol>
+
+  <h3>Факты до озвучки</h3>
+  <ul class="facts prose">
+    <li><span class="chip ok">ок</span><span>1 картридж ≈ 200 затяжек ≈ пачка сигарет — так писала сама компания. В голосе так и говорим: «так пишет сама компания».</span></li>
+    <li><span class="chip ok">ок</span><span>Записка R.J. Reynolds, 1973 (Клод Тиг): «чтобы выжить и процветать, мы должны получить свою долю молодёжного рынка». Возраст «14–18» — из другой записки, 1975 года, поэтому в промо без возраста.</span></li>
+    <li><span class="chip warn">уточнить</span><span>Основатели брали идею соли из архивов табачников и патентов RJR — так пишет расследование LA Times 2019. Сами основатели это отрицают.</span></li>
+    <li><span class="chip warn">натяжка</span><span>Год соли 1979 — твоё решение для карточки на доске. Исследования у табачников были раньше.</span></li>
+    <li><span class="chip ok">ок</span><span>Три четверти рынка США — конец 2018 года.</span></li>
+    <li><span class="chip ok">ок</span><span>Каждый четвёртый старшеклассник — американский опрос школьников 2019 года (27,5 % парят).</span></li>
+    <li><span class="chip ok">ок</span><span>Почти 13 млрд $ — «Альтрия», владелец «Мальборо», декабрь 2018: 12,8 млрд $ за 35 %.</span></li>
+    <li><span class="chip warn">натяжка</span><span>«Тебя выбрали в 1973-м» — драма, а не цитата. Решать тебе.</span></li>
+  </ul>
+</section>
+
+<section>
+  <p class="eb">Тебе · <em>3 решения</em></p>
+  <h2>Что нужно от тебя</h2>
+  <ol class="ask prose">
+    <li><b>Кто «ты» в промо:</b> подросток с «флешкой» (советую) или табачник 1973-го.</li>
+    <li><b>Конец вопросом и «Часть 2»</b> — ок? Тогда каждый шортс кончается вопросом, а ответ — в следующей главе.</li>
+    <li><b>Голос.</b> ElevenLabs платный, без твоего «да» и суммы не трогаю. До этого промо собирается без голоса, по таймингу текста.</li>
+  </ol>
+</section>
+
+<footer>
+  <p>Как смотрел: кадры каждые 4 секунды, первые 6 секунд — каждые полсекунды, концовки — покадрово. Слова — по субтитрам в кадре. Склейки — по скачкам картинки, «кадр стоит» — <code>ref/prof.py</code>, громкость — LUFS по всему ролику.</p>
+  <p>Второй Claude получил то же задание (<code>ТЗ-ДЛЯ-КЛАУДА-17.11-разбор-dynastixxx.md</code>). Этой страницы у него нет.</p>
+  <p>Источники по фактам: <a href="https://tobacco.stanford.edu/cigarettes/targeting-teens/todays-youth/" target="_blank" rel="noopener">архив рекламы табака Стэнфорда</a> (записка 1973 года), <a href="https://seatca.org/juul-wanted-to-revolutionize-vaping-it-took-a-page-from-big-tobaccos-chemical-formulas/" target="_blank" rel="noopener">перепечатка расследования LA Times 2019</a> (соль и архивы).</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var el=document.getElementById('clk');
+  if(!el)return;
+  function p(n){return (n<10?'0':'')+n}
+  function t(){var d=new Date();el.textContent=p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds())}
+  t();setInterval(t,1000);
+})();
+</script>
