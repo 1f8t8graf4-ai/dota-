@@ -4620,6 +4620,7 @@
     c.fillStyle = o.col; c.fillRect(x - w / 2, y - h, w, h); c.fillStyle = o.dk; c.fillRect(x + w / 2 - 12, y - h, 12, h);
     c.strokeStyle = o.dk; c.lineWidth = 4; c.strokeRect(x - w / 2 + 9, y - h + 9, w - 30, h - 18);
     for (let i = 0; i < 4; i++) { rr(c, x - w * .3, y - h + 40 + i * 20, w * .52, 8, 4); fill(c, o.dk) }
+    c.fillStyle = 'rgba(16,24,60,.28)'; c.fillRect(x + w * .25, y - h, w * .25, h); rr(c, x - w / 2 + 8, y - h + 14, 12, h - 28, 6); fill(c, 'rgba(255,255,255,.3)');   // v19.0: 3 тона — тень справа, блик слева
     rr(c, x + w * .18, y - h * .52, 12, 50, 6); fill(c, '#d5dbe6');
     rr(c, x - 30, y - h + 132, 52, 26, 4); fill(c, '#eef2f8'); tx(c, String(o.n), x - 4, y - h + 145, { f: 'J', w: 700, s: 18, c: C.ink });
     if (LUX()) { const g = c.createLinearGradient(x - w / 2, y - h, x + w / 2, y); g.addColorStop(0, 'rgba(255,255,255,.12)'); g.addColorStop(.5, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(0,0,0,.2)'); c.fillStyle = g; c.fillRect(x - w / 2, y - h, w, h) }
@@ -4689,8 +4690,14 @@
       }
     });
   }
+  function steamV(c, t) {   // v19.0: пар над силуэтами школьников — контурные кружки поднимаются и тают
+    TEENV.forEach((p, i) => { if (i % 2 && !REDV.includes(i)) return; const hx = p.x + 30 * p.s, hy = p.y - 560 * p.s;
+      for (let j = 0; j < 4; j++) { const u = ((t * .38 + j / 4 + i * .17) % 1), r = (16 + 40 * u) * p.s * 2; c.beginPath(); c.arc(hx + Math.sin(u * 5 + i) * 18 * p.s + u * 40 * p.s, hy - u * 260 * p.s, r, 0, TAU); c.strokeStyle = `rgba(240,248,255,${.8 * (1 - u)})`; c.lineWidth = 6; c.stroke() } });
+  }
   function vS12(c, t) {
-    if (VARIANT === 2) v2School(c, t); else { schoolCorrV(c, t); kidsV(c, t) }   // вариант 2: здание в разрезе
+    const zP = 1 + .09 * eio(at(t, K.kids - .4, K.usa + 1.6)); c.save(); c.translate(540, 980); c.scale(zP, zP); c.translate(-540, -980);   // v19.0: наезд камеры на коридор
+    if (VARIANT === 2) v2School(c, t); else { schoolCorrV(c, t); kidsV(c, t); steamV(c, t) }   // вариант 2: здание в разрезе
+    c.restore();
     // график «ЗАВИСИМОСТЬ» над шкафчиками: на «подсаживались», уходит на «в США»
     const kg = VARIANT === 1 ? 0 : spr(at(t, K.hooked - .1, K.hooked + .3)) * (1 - eio(at(t, K.usa - .25, K.usa + .1)));   // вариант 1: вместо графика — отчёт со столбиками (v1Report)
     if (VARIANT === 1) v1Report(c, t);
@@ -4945,6 +4952,7 @@
     if (VARIANT === 2 && t < 2.45) return;   // вариант 2: «Что вы знаете об одноразках?» — на ленте
     if (t > K.qt[0] - .15 && t < K.qEnd + .35) return;   // цитата печатается на бумаге — субтитр её не повторяет
     if (t > K.whip - .02) return;
+    if (BRIDGE && MODE === 'main' && t > K.cold + .45) return;   // v19.0: «холоднее» — под карточкой 2020, в нырке в фото субтитра нет (последний кадр = кадр 0 выпуска 2)
     const ch = CHUNKS.find(x => t >= x.a - .05 && t < x.e); if (!ch) return;
     if (ch.a > K.qt[0] - .25 && ch.a < K.qEnd + .1) return;
     const o = { f: 'M', w: 800, s: 54, ls: 0 }, w = tw(c, ch.s, o) + 56, h = 84, k = eo(at(t, ch.a - .05, ch.a + .1)) * (VARIANT === 1 && MODE === 'main' && !BRIDGE && ch.a >= K.q2 - .1 ? 1 - ss(K.q2 + .12, K.q2 + .3, t) : 1);   // v18 (ТЗ Gemini, п. 7): «А, точно!» гаснет до наезда в ноутбук
@@ -6176,13 +6184,28 @@
       c.save(); c.globalAlpha = (1 - k) * .85; circ(c, x + ox + e * (160 + 120 * H1(i)), y + oy - e * (90 + 140 * H1(i * 3.1)) + 30 * k * k, 4 + 6 * H1(i * 1.7), i % 3 ? '#9c9893' : '#cfcac3'); c.restore();
     }
   }
+  function bedBack(c, t) {   // v19.0: ночная спальня за вейпом крупным планом — 3 слоя: город в окне, окно со шторами, край кровати и пылинки
+    c.fillStyle = '#1b1d3a'; c.fillRect(-400, -400, WW + 800, HH + 800);
+    const dx = Math.sin(t * .3) * 10;
+    c.save(); c.beginPath(); c.rect(250, 220, 580, 760); c.clip(); c.fillStyle = '#0d1230'; c.fillRect(250, 220, 580, 760);
+    c.beginPath(); c.arc(700 + dx * .3, 330, 46, 0, TAU); c.fillStyle = '#f1f5f9'; c.fill();
+    let x = 230 + dx * .4, i = 0; while (x < 860) { const w = 50 + H1(i * 3.1) * 60, h = 160 + H1(i * 5.7) * 300; c.fillStyle = '#20264a'; c.fillRect(x, 980 - h, w + 1, h);
+      for (let r = 0; r < h / 36 - 1; r++) for (let q = 0; q < (w - 14) / 20; q++) if (H1(i * 17 + r * 5 + q) < .3) { c.fillStyle = '#f4a261'; c.fillRect(x + 8 + q * 20, 980 - h + 14 + r * 36, 9, 14) } x += w + 4; i++ }
+    c.restore();
+    c.fillStyle = '#2c2f55'; c.fillRect(530, 220, 20, 760); c.fillRect(250, 580, 580, 20); c.strokeStyle = '#3c4070'; c.lineWidth = 22; c.strokeRect(250, 220, 580, 760);
+    for (const s of [-1, 1]) { const x0 = s < 0 ? 170 : 910; c.fillStyle = '#3b2a55'; c.beginPath(); c.moveTo(x0 - 110, 160); c.lineTo(x0 + 110, 160); c.quadraticCurveTo(x0 + 70 + s * 10, 600, x0 + 90 * s * -1 + 20 * s, 1080); c.lineTo(x0 - 110 * s, 1080); c.closePath(); c.fill();
+      c.strokeStyle = '#2a1d40'; c.lineWidth = 6; for (let j = 0; j < 3; j++) { c.beginPath(); c.moveTo(x0 - 60 + j * 50, 170); c.quadraticCurveTo(x0 - 50 + j * 50 + Math.sin(t + j) * 6, 600, x0 - 70 + j * 50, 1070); c.stroke() } }
+    c.fillStyle = '#141530'; c.beginPath(); c.moveTo(-400, 1500); c.quadraticCurveTo(540, 1400, 1480, 1520); c.lineTo(1480, 2400); c.lineTo(-400, 2400); c.closePath(); c.fill();
+    for (let j = 0; j < 18; j++) { const u = (t * .05 + H1(j * 3.3)) % 1; c.beginPath(); c.arc(80 + H1(j * 7.1) * 920, 1500 - u * 1200, 2 + H1(j) * 3, 0, TAU); c.fillStyle = `rgba(255,236,200,${.35 * Math.sin(Math.PI * u)})`; c.fill() }
+  }
   function v1MemoToVape(c, t, W) {
     // v18: под доозвучку «Бумажная сигарета ушла в прошлое, а табачная империя сорвала самый большой куш…» — та же сцена, растянутая на всю фразу (≈ 6 с):
     // сигарета истлевает → лист сворачивается в трубку → вейп «МАНГО» на веере стодолларовых купюр (#181 «Мадонна») → купюры гаснут, проступает спальня
     const P1 = K.pap < 1e8, T0 = P1 ? K.pap : K.adm - .95, F = P1 ? Math.max(1, (K.adm - .3 - K.pap) / 1.5) : 1, R = x => T0 + x * F;
-    const b = eio(at(t, R(.02), R(.36))), kf = eio(at(t, R(.42), R(.7))), kd = ss(R(.45), R(.75), t), kn = ss(R(1.22), R(1.5), t);
+    const b = eio(at(t, R(.02), R(.36))), kf = eio(at(t, R(.42), R(.7))), kd = ss(R(.45), R(.75), t), kn = ss(R(1.22), R(1.5), t), kbb = ss(R(.42), R(.74), t);   // v19.0: kbb — ночная спальня за вейпом и веером (вместо чёрной пустоты)
     const kv = at(t, P1 ? R(.66) : T0 + .88, P1 ? R(.82) : T0 + 1.3), kva = ss(0, .35, kv), vs = spr(kv), kb = P1 ? eo(at(t, R(.74), R(.98))) * (1 - ss(R(1.12), R(1.32), t)) : 0;
     c.fillStyle = '#0c0f20'; c.fillRect(-400, -400, WW + 800, HH + 800);
+    if (kbb > 0) { c.save(); c.globalAlpha *= kbb; bedBack(c, t); c.restore() }
     if (kd < 1) v1Fade(c, 1 - kd, cc => { V1NOMEMO = true; vS14(cc, t); V1NOMEMO = false; rig(cc, t, 's14') });   // стол без листа гаснет
     if (kn > 0) v1Fade(c, kn, cc => { vS15(cc, t); rig(cc, t, 's15') });   // спальня проступает (вейп в ней — на том же месте)
     // лист: бока сворачиваются к центру — трубка по высоте вейпа в спальне
@@ -6896,7 +6919,7 @@
       if (!document.getElementById('v162')) { const st = document.createElement('style'); st.id = 'v162'; st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join(''); document.head.appendChild(st) }
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
       X = cv.getContext('2d'); MA = MB = null; CORK = null; OFF = null; for (const k in BLUR) delete BLUR[k];
-      if (BRIDGE && !IMG18) { IMG18 = new Image(); IMG18.src = 'ep/v180-f0.png' }   // v18: кадр 0 выпуска 2 v18.1 (ep/v180) — снять заново, если выпуск 2 поменялся: node v170tools/frame.mjs v180s-ru 0 ep/v180-f0.png
+      if (BRIDGE && !IMG18) { IMG18 = new Image(); IMG18.src = 'ep/v190-f0.png' }   // v19.0 (17.11): кадр 0 выпуска 2 v19.0 «Боб 2.0» (глыба льда, без плашки года); было ep/v180-f0.png (v18.1) — снять заново, если выпуск 2 поменялся: node v170tools/frame.mjs v180s-ru 0 ep/v180-f0.png
       return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px "Liberation Serif"'].map(f => document.fonts.load(f, 'АЯaz09')).concat(BRIDGE ? [IMG18.decode()] : [])).then(() => { qLayout(X); return 0 });
     },
   };
