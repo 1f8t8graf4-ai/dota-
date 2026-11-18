@@ -1,0 +1,441 @@
+<title>Тексты главы «Мальборо»</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&family=Oswald:wght@600&display=swap">
+<style>
+/* Лист диктора: сверху доска глав фильма и совет, ниже переключатель «Текст 1 · 2 · 3 · Gemini»,
+   текст построчно с номерами строк (по ним удобно писать правки), сбоку на ПК — плюсы, минусы, факты. */
+:root{
+  --ground:#F1EFEE; --sheet:#FFFFFF; --ink:#1C1919; --muted:#6C6563; --line:#DCD6D3;
+  --red:#B3141C; --kraft:#E6D6B8; --kraft-ink:#3B2F1E; --marker:rgba(255,206,48,.6); --ok:#1D7A4C;
+  --f-disp:"Oswald","Arial Narrow","Roboto Condensed",sans-serif;
+  --f-body:"Golos Text",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#151313; --sheet:#1F1C1B; --ink:#EEE9E6; --muted:#A39A96; --line:#36312F;
+  --red:#EA5359; --kraft:#3B3226; --kraft-ink:#EADCC4; --marker:rgba(255,206,48,.3); --ok:#55C994; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#151313; --sheet:#1F1C1B; --ink:#EEE9E6; --muted:#A39A96; --line:#36312F;
+  --red:#EA5359; --kraft:#3B3226; --kraft-ink:#EADCC4; --marker:rgba(255,206,48,.3); --ok:#55C994; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:16px/1.5 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:2px}
+a:hover{text-decoration-color:var(--red)}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
+.eb{font:500 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:600 clamp(40px,9vw,68px)/1 var(--f-disp);letter-spacing:.01em;text-transform:uppercase}
+h1 .yr{color:var(--red)}
+h2{font:600 clamp(26px,5vw,34px)/1.1 var(--f-disp);letter-spacing:.01em}
+h3{font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lede{margin:0;max-width:60ch;font-size:17px}
+header.top{display:flex;flex-direction:column;gap:12px}
+
+/* доска глав */
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.bc{background:var(--kraft);color:var(--kraft-ink);border-radius:3px;padding:10px 10px 9px;display:flex;flex-direction:column;gap:2px;min-width:0;position:relative}
+.bc b{font:600 22px/1 var(--f-disp)}
+.bc span{font-size:13px;line-height:1.25}
+.bc small{font:500 10.5px/1.3 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;opacity:.75;margin-top:4px}
+.bc.film small{color:var(--red);opacity:1}
+.bc.now{outline:2px solid var(--red);outline-offset:-2px}
+.bc i{font:500 10.5px/1.2 var(--f-mono);font-style:normal;text-transform:uppercase;letter-spacing:.05em;opacity:.75;margin-bottom:4px}
+.bc.now i{opacity:1}
+.bc.now i{color:var(--red)}
+@media (max-width:720px){.board{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* совет */
+.tip{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:18px 18px 16px;display:grid;gap:10px}
+.tip h2{font-size:24px}
+.tip ul{margin:0;padding-left:20px;display:grid;gap:6px;max-width:70ch}
+.chosen-line{margin:0;font-weight:600;color:var(--ok)}
+
+/* вкладки */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);padding-block:8px;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.tab{appearance:none;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:6px;
+  padding:8px 6px;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0}
+.tab b{font:600 15px/1.2 var(--f-body);white-space:nowrap}
+.tab span{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tab[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--red)}
+.tab .ck{display:none;color:var(--ok)}
+.tab.chosen .ck{display:inline}
+
+/* панель текста */
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:22px 18px 22px}
+.phead{display:grid;gap:10px;margin-bottom:22px;max-width:70ch}
+.idea{margin:0;font-size:17px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{appearance:none;font:600 15px/1 var(--f-body);border-radius:6px;padding:12px 16px;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink)}
+.btn.pick{background:var(--red);border-color:var(--red);color:#fff}
+.btn.pick[aria-pressed="true"]{background:transparent;color:var(--ok);border-color:var(--ok)}
+.msg{font-size:14px;color:var(--muted)}
+p.msg{margin:0}
+p.msg:empty{display:none}
+.pbody{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:36px;align-items:start}
+@media (max-width:860px){.pbody{grid-template-columns:minmax(0,1fr);gap:26px}}
+.script{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:64ch;counter-reset:l}
+.script li{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:4px 10px;font-size:17.5px;line-height:1.55}
+.script .n{font:500 13px/1.9 var(--f-mono);color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.script mark{background:linear-gradient(transparent 52%,var(--marker) 52%);color:inherit;padding:0 1px}
+.script .tag{grid-column:2;font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
+aside{display:grid;gap:22px;min-width:0}
+.pm{display:grid;gap:8px}
+.pm ul{margin:0;padding:0;list-style:none;display:grid;gap:7px}
+.pm li{display:grid;grid-template-columns:1.1em minmax(0,1fr);gap:6px;font-size:15px}
+.pm li::before{font:600 15px/1.45 var(--f-mono)}
+.plus li::before{content:"+";color:var(--ok)}
+.minus li::before{content:"−";color:var(--red)}
+details{border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts ol{margin:12px 0 0;padding-left:20px;display:grid;gap:9px;font-size:14.5px}
+.facts .src{display:block;font-size:13px;color:var(--muted)}
+.note{display:grid;gap:6px}
+.note label{font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+textarea{width:100%;min-height:96px;resize:vertical;font:15px/1.45 var(--f-body);color:var(--ink);background:var(--ground);
+  border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+textarea:focus-visible{outline:2px solid var(--red);outline-offset:0}
+.st{font-size:13px;color:var(--muted);min-height:1.2em}
+
+/* Gemini */
+.gem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:960px){.gem{grid-template-columns:minmax(0,1fr)}}
+.g{border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.g .gid{font:600 28px/1 var(--f-disp);color:var(--red)}
+.g h3{color:var(--ink);font:600 18px/1.25 var(--f-body);letter-spacing:0;text-transform:none}
+.g .meta{font:500 12px/1 var(--f-mono);color:var(--muted)}
+.g p{margin:0;font-size:15px}
+.g h4{margin:4px 0 0;font:600 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
+.g ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
+.g .gnote{color:var(--muted);font-size:14px}
+
+/* что дальше */
+.next{display:grid;gap:12px}
+.next ol{margin:0;padding-left:22px;display:grid;gap:8px;max-width:72ch}
+footer{color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<div class="wrap">
+<header class="top">
+<p class="eb">Фильм «Что вы знаете о никотине?» · глава 3</p>
+<h1><span class="yr">1924</span> · «Мальборо»</h1>
+<p class="lede">Три текста для голоса и разбор трёх сценариев Gemini. Выбери один текст или напиши, что взять из разных.</p>
+<ol class="board" aria-label="Главы фильма">
+<li class="bc"><i>готово</i><b>1979</b><span>Боб</span><small>TikTok · часть 1</small></li>
+<li class="bc"><i>готово</i><b>2020</b><span>Лёд</span><small>TikTok · часть 2</small></li>
+<li class="bc now film"><i>сейчас</i><b>1924</b><span>Мальборо</span><small>только в фильме</small></li>
+<li class="bc"><i>дальше</i><b>2014</b><span>Айкос</span><small>TikTok · часть 3</small></li>
+<li class="bc"><i>дальше</i><b>2022</b><span>Шайбы</span><small>TikTok · часть 4</small></li>
+<li class="bc film"><i>дальше</i><b>финал</b><span>Переворот доски</span><small>только в фильме</small></li>
+</ol>
+</header>
+
+<section class="tip" aria-labelledby="tip-h">
+<h2 id="tip-h">Мой совет — текст 1</h2>
+<ul>
+<li>Самое сильное место главы — живой ковбой и его последние слова.</li>
+<li>Первая же фраза отвечает на вопрос, которым кончается «Лёд».</li>
+<li>Хочешь подачу, как в «Бобе» и «Льде», — бери текст 3. Связку через 12 млрд из него можно вставить в любой текст.</li>
+<li>Длина у всех трёх — 1:33–1:40, как у первых двух глав (1:48 и 1:36).</li>
+</ul>
+<p class="chosen-line" id="chosen" hidden></p>
+<p class="msg" id="dbmsg" aria-live="polite"></p>
+</section>
+
+<nav class="tabs" id="tabs" role="tablist" aria-label="Тексты"><button class="tab" type="button" role="tab" id="tab-t1" data-p="t1" aria-controls="p-t1" aria-selected="false"><b>Текст 1 <span class="ck">✓</span></b><span>ковбой</span></button><button class="tab" type="button" role="tab" id="tab-t2" data-p="t2" aria-controls="p-t2" aria-selected="false"><b>Текст 2 <span class="ck">✓</span></b><span>рекламщик</span></button><button class="tab" type="button" role="tab" id="tab-t3" data-p="t3" aria-controls="p-t3" aria-selected="false"><b>Текст 3 <span class="ck">✓</span></b><span>три жизни</span></button><button class="tab" type="button" role="tab" id="tab-gemini" data-p="gemini" aria-controls="p-gemini" aria-selected="false"><b>Gemini</b><span>3 сценария</span></button></nav>
+<section class="panel" id="p-t1" role="tabpanel" aria-labelledby="tab-t1">
+<div class="phead">
+<p class="eb">Текст 1 · ≈ 1:38 · 235 слов</p>
+<h2>Вы — ковбой с рекламы</h2>
+<p class="idea">Зритель на месте Уэйна Макларена — одного из ковбоев «Мальборо». Факты о марке идут через его жизнь.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t1" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t1">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li><span class="n">1</span><span>Это «Мальборо».</span></li>
+<li><span class="n">2</span><span>Представьте, что вы — Уэйн Макларен: вы выступаете на родео, а в семьдесят шестом году вас снимают для рекламы самых мужских сигарет на свете.</span></li>
+<li><span class="n">3</span><span>Вам вряд ли рассказывали, что первые тридцать лет их продавали женщинам — под слоганом «мягкие, как май», и кончик красили в красный, чтобы на нём не было видно помады.</span></li>
+<li><span class="n">4</span><span>Ковбой появился в пятьдесят четвёртом: курильщики тогда впервые испугались рака и потянулись к фильтру, а сигареты с фильтром считались куревом для неженок.</span></li>
+<li><span class="n">5</span><span>Рекламщик Лео Бёрнетт сделал лицом рекламы самого понятного в Америке мужчину — ковбоя, и через год бывшая дамская марка была уже четвёртой в стране.</span></li>
+<li><span class="n">6</span><span>А вы курите полторы пачки в день, двадцать пять лет подряд.</span></li>
+<li><span class="n">7</span><span>В девяностом году врачи находят у вас рак лёгких.</span></li>
+<li><span class="n">8</span><span>В рекламе против курения вас показывают в ковбойской шляпе — и тут же на больничной койке.</span></li>
+<li><span class="n">9</span><span>Вы приезжаете на собрание акционеров «Филип Моррис» и просите урезать рекламу, а там отвечают, что не нашли никаких записей о том, что вы у них работали.</span></li>
+<li><span class="n">10</span><span>Летом девяносто второго вы умираете. Вам пятьдесят один год.</span></li>
+<li class="key"><span class="n">11</span><span><mark>Мама потом расскажет, что одними из последних ваших слов были: «Берегите детей. Табак вас убьёт, и я — живое тому доказательство».</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">12</span><span>От болезней лёгких умерли как минимум четверо ковбоев с этой рекламы, а сами сигареты в народе прозвали «убийцами ковбоев».</span></li>
+<li><span class="n">13</span><span>А в две тысячи четырнадцатом, когда курильщики снова испугались дыма, хозяева «Мальборо» выпустили сигарету без огня: табак в ней греет маленький нагреватель.</span></li>
+<li><span class="n">14</span><span>И стики к ней назывались… «Мальборо».</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Живой человек и его последние слова — самое сильное место главы.</li><li>Первая же фраза отвечает на вопрос, которым кончается «Лёд».</li><li>Рассказчик говорит «вы», как в «Бобе» и «Льде».</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Факты о марке и судьба Макларена — в одном рассказе, получается плотно.</li><li>Нет связки через потерянные 12 млрд — её можно взять из текста 3.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 11</summary><ol>
+<li>Макларен — наездник родео, снимался для «Мальборо» в 1976-м<span class="src"><a href="https://en.wikipedia.org/wiki/Wayne_McLaren" target="_blank" rel="noopener">Wayne McLaren — Wikipedia</a> · <a href="https://archive.seattletimes.com/archive/19920724/1503707/wayne-mclaren-former-marlboro-man-who-became-anti-smoking-crusader" target="_blank" rel="noopener">Некролог Макларена — Seattle Times, 1992</a></span></li>
+<li>«Мальборо» с 1924-го — женская марка, слоган «Mild as May»<span class="src"><a href="https://en.wikipedia.org/wiki/Marlboro" target="_blank" rel="noopener">Marlboro — Wikipedia</a> · <a href="https://csts.ua.edu/women/home/" target="_blank" rel="noopener">«Mild As May…» — Университет Алабамы</a></span></li>
+<li>кончик красили в красный, чтобы не было видно помады (в 1930-х)<span class="src"><a href="https://en.wikipedia.org/wiki/Marlboro" target="_blank" rel="noopener">Marlboro — Wikipedia</a></span></li>
+<li>1953: испуг из-за рака, фильтр считали куревом для неженок<span class="src"><a href="https://tobacco.stanford.edu/cigarettes/filter-safety-myths/marlboro-men" target="_blank" rel="noopener">Marlboro Men — Стэнфорд, исследование табачной рекламы</a> · <a href="https://www.retrowow.co.uk/social_history/50s/cigarette_smoking_1950s_usa.php" target="_blank" rel="noopener">Курение в США в 1950-х — Retrowow</a></span></li>
+<li>Бёрнетт: ковбой — «самый понятный символ мужчины в Америке»; через год — 4-я марка в стране<span class="src"><a href="https://tobacco.stanford.edu/cigarettes/filter-safety-myths/marlboro-men" target="_blank" rel="noopener">Marlboro Men — Стэнфорд, исследование табачной рекламы</a> · <a href="https://en.wikipedia.org/wiki/Marlboro_Man" target="_blank" rel="noopener">Marlboro Man — Wikipedia</a></span></li>
+<li>полторы пачки в день ~25 лет, рак лёгких за два года до смерти<span class="src"><a href="https://archive.seattletimes.com/archive/19920724/1503707/wayne-mclaren-former-marlboro-man-who-became-anti-smoking-crusader" target="_blank" rel="noopener">Некролог Макларена — Seattle Times, 1992</a></span></li>
+<li>реклама против курения: шляпа и больничная койка<span class="src"><a href="https://en.wikipedia.org/wiki/Wayne_McLaren" target="_blank" rel="noopener">Wayne McLaren — Wikipedia</a></span></li>
+<li>собрание акционеров 1992 года: «нет записей, что работал»<span class="src"><a href="https://csts.ua.edu/files/2022/02/Wayne-McLaren-Marlboro-Man-Obituary-Gregory-N-Connolly-Tobacco-Control-1992.pdf" target="_blank" rel="noopener">Некролог Макларена — Tobacco Control, 1992</a> · <a href="https://en.wikipedia.org/wiki/Wayne_McLaren" target="_blank" rel="noopener">Wayne McLaren — Wikipedia</a></span></li>
+<li>умер летом 1992-го в 51 год; последние слова — со слов матери<span class="src"><a href="https://www.deseret.com/1992/7/24/18995895/former-marlboro-man-wayne-mclaren-dies/" target="_blank" rel="noopener">Некролог Макларена — Deseret News, 1992</a> · <a href="https://archive.seattletimes.com/archive/19920724/1503707/wayne-mclaren-former-marlboro-man-who-became-anti-smoking-crusader" target="_blank" rel="noopener">Некролог Макларена — Seattle Times, 1992</a></span></li>
+<li>минимум четверо ковбоев умерли от болезней лёгких, «убийцы ковбоев»<span class="src"><a href="https://en.wikipedia.org/wiki/Marlboro_Man" target="_blank" rel="noopener">Marlboro Man — Wikipedia</a> · <a href="https://www.cbsnews.com/amp/news/former-marlboro-man-eric-lawson-dies-of-smoking-related-disease" target="_blank" rel="noopener">Смерть Эрика Лоусона — CBS, 2014</a></span></li>
+<li>2014: айкос, стики Marlboro HeatSticks<span class="src"><a href="https://media.corporate-ir.net/media_files/IROL/14/146476/PM_AR_2014/pdf/pmi-iqos.pdf" target="_blank" rel="noopener">Годовой отчёт PMI 2014: iQOS и Marlboro HeatSticks</a> · <a href="https://www.yahoo.com/news/marlboro-heatsticks-sale-milan-week-191351773--finance.html" target="_blank" rel="noopener">Reuters: Marlboro HeatSticks в Милане, 2014</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t1">Правки к тексту 1</label>
+<textarea id="n-t1" data-note="t1" placeholder="Например: строка 5 — проще; концовку взять из текста 2"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section>
+<section class="panel" id="p-t2" role="tabpanel" hidden aria-labelledby="tab-t2">
+<div class="phead">
+<p class="eb">Текст 2 · ≈ 1:33 · 223 слов</p>
+<h2>Вы — рекламщик</h2>
+<p class="idea">Зритель на месте Лео Бёрнетта: ему дают умирающую дамскую марку и задачу продать её мужчинам.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t2" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t2">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li><span class="n">1</span><span>Это «Мальборо».</span></li>
+<li><span class="n">2</span><span>Представьте: пятьдесят четвёртый год, вы — чикагский рекламщик Лео Бёрнетт, и вам приносят марку, которую почти никто не берёт.</span></li>
+<li><span class="n">3</span><span>Тридцать лет её продавали женщинам — под слоганом «мягкие, как май», кончик красили в красный, чтобы на нём не было видно помады, и в итоге у неё четверть процента рынка.</span></li>
+<li><span class="n">4</span><span>А продать её теперь нужно мужчинам. Потому что Америка только что испугалась рака: учёные намазали мышей табачной смолой, у мышей выросли опухоли, и впервые со времён Великой депрессии американцы стали курить меньше.</span></li>
+<li><span class="n">5</span><span>Курильщики потянулись к фильтру, только мужчине стыдно было взять его в руки: сигареты с фильтром считались куревом для неженок.</span></li>
+<li><span class="n">6</span><span>Заказчик уже поставил фильтр и придумал жёсткую пачку, которую открывают со щелчком у всех на виду. Осталось сделать так, чтобы её не стеснялись.</span></li>
+<li><span class="n">7</span><span>И вы сажаете на рекламу ковбоя — по вашим же словам, самый понятный в Америке символ мужчины.</span></li>
+<li><span class="n">8</span><span>Через год бывшая дамская марка уже четвёртая в стране, а в семьдесят втором — самые продаваемые сигареты в мире.</span></li>
+<li><span class="n">9</span><span>Вы — гений рекламы.</span></li>
+<li><span class="n">10</span><span>Вот только ковбои в кадре курили по-настоящему. От болезней лёгких умерли как минимум четверо из них, и сигареты в народе прозвали «убийцами ковбоев».</span></li>
+<li class="key"><span class="n">11</span><span><mark>Последний из этих четверых умер в январе две тысячи четырнадцатого.</mark></span><span class="tag">сильное место</span></li>
+<li class="key"><span class="n">12</span><span><mark>А в ноябре того же года хозяева «Мальборо» снова продают страх перед дымом: выпускают сигарету без огня, табак в ней греет маленький нагреватель.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">13</span><span>И первые стики к ней назывались… «Мальборо».</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Загадка «как продать дамские сигареты мужикам» — зритель решает вместе с героем.</li><li>Совпадение по датам: последний из четверых ковбоев умер в январе 2014-го, айкос вышел в ноябре.</li><li>Самый короткий: ≈ 92 с.</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Макларена нет по имени — ковбои остаются цифрой.</li><li>Герой — тот, кто всё это придумал: сочувствовать некому, эмоция слабее, чем в тексте 1.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 6</summary><ol>
+<li>1954: у «Мальборо» четверть процента рынка, марку отдают Бёрнетту<span class="src"><a href="https://quartr.com/insights/edge/making-the-marlboro-man" target="_blank" rel="noopener">Making the Marlboro Man — Quartr (0,25 % рынка в 1954-м)</a> · <a href="https://tobacco.stanford.edu/cigarettes/filter-safety-myths/marlboro-men" target="_blank" rel="noopener">Marlboro Men — Стэнфорд, исследование табачной рекламы</a></span></li>
+<li>1953: опыты со смолой на мышах, продажи сигарет упали впервые с Великой депрессии<span class="src"><a href="https://www.retrowow.co.uk/social_history/50s/cigarette_smoking_1950s_usa.php" target="_blank" rel="noopener">Курение в США в 1950-х — Retrowow</a></span></li>
+<li>фильтр, новый логотип и жёсткая откидная пачка — решение «Филип Моррис»<span class="src"><a href="https://tobacco.stanford.edu/cigarettes/filter-safety-myths/marlboro-men" target="_blank" rel="noopener">Marlboro Men — Стэнфорд, исследование табачной рекламы</a></span></li>
+<li>через год — 4-я марка в США, с 1972-го — самая продаваемая в мире<span class="src"><a href="https://en.wikipedia.org/wiki/Marlboro" target="_blank" rel="noopener">Marlboro — Wikipedia</a> · <a href="https://afro.who.int/sites/default/files/2017-09/Chapter%2032.%20The%20history%20of%20tobacco.pdf" target="_blank" rel="noopener">История табака — ВОЗ (1972 год)</a></span></li>
+<li>Эрик Лоусон умер 10 января 2014-го от ХОБЛ<span class="src"><a href="https://www.cbsnews.com/amp/news/former-marlboro-man-eric-lawson-dies-of-smoking-related-disease" target="_blank" rel="noopener">Смерть Эрика Лоусона — CBS, 2014</a></span></li>
+<li>ноябрь 2014-го: айкос и Marlboro HeatSticks в Нагое и Милане<span class="src"><a href="https://media.corporate-ir.net/media_files/IROL/14/146476/PM_AR_2014/pdf/pmi-iqos.pdf" target="_blank" rel="noopener">Годовой отчёт PMI 2014: iQOS и Marlboro HeatSticks</a> · <a href="https://www.yahoo.com/news/marlboro-heatsticks-sale-milan-week-191351773--finance.html" target="_blank" rel="noopener">Reuters: Marlboro HeatSticks в Милане, 2014</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t2">Правки к тексту 2</label>
+<textarea id="n-t2" data-note="t2" placeholder="Например: строка 5 — проще; концовку взять из текста 2"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section>
+<section class="panel" id="p-t3" role="tabpanel" hidden aria-labelledby="tab-t3">
+<div class="phead">
+<p class="eb">Текст 3 · ≈ 1:40 · 240 слов</p>
+<h2>Три жизни одной марки</h2>
+<p class="idea">Рассказчик, как в «Бобе» и «Льде»: дамская марка умирает, страх перед раком делает её мировым хитом, ковбои за это платят.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t3" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t3">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li><span class="n">1</span><span>Это «Мальборо», и до ковбойской славы эта марка успела прожить целую жизнь.</span></li>
+<li><span class="n">2</span><span>Первые тридцать лет она была дамской: слоган «мягкие, как май», изящная реклама в журналах и красный кончик, на котором не видно помады.</span></li>
+<li><span class="n">3</span><span>К пятьдесят четвёртому году её курила горстка женщин — четверть процента рынка, марка почти умерла.</span></li>
+<li><span class="n">4</span><span>Спас её страх. Учёные намазали мышей табачной смолой, у мышей выросли опухоли, и Америка впервые со времён Великой депрессии стала курить меньше.</span></li>
+<li><span class="n">5</span><span>Курильщики бросились к сигаретам с фильтром, только мужчины их стеснялись: это считалось куревом для неженок.</span></li>
+<li><span class="n">6</span><span>И «Филип Моррис» дарит той же марке вторую жизнь: фильтр, жёсткую пачку, которую открывают со щелчком у всех на виду, и чикагского рекламщика Лео Бёрнетта.</span></li>
+<li><span class="n">7</span><span>Бёрнетт ставит на рекламу ковбоя — по его словам, самый понятный в Америке символ мужчины.</span></li>
+<li><span class="n">8</span><span>Через год бывшая дамская марка уже четвёртая в стране, а в семьдесят втором — первая в мире.</span></li>
+<li><span class="n">9</span><span>Вот только ковбои с рекламы курили по-настоящему.</span></li>
+<li><span class="n">10</span><span>Уэйн Макларен выкуривал по полторы пачки в день, в девяностом у него нашли рак лёгких, в последний год жизни он снимался в рекламе против курения и умер в пятьдесят один.</span></li>
+<li><span class="n">11</span><span>Всего от болезней лёгких умерли как минимум четверо ковбоев «Мальборо».</span></li>
+<li class="key"><span class="n">12</span><span><mark>Помните тринадцать миллиардов, которые производитель «Мальборо» отдал за треть «Джула»? Почти все он потом потерял — и спокойно пережил: красно-белая пачка кормит его до сих пор.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">13</span><span>А когда курильщики снова испугались дыма, у марки началась третья жизнь — без огня: табак в новой сигарете греет маленький нагреватель.</span></li>
+<li><span class="n">14</span><span>И первые стики к ней тоже назывались… «Мальборо».</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Тот же голос, что в двух первых главах: цепочка фактов, одна мысль.</li><li>Есть связка через 12 млрд за «Джул» — она по твоему плану идёт только в фильме.</li><li>«Третья жизнь — без огня» сама ведёт в главу «Айкос».</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Фактов больше всего, к середине может звучать перечнем.</li><li>Макларену — одна фраза, эмоция слабее, чем в тексте 1.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 8</summary><ol>
+<li>1924–1954: женская марка, «Mild as May», реклама в модных журналах<span class="src"><a href="https://en.wikipedia.org/wiki/Marlboro" target="_blank" rel="noopener">Marlboro — Wikipedia</a> · <a href="https://csts.ua.edu/women/home/" target="_blank" rel="noopener">«Mild As May…» — Университет Алабамы</a></span></li>
+<li>1954: четверть процента рынка<span class="src"><a href="https://quartr.com/insights/edge/making-the-marlboro-man" target="_blank" rel="noopener">Making the Marlboro Man — Quartr (0,25 % рынка в 1954-м)</a></span></li>
+<li>1953: смола на мышах, продажи упали впервые с Великой депрессии<span class="src"><a href="https://www.retrowow.co.uk/social_history/50s/cigarette_smoking_1950s_usa.php" target="_blank" rel="noopener">Курение в США в 1950-х — Retrowow</a></span></li>
+<li>фильтр, жёсткая пачка, Бёрнетт и его слова про ковбоя<span class="src"><a href="https://tobacco.stanford.edu/cigarettes/filter-safety-myths/marlboro-men" target="_blank" rel="noopener">Marlboro Men — Стэнфорд, исследование табачной рекламы</a></span></li>
+<li>через год — 4-е место в США, 1972 — 1-е в мире<span class="src"><a href="https://en.wikipedia.org/wiki/Marlboro" target="_blank" rel="noopener">Marlboro — Wikipedia</a> · <a href="https://afro.who.int/sites/default/files/2017-09/Chapter%2032.%20The%20history%20of%20tobacco.pdf" target="_blank" rel="noopener">История табака — ВОЗ (1972 год)</a></span></li>
+<li>Макларен: полторы пачки, рак в 1990-м, реклама против курения, умер в 51<span class="src"><a href="https://archive.seattletimes.com/archive/19920724/1503707/wayne-mclaren-former-marlboro-man-who-became-anti-smoking-crusader" target="_blank" rel="noopener">Некролог Макларена — Seattle Times, 1992</a> · <a href="https://en.wikipedia.org/wiki/Wayne_McLaren" target="_blank" rel="noopener">Wayne McLaren — Wikipedia</a></span></li>
+<li>Altria: 12,8 млрд за 35 % «Джула», почти всё списано<span class="src"><a href="https://en.wikipedia.org/wiki/Juul" target="_blank" rel="noopener">Juul — Wikipedia (сделка Altria)</a></span></li>
+<li>2014: Marlboro HeatSticks для айкоса<span class="src"><a href="https://media.corporate-ir.net/media_files/IROL/14/146476/PM_AR_2014/pdf/pmi-iqos.pdf" target="_blank" rel="noopener">Годовой отчёт PMI 2014: iQOS и Marlboro HeatSticks</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t3">Правки к тексту 3</label>
+<textarea id="n-t3" data-note="t3" placeholder="Например: строка 5 — проще; концовку взять из текста 2"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section>
+<section class="panel" id="p-gemini" role="tabpanel" aria-labelledby="tab-gemini" hidden>
+<div class="phead">
+<p class="eb">Gemini · ТЗ от 17.11 · три сценария</p>
+<h2>Что у Gemini</h2>
+<p class="idea">Все три сценария начинаются с картинки 1924 года, которую ты не берёшь, и не продолжают последнюю фразу «Льда». Удачные мысли я забрал в свои тексты, ошибки — ниже.</p>
+</div>
+<div class="gem">
+<article class="g">
+<span class="gid">3-А</span>
+<h3>Алая полоска и мёртвые ковбои</h3>
+<span class="meta">248 слов · 1:38</span>
+<p><b>Что хорошего.</b> Мысль «марка та же — сказка на коробке другая».</p>
+<h4>Ошибки в фактах</h4>
+<ul><li>«Тридцать лет был красный кончик»: в 1930-м кончик был цвета слоновой кости, красный появился в 1936-м или 1940-м.</li><li>«Под цвет французской помады»: ни в одном источнике не нашёл.</li><li>«Полоску напечатали вокруг фильтра»: до 1954-го фильтра у «Мальборо» не было.</li><li>«Сигареты советовали молодым мамам прямо в роддомах»: не нашёл.</li><li>«Внутри та же начинка»: в 1954-м добавили фильтр.</li></ul>
+<p class="gnote">Начинается с картинки 1924 года — её ты не берёшь. Ковбои — только цифрой.</p>
+</article><article class="g">
+<span class="gid">3-Б</span>
+<h3>Афера на страхе смерти</h3>
+<span class="meta">256 слов · 1:42</span>
+<p><b>Что хорошего.</b> Лучший у Gemini. Мысль «хитом марку сделал страх перед раком» — она есть в моём тексте 3, а «продают страх» — в тексте 2.</p>
+<h4>Ошибки в фактах</h4>
+<ul><li>«Оставляют тот же фильтр»: фильтр появился только в 1954-м.</li><li>«В 1953-м учёные официально связывают дым с раком»: официально в США это признали в 1964-м, в 1953-м были опыты на мышах.</li><li>«Проект уже хотели закрыть»: не нашёл.</li></ul>
+<p class="gnote">Первая фраза повторяет то, чем только что кончился «Лёд»: в фильме прозвучит два раза подряд. Начинается с картинки 1924 года.</p>
+</article><article class="g">
+<span class="gid">3-В</span>
+<h3>Три ловушки в пачке</h3>
+<span class="meta">246 слов · 1:38</span>
+<p><b>Что хорошего.</b> Жёсткая пачка, которую открывают со щелчком у всех на виду — взял в тексты 2 и 3.</p>
+<h4>Ошибки в фактах</h4>
+<ul><li>Аммиак в табаке — правда, но это 1960-е годы и сам табак. К пачке 1954 года и к фильтру он отношения не имеет.</li><li>«Когда врачи доказали связь курения с раком» — в 1954-м так говорить рано: официально в США это признали в 1964-м.</li><li>«Семь секунд до мозга»: в источниках цифру называют по-разному, я бы не брал.</li></ul>
+<p class="gnote">Схема «ловушка первая, вторая, третья» — тот самый список, который тебе не нравится. Химия никотина повторяет главу 1. Начинается с картинки 1924 года.</p>
+</article>
+</div>
+<div class="note" hidden style="margin-top:22px"><label for="n-g">Что взять у Gemini</label>
+<textarea id="n-g" data-note="g" placeholder="Например: из 3-Б — мостик «продавать страх под видом безопасности»"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</section>
+
+<section class="next" aria-labelledby="next-h">
+<h2 id="next-h">Что дальше</h2>
+<ol>
+<li>Ты выбираешь текст: кнопкой «Беру этот текст» или в чате. Правки — в поле под текстом, по номерам строк.</li>
+<li>Голос. Совет — тот же «Макс» из ElevenLabs, что в «Бобе» и «Льде», чтобы весь фильм шёл одним голосом: около 1 700 кредитов за дубль, с переозвучкой — до 2 500. Трачу только после твоего «да». Или пишешь сам.</li>
+<li>Первый кадр главы рисую заново: картинку 1924 года ты не берёшь.</li>
+<li>Мостик «Лёд» → глава 3 — когда глава будет готова, в её настоящий первый кадр.</li>
+</ol>
+<div class="note" hidden><label for="n-all">Общее мнение</label>
+<textarea id="n-all" data-note="all" placeholder="Что поменять во всех текстах сразу"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</section>
+<footer>Время — по скорости голоса «Льда», 2,4 слова в секунду. Claude, 18.11.</footer>
+</div>
+<script>
+const TX = {"t1": ["Это «Мальборо».", "Представьте, что вы — Уэйн Макларен: вы выступаете на родео, а в семьдесят шестом году вас снимают для рекламы самых мужских сигарет на свете.", "Вам вряд ли рассказывали, что первые тридцать лет их продавали женщинам — под слоганом «мягкие, как май», и кончик красили в красный, чтобы на нём не было видно помады.", "Ковбой появился в пятьдесят четвёртом: курильщики тогда впервые испугались рака и потянулись к фильтру, а сигареты с фильтром считались куревом для неженок.", "Рекламщик Лео Бёрнетт сделал лицом рекламы самого понятного в Америке мужчину — ковбоя, и через год бывшая дамская марка была уже четвёртой в стране.", "А вы курите полторы пачки в день, двадцать пять лет подряд.", "В девяностом году врачи находят у вас рак лёгких.", "В рекламе против курения вас показывают в ковбойской шляпе — и тут же на больничной койке.", "Вы приезжаете на собрание акционеров «Филип Моррис» и просите урезать рекламу, а там отвечают, что не нашли никаких записей о том, что вы у них работали.", "Летом девяносто второго вы умираете. Вам пятьдесят один год.", "Мама потом расскажет, что одними из последних ваших слов были: «Берегите детей. Табак вас убьёт, и я — живое тому доказательство».", "От болезней лёгких умерли как минимум четверо ковбоев с этой рекламы, а сами сигареты в народе прозвали «убийцами ковбоев».", "А в две тысячи четырнадцатом, когда курильщики снова испугались дыма, хозяева «Мальборо» выпустили сигарету без огня: табак в ней греет маленький нагреватель.", "И стики к ней назывались… «Мальборо»."], "t2": ["Это «Мальборо».", "Представьте: пятьдесят четвёртый год, вы — чикагский рекламщик Лео Бёрнетт, и вам приносят марку, которую почти никто не берёт.", "Тридцать лет её продавали женщинам — под слоганом «мягкие, как май», кончик красили в красный, чтобы на нём не было видно помады, и в итоге у неё четверть процента рынка.", "А продать её теперь нужно мужчинам. Потому что Америка только что испугалась рака: учёные намазали мышей табачной смолой, у мышей выросли опухоли, и впервые со времён Великой депрессии американцы стали курить меньше.", "Курильщики потянулись к фильтру, только мужчине стыдно было взять его в руки: сигареты с фильтром считались куревом для неженок.", "Заказчик уже поставил фильтр и придумал жёсткую пачку, которую открывают со щелчком у всех на виду. Осталось сделать так, чтобы её не стеснялись.", "И вы сажаете на рекламу ковбоя — по вашим же словам, самый понятный в Америке символ мужчины.", "Через год бывшая дамская марка уже четвёртая в стране, а в семьдесят втором — самые продаваемые сигареты в мире.", "Вы — гений рекламы.", "Вот только ковбои в кадре курили по-настоящему. От болезней лёгких умерли как минимум четверо из них, и сигареты в народе прозвали «убийцами ковбоев».", "Последний из этих четверых умер в январе две тысячи четырнадцатого.", "А в ноябре того же года хозяева «Мальборо» снова продают страх перед дымом: выпускают сигарету без огня, табак в ней греет маленький нагреватель.", "И первые стики к ней назывались… «Мальборо»."], "t3": ["Это «Мальборо», и до ковбойской славы эта марка успела прожить целую жизнь.", "Первые тридцать лет она была дамской: слоган «мягкие, как май», изящная реклама в журналах и красный кончик, на котором не видно помады.", "К пятьдесят четвёртому году её курила горстка женщин — четверть процента рынка, марка почти умерла.", "Спас её страх. Учёные намазали мышей табачной смолой, у мышей выросли опухоли, и Америка впервые со времён Великой депрессии стала курить меньше.", "Курильщики бросились к сигаретам с фильтром, только мужчины их стеснялись: это считалось куревом для неженок.", "И «Филип Моррис» дарит той же марке вторую жизнь: фильтр, жёсткую пачку, которую открывают со щелчком у всех на виду, и чикагского рекламщика Лео Бёрнетта.", "Бёрнетт ставит на рекламу ковбоя — по его словам, самый понятный в Америке символ мужчины.", "Через год бывшая дамская марка уже четвёртая в стране, а в семьдесят втором — первая в мире.", "Вот только ковбои с рекламы курили по-настоящему.", "Уэйн Макларен выкуривал по полторы пачки в день, в девяностом у него нашли рак лёгких, в последний год жизни он снимался в рекламе против курения и умер в пятьдесят один.", "Всего от болезней лёгких умерли как минимум четверо ковбоев «Мальборо».", "Помните тринадцать миллиардов, которые производитель «Мальборо» отдал за треть «Джула»? Почти все он потом потерял — и спокойно пережил: красно-белая пачка кормит его до сих пор.", "А когда курильщики снова испугались дыма, у марки началась третья жизнь — без огня: табак в новой сигарете греет маленький нагреватель.", "И первые стики к ней тоже назывались… «Мальборо»."]}, NAMES = {"t1": "текст 1 · «Вы — ковбой с рекламы»", "t2": "текст 2 · «Вы — рекламщик»", "t3": "текст 3 · «Три жизни одной марки»"};
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const IDS = ['t1', 't2', 't3', 'gemini'];
+const tabs = $$('[role="tab"]');
+function show(id, focus) {
+  tabs.forEach(t => { const on = t.dataset.p === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
+  $$('.panel').forEach(p => { p.hidden = p.id !== 'p-' + id; });
+}
+function go(id, focus) {
+  show(id, focus);
+  try { history.replaceState(null, '', '#' + id); } catch (e) { try { location.hash = id; } catch (e2) {} }
+}
+function fromHash() { const h = location.hash.slice(1); show(IDS.includes(h) ? h : 't1'); }
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => go(t.dataset.p));
+  t.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault(); const j = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length; go(tabs[j].dataset.p, true);
+  });
+});
+addEventListener('hashchange', fromHash); fromHash();
+$$('[data-goto]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(a.dataset.goto); $('#tabs').scrollIntoView({ block: 'start' }); }));
+
+function say(el, text) { if (!el) return; el.textContent = text; clearTimeout(el._t); el._t = setTimeout(() => { el.textContent = ''; }, 4000); }
+$$('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+  const id = b.dataset.copy, msg = $('.msg', b.parentElement), text = TX[id].join('\n');
+  try { await navigator.clipboard.writeText(text); say(msg, 'Скопировано'); }
+  catch (e) {
+    const r = document.createRange(); r.selectNodeContents($('#p-' + id + ' .script'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    say(msg, 'Текст выделен — скопируй вручную');
+  }
+}));
+
+// Выбор текста и правки — в базе страницы (их читает Claude). Без базы страница просто читается.
+(async () => {
+  let db = null;
+  try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) return;
+  const S = { pick: '', ready: false, ro: false }, last = {}, busy = {}, timers = {}, chain = {};
+  const line = $('#chosen');
+  const readOnly = () => { S.ro = true; $$('[data-pick]').forEach(b => { b.hidden = true; }); $$('.note').forEach(n => { n.hidden = true; }); };
+  function renderPick() {
+    $$('[data-pick]').forEach(b => {
+      const on = S.pick === b.dataset.pick; b.setAttribute('aria-pressed', on);
+      b.textContent = on ? '✓ Выбран · нажми, чтобы снять' : 'Беру этот текст';
+    });
+    tabs.forEach(t => t.classList.toggle('chosen', t.dataset.p === S.pick));
+    line.hidden = !S.pick; line.textContent = S.pick ? 'Ты выбрал ' + NAMES[S.pick] : '';
+  }
+  $$('[data-pick]').forEach(b => { b.hidden = false; });
+  $$('.note').forEach(n => { n.hidden = false; });
+  const tm = setTimeout(() => { if (!S.ready) say($('#dbmsg'), 'Отметки пока не загрузились. Выбор можно написать в чат.'); }, 10000);
+  db.collection('pick').onSnapshot(snap => {
+    const doc = snap.docs.find(x => x.id === 'choice');
+    S.pick = doc && doc.exists ? String((doc.data() || {}).t || '') : '';
+    if (!TX[S.pick]) S.pick = '';
+    renderPick();
+    if (!snap.metadata.fromCache) { S.ready = true; clearTimeout(tm); }
+  }, () => { clearTimeout(tm); });
+  db.collection('notes').onSnapshot(snap => {
+    snap.docs.forEach(x => {
+      const ta = $('[data-note="' + x.id + '"]'); if (!ta) return;
+      const v = String((x.data() || {}).text || '');
+      last[x.id] = v;
+      if (document.activeElement !== ta && !busy[x.id]) ta.value = v;
+    });
+  }, () => {});
+  $$('[data-pick]').forEach(b => b.addEventListener('click', async () => {
+    if (S.ro) return;
+    const prev = S.pick, next = S.pick === b.dataset.pick ? '' : b.dataset.pick;
+    S.pick = next; renderPick();
+    try { await db.doc('pick/choice').set({ t: next, at: new Date().toISOString() }); say($('.msg', b.parentElement), next ? 'Сохранено' : 'Выбор снят'); }
+    catch (e) {
+      S.pick = prev; renderPick();
+      if (e && e.code === 'invalid_argument') readOnly();
+      say($('.msg', b.parentElement), 'Не сохранилось. Напиши выбор в чат.');
+    }
+  }));
+  const st = id => $('.st', $('[data-note="' + id + '"]').parentElement);
+  function flush(id) {
+    clearTimeout(timers[id]);
+    const ta = $('[data-note="' + id + '"]'), text = ta.value;
+    if ((last[id] || '') === text) { busy[id] = false; return; }
+    chain[id] = (chain[id] || Promise.resolve())
+      .then(() => db.doc('notes/' + id).set({ text, at: new Date().toISOString() }))
+      .then(() => { last[id] = text; busy[id] = false; st(id).textContent = 'Сохранено'; })
+      .catch(e => { busy[id] = false; st(id).textContent = 'Не сохранилось. Скопируй текст и пришли в чат.'; if (e && e.code === 'invalid_argument') readOnly(); });
+  }
+  $$('[data-note]').forEach(ta => {
+    const id = ta.dataset.note;
+    ta.addEventListener('input', () => { if (S.ro) return; busy[id] = true; st(id).textContent = 'Сохраняю…'; clearTimeout(timers[id]); timers[id] = setTimeout(() => flush(id), 900); });
+    ta.addEventListener('blur', () => { if (busy[id]) flush(id); });
+  });
+})();
+</script>
