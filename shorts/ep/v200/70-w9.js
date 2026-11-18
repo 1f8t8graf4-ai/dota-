@@ -50,7 +50,6 @@
     wire(c, t);
     smoke9(c, t);
     const kn = at(t, a.nast - .05, a.nast + .35) * (1 - at(t, a.uein - .35, a.uein + .05)); if (kn > 0) tx(c, 'ПО-НАСТОЯЩЕМУ', 430, 330, { f: 'M', w: 800, s: 38 * bo(kn), c: '#F4F1EA', a: Math.min(1, kn * 2) });
-    const kp = at(t, a.uein - .05, a.uein + .3) * (1 - at(t, a.polt - .25, a.polt + .05)); if (kp > 0) { plate(c, 'УЭЙН МАКЛАРЕН', 470, 290, bo(kp), { s: 34, bg: '#F3EBDD', c: '#141010', ls: 2 }); plate(c, 'КОВБОЙ С РЕКЛАМЫ', 470, 352, bo(kp), { s: 22, bg: C3.red, c: '#fff', ls: 2 }) }
     const k1 = at(t, a.polt + .1, a.polt + .45) * (1 - at(t, a.dev - .3, a.dev)); if (k1 > 0) plate(c, '1,5 ПАЧКИ В ДЕНЬ', 560, 300, bo(k1), { s: 40, bg: C3.red, c: '#fff', ls: 2 });
     const k5 = at(t, a.odin - .05, a.odin + .3) * (1 - at(t, a.vsego - .3, a.vsego + .1)); if (k5 > 0) tx(c, '51', 760, 760, { f: 'M', w: 800, s: 200 * bo(k5), c: '#F4F1EA', a: Math.min(1, k5 * 2) });
     const k4 = at(t, a.chet + .9, a.chet + 1.25); if (k4 > 0) tx(c, 'КАК МИНИМУМ 4', 1620, 470, { f: 'M', w: 800, s: 150 * bo(k4), c: '#F4F1EA', a: Math.min(1, k4 * 2) });

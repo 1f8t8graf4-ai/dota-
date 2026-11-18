@@ -907,7 +907,6 @@
     c.save(); c.beginPath(); c.rect(x + wx - 100, y + wy - 70, 200, 140); c.clip(); inNest(c, NC7(), cc => officeW7(cc, t)); c.restore();
     c.strokeStyle = '#DCD3BE'; c.lineWidth = 6; c.strokeRect(x + wx - 100, y + wy - 70, 200, 140);
     c.restore();
-    const kp = at(t, TC.bern - .1, TC.bern + .3) * (1 - at(t, TC.end - .55, TC.end - .25)); if (kp > 0) plate(c, 'ЛЕО БЁРНЕТТ · РЕКЛАМЩИК, ЧИКАГО', x + wx + 40, y + wy - 190, bo(kp), { s: 58, bg: '#F3EBDD', c: '#141010', ls: 2 });
   }
   // сигареты из пачки растут небоскрёбами: выше крыши у них окна и ступени ар-деко
   function towers(c, t) {
@@ -1063,7 +1062,7 @@
     PACKS_E.forEach(([u, v], i) => { const pa = Math.atan2(v, u), d = ((pa - (-Math.PI / 2)) % TAU + TAU) % TAU, k = spr(at(sw * TAU, d, d + .6)); if (k <= 0) return;
       const px = G.x + u * G.R * 1.15, py = G.y + v * G.R * 1.15; c.save(); c.translate(px, py); c.scale(k * .16, k * .16); mPack(c, -95, -141, 190, 282, 34, { shadow: false }); c.restore() });
     c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(G.x + G.R * .35, G.y - G.R, G.R, G.R * 2); c.restore();
-    const k1 = at(t, a.mir - .05, a.mir + .35) * (1 - at(t, a.sweep1 - .25, a.sweep1 + .05)); if (k1 > 0) tx(c, '№ 1 В МИРЕ', G.x, G.y + G.R + 150, { f: 'M', w: 800, s: 92 * bo(k1), c: '#F4F1EA', a: Math.min(1, k1 * 2) });
+    const k1 = at(t, a.mir - .05, a.mir + .35) * (1 - at(t, a.sweep1 - .25, a.sweep1 + .05)); if (k1 > 0) plate(c, '№ 1 В МИРЕ', G.x, G.y - G.R - 190, bo(k1), { s: 64, bg: '#F4F1EA', c: '#141010', ls: 3 });
     if (typeof nightInEarth === 'function') nightInEarth(c, t, q);
   }
   function w8Shot(c, t) {
@@ -1122,7 +1121,6 @@
     wire(c, t);
     smoke9(c, t);
     const kn = at(t, a.nast - .05, a.nast + .35) * (1 - at(t, a.uein - .35, a.uein + .05)); if (kn > 0) tx(c, 'ПО-НАСТОЯЩЕМУ', 430, 330, { f: 'M', w: 800, s: 38 * bo(kn), c: '#F4F1EA', a: Math.min(1, kn * 2) });
-    const kp = at(t, a.uein - .05, a.uein + .3) * (1 - at(t, a.polt - .25, a.polt + .05)); if (kp > 0) { plate(c, 'УЭЙН МАКЛАРЕН', 470, 290, bo(kp), { s: 34, bg: '#F3EBDD', c: '#141010', ls: 2 }); plate(c, 'КОВБОЙ С РЕКЛАМЫ', 470, 352, bo(kp), { s: 22, bg: C3.red, c: '#fff', ls: 2 }) }
     const k1 = at(t, a.polt + .1, a.polt + .45) * (1 - at(t, a.dev - .3, a.dev)); if (k1 > 0) plate(c, '1,5 ПАЧКИ В ДЕНЬ', 560, 300, bo(k1), { s: 40, bg: C3.red, c: '#fff', ls: 2 });
     const k5 = at(t, a.odin - .05, a.odin + .3) * (1 - at(t, a.vsego - .3, a.vsego + .1)); if (k5 > 0) tx(c, '51', 760, 760, { f: 'M', w: 800, s: 200 * bo(k5), c: '#F4F1EA', a: Math.min(1, k5 * 2) });
     const k4 = at(t, a.chet + .9, a.chet + 1.25); if (k4 > 0) tx(c, 'КАК МИНИМУМ 4', 1620, 470, { f: 'M', w: 800, s: 150 * bo(k4), c: '#F4F1EA', a: Math.min(1, k4 * 2) });
@@ -1260,14 +1258,18 @@
   }
   function w12Shot(c, t) { const q = camObj(camAt(K12, t)); layer(c, q, 1, cc => board12(cc, t, ci => inNest(ci, N12, cn => nightLocal(cn, t, q, false)))) }
   // ---------- дым: густая серая полоса проходит перед камерой (стык доски / ночной дороги с 2014-м) ----------
-  function smokeCover(c, t, tc, half = .62) {
-    const k = 1 - Math.abs(t - tc) / half; if (k <= 0) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    const cov = ss(0, .94, k);
-    for (let i = 0; i < 26; i++) { const ang = H1(i * 3.3) * TAU, d = (1 - cov) * (700 + H1(i) * 500), x = 540 + Math.cos(ang) * d + Math.sin(t * 1.3 + i) * 30, y = 960 + Math.sin(ang) * d * 1.6 + (t - tc) * -300, r = (260 + H1(i * 7) * 260) * (.4 + .9 * cov);
-      circ(c, x, y, r, ['#9A9AA6', '#8A8A96', '#B0AFBA'][i % 3]) }
-    if (cov >= .999) { c.fillStyle = '#9A9AA6'; c.fillRect(0, 0, WW, HH) }
+  function smokeCover(c, t, tc, half = .5) {   // клубы дыма поднимаются снизу и закрывают кадр; после стыка уходят вверх — снизу открывается новый мир
+    if (Math.abs(t - tc) > half + .3) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); const TONE = ['#9A9AA6', '#8A8A96', '#B0AFBA', '#A3A2AE'];
+    let full = Math.abs(t - tc) < .02;
+    for (let j = 0; j < 11; j++) for (let i = 0; i < 8; i++) { const n = j * 8 + i, bx = -40 + i * 160 + (H1(n * 1.7) - .5) * 60, by = -60 + j * 200 + (H1(n * 2.9) - .5) * 60;
+      const ta = tc - half + (1 - by / 1920) * .1 + ((1920 - by) / 1920) * (half - .18) * .9, k = eo(at(t, ta, ta + .3));   // снизу вверх, как поднимается дым
+      const tl = tc + .04 + (by / 1920) * .05 + ((1920 - by) / 1920) * .02, u = at(t, tl, tl + half), up = 4200 * u * u;   // после стыка — вверх, нижние клубы раньше
+      if (k <= 0 || u >= 1) continue; const r = 196 * k * (1 - .35 * u) + 22 * Math.sin(t * 3 + n);
+      circ(c, bx + Math.sin(t * 1.7 + n) * 14, by - up - (1 - k) * 220, r, TONE[n % 4]) }
+    if (full) { c.fillStyle = '#9A9AA6'; c.fillRect(0, 0, WW, HH) }
     c.restore();
   }
+
   // ================= мир 13–14 (фразы 13–14): графит 2014-го. Белые фигурки 1954-го пятятся от дыма; огонь на кончике сжимается в пластинку нагревателя (#114);
   // разрез тонкими линиями поверх держателя (#067); волны тепла вместо дыма. Стик выезжает, отъезд: пачка HeatSticks → витрина с тремя пачками (#151), имена загораются.
   // Концовки: фильм — витрина становится фото карточки 1924, нить к закрытой «2014»; шортс — вопрос, «Часть 4 →», камера ныряет в рамку с кадром 0 (петля).
@@ -1387,6 +1389,11 @@
     if (t < h.t14 - .25 || t > h.end + .45) return;
     pill(2014, 2014, 1, -240 * Math.max(1 - eo(at(t, h.t14 - .25, h.t14 + .15)), ei(at(t, h.end, h.end + .45))));
   }
+  function names(c, t) {   // плашки с именами — поверх кадра, чтобы читались, пока камера едет
+    for (const [a, b, n1, n2] of [[TC.bern - .12, TC.end - .12, 'ЛЕО БЁРНЕТТ', 'РЕКЛАМЩИК, ЧИКАГО'], [T9.uein - .05, T9.polt + .1, 'УЭЙН МАКЛАРЕН', 'КОВБОЙ С РЕКЛАМЫ']]) {
+      const k = at(t, a, a + .3) * (1 - at(t, b - .25, b)); if (k <= 0) continue;
+      c.save(); c.setTransform(1, 0, 0, 1, 0, 0); plate(c, n1, 540, 300, bo(k), { s: 50, bg: '#F3EBDD', c: '#141010', ls: 3 }); plate(c, n2, 540, 384, bo(at(t, a + .1, a + .4)) * (1 - at(t, b - .25, b)), { s: 30, bg: C3.red, c: '#fff', ls: 3 }); c.restore() }
+  }
   let MBC = null; const SHUT = [];   // окна короткой выдержки — заполняются в allInit по быстрым проездам камеры
   function sceneMB(c, t) {   // затвор 180° — среднее 4 моментов за полкадра
     const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
@@ -1401,7 +1408,7 @@
     const c = X; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (window.NOMB) scene(c, t); else sceneMB(c, t);
-    c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); subs(c, t);
+    c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); names(c, t); subs(c, t);
   }
   function cues() {   // звуки по событиям сцен (мягкие)
     allInit(); const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);

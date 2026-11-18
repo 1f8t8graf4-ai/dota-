@@ -75,11 +75,15 @@
   }
   function w12Shot(c, t) { const q = camObj(camAt(K12, t)); layer(c, q, 1, cc => board12(cc, t, ci => inNest(ci, N12, cn => nightLocal(cn, t, q, false)))) }
   // ---------- дым: густая серая полоса проходит перед камерой (стык доски / ночной дороги с 2014-м) ----------
-  function smokeCover(c, t, tc, half = .62) {
-    const k = 1 - Math.abs(t - tc) / half; if (k <= 0) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    const cov = ss(0, .94, k);
-    for (let i = 0; i < 26; i++) { const ang = H1(i * 3.3) * TAU, d = (1 - cov) * (700 + H1(i) * 500), x = 540 + Math.cos(ang) * d + Math.sin(t * 1.3 + i) * 30, y = 960 + Math.sin(ang) * d * 1.6 + (t - tc) * -300, r = (260 + H1(i * 7) * 260) * (.4 + .9 * cov);
-      circ(c, x, y, r, ['#9A9AA6', '#8A8A96', '#B0AFBA'][i % 3]) }
-    if (cov >= .999) { c.fillStyle = '#9A9AA6'; c.fillRect(0, 0, WW, HH) }
+  function smokeCover(c, t, tc, half = .5) {   // клубы дыма поднимаются снизу и закрывают кадр; после стыка уходят вверх — снизу открывается новый мир
+    if (Math.abs(t - tc) > half + .3) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); const TONE = ['#9A9AA6', '#8A8A96', '#B0AFBA', '#A3A2AE'];
+    let full = Math.abs(t - tc) < .02;
+    for (let j = 0; j < 11; j++) for (let i = 0; i < 8; i++) { const n = j * 8 + i, bx = -40 + i * 160 + (H1(n * 1.7) - .5) * 60, by = -60 + j * 200 + (H1(n * 2.9) - .5) * 60;
+      const ta = tc - half + (1 - by / 1920) * .1 + ((1920 - by) / 1920) * (half - .18) * .9, k = eo(at(t, ta, ta + .3));   // снизу вверх, как поднимается дым
+      const tl = tc + .04 + (by / 1920) * .05 + ((1920 - by) / 1920) * .02, u = at(t, tl, tl + half), up = 4200 * u * u;   // после стыка — вверх, нижние клубы раньше
+      if (k <= 0 || u >= 1) continue; const r = 196 * k * (1 - .35 * u) + 22 * Math.sin(t * 3 + n);
+      circ(c, bx + Math.sin(t * 1.7 + n) * 14, by - up - (1 - k) * 220, r, TONE[n % 4]) }
+    if (full) { c.fillStyle = '#9A9AA6'; c.fillRect(0, 0, WW, HH) }
     c.restore();
   }
+

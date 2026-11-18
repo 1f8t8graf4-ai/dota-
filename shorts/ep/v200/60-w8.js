@@ -59,7 +59,7 @@
     PACKS_E.forEach(([u, v], i) => { const pa = Math.atan2(v, u), d = ((pa - (-Math.PI / 2)) % TAU + TAU) % TAU, k = spr(at(sw * TAU, d, d + .6)); if (k <= 0) return;
       const px = G.x + u * G.R * 1.15, py = G.y + v * G.R * 1.15; c.save(); c.translate(px, py); c.scale(k * .16, k * .16); mPack(c, -95, -141, 190, 282, 34, { shadow: false }); c.restore() });
     c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(G.x + G.R * .35, G.y - G.R, G.R, G.R * 2); c.restore();
-    const k1 = at(t, a.mir - .05, a.mir + .35) * (1 - at(t, a.sweep1 - .25, a.sweep1 + .05)); if (k1 > 0) tx(c, '№ 1 В МИРЕ', G.x, G.y + G.R + 150, { f: 'M', w: 800, s: 92 * bo(k1), c: '#F4F1EA', a: Math.min(1, k1 * 2) });
+    const k1 = at(t, a.mir - .05, a.mir + .35) * (1 - at(t, a.sweep1 - .25, a.sweep1 + .05)); if (k1 > 0) plate(c, '№ 1 В МИРЕ', G.x, G.y - G.R - 190, bo(k1), { s: 64, bg: '#F4F1EA', c: '#141010', ls: 3 });
     if (typeof nightInEarth === 'function') nightInEarth(c, t, q);
   }
   function w8Shot(c, t) {

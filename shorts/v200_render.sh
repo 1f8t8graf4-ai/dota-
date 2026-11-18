@@ -7,7 +7,7 @@ cat ep/v200/*.js > ep/v200.js && node -e "new Function(require('fs').readFileSyn
 export NODE_PATH=${NODE_PATH:-$(npm root -g)}
 for EP in ${@:-v200y-ru v200s-ru}; do
   D=out/$EP/parts; mkdir -p $D
-  DUR=$(python3 -c "import json;print(json.load(open('tl/$EP.json'))['dur'])")
+  DUR=$(python3 -c "import json,math;print(math.ceil(json.load(open('tl/$EP.json'))['dur']*30)/30)")   # до последнего кадра включительно (у шортса он = кадр 0)
   N=$(python3 -c "import math;print(math.ceil($DUR/12))")
   for ((k=0; k<N; k++)); do
     [ -f $D/p$k.done ] && continue

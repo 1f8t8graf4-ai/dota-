@@ -43,6 +43,11 @@
     if (t < h.t14 - .25 || t > h.end + .45) return;
     pill(2014, 2014, 1, -240 * Math.max(1 - eo(at(t, h.t14 - .25, h.t14 + .15)), ei(at(t, h.end, h.end + .45))));
   }
+  function names(c, t) {   // плашки с именами — поверх кадра, чтобы читались, пока камера едет
+    for (const [a, b, n1, n2] of [[TC.bern - .12, TC.end - .12, 'ЛЕО БЁРНЕТТ', 'РЕКЛАМЩИК, ЧИКАГО'], [T9.uein - .05, T9.polt + .1, 'УЭЙН МАКЛАРЕН', 'КОВБОЙ С РЕКЛАМЫ']]) {
+      const k = at(t, a, a + .3) * (1 - at(t, b - .25, b)); if (k <= 0) continue;
+      c.save(); c.setTransform(1, 0, 0, 1, 0, 0); plate(c, n1, 540, 300, bo(k), { s: 50, bg: '#F3EBDD', c: '#141010', ls: 3 }); plate(c, n2, 540, 384, bo(at(t, a + .1, a + .4)) * (1 - at(t, b - .25, b)), { s: 30, bg: C3.red, c: '#fff', ls: 3 }); c.restore() }
+  }
   let MBC = null; const SHUT = [];   // окна короткой выдержки — заполняются в allInit по быстрым проездам камеры
   function sceneMB(c, t) {   // затвор 180° — среднее 4 моментов за полкадра
     const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
@@ -57,7 +62,7 @@
     const c = X; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (window.NOMB) scene(c, t); else sceneMB(c, t);
-    c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); subs(c, t);
+    c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); names(c, t); subs(c, t);
   }
   function cues() {   // звуки по событиям сцен (мягкие)
     allInit(); const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);

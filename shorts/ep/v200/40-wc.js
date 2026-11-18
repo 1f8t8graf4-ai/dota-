@@ -224,7 +224,6 @@
     c.save(); c.beginPath(); c.rect(x + wx - 100, y + wy - 70, 200, 140); c.clip(); inNest(c, NC7(), cc => officeW7(cc, t)); c.restore();
     c.strokeStyle = '#DCD3BE'; c.lineWidth = 6; c.strokeRect(x + wx - 100, y + wy - 70, 200, 140);
     c.restore();
-    const kp = at(t, TC.bern - .1, TC.bern + .3) * (1 - at(t, TC.end - .55, TC.end - .25)); if (kp > 0) plate(c, 'ЛЕО БЁРНЕТТ · РЕКЛАМЩИК, ЧИКАГО', x + wx + 40, y + wy - 190, bo(kp), { s: 58, bg: '#F3EBDD', c: '#141010', ls: 2 });
   }
   // сигареты из пачки растут небоскрёбами: выше крыши у них окна и ступени ар-деко
   function towers(c, t) {
