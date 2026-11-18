@@ -1,0 +1,30 @@
+  // ================= мир 1: щит Marlboro Country у трассы на закате (кадр 0) → ветер рвёт плакат с угла → под ним дамская реклама, нырок в дыру (#088) =================
+  let T1 = null, K1 = null;
+  function w1Init() {
+    const hk = SA('hook') !== null, s1 = SA('s1');
+    T1 = { hk, s1, marl: Ws('s1', 'мальборо'), do: Ws('s1', 'до'), zh: Ws('s1', 'жизнь'), end: SA('s2') - .02,
+      ledi: hk ? Ws('hook', 'леди') : -9, brut: hk ? Ws('hook', 'брутальности') : -9 };
+    const a = T1;   // камера: кадр 0 → пачка → угол → нырок в розовый слой под плакатом
+    K1 = [KY(0, 540, 960, 1)];
+    if (hk) K1.push(KY(a.brut, 549, 944, 1.05), KY(a.s1 - .2, 566, 912, 1.19));   // крючок: медленный наезд, камера не стоит
+    K1.push(KY(a.marl + .1, 690, 840, 1.32), KY(a.do + .6, 760, 860, 1.42), KY(a.zh - .5, 860, 860, 1.9), KY(a.zh + .05, 900, 870, 2.6), KY(a.end, 918, 872, 9.5));
+  }
+  function w1Peel(t) {
+    const a = T1; let px = 210 + 14 * Math.sin(t * 3.1) + 8 * Math.sin(t * 7.3);   // ветер треплет угол
+    if (a.hk) px += 40 * eo(at(t, a.ledi - .3, a.ledi + .6));
+    return px + 1250 * eio(at(t, a.do - .1, a.zh + .2));
+  }
+  function tumbleweed(c, x, y, R, rot) {
+    c.save(); c.translate(x, y); c.rotate(rot); c.strokeStyle = '#8A4A2A'; c.lineWidth = 4;
+    for (let k = 0; k < 14; k++) { c.beginPath(); c.arc(((k * 13) % 21 - 10) * R / 40, ((k * 7) % 17 - 8) * R / 40, R * (.65 + ((k * 11) % 22) / 40), k * .9, k * .9 + 2.1); c.stroke() } c.restore();
+  }
+  function w1World(c, t, q) {
+    layer(c, q, .3, cc => { P0(cc, .3); desertFar(cc) });   // дальний план почти стоит
+    layer(c, q, 1, cc => { desertGround(cc, t); billboardFrame(cc); poster(cc, t, { peelPx: w1Peel(t) }) });
+    layer(c, q, 1.35, cc => { P0(cc, 1.35);   // передний план: перекати-поле катится, песок по ветру
+      const u = (t * .045 + .62) % 1, x = lp(-300, 1500, u); tumbleweed(cc, x, 1530 - Math.abs(Math.sin(t * 2.4)) * 26, 44, t * 2.2);
+      cc.strokeStyle = 'rgba(242,180,90,.5)'; cc.lineWidth = 3;
+      [[90, 1500], [270, 1560], [500, 1510], [690, 1590], [210, 1650], [620, 1680], [960, 1640], [-200, 1600], [1200, 1540]].forEach(([x0, y0], i) => { const dx = ((t * 160 + i * 90) % 400); cc.beginPath(); cc.moveTo(x0 + dx, y0); cc.lineTo(x0 + dx + 80, y0 - 16); cc.stroke() });
+    });
+  }
+  function w1Shot(c, t) { const q = camObj(camAt(K1, t)); w1World(c, t, q) }
