@@ -3,7 +3,7 @@
   // Мир C — Капитолий (координаты экрана в 7,5 с), мир O — кабинет за окном: точка O (x, y) = C (OX + x·OS, OY + y·OS).
   const WIN2 = { x: 504, y: 1226, w: 72, h: 128 }, OS2 = 72 / 1080, OX2 = 504, OY2 = 1226;
   const CRT2 = [['ТАБАК', '#9a6a44'], ['МАНГО', '#f6a03a'], ['ФРУКТЫ', '#e2504f'], ['ДЕСЕРТЫ', '#f19ac2'], ['МЯТА', '#5ed39b'], ['МЕНТОЛ', '#9fdcf2']];
-  const CX2 = [190, 330, 470, 610, 750, 890], STK2 = { y: 1400, top: 1140, cut: 1230 }, BLD2 = { x0: 262, x1: 818, top: 620, bl: 870, br: 795 };   // v19.1: гильотина собирается на месте листа — без рывка камеры вверх
+  const CX2 = [190, 330, 470, 610, 750, 890], STK2 = { y: 1400, top: 1140, cut: 1290 }, BLD2 = { x0: 262, x1: 818, top: 620, bl: 870, br: 795 };   // v19.1: гильотина собирается на месте листа — без рывка камеры вверх
   const POST2 = { l: 70, r: 1010, top: 300, w: 44 };
   let T2 = null, K2 = null, TIN2 = 99, DR2 = null;
   const KO2 = (t, x, y, z) => KY(t, OX2 + x * OS2, OY2 + y * OS2, z / OS2);
@@ -12,7 +12,7 @@
       posle: w('после'), sk: w('скандала'), juul: w('джулом'), lift: 15.2, vl: w('власти'), usa: w('сша'), rub: w('рубят'), vk: w('вкусами'),
       fl: [w('манго'), w('фрукты'), w('десерты'), w('мята')], pod: w('под'), end: 20.95 };
     T2.chop = T2.pod; T2.drop = T2.chop - .17;
-    K2 = [KY(T2.a, 540, 960, 1), KY(T2.fly, 540, 1010, 1.04), KY(8.55, 540, 1210, 4.2), KO2(9.0, 540, 960, 1.0), KO2(9.6, 560, 1060, 1.5), KO2(10.9, 556, 1050, 1.62),
+    K2 = [KY(T2.a, 540, 960, 1), KY(T2.fly, 540, 1010, 1.04), KY(8.55, 540, 1210, 4.2), KO2(9.0, 540, 960, 1.0), KO2(9.6, 560, 1020, 1.5), KO2(10.9, 556, 1005, 1.62),
       KO2(T2.zak - .15, 540, 960, 1.06), KO2(T2.zak + .25, 540, 960, 1.06), KO2(12.7, 520, 1040, 1.0), KO2(14.6, 548, 1080, 1.0), KO2(15.15, 552, 1090, 1.0),
       KO2(16.0, 540, 1000, .96), KO2(T2.chop, 540, 1010, 1.0), KO2(T2.chop + .22, 540, 1010, 1.0), KO2(T2.end, 540, 1030, 1.0)]; if (typeof b3Keys === 'function') { K2.pop(); K2.push(...b3Keys()) }
     TIN2 = 99; for (let f = Math.floor(8 * 30); f < 10 * 30; f++) { const v = viewRect(camObj(camAt(K2, f / 30))); if (v.x0 > WIN2.x && v.x1 < WIN2.x + WIN2.w && v.y0 > WIN2.y && v.y1 < WIN2.y + WIN2.h) { TIN2 = f / 30; break } }
@@ -58,7 +58,7 @@
   // ---------- кабинет (мир O) ----------
   function sheet2(c, t) {
     const kS = eio(at(t, T2.lift, T2.lift + .8)); if (kS >= 1) return; c.save(); c.beginPath(); c.rect(-2000, -3000, 6000, 4640); c.clip(); c.translate(0, 1800 * kS);
-    const x0 = 210, y0 = 450, w = 660, h = 900;
+    const x0 = 210, y0 = 450, w = 660, h = 1190;   // v19.3: лист стоит на столе (низ — 1640), календарь и газета перед ним не висят в воздухе
     castDots(c, x0, y0, w, h, 140, { st: 16 });
     rr(c, x0, y0, w, h, 8); cel(c, x0, y0, w, h, B2.cream, { hw: .03, sw: .12, gr: .12 }); rr(c, x0, y0, w, h, 8); lnB(c, 4, '#c9c1ae');
     tx(c, 'ЗАПРЕТ ВКУСОВ', 540, 560, { f: 'U', w: 800, s: 62, c: B2.ink, mw: 580 }); tx(c, 'FDA · США · 2020', 540, 625, { f: 'M', w: 800, s: 26, c: '#5b6075', ls: 3 });
@@ -69,6 +69,8 @@
     rr(c, 260, yy - 60, 560, 120, 6); fill(c, rgba('#fde68a', .35 * blink)); c.setLineDash([16, 12]); rr(c, 260, yy - 60, 560, 120, 6); lnB(c, 4, mixc('#b8ae98', B2.red, blink)); c.setLineDash([]);
     tx(c, 'ОДНОРАЗОВЫЕ ?', 540, yy + 2, { f: 'M', w: 800, s: 40, c: mixc('#c9c3b6', '#9a937f', blink) });
     for (let i = 0; i < 3; i++) { c.fillStyle = '#d9d2c1'; c.fillRect(260, 1240 + i * 28, 560 - i * 120, 9) }
+    for (let i = 0; i < 5; i++) { c.fillStyle = '#e1dacb'; c.fillRect(260, 1370 + i * 30, 560 - (i % 2) * 140 - (i === 4 ? 260 : 0), 8) }
+    c.fillStyle = '#d9d2c1'; c.fillRect(520, 1585, 300, 4); tx(c, 'FDA', 670, 1560, { f: 'M', w: 800, s: 22, c: '#c9c1ae', ls: 6 });
     const ks = at(t, T2.zak - .12, T2.zak); if (ks > 0) { const s = lp(2.6, 1, eo(ks)); c.save(); c.translate(650, 1290); c.rotate(-.12); c.scale(s, s); c.globalAlpha *= cl(ks * 3);
       rr(c, -120, -48, 240, 96, 10); lnB(c, 9, B2.red); tx(c, 'ЗАКОН', 0, 3, { f: 'U', w: 800, s: 58, c: B2.red, ls: 4, mw: 210 }); c.restore() }
     c.restore();
@@ -77,7 +79,7 @@
     const k = bo(at(t, T2.jan - .3, T2.jan + .15)); if (k <= 0) return;
     const fl = eio(at(t, T2.jan - .05, T2.jan + .35));
     const kx = ei(at(t, T2.lift + .05, T2.lift + .5)); if (kx >= 1) return;
-    c.save(); c.translate(340 - 900 * kx, 1630 - 500 * (1 - k)); c.rotate(-.04 - .4 * kx); c.scale(.82, .82);   // v19.1: под листом, в его ширину; год — внутри листка
+    c.save(); c.translate(340 - 900 * kx, 1640 - 500 * (1 - k)); c.rotate(-.04 - .4 * kx); c.scale(.82, .82);   // v19.1: под листом, в его ширину; год — внутри листка
     castDots(c, -130, -330, 260, 330, 90, { st: 14 });
     rr(c, -130, -330, 260, 330, 12); cel(c, -130, -330, 260, 330, B2.cream, { hw: .05, gr: .1 }); rr(c, -130, -330, 260, 330, 12); lnB(c, 4, '#c9c1ae');
     c.fillStyle = B2.red; c.fillRect(-130, -330, 260, 80); tx(c, 'ЯНВАРЬ', 0, -290, { f: 'U', w: 800, s: 40, c: '#fff', mw: 220 }); tx(c, '2020', 0, -150, { f: 'U', w: 800, s: 86, c: B2.ink, mw: 210 });
@@ -89,7 +91,7 @@
   function paper2(c, t) {
     const k = eo(at(t, T2.posle - .25, T2.sk + .2)); if (k <= 0) return;
     const kx = ei(at(t, T2.lift + .1, T2.lift + .55)); if (kx >= 1) return;
-    c.save(); c.translate(lp(1500, 668, k) + 1000 * kx, 1500); c.rotate(-.04 * k + .3 * kx); c.scale(.8, .8);   // v19.1: под листом, в его ширину; СКАНДАЛ — внутри шапки
+    c.save(); c.translate(lp(1500, 668, k) + 1000 * kx, 1504); c.rotate(-.04 * k + .3 * kx); c.scale(.8, .8);   // v19.1: под листом, в его ширину; СКАНДАЛ — внутри шапки
     castDots(c, -230, -170, 460, 340, 110, { st: 14 });
     rr(c, -230, -170, 460, 340, 6); cel(c, -230, -170, 460, 340, '#ece6d6', { hw: .03, sw: .15, gr: .14 }); rr(c, -230, -170, 460, 340, 6); lnB(c, 4, '#c9c1ae');
     tx(c, 'СКАНДАЛ', 0, -112, { f: 'U', w: 800, s: 70, c: B2.ink, ls: 2, mw: 400 }); c.fillStyle = B2.ink; c.fillRect(-200, -68, 400, 5);
@@ -155,7 +157,7 @@
   }
   function bladeY(t) {   // лезвие висит, на «рубят» дёргается вверх, на «под нож» падает
     let y = 0; if (t > T2.rub - .1) y -= 70 * eo(at(t, T2.rub - .1, T2.rub + .35)); y += Math.sin(t * 2.2) * 6 * at(t, T2.lift + .7, T2.lift + 1.2);
-    if (t > T2.drop) y = lp(y, STK2.cut - BLD2.br + 40 + 4, ei(at(t, T2.drop, T2.chop))); return y;
+    if (t > T2.drop) y = lp(y, STK2.y - BLD2.bl, ei(at(t, T2.drop, T2.chop))); return y;   // v19.3: удар до самой колодки — нижний угол лезвия в дерево (0:20)
   }
   function office(c, t) {
     c.fillStyle = B2.bg2; c.fillRect(-1600, -3000, 9000, 6000);

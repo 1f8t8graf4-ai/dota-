@@ -60,7 +60,7 @@
     const kc = at(t, T4.ws - .25, T4.ws + .25); if (kc > 0 && t < T4.ws + .9) { const x = 540, y = 470 + 560 * ei(kc), r = t > T4.ws + .25 ? 0 : 1;
       if (r) { c.save(); c.translate(x, y); c.rotate(t * 4); poly(c, [0, -46, 40, 0, 0, 46, -40, 0]); cel(c, -40, -46, 80, 92, '#dff6ff', { hw: .2 }); poly(c, [0, -46, 40, 0, 0, 46, -40, 0]); lnB(c, 4); c.restore() }
       else { const u = t - T4.ws - .25; for (let j = 0; j < 9; j++) { const a = -Math.PI / 2 + (j - 4) * .3; drop(c, x + Math.cos(a) * 300 * u, 1000 + Math.sin(a) * 420 * u + 900 * u * u, 14, B2.ice, a + Math.PI / 2) } } }
-    const kp = bo(at(t, T4.ws - .05, T4.ws + .3)); if (kp > 0) { c.save(); c.translate(540, 830); c.scale(kp, kp); rr(c, -200, -50, 400, 100, 16); fill(c, B2.ink); rr(c, -200, -50, 400, 100, 16); lnB(c, 4, B2.ice);
+    const kp = bo(at(t, T4.ws - .05, T4.ws + .3)), kpa = 1 - at(t, T4.obm - .5, T4.obm - .05); if (kp > 0 && kpa > 0) { c.save(); c.globalAlpha *= kpa; c.translate(540, 830); c.scale(kp, kp);   // v19.3: плашка гаснет, когда камера уходит вверх (0:49) rr(c, -200, -50, 400, 100, 16); fill(c, B2.ink); rr(c, -200, -50, 400, 100, 16); lnB(c, 4, B2.ice);
       tx(c, 'WS-23', -10, -8, { f: 'U', w: 800, s: 50, c: B2.ice }); tx(c, 'синтетический холодок', 0, 30, { f: 'M', w: 600, s: 22, c: B2.cream }); c.restore() }
     // иней на стенках бака после кристалла
     const kf = eo(at(t, T4.ws + .3, T4.ws + 1.3)); if (kf > 0) [[0, 1], [1080, -1]].forEach(([x, s]) => { c.beginPath(); c.moveTo(x, 1000); for (let i = 0; i <= 10; i++) c.lineTo(x + s * (30 + 26 * H1(i * 3)) * kf, 1000 + i * 80); c.lineTo(x, 1800); c.closePath(); fill(c, 'rgba(223,246,255,.85)') });
@@ -76,6 +76,7 @@
     c.save(); c.translate(0, 300 * (1 - k));
     castDots(c, 100, -1560, 880, 1500, 120, { st: 18 });
     rr(c, 100, -1560, 880, 1500, 26); cel(c, 100, -1560, 880, 1500, '#2a2f55', { hw: .03, sw: .1 }); rr(c, 100, -1560, 880, 1500, 26); lnB(c, 5);
+    const fz = 1 - at(t, T4.end - .75, T4.end - .45); c.save(); c.globalAlpha *= fz;   // v19.3: перед наездом в снежинку надписи и шкала гаснут — «СПАЗМ» не размазывается (0:53)
     tx(c, 'РЕЦЕПТОРЫ ГОРЛА', 540, -1430, { f: 'U', w: 800, s: 54, c: B2.cream, mw: 780 });
     // шкала спазма: холод → жжение; стрелка уходит в холод, когда ложится лёд
     const sx0 = 190, sx1 = 890, sy = -820; rr(c, sx0, sy - 40, sx1 - sx0, 80, 40); c.save(); c.clip();
@@ -85,7 +86,7 @@
     tx(c, 'СПАЗМ', 540, sy - 90, { f: 'M', w: 800, s: 30, c: '#c9cde0', ls: 4 });
     tx(c, 'ХОЛОД', sx0 + 70, sy + 84, { f: 'M', w: 800, s: 30, c: B2.ice }); tx(c, 'ЖЖЕНИЕ', sx1 - 100, sy + 84, { f: 'U', w: 800, s: 38, c: mixc('#ff8a8a', '#c9cde0', ki * .4) });
     const nv = lp(.9, .12, eio(at(t, T4.led - .2, T4.led + .5))) + .03 * Math.sin(t * 9) * (1 - ki), nx = lp(sx0 + 30, sx1 - 30, nv);
-    poly(c, [nx, sy - 52, nx - 22, sy - 92, nx + 22, sy - 92]); fill(c, '#ffffff');
+    poly(c, [nx, sy - 52, nx - 22, sy - 92, nx + 22, sy - 92]); fill(c, '#ffffff'); c.restore();
     // лист мяты → поворот на 180° в плоскости → ледяная фреза
     const kr = eio(at(t, T4.rec, T4.gor)), kd = eo(at(t, T4.gor - .1, T4.led - .2));
     c.save(); c.translate(lp(300, sx0 + (sx1 - sx0) * .5, kd), lp(-1150, sy - 260, kd)); c.rotate(Math.PI * kr + t * 6 * at(t, T4.gor, T4.gor + .3) * (1 - at(t, T4.end - .9, T4.end - .6)) + Math.PI * eio(at(t, T4.end - .55, T4.end - .05)));   // v19.1: снежинка поворачивается на 180° (Starbucks #019) и становится диском весов

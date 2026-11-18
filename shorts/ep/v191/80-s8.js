@@ -79,7 +79,7 @@
     const kt = eo(at(t, K.s8 + .9, K.s8 + 1.3)), kf = at(t, W.pod - .2, W.pod + .7);
     if (kt > 0 && kf < 1) [[-.5, 1], [.5, -1]].forEach(([a, sd], j) => { c.save(); c.translate(600 + sd * 260 * kf * kf, 900 + 1300 * kf * kf); c.rotate(a + sd * 1.2 * kf); c.scale(kt, 1);
       rr(c, -560, -42, 1120, 84, 4); cel(c, -560, -42, 1120, 84, B2.red, { hw: .02, hi: false, sw: .0001 }); rr(c, -560, -42, 1120, 84, 4); lnS(c, 3, '#ffd5dc');
-      for (let q = -1; q <= 1; q++) tx(c, 'ЗАПРЕТ ВКУСОВ', q * 330, 3, { f: 'U', w: 800, s: 34, c: '#fff', ls: 2 }); c.restore() });
+      for (let q = -1; q <= 1; q++) tx(c, 'ЗАПРЕТ ВКУСОВ', q * 370, 3, { f: 'U', w: 800, s: 30, c: '#fff', ls: 2, mw: 280 }); [-185, 185].forEach(x => circ(c, x, 0, 7, '#ffd5dc')); c.restore() });   // v19.3: надписи на ленте не слипаются (1:17)
     c.restore();
   }
   const MOON = { x: 210, y: 290, r: 86 };
@@ -99,7 +99,7 @@
     const kd = bo(at(t, K.s8 + .3, K.s8 + 1.1)); if (kd > 0) vitrine(c, t, kd);
     c.restore();
     if (p < 1) {   // касса уезжает вниз целиком (без растворения), монета летит в Луну
-      c.save(); c.translate(0, 1950 * p); c.beginPath(); c.rect(-200, -200, WW + 400, HH + 400); c.clip(); b6Shot(c, t); c.restore();
+      c.save(); c.translate(0, 1950 * p); c.beginPath(); c.rect(0, 0, WW, HH); c.clip(); b6Shot(c, t); c.restore();   // v19.3: уезжает ровно кадр — без полосы сверху (1:16)
       const x = lp(540, MOON.x, p), y = lp(850, MOON.y, p) - Math.sin(Math.PI * p) * 140, r = lp(36, MOON.r, p);
       if (p > .6) moon8(c, x, y, r, mixc('#f59e0b', '#f8fafc', ss(.6, 1, p))); else { circ(c, x, y, r, mixc('#f59e0b', '#f8fafc', p)); ring(c, x, y, r * .76, rgba('#b45309', 1 - p), 4) }
     }

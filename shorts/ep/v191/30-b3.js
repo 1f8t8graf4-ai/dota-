@@ -35,6 +35,7 @@
     const { x0, x1, y0, y1 } = PG3, w = x1 - x0, h = y1 - y0;
     castDots(c, x0, y0, w, h, 140, { st: 16 });
     rr(c, x0, y0, w, h, 8); cel(c, x0, y0, w, h, B2.cream, { hw: .03, sw: .12, gr: .12 }); rr(c, x0, y0, w, h, 8); lnB(c, 4, '#c9c1ae');
+    const ga = c.globalAlpha, fa = 1 - at(t, T3.poka - .35, T3.poka - .1); c.globalAlpha = ga * fa;   // v19.3: на нырке в дыру надписи гаснут — не пролетают огромными мимо камеры
     const kt = eo(at(t, T3.zap - .1, T3.zap + .7)); c.save(); c.beginPath(); c.rect(x0, y0, w * kt + 1, 200); c.clip(); tx(c, 'ЗАПРЕТ — ТОЛЬКО ДЛЯ:', 540, 1440, { f: 'U', w: 800, s: 44, c: B2.ink, mw: 590 }); c.restore();
     c.fillStyle = B2.ink; c.fillRect(260, 1490, 560 * kt, 5);
     const ka = bo(at(t, T3.only - .15, T3.only + .3)); if (ka > 0) { c.save(); c.translate(330, 1640); c.scale(ka, ka); podIcon(c, 0, 0, t, false); c.restore();
@@ -42,9 +43,10 @@
       tx(c, 'ВЕЙПОВ СО СМЕННЫМИ', 640, 1610, { f: 'M', w: 800, s: 34, c: B2.ink, mw: 390 }); tx(c, 'КАРТРИДЖАМИ', 585, 1670, { f: 'M', w: 800, s: 34, c: B2.ink });
       const kc = bo(at(t, T3.cart + .2, T3.cart + .5)); if (kc > 0) { c.save(); c.translate(800, 1680); c.scale(kc, kc); circ(c, 0, 0, 30, '#16a34a'); c.beginPath(); c.moveTo(-13, 0); c.lineTo(-3, 11); c.lineTo(14, -10); lnB(c, 7, '#fff'); c.restore() } }
     const kb = bo(at(t, T3.cel - .15, T3.cel + .3)); if (kb > 0) { c.save(); c.translate(330, 1900); c.scale(kb, kb); podIcon(c, 0, 0, t, true); tx(c, '?', 0, 0, { f: 'M', w: 800, s: 80, c: '#b9b2a2' }); c.restore();
-      hole3(c, t, kb) }
+      c.save(); c.globalAlpha = ga; hole3(c, t, kb); c.restore() }
     const ks = at(t, T3.upom - .1, T3.upom + .02); if (ks > 0) { const s = lp(2.4, 1, eo(ks)); c.save(); c.translate(545, 2110); c.rotate(-.08); c.scale(s, s); c.globalAlpha *= cl(ks * 3);
       rr(c, -260, -54, 520, 108, 12); fill(c, 'rgba(214,51,77,.08)'); rr(c, -260, -54, 520, 108, 12); lnB(c, 9, B2.red); tx(c, 'НЕ УПОМЯНУТЫ', 0, 4, { f: 'U', w: 800, s: 56, c: B2.red, ls: 2, mw: 470 }); c.restore() }
+    c.globalAlpha = ga;
   }
   function hole3(c, t, kb) {   // пустая клетка «ЦЕЛЬНЫЕ ОДНОРАЗОВЫЕ»: на «Пока…» бумага в ней проваливается люком, в дыре — полка «Джула»
     const x = 440, y = 1840, w = 400, h = 120, kh = eio(at(t, T3.poka - .5, T3.poka - .1));
@@ -128,7 +130,7 @@
     for (let j = 0; j < 3; j++) { const x = 1900 + ((t * 120 + j * 520) % 1560), cy = 760 + 60 * Math.sin(t * 1.3 + j);
       c.fillStyle = '#2c3048'; c.fillRect(x - 40, 515, 80, 40); c.beginPath(); c.moveTo(x - 20, 555); c.lineTo(x - 50, cy); c.moveTo(x + 20, 555); c.lineTo(x + 50, cy); lnB(c, 4, B2.steel);
       box3(c, x, cy + 130, .55, ['#b65bd6', '#2f80ed', '#16c09a'][j], ['PUFF', 'HQD', 'ELF'][j]) }
-    neonTxt(c, 'ШЭНЬЧЖЭНЬ', 2620, 650, t, T3.shen);
+    A(c, 1 - at(t, T3.wave + .05, T3.wave + .4), () => neonTxt(c, 'ШЭНЬЧЖЭНЬ', 2620, 650, t, T3.shen));   // v19.3: вывеска гаснет до того, как камера срежет её краем кадра (0:36)
     // конвейер: лента — линия, которая на «волной» изгибается
     const x0 = 1700, x1 = T3 && t > T3.wave ? 6000 : 3500;
     if (kc >= 1) for (let x = 1760; x < 3500; x += 120) { const y = beltY(x, t); circ(c, x, y + 40, 26, '#3a3f66'); ring(c, x, y + 40, 26, B2.ln, 3); c.save(); c.translate(x, y + 40); c.rotate(t * 6); c.beginPath(); c.moveTo(-20, 0); c.lineTo(20, 0); lnB(c, 3); c.restore() }

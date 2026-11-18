@@ -16,15 +16,18 @@
   }
   function pathAt(u) { const P = PATH6, d = u * P.L; let i = 1; while (i < P.length - 1 && P[i][2] < d) i++; const a = P[i - 1], b = P[i], k = (d - a[2]) / Math.max(1e-6, b[2] - a[2]); return [lp(a[0], b[0], k), lp(a[1], b[1], k)] }
   function pathStroke(c, u0, u1) { const P = PATH6; c.beginPath(); let st = false; for (const p of P) { const u = p[2] / P.L; if (u < u0 || u > u1) continue; if (!st) { c.moveTo(p[0], p[1]); st = true } else c.lineTo(p[0], p[1]) } }
-  function hill6(c, t) {   // торец-круг → белый холм
-    const k = eio(at(t, T6.a, T6.a + 1.1)), cx = 540, cy = lp(ORB.y, HILL.y, k)   // v19.1: торец медленнее опускается и расплывается в холм — без склейки
-    , rx = lp(ORB.R, HILL.rx, k), ry = lp(ORB.R, HILL.ry, k), col = mixc(lit(B2.ind, .25), B2.cream, ss(.3, .8, k));
-    if (k < .4) castCirc(c, cx, cy, rx, 520 * (1 - k / .4), { st: 17 });
-    c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); if (k > 0) c.rect(cx - 2400 * k, cy, 4800 * k, 400 * k); fill(c, col);
-    c.save(); c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); c.rect(cx - 2400 * k, cy, 4800 * k, 400 * k); c.clip(); grain(c, -1200, cy - ry - 10, 3000, 800, .12 * k); c.fillStyle = 'rgba(20,23,51,.12)'; c.fillRect(cx + rx * .45, cy - ry, 2000, 800); c.restore();
-    if (k > .5) { c.beginPath(); c.moveTo(-1900, cy + 400); c.lineTo(3000, cy + 400); lnB(c, 5) }
+  function hill6(c, t) {   // торец-круг → белый холм; v19.3 (Gemini, 1:04 — «фиолетовая шляпа»): земля лежит внизу с самого начала,
+    // круг за 0,15 с светлеет до цвета земли, тёмная середина и точки исчезают, круг опускается на землю и расплывается холмом
+    const k = eio(at(t, T6.a, T6.a + 1.1)), cx = 540, cy = lp(ORB.y, HILL.y, k)
+    , rx = lp(ORB.R, HILL.rx, k), ry = lp(ORB.R, HILL.ry, k), col = mixc(lit(B2.ind, .25), B2.cream, ss(0, .15, k)), G0 = HILL.y + 600 * (1 - ss(0, .7, k)), G1 = G0 + 400;   // земля поднимается из-под кадра и встречает круг
+    if (k < .1) castCirc(c, cx, cy, rx, 520 * (1 - k / .1), { st: 17 });
+    c.fillStyle = B2.cream; c.fillRect(-1900, G0, 4900, G1 - G0);
+    c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); fill(c, col);
+    c.save(); c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); c.rect(-1900, G0, 4900, G1 - G0); c.clip(); grain(c, -1900, cy - ry - 10, 4900, G1 - cy + ry + 10, .12 * Math.max(k, .3)); c.fillStyle = 'rgba(20,23,51,.12)'; c.fillRect(cx + rx * .45, cy - ry, 2400, 1200); c.restore();
+    c.beginPath(); c.moveTo(-1900, G1); c.lineTo(3000, G1); lnB(c, 5);
     c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, Math.PI, 0); lnB(c, 5);
-    if (k < .5) { c.save(); c.globalAlpha *= 1 - k * 2; c.beginPath(); c.ellipse(cx, cy, rx * .55, ry * .55, 0, 0, TAU); fill(c, '#2d3142'); c.restore() }
+    if (k < .1) { c.save(); c.globalAlpha *= 1 - k / .1; c.beginPath(); c.ellipse(cx, cy, rx * .55, ry * .55, 0, 0, TAU); fill(c, '#2d3142'); lnB(c, 4); c.beginPath(); c.ellipse(cx, cy, rx * .2, ry * .2, 0, 0, TAU); fill(c, B2.mango); c.restore() }   // как торец в блоке 5 — стык без скачка
+    const kn = at(t, T6.corp - .9, T6.corp - .2); if (kn > 0) { c.fillStyle = rgba(B2.navy, kn); c.fillRect(-1950, cy - ry - 20, 5000, ry + 470) }   // v19.3: к «корпорациям» полоса земли вверху кадра уходит в ночь — на шторке 1:16 нет светлой стены
   }
   const hillTop = x => HILL.y - HILL.ry * Math.sqrt(Math.max(0, 1 - Math.pow((x - 540) / HILL.rx, 2)));
   function leaf(c, x, y, s, a, col = B2.mint) { c.save(); c.translate(x, y); c.rotate(a); c.scale(s, s); c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(30, -40, 110, -40, 140, 0); c.bezierCurveTo(110, 30, 30, 30, 0, 0); c.closePath(); cel(c, 0, -40, 140, 70, col, { hw: .1, sw: .35 }); c.beginPath(); c.moveTo(4, 0); c.lineTo(130, 0); lnB(c, 3, '#2f7d5a'); c.restore() }
@@ -51,7 +54,7 @@
     if (kv > .5) { c.beginPath(); c.moveTo(x - 18, cy + r - 6); c.lineTo(x - 8, cy + 10); c.lineTo(x, cy + 30); c.lineTo(x + 8, cy + 10); c.lineTo(x + 18, cy + r - 6); lnB(c, 4, '#ffffff') }
   }
   function noTob6(c, t) {   // красный круг БЕЗ ТАБАКА — целиком в кадре
-    const k = spr(at(t, T6.bez - .1, T6.bez + .45)); if (k <= 0) return;
+    const ko = ei(at(t, T6.kogda - .15, T6.kogda + .2)), k = spr(at(t, T6.bez - .1, T6.bez + .45)) * (1 - ko); if (k <= 0) return;   // v19.3: знак сжимается до того, как камера срежет его краем (1:10)
     c.save(); c.translate(230, 610); c.scale(k, k); c.rotate(-.06);
     circ(c, 0, 0, 130, '#f5f1e8'); leaf(c, -70, 10, .95, -.2, '#6b8f4e'); ring(c, 0, 0, 118, B2.red, 22); c.beginPath(); c.moveTo(-82, -82); c.lineTo(82, 82); lnB(c, 22, B2.red);
     plate(c, 'БЕЗ ТАБАКА', 0, 182, 1, { s: 32, bg: B2.red, c: '#fff' }); c.restore();
@@ -97,7 +100,7 @@
   function b6World(c, t, q) {
     const kw = eio(at(t, T6.a, T6.a + .6)), v = viewRect(q);
     c.fillStyle = B2.navy; c.fillRect(v.x0 - 10, v.y0 - 10, v.x1 - v.x0 + 20, v.y1 - v.y0 + 20);
-    if (kw < 1) { c.save(); const X = lp(v.x1 + 1000, v.x0 - 60, kw); poly(c, [v.x0 - 50, v.y0 - 50, X, v.y0 - 50, X - 900, v.y1 + 50, v.x0 - 50, v.y1 + 50]); c.clip(); blueprint5(c, t, q); c.restore() }
+    if (kw < 1) { c.save(); const X = lp(v.x1 + 1000, v.x0 - 60, kw); poly(c, [v.x0 - 50, v.y0 - 50, X, v.y0 - 50, X - 900, v.y1 + 50, v.x0 - 50, v.y1 + 50]); c.clip(); blueprint5(c, t, q); cranes5(c, t); c.restore() }   // v19.3: балка с лебёдками уходит вместе с чертежом, не пропадает на стыке
     for (let i = 0; i < 30; i++) circ(c, -300 + H1(i * 4.4) * 1700, -200 + H1(i * 6.6) * 1300, 2 + H1(i) * 2, rgba('#e2e8f0', .3 + .2 * Math.sin(t * 1.7 + i)));
     towers6(c, t);
     if (t < T6.a + .5) orbitOut(c, t);

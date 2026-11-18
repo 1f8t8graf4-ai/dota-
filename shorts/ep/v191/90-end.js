@@ -47,7 +47,8 @@
     c.restore();
   }
   // 3-я глава, кадр 0: белая сигарета с красным ободком на тёмно-синем фоне ар-деко
-  function ep3Frame(c, t) {
+  const sp4 = (c, x, y, r, col) => { c.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, q = i % 2 ? r * .26 : r; c.lineTo(x + Math.cos(a) * q, y + Math.sin(a) * q) } c.closePath(); fill(c, col) };
+  function ep3Frame(c, t, tip = 1) {   // v19.3: tip 0…1 — красный кончик загорается (мостик, «нежные»), 1 — кадр 0 3-й главы
     const u = MODE === 'y' && K.ledi ? 1 - at(t, K.ledi - .5, K.endT) : 0, w2 = u * u;   // мостик: лучи и сигарета плавно «садятся» в кадр 0 3-й главы
     c.fillStyle = '#0f172a'; c.fillRect(-200, -200, WW + 400, HH + 400);
     const g = c.createRadialGradient(540, 860, 0, 540, 860, 1000); g.addColorStop(0, '#1e3a8a'); g.addColorStop(.5, '#172554'); g.addColorStop(1, '#0f172a'); c.fillStyle = g; c.fillRect(-200, -200, WW + 400, HH + 400);
@@ -55,9 +56,16 @@
     [260, 360, 470].forEach((r, i) => { c.beginPath(); c.arc(0, 0, r, Math.PI * 1.1, Math.PI * 1.9); stroke(c, rgba('#d4a017', .35 - i * .08), 4) }); c.restore();
     c.save(); c.strokeStyle = 'rgba(212,160,23,.35)'; c.lineWidth = 4; [[0, 0], [WW, 0], [0, HH], [WW, HH]].forEach(([qx, qy]) => { c.save(); c.translate(qx, qy); c.scale(qx ? -1 : 1, qy ? -1 : 1); for (let i = 0; i < 3; i++) { c.beginPath(); c.moveTo(40 + i * 26, 230); c.lineTo(40 + i * 26, 40 + i * 26); c.lineTo(230, 40 + i * 26); c.stroke() } c.restore() }); c.restore();
     glow(c, 540, 860, 420, '#fde68a', .14);
-    c.save(); c.translate(540, 860); c.scale(1 + .1 * w2, 1 + .1 * w2); c.save(); c.translate(30, 40); rr(c, -38, -330, 76, 660, 20); fill(c, 'rgba(0,0,0,.35)'); c.restore();
+    c.save(); c.translate(540, 860); c.scale(1 + .1 * w2, 1 + .1 * w2);
+    const pk = tip < 1 ? Math.sin(Math.PI * at(tip, .2, 1)) : 0;   // вспышка, пока кончик загорается
+    if (pk > 0) { glow(c, 0, -295, 260, '#f43f5e', .6 * pk); glow(c, 0, -295, 120, '#fecdd3', .5 * pk) }
+    c.save(); c.translate(30, 40); rr(c, -38, -330, 76, 660, 20); fill(c, 'rgba(0,0,0,.35)'); c.restore();
     rr(c, -38, -330, 76, 660, 20); fill(c, '#f8fafc'); c.fillStyle = 'rgba(203,213,225,.6)'; c.fillRect(14, -330, 16, 660);
-    rr(c, -38, -330, 76, 70, 20); fill(c, '#e11d48'); c.fillStyle = '#be123c'; c.fillRect(-38, -270, 76, 10);
+    if (tip >= 1) { rr(c, -38, -330, 76, 70, 20); fill(c, '#e11d48'); c.fillStyle = '#be123c'; c.fillRect(-38, -270, 76, 10) }
+    else if (tip > 0) { const f = ss(0, .75, tip); c.save(); rr(c, -38, -330, 76, 70, 20); c.clip(); c.fillStyle = '#e11d48'; c.fillRect(-38, -260 - 70 * f, 76, 70 * f + 1); c.fillStyle = '#be123c'; c.fillRect(-38, -270, 76, 10 * ss(.1, .4, tip)); c.restore();
+      if (pk > 0) { rr(c, -38, -330, 76, 70, 20); stroke(c, rgba('#fff1f2', .8 * pk), 6) } }
+    if (tip > 0 && tip < 1) for (let i = 0; i < 6; i++) { const k0 = .3 + i * .08, k = at(tip, k0, k0 + .4); if (k <= 0 || k >= 1) continue; const a = -Math.PI / 2 + (i - 2.5) * .62, r = 70 + 70 * eo(k);
+      c.save(); c.globalAlpha *= 1 - ss(.55, 1, k); sp4(c, Math.cos(a) * r, -295 + Math.sin(a) * r * .9, (i % 2 ? 22 : 30) * bo(at(k, 0, .45)), i % 2 ? '#fecdd3' : '#fde68a'); c.restore() }
     c.restore();
   }
   function cardDraw(c, t, cd, o = {}) {
@@ -67,33 +75,26 @@
     c.save(); c.beginPath(); c.rect(px - PH / 2, py - PH / 2, PH, PH); c.clip();
     if (cd.id === '1979') photo1979(c, t, px, py, PH);
     else if (cd.id === '2020') { c.save(); c.translate(px, py); c.scale(PH / 1040, PH / 1040); c.translate(-620, -880); shot8(c, t); c.restore() }
-    else if (cd.id === '1924' && o.ep3) { c.save(); c.translate(px, py); c.scale(PH / 1080, PH / 1080); c.translate(-540, -860); ep3Frame(c, t); c.restore() }
+    else if (cd.id === '1924' && o.ep3) { c.save(); c.translate(px, py); c.scale(PH / 1080, PH / 1080); c.translate(-540, -860); ep3Frame(c, t, o.tip ?? 1); c.restore() }
     else { c.fillStyle = '#1e293b'; c.fillRect(px - PH / 2, py - PH / 2, PH, PH) }
-    if (!cd.open) {   // v19.1: закрыто — глухой чёрный маркер, под ним ничего не видно; на 1924 маркер снимается маской (Да Винчи #061)
-      const pe = o.peel || 0;
-      if (pe < 1) { c.save(); c.translate(px, py); c.rotate(-.5 * pe * pe); c.translate(-px + PH * 1.3 * ei(pe), -py - PH * .5 * ei(pe));
-        rr(c, px - PH / 2, py - PH / 2, PH, PH, 2); fill(c, '#17171c'); marker(c, px, py, PH, cd.x);
-        if (o.chev > 0) chevron(c, px, py - 6, PH * .0042 * o.chev);
-        if (pe > 0) { c.beginPath(); c.moveTo(px - PH / 2, py + PH / 2); c.lineTo(px + PH / 2, py + PH / 2); lnS(c, 5, 'rgba(255,255,255,.25)') }
-        c.restore() }
+    if (!cd.open) {   // закрыто — глухой чёрный маркер; v19.3: на 1924 маркер режется по диагонали (o.dl) и две половины расходятся (o.ds)
+      const ds = o.ds || 0, L = px - PH / 2, R = px + PH / 2, T = py - PH / 2, B = py + PH / 2;
+      if (ds < 1) { const d = PH * .8 * eio(ds), n = Math.SQRT1_2;
+        [[1, [L - 4, T - 4, R + 4, T - 4, R + 4, B + 4]], [-1, [L - 4, T - 4, R + 4, B + 4, L - 4, B + 4]]].forEach(([sg, P]) => {
+          c.save(); c.translate(sg * d * n, -sg * d * n); poly(c, P); c.clip();
+          rr(c, L, T, PH, PH, 2); fill(c, '#17171c'); marker(c, px, py, PH, cd.x);
+          if (ds > 0) { c.beginPath(); c.moveTo(L, T); c.lineTo(R, B); lnS(c, 7, rgba('#fde68a', .9 * (1 - ss(.4, 1, ds)))) }
+          c.restore() });
+        const dl = o.dl || 0; if (dl > 0 && ds <= 0) { const ex = lp(L, R, eio(dl)), ey = lp(T, B, eio(dl)); c.beginPath(); c.moveTo(L, T); c.lineTo(ex, ey); lnS(c, 5, '#fde68a');
+          if (dl < 1) { glow(c, ex, ey, 46, '#fde68a', .95); circ(c, ex, ey, 6, '#fffbe6') } } }
     }
-    if (o.lips > 0) { const m = o.lipsM || 0, lx = lp(px + 6, px, m), ly = lp(py + 52, py - PH * 295 / 1080, m); lips(c, lx, ly, lp(1, .16, m) * o.lips) }
     c.restore();
-    tx(c, cd.a, cd.x, cd.y + CH / 2 - 46, { f: 'O', w: 700, s: 30, c: '#1e293b' });   // на закрытой карточке — только год
+    const la = o.labA ?? 1;
+    if (la > 0) A(c, la, () => tx(c, cd.a, cd.x, cd.y + CH / 2 - 46, { f: 'O', w: 700, s: 30, c: '#1e293b' }));   // на закрытой карточке — только год
     if (cd.open) tx(c, cd.b, cd.x, cd.y + CH / 2 - 18, { f: 'M', w: 800, s: 18, c: '#475569', mw: CW - 24 });
-    else if (o.sub && o.subA > 0) { c.save(); c.translate(cd.x, cd.y + CH / 2 - 18); c.scale(1, bo(o.subA)); tx(c, o.sub, 0, 0, { f: 'M', w: 800, s: 18, c: '#b91c1c', mw: CW - 20 }); c.restore() }
+    else if (o.sub && o.subA > 0 && la > 0) { c.save(); c.globalAlpha *= la; c.translate(cd.x, cd.y + CH / 2 - 18); c.scale(1, bo(o.subA)); tx(c, o.sub, 0, 0, { f: 'M', w: 800, s: 18, c: '#b91c1c', mw: CW - 20 }); c.restore() }
     if (o.q > 0) { const [qx, qy] = photoC(cd); c.save(); c.translate(qx, qy); c.scale(o.q, o.q); tx(c, '?', 0, 4, { f: 'U', w: 800, s: 150, c: '#fbbf24', sw: 10, sc: '#78350f' }); c.restore() }
     if (!o.noPin) pin(c, ...pinP(cd));
-  }
-  function chevron(c, x, y, s) {   // красный шеврон крыши пачки «Мальборо» (без логотипа)
-    c.save(); c.translate(x, y); c.scale(s, s); const P = [-100, 70, -100, 0, 0, -70, 100, 0, 100, 70, 0, 0];
-    poly(c, P); cel(c, -100, -70, 200, 140, '#d81e3a', { hw: .06, sw: .3 }); poly(c, P); lnS(c, 4, '#fff1f2'); c.restore();
-  }
-  function lips(c, x, y, s) {   // алый отпечаток губ — наклейка шлёпается, как «I ❤ NY» (Google #150)
-    c.save(); c.translate(x, y); c.scale(s, s); c.rotate(-.12);
-    c.beginPath(); c.moveTo(-70, 0); c.bezierCurveTo(-52, -34, -22, -40, 0, -20); c.bezierCurveTo(22, -40, 52, -34, 70, 0); c.bezierCurveTo(40, -8, -40, -8, -70, 0); c.closePath(); cel(c, -70, -40, 140, 40, '#d6203f', { hw: .1, sw: .3 });
-    c.beginPath(); c.moveTo(-70, 4); c.bezierCurveTo(-40, 6, 40, 6, 70, 4); c.bezierCurveTo(48, 46, -48, 46, -70, 4); c.closePath(); cel(c, -70, 4, 140, 42, '#e3324f', { hw: .1, sw: .3 });
-    c.beginPath(); c.moveTo(-64, 3); c.bezierCurveTo(-30, 10, 30, 10, 64, 3); lnS(c, 4, '#9f1239'); rr(c, -18, 22, 40, 9, 4); fill(c, 'rgba(255,255,255,.55)'); c.restore();
   }
   function pin(c, x, y) { circ(c, x + 3, y + 5, 14, 'rgba(0,0,0,.35)'); circ(c, x, y, 14, '#dc2626'); circ(c, x - 4, y - 4, 5, '#fca5a5') }
   function thread(c, a, b, k = 1) { if (k <= 0) return; const [x1, y1] = pinP(a), [x2, y2] = pinP(b); c.save(); c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 4; c.beginPath(); c.moveTo(x1 + 3, y1 + 6); c.lineTo(lp(x1, x2, k) + 3, lp(y1, y2, k) + 6); c.stroke(); c.strokeStyle = '#dc2626'; c.lineWidth = 4; c.beginPath(); c.moveTo(x1, y1); c.lineTo(lp(x1, x2, k), lp(y1, y2, k)); c.stroke(); c.restore() }
@@ -188,22 +189,21 @@
     if (kZ >= 1) { const m = 1 + .12 * (1 - at(t, K.ledi + 1.6, K.endT)); c.save(); c.translate(540, 960); c.scale(m, m); c.translate(-540, -960); ep3Frame(c, t); c.restore(); ep3Pill(c, 1); return }   // v18.5: последний кадр — мостик, но не стоит
     const p = PH / 1080, [pcx, pcy] = photoC(C24);
     const zc = 2.6, Fc = [540, C24.y + 5];
-    const zE = 1 / p, FE = [pcx - p * 0, pcy + p * 100];
+    const zE = 1.12 / p, FE = [pcx, pcy + p * 100];   // v19.3: конец наезда = масштаб 1.12 последнего кадра — без скачка на 1:34
     let z = Math.exp(lp(0, Math.log(zc), kz1)), F = [lp(540, Fc[0], kz1), lp(960, Fc[1], kz1)];
     if (kZ > 0) { z = Math.exp(lp(Math.log(zc), Math.log(zE), kZ)); const u = (1 / z - 1 / zc) / (1 / zE - 1 / zc); F = [lp(Fc[0], FE[0], u), lp(Fc[1], FE[1], u)] }
     else { const u = at(t, K.zo1 + 1.25, K.nezh - .2); z *= 1 + .06 * Math.sin(Math.PI * u) ** 2; F = [F[0] + 50 * Math.sin(2 * Math.PI * u) * Math.sin(Math.PI * u), F[1]] }   // v18.5: доска не стоит
-    // v19.1: без замка и помады. «Ведь главный символ мужской брутальности» — на маркер шлёпается красный шеврон «Мальборо»;
-    // «век назад выводили…» — поверх шлёпается алый отпечаток губ (#150); маркер снимается маской (#061), губы садятся на кончик сигареты.
-    const sl = (k, a = 2.4) => k <= 0 ? 0 : k < 1 ? lp(a, 1, ei(k)) : 1;
-    const kch = at(t, K.brut - .45, K.brut - .2), klp = at(t, K.vek - .28, K.vek - .02), kpe = eio(at(t, K.vyv + .1, K.vyv + .8)), kmv = eio(at(t, K.vyv + .45, K.nezh - .25));
-    const ops = { pulse: at(t, K.rules - .4, K.vperv - .2), card: { '1924': { ep3: true, chev: sl(kch), lips: sl(klp, 3), lipsM: kmv, peel: kpe, noPin: kpe > .02, sub: '«МАЛЬБОРО»: МЯГКИЕ, КАК МАЙ', subA: at(t, K.vyv + .6, K.nezh - .1) } } };
+    // v19.3 (Андрей и Gemini: без губ и шеврона): «мужской брутальности» — по маркеру идёт косой золотой разрез;
+    // «век назад выводили» — две половины маркера расходятся по диагонали, под ними сигарета 1924 года; «нежные» — загорается красный кончик (Red Beauty Tip).
+    const tip = at(t, K.nezh - .1, K.nezh + .5), labA = 1 - at(kZ, .25, .5);
+    const ops = { pulse: at(t, K.rules - .4, K.vperv - .2), card: { '1924': { ep3: true, dl: at(t, K.brut - .1, K.brut + .45), ds: at(t, K.vek - .05, K.vyv + .3), tip, labA, sub: '«МАЛЬБОРО»: МЯГКИЕ, КАК МАЙ', subA: at(t, K.vyv + .4, K.vyv + .8) } } };
     if (t < K.zo1) { zoomOutTo2020(c, t, cc => board(cc, t, {})); return }
-    const shk = t > K.brut - .2 && t < K.brut + .2 ? 6 * (1 - at(t, K.brut - .2, K.brut + .2)) : t > K.vek - .02 && t < K.vek + .35 ? 5 * (1 - at(t, K.vek - .02, K.vek + .35)) : 0;
+    const shk = t > K.vek - .05 && t < K.vek + .3 ? 4 * (1 - at(t, K.vek - .05, K.vek + .3)) : 0;
     c.save(); c.translate(540 + Math.sin(t * 91) * shk, 960 + Math.cos(t * 77) * shk); c.scale(z, z); c.translate(-F[0], -F[1]);
     board(c, t, ops);
     if (kZ > 0) {   // фото раскрывается из квадрата во весь кадр 3-й главы
-      const kc = at(kZ, .55, 1), R = [lp(pcx - PH / 2, pcx - 540 * p, kc), lp(pcy - PH / 2, pcy - 860 * p, kc), lp(PH, WW * p, kc), lp(PH, HH * p, kc)];
-      c.save(); c.beginPath(); c.rect(...R); c.clip(); c.translate(pcx, pcy); c.scale(p, p); c.translate(-540, -860); ep3Frame(c, t); c.restore();
+      const kc = at(kZ, .55, 1), m = 26, R = [lp(pcx - PH / 2, pcx - 540 * p - m, kc), lp(pcy - PH / 2, pcy - 860 * p - m, kc), lp(PH, WW * p + 2 * m, kc), lp(PH, HH * p + 2 * m, kc)];   // v19.3: окно шире карточки — её поля и подпись не торчат по краям
+      c.save(); c.beginPath(); c.rect(...R); c.clip(); c.translate(pcx, pcy); c.scale(p, p); c.translate(-540, -860); ep3Frame(c, t, tip); c.restore();
     }
     c.restore();
   }

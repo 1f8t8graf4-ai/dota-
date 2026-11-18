@@ -4,7 +4,7 @@
   let T5 = null, K5 = null; const DEV = { x: 540, y: 1000, w: 300, h: 820 }, ORB = { x: 540, y: 820, r: 330, R: 210 };
   function b5Init() {
     const w = Wd; T5 = { a: T4.end, kart: w('картридж'), zam: w('заменял'), pach: w('пачку'), potom: w('потом', 1), razr: w('разрослись'), t13: w('тринадцать'), dv: w('двойная'), tys: w('тысячи'),
-      rot: 60.85, nik: w('никотину'), n16: w('шестнадцать'), k16: w('картриджей'), end: w('чтобы') - .15 };
+      rot: 61.3, nik: w('никотину'), n16: w('шестнадцать'), k16: w('картриджей'), end: w('чтобы') - .15 };
     T5.wipe = T5.potom - .12;
     K5 = [KY(T5.a, 540, 960, 1), KY(T5.pach + .1, 540, 935, 1.05), KY(T5.pach + .4, 540, 935, 1.05), KY(T5.razr + .3, 540, 980, .9), KY(T5.rot - .1, 540, 960, .94),
       KY(T5.rot + .7, 540, 900, 1.0), KY(T5.k16 + .05, 540, 880, 1.03), KY(T5.k16 + .28, 540, 880, 1.03), KY(T5.end, 540, 875, 1.04)];
@@ -66,19 +66,19 @@
     return { cx, top, s };
   }
   function callouts5(c, t) {   // выноски: бак, спирали, барабан
-    const out = ei(at(t, T5.rot - .35, T5.rot)); if (out >= 1) return;
+    const out = ei(at(t, T5.rot - .15, T5.rot + .2)); if (out >= 1) return;   // v19.3: выноски уходят позже — «5 000» успевают прочитать
     const L = (k, x0, y0, x1, y1, lab1, lab2, al = 'right') => { if (k <= 0) return; c.save(); c.translate(-500 * out * (al === 'right' ? 1 : -1), 0);
       c.beginPath(); c.moveTo(x0, y0); c.lineTo(lp(x0, x1, eo(k)), lp(y0, y1, eo(k))); lnB(c, 4, '#ffffff'); circ(c, x0, y0, 9, '#ffffff');
       const kb = bo(at(k, .4, 1)); if (kb > 0) { c.save(); c.translate(x1, y1); c.scale(kb, kb); tx(c, lab1, 0, -20, { f: 'U', w: 800, s: 44, c: '#ffffff' }); if (lab2) tx(c, lab2, 0, 26, { f: 'M', w: 800, s: 28, c: '#bfe0ff' }); c.restore() } c.restore() };
     L(at(t, T5.t13 - .2, T5.t13 + .6), 470, 760, 200, 640, '13 МЛ', 'БАК', 'left');
     L(at(t, T5.dv - .2, T5.dv + .6), 470, 1150, 190, 1080, '2 СЕТКИ', 'НАГРЕВА', 'left');
     const kd = at(t, T5.tys - .25, T5.tys + .5); if (kd > 0) { c.save(); c.translate(500 * out, 0); const x = 860, y = 1120, sb = bo(at(kd, 0, .5)); c.translate(x, y); c.scale(sb, sb);
-      rr(c, -150, -70, 300, 140, 16); fill(c, B2.ink); rr(c, -150, -70, 300, 140, 16); lnB(c, 4); const v = Math.round(5000 * eio(at(Math.round(t * 30) / 30, T5.tys, T5.tys + .9)) / 10) * 10;   // по кадру — без двоения цифр
+      rr(c, -150, -70, 300, 140, 16); fill(c, B2.ink); rr(c, -150, -70, 300, 140, 16); lnB(c, 4); const v = Math.round(5000 * eo(at(Math.round(t * 30) / 30, T5.tys - .05, T5.tys + .45)) / 10) * 10;   // по кадру — без двоения цифр; v19.3: до 5 000 за полсекунды (было — уходил на «110»)
       c.save(); rr(c, -130, -52, 260, 92, 10); c.clip(); num(c, (v >= 1000 ? Math.floor(v / 1000) + ' ' + String(v % 1000).padStart(3, '0') : String(v)), 0, -6, { f: 'J', w: 700, s: 66, c: '#7ee787' }); c.restore();
       tx(c, 'ЗАТЯЖЕК', 0, 100, { f: 'U', w: 800, s: 34, c: '#ffffff' }); c.restore() }
   }
   function orbit16(c, t) {
-    const k0 = at(t, T5.rot + .5, T5.rot + .9); if (k0 <= 0) return;
+    const k0 = at(t, T5.rot + .35, T5.rot + .7); if (k0 <= 0) return;
     for (let i = 0; i < 16; i++) { const a = -Math.PI / 2 + i * TAU / 16, tl = lp(T5.nik + .1, T5.k16 - .2, i / 15), kl = spr(at(t, tl, tl + .35)), x = ORB.x + Math.cos(a) * ORB.r * lp(.7, 1, eo(k0)), y = ORB.y + Math.sin(a) * ORB.r * lp(.7, 1, eo(k0));
       c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2); c.globalAlpha *= cl(k0 * 2); const s = .62 * (1 + .25 * Math.max(0, kl - 1 + 1) * (t < tl + .35 ? 1 : 0) * 0);
       if (kl > 0) { glow(c, 0, -60, 80, '#f6a03a', .35 * cl(kl)); cart5(c, 0, 20, s * lp(.85, 1, cl(kl))) } else { c.setLineDash([10, 8]); rr(c, -21, -73, 42, 93, 9); lnB(c, 3, 'rgba(255,255,255,.55)'); c.setLineDash([]) }

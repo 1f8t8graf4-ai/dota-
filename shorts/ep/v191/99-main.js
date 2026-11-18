@@ -62,7 +62,7 @@
     Q(g.mlrd - .4, 'conveyor', .5); Q(g.mlrd - .05, 'register', 1); Q(g.mlrd + .05, 'counter', .8); Q(g.doll, 'coins', .5); Q(g.rynok - .05, 'boom', .35); Q(g.corp - .2, 'boom', .35); Q(g.end - .3, 'plop', .5);
     Q(K.s8 - .57, 'whoosh', .7); Q(K.s8 + .4, 'city', .6); Q(K.s8 + .9, 'thud', .5); Q(K.s8 + .95, 'marker', .5); { const W = w8(); Q(W.pod - .2, 'scroll', .7); Q(W.pod, 'neon', .7); Q(W.led - .3, 'icecrack', .7); Q(W.gig - .3, 'pour', .6); Q(W.nik - .3, 'glassbulb', .6); Q(W.nik + .1, 'plop', .5) } Q(K.b0, 'whoosh', .6);
     if (MODE === 's') { for (let i = 0; i < 3; i++) Q(K.th0 + i * 1.2, 'papers', .3, -.3 + i * .3); Q(K.stamp, 'stamp', 1); Q(K.stamp + .02, 'impact', .5); Q(K.down0, 'whoosh', .6); Q(K.zA0 + .3, 'dive', .7) }
-    else { Q(K.zo1 + .1, 'whoosh', .6); Q(K.rules - .4, 'whoosh', .35); Q(K.vperv - .25, 'plop', .5); Q(K.brut - .22, 'stamp', 1); Q(K.brut - .2, 'impact', .4); Q(K.vek - .05, 'stamp', .7); Q(K.vek - .02, 'plop', .6); Q(K.vyv + .1, 'pageflip', .8); Q(K.nezh - .2, 'dive', .8) }
+    else { Q(K.zo1 + .1, 'whoosh', .6); Q(K.rules - .4, 'whoosh', .35); Q(K.vperv - .25, 'plop', .5); Q(K.brut - .12, 'blade', .45); Q(K.vek - .07, 'whoosh', .6); Q(K.vek + .05, 'pageflip', .45); Q(K.nezh - .12, 'shimmer', .7); Q(K.nezh - .2, 'dive', .6) }
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
