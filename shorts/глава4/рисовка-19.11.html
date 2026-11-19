@@ -1,0 +1,782 @@
+<title>Рисовка главы «Нагреватели»</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Oswald:wght@600;700&display=swap">
+<style>
+/* Лист раскадровки главы 4: сверху что взял из Gemini, лента главы по кускам, переходы (ответ на «какой переход»),
+   кадр 0 и предметы, дальше карточки строк; цвет полосы карточки — кусок главы. Кнопка копирования — в липкой шапке. */
+:root{
+  --ground:#F0EFEC; --sheet:#FFFFFF; --ink:#1B1A18; --muted:#67635C; --line:#DAD6CF;
+  --red:#B3141C; --on-red:#FFFFFF; --marker:rgba(255,206,48,.6); --ok:#1D7A4C;
+  --l-promise:#B3141C; --l-heat:#C85F16; --l-smoke:#237B80; --l-rj:#34457A; --l-quit:#9A7413; --l-zyn:#5B6B7A; --l-board:#8C6B4A;
+  --f-disp:"Oswald","Arial Narrow","Roboto Condensed",sans-serif;
+  --f-body:"Golos Text",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#141413; --sheet:#1E1D1B; --ink:#EDEAE4; --muted:#A29D94; --line:#35332F;
+  --red:#EA5359; --on-red:#1C0B0B; --marker:rgba(255,206,48,.3); --ok:#55C994;
+  --l-promise:#EA5359; --l-heat:#F08A3E; --l-smoke:#4FB7B9; --l-rj:#8E9DDA; --l-quit:#D8AE4A; --l-zyn:#9BAEC2; --l-board:#C9A27C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#141413; --sheet:#1E1D1B; --ink:#EDEAE4; --muted:#A29D94; --line:#35332F;
+  --red:#EA5359; --on-red:#1C0B0B; --marker:rgba(255,206,48,.3); --ok:#55C994;
+  --l-promise:#EA5359; --l-heat:#F08A3E; --l-smoke:#4FB7B9; --l-rj:#8E9DDA; --l-quit:#D8AE4A; --l-zyn:#9BAEC2; --l-board:#C9A27C; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:16px/1.5 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+.eb{font:500 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font:600 clamp(36px,8vw,60px)/1.02 var(--f-disp);letter-spacing:.01em;text-transform:uppercase}
+h1 .yr{color:var(--red)}
+h2{font:600 clamp(24px,5vw,30px)/1.1 var(--f-disp);letter-spacing:.01em}
+h3{font:600 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lede{margin:0;max-width:62ch;font-size:17px}
+header.top{display:flex;flex-direction:column;gap:12px;padding-top:6px}
+.sum{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;padding:0;list-style:none;font:500 13.5px/1.4 var(--f-mono);color:var(--muted)}
+.sum b{color:var(--ink);font-weight:600}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px))) calc(-1 * max(16px,env(safe-area-inset-right,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));margin-bottom:22px}
+.topbar .in{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar .tt{font:600 18px/1.1 var(--f-disp);letter-spacing:.02em;text-transform:uppercase;margin-right:auto}
+.btn{appearance:none;font:600 15px/1 var(--f-body);border-radius:6px;padding:12px 16px;cursor:pointer;border:1px solid var(--red);background:var(--red);color:var(--on-red)}
+.btn:active{transform:translateY(1px)}
+.st{font-size:13.5px;color:var(--ok);min-height:1.2em}
+.st.err{color:var(--red)}
+.tl{display:grid;gap:8px}
+.bar{display:flex;gap:2px;height:30px;border-radius:4px;overflow:hidden}
+.seg{display:block;min-width:4px;background:var(--c)}
+.seg:hover{filter:brightness(1.1)}
+.ticks{position:relative;height:16px;font:500 11px/1 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.ticks span:first-child{transform:none}
+.ticks span:last-child{transform:translateX(-100%)}
+.legend{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px 16px}
+.legend a{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:8px;align-items:center;text-decoration:none;font-size:14.5px}
+.legend i{width:12px;height:12px;border-radius:2px;background:var(--c)}
+.legend small{font:500 12px/1 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.l-promise{--c:var(--l-promise)} .l-heat{--c:var(--l-heat)} .l-smoke{--c:var(--l-smoke)} .l-rj{--c:var(--l-rj)}
+.l-quit{--c:var(--l-quit)} .l-zyn{--c:var(--l-zyn)} .l-board{--c:var(--l-board)}
+.beats{display:grid;gap:16px}
+.beat{background:var(--sheet);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:6px;padding:16px 18px;display:grid;gap:10px;min-width:0;scroll-margin-top:124px}
+.bh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.bn{font:600 26px/1 var(--f-disp);color:var(--c)}
+.tm{font:600 15px/1 var(--f-mono);font-variant-numeric:tabular-nums}
+.life{font:500 12px/1.2 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--c);margin-left:auto}
+.only{font:600 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ground);background:var(--ink);border-radius:3px;padding:4px 6px}
+.voice{margin:0;font-size:18px;line-height:1.5;max-width:62ch}
+.voice mark{background:linear-gradient(transparent 55%,var(--marker) 55%);color:inherit;padding:0 1px}
+.shots{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.shots li{display:grid;grid-template-columns:8.6em minmax(0,1fr);gap:4px 12px;font-size:15.5px}
+.shots .at{font:600 13.5px/1.45 var(--f-body);display:flex;flex-direction:column}
+.shots .at small{font:500 12px/1.3 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.shots li{grid-template-columns:minmax(0,1fr)}.shots .at{flex-direction:row;gap:8px;align-items:baseline}}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border-top:1px solid var(--line);padding-top:10px}
+@media (max-width:520px){.meta{grid-template-columns:minmax(0,1fr)}}
+.meta > div{display:grid;gap:5px;align-content:start;min-width:0}
+.caps{display:flex;flex-wrap:wrap;gap:6px}
+.cap{font:600 15px/1.2 var(--f-disp);letter-spacing:.03em;border:1px solid var(--line);border-radius:4px;padding:5px 8px}
+.plate{margin:0;font:500 14px/1.4 var(--f-mono)}
+.fx{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.fx li{display:grid;gap:1px;font-size:14.5px}
+.fx b{font:600 13.5px/1.35 var(--f-mono)}
+.fx .bob{color:var(--muted)}
+.snd{margin:0;font-size:14px;color:var(--muted)}
+.snd b{color:var(--ink);font-weight:600}
+.det{margin:0;font-size:14px;border-top:1px dashed var(--line);padding-top:8px}
+.det span{color:var(--ok);font-weight:700}
+.bg3{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.bg3 li{display:grid;grid-template-columns:5.6em minmax(0,1fr);gap:2px 12px;font-size:14.5px}
+.bg3 b{font:500 12px/1.6 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.gem ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.gem li{display:grid;grid-template-columns:4.6em minmax(0,1fr);gap:2px 12px;font-size:15px}
+.gem .s{font:600 11px/1 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;border-radius:3px;padding:5px 0;text-align:center;align-self:start;margin-top:2px}
+.gem .s.yes{color:var(--ok);border:1px solid var(--ok)}
+.gem .s.no{color:var(--red);border:1px solid var(--red)}
+.gem .s.alt{color:var(--l-quit);border:1px solid var(--l-quit)}
+.gem b{display:block;font-weight:600}
+.gem span.h{color:var(--muted)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:860px){.three{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.box{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:16px 18px;display:grid;gap:10px;align-content:start;min-width:0}
+.box ul,.box ol{margin:0;padding-left:20px;display:grid;gap:7px}
+.tr .box{border-top:4px solid var(--c)}
+.tr h3{color:var(--c)}
+.refs ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.refs li{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr);gap:2px 14px;font-size:14.5px}
+.refs b{font:600 13px/1.45 var(--f-mono)}
+@media (max-width:620px){.refs li{grid-template-columns:minmax(0,1fr)}}
+.txw{overflow-x:auto}
+.tx{border-collapse:collapse;width:100%;font-size:14.5px}
+.tx th,.tx td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tx th{font:600 11.5px/1.3 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tx td:first-child{font:500 13px/1.45 var(--f-mono);color:var(--muted);white-space:nowrap}
+.tx td:nth-child(2){font:600 15px/1.35 var(--f-disp);letter-spacing:.02em}
+.obj{display:flex;flex-wrap:wrap;gap:6px}
+.obj span{font:500 13px/1.3 var(--f-mono);border:1px dashed var(--line);border-radius:4px;padding:5px 8px}
+details.raw{border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+textarea{width:100%;min-height:340px;margin-top:12px;resize:vertical;font:13px/1.5 var(--f-mono);color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:12px}
+footer{color:var(--muted);font-size:13.5px;display:grid;gap:6px}
+footer ul{margin:0;padding-left:18px;display:grid;gap:4px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+<div class="topbar"><div class="in"><span class="tt">Глава 4 · рисовка</span>
+<button class="btn" id="cp" type="button">Скопировать для Gemini</button><span class="st" id="cpst" role="status" aria-live="polite"></span></div></div>
+<main class="wrap">
+<header class="top">
+<p class="eb">Фильм «Что вы знаете о никотине?» · глава 4 · утверждённый текст</p>
+<h1>Рисовка главы <span class="yr">«Нагреватели»</span></h1>
+<p class="lede">Общая раскадровка: моя и Gemini. На каждую строку — фон в 3 плана, что на экране и на каком слове, крупная надпись, плашка года, приём Боба с роликом и секундой. Отдельно — переходы из главы 3, в главу 5 и петля шортса. Кнопка сверху копирует всё одним текстом для Gemini.</p>
+<ul class="sum"><li>фильм <b>1:37</b> с доской</li><li>шортс <b>1:31</b></li><li><b>242</b> слова, 2,57 в секунду</li><li><b>23</b> приёмов Боба</li><li>ответ Gemini: да — <b>15</b>, иначе — <b>3</b>, нет — <b>3</b></li></ul>
+</header>
+<section class="box gem" aria-labelledby="h-gm"><h2 id="h-gm">Ответ Gemini · что взял</h2><ul><li><span class='s yes'>да</span><span><b>Кадр 0 — столик лондонской кофейни утром: Биг-Бен за окном, сложенная газета, пачка Marlboro</b><span class='h'>Газета сложена и раскрывается на «пообещал».</span></span></li><li><span class='s alt'>иначе</span><span><b>Реклама на газете — по-русски, с перечёркнутой сигаретой</b><span class='h'>Реклама — предмет, её текст по-английски (правило Андрея): Our New Year’s resolution, We’re trying to give up cigarettes, Philip Morris Limited. Под ней — наша плашка «НОВОГОДНЕЕ ОБЕЩАНИЕ». Рисуем только текст.</span></span></li><li><span class='s no'>нет</span><span><b>Строка 3: газета складывается в корпус IQOS, под углом — красная полоса растущих продаж</b><span class='h'>Айкос в тексте появляется только в строке 4. Растущих продаж после обещания 2018-го не было: сигарет продали 740 млрд в 2018-м и 617 млрд в 2024-м, больше — только год к году. У нас газета сминается в комок-обещание: в строке 14 он вернётся, в строке 15 упадёт в урну.</span></span></li><li><span class='s yes'>да</span><span><b>Строка 4: глобус, на нём замок Нагои и Миланский собор; зажигалка щёлкает, пламя не поджигает стик</b><span class='h'>Глобус — из того же комка: складки бумаги становятся материками.</span></span></li><li><span class='s yes'>да</span><span><b>Строка 5: пламя сжимается в лезвие нагревателя, разрез держателя, салон машины с курткой</b><span class='h'>Строка — утверждённая: «Табак в ней греет нагреватель…» (в ответе было старое начало). Устройства у рта не показываем: облачко пара под потолком салона.</span></span></li><li><span class='s yes'>да</span><span><b>Строка 6: экран машины растёт в японское ТВ-шоу, потом витрина, поток белых фигурок сметает коробки</b><span class='h'></span></span></li><li><span class='s yes'>да</span><span><b>Строка 7: пар над одиноким держателем загибается в «?»</b><span class='h'>Плашка короче — «БЕЗ ВРЕДА?».</span></span></li><li><span class='s yes'>да</span><span><b>Строка 8: колпак ловит «?» из пара, сканер, парные столбики, один выше, 84 %</b><span class='h'>На колпаке — наша наклейка «ПАР», она нужна в строке 9.</span></span></li><li><span class='s yes'>да</span><span><b>Строка 9: обложка журнала, дым из-под заголовка</b><span class='h'>Плюс наклейка «ПАР» отклеивается — под ней «ДЫМ». Заголовок статьи по-английски, плашка по-русски.</span></span></li><li><span class='s no'>нет</span><span><b>Строка 10: Капитолий за окном</b><span class='h'>Капитолий — это Конгресс, он был в главе 2. Здесь FDA: строгое здание с буквами FDA на фасаде.</span></span></li><li><span class='s yes'>да</span><span><b>Строка 10: бланк из двух строк, зелёная галочка и красная планка «НЕЛЬЗЯ»</b><span class='h'>На «не разрешает до сих пор» вторая галочка пробует встать у «МЕНЬШЕ ВРЕДА» и отскакивает от планки.</span></span></li><li><span class='s yes'>да</span><span><b>Строка 11: без доски — красная планка вытягивается в нить и вытаскивает досье Reynolds 1973</b><span class='h'>Досье — та же записка, что в главе 1: «МЕМОРАНДУМ», «2 ФЕВРАЛЯ 1973», «СЕКРЕТНО», цитата про молодёжный рынок. За окном — башня Reynolds из главы 1.</span></span></li><li><span class='s yes'>да</span><span><b>Строка 12: сигарета с угольком, уголёк гаснет, счётчик −$300 млн</b><span class='h'>Плюс пачка Premier, и уголёк прожигает стопку купюр — «съела».</span></span></li><li><span class='s yes'>да</span><span><b>Строка 13: чертёж PATENT · R.J. Reynolds, карта США, шлагбаум таможни выталкивает IQOS</b><span class='h'>На патенте нет года.</span></span></li><li><span class='s alt'>иначе</span><span><b>Строка 14: экран делится пополам — IQOS 32 млн и Marlboro 617 млрд</b><span class='h'>Без деления экрана: камера отъезжает от карты на стол кофейни, туда катится комок-обещание, оба столбика растут прямо на столе. «Больше, чем годом раньше» — «+0,6 %».</span></span></li><li><span class='s alt'>иначе</span><span><b>Строка 15: IQOS и Marlboro рядом на столе</b><span class='h'>Сначала комок падает в урну у стола, а урна полна таких же смятых обещаний — это и есть «как и вы». Потом камера на столе: IQOS и Marlboro рядом.</span></span></li><li><span class='s yes'>да</span><span><b>Строки 16–17: белая баночка без логотипа, ценник $16 млрд, крышка, лист табака перечёркнут</b><span class='h'>Баночка въезжает в США через тот же шлагбаум, что выгнал айкос.</span></span></li><li><span class='s no'>нет</span><span><b>Финал фильма: баночка и стол сжимаются в карточку 2014</b><span class='h'>Баночка не должна попасть в фото карточки 2014 — как айкос в фото 1924 в главе 3. Белая подушечка растёт в белый лист, лист — газета с обещанием, она и есть фото карточки 2014.</span></span></li><li><span class='s yes'>да</span><span><b>Петля шортса: на стол ложится свежая газета — кадр 0</b><span class='h'></span></span></li><li><span class='s yes'>да</span><span><b>Плашка года, словарь TEXT, марки латиницей, объём в 3 тона</b><span class='h'>Всё по правилам Андрея.</span></span></li><li><span class='s yes'>да</span><span><b>Номера приёмов</b><span class='h'>Все есть в пульте, ролики и секунды совпадают. #009 и #105 — по смыслу: форма становится другой, ячейка переворачивается.</span></span></li></ul></section>
+<section class="tl" aria-labelledby="h-tl"><h2 id="h-tl">Лента главы · фильм</h2><div class='bar'><a class='seg l-promise' href='#b1' tabindex='-1' aria-hidden='true' style='flex:9.34' title='Обещание · 0:00–0:09'></a><a class='seg l-heat' href='#b4' tabindex='-1' aria-hidden='true' style='flex:22.96' title='Сигарета без огня · 0:09–0:32'></a><a class='seg l-smoke' href='#b8' tabindex='-1' aria-hidden='true' style='flex:22.18' title='Дым под другим именем · 0:32–0:54'></a><a class='seg l-rj' href='#b11' tabindex='-1' aria-hidden='true' style='flex:18.68' title='«Рейнольдс» · 0:54–1:13'></a><a class='seg l-quit' href='#b14' tabindex='-1' aria-hidden='true' style='flex:12.06' title='Как бросают · 1:13–1:25'></a><a class='seg l-zyn' href='#b16' tabindex='-1' aria-hidden='true' style='flex:8.95' title='Белая баночка · 1:25–1:34'></a><a class='seg l-board' href='#tr' tabindex='-1' aria-hidden='true' style='flex:3.00' title='Доска · только фильм · 1:34–1:37'></a></div><div class='ticks'><span style='left:0.00%'>0:00</span><span style='left:20.58%'>0:20</span><span style='left:41.17%'>0:40</span><span style='left:61.75%'>1:00</span><span style='left:82.34%'>1:20</span></div><ul class='legend'><li><a class='l-promise' href='#b1'><i></i><b>Обещание</b><small>0:00–0:09</small></a></li><li><a class='l-heat' href='#b4'><i></i><b>Сигарета без огня</b><small>0:09–0:32</small></a></li><li><a class='l-smoke' href='#b8'><i></i><b>Дым под другим именем</b><small>0:32–0:54</small></a></li><li><a class='l-rj' href='#b11'><i></i><b>«Рейнольдс»</b><small>0:54–1:13</small></a></li><li><a class='l-quit' href='#b14'><i></i><b>Как бросают</b><small>1:13–1:25</small></a></li><li><a class='l-zyn' href='#b16'><i></i><b>Белая баночка</b><small>1:25–1:34</small></a></li><li><a class='l-board' href='#tr'><i></i><b>Доска · только фильм</b><small>1:34–1:37</small></a></li></ul></section>
+<section class="three tr" id="tr" aria-labelledby="h-tr"><h2 id="h-tr" style="grid-column:1/-1">Переходы</h2>
+<div class="box l-promise"><h3>Из главы 3 · фильм</h3><ul><li>Глава 3 кончается отъездом на всю доску: красная нить тянется к закрытой карточке 2014, под маркером виден только год. После переделки главы 3 конец тот же.</li><li>Камера едет по нити к карточке 2014. Маркер трескается и осыпается — как в мостике из главы 1 в главу 2.</li><li>Под маркером — фото: столик лондонской кофейни, сложенная газета, пачка Marlboro.</li><li>Камера ныряет в фото, оно раскрывается во весь экран — это кадр 0 главы 4.</li><li>Последний кадр главы 3 — кадр главы 4 за 1/30 с до её кадра 0: кадр не повторяется.</li><li>Голоса нет, 2–3 с: шорох маркера, улица за окном.</li></ul></div>
+<div class="box l-board"><h3>В главу 5 · фильм</h3><ul><li>После «табака» белая подушечка растёт во весь кадр — белый лист.</li><li>Белый лист — это бумага газеты. Отъезд: газета с обещанием на столе кофейни, и это фото карточки «2014 · НАГРЕВАТЕЛИ» на доске. Баночки в фото нет.</li><li>Отъезд на всю доску — один раз за главу: открыты 1979, 2020, 1924 и 2014.</li><li>Красная нить тянется от 2014 к закрытой карточке 2022 — под маркером виден только год.</li><li>Мостик в главу 5 — когда будет её текст: камера нырнёт в карточку 2022. «Части N» в фильме нет.</li></ul></div>
+<div class="box l-quit"><h3>Петля шортса</h3><ul><li>Строк 16–17 нет: после «как и вы» — вопрос «Угадаете, с чем они всё-таки вернулись в Америку?».</li><li>На краю карты США — белый круглый силуэт со знаком «?», плашка «Часть 5 →».</li><li>Сверху на стол ложится свежая сложенная газета и закрывает карту и IQOS. Пачка Marlboro и чашка — на своих местах: это кадр 0.</li><li>Последний кадр шортса — кадр 0 за 1/30 с до начала: петля без повтора кадра.</li><li>Голос вопроса запишем вместе с главой.</li></ul></div>
+</section>
+<section class="two" aria-labelledby="h-f0"><h2 id="h-f0" style="grid-column:1/-1">Кадр 0 и предметы</h2>
+<div class="box"><h3>Кадр 0</h3><ul><li>Столик лондонской кофейни утром. Дальний план — окно, за ним полосы рассвета и силуэт Биг-Бена; средний — тёмный стол: чашка чая с паром, сложенная газета, объёмная пачка Marlboro (эталон главы 3); передний — косой луч из окна, пылинки в нём.</li><li>Газета сложена вдвое, шапка видна наполовину. Даты нигде нет.</li><li>Стол — Y 900–1450, газета — в центре. Всё важное выше Y 1480, субтитры — Y ≈ 1720.</li><li>Плашки года нет: обещание дали в 2018-м, а дальше идёт 2014 — назад во времени нельзя.</li><li>Фильм: камера выныривает сюда из фото карточки 2014 на доске. Шортс: это кадр 0, в конце на стол ложится свежая газета — петля.</li></ul></div>
+<div class="box"><h3>Одни и те же во всех сценах</h3><ul><li>Пачка Marlboro — эталон главы 3: красная «крыша», золотой герб, Marlboro с засечками, объём и растровая тень.</li><li>Держатель IQOS 2014 года — белый, вытянутый, грани скруглены, сверху торчит стик. Разрез — тонкими светлыми линиями, как в конце главы 3.</li><li>Пачка Marlboro HeatSticks — та же «крыша», ниже и уже обычной пачки, как в витрине главы 3.</li><li>Комок-обещание — та же газетная полоса, смятая; на сгибах видны куски английского текста рекламы.</li><li>Лаборатория — из главы 3: стеллажи с колбами, тёмно-бирюзовый свет.</li><li>Записка R.J. Reynolds 1973 года и башня Reynolds — из главы 1.</li><li>Белая баночка — круглая, низкая, с выпуклой крышкой. Без имени и логотипа: имя скажем в главе 5.</li></ul></div>
+</section>
+<section class="beats" aria-labelledby="h-b"><h2 id="h-b">Раскадровка</h2><article class="beat l-promise" id="b1">
+<header class="bh"><span class="bn">01</span><span class="tm">0:00–0:02</span><span class="life">Обещание</span></header>
+<p class="voice">Производитель «<mark>Мальборо</mark>» однажды <mark>пообещал</mark> <mark>бросить</mark> сигареты.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>окно кофейни: рассвет, силуэт Биг-Бена</span></li><li><b>средний</b><span>тёмный стол: чашка, газета, пачка Marlboro</span></li><li><b>передний</b><span>пар над чашкой, пылинки в луче</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>с начала<small>0:00,0</small></span><span>кадр 0: камера медленно наезжает на стол. В фильме камера только что вынырнула сюда из фото карточки 2014 (см. «Переходы»).</span></li><li><span class='at'>«Мальборо»<small>0:00,4</small></span><span>имя Marlboro на пачке загорается — как в главе 3.</span></li><li><span class='at'>«пообещал»<small>0:01,2</small></span><span>сложенная газета с хрустом раскрывается на камеру: внутри — реклама на всю полосу.</span></li><li><span class='at'>«бросить»<small>0:01,6</small></span><span>пачка Marlboro сама отъезжает по столу к краю, но остаётся в кадре.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>— (на пачке: Marlboro)</span></div></div><div><h3>Плашка года</h3><p class="plate">нет — даты на газете нет</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#088 · MDK 0:48–0:53</b><span class='bob'>у Боба: Бумажная страница с иллюстрацией отгибается за правый нижний угол, и книга захлопывается обложкой с крестом</span><span>у нас: газета раскрывается, как страница за угол</span></li></ul>
+<p class="snd"><b>Звук:</b> улица за окном, звяк ложки о чашку, хруст газеты</p>
+</article><article class="beat l-promise" id="b2">
+<header class="bh"><span class="bn">02</span><span class="tm">0:02–0:07</span><span class="life">Обещание</span></header>
+<p class="voice"><mark>Выкупил</mark> целые страницы в <mark>британских</mark> газетах: «<mark>Наше</mark> новогоднее обещание — мы <mark>пытаемся</mark> бросить сигареты».</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>за окном — газетный киоск на улице</span></li><li><b>средний</b><span>разворот газеты, реклама на всю полосу</span></li><li><b>передний</b><span>ещё две газеты веером пролетают мимо камеры</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Выкупил»<small>0:02,3</small></span><span>камера скользит по развороту: белое поле, крупный текст, реклама на всю полосу.</span></li><li><span class='at'>«британских»<small>0:03,9</small></span><span>из-под газеты веером выезжают ещё две. Шапки — The Times, The Sun, Daily Mirror простым шрифтом, не копия логотипов; в каждой та же полоса.</span></li><li><span class='at'>«Наше»<small>0:04,7</small></span><span>на полосе печатается заголовок Our New Year’s resolution, под ним — наша плашка «НОВОГОДНЕЕ ОБЕЩАНИЕ».</span></li><li><span class='at'>«пытаемся»<small>0:06,2</small></span><span>вторая строка — We’re trying to give up cigarettes, внизу подпись Philip Morris Limited.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>НОВОГОДНЕЕ ОБЕЩАНИЕ</span><span class='cap'>— (в газете: Our New Year’s resolution · We’re trying to give up cigarettes · Philip Morris Limited)</span></div></div><div><h3>Плашка года</h3><p class="plate">нет</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#119 · Соболев 0:48–0:55</b><span class='bob'>у Боба: Три газетные передовицы (АВАРИЯ, КАТАСТРОФА, ОСТОРОЖНО!) падают веером, и зум в бумагу заливает экран белым</span><span>у нас: газеты падают веером</span></li></ul>
+<p class="snd"><b>Звук:</b> шелест газет</p><p class='det'><span aria-hidden='true'>✓</span> Январь 2018: реклама на всю полосу в The Times, The Sun и Daily Mirror — «Our New Year’s resolution: we’re trying to give up cigarettes». Дату на газете не пишем.</p>
+</article><article class="beat l-promise" id="b3">
+<header class="bh"><span class="bn">03</span><span class="tm">0:07–0:09</span><span class="life">Обещание</span></header>
+<p class="voice"><mark>Слово</mark>, мягко говоря, не <mark>сдержал</mark>.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>окно кофейни: рассвет, силуэт Биг-Бена</span></li><li><b>средний</b><span>тёмный стол: чашка, газета, пачка Marlboro</span></li><li><b>передний</b><span>пар над чашкой, пылинки в луче</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Слово»<small>0:07,4</small></span><span>полоса с обещанием сама сминается — от углов к середине.</span></li><li><span class='at'>«сдержал»<small>0:08,9</small></span><span>газета сжимается в тугой бумажный комок; комок падает на стол и откатывается к краю.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>нет</span></div></div><div><h3>Плашка года</h3><p class="plate">нет</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#108 · Мадонна 0:45–0:55</b><span class='bob'>у Боба: Анатомическое сердце каменеет, раскалывается пополам и сжимается в точку, которая оказывается оливкой в бокале мартини</span><span>у нас: у Боба сердце сжимается в точку, у нас газета сминается в комок</span></li></ul>
+<p class="snd"><b>Звук:</b> хруст бумаги, глухой стук комка</p>
+</article><article class="beat l-heat" id="b4">
+<header class="bh"><span class="bn">04</span><span class="tm">0:09–0:17</span><span class="life">Сигарета без огня</span></header>
+<p class="voice"><mark>Бросать</mark> он начал заранее: в две тысячи <mark>четырнадцатом</mark> в японской <mark>Нагое</mark> и итальянском <mark>Милане</mark> появилась <mark>сигарета</mark>, которую нельзя <mark>поджечь</mark>.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>тёмно-синий космос с тонкой сеткой</span></li><li><b>средний</b><span>бумажный глобус из комка: складки — горы и материки</span></li><li><b>передний</b><span>тонкие кольца радара</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Бросать»<small>0:09,3</small></span><span>комок на краю стола начинает вращаться, складки бумаги становятся горами и материками — это глобус. Камера ныряет к нему.</span></li><li><span class='at'>«четырнадцатом»<small>0:12,1</small></span><span>плашка: 2014. Луч радара обходит глобус.</span></li><li><span class='at'>«Нагое»<small>0:13,2</small></span><span>в Японии загорается точка — силуэт замка Нагои.</span></li><li><span class='at'>«Милане»<small>0:14,4</small></span><span>в Италии — силуэт Миланского собора.</span></li><li><span class='at'>«сигарета»<small>0:15,2</small></span><span>камера ныряет в точку Нагои: стеклянная полка витрины, на ней белый держатель IQOS и пачка Marlboro HeatSticks; из пачки выдвигается стик.</span></li><li><span class='at'>«поджечь»<small>0:16,3</small></span><span>металлическая зажигалка рядом сама откидывает крышку и чиркает. Пламя лижет кончик стика — ни огонька, ни дыма. Плашка «НЕ ГОРИТ».</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>НАГОЯ · МИЛАН</span><span class='cap'>НЕ ГОРИТ</span><span class='cap'>— (на держателе: IQOS, на пачке: Marlboro HeatSticks)</span></div></div><div><h3>Плашка года</h3><p class="plate">2014 — появляется на «четырнадцатом»</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#039 · Google 0:56–1:02</b><span class='bob'>у Боба: Круглый чертёж превращается в 3D-глобус с лучом радара, зажигающим иконки</span><span>у нас: луч радара обходит глобус и зажигает города</span></li><li><b>#151 · Apple 0:05–0:09</b><span class='bob'>у Боба: Витрина магазина за стеклом</span><span>у нас: витрина за стеклом</span></li></ul>
+<p class="snd"><b>Звук:</b> шорох бумаги, «пиу» радара, щелчок зажигалки</p><p class='det'><span aria-hidden='true'>✓</span> Ноябрь 2014: айкос и стики Marlboro HeatSticks — в Нагое и Милане.</p>
+</article><article class="beat l-heat" id="b5">
+<header class="bh"><span class="bn">05</span><span class="tm">0:17–0:24</span><span class="life">Сигарета без огня</span></header>
+<p class="voice"><mark>Табак</mark> в ней греет <mark>нагреватель</mark>, <mark>вдвое</mark> холоднее огня: <mark>куртка</mark> не пахнет, <mark>пепла</mark> нет, затянуться можно прямо в <mark>машине</mark>.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>графит с инженерной сеткой, потом ночной город за лобовым стеклом</span></li><li><b>средний</b><span>разрез держателя, потом салон машины</span></li><li><b>передний</b><span>волны тепла, потом блики фар на стекле</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Табак»<small>0:16,7</small></span><span>пламя зажигалки сжимается внутрь держателя и становится оранжевым лезвием нагревателя. Держатель — в разрезе тонкими светлыми линиями поверх настоящей вещи, стик надет на лезвие.</span></li><li><span class='at'>«нагреватель»<small>0:18,3</small></span><span>лезвие внутри табака светится, вверх идут волны тепла вместо дыма.</span></li><li><span class='at'>«вдвое»<small>0:18,7</small></span><span>рядом два столбика-термометра: огонь — 684°, лезвие — 330°. Красный столбик огня проседает до оранжевого — вдвое ниже. Плашка «ВДВОЕ ХОЛОДНЕЕ».</span></li><li><span class='at'>«куртка»<small>0:19,8</small></span><span>отъезд: держатель лежит в подстаканнике ночной машины, на пассажирском сиденье — куртка, волнистых линий запаха над ней нет.</span></li><li><span class='at'>«пепла»<small>0:21,0</small></span><span>пепельница в двери — пустая и чистая.</span></li><li><span class='at'>«машине»<small>0:23,3</small></span><span>белая фигурка за рулём; к потолку салона поднимается маленькое облачко пара и тает. За стеклом проезжают фары.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>ВДВОЕ ХОЛОДНЕЕ</span><span class='cap'>684° · 330°</span></div></div><div><h3>Плашка года</h3><p class="plate">2014</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#114 · Соболев 0:13–0:18</b><span class='bob'>у Боба: Жёлтые языки пламени на весь экран сжимаются в камин, куда рука в жёлтом рукаве кидает книгу «МЁРТВЫЕ ДУШИ»</span><span>у нас: пламя сжимается в лезвие нагревателя</span></li><li><b>#067 · Да Винчи 0:29–0:37</b><span class='bob'>у Боба: Руки листают синие чертежи на переднем плане, пока позади заводской кран на цепях везёт реальные танки</span><span>у нас: разрез тонкими линиями поверх настоящего держателя</span></li><li><b>#158 · Instagram 0:15–0:20</b><span class='bob'>у Боба: Машины с фарами на ночной дороге</span><span>у нас: фары на ночной дороге за стеклом</span></li></ul>
+<p class="snd"><b>Звук:</b> шипение лезвия, гул мотора</p><p class='det'><span aria-hidden='true'>✓</span> Нагрев айкоса ≈ 330 °C, сигарета горит при ≈ 684 °C (Auer и др., 2017).</p>
+</article><article class="beat l-heat" id="b6">
+<header class="bh"><span class="bn">06</span><span class="tm">0:24–0:30</span><span class="life">Сигарета без огня</span></header>
+<p class="voice">Это <mark>айкос</mark>, и когда в <mark>шестнадцатом</mark> его <mark>расхвалили</mark> комики в популярном японском шоу, айкосы <mark>смели</mark> с полок.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>ночной Токио: неон без надписей, лучи софитов</span></li><li><b>средний</b><span>экран шоу, потом витрина магазина электроники</span></li><li><b>передний</b><span>поток белых фигурок</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«айкос»<small>0:24,1</small></span><span>на экране магнитолы в машине — белый держатель, имя IQOS загорается.</span></li><li><span class='at'>«шестнадцатом»<small>0:25,7</small></span><span>плашка: 2014 → 2016. Экран магнитолы растёт во весь кадр: японское ТВ-шоу — студия, софиты, два белых силуэта комиков за столом, между ними на подставке IQOS.</span></li><li><span class='at'>«расхвалили»<small>0:26,5</small></span><span>над силуэтами вспыхивают звёздочки и полосы смеха. Отъезд: шоу идёт на телевизоре в витрине магазина, рядом полки с рядами белых коробок IQOS.</span></li><li><span class='at'>«смели»<small>0:29,2</small></span><span>поток белых фигурок проносится вдоль полок — коробки исчезают волной, ряд за рядом. Плашка «РАСКУПИЛИ».</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>РАСКУПИЛИ</span><span class='cap'>— (на коробках: IQOS)</span></div></div><div><h3>Плашка года</h3><p class="plate">2014 → 2016, барабаном на «шестнадцатом»</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#151 · Apple 0:05–0:09</b><span class='bob'>у Боба: Витрина магазина за стеклом</span><span>у нас: витрина магазина за стеклом</span></li><li><b>#103 · Мадонна 0:15–0:20</b><span class='bob'>у Боба: Заводской конвейер с белыми фигурками людей под гигантским монитором с головой робота</span><span>у нас: поток белых фигурок</span></li></ul>
+<p class="snd"><b>Звук:</b> смех студии, топот толпы</p><p class='det'><span aria-hidden='true'>✓</span> Апрель 2016: айкос хвалили в японском шоу «Ame-talk», после этого его раскупили по всей Японии.</p>
+</article><article class="beat l-heat" id="b7">
+<header class="bh"><span class="bn">07</span><span class="tm">0:30–0:32</span><span class="life">Сигарета без огня</span></header>
+<p class="voice"><mark>Без</mark> огня — значит, <mark>без</mark> <mark>вреда</mark>?</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>тёмный магазин, свет гаснет</span></li><li><b>средний</b><span>пустая полка, на ней один держатель IQOS</span></li><li><b>передний</b><span>тонкая струйка пара</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Без»<small>0:30,4</small></span><span>свет в магазине гаснет, остаётся луч сверху: пустая полка, на ней один держатель.</span></li><li><span class='at'>«вреда»<small>0:31,9</small></span><span>струйка пара над держателем загибается в белый вопросительный знак.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>БЕЗ ВРЕДА?</span></div></div><div><h3>Плашка года</h3><p class="plate">2016</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#009 · Coca-Cola 0:41–0:46</b><span class='bob'>у Боба: Макушка головы становится холмом, где растут маки и зажигается лампочка</span><span>у нас: струйка пара становится формой — знаком вопроса</span></li></ul>
+<p class="snd"><b>Звук:</b> музыка тише, тихое шипение</p>
+</article><article class="beat l-smoke" id="b8">
+<header class="bh"><span class="bn">08</span><span class="tm">0:32–0:43</span><span class="life">Дым под другим именем</span></header>
+<p class="voice"><mark>Через</mark> год швейцарские учёные <mark>поймали</mark> этот «пар» и нашли те же <mark>яды</mark>, что в дыме. <mark>Многих</mark> меньше, одного даже <mark>больше</mark>, а <mark>никотина</mark> — восемьдесят четыре процента от сигареты.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>окно лаборатории: Альпы, маленький швейцарский флаг на стекле</span></li><li><b>средний</b><span>стол с колбами и анализатором — лаборатория из главы 3</span></li><li><b>передний</b><span>шестигранники молекул плывут мимо камеры</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Через»<small>0:32,3</small></span><span>плашка: 2016 → 2017. Отъезд: полка с держателем стоит уже на лабораторном столе.</span></li><li><span class='at'>«поймали»<small>0:33,9</small></span><span>сверху опускается стеклянный колпак и ловит вопрос из пара. На колпаке — наша наклейка «ПАР».</span></li><li><span class='at'>«яды»<small>0:36,6</small></span><span>по колпаку проезжает светлая полоса сканера: в паре проступают шестигранники ядов — такие же, как в дыме сигареты рядом.</span></li><li><span class='at'>«Многих»<small>0:38,1</small></span><span>рядом вырастают пары столбиков: серый — дым сигареты, белый — пар айкоса. Белые почти все ниже.</span></li><li><span class='at'>«больше»<small>0:39,7</small></span><span>один белый столбик выстреливает выше серого и краснеет. Плашка «ОДНОГО БОЛЬШЕ».</span></li><li><span class='at'>«никотина»<small>0:40,5</small></span><span>круглый индикатор никотина заполняется и замирает на 84 %.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>ОДНОГО БОЛЬШЕ</span><span class='cap'>84 % НИКОТИНА</span></div></div><div><h3>Плашка года</h3><p class="plate">2016 → 2017 на «Через»</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#116 · Соболев 0:27–0:34</b><span class='bob'>у Боба: Химическая формула H-C-C-O-H парит среди шестигранников, а снизу чокаются две стеклянные пробирки в руках</span><span>у нас: шестигранники молекул</span></li><li><b>#037 · Google 0:43–0:51</b><span class='bob'>у Боба: Зелёная планка рентгена проезжает по кожаному портфелю, высвечивая секретные чертежи внутри</span><span>у нас: полоса сканера по колпаку</span></li><li><b>#109 · Мадонна 0:55–1:00</b><span class='bob'>у Боба: Четыре кружка с флагами прямо на листе отчёта вырастают вверх в столбики графика</span><span>у нас: столбики растут парами</span></li><li><b>#120 · Соболев 0:55–1:00</b><span class='bob'>у Боба: Тройная инфографика 75% на белом фоне: круговая диаграмма, бублик и растущий столбик</span><span>у нас: круглый индикатор 84 %</span></li></ul>
+<p class="snd"><b>Звук:</b> стеклянный «дзынь» колпака, гул сканера, «тук» столбиков</p><p class='det'><span aria-hidden='true'>✓</span> 2017, Берн и Лозанна: никотина в паре айкоса — 84 % от сигаретного, многих ядов меньше, аценафтена — больше (Auer и др., JAMA Internal Medicine, 2017).</p>
+</article><article class="beat l-smoke" id="b9">
+<header class="bh"><span class="bn">09</span><span class="tm">0:43–0:46</span><span class="life">Дым под другим именем</span></header>
+<p class="voice"><mark>Статью</mark> они так и назвали: «<mark>Дым</mark> под другим <mark>именем</mark>».</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>та же лаборатория</span></li><li><b>средний</b><span>колпак и раскрытый журнал на столе</span></li><li><b>передний</b><span>серый дым из-под заголовка</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Статью»<small>0:42,8</small></span><span>рядом с колпаком на стол ложится раскрытый журнал JAMA Internal Medicine, заголовок статьи закрыт полоской бумаги.</span></li><li><span class='at'>«Дым»<small>0:44,7</small></span><span>наклейка «ПАР» на колпаке отклеивается с угла — под ней «ДЫМ». В журнале полоска слетает: Smoke by Any Other Name.</span></li><li><span class='at'>«именем»<small>0:45,9</small></span><span>из-под заголовка выползает мягкий серый дым. Плашка «ДЫМ ПОД ДРУГИМ ИМЕНЕМ».</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>ДЫМ ПОД ДРУГИМ ИМЕНЕМ</span><span class='cap'>— (в журнале: JAMA Internal Medicine · Smoke by Any Other Name)</span></div></div><div><h3>Плашка года</h3><p class="plate">2017</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#088 · MDK 0:48–0:53</b><span class='bob'>у Боба: Бумажная страница с иллюстрацией отгибается за правый нижний угол, и книга захлопывается обложкой с крестом</span><span>у нас: наклейка отгибается за угол</span></li><li><b>#141 · Сатана Клаус 0:04–0:08</b><span class='bob'>у Боба: Дым из печной трубы тает в ночном небе</span><span>у нас: дым из-под заголовка</span></li></ul>
+<p class="snd"><b>Звук:</b> треск наклейки, шелест страницы</p><p class='det'><span aria-hidden='true'>✓</span> Статья — «Heat-Not-Burn Tobacco Cigarettes: Smoke by Any Other Name», JAMA Internal Medicine, 2017.</p>
+</article><article class="beat l-smoke" id="b10">
+<header class="bh"><span class="bn">10</span><span class="tm">0:46–0:54</span><span class="life">Дым под другим именем</span></header>
+<p class="voice">В <mark>двадцатом</mark> американский <mark>регулятор</mark> разрешил писать, что вредных веществ в айкосе <mark>меньше</mark>, а сказать «<mark>вреда</mark> <mark>меньше</mark>» не <mark>разрешает</mark> до сих пор.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>за окном — строгое здание с буквами FDA и флагом США (не Капитолий)</span></li><li><b>средний</b><span>стол: журнал, бланк из двух строк, держатель IQOS</span></li><li><b>передний</b><span>конус света настольной лампы</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«двадцатом»<small>0:46,7</small></span><span>плашка: 2017 → 2020. Отъезд: журнал лежит на столе кабинета, за окном — здание FDA.</span></li><li><span class='at'>«регулятор»<small>0:47,5</small></span><span>на журнал ложится бланк из двух строк — «МЕНЬШЕ ВЕЩЕСТВ» и «МЕНЬШЕ ВРЕДА», в углу печать FDA, рядом держатель IQOS.</span></li><li><span class='at'>«меньше»<small>0:50,6</small></span><span>у «МЕНЬШЕ ВЕЩЕСТВ» щёлкает зелёная галочка.</span></li><li><span class='at'>«вреда»<small>0:51,8</small></span><span>строку «МЕНЬШЕ ВРЕДА» со стуком закрывает красная планка «НЕЛЬЗЯ».</span></li><li><span class='at'>«разрешает»<small>0:52,9</small></span><span>у «МЕНЬШЕ ВРЕДА» пробует встать вторая галочка — и отскакивает от планки.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>МЕНЬШЕ ВЕЩЕСТВ ✓</span><span class='cap'>МЕНЬШЕ ВРЕДА ✕</span><span class='cap'>— (печать: FDA)</span></div></div><div><h3>Плашка года</h3><p class="plate">2017 → 2020 на «двадцатом»</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#105 · Мадонна 0:26–0:31</b><span class='bob'>у Боба: Курсор жмёт кнопку REVERSE, и 7 квадратных ячеек с буквами зеркально меняются местами</span><span>у нас: строка бланка закрывается красной планкой, как ячейка переворачивается</span></li></ul>
+<p class="snd"><b>Звук:</b> шум улицы, щелчок галочки, удар планки</p><p class='det'><span aria-hidden='true'>✓</span> FDA, июль 2020: айкосу разрешили писать о меньшем количестве вредных веществ, «меньше вреда» — нет; в 2026-м продлили так же.</p>
+</article><article class="beat l-rj" id="b11">
+<header class="bh"><span class="bn">11</span><span class="tm">0:54–0:59</span><span class="life">«Рейнольдс»</span></header>
+<p class="voice"><mark>Помните</mark> «<mark>Рейнольдс</mark>» — тех, что в <mark>семьдесят</mark> третьем искали, как подсадить <mark>подростков</mark>?</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>за окном вместо FDA — башня Reynolds в ар-деко и заводы с трубами из главы 1</span></li><li><b>средний</b><span>стол, записка 1973 года</span></li><li><b>передний</b><span>пылинки в луче лампы</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Помните»<small>0:54,5</small></span><span>плашка года гаснет. Красная планка «НЕЛЬЗЯ» вытягивается в красную нить и вытаскивает из-под бланка старую записку — в этом же кадре, без доски.</span></li><li><span class='at'>«Рейнольдс»<small>0:54,9</small></span><span>это та же записка, что в главе 1: шапка R.J. REYNOLDS TOBACCO COMPANY, «МЕМОРАНДУМ», штамп «СЕКРЕТНО». За окном здание FDA уезжает, выезжает башня Reynolds.</span></li><li><span class='at'>«семьдесят»<small>0:56,4</small></span><span>на записке подсвечивается дата «2 ФЕВРАЛЯ 1973».</span></li><li><span class='at'>«подростков»<small>0:58,4</small></span><span>строка цитаты из главы 1 «МОЛОДЁЖНОГО РЫНКА» — под маркером.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>— (на записке: R.J. REYNOLDS TOBACCO COMPANY · МЕМОРАНДУМ · 2 ФЕВРАЛЯ 1973 · СЕКРЕТНО)</span></div></div><div><h3>Плашка года</h3><p class="plate">гаснет на «Помните»: дальше 1973 и 1988, назад во времени нельзя</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#126 · Хованский 0:27–0:30</b><span class='bob'>у Боба: Вертикальная нить под конвертом становится шкалой истории с красной точкой (1783 -&gt; 1682 -&gt; 1604 -&gt; 1552)</span><span>у нас: красная нить вытаскивает записку</span></li></ul>
+<p class="snd"><b>Звук:</b> скрип бумаги, далёкий гудок завода</p><p class='det'><span aria-hidden='true'>✓</span> Меморандум R.J. Reynolds от 2 февраля 1973 — тот же, что в главе 1 (функция memo в ep/v170.js).</p>
+</article><article class="beat l-rj" id="b12">
+<header class="bh"><span class="bn">12</span><span class="tm">0:59–1:05</span><span class="life">«Рейнольдс»</span></header>
+<p class="voice"><mark>Свои</mark> сигареты без огня у них не <mark>прижились</mark>: одна, с <mark>угольком</mark>, <mark>съела</mark> больше трёхсот миллионов <mark>долларов</mark>.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>та же башня Reynolds за окном, сумерки</span></li><li><b>средний</b><span>стол: пачка Premier, сигарета с угольком</span></li><li><b>передний</b><span>пепел и обрывки купюр</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Свои»<small>0:58,8</small></span><span>записка уезжает со стола, на её место ложатся пачка Premier и объёмная сигарета: на кончике — тёмный уголёк.</span></li><li><span class='at'>«прижились»<small>1:01,5</small></span><span>уголёк тлеет тускло и гаснет.</span></li><li><span class='at'>«угольком»<small>1:02,6</small></span><span>уголёк вспыхивает снова, рядом появляется стопка долларов.</span></li><li><span class='at'>«съела»<small>1:03,0</small></span><span>уголёк прожигает стопку насквозь, купюры тают в пепел; под стопкой крутится барабанный счётчик.</span></li><li><span class='at'>«долларов»<small>1:04,6</small></span><span>счётчик встаёт на −$300 млн, от стопки остаётся горстка пепла.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>−$300 МЛН</span><span class='cap'>— (на пачке: Premier)</span></div></div><div><h3>Плашка года</h3><p class="plate">нет</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#089 · MDK 0:54–1:03</b><span class='bob'>у Боба: Механический барабанный счётчик крутит 7 800 000 и при отъезде оказывается рубкой корабля перед метеоритом</span><span>у нас: барабанный счётчик</span></li></ul>
+<p class="snd"><b>Звук:</b> треск уголька, шорох горящих купюр, «тррр» счётчика</p><p class='det'><span aria-hidden='true'>✓</span> 1988: Premier от R.J. Reynolds грел табак угольком; его сняли в феврале 1989-го, потери — 300–325 млн $.</p>
+</article><article class="beat l-rj" id="b13">
+<header class="bh"><span class="bn">13</span><span class="tm">1:05–1:13</span><span class="life">«Рейнольдс»</span></header>
+<p class="voice">Зато их старые <mark>патенты</mark> выжили: в двадцать <mark>первом</mark> торговая <mark>комиссия</mark> США решила, что айкос их <mark>нарушает</mark>, и <mark>выгнала</mark> его из Америки.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>колонны Вашингтона, полосы света</span></li><li><b>средний</b><span>карта США, на ней ряды белых держателей IQOS</span></li><li><b>передний</b><span>красный шлагбаум таможни</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«патенты»<small>1:06,1</small></span><span>из пепла выезжает целый лист: синий чертёж PATENT · R.J. Reynolds, без года.</span></li><li><span class='at'>«первом»<small>1:07,7</small></span><span>плашка: 2021. Лист ложится на карту США, по ней рядами стоят белые держатели IQOS.</span></li><li><span class='at'>«комиссия»<small>1:08,5</small></span><span>над картой опускается молоток. Плашка «ТОРГОВАЯ КОМИССИЯ США».</span></li><li><span class='at'>«нарушает»<small>1:10,8</small></span><span>на чертеже патента и в разрезе держателя подсвечиваются одинаковые детали, их соединяет красная линия.</span></li><li><span class='at'>«выгнала»<small>1:11,6</small></span><span>на границе опускается красный шлагбаум и одним движением выталкивает все IQOS с карты в океан. На карте — штамп «ЗАПРЕТ».</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>ТОРГОВАЯ КОМИССИЯ США</span><span class='cap'>ЗАПРЕТ</span><span class='cap'>— (на чертеже: PATENT · R.J. Reynolds, на держателях: IQOS)</span></div></div><div><h3>Плашка года</h3><p class="plate">2021 — появляется на «первом»</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#067 · Да Винчи 0:29–0:37</b><span class='bob'>у Боба: Руки листают синие чертежи на переднем плане, пока позади заводской кран на цепях везёт реальные танки</span><span>у нас: синий чертёж поверх настоящей вещи</span></li><li><b>#005 · Coca-Cola 0:11–0:16</b><span class='bob'>у Боба: Падающий 3D-крест выбивает логотип в конвейер бутылок 25¢</span><span>у нас: шлагбаум падает и выбивает держатели с карты</span></li></ul>
+<p class="snd"><b>Звук:</b> удар молотка, лязг шлагбаума, плеск</p><p class='det'><span aria-hidden='true'>✓</span> 29 сентября 2021: торговая комиссия США решила, что айкос нарушает два патента R.J. Reynolds; ввоз запрещён с 29 ноября (дело 337-TA-1199). Год на патенте не пишем.</p>
+</article><article class="beat l-quit" id="b14">
+<header class="bh"><span class="bn">14</span><span class="tm">1:13–1:22</span><span class="life">Как бросают</span></header>
+<p class="voice">А <mark>обещание</mark> бросить? В двадцать <mark>четвёртом</mark> у айкоса <mark>тридцать</mark> два миллиона пользователей, а <mark>сигарет</mark> компания продала <mark>шестьсот</mark> семнадцать миллиардов — <mark>больше</mark>, чем годом раньше.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>снова окно лондонской кофейни, рассвет</span></li><li><b>средний</b><span>стол кофейни: карта США, пачка Marlboro</span></li><li><b>передний</b><span>пар над чашкой</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«обещание»<small>1:13,5</small></span><span>держатели уплывают за край карты. Отъезд: карта лежит на столе той же лондонской кофейни, по столу катится бумажный комок — то самое обещание.</span></li><li><span class='at'>«четвёртом»<small>1:15,1</small></span><span>плашка: 2021 → 2024.</span></li><li><span class='at'>«тридцать»<small>1:16,3</small></span><span>слева на столе из белых фигурок растёт белый столбик, над ним держатель IQOS; барабанный счётчик — 32 млн.</span></li><li><span class='at'>«сигарет»<small>1:18,2</small></span><span>справа из пачки Marlboro растёт красная башня сигарет.</span></li><li><span class='at'>«шестьсот»<small>1:19,4</small></span><span>счётчик башни — 617 млрд, башня пробивает верх кадра.</span></li><li><span class='at'>«больше»<small>1:20,5</small></span><span>красная стрелка вверх и «+0,6 %».</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>32 МЛН</span><span class='cap'>617 МЛРД ↑</span><span class='cap'>+0,6 %</span></div></div><div><h3>Плашка года</h3><p class="plate">2021 → 2024 на «четвёртом»</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#089 · MDK 0:54–1:03</b><span class='bob'>у Боба: Механический барабанный счётчик крутит 7 800 000 и при отъезде оказывается рубкой корабля перед метеоритом</span><span>у нас: барабанные счётчики</span></li><li><b>#109 · Мадонна 0:55–1:00</b><span class='bob'>у Боба: Четыре кружка с флагами прямо на листе отчёта вырастают вверх в столбики графика</span><span>у нас: столбики растут прямо на столе</span></li></ul>
+<p class="snd"><b>Звук:</b> шорох катящегося комка, «тррр» счётчиков</p><p class='det'><span aria-hidden='true'>✓</span> 2024: 32,2 млн пользователей айкоса; 616,8 млрд сигарет — на 0,6 % больше, чем в 2023-м.</p>
+</article><article class="beat l-quit" id="b15">
+<header class="bh"><span class="bn">15</span><span class="tm">1:22–1:25</span><span class="life">Как бросают</span></header>
+<p class="voice"><mark>Бросают</mark> они <mark>ровно</mark> так же, как и <mark>вы</mark>.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>окно кофейни</span></li><li><b>средний</b><span>стол: IQOS, пачка Marlboro; урна у стола</span></li><li><b>передний</b><span>пар над чашкой</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Бросают»<small>1:22,1</small></span><span>комок докатывается до края стола и падает в урну.</span></li><li><span class='at'>«ровно»<small>1:22,9</small></span><span>урна полна точно таких же комков — чужих новогодних обещаний.</span></li><li><span class='at'>«вы»<small>1:24,8</small></span><span>камера поднимается к столу: рядом спокойно лежат IQOS и пачка Marlboro — их никто не бросил.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>нет</span></div></div><div><h3>Плашка года</h3><p class="plate">2024</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#110 · Мадонна 1:05–1:12</b><span class='bob'>у Боба: На экране MISSION FAILED курсор жмёт NO, и механическая клешня сверху уносит фигурку по рельсу в мусорный бак</span><span>у нас: у Боба фигурку уносят в мусорный бак, у нас комок падает в урну к таким же</span></li></ul>
+<p class="snd"><b>Звук:</b> глухое «пум» комка в урне</p>
+</article><article class="beat l-quit" id="bq">
+<header class="bh"><span class="bn">?</span><span class="tm">1:25–1:28</span><span class="life">Как бросают</span><span class="only">только в шортсе</span></header>
+<p class="voice"><mark>Угадаете</mark>, с чем они всё-таки вернулись в <mark>Америку</mark>?</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>окно кофейни</span></li><li><b>средний</b><span>стол: IQOS, пачка Marlboro, карта США</span></li><li><b>передний</b><span>пар над чашкой</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Угадаете»<small>1:25,2</small></span><span>на краю карты США, у океана, — белый круглый силуэт со знаком «?» внутри.</span></li><li><span class='at'>«Америку»<small>1:27,9</small></span><span>плашка «Часть 5 →». Сверху на стол со шлепком ложится свежая сложенная газета и закрывает карту и IQOS — кадр становится кадром 0.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>Часть 5 →</span></div></div><div><h3>Плашка года</h3><p class="plate">уходит до вопроса: в кадре 0 плашки нет</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#088 · MDK 0:48–0:53</b><span class='bob'>у Боба: Бумажная страница с иллюстрацией отгибается за правый нижний угол, и книга захлопывается обложкой с крестом</span><span>у нас: газета ложится обратно — петля в кадр 0</span></li></ul>
+<p class="snd"><b>Звук:</b> шлепок газеты</p>
+</article><article class="beat l-zyn" id="b16">
+<header class="bh"><span class="bn">16</span><span class="tm">1:25–1:32</span><span class="life">Белая баночка</span><span class="only">только в фильме</span></header>
+<p class="voice">А в <mark>Америку</mark> «Филип Моррис» всё-таки <mark>вернулся</mark> — через год после <mark>запрета</mark>, с маленькой белой баночкой за <mark>шестнадцать</mark> миллиардов.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>океан и ночной берег США</span></li><li><b>средний</b><span>та же карта США на столе кофейни</span></li><li><b>передний</b><span>брызги волны у берега</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«Америку»<small>1:26,0</small></span><span>плашки года уже нет. Камера наезжает на карту США на столе: у берега — океан.</span></li><li><span class='at'>«вернулся»<small>1:27,5</small></span><span>по океану к берегу катится маленькая белая круглая баночка, качаясь на волнах.</span></li><li><span class='at'>«запрета»<small>1:29,1</small></span><span>тот же красный шлагбаум поднимается — баночка въезжает в США. Имени на ней нет: его скажем в главе 5.</span></li><li><span class='at'>«шестнадцать»<small>1:31,4</small></span><span>к баночке подвешен ценник, барабан крутится до $16 млрд.</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>$16 МЛРД</span></div></div><div><h3>Плашка года</h3><p class="plate">уходит до этой фразы</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#134 · Coca-Cola 0:25–0:29</b><span class='bob'>у Боба: Конверт качается по гребню волны</span><span>у нас: баночка качается на гребне волны</span></li><li><b>#089 · MDK 0:54–1:03</b><span class='bob'>у Боба: Механический барабанный счётчик крутит 7 800 000 и при отъезде оказывается рубкой корабля перед метеоритом</span><span>у нас: барабанный ценник</span></li></ul>
+<p class="snd"><b>Звук:</b> волна, лязг шлагбаума, «тррр» ценника</p><p class='det'><span aria-hidden='true'>✓</span> Ноябрь 2022: «Филип Моррис» купил Swedish Match (Zyn) примерно за 16 млрд $ — через год после запрета айкоса.</p>
+</article><article class="beat l-zyn" id="b17">
+<header class="bh"><span class="bn">17</span><span class="tm">1:32–1:34</span><span class="life">Белая баночка</span><span class="only">только в фильме</span></header>
+<p class="voice">В ней <mark>нет</mark> <mark>даже</mark>… <mark>табака</mark>.</p>
+<h3>Фон · 3 плана</h3><ul class="bg3"><li><b>дальний</b><span>ночной берег</span></li><li><b>средний</b><span>баночка крупно</span></li><li><b>передний</b><span>брызги</span></li></ul>
+<h3>На экране</h3><ol class="shots"><li><span class='at'>«нет»<small>1:33,0</small></span><span>баночка поворачивается крышкой к камере, крышка откидывается со щелчком: внутри по кругу — белые подушечки.</span></li><li><span class='at'>«даже»<small>1:33,4</small></span><span>над подушечками — тонкий контур табачного листа…</span></li><li><span class='at'>«табака»<small>1:33,8</small></span><span>…он перечёркивается и тает. Плашка «БЕЗ ТАБАКА».</span></li></ol>
+<div class="meta"><div><h3>Крупно</h3><div class="caps"><span class='cap'>БЕЗ ТАБАКА</span></div></div><div><h3>Плашка года</h3><p class="plate">нет</p></div></div>
+<h3>Приёмы Боба</h3><ul class="fx"><li><b>#003 · Coca-Cola 0:05–0:09</b><span class='bob'>у Боба: Поворот банки верхним торцом с растровой тенью</span><span>у нас: баночка поворачивается торцом</span></li></ul>
+<p class="snd"><b>Звук:</b> щелчок крышки</p>
+</article></section>
+<section class="box" aria-labelledby="h-tx"><h2 id="h-tx">Надписи · словарь TEXT</h2>
+<p class="lede">Наши надписи — в словаре TEXT в шапке кода: по нему сделаем английскую и немецкую версии.</p>
+<div class="txw"><table class="tx"><thead><tr><th>ключ</th><th>по-русски</th><th>где</th></tr></thead><tbody><tr><td>promise</td><td>НОВОГОДНЕЕ ОБЕЩАНИЕ</td><td>строка 2, под рекламой</td></tr><tr><td>nagoya</td><td>НАГОЯ</td><td>строка 4, точка на глобусе</td></tr><tr><td>milan</td><td>МИЛАН</td><td>строка 4</td></tr><tr><td>nofire</td><td>НЕ ГОРИТ</td><td>строка 4, зажигалка</td></tr><tr><td>half</td><td>ВДВОЕ ХОЛОДНЕЕ</td><td>строка 5, термометры</td></tr><tr><td>soldout</td><td>РАСКУПИЛИ</td><td>строка 6, полки</td></tr><tr><td>noharm</td><td>БЕЗ ВРЕДА?</td><td>строка 7, вопрос из пара</td></tr><tr><td>vapor</td><td>ПАР</td><td>строки 8–9, наклейка на колпаке</td></tr><tr><td>smoke</td><td>ДЫМ</td><td>строка 9, под наклейкой</td></tr><tr><td>onemore</td><td>ОДНОГО БОЛЬШЕ</td><td>строка 8, красный столбик</td></tr><tr><td>nic</td><td>84 % НИКОТИНА</td><td>строка 8, индикатор</td></tr><tr><td>title</td><td>ДЫМ ПОД ДРУГИМ ИМЕНЕМ</td><td>строка 9, под заголовком журнала</td></tr><tr><td>less</td><td>МЕНЬШЕ ВЕЩЕСТВ</td><td>строка 10, бланк</td></tr><tr><td>harm</td><td>МЕНЬШЕ ВРЕДА</td><td>строка 10, бланк</td></tr><tr><td>no</td><td>НЕЛЬЗЯ</td><td>строка 10, красная планка</td></tr><tr><td>memo</td><td>МЕМОРАНДУМ · 2 ФЕВРАЛЯ 1973 · СЕКРЕТНО</td><td>строка 11, как в главе 1</td></tr><tr><td>quote</td><td>МЫ ДОЛЖНЫ ПОЛУЧИТЬ СВОЮ ДОЛЮ МОЛОДЁЖНОГО РЫНКА</td><td>строка 11, цитата из главы 1</td></tr><tr><td>premier</td><td>−$300 МЛН</td><td>строка 12, счётчик</td></tr><tr><td>itc</td><td>ТОРГОВАЯ КОМИССИЯ США</td><td>строка 13</td></tr><tr><td>ban</td><td>ЗАПРЕТ</td><td>строка 13, штамп на карте</td></tr><tr><td>users</td><td>32 МЛН</td><td>строка 14</td></tr><tr><td>cigs</td><td>617 МЛРД</td><td>строка 14</td></tr><tr><td>pct</td><td>+0,6 %</td><td>строка 14</td></tr><tr><td>price</td><td>$16 МЛРД</td><td>строка 16, ценник</td></tr><tr><td>notob</td><td>БЕЗ ТАБАКА</td><td>строка 17</td></tr><tr><td>card14</td><td>2014 · НАГРЕВАТЕЛИ</td><td>доска</td></tr><tr><td>card22</td><td>2022</td><td>доска, закрытая карточка</td></tr><tr><td>part5</td><td>Часть 5 →</td><td>конец шортса</td></tr></tbody></table></div>
+<h3>На предметах — не переводим</h3><div class="obj"><span>Our New Year’s resolution</span><span>We’re trying to give up cigarettes</span><span>Philip Morris Limited</span><span>The Times · The Sun · Daily Mirror</span><span>Marlboro</span><span>Marlboro HeatSticks</span><span>IQOS</span><span>JAMA Internal Medicine</span><span>Smoke by Any Other Name</span><span>FDA</span><span>R.J. REYNOLDS TOBACCO COMPANY</span><span>Premier</span><span>PATENT · R.J. Reynolds</span></div></section>
+<section class="two" aria-labelledby="h-r"><h2 id="h-r" style="grid-column:1/-1">Для Gemini</h2>
+<div class="box"><h3>Что прошу</h3><ol><li>Это общая раскадровка — твоя и моя. Что взял из твоего ответа и что нет — в начале, с причинами.</li><li>Пройди по каждой фразе: где картинка скучная, непонятная или нарушает правила ниже — предложи свою.</li><li>Отдельно посмотри переходы: из главы 3, в главу 5 и петлю шортса.</li><li>Номер приёма — только из пульта Боба, с роликом и секундой. Сначала проверь, что номер показывает то, что ты описываешь.</li><li>Голос не меняй: текст утверждён.</li><li>Новых цифр и фактов на экран без ссылки не добавляй.</li><li>Ответ — таблицей: тайминг · голос · на экране · крупная надпись · приём. Сначала 5 самых важных правок, потом остальное.</li></ol></div>
+<div class="box"><h3>Как рисуем</h3><ul><li>Стиль — ролики «Знакомьтесь, Боб» (14 штук). Номера приёмов — из пульта Боба, 195 приёмов.</li><li>Фон — всегда место: 3 плана — дальний, средний, передний. Когда камера едет, планы сдвигаются с разной скоростью: ≈ 0,2 / 0,6 / 1,3.</li><li>Предметы объёмные: лицо, бок на тон темнее, блик, растровая тень под 35°. Без плоских «палок» и «сосисок».</li><li>3 тона на предмет, тонкие светлые линии, косые разрезы фона, черты скорости. Без толстой чёрной обводки, свечения, виньетки, зерна.</li><li>Частицы (пыль, пар, брызги) — только где есть причина.</li><li>Без лиц крупно, без рук, без крови, без предметов во рту. Люди — белыми фигурками.</li><li>Один мир и камера: камера не стоит; переход — предмет становится другим или камера ныряет внутрь. Без растворения картинки в картинке, шторок и экрана пополам.</li><li>Доска — только на входе из главы 3 и один раз в конце фильма.</li><li>Кадр 9:16 (1080×1920): важное выше Y ≈ 1480, субтитры — Y ≈ 1720.</li><li>Плашка года — слева сверху, только вперёд: нет → 2014 → 2016 → 2017 → 2020 → гаснет на «Рейнольдс» → 2021 → 2024 → уходит до строки 16. На газете даты нет.</li><li>Марки и надписи на предметах — латиницей, как в жизни: Marlboro, Marlboro HeatSticks, IQOS, Philip Morris, R.J. Reynolds, Premier, FDA. Текст рекламы и заголовок статьи — по-английски.</li><li>Наши плашки — по-русски, 1–3 слова. Все наши надписи — в словаре TEXT в шапке кода: по нему сделаем английскую и немецкую версии.</li><li>Баночку в главе 4 не называем: имя — в главе 5.</li></ul></div>
+</section>
+<section class="box refs" aria-labelledby="h-fx"><h2 id="h-fx">Приёмы из пульта Боба</h2>
+<p class="lede">Клипы — в <a href="https://claude.ai/artifact/6zC9afRinD6tGydLhVQetA">пульте</a>, по номеру.</p><ul><li><b>#003 · Coca-Cola 0:05–0:09</b><span>Поворот банки верхним торцом с растровой тенью</span></li><li><b>#005 · Coca-Cola 0:11–0:16</b><span>Падающий 3D-крест выбивает логотип в конвейер бутылок 25¢</span></li><li><b>#009 · Coca-Cola 0:41–0:46</b><span>Макушка головы становится холмом, где растут маки и зажигается лампочка</span></li><li><b>#037 · Google 0:43–0:51</b><span>Зелёная планка рентгена проезжает по кожаному портфелю, высвечивая секретные чертежи внутри</span></li><li><b>#039 · Google 0:56–1:02</b><span>Круглый чертёж превращается в 3D-глобус с лучом радара, зажигающим иконки</span></li><li><b>#041 · Apple 0:00–0:09</b><span>Белый контур яблока каскадным отъездом раскрывается в витрину с ценником $50 000 000 000</span></li><li><b>#067 · Да Винчи 0:29–0:37</b><span>Руки листают синие чертежи на переднем плане, пока позади заводской кран на цепях везёт реальные танки</span></li><li><b>#088 · MDK 0:48–0:53</b><span>Бумажная страница с иллюстрацией отгибается за правый нижний угол, и книга захлопывается обложкой с крестом</span></li><li><b>#089 · MDK 0:54–1:03</b><span>Механический барабанный счётчик крутит 7 800 000 и при отъезде оказывается рубкой корабля перед метеоритом</span></li><li><b>#103 · Мадонна 0:15–0:20</b><span>Заводской конвейер с белыми фигурками людей под гигантским монитором с головой робота</span></li><li><b>#105 · Мадонна 0:26–0:31</b><span>Курсор жмёт кнопку REVERSE, и 7 квадратных ячеек с буквами зеркально меняются местами</span></li><li><b>#108 · Мадонна 0:45–0:55</b><span>Анатомическое сердце каменеет, раскалывается пополам и сжимается в точку, которая оказывается оливкой в бокале мартини</span></li><li><b>#109 · Мадонна 0:55–1:00</b><span>Четыре кружка с флагами прямо на листе отчёта вырастают вверх в столбики графика</span></li><li><b>#110 · Мадонна 1:05–1:12</b><span>На экране MISSION FAILED курсор жмёт NO, и механическая клешня сверху уносит фигурку по рельсу в мусорный бак</span></li><li><b>#114 · Соболев 0:13–0:18</b><span>Жёлтые языки пламени на весь экран сжимаются в камин, куда рука в жёлтом рукаве кидает книгу «МЁРТВЫЕ ДУШИ»</span></li><li><b>#116 · Соболев 0:27–0:34</b><span>Химическая формула H-C-C-O-H парит среди шестигранников, а снизу чокаются две стеклянные пробирки в руках</span></li><li><b>#119 · Соболев 0:48–0:55</b><span>Три газетные передовицы (АВАРИЯ, КАТАСТРОФА, ОСТОРОЖНО!) падают веером, и зум в бумагу заливает экран белым</span></li><li><b>#120 · Соболев 0:55–1:00</b><span>Тройная инфографика 75% на белом фоне: круговая диаграмма, бублик и растущий столбик</span></li><li><b>#126 · Хованский 0:27–0:30</b><span>Вертикальная нить под конвертом становится шкалой истории с красной точкой (1783 -&gt; 1682 -&gt; 1604 -&gt; 1552)</span></li><li><b>#134 · Coca-Cola 0:25–0:29</b><span>Конверт качается по гребню волны</span></li><li><b>#141 · Сатана Клаус 0:04–0:08</b><span>Дым из печной трубы тает в ночном небе</span></li><li><b>#151 · Apple 0:05–0:09</b><span>Витрина магазина за стеклом</span></li><li><b>#158 · Instagram 0:15–0:20</b><span>Машины с фарами на ночной дороге</span></li></ul></section>
+<details class="raw" id="rawbox"><summary>Текст для Gemini целиком</summary><textarea id="tz" readonly aria-label="Текст для Gemini"># Глава 4 «2014 · Нагреватели» — общая рисовка для Gemini (от Claude, 19.11)
+
+Фильм «Что вы знаете о никотине?», глава 4. Текст утверждён Андреем: 242 слова, голос фильма ≈ 1:34, с доской ≈ 1:37; шортс ≈ 1:31.
+Тайминг черновой: 2,57 слова в секунду — темп Макса в главе 3. Когда запишем голос, Claude подгонит каждое событие к своему слову.
+Это общая раскадровка: твой ответ + раскадровка Claude.
+
+## Что взято из твоего ответа
+
+- Кадр 0 — столик лондонской кофейни утром: Биг-Бен за окном, сложенная газета, пачка Marlboro — да. Газета сложена и раскрывается на «пообещал».
+- Реклама на газете — по-русски, с перечёркнутой сигаретой — иначе. Реклама — предмет, её текст по-английски (правило Андрея): Our New Year’s resolution, We’re trying to give up cigarettes, Philip Morris Limited. Под ней — наша плашка «НОВОГОДНЕЕ ОБЕЩАНИЕ». Рисуем только текст.
+- Строка 3: газета складывается в корпус IQOS, под углом — красная полоса растущих продаж — нет. Айкос в тексте появляется только в строке 4. Растущих продаж после обещания 2018-го не было: сигарет продали 740 млрд в 2018-м и 617 млрд в 2024-м, больше — только год к году. У нас газета сминается в комок-обещание: в строке 14 он вернётся, в строке 15 упадёт в урну.
+- Строка 4: глобус, на нём замок Нагои и Миланский собор; зажигалка щёлкает, пламя не поджигает стик — да. Глобус — из того же комка: складки бумаги становятся материками.
+- Строка 5: пламя сжимается в лезвие нагревателя, разрез держателя, салон машины с курткой — да. Строка — утверждённая: «Табак в ней греет нагреватель…» (в ответе было старое начало). Устройства у рта не показываем: облачко пара под потолком салона.
+- Строка 6: экран машины растёт в японское ТВ-шоу, потом витрина, поток белых фигурок сметает коробки — да.
+- Строка 7: пар над одиноким держателем загибается в «?» — да. Плашка короче — «БЕЗ ВРЕДА?».
+- Строка 8: колпак ловит «?» из пара, сканер, парные столбики, один выше, 84 % — да. На колпаке — наша наклейка «ПАР», она нужна в строке 9.
+- Строка 9: обложка журнала, дым из-под заголовка — да. Плюс наклейка «ПАР» отклеивается — под ней «ДЫМ». Заголовок статьи по-английски, плашка по-русски.
+- Строка 10: Капитолий за окном — нет. Капитолий — это Конгресс, он был в главе 2. Здесь FDA: строгое здание с буквами FDA на фасаде.
+- Строка 10: бланк из двух строк, зелёная галочка и красная планка «НЕЛЬЗЯ» — да. На «не разрешает до сих пор» вторая галочка пробует встать у «МЕНЬШЕ ВРЕДА» и отскакивает от планки.
+- Строка 11: без доски — красная планка вытягивается в нить и вытаскивает досье Reynolds 1973 — да. Досье — та же записка, что в главе 1: «МЕМОРАНДУМ», «2 ФЕВРАЛЯ 1973», «СЕКРЕТНО», цитата про молодёжный рынок. За окном — башня Reynolds из главы 1.
+- Строка 12: сигарета с угольком, уголёк гаснет, счётчик −$300 млн — да. Плюс пачка Premier, и уголёк прожигает стопку купюр — «съела».
+- Строка 13: чертёж PATENT · R.J. Reynolds, карта США, шлагбаум таможни выталкивает IQOS — да. На патенте нет года.
+- Строка 14: экран делится пополам — IQOS 32 млн и Marlboro 617 млрд — иначе. Без деления экрана: камера отъезжает от карты на стол кофейни, туда катится комок-обещание, оба столбика растут прямо на столе. «Больше, чем годом раньше» — «+0,6 %».
+- Строка 15: IQOS и Marlboro рядом на столе — иначе. Сначала комок падает в урну у стола, а урна полна таких же смятых обещаний — это и есть «как и вы». Потом камера на столе: IQOS и Marlboro рядом.
+- Строки 16–17: белая баночка без логотипа, ценник $16 млрд, крышка, лист табака перечёркнут — да. Баночка въезжает в США через тот же шлагбаум, что выгнал айкос.
+- Финал фильма: баночка и стол сжимаются в карточку 2014 — нет. Баночка не должна попасть в фото карточки 2014 — как айкос в фото 1924 в главе 3. Белая подушечка растёт в белый лист, лист — газета с обещанием, она и есть фото карточки 2014.
+- Петля шортса: на стол ложится свежая газета — кадр 0 — да.
+- Плашка года, словарь TEXT, марки латиницей, объём в 3 тона — да. Всё по правилам Андрея.
+- Номера приёмов — да. Все есть в пульте, ролики и секунды совпадают. #009 и #105 — по смыслу: форма становится другой, ячейка переворачивается.
+
+## Что прошу
+
+1. Это общая раскадровка — твоя и моя. Что взял из твоего ответа и что нет — в начале, с причинами.
+2. Пройди по каждой фразе: где картинка скучная, непонятная или нарушает правила ниже — предложи свою.
+3. Отдельно посмотри переходы: из главы 3, в главу 5 и петлю шортса.
+4. Номер приёма — только из пульта Боба, с роликом и секундой. Сначала проверь, что номер показывает то, что ты описываешь.
+5. Голос не меняй: текст утверждён.
+6. Новых цифр и фактов на экран без ссылки не добавляй.
+7. Ответ — таблицей: тайминг · голос · на экране · крупная надпись · приём. Сначала 5 самых важных правок, потом остальное.
+
+## Как рисуем
+
+- Стиль — ролики «Знакомьтесь, Боб» (14 штук). Номера приёмов — из пульта Боба, 195 приёмов.
+- Фон — всегда место: 3 плана — дальний, средний, передний. Когда камера едет, планы сдвигаются с разной скоростью: ≈ 0,2 / 0,6 / 1,3.
+- Предметы объёмные: лицо, бок на тон темнее, блик, растровая тень под 35°. Без плоских «палок» и «сосисок».
+- 3 тона на предмет, тонкие светлые линии, косые разрезы фона, черты скорости. Без толстой чёрной обводки, свечения, виньетки, зерна.
+- Частицы (пыль, пар, брызги) — только где есть причина.
+- Без лиц крупно, без рук, без крови, без предметов во рту. Люди — белыми фигурками.
+- Один мир и камера: камера не стоит; переход — предмет становится другим или камера ныряет внутрь. Без растворения картинки в картинке, шторок и экрана пополам.
+- Доска — только на входе из главы 3 и один раз в конце фильма.
+- Кадр 9:16 (1080×1920): важное выше Y ≈ 1480, субтитры — Y ≈ 1720.
+- Плашка года — слева сверху, только вперёд: нет → 2014 → 2016 → 2017 → 2020 → гаснет на «Рейнольдс» → 2021 → 2024 → уходит до строки 16. На газете даты нет.
+- Марки и надписи на предметах — латиницей, как в жизни: Marlboro, Marlboro HeatSticks, IQOS, Philip Morris, R.J. Reynolds, Premier, FDA. Текст рекламы и заголовок статьи — по-английски.
+- Наши плашки — по-русски, 1–3 слова. Все наши надписи — в словаре TEXT в шапке кода: по нему сделаем английскую и немецкую версии.
+- Баночку в главе 4 не называем: имя — в главе 5.
+
+## Кадр 0
+
+- Столик лондонской кофейни утром. Дальний план — окно, за ним полосы рассвета и силуэт Биг-Бена; средний — тёмный стол: чашка чая с паром, сложенная газета, объёмная пачка Marlboro (эталон главы 3); передний — косой луч из окна, пылинки в нём.
+- Газета сложена вдвое, шапка видна наполовину. Даты нигде нет.
+- Стол — Y 900–1450, газета — в центре. Всё важное выше Y 1480, субтитры — Y ≈ 1720.
+- Плашки года нет: обещание дали в 2018-м, а дальше идёт 2014 — назад во времени нельзя.
+- Фильм: камера выныривает сюда из фото карточки 2014 на доске. Шортс: это кадр 0, в конце на стол ложится свежая газета — петля.
+
+## Предметы — одни и те же во всех сценах
+
+- Пачка Marlboro — эталон главы 3: красная «крыша», золотой герб, Marlboro с засечками, объём и растровая тень.
+- Держатель IQOS 2014 года — белый, вытянутый, грани скруглены, сверху торчит стик. Разрез — тонкими светлыми линиями, как в конце главы 3.
+- Пачка Marlboro HeatSticks — та же «крыша», ниже и уже обычной пачки, как в витрине главы 3.
+- Комок-обещание — та же газетная полоса, смятая; на сгибах видны куски английского текста рекламы.
+- Лаборатория — из главы 3: стеллажи с колбами, тёмно-бирюзовый свет.
+- Записка R.J. Reynolds 1973 года и башня Reynolds — из главы 1.
+- Белая баночка — круглая, низкая, с выпуклой крышкой. Без имени и логотипа: имя скажем в главе 5.
+
+## Переходы
+
+Из главы 3 (фильм):
+- Глава 3 кончается отъездом на всю доску: красная нить тянется к закрытой карточке 2014, под маркером виден только год. После переделки главы 3 конец тот же.
+- Камера едет по нити к карточке 2014. Маркер трескается и осыпается — как в мостике из главы 1 в главу 2.
+- Под маркером — фото: столик лондонской кофейни, сложенная газета, пачка Marlboro.
+- Камера ныряет в фото, оно раскрывается во весь экран — это кадр 0 главы 4.
+- Последний кадр главы 3 — кадр главы 4 за 1/30 с до её кадра 0: кадр не повторяется.
+- Голоса нет, 2–3 с: шорох маркера, улица за окном.
+
+В главу 5 (фильм, после строки 17):
+- После «табака» белая подушечка растёт во весь кадр — белый лист.
+- Белый лист — это бумага газеты. Отъезд: газета с обещанием на столе кофейни, и это фото карточки «2014 · НАГРЕВАТЕЛИ» на доске. Баночки в фото нет.
+- Отъезд на всю доску — один раз за главу: открыты 1979, 2020, 1924 и 2014.
+- Красная нить тянется от 2014 к закрытой карточке 2022 — под маркером виден только год.
+- Мостик в главу 5 — когда будет её текст: камера нырнёт в карточку 2022. «Части N» в фильме нет.
+
+Петля шортса (после строки 15):
+- Строк 16–17 нет: после «как и вы» — вопрос «Угадаете, с чем они всё-таки вернулись в Америку?».
+- На краю карты США — белый круглый силуэт со знаком «?», плашка «Часть 5 →».
+- Сверху на стол ложится свежая сложенная газета и закрывает карту и IQOS. Пачка Marlboro и чашка — на своих местах: это кадр 0.
+- Последний кадр шортса — кадр 0 за 1/30 с до начала: петля без повтора кадра.
+- Голос вопроса запишем вместе с главой.
+
+## Раскадровка — фильм 0:00–1:37, шортс 0:00–1:31
+
+### Строка 1 · 0:00–0:02 · Обещание
+Голос: «Производитель «Мальборо» однажды пообещал бросить сигареты.»
+Фон: дальний — окно кофейни: рассвет, силуэт Биг-Бена; средний — тёмный стол: чашка, газета, пачка Marlboro; передний — пар над чашкой, пылинки в луче.
+На экране:
+- с начала (0:00,0) — кадр 0: камера медленно наезжает на стол. В фильме камера только что вынырнула сюда из фото карточки 2014 (см. «Переходы»).
+- на «Мальборо» (0:00,4) — имя Marlboro на пачке загорается — как в главе 3.
+- на «пообещал» (0:01,2) — сложенная газета с хрустом раскрывается на камеру: внутри — реклама на всю полосу.
+- на «бросить» (0:01,6) — пачка Marlboro сама отъезжает по столу к краю, но остаётся в кадре.
+Крупно: — (на пачке: Marlboro)
+Плашка года: нет — даты на газете нет
+Приёмы:
+- #088 · MDK 0:48–0:53 — у Боба: Бумажная страница с иллюстрацией отгибается за правый нижний угол, и книга захлопывается обложкой с крестом. У нас: газета раскрывается, как страница за угол.
+Звук: улица за окном, звяк ложки о чашку, хруст газеты
+
+### Строка 2 · 0:02–0:07 · Обещание
+Голос: «Выкупил целые страницы в британских газетах: «Наше новогоднее обещание — мы пытаемся бросить сигареты».»
+Фон: дальний — за окном — газетный киоск на улице; средний — разворот газеты, реклама на всю полосу; передний — ещё две газеты веером пролетают мимо камеры.
+На экране:
+- на «Выкупил» (0:02,3) — камера скользит по развороту: белое поле, крупный текст, реклама на всю полосу.
+- на «британских» (0:03,9) — из-под газеты веером выезжают ещё две. Шапки — The Times, The Sun, Daily Mirror простым шрифтом, не копия логотипов; в каждой та же полоса.
+- на «Наше» (0:04,7) — на полосе печатается заголовок Our New Year’s resolution, под ним — наша плашка «НОВОГОДНЕЕ ОБЕЩАНИЕ».
+- на «пытаемся» (0:06,2) — вторая строка — We’re trying to give up cigarettes, внизу подпись Philip Morris Limited.
+Крупно: НОВОГОДНЕЕ ОБЕЩАНИЕ → — (в газете: Our New Year’s resolution · We’re trying to give up cigarettes · Philip Morris Limited)
+Плашка года: нет
+Приёмы:
+- #119 · Соболев 0:48–0:55 — у Боба: Три газетные передовицы (АВАРИЯ, КАТАСТРОФА, ОСТОРОЖНО!) падают веером, и зум в бумагу заливает экран белым. У нас: газеты падают веером.
+Звук: шелест газет
+Деталь (проверено): Январь 2018: реклама на всю полосу в The Times, The Sun и Daily Mirror — «Our New Year’s resolution: we’re trying to give up cigarettes». Дату на газете не пишем.
+
+### Строка 3 · 0:07–0:09 · Обещание
+Голос: «Слово, мягко говоря, не сдержал.»
+Фон: дальний — окно кофейни: рассвет, силуэт Биг-Бена; средний — тёмный стол: чашка, газета, пачка Marlboro; передний — пар над чашкой, пылинки в луче.
+На экране:
+- на «Слово» (0:07,4) — полоса с обещанием сама сминается — от углов к середине.
+- на «сдержал» (0:08,9) — газета сжимается в тугой бумажный комок; комок падает на стол и откатывается к краю.
+Крупно: нет
+Плашка года: нет
+Приёмы:
+- #108 · Мадонна 0:45–0:55 — у Боба: Анатомическое сердце каменеет, раскалывается пополам и сжимается в точку, которая оказывается оливкой в бокале мартини. У нас: у Боба сердце сжимается в точку, у нас газета сминается в комок.
+Звук: хруст бумаги, глухой стук комка
+
+### Строка 4 · 0:09–0:17 · Сигарета без огня
+Голос: «Бросать он начал заранее: в две тысячи четырнадцатом в японской Нагое и итальянском Милане появилась сигарета, которую нельзя поджечь.»
+Фон: дальний — тёмно-синий космос с тонкой сеткой; средний — бумажный глобус из комка: складки — горы и материки; передний — тонкие кольца радара.
+На экране:
+- на «Бросать» (0:09,3) — комок на краю стола начинает вращаться, складки бумаги становятся горами и материками — это глобус. Камера ныряет к нему.
+- на «четырнадцатом» (0:12,1) — плашка: 2014. Луч радара обходит глобус.
+- на «Нагое» (0:13,2) — в Японии загорается точка — силуэт замка Нагои.
+- на «Милане» (0:14,4) — в Италии — силуэт Миланского собора.
+- на «сигарета» (0:15,2) — камера ныряет в точку Нагои: стеклянная полка витрины, на ней белый держатель IQOS и пачка Marlboro HeatSticks; из пачки выдвигается стик.
+- на «поджечь» (0:16,3) — металлическая зажигалка рядом сама откидывает крышку и чиркает. Пламя лижет кончик стика — ни огонька, ни дыма. Плашка «НЕ ГОРИТ».
+Крупно: НАГОЯ · МИЛАН → НЕ ГОРИТ → — (на держателе: IQOS, на пачке: Marlboro HeatSticks)
+Плашка года: 2014 — появляется на «четырнадцатом»
+Приёмы:
+- #039 · Google 0:56–1:02 — у Боба: Круглый чертёж превращается в 3D-глобус с лучом радара, зажигающим иконки. У нас: луч радара обходит глобус и зажигает города.
+- #151 · Apple 0:05–0:09 — у Боба: Витрина магазина за стеклом. У нас: витрина за стеклом.
+Звук: шорох бумаги, «пиу» радара, щелчок зажигалки
+Деталь (проверено): Ноябрь 2014: айкос и стики Marlboro HeatSticks — в Нагое и Милане.
+
+### Строка 5 · 0:17–0:24 · Сигарета без огня
+Голос: «Табак в ней греет нагреватель, вдвое холоднее огня: куртка не пахнет, пепла нет, затянуться можно прямо в машине.»
+Фон: дальний — графит с инженерной сеткой, потом ночной город за лобовым стеклом; средний — разрез держателя, потом салон машины; передний — волны тепла, потом блики фар на стекле.
+На экране:
+- на «Табак» (0:16,7) — пламя зажигалки сжимается внутрь держателя и становится оранжевым лезвием нагревателя. Держатель — в разрезе тонкими светлыми линиями поверх настоящей вещи, стик надет на лезвие.
+- на «нагреватель» (0:18,3) — лезвие внутри табака светится, вверх идут волны тепла вместо дыма.
+- на «вдвое» (0:18,7) — рядом два столбика-термометра: огонь — 684°, лезвие — 330°. Красный столбик огня проседает до оранжевого — вдвое ниже. Плашка «ВДВОЕ ХОЛОДНЕЕ».
+- на «куртка» (0:19,8) — отъезд: держатель лежит в подстаканнике ночной машины, на пассажирском сиденье — куртка, волнистых линий запаха над ней нет.
+- на «пепла» (0:21,0) — пепельница в двери — пустая и чистая.
+- на «машине» (0:23,3) — белая фигурка за рулём; к потолку салона поднимается маленькое облачко пара и тает. За стеклом проезжают фары.
+Крупно: ВДВОЕ ХОЛОДНЕЕ → 684° · 330°
+Плашка года: 2014
+Приёмы:
+- #114 · Соболев 0:13–0:18 — у Боба: Жёлтые языки пламени на весь экран сжимаются в камин, куда рука в жёлтом рукаве кидает книгу «МЁРТВЫЕ ДУШИ». У нас: пламя сжимается в лезвие нагревателя.
+- #067 · Да Винчи 0:29–0:37 — у Боба: Руки листают синие чертежи на переднем плане, пока позади заводской кран на цепях везёт реальные танки. У нас: разрез тонкими линиями поверх настоящего держателя.
+- #158 · Instagram 0:15–0:20 — у Боба: Машины с фарами на ночной дороге. У нас: фары на ночной дороге за стеклом.
+Звук: шипение лезвия, гул мотора
+Деталь (проверено): Нагрев айкоса ≈ 330 °C, сигарета горит при ≈ 684 °C (Auer и др., 2017).
+
+### Строка 6 · 0:24–0:30 · Сигарета без огня
+Голос: «Это айкос, и когда в шестнадцатом его расхвалили комики в популярном японском шоу, айкосы смели с полок.»
+Фон: дальний — ночной Токио: неон без надписей, лучи софитов; средний — экран шоу, потом витрина магазина электроники; передний — поток белых фигурок.
+На экране:
+- на «айкос» (0:24,1) — на экране магнитолы в машине — белый держатель, имя IQOS загорается.
+- на «шестнадцатом» (0:25,7) — плашка: 2014 → 2016. Экран магнитолы растёт во весь кадр: японское ТВ-шоу — студия, софиты, два белых силуэта комиков за столом, между ними на подставке IQOS.
+- на «расхвалили» (0:26,5) — над силуэтами вспыхивают звёздочки и полосы смеха. Отъезд: шоу идёт на телевизоре в витрине магазина, рядом полки с рядами белых коробок IQOS.
+- на «смели» (0:29,2) — поток белых фигурок проносится вдоль полок — коробки исчезают волной, ряд за рядом. Плашка «РАСКУПИЛИ».
+Крупно: РАСКУПИЛИ → — (на коробках: IQOS)
+Плашка года: 2014 → 2016, барабаном на «шестнадцатом»
+Приёмы:
+- #151 · Apple 0:05–0:09 — у Боба: Витрина магазина за стеклом. У нас: витрина магазина за стеклом.
+- #103 · Мадонна 0:15–0:20 — у Боба: Заводской конвейер с белыми фигурками людей под гигантским монитором с головой робота. У нас: поток белых фигурок.
+Звук: смех студии, топот толпы
+Деталь (проверено): Апрель 2016: айкос хвалили в японском шоу «Ame-talk», после этого его раскупили по всей Японии.
+
+### Строка 7 · 0:30–0:32 · Сигарета без огня
+Голос: «Без огня — значит, без вреда?»
+Фон: дальний — тёмный магазин, свет гаснет; средний — пустая полка, на ней один держатель IQOS; передний — тонкая струйка пара.
+На экране:
+- на «Без» (0:30,4) — свет в магазине гаснет, остаётся луч сверху: пустая полка, на ней один держатель.
+- на «вреда» (0:31,9) — струйка пара над держателем загибается в белый вопросительный знак.
+Крупно: БЕЗ ВРЕДА?
+Плашка года: 2016
+Приёмы:
+- #009 · Coca-Cola 0:41–0:46 — у Боба: Макушка головы становится холмом, где растут маки и зажигается лампочка. У нас: струйка пара становится формой — знаком вопроса.
+Звук: музыка тише, тихое шипение
+
+### Строка 8 · 0:32–0:43 · Дым под другим именем
+Голос: «Через год швейцарские учёные поймали этот «пар» и нашли те же яды, что в дыме. Многих меньше, одного даже больше, а никотина — восемьдесят четыре процента от сигареты.»
+Фон: дальний — окно лаборатории: Альпы, маленький швейцарский флаг на стекле; средний — стол с колбами и анализатором — лаборатория из главы 3; передний — шестигранники молекул плывут мимо камеры.
+На экране:
+- на «Через» (0:32,3) — плашка: 2016 → 2017. Отъезд: полка с держателем стоит уже на лабораторном столе.
+- на «поймали» (0:33,9) — сверху опускается стеклянный колпак и ловит вопрос из пара. На колпаке — наша наклейка «ПАР».
+- на «яды» (0:36,6) — по колпаку проезжает светлая полоса сканера: в паре проступают шестигранники ядов — такие же, как в дыме сигареты рядом.
+- на «Многих» (0:38,1) — рядом вырастают пары столбиков: серый — дым сигареты, белый — пар айкоса. Белые почти все ниже.
+- на «больше» (0:39,7) — один белый столбик выстреливает выше серого и краснеет. Плашка «ОДНОГО БОЛЬШЕ».
+- на «никотина» (0:40,5) — круглый индикатор никотина заполняется и замирает на 84 %.
+Крупно: ОДНОГО БОЛЬШЕ → 84 % НИКОТИНА
+Плашка года: 2016 → 2017 на «Через»
+Приёмы:
+- #116 · Соболев 0:27–0:34 — у Боба: Химическая формула H-C-C-O-H парит среди шестигранников, а снизу чокаются две стеклянные пробирки в руках. У нас: шестигранники молекул.
+- #037 · Google 0:43–0:51 — у Боба: Зелёная планка рентгена проезжает по кожаному портфелю, высвечивая секретные чертежи внутри. У нас: полоса сканера по колпаку.
+- #109 · Мадонна 0:55–1:00 — у Боба: Четыре кружка с флагами прямо на листе отчёта вырастают вверх в столбики графика. У нас: столбики растут парами.
+- #120 · Соболев 0:55–1:00 — у Боба: Тройная инфографика 75% на белом фоне: круговая диаграмма, бублик и растущий столбик. У нас: круглый индикатор 84 %.
+Звук: стеклянный «дзынь» колпака, гул сканера, «тук» столбиков
+Деталь (проверено): 2017, Берн и Лозанна: никотина в паре айкоса — 84 % от сигаретного, многих ядов меньше, аценафтена — больше (Auer и др., JAMA Internal Medicine, 2017).
+
+### Строка 9 · 0:43–0:46 · Дым под другим именем
+Голос: «Статью они так и назвали: «Дым под другим именем».»
+Фон: дальний — та же лаборатория; средний — колпак и раскрытый журнал на столе; передний — серый дым из-под заголовка.
+На экране:
+- на «Статью» (0:42,8) — рядом с колпаком на стол ложится раскрытый журнал JAMA Internal Medicine, заголовок статьи закрыт полоской бумаги.
+- на «Дым» (0:44,7) — наклейка «ПАР» на колпаке отклеивается с угла — под ней «ДЫМ». В журнале полоска слетает: Smoke by Any Other Name.
+- на «именем» (0:45,9) — из-под заголовка выползает мягкий серый дым. Плашка «ДЫМ ПОД ДРУГИМ ИМЕНЕМ».
+Крупно: ДЫМ ПОД ДРУГИМ ИМЕНЕМ → — (в журнале: JAMA Internal Medicine · Smoke by Any Other Name)
+Плашка года: 2017
+Приёмы:
+- #088 · MDK 0:48–0:53 — у Боба: Бумажная страница с иллюстрацией отгибается за правый нижний угол, и книга захлопывается обложкой с крестом. У нас: наклейка отгибается за угол.
+- #141 · Сатана Клаус 0:04–0:08 — у Боба: Дым из печной трубы тает в ночном небе. У нас: дым из-под заголовка.
+Звук: треск наклейки, шелест страницы
+Деталь (проверено): Статья — «Heat-Not-Burn Tobacco Cigarettes: Smoke by Any Other Name», JAMA Internal Medicine, 2017.
+
+### Строка 10 · 0:46–0:54 · Дым под другим именем
+Голос: «В двадцатом американский регулятор разрешил писать, что вредных веществ в айкосе меньше, а сказать «вреда меньше» не разрешает до сих пор.»
+Фон: дальний — за окном — строгое здание с буквами FDA и флагом США (не Капитолий); средний — стол: журнал, бланк из двух строк, держатель IQOS; передний — конус света настольной лампы.
+На экране:
+- на «двадцатом» (0:46,7) — плашка: 2017 → 2020. Отъезд: журнал лежит на столе кабинета, за окном — здание FDA.
+- на «регулятор» (0:47,5) — на журнал ложится бланк из двух строк — «МЕНЬШЕ ВЕЩЕСТВ» и «МЕНЬШЕ ВРЕДА», в углу печать FDA, рядом держатель IQOS.
+- на «меньше» (0:50,6) — у «МЕНЬШЕ ВЕЩЕСТВ» щёлкает зелёная галочка.
+- на «вреда» (0:51,8) — строку «МЕНЬШЕ ВРЕДА» со стуком закрывает красная планка «НЕЛЬЗЯ».
+- на «разрешает» (0:52,9) — у «МЕНЬШЕ ВРЕДА» пробует встать вторая галочка — и отскакивает от планки.
+Крупно: МЕНЬШЕ ВЕЩЕСТВ ✓ → МЕНЬШЕ ВРЕДА ✕ → — (печать: FDA)
+Плашка года: 2017 → 2020 на «двадцатом»
+Приёмы:
+- #105 · Мадонна 0:26–0:31 — у Боба: Курсор жмёт кнопку REVERSE, и 7 квадратных ячеек с буквами зеркально меняются местами. У нас: строка бланка закрывается красной планкой, как ячейка переворачивается.
+Звук: шум улицы, щелчок галочки, удар планки
+Деталь (проверено): FDA, июль 2020: айкосу разрешили писать о меньшем количестве вредных веществ, «меньше вреда» — нет; в 2026-м продлили так же.
+
+### Строка 11 · 0:54–0:59 · «Рейнольдс»
+Голос: «Помните «Рейнольдс» — тех, что в семьдесят третьем искали, как подсадить подростков?»
+Фон: дальний — за окном вместо FDA — башня Reynolds в ар-деко и заводы с трубами из главы 1; средний — стол, записка 1973 года; передний — пылинки в луче лампы.
+На экране:
+- на «Помните» (0:54,5) — плашка года гаснет. Красная планка «НЕЛЬЗЯ» вытягивается в красную нить и вытаскивает из-под бланка старую записку — в этом же кадре, без доски.
+- на «Рейнольдс» (0:54,9) — это та же записка, что в главе 1: шапка R.J. REYNOLDS TOBACCO COMPANY, «МЕМОРАНДУМ», штамп «СЕКРЕТНО». За окном здание FDA уезжает, выезжает башня Reynolds.
+- на «семьдесят» (0:56,4) — на записке подсвечивается дата «2 ФЕВРАЛЯ 1973».
+- на «подростков» (0:58,4) — строка цитаты из главы 1 «МОЛОДЁЖНОГО РЫНКА» — под маркером.
+Крупно: — (на записке: R.J. REYNOLDS TOBACCO COMPANY · МЕМОРАНДУМ · 2 ФЕВРАЛЯ 1973 · СЕКРЕТНО)
+Плашка года: гаснет на «Помните»: дальше 1973 и 1988, назад во времени нельзя
+Приёмы:
+- #126 · Хованский 0:27–0:30 — у Боба: Вертикальная нить под конвертом становится шкалой истории с красной точкой (1783 -&gt; 1682 -&gt; 1604 -&gt; 1552). У нас: красная нить вытаскивает записку.
+Звук: скрип бумаги, далёкий гудок завода
+Деталь (проверено): Меморандум R.J. Reynolds от 2 февраля 1973 — тот же, что в главе 1 (функция memo в ep/v170.js).
+
+### Строка 12 · 0:59–1:05 · «Рейнольдс»
+Голос: «Свои сигареты без огня у них не прижились: одна, с угольком, съела больше трёхсот миллионов долларов.»
+Фон: дальний — та же башня Reynolds за окном, сумерки; средний — стол: пачка Premier, сигарета с угольком; передний — пепел и обрывки купюр.
+На экране:
+- на «Свои» (0:58,8) — записка уезжает со стола, на её место ложатся пачка Premier и объёмная сигарета: на кончике — тёмный уголёк.
+- на «прижились» (1:01,5) — уголёк тлеет тускло и гаснет.
+- на «угольком» (1:02,6) — уголёк вспыхивает снова, рядом появляется стопка долларов.
+- на «съела» (1:03,0) — уголёк прожигает стопку насквозь, купюры тают в пепел; под стопкой крутится барабанный счётчик.
+- на «долларов» (1:04,6) — счётчик встаёт на −$300 млн, от стопки остаётся горстка пепла.
+Крупно: −$300 МЛН → — (на пачке: Premier)
+Плашка года: нет
+Приёмы:
+- #089 · MDK 0:54–1:03 — у Боба: Механический барабанный счётчик крутит 7 800 000 и при отъезде оказывается рубкой корабля перед метеоритом. У нас: барабанный счётчик.
+Звук: треск уголька, шорох горящих купюр, «тррр» счётчика
+Деталь (проверено): 1988: Premier от R.J. Reynolds грел табак угольком; его сняли в феврале 1989-го, потери — 300–325 млн $.
+
+### Строка 13 · 1:05–1:13 · «Рейнольдс»
+Голос: «Зато их старые патенты выжили: в двадцать первом торговая комиссия США решила, что айкос их нарушает, и выгнала его из Америки.»
+Фон: дальний — колонны Вашингтона, полосы света; средний — карта США, на ней ряды белых держателей IQOS; передний — красный шлагбаум таможни.
+На экране:
+- на «патенты» (1:06,1) — из пепла выезжает целый лист: синий чертёж PATENT · R.J. Reynolds, без года.
+- на «первом» (1:07,7) — плашка: 2021. Лист ложится на карту США, по ней рядами стоят белые держатели IQOS.
+- на «комиссия» (1:08,5) — над картой опускается молоток. Плашка «ТОРГОВАЯ КОМИССИЯ США».
+- на «нарушает» (1:10,8) — на чертеже патента и в разрезе держателя подсвечиваются одинаковые детали, их соединяет красная линия.
+- на «выгнала» (1:11,6) — на границе опускается красный шлагбаум и одним движением выталкивает все IQOS с карты в океан. На карте — штамп «ЗАПРЕТ».
+Крупно: ТОРГОВАЯ КОМИССИЯ США → ЗАПРЕТ → — (на чертеже: PATENT · R.J. Reynolds, на держателях: IQOS)
+Плашка года: 2021 — появляется на «первом»
+Приёмы:
+- #067 · Да Винчи 0:29–0:37 — у Боба: Руки листают синие чертежи на переднем плане, пока позади заводской кран на цепях везёт реальные танки. У нас: синий чертёж поверх настоящей вещи.
+- #005 · Coca-Cola 0:11–0:16 — у Боба: Падающий 3D-крест выбивает логотип в конвейер бутылок 25¢. У нас: шлагбаум падает и выбивает держатели с карты.
+Звук: удар молотка, лязг шлагбаума, плеск
+Деталь (проверено): 29 сентября 2021: торговая комиссия США решила, что айкос нарушает два патента R.J. Reynolds; ввоз запрещён с 29 ноября (дело 337-TA-1199). Год на патенте не пишем.
+
+### Строка 14 · 1:13–1:22 · Как бросают
+Голос: «А обещание бросить? В двадцать четвёртом у айкоса тридцать два миллиона пользователей, а сигарет компания продала шестьсот семнадцать миллиардов — больше, чем годом раньше.»
+Фон: дальний — снова окно лондонской кофейни, рассвет; средний — стол кофейни: карта США, пачка Marlboro; передний — пар над чашкой.
+На экране:
+- на «обещание» (1:13,5) — держатели уплывают за край карты. Отъезд: карта лежит на столе той же лондонской кофейни, по столу катится бумажный комок — то самое обещание.
+- на «четвёртом» (1:15,1) — плашка: 2021 → 2024.
+- на «тридцать» (1:16,3) — слева на столе из белых фигурок растёт белый столбик, над ним держатель IQOS; барабанный счётчик — 32 млн.
+- на «сигарет» (1:18,2) — справа из пачки Marlboro растёт красная башня сигарет.
+- на «шестьсот» (1:19,4) — счётчик башни — 617 млрд, башня пробивает верх кадра.
+- на «больше» (1:20,5) — красная стрелка вверх и «+0,6 %».
+Крупно: 32 МЛН → 617 МЛРД ↑ → +0,6 %
+Плашка года: 2021 → 2024 на «четвёртом»
+Приёмы:
+- #089 · MDK 0:54–1:03 — у Боба: Механический барабанный счётчик крутит 7 800 000 и при отъезде оказывается рубкой корабля перед метеоритом. У нас: барабанные счётчики.
+- #109 · Мадонна 0:55–1:00 — у Боба: Четыре кружка с флагами прямо на листе отчёта вырастают вверх в столбики графика. У нас: столбики растут прямо на столе.
+Звук: шорох катящегося комка, «тррр» счётчиков
+Деталь (проверено): 2024: 32,2 млн пользователей айкоса; 616,8 млрд сигарет — на 0,6 % больше, чем в 2023-м.
+
+### Строка 15 · 1:22–1:25 · Как бросают
+Голос: «Бросают они ровно так же, как и вы.»
+Фон: дальний — окно кофейни; средний — стол: IQOS, пачка Marlboro; урна у стола; передний — пар над чашкой.
+На экране:
+- на «Бросают» (1:22,1) — комок докатывается до края стола и падает в урну.
+- на «ровно» (1:22,9) — урна полна точно таких же комков — чужих новогодних обещаний.
+- на «вы» (1:24,8) — камера поднимается к столу: рядом спокойно лежат IQOS и пачка Marlboro — их никто не бросил.
+Крупно: нет
+Плашка года: 2024
+Приёмы:
+- #110 · Мадонна 1:05–1:12 — у Боба: На экране MISSION FAILED курсор жмёт NO, и механическая клешня сверху уносит фигурку по рельсу в мусорный бак. У нас: у Боба фигурку уносят в мусорный бак, у нас комок падает в урну к таким же.
+Звук: глухое «пум» комка в урне
+
+### Вопрос · только шортс · 1:25–1:28 · Как бросают · только шортс
+Голос: «Угадаете, с чем они всё-таки вернулись в Америку?»
+Фон: дальний — окно кофейни; средний — стол: IQOS, пачка Marlboro, карта США; передний — пар над чашкой.
+На экране:
+- на «Угадаете» (1:25,2) — на краю карты США, у океана, — белый круглый силуэт со знаком «?» внутри.
+- на «Америку» (1:27,9) — плашка «Часть 5 →». Сверху на стол со шлепком ложится свежая сложенная газета и закрывает карту и IQOS — кадр становится кадром 0.
+Крупно: Часть 5 →
+Плашка года: уходит до вопроса: в кадре 0 плашки нет
+Приёмы:
+- #088 · MDK 0:48–0:53 — у Боба: Бумажная страница с иллюстрацией отгибается за правый нижний угол, и книга захлопывается обложкой с крестом. У нас: газета ложится обратно — петля в кадр 0.
+Звук: шлепок газеты
+
+### Строка 16 · 1:25–1:32 · Белая баночка · только фильм
+Голос: «А в Америку «Филип Моррис» всё-таки вернулся — через год после запрета, с маленькой белой баночкой за шестнадцать миллиардов.»
+Фон: дальний — океан и ночной берег США; средний — та же карта США на столе кофейни; передний — брызги волны у берега.
+На экране:
+- на «Америку» (1:26,0) — плашки года уже нет. Камера наезжает на карту США на столе: у берега — океан.
+- на «вернулся» (1:27,5) — по океану к берегу катится маленькая белая круглая баночка, качаясь на волнах.
+- на «запрета» (1:29,1) — тот же красный шлагбаум поднимается — баночка въезжает в США. Имени на ней нет: его скажем в главе 5.
+- на «шестнадцать» (1:31,4) — к баночке подвешен ценник, барабан крутится до $16 млрд.
+Крупно: $16 МЛРД
+Плашка года: уходит до этой фразы
+Приёмы:
+- #134 · Coca-Cola 0:25–0:29 — у Боба: Конверт качается по гребню волны. У нас: баночка качается на гребне волны.
+- #089 · MDK 0:54–1:03 — у Боба: Механический барабанный счётчик крутит 7 800 000 и при отъезде оказывается рубкой корабля перед метеоритом. У нас: барабанный ценник.
+Звук: волна, лязг шлагбаума, «тррр» ценника
+Деталь (проверено): Ноябрь 2022: «Филип Моррис» купил Swedish Match (Zyn) примерно за 16 млрд $ — через год после запрета айкоса.
+
+### Строка 17 · 1:32–1:34 · Белая баночка · только фильм
+Голос: «В ней нет даже… табака.»
+Фон: дальний — ночной берег; средний — баночка крупно; передний — брызги.
+На экране:
+- на «нет» (1:33,0) — баночка поворачивается крышкой к камере, крышка откидывается со щелчком: внутри по кругу — белые подушечки.
+- на «даже» (1:33,4) — над подушечками — тонкий контур табачного листа…
+- на «табака» (1:33,8) — …он перечёркивается и тает. Плашка «БЕЗ ТАБАКА».
+Крупно: БЕЗ ТАБАКА
+Плашка года: нет
+Приёмы:
+- #003 · Coca-Cola 0:05–0:09 — у Боба: Поворот банки верхним торцом с растровой тенью. У нас: баночка поворачивается торцом.
+Звук: щелчок крышки
+
+## Тайминг
+
+- Фильм: 0:00–1:34 — строки 1–17; 1:34–1:37 — отъезд на доску, нить к 2022.
+- Шортс: 0:00–1:25 — строки 1–15, как в фильме; 1:25–1:28 — вопрос; 1:28–1:31 — «Часть 5 →», газета ложится на стол, петля в кадр 0.
+
+## Надписи — словарь TEXT (переводим)
+
+- promise: «НОВОГОДНЕЕ ОБЕЩАНИЕ» — строка 2, под рекламой
+- nagoya: «НАГОЯ» — строка 4, точка на глобусе
+- milan: «МИЛАН» — строка 4
+- nofire: «НЕ ГОРИТ» — строка 4, зажигалка
+- half: «ВДВОЕ ХОЛОДНЕЕ» — строка 5, термометры
+- soldout: «РАСКУПИЛИ» — строка 6, полки
+- noharm: «БЕЗ ВРЕДА?» — строка 7, вопрос из пара
+- vapor: «ПАР» — строки 8–9, наклейка на колпаке
+- smoke: «ДЫМ» — строка 9, под наклейкой
+- onemore: «ОДНОГО БОЛЬШЕ» — строка 8, красный столбик
+- nic: «84 % НИКОТИНА» — строка 8, индикатор
+- title: «ДЫМ ПОД ДРУГИМ ИМЕНЕМ» — строка 9, под заголовком журнала
+- less: «МЕНЬШЕ ВЕЩЕСТВ» — строка 10, бланк
+- harm: «МЕНЬШЕ ВРЕДА» — строка 10, бланк
+- no: «НЕЛЬЗЯ» — строка 10, красная планка
+- memo: «МЕМОРАНДУМ · 2 ФЕВРАЛЯ 1973 · СЕКРЕТНО» — строка 11, как в главе 1
+- quote: «МЫ ДОЛЖНЫ ПОЛУЧИТЬ СВОЮ ДОЛЮ МОЛОДЁЖНОГО РЫНКА» — строка 11, цитата из главы 1
+- premier: «−$300 МЛН» — строка 12, счётчик
+- itc: «ТОРГОВАЯ КОМИССИЯ США» — строка 13
+- ban: «ЗАПРЕТ» — строка 13, штамп на карте
+- users: «32 МЛН» — строка 14
+- cigs: «617 МЛРД» — строка 14
+- pct: «+0,6 %» — строка 14
+- price: «$16 МЛРД» — строка 16, ценник
+- notob: «БЕЗ ТАБАКА» — строка 17
+- card14: «2014 · НАГРЕВАТЕЛИ» — доска
+- card22: «2022» — доска, закрытая карточка
+- part5: «Часть 5 →» — конец шортса
+
+Надписи на предметах — не переводим, во всех версиях как есть: Our New Year’s resolution, We’re trying to give up cigarettes, Philip Morris Limited, The Times · The Sun · Daily Mirror, Marlboro, Marlboro HeatSticks, IQOS, JAMA Internal Medicine, Smoke by Any Other Name, FDA, R.J. REYNOLDS TOBACCO COMPANY, Premier, PATENT · R.J. Reynolds.
+
+## Приёмы из пульта Боба
+
+- #003 · Coca-Cola 0:05–0:09 — Поворот банки верхним торцом с растровой тенью
+- #005 · Coca-Cola 0:11–0:16 — Падающий 3D-крест выбивает логотип в конвейер бутылок 25¢
+- #009 · Coca-Cola 0:41–0:46 — Макушка головы становится холмом, где растут маки и зажигается лампочка
+- #037 · Google 0:43–0:51 — Зелёная планка рентгена проезжает по кожаному портфелю, высвечивая секретные чертежи внутри
+- #039 · Google 0:56–1:02 — Круглый чертёж превращается в 3D-глобус с лучом радара, зажигающим иконки
+- #041 · Apple 0:00–0:09 — Белый контур яблока каскадным отъездом раскрывается в витрину с ценником $50 000 000 000
+- #067 · Да Винчи 0:29–0:37 — Руки листают синие чертежи на переднем плане, пока позади заводской кран на цепях везёт реальные танки
+- #088 · MDK 0:48–0:53 — Бумажная страница с иллюстрацией отгибается за правый нижний угол, и книга захлопывается обложкой с крестом
+- #089 · MDK 0:54–1:03 — Механический барабанный счётчик крутит 7 800 000 и при отъезде оказывается рубкой корабля перед метеоритом
+- #103 · Мадонна 0:15–0:20 — Заводской конвейер с белыми фигурками людей под гигантским монитором с головой робота
+- #105 · Мадонна 0:26–0:31 — Курсор жмёт кнопку REVERSE, и 7 квадратных ячеек с буквами зеркально меняются местами
+- #108 · Мадонна 0:45–0:55 — Анатомическое сердце каменеет, раскалывается пополам и сжимается в точку, которая оказывается оливкой в бокале мартини
+- #109 · Мадонна 0:55–1:00 — Четыре кружка с флагами прямо на листе отчёта вырастают вверх в столбики графика
+- #110 · Мадонна 1:05–1:12 — На экране MISSION FAILED курсор жмёт NO, и механическая клешня сверху уносит фигурку по рельсу в мусорный бак
+- #114 · Соболев 0:13–0:18 — Жёлтые языки пламени на весь экран сжимаются в камин, куда рука в жёлтом рукаве кидает книгу «МЁРТВЫЕ ДУШИ»
+- #116 · Соболев 0:27–0:34 — Химическая формула H-C-C-O-H парит среди шестигранников, а снизу чокаются две стеклянные пробирки в руках
+- #119 · Соболев 0:48–0:55 — Три газетные передовицы (АВАРИЯ, КАТАСТРОФА, ОСТОРОЖНО!) падают веером, и зум в бумагу заливает экран белым
+- #120 · Соболев 0:55–1:00 — Тройная инфографика 75% на белом фоне: круговая диаграмма, бублик и растущий столбик
+- #126 · Хованский 0:27–0:30 — Вертикальная нить под конвертом становится шкалой истории с красной точкой (1783 -&gt; 1682 -&gt; 1604 -&gt; 1552)
+- #134 · Coca-Cola 0:25–0:29 — Конверт качается по гребню волны
+- #141 · Сатана Клаус 0:04–0:08 — Дым из печной трубы тает в ночном небе
+- #151 · Apple 0:05–0:09 — Витрина магазина за стеклом
+- #158 · Instagram 0:15–0:20 — Машины с фарами на ночной дороге
+
+## Источники деталей
+
+- Реклама «Our New Year’s resolution», январь 2018 — Business Insider: https://uk.finance.yahoo.com/news/maker-marlboro-took-full-page-093706503.html
+- Та же реклама — The Drum: https://www.thedrum.com/news/2018/01/02/cigarette-maker-philip-morris-resolves-give-up-cigarettes-with-new-ads-and-website
+- Айкос и Marlboro HeatSticks в Нагое и Милане, ноябрь 2014 — отчёт PMI: https://media.corporate-ir.net/media_files/IROL/14/146476/PM_AR_2014/pdf/pmi-iqos.pdf
+- Шоу «Ame-talk», апрель 2016 — Tobacco Control: https://tobaccocontrol.bmj.com/content/27/e1/e25.full
+- 330 °C против 684 °C, никотин 84 %, аценафтен — Auer и др., 2017: https://pubmed.ncbi.nlm.nih.gov/28531246/
+- FDA, 2020: «reduced exposure» — CSP Daily News: https://www.cspdailynews.com/tobacco/fda-says-pm-usa-can-market-iqos-modified-risk-tobacco-products
+- Premier, 1988: уголёк, 300–325 млн $ — Wikipedia: https://en.wikipedia.org/wiki/Premier_(cigarette)
+- Торговая комиссия США, дело 337-TA-1199, 29.09.2021: https://www.usitc.gov/system/files/secretary/fed_reg_notices/337/337_1199_notice_09292021sgl.pdf
+- PMI, итоги 2024: 616,8 млрд сигарет, +0,6 % — Business Wire: https://www.businesswire.com/news/home/20250205873542/en/Philip-Morris-International-Reports-2024-Fourth-Quarter-Full-Year-Results
+- 32,2 млн пользователей айкоса — PMI Integrated Report 2024: https://www.nasdaq.com/press-release/philip-morris-international-releases-integrated-report-detailing-progress-towards-its
+- Swedish Match (Zyn), ≈ 16 млрд $, ноябрь 2022 — CSP Daily News: https://cspdailynews.com/tobacco/pmi-takes-83-share-swedish-match
+</textarea></details>
+<footer><p style="margin:0">Тайминг черновой: 2,57 слова в секунду. После записи голоса каждое событие встанет на своё слово.</p>
+<p style="margin:0">Детали в кадре проверены:</p><ul><li><a href='https://uk.finance.yahoo.com/news/maker-marlboro-took-full-page-093706503.html'>Реклама «Our New Year’s resolution», январь 2018 — Business Insider</a></li><li><a href='https://www.thedrum.com/news/2018/01/02/cigarette-maker-philip-morris-resolves-give-up-cigarettes-with-new-ads-and-website'>Та же реклама — The Drum</a></li><li><a href='https://media.corporate-ir.net/media_files/IROL/14/146476/PM_AR_2014/pdf/pmi-iqos.pdf'>Айкос и Marlboro HeatSticks в Нагое и Милане, ноябрь 2014 — отчёт PMI</a></li><li><a href='https://tobaccocontrol.bmj.com/content/27/e1/e25.full'>Шоу «Ame-talk», апрель 2016 — Tobacco Control</a></li><li><a href='https://pubmed.ncbi.nlm.nih.gov/28531246/'>330 °C против 684 °C, никотин 84 %, аценафтен — Auer и др., 2017</a></li><li><a href='https://www.cspdailynews.com/tobacco/fda-says-pm-usa-can-market-iqos-modified-risk-tobacco-products'>FDA, 2020: «reduced exposure» — CSP Daily News</a></li><li><a href='https://en.wikipedia.org/wiki/Premier_(cigarette)'>Premier, 1988: уголёк, 300–325 млн $ — Wikipedia</a></li><li><a href='https://www.usitc.gov/system/files/secretary/fed_reg_notices/337/337_1199_notice_09292021sgl.pdf'>Торговая комиссия США, дело 337-TA-1199, 29.09.2021</a></li><li><a href='https://www.businesswire.com/news/home/20250205873542/en/Philip-Morris-International-Reports-2024-Fourth-Quarter-Full-Year-Results'>PMI, итоги 2024: 616,8 млрд сигарет, +0,6 % — Business Wire</a></li><li><a href='https://www.nasdaq.com/press-release/philip-morris-international-releases-integrated-report-detailing-progress-towards-its'>32,2 млн пользователей айкоса — PMI Integrated Report 2024</a></li><li><a href='https://cspdailynews.com/tobacco/pmi-takes-83-share-swedish-match'>Swedish Match (Zyn), ≈ 16 млрд $, ноябрь 2022 — CSP Daily News</a></li></ul>
+<p style="margin:0">Тексты главы и факты — на <a href="https://claude.ai/artifact/6dUDSbqFc1WPEHpN38e1qZ">странице текстов</a>.</p></footer>
+</main>
+<script>
+(function(){
+  var ta = document.getElementById('tz'), TZ = ta.value;
+  var st = document.getElementById('cpst');
+  function fallback(){
+    var d = document.getElementById('rawbox'); d.open = true; ta.focus(); ta.select();
+    st.className = 'st err'; st.textContent = 'Не скопировалось само — текст выделен внизу, скопируй вручную.';
+  }
+  document.getElementById('cp').addEventListener('click', function(){
+    try{
+      navigator.clipboard.writeText(TZ).then(function(){
+        st.className = 'st'; st.textContent = 'Скопировано — вставляй в Gemini.';
+      }, fallback);
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
