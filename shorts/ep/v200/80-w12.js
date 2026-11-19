@@ -19,7 +19,7 @@
   function pin3d(c, x, y) { circ(c, x + 2, y + 4, 10, 'rgba(0,0,0,.35)'); circ(c, x, y, 10, '#dc2626'); circ(c, x - 3, y - 3, 3.6, '#fca5a5') }   // v20.2: булавка меньше — при отъезде из фото не «огромный шар»
   function thread3(c, a, b, k = 1, col = '#dc2626') { if (k <= 0) return; const [x1, y1] = pin3(a), [x2, y2] = pin3(b); c.save(); c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 4; c.beginPath(); c.moveTo(x1 + 3, y1 + 6); c.lineTo(lp(x1, x2, k) + 3, lp(y1, y2, k) + 6); c.stroke(); c.strokeStyle = col; c.lineWidth = 4; c.beginPath(); c.moveTo(x1, y1); c.lineTo(lp(x1, x2, k), lp(y1, y2, k)); c.stroke(); c.restore() }
   function photo1979b(c, t, x, y, s) {   // колба и кристалл соли (как в главе 1); на «миллиардов» — круг «Джула» с долей 35 %
-    const a = T12, k = a ? spr(at(t, a.mil - .15, a.mil + .5)) : 0;
+    const a = T12, k = a ? spr(at(t, a.mil + .05, a.mil + .7)) : 0;   // v20.3: круг раскрывается, когда камера уже на карточке
     c.fillStyle = '#1b2142'; c.fillRect(x - s / 2, y - s / 2, s, s);
     if (k < 1) { c.save(); c.translate(x - s * .12, y + s * .08); c.scale(s / 240, s / 240); poly(c, [-38, 20, 38, 20, 56, 56, -56, 56]); fill(c, '#38bdf8'); poly(c, [-14, -80, 14, -80, 14, -30, 60, 60, -60, 60, -14, -30]); c.strokeStyle = '#e0f2fe'; c.lineWidth = 5; c.stroke(); c.restore() }
     if (k > 0) { const R = s * .34 * k, cx = x, cy = y - s * .06, pale = a ? eio(at(t, a.pochti, a.poter + .4)) : 0;
@@ -43,20 +43,25 @@
     T12 = { a: SA(s), pom: w('помните'), tri: w('тринадцать'), mil: w('миллиардов'), juul: w('джула'), pochti: w('почти'), poter: w('потерял'), spok: w('спокойно'), perezh: w('пережил'),
       pach: w('пачка'), korm: w('кормит'), por: w('пор'), end: SA('s13') - .02 };
     const [ex, ey, ez] = T9END, m = 230 / (1920 / ez); N12 = { x: 540 - (ex - 540) * m, y: photo3(C1924)[1] - (ey - 960) * m, m };   // v20.2: фото = последний кадр ночной сцены
-    const a = T12; a.burn = a.por + .05;
-    K12 = [KY(a.pom + .5, 520, 720, 2.6), KY(a.tri + .5, 500, 660, 1.55), KY(a.mil + .25, 360, 470, 2.0), KY(a.juul, 345, 430, 2.35), KY(a.pochti + .35, 345, 470, 2.2), KY(a.spok + .1, 520, 720, 1.35),
-      KY(a.korm + .1, 600, 900, 1.2), KY(a.por, 720, 1080, 1.6), KY(a.end, RC.x1, RC.y1, 9)];
+    const a = T12; a.burn = a.por + .05; a.sih = w('сих');
+    // v20.3 (по разбору Gemini): на 1:12–1:21 доска только крупно — всю доску с закрытыми 2014 и 2022 видно один раз, в конце главы.
+    // Кадр, который заходит ниже верхнего края карточек 2014 и 2022 (y 619), не шире промежутка между ними (x 373…715); по диагонали нити — с наездом.
+    const tip = [RC.x1 + Math.sin(9 - a.end * 4) * 24, RC.y1];   // кончик чека в момент нырка
+    K12 = [KY(a.pom + .5, 545, 785, 3.3), KY(a.tri + .4, 538, 520, 4.3), KY(a.mil + .1, 478, 395, 4.6), KY(a.mil + .36, 345, 342, 3.6),   // 1924 → вверх по нити → 1979, круг «Джула»
+      KY(a.juul, 342, 348, 3.95), KY(a.poter + .25, 348, 340, 3.8),   // счётчик 12,80 → 0,45 крутится поверх кадра
+      KY(a.spok, 470, 330, 4.3), KY(a.spok + .4, 540, 560, 4), KY(a.perezh + .2, 544, 900, 3.4), KY(a.pach, 544, 1010, 3.3),   // назад вдоль нити и вниз: пачка выезжает из-за карточки 1924
+      KY(a.korm + .1, 548, 1100, 3.35), KY(a.sih + .1, 570, 1340, 3.9), KY(a.end, tip[0], tip[1], 9)];   // крышка-касса, чек спускается, нырок в тлеющий кончик
   }
-  const RC = { x0: 640, y0: 760, x1: 905, y1: 1175 };   // чек: откуда выползает и где кончик (тлеет)
-  function pack12(c, t) {   // v20.2: крупная пачка-касса на переднем плане: выезжает из-за карточки 1924, крышка откидывается назад (как ящик кассы), из пачки волной ползёт чек
-    const a = T12, k = eo(at(t, a.spok - .3, a.spok + .5)); if (k <= 0) return;
-    const S = .82, w = 190 * S, h = 282 * S, x = lp(470, 650, k), top = lp(760, 800, k), sw = Math.sin(t * 2.2) * .04 * at(t, a.spok + .3, a.spok + .8), lid = eio(at(t, a.korm - .1, a.korm + .2));
+  const RC = { x1: 610, y1: 1640 };   // v20.3: кончик чека (тлеет) — под карточками, в стороне от закрытых 2014 и 2022
+  function pack12(c, t) {   // v20.2: крупная пачка-касса: выезжает из-за карточки 1924, крышка откидывается назад (как ящик кассы), из пачки волной ползёт чек
+    const a = T12, k = eo(at(t, a.perezh - .3, a.perezh + .5)); if (k <= 0) return;   // v20.3: выезжает вниз из-за карточки 1924
+    const S = .82, w = 190 * S, h = 282 * S, x = 540 - w / 2, top = lp(700, 1010, k), sw = Math.sin(t * 2.2) * .04 * at(t, a.perezh + .3, a.perezh + .8), lid = eio(at(t, a.korm - .1, a.korm + .2));
     c.save(); c.translate(x + w / 2, top + h); c.rotate(sw); c.translate(-(x + w / 2), -(top + h));
     rasterPoly(c, [x + w, top + h * .1, x + w + h * .2, top + h * .25, x + w + h * .2, top + h * 1.1, x + w * .2, top + h * 1.1, x, top + h], 'rgba(0,0,0,.3)', 9, 2.4);
     flipPack(c, x, top, w, h, lid, { shadow: false });
     c.restore();
     if (lid > 0) { const rl = at(t, a.korm + .08, a.end), x0 = x + w / 2, y0 = top + h * .1, pts = [];   // бесконечный чек волной
-      for (let i = 0; i <= 44; i++) { const u = i / 44 * rl, bx = lp(x0, RC.x1, u), by = lp(y0, RC.y1, u) - Math.sin(Math.PI * Math.min(1, u * 1.6)) * 240; pts.push([bx + Math.sin(u * 9 - t * 4) * 24, by]) }
+      for (let i = 0; i <= 44; i++) { const u = i / 44 * rl, bx = lp(x0, RC.x1, u), by = lp(y0, RC.y1, u) - Math.sin(Math.PI * Math.min(1, u * 1.6)) * 200; pts.push([bx + Math.sin(u * 9 - t * 4) * 24, by]) }
       c.strokeStyle = '#F4F1EA'; c.lineCap = 'butt'; c.lineWidth = 36; c.beginPath(); pts.forEach((p, i) => i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])); c.stroke();
       c.strokeStyle = 'rgba(40,40,50,.35)'; c.lineWidth = 2; pts.forEach((p, i) => { if (i % 2 && i > 2) { c.beginPath(); c.moveTo(p[0] - 11, p[1]); c.lineTo(p[0] + 11, p[1]); c.stroke() } });
       const end = pts[pts.length - 1], eb = at(t, a.burn - .1, a.end); if (eb > 0) { circ(c, end[0], end[1], 16, rgba('#FF9A4A', .45 * eb)); circ(c, end[0], end[1], 9, C3.ember) } }
@@ -81,10 +86,10 @@
   function board12(c, t, inner) {
     const a = T12; boardWall3(c, t);
     thread3(c, CARDS3[0], CARDS3[1]); [2, 3, 4].forEach(i => thread3(c, CARDS3[1], CARDS3[i]));
-    const kt = a ? eo(at(t, a.pom + .2, a.tri + .4)) : 1; thread3(c, C1924, CARDS3[0], kt);
+    const kt = a ? eio(at(t, a.pom + .25, a.mil + .1)) : 1; thread3(c, C1924, CARDS3[0], kt);   // v20.3: нить тянется, камера едет за ней
+    if (a && t < a.end + .3) pack12(c, t);   // v20.3: пачка выезжает вниз из-за карточки 1924 (рисуется под карточками); с чеком сгорает в дым — в концовке её нет
     CARDS3.forEach(cd => card3(c, t, cd, cd.id === '1924' ? inner : null));
     CARDS3.forEach(cd => pin3d(c, ...pin3(cd)));
-    if (a && t < a.end + .3) pack12(c, t);   // пачка с чеком сгорела в дым — на доске в концовке её нет
   }
   function w12Shot(c, t) { const q = camObj(camAt(K12, t)); layer(c, q, 1, cc => board12(cc, t, ci => inNest(ci, N12, cn => nightLocal(cn, t, q, false)))) }
   // ---------- дым (v20.2): неровные клубы растут из тлеющего кончика чека (в шортсе — снизу), закрывают кадр; после стыка с 2014-м уходят вверх ----------

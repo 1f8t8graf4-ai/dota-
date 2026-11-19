@@ -20,7 +20,7 @@
     const W = (a, b) => SHUT.push([a, b]);   // короткая выдержка на быстрых проездах: без смаза и двоения
     W(T1.zh - .2, T1.end + .55); W(T2.izy - .1, T2.zh + .5); W(T2.pom - .15, T2.end + .35); W(TC.spas - .1, TC.strah + .25); W(TC.amer + .15, TC.amer + .75); W(TC.bros - .1, TC.filt + .4); W(TC.nezh - .2, TC.nezh + .4); W(TC.fil - .12, TC.fil + .9);
     W(TC.vidu - .1, TC.end + .4); W(T7.stav + .2, T7.slov + .15); W(T8.muzh, T8.chet + .55); W(T8.sem - .1, T8.mir + .35); W(T8.sweep1 - .1, T9.kur); W(T9.vsego - .2, T9.umerli + .3); W(T9.chet + .8, T9.chet + 1.4); W(T9.dev - .2, T9.dev + .5);
-    if (T12) { W(T12.pom - .1, T12.pom + .7); W(T12.pochti - .1, T12.poter + .55) } W(TSM - .5, TSM + .5); W(T13.stiki - .2, T13.naz + .3);
+    if (T12) { W(T12.pom - .1, T12.mil + .6); W(T12.pochti - .1, T12.poter + .55); W(T12.spok - .45, T12.perezh + .35); W(T12.korm + .3, T12.end) } W(TSM - .5, TSM + .5); W(T13.stiki - .2, T13.naz + .3);   // v20.3: проезды вдоль нити — без двоения
     if (MODE === 'y') W(TLX.vEnd - .05, TLX.vEnd + 1.3); else W(T13.qEnd, TLX.endT + .1);
     BLOCKS.push(['w1', -1, FN.w1]);
     for (const sc of ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14']) { const a = SA(sc); if (a !== null) BLOCKS.push([sc, a, FN[sc]]) }
@@ -84,7 +84,7 @@
     Q(TSM - .3, 'whoosh', .55);
     const k = T13; Q(k.isp - .1, 'school', .3); Q(k.tret - .15, 'puff', .4); Q(k.tret + .1, 'glassbulb', .4); Q(k.tab - .3, 'whoosh', .45); Q(k.tab, 'drawer', .45); Q(k.gre, 'pour', .35); Q(k.stiki - .1, 'whoosh', .5); Q(k.naz - .1, 'glass', .45);
     for (let i = 0; i < 3; i++) Q(k.marl - .05 + i * .22, 'glass', .5, -.4 + i * .4);
-    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.qEnd - .2, 'whoosh', .45); Q(k.qEnd + .3, 'whoosh', .6) }
+    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.q + .95, 'plop', .3); Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // v20.3: нырок в пачку → щит у трассы
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
@@ -108,4 +108,5 @@
     },
   };
   { const ep = window.EP; ep.sub.init = tl => ep.init(tl, [], true) }
+  window.__dbg = { camAt, get K12() { return K12 }, get K13() { return K13 }, get KL() { return KL }, get T12() { return T12 }, get T13() { return T13 }, get TSM() { return TSM } };   // v20.3: камера для проверок (кадр не трогает)
 })();

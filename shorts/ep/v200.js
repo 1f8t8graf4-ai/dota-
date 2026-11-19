@@ -1408,7 +1408,7 @@
   function pin3d(c, x, y) { circ(c, x + 2, y + 4, 10, 'rgba(0,0,0,.35)'); circ(c, x, y, 10, '#dc2626'); circ(c, x - 3, y - 3, 3.6, '#fca5a5') }   // v20.2: булавка меньше — при отъезде из фото не «огромный шар»
   function thread3(c, a, b, k = 1, col = '#dc2626') { if (k <= 0) return; const [x1, y1] = pin3(a), [x2, y2] = pin3(b); c.save(); c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 4; c.beginPath(); c.moveTo(x1 + 3, y1 + 6); c.lineTo(lp(x1, x2, k) + 3, lp(y1, y2, k) + 6); c.stroke(); c.strokeStyle = col; c.lineWidth = 4; c.beginPath(); c.moveTo(x1, y1); c.lineTo(lp(x1, x2, k), lp(y1, y2, k)); c.stroke(); c.restore() }
   function photo1979b(c, t, x, y, s) {   // колба и кристалл соли (как в главе 1); на «миллиардов» — круг «Джула» с долей 35 %
-    const a = T12, k = a ? spr(at(t, a.mil - .15, a.mil + .5)) : 0;
+    const a = T12, k = a ? spr(at(t, a.mil + .05, a.mil + .7)) : 0;   // v20.3: круг раскрывается, когда камера уже на карточке
     c.fillStyle = '#1b2142'; c.fillRect(x - s / 2, y - s / 2, s, s);
     if (k < 1) { c.save(); c.translate(x - s * .12, y + s * .08); c.scale(s / 240, s / 240); poly(c, [-38, 20, 38, 20, 56, 56, -56, 56]); fill(c, '#38bdf8'); poly(c, [-14, -80, 14, -80, 14, -30, 60, 60, -60, 60, -14, -30]); c.strokeStyle = '#e0f2fe'; c.lineWidth = 5; c.stroke(); c.restore() }
     if (k > 0) { const R = s * .34 * k, cx = x, cy = y - s * .06, pale = a ? eio(at(t, a.pochti, a.poter + .4)) : 0;
@@ -1432,20 +1432,25 @@
     T12 = { a: SA(s), pom: w('помните'), tri: w('тринадцать'), mil: w('миллиардов'), juul: w('джула'), pochti: w('почти'), poter: w('потерял'), spok: w('спокойно'), perezh: w('пережил'),
       pach: w('пачка'), korm: w('кормит'), por: w('пор'), end: SA('s13') - .02 };
     const [ex, ey, ez] = T9END, m = 230 / (1920 / ez); N12 = { x: 540 - (ex - 540) * m, y: photo3(C1924)[1] - (ey - 960) * m, m };   // v20.2: фото = последний кадр ночной сцены
-    const a = T12; a.burn = a.por + .05;
-    K12 = [KY(a.pom + .5, 520, 720, 2.6), KY(a.tri + .5, 500, 660, 1.55), KY(a.mil + .25, 360, 470, 2.0), KY(a.juul, 345, 430, 2.35), KY(a.pochti + .35, 345, 470, 2.2), KY(a.spok + .1, 520, 720, 1.35),
-      KY(a.korm + .1, 600, 900, 1.2), KY(a.por, 720, 1080, 1.6), KY(a.end, RC.x1, RC.y1, 9)];
+    const a = T12; a.burn = a.por + .05; a.sih = w('сих');
+    // v20.3 (по разбору Gemini): на 1:12–1:21 доска только крупно — всю доску с закрытыми 2014 и 2022 видно один раз, в конце главы.
+    // Кадр, который заходит ниже верхнего края карточек 2014 и 2022 (y 619), не шире промежутка между ними (x 373…715); по диагонали нити — с наездом.
+    const tip = [RC.x1 + Math.sin(9 - a.end * 4) * 24, RC.y1];   // кончик чека в момент нырка
+    K12 = [KY(a.pom + .5, 545, 785, 3.3), KY(a.tri + .4, 538, 520, 4.3), KY(a.mil + .1, 478, 395, 4.6), KY(a.mil + .36, 345, 342, 3.6),   // 1924 → вверх по нити → 1979, круг «Джула»
+      KY(a.juul, 342, 348, 3.95), KY(a.poter + .25, 348, 340, 3.8),   // счётчик 12,80 → 0,45 крутится поверх кадра
+      KY(a.spok, 470, 330, 4.3), KY(a.spok + .4, 540, 560, 4), KY(a.perezh + .2, 544, 900, 3.4), KY(a.pach, 544, 1010, 3.3),   // назад вдоль нити и вниз: пачка выезжает из-за карточки 1924
+      KY(a.korm + .1, 548, 1100, 3.35), KY(a.sih + .1, 570, 1340, 3.9), KY(a.end, tip[0], tip[1], 9)];   // крышка-касса, чек спускается, нырок в тлеющий кончик
   }
-  const RC = { x0: 640, y0: 760, x1: 905, y1: 1175 };   // чек: откуда выползает и где кончик (тлеет)
-  function pack12(c, t) {   // v20.2: крупная пачка-касса на переднем плане: выезжает из-за карточки 1924, крышка откидывается назад (как ящик кассы), из пачки волной ползёт чек
-    const a = T12, k = eo(at(t, a.spok - .3, a.spok + .5)); if (k <= 0) return;
-    const S = .82, w = 190 * S, h = 282 * S, x = lp(470, 650, k), top = lp(760, 800, k), sw = Math.sin(t * 2.2) * .04 * at(t, a.spok + .3, a.spok + .8), lid = eio(at(t, a.korm - .1, a.korm + .2));
+  const RC = { x1: 610, y1: 1640 };   // v20.3: кончик чека (тлеет) — под карточками, в стороне от закрытых 2014 и 2022
+  function pack12(c, t) {   // v20.2: крупная пачка-касса: выезжает из-за карточки 1924, крышка откидывается назад (как ящик кассы), из пачки волной ползёт чек
+    const a = T12, k = eo(at(t, a.perezh - .3, a.perezh + .5)); if (k <= 0) return;   // v20.3: выезжает вниз из-за карточки 1924
+    const S = .82, w = 190 * S, h = 282 * S, x = 540 - w / 2, top = lp(700, 1010, k), sw = Math.sin(t * 2.2) * .04 * at(t, a.perezh + .3, a.perezh + .8), lid = eio(at(t, a.korm - .1, a.korm + .2));
     c.save(); c.translate(x + w / 2, top + h); c.rotate(sw); c.translate(-(x + w / 2), -(top + h));
     rasterPoly(c, [x + w, top + h * .1, x + w + h * .2, top + h * .25, x + w + h * .2, top + h * 1.1, x + w * .2, top + h * 1.1, x, top + h], 'rgba(0,0,0,.3)', 9, 2.4);
     flipPack(c, x, top, w, h, lid, { shadow: false });
     c.restore();
     if (lid > 0) { const rl = at(t, a.korm + .08, a.end), x0 = x + w / 2, y0 = top + h * .1, pts = [];   // бесконечный чек волной
-      for (let i = 0; i <= 44; i++) { const u = i / 44 * rl, bx = lp(x0, RC.x1, u), by = lp(y0, RC.y1, u) - Math.sin(Math.PI * Math.min(1, u * 1.6)) * 240; pts.push([bx + Math.sin(u * 9 - t * 4) * 24, by]) }
+      for (let i = 0; i <= 44; i++) { const u = i / 44 * rl, bx = lp(x0, RC.x1, u), by = lp(y0, RC.y1, u) - Math.sin(Math.PI * Math.min(1, u * 1.6)) * 200; pts.push([bx + Math.sin(u * 9 - t * 4) * 24, by]) }
       c.strokeStyle = '#F4F1EA'; c.lineCap = 'butt'; c.lineWidth = 36; c.beginPath(); pts.forEach((p, i) => i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])); c.stroke();
       c.strokeStyle = 'rgba(40,40,50,.35)'; c.lineWidth = 2; pts.forEach((p, i) => { if (i % 2 && i > 2) { c.beginPath(); c.moveTo(p[0] - 11, p[1]); c.lineTo(p[0] + 11, p[1]); c.stroke() } });
       const end = pts[pts.length - 1], eb = at(t, a.burn - .1, a.end); if (eb > 0) { circ(c, end[0], end[1], 16, rgba('#FF9A4A', .45 * eb)); circ(c, end[0], end[1], 9, C3.ember) } }
@@ -1470,10 +1475,10 @@
   function board12(c, t, inner) {
     const a = T12; boardWall3(c, t);
     thread3(c, CARDS3[0], CARDS3[1]); [2, 3, 4].forEach(i => thread3(c, CARDS3[1], CARDS3[i]));
-    const kt = a ? eo(at(t, a.pom + .2, a.tri + .4)) : 1; thread3(c, C1924, CARDS3[0], kt);
+    const kt = a ? eio(at(t, a.pom + .25, a.mil + .1)) : 1; thread3(c, C1924, CARDS3[0], kt);   // v20.3: нить тянется, камера едет за ней
+    if (a && t < a.end + .3) pack12(c, t);   // v20.3: пачка выезжает вниз из-за карточки 1924 (рисуется под карточками); с чеком сгорает в дым — в концовке её нет
     CARDS3.forEach(cd => card3(c, t, cd, cd.id === '1924' ? inner : null));
     CARDS3.forEach(cd => pin3d(c, ...pin3(cd)));
-    if (a && t < a.end + .3) pack12(c, t);   // пачка с чеком сгорела в дым — на доске в концовке её нет
   }
   function w12Shot(c, t) { const q = camObj(camAt(K12, t)); layer(c, q, 1, cc => board12(cc, t, ci => inNest(ci, N12, cn => nightLocal(cn, t, q, false)))) }
   // ---------- дым (v20.2): неровные клубы растут из тлеющего кончика чека (в шортсе — снизу), закрывают кадр; после стыка с 2014-м уходят вверх ----------
@@ -1493,9 +1498,10 @@
   }
   // ================= мир 13–14 (фразы 13–14): графит 2014-го. Белые фигурки 1954-го пятятся от дыма; огонь на кончике сжимается в пластинку нагревателя (#114);
   // разрез тонкими линиями поверх держателя (#067); волны тепла вместо дыма. Стик выезжает, отъезд: пачка HeatSticks → витрина с тремя пачками (#151), имена загораются.
-  // Концовки: фильм — витрина становится фото карточки 1924, нить к закрытой «2014»; шортс — вопрос, «Часть 4 →», камера ныряет в рамку с кадром 0 (петля).
-  let T13 = null, K13 = null, KEND = null, N14 = null, TSM = 0;
-  const CIG = { x0: 230, x1: 820, y: 900, r: 26 }, HOLD = { x0: 640, x1: 1180, y: 900 }, SHOW = { x0: 90, x1: 990, y0: 600, y1: 1250, shelf: 1190 }, PRINT = { x: 540, y: 300, w: 108, h: 192 };
+  // Концовки: фильм — витрина становится фото карточки 1924, нить к закрытой «2014»; шортс — вопрос, «Часть 4 →», камера ныряет в среднюю пачку витрины —
+  // v20.3: это та же пачка, что на плакате у трассы, она раскрывается в щит кадра 0 (петля).
+  let T13 = null, K13 = null, KEND = null, N14 = null, TSM = 0, KL = null, TL0 = 0;
+  const CIG = { x0: 230, x1: 820, y: 900, r: 26 }, HOLD = { x0: 640, x1: 1180, y: 900 }, SHOW = { x0: 90, x1: 990, y0: 600, y1: 1250, shelf: 1190 };
   function w13Init() {
     const s = 's13', w = q => Ws(s, q), s4 = 's14';
     T13 = { a: SA(s), kogda: w('когда'), isp: w('испугались'), dyma: w('дыма'), tret: w('третья'), zh: w('жизнь'), bez: w('без'), ogn: w('огня'), tab: w('табак'), sig: w('сигарете'), gre: w('греет'), nagr: w('нагреватель'),
@@ -1503,7 +1509,9 @@
     const a = T13; TSM = (SA('s12') !== null ? T12.end : T9.end);   // дым закрывает кадр — стык миров
     K13 = [KY(TSM, 560, 930, .74), KY(a.isp, 520, 960, .9), KY(a.tret, 640, 930, 1.3), KY(a.bez + .25, 700, 920, 1.6), KY(a.tab + .35, 760, 900, 1.25), KY(a.nagr + .3, 780, 880, 1.35),
       KY(a.stiki + .2, 560, 920, 1.05), KY(a.naz + .1, 540, 900, .86), KY(a.marl + .1, 540, 905, .84)];
-    if (MODE === 's') K13.push(KY(a.qEnd, 540, 760, .9), KY(a.endT, PRINT.x, PRINT.y, WW / PRINT.w));
+    if (MODE === 's') {   // v20.3: петля шортса — нырок в среднюю пачку; пачка на плакате (мир 1) нарисована так же, мир 1 лежит так, что пачки совпадают
+      a.ts = a.qEnd + .95; TL0 = TLX.endT + 1 / 30; const NPK = { x: 445 - (BB.x + 676) + 540, y: SHOW.shelf - 282 - (BB.y + 176) + 960, m: 1 };
+      K13[K13.length - 1] = KY(a.marl + .1, 540, 930, .9); K13.push(KY(a.qEnd - .05, 540, 1020, 1.06), KY(a.ts, 540, SHOW.shelf - 141, 7.6)); KL = [KY(TL0, 540, 960, 1)]; linkK(K13, KL, NPK, true) }   // наезд до пачки во весь кадр → отъезд к кадру 0
     else { K13.push(KY(a.vEnd, 540, 900, .82)); const m = 230 / (1920 / .82); N14 = { x: 540, y: photo3(C1924)[1] - (900 - 960) * m, m };
       KEND = [KY(a.vEnd + 1.25, 540, 640, 1.12), KY(a.endT, 535, 630, 1.08)]; linkK(K13, KEND, N14, false) }   // v20.2: в кадре все пять карточек и нить к закрытой «2014»
   }
@@ -1549,28 +1557,26 @@
     const a = T13, k = eio(at(t, a.stiki - .1, a.naz + .2)); if (k <= 0) return; const { x0, x1, y0, y1, shelf } = SHOW;
     c.save(); c.globalAlpha *= 1; rr(c, x0 - 20, y0 - 20, x1 - x0 + 40, y1 - y0 + 40, 14); fill(c, '#1B1D23'); rr(c, x0, y0, x1 - x0, y1 - y0, 8); fill(c, '#3A3E4A');
     c.fillStyle = '#4A4F5C'; c.fillRect(x0, shelf, x1 - x0, 24); c.restore();
-    const gl = i => eo(at(t, a.marl - .05 + i * .22, a.marl + .2 + i * .22));
+    const kd = MODE === 's' ? eio(at(t, a.qEnd - .05, a.ts - .3)) : 0;   // v20.3: на нырке имена гаснут и блики стекла уходят — пачка как на плакате
+    const gl = i => eo(at(t, a.marl - .05 + i * .22, a.marl + .2 + i * .22)) * (1 - kd);
     softPack(c, 160, shelf - 300, 200, 300, 30, { glow: gl(0), shc: 'rgba(0,0,0,.3)' });
     mPack(c, 445, shelf - 282, 190, 282, 34, { glow: gl(1), shc: 'rgba(0,0,0,.3)' });
     heatPack(c, 830, shelf, 1, gl(2));
-    c.save(); rr(c, x0, y0, x1 - x0, y1 - y0, 8); c.clip();   // стекло: блики и отражение четырёх шляп с забора
+    c.save(); rr(c, x0, y0, x1 - x0, y1 - y0, 8); c.clip(); c.globalAlpha *= 1 - kd;   // стекло: блики и отражение четырёх шляп с забора
     poly(c, [x0 + 80, y1, x0 + 200, y1, x0 + 520, y0, x0 + 400, y0]); fill(c, 'rgba(255,255,255,.07)'); poly(c, [x0 + 600, y1, x0 + 640, y1, x0 + 960, y0, x0 + 920, y0]); fill(c, 'rgba(255,255,255,.06)');
     { const u = at(t, a.naz - .2, a.marl + .9), gxx = lp(x0 - 300, x1 + 300, eio(u)); if (u > 0 && u < 1) { poly(c, [gxx - 60, y1, gxx + 60, y1, gxx + 380, y0, gxx + 260, y0]); fill(c, 'rgba(255,255,255,.13)') } }   // v20.2: блик бежит по стеклу, пока имена загораются
     c.globalAlpha *= .16; for (let i = 0; i < 4; i++) cHat(c, x0 + 170 + i * 190, y0 + 110 + Math.sin(t * 1.3 + i) * 3, 1.6, '#F4F1EA'); c.restore();
     rr(c, x0, y0, x1 - x0, y1 - y0, 8); lnB(c, 4, 'rgba(255,255,255,.35)');
   }
-  function print0(c, t) {   // рамка на стене: внутри — кадр 0 (щит у трассы); в шортсе камера ныряет в неё — петля
-    if (MODE !== 's') return; const { x, y, w, h } = PRINT; rr(c, x - w / 2 - 12, y - h / 2 - 12, w + 24, h + 24, 4); fill(c, '#C9A24A');
-    c.save(); c.beginPath(); c.rect(x - w / 2, y - h / 2, w, h); c.clip(); c.translate(x - w / 2, y - h / 2); c.scale(w / WW, h / HH); w1Shot(c, 0); c.restore();
-  }
   function w13World(c, t) {
-    const a = T13; graphite(c, t); print0(c, t); figs13(c, t); showcase(c, t); stick13(c, t);
-    if (MODE === 's') { const kq = at(t, a.q - .1, a.q + .3), kx = 1 - eio(at(t, a.qEnd + .15, a.qEnd + .45)); if (kq > 0 && kx > 0) { plate(c, 'Без огня — без вреда?', 540, 528, bo(kq) * kx, { s: 54, bg: '#F4F1EA', c: '#141010', ls: 0, w: 800 }) }   // v20.2: до нырка в рамку плашки сжимаются
-      const kp = at(t, a.qEnd - .2, a.qEnd + .2); if (kp > 0) tx(c, 'Часть 4 →', 540, 1330, { f: 'M', w: 800, s: 70 * bo(kp), c: '#F4F1EA', a: Math.min(1, kp * 2) }) }
+    const a = T13; graphite(c, t); figs13(c, t); showcase(c, t); stick13(c, t);
+    if (MODE === 's') { const kq = at(t, a.q - .1, a.q + .3); if (kq > 0) plate(c, 'Без огня — без вреда?', 540, 528, bo(kq), { s: 54, bg: '#F4F1EA', c: '#141010', ls: 0, w: 800 });   // v20.3: на нырке плашки уходят за край кадра
+      const kp = at(t, a.q + 1, a.q + 1.4); if (kp > 0) tx(c, 'Часть 4 →', 540, 1330, { f: 'M', w: 800, s: 70 * bo(kp), c: '#F4F1EA', a: Math.min(1, kp * 2) }) }
   }
   function w13Shot(c, t) {
     if (MODE === 'y' && t >= T13.vEnd) { const q = camObj(camAt(KEND, t)); layer(c, q, 1, cc => { board12(cc, t, ci => inNest(ci, N14, cn => w13World(cn, t)));
       const kt = eo(at(t, T13.vEnd + 1.3, T13.vEnd + 2.3)); thread3(cc, C1924, CARDS3[2], kt) }); return }
+    if (KL && t >= T13.ts) { w1World(c, t - TL0, camObj(camAt(KL, t))); return }   // v20.3: шортс — пачка раскрылась в щит у трассы; мир 1 подходит к своему кадру 0 (петля без повтора кадра)
     const q = camObj(camAt(K13, t)); layer(c, q, 1, cc => w13World(cc, t));
   }
   // ================= сборка главы 3: время сцен по словам голоса, плашка года, кадр, звуки =================
@@ -1595,7 +1601,7 @@
     const W = (a, b) => SHUT.push([a, b]);   // короткая выдержка на быстрых проездах: без смаза и двоения
     W(T1.zh - .2, T1.end + .55); W(T2.izy - .1, T2.zh + .5); W(T2.pom - .15, T2.end + .35); W(TC.spas - .1, TC.strah + .25); W(TC.amer + .15, TC.amer + .75); W(TC.bros - .1, TC.filt + .4); W(TC.nezh - .2, TC.nezh + .4); W(TC.fil - .12, TC.fil + .9);
     W(TC.vidu - .1, TC.end + .4); W(T7.stav + .2, T7.slov + .15); W(T8.muzh, T8.chet + .55); W(T8.sem - .1, T8.mir + .35); W(T8.sweep1 - .1, T9.kur); W(T9.vsego - .2, T9.umerli + .3); W(T9.chet + .8, T9.chet + 1.4); W(T9.dev - .2, T9.dev + .5);
-    if (T12) { W(T12.pom - .1, T12.pom + .7); W(T12.pochti - .1, T12.poter + .55) } W(TSM - .5, TSM + .5); W(T13.stiki - .2, T13.naz + .3);
+    if (T12) { W(T12.pom - .1, T12.mil + .6); W(T12.pochti - .1, T12.poter + .55); W(T12.spok - .45, T12.perezh + .35); W(T12.korm + .3, T12.end) } W(TSM - .5, TSM + .5); W(T13.stiki - .2, T13.naz + .3);   // v20.3: проезды вдоль нити — без двоения
     if (MODE === 'y') W(TLX.vEnd - .05, TLX.vEnd + 1.3); else W(T13.qEnd, TLX.endT + .1);
     BLOCKS.push(['w1', -1, FN.w1]);
     for (const sc of ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14']) { const a = SA(sc); if (a !== null) BLOCKS.push([sc, a, FN[sc]]) }
@@ -1659,7 +1665,7 @@
     Q(TSM - .3, 'whoosh', .55);
     const k = T13; Q(k.isp - .1, 'school', .3); Q(k.tret - .15, 'puff', .4); Q(k.tret + .1, 'glassbulb', .4); Q(k.tab - .3, 'whoosh', .45); Q(k.tab, 'drawer', .45); Q(k.gre, 'pour', .35); Q(k.stiki - .1, 'whoosh', .5); Q(k.naz - .1, 'glass', .45);
     for (let i = 0; i < 3; i++) Q(k.marl - .05 + i * .22, 'glass', .5, -.4 + i * .4);
-    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.qEnd - .2, 'whoosh', .45); Q(k.qEnd + .3, 'whoosh', .6) }
+    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.q + .95, 'plop', .3); Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // v20.3: нырок в пачку → щит у трассы
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
@@ -1683,4 +1689,5 @@
     },
   };
   { const ep = window.EP; ep.sub.init = tl => ep.init(tl, [], true) }
+  window.__dbg = { camAt, get K12() { return K12 }, get K13() { return K13 }, get KL() { return KL }, get T12() { return T12 }, get T13() { return T13 }, get TSM() { return TSM } };   // v20.3: камера для проверок (кадр не трогает)
 })();
