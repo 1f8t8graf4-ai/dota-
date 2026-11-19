@@ -117,7 +117,7 @@
     const o = { f: 'M', w: 800, s: 54, ls: 0 }; let w = tw(c, ch.s, o); if (w > 840) { o.s *= 840 / w; w = 840 }
     w += 64; const h = 84;
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.translate(0, (1 - a) * 10);
-    const sy = SUBY;
+    const sy = (MODE === 'y' && T12 && ch.a >= T12.mil - .1 && ch.a < T12.perezh - .1) ? 1416 : SUBY;   // v20.5: пока камера на карточке 1979, подпись «1979 · СОЛЬ» внизу кадра — субтитр выше, в тёмном поле фото под кругом
     rr(c, CX - w / 2, sy - h / 2, w, h, 20); fill(c, 'rgba(11,16,48,.86)');
     tx(c, ch.s, CX, sy + 2, { ...o, c: '#fff' }); c.restore();
   }

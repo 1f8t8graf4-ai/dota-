@@ -41,8 +41,9 @@
     if (t < h.t90 - .3) return pill(1954, 1972, at(t, h.t72 - .15, h.t72 + .35));
     if (t < h.t92 - .3) return pill(1972, 1990, at(t, h.t90 - .15, h.t90 + .35));
     if (t < h.out + .45) return pill(1990, 1992, at(t, h.t92 - .15, h.t92 + .35), -240 * ei(at(t, h.out, h.out + .45)));
-    if (t < h.t14 - .25 || t > h.end + .45) return;
-    pill(2014, 2014, 1, -240 * Math.max(1 - eo(at(t, h.t14 - .25, h.t14 + .15)), ei(at(t, h.end, h.end + .45))));
+    const he = h.end - (MODE === 'y' ? .42 : 0);   // v20.5: в фильме плашка уходит до отъезда из фото — не горит, пока витрина сжимается в карточку
+    if (t < h.t14 - .25 || t > he + .45) return;
+    pill(2014, 2014, 1, -240 * Math.max(1 - eo(at(t, h.t14 - .25, h.t14 + .15)), ei(at(t, he, he + .45))));
   }
   function names(c, t) {   // плашки с именами — поверх кадра, чтобы читались, пока камера едет
     { const kn = at(t, T9.nast - .05, T9.nast + .3) * (1 - at(t, T9.uein - .4, T9.uein - .12)); if (kn > 0) { c.save(); c.setTransform(1, 0, 0, 1, 0, 0); plate(c, 'ПО-НАСТОЯЩЕМУ', 540, 300, bo(kn), { s: 46, bg: '#F4F1EA', c: '#141010', ls: 3 }); c.restore() } }   // v20.2: плашкой, не поверх ламп
@@ -84,7 +85,7 @@
     Q(TSM - .3, 'whoosh', .55);
     const k = T13; Q(k.isp - .1, 'school', .3); Q(k.tret - .15, 'puff', .4); Q(k.tret + .1, 'glassbulb', .4); Q(k.tab - .3, 'whoosh', .45); Q(k.tab, 'drawer', .45); Q(k.gre, 'pour', .35); Q(k.stiki - .1, 'whoosh', .5); Q(k.naz - .1, 'glass', .45);
     for (let i = 0; i < 3; i++) Q(k.marl - .05 + i * .22, 'glass', .5, -.4 + i * .4);
-    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.q + .95, 'plop', .3); Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // v20.3: нырок в пачку → щит у трассы
+    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + .6, 'plop', .3); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.q + .95, 'plop', .3); Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // v20.3: нырок в пачку → щит у трассы
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],

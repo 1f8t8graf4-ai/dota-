@@ -16,7 +16,7 @@
   }
   function marker3(c, x, y, s, seed) { c.save(); c.translate(x, y); c.lineCap = 'round';
     [[-1, -.62], [1, .55], [-1, .1]].forEach(([d, off], i) => { c.save(); c.rotate(d * .62 + (H1(seed + i) - .5) * .1); c.strokeStyle = 'rgba(10,10,12,.94)'; c.lineWidth = s * .2; c.beginPath(); c.moveTo(-s * .62, off * s * .25); c.lineTo(s * .62, off * s * .25); c.stroke(); c.restore() }); c.restore() }
-  function pin3d(c, x, y) { circ(c, x + 2, y + 4, 10, 'rgba(0,0,0,.35)'); circ(c, x, y, 10, '#dc2626'); circ(c, x - 3, y - 3, 3.6, '#fca5a5') }   // v20.2: булавка меньше — при отъезде из фото не «огромный шар»
+  function pin3d(c, x, y, k = 1) { if (k <= 0) return; c.save(); c.translate(x, y); c.scale(k, k); circ(c, 2, 4, 10, 'rgba(0,0,0,.35)'); circ(c, 0, 0, 10, '#dc2626'); circ(c, -3, -3, 3.6, '#fca5a5'); c.restore() }   // v20.2: булавка меньше — при отъезде из фото не «огромный шар»
   function thread3(c, a, b, k = 1, col = '#dc2626') { if (k <= 0) return; const [x1, y1] = pin3(a), [x2, y2] = pin3(b); c.save(); c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 4; c.beginPath(); c.moveTo(x1 + 3, y1 + 6); c.lineTo(lp(x1, x2, k) + 3, lp(y1, y2, k) + 6); c.stroke(); c.strokeStyle = col; c.lineWidth = 4; c.beginPath(); c.moveTo(x1, y1); c.lineTo(lp(x1, x2, k), lp(y1, y2, k)); c.stroke(); c.restore() }
   function photo1979b(c, t, x, y, s) {   // колба и кристалл соли (как в главе 1); на «миллиардов» — круг «Джула» с долей 35 %
     const a = T12, k = a ? spr(at(t, a.mil + .05, a.mil + .7)) : 0;   // v20.3: круг раскрывается, когда камера уже на карточке
@@ -85,11 +85,13 @@
   }
   function board12(c, t, inner) {
     const a = T12; boardWall3(c, t);
-    thread3(c, CARDS3[0], CARDS3[1]); [2, 3, 4].forEach(i => thread3(c, CARDS3[1], CARDS3[i]));
-    const kt = a ? eio(at(t, a.pom + .25, a.mil + .1)) : 1; thread3(c, C1924, CARDS3[0], kt);   // v20.3: нить тянется, камера едет за ней
+    const pk = (MODE === 'y' && T13 && t >= T13.vEnd) ? spr(at(t, T13.vEnd + .52, T13.vEnd + .9)) : 1, ta = Math.min(1, pk);   // v20.5: при отъезде из фото булавка 1924 не вылезает огромной сверху — вдавливается, когда карточка уже целиком в кадре; нити к ней появляются вместе с ней
+    const th = (p, q, k) => { if (p !== C1924 && q !== C1924) return thread3(c, p, q, k); c.save(); c.globalAlpha *= ta; thread3(c, p, q, k); c.restore() };
+    th(CARDS3[0], CARDS3[1]); [2, 3, 4].forEach(i => th(CARDS3[1], CARDS3[i]));
+    const kt = a ? eio(at(t, a.pom + .25, a.mil + .1)) : 1; th(C1924, CARDS3[0], kt);   // v20.3: нить тянется, камера едет за ней
     if (a && t < a.end + .3) pack12(c, t);   // v20.3: пачка выезжает вниз из-за карточки 1924 (рисуется под карточками); с чеком сгорает в дым — в концовке её нет
     CARDS3.forEach(cd => card3(c, t, cd, cd.id === '1924' ? inner : null));
-    CARDS3.forEach(cd => pin3d(c, ...pin3(cd)));
+    CARDS3.forEach(cd => pin3d(c, ...pin3(cd), cd === C1924 ? pk : 1));
   }
   function w12Shot(c, t) { const q = camObj(camAt(K12, t)); layer(c, q, 1, cc => board12(cc, t, ci => inNest(ci, N12, cn => nightLocal(cn, t, q, false)))) }
   // ---------- дым (v20.2): неровные клубы растут из тлеющего кончика чека (в шортсе — снизу), закрывают кадр; после стыка с 2014-м уходят вверх ----------

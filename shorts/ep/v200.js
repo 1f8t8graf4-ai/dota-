@@ -117,7 +117,7 @@
     const o = { f: 'M', w: 800, s: 54, ls: 0 }; let w = tw(c, ch.s, o); if (w > 840) { o.s *= 840 / w; w = 840 }
     w += 64; const h = 84;
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.translate(0, (1 - a) * 10);
-    const sy = SUBY;
+    const sy = (MODE === 'y' && T12 && ch.a >= T12.mil - .1 && ch.a < T12.perezh - .1) ? 1416 : SUBY;   // v20.5: пока камера на карточке 1979, подпись «1979 · СОЛЬ» внизу кадра — субтитр выше, в тёмном поле фото под кругом
     rr(c, CX - w / 2, sy - h / 2, w, h, 20); fill(c, 'rgba(11,16,48,.86)');
     tx(c, ch.s, CX, sy + 2, { ...o, c: '#fff' }); c.restore();
   }
@@ -886,8 +886,10 @@
   let SMKP = null;
   function smokeRise(c, t) {
     const a = TC, rise = eio(at(t, a.umer + .05, a.strah - .12)); if (rise <= 0) return;
-    if (!SMKP) { SMKP = smoothPts(SMK.flat(), 10); let L = 0; SMKP.forEach((p, i) => { if (i) L += Math.hypot(p[0] - SMKP[i - 1][0], p[1] - SMKP[i - 1][1]); p[2] = L }); SMKP.L = L }
-    const lo = eio(at(t, a.strah - .4, a.strah + .45)), u0 = lo, u1 = rise, wob = 1 - at(t, a.strah - .3, a.strah + .3);   // v20.4: низ ленты тает, как только дым вышел над столом
+    if (!SMKP) { SMKP = smoothPts(SMK.flat(), 10); let L = 0; SMKP.forEach((p, i) => { if (i) L += Math.hypot(p[0] - SMKP[i - 1][0], p[1] - SMKP[i - 1][1]); p[2] = L }); SMKP.L = L;
+      const iS = SMKP.findIndex(p => p[1] <= SLAB[1]); SMKP.uS = iS > 0 ? SMKP[iS][2] / L : 0 }   // v20.5: доля пути, на которой лента уходит за перекрытие
+    const lo = eio(at(t, a.strah - .4, a.strah + .45)), fb = eio(at(t, a.strah - .62, a.strah - .22)), u0 = Math.max(lo, fb * SMKP.uS), u1 = rise,   // v20.5: пока камера поднимается к столу, хвост уходит из подвала за перекрытие
+      wob = 1 - at(t, a.strah - .3, a.strah + .3);   // v20.4: низ ленты тает, как только дым вышел над столом
     if (u1 - u0 > .005) { const S = SMKP.filter(p => p[2] >= u0 * SMKP.L && p[2] <= u1 * SMKP.L).map((p, i) => [p[0] + Math.sin(t * 2.2 + p[1] * .01) * 14 * wob * (1 - p[2] / SMKP.L), p[1]]);
       if (S.length > 1) { c.save(); c.globalAlpha *= 1 - .7 * lo; ribbon(c, S, u => 14 + 10 * u, 'rgba(226,222,232,.22)'); ribbon(c, S, u => 6 + 3 * u, 'rgba(236,232,240,.8)'); c.restore() } }
   }
@@ -1066,7 +1068,8 @@
     if (md < 1) packWall(c, q, -1600, SHOPX + 1600, SLAB[1], 1500);
     c.fillStyle = '#5A3A26'; c.fillRect(-1600, 1500, SHOPX + 3200, 220); c.fillStyle = '#7A5135'; c.fillRect(-1600, 1500, SHOPX + 3200, 10); c.fillStyle = '#1A1420'; c.fillRect(-1600, 1720, SHOPX + 3200, 2000);
     if (md < 1) marketDisc(c, t);
-    const kr = at(t, a.proc + .1, a.proc + .45) * (1 - at(t, a.spas - .3, a.spas + .1)); if (kr > 0) plate(c, '0,25 % РЫНКА', 540, 1040, bo(kr), { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 });
+    const kr = at(t, a.proc + .1, a.proc + .45) * (1 - at(t, a.spas - .3, a.spas + .1));
+    if (kr > 0) { const T = c.getTransform(), k = bo(kr), py = Math.min(1040, (1600 - T.f) / T.d - 70 * k); plate(c, '0,25 % РЫНКА', 540, py, k, { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 }) }   // v20.5: камера уходит вверх за дымом — плашка остаётся над субтитром (низ не ниже 1600 px), а не съезжает под него
     if (md > 0) { const v = viewRect(q); if (v.y1 > SLAB[1]) { const g = c.createLinearGradient(0, SLAB[1], 0, SLAB[1] + 1100); g.addColorStop(0, `rgba(22,19,28,${md})`); g.addColorStop(1, `rgba(8,7,11,${md})`);
       c.fillStyle = g; c.fillRect(v.x0 - 50, SLAB[1], v.x1 - v.x0 + 100, v.y1 - SLAB[1] + 50) } }
     smokeRise(c, t);   // v20.4: лента дыма — за перекрытием, полом и тумбой стола
@@ -1326,8 +1329,8 @@
     const a = T9; a.sw = a.vot + .28;   // смена мира: шар Земли во весь кадр, горизонт — прямая
     NE9 = { x: GLOBE.x, y: GLOBE.y - GLOBE.R - (HORZ - 960) * M9, m: M9 };
     { const ty = NE9.y + (1000 - 960) * M9, d = a.sw - T8.sweep1 - .06;   // v20.2: нырок к горизонту быстрее — щит сразу крупный; щит всё время у центра кадра (сдвиг цели на экране тает: y = цель + D / z)
-      KE.push(KY(T8.sweep1 + .06, 540, 700, 1.7), KY(T8.sweep1 + .06 + d * .32, 540, ty + 120 / 8, 8), KY(T8.sweep1 + .06 + d * .66, 540, ty + 60 / 50, 50), KY(a.sw, 540, ty, .45 / M9)) }
-    K9 = [KY(a.kov + .05, 520, 880, .66), KY(a.rekl0 + .1, 430, 700, 1.6), KY(a.kur + .08, 405, 640, 3.4), KY(a.nast + .45, 420, 520, 2.4), KY(a.uein + .2, 470, 600, 1.75),
+      KE.push(KY(T8.sweep1 + .06, 540, 700, 1.7), KY(T8.sweep1 + .06 + d * .32, 540, ty + 120 / 8, 8), KY(T8.sweep1 + .06 + d * .66, 540, ty + 60 / 50, 50), KY(a.sw, 540, ty, .6 / M9)) }   // v20.5: на стыке щит крупнее (было .45 — «мелковат над пустыней»)
+    K9 = [KY(a.kov + .05, 520, 860, .85), KY(a.rekl0 + .1, 430, 700, 1.6), KY(a.kur + .08, 405, 640, 3.4), KY(a.nast + .45, 420, 520, 2.4), KY(a.uein + .2, 470, 600, 1.75),
       KY(a.polt + .1, 560, 600, 1.45), KY(a.den + .3, 600, 640, 1.4), KY(a.dev + .2, 390, 660, 3.0), KY(a.leg + .25, 385, 668, 3.3), KY(a.posl + .2, 470, 690, 1.6),
       KY(a.rekl + .15, 540, 700, 1.15), KY(a.umer, 540, 800, 1.0), KY(a.odin + .2, 560, 900, .9), KY(a.umerli, 1000, 1010, .66), KY(a.chet + .5, 1170, 980, .58), KY(a.end, T9END[0], T9END[1], T9END[2])];
   }
@@ -1498,7 +1501,7 @@
   }
   function marker3(c, x, y, s, seed) { c.save(); c.translate(x, y); c.lineCap = 'round';
     [[-1, -.62], [1, .55], [-1, .1]].forEach(([d, off], i) => { c.save(); c.rotate(d * .62 + (H1(seed + i) - .5) * .1); c.strokeStyle = 'rgba(10,10,12,.94)'; c.lineWidth = s * .2; c.beginPath(); c.moveTo(-s * .62, off * s * .25); c.lineTo(s * .62, off * s * .25); c.stroke(); c.restore() }); c.restore() }
-  function pin3d(c, x, y) { circ(c, x + 2, y + 4, 10, 'rgba(0,0,0,.35)'); circ(c, x, y, 10, '#dc2626'); circ(c, x - 3, y - 3, 3.6, '#fca5a5') }   // v20.2: булавка меньше — при отъезде из фото не «огромный шар»
+  function pin3d(c, x, y, k = 1) { if (k <= 0) return; c.save(); c.translate(x, y); c.scale(k, k); circ(c, 2, 4, 10, 'rgba(0,0,0,.35)'); circ(c, 0, 0, 10, '#dc2626'); circ(c, -3, -3, 3.6, '#fca5a5'); c.restore() }   // v20.2: булавка меньше — при отъезде из фото не «огромный шар»
   function thread3(c, a, b, k = 1, col = '#dc2626') { if (k <= 0) return; const [x1, y1] = pin3(a), [x2, y2] = pin3(b); c.save(); c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 4; c.beginPath(); c.moveTo(x1 + 3, y1 + 6); c.lineTo(lp(x1, x2, k) + 3, lp(y1, y2, k) + 6); c.stroke(); c.strokeStyle = col; c.lineWidth = 4; c.beginPath(); c.moveTo(x1, y1); c.lineTo(lp(x1, x2, k), lp(y1, y2, k)); c.stroke(); c.restore() }
   function photo1979b(c, t, x, y, s) {   // колба и кристалл соли (как в главе 1); на «миллиардов» — круг «Джула» с долей 35 %
     const a = T12, k = a ? spr(at(t, a.mil + .05, a.mil + .7)) : 0;   // v20.3: круг раскрывается, когда камера уже на карточке
@@ -1567,11 +1570,13 @@
   }
   function board12(c, t, inner) {
     const a = T12; boardWall3(c, t);
-    thread3(c, CARDS3[0], CARDS3[1]); [2, 3, 4].forEach(i => thread3(c, CARDS3[1], CARDS3[i]));
-    const kt = a ? eio(at(t, a.pom + .25, a.mil + .1)) : 1; thread3(c, C1924, CARDS3[0], kt);   // v20.3: нить тянется, камера едет за ней
+    const pk = (MODE === 'y' && T13 && t >= T13.vEnd) ? spr(at(t, T13.vEnd + .52, T13.vEnd + .9)) : 1, ta = Math.min(1, pk);   // v20.5: при отъезде из фото булавка 1924 не вылезает огромной сверху — вдавливается, когда карточка уже целиком в кадре; нити к ней появляются вместе с ней
+    const th = (p, q, k) => { if (p !== C1924 && q !== C1924) return thread3(c, p, q, k); c.save(); c.globalAlpha *= ta; thread3(c, p, q, k); c.restore() };
+    th(CARDS3[0], CARDS3[1]); [2, 3, 4].forEach(i => th(CARDS3[1], CARDS3[i]));
+    const kt = a ? eio(at(t, a.pom + .25, a.mil + .1)) : 1; th(C1924, CARDS3[0], kt);   // v20.3: нить тянется, камера едет за ней
     if (a && t < a.end + .3) pack12(c, t);   // v20.3: пачка выезжает вниз из-за карточки 1924 (рисуется под карточками); с чеком сгорает в дым — в концовке её нет
     CARDS3.forEach(cd => card3(c, t, cd, cd.id === '1924' ? inner : null));
-    CARDS3.forEach(cd => pin3d(c, ...pin3(cd)));
+    CARDS3.forEach(cd => pin3d(c, ...pin3(cd), cd === C1924 ? pk : 1));
   }
   function w12Shot(c, t) { const q = camObj(camAt(K12, t)); layer(c, q, 1, cc => board12(cc, t, ci => inNest(ci, N12, cn => nightLocal(cn, t, q, false)))) }
   // ---------- дым (v20.2): неровные клубы растут из тлеющего кончика чека (в шортсе — снизу), закрывают кадр; после стыка с 2014-м уходят вверх ----------
@@ -1725,8 +1730,9 @@
     if (t < h.t90 - .3) return pill(1954, 1972, at(t, h.t72 - .15, h.t72 + .35));
     if (t < h.t92 - .3) return pill(1972, 1990, at(t, h.t90 - .15, h.t90 + .35));
     if (t < h.out + .45) return pill(1990, 1992, at(t, h.t92 - .15, h.t92 + .35), -240 * ei(at(t, h.out, h.out + .45)));
-    if (t < h.t14 - .25 || t > h.end + .45) return;
-    pill(2014, 2014, 1, -240 * Math.max(1 - eo(at(t, h.t14 - .25, h.t14 + .15)), ei(at(t, h.end, h.end + .45))));
+    const he = h.end - (MODE === 'y' ? .42 : 0);   // v20.5: в фильме плашка уходит до отъезда из фото — не горит, пока витрина сжимается в карточку
+    if (t < h.t14 - .25 || t > he + .45) return;
+    pill(2014, 2014, 1, -240 * Math.max(1 - eo(at(t, h.t14 - .25, h.t14 + .15)), ei(at(t, he, he + .45))));
   }
   function names(c, t) {   // плашки с именами — поверх кадра, чтобы читались, пока камера едет
     { const kn = at(t, T9.nast - .05, T9.nast + .3) * (1 - at(t, T9.uein - .4, T9.uein - .12)); if (kn > 0) { c.save(); c.setTransform(1, 0, 0, 1, 0, 0); plate(c, 'ПО-НАСТОЯЩЕМУ', 540, 300, bo(kn), { s: 46, bg: '#F4F1EA', c: '#141010', ls: 3 }); c.restore() } }   // v20.2: плашкой, не поверх ламп
@@ -1768,7 +1774,7 @@
     Q(TSM - .3, 'whoosh', .55);
     const k = T13; Q(k.isp - .1, 'school', .3); Q(k.tret - .15, 'puff', .4); Q(k.tret + .1, 'glassbulb', .4); Q(k.tab - .3, 'whoosh', .45); Q(k.tab, 'drawer', .45); Q(k.gre, 'pour', .35); Q(k.stiki - .1, 'whoosh', .5); Q(k.naz - .1, 'glass', .45);
     for (let i = 0; i < 3; i++) Q(k.marl - .05 + i * .22, 'glass', .5, -.4 + i * .4);
-    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.q + .95, 'plop', .3); Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // v20.3: нырок в пачку → щит у трассы
+    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + .6, 'plop', .3); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.q + .95, 'plop', .3); Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // v20.3: нырок в пачку → щит у трассы
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],

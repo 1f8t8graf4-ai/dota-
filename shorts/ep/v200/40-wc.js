@@ -127,8 +127,10 @@
   let SMKP = null;
   function smokeRise(c, t) {
     const a = TC, rise = eio(at(t, a.umer + .05, a.strah - .12)); if (rise <= 0) return;
-    if (!SMKP) { SMKP = smoothPts(SMK.flat(), 10); let L = 0; SMKP.forEach((p, i) => { if (i) L += Math.hypot(p[0] - SMKP[i - 1][0], p[1] - SMKP[i - 1][1]); p[2] = L }); SMKP.L = L }
-    const lo = eio(at(t, a.strah - .4, a.strah + .45)), u0 = lo, u1 = rise, wob = 1 - at(t, a.strah - .3, a.strah + .3);   // v20.4: низ ленты тает, как только дым вышел над столом
+    if (!SMKP) { SMKP = smoothPts(SMK.flat(), 10); let L = 0; SMKP.forEach((p, i) => { if (i) L += Math.hypot(p[0] - SMKP[i - 1][0], p[1] - SMKP[i - 1][1]); p[2] = L }); SMKP.L = L;
+      const iS = SMKP.findIndex(p => p[1] <= SLAB[1]); SMKP.uS = iS > 0 ? SMKP[iS][2] / L : 0 }   // v20.5: доля пути, на которой лента уходит за перекрытие
+    const lo = eio(at(t, a.strah - .4, a.strah + .45)), fb = eio(at(t, a.strah - .62, a.strah - .22)), u0 = Math.max(lo, fb * SMKP.uS), u1 = rise,   // v20.5: пока камера поднимается к столу, хвост уходит из подвала за перекрытие
+      wob = 1 - at(t, a.strah - .3, a.strah + .3);   // v20.4: низ ленты тает, как только дым вышел над столом
     if (u1 - u0 > .005) { const S = SMKP.filter(p => p[2] >= u0 * SMKP.L && p[2] <= u1 * SMKP.L).map((p, i) => [p[0] + Math.sin(t * 2.2 + p[1] * .01) * 14 * wob * (1 - p[2] / SMKP.L), p[1]]);
       if (S.length > 1) { c.save(); c.globalAlpha *= 1 - .7 * lo; ribbon(c, S, u => 14 + 10 * u, 'rgba(226,222,232,.22)'); ribbon(c, S, u => 6 + 3 * u, 'rgba(236,232,240,.8)'); c.restore() } }
   }
@@ -307,7 +309,8 @@
     if (md < 1) packWall(c, q, -1600, SHOPX + 1600, SLAB[1], 1500);
     c.fillStyle = '#5A3A26'; c.fillRect(-1600, 1500, SHOPX + 3200, 220); c.fillStyle = '#7A5135'; c.fillRect(-1600, 1500, SHOPX + 3200, 10); c.fillStyle = '#1A1420'; c.fillRect(-1600, 1720, SHOPX + 3200, 2000);
     if (md < 1) marketDisc(c, t);
-    const kr = at(t, a.proc + .1, a.proc + .45) * (1 - at(t, a.spas - .3, a.spas + .1)); if (kr > 0) plate(c, '0,25 % РЫНКА', 540, 1040, bo(kr), { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 });
+    const kr = at(t, a.proc + .1, a.proc + .45) * (1 - at(t, a.spas - .3, a.spas + .1));
+    if (kr > 0) { const T = c.getTransform(), k = bo(kr), py = Math.min(1040, (1600 - T.f) / T.d - 70 * k); plate(c, '0,25 % РЫНКА', 540, py, k, { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 }) }   // v20.5: камера уходит вверх за дымом — плашка остаётся над субтитром (низ не ниже 1600 px), а не съезжает под него
     if (md > 0) { const v = viewRect(q); if (v.y1 > SLAB[1]) { const g = c.createLinearGradient(0, SLAB[1], 0, SLAB[1] + 1100); g.addColorStop(0, `rgba(22,19,28,${md})`); g.addColorStop(1, `rgba(8,7,11,${md})`);
       c.fillStyle = g; c.fillRect(v.x0 - 50, SLAB[1], v.x1 - v.x0 + 100, v.y1 - SLAB[1] + 50) } }
     smokeRise(c, t);   // v20.4: лента дыма — за перекрытием, полом и тумбой стола
