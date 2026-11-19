@@ -12,7 +12,7 @@
       KY(a.stiki + .2, 560, 920, 1.05), KY(a.naz + .1, 540, 900, .86), KY(a.marl + .1, 540, 905, .84)];
     if (MODE === 's') K13.push(KY(a.qEnd, 540, 760, .9), KY(a.endT, PRINT.x, PRINT.y, WW / PRINT.w));
     else { K13.push(KY(a.vEnd, 540, 900, .82)); const m = 230 / (1920 / .82); N14 = { x: 540, y: photo3(C1924)[1] - (900 - 960) * m, m };
-      KEND = [KY(a.vEnd + 1.2, 470, 800, 1.55), KY(a.endT, 420, 790, 1.42)]; linkK(K13, KEND, N14, false) }
+      KEND = [KY(a.vEnd + 1.25, 540, 640, 1.12), KY(a.endT, 535, 630, 1.08)]; linkK(K13, KEND, N14, false) }   // v20.2: в кадре все пять карточек и нить к закрытой «2014»
   }
   function graphite(c, t) {
     c.fillStyle = '#2B2E36'; c.fillRect(-6000, -6000, 12000, 12000); poly(c, [-6000, 2600, 6000, -3400, 6000, -2600, -6000, 3400]); fill(c, '#343844');
@@ -20,27 +20,34 @@
     c.fillStyle = '#23262D'; c.fillRect(-6000, 1460, 12000, 3000);
   }
   function figs13(c, t) {   // белые фигурки из 1954-го пятятся от дыма
-    const a = T13, b = eio(at(t, a.isp - .2, a.isp + .7)); for (let i = 0; i < 5; i++) { const m = i % 2 === 0, x = 60 + i * 90 - b * (260 + i * 40); fig(c, x, 1460, 1.5, { m, hat: m && i === 2, dir: b > .1 ? -1 : 1, col: '#F4F1EA', hc: C3.rose2 }) }
+    const a = T13, b = eio(at(t, a.isp - .2, a.isp + .75)); if (b >= 1) return; for (let i = 0; i < 5; i++) { const m = i % 2 === 0, x = 60 + i * 90 - b * (900 + i * 70), bob = b > 0 ? Math.abs(Math.sin(t * 11 + i)) * 10 : 0; fig(c, x, 1460 - bob, 1.5, { m, hat: m && i === 2, dir: b > .1 ? -1 : 1, col: '#F4F1EA', hc: C3.rose2 }) }   // v20.2: убегают из кадра целиком
   }
-  function flame(c, x, y, s, t) { const f = 1 + Math.sin(t * 17) * .06; c.save(); c.translate(x, y); c.scale(s, s * f);
-    c.beginPath(); c.moveTo(0, -70); c.bezierCurveTo(30, -30, 34, 0, 0, 22); c.bezierCurveTo(-34, 0, -30, -30, 0, -70); fill(c, '#FF8A2A'); c.beginPath(); c.moveTo(0, -34); c.bezierCurveTo(16, -14, 16, 2, 0, 14); c.bezierCurveTo(-16, 2, -16, -14, 0, -34); fill(c, '#FFD45A'); c.restore() }
+  // v20.2: сигарета 2014-го — бумага, пробковый фильтр, огонёк с пеплом (без язычка свечи); на «табак» она становится стиком, держатель — чертёж тонкими линиями,
+  // пластина нагревателя раскаляется оранжевым, тепло — мягкими прозрачными струями; на «стики» стик уходит в пачку HeatSticks на витрине
   function stick13(c, t) {
-    const a = T13, kf = eio(at(t, a.tret - .2, a.tret + .5)), kh = eio(at(t, a.tab - .35, a.tab + .3)), kn = eio(at(t, a.gre - .2, a.nagr + .2)), out = eio(at(t, a.stiki - .2, a.stiki + .55)), { y, r } = CIG;
-    const L = lp(CIG.x1 - CIG.x0, 340, kh), x0 = CIG.x0 + lp(0, 300, kh) - out * 520, x1 = x0 + L;
-    if (out < 1 || t < a.naz) {
-      rasterPoly(c, [x0, y + r, x1, y + r, x1 + 90, y + r + 70, x0 + 90, y + r + 70], 'rgba(0,0,0,.3)', 9, 2.3);
-      rr(c, x0, y - r, L, r * 2, r * .4); fill(c, C3.white); c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(x0, y + r * .35, L, r * .65);
-      c.fillStyle = lp(0, 1, kh) > .5 ? C3.cork : C3.white; c.fillRect(x0, y - r, L * .3, r * 2); c.fillStyle = '#8A5A2E'; c.fillRect(x1 - L * .38, y - r, L * .38 - 6, r * 2 * kh);
-      if (kf < 1) { const ex = x1; c.fillStyle = mixc('#3a2a26', C3.ember, 1 - kf); c.fillRect(ex - 18, y - r, 18, r * 2); flame(c, ex + 30, y - 8, 1 - kf, t);
-        smokeLine(c, [ex + 20, y - 60, ex + 40 + Math.sin(t * 2) * 20, y - 160, ex + 10, y - 280, ex + 40, y - 400], 7, '#C9C6D2', .7 * (1 - kf)) }
-      const sq = lp(26, 14, kf); if (kf > .2) { c.fillStyle = mixc('#9A9AA6', '#FF8A2A', kn); c.fillRect(x1 - L * .22 - sq / 2, y - sq * 1.6, sq, sq * 3.2) }   // пластинка нагревателя
+    const a = T13, kf = eio(at(t, a.tret - .2, a.tret + .5)), kh = eio(at(t, a.tab - .35, a.tab + .3)), kn = eio(at(t, a.gre - .2, a.nagr + .2)), out = eio(at(t, a.stiki - .2, a.stiki + .6)), { y, r } = CIG;
+    const L0 = lp(CIG.x1 - CIG.x0, 360, kh), X0 = CIG.x0 + lp(0, 300, kh);
+    const gx = 830, gy = SHOW.shelf - 236, sc = lp(1, .34, out), px = lp(X0 + L0 / 2, gx, out), py = lp(y, gy - 40 + 120 * eio(at(t, a.stiki + .35, a.naz)), out);   // в пачку: уменьшается, летит к её верху и опускается внутрь
+    if (out < 1 || t < a.naz + .1) {
+      c.save(); if (out > .6) { c.beginPath(); c.rect(-4000, -4000, 8000, gy + 4000); c.clip() }   // внутри пачки стик не виден
+      c.translate(px, py); c.scale(sc, sc); const x0 = -L0 / 2, x1 = L0 / 2;
+      if (out < .05) rasterPoly(c, [x0, r, x1, r, x1 + 90, r + 70, x0 + 90, r + 70], 'rgba(0,0,0,.3)', 9, 2.3);
+      cig3(c, x0, 0, x1, 0, r, { tip: C3.cork, tl: .3, em: kf < 1 ? 1 - kf : undefined, ek: 1 - kf });
+      if (kh > 0) { c.fillStyle = rgba('#8A5A2E', kh); c.fillRect(x1 - L0 * .36, -r, L0 * .36 - 4, r * 2); c.fillStyle = rgba('#6A4222', kh); for (let k = 0; k < 6; k++) c.fillRect(x1 - L0 * .36 + 6 + k * L0 * .055, -r + 4, 3, r * 2 - 8) }   // табак стика
+      c.restore();
     }
-    if (kh > 0 && out < 1) {   // белый держатель надвигается на табак; поверх — разрез тонкими линиями
-      const hx = lp(1500, HOLD.x0 + 140, kh) + out * 700, hw = 540; c.save(); rr(c, hx - 40, y - 70, hw, 140, 60); c.fillStyle = '#F2F2F4'; c.fill(); c.clip(); c.fillStyle = '#D9DAE0'; c.fillRect(hx - 40, y + 20, hw, 60); c.restore();
-      rr(c, hx - 40, y - 70, hw, 140, 60); lnB(c, 3, 'rgba(255,255,255,.8)');
-      const kc = at(t, a.tab - .1, a.tab + .5); if (kc > 0) { c.save(); c.globalAlpha *= Math.min(1, kc * 2); c.setLineDash([10, 8]); rr(c, x1 - L * .4, y - r, L * .4, r * 2, 6); lnB(c, 3, '#7CC4E0'); c.setLineDash([]);
-        c.beginPath(); c.moveTo(x1 - L * .3, y); c.lineTo(hx + 300, y); lnB(c, 2, '#7CC4E0'); c.restore() }
-      if (kn > 0) for (let i = 0; i < 4; i++) { const u = ((t * .9 + i * .25) % 1), wx = hx + 80 + i * 90; c.beginPath(); for (let k = 0; k <= 12; k++) { const yy = y - 90 - k * 22 - u * 60; c.lineTo(wx + Math.sin(k * .9 + t * 6 + i) * 12, yy) } lnB(c, 4, rgba('#FFB36A', .65 * kn * (1 - u))) }
+    const ex = CIG.x1; if (kf < 1) smokeLine(c, [ex + 6, y - 20, ex + 22 + Math.sin(t * 2) * 18, y - 140, ex + 4, y - 270, ex + 30, y - 400], 7, '#C9C6D2', .75 * (1 - kf));
+    if (kh > 0 && out < 1) {   // держатель — чертёж: контур тонкими линиями, прозрачный корпус, размерные линии; внутри пластина
+      const hx = lp(1500, CIG.x0 + 300 + 360 * .62, kh) + out * 900, hw = 560, hy = y; c.save();
+      rr(c, hx - 40, hy - 72, hw, 144, 64); c.fillStyle = 'rgba(190,225,250,.13)'; c.fill(); rr(c, hx - 40, hy - 72, hw, 144, 64); lnB(c, 3, 'rgba(220,240,255,.9)');
+      rr(c, hx - 26, hy - 58, hw - 28, 116, 52); lnB(c, 1.6, 'rgba(220,240,255,.45)');
+      c.setLineDash([12, 9]); c.beginPath(); c.moveTo(hx - 70, hy); c.lineTo(hx + hw + 30, hy); lnB(c, 1.4, 'rgba(124,196,224,.7)'); c.setLineDash([]);   // ось
+      const dy = hy + 112; c.beginPath(); c.moveTo(hx - 40, dy); c.lineTo(hx + hw - 40, dy); c.moveTo(hx - 40, dy - 12); c.lineTo(hx - 40, dy + 12); c.moveTo(hx + hw - 40, dy - 12); c.lineTo(hx + hw - 40, dy + 12); lnB(c, 2, 'rgba(124,196,224,.8)');   // размер
+      const bx = hx + 58, bh = r * 1.7, ko = 1 - out;   // пластина — внутри держателя и уезжает с ним
+      if (kh > .5) { const g = c.createLinearGradient(bx, hy - bh, bx, hy + bh); g.addColorStop(0, mixc('#8E929E', '#FF8A2A', kn)); g.addColorStop(.5, mixc('#B9BCC6', '#FFE08A', kn)); g.addColorStop(1, mixc('#8E929E', '#FF8A2A', kn));
+        rr(c, bx - 7, hy - bh, 14, bh * 2, 4); c.fillStyle = g; c.fill(); if (kn > 0) glow(c, bx, hy, 90, '#FF9A3A', .45 * kn * ko) }   // пластина: серая → раскалённая
+      if (kn > 0) for (let i = 0; i < 4; i++) { const u = (t * .7 + i * .25) % 1, wx = bx - 90 + i * 60; smokeLine(c, [wx, hy - 80 - u * 40, wx + 14, hy - 170 - u * 60, wx - 8, hy - 260 - u * 80, wx + 10, hy - 350 - u * 90], 9, '#FFB36A', .4 * kn * ko * Math.sin(Math.PI * u)) }   // тепло — мягкие прозрачные струи
+      c.restore();
     }
     const kb = at(t, a.bez - .05, a.bez + .3) * (1 - at(t, a.stiki - .3, a.stiki)); if (kb > 0) tx(c, 'БЕЗ ОГНЯ', 700, 560, { f: 'M', w: 800, s: 92 * bo(kb), c: '#F4F1EA', a: Math.min(1, kb * 2) });
   }
@@ -64,8 +71,8 @@
   }
   function w13World(c, t) {
     const a = T13; graphite(c, t); print0(c, t); figs13(c, t); showcase(c, t); stick13(c, t);
-    if (MODE === 's') { const kq = at(t, a.q - .1, a.q + .3); if (kq > 0) { plate(c, 'Без огня — без вреда?', 540, 528, bo(kq), { s: 54, bg: '#F4F1EA', c: '#141010', ls: 0, w: 800 }) }
-      const kp = at(t, a.qEnd - .2, a.qEnd + .2); if (kp > 0) tx(c, 'Часть 4 →', 540, 1400, { f: 'M', w: 800, s: 70 * bo(kp), c: '#F4F1EA', a: Math.min(1, kp * 2) }) }
+    if (MODE === 's') { const kq = at(t, a.q - .1, a.q + .3), kx = 1 - eio(at(t, a.qEnd + .15, a.qEnd + .45)); if (kq > 0 && kx > 0) { plate(c, 'Без огня — без вреда?', 540, 528, bo(kq) * kx, { s: 54, bg: '#F4F1EA', c: '#141010', ls: 0, w: 800 }) }   // v20.2: до нырка в рамку плашки сжимаются
+      const kp = at(t, a.qEnd - .2, a.qEnd + .2); if (kp > 0) tx(c, 'Часть 4 →', 540, 1330, { f: 'M', w: 800, s: 70 * bo(kp), c: '#F4F1EA', a: Math.min(1, kp * 2) }) }
   }
   function w13Shot(c, t) {
     if (MODE === 'y' && t >= T13.vEnd) { const q = camObj(camAt(KEND, t)); layer(c, q, 1, cc => { board12(cc, t, ci => inNest(ci, N14, cn => w13World(cn, t)));

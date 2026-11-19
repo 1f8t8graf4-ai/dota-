@@ -106,7 +106,7 @@
       cur.push(w);
       if (/[.,!?…:;—]$/.test(w.d) || !nx || nx.a - w.b > .35) flush();
     });
-    out.forEach((ch, i) => { const nx = out[i + 1]; ch.e = nx ? Math.min(nx.a - .02, ch.b + .6) : ch.b + .8; ch.s = ch.s.replace(/\.\.\./g, '…').replace(/[.,;:—]+$/, '').replace(/^—\s*/, '') });
+    out.forEach((ch, i) => { const nx = out[i + 1]; ch.e = nx ? Math.min(nx.a - .02, ch.b + .6) : MODE === 'y' ? Math.min(ch.b + .8, TLX.vEnd + .3) : ch.b + .2; ch.s = ch.s.replace(/\.\.\./g, '…').replace(/[.,;:—]+$/, '').replace(/^—\s*/, '') });   // v20.2: в фильме последний субтитр уходит до отъезда на доску
     return out.filter(ch => ch.s);
   }
   function subs(c, t) {
@@ -350,6 +350,23 @@
   }
   const PL = (c, p, col) => { poly(c, p); fill(c, col) };
   const SL = (c, p, col, w) => { c.beginPath(); c.moveTo(p[0], p[1]); for (let i = 2; i < p.length; i += 2) c.lineTo(p[i], p[i + 1]); c.strokeStyle = col; c.lineWidth = w; c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke() };
+  // v20.2: сигарета объёмом в 3 тона (бумага, тень снизу, блик сверху) от мундштука (x0, y0) к кончику (x1, y1).
+  // o.tip — цвет мундштука (o.tl — его доля длины), o.ring — тонкое кольцо за ним, o.em — огонёк 0…1 (полоса и пепел на кончике, без круга), o.brand — Marlboro на бумаге
+  function cig3(c, x0, y0, x1, y1, r, o = {}) {
+    const a = Math.atan2(y1 - y0, x1 - x0), L = Math.hypot(x1 - x0, y1 - y0); c.save(); c.translate(x0, y0); c.rotate(a);
+    rr(c, 0, -r, L, r * 2, r * .35); fill(c, o.paper || C3.white);
+    c.save(); rr(c, 0, -r, L, r * 2, r * .35); c.clip();
+    c.fillStyle = 'rgba(52,26,36,.17)'; c.fillRect(0, r * .28, L, r); c.fillStyle = 'rgba(255,255,255,.6)'; c.fillRect(0, -r * .72, L, r * .3);
+    if (o.tip) { const tl = L * (o.tl ?? .2); c.fillStyle = o.tip; c.fillRect(-1, -r, tl + 1, r * 2); c.fillStyle = 'rgba(0,0,0,.2)'; c.fillRect(-1, r * .28, tl + 1, r); c.fillStyle = 'rgba(255,255,255,.28)'; c.fillRect(-1, -r * .72, tl + 1, r * .3);
+      if (o.ring) { c.fillStyle = o.ring; c.fillRect(tl, -r, Math.max(1, r * .3), r * 2) } }
+    if (o.brand) tx(c, 'Marlboro', L * (o.tl ?? .2) + r * 2.6, 0, { f: 'P', w: 700, st: 'italic', s: r * .95, c: rgba('#B0122C', .8), al: 'left' });
+    if (o.em !== undefined) { const el = Math.min(L * .13, r * 1.9) * (o.ek ?? 1), em = cl(o.em);
+      c.fillStyle = mixc('#5a4842', C3.ember, em); c.fillRect(L - el, -r, el * .72, r * 2);
+      if (em > .15) { c.fillStyle = rgba('#FFD08A', .7 * em); c.fillRect(L - el * .82, -r * .38, el * .36, r * .76) }
+      c.fillStyle = '#A9A2A0'; c.beginPath(); c.moveTo(L - el * .3, -r); c.lineTo(L, -r * .55); c.lineTo(L, r * .55); c.lineTo(L - el * .3, r); c.closePath(); c.fill() }
+    c.restore(); c.restore();
+  }
+  const RCIG = [27, -219.5, 44, -216];   // сигарета всадника: мундштук у губ → кончик (координаты всадника)
   // всадник на коне (смотрят вправо), земля — y 0; o.ember — огонёк сигареты 0..1 (живой), o.chest — функция поверх груди (рентген)
   function horseRider(c, x, y, s, o = {}) {
     const T = C3; c.save(); c.translate(x, y); c.scale(s, s);
@@ -387,8 +404,9 @@
     c.beginPath(); c.moveTo(-14, -240); c.quadraticCurveTo(-8, -234, 4, -236); c.lineTo(30, -236); c.quadraticCurveTo(42, -234, 48, -242); c.quadraticCurveTo(44, -230, 30, -230); c.lineTo(4, -230); c.quadraticCurveTo(-10, -230, -14, -240); c.closePath(); fill(c, T.hat);
     c.fillStyle = T.band; c.fillRect(4, -240, 26, 4);
     limb(c, [[14, -205], [25, -184], [45, -176]], [11, 9, 8], T.rid);
-    SL(c, [29, -222, 38, -219], T.cig, 2.6);
-    const em = o.ember ?? 0; if (em > 0) { circ(c, 39, -219, 3.4 + em * 4.5, rgba('#FF9A4A', .28 * em)); circ(c, 39, -219, 2.6 + em * 2.4, rgba('#FFC36A', .5 * em)) } circ(c, 39, -219, 2.2 + em * 1.2, mixc('#c05a3a', T.ember, .6 + em * .4));   // огонёк — плоскими кругами, без свечения
+    const em = o.ember ?? 0;   // v20.2: сигарета во рту — бумага, пепел и огонёк полосой на кончике (не круг поверх головы)
+    if (em > 0) circ(c, RCIG[2] - 1.5, RCIG[3], 2.4 + em * 2.2, rgba('#FFB060', .24 * em));
+    cig3(c, RCIG[0], RCIG[1], RCIG[2], RCIG[3], 1.7, { em: .45 + .55 * em });
     SL(c, [28, -204, 27, -184, 21, -164], T.rim, 2.2); SL(c, [30, -236, 4, -236], T.rim, 1.6);
     c.restore();
   }
@@ -421,16 +439,38 @@
   // мягкая пачка 1920-х: кремовая, Marlboro курсивом, Mild as May; сверху сигареты с красным кончиком
   function softPack(c, x, y, w, h, side, o = {}) {
     const T = C3; if (o.shadow !== false) rasterPoly(c, [x + w, y + h * .1, x + w + h * .15, y + h * .2, x + w + h * .15, y + h * 1.06, x + w * .2, y + h * 1.06, x, y + h], o.shc || T.sh, 8, 2.3);
-    if (o.cigs !== false) [.3, .5, .7].forEach((u, i) => { const cx = x + w * u, top = y - h * .12 + (i % 2) * h * .04; c.fillStyle = T.white; c.fillRect(cx - w * .047, top, w * .095, h * .21); c.fillStyle = T.red; c.fillRect(cx - w * .047, top, w * .095, h * .042) });
+    if (o.cigs !== false) [[.33, .25], [.5, .32], [.67, .22]].forEach(([u, hh]) => {   // v20.2: длинные тонкие сигареты из надорванной фольги, красный мундштук и золотое кольцо (не спички)
+      const cw = w * .074, cx = x + w * u, top = y - h * hh + h * .05, L = h * hh + 14;
+      c.save(); rr(c, cx - cw / 2, top, cw, L, cw * .2); c.clip(); c.fillStyle = T.white; c.fillRect(cx - cw / 2, top, cw, L);
+      c.fillStyle = 'rgba(52,26,36,.16)'; c.fillRect(cx + cw * .14, top, cw * .4, L); c.fillStyle = 'rgba(255,255,255,.6)'; c.fillRect(cx - cw * .38, top, cw * .16, L);
+      c.fillStyle = T.red; c.fillRect(cx - cw / 2, top, cw, h * .05); c.fillStyle = T.redD; c.fillRect(cx + cw * .14, top, cw * .4, h * .05);
+      c.fillStyle = T.gold; c.fillRect(cx - cw / 2, top + h * .05, cw, Math.max(1.5, h * .008)); c.restore() });
     PL(c, [x - side, y + 8, x, y + 2, x, y + h, x - side, y + h - 8], T.creamD);
     c.beginPath(); c.moveTo(x, y + 6); [[.18, 0], [.3, 10], [.46, 2], [.62, 12], [.8, 3], [1, 8]].forEach(([u, d]) => c.lineTo(x + w * u, y + d)); c.lineTo(x + w, y + h); c.lineTo(x, y + h); c.closePath(); fill(c, T.cream);
     c.fillStyle = T.foil; c.fillRect(x, y + 14, w, 10);
     c.strokeStyle = T.gold; c.lineWidth = 2.5; c.strokeRect(x + w * .063, y + h * .12, w * .874, h * .83);
-    for (let q = 0; q < 3; q++) { c.beginPath(); c.arc(x + w / 2, y + h * .36, w * (.084 + q * .063), Math.PI * 1.15, Math.PI * 1.85); c.stroke() }
+    { const gx = x + w / 2, gy = y + h * .33, R = w * .085;   // v20.2: герб ар-деко — золотой овал «PM» в лавровых ветках (было — дуги, читались как значок вайфая)
+      c.beginPath(); c.ellipse(gx, gy, R, R * 1.25, 0, 0, TAU); c.lineWidth = Math.max(2, w * .012); c.stroke();
+      tx(c, 'PM', gx, gy + R * .06, { f: 'P', w: 700, st: 'italic', s: Math.round(R * 1.05), c: T.gold });
+      for (const s of [-1, 1]) for (let k = 0; k < 4; k++) { const an = Math.PI / 2 + s * (.62 + k * .42), lx = gx + Math.cos(an) * R * 1.62, ly = gy + Math.sin(an) * R * 1.75;
+        c.save(); c.translate(lx, ly); c.rotate(an + s * Math.PI / 2 * .9); c.beginPath(); c.ellipse(0, 0, R * .3, R * .12, 0, 0, TAU); fill(c, T.gold); c.restore() } }
     tx(c, 'Marlboro', x + w / 2, y + h * .56, { f: 'P', w: 700, st: 'italic', s: Math.round(w * .2), c: o.glow ? mixc(T.ink, T.red, o.glow) : T.ink });
     tx(c, 'Mild as May', x + w / 2, y + h * .69, { f: 'P', w: 400, st: 'italic', s: Math.round(w * .1), c: T.ink });
     if (o.glow) { c.fillStyle = rgba('#FFD27A', .55 * o.glow); c.fillRect(x + w * .14, y + h * .62, w * .72 * o.glow, 5) }
     SL(c, [x, y + 8, x, y + h - 2], 'rgba(255,255,255,.6)', 2);
+  }
+  // v20.2: жёсткая пачка с крышкой Flip-Top на петле сзади: lid 0…1 — крышка откидывается назад (лицевая сторона сжимается к петле, потом видна изнанка),
+  // внутри — задняя стенка, золотой воротник и пробковые кончики сигарет
+  function flipPack(c, x, top, w, h, lid, o = {}) {
+    const phi = lid * 1.98, cutY = top + h * .3, L = h * .3;
+    if (lid <= 0) { mPack(c, x, top, w, h, w * .18, o); return }
+    if (phi > Math.PI / 2) { const hh = L * -Math.cos(phi); PL(c, [x - w * .18, top + 2 - hh * .9, x, top - hh, x, top, x - w * .18, top + 2], '#C8B370'); c.fillStyle = '#F4EEDD'; c.fillRect(x, top - hh, w, hh); c.fillStyle = '#D9C27A'; c.fillRect(x + w * .08, top - hh + hh * .18, w * .84, hh * .64) }
+    c.fillStyle = '#E6E0D2'; c.fillRect(x, top + 3, w, h * .32);
+    for (let i = 0; i < 5; i++) { const cx = x + w * (.14 + i * .18), ct = top + h * .1 - h * .12 * ei(lid); rr(c, cx - w * .08, ct, w * .16, h * .4, 4); fill(c, C3.white); c.fillStyle = C3.cork; c.fillRect(cx - w * .08, ct, w * .16, h * .14) }
+    c.save(); c.beginPath(); c.rect(x - w, cutY, w * 3, h * 2); c.clip(); mPack(c, x, top, w, h, w * .18, o); c.restore();
+    PL(c, [x - w * .18, top + 6, x, cutY, x - w * .18, cutY + 4], C3.redD);
+    c.fillStyle = '#D9C27A'; c.fillRect(x + w * .05, cutY - h * .07, w * .9, h * .07 + 2); c.fillStyle = '#B89B55'; c.fillRect(x + w * .05, cutY - 3, w * .9, 5);
+    if (phi < Math.PI / 2) { const k2 = Math.cos(phi); c.save(); c.translate(0, top); c.scale(1, Math.max(.001, k2)); c.translate(0, -top); c.beginPath(); c.rect(x - w, top - 10, w * 3, L + 10); c.clip(); mPack(c, x, top, w, h, w * .18, { ...o, shadow: false }); c.restore() }
   }
   // небо заката полосами, облака, одно солнце, столовые горы (дальний план кадра 0)
   // nk — ночь 0…1 (трасса фразы 8: закат → ночь). При nk = 0 кадр 0 — как был. Края раздвинуты: камера отъезжает и летит вдоль трассы
@@ -536,10 +576,27 @@
     c.beginPath(); c.moveTo(-62, -14); c.quadraticCurveTo(-46, 0, -26, -4); c.lineTo(26, -4); c.quadraticCurveTo(46, 0, 62, -14); c.quadraticCurveTo(54, 8, 26, 6); c.lineTo(-26, 6); c.quadraticCurveTo(-54, 8, -62, -14); c.closePath(); fill(c, col);
     c.fillStyle = C3.band; c.fillRect(-26, -14, 52, 6); SL(c, [-24, -46, -8, -50], C3.rim, 2); c.restore();
   }
-  // струйка дыма: мягкая лента по точкам, тает к концу (без колец)
-  function smokeLine(c, pts, w, col, a = 1) {
-    if (a <= 0 || pts.length < 4) return; c.save(); c.globalAlpha *= a; c.lineCap = 'round'; c.lineJoin = 'round';
-    for (let i = 2; i < pts.length; i += 2) { const u = i / pts.length; c.strokeStyle = rgba(col, .75 * (1 - u * .8)); c.lineWidth = w * (1 + u * 1.6); c.beginPath(); c.moveTo(pts[i - 2], pts[i - 1]); c.lineTo(pts[i], pts[i + 1]); c.stroke() }
+  // струйка дыма (v20.2): гладкая лента по точкам (Катмулл–Ром), ширина растёт кверху, прозрачность тает градиентом вдоль ленты; два слоя — мягкий край и плотная середина
+  function smoothPts(pts, nPer = 6) {
+    const n = pts.length / 2, P = []; for (let i = 0; i < n; i++) P.push([pts[i * 2], pts[i * 2 + 1]]); if (n < 2) return P;
+    const S = []; for (let i = 0; i < n - 1; i++) { const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(n - 1, i + 2)];
+      for (let k = 0; k < nPer; k++) { const u = k / nPer, u2 = u * u, u3 = u2 * u; S.push([0, 1].map(j => .5 * (2 * p1[j] + (-p0[j] + p2[j]) * u + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * u2 + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * u3))) } }
+    S.push(P[n - 1]); return S;
+  }
+  function ribbon(c, S, hw, style) {   // лента вокруг осевой S, полуширина hw(u), заливка style
+    const m = S.length; if (m < 2) return; const Lp = [], Rp = [];
+    for (let i = 0; i < m; i++) { const a0 = S[Math.max(0, i - 1)], a1 = S[Math.min(m - 1, i + 1)], dx = a1[0] - a0[0], dy = a1[1] - a0[1], d = Math.hypot(dx, dy) || 1, h = hw(i / (m - 1));
+      Lp.push([S[i][0] - dy / d * h, S[i][1] + dx / d * h]); Rp.push([S[i][0] + dy / d * h, S[i][1] - dx / d * h]) }
+    const E = Lp.concat(Rp.reverse()); c.beginPath(); c.moveTo(E[0][0], E[0][1]);
+    for (let i = 1; i < E.length - 1; i++) c.quadraticCurveTo(E[i][0], E[i][1], (E[i][0] + E[i + 1][0]) / 2, (E[i][1] + E[i + 1][1]) / 2);
+    c.lineTo(E[E.length - 1][0], E[E.length - 1][1]); c.closePath(); c.fillStyle = style; c.fill();
+  }
+  function smokeLine(c, pts, w, col, a = 1, o = {}) {
+    if (a <= 0 || pts.length < 4) return; const S = smoothPts(pts), A = S[0], B = S[S.length - 1];
+    const g = (k, w0) => { const gr = c.createLinearGradient(A[0], A[1], B[0], B[1]); gr.addColorStop(0, rgba(col, k * (o.a0 ?? .9))); gr.addColorStop(.45, rgba(col, k * .55)); gr.addColorStop(1, rgba(col, 0)); return gr };
+    c.save(); c.globalAlpha *= a;
+    ribbon(c, S, u => w * (.9 + u * 2.6) * Math.sqrt(Math.min(1, u * 8 + .3)), g(.3));
+    ribbon(c, S, u => w * (.42 + u * 1.2) * Math.sqrt(Math.min(1, u * 8 + .3)), g(.75));
     c.restore();
   }
   // ================= мир 1: щит Marlboro Country у трассы на закате (кадр 0) → ветер рвёт плакат с угла → под ним дамская реклама, нырок в дыру (#088) =================
@@ -551,9 +608,10 @@
       ledi: hk ? Ws('hook', 'леди') : -9, brut: hk ? Ws('hook', 'брутальности') : -9 };
     const a = T1;   // камера: кадр 0 → пачка → угол → нырок в розовый слой под плакатом
     K1 = [KY(0, 540, 960, 1)];
-    if (hk) K1.push(KY(a.brut, 549, 944, 1.05), KY(a.s1 - .2, 566, 912, 1.19));   // крючок: медленный наезд, камера не стоит
-    else K1[0].v = [0, 0, W1V, 0];   // v20.1: фильм — кадр 0 на ходу: наезд продолжает нырок мостика «Льда»
-    K1.push(KY(a.marl + .1, 690, 840, 1.32), KY(a.do + .6, 760, 860, 1.42), KY(a.zh - .5, 860, 860, 1.9), KY(a.zh + .05, 900, 870, 2.6), KY(a.end, 918, 872, 9.5));
+    // v20.2: до «до» камера держит щит целиком (надпись и всадник в кадре), потом едет к отогнутому углу
+    if (hk) K1.push(KY(a.brut, 545, 944, 1.05), KY(a.s1 - .2, 540, 912, 1.1));   // крючок: медленный наезд, камера не стоит
+    else { K1[0].v = [0, 0, W1V, 0]; K1.push(KY(.62, 540, 905, 1.12)) }   // v20.1: фильм — кадр 0 на ходу (наезд продолжает нырок мостика «Льда») и сразу мягко тормозит
+    K1.push(KY(a.do + .05, 548, 880, 1.16), KY(a.do + .6, 760, 860, 1.42), KY(a.zh - .5, 860, 860, 1.9), KY(a.zh + .05, 900, 870, 2.6), KY(a.end, 918, 872, 9.5));
   }
   function w1Peel(t) {
     const a = T1; let px = 210 + 14 * Math.sin(t * 3.1) + 8 * Math.sin(t * 7.3);   // ветер треплет угол
@@ -566,7 +624,7 @@
   }
   function w1World(c, t, q) {
     layer(c, q, .3, cc => { P0(cc, .3); desertFar(cc) });   // дальний план почти стоит
-    layer(c, q, 1, cc => { desertGround(cc, t); billboardFrame(cc); poster(cc, t, { peelPx: w1Peel(t) }) });
+    layer(c, q, 1, cc => { desertGround(cc, t); billboardFrame(cc); poster(cc, t, { peelPx: w1Peel(t), glow: eo(at(t, T1.marl - .05, T1.marl + .3)) * (1 - eio(at(t, T1.do + .4, T1.do + 1))) }) });   // v20.2: на «Мальборо» имя на пачке загорается
     layer(c, q, 1.35, cc => { P0(cc, 1.35);   // передний план: перекати-поле катится, песок по ветру
       const u = (t * .045 + .62) % 1, x = lp(-300, 1500, u); tumbleweed(cc, x, 1530 - Math.abs(Math.sin(t * 2.4)) * 26, 44, t * 2.2);
       cc.strokeStyle = 'rgba(242,180,90,.5)'; cc.lineWidth = 3;
@@ -586,26 +644,38 @@
     const a = T2; a.top = LIP.y - 330;   // верх стержня, когда он выкручен
     a.tilt0 = a.pom + .05; a.tilt1 = a.end - .32;
     K2 = [KY(a.a + .55, 610, 1010, .6), KY(a.dam - .05, 540, 960, 1.0), KY(a.myag + .4, 552, 950, 1.04), KY(a.izy + .1, 566, 942, 1.06),
-      KY(a.zh + .35, 800, 1230, .6), KY(a.kr + .05, 880, 1420, .56), KY(a.kon + .25, LIP.x, a.top + 120, .74), KY(a.pom - .05, LIP.x, a.top + 40, .9),
+      KY(a.zh + .35, 800, 1230, .6), KY(a.kr + .05, 860, 1300, .56), KY(a.kon + .25, LIP.x, 1250, .6), KY(a.pom - .05, LIP.x, 1215, .7),   // v20.2: заголовок страницы всё время ниже плашки года
       KY(a.tilt1, LIP.x, a.top, 2.4), KY(a.end, LIP.x, a.top, 11.6)];
   }
-  // дама 1920-х сбоку (смотрит вправо), ноги — y 0; шляпка-колокол, платье с заниженной талией, жемчуг, сигарета в поднятой руке
+  // дама 1920-х сбоку (смотрит вправо), ноги — y 0. v20.2: икры и тонкие щиколотки, туфли на каблуке, платье с заниженной талией и складками,
+  // подол фестонами, пояс с бантом, клатч; сигарета между пальцев: красный мундштук к лицу, огонёк наружу, дым — от огонька
+  function shoe(c, ax, ay, col) {
+    c.beginPath(); c.moveTo(ax - 9, ay - 2); c.quadraticCurveTo(ax + 8, ay + 4, ax + 20, ay + 15); c.quadraticCurveTo(ax + 34, ay + 26, ax + 46, ay + 27); c.lineTo(ax + 46, ay + 30);
+    c.lineTo(ax + 6, ay + 30); c.quadraticCurveTo(ax - 2, ay + 24, ax - 5, ay + 14); c.lineTo(ax - 6, ay + 30); c.lineTo(ax - 12, ay + 30); c.lineTo(ax - 13, ay + 6); c.closePath(); fill(c, col);
+  }
   function lady(c, x, y, s, t, col = '#3A1830', rim = '#F1C3CC') {
     c.save(); c.translate(x, y); c.scale(s, s);
-    limb(c, [[-14, -190], [-18, -96], [-22, -10]], [26, 18, 14], col); limb(c, [[14, -190], [20, -100], [26, -10]], [26, 18, 14], col);
-    PL(c, [-34, -12, -6, -12, -2, 0, -40, 0], col); PL(c, [16, -12, 44, -12, 48, 0, 10, 0], col);
-    c.beginPath(); c.moveTo(-40, -620); c.bezierCurveTo(-48, -520, -50, -440, -52, -380); c.lineTo(-74, -180); c.quadraticCurveTo(0, -164, 76, -180); c.lineTo(54, -380); c.bezierCurveTo(52, -460, 48, -540, 40, -620); c.closePath(); fill(c, col);
-    c.fillStyle = shd(col, .3); c.fillRect(-60, -392, 118, 10);   // заниженная талия — лента
-    c.beginPath(); c.moveTo(-40, -620); c.quadraticCurveTo(0, -640, 40, -620); c.lineTo(36, -600); c.lineTo(-36, -600); c.closePath(); fill(c, col);
+    const sk = shd(col, .25), acc = C3.rose2;
+    limb(c, [[-28, -604], [-46, -492], [-56, -396]], [20, 16, 12], sk); rr(c, -80, -404, 46, 30, 7); fill(c, acc); c.fillStyle = C3.gold; c.fillRect(-80, -392, 46, 4);   // задняя рука от плеча, за спиной, с клатчем
+    limb(c, [[-18, -240], [-20, -150], [-15, -30]], [27, 31, 12], sk); shoe(c, -15, -30, sk);   // задняя нога
+    limb(c, [[14, -240], [24, -150], [32, -30]], [27, 31, 12], col); shoe(c, 32, -30, col);   // передняя нога
+    c.beginPath(); c.moveTo(-34, -618); c.bezierCurveTo(-44, -560, -46, -470, -46, -404); c.lineTo(-72, -234);   // спина, юбка чуть клёш
+    [[-58, -218, -46, -232], [-30, -214, -14, -230], [2, -212, 18, -228], [36, -212, 52, -228], [66, -214, 78, -232]].forEach(([qx, qy, ex, ey]) => c.quadraticCurveTo(qx, qy, ex, ey));   // подол фестонами
+    c.lineTo(52, -404); c.bezierCurveTo(54, -470, 58, -520, 50, -552); c.bezierCurveTo(44, -584, 40, -606, 34, -618); c.quadraticCurveTo(0, -606, -34, -618); c.closePath(); fill(c, col);
+    c.strokeStyle = sk; c.lineWidth = 3; [[-22, -398, -34, -238], [6, -398, 4, -234], [32, -398, 44, -236]].forEach(([x0, y0, x1, y1]) => { c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke() });   // складки
+    c.fillStyle = acc; c.beginPath(); c.moveTo(-47, -416); c.lineTo(53, -416); c.lineTo(52, -398); c.lineTo(-46, -398); c.closePath(); c.fill();   // пояс
+    c.beginPath(); c.ellipse(-50, -414, 16, 9, -.5, 0, TAU); c.ellipse(-50, -398, 16, 9, .5, 0, TAU); fill(c, acc); PL(c, [-50, -404, -60, -350, -52, -352], acc); PL(c, [-48, -404, -40, -356, -34, -360], acc);   // бант
     rr(c, -12, -664, 24, 52, 8); fill(c, col);   // шея
-    circ(c, 6, -690, 36, col);   // голова
-    c.beginPath(); c.moveTo(-36, -690); c.bezierCurveTo(-38, -740, -10, -762, 14, -760); c.bezierCurveTo(40, -758, 52, -734, 50, -700); c.quadraticCurveTo(54, -690, 62, -686); c.lineTo(58, -676); c.quadraticCurveTo(30, -684, 4, -684); c.quadraticCurveTo(-24, -682, -40, -668); c.closePath(); fill(c, shd(col, .15));   // шляпка-колокол
-    c.fillStyle = C3.rose2; c.fillRect(-36, -704, 86, 7);
-    for (let i = 0; i < 9; i++) { const u = i / 8; circ(c, lp(-8, 26, u) + Math.sin(u * Math.PI) * 10, lp(-622, -520, u), 5, '#F6EBDD') }   // жемчуг
-    limb(c, [[30, -606], [70, -506], [84, -590]], [22, 16, 13], col);   // рука: локоть вниз, кисть у плеча
-    const tip = [140, -650]; cigar(c, 86, -594, tip[0], tip[1], 5, { tip: C3.red, tl: .2 });
-    const sw = Math.sin(t * 1.7) * 8; smokeLine(c, [tip[0], tip[1], tip[0] + 10 + sw, tip[1] - 50, tip[0] - 6 + sw, tip[1] - 110, tip[0] + 14 - sw, tip[1] - 170, tip[0] + 2, tip[1] - 230], 5, '#F6EBDD', .8);
-    SL(c, [-40, -616, -48, -520, -52, -380, -72, -186], rim, 4); SL(c, [-34, -700, -26, -748, 10, -760], rim, 3);
+    circ(c, 6, -690, 36, col); PL(c, [36, -708, 50, -689, 40, -682], col);   // голова, нос
+    c.beginPath(); c.ellipse(38, -672, 4.5, 2.8, -.2, 0, TAU); fill(c, C3.red);   // губы
+    c.beginPath(); c.moveTo(-36, -700); c.quadraticCurveTo(-42, -664, -24, -652); c.quadraticCurveTo(-10, -662, -8, -676); c.lineTo(-14, -700); c.closePath(); fill(c, sk);   // каре
+    c.beginPath(); c.moveTo(-36, -690); c.bezierCurveTo(-38, -740, -10, -762, 14, -760); c.bezierCurveTo(40, -758, 52, -734, 50, -700); c.quadraticCurveTo(54, -690, 62, -686); c.lineTo(58, -676); c.quadraticCurveTo(30, -684, 4, -684); c.quadraticCurveTo(-24, -682, -40, -668); c.closePath(); fill(c, shd(col, .12));   // шляпка-колокол
+    c.fillStyle = acc; c.fillRect(-36, -704, 86, 7);
+    for (let i = 0; i < 11; i++) { const u = i / 10; circ(c, lp(-6, 30, u) + Math.sin(u * Math.PI) * 14, lp(-622, -500, u), 4.6, '#F6EBDD') }   // длинные бусы
+    const tip = [150, -636]; cig3(c, 76, -574, tip[0], tip[1], 4.6, { tip: C3.red, tl: .2, ring: C3.gold, em: .85 });   // мундштук к лицу, огонёк наружу
+    limb(c, [[30, -600], [68, -506], [98, -593]], [19, 15, 12], col); circ(c, 99, -594, 9, col); PL(c, [94, -602, 108, -606, 104, -596], col);   // рука, пальцы держат сигарету
+    const sw = Math.sin(t * 1.7) * 9; smokeLine(c, [tip[0] + 3, tip[1] - 4, tip[0] + 12 + sw, tip[1] - 70, tip[0] - 4 + sw, tip[1] - 150, tip[0] + 18 - sw, tip[1] - 240, tip[0] + 4, tip[1] - 330], 5.5, '#F6EBDD', .85);
+    SL(c, [-34, -616, -44, -560, -46, -470, -46, -404, -72, -234], rim, 4); SL(c, [-34, -700, -26, -748, 10, -760], rim, 3); SL(c, [-16, -236, -18, -150, -13, -32], rgba(rim, .55), 2.5);
     c.restore();
   }
   function fanArt(c, x, y, R, n = 7) {   // золотой веер ар-деко
@@ -651,7 +721,7 @@
       c.save(); c.translate(x, top); c.scale(1, cb); c.translate(-x, -top);   // наклон: длина сжимается, торец становится кругом
       const tube = mixc('#D9A441', C3.white, m), col = mixc('#B98A2E', '#EDE7DC', m);
       rasterPoly(c, [x + W / 2, y + 30, x + W / 2 + 160, y + 150, x + W / 2 + 160, y + bodyL + 60, x + W / 2, y + bodyL], 'rgba(90,30,40,.3)', 9, 2.4);
-      rr(c, x - W / 2, y, W, bodyL, lp(10, 22, m)); fill(c, tube); c.fillStyle = shd(tube, .22); c.fillRect(x + W * .22, y, W * .28, bodyL); c.fillStyle = 'rgba(255,255,255,.4)'; c.fillRect(x - W * .38, y + 20, W * .08, bodyL - 40);
+      rr(c, x - W / 2, y, W, bodyL, lp(10, 22, m)); fill(c, tube); c.fillStyle = shd(tube, lp(.22, .1, m)); c.fillRect(x + W * .22, y, W * .28, bodyL); c.fillStyle = 'rgba(255,255,255,.4)'; c.fillRect(x - W * .38, y + 20, W * .08, bodyL - 40);
       if (m < 1) A(c, 1 - m, () => { rr(c, x - LIP.w / 2 - 14, y - 22, LIP.w + 28, 44, 10); fill(c, col); c.fillStyle = shd(col, .2); c.fillRect(x + LIP.w * .2, y - 22, LIP.w * .34, 44);
         for (let i = 0; i < 4; i++) c.fillRect(x - LIP.w / 2 - 10, y + 70 + i * 26, LIP.w + 20, 5) });
       const tipH = lp(ext + 6, 170, m);   // стержень помады → красный кончик сигареты
@@ -660,10 +730,13 @@
       c.save(); c.clip(); c.fillStyle = C3.red; c.fillRect(x - bw / 2, top - 10, bw, Math.max(tipH, ext + 20) + 20);
       if (m > 0) { c.fillStyle = C3.white; c.fillRect(x - bw / 2, top + tipH, bw, bodyL + 400) }
       c.fillStyle = C3.redD; c.fillRect(x + bw * .22, top - 10, bw * .3, tipH + 10); c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(x - bw * .36, top + slant + 8, bw * .08, tipH - slant - 12); c.restore();
-      if (rib > 0) {   // ободок — чистой лентой: обвивает кончик слева направо, без следа губ
-        const ry = top + tipH - 14, e = 16; c.save(); c.beginPath(); c.rect(x - bw / 2 - 4, ry - e - 10, (bw + 8) * rib, e * 2 + 30); c.clip();
-        c.beginPath(); c.ellipse(x, ry + 8, bw / 2 + 3, e, 0, 0, Math.PI); c.lineTo(x - bw / 2 - 3, ry - 10); c.ellipse(x, ry - 10, bw / 2 + 3, e, 0, Math.PI, 0, true); c.closePath(); fill(c, C3.redD);
-        c.beginPath(); c.ellipse(x, ry - 4, bw / 2 + 3, e, 0, .15, Math.PI - .15); c.strokeStyle = 'rgba(255,255,255,.45)'; c.lineWidth = 3; c.stroke(); c.restore();
+      if (m > .3) A(c, at(m, .3, .8), () => {   // v20.2: бумага сигареты — шов и надпись Marlboro вдоль, у мундштука
+        c.fillStyle = 'rgba(60,30,40,.09)'; c.fillRect(x - bw * .3, top + tipH + 12, 3, bodyL);
+        c.save(); c.translate(x - bw * .04, top + tipH + 64); c.rotate(Math.PI / 2); tx(c, 'Marlboro', 0, 0, { f: 'P', w: 700, st: 'italic', s: 46, c: 'rgba(176,18,44,.85)', al: 'left' }); c.restore() });
+      if (rib > 0) {   // v20.2: тонкое золотое кольцо между красным мундштуком и бумагой (обвивает слева направо) — сигарета, а не маркер
+        const ry = top + tipH, e = 10, hh = 10; c.save(); c.beginPath(); c.rect(x - bw / 2 - 4, ry - e - hh - 8, (bw + 8) * rib, 2 * e + hh + 20); c.clip();
+        c.beginPath(); c.ellipse(x, ry + hh / 2, bw / 2 + 2, e, 0, 0, Math.PI); c.lineTo(x - bw / 2 - 2, ry - hh / 2); c.ellipse(x, ry - hh / 2, bw / 2 + 2, e, 0, Math.PI, 0, true); c.closePath(); fill(c, C3.gold);
+        c.beginPath(); c.ellipse(x, ry - hh / 2 + 2, bw / 2 + 2, e, 0, .2, Math.PI - .2); c.strokeStyle = 'rgba(255,240,200,.75)'; c.lineWidth = 2.5; c.stroke(); c.restore();
       }
       c.restore();
     }
@@ -686,7 +759,7 @@
   function w2Shot(c, t) { const q = camObj(camAt(K2, t)); layer(c, q, 1, cc => w2World(cc, t)) }
   // ================= мир C (фразы 3–6): дом в разрезе. Внизу — «рынок»: круг рынка на стене серых пачек; наверху — лаборатория с мышью и лавка 1950-х;
   // над крышей — ночной Чикаго. Мир C вложен в торец сигареты мира 2: круг рынка = красный торец (камера ныряет в него).
-  let TC = null, KC = null, NC2 = null;
+  let TC = null, KC = null, NC2 = null, NCH = null;
   const MK = { x: 540, y: 860, R: 400 }, SLIT = .045;   // круг рынка; щель «Мальборо» — 2,6° (0,25 % — это 0,9°, тоньше не видно)
   const SLAB = [-420, -300], TOPY = -900, ROOF = [-2520, -2400], WALLX = [1480, 1560], SHOPX = 3900;
   const GRAYS = ['#5B5866', '#6C6977', '#4D4A57', '#7A7784'];
@@ -703,8 +776,11 @@
       KY(a.spas + .12, 552, 330, 1.22), KY(a.strah + .05, 470, -930, 1.12), KY(a.nam + .1, 430, -1060, 1.42), KY(a.smol + .2, 425, -1080, 1.55), KY(a.op + .25, 420, -1086, 1.64),
       KY(a.amer + .6, 780, -1080, .92), KY(a.men + .15, 960, -1100, .8), KY(a.bros + .45, 1650, -1060, .72), KY(a.filt + .35, 2350, -1010, .7), KY(a.muzh + .45, 2700, -1020, .74),
       KY(a.nezh - .45, 3010, -1080, 1.12), KY(a.nezh + .35, 3040, -1110, 1.32), KY(a.fil + .35, 3170, -1090, 1.14), KY(a.zhest + .05, 3200, -1080, 1.24),
-      KY(a.otkr + .05, 3205, -1205, 1.72), KY(a.shch + .28, 3200, -1170, 1.42), KY(a.vidu, 3130, -1130, .94), KY(a.chik + .35, 3200, -1850, .8), KY(a.rekl + .35, 3240, -2950, .62),
-      KY(a.leo + .05, 3420, -3260, .6), KY(a.bern - .02, BW.x + BW.wx, BW.y + BW.wy - 30, 1.05), KY(a.end - .32, BW.x + BW.wx, BW.y + BW.wy, 4.4), KY(a.end, BW.x + BW.wx, BW.y + BW.wy, 14.6)];   // нырок в окно — за 0,8 с, без рывка   // окно 200×140 закрывает кадр: дальше — мир 7
+      KY(a.otkr + .05, 3205, -1205, 1.72), KY(a.shch + .28, 3200, -1170, 1.42), KY(a.vidu, 3130, -1130, .94)];
+    // v20.2: сигареты растут из пачки и расходятся; камера ныряет в пробку самой высокой — это золотая корона небоскрёба в ночном Чикаго (мир CH)
+    a.sw = a.rekl - .05; NCH = { x: PK.x + PK.w / 2, y: PK.y - PK.h - 400 - (TWR[TWT].top - 960) * TWM, m: TWM };
+    const tg = twC(TWT), cy = tg.top + 22;
+    KC.push(KY(a.chik + .1, 3205, -1430, 1.9), KY(a.sw - .22, tg.x, cy + 18, 7), KY(a.sw, tg.x, cy, 46));
     // круг рынка = торец сигареты мира 2: радиус торца — LIP.bw / 2
     const m = (LIP.bw / 2) / MK.R; NC2 = { x: LIP.x, y: T2.top + (960 - MK.y) * m, m };
   }
@@ -733,10 +809,9 @@
     c.save(); c.beginPath(); c.arc(x, y, R, 0, TAU); c.clip(); c.fillStyle = 'rgba(0,0,0,.16)'; c.fillRect(x + R * .5, y - R, R, R * 2); c.restore();
     ring(c, x, y, R, 'rgba(255,255,255,.55)', 4);
     const kc = eio(at(t, a.proc - .25, a.proc + .35)), em = 1 - .85 * eio(at(t, a.umer - .2, a.umer + .6));   // щель → сигарета: лежит от центра к краю, огонёк у края
-    if (kc > 0) { const w = lp(R * Math.tan(sl / 2) * 2, 26, kc); c.save(); c.translate(x, y); c.rotate(top);
-      rr(c, 0, -w / 2, R - 6, w, w / 2); fill(c, mixc(C3.red, C3.white, kc)); c.fillStyle = C3.red; c.fillRect(0, -w / 2, 60 * kc, w);
-      c.fillStyle = mixc(C3.red, '#3a2a26', kc); c.fillRect(R - 26, -w / 2, 20, w); const er = 13 * kc; circ(c, R - 12, 0, er, mixc('#4a3a34', C3.ember, em));
-      if (em > .3) glow(c, R - 12, 0, 34, C3.ember, .45 * kc * em); c.restore() }
+    if (kc > 0) { const w = lp(R * Math.tan(sl / 2) * 2, 30, kc); c.save(); c.translate(x, y); c.rotate(top);   // v20.2: щель → сигарета: бумага без красного у центра, у края — пепел и огонёк полосой (не градусник)
+      cig3(c, 4, 0, R - 4, 0, w / 2, { em: em * kc, ek: kc, paper: mixc(C3.red, C3.white, kc) });
+      if (em > .3) circ(c, R - 16, 0, 26, rgba('#FF9A4A', .16 * kc * em)); c.restore() }
     const kl = eo(at(t, a.gor + .3, a.gor + .9)) * (1 - eio(at(t, a.proc - .1, a.proc + .4)));   // лупа над щелью
     if (kl > 0) { const lx = x + 12, ly = y - R + 120 - (1 - kl) * 260, LR = 112; c.save(); c.globalAlpha *= Math.min(1, kl * 2);
       c.save(); c.translate(lx + 92, ly + 92); c.rotate(.78); rr(c, -14, 0, 28, 190, 10); fill(c, '#3A2A1E'); c.restore();
@@ -746,18 +821,6 @@
       c.fillStyle = 'rgba(255,255,255,.18)'; poly(c, [lx - LR, ly + 20, lx - 20, ly - LR, lx + 10, ly - LR, lx - LR, ly + 50]); c.fill(); c.restore();
       ring(c, lx, ly, LR + 6, '#8A6A2A', 4); c.restore() }
   }
-  // дым: тонкая струйка от огонька; на «Спас» выше перекрытия становится хвостом мыши
-  const TAILP = [[540, 470], [552, 330], [528, 190], [556, 40], [536, -110], [548, -250], [560, -420], [590, -560], [612, -700], [600, -820], [640, -930], [690, -985]];
-  function tailOrSmoke(c, t, q) {
-    const a = TC, rise = eo(at(t, a.umer - .1, a.umer + .9)); if (rise <= 0) return;
-    const n = TAILP.length, top = lp(470, -985, rise), pts = [];
-    for (let i = 0; i < n; i++) { const p = TAILP[i]; if (p[1] < top) break; const wob = Math.sin(t * 2.2 + i * .9) * 10 * (1 - at(t, a.spas - .2, a.spas + .5)); pts.push(p[0] + wob, p[1]) }
-    if (pts.length < 4) return;
-    const kt = eio(at(t, a.spas - .15, a.spas + .55));   // хвост: выше пола лаборатории дым розовеет и толстеет
-    for (let i = 2; i < pts.length; i += 2) { const y0 = pts[i - 1], y1 = pts[i + 1], up = y1 < SLAB[0] ? kt : 0, u = i / pts.length;
-      c.strokeStyle = up > 0 ? mixc('#C7C2CF', '#E9A9B4', up) : rgba('#C7C2CF', .7 * (1 - u * .4)); c.lineWidth = up > 0 ? lp(7, 16 - u * 4, up) : 7 + u * 6; c.lineCap = 'round';
-      c.beginPath(); c.moveTo(pts[i - 2], y0); c.lineTo(pts[i], y1); c.stroke() }
-  }
   // ---------- лаборатория ----------
   function labRoom(c, t, q) {
     const v = viewRect(q); if (v.y0 > SLAB[0] + 10 || v.y1 < ROOF[1] - 10) return;
@@ -766,35 +829,66 @@
     c.strokeStyle = 'rgba(126,214,210,.08)'; c.lineWidth = 2; c.beginPath(); for (let gx = x0; gx < x1; gx += 80) { c.moveTo(gx, ROOF[1]); c.lineTo(gx, SLAB[0]) } for (let gy = ROOF[1]; gy < SLAB[0]; gy += 80) { c.moveTo(x0, gy); c.lineTo(x1, gy) } c.stroke();
     poly(c, [180, ROOF[1], 300, ROOF[1], 760, SLAB[0], 220, SLAB[0]]); fill(c, 'rgba(190,240,236,.07)'); poly(c, [900, ROOF[1], 980, ROOF[1], 1400, SLAB[0], 1000, SLAB[0]]); fill(c, 'rgba(190,240,236,.05)');   // косые лучи холодной лампы
     c.fillStyle = '#0E2B2E'; rr(c, 200, ROOF[1], 120, 40, 8); c.fill(); rr(c, 900, ROOF[1], 120, 40, 8); c.fill(); c.fillStyle = '#CFF6F2'; c.fillRect(214, ROOF[1] + 34, 92, 10); c.fillRect(914, ROOF[1] + 34, 92, 10);
-    [[-1300, -1700], [-1300, -1350], [-760, -1700], [-760, -1350], [1000, -1760], [1000, -1460]].forEach(([sx, sy], i) => {   // полки с колбами
+    [[-1300, -1700], [-1300, -1350], [-760, -1700], [-760, -1350], [80, -1760]].forEach(([sx, sy], i) => {   // полки с колбами
       c.fillStyle = '#0B2427'; c.fillRect(sx, sy, 420, 16);
       for (let k = 0; k < 4; k++) { const fx = sx + 40 + k * 100, h = 70 + H1(i * 4 + k) * 70, col = ['#3FB6A8', '#7ED6CF', '#E7A9B6', '#F2B84B'][(i + k) % 4];
         c.beginPath(); c.moveTo(fx, sy); c.lineTo(fx, sy - h * .55); c.lineTo(fx + 12, sy - h * .55); c.lineTo(fx + 12, sy - h); c.lineTo(fx + 30, sy - h); c.lineTo(fx + 30, sy - h * .55); c.lineTo(fx + 42, sy - h * .55); c.lineTo(fx + 42, sy); c.closePath(); fill(c, rgba(col, .75)); lnB(c, 2.5, 'rgba(230,250,248,.5)') } });
     c.fillStyle = '#0B2427'; c.fillRect(WALLX[0], ROOF[1], WALLX[1] - WALLX[0], SLAB[0] - ROOF[1]);   // стена между лабораторией и лавкой
   }
   function table(c, x0, x1) { c.fillStyle = '#5A3A26'; c.fillRect(x0, TOPY, x1 - x0, 34); c.fillStyle = '#7A5135'; c.fillRect(x0, TOPY, x1 - x0, 8); c.fillStyle = '#3E2718'; for (let lx = x0 + 40; lx < x1; lx += 520) c.fillRect(lx, TOPY + 34, 26, SLAB[0] - TOPY - 34) }
-  // мышь в профиль (смотрит влево): тело, голова, ухо, глаз; выбритый квадрат на спине; смола, пятно, кольцо тревоги
-  const MOUSE = { x: 470, y: TOPY - 4 };
+  // v20.2: мышь как у Боба — контур кривыми (спина, круп, острая мордочка), ушко-овал, глаз, усы, лапки, короткий хвост; смотрит влево, лапки — y 0
+  const MOUSE = { x: 470, y: TOPY - 2 };
+  const MT = [[330, -4], [[290, -8], [240, -46], [184, -40]]];   // хвост: кончик → у крупа
+  const MB = [[184, -40], [[200, -90], [180, -140], [130, -160]], [[70, -182], [-20, -180], [-80, -160]], [[-130, -142], [-170, -128], [-205, -112]], [[-232, -98], [-252, -84], [-266, -70]],
+    [[-252, -56], [-228, -44], [-200, -38]], [[-150, -16], [-60, -8], [20, -8]], [[100, -8], [170, -14], [184, -40]]];
+  function bez(c, P) { c.moveTo(P[0][0], P[0][1]); for (let i = 1; i < P.length; i++) c.bezierCurveTo(P[i][0][0], P[i][0][1], P[i][1][0], P[i][1][1], P[i][2][0], P[i][2][1]) }
+  function flatB(P, n = 14) { const out = [[P[0][0], P[0][1]]]; for (let i = 1; i < P.length; i++) { const p0 = out[out.length - 1], [c1, c2, p3] = P[i];
+      for (let k = 1; k <= n; k++) { const u = k / n, v = 1 - u; out.push([0, 1].map(j => v * v * v * p0[j] + 3 * v * v * u * c1[j] + 3 * v * u * u * c2[j] + u * u * u * p3[j])) } } return out }
+  let MPATH = null;   // путь, по которому дым обводит мышь: хвост от кончика, потом контур тела (длины по дуге)
+  function mPath() { if (MPATH) return MPATH; const P = flatB(MT).concat(flatB(MB).slice(1)); let L = 0; P.forEach((p, i) => { if (i) L += Math.hypot(p[0] - P[i - 1][0], p[1] - P[i - 1][1]); p[2] = L }); return (MPATH = { P, L }) }
+  function mouseRun(t) { const a = TC; return ei(at(t, a.amer - .15, a.amer + .85)) }
   function mouse(c, t) {
-    const a = TC, { x, y } = MOUSE, br = Math.sin(t * 3.1) * 3;
-    c.save(); c.translate(x, y);
-    rasterPoly(c, [-150, 0, 190, 0, 240, 60, -110, 60], 'rgba(5,20,22,.4)', 9, 2.3);
-    c.beginPath(); c.ellipse(20, -96 - br * .3, 190, 96 + br * .2, 0, 0, TAU); fill(c, '#F4F1EA');
-    c.beginPath(); c.moveTo(-140, -110); c.quadraticCurveTo(-230, -110, -268, -64); c.quadraticCurveTo(-232, -30, -150, -40); c.closePath(); fill(c, '#F4F1EA');
-    circ(c, -270, -64, 9, '#E9A9B4'); circ(c, -196, -86, 9, '#1A1214');
-    c.beginPath(); c.ellipse(-150, -170, 46, 58, -.3, 0, TAU); fill(c, '#F4F1EA'); c.beginPath(); c.ellipse(-150, -168, 28, 38, -.3, 0, TAU); fill(c, '#E9A9B4');
-    c.save(); c.beginPath(); c.ellipse(20, -96, 190, 96, 0, 0, TAU); c.clip(); c.fillStyle = shd('#F4F1EA', .22); c.fillRect(110, -200, 140, 220); c.restore();
-    [[-90, 0], [-20, 0], [80, 0], [150, 0]].forEach(([fx]) => { rr(c, fx - 14, -14, 34, 16, 8); fill(c, '#E9A9B4') });
-    const SQ = { x: -10, y: -186, w: 116, h: 64 }; rr(c, SQ.x, SQ.y, SQ.w, SQ.h, 8); fill(c, '#EDB5BE');
-    const pt = at(t, a.nam + .25, a.smol + .35); if (pt > 0) { c.save(); rr(c, SQ.x, SQ.y, SQ.w, SQ.h, 8); c.clip(); c.fillStyle = '#16100E';
-      for (let s = 0; s < 4; s++) { const k = cl(pt * 4 - s); if (k <= 0) break; c.fillRect(SQ.x - 4, SQ.y + s * SQ.h / 4 - 2, (SQ.w + 8) * k, SQ.h / 4 + 4) } c.restore() }
-    const sp = eo(at(t, a.vyr - .1, a.op + .2)); if (sp > 0) { c.beginPath(); c.ellipse(SQ.x + 64, SQ.y + 26, 36 * sp, 20 * sp, 0, 0, TAU); fill(c, '#3A0E14'); c.beginPath(); c.ellipse(SQ.x + 56, SQ.y + 20, 14 * sp, 7 * sp, 0, 0, TAU); fill(c, '#6A1A22') }
-    for (let k = 0; k < 2; k++) { const u = at(t, a.op + k * .45, a.op + .7 + k * .45); if (u <= 0 || u >= 1) continue; ring(c, SQ.x + 64, SQ.y + 26, 50 + 110 * eo(u), rgba('#E23A4E', .9 * (1 - u)), 7) }
+    const a = TC, f = eio(at(t, a.uch - .38, a.uch + .18)); if (f <= 0) return;   // мышь заливается белым от крупа к мордочке, когда дым обвёл контур
+    const run = mouseRun(t), { y } = MOUSE, x = MOUSE.x - 1250 * run, hop = run > 0 && run < 1 ? Math.abs(Math.sin(t * 26)) * 14 : 0, br = Math.sin(t * 3.1) * 2.5, base = '#F4F1EA', sk = shd(base, .24);
+    c.save(); c.translate(x, y - hop);
+    if (run < .02) rasterPoly(c, [-190, 0, 200, 0, 250, 54, -140, 54], 'rgba(5,20,22,.38)', 9, 2.3);
+    c.save(); c.beginPath(); c.rect(lp(360, -360, f), -260, 900, 300); c.clip();
+    c.beginPath(); bez(c, MT); c.strokeStyle = '#E9A9B4'; c.lineWidth = 7; c.lineCap = 'round'; c.stroke();   // хвост
+    const lg = Math.sin(t * 26) * 14 * (run > 0 && run < 1 ? 1 : 0);
+    rr(c, -168 + lg, -10, 34, 12, 6); fill(c, '#E9A9B4'); rr(c, 86 - lg, -10, 44, 12, 6); fill(c, '#E9A9B4');   // лапки
+    c.save(); c.scale(1, 1 + br * .004); c.beginPath(); bez(c, MB); c.closePath(); fill(c, base);
+    c.save(); c.beginPath(); bez(c, MB); c.closePath(); c.clip(); c.fillStyle = sk; c.fillRect(120, -200, 140, 220); c.beginPath(); c.ellipse(-30, -176, 110, 14, 0, 0, TAU); fill(c, 'rgba(255,255,255,.55)');
+    c.beginPath(); c.moveTo(96, -14); c.bezierCurveTo(150, -36, 168, -98, 126, -142); lnB(c, 4, sk); c.restore(); c.restore();   // тень крупа, блик спины, линия бедра
+    c.beginPath(); c.ellipse(-150, -150, 22, 31, -.35, 0, TAU); fill(c, base); c.beginPath(); c.ellipse(-150, -148, 12, 19, -.35, 0, TAU); fill(c, '#E9A9B4');   // ушко-овал
+    circ(c, -206, -92, 6.5, '#1A1214'); circ(c, -208, -94.5, 2, '#fff'); circ(c, -266, -70, 6, '#E9A9B4');   // глаз, нос
+    c.strokeStyle = 'rgba(230,236,240,.85)'; c.lineWidth = 2; [[-318, -96], [-326, -74], [-316, -52]].forEach(([wx, wy]) => { c.beginPath(); c.moveTo(-250, -74); c.quadraticCurveTo((wx - 250) / 2 - 125, (wy - 74) / 2 - 37, wx, wy); c.stroke() });   // усы
+    const PT = { x: 30, y: -160, rx: 60, ry: 15 }; c.beginPath(); c.ellipse(PT.x, PT.y, PT.rx, PT.ry, -.04, 0, TAU); fill(c, '#EDB5BE');   // выбритое пятно
+    const T0 = a.nam + .4, T1 = Math.min(t, a.smol + .35); if (T1 > T0) { c.save(); c.beginPath(); c.ellipse(PT.x, PT.y, PT.rx, PT.ry, -.04, 0, TAU); c.clip();   // смола — мазками по следу кисти
+      c.beginPath(); let on = false; for (let k = 0; k <= 48; k++) { const tk = lp(T0, T1, k / 48), [bx, by] = brushPos(tk); if (by < -1092) { on = false; continue } const px = bx - MOUSE.x, py = PT.y + Math.sin(k * 1.7) * 3; if (!on) { c.moveTo(px, py); on = true } else c.lineTo(px, py) }
+      c.strokeStyle = '#16100E'; c.lineWidth = 22; c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke(); c.restore() }
+    const sp = eo(at(t, a.vyr - .1, a.op + .2)); if (sp > 0) { c.beginPath(); c.ellipse(PT.x + 12, PT.y - 6 - 8 * sp, 26 * sp, 17 * sp, 0, 0, TAU); fill(c, '#5A1018'); c.beginPath(); c.ellipse(PT.x + 4, PT.y - 12 - 8 * sp, 10 * sp, 6 * sp, -.3, 0, TAU); fill(c, '#8E2C36') }   // опухоль — бугорок
     c.restore();
+    if (run < .05) for (let k = 0; k < 2; k++) { const u = at(t, a.op + k * .45, a.op + .7 + k * .45); if (u <= 0 || u >= 1) continue; ring(c, 42, -176, 46 + 110 * eo(u), rgba('#E23A4E', .9 * (1 - u)), 7) }
+    c.restore();
+  }
+  // v20.2: дым от огонька — гладкая лента вверх (поверх перекрытия, без решётки); на «страх» обводит мышь от кончика хвоста; низ отрывается и тает
+  const SMK = [[540, 474], [552, 300], [530, 120], [556, -60], [600, -250], [664, -430], [738, -620], [788, -780], [MOUSE.x + 330, MOUSE.y - 4]];
+  let SMKP = null;
+  function smokeMouse(c, t) {
+    const a = TC, rise = eio(at(t, a.umer + .05, a.strah - .12)); if (rise <= 0) return;
+    if (!SMKP) { SMKP = smoothPts(SMK.flat(), 10); let L = 0; SMKP.forEach((p, i) => { if (i) L += Math.hypot(p[0] - SMKP[i - 1][0], p[1] - SMKP[i - 1][1]); p[2] = L }); SMKP.L = L }
+    const lo = eio(at(t, a.strah + .05, a.uch + .3)), u0 = lo, u1 = rise, f = eio(at(t, a.uch - .38, a.uch + .18)), wob = 1 - at(t, a.strah - .3, a.strah + .3);
+    if (u1 - u0 > .005) { const S = SMKP.filter(p => p[2] >= u0 * SMKP.L && p[2] <= u1 * SMKP.L).map((p, i) => [p[0] + Math.sin(t * 2.2 + p[1] * .01) * 14 * wob * (1 - p[2] / SMKP.L), p[1]]);
+      if (S.length > 1) { c.save(); c.globalAlpha *= 1 - .7 * lo; ribbon(c, S, u => 14 + 10 * u, 'rgba(226,222,232,.22)'); ribbon(c, S, u => 6 + 3 * u, 'rgba(236,232,240,.8)'); c.restore() } }
+    const tr = eio(at(t, a.strah - .12, a.uch - .2)); if (tr <= 0 || f >= 1) return;   // обвод контура
+    const { P, L } = mPath(), d = tr * L, S = []; for (const p of P) { if (p[2] > d) break; S.push([MOUSE.x + p[0], MOUSE.y + p[1]]) }
+    if (S.length < 2) return; c.save(); c.globalAlpha *= 1 - f; c.lineCap = 'round'; c.lineJoin = 'round';
+    c.beginPath(); S.forEach((p, i) => i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])); c.strokeStyle = 'rgba(226,222,232,.3)'; c.lineWidth = 22; c.stroke(); c.strokeStyle = 'rgba(244,240,248,.95)'; c.lineWidth = 8; c.stroke();
+    const h = S[S.length - 1]; if (tr < 1) { circ(c, h[0], h[1], 18, 'rgba(236,232,240,.35)'); circ(c, h[0], h[1], 9, 'rgba(250,248,252,.9)') } c.restore();
   }
   // кисть в стальном зажиме (без рук): штатив на столе, зажим едет сам
   function brushPos(t) {
-    const a = TC, P = [[a.uch - .4, 760, -1240], [a.nam - .15, 900, -1005], [a.nam + .2, 900, -1060], [a.nam + .45, 560, -1135], [a.nam + .75, 420, -1130], [a.nam + 1.05, 560, -1120], [a.smol, 420, -1112], [a.smol + .3, 560, -1100], [a.smol + .6, 560, -1210],
+    const a = TC, P = [[a.uch - .4, 760, -1240], [a.nam - .15, 900, -1005], [a.nam + .2, 900, -1060], [a.nam + .45, 552, -1074], [a.nam + .75, 452, -1070], [a.nam + 1.05, 552, -1068], [a.smol, 452, -1066], [a.smol + .3, 548, -1064], [a.smol + .6, 560, -1210],
       [a.amer - .1, 590, -1180], [a.amer + .15, 600, TOPY - 8], [a.amer + 1.4, 1560, TOPY - 8], [a.amer + 1.9, 1700, -1200]];
     if (t <= P[0][0]) return [P[0][1], P[0][2]]; for (let i = 1; i < P.length; i++) if (t < P[i][0]) { const k = eio((t - P[i - 1][0]) / (P[i][0] - P[i - 1][0])); return [lp(P[i - 1][1], P[i][1], k), lp(P[i - 1][2], P[i][2], k)] }
     return [P[P.length - 1][1], P[P.length - 1][2]];
@@ -846,26 +940,40 @@
     c.fillStyle = 'rgba(255,255,255,.55)'; c.fillRect(x + w * .14, y - h * .56, w * .5, 8 * s);
   }
   const SHELF = [1900, 2040, 2180, 2320, 2460, 2600, 2740, 2880], OLDP = 3150;   // где встают пачки; старая мягкая пачка Mild as May — с краю
-  // толпа белых фигурок: бегут к фильтрам; мужчины тормозят и разворачиваются
+  // толпа белых фигурок: бегут к фильтрам; мужчины тормозят и отходят; v20.2: после «дарит» мужчины идут к новой пачке и подпрыгивают на щелчок
+  const MEN = [0, 2, 3, 5, 6, 8, 9, 11];
   function crowd(c, t) {
     const a = TC, run = at(t, a.bros - .2, a.bros + 1.6); if (run <= 0) return;
     for (let i = 0; i < 12; i++) { const m = i % 3 !== 1, x0 = SHOPX + 500 + i * 120, xt = 1950 + (i % 8) * 120 + (m ? 40 : 0), turn = m ? eo(at(t, a.muzh - .05 + (i % 3) * .08, a.muzh + .35 + (i % 3) * .08)) : 0;
-      const back = m ? eio(at(t, a.stesn, a.nezh + .2)) * 340 : 0, x = lp(x0, xt + (m ? 260 : 0), eo(run)) + back, bob = Math.abs(Math.sin(t * 9 + i)) * 12 * (1 - at(t, a.bros + 1.2, a.bros + 1.7));
-      const look = m ? eio(at(t, a.shch - .05, a.shch + .4)) : 0, dir = m ? (turn > .5 ? (look > .5 ? -1 : 1) : -1) : -1;
-      fig(c, x, SLAB[0] - 200 + 6 - bob, 1.55, { m, hat: m && i % 2 === 0, dir, col: '#F4F1EA', hc: C3.rose2 }) }
+      const back = m ? eio(at(t, a.stesn, a.nezh + .2)) * 340 : 0, xb = lp(x0, xt + (m ? 260 : 0), eo(run)) + back;
+      const g0 = a.dar + .05 + (i % 4) * .14, go = m ? eio(at(t, g0, g0 + 1.9)) : 0, mk = MEN.indexOf(i), xg = mk < 4 ? 2700 + mk * 78 : 3340 + (mk - 4) * 78, x = lp(xb, xg, go);   // встают по бокам пачки — её видно
+      const walking = run < 1 || (go > 0 && go < 1), bob = walking ? Math.abs(Math.sin(t * 9 + i)) * 12 : 0;
+      const hop = m ? Math.sin(Math.PI * at(t, a.shch + (i % 3) * .05, a.shch + .38 + (i % 3) * .05)) * 34 : 0;
+      const dir = !m ? -1 : go > 0 ? (go < 1 ? Math.sign(xg - xb) || 1 : (x < PK.x + PK.w / 2 ? 1 : -1)) : (turn > .5 ? 1 : -1);
+      fig(c, x, SLAB[0] - 200 + 6 - bob - hop, 1.55, { m, hat: m && i % 2 === 0, dir, col: '#F4F1EA', hc: C3.rose2 }) }
   }
   function shelfPacks(c, t) {
     const a = TC, kp = eio(at(t, a.bros - .1, a.bros + .55)), sl = eio(at(t, a.bros + .2, a.bros + 1.3)); if (kp <= 0) return;
     SHELF.forEach((tx0, i) => { if (i >= BARS.length) return; const x = lp(barX(i) - 46, tx0, sl); A(c, kp, () => pack5(c, x, TOPY - 12, 1, GRAYS[i % 4], { filt: true })) });
   }
-  // пудреница защёлкивается вокруг фильтра; на «Филип» трескается
+  // v20.2: пудреница в 3/4: круглый корпус с бортиком, внутри пудра и пуховка, крышка на петле сзади — внутри зеркало; на «неженок» защёлкивается,
+  // на «Филип» трескается и улетает вниз из кадра (не лежит на полу)
   function compact(c, t) {
-    const a = TC, k = eio(at(t, a.schit - .2, a.nezh + .05)), cr = at(t, a.fil - .15, a.fil + .25); if (k <= 0) return;
-    const x = 2880 + 46, y = TOPY - 12 - 136 - 40, R = 62, op = 1 - eio(at(t, a.nezh - .25, a.nezh + .02)), fall = eio(at(t, a.fil + .15, a.fil + .7));
-    c.save(); c.translate(x, y + fall * 600); c.rotate(fall * .8); c.globalAlpha *= Math.min(1, k * 2);
-    c.save(); c.translate(0, 0); c.rotate(-op * 1.9); c.beginPath(); c.arc(0, 0, R, Math.PI, TAU); c.closePath(); fill(c, '#E7A9B6'); c.beginPath(); c.arc(0, -4, R * .7, Math.PI, TAU); c.closePath(); fill(c, '#DDEFF4'); c.restore();
-    c.beginPath(); c.arc(0, 0, R, 0, Math.PI); c.closePath(); fill(c, '#D88A9C'); c.beginPath(); c.arc(0, 0, R * .55, .2, Math.PI - .2); fill(c, '#F1C3CC'); ring(c, 0, 0, R, '#C9A24A', 4);
-    if (cr > 0) { c.beginPath(); c.moveTo(-R, 0); c.lineTo(-20, 18); c.lineTo(8, -6); c.lineTo(40, 22); c.lineTo(R, 6); lnB(c, 4 * cr, '#5a1a2a') }
+    const a = TC, k = eio(at(t, a.schit - .2, a.schit + .25)), cr = at(t, a.fil - .12, a.fil + .18), fall = ei(at(t, a.fil + .3, a.fil + .85)); if (k <= 0 || fall >= 1) return;
+    const x = 2926 - 520 * fall, y = TOPY - 12 - 136 - 40 + 1500 * fall * fall, R = 74, e = .42, th = R * .22;
+    const phi = 1.9 * (1 - eio(at(t, a.nezh - .3, a.nezh + .02))), ry = R * (e * Math.cos(phi) - .91 * Math.sin(phi)), cy = -R * (.91 * Math.sin(phi) + e - e * Math.cos(phi));
+    c.save(); c.translate(x, y); c.rotate(-fall * 2.4); c.scale(k, k);
+    if (ry < 0) {   // крышка открыта: видно зеркало
+      c.beginPath(); c.ellipse(0, cy, R, -ry, 0, 0, TAU); fill(c, '#C9A24A'); c.beginPath(); c.ellipse(0, cy, R * .86, -ry * .86, 0, 0, TAU); fill(c, '#DDEFF4');
+      c.save(); c.beginPath(); c.ellipse(0, cy, R * .86, -ry * .86, 0, 0, TAU); c.clip(); c.fillStyle = 'rgba(255,255,255,.55)'; poly(c, [-R * .5, cy + R, -R * .2, cy + R, R * .3, cy - R, 0, cy - R]); c.fill(); poly(c, [R * .05, cy + R, R * .14, cy + R, R * .64, cy - R, R * .55, cy - R]); c.fill(); c.restore() }
+    c.beginPath(); c.ellipse(0, th, R, R * e, 0, 0, TAU); fill(c, '#B9657A'); c.fillStyle = '#B9657A'; c.fillRect(-R, 0, R * 2, th);   // бортик
+    c.beginPath(); c.ellipse(0, 0, R, R * e, 0, 0, TAU); fill(c, '#C9A24A'); c.beginPath(); c.ellipse(0, 0, R * .86, R * e * .86, 0, 0, TAU); fill(c, '#F3D5C6');   // кольцо, пудра
+    c.beginPath(); c.ellipse(-R * .12, -R * .04, R * .5, R * e * .48, 0, 0, TAU); fill(c, '#FBF4EE'); c.beginPath(); c.ellipse(-R * .12, -R * .07, R * .5, R * e * .4, 0, Math.PI, TAU); fill(c, '#FFFFFF');   // пуховка
+    c.beginPath(); c.ellipse(R * .3, -R * .1, R * .12, R * .07, .4, 0, TAU); fill(c, C3.rose2);   // бантик на пуховке
+    if (ry >= 0) {   // крышка закрывается сверху
+      c.beginPath(); c.ellipse(0, cy, R, ry, 0, 0, TAU); fill(c, '#E7A9B6'); c.beginPath(); c.ellipse(0, cy, R, ry, 0, 0, TAU); lnB(c, 3, '#C9A24A');
+      c.beginPath(); c.ellipse(0, cy, R * .38, ry * .38, 0, 0, TAU); lnB(c, 3, '#C9A24A');
+      if (cr > 0) { c.save(); c.beginPath(); c.ellipse(0, cy, R, ry, 0, 0, TAU); c.clip(); c.beginPath(); c.moveTo(-R, cy - 4); c.lineTo(-24, cy + 6); c.lineTo(6, cy - 8); c.lineTo(34, cy + 8); c.lineTo(R, cy - 2); c.moveTo(6, cy - 8); c.lineTo(14, cy - R * .4); lnB(c, 4 * cr, '#5a1a2a'); c.restore() } }
     c.restore();
     const kp = at(t, a.nezh - .1, a.nezh + .3) * (1 - at(t, a.fil - .3, a.fil + .1)); if (kp > 0) tx(c, 'ДЛЯ НЕЖЕНОК', 2980, TOPY - 520, { f: 'M', w: 800, s: 70 * bo(kp), c: '#F1C3CC', a: Math.min(1, kp * 2) });
   }
@@ -877,79 +985,118 @@
     if (d > 0 && slam < 1) { c.save(); c.translate(0, -(1 - ei(d)) * 1100); mPack(c, x, top, w, h, 34, { shadow: false }); c.restore() }   // жёсткая пачка падает сверху и накрывает мягкую
     if (slam >= 1) { const u = at(t, a.fil + .45, a.fil + .85); if (u > 0 && u < 1) for (let k = 0; k < 6; k++) { const s2 = k < 3 ? -1 : 1, yy = y - 20 - (k % 3) * 40; c.beginPath(); c.moveTo(x + w / 2 + s2 * (w / 2 + 20 + 60 * u), yy); c.lineTo(x + w / 2 + s2 * (w / 2 + 70 + 120 * u), yy - 10); lnB(c, 5, rgba('#F4F1EA', 1 - u)) } }
     if (slam >= 1) {
-      const lid = eio(at(t, a.shch - .08, a.shch + .22)), seam = at(t, a.otkr - .35, a.shch - .1);
-      if (lid > 0) {   // открытая пачка: сигареты с фильтром цвета пробки
-        const ris = at(t, a.chik - .2, a.rekl + .6); c.save(); c.beginPath(); c.rect(-1e4, ROOF[1], 2e4, 1e4); c.clip();   // выше крыши — уже башни
-        CIGS.forEach((cg, i) => { const lift = 60 + cg.h * eio(cl(ris * 1.25 - i * .1)); const cx = x + w * cg.u;
-          rr(c, cx - 17, top - lift, 34, lift + 30, 6); fill(c, C3.white); c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(cx + 4, top - lift, 13, lift + 30); c.fillStyle = C3.cork; c.fillRect(cx - 17, top - lift, 34, 44);
-          c.fillStyle = 'rgba(120,70,30,.35)'; for (let s = 0; s < 3; s++) c.fillRect(cx - 17, top - lift + 8 + s * 12, 34, 3) }); c.restore() }
-      mPack(c, x, top, w, h, 34, { shc: 'rgba(8,24,22,.35)' });
+      const lid = eio(at(t, a.shch - .08, a.shch + .24)), seam = at(t, a.otkr - .35, a.shch - .1), phi = lid * 1.98, cutY = top + h * .3, L = h * .3;
+      if (lid > 0 && phi > Math.PI / 2) {   // v20.2: крышка откинулась назад на петле — за сигаретами видно её изнанку (золотая фольга)
+        const hh = L * -Math.cos(phi); PL(c, [x - 34, top + 2 - hh * .9, x, top - hh, x, top, x - 34, top + 2], '#C8B370');
+        c.fillStyle = '#F4EEDD'; c.fillRect(x, top - hh, w, hh); c.fillStyle = '#D9C27A'; c.fillRect(x + w * .08, top - hh + hh * .18, w * .84, hh * .64) }
+      if (lid > 0) { c.fillStyle = '#E6E0D2'; c.fillRect(x, top + 3, w, h * .32); c.fillStyle = 'rgba(0,0,0,.08)'; c.fillRect(x + w * .7, top + 3, w * .3, h * .32) }   // задняя стенка пачки изнутри
+      if (lid > 0) {   // открытая пачка: сигареты с фильтром цвета пробки; на «чикагского» растут и расходятся — как башни мира CH
+        const r = eio(at(t, a.chik - .3, a.sw - .06)), sp = eio(at(t, a.chik - .2, a.sw - .2)), bot = top + h * .5;
+        TWR.forEach((tw, i) => { const f = twC(i), cx = lp(x + w * (.2 + i * .2), f.x, sp), ct = lp(top + 14 - 74 * ei(lid), f.top, r);
+          rr(c, cx - 17, ct, 34, bot - ct, 6); fill(c, C3.white); c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(cx + 4, ct, 13, bot - ct); c.fillStyle = C3.cork; c.fillRect(cx - 17, ct, 34, 44);
+          c.fillStyle = 'rgba(120,70,30,.35)'; for (let s = 0; s < 3; s++) c.fillRect(cx - 17, ct + 8 + s * 12, 34, 3) }) }
+      if (lid > 0) { c.save(); c.beginPath(); c.rect(x - 60, cutY, w + 400, h + 400); c.clip(); mPack(c, x, top, w, h, 34, { shc: 'rgba(8,24,22,.35)' }); c.restore();   // корпус ниже линии крышки
+        PL(c, [x - 34, top + 6, x, cutY, x - 34, cutY + 4], C3.redD);   // бок: косой срез от петли к линии крышки
+        c.fillStyle = '#D9C27A'; c.fillRect(x + w * .05, cutY - h * .07, w * .9, h * .07 + 2); c.fillStyle = '#B89B55'; c.fillRect(x + w * .05, cutY - 3, w * .9, 5); PL(c, [x - 30, cutY - h * .06, x, cutY - h * .07, x, cutY + 2, x - 30, cutY + 4], '#B89B55');   // внутренний золотой воротник
+        if (phi < Math.PI / 2) { const k2 = Math.cos(phi); c.save(); c.translate(0, top); c.scale(1, Math.max(.001, k2)); c.translate(0, -top); c.beginPath(); c.rect(x - 60, top - 10, w + 120, L + 10); c.clip(); mPack(c, x, top, w, h, 34, { shadow: false }); c.restore() } }   // крышка уходит назад: лицевая сторона сжимается к петле
+      else mPack(c, x, top, w, h, 34, { shc: 'rgba(8,24,22,.35)' });
       if (seam > 0 && lid <= 0) { const sx = x + w * eio(seam); c.fillStyle = '#FFF6D6'; c.fillRect(x, top + h * .3, sx - x, 5); glow(c, sx, top + h * .3, 40, '#FFF1B8', .8) }
-      if (lid > 0) { c.save(); c.translate(x + w, top + h * .3); c.rotate(-lid * 2.1); PL(c, [-w, 0, 0, 0, 0, -h * .3, -w, -h * .3], C3.white); PL(c, [-w, -h * .3, 0, -h * .3, -w / 2, -h * .3 + h * .17], C3.red); c.restore() }
       for (let k = 0; k < 2; k++) { const u = at(t, a.shch + k * .18, a.shch + .7 + k * .18); if (u > 0 && u < 1) ring(c, x + w / 2, top, 60 + 260 * eo(u), rgba('#FFF1B8', .8 * (1 - u)), 6) }
     }
   }
-  const CIGS = [{ u: .2, h: 1700 }, { u: .4, h: 2300 }, { u: .6, h: 1950 }, { u: .8, h: 2500 }];
-  // ---------- ночной Чикаго над крышей ----------
-  const BW = { x: 3920, y: -3560, w: 520, h: 820, wx: 150, wy: 300 };   // дом Бёрнетта (с косым разрезом), окно — (x + wx, y + wy)
-  function chicago(c, t, q) {
-    const a = TC; if (viewRect(q).y0 > ROOF[0] + 20) return;
-    c.fillStyle = '#0D1230'; c.fillRect(-1600, -9000, 9000, 9000 + ROOF[0]);
-    c.fillStyle = '#171D45'; c.fillRect(-1600, ROOF[0] - 700, 9000, 700);
-    circ(c, 3150, -3900, 120, '#F3EBDD'); circ(c, 3110, -3930, 22, '#DCD3BE'); circ(c, 3190, -3860, 14, '#DCD3BE');
-    for (let i = 0; i < 26; i++) { const bx = 1500 + i * 150, h = 300 + H1(i * 2.7) * 520; c.fillStyle = i % 2 ? '#141A3E' : '#1A2150'; c.fillRect(bx, ROOF[0] - h, 130, h);
-      c.fillStyle = 'rgba(253,230,138,.5)'; for (let k = 0; k < h / 60 - 1; k++) for (let m = 0; m < 3; m++) if (H1(i * 31 + k * 7 + m) > .6) c.fillRect(bx + 18 + m * 36, ROOF[0] - h + 30 + k * 60, 18, 24) }
-    const sl = eo(at(t, a.leo - .4, a.bern + .1)); if (sl > 0) burnett(c, t, sl);
-  }
-  function burnett(c, t, sl) {   // дом с косым разрезом (WoT #076): в светлом окне — стол, ваза красных яблок, стакан толстых чёрных карандашей
-    const { x, y, w, h, wx, wy } = BW, dx = (1 - sl) * 1400; c.save(); c.translate(dx, 0);
-    c.fillStyle = '#20285A'; c.fillRect(x, y, w, h + 3000); PL(c, [x + w, y, x + w + 60, y + 60, x + w + 60, y + h + 3000, x + w, y + h + 3000], '#161C44');
-    PL(c, [x, y + 60, x + w, y - 40, x + w, y + 10, x, y + 110], '#2C356E');
-    for (let k = 0; k < 14; k++) for (let m = 0; m < 4; m++) if (!(k === 2 && m < 2)) { c.fillStyle = H1(k * 5 + m) > .55 ? 'rgba(253,230,138,.45)' : '#141A3E'; c.fillRect(x + 40 + m * 120, y + 150 + k * 110, 70, 60) }
-    c.fillStyle = '#FFE9B0'; c.fillRect(x + wx - 100, y + wy - 70, 200, 140);
-    c.save(); c.beginPath(); c.rect(x + wx - 100, y + wy - 70, 200, 140); c.clip(); inNest(c, NC7(), cc => officeW7(cc, t)); c.restore();
-    c.strokeStyle = '#DCD3BE'; c.lineWidth = 6; c.strokeRect(x + wx - 100, y + wy - 70, 200, 140);
-    c.restore();
-  }
-  // сигареты из пачки растут небоскрёбами: выше крыши у них окна и ступени ар-деко
-  function towers(c, t) {
-    const a = TC, ris = at(t, a.chik - .2, a.rekl + .6); if (ris <= 0) return; const { x, y, w, h } = PK, top = y - h;
-    CIGS.forEach((cg, i) => { const lift = 60 + cg.h * eio(cl(ris * 1.25 - i * .1)), yt = top - lift, k = eio(at(yt, ROOF[0] + 100, ROOF[0] - 900)); if (yt > ROOF[0]) return;
-      const W = lp(34, 250, k), cx = x + w * cg.u + (cg.u - .5) * 1500 * k, yb = ROOF[0];
-      c.fillStyle = '#E9E4DA'; c.fillRect(cx - W / 2, yt, W, yb - yt); c.fillStyle = 'rgba(20,20,40,.28)'; c.fillRect(cx + W * .12, yt, W * .38, yb - yt);
-      if (k > .3) { c.fillStyle = rgba('#FDE68A', .85 * at(k, .3, .7)); for (let r = 0; r < (yb - yt - 130) / 52; r++) for (let m = 0; m < 4; m++) if (H1(i * 41 + r * 3 + m) > .38) c.fillRect(cx - W / 2 + 14 + m * (W - 28) / 4, yt + 120 + r * 52, (W - 28) / 4 - 12, 24) }
-      c.fillStyle = C3.cork; c.fillRect(cx - W / 2, yt, W, 44 + 30 * k); PL(c, [cx - W * .34, yt, cx - W * .18, yt - 90 * k, cx + W * .18, yt - 90 * k, cx + W * .34, yt], C3.cork); c.fillRect(cx - 5, yt - 160 * k, 10, 70 * k) });
-    c.fillStyle = '#1A1720'; c.fillRect(-1600, ROOF[0], SHOPX + 3200, ROOF[1] - ROOF[0]);   // крыша поверх — стык ствола и башни не виден
-  }
+  function twC(i) { const tw = TWR[i]; return { x: NCH.x + (tw.x - 540) * TWM, top: NCH.y + (tw.top - 960) * TWM } }   // башня мира CH → сигарета в лавке (центр, верх)
   function wcWorld(c, t, q) {
     const a = TC;
-    chicago(c, t, q);
     c.fillStyle = '#1A1720'; c.fillRect(-1600, ROOF[0], SHOPX + 3200, ROOF[1] - ROOF[0]);   // крыша
     labRoom(c, t, q); shopRoom(c, t, q);
     packWall(c, q, -1600, SHOPX + 1600, SLAB[1], 1500);
-    c.fillStyle = '#1A1720'; c.fillRect(-1600, SLAB[0], SHOPX + 3200, SLAB[1] - SLAB[0]); c.fillStyle = '#0E0C12'; rr(c, 500, SLAB[0] - 4, 120, SLAB[1] - SLAB[0] + 8, 10); c.fill();   // перекрытие с решёткой
+    c.fillStyle = '#1A1720'; c.fillRect(-1600, SLAB[0], SHOPX + 3200, SLAB[1] - SLAB[0]); c.fillStyle = '#26222E'; for (let bx = -1560; bx < SHOPX + 1600; bx += 240) c.fillRect(bx, SLAB[0] + 34, 70, 52);   // перекрытие: торцы балок (без решётки — дым идёт поверх)
     c.fillStyle = '#5A3A26'; c.fillRect(-1600, 1500, SHOPX + 3200, 220); c.fillStyle = '#7A5135'; c.fillRect(-1600, 1500, SHOPX + 3200, 10); c.fillStyle = '#1A1420'; c.fillRect(-1600, 1720, SHOPX + 3200, 2000);
     marketDisc(c, t);
     const kr = at(t, a.proc + .1, a.proc + .45) * (1 - at(t, a.spas - .3, a.spas + .1)); if (kr > 0) plate(c, '0,25 % РЫНКА', 540, 1040, bo(kr), { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 });
+    const md = eio(at(t, a.spas - .15, a.strah + .25)); if (md > 0) { const v = viewRect(q); if (v.y1 > SLAB[1]) { c.fillStyle = `rgba(10,8,14,${.88 * md})`; c.fillRect(v.x0 - 50, SLAB[1], v.x1 - v.x0 + 100, v.y1 - SLAB[1] + 50) } }   // v20.2: марка «умерла» — на рынке гаснет свет, снизу под лабораторией и лавкой больше не видно серых пачек
     table(c, -300, SHOPX + 400); mouse(c, t); tarJar(c); strokeAxis(c, t); bars(c, t); shelfPacks(c, t);
-    hardPack(c, t); compact(c, t); towers(c, t); crowd(c, t); brushRig(c, t);
-    tailOrSmoke(c, t, q);
+    hardPack(c, t); compact(c, t); crowd(c, t); brushRig(c, t);
+    smokeMouse(c, t);
   }
-  function wcShot(c, t) { const q = camObj(camAt(KC, t)); layer(c, q, 1, cc => wcWorld(cc, t, q));
+  function wcShot(c, t) { if (KCH && t >= TC.sw) return chShot(c, t); const q = camObj(camAt(KC, t)); layer(c, q, 1, cc => wcWorld(cc, t, q));
     layer(c, q, 1.3, cc => { const v = viewRect(q); if (v.y1 < SLAB[0] - 600 || v.y0 > SLAB[0] + 400) return;   // шестигранники смолы плывут мимо камеры
       for (let i = 0; i < 9; i++) { const hx = -200 + i * 260 + Math.sin(t * .5 + i) * 30, hy = -1500 + H1(i * 3) * 900 + ((t * 40 + i * 111) % 600) - 300, R = 26 + H1(i) * 18;
         cc.beginPath(); for (let k = 0; k < 6; k++) { const an = k * Math.PI / 3; cc.lineTo(hx + Math.cos(an) * R, hy + Math.sin(an) * R) } cc.closePath(); lnB(cc, 3, 'rgba(160,230,224,.28)') } });
   }
+  // ================= мир CH (конец фразы 6): ночной Чикаго. v20.2 — по разбору Gemini: сигареты больше не проходят сквозь крышу лавки.
+  // Мир CH вложен в пробку самой высокой сигареты (NCH, считается в wcInit): камера ныряет в пробку — это золотая корона небоскрёба; отъезд —
+  // четыре белые башни среди ночных домов и луна; справа въезжает дом Бёрнетта в разрезе (WoT #076): освещённые этажи с фигурами, в одном — его кабинет (мир 7).
+  let KCH = null;
+  const TWM = .283, TWW = 120, TWT = 3, TWR = [{ x: 240, top: 820 }, { x: 440, top: 640 }, { x: 640, top: 760 }, { x: 840, top: 560 }];   // башни в мире CH; TWT — в чью пробку ныряем
+  const CORK = 44 / TWM;   // пробка сигареты = полоса короны башни
+  const BUR = { x0: 1180, x1: 1780, top: 380, cut: [1780, 760, 1300, 1860], slabs: [760, 980, 1200, 1420, 1640, 1860] };   // дом Бёрнетта; разрез — треугольник у правого края
+  const ROOM = { x: 1635, y: 1530, w: 270, h: 200, m: 270 / 1500 };   // кабинет Бёрнетта (этаж 1420…1640): мир 7 вложен сюда
+  function chInit() {
+    const a = TC;
+    KCH = [KY(a.rekl + .42, 760, 860, 1.22), KY(a.leo + .02, 800, 1020, .68), KY(a.bern - .03, 1470, 1430, .8), KY(a.end - .32, ROOM.x, ROOM.y, 3.4), KY(a.end, ROOM.x, ROOM.y, 1.96 / ROOM.m)];
+  }
+  function burX(t) { const a = TC; return (1 - eo(at(t, a.leo - .55, a.bern))) * 1400 }   // дом въезжает справа
+  function cutX(y) { const [x0, y0, x1, y1] = BUR.cut; return lp(x0, x1, (y - y0) / (y1 - y0)) }
+  function sitter(c, x, y, s, col, o = {}) {   // фигура за столом сбоку (смотрит вправо): стул, тело, рука к машинке / доске
+    c.save(); c.translate(x, y); c.scale(s, s); c.fillStyle = col;
+    c.fillRect(-34, -64, 8, 64); c.fillRect(-34, -64, 40, 8);   // стул
+    rr(c, -26, -150, 44, 92, 14); c.fill(); circ(c, 0, -172, 20, col); if (o.hat) { c.fillRect(-26, -192, 52, 7); rr(c, -16, -212, 32, 22, 6); c.fill() }
+    limb(c, [[6, -132], [40, -104], [70, -110]], [12, 10, 9], col); limb(c, [[-6, -64], [30, -60], [34, 0]], [16, 14, 12], col);
+    if (o.desk !== false) { c.fillRect(56, -86, 110, 10); c.fillRect(150, -76, 8, 76); rr(c, 76, -112, 54, 26, 5); c.fill(); c.fillStyle = 'rgba(255,255,255,.85)'; c.fillRect(88, -134, 30, 24) }   // стол и машинка с листом
+    c.restore();
+  }
+  function burnettB(c, t) {
+    const { x0, x1, top, slabs } = BUR, dx = burX(t), [cxa, cya, cxb, cyb] = BUR.cut; c.save(); c.translate(dx, 0);
+    c.fillStyle = '#1C2352'; c.fillRect(x0 + 70, top - 130, x1 - x0 - 140, 140); c.fillRect(x0 + 170, top - 230, x1 - x0 - 340, 110); c.fillRect(x0 + 292, top - 420, 16, 200);   // ступени ар-деко и шпиль
+    c.fillStyle = '#20285A'; c.fillRect(x0, top, x1 - x0, 3200); c.fillStyle = '#171D47'; c.fillRect(x1 - 90, top, 90, 3200);
+    for (let k = 0; k < 24; k++) for (let m = 0; m < 5; m++) { const wx = x0 + 34 + m * 104, wy = top + 50 + k * 110; if (wx + 70 > cutX(wy) && wy > cya - 40 && wy < cyb) continue;
+      c.fillStyle = H1(k * 7 + m * 3) > .55 ? 'rgba(253,230,138,.55)' : '#141A3E'; c.fillRect(wx, wy, 70, 56) }
+    c.save(); poly(c, [cxa, cya, cxa, cyb, cxb, cyb]); c.clip();   // разрез: этажи изнутри
+    for (let f = 0; f < slabs.length - 1; f++) { const fy0 = slabs[f], fy1 = slabs[f + 1]; c.fillStyle = ['#E3BE7E', '#EBCB8C', '#E5C384', '#F0D29A', '#E8C688'][f]; c.fillRect(x0, fy0, x1 - x0, fy1 - fy0);
+      c.fillStyle = 'rgba(120,70,30,.18)'; c.fillRect(x0, fy1 - 46, x1 - x0, 28) }   // плинтус
+    const ink = '#2A2238';
+    sitter(c, 1600, 1420 - 18, .95, ink, { hat: true }); sitter(c, 1380, 1860 - 18, 1, ink); sitter(c, 1580, 1860 - 18, 1, ink, { hat: true });
+    c.fillStyle = ink; c.fillRect(1660, 1200 - 18 - 150, 70, 150); c.fillRect(1668, 1200 - 18 - 120, 54, 4); c.fillRect(1668, 1200 - 18 - 70, 54, 4);   // картотека
+    c.save(); c.translate(1700, 980 - 18); c.fillRect(-4, -90, 8, 90); poly(c, [-26, -90, 26, -90, 14, -120, -14, -120]); c.fill(); c.restore();   // лампа
+    c.save(); poly(c, [cutX(slabs[3]), slabs[3], x1, slabs[3], x1, slabs[4] - 18, cutX(slabs[4] - 18), slabs[4] - 18]); c.clip();   // кабинет Бёрнетта — мир 7
+    inNest(c, NC7(), cc => officeW7(cc, t)); c.restore();   // та же вложенность, что у камеры (linkK) — на стыке кадры совпадают
+    c.fillStyle = '#3A3050'; slabs.forEach(sy => c.fillRect(x0, sy - 18, x1 - x0, 18));   // перекрытия
+    c.restore();
+    c.beginPath(); c.moveTo(cxa, cya); c.lineTo(cxb, cyb); lnB(c, 14, '#DCD3BE'); c.strokeStyle = '#2C356E'; c.lineWidth = 4; c.beginPath(); c.moveTo(cxa - 10, cya + 4); c.lineTo(cxb - 10, cyb + 4); c.stroke();   // край разреза: толщина стены
+    c.restore();
+  }
+  function tower(c, i, t) {   // белая башня = сигарета: тело с окнами, полоса короны = пробка (совпадает с ней при стыке), ступени и шпиль ар-деко
+    const { x, top } = TWR[i], L = x - TWW / 2, s = 1 / TWM;
+    rr(c, L, top, TWW, 3600 - top, 6 * s); fill(c, C3.white);
+    c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(x + 4 * s, top, 13 * s, 3600 - top);   // тень — как у сигареты
+    c.fillStyle = 'rgba(253,230,138,.9)'; for (let r = 0; r < 60; r++) for (let m = 0; m < 4; m++) if (H1(i * 41 + r * 3 + m) > .42) c.fillRect(L + 12 + m * 26, top + CORK + 36 + r * 52, 16, 26);
+    c.fillStyle = C3.cork; c.fillRect(L, top, TWW, CORK); c.fillStyle = 'rgba(120,70,30,.35)'; for (let k = 0; k < 3; k++) c.fillRect(L, top + (8 + k * 12) * s, TWW, 3 * s);
+    PL(c, [L + 14, top, L + 30, top - 50, L + TWW - 30, top - 50, L + TWW - 14, top], C3.cork); PL(c, [x - 26, top - 50, x - 16, top - 100, x + 16, top - 100, x + 26, top - 50], '#D9B888');
+    PL(c, [x - 7, top - 100, x, top - 210 - i * 16, x + 7, top - 100], C3.cork); c.fillStyle = 'rgba(120,70,30,.3)'; c.fillRect(L + 22, top - 30, TWW - 44, 6);
+  }
+  function chWorld(c, t, q) {
+    c.fillStyle = '#0D1230'; c.fillRect(-3000, -5000, 8000, 9000); c.fillStyle = '#121845'; c.fillRect(-3000, 1300, 8000, 500); c.fillStyle = '#18204F'; c.fillRect(-3000, 1800, 8000, 3000);
+    starsS(c, t, .9);
+    circ(c, 190, 300, 110, '#F3EBDD'); circ(c, 150, 270, 22, '#DCD3BE'); circ(c, 222, 342, 15, '#DCD3BE'); circ(c, 230, 262, 9, '#DCD3BE');   // луна
+    for (let i = 0; i < 34; i++) { const bx = -900 + i * 104, h = 520 + H1(i * 2.7) * 720, by = 2500 - h; c.fillStyle = i % 2 ? '#141A3E' : '#1A2150'; c.fillRect(bx, by, 96, h + 1200);
+      c.fillStyle = 'rgba(253,230,138,.45)'; for (let k = 0; k < h / 60; k++) for (let m = 0; m < 3; m++) if (H1(i * 31 + k * 7 + m) > .62) c.fillRect(bx + 12 + m * 28, by + 26 + k * 60, 16, 22) }   // дальние дома
+    for (let i = 0; i < TWR.length; i++) tower(c, i, t);
+    burnettB(c, t);
+    for (let i = 0; i < 22; i++) { const bx = -1000 + i * 160, h = 260 + H1(i * 5.3) * 300; c.fillStyle = '#0A0E26'; c.fillRect(bx, 2560 - h, 150, h + 1400);
+      c.fillStyle = 'rgba(253,230,138,.35)'; for (let k = 0; k < h / 70; k++) if (H1(i * 13 + k) > .5) c.fillRect(bx + 30 + (k % 2) * 60, 2600 - h + k * 70, 22, 26) }   // ближние дома закрывают низ башен
+  }
+  function chShot(c, t) { const q = camObj(camAt(KCH, t)); layer(c, q, 1, cc => chWorld(cc, t, q)) }
   // ================= мир 7 (фраза 7): кабинет Бёрнетта — в координатах мира 1: лист на чертёжной доске = плакат щита (BB). Толстый чёрный карандаш сам рисует ковбоя (#091),
   // набросок заливается цветом, лист становится плакатом — и мир 7 незаметно меняется на щит у трассы (видно только лист), камера отъезжает (#041).
-  let T7 = null, K7 = null, RIDS = null, RIDC = null, PEN7 = null;
-  const NC7 = () => ({ x: BW.x + BW.wx, y: BW.y + BW.wy + (960 - 765) * (200 / 1500), m: 200 / 1500 });   // окно дома Бёрнетта (200×140) показывает кабинет 1500×1050 с центром (540, 765)
+  let T7 = null, K7 = null, RIDS = null, RIDC = null, RIDO = null, PEN7 = null, TB7 = null;
+  const NC7 = () => ({ x: ROOM.x + (540 - 360) * ROOM.m, y: ROOM.y + (960 - 765) * ROOM.m, m: ROOM.m });   // в центре этажа — место всадника на листе (360, 765): после нырка в кадре уже набросок   // v20.2: этаж в разрезе дома Бёрнетта (мир CH) показывает кабинет 1500×1050 с центром (540, 765)
   const RB = { x0: 96, x1: 610, y0: 540, y1: 960 };   // рамка всадника на листе (мир 1)
   function w7Init() {
     const s = 's7';
     T7 = { a: SA(s), stav: Ws(s, 'ставит'), rekl: Ws(s, 'рекламу'), kov: Ws(s, 'ковбоя'), slov: Ws(s, 'словам'), sam: Ws(s, 'самый'), am: Ws(s, 'америке'), sim: Ws(s, 'символ'), muzh: Ws(s, 'мужчины'), end: SA('s8') - .02 };
     const a = T7; a.sw = a.sim - .55;   // смена мира: кадр — только лист
-    K7 = [KY(a.stav + .1, 360, 770, 1.96), KY(a.kov + .2, 352, 772, 2.0), KY(a.slov + .1, 360, 740, 2.2), KY(a.sw, 380, 690, 3.3)];
+    K7 = [KY(a.stav + .1, 360, 770, 1.96), KY(a.kov + .2, 352, 772, 2.0), KY(a.slov + .1, 360, 740, 2.2), KY(a.sw, 380, 640, 3.3)];   // v20.2: на «символ» надпись Marlboro Country — ниже плашки года
     // всадник: цветной и карандашный (маска + обводка) — заранее, в 2× разрешении
     const S = 2, W = (RB.x1 - RB.x0) * S, H = (RB.y1 - RB.y0) * S; RIDC = mk(W, H); const g = RIDC.getContext('2d'); g.scale(S, S); g.translate(-RB.x0, -RB.y0); horseRider(g, BB.x + 290, BB.y + BB.h * .94, 1.5, { t: 0 });
     RIDS = mk(W, H); const h = RIDS.getContext('2d');
@@ -957,8 +1104,11 @@
     h.globalCompositeOperation = 'source-in'; h.fillStyle = '#4A4A52'; h.fillRect(0, 0, W, H); h.globalCompositeOperation = 'source-over';
     const m2 = mk(W, H), q2 = m2.getContext('2d'); q2.drawImage(RIDC, 0, 0); q2.globalCompositeOperation = 'source-in'; q2.fillStyle = '#E4DCC8'; q2.fillRect(0, 0, W, H); h.drawImage(m2, 0, 0);
     h.strokeStyle = 'rgba(74,74,82,.35)'; h.lineWidth = 2; h.globalCompositeOperation = 'source-atop'; for (let k = -H; k < W; k += 14) { h.beginPath(); h.moveTo(k, H); h.lineTo(k + H * .7, 0); h.stroke() }   // штриховка
+    RIDO = mk(W, H); const o2 = RIDO.getContext('2d');   // v20.2: только контур — первый проход карандаша
+    for (const [dx, dy] of [[-3, 0], [3, 0], [0, -3], [0, 3], [-2, -2], [2, 2], [-2, 2], [2, -2]]) o2.drawImage(RIDC, dx, dy);
+    o2.globalCompositeOperation = 'source-in'; o2.fillStyle = '#4A4A52'; o2.fillRect(0, 0, W, H); o2.globalCompositeOperation = 'destination-out'; o2.drawImage(RIDC, 0, 0); o2.globalCompositeOperation = 'source-over';
     // путь карандаша: три прохода рядами (верх, середина, низ силуэта) — как штрихуют набросок; карандаш едет не быстрее ~1000 px/с
-    const d = g.getImageData(0, 0, W, H).data, top = [], bot = [];
+    const d = g.getImageData(0, 0, W, H).data, top = [], bot = []; TB7 = { top, bot };
     for (let x = 0; x < W; x += 16) { let y0 = -1, y1 = -1; for (let y = 0; y < H; y += 3) if (d[(y * W + x) * 4 + 3] > 40) { if (y0 < 0) y0 = y; y1 = y } if (y0 >= 0) { top.push([RB.x0 + x / S, RB.y0 + y0 / S]); bot.push([RB.x0 + x / S, RB.y0 + y1 / S]) } }
     const row = f => top.map((p, i) => [p[0], lp(p[1], bot[i][1], f)]), P = [...row(.12), ...row(.5).reverse(), ...row(.86)];
     let L = 0; P.forEach((p, i) => { if (i) L += Math.hypot(p[0] - P[i - 1][0], p[1] - P[i - 1][1]); p[2] = L }); PEN7 = { P, L };
@@ -970,10 +1120,14 @@
     PL(c, [-46, -16, -46, 16, -6, 4, -6, -4], '#D9B38C'); PL(c, [-6, -4, -6, 4, 6, 0], '#1A1A1E'); c.fillStyle = '#B8B8C0'; c.fillRect(-312, -16, 14, 32);
     c.restore();
   }
-  // лист на доске: бумага, набросок карандашом, цвет, потом весь плакат (k — сколько готово)
+  // лист на доске: бумага, набросок карандашом, цвет, потом весь плакат. v20.2: карандаш идёт двумя проходами — контур слева направо, штриховка обратно
+  // (проявляется полосой с неровным краем, без «дырок» кругами); начинается ещё во время нырка в окно — после нырка лист не пустой
+  const edgeY = (arr, x) => { const P = arr; if (!P.length) return RB.y0; if (x <= P[0][0]) return P[0][1]; for (let i = 1; i < P.length; i++) if (x <= P[i][0]) return lp(P[i - 1][1], P[i][1], (x - P[i - 1][0]) / (P[i][0] - P[i - 1][0])); return P[P.length - 1][1] };
+  function sweepClip(c, xa, xb, seed) { const { y0, y1 } = RB; c.beginPath(); c.moveTo(xa, y0 - 20); for (let i = 0; i <= 14; i++) c.lineTo(xb + Math.sin(i * 2.3 + seed) * 9, lp(y0 - 20, y1 + 20, i / 14)); c.lineTo(xa, y1 + 20); c.closePath(); c.clip() }
+  function penSk(t) { const a = T7, ko = at(t, a.a - .62, a.stav + .28), kh = at(t, a.stav + .28, a.slov - .05); return { ko, kh } }
   function sheet7(c, t) {
     const a = T7, { x, y, w, h } = BB, T = C3;
-    const ksk = at(t, a.stav - .05, a.slov - .05), kco = eio(at(t, a.slov - .1, a.slov + .45)), kbg = eio(at(t, a.slov + .25, a.sam + .45)), ktx = at(t, a.sam + .1, a.am + .1), kpk = spr(at(t, a.sam + .2, a.am + .6));
+    const { ko, kh } = penSk(t), kco = eio(at(t, a.slov - .1, a.slov + .45)), kbg = eio(at(t, a.slov + .25, a.sam + .45)), ktx = at(t, a.sam + .1, a.am + .1), kpk = spr(at(t, a.sam + .2, a.am + .6));
     c.save(); c.beginPath(); c.rect(x, y, w, h); c.clip();
     c.fillStyle = T.paper; c.fillRect(x, y, w, h);
     if (kbg > 0) { c.save(); c.beginPath(); c.rect(x, y + h * (1 - kbg), w, h * kbg + 1); c.clip(); c.fillStyle = T.dune; c.fillRect(x, y + h * .58, w, h * .42);
@@ -982,16 +1136,20 @@
     if (ktx > 0) { c.save(); c.beginPath(); c.rect(x, y, 40 + 600 * eo(ktx), 160); c.clip(); tx(c, 'Marlboro Country', x + 40, y + 84, { f: 'P', w: 700, st: 'italic', s: 66, c: T.inkB, al: 'left' }); c.restore() }
     if (kco >= 1) horseRider(c, x + 290, y + h * .94, 1.5, { t });
     else {
-      if (ksk > 0) { const [px, py] = penAt(Math.min(1, ksk)); c.save(); c.beginPath(); const { P } = PEN7, n = penAt(Math.min(1, ksk))[2];
-        for (let i = 0; i < n; i++) { c.moveTo(P[i][0] + 92, P[i][1]); c.arc(P[i][0], P[i][1], 92, 0, TAU) } c.moveTo(px + 92, py); c.arc(px, py, 92, 0, TAU); if (ksk >= 1) c.rect(RB.x0, RB.y0, RB.x1 - RB.x0, RB.y1 - RB.y0);
-        c.clip(); c.drawImage(RIDS, RB.x0, RB.y0, RB.x1 - RB.x0, RB.y1 - RB.y0); c.restore() }
+      const bw = RB.x1 - RB.x0, bh = RB.y1 - RB.y0;
+      if (ko > 0) { c.save(); sweepClip(c, RB.x0 - 30, lp(RB.x0 - 20, RB.x1 + 20, ko), 1); c.drawImage(RIDO, RB.x0, RB.y0, bw, bh); c.restore() }
+      if (kh > 0) { c.save(); sweepClip(c, RB.x1 + 30, lp(RB.x1 + 20, RB.x0 - 20, kh), 4); c.drawImage(RIDS, RB.x0, RB.y0, bw, bh); c.restore() }
       if (kco > 0) { c.save(); c.beginPath(); c.rect(RB.x0, RB.y0, (RB.x1 - RB.x0) * kco, RB.y1 - RB.y0); c.clip(); horseRider(c, x + 290, y + h * .94, 1.5, { t }); c.restore() }
     }
     if (kpk > 0) { c.save(); c.translate(x + 771, y + 458); c.scale(kpk, kpk); c.translate(-(x + 771), -(y + 458)); mPack(c, x + 676, y + 176, 190, 282, 34, {}); c.restore() }
     c.restore();
-    if (ksk > 0 && ksk < 1.05 && kco < .2) { const [px, py] = penAt(Math.min(1, ksk)); pencil(c, px + Math.sin(t * 31) * 3, py + Math.cos(t * 23) * 4, .7, -2.3) }
-    else if (kco < .2 && t > a.stav - .6) { const k = eo(at(t, a.stav - .6, a.stav)), [px, py] = penAt(0); pencil(c, lp(px + 300, px, k), lp(py + 260, py, k), .7, -2.3) }
-    else if (kco >= .2) { const k = eio(at(t, a.slov - .1, a.slov + .5)); pencil(c, lp(RB.x0 + 420, 760, k), lp(RB.y0 + 300, 1260, k), .7, -2.3) }
+    if (kco < .2) {   // карандаш: подлетает, ведёт контур по верху силуэта, потом штрихует обратно (вверх-вниз)
+      const { top, bot } = TB7, X0 = RB.x0 - 20, X1 = RB.x1 + 20;
+      if (ko <= 0) { const k = eo(at(t, a.a - 1.1, a.a - .62)), px = X0, py = edgeY(top, RB.x0); pencil(c, lp(px + 300, px, k), lp(py + 260, py, k), .7, -2.3) }
+      else if (kh <= 0) { const ex = lp(X0, X1, ko); pencil(c, ex, edgeY(top, ex) + Math.sin(t * 23) * 3, .7, -2.3) }
+      else if (kh < 1) { const ex = lp(X1, X0, kh), z = .5 + .5 * Math.sin(t * 34); pencil(c, ex, lp(edgeY(top, ex) + 6, edgeY(bot, ex) - 6, z), .7, -2.3) }
+      else { const k = eio(at(t, a.slov - .1, a.slov + .5)); pencil(c, lp(RB.x0, 760, k), lp(RB.y0 + 300, 1260, k), .7, -2.3) }
+    } else { const k = eio(at(t, a.slov - .1, a.slov + .5)); pencil(c, lp(RB.x0, 760, k), lp(RB.y0 + 300, 1260, k), .7, -2.3) }
   }
   function officeW7(c, t) {   // кабинет: стена, доска с листом, стол, ваза яблок, стакан карандашей, лампа
     c.fillStyle = '#3B2A22'; c.fillRect(-600, -200, 2300, 1800); c.fillStyle = '#433027'; for (let sx = -600; sx < 1700; sx += 120) c.fillRect(sx, -200, 50, 1800);
@@ -1015,23 +1173,38 @@
     T8 = { sim: a7.sim, muzh: Ws('s7', 'мужчины'), a: SA(s), cherez: Ws(s, 'через'), god: Ws(s, 'год'), byv: Ws(s, 'бывшая'), mar: Ws(s, 'марка'), chet: Ws(s, 'четвёртая'), str: Ws(s, 'стране'),
       sem: Ws(s, 'семьдесят'), vt: Ws(s, 'втором'), perv: Ws(s, 'первая'), mir: Ws(s, 'мире'), end: SA('s9') - .02 };
     const a = T8; a.sw = a.perv - .12;   // смена мира: в кадре — только ночное небо, звёзды и красный столбик
-    a.sweep0 = a.mir - .05; a.sweep1 = a.end - .2;
+    a.sweep0 = a.perv + .2; a.sweep1 = a.end - .2;   // v20.2: круг радара — 0,8 с
     K8 = [KY(a.sim + .2, 470, 850, 1.7), KY(a.muzh + .42, 540, 955, 1.01), KY(a.cherez + .25, 900, 950, .98), KY(a.byv + .18, 3000, 930, .9), KY(a.mar + .08, 6000, 820, .62),
       KY(a.chet + .25, 8700, -300, .135), KY(a.str + .15, 8760, -420, .13), KY(a.sem + .28, OURX, -3200, .16), KY(a.vt + .4, OURX, -12000, .19), KY(a.sw, OURX, -15500, .2)];
     // W8 вложен в Землю: основание нашего столбика (OURX, 1378) — верх шара, ширина щита — ширина луча
     const m = BEAMW / BB.w; NE8 = { x: GLOBE.x - (OURX - 540) * m, y: GLOBE.y - GLOBE.R - (1378 - 960) * m, m };
-    KE = [KY(a.mir + .1, 540, 880, .95), KY(a.sweep1 - .3, 540, 900, .98)];
+    KE = [KY(a.mir + .1, 540, 900, .9), KY(a.sweep1 - .3, 540, 910, .92)];
   }
   function nightK(t) { const a = T8; return eio(at(t, a.byv - .2, a.sem + .6)) }
   function ourH(t) { const a = T8; return lp(600, 2400, eio(at(t, a.chet - .45, a.chet + .45))) + 90000 * Math.pow(at(t, a.sem - .1, a.sw + .3), 2.2) }
-  function rowBoard(c, t, i, nk) {   // щит в ряду: рама, плакат (наш — Marlboro, другие — серые без названий), под щитом столбик своего цвета
+  // v20.2: на чужих щитах — обычная реклама 1950-х без марок (газировка, машина, кофе, бензин, шины, шляпы); ночью темнеет, как наш плакат
+  function adPoster(c, x, y, i, nk) {
+    const W = BB.w, H = BB.h, v = i % 6, BG = ['#2E7F86', '#E6D3A8', '#7A4A2A', '#E3B23C', '#2F4F8F', '#C96A5A'][v], INK = ['#F4F1EA', '#8E1B24', '#F4E3C8', '#3A2416', '#F4F1EA', '#F8EEE4'][v];
+    c.save(); c.beginPath(); c.rect(x, y, W, H); c.clip(); c.fillStyle = BG; c.fillRect(x, y, W, H); c.fillStyle = shd(BG, .14); c.fillRect(x, y + H * .78, W, H * .22);
+    c.fillStyle = INK; c.fillRect(x + 60, y + 70, 420, 64); c.fillRect(x + 60, y + 160, 280, 34); c.fillRect(x + 60, y + 214, 330, 34);   // заголовок и строки — плашками, без слов
+    if (v === 0) { rr(c, x + 680, y + 150, 120, 380, 46); fill(c, '#F4F1EA'); rr(c, x + 712, y + 90, 56, 90, 14); fill(c, '#F4F1EA'); c.fillStyle = '#C8102E'; c.fillRect(x + 680, y + 300, 120, 70); circ(c, x + 560, y + 420, 70, '#C8102E') }   // бутылка газировки
+    else if (v === 1) { rr(c, x + 470, y + 360, 420, 110, 46); fill(c, '#C8102E'); rr(c, x + 560, y + 290, 230, 100, 40); fill(c, '#C8102E'); c.fillStyle = '#BFE3EE'; c.fillRect(x + 590, y + 310, 80, 60); c.fillRect(x + 690, y + 310, 80, 60);
+      circ(c, x + 560, y + 480, 46, '#2A1A14'); circ(c, x + 800, y + 480, 46, '#2A1A14'); circ(c, x + 560, y + 480, 18, '#D8D2C8'); circ(c, x + 800, y + 480, 18, '#D8D2C8') }   // машина
+    else if (v === 2) { rr(c, x + 600, y + 300, 230, 200, 30); fill(c, '#F4F1EA'); c.beginPath(); c.arc(x + 840, y + 390, 50, -1.2, 1.2); c.strokeStyle = '#F4F1EA'; c.lineWidth = 22; c.stroke();
+      for (let k = 0; k < 3; k++) smokeLine(c, [x + 650 + k * 60, y + 280, x + 670 + k * 60, y + 220, x + 650 + k * 60, y + 160, x + 670 + k * 60, y + 100], 8, '#F4E3C8', .9) }   // чашка кофе
+    else if (v === 3) { rr(c, x + 640, y + 170, 170, 360, 18); fill(c, '#C8102E'); rr(c, x + 668, y + 210, 114, 90, 10); fill(c, '#F4F1EA'); c.beginPath(); c.moveTo(x + 810, y + 260); c.quadraticCurveTo(x + 900, y + 270, x + 880, y + 420); c.strokeStyle = '#2A1A14'; c.lineWidth = 16; c.stroke() }   // бензоколонка
+    else if (v === 4) { ring(c, x + 700, y + 360, 150, '#F4F1EA', 60); for (let k = 0; k < 12; k++) { const an = k * TAU / 12; c.fillStyle = '#2F4F8F'; c.save(); c.translate(x + 700 + Math.cos(an) * 150, y + 360 + Math.sin(an) * 150); c.rotate(an); c.fillRect(-6, -30, 12, 60); c.restore() } }   // шина
+    else { fig(c, x + 720, y + 560, 2.1, { col: '#F8EEE4', hc: '#3A1830' }); fig(c, x + 880, y + 560, 1.8, { m: true, hat: true, col: '#F8EEE4' }) }   // шляпы и пальто
+    if (nk) { c.fillStyle = `rgba(14,18,46,${.55 * nk})`; c.fillRect(x, y, W, H) }
+    c.restore();
+  }
+  function rowBoard(c, t, i, nk) {   // щит в ряду: рама, плакат (наш — Marlboro, другие — обычная реклама), под щитом столбик своего цвета
     const x = ROW.x0 + i * ROW.dx, ours = i === ROW.ours, kb = at(t, T8.chet - .5, T8.chet + .1), hb = ours ? ourH(t) : lp(1200, BARH[i], eio(kb)), y = 1378 - hb - BB.h;
     const col = ours ? C3.red : GRAYS[i % 4], cb = mixc(C3.steel, col, eio(kb));
     c.fillStyle = cb; c.fillRect(x + (BB.w - lp(60, BB.w, eio(kb))) / 2, y + BB.h, lp(60, BB.w, eio(kb)), hb);
     c.fillStyle = C3.steel; c.fillRect(x - 12, y - 12, BB.w + 24, BB.h + 24);
     if (ours) { c.save(); c.translate(x - BB.x, y - BB.y); poster(c, t, { peelPx: 0, night: nk * .6 }); c.restore() }
-    else { c.fillStyle = mixc('#B8B4AC', '#3A3848', nk * .6); c.fillRect(x, y, BB.w, BB.h); c.fillStyle = mixc(col, '#2A2838', nk * .5); c.fillRect(x, y + BB.h * .55, BB.w, BB.h * .45);
-      c.fillStyle = mixc('#8A867E', '#2A2838', nk * .6); c.fillRect(x + 60, y + 60, 420, 60); c.fillRect(x + 60, y + 150, 260, 40); rr(c, x + 640, y + 140, 200, 300, 10); fill(c, mixc('#6E6A62', '#242232', nk * .6)) }
+    else adPoster(c, x, y, i + 1, nk * .6);
   }
   function w8World(c, t, q) {
     const a = T8, nk = nightK(t);
@@ -1041,31 +1214,42 @@
       desertGround(cc, t, nk, q); billboardFrame(cc, { lamp: nk }); poster(cc, t, { peelPx: 0, night: nk * .6 });
       for (let i = 0; i < ROW.n; i++) rowBoard(cc, t, i, nk);
       [1700, 2900].forEach((bx, j) => { cc.save(); cc.translate(bx - BB.x, 0); cc.fillStyle = C3.steel; cc.fillRect(BB.x + 230, BB.y + BB.h, 24, 1378 - BB.y - BB.h); cc.fillRect(BB.x + 714, BB.y + BB.h, 24, 1378 - BB.y - BB.h);
-        cc.fillRect(BB.x - 12, BB.y - 12, BB.w + 24, BB.h + 24); cc.fillStyle = mixc(j ? '#C9C2B4' : '#B5AFA2', '#3A3848', nk * .6); cc.fillRect(BB.x, BB.y, BB.w, BB.h); cc.fillStyle = mixc(GRAYS[j + 1], '#2A2838', nk * .5); cc.fillRect(BB.x, BB.y + 380, BB.w, 250); cc.restore() });
+        cc.fillRect(BB.x - 12, BB.y - 12, BB.w + 24, BB.h + 24); cc.restore(); adPoster(cc, bx, BB.y, j ? 4 : 2, nk * .6) });
       const k4 = at(t, a.chet + .05, a.chet + .45) * (1 - at(t, a.sem - .2, a.sem + .2));
       if (k4 > 0) { const x = OURX, y = 1378 - ourH(t) - BB.h - 900; tx(cc, '№ 4 В США', x, y, { f: 'M', w: 800, s: 640 * bo(k4), c: '#F4F1EA', a: Math.min(1, k4 * 2) }) }
     });
     layer(c, q, 1.35, cc => { if (q.z < .5) return; P0(cc, 1.35); const u = (t * .045 + .62) % 1, x = lp(-300, 1500, u); tumbleweed(cc, x, 1530 - Math.abs(Math.sin(t * 2.4)) * 26, 44, t * 2.2) });
   }
-  // ---------- Земля ----------
+  // ---------- Земля (v20.2, Боб #039): глобус в концентрических кольцах; наш красный столбик втягивается в стрелку радара, она идёт по кругу
+  // градиентным сектором и по очереди зажигает кружки с пачками на кольцах вокруг Земли; «№ 1 В МИРЕ» крупно ----------
   const CONT = [[[-.62, -.15], [-.3, -.42], [-.05, -.3], [-.12, .05], [-.38, .12], [-.55, .02]], [[-.28, .15], [-.08, .2], [-.12, .6], [-.25, .7], [-.3, .35]],
     [[.05, -.35], [.32, -.45], [.5, -.25], [.38, -.05], [.12, -.1]], [[.1, 0], [.3, .02], [.32, .4], [.18, .55], [.06, .3]], [[.45, .3], [.62, .32], [.6, .45], [.44, .44]]];
-  const PACKS_E = [[-.36, -.18], [-.2, .38], [.25, -.28], [.2, .22], [.53, .38], [-.5, -.05], [.4, -.18]];
+  const RING = [1.24, 1.46], ICONS = [[0, -.95], [1, -.35], [0, .45], [1, 1.1], [0, 1.75], [1, 2.4], [0, 3.05], [1, 3.75], [0, 4.45], [1, 5.15]];   // кольцо, угол от верха по часовой
+  const PACKS_E = ICONS, AN = an => ((an % TAU) + TAU) % TAU;   // для звуков: кружок загорается, когда стрелка проходит его угол
+  function blob(c, pts) { const n = pts.length; c.beginPath(); const m = i => [(pts[i % n][0] + pts[(i + 1) % n][0]) / 2, (pts[i % n][1] + pts[(i + 1) % n][1]) / 2]; let p = m(n - 1); c.moveTo(p[0], p[1]);
+    for (let i = 0; i < n; i++) { const q2 = m(i); c.quadraticCurveTo(pts[i][0], pts[i][1], q2[0], q2[1]) } c.closePath() }
+  function radarT(t) { const a = T8; return { ret: eio(at(t, a.sw + .04, a.sweep0)), sw: eio(at(t, a.sweep0, a.sweep1)), back: eio(at(t, a.sweep1 - .04, a.sweep1 + .14)) } }
   function earthWorld(c, t, q) {
-    const a = T8, G = GLOBE;
+    const a = T8, G = GLOBE, R = G.R, { ret, sw, back } = radarT(t), ang = -Math.PI / 2 + TAU * sw;
     c.fillStyle = SPACE; c.fillRect(-60000, -60000, 120000, 120000);
     starsS(c, t, 1);
-    const sw = eio(at(t, a.sweep0, a.sweep1)), ang = -Math.PI / 2 + TAU * sw, ret = eio(at(t, a.sweep1 - .05, a.sweep1 + .35));
-    c.save(); c.translate(G.x, G.y); c.rotate(ang + Math.PI / 2); c.fillStyle = C3.red; c.fillRect(-BEAMW / 2, -G.R - 60000 * (1 - ret), BEAMW, 60000 * (1 - ret) + 10); c.restore();   // луч: снаружи шара
-    circ(c, G.x, G.y, G.R, GLOBEC);
-    c.save(); c.beginPath(); c.arc(G.x, G.y, G.R, 0, TAU); c.clip();
-    CONT.forEach(P => { poly(c, P.flatMap(p => [G.x + p[0] * G.R * 1.15, G.y + p[1] * G.R * 1.15])); fill(c, LANDC) });
-    for (let i = 0; i < 40; i++) { const u = H1(i * 2.3), v = H1(i * 5.1); circ(c, G.x + (u - .5) * G.R * 1.3, G.y + (v - .45) * G.R * 1.2, 2.2, rgba('#FDE68A', .45)) }
-    if (sw > 0 && sw < 1) { c.beginPath(); c.moveTo(G.x, G.y); c.arc(G.x, G.y, G.R + 20, ang - .7, ang); c.closePath(); fill(c, 'rgba(200,16,46,.22)'); c.save(); c.translate(G.x, G.y); c.rotate(ang); c.fillStyle = C3.red; c.fillRect(0, -6, G.R + 20, 12); c.restore() }
-    PACKS_E.forEach(([u, v], i) => { const pa = Math.atan2(v, u), d = ((pa - (-Math.PI / 2)) % TAU + TAU) % TAU, k = spr(at(sw * TAU, d, d + .6)); if (k <= 0) return;
-      const px = G.x + u * G.R * 1.15, py = G.y + v * G.R * 1.15; c.save(); c.translate(px, py); c.scale(k * .16, k * .16); mPack(c, -95, -141, 190, 282, 34, { shadow: false }); c.restore() });
-    c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(G.x + G.R * .35, G.y - G.R, G.R, G.R * 2); c.restore();
-    const k1 = at(t, a.mir - .05, a.mir + .35) * (1 - at(t, a.sweep1 - .25, a.sweep1 + .05)); if (k1 > 0) plate(c, '№ 1 В МИРЕ', G.x, G.y - G.R - 190, bo(k1), { s: 64, bg: '#F4F1EA', c: '#141010', ls: 3 });
+    RING.forEach(rk => ring(c, G.x, G.y, R * rk, 'rgba(200,210,255,.22)', 3)); ring(c, G.x, G.y, R * 1.7, 'rgba(200,210,255,.1)', 2);
+    if (sw > 0 && sw < 1) { const g = c.createConicGradient(ang - 1.25, G.x, G.y); g.addColorStop(0, 'rgba(200,16,46,0)'); g.addColorStop(1.25 / TAU, 'rgba(232,40,70,.42)'); g.addColorStop(1.25 / TAU + .001, 'rgba(200,16,46,0)'); g.addColorStop(1, 'rgba(200,16,46,0)');
+      c.beginPath(); c.arc(G.x, G.y, R * 1.7, 0, TAU); c.fillStyle = g; c.fill() }   // след радара — градиентный сектор
+    circ(c, G.x, G.y, R, '#1C2B6B');
+    c.save(); c.beginPath(); c.arc(G.x, G.y, R, 0, TAU); c.clip();
+    CONT.forEach(P => { blob(c, P.map(p => [G.x + p[0] * R * 1.15, G.y + p[1] * R * 1.15])); fill(c, '#2E4290') });
+    c.strokeStyle = 'rgba(150,180,255,.16)'; c.lineWidth = 2; [-.45, 0, .45].forEach(la => { c.beginPath(); c.ellipse(G.x, G.y + la * R, R * Math.sqrt(1 - la * la), R * .13, 0, 0, TAU); c.stroke() });
+    [.36, .72].forEach(lo => { c.beginPath(); c.ellipse(G.x, G.y, R * lo, R, 0, 0, TAU); c.stroke() });   // параллели и меридианы — объём
+    for (let i = 0; i < 40; i++) { const u = H1(i * 2.3), v = H1(i * 5.1); circ(c, G.x + (u - .5) * R * 1.3, G.y + (v - .45) * R * 1.2, 2.2, rgba('#FDE68A', .45)) }
+    c.beginPath(); c.arc(G.x + R * .6, G.y - R * .08, R * 1.08, 0, TAU); fill(c, 'rgba(6,8,30,.42)'); c.restore();   // терминатор — ночная сторона справа
+    c.beginPath(); c.arc(G.x, G.y, R - 6, Math.PI * 1.02, Math.PI * 1.36); c.strokeStyle = 'rgba(255,255,255,.28)'; c.lineWidth = 9; c.stroke();   // блик — слева, не на верху шара (туда ныряем)
+    ICONS.forEach(([ri, an], i) => { const r = R * RING[ri], th = -Math.PI / 2 + an, px = G.x + Math.cos(th) * r, py = G.y + Math.sin(th) * r, lit = spr(at(sw * TAU, AN(an) + .05, AN(an) + .65));
+      circ(c, px, py, 44, mixc('#1B2552', '#C8102E', Math.min(1, lit))); ring(c, px, py, 44, lit > .02 ? '#F4F1EA' : 'rgba(200,210,255,.35)', 3);
+      if (lit > 0) { c.save(); c.translate(px, py + 2); c.scale(.17 * lit, .17 * lit); mPack(c, -95, -141, 190, 282, 34, { shadow: false }); c.restore(); ring(c, px, py, 44 + 40 * at(lit, 0, 1), rgba('#F4F1EA', .5 * (1 - Math.min(1, lit))), 3) } });
+    { const rin = lp(R, 0, ret), rout = Math.max(rin, (R * 1.7 + 60000 * Math.pow(1 - ret, 4)) * (1 - back)), bw = lp(BEAMW, 14, ret);   // наш столбик → стрелка радара; после круга уходит в Землю
+      if (rout > rin + 1) { c.save(); c.translate(G.x, G.y); c.rotate(ang + Math.PI / 2); c.fillStyle = C3.red; c.fillRect(-bw / 2, -rout, bw, rout - rin); c.fillStyle = `rgba(255,240,240,${.8 * ret})`; c.fillRect(-1.5, -rout, 3, rout - rin); c.restore() } }
+    const k1 = at(t, a.perv + .25, a.perv + .6) * (1 - at(t, a.sweep1 + .15, a.sweep1 + .4)); if (k1 > 0) plate(c, '№ 1 В МИРЕ', G.x, G.y - R * 1.7 - 90, bo(k1), { s: 84, bg: '#F4F1EA', c: '#141010', ls: 3 });
     if (typeof nightInEarth === 'function') nightInEarth(c, t, q);
   }
   function w8Shot(c, t) {
@@ -1075,7 +1259,7 @@
   // ================= мир 9 (фразы 9–11): ночной щит у пустой дороги (координаты мира 1). Камера спускается с ночной стороны Земли (мир 9 вложен в верх шара),
   // нарисованный огонёк становится живым (#092), дым тает в небе (#141); Макларен: календарь и пачки, рентген (#037), планки щита поворачиваются (#105), щит → столб-памятник, ещё три столба.
   let T9 = null, K9 = null, NE9 = null;
-  const M9 = .0012, POSTS = [540, 1260, 1980, 2700], HORZ = 1350;
+  const M9 = .0012, POSTS = [540, 980, 1420, 1860], HORZ = 1350, PTOP = 980;   // v20.2: столбы забора ближе и ниже — шляпы крупнее
   function w9Init() {
     const w = (s, q, n) => Ws(s, q, n);
     T9 = { a: SA('s9'), vot: w('s9', 'вот'), kov: w('s9', 'ковбои'), rekl0: w('s9', 'рекламы'), kur: w('s9', 'курили'), nast: w('s9', 'по-настоящему'),
@@ -1084,19 +1268,20 @@
       vsego: w('s11', 'всего'), umerli: w('s11', 'умерли'), chet: w('s11', 'четверо'), kovb: w('s11', 'ковбоев'), marl: w('s11', 'мальборо'), end: (SA('s12') ?? SA('s13')) - .02 };
     const a = T9; a.sw = a.vot + .28;   // смена мира: шар Земли во весь кадр, горизонт — прямая
     NE9 = { x: GLOBE.x, y: GLOBE.y - GLOBE.R - (HORZ - 960) * M9, m: M9 };
-    KE.push(KY(T8.sweep1 + .12, 540, 640, 2.6), KY(a.sw, 540, NE9.y + (1100 - 960) * M9, .14 / M9));
-    K9 = [KY(a.kov + .05, 520, 900, .55), KY(a.rekl0 + .1, 430, 700, 1.6), KY(a.kur + .08, 405, 640, 3.4), KY(a.nast + .45, 420, 520, 2.4), KY(a.uein + .2, 470, 600, 1.75),
+    KE.push(KY(T8.sweep1 + .06, 540, 700, 1.7), KY(a.sw, 540, NE9.y + (1000 - 960) * M9, .45 / M9));   // v20.2: нырок к горизонту быстрее — щит сразу крупный
+    K9 = [KY(a.kov + .05, 520, 880, .66), KY(a.rekl0 + .1, 430, 700, 1.6), KY(a.kur + .08, 405, 640, 3.4), KY(a.nast + .45, 420, 520, 2.4), KY(a.uein + .2, 470, 600, 1.75),
       KY(a.polt + .1, 560, 600, 1.45), KY(a.den + .3, 600, 640, 1.4), KY(a.dev + .2, 390, 660, 3.0), KY(a.leg + .25, 385, 668, 3.3), KY(a.posl + .2, 470, 690, 1.6),
-      KY(a.rekl + .15, 540, 700, 1.15), KY(a.umer, 540, 800, 1.0), KY(a.odin + .2, 560, 900, .9), KY(a.umerli, 1250, 950, .58), KY(a.chet + .5, 1600, 970, .47), KY(a.end, 1640, 960, .45)];
+      KY(a.rekl + .15, 540, 700, 1.15), KY(a.umer, 540, 800, 1.0), KY(a.odin + .2, 560, 900, .9), KY(a.umerli, 1000, 1010, .66), KY(a.chet + .5, 1170, 980, .58), KY(a.end, T9END[0], T9END[1], T9END[2])];
   }
   const KEf = () => KE;
+  const T9END = [1200, 960, .56];   // последний кадр ночной сцены = фото карточки 1924 на доске (мир 12)
   // ночное небо и горизонт (для мира 9 целиком; noFill — внутри Земли: небо и землю там даёт сам шар)
   function nightLocal(c, t, q, noFill) {
     const a = T9;
     if (!noFill) { c.fillStyle = SPACE; c.fillRect(-60000, -60000, 120000, 60000 + HORZ) }
     if (!noFill) { c.save(); c.beginPath(); c.rect(-60000, -60000, 120000, 60000 + HORZ); c.clip(); starsS(c, t, 1); c.restore() }
     c.fillStyle = '#121640'; c.fillRect(-60000, 950, 120000, HORZ - 950); c.fillStyle = '#24183A'; c.fillRect(-60000, 1180, 120000, HORZ - 1180); c.fillStyle = '#3E1C30'; c.fillRect(-60000, 1300, 120000, HORZ - 1300);
-    const mx = 870, my = 250; circ(c, mx, my, 96, '#F3EBDD'); circ(c, mx - 30, my - 20, 18, '#DCD3BE'); circ(c, mx + 26, my + 30, 12, '#DCD3BE'); circ(c, mx + 30, my - 34, 9, '#DCD3BE');
+    const mx = 900, my = 118; circ(c, mx, my, 84, '#F3EBDD'); circ(c, mx - 30, my - 20, 18, '#DCD3BE'); circ(c, mx + 26, my + 30, 12, '#DCD3BE'); circ(c, mx + 30, my - 34, 9, '#DCD3BE');   // v20.2: луна выше ламп щита
     PL(c, [-1500, HORZ, -1500, 1220, -900, 1220, -860, 1260, -500, 1260, -470, 1196, 110, 1196, 150, 1240, 250, 1240, 296, HORZ], NIGHT.mesa);
     PL(c, [800, HORZ, 836, 1262, 880, 1262, 904, 1222, 1500, 1222, 1540, 1180, 2100, 1180, 2600, HORZ], NIGHT.mesa); PL(c, [2600, HORZ, 2700, 1250, 3300, 1250, 3420, 1200, 4200, 1200, 4400, HORZ], NIGHT.mesa);
     if (!noFill) { c.fillStyle = GLOBEC; c.fillRect(-60000, HORZ, 120000, 60000) }
@@ -1112,28 +1297,29 @@
     const a = T9, km = boardMorph(t), { x, y, w, h } = BB;
     if (km < 1) {
       c.save();
-      if (km > 0) { const px = 540, py = 620, sx = lp(1, 44 / w, km), sy = lp(1, (1378 - py) / h, km); c.translate(px, lp(y + h / 2, py + (1378 - py) / 2, km)); c.scale(sx, sy); c.translate(-(x + w / 2), -(y + h / 2)) }
+      if (km > 0) { const gx0 = x - 12, gx1 = x + w + 12, gy0 = y - 92, gy1 = 1378, gcx = (gx0 + gx1) / 2, gcy = (gy0 + gy1) / 2;
+        c.translate(lp(gcx, POSTS[0], km), lp(gcy, (PTOP + 1378) / 2, km)); c.scale(lp(1, 44 / (gx1 - gx0), km), lp(1, (1378 - PTOP) / (gy1 - gy0), km)); c.translate(-gcx, -gcy) }
       billboardFrame(c, { lamp: 1 });
       const em = eo(at(t, a.kur - .15, a.kur + .25)) * (1 - .3 * at(t, a.nast + .6, a.uein + .3));
       poster(c, t, { peelPx: 0, night: .62, ember: em, chest: cc => xray(cc, t), cal: cc => calendar(cc, t), over: cc => slats(cc, t) });
       [x + 180, x + 480, x + 780].forEach(lx => poly(c, [lx + 40, y - 62, lx + 72, y - 56, lx + 330, y + h * .9, lx - 220, y + h * .9]) || fill(c, 'rgba(255,233,176,.09)'));
+      if (km > 0) { c.fillStyle = rgba('#4A3326', ss(.3, .92, km)); c.fillRect(x - 14, y - 94, w + 28, 1378 - y + 94) }   // щит становится деревом
       c.restore();
     }
-    if (km > 0) post(c, POSTS[0], t, 0);
+    if (km >= 1) post(c, POSTS[0], t, 0);
     for (let i = 1; i < 4; i++) post(c, POSTS[i], t, i);
     wire(c, t);
     smoke9(c, t);
-    const kn = at(t, a.nast - .05, a.nast + .35) * (1 - at(t, a.uein - .35, a.uein + .05)); if (kn > 0) tx(c, 'ПО-НАСТОЯЩЕМУ', 430, 330, { f: 'M', w: 800, s: 38 * bo(kn), c: '#F4F1EA', a: Math.min(1, kn * 2) });
     const k1 = at(t, a.polt + .1, a.polt + .45) * (1 - at(t, a.dev - .3, a.dev)); if (k1 > 0) plate(c, '1,5 ПАЧКИ В ДЕНЬ', 560, 300, bo(k1), { s: 40, bg: C3.red, c: '#fff', ls: 2 });
     const k5 = at(t, a.odin - .05, a.odin + .3) * (1 - at(t, a.vsego - .3, a.vsego + .1)); if (k5 > 0) tx(c, '51', 760, 760, { f: 'M', w: 800, s: 200 * bo(k5), c: '#F4F1EA', a: Math.min(1, k5 * 2) });
-    const k4 = at(t, a.chet + .9, a.chet + 1.25); if (k4 > 0) tx(c, 'КАК МИНИМУМ 4', 1620, 470, { f: 'M', w: 800, s: 150 * bo(k4), c: '#F4F1EA', a: Math.min(1, k4 * 2) });
+    const k4 = at(t, a.chet + .9, a.chet + 1.25); if (k4 > 0) tx(c, 'КАК МИНИМУМ 4', 1200, 640, { f: 'M', w: 800, s: 112 * bo(k4), c: '#F4F1EA', a: Math.min(1, k4 * 2) });
   }
   function smoke9(c, t) {   // дым выходит из плаката и тает в ночном небе
-    const a = T9, k = at(t, a.kur + .1, a.uein + .6); if (k <= 0) return; const x0 = 404.5, y0 = 623.5;
+    const a = T9, k = at(t, a.kur + .1, a.uein + .6); if (k <= 0) return; const x0 = 412, y0 = 628;   // кончик сигареты всадника (RCIG)
     for (let j = 0; j < 3; j++) { const u = cl(k * 1.4 - j * .2), pts = []; for (let i = 0; i <= 10; i++) { const s2 = i / 10 * u; pts.push(x0 + Math.sin(s2 * 7 + j + t * 1.3) * 26 * s2 + s2 * 40, y0 - s2 * 520) } smokeLine(c, pts, 6 - j, '#DCD8E4', (1 - at(k, .7, 1)) * (1 - j * .2)) }
   }
   function calendar(c, t) {   // отрывной календарь на плакате между всадником и пачкой; за каждый день из пачки падают полторы пачки
-    const a = T9, k = at(t, a.polt - .25, a.dev - .2); if (k <= 0) return; const cx = 560, cy = 520, A0 = Math.min(1, k * 6) * (1 - at(t, a.dev - .2, a.dev + .1));
+    const a = T9, k = at(t, a.polt - .25, a.dev - .2); if (k <= 0) return; const cx = 840, cy = 452, A0 = Math.min(1, k * 6) * (1 - at(t, a.dev - .2, a.dev + .1));
     c.save(); c.globalAlpha *= A0;
     rr(c, cx - 74, cy - 96, 148, 176, 8); fill(c, '#F4F1EA'); c.fillStyle = C3.red; c.fillRect(cx - 74, cy - 96, 148, 40); circ(c, cx - 40, cy - 96, 6, '#333'); circ(c, cx + 40, cy - 96, 6, '#333');
     const n = Math.floor(k * 14); tx(c, String(1 + n), cx, cy + 18, { f: 'M', w: 800, s: 74, c: '#141010' });
@@ -1142,12 +1328,21 @@
     const fp = (k * 21) % 1; if (np < 21) { c.save(); c.translate(860, lp(BB.y + 200, BB.y + BB.h - 60, ei(fp))); c.rotate(fp * 2); c.scale(.17, .17); mPack(c, -95, -141, 190, 282, 34, { shadow: false }); c.restore() }
     c.restore();
   }
-  function xray(c, t) {   // светлая планка рентгена едет по груди всадника: за ней лёгкие контуром и тёмное пятно (координаты всадника)
-    const a = T9, k = at(t, a.dev - .1, a.posl - .1); if (k <= 0 || k >= 1) return; const bx = lp(-30, 40, eio(at(k, 0, .45))), A0 = Math.min(1, k * 8) * (1 - at(k, .85, 1)), sp = eo(at(t, a.rak - .1, a.leg + .2));
-    c.save(); c.globalAlpha *= A0; c.beginPath(); c.rect(bx - 30, -214, 60, 58); c.clip(); c.fillStyle = '#9FD4E6'; c.fillRect(bx - 30, -214, 60, 58);
-    [[-1, 0], [1, 0]].forEach(([s2]) => { c.beginPath(); c.ellipse(10 + s2 * 9, -186, 7, 18, s2 * .15, 0, TAU); c.strokeStyle = '#1E4E6A'; c.lineWidth = 1.6; c.stroke() });
-    c.beginPath(); c.moveTo(10, -208); c.lineTo(10, -170); c.strokeStyle = '#1E4E6A'; c.lineWidth = 1.4; c.stroke(); if (sp > 0) circ(c, 15, -192, 4.2 * sp, '#1A1214');
-    c.restore(); c.save(); c.globalAlpha *= A0; c.strokeStyle = '#E8F7FC'; c.lineWidth = 1.5; c.strokeRect(bx - 30, -214, 60, 58); c.restore();
+  function torsoPath(c) { c.beginPath(); c.moveTo(-6, -160); c.bezierCurveTo(-10, -178, -8, -196, -2, -208); c.quadraticCurveTo(6, -216, 16, -214); c.lineTo(24, -211); c.bezierCurveTo(31, -204, 32, -192, 28, -180); c.bezierCurveTo(24, -172, 22, -166, 20, -160); c.closePath() }
+  function xray(c, t) {   // v20.2 (Боб #037): вертикальная полоса сканера идёт по всаднику слева направо; за ней тело — прозрачный контур на тёмной сетке: лёгкие, рёбра, тёмное пятно (координаты всадника)
+    const a = T9, k = at(t, a.dev - .15, a.posl - .1); if (k <= 0 || k >= 1) return; const bx = lp(-16, 38, eio(at(k, 0, .4))), A0 = 1 - at(k, .88, 1), sp = eo(at(t, a.rak - .1, a.leg + .2));
+    c.save(); c.globalAlpha *= A0;
+    c.save(); torsoPath(c); c.clip(); c.beginPath(); c.rect(-20, -230, bx + 20, 90); c.clip();
+    c.fillStyle = '#0B1A33'; c.fillRect(-20, -230, 60, 90); c.strokeStyle = 'rgba(120,210,240,.3)'; c.lineWidth = .5; c.beginPath(); for (let gx = -18; gx < 40; gx += 4) { c.moveTo(gx, -230); c.lineTo(gx, -140) } for (let gy = -228; gy < -140; gy += 4) { c.moveTo(-20, gy); c.lineTo(40, gy) } c.stroke();
+    [-1, 1].forEach(s2 => { c.beginPath(); c.ellipse(11 + s2 * 6, -186, 5, 13, s2 * .14, 0, TAU); c.fillStyle = 'rgba(150,220,245,.32)'; c.fill(); c.strokeStyle = '#BFEFFF'; c.lineWidth = 1; c.stroke() });   // лёгкие
+    c.strokeStyle = 'rgba(191,239,255,.55)'; c.lineWidth = .7; for (let r = 0; r < 4; r++) { c.beginPath(); c.arc(11, -198 + r * 7, 10, Math.PI * .1, Math.PI * .9); c.stroke() }   // рёбра
+    c.beginPath(); c.moveTo(11, -210); c.lineTo(11, -166); c.strokeStyle = '#BFEFFF'; c.lineWidth = .9; c.stroke(); if (sp > 0) circ(c, 15, -190, 3.4 * sp, '#020308');   // трахея, пятно
+    c.restore();
+    c.strokeStyle = 'rgba(191,239,255,.85)'; c.lineWidth = .9;
+    c.save(); c.beginPath(); c.rect(-20, -230, bx + 20, 90); c.clip(); torsoPath(c); c.stroke(); c.restore();   // контур тела — только за полосой
+    if (k < .45) { c.fillStyle = 'rgba(190,240,255,.22)'; c.fillRect(bx - 3, -222, 6, 70); c.fillStyle = '#E8FBFF'; c.fillRect(bx - .8, -222, 1.6, 70) }   // полоса сканера
+    c.restore();
+    if (sp > 0) for (let q = 0; q < 2; q++) { const u = at(t, a.rak + q * .4, a.rak + .7 + q * .4); if (u > 0 && u < 1) ring(c, 15, -190, 5 + 16 * eo(u), rgba('#E23A4E', .9 * (1 - u)), 1.4) }
   }
   function slats(c, t) {   // щит делится на трёхгранные планки, они поворачиваются: реклама против курения — шляпа на больничной койке
     const a = T9, k = at(t, a.rekl - .25, a.prot + .5); if (k <= 0) return; const { x, y, w, h } = BB, N = 14, sw = w / N;
@@ -1162,22 +1357,29 @@
     rr(c, x + 254, y + 360, 466, 66, 12); fill(c, '#F4F1EA'); rr(c, x + 270, y + 330, 130, 40, 14); fill(c, '#FFFFFF'); c.fillStyle = '#9FB3C2'; c.fillRect(x + 254, y + 408, 466, 18);
     cHat(c, x + 520, y + 352, 1.9); c.fillStyle = '#5E6A74'; c.fillRect(x + 820, y + 120, 8, 430); rr(c, x + 790, y + 120, 70, 90, 10); fill(c, '#DCE6EC');
   }
-  function post(c, px, t, i) {   // столб-памятник у дороги: шляпа висит на нём
-    const a = T9; let k;
-    if (i === 0) k = boardMorph(t); else { const t0 = a.vsego + .1 + (i - 1) * .2; k = eo(at(t, t0, t0 + .5)) }
-    if (k <= 0) return; const top = 620, H = (1378 - top) * (i === 0 ? 1 : k);
-    c.fillStyle = '#2A1D18'; c.fillRect(px - 22, 1378 - H, 44, H); c.fillStyle = '#3E2A22'; c.fillRect(px - 22, 1378 - H, 14, H); c.fillRect(px - 70, 1378 - H + 90, 140, 22);
-    const th = i === 0 ? at(t, a.pyat - .05, a.pyat + .35) : at(t, a.chet - .1 + (i - 1) * .25, a.chet + .3 + (i - 1) * .25); if (th > 0) { const hy = lp(top - 500, 1378 - H + 6, eo(th)); cHat(c, px, hy, 2.1) }
+  function hatL(c, x, y, s) {   // v20.2: светлая шляпа ковбоя в лунном свете — видна на ночном небе
+    cHat(c, x, y, s, '#B88A5C'); c.save(); c.translate(x, y); c.scale(s, s); c.strokeStyle = 'rgba(250,232,196,.9)'; c.lineWidth = 2.2;
+    c.beginPath(); c.moveTo(-60, -13); c.quadraticCurveTo(-46, -1, -26, -5); c.lineTo(26, -5); c.quadraticCurveTo(46, -1, 60, -13); c.stroke();
+    c.beginPath(); c.moveTo(-25, -8); c.bezierCurveTo(-25, -32, -18, -44, -8, -48); c.stroke(); c.restore();
   }
-  function wire(c, t) {   // проволока между столбами натягивается на «Мальборо»; в фильме на «Помните» краснеет — это красная нить доски
-    const a = T9, k = at(t, a.vsego + .3, a.vsego + .9); if (k <= 0) return; const tight = eio(at(t, a.marl - .1, a.marl + .4)), red = SA('s12') !== null ? eio(at(t, SA('s12') - .05, SA('s12') + .5)) : 0;
-    c.strokeStyle = mixc('#8A8296', '#DC2626', red); c.lineWidth = 5 + 4 * red; c.beginPath();
-    for (let i = 0; i < 3; i++) { const x0 = POSTS[i], x1 = POSTS[i + 1], sag = 120 * (1 - tight) * Math.min(1, k * 2); c.moveTo(x0, 760); c.quadraticCurveTo((x0 + x1) / 2, 760 + sag, x0 + (x1 - x0) * Math.min(1, k * 3 - i), 760) } c.stroke();
-    if (tight > 0) for (let i = 0; i < 10; i++) { const u = (t * 1.6 + i * .37) % 1, dx = lp(-200, 3800, u), dy = 900 + H1(i) * 400; c.beginPath(); c.moveTo(dx, dy); c.lineTo(dx + 140, dy - 40); lnB(c, 3, rgba('#B9A99A', .45 * tight)) }
+  function post(c, px, t, i) {   // v20.2: столб забора ранчо у дороги (тёплое дерево, скошенный верх); на него падает большая светлая шляпа
+    const a = T9; let k;
+    if (i === 0) k = 1; else { const t0 = a.vsego + .1 + (i - 1) * .2; k = eo(at(t, t0, t0 + .5)) }
+    if (k <= 0) return; const H = (1378 - PTOP) * k, y0 = 1378 - H;
+    c.fillStyle = '#4A3326'; c.fillRect(px - 22, y0, 44, H); c.fillStyle = '#5E4232'; c.fillRect(px - 22, y0, 12, H); c.fillStyle = '#2E1F17'; c.fillRect(px + 12, y0, 10, H);
+    PL(c, [px - 22, y0, px, y0 - 12, px + 22, y0], '#5E4232'); c.fillStyle = 'rgba(30,20,14,.45)'; for (let g = 0; g < 3; g++) c.fillRect(px - 12 + g * 9, y0 + 40 + g * 70, 3, 60);
+    const th = i === 0 ? at(t, a.pyat - .05, a.pyat + .35) : at(t, a.chet - .1 + (i - 1) * .25, a.chet + .3 + (i - 1) * .25); if (th > 0) hatL(c, px, lp(PTOP - 700, y0 - 16, eo(th)), 2.0);
+  }
+  function wire(c, t) {   // v20.2: между столбами — две жерди и колючая проволока; проволока натягивается на «Мальборо», в фильме на «Помните» краснеет — это красная нить доски
+    const a = T9, red = SA('s12') !== null ? eio(at(t, SA('s12') - .05, SA('s12') + .5)) : 0, tight = eio(at(t, a.marl - .1, a.marl + .4));
+    for (let i = 0; i < 3; i++) { const t0 = a.vsego + .1 + i * .2, k = eio(at(t, t0 + .2, t0 + .6)); if (k <= 0) continue; const x0 = POSTS[i], x1 = POSTS[i + 1], xe = lp(x0, x1, k);
+      [PTOP + 110, PTOP + 250].forEach(ry => { c.fillStyle = '#3E2B20'; c.fillRect(x0, ry, xe - x0, 22); c.fillStyle = '#5E4232'; c.fillRect(x0, ry, xe - x0, 5) });
+      const wy = PTOP + 34, sag = 46 * (1 - tight); c.strokeStyle = mixc('#8A8296', '#DC2626', red); c.lineWidth = 3 + 3 * red; c.beginPath(); c.moveTo(x0, wy); c.quadraticCurveTo((x0 + xe) / 2, wy + sag * k, xe, wy); c.stroke();
+      for (let bx = x0 + 30; bx < xe - 10; bx += 46) { const u = (bx - x0) / (x1 - x0), by = wy + sag * k * 4 * u * (1 - u); c.beginPath(); c.moveTo(bx - 6, by - 6); c.lineTo(bx + 6, by + 6); c.moveTo(bx + 6, by - 6); c.lineTo(bx - 6, by + 6); c.stroke() } }   // колючки
   }
   function w9World(c, t, q) {
     nightLocal(c, t, q, false);
-    if (q.z > .3) layerRel(c, q, K9REF, 1.3, cc => { for (let i = 0; i < 14; i++) { const lx = BB.x + 180 + (i % 3) * 300 + Math.sin(t * 3 + i) * 60, ly = BB.y - 40 + H1(i) * 300 + Math.cos(t * 2.3 + i * 2) * 40; circ(cc, lx, ly, 3, 'rgba(255,240,200,.7)') } });   // мошкара в луче лампы
+    if (q.z > .6) A(c, cl((q.z - .6) / .8), () => layerRel(c, q, K9REF, 1.3, cc => { for (let i = 0; i < 14; i++) { const lx = BB.x + 180 + (i % 3) * 300 + Math.sin(t * 3 + i) * 60, ly = BB.y - 40 + H1(i) * 300 + Math.cos(t * 2.3 + i * 2) * 40; circ(cc, lx, ly, 3, 'rgba(255,240,200,.7)') } }));   // мошкара в луче лампы
   }
   let K9REF = null;
   function w9Shot(c, t) {
@@ -1192,17 +1394,17 @@
   let T12 = null, K12 = null, N12 = null, CORK3 = null;
   function corkImg3() { if (CORK3) return CORK3; CORK3 = mk(WW, 1400); const g = CORK3.getContext('2d'); g.fillStyle = '#b07a4a'; g.fillRect(0, 0, WW, 1400);
     for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < WW; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() } return CORK3 }
-  function boardWall3(c, t) {
-    c.fillStyle = '#1f1b2b'; c.fillRect(-4000, -4000, 9000, 9000);
-    c.save(); rr(c, 30, 150, WW - 60, 1050, 14); fill(c, '#5b3d26'); rr(c, 52, 172, WW - 104, 1006, 8); c.clip(); c.drawImage(corkImg3(), 0, 0); c.restore();
-    rr(c, 30, 150, WW - 60, 1050, 14); lnS(c, 5, '#f1e6d6'); rr(c, 52, 172, WW - 104, 1006, 8); lnS(c, 3, 'rgba(241,230,214,.5)');
-    const sw = Math.sin(t * 1.25) * .2, bx = 540 + Math.sin(sw) * 1300; c.beginPath(); c.moveTo(540, -400); c.lineTo(540, 40); lnS(c, 3, '#f1e6d6');
-    c.save(); c.translate(540, 40); c.rotate(-sw * .25); c.beginPath(); c.arc(0, 30, 44, Math.PI, 0); c.closePath(); fill(c, '#2b2638'); c.beginPath(); c.arc(0, 30, 44, Math.PI, 0); c.closePath(); lnS(c, 4, '#f1e6d6'); circ(c, 0, 34, 10, '#fde68a'); c.restore();
-    poly(c, [510, 74, 570, 74, bx + 420, 1200, bx - 420, 1200]); fill(c, 'rgba(253,230,138,.09)');
+  function boardWall3(c, t) {   // v20.2: пробка во весь кадр (без тёмной стены снизу): доска шире любого кадра камеры
+    c.fillStyle = '#4a3220'; c.fillRect(-4000, -4000, 9000, 9000);
+    const X0 = -520, Y0 = -420, X1 = 1600, Y1 = 2300, im = corkImg3();
+    c.save(); rr(c, X0, Y0, X1 - X0, Y1 - Y0, 14); fill(c, '#5b3d26'); rr(c, X0 + 22, Y0 + 22, X1 - X0 - 44, Y1 - Y0 - 44, 8); c.clip();
+    for (let yy = Y0; yy < Y1; yy += 1400) for (let xx = X0; xx < X1; xx += 1080) c.drawImage(im, xx, yy); c.restore();
+    rr(c, X0 + 22, Y0 + 22, X1 - X0 - 44, Y1 - Y0 - 44, 8); lnS(c, 3, 'rgba(241,230,214,.4)');
+    c.save(); const g = c.createRadialGradient(540, 420, 120, 540, 700, 1500); g.addColorStop(0, 'rgba(255,236,190,.12)'); g.addColorStop(1, 'rgba(20,12,6,.38)'); c.fillStyle = g; c.fillRect(X0, Y0, X1 - X0, Y1 - Y0); c.restore();   // свет лампы сверху, края темнее
   }
   function marker3(c, x, y, s, seed) { c.save(); c.translate(x, y); c.lineCap = 'round';
     [[-1, -.62], [1, .55], [-1, .1]].forEach(([d, off], i) => { c.save(); c.rotate(d * .62 + (H1(seed + i) - .5) * .1); c.strokeStyle = 'rgba(10,10,12,.94)'; c.lineWidth = s * .2; c.beginPath(); c.moveTo(-s * .62, off * s * .25); c.lineTo(s * .62, off * s * .25); c.stroke(); c.restore() }); c.restore() }
-  function pin3d(c, x, y) { circ(c, x + 3, y + 5, 14, 'rgba(0,0,0,.35)'); circ(c, x, y, 14, '#dc2626'); circ(c, x - 4, y - 4, 5, '#fca5a5') }
+  function pin3d(c, x, y) { circ(c, x + 2, y + 4, 10, 'rgba(0,0,0,.35)'); circ(c, x, y, 10, '#dc2626'); circ(c, x - 3, y - 3, 3.6, '#fca5a5') }   // v20.2: булавка меньше — при отъезде из фото не «огромный шар»
   function thread3(c, a, b, k = 1, col = '#dc2626') { if (k <= 0) return; const [x1, y1] = pin3(a), [x2, y2] = pin3(b); c.save(); c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 4; c.beginPath(); c.moveTo(x1 + 3, y1 + 6); c.lineTo(lp(x1, x2, k) + 3, lp(y1, y2, k) + 6); c.stroke(); c.strokeStyle = col; c.lineWidth = 4; c.beginPath(); c.moveTo(x1, y1); c.lineTo(lp(x1, x2, k), lp(y1, y2, k)); c.stroke(); c.restore() }
   function photo1979b(c, t, x, y, s) {   // колба и кристалл соли (как в главе 1); на «миллиардов» — круг «Джула» с долей 35 %
     const a = T12, k = a ? spr(at(t, a.mil - .15, a.mil + .5)) : 0;
@@ -1228,28 +1430,41 @@
     const s = 's12'; if (SA(s) === null) return; const w = q => Ws(s, q);
     T12 = { a: SA(s), pom: w('помните'), tri: w('тринадцать'), mil: w('миллиардов'), juul: w('джула'), pochti: w('почти'), poter: w('потерял'), spok: w('спокойно'), perezh: w('пережил'),
       pach: w('пачка'), korm: w('кормит'), por: w('пор'), end: SA('s13') - .02 };
-    const m = 230 / (1920 / .45); N12 = { x: 540 - (1640 - 540) * m, y: photo3(C1924)[1], m };
+    const [ex, ey, ez] = T9END, m = 230 / (1920 / ez); N12 = { x: 540 - (ex - 540) * m, y: photo3(C1924)[1] - (ey - 960) * m, m };   // v20.2: фото = последний кадр ночной сцены
     const a = T12; a.burn = a.por + .05;
     K12 = [KY(a.pom + .5, 520, 720, 2.6), KY(a.tri + .5, 500, 660, 1.55), KY(a.mil + .25, 360, 470, 2.0), KY(a.juul, 345, 430, 2.35), KY(a.pochti + .35, 345, 470, 2.2), KY(a.spok + .1, 520, 720, 1.35),
       KY(a.korm + .1, 600, 900, 1.2), KY(a.por, 720, 1080, 1.6), KY(a.end, RC.x1, RC.y1, 9)];
   }
-  const RC = { x0: 640, y0: 760, x1: 860, y1: 1140 };   // чек: откуда выползает и где кончик (тлеет)
-  function pack12(c, t) {   // пачка выезжает из-за карточки 1924, качается; крышка открывается ящиком кассы, чек волной
+  const RC = { x0: 640, y0: 760, x1: 905, y1: 1175 };   // чек: откуда выползает и где кончик (тлеет)
+  function pack12(c, t) {   // v20.2: крупная пачка-касса на переднем плане: выезжает из-за карточки 1924, крышка откидывается назад (как ящик кассы), из пачки волной ползёт чек
     const a = T12, k = eo(at(t, a.spok - .3, a.spok + .5)); if (k <= 0) return;
-    const x = lp(560, 650, k), y = 800, sw = Math.sin(t * 2.2) * .05 * at(t, a.spok + .3, a.spok + .8), lid = eio(at(t, a.korm - .08, a.korm + .2));
-    c.save(); c.translate(x + 60, y + 90); c.rotate(sw); c.translate(-(x + 60), -(y + 90));
-    if (lid > 0) { const rl = at(t, a.korm + .1, a.end); c.strokeStyle = '#F4F1EA'; c.lineCap = 'butt';   // бесконечный чек волной
-      const pts = []; for (let i = 0; i <= 40; i++) { const u = i / 40 * rl; pts.push([lp(x + 60, RC.x1, u) + Math.sin(u * 9 - t * 4) * 26, lp(y - 10, RC.y1, u)]) }
-      c.lineWidth = 34; c.beginPath(); pts.forEach((p, i) => i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])); c.stroke(); c.strokeStyle = 'rgba(40,40,50,.35)'; c.lineWidth = 2;
-      pts.forEach((p, i) => { if (i % 2) { c.beginPath(); c.moveTo(p[0] - 10, p[1]); c.lineTo(p[0] + 10, p[1]); c.stroke() } });
-      const end = pts[pts.length - 1], eb = at(t, a.burn - .1, a.end); if (eb > 0) { circ(c, end[0], end[1], 14, rgba('#FF9A4A', .5 * eb)); circ(c, end[0], end[1], 8, C3.ember) } }
-    c.save(); c.translate(x, y); c.scale(.42, .42); mPack(c, 0, 0, 190, 282, 34, { shc: 'rgba(0,0,0,.3)' });
-    if (lid > 0) { c.save(); c.translate(190, 282 * .3); c.rotate(-lid * 2.1); PL(c, [-190, 0, 0, 0, 0, -84, -190, -84], C3.white); PL(c, [-190, -84, 0, -84, -95, -36], C3.red); c.restore() } c.restore();
+    const S = .82, w = 190 * S, h = 282 * S, x = lp(470, 650, k), top = lp(760, 800, k), sw = Math.sin(t * 2.2) * .04 * at(t, a.spok + .3, a.spok + .8), lid = eio(at(t, a.korm - .1, a.korm + .2));
+    c.save(); c.translate(x + w / 2, top + h); c.rotate(sw); c.translate(-(x + w / 2), -(top + h));
+    rasterPoly(c, [x + w, top + h * .1, x + w + h * .2, top + h * .25, x + w + h * .2, top + h * 1.1, x + w * .2, top + h * 1.1, x, top + h], 'rgba(0,0,0,.3)', 9, 2.4);
+    flipPack(c, x, top, w, h, lid, { shadow: false });
     c.restore();
+    if (lid > 0) { const rl = at(t, a.korm + .08, a.end), x0 = x + w / 2, y0 = top + h * .1, pts = [];   // бесконечный чек волной
+      for (let i = 0; i <= 44; i++) { const u = i / 44 * rl, bx = lp(x0, RC.x1, u), by = lp(y0, RC.y1, u) - Math.sin(Math.PI * Math.min(1, u * 1.6)) * 240; pts.push([bx + Math.sin(u * 9 - t * 4) * 24, by]) }
+      c.strokeStyle = '#F4F1EA'; c.lineCap = 'butt'; c.lineWidth = 36; c.beginPath(); pts.forEach((p, i) => i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])); c.stroke();
+      c.strokeStyle = 'rgba(40,40,50,.35)'; c.lineWidth = 2; pts.forEach((p, i) => { if (i % 2 && i > 2) { c.beginPath(); c.moveTo(p[0] - 11, p[1]); c.lineTo(p[0] + 11, p[1]); c.stroke() } });
+      const end = pts[pts.length - 1], eb = at(t, a.burn - .1, a.end); if (eb > 0) { circ(c, end[0], end[1], 16, rgba('#FF9A4A', .45 * eb)); circ(c, end[0], end[1], 9, C3.ember) } }
   }
-  function counter12(c, t) {   // барабанный счётчик под кругом: 12,8 → 0,45 млрд
-    const a = T12, k = at(t, a.mil + .2, a.mil + .5); if (k <= 0) return; const v = lp(12.8, .45, eio(at(t, a.pochti, a.poter + .45))), s = v >= 1 ? v.toFixed(1).replace('.', ',') : v.toFixed(2).replace('.', ',');
-    const cd = CARDS3[0]; plate(c, '$' + s + ' МЛРД', cd.x, cd.y + CH3 / 2 + 46, bo(k), { s: 30, bg: '#F4F1EA', c: '#141010', ls: 1 });
+  function drum12(c, t) {   // v20.2: барабанный счётчик поверх кадра: 12,80 → 0,45 млрд $, цифры прокручиваются; уходит на «пережил»
+    const a = T12; if (!a) return; const k = at(t, a.mil + .1, a.mil + .45) * (1 - at(t, a.perezh + .1, a.perezh + .4)); if (k <= 0) return;
+    const v = lp(12.8, .45, eio(at(t, a.pochti, a.poter + .45))), cw = 46, ch = 70, x0 = 540 - 3.2 * cw, y0 = 300;
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.translate(540, y0); c.scale(bo(k), bo(k)); c.translate(-540, -y0); c.globalAlpha *= Math.min(1, k * 2);
+    rr(c, x0 - 70, y0 - ch / 2 - 14, 6.4 * cw + 210, ch + 28, 18); fill(c, 'rgba(15,23,42,.9)');
+    tx(c, '$', x0 - 34, y0 + 3, { f: 'M', w: 800, s: 50, c: '#F4F1EA' }); tx(c, 'МЛРД', x0 + 5.6 * cw + 62, y0 + 3, { f: 'M', w: 800, s: 34, c: '#F4F1EA' });
+    const P = [[10, 0], [1, 1], [null, 2], [.1, 3], [.01, 4]];
+    P.forEach(([pl, i]) => { const cx = x0 + i * cw * 1.12 + cw / 2;
+      if (pl === null) { tx(c, ',', cx, y0 + 14, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); return }
+      rr(c, cx - cw / 2, y0 - ch / 2, cw, ch, 8); fill(c, '#F4F1EA');
+      const dd = (v + 1e-6) / pl, d0 = Math.floor(dd) % 10, fr = dd - Math.floor(dd), sh = pl < .05 ? fr : cl((fr - .9) * 10);   // как одометр: младшая цифра крутится, старшие поворачиваются, когда младшая проходит 9→0
+      c.save(); rr(c, cx - cw / 2, y0 - ch / 2, cw, ch, 8); c.clip();
+      const show = n => (i === 0 && v < 9.6 && n % 10 === 0) ? '' : String(n % 10);
+      tx(c, show(d0), cx, y0 + 4 - sh * ch, { f: 'M', w: 800, s: 54, c: '#141010' }); tx(c, show(d0 + 1), cx, y0 + 4 + ch - sh * ch, { f: 'M', w: 800, s: 54, c: '#141010' });
+      c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(cx - cw / 2, y0 - 3, cw, 6); c.restore() });
+    c.restore();
   }
   function board12(c, t, inner) {
     const a = T12; boardWall3(c, t);
@@ -1257,22 +1472,24 @@
     const kt = a ? eo(at(t, a.pom + .2, a.tri + .4)) : 1; thread3(c, C1924, CARDS3[0], kt);
     CARDS3.forEach(cd => card3(c, t, cd, cd.id === '1924' ? inner : null));
     CARDS3.forEach(cd => pin3d(c, ...pin3(cd)));
-    if (a) { counter12(c, t); if (t < a.end + .3) pack12(c, t) }   // пачка с чеком сгорела в дым — на доске в концовке её нет
+    if (a && t < a.end + .3) pack12(c, t);   // пачка с чеком сгорела в дым — на доске в концовке её нет
   }
   function w12Shot(c, t) { const q = camObj(camAt(K12, t)); layer(c, q, 1, cc => board12(cc, t, ci => inNest(ci, N12, cn => nightLocal(cn, t, q, false)))) }
-  // ---------- дым: густая серая полоса проходит перед камерой (стык доски / ночной дороги с 2014-м) ----------
-  function smokeCover(c, t, tc, half = .5) {   // клубы дыма поднимаются снизу и закрывают кадр; после стыка уходят вверх — снизу открывается новый мир
-    if (Math.abs(t - tc) > half + .3) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); const TONE = ['#9A9AA6', '#8A8A96', '#B0AFBA', '#A3A2AE'];
-    let full = Math.abs(t - tc) < .02;
-    for (let j = 0; j < 11; j++) for (let i = 0; i < 8; i++) { const n = j * 8 + i, bx = -40 + i * 160 + (H1(n * 1.7) - .5) * 60, by = -60 + j * 200 + (H1(n * 2.9) - .5) * 60;
-      const ta = tc - half + (1 - by / 1920) * .1 + ((1920 - by) / 1920) * (half - .18) * .9, k = eo(at(t, ta, ta + .3));   // снизу вверх, как поднимается дым
-      const tl = tc + .04 + (by / 1920) * .05 + ((1920 - by) / 1920) * .02, u = at(t, tl, tl + half), up = 4200 * u * u;   // после стыка — вверх, нижние клубы раньше
-      if (k <= 0 || u >= 1) continue; const r = 196 * k * (1 - .35 * u) + 22 * Math.sin(t * 3 + n);
-      circ(c, bx + Math.sin(t * 1.7 + n) * 14, by - up - (1 - k) * 220, r, TONE[n % 4]) }
-    if (full) { c.fillStyle = '#9A9AA6'; c.fillRect(0, 0, WW, HH) }
+  // ---------- дым (v20.2): неровные клубы растут из тлеющего кончика чека (в шортсе — снизу), закрывают кадр; после стыка с 2014-м уходят вверх ----------
+  function smokeCover(c, t, tc, half = .5) {
+    if (Math.abs(t - tc) > half + .5) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
+    const TONE = ['#9A9AA6', '#8C8C98', '#B3B2BC', '#A5A4AF', '#7F7F8B'], [sx, sy] = MODE === 'y' && T12 ? [540, 960] : [540, 2250];
+    for (let n = 0; n < 48; n++) {
+      const fx = -80 + H1(n * 1.37) * 1240, fy = -120 + H1(n * 2.91) * 2160, R = 230 + H1(n * 6.53) * 270;   // где клуб стоит, когда кадр закрыт
+      const ta = tc - half + H1(n * 4.17) * half * .55, k = eo(at(t, ta, tc + .02));
+      const after = at(t, tc + .03 + (fy / 1920) * .1, tc + .03 + half + .2), up = 2800 * after * after;   // после стыка — вверх; нижние клубы уходят позже
+      if (k <= 0 || after >= 1) continue;
+      const x = lp(sx, fx, k) + Math.sin(t * 1.6 + n) * 16, y = lp(sy, fy, k) - up, r = R * (.18 + .82 * k) * (1 - .35 * after);
+      circ(c, x, y, r, TONE[n % 5]); circ(c, x - r * .22, y - r * .26, r * .56, 'rgba(200,199,208,.32)');   // клуб и его светлая сторона
+    }
+    if (Math.abs(t - tc) < .02) { c.fillStyle = '#9A9AA6'; c.fillRect(0, 0, WW, HH) }
     c.restore();
   }
-
   // ================= мир 13–14 (фразы 13–14): графит 2014-го. Белые фигурки 1954-го пятятся от дыма; огонь на кончике сжимается в пластинку нагревателя (#114);
   // разрез тонкими линиями поверх держателя (#067); волны тепла вместо дыма. Стик выезжает, отъезд: пачка HeatSticks → витрина с тремя пачками (#151), имена загораются.
   // Концовки: фильм — витрина становится фото карточки 1924, нить к закрытой «2014»; шортс — вопрос, «Часть 4 →», камера ныряет в рамку с кадром 0 (петля).
@@ -1287,7 +1504,7 @@
       KY(a.stiki + .2, 560, 920, 1.05), KY(a.naz + .1, 540, 900, .86), KY(a.marl + .1, 540, 905, .84)];
     if (MODE === 's') K13.push(KY(a.qEnd, 540, 760, .9), KY(a.endT, PRINT.x, PRINT.y, WW / PRINT.w));
     else { K13.push(KY(a.vEnd, 540, 900, .82)); const m = 230 / (1920 / .82); N14 = { x: 540, y: photo3(C1924)[1] - (900 - 960) * m, m };
-      KEND = [KY(a.vEnd + 1.2, 470, 800, 1.55), KY(a.endT, 420, 790, 1.42)]; linkK(K13, KEND, N14, false) }
+      KEND = [KY(a.vEnd + 1.25, 540, 640, 1.12), KY(a.endT, 535, 630, 1.08)]; linkK(K13, KEND, N14, false) }   // v20.2: в кадре все пять карточек и нить к закрытой «2014»
   }
   function graphite(c, t) {
     c.fillStyle = '#2B2E36'; c.fillRect(-6000, -6000, 12000, 12000); poly(c, [-6000, 2600, 6000, -3400, 6000, -2600, -6000, 3400]); fill(c, '#343844');
@@ -1295,27 +1512,34 @@
     c.fillStyle = '#23262D'; c.fillRect(-6000, 1460, 12000, 3000);
   }
   function figs13(c, t) {   // белые фигурки из 1954-го пятятся от дыма
-    const a = T13, b = eio(at(t, a.isp - .2, a.isp + .7)); for (let i = 0; i < 5; i++) { const m = i % 2 === 0, x = 60 + i * 90 - b * (260 + i * 40); fig(c, x, 1460, 1.5, { m, hat: m && i === 2, dir: b > .1 ? -1 : 1, col: '#F4F1EA', hc: C3.rose2 }) }
+    const a = T13, b = eio(at(t, a.isp - .2, a.isp + .75)); if (b >= 1) return; for (let i = 0; i < 5; i++) { const m = i % 2 === 0, x = 60 + i * 90 - b * (900 + i * 70), bob = b > 0 ? Math.abs(Math.sin(t * 11 + i)) * 10 : 0; fig(c, x, 1460 - bob, 1.5, { m, hat: m && i === 2, dir: b > .1 ? -1 : 1, col: '#F4F1EA', hc: C3.rose2 }) }   // v20.2: убегают из кадра целиком
   }
-  function flame(c, x, y, s, t) { const f = 1 + Math.sin(t * 17) * .06; c.save(); c.translate(x, y); c.scale(s, s * f);
-    c.beginPath(); c.moveTo(0, -70); c.bezierCurveTo(30, -30, 34, 0, 0, 22); c.bezierCurveTo(-34, 0, -30, -30, 0, -70); fill(c, '#FF8A2A'); c.beginPath(); c.moveTo(0, -34); c.bezierCurveTo(16, -14, 16, 2, 0, 14); c.bezierCurveTo(-16, 2, -16, -14, 0, -34); fill(c, '#FFD45A'); c.restore() }
+  // v20.2: сигарета 2014-го — бумага, пробковый фильтр, огонёк с пеплом (без язычка свечи); на «табак» она становится стиком, держатель — чертёж тонкими линиями,
+  // пластина нагревателя раскаляется оранжевым, тепло — мягкими прозрачными струями; на «стики» стик уходит в пачку HeatSticks на витрине
   function stick13(c, t) {
-    const a = T13, kf = eio(at(t, a.tret - .2, a.tret + .5)), kh = eio(at(t, a.tab - .35, a.tab + .3)), kn = eio(at(t, a.gre - .2, a.nagr + .2)), out = eio(at(t, a.stiki - .2, a.stiki + .55)), { y, r } = CIG;
-    const L = lp(CIG.x1 - CIG.x0, 340, kh), x0 = CIG.x0 + lp(0, 300, kh) - out * 520, x1 = x0 + L;
-    if (out < 1 || t < a.naz) {
-      rasterPoly(c, [x0, y + r, x1, y + r, x1 + 90, y + r + 70, x0 + 90, y + r + 70], 'rgba(0,0,0,.3)', 9, 2.3);
-      rr(c, x0, y - r, L, r * 2, r * .4); fill(c, C3.white); c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(x0, y + r * .35, L, r * .65);
-      c.fillStyle = lp(0, 1, kh) > .5 ? C3.cork : C3.white; c.fillRect(x0, y - r, L * .3, r * 2); c.fillStyle = '#8A5A2E'; c.fillRect(x1 - L * .38, y - r, L * .38 - 6, r * 2 * kh);
-      if (kf < 1) { const ex = x1; c.fillStyle = mixc('#3a2a26', C3.ember, 1 - kf); c.fillRect(ex - 18, y - r, 18, r * 2); flame(c, ex + 30, y - 8, 1 - kf, t);
-        smokeLine(c, [ex + 20, y - 60, ex + 40 + Math.sin(t * 2) * 20, y - 160, ex + 10, y - 280, ex + 40, y - 400], 7, '#C9C6D2', .7 * (1 - kf)) }
-      const sq = lp(26, 14, kf); if (kf > .2) { c.fillStyle = mixc('#9A9AA6', '#FF8A2A', kn); c.fillRect(x1 - L * .22 - sq / 2, y - sq * 1.6, sq, sq * 3.2) }   // пластинка нагревателя
+    const a = T13, kf = eio(at(t, a.tret - .2, a.tret + .5)), kh = eio(at(t, a.tab - .35, a.tab + .3)), kn = eio(at(t, a.gre - .2, a.nagr + .2)), out = eio(at(t, a.stiki - .2, a.stiki + .6)), { y, r } = CIG;
+    const L0 = lp(CIG.x1 - CIG.x0, 360, kh), X0 = CIG.x0 + lp(0, 300, kh);
+    const gx = 830, gy = SHOW.shelf - 236, sc = lp(1, .34, out), px = lp(X0 + L0 / 2, gx, out), py = lp(y, gy - 40 + 120 * eio(at(t, a.stiki + .35, a.naz)), out);   // в пачку: уменьшается, летит к её верху и опускается внутрь
+    if (out < 1 || t < a.naz + .1) {
+      c.save(); if (out > .6) { c.beginPath(); c.rect(-4000, -4000, 8000, gy + 4000); c.clip() }   // внутри пачки стик не виден
+      c.translate(px, py); c.scale(sc, sc); const x0 = -L0 / 2, x1 = L0 / 2;
+      if (out < .05) rasterPoly(c, [x0, r, x1, r, x1 + 90, r + 70, x0 + 90, r + 70], 'rgba(0,0,0,.3)', 9, 2.3);
+      cig3(c, x0, 0, x1, 0, r, { tip: C3.cork, tl: .3, em: kf < 1 ? 1 - kf : undefined, ek: 1 - kf });
+      if (kh > 0) { c.fillStyle = rgba('#8A5A2E', kh); c.fillRect(x1 - L0 * .36, -r, L0 * .36 - 4, r * 2); c.fillStyle = rgba('#6A4222', kh); for (let k = 0; k < 6; k++) c.fillRect(x1 - L0 * .36 + 6 + k * L0 * .055, -r + 4, 3, r * 2 - 8) }   // табак стика
+      c.restore();
     }
-    if (kh > 0 && out < 1) {   // белый держатель надвигается на табак; поверх — разрез тонкими линиями
-      const hx = lp(1500, HOLD.x0 + 140, kh) + out * 700, hw = 540; c.save(); rr(c, hx - 40, y - 70, hw, 140, 60); c.fillStyle = '#F2F2F4'; c.fill(); c.clip(); c.fillStyle = '#D9DAE0'; c.fillRect(hx - 40, y + 20, hw, 60); c.restore();
-      rr(c, hx - 40, y - 70, hw, 140, 60); lnB(c, 3, 'rgba(255,255,255,.8)');
-      const kc = at(t, a.tab - .1, a.tab + .5); if (kc > 0) { c.save(); c.globalAlpha *= Math.min(1, kc * 2); c.setLineDash([10, 8]); rr(c, x1 - L * .4, y - r, L * .4, r * 2, 6); lnB(c, 3, '#7CC4E0'); c.setLineDash([]);
-        c.beginPath(); c.moveTo(x1 - L * .3, y); c.lineTo(hx + 300, y); lnB(c, 2, '#7CC4E0'); c.restore() }
-      if (kn > 0) for (let i = 0; i < 4; i++) { const u = ((t * .9 + i * .25) % 1), wx = hx + 80 + i * 90; c.beginPath(); for (let k = 0; k <= 12; k++) { const yy = y - 90 - k * 22 - u * 60; c.lineTo(wx + Math.sin(k * .9 + t * 6 + i) * 12, yy) } lnB(c, 4, rgba('#FFB36A', .65 * kn * (1 - u))) }
+    const ex = CIG.x1; if (kf < 1) smokeLine(c, [ex + 6, y - 20, ex + 22 + Math.sin(t * 2) * 18, y - 140, ex + 4, y - 270, ex + 30, y - 400], 7, '#C9C6D2', .75 * (1 - kf));
+    if (kh > 0 && out < 1) {   // держатель — чертёж: контур тонкими линиями, прозрачный корпус, размерные линии; внутри пластина
+      const hx = lp(1500, CIG.x0 + 300 + 360 * .62, kh) + out * 900, hw = 560, hy = y; c.save();
+      rr(c, hx - 40, hy - 72, hw, 144, 64); c.fillStyle = 'rgba(190,225,250,.13)'; c.fill(); rr(c, hx - 40, hy - 72, hw, 144, 64); lnB(c, 3, 'rgba(220,240,255,.9)');
+      rr(c, hx - 26, hy - 58, hw - 28, 116, 52); lnB(c, 1.6, 'rgba(220,240,255,.45)');
+      c.setLineDash([12, 9]); c.beginPath(); c.moveTo(hx - 70, hy); c.lineTo(hx + hw + 30, hy); lnB(c, 1.4, 'rgba(124,196,224,.7)'); c.setLineDash([]);   // ось
+      const dy = hy + 112; c.beginPath(); c.moveTo(hx - 40, dy); c.lineTo(hx + hw - 40, dy); c.moveTo(hx - 40, dy - 12); c.lineTo(hx - 40, dy + 12); c.moveTo(hx + hw - 40, dy - 12); c.lineTo(hx + hw - 40, dy + 12); lnB(c, 2, 'rgba(124,196,224,.8)');   // размер
+      const bx = hx + 58, bh = r * 1.7, ko = 1 - out;   // пластина — внутри держателя и уезжает с ним
+      if (kh > .5) { const g = c.createLinearGradient(bx, hy - bh, bx, hy + bh); g.addColorStop(0, mixc('#8E929E', '#FF8A2A', kn)); g.addColorStop(.5, mixc('#B9BCC6', '#FFE08A', kn)); g.addColorStop(1, mixc('#8E929E', '#FF8A2A', kn));
+        rr(c, bx - 7, hy - bh, 14, bh * 2, 4); c.fillStyle = g; c.fill(); if (kn > 0) glow(c, bx, hy, 90, '#FF9A3A', .45 * kn * ko) }   // пластина: серая → раскалённая
+      if (kn > 0) for (let i = 0; i < 4; i++) { const u = (t * .7 + i * .25) % 1, wx = bx - 90 + i * 60; smokeLine(c, [wx, hy - 80 - u * 40, wx + 14, hy - 170 - u * 60, wx - 8, hy - 260 - u * 80, wx + 10, hy - 350 - u * 90], 9, '#FFB36A', .4 * kn * ko * Math.sin(Math.PI * u)) }   // тепло — мягкие прозрачные струи
+      c.restore();
     }
     const kb = at(t, a.bez - .05, a.bez + .3) * (1 - at(t, a.stiki - .3, a.stiki)); if (kb > 0) tx(c, 'БЕЗ ОГНЯ', 700, 560, { f: 'M', w: 800, s: 92 * bo(kb), c: '#F4F1EA', a: Math.min(1, kb * 2) });
   }
@@ -1339,8 +1563,8 @@
   }
   function w13World(c, t) {
     const a = T13; graphite(c, t); print0(c, t); figs13(c, t); showcase(c, t); stick13(c, t);
-    if (MODE === 's') { const kq = at(t, a.q - .1, a.q + .3); if (kq > 0) { plate(c, 'Без огня — без вреда?', 540, 528, bo(kq), { s: 54, bg: '#F4F1EA', c: '#141010', ls: 0, w: 800 }) }
-      const kp = at(t, a.qEnd - .2, a.qEnd + .2); if (kp > 0) tx(c, 'Часть 4 →', 540, 1400, { f: 'M', w: 800, s: 70 * bo(kp), c: '#F4F1EA', a: Math.min(1, kp * 2) }) }
+    if (MODE === 's') { const kq = at(t, a.q - .1, a.q + .3), kx = 1 - eio(at(t, a.qEnd + .15, a.qEnd + .45)); if (kq > 0 && kx > 0) { plate(c, 'Без огня — без вреда?', 540, 528, bo(kq) * kx, { s: 54, bg: '#F4F1EA', c: '#141010', ls: 0, w: 800 }) }   // v20.2: до нырка в рамку плашки сжимаются
+      const kp = at(t, a.qEnd - .2, a.qEnd + .2); if (kp > 0) tx(c, 'Часть 4 →', 540, 1330, { f: 'M', w: 800, s: 70 * bo(kp), c: '#F4F1EA', a: Math.min(1, kp * 2) }) }
   }
   function w13Shot(c, t) {
     if (MODE === 'y' && t >= T13.vEnd) { const q = camObj(camAt(KEND, t)); layer(c, q, 1, cc => { board12(cc, t, ci => inNest(ci, N14, cn => w13World(cn, t)));
@@ -1358,7 +1582,8 @@
       s12: w12Shot, s13: w13Shot, s14: w13Shot };
     w1Init(); w2Init(); linkK(K1, K2, { x: V1.x, y: V1.y, m: M1 }, true);   // ныряем из плаката в коридор: мир 2 вложен в мир 1
     wcInit(); linkK(K2, KC, NC2, true);   // ныряем в красный торец: круг рынка — это он
-    w7Init(); linkK(KC, K7, NC7(), true);   // ныряем в окно Бёрнетта
+    chInit(); linkK(KC, KCH, NCH, true);   // v20.2: ныряем в пробку сигареты — это корона небоскрёба, отъезд в ночной Чикаго
+    w7Init(); linkK(KCH, K7, NC7(), true);   // ныряем в кабинет Бёрнетта (этаж в разрезе дома)
     w8Init(); linkK(K7, K8, { x: 540, y: 960, m: 1 }, true);   // лист = плакат: тот же мир, смена незаметна
     linkK(K8, KE, NE8, false);   // столбик в ночном небе = луч над Землёй (мир 8 вложен в Землю)
     w9Init(); linkK(KE, K9, NE9, true);   // ныряем к горизонту на верху шара: ночной щит вложен в Землю
@@ -1366,8 +1591,8 @@
     w13Init();
     if (typeof wInitRest === 'function') wInitRest();
     const W = (a, b) => SHUT.push([a, b]);   // короткая выдержка на быстрых проездах: без смаза и двоения
-    W(T1.zh - .2, T1.end + .55); W(T2.izy - .1, T2.zh + .5); W(T2.tilt1 - .15, T2.end + .35); W(TC.spas - .1, TC.strah + .25); W(TC.amer + .15, TC.amer + .75); W(TC.bros - .1, TC.filt + .4);
-    W(TC.chik - .1, TC.leo + .3); W(TC.end - .7, TC.end + .35); W(T8.muzh, T8.chet + .55); W(T8.sem - .1, T8.mir + .35); W(T8.sweep1 - .1, T9.kur); W(T9.vsego - .2, T9.umerli + .3);
+    W(T1.zh - .2, T1.end + .55); W(T2.izy - .1, T2.zh + .5); W(T2.pom - .15, T2.end + .35); W(TC.spas - .1, TC.strah + .25); W(TC.amer + .15, TC.amer + .75); W(TC.bros - .1, TC.filt + .4); W(TC.nezh - .2, TC.nezh + .4); W(TC.fil - .12, TC.fil + .9);
+    W(TC.vidu - .1, TC.end + .4); W(T7.stav + .2, T7.slov + .15); W(T8.muzh, T8.chet + .55); W(T8.sem - .1, T8.mir + .35); W(T8.sweep1 - .1, T9.kur); W(T9.vsego - .2, T9.umerli + .3); W(T9.chet + .8, T9.chet + 1.4); W(T9.dev - .2, T9.dev + .5);
     if (T12) { W(T12.pom - .1, T12.pom + .7); W(T12.pochti - .1, T12.poter + .55) } W(TSM - .5, TSM + .5); W(T13.stiki - .2, T13.naz + .3);
     if (MODE === 'y') W(TLX.vEnd - .05, TLX.vEnd + 1.3); else W(T13.qEnd, TLX.endT + .1);
     BLOCKS.push(['w1', -1, FN.w1]);
@@ -1393,6 +1618,7 @@
     pill(2014, 2014, 1, -240 * Math.max(1 - eo(at(t, h.t14 - .25, h.t14 + .15)), ei(at(t, h.end, h.end + .45))));
   }
   function names(c, t) {   // плашки с именами — поверх кадра, чтобы читались, пока камера едет
+    { const kn = at(t, T9.nast - .05, T9.nast + .3) * (1 - at(t, T9.uein - .4, T9.uein - .12)); if (kn > 0) { c.save(); c.setTransform(1, 0, 0, 1, 0, 0); plate(c, 'ПО-НАСТОЯЩЕМУ', 540, 300, bo(kn), { s: 46, bg: '#F4F1EA', c: '#141010', ls: 3 }); c.restore() } }   // v20.2: плашкой, не поверх ламп
     for (const [a, b, n1, n2] of [[TC.bern - .12, TC.end - .12, 'ЛЕО БЁРНЕТТ', 'РЕКЛАМЩИК, ЧИКАГО'], [T9.uein - .05, T9.polt + .1, 'УЭЙН МАКЛАРЕН', 'КОВБОЙ С РЕКЛАМЫ']]) {
       const k = at(t, a, a + .3) * (1 - at(t, b - .25, b)); if (k <= 0) continue;
       c.save(); c.setTransform(1, 0, 0, 1, 0, 0); plate(c, n1, 540, 300, bo(k), { s: 50, bg: '#F3EBDD', c: '#141010', ls: 3 }); plate(c, n2, 540, 384, bo(at(t, a + .1, a + .4)) * (1 - at(t, b - .25, b)), { s: 30, bg: C3.red, c: '#fff', ls: 3 }); c.restore() }
@@ -1412,7 +1638,7 @@
     c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (window.NOMB) scene(c, t); else sceneMB(c, t);
-    c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); names(c, t); subs(c, t);
+    c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); names(c, t); if (T12) drum12(c, t); subs(c, t);
   }
   function cues() {   // звуки по событиям сцен (мягкие)
     allInit(); const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
@@ -1421,10 +1647,10 @@
     const d = TC; Q(d.pyat - .15, 'plop', .4); Q(d.gor - .1, 'counter', .5); Q(d.gor + .35, 'glass', .45); Q(d.proc - .2, 'plop', .5); Q(d.umer - .1, 'puff', .35); Q(d.spas - .05, 'whoosh', .6);
     Q(d.nam - .15, 'pour', .4); Q(d.nam + .3, 'marker', .5); Q(d.smol, 'marker', .4); Q(d.op - .1, 'xray', .45); Q(d.op + .45, 'xray', .3); Q(d.amer + .15, 'marker', .55); for (let i = 0; i < BARS.length; i++) Q(d.amer + .75 + i * .26, 'plop', .22, -.4 + i * .1); Q(d.men - .2, 'thud', .5);
     Q(d.bros - .1, 'whoosh', .5); Q(d.bros + .3, 'school', .35); for (let i = 0; i < 5; i++) Q(d.bros + .1 + i * .18, 'plop', .25, -.3 + i * .15); Q(d.muzh + .05, 'whoosh', .4); Q(d.nezh - .25, 'drawer', .5); Q(d.nezh + .02, 'stamp', .6);
-    Q(d.fil - .1, 'icecrack', .5); Q(d.fil + .35, 'impact', .7); Q(d.fil + .45, 'thud', .6); Q(d.otkr - .35, 'whoosh', .35); Q(d.shch - .08, 'drawer', .9); Q(d.shch, 'stamp', .5); Q(d.chik - .1, 'whoosh', .6); Q(d.chik + .3, 'city', .4); Q(d.leo - .3, 'whoosh', .5); Q(d.end - .6, 'deep', .5);
+    Q(d.fil - .1, 'icecrack', .5); Q(d.fil + .35, 'impact', .7); Q(d.fil + .45, 'thud', .6); Q(d.otkr - .35, 'whoosh', .35); Q(d.shch - .08, 'drawer', .9); Q(d.shch, 'stamp', .5); Q(d.chik - .1, 'whoosh', .5); Q(d.sw - .3, 'deep', .5); Q(d.sw + .1, 'city', .4); Q(d.leo - .3, 'whoosh', .5); Q(d.end - .6, 'deep', .5);
     const e = T7; Q(e.stav - .3, 'whoosh', .4); Q(e.stav, 'marker', .6); Q(e.stav + .6, 'marker', .5); Q(e.stav + 1.2, 'marker', .45); Q(e.slov - .1, 'pour', .45); Q(e.sam + .1, 'scroll', .4); Q(e.sam + .3, 'plop', .5); Q(e.sim - .1, 'whoosh', .6);
     const f = T8; Q(f.cherez, 'truck', .45, -.4); Q(f.god, 'whoosh', .5); Q(f.byv, 'truck', .35, .4); Q(f.chet - .2, 'counter', .5); Q(f.chet + .2, 'glass', .45); Q(f.sem - .1, 'whoosh', .7); Q(f.sw + .1, 'deep', .5); Q(f.mir - .1, 'whoosh', .45);
-    PACKS_E.forEach((p, i) => { const pa = Math.atan2(p[1], p[0]), dd = ((pa + Math.PI / 2) % TAU + TAU) % TAU; Q(lp(f.sweep0, f.sweep1, dd / TAU), 'plop', .35, (p[0]) * .8) });
+    PACKS_E.forEach(([ri, an]) => { const a2 = AN(an); Q(lp(f.sweep0, f.sweep1, (a2 + .05) / TAU), 'plop', .35, Math.sin(a2) * .8) });
     const g = T9; Q(g.vot - .3, 'whoosh', .6); Q(g.kur - .05, 'neon', .4); Q(g.kur + .1, 'puff', .3); Q(g.uein - .05, 'plop', .4); for (let i = 0; i < 8; i++) Q(g.polt - .2 + i * .19, 'pageflip', .25, .2); Q(g.dev - .05, 'xray', .55);
     Q(g.rekl - .25, 'conveyor', .4); Q(g.rekl, 'chain', .35); Q(g.umer - .15, 'thud', .55); Q(g.pyat + .3, 'thud', .5); Q(g.vsego, 'whoosh', .45); for (let i = 0; i < 3; i++) Q(g.chet - .05 + i * .25, 'thud', .4, -.2 + i * .25); Q(g.marl, 'leaves', .35);
     if (T12) { const h = T12; Q(h.pom - .05, 'whoosh', .5); Q(h.mil - .1, 'plop', .5); Q(h.mil + .2, 'coins', .4); Q(h.pochti, 'counter', .6); Q(h.spok - .25, 'whoosh', .45); Q(h.korm - .08, 'register', .8); Q(h.korm + .15, 'receipt', .7); Q(h.burn, 'puff', .5) }

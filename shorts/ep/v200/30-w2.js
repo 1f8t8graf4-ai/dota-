@@ -10,26 +10,38 @@
     const a = T2; a.top = LIP.y - 330;   // верх стержня, когда он выкручен
     a.tilt0 = a.pom + .05; a.tilt1 = a.end - .32;
     K2 = [KY(a.a + .55, 610, 1010, .6), KY(a.dam - .05, 540, 960, 1.0), KY(a.myag + .4, 552, 950, 1.04), KY(a.izy + .1, 566, 942, 1.06),
-      KY(a.zh + .35, 800, 1230, .6), KY(a.kr + .05, 880, 1420, .56), KY(a.kon + .25, LIP.x, a.top + 120, .74), KY(a.pom - .05, LIP.x, a.top + 40, .9),
+      KY(a.zh + .35, 800, 1230, .6), KY(a.kr + .05, 860, 1300, .56), KY(a.kon + .25, LIP.x, 1250, .6), KY(a.pom - .05, LIP.x, 1215, .7),   // v20.2: заголовок страницы всё время ниже плашки года
       KY(a.tilt1, LIP.x, a.top, 2.4), KY(a.end, LIP.x, a.top, 11.6)];
   }
-  // дама 1920-х сбоку (смотрит вправо), ноги — y 0; шляпка-колокол, платье с заниженной талией, жемчуг, сигарета в поднятой руке
+  // дама 1920-х сбоку (смотрит вправо), ноги — y 0. v20.2: икры и тонкие щиколотки, туфли на каблуке, платье с заниженной талией и складками,
+  // подол фестонами, пояс с бантом, клатч; сигарета между пальцев: красный мундштук к лицу, огонёк наружу, дым — от огонька
+  function shoe(c, ax, ay, col) {
+    c.beginPath(); c.moveTo(ax - 9, ay - 2); c.quadraticCurveTo(ax + 8, ay + 4, ax + 20, ay + 15); c.quadraticCurveTo(ax + 34, ay + 26, ax + 46, ay + 27); c.lineTo(ax + 46, ay + 30);
+    c.lineTo(ax + 6, ay + 30); c.quadraticCurveTo(ax - 2, ay + 24, ax - 5, ay + 14); c.lineTo(ax - 6, ay + 30); c.lineTo(ax - 12, ay + 30); c.lineTo(ax - 13, ay + 6); c.closePath(); fill(c, col);
+  }
   function lady(c, x, y, s, t, col = '#3A1830', rim = '#F1C3CC') {
     c.save(); c.translate(x, y); c.scale(s, s);
-    limb(c, [[-14, -190], [-18, -96], [-22, -10]], [26, 18, 14], col); limb(c, [[14, -190], [20, -100], [26, -10]], [26, 18, 14], col);
-    PL(c, [-34, -12, -6, -12, -2, 0, -40, 0], col); PL(c, [16, -12, 44, -12, 48, 0, 10, 0], col);
-    c.beginPath(); c.moveTo(-40, -620); c.bezierCurveTo(-48, -520, -50, -440, -52, -380); c.lineTo(-74, -180); c.quadraticCurveTo(0, -164, 76, -180); c.lineTo(54, -380); c.bezierCurveTo(52, -460, 48, -540, 40, -620); c.closePath(); fill(c, col);
-    c.fillStyle = shd(col, .3); c.fillRect(-60, -392, 118, 10);   // заниженная талия — лента
-    c.beginPath(); c.moveTo(-40, -620); c.quadraticCurveTo(0, -640, 40, -620); c.lineTo(36, -600); c.lineTo(-36, -600); c.closePath(); fill(c, col);
+    const sk = shd(col, .25), acc = C3.rose2;
+    limb(c, [[-28, -604], [-46, -492], [-56, -396]], [20, 16, 12], sk); rr(c, -80, -404, 46, 30, 7); fill(c, acc); c.fillStyle = C3.gold; c.fillRect(-80, -392, 46, 4);   // задняя рука от плеча, за спиной, с клатчем
+    limb(c, [[-18, -240], [-20, -150], [-15, -30]], [27, 31, 12], sk); shoe(c, -15, -30, sk);   // задняя нога
+    limb(c, [[14, -240], [24, -150], [32, -30]], [27, 31, 12], col); shoe(c, 32, -30, col);   // передняя нога
+    c.beginPath(); c.moveTo(-34, -618); c.bezierCurveTo(-44, -560, -46, -470, -46, -404); c.lineTo(-72, -234);   // спина, юбка чуть клёш
+    [[-58, -218, -46, -232], [-30, -214, -14, -230], [2, -212, 18, -228], [36, -212, 52, -228], [66, -214, 78, -232]].forEach(([qx, qy, ex, ey]) => c.quadraticCurveTo(qx, qy, ex, ey));   // подол фестонами
+    c.lineTo(52, -404); c.bezierCurveTo(54, -470, 58, -520, 50, -552); c.bezierCurveTo(44, -584, 40, -606, 34, -618); c.quadraticCurveTo(0, -606, -34, -618); c.closePath(); fill(c, col);
+    c.strokeStyle = sk; c.lineWidth = 3; [[-22, -398, -34, -238], [6, -398, 4, -234], [32, -398, 44, -236]].forEach(([x0, y0, x1, y1]) => { c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke() });   // складки
+    c.fillStyle = acc; c.beginPath(); c.moveTo(-47, -416); c.lineTo(53, -416); c.lineTo(52, -398); c.lineTo(-46, -398); c.closePath(); c.fill();   // пояс
+    c.beginPath(); c.ellipse(-50, -414, 16, 9, -.5, 0, TAU); c.ellipse(-50, -398, 16, 9, .5, 0, TAU); fill(c, acc); PL(c, [-50, -404, -60, -350, -52, -352], acc); PL(c, [-48, -404, -40, -356, -34, -360], acc);   // бант
     rr(c, -12, -664, 24, 52, 8); fill(c, col);   // шея
-    circ(c, 6, -690, 36, col);   // голова
-    c.beginPath(); c.moveTo(-36, -690); c.bezierCurveTo(-38, -740, -10, -762, 14, -760); c.bezierCurveTo(40, -758, 52, -734, 50, -700); c.quadraticCurveTo(54, -690, 62, -686); c.lineTo(58, -676); c.quadraticCurveTo(30, -684, 4, -684); c.quadraticCurveTo(-24, -682, -40, -668); c.closePath(); fill(c, shd(col, .15));   // шляпка-колокол
-    c.fillStyle = C3.rose2; c.fillRect(-36, -704, 86, 7);
-    for (let i = 0; i < 9; i++) { const u = i / 8; circ(c, lp(-8, 26, u) + Math.sin(u * Math.PI) * 10, lp(-622, -520, u), 5, '#F6EBDD') }   // жемчуг
-    limb(c, [[30, -606], [70, -506], [84, -590]], [22, 16, 13], col);   // рука: локоть вниз, кисть у плеча
-    const tip = [140, -650]; cigar(c, 86, -594, tip[0], tip[1], 5, { tip: C3.red, tl: .2 });
-    const sw = Math.sin(t * 1.7) * 8; smokeLine(c, [tip[0], tip[1], tip[0] + 10 + sw, tip[1] - 50, tip[0] - 6 + sw, tip[1] - 110, tip[0] + 14 - sw, tip[1] - 170, tip[0] + 2, tip[1] - 230], 5, '#F6EBDD', .8);
-    SL(c, [-40, -616, -48, -520, -52, -380, -72, -186], rim, 4); SL(c, [-34, -700, -26, -748, 10, -760], rim, 3);
+    circ(c, 6, -690, 36, col); PL(c, [36, -708, 50, -689, 40, -682], col);   // голова, нос
+    c.beginPath(); c.ellipse(38, -672, 4.5, 2.8, -.2, 0, TAU); fill(c, C3.red);   // губы
+    c.beginPath(); c.moveTo(-36, -700); c.quadraticCurveTo(-42, -664, -24, -652); c.quadraticCurveTo(-10, -662, -8, -676); c.lineTo(-14, -700); c.closePath(); fill(c, sk);   // каре
+    c.beginPath(); c.moveTo(-36, -690); c.bezierCurveTo(-38, -740, -10, -762, 14, -760); c.bezierCurveTo(40, -758, 52, -734, 50, -700); c.quadraticCurveTo(54, -690, 62, -686); c.lineTo(58, -676); c.quadraticCurveTo(30, -684, 4, -684); c.quadraticCurveTo(-24, -682, -40, -668); c.closePath(); fill(c, shd(col, .12));   // шляпка-колокол
+    c.fillStyle = acc; c.fillRect(-36, -704, 86, 7);
+    for (let i = 0; i < 11; i++) { const u = i / 10; circ(c, lp(-6, 30, u) + Math.sin(u * Math.PI) * 14, lp(-622, -500, u), 4.6, '#F6EBDD') }   // длинные бусы
+    const tip = [150, -636]; cig3(c, 76, -574, tip[0], tip[1], 4.6, { tip: C3.red, tl: .2, ring: C3.gold, em: .85 });   // мундштук к лицу, огонёк наружу
+    limb(c, [[30, -600], [68, -506], [98, -593]], [19, 15, 12], col); circ(c, 99, -594, 9, col); PL(c, [94, -602, 108, -606, 104, -596], col);   // рука, пальцы держат сигарету
+    const sw = Math.sin(t * 1.7) * 9; smokeLine(c, [tip[0] + 3, tip[1] - 4, tip[0] + 12 + sw, tip[1] - 70, tip[0] - 4 + sw, tip[1] - 150, tip[0] + 18 - sw, tip[1] - 240, tip[0] + 4, tip[1] - 330], 5.5, '#F6EBDD', .85);
+    SL(c, [-34, -616, -44, -560, -46, -470, -46, -404, -72, -234], rim, 4); SL(c, [-34, -700, -26, -748, 10, -760], rim, 3); SL(c, [-16, -236, -18, -150, -13, -32], rgba(rim, .55), 2.5);
     c.restore();
   }
   function fanArt(c, x, y, R, n = 7) {   // золотой веер ар-деко
@@ -75,7 +87,7 @@
       c.save(); c.translate(x, top); c.scale(1, cb); c.translate(-x, -top);   // наклон: длина сжимается, торец становится кругом
       const tube = mixc('#D9A441', C3.white, m), col = mixc('#B98A2E', '#EDE7DC', m);
       rasterPoly(c, [x + W / 2, y + 30, x + W / 2 + 160, y + 150, x + W / 2 + 160, y + bodyL + 60, x + W / 2, y + bodyL], 'rgba(90,30,40,.3)', 9, 2.4);
-      rr(c, x - W / 2, y, W, bodyL, lp(10, 22, m)); fill(c, tube); c.fillStyle = shd(tube, .22); c.fillRect(x + W * .22, y, W * .28, bodyL); c.fillStyle = 'rgba(255,255,255,.4)'; c.fillRect(x - W * .38, y + 20, W * .08, bodyL - 40);
+      rr(c, x - W / 2, y, W, bodyL, lp(10, 22, m)); fill(c, tube); c.fillStyle = shd(tube, lp(.22, .1, m)); c.fillRect(x + W * .22, y, W * .28, bodyL); c.fillStyle = 'rgba(255,255,255,.4)'; c.fillRect(x - W * .38, y + 20, W * .08, bodyL - 40);
       if (m < 1) A(c, 1 - m, () => { rr(c, x - LIP.w / 2 - 14, y - 22, LIP.w + 28, 44, 10); fill(c, col); c.fillStyle = shd(col, .2); c.fillRect(x + LIP.w * .2, y - 22, LIP.w * .34, 44);
         for (let i = 0; i < 4; i++) c.fillRect(x - LIP.w / 2 - 10, y + 70 + i * 26, LIP.w + 20, 5) });
       const tipH = lp(ext + 6, 170, m);   // стержень помады → красный кончик сигареты
@@ -84,10 +96,13 @@
       c.save(); c.clip(); c.fillStyle = C3.red; c.fillRect(x - bw / 2, top - 10, bw, Math.max(tipH, ext + 20) + 20);
       if (m > 0) { c.fillStyle = C3.white; c.fillRect(x - bw / 2, top + tipH, bw, bodyL + 400) }
       c.fillStyle = C3.redD; c.fillRect(x + bw * .22, top - 10, bw * .3, tipH + 10); c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(x - bw * .36, top + slant + 8, bw * .08, tipH - slant - 12); c.restore();
-      if (rib > 0) {   // ободок — чистой лентой: обвивает кончик слева направо, без следа губ
-        const ry = top + tipH - 14, e = 16; c.save(); c.beginPath(); c.rect(x - bw / 2 - 4, ry - e - 10, (bw + 8) * rib, e * 2 + 30); c.clip();
-        c.beginPath(); c.ellipse(x, ry + 8, bw / 2 + 3, e, 0, 0, Math.PI); c.lineTo(x - bw / 2 - 3, ry - 10); c.ellipse(x, ry - 10, bw / 2 + 3, e, 0, Math.PI, 0, true); c.closePath(); fill(c, C3.redD);
-        c.beginPath(); c.ellipse(x, ry - 4, bw / 2 + 3, e, 0, .15, Math.PI - .15); c.strokeStyle = 'rgba(255,255,255,.45)'; c.lineWidth = 3; c.stroke(); c.restore();
+      if (m > .3) A(c, at(m, .3, .8), () => {   // v20.2: бумага сигареты — шов и надпись Marlboro вдоль, у мундштука
+        c.fillStyle = 'rgba(60,30,40,.09)'; c.fillRect(x - bw * .3, top + tipH + 12, 3, bodyL);
+        c.save(); c.translate(x - bw * .04, top + tipH + 64); c.rotate(Math.PI / 2); tx(c, 'Marlboro', 0, 0, { f: 'P', w: 700, st: 'italic', s: 46, c: 'rgba(176,18,44,.85)', al: 'left' }); c.restore() });
+      if (rib > 0) {   // v20.2: тонкое золотое кольцо между красным мундштуком и бумагой (обвивает слева направо) — сигарета, а не маркер
+        const ry = top + tipH, e = 10, hh = 10; c.save(); c.beginPath(); c.rect(x - bw / 2 - 4, ry - e - hh - 8, (bw + 8) * rib, 2 * e + hh + 20); c.clip();
+        c.beginPath(); c.ellipse(x, ry + hh / 2, bw / 2 + 2, e, 0, 0, Math.PI); c.lineTo(x - bw / 2 - 2, ry - hh / 2); c.ellipse(x, ry - hh / 2, bw / 2 + 2, e, 0, Math.PI, 0, true); c.closePath(); fill(c, C3.gold);
+        c.beginPath(); c.ellipse(x, ry - hh / 2 + 2, bw / 2 + 2, e, 0, .2, Math.PI - .2); c.strokeStyle = 'rgba(255,240,200,.75)'; c.lineWidth = 2.5; c.stroke(); c.restore();
       }
       c.restore();
     }
