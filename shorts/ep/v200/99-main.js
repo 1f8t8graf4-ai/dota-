@@ -58,8 +58,9 @@
       c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
     }
   }
-  function frame(t) {
-    const c = X; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+  function frame(t) { frameTo(X, t) }
+  function frameTo(c, t) {   // v20.1: кадр главы в любой холст — им же мостик «Льда» рисует последние кадры
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (window.NOMB) scene(c, t); else sceneMB(c, t);
     c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); names(c, t); subs(c, t);
@@ -85,19 +86,24 @@
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
-    init(tl, SC) {
+    // v20.1: глава внутри другого ролика (мостик «Льда» ныряет в её кадр 0): sub.init(таймлайн главы) — без своего холста и звуков,
+    // sub.scene(c, t) — мир главы в текущих координатах, sub.frameTo(c, t) — кадр целиком, sub.pre(камера до кадра 0, порыв ветра на плакате)
+    sub: { init: null, scene: (c, t) => scene(c, t), frameTo: (c, t) => frameTo(c, t), pre(cam, peel) { W1PRE = cam; W1PEEL = peel } },
+    init(tl, SC, sub) {
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
       MODE = /y$/.test(ep) ? 'y' : 's';
       TLX = { b0: tl.b0, vEnd: tl.vEnd, endT: (Math.ceil(tl.dur * 30) - 1) / 30 };
-      K = keys(); window.__K = K; BLOCKS.length = 0; SHUT.length = 0; HY = null; cues(); window.CUES_READY = 1; CHUNKS = buildChunks();
+      K = keys(); BLOCKS.length = 0; SHUT.length = 0; HY = null; CHUNKS = buildChunks(); W1PRE = W1PEEL = null;
+      if (!sub) { window.__K = K; cues(); window.CUES_READY = 1 } else allInit();
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       if (!document.getElementById('v200f')) { const st = document.createElement('style'); st.id = 'v200f';
         st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join('')
           + ['latin', 'cyrillic'].map(sub => `@font-face{font-family:P;font-weight:700;font-style:normal;src:url(fonts/playfair-${sub}-700-normal.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}@font-face{font-family:P;font-weight:400 700;font-style:italic;src:url(fonts/playfair-${sub}-700-italic.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}`).join('');
         document.head.appendChild(st) }
-      cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
+      cv = mk(WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
       X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
       return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$'))).then(() => 0);
     },
   };
+  { const ep = window.EP; ep.sub.init = tl => ep.init(tl, [], true) }
 })();

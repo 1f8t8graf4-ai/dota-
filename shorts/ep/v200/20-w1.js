@@ -1,5 +1,6 @@
   // ================= мир 1: щит Marlboro Country у трассы на закате (кадр 0) → ветер рвёт плакат с угла → под ним дамская реклама, нырок в дыру (#088) =================
-  let T1 = null, K1 = null;
+  let T1 = null, K1 = null, W1PRE = null, W1PEEL = null;   // v20.1: W1PRE / W1PEEL — только когда главу рисует мостик «Льда» (камера до кадра 0, порыв ветра)
+  const W1V = .4;   // v20.1: фильм — в кадре 0 камера уже наезжает (лог. масштаба в секунду); мостик «Льда» приходит с той же скоростью
   function w1Init() {
     const hk = SA('hook') !== null, s1 = SA('s1');
     T1 = { hk, s1, marl: Ws('s1', 'мальборо'), do: Ws('s1', 'до'), zh: Ws('s1', 'жизнь'), end: SA('s2') - .02,
@@ -7,12 +8,13 @@
     const a = T1;   // камера: кадр 0 → пачка → угол → нырок в розовый слой под плакатом
     K1 = [KY(0, 540, 960, 1)];
     if (hk) K1.push(KY(a.brut, 549, 944, 1.05), KY(a.s1 - .2, 566, 912, 1.19));   // крючок: медленный наезд, камера не стоит
+    else K1[0].v = [0, 0, W1V, 0];   // v20.1: фильм — кадр 0 на ходу: наезд продолжает нырок мостика «Льда»
     K1.push(KY(a.marl + .1, 690, 840, 1.32), KY(a.do + .6, 760, 860, 1.42), KY(a.zh - .5, 860, 860, 1.9), KY(a.zh + .05, 900, 870, 2.6), KY(a.end, 918, 872, 9.5));
   }
   function w1Peel(t) {
     const a = T1; let px = 210 + 14 * Math.sin(t * 3.1) + 8 * Math.sin(t * 7.3);   // ветер треплет угол
     if (a.hk) px += 40 * eo(at(t, a.ledi - .3, a.ledi + .6));
-    return px + 1250 * eio(at(t, a.do - .1, a.zh + .2));
+    return px + 1250 * eio(at(t, a.do - .1, a.zh + .2)) + (W1PEEL ? W1PEEL(t) : 0);
   }
   function tumbleweed(c, x, y, R, rot) {
     c.save(); c.translate(x, y); c.rotate(rot); c.strokeStyle = '#8A4A2A'; c.lineWidth = 4;
@@ -27,4 +29,4 @@
       [[90, 1500], [270, 1560], [500, 1510], [690, 1590], [210, 1650], [620, 1680], [960, 1640], [-200, 1600], [1200, 1540]].forEach(([x0, y0], i) => { const dx = ((t * 160 + i * 90) % 400); cc.beginPath(); cc.moveTo(x0 + dx, y0); cc.lineTo(x0 + dx + 80, y0 - 16); cc.stroke() });
     });
   }
-  function w1Shot(c, t) { const q = camObj(camAt(K1, t)); w1World(c, t, q) }
+  function w1Shot(c, t) { const v = camAt(K1, t); if (W1PRE && t < 0) v[2] = W1PRE(t); w1World(c, t, camObj(v)) }

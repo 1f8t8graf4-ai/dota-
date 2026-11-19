@@ -2,10 +2,11 @@
   // Камера по ключам [t, x, y, ln z, r]: монотонная кривая (Фрич–Карлсон). Старт и финиш — с места, внутри — без остановок.
   function camAt(KEYS, t) {
     const n = KEYS.length, D = KEYS[0].length;
-    if (t <= KEYS[0][0]) return KEYS[0].slice(1);
+    if (t <= KEYS[0][0]) { const k0 = KEYS[0]; return k0.v ? k0.slice(1).map((x, i) => x + k0.v[i] * (t - k0[0])) : k0.slice(1) }   // v20.1: у первого ключа со скоростью (v) камера и до него едет с ней
     if (t >= KEYS[n - 1][0]) return KEYS[n - 1].slice(1);
     let i = 0; while (KEYS[i + 1][0] < t) i++;
     const tg = (j, k) => {
+      if (KEYS[j].v) return KEYS[j].v[k - 1];   // v20.1: явная скорость в ключе — глава 3 стартует на ходу, мостик «Льда» въезжает в кадр 0 с той же скоростью
       if (j <= 0 || j >= n - 1) return 0;
       const a = (KEYS[j][k] - KEYS[j - 1][k]) / (KEYS[j][0] - KEYS[j - 1][0]), b = (KEYS[j + 1][k] - KEYS[j][k]) / (KEYS[j + 1][0] - KEYS[j][0]);
       if (a * b <= 0) return 0;

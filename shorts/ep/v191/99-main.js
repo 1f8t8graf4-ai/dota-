@@ -4,7 +4,7 @@
     k.s8 = w('запретом');
     k.b0 = TLX.b0 - .4; k.endT = TLX.endT;   // v19.0: отъезд в карточку 2020 на 0,4 с раньше
     if (MODE === 's') { k.rest = w('остальных'); k.yt = w('youtube'); k.zo1 = k.b0 + 3.9; k.hl0 = w('открыла'); k.th0 = k.zo1 + .2; k.stamp = k.yt - 1; k.down0 = k.yt + .5; k.down1 = k.down0 + 1.6; k.zA0 = k.down1 + .08 }
-    else { k.zo1 = k.b0 + 1.75; k.rules = w('правила'); k.vperv = w('впервой'); k.brut = w('брутальности'); k.vek = w('век'); k.vyv = w('выводили'); k.nezh = w('нежные'); k.ledi = w('леди') }
+    else { k.zo1 = k.b0 + 1.75; k.rules = w('правила'); k.vperv = w('впервой'); k.brut = w('брутальности'); k.vek = w('век'); k.vyv = w('выводили'); k.nezh = w('нежные'); k.ledi = w('леди'); k.d0 = k.ledi - .15; k.ts = k.endT + 1 / 30 }   // v19.4: d0 — начало нырка в кадр 0 главы 3, ts — её кадр 0 (следующий после последнего кадра мостика)
     return k;
   }
   function allInit() { if (!T1) b1Init(); if (!T2) b2Init(); if (!T5) b5Init(); if (!T6) b6Init() }
@@ -35,10 +35,19 @@
       c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
     }
   }
+  function mbDo(c, t, fn) {   // v19.4: затвор 180° для любой функции кадра (как sceneMB)
+    const n = 4, sh = 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
+    for (let j = 0; j < n; j++) {
+      const tj = t + (j / (n - 1) - .5) * sh;
+      if (j === 0) { fn(c, tj); continue }
+      g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, WW, HH); fn(g, tj);
+      c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
+    }
+  }
   function frame(t) {
     const c = X; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
-    if (t >= K.b0) { if (MODE === 's') endA(c, t); else { endB(c, t); const kZ = at(t, K.nezh - .2, K.ledi + 1.6); if (kZ > .7 && kZ < 1) ep3Pill(c, at(kZ, .7, 1)) } }
+    if (t >= K.b0) { if (MODE === 's') endA(c, t); else if (t >= K.d0 && !window.NOMB) mbDo(c, t, endB); else endB(c, t) }   // v19.4: нырок — с затвором, как у главы 3 (стык без смены резкости); плашки 1924 нет — в кадре 0 главы её нет
     else { sceneMB(c, t); hud(c, t) }
     subs(c, t);
   }
@@ -62,7 +71,7 @@
     Q(g.mlrd - .4, 'conveyor', .5); Q(g.mlrd - .05, 'register', 1); Q(g.mlrd + .05, 'counter', .8); Q(g.doll, 'coins', .5); Q(g.rynok - .05, 'boom', .35); Q(g.corp - .2, 'boom', .35); Q(g.end - .3, 'plop', .5);
     Q(K.s8 - .57, 'whoosh', .7); Q(K.s8 + .4, 'city', .6); Q(K.s8 + .9, 'thud', .5); Q(K.s8 + .95, 'marker', .5); { const W = w8(); Q(W.pod - .2, 'scroll', .7); Q(W.pod, 'neon', .7); Q(W.led - .3, 'icecrack', .7); Q(W.gig - .3, 'pour', .6); Q(W.nik - .3, 'glassbulb', .6); Q(W.nik + .1, 'plop', .5) } Q(K.b0, 'whoosh', .6);
     if (MODE === 's') { for (let i = 0; i < 3; i++) Q(K.th0 + i * 1.2, 'papers', .3, -.3 + i * .3); Q(K.stamp, 'stamp', 1); Q(K.stamp + .02, 'impact', .5); Q(K.down0, 'whoosh', .6); Q(K.zA0 + .3, 'dive', .7) }
-    else { Q(K.zo1 + .1, 'whoosh', .6); Q(K.rules - .4, 'whoosh', .35); Q(K.vperv - .25, 'plop', .5); Q(K.brut - .12, 'blade', .45); Q(K.vek - .07, 'whoosh', .6); Q(K.vek + .05, 'pageflip', .45); Q(K.nezh - .12, 'shimmer', .7); Q(K.nezh - .2, 'dive', .6) }
+    else { Q(K.zo1 + .1, 'whoosh', .6); Q(K.rules - .4, 'whoosh', .35); Q(K.vperv - .25, 'plop', .5); Q(K.brut - .12, 'blade', .45); Q(K.vek - .07, 'whoosh', .6); Q(K.vek + .05, 'pageflip', .45); Q(K.nezh - .1, 'leaves', .45); Q(K.ledi - .1, 'pageflip', .35); Q(K.ledi + .3, 'whoosh', .35); Q(K.ts - 1.2, 'dive', .55) }   // v19.4: ветер треплет угол плаката, нырок в кадр 0 главы 3
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
@@ -75,7 +84,10 @@
       if (!document.getElementById('v180f')) { const st = document.createElement('style'); st.id = 'v180f'; st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join(''); document.head.appendChild(st) }
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
       X = cv.getContext('2d'); CORK = null; T1 = T2 = T3 = T4 = T5 = T6 = null; for (const k in BLUR) delete BLUR[k];
-      return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U'].map(f => document.fonts.load(f, 'АЯaz09$'))).then(() => 0);
+      // v19.4: мостик фильма ныряет в кадр 0 главы 3 — её рисовку грузит stage.html (window.EP3 = ep/v200.js, window.TL200 — таймлайн главы)
+      const E3 = MODE === 'y' && window.EP3 && window.EP3.sub && window.TL200 ? window.EP3 : null; CH3OK = false;
+      const p3 = E3 ? Promise.resolve(E3.sub.init(window.TL200)).then(() => { E3.sub.pre(tau => -DVL * (1 - DV(tau + K.ts).g), tau => GUST(tau + K.ts)); CH3OK = true }) : 0;
+      return Promise.all([p3].concat(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U'].map(f => document.fonts.load(f, 'АЯaz09$')))).then(() => 0);
     },
   };
 })();

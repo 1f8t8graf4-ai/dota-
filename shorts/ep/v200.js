@@ -253,10 +253,11 @@
   // Камера по ключам [t, x, y, ln z, r]: монотонная кривая (Фрич–Карлсон). Старт и финиш — с места, внутри — без остановок.
   function camAt(KEYS, t) {
     const n = KEYS.length, D = KEYS[0].length;
-    if (t <= KEYS[0][0]) return KEYS[0].slice(1);
+    if (t <= KEYS[0][0]) { const k0 = KEYS[0]; return k0.v ? k0.slice(1).map((x, i) => x + k0.v[i] * (t - k0[0])) : k0.slice(1) }   // v20.1: у первого ключа со скоростью (v) камера и до него едет с ней
     if (t >= KEYS[n - 1][0]) return KEYS[n - 1].slice(1);
     let i = 0; while (KEYS[i + 1][0] < t) i++;
     const tg = (j, k) => {
+      if (KEYS[j].v) return KEYS[j].v[k - 1];   // v20.1: явная скорость в ключе — глава 3 стартует на ходу, мостик «Льда» въезжает в кадр 0 с той же скоростью
       if (j <= 0 || j >= n - 1) return 0;
       const a = (KEYS[j][k] - KEYS[j - 1][k]) / (KEYS[j][0] - KEYS[j - 1][0]), b = (KEYS[j + 1][k] - KEYS[j][k]) / (KEYS[j + 1][0] - KEYS[j][0]);
       if (a * b <= 0) return 0;
@@ -542,7 +543,8 @@
     c.restore();
   }
   // ================= мир 1: щит Marlboro Country у трассы на закате (кадр 0) → ветер рвёт плакат с угла → под ним дамская реклама, нырок в дыру (#088) =================
-  let T1 = null, K1 = null;
+  let T1 = null, K1 = null, W1PRE = null, W1PEEL = null;   // v20.1: W1PRE / W1PEEL — только когда главу рисует мостик «Льда» (камера до кадра 0, порыв ветра)
+  const W1V = .4;   // v20.1: фильм — в кадре 0 камера уже наезжает (лог. масштаба в секунду); мостик «Льда» приходит с той же скоростью
   function w1Init() {
     const hk = SA('hook') !== null, s1 = SA('s1');
     T1 = { hk, s1, marl: Ws('s1', 'мальборо'), do: Ws('s1', 'до'), zh: Ws('s1', 'жизнь'), end: SA('s2') - .02,
@@ -550,12 +552,13 @@
     const a = T1;   // камера: кадр 0 → пачка → угол → нырок в розовый слой под плакатом
     K1 = [KY(0, 540, 960, 1)];
     if (hk) K1.push(KY(a.brut, 549, 944, 1.05), KY(a.s1 - .2, 566, 912, 1.19));   // крючок: медленный наезд, камера не стоит
+    else K1[0].v = [0, 0, W1V, 0];   // v20.1: фильм — кадр 0 на ходу: наезд продолжает нырок мостика «Льда»
     K1.push(KY(a.marl + .1, 690, 840, 1.32), KY(a.do + .6, 760, 860, 1.42), KY(a.zh - .5, 860, 860, 1.9), KY(a.zh + .05, 900, 870, 2.6), KY(a.end, 918, 872, 9.5));
   }
   function w1Peel(t) {
     const a = T1; let px = 210 + 14 * Math.sin(t * 3.1) + 8 * Math.sin(t * 7.3);   // ветер треплет угол
     if (a.hk) px += 40 * eo(at(t, a.ledi - .3, a.ledi + .6));
-    return px + 1250 * eio(at(t, a.do - .1, a.zh + .2));
+    return px + 1250 * eio(at(t, a.do - .1, a.zh + .2)) + (W1PEEL ? W1PEEL(t) : 0);
   }
   function tumbleweed(c, x, y, R, rot) {
     c.save(); c.translate(x, y); c.rotate(rot); c.strokeStyle = '#8A4A2A'; c.lineWidth = 4;
@@ -570,7 +573,7 @@
       [[90, 1500], [270, 1560], [500, 1510], [690, 1590], [210, 1650], [620, 1680], [960, 1640], [-200, 1600], [1200, 1540]].forEach(([x0, y0], i) => { const dx = ((t * 160 + i * 90) % 400); cc.beginPath(); cc.moveTo(x0 + dx, y0); cc.lineTo(x0 + dx + 80, y0 - 16); cc.stroke() });
     });
   }
-  function w1Shot(c, t) { const q = camObj(camAt(K1, t)); w1World(c, t, q) }
+  function w1Shot(c, t) { const v = camAt(K1, t); if (W1PRE && t < 0) v[2] = W1PRE(t); w1World(c, t, camObj(v)) }
   // ================= мир 2 (фраза 2): коридор арок ар-деко → страница журнала 1924 → журналы веером (#065) → помада становится красным кончиком (#048) → кончик торцом =================
   // Координаты страницы: 1080×1920. Мир 2 вложен в плакат мира 1 (V1, M1): камера ныряет в коридор без остановки (linkK).
   let T2 = null, K2 = null;
@@ -1404,8 +1407,9 @@
       c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
     }
   }
-  function frame(t) {
-    const c = X; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+  function frame(t) { frameTo(X, t) }
+  function frameTo(c, t) {   // v20.1: кадр главы в любой холст — им же мостик «Льда» рисует последние кадры
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (window.NOMB) scene(c, t); else sceneMB(c, t);
     c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); names(c, t); subs(c, t);
@@ -1431,19 +1435,24 @@
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
-    init(tl, SC) {
+    // v20.1: глава внутри другого ролика (мостик «Льда» ныряет в её кадр 0): sub.init(таймлайн главы) — без своего холста и звуков,
+    // sub.scene(c, t) — мир главы в текущих координатах, sub.frameTo(c, t) — кадр целиком, sub.pre(камера до кадра 0, порыв ветра на плакате)
+    sub: { init: null, scene: (c, t) => scene(c, t), frameTo: (c, t) => frameTo(c, t), pre(cam, peel) { W1PRE = cam; W1PEEL = peel } },
+    init(tl, SC, sub) {
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
       MODE = /y$/.test(ep) ? 'y' : 's';
       TLX = { b0: tl.b0, vEnd: tl.vEnd, endT: (Math.ceil(tl.dur * 30) - 1) / 30 };
-      K = keys(); window.__K = K; BLOCKS.length = 0; SHUT.length = 0; HY = null; cues(); window.CUES_READY = 1; CHUNKS = buildChunks();
+      K = keys(); BLOCKS.length = 0; SHUT.length = 0; HY = null; CHUNKS = buildChunks(); W1PRE = W1PEEL = null;
+      if (!sub) { window.__K = K; cues(); window.CUES_READY = 1 } else allInit();
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       if (!document.getElementById('v200f')) { const st = document.createElement('style'); st.id = 'v200f';
         st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join('')
           + ['latin', 'cyrillic'].map(sub => `@font-face{font-family:P;font-weight:700;font-style:normal;src:url(fonts/playfair-${sub}-700-normal.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}@font-face{font-family:P;font-weight:400 700;font-style:italic;src:url(fonts/playfair-${sub}-700-italic.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}`).join('');
         document.head.appendChild(st) }
-      cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
+      cv = mk(WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
       X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
       return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$'))).then(() => 0);
     },
   };
+  { const ep = window.EP; ep.sub.init = tl => ep.init(tl, [], true) }
 })();
