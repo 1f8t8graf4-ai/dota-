@@ -14,7 +14,8 @@ for t in d.TEXTS:
     sl = [l for i, l in enumerate(t['lines']) if i not in t['film']] + [t['q'], 'Часть 5']
     t['ws'] = words({'lines': sl}); t['sdur'] = mmss(round(t['ws'] / d.WPS))
 
-SHORT = {'t1': 'обещание', 't2': 'вы и айкос', 't3': 'без огня'}
+SHORT = {'m1': 'обещание', 'm2': 'почти бросили', 'g1': 'иллюзия', 'g2': 'айфон', 'g3': 'блеф', 't1': 'обещание', 't2': 'вы и айкос', 't3': 'без огня'}
+WHO = {'mix': 'Claude + Gemini', 'gem': 'без правок', 'me': 'Claude, первый вариант'}
 BOARD = [  # глава фильма: год, имя, состояние, куда идёт
     ('1979', 'Боб', 'готово', 'TikTok · часть 1'),
     ('2020', 'Лёд', 'готово', 'TikTok · часть 2'),
@@ -79,12 +80,16 @@ header.top{display:flex;flex-direction:column;gap:12px}
 
 /* вкладки */
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);padding-block:8px;
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
 .tab{appearance:none;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:6px;
   padding:8px 6px;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0}
 .tab b{font:600 15px/1.2 var(--f-body);white-space:nowrap}
 .tab span{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .tab[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--red)}
+.tabs .tab{flex:1 0 auto;min-width:96px}
+.tabs .tab.grp{margin-left:8px}
+@media (min-width:900px){.tabs{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));overflow:visible}.tabs .tab{min-width:0}.tabs .tab.grp{margin-left:0}}
 .tab .ck{display:none;color:var(--ok)}
 .tab.chosen .ck{display:inline}
 
@@ -141,6 +146,8 @@ textarea:focus-visible{outline:2px solid var(--red);outline-offset:0}
 .next ol{margin:0;padding-left:22px;display:grid;gap:8px;max-width:72ch}
 footer{color:var(--muted);font-size:13px}
 .script li.film>span:nth-child(2){color:var(--muted)}
+.script li.warn>span:nth-child(2){text-decoration:underline wavy var(--red);text-decoration-thickness:1px;text-underline-offset:5px}
+.script .tag.w{text-transform:none;letter-spacing:0;font:500 13.5px/1.45 var(--f-body)}
 .script li.film{border-left:2px dashed var(--line);margin-left:-12px;padding-left:10px}
 .script li.shortq{border-top:1px dashed var(--line);padding-top:12px;font-size:15.5px}
 .script li.shortq .n{color:var(--red);font-weight:600}
@@ -159,7 +166,10 @@ def li_script(t):
         cls = ' '.join(c for c, on in (('key', key), ('film', film)) if on)
         body = f'<mark>{E(l)}</mark>' if key else E(l)
         tag = ' · '.join(x for x, on in (('сильное место', key), ('только в фильме', film)) if on)
-        out.append(f'<li{f" class=\"{cls}\"" if cls else ""}><span class="n">{i+1}</span><span>{body}</span>' + (f'<span class="tag">{tag}</span>' if tag else '') + '</li>')
+        wn = t.get('warn', {}).get(i)
+        if wn: cls = (cls + ' warn').strip()
+        out.append(f'<li{f" class=\"{cls}\"" if cls else ""}><span class="n">{i+1}</span><span>{body}</span>' + (f'<span class="tag">{tag}</span>' if tag else '')
+                   + (f'<span class="tag w">⚠ {E(wn)}</span>' if wn else '') + '</li>')
     a, b = t['film'][0] + 1, t['film'][-1] + 1
     out.append(f'<li class="shortq"><span class="n">TT</span><span>В шортсе вместо строк {a}–{b}: «{E(t["q"])}» → «Часть 5 →»</span></li>')
     return '\n'.join(out)
@@ -176,7 +186,7 @@ def panel(t):
     mi = ''.join(f'<li>{E(x)}</li>' for x in t['minus'])
     return f'''<section class="panel" id="p-{t['id']}" role="tabpanel" aria-labelledby="tab-{t['id']}">
 <div class="phead">
-<p class="eb">Текст {t['n']} · фильм ≈ {t['dur']} · шортс ≈ {t['sdur']} · {t['w']} слов</p>
+<p class="eb">{t['label']} · {WHO[t['who']]} · фильм ≈ {t['dur']} · шортс ≈ {t['sdur']} · {t['w']} слов</p>
 <h2>{E(t['name'])}</h2>
 <p class="idea">{E(t['idea'])}</p>
 <div class="acts">
@@ -195,7 +205,7 @@ def panel(t):
 <details class="facts"><summary>Факты и источники · {len(t['facts'])}</summary><ol>
 {facts(t)}
 </ol></details>
-<div class="note" hidden><label for="n-{t['id']}">Правки к тексту {t['n']}</label>
+<div class="note" hidden><label for="n-{t['id']}">Правки · {t['label'].lower()}</label>
 <textarea id="n-{t['id']}" data-note="{t['id']}" placeholder="Например: строка 2 — короче; ощущения взять из текста 2"></textarea>
 <span class="st" aria-live="polite"></span></div>
 </aside>
@@ -256,16 +266,17 @@ def board():
 
 tabs = ''.join(
     f'<button class="tab" type="button" role="tab" id="tab-{t["id"]}" data-p="{t["id"]}" aria-controls="p-{t["id"]}" aria-selected="false">'
-    f'<b>Текст {t["n"]} <span class="ck">✓</span></b><span>{SHORT[t["id"]]}</span></button>' for t in d.TEXTS
-) + '<button class="tab" type="button" role="tab" id="tab-fin" data-p="fin" aria-controls="p-fin" aria-selected="false"><b>Финал</b><span>осталось</span></button>'
+    f'<b>{t["label"]} <span class="ck">✓</span></b><span>{SHORT[t["id"]]}</span></button>' for t in d.TEXTS
+) + '<button class="tab grp" type="button" role="tab" id="tab-fin" data-p="fin" aria-controls="p-fin" aria-selected="false"><b>Финал</b><span>осталось</span></button>'
+tabs = tabs.replace('<button class="tab" type="button" role="tab" id="tab-g1"', '<button class="tab grp" type="button" role="tab" id="tab-g1"').replace('<button class="tab" type="button" role="tab" id="tab-t1"', '<button class="tab grp" type="button" role="tab" id="tab-t1"')
 
 TX = {t['id']: t['lines'] for t in d.TEXTS}
-NAMES = {t['id']: f"текст {t['n']} · «{t['name']}»" for t in d.TEXTS}
+NAMES = {t['id']: f"{t['label'].lower()} · «{t['name']}»" for t in d.TEXTS}
 
 JS = r"""
 const TX = __TX__, NAMES = __NAMES__;
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const IDS = ['t1', 't2', 't3', 'fin'];
+const IDS = Object.keys(TX).concat('fin');
 const tabs = $$('[role="tab"]');
 function show(id, focus) {
   tabs.forEach(t => { const on = t.dataset.p === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
@@ -275,7 +286,7 @@ function go(id, focus) {
   show(id, focus);
   try { history.replaceState(null, '', '#' + id); } catch (e) { try { location.hash = id; } catch (e2) {} }
 }
-function fromHash() { const h = location.hash.slice(1); show(IDS.includes(h) ? h : 't1'); }
+function fromHash() { const h = location.hash.slice(1); show(IDS.includes(h) ? h : IDS[0]); }
 tabs.forEach((t, i) => {
   t.addEventListener('click', () => go(t.dataset.p));
   t.addEventListener('keydown', e => {
@@ -361,7 +372,7 @@ $$('[data-copy]').forEach(b => b.addEventListener('click', async () => {
 """
 JS = JS.replace('__TX__', json.dumps(TX, ensure_ascii=False)).replace('__NAMES__', json.dumps(NAMES, ensure_ascii=False))
 
-t1, t2, t3 = d.TEXTS
+TT = {t['id']: t for t in d.TEXTS}; m1, m2 = TT['m1'], TT['m2']
 PAGE = f'''<title>Тексты главы «Нагреватели»</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -372,29 +383,27 @@ PAGE = f'''<title>Тексты главы «Нагреватели»</title>
 <header class="top">
 <p class="eb">Фильм «Что вы знаете о никотине?» · глава 4</p>
 <h1><span class="yr">2014</span> · Нагреватели</h1>
-<p class="lede">Три текста для голоса — про айкос и вопрос «Без огня — значит, без вреда?». Выбери один или напиши, что взять из разных. Во вкладке «Финал» — что осталось после этой главы.</p>
+<p class="lede">Восемь текстов для голоса про айкос и вопрос «Без огня — значит, без вреда?»: два микса Claude и Gemini, три текста Gemini и три первых текста Claude. Выбери один или напиши, что взять из разных. Во вкладке «Финал» — что осталось после этой главы.</p>
 <ol class="board" aria-label="Главы фильма">
 {board()}
 </ol>
 </header>
 
 <section class="tip" aria-labelledby="tip-h">
-<h2 id="tip-h">Мой совет — текст 1</h2>
+<h2 id="tip-h">Мой совет — микс 1 «Обещание»</h2>
 <ul>
-<li>Самый сильный крючок: производитель «Мальборо» обещает бросить сигареты.</li>
-<li>Отвечает на вопрос шортса «Мальборо» и связывает главу с «Бобом» через «Рейнольдс».</li>
-<li>Последняя фраза «Бросают они ровно так же, как и вы» не съедает финал фильма. В тексте 2 концовка почти совпадает с последней фразой фильма.</li>
-<li>Ощущения из текста 2 — запах, машина, «кажется, вы почти бросили» — можно вставить в любой текст.</li>
-<li>Фильм — {t2['dur']}–{t1['dur']}, шортс короче на 5–10 секунд: без мостика, с вопросом и «Часть 5 →».</li>
+<li>Gemini прав в трёх местах: в тексте 1 годы шли назад (2018 → 2014), во втором пропали «Рейнольдс», в третьем скучный старт. В миксах это исправлено.</li>
+<li>Микс 1: крючок — обещание без года, плашка начинается с 2014-го и дальше идёт только вперёд. Ощущения взяты из текста Gemini, концовка «Бросают они ровно так же, как и вы» — из текста 1.</li>
+<li>Микс 2 — если важнее связка с шортсом «Мальборо»: часть 4 начинается с его вопроса «Без огня — значит, без вреда?» и сразу с «вы».</li>
+<li>В текстах Gemini три ошибки, они отмечены ⚠ у строк. В 2018-м компания продала сигарет больше, чем в 2024-м: 740 и 617 миллиардов. Патенты из суда 2021-го — 2011 года, они не от сигареты с угольком. Регулятор разрешил писать про вещества в 2020-м, а у Gemini эта строка стоит до газет 2018-го.</li>
+<li>Фильм — {m1['dur']}–{m2['dur']}, шортс короче на 5–6 секунд: без мостика, с вопросом и «Часть 5 →».</li>
 </ul>
 <p class="chosen-line" id="chosen" hidden></p>
 <p class="msg" id="dbmsg" aria-live="polite"></p>
 </section>
 
 <nav class="tabs" id="tabs" role="tablist" aria-label="Тексты">{tabs}</nav>
-{panel(t1)}
-{panel(t2).replace('role="tabpanel"', 'role="tabpanel" hidden', 1)}
-{panel(t3).replace('role="tabpanel"', 'role="tabpanel" hidden', 1)}
+{''.join(panel(t) if i == 0 else panel(t).replace('role="tabpanel"', 'role="tabpanel" hidden', 1) for i, t in enumerate(d.TEXTS))}
 {fin_panel()}
 
 <section class="next" aria-labelledby="next-h">
@@ -404,7 +413,7 @@ PAGE = f'''<title>Тексты главы «Нагреватели»</title>
 <li>Голос — тот же «Макс» из ElevenLabs: около 750 кредитов за дубль (0,48 кредита за знак), с переозвучкой — до 1 100. Трачу только после твоего «да».</li>
 <li>Рисовка — страница с таймингом и референсами, как для «Мальборо». Первый кадр продолжает витрину и карточку «2014» из конца главы 3.</li>
 <li>Шортс — тот же голос без двух последних строк, в конце — вопрос и «Часть 5 →».</li>
-<li>Факты Зетки по главам 4–5 сверю с этими, когда её ветка <code>zai/film-facts-4-5</code> появится на GitHub — сейчас её там нет.</li>
+<li>Факты Зетки по главе 4 сверены — сходятся с этими. Её фактов по главе 5 пока нет: попросил прислать.</li>
 </ol>
 <div class="note" hidden><label for="n-all">Общее мнение</label>
 <textarea id="n-all" data-note="all" placeholder="Что поменять во всех текстах сразу"></textarea>
@@ -417,11 +426,12 @@ PAGE = f'''<title>Тексты главы «Нагреватели»</title>
 (HERE / 'тексты-19.11.html').write_text(PAGE, encoding='utf-8')
 
 # копия для следующего Claude и для озвучки
-md = ['# Глава 4 «2014 · Нагреватели» — три текста (19.11)', '',
-      'Страница с выбором — см. CLAUDE.md. Совет — текст 1. Финал фильма — вставкой ≈ 30 с (вкладка «Финал»).', '']
+md = ['# Глава 4 «2014 · Нагреватели» — восемь текстов (19.11)', '',
+      'Страница с выбором — см. CLAUDE.md. Миксы — Claude и Gemini вместе, Gemini 1–3 — его тексты без правок, тексты 1–3 — первые варианты Claude.',
+      'Совет — микс 1 «Обещание». Финал фильма — вставкой ≈ 30 с (вкладка «Финал»).', '']
 for t in d.TEXTS:
-    md += [f"## Текст {t['n']} — {t['name']} (фильм ≈ {t['dur']}, шортс ≈ {t['sdur']}, {t['w']} слов)", '', t['idea'], '']
-    md += [f"{i+1}. {l}" + (' **← сильное место**' if i in t['key'] else '') + (' *(только в фильме)*' if i in t['film'] else '') for i, l in enumerate(t['lines'])]
+    md += [f"## {t['label']} — {t['name']} · {WHO[t['who']]} (фильм ≈ {t['dur']}, шортс ≈ {t['sdur']}, {t['w']} слов)", '', t['idea'], '']
+    md += [f"{i+1}. {l}" + (' **← сильное место**' if i in t['key'] else '') + (' *(только в фильме)*' if i in t['film'] else '') + (f" ⚠ {t['warn'][i]}" if i in t.get('warn', {}) else '') for i, l in enumerate(t['lines'])]
     md += ['', f"Шортс: без строк {t['film'][0]+1}–{t['film'][-1]+1}, в конце — «{t['q']}» → «Часть 5 →».", '', 'Факты:']
     md += [f"- {f} — " + ', '.join(f"[{d.SRC[k][0]}]({d.SRC[k][1]})" for k in ks) for f, ks in t['facts']] + ['']
 md += ['## Что осталось', '', f"- Глава 5 «{d.CH5[0]}»: {d.CH5[1]}",
