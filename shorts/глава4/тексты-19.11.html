@@ -1,0 +1,462 @@
+<title>Тексты главы «Нагреватели»</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&family=Oswald:wght@600&display=swap">
+<style>
+/* Лист диктора: сверху доска глав фильма и совет, ниже переключатель «Текст 1 · 2 · 3 · Финал»,
+   текст построчно с номерами строк (по ним удобно писать правки), сбоку на ПК — плюсы, минусы, факты. */
+:root{
+  --ground:#F1EFEE; --sheet:#FFFFFF; --ink:#1C1919; --muted:#6C6563; --line:#DCD6D3;
+  --red:#B3141C; --kraft:#E6D6B8; --kraft-ink:#3B2F1E; --marker:rgba(255,206,48,.6); --ok:#1D7A4C;
+  --f-disp:"Oswald","Arial Narrow","Roboto Condensed",sans-serif;
+  --f-body:"Golos Text",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#151313; --sheet:#1F1C1B; --ink:#EEE9E6; --muted:#A39A96; --line:#36312F;
+  --red:#EA5359; --kraft:#3B3226; --kraft-ink:#EADCC4; --marker:rgba(255,206,48,.3); --ok:#55C994; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#151313; --sheet:#1F1C1B; --ink:#EEE9E6; --muted:#A39A96; --line:#36312F;
+  --red:#EA5359; --kraft:#3B3226; --kraft-ink:#EADCC4; --marker:rgba(255,206,48,.3); --ok:#55C994; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:16px/1.5 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:2px}
+a:hover{text-decoration-color:var(--red)}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
+.eb{font:500 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:600 clamp(40px,9vw,68px)/1 var(--f-disp);letter-spacing:.01em;text-transform:uppercase}
+h1 .yr{color:var(--red)}
+h2{font:600 clamp(26px,5vw,34px)/1.1 var(--f-disp);letter-spacing:.01em}
+h3{font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lede{margin:0;max-width:60ch;font-size:17px}
+header.top{display:flex;flex-direction:column;gap:12px}
+
+/* доска глав */
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.bc{background:var(--kraft);color:var(--kraft-ink);border-radius:3px;padding:10px 10px 9px;display:flex;flex-direction:column;gap:2px;min-width:0;position:relative}
+.bc b{font:600 22px/1 var(--f-disp)}
+.bc span{font-size:13px;line-height:1.25}
+.bc small{font:500 10.5px/1.3 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;opacity:.75;margin-top:4px}
+.bc.film small{color:var(--red);opacity:1}
+.bc.now{outline:2px solid var(--red);outline-offset:-2px}
+.bc i{font:500 10.5px/1.2 var(--f-mono);font-style:normal;text-transform:uppercase;letter-spacing:.05em;opacity:.75;margin-bottom:4px}
+.bc.now i{opacity:1}
+.bc.now i{color:var(--red)}
+@media (max-width:720px){.board{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* совет */
+.tip{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:18px 18px 16px;display:grid;gap:10px}
+.tip h2{font-size:24px}
+.tip ul{margin:0;padding-left:20px;display:grid;gap:6px;max-width:70ch}
+.chosen-line{margin:0;font-weight:600;color:var(--ok)}
+
+/* вкладки */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);padding-block:8px;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.tab{appearance:none;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:6px;
+  padding:8px 6px;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0}
+.tab b{font:600 15px/1.2 var(--f-body);white-space:nowrap}
+.tab span{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tab[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--red)}
+.tab .ck{display:none;color:var(--ok)}
+.tab.chosen .ck{display:inline}
+
+/* панель текста */
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:22px 18px 22px}
+.phead{display:grid;gap:10px;margin-bottom:22px;max-width:70ch}
+.idea{margin:0;font-size:17px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{appearance:none;font:600 15px/1 var(--f-body);border-radius:6px;padding:12px 16px;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink)}
+.btn.pick{background:var(--red);border-color:var(--red);color:#fff}
+.btn.pick[aria-pressed="true"]{background:transparent;color:var(--ok);border-color:var(--ok)}
+.msg{font-size:14px;color:var(--muted)}
+p.msg{margin:0}
+p.msg:empty{display:none}
+.pbody{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:36px;align-items:start}
+@media (max-width:860px){.pbody{grid-template-columns:minmax(0,1fr);gap:26px}}
+.script{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:64ch;counter-reset:l}
+.script li{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:4px 10px;font-size:17.5px;line-height:1.55}
+.script .n{font:500 13px/1.9 var(--f-mono);color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.script mark{background:linear-gradient(transparent 52%,var(--marker) 52%);color:inherit;padding:0 1px}
+.script .tag{grid-column:2;font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
+aside{display:grid;gap:22px;min-width:0}
+.pm{display:grid;gap:8px}
+.pm ul{margin:0;padding:0;list-style:none;display:grid;gap:7px}
+.pm li{display:grid;grid-template-columns:1.1em minmax(0,1fr);gap:6px;font-size:15px}
+.pm li::before{font:600 15px/1.45 var(--f-mono)}
+.plus li::before{content:"+";color:var(--ok)}
+.minus li::before{content:"−";color:var(--red)}
+details{border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts ol{margin:12px 0 0;padding-left:20px;display:grid;gap:9px;font-size:14.5px}
+.facts .src{display:block;font-size:13px;color:var(--muted)}
+.note{display:grid;gap:6px}
+.note label{font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+textarea{width:100%;min-height:96px;resize:vertical;font:15px/1.45 var(--f-body);color:var(--ink);background:var(--ground);
+  border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+textarea:focus-visible{outline:2px solid var(--red);outline-offset:0}
+.st{font-size:13px;color:var(--muted);min-height:1.2em}
+
+/* Финал и карточки */
+.gem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:960px){.gem{grid-template-columns:minmax(0,1fr)}}
+.g{border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.g .gid{font:600 28px/1 var(--f-disp);color:var(--red)}
+.g h3{color:var(--ink);font:600 18px/1.25 var(--f-body);letter-spacing:0;text-transform:none}
+.g .meta{font:500 12px/1 var(--f-mono);color:var(--muted)}
+.g p{margin:0;font-size:15px}
+.g h4{margin:4px 0 0;font:600 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
+.g ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
+.g .gnote{color:var(--muted);font-size:14px}
+
+/* что дальше */
+.next{display:grid;gap:12px}
+.next ol{margin:0;padding-left:22px;display:grid;gap:8px;max-width:72ch}
+footer{color:var(--muted);font-size:13px}
+.script li.film>span:nth-child(2){color:var(--muted)}
+.script li.film{border-left:2px dashed var(--line);margin-left:-12px;padding-left:10px}
+.script li.shortq{border-top:1px dashed var(--line);padding-top:12px;font-size:15.5px}
+.script li.shortq .n{color:var(--red);font-weight:600}
+.fin .g h3{font-size:19px}
+.fin .beats{margin:0;padding-left:0;list-style:none;display:grid;gap:8px;font-size:14.5px}
+.fin .beats li{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:8px}
+.fin .beats b{font:600 12px/1.6 var(--f-mono);color:var(--red);font-variant-numeric:tabular-nums}
+.fin q{font-style:italic;quotes:"«" "»"}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<div class="wrap">
+<header class="top">
+<p class="eb">Фильм «Что вы знаете о никотине?» · глава 4</p>
+<h1><span class="yr">2014</span> · Нагреватели</h1>
+<p class="lede">Три текста для голоса — про айкос и вопрос «Без огня — значит, без вреда?». Выбери один или напиши, что взять из разных. Во вкладке «Финал» — что осталось после этой главы.</p>
+<ol class="board" aria-label="Главы фильма">
+<li class="bc"><i>готово</i><b>1979</b><span>Боб</span><small>TikTok · часть 1</small></li>
+<li class="bc"><i>готово</i><b>2020</b><span>Лёд</span><small>TikTok · часть 2</small></li>
+<li class="bc"><i>готово</i><b>1924</b><span>Мальборо</span><small>TikTok · часть 3</small></li>
+<li class="bc now"><i>сейчас</i><b>2014</b><span>Нагреватели</span><small>TikTok · часть 4</small></li>
+<li class="bc"><i>дальше</i><b>2022</b><span>Шайбы</span><small>TikTok · часть 5</small></li>
+<li class="bc film"><i>дальше</i><b>финал</b><span>Переворот доски</span><small>только в фильме · ≈ 30 с</small></li>
+</ol>
+</header>
+
+<section class="tip" aria-labelledby="tip-h">
+<h2 id="tip-h">Мой совет — текст 1</h2>
+<ul>
+<li>Самый сильный крючок: производитель «Мальборо» обещает бросить сигареты.</li>
+<li>Отвечает на вопрос шортса «Мальборо» и связывает главу с «Бобом» через «Рейнольдс».</li>
+<li>Последняя фраза «Бросают они ровно так же, как и вы» не съедает финал фильма. В тексте 2 концовка почти совпадает с последней фразой фильма.</li>
+<li>Ощущения из текста 2 — запах, машина, «кажется, вы почти бросили» — можно вставить в любой текст.</li>
+<li>Фильм — 1:31–1:38, шортс короче на 5–10 секунд: без мостика, с вопросом и «Часть 5 →».</li>
+</ul>
+<p class="chosen-line" id="chosen" hidden></p>
+<p class="msg" id="dbmsg" aria-live="polite"></p>
+</section>
+
+<nav class="tabs" id="tabs" role="tablist" aria-label="Тексты"><button class="tab" type="button" role="tab" id="tab-t1" data-p="t1" aria-controls="p-t1" aria-selected="false"><b>Текст 1 <span class="ck">✓</span></b><span>обещание</span></button><button class="tab" type="button" role="tab" id="tab-t2" data-p="t2" aria-controls="p-t2" aria-selected="false"><b>Текст 2 <span class="ck">✓</span></b><span>вы и айкос</span></button><button class="tab" type="button" role="tab" id="tab-t3" data-p="t3" aria-controls="p-t3" aria-selected="false"><b>Текст 3 <span class="ck">✓</span></b><span>без огня</span></button><button class="tab" type="button" role="tab" id="tab-fin" data-p="fin" aria-controls="p-fin" aria-selected="false"><b>Финал</b><span>осталось</span></button></nav>
+<section class="panel" id="p-t1" role="tabpanel" aria-labelledby="tab-t1">
+<div class="phead">
+<p class="eb">Текст 1 · фильм ≈ 1:38 · шортс ≈ 1:33 · 235 слов</p>
+<h2>Новогоднее обещание</h2>
+<p class="idea">Рассказчик, как в «Бобе», «Льде» и «Мальборо». Крючок — производитель «Мальборо» обещает бросить сигареты; дальше айкос, учёные, «Рейнольдс» из главы 1 и честный счёт через шесть лет.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t1" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t1">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li class="key"><span class="n">1</span><span><mark>Производитель «Мальборо» однажды пообещал бросить сигареты.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">2</span><span>В январе восемнадцатого года он выкупил целые страницы в британских газетах, и там крупно: «Наше новогоднее обещание — мы пытаемся бросить сигареты».</span></li>
+<li><span class="n">3</span><span>Бросать предлагалось вот так: за три года до этого в японской Нагое и итальянском Милане появилась сигарета, которую нельзя поджечь.</span></li>
+<li><span class="n">4</span><span>Табак в ней греет маленький нагреватель, вдвое холоднее, чем горит обычная сигарета, и нет ни огня, ни пепла, ни запаха на пальцах.</span></li>
+<li><span class="n">5</span><span>Устройство назвали айкос, и когда в шестнадцатом году его расхвалили комики в популярном японском шоу, айкосы смели с полок.</span></li>
+<li><span class="n">6</span><span>Без огня — значит, без вреда?</span></li>
+<li><span class="n">7</span><span>Через год швейцарские учёные поймали этот «пар» и нашли в нём те же яды, что в сигаретном дыме: многих меньше, одного даже больше, а никотина — восемьдесят четыре процента от обычной сигареты.</span></li>
+<li><span class="n">8</span><span>Статью они так и назвали: «Дым под другим именем».</span></li>
+<li><span class="n">9</span><span>Американский регулятор позже разрешил писать, что вредных веществ в айкосе меньше, а сказать «вреда меньше» не разрешил до сих пор.</span></li>
+<li><span class="n">10</span><span>Помните «Рейнольдс» — тех, что в семьдесят третьем искали, как подсадить подростков?</span></li>
+<li><span class="n">11</span><span>В двадцать первом году из Америки айкос выгнали именно они: торговая комиссия США решила, что нагреватель нарушает их патенты.</span></li>
+<li><span class="n">12</span><span>А обещание бросить? В двадцать четвёртом у айкоса тридцать два миллиона пользователей, а сигарет компания продала шестьсот семнадцать миллиардов — больше, чем годом раньше.</span></li>
+<li class="key"><span class="n">13</span><span><mark>Бросают они ровно так же, как и вы.</mark></span><span class="tag">сильное место</span></li>
+<li class="film"><span class="n">14</span><span>А в Америку «Филип Моррис» всё-таки вернулся — через год, с маленькой белой баночкой за шестнадцать миллиардов.</span><span class="tag">только в фильме</span></li>
+<li class="film"><span class="n">15</span><span>В ней нет даже… табака.</span><span class="tag">только в фильме</span></li>
+<li class="shortq"><span class="n">TT</span><span>В шортсе вместо строк 14–15: «Угадаете, с чем они вернулись в Америку?» → «Часть 5 →»</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Крючок за 3 секунды: табачная компания обещает бросить сигареты — звучит как шутка, а это правда.</li><li>Отвечает на вопрос, которым кончается шортс «Мальборо»: «Без огня — значит, без вреда?»</li><li>Связка с главой 1: из Америки айкос выгнали «Рейнольдс» — те самые, из семьдесят третьего.</li><li>Поворот к зрителю в конце: «Бросают они ровно так же, как и вы».</li><li>Мостик в шайбы — причиной: выгнали из Америки, вернулись с баночкой.</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Ощущений меньше, чем в тексте 2: про запах и машину — одной строкой.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 10</summary><ol>
+<li>Январь 2018: полностраничная реклама в The Times, The Sun, Daily Mirror — «Our New Year’s resolution: we’re trying to give up cigarettes»<span class="src"><a href="https://uk.finance.yahoo.com/news/maker-marlboro-took-full-page-093706503.html" target="_blank" rel="noopener">Maker of Marlboro: New Year’s resolution — Business Insider, 2018</a> · <a href="https://www.thedrum.com/news/2018/01/02/cigarette-maker-philip-morris-resolves-give-up-cigarettes-with-new-ads-and-website" target="_blank" rel="noopener">Philip Morris resolves to give up cigarettes — The Drum, 2018</a></span></li>
+<li>Ноябрь 2014: айкос и стики Marlboro HeatSticks — в Нагое и Милане<span class="src"><a href="https://media.corporate-ir.net/media_files/IROL/14/146476/PM_AR_2014/pdf/pmi-iqos.pdf" target="_blank" rel="noopener">Годовой отчёт PMI 2014: iQOS и Marlboro HeatSticks</a> · <a href="https://www.yahoo.com/news/marlboro-heatsticks-sale-milan-week-191351773--finance.html" target="_blank" rel="noopener">Reuters: Marlboro HeatSticks в Милане, 2014</a></span></li>
+<li>Нагрев ≈ 330 °C против ≈ 684 °C у горящей сигареты<span class="src"><a href="https://pubmed.ncbi.nlm.nih.gov/28531246/" target="_blank" rel="noopener">Auer и др., JAMA Internal Medicine, 2017 — PubMed</a> · <a href="https://core.ac.uk/download/90216495.pdf" target="_blank" rel="noopener">Auer и др. 2017 — полный текст</a></span></li>
+<li>Апрель 2016: айкос по всей Японии, раскупили сразу; в том же месяце его хвалили в шоу «Ame-talk»<span class="src"><a href="https://archives.lincolndailynews.com/2016/Aug/12/NEWS/health_b.shtml" target="_blank" rel="noopener">Reuters: айкос раскупают в Японии, август 2016</a> · <a href="https://tobaccocontrol.bmj.com/content/27/e1/e25.full" target="_blank" rel="noopener">Tobacco Control: айкос в шоу «Ame-talk», апрель 2016</a></span></li>
+<li>2017, Берн и Лозанна: никотина 84 %, акролеина 82 %, формальдегида 74 %, аценафтена больше; статья «Smoke by any other name»<span class="src"><a href="https://pubmed.ncbi.nlm.nih.gov/28531246/" target="_blank" rel="noopener">Auer и др., JAMA Internal Medicine, 2017 — PubMed</a> · <a href="https://cot.food.gov.uk/sites/default/files/tox2017-42.pdf" target="_blank" rel="noopener">Комитет по токсичности Великобритании: таблица из Auer 2017</a> · <a href="https://core.ac.uk/download/90216495.pdf" target="_blank" rel="noopener">Auer и др. 2017 — полный текст</a></span></li>
+<li>FDA, июль 2020: разрешено «меньше вредных веществ», «меньше вреда» — нет; в 2026-м продлено так же<span class="src"><a href="https://www.cspdailynews.com/tobacco/fda-says-pm-usa-can-market-iqos-modified-risk-tobacco-products" target="_blank" rel="noopener">FDA разрешило айкосу «reduced exposure», 2020 — CSP Daily News</a> · <a href="https://www.generationsanstabac.org/en/?p=26664" target="_blank" rel="noopener">FDA продлило статус айкоса, 2026: только «меньше веществ»</a></span></li>
+<li>«Рейнольдс» 1973, молодёжный рынок — глава 1 фильма<span class="src"><a href="https://github.com/1f8t8graf4-ai/dota-/blob/main/shorts/tl/v170e-ru.json" target="_blank" rel="noopener">Глава 1 «Боб» — текст фильма</a></span></li>
+<li>2021: комиссия по торговле США — айкос нарушает два патента R.J. Reynolds, запрет с 29 ноября<span class="src"><a href="https://www.cspdailynews.com/tobacco/altria-pmi-must-stop-Iqos-sales-us" target="_blank" rel="noopener">Altria и PMI должны остановить продажи айкоса в США — CSP Daily News, 2021</a> · <a href="https://nbcmiami.com/news/business/money-report/altria-cant-sell-iqos-in-the-u-s-as-biden-administration-opts-to-not-intervene-in-patent-dispute/2631040/?amp=1" target="_blank" rel="noopener">Altria can’t sell IQOS in the U.S. — NBC, 2021</a></span></li>
+<li>2024: 32,2 млн пользователей айкоса; 616,8 млрд сигарет, +0,6 % к 2023-му<span class="src"><a href="https://www.businesswire.com/news/home/20250205873542/en/Philip-Morris-International-Reports-2024-Fourth-Quarter-Full-Year-Results" target="_blank" rel="noopener">PMI: итоги 2024 года — Business Wire</a> · <a href="https://www.nasdaq.com/press-release/philip-morris-international-releases-integrated-report-detailing-progress-towards-its" target="_blank" rel="noopener">PMI Integrated Report 2024 — 32,2 млн пользователей айкоса</a></span></li>
+<li>Ноябрь 2022: «Филип Моррис» покупает Swedish Match (Zyn), ≈ 16 млрд $, чтобы самому войти на рынок США<span class="src"><a href="https://cspdailynews.com/tobacco/pmi-takes-83-share-swedish-match" target="_blank" rel="noopener">PMI получает 83 % Swedish Match — CSP Daily News, 2022</a> · <a href="https://www.marketscreener.com/quote/stock/SWEDISH-MATCH-6492173/news/Philip-Morris-Holland-Holdings-B-V-completed-the-acquisition-of-Swedish-Match-AB-OM-SWMA--42427098/" target="_blank" rel="noopener">Philip Morris completed the acquisition of Swedish Match — MarketScreener, 2022</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t1">Правки к тексту 1</label>
+<textarea id="n-t1" data-note="t1" placeholder="Например: строка 2 — короче; ощущения взять из текста 2"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section>
+<section class="panel" id="p-t2" role="tabpanel" hidden aria-labelledby="tab-t2">
+<div class="phead">
+<p class="eb">Текст 2 · фильм ≈ 1:31 · шортс ≈ 1:28 · 219 слов</p>
+<h2>Вы перешли на айкос</h2>
+<p class="idea">Зритель — тот, кто сам перешёл на айкос. Сначала его ощущения, потом — кто это продаёт и что нашли учёные.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t2" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t2">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li><span class="n">1</span><span>Вы перешли на айкос, потому что это вроде уже не курение.</span></li>
+<li><span class="n">2</span><span>Руки и куртка больше не пахнут, дома никто не морщится, затянуться можно прямо в машине, а через шесть минут он сам даёт знать: всё, стик кончился.</span></li>
+<li class="key"><span class="n">3</span><span><mark>Кажется, вы почти бросили.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">4</span><span>Только этот гаджет придумали те же люди, что делают «Мальборо», и первые стики к нему так и назывались — «Мальборо».</span></li>
+<li><span class="n">5</span><span>Впервые его продали в четырнадцатом году в японской Нагое и итальянском Милане: табак в нём греется вдвое холоднее, чем горит сигарета, — ни огня, ни пепла.</span></li>
+<li><span class="n">6</span><span>А через три года швейцарские учёные поймали этот «пар» и нашли в нём те же яды, что в сигаретном дыме: многих меньше, одного даже больше, а никотина — восемьдесят четыре процента от обычной сигареты.</span></li>
+<li><span class="n">7</span><span>Статью так и назвали: «Дым под другим именем».</span></li>
+<li><span class="n">8</span><span>Американский регулятор разрешил писать, что вредных веществ в айкосе меньше, а сказать «вреда меньше» не разрешил до сих пор.</span></li>
+<li><span class="n">9</span><span>Зато в восемнадцатом году производитель «Мальборо» выкупил целые страницы в британских газетах с новогодним обещанием: «Мы пытаемся бросить сигареты».</span></li>
+<li><span class="n">10</span><span>Через шесть лет у айкоса тридцать два миллиона пользователей, таких же, как вы, а сигарет компания продала шестьсот семнадцать миллиардов за год — больше, чем годом раньше.</span></li>
+<li class="key"><span class="n">11</span><span><mark>Вы бросили курить — и платите всё тем же людям.</mark></span><span class="tag">сильное место</span></li>
+<li class="film"><span class="n">12</span><span>А когда надоест и нагреватель, у них уже готова маленькая белая баночка за шестнадцать миллиардов.</span><span class="tag">только в фильме</span></li>
+<li class="film"><span class="n">13</span><span>В ней нет даже… табака.</span><span class="tag">только в фильме</span></li>
+<li class="shortq"><span class="n">TT</span><span>В шортсе вместо строк 12–13: «А что вам продадут, когда вы бросите и айкос?» → «Часть 5 →»</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Больше всего ощущений: руки не пахнут, можно в машине, «кажется, вы почти бросили».</li><li>Говорит с тем, кто держит айкос прямо сейчас, — таких среди зрителей много.</li><li>Связка с главой 3: первые стики назывались «Мальборо».</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Концовка «вы платите всё тем же людям» почти дословно повторяет последнюю фразу фильма — финалу потом нечем удивить.</li><li>Мостик в шайбы слабее: без причины, просто «у них уже готова баночка».</li><li>Нет «Рейнольдса» — связка только с главой 3.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 8</summary><ol>
+<li>Стик — до 6 минут или 14 затяжек, потом устройство выключается<span class="src"><a href="https://www.iqos.com/gb/en/blog/can-you-switch-iqos-off-after-couple-puffs.html" target="_blank" rel="noopener">IQOS: сколько длится стик — официальный сайт</a> · <a href="https://www.iqos.com/ph/en/news/iqos-and-heatsticks/flexpuff-iqos-iluma-i.html" target="_blank" rel="noopener">IQOS ILUMA i: 6 минут или 14 затяжек — официальный сайт</a></span></li>
+<li>Первые стики — Marlboro HeatSticks; Нагоя и Милан, ноябрь 2014<span class="src"><a href="https://media.corporate-ir.net/media_files/IROL/14/146476/PM_AR_2014/pdf/pmi-iqos.pdf" target="_blank" rel="noopener">Годовой отчёт PMI 2014: iQOS и Marlboro HeatSticks</a> · <a href="https://www.yahoo.com/news/marlboro-heatsticks-sale-milan-week-191351773--finance.html" target="_blank" rel="noopener">Reuters: Marlboro HeatSticks в Милане, 2014</a></span></li>
+<li>Нагрев ≈ 330 °C против ≈ 684 °C у горящей сигареты<span class="src"><a href="https://pubmed.ncbi.nlm.nih.gov/28531246/" target="_blank" rel="noopener">Auer и др., JAMA Internal Medicine, 2017 — PubMed</a> · <a href="https://core.ac.uk/download/90216495.pdf" target="_blank" rel="noopener">Auer и др. 2017 — полный текст</a></span></li>
+<li>2017, Берн и Лозанна: никотина 84 %, акролеина 82 %, формальдегида 74 %, аценафтена больше; статья «Smoke by any other name»<span class="src"><a href="https://pubmed.ncbi.nlm.nih.gov/28531246/" target="_blank" rel="noopener">Auer и др., JAMA Internal Medicine, 2017 — PubMed</a> · <a href="https://cot.food.gov.uk/sites/default/files/tox2017-42.pdf" target="_blank" rel="noopener">Комитет по токсичности Великобритании: таблица из Auer 2017</a> · <a href="https://core.ac.uk/download/90216495.pdf" target="_blank" rel="noopener">Auer и др. 2017 — полный текст</a></span></li>
+<li>FDA, июль 2020: разрешено «меньше вредных веществ», «меньше вреда» — нет; в 2026-м продлено так же<span class="src"><a href="https://www.cspdailynews.com/tobacco/fda-says-pm-usa-can-market-iqos-modified-risk-tobacco-products" target="_blank" rel="noopener">FDA разрешило айкосу «reduced exposure», 2020 — CSP Daily News</a> · <a href="https://www.generationsanstabac.org/en/?p=26664" target="_blank" rel="noopener">FDA продлило статус айкоса, 2026: только «меньше веществ»</a></span></li>
+<li>Январь 2018: полностраничная реклама «we’re trying to give up cigarettes»<span class="src"><a href="https://uk.finance.yahoo.com/news/maker-marlboro-took-full-page-093706503.html" target="_blank" rel="noopener">Maker of Marlboro: New Year’s resolution — Business Insider, 2018</a> · <a href="https://www.thedrum.com/news/2018/01/02/cigarette-maker-philip-morris-resolves-give-up-cigarettes-with-new-ads-and-website" target="_blank" rel="noopener">Philip Morris resolves to give up cigarettes — The Drum, 2018</a></span></li>
+<li>2024: 32,2 млн пользователей айкоса; 616,8 млрд сигарет, +0,6 % к 2023-му<span class="src"><a href="https://www.businesswire.com/news/home/20250205873542/en/Philip-Morris-International-Reports-2024-Fourth-Quarter-Full-Year-Results" target="_blank" rel="noopener">PMI: итоги 2024 года — Business Wire</a> · <a href="https://www.nasdaq.com/press-release/philip-morris-international-releases-integrated-report-detailing-progress-towards-its" target="_blank" rel="noopener">PMI Integrated Report 2024 — 32,2 млн пользователей айкоса</a></span></li>
+<li>Ноябрь 2022: «Филип Моррис» покупает Swedish Match (Zyn), ≈ 16 млрд $<span class="src"><a href="https://cspdailynews.com/tobacco/pmi-takes-83-share-swedish-match" target="_blank" rel="noopener">PMI получает 83 % Swedish Match — CSP Daily News, 2022</a> · <a href="https://www.marketscreener.com/quote/stock/SWEDISH-MATCH-6492173/news/Philip-Morris-Holland-Holdings-B-V-completed-the-acquisition-of-Swedish-Match-AB-OM-SWMA--42427098/" target="_blank" rel="noopener">Philip Morris completed the acquisition of Swedish Match — MarketScreener, 2022</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t2">Правки к тексту 2</label>
+<textarea id="n-t2" data-note="t2" placeholder="Например: строка 2 — короче; ощущения взять из текста 2"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section>
+<section class="panel" id="p-t3" role="tabpanel" hidden aria-labelledby="tab-t3">
+<div class="phead">
+<p class="eb">Текст 3 · фильм ≈ 1:35 · шортс ≈ 1:30 · 229 слов</p>
+<h2>Сигарета без огня</h2>
+<p class="idea">История одной идеи: сигарету без огня пробовали продать ещё в восемьдесят восьмом — и провалились. Удалось только с айкосом, а выгнали его из Америки те, кто провалился первым.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t3" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t3">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li><span class="n">1</span><span>Сигарету без огня табачники пытались продать задолго до айкоса.</span></li>
+<li><span class="n">2</span><span>Первыми были «Рейнольдс» — те самые, что в семьдесят третьем искали, как подсадить подростков.</span></li>
+<li><span class="n">3</span><span>В восемьдесят восьмом они выпустили сигарету, которая тлела на угольке и почти не дымила, только раскурить её было трудно, а на вкус она отдавала углём.</span></li>
+<li><span class="n">4</span><span>Через несколько месяцев её сняли с продаж, и больше трёхсот миллионов долларов ушли в трубу.</span></li>
+<li><span class="n">5</span><span>Потом попробовал «Филип Моррис»: короткая сигарета в электронной зажигалке на батарейках, — и через восемь лет её тоже убрали.</span></li>
+<li><span class="n">6</span><span>А в четырнадцатом году та же компания выпустила айкос: табак в нём греется вдвое холоднее, чем горит сигарета, — ни огня, ни пепла, ни запаха на пальцах.</span></li>
+<li><span class="n">7</span><span>В Японии айкосы смели с полок, и сейчас ими пользуются тридцать два миллиона человек.</span></li>
+<li><span class="n">8</span><span>Без огня — значит, без вреда?</span></li>
+<li><span class="n">9</span><span>Швейцарские учёные поймали этот «пар» и нашли в нём те же яды, что в сигаретном дыме: многих меньше, одного даже больше, — и назвали статью «Дым под другим именем».</span></li>
+<li><span class="n">10</span><span>Американский регулятор разрешил писать, что вредных веществ меньше, а сказать «вреда меньше» не разрешил до сих пор.</span></li>
+<li class="key"><span class="n">11</span><span><mark>А из Америки айкос в двадцать первом году выгнали… «Рейнольдс».</mark></span><span class="tag">сильное место</span></li>
+<li class="key"><span class="n">12</span><span><mark>Их собственные сигареты без огня так и не прижились, зато торговая комиссия США решила, что айкос нарушает их патенты, — и его сняли с полок по всей стране.</mark></span><span class="tag">сильное место</span></li>
+<li class="film"><span class="n">13</span><span>Но в Америку «Филип Моррис» всё равно вернулся — через год, с маленькой белой баночкой за шестнадцать миллиардов.</span><span class="tag">только в фильме</span></li>
+<li class="film"><span class="n">14</span><span>В ней нет даже… табака.</span><span class="tag">только в фильме</span></li>
+<li class="shortq"><span class="n">TT</span><span>В шортсе вместо строк 13–14: «Угадаете, с чем они вернулись в Америку?» → «Часть 5 →»</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Сюжет с поворотом, как в «Бобе»: «Рейнольдс» в начале — и «Рейнольдс» в конце.</li><li>Двойная связка с главой 1: первые сигареты без огня и запрет айкоса — от «Рейнольдса».</li><li>Мостик в шайбы — причиной, как в тексте 1.</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Крючок слабее, чем в текстах 1 и 2: история начинается издалека, с восемьдесят восьмого.</li><li>Год на плашке сначала уходит назад, в 1988-й, хотя карточка главы — 2014.</li><li>Нет новогоднего обещания и «больше, чем годом раньше» — самой злой цифры.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 9</summary><ol>
+<li>«Рейнольдс» 1973, молодёжный рынок — глава 1 фильма<span class="src"><a href="https://github.com/1f8t8graf4-ai/dota-/blob/main/shorts/tl/v170e-ru.json" target="_blank" rel="noopener">Глава 1 «Боб» — текст фильма</a></span></li>
+<li>1988: Premier от R.J. Reynolds — тлел на угольке, трудно раскурить, привкус угля; снят в феврале 1989-го, 300–325 млн $<span class="src"><a href="https://en.wikipedia.org/wiki/Premier_(cigarette)" target="_blank" rel="noopener">Premier (cigarette) — Wikipedia</a> · <a href="https://thehustle.co/news/why-though-a-cigarette-that-didn-t-smoke" target="_blank" rel="noopener">A cigarette that didn’t smoke — The Hustle</a></span></li>
+<li>1998–2006: Accord от «Филип Моррис» — короткая сигарета в зажигалке на батарейках<span class="src"><a href="https://tobaccotactics.org/wiki/heated-tobacco-products/" target="_blank" rel="noopener">Heated Tobacco Products — Tobacco Tactics, Университет Бата</a> · <a href="https://en.wikipedia.org/wiki/Iqos" target="_blank" rel="noopener">IQOS — Wikipedia</a></span></li>
+<li>Ноябрь 2014: айкос; нагрев ≈ 330 °C против ≈ 684 °C<span class="src"><a href="https://media.corporate-ir.net/media_files/IROL/14/146476/PM_AR_2014/pdf/pmi-iqos.pdf" target="_blank" rel="noopener">Годовой отчёт PMI 2014: iQOS и Marlboro HeatSticks</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/28531246/" target="_blank" rel="noopener">Auer и др., JAMA Internal Medicine, 2017 — PubMed</a></span></li>
+<li>Апрель 2016: раскупили по всей Японии; 2024 — 32,2 млн пользователей<span class="src"><a href="https://archives.lincolndailynews.com/2016/Aug/12/NEWS/health_b.shtml" target="_blank" rel="noopener">Reuters: айкос раскупают в Японии, август 2016</a> · <a href="https://www.businesswire.com/news/home/20250205873542/en/Philip-Morris-International-Reports-2024-Fourth-Quarter-Full-Year-Results" target="_blank" rel="noopener">PMI: итоги 2024 года — Business Wire</a></span></li>
+<li>2017, Берн и Лозанна: многих ядов меньше, аценафтена больше; статья «Smoke by any other name»<span class="src"><a href="https://pubmed.ncbi.nlm.nih.gov/28531246/" target="_blank" rel="noopener">Auer и др., JAMA Internal Medicine, 2017 — PubMed</a> · <a href="https://cot.food.gov.uk/sites/default/files/tox2017-42.pdf" target="_blank" rel="noopener">Комитет по токсичности Великобритании: таблица из Auer 2017</a> · <a href="https://core.ac.uk/download/90216495.pdf" target="_blank" rel="noopener">Auer и др. 2017 — полный текст</a></span></li>
+<li>FDA, июль 2020: разрешено «меньше вредных веществ», «меньше вреда» — нет; в 2026-м продлено так же<span class="src"><a href="https://www.cspdailynews.com/tobacco/fda-says-pm-usa-can-market-iqos-modified-risk-tobacco-products" target="_blank" rel="noopener">FDA разрешило айкосу «reduced exposure», 2020 — CSP Daily News</a> · <a href="https://www.generationsanstabac.org/en/?p=26664" target="_blank" rel="noopener">FDA продлило статус айкоса, 2026: только «меньше веществ»</a></span></li>
+<li>2021: айкос нарушает два патента R.J. Reynolds, запрет продажи с 29 ноября<span class="src"><a href="https://www.cspdailynews.com/tobacco/altria-pmi-must-stop-Iqos-sales-us" target="_blank" rel="noopener">Altria и PMI должны остановить продажи айкоса в США — CSP Daily News, 2021</a> · <a href="https://nbcmiami.com/news/business/money-report/altria-cant-sell-iqos-in-the-u-s-as-biden-administration-opts-to-not-intervene-in-patent-dispute/2631040/?amp=1" target="_blank" rel="noopener">Altria can’t sell IQOS in the U.S. — NBC, 2021</a></span></li>
+<li>Ноябрь 2022: «Филип Моррис» покупает Swedish Match (Zyn), ≈ 16 млрд $, чтобы самому войти на рынок США<span class="src"><a href="https://cspdailynews.com/tobacco/pmi-takes-83-share-swedish-match" target="_blank" rel="noopener">PMI получает 83 % Swedish Match — CSP Daily News, 2022</a> · <a href="https://www.marketscreener.com/quote/stock/SWEDISH-MATCH-6492173/news/Philip-Morris-Holland-Holdings-B-V-completed-the-acquisition-of-Swedish-Match-AB-OM-SWMA--42427098/" target="_blank" rel="noopener">Philip Morris completed the acquisition of Swedish Match — MarketScreener, 2022</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t3">Правки к тексту 3</label>
+<textarea id="n-t3" data-note="t3" placeholder="Например: строка 2 — короче; ощущения взять из текста 2"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section>
+<section class="panel fin" id="p-fin" role="tabpanel" aria-labelledby="tab-fin" hidden>
+<div class="phead">
+<p class="eb">Что осталось · глава 5 и финал</p>
+<h2>Две главы и финал</h2>
+<p class="idea">После «Нагревателей» — глава 5 «Шайбы», потом переворот доски. Глав в фильме остаётся пять, финал — короткой вставкой.</p>
+</div>
+<div class="gem">
+<article class="g">
+<span class="gid">5</span>
+<h3>2022 · Шайбы</h3>
+<span class="meta">TikTok · часть 5</span>
+<p>Zyn — белые пакетики под губу, без табака. «Филип Моррис» купил Swedish Match за ≈ 16 млрд $ в ноябре 2022-го, чтобы вернуться в Америку после запрета айкоса; у Altria — свои пакетики on! с 2019-го. Текст напишу, когда выберешь текст главы 4.</p>
+</article>
+<article class="g">
+<span class="gid">≈ 30 с</span>
+<h3>Финал — вставкой, не главой</h3>
+<span class="meta">мой совет</span>
+<ul>
+<li>Новых фактов для финала нет: всё уже рассказано в главах 1–5.</li>
+<li>Переворот работает за 20–30 секунд, полторы минуты затянут и повторят главы.</li>
+<li>Фильм выходит около восьми с половиной минут: пять глав по ≈ 1:35 и финал.</li>
+<li>Голос финала — две фразы, запишем в одной сессии с главой 5.</li>
+</ul>
+</article>
+<article class="g">
+<span class="gid">кадр</span>
+<h3>Как выглядит финал</h3>
+<span class="meta">из плана 12.11</span>
+<ol class="beats">
+<li><b>0–5 с</b><span>Отъезд: вся доска, все пять карточек открыты, нити.</span></li>
+<li><b>5–12 с</b><span>Доска переворачивается на 180°. На чёрной изнанке нити сходятся в змею, которая кусает свой хвост, вокруг табачных гигантов.</span></li>
+<li><b>12–20 с</b><span>Нить от «2020 · Лазейка» тянется к «1979 · Соль»: китайские фабрики — не их, идею придумали они.</span></li>
+<li><b>20–30 с</b><span><q>Сигареты, нагреватель, шайбы — вы платите всё тем же людям. А одноразку из Китая… придумали тоже они.</q> → название фильма.</span></li>
+</ol>
+<p class="gnote">В TikTok — тизер: доска переворачивается наполовину, «Целиком — на YouTube».</p>
+</article>
+</div>
+<div class="note" hidden style="margin-top:22px"><label for="n-fin">Финал и глава 5</label>
+<textarea id="n-fin" data-note="fin" placeholder="Например: финал — отдельной главой; в шайбах — про школьников"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</section>
+
+<section class="next" aria-labelledby="next-h">
+<h2 id="next-h">Что дальше</h2>
+<ol>
+<li>Ты выбираешь текст: кнопкой «Беру этот текст» или в чате. Правки — в поле под текстом, по номерам строк.</li>
+<li>Голос — тот же «Макс» из ElevenLabs: около 750 кредитов за дубль (0,48 кредита за знак), с переозвучкой — до 1 100. Трачу только после твоего «да».</li>
+<li>Рисовка — страница с таймингом и референсами, как для «Мальборо». Первый кадр продолжает витрину и карточку «2014» из конца главы 3.</li>
+<li>Шортс — тот же голос без двух последних строк, в конце — вопрос и «Часть 5 →».</li>
+<li>Факты Зетки по главам 4–5 сверю с этими, когда её ветка <code>zai/film-facts-4-5</code> появится на GitHub — сейчас её там нет.</li>
+</ol>
+<div class="note" hidden><label for="n-all">Общее мнение</label>
+<textarea id="n-all" data-note="all" placeholder="Что поменять во всех текстах сразу"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</section>
+<footer>Время — по скорости голоса «Льда» и «Мальборо», 2,4 слова в секунду. Claude, 19.11.</footer>
+</div>
+<script>
+const TX = {"t1": ["Производитель «Мальборо» однажды пообещал бросить сигареты.", "В январе восемнадцатого года он выкупил целые страницы в британских газетах, и там крупно: «Наше новогоднее обещание — мы пытаемся бросить сигареты».", "Бросать предлагалось вот так: за три года до этого в японской Нагое и итальянском Милане появилась сигарета, которую нельзя поджечь.", "Табак в ней греет маленький нагреватель, вдвое холоднее, чем горит обычная сигарета, и нет ни огня, ни пепла, ни запаха на пальцах.", "Устройство назвали айкос, и когда в шестнадцатом году его расхвалили комики в популярном японском шоу, айкосы смели с полок.", "Без огня — значит, без вреда?", "Через год швейцарские учёные поймали этот «пар» и нашли в нём те же яды, что в сигаретном дыме: многих меньше, одного даже больше, а никотина — восемьдесят четыре процента от обычной сигареты.", "Статью они так и назвали: «Дым под другим именем».", "Американский регулятор позже разрешил писать, что вредных веществ в айкосе меньше, а сказать «вреда меньше» не разрешил до сих пор.", "Помните «Рейнольдс» — тех, что в семьдесят третьем искали, как подсадить подростков?", "В двадцать первом году из Америки айкос выгнали именно они: торговая комиссия США решила, что нагреватель нарушает их патенты.", "А обещание бросить? В двадцать четвёртом у айкоса тридцать два миллиона пользователей, а сигарет компания продала шестьсот семнадцать миллиардов — больше, чем годом раньше.", "Бросают они ровно так же, как и вы.", "А в Америку «Филип Моррис» всё-таки вернулся — через год, с маленькой белой баночкой за шестнадцать миллиардов.", "В ней нет даже… табака."], "t2": ["Вы перешли на айкос, потому что это вроде уже не курение.", "Руки и куртка больше не пахнут, дома никто не морщится, затянуться можно прямо в машине, а через шесть минут он сам даёт знать: всё, стик кончился.", "Кажется, вы почти бросили.", "Только этот гаджет придумали те же люди, что делают «Мальборо», и первые стики к нему так и назывались — «Мальборо».", "Впервые его продали в четырнадцатом году в японской Нагое и итальянском Милане: табак в нём греется вдвое холоднее, чем горит сигарета, — ни огня, ни пепла.", "А через три года швейцарские учёные поймали этот «пар» и нашли в нём те же яды, что в сигаретном дыме: многих меньше, одного даже больше, а никотина — восемьдесят четыре процента от обычной сигареты.", "Статью так и назвали: «Дым под другим именем».", "Американский регулятор разрешил писать, что вредных веществ в айкосе меньше, а сказать «вреда меньше» не разрешил до сих пор.", "Зато в восемнадцатом году производитель «Мальборо» выкупил целые страницы в британских газетах с новогодним обещанием: «Мы пытаемся бросить сигареты».", "Через шесть лет у айкоса тридцать два миллиона пользователей, таких же, как вы, а сигарет компания продала шестьсот семнадцать миллиардов за год — больше, чем годом раньше.", "Вы бросили курить — и платите всё тем же людям.", "А когда надоест и нагреватель, у них уже готова маленькая белая баночка за шестнадцать миллиардов.", "В ней нет даже… табака."], "t3": ["Сигарету без огня табачники пытались продать задолго до айкоса.", "Первыми были «Рейнольдс» — те самые, что в семьдесят третьем искали, как подсадить подростков.", "В восемьдесят восьмом они выпустили сигарету, которая тлела на угольке и почти не дымила, только раскурить её было трудно, а на вкус она отдавала углём.", "Через несколько месяцев её сняли с продаж, и больше трёхсот миллионов долларов ушли в трубу.", "Потом попробовал «Филип Моррис»: короткая сигарета в электронной зажигалке на батарейках, — и через восемь лет её тоже убрали.", "А в четырнадцатом году та же компания выпустила айкос: табак в нём греется вдвое холоднее, чем горит сигарета, — ни огня, ни пепла, ни запаха на пальцах.", "В Японии айкосы смели с полок, и сейчас ими пользуются тридцать два миллиона человек.", "Без огня — значит, без вреда?", "Швейцарские учёные поймали этот «пар» и нашли в нём те же яды, что в сигаретном дыме: многих меньше, одного даже больше, — и назвали статью «Дым под другим именем».", "Американский регулятор разрешил писать, что вредных веществ меньше, а сказать «вреда меньше» не разрешил до сих пор.", "А из Америки айкос в двадцать первом году выгнали… «Рейнольдс».", "Их собственные сигареты без огня так и не прижились, зато торговая комиссия США решила, что айкос нарушает их патенты, — и его сняли с полок по всей стране.", "Но в Америку «Филип Моррис» всё равно вернулся — через год, с маленькой белой баночкой за шестнадцать миллиардов.", "В ней нет даже… табака."]}, NAMES = {"t1": "текст 1 · «Новогоднее обещание»", "t2": "текст 2 · «Вы перешли на айкос»", "t3": "текст 3 · «Сигарета без огня»"};
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const IDS = ['t1', 't2', 't3', 'fin'];
+const tabs = $$('[role="tab"]');
+function show(id, focus) {
+  tabs.forEach(t => { const on = t.dataset.p === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
+  $$('.panel').forEach(p => { p.hidden = p.id !== 'p-' + id; });
+}
+function go(id, focus) {
+  show(id, focus);
+  try { history.replaceState(null, '', '#' + id); } catch (e) { try { location.hash = id; } catch (e2) {} }
+}
+function fromHash() { const h = location.hash.slice(1); show(IDS.includes(h) ? h : 't1'); }
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => go(t.dataset.p));
+  t.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault(); const j = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length; go(tabs[j].dataset.p, true);
+  });
+});
+addEventListener('hashchange', fromHash); fromHash();
+$$('[data-goto]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(a.dataset.goto); $('#tabs').scrollIntoView({ block: 'start' }); }));
+
+function say(el, text) { if (!el) return; el.textContent = text; clearTimeout(el._t); el._t = setTimeout(() => { el.textContent = ''; }, 4000); }
+$$('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+  const id = b.dataset.copy, msg = $('.msg', b.parentElement), text = TX[id].join('\n');
+  try { await navigator.clipboard.writeText(text); say(msg, 'Скопировано'); }
+  catch (e) {
+    const r = document.createRange(); r.selectNodeContents($('#p-' + id + ' .script'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    say(msg, 'Текст выделен — скопируй вручную');
+  }
+}));
+
+// Выбор текста и правки — в базе страницы (их читает Claude). Без базы страница просто читается.
+(async () => {
+  let db = null;
+  try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) return;
+  const S = { pick: '', ready: false, ro: false }, last = {}, busy = {}, timers = {}, chain = {};
+  const line = $('#chosen');
+  const readOnly = () => { S.ro = true; $$('[data-pick]').forEach(b => { b.hidden = true; }); $$('.note').forEach(n => { n.hidden = true; }); };
+  function renderPick() {
+    $$('[data-pick]').forEach(b => {
+      const on = S.pick === b.dataset.pick; b.setAttribute('aria-pressed', on);
+      b.textContent = on ? '✓ Выбран · нажми, чтобы снять' : 'Беру этот текст';
+    });
+    tabs.forEach(t => t.classList.toggle('chosen', t.dataset.p === S.pick));
+    line.hidden = !S.pick; line.textContent = S.pick ? 'Ты выбрал ' + NAMES[S.pick] : '';
+  }
+  $$('[data-pick]').forEach(b => { b.hidden = false; });
+  $$('.note').forEach(n => { n.hidden = false; });
+  const tm = setTimeout(() => { if (!S.ready) say($('#dbmsg'), 'Отметки пока не загрузились. Выбор можно написать в чат.'); }, 10000);
+  db.collection('pick').onSnapshot(snap => {
+    const doc = snap.docs.find(x => x.id === 'choice');
+    S.pick = doc && doc.exists ? String((doc.data() || {}).t || '') : '';
+    if (!TX[S.pick]) S.pick = '';
+    renderPick();
+    if (!snap.metadata.fromCache) { S.ready = true; clearTimeout(tm); }
+  }, () => { clearTimeout(tm); });
+  db.collection('notes').onSnapshot(snap => {
+    snap.docs.forEach(x => {
+      const ta = $('[data-note="' + x.id + '"]'); if (!ta) return;
+      const v = String((x.data() || {}).text || '');
+      last[x.id] = v;
+      if (document.activeElement !== ta && !busy[x.id]) ta.value = v;
+    });
+  }, () => {});
+  $$('[data-pick]').forEach(b => b.addEventListener('click', async () => {
+    if (S.ro) return;
+    const prev = S.pick, next = S.pick === b.dataset.pick ? '' : b.dataset.pick;
+    S.pick = next; renderPick();
+    try { await db.doc('pick/choice').set({ t: next, at: new Date().toISOString() }); say($('.msg', b.parentElement), next ? 'Сохранено' : 'Выбор снят'); }
+    catch (e) {
+      S.pick = prev; renderPick();
+      if (e && e.code === 'invalid_argument') readOnly();
+      say($('.msg', b.parentElement), 'Не сохранилось. Напиши выбор в чат.');
+    }
+  }));
+  const st = id => $('.st', $('[data-note="' + id + '"]').parentElement);
+  function flush(id) {
+    clearTimeout(timers[id]);
+    const ta = $('[data-note="' + id + '"]'), text = ta.value;
+    if ((last[id] || '') === text) { busy[id] = false; return; }
+    chain[id] = (chain[id] || Promise.resolve())
+      .then(() => db.doc('notes/' + id).set({ text, at: new Date().toISOString() }))
+      .then(() => { last[id] = text; busy[id] = false; st(id).textContent = 'Сохранено'; })
+      .catch(e => { busy[id] = false; st(id).textContent = 'Не сохранилось. Скопируй текст и пришли в чат.'; if (e && e.code === 'invalid_argument') readOnly(); });
+  }
+  $$('[data-note]').forEach(ta => {
+    const id = ta.dataset.note;
+    ta.addEventListener('input', () => { if (S.ro) return; busy[id] = true; st(id).textContent = 'Сохраняю…'; clearTimeout(timers[id]); timers[id] = setTimeout(() => flush(id), 900); });
+    ta.addEventListener('blur', () => { if (busy[id]) flush(id); });
+  });
+})();
+</script>
