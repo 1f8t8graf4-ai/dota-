@@ -93,17 +93,27 @@
   }
   function w12Shot(c, t) { const q = camObj(camAt(K12, t)); layer(c, q, 1, cc => board12(cc, t, ci => inNest(ci, N12, cn => nightLocal(cn, t, q, false)))) }
   // ---------- дым (v20.2): неровные клубы растут из тлеющего кончика чека (в шортсе — снизу), закрывают кадр; после стыка с 2014-м уходят вверх ----------
+  // v20.4 (разбор Gemini: «плоские серые круги, как мыльные пузыри»): мягкий дым — клубы с размытым краем (радиальный градиент, без кружка-блика),
+  // каждый из трёх комков, которые медленно ворочаются; рисуется в маленький холст и растягивается — края мягкие; на стыке кадр закрыт ровной дымкой
+  let SMC = null; const SMTONE = ['#B9B6C2', '#A9A6B4', '#C6C3CE', '#9F9CAA'];
+  function puff(g, x, y, r, col, a) { if (a <= 0 || r <= 0) return; const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, rgba(col, a)); gr.addColorStop(.55, rgba(col, a * .72)); gr.addColorStop(1, rgba(col, 0));
+    g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2) }
   function smokeCover(c, t, tc, half = .5) {
-    if (Math.abs(t - tc) > half + .5) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    const TONE = ['#9A9AA6', '#8C8C98', '#B3B2BC', '#A5A4AF', '#7F7F8B'], [sx, sy] = MODE === 'y' && T12 ? [540, 960] : [540, 2250];
-    for (let n = 0; n < 48; n++) {
-      const fx = -80 + H1(n * 1.37) * 1240, fy = -120 + H1(n * 2.91) * 2160, R = 230 + H1(n * 6.53) * 270;   // где клуб стоит, когда кадр закрыт
+    if (Math.abs(t - tc) > half + .5) return;
+    if (!SMC) SMC = mk(270, 480); const g = SMC.getContext('2d'), Q = .25; g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.clearRect(0, 0, 270, 480);
+    const [sx, sy] = MODE === 'y' && T12 ? [540, 960] : [540, 2250];
+    const base = t <= tc ? ei(at(t, tc - .24, tc)) : 1 - eo(at(t, tc + .02, tc + .32)); if (base > 0) { g.fillStyle = rgba('#ABA8B6', base); g.fillRect(0, 0, 270, 480) }   // ровная дымка — к стыку кадр закрыт
+    let any = base > 0;
+    for (let n = 0; n < 56; n++) {
+      const fx = -80 + H1(n * 1.37) * 1240, fy = -120 + H1(n * 2.91) * 2160, R = 240 + H1(n * 6.53) * 280;   // где клуб стоит, когда кадр закрыт
       const ta = tc - half + H1(n * 4.17) * half * .55, k = eo(at(t, ta, tc + .02));
-      const after = at(t, tc + .03 + (fy / 1920) * .1, tc + .03 + half + .2), up = 2800 * after * after;   // после стыка — вверх; нижние клубы уходят позже
-      if (k <= 0 || after >= 1) continue;
-      const x = lp(sx, fx, k) + Math.sin(t * 1.6 + n) * 16, y = lp(sy, fy, k) - up, r = R * (.18 + .82 * k) * (1 - .35 * after);
-      circ(c, x, y, r, TONE[n % 5]); circ(c, x - r * .22, y - r * .26, r * .56, 'rgba(200,199,208,.32)');   // клуб и его светлая сторона
+      const after = at(t, tc + .03 + (fy / 1920) * .1, tc + .03 + half + .25), up = 2400 * after * after;   // после стыка — вверх и тает; нижние клубы уходят позже
+      if (k <= 0 || after >= 1) continue; any = true;
+      const x = lp(sx, fx, k) + Math.sin(t * 1.6 + n) * 16, y = lp(sy, fy, k) - up, r = R * (.18 + .82 * k) * (1 + .25 * after), al = Math.min(1, k * 1.6) * Math.pow(1 - after, 1.3);
+      for (let j = 0; j < 3; j++) { const an = n * 2.1 + j * 2.09 + t * (.5 + H1(n) * .5), d = r * .34;   // три комка ворочаются вокруг центра клуба
+        puff(g, (x + Math.cos(an) * d) * Q, (y + Math.sin(an) * d * .8) * Q, r * (.62 - j * .06) * Q, SMTONE[(n + j) % 4], .9 * al) }
+      puff(g, (x - r * .22) * Q, (y - r * .28) * Q, r * .42 * Q, '#D4D1DB', .45 * al);   // светлая сторона — мягко, без края
     }
-    if (Math.abs(t - tc) < .02) { c.fillStyle = '#9A9AA6'; c.fillRect(0, 0, WW, HH) }
-    c.restore();
+    if (!any) return;
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high'; c.drawImage(SMC, 0, 0, WW, HH); c.restore();
   }

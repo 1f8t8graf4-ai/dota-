@@ -32,6 +32,42 @@
     c.fillStyle = '#5A4E44'; for (let dx = -2960; dx < 6000; dx += 120) c.fillRect(dx, 1406, 64, 5);
     c.fillStyle = '#0E0B1C'; for (let fx = -594; fx < 260; fx += 50) c.fillRect(fx, 1300, 11, 80); c.fillRect(-600, 1316, 866, 5); c.fillRect(-600, 1344, 866, 5);
     nightBoard(c, t, q);
+    ground9(c, t, q, noFill); car9(c, t);
+  }
+  // v20.4 (разбор Gemini: «пол-экрана снизу — пустое синее поле»): ночная земля перед дорогой — ряды кустов, камни, кактусы; чем ниже ряд, тем он ближе к зрителю
+  // и крупнее. Ряды уходят далеко вниз — их видно и на нырке с Земли (там — внутри шара); по дороге проезжает машина с фарами
+  const ell = (c, x, y, rx, ry, r = 0) => { c.moveTo(x + rx * Math.cos(r), y + rx * Math.sin(r)); c.ellipse(x, y, rx, ry, r, 0, TAU) };
+  function bush9(c, x, y, s) { c.beginPath(); ell(c, x, y - s * .42, s, s * .6); ell(c, x - s * .62, y - s * .28, s * .6, s * .42); ell(c, x + s * .66, y - s * .3, s * .58, s * .4); fill(c, '#121B4A');
+    c.beginPath(); ell(c, x - s * .28, y - s * .86, s * .42, s * .13, -.1); fill(c, 'rgba(60,82,160,.45)') }
+  function rock9(c, x, y, s) { c.beginPath(); ell(c, x, y - s * .2, s * .8, s * .3); fill(c, '#18225C'); c.beginPath(); ell(c, x - s * .2, y - s * .38, s * .4, s * .08); fill(c, 'rgba(70,92,170,.4)') }
+  function cactus9(c, x, y, s) { c.fillStyle = '#101848'; rr(c, x - s * .18, y - s * 2.2, s * .36, s * 2.2, s * .18); c.fill(); rr(c, x - s * .7, y - s * 1.62, s * .26, s * .78, s * .13); c.fill(); rr(c, x - s * .7, y - s * 1.06, s * .62, s * .24, s * .12); c.fill();
+    rr(c, x + s * .44, y - s * 1.9, s * .26, s * .7, s * .13); c.fill(); rr(c, x + s * .08, y - s * 1.42, s * .62, s * .24, s * .12); c.fill() }
+  function ground9(c, t, q, noFill) {
+    const T = c.getTransform(), I = T.inverse(), P = [[0, 0], [WW, 0], [0, HH], [WW, HH]].map(([X, Y]) => [I.a * X + I.c * Y + I.e, I.b * X + I.d * Y + I.f]);   // что видно — из текущего преобразования холста:
+    const v = { x0: Math.min(...P.map(p => p[0])), x1: Math.max(...P.map(p => p[0])), y0: Math.min(...P.map(p => p[1])), y1: Math.max(...P.map(p => p[1])) }, z = Math.sqrt(Math.abs(T.a * T.d - T.b * T.c)), al = noFill ? at(q.z, 12, 22) : 1;   // мир 9, он же внутри Земли и в фото карточки 1924
+    if (al <= 0 || v.y1 < 1440) return;
+    const base = c.globalAlpha, G = 1.32; c.save();
+    if (noFill) { c.beginPath(); c.arc(540 + (GLOBE.x - NE9.x) / M9, 960 + (GLOBE.y - NE9.y) / M9, GLOBE.R / M9, 0, TAU); c.clip() }   // по кривизне шара
+    for (let j = 0; j < 20; j++) {
+      const yj = 1452 + 46 * (Math.pow(G, j) - 1) / (G - 1), sj = 16 * Math.pow(G, j), aj = 1 - at(yj, 9000, 15000);
+      if (aj <= 0 || sj * z < 1.2 || yj - sj * 2.4 > v.y1 || yj + sj * .2 < v.y0) continue;
+      const dx = 6.5 * sj, k0 = Math.floor((v.x0 - sj * 2) / dx), k1 = Math.ceil((v.x1 + sj * 2) / dx); if (k1 - k0 > 90) continue;
+      c.globalAlpha = base * al * aj;
+      for (let k = k0; k <= k1; k++) { const hh = H1(j * 31.7 + k * 7.31), x = (k + H1(j * 13.1 + k * 3.7) * .7) * dx, s2 = sj * (.7 + hh * .6);
+        if (hh < .1 && j < 7) cactus9(c, x, yj, s2); else if (hh < .32) rock9(c, x, yj, s2); else bush9(c, x, yj, s2) }
+    }
+    c.restore();
+  }
+  function car9(c, t) {   // машина 1950-х с фарами: на «Вот только ковбои» едет вправо, на «Всего от болезней» — влево
+    const a = T9;
+    for (const [t0, t1, x0, x1] of [[a.vot + .1, a.rekl0 + .3, -700, 1700], [a.umerli - .2, a.marl + .3, 2600, -300]]) {   // проезжает, пока камера широко
+      const u = at(t, t0, t1); if (u <= 0 || u >= 1) continue; const x = lp(x0, x1, u), d = Math.sign(x1 - x0), by = 1428;
+      const g = c.createLinearGradient(x + d * 120, 0, x + d * 760, 0); g.addColorStop(0, 'rgba(255,236,170,.26)'); g.addColorStop(1, 'rgba(255,236,170,0)');
+      c.fillStyle = g; poly(c, [x + d * 118, by - 30, x + d * 760, by - 64, x + d * 760, by + 14, x + d * 118, by - 20]); c.fill();   // свет фар
+      rr(c, x - 130, by - 36, 260, 30, 10); fill(c, '#262040'); rr(c, x - 70 - d * 6, by - 62, 140, 30, 13); fill(c, '#262040');   // кузов и крыша
+      c.fillStyle = 'rgba(120,130,190,.5)'; c.fillRect(x - 56 - d * 6, by - 56, 50, 18); c.fillRect(x + 6 - d * 6, by - 56, 50, 18);   // окна
+      for (const wx of [-78, 78]) { circ(c, x + wx, by - 4, 18, '#0A0814'); circ(c, x + wx, by - 4, 7, '#3A3456') }   // колёса
+      circ(c, x + d * 124, by - 24, 7, '#FFF3C4'); glow(c, x + d * 124, by - 24, 34, '#FFF3C4', .6); circ(c, x - d * 128, by - 26, 5, '#E23A4E') }   // фара и стоп-сигнал
   }
   function nightInEarth(c, t, q) { if (q.z < 12) return; inNest(c, NE9, cc => nightLocal(cc, t, q, true)) }
   // ---------- щит ночью: лампы, огонёк, дым, календарь, рентген, планки, столб ----------
