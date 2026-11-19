@@ -1034,9 +1034,9 @@
   const ROOM = { x: 1635, y: 1530, w: 270, h: 200, m: 270 / 1500 };   // кабинет Бёрнетта (этаж 1420…1640): мир 7 вложен сюда
   function chInit() {
     const a = TC;
-    KCH = [KY(a.rekl + .5, 730, 880, 1.08), KY(a.leo + .08, 900, 1080, .74), KY(a.bern + .02, 1480, 1440, .86), KY(a.end - .3, ROOM.x, ROOM.y, 3.4), KY(a.end, ROOM.x, ROOM.y, 1.96 / ROOM.m)];   // v20.2: отъезд от короны длиннее — без рывка
+    KCH = [KY(a.rekl + .55, 900, 1020, .8), KY(a.leo + .05, 1000, 1100, .64), KY(a.bern + .02, 1060, 1150, .68), KY(a.end - .3, ROOM.x, ROOM.y, 3.4), KY(a.end, ROOM.x, ROOM.y, 1.96 / ROOM.m)];   // v20.2: отъезд от короны на общий план, дом въезжает в стоящий кадр (#076), потом нырок на этаж
   }
-  function burX(t) { const a = TC; return (1 - eo(at(t, a.leo - .6, a.bern + .02))) * 1400 }   // дом въезжает справа
+  function burX(t) { const a = TC; return (1 - eio(at(t, a.leo - .35, a.bern + .05))) * 760 }   // дом въезжает справа в стоящий кадр
   function cutX(y) { const [x0, y0, x1, y1] = BUR.cut; return lp(x0, x1, (y - y0) / (y1 - y0)) }
   function sitter(c, x, y, s, col, o = {}) {   // фигура за столом сбоку (смотрит вправо): стул, тело, рука к машинке / доске
     c.save(); c.translate(x, y); c.scale(s, s); c.fillStyle = col;
