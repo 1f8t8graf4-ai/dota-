@@ -3,7 +3,7 @@
   let T8 = null, K8 = null, KE = null, NE8 = null;
   const ROW = { x0: 4400, dx: 1100, n: 8, ours: 5 }, BARH = [2600, 3400, 2200, 3000, 1800, 0, 1500, 1200];
   const OURX = ROW.x0 + ROW.ours * ROW.dx + BB.w / 2;   // центр нашего щита в ряду
-  const GLOBE = { x: 540, y: 960, R: 360 }, SPACE = '#0B0F2A', GLOBEC = '#18183A', LANDC = '#26244A', BEAMW = 40;
+  const GLOBE = { x: 540, y: 960, R: 360 }, SPACE = '#0B0F2A', GLOBEC = '#1C2B6B', LANDC = '#26244A', BEAMW = 40;
   function w8Init() {
     const s = 's8', a7 = T7;
     T8 = { sim: a7.sim, muzh: Ws('s7', 'мужчины'), a: SA(s), cherez: Ws(s, 'через'), god: Ws(s, 'год'), byv: Ws(s, 'бывшая'), mar: Ws(s, 'марка'), chet: Ws(s, 'четвёртая'), str: Ws(s, 'стране'),
@@ -72,11 +72,11 @@
     RING.forEach(rk => ring(c, G.x, G.y, R * rk, 'rgba(200,210,255,.22)', 3)); ring(c, G.x, G.y, R * 1.7, 'rgba(200,210,255,.1)', 2);
     if (sw > 0 && sw < 1) { const g = c.createConicGradient(ang - 1.25, G.x, G.y); g.addColorStop(0, 'rgba(200,16,46,0)'); g.addColorStop(1.25 / TAU, 'rgba(232,40,70,.42)'); g.addColorStop(1.25 / TAU + .001, 'rgba(200,16,46,0)'); g.addColorStop(1, 'rgba(200,16,46,0)');
       c.beginPath(); c.arc(G.x, G.y, R * 1.7, 0, TAU); c.fillStyle = g; c.fill() }   // след радара — градиентный сектор
-    circ(c, G.x, G.y, R, '#1C2B6B');
+    circ(c, G.x, G.y, R, GLOBEC);   // океан = земля ночной сцены (на нырке к горизонту — тот же цвет)
     c.save(); c.beginPath(); c.arc(G.x, G.y, R, 0, TAU); c.clip();
     CONT.forEach(P => { blob(c, P.map(p => [G.x + p[0] * R * 1.15, G.y + p[1] * R * 1.15])); fill(c, '#2E4290') });
-    c.strokeStyle = 'rgba(150,180,255,.16)'; c.lineWidth = 2; [-.45, 0, .45].forEach(la => { c.beginPath(); c.ellipse(G.x, G.y + la * R, R * Math.sqrt(1 - la * la), R * .13, 0, 0, TAU); c.stroke() });
-    [.36, .72].forEach(lo => { c.beginPath(); c.ellipse(G.x, G.y, R * lo, R, 0, 0, TAU); c.stroke() });   // параллели и меридианы — объём
+    if (q.z < 3) { c.strokeStyle = 'rgba(150,180,255,.16)'; c.lineWidth = 2; [-.45, 0, .45].forEach(la => { c.beginPath(); c.ellipse(G.x, G.y + la * R, R * Math.sqrt(1 - la * la), R * .13, 0, 0, TAU); c.stroke() });
+    [.36, .72].forEach(lo => { c.beginPath(); c.ellipse(G.x, G.y, R * lo, R, 0, 0, TAU); c.stroke() }) }   // параллели и меридианы — объём (вблизи не рисуем: сходятся в точке нырка)
     for (let i = 0; i < 40; i++) { const u = H1(i * 2.3), v = H1(i * 5.1); circ(c, G.x + (u - .5) * R * 1.3, G.y + (v - .45) * R * 1.2, 2.2, rgba('#FDE68A', .45)) }
     c.beginPath(); c.arc(G.x + R * .6, G.y - R * .08, R * 1.08, 0, TAU); fill(c, 'rgba(6,8,30,.42)'); c.restore();   // терминатор — ночная сторона справа
     c.beginPath(); c.arc(G.x, G.y, R - 6, Math.PI * 1.02, Math.PI * 1.36); c.strokeStyle = 'rgba(255,255,255,.28)'; c.lineWidth = 9; c.stroke();   // блик — слева, не на верху шара (туда ныряем)

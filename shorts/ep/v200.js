@@ -1034,9 +1034,9 @@
   const ROOM = { x: 1635, y: 1530, w: 270, h: 200, m: 270 / 1500 };   // кабинет Бёрнетта (этаж 1420…1640): мир 7 вложен сюда
   function chInit() {
     const a = TC;
-    KCH = [KY(a.rekl + .42, 760, 860, 1.22), KY(a.leo + .02, 800, 1020, .68), KY(a.bern - .03, 1470, 1430, .8), KY(a.end - .32, ROOM.x, ROOM.y, 3.4), KY(a.end, ROOM.x, ROOM.y, 1.96 / ROOM.m)];
+    KCH = [KY(a.rekl + .5, 730, 880, 1.08), KY(a.leo + .08, 900, 1080, .74), KY(a.bern + .02, 1480, 1440, .86), KY(a.end - .3, ROOM.x, ROOM.y, 3.4), KY(a.end, ROOM.x, ROOM.y, 1.96 / ROOM.m)];   // v20.2: отъезд от короны длиннее — без рывка
   }
-  function burX(t) { const a = TC; return (1 - eo(at(t, a.leo - .55, a.bern))) * 1400 }   // дом въезжает справа
+  function burX(t) { const a = TC; return (1 - eo(at(t, a.leo - .6, a.bern + .02))) * 1400 }   // дом въезжает справа
   function cutX(y) { const [x0, y0, x1, y1] = BUR.cut; return lp(x0, x1, (y - y0) / (y1 - y0)) }
   function sitter(c, x, y, s, col, o = {}) {   // фигура за столом сбоку (смотрит вправо): стул, тело, рука к машинке / доске
     c.save(); c.translate(x, y); c.scale(s, s); c.fillStyle = col;
@@ -1167,7 +1167,7 @@
   let T8 = null, K8 = null, KE = null, NE8 = null;
   const ROW = { x0: 4400, dx: 1100, n: 8, ours: 5 }, BARH = [2600, 3400, 2200, 3000, 1800, 0, 1500, 1200];
   const OURX = ROW.x0 + ROW.ours * ROW.dx + BB.w / 2;   // центр нашего щита в ряду
-  const GLOBE = { x: 540, y: 960, R: 360 }, SPACE = '#0B0F2A', GLOBEC = '#18183A', LANDC = '#26244A', BEAMW = 40;
+  const GLOBE = { x: 540, y: 960, R: 360 }, SPACE = '#0B0F2A', GLOBEC = '#1C2B6B', LANDC = '#26244A', BEAMW = 40;
   function w8Init() {
     const s = 's8', a7 = T7;
     T8 = { sim: a7.sim, muzh: Ws('s7', 'мужчины'), a: SA(s), cherez: Ws(s, 'через'), god: Ws(s, 'год'), byv: Ws(s, 'бывшая'), mar: Ws(s, 'марка'), chet: Ws(s, 'четвёртая'), str: Ws(s, 'стране'),
@@ -1236,11 +1236,11 @@
     RING.forEach(rk => ring(c, G.x, G.y, R * rk, 'rgba(200,210,255,.22)', 3)); ring(c, G.x, G.y, R * 1.7, 'rgba(200,210,255,.1)', 2);
     if (sw > 0 && sw < 1) { const g = c.createConicGradient(ang - 1.25, G.x, G.y); g.addColorStop(0, 'rgba(200,16,46,0)'); g.addColorStop(1.25 / TAU, 'rgba(232,40,70,.42)'); g.addColorStop(1.25 / TAU + .001, 'rgba(200,16,46,0)'); g.addColorStop(1, 'rgba(200,16,46,0)');
       c.beginPath(); c.arc(G.x, G.y, R * 1.7, 0, TAU); c.fillStyle = g; c.fill() }   // след радара — градиентный сектор
-    circ(c, G.x, G.y, R, '#1C2B6B');
+    circ(c, G.x, G.y, R, GLOBEC);   // океан = земля ночной сцены (на нырке к горизонту — тот же цвет)
     c.save(); c.beginPath(); c.arc(G.x, G.y, R, 0, TAU); c.clip();
     CONT.forEach(P => { blob(c, P.map(p => [G.x + p[0] * R * 1.15, G.y + p[1] * R * 1.15])); fill(c, '#2E4290') });
-    c.strokeStyle = 'rgba(150,180,255,.16)'; c.lineWidth = 2; [-.45, 0, .45].forEach(la => { c.beginPath(); c.ellipse(G.x, G.y + la * R, R * Math.sqrt(1 - la * la), R * .13, 0, 0, TAU); c.stroke() });
-    [.36, .72].forEach(lo => { c.beginPath(); c.ellipse(G.x, G.y, R * lo, R, 0, 0, TAU); c.stroke() });   // параллели и меридианы — объём
+    if (q.z < 3) { c.strokeStyle = 'rgba(150,180,255,.16)'; c.lineWidth = 2; [-.45, 0, .45].forEach(la => { c.beginPath(); c.ellipse(G.x, G.y + la * R, R * Math.sqrt(1 - la * la), R * .13, 0, 0, TAU); c.stroke() });
+    [.36, .72].forEach(lo => { c.beginPath(); c.ellipse(G.x, G.y, R * lo, R, 0, 0, TAU); c.stroke() }) }   // параллели и меридианы — объём (вблизи не рисуем: сходятся в точке нырка)
     for (let i = 0; i < 40; i++) { const u = H1(i * 2.3), v = H1(i * 5.1); circ(c, G.x + (u - .5) * R * 1.3, G.y + (v - .45) * R * 1.2, 2.2, rgba('#FDE68A', .45)) }
     c.beginPath(); c.arc(G.x + R * .6, G.y - R * .08, R * 1.08, 0, TAU); fill(c, 'rgba(6,8,30,.42)'); c.restore();   // терминатор — ночная сторона справа
     c.beginPath(); c.arc(G.x, G.y, R - 6, Math.PI * 1.02, Math.PI * 1.36); c.strokeStyle = 'rgba(255,255,255,.28)'; c.lineWidth = 9; c.stroke();   // блик — слева, не на верху шара (туда ныряем)
@@ -1268,7 +1268,8 @@
       vsego: w('s11', 'всего'), umerli: w('s11', 'умерли'), chet: w('s11', 'четверо'), kovb: w('s11', 'ковбоев'), marl: w('s11', 'мальборо'), end: (SA('s12') ?? SA('s13')) - .02 };
     const a = T9; a.sw = a.vot + .28;   // смена мира: шар Земли во весь кадр, горизонт — прямая
     NE9 = { x: GLOBE.x, y: GLOBE.y - GLOBE.R - (HORZ - 960) * M9, m: M9 };
-    KE.push(KY(T8.sweep1 + .06, 540, 700, 1.7), KY(a.sw, 540, NE9.y + (1000 - 960) * M9, .45 / M9));   // v20.2: нырок к горизонту быстрее — щит сразу крупный
+    { const ty = NE9.y + (1000 - 960) * M9, d = a.sw - T8.sweep1 - .06;   // v20.2: нырок к горизонту быстрее — щит сразу крупный; щит всё время у центра кадра (сдвиг цели на экране тает: y = цель + D / z)
+      KE.push(KY(T8.sweep1 + .06, 540, 700, 1.7), KY(T8.sweep1 + .06 + d * .32, 540, ty + 120 / 8, 8), KY(T8.sweep1 + .06 + d * .66, 540, ty + 60 / 50, 50), KY(a.sw, 540, ty, .45 / M9)) }
     K9 = [KY(a.kov + .05, 520, 880, .66), KY(a.rekl0 + .1, 430, 700, 1.6), KY(a.kur + .08, 405, 640, 3.4), KY(a.nast + .45, 420, 520, 2.4), KY(a.uein + .2, 470, 600, 1.75),
       KY(a.polt + .1, 560, 600, 1.45), KY(a.den + .3, 600, 640, 1.4), KY(a.dev + .2, 390, 660, 3.0), KY(a.leg + .25, 385, 668, 3.3), KY(a.posl + .2, 470, 690, 1.6),
       KY(a.rekl + .15, 540, 700, 1.15), KY(a.umer, 540, 800, 1.0), KY(a.odin + .2, 560, 900, .9), KY(a.umerli, 1000, 1010, .66), KY(a.chet + .5, 1170, 980, .58), KY(a.end, T9END[0], T9END[1], T9END[2])];
@@ -1554,7 +1555,8 @@
     heatPack(c, 830, shelf, 1, gl(2));
     c.save(); rr(c, x0, y0, x1 - x0, y1 - y0, 8); c.clip();   // стекло: блики и отражение четырёх шляп с забора
     poly(c, [x0 + 80, y1, x0 + 200, y1, x0 + 520, y0, x0 + 400, y0]); fill(c, 'rgba(255,255,255,.07)'); poly(c, [x0 + 600, y1, x0 + 640, y1, x0 + 960, y0, x0 + 920, y0]); fill(c, 'rgba(255,255,255,.06)');
-    c.globalAlpha *= .16; for (let i = 0; i < 4; i++) cHat(c, x0 + 170 + i * 190, y0 + 110, 1.6, '#F4F1EA'); c.restore();
+    { const u = at(t, a.naz - .2, a.marl + .9), gxx = lp(x0 - 300, x1 + 300, eio(u)); if (u > 0 && u < 1) { poly(c, [gxx - 60, y1, gxx + 60, y1, gxx + 380, y0, gxx + 260, y0]); fill(c, 'rgba(255,255,255,.13)') } }   // v20.2: блик бежит по стеклу, пока имена загораются
+    c.globalAlpha *= .16; for (let i = 0; i < 4; i++) cHat(c, x0 + 170 + i * 190, y0 + 110 + Math.sin(t * 1.3 + i) * 3, 1.6, '#F4F1EA'); c.restore();
     rr(c, x0, y0, x1 - x0, y1 - y0, 8); lnB(c, 4, 'rgba(255,255,255,.35)');
   }
   function print0(c, t) {   // рамка на стене: внутри — кадр 0 (щит у трассы); в шортсе камера ныряет в неё — петля
