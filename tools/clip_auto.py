@@ -387,13 +387,15 @@ def render(mp4, a, b, words, out_mp4, tmpd, pcmb):
     wseg = [(w, x, y) for w, x, y in words if x >= a - 0.2 and y <= b + 0.2]
     wseg = snap_starts(wseg, a, b, pcmb)
     anchors, W = face_anchors(mp4, a, b)
-    ih = int(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'stream=height',
+    ih = int(subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=height',
                              '-of', 'csv=p=0', mp4], capture_output=True, text=True)
              .stdout.splitlines()[0])
-    cw = int(round(W * 9 / 32.0)) * 2   # 9/16 ширины, чётное
+    # 9:16 считается от ВЫСОТЫ исходника (1920×1080 → 608 px), не шире самого кадра;
+    # от ширины выходил квадрат 1080×1080, растянутый в 1080×1920 (SAR 16:9)
+    cw = min(int(round(ih * 9 / 32.0)) * 2, int(W) // 2 * 2)
     xexpr = crop_expr(smooth_x(anchors, W), cw, W)
     vf = (f"crop=w={cw}:h={ih}:x='{xexpr}':y=0,"
-          f'scale=1080:1920:flags=lanczos,fps=30')
+          f'scale=1080:1920:flags=lanczos,setsar=1,fps=30')
     af_pre = ('silenceremove=start_periods=1:start_silence=0.15:start_threshold=-50dB,'
               'areverse,silenceremove=start_periods=1:start_silence=0.15:start_threshold=-50dB,'
               'areverse,loudnorm=I=-14:TP=-1.5:LRA=11')
