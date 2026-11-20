@@ -43,6 +43,7 @@ window.loadEp = function (name) {
   if (/^v18[ab]$/.test(name)) return add('ep/v18.js');   // v18 (15.11, ночь): выпуск 2 «2020 · Лазейка одноразок» — v18a шортс (петля через ноутбук), v18b мостик в главу 3
   if (/^v184[sy]$/.test(name)) return add('ep/v184.js');   // v18.4 (16.11): весь выпуск 2 в стиле Боба по роликам-референсам, чуть своё (иней, снежинка, косая заливка)
   if (/^v190[sy]$/.test(name)) return add('ep/v190.js');   // v19.0 (17.11): «Боб 2.0» — выпуск 2 по ТЗ Андрея и Gemini, рисовка по референсам
+  if (/^v220[sy]$/.test(name)) return add('vendor/flubber-0.4.2.min.js').then(() => add('ep/v220.js'));   // v22.0 (20.11): глава 5 «2022 · Снюс» и финал — v220y глава фильма с финалом, v220s шортс
   if (name === 'vpr') return add('vendor/flubber-0.4.2.min.js').then(() => add('ep/vpr.js'));   // проба 20.11: превращения (flubber, MIT), скелет фигурок, баночка из Blender — proba/vpr_render.sh
   if (/^v210[sy]$/.test(name)) return add('ep/v210.js');   // v21.0 (19.11): глава 4 «2014 · Нагреватели» — v210y глава фильма, v210s шортс
   if (/^v200[sy]$/.test(name)) return add('ep/v200.js');   // v20.0 (18.11): глава 3 «1924 · Мальборо» — v200y глава фильма, v200s шортс
