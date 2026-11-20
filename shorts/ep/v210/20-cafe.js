@@ -13,12 +13,12 @@
   const BALL_R = 44, FLOORC = '#1E1830';
   function cafeInit() {
     const w = (s, q, n) => Ws(s, q, n);
-    TA = { marl: w('s1', 'мальборо'), poob: w('s1', 'пообещал'), bros: w('s1', 'бросить'), vyk: w('s2', 'выкупил'), brit: w('s2', 'британских'), nashe: w('s2', 'наше'),
+    TA = { marl: w('s1', 'мальборо'), poob: w('s1', 'пообещал'), bros: w('s1', 'бросить'), vyk: w('s2', 'выкупил'), brit: w('s2', 'британских'), nashe: w('s2', 'наше'), ob2: w('s2', 'обещание'), my2: w('s2', 'мы'),
       pyt: w('s2', 'пытаемся'), sig2: w('s2', 'сигареты'), slovo: w('s3', 'слово'), sderzh: w('s3', 'сдержал'), brosat: w('s4', 'бросать'),
       obesch: SA('s14') !== null ? w('s14', 'обещание') : null };
     const a = TA;
     a.ball0 = a.sderzh + .05; a.roll1 = a.ball0 + .8; a.fall1 = a.roll1 + .55; a.jAB = a.fall1 + .1;   // комок готов → у края → в темноте
-    KA1 = [KY(0, 540, 1000, 1.0), KY(a.poob + .1, 560, 1110, 1.1), KY(a.vyk - .2, 560, 1230, 1.2), KY(a.vyk + .75, 640, 1330, 1.55), KY(a.brit + .6, 560, 1330, 1.13),
+    KA1 = [KY(0, 540, 1000, 1.0), KY(a.poob + .1, 560, 1110, 1.1), KY(a.vyk - .2, 560, 1230, 1.2), KY(a.vyk + .75, 640, 1330, 1.55), KY(a.brit + .6, 540, 1330, .95),
       KY(a.nashe + .55, 690, 1275, 1.98), KY(a.pyt + .5, 690, 1330, 1.88), KY(a.slovo - .3, 680, 1340, 1.72), KY(a.sderzh - .2, 560, 1345, 1.3),
       KY(a.ball0 + .35, 565, 1420, 1.42), KY(a.roll1 + .05, 620, 1650, 1.8), KY(a.jAB, 660, 2050, 2.6)];
     KA1[0].v = [6, 40, .035, 0];   // кадр 0 — уже на ходу (как в главе 3): петля шортса въезжает в него с той же скоростью
@@ -41,19 +41,19 @@
     c.fillStyle = '#9A958C'; c.fillRect(x + w * .52, y + h * .27, w * .42, h * .3); c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(x + w * .52, y + h * .27, w * .42 * .4, h * .3);
     textLines(c, x + w * .52, y + h * .61, w * .42, h * .32, 8, 'rgba(27,26,24,.38)', 9);
   }
-  function adPage(c, x, y, w, h, k1, k2, o = {}) {   // полоса рекламы: белое поле, рамка, заголовок печатается по словам голоса (k1, k2 — 0..1)
+  function adPage(c, x, y, w, h, m1, m2) {   // v21.1: полоса рекламы напечатана целиком (не печатается по буквам); m1, m2 — жёлтый маркер под строками по голосу (0..1)
     c.fillStyle = C4.paperL; c.fillRect(x, y, w, h); c.strokeStyle = 'rgba(27,26,24,.75)'; c.lineWidth = Math.max(1.5, w * .006); c.strokeRect(x + w * .05, y + h * .035, w * .9, h * .93);
-    const s1 = OBJ.ad1, s2 = OBJ.ad2, n1 = Math.round(s1.length * cl(k1)), n2 = Math.round(s2.length * cl(k2));
-    const f1 = { f: 'P', w: 700, s: w * .088, c: C4.inkN, al: 'left' }, f2 = { f: 'P', w: 700, st: 'italic', s: w * .057, c: C4.inkN, al: 'left' };
-    const words = s1.split(' '), L1 = [words.slice(0, 2).join(' '), words.slice(2).join(' ')];
-    let used = 0; L1.forEach((ln, i) => { const m = cl(n1 - used, 0, ln.length); used += ln.length + 1; if (m > 0) tx(c, ln.slice(0, m), x + w * .11, y + h * (.2 + i * .11), f1) });
-    const w2 = s2.split(' '), L2 = [w2.slice(0, 3).join(' '), w2.slice(3).join(' ')]; used = 0;
-    L2.forEach((ln, i) => { const m = cl(n2 - used, 0, ln.length); used += ln.length + 1; if (m > 0) tx(c, ln.slice(0, m), x + w * .11, y + h * (.44 + i * .075), f2) });
-    textLines(c, x + w * .11, y + h * .62, w * .78, h * .14, 6, `rgba(27,26,24,${.3 * cl(k2 * 2 - 1)})`, 21);
-    if (k2 > .6) tx(c, OBJ.ad3, x + w * .5, y + h * .87, { f: 'M', w: 800, s: w * .045, c: C4.inkN, a: cl((k2 - .6) * 3), ls: 1 });
-    if (o.small) tx(c, OBJ.ad1, x + w / 2, y + h * .22, { f: 'P', w: 700, s: w * .075, c: C4.inkN, mw: w * .82 });
+    const f1 = { f: 'P', w: 700, s: w * .088, c: C4.inkN, al: 'left', mw: w * .8 }, f2 = { f: 'P', w: 700, st: 'italic', s: w * .057, c: C4.inkN, al: 'left', mw: w * .8 };
+    const L = [[OBJ.ad1L[0], .2, f1, m1, 0], [OBJ.ad1L[1], .31, f1, m1, 1], [OBJ.ad2L[0], .44, f2, m2, 0], [OBJ.ad2L[1], .515, f2, m2, 1]];
+    for (const [ln, yy, f, m, i] of L) { const k = cl(m * 2 - i); if (k <= 0) continue;   // маркер — под буквами, строка за строкой
+      const ww = Math.min(tw(c, ln, f), f.mw) * eio(k) + w * .03, hh = f.s * .78, x0 = x + w * .11 - w * .015, y0 = y + h * yy;
+      poly(c, [x0, y0 - hh * .42, x0 + ww, y0 - hh * .5, x0 + ww - 3, y0 + hh * .5, x0 - 2, y0 + hh * .46]); fill(c, 'rgba(255,226,122,.85)') }
+    for (const [ln, yy, f] of L) tx(c, ln, x + w * .11, y + h * yy, f);
+    textLines(c, x + w * .11, y + h * .6, w * .37, h * .2, 9, 'rgba(27,26,24,.3)', 21); textLines(c, x + w * .52, y + h * .6, w * .37, h * .2, 9, 'rgba(27,26,24,.3)', 27);   // текст объявления — две колонки
+    c.fillStyle = 'rgba(27,26,24,.6)'; c.fillRect(x + w * .3, y + h * .835, w * .4, 1.5);
+    tx(c, OBJ.ad3, x + w * .5, y + h * .87, { f: 'M', w: 800, s: w * .045, c: C4.inkN, ls: 1, mw: w * .8 });
   }
-  function innerLeft(c, x, y, w, h) { c.fillStyle = C4.paper; c.fillRect(x, y, w, h); tx(c, 'NEWS', x + w * .1, y + h * .06, { f: 'M', w: 800, s: h * .035, c: C4.inkN, al: 'left', ls: 2 });
+  function innerLeft(c, x, y, w, h) { c.fillStyle = C4.paper; c.fillRect(x, y, w, h); tx(c, OBJ.news, x + w * .1, y + h * .06, { f: 'M', w: 800, s: h * .035, c: C4.inkN, al: 'left', ls: 2, mw: w * .5 });
     c.fillStyle = 'rgba(27,26,24,.8)'; c.fillRect(x + w * .08, y + h * .1, w * .84, h * .045); c.fillStyle = '#A8A296'; c.fillRect(x + w * .08, y + h * .19, w * .84, h * .24);
     textLines(c, x + w * .08, y + h * .47, w * .4, h * .46, 12, 'rgba(27,26,24,.35)', 31); textLines(c, x + w * .52, y + h * .47, w * .4, h * .46, 12, 'rgba(27,26,24,.35)', 41) }
   // газета целиком: сложена → раскрывается (#088) → разворот; k — раскрытие 0..1
@@ -72,9 +72,15 @@
   function fanPapers(c, t, k, out) {   // «британских»: ещё две газеты выезжают веером из-под разворота; в строке 3 уезжают
     if (k <= 0) return; const { w, h, y } = PG, e = eo(k), o = eio(out);
     [[-1, OBJ.heads[1], -.13], [1, OBJ.heads[2], .1]].forEach(([d, head, rot], i) => {
-      const cx = 540 + d * lp(150, 400 + 700 * o, e), cy = y + h / 2 + 25 - i * 10;
+      const cx = 540 + d * lp(150, 390 + 700 * o, e), cy = y + h / 2 + 25 - i * 10;
       c.save(); c.translate(cx, cy); c.rotate(rot * e); rasterPoly(c, [-w / 2 + 20, h / 2, w / 2, h / 2, w / 2 + 70, h / 2 + 45, -w / 2 + 90, h / 2 + 45], 'rgba(6,8,24,.35)', 9, 2.2);
-      frontPage(c, -w / 2, -h / 2, w, h, head, { red: true }); adPage(c, -w / 2 + w * .06, -h / 2 + h * .26, w * .88, h * .7, 1, 1, { small: true }); c.restore() });
+      frontPage(c, -w / 2, -h / 2, w, h, head, { red: true }); adPage(c, -w / 2 + w * .06, -h / 2 + h * .26, w * .88, h * .7, 0, 0); c.restore() });
+  }
+  function creases(c, R) {   // v21.1: складки смятой бумаги — тонкие ломаные линии (раньше тёмные чёрточки читались как значок «пауза»)
+    c.lineCap = 'round'; c.lineJoin = 'round';
+    for (let i = 0; i < 6; i++) { const a = H1(i * 7.3 + .4) * TAU, d = R * (.15 + H1(i * 2.1) * .55), L = R * (.35 + H1(i * 4.7) * .3), b = a * 2 + H1(i) * 1.5;
+      const x0 = Math.cos(a) * d, y0 = Math.sin(a) * d; c.beginPath(); c.moveTo(x0 - Math.cos(b) * L / 2, y0 - Math.sin(b) * L / 2); c.lineTo(x0 + Math.sin(b) * L * .08, y0 - Math.cos(b) * L * .08); c.lineTo(x0 + Math.cos(b) * L / 2, y0 + Math.sin(b) * L / 2);
+      c.strokeStyle = i % 2 ? 'rgba(120,108,92,.42)' : 'rgba(255,255,255,.6)'; c.lineWidth = Math.max(1, R * .025); c.stroke() }
   }
   // комок бумаги: круг в 3 тона, грани-сгибы, обрывки строк; rot — поворот рисунка граней
   function paperBall(c, x, y, R, rot = 0, o = {}) {
@@ -83,7 +89,7 @@
     c.beginPath(); c.arc(0, 0, R, 0, TAU); c.fillStyle = C4.paper; c.fill(); c.save(); c.clip(); c.rotate(rot);
     for (let i = 0; i < 9; i++) { const a0 = i * TAU / 9 + H1(i) * .3, a1 = a0 + TAU / 9 + .1, r0 = R * (.15 + H1(i * 3) * .3);
       poly(c, [Math.cos(a0) * r0, Math.sin(a0) * r0, Math.cos(a0) * R * 1.3, Math.sin(a0) * R * 1.3, Math.cos(a1) * R * 1.3, Math.sin(a1) * R * 1.3]); fill(c, i % 3 === 0 ? C4.paperD : i % 3 === 1 ? '#E9E3D6' : C4.paperL) }
-    c.fillStyle = 'rgba(27,26,24,.32)'; for (let i = 0; i < 7; i++) { const a = H1(i * 7.3) * TAU, d = R * (.2 + H1(i * 2.1) * .6); c.save(); c.translate(Math.cos(a) * d, Math.sin(a) * d); c.rotate(a * 2); c.fillRect(-R * .22, -R * .03, R * .44, R * .06); c.restore() }
+    creases(c, R);
     c.restore(); c.fillStyle = 'rgba(14,16,40,.28)'; c.beginPath(); c.arc(0, 0, R, -Math.PI * .35, Math.PI * .65); c.arc(R * .18, 0, R * .9, Math.PI * .65, -Math.PI * .35, true); c.fill();
     c.beginPath(); c.arc(0, 0, R, 0, TAU); lnB(c, Math.max(1.5, R * .045), 'rgba(238,241,248,.55)'); c.restore();
   }
@@ -130,13 +136,13 @@
     PL(c, [TEND, TOPY4, TEND + 26, TOPY4 + 14, TEND + 26, FLOORY + 10, TEND, FLOORY], C4.woodE);   // торец стола справа
     c.fillStyle = C4.woodE; c.fillRect(TEND - 60, FLOORY, 34, 900);   // ножка
   }
-  function cup(c, t, tau) {
+  function cup(c, t, tau, sk = 1) {   // sk — сколько видно пара (v21.1: пока чашку закрывает газета, пар не идёт сквозь бумагу)
     const { x, y } = CUP; c.save(); c.translate(x, y);
     c.beginPath(); c.ellipse(10, 58, 120, 26, 0, 0, TAU); fill(c, 'rgba(6,8,24,.35)'); c.beginPath(); c.ellipse(0, 50, 112, 24, 0, 0, TAU); fill(c, '#E9E5DD'); c.beginPath(); c.ellipse(0, 46, 84, 15, 0, 0, TAU); fill(c, '#D5D0C6');
     c.beginPath(); c.moveTo(-62, -50); c.lineTo(62, -50); c.quadraticCurveTo(60, 40, 0, 44); c.quadraticCurveTo(-60, 40, -62, -50); c.closePath(); cel(c, -62, -50, 124, 94, '#F4F1EA', { sw: .28, hx: .12 });
     c.beginPath(); c.ellipse(0, -50, 62, 13, 0, 0, TAU); fill(c, '#EDE8DF'); c.beginPath(); c.ellipse(0, -48, 54, 9, 0, 0, TAU); fill(c, '#8A4E24'); c.beginPath(); c.ellipse(-12, -50, 20, 3, 0, 0, TAU); fill(c, 'rgba(255,220,170,.35)');
     c.beginPath(); c.arc(70, -12, 24, -1.3, 1.3); lnB(c, 11, '#E3DED4'); c.restore();
-    for (let i = 0; i < 2; i++) { const u = (tau * .22 + i * .5) % 1, sx = x - 18 + i * 34; smokeLine(c, [sx, y - 66, sx + 16 + Math.sin(tau * 1.3 + i) * 14, y - 150, sx - 6, y - 240, sx + 20 + Math.sin(tau + i) * 10, y - 330], 6, '#F4F1EA', .38 * Math.sin(Math.PI * (.25 + .75 * u))) }
+    for (let i = 0; i < 2; i++) { const u = (tau * .22 + i * .5) % 1, sx = x - 18 + i * 34; if (sk > 0) smokeLine(c, [sx, y - 66, sx + 16 + Math.sin(tau * 1.3 + i) * 14, y - 150, sx - 6, y - 240, sx + 20 + Math.sin(tau + i) * 10, y - 330], 6, '#F4F1EA', .38 * sk * Math.sin(Math.PI * (.25 + .75 * u))) }
   }
   function bin(c, t, n = 7) {   // урна на полу справа от стола: металл в 3 тона, в ней — такие же комки
     const { x, y, w, h } = BIN, top = y - h;
@@ -147,37 +153,37 @@
   }
   function beamA(c, t, tau) {   // косой луч из окна и пылинки в нём (передний план)
     c.save(); poly(c, [WIN.x0 + 40, WIN.y1 - 120, 520, WIN.y1 - 120, 1150, FLOORY, 300, FLOORY]); c.fillStyle = 'rgba(255,214,150,.06)'; c.fill(); c.clip();
-    for (let i = 0; i < 26; i++) { const px = 200 + H1(i * 3.7) * 900 + Math.sin(tau * .3 + i) * 30, py = 700 + ((H1(i * 5.1) * 1000 + tau * (12 + H1(i) * 14)) % 1000); circ(c, px, py, 2 + H1(i * 2) * 2.5, `rgba(255,236,200,${.35 + .3 * Math.sin(tau + i)})`) }
+    for (let i = 0; i < 26; i++) { const px = 200 + H1(i * 3.7) * 900 + Math.sin(tau * .3 + i) * 30, py = 700 + ((H1(i * 5.1) * 1000 + tau * (12 + H1(i) * 14)) % 1000); circ(c, px, py, 1.5 + H1(i * 2) * 1.8, `rgba(255,236,200,${.2 + .16 * Math.sin(tau + i)})`) }
     c.restore();
   }
   // ---------- строка 14: башня сигарет из пачки и столбик из белых фигурок ----------
   function towers(c, t) {
     const a = TB4; if (!a || t < a.tri - .1) return;
     const out = eio(at(t, a.brosaj - .25, a.brosaj + .25)), kr = eio(at(t, a.sig - .05, a.shest + .8)) * (1 - out), kw = eio(at(t, a.tri - .05, a.tri + 1.4)) * (1 - out);
-    const px = PACK0.x - 70 * packShift(t) + PACK0.w / 2, H = 2100 * kr;   // красная башня: сигареты лёжа, одна на другой, за ними красная колонна
+    const px = PACK0.x - packOff(t) + PACK0.w / 2, H = 1090 * kr;   // v21.1: башня кончается под плашками — не протыкает плашку года   // красная башня: сигареты лёжа, одна на другой, за ними красная колонна
     if (H > 2) { c.fillStyle = C4.red; c.fillRect(px - 82, PACK0.y - H, 164, H); c.fillStyle = C4.redD; c.fillRect(px + 46, PACK0.y - H, 36, H);
       c.save(); c.beginPath(); c.rect(px - 90, PACK0.y - H, 180, H); c.clip(); for (let yy = PACK0.y - 14; yy > PACK0.y - H - 20; yy -= 22) cig3(c, px - 66, yy, px + 66, yy, 9, { tip: '#D9874A', tl: .26 }); c.restore() }
     if (kw > 0) { const cx = 330, rows = Math.round(kw * 11); for (let r = 0; r < rows; r++) for (let j = 0; j < 3; j++) fig(c, cx - 44 + j * 44 + (r % 2) * 6, 1440 - r * 46, .28, { m: (r + j) % 2 === 0, col: r % 2 ? '#E9E5DD' : '#F4F1EA' });
       if (kw > .95) iqos4(c, cx, 1440 - rows * 46 - 34, 160, { shadow: false }) }
   }
-  const packShift = t => eio(at(t, TA.bros - .05, TA.bros + .55)) * (1 - eio(at(t, TB4 ? TB4.vy - .3 : 1e9, TB4 ? TB4.vy + .35 : 1e9)));   // пачка отъехала влево на «бросить», вернулась на «вы»
+  const packOff = t => 160 * eio(at(t, TA.bros - .05, TA.bros + .55)) - (TB4 ? 90 * eio(at(t, TB4.chet - .7, TB4.chet - .1)) + 70 * eio(at(t, TB4.vy - .3, TB4.vy + .35)) : 0);   // пачка уехала влево на «бросить» (целиком из кадра), в строке 14 вернулась к краю, на «вы» — на место
   function cafeWorld(c, t, tau, st = {}) {   // tau — «своё» время мира: пар, пыль (для петли шортса — t − TL0)
     cafeTable(c, t); bin(c, t, st.binN ?? 7);
     if (st.map) st.map(c);   // карта США лежит на столе (строки 14–17) — под пачкой и чашкой
-    const a = TA, pk = packShift(t);
-    mPack(c, PACK0.x - 70 * pk, PACK0.y, PACK0.w, PACK0.h, 20, { glow: eo(at(t, a.marl - .05, a.marl + .3)) * (1 - at(t, a.bros, a.bros + .4)) });
-    cup(c, t, tau);
+    const a = TA;
+    mPack(c, PACK0.x - packOff(t), PACK0.y, PACK0.w, PACK0.h, 20, { glow: eo(at(t, a.marl - .05, a.marl + .3)) * (1 - at(t, a.bros, a.bros + .4)) });
+    cup(c, t, tau, 1 - at(t, a.brit - .15, a.brit + .25) * (1 - at(t, a.slovo + .25, a.slovo + .7)));
     if (st.paper !== false) {
       if (t < a.slovo) { const k = eio(at(t, a.poob - .05, a.poob + .55)); fanPapers(c, t, at(t, a.brit - .1, a.brit + .55), 0);
-        newspaper(c, t, k, at(t, a.nashe - .05, a.nashe + 1.25), at(t, a.pyt - .1, a.sig2 + .3)) }
+        newspaper(c, t, k, at(t, a.nashe - .08, a.ob2 + .5), at(t, a.my2 - .08, a.sig2 + .45)) }
       else if (t < a.ball0) { fanPapers(c, t, 1, at(t, a.slovo - .1, a.slovo + .5)); crumple(c, t, at(t, a.slovo, a.ball0)) }
       else if (t < a.jAB + .5) { const [bx, by, br] = ballPos(t); paperBall(c, bx, by, BALL_R, br, { shadow: by < EDGEY }) }
     }
     if (st.after) st.after(c);
   }
   function cafePlates1(c, t) { const a = TA; capS(c, TEXT.promise, 540, 300, at(t, a.nashe + .15, a.nashe + .45) * (1 - at(t, a.slovo - .35, a.slovo - .05)), { s: 50 }) }
-  function cafeShot(c, t, K, tau, st) {
-    const q = camObj(camAt(K, t));
+  function cafeShot(c, t, K, tau, st) {   // K — ключи камеры или готовая камера {x, y, z, r} (фото на доске)
+    const q = Array.isArray(K) ? camObj(camAt(K, t)) : K;
     layerRel(c, q, RA, .38, cc => cafeFar(cc, tau));
     layer(c, q, 1, cc => { cafeWall(cc, t); cafeWorld(cc, t, tau, st) });
     layerRel(c, q, RA, 1.22, cc => A(cc, 1 - at(Math.log(q.z), .62, 1.05), () => beamA(cc, t, tau)));   // луч с пылью — только на общих планах: при наезде на карту его нет

@@ -41,7 +41,7 @@
       ugad: hasQ ? Ws('q', 'угадаете') : null, amerQ: hasQ ? Ws('q', 'америку') : null,
       amerF: hasF ? Ws('s16', 'америку') : null, vern: hasF ? Ws('s16', 'вернулся') : null, zapr: hasF ? Ws('s16', 'запрета') : null, shestn: hasF ? Ws('s16', 'шестнадцать') : null,
       net: hasF ? Ws('s17', 'нет') : null, dazhe: hasF ? Ws('s17', 'даже') : null, tab: hasF ? Ws('s17', 'табака') : null };
-    TB4 = TM; const a = TM; a.jAJ = hasF ? TLX.vEnd + .05 : null;
+    TB4 = TM; const a = TM; a.jAJ = MODE === 'y' ? TLX.vEnd + .25 : null;   // v21.1: фильм — после «как и вы» сразу доска
     if (PJ) return;
     const P = L => { const o = []; for (let i = 0; i < L.length; i += 2) o.push(...mpj(L[i], L[i + 1])); return o };
     PJ = { us: P(LL.us), can: P(LL.can), mex: P(LL.mex), isl: [P(LL.cuba), P(LL.hisp), P(LL.pr)], hud: P(LL.hud), lakes: LAKE_US.map(P) };
@@ -60,11 +60,10 @@
   function holderPin(c, x, y, s, o = {}) {   // держатель стоит: белая капсула, тень вправо-вниз
     const L = 64 * s, w = 15 * s;
     if (o.sh !== false) { c.beginPath(); c.ellipse(x + 10 * s, y + 2 * s, 17 * s, 5 * s, .25, 0, TAU); fill(c, 'rgba(20,30,60,.3)') }
-    if (o.cut) { rr(c, x - w / 2, y - L, w, L, w / 2); c.fillStyle = 'rgba(190,225,250,.3)'; c.fill(); lnB(c, 2.2, 'rgba(255,255,255,.95)'); rr(c, x - w / 2 + 3 * s, y - L + 3 * s, w - 6 * s, L - 6 * s, w / 2 - 3 * s); lnB(c, 1, 'rgba(255,255,255,.6)');
-      rr(c, x - 3 * s, y - L + 8 * s, 6 * s, 22 * s, 2); c.fillStyle = o.hl > 0 ? mixc('#C9CED8', '#E2412F', o.hl) : '#C9CED8'; c.fill(); if (o.hl > 0) glow(c, x, y - L + 19 * s, 36 * s, '#FF6A4A', .6 * o.hl); return }
     rr(c, x - w / 2, y - L, w, L, w / 2); c.fillStyle = C4.iq; c.fill(); c.save(); rr(c, x - w / 2, y - L, w, L, w / 2); c.clip();
     c.fillStyle = C4.iqS; c.fillRect(x + w * .15, y - L, w, L); c.fillStyle = 'rgba(255,255,255,.85)'; c.fillRect(x - w * .36, y - L + 5 * s, w * .16, L - 10 * s); c.fillStyle = C4.iqCap; c.fillRect(x - w / 2, y - L + L * .22, w, 2.5 * s); c.restore();
     rr(c, x - w / 2, y - L, w, L, w / 2); lnB(c, 1.5, 'rgba(20,23,51,.35)');
+    if (o.hl > 0) { rr(c, x - 3 * s, y - L + 8 * s, 6 * s, 22 * s, 2); c.fillStyle = rgba('#E2412F', o.hl); c.fill(); glow(c, x, y - L + 19 * s, 36 * s, '#FF6A4A', .6 * o.hl) }   // v21.1: лезвие светится сквозь корпус
   }
   function holderState(h, t) {   // [x, y, наклон 0..1, в воде 0..1]
     const a = TM, phi = boomPhi(t), d = 20 / h.r; let th = t > a.vygn ? Math.min(h.th, phi - d) : h.th, x, y;
@@ -79,9 +78,9 @@
   }
   function gavel4(c, t) {   // молоток комиссии: опускается сверху, удар, кольца, уходит
     const a = TM, k = at(t, a.kom - .5, a.kom + .55); if (k <= 0 || k >= 1) return;
-    const hk = .5 / 1.05, dn = k < hk ? ei(k / hk) : 1 - eo((k - hk) / (1 - hk)), s = lp(2.1, 1, dn), lift = lp(-520, 0, dn), rot = lp(-.75, -.2, dn), [gx, gy] = GV;
-    c.save(); c.globalAlpha *= .4 * dn; c.beginPath(); c.ellipse(gx + 40, gy + 26, 120 * (2.2 - dn * 1.2), 34 * (2.2 - dn * 1.2), .2, 0, TAU); fill(c, '#0A0F23'); c.restore();
-    c.save(); c.translate(gx, gy + lift); c.rotate(rot); c.scale(s, s);
+    const hk = .5 / 1.05, dn = k < hk ? ei(k / hk) : 1 - eo((k - hk) / (1 - hk)), s = lp(1.45, 1, dn), lift = lp(-380, 0, dn), rot = lp(-.75, -.2, dn), [gx, gy] = GV, ga = k < hk ? 1 : 1 - at(k, hk + .05, hk + .35);   // v21.1: меньше, после удара гаснет
+    c.save(); c.globalAlpha *= .4 * dn * ga; c.beginPath(); c.ellipse(gx + 40, gy + 26, 120 * (2.2 - dn * 1.2), 34 * (2.2 - dn * 1.2), .2, 0, TAU); fill(c, '#0A0F23'); c.restore();
+    c.save(); c.globalAlpha *= ga; c.translate(gx, gy + lift); c.rotate(rot); c.scale(s, s);
     rr(c, -13, -340, 26, 290, 12); cel(c, -13, -340, 26, 290, '#8A5A38', { sw: .35 }); rr(c, -13, -340, 26, 290, 12); lnB(c, 2, 'rgba(20,12,8,.4)');
     rr(c, -100, -76, 200, 82, 20); cel(c, -100, -76, 200, 82, '#6B4228', { sw: .3, hx: .1, ha: .25 }); c.fillStyle = '#C9A24A'; c.fillRect(-74, -76, 12, 82); c.fillRect(62, -76, 12, 82);
     rr(c, -100, -76, 200, 82, 20); lnB(c, 2.5, 'rgba(20,12,8,.45)'); c.restore();
@@ -144,15 +143,15 @@
     for (const p of [PJ.us, PJ.can, PJ.mex, ...PJ.isl]) { poly(c, p); lnB(c, 2.4, '#4E7FA6') }
     c.setLineDash([8, 6]); c.beginPath(); for (const L of [[-95.2, 49.0, -89.6, 48.0], [-71.5, 45.0, -70.0, 46.7, -69.2, 47.45, -67.8, 45.9, -67.0, 44.8], [-117.1, 32.5, -111.1, 31.3, -106.5, 31.8, -104.5, 29.7, -102.4, 29.8, -99.5, 27.5, -97.4, 26.0]]) { for (let i = 0; i < L.length; i += 2) { const [px, py] = mpj(L[i], L[i + 1]); i ? c.lineTo(px, py) : c.moveTo(px, py) } } lnB(c, 1.6, 'rgba(120,90,50,.6)'); c.setLineDash([]);
     const [dx, dy] = mpj(-77.0, 38.9); star(c, dx, dy, 11, '#C8102E');
-    tx(c, 'UNITED STATES', mpj(-90, 39.5)[0], mpj(-90, 39.5)[1], { f: 'P', w: 700, s: 30, c: 'rgba(110,84,40,.4)', ls: 10 });
-    tx(c, 'ATLANTIC OCEAN', mpj(-66.5, 33.5)[0], mpj(-66.5, 33.5)[1], { f: 'P', w: 400, st: 'italic', s: 22, c: 'rgba(40,80,120,.5)', ls: 3 });
+    { const [ux, uy] = mpj(-83.5, 39.2); tx(c, OBJ.mapUS, ux, uy, { f: 'P', w: 700, s: 30, c: 'rgba(110,84,40,.4)', ls: 10 }) }   // v21.1: подписи — на языке ролика, «США» не под листом патента
+    { const [ox, oy] = mpj(-68.5, 32.6); OBJ.mapOcean.forEach((L, i) => tx(c, L, ox, oy + i * 28, { f: 'P', w: 400, st: 'italic', s: 22, c: 'rgba(40,80,120,.5)', ls: 3 })) }
     c.fillStyle = 'rgba(255,255,255,.16)'; c.fillRect(x0 + w / 3 - 2, y0, 4, h); c.fillRect(x0 + w * 2 / 3 - 2, y0, 4, h); c.fillRect(x0, y0 + h / 2 - 2, w, 4);   // сгибы
     c.fillStyle = 'rgba(0,0,0,.06)'; c.fillRect(x0 + w / 3 + 2, y0, 3, h); c.fillRect(x0 + w * 2 / 3 + 2, y0, 3, h); c.fillRect(x0, y0 + h / 2 + 2, w, 3);
     c.restore(); c.strokeStyle = 'rgba(60,50,30,.45)'; c.lineWidth = 2; c.strokeRect(x0, y0, w, h);
   }
   function usMapWorld(c, t, inH) {
     const a = TM; mapPrint(c, t);
-    const kz = at(t, a.vygn + .5, a.vygn + .78); if (kz > 0) stamp4(c, TEXT.ban, 1505, 1712, kz, '#C8102E', -.16, 60);
+    const kz = at(t, a.vygn + .5, a.vygn + .78); if (kz > 0) stamp4(c, TEXT.ban, 1560, 1712, kz, '#C8102E', -.16, 60);
     const P = patentPose(t), hl = at(t, a.narush - .05, a.narush + .3) * (1 - at(t, a.vygn - .3, a.vygn));
     if (t > TH.pat - .1) patent4(c, t, P.x, P.y, P.r, P.s, { lift: P.lift, hl });
     const { x: mx, y: my, w: mw, h: mh } = MAPH;
@@ -162,7 +161,7 @@
     for (const h of HOLD) { const s = app(h.i); if (s <= 0) continue; const [x, y, fall, wet] = holderState(h, t), hc = cut && h === HCUT;
       c.save(); c.translate(x, y - hop * (fall > 0 ? 0 : 1)); c.rotate(fall * (Math.PI / 2 - .3 + H1(h.i) * .6) + Math.sin(t * 2 + h.ph) * .08 * wet); c.scale(s, s);
       if (wet > 0) { c.beginPath(); c.ellipse(0, -30, 44 * wet, 16 * wet, 0, 0, TAU); c.strokeStyle = `rgba(255,255,255,${.35 * wet})`; c.lineWidth = 2; c.stroke() }
-      holderPin(c, 0, 0, 1, { cut: hc, hl: hc ? hl : 0, sh: fall < .5 }); c.restore() }
+      holderPin(c, 0, 0, 1, { hl: hc ? hl : 0, sh: fall < .5 }); c.restore() }
     gavel4(c, t);
     if (hl > 0 && HCUT) { const [bx, by] = patentBlade(t), hx = HCUT.x, hy = HCUT.y - 64 + 19; c.save(); c.globalAlpha *= hl; c.setLineDash([14, 9]); c.lineDashOffset = -t * 40; c.beginPath(); c.moveTo(bx, by); c.lineTo(hx, hy); lnB(c, 5, '#E2412F'); c.setLineDash([]); circ(c, bx, by, 8, '#E2412F'); circ(c, hx, hy, 8, '#E2412F'); c.restore() }
     boom4(c, t);
@@ -179,4 +178,4 @@
     c.restore();
   }
   // заголовки поверх кадра в мире карты (строка 13)
-  function mapPlates(c, t) { const a = TM; capS(c, TEXT.itc, 540, 300, at(t, a.kom + .12, a.kom + .42) * (1 - at(t, a.narush - .35, a.narush - .1)), { s: 44 }) }
+  function mapPlates(c, t) { const a = TM; capS(c, TEXT.itc, 540, 230, at(t, a.kom + .12, a.kom + .42) * (1 - at(t, a.narush - .35, a.narush - .1)), { s: 44 }) }

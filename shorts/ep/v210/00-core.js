@@ -7,6 +7,7 @@
   'use strict';
   const WW = 1080, HH = 1920, CX = WW / 2, CY = HH / 2, TAU = Math.PI * 2, SUBY = 1720;
   let cv = null, X = null, K = null, TLW = [], TLX = {}, MODE = 's', CHUNKS = [];
+  let FT = 0;   // v21.1: время кадра — числа на счётчиках считаем по нему, иначе в размытии движения (4 момента за полкадра) цифры двоятся
   window.CUES = window.CUES || {};
   const cue = (t0, name, gain = 1, pan = 0) => { if (!(t0 >= 0) || !name) return; const k = name + '@' + Math.round(t0 * 40); if (!(k in CUES)) CUES[k] = [Math.round(t0 * 1000) / 1000, name, Math.round(gain * 100) / 100, pan] };
   const nw = s => String(s).toLowerCase().replace(/[«»"“”.,?!…:;]/g, '');

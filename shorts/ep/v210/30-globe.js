@@ -33,7 +33,7 @@
   const lon0At = t => TB ? lp(28, 72, eio(at(t, TB.j, TB.nag - .3))) + .8 * at(t, TB.nag - .3, TB.dive) : 72;
   function globeInit() {
     const w = (q, n) => Ws('s4', q, n);
-    TB = { j: TA.jAB, chet: w('четырнадцатом'), nag: w('нагое'), mil: w('милане'), poyav: w('появилась'), sig: w('сигарета'), kot: w('которую') };
+    TB = { j: TA.jAB, chet: w('четырнадцатом'), nag: w('нагое'), mil: w('милане'), yap: w('японской'), ital: w('итальянском'), poyav: w('появилась'), sig: w('сигарета'), kot: w('которую') };
     const a = TB; a.dive = a.sig - .25; a.jBC = a.sig + .35;
     const L0 = lon0At(a.dive), [nx, ny] = gProj(NAGOYA[0], NAGOYA[1], L0), px = GB.x + nx * GB.R, py = GB.y + ny * GB.R;
     a.ng = [px, py]; NBC = { x: px, y: py, m: 9 / 1105 };   // в точке Нагои (радиус 9) — мир C целиком
@@ -44,7 +44,7 @@
     if (k <= 0) return; c.save(); c.globalAlpha *= k; c.rotate(rot);
     for (let i = 0; i < 9; i++) { const a0 = i * TAU / 9 + H1(i) * .3, a1 = a0 + TAU / 9 + .1, r0 = R * (.15 + H1(i * 3) * .3);
       poly(c, [Math.cos(a0) * r0, Math.sin(a0) * r0, Math.cos(a0) * R * 1.3, Math.sin(a0) * R * 1.3, Math.cos(a1) * R * 1.3, Math.sin(a1) * R * 1.3]); fill(c, i % 3 === 0 ? C4.paperD : i % 3 === 1 ? '#E9E3D6' : C4.paperL) }
-    c.fillStyle = 'rgba(27,26,24,.32)'; for (let i = 0; i < 7; i++) { const a = H1(i * 7.3) * TAU, d = R * (.2 + H1(i * 2.1) * .6); c.save(); c.translate(Math.cos(a) * d, Math.sin(a) * d); c.rotate(a * 2); c.fillRect(-R * .22, -R * .03, R * .44, R * .06); c.restore() }
+    creases(c, R);   // v21.1: складки вместо тёмных чёрточек
     c.restore();
   }
   function landPath(c, P, R, lon0) { c.beginPath(); for (let i = 0; i < P.length; i += 2) { const [x, y] = gProj(P[i], P[i + 1], lon0); i ? c.lineTo(x * R, y * R) : c.moveTo(x * R, y * R) } c.closePath() }
@@ -79,7 +79,7 @@
   function pinAt(c, t, ll, lon0, k, kind) {   // точка-булавка с силуэтом; возвращает её место
     const [x, y, v] = gProj(ll[0], ll[1], lon0), px = GB.x + x * GB.R, py = GB.y + y * GB.R; if (k <= 0 || v < .05) return [px, py];
     const e = bo(k); glow(c, px, py, 60 * e, '#FFC86A', .55 * k); circ(c, px, py, 9 * e, '#FFE2A0'); ring(c, px, py, 14 + 40 * cl(k * 1.3 - .3) , `rgba(255,214,120,${.6 * (1 - cl(k * 1.3 - .3))})`, 3);
-    c.save(); c.translate(px, py); c.scale(e, e); c.beginPath(); c.moveTo(0, -12); c.lineTo(-10, -40); c.lineTo(10, -40); c.closePath(); fill(c, '#F4F1EA');
+    c.save(); c.translate(px, py); c.scale(e * .8, e * .8); c.beginPath(); c.moveTo(0, -12); c.lineTo(-10, -40); c.lineTo(10, -40); c.closePath(); fill(c, '#F4F1EA');
     rr(c, -70, -176, 140, 136, 16); fill(c, '#F4F1EA'); rr(c, -70, -176, 140, 136, 16); lnB(c, 3, 'rgba(20,23,51,.4)');
     if (kind === 'n') castle(c, 0, -58, .82, '#2B2F55'); else duomo(c, 0, -58, .9, '#2B2F55'); c.restore();
     return [px, py];
@@ -90,7 +90,7 @@
     if (sp > 0) { c.save(); c.globalAlpha *= sp; c.strokeStyle = 'rgba(126,150,220,.08)'; c.lineWidth = 2; c.beginPath(); for (let x = -1500; x < 2600; x += 90) { c.moveTo(x, -1500); c.lineTo(x, 3400) } for (let y = -1500; y < 3400; y += 90) { c.moveTo(-1500, y); c.lineTo(2600, y) } c.stroke();
       [1.16, 1.34, 1.55].forEach((f, i) => ring(c, GB.x, GB.y, GB.R * f, `rgba(238,241,248,${.22 - i * .05})`, 2.5)); c.restore() }
     globe(c, t, lon0, kb, rot);
-    const kn = at(t, a.nag - .1, a.nag + .45), km = at(t, a.mil - .1, a.mil + .45);
+    const kn = at(t, a.yap - .05, a.yap + .5), km = at(t, a.ital - .05, a.ital + .5);
     const pf = 1 - at(t, a.dive - .35, a.dive - .05); c.save(); c.globalAlpha *= pf; pinAt(c, t, MILAN, lon0, km, 'm'); const [nx, ny] = pinAt(c, t, NAGOYA, lon0, kn, 'n'); c.restore();
     if (pf < 1) { circ(c, nx, ny, 9, '#FFE2A0'); glow(c, nx, ny, 40, '#FFC86A', .5 * (1 - pf)) }
     if (t > a.dive - .3) { c.save(); c.beginPath(); c.arc(NBC.x, NBC.y, 9, 0, TAU); c.clip(); inNest(c, NBC, cc => storeWorld(cc, t, null)); c.restore() }   // портал: в точке — витрина
@@ -98,7 +98,7 @@
   }
   function globeLabels(c, t, q) {   // подписи городов — плашками поверх (по экрану), пока камера едет
     const a = TB; if (t > a.dive + .1) return; const lon0 = lon0At(t);
-    for (const [ll, s, t0] of [[NAGOYA, TEXT.nagoya, a.nag], [MILAN, TEXT.milan, a.mil]]) {
+    for (const [ll, s, t0] of [[NAGOYA, TEXT.nagoya, a.yap], [MILAN, TEXT.milan, a.ital]]) {
       const k = at(t, t0 + .05, t0 + .4) * (1 - at(t, a.dive - .2, a.dive + .05)); if (k <= 0) continue;
       const [x, y] = gProj(ll[0], ll[1], lon0), px = GB.x + x * GB.R, py = GB.y + y * GB.R, sx = (px - q.x) * q.z + 540, sy = (py - q.y) * q.z + 960;
       capS(c, s, sx, sy + 60, k, { s: 40 }) }

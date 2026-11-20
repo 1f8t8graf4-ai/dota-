@@ -9,10 +9,10 @@
   function storeCInit() {
     const w4 = (q, n) => Ws('s4', q, n), w5 = (q, n) => Ws('s5', q, n);
     TC4 = { j: TB.jBC, kot: w4('которую'), nelz: w4('нельзя'), podzh: w4('поджечь'), tab: w5('табак'), nagr: w5('нагреватель'), vdvoe: w5('вдвое'), hol: w5('холоднее'), kurt: w5('куртка') };
-    const a = TC4; a.close = a.kurt - .6; a.jCD = a.kurt - .22;
+    const a = TC4; a.close = a.kurt - .45; a.jCD = a.kurt - .1;   // v21.1: столбики успевают постоять, нырок — позже
     KC = [KY(a.j + .45, 545, 1010, 1.12), KY(a.kot + .45, 520, 1030, 1.25), KY(a.podzh + .05, 330, 1050, 2.05), KY(a.tab + .45, 560, 1040, 1.75),
-      KY(a.vdvoe + .1, 560, 880, 1.18), KY(a.hol + .3, 578, 888, 1.24), KY(a.close + .05, 640, 1052, 2.2), KY(a.jCD, 640, 1055, 60)];   // столбики держим в кадре, пока второй не встал
-    NCD = { x: HC.x, y: HC.y - 350, m: 1 };   // держатель в машине — (540, 1310)
+      KY(a.vdvoe + .1, 560, 800, 1.18), KY(a.hol + .3, 578, 790, 1.2), KY(a.close + .05, 640, 1052, 2.2), KY(a.jCD, 640, 1055, 60)];   // столбики держим в кадре, пока второй не встал
+    NCD = { x: HC.x, y: HC.y - (HD.y - 960) * MCAR, m: MCAR };   // держатель в машине — (540, 1310), в MCAR раз меньше витринного (v21.1: был в пол-салона)
   }
   function lighter4(c, t) {   // зажигалка: хром в 3 тона, крышка на петле справа, колёсико, пламя
     const a = TC4, { x, y } = LIGHTER, w = 64, h = 100, top = y - h, open = eio(at(t, a.nelz - .05, a.nelz + .25)) * (1 - eio(at(t, a.tab + .2, a.tab + .45)));
@@ -20,7 +20,7 @@
     rr(c, x - w / 2, top, w, h, 8); cel(c, x - w / 2, top, w, h, '#B9BFCC', { sw: .3, hx: .12, ha: .5 }); rr(c, x - w / 2, top, w, h, 8); lnB(c, 2.5, 'rgba(238,241,248,.6)');
     c.fillStyle = '#7C8396'; c.fillRect(x - w / 2, top + 22, w, 4);
     if (open > 0) { circ(c, x - 6, top - 6, 9, '#6B7184'); c.fillStyle = '#9AA1B3'; c.fillRect(x - 24, top - 14, 30, 14) }   // колёсико и ветрозащита
-    c.save(); c.translate(x + w / 2, top + 22); c.rotate(-2.3 * open); rr(c, -w, -40, w, 40, 7); cel(c, -w, -40, w, 40, '#C9CED9', { sw: .3, ha: .5 }); c.restore();   // крышка
+    c.save(); c.translate(x - w / 2, top + 22); c.rotate(2.3 * open); rr(c, 0, -40, w, 40, 7); cel(c, 0, -40, w, 40, '#C9CED9', { sw: .3, ha: .5 }); c.restore();   // крышка — петля слева, откидывается от футляра (v21.1)
     const fl = at(t, a.podzh - .12, a.podzh + .05) * (1 - at(t, a.tab - .05, a.tab + .1)); if (fl > 0) flame4(c, t, x - 8, top - 16, fl);
   }
   function flame4(c, t, x, y, k, s = 1) {   // язычок пламени: капля в 3 тона, дрожит
@@ -34,19 +34,24 @@
     const x0 = HPACK.x, y0 = HPACK.y - 190 - 40 * up, [tx0, ty0] = [HC.x - HC.L / 2 - 50, HC.y];
     return [lp(x0, tx0, k), lp(y0, ty0, k) - Math.sin(Math.PI * k) * 160, lp(-Math.PI / 2, 0, eio(at(t, a.kot, a.kot + .5))), k];
   }
-  function bladeIn(c, t, kn, ko = 1) {   // лезвие нагревателя внутри держателя: серое → раскалённое, волны тепла
-    const bx = HC.x - HC.L / 2 + 64, bh = 30, hy = HC.y;
-    const g = c.createLinearGradient(bx, hy - bh, bx, hy + bh); g.addColorStop(0, mixc('#8E929E', '#FF8A2A', kn)); g.addColorStop(.5, mixc('#B9BCC6', '#FFE08A', kn)); g.addColorStop(1, mixc('#8E929E', '#FF8A2A', kn));
-    rr(c, bx - 7, hy - bh, 70, bh * 2, 6); c.fillStyle = g; c.fill(); if (kn > 0) glow(c, bx + 28, hy, 120, '#FF9A3A', .45 * kn * ko);
-    if (kn > 0) for (let i = 0; i < 4; i++) { const u = (t * .7 + i * .25) % 1, wx = bx - 40 + i * 40; smokeLine(c, [wx, hy - 50 - u * 40, wx + 14, hy - 140 - u * 60, wx - 8, hy - 230 - u * 80, wx + 10, hy - 320 - u * 90], 9, C4.heat, .4 * kn * ko * Math.sin(Math.PI * u)) }
+  function bladeIn(c, t, kn, ko = 1, kw = 1) {   // v21.1: внутри держателя — стик, его табачная часть и острое лезвие нагревателя: серое → раскалённое; kw — волны тепла
+    const x0 = HC.x - HC.L / 2 + 8, hy = HC.y, tip = x0 + 34, base = x0 + 132;
+    rr(c, x0, hy - 17, 104, 34, 4); fill(c, 'rgba(247,244,236,.9)');   // бумага стика внутри
+    rr(c, x0 + 22, hy - 14, 82, 28, 3); fill(c, '#B9874A'); c.fillStyle = 'rgba(90,55,25,.45)'; for (let i = 0; i < 9; i++) c.fillRect(x0 + 26 + i * 9, hy - 12 + (i % 3) * 7, 6, 2);   // табак
+    const g = c.createLinearGradient(tip, 0, base, 0); g.addColorStop(0, mixc('#C9CDD6', '#FFE08A', kn)); g.addColorStop(1, mixc('#8E929E', '#FF8A2A', kn));
+    poly(c, [tip, hy, tip + 26, hy - 7, base, hy - 7, base, hy + 7, tip + 26, hy + 7]); c.fillStyle = g; c.fill(); lnB(c, 1.5, 'rgba(20,23,51,.45)');
+    rr(c, base, hy - 20, 26, 40, 5); fill(c, '#6E7488');   // держатель лезвия
+    if (kn > 0) glow(c, (tip + base) / 2, hy, 120, '#FF9A3A', .45 * kn * ko);
+    if (kn > 0 && kw > 0) for (let i = 0; i < 4; i++) { const u = (t * .7 + i * .25) % 1, wx = tip - 10 + i * 40; smokeLine(c, [wx, hy - 50 - u * 40, wx + 14, hy - 140 - u * 60, wx - 8, hy - 230 - u * 80, wx + 10, hy - 320 - u * 90], 9, C4.heat, .4 * kn * kw * Math.sin(Math.PI * u)) }
   }
   function thermo4(c, t) {   // «вдвое холоднее»: огонь 684° и нагрев 330° — столбики над держателем
-    const a = TC4, k1 = eo(at(t, a.vdvoe - .1, a.vdvoe + .4)), k2 = eo(at(t, a.hol - .1, a.hol + .45)), out = eio(at(t, a.close - .12, a.close + .2)); if (k1 <= 0 || out >= 1) return;
+    const a = TC4, k1 = eo(at(t, a.vdvoe - .1, a.vdvoe + .4)), k2 = eo(at(t, a.hol - .15, a.hol + .3)), out = eio(at(t, a.close - .25, a.close + .05)); if (k1 <= 0 || out >= 1) return;
+    const kv = [eo(at(FT, a.vdvoe - .1, a.vdvoe + .4)), eo(at(FT, a.hol - .15, a.hol + .3))];   // цифры — по времени кадра: в размытии не двоятся
     const base = 800, Hmax = 420;
-    [[440, 684, '#E2412F', TEXT.fire, k1], [700, 330, '#FF9A3A', TEXT.blade, k2]].forEach(([x, v, col, lab, k]) => { if (k <= 0) return; const H = Hmax * v / 684 * k;
+    [[440, 684, '#E2412F', TEXT.fire, k1, kv[0]], [700, 330, '#FF9A3A', TEXT.blade, k2, kv[1]]].forEach(([x, v, col, lab, k, kn]) => { if (k <= 0) return; const H = Hmax * v / 684 * k;
       c.save(); c.globalAlpha *= 1 - out; rr(c, x - 50, base - Hmax - 20, 100, Hmax + 20, 50); fill(c, 'rgba(238,241,248,.08)'); rr(c, x - 50, base - Hmax - 20, 100, Hmax + 20, 50); lnB(c, 3, 'rgba(238,241,248,.4)');
       rr(c, x - 38, base - H, 76, H, 38); cel(c, x - 38, base - H, 76, H, col, { sw: .3, hx: .14 }); circ(c, x, base + 20, 56, col);
-      tx(c, Math.round(v * k) + '°', x, base - H - 46, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); tx(c, lab, x, base + 100, { f: 'M', w: 800, s: 28, c: '#F4F1EA', ls: 3 }); c.restore() });
+      tx(c, Math.round(v * kn) + '°', x, base - H - 46, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); tx(c, lab, x, base + 100, { f: 'M', w: 800, s: 28, c: '#F4F1EA', ls: 3 }); c.restore() });
   }
   function storeC(c, t) {   // фон: графит, ряды коробок в глубине, стеклянная полка, луч сверху
     c.fillStyle = C4.graph; c.fillRect(-3000, -3000, 7000, 7000);
@@ -56,21 +61,22 @@
   }
   function storeWorld(c, t, q) {
     const a = TC4; storeC(c, t);
+    c.beginPath(); c.ellipse(HC.x + 18, SHELFC + 2, 186, 12, 0, 0, TAU); fill(c, 'rgba(0,0,0,.32)');
     rr(c, HC.x - 170, HC.y + 42, 340, 90, 30); cel(c, HC.x - 170, HC.y + 42, 340, 90, '#E6E7EB', { sw: .25 }); rr(c, HC.x - 170, HC.y + 42, 340, 90, 30); lnB(c, 2, 'rgba(20,23,51,.3)');   // зарядный футляр
     heat4(c, HPACK.x, HPACK.y, 1, 0);
     const [sx, sy, sa, sk] = stickFly(t), inH = sk >= 1;
     const cut = eio(at(t, a.tab + .1, a.tab + .5)) * (1 - eio(at(t, a.close - .35, a.close))), kn = eio(at(t, a.nagr - .25, a.nagr + .3));
-    iqos4(c, HC.x, HC.y, HC.L, { left: true, stick: inH ? 1 : 0, name: true, cut: cut > .5, shadow: true });
-    if (cut > 0) { c.save(); c.globalAlpha *= Math.min(1, cut * 2); bladeIn(c, t, kn); c.restore() }
+    iqos4(c, HC.x, HC.y, HC.L, { left: true, stick: inH ? 1 : 0, name: true, cut: cut > .5, shadow: false });
+    if (cut > 0) { c.save(); c.globalAlpha *= Math.min(1, cut * 2); bladeIn(c, t, kn, 1, 1 - at(t, a.vdvoe - .35, a.vdvoe)); c.restore() }   // волны тепла гаснут, когда встают столбики
     if (!inH && sk > 0) { c.save(); c.translate(sx, sy); c.rotate(sa); rr(c, -71, -9, 142, 18, 4); fill(c, '#F7F4EC'); c.fillStyle = '#C9A266'; c.fillRect(-71, -9, 22, 18); c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(-71, 3, 142, 6); c.restore() }
     lighter4(c, t);
-    const fk = at(t, a.tab - .05, a.tab + .4); if (fk > 0 && fk < 1) { const fx = lp(LIGHTER.x - 8, HC.x - HC.L / 2 + 92, eio(fk)), fy = lp(LIGHTER.y - 116, HC.y + 10, eio(fk)); flame4(c, t, fx, fy, 1 - fk * .85) }   // пламя улетает внутрь и сжимается в лезвие
+    const fk = at(t, a.tab - .05, a.tab + .4); if (fk > 0 && fk < 1) { const fx = lp(LIGHTER.x - 8, HC.x - HC.L / 2 + 70, eio(fk)), fy = lp(LIGHTER.y - 116, HC.y + 10, eio(fk)); flame4(c, t, fx, fy, 1 - fk * .85) }   // пламя улетает внутрь и сжимается в лезвие
     thermo4(c, t);
   }
   function storeShot(c, t) {
     const q = camObj(camAt(KC, t)); layer(c, q, 1, cc => storeWorld(cc, t, q));
     const a = TC4; capS(c, TEXT.nofire, 540, 330, at(t, a.podzh + .12, a.podzh + .45) * (1 - at(t, a.tab - .2, a.tab + .05)), { s: 56 });
-    capS(c, TEXT.half, 540, 300, at(t, a.hol + .1, a.hol + .4) * (1 - at(t, a.close + .05, a.close + .3)), { s: 52 });
+    capS(c, TEXT.half, 540, 300, at(t, a.hol + .05, a.hol + .3) * (1 - at(t, a.close - .3, a.close - .05)), { s: 52 });
   }
 
   // ================= японское шоу (мир E): его показывает экран машины и телевизор в магазине =================
@@ -83,7 +89,7 @@
     for (const x of [120, 960]) beam(c, x, -40, x < 540 ? 300 : 780, 420, 8, 90, '#FFFFFF', .22);
     const ks = TD4 ? eo(at(t, TD4.rash - .05, TD4.rash + .4)) : 0, lau = TD4 ? at(t, TD4.kom - .1, TD4.kom + .3) : 0;
     rr(c, 80, 420, 920, 190, 18); fill(c, '#2F6FD6'); c.fillStyle = '#1D3F8F'; c.fillRect(80, 520, 920, 90); c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(80, 430, 920, 10);   // стол
-    [[250, 1, true], [830, -1, false]].forEach(([x, d, m], i) => { const hop = lau > 0 ? Math.abs(Math.sin(t * 9 + i * 1.7)) * 16 * lau : 0; fig(c, x, 440 - hop, 1.45, { m: true, dir: d, col: '#FFFFFF', hat: i === 0 });
+    [[250, 1, true], [830, -1, false]].forEach(([x, d, m], i) => { const hop = lau > 0 ? Math.abs(Math.sin(t * 9 + i * 1.7)) * 16 * lau : 0; fig(c, x, 440 - hop, 1.45, { m: true, dir: d, col: '#FFFFFF', hat: false });
       if (lau > 0) { c.strokeStyle = `rgba(29,63,143,${.9 * lau})`; c.lineWidth = 6; c.lineCap = 'round'; for (let k = 0; k < 3; k++) { const a = -2.2 + k * .5 + (d < 0 ? 1.6 : 0); c.beginPath(); c.moveTo(x + Math.cos(a) * 70, 160 - hop + Math.sin(a) * 70); c.lineTo(x + Math.cos(a) * 104, 160 - hop + Math.sin(a) * 104); c.stroke() } } });
     rr(c, 470, 330, 140, 100, 10); fill(c, '#FFFFFF'); c.fillStyle = '#D9DCE3'; c.fillRect(470, 400, 140, 30);   // подставка
     c.beginPath(); c.ellipse(540, 322, 110, 24, 0, 0, TAU); fill(c, '#C8102E');   // подушечка
@@ -121,13 +127,13 @@
     c.fillStyle = '#20232E'; c.fillRect(TVF.x - 14, TVF.y + TVF.w * 9 / 32, 28, 300); rr(c, TVF.x - 120, TVF.y + TVF.w * 9 / 32 + 290, 240, 20, 8); fill(c, '#20232E');   // стойка ТВ
     rr(c, TVF.x - TVF.w / 2 - 16, TVF.y - TVF.w * 9 / 32 - 16, TVF.w + 32, TVF.w * 9 / 16 + 32, 14); fill(c, '#16181F');
     c.save(); c.beginPath(); c.rect(TVF.x - TVF.w / 2, TVF.y - TVF.w * 9 / 32, TVF.w, TVF.w * 9 / 16); c.clip(); showDraw(c, t, TVF.x, TVF.y, TVF.w); c.restore();
-    iqos4(c, HF.x, HF.y, HF.L, { name: false, shadow: false, leds: 0 });   // остался один держатель
+    iqos4(c, HF.x, HF.y, HF.L, { name: false, shadow: false, leds: 0, stick: 1 });   // остался один держатель (со стиком — пар идёт из него)
     crowdF(c, t);
     const off = eio(at(t, a.off, a.off + .35)); spotScene(c, t, HF.x, HF.y, HF.L, off, a.vred, 1);
-    if (off < 1) qVapor2(c, t, HF.x + HF.L / 2 - 20, HF.y, at(t, a.bez, a.bez + .4) * (1 - off), a.vred);
+    if (off < 1) qVapor2(c, t, vapX(HF.x, HF.L), HF.y, at(t, a.bez, a.bez + .4) * (1 - off), a.vred);
   }
   function storeFShot(c, t) {
     const q = camObj(camAt(KF, t)); layer(c, q, 1, cc => storeFWorld(cc, t, q));
     const a = TF; capS(c, TEXT.soldout, 540, 330, at(t, a.smel + .35, a.smel + .7) * (1 - at(t, a.bez - .3, a.bez)), { s: 58 });
-    capS(c, TEXT.noharm, 540, 360, at(t, a.vred + .15, a.vred + .45) * (1 - at(t, a.jFG - .45, a.jFG - .15)), { s: 58 });
+    capS(c, TEXT.noharm, 540, 250, at(t, a.vred + .15, a.vred + .45) * (1 - at(t, a.jFG - .45, a.jFG - .15)), { s: 58 });   // выше «?» (v21.1)
   }

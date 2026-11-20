@@ -3,13 +3,13 @@
   // «прямо в машине» — белая фигурка за рулём, к потолку тает облачко пара (устройства у рта не показываем). За стеклом — ночной город и фары (#158).
   // «Это айкос…» — на экране машины идёт японское шоу; камера ныряет в экран — это телевизор в магазине (мир F).
   let TD4 = null, KD = null, NDF = null;
-  const HD = { x: 540, y: 1310 }, SCR = { x: 540, y: 860, w: 300 }, WSH = [70, 780, 1010, 780, 930, 170, 150, 170];
+  const MCAR = 1.6, HD = { x: 540, y: 1310 }, SCR = { x: 540, y: 860, w: 300 }, WSH = [70, 780, 1010, 780, 930, 170, 150, 170];
   function carInit() {
     const w5 = (q, n) => Ws('s5', q, n), w6 = (q, n) => Ws('s6', q, n);
     TD4 = { j: TC4.jCD, kurt: w5('куртка'), pep: w5('пепла'), zat: w5('затянуться'), mash: w5('машине'), aik: w6('айкос'), shest: w6('шестнадцатом'), rash: w6('расхвалили'),
       kom: w6('комики'), shou: w6('шоу') };
     const a = TD4; a.jDF = a.kom + .95;
-    KD = [KY(a.kurt + .4, 610, 1230, 1.45), KY(a.pep + .25, 560, 1380, 1.55), KY(a.mash + .05, 400, 1040, 1.22), KY(a.aik + .25, 540, 905, 1.5), KY(a.shest + .55, 540, 862, 3.6),
+    KD = [KY(a.kurt + .25, 610, 1230, 1.45), KY(a.pep + .25, 560, 1380, 1.55), KY(a.mash + .05, 400, 1040, 1.22), KY(a.aik + .25, 540, 905, 1.5), KY(a.shest + .55, 540, 862, 3.6),
       KY(a.kom + .3, 540, 862, 4.3), KY(a.jDF, 540, 862, 12.5)];
     const m = SCR.w / TVF.w; NDF = { x: SCR.x - (TVF.x - 540) * m, y: SCR.y - (TVF.y - 960) * m, m };   // телевизор магазина = экран машины
   }
@@ -21,6 +21,13 @@
     for (let i = 0; i < 6; i++) { const x = ((i * 420 - t * 260) % 2520 + 2520) % 2520 - 700; c.fillStyle = '#2A2F55'; c.fillRect(x, 560, 8, 240); circ(c, x + 4, 556, 18, '#FFE2A0'); glow(c, x + 4, 556, 90, '#FFD27A', .35) }
     for (let i = 0; i < 4; i++) { const u = ((t * .35 + i * .27) % 1), x = lp(1500, -500, u), y = 770 + (i % 2) * 14; circ(c, x, y, 9, '#FFF2C8'); circ(c, x + 40, y, 9, '#FFF2C8'); glow(c, x + 20, y, 80, '#FFE6B8', .35) }   // фары встречных
   }
+  function navDraw(c, t, cx, cy, w) {   // экран машины до шоу: ночной навигатор — тёмная карта, дороги, стрелка
+    const h = w * 9 / 16, x0 = cx - w / 2, y0 = cy - h / 2; c.fillStyle = '#10142C'; c.fillRect(x0, y0, w, h);
+    c.strokeStyle = 'rgba(126,150,220,.35)'; c.lineWidth = 3; c.beginPath();
+    for (let i = 0; i < 5; i++) { const yy = y0 + h * (.15 + i * .18) + ((t * 18) % (h * .18)); c.moveTo(x0, yy); c.lineTo(x0 + w, yy - h * .12) } for (let i = 0; i < 4; i++) { const xx = x0 + w * (.12 + i * .26); c.moveTo(xx, y0); c.lineTo(xx + w * .05, y0 + h) } c.stroke();
+    c.strokeStyle = '#4FA3FF'; c.lineWidth = 7; c.beginPath(); c.moveTo(cx, y0 + h); c.lineTo(cx, cy + 6); c.lineTo(cx + w * .2, cy - h * .3); c.stroke();
+    poly(c, [cx, cy - 16, cx + 13, cy + 14, cx, cy + 6, cx - 13, cy + 14]); fill(c, '#FFFFFF');
+  }
   function carInterior(c, t) {
     c.save(); c.beginPath(); c.rect(-3000, -3000, 7000, 7000); poly(c, WSH); c.fillStyle = '#14162A'; c.fill('evenodd'); c.restore();
     poly(c, WSH); lnB(c, 10, '#0C0E1E'); c.save(); poly(c, WSH); c.clip(); glint(c, 70, 170, 940, 610, .05); c.restore();
@@ -29,7 +36,8 @@
     for (const x of [120, 960]) { rr(c, x - 50, 820, 100, 40, 10); fill(c, '#0F1124') }
     glow(c, SCR.x, SCR.y, 260, '#7EA6FF', .12);   // свечение экрана — под ним, на сам экран не ложится (стык с телевизором магазина)
     rr(c, SCR.x - SCR.w / 2 - 14, SCR.y - SCR.w * 9 / 32 - 14, SCR.w + 28, SCR.w * 9 / 16 + 28, 16); fill(c, '#0B0C18');
-    c.save(); c.beginPath(); c.rect(SCR.x - SCR.w / 2, SCR.y - SCR.w * 9 / 32, SCR.w, SCR.w * 9 / 16); c.clip(); showDraw(c, t, SCR.x, SCR.y, SCR.w); c.restore();
+    c.save(); c.beginPath(); c.rect(SCR.x - SCR.w / 2, SCR.y - SCR.w * 9 / 32, SCR.w, SCR.w * 9 / 16); c.clip(); const ks = TD4 ? at(t, TD4.aik - .45, TD4.aik - .05) : 1;
+    if (ks < 1) navDraw(c, t, SCR.x, SCR.y, SCR.w); if (ks > 0) A(c, ks, () => showDraw(c, t, SCR.x, SCR.y, SCR.w)); c.restore();   // v21.1: шоу — с «Это айкос», до этого навигатор
     c.beginPath(); c.arc(255, 940, 170, 0, TAU); lnB(c, 30, '#0E1022'); c.beginPath(); c.arc(255, 940, 170, Math.PI * 1.1, Math.PI * 1.6); lnB(c, 6, 'rgba(160,180,230,.25)');   // руль
   }
   function driver(c, t) { c.save(); circ(c, 250, 1000, 64, '#F4F1EA'); c.fillStyle = shd('#F4F1EA', .25); c.beginPath(); c.arc(250, 1000, 64, -.6, 1.2); c.lineTo(250, 1000); c.fill();
@@ -42,7 +50,7 @@
   }
   function console4(c, t) {
     const a = TD4; rr(c, 330, 1240, 420, 460, 30); cel(c, 330, 1240, 420, 460, '#1E2138', { sw: .2, ha: .1 }); rr(c, 340, 1262, 400, 96, 22); fill(c, '#111326');   // подстаканник
-    iqos4(c, HD.x, HD.y, HC.L, { left: true, stick: 1, name: true, shadow: false });
+    iqos4(c, HD.x, HD.y, HC.L / MCAR, { left: true, stick: 1, name: true, shadow: false });
     const op = eio(at(t, a.pep - .2, a.pep + .2)), ax = 540, ay = 1470;   // пепельница: крышка откидывается — внутри пусто и чисто
     rr(c, ax - 110, ay - 50, 220, 100, 14); fill(c, '#0F1124'); rr(c, ax - 96, ay - 36, 192, 72, 10); cel(c, ax - 96, ay - 36, 192, 72, '#9AA1B3', { sw: .3, ha: .4 });
     c.save(); c.translate(ax, ay - 50); c.scale(1, Math.cos(op * 2.4)); rr(c, -110, 0, 220, 100, 14); fill(c, op < .5 ? '#2A2E4A' : '#3A3F5E'); c.restore();

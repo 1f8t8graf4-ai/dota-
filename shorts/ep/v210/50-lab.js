@@ -8,11 +8,11 @@
   const BARS4 = [[230, 70], [270, 90], [210, 50], [250, 320], [190, 80]];   // [дым, пар]; четвёртый «пар» — выше дыма
   function labInit() {
     const w8 = (q, n) => Ws('s8', q, n), w9 = (q, n) => Ws('s9', q, n);
-    TG = { j: TF.jFG, poim: w8('поймали'), yady: w8('яды'), mnog: w8('многих'), bol: w8('больше'), nik: w8('никотина'), stat: w9('статью'), dym: w9('дым'), imen: w9('именем'), dvadc: Ws('s10', 'двадцатом') };
+    TG = { j: TF.jFG, poim: w8('поймали'), yady: w8('яды'), mnog: w8('многих'), odn: w8('одного'), bol: w8('больше'), nik: w8('никотина'), stat: w9('статью'), dym: w9('дым'), imen: w9('именем'), dvadc: Ws('s10', 'двадцатом') };
     const a = TG; a.on = a.j + .1; a.jGH = a.dvadc + .45;
     KG = [KY(a.on + .55, 540, 1010, 1.32), KY(a.poim + .45, 540, 1010, 1.42), KY(a.yady + .3, 430, 1060, 1.28), KY(a.mnog + .35, 780, 600, 1.32), KY(a.bol + .3, 820, 560, 1.6),
-      KY(a.nik + .7, 330, 540, 1.48), KY(a.stat - .3, 420, 760, 1.12), KY(a.stat + .45, 560, 1180, 1.42), KY(a.dym + .35, 520, 1160, 1.55), KY(a.imen + .4, 470, 1230, 1.72),
-      KY(a.jGH - .35, 690, 1268, 5.2), KY(a.jGH, JRN.x + 152, JRN.y - 36, 40)];   // ныряем в белый просвет правой страницы журнала
+      KY(a.nik + .7, 790, 520, 1.5), KY(a.stat - .3, 420, 760, 1.12), KY(a.stat + .45, 560, 1180, 1.42), KY(a.dym + .35, 520, 1160, 1.55), KY(a.imen + .4, 470, 1230, 1.72),
+      KY(a.jGH - .3, 452, 1292, 4.2), KY(a.jGH, JRN.x - 118, JRN.y, 6.6)];   // v21.1: наезд на заголовок статьи — страница во весь экран; это же журнал на столе FDA (стык без белого)
     NGH = { x: JRN.x - (JRH.x - 540), y: JRN.y - (JRH.y - 960), m: 1 };   // журнал на столе FDA (мир H)
   }
   // общий «луч в темноте» на стыке магазин → лаборатория: темнота, луч, кусок белой полочки, держатель, пар и «?»
@@ -21,9 +21,10 @@
     beam(c, x, y - 760, x, y + 18, 30, 190, '#FFE6B8', .22);
     c.fillStyle = '#D8D4CC'; c.fillRect(x - 170, y + 18, 340, 22); c.fillStyle = '#B9B5AD'; c.fillRect(x - 170, y + 40, 340, 8);
     c.beginPath(); c.ellipse(x, y + 22, 190, 26, 0, 0, TAU); c.fillStyle = 'rgba(255,230,184,.12)'; c.fill();
-    iqos4(c, x, y, L, { name: false, shadow: false, leds: 0 }); c.restore();
-    qVapor2(c, t, x + L / 2 - 20, y, k * (q0 ?? 1), tq);
+    iqos4(c, x, y, L, { name: false, shadow: false, leds: 0, stick: 1 }); c.restore();
+    qVapor2(c, t, vapX(x, L), y, k * (q0 ?? 1), tq);
   }
+  function vapX(x, L) { return x + L / 2 - 14 + L * .34 }   // v21.1: пар идёт из стика, а не из корпуса держателя
   function qVapor2(c, t, x, y, k, tq) {   // пар → белый «?» (над держателем, близко — в луче)
     if (k <= 0) return; smokeLine(c, [x, y - 16, x + 8 + Math.sin(t * 2) * 6, y - 60, x - 4, y - 100], 6, '#F4F1EA', .5 * k);
     const kq = eio(at(t, tq - .1, tq + .5)) * k; if (kq <= 0) return;
@@ -58,7 +59,7 @@
     c.beginPath(); c.moveTo(x - w / 2, b); c.lineTo(x - w / 2, b - h + w / 2); c.arc(x, b - h + w / 2, w / 2, Math.PI, 0); c.lineTo(x + w / 2, b); c.closePath();
     c.fillStyle = 'rgba(200,230,240,.14)'; c.fill(); lnB(c, 4, 'rgba(230,250,255,.7)'); c.save(); c.clip(); glint(c, x - w / 2, b - h, w, h, .12); c.restore();
     rr(c, x - w / 2 - 14, b - 18, w + 28, 22, 8); fill(c, 'rgba(200,230,240,.35)'); c.restore();
-    if (label) label(x, b - h * .52);
+    if (label) label(x, b - h * .86);   // v21.1: наклейка — на куполе, над «?» (иначе вместе с «?» читалась как висячий замок)
   }
   function labelPAR(c, t, x, y, peel) {   // наклейка «ПАР» отклеивается с угла — под ней «ДЫМ»
     const w = 150, h = 64; c.save(); c.translate(x, y); c.rotate(-.05);
@@ -68,26 +69,28 @@
     c.restore();
   }
   function bars4(c, t) {   // пары столбиков на доске: серый — дым, белый — пар; четвёртый белый — выше и краснеет
-    const a = TG, k = eo(at(t, a.mnog - .1, a.mnog + .6)); if (k <= 0) return; const base = 700, x0 = 610;
-    c.fillStyle = '#2B2F55'; c.fillRect(x0 - 10, base, 410, 4);
-    BARS4.forEach(([g, w], i) => { const x = x0 + i * 82, kb = cl(k * 1.4 - i * .1), up = i === 3 ? eo(at(t, a.bol - .1, a.bol + .35)) : 0, wh = (i === 3 ? lp(90, w, up) : w) * kb;
-      rr(c, x, base - g * kb, 30, g * kb, 4); fill(c, '#8C8FA0'); rr(c, x + 34, base - wh, 30, wh, 4); fill(c, i === 3 ? mixc('#FFFFFF', C4.red, up) : '#FFFFFF'); rr(c, x + 34, base - wh, 30, wh, 4); lnB(c, 2, '#2B2F55') });
+    const a = TG, base = 700, x0 = 610, ko = 1 - at(t, a.nik - .2, a.nik + .1); if (ko <= 0) return; c.save(); c.globalAlpha *= ko;
+    c.fillStyle = '#2B2F55'; c.fillRect(x0 - 10, base, 410, 4); c.fillRect(x0 - 10, 300, 4, base - 296);   // оси — видны сразу, доска не пустая
     rr(c, x0, 260, 22, 22, 3); fill(c, '#8C8FA0'); tx(c, TEXT.smoke, x0 + 32, 272, { f: 'M', w: 800, s: 22, c: '#2B2F55', al: 'left' });
     rr(c, x0 + 120, 260, 22, 22, 3); fill(c, '#FFFFFF'); rr(c, x0 + 120, 260, 22, 22, 3); lnB(c, 2, '#2B2F55'); tx(c, TEXT.vapor, x0 + 152, 272, { f: 'M', w: 800, s: 22, c: '#2B2F55', al: 'left' });
+    const k = eo(at(t, a.mnog - .1, a.mnog + .6));
+    if (k > 0) BARS4.forEach(([g, w], i) => { const x = x0 + i * 82, kb = cl(k * 1.4 - i * .1), up = i === 3 ? eo(at(t, a.odn - .05, a.odn + .4)) : 0, wh = (i === 3 ? lp(90, w, up) : w) * kb;
+      rr(c, x, base - g * kb, 30, g * kb, 4); fill(c, '#8C8FA0'); rr(c, x + 34, base - wh, 30, wh, 4); fill(c, i === 3 ? mixc('#FFFFFF', C4.red, up) : '#FFFFFF'); rr(c, x + 34, base - wh, 30, wh, 4); lnB(c, 2, '#2B2F55') });
+    c.restore();
   }
-  function gauge4(c, t) {   // никотин: 84 % от сигареты (#120)
-    const a = TG, k = eo(at(t, a.nik - .05, a.nik + .35)); if (k <= 0) return; const x = 300, y = 500, R = 150, f = .84 * eio(at(t, a.nik + .1, a.nik + 1.3)), s = bo(k);
-    c.save(); c.translate(x, y); c.scale(s, s); circ(c, 8, 12, R + 30, 'rgba(0,0,0,.3)'); circ(c, 0, 0, R + 30, '#F4F1EA');
+  function gauge4(c, t) {   // никотин: 84 % от сигареты (#120) — на той же доске, вместо столбиков (v21.1: был над окном с Альпами и уезжал под плашку года)
+    const a = TG, k = eo(at(t, a.nik - .05, a.nik + .35)); if (k <= 0) return; const x = 795, y = 500, R = 150, f = .84 * eio(at(t, a.nik + .1, a.nik + 1.3)), fv = .84 * eio(at(FT, a.nik + .1, a.nik + 1.3)), s = bo(k);
+    c.save(); c.translate(x, y); c.scale(s, s); circ(c, 8, 12, R + 30, 'rgba(0,0,0,.18)'); circ(c, 0, 0, R + 30, '#F4F1EA');
     c.beginPath(); c.arc(0, 0, R - 10, 0, TAU); lnB(c, 40, '#D9D3C6'); c.beginPath(); c.arc(0, 0, R - 10, -Math.PI / 2, -Math.PI / 2 + TAU * f); lnB(c, 40, '#E2412F');
-    tx(c, Math.round(f * 100) + ' %', 0, -6, { f: 'M', w: 800, s: 66, c: '#141010' }); tx(c, TEXT.nicL, 0, 50, { f: 'M', w: 800, s: 26, c: '#141010', ls: 3 }); c.restore();
+    tx(c, TEXT.fPctN(Math.round(fv * 100)), 0, -6, { f: 'M', w: 800, s: 66, c: '#141010' }); tx(c, TEXT.nicL, 0, 50, { f: 'M', w: 800, s: 26, c: '#141010', ls: 3 }); c.restore();
   }
   // журнал: раскрыт, слева заголовок статьи (сначала закрыт полоской), справа колонки; есть белый просвет справа — в него ныряет камера
   function journal4(c, t, x, y, strip, smoke) {
     const { w, h } = JRN; c.save(); c.translate(x, y);
     rasterPoly(c, [-w / 2 + 20, h / 2, w / 2, h / 2, w / 2 + 70, h / 2 + 40, -w / 2 + 90, h / 2 + 40], 'rgba(6,8,24,.3)', 9, 2.2);
     c.fillStyle = '#FFFDF8'; c.fillRect(-w / 2, -h / 2, w, h); c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(-3, -h / 2, 6, h);
-    c.fillStyle = '#B5162B'; c.fillRect(-w / 2 + 18, -h / 2 + 18, w / 2 - 36, 26); tx(c, OBJ.journal, -w / 4, -h / 2 + 32, { f: 'M', w: 800, s: 15, c: '#FFFFFF', mw: w / 2 - 50 });
-    tx(c, OBJ.jtitle1, -w / 4, -h / 2 + 74, { f: 'P', w: 700, s: 17, c: '#141010', mw: w / 2 - 40 }); tx(c, OBJ.jtitle2, -w / 4, -h / 2 + 100, { f: 'P', w: 700, st: 'italic', s: 21, c: '#141010', mw: w / 2 - 40 });
+    c.fillStyle = '#B5162B'; c.fillRect(-w / 2 + 18, -h / 2 + 18, w / 2 - 36, 26); tx(c, OBJ.journal, -w / 4, -h / 2 + 32, { f: 'M', w: 800, s: 15, c: '#FFFFFF', mw: w / 2 - 90 });
+    tx(c, OBJ.jtitle1, -w / 4, -h / 2 + 74, { f: 'P', w: 700, s: 17, c: '#141010', mw: w / 2 - 82 }); tx(c, OBJ.jtitle2, -w / 4, -h / 2 + 100, { f: 'P', w: 700, st: 'italic', s: 21, c: '#141010', mw: w / 2 - 82 });
     if (strip < 1) { const s = eio(strip); c.save(); c.translate(-w / 4 + s * 260, -h / 2 + 88 - s * 120); c.rotate(s * .5); rr(c, -w / 4 + 6, -26, w / 2 - 12, 52, 3); fill(c, '#EDE6D6'); rr(c, -w / 4 + 6, -26, w / 2 - 12, 52, 3); lnB(c, 2, 'rgba(0,0,0,.15)'); c.restore() }
     textLines(c, -w / 2 + 18, -h / 2 + 128, w / 2 - 36, 150, 10, 'rgba(27,26,24,.35)', 51);
     textLines(c, 18, -h / 2 + 22, w / 2 - 36, 60, 5, 'rgba(27,26,24,.35)', 61); textLines(c, 18, -h / 2 + 152, w / 2 - 36, 120, 8, 'rgba(27,26,24,.35)', 71);   // справа: просвет y −h/2+90…−h/2+148
@@ -99,8 +102,8 @@
     c.fillStyle = '#D8D4CC'; c.fillRect(HG.x - 170, BENCH, 340, 22); c.fillStyle = '#B9B5AD'; c.fillRect(HG.x - 170, BENCH + 22, 340, 8);   // белая полочка под держателем
     const sk = eio(at(t, a.yady - .1, a.yady + .5)) * (1 - at(t, a.stat - .3, a.stat));
     ashtrayCig(c, t, sk);
-    iqos4(c, HG.x, HG.y, HG.L, { name: false, shadow: false, leds: 0 });
-    qVapor2(c, t, HG.x + HG.L / 2 - 20, HG.y, 1, -10);
+    iqos4(c, HG.x, HG.y, HG.L, { name: false, shadow: false, leds: 0, stick: 1 });
+    qVapor2(c, t, vapX(HG.x, HG.L), HG.y, 1, -10);
     hexes(c, HG.x - 120, HG.y - 300, 220, 220, sk, 5);
     const ky = 760 * (1 - eio(at(t, a.poim - .2, a.poim + .25)));
     bellJar(c, t, ky, (x, y) => labelPAR(c, t, x, y, at(t, a.dym - .1, a.dym + .45)));
@@ -112,5 +115,5 @@
   function labShot(c, t) {
     const q = camObj(camAt(KG, t)); layer(c, q, 1, cc => labWorld(cc, t, q));
     const a = TG; capS(c, TEXT.onemore, 540, 300, at(t, a.bol + .15, a.bol + .45) * (1 - at(t, a.nik - .2, a.nik)), { s: 54 });
-    capS(c, TEXT.title, 540, 330, at(t, a.imen + .05, a.imen + .35) * (1 - at(t, a.jGH - .5, a.jGH - .25)), { s: 46 });
+    capS(c, TEXT.title, 540, 1480, at(t, a.imen + .05, a.imen + .35) * (1 - at(t, a.jGH - .5, a.jGH - .25)), { s: 46 });   // под журналом: не налезает на колпак с «ДЫМ»
   }

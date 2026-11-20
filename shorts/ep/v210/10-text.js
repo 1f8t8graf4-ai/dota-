@@ -1,19 +1,55 @@
-  // ================= глава 4: наши надписи — одним словарём (Андрей, 19.11: «надписи — в словарь TEXT в шапке кода»; по нему — английская и немецкая версии) =================
-  // Надписи на предметах (Marlboro, IQOS, Philip Morris, R.J. Reynolds, Premier, FDA, JAMA Internal Medicine, текст рекламы) — не переводим: это вещи из жизни.
-  const TEXT = {
-    promise: 'НОВОГОДНЕЕ ОБЕЩАНИЕ', nagoya: 'НАГОЯ', milan: 'МИЛАН', nofire: 'НЕ ГОРИТ', half: 'ВДВОЕ ХОЛОДНЕЕ', soldout: 'РАСКУПИЛИ',
-    noharm: 'БЕЗ ВРЕДА?', vapor: 'ПАР', smoke: 'ДЫМ', onemore: 'ОДНОГО БОЛЬШЕ', nic: '84 %', nicL: 'НИКОТИН', title: 'ДЫМ ПОД ДРУГИМ ИМЕНЕМ',
-    less: 'МЕНЬШЕ ВЕЩЕСТВ', harm: 'МЕНЬШЕ ВРЕДА', no: 'НЕЛЬЗЯ', memo: 'МЕМОРАНДУМ', memoDate: '2 ФЕВРАЛЯ 1973', secret: 'СЕКРЕТНО',
-    quote: [['МЫ', 'ДОЛЖНЫ', 'ПОЛУЧИТЬ'], ['СВОЮ', 'ДОЛЮ'], ['МОЛОДЁЖНОГО', 'РЫНКА']], sign: 'К. ТИГ · ОТДЕЛ ИССЛЕДОВАНИЙ',
-    premier: '−$300 МЛН', itc: 'ТОРГОВАЯ КОМИССИЯ США', ban: 'ЗАПРЕТ', users: '32 МЛН', usersL: 'ПОЛЬЗОВАТЕЛЕЙ', cigs: '617 МЛРД', cigsL: 'СИГАРЕТ', pct: '+0,6 %',
-    price: '$16 МЛРД', notob: 'БЕЗ ТАБАКА', card14a: '2014', card14b: 'НАГРЕВАТЕЛИ', card22a: '2022', part5: 'Часть 5 →',
-    fire: 'ОГОНЬ', blade: 'НАГРЕВ',
+  // ================= глава 4: надписи — по языку ролика (Андрей, 20.11: «текст зависит от типа ролика: русский ролик — на русском, английский — англ, дойч — дойч») =================
+  // TEXT — наши плашки, OBJ — надписи на предметах. Названия (The Times, The Sun, Daily Mirror, Marlboro, IQOS, Philip Morris, R.J. Reynolds, Premier, FDA, JAMA) — как в жизни.
+  // Язык берётся из ролика (v210y-ru → ru) в EP.init → setLang.
+  const TEXT_L = {
+    ru: {
+      promise: 'НОВОГОДНЕЕ ОБЕЩАНИЕ', nagoya: 'НАГОЯ', milan: 'МИЛАН', nofire: 'НЕ ГОРИТ', half: 'ВДВОЕ ХОЛОДНЕЕ', soldout: 'РАСКУПИЛИ',
+      noharm: 'БЕЗ ВРЕДА?', vapor: 'ПАР', smoke: 'ДЫМ', onemore: 'ОДНОГО БОЛЬШЕ', nicL: 'НИКОТИН', title: 'ДЫМ ПОД ДРУГИМ ИМЕНЕМ',
+      less: 'МЕНЬШЕ ВЕЩЕСТВ', harm: 'МЕНЬШЕ ВРЕДА', no: 'НЕЛЬЗЯ', memo: 'МЕМОРАНДУМ', memoDate: '2 ФЕВРАЛЯ 1973', secret: 'СЕКРЕТНО',
+      quote: [['МЫ', 'ДОЛЖНЫ', 'ПОЛУЧИТЬ'], ['СВОЮ', 'ДОЛЮ'], ['МОЛОДЁЖНОГО', 'РЫНКА']], sign: 'К. ТИГ · ОТДЕЛ ИССЛЕДОВАНИЙ',
+      premier: '−$300 МЛН', itc: 'ТОРГОВАЯ КОМИССИЯ США', ban: 'ЗАПРЕТ', users: '32 МЛН', usersL: 'ПОЛЬЗОВАТЕЛЕЙ', cigs: '617 МЛРД', cigsL: 'СИГАРЕТ',
+      pct: '+0,6 %', pctL: 'ЗА ГОД', price: '$16 МЛРД', notob: 'БЕЗ ТАБАКА', part5: 'Часть 5 →', fire: 'ОГОНЬ', blade: 'НАГРЕВ',
+      card79b: 'СОЛЬ', card20b: 'ЛАЗЕЙКА ОДНОРАЗОК', card24b: '«МАЛЬБОРО»', card14b: 'НАГРЕВАТЕЛИ', card22b: 'СНЮС',
+      fPrem: v => '−$' + v + ' МЛН', fUsers: v => v + ' МЛН', fCigs: v => v + ' МЛРД', fPrice: v => '$' + v + ' МЛРД', fPctN: v => v + ' %',
+    },
+    en: {
+      promise: 'NEW YEAR’S RESOLUTION', nagoya: 'NAGOYA', milan: 'MILAN', nofire: 'WON’T LIGHT', half: 'HALF AS HOT', soldout: 'SOLD OUT',
+      noharm: 'NO HARM?', vapor: 'VAPOR', smoke: 'SMOKE', onemore: 'ONE EVEN HIGHER', nicL: 'NICOTINE', title: 'SMOKE BY ANY OTHER NAME',
+      less: 'FEWER CHEMICALS', harm: 'LESS HARM', no: 'NOT ALLOWED', memo: 'MEMORANDUM', memoDate: 'FEBRUARY 2, 1973', secret: 'SECRET',
+      quote: [['WE', 'MUST', 'GET'], ['OUR', 'SHARE', 'OF THE'], ['YOUTH', 'MARKET']], sign: 'C. TEAGUE · RESEARCH DEPARTMENT',
+      premier: '−$300M', itc: 'U.S. TRADE COMMISSION', ban: 'BANNED', users: '32M', usersL: 'USERS', cigs: '617B', cigsL: 'CIGARETTES',
+      pct: '+0.6%', pctL: 'IN A YEAR', price: '$16B', notob: 'NO TOBACCO', part5: 'Part 5 →', fire: 'FLAME', blade: 'HEATER',
+      card79b: 'SALT', card20b: 'THE DISPOSABLE LOOPHOLE', card24b: '“MARLBORO”', card14b: 'HEATERS', card22b: 'NICOTINE POUCHES',
+      fPrem: v => '−$' + v + 'M', fUsers: v => v + 'M', fCigs: v => v + 'B', fPrice: v => '$' + v + 'B', fPctN: v => v + '%',
+    },
+    de: {
+      promise: 'NEUJAHRSVORSATZ', nagoya: 'NAGOYA', milan: 'MAILAND', nofire: 'BRENNT NICHT', half: 'HALB SO HEISS', soldout: 'AUSVERKAUFT',
+      noharm: 'HARMLOS?', vapor: 'DAMPF', smoke: 'RAUCH', onemore: 'EINER SOGAR HÖHER', nicL: 'NIKOTIN', title: 'RAUCH UNTER ANDEREM NAMEN',
+      less: 'WENIGER SCHADSTOFFE', harm: 'WENIGER SCHADEN', no: 'VERBOTEN', memo: 'MEMORANDUM', memoDate: '2. FEBRUAR 1973', secret: 'GEHEIM',
+      quote: [['WIR', 'MÜSSEN', 'UNSEREN'], ['ANTEIL', 'AM'], ['JUGENDMARKT'], ['BEKOMMEN']], sign: 'C. TEAGUE · FORSCHUNGSABTEILUNG',
+      premier: '−300 MIO. $', itc: 'US-HANDELSKOMMISSION', ban: 'VERBOT', users: '32 MIO.', usersL: 'NUTZER', cigs: '617 MRD.', cigsL: 'ZIGARETTEN',
+      pct: '+0,6 %', pctL: 'IN EINEM JAHR', price: '16 MRD. $', notob: 'OHNE TABAK', part5: 'Teil 5 →', fire: 'FLAMME', blade: 'ERHITZER',
+      card79b: 'SALZ', card20b: 'DIE EINWEG-LÜCKE', card24b: '„MARLBORO“', card14b: 'ERHITZER', card22b: 'NIKOTINBEUTEL',
+      fPrem: v => '−' + v + ' MIO. $', fUsers: v => v + ' MIO.', fCigs: v => v + ' MRD.', fPrice: v => v + ' MRD. $', fPctN: v => v + ' %',
+    },
   };
-  const OBJ = {   // на предметах — как в жизни, латиницей
-    ad1: 'Our New Year’s resolution', ad2: 'We’re trying to give up cigarettes.', ad3: 'Philip Morris Limited', heads: ['The Times', 'The Sun', 'Daily Mirror'],
-    journal: 'JAMA Internal Medicine', jtitle1: 'Heat-Not-Burn Tobacco Cigarettes:', jtitle2: 'Smoke by Any Other Name', fda: 'FDA', rj: 'R.J. REYNOLDS TOBACCO COMPANY',
-    premier: 'Premier', patent: 'PATENT', rjs: 'R.J. Reynolds', iqos: 'IQOS',
+  const OBJ_NAMES = { ad3: 'Philip Morris Limited', heads: ['The Times', 'The Sun', 'Daily Mirror'], journal: 'JAMA Internal Medicine', fda: 'FDA', rj: 'R.J. REYNOLDS TOBACCO COMPANY',
+    premier: 'Premier', rjs: 'R.J. Reynolds', iqos: 'IQOS' };
+  const OBJ_L = {   // текст рекламы — как в газетах 2018 года (Our New Year’s resolution. We’re trying to give up cigarettes.), переведён
+    ru: { ad1L: ['Наше новогоднее', 'обещание'], ad2L: ['Мы пытаемся бросить', 'сигареты.'], news: 'НОВОСТИ', jtitle1: 'Табачные нагреватели:', jtitle2: 'дым под другим именем',
+      patent: 'ПАТЕНТ', fig: 'РИС. 1', mapUS: 'США', mapOcean: ['АТЛАНТИЧЕСКИЙ', 'ОКЕАН'] },
+    en: { ad1L: ['Our New', 'Year’s resolution'], ad2L: ['We’re trying to', 'give up cigarettes.'], news: 'NEWS', jtitle1: 'Heat-Not-Burn Tobacco Cigarettes:', jtitle2: 'Smoke by Any Other Name',
+      patent: 'PATENT', fig: 'FIG. 1', mapUS: 'USA', mapOcean: ['ATLANTIC', 'OCEAN'] },
+    de: { ad1L: ['Unser', 'Neujahrsvorsatz'], ad2L: ['Wir versuchen, die', 'Zigaretten aufzugeben.'], news: 'NACHRICHTEN', jtitle1: 'Tabakerhitzer:', jtitle2: 'Rauch unter anderem Namen',
+      patent: 'PATENT', fig: 'ABB. 1', mapUS: 'USA', mapOcean: ['ATLANTISCHER', 'OZEAN'] },
   };
+  const TEXT = {}, OBJ = {};
+  let LANG = 'ru';
+  function setLang(l) {
+    LANG = TEXT_L[l] ? l : 'ru'; for (const o of [TEXT, OBJ]) for (const k in o) delete o[k];
+    Object.assign(TEXT, TEXT_L[LANG]); Object.assign(OBJ, OBJ_NAMES, OBJ_L[LANG]);
+  }
+  setLang('ru');
   // палитра главы 4 (основа — набор Боба B2 и палитра главы 3 C3)
   const C4 = {
     night: '#1e2138', navy: '#141733', ink: '#141010', cream: '#F4F1EA', paper: '#F3EFE6', paperD: '#DDD6C8', paperL: '#FFFDF8', inkN: '#1B1A18',
@@ -71,6 +107,8 @@
     for (let i = 0; i < n; i++) { const yy = y - i * 7, b = cl((burn * n - (n - 1 - i)) / 1.2); if (b >= 1) continue;
       c.save(); c.beginPath(); c.rect(x - w / 2 - 20, yy - 30, w + 40 + 1, 60); c.clip();
       const ww = w * (1 - b); rr(c, x - w / 2, yy - 18, ww, 36, 4); fill(c, mixc('#7FA86A', '#3A3330', b)); c.fillStyle = 'rgba(30,60,30,.35)'; c.fillRect(x - w / 2 + ww * .42, yy - 18, ww * .16, 36);
+      if (i === n - 1 && b < .5) { const cx0 = x - w / 2 + ww * .5; c.save(); c.globalAlpha *= 1 - b * 2; c.strokeStyle = 'rgba(30,60,30,.45)'; c.lineWidth = 1.5; c.strokeRect(x - w / 2 + 4, yy - 14, ww - 8, 28);
+        c.beginPath(); c.ellipse(cx0, yy, 15, 12, 0, 0, TAU); fill(c, '#A9CC92'); tx(c, '$', cx0, yy + 1, { f: 'M', w: 800, s: 18, c: '#2E5A2A' }); tx(c, '100', x - w / 2 + 18, yy - 7, { f: 'M', w: 800, s: 9, c: '#2E5A2A' }); tx(c, '100', x - w / 2 + ww - 18, yy + 8, { f: 'M', w: 800, s: 9, c: '#2E5A2A' }); c.restore() }   // v21.1: видно, что это доллары
       if (b > 0) { c.fillStyle = C4.ember; c.fillRect(x - w / 2 + ww - 6, yy - 18, 6, 36); c.fillStyle = 'rgba(169,162,160,.9)'; c.fillRect(x - w / 2 + ww, yy - 16, 10, 32) }
       c.restore() }
   }

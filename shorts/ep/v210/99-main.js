@@ -7,25 +7,29 @@
     if (INITED) return; INITED = true;
     cafeInit(); globeInit(); linkK(KA1, KB, { x: 660, y: 1990, m: BALL_R / GB.R }, true);   // комок падает в темноту — это глобус
     storeCInit(); linkK(KB, KC, NBC, true);   // в точке Нагои — витрина
-    carInit(); linkK(KC, KD, NCD, true);   // белый бок держателя — он же в подстаканнике машины
+    carInit(); linkK(KC, KD, NCD, true); vturn(KC, KD);   // белый бок держателя — он же в подстаканнике машины
     storeFInit(); linkK(KD, KF, NDF, true);   // экран машины = телевизор в магазине
     labInit(); linkK(KF, KG, NFG, true);   // луч в темноте — одинаковый в магазине и в лаборатории
-    deskInit(); linkK(KG, KH, NGH, true);   // белое поле журнала: тот же журнал на столе FDA
+    deskInit(); linkK(KG, KH, NGH, true);   // страница журнала во весь экран: тот же журнал на столе FDA (v21.1: без нырка в белое)
     mapInit(); cafe2Init(); linkK(KH, KAE, N_HA, false);   // карта США на столе FDA = карта на столе кофейни
-    if (MODE === 'y') { boardInit(); linkK(KAE, KJ, N_AJ, false) }   // белая подушечка = белое поле газеты в фото карточки 2014
+    if (MODE === 'y') boardInit();   // v21.1: кадр кофейни сжимается в фото карточки 2014 (photoOver) — без нырка в белое
     const W = (a, b) => SHUT.push([a, b]);
     W(TA.fall1 - .45, TA.jAB + .45); W(TB.dive - .1, TB.jBC + .35); W(TC4.close - .1, TC4.jCD + .4); W(TD4.kom + .2, TD4.jDF + .3); W(TG.jGH - .45, TG.jGH + .65);
     W(TH.pat + .35, TH.land + .1); W(TH.vygn, TH.vygn + .65); W(TH.jHA - .1, TH.jHA + .85); W(TM.brosaj + .5, TM.inBin + .1);
-    if (MODE === 'y') W(TM.jAJ - .55, TM.jAJ + .7); else W(TM.amerQ + .05, TM.amerQ + .5);
+    if (MODE !== 'y') W(TM.amerQ + .05, TM.amerQ + .5);
     SEG.push([-1e9, (c, t) => { cafeShot(c, t, KA1, t, {}); cafePlates1(c, t) }], [TA.jAB, globeShot], [TB.jBC, storeShot], [TC4.jCD, carShot], [TD4.jDF, storeFShot], [TF.jFG, labShot],
       [TG.jGH, (c, t) => { deskShot(c, t); mapPlates(c, t) }], [TH.jHA, cafe2Shot]);
     if (MODE === 'y') SEG.push([TM.jAJ, boardShot]);
   }
+  function vturn(KA, KB, f = 2.2) {   // v21.1: нырок «в белое» — на стыке зум разворачивается на полном ходу, камера не замирает на белом кадре (было до 0,5 с белого)
+    const a1 = KA[KA.length - 3], a2 = KA[KA.length - 2], b1 = KB[1], b2 = KB[2];
+    a2.v = [0, 0, f * (a2[3] - a1[3]) / (a2[0] - a1[0]), 0]; b1.v = [0, 0, f * (b2[3] - b1[3]) / (b2[0] - b1[0]), 0];
+  }
   function scene(c, t) { allInit(); let f = SEG[0][1]; for (const s of SEG) if (t >= s[0]) f = s[1]; f(c, t) }
   let HY = null;
   function hud(c, t) {   // плашка года — только вперёд: 2014 → 2016 → 2017 → 2020, уходит на «Помните» (1973 и 1988 — назад нельзя); 2021 → 2024, уходит до строки 16 / вопроса
-    if (!HY) HY = { t14: Ws('s4', 'четырнадцатом'), t16: Ws('s6', 'шестнадцатом'), t17: Ws('s8', 'год'), t20: Ws('s10', 'двадцатом'), out1: Ws('s11', 'помните'), t21: Ws('s13', 'первом'),
-      t24: Ws('s14', 'четвёртом'), out2: MODE === 'y' ? Ws('s16', 'америку') - .9 : Ws('q', 'угадаете') - .6 };
+    if (!HY) HY = { t14: Ws('s4', 'две'), t16: Ws('s6', 'шестнадцатом'), t17: Ws('s8', 'год'), t20: Ws('s10', 'двадцатом'), out1: Ws('s11', 'помните') - .5, t21: Ws('s13', 'двадцать'),
+      t24: Ws('s14', 'двадцать'), out2: MODE === 'y' ? WsB('s15', 'вы') + .2 : Ws('q', 'угадаете') - .6 };   // v21.1: год — на «в две тысячи…», «в двадцать…»; 2020 уходит до «Помните»
     const h = HY, pill = (y0, y1, k, dy = 0) => { c.save(); c.setTransform(1, 0, 0, 1, 0, dy); yearPill(c, y0, y1, k, 1, true); c.restore() };
     if (t < h.t14 - .25) return;
     if (t < h.t16 - .3) return pill(2014, 2014, 1, -240 * (1 - eo(at(t, h.t14 - .25, h.t14 + .15))));
@@ -49,7 +53,7 @@
   function frame(t) { frameTo(X, t) }
   function frameTo(c, t) {
     c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
-    c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
+    c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH); FT = t;
     if (window.NOMB) scene(c, t); else sceneMB(c, t);
     c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); subs(c, t);
   }
@@ -71,8 +75,7 @@
     Q(h.vygn + .45, 'splash', .5); Q(h.vygn + .5, 'stamp', .55); Q(h.amer, 'wave', .3); Q(h.jHA, 'whoosh', .45);
     const m = TM; Q(m.roll0, 'scuttle', .4, -.4); Q(m.tri, 'counter', .45); for (let i = 0; i < 3; i++) Q(m.tri + .2 + i * .3, 'plop', .2, -.3); Q(m.sig, 'conveyor', .35); Q(m.sig + .1, 'counter', .4); Q(m.shest, 'counter', .45);
     Q(m.bol, 'impact', .3); Q(m.bol + .05, 'shimmer', .25); Q(m.brosaj, 'scuttle', .4, .3); Q(m.edge, 'whoosh', .3); Q(m.inBin - .05, 'bin', .6, .4); Q(m.rovno, 'thud', .2); Q(m.vy, 'city', .2);
-    if (MODE === 'y') { Q(m.amerF + .2, 'whoosh', .35); Q(m.vern, 'wave', .45); Q(m.vern + .3, 'splash', .25); Q(m.zapr, 'chain', .4); Q(m.zapr + .1, 'drawer', .3); Q(m.shestn, 'counter', .5); Q(m.shestn + .1, 'register', .35);
-      Q(m.net, 'cryptex', .4); Q(m.dazhe, 'shimmer', .3); Q(m.tab, 'marker', .4); Q(m.jAJ - .45, 'dive', .55); Q(m.jAJ + .1, 'whoosh', .45); Q(m.jAJ + 2.2, 'marker', .35); Q(m.jAJ + 3.1, 'plop', .3) }
+    if (MODE === 'y') { Q(m.jAJ + .05, 'whoosh', .4); Q(m.jAJ + 1.0, 'papers', .3); Q(m.jAJ + 1.12, 'plop', .3); Q(m.jAJ + 2.05, 'marker', .35); Q(m.jAJ + 2.85, 'plop', .3) }   // кадр → фото на доске, нить к 2022
     else { Q(m.ugad, 'shimmer', .3); Q(m.amerQ, 'pageflip', .3); Q(m.amerQ + .46, 'impact', .45); Q(m.amerQ + .48, 'papers', .5); Q(TL0 - .5, 'city', .25) }
   }
   window.EP = {
@@ -80,6 +83,7 @@
     sub: { init: null, scene: (c, t) => scene(c, t), frameTo: (c, t) => frameTo(c, t) },
     init(tl, SC, sub) {
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
+      setLang(tl.lang || (String(tl.ep || '').match(/-(ru|en|de)$/) || [])[1] || 'ru'); MQF = 0;   // v21.1: надписи — на языке ролика
       MODE = /y$/.test(ep) ? 'y' : 's';
       TLX = { b0: tl.b0, vEnd: tl.vEnd, endT: (Math.ceil(tl.dur * 30) - 1) / 30 };
       K = keys(); SEG.length = 0; SHUT.length = 0; HY = null; INITED = false; CHUNKS = buildChunks();

@@ -21,7 +21,7 @@
       pat: w13('патенты'), vyzh: w13('выжили'), perv: w13('первом'), kom: w13('комиссия'), narush: w13('нарушает'), vygn: w13('выгнала'), amer: w13('америки'),
       obesch: Ws('s14', 'обещание') };
     const a = TH; a.jHA = a.obesch + .15; a.form = a.reg + .05; a.land = a.perv + .02;
-    KH = [KY(a.j + .55, 452, 1150, 2.6), KY(a.reg + .45, 530, 985, 1.16), KY(a.vesch, 470, 1120, 1.42), KY(a.mensh + .1, 430, 1188, 1.72), KY(a.vreda + .3, 420, 1205, 1.86),
+    KH = [KY(a.j + .6, 452, 1150, 2.6), KY(a.reg + .45, 530, 985, 1.16), KY(a.vesch, 470, 1120, 1.42), KY(a.mensh + .1, 430, 1188, 1.72), KY(a.vreda + .3, 420, 1205, 1.86),
       KY(a.razresh + .5, 450, 1180, 1.62), KY(a.pomn + .3, 600, 1130, 1.34), KY(a.reyn + .45, 650, 1000, 1.14), KY(a.sem + .05, 790, 1258, 2.0), KY(a.podr + .3, 800, 1300, 2.2),
       KY(a.svoi + .35, 790, 1332, 1.85), KY(a.prizh + .2, 800, 1362, 2.0), KY(a.ugol + .25, 845, 1392, 1.98), KY(a.sela + .7, 890, 1432, 1.92), KY(a.doll + .25, 910, 1452, 1.9),
       KY(a.pat + .25, 1010, 1412, 1.62), KY(a.perv - .25, 1300, 1430, 1.55), KY(a.perv + .45, 1470, 1480, 1.82), KY(a.kom + .4, 1500, 1470, 1.9), KY(a.narush + .1, 1470, 1500, 2.05),
@@ -107,8 +107,7 @@
     const kb = at(t, a.vreda - .12, a.vreda + .1), thin = barK ?? 0;   // планка «НЕЛЬЗЯ»: падает сверху со стуком
     if (kb > 0 && thin < 1) { const dy = -150 * (1 - eo(kb)), sc = lp(1.25, 1, eo(kb)), hit = at(t, a.razresh + .2, a.razresh + .45), sh = Math.sin(hit * Math.PI * 4) * 6 * (1 - hit) * (hit > 0 ? 1 : 0), hh = lp(64, 6, thin);
       c.save(); c.translate(sh, ROW2 + dy + sh * .3); c.scale(sc, sc); c.globalAlpha *= Math.min(1, kb * 4);
-      if (thin < .5) { rr(c, -w / 2 + 8 + 6, -hh / 2 + 10, w - 16, hh, 8); fill(c, 'rgba(0,0,0,.25)') }
-      rr(c, -w / 2 + 8, -hh / 2, w - 16, hh, Math.min(8, hh / 2)); fill(c, C4.red); if (thin < .4) { c.fillStyle = C4.redD; c.fillRect(-w / 2 + 8, hh * .18, w - 16, hh * .32) }
+      c.fillStyle = C4.red; c.fillRect(-w / 2 + 8, -hh / 2, w - 16, hh);   // v21.1: плоская полоса, как штамп
       if (thin < .3) tx(c, TEXT.no, 0, 3, { f: 'M', w: 800, s: 38, c: '#FFFFFF', ls: 8, a: 1 - thin / .3 });
       c.restore() }
     const kc = at(t, a.razresh - .1, a.razresh + .7);   // вторая галочка пробует встать — и отскакивает от планки
@@ -120,7 +119,7 @@
   // ---------- записка R.J. Reynolds 1973 (как в главе 1) ----------
   let MQF = 0;
   function stamp4(c, s, x, y, k, col, r = -.2, fs = 50) {
-    if (k <= 0) return; const sc = lp(1.9, 1, bo(k)); c.save(); c.translate(x, y); c.rotate(r); c.scale(sc, sc); c.globalAlpha *= cl(k * 5) * .94;
+    if (k <= 0) return; const sc = lp(1.5, 1, bo(k)); c.save(); c.translate(x, y); c.rotate(r); c.scale(sc, sc); c.globalAlpha *= cl(k * 5) * .94;
     const w = tw(c, s, { s: fs, ls: 6 }) + fs * 1.1, h = fs * 1.9; c.strokeStyle = col; rr(c, -w / 2, -h / 2, w, h, 14); c.lineWidth = 7; c.stroke();
     rr(c, -w / 2 + 11, -h / 2 + 11, w - 22, h - 22, 8); c.lineWidth = 2.5; c.stroke(); tx(c, s, 0, 3, { s: fs, ls: 6, c: col }); c.restore();
   }
@@ -135,7 +134,7 @@
     if (!MQF) MQF = Math.min(48, 48 * 528 / Math.max(...TEXT.quote.map(q => tw(c, q.join(' '), { f: 'J', w: 700, s: 48 }))));
     const fs = MQF;
     TEXT.quote.forEach((L, i) => { const y = 470 + i * fs * 1.25, s0 = L.join(' ');
-      if (i === 2 && o.mk > 0) { const m = eio(o.mk), w = (tw(c, s0, { f: 'J', w: 700, s: fs }) + 28) * m; poly(c, [44, y - fs * .52, 44 + w, y - fs * .56, 44 + w - 6, y + fs * .52, 40, y + fs * .5]); fill(c, '#ffb3c0') }
+      if (i === 2 && o.mk > 0) { const m = eio(o.mk), w = (tw(c, s0, { f: 'J', w: 700, s: fs }) + 28) * m; poly(c, [44, y - fs * .52, 44 + w, y - fs * .56, 44 + w - 6, y + fs * .52, 40, y + fs * .5]); fill(c, '#FFE27A') }
       tx(c, s0, 56, y, { f: 'J', w: 700, s: fs, c: '#141935', al: 'left' }) });
     c.save(); c.strokeStyle = '#1f2858'; c.lineWidth = 4; c.lineCap = 'round'; c.lineJoin = 'round'; c.beginPath();
     for (let i = 0; i <= 70; i++) { const u = i / 70, px = 60 + u * 220, py = 700 + Math.sin(u * 17) * 15 * (1 - u * .5) - u * 10 + Math.sin(u * 5) * 6; i ? c.lineTo(px, py) : c.moveTo(px, py) } c.stroke(); c.restore();
@@ -171,7 +170,7 @@
     const kc = at(t, a.svoi + .12, a.svoi + .5), cf = eo(kc), cdy = -300 * (1 - cf); if (kc <= 0) return;
     // уголёк: тёмный → тлеет → гаснет на «прижились» → вспыхивает на «угольком» → горит, пока прожигает доллары
     const em = (.45 + .1 * Math.sin(t * 6)) * (1 - at(t, a.prizh - .1, a.prizh + .45)) + at(t, a.ugol - .1, a.ugol + .15) * (.9 + .1 * Math.sin(t * 11)) * (1 - at(t, a.doll + .2, a.doll + .7));
-    const [x0, y0, x1, y1] = CIGH; c.save(); c.translate(0, cdy); c.globalAlpha *= Math.min(1, kc * 3);
+    const [x0, y0, X1, Y1] = CIGH, bu = .3 * eio(at(t, a.ugol, a.doll + .4)), x1 = lp(X1, x0, bu), y1 = lp(Y1, y0, bu); c.save(); c.translate(0, cdy); c.globalAlpha *= Math.min(1, kc * 3);   // v21.1: сигарета сгорает — короче
     c.beginPath(); c.ellipse((x0 + x1) / 2 + 10, (y0 + y1) / 2 + 16, 150, 12, Math.atan2(y1 - y0, x1 - x0), 0, TAU); fill(c, 'rgba(6,8,20,.3)');
     cig3(c, x0, y0, x1, y1, 13, { tip: '#D9B48A', tl: .24, em, ek: 1.15 }); if (em > .3) glow(c, x1 - 8, y1, 90, '#FF7A30', .5 * (em - .3)); c.restore();
     const kb = at(t, a.ugol - .05, a.ugol + .35), burn = eio(at(t, a.sela - .05, a.doll + .05));
@@ -179,8 +178,8 @@
       c.beginPath(); c.ellipse(BILLH.x + 8, BILLH.y + 26, 90, 16, 0, 0, TAU); fill(c, 'rgba(6,8,20,.3)'); bills4(c, BILLH.x, BILLH.y, BILLH.w, BILLH.n, burn); c.restore();
       if (burn > 0) for (let i = 0; i < 3; i++) smokeLine(c, [BILLH.x - 40 + i * 40, BILLH.y - 60 + burn * 50, BILLH.x - 30 + i * 40 + Math.sin(t * 2 + i) * 14, BILLH.y - 150, BILLH.x - 50 + i * 40, BILLH.y - 250], 7, '#B9B6C4', .5 * Math.sin(Math.PI * burn)) }
     ash4(c, BILLH.x, BILLH.y + 12, eo(at(t, a.sela + .3, a.doll + .1)) * (1 - eio(at(t, a.pat - .05, a.pat + .5))));
-    const kd = at(t, a.sela - .1, a.sela + .2) * (1 - at(t, a.pat - .3, a.pat)), v = Math.round(300 * eio(at(t, a.sela, a.doll - .05)));
-    if (kd > 0) drum4(c, v >= 300 ? TEXT.premier : '−$' + v + ' МЛН', DRUMH.x, DRUMH.y, kd, { s: 56, w: 330, bg: '#141733' });
+    const kd = at(t, a.sela - .1, a.sela + .2) * (1 - at(t, a.pat - .3, a.pat)), v = Math.round(300 * eio(at(FT, a.sela, a.doll - .05)));
+    if (kd > 0) drum4(c, TEXT.fPrem(v), DRUMH.x, DRUMH.y, kd, { s: 56, w: 330, bg: '#141733' });
   }
   // ---------- синий чертёж PATENT · R.J. Reynolds (без года) ----------
   const PBL = [-46, 8];   // лезвие нагревателя на чертеже (координаты листа)
@@ -189,13 +188,13 @@
     const lift = o.lift || 0; rasterPoly(c, [-w / 2 + 14 + lift * 40, h / 2 + lift * 50, w / 2 + lift * 40, h / 2 + lift * 50, w / 2 + 56 + lift * 40, h / 2 + 36 + lift * 50, -w / 2 + 70 + lift * 40, h / 2 + 36 + lift * 50], `rgba(6,8,24,${.32 - lift * .12})`, 9, 2.2);
     c.fillStyle = C4.bp; c.fillRect(-w / 2, -h / 2, w, h); c.fillStyle = 'rgba(255,255,255,.07)'; for (let i = -w / 2 + 20; i < w / 2; i += 20) c.fillRect(i, -h / 2, 1.5, h); for (let i = -h / 2 + 20; i < h / 2; i += 20) c.fillRect(-w / 2, i, w, 1.5);
     c.strokeStyle = 'rgba(234,241,255,.75)'; c.lineWidth = 2; c.strokeRect(-w / 2 + 10, -h / 2 + 10, w - 20, h - 20);
-    tx(c, OBJ.patent, 0, -h / 2 + 46, { f: 'M', w: 800, s: 38, c: '#FFFFFF', ls: 10 }); tx(c, OBJ.rjs, 0, -h / 2 + 84, { f: 'P', w: 700, st: 'italic', s: 24, c: '#DCE6FF' });
+    tx(c, OBJ.patent, 0, -h / 2 + 46, { f: 'M', w: 800, s: 38, c: '#FFFFFF', ls: 10, mw: w - 40 }); tx(c, OBJ.rjs, 0, -h / 2 + 84, { f: 'P', w: 700, st: 'italic', s: 24, c: '#DCE6FF' });
     c.strokeStyle = '#EAF1FF'; c.lineWidth = 2.5; rr(c, -110, -16, 220, 52, 26); c.stroke(); rr(c, -98, -6, 196, 32, 16); c.lineWidth = 1.5; c.stroke();
     c.setLineDash([6, 5]); c.beginPath(); c.moveTo(-130, 10); c.lineTo(130, 10); c.stroke(); c.setLineDash([]);
     rr(c, PBL[0] - 36, PBL[1] - 9, 72, 18, 4); c.fillStyle = o.hl > 0 ? mixc('#2E58B8', C4.red, o.hl) : 'rgba(234,241,255,.2)'; c.fill(); c.lineWidth = 2; c.stroke();
     if (o.hl > 0) glow(c, PBL[0], PBL[1], 70, '#FF6A4A', .5 * o.hl);
     c.beginPath(); c.moveTo(-110, 66); c.lineTo(110, 66); c.moveTo(-110, 58); c.lineTo(-110, 74); c.moveTo(110, 58); c.lineTo(110, 74); c.stroke();
-    tx(c, 'FIG. 1', 0, 96, { f: 'M', w: 800, s: 16, c: '#DCE6FF', ls: 4 }); textLines(c, -w / 2 + 30, 120, w - 60, 56, 4, 'rgba(234,241,255,.3)', 91);
+    tx(c, OBJ.fig, 0, 96, { f: 'M', w: 800, s: 16, c: '#DCE6FF', ls: 4 }); textLines(c, -w / 2 + 30, 120, w - 60, 56, 4, 'rgba(234,241,255,.3)', 91);
     c.restore();
   }
   function patentPose(t) {   // лист выезжает из пепла, поднимается и ложится на карту
@@ -214,7 +213,7 @@
     const kf = at(t, a.form - .05, a.form + .4), thin = eio(at(t, a.pomn - .1, a.pomn + .3));
     if (kf > 0) { const f = eo(kf); c.save(); c.globalAlpha *= Math.min(1, kf * 3); formH(c, t, FORM.x + 40 * (1 - f), FORM.y - 220 * (1 - f), FORM.r - .25 * (1 - f), lp(1.3, 1, f), thin); c.restore() }
     const kt = at(t, a.pomn - .05, a.pomn + .45), ko = 1 - at(t, a.svoi - .2, a.svoi + .3);   // красная нить от планки к записке, тянет её вправо
-    if (kt > 0 && ko > 0) { const P = memoPose(t), [mx, my] = memoPin(P), e = eio(kt), lx = lp(FORM.x - 180, mx, e), ly = lp(FORM.y + ROW2, my, e), rx = lp(FORM.x + 190, 1500, e), ry = lp(FORM.y + ROW2, my - 160, e);
+    if (kt > 0 && ko > 0) { const P = memoPose(t), [mx, my] = memoPin(P), e = eio(kt), r = eio(at(t, a.reyn + .35, a.reyn + .85)), lx = lp(FORM.x - 180, mx, e), ly = lp(FORM.y + ROW2, my, e), rx = lp(lp(FORM.x + 190, 1500, e), mx, r), ry = lp(lp(FORM.y + ROW2, my - 160, e), my, r);   // v21.1: хвост нити втягивается в записку — нить не уходит в пустоту
       c.save(); c.globalAlpha *= ko; c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 5; c.beginPath(); c.moveTo(lx + 3, ly + 6); c.lineTo(rx + 3, ry + 6); c.stroke(); c.strokeStyle = '#dc2626'; c.lineWidth = 5; c.beginPath(); c.moveTo(lx, ly); c.lineTo(rx, ry); c.stroke();
       if (e > .6) circ(c, lx, ly, 7, '#dc2626'); c.restore() }
     premierScene(c, t);
