@@ -1,0 +1,100 @@
+  // ================= сборка главы 4: миры подряд, одна камера, плашка года, кадр, звуки =================
+  // Миры: A кофейня → B бумажный глобус → C витрина в Нагое → D ночная машина → F магазин (шоу) → G лаборатория → H кабинет FDA с картой США
+  // → A кофейня (карта на столе) → J доска (только фильм). На каждом стыке у миров общие ключи камеры (linkK), кадр на стыке одинаков в обоих мирах.
+  const SEG = []; let INITED = false;
+  function keys() { return { endT: TLX.endT, b0: TLX.b0, vEnd: TLX.vEnd } }
+  function allInit() {
+    if (INITED) return; INITED = true;
+    cafeInit(); globeInit(); linkK(KA1, KB, { x: 660, y: 1990, m: BALL_R / GB.R }, true);   // комок падает в темноту — это глобус
+    storeCInit(); linkK(KB, KC, NBC, true);   // в точке Нагои — витрина
+    carInit(); linkK(KC, KD, NCD, true);   // белый бок держателя — он же в подстаканнике машины
+    storeFInit(); linkK(KD, KF, NDF, true);   // экран машины = телевизор в магазине
+    labInit(); linkK(KF, KG, NFG, true);   // луч в темноте — одинаковый в магазине и в лаборатории
+    deskInit(); linkK(KG, KH, NGH, true);   // белое поле журнала: тот же журнал на столе FDA
+    mapInit(); cafe2Init(); linkK(KH, KAE, N_HA, false);   // карта США на столе FDA = карта на столе кофейни
+    if (MODE === 'y') { boardInit(); linkK(KAE, KJ, N_AJ, false) }   // белая подушечка = белое поле газеты в фото карточки 2014
+    const W = (a, b) => SHUT.push([a, b]);
+    W(TA.fall1 - .45, TA.jAB + .45); W(TB.dive - .1, TB.jBC + .35); W(TC4.close - .1, TC4.jCD + .4); W(TD4.kom + .2, TD4.jDF + .3); W(TG.jGH - .45, TG.jGH + .65);
+    W(TH.pat + .35, TH.land + .1); W(TH.vygn, TH.vygn + .65); W(TH.jHA - .1, TH.jHA + .85); W(TM.brosaj + .5, TM.inBin + .1);
+    if (MODE === 'y') W(TM.jAJ - .55, TM.jAJ + .7); else W(TM.amerQ + .05, TM.amerQ + .5);
+    SEG.push([-1e9, (c, t) => { cafeShot(c, t, KA1, t, {}); cafePlates1(c, t) }], [TA.jAB, globeShot], [TB.jBC, storeShot], [TC4.jCD, carShot], [TD4.jDF, storeFShot], [TF.jFG, labShot],
+      [TG.jGH, (c, t) => { deskShot(c, t); mapPlates(c, t) }], [TH.jHA, cafe2Shot]);
+    if (MODE === 'y') SEG.push([TM.jAJ, boardShot]);
+  }
+  function scene(c, t) { allInit(); let f = SEG[0][1]; for (const s of SEG) if (t >= s[0]) f = s[1]; f(c, t) }
+  let HY = null;
+  function hud(c, t) {   // плашка года — только вперёд: 2014 → 2016 → 2017 → 2020, уходит на «Помните» (1973 и 1988 — назад нельзя); 2021 → 2024, уходит до строки 16 / вопроса
+    if (!HY) HY = { t14: Ws('s4', 'четырнадцатом'), t16: Ws('s6', 'шестнадцатом'), t17: Ws('s8', 'год'), t20: Ws('s10', 'двадцатом'), out1: Ws('s11', 'помните'), t21: Ws('s13', 'первом'),
+      t24: Ws('s14', 'четвёртом'), out2: MODE === 'y' ? Ws('s16', 'америку') - .9 : Ws('q', 'угадаете') - .6 };
+    const h = HY, pill = (y0, y1, k, dy = 0) => { c.save(); c.setTransform(1, 0, 0, 1, 0, dy); yearPill(c, y0, y1, k, 1, true); c.restore() };
+    if (t < h.t14 - .25) return;
+    if (t < h.t16 - .3) return pill(2014, 2014, 1, -240 * (1 - eo(at(t, h.t14 - .25, h.t14 + .15))));
+    if (t < h.t17 - .3) return pill(2014, 2016, at(t, h.t16 - .15, h.t16 + .35));
+    if (t < h.t20 - .3) return pill(2016, 2017, at(t, h.t17 - .15, h.t17 + .35));
+    if (t < h.out1 + .45) return pill(2017, 2020, at(t, h.t20 - .15, h.t20 + .35), -240 * ei(at(t, h.out1, h.out1 + .45)));
+    if (t < h.t21 - .25) return;
+    if (t < h.t24 - .3) return pill(2021, 2021, 1, -240 * (1 - eo(at(t, h.t21 - .25, h.t21 + .15))));
+    if (t < h.out2 + .45) return pill(2021, 2024, at(t, h.t24 - .15, h.t24 + .35), -240 * ei(at(t, h.out2, h.out2 + .45)));
+  }
+  let MBC = null; const SHUT = [];   // окна короткой выдержки — на быстрых нырках и проездах
+  function sceneMB(c, t) {   // затвор 180° — среднее 4 моментов за полкадра
+    const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
+    for (let j = 0; j < n; j++) {
+      const tj = t + (j / (n - 1) - .5) * sh;
+      if (j === 0) { scene(c, tj); continue }
+      g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, WW, HH); scene(g, tj);
+      c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
+    }
+  }
+  function frame(t) { frameTo(X, t) }
+  function frameTo(c, t) {
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+    c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
+    if (window.NOMB) scene(c, t); else sceneMB(c, t);
+    c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); subs(c, t);
+  }
+  function cues() {   // звуки по событиям (мягкие)
+    allInit(); const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
+    const a = TA; Q(.05, 'city', .25); Q(a.marl, 'shimmer', .25); Q(a.poob, 'pageflip', .7); Q(a.poob + .2, 'papers', .3); Q(a.brit - .05, 'papers', .5); Q(a.brit + .1, 'whoosh', .3, -.3);
+    Q(a.nashe, 'quill', .3); Q(a.pyt, 'quill', .25); Q(a.slovo, 'papers', .6); Q(a.slovo + .5, 'munch', .3); Q(a.ball0, 'thud', .4); Q(a.roll1 - .3, 'scuttle', .3, .2); Q(a.fall1, 'whoosh', .45); Q(a.jAB, 'deep', .4);
+    const b = TB; Q(b.j + .3, 'whirr', .3); Q(b.chet, 'shimmer', .3); Q(b.nag, 'plop', .45, .3); Q(b.mil, 'plop', .45, -.3); Q(b.dive, 'dive', .55); Q(b.jBC, 'glass', .3);
+    const s = TC4; Q(s.kot - .1, 'drawer', .3); Q(s.kot + .5, 'plop', .35); Q(s.nelz, 'cryptex', .35, -.4); Q(s.podzh - .1, 'zap', .3, -.4); Q(s.podzh, 'puff', .2); Q(s.tab, 'whoosh', .35); Q(s.nagr, 'blade', .35);
+    Q(s.vdvoe, 'counter', .3); Q(s.hol, 'counter', .3); Q(s.close, 'whoosh', .4); Q(s.jCD, 'dive', .4);
+    const d = TD4; Q(d.j + .1, 'city', .3); Q(d.kurt, 'truck', .3, .4); Q(d.pep, 'drawer', .35); Q(d.mash, 'puff', .3); Q(d.shest, 'shimmer', .3); Q(d.rash, 'flutter', .3); Q(d.jDF, 'dive', .45); Q(d.jDF + .1, 'glass', .25);
+    const f = TF; Q(f.smel - .25, 'scuttle', .5); Q(f.smel + .3, 'conveyor', .3); Q(f.pol, 'whoosh', .3); Q(f.off, 'buzz', .35); Q(f.vred, 'puff', .3);
+    const g = TG; Q(g.on, 'buzz', .3); Q(g.poim - .1, 'glassbulb', .45); Q(g.yady - .1, 'xray', .45); Q(g.mnog, 'plop', .3); for (let i = 0; i < 4; i++) Q(g.mnog + .15 + i * .12, 'plop', .2, -.3 + i * .2);
+    Q(g.bol, 'impact', .35); Q(g.nik, 'counter', .35); Q(g.stat - .1, 'pageflip', .5); Q(g.dym - .05, 'scroll', .35); Q(g.imen, 'puff', .3); Q(g.jGH - .3, 'whoosh', .5); Q(g.jGH, 'pageflip', .3);
+    const h = TH; Q(h.form, 'papers', .5); Q(h.mensh, 'marker', .45); Q(h.vreda - .05, 'thud', .6); Q(h.vreda, 'impact', .4); Q(h.razresh + .25, 'plop', .35); Q(h.pomn, 'scroll', .4); Q(h.pomn + .4, 'papers', .4);
+    Q(h.reyn, 'factory', .3); Q(h.sem, 'marker', .35); Q(h.podr, 'marker', .45); Q(h.svoi - .05, 'drawer', .3); Q(h.svoi + .3, 'thud', .4); Q(h.svoi + .45, 'plop', .3); Q(h.prizh, 'puff', .3); Q(h.ugol, 'zap', .3);
+    Q(h.ugol + .1, 'coins', .3); Q(h.sela, 'counter', .5); Q(h.sela + .3, 'puff', .35); Q(h.doll, 'register', .5); Q(h.pat, 'scroll', .5); Q(h.pat + .5, 'whoosh', .4); Q(h.land, 'papers', .5);
+    for (let i = 0; i < 4; i++) Q(h.perv - .3 + i * .1, 'plop', .2, -.2 + i * .15); Q(h.kom - .05, 'impact', .7); Q(h.kom, 'thud', .6); Q(h.narush, 'xray', .4); Q(h.vygn - .2, 'chain', .4); Q(h.vygn + .1, 'whoosh', .6);
+    Q(h.vygn + .45, 'splash', .5); Q(h.vygn + .5, 'stamp', .55); Q(h.amer, 'wave', .3); Q(h.jHA, 'whoosh', .45);
+    const m = TM; Q(m.roll0, 'scuttle', .4, -.4); Q(m.tri, 'counter', .45); for (let i = 0; i < 3; i++) Q(m.tri + .2 + i * .3, 'plop', .2, -.3); Q(m.sig, 'conveyor', .35); Q(m.sig + .1, 'counter', .4); Q(m.shest, 'counter', .45);
+    Q(m.bol, 'impact', .3); Q(m.bol + .05, 'shimmer', .25); Q(m.brosaj, 'scuttle', .4, .3); Q(m.edge, 'whoosh', .3); Q(m.inBin - .05, 'bin', .6, .4); Q(m.rovno, 'thud', .2); Q(m.vy, 'city', .2);
+    if (MODE === 'y') { Q(m.amerF + .2, 'whoosh', .35); Q(m.vern, 'wave', .45); Q(m.vern + .3, 'splash', .25); Q(m.zapr, 'chain', .4); Q(m.zapr + .1, 'drawer', .3); Q(m.shestn, 'counter', .5); Q(m.shestn + .1, 'register', .35);
+      Q(m.net, 'cryptex', .4); Q(m.dazhe, 'shimmer', .3); Q(m.tab, 'marker', .4); Q(m.jAJ - .45, 'dive', .55); Q(m.jAJ + .1, 'whoosh', .45); Q(m.jAJ + 2.2, 'marker', .35); Q(m.jAJ + 3.1, 'plop', .3) }
+    else { Q(m.ugad, 'shimmer', .3); Q(m.amerQ, 'pageflip', .3); Q(m.amerQ + .46, 'impact', .45); Q(m.amerQ + .48, 'papers', .5); Q(TL0 - .5, 'city', .25) }
+  }
+  window.EP = {
+    P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
+    sub: { init: null, scene: (c, t) => scene(c, t), frameTo: (c, t) => frameTo(c, t) },
+    init(tl, SC, sub) {
+      TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
+      MODE = /y$/.test(ep) ? 'y' : 's';
+      TLX = { b0: tl.b0, vEnd: tl.vEnd, endT: (Math.ceil(tl.dur * 30) - 1) / 30 };
+      K = keys(); SEG.length = 0; SHUT.length = 0; HY = null; INITED = false; CHUNKS = buildChunks();
+      if (!sub) { window.__K = K; cues(); window.CUES_READY = 1 } else allInit();
+      SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
+      if (!document.getElementById('v210f')) { const st = document.createElement('style'); st.id = 'v210f';
+        st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join('')
+          + ['latin', 'cyrillic'].map(sub => `@font-face{font-family:P;font-weight:700;font-style:normal;src:url(fonts/playfair-${sub}-700-normal.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}@font-face{font-family:P;font-weight:400 700;font-style:italic;src:url(fonts/playfair-${sub}-700-italic.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}`).join('');
+        document.head.appendChild(st) }
+      cv = mk(WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
+      X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
+      return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$'))).then(() => 0);
+    },
+  };
+  { const ep = window.EP; ep.sub.init = tl => ep.init(tl, [], true) }
+  window.__dbg = { camAt, get KA1() { return KA1 }, get KB() { return KB }, get KC() { return KC }, get KD() { return KD }, get KF() { return KF }, get KG() { return KG }, get KH() { return KH }, get KAE() { return KAE }, get KJ() { return KJ },
+    get T() { return { TA, TB, TC4, TD4, TF, TG, TH, TM } }, get HOLD() { return HOLD }, get SEG() { return SEG } };
+})();
