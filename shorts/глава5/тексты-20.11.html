@@ -1,0 +1,536 @@
+<title>Тексты главы «Шайбы»</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&family=Oswald:wght@600&display=swap">
+<style>
+/* Лист диктора: сверху доска глав фильма и совет, ниже переключатель «Текст 1 · 2 · 3 · Финал»,
+   текст построчно с номерами строк (по ним удобно писать правки), сбоку на ПК — плюсы, минусы, факты. */
+:root{
+  --ground:#F1EFEE; --sheet:#FFFFFF; --ink:#1C1919; --muted:#6C6563; --line:#DCD6D3;
+  --red:#B3141C; --kraft:#E6D6B8; --kraft-ink:#3B2F1E; --marker:rgba(255,206,48,.6); --ok:#1D7A4C;
+  --f-disp:"Oswald","Arial Narrow","Roboto Condensed",sans-serif;
+  --f-body:"Golos Text",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#151313; --sheet:#1F1C1B; --ink:#EEE9E6; --muted:#A39A96; --line:#36312F;
+  --red:#EA5359; --kraft:#3B3226; --kraft-ink:#EADCC4; --marker:rgba(255,206,48,.3); --ok:#55C994; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#151313; --sheet:#1F1C1B; --ink:#EEE9E6; --muted:#A39A96; --line:#36312F;
+  --red:#EA5359; --kraft:#3B3226; --kraft-ink:#EADCC4; --marker:rgba(255,206,48,.3); --ok:#55C994; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:16px/1.5 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:2px}
+a:hover{text-decoration-color:var(--red)}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
+.eb{font:500 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:600 clamp(40px,9vw,68px)/1 var(--f-disp);letter-spacing:.01em;text-transform:uppercase}
+h1 .yr{color:var(--red)}
+h2{font:600 clamp(26px,5vw,34px)/1.1 var(--f-disp);letter-spacing:.01em}
+h3{font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lede{margin:0;max-width:60ch;font-size:17px}
+header.top{display:flex;flex-direction:column;gap:12px}
+
+/* доска глав */
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.bc{background:var(--kraft);color:var(--kraft-ink);border-radius:3px;padding:10px 10px 9px;display:flex;flex-direction:column;gap:2px;min-width:0;position:relative}
+.bc b{font:600 22px/1 var(--f-disp)}
+.bc span{font-size:13px;line-height:1.25}
+.bc small{font:500 10.5px/1.3 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;opacity:.75;margin-top:4px}
+.bc.film small{color:var(--red);opacity:1}
+.bc.now{outline:2px solid var(--red);outline-offset:-2px}
+.bc i{font:500 10.5px/1.2 var(--f-mono);font-style:normal;text-transform:uppercase;letter-spacing:.05em;opacity:.75;margin-bottom:4px}
+.bc.now i{opacity:1}
+.bc.now i{color:var(--red)}
+@media (max-width:720px){.board{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* совет */
+.tip{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:18px 18px 16px;display:grid;gap:10px}
+.tip h2{font-size:24px}
+.tip ul{margin:0;padding-left:20px;display:grid;gap:6px;max-width:70ch}
+.chosen-line{margin:0;font-weight:600;color:var(--ok)}
+
+/* вкладки */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);padding-block:8px;
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:6px;
+  padding:8px 6px;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0}
+.tab b{font:600 15px/1.2 var(--f-body);white-space:nowrap}
+.tab span{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tab[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--red)}
+.tabs .tab{flex:1 0 auto;min-width:96px}
+.tabs .tab.grp{margin-left:8px}
+@media (min-width:900px){.tabs{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));overflow:visible}.tabs .tab{min-width:0}.tabs .tab.grp{margin-left:0}}
+.tab .ck{display:none;color:var(--ok)}
+.tab.chosen .ck{display:inline}
+
+/* панель текста */
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:22px 18px 22px}
+.phead{display:grid;gap:10px;margin-bottom:22px;max-width:70ch}
+.idea{margin:0;font-size:17px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{appearance:none;font:600 15px/1 var(--f-body);border-radius:6px;padding:12px 16px;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink)}
+.btn.pick{background:var(--red);border-color:var(--red);color:#fff}
+.btn.pick[aria-pressed="true"]{background:transparent;color:var(--ok);border-color:var(--ok)}
+.msg{font-size:14px;color:var(--muted)}
+p.msg{margin:0}
+p.msg:empty{display:none}
+.pbody{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:36px;align-items:start}
+@media (max-width:860px){.pbody{grid-template-columns:minmax(0,1fr);gap:26px}}
+.script{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:64ch;counter-reset:l}
+.script li{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:4px 10px;font-size:17.5px;line-height:1.55}
+.script .n{font:500 13px/1.9 var(--f-mono);color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.script mark{background:linear-gradient(transparent 52%,var(--marker) 52%);color:inherit;padding:0 1px}
+.script .tag{grid-column:2;font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
+aside{display:grid;gap:22px;min-width:0}
+.pm{display:grid;gap:8px}
+.pm ul{margin:0;padding:0;list-style:none;display:grid;gap:7px}
+.pm li{display:grid;grid-template-columns:1.1em minmax(0,1fr);gap:6px;font-size:15px}
+.pm li::before{font:600 15px/1.45 var(--f-mono)}
+.plus li::before{content:"+";color:var(--ok)}
+.minus li::before{content:"−";color:var(--red)}
+details{border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts ol{margin:12px 0 0;padding-left:20px;display:grid;gap:9px;font-size:14.5px}
+.facts .src{display:block;font-size:13px;color:var(--muted)}
+.note{display:grid;gap:6px}
+.note label{font:600 13px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+textarea{width:100%;min-height:96px;resize:vertical;font:15px/1.45 var(--f-body);color:var(--ink);background:var(--ground);
+  border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+textarea:focus-visible{outline:2px solid var(--red);outline-offset:0}
+.st{font-size:13px;color:var(--muted);min-height:1.2em}
+
+/* Финал и карточки */
+.gem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:960px){.gem{grid-template-columns:minmax(0,1fr)}}
+.g{border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.g .gid{font:600 28px/1 var(--f-disp);color:var(--red)}
+.g h3{color:var(--ink);font:600 18px/1.25 var(--f-body);letter-spacing:0;text-transform:none}
+.g .meta{font:500 12px/1 var(--f-mono);color:var(--muted)}
+.g p{margin:0;font-size:15px}
+.g h4{margin:4px 0 0;font:600 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
+.g ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14.5px}
+.g .gnote{color:var(--muted);font-size:14px}
+
+/* что дальше */
+.next{display:grid;gap:12px}
+.next ol{margin:0;padding-left:22px;display:grid;gap:8px;max-width:72ch}
+footer{color:var(--muted);font-size:13px}
+.script li.film>span:nth-child(2){color:var(--muted)}
+.script li.warn>span:nth-child(2){text-decoration:underline wavy var(--red);text-decoration-thickness:1px;text-underline-offset:5px}
+.script .tag.w{text-transform:none;letter-spacing:0;font:500 13.5px/1.45 var(--f-body)}
+.script li.film{border-left:2px dashed var(--line);margin-left:-12px;padding-left:10px}
+.script li.shortq{border-top:1px dashed var(--line);padding-top:12px;font-size:15.5px}
+.script li.shortq .n{color:var(--red);font-weight:600}
+.fin .g h3{font-size:19px}
+.fin .beats{margin:0;padding-left:0;list-style:none;display:grid;gap:8px;font-size:14.5px}
+.fin .beats li{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:8px}
+.fin .beats b{font:600 12px/1.6 var(--f-mono);color:var(--red);font-variant-numeric:tabular-nums}
+.fin q{font-style:italic;quotes:"«" "»"}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* глава 5: пять вкладок, строки «только в шортсе», финалы и концовка главы 3 карточками с выбором */
+@media (min-width:900px){.tabs{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.script li.short{border-left:2px dotted var(--red);margin-left:-12px;padding-left:10px}
+.script li.short>span:nth-child(2){color:var(--muted)}
+.g ol.fl{margin:0;padding-left:20px;display:grid;gap:7px;font-size:15.5px;line-height:1.5}
+.g ol.fl li.warn{text-decoration:underline wavy var(--red);text-decoration-thickness:1px;text-underline-offset:5px}
+.g .gw{margin:0;color:var(--red);font-size:13.5px}
+.g .acts{margin-top:auto;padding-top:6px}
+.g details{margin-top:2px}
+.g.on{border-color:var(--ok);box-shadow:inset 0 0 0 1px var(--ok)}
+.c3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.c3{grid-template-columns:minmax(0,1fr)}}
+.cost{font:500 13px/1.4 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+</style>
+<div class="wrap">
+<header class="top">
+<p class="eb">Фильм «Что вы знаете о никотине?» · глава 5 и финал</p>
+<h1><span class="yr">2022</span> · Шайбы</h1>
+<p class="lede">Три текста про Zyn — белые пакетики под губу, которые «Филип Моррис» купил за 16 миллиардов, — три финала фильма и концовка шортса главы 3. Выбери кнопками или напиши в чат, правки — в поле под текстом.</p>
+<ol class="board" aria-label="Главы фильма">
+<li class="bc"><i>готово</i><b>1979</b><span>Боб</span><small>TikTok · часть 1</small></li>
+<li class="bc"><i>готово</i><b>2020</b><span>Лёд</span><small>TikTok · часть 2</small></li>
+<li class="bc"><i>готово</i><b>1924</b><span>Мальборо</span><small>TikTok · часть 3</small></li>
+<li class="bc"><i>готово</i><b>2014</b><span>Нагреватели</span><small>TikTok · часть 4</small></li>
+<li class="bc now"><i>сейчас</i><b>2022</b><span>Шайбы</span><small>TikTok · часть 5</small></li>
+<li class="bc now film"><i>сейчас</i><b>финал</b><span>Переворот доски</span><small>только в фильме · ≈ 30 с</small></li>
+</ol>
+</header>
+
+<section class="tip" aria-labelledby="tip-h">
+<h2 id="tip-h">Мой совет — текст 1 «Невидимка» и финал Б</h2>
+<ul>
+<li>Текст 1: крючок за две секунды — шайбу не видно, не слышно, и она не пахнет. Дальше годы только вперёд: 2022 → 2024 → 2025 → 2026.</li>
+<li>Главный поворот главы — свежий: 30 июня 2026-го американский регулятор разрешил шайбам писать «Zyn вместо сигарет — ниже риск рака, болезней сердца и инсульта». Айкосу в главе 4 так и не разрешили сказать «вреда меньше».</li>
+<li>Ещё два эха прошлых глав: шайбы смели с полок, как айкосы в Японии, а вкусы, которые в 2020-м отняли у «Джула», шайбам разрешили сразу.</li>
+<li>Конец главы: «вместо сигарет» — а американские школьники сигарет почти не курят, шайбы у них уже обогнали сигареты. И через два месяца — шайбы крепче: 9 и 11 мг вместо 3 и 6.</li>
+<li>Финал Б кончается названием фильма: «Так что вы знаете о никотине?» — и без натяжек. В финале А последняя строка — натяжка из главы 1, В — новый факт про первую электронную сигарету.</li>
+<li>Текст 3 — если важнее Европа: в нём строка про Германию, где шайбы продавать нельзя совсем. Её можно взять и в текст 1 для немецкой версии.</li>
+</ul>
+<p class="chosen-line" id="chosen" hidden></p>
+<p class="msg" id="dbmsg" aria-live="polite"></p>
+</section>
+
+<nav class="tabs" id="tabs" role="tablist" aria-label="Тексты"><button class="tab" type="button" role="tab" id="tab-t1" data-p="t1" aria-controls="p-t1" aria-selected="false"><b>Текст 1 <span class="ck">✓</span></b><span>невидимка</span></button><button class="tab" type="button" role="tab" id="tab-t2" data-p="t2" aria-controls="p-t2" aria-selected="false"><b>Текст 2 <span class="ck">✓</span></b><span>вы и шайба</span></button><button class="tab" type="button" role="tab" id="tab-t3" data-p="t3" aria-controls="p-t3" aria-selected="false"><b>Текст 3 <span class="ck">✓</span></b><span>лазейка</span></button><button class="tab grp" type="button" role="tab" id="tab-fin" data-p="fin" aria-controls="p-fin" aria-selected="false"><b>Финал <span class="ck">✓</span></b><span>переворот доски</span></button><button class="tab" type="button" role="tab" id="tab-ch3" data-p="ch3" aria-controls="p-ch3" aria-selected="false"><b>Глава 3 <span class="ck">✓</span></b><span>петля или вопрос</span></button></nav>
+<section class="panel" id="p-t1" role="tabpanel" aria-labelledby="tab-t1">
+<div class="phead">
+<p class="eb">Текст 1 · фильм ≈ 1:21 без финала · шортс ≈ 1:18 · голос ≈ 732 кредитов</p>
+<h2>Невидимка</h2>
+<p class="idea">Рассказчик, как в главах 1–4. Крючок — ощущение: шайбу не видно, не слышно, и она не пахнет. Дальше — годы только вперёд: 2022 → 2024 → 2025 → 2026, и каждая новость — эхо прошлых глав.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t1" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t1">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li class="key"><span class="n">1</span><span><mark>Их не видно, не слышно, и они ничем не пахнут: маленький белый пакетик кладут под верхнюю губу — и всё.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">2</span><span>Сначала щиплет десну, никотин уходит в кровь прямо через неё, а со стороны ничего не заметно: ни дыма, ни пара — хоть на совещании, хоть в самолёте.</span></li>
+<li><span class="n">3</span><span>Круглую баночку из-под таких пакетиков у нас прозвали шайбой.</span></li>
+<li class="key"><span class="n">4</span><span><mark>Табака в шайбе нет — зато никотин есть, и выжимают его… из табака.</mark></span><span class="tag">сильное место</span></li>
+<li class="short"><span class="n">5</span><span>Придумали шайбы шведы, а в двадцать втором их за шестнадцать миллиардов купил производитель «Мальборо».</span><span class="tag">только в шортсе</span></li>
+<li class="film"><span class="n">6</span><span>Придумали их шведы, а производитель «Мальборо» купил шведскую компанию целиком — вместе с американским заводом в Кентукки.</span><span class="tag">только в фильме</span></li>
+<li><span class="n">7</span><span>Через два года шайбы смели с полок по всей Америке, как когда-то айкосы в Японии: только в двадцать четвёртом там продали почти шестьсот миллионов банок.</span></li>
+<li><span class="n">8</span><span>В двадцать пятом американский регулятор разрешил их продавать — первыми из всех пакетиков, и сразу со вкусами: мята, цитрус, кофе, корица.</span></li>
+<li><span class="n">9</span><span>Пять лет назад «Джулу» такие вкусы запретили.</span></li>
+<li class="key"><span class="n">10</span><span><mark>А в двадцать шестом шайбам разрешили то, что айкосу не разрешают до сих пор, — говорить о риске: «Зин вместо сигарет — ниже риск рака рта и лёгких, болезней сердца и инсульта».</mark></span><span class="tag">сильное место</span></li>
+<li class="key"><span class="n">11</span><span><mark>Вот только американские школьники сигарет почти не курят, а шайбы у них уже обогнали сигареты.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">12</span><span>И меньше чем через два месяца разрешили шайбы покрепче: девять и одиннадцать миллиграммов вместо трёх и шести.</span></li>
+<li class="film"><span class="n">13</span><span>Каждая карточка на этой доске — новый способ бросить. Осталось перевернуть саму доску.</span><span class="tag">только в фильме</span></li>
+<li class="shortq"><span class="n">TT</span><span>Конец шортса: «Угадаете, что окажется на обороте этой доски?» → доска переворачивается наполовину → «Целиком — на YouTube»</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Крючок за 2 секунды и сразу ощущения — «меньше устройства, больше ощущений».</li><li>Три эха прошлых глав: шайбы смели с полок, как айкосы; вкусы, которые отняли у «Джула»; «вреда меньше», которого айкос так и не дождался.</li><li>Поворот в конце: «вместо сигарет», а школьники сигарет почти не курят — и сразу шайбы крепче.</li><li>Плашка года только вперёд: 2022 → 2024 → 2025 → 2026.</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Про Европу ничего — для немецкой версии можно взять строку про Германию из текста 3.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 12</summary><ol>
+<li>Zyn — белый пакетик под губу, без табачного листа; кладут между десной и губой, никотин всасывается через десну<span class="src"><a href="https://en.wikipedia.org/wiki/Zyn" target="_blank" rel="noopener">Zyn — Wikipedia</a> · <a href="https://www.accessdata.fda.gov/static/searchtobacco/2-6-25/PMTA_TPL_PM593-PM612_Zyn_01_13_2025_Redacted.pdf" target="_blank" rel="noopener">FDA: разбор заявки Zyn, январь 2025 (PDF)</a></span></li>
+<li>В пакетике нет табака, но никотин — из табака (tobacco-derived nicotine) — так в документах FDA<span class="src"><a href="https://www.accessdata.fda.gov/static/searchtobacco/2-6-25/PMTA_TPL_PM593-PM612_Zyn_01_13_2025_Redacted.pdf" target="_blank" rel="noopener">FDA: разбор заявки Zyn, январь 2025 (PDF)</a> · <a href="https://www.rilegislature.gov/senators/SenateComDocs/2026%20Finance/S3131%20Phillip%20Morris%20International.pdf" target="_blank" rel="noopener">Сенат Род-Айленда: материалы Philip Morris, 2026 (PDF)</a></span></li>
+<li>2022: «Филип Моррис» покупает шведскую Swedish Match (Zyn) — около 16 млрд $, сделка закрыта в ноябре<span class="src"><a href="https://www.reuters.com/business/healthcare-pharmaceuticals/philip-morris-international-bids-16-billion-swedish-match-2022-05-11/" target="_blank" rel="noopener">Reuters: PMI предлагает 16 млрд $ за Swedish Match, 11.05.2022</a> · <a href="https://cspdailynews.com/tobacco/pmi-takes-83-share-swedish-match" target="_blank" rel="noopener">PMI получает 83 % Swedish Match — CSP Daily News, 2022</a> · <a href="https://www.marketscreener.com/quote/stock/SWEDISH-MATCH-6492173/news/Philip-Morris-Holland-Holdings-B-V-completed-the-acquisition-of-Swedish-Match-AB-OM-SWMA--42427098/" target="_blank" rel="noopener">Philip Morris completed the acquisition of Swedish Match — MarketScreener, 2022</a></span></li>
+<li>Zyn для США делают на заводе в Кентукки; в 2024-м «Филип Моррис» его расширял<span class="src"><a href="https://www.wfae.org/business/2024-08-21/whats-zyn-and-why-there-was-a-shortage-this-summer" target="_blank" rel="noopener">NPR: почему летом 2024-го не было Zyn</a></span></li>
+<li>2024: в первом квартале продажи Zyn в США +80 %, к лету шайбы пропали из магазинов по всей стране<span class="src"><a href="https://www.bloomberg.com/news/articles/2024-06-07/zyn-shortage-why-nicotine-pouches-are-out-of-stock-across-us" target="_blank" rel="noopener">Bloomberg: Zyn нет в магазинах по всей Америке, 07.06.2024</a> · <a href="https://fortune.com/2024/05/17/zyn-shortage-retailers-out-of-stock-online-sellers-ration-hoarding/" target="_blank" rel="noopener">Fortune: Zyn раскупили, продавцы выдают по норме, 17.05.2024</a> · <a href="https://www.wfae.org/business/2024-08-21/whats-zyn-and-why-there-was-a-shortage-this-summer" target="_blank" rel="noopener">NPR: почему летом 2024-го не было Zyn</a></span></li>
+<li>2024: около 581 млн банок Zyn в США, в 4-м квартале — почти 165 млн; в 1-м квартале 2025-го — 202 млн, вчетверо больше, чем в начале 2022-го<span class="src"><a href="https://tobaccoinsider.com/zyn-pouches/" target="_blank" rel="noopener">Tobacco Insider: 581,4 млн банок Zyn в США за 2024 год</a> · <a href="https://www.businesswire.com/news/home/20250205873542/en/Philip-Morris-International-Reports-2024-Fourth-Quarter-Full-Year-Results" target="_blank" rel="noopener">PMI: итоги 2024 года — Business Wire</a> · <a href="https://www.reuters.com/business/philip-morris-shrugs-off-economic-volatility-zyn-shines-2025-04-23/" target="_blank" rel="noopener">Reuters: 202 млн банок Zyn за первый квартал 2025-го</a></span></li>
+<li>16.01.2025: FDA разрешила продавать 20 вкусов Zyn (по 3 и 6 мг) — первые разрешённые никотиновые пакетики; «это не значит, что они безопасны»<span class="src"><a href="https://www.fda.gov/news-events/press-announcements/fda-authorizes-marketing-20-zyn-nicotine-pouch-products-after-extensive-scientific-review" target="_blank" rel="noopener">FDA: разрешены 20 вкусов Zyn, 16.01.2025</a> · <a href="https://www.cspdailynews.com/tobacco/fda-authorizes-first-nicotine-pouch" target="_blank" rel="noopener">CSP Daily News: FDA разрешила первые никотиновые пакетики</a></span></li>
+<li>Январь 2020: FDA запретила вкусы у вейпов с картриджами — фрукты, мята, десерты (глава 2)<span class="src"><a href="https://www.fda.gov/news-events/press-announcements/fda-finalizes-enforcement-policy-unauthorized-flavored-cartridge-based-e-cigarettes-appeal-children" target="_blank" rel="noopener">FDA: запрет вкусов у вейпов с картриджами, 02.01.2020</a></span></li>
+<li>30.06.2026: FDA разрешила 20 вкусам Zyn заявление «Zyn вместо сигарет — ниже риск рака рта, болезней сердца, рака лёгких, инсульта, эмфиземы и бронхита»<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/fda-authorizes-20-zyn-nicotine-pouches-be-marketed-specific-modified-risk-claim" target="_blank" rel="noopener">FDA: Zyn разрешено заявление о меньшем риске, 30.06.2026</a> · <a href="https://www.cnbc.com/2026/06/30/fda-zyn-philip-morris-nicotine-pouches-cigarettes-trump.html" target="_blank" rel="noopener">CNBC: FDA разрешила продавать Zyn как менее вредные, чем сигареты, 30.06.2026</a></span></li>
+<li>Айкосу в 2020-м и при продлении в 2026-м разрешили только «меньше вредных веществ», «меньше вреда» — нет (глава 4)<span class="src"><a href="https://www.generationsanstabac.org/en/?p=26664" target="_blank" rel="noopener">FDA продлило статус айкоса, 2026: только «меньше веществ»</a> · <a href="https://www.cspdailynews.com/tobacco/fda-says-pm-usa-can-market-iqos-modified-risk-tobacco-products" target="_blank" rel="noopener">FDA разрешило айкосу «reduced exposure», 2020 — CSP Daily News</a></span></li>
+<li>Опрос школьников США 2025: вейп — 5,2 %, шайбы — 1,7 %, сигареты — 1,4 %; шайбы — вдвое больше, чем в 2021-м<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/national-youth-tobacco-survey-fda-publishes-peer-reviewed-journal-article-releases-2025-findings" target="_blank" rel="noopener">FDA: опрос школьников 2025 (NYTS)</a> · <a href="https://www.tobaccofreekids.org/press-releases/2026_06_23_national-survey-shows-long-term-drop-in-youth-tobacco-use-but-over-two-million-youth-still-use-tobacco-products" target="_blank" rel="noopener">Campaign for Tobacco-Free Kids: итоги опроса 2025, 23.06.2026</a></span></li>
+<li>21.08.2026: FDA разрешила Zyn Ultra — 9 и 11 мг вместо прежних 3 и 6<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/fda-authorizes-11-new-nicotine-pouches" target="_blank" rel="noopener">FDA: разрешены 11 новых пакетиков (Zyn Ultra), 21.08.2026</a> · <a href="https://secure.businesswire.com/news/home/20260821238273/en/FDA-Authorizes-ZYN-ULTRA-Nicotine-Pouches-Following-Scientific-Review" target="_blank" rel="noopener">Business Wire: Zyn Ultra — 9 и 11 мг, 21.08.2026</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t1">Правки · текст 1</label>
+<textarea id="n-t1" data-note="t1" placeholder="Например: строка 2 — короче; строку про Германию взять из текста 3"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section><section class="panel" id="p-t2" role="tabpanel" aria-labelledby="tab-t2" hidden>
+<div class="phead">
+<p class="eb">Текст 2 · фильм ≈ 1:19 без финала · шортс ≈ 1:15 · голос ≈ 698 кредитов</p>
+<h2>Вы</h2>
+<p class="idea">Голос обращается к зрителю — «вы», как в «Бросают они ровно так же, как и вы». Те же факты, что в тексте 1, но с первой строки зритель сам кладёт пакетик под губу.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t2" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t2">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li class="key"><span class="n">1</span><span><mark>Вы кладёте под губу маленький белый пакетик — и никто вокруг даже не догадается.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">2</span><span>Ни дыма, ни пара: сначала щиплет десну, никотин уходит в кровь прямо через неё, а вы спокойно сидите на совещании или в самолёте.</span></li>
+<li><span class="n">3</span><span>Баночку за круглую форму зовут шайбой, и табака в ней нет.</span></li>
+<li class="key"><span class="n">4</span><span><mark>Только никотин — и выжимают его… из табака.</mark></span><span class="tag">сильное место</span></li>
+<li class="short"><span class="n">5</span><span>Придумали шайбы шведы, а в двадцать втором шведов за шестнадцать миллиардов купил производитель «Мальборо».</span><span class="tag">только в шортсе</span></li>
+<li class="film"><span class="n">6</span><span>Придумали шайбы шведы, а производитель «Мальборо» купил их компанию целиком, вместе с американским заводом в Кентукки.</span><span class="tag">только в фильме</span></li>
+<li><span class="n">7</span><span>Через два года вы бы их уже не нашли: шайбы смели с полок по всей Америке, как когда-то айкосы, — почти шестьсот миллионов банок за год.</span></li>
+<li><span class="n">8</span><span>В двадцать пятом американский регулятор впервые разрешил такие пакетики, и сразу со вкусами: мята, цитрус, кофе, корица — такие вкусы у «Джула» отняли пять лет назад.</span></li>
+<li class="key"><span class="n">9</span><span><mark>А в двадцать шестом шайбам разрешили то, чего айкос не дождался до сих пор, — сказать вам прямо: «Зин вместо сигарет — ниже риск рака рта и лёгких, болезней сердца и инсульта».</mark></span><span class="tag">сильное место</span></li>
+<li class="key"><span class="n">10</span><span><mark>Только «вместо сигарет» — это не про американских школьников: сигарет они почти не курят, а шайбы у них уже обогнали сигареты.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">11</span><span>И меньше чем через два месяца разрешили шайбы покрепче — девять и одиннадцать миллиграммов вместо трёх и шести.</span></li>
+<li class="film"><span class="n">12</span><span>Пять карточек на этой доске — пять способов бросить. Осталось посмотреть, что у неё на обороте.</span><span class="tag">только в фильме</span></li>
+<li class="shortq"><span class="n">TT</span><span>Конец шортса: «Угадаете, кому вы платите за все пять?» → доска переворачивается наполовину → «Целиком — на YouTube»</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Зритель — герой с первой секунды: «Вы кладёте под губу… и никто вокруг даже не догадается».</li><li>«Через два года вы бы их уже не нашли» — пустые полки глазами покупателя.</li><li>В конце вопрос к самому зрителю: «Угадаете, кому вы платите за все пять?»</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Для тех, кто шайбы не пробовал, «вы кладёте» звучит как приглашение — в тексте 1 этого нет.</li><li>Чуть длиннее текста 1.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 12</summary><ol>
+<li>Zyn — белый пакетик под губу, без табачного листа; кладут между десной и губой, никотин всасывается через десну<span class="src"><a href="https://en.wikipedia.org/wiki/Zyn" target="_blank" rel="noopener">Zyn — Wikipedia</a> · <a href="https://www.accessdata.fda.gov/static/searchtobacco/2-6-25/PMTA_TPL_PM593-PM612_Zyn_01_13_2025_Redacted.pdf" target="_blank" rel="noopener">FDA: разбор заявки Zyn, январь 2025 (PDF)</a></span></li>
+<li>В пакетике нет табака, но никотин — из табака (tobacco-derived nicotine) — так в документах FDA<span class="src"><a href="https://www.accessdata.fda.gov/static/searchtobacco/2-6-25/PMTA_TPL_PM593-PM612_Zyn_01_13_2025_Redacted.pdf" target="_blank" rel="noopener">FDA: разбор заявки Zyn, январь 2025 (PDF)</a> · <a href="https://www.rilegislature.gov/senators/SenateComDocs/2026%20Finance/S3131%20Phillip%20Morris%20International.pdf" target="_blank" rel="noopener">Сенат Род-Айленда: материалы Philip Morris, 2026 (PDF)</a></span></li>
+<li>2022: «Филип Моррис» покупает шведскую Swedish Match (Zyn) — около 16 млрд $, сделка закрыта в ноябре<span class="src"><a href="https://www.reuters.com/business/healthcare-pharmaceuticals/philip-morris-international-bids-16-billion-swedish-match-2022-05-11/" target="_blank" rel="noopener">Reuters: PMI предлагает 16 млрд $ за Swedish Match, 11.05.2022</a> · <a href="https://cspdailynews.com/tobacco/pmi-takes-83-share-swedish-match" target="_blank" rel="noopener">PMI получает 83 % Swedish Match — CSP Daily News, 2022</a> · <a href="https://www.marketscreener.com/quote/stock/SWEDISH-MATCH-6492173/news/Philip-Morris-Holland-Holdings-B-V-completed-the-acquisition-of-Swedish-Match-AB-OM-SWMA--42427098/" target="_blank" rel="noopener">Philip Morris completed the acquisition of Swedish Match — MarketScreener, 2022</a></span></li>
+<li>Zyn для США делают на заводе в Кентукки; в 2024-м «Филип Моррис» его расширял<span class="src"><a href="https://www.wfae.org/business/2024-08-21/whats-zyn-and-why-there-was-a-shortage-this-summer" target="_blank" rel="noopener">NPR: почему летом 2024-го не было Zyn</a></span></li>
+<li>2024: в первом квартале продажи Zyn в США +80 %, к лету шайбы пропали из магазинов по всей стране<span class="src"><a href="https://www.bloomberg.com/news/articles/2024-06-07/zyn-shortage-why-nicotine-pouches-are-out-of-stock-across-us" target="_blank" rel="noopener">Bloomberg: Zyn нет в магазинах по всей Америке, 07.06.2024</a> · <a href="https://fortune.com/2024/05/17/zyn-shortage-retailers-out-of-stock-online-sellers-ration-hoarding/" target="_blank" rel="noopener">Fortune: Zyn раскупили, продавцы выдают по норме, 17.05.2024</a> · <a href="https://www.wfae.org/business/2024-08-21/whats-zyn-and-why-there-was-a-shortage-this-summer" target="_blank" rel="noopener">NPR: почему летом 2024-го не было Zyn</a></span></li>
+<li>2024: около 581 млн банок Zyn в США, в 4-м квартале — почти 165 млн; в 1-м квартале 2025-го — 202 млн, вчетверо больше, чем в начале 2022-го<span class="src"><a href="https://tobaccoinsider.com/zyn-pouches/" target="_blank" rel="noopener">Tobacco Insider: 581,4 млн банок Zyn в США за 2024 год</a> · <a href="https://www.businesswire.com/news/home/20250205873542/en/Philip-Morris-International-Reports-2024-Fourth-Quarter-Full-Year-Results" target="_blank" rel="noopener">PMI: итоги 2024 года — Business Wire</a> · <a href="https://www.reuters.com/business/philip-morris-shrugs-off-economic-volatility-zyn-shines-2025-04-23/" target="_blank" rel="noopener">Reuters: 202 млн банок Zyn за первый квартал 2025-го</a></span></li>
+<li>16.01.2025: FDA разрешила продавать 20 вкусов Zyn (по 3 и 6 мг) — первые разрешённые никотиновые пакетики; «это не значит, что они безопасны»<span class="src"><a href="https://www.fda.gov/news-events/press-announcements/fda-authorizes-marketing-20-zyn-nicotine-pouch-products-after-extensive-scientific-review" target="_blank" rel="noopener">FDA: разрешены 20 вкусов Zyn, 16.01.2025</a> · <a href="https://www.cspdailynews.com/tobacco/fda-authorizes-first-nicotine-pouch" target="_blank" rel="noopener">CSP Daily News: FDA разрешила первые никотиновые пакетики</a></span></li>
+<li>Январь 2020: FDA запретила вкусы у вейпов с картриджами — фрукты, мята, десерты (глава 2)<span class="src"><a href="https://www.fda.gov/news-events/press-announcements/fda-finalizes-enforcement-policy-unauthorized-flavored-cartridge-based-e-cigarettes-appeal-children" target="_blank" rel="noopener">FDA: запрет вкусов у вейпов с картриджами, 02.01.2020</a></span></li>
+<li>30.06.2026: FDA разрешила 20 вкусам Zyn заявление «Zyn вместо сигарет — ниже риск рака рта, болезней сердца, рака лёгких, инсульта, эмфиземы и бронхита»<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/fda-authorizes-20-zyn-nicotine-pouches-be-marketed-specific-modified-risk-claim" target="_blank" rel="noopener">FDA: Zyn разрешено заявление о меньшем риске, 30.06.2026</a> · <a href="https://www.cnbc.com/2026/06/30/fda-zyn-philip-morris-nicotine-pouches-cigarettes-trump.html" target="_blank" rel="noopener">CNBC: FDA разрешила продавать Zyn как менее вредные, чем сигареты, 30.06.2026</a></span></li>
+<li>Айкосу в 2020-м и при продлении в 2026-м разрешили только «меньше вредных веществ», «меньше вреда» — нет (глава 4)<span class="src"><a href="https://www.generationsanstabac.org/en/?p=26664" target="_blank" rel="noopener">FDA продлило статус айкоса, 2026: только «меньше веществ»</a> · <a href="https://www.cspdailynews.com/tobacco/fda-says-pm-usa-can-market-iqos-modified-risk-tobacco-products" target="_blank" rel="noopener">FDA разрешило айкосу «reduced exposure», 2020 — CSP Daily News</a></span></li>
+<li>Опрос школьников США 2025: вейп — 5,2 %, шайбы — 1,7 %, сигареты — 1,4 %; шайбы — вдвое больше, чем в 2021-м<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/national-youth-tobacco-survey-fda-publishes-peer-reviewed-journal-article-releases-2025-findings" target="_blank" rel="noopener">FDA: опрос школьников 2025 (NYTS)</a> · <a href="https://www.tobaccofreekids.org/press-releases/2026_06_23_national-survey-shows-long-term-drop-in-youth-tobacco-use-but-over-two-million-youth-still-use-tobacco-products" target="_blank" rel="noopener">Campaign for Tobacco-Free Kids: итоги опроса 2025, 23.06.2026</a></span></li>
+<li>21.08.2026: FDA разрешила Zyn Ultra — 9 и 11 мг вместо прежних 3 и 6<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/fda-authorizes-11-new-nicotine-pouches" target="_blank" rel="noopener">FDA: разрешены 11 новых пакетиков (Zyn Ultra), 21.08.2026</a> · <a href="https://secure.businesswire.com/news/home/20260821238273/en/FDA-Authorizes-ZYN-ULTRA-Nicotine-Pouches-Following-Scientific-Review" target="_blank" rel="noopener">Business Wire: Zyn Ultra — 9 и 11 мг, 21.08.2026</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t2">Правки · текст 2</label>
+<textarea id="n-t2" data-note="t2" placeholder="Например: строка 2 — короче; строку про Германию взять из текста 3"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section><section class="panel" id="p-t3" role="tabpanel" aria-labelledby="tab-t3" hidden>
+<div class="phead">
+<p class="eb">Текст 3 · фильм ≈ 1:20 без финала · шортс ≈ 1:17 · голос ≈ 724 кредитов</p>
+<h2>Без табака</h2>
+<p class="idea">Начало — закон, как в «Льде»: табак под губу в Евросоюзе продавать нельзя, а без табака — уже можно. Дальше та же история, что в тексте 1, и строка про Германию — для немецкой версии фильма.</p>
+<div class="acts">
+<button class="btn pick" type="button" data-pick="t3" aria-pressed="false" hidden>Беру этот текст</button>
+<button class="btn" type="button" data-copy="t3">Скопировать текст</button>
+<span class="msg" aria-live="polite"></span>
+</div>
+</div>
+<div class="pbody">
+<ol class="script">
+<li class="key"><span class="n">1</span><span><mark>В Евросоюзе табак под губу запрещено продавать везде, кроме Швеции.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">2</span><span>Шведы кладут его под губу веками и называют снюсом.</span></li>
+<li class="key"><span class="n">3</span><span><mark>А потом шведская компания вынула из пакетика сам табак — и запрет, написанный для табака, на такие пакетики уже не действует.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">4</span><span>Никотин при этом остался: его выжимают… из табака.</span></li>
+<li class="key"><span class="n">5</span><span><mark>В Германии из-за этого их вообще нельзя продавать: табачный закон до них не дотягивается, а как еду их… не разрешили.</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">6</span><span>Пакетики назвали Зин, а круглую баночку у нас прозвали шайбой.</span></li>
+<li class="short"><span class="n">7</span><span>В двадцать втором шведов за шестнадцать миллиардов купил производитель «Мальборо».</span><span class="tag">только в шортсе</span></li>
+<li class="film"><span class="n">8</span><span>Производитель «Мальборо» купил шведов целиком, вместе с американским заводом в Кентукки.</span><span class="tag">только в фильме</span></li>
+<li><span class="n">9</span><span>Через два года шайбы смели с полок по всей Америке, как когда-то айкосы: почти шестьсот миллионов банок за год.</span></li>
+<li><span class="n">10</span><span>В двадцать пятом американский регулятор впервые разрешил такие пакетики — и сразу со вкусами: мята, цитрус, кофе, корица. А «Джулу» такие вкусы запретили ещё пять лет назад.</span></li>
+<li class="key"><span class="n">11</span><span><mark>В двадцать шестом шайбам разрешили говорить то, что айкосу не разрешают до сих пор: «Зин вместо сигарет — ниже риск рака рта и лёгких, болезней сердца и инсульта».</mark></span><span class="tag">сильное место</span></li>
+<li><span class="n">12</span><span>Только американские школьники сигарет почти не курят — а шайбы у них уже обогнали сигареты.</span></li>
+<li><span class="n">13</span><span>И меньше чем через два месяца разрешили шайбы покрепче: девять и одиннадцать миллиграммов вместо трёх и шести.</span></li>
+<li class="key film"><span class="n">14</span><span><mark>Запрет каждый раз пишут под вчерашний товар — а продают уже завтрашний. Осталось перевернуть доску.</mark></span><span class="tag">сильное место · только в фильме</span></li>
+<li class="shortq"><span class="n">TT</span><span>Конец шортса: «Угадаете, что окажется на обороте этой доски?» → доска переворачивается наполовину → «Целиком — на YouTube»</span></li>
+</ol>
+<aside>
+<div class="pm plus"><h3>Плюсы</h3><ul><li>Перекличка с «Льдом»: снова закон, который написан под вчерашний товар.</li><li>Германия: табачный закон до шайб не дотягивается, а как еду их не разрешили — продавать нельзя совсем.</li><li>Последняя строка фильма — вывод всей серии: «Запрет каждый раз пишут под вчерашний товар».</li></ul></div>
+<div class="pm minus"><h3>Минусы</h3><ul><li>Крючок слабее, чем в текстах 1 и 2: закон, а не ощущение.</li><li>Самый длинный: на 3 строки больше.</li></ul></div>
+<details class="facts"><summary>Факты и источники · 14</summary><ol>
+<li>Евросоюз запрещает продавать табак для рта, исключение — Швеция; пакетики без табака под этот запрет не попадают<span class="src"><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32014L0040" target="_blank" rel="noopener">Директива ЕС 2014/40/EU, статья 17</a> · <a href="https://github.com/1f8t8graf4-ai/dota-/blob/main/shorts/%D0%B3%D0%BB%D0%B0%D0%B2%D0%B05/%D1%84%D0%B0%D0%BA%D1%82%D1%8B.md" target="_blank" rel="noopener">Факты главы 5 — Зетка, 19.11</a></span></li>
+<li>Снюс — шведский табак под губу, в Швеции с XVIII века<span class="src"><a href="https://en.wikipedia.org/wiki/Snus" target="_blank" rel="noopener">Snus — Wikipedia</a></span></li>
+<li>В пакетике нет табака, но никотин — из табака (tobacco-derived nicotine) — так в документах FDA<span class="src"><a href="https://www.accessdata.fda.gov/static/searchtobacco/2-6-25/PMTA_TPL_PM593-PM612_Zyn_01_13_2025_Redacted.pdf" target="_blank" rel="noopener">FDA: разбор заявки Zyn, январь 2025 (PDF)</a> · <a href="https://www.rilegislature.gov/senators/SenateComDocs/2026%20Finance/S3131%20Phillip%20Morris%20International.pdf" target="_blank" rel="noopener">Сенат Род-Айленда: материалы Philip Morris, 2026 (PDF)</a></span></li>
+<li>Германия: шайбы продавать нельзя — табачный закон на них не распространяется, а пищевой считает неразрешённой «новой едой»<span class="src"><a href="https://pubmed.ncbi.nlm.nih.gov/40953592/" target="_blank" rel="noopener">Hanewinkel и др., 2026 — PubMed</a> · <a href="https://www.smokefreepartnership.eu/news/press-release-call-against-the-legalisation-of-nicotine-pouches-in-germany" target="_blank" rel="noopener">Smoke Free Partnership: не легализовать пакетики в Германии, 14.09.2026</a></span></li>
+<li>2022: «Филип Моррис» покупает шведскую Swedish Match (Zyn) — около 16 млрд $, сделка закрыта в ноябре<span class="src"><a href="https://www.reuters.com/business/healthcare-pharmaceuticals/philip-morris-international-bids-16-billion-swedish-match-2022-05-11/" target="_blank" rel="noopener">Reuters: PMI предлагает 16 млрд $ за Swedish Match, 11.05.2022</a> · <a href="https://cspdailynews.com/tobacco/pmi-takes-83-share-swedish-match" target="_blank" rel="noopener">PMI получает 83 % Swedish Match — CSP Daily News, 2022</a> · <a href="https://www.marketscreener.com/quote/stock/SWEDISH-MATCH-6492173/news/Philip-Morris-Holland-Holdings-B-V-completed-the-acquisition-of-Swedish-Match-AB-OM-SWMA--42427098/" target="_blank" rel="noopener">Philip Morris completed the acquisition of Swedish Match — MarketScreener, 2022</a></span></li>
+<li>Zyn для США делают на заводе в Кентукки; в 2024-м «Филип Моррис» его расширял<span class="src"><a href="https://www.wfae.org/business/2024-08-21/whats-zyn-and-why-there-was-a-shortage-this-summer" target="_blank" rel="noopener">NPR: почему летом 2024-го не было Zyn</a></span></li>
+<li>2024: в первом квартале продажи Zyn в США +80 %, к лету шайбы пропали из магазинов по всей стране<span class="src"><a href="https://www.bloomberg.com/news/articles/2024-06-07/zyn-shortage-why-nicotine-pouches-are-out-of-stock-across-us" target="_blank" rel="noopener">Bloomberg: Zyn нет в магазинах по всей Америке, 07.06.2024</a> · <a href="https://fortune.com/2024/05/17/zyn-shortage-retailers-out-of-stock-online-sellers-ration-hoarding/" target="_blank" rel="noopener">Fortune: Zyn раскупили, продавцы выдают по норме, 17.05.2024</a> · <a href="https://www.wfae.org/business/2024-08-21/whats-zyn-and-why-there-was-a-shortage-this-summer" target="_blank" rel="noopener">NPR: почему летом 2024-го не было Zyn</a></span></li>
+<li>2024: около 581 млн банок Zyn в США, в 4-м квартале — почти 165 млн; в 1-м квартале 2025-го — 202 млн, вчетверо больше, чем в начале 2022-го<span class="src"><a href="https://tobaccoinsider.com/zyn-pouches/" target="_blank" rel="noopener">Tobacco Insider: 581,4 млн банок Zyn в США за 2024 год</a> · <a href="https://www.businesswire.com/news/home/20250205873542/en/Philip-Morris-International-Reports-2024-Fourth-Quarter-Full-Year-Results" target="_blank" rel="noopener">PMI: итоги 2024 года — Business Wire</a> · <a href="https://www.reuters.com/business/philip-morris-shrugs-off-economic-volatility-zyn-shines-2025-04-23/" target="_blank" rel="noopener">Reuters: 202 млн банок Zyn за первый квартал 2025-го</a></span></li>
+<li>16.01.2025: FDA разрешила продавать 20 вкусов Zyn (по 3 и 6 мг) — первые разрешённые никотиновые пакетики; «это не значит, что они безопасны»<span class="src"><a href="https://www.fda.gov/news-events/press-announcements/fda-authorizes-marketing-20-zyn-nicotine-pouch-products-after-extensive-scientific-review" target="_blank" rel="noopener">FDA: разрешены 20 вкусов Zyn, 16.01.2025</a> · <a href="https://www.cspdailynews.com/tobacco/fda-authorizes-first-nicotine-pouch" target="_blank" rel="noopener">CSP Daily News: FDA разрешила первые никотиновые пакетики</a></span></li>
+<li>Январь 2020: FDA запретила вкусы у вейпов с картриджами — фрукты, мята, десерты (глава 2)<span class="src"><a href="https://www.fda.gov/news-events/press-announcements/fda-finalizes-enforcement-policy-unauthorized-flavored-cartridge-based-e-cigarettes-appeal-children" target="_blank" rel="noopener">FDA: запрет вкусов у вейпов с картриджами, 02.01.2020</a></span></li>
+<li>30.06.2026: FDA разрешила 20 вкусам Zyn заявление «Zyn вместо сигарет — ниже риск рака рта, болезней сердца, рака лёгких, инсульта, эмфиземы и бронхита»<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/fda-authorizes-20-zyn-nicotine-pouches-be-marketed-specific-modified-risk-claim" target="_blank" rel="noopener">FDA: Zyn разрешено заявление о меньшем риске, 30.06.2026</a> · <a href="https://www.cnbc.com/2026/06/30/fda-zyn-philip-morris-nicotine-pouches-cigarettes-trump.html" target="_blank" rel="noopener">CNBC: FDA разрешила продавать Zyn как менее вредные, чем сигареты, 30.06.2026</a></span></li>
+<li>Айкосу в 2020-м и при продлении в 2026-м разрешили только «меньше вредных веществ», «меньше вреда» — нет (глава 4)<span class="src"><a href="https://www.generationsanstabac.org/en/?p=26664" target="_blank" rel="noopener">FDA продлило статус айкоса, 2026: только «меньше веществ»</a> · <a href="https://www.cspdailynews.com/tobacco/fda-says-pm-usa-can-market-iqos-modified-risk-tobacco-products" target="_blank" rel="noopener">FDA разрешило айкосу «reduced exposure», 2020 — CSP Daily News</a></span></li>
+<li>Опрос школьников США 2025: вейп — 5,2 %, шайбы — 1,7 %, сигареты — 1,4 %; шайбы — вдвое больше, чем в 2021-м<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/national-youth-tobacco-survey-fda-publishes-peer-reviewed-journal-article-releases-2025-findings" target="_blank" rel="noopener">FDA: опрос школьников 2025 (NYTS)</a> · <a href="https://www.tobaccofreekids.org/press-releases/2026_06_23_national-survey-shows-long-term-drop-in-youth-tobacco-use-but-over-two-million-youth-still-use-tobacco-products" target="_blank" rel="noopener">Campaign for Tobacco-Free Kids: итоги опроса 2025, 23.06.2026</a></span></li>
+<li>21.08.2026: FDA разрешила Zyn Ultra — 9 и 11 мг вместо прежних 3 и 6<span class="src"><a href="https://www.fda.gov/tobacco-products/ctp-newsroom/fda-authorizes-11-new-nicotine-pouches" target="_blank" rel="noopener">FDA: разрешены 11 новых пакетиков (Zyn Ultra), 21.08.2026</a> · <a href="https://secure.businesswire.com/news/home/20260821238273/en/FDA-Authorizes-ZYN-ULTRA-Nicotine-Pouches-Following-Scientific-Review" target="_blank" rel="noopener">Business Wire: Zyn Ultra — 9 и 11 мг, 21.08.2026</a></span></li>
+</ol></details>
+<div class="note" hidden><label for="n-t3">Правки · текст 3</label>
+<textarea id="n-t3" data-note="t3" placeholder="Например: строка 2 — короче; строку про Германию взять из текста 3"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</aside>
+</div>
+</section>
+<section class="panel fin" id="p-fin" role="tabpanel" aria-labelledby="tab-fin" hidden>
+<div class="phead">
+<p class="eb">Финал фильма · только YouTube · ≈ 30 с</p>
+<h2>Переворот доски</h2>
+<p class="idea">После главы 5 камера отъезжает на всю доску, доска переворачивается, на изнанке нити сходятся в змею, которая кусает свой хвост. Голос финала запишу вместе с главой 5. В TikTok вместо финала — полупереворот и «Целиком — на YouTube».</p>
+</div>
+<div class="gem">
+<article class="g" data-card="f1">
+<span class="gid">А</span>
+<h3>Змея</h3>
+<span class="meta">голос ≈ 19 с · ≈ 152 кредитов</span>
+<p>Как в плане 19.11: нити на изнанке доски сходятся в змею, последняя строка возвращает в главу 1.</p>
+<ol class="fl"><li>Переверните доску — и нити с пяти карточек сходятся в одну точку.</li><li>Соль, «Джул», «Мальборо», айкос, шайбы: каждый раз, когда вы пытаетесь уйти от сигарет, у двери вас уже ждут.</li><li>Сигареты, нагреватель, шайбы — вы платите всё тем же людям.</li><li class="warn">А жидкость в китайской одноразке, как вы помните… изобрели тоже они.</li></ol><p class="gw">⚠ строка 4: та же натяжка, что в главе 1: соль никотина изучали в «Рейнольдс», а одноразки делают китайские фабрики</p>
+<details class="facts"><summary>Факты · 2</summary><ol>
+<li>Marlboro (вне США), айкос и Zyn — «Филип Моррис»; треть «Джула» и Marlboro в США — Altria, до 2008-го одна компания с PMI (главы 1, 3, 4)<span class="src"><a href="https://github.com/1f8t8graf4-ai/dota-/blob/main/shorts/tl/v170e-ru.json" target="_blank" rel="noopener">Глава 1 «Боб» — текст фильма</a> · <a href="https://en.wikipedia.org/wiki/Philip_Morris_International" target="_blank" rel="noopener">Philip Morris International — Wikipedia (отделение от Altria, 2008)</a></span></li>
+<li>Глава 1: «жидкость внутри них изобрели табачные гиганты ещё пятьдесят лет назад» — та же натяжка<span class="src"><a href="https://github.com/1f8t8graf4-ai/dota-/blob/main/shorts/tl/v170e-ru.json" target="_blank" rel="noopener">Глава 1 «Боб» — текст фильма</a></span></li>
+</ol></details>
+<div class="acts"><button class="btn pick" type="button" data-pickf="f1" aria-pressed="false" hidden>Беру этот финал</button><span class="msg" aria-live="polite"></span></div>
+</article><article class="g" data-card="f2">
+<span class="gid">Б</span>
+<h3>Что вы знаете о никотине?</h3>
+<span class="meta">голос ≈ 16 с · ≈ 123 кредитов</span>
+<p>Фильм кончается своим названием, как ролики Боба. Без натяжек: каждую форму никотина продавали как способ бросить, а нити тянутся к табачным гигантам.</p>
+<ol class="fl"><li>Так что вы знаете о никотине?</li><li>Что его курят, греют, парят и кладут под губу — и каждый раз продают как способ бросить.</li><li>Переверните доску: все пять нитей тянутся к табачным гигантам.</li><li>Змея кусает свой хвост: вы бросаете одно — вам продают следующее.</li></ol>
+<details class="facts"><summary>Факты · 1</summary><ol>
+<li>Marlboro (вне США), айкос и Zyn — «Филип Моррис»; треть «Джула» и Marlboro в США — Altria, до 2008-го одна компания с PMI (главы 1, 3, 4)<span class="src"><a href="https://github.com/1f8t8graf4-ai/dota-/blob/main/shorts/tl/v170e-ru.json" target="_blank" rel="noopener">Глава 1 «Боб» — текст фильма</a> · <a href="https://en.wikipedia.org/wiki/Philip_Morris_International" target="_blank" rel="noopener">Philip Morris International — Wikipedia (отделение от Altria, 2008)</a></span></li>
+</ol></details>
+<div class="acts"><button class="btn pick" type="button" data-pickf="f2" aria-pressed="false" hidden>Беру этот финал</button><span class="msg" aria-live="polite"></span></div>
+</article><article class="g" data-card="f3">
+<span class="gid">В</span>
+<h3>Фармацевт</h3>
+<span class="meta">голос ≈ 18 с · ≈ 159 кредитов</span>
+<p>Новый факт, которого не было в главах: даже первую электронную сигарету — её придумал китайский фармацевт — через десять лет выкупила табачная компания.</p>
+<ol class="fl"><li>Даже электронную сигарету придумали не они: в две тысячи третьем её собрал китайский фармацевт, который хотел бросить курить.</li><li>Через десять лет его патенты за семьдесят пять миллионов долларов выкупила табачная компания.</li><li>Сигареты, нагреватель, вейп, шайбы — бросайте как хотите.</li><li>Платить вы будете всё тем же табачникам.</li></ol>
+<details class="facts"><summary>Факты · 2</summary><ol>
+<li>2003: фармацевт Хон Лик придумал современную электронную сигарету (Ruyan); 2013: её патенты за 75 млн $ купила Imperial Tobacco<span class="src"><a href="https://en.wikipedia.org/wiki/Dragonite_International" target="_blank" rel="noopener">Dragonite International (Ruyan) — Wikipedia</a> · <a href="https://tobaccotactics.org/wiki/e-cigarettes-imperial-brands/" target="_blank" rel="noopener">Tobacco Tactics: электронные сигареты Imperial Brands</a></span></li>
+<li>Marlboro (вне США), айкос и Zyn — «Филип Моррис»; треть «Джула» и Marlboro в США — Altria, до 2008-го одна компания с PMI (главы 1, 3, 4)<span class="src"><a href="https://github.com/1f8t8graf4-ai/dota-/blob/main/shorts/tl/v170e-ru.json" target="_blank" rel="noopener">Глава 1 «Боб» — текст фильма</a> · <a href="https://en.wikipedia.org/wiki/Philip_Morris_International" target="_blank" rel="noopener">Philip Morris International — Wikipedia (отделение от Altria, 2008)</a></span></li>
+</ol></details>
+<div class="acts"><button class="btn pick" type="button" data-pickf="f3" aria-pressed="false" hidden>Беру этот финал</button><span class="msg" aria-live="polite"></span></div>
+</article>
+</div>
+<article class="g" style="margin-top:16px">
+<span class="gid">кадр</span>
+<h3>Как выглядит финал</h3>
+<ol class="beats">
+<li><b>0–5 с</b><span>Отъезд: вся доска, все пять карточек открыты, нити.</span></li>
+<li><b>5–12 с</b><span>Доска переворачивается на 180°. На чёрной изнанке нити сходятся в змею, которая кусает свой хвост.</span></li>
+<li><b>12–25 с</b><span>Голос финала. Змея делает круг через все пять карточек.</span></li>
+<li><b>25–30 с</b><span>Название фильма: «Что вы знаете о никотине?»</span></li>
+</ol>
+</article>
+<div class="note" hidden style="margin-top:22px"><label for="n-fin">Правки финала</label>
+<textarea id="n-fin" data-note="fin" placeholder="Например: финал Б, но последнюю строку из А"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</section>
+<section class="panel" id="p-ch3" role="tabpanel" aria-labelledby="tab-ch3" hidden>
+<div class="phead">
+<p class="eb">Глава 3 «Мальборо» · конец шортса</p>
+<h2>Петля или вопрос</h2>
+<p class="idea">Айкос из конца главы 3 уходит: он теперь целиком в главе 4. Шортс главы 3 кончится на «…четверо ковбоев «Мальборо»». Продолжение будет в любом случае: в TikTok — «Часть 4 →», на YouTube — ссылка на целый фильм. Выбираешь только последние секунды. Выбор концовки — это и «го» на переделку конца главы 3: в фильме уходят нагреватель и плашка «2014», голос уже записан.</p>
+</div>
+<div class="c3">
+<article class="g" data-card="loop">
+<span class="gid">1</span>
+<h3>Петля</h3>
+<span class="meta">бесплатно</span>
+<p>От четырёх столбов камера возвращается к щиту с ковбоем — это первый кадр, ролик идёт по кругу. «Часть 4 →» — надписью, без голоса.</p>
+<div class="acts"><button class="btn pick" type="button" data-pick3="loop" aria-pressed="false" hidden>Беру петлю</button><span class="msg" aria-live="polite"></span></div>
+</article>
+<article class="g" data-card="q">
+<span class="gid">2</span>
+<h3>Вопрос · мой совет</h3>
+<span class="meta">≈ 28 кредитов, запишу вместе с главой 5</span>
+<p>Голосом: «А знаете, что производитель «Мальборо» однажды пообещал?». Часть 4 открывается ответом: «Производитель «Мальборо» однажды пообещал бросить сигареты». Вопрос держит до следующей части лучше, чем петля.</p>
+<div class="acts"><button class="btn pick" type="button" data-pick3="q" aria-pressed="false" hidden>Беру вопрос</button><span class="msg" aria-live="polite"></span></div>
+</article>
+</div>
+</section>
+
+<section class="next" aria-labelledby="next-h">
+<h2 id="next-h">Что дальше</h2>
+<ol>
+<li>Ты выбираешь текст, финал и концовку главы 3 — кнопками здесь или в чате.</li>
+<li>Голос — тот же «Макс» из ElevenLabs, одним заходом: глава 5, финал и вопрос главы 3. По совету это около 883 кредитов (полкредита за знак, как у главы 4), с переозвучкой — до 1190. Трачу только после твоего «да» в чате.</li>
+<li>Шортс главы 5 — последняя часть в TikTok: в конце вопрос, доска переворачивается наполовину и «Целиком — на YouTube». Целиком фильм с финалом — только на YouTube.</li>
+<li>Потом рисовка главы 5 — страница с таймингом, как у главы 4. Первый кадр продолжает нырок в белую подушечку из конца главы 4.</li>
+</ol>
+<div class="note" hidden><label for="n-all">Общее мнение</label>
+<textarea id="n-all" data-note="all" placeholder="Что поменять во всех текстах сразу"></textarea>
+<span class="st" aria-live="polite"></span></div>
+</section>
+<footer>Время — по темпу голоса глав 3–4, 2,57 слова в секунду. Факты Зетки сверены, свежие (2025–2026) добавлены. Claude, 20.11.</footer>
+</div>
+<script>
+const TX = {"t1": ["1. Их не видно, не слышно, и они ничем не пахнут: маленький белый пакетик кладут под верхнюю губу — и всё.", "2. Сначала щиплет десну, никотин уходит в кровь прямо через неё, а со стороны ничего не заметно: ни дыма, ни пара — хоть на совещании, хоть в самолёте.", "3. Круглую баночку из-под таких пакетиков у нас прозвали шайбой.", "4. Табака в шайбе нет — зато никотин есть, и выжимают его… из табака.", "5. Придумали шайбы шведы, а в двадцать втором их за шестнадцать миллиардов купил производитель «Мальборо». (только шортс)", "6. Придумали их шведы, а производитель «Мальборо» купил шведскую компанию целиком — вместе с американским заводом в Кентукки. (только фильм)", "7. Через два года шайбы смели с полок по всей Америке, как когда-то айкосы в Японии: только в двадцать четвёртом там продали почти шестьсот миллионов банок.", "8. В двадцать пятом американский регулятор разрешил их продавать — первыми из всех пакетиков, и сразу со вкусами: мята, цитрус, кофе, корица.", "9. Пять лет назад «Джулу» такие вкусы запретили.", "10. А в двадцать шестом шайбам разрешили то, что айкосу не разрешают до сих пор, — говорить о риске: «Зин вместо сигарет — ниже риск рака рта и лёгких, болезней сердца и инсульта».", "11. Вот только американские школьники сигарет почти не курят, а шайбы у них уже обогнали сигареты.", "12. И меньше чем через два месяца разрешили шайбы покрепче: девять и одиннадцать миллиграммов вместо трёх и шести.", "13. Каждая карточка на этой доске — новый способ бросить. Осталось перевернуть саму доску. (только фильм)", "Шортс в конце: Угадаете, что окажется на обороте этой доски?"], "t2": ["1. Вы кладёте под губу маленький белый пакетик — и никто вокруг даже не догадается.", "2. Ни дыма, ни пара: сначала щиплет десну, никотин уходит в кровь прямо через неё, а вы спокойно сидите на совещании или в самолёте.", "3. Баночку за круглую форму зовут шайбой, и табака в ней нет.", "4. Только никотин — и выжимают его… из табака.", "5. Придумали шайбы шведы, а в двадцать втором шведов за шестнадцать миллиардов купил производитель «Мальборо». (только шортс)", "6. Придумали шайбы шведы, а производитель «Мальборо» купил их компанию целиком, вместе с американским заводом в Кентукки. (только фильм)", "7. Через два года вы бы их уже не нашли: шайбы смели с полок по всей Америке, как когда-то айкосы, — почти шестьсот миллионов банок за год.", "8. В двадцать пятом американский регулятор впервые разрешил такие пакетики, и сразу со вкусами: мята, цитрус, кофе, корица — такие вкусы у «Джула» отняли пять лет назад.", "9. А в двадцать шестом шайбам разрешили то, чего айкос не дождался до сих пор, — сказать вам прямо: «Зин вместо сигарет — ниже риск рака рта и лёгких, болезней сердца и инсульта».", "10. Только «вместо сигарет» — это не про американских школьников: сигарет они почти не курят, а шайбы у них уже обогнали сигареты.", "11. И меньше чем через два месяца разрешили шайбы покрепче — девять и одиннадцать миллиграммов вместо трёх и шести.", "12. Пять карточек на этой доске — пять способов бросить. Осталось посмотреть, что у неё на обороте. (только фильм)", "Шортс в конце: Угадаете, кому вы платите за все пять?"], "t3": ["1. В Евросоюзе табак под губу запрещено продавать везде, кроме Швеции.", "2. Шведы кладут его под губу веками и называют снюсом.", "3. А потом шведская компания вынула из пакетика сам табак — и запрет, написанный для табака, на такие пакетики уже не действует.", "4. Никотин при этом остался: его выжимают… из табака.", "5. В Германии из-за этого их вообще нельзя продавать: табачный закон до них не дотягивается, а как еду их… не разрешили.", "6. Пакетики назвали Зин, а круглую баночку у нас прозвали шайбой.", "7. В двадцать втором шведов за шестнадцать миллиардов купил производитель «Мальборо». (только шортс)", "8. Производитель «Мальборо» купил шведов целиком, вместе с американским заводом в Кентукки. (только фильм)", "9. Через два года шайбы смели с полок по всей Америке, как когда-то айкосы: почти шестьсот миллионов банок за год.", "10. В двадцать пятом американский регулятор впервые разрешил такие пакетики — и сразу со вкусами: мята, цитрус, кофе, корица. А «Джулу» такие вкусы запретили ещё пять лет назад.", "11. В двадцать шестом шайбам разрешили говорить то, что айкосу не разрешают до сих пор: «Зин вместо сигарет — ниже риск рака рта и лёгких, болезней сердца и инсульта».", "12. Только американские школьники сигарет почти не курят — а шайбы у них уже обогнали сигареты.", "13. И меньше чем через два месяца разрешили шайбы покрепче: девять и одиннадцать миллиграммов вместо трёх и шести.", "14. Запрет каждый раз пишут под вчерашний товар — а продают уже завтрашний. Осталось перевернуть доску. (только фильм)", "Шортс в конце: Угадаете, что окажется на обороте этой доски?"]}, NAMES = {"t1": "текст 1 «Невидимка»", "t2": "текст 2 «Вы»", "t3": "текст 3 «Без табака»"}, FN = {"f1": "финал А «Змея»", "f2": "финал Б «Что вы знаете о никотине?»", "f3": "финал В «Фармацевт»"}, C3 = {"loop": "глава 3 — петля", "q": "глава 3 — вопрос"};
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const IDS = Object.keys(TX).concat('fin', 'ch3');
+const tabs = $$('[role="tab"]');
+function show(id, focus) {
+  tabs.forEach(t => { const on = t.dataset.p === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
+  $$('.panel').forEach(p => { p.hidden = p.id !== 'p-' + id; });
+}
+function go(id, focus) {
+  show(id, focus);
+  try { history.replaceState(null, '', '#' + id); } catch (e) { try { location.hash = id; } catch (e2) {} }
+}
+function fromHash() { const h = location.hash.slice(1); show(IDS.includes(h) ? h : IDS[0]); }
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => go(t.dataset.p));
+  t.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault(); const j = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length; go(tabs[j].dataset.p, true);
+  });
+});
+addEventListener('hashchange', fromHash); fromHash();
+$$('[data-goto]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(a.dataset.goto); $('#tabs').scrollIntoView({ block: 'start' }); }));
+
+function say(el, text) { if (!el) return; el.textContent = text; clearTimeout(el._t); el._t = setTimeout(() => { el.textContent = ''; }, 4000); }
+$$('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+  const id = b.dataset.copy, msg = $('.msg', b.parentElement), text = TX[id].join('\n');
+  try { await navigator.clipboard.writeText(text); say(msg, 'Скопировано'); }
+  catch (e) {
+    const r = document.createRange(); r.selectNodeContents($('#p-' + id + ' .script'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    say(msg, 'Текст выделен — скопируй вручную');
+  }
+}));
+
+// Выбор и правки — в базе страницы (их читает Claude). Без базы страница просто читается.
+(async () => {
+  let db = null;
+  try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) return;
+  const K = { choice: { attr: 'pick', names: NAMES, on: 'Беру этот текст', tab: id => id },
+              final: { attr: 'pickf', names: FN, on: 'Беру этот финал', tab: () => 'fin' },
+              ch3: { attr: 'pick3', names: C3, on: null, tab: () => 'ch3' } };
+  const S = { choice: '', final: '', ch3: '' }, last = {}, busy = {}, timers = {}, chain = {};
+  let ready = false, ro = false;
+  const line = $('#chosen');
+  const btns = k => $$('[data-' + K[k].attr + ']');
+  const val = (k, b) => b.dataset[K[k].attr];
+  const readOnly = () => { ro = true; Object.keys(K).forEach(k => btns(k).forEach(b => { b.hidden = true; })); $$('.note').forEach(n => { n.hidden = true; }); };
+  function render() {
+    Object.keys(K).forEach(k => btns(k).forEach(b => {
+      const on = S[k] === val(k, b); b.setAttribute('aria-pressed', on);
+      if (!b._lab) b._lab = b.textContent;
+      b.textContent = on ? '✓ Выбрано · нажми, чтобы снять' : b._lab;
+      const card = b.closest('[data-card]'); if (card) card.classList.toggle('on', on);
+    }));
+    tabs.forEach(t => t.classList.toggle('chosen', t.dataset.p === S.choice || (t.dataset.p === 'fin' && !!S.final) || (t.dataset.p === 'ch3' && !!S.ch3)));
+    const parts = [S.choice && NAMES[S.choice], S.final && FN[S.final], S.ch3 && C3[S.ch3]].filter(Boolean);
+    line.hidden = !parts.length; line.textContent = parts.length ? 'Ты выбрал: ' + parts.join(' · ') : '';
+  }
+  Object.keys(K).forEach(k => btns(k).forEach(b => { b.hidden = false; }));
+  $$('.note').forEach(n => { n.hidden = false; });
+  const tm = setTimeout(() => { if (!ready) say($('#dbmsg'), 'Отметки пока не загрузились. Выбор можно написать в чат.'); }, 10000);
+  db.collection('pick').onSnapshot(snap => {
+    Object.keys(K).forEach(k => {
+      const doc = snap.docs.find(x => x.id === k);
+      const v = doc && doc.exists ? String((doc.data() || {}).t || '') : '';
+      S[k] = K[k].names[v] ? v : '';
+    });
+    render();
+    if (!snap.metadata.fromCache) { ready = true; clearTimeout(tm); }
+  }, () => { clearTimeout(tm); });
+  db.collection('notes').onSnapshot(snap => {
+    snap.docs.forEach(x => {
+      const ta = $('[data-note="' + x.id + '"]'); if (!ta) return;
+      const v = String((x.data() || {}).text || '');
+      last[x.id] = v;
+      if (document.activeElement !== ta && !busy[x.id]) ta.value = v;
+    });
+  }, () => {});
+  Object.keys(K).forEach(k => btns(k).forEach(b => b.addEventListener('click', async () => {
+    if (ro) return;
+    const prev = S[k], next = S[k] === val(k, b) ? '' : val(k, b);
+    S[k] = next; render();
+    try { await db.doc('pick/' + k).set({ t: next, at: new Date().toISOString() }); say($('.msg', b.parentElement), next ? 'Сохранено' : 'Выбор снят'); }
+    catch (e) {
+      S[k] = prev; render();
+      if (e && e.code === 'invalid_argument') readOnly();
+      say($('.msg', b.parentElement), 'Не сохранилось. Напиши выбор в чат.');
+    }
+  })));
+  const st = id => $('.st', $('[data-note="' + id + '"]').parentElement);
+  function flush(id) {
+    clearTimeout(timers[id]);
+    const ta = $('[data-note="' + id + '"]'), text = ta.value;
+    if ((last[id] || '') === text) { busy[id] = false; return; }
+    chain[id] = (chain[id] || Promise.resolve())
+      .then(() => db.doc('notes/' + id).set({ text, at: new Date().toISOString() }))
+      .then(() => { last[id] = text; busy[id] = false; st(id).textContent = 'Сохранено'; })
+      .catch(e => { busy[id] = false; st(id).textContent = 'Не сохранилось. Скопируй текст и пришли в чат.'; if (e && e.code === 'invalid_argument') readOnly(); });
+  }
+  $$('[data-note]').forEach(ta => {
+    const id = ta.dataset.note;
+    ta.addEventListener('input', () => { if (ro) return; busy[id] = true; st(id).textContent = 'Сохраняю…'; clearTimeout(timers[id]); timers[id] = setTimeout(() => flush(id), 900); });
+    ta.addEventListener('blur', () => { if (busy[id]) flush(id); });
+  });
+})();
+</script>
