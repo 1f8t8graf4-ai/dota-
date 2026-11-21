@@ -168,6 +168,22 @@ def build_md():
     open(os.path.join(HERE, 'тексты-EN-DE.md'), 'w').write('\n'.join(L))
 
 
+def build_srt():
+    """субтитры по фразам (.srt) — для загрузки на YouTube отдельной дорожкой: out/deliver-l10n/<Глава>_<ЯЗ>.srt"""
+    NM = {'v170e': 'Ch1_Bob_Film', 'v191s': 'Ch2_Ice_Shorts', 'v191y': 'Ch2_Ice_Film', 'v200s': 'Ch3_Marlboro_Shorts', 'v200y': 'Ch3_Marlboro_Film'}
+    od = os.path.join(ROOT, 'out', 'deliver-l10n'); os.makedirs(od, exist_ok=True)
+    ts = lambda x: '%02d:%02d:%02d,%03d' % (int(x // 3600), int(x % 3600 // 60), int(x % 60), int(round(x % 1 * 1000)) % 1000)
+    for ep, nm in NM.items():
+        T = json.load(open(os.path.join(ROOT, 'tl', ep + '-ru.json')))
+        for li, lang in enumerate(LANGS):
+            L = []
+            for k, snt in enumerate(T['sent']):
+                txt = SENT[snt['text']][li].replace(' | ', ' ').replace('|', '')
+                nx = T['sent'][k + 1]['a'] - .02 if k + 1 < len(T['sent']) else snt['b'] + .8
+                L += [str(k + 1), ts(snt['a']) + ' --> ' + ts(min(snt['b'] + .3, nx)), txt, '']
+            open(os.path.join(od, nm + '_' + lang.upper() + '.srt'), 'w').write('\n'.join(L))
+
+
 def missing():
     bad = {}
     for ep in EPS:
@@ -182,4 +198,4 @@ def missing():
 
 if __name__ == '__main__':
     if '--missing' in sys.argv: missing()
-    else: build_tl(); build_dict(); build_md()
+    else: build_tl(); build_dict(); build_md(); build_srt()
