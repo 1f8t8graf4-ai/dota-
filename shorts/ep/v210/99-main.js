@@ -76,7 +76,7 @@
     Q(h.vygn + .45, 'splash', .5); Q(h.vygn + .5, 'stamp', .55); Q(h.amer, 'wave', .3); Q(h.jHA, 'whoosh', .45);
     const m = TM; Q(m.roll0, 'scuttle', .4, -.4); Q(m.tri, 'counter', .45); for (let i = 0; i < 3; i++) Q(m.tri + .2 + i * .3, 'plop', .2, -.3); Q(m.sig, 'conveyor', .35); Q(m.sig + .1, 'counter', .4); Q(m.shest, 'counter', .45);
     Q(m.bol, 'impact', .3); Q(m.bol + .05, 'shimmer', .25); Q(m.brosaj, 'scuttle', .4, .3); Q(m.edge, 'whoosh', .3); Q(m.inBin - .05, 'bin', .6, .4); Q(m.rovno, 'thud', .2); Q(m.vy, 'city', .2);
-    if (MODE === 'y') { Q(m.jAJ + .05, 'whoosh', .4); Q(m.jAJ + .6, 'papers', .3); Q(m.jAJ + .7, 'plop', .3); Q(m.jAJ + .5, 'marker', .35); Q(m.jAJ + 1.2, 'whoosh', .3) }   // v21.2: хвост 2 с — кадр → фото, нить к 2022, камера к карточке 2022   // кадр → фото на доске, нить к 2022
+    if (MODE === 'y') { Q(m.jAJ + .05, 'whoosh', .4); Q(m.jAJ + .6, 'papers', .3); Q(m.jAJ + .7, 'plop', .3); Q(m.jAJ + .9, 'whoosh', .22) }   // v22.4: без нити к 2022 — её тянет глава 5   // v21.2: хвост 2 с — кадр → фото, нить к 2022, камера к карточке 2022   // кадр → фото на доске, нить к 2022
     else { Q(m.ugad, 'shimmer', .3); Q(m.amerQ, 'pageflip', .3); Q(m.amerQ + .46, 'impact', .45); Q(m.amerQ + .48, 'papers', .5); Q(TL0 - .5, 'city', .25) }
   }
   window.EP = {

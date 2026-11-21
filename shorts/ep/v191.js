@@ -853,7 +853,8 @@
   function chart4(c, t) {
     const ka = bo(at(t, T4.vsego + .3, T4.vsego + .7)), kb = at(t, T4.par, T4.x11 + .2), vb = lp(2.4, 26.5, eio(at(Math.round(t * 30) / 30, T4.vyr - .1, T4.x11 + .4)));   // цифры — по кадру, без двоения от затвора
     const kt = eo(at(t, T4.vsego - .2, T4.vsego + .4)), out = ei(at(t, T4.dive - .3, T4.dive + .1));
-    if (out < 1) A(c, kt, () => { tx(c, 'ДОЛЯ ОДНОРАЗОК У ПАРЯЩИХ', 4290, 240 - 700 * out, { f: 'U', w: 800, s: 44, c: B2.cream, mw: 900 }); tx(c, 'ШКОЛЬНИКОВ США', 4290, 300 - 700 * out, { f: 'U', w: 800, s: 44, c: B2.cream }) });   // v19.1: заголовок выше плашки 26,5 %
+    if (out < 1) A(c, kt, () => { const m = c.getTransform(), dy = m.d > 0 ? Math.max(0, (178 - (m.d * 240 + m.f)) / m.d) * (1 - out) : 0;   // v22.4: пока камера въезжает, заголовок не заходит под плашку года
+      tx(c, 'ДОЛЯ ОДНОРАЗОК У ПАРЯЩИХ', 4290, 240 + dy - 700 * out, { f: 'U', w: 800, s: 44, c: B2.cream, mw: 900 }); tx(c, 'ШКОЛЬНИКОВ США', 4290, 300 + dy - 700 * out, { f: 'U', w: 800, s: 44, c: B2.cream }) });   // v19.1: заголовок выше плашки 26,5 %
     const ha = 70 * ka; if (ka > 0) { rr(c, BARA.x0, LVL4 - ha, 160, ha + 120, 8); cel(c, BARA.x0, LVL4 - ha, 160, ha + 120, B2.mango, { hw: .1 }); rr(c, BARA.x0, LVL4 - ha, 160, ha + 120, 8); lnB(c, 4);
       plate(c, '2019 · 2,4 %', 4140, LVL4 - ha - 60 - 400 * out, ka * (1 - out), { s: 30, bg: B2.cream, c: B2.ink }) }
     if (kb > 0) {
@@ -1115,7 +1116,7 @@
     for (let r = 0; r < 2; r++) for (let q = 0; q < 5; q++) { rr(c, -200 + q * 82, -40 + r * 76, 60, 50, 10); fill(c, '#e9e3ff'); lnB(c, 3, B2.ink) }
     c.beginPath(); c.moveTo(-40, -80); c.lineTo(-40, -170); c.moveTo(40, -80); c.lineTo(40, -170); lnB(c, 16, '#3b3166');
     rr(c, -360, -400, 720, 240, 26); fill(c, B2.ink); rr(c, -360, -400, 720, 240, 26); lnB(c, 6);
-    const v = 3e9 * eio(at(Math.round(t * 30) / 30, T6.mlrd, T6.doll + .4)); c.save(); rr(c, -340, -380, 680, 150, 16); c.clip(); num(c, '$' + fmt3(Math.round(v / 1e7) * 1e7), 0, -306, { f: 'J', w: 700, s: 60, c: '#7ee787' }); c.restore();   // по кадру — без двоения цифр
+    const v = 3e9 * eio(at(Math.round(t * 30) / 30, T6.mlrd, T6.doll + .4)); c.save(); rr(c, -340, -380, 680, 150, 16); c.clip(); num(c, window.L10N && window.L10N.lang === 'de' ? fmt3(Math.round(v / 1e7) * 1e7) + ' $' : '$' + fmt3(Math.round(v / 1e7) * 1e7), 0, -306, { f: 'J', w: 700, s: 60, c: '#7ee787' });   // v22.4: в немецком — 3.000.000.000 $ c.restore();   // по кадру — без двоения цифр
     const kg = bo(at(t, T6.god - .1, T6.god + .3)); if (kg > 0) { c.save(); c.translate(0, -200); c.scale(kg, kg); tx(c, 'В ГОД', 0, 0, { f: 'U', w: 800, s: 40, c: B2.gold }); c.restore() }
     const kt = eo(at(t, T6.mlrd, T6.corp)); if (kt > 0) {   // v19.1: чек — бумажная лента из щели кассы (Starbucks #012), а не кривая палка
       const L = 460 * kt; c.save(); c.translate(258, 30); c.rotate(-.42); rr(c, -6, -10, 12, 20, 4); fill(c, '#2d3142');
@@ -1322,10 +1323,11 @@
     c.save(); c.beginPath(); c.rect(px - PH / 2, py - PH / 2, PH, PH); c.clip();
     if (cd.id === '1979') photo1979(c, t, px, py, PH);
     else if (cd.id === '2020') { c.save(); c.translate(px, py); c.scale(PH / 1040, PH / 1040); c.translate(-620, -880); shot8(c, t); c.restore() }
-    else if (cd.id === '1924' && o.ch3 && !cd.open && !(o.ds > 0)) { c.fillStyle = '#1e293b'; c.fillRect(px - PH / 2, py - PH / 2, PH, PH) }   // v19.4: маркер ещё целый — под ним ничего не рисуем
+    else if (cd.id === '1924' && o.ch3 && !cd.open && !(o.ds > 0) && !(o.lip && o.lip.s > 0)) { c.fillStyle = '#1e293b'; c.fillRect(px - PH / 2, py - PH / 2, PH, PH) }   // v19.4: маркер ещё целый — под ним ничего не рисуем
     else if (cd.id === '1924' && (o.ep3 || o.ch3)) { c.save(); c.translate(px, py); c.scale(PH / 1080, PH / 1080); c.translate(-540, -860); if (o.ch3 && CH3OK) ch3(c, t); else ep3Frame(c, t, o.tip ?? 1); c.restore() }
     else { c.fillStyle = '#1e293b'; c.fillRect(px - PH / 2, py - PH / 2, PH, PH) }
-    if (!cd.open) {   // закрыто — глухой чёрный маркер; v19.3: на 1924 маркер режется по диагонали (o.dl) и две половины расходятся (o.ds)
+    if (!cd.open && o.lip) lipCover(c, cd, px, py, o.lip);   // v22.4: шляпа на заглушке, мазок помады стирает заглушку
+    else if (!cd.open) {   // закрыто — глухой чёрный маркер; v19.3: на 1924 маркер режется по диагонали (o.dl) и две половины расходятся (o.ds)
       const ds = o.ds || 0, L = px - PH / 2, R = px + PH / 2, T = py - PH / 2, B = py + PH / 2;
       if (ds < 1) { const d = PH * .8 * eio(ds), n = Math.SQRT1_2;
         [[1, [L - 4, T - 4, R + 4, T - 4, R + 4, B + 4]], [-1, [L - 4, T - 4, R + 4, B + 4, L - 4, B + 4]]].forEach(([sg, P]) => {
@@ -1441,22 +1443,82 @@
     const f = P <= a ? c1 * P : P >= DVH ? 1 : c1 * a + c1 * (P - a) - c1 * (P - a) ** 2 / (2 * (DVH - a));
     return { f, g: (dL * P - DVB * f) / DVL };
   }
-  const GUST = t => 120 * eo(at(t, K.nezh - .1, K.ledi + .25)) * (1 - eio(at(t, K.ledi + .7, K.ledi + 2.3)));   // «нежные сигареты для леди»: ветер приподнимает угол плаката, под ним — розовая дамская реклама
+  const GUST = t => 240 * eo(at(t, K.L1 - .1, K.L1 + .5)) * (1 - eio(at(t, K.d0 + .4, K.ts - .35)));   // v22.4: мазок стёр заглушку — ветер сильнее отгибает угол щита, под ним розовая дамская реклама; к кадру 0 угол ложится как был
   const ch3 = (c, t) => window.EP3.sub.scene(c, t - K.ts);
+  // ---------- v22.4 (ФИНАЛЬНОЕ ТЗ мейн): стык 2 → 3 — нить в реальном времени, силуэт шляпы, мазок помады ----------
+  // «Но менять правила игры табачникам не впервой» — из булавки 2020 к закрытой 1924 в реальном времени натягивается нить (провисает, у булавки дрожит),
+  // камера едет вдоль неё и встаёт на 1924. «Ведь главный символ мужской брутальности…» — на тёмной заглушке проступает белый силуэт ковбойской шляпы
+  // с тёмно-золотой лентой. «…как нежные сигареты для леди» — золотой тюбик помады по диагонали: жирный алый мазок с неровной кромкой перечёркивает
+  // шляпу, заглушка тает от мазка — под ней фото карточки 1924 (кадр 0 главы 3: щит Marlboro Country, ветер сильнее отгибает угол — под ним розовая
+  // дамская реклама), подпись «МАЛЬБОРО»: МЯГКИЕ, КАК МАЙ; ≈ 0,25 с — и камера ныряет в фото: кадр 0 главы 3.
+  let KB2 = null;
+  const LIPD = 150;   // путь кончика помады по диагонали фото: от (−LIPD, −LIPD) до (LIPD, LIPD) от центра фото
+  function lipState(t) { return { hat: eo(at(t, K.brut - .15, K.brut + .45)), s: at(t, K.L0, K.L1), e: at(t, K.L1 - .25, K.L1 + .35), r: 1 - at(t, K.L1 + .15, K.L1 + .6) } }
+  function lipTip(u) { const d = lp(-LIPD, LIPD, eio(u)); return [d, d] }
+  function lipBand(c, x0, y0, x1, y1, hw, rough, seed, cont) {   // полоса вдоль отрезка с неровной кромкой (контур — путь; cont — дописать к текущему пути)
+    const L = Math.hypot(x1 - x0, y1 - y0) || 1, dx = (x1 - x0) / L, dy = (y1 - y0) / L, nx = -dy, ny = dx, n = Math.max(6, Math.ceil(L / 7)), ext = hw * .55;
+    const P = i => { const u = i / n, x = lp(x0 - dx * ext, x1 + dx * ext, u), y = lp(y0 - dy * ext, y1 + dy * ext, u); return [x, y] };
+    const j = (i, sd) => rough * (Math.sin(i * 1.7 + seed + sd) * .6 + Math.sin(i * 4.3 + seed * 2 + sd) * .4);
+    if (!cont) c.beginPath(); for (let i = 0; i <= n; i++) { const [x, y] = P(i), w = hw * (i === 0 || i === n ? .55 : 1) + j(i, 0); i ? c.lineTo(x + nx * w, y + ny * w) : c.moveTo(x + nx * w, y + ny * w) }
+    for (let i = n; i >= 0; i--) { const [x, y] = P(i), w = hw * (i === 0 || i === n ? .55 : 1) + j(i, 9); c.lineTo(x - nx * w, y - ny * w) } c.closePath();
+  }
+  function cowHat(c, x, y, s, a) {   // минималистичный силуэт ковбойской шляпы: белые тулья и поля с загнутыми краями, тёмно-золотые лента и контур
+    if (a <= 0) return; c.save(); c.globalAlpha *= a; c.translate(x, y); c.scale(s, s);
+    const brim = () => { c.beginPath(); c.moveTo(-112, -10); c.bezierCurveTo(-98, 30, -40, 40, 0, 40); c.bezierCurveTo(40, 40, 98, 30, 112, -10); c.bezierCurveTo(90, 10, 50, 18, 0, 18); c.bezierCurveTo(-50, 18, -90, 10, -112, -10); c.closePath() };
+    const crown = () => { c.beginPath(); c.moveTo(-50, 20); c.lineTo(-46, -34); c.bezierCurveTo(-44, -56, -26, -66, -12, -58); c.quadraticCurveTo(0, -50, 12, -58); c.bezierCurveTo(26, -66, 44, -56, 46, -34); c.lineTo(50, 20); c.closePath() };
+    brim(); fill(c, '#F4F1EA'); crown(); fill(c, '#F4F1EA');
+    c.save(); crown(); c.clip(); c.fillStyle = '#9A7417'; c.fillRect(-60, 2, 120, 15); c.fillStyle = 'rgba(0,0,0,.1)'; c.fillRect(18, -70, 40, 90); c.restore();   // лента, тень справа
+    brim(); lnB(c, 4, '#9A7417'); crown(); lnB(c, 4, '#9A7417');
+    c.beginPath(); c.moveTo(-26, -50); c.quadraticCurveTo(0, -40, 26, -50); lnB(c, 2.5, 'rgba(154,116,23,.7)');   // залом на тулье
+    c.restore();
+  }
+  function lipCover(c, cd, px, py, L) {   // заглушка 1924: чёрный маркер + шляпа; мазок помады перечёркивает, заглушка тает от мазка; мазок гаснет
+    const [tx0, ty0] = lipTip(L.s), A = [px - 128, py - 128], B = [px + tx0, py + ty0], HW = 50;
+    const sp = 185 * eo(L.e), cov = L.e < 1;
+    if (cov) { c.save(); c.beginPath(); c.rect(px - PH / 2 - 6, py - PH / 2 - 6, PH + 12, PH + 12);
+      if (L.s > 0 && (B[0] > A[0] || sp > 0)) lipBand(c, A[0], A[1], Math.max(A[0], B[0]), Math.max(A[1], B[1]), HW + sp, 10 + 18 * L.e, cd.x * .01, true);
+      c.clip('evenodd'); rr(c, px - PH / 2, py - PH / 2, PH, PH, 2); fill(c, '#17171c'); marker(c, px, py, PH, cd.x); cowHat(c, px, py + 8, .95, L.hat); c.restore() }
+    if (L.s > 0 && L.r > 0 && B[0] > A[0]) {   // алый мазок: основной тон, тень по одной кромке, светлые и тёмные штрихи вдоль хода
+      c.save(); c.globalAlpha *= L.r; lipBand(c, A[0], A[1], B[0], B[1], HW, 7, cd.x * .01); fill(c, '#D61F3C');
+      c.save(); lipBand(c, A[0], A[1], B[0], B[1], HW, 7, cd.x * .01); c.clip();
+      const dx = B[0] - A[0], dy = B[1] - A[1], Ln = Math.hypot(dx, dy) || 1, ux = dx / Ln, uy = dy / Ln, nx = -uy, ny = ux;
+      c.lineCap = 'round'; for (let i = 0; i < 14; i++) { const off = lp(-HW + 6, HW - 6, H1(i * 3.7 + 1)), l0 = Ln * H1(i * 5.1) * .3, l1 = Ln * (.55 + .45 * H1(i * 2.3));
+        c.beginPath(); c.moveTo(A[0] + ux * l0 + nx * off, A[1] + uy * l0 + ny * off); c.lineTo(A[0] + ux * l1 + nx * off, A[1] + uy * l1 + ny * off);
+        c.strokeStyle = i % 3 ? 'rgba(255,140,160,.28)' : 'rgba(110,0,24,.3)'; c.lineWidth = 2 + 3 * H1(i + 8); c.stroke() }
+      c.fillStyle = 'rgba(110,0,24,.35)'; c.beginPath(); c.moveTo(A[0] - nx * HW * 1.2, A[1] - ny * HW * 1.2); c.lineTo(B[0] - nx * HW * 1.2, B[1] - ny * HW * 1.2); c.lineTo(B[0] - nx * HW * .55, B[1] - ny * HW * .55); c.lineTo(A[0] - nx * HW * .55, A[1] - ny * HW * .55); c.closePath(); c.fill();
+      c.restore(); c.restore() }
+  }
+  function lipTube(c, x, y, s) {   // золотой тюбик помады: скошенный алый стержень впереди, золотой цилиндр (свет полосой, тень по краю); x, y — кончик стержня
+    c.save(); c.translate(x, y); c.rotate(Math.PI * .25 + Math.PI + .38); c.scale(s, s);   // ось тюбика — назад по ходу, чуть приподнят
+    c.save(); c.translate(10, 16); c.globalAlpha *= .3; rr(c, 30, -24, 190, 48, 12); fill(c, '#000'); c.restore();   // тень
+    poly(c, [0, -12, 46, -17, 46, 17, 14, 17]); fill(c, '#E11D48'); poly(c, [0, -12, 46, -17, 46, -6, 8, -2]); fill(c, '#FB7185'); poly(c, [14, 17, 46, 17, 46, 9, 12, 9]); fill(c, '#9F1239');   // стержень со скосом
+    const g = c.createLinearGradient(0, -24, 0, 24); g.addColorStop(0, '#78530a'); g.addColorStop(.28, '#fde68a'); g.addColorStop(.55, '#d4a017'); g.addColorStop(1, '#6b4a08');
+    rr(c, 44, -20, 30, 40, 4); c.fillStyle = g; c.fill(); rr(c, 70, -24, 150, 48, 10); c.fillStyle = g; c.fill();
+    c.fillStyle = 'rgba(80,52,6,.55)'; c.fillRect(70, -24, 7, 48); c.fillRect(212, -24, 8, 48); c.fillStyle = 'rgba(255,248,220,.55)'; c.fillRect(80, -16, 128, 5);
+    rr(c, 70, -24, 150, 48, 10); lnB(c, 2, 'rgba(60,40,4,.55)');
+    c.restore();
+  }
+  function pullThread2(c, t) {   // нить 2020 → 1924 тянется в реальном времени: провисает, у булавки 1924 дрожит и замирает
+    const k = eio(at(t, K.rules - .1, K.vperv + .05)); if (k <= 0) return;
+    const [x1, y1] = pinP(CARDS[1]), [x2, y2] = pinP(C24), x = lp(x1, x2, k), y = lp(y1, y2, k), t1 = K.vperv + .05;
+    const tw = t > t1 ? 16 * Math.exp(-5 * (t - t1)) * Math.sin(24 * (t - t1)) : 0, sag = 46 * Math.sin(Math.PI * k) + tw, mx = (x1 + x) / 2 + sag * .3, my = (y1 + y) / 2 + sag;
+    c.save(); c.beginPath(); c.moveTo(x1 + 3, y1 + 6); c.quadraticCurveTo(mx + 3, my + 6, x + 3, y + 6); lnB(c, 4, 'rgba(0,0,0,.25)');
+    c.beginPath(); c.moveTo(x1, y1); c.quadraticCurveTo(mx, my, x, y); lnB(c, 4, '#dc2626');
+    if (k < 1) { glow(c, x, y, 26, '#fecaca', .55); circ(c, x, y, 5, '#fff1f2') }
+    c.restore();
+  }
   function endB(c, t) {
-    const kz1 = eio(at(t, K.zo1 + .1, K.zo1 + 1.25));   // доска → карточка 1924
-    const p = PH / 1080, [pcx, pcy] = photoC(C24);
-    const zc = 2.6, Fc = [540, C24.y + 5], FE = [pcx, pcy + p * 100];   // в конце фото = кадр 0 главы ровно во весь экран (масштаб 1/p, центр — его середина)
-    let z = Math.exp(lp(0, Math.log(zc), kz1)), F = [lp(540, Fc[0], kz1), lp(960, Fc[1], kz1)];
+    if (t < K.zo1) { zoomOutTo2020(c, t, cc => board(cc, t, { th: [1, 0, 1] })); return }   // нить 2020 → 1924 ещё не натянута
+    if (!KB2) KB2 = [KY(K.zo1, 540, 960, 1), KY(K.rules + .15, 660, 500, 1.5), KY(K.rules + .95, 610, 620, 1.9), KY(K.vperv + .35, 540, 812, 2.45), KY(K.d0, 540, 810, 2.6)];
+    const p = PH / 1080, [pcx, pcy] = photoC(C24), zc = 2.6, Fc = [540, 810], FE = [pcx, pcy + p * 100];   // в конце фото = кадр 0 главы ровно во весь экран
+    let z, F;
     if (t >= K.d0) { const f = DV(t).f; z = zc * Math.exp(DVB * f); F = [lp(Fc[0], FE[0], f), lp(Fc[1], FE[1], f)] }
-    else { const u = at(t, K.zo1 + 1.25, K.d0); z *= 1 + .06 * Math.sin(Math.PI * u) ** 2; F = [F[0] + 50 * Math.sin(2 * Math.PI * u) * Math.sin(Math.PI * u), F[1]] }   // v18.5: доска не стоит
-    // v19.3: «мужской брутальности» — косой золотой разрез по маркеру; «век назад выводили» — половины расходятся по диагонали, под ними — живой щит главы 3
-    const kc = eio(at(t, K.ledi + .3, K.ledi + 2.3)), labA = 1 - at(kc, .1, .35);   // после «леди» фото раскрывается из квадрата в кадр 9:16
-    const ops = { pulse: at(t, K.rules - .4, K.vperv - .2), card: { '1924': { ch3: true, dl: at(t, K.brut - .1, K.brut + .45), ds: at(t, K.vek - .05, K.vyv + .3), labA, sub: '«МАЛЬБОРО»: МЯГКИЕ, КАК МАЙ', subA: at(t, K.vyv + .4, K.vyv + .8) } } };
-    if (t < K.zo1) { zoomOutTo2020(c, t, cc => board(cc, t, {})); return }
-    const shk = t > K.vek - .05 && t < K.vek + .3 ? 4 * (1 - at(t, K.vek - .05, K.vek + .3)) : 0;
-    c.save(); c.translate(540 + Math.sin(t * 91) * shk, 960 + Math.cos(t * 77) * shk); c.scale(z, z); c.translate(-F[0], -F[1]);
-    board(c, t, ops);
+    else { const q = camObj(camAt(KB2, t)); z = q.z; F = [q.x, q.y] }
+    const kc = eio(at(t, K.d0 + .05, K.d0 + 2.05)), labA = 1 - at(kc, .1, .35), L = lipState(t);   // фото раскрывается из квадрата в кадр 9:16
+    const ops = { th: [1, 0, 1], card: { '1924': { ch3: true, lip: L, labA, sub: '«МАЛЬБОРО»: МЯГКИЕ, КАК МАЙ', subA: at(t, K.L1 + .2, K.L1 + .6) } } };
+    c.save(); c.translate(540, 960); c.scale(z, z); c.translate(-F[0], -F[1]);
+    board(c, t, ops); pullThread2(c, t); pin(c, ...pinP(CARDS[1])); pin(c, ...pinP(C24));
+    if (L.s > 0 && L.s < 1) { const [lx, ly] = lipTip(L.s); lipTube(c, pcx + lx, pcy + ly, .95) }
     if (kc > 0) {   // фото раскрывается из квадрата во весь кадр главы; окно шире кадра — поля и подпись карточки не торчат по краям
       const m = 26, R = [lp(pcx - PH / 2, pcx - 540 * p - m, kc), lp(pcy - PH / 2, pcy - 860 * p - m, kc), lp(PH, WW * p + 2 * m, kc), lp(PH, HH * p + 2 * m, kc)];
       c.save(); c.beginPath(); c.rect(...R); c.clip(); c.translate(pcx, pcy); c.scale(p, p); c.translate(-540, -860); if (CH3OK) ch3(c, t); else ep3Frame(c, t); c.restore();
@@ -1470,7 +1532,9 @@
     k.s8 = w('запретом');
     k.b0 = TLX.b0 - .4; k.endT = TLX.endT;   // v19.0: отъезд в карточку 2020 на 0,4 с раньше
     if (MODE === 's') { k.rest = w('остальных'); k.yt = w('youtube'); k.zo1 = k.b0 + 3.9; k.hl0 = w('открыла'); k.th0 = k.zo1 + .2; k.stamp = k.yt - 1; k.down0 = k.yt + .5; k.down1 = k.down0 + 1.6; k.zA0 = k.down1 + .08 }
-    else { k.zo1 = k.b0 + 1.75; k.rules = w('правила'); k.vperv = w('впервой'); k.brut = w('брутальности'); k.vek = w('век'); k.vyv = w('выводили'); k.nezh = w('нежные'); k.ledi = w('леди'); k.d0 = k.ledi - .15; k.ts = k.endT + 1 / 30 }   // v19.4: d0 — начало нырка в кадр 0 главы 3, ts — её кадр 0 (следующий после последнего кадра мостика)
+    else { k.zo1 = k.b0 + 1.75; k.rules = w('правила'); k.vperv = w('впервой'); k.brut = w('брутальности'); k.vek = w('век'); k.vyv = w('выводили'); k.nezh = w('нежные'); k.ledi = w('леди'); k.ts = k.endT + 1 / 30;
+      const after = (q, t0) => { for (const x of TLW) if (nw(x.d) === q && x.a > t0) return x.a; return null }, kak = after('как', WdB('рынок')), sig = after('сигареты', kak);   // v22.4: помада — «как нежные сигареты», ≈0,25 с фиксации, нырок
+      k.L0 = kak - .15; k.L1 = Math.max(k.L0 + .7, sig + .1); k.d0 = Math.max(k.ledi + .2, k.L1 + .9) }   // v19.4: d0 — начало нырка в кадр 0 главы 3, ts — её кадр 0 (следующий после последнего кадра мостика)
     return k;
   }
   function allInit() { if (!T1) b1Init(); if (!T2) b2Init(); if (!T5) b5Init(); if (!T6) b6Init() }
@@ -1537,7 +1601,7 @@
     Q(g.mlrd - .4, 'conveyor', .5); Q(g.mlrd - .05, 'register', 1); Q(g.mlrd + .05, 'counter', .8); Q(g.doll, 'coins', .5); Q(g.rynok - .05, 'boom', .35); Q(g.corp - .2, 'boom', .35); Q(g.end - .3, 'plop', .5);
     Q(K.s8 - .57, 'whoosh', .7); Q(K.s8 + .4, 'city', .6); Q(K.s8 + .9, 'thud', .5); Q(K.s8 + .95, 'marker', .5); { const W = w8(); Q(W.pod - .2, 'scroll', .7); Q(W.pod, 'neon', .7); Q(W.led - .3, 'icecrack', .7); Q(W.gig - .3, 'pour', .6); Q(W.nik - .3, 'glassbulb', .6); Q(W.nik + .1, 'plop', .5) } Q(K.b0, 'whoosh', .6);
     if (MODE === 's') { for (let i = 0; i < 3; i++) Q(K.th0 + i * 1.2, 'papers', .3, -.3 + i * .3); Q(K.stamp, 'stamp', 1); Q(K.stamp + .02, 'impact', .5); Q(K.down0, 'whoosh', .6); Q(K.zA0 + .3, 'dive', .7) }
-    else { Q(K.zo1 + .1, 'whoosh', .6); Q(K.rules - .4, 'whoosh', .35); Q(K.vperv - .25, 'plop', .5); Q(K.brut - .12, 'blade', .45); Q(K.vek - .07, 'whoosh', .6); Q(K.vek + .05, 'pageflip', .45); Q(K.nezh - .1, 'leaves', .45); Q(K.ledi - .1, 'pageflip', .35); Q(K.ledi + .3, 'whoosh', .35); Q(K.ts - 1.2, 'dive', .55) }   // v19.4: ветер треплет угол плаката, нырок в кадр 0 главы 3
+    else { Q(K.zo1 + .1, 'whoosh', .6); Q(K.rules - .1, 'whip', .3, .2); Q(K.vperv + .03, 'plop', .5); Q(K.brut - .12, 'shimmer', .4); Q(K.L0 - .05, 'whoosh', .45, -.3); Q(K.L0 + .12, 'lipstick', .5); Q(K.L1 - .15, 'shimmer', .35, .3); Q(K.L1 + .1, 'leaves', .4); Q(K.d0 + .1, 'whoosh', .35); Q(K.ts - 1.2, 'dive', .55) }   // v19.4: ветер треплет угол плаката, нырок в кадр 0 главы 3
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],

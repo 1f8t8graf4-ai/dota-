@@ -26,7 +26,8 @@
   function chart4(c, t) {
     const ka = bo(at(t, T4.vsego + .3, T4.vsego + .7)), kb = at(t, T4.par, T4.x11 + .2), vb = lp(2.4, 26.5, eio(at(Math.round(t * 30) / 30, T4.vyr - .1, T4.x11 + .4)));   // цифры — по кадру, без двоения от затвора
     const kt = eo(at(t, T4.vsego - .2, T4.vsego + .4)), out = ei(at(t, T4.dive - .3, T4.dive + .1));
-    if (out < 1) A(c, kt, () => { tx(c, 'ДОЛЯ ОДНОРАЗОК У ПАРЯЩИХ', 4290, 240 - 700 * out, { f: 'U', w: 800, s: 44, c: B2.cream, mw: 900 }); tx(c, 'ШКОЛЬНИКОВ США', 4290, 300 - 700 * out, { f: 'U', w: 800, s: 44, c: B2.cream }) });   // v19.1: заголовок выше плашки 26,5 %
+    if (out < 1) A(c, kt, () => { const m = c.getTransform(), dy = m.d > 0 ? Math.max(0, (178 - (m.d * 240 + m.f)) / m.d) * (1 - out) : 0;   // v22.4: пока камера въезжает, заголовок не заходит под плашку года
+      tx(c, 'ДОЛЯ ОДНОРАЗОК У ПАРЯЩИХ', 4290, 240 + dy - 700 * out, { f: 'U', w: 800, s: 44, c: B2.cream, mw: 900 }); tx(c, 'ШКОЛЬНИКОВ США', 4290, 300 + dy - 700 * out, { f: 'U', w: 800, s: 44, c: B2.cream }) });   // v19.1: заголовок выше плашки 26,5 %
     const ha = 70 * ka; if (ka > 0) { rr(c, BARA.x0, LVL4 - ha, 160, ha + 120, 8); cel(c, BARA.x0, LVL4 - ha, 160, ha + 120, B2.mango, { hw: .1 }); rr(c, BARA.x0, LVL4 - ha, 160, ha + 120, 8); lnB(c, 4);
       plate(c, '2019 · 2,4 %', 4140, LVL4 - ha - 60 - 400 * out, ka * (1 - out), { s: 30, bg: B2.cream, c: B2.ink }) }
     if (kb > 0) {

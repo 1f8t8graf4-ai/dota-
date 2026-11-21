@@ -7,7 +7,7 @@ const [ep, N, out] = process.argv.slice(2);
 const TL = JSON.parse(fs.readFileSync(path.join(here, 'out', ep, 'timeline.json'), 'utf8'));
 const b = await chromium.launch({ args: ['--allow-file-access-from-files'] }); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
 await p.goto('file://' + path.join(here, 'stage.html'));
-await p.evaluate(ep => window.loadEp(ep), ep.replace(/-(en|ru|de)$/, ''));
+await p.evaluate(ep => window.loadEp(ep), ep.replace(/-(en|ru|de)(-vo)?$/, ''));
 await p.evaluate(async () => { for (const f of ['600 10px M', '800 10px M', '500 10px O', '700 10px O', '700 10px P', 'italic 700 10px P']) await document.fonts.load(f, 'aя'); await document.fonts.ready });
 await p.evaluate(tl => window.init(tl), TL);
 const endT = (Math.ceil(TL.dur * 30) - 1) / 30;

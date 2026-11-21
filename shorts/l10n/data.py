@@ -234,7 +234,7 @@ STR = {
     'FDA · США': ('FDA · USA', 'FDA · USA'), 'FDA · США · 2020': ('FDA · USA · 2020', 'FDA · USA · 2020'),
     'КАРТРИДЖНЫЕ': ('CARTRIDGES', 'PODS'), 'ЗАПРЕЩЕНЫ': ('BANNED', 'VERBOTEN'), 'ТАБАК · МЕНТОЛ': ('TOBACCO · MENTHOL', 'TABAK · MENTHOL'),
     'МОЖНО': ('ALLOWED', 'ERLAUBT'), 'ОДНОРАЗОВЫЕ ?': ('DISPOSABLES ?', 'EINWEG-VAPES ?'), 'ЗАПРЕТ ВКУСОВ': ('FLAVOR BAN', 'AROMENVERBOT'),
-    'ЗАПРЕТ — ТОЛЬКО ДЛЯ:': ('BAN — ONLY FOR:', 'VERBOT – NUR FÜR:'), 'ВЕЙПОВ СО СМЕННЫМИ': ('VAPES WITH REPLACEABLE', 'VAPES MIT AUSTAUSCHBAREN'),
+    'ЗАПРЕТ — ТОЛЬКО ДЛЯ:': ('BAN — ONLY FOR:', 'VERBOT – NUR FÜR:'), 'ВЕЙПОВ СО СМЕННЫМИ': ('VAPES WITH REPLACEABLE', 'VAPES MIT WECHSELBAREN'),
     'КАРТРИДЖАМИ': ('CARTRIDGES', 'PODS'), 'ЦЕЛЬНЫЕ': ('ALL-IN-ONE', 'EINTEILIGE'), 'ОДНОРАЗОВЫЕ': ('DISPOSABLES', 'EINWEG-VAPES'),
     'НЕ УПОМЯНУТЫ': ('NOT MENTIONED', 'NICHT ERWÄHNT'), '«ДЖУЛ» · ВКУСЫ': ('JUUL · FLAVORS', 'JUUL · AROMEN'), 'НЕТ': ('GONE', 'WEG'),
     'ШЭНЬЧЖЭНЬ': ('SHENZHEN', 'SHENZHEN'), 'ВЕЙПЫ · США': ('VAPES · USA', 'VAPES · USA'),

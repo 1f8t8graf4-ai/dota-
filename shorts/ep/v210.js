@@ -1735,7 +1735,7 @@
       ugad: hasQ ? Ws('q', 'угадаете') : null, amerQ: hasQ ? Ws('q', 'америку') : null,
       amerF: hasF ? Ws('s16', 'америку') : null, vern: hasF ? Ws('s16', 'вернулся') : null, zapr: hasF ? Ws('s16', 'запрета') : null, shestn: hasF ? Ws('s16', 'шестнадцать') : null,
       net: hasF ? Ws('s17', 'нет') : null, dazhe: hasF ? Ws('s17', 'даже') : null, tab: hasF ? Ws('s17', 'табака') : null };
-    TB4 = TM; const a = TM; a.jAJ = MODE === 'y' ? TLX.vEnd + .25 : null;   // v21.1: фильм — после «как и вы» сразу доска
+    TB4 = TM; const a = TM; a.jAJ = MODE === 'y' ? TLX.vEnd + .2 : null;   // v21.1: фильм — после «как и вы» сразу доска
     if (PJ) return;
     const P = L => { const o = []; for (let i = 0; i < L.length; i += 2) o.push(...mpj(L[i], L[i + 1])); return o };
     PJ = { us: P(LL.us), can: P(LL.can), mex: P(LL.mex), isl: [P(LL.cuba), P(LL.hisp), P(LL.pr)], hud: P(LL.hud), lakes: LAKE_US.map(P) };
@@ -1939,11 +1939,13 @@
   // v21.2: доска — та же, что в начале главы 5 (ep/v220/80-board.js): компактная, на тёмной стене, 1924 — две пачки без HeatSticks.
   // Хвост фильма — 2 с: кадр кофейни сжимается в фото 2014, нить тянется к закрытой 2022, камера едет по нити к карточке 2022.
   // Последний кадр = кадр главы 5 за 1/30 с до её начала: ключи KS — общие с KJ5 главы 5 (время τ: 0 — начало главы 5).
-  const BRD4 = { x0: -40, y0: 120, x1: 1120, y1: 1160 }, KS = [[-1.0, 330, 740, 1.35], [0, 540, 640, .88], [.55, 820, 752, 2.2], [1.15, 850, 760, 4.6]];
+  // v22.4 (ФИНАЛЬНОЕ ТЗ мейн): хвост 1,4 с — кадр кофейни сжимается в фото 2014, камера отъезжает вправо; нить к 2022 в главе 4 не тянется:
+  // её в реальном времени тянет начало главы 5 под голосовой мостик (ep/v220/80-board.js, KS5 — те же ключи).
+  const BRD4 = { x0: -40, y0: 120, x1: 1120, y1: 1160 }, KS = [[-1.2, 230, 760, 860 / 240], [-.55, 290, 742, 2.05], [0, 360, 724, 1.62], [.6, 455, 716, 1.5]];
   function boardInit() {
     if (MODE !== 'y') return; const a = TM, j0 = a.jAJ, [px, py] = photo4(C2014), T0 = TLX.endT + 1 / 30;
     CAFE_END = camObj(camAt(KAE, j0));   // кадр кофейни, который станет фото
-    KJ = [KY(j0, px, py, 860 / PH4), ...KS.map(([t, x, y, z]) => KY(T0 + t, x, y, z))];
+    KJ = [KY(j0, px, py, 860 / PH4), ...KS.slice(1).map(([t, x, y, z]) => KY(T0 + t, x, y, z))];   // первый ключ — фото на весь кадр (τ ≈ −1,2, как KS[0])
   }
   function corkImg4() { if (CORK4) return CORK4; CORK4 = mk(WW, 1400); const g = CORK4.getContext('2d'); g.fillStyle = '#b07a4a'; g.fillRect(0, 0, WW, 1400);
     for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < WW; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() } return CORK4 }
@@ -1986,19 +1988,18 @@
   function boardWorld(c, t) {
     const a = TM; boardWall4(c);
     const [c79, c20, c14, c24, c22] = CARDS4; thread4(c, c79, c20); thread4(c, c20, c14); thread4(c, c20, c24); thread4(c, c20, c22); thread4(c, c24, c79); thread4(c, c24, c14);
-    thread4(c, c14, c22, eio(at(t, a.jAJ + .45, a.jAJ + 1.15)));   // нить к закрытой 2022
     CARDS4.forEach(cd => card4(c, t, cd)); CARDS4.forEach(cd => pin4d(c, ...pin4(cd)));
   }
   function photoOver(c, t, q) {   // кадр кофейни сжимается в фото карточки 2014 (v21.2: за 0,7 с)
     const a = TM, e = eio(at(t, a.jAJ, a.jAJ + .7)), [px, py] = photo4(C2014), P = { x: (px - q.x) * q.z + 540, y: (py - q.y) * q.z + 960, s: PH4 * q.z };
     const S = { x: lp(540, P.x, e), y: lp(960, P.y, e), w: lp(WW, P.s, e), h: lp(HH, P.s, e) }, c0 = CAFE_END, Vh = lp(HH / c0.z, PHC.s, e), k = S.h / Vh;
     const V = { x: lp(c0.x, PHC.x, e), y: lp(c0.y, PHC.y, e) }, fw = 15 * q.z * Math.min(1, e * 3);
-    if (e > 0) { c.save(); c.globalAlpha *= .35 * Math.min(1, e * 3) * (1 - at(e, .85, 1)); c.fillStyle = '#000'; c.fillRect(S.x - S.w / 2 - fw + 8 * q.z, S.y - S.h / 2 - fw + 12 * q.z, S.w + fw * 2, S.h + fw * 2); c.restore();
-      c.fillStyle = '#f5f0e6'; c.fillRect(S.x - S.w / 2 - fw, S.y - S.h / 2 - fw, S.w + fw * 2, S.h + fw * 2) }
+    if (e > 0 && e < 1) { c.save(); c.globalAlpha *= .35 * Math.min(1, e * 3) * (1 - at(e, .85, 1)); c.fillStyle = '#000'; c.fillRect(S.x - S.w / 2 - fw + 8 * q.z, S.y - S.h / 2 - fw + 12 * q.z, S.w + fw * 2, S.h + fw * 2); c.restore();
+      c.fillStyle = '#f5f0e6'; c.fillRect(S.x - S.w / 2 - fw, S.y - S.h / 2 - fw, S.w + fw * 2, S.h + fw * 2) }   // v22.4: фото легло — дальше рамка и булавка карточки (как в главе 5)
     c.save(); c.beginPath(); c.rect(S.x - S.w / 2, S.y - S.h / 2, S.w, S.h); c.clip(); c.translate(S.x - 540, S.y - 960);
     cafeShot(c, t, { x: V.x, y: V.y, z: k, r: 0 }, t - TL0, cafe2St(t)); c.restore();
   }
-  function boardShot(c, t) { const q = camObj(camAt(KJ, t)); layer(c, q, 1, cc => boardWorld(cc, t)); photoOver(c, t, q) }
+  function boardShot(c, t) { const q = camObj(camAt(KJ, t)), kp = at(t, TM.jAJ + .62, TM.jAJ + .7); layer(c, q, 1, cc => boardWorld(cc, t)); photoOver(c, t, q); if (kp > 0) layer(c, q, 1, cc => { cc.globalAlpha *= kp; pin4d(cc, ...pin4(C2014)) }) }   // v22.4: булавка 2014 — поверх фото (из неё в главе 5 потянется нить)
   window.__ph14 = (t, N) => { const cv = mk(N, N), g = cv.getContext('2d'); g.translate(N / 2 - 540, N / 2 - 960); cafeShot(g, t, { x: PHC.x, y: PHC.y, z: N / PHC.s, r: 0 }, t - TL0, cafe2St(t)); return cv.toDataURL('image/png') };   // v22.2: фото карточки 2014 в конце главы 4 → ep/v210-ph2014.png (глава 5 рисует его же — стык 4 → 5 без подмены)
   // ================= сборка главы 4: миры подряд, одна камера, плашка года, кадр, звуки =================
   // Миры: A кофейня → B бумажный глобус → C витрина в Нагое → D ночная машина → F магазин (шоу) → G лаборатория → H кабинет FDA с картой США
@@ -2078,7 +2079,7 @@
     Q(h.vygn + .45, 'splash', .5); Q(h.vygn + .5, 'stamp', .55); Q(h.amer, 'wave', .3); Q(h.jHA, 'whoosh', .45);
     const m = TM; Q(m.roll0, 'scuttle', .4, -.4); Q(m.tri, 'counter', .45); for (let i = 0; i < 3; i++) Q(m.tri + .2 + i * .3, 'plop', .2, -.3); Q(m.sig, 'conveyor', .35); Q(m.sig + .1, 'counter', .4); Q(m.shest, 'counter', .45);
     Q(m.bol, 'impact', .3); Q(m.bol + .05, 'shimmer', .25); Q(m.brosaj, 'scuttle', .4, .3); Q(m.edge, 'whoosh', .3); Q(m.inBin - .05, 'bin', .6, .4); Q(m.rovno, 'thud', .2); Q(m.vy, 'city', .2);
-    if (MODE === 'y') { Q(m.jAJ + .05, 'whoosh', .4); Q(m.jAJ + .6, 'papers', .3); Q(m.jAJ + .7, 'plop', .3); Q(m.jAJ + .5, 'marker', .35); Q(m.jAJ + 1.2, 'whoosh', .3) }   // v21.2: хвост 2 с — кадр → фото, нить к 2022, камера к карточке 2022   // кадр → фото на доске, нить к 2022
+    if (MODE === 'y') { Q(m.jAJ + .05, 'whoosh', .4); Q(m.jAJ + .6, 'papers', .3); Q(m.jAJ + .7, 'plop', .3); Q(m.jAJ + .9, 'whoosh', .22) }   // v22.4: без нити к 2022 — её тянет глава 5   // v21.2: хвост 2 с — кадр → фото, нить к 2022, камера к карточке 2022   // кадр → фото на доске, нить к 2022
     else { Q(m.ugad, 'shimmer', .3); Q(m.amerQ, 'pageflip', .3); Q(m.amerQ + .46, 'impact', .45); Q(m.amerQ + .48, 'papers', .5); Q(TL0 - .5, 'city', .25) }
   }
   window.EP = {

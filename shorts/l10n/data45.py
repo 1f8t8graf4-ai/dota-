@@ -46,7 +46,9 @@ CH4 = {   # глава 4 «2014 · Нагреватели»: фильм — s1�
           'Ratet mal, womit sie doch noch nach Amerika zurückkamen?'),
 }
 
-CH5 = {   # глава 5 «2022 · Снюс»: фильм — b1–b2, s1–s12 (+ финал), шортс — b1–b2, s1–s11 и вопрос q
+CH5 = {   # глава 5 «2022 · Снюс»: фильм — мостик b0, b1–b2, s1–s11 (+ финал), шортс — b1–b2, s1–s11 и вопрос q (v22.4: s12 вырезана, b0 и q — ФИНАЛЬНОЕ ТЗ мейн)
+    'b0': ('But after the IQOS setback, they made an even smarter move.',
+           'Doch nach dem IQOS-Rückschlag machten sie einen noch schlaueren Zug.'),
     'b1': ('But Philip Morris did make it back to America — a year after the ban, with a small white can — a sixteen-billion-dollar deal.',
            'Doch Philip Morris kam nach Amerika zurück – ein Jahr nach dem Verbot, mit einer kleinen weißen Dose für sechzehn Milliarden.'),
     'b2': ('There isn’t even any… tobacco in it.',
@@ -73,10 +75,8 @@ CH5 = {   # глава 5 «2022 · Снюс»: фильм — b1–b2, s1–s12 
             'Nur: Amerikanische Schüler rauchen kaum noch Zigaretten – und bei ihnen haben die Beutel die Zigaretten schon überholt.'),
     's11': ('And less than two months later, stronger pouches were approved: nine and eleven milligrams instead of three and six.',
             'Und keine zwei Monate später wurden stärkere Beutel zugelassen: neun und elf Milligramm statt drei und sechs.'),
-    's12': ('Every card on this board is a new way to quit. All that’s left is to flip the board itself.',
-            'Jede Karte an dieser Pinnwand ist ein neuer Weg, aufzuhören. Jetzt bleibt nur noch, die Pinnwand selbst umzudrehen.'),
-    'q': ('Can you guess what’s on the back of this board?',
-          'Ratet mal, was auf der Rückseite dieser Pinnwand ist?'),
+    'q': ('Can you guess who’s actually behind cigarettes, vapes, and pouches?',
+          'Ratet mal, wer wirklich hinter Zigaretten, Vapes und Nikotinbeuteln steckt?'),
 }
 
 FIN = {   # финал фильма (после главы 5)
@@ -84,8 +84,8 @@ FIN = {   # финал фильма (после главы 5)
            'Also – was wisst ihr über Nikotin?'),
     'f2': ('That it’s smoked, heated, vaped, and tucked under the lip — and every time, it’s sold as a way to quit.',
            'Dass man es raucht, erhitzt, dampft und unter die Lippe legt – und es jedes Mal als Weg zum Aufhören verkauft wird.'),
-    'f3': ('Flip the board: all five threads lead to the tobacco giants.',
-           'Dreht die Pinnwand um: Alle fünf Fäden führen zu den Tabakriesen.'),
-    'f4': ('The snake bites its own tail: you quit one thing — they sell you the next.',
-           'Die Schlange beißt sich in den Schwanz: Ihr hört mit einem auf – und sie verkaufen euch das nächste.'),
+    'f3': ('Pull any thread — all five lead straight back to the same tobacco giants.',
+           'Zieht an irgendeinem Faden – alle fünf führen zurück zu denselben Tabakriesen.'),
+    'f4': ('You quit one thing — they sell you the next.',
+           'Ihr hört mit einem auf – und sie verkaufen euch das nächste.'),
 }

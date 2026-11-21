@@ -1,7 +1,7 @@
   // ================= финал фильма (финал Б, f1–f4) — v22.2: собран заново по ТЗ Gemini =================
   // f1 «Так что вы знаете о никотине?» — свет гаснет до луча на доске, маркер пишет название на тёмной полосе над доской.
   // f2 — карточки вспыхивают на глаголах, из-под каждой выползает чек «СПОСОБ БРОСИТЬ».
-  // f3 «Переверните доску» — настоящий 3D-поворот на 180° вокруг вертикали (перспектива, ребро, свет уходит); изнанка не пустая: фанера,
+  // f3 (v22.4: поворот — молча, до f3) — настоящий 3D-поворот на 180° вокруг вертикали (перспектива, ребро, свет уходит); изнанка не пустая: фанера,
   // рамка, светлые отпечатки пяти карточек, острия пяти булавок. «все пять нитей» — из булавок выстреливают пять прямых, туго натянутых
   // красных нитей и симметричными лучами сходятся в центр; на «гигантам» там вырастают две башни — ар-деко R.J. Reynolds и стеклянный
   // монолит Philip Morris, подписи выше Y 1480. f4 «Змея кусает свой хвост» — нити одним движением стягиваются вокруг башен в ровное кольцо,
@@ -13,9 +13,14 @@
   function finalInit() {
     const f = (sc, q) => Ws(sc, q);
     T8 = { f0: K7[K7.length - 1][0], tak: f('f1', 'так'), nik: f('f1', 'никотине'), kur: f('f2', 'курят'), gre: f('f2', 'греют'), par: f('f2', 'парят'), klad: f('f2', 'кладут'), gubu: f('f2', 'губу'),
-      prod: f('f2', 'продают'), bros: f('f2', 'бросить'), perev: f('f3', 'переверните'), dosku: f('f3', 'доску'), vse: f('f3', 'все'), niti: f('f3', 'нитей'), tyan: f('f3', 'тянутся'), gig: f('f3', 'гигантам'),
-      zmeya: f('f4', 'змея'), kus: f('f4', 'кусает'), hvost: f('f4', 'хвост'), vy: f('f4', 'вы'), brosa: f('f4', 'бросаете'), odno: f('f4', 'одно'), prod2: f('f4', 'продают'), sled: f('f4', 'следующее'), vEnd: TLX.vEnd, end: TLX.endT };
-    const a = T8; a.flip0 = a.perev - .1; a.flip1 = a.dosku + .9; a.fade0 = a.vEnd + .05; a.fade1 = a.vEnd + 1.1;
+      prod: f('f2', 'продают'), bros: f('f2', 'бросить'), pot: f('f3', 'потяните'), nit: f('f3', 'нить'), vse: f('f3', 'все'), ved: f('f3', 'ведут'), gig: f('f3', 'гигантам'), f3e: SB('f3'),
+      vy: f('f4', 'вы'), brosa: f('f4', 'бросаете'), odno: f('f4', 'одно'), prod2: f('f4', 'продают'), sled: f('f4', 'следующее'), vEnd: TLX.vEnd, end: TLX.endT };
+    // v22.4 (ФИНАЛЬНОЕ ТЗ мейн): доска переворачивается МОЛЧА — между f2 и f3; f3 «Потяните за любую нить — все пять ведут к одним и тем же табачным
+    // гигантам»: нити выстреливают на «нить», сходятся в центр к «ведут», башни встают на «гигантам»; после f3 нити стягиваются в кольцо, голова
+    // смыкается на хвосте, 0,5 с змея просто вращается — и f4 «Вы бросаете одно — вам продают следующее» (без «Змея кусает свой хвост»)
+    const a = T8; a.flip0 = Math.max(a.bros + .4, SB('f2') + .2); a.flip1 = Math.max(a.flip0 + .9, Math.min(a.pot - .05, a.flip0 + 1.45));
+    a.niti = a.nit; a.tyan = a.ved; a.zmeya = a.f3e + .02; a.kus = a.zmeya + .45; a.hvost = a.zmeya + .9;
+    a.fade0 = a.vEnd + .05; a.fade1 = a.vEnd + 1.1;
     const k7 = K7[K7.length - 1];
     KF = [k7, KY(a.tak, 540, 565, .87), KY(a.bros + .3, 540, 620, .97), KY(a.flip0, 540, 640, .92), KY(a.flip1, 540, 700, .88), KY(a.gig + .3, 540, 1040, .9),
       KY(a.zmeya + .1, 540, 1110, .88), KY(a.hvost + .4, 540, TC.y - 10, .86), KY(a.vEnd, 540, TC.y - 55, .93), KY(a.end, 540, TC.y - 90, 1.02)];   // до конца медленный наезд на змею — кадр не стоит
@@ -90,16 +95,16 @@
     const a = T8, q = camObj(camAt(KF, t)), fk = eio(at(t, a.flip0, a.flip1)), ang = Math.PI * fk;
     const flashW = [[a.par, 0], [a.par, 1], [a.gre, 2], [a.kur, 3], [a.klad, 4]];
     const flash = i => { const w = flashW.find(f => f[1] === i)[0]; return Math.sin(Math.PI * at(t, w - .1, w + .55)) };
-    const fade = eio(at(t, a.fade0, a.fade1)), dim = at(t, a.f0 + .4, a.tak + .2), shoot = at(t, a.niti - .35, a.tyan + .45), wrap = at(t, a.zmeya - .1, a.kus + .35);
+    const fade = eio(at(t, a.fade0, a.fade1)), dim = at(t, a.f0 + .1, a.tak + .5), shoot = at(t, a.niti - .35, a.tyan + .45), wrap = at(t, a.zmeya - .1, a.kus + .35);
     const front = g => { boardWorld5(g, t, { tO: t - 200, flash, noWall: true }); curlCorner(g, t);
       CARDS5.forEach((cd, i) => { const f = flash(i); if (f > 0) { rr(g, cd.x - CW5 / 2 - 8, cd.y - CH5 / 2 - 8, CW5 + 16, CH5 + 16, 10); lnB(g, 6, rgba('#FFD23F', f)) }
         receipt5(g, cd.x, cd.y + CH5 / 2 - 8, at(t, a.prod - .1 + i * .1, a.bros + .2 + i * .1)) }) };
     layer(c, q, 1, cc => {
       wallBg5(cc);
       if (fk > 0 && fk < 1) flipBoard(cc, ang, front, g => boardBack5(g, t, {}));
-      else if (fk <= 0) front(cc); else { const bF = 1 - eio(at(t, a.kus, a.hvost + .3)); if (bF > 0) { cc.save(); cc.globalAlpha *= bF; boardBack5(cc, t, {}); cc.restore() } }   // v22.3: изнанка уходит, пока нити становятся змеёй — край доски сверху не торчит
+      else if (fk <= 0) front(cc); else { const bF = 1 - eio(at(t, a.gig + .1, a.zmeya + .3)); if (bF > 0) { cc.save(); cc.globalAlpha *= bF; boardBack5(cc, t, {}); cc.restore() } }   // v22.3: изнанка уходит, пока нити становятся змеёй — край доски сверху не торчит
       if (dim > 0) { const g = cc.createRadialGradient(540, 640, 420, 540, 700, 1500); g.addColorStop(0, 'rgba(6,4,10,0)'); g.addColorStop(1, `rgba(6,4,10,${.72 * dim})`); cc.fillStyle = g; cc.fillRect(-3000, -3000, 7000, 7000) }
-      titleStrip5(cc, t, at(t, a.tak, a.nik + .55), 1 - at(t, a.zmeya, a.hvost));
+      titleStrip5(cc, t, at(t, a.tak, a.nik + .55), 1 - at(t, a.gig - .35, a.gig + .25));   // v22.4: полоса и изнанка гаснут, пока встают башни — край доски сверху не торчит
       const tw = [at(t, a.gig - .55, a.gig + .35), at(t, a.gig - .4, a.gig + .5)];
       if (fade < 1) { cc.save(); cc.globalAlpha *= 1 - fade; const cA = 1 - at(t, a.vy - .35, a.vy - .05); towerRJ5(cc, TC.x - 168, TC.y - 280, 190, tw[0], cA); towerPM5(cc, TC.x + 168, TC.y - 250, 180, tw[1], cA); cc.restore() }   // v22.3: в конце башни и таблички гаснут до нуля
       if (wrap < 1) strings5(cc, t, shoot, wrap);

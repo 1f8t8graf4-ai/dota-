@@ -41,7 +41,7 @@
       ugad: hasQ ? Ws('q', 'угадаете') : null, amerQ: hasQ ? Ws('q', 'америку') : null,
       amerF: hasF ? Ws('s16', 'америку') : null, vern: hasF ? Ws('s16', 'вернулся') : null, zapr: hasF ? Ws('s16', 'запрета') : null, shestn: hasF ? Ws('s16', 'шестнадцать') : null,
       net: hasF ? Ws('s17', 'нет') : null, dazhe: hasF ? Ws('s17', 'даже') : null, tab: hasF ? Ws('s17', 'табака') : null };
-    TB4 = TM; const a = TM; a.jAJ = MODE === 'y' ? TLX.vEnd + .25 : null;   // v21.1: фильм — после «как и вы» сразу доска
+    TB4 = TM; const a = TM; a.jAJ = MODE === 'y' ? TLX.vEnd + .2 : null;   // v21.1: фильм — после «как и вы» сразу доска
     if (PJ) return;
     const P = L => { const o = []; for (let i = 0; i < L.length; i += 2) o.push(...mpj(L[i], L[i + 1])); return o };
     PJ = { us: P(LL.us), can: P(LL.can), mex: P(LL.mex), isl: [P(LL.cuba), P(LL.hisp), P(LL.pr)], hud: P(LL.hud), lakes: LAKE_US.map(P) };

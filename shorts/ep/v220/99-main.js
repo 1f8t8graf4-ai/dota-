@@ -13,7 +13,7 @@
     if (MODE === 'y' && typeof finalInit === 'function') finalInit();
     const W = (a, b) => SHUT.push([a, b]);
     W(T1.dive - .5, T1.dive + .3); W(T2.jw - .35, T2.jw + .25); W(T3.vyzh - .2, T3.iz + .2); W(T3.iz + .2, T3.shvedy + .1); W(T3.crack - .1, T3.land + .15);
-    W(T3.junk - .2, T3.junk + .7); W(T5.dive0 + .3, T5.jdive + .25); W(T7.fl1 - .1, T7.sh1 + .1); if (MODE === 'y') { W(.45, 1.2); W(T8.flip0, T8.flip1) } else W(T7.end - .65, T7.end + .1);
+    W(T3.junk - .2, T3.junk + .7); W(T5.dive0 + .3, T5.jdive + .25); W(T7.fl1 - .1, T7.sh1 + .1); if (MODE === 'y') { W(J5.th0 - .1, J5.fix + .1); W(J5.w0 - .05, J5.j0 + .05); W(T8.flip0, T8.flip1) } else W(T7.end - .65, T7.end + .1);
     if (MODE === 'y' && typeof boardStartShot === 'function') SEG.push([-1e9, boardStartShot], [T0.j0, oceanShot]); else SEG.push([-1e9, oceanShot]);
     SEG.push([T0.sw, officeShot], [T1.dive, swedenShot], [T2.jw, tableShot]);
     if (typeof fdaShot === 'function') SEG.push([T3.junk, fdaShot]);
@@ -25,7 +25,7 @@
   let HY = null;
   function hud(c, t) {   // плашка года — только вперёд: 2022 → 2024 → 2025, гаснет на «Пять лет назад» (2020 — назад нельзя), 2026 — до доски / вопроса
     if (!HY) HY = { t22: Ws('b1', 'через'), t24: Ws('s6', 'два'), t25: Ws('s7', 'двадцать'), out1: Ws('s8', 'пять') - .15, t26: Ws('s9', 'двадцать'),
-      out2: MODE === 'y' ? SA('s12') - .2 : Ws('q', 'угадаете') - .5 };
+      out2: MODE === 'y' ? SB('s11') + .1 : Ws('q', 'угадаете') - .5 };   // v22.4: строки 12 в фильме нет — 2026 уходит после строки 11
     const h = HY, pill = (y0, y1, k, dy = 0) => { c.save(); c.setTransform(1, 0, 0, 1, 0, dy); yearPill(c, y0, y1, k, 1, true); c.restore() };
     if (t < h.t22 - .25) return;
     if (t < h.t24 - .3) return pill(2022, 2022, 1, -240 * (1 - eo(at(t, h.t22 - .25, h.t22 + .15))));
@@ -61,7 +61,7 @@
     Q(s.iz, 'glassbulb', .4); Q(s.shvedy, 'plop', .3); Q(s.malb - .3, 'scuttle', .35, .4); Q(s.kupil, 'drawer', .35); Q(s.komp, 'whoosh', .35); Q(s.tsel, 'glass', .4); Q(s.zav, 'plop', .35, .3);
     Q(s.crack - .3, 'glass', .45, .3); Q(s.crack, 'icecrack', .5, .3); Q(s.fall, 'whoosh', .5); Q(s.land - .1, 'coins', .5); Q(s.smeli, 'scuttle', .55); Q(s.smeli + .4, 'scuttle', .45, .3);
     Q(s.ajk, 'buzz', .3); Q(s.japo, 'flutter', .3); Q(s.chet, 'whoosh', .4); Q(s.chet + .3, 'city', .3); Q(s.prod, 'conveyor', .3); Q(s.shest, 'counter', .5);
-    if (typeof fdaCues === 'function') fdaCues(Q); if (typeof schoolCues === 'function') schoolCues(Q); if (typeof boardCues5 === 'function') boardCues5(Q); if (MODE === 'y' && typeof finalCues === 'function') finalCues(Q);
+    if (typeof fdaCues === 'function') fdaCues(Q); if (typeof schoolCues === 'function') schoolCues(Q); if (typeof boardCues5 === 'function') boardCues5(Q); if (MODE === 'y' && typeof finalCues === 'function') finalCues(Q); if (MODE === 'y' && typeof boardStartCues === 'function') boardStartCues(Q);
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
@@ -80,7 +80,7 @@
         document.head.appendChild(st) }
       cv = mk(WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
       X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
-      if (!IMG14) { IMG14 = new Image(); IMG14.src = 'ep/v210-ph2014.png' }   // v22.2: фото карточки 2014 из последнего кадра главы 4 (node v170tools/ph14.mjs v210y-ru 720 ep/v210-ph2014.png)
+      if (!IMG14 || IMG14.dataset.l !== LANG) { IMG14 = new Image(); IMG14.dataset.l = LANG; IMG14.src = 'ep/v210-ph2014' + (LANG === 'ru' ? '' : '-' + LANG) + '.png' }   // v22.4: фото по языку ролика (надписи на карте — ЗАПРЕТ, США…)   // v22.2: фото карточки 2014 из последнего кадра главы 4 (node v170tools/ph14.mjs v210y-ru 720 ep/v210-ph2014.png)
       return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$')).concat([IMG14.decode().catch(() => 0)])).then(() => 0);
     },
   };

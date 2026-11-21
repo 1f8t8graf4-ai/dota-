@@ -50,8 +50,8 @@
     poly(c, US); fill(c, '#C9B892'); poly(c, US); lnB(c, 1.8, '#7A6A4A'); c.restore();
     iqos4(c, 10, 72, 130, { shadow: false, ang: -.12 }); c.restore();
   }
-  function oceanIn(c, x, y, s, tO) {   // кадр океана (камера (540, 960, 1), без параллакса) в квадрате со стороной s
-    const k = s / PHC5.s; c.save(); c.beginPath(); c.rect(x - s / 2, y - s / 2, s, s); c.clip(); c.translate(x, y); c.scale(k, k); c.translate(-PHC5.x, -PHC5.y); oceanWorld(c, tO, Q0); c.restore();
+  function oceanIn(c, x, y, s, tO, noTin) {   // кадр океана (камера (540, 960, 1), без параллакса) в квадрате со стороной s
+    const k = s / PHC5.s; c.save(); c.beginPath(); c.rect(x - s / 2, y - s / 2, s, s); c.clip(); c.translate(x, y); c.scale(k, k); c.translate(-PHC5.x, -PHC5.y); oceanWorld(c, tO, Q0, { noTin }); c.restore();
   }
   function card5(c, t, cd, o = {}) {
     const [px, py] = photo5(cd);
@@ -59,7 +59,7 @@
     rr(c, cd.x - CW5 / 2, cd.y - CH5 / 2, CW5, CH5, 6); fill(c, '#f5f0e6'); rr(c, cd.x - CW5 / 2, cd.y - CH5 / 2, CW5, CH5, 6); lnS(c, 3, '#2b2638');
     c.save(); c.beginPath(); c.rect(px - PS5 / 2, py - PS5 / 2, PS5, PS5); c.clip();
     if (cd.id === '1979') photo1979(c, px, py, PS5); else if (cd.id === '2020') photo2020(c, px, py, PS5); else if (cd.id === '1924') photo1924(c, px, py, PS5);
-    else if (cd.id === '2014') { if (IMG14 && IMG14.complete && IMG14.naturalWidth) c.drawImage(IMG14, px - PS5 / 2, py - PS5 / 2, PS5, PS5); else photo2014(c, px, py, PS5) } else oceanIn(c, px, py, PS5, o.tO ?? -50);   // v22.2: 2014 — то же фото кофейни, что в конце главы 4 (ep/v210-ph2014.png)
+    else if (cd.id === '2014') { if (IMG14 && IMG14.complete && IMG14.naturalWidth) c.drawImage(IMG14, px - PS5 / 2, py - PS5 / 2, PS5, PS5); else photo2014(c, px, py, PS5) } else oceanIn(c, px, py, PS5, o.tO ?? -50, o.noTin);   // v22.2: 2014 — то же фото кофейни, что в конце главы 4 (ep/v210-ph2014.png)
     if (o.flash > 0) { c.fillStyle = `rgba(255,246,218,${.55 * o.flash})`; c.fillRect(px - PS5 / 2, py - PS5 / 2, PS5, PS5) }
     c.restore();
     if (cd.id === '2022' && o.cover !== undefined) coverDraw(c, t, px, py, o.cover);
@@ -80,7 +80,7 @@
     boardWall5(c, o.noWall);
     if (o.titleStrip) o.titleStrip(c);
     if (o.threads !== false) THR5.forEach(([i, j], n) => { const kk = o.thrK ? o.thrK(n) : 1; thread5(c, CARDS5[i], CARDS5[j], kk, { pulse: o.pulse ? o.pulse(n) : undefined }) });
-    CARDS5.forEach((cd, i) => card5(c, t, cd, { tO: o.tO, cover: cd.id === '2022' ? o.cover : undefined, flash: o.flash ? o.flash(i) : 0 }));
+    CARDS5.forEach((cd, i) => card5(c, t, cd, { tO: o.tO, cover: cd.id === '2022' ? o.cover : undefined, flash: o.flash ? o.flash(i) : 0, noTin: o.noTin }));
     CARDS5.forEach(cd => pin5d(c, ...pin5(cd)));
   }
   // ---------- кадр океана поверх доски: фото 2022 ↔ весь экран ----------
@@ -89,12 +89,107 @@
     const S = { x: lp(540, P.x, e), y: lp(960, P.y, e), w: lp(WW, P.s, e), h: lp(HH, P.s, e) }, Vh = lp(HH, PHC5.s, e), k = S.h / Vh, V = { x: lp(540, PHC5.x, e), y: lp(960, PHC5.y, e) };
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); c.rect(S.x - S.w / 2, S.y - S.h / 2, S.w, S.h); c.clip(); c.translate(S.x, S.y); c.scale(k, k); c.translate(-V.x, -V.y); oceanWorld(c, tO, Q0); c.restore();
   }
-  // ---------- фильм: начало главы ----------
-  function boardStartInit() { KJ5 = [KY(-1.0, 330, 740, 1.35), KY(0, ...JCAM), KY(.55, 820, 752, 2.2), KY(1.15, 850, 760, 4.6)]; T0.j0 = 1.15 }   // v22.1: ключи — те же, что KS в конце главы 4 (ep/v210/80-board.js)
+  // ---------- фильм: начало главы (v22.4, ФИНАЛЬНОЕ ТЗ мейн — стык 4 → 5) ----------
+  // Голосовой мостик b0 «Но после провала с айкосом они сделали ход ещё хитрее.»: из булавки 2014 в реальном времени натягивается красная нить
+  // к закрытой 2022 · СНЮС (провисает, у булавки 2022 дрожит и замирает), камера едет вдоль нити и встаёт на карточке 2022 (короткая выдержка — без
+  // размытия). На «ход» из левого нижнего угла поднимается тёмно-синяя волна в 3 тона с белой пеной, на гребне качается белая баночка; гребень
+  // срывает заглушку с фото 2022 (кувырком улетает вправо), вода растёт и накрывает кадр; вода уходит вниз — над ней тот же ночной океан, баночка
+  // всплывает, линия воды ложится на передний вал кадра 0. b1 «А в Америку…» — на входе в океан (T0.j0, 20-ocean.js).
+  // Ключи KS5 до τ = 0,6 — общие с концом главы 4 (ep/v210/80-board.js, KS): последний кадр главы 4 = кадр главы 5 за 1/30 с до начала.
+  const KS5 = [[-1.2, 230, 760, 860 / 240], [-.55, 290, 742, 2.05], [0, 360, 724, 1.62], [.6, 455, 716, 1.5]];
+  let J5 = null;
+  function boardStartInit() {
+    const w = q => Ws('b0', q), J = J5 = { no: w('но'), hod: w('ход'), e: SB('b0'), j0: T0.j0 };
+    J.th0 = J.no - .06; J.th1 = Math.max(1.25, WsB('b0', 'айкосом')); J.fix = J.th1 + .42;   // нить 2014 → 2022; камера встала на 2022
+    J.w0 = Math.max(J.fix + .12, J.hod - .05); J.cov = Math.min(J.j0 - .3, Math.max(J.e + .08, J.w0 + 1.35)); J.hitT = J.w0 + .445 * (J.cov - J.w0);   // волна: подъём → накрыла кадр; гребень у заглушки
+    KJ5 = [...KS5.map(k => KY(...k)), KY(J.th1 - .36, 712, 731, 1.64), KY(J.fix, 850, 765, 2.35)];
+  }
+  function pullThread5(c, t, J) {   // нить тянется от булавки 2014: провисает, у булавки 2022 дрожит и замирает
+    const k = eio(at(t, J.th0, J.th1)); if (k <= 0) return;
+    const [x1, y1] = pin5(CARDS5[2]), [x2, y2] = pin5(C22), x = lp(x1, x2, k), y = lp(y1, y2, k);
+    const tw = t > J.th1 ? 20 * Math.exp(-5 * (t - J.th1)) * Math.sin(24 * (t - J.th1)) : 0, sag = 52 * Math.sin(Math.PI * k) + tw, mx = (x1 + x) / 2, my = (y1 + y) / 2 + sag;
+    c.save(); c.beginPath(); c.moveTo(x1 + 3, y1 + 6); c.quadraticCurveTo(mx + 3, my + 6, x + 3, y + 6); lnB(c, 4, 'rgba(0,0,0,.28)');
+    c.beginPath(); c.moveTo(x1, y1); c.quadraticCurveTo(mx, my, x, y); lnB(c, 4, '#dc2626');
+    if (k < 1) { glow(c, x, y, 24, '#FFB0B0', .55); circ(c, x, y, 4.5, '#FFE0E0') }
+    c.restore();
+  }
+  // ---------- волна (экранные координаты): три слоя — дальние светлее и выше-левее, ближний тёмный с пеной, губой и баночкой;
+  // гребень идёт по кривой из левого нижнего угла вверх-вправо, позади гребня вода поднимается до его высоты — к J.cov весь кадр под водой ----------
+  const WV = [[-240, 1680], [140, 1080], [640, 760], [1360, -280]], WCOL = [C5.sea2, C5.sea1, C5.sea0];
+  function waveCrest(ue) { const a = 1 - ue; return [0, 1].map(i => a * a * a * WV[0][i] + 3 * a * a * ue * WV[1][i] + 3 * a * ue * ue * WV[2][i] + ue * ue * ue * WV[3][i]) }
+  function waveSurf(x, cx, cy, s, ue, t) {
+    if (x >= cx) { const d = (x - cx) / (290 * s); return cy + 940 * s * d * d }   // передний склон — вогнутый, книзу круче
+    const d = (cx - x) / (1000 * s), hb = lp(430, 0, ss(.3, 1, ue)) * s;   // задний склон — пологий: вода за гребнем поднимается до его высоты
+    return cy + hb * Math.pow(d, 1.15) + 10 * s * Math.sin(x / 64 + t * 6) * Math.min(1, d * 4);
+  }
+  function lip5(c, cx, cy, s) {   // губа гребня загибается вперёд: светлая, под ней тёмная «трубка», по кромке — пена
+    c.save(); c.translate(cx, cy); c.scale(s, s);
+    c.beginPath(); c.moveTo(-70, 10); c.bezierCurveTo(-24, -46, 96, -52, 156, 4); c.bezierCurveTo(184, 32, 174, 84, 136, 102); c.bezierCurveTo(152, 64, 128, 40, 94, 44);
+    c.bezierCurveTo(58, 48, 34, 76, 20, 120); c.lineTo(-30, 130); c.closePath(); fill(c, C5.sea2);
+    c.beginPath(); c.moveTo(20, 120); c.bezierCurveTo(34, 76, 58, 48, 94, 44); c.bezierCurveTo(128, 40, 152, 64, 136, 102); c.bezierCurveTo(112, 118, 86, 132, 70, 170); c.closePath(); fill(c, '#0A1838');
+    c.beginPath(); c.moveTo(-70, 10); c.bezierCurveTo(-24, -46, 96, -52, 156, 4); c.bezierCurveTo(184, 32, 174, 84, 136, 102); lnB(c, 16, C5.foam);
+    c.beginPath(); c.moveTo(-50, -2); c.bezierCurveTo(-10, -38, 80, -44, 136, -8); lnB(c, 6, '#FFFFFF');
+    for (let i = 0; i < 7; i++) circ(c, 172 - i * 6 + (i % 2) * 10, 30 + i * 12, 9 - i * .8, C5.foam);   // пена срывается с кончика губы
+    c.restore();
+  }
+  function crestTin(c, t, cx, cy, s, sink) {   // белая баночка на гребне: качается, потом гребень уходит вперёд и её затягивает под воду
+    const R = 112 * s, x = cx - 34 * s - sink * 90 * s, y = cy - 76 * s + sink * 360 * s, r = .22 * Math.sin(t * 7.4) - .1;
+    c.save(); c.translate(x, y); c.rotate(r); tin5(c, 0, 0, R, .48 + .07 * Math.sin(t * 5.1), 0, { shc: 'rgba(4,8,26,.35)' }); c.restore();
+  }
+  function foamCap(c, S, x0, x1, w, t, ph) {   // сплошная пенная шапка вдоль поверхности S на [x0, x1]: толщина w(x), неровный верх, белая кромка
+    if (x1 <= x0) return; const n = Math.max(8, Math.ceil((x1 - x0) / 7)), top = [], bot = [];
+    for (let i = 0; i <= n; i++) { const x = lp(x0, x1, i / n), r = w(x), y = S(x); top.push([x, y - r * (1 + .3 * Math.sin(x / 9 + t * 8 + ph * 1.7))]); bot.push([x, y + r * .45]) }
+    c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); for (let i = bot.length - 1; i >= 0; i--) c.lineTo(bot[i][0], bot[i][1]); c.closePath(); fill(c, C5.foam);
+    c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y + 2) : c.moveTo(x, y + 2)); lnB(c, 3, '#FFFFFF');
+  }
+  function waveIn5(c, t, J, q) {
+    const u = at(t, J.w0, J.cov); if (u <= 0) return; const ue = u * u * (3 - 2 * u), [cx, cy] = waveCrest(ue), s = lp(1, 1.7, ue), sink = at(ue, .6, .8);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
+    if (sink > 0) crestTin(c, t, cx, cy, s, sink);   // уже под водой
+    for (let L = 0; L < 3; L++) {   // слои: 0 — дальний (светлее, выше-левее), 2 — ближний
+      const ox = (L - 2) * 58 * s * (1 - at(ue, .8, 1)), oy = (L - 2) * 50 * s * (1 - at(ue, .8, 1)), S = x => waveSurf(x - ox, cx, cy, s, ue, t + L * .7) + oy;
+      const path = () => { c.beginPath(); c.moveTo(-140, 2300); for (let x = -140; x <= 1220; x += 8) c.lineTo(x, S(x)); c.lineTo(1220, 2300); c.closePath() };
+      const surf = () => { c.beginPath(); for (let x = -140; x <= 1220; x += 8) { const y = S(x); x === -140 ? c.moveTo(x, y) : c.lineTo(x, y) } };
+      path(); fill(c, WCOL[L]);
+      if (L === 2) { c.save(); path(); c.clip(); surf(); lnB(c, 150 * s, C5.sea1); surf(); lnB(c, 52 * s, C5.sea2);
+        for (let i = 0; i < 14; i++) { const bx = -40 + 1160 * H1(i * 5.3), by = S(bx) + 60 * s + lp(900, 0, (t * .8 + H1(i * 2.1)) % 1) * s; circ(c, bx + 6 * Math.sin(t * 5 + i), by, (4 + 7 * H1(i + 6)) * s, 'rgba(201,220,242,.18)') }   // пузыри в толще воды
+        c.restore() }
+      const fx0 = cx + ox, nF = L === 2 ? 1 : .55;   // пена на гребне слоя
+      foamCap(c, S, fx0 - 380 * s * nF, fx0 + 8 * s, x => (2 + 13 * Math.pow(cl(1 - (fx0 - x) / (380 * s * nF)), .8)) * s * nF, t, L);
+    }
+    lip5(c, cx, cy, s);
+    if (sink <= 0) crestTin(c, t, cx, cy, s, 0);
+    for (let i = 0; i < 24; i++) { const f = (t * 1.9 + H1(i * 3.3)) % 1, bx = cx + (50 + 180 * H1(i)) * s, by = cy - (10 + 130 * H1(i + 4)) * s;   // брызги впереди гребня
+      circ(c, bx + 80 * s * f, by - 130 * s * f + 100 * s * f * f, (3 + 5 * H1(i + 9)) * s, rgba('#E6F0FF', .85 * (1 - f))) }
+    coverFly5(c, t, J, q);
+    c.restore();
+  }
+  function coverFly5(c, t, J, q) {   // заглушка с фото 2022 сорвана гребнем — кувырком улетает вправо-вверх, брызги веером
+    const tau = t - J.hitT; if (tau < 0 || tau > .9) return; const [px, py] = photo5(C22), X = (px - q.x) * q.z + 540, Y = (py - q.y) * q.z + 960, S0 = PS5 * q.z;
+    for (let i = 0; i < 26; i++) { const an = -Math.PI * .1 - Math.PI * .75 * H1(i * 5.1), v = (500 + 900 * H1(i * 2.7)) * tau, x = X - S0 * .45 + Math.cos(an) * v, y = Y + Math.sin(an) * v + 1400 * tau * tau;
+      circ(c, x, y, (4 + 7 * H1(i + 3)) * (1 - at(tau, .2, .7)), rgba('#E6F0FF', .9 * (1 - at(tau, .25, .7)))) }
+    const a = 1 - at(tau, .42, .62); if (a <= 0) return;
+    c.save(); c.globalAlpha *= a; c.translate(X + 1150 * tau + 500 * tau * tau, Y - 980 * tau + 420 * tau * tau); c.rotate(2.4 * tau); const k = 1 - .3 * at(tau, 0, .7), fy = Math.cos(5.2 * tau);   // кувырок: переворачивается через край
+    c.scale(1, Math.max(.06, Math.abs(fy))); if (fy > 0) c.drawImage(coverImg(), -S0 * k / 2, -S0 * k / 2, S0 * k, S0 * k); else { rr(c, -S0 * k / 2, -S0 * k / 2, S0 * k, S0 * k, 4); fill(c, '#2A2A33') } c.restore();
+  }
+  function surface5(c, t, J) {   // вода уходит вниз: над ней ночной океан (кадр 0), баночка всплывает; линия воды ложится на передний вал кадра 0
+    const k = at(t, J.cov, J.j0); if (k <= 0) return; const e = eo(k), base = lp(-170, 1330, e), L = x => base + 30 * Math.sin(x / 160 + t * 1.7);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
+    c.save(); c.beginPath(); c.moveTo(-100, -100); c.lineTo(1180, -100); for (let x = 1180; x >= -100; x -= 20) c.lineTo(x, L(x)); c.closePath(); c.clip(); oceanWorld(c, t, Q0); c.restore();
+    c.beginPath(); c.moveTo(-700, 2400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, L(x)); c.lineTo(1800, 2400); c.closePath(); fill(c, C5.sea0);
+    for (let i = 0; i < 16; i++) { const bx = 60 + 960 * H1(i * 7.7), by = lp(1900, base + 40, (t * .9 + H1(i * 1.9)) % 1); if (by > L(bx) + 20) circ(c, bx + 8 * Math.sin(t * 6 + i), by, (5 + 9 * H1(i + 2)) * (1 - k * .6), 'rgba(201,220,242,.22)') }   // пузыри
+    c.beginPath(); for (let x = -700; x <= 1800; x += 20) { const y = L(x); x === -700 ? c.moveTo(x, y) : c.lineTo(x, y) } lnB(c, 5, 'rgba(201,220,242,.55)');
+    const fo = 1 - at(k, .5, 1); if (fo > 0) foamCap(c, x => L(x) - 2, -40, 1120, x => (5 + 5 * Math.sin(x / 37 + 1.3)) * fo + 2 * fo, t, 3);   // пена на кромке тает к кадру 0
+    c.restore();
+  }
   function boardStartShot(c, t) {
-    const q = camObj(camAt(KJ5, t)), cov = at(t, 0, .62);
-    layer(c, q, 1, cc => boardWorld5(cc, t, { tO: t, cover: cov }));
-    const e = eio(at(t, .5, 1.15)); if (e > 0) photoOver5(c, q, 1 - e, t);
+    const J = J5, q = camObj(camAt(KJ5, t)), off = t >= J.hitT;
+    layer(c, q, 1, cc => { boardWorld5(cc, t, { tO: t, cover: off ? 1 : 0, thrK: n => n === 6 ? 0 : 1, noTin: true }); pullThread5(cc, t, J); CARDS5.forEach(cd => pin5d(cc, ...pin5(cd))) });   // нить 14 → 22 тянется отдельно, булавки — поверх неё
+    waveIn5(c, t, J, q); surface5(c, t, J);
+  }
+  function boardStartCues(Q) {
+    const J = J5; Q(J.th0, 'whip', .28, -.4); Q(J.th1 - .05, 'plop', .3, .3); Q(J.th1, 'whip', .22, .3);
+    Q(J.w0 - .15, 'wave', .55, -.5); Q(J.hitT, 'splash', .55, .1); Q(J.hitT + .02, 'papers', .3, .4); Q(J.cov - .25, 'wave', .45); Q(J.cov, 'deep', .4); Q(J.j0 - .2, 'splash', .35);
   }
   // ---------- вода поднимается (конец строки 11): за ней — тот же ночной океан ----------
   function flood5(c, t, k, tO) {
@@ -106,9 +201,9 @@
   // ---------- строка 12 (фильм) и концовка шортса ----------
   function boardInit5() {
     const a = { j: T6.jout }; T7 = a; a.fl1 = a.j + .62; a.sh1 = a.fl1 + .75; a.tOff = MODE === 'y' ? 200 : TLX.endT + 1 / 30;
-    if (MODE === 'y') { const w = q => Ws('s12', q); Object.assign(a, { kazh: w('каждая'), dosk: w('доске'), nov: w('новый'), bros: w('бросить'), ost: w('осталось'), per: w('перевернуть'), dosk2: w('доску'), sB: SB('s12') }) }
-    else { const w = q => Ws('q', q); Object.assign(a, { ugad: w('угадаете'), obor: w('обороте'), dos: w('доски'), vEnd: TLX.vEnd, end: TLX.endT + 1 / 30 }) }
-    if (MODE === 'y') K7 = [KY(a.fl1, 850, 760, 3.0), KY(a.sh1, 700, 690, 1.25), KY(a.dosk + .2, 560, 680, .94), KY(a.ost, 548, 660, .92), KY(a.dosk2 + .4, 540, 610, .86)];
+    // v22.4: строки 12 в фильме больше нет — после строки 11 вода, фото 2022, плавный отъезд на всю доску, дальше финал (90-final.js)
+    if (MODE !== 'y') { const w = q => Ws('q', q); Object.assign(a, { ugad: w('угадаете'), obor: w('стоит'), dos: w('снюсом'), vEnd: TLX.vEnd, end: TLX.endT + 1 / 30 }) }   // v22.4: вопрос «Угадаете, кто на самом деле стоит за…» — доска на ребро на «стоит»
+    if (MODE === 'y') K7 = [KY(a.fl1, 850, 760, 3.0), KY(a.sh1, 700, 690, 1.25), KY(Math.min(a.sh1 + .7, Ws('f1', 'так') - .25), 556, 664, .93)];
     else K7 = [KY(a.fl1, 850, 760, 3.0), KY(a.sh1, 700, 690, 1.25), KY(a.sh1 + .7, 560, 690, .92), KY(a.vEnd + .15, 560, 680, .9), KY(a.end - .62, 760, 730, 1.6), KY(a.end, 850, 760, 4.6)];
   }
   function turnK(t) { const a = T7; if (MODE === 'y') return 0; const u = at(t, Math.max(a.obor - .3, a.sh1 + .05), a.obor + 1.0); return u > 0 && u < 1 ? 1.92 * Math.sin(Math.PI * u) : 0 }   // шортс: поворот доски на ребро и обратно (рад); v22.2 — когда фото уже легло в карточку
@@ -116,14 +211,13 @@
     const a = T7, tO = t - a.tOff;
     if (t < a.fl1) { schoolShot(c, t); flood5(c, t, at(t, a.j, a.fl1), tO); return }
     const q = camObj(camAt(K7, Math.min(t, K7[K7.length - 1][0])));
-    const pulse = MODE === 'y' ? (n => at(t, a.nov - .1 + n * .05, a.bros + .2 + n * .05)) : undefined;
+    const pulse = undefined;   // v22.4: импульс по нитям был на строке 12 — её нет
     const flash = MODE === 'y' ? undefined : (i => Math.sin(Math.PI * at(t, a.fl1 + .15 + i * .08, a.fl1 + .5 + i * .08)));   // шортс: пока кадр сжимается в фото — значки вспыхивают, нити уходят за доску
     const thrK = MODE === 'y' ? undefined : (n => 1 - eio(at(t, a.fl1 + .35 + n * .03, a.obor - .35)));
     const ang = turnK(t), sx = Math.cos(ang);
     c.save(); layer(c, q, 1, cc => {
       if (Math.abs(sx) < .999) { wallBg5(cc); flipBoard(cc, ang, g => boardWorld5(g, t, { tO, threads: false, noWall: true }), g => boardBack5(g, t, { teaser: 1 })) }   // v22.2: настоящий 3D-поворот, на изнанке — уроборос с натянутыми нитями
       else boardWorld5(cc, t, { tO, pulse, flash, thrK });
-      if (MODE === 'y' && t > a.ost) curlCorner(cc, t);
     }); c.restore();
     const e = eio(at(t, a.fl1, a.sh1)); if (e < 1) photoOver5(c, q, e, tO);
     if (MODE !== 'y') {   // шортс: штамп и нырок в фото 2022 = кадр 0
@@ -206,7 +300,7 @@
     if (Math.abs(ca) < .14) { const e = 1 - Math.abs(ca) / .14; c.save(); c.globalAlpha *= e; rr(c, R.ax - 10, R.y0 + 30, 20, R.h - 60, 6); fill(c, '#3A2A1E'); c.fillStyle = 'rgba(255,230,200,.25)'; c.fillRect(R.ax - 10, R.y0 + 30, 4, R.h - 60); c.restore() }   // ребро доски
   }
   // ---------- фильм: «Осталось перевернуть саму доску» — правый нижний угол загибается ----------
-  function curlK(t) { const a = T7; return eio(at(t, a.per - .1, a.dosk2 + .35)) * .55 }
+  function curlK(t) { const a = T7; return a.per === undefined ? 0 : eio(at(t, a.per - .1, a.dosk2 + .35)) * .55 }   // v22.4: угол загибался на строке 12 — её нет, доска переворачивается молча
   function curlCorner(c, t) {
     const k = curlK(t); if (k <= 0) return; const B = BRD5, L = lp(0, 340, k), x = B.x1, y = B.y1;
     c.save(); poly(c, [x - L, y, x, y, x, y - L]); fill(c, '#2a1d14');   // под загибом — стена
@@ -216,6 +310,6 @@
   }
   function boardCues5(Q) {
     const a = T7; Q(a.j + .05, 'wave', .5); Q(a.j + .3, 'splash', .45); Q(a.fl1 + .1, 'whoosh', .4); Q(a.sh1 - .1, 'papers', .3); Q(a.sh1, 'plop', .3);
-    if (MODE === 'y') { Q(a.nov - .1, 'shimmer', .35); Q(a.per, 'pageflip', .4); Q(a.per + .3, 'papers', .3) }
+    if (MODE === 'y') Q(a.sh1 + .1, 'whoosh', .3);
     else { for (let i = 0; i < 5; i++) Q(a.ugad - .1 + i * .12, 'plop', .25, -.4 + i * .2); Q(a.ugad + .8, 'chain', .35); Q(a.obor - .3, 'whoosh', .45); Q(a.obor + .2, 'deep', .35); Q(a.obor + .8, 'whoosh', .35); Q(a.vEnd, 'stamp', .55); Q(a.end - .6, 'dive', .5); Q(a.end - .2, 'wave', .35) }
   }

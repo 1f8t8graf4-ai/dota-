@@ -1,7 +1,7 @@
 # Главы 1–5 и финал на английском и немецком — тексты на проверку
 
 Собрано `python3 l10n/build.py`: голос глав 1–3 — `l10n/data.py`, глав 4–5 и финала — `l10n/data45.py`, надписи — словари роликов.
-Английский голос записан (Nathan, 21.11), немецкий — ждёт выбора голоса.
+Английский голос записан (Nathan, 21.11), кроме четырёх новых строк финального ТЗ: мостик главы 5, строка 3 финала, строка 4 финала без «Змея кусает свой хвост» и вопрос шортса главы 5. Немецкий — ждёт выбора голоса.
 
 - **Часть 1** — текст диктора: фильм целиком по строкам (RU → EN → DE), у шортса — только то, чем он отличается.
 - **Часть 2** — все надписи в кадре по главам: RU → EN → DE.
@@ -392,90 +392,92 @@
 
 ## Глава 5 «Снюс» · 2022
 
-> Строка 3 адаптирована: «у нас» (в России) → «многие».
+> Строка 3 адаптирована: «у нас» (в России) → «многие». Финальное ТЗ (21.11): первая строка фильма — мостик «Но после провала с айкосом…» поверх нити и волны; строки «Каждая карточка на этой доске…» больше нет; вопрос шортса — про сигареты, вейпы и снюс (без «доски»).
 
 ### Фильм
 
-**1.** А в Америку «Филип Моррис» всё-таки вернулся — через год после запрета, с маленькой белой баночкой за шестнадцать миллиардов.
+**1.** Но после провала с айкосом они сделали ход ещё хитрее. *(только в фильме)*
+
+- EN: But after the IQOS setback, they made an even smarter move.
+- DE: Doch nach dem IQOS-Rückschlag machten sie einen noch schlaueren Zug.
+
+**2.** А в Америку «Филип Моррис» всё-таки вернулся — через год после запрета, с маленькой белой баночкой за шестнадцать миллиардов.
 
 - EN: But Philip Morris did make it back to America — a year after the ban, with a small white can — a sixteen-billion-dollar deal.
 - DE: Doch Philip Morris kam nach Amerika zurück – ein Jahr nach dem Verbot, mit einer kleinen weißen Dose für sechzehn Milliarden.
 
-**2.** В ней нет даже… табака.
+**3.** В ней нет даже… табака.
 
 - EN: There isn’t even any… tobacco in it.
 - DE: Darin ist nicht mal… Tabak.
 
-**3.** Их не видно, не слышно, и они ничем не пахнут: маленький белый пакетик кладут под верхнюю губу — и всё.
+**4.** Их не видно, не слышно, и они ничем не пахнут: маленький белый пакетик кладут под верхнюю губу — и всё.
 
 - EN: You can’t see it, hear it, or smell it: a small white pouch goes under the upper lip — and that’s it.
 - DE: Man sieht sie nicht, man hört sie nicht, und sie riechen nach nichts: Ein kleiner weißer Beutel kommt unter die Oberlippe – fertig.
 
-**4.** Сначала щиплет десну, никотин уходит в кровь прямо через неё, а со стороны ничего не заметно: ни дыма, ни пара — хоть на совещании, хоть в самолёте.
+**5.** Сначала щиплет десну, никотин уходит в кровь прямо через неё, а со стороны ничего не заметно: ни дыма, ни пара — хоть на совещании, хоть в самолёте.
 
 - EN: First it stings your gums, the nicotine goes straight into your bloodstream, and no one around can tell: no smoke, no vapor — in a meeting or on a plane.
 - DE: Erst brennt es am Zahnfleisch, das Nikotin geht direkt darüber ins Blut, und von außen merkt man nichts: kein Rauch, kein Dampf – ob im Meeting oder im Flugzeug.
 
-**5.** У нас такие пакетики все зовут снюсом, хотя настоящий шведский снюс — это табак.
+**6.** У нас такие пакетики все зовут снюсом, хотя настоящий шведский снюс — это табак.
 
 - EN: Lots of people call these pouches snus, but real Swedish snus is tobacco.
 - DE: Viele nennen solche Beutel Snus – dabei ist echter schwedischer Snus Tabak.
 
-**6.** А в этих табака нет — зато никотин есть, и выжимают его… из табака.
+**7.** А в этих табака нет — зато никотин есть, и выжимают его… из табака.
 
 - EN: These contain no tobacco — but they do contain nicotine, and it’s extracted… from tobacco.
 - DE: Hier ist kein Tabak drin – dafür Nikotin, und das wird gewonnen… aus Tabak.
 
-**7.** Придумали их шведы, а производитель «Мальборо» купил шведскую компанию целиком — вместе с американским заводом в Кентукки.
+**8.** Придумали их шведы, а производитель «Мальборо» купил шведскую компанию целиком — вместе с американским заводом в Кентукки.
 
 - EN: The Swedes invented them — and the maker of Marlboro bought the whole Swedish company, along with its American factory in Kentucky.
 - DE: Erfunden haben sie die Schweden – und der Marlboro-Hersteller kaufte die schwedische Firma komplett, samt amerikanischem Werk in Kentucky.
 
-**8.** Через два года снюс смели с полок по всей Америке, как когда-то айкосы в Японии: только в двадцать четвёртом там продали почти шестьсот миллионов банок.
+**9.** Через два года снюс смели с полок по всей Америке, как когда-то айкосы в Японии: только в двадцать четвёртом там продали почти шестьсот миллионов банок.
 
 - EN: Two years later, pouches were flying off shelves all over America, just like IQOS once did in Japan: in 2024 alone, nearly six hundred million cans were sold there.
 - DE: Zwei Jahre später waren die Beutel in ganz Amerika ausverkauft – wie einst IQOS in Japan: Allein 2024 wurden dort fast sechshundert Millionen Dosen verkauft.
 
-**9.** В двадцать пятом американский регулятор разрешил их продавать — первыми из всех пакетиков, и сразу со вкусами: мята, цитрус, кофе, корица.
+**10.** В двадцать пятом американский регулятор разрешил их продавать — первыми из всех пакетиков, и сразу со вкусами: мята, цитрус, кофе, корица.
 
 - EN: In 2025, the US regulator approved them — the first nicotine pouches ever authorized, and with flavors right away: mint, citrus, coffee, cinnamon.
 - DE: 2025 ließ die US-Behörde sie zu – als allererste Nikotinbeutel, und gleich mit Geschmack: Minze, Zitrus, Kaffee, Zimt.
 
-**10.** Пять лет назад «Джулу» такие вкусы запретили.
+**11.** Пять лет назад «Джулу» такие вкусы запретили.
 
 - EN: Five years earlier, JUUL had been banned from selling flavors like these.
 - DE: Fünf Jahre zuvor wurden JUUL genau solche Geschmacksrichtungen verboten.
 
-**11.** А в двадцать шестом Зину разрешили то, что айкосу не разрешают до сих пор, — говорить о риске: «Зин вместо сигарет — ниже риск рака рта и лёгких, болезней сердца и инсульта».
+**12.** А в двадцать шестом Зину разрешили то, что айкосу не разрешают до сих пор, — говорить о риске: «Зин вместо сигарет — ниже риск рака рта и лёгких, болезней сердца и инсульта».
 
 - EN: And in 2026, ZYN got permission for what IQOS still doesn’t have — to talk about risk: “ZYN instead of cigarettes — lower risk of mouth and lung cancer, heart disease, and stroke.”
 - DE: Und 2026 durfte ZYN etwas, das IQOS bis heute verwehrt bleibt – über das Risiko sprechen: „ZYN statt Zigaretten – geringeres Risiko für Mund- und Lungenkrebs, Herzkrankheiten und Schlaganfall.“
 
-**12.** Вот только американские школьники сигарет почти не курят, а снюс у них уже обогнал сигареты.
+**13.** Вот только американские школьники сигарет почти не курят, а снюс у них уже обогнал сигареты.
 
 - EN: The catch: American teens barely smoke cigarettes anymore — and among them, pouches have already overtaken cigarettes.
 - DE: Nur: Amerikanische Schüler rauchen kaum noch Zigaretten – und bei ihnen haben die Beutel die Zigaretten schon überholt.
 
-**13.** И меньше чем через два месяца разрешили снюс покрепче: девять и одиннадцать миллиграммов вместо трёх и шести.
+**14.** И меньше чем через два месяца разрешили снюс покрепче: девять и одиннадцать миллиграммов вместо трёх и шести.
 
 - EN: And less than two months later, stronger pouches were approved: nine and eleven milligrams instead of three and six.
 - DE: Und keine zwei Monate später wurden stärkere Beutel zugelassen: neun und elf Milligramm statt drei und sechs.
-
-**14.** Каждая карточка на этой доске — новый способ бросить. Осталось перевернуть саму доску. *(только в фильме)*
-
-- EN: Every card on this board is a new way to quit. All that’s left is to flip the board itself.
-- DE: Jede Karte an dieser Pinnwand ist ein neuer Weg, aufzuhören. Jetzt bleibt nur noch, die Pinnwand selbst umzudrehen.
 
 ### Шортс — отличия от фильма
 
 **Концовка шортса** (после строки «И меньше чем через два месяца разрешили снюс покрепче: девять и одиннадцать миллиграммов вместо трёх и шести.»):
 
-**Ш1.** Угадаете, что окажется на обороте этой доски?
+**Ш1.** Угадаете, кто на самом деле стоит за сигаретами, вейпами и снюсом?
 
-- EN: Can you guess what’s on the back of this board?
-- DE: Ratet mal, was auf der Rückseite dieser Pinnwand ist?
+- EN: Can you guess who’s actually behind cigarettes, vapes, and pouches?
+- DE: Ratet mal, wer wirklich hinter Zigaretten, Vapes und Nikotinbeuteln steckt?
 
 ## Финал фильма (после главы 5)
+
+> Финальное ТЗ (21.11): доска переворачивается молча (между строками 2 и 3), «Змея кусает свой хвост» убрана — перед строкой 4 полсекунды змея просто вращается.
 
 **1.** Так что вы знаете о никотине?
 
@@ -487,15 +489,15 @@
 - EN: That it’s smoked, heated, vaped, and tucked under the lip — and every time, it’s sold as a way to quit.
 - DE: Dass man es raucht, erhitzt, dampft und unter die Lippe legt – und es jedes Mal als Weg zum Aufhören verkauft wird.
 
-**3.** Переверните доску: все пять нитей тянутся к табачным гигантам.
+**3.** Потяните за любую нить — все пять ведут к одним и тем же табачным гигантам.
 
-- EN: Flip the board: all five threads lead to the tobacco giants.
-- DE: Dreht die Pinnwand um: Alle fünf Fäden führen zu den Tabakriesen.
+- EN: Pull any thread — all five lead straight back to the same tobacco giants.
+- DE: Zieht an irgendeinem Faden – alle fünf führen zurück zu denselben Tabakriesen.
 
-**4.** Змея кусает свой хвост: вы бросаете одно — вам продают следующее.
+**4.** Вы бросаете одно — вам продают следующее.
 
-- EN: The snake bites its own tail: you quit one thing — they sell you the next.
-- DE: Die Schlange beißt sich in den Schwanz: Ihr hört mit einem auf – und sie verkaufen euch das nächste.
+- EN: You quit one thing — they sell you the next.
+- DE: Ihr hört mit einem auf – und sie verkaufen euch das nächste.
 
 # Часть 2. Надписи в кадре
 
@@ -609,7 +611,7 @@
 | МЕНТОЛ | MENTHOL | MENTHOL |
 | FDA · США | FDA · USA | FDA · USA |
 | ЗАПРЕТ — ТОЛЬКО ДЛЯ: | BAN — ONLY FOR: | VERBOT – NUR FÜR: |
-| ВЕЙПОВ СО СМЕННЫМИ | VAPES WITH REPLACEABLE | VAPES MIT AUSTAUSCHBAREN |
+| ВЕЙПОВ СО СМЕННЫМИ | VAPES WITH REPLACEABLE | VAPES MIT WECHSELBAREN |
 | КАРТРИДЖАМИ | CARTRIDGES | PODS |
 | ЦЕЛЬНЫЕ | ALL-IN-ONE | EINTEILIGE |
 | ОДНОРАЗОВЫЕ | DISPOSABLES | EINWEG-VAPES |

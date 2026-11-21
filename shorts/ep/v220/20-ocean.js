@@ -8,7 +8,8 @@
     T0 = { fil: Ws('b1', 'филип'), cher: Ws('b1', 'через'), zap: Ws('b1', 'запрета'), mal: Ws('b1', 'маленькой'), za: Ws('b1', 'за'), shest: Ws('b1', 'шестнадцать'), mlrdA: Ws('b1', 'миллиардов'), mlrd: WsB('b1', 'миллиардов'),
       net: Ws('b2', 'нет'), dazhe: Ws('b2', 'даже'), tab: Ws('b2', 'табака'), tabB: WsB('b2', 'табака'), s1: SA('s1') };
     const a = T0; T0.fly = a.tabB + .05; T0.sw = SA('s1') - .25;   // подушечка летит к камере · смена фона
-    K0 = [KY(MODE === 'y' ? 1.15 : 0, 540, 960, 1.0), KY(a.zap - .4, 548, 940, 1.1), KY(a.mlrd, 560, 1010, 1.26), KY(a.dazhe, 548, 1060, 1.42), KY(a.fly + .1, 540, 1110, 1.62)];
+    T0.j0 = MODE === 'y' ? SA('b1') - .1 : 0;   // v22.4: фильм — волна стыка 4 → 5 открывает океан к началу b1 (80-board.js)
+    K0 = [KY(T0.j0, 540, 960, 1.0), KY(a.zap - .4, 548, 940, 1.1), KY(a.mlrd, 560, 1010, 1.26), KY(a.dazhe, 548, 1060, 1.42), KY(a.fly + .1, 540, 1110, 1.62)];
   }
   // баночка 2.5D: центр крышки (x, y), радиус R, ty — насколько видна крышка (0 — сбоку, 1 — сверху), lid 0..1 — крышка откидывается назад;
   // o.cap — цвет крышки (вкусы), o.name — надпись на крышке, o.dark — тёмная банка SNUS, o.label — бумажная наклейка на боку, o.h — высота бока
@@ -182,7 +183,7 @@
     const x = lp(540, 556, k) + Math.sin(t * 1.1) * 10 * wet, y = lp(1180, 1236, k) + Math.sin(t * 1.7) * 16 * wet - 20 * turn;
     return { x, y, R: lp(lp(210, 222, k), 236, turn), ty: lp(.46 + .06 * Math.sin(t * 1.7) * wet, .9, turn), r: Math.sin(t * 1.3) * .07 * wet, lid: eio(at(t, a.dazhe + .05, a.tab - .1)) };
   }
-  function oceanWorld(c, t, q) {
+  function oceanWorld(c, t, q, o = {}) {   // o.noTin — без баночки (v22.4: в фото 2022 на доске, пока баночка едет на гребне волны)
     const a = T0, up = eio(at(t, a.zap - .05, a.zap + .7));
     layer(c, q, .15, cc => { P0(cc, .15); oceanSky(cc, t) }); layer(c, q, .35, cc => { P0(cc, .35); oceanShore(cc, t) });   // P0: дальний план при камере (540, 960, 1) — на своём месте
     layer(c, q, .55, cc => { P0(cc, .55); seaRows(cc, t, 830, 1000, 5, false) });
@@ -192,7 +193,7 @@
     layer(c, q, 1, cc => seaRows(cc, t, 1000, 1500, 6, false));
     layer(c, q, 1, cc => sand(cc, t, at(t, a.zap, a.zap + 1.6)));
     layer(c, q, 1, cc => { const p = tinPos0(t);
-      cc.save(); cc.translate(p.x, p.y); cc.rotate(p.r); tin5(cc, 0, 0, p.R, p.ty, p.lid, { skip: t > a.fly ? 1 : -1, shc: 'rgba(4,8,26,.4)' }); cc.restore();
+      if (!o.noTin) { cc.save(); cc.translate(p.x, p.y); cc.rotate(p.r); tin5(cc, 0, 0, p.R, p.ty, p.lid, { skip: t > a.fly ? 1 : -1, shc: 'rgba(4,8,26,.4)' }); cc.restore() }
       // волна перед баночкой — пока её не вынесло на песок
       const wet = 1 - at(t, a.zap + .2, a.zap + 1.2); if (wet > 0) { cc.save(); cc.globalAlpha *= wet; cc.beginPath(); cc.moveTo(-700, 2400);
         for (let x = -700; x <= 1800; x += 20) cc.lineTo(x, 1330 + 30 * Math.sin(x / 160 + t * 1.7)); cc.lineTo(1800, 2400); cc.closePath(); fill(cc, C5.sea0);

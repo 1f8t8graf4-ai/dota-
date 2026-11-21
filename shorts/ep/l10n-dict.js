@@ -282,7 +282,7 @@ window.L10N_DICT = {
 "ОДНОРАЗОВЫЕ ?": "EINWEG-VAPES ?",
 "ЗАПРЕТ ВКУСОВ": "AROMENVERBOT",
 "ЗАПРЕТ — ТОЛЬКО ДЛЯ:": "VERBOT – NUR FÜR:",
-"ВЕЙПОВ СО СМЕННЫМИ": "VAPES MIT AUSTAUSCHBAREN",
+"ВЕЙПОВ СО СМЕННЫМИ": "VAPES MIT WECHSELBAREN",
 "КАРТРИДЖАМИ": "PODS",
 "ЦЕЛЬНЫЕ": "EINTEILIGE",
 "ОДНОРАЗОВЫЕ": "EINWEG-VAPES",

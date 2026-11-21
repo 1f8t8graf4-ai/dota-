@@ -1586,8 +1586,10 @@
     const a = T12; if (!a) return; const k = at(t, a.mil + .1, a.mil + .45) * (1 - at(t, a.perezh + .1, a.perezh + .4)); if (k <= 0) return;
     const v = lp(12.8, .45, eio(at(t, a.pochti, a.poter + .45))), cw = 46, ch = 70, x0 = 540 - 3.2 * cw, y0 = 300;
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.translate(540, y0); c.scale(bo(k), bo(k)); c.translate(-540, -y0); c.globalAlpha *= Math.min(1, k * 2);
-    rr(c, x0 - 70, y0 - ch / 2 - 14, 6.4 * cw + 210, ch + 28, 18); fill(c, 'rgba(15,23,42,.9)');
-    tx(c, '$', x0 - 34, y0 + 3, { f: 'M', w: 800, s: 50, c: '#F4F1EA' }); tx(c, 'МЛРД', x0 + 5.6 * cw + 62, y0 + 3, { f: 'M', w: 800, s: 34, c: '#F4F1EA' });
+    const de = window.L10N && window.L10N.lang === 'de';   // v22.4: в немецком — 12,80 MRD. $ (доллар после единиц)
+    rr(c, de ? x0 - 26 : x0 - 70, y0 - ch / 2 - 14, 6.4 * cw + (de ? 226 : 210), ch + 28, 18); fill(c, 'rgba(15,23,42,.9)');
+    if (!de) tx(c, '$', x0 - 34, y0 + 3, { f: 'M', w: 800, s: 50, c: '#F4F1EA' }); tx(c, 'МЛРД', x0 + 5.6 * cw + (de ? 48 : 62), y0 + 3, { f: 'M', w: 800, s: 34, c: '#F4F1EA' });
+    if (de) tx(c, '$', x0 + 5.6 * cw + 124, y0 + 3, { f: 'M', w: 800, s: 44, c: '#F4F1EA' });
     const P = [[10, 0], [1, 1], [null, 2], [.1, 3], [.01, 4]];
     P.forEach(([pl, i]) => { const cx = x0 + i * cw * 1.12 + cw / 2;
       if (pl === null) { tx(c, window.L10N && window.L10N.lang === 'en' ? '.' : ',', cx, y0 + 14, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); return }   // 21.11: в английском — десятичная точка
