@@ -154,13 +154,15 @@
   const OUR = { red: '#B8122C', redL: '#E0344B', redD: '#5E0A18', facet: '#CC1E37', ln: 'rgba(255,226,226,.6)' };
   function ouroBody(c, x, y, R, o = {}) {   // o.w — толщина у шеи, o.a0 — кончик хвоста (угол), o.gap — зазор под голову, o.kw 0..1 — толщина растёт
     const a0 = o.a0 ?? (-Math.PI / 2 + .06), span = TAU - (o.gap ?? .13), n = 180, W = (o.w ?? 46) * (o.kw ?? 1), tail = u => lp(.14, 1, Math.pow(u, .5)) * (u > .97 ? lp(1, .86, (u - .97) / .03) : 1);
-    const pt = (u, d) => { const a = a0 + span * u, r = R + d; return [x + Math.cos(a) * r, y + Math.sin(a) * r] };
+    const pt = (u, d) => { const a = a0 + span * u, r = R + d + (o.wv ? o.wv * Math.sin(TAU * (u * 7 - (o.ph || 0))) : 0); return [x + Math.cos(a) * r, y + Math.sin(a) * r] };   // v22.3: o.wv — волна вдоль тела (ползёт)
     const band = (d0, d1) => { c.beginPath(); for (let i = 0; i <= n; i++) { const u = i / n, w = W * tail(u) / 2, [px, py] = pt(u, w * d1); i ? c.lineTo(px, py) : c.moveTo(px, py) }
       for (let i = n; i >= 0; i--) { const u = i / n, w = W * tail(u) / 2, [px, py] = pt(u, w * d0); c.lineTo(px, py) } c.closePath() };
     band(-1, 1); fill(c, OUR.red); band(-1, -.15); fill(c, OUR.redD); band(.72, 1); fill(c, OUR.redL);   // 3 тона: алый, бордовая тень внутри, свет по внешнему краю
     if ((o.kw ?? 1) > .55) {   // грани-ромбы (чешуя): по одной на толщину тела, через одну — чуть светлее
       let u = .03, k = 0; while (u < .975) { const w = W * tail(u) / 2; if (w > 7) { const du = w * 1.7 / (R * span), [p0x, p0y] = pt(u - du / 2, 0), [p1x, p1y] = pt(u, w * .7), [p2x, p2y] = pt(u + du / 2, 0), [p3x, p3y] = pt(u, -w * .7);
-          c.beginPath(); c.moveTo(p0x, p0y); c.lineTo(p1x, p1y); c.lineTo(p2x, p2y); c.lineTo(p3x, p3y); c.closePath(); if (k % 2) { c.fillStyle = 'rgba(255,120,130,.16)'; c.fill() } lnB(c, 1.3, OUR.ln);
+          c.beginPath(); c.moveTo(p0x, p0y); c.lineTo(p1x, p1y); c.lineTo(p2x, p2y); c.lineTo(p3x, p3y); c.closePath();
+          const gw = o.gl == null ? 0 : Math.exp(-Math.pow((((u - o.gl) % 1 + 1.5) % 1 - .5) / .06, 2));   // v22.3: перелив чешуек — светлая волна бежит по телу
+          if (k % 2 || gw > .05) { c.fillStyle = `rgba(255,${120 + 90 * gw | 0},${130 + 80 * gw | 0},${.16 + .5 * gw})`; c.fill() } lnB(c, 1.3, OUR.ln);
           u += du * 1.02 } else u += .01; k++ } }
     band(-1, 1); lnB(c, 2, 'rgba(255,226,226,.4)');
     return { head: pt(1, 0), ang: a0 + span + Math.PI / 2, tailTip: pt(0, 0) };

@@ -309,21 +309,21 @@
 **1.** Производитель «Мальборо» однажды пообещал бросить сигареты.
 
 - EN: The maker of Marlboro once promised to quit cigarettes.
-- DE: Der Marlboro-Hersteller hat einmal versprochen, die Zigaretten aufzugeben.
+- DE: Der Marlboro-Hersteller hat einmal versprochen, Zigaretten aufzugeben.
 
 **2.** Выкупил целые страницы в британских газетах: «Наше новогоднее обещание — мы пытаемся бросить сигареты».
 
-- EN: It bought full pages in British newspapers: “Our New Year’s resolution — we’re trying to give up cigarettes.”
-- DE: Er kaufte ganze Seiten in britischen Zeitungen: „Unser Neujahrsvorsatz: Wir versuchen, die Zigaretten aufzugeben.“
+- EN: They bought full pages in British newspapers: “Our New Year’s resolution — we’re trying to give up cigarettes.”
+- DE: Er kaufte ganze Seiten in britischen Zeitungen: „Unser Neujahrsvorsatz: Wir versuchen, Zigaretten aufzugeben.“
 
 **3.** Слово, мягко говоря, не сдержал.
 
-- EN: To put it mildly, it didn’t keep its word.
+- EN: To put it mildly, they didn’t keep their word.
 - DE: Sein Wort hat er, gelinde gesagt, nicht gehalten.
 
 **4.** Бросать он начал заранее: в две тысячи четырнадцатом в японской Нагое и итальянском Милане появилась сигарета, которую нельзя поджечь.
 
-- EN: It started “quitting” early: in 2014, a cigarette you can’t light appeared in Nagoya, Japan, and Milan, Italy.
+- EN: They started “quitting” early: in 2014, a cigarette you can’t light appeared in Nagoya, Japan, and Milan, Italy.
 - DE: Mit dem Aufhören fing er schon früher an: 2014 tauchte im japanischen Nagoya und im italienischen Mailand eine Zigarette auf, die man nicht anzünden kann.
 
 **5.** Табак в ней греет нагреватель, вдвое холоднее огня: куртка не пахнет, пепла нет, затянуться можно прямо в машине.
@@ -343,18 +343,18 @@
 
 **8.** Через год швейцарские учёные поймали этот «пар» и нашли те же яды, что в дыме. Многих меньше, одного даже больше, а никотина — восемьдесят четыре процента от сигареты.
 
-- EN: A year later, Swiss scientists captured this “vapor” and found the same toxins as in smoke. Less of many, even more of one — and eighty-four percent of a cigarette’s nicotine.
-- DE: Ein Jahr später fingen Schweizer Forscher diesen „Dampf“ ein und fanden dieselben Giftstoffe wie im Rauch. Von vielen weniger, von einem sogar mehr – und Nikotin: vierundachtzig Prozent einer Zigarette.
+- EN: A year later, Swiss scientists captured this “vapor” and found the same toxins as in smoke. Lower levels of most, even higher of one — and eighty-four percent of a cigarette’s nicotine.
+- DE: Ein Jahr später fingen Schweizer Forscher diesen „Dampf“ ein und fanden dieselben Giftstoffe wie im Rauch. Von vielen weniger, von einem sogar mehr – und beim Nikotin vierundachtzig Prozent einer Zigarette.
 
 **9.** Статью они так и назвали: «Дым под другим именем».
 
 - EN: They even titled their paper “Smoke by Any Other Name.”
-- DE: Ihren Artikel nannten sie genau so: „Rauch unter anderem Namen“.
+- DE: Ihre Studie nannten sie schlicht: „Rauch unter anderem Namen“.
 
 **10.** В двадцатом американский регулятор разрешил писать, что вредных веществ в айкосе меньше, а сказать «вреда меньше» не разрешает до сих пор.
 
 - EN: In 2020, the US regulator allowed IQOS to say it contains fewer harmful chemicals — but it still won’t let them say “less harm.”
-- DE: 2020 erlaubte die US-Behörde den Hinweis, dass IQOS weniger Schadstoffe enthält – aber „weniger schädlich“ darf man bis heute nicht sagen.
+- DE: 2020 erlaubte die US-Behörde den Hinweis, dass IQOS weniger Schadstoffe enthält – aber „weniger schädlich“ dürfen sie bis heute nicht sagen.
 
 **11.** Помните «Рейнольдс» — тех, что в семьдесят третьем искали, как подсадить подростков?
 
@@ -398,7 +398,7 @@
 
 **1.** А в Америку «Филип Моррис» всё-таки вернулся — через год после запрета, с маленькой белой баночкой за шестнадцать миллиардов.
 
-- EN: But Philip Morris did make it back to America — a year after the ban, with a small white can worth sixteen billion.
+- EN: But Philip Morris did make it back to America — a year after the ban, with a small white can — a sixteen-billion-dollar deal.
 - DE: Doch Philip Morris kam nach Amerika zurück – ein Jahr nach dem Verbot, mit einer kleinen weißen Dose für sechzehn Milliarden.
 
 **2.** В ней нет даже… табака.
@@ -408,12 +408,12 @@
 
 **3.** Их не видно, не слышно, и они ничем не пахнут: маленький белый пакетик кладут под верхнюю губу — и всё.
 
-- EN: You can’t see them, can’t hear them, and they don’t smell: a small white pouch goes under the upper lip — and that’s it.
+- EN: You can’t see it, hear it, or smell it: a small white pouch goes under the upper lip — and that’s it.
 - DE: Man sieht sie nicht, man hört sie nicht, und sie riechen nach nichts: Ein kleiner weißer Beutel kommt unter die Oberlippe – fertig.
 
 **4.** Сначала щиплет десну, никотин уходит в кровь прямо через неё, а со стороны ничего не заметно: ни дыма, ни пара — хоть на совещании, хоть в самолёте.
 
-- EN: First it stings the gum, the nicotine enters the blood right through it, and no one around can tell: no smoke, no vapor — in a meeting or on a plane.
+- EN: First it stings your gums, the nicotine goes straight into your bloodstream, and no one around can tell: no smoke, no vapor — in a meeting or on a plane.
 - DE: Erst brennt es am Zahnfleisch, das Nikotin geht direkt darüber ins Blut, und von außen merkt man nichts: kein Rauch, kein Dampf – ob im Meeting oder im Flugzeug.
 
 **5.** У нас такие пакетики все зовут снюсом, хотя настоящий шведский снюс — это табак.
@@ -424,7 +424,7 @@
 **6.** А в этих табака нет — зато никотин есть, и выжимают его… из табака.
 
 - EN: These contain no tobacco — but they do contain nicotine, and it’s extracted… from tobacco.
-- DE: In diesen ist kein Tabak – dafür Nikotin, und das wird gewonnen… aus Tabak.
+- DE: Hier ist kein Tabak drin – dafür Nikotin, und das wird gewonnen… aus Tabak.
 
 **7.** Придумали их шведы, а производитель «Мальборо» купил шведскую компанию целиком — вместе с американским заводом в Кентукки.
 
@@ -438,7 +438,7 @@
 
 **9.** В двадцать пятом американский регулятор разрешил их продавать — первыми из всех пакетиков, и сразу со вкусами: мята, цитрус, кофе, корица.
 
-- EN: In 2025, the US regulator authorized them — the first pouches ever authorized, and with flavors right away: mint, citrus, coffee, cinnamon.
+- EN: In 2025, the US regulator approved them — the first nicotine pouches ever authorized, and with flavors right away: mint, citrus, coffee, cinnamon.
 - DE: 2025 ließ die US-Behörde sie zu – als allererste Nikotinbeutel, und gleich mit Geschmack: Minze, Zitrus, Kaffee, Zimt.
 
 **10.** Пять лет назад «Джулу» такие вкусы запретили.
@@ -495,7 +495,7 @@
 **4.** Змея кусает свой хвост: вы бросаете одно — вам продают следующее.
 
 - EN: The snake bites its own tail: you quit one thing — they sell you the next.
-- DE: Die Schlange beißt sich in den Schwanz: Ihr hört mit einem auf – und bekommt das Nächste verkauft.
+- DE: Die Schlange beißt sich in den Schwanz: Ihr hört mit einem auf – und sie verkaufen euch das nächste.
 
 # Часть 2. Надписи в кадре
 
@@ -705,7 +705,7 @@
 | 617 МЛРД | 617B | 617 MRD. |
 | СИГАРЕТ | CIGARETTES | ZIGARETTEN |
 | +0,6 % | +0.6% | +0,6 % |
-| ЗА ГОД | IN A YEAR | IN EINEM JAHR |
+| ЗА ГОД | VS. PRIOR YEAR | ZUM VORJAHR |
 | $16 МЛРД | $16B | 16 MRD. $ |
 | БЕЗ ТАБАКА | NO TOBACCO | OHNE TABAK |
 | Часть 5 → | Part 5 → | Teil 5 → |
@@ -714,7 +714,7 @@
 | СОЛЬ | SALT | SALZ |
 | ЛАЗЕЙКА ОДНОРАЗОК | THE DISPOSABLE LOOPHOLE | DIE EINWEG-LÜCKE |
 | «МАЛЬБОРО» | “MARLBORO” | „MARLBORO“ |
-| НАГРЕВАТЕЛИ | HEATERS | TABAKERHITZER |
+| НАГРЕВАТЕЛИ | HEATED TOBACCO | TABAKERHITZER |
 | СНЮС | NICOTINE POUCHES | NIKOTINBEUTEL |
 | −$300 МЛН | −$300M | −300 MIO. $ |
 | 32 МЛН | 32M | 32 MIO. |
@@ -727,7 +727,7 @@
 | RU | EN | DE |
 |---|---|---|
 | Наше новогоднее / обещание | Our New / Year’s resolution | Unser / Neujahrsvorsatz |
-| Мы пытаемся бросить / сигареты. | We’re trying to / give up cigarettes. | Wir versuchen, die / Zigaretten aufzugeben. |
+| Мы пытаемся бросить / сигареты. | We’re trying to / give up cigarettes. | Wir versuchen, / Zigaretten aufzugeben. |
 | НОВОСТИ | NEWS | NACHRICHTEN |
 | Табачные нагреватели: | Heat-Not-Burn Tobacco Cigarettes: | Tabakerhitzer: |
 | дым под другим именем | Smoke by Any Other Name | Rauch unter anderem Namen |
@@ -765,7 +765,7 @@
 | СОЛЬ | SALT | SALZ |
 | ЛАЗЕЙКА ОДНОРАЗОК | THE DISPOSABLE LOOPHOLE | DIE EINWEG-LÜCKE |
 | «МАЛЬБОРО» | “MARLBORO” | „MARLBORO“ |
-| НАГРЕВАТЕЛИ | HEATERS | TABAKERHITZER |
+| НАГРЕВАТЕЛИ | HEATED TOBACCO | TABAKERHITZER |
 | СНЮС | NICOTINE POUCHES | NIKOTINBEUTEL |
 | $16 МЛРД | $16B | 16 MRD. $ |
 | 581 МЛН | 581M | 581 MIO. |

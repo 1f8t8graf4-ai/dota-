@@ -602,28 +602,28 @@
   // По разбору Gemini 20.11 числа сразу в форматах EN/DE ($16B / 16 MRD. $, 581M / 581 MIO.). Язык — из ролика (v220y-ru → ru) в EP.init → setLang.
   const TEXT_L = {
     ru: {
-      notob: 'БЕЗ ТАБАКА', snusTag: 'СНЮС', snusTob: 'СНЮС = ТАБАК', nicTob: 'НИКОТИН — ИЗ ТАБАКА', ky: 'КЕНТУККИ', empty: 'ПУСТЫЕ ПОЛКИ',
+      notob: 'БЕЗ ТАБАКА', snusTob: 'СНЮС = ТАБАК', nicTob: 'НИКОТИН — ИЗ ТАБАКА', ky: 'КЕНТУККИ', empty: 'ПУСТЫЕ ПОЛКИ',
       soldout: 'РАСКУПИЛИ', ok: 'РАЗРЕШЕНО', first: 'ПЕРВЫЕ', less: 'МЕНЬШЕ ВЕЩЕСТВ', harm: 'МЕНЬШЕ ВРЕДА', no: 'НЕЛЬЗЯ', risk: 'НИЖЕ РИСК',
       kids: 'ШКОЛЬНИКИ США', mg: 'МГ', strength: 'КРЕПОСТЬ', title: 'ЧТО ВЫ ЗНАЕТЕ О НИКОТИНЕ?', titleL: ['ЧТО ВЫ ЗНАЕТЕ', 'О НИКОТИНЕ?'], quit: 'СПОСОБ БРОСИТЬ', yt: 'ЦЕЛИКОМ — НА YOUTUBE',
       card79b: 'СОЛЬ', card20b: 'ЛАЗЕЙКА ОДНОРАЗОК', card24b: '«МАЛЬБОРО»', card14b: 'НАГРЕВАТЕЛИ', card22b: 'СНЮС',
       fPrice: v => '$' + v + ' МЛРД', fCans: v => v + ' МЛН', fPct: v => String(v).replace('.', ',') + ' %',
     },
     en: {
-      notob: 'NO TOBACCO', snusTag: 'SNUS', snusTob: 'SNUS = TOBACCO', nicTob: 'NICOTINE — FROM TOBACCO', ky: 'KENTUCKY', empty: 'EMPTY SHELVES',
+      notob: 'NO TOBACCO', snusTob: 'SNUS = TOBACCO', nicTob: 'NICOTINE — FROM TOBACCO', ky: 'KENTUCKY', empty: 'EMPTY SHELVES',
       soldout: 'SOLD OUT', ok: 'AUTHORIZED', first: 'THE FIRST', less: 'FEWER CHEMICALS', harm: 'LESS HARM', no: 'NOT ALLOWED', risk: 'LOWER RISK',
       kids: 'U.S. STUDENTS', mg: 'MG', strength: 'STRENGTH', title: 'WHAT DO YOU KNOW ABOUT NICOTINE?', titleL: ['WHAT DO YOU KNOW', 'ABOUT NICOTINE?'], quit: 'A WAY TO QUIT', yt: 'FULL VERSION — ON YOUTUBE',
-      card79b: 'SALT', card20b: 'THE DISPOSABLE LOOPHOLE', card24b: '“MARLBORO”', card14b: 'HEATERS', card22b: 'NICOTINE POUCHES',
+      card79b: 'SALT', card20b: 'THE DISPOSABLE LOOPHOLE', card24b: '“MARLBORO”', card14b: 'HEATED TOBACCO', card22b: 'NICOTINE POUCHES',
       fPrice: v => '$' + v + 'B', fCans: v => v + 'M', fPct: v => v + '%',
     },
     de: {
-      notob: 'OHNE TABAK', snusTag: 'SNUS', snusTob: 'SNUS = TABAK', nicTob: 'NIKOTIN – AUS TABAK', ky: 'KENTUCKY', empty: 'LEERE REGALE',
+      notob: 'OHNE TABAK', snusTob: 'SNUS = TABAK', nicTob: 'NIKOTIN – AUS TABAK', ky: 'KENTUCKY', empty: 'LEERE REGALE',
       soldout: 'AUSVERKAUFT', ok: 'ZUGELASSEN', first: 'DIE ERSTEN', less: 'WENIGER SCHADSTOFFE', harm: 'WENIGER SCHÄDLICH', no: 'VERBOTEN', risk: 'GERINGERES RISIKO',
       kids: 'US-SCHÜLER', mg: 'MG', strength: 'STÄRKE', title: 'WAS WISST IHR ÜBER NIKOTIN?', titleL: ['WAS WISST IHR', 'ÜBER NIKOTIN?'], quit: 'EIN WEG ZUM AUFHÖREN', yt: 'KOMPLETT AUF YOUTUBE',
       card79b: 'SALZ', card20b: 'DIE EINWEG-LÜCKE', card24b: '„MARLBORO“', card14b: 'TABAKERHITZER', card22b: 'NIKOTINBEUTEL',
       fPrice: v => v + ' MRD. $', fCans: v => v + ' MIO.', fPct: v => String(v).replace('.', ',') + ' %',
     },
   };
-  const OBJ_NAMES = { pm: 'Philip Morris', snus: 'SNUS', marl: 'Marlboro', zyn: 'ZYN', juul: 'JUUL', fda: 'FDA', iqos: 'IQOS', rj: 'R.J. REYNOLDS', pmT: 'PHILIP MORRIS' };
+  const OBJ_NAMES = { pm: 'Philip Morris', snus: 'SNUS', marl: 'Marlboro', zyn: 'ZYN', velo: 'VELO', pablo: 'PABLO', juul: 'JUUL', fda: 'FDA', iqos: 'IQOS', rj: 'R.J. REYNOLDS', pmT: 'PHILIP MORRIS' };
   const TEXT = {}, OBJ = {};
   let LANG = 'ru';
   function setLang(l) {
@@ -1124,10 +1124,29 @@
   const XP = { x: 950, y: 1038, w: 245, h: 290 };
   function smoothOpen(c, P) { c.beginPath(); c.moveTo(P[0][0], P[0][1]); for (let i = 1; i < P.length - 1; i++) { const mx = (P[i][0] + P[i + 1][0]) / 2, my = (P[i][1] + P[i + 1][1]) / 2; c.quadraticCurveTo(P[i][0], P[i][1], mx, my) } c.lineTo(P[P.length - 1][0], P[P.length - 1][1]) }
   const XFACE = [[176, -12], [160, 50], [112, 108], [74, 142], [78, 162], [118, 176], [150, 186], [146, 226], [128, 268], [116, 292], [134, 312], [118, 334], [128, 362], [146, 396], [142, 432], [128, 468], [150, 500], [210, 512]];
-  const XLIPIN = [[196, 196], [190, 236], [182, 276], [178, 302], [214, 314]];
-  const XVES = [[222, 268], [218, 232], [221, 196], [228, 158], [236, 118], [246, 76], [258, 30], [266, -12]];
-  const XBR = [[[219, 226], [240, 214], [252, 200]], [[224, 176], [204, 160], [196, 134]], [[232, 138], [254, 126], [266, 104]], [[244, 90], [226, 70], [222, 44]]];
-  function xpt(P, u) { const n = P.length - 1, f = cl(u) * n, i = Math.min(n - 1, Math.floor(f)), k = f - i; return [lp(P[i][0], P[i + 1][0], k), lp(P[i][1], P[i + 1][1], k)] }
+  // v22.3: макросхема десны (координаты рамки 420 × 500): сверху белая подушечка, под ней ровная розовая десна (на стыке — жёлтые уколы),
+  // прямо под десной — горизонтальный сосуд, кровь течёт вправо; жёлтые точки никотина проходят сквозь розовую стенку и уходят с потоком
+  function gumMacro(c, t, a) {
+    const L = (w, col) => lnB(c, w, col), gy0 = 236, gy1 = 330, vy0 = 340, vy1 = 424;
+    c.fillStyle = '#6E1621'; c.fillRect(-20, gy1, 470, vy1 - gy1 + 10);   // стенка сосуда
+    c.fillStyle = '#C8303F'; c.fillRect(-20, vy0, 470, vy1 - vy0);
+    c.fillStyle = 'rgba(255,130,140,.35)'; c.fillRect(-20, vy0 + 6, 470, 9); c.fillStyle = 'rgba(70,8,18,.35)'; c.fillRect(-20, vy1 - 14, 470, 14);
+    for (let i = 0; i < 14; i++) { const x = ((t * 95 + i * 37) % 490) - 35, y = vy0 + 22 + H1(i * 2.7) * 42; c.save(); c.translate(x, y); c.scale(1, .55); circ(c, 0, 0, 11, 'rgba(140,16,32,.55)'); circ(c, 0, 0, 5, 'rgba(100,8,22,.5)'); c.restore() }   // кровь течёт
+    c.fillStyle = '#E58C99'; c.fillRect(-20, gy0, 470, gy1 - gy0); c.fillStyle = '#F6B3BC'; c.fillRect(-20, gy0, 470, 8); c.fillStyle = 'rgba(160,60,75,.35)'; c.fillRect(-20, gy1 - 12, 470, 12);
+    for (let i = 0; i < 40; i++) circ(c, H1(i * 3.1) * 440 - 10, gy0 + 20 + H1(i * 7.7) * (gy1 - gy0 - 36), 3 + H1(i) * 3, 'rgba(255,215,220,.35)');   // клетки слизистой
+    const px0 = 60, px1 = 360, py0 = 122, py1 = gy0 + 4, pw = px1 - px0, ph = py1 - py0;   // подушечка
+    c.fillStyle = 'rgba(0,0,0,.25)'; rr(c, px0 + 10, py0 + 12, pw, ph, 46); c.fill();
+    rr(c, px0, py0, pw, ph, 46); fill(c, '#FFFDF8');
+    c.save(); rr(c, px0, py0, pw, ph, 46); c.clip(); c.fillStyle = 'rgba(205,198,186,.5)'; c.fillRect(px0 + pw * .64, py0, pw, ph); c.fillStyle = 'rgba(255,255,255,.95)'; c.fillRect(px0 + 34, py0 + 16, pw * .42, 9); c.restore();
+    c.setLineDash([8, 7]); rr(c, px0 + 13, py0 + 13, pw - 26, ph - 26, 34); L(2, 'rgba(176,166,150,.75)'); c.setLineDash([]); rr(c, px0, py0, pw, ph, 46); L(2.5, '#E8E2D6');
+    const ks = at(t, a.shch - .1, a.shch + .15) * (1 - at(t, a.stor - .4, a.stor));   // «щиплет»: жёлтые уколы на стыке
+    if (ks > 0) for (let i = 0; i < 9; i++) { const q = (t * 2.6 + i * .29) % 1, x = px0 + 28 + i * 31 + (H1(i * 5.3) - .5) * 12, y = gy0 + 4;
+      c.save(); c.globalAlpha *= ks * Math.sin(Math.PI * q); c.beginPath(); c.moveTo(x - 10 - 6 * q, y - 7); c.lineTo(x, y + 4); c.lineTo(x + 10 + 6 * q, y - 7); c.moveTo(x, y - 15 - 8 * q); c.lineTo(x, y + 4); L(3, C5.nic); circ(c, x, y + 4, 3.5, '#FFF4C2'); c.restore() }
+    if (t > a.nik - .15) for (let i = 0; i < 16; i++) { const st = a.nik - .15 + i * .11; if (t < st) continue;   // никотин: сквозь десну — в кровь и с потоком вправо
+      const q = ((t - st) * .55) % 1, x0 = px0 + 30 + H1(i * 3.7) * (pw - 60); let x, y;
+      if (q < .55) { const e = q / .55; x = x0 + 6 * Math.sin(e * 6 + i); y = lp(gy0 - 4, vy0 + 22, eio(e)) } else { const e = (q - .55) / .45; x = x0 + e * 230; y = vy0 + 22 + H1(i * 9.1) * 34 }
+      circ(c, x, y, 11, 'rgba(255,210,63,.28)'); circ(c, x, y, 5.6, C5.nic) }
+  }
   function xrayPanel(c, t) {
     const a = T1, k1 = eio(at(t, a.gub - .5, a.gub)), k2 = eio(at(t, a.stor - .15, a.stor + .35)); if (k1 <= 0 || k2 >= 1) return;
     const k = k1 * (1 - k2), h = HEAD1, W = XP.w, H = XP.h, s = W / 420;
@@ -1138,35 +1157,15 @@
     const g = c.createRadialGradient(0, 0, W * .2, 0, 0, W * .8); g.addColorStop(0, 'rgba(60,120,200,.18)'); g.addColorStop(1, 'rgba(0,0,0,.35)'); c.fillStyle = g; c.fillRect(-W / 2, -H / 2, W, H);
     c.translate(-W / 2, -H / 2); c.scale(s, H / 500);
     const L = (w, col) => lnB(c, w, col);
-    // кость верхней челюсти и нижний резец — бледно
-    c.beginPath(); c.moveTo(232, 150); c.bezierCurveTo(250, 90, 300, 60, 330, 40); c.moveTo(262, 292); c.bezierCurveTo(300, 250, 320, 180, 330, 120); L(2.5, 'rgba(190,230,255,.3)');
-    for (let i = 0; i < 26; i++) circ(c, 262 + H1(i * 3.3) * 60, 70 + H1(i * 5.7) * 190, 1.6, 'rgba(190,230,255,.16)');
-    c.beginPath(); c.moveTo(214, 334); c.lineTo(236, 334); c.lineTo(258, 470); c.lineTo(232, 470); c.closePath(); c.fillStyle = 'rgba(220,235,255,.08)'; c.fill(); L(2, 'rgba(190,230,255,.3)');
-    c.beginPath(); c.moveTo(150, 452); c.bezierCurveTo(220, 470, 320, 446, 430, 360); L(3, 'rgba(190,230,255,.55)');   // контур нижней челюсти
-    // десна (розовая, полупрозрачная) и верхний резец
-    c.beginPath(); c.moveTo(206, 168); c.bezierCurveTo(222, 160, 240, 162, 248, 176); c.lineTo(262, 300); c.bezierCurveTo(244, 306, 226, 304, 214, 296); c.bezierCurveTo(206, 250, 202, 210, 206, 168); c.closePath();
-    c.fillStyle = 'rgba(232,140,150,.32)'; c.fill(); L(2.5, 'rgba(255,190,200,.85)');
-    c.beginPath(); c.moveTo(286, 104); c.bezierCurveTo(262, 150, 238, 200, 224, 248); c.lineTo(204, 306); c.quadraticCurveTo(198, 330, 210, 334); c.lineTo(226, 330); c.lineTo(252, 262); c.bezierCurveTo(268, 214, 284, 170, 296, 124); c.closePath();
-    c.fillStyle = 'rgba(230,240,255,.2)'; c.fill(); L(2.5, 'rgba(220,240,255,.9)'); c.beginPath(); c.moveTo(214, 282); c.lineTo(246, 276); L(1.6, 'rgba(220,240,255,.5)');
-    // капилляры — тонкая сеть вверх (проявляется на «никотин»)
-    const kv = eo(at(t, a.nik - .25, a.nik + .45));
-    if (kv > 0) { c.save(); c.globalAlpha *= kv;
-      c.beginPath(); XVES.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); L(4.5, 'rgba(226,65,79,.9)'); c.beginPath(); XVES.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); L(1.6, 'rgba(255,170,180,.9)');
-      XBR.forEach(B => { c.beginPath(); B.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); L(2.6, 'rgba(226,65,79,.8)') }); c.restore() }
-    // губа: внутренняя поверхность и профиль лица
-    smoothOpen(c, XLIPIN); L(2.2, 'rgba(255,200,205,.6)');
-    smoothOpen(c, XFACE); L(3.4, 'rgba(207,233,255,.95)');
-    // пакетик — между губой и десной
-    const kin = eio(at(t, a.gub - .35, a.gub + .2)), px = 197 - 46 * (1 - kin), py = 232 + 70 * (1 - kin);
-    c.save(); c.globalAlpha *= kin; c.translate(px, py); c.rotate(-.12); glow(c, 0, 0, 50, '#FFFFFF', .35); rr(c, -11, -42, 22, 84, 10); fill(c, '#FFFDF8'); rr(c, -11, -42, 22, 84, 10); L(1.6, 'rgba(255,255,255,.9)'); c.restore();
-    // «щиплет»: покалывание у десны
-    const ks = at(t, a.shch - .1, a.shch + .1) * (1 - at(t, a.krov, a.krov + .4));
-    if (ks > 0) for (let i = 0; i < 5; i++) { const ph = (t * 3 + i * .37) % 1, x0 = 210 + (i % 2) * 6, y0 = 196 + i * 18; c.save(); c.globalAlpha *= ks * (1 - ph);
-      c.beginPath(); c.moveTo(x0, y0); c.lineTo(x0 + 7 + 10 * ph, y0 - 5); c.lineTo(x0 + 3 + 12 * ph, y0 + 3); c.lineTo(x0 + 12 + 14 * ph, y0 - 2); L(2.2, C5.nic); c.restore() }
-    // никотин: из пакетика сквозь десну — в капилляр и вверх
-    if (kv > 0) for (let i = 0; i < 13; i++) { const ph = ((t - a.nik) * .5 + i / 13 + H1(i * 4.1) * .03) % 1; if (t - a.nik < i * .07) continue;
-      let p; if (ph < .22) { const e = ph / .22; p = [lp(206, 220, e), lp(208 + (i % 5) * 9, 250 - (i % 3) * 12, e)] } else p = xpt(XVES, (ph - .22) / .78 * .96 + .02);
-      circ(c, p[0], p[1], 6, 'rgba(255,210,63,.25)'); circ(c, p[0], p[1], 3.2, C5.nic) }
+    const zA = eio(at(t, a.shch - .45, a.shch - .05));   // v22.3: профиль → макросхема (наезд в пакетик) к «щиплет»
+    // кадр А («кладут под верхнюю губу — и всё»): только профиль — нос, губы, подбородок; под верхней губой светится пакетик
+    if (zA < 1) { c.save(); c.globalAlpha *= 1 - zA; c.translate(200, 232); c.scale(1 + 2.2 * zA, 1 + 2.2 * zA); c.translate(-200, -232);
+      smoothOpen(c, XFACE); L(3.4, 'rgba(207,233,255,.95)');
+      const kin = eio(at(t, a.gub - .35, a.gub + .2)), px = 197 - 46 * (1 - kin), py = 232 + 70 * (1 - kin), pul = .45 + .12 * Math.sin(t * 5);
+      c.save(); c.globalAlpha *= kin; c.translate(px, py); c.rotate(-.12); glow(c, 0, 0, 56, '#FFFFFF', pul); rr(c, -11, -42, 22, 84, 10); fill(c, '#FFFDF8'); rr(c, -11, -42, 22, 84, 10); L(1.6, 'rgba(255,255,255,.9)'); c.restore();
+      c.restore() }
+    // кадр Б («щиплет десну, никотин уходит в кровь прямо через неё»): макросхема в два слоя — подушечка, под ней десна, ещё ниже — сосуд
+    if (zA > 0) { c.save(); c.globalAlpha *= zA; c.translate(210, 270); c.scale(lp(.55, 1, zA), lp(.55, 1, zA)); c.translate(-210, -270); gumMacro(c, t, a); c.restore() }
     c.restore();
     const bl = Math.sin(t * 6) > 0; circ(c, W / 2 - 16, -H / 2 + 16, 4, bl ? '#FF4B4B' : '#7A2A33');
     c.strokeStyle = '#CFE9FF'; c.lineWidth = 2.5; const q = 18, m = 10;   // уголки рамки
@@ -1273,7 +1272,7 @@
   // ряд магазинов с пустыми полками, из средней полки растёт башня банок и барабан 581 МЛН. Пока камера внутри магазина (после посадки),
   // мир подменяется улицей (те же координаты, тот же магазин) — стола над ней уже нет.
   let T3 = null, K3 = null;
-  const TA3 = { x: 380, y: 1180, R: 150 }, TB3 = { x: 760, y: 1176, R: 150 }, PRESS = { x: 1330, y: 1150 }, FLASK = { x: 1810, y: 1060 };
+  const TA3 = { x: 410, y: 1180, R: 150 }, TB3 = { x: 760, y: 1176, R: 150 }, PRESS = { x: 1330, y: 1150 }, FLASK = { x: 1810, y: 1060 };
   const FACT = { x: 2440, y: 1150 }, PACK3 = { x: 2715, y: 1170, w: 170, h: 268 }, G2 = { x: 3140, y: 1050, R: 170 }, D1R = 190;   // v22.2: оба купола и пачка — целиком в кадре (камера .95)
   const GS = { x: 2960, y: 3700 }, SHOP = { x0: 2360, y0: 2300, w: 1200, h: 2400 }, SHELVES = [3330, 3580, 3830, 4080], FLOOR3 = 4260;
   function tableInit() {
@@ -1285,8 +1284,9 @@
       prod: w6('продали'), shest: w6('шестьсот'), bank: WsB('s6', 'банок'), s7: SA('s7') };
     const a = T3; a.crack = a.snus6 - .2; a.fall = a.snus6; a.land = a.smeli + .3; a.junk = a.bank + .4;
     K3 = [KY(a.jw + .3, 560, 1150, 1.25), KY(a.nast, 572, 1205, 1.32), KY(a.tab + .3, 578, 1215, 1.35), KY(a.nik, 430, 1190, 1.45), KY(a.vyzh, 1350, 860, 1.42),
-      KY(a.ego + .3, 1530, 910, 1.42), KY(a.iz + .25, 1830, 1060, 1.5), KY(a.shvedy, 2450, 1000, 1.3), KY(a.malb, 2600, 990, 1.12), KY(a.tsel + .2, 2610, 990, 1.08),
-      KY(a.amer, 2740, 995, .98), KY(a.zav + .2, 2780, 995, .95), KY(a.kent + .1, 2782, 995, .95), KY(a.crack, 3130, 1010, 1.15), KY(a.land, 2960, 3560, .95), KY(a.ajk - .2, 2960, 3580, .95),
+      KY(a.ego + .3, 1530, 910, 1.42), KY(a.iz + .25, 1830, 1060, 1.5), KY(a.shvedy, 2450, 1000, 1.3), KY(a.malb, 2600, 990, 1.12), KY(a.tsel + .2, 2610, 990, 1.02),
+      KY(a.amer, 2740, 995, .92), KY(a.zav + .2, 2780, 995, .89), KY(a.kent + .1, 2782, 995, .89),   // v22.3: купола на 6 % мельче — края не режутся
+      KY(a.crack, 3130, 1010, 1.15), KY(a.land, 2960, 3560, .95), KY(a.ajk - .2, 2960, 3580, .95),
       KY(a.japo + .1, 3260, 3090, 2.0), KY(a.tolko + .15, 3120, 3220, 1.35), KY(a.chet + .5, 2960, 3300, .55), KY(a.shest, 2960, 3150, .42), KY(a.junk, 2960, 3060, .4)];
     linkK(K2, K3, N3, true);
   }
@@ -1302,9 +1302,16 @@
     c.fillStyle = '#10142A'; c.fillRect(-1600, 2140, 6600, 700);   // под столом — темно: камера падает к заправке
   }
   // ---------- строки 3–4: баночки, сканер, пресс, змеевик, колба ----------
+  // v22.3: вместо наклейки «СНЮС» — веер белых банок брендов (латиницей во всех языках): ZYN впереди, VELO и PABLO выезжают из-за неё,
+  // на «табака нет» уходят в стороны — сканер и дальше вся линия про шведов остаются на ZYN
+  const BRC = { zyn: ['#1F2A44', '#2BB5A0'], velo: ['#1E5BD8', '#1E5BD8'], pablo: ['#D6334D', '#18181C'] }, BR3 = [['velo', -128], ['pablo', 128]];
+  function brandTin(c, kd, x, y, R) { tin5(c, x, y, R, .55, 0, { name: OBJ[kd], nameC: BRC[kd][0], band: BRC[kd][1], h: .7 }) }
   function snusTins(c, t) {
     const a = T3, kin = eio(at(t, a.nast - .35, a.nast + .4)), lid = eio(at(t, a.shv, a.tab - .05));
-    tin5(c, TA3.x, TA3.y, TA3.R, .55, 0, { label: TEXT.snusTag, h: .78 });   // v22.2: жёлтая наклейка «СНЮС» от руки — крупнее, без отдельной рамки-маркера
+    const fan = T3 ? eio(at(t, a.jw - .2, a.jw + .5)) : 1, away = T3 ? eio(at(t, a.s4 - .3, a.s4 + .5)) : 0;
+    if (fan > 0 && away < 1) BR3.forEach(([kd, dx]) => { const x = TA3.x + dx * fan + Math.sign(dx) * 300 * away, y = TA3.y - 118 * fan, sc = lp(.74, .84, fan);
+      c.save(); c.globalAlpha *= Math.min(1, fan * 1.6) * (1 - away); c.translate(x, y); c.scale(sc, sc); brandTin(c, kd, 0, 0, TA3.R); c.restore() });
+    brandTin(c, 'zyn', TA3.x, TA3.y, TA3.R);
     if (kin > 0) tin5(c, lp(1600, TB3.x, kin), TB3.y, TB3.R, .55, lid, { dark: true, name: OBJ.snus, h: .6, n: 9 });
   }
   function scanTin(c, t) {   // строка 4: линза сканера над белой баночкой — внутри лист табака перечёркнут, потом светятся шестигранники никотина
@@ -1510,7 +1517,7 @@
     drum4(c, TEXT.fCans(Math.round(lp(0, 581, eo(at(FT, a.shest - .05, a.bank + .1))))), x, y0 - n * 96 - 220, eo(at(t, a.shest - .2, a.shest + .2)), { s: 200, w: 1080, bg: '#F4F1EA', c: '#141010' });
   }
   function tableWorld(c, t) {
-    if (!T3) { tableRoom(c); tin5(c, TA3.x, TA3.y, TA3.R, .55, 0, { label: TEXT.snusTag, h: .78 }); return }
+    if (!T3) { tableRoom(c); brandTin(c, 'zyn', TA3.x, TA3.y, TA3.R); return }
     const a = T3;
     if (t < a.land) { tableRoom(c); pressScene(c, t); snusTins(c, t); scanTin(c, t); marlScene(c, t); shopInterior(c, t) }
     else { streetWorld(c, t); shopInterior(c, t); storeGlass(c, t); canTower(c, t) }
@@ -1545,7 +1552,7 @@
     { const cr = Math.cos(PH5.r), sr = Math.sin(PH5.r), m = PH5.w / (1080 / .4), dx = (2960 - 540) * m, dy = (3060 - 960) * m;
       N5 = { x: PH5.x - (dx * cr - dy * sr), y: PH5.y - (dx * sr + dy * cr), m, r: PH5.r } }   // кадр улицы в момент стыка (2960, 3060, z .4) = фото на столе
     K5 = [KY(a.j + .55, -150, 1290, 1.5, .04), KY(a.j + 1.25, 250, 1240, 1.1, .01), KY(a.regul, 660, 1230, 1.2), KY(a.razr, 720, 1225, 1.3), KY(a.perv - .3, 640, 1430, 1.0), KY(a.vkus, 640, 1620, 1.25),
-      KY(a.kor + .4, 640, 1620, 1.2), KY(a.juul, 520, 1560, 1.05), KY(a.zapr + .3, 420, 1540, 1.15), KY(a.dv26, 540, 1260, 1.0), KY(a.zinu, 760, 1230, 1.3),
+      KY(a.kor + .4, 640, 1620, 1.2), KY(a.juul, 560, 1560, .97), KY(a.zapr + .3, 540, 1540, 1.0), KY(a.dv26, 540, 1260, 1.0), KY(a.zinu, 760, 1230, 1.3),
       KY(a.ayk, 300, 1240, 1.3), KY(a.pory, 300, 1240, 1.32), KY(a.govor + .1, 760, 1230, 1.3), KY(a.zin2, 780, 1220, 1.25), KY(a.nizhe + .3, 780, 1020, .95),
       KY(a.insult + .1, 790, 1010, .95), KY(a.dive0 + .3, 900, 1120, 1.5), KY(a.jdive, N6.x, N6.y, 1 / N6.m)];
     linkK(K3, K5, N5, false);
@@ -1627,8 +1634,9 @@
   function tinsRow(c, t) {
     const a = T5, kin = eo(at(t, a.perv - .9, a.perv - .1)), shift = eio(at(t, a.pyat - .1, a.juul)), out = eio(at(t, a.s9 - .2, a.dv26 + .3)); if (kin <= 0 || out >= 1) return;
     const W = [a.mint, a.citr, a.kofe, a.kor];
-    TINS5.forEach((T, i) => { const x = lp(1700 + i * 200, 340 + i * 200, kin) + 330 * shift + 700 * out, y = 1720, lid = eio(at(t, W[i] - .25, W[i] + .05));
-      tin5(c, x, y, 92, .55, lid, { cap: T.cap, h: .6, n: 8 }); flavor5(c, T.f, x, y - 70, at(t, W[i] - .05, W[i] + .3)) });
+    const sc = lp(1, .72, shift);   // v22.3: на «Джулу» банки сдвигаются плотнее и чуть мельче — все четыре с дольками в кадре справа от гильотины
+    TINS5.forEach((T, i) => { const x = lp(lp(1700 + i * 200, 340 + i * 200, kin), 622 + i * 120, shift) + 700 * out, y = 1720, lid = eio(at(t, W[i] - .25, W[i] + .05));
+      c.save(); c.translate(x, y); c.scale(sc, sc); tin5(c, 0, 0, 92, .55, lid, { cap: T.cap, h: .6, n: 8 }); flavor5(c, T.f, 0, -70, at(t, W[i] - .05, W[i] + .3)); c.restore() });
   }
   // ---------- «Джул» и нож ----------
   const JCOL = ['#7FD3A8', '#F6A03A', '#E9D8B4', '#E7739A'];
@@ -1695,7 +1703,7 @@
   // ---------- мир 5 ----------
   function fdaWorld(c, t) {
     const a = T5; fdaRoom(c, t); streetPhoto(c, t);
-    const kz = eo(at(t, a.razr - .2, a.razr + .15)), zn = at(t, a.zinu - .05, a.zinu + .35), ok9 = at(t, a.razr9 - .05, a.razr9 + .35);
+    const kz = eo(at(t, a.razr - .2, a.razr + .15)), zn = at(t, a.zinu - .05, a.zinu + .35), ok9 = at(t, a.govor - .05, a.govor + .35);   // v22.3: галочка ZYN — когда камера вернулась, на «говорить о риске»
     const inI = eio(at(t, a.s9 - .1, a.dv26 + .3));
     if (inI > 0) form5(c, t, lp(-500, FI.x, inI), FI.y, { pic: 'iqos', less: 1, harm: 0, no: at(t, a.nera - .2, a.nera + .1), r: .03 });
     form5(c, t, FZ.x, FZ.y, { pic: 'tin', harm: ok9, ok: kz * (1 - at(t, a.s9 - .2, a.s9 + .2)), name: zn, r: -.02 });
@@ -1716,7 +1724,7 @@
     const a = T5; Q(a.j + .1, 'whoosh', .35); Q(a.j + .6, 'papers', .4); Q(a.razr - .05, 'stamp', .6); Q(a.razr, 'thud', .4); for (let i = 0; i < 4; i++) Q(a.perv - .8 + i * .14, 'plop', .25, .4 - i * .2);
     [a.mint, a.citr, a.kofe, a.kor].forEach((w, i) => { Q(w - .2, 'drawer', .25, -.3 + i * .2); Q(w, 'plop', .35, -.3 + i * .2) });
     Q(a.juul - .4, 'scuttle', .35, -.4); Q(a.zapr - .2, 'chain', .35); Q(a.zapr, 'blade', .6); Q(a.zapr + .1, 'impact', .4); Q(a.zapr + .4, 'plop', .3);
-    Q(a.s9, 'whoosh', .35); Q(a.dv26 + .1, 'papers', .4); Q(a.zinu, 'marker', .4); Q(a.razr9, 'shimmer', .35); Q(a.ayk - .2, 'whoosh', .3); Q(a.nera - .1, 'stamp', .55); Q(a.nera, 'thud', .45);
+    Q(a.s9, 'whoosh', .35); Q(a.dv26 + .1, 'papers', .4); Q(a.zinu, 'marker', .4); Q(a.govor + .05, 'shimmer', .35); Q(a.ayk - .2, 'whoosh', .3); Q(a.nera - .1, 'stamp', .55); Q(a.nera, 'thud', .45);
     Q(a.govor, 'whoosh', .3); Q(a.sig, 'marker', .35); Q(a.nizhe, 'deep', .35); [a.rta, a.legk, a.serd, a.insult].forEach((w, i) => Q(w - .1, 'plop', .4, [-.3, .3, -.3, .3][i])); Q(a.dive0 + .2, 'dive', .55);
   }
   // ================= мир 6: школьный коридор (строки 10–11) =================
@@ -1969,13 +1977,15 @@
   const OUR = { red: '#B8122C', redL: '#E0344B', redD: '#5E0A18', facet: '#CC1E37', ln: 'rgba(255,226,226,.6)' };
   function ouroBody(c, x, y, R, o = {}) {   // o.w — толщина у шеи, o.a0 — кончик хвоста (угол), o.gap — зазор под голову, o.kw 0..1 — толщина растёт
     const a0 = o.a0 ?? (-Math.PI / 2 + .06), span = TAU - (o.gap ?? .13), n = 180, W = (o.w ?? 46) * (o.kw ?? 1), tail = u => lp(.14, 1, Math.pow(u, .5)) * (u > .97 ? lp(1, .86, (u - .97) / .03) : 1);
-    const pt = (u, d) => { const a = a0 + span * u, r = R + d; return [x + Math.cos(a) * r, y + Math.sin(a) * r] };
+    const pt = (u, d) => { const a = a0 + span * u, r = R + d + (o.wv ? o.wv * Math.sin(TAU * (u * 7 - (o.ph || 0))) : 0); return [x + Math.cos(a) * r, y + Math.sin(a) * r] };   // v22.3: o.wv — волна вдоль тела (ползёт)
     const band = (d0, d1) => { c.beginPath(); for (let i = 0; i <= n; i++) { const u = i / n, w = W * tail(u) / 2, [px, py] = pt(u, w * d1); i ? c.lineTo(px, py) : c.moveTo(px, py) }
       for (let i = n; i >= 0; i--) { const u = i / n, w = W * tail(u) / 2, [px, py] = pt(u, w * d0); c.lineTo(px, py) } c.closePath() };
     band(-1, 1); fill(c, OUR.red); band(-1, -.15); fill(c, OUR.redD); band(.72, 1); fill(c, OUR.redL);   // 3 тона: алый, бордовая тень внутри, свет по внешнему краю
     if ((o.kw ?? 1) > .55) {   // грани-ромбы (чешуя): по одной на толщину тела, через одну — чуть светлее
       let u = .03, k = 0; while (u < .975) { const w = W * tail(u) / 2; if (w > 7) { const du = w * 1.7 / (R * span), [p0x, p0y] = pt(u - du / 2, 0), [p1x, p1y] = pt(u, w * .7), [p2x, p2y] = pt(u + du / 2, 0), [p3x, p3y] = pt(u, -w * .7);
-          c.beginPath(); c.moveTo(p0x, p0y); c.lineTo(p1x, p1y); c.lineTo(p2x, p2y); c.lineTo(p3x, p3y); c.closePath(); if (k % 2) { c.fillStyle = 'rgba(255,120,130,.16)'; c.fill() } lnB(c, 1.3, OUR.ln);
+          c.beginPath(); c.moveTo(p0x, p0y); c.lineTo(p1x, p1y); c.lineTo(p2x, p2y); c.lineTo(p3x, p3y); c.closePath();
+          const gw = o.gl == null ? 0 : Math.exp(-Math.pow((((u - o.gl) % 1 + 1.5) % 1 - .5) / .06, 2));   // v22.3: перелив чешуек — светлая волна бежит по телу
+          if (k % 2 || gw > .05) { c.fillStyle = `rgba(255,${120 + 90 * gw | 0},${130 + 80 * gw | 0},${.16 + .5 * gw})`; c.fill() } lnB(c, 1.3, OUR.ln);
           u += du * 1.02 } else u += .01; k++ } }
     band(-1, 1); lnB(c, 2, 'rgba(255,226,226,.4)');
     return { head: pt(1, 0), ang: a0 + span + Math.PI / 2, tailTip: pt(0, 0) };
@@ -2043,7 +2053,7 @@
   // «бросаете одно — продают следующее» — по концентрической орбите снаружи кольца идут четыре силуэта: Marlboro, IQOS, одноразка, ZYN.
   // В конце башни и доска уходят в темноту — остаются уроборос и крупное название «ЧТО ВЫ ЗНАЕТЕ О НИКОТИНЕ?».
   let T8 = null, KF = null;
-  const TC = { x: 540, y: 1700 }, RR = 380, RO = RR + 150;   // центр кольца (и точка схода нитей), радиус кольца, радиус орбиты
+  const TC = { x: 540, y: 1700 }, RR = 380, RI = 248;   // v22.3: продукты ходят по кругу ВНУТРИ кольца (RI), голова змеи до них не достаёт   // центр кольца (и точка схода нитей), радиус кольца, радиус орбиты
   function finalInit() {
     const f = (sc, q) => Ws(sc, q);
     T8 = { f0: K7[K7.length - 1][0], tak: f('f1', 'так'), nik: f('f1', 'никотине'), kur: f('f2', 'курят'), gre: f('f2', 'греют'), par: f('f2', 'парят'), klad: f('f2', 'кладут'), gubu: f('f2', 'губу'),
@@ -2072,23 +2082,23 @@
   // ---------- башни (по центру, подписи выше Y 1480 на экране) ----------
   // подпись башни видна, только когда она на экране выше 1460 (центр плашки): субтитры её не закрывают, пока башня встаёт и камера едет
   function capVis(c, x, y) { if (c.canvas.width !== WW || c.canvas.height !== HH) return 1; const m = c.getTransform(), sy = m.b * x + m.d * y + m.f; return 1 - at(sy, 1420, 1450) }
-  function towerRJ5(c, x, top, w, k) {   // ар-деко R.J. Reynolds: уступы, шпиль, золотые вертикали
+  function towerRJ5(c, x, top, w, k, capA = 1) {   // ар-деко R.J. Reynolds: уступы, шпиль, золотые вертикали
     if (k <= 0) return; const y = top + 900 * (1 - eo(k)); c.save();
     const steps = [[w, 0], [w * .8, -70], [w * .58, -130], [w * .36, -176]];
     steps.forEach(([ww, dy], i) => { const shade = mixc('#2E2C36', '#1E1C26', i * .15); c.fillStyle = shade; c.fillRect(x - ww / 2, y + dy, ww, 2400); c.fillStyle = 'rgba(0,0,0,.28)'; c.fillRect(x + ww * .22, y + dy, ww * .28, 2400);
       c.fillStyle = 'rgba(255,226,170,.25)'; c.fillRect(x - ww / 2, y + dy, ww, 3) });
     c.fillStyle = '#C9A24A'; for (let i = -2; i <= 2; i++) c.fillRect(x + i * w * .17 - 2.5, y + 14, 5, 2400); c.fillRect(x - 4, y - 290, 8, 120); circ(c, x, y - 292, 6, '#F2D27A');
     for (let r = 0; r < 26; r++) for (let i = -2; i < 2; i++) { const on = H1(r * 7.1 + i * 3) > .55; c.fillStyle = on ? 'rgba(255,214,140,.55)' : 'rgba(0,0,0,.25)'; c.fillRect(x + i * w * .17 + 6, y + 40 + r * 44, w * .17 - 12, 22) }
-    const cv = at(k, .75, 1) * capVis(c, x, y + 92); if (cv > 0) { c.save(); c.globalAlpha *= cv; rr(c, x - 125, y + 60, 250, 62, 10); fill(c, '#111116'); rr(c, x - 125, y + 60, 250, 62, 10); lnB(c, 3, '#C9A24A'); tx(c, OBJ.rj, x, y + 92, { f: 'M', w: 800, s: 30, c: '#E9C66A', ls: 2, mw: 226 }); c.restore() }
+    const cv = at(k, .75, 1) * capVis(c, x, y + 92) * capA; if (cv > 0) { c.save(); c.globalAlpha *= cv; rr(c, x - 125, y + 60, 250, 62, 10); fill(c, '#111116'); rr(c, x - 125, y + 60, 250, 62, 10); lnB(c, 3, '#C9A24A'); tx(c, OBJ.rj, x, y + 92, { f: 'M', w: 800, s: 30, c: '#E9C66A', ls: 2, mw: 226 }); c.restore() }
     c.restore();
   }
-  function towerPM5(c, x, top, w, k) {   // монолит Philip Morris: тёмное стекло, сетка окон, косой блик
+  function towerPM5(c, x, top, w, k, capA = 1) {   // монолит Philip Morris: тёмное стекло, сетка окон, косой блик
     if (k <= 0) return; const y = top + 900 * (1 - eo(k)); c.save();
     c.fillStyle = '#26344F'; c.fillRect(x - w / 2, y, w, 2400); c.fillStyle = 'rgba(0,0,0,.3)'; c.fillRect(x + w * .2, y, w * .3, 2400);
     c.fillStyle = 'rgba(170,205,245,.3)'; for (let r = 0; r < 40; r++) for (let i = 0; i < 5; i++) c.fillRect(x - w / 2 + 12 + i * (w - 24) / 5, y + 18 + r * 40, (w - 24) / 5 - 7, 26);
     c.save(); c.beginPath(); c.rect(x - w / 2, y, w, 2400); c.clip(); c.fillStyle = 'rgba(255,255,255,.12)'; poly(c, [x - w / 2, y + 300, x - w / 2 + 40, y, x + 10, y, x - w / 2, y + 520]); c.fill(); c.restore();
     c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(x - w / 2, y, w, 4); c.fillRect(x - w / 2 + 5, y, 4, 2400);
-    const cv = at(k, .75, 1) * capVis(c, x, y + 102); if (cv > 0) { c.save(); c.globalAlpha *= cv; rr(c, x - 125, y + 70, 250, 62, 10); fill(c, '#111116'); rr(c, x - 125, y + 70, 250, 62, 10); lnB(c, 3, '#9DB6D9'); tx(c, OBJ.pmT, x, y + 102, { f: 'M', w: 800, s: 30, c: '#E8EEF8', ls: 2, mw: 226 }); c.restore() }
+    const cv = at(k, .75, 1) * capVis(c, x, y + 102) * capA; if (cv > 0) { c.save(); c.globalAlpha *= cv; rr(c, x - 125, y + 70, 250, 62, 10); fill(c, '#111116'); rr(c, x - 125, y + 70, 250, 62, 10); lnB(c, 3, '#9DB6D9'); tx(c, OBJ.pmT, x, y + 102, { f: 'M', w: 800, s: 30, c: '#E8EEF8', ls: 2, mw: 226 }); c.restore() }
     c.restore();
   }
   // ---------- нити: прямые струны от булавок изнанки к центру; потом стягиваются в кольцо ----------
@@ -2115,10 +2125,10 @@
   }
   function carousel5(c, t, a, out) {
     const k = at(t, a.vy - .15, a.vy + .35); if (k <= 0 || out >= 1) return;
-    const step = eio(at(t, a.prod2 - .1, a.sled + .25)) * Math.PI / 2, rot = step + (t - a.vy) * .06;
-    ['marl', 'iqos', 'vape', 'zyn'].forEach((kd, i) => { const an = -Math.PI / 4 + i * Math.PI / 2 + rot, x = TC.x + Math.cos(an) * RO, y = TC.y + Math.sin(an) * RO;
+    const step = eio(at(t, a.prod2 - .1, a.sled + .25)) * Math.PI / 2, rot = step + (t - a.vy) * .3;   // v22.3: круговорот внутри кольца
+    ['marl', 'iqos', 'vape', 'zyn'].forEach((kd, i) => { const an = -Math.PI / 4 + i * Math.PI / 2 + rot, x = TC.x + Math.cos(an) * RI, y = TC.y + Math.sin(an) * RI;
       c.save(); c.globalAlpha *= 1 - out; c.translate(x, y); const s = bo(cl(k * 1.3 - i * .1)) * .95; c.scale(s, s); prodIcon(c, kd); c.restore() });
-    c.save(); c.globalAlpha *= .35 * k * (1 - out); c.setLineDash([6, 12]); c.beginPath(); c.arc(TC.x, TC.y, RO, 0, TAU); lnB(c, 2, 'rgba(244,241,234,.6)'); c.restore();
+    c.save(); c.globalAlpha *= .35 * k * (1 - out); c.setLineDash([6, 12]); c.beginPath(); c.arc(TC.x, TC.y, RI, 0, TAU); lnB(c, 2, 'rgba(244,241,234,.6)'); c.restore();
   }
   function finalShot(c, t) {
     const a = T8, q = camObj(camAt(KF, t)), fk = eio(at(t, a.flip0, a.flip1)), ang = Math.PI * fk;
@@ -2131,16 +2141,19 @@
     layer(c, q, 1, cc => {
       wallBg5(cc);
       if (fk > 0 && fk < 1) flipBoard(cc, ang, front, g => boardBack5(g, t, {}));
-      else if (fk <= 0) front(cc); else boardBack5(cc, t, {});
+      else if (fk <= 0) front(cc); else { const bF = 1 - eio(at(t, a.kus, a.hvost + .3)); if (bF > 0) { cc.save(); cc.globalAlpha *= bF; boardBack5(cc, t, {}); cc.restore() } }   // v22.3: изнанка уходит, пока нити становятся змеёй — край доски сверху не торчит
       if (dim > 0) { const g = cc.createRadialGradient(540, 640, 420, 540, 700, 1500); g.addColorStop(0, 'rgba(6,4,10,0)'); g.addColorStop(1, `rgba(6,4,10,${.72 * dim})`); cc.fillStyle = g; cc.fillRect(-3000, -3000, 7000, 7000) }
       titleStrip5(cc, t, at(t, a.tak, a.nik + .55), 1 - at(t, a.zmeya, a.hvost));
       const tw = [at(t, a.gig - .55, a.gig + .35), at(t, a.gig - .4, a.gig + .5)];
-      towerRJ5(cc, TC.x - 168, TC.y - 280, 190, tw[0]); towerPM5(cc, TC.x + 168, TC.y - 250, 180, tw[1]);
+      if (fade < 1) { cc.save(); cc.globalAlpha *= 1 - fade; const cA = 1 - at(t, a.vy - .35, a.vy - .05); towerRJ5(cc, TC.x - 168, TC.y - 280, 190, tw[0], cA); towerPM5(cc, TC.x + 168, TC.y - 250, 180, tw[1], cA); cc.restore() }   // v22.3: в конце башни и таблички гаснут до нуля
       if (wrap < 1) strings5(cc, t, shoot, wrap);
-      if (fade > 0) { cc.save(); cc.globalAlpha *= .97 * fade; cc.fillStyle = '#050407'; cc.fillRect(-3000, -3000, 7000, 7000); cc.restore() }
+      if (fade > 0) { cc.save(); cc.globalAlpha *= fade; cc.fillStyle = '#050407'; cc.fillRect(-3000, -3000, 7000, 7000); cc.restore() }
       if (wrap > .85) { const kw = eio(at(wrap, .85, 1)) * 1 + 0, jaw = 1 - eio(at(t, a.hvost - .25, a.hvost + .05));   // кольцо → тело змеи, голова смыкается на хвосте («хвост»)
         if (wrap < 1) { cc.save(); cc.globalAlpha *= at(wrap, .85, 1); }
-        ouro5(cc, t, TC.x, TC.y, RR, { kw: Math.max(.12, kw), kh: at(t, a.kus - .2, a.kus + .3), jaw, hs: 1.45, w: 58, gap: .13 });
+        const u0 = Math.max(0, t - (a.kus + .35)), th = .85 * (u0 - .5 * (1 - Math.exp(-u0 / .5)));   // v22.3: змея ползёт по кругу — плавный разгон, дальше ровно
+        cc.save(); cc.translate(TC.x, TC.y); cc.rotate(th); cc.translate(-TC.x, -TC.y);
+        ouro5(cc, t, TC.x, TC.y, RR, { kw: Math.max(.12, kw), kh: at(t, a.kus - .2, a.kus + .3), jaw, hs: 1.45, w: 58, gap: .13, wv: 3 * at(u0, 0, .6), ph: t * 1.6, gl: u0 > 0 ? (u0 * .45) % 1 : null });
+        cc.restore();
         if (wrap < 1) cc.restore();
         const fl = Math.sin(Math.PI * at(t, a.hvost, a.hvost + .4)); if (fl > 0) glow(cc, TC.x, TC.y - RR, 120, '#FF8080', .5 * fl) }
       carousel5(cc, t, a, at(t, a.fade0 - .1, a.fade0 + .5));

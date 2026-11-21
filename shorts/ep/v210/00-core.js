@@ -95,12 +95,12 @@
     c.restore(); c.restore();
   }
   // ---------- субтитры (ТЗ: x 540, y 1720, ширина до 920) ----------
-  function buildChunks() {
-    const out = []; let cur = [];
+  function buildChunks(subs) {   // 21.11: subs — субтитры перевода из таймлайна (EN/DE, l10n/build.py), иначе — русские слова голоса
+    const out = []; let cur = []; if (subs) subs.forEach(x => out.push({ a: x.a, b: x.b, s: x.s }));
     const FW = new Set(['с', 'со', 'в', 'во', 'и', 'а', 'на', 'по', 'за', 'но', 'к', 'о', 'от', 'до', 'из', 'у', 'для', 'при', 'без', 'под', 'что', 'как', 'не', 'их', 'ещё', 'если', 'пока', 'когда', 'чтобы', 'так']);
     const bare = w => w.d.toLowerCase().replace(/[«»"“”.,?!…:;]/g, '');
     const flush = () => { if (cur.length) { out.push({ a: cur[0].a, b: cur[cur.length - 1].b, s: cur.map(w => w.d).join(' ') }); cur = [] } };
-    TLW.forEach((w, i) => {
+    if (!subs) TLW.forEach((w, i) => {
       const nx = TLW[i + 1];
       if (cur.length && ((FW.has(bare(w)) && cur.length >= 2) || cur.length >= 4 || (cur.map(x => x.d).join(' ') + ' ' + w.d).length > 22)) flush();
       cur.push(w);

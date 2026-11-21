@@ -82,10 +82,29 @@
   const XP = { x: 950, y: 1038, w: 245, h: 290 };
   function smoothOpen(c, P) { c.beginPath(); c.moveTo(P[0][0], P[0][1]); for (let i = 1; i < P.length - 1; i++) { const mx = (P[i][0] + P[i + 1][0]) / 2, my = (P[i][1] + P[i + 1][1]) / 2; c.quadraticCurveTo(P[i][0], P[i][1], mx, my) } c.lineTo(P[P.length - 1][0], P[P.length - 1][1]) }
   const XFACE = [[176, -12], [160, 50], [112, 108], [74, 142], [78, 162], [118, 176], [150, 186], [146, 226], [128, 268], [116, 292], [134, 312], [118, 334], [128, 362], [146, 396], [142, 432], [128, 468], [150, 500], [210, 512]];
-  const XLIPIN = [[196, 196], [190, 236], [182, 276], [178, 302], [214, 314]];
-  const XVES = [[222, 268], [218, 232], [221, 196], [228, 158], [236, 118], [246, 76], [258, 30], [266, -12]];
-  const XBR = [[[219, 226], [240, 214], [252, 200]], [[224, 176], [204, 160], [196, 134]], [[232, 138], [254, 126], [266, 104]], [[244, 90], [226, 70], [222, 44]]];
-  function xpt(P, u) { const n = P.length - 1, f = cl(u) * n, i = Math.min(n - 1, Math.floor(f)), k = f - i; return [lp(P[i][0], P[i + 1][0], k), lp(P[i][1], P[i + 1][1], k)] }
+  // v22.3: макросхема десны (координаты рамки 420 × 500): сверху белая подушечка, под ней ровная розовая десна (на стыке — жёлтые уколы),
+  // прямо под десной — горизонтальный сосуд, кровь течёт вправо; жёлтые точки никотина проходят сквозь розовую стенку и уходят с потоком
+  function gumMacro(c, t, a) {
+    const L = (w, col) => lnB(c, w, col), gy0 = 236, gy1 = 330, vy0 = 340, vy1 = 424;
+    c.fillStyle = '#6E1621'; c.fillRect(-20, gy1, 470, vy1 - gy1 + 10);   // стенка сосуда
+    c.fillStyle = '#C8303F'; c.fillRect(-20, vy0, 470, vy1 - vy0);
+    c.fillStyle = 'rgba(255,130,140,.35)'; c.fillRect(-20, vy0 + 6, 470, 9); c.fillStyle = 'rgba(70,8,18,.35)'; c.fillRect(-20, vy1 - 14, 470, 14);
+    for (let i = 0; i < 14; i++) { const x = ((t * 95 + i * 37) % 490) - 35, y = vy0 + 22 + H1(i * 2.7) * 42; c.save(); c.translate(x, y); c.scale(1, .55); circ(c, 0, 0, 11, 'rgba(140,16,32,.55)'); circ(c, 0, 0, 5, 'rgba(100,8,22,.5)'); c.restore() }   // кровь течёт
+    c.fillStyle = '#E58C99'; c.fillRect(-20, gy0, 470, gy1 - gy0); c.fillStyle = '#F6B3BC'; c.fillRect(-20, gy0, 470, 8); c.fillStyle = 'rgba(160,60,75,.35)'; c.fillRect(-20, gy1 - 12, 470, 12);
+    for (let i = 0; i < 40; i++) circ(c, H1(i * 3.1) * 440 - 10, gy0 + 20 + H1(i * 7.7) * (gy1 - gy0 - 36), 3 + H1(i) * 3, 'rgba(255,215,220,.35)');   // клетки слизистой
+    const px0 = 60, px1 = 360, py0 = 122, py1 = gy0 + 4, pw = px1 - px0, ph = py1 - py0;   // подушечка
+    c.fillStyle = 'rgba(0,0,0,.25)'; rr(c, px0 + 10, py0 + 12, pw, ph, 46); c.fill();
+    rr(c, px0, py0, pw, ph, 46); fill(c, '#FFFDF8');
+    c.save(); rr(c, px0, py0, pw, ph, 46); c.clip(); c.fillStyle = 'rgba(205,198,186,.5)'; c.fillRect(px0 + pw * .64, py0, pw, ph); c.fillStyle = 'rgba(255,255,255,.95)'; c.fillRect(px0 + 34, py0 + 16, pw * .42, 9); c.restore();
+    c.setLineDash([8, 7]); rr(c, px0 + 13, py0 + 13, pw - 26, ph - 26, 34); L(2, 'rgba(176,166,150,.75)'); c.setLineDash([]); rr(c, px0, py0, pw, ph, 46); L(2.5, '#E8E2D6');
+    const ks = at(t, a.shch - .1, a.shch + .15) * (1 - at(t, a.stor - .4, a.stor));   // «щиплет»: жёлтые уколы на стыке
+    if (ks > 0) for (let i = 0; i < 9; i++) { const q = (t * 2.6 + i * .29) % 1, x = px0 + 28 + i * 31 + (H1(i * 5.3) - .5) * 12, y = gy0 + 4;
+      c.save(); c.globalAlpha *= ks * Math.sin(Math.PI * q); c.beginPath(); c.moveTo(x - 10 - 6 * q, y - 7); c.lineTo(x, y + 4); c.lineTo(x + 10 + 6 * q, y - 7); c.moveTo(x, y - 15 - 8 * q); c.lineTo(x, y + 4); L(3, C5.nic); circ(c, x, y + 4, 3.5, '#FFF4C2'); c.restore() }
+    if (t > a.nik - .15) for (let i = 0; i < 16; i++) { const st = a.nik - .15 + i * .11; if (t < st) continue;   // никотин: сквозь десну — в кровь и с потоком вправо
+      const q = ((t - st) * .55) % 1, x0 = px0 + 30 + H1(i * 3.7) * (pw - 60); let x, y;
+      if (q < .55) { const e = q / .55; x = x0 + 6 * Math.sin(e * 6 + i); y = lp(gy0 - 4, vy0 + 22, eio(e)) } else { const e = (q - .55) / .45; x = x0 + e * 230; y = vy0 + 22 + H1(i * 9.1) * 34 }
+      circ(c, x, y, 11, 'rgba(255,210,63,.28)'); circ(c, x, y, 5.6, C5.nic) }
+  }
   function xrayPanel(c, t) {
     const a = T1, k1 = eio(at(t, a.gub - .5, a.gub)), k2 = eio(at(t, a.stor - .15, a.stor + .35)); if (k1 <= 0 || k2 >= 1) return;
     const k = k1 * (1 - k2), h = HEAD1, W = XP.w, H = XP.h, s = W / 420;
@@ -96,35 +115,15 @@
     const g = c.createRadialGradient(0, 0, W * .2, 0, 0, W * .8); g.addColorStop(0, 'rgba(60,120,200,.18)'); g.addColorStop(1, 'rgba(0,0,0,.35)'); c.fillStyle = g; c.fillRect(-W / 2, -H / 2, W, H);
     c.translate(-W / 2, -H / 2); c.scale(s, H / 500);
     const L = (w, col) => lnB(c, w, col);
-    // кость верхней челюсти и нижний резец — бледно
-    c.beginPath(); c.moveTo(232, 150); c.bezierCurveTo(250, 90, 300, 60, 330, 40); c.moveTo(262, 292); c.bezierCurveTo(300, 250, 320, 180, 330, 120); L(2.5, 'rgba(190,230,255,.3)');
-    for (let i = 0; i < 26; i++) circ(c, 262 + H1(i * 3.3) * 60, 70 + H1(i * 5.7) * 190, 1.6, 'rgba(190,230,255,.16)');
-    c.beginPath(); c.moveTo(214, 334); c.lineTo(236, 334); c.lineTo(258, 470); c.lineTo(232, 470); c.closePath(); c.fillStyle = 'rgba(220,235,255,.08)'; c.fill(); L(2, 'rgba(190,230,255,.3)');
-    c.beginPath(); c.moveTo(150, 452); c.bezierCurveTo(220, 470, 320, 446, 430, 360); L(3, 'rgba(190,230,255,.55)');   // контур нижней челюсти
-    // десна (розовая, полупрозрачная) и верхний резец
-    c.beginPath(); c.moveTo(206, 168); c.bezierCurveTo(222, 160, 240, 162, 248, 176); c.lineTo(262, 300); c.bezierCurveTo(244, 306, 226, 304, 214, 296); c.bezierCurveTo(206, 250, 202, 210, 206, 168); c.closePath();
-    c.fillStyle = 'rgba(232,140,150,.32)'; c.fill(); L(2.5, 'rgba(255,190,200,.85)');
-    c.beginPath(); c.moveTo(286, 104); c.bezierCurveTo(262, 150, 238, 200, 224, 248); c.lineTo(204, 306); c.quadraticCurveTo(198, 330, 210, 334); c.lineTo(226, 330); c.lineTo(252, 262); c.bezierCurveTo(268, 214, 284, 170, 296, 124); c.closePath();
-    c.fillStyle = 'rgba(230,240,255,.2)'; c.fill(); L(2.5, 'rgba(220,240,255,.9)'); c.beginPath(); c.moveTo(214, 282); c.lineTo(246, 276); L(1.6, 'rgba(220,240,255,.5)');
-    // капилляры — тонкая сеть вверх (проявляется на «никотин»)
-    const kv = eo(at(t, a.nik - .25, a.nik + .45));
-    if (kv > 0) { c.save(); c.globalAlpha *= kv;
-      c.beginPath(); XVES.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); L(4.5, 'rgba(226,65,79,.9)'); c.beginPath(); XVES.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); L(1.6, 'rgba(255,170,180,.9)');
-      XBR.forEach(B => { c.beginPath(); B.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); L(2.6, 'rgba(226,65,79,.8)') }); c.restore() }
-    // губа: внутренняя поверхность и профиль лица
-    smoothOpen(c, XLIPIN); L(2.2, 'rgba(255,200,205,.6)');
-    smoothOpen(c, XFACE); L(3.4, 'rgba(207,233,255,.95)');
-    // пакетик — между губой и десной
-    const kin = eio(at(t, a.gub - .35, a.gub + .2)), px = 197 - 46 * (1 - kin), py = 232 + 70 * (1 - kin);
-    c.save(); c.globalAlpha *= kin; c.translate(px, py); c.rotate(-.12); glow(c, 0, 0, 50, '#FFFFFF', .35); rr(c, -11, -42, 22, 84, 10); fill(c, '#FFFDF8'); rr(c, -11, -42, 22, 84, 10); L(1.6, 'rgba(255,255,255,.9)'); c.restore();
-    // «щиплет»: покалывание у десны
-    const ks = at(t, a.shch - .1, a.shch + .1) * (1 - at(t, a.krov, a.krov + .4));
-    if (ks > 0) for (let i = 0; i < 5; i++) { const ph = (t * 3 + i * .37) % 1, x0 = 210 + (i % 2) * 6, y0 = 196 + i * 18; c.save(); c.globalAlpha *= ks * (1 - ph);
-      c.beginPath(); c.moveTo(x0, y0); c.lineTo(x0 + 7 + 10 * ph, y0 - 5); c.lineTo(x0 + 3 + 12 * ph, y0 + 3); c.lineTo(x0 + 12 + 14 * ph, y0 - 2); L(2.2, C5.nic); c.restore() }
-    // никотин: из пакетика сквозь десну — в капилляр и вверх
-    if (kv > 0) for (let i = 0; i < 13; i++) { const ph = ((t - a.nik) * .5 + i / 13 + H1(i * 4.1) * .03) % 1; if (t - a.nik < i * .07) continue;
-      let p; if (ph < .22) { const e = ph / .22; p = [lp(206, 220, e), lp(208 + (i % 5) * 9, 250 - (i % 3) * 12, e)] } else p = xpt(XVES, (ph - .22) / .78 * .96 + .02);
-      circ(c, p[0], p[1], 6, 'rgba(255,210,63,.25)'); circ(c, p[0], p[1], 3.2, C5.nic) }
+    const zA = eio(at(t, a.shch - .45, a.shch - .05));   // v22.3: профиль → макросхема (наезд в пакетик) к «щиплет»
+    // кадр А («кладут под верхнюю губу — и всё»): только профиль — нос, губы, подбородок; под верхней губой светится пакетик
+    if (zA < 1) { c.save(); c.globalAlpha *= 1 - zA; c.translate(200, 232); c.scale(1 + 2.2 * zA, 1 + 2.2 * zA); c.translate(-200, -232);
+      smoothOpen(c, XFACE); L(3.4, 'rgba(207,233,255,.95)');
+      const kin = eio(at(t, a.gub - .35, a.gub + .2)), px = 197 - 46 * (1 - kin), py = 232 + 70 * (1 - kin), pul = .45 + .12 * Math.sin(t * 5);
+      c.save(); c.globalAlpha *= kin; c.translate(px, py); c.rotate(-.12); glow(c, 0, 0, 56, '#FFFFFF', pul); rr(c, -11, -42, 22, 84, 10); fill(c, '#FFFDF8'); rr(c, -11, -42, 22, 84, 10); L(1.6, 'rgba(255,255,255,.9)'); c.restore();
+      c.restore() }
+    // кадр Б («щиплет десну, никотин уходит в кровь прямо через неё»): макросхема в два слоя — подушечка, под ней десна, ещё ниже — сосуд
+    if (zA > 0) { c.save(); c.globalAlpha *= zA; c.translate(210, 270); c.scale(lp(.55, 1, zA), lp(.55, 1, zA)); c.translate(-210, -270); gumMacro(c, t, a); c.restore() }
     c.restore();
     const bl = Math.sin(t * 6) > 0; circ(c, W / 2 - 16, -H / 2 + 16, 4, bl ? '#FF4B4B' : '#7A2A33');
     c.strokeStyle = '#CFE9FF'; c.lineWidth = 2.5; const q = 18, m = 10;   // уголки рамки

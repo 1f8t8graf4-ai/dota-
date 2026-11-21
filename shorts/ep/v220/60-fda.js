@@ -20,7 +20,7 @@
     { const cr = Math.cos(PH5.r), sr = Math.sin(PH5.r), m = PH5.w / (1080 / .4), dx = (2960 - 540) * m, dy = (3060 - 960) * m;
       N5 = { x: PH5.x - (dx * cr - dy * sr), y: PH5.y - (dx * sr + dy * cr), m, r: PH5.r } }   // кадр улицы в момент стыка (2960, 3060, z .4) = фото на столе
     K5 = [KY(a.j + .55, -150, 1290, 1.5, .04), KY(a.j + 1.25, 250, 1240, 1.1, .01), KY(a.regul, 660, 1230, 1.2), KY(a.razr, 720, 1225, 1.3), KY(a.perv - .3, 640, 1430, 1.0), KY(a.vkus, 640, 1620, 1.25),
-      KY(a.kor + .4, 640, 1620, 1.2), KY(a.juul, 520, 1560, 1.05), KY(a.zapr + .3, 420, 1540, 1.15), KY(a.dv26, 540, 1260, 1.0), KY(a.zinu, 760, 1230, 1.3),
+      KY(a.kor + .4, 640, 1620, 1.2), KY(a.juul, 560, 1560, .97), KY(a.zapr + .3, 540, 1540, 1.0), KY(a.dv26, 540, 1260, 1.0), KY(a.zinu, 760, 1230, 1.3),
       KY(a.ayk, 300, 1240, 1.3), KY(a.pory, 300, 1240, 1.32), KY(a.govor + .1, 760, 1230, 1.3), KY(a.zin2, 780, 1220, 1.25), KY(a.nizhe + .3, 780, 1020, .95),
       KY(a.insult + .1, 790, 1010, .95), KY(a.dive0 + .3, 900, 1120, 1.5), KY(a.jdive, N6.x, N6.y, 1 / N6.m)];
     linkK(K3, K5, N5, false);
@@ -102,8 +102,9 @@
   function tinsRow(c, t) {
     const a = T5, kin = eo(at(t, a.perv - .9, a.perv - .1)), shift = eio(at(t, a.pyat - .1, a.juul)), out = eio(at(t, a.s9 - .2, a.dv26 + .3)); if (kin <= 0 || out >= 1) return;
     const W = [a.mint, a.citr, a.kofe, a.kor];
-    TINS5.forEach((T, i) => { const x = lp(1700 + i * 200, 340 + i * 200, kin) + 330 * shift + 700 * out, y = 1720, lid = eio(at(t, W[i] - .25, W[i] + .05));
-      tin5(c, x, y, 92, .55, lid, { cap: T.cap, h: .6, n: 8 }); flavor5(c, T.f, x, y - 70, at(t, W[i] - .05, W[i] + .3)) });
+    const sc = lp(1, .72, shift);   // v22.3: на «Джулу» банки сдвигаются плотнее и чуть мельче — все четыре с дольками в кадре справа от гильотины
+    TINS5.forEach((T, i) => { const x = lp(lp(1700 + i * 200, 340 + i * 200, kin), 622 + i * 120, shift) + 700 * out, y = 1720, lid = eio(at(t, W[i] - .25, W[i] + .05));
+      c.save(); c.translate(x, y); c.scale(sc, sc); tin5(c, 0, 0, 92, .55, lid, { cap: T.cap, h: .6, n: 8 }); flavor5(c, T.f, 0, -70, at(t, W[i] - .05, W[i] + .3)); c.restore() });
   }
   // ---------- «Джул» и нож ----------
   const JCOL = ['#7FD3A8', '#F6A03A', '#E9D8B4', '#E7739A'];
@@ -170,7 +171,7 @@
   // ---------- мир 5 ----------
   function fdaWorld(c, t) {
     const a = T5; fdaRoom(c, t); streetPhoto(c, t);
-    const kz = eo(at(t, a.razr - .2, a.razr + .15)), zn = at(t, a.zinu - .05, a.zinu + .35), ok9 = at(t, a.razr9 - .05, a.razr9 + .35);
+    const kz = eo(at(t, a.razr - .2, a.razr + .15)), zn = at(t, a.zinu - .05, a.zinu + .35), ok9 = at(t, a.govor - .05, a.govor + .35);   // v22.3: галочка ZYN — когда камера вернулась, на «говорить о риске»
     const inI = eio(at(t, a.s9 - .1, a.dv26 + .3));
     if (inI > 0) form5(c, t, lp(-500, FI.x, inI), FI.y, { pic: 'iqos', less: 1, harm: 0, no: at(t, a.nera - .2, a.nera + .1), r: .03 });
     form5(c, t, FZ.x, FZ.y, { pic: 'tin', harm: ok9, ok: kz * (1 - at(t, a.s9 - .2, a.s9 + .2)), name: zn, r: -.02 });
@@ -191,6 +192,6 @@
     const a = T5; Q(a.j + .1, 'whoosh', .35); Q(a.j + .6, 'papers', .4); Q(a.razr - .05, 'stamp', .6); Q(a.razr, 'thud', .4); for (let i = 0; i < 4; i++) Q(a.perv - .8 + i * .14, 'plop', .25, .4 - i * .2);
     [a.mint, a.citr, a.kofe, a.kor].forEach((w, i) => { Q(w - .2, 'drawer', .25, -.3 + i * .2); Q(w, 'plop', .35, -.3 + i * .2) });
     Q(a.juul - .4, 'scuttle', .35, -.4); Q(a.zapr - .2, 'chain', .35); Q(a.zapr, 'blade', .6); Q(a.zapr + .1, 'impact', .4); Q(a.zapr + .4, 'plop', .3);
-    Q(a.s9, 'whoosh', .35); Q(a.dv26 + .1, 'papers', .4); Q(a.zinu, 'marker', .4); Q(a.razr9, 'shimmer', .35); Q(a.ayk - .2, 'whoosh', .3); Q(a.nera - .1, 'stamp', .55); Q(a.nera, 'thud', .45);
+    Q(a.s9, 'whoosh', .35); Q(a.dv26 + .1, 'papers', .4); Q(a.zinu, 'marker', .4); Q(a.govor + .05, 'shimmer', .35); Q(a.ayk - .2, 'whoosh', .3); Q(a.nera - .1, 'stamp', .55); Q(a.nera, 'thud', .45);
     Q(a.govor, 'whoosh', .3); Q(a.sig, 'marker', .35); Q(a.nizhe, 'deep', .35); [a.rta, a.legk, a.serd, a.insult].forEach((w, i) => Q(w - .1, 'plop', .4, [-.3, .3, -.3, .3][i])); Q(a.dive0 + .2, 'dive', .55);
   }

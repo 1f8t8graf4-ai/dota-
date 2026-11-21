@@ -120,8 +120,8 @@ def place(seg_words, pieces):
     return res
 
 
-def subs_for(sent, lang):
-    tr = SENT.get(sent['text'])
+def subs_for(sent, lang, tab=None):
+    tr = tab.get(sent.get('scene')) if tab is not None else SENT.get(sent['text'])   # 21.11: глава 4 — перевод по сцене (l10n/data45.py)
     if not tr: raise SystemExit('нет перевода реплики: ' + sent['text'])
     text = tr[0 if lang == 'en' else 1]
     parts = [p.strip() for p in text.split('|')]
@@ -138,6 +138,16 @@ def build_tl():
         for lang in LANGS:
             t = dict(T); t['lang'] = lang; t['ep'] = ep + '-' + lang
             t['subs'] = [c for s in T['sent'] for c in subs_for(s, lang)]
+            for p in (os.path.join(ROOT, 'tl', ep + '-' + lang + '.json'), os.path.join(ROOT, 'out', ep + '-' + lang, 'timeline.json')):
+                if 'out' in p and not os.path.isdir(os.path.dirname(p)): continue
+                json.dump(t, open(p, 'w'), ensure_ascii=False)
+            print(ep + '-' + lang, 'субтитров:', len(t['subs']), 'длина', t['dur'])
+    from data45 import CH4   # 21.11: глава 4 «2014 · Нагреватели» — надписи глава рисует сама (TEXT_L / OBJ_L), здесь только субтитры
+    for ep in ['v210y', 'v210s']:
+        T = json.load(open(os.path.join(ROOT, 'tl', ep + '-ru.json')))
+        for lang in LANGS:
+            t = dict(T); t['lang'] = lang; t['ep'] = ep + '-' + lang
+            t['subs'] = [c for s in T['sent'] for c in subs_for(s, lang, CH4)]
             for p in (os.path.join(ROOT, 'tl', ep + '-' + lang + '.json'), os.path.join(ROOT, 'out', ep + '-' + lang, 'timeline.json')):
                 if 'out' in p and not os.path.isdir(os.path.dirname(p)): continue
                 json.dump(t, open(p, 'w'), ensure_ascii=False)
@@ -233,7 +243,8 @@ def build_md():
 
 def build_srt():
     """субтитры по фразам (.srt) — для загрузки на YouTube отдельной дорожкой: out/deliver-l10n/<Глава>_<ЯЗ>.srt"""
-    NM = {'v170e': 'Ch1_Bob_Film', 'v191s': 'Ch2_Ice_Shorts', 'v191y': 'Ch2_Ice_Film', 'v200s': 'Ch3_Marlboro_Shorts', 'v200y': 'Ch3_Marlboro_Film'}
+    from data45 import CH4
+    NM = {'v170e': 'Ch1_Bob_Film', 'v191s': 'Ch2_Ice_Shorts', 'v191y': 'Ch2_Ice_Film', 'v200s': 'Ch3_Marlboro_Shorts', 'v200y': 'Ch3_Marlboro_Film', 'v210y': 'Ch4_IQOS_Film'}
     od = os.path.join(ROOT, 'out', 'deliver-l10n'); os.makedirs(od, exist_ok=True)
     ts = lambda x: '%02d:%02d:%02d,%03d' % (int(x // 3600), int(x % 3600 // 60), int(x % 60), int(round(x % 1 * 1000)) % 1000)
     for ep, nm in NM.items():
@@ -241,7 +252,7 @@ def build_srt():
         for li, lang in enumerate(LANGS):
             L = []
             for k, snt in enumerate(T['sent']):
-                txt = SENT[snt['text']][li].replace(' | ', ' ').replace('|', '')
+                txt = (CH4[snt['scene']] if ep.startswith('v210') else SENT[snt['text']])[li].replace(' | ', ' ').replace('|', '')
                 nx = T['sent'][k + 1]['a'] - .02 if k + 1 < len(T['sent']) else snt['b'] + .8
                 L += [str(k + 1), ts(snt['a']) + ' --> ' + ts(min(snt['b'] + .3, nx)), txt, '']
             open(os.path.join(od, nm + '_' + lang.upper() + '.srt'), 'w').write('\n'.join(L))

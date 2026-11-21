@@ -5,7 +5,7 @@
   // ряд магазинов с пустыми полками, из средней полки растёт башня банок и барабан 581 МЛН. Пока камера внутри магазина (после посадки),
   // мир подменяется улицей (те же координаты, тот же магазин) — стола над ней уже нет.
   let T3 = null, K3 = null;
-  const TA3 = { x: 380, y: 1180, R: 150 }, TB3 = { x: 760, y: 1176, R: 150 }, PRESS = { x: 1330, y: 1150 }, FLASK = { x: 1810, y: 1060 };
+  const TA3 = { x: 410, y: 1180, R: 150 }, TB3 = { x: 760, y: 1176, R: 150 }, PRESS = { x: 1330, y: 1150 }, FLASK = { x: 1810, y: 1060 };
   const FACT = { x: 2440, y: 1150 }, PACK3 = { x: 2715, y: 1170, w: 170, h: 268 }, G2 = { x: 3140, y: 1050, R: 170 }, D1R = 190;   // v22.2: оба купола и пачка — целиком в кадре (камера .95)
   const GS = { x: 2960, y: 3700 }, SHOP = { x0: 2360, y0: 2300, w: 1200, h: 2400 }, SHELVES = [3330, 3580, 3830, 4080], FLOOR3 = 4260;
   function tableInit() {
@@ -17,8 +17,9 @@
       prod: w6('продали'), shest: w6('шестьсот'), bank: WsB('s6', 'банок'), s7: SA('s7') };
     const a = T3; a.crack = a.snus6 - .2; a.fall = a.snus6; a.land = a.smeli + .3; a.junk = a.bank + .4;
     K3 = [KY(a.jw + .3, 560, 1150, 1.25), KY(a.nast, 572, 1205, 1.32), KY(a.tab + .3, 578, 1215, 1.35), KY(a.nik, 430, 1190, 1.45), KY(a.vyzh, 1350, 860, 1.42),
-      KY(a.ego + .3, 1530, 910, 1.42), KY(a.iz + .25, 1830, 1060, 1.5), KY(a.shvedy, 2450, 1000, 1.3), KY(a.malb, 2600, 990, 1.12), KY(a.tsel + .2, 2610, 990, 1.08),
-      KY(a.amer, 2740, 995, .98), KY(a.zav + .2, 2780, 995, .95), KY(a.kent + .1, 2782, 995, .95), KY(a.crack, 3130, 1010, 1.15), KY(a.land, 2960, 3560, .95), KY(a.ajk - .2, 2960, 3580, .95),
+      KY(a.ego + .3, 1530, 910, 1.42), KY(a.iz + .25, 1830, 1060, 1.5), KY(a.shvedy, 2450, 1000, 1.3), KY(a.malb, 2600, 990, 1.12), KY(a.tsel + .2, 2610, 990, 1.02),
+      KY(a.amer, 2740, 995, .92), KY(a.zav + .2, 2780, 995, .89), KY(a.kent + .1, 2782, 995, .89),   // v22.3: купола на 6 % мельче — края не режутся
+      KY(a.crack, 3130, 1010, 1.15), KY(a.land, 2960, 3560, .95), KY(a.ajk - .2, 2960, 3580, .95),
       KY(a.japo + .1, 3260, 3090, 2.0), KY(a.tolko + .15, 3120, 3220, 1.35), KY(a.chet + .5, 2960, 3300, .55), KY(a.shest, 2960, 3150, .42), KY(a.junk, 2960, 3060, .4)];
     linkK(K2, K3, N3, true);
   }
@@ -34,9 +35,16 @@
     c.fillStyle = '#10142A'; c.fillRect(-1600, 2140, 6600, 700);   // под столом — темно: камера падает к заправке
   }
   // ---------- строки 3–4: баночки, сканер, пресс, змеевик, колба ----------
+  // v22.3: вместо наклейки «СНЮС» — веер белых банок брендов (латиницей во всех языках): ZYN впереди, VELO и PABLO выезжают из-за неё,
+  // на «табака нет» уходят в стороны — сканер и дальше вся линия про шведов остаются на ZYN
+  const BRC = { zyn: ['#1F2A44', '#2BB5A0'], velo: ['#1E5BD8', '#1E5BD8'], pablo: ['#D6334D', '#18181C'] }, BR3 = [['velo', -128], ['pablo', 128]];
+  function brandTin(c, kd, x, y, R) { tin5(c, x, y, R, .55, 0, { name: OBJ[kd], nameC: BRC[kd][0], band: BRC[kd][1], h: .7 }) }
   function snusTins(c, t) {
     const a = T3, kin = eio(at(t, a.nast - .35, a.nast + .4)), lid = eio(at(t, a.shv, a.tab - .05));
-    tin5(c, TA3.x, TA3.y, TA3.R, .55, 0, { label: TEXT.snusTag, h: .78 });   // v22.2: жёлтая наклейка «СНЮС» от руки — крупнее, без отдельной рамки-маркера
+    const fan = T3 ? eio(at(t, a.jw - .2, a.jw + .5)) : 1, away = T3 ? eio(at(t, a.s4 - .3, a.s4 + .5)) : 0;
+    if (fan > 0 && away < 1) BR3.forEach(([kd, dx]) => { const x = TA3.x + dx * fan + Math.sign(dx) * 300 * away, y = TA3.y - 118 * fan, sc = lp(.74, .84, fan);
+      c.save(); c.globalAlpha *= Math.min(1, fan * 1.6) * (1 - away); c.translate(x, y); c.scale(sc, sc); brandTin(c, kd, 0, 0, TA3.R); c.restore() });
+    brandTin(c, 'zyn', TA3.x, TA3.y, TA3.R);
     if (kin > 0) tin5(c, lp(1600, TB3.x, kin), TB3.y, TB3.R, .55, lid, { dark: true, name: OBJ.snus, h: .6, n: 9 });
   }
   function scanTin(c, t) {   // строка 4: линза сканера над белой баночкой — внутри лист табака перечёркнут, потом светятся шестигранники никотина
@@ -242,7 +250,7 @@
     drum4(c, TEXT.fCans(Math.round(lp(0, 581, eo(at(FT, a.shest - .05, a.bank + .1))))), x, y0 - n * 96 - 220, eo(at(t, a.shest - .2, a.shest + .2)), { s: 200, w: 1080, bg: '#F4F1EA', c: '#141010' });
   }
   function tableWorld(c, t) {
-    if (!T3) { tableRoom(c); tin5(c, TA3.x, TA3.y, TA3.R, .55, 0, { label: TEXT.snusTag, h: .78 }); return }
+    if (!T3) { tableRoom(c); brandTin(c, 'zyn', TA3.x, TA3.y, TA3.R); return }
     const a = T3;
     if (t < a.land) { tableRoom(c); pressScene(c, t); snusTins(c, t); scanTin(c, t); marlScene(c, t); shopInterior(c, t) }
     else { streetWorld(c, t); shopInterior(c, t); storeGlass(c, t); canTower(c, t) }
