@@ -71,7 +71,7 @@
       setLang(tl.lang || (String(tl.ep || '').match(/-(ru|en|de)$/) || [])[1] || 'ru');
       MODE = /y$/.test(ep) ? 'y' : 's';
       TLX = { b0: tl.b0, vEnd: tl.vEnd, fin: tl.fin, endT: (Math.ceil(tl.dur * 30) - 1) / 30 };
-      K = keys(); SEG.length = 0; SHUT.length = 0; HY = null; INITED = false; CHUNKS = buildChunks();
+      K = keys(); SEG.length = 0; SHUT.length = 0; HY = null; INITED = false; CHUNKS = buildChunks(tl.subs);
       if (!sub) { window.__K = K; cues(); window.CUES_READY = 1 } else allInit();
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       if (!document.getElementById('v220f')) { const st = document.createElement('style'); st.id = 'v220f';

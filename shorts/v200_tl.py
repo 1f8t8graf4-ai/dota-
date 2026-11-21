@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """v20.0 (18.11): глава 3 «1924 · Мальборо» — один дубль Макса (voice/v200) → голос и таймлайны фильма и шортса.
   python3 v200_tl.py   → out/v200y-ru/{voice.wav,timeline.json}, out/v200s-ru/{voice.wav,timeline.json}, копии таймлайнов в tl/
-Фильм (y): фразы 1–14. Пауза перед последним «Мальборо» — 0,5 с (в дубле 0,15), перед «Вот только» — на 0,2 с дольше.
-  После голоса — 3,6 с финала: витрина → карточка 1924 → нить к закрытой карточке 2014.
-Шортс (s): крючок — последняя фраза «Льда» без «Ведь» (stems/v191y-ru, уже записана), фразы 1–11, 13, 14 и вопрос
-  «Без огня — значит, без вреда?», потом 1,7 с «Часть 4 →» и петля в кадр 0.
+Фильм (y): фразы 1–12 (v20.6, 21.11: строк 13–14 больше нет — айкос целиком в главе 4). Перед «Вот только» пауза на 0,2 с дольше.
+  После голоса — 4,3 с: доска → нить к закрытой 2014 → маркер осыпается → нырок в фото кофейни = кадр 0 главы 4.
+Шортс (s): крючок — последняя фраза «Льда» без «Ведь» (stems/v191y-ru, уже записана), фразы 1–11 и вопрос
+  «А знаете, что производитель «Мальборо» однажды пообещал?» (q3, voice/v220), потом 1,75 с «Часть 4 →» и петля в кадр 0.
 Резы — посреди настоящих пауз записи, склейки с наплывом 15 мс; добавленные паузы — шум самой записи, не цифровой ноль."""
 import json, os, re, subprocess
 import numpy as np, soundfile as sf
@@ -117,8 +117,8 @@ def main():
             else: tr.add(y, a, cut[sc], S)
             prev = sc
 
-    # ---- фильм ----
-    F = Track(); body(F, order[:14]); vend = F.t(); F.silence(3.6)
+    # ---- фильм ---- (v20.6, 21.11: новая концовка — строк 13–14 нет; после строки 12 — 4,3 с: доска → нить к 2014 → кофейня = кадр 0 главы 4)
+    F = Track(); body(F, order[:12]); vend = F.t(); F.silence(4.3)
     write('v200y-ru', F, {'vEnd': round(vend, 3), 'b0': round(vend - .1, 3)})
     # ---- шортс ----
     hs = json.load(open(os.path.join(HERE, 'tl', 'v191y-ru.json')))['sent'][-1]; hw = [w for w in hs['words'] if w['d'] != 'Ведь']
@@ -126,8 +126,11 @@ def main():
     hook = {'scene': 'hook', 'text': re.sub(r'^Ведь главный', 'Главный', hs['text']), 'words': [dict(w, d=('Главный' if w['d'] == 'главный' else w['d'])) for w in hw]}
     Sh = Track(); Sh.add(hy, ha, hb, [hook]); Sh.pad(room, .3)
     body(Sh, ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11'])
-    Sh.add(y, cut['s12'], cut['s13'], S); Sh.add(y, cut['s13'], mid14, S); Sh.pad(room, .35); Sh.add(y, mid14, cut['s14'], S)
-    Sh.pad(room, .25); Sh.add(y, cut['s14'], cut['q'], S); qend = Sh.t(); Sh.silence(1.7)
+    # v20.6: после строки 11 — вопрос «А знаете, что производитель «Мальборо» однажды пообещал?» (q3 из дубля главы 5, voice/v220), витрина и петля
+    t5 = json.load(open(os.path.join(HERE, 'out', 'v220-ru', 'timeline.json'))); y5 = load(os.path.join(HERE, 'out', 'v220-ru', 'voice.wav')); Q5 = quiet_spans(y5)
+    q3 = next(x for x in t5['sent'] if x['scene'] == 'q3'); W3 = q3['words']; prev = max(w['b'] for x in t5['sent'] for w in x['words'] if w['b'] <= W3[0]['a'])
+    a3, b3 = cut_between(Q5, prev, W3[0]['a']), min(len(y5) / SR, W3[-1]['b'] + .3)
+    Sh.pad(room, .45); Sh.add(y5, a3, b3, [q3]); qend = Sh.t(); Sh.silence(1.75)
     write('v200s-ru', Sh, {'vEnd': round(qend, 3), 'b0': round(qend - .1, 3), 'hookEnd': round(hb - ha, 3)})
 
 

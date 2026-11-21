@@ -120,8 +120,12 @@ def place(seg_words, pieces):
     return res
 
 
+from data45 import CH3_Q
+EXTRA = {CH3_Q[0]: CH3_Q[1]}
+
+
 def subs_for(sent, lang, tab=None):
-    tr = tab.get(sent.get('scene')) if tab is not None else SENT.get(sent['text'])   # 21.11: глава 4 — перевод по сцене (l10n/data45.py)
+    tr = tab.get(sent.get('scene')) if tab is not None else (SENT.get(sent['text']) or EXTRA.get(sent['text']))   # 21.11: глава 4 — перевод по сцене (l10n/data45.py); вопрос шортса главы 3 — data45.CH3_Q
     if not tr: raise SystemExit('нет перевода реплики: ' + sent['text'])
     text = tr[0 if lang == 'en' else 1]
     parts = [p.strip() for p in text.split('|')]
@@ -174,22 +178,22 @@ def build_md():
         for s_ in tl(ep):
             sc = s_['scene']
             if sc in drop or (only and sc not in only): continue
-            en, de = (tr[sc] if tr else SENT[s_['text']])
+            en, de = (tr[sc] if tr else (SENT.get(s_['text']) or EXTRA[s_['text']]))
             out.append((s_['text'], en.replace(' | ', ' ').replace('|', ''), de.replace(' | ', ' ').replace('|', '')))
         return out
     CH = [
         ('Глава 1 «Боб» · 1979 · Соль', rows('v170e'), rows('v170a'), ''),
         ('Глава 2 «Лёд» · 2020 · Лазейка одноразок', rows('v191y'), rows('v191s'), ''),
-        ('Глава 3 «Мальборо» · 1924', rows('v200y', drop=('s13', 's14')), rows('v200s', drop=('s13', 's14', 'q')) + [(CH3_Q[0],) + CH3_Q[1]],
-         'Новая концовка (22.11): строк 13–14 про «третью жизнь» и нагреватель больше нет — фильм кончается строкой 12 и уходит на доску к карточке 2014, '
-         'шортс — вопросом про обещание (голос уже записан). Ролики главы 3 (RU, EN, DE) под новую концовку ещё не пересобраны.'),
+        ('Глава 3 «Мальборо» · 1924', rows('v200y'), rows('v200s'),
+         'Новая концовка (21.11): строк 13–14 про «третью жизнь» и нагреватель больше нет — фильм кончается строкой 12 и уходит на доску к карточке 2014, '
+         'шортс — вопросом про обещание.'),
         ('Глава 4 «Айкос» · 2014 · Нагреватели', rows('v210y', tr=CH4), rows('v210s', tr=CH4), ''),
         ('Глава 5 «Снюс» · 2022', rows('v220y', drop=('f1', 'f2', 'f3', 'f4'), tr=CH5), rows('v220s', tr=CH5),
          'Строка 3 адаптирована: «у нас» (в России) → «многие».'),
     ]
     L = ['# Главы 1–5 и финал на английском и немецком — тексты на проверку', '',
          'Собрано `python3 l10n/build.py`: голос глав 1–3 — `l10n/data.py`, глав 4–5 и финала — `l10n/data45.py`, надписи — словари роликов.',
-         'Голос EN и DE ещё не записан: сначала проверка.', '',
+         'Английский голос записан (Nathan, 21.11), немецкий — ждёт выбора голоса.', '',
          '- **Часть 1** — текст диктора: фильм целиком по строкам (RU → EN → DE), у шортса — только то, чем он отличается.',
          '- **Часть 2** — все надписи в кадре по главам: RU → EN → DE.',
          '- Немецкий — на «ihr», кавычки „…“, тире –. Правки проверки 22.11 внесены, Kartusche → Pod.', '',
@@ -252,7 +256,7 @@ def build_srt():
         for li, lang in enumerate(LANGS):
             L = []
             for k, snt in enumerate(T['sent']):
-                txt = (CH4[snt['scene']] if ep.startswith('v210') else SENT[snt['text']])[li].replace(' | ', ' ').replace('|', '')
+                txt = (CH4[snt['scene']] if ep.startswith('v210') else (SENT.get(snt['text']) or EXTRA[snt['text']]))[li].replace(' | ', ' ').replace('|', '')
                 nx = T['sent'][k + 1]['a'] - .02 if k + 1 < len(T['sent']) else snt['b'] + .8
                 L += [str(k + 1), ts(snt['a']) + ' --> ' + ts(min(snt['b'] + .3, nx)), txt, '']
             open(os.path.join(od, nm + '_' + lang.upper() + '.srt'), 'w').write('\n'.join(L))

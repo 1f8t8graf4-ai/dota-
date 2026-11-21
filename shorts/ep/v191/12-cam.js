@@ -2,6 +2,7 @@
   // Камера по ключам [t, x, y, ln z, r]: монотонная кривая (Фрич–Карлсон). Старт и финиш — с места, внутри — без остановок.
   function camAt(KEYS, t) {
     const n = KEYS.length, D = KEYS[0].length;
+    if (!KEYS._chk) { KEYS._chk = 1; for (let j = 0; j + 1 < n; j++) if (!(KEYS[j + 1][0] > KEYS[j][0])) console.error(`camAt: ключи камеры не по порядку №${j}: ${KEYS[j][0].toFixed(3)} → ${KEYS[j + 1][0].toFixed(3)}`) }   // 21.11: озвучка перевода сжимает время между словами
     if (t <= KEYS[0][0]) return KEYS[0].slice(1);
     if (t >= KEYS[n - 1][0]) return KEYS[n - 1].slice(1);
     let i = 0; while (KEYS[i + 1][0] < t) i++;

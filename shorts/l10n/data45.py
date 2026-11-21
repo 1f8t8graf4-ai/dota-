@@ -18,7 +18,7 @@ CH4 = {   # глава 4 «2014 · Нагреватели»: фильм — s1�
            'Er kaufte ganze Seiten in britischen Zeitungen: „Unser Neujahrsvorsatz: Wir versuchen, Zigaretten aufzugeben.“'),
     's3': ('To put it mildly, they didn’t keep their word.',
            'Sein Wort hat er, gelinde gesagt, nicht gehalten.'),
-    's4': ('They started “quitting” early: in 2014, a cigarette you can’t light appeared in Nagoya, Japan, and Milan, Italy.',
+    's4': ('They started “quitting” early: in 2014, Nagoya, Japan, and Milan, Italy, got a cigarette you can’t light.',
            'Mit dem Aufhören fing er schon früher an: 2014 tauchte im japanischen Nagoya und im italienischen Mailand eine Zigarette auf, die man nicht anzünden kann.'),
     's5': ('The tobacco is warmed by a heater, at half the temperature of a flame: your jacket doesn’t smell, there’s no ash, and you can take a puff right in the car.',
            'Den Tabak darin erhitzt ein Heizelement – nur halb so heiß wie eine Flamme: Die Jacke riecht nicht, es gibt keine Asche, und ziehen kann man sogar im Auto.'),

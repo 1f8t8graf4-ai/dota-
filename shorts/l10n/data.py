@@ -39,7 +39,7 @@ SENT = {
         'In 1998, a court forced the tobacco companies to reveal their secrets, and fourteen million secret documents were published in California.',
         '1998 zwang ein Gericht die Tabakkonzerne, ihre Geheimnisse offenzulegen – und vierzehn Millionen geheime Dokumente wurden in Kalifornien veröffentlicht.'),
     'По странному стечению обстоятельств прямо по соседству со Стэнфордским университетом, где эти бумаги вскоре находят два студента.': (
-        'By a strange coincidence, right next door to Stanford University, where two students soon find these papers.',
+        'By a strange coincidence, right next door to Stanford University, where these papers are soon found by two students.',
         'Wie der Zufall es wollte, gleich neben der Stanford University – wo zwei Studenten diese Papiere bald entdecken.'),
     'Позже они создают электронную сигарету, похожую на флешку, внутри которой оживает та самая соль.': (
         'Later they create an e-cigarette that looks like a USB stick — and inside it, that very salt comes back to life.',
@@ -48,7 +48,7 @@ SENT = {
         'One pod replaced a whole pack of cigarettes, and since the smooth vapor no longer burned the throat, teens puffed nonstop and got hooked way faster.',
         'Ein Pod ersetzte eine ganze Schachtel Zigaretten, und weil der sanfte Dampf nicht mehr im Hals brannte, zogen Schüler ohne Pause und wurden um ein Vielfaches schneller süchtig.'),
     'Уже через четыре года в США парил каждый четвёртый старшеклассник, а треть новой компании за тринадцать миллиардов долларов выкупил производитель «Мальборо».': (
-        'Within four years, one in four US high school students was vaping — and the maker of Marlboro bought a third of the new company for thirteen billion dollars.',
+        'Within four years, one in four US high school students was vaping — and a third of the new company, for thirteen billion dollars, was bought by the maker of Marlboro.',
         'Schon vier Jahre später dampfte in den USA jeder vierte Highschool-Schüler – und der Hersteller von Marlboro kaufte ein Drittel der neuen Firma für dreizehn Milliarden Dollar.'),
     'Старый план сработал идеально.': (
         'The old plan worked perfectly.',
@@ -86,7 +86,7 @@ SENT = {
         'And all-in-one disposables… simply aren’t mentioned.',
         'Und Einweg-Geräte aus einem Stück… werden darin schlicht nicht erwähnt.'),
     'Пока «Джул» убирал вкусы с полок, в Шэньчжэне уже запускали конвейеры.': (
-        'While JUUL was pulling its flavors off the shelves, assembly lines were already starting up in Shenzhen.',
+        'While JUUL was pulling its flavors off the shelves, in Shenzhen, assembly lines were already starting up.',
         'Während JUUL seine Geschmacksrichtungen aus den Regalen nahm, liefen in Shenzhen schon die Fließbänder an.'),
     'Пафф Бар, эйч-кью-ди, а потом Эльф Бар — одноразки накрыли Америку волной.': (
         'Puff Bar, HQD, and then Elf Bar — disposables swept over America like a wave.',
@@ -253,7 +253,7 @@ STR = {
     'ЛЕО БЁРНЕТТ': ('LEO BURNETT', 'LEO BURNETT'), 'РЕКЛАМЩИК, ЧИКАГО': ('AD MAN, CHICAGO', 'WERBER, CHICAGO'),
     '№ 4 В США': ('#4 IN THE US', 'NR. 4 DER USA'), '№ 1 В МИРЕ': ('#1 IN THE WORLD', 'NR. 1 DER WELT'), 'ПО-НАСТОЯЩЕМУ': ('FOR REAL', 'WIRKLICH'),
     'УЭЙН МАКЛАРЕН': ('WAYNE McLAREN', 'WAYNE McLAREN'), 'КОВБОЙ С РЕКЛАМЫ': ('COWBOY FROM THE ADS', 'COWBOY AUS DER WERBUNG'),
-    '1,5 ПАЧКИ В ДЕНЬ': ('1.5 PACKS A DAY', '1,5 SCHACHTELN AM TAG'), 'КАК МИНИМУМ 4': ('AT LEAST 4', 'MINDESTENS 4'), 'БЕЗ ОГНЯ': ('NO FIRE', 'OHNE FEUER'),
+    '1,5 ПАЧКИ В ДЕНЬ': ('1.5 PACKS A DAY', '1,5 SCHACHTELN AM TAG'), 'КАК МИНИМУМ 4': ('AT LEAST 4', 'MINDESTENS 4'), 'БЕЗ ОГНЯ': ('NO FIRE', 'OHNE FEUER'), 'НАГРЕВАТЕЛИ': ('HEATED TOBACCO', 'TABAKERHITZER'),
     'Без огня — без вреда?': ('No fire — no harm?', 'Kein Feuer – also harmlos?'), 'Часть 4 →': ('Part 4 →', 'Teil 4 →'),
     '«МАЛЬБОРО»': ('“MARLBORO”', '„MARLBORO“'), 'МЛРД': ('B', 'MRD.'),
 }

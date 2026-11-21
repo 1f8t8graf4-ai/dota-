@@ -6,7 +6,7 @@
     if (BLOCKS.length) return;
     const FN = { w1: typeof w1Shot === 'function' ? w1Shot : null, s2: typeof w2Shot === 'function' ? w2Shot : null, s3: wcShot, s4: wcShot, s5: wcShot, s6: wcShot,
       s7: (c, t) => (t < T7.sw || typeof w8Shot !== 'function' ? w7Shot : w8Shot)(c, t), s8: typeof w8Shot === 'function' ? w8Shot : null, s9: w9Shot, s10: w9Shot, s11: w9Shot,
-      s12: w12Shot, s13: w13Shot, s14: w13Shot };
+      s12: w12Shot, q3: w13Shot };   // v20.6: строк 13–14 нет; q3 — вопрос шортса новой концовки
     w1Init(); w2Init(); linkK(K1, K2, { x: V1.x, y: V1.y, m: M1 }, true);   // ныряем из плаката в коридор: мир 2 вложен в мир 1
     wcInit(); linkK(K2, KC, NC2, true);   // ныряем в красный торец: круг рынка — это он
     chInit(); linkK(KC, KCH, NCH, true);   // v20.2: ныряем в пробку сигареты — это корона небоскрёба, отъезд в ночной Чикаго
@@ -20,10 +20,10 @@
     const W = (a, b) => SHUT.push([a, b]);   // короткая выдержка на быстрых проездах: без смаза и двоения
     W(T1.zh - .2, T1.end + .55); W(T2.izy - .1, T2.zh + .5); W(T2.pom - .15, T2.end + .35); W(TC.spas - .1, TC.strah + .25); W(TC.amer + .15, TC.amer + .75); W(TC.bros - .1, TC.filt + .4); W(TC.nezh - .2, TC.nezh + .4); W(TC.fil - .12, TC.fil + .9);
     W(TC.vidu - .1, TC.end + .4); W(T7.stav + .2, T7.slov + .15); W(T8.muzh, T8.chet + .55); W(T8.sem - .1, T8.mir + .35); W(T8.sweep1 - .1, T9.kur); W(T9.vsego - .2, T9.umerli + .3); W(T9.chet + .8, T9.chet + 1.4); W(T9.dev - .2, T9.dev + .5);
-    if (T12) { W(T12.pom - .1, T12.mil + .6); W(T12.pochti - .1, T12.poter + .55); W(T12.spok - .45, T12.perezh + .35); W(T12.korm + .3, T12.end) } W(TSM - .5, TSM + .5); W(T13.stiki - .2, T13.naz + .3);   // v20.3: проезды вдоль нити — без двоения
-    if (MODE === 'y') W(TLX.vEnd - .05, TLX.vEnd + 1.3); else W(T13.qEnd, TLX.endT + .1);
+    if (T12) { W(T12.pom - .1, T12.mil + .6); W(T12.pochti - .1, T12.poter + .55); W(T12.spok - .45, T12.perezh + .35); W(T12.korm + .3, T12.V) } if (MODE === 's') W(TSM - .5, TSM + .5);   // v20.3: проезды вдоль нити — без двоения
+    if (MODE === 'y') { W(TLX.vEnd - .05, TLX.vEnd + 1.3); W(TLX.vEnd + 2.9, TLX.endT + .1) } else W(T13.qEnd, TLX.endT + .1);   // v20.6: нырок в кофейню — без смаза: последний кадр = кадр главы 4
     BLOCKS.push(['w1', -1, FN.w1]);
-    for (const sc of ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14']) { const a = SA(sc); if (a !== null) BLOCKS.push([sc, a, FN[sc]]) }
+    for (const sc of ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 'q3']) { const a = SA(sc); if (a !== null) BLOCKS.push([sc, a, FN[sc]]) }
   }
   function scene(c, t) {
     allInit(); let b = BLOCKS[0];
@@ -33,7 +33,7 @@
   }
   let HY = null;
   function hud(c, t) {   // плашка года — только вперёд: 1924 → 1954 → 1972 → 1990 → 1992, уходит; 2014; в кадре 0 и в концовке плашки нет
-    if (!HY) HY = { t1: Ws('s2', 'первые'), t54: Ws('s3', 'пятьдесят'), t72: Ws('s8', 'семьдесят'), t90: Ws('s10', 'девяностом'), t92: Ws('s10', 'умер'), out: Ws('s11', 'всего'), t14: Ws('s13', 'когда'), kv: Ws('s2', 'видно'),
+    if (!HY) HY = { t1: Ws('s2', 'первые'), t54: Ws('s3', 'пятьдесят'), t72: Ws('s8', 'семьдесят'), t90: Ws('s10', 'девяностом'), t92: Ws('s10', 'умер'), out: Ws('s11', 'всего'), t14: Infinity, kv: Ws('s2', 'видно'),
       end: MODE === 'y' ? TLX.vEnd : T13.qEnd + .25 };
     const h = HY, pill = (y0, y1, k, dy = 0, al = 1) => { c.save(); c.setTransform(1, 0, 0, 1, 0, dy); yearPill(c, y0, y1, k, al, true); c.restore() };
     if (t < h.t1 - .25) return;
@@ -82,10 +82,10 @@
     const g = T9; Q(g.vot - .3, 'whoosh', .6); Q(g.kur - .05, 'neon', .4); Q(g.kur + .1, 'puff', .3); Q(g.uein - .05, 'plop', .4); for (let i = 0; i < 8; i++) Q(g.polt - .2 + i * .19, 'pageflip', .25, .2); Q(g.dev - .05, 'xray', .55);
     Q(g.rekl - .25, 'conveyor', .4); Q(g.rekl, 'chain', .35); Q(g.umer - .15, 'thud', .55); Q(g.pyat + .3, 'thud', .5); Q(g.vsego, 'whoosh', .45); Q(g.vot + .35, 'truck', .2, -.5); Q(g.umerli + .3, 'truck', .18, .5); for (let i = 0; i < 3; i++) Q(g.chet - .05 + i * .25, 'thud', .4, -.2 + i * .25); Q(g.marl, 'leaves', .35);
     if (T12) { const h = T12; Q(h.pom - .05, 'whoosh', .5); Q(h.mil - .1, 'plop', .5); Q(h.mil + .2, 'coins', .4); Q(h.pochti, 'counter', .6); Q(h.spok - .25, 'whoosh', .45); Q(h.korm - .08, 'register', .8); Q(h.korm + .15, 'receipt', .7); Q(h.burn, 'puff', .5) }
-    Q(TSM - .3, 'whoosh', .55);
-    const k = T13; Q(k.isp - .1, 'school', .3); Q(k.tret - .15, 'puff', .4); Q(k.tret + .1, 'glassbulb', .4); Q(k.tab - .3, 'whoosh', .45); Q(k.tab, 'drawer', .45); Q(k.gre, 'pour', .35); Q(k.stiki - .1, 'whoosh', .5); Q(k.naz - .1, 'glass', .45);
-    for (let i = 0; i < 3; i++) Q(k.marl - .05 + i * .22, 'glass', .5, -.4 + i * .4);
-    if (MODE === 'y') { Q(TLX.vEnd + .05, 'whoosh', .55); Q(TLX.vEnd + .6, 'plop', .3); Q(TLX.vEnd + 1.3, 'marker', .4) } else { Q(k.q - .1, 'plop', .5); Q(k.q + .95, 'plop', .3); Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // v20.3: нырок в пачку → щит у трассы
+    if (MODE === 'y') { const V = TLX.vEnd, E = TLX.endT;   // v20.6: доска → нить к 2014 → маркер осыпается → нырок в кофейню главы 4
+      Q(V + .05, 'receipt', .4); Q(V + .2, 'whoosh', .55); Q(V + .45, 'scroll', .3); Q(V + 1.15, 'marker', .35); Q(V + 1.25, 'whoosh', .35); Q(V + 2.05, 'plop', .3); Q(V + 2.35, 'papers', .5); Q(V + 2.95, 'whoosh', .5); Q(E - .55, 'dive', .5) }
+    else { const k = T13; Q(TSM - .3, 'whoosh', .55); Q(k.q - .05, 'plop', .4); for (let i = 0; i < 2; i++) Q(k.marl - .05 + i * .22, 'glass', .5, -.4 + i * .4); Q(k.poob, 'plop', .45, .4);
+      Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // нырок в пачку → щит у трассы
   }
   window.EP = {
     P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
@@ -105,7 +105,8 @@
         document.head.appendChild(st) }
       cv = mk(WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
       X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
-      return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$'))).then(() => 0);
+      const img4 = new Promise(r => { if (IMG4) return r(); IMG4 = new Image(); IMG4.onload = IMG4.onerror = () => r(); IMG4.src = 'ep/v200-ch4f0.png' });   // v20.6: кадр главы 4 — фото карточки 2014
+      return Promise.all([img4, ...['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$'))]).then(() => 0);
     },
   };
   { const ep = window.EP; ep.sub.init = tl => ep.init(tl, [], true) }

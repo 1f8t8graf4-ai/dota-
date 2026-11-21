@@ -1,7 +1,7 @@
 # Главы 1–5 и финал на английском и немецком — тексты на проверку
 
 Собрано `python3 l10n/build.py`: голос глав 1–3 — `l10n/data.py`, глав 4–5 и финала — `l10n/data45.py`, надписи — словари роликов.
-Голос EN и DE ещё не записан: сначала проверка.
+Английский голос записан (Nathan, 21.11), немецкий — ждёт выбора голоса.
 
 - **Часть 1** — текст диктора: фильм целиком по строкам (RU → EN → DE), у шортса — только то, чем он отличается.
 - **Часть 2** — все надписи в кадре по главам: RU → EN → DE.
@@ -60,7 +60,7 @@
 
 **10.** По странному стечению обстоятельств прямо по соседству со Стэнфордским университетом, где эти бумаги вскоре находят два студента.
 
-- EN: By a strange coincidence, right next door to Stanford University, where two students soon find these papers.
+- EN: By a strange coincidence, right next door to Stanford University, where these papers are soon found by two students.
 - DE: Wie der Zufall es wollte, gleich neben der Stanford University – wo zwei Studenten diese Papiere bald entdecken.
 
 **11.** Позже они создают электронную сигарету, похожую на флешку, внутри которой оживает та самая соль.
@@ -75,7 +75,7 @@
 
 **13.** Уже через четыре года в США парил каждый четвёртый старшеклассник, а треть новой компании за тринадцать миллиардов долларов выкупил производитель «Мальборо».
 
-- EN: Within four years, one in four US high school students was vaping — and the maker of Marlboro bought a third of the new company for thirteen billion dollars.
+- EN: Within four years, one in four US high school students was vaping — and a third of the new company, for thirteen billion dollars, was bought by the maker of Marlboro.
 - DE: Schon vier Jahre später dampfte in den USA jeder vierte Highschool-Schüler – und der Hersteller von Marlboro kaufte ein Drittel der neuen Firma für dreizehn Milliarden Dollar.
 
 **14.** Старый план сработал идеально.
@@ -143,7 +143,7 @@
 
 **6.** Пока «Джул» убирал вкусы с полок, в Шэньчжэне уже запускали конвейеры.
 
-- EN: While JUUL was pulling its flavors off the shelves, assembly lines were already starting up in Shenzhen.
+- EN: While JUUL was pulling its flavors off the shelves, in Shenzhen, assembly lines were already starting up.
 - DE: Während JUUL seine Geschmacksrichtungen aus den Regalen nahm, liefen in Shenzhen schon die Fließbänder an.
 
 **7.** Пафф Бар, эйч-кью-ди, а потом Эльф Бар — одноразки накрыли Америку волной.
@@ -222,7 +222,7 @@
 
 ## Глава 3 «Мальборо» · 1924
 
-> Новая концовка (22.11): строк 13–14 про «третью жизнь» и нагреватель больше нет — фильм кончается строкой 12 и уходит на доску к карточке 2014, шортс — вопросом про обещание (голос уже записан). Ролики главы 3 (RU, EN, DE) под новую концовку ещё не пересобраны.
+> Новая концовка (21.11): строк 13–14 про «третью жизнь» и нагреватель больше нет — фильм кончается строкой 12 и уходит на доску к карточке 2014, шортс — вопросом про обещание.
 
 ### Фильм
 
@@ -323,7 +323,7 @@
 
 **4.** Бросать он начал заранее: в две тысячи четырнадцатом в японской Нагое и итальянском Милане появилась сигарета, которую нельзя поджечь.
 
-- EN: They started “quitting” early: in 2014, a cigarette you can’t light appeared in Nagoya, Japan, and Milan, Italy.
+- EN: They started “quitting” early: in 2014, Nagoya, Japan, and Milan, Italy, got a cigarette you can’t light.
 - DE: Mit dem Aufhören fing er schon früher an: 2014 tauchte im japanischen Nagoya und im italienischen Mailand eine Zigarette auf, die man nicht anzünden kann.
 
 **5.** Табак в ней греет нагреватель, вдвое холоднее огня: куртка не пахнет, пепла нет, затянуться можно прямо в машине.
@@ -743,7 +743,6 @@
 | RU | EN | DE |
 |---|---|---|
 | БЕЗ ТАБАКА | NO TOBACCO | OHNE TABAK |
-| СНЮС | SNUS | SNUS |
 | СНЮС = ТАБАК | SNUS = TOBACCO | SNUS = TABAK |
 | НИКОТИН — ИЗ ТАБАКА | NICOTINE — FROM TOBACCO | NIKOTIN – AUS TABAK |
 | КЕНТУККИ | KENTUCKY | KENTUCKY |

@@ -50,7 +50,10 @@ if __name__ == '__main__':
     sw = os.path.join(od, 'sfx.wav'); VS.wav(sfx_track(json.load(open(os.path.join(o, 'cues.json'))), dur), sw)
     tail = .25 if sh else 1.4
     if track: b = M.bed(track, dur, tail, M.bars_of(M.ORDER))
-    else: b = bed_from(old_bed(), dur, tail, SEQ['s' if sh else 'y'])
+    else:
+        seq = SEQ['s' if sh else 'y']
+        while len(seq) < int(np.ceil(dur / BAR)) + 1: seq = seq + list(range(20, 40))   # 21.11: озвучка EN/DE длиннее русской — такты фраз 33 и 37 по кругу
+        b = bed_from(old_bed(), dur, tail, seq)
     tmp = os.path.join(od, 'bed_raw.wav'); VS.wav(b, tmp); Lv, _ = tt_audio._lufs(voice); Lm, _ = tt_audio._lufs(tmp); os.remove(tmp)
     env, sp, last = M.duck(voice, n); b = b * 10 ** ((Lv - 5.5 - Lm) / 20) * env
     if not sh: b *= 10 ** (4 * np.clip((np.arange(n) / SR - last) / .5, 0, 1) / 20)[:, None]

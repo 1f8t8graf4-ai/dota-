@@ -1,0 +1,111 @@
+{
+ "voice": "lWDDHwXsJXJM7nv2YgHY",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "This is Marlboro, and before its cowboy fame, the brand had already lived a whole life.\n\nFor its first thirty years, it was a ladies’ brand: the slogan “Mild as May,” elegant magazine ads, and a red tip that hid lipstick.\n\nBy 1954, only a handful of women smoked it — a quarter of a percent of the market. The brand was nearly dead.\n\nFear saved it. Scientists painted mice with tobacco tar, the mice grew tumors, and for the first time since the Great Depression, America started smoking less.\n\nSmokers rushed to filter cigarettes — only men were embarrassed by them: filters were seen as smokes for sissies.\n\nSo Philip Morris gives the same brand a second life: a filter, a hard pack that clicks open in front of everyone, and Chicago ad man Leo Burnett.\n\nBurnett puts a cowboy in the ads — in his words, the most universally understood symbol of a man in America.\n\nA year later, the former ladies’ brand is already number four in the country — and in 1972, number one in the world.\n\nThe only thing is, the cowboys in the ads really smoked.\n\nWayne McLaren smoked a pack and a half a day. In 1990 he was diagnosed with lung cancer; in the last year of his life he starred in anti-smoking ads, and he died at fifty-one.\n\nIn total, at least four Marlboro cowboys died of lung disease.\n\nRemember the thirteen billion the maker of Marlboro paid for a third of JUUL? It later lost almost all of it — and shrugged it off: the red-and-white pack still pays the bills to this day.\n\nThe ultimate symbol of rugged masculinity was launched a century ago… as delicate cigarettes for ladies.\n\nAnd do you know what the maker of Marlboro once promised?",
+ "items": [
+  {
+   "key": "Это «Мальборо», и до ковбойской славы эта марка успела прожить целую жизнь.",
+   "scene": "s1",
+   "text": "This is Marlboro, and before its cowboy fame, the brand had already lived a whole life.",
+   "off": 0,
+   "len": 87
+  },
+  {
+   "key": "Первые тридцать лет она была дамской: слоган «мягкие, как май», изящная реклама в журналах и красный кончик, на котором не видно помады.",
+   "scene": "s2",
+   "text": "For its first thirty years, it was a ladies’ brand: the slogan “Mild as May,” elegant magazine ads, and a red tip that hid lipstick.",
+   "off": 89,
+   "len": 132
+  },
+  {
+   "key": "К пятьдесят четвёртому году её курила горстка женщин — четверть процента рынка, марка почти умерла.",
+   "scene": "s3",
+   "text": "By 1954, only a handful of women smoked it — a quarter of a percent of the market. The brand was nearly dead.",
+   "off": 223,
+   "len": 109
+  },
+  {
+   "key": "Спас её страх. Учёные намазали мышей табачной смолой, у мышей выросли опухоли, и Америка впервые со времён Великой депрессии стала курить меньше.",
+   "scene": "s4",
+   "text": "Fear saved it. Scientists painted mice with tobacco tar, the mice grew tumors, and for the first time since the Great Depression, America started smoking less.",
+   "off": 334,
+   "len": 159
+  },
+  {
+   "key": "Курильщики бросились к сигаретам с фильтром, только мужчины их стеснялись: это считалось куревом для неженок.",
+   "scene": "s5",
+   "text": "Smokers rushed to filter cigarettes — only men were embarrassed by them: filters were seen as smokes for sissies.",
+   "off": 495,
+   "len": 113
+  },
+  {
+   "key": "И «Филип Моррис» дарит той же марке вторую жизнь: фильтр, жёсткую пачку, которую открывают со щелчком у всех на виду, и чикагского рекламщика Лео Бёрнетта.",
+   "scene": "s6",
+   "text": "So Philip Morris gives the same brand a second life: a filter, a hard pack that clicks open in front of everyone, and Chicago ad man Leo Burnett.",
+   "off": 610,
+   "len": 145
+  },
+  {
+   "key": "Бёрнетт ставит на рекламу ковбоя — по его словам, самый понятный в Америке символ мужчины.",
+   "scene": "s7",
+   "text": "Burnett puts a cowboy in the ads — in his words, the most universally understood symbol of a man in America.",
+   "off": 757,
+   "len": 108
+  },
+  {
+   "key": "Через год бывшая дамская марка уже четвёртая в стране, а в семьдесят втором — первая в мире.",
+   "scene": "s8",
+   "text": "A year later, the former ladies’ brand is already number four in the country — and in 1972, number one in the world.",
+   "off": 867,
+   "len": 116
+  },
+  {
+   "key": "Вот только ковбои с рекламы курили по-настоящему.",
+   "scene": "s9",
+   "text": "The only thing is, the cowboys in the ads really smoked.",
+   "off": 985,
+   "len": 56
+  },
+  {
+   "key": "Уэйн Макларен выкуривал по полторы пачки в день, в девяностом у него нашли рак лёгких, в последний год жизни он снимался в рекламе против курения и умер в пятьдесят один.",
+   "scene": "s10",
+   "text": "Wayne McLaren smoked a pack and a half a day. In 1990 he was diagnosed with lung cancer; in the last year of his life he starred in anti-smoking ads, and he died at fifty-one.",
+   "off": 1043,
+   "len": 175
+  },
+  {
+   "key": "Всего от болезней лёгких умерли как минимум четверо ковбоев «Мальборо».",
+   "scene": "s11",
+   "text": "In total, at least four Marlboro cowboys died of lung disease.",
+   "off": 1220,
+   "len": 62
+  },
+  {
+   "key": "Помните тринадцать миллиардов, которые производитель «Мальборо» отдал за треть «Джула»? Почти все он потом потерял — и спокойно пережил: красно-белая пачка кормит его до сих пор.",
+   "scene": "s12",
+   "text": "Remember the thirteen billion the maker of Marlboro paid for a third of JUUL? It later lost almost all of it — and shrugged it off: the red-and-white pack still pays the bills to this day.",
+   "off": 1284,
+   "len": 188
+  },
+  {
+   "key": "Главный символ мужской брутальности век назад выводили на рынок... как нежные сигареты для леди.",
+   "scene": "hook",
+   "text": "The ultimate symbol of rugged masculinity was launched a century ago… as delicate cigarettes for ladies.",
+   "off": 1474,
+   "len": 104
+  },
+  {
+   "key": "А знаете, что производитель «Мальборо» однажды пообещал?",
+   "scene": null,
+   "text": "And do you know what the maker of Marlboro once promised?",
+   "off": 1580,
+   "len": 57
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "voice": "lWDDHwXsJXJM7nv2YgHY",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "By a strange coincidence, right next door to Stanford University, where these papers are soon found by two students.\n\nWithin four years, one in four US high school students was vaping — and a third of the new company, for thirteen billion dollars, was bought by the maker of Marlboro.",
+ "items": [
+  {
+   "key": "По странному стечению обстоятельств прямо по соседству со Стэнфордским университетом, где эти бумаги вскоре находят два студента.",
+   "scene": "s5",
+   "text": "By a strange coincidence, right next door to Stanford University, where these papers are soon found by two students.",
+   "off": 0,
+   "len": 116
+  },
+  {
+   "key": "Уже через четыре года в США парил каждый четвёртый старшеклассник, а треть новой компании за тринадцать миллиардов долларов выкупил производитель «Мальборо».",
+   "scene": "s7",
+   "text": "Within four years, one in four US high school students was vaping — and a third of the new company, for thirteen billion dollars, was bought by the maker of Marlboro.",
+   "off": 118,
+   "len": 166
+  }
+ ]
+}

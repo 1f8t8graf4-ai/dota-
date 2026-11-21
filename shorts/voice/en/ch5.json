@@ -1,0 +1,146 @@
+{
+ "voice": "lWDDHwXsJXJM7nv2YgHY",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "But Philip Morris did make it back to America — a year after the ban, with a small white can — a sixteen-billion-dollar deal.\n\nThere isn’t even any… tobacco in it.\n\nYou can’t see it, hear it, or smell it: a small white pouch goes under the upper lip — and that’s it.\n\nFirst it stings your gums, the nicotine goes straight into your bloodstream, and no one around can tell: no smoke, no vapor — in a meeting or on a plane.\n\nLots of people call these pouches snus, but real Swedish snus is tobacco.\n\nThese contain no tobacco — but they do contain nicotine, and it’s extracted… from tobacco.\n\nThe Swedes invented them — and the maker of Marlboro bought the whole Swedish company, along with its American factory in Kentucky.\n\nTwo years later, pouches were flying off shelves all over America, just like IQOS once did in Japan: in 2024 alone, nearly six hundred million cans were sold there.\n\nIn 2025, the US regulator approved them — the first nicotine pouches ever authorized, and with flavors right away: mint, citrus, coffee, cinnamon.\n\nFive years earlier, JUUL had been banned from selling flavors like these.\n\nAnd in 2026, ZYN got permission for what IQOS still doesn’t have — to talk about risk: “ZYN instead of cigarettes — lower risk of mouth and lung cancer, heart disease, and stroke.”\n\nThe catch: American teens barely smoke cigarettes anymore — and among them, pouches have already overtaken cigarettes.\n\nAnd less than two months later, stronger pouches were approved: nine and eleven milligrams instead of three and six.\n\nEvery card on this board is a new way to quit. All that’s left is to flip the board itself.\n\nSo, what do you know about nicotine?\n\nThat it’s smoked, heated, vaped, and tucked under the lip — and every time, it’s sold as a way to quit.\n\nFlip the board: all five threads lead to the tobacco giants.\n\nThe snake bites its own tail: you quit one thing — they sell you the next.\n\nCan you guess what’s on the back of this board?",
+ "items": [
+  {
+   "key": "b1",
+   "scene": "b1",
+   "text": "But Philip Morris did make it back to America — a year after the ban, with a small white can — a sixteen-billion-dollar deal.",
+   "off": 0,
+   "len": 125
+  },
+  {
+   "key": "b2",
+   "scene": "b2",
+   "text": "There isn’t even any… tobacco in it.",
+   "off": 127,
+   "len": 36
+  },
+  {
+   "key": "s1",
+   "scene": "s1",
+   "text": "You can’t see it, hear it, or smell it: a small white pouch goes under the upper lip — and that’s it.",
+   "off": 165,
+   "len": 101
+  },
+  {
+   "key": "s2",
+   "scene": "s2",
+   "text": "First it stings your gums, the nicotine goes straight into your bloodstream, and no one around can tell: no smoke, no vapor — in a meeting or on a plane.",
+   "off": 268,
+   "len": 153
+  },
+  {
+   "key": "s3",
+   "scene": "s3",
+   "text": "Lots of people call these pouches snus, but real Swedish snus is tobacco.",
+   "off": 423,
+   "len": 73
+  },
+  {
+   "key": "s4",
+   "scene": "s4",
+   "text": "These contain no tobacco — but they do contain nicotine, and it’s extracted… from tobacco.",
+   "off": 498,
+   "len": 90
+  },
+  {
+   "key": "s5",
+   "scene": "s5",
+   "text": "The Swedes invented them — and the maker of Marlboro bought the whole Swedish company, along with its American factory in Kentucky.",
+   "off": 590,
+   "len": 131
+  },
+  {
+   "key": "s6",
+   "scene": "s6",
+   "text": "Two years later, pouches were flying off shelves all over America, just like IQOS once did in Japan: in 2024 alone, nearly six hundred million cans were sold there.",
+   "off": 723,
+   "len": 164
+  },
+  {
+   "key": "s7",
+   "scene": "s7",
+   "text": "In 2025, the US regulator approved them — the first nicotine pouches ever authorized, and with flavors right away: mint, citrus, coffee, cinnamon.",
+   "off": 889,
+   "len": 146
+  },
+  {
+   "key": "s8",
+   "scene": "s8",
+   "text": "Five years earlier, JUUL had been banned from selling flavors like these.",
+   "off": 1037,
+   "len": 73
+  },
+  {
+   "key": "s9",
+   "scene": "s9",
+   "text": "And in 2026, ZYN got permission for what IQOS still doesn’t have — to talk about risk: “ZYN instead of cigarettes — lower risk of mouth and lung cancer, heart disease, and stroke.”",
+   "off": 1112,
+   "len": 180
+  },
+  {
+   "key": "s10",
+   "scene": "s10",
+   "text": "The catch: American teens barely smoke cigarettes anymore — and among them, pouches have already overtaken cigarettes.",
+   "off": 1294,
+   "len": 118
+  },
+  {
+   "key": "s11",
+   "scene": "s11",
+   "text": "And less than two months later, stronger pouches were approved: nine and eleven milligrams instead of three and six.",
+   "off": 1414,
+   "len": 116
+  },
+  {
+   "key": "s12",
+   "scene": "s12",
+   "text": "Every card on this board is a new way to quit. All that’s left is to flip the board itself.",
+   "off": 1532,
+   "len": 91
+  },
+  {
+   "key": "f1",
+   "scene": "f1",
+   "text": "So, what do you know about nicotine?",
+   "off": 1625,
+   "len": 36
+  },
+  {
+   "key": "f2",
+   "scene": "f2",
+   "text": "That it’s smoked, heated, vaped, and tucked under the lip — and every time, it’s sold as a way to quit.",
+   "off": 1663,
+   "len": 103
+  },
+  {
+   "key": "f3",
+   "scene": "f3",
+   "text": "Flip the board: all five threads lead to the tobacco giants.",
+   "off": 1768,
+   "len": 60
+  },
+  {
+   "key": "f4",
+   "scene": "f4",
+   "text": "The snake bites its own tail: you quit one thing — they sell you the next.",
+   "off": 1830,
+   "len": 74
+  },
+  {
+   "key": "q",
+   "scene": "q",
+   "text": "Can you guess what’s on the back of this board?",
+   "off": 1906,
+   "len": 47
+  }
+ ]
+}

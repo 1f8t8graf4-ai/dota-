@@ -1,0 +1,125 @@
+{
+ "voice": "lWDDHwXsJXJM7nv2YgHY",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "The maker of Marlboro once promised to quit cigarettes.\n\nThey bought full pages in British newspapers: “Our New Year’s resolution — we’re trying to give up cigarettes.”\n\nTo put it mildly, they didn’t keep their word.\n\nThey started “quitting” early: in 2014, a cigarette you can’t light appeared in Nagoya, Japan, and Milan, Italy.\n\nThe tobacco is warmed by a heater, at half the temperature of a flame: your jacket doesn’t smell, there’s no ash, and you can take a puff right in the car.\n\nThis is IQOS, and when comedians raved about it on a popular Japanese TV show in 2016, IQOS sold out everywhere.\n\nNo fire — so, no harm?\n\nA year later, Swiss scientists captured this “vapor” and found the same toxins as in smoke. Lower levels of most, even higher of one — and eighty-four percent of a cigarette’s nicotine.\n\nThey even titled their paper “Smoke by Any Other Name.”\n\nIn 2020, the US regulator allowed IQOS to say it contains fewer harmful chemicals — but it still won’t let them say “less harm.”\n\nRemember R.J. Reynolds — the ones who, in 1973, were looking for ways to hook teenagers?\n\nTheir own fire-free cigarettes never caught on: one, with a carbon tip, burned through more than three hundred million dollars.\n\nBut their old patents survived: in 2021, the US International Trade Commission ruled that IQOS infringed them — and kicked it out of America.\n\nAnd the promise to quit? In 2024, IQOS had thirty-two million users — and the company sold six hundred seventeen billion cigarettes, more than the year before.\n\nThey quit exactly the way you do.\n\nCan you guess what they came back to America with?",
+ "items": [
+  {
+   "key": "s1",
+   "scene": "s1",
+   "text": "The maker of Marlboro once promised to quit cigarettes.",
+   "off": 0,
+   "len": 55
+  },
+  {
+   "key": "s2",
+   "scene": "s2",
+   "text": "They bought full pages in British newspapers: “Our New Year’s resolution — we’re trying to give up cigarettes.”",
+   "off": 57,
+   "len": 111
+  },
+  {
+   "key": "s3",
+   "scene": "s3",
+   "text": "To put it mildly, they didn’t keep their word.",
+   "off": 170,
+   "len": 46
+  },
+  {
+   "key": "s4",
+   "scene": "s4",
+   "text": "They started “quitting” early: in 2014, a cigarette you can’t light appeared in Nagoya, Japan, and Milan, Italy.",
+   "off": 218,
+   "len": 112
+  },
+  {
+   "key": "s5",
+   "scene": "s5",
+   "text": "The tobacco is warmed by a heater, at half the temperature of a flame: your jacket doesn’t smell, there’s no ash, and you can take a puff right in the car.",
+   "off": 332,
+   "len": 155
+  },
+  {
+   "key": "s6",
+   "scene": "s6",
+   "text": "This is IQOS, and when comedians raved about it on a popular Japanese TV show in 2016, IQOS sold out everywhere.",
+   "off": 489,
+   "len": 112
+  },
+  {
+   "key": "s7",
+   "scene": "s7",
+   "text": "No fire — so, no harm?",
+   "off": 603,
+   "len": 22
+  },
+  {
+   "key": "s8",
+   "scene": "s8",
+   "text": "A year later, Swiss scientists captured this “vapor” and found the same toxins as in smoke. Lower levels of most, even higher of one — and eighty-four percent of a cigarette’s nicotine.",
+   "off": 627,
+   "len": 185
+  },
+  {
+   "key": "s9",
+   "scene": "s9",
+   "text": "They even titled their paper “Smoke by Any Other Name.”",
+   "off": 814,
+   "len": 55
+  },
+  {
+   "key": "s10",
+   "scene": "s10",
+   "text": "In 2020, the US regulator allowed IQOS to say it contains fewer harmful chemicals — but it still won’t let them say “less harm.”",
+   "off": 871,
+   "len": 128
+  },
+  {
+   "key": "s11",
+   "scene": "s11",
+   "text": "Remember R.J. Reynolds — the ones who, in 1973, were looking for ways to hook teenagers?",
+   "off": 1001,
+   "len": 88
+  },
+  {
+   "key": "s12",
+   "scene": "s12",
+   "text": "Their own fire-free cigarettes never caught on: one, with a carbon tip, burned through more than three hundred million dollars.",
+   "off": 1091,
+   "len": 127
+  },
+  {
+   "key": "s13",
+   "scene": "s13",
+   "text": "But their old patents survived: in 2021, the US International Trade Commission ruled that IQOS infringed them — and kicked it out of America.",
+   "off": 1220,
+   "len": 141
+  },
+  {
+   "key": "s14",
+   "scene": "s14",
+   "text": "And the promise to quit? In 2024, IQOS had thirty-two million users — and the company sold six hundred seventeen billion cigarettes, more than the year before.",
+   "off": 1363,
+   "len": 159
+  },
+  {
+   "key": "s15",
+   "scene": "s15",
+   "text": "They quit exactly the way you do.",
+   "off": 1524,
+   "len": 33
+  },
+  {
+   "key": "q",
+   "scene": "q",
+   "text": "Can you guess what they came back to America with?",
+   "off": 1559,
+   "len": 50
+  }
+ ]
+}

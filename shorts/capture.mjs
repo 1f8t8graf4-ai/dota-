@@ -13,7 +13,9 @@ const [ep, mode, arg, tabsArg] = process.argv.slice(2);
 const OUT = path.join(here, 'out', ep);
 // out/ не в git: тайминги ролика лежат в tl/<ролик>.json — при первом запуске копируем в out/<ролик>/
 if (!fs.existsSync(path.join(OUT, 'timeline.json')) && fs.existsSync(path.join(here, 'tl', ep + '.json'))) { fs.mkdirSync(OUT, { recursive: true }); fs.copyFileSync(path.join(here, 'tl', ep + '.json'), path.join(OUT, 'timeline.json')) }
-const TL = JSON.parse(fs.readFileSync(path.join(OUT, 'timeline.json'), 'utf8'));
+// 21.11: TLF=путь — свой таймлайн вместо out/<ролик>/timeline.json (пробники и озвучка EN/DE: субтитры по новому голосу)
+fs.mkdirSync(OUT, { recursive: true });
+const TL = JSON.parse(fs.readFileSync(process.env.TLF || path.join(OUT, 'timeline.json'), 'utf8'));
 // ПК с видеокартой: GPU=1 — рисовать на видюхе; CH=chromium — полный Chromium вместо headless shell; HEADFUL=1 — с окном браузера (видюха есть всегда); FFMPEG — путь к ffmpeg
 const GPU = !!process.env.GPU, HEADFUL = !!process.env.HEADFUL, FF = process.env.FFMPEG || 'ffmpeg';
 const b = await chromium.launch(GPU ? {
@@ -29,7 +31,7 @@ async function page() {
   p.on('pageerror', e => errs.push(String(e))); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()) });
   await p.goto(url.pathToFileURL(path.join(here, 'stage.html')).href);
   await p.evaluate(f => { window.FMT = f }, process.env.FMT || '');   // формат кадра: FMT=9x16 — вертикаль, иначе как задано в ролике
-  await p.evaluate(ep => window.loadEp(ep), ep.replace(/-(en|ru|de)$/, ''));   // 21.11: и немецкие версии (-de)
+  await p.evaluate(ep => window.loadEp(ep), ep.replace(/-(en|ru|de)(-vo)?$/, ''));   // 21.11: и немецкие версии (-de); -vo — озвучка на языке ролика (l10n/dub.py)
   await p.evaluate(async () => {
     for (const f of ['600 10px M', '800 10px M', '500 10px O', '700 10px O', '700 10px U', '800 10px U']) { await document.fonts.load(f, 'aя'); }
     await document.fonts.ready;
@@ -80,7 +82,8 @@ if (mode === 'cues') {
   console.log(`кадр ≈ ${s.toFixed(2)} с на вкладку; весь ролик (${NF} кадров) на одной вкладке ≈ ${(s * NF / 60).toFixed(1)} мин`);
 } else {
   // v16.6: RANGE='44.9-55.4,73.6-88.9' — только эти отрезки подряд (пробы), иначе весь ролик
-  const fps = Number(arg || 30), TS = process.env.RANGE ? process.env.RANGE.split(',').flatMap(r => { const [a, b] = r.split('-').map(Number), o = []; for (let i = Math.round(a * fps); i < Math.round(b * fps); i++) o.push(i / fps); return o }) : null;
+  // 21.11: TMAP=путь к JSON [t0, t1, …] — время ролика для каждого кадра подряд (картинка под голос другой длины)
+  const fps = Number(arg || 30), TS = process.env.TMAP ? JSON.parse(fs.readFileSync(process.env.TMAP, 'utf8')) : process.env.RANGE ? process.env.RANGE.split(',').flatMap(r => { const [a, b] = r.split('-').map(Number), o = []; for (let i = Math.round(a * fps); i < Math.round(b * fps); i++) o.push(i / fps); return o }) : null;
   const N = TS ? TS.length : Math.ceil(TL.dur * fps), K = Number(tabsArg || (HEADFUL ? 1 : 4));
   const P = await Promise.all([...Array(K)].map(page));
   const g = await glName(P[0]); console.log('WebGL рисует:', g, soft(g) ? '(программно)' : '(видюха)');
