@@ -165,7 +165,7 @@
     c.fillText(s, x + (al === 'center' ? (o.ls || 0) / 2 : al === 'right' ? (o.ls || 0) : 0), y); c.restore();
   }
   // число в ровных клетках — цифры не прыгают, пока считают
-  function num(c, s, x, y, o) {
+  function num(c, s, x, y, o) { s = window.L10N ? window.L10N.tr(String(s)) : s;
     c.save(); c.font = FNT(o); c.letterSpacing = '0px'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = o.c; c.globalAlpha *= o.a ?? 1;
     const dw = c.measureText('0').width * 1.02, cw = ch => /[0-9]/.test(ch) ? dw : ch === ' ' ? dw * .38 : c.measureText(ch).width + dw * .05;
     let px = x - [...s].reduce((n, ch) => n + cw(ch), 0) / 2;
@@ -2844,12 +2844,12 @@
     }
   }
   // субтитры: по 2–3 слова, небольшие, но читаемые — поверх кадра (без живой камеры), внизу по центру
-  function buildChunks() {
-    const out = []; let cur = [];
+  function buildChunks(subs) {   // 21.11: subs — субтитры перевода из таймлайна (EN/DE, tools/l10n_subs.py), иначе — русские слова голоса
+    const out = []; let cur = []; if (subs) subs.forEach(x => out.push({ a: x.a, b: x.b, s: x.s }));
     const FW = new Set(['с', 'со', 'в', 'во', 'и', 'а', 'на', 'по', 'за', 'но', 'к', 'ко', 'о', 'об', 'от', 'до', 'из', 'у', 'для', 'при', 'без', 'под', 'над', 'что', 'как', 'чем', 'не', 'ни', 'где', 'the', 'a', 'an', 'of', 'to', 'in', 'and', 'der', 'die', 'das', 'und', 'mit', 'zu']);
     const bare = w => w.d.toLowerCase().replace(/[«»"“”.,?!…:;]/g, '');
     const flush = () => { if (cur.length) { out.push({ a: cur[0].a, b: cur[cur.length - 1].b, s: cur.map(w => w.d).join(' ') }); cur = [] } };
-    TLW.forEach((w, i) => {
+    if (!subs) TLW.forEach((w, i) => {
       const nx = TLW[i + 1];
       if (cur.length && ((FW.has(bare(w)) && cur.length >= 2) || cur.length >= 4 || (cur.map(x => x.d).join(' ') + ' ' + w.d).length > 20)) flush();
       cur.push(w);
@@ -5328,7 +5328,7 @@
     c.globalCompositeOperation = 'multiply';
     c.beginPath(); c.arc(0, 0, r, 0, TAU); c.lineWidth = 12; c.strokeStyle = '#d8303f'; c.stroke();
     c.beginPath(); c.arc(0, 0, r - 26, 0, TAU); c.lineWidth = 4; c.stroke();
-    const txt = 'СЕКРЕТНО · R.J. REYNOLDS · 1973 · ', n = txt.length; c.font = FNT({ s: 22, w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    const txt0 = 'СЕКРЕТНО · R.J. REYNOLDS · 1973 · ', txt = window.L10N ? window.L10N.tr(txt0) : txt0, n = txt.length;   // 21.11: по кругу — переведённая строка c.font = FNT({ s: 22, w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';
     for (let q = 0; q < n; q++) { const an = -Math.PI / 2 + q / n * TAU; c.save(); c.rotate(an + Math.PI / 2); c.fillText(txt[q], 0, -(r - 13)); c.restore() }
     tx(c, 'СЕКРЕТНО', 0, 2, { s: 30, w: 800, ls: 2, c: '#d8303f' });
     c.globalCompositeOperation = 'source-over';
@@ -5584,7 +5584,7 @@
     c.save(); c.translate(x, y); c.rotate(-.12); c.globalAlpha *= a; c.globalCompositeOperation = 'multiply';
     c.beginPath(); c.arc(0, 0, r, 0, TAU); c.lineWidth = r * .107; c.strokeStyle = '#d8303f'; c.stroke();
     c.beginPath(); c.arc(0, 0, r * .77, 0, TAU); c.lineWidth = r * .036; c.stroke();
-    const s = 'СЕКРЕТНО · ПРОЕКТ · 1979 · ', n = s.length; c.font = FNT({ s: Math.round(r * .196), w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    const s0 = 'СЕКРЕТНО · ПРОЕКТ · 1979 · ', s = window.L10N ? window.L10N.tr(s0) : s0, n = s.length;   // 21.11: по кругу — переведённая строка (буквы рисуются по одной) c.font = FNT({ s: Math.round(r * .196), w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';
     for (let q = 0; q < n; q++) { c.save(); c.rotate(q / n * TAU); c.fillText(s[q], 0, -r * .884); c.restore() }
     tx(c, 'СЕКРЕТНО', 0, 2, { s: Math.round(r * .27), w: 800, ls: 2, c: '#d8303f' });
     c.restore();
@@ -6988,7 +6988,7 @@
       PIEV.y = VARIANT === 1 ? 390 : 600;   // v17.2 (мастер-ТЗ, ошибка 13): в варианте 1 диаграмма выше, пачка «Мальборо» выше субтитров
       MEMV.r = VARIANT === 2 ? -.11 : .022;   // вариант 2: записка лежит на столе наискосок
       K = MODE === 'end' ? keysEnd() : MODE === 'tail' ? keysTail() : keysMain(); window.__K = K; cues();
-      CHUNKS = buildChunks();
+      CHUNKS = buildChunks(tl.subs);
       if (MODE === 'tail' || (MODE === 'end' && VAR !== 'A')) CHUNKS.push({ a: K.q1, e: K.q2 - .05, s: 'Так… о чём это я?' }, { a: K.q2, e: K.whip + .1, s: 'А, точно!' });
       if (MODE === 'main' && !TLX.endT) CHUNKS.push({ a: K.l1, e: K.l2 - .12, s: 'Захотите бросить — вам и это продадут' }, { a: K.l2, e: K.l3 - .12, s: 'Причём одни и те же люди…' }, { a: K.l3, e: K.q1 - .15, s: 'А вот кто именно — смотрите на YouTube' }, { a: K.q1, e: K.q2 - .05, s: 'Так… о чём это я?' }, { a: K.q2, e: K.whip + .1, s: 'А, точно!' });   // v16.3: голоса доски ещё нет
       SC.forEach(S => { D[S.key] = t => { frame(t); return '' } });

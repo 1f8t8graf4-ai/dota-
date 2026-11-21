@@ -96,7 +96,7 @@
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
       MODE = /y$/.test(ep) ? 'y' : 's';
       TLX = { b0: tl.b0, vEnd: tl.vEnd, endT: (Math.ceil(tl.dur * 30) - 1) / 30 };
-      K = keys(); BLOCKS.length = 0; SHUT.length = 0; HY = null; CHUNKS = buildChunks(); W1PRE = W1PEEL = null;
+      K = keys(); BLOCKS.length = 0; SHUT.length = 0; HY = null; CHUNKS = buildChunks(tl.subs); W1PRE = W1PEEL = null;
       if (!sub) { window.__K = K; cues(); window.CUES_READY = 1 } else allInit();
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       if (!document.getElementById('v200f')) { const st = document.createElement('style'); st.id = 'v200f';

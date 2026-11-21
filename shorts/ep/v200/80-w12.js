@@ -74,7 +74,7 @@
     tx(c, '$', x0 - 34, y0 + 3, { f: 'M', w: 800, s: 50, c: '#F4F1EA' }); tx(c, 'МЛРД', x0 + 5.6 * cw + 62, y0 + 3, { f: 'M', w: 800, s: 34, c: '#F4F1EA' });
     const P = [[10, 0], [1, 1], [null, 2], [.1, 3], [.01, 4]];
     P.forEach(([pl, i]) => { const cx = x0 + i * cw * 1.12 + cw / 2;
-      if (pl === null) { tx(c, ',', cx, y0 + 14, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); return }
+      if (pl === null) { tx(c, window.L10N && window.L10N.lang === 'en' ? '.' : ',', cx, y0 + 14, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); return }   // 21.11: в английском — десятичная точка
       rr(c, cx - cw / 2, y0 - ch / 2, cw, ch, 8); fill(c, '#F4F1EA');
       const dd = (v + 1e-6) / pl, d0 = Math.floor(dd) % 10, fr = dd - Math.floor(dd), sh = pl < .05 ? fr : cl((fr - .9) * 10);   // как одометр: младшая цифра крутится, старшие поворачиваются, когда младшая проходит 9→0
       c.save(); rr(c, cx - cw / 2, y0 - ch / 2, cw, ch, 8); c.clip();

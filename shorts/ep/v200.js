@@ -49,7 +49,7 @@
     if (o.sw) { c.lineJoin = 'round'; c.strokeStyle = o.sc || '#fff'; c.lineWidth = o.sw; c.strokeText(s, xx, y) }
     c.fillStyle = o.c || '#fff'; c.fillText(s, xx, y); c.restore();
   }
-  function num(c, s, x, y, o) {   // цифры в ровных клетках — не прыгают, пока считают
+  function num(c, s, x, y, o) { s = window.L10N ? window.L10N.tr(String(s)) : s;   // цифры в ровных клетках — не прыгают, пока считают
     c.save(); c.font = FNT(o); c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = o.c; c.globalAlpha *= o.a ?? 1;
     const dw = c.measureText('0').width * 1.02, cw = ch => /[0-9]/.test(ch) ? dw : ch === ' ' ? dw * .38 : c.measureText(ch).width + dw * .05;
     let px = x - [...s].reduce((n, ch) => n + cw(ch), 0) / 2; const pos = [];
@@ -95,12 +95,12 @@
     c.restore(); c.restore();
   }
   // ---------- субтитры (ТЗ: x 540, y 1720, ширина до 920) ----------
-  function buildChunks() {
-    const out = []; let cur = [];
+  function buildChunks(subs) {   // 21.11: subs — субтитры перевода из таймлайна (EN/DE, tools/l10n_subs.py), иначе — русские слова голоса
+    const out = []; let cur = []; if (subs) subs.forEach(x => out.push({ a: x.a, b: x.b, s: x.s }));
     const FW = new Set(['с', 'со', 'в', 'во', 'и', 'а', 'на', 'по', 'за', 'но', 'к', 'о', 'от', 'до', 'из', 'у', 'для', 'при', 'без', 'под', 'что', 'как', 'не', 'их', 'ещё', 'если', 'пока', 'когда', 'чтобы', 'так']);
     const bare = w => w.d.toLowerCase().replace(/[«»"“”.,?!…:;]/g, '');
     const flush = () => { if (cur.length) { out.push({ a: cur[0].a, b: cur[cur.length - 1].b, s: cur.map(w => w.d).join(' ') }); cur = [] } };
-    TLW.forEach((w, i) => {
+    if (!subs) TLW.forEach((w, i) => {
       const nx = TLW[i + 1];
       if (cur.length && ((FW.has(bare(w)) && cur.length >= 2) || cur.length >= 4 || (cur.map(x => x.d).join(' ') + ' ' + w.d).length > 22)) flush();
       cur.push(w);
@@ -1559,7 +1559,7 @@
     tx(c, '$', x0 - 34, y0 + 3, { f: 'M', w: 800, s: 50, c: '#F4F1EA' }); tx(c, 'МЛРД', x0 + 5.6 * cw + 62, y0 + 3, { f: 'M', w: 800, s: 34, c: '#F4F1EA' });
     const P = [[10, 0], [1, 1], [null, 2], [.1, 3], [.01, 4]];
     P.forEach(([pl, i]) => { const cx = x0 + i * cw * 1.12 + cw / 2;
-      if (pl === null) { tx(c, ',', cx, y0 + 14, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); return }
+      if (pl === null) { tx(c, window.L10N && window.L10N.lang === 'en' ? '.' : ',', cx, y0 + 14, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); return }   // 21.11: в английском — десятичная точка
       rr(c, cx - cw / 2, y0 - ch / 2, cw, ch, 8); fill(c, '#F4F1EA');
       const dd = (v + 1e-6) / pl, d0 = Math.floor(dd) % 10, fr = dd - Math.floor(dd), sh = pl < .05 ? fr : cl((fr - .9) * 10);   // как одометр: младшая цифра крутится, старшие поворачиваются, когда младшая проходит 9→0
       c.save(); rr(c, cx - cw / 2, y0 - ch / 2, cw, ch, 8); c.clip();
@@ -1785,7 +1785,7 @@
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
       MODE = /y$/.test(ep) ? 'y' : 's';
       TLX = { b0: tl.b0, vEnd: tl.vEnd, endT: (Math.ceil(tl.dur * 30) - 1) / 30 };
-      K = keys(); BLOCKS.length = 0; SHUT.length = 0; HY = null; CHUNKS = buildChunks(); W1PRE = W1PEEL = null;
+      K = keys(); BLOCKS.length = 0; SHUT.length = 0; HY = null; CHUNKS = buildChunks(tl.subs); W1PRE = W1PEEL = null;
       if (!sub) { window.__K = K; cues(); window.CUES_READY = 1 } else allInit();
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       if (!document.getElementById('v200f')) { const st = document.createElement('style'); st.id = 'v200f';

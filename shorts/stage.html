@@ -31,7 +31,13 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
 let TL = null, SC = [], CH = [], EP = null;
 const svg = document.getElementById('S'), capEl = document.getElementById('cap'), grainEl = document.getElementById('grain');
 
+// 21.11: главы 1–3 — локализация без правки рисовки: перед главой грузим перехват надписей (ep/l10n.js) и словарь RU → EN/DE (ep/l10n-dict.js)
 window.loadEp = function (name) {
+  const add = src => new Promise(r => { const s = document.createElement('script'); s.src = src; s.onload = r; s.onerror = r; document.body.appendChild(s) });
+  const pre = /^(v170|v191|v200)/.test(name) ? add('ep/l10n.js').then(() => add('ep/l10n-dict.js')) : Promise.resolve();
+  return pre.then(() => loadEp0(name));
+};
+function loadEp0(name) {
   const add = src => new Promise(r => { const s = document.createElement('script'); s.src = src; s.onload = r; document.body.appendChild(s) });
   const v8 = /^nic([bhgs]|s[abc])$/.test(name), v5 = v8 || /^(nic(w\d?|max|tyaga|me)|howto)$/.test(name), v6 = /^nicw\d$/.test(name), n9 = /^nics[abc]$/.test(name);
   if (/^v145/.test(name)) { window.V14NAME = name; return add('ep/v145-map.js').then(() => add('ep/v14-icons.js')).then(() => add('ep/v145.js')) }
@@ -73,6 +79,7 @@ function cueNorm(w) { return String(w).toLowerCase().replace(/[^a-zа-яё0-9%$�
 
 window.init = function (tl) {
   TL = tl; LANG = tl.lang || 'en'; EP = window.EP; P = EP.P;
+  if (window.L10N && tl.lang && tl.lang !== 'ru') window.L10N.install(tl.lang);   // 21.11: надписи в кадре — по словарю
   if (EP.size) { const [w, h] = EP.size; svg.setAttribute('viewBox', `0 0 ${w} ${h}`); for (const el of [document.documentElement, document.body, svg]) { el.style.width = w + 'px'; el.style.height = h + 'px' } }  // 16:9 — EP.size = [1920, 1080]
   SC = []; CH = [];
   for (const s of tl.sent) {

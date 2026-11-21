@@ -29,7 +29,7 @@ async function page() {
   p.on('pageerror', e => errs.push(String(e))); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()) });
   await p.goto(url.pathToFileURL(path.join(here, 'stage.html')).href);
   await p.evaluate(f => { window.FMT = f }, process.env.FMT || '');   // формат кадра: FMT=9x16 — вертикаль, иначе как задано в ролике
-  await p.evaluate(ep => window.loadEp(ep), ep.replace(/-(en|ru)$/, ''));
+  await p.evaluate(ep => window.loadEp(ep), ep.replace(/-(en|ru|de)$/, ''));   // 21.11: и немецкие версии (-de)
   await p.evaluate(async () => {
     for (const f of ['600 10px M', '800 10px M', '500 10px O', '700 10px O', '700 10px U', '800 10px U']) { await document.fonts.load(f, 'aя'); }
     await document.fonts.ready;
@@ -44,6 +44,24 @@ if (mode === 'cues') {
   const cues = await p.evaluate(([N, fps]) => { for (let i = 0; i <= N; i++) window.render(i / fps); return Object.values(window.CUES || {}).sort((a, b) => a[0] - b[0]) }, [N, fps]);
   fs.writeFileSync(path.join(OUT, 'cues.json'), JSON.stringify(cues));
   console.log(ep, 'звуков по событиям:', cues.length);
+} else if (mode === 'texts') {
+  // 21.11, локализация: какие строки ролик рисует в кадре — пройти кадры без снимков и собрать всё, что ушло в fillText/strokeText
+  // → out/<ep>/texts.json: { строка: [первый раз, последний раз, сколько раз, что нарисовано на деле (с переводом L10N)] }
+  const p = await page(), fps = Number(arg || 10), N = Math.ceil(TL.dur * fps);
+  const res = await p.evaluate(([N, fps]) => {
+    const T = {}; let cur = 0;
+    const rec = s => { s = String(s); const e = T[s] || (T[s] = [cur, cur, 0, window.L10N && window.L10N.tr ? window.L10N.tr(s) : s]); e[1] = cur; e[2]++ };
+    for (const P of [CanvasRenderingContext2D.prototype, self.OffscreenCanvasRenderingContext2D && OffscreenCanvasRenderingContext2D.prototype].filter(Boolean)) {
+      const f = P.fillText, g = P.strokeText;
+      P.fillText = function (s, ...a) { rec(s); return f.call(this, s, ...a) };
+      P.strokeText = function (s, ...a) { rec(s); return g.call(this, s, ...a) };
+    }
+    for (let i = 0; i <= N; i++) { cur = Math.round(i / fps * 100) / 100; window.render(cur) }
+    return T;
+  }, [N, fps]);
+  fs.writeFileSync(path.join(OUT, 'texts.json'), JSON.stringify(res, null, 1));
+  const cyr = s => /[А-Яа-яЁё]/.test(s), K = Object.keys(res);
+  console.log(ep, 'строк:', K.length, '· с кириллицей:', K.filter(cyr).length, '· нарисовано с кириллицей:', K.filter(s => cyr(res[s][3])).length);
 } else if (mode === 'shots') {
   const p = await page();
   const dir = path.join(OUT, 'shots'); fs.mkdirSync(dir, { recursive: true });

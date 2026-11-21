@@ -49,7 +49,7 @@
     if (o.sw) { c.lineJoin = 'round'; c.strokeStyle = o.sc || '#fff'; c.lineWidth = o.sw; c.strokeText(s, xx, y) }
     c.fillStyle = o.c || '#fff'; c.fillText(s, xx, y); c.restore();
   }
-  function num(c, s, x, y, o) {   // цифры в ровных клетках — не прыгают, пока считают
+  function num(c, s, x, y, o) { s = window.L10N ? window.L10N.tr(String(s)) : s;   // цифры в ровных клетках — не прыгают, пока считают
     c.save(); c.font = FNT(o); c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = o.c; c.globalAlpha *= o.a ?? 1;
     const dw = c.measureText('0').width * 1.02, cw = ch => /[0-9]/.test(ch) ? dw : ch === ' ' ? dw * .38 : c.measureText(ch).width + dw * .05;
     let px = x - [...s].reduce((n, ch) => n + cw(ch), 0) / 2; const pos = [];
@@ -95,12 +95,12 @@
     c.restore(); c.restore();
   }
   // ---------- субтитры (ТЗ: x 540, y 1720, ширина до 920) ----------
-  function buildChunks() {
-    const out = []; let cur = [];
+  function buildChunks(subs) {   // 21.11: subs — субтитры перевода из таймлайна (EN/DE, tools/l10n_subs.py), иначе — русские слова голоса
+    const out = []; let cur = []; if (subs) subs.forEach(x => out.push({ a: x.a, b: x.b, s: x.s }));
     const FW = new Set(['с', 'со', 'в', 'во', 'и', 'а', 'на', 'по', 'за', 'но', 'к', 'о', 'от', 'до', 'из', 'у', 'для', 'при', 'без', 'под', 'что', 'как', 'не', 'их', 'ещё', 'если', 'пока', 'когда', 'чтобы', 'так']);
     const bare = w => w.d.toLowerCase().replace(/[«»"“”.,?!…:;]/g, '');
     const flush = () => { if (cur.length) { out.push({ a: cur[0].a, b: cur[cur.length - 1].b, s: cur.map(w => w.d).join(' ') }); cur = [] } };
-    TLW.forEach((w, i) => {
+    if (!subs) TLW.forEach((w, i) => {
       const nx = TLW[i + 1];
       if (cur.length && ((FW.has(bare(w)) && cur.length >= 2) || cur.length >= 4 || (cur.map(x => x.d).join(' ') + ' ' + w.d).length > 22)) flush();
       cur.push(w);
@@ -1535,7 +1535,7 @@
       TLW = tl.sent.flatMap(s => s.words); const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
       MODE = /y$/.test(ep) ? 'y' : 's';
       TLX = { b0: tl.b0, endT: (Math.ceil(tl.dur * 30) - 1) / 30 };   // последний кадр ролика = endT (у шортса он равен кадру 0)
-      K = keys(); window.__K = K; cues(); CHUNKS = buildChunks();
+      K = keys(); window.__K = K; cues(); CHUNKS = buildChunks(tl.subs);
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       if (!document.getElementById('v180f')) { const st = document.createElement('style'); st.id = 'v180f'; st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join(''); document.head.appendChild(st) }
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
