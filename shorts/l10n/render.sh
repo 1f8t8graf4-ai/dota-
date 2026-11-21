@@ -29,6 +29,6 @@ for EP in ${@:-v170e-en v170e-de v191s-en v191s-de v191y-en v191y-de v200s-en v2
   ( for ((k=0; k<N; k++)); do echo "file 'p$k.mp4'"; done ) > $D/list.txt
   ffmpeg -y -v error -f concat -safe 0 -i $D/list.txt -c copy out/$EP/video.mp4
   OUT=out/deliver-l10n/${NM[$B]}_${L^^}.mp4
-  ffmpeg -y -v error -i out/$EP/video.mp4 -i ${RU[$B]} -map 0:v -map 1:a -c copy -shortest $OUT
+  ffmpeg -y -v error -i out/$EP/video.mp4 -i ${RU[$B]} -map 0:v -map 1:a -c copy $OUT
   echo "$EP → $OUT: видео $(ffprobe -v error -show_entries format=duration -of csv=p=0 out/$EP/video.mp4) с, русский звук $(ffprobe -v error -show_entries format=duration -of csv=p=0 ${RU[$B]}) с"
 done
