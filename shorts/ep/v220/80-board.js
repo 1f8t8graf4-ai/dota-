@@ -12,8 +12,8 @@
   const THR5 = [[0, 1], [1, 2], [1, 3], [1, 4], [3, 0], [3, 2], [2, 4]];   // как в главе 4: 79–20, 20–14, 20–24, 20–22, 24–79, 24–14, 14–22
   const photo5 = cd => [cd.x, cd.y - CH5 / 2 + 15 + PS5 / 2], pin5 = cd => [cd.x, cd.y - CH5 / 2 + 4];
   const PHC5 = { x: 560, y: 860, s: 1200 }, Q0 = { x: 540, y: 960, z: 1, r: 0 };   // какой квадрат кадра океана видно в фото 2022
-  const JCAM = [850, 770, 1.9];   // камера стыка 4 → 5: последний кадр главы 4 = кадр главы 5 за 1/30 с до начала
-  let T7 = null, K7 = null, KJ5 = null, CORK5 = null, COVER = null;
+  const JCAM = [540, 640, .88];   // v22.2: камера стыка 4 → 5 — вся доска целиком (без обрезанных карточек у краёв кадра); последний кадр главы 4 = кадр главы 5 за 1/30 с до начала
+  let T7 = null, K7 = null, KJ5 = null, CORK5 = null, COVER = null, IMG14 = null;
   // ---------- доска ----------
   function corkImg5() { if (CORK5) return CORK5; CORK5 = mk(WW, 1400); const g = CORK5.getContext('2d'); g.fillStyle = '#b07a4a'; g.fillRect(0, 0, WW, 1400);
     for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < WW; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() } return CORK5 }
@@ -59,7 +59,7 @@
     rr(c, cd.x - CW5 / 2, cd.y - CH5 / 2, CW5, CH5, 6); fill(c, '#f5f0e6'); rr(c, cd.x - CW5 / 2, cd.y - CH5 / 2, CW5, CH5, 6); lnS(c, 3, '#2b2638');
     c.save(); c.beginPath(); c.rect(px - PS5 / 2, py - PS5 / 2, PS5, PS5); c.clip();
     if (cd.id === '1979') photo1979(c, px, py, PS5); else if (cd.id === '2020') photo2020(c, px, py, PS5); else if (cd.id === '1924') photo1924(c, px, py, PS5);
-    else if (cd.id === '2014') photo2014(c, px, py, PS5); else oceanIn(c, px, py, PS5, o.tO ?? -50);
+    else if (cd.id === '2014') { if (IMG14 && IMG14.complete && IMG14.naturalWidth) c.drawImage(IMG14, px - PS5 / 2, py - PS5 / 2, PS5, PS5); else photo2014(c, px, py, PS5) } else oceanIn(c, px, py, PS5, o.tO ?? -50);   // v22.2: 2014 — то же фото кофейни, что в конце главы 4 (ep/v210-ph2014.png)
     if (o.flash > 0) { c.fillStyle = `rgba(255,246,218,${.55 * o.flash})`; c.fillRect(px - PS5 / 2, py - PS5 / 2, PS5, PS5) }
     c.restore();
     if (cd.id === '2022' && o.cover !== undefined) coverDraw(c, t, px, py, o.cover);
@@ -90,7 +90,7 @@
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); c.rect(S.x - S.w / 2, S.y - S.h / 2, S.w, S.h); c.clip(); c.translate(S.x, S.y); c.scale(k, k); c.translate(-V.x, -V.y); oceanWorld(c, tO, Q0); c.restore();
   }
   // ---------- фильм: начало главы ----------
-  function boardStartInit() { KJ5 = [KY(-1.0, 330, 740, 1.35), KY(0, ...JCAM), KY(.55, 850, 762, 2.6), KY(1.15, 850, 760, 4.6)]; T0.j0 = 1.15 }   // v22.1: ключи — те же, что KS в конце главы 4 (ep/v210/80-board.js)
+  function boardStartInit() { KJ5 = [KY(-1.0, 330, 740, 1.35), KY(0, ...JCAM), KY(.55, 820, 752, 2.2), KY(1.15, 850, 760, 4.6)]; T0.j0 = 1.15 }   // v22.1: ключи — те же, что KS в конце главы 4 (ep/v210/80-board.js)
   function boardStartShot(c, t) {
     const q = camObj(camAt(KJ5, t)), cov = at(t, 0, .62);
     layer(c, q, 1, cc => boardWorld5(cc, t, { tO: t, cover: cov }));
@@ -111,7 +111,7 @@
     if (MODE === 'y') K7 = [KY(a.fl1, 850, 760, 3.0), KY(a.sh1, 700, 690, 1.25), KY(a.dosk + .2, 560, 680, .94), KY(a.ost, 548, 660, .92), KY(a.dosk2 + .4, 540, 610, .86)];
     else K7 = [KY(a.fl1, 850, 760, 3.0), KY(a.sh1, 700, 690, 1.25), KY(a.sh1 + .7, 560, 690, .92), KY(a.vEnd + .15, 560, 680, .9), KY(a.end - .62, 760, 730, 1.6), KY(a.end, 850, 760, 4.6)];
   }
-  function turnK(t) { const a = T7; if (MODE === 'y') return 0; const u = at(t, a.obor - .3, a.obor + 1.0); return u > 0 && u < 1 ? 1.92 * Math.sin(Math.PI * u) : 0 }   // шортс: поворот доски на ребро и обратно (рад)
+  function turnK(t) { const a = T7; if (MODE === 'y') return 0; const u = at(t, Math.max(a.obor - .3, a.sh1 + .05), a.obor + 1.0); return u > 0 && u < 1 ? 1.92 * Math.sin(Math.PI * u) : 0 }   // шортс: поворот доски на ребро и обратно (рад); v22.2 — когда фото уже легло в карточку
   function boardShot5(c, t) {
     const a = T7, tO = t - a.tOff;
     if (t < a.fl1) { schoolShot(c, t); flood5(c, t, at(t, a.j, a.fl1), tO); return }
@@ -121,7 +121,7 @@
     const thrK = MODE === 'y' ? undefined : (n => 1 - eio(at(t, a.fl1 + .35 + n * .03, a.obor - .35)));
     const ang = turnK(t), sx = Math.cos(ang);
     c.save(); layer(c, q, 1, cc => {
-      if (Math.abs(sx) < .999) { wallBg5(cc); cc.save(); cc.translate(540, 0); cc.scale(sx, 1); cc.translate(-540, 0); if (sx < 0) boardBack5(cc, t, { ring: 1 }); else boardWorld5(cc, t, { tO, threads: false, noWall: true }); cc.restore() }
+      if (Math.abs(sx) < .999) { wallBg5(cc); flipBoard(cc, ang, g => boardWorld5(g, t, { tO, threads: false, noWall: true }), g => boardBack5(g, t, { teaser: 1 })) }   // v22.2: настоящий 3D-поворот, на изнанке — уроборос с натянутыми нитями
       else boardWorld5(cc, t, { tO, pulse, flash, thrK });
       if (MODE === 'y' && t > a.ost) curlCorner(cc, t);
     }); c.restore();
@@ -131,24 +131,77 @@
       const ed = eio(at(t, a.end - .62, TLX.endT)); if (ed > 0) photoOver5(c, q, 1 - ed, tO);   // в последнем кадре океан — ровно на весь экран (шов петли)
     }
   }
-  // ---------- изнанка доски (шортс — мельком; фильм — финал) ----------
+  // ---------- v22.2: изнанка доски — фанера с волокнами, рамка, светлые контуры-отпечатки пяти карточек, острия пяти булавок ----------
+  const BPIN = () => CARDS5.map(cd => { const [x, y] = pin5(cd); return [1080 - x, y] });   // на изнанке всё зеркально
   function boardBack5(c, t, o = {}) {
     const B = BRD5; c.fillStyle = 'rgba(0,0,0,.45)'; c.fillRect(B.x0 + 18, B.y0 + 26, B.x1 - B.x0, B.y1 - B.y0);
-    rr(c, B.x0, B.y0, B.x1 - B.x0, B.y1 - B.y0, 14); fill(c, '#3a2a1e'); rr(c, B.x0 + 22, B.y0 + 22, B.x1 - B.x0 - 44, B.y1 - B.y0 - 44, 8); fill(c, '#241912');
-    c.fillStyle = 'rgba(255,255,255,.04)'; for (let x = B.x0 + 40; x < B.x1 - 40; x += 60) c.fillRect(x, B.y0 + 22, 2, B.y1 - B.y0 - 44);
-    CARDS5.forEach(cd => { const [x, y] = pin5(cd); circ(c, 1080 - x, y, 7, '#0e0a07'); ring(c, 1080 - x, y, 8, 'rgba(255,220,180,.25)', 2) });
-    if (o.ring) snakeRing(c, t, 540, 640, 300, o.ring, {});
-  }
-  // красное кольцо змеи, кусающей свой хвост: центр (x, y), радиус R, k — сколько кольца нарисовано (0..1)
-  function snakeRing(c, t, x, y, R, k, o) {
-    if (k <= 0) return; const a0 = -Math.PI / 2 + .22, a1 = a0 + (TAU - .44) * eo(k), n = 90;
-    c.save(); c.lineCap = 'round';
-    for (let i = 0; i < n; i++) { const u0 = i / n, u1 = (i + 1) / n, b0 = lp(a0, a1, u0), b1 = lp(a0, a1, u1), w = lp(10, 30, Math.min(1, u0 * 3)) * (1 - .3 * Math.pow(u0, 6));
-      c.strokeStyle = i % 6 < 3 ? '#D6334D' : '#B8263D'; c.lineWidth = w; c.beginPath(); c.arc(x, y, R, b0, b1 + .01); c.stroke() }
-    if (k > .9) { const hx = x + Math.cos(a1) * R, hy = y + Math.sin(a1) * R; c.save(); c.translate(hx, hy); c.rotate(a1 + Math.PI / 2);   // голова кусает хвост
-      c.beginPath(); c.ellipse(0, 0, 30, 22, 0, 0, TAU); fill(c, '#D6334D'); circ(c, 8, -10, 5, '#FFE7B0'); circ(c, 9, -10, 2.4, '#141010');
-      c.beginPath(); c.moveTo(24, -4); c.lineTo(40, -14); c.moveTo(24, 6); c.lineTo(40, 14); lnB(c, 4, '#D6334D'); c.restore() }
+    rr(c, B.x0, B.y0, B.x1 - B.x0, B.y1 - B.y0, 14); fill(c, '#3A2A1E'); rr(c, B.x0 + 22, B.y0 + 22, B.x1 - B.x0 - 44, B.y1 - B.y0 - 44, 8); fill(c, '#2A1E15');
+    c.save(); rr(c, B.x0 + 22, B.y0 + 22, B.x1 - B.x0 - 44, B.y1 - B.y0 - 44, 8); c.clip();
+    for (let k = 0; k < 34; k++) { const y0 = B.y0 + 30 + k * 30 + H1(k) * 10; c.beginPath(); for (let x = B.x0; x <= B.x1; x += 30) { const yy = y0 + 6 * Math.sin(x / (90 + H1(k * 3) * 70) + k) + 3 * Math.sin(x / 23 + k * 2); x === B.x0 ? c.moveTo(x, yy) : c.lineTo(x, yy) }
+      lnB(c, 1.2 + H1(k * 7) * 1.2, `rgba(255,220,180,${.035 + H1(k * 5) * .05})`) }   // волокна фанеры
+    for (let k = 0; k < 4; k++) { const cx = B.x0 + 140 + H1(k * 9.1) * 860, cy = B.y0 + 120 + H1(k * 4.4) * 780; c.beginPath(); c.ellipse(cx, cy, 26, 12, H1(k) * 2, 0, TAU); lnB(c, 1.4, 'rgba(255,220,180,.08)') }   // сучки
+    const g = c.createRadialGradient(540, 560, 120, 540, 640, 900); g.addColorStop(0, 'rgba(255,236,190,.06)'); g.addColorStop(1, 'rgba(0,0,0,.35)'); c.fillStyle = g; c.fillRect(B.x0, B.y0, B.x1 - B.x0, B.y1 - B.y0);
+    CARDS5.forEach(cd => { const x = 1080 - cd.x, y = cd.y; c.save(); c.setLineDash([10, 7]); rr(c, x - CW5 / 2, y - CH5 / 2, CW5, CH5, 6); lnB(c, 2, 'rgba(255,236,200,.16)');
+      c.setLineDash([]); c.strokeStyle = 'rgba(255,236,200,.1)'; c.lineWidth = 1.5; c.strokeRect(x - PS5 / 2, y - CH5 / 2 + 15, PS5, PS5); c.restore() });   // отпечатки карточек
     c.restore();
+    rr(c, B.x0 + 22, B.y0 + 22, B.x1 - B.x0 - 44, B.y1 - B.y0 - 44, 8); lnS(c, 3, 'rgba(241,230,214,.22)');
+    BPIN().forEach(([x, y]) => { circ(c, x, y, 13, 'rgba(0,0,0,.4)'); circ(c, x, y, 7, '#1A120C'); c.save(); c.translate(x, y); c.rotate(-.7);   // остриё булавки сквозь доску
+      const gg = c.createLinearGradient(-4, 0, 4, 0); gg.addColorStop(0, '#E6EAF0'); gg.addColorStop(1, '#7A8096'); c.fillStyle = gg; poly(c, [-3.5, 0, 3.5, 0, 0, -26]); c.fill(); c.restore(); circ(c, x - 4, y - 9, 2, 'rgba(255,255,255,.85)') });
+    if (o.teaser) backTeaser(c, t, o.teaser);
+  }
+  // ---------- v22.2: строгий графичный уроборос — алое тело с бордовой тенью и светлыми гранями-ромбами, сужается к хвосту;
+  // угловатая голова с белыми клыками и прищуром намертво смыкается на кончике хвоста (кольцо без разрыва) ----------
+  const OUR = { red: '#B8122C', redL: '#E0344B', redD: '#5E0A18', facet: '#CC1E37', ln: 'rgba(255,226,226,.6)' };
+  function ouroBody(c, x, y, R, o = {}) {   // o.w — толщина у шеи, o.a0 — кончик хвоста (угол), o.gap — зазор под голову, o.kw 0..1 — толщина растёт
+    const a0 = o.a0 ?? (-Math.PI / 2 + .06), span = TAU - (o.gap ?? .13), n = 180, W = (o.w ?? 46) * (o.kw ?? 1), tail = u => lp(.14, 1, Math.pow(u, .5)) * (u > .97 ? lp(1, .86, (u - .97) / .03) : 1);
+    const pt = (u, d) => { const a = a0 + span * u, r = R + d; return [x + Math.cos(a) * r, y + Math.sin(a) * r] };
+    const band = (d0, d1) => { c.beginPath(); for (let i = 0; i <= n; i++) { const u = i / n, w = W * tail(u) / 2, [px, py] = pt(u, w * d1); i ? c.lineTo(px, py) : c.moveTo(px, py) }
+      for (let i = n; i >= 0; i--) { const u = i / n, w = W * tail(u) / 2, [px, py] = pt(u, w * d0); c.lineTo(px, py) } c.closePath() };
+    band(-1, 1); fill(c, OUR.red); band(-1, -.15); fill(c, OUR.redD); band(.72, 1); fill(c, OUR.redL);   // 3 тона: алый, бордовая тень внутри, свет по внешнему краю
+    if ((o.kw ?? 1) > .55) {   // грани-ромбы (чешуя): по одной на толщину тела, через одну — чуть светлее
+      let u = .03, k = 0; while (u < .975) { const w = W * tail(u) / 2; if (w > 7) { const du = w * 1.7 / (R * span), [p0x, p0y] = pt(u - du / 2, 0), [p1x, p1y] = pt(u, w * .7), [p2x, p2y] = pt(u + du / 2, 0), [p3x, p3y] = pt(u, -w * .7);
+          c.beginPath(); c.moveTo(p0x, p0y); c.lineTo(p1x, p1y); c.lineTo(p2x, p2y); c.lineTo(p3x, p3y); c.closePath(); if (k % 2) { c.fillStyle = 'rgba(255,120,130,.16)'; c.fill() } lnB(c, 1.3, OUR.ln);
+          u += du * 1.02 } else u += .01; k++ } }
+    band(-1, 1); lnB(c, 2, 'rgba(255,226,226,.4)');
+    return { head: pt(1, 0), ang: a0 + span + Math.PI / 2, tailTip: pt(0, 0) };
+  }
+  function ouroHead(c, x, y, ang, s, jaw = 0) {   // угловатая ромбовидная голова, нос — по ходу кольца (к хвосту); jaw 0 — челюсти сомкнуты на хвосте, 1 — раскрыты
+    c.save(); c.translate(x, y); c.rotate(ang); c.scale(s, s);
+    const op = jaw * .35;
+    const up = [[-70, -22], [-44, -46], [6, -44], [48, -22], [80, -2 - 18 * op], [18, 1 - 12 * op], [-40, 1]], lo = [[-70, 22], [-44, 44], [10, 38], [52, 16], [76, 3 + 18 * op], [18, -1 + 12 * op], [-40, -1]];   // сомкнуты: щели нет
+    poly(c, lo.flat()); fill(c, OUR.redD); poly(c, up.flat()); fill(c, OUR.red);
+    poly(c, [-44, -46, 6, -44, 48, -22, -2, -26]); fill(c, OUR.redL); poly(c, [-70, -22, -44, -46, -2, -26, -40, -8]); fill(c, OUR.facet);   // светлые грани сверху
+    c.beginPath(); c.moveTo(-34, 0); c.lineTo(78, 0); lnB(c, 2.2, 'rgba(40,4,12,.85)');   // линия пасти
+    c.fillStyle = '#FFF6F0'; poly(c, [40, -3 - 11 * op, 49, -3 - 11 * op, 44.5, 9]); c.fill(); poly(c, [22, -3 - 9 * op, 30, -3 - 9 * op, 26, 8]); c.fill();   // клыки впиваются в хвост
+    poly(c, [32, 3 + 11 * op, 40, 3 + 11 * op, 36, -8]); c.fill();
+    c.beginPath(); c.moveTo(-18, -26); c.lineTo(14, -32); lnB(c, 5, '#FFD9A0'); c.beginPath(); c.moveTo(-12, -26.5); c.lineTo(8, -30); lnB(c, 2, '#2A0A10');   // узкий прищур
+    poly(c, up.flat()); lnB(c, 2, OUR.ln); poly(c, lo.flat()); lnB(c, 2, OUR.ln); c.beginPath(); c.moveTo(-60, -14); c.lineTo(-10, -22); c.lineTo(40, -14); lnB(c, 1.2, 'rgba(255,226,226,.45)');
+    c.restore();
+  }
+  function ouro5(c, t, x, y, R, o = {}) {   // целиком: тело, голова на кончике хвоста
+    const r = ouroBody(c, x, y, R, o); if ((o.kh ?? 1) <= 0) return r;
+    const s = (o.hs ?? R / 330) * bo(Math.min(1, o.kh ?? 1)); ouroHead(c, r.head[0], r.head[1], r.ang, s, o.jaw ?? 0); return r;
+  }
+  function backTeaser(c, t, k) {   // шортс: на изнанке — прямые нити от булавок к центру и строгий уроборос вокруг
+    const C = { x: 540, y: 660 }, P = BPIN(); c.save(); c.globalAlpha *= k;
+    P.forEach(([px, py]) => { c.beginPath(); c.moveTo(px, py); c.lineTo(C.x, C.y); lnB(c, 5, '#D6334D'); c.beginPath(); c.moveTo(px + 2, py + 3); c.lineTo(C.x + 2, C.y + 3); lnB(c, 2, 'rgba(0,0,0,.25)') });
+    ouro5(c, t, C.x, C.y, 230, { w: 40, hs: .8, gap: .14 }); c.restore();
+  }
+  // ---------- v22.2: 3D-поворот доски вокруг вертикали (полосками, с перспективой); изнанка — зеркально ----------
+  let BFC = null, BBC = null; const FLR = { x0: -80, y0: 90, w: 1240, h: 1110, ax: 540, cy: 640 };
+  function flipBoard(c, ang, drawFront, drawBack) {
+    const R = FLR, ca = Math.cos(ang), sa = Math.sin(ang), front = ca >= 0;
+    if (front && !BFC) BFC = mk(R.w, R.h); if (!front && !BBC) BBC = mk(R.w, R.h);
+    const src = front ? BFC : BBC, g = src.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, R.w, R.h); g.translate(-R.x0, -R.y0); (front ? drawFront : drawBack)(g);
+    const n = 96, D = 2600, prj = xs => { const X = xs * ca, Z = xs * sa, f = D / (D + Z); return [R.ax + X * f, f] };
+    for (let i = 0; i < n; i++) {
+      const u0 = i / n, u1 = (i + 1) / n, [x0, f0] = prj(R.x0 + u0 * R.w - R.ax), [x1, f1] = prj(R.x0 + u1 * R.w - R.ax), dw = Math.abs(x1 - x0); if (dw < .05) continue;
+      const f = (f0 + f1) / 2, sx = front ? u0 * R.w : (1 - u1) * R.w;
+      c.drawImage(src, sx, 0, R.w / n + .5, R.h, Math.min(x0, x1) - .3, R.cy - (R.cy - R.y0) * f, dw + .6, R.h * f);
+    }
+    const sh = (1 - Math.abs(ca)) * .55; if (sh > .01) { const [xl, fl] = prj(R.x0 - R.ax), [xr, fr] = prj(R.x0 + R.w - R.ax);   // свет уходит, когда доска поворачивается ребром
+      c.save(); c.globalAlpha *= sh; poly(c, [xl, R.cy - (R.cy - R.y0) * fl, xr, R.cy - (R.cy - R.y0) * fr, xr, R.cy + (R.y0 + R.h - R.cy) * fr, xl, R.cy + (R.y0 + R.h - R.cy) * fl]); fill(c, '#050407'); c.restore() }
+    if (Math.abs(ca) < .14) { const e = 1 - Math.abs(ca) / .14; c.save(); c.globalAlpha *= e; rr(c, R.ax - 10, R.y0 + 30, 20, R.h - 60, 6); fill(c, '#3A2A1E'); c.fillStyle = 'rgba(255,230,200,.25)'; c.fillRect(R.ax - 10, R.y0 + 30, 4, R.h - 60); c.restore() }   // ребро доски
   }
   // ---------- фильм: «Осталось перевернуть саму доску» — правый нижний угол загибается ----------
   function curlK(t) { const a = T7; return eio(at(t, a.per - .1, a.dosk2 + .35)) * .55 }

@@ -11,14 +11,19 @@
       s11: SA('s11'), mes: w11('месяца'), razr: w11('разрешили'), snus2: w11('снюс'), kr: w11('покрепче'), dev: w11('девять'), odin: w11('одиннадцать'), mg: w11('миллиграммов'),
       vm: w11('вместо'), tr: w11('трёх'), sh: w11('шести'), shB: WsB('s11', 'шести') };
     const a = T6; a.split0 = a.razr - .35; a.split1 = a.razr + .45; a.jout = a.shB + .35;   // после строки 11 — вода поднимается (мир доски)
-    K6 = [KY(a.j + .35, 560, 1010, 1.06), KY(a.shk + .2, 620, 1000, 1.0), KY(a.sig + .1, 560, 950, 1.55), KY(a.ob, 560, 940, 1.6), KY(a.s11, 560, 945, 1.6), KY(a.razr + .2, 555, 960, 1.7),
-      KY(a.kr + .2, 555, 950, 1.75), KY(a.shB, 555, 945, 1.84), KY(a.jout + .62, 555, 940, 1.95)];   // до самой воды камера не встаёт
+    // v22.2: строка 10 — коридор и лист с графиком (камера в движении); строка 11 — камера уезжает вправо к тёмной витрине с двумя банками ZYN
+    // («КРЕПОСТЬ»): заголовка «ШКОЛЬНИКИ США» в кадре нет — крепкий снюс не читается как разрешённый школьникам
+    K6 = [KY(a.j + .35, 560, 1010, 1.06), KY(a.shk + .2, 640, 1000, 1.02), KY(a.sig + .1, 575, 955, 1.5), KY(a.ob, 548, 945, 1.6), KY(a.s11 + .2, 600, 950, 1.5), KY(a.razr - .1, 1600, 1000, 1.3),
+      KY(a.kr + .2, 1630, 985, 1.38), KY(a.shB, 1640, 975, 1.5), KY(a.jout + .62, 1640, 970, 1.6)];   // до самой воды камера не встаёт
     linkK(K5, K6, N6, true);
   }
   function schoolRoom(c, t) {
     c.fillStyle = '#E8E4DA'; c.fillRect(-1600, -1200, 4800, 1800); c.fillStyle = '#D6D0C2'; c.fillRect(-1600, 500, 4800, 60);
     for (let i = 0; i < 5; i++) { rr(c, -600 + i * 600, 150, 360, 26, 13); fill(c, '#FFFFFF'); glow(c, -420 + i * 600, 170, 300, '#FFFFFF', .12) }   // лампы
-    for (let i = 0; i < 30; i++) {   // шкафчики
+    // v22.2: справа коридор кончается — тёмная витрина-стенд (строка 11)
+    c.fillStyle = '#121833'; c.fillRect(1110, 470, 1500, 1030); c.fillStyle = 'rgba(255,255,255,.035)'; for (let x = 1140; x < 2600; x += 110) c.fillRect(x, 470, 3, 1030);
+    c.fillStyle = '#2B3256'; c.fillRect(1096, 470, 18, 1030); c.fillStyle = 'rgba(255,255,255,.12)'; c.fillRect(1096, 470, 4, 1030);
+    for (let i = 0; i < 20; i++) {   // шкафчики (до витрины)
       const x = -1500 + i * 130, col = i % 2 ? C5.locker : mixc(C5.locker, C5.lockerL, .25);
       c.fillStyle = col; c.fillRect(x, 560, 126, 920); c.fillStyle = C5.lockerD; c.fillRect(x + 96, 560, 30, 920); c.fillStyle = 'rgba(255,255,255,.12)'; c.fillRect(x + 6, 570, 6, 900);
       for (let v = 0; v < 4; v++) { c.fillStyle = C5.lockerD; c.fillRect(x + 22, 600 + v * 14, 60, 6) }
@@ -37,7 +42,7 @@
   function walkers6(c, t) {   // фигурки с рюкзаками идут по коридору (кто влево — зеркально)
     const a = T6; if (!a) return;
     WALK6.forEach(W => { const tt = t - a.j + 1.2 + W.t0, P = walker(tt, { x0: 0, v: Math.abs(W.v), T: .62, floor: W.f, s: W.s, t0: 0, lean: .05 }), x = W.x0 + W.v * tt;
-      if (x < -600 || x > 1700) return;
+      if (x < -600 || x > 1000) return;   // v22.2: к витрине школьники не подходят
       const body = () => { c.save(); c.translate(x - P.pel[0], 0); castDots(c, P.pel[0] - 50 * W.s, W.f - 8, 110 * W.s, 10, 60, { k: .6 }); pack6(c, P, W.s, W.bp); drawRig(c, P, { col: W.col }); c.restore() };
       if (W.v < 0) mirrorX(c, x, body); else body() });
   }
@@ -46,7 +51,7 @@
     castDots(c, x0, y0 + 20, S.w, S.h, 70, { k: .7 }); rr(c, x0, y0, S.w, S.h, 6); fill(c, '#FBFAF6');
     c.save(); c.translate(x0 + 60, y0 - 6); c.rotate(-.2); c.fillStyle = 'rgba(240,230,190,.85)'; c.fillRect(-40, -14, 80, 28); c.restore(); c.save(); c.translate(x0 + S.w - 60, y0 - 6); c.rotate(.18); c.fillStyle = 'rgba(240,230,190,.85)'; c.fillRect(-40, -14, 80, 28); c.restore();
     tx(c, TEXT.kids, S.x, y0 + 52, { f: 'M', w: 800, s: 36, c: '#1F2A44', ls: 3, mw: S.w - 40 });
-    const ax = at(t, a.split0, a.split1);   // оси и сигареты уходят, когда столбик снюса становится банками
+    const ax = 0;   // v22.2: лист остаётся как есть — банки крепкого снюса стоят отдельно, на витрине
     c.save(); c.globalAlpha *= 1 - ax;
     c.fillStyle = 'rgba(31,42,68,.85)'; c.fillRect(x0 + 70, BASE6, S.w - 110, 5); c.fillRect(x0 + 70, BASE6 - 2 * PCT6, 4, 2 * PCT6);
     for (let i = 0; i <= 2; i++) { const yy = BASE6 - i * PCT6; c.fillStyle = 'rgba(31,42,68,.15)'; c.fillRect(x0 + 70, yy, S.w - 110, 2); tx(c, TEXT.fPct(i), x0 + 40, yy, { f: 'M', w: 800, s: 24, c: '#56607A' }) }
@@ -64,17 +69,21 @@
       c.beginPath(); c.moveTo(B[0].x, y1 - 60); c.quadraticCurveTo(B[0].x + 60, y2 - 60, lp(B[0].x, B[1].x - 30, kar), lp(y1 - 60, y2, kar)); lnB(c, 8, '#D6334D');
       if (kar > .9) { c.save(); c.translate(B[1].x - 30, y2); c.rotate(.6); poly(c, [0, 0, -26, -10, -16, 14]); fill(c, '#D6334D'); c.restore() } c.restore() }
   }
-  function mgTins(c, t) {   // строка 11: столбик снюса → две банки на нижней планке листа, 3 → 9 и 6 → 11 МГ
-    const a = T6, k = eio(at(t, a.split0, a.split1)); if (k <= 0) return;
-    const kr = eio(at(t, a.kr - .1, a.kr + .4)), R = 88, ty = lp(.08, .34, k), h = lp(.7, .95, kr), cap = mixc('#FAFAF8', '#2B2F3A', kr);
-    [[470, a.dev, 3, 9], [690, a.odin, 6, 11]].forEach(([x1, w, v0, v1], i) => {
-      const bx = lp(BAR6[1].x, x1, k), hS = R * h * Math.sqrt(1 - ty * ty) + R * .06, y = BASE6 - hS - R * ty;
-      if (k < 1) { const hb = lp(1.7 * PCT6, hS + R * ty * 2, k), wb = lp(110, R * 2, k); c.save(); c.globalAlpha *= 1 - at(k, .7, 1); rr(c, bx - wb / 2, BASE6 - hb, wb, hb, 6); fill(c, '#FFFFFF'); rr(c, bx - wb / 2, BASE6 - hb, wb, hb, 6); lnB(c, 3, '#1F2A44'); c.restore() }
-      c.save(); c.globalAlpha *= at(k, .4, .9); tin5(c, bx, y, R, ty, 0, { cap, name: OBJ.zyn, nameC: kr > .5 ? '#F4F1EA' : '#1F2A44', h, shc: 'rgba(6,10,30,.22)' }); c.restore();
-      const kd = at(t, w - .1, w + .4), v = Math.round(lp(v0, v1, eo(kd)));
-      if (k > .6) { drum4(c, v + ' ' + TEXT.mg, bx, y - R * ty - 92, at(k, .6, 1), { s: 52, w: 200, bg: kr > .5 ? '#D6334D' : '#141733' });
-        const ko = at(t, a.vm - .05 + i * .4, a.vm + .3 + i * .4); if (ko > 0) { c.save(); c.globalAlpha *= ko; tx(c, v0 + ' ' + TEXT.mg, bx, BASE6 + 62, { f: 'M', w: 800, s: 30, c: '#56607A' });
-          c.beginPath(); c.moveTo(bx - 50, BASE6 + 62); c.lineTo(lp(bx - 50, bx + 50, eo(ko)), BASE6 + 62); lnB(c, 4, '#D6334D'); c.restore() } }
+  const DSP = { x: 1640, y: 1100, xs: [1520, 1760] };
+  function mgTins(c, t) {   // v22.2: строка 11 — тёмная витрина: стеклянная полка, два луча, банки ZYN 3 → 9 и 6 → 11 МГ, «КРЕПОСТЬ»
+    const a = T6, on = eio(at(t, a.razr - .45, a.razr + .1)); if (on <= 0) return;
+    const kr = eio(at(t, a.kr - .1, a.kr + .4)), R = 92, ty = .34, h = lp(.7, 1.0, kr), cap = mixc('#FAFAF8', '#2B2F3A', kr);
+    for (const x of DSP.xs) beam(c, x, 520, x, DSP.y + 20, 16, 150, '#FFE7B0', .22 * on);
+    c.save(); c.globalAlpha *= on; PL(c, [1300, DSP.y + 38, 1980, DSP.y + 38, 2010, DSP.y + 16, 1330, DSP.y + 16], 'rgba(190,225,250,.25)'); SL(c, [1300, DSP.y + 38, 1980, DSP.y + 38], 'rgba(225,242,255,.8)', 3); c.restore();
+    cap5(c, TEXT.strength, DSP.x, 640, at(t, a.razr - .2, a.razr + .15) * (1 - at(t, a.jout - .3, a.jout)), { s: 46, bg: '#F4F1EA', c: '#141010' });   // гаснет до того, как поднимется вода
+    [[DSP.xs[0], a.dev, 3, 9], [DSP.xs[1], a.odin, 6, 11]].forEach(([x, w, v0, v1], i) => {
+      const k = eo(at(t, a.razr - .3 + i * .12, a.razr + .2 + i * .12)); if (k <= 0) return;
+      const hS = R * h * Math.sqrt(1 - ty * ty) + R * .06, y = DSP.y + 30 - hS - R * ty;
+      c.save(); c.globalAlpha *= k; tin5(c, x, y + (1 - k) * 60, R, ty, 0, { cap, name: OBJ.zyn, nameC: kr > .5 ? '#F4F1EA' : '#1F2A44', h, shc: 'rgba(0,0,0,.45)' }); c.restore();
+      const v = Math.round(lp(v0, v1, eo(at(FT, w - .1, w + .4))));   // по времени кадра — цифры не двоятся
+      drum4(c, v + ' ' + TEXT.mg, x, y - R * ty - 96, at(t, a.razr, a.razr + .35), { s: 52, w: 210, bg: kr > .5 ? '#D6334D' : '#141733' });
+      const ko = at(t, a.vm - .05 + i * .4, a.vm + .3 + i * .4); if (ko > 0) { c.save(); c.globalAlpha *= ko; tx(c, v0 + ' ' + TEXT.mg, x, DSP.y + 96, { f: 'M', w: 800, s: 34, c: '#AEB6CC' });
+        c.beginPath(); c.moveTo(x - 56, DSP.y + 96); c.lineTo(lp(x - 56, x + 56, eo(ko)), DSP.y + 96); lnB(c, 5, '#D6334D'); c.restore() }
     });
   }
   function schoolWorld(c, t) { schoolRoom(c, t); sheet6(c, t); mgTins(c, t); walkers6(c, t) }

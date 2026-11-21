@@ -31,11 +31,11 @@
     rr(c, 110, 70, 860, 560, 10); fill(c, '#F4F1EA'); vgrad(c, 130, 90, 820, 520, ['#B9D7EE', '#E3EEF6']);   // окно: здание FDA
     c.save(); c.beginPath(); c.rect(130, 90, 820, 520); c.clip();
     c.fillStyle = '#9DB6C9'; for (let i = 0; i < 6; i++) c.fillRect(140 + i * 140, 430 - H1(i) * 120, 110, 300);
-    c.fillStyle = '#F7F6F2'; c.fillRect(280, 270, 520, 360); c.fillStyle = 'rgba(0,0,0,.08)'; c.fillRect(700, 270, 100, 360);
-    for (let r = 0; r < 4; r++) for (let i = 0; i < 7; i++) { c.fillStyle = '#7FA2BF'; c.fillRect(300 + i * 70, 330 + r * 70, 46, 44) }
-    rr(c, 400, 200, 280, 70, 8); fill(c, '#1F3A66'); tx(c, OBJ.fda, 540, 236, { f: 'M', w: 800, s: 54, c: '#F4F1EA', ls: 10 });
+    c.fillStyle = '#F7F6F2'; c.fillRect(400, 270, 520, 360); c.fillStyle = 'rgba(0,0,0,.08)'; c.fillRect(820, 270, 100, 360);   // v22.2: здание и вывеска правее — плашка 2026 их не задевает
+    for (let r = 0; r < 4; r++) for (let i = 0; i < 7; i++) { c.fillStyle = '#7FA2BF'; c.fillRect(420 + i * 70, 330 + r * 70, 46, 44) }
+    rr(c, 560, 200, 280, 70, 8); fill(c, '#1F3A66'); tx(c, OBJ.fda, 700, 236, { f: 'M', w: 800, s: 54, c: '#F4F1EA', ls: 10 });
     for (let i = 0; i < 5; i++) { c.beginPath(); c.arc(170 + i * 190, 610, 60 + H1(i * 3) * 30, Math.PI, 0); fill(c, '#5E8C5A') } c.restore();
-    c.fillStyle = '#F4F1EA'; c.fillRect(530, 90, 20, 520); c.fillRect(130, 340, 820, 16);
+    c.fillStyle = '#F4F1EA'; c.fillRect(330, 90, 20, 520); c.fillRect(130, 340, 200, 16);
     c.fillStyle = '#5A3A26'; c.fillRect(-1600, 660, 4800, 3000); c.fillStyle = 'rgba(255,235,200,.18)'; c.fillRect(-1600, 660, 4800, 8);   // стол
     rr(c, -1500, 720, 4600, 2900, 18); fill(c, '#2F5444'); rr(c, -1480, 740, 4560, 2860, 14); lnB(c, 3, 'rgba(201,162,74,.55)');   // зелёное сукно с золотой каймой
     glow(c, 980, 980, 620, '#FFE7B0', .16);   // свет лампы на сукне
@@ -76,12 +76,27 @@
     c.restore();
   }
   // ---------- вкусы ----------
-  function flavor5(c, kind, x, y, k) {   // значок вкуса над открытой банкой
-    if (k <= 0) return; c.save(); c.translate(x, y - 40 * eo(k)); c.scale(bo(k), bo(k));
-    if (kind === 'mint') { for (const s of [-1, 1]) { c.save(); c.rotate(s * .5); c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(-20 * s, -10, -18 * s, -44, 0, -56); c.bezierCurveTo(18 * s, -44, 16 * s, -10, 0, 0); fill(c, '#3FBF7F'); c.beginPath(); c.moveTo(0, -4); c.lineTo(0, -48); lnB(c, 2, '#1E7A4E'); c.restore() } }
-    else if (kind === 'lemon') { circ(c, 0, -26, 30, '#F2D04B'); circ(c, 0, -26, 23, '#FBE79A'); for (let i = 0; i < 6; i++) { const an = i * Math.PI / 3; c.beginPath(); c.moveTo(0, -26); c.lineTo(Math.cos(an) * 22, -26 + Math.sin(an) * 22); lnB(c, 2, '#E6B830') } }
-    else if (kind === 'coffee') { for (const dx of [-16, 16]) { c.save(); c.translate(dx, -26); c.rotate(dx > 0 ? .4 : -.3); c.beginPath(); c.ellipse(0, 0, 15, 21, 0, 0, TAU); fill(c, '#6B4429'); c.beginPath(); c.moveTo(0, -18); c.quadraticCurveTo(6, 0, 0, 18); lnB(c, 2.5, '#3A2416'); c.restore() } }
-    else { for (const dx of [-10, 10]) { c.save(); c.translate(dx, -26); c.rotate(dx * .03); rr(c, -9, -34, 18, 68, 8); fill(c, '#A85A2A'); c.beginPath(); c.moveTo(-5, -30); c.lineTo(-5, 30); lnB(c, 2, '#7A3E1C'); c.restore() } }
+  function flavor5(c, kind, x, y, k) {   // v22.2: вкусы узнаваемо и в объёме — лист мяты, долька цитруса с сегментами, кофейные зёрна, палочка корицы
+    if (k <= 0) return; c.save(); c.translate(x, y - 64 * eo(k)); c.scale(bo(k) * 1.7, bo(k) * 1.7);
+    if (kind === 'mint') {
+      for (const [ang, sc, col] of [[-.55, .82, '#2E9E63'], [.35, 1, '#3FBF7F']]) { c.save(); c.translate(0, -8); c.rotate(ang); c.scale(sc, sc);
+        c.beginPath(); c.moveTo(0, 6); for (let i = 0; i <= 12; i++) { const u = i / 12, yy = -u * 64, w = 26 * Math.sin(Math.PI * Math.pow(u, .8)) * (1 + (i % 2 ? .1 : 0)); c.lineTo(-w, yy) } for (let i = 12; i >= 0; i--) { const u = i / 12, yy = -u * 64, w = 26 * Math.sin(Math.PI * Math.pow(u, .8)) * (1 + (i % 2 ? .1 : 0)); c.lineTo(w, yy) } c.closePath();
+        fill(c, col); c.save(); c.clip(); c.fillStyle = shd(col, .3); c.fillRect(0, -70, 40, 80); c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(-18, -54, 5, 40); c.restore();
+        c.beginPath(); c.moveTo(0, 6); c.lineTo(0, -60); for (let i = 1; i < 5; i++) { c.moveTo(0, -i * 12); c.lineTo(-16, -i * 12 - 10); c.moveTo(0, -i * 12); c.lineTo(16, -i * 12 - 10) } lnB(c, 2, 'rgba(20,80,50,.7)'); c.restore() }
+    } else if (kind === 'lemon') {
+      c.save(); c.translate(0, -30); circ(c, 3, 5, 36, 'rgba(0,0,0,.22)'); circ(c, 0, 0, 36, '#E8B730'); circ(c, 0, 0, 31, '#FFF6D6');
+      for (let i = 0; i < 8; i++) { const a0 = i * TAU / 8 + .06, a1 = (i + 1) * TAU / 8 - .06; c.beginPath(); c.moveTo(0, 0); c.arc(0, 0, 27, a0, a1); c.closePath(); fill(c, i % 2 ? '#F6D54A' : '#F2CC3A') }
+      circ(c, 0, 0, 4, '#FFF6D6'); c.beginPath(); c.arc(0, 0, 33, Math.PI * 1.1, Math.PI * 1.5); lnB(c, 3, 'rgba(255,255,255,.7)'); c.restore();
+    } else if (kind === 'coffee') {
+      for (const [dx, dy, r] of [[-17, -24, -.4], [16, -30, .5]]) { c.save(); c.translate(dx, dy); c.rotate(r); c.beginPath(); c.ellipse(2, 3, 16, 22, 0, 0, TAU); fill(c, 'rgba(0,0,0,.25)');
+        c.beginPath(); c.ellipse(0, 0, 16, 22, 0, 0, TAU); fill(c, '#6B4429'); c.save(); c.beginPath(); c.ellipse(0, 0, 16, 22, 0, 0, TAU); c.clip(); c.fillStyle = '#4A2C18'; c.fillRect(4, -24, 14, 48); c.restore();
+        c.beginPath(); c.moveTo(0, -19); c.bezierCurveTo(6, -6, -6, 6, 0, 19); lnB(c, 3, '#2A180C'); c.beginPath(); c.ellipse(-7, -8, 3, 8, .2, 0, TAU); fill(c, 'rgba(255,220,180,.35)'); c.restore() }
+    } else {
+      c.save(); c.translate(0, -28); c.rotate(-.35); castDots(c, -40, 10, 80, 8, 20, { k: .5 });
+      for (const off of [-6, 6]) { rr(c, -42, off - 9, 84, 18, 8); fill(c, '#A85A2A'); c.fillStyle = '#7E3F1C'; c.fillRect(-42, off + 2, 84, 7); c.fillStyle = 'rgba(255,210,170,.3)'; c.fillRect(-36, off - 7, 70, 3) }
+      for (const sx of [-1, 1]) { c.save(); c.translate(sx * 42, 0); c.beginPath(); c.ellipse(0, 0, 6, 15, 0, 0, TAU); fill(c, '#8A4A22'); c.beginPath(); for (let i = 0; i < 30; i++) { const a = i * .45, r = 1 + i * .45; c.lineTo(Math.cos(a) * r * .38, Math.sin(a) * r) } lnB(c, 1.6, '#5A2C12'); c.restore() }
+      c.restore();
+    }
     c.restore();
   }
   function tinsRow(c, t) {
@@ -92,27 +107,46 @@
   }
   // ---------- «Джул» и нож ----------
   const JCOL = ['#7FD3A8', '#F6A03A', '#E9D8B4', '#E7739A'];
+  // v22.2: узнаваемые «Джулы» (графитовый корпус, светодиод, цветной под с окошком и мундштуком) и строгая стальная гильотина:
+  // стойки из стали, косое лезвие с красной кромкой и гравировкой FDA срезает поды со стола
+  function juul5(c, x, y, i, cut) {
+    castDots(c, x - 18, y - 6, 36, 10, 60, { k: .7 });
+    rr(c, x - 18, y - 236, 36, 236, 8); fill(c, '#3A3F4C'); c.save(); rr(c, x - 18, y - 236, 36, 236, 8); c.clip(); c.fillStyle = '#2A2E38'; c.fillRect(x + 6, y - 240, 14, 240); c.fillStyle = 'rgba(255,255,255,.22)'; c.fillRect(x - 13, y - 228, 4, 220); c.restore();
+    circ(c, x, y - 150, 3.5, i % 2 ? '#7FD3FF' : '#9CF2C2'); c.fillStyle = '#9AA3B5'; c.fillRect(x - 18, y - 240, 36, 6);
+    const fall = cut, px = x + fall * (36 + i * 14), py = y - 272 + 900 * fall * fall, rot = fall * (i % 2 ? 1.7 : -1.5); if (fall >= 1) return;
+    c.save(); c.translate(px, py); c.rotate(rot); c.globalAlpha *= 1 - at(fall, .6, 1);
+    rr(c, -18, -34, 36, 66, 7); fill(c, rgba(JCOL[i], .92)); rr(c, -11, -56, 22, 26, 6); fill(c, rgba(shd(JCOL[i], .1), .95));   // под и мундштук
+    rr(c, -10, -18, 20, 36, 4); fill(c, 'rgba(255,255,255,.35)'); c.fillStyle = rgba(shd(JCOL[i], .35), .9); c.fillRect(-10, -18 + 36 * (.35 + i * .1), 20, 36 * (.65 - i * .1));   // окошко с жидкостью
+    c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(6, -34, 12, 66); c.restore();
+  }
   function juulRow(c, t) {
     const a = T5, kin = eio(at(t, a.juul - .45, a.juul + .1)), out = eio(at(t, a.s9 - .2, a.dv26 + .2)), cut = at(t, a.zapr - .02, a.zapr + .8); if (kin <= 0 || out >= 1) return;
     c.save(); c.translate(lp(-800, 0, kin) - 900 * out, 0);
-    for (let i = 0; i < 4; i++) { const x = 150 + i * 100, y = 1720; castDots(c, x - 14, y - 6, 28, 10, 60, { k: .7 });
-      rr(c, x - 15, y - 250, 30, 250, 9); fill(c, '#3A3F4C'); c.fillStyle = 'rgba(255,255,255,.18)'; c.fillRect(x - 10, y - 240, 5, 230); c.fillStyle = '#9AA3B5'; c.fillRect(x - 15, y - 250, 30, 6);
-      const fall = cut > 0 ? cut : 0, px = x + fall * (30 + i * 12), py = y - 296 + 900 * fall * fall, rot = fall * (i % 2 ? 1.6 : -1.4);
-      c.save(); c.translate(px, py); c.rotate(rot); c.globalAlpha *= 1 - at(fall, .6, 1); rr(c, -15, -22, 30, 46, 6); fill(c, rgba(JCOL[i], .9)); c.fillStyle = 'rgba(255,255,255,.4)'; c.fillRect(-10, -18, 5, 36); c.restore() }
-    // нож: стойки, перекладина, лезвие с гравировкой FDA
-    c.fillStyle = '#4A3226'; c.fillRect(60, 1180, 26, 560); c.fillRect(514, 1180, 26, 560); rr(c, 40, 1150, 520, 40, 8); fill(c, '#5A3A26');
-    const by = lp(1210, 1390, eio(at(t, a.zapr - .18, a.zapr + .02))), shake = cut > 0 && cut < .15 ? Math.sin(cut * 200) * 4 : 0;
-    c.save(); c.translate(shake, 0); poly(c, [90, by, 510, by, 510, by + 70, 90, by + 110]); fill(c, '#C9CED8'); c.save(); poly(c, [90, by, 510, by, 510, by + 70, 90, by + 110]); c.clip();
-    c.fillStyle = 'rgba(255,255,255,.45)'; c.fillRect(90, by + 6, 420, 10); c.fillStyle = '#D6334D'; c.fillRect(90, by, 420, 8); c.restore();
-    tx(c, OBJ.fda, 300, by + 48, { f: 'M', w: 800, s: 34, c: 'rgba(40,46,60,.55)', ls: 8 }); poly(c, [90, by, 510, by, 510, by + 70, 90, by + 110]); lnB(c, 2, 'rgba(20,23,51,.5)'); c.restore();
+    for (let i = 0; i < 4; i++) juul5(c, 150 + i * 100, 1720, i, cut > 0 ? cut : 0);
+    // стойки и перекладина — сталь
+    for (const px of [62, 518]) { const g = c.createLinearGradient(px - 14, 0, px + 14, 0); g.addColorStop(0, '#D4D8E2'); g.addColorStop(.4, '#8F95A8'); g.addColorStop(1, '#3B4155');
+      c.fillStyle = g; c.fillRect(px - 14, 1170, 28, 572); c.fillStyle = '#2C3142'; c.fillRect(px - 4, 1190, 8, 540); for (let k = 0; k < 4; k++) circ(c, px, 1200 + k * 160, 4, '#C9CED8') }
+    PL(c, [40, 1150, 540, 1150, 540, 1186, 40, 1186], '#5C6379'); SL(c, [42, 1151, 538, 1151], 'rgba(255,255,255,.4)', 2); PL(c, [30, 1736, 550, 1736, 550, 1752, 30, 1752], '#3F4559');
+    // лезвие: падает на «запретили»
+    const by = lp(1196, 1404, eio(at(t, a.zapr - .18, a.zapr + .02))), shake = cut > 0 && cut < .15 ? Math.sin(cut * 200) * 4 : 0;
+    c.save(); c.translate(shake, 0); const B = [76, by, 504, by, 504, by + 46, 76, by + 120];
+    poly(c, B); const g = c.createLinearGradient(0, by, 0, by + 120); g.addColorStop(0, '#E1E5EC'); g.addColorStop(1, '#9AA1B2'); c.fillStyle = g; c.fill();
+    c.save(); poly(c, B); c.clip(); c.fillStyle = 'rgba(255,255,255,.5)'; c.fillRect(76, by + 8, 428, 6); poly(c, [76, by + 106, 504, by + 34, 504, by + 46, 76, by + 120]); fill(c, '#C8102E'); c.restore();
+    tx(c, OBJ.fda, 290, by + 44, { f: 'M', w: 800, s: 38, c: 'rgba(40,46,60,.5)', ls: 10 }); tx(c, OBJ.fda, 291, by + 45, { f: 'M', w: 800, s: 38, c: 'rgba(255,255,255,.35)', ls: 10 });
+    poly(c, B); lnB(c, 2, 'rgba(20,23,51,.5)'); c.restore();
     c.restore();
   }
   // ---------- медальоны ----------
   function organ5(c, k) {
     c.strokeStyle = '#D6334D'; c.lineWidth = 7; c.lineCap = 'round'; c.lineJoin = 'round';
     if (k === 'mouth') { c.beginPath(); c.moveTo(-52, 0); c.bezierCurveTo(-30, -26, -12, -22, 0, -12); c.bezierCurveTo(12, -22, 30, -26, 52, 0); c.bezierCurveTo(26, 30, -26, 30, -52, 0); c.closePath(); fill(c, '#E2566A'); c.beginPath(); c.moveTo(-46, 0); c.quadraticCurveTo(0, 10, 46, 0); lnB(c, 4, '#9C2236') }
-    else if (k === 'lungs') { c.beginPath(); c.moveTo(0, -50); c.lineTo(0, -10); c.moveTo(0, -12); c.lineTo(-16, 0); c.moveTo(0, -12); c.lineTo(16, 0); c.stroke();
-      for (const s of [-1, 1]) { c.beginPath(); c.moveTo(s * 10, -26); c.bezierCurveTo(s * 50, -40, s * 58, 30, s * 40, 46); c.bezierCurveTo(s * 24, 54, s * 12, 40, s * 10, 20); c.closePath(); fill(c, '#E98A96') } }
+    else if (k === 'lungs') {   // v22.2: лёгкие узнаваемо — трахея, бронхи, две доли с вырезкой под сердце, 3 тона
+      for (const s of [-1, 1]) { const P = () => { c.beginPath(); c.moveTo(s * 9, -38); c.bezierCurveTo(s * 30, -50, s * 52, -26, s * 56, 8); c.bezierCurveTo(s * 60, 40, s * 48, 58, s * 26, 56);
+          c.bezierCurveTo(s * 12, 55, s * (s < 0 ? 8 : 16), 44, s * (s < 0 ? 8 : 16), 26); c.bezierCurveTo(s * (s < 0 ? 8 : 22), 12, s * 10, -6, s * 9, -38); c.closePath() };
+        P(); fill(c, '#E98A96'); c.save(); P(); c.clip(); c.fillStyle = s > 0 ? '#C9677A' : '#D97A8A'; c.fillRect(s > 0 ? 34 : -60, -60, 30, 130); c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(s > 0 ? 18 : -48, -30, 6, 60); c.restore();
+        P(); lnB(c, 2.5, '#B84A60'); c.beginPath(); c.moveTo(s * 30, -14); c.quadraticCurveTo(s * 44, 6, s * 54, 18); lnB(c, 2, 'rgba(160,50,70,.6)') }
+      c.beginPath(); c.moveTo(0, -58); c.lineTo(0, -22); c.moveTo(0, -24); c.quadraticCurveTo(-10, -16, -22, -8); c.moveTo(0, -24); c.quadraticCurveTo(10, -16, 22, -8); lnB(c, 7, '#D6334D');
+      for (let i = 0; i < 4; i++) { c.fillStyle = 'rgba(255,255,255,.55)'; c.fillRect(-5, -54 + i * 8, 10, 2.5) } }
     else if (k === 'heart') { c.beginPath(); c.moveTo(0, 46); c.bezierCurveTo(-60, 6, -50, -46, 0, -22); c.bezierCurveTo(50, -46, 60, 6, 0, 46); fill(c, '#E2414F') }
     else { for (const s of [-1, 1]) { c.beginPath(); c.moveTo(0, -40); c.bezierCurveTo(s * 40, -50, s * 60, -10, s * 48, 18); c.bezierCurveTo(s * 40, 40, s * 10, 40, 0, 30); c.closePath(); fill(c, '#F2A6B4') }
       c.beginPath(); c.moveTo(0, -38); c.lineTo(0, 30); c.moveTo(-34, -20); c.quadraticCurveTo(-20, -8, -30, 6); c.moveTo(34, -20); c.quadraticCurveTo(20, -8, 30, 6); c.moveTo(-14, 14); c.quadraticCurveTo(-26, 22, -40, 16); c.moveTo(14, 14); c.quadraticCurveTo(26, 22, 40, 16); lnB(c, 4, '#B84A60') }
@@ -142,14 +176,15 @@
     form5(c, t, FZ.x, FZ.y, { pic: 'tin', harm: ok9, ok: kz * (1 - at(t, a.s9 - .2, a.s9 + .2)), name: zn, r: -.02 });
     if (t > a.zin2 - .3 && t < a.nizhe + .3) { const k = at(t, a.zin2 - .3, a.zin2 + .1) * (1 - at(t, a.nizhe - .1, a.nizhe + .3));   // «Зин вместо сигарет»: сигарета перечёркнута у бланка
       c.save(); c.globalAlpha *= k; cigar(c, FZ.x - 140, FZ.y + 300, FZ.x + 40, FZ.y + 300, 14, { filt: C3.filt, ember: 1 }); const kx = eo(at(t, a.sig - .05, a.sig + .25)); c.beginPath(); c.moveTo(FZ.x - 150, FZ.y + 330); c.lineTo(lp(FZ.x - 150, FZ.x + 50, kx), lp(FZ.y + 330, FZ.y + 270, kx)); lnB(c, 7, '#D6334D'); c.restore() }
+    cap5(c, TEXT.first, FZ.x + 104, FZ.y - FH / 2 + 2, at(t, a.perv - .05, a.perv + .25) * (1 - at(t, a.vkus + .3, a.vkus + .6)), { s: 44, r: .07 });   // v22.2: наклейкой на углу бланка — логотип FDA открыт
     tinsRow(c, t); juulRow(c, t); lamp5(c);
     const dim = at(t, a.nizhe - .1, a.nizhe + .4); if (dim > 0) { c.save(); c.globalAlpha *= .6 * dim; c.fillStyle = '#0B1024'; c.fillRect(-1600, -1200, 4800, 4800); c.restore() }
     medals(c, t);
+    cap5(c, TEXT.risk, 780, 664, at(t, a.nizhe - .05, a.nizhe + .25) * (1 - at(t, a.dive0 + .2, a.dive0 + .5)), { s: 50, bg: '#17A86B', c: '#FFFFFF' });   // v22.2: над сеткой медальонов, лёгкие не закрывает
   }
   function fdaPlates(c, t) {
     const a = T5;
-    capS(c, TEXT.first, 540, 330, at(t, a.perv - .05, a.perv + .25) * (1 - at(t, a.vkus + .3, a.vkus + .6)), { s: 54 });
-    capS(c, TEXT.risk, 540, 330, at(t, a.nizhe - .05, a.nizhe + .25) * (1 - at(t, a.dive0 + .2, a.dive0 + .5)), { s: 54, bg: '#17A86B', c: '#FFFFFF' });
+
   }
   function fdaShot(c, t) { const q = camObj(camAt(K5, t)); layer(c, q, 1, cc => fdaWorld(cc, t)); fdaPlates(c, t) }
   function fdaCues(Q) {

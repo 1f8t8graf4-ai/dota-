@@ -11,7 +11,7 @@
   // v21.2: доска — та же, что в начале главы 5 (ep/v220/80-board.js): компактная, на тёмной стене, 1924 — две пачки без HeatSticks.
   // Хвост фильма — 2 с: кадр кофейни сжимается в фото 2014, нить тянется к закрытой 2022, камера едет по нити к карточке 2022.
   // Последний кадр = кадр главы 5 за 1/30 с до её начала: ключи KS — общие с KJ5 главы 5 (время τ: 0 — начало главы 5).
-  const BRD4 = { x0: -40, y0: 120, x1: 1120, y1: 1160 }, KS = [[-1.0, 330, 740, 1.35], [0, 850, 770, 1.9], [.55, 850, 762, 2.6], [1.15, 850, 760, 4.6]];
+  const BRD4 = { x0: -40, y0: 120, x1: 1120, y1: 1160 }, KS = [[-1.0, 330, 740, 1.35], [0, 540, 640, .88], [.55, 820, 752, 2.2], [1.15, 850, 760, 4.6]];
   function boardInit() {
     if (MODE !== 'y') return; const a = TM, j0 = a.jAJ, [px, py] = photo4(C2014), T0 = TLX.endT + 1 / 30;
     CAFE_END = camObj(camAt(KAE, j0));   // кадр кофейни, который станет фото
@@ -71,3 +71,4 @@
     cafeShot(c, t, { x: V.x, y: V.y, z: k, r: 0 }, t - TL0, cafe2St(t)); c.restore();
   }
   function boardShot(c, t) { const q = camObj(camAt(KJ, t)); layer(c, q, 1, cc => boardWorld(cc, t)); photoOver(c, t, q) }
+  window.__ph14 = (t, N) => { const cv = mk(N, N), g = cv.getContext('2d'); g.translate(N / 2 - 540, N / 2 - 960); cafeShot(g, t, { x: PHC.x, y: PHC.y, z: N / PHC.s, r: 0 }, t - TL0, cafe2St(t)); return cv.toDataURL('image/png') };   // v22.2: фото карточки 2014 в конце главы 4 → ep/v210-ph2014.png (глава 5 рисует его же — стык 4 → 5 без подмены)

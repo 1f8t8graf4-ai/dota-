@@ -80,7 +80,8 @@
         document.head.appendChild(st) }
       cv = mk(WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
       X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
-      return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$'))).then(() => 0);
+      if (!IMG14) { IMG14 = new Image(); IMG14.src = 'ep/v210-ph2014.png' }   // v22.2: фото карточки 2014 из последнего кадра главы 4 (node v170tools/ph14.mjs v210y-ru 720 ep/v210-ph2014.png)
+      return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$')).concat([IMG14.decode().catch(() => 0)])).then(() => 0);
     },
   };
   { const ep = window.EP; ep.sub.init = tl => ep.init(tl, [], true) }

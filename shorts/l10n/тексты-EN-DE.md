@@ -757,6 +757,7 @@
 | НИЖЕ РИСК | LOWER RISK | GERINGERES RISIKO |
 | ШКОЛЬНИКИ США | U.S. STUDENTS | US-SCHÜLER |
 | МГ | MG | MG |
+| КРЕПОСТЬ | STRENGTH | STÄRKE |
 | ЧТО ВЫ ЗНАЕТЕ О НИКОТИНЕ? | WHAT DO YOU KNOW ABOUT NICOTINE? | WAS WISST IHR ÜBER NIKOTIN? |
 | ЧТО ВЫ ЗНАЕТЕ / О НИКОТИНЕ? | WHAT DO YOU KNOW / ABOUT NICOTINE? | WAS WISST IHR / ÜBER NIKOTIN? |
 | СПОСОБ БРОСИТЬ | A WAY TO QUIT | EIN WEG ZUM AUFHÖREN |

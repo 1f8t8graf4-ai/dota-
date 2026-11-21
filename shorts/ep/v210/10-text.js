@@ -25,11 +25,11 @@
     de: {
       promise: 'NEUJAHRSVORSATZ', nagoya: 'NAGOYA', milan: 'MAILAND', nofire: 'BRENNT NICHT', half: 'HALB SO HEISS', soldout: 'AUSVERKAUFT',
       noharm: 'HARMLOS?', vapor: 'DAMPF', smoke: 'RAUCH', onemore: 'EINER SOGAR HÖHER', nicL: 'NIKOTIN', title: 'RAUCH UNTER ANDEREM NAMEN',
-      less: 'WENIGER SCHADSTOFFE', harm: 'WENIGER SCHADEN', no: 'VERBOTEN', memo: 'MEMORANDUM', memoDate: '2. FEBRUAR 1973', secret: 'GEHEIM',
-      quote: [['WIR', 'MÜSSEN', 'UNSEREN'], ['ANTEIL', 'AM'], ['JUGENDMARKT'], ['BEKOMMEN']], sign: 'C. TEAGUE · FORSCHUNGSABTEILUNG',
+      less: 'WENIGER SCHADSTOFFE', harm: 'WENIGER SCHÄDLICH', no: 'VERBOTEN', memo: 'MEMORANDUM', memoDate: '2. FEBRUAR 1973', secret: 'GEHEIM',
+      quote: [['WIR', 'MÜSSEN', 'UNS'], ['UNSEREN', 'ANTEIL', 'AM'], ['JUGENDMARKT'], ['SICHERN.']], sign: 'C. TEAGUE · FORSCHUNGSABTEILUNG',
       premier: '−300 MIO. $', itc: 'US-HANDELSKOMMISSION', ban: 'VERBOT', users: '32 MIO.', usersL: 'NUTZER', cigs: '617 MRD.', cigsL: 'ZIGARETTEN',
-      pct: '+0,6 %', pctL: 'IN EINEM JAHR', price: '16 MRD. $', notob: 'OHNE TABAK', part5: 'Teil 5 →', fire: 'FLAMME', blade: 'ERHITZER',
-      card79b: 'SALZ', card20b: 'DIE EINWEG-LÜCKE', card24b: '„MARLBORO“', card14b: 'ERHITZER', card22b: 'NIKOTINBEUTEL',
+      pct: '+0,6 %', pctL: 'IN EINEM JAHR', price: '16 MRD. $', notob: 'OHNE TABAK', part5: 'Teil 5 →', fire: 'FLAMME', blade: 'HEIZELEMENT',
+      card79b: 'SALZ', card20b: 'DIE EINWEG-LÜCKE', card24b: '„MARLBORO“', card14b: 'TABAKERHITZER', card22b: 'NIKOTINBEUTEL',
       fPrem: v => '−' + v + ' MIO. $', fUsers: v => v + ' MIO.', fCigs: v => v + ' MRD.', fPrice: v => v + ' MRD. $', fPctN: v => v + ' %',
     },
   };

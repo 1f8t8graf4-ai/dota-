@@ -1,21 +1,24 @@
-  // ================= финал фильма (финал Б, f1–f4): доска глав переворачивается =================
+  // ================= финал фильма (финал Б, f1–f4) — v22.2: собран заново по ТЗ Gemini =================
   // f1 «Так что вы знаете о никотине?» — свет гаснет до луча на доске, маркер пишет название на тёмной полосе над доской.
-  // f2 — карточки вспыхивают на глаголах: «курят» 1924, «греют» 2014, «парят» 1979 и 2020, «кладут под губу» 2022; «продают как способ бросить» —
-  // из-под каждой карточки выползает чек «СПОСОБ БРОСИТЬ». f3 «Переверните доску» — доска поворачивается на 180°: картон, пять дырок от булавок;
-  // из дырок тянутся пять нитей вниз, к башням R.J. Reynolds (ар-деко) и Philip Morris — они поднимаются снизу на «гигантам».
-  // f4 «Змея кусает свой хвост» — нити сплетаются в красное кольцо змеи, голова кусает хвост; «бросаете одно — продают следующее» — по кольцу
-  // идут силуэты: сигарета → айкос → одноразка → баночка. В конце башни, доска и стена гаснут — остаются кольцо и название.
+  // f2 — карточки вспыхивают на глаголах, из-под каждой выползает чек «СПОСОБ БРОСИТЬ».
+  // f3 «Переверните доску» — настоящий 3D-поворот на 180° вокруг вертикали (перспектива, ребро, свет уходит); изнанка не пустая: фанера,
+  // рамка, светлые отпечатки пяти карточек, острия пяти булавок. «все пять нитей» — из булавок выстреливают пять прямых, туго натянутых
+  // красных нитей и симметричными лучами сходятся в центр; на «гигантам» там вырастают две башни — ар-деко R.J. Reynolds и стеклянный
+  // монолит Philip Morris, подписи выше Y 1480. f4 «Змея кусает свой хвост» — нити одним движением стягиваются вокруг башен в ровное кольцо,
+  // кольцо становится строгим графичным уроборосом: алое тело сужается к хвосту, угловатая голова с клыками смыкает челюсти на кончике хвоста.
+  // «бросаете одно — продают следующее» — по концентрической орбите снаружи кольца идут четыре силуэта: Marlboro, IQOS, одноразка, ZYN.
+  // В конце башни и доска уходят в темноту — остаются уроборос и крупное название «ЧТО ВЫ ЗНАЕТЕ О НИКОТИНЕ?».
   let T8 = null, KF = null;
-  const RINGC = { x: 540, y: 640, R: 300 }, TWR = [{ id: 'rj', x: 240, w: 300, top: 1400 }, { id: 'pm', x: 840, w: 280, top: 1300 }];
-  const TO_TWR = [0, 0, 1, 1, 1];   // какая нить к какой башне (порядок CARDS5): 1979, 2020 → R.J. Reynolds; 2014, 1924, 2022 → Philip Morris
+  const TC = { x: 540, y: 1700 }, RR = 380, RO = RR + 150;   // центр кольца (и точка схода нитей), радиус кольца, радиус орбиты
   function finalInit() {
     const f = (sc, q) => Ws(sc, q);
     T8 = { f0: K7[K7.length - 1][0], tak: f('f1', 'так'), nik: f('f1', 'никотине'), kur: f('f2', 'курят'), gre: f('f2', 'греют'), par: f('f2', 'парят'), klad: f('f2', 'кладут'), gubu: f('f2', 'губу'),
-      prod: f('f2', 'продают'), bros: f('f2', 'бросить'), perev: f('f3', 'переверните'), dosku: f('f3', 'доску'), niti: f('f3', 'нитей'), tyan: f('f3', 'тянутся'), gig: f('f3', 'гигантам'),
-      zmeya: f('f4', 'змея'), kus: f('f4', 'кусает'), hvost: f('f4', 'хвост'), brosa: f('f4', 'бросаете'), odno: f('f4', 'одно'), prod2: f('f4', 'продают'), sled: f('f4', 'следующее'), vEnd: TLX.vEnd, end: TLX.endT };
-    const a = T8; a.flip0 = a.perev - .1; a.flip1 = a.dosku + .45; a.fade0 = a.vEnd + .1; a.fade1 = a.vEnd + 1.3;
+      prod: f('f2', 'продают'), bros: f('f2', 'бросить'), perev: f('f3', 'переверните'), dosku: f('f3', 'доску'), vse: f('f3', 'все'), niti: f('f3', 'нитей'), tyan: f('f3', 'тянутся'), gig: f('f3', 'гигантам'),
+      zmeya: f('f4', 'змея'), kus: f('f4', 'кусает'), hvost: f('f4', 'хвост'), vy: f('f4', 'вы'), brosa: f('f4', 'бросаете'), odno: f('f4', 'одно'), prod2: f('f4', 'продают'), sled: f('f4', 'следующее'), vEnd: TLX.vEnd, end: TLX.endT };
+    const a = T8; a.flip0 = a.perev - .1; a.flip1 = a.dosku + .9; a.fade0 = a.vEnd + .05; a.fade1 = a.vEnd + 1.1;
     const k7 = K7[K7.length - 1];
-    KF = [k7, KY(a.tak, 540, 565, .87), KY(a.bros + .3, 540, 620, .97), KY(a.flip0, 540, 600, .85), KY(a.gig + .4, 540, 780, .64), KY(a.zmeya, 540, 700, .74), KY(a.sled, 540, 560, .95), KY(a.end, 540, 440, 1.1)];
+    KF = [k7, KY(a.tak, 540, 565, .87), KY(a.bros + .3, 540, 620, .97), KY(a.flip0, 540, 640, .92), KY(a.flip1, 540, 700, .88), KY(a.gig + .3, 540, 1040, .9),
+      KY(a.zmeya + .1, 540, 1110, .88), KY(a.hvost + .4, 540, TC.y, .85), KY(a.end, 540, TC.y, .85)];
   }
   function titleStrip5(c, t, k, a = 1) {   // тёмная полоса над доской, маркер пишет название
     if (k <= 0 && a >= 1) { } const w = 1060, x0 = 540 - w / 2, y0 = -90;
@@ -32,59 +35,88 @@
     tx(c, TEXT.quit, x, y + h - 98, { f: 'M', w: 800, s: 22, c: '#1F2A44', mw: w - 24 }); c.fillStyle = '#1F2A44'; for (let i = 0; i < 16; i++) c.fillRect(x - 70 + i * 9, y + h - 66, i % 3 ? 3 : 5, 30);
     tx(c, '$ $ $', x, y + h - 20, { f: 'M', w: 800, s: 18, c: '#D6334D' }); c.restore();
   }
-  function towerRJ(c, x, top, w, k) {   // ар-деко: уступы, золотые полосы
-    if (k <= 0) return; const y = lp(2300, top, eo(k)); c.save(); castDots(c, x - w / 2, y + 60, w, 1200, 120, { k: .7 });
-    const steps = [[w, 0], [w * .82, -90], [w * .62, -170], [w * .4, -230]]; steps.forEach(([ww, dy]) => { c.fillStyle = '#2E2C36'; c.fillRect(x - ww / 2, y + dy, ww, 2400); c.fillStyle = 'rgba(0,0,0,.25)'; c.fillRect(x + ww * .25, y + dy, ww * .25, 2400) });
-    c.fillStyle = '#C9A24A'; for (let i = -2; i <= 2; i++) c.fillRect(x + i * w * .16 - 3, y + 10, 6, 2400); c.fillRect(x - 5, y - 330, 10, 100);
-    rr(c, x - 170, y + 120, 340, 76, 10); fill(c, '#111116'); rr(c, x - 170, y + 120, 340, 76, 10); lnB(c, 3, '#C9A24A'); tx(c, OBJ.rj, x, y + 159, { f: 'M', w: 800, s: 40, c: '#C9A24A', ls: 3, mw: 310 }); c.restore();
-  }
-  function towerPM(c, x, top, w, k) {   // стекло, сетка окон
-    if (k <= 0) return; const y = lp(2300, top, eo(k)); c.save(); castDots(c, x - w / 2, y + 60, w, 1200, 120, { k: .7 });
-    c.fillStyle = '#3E4F6E'; c.fillRect(x - w / 2, y, w, 2400); c.fillStyle = 'rgba(0,0,0,.22)'; c.fillRect(x + w * .25, y, w * .25, 2400);
-    c.fillStyle = 'rgba(190,220,255,.35)'; for (let r = 0; r < 30; r++) for (let i = 0; i < 6; i++) c.fillRect(x - w / 2 + 14 + i * (w - 28) / 6, y + 20 + r * 46, (w - 28) / 6 - 8, 30);
-    c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(x - w / 2 + 6, y, 6, 2400);
-    rr(c, x - 170, y + 120, 340, 76, 10); fill(c, '#111116'); rr(c, x - 170, y + 120, 340, 76, 10); lnB(c, 3, '#9DB6D9'); tx(c, OBJ.pmT, x, y + 159, { f: 'M', w: 800, s: 40, c: '#E8EEF8', ls: 3, mw: 310 }); c.restore();
-  }
-  function backThreads(c, t, k, a) {   // нити с изнанки: из дырок к вершинам башен
-    if (k <= 0 || a <= 0) return; c.save(); c.globalAlpha *= a;
-    CARDS5.forEach((cd, i) => { const [x0, y0] = pin5(cd), hx = 1080 - x0, T = TWR[TO_TWR[i]], tx1 = T.x, ty1 = T.top - (T.id === 'rj' ? 330 : 0), u = eo(cl(k * 1.4 - i * .08));
-      if (u <= 0) return; const ex = lp(hx, tx1, u), ey = lp(y0, ty1, u), mx = (hx + ex) / 2, my = Math.max(y0, ey) + 120 * u;
-      c.strokeStyle = 'rgba(0,0,0,.3)'; c.lineWidth = 5; c.beginPath(); c.moveTo(hx + 3, y0 + 6); c.quadraticCurveTo(mx + 3, my + 6, ex + 3, ey + 6); c.stroke();
-      c.strokeStyle = '#dc2626'; c.lineWidth = 8; c.beginPath(); c.moveTo(hx, y0); c.quadraticCurveTo(mx, my, ex, ey); c.stroke() });
+  // ---------- башни (по центру, подписи выше Y 1480 на экране) ----------
+  // подпись башни видна, только когда она на экране выше 1460 (центр плашки): субтитры её не закрывают, пока башня встаёт и камера едет
+  function capVis(c, x, y) { if (c.canvas.width !== WW || c.canvas.height !== HH) return 1; const m = c.getTransform(), sy = m.b * x + m.d * y + m.f; return 1 - at(sy, 1420, 1450) }
+  function towerRJ5(c, x, top, w, k) {   // ар-деко R.J. Reynolds: уступы, шпиль, золотые вертикали
+    if (k <= 0) return; const y = top + 900 * (1 - eo(k)); c.save();
+    const steps = [[w, 0], [w * .8, -70], [w * .58, -130], [w * .36, -176]];
+    steps.forEach(([ww, dy], i) => { const shade = mixc('#2E2C36', '#1E1C26', i * .15); c.fillStyle = shade; c.fillRect(x - ww / 2, y + dy, ww, 2400); c.fillStyle = 'rgba(0,0,0,.28)'; c.fillRect(x + ww * .22, y + dy, ww * .28, 2400);
+      c.fillStyle = 'rgba(255,226,170,.25)'; c.fillRect(x - ww / 2, y + dy, ww, 3) });
+    c.fillStyle = '#C9A24A'; for (let i = -2; i <= 2; i++) c.fillRect(x + i * w * .17 - 2.5, y + 14, 5, 2400); c.fillRect(x - 4, y - 290, 8, 120); circ(c, x, y - 292, 6, '#F2D27A');
+    for (let r = 0; r < 26; r++) for (let i = -2; i < 2; i++) { const on = H1(r * 7.1 + i * 3) > .55; c.fillStyle = on ? 'rgba(255,214,140,.55)' : 'rgba(0,0,0,.25)'; c.fillRect(x + i * w * .17 + 6, y + 40 + r * 44, w * .17 - 12, 22) }
+    const cv = at(k, .75, 1) * capVis(c, x, y + 92); if (cv > 0) { c.save(); c.globalAlpha *= cv; rr(c, x - 125, y + 60, 250, 62, 10); fill(c, '#111116'); rr(c, x - 125, y + 60, 250, 62, 10); lnB(c, 3, '#C9A24A'); tx(c, OBJ.rj, x, y + 92, { f: 'M', w: 800, s: 30, c: '#E9C66A', ls: 2, mw: 226 }); c.restore() }
     c.restore();
   }
-  function carousel(c, t) {   // по кольцу: сигарета → айкос → одноразка → баночка; верхний — «сейчас», на «бросаете» уходит, на «продают» приходит следующий
-    const a = T8, k = at(t, a.hvost - .1, a.hvost + .5); if (k <= 0) return; const C = RINGC, rot = eio(at(t, a.odno - .1, a.prod2 + .4)) * Math.PI / 2 + Math.max(0, t - a.sled - .4) * .25;
-    const icons = ['cig', 'iqos', 'vape', 'tin'];
-    icons.forEach((ic, i) => { const an = -Math.PI / 2 - i * Math.PI / 2 + rot, x = C.x + Math.cos(an) * C.R, y = C.y + Math.sin(an) * C.R, top = Math.max(0, Math.cos(an + Math.PI / 2) * -1);
-      c.save(); c.translate(x, y); const s = bo(k) * (.85 + .35 * Math.max(0, -Math.sin(an))); c.scale(s, s); circ(c, 0, 0, 64, '#141016'); ring(c, 0, 0, 64, 'rgba(244,241,234,.6)', 3);
-      if (ic === 'cig') cigar(c, -46, 0, 46, 0, 11, { filt: C3.filt, ember: 1 }); else if (ic === 'iqos') iqos4(c, 0, 0, 110, { shadow: false, name: false });
-      else if (ic === 'vape') { rr(c, -15, -44, 30, 88, 10); fill(c, B2.mango); poly(c, [-15, 0, 15, -12, 15, 44, -15, 44]); fill(c, B2.ice2) } else tin5(c, 0, -10, 40, .5, 0, { name: OBJ.zyn, h: .6, shadow: false });
-      c.restore() });
+  function towerPM5(c, x, top, w, k) {   // монолит Philip Morris: тёмное стекло, сетка окон, косой блик
+    if (k <= 0) return; const y = top + 900 * (1 - eo(k)); c.save();
+    c.fillStyle = '#26344F'; c.fillRect(x - w / 2, y, w, 2400); c.fillStyle = 'rgba(0,0,0,.3)'; c.fillRect(x + w * .2, y, w * .3, 2400);
+    c.fillStyle = 'rgba(170,205,245,.3)'; for (let r = 0; r < 40; r++) for (let i = 0; i < 5; i++) c.fillRect(x - w / 2 + 12 + i * (w - 24) / 5, y + 18 + r * 40, (w - 24) / 5 - 7, 26);
+    c.save(); c.beginPath(); c.rect(x - w / 2, y, w, 2400); c.clip(); c.fillStyle = 'rgba(255,255,255,.12)'; poly(c, [x - w / 2, y + 300, x - w / 2 + 40, y, x + 10, y, x - w / 2, y + 520]); c.fill(); c.restore();
+    c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(x - w / 2, y, w, 4); c.fillRect(x - w / 2 + 5, y, 4, 2400);
+    const cv = at(k, .75, 1) * capVis(c, x, y + 102); if (cv > 0) { c.save(); c.globalAlpha *= cv; rr(c, x - 125, y + 70, 250, 62, 10); fill(c, '#111116'); rr(c, x - 125, y + 70, 250, 62, 10); lnB(c, 3, '#9DB6D9'); tx(c, OBJ.pmT, x, y + 102, { f: 'M', w: 800, s: 30, c: '#E8EEF8', ls: 2, mw: 226 }); c.restore() }
+    c.restore();
+  }
+  // ---------- нити: прямые струны от булавок изнанки к центру; потом стягиваются в кольцо ----------
+  function strings5(c, t, shoot, wrap) {   // shoot 0..1 — нити выстреливают; wrap 0..1 — нити гнутся в кольцо вокруг башен
+    const P = BPIN(), ord = [3, 0, 1, 2, 4], n = 40;
+    ord.forEach((pi, j) => { const [px, py] = P[pi], u = eo(cl(shoot * 1.6 - j * .15)); if (u <= 0) return;
+      const tw = Math.exp(-6 * Math.max(0, shoot * 1.6 - j * .15 - 1)) * (u >= 1 ? 1 : 0), vib = s => Math.sin(Math.PI * s) * 9 * tw * Math.sin((t - T8.niti) * 60);   // струна дрожит и замирает
+      const a0 = -Math.PI / 2 + .06 + j * (TAU - .13) / 5, a1 = -Math.PI / 2 + .06 + (j + 1) * (TAU - .13) / 5;
+      const pts = []; for (let i = 0; i <= n; i++) { const s = i / n * u, lx = lp(px, TC.x, s), ly = lp(py, TC.y, s), dx = -(TC.y - py), dy = TC.x - px, L = Math.hypot(dx, dy) || 1;
+        const ax = lx + dx / L * vib(s), ay = ly + dy / L * vib(s), ang = lp(a0, a1, s), rx = TC.x + Math.cos(ang) * RR, ry = TC.y + Math.sin(ang) * RR, e = eio(wrap);
+        pts.push([lp(ax, rx, e), lp(ay, ry, e)]) }
+      c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x + 3, y + 5) : c.moveTo(x + 3, y + 5)); lnB(c, 6, 'rgba(0,0,0,.3)');
+      c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); lnB(c, 6, '#D6334D'); c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x - 1, y - 1.5) : c.moveTo(x - 1, y - 1.5)); lnB(c, 1.6, 'rgba(255,190,190,.7)');
+      if (u < 1) { const [hx, hy] = pts[pts.length - 1]; glow(c, hx, hy, 30, '#FFB0B0', .6); circ(c, hx, hy, 6, '#FFE0E0') } });
+    if (shoot >= .99 && wrap <= 0) { glow(c, TC.x, TC.y, 70, '#FF6A6A', .35 * Math.min(1, (t - T8.tyan) * 2)) }
+  }
+  // ---------- четыре силуэта на орбите снаружи кольца ----------
+  function prodIcon(c, kind) {
+    circ(c, 0, 0, 58, '#141016'); ring(c, 0, 0, 58, 'rgba(244,241,234,.55)', 3);
+    if (kind === 'marl') { c.save(); c.scale(.42, .42); pack3(c, -60, -95, 110, 170, { d: 36, shadow: false }); c.restore() }
+    else if (kind === 'iqos') iqos4(c, 0, 0, 96, { shadow: false, name: false });
+    else if (kind === 'vape') { rr(c, -15, -42, 30, 84, 10); fill(c, B2.mango); c.save(); rr(c, -15, -42, 30, 84, 10); c.clip(); poly(c, [-15, 2, 15, -10, 15, 44, -15, 44]); fill(c, B2.ice2); c.fillStyle = 'rgba(255,255,255,.4)'; c.fillRect(-10, -36, 5, 72); c.restore(); rr(c, -9, -52, 18, 12, 4); fill(c, '#2A2F55') }
+    else tin5(c, 0, -12, 40, .5, 0, { name: OBJ.zyn, h: .7, shadow: false });
+  }
+  function carousel5(c, t, a, out) {
+    const k = at(t, a.vy - .15, a.vy + .35); if (k <= 0 || out >= 1) return;
+    const step = eio(at(t, a.prod2 - .1, a.sled + .25)) * Math.PI / 2, rot = step + (t - a.vy) * .06;
+    ['marl', 'iqos', 'vape', 'zyn'].forEach((kd, i) => { const an = -Math.PI / 4 + i * Math.PI / 2 + rot, x = TC.x + Math.cos(an) * RO, y = TC.y + Math.sin(an) * RO;
+      c.save(); c.globalAlpha *= 1 - out; c.translate(x, y); const s = bo(cl(k * 1.3 - i * .1)) * .95; c.scale(s, s); prodIcon(c, kd); c.restore() });
+    c.save(); c.globalAlpha *= .35 * k * (1 - out); c.setLineDash([6, 12]); c.beginPath(); c.arc(TC.x, TC.y, RO, 0, TAU); lnB(c, 2, 'rgba(244,241,234,.6)'); c.restore();
   }
   function finalShot(c, t) {
-    const a = T8, q = camObj(camAt(KF, t)), fk = eio(at(t, a.flip0, a.flip1)), sx = Math.cos(Math.PI * fk), lift = 1 + .06 * Math.sin(Math.PI * fk);
+    const a = T8, q = camObj(camAt(KF, t)), fk = eio(at(t, a.flip0, a.flip1)), ang = Math.PI * fk;
     const flashW = [[a.par, 0], [a.par, 1], [a.gre, 2], [a.kur, 3], [a.klad, 4]];
     const flash = i => { const w = flashW.find(f => f[1] === i)[0]; return Math.sin(Math.PI * at(t, w - .1, w + .55)) };
-    const fade = at(t, a.fade0, a.fade1), dim = at(t, a.f0 + .4, a.tak + .2);
+    const fade = eio(at(t, a.fade0, a.fade1)), dim = at(t, a.f0 + .4, a.tak + .2), shoot = at(t, a.niti - .35, a.tyan + .45), wrap = at(t, a.zmeya - .1, a.kus + .35);
+    const front = g => { boardWorld5(g, t, { tO: t - 200, flash, noWall: true }); curlCorner(g, t);
+      CARDS5.forEach((cd, i) => { const f = flash(i); if (f > 0) { rr(g, cd.x - CW5 / 2 - 8, cd.y - CH5 / 2 - 8, CW5 + 16, CH5 + 16, 10); lnB(g, 6, rgba('#FFD23F', f)) }
+        receipt5(g, cd.x, cd.y + CH5 / 2 - 8, at(t, a.prod - .1 + i * .1, a.bros + .2 + i * .1)) }) };
     layer(c, q, 1, cc => {
-      wallBg5(cc); cc.save(); cc.translate(540, 640); cc.scale(sx * lift, lift); cc.translate(-540, -640);
-      if (sx > 0) { boardWorld5(cc, t, { tO: t - 200, flash, noWall: true }); curlCorner(cc, t);
-        CARDS5.forEach((cd, i) => { const f = flash(i); if (f > 0) { rr(cc, cd.x - CW5 / 2 - 8, cd.y - CH5 / 2 - 8, CW5 + 16, CH5 + 16, 10); lnB(cc, 6, rgba('#FFD23F', f)) }
-          receipt5(cc, cd.x, cd.y + CH5 / 2 - 8, at(t, a.prod - .1 + i * .1, a.bros + .2 + i * .1)) }) }
-      else boardBack5(cc, t, {});
-      cc.restore();
+      wallBg5(cc);
+      if (fk > 0 && fk < 1) flipBoard(cc, ang, front, g => boardBack5(g, t, {}));
+      else if (fk <= 0) front(cc); else boardBack5(cc, t, {});
       if (dim > 0) { const g = cc.createRadialGradient(540, 640, 420, 540, 700, 1500); g.addColorStop(0, 'rgba(6,4,10,0)'); g.addColorStop(1, `rgba(6,4,10,${.72 * dim})`); cc.fillStyle = g; cc.fillRect(-3000, -3000, 7000, 7000) }
-      titleStrip5(cc, t, at(t, a.tak, a.nik + .55));
-      TWR.forEach((T, i) => (T.id === 'rj' ? towerRJ : towerPM)(cc, T.x, T.top, T.w, at(t, a.gig - .55 + i * .12, a.gig + .35 + i * .12)));
-      const ringK = at(t, a.zmeya - .1, a.hvost + .05); backThreads(cc, t, at(t, a.niti - .2, a.gig + .3), 1 - ringK);
-      if (fade > 0) { cc.save(); cc.globalAlpha *= .94 * fade; cc.fillStyle = '#050407'; cc.fillRect(-3000, -3000, 7000, 7000); cc.restore(); titleStrip5(cc, t, 1, fade) }
-      snakeRing(cc, t, RINGC.x, RINGC.y, RINGC.R, ringK, {}); carousel(cc, t);
+      titleStrip5(cc, t, at(t, a.tak, a.nik + .55), 1 - at(t, a.zmeya, a.hvost));
+      const tw = [at(t, a.gig - .55, a.gig + .35), at(t, a.gig - .4, a.gig + .5)];
+      towerRJ5(cc, TC.x - 168, TC.y - 280, 190, tw[0]); towerPM5(cc, TC.x + 168, TC.y - 250, 180, tw[1]);
+      if (wrap < 1) strings5(cc, t, shoot, wrap);
+      if (fade > 0) { cc.save(); cc.globalAlpha *= .97 * fade; cc.fillStyle = '#050407'; cc.fillRect(-3000, -3000, 7000, 7000); cc.restore() }
+      if (wrap > .85) { const kw = eio(at(wrap, .85, 1)) * 1 + 0, jaw = 1 - eio(at(t, a.hvost - .25, a.hvost + .05));   // кольцо → тело змеи, голова смыкается на хвосте («хвост»)
+        if (wrap < 1) { cc.save(); cc.globalAlpha *= at(wrap, .85, 1); }
+        ouro5(cc, t, TC.x, TC.y, RR, { kw: Math.max(.12, kw), kh: at(t, a.kus - .2, a.kus + .3), jaw, hs: 1.45, w: 58, gap: .13 });
+        if (wrap < 1) cc.restore();
+        const fl = Math.sin(Math.PI * at(t, a.hvost, a.hvost + .4)); if (fl > 0) glow(cc, TC.x, TC.y - RR, 120, '#FF8080', .5 * fl) }
+      carousel5(cc, t, a, at(t, a.fade0 - .1, a.fade0 + .5));
     });
+    const kt = eio(at(t, a.fade0 + .2, a.fade0 + .9)); if (kt > 0) { c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha *= kt;   // крупное чистое название
+      TEXT.titleL.forEach((L, i) => tx(c, L, 540, 360 + i * 104 + 14 * (1 - kt), { f: 'M', w: 800, s: 82, c: '#F4F1EA', ls: 2, mw: 980 })); c.restore() }
   }
   function finalCues(Q) {
     const a = T8; Q(a.f0 + .4, 'buzz', .3); Q(a.tak, 'marker', .45); Q(a.tak + .6, 'marker', .35);
     [a.kur, a.gre, a.par, a.klad].forEach((w, i) => Q(w, 'shimmer', .3, [-.2, -.4, .1, .4][i])); for (let i = 0; i < 5; i++) Q(a.prod + i * .1, 'receipt', .3, -.4 + i * .2);
-    Q(a.flip0, 'whoosh', .55); Q(a.flip0 + .4, 'thud', .45); Q(a.niti, 'chain', .35); Q(a.gig - .4, 'factory', .45); Q(a.gig, 'boom', .35);
-    Q(a.zmeya, 'scuttle', .35); Q(a.hvost, 'chomp', .5); Q(a.odno, 'whoosh', .3); Q(a.prod2, 'register', .4); Q(a.fade0, 'deep', .45);
+    Q(a.flip0, 'whoosh', .55); Q(a.flip0 + .7, 'pageflip', .35); Q(a.flip1 - .1, 'thud', .45); for (let i = 0; i < 5; i++) Q(a.niti - .3 + i * .1, 'whip', .28, -.4 + i * .2); Q(a.gig - .4, 'factory', .45); Q(a.gig, 'boom', .35);
+    Q(a.zmeya, 'scuttle', .35); Q(a.hvost, 'chomp', .5); Q(a.vy, 'whoosh', .3); Q(a.prod2, 'register', .4); Q(a.fade0, 'deep', .45);
   }
