@@ -24,6 +24,9 @@
     [10.5,54.3,14,53.9,19,54.4,21,56.5,24,57.2,23.5,59.3,30,60,25,60.4,21.5,60.7,21.4,63.6,25.4,65,22.3,65.8,17.8,62.5,18.4,60.2,16.5,57.3,14.2,55.4,12.5,56.2,11,55.6],
   ];
   const NAGOYA = [136.9, 35.2], MILAN = [9.2, 45.5];
+  // v21.2: Италия подробнее (сапог, Сицилия, Сардиния) — подсвечивается на «итальянском», Япония (Хонсю, Хоккайдо) — на «японской»
+  const ITALY = [[7.5,43.8,8.2,44,8.8,44.4,9.8,44.1,10.3,43.5,10.5,42.9,11.1,42.4,11.6,42.3,12.3,41.7,12.8,41.4,13.6,41.2,14,40.9,14.4,40.6,14.9,40.4,15.6,40.1,15.7,39.9,16.1,39.7,16,39.2,15.8,38.9,15.6,38.2,15.9,38,16.2,38.3,16.6,38.6,17.1,39,17.2,39.4,16.6,39.8,16.9,40.4,17.5,40.3,18,40.1,18.5,40.1,18.4,40.4,17.9,40.7,17,41.1,16.1,41.5,15.9,41.9,15.2,41.9,14.5,42.2,14,42.7,13.6,43.5,12.6,44.1,12.3,44.8,12.4,45.4,13.1,45.7,13.7,45.6,13.8,46.4,12.6,46.7,11,46.8,10.4,46.5,9.3,46.5,8.5,46.2,7,45.9,6.9,45.2,7.6,44.2],
+    [12.4,38,13.4,38.2,14.5,38,15.6,38.3,15.1,37.5,15.1,36.7,14.4,36.8,12.5,37.6], [8.4,39,9,39.1,9.6,39.2,9.8,40.5,9.4,41.2,8.6,41,8.2,40.6,8.4,40]];
   function gProj(lon, lat, lon0, lat0 = GB.lat0) {   // ортографическая проекция → [x, y (вниз), видна]
     const f = lat * D2R, l = (lon - lon0) * D2R, f0 = lat0 * D2R, cf = Math.cos(f), cs = Math.sin(f0) * Math.sin(f) + Math.cos(f0) * cf * Math.cos(l);
     let x = cf * Math.sin(l), y = Math.cos(f0) * Math.sin(f) - Math.sin(f0) * cf * Math.cos(l);
@@ -36,16 +39,9 @@
     TB = { j: TA.jAB, chet: w('четырнадцатом'), nag: w('нагое'), mil: w('милане'), yap: w('японской'), ital: w('итальянском'), poyav: w('появилась'), sig: w('сигарета'), kot: w('которую') };
     const a = TB; a.dive = a.sig - .25; a.jBC = a.sig + .35;
     const L0 = lon0At(a.dive), [nx, ny] = gProj(NAGOYA[0], NAGOYA[1], L0), px = GB.x + nx * GB.R, py = GB.y + ny * GB.R;
-    a.ng = [px, py]; NBC = { x: px, y: py, m: 9 / 1105 };   // в точке Нагои (радиус 9) — мир C целиком
+    a.ng = [px, py]; NBC = { x: px, y: py + CARDC * .8, m: PWW * .8 / 1080 };   // v21.2: мир C — в окне карточки Нагои (9:16), не в точке
     KB = [KY(a.j + .55, 540, 975, .8), KY(a.chet + .2, 560, 960, 1.12), KY(a.nag - .1, 620, 935, 1.2), KY(a.mil - .05, 520, 925, 1.18), KY(a.poyav + .1, lp(540, px, .45), lp(935, py, .45), 1.6),
-      KY(a.dive + .02, lp(540, px, .85), lp(935, py, .85), 3.4), KY(a.jBC, px, py, 1105 / 9)];
-  }
-  function globePaper(c, t, R, k, rot) {   // складки комка (k = 1 — комок, 0 — гладкий глобус)
-    if (k <= 0) return; c.save(); c.globalAlpha *= k; c.rotate(rot);
-    for (let i = 0; i < 9; i++) { const a0 = i * TAU / 9 + H1(i) * .3, a1 = a0 + TAU / 9 + .1, r0 = R * (.15 + H1(i * 3) * .3);
-      poly(c, [Math.cos(a0) * r0, Math.sin(a0) * r0, Math.cos(a0) * R * 1.3, Math.sin(a0) * R * 1.3, Math.cos(a1) * R * 1.3, Math.sin(a1) * R * 1.3]); fill(c, i % 3 === 0 ? C4.paperD : i % 3 === 1 ? '#E9E3D6' : C4.paperL) }
-    creases(c, R);   // v21.1: складки вместо тёмных чёрточек
-    c.restore();
+      KY(a.dive + .02, lp(540, NBC.x, .85), lp(935, NBC.y, .85), 3.4), KY(a.jBC, NBC.x, NBC.y, 1 / NBC.m)];
   }
   function landPath(c, P, R, lon0) { c.beginPath(); for (let i = 0; i < P.length; i += 2) { const [x, y] = gProj(P[i], P[i + 1], lon0); i ? c.lineTo(x * R, y * R) : c.moveTo(x * R, y * R) } c.closePath() }
   function castle(c, x, y, s, col) {   // замок Нагои: каменное основание, три яруса крыш, золотые рыбы на коньке
@@ -56,44 +52,49 @@
     c.save(); c.translate(x, y); c.scale(s, s); c.fillStyle = col; c.fillRect(-50, -60, 100, 60); poly(c, [-50, -60, 0, -92, 50, -60]); fill(c, col);
     for (let i = -2; i <= 2; i++) { c.fillRect(i * 24 - 3, -60 - (i ? 30 : 64), 6, i ? 30 : 64); poly(c, [i * 24 - 5, -60 - (i ? 30 : 64), i * 24 + 5, -60 - (i ? 30 : 64), i * 24, -60 - (i ? 46 : 88)]); fill(c, col) }
     c.restore() }
-  function globe(c, t, lon0, k, rot) {   // k — сколько ещё «комок»
+  function globe(c, t, lon0, k, spin, hl = {}) {   // k — сколько ещё «комок»; spin — поворот в плоскости кадра (комок раскручивается в глобус — одним вращением)
     const R = GB.R; c.save(); c.translate(GB.x, GB.y);
-    c.beginPath(); c.arc(0, 0, R, 0, TAU); c.fillStyle = mixc(C4.paper, '#D9E2E6', 1 - k); c.fill(); c.save(); c.clip();
-    const lk = 1 - k; if (lk > 0) { c.save(); c.globalAlpha *= lk;
-      LAND.forEach(P => { landPath(c, P, R, lon0); fill(c, '#C9B48A'); landPath(c, P, R, lon0); lnB(c, 2, 'rgba(60,44,24,.55)') });
-      LAKES.forEach(P => { landPath(c, P, R, lon0); fill(c, '#D9E2E6') });
-      c.strokeStyle = 'rgba(60,70,110,.18)'; c.lineWidth = 1.5; for (let la = -60; la <= 80; la += 20) { c.beginPath(); for (let lo = -180; lo <= 180; lo += 6) { const [x, y, v] = gProj(lo, la, lon0); if (v < 0) { c.moveTo(x * R, y * R); continue } c.lineTo(x * R, y * R) } c.stroke() }
-      for (let lo = -180; lo < 180; lo += 30) { c.beginPath(); for (let la = -80; la <= 80; la += 5) { const [x, y, v] = gProj(lo, la, lon0); if (v < 0) { c.moveTo(x * R, y * R); continue } c.lineTo(x * R, y * R) } c.stroke() }
-      c.restore() }
-    globePaper(c, t, R, k, rot);
+    crumpPath(c, R, k, spin); c.fillStyle = mixc(C4.paper, '#D9E2E6', 1 - k); c.fill(); c.save(); crumpPath(c, R, k, spin); c.clip(); c.rotate(spin);   // v21.2: контур — тот же мятый комок, скругляется по k
+    const lk = Math.min(1, (1 - k) * 2.6); c.save(); c.globalAlpha *= lk;   // суша проступает, пока грани комка гаснут — гладкого «мячика» нет
+    LAND.forEach(P => { landPath(c, P, R, lon0); fill(c, '#C9B48A'); landPath(c, P, R, lon0); lnB(c, 1.6, 'rgba(60,44,24,.55)') });
+    LAKES.forEach(P => { landPath(c, P, R, lon0); fill(c, '#D9E2E6') });
+    if (hl.it > 0) ITALY.forEach(P => { landPath(c, P, R, lon0); fill(c, rgba('#E39A2E', hl.it)); landPath(c, P, R, lon0); lnB(c, 2.2, rgba('#5A3510', hl.it)) });
+    if (hl.jp > 0) [LAND[4], LAND[5], LAND[6]].forEach(P => { landPath(c, P, R, lon0); fill(c, rgba('#E39A2E', hl.jp)); landPath(c, P, R, lon0); lnB(c, 2.2, rgba('#5A3510', hl.jp)) });
+    c.strokeStyle = 'rgba(60,70,110,.18)'; c.lineWidth = 1.5; for (let la = -60; la <= 80; la += 20) { c.beginPath(); for (let lo = -180; lo <= 180; lo += 6) { const [x, y, v] = gProj(lo, la, lon0); if (v < 0) { c.moveTo(x * R, y * R); continue } c.lineTo(x * R, y * R) } c.stroke() }
+    for (let lo = -180; lo < 180; lo += 30) { c.beginPath(); for (let la = -80; la <= 80; la += 5) { const [x, y, v] = gProj(lo, la, lon0); if (v < 0) { c.moveTo(x * R, y * R); continue } c.lineTo(x * R, y * R) } c.stroke() }
+    c.restore();
+    c.rotate(-spin); crumpFacets(c, R, spin, k);   // грани комка (20-cafe.js): гаснут, пока он раскручивается
     const sw = TB ? at(t, TB.chet - .2, TB.chet + .2) : 0;   // луч радара (#039)
     if (sw > 0) { const ang = (t - TB.chet) * 2.4 - 1.2, g = c.createConicGradient ? c.createConicGradient(ang - .9, 0, 0) : null;
-      if (g) { g.addColorStop(0, 'rgba(255,214,120,0)'); g.addColorStop(.14, `rgba(255,214,120,${.32 * sw})`); g.addColorStop(.15, 'rgba(255,214,120,0)'); g.addColorStop(1, 'rgba(255,214,120,0)'); c.fillStyle = g; c.fillRect(-R, -R, R * 2, R * 2) }
-      c.strokeStyle = `rgba(255,214,120,${.7 * sw})`; c.lineWidth = 4; c.beginPath(); c.moveTo(0, 0); c.lineTo(Math.cos(ang) * R, Math.sin(ang) * R); c.stroke() }
-    c.restore();
-    c.fillStyle = 'rgba(14,16,40,.28)'; c.beginPath(); c.arc(0, 0, R, -Math.PI * .35, Math.PI * .65); c.arc(R * .18, 0, R * .9, Math.PI * .65, -Math.PI * .35, true); c.fill();   // тень как у комка (стык с миром A)
+      if (g) { g.addColorStop(0, 'rgba(30,220,255,0)'); g.addColorStop(.14, `rgba(30,220,255,${.38 * sw})`); g.addColorStop(.15, 'rgba(30,220,255,0)'); g.addColorStop(1, 'rgba(30,220,255,0)'); c.fillStyle = g; c.fillRect(-R, -R, R * 2, R * 2) }
+      c.strokeStyle = `rgba(12,30,60,${.8 * sw})`; c.lineWidth = 9; c.beginPath(); c.moveTo(0, 0); c.lineTo(Math.cos(ang) * R, Math.sin(ang) * R); c.stroke();   // v21.2: луч контрастнее — бирюзовый с тёмной обводкой
+      c.strokeStyle = `rgba(60,235,255,${sw})`; c.lineWidth = 4; c.beginPath(); c.moveTo(0, 0); c.lineTo(Math.cos(ang) * R, Math.sin(ang) * R); c.stroke() }
+    crumpShade(c, R); c.restore();   // тень как у комка (стык с миром A)
     if (k < 1) { c.fillStyle = `rgba(255,255,255,${.28 * (1 - k)})`; c.beginPath(); c.ellipse(-R * .52, -R * .38, R * .08, R * .26, .6, 0, TAU); c.fill() }
-    c.beginPath(); c.arc(0, 0, R, 0, TAU); lnB(c, lp(3, R * .045, k), 'rgba(238,241,248,.55)');
+    crumpPath(c, R, k, spin); lnB(c, lp(3, R * .045, k), 'rgba(238,241,248,.55)');
     c.restore();
   }
-  function pinAt(c, t, ll, lon0, k, kind) {   // точка-булавка с силуэтом; возвращает её место
+  const CARDW = 108, CARDH = 192, CARDC = -136, PWW = 96, PWH = 96 * 16 / 9;   // v21.2: карточка булавки вертикальная — её окно 9:16, в нём витрина (мир C)
+  function pinAt(c, t, ll, lon0, k, kind, o = {}) {   // точка-булавка с силуэтом; o.win — в окне карточки мир C (нырок), o.wk — силуэт гаснет
     const [x, y, v] = gProj(ll[0], ll[1], lon0), px = GB.x + x * GB.R, py = GB.y + y * GB.R; if (k <= 0 || v < .05) return [px, py];
-    const e = bo(k); glow(c, px, py, 60 * e, '#FFC86A', .55 * k); circ(c, px, py, 9 * e, '#FFE2A0'); ring(c, px, py, 14 + 40 * cl(k * 1.3 - .3) , `rgba(255,214,120,${.6 * (1 - cl(k * 1.3 - .3))})`, 3);
+    const e = bo(k); glow(c, px, py, 60 * e, '#FFC86A', .55 * k); circ(c, px, py, 9 * e, '#FFE2A0'); ring(c, px, py, 14 + 40 * cl(k * 1.3 - .3), `rgba(255,214,120,${.6 * (1 - cl(k * 1.3 - .3))})`, 3);
     c.save(); c.translate(px, py); c.scale(e * .8, e * .8); c.beginPath(); c.moveTo(0, -12); c.lineTo(-10, -40); c.lineTo(10, -40); c.closePath(); fill(c, '#F4F1EA');
-    rr(c, -70, -176, 140, 136, 16); fill(c, '#F4F1EA'); rr(c, -70, -176, 140, 136, 16); lnB(c, 3, 'rgba(20,23,51,.4)');
-    if (kind === 'n') castle(c, 0, -58, .82, '#2B2F55'); else duomo(c, 0, -58, .9, '#2B2F55'); c.restore();
+    rr(c, -CARDW / 2, CARDC - CARDH / 2, CARDW, CARDH, 14); fill(c, '#F4F1EA'); rr(c, -CARDW / 2, CARDC - CARDH / 2, CARDW, CARDH, 14); lnB(c, 3, 'rgba(20,23,51,.4)');
+    if (o.win) { c.save(); c.beginPath(); c.rect(-PWW / 2, CARDC - PWH / 2, PWW, PWH); c.clip(); c.scale(PWW / 1080, PWW / 1080); c.translate(-540, CARDC * 1080 / PWW - 960); o.win(c); c.restore() }
+    const wk = o.wk ?? 0; if (wk < 1) { c.save(); c.globalAlpha *= 1 - wk; if (o.win) { c.fillStyle = '#F4F1EA'; c.fillRect(-PWW / 2, CARDC - PWH / 2, PWW, PWH) }
+      if (kind === 'n') castle(c, 0, CARDC + 38, .82, '#2B2F55'); else duomo(c, 0, CARDC + 38, .9, '#2B2F55'); c.restore() }
+    c.restore();
     return [px, py];
   }
   function globeWorld(c, t, q) {
-    const a = TB, lon0 = lon0At(t), kb = 1 - eio(at(t, a.j + .1, a.j + 1.1)), rot = ballPos(a.j)[2];
+    const a = TB, lon0 = lon0At(t), kb = 1 - eio(at(t, a.j + .1, a.j + 1.1)), s0 = ballPos(a.j)[2], spin = (s0 - TAU * Math.floor(s0 / TAU) + TAU) * (1 - eio(at(t, a.j + .05, a.j + 1.15)));   // v21.2: раскручивается ровно на один оборот (тот же угол по модулю 2π)
     const sp = at(t, a.j, a.j + .9);   // сетка и кольца проявляются вокруг (фон — в globeShot, под звёздами)
     if (sp > 0) { c.save(); c.globalAlpha *= sp; c.strokeStyle = 'rgba(126,150,220,.08)'; c.lineWidth = 2; c.beginPath(); for (let x = -1500; x < 2600; x += 90) { c.moveTo(x, -1500); c.lineTo(x, 3400) } for (let y = -1500; y < 3400; y += 90) { c.moveTo(-1500, y); c.lineTo(2600, y) } c.stroke();
       [1.16, 1.34, 1.55].forEach((f, i) => ring(c, GB.x, GB.y, GB.R * f, `rgba(238,241,248,${.22 - i * .05})`, 2.5)); c.restore() }
-    globe(c, t, lon0, kb, rot);
     const kn = at(t, a.yap - .05, a.yap + .5), km = at(t, a.ital - .05, a.ital + .5);
-    const pf = 1 - at(t, a.dive - .35, a.dive - .05); c.save(); c.globalAlpha *= pf; pinAt(c, t, MILAN, lon0, km, 'm'); const [nx, ny] = pinAt(c, t, NAGOYA, lon0, kn, 'n'); c.restore();
-    if (pf < 1) { circ(c, nx, ny, 9, '#FFE2A0'); glow(c, nx, ny, 40, '#FFC86A', .5 * (1 - pf)) }
-    if (t > a.dive - .3) { c.save(); c.beginPath(); c.arc(NBC.x, NBC.y, 9, 0, TAU); c.clip(); inNest(c, NBC, cc => storeWorld(cc, t, null)); c.restore() }   // портал: в точке — витрина
+    globe(c, t, lon0, kb, spin, { jp: .85 * kn, it: .85 * km });
+    const pm = 1 - at(t, a.dive - .35, a.dive - .05); c.save(); c.globalAlpha *= pm; pinAt(c, t, MILAN, lon0, km, 'm'); c.restore();
+    const dv = t > a.dive - .4, [nx, ny] = pinAt(c, t, NAGOYA, lon0, kn, 'n', dv ? { win: cc => storeWorld(cc, t, null), wk: at(t, a.dive - .35, a.dive + .1) } : {});   // v21.2: нырок в окно карточки Нагои — без чёрной дыры
     return [nx, ny];
   }
   function globeLabels(c, t, q) {   // подписи городов — плашками поверх (по экрану), пока камера едет

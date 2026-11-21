@@ -16,12 +16,14 @@
     NGH = { x: JRN.x - (JRH.x - 540), y: JRN.y - (JRH.y - 960), m: 1 };   // журнал на столе FDA (мир H)
   }
   // общий «луч в темноте» на стыке магазин → лаборатория: темнота, луч, кусок белой полочки, держатель, пар и «?»
-  function spotScene(c, t, x, y, L, k, tq, q0) {
-    if (k <= 0) return; c.save(); c.globalAlpha *= k; c.fillStyle = '#0B0C16'; c.fillRect(x - 4000, y - 4000, 8000, 8000);
-    beam(c, x, y - 760, x, y + 18, 30, 190, '#FFE6B8', .22);
+  function spotScene(c, t, x, y, L, k, tq, q0) {   // v21.2: свет гаснет «диафрагмой» — темнота сходится к лучу над держателем (не рубка в чёрное)
+    if (k <= 0) return; c.save();
+    if (k < 1) { const R = 2200 * (1 - eio(k)), g = c.createRadialGradient(x, y - 80, R * .5, x, y - 80, R + 2); g.addColorStop(0, 'rgba(11,12,22,0)'); g.addColorStop(1, 'rgba(11,12,22,1)'); c.fillStyle = g; c.fillRect(x - 4000, y - 4000, 8000, 8000) }
+    else { c.fillStyle = '#0B0C16'; c.fillRect(x - 4000, y - 4000, 8000, 8000) }
+    c.globalAlpha *= k; beam(c, x, y - 760, x, y + 18, 30, 190, '#FFE6B8', .22);
     c.fillStyle = '#D8D4CC'; c.fillRect(x - 170, y + 18, 340, 22); c.fillStyle = '#B9B5AD'; c.fillRect(x - 170, y + 40, 340, 8);
-    c.beginPath(); c.ellipse(x, y + 22, 190, 26, 0, 0, TAU); c.fillStyle = 'rgba(255,230,184,.12)'; c.fill();
-    iqos4(c, x, y, L, { name: false, shadow: false, leds: 0, stick: 1 }); c.restore();
+    c.beginPath(); c.ellipse(x, y + 22, 190, 26, 0, 0, TAU); c.fillStyle = 'rgba(255,230,184,.12)'; c.fill(); c.restore();
+    const drop = 1 - eo(at(k, .1, .6)); if (k > .1) { c.save(); c.globalAlpha *= Math.min(1, (k - .1) * 4); iqos4(c, x, y - 260 * drop, L, { name: true, shadow: false, leds: 0, stick: 1 }); c.restore() }   // держатель опускается в луч на полку
     qVapor2(c, t, vapX(x, L), y, k * (q0 ?? 1), tq);
   }
   function vapX(x, L) { return x + L / 2 - 14 + L * .34 }   // v21.1: пар идёт из стика, а не из корпуса держателя
@@ -40,7 +42,7 @@
     c.fillStyle = '#E6EEF2'; c.fillRect(90, 240, 380, 460); ['#BFD5E8', '#A9C6E0', '#93B6D6'].forEach((col, i) => { c.fillStyle = col; c.fillRect(90, 240 + i * 60, 380, 62) });   // окно: небо и Альпы
     poly(c, [90, 620, 150, 470, 210, 540, 290, 400, 370, 520, 420, 470, 470, 560, 470, 700, 90, 700]); fill(c, '#5E7AA0'); poly(c, [260, 440, 290, 400, 322, 446, 300, 438, 284, 452]); fill(c, '#FFFFFF'); poly(c, [130, 520, 150, 470, 170, 516]); fill(c, '#FFFFFF');
     c.fillStyle = '#7E9A6E'; c.fillRect(90, 660, 380, 40); rr(c, 90, 240, 380, 460, 4); lnB(c, 14, '#0B2427'); c.fillStyle = '#0B2427'; c.fillRect(276, 240, 10, 460);
-    rr(c, 412, 254, 40, 40, 4); fill(c, '#D52B1E'); c.fillStyle = '#FFFFFF'; c.fillRect(428, 262, 8, 24); c.fillRect(420, 270, 24, 8);   // швейцарский флажок на стекле
+    rr(c, 380, 420, 64, 64, 6); fill(c, '#D52B1E'); c.fillStyle = '#FFFFFF'; c.fillRect(405, 432, 14, 40); c.fillRect(392, 445, 40, 14);   // v21.2: швейцарский флажок на правом стекле — в кадре с первой секунды и не под плашкой года
     rr(c, 560, 230, 470, 540, 10); fill(c, '#F4F6F2'); rr(c, 560, 230, 470, 540, 10); lnB(c, 8, '#9AA6A8');   // доска
     [[-1300, 380], [1120, 320]].forEach(([sx, sy], i) => { c.fillStyle = '#0B2427'; c.fillRect(sx, sy, 420, 16); for (let k = 0; k < 4; k++) { const fx = sx + 40 + k * 100, h = 70 + H1(i * 4 + k) * 70, col = ['#3FB6A8', '#7ED6CF', '#E7A9B6', '#F2B84B'][(i + k) % 4];
       c.beginPath(); c.moveTo(fx, sy); c.lineTo(fx, sy - h * .55); c.lineTo(fx + 12, sy - h * .55); c.lineTo(fx + 12, sy - h); c.lineTo(fx + 30, sy - h); c.lineTo(fx + 30, sy - h * .55); c.lineTo(fx + 42, sy - h * .55); c.lineTo(fx + 42, sy); c.closePath(); fill(c, rgba(col, .75)); lnB(c, 2.5, 'rgba(230,250,248,.5)') } });
@@ -102,7 +104,7 @@
     c.fillStyle = '#D8D4CC'; c.fillRect(HG.x - 170, BENCH, 340, 22); c.fillStyle = '#B9B5AD'; c.fillRect(HG.x - 170, BENCH + 22, 340, 8);   // белая полочка под держателем
     const sk = eio(at(t, a.yady - .1, a.yady + .5)) * (1 - at(t, a.stat - .3, a.stat));
     ashtrayCig(c, t, sk);
-    iqos4(c, HG.x, HG.y, HG.L, { name: false, shadow: false, leds: 0, stick: 1 });
+    iqos4(c, HG.x, HG.y, HG.L, { name: true, shadow: false, leds: 0, stick: 1 });
     qVapor2(c, t, vapX(HG.x, HG.L), HG.y, 1, -10);
     hexes(c, HG.x - 120, HG.y - 300, 220, 220, sk, 5);
     const ky = 760 * (1 - eio(at(t, a.poim - .2, a.poim + .25)));
@@ -110,7 +112,7 @@
     const sc = at(t, a.yady - .15, a.yady + .75); if (sc > 0 && sc < 1) { const x = lp(80, 760, sc); c.save(); c.globalAlpha *= Math.sin(Math.PI * sc); c.fillStyle = 'rgba(126,240,180,.25)'; c.fillRect(x - 40, 560, 80, 700); c.fillStyle = 'rgba(126,240,180,.85)'; c.fillRect(x - 3, 560, 6, 700); c.restore() }
     bars4(c, t); gauge4(c, t);
     const kj = eio(at(t, a.stat - .2, a.stat + .4)); if (kj > 0) journal4(c, t, lp(1500, JRN.x, kj), JRN.y, at(t, a.dym - .05, a.dym + .45), at(t, a.imen - .3, a.imen + .5));
-    spotScene(c, t, HG.x, HG.y, HG.L, 1 - eio(at(t, a.on, a.on + .45)), -10, 1);
+    spotScene(c, t, HG.x, HG.y, HG.L, 1 - at(t, a.on - .1, a.on + .7), -10, 1);   // v21.2: свет в лаборатории зажигается за 0,8 с (было 0,45 с с двойным сглаживанием — вспышка)
   }
   function labShot(c, t) {
     const q = camObj(camAt(KG, t)); layer(c, q, 1, cc => labWorld(cc, t, q));

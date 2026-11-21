@@ -6,6 +6,7 @@ set -e
 cd "$(dirname "$0")"
 cat ep/v210/00-core.js ep/v200/05-kit.js ep/v200/12-cam.js ep/v200/15-props.js ep/v210/[1-9]*.js > ep/v210.js && node -e "new Function(require('fs').readFileSync('ep/v210.js','utf8'))"
 export NODE_PATH=${NODE_PATH:-$(npm root -g)}
+if [ "$1" = "shots" ]; then rm -rf out/$2/shots; exec node capture.mjs $2 shots "$3"; fi   # ./v210_render.sh shots <ролик> t1,t2,… → out/<ролик>/shots/*.png
 for EP in ${@:-v210y-ru v210s-ru}; do
   D=out/$EP/parts; mkdir -p $D
   DUR=$(python3 -c "import json,math;print(math.ceil(json.load(open('tl/$EP.json'))['dur']*30)/30)")   # до последнего кадра включительно (у шортса он = кадр 0)

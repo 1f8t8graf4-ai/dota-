@@ -30,7 +30,7 @@
     [-84.6, 45.8, -83.5, 46.0, -81.7, 45.3, -80.4, 45.0, -81.6, 43.2, -82.5, 43.0, -83.4, 43.9, -83.6, 44.8], [-83.4, 41.7, -82.5, 41.4, -81.0, 41.9, -79.0, 42.8, -80.2, 42.6, -81.7, 42.6, -83.1, 42.1],
     [-79.8, 43.3, -78.0, 43.4, -76.2, 43.5, -76.3, 44.1, -77.6, 44.0, -79.4, 43.7]];
   const BP = mpj(-68.2, 44.4), BFL = mpj(-79.6, 25.4), BPHI1 = Math.atan2(BFL[1] - BP[1], BFL[0] - BP[0]), BPHI0 = Math.PI, BLEN = 560, BOPEN = 2.78;   // шлагбаум: столб у Мэна
-  const QM = mpj(-66.4, 38.6), CANF = mpj(-76.5, 38.2), CANR = 34, GV = [1600, 1525];
+  const QM = mpj(-66.4, 38.6), CANF = mpj(-76.5, 38.2), CANR = 34, GV = [1730, 1290];   // v21.2: молоток бьёт по северо-востоку карты — не закрывает центральный IQOS
   let PJ = null, HOLD = null, WAVES = null, TM = null, TB4 = null, HCUT = null;
   function pip(P, x, y) { let ins = false; for (let i = 0, j = P.length - 2; i < P.length; j = i, i += 2) { const xi = P[i], yi = P[i + 1], xj = P[j], yj = P[j + 1]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) ins = !ins } return ins }
   function boomPhi(t) { const a = TM; let p = lp(BPHI0, BPHI1, eio(at(t, a.vygn + .02, a.vygn + .62))); if (a.zapr) p = lp(p, BOPEN, eio(at(t, a.zapr - .05, a.zapr + .55))); return p }
@@ -178,4 +178,4 @@
     c.restore();
   }
   // заголовки поверх кадра в мире карты (строка 13)
-  function mapPlates(c, t) { const a = TM; capS(c, TEXT.itc, 540, 230, at(t, a.kom + .12, a.kom + .42) * (1 - at(t, a.narush - .35, a.narush - .1)), { s: 44 }) }
+  function mapPlates(c, t) { const a = TM; capS(c, TEXT.itc, 560, 190, at(t, a.kom + .12, a.kom + .42) * (1 - at(t, a.narush - .35, a.narush - .1)), { s: 38 }) }   // v21.2: выше синего PATENT, правее плашки года

@@ -9,9 +9,9 @@
   function storeCInit() {
     const w4 = (q, n) => Ws('s4', q, n), w5 = (q, n) => Ws('s5', q, n);
     TC4 = { j: TB.jBC, kot: w4('которую'), nelz: w4('нельзя'), podzh: w4('поджечь'), tab: w5('табак'), nagr: w5('нагреватель'), vdvoe: w5('вдвое'), hol: w5('холоднее'), kurt: w5('куртка') };
-    const a = TC4; a.close = a.kurt - .45; a.jCD = a.kurt - .1;   // v21.1: столбики успевают постоять, нырок — позже
+    const a = TC4; a.close = a.kurt - .45; a.jCD = a.close + .08;   // v21.2: без нырка в белый бок — держатель переезжает на подлокотник (45-car.js)
     KC = [KY(a.j + .45, 545, 1010, 1.12), KY(a.kot + .45, 520, 1030, 1.25), KY(a.podzh + .05, 330, 1050, 2.05), KY(a.tab + .45, 560, 1040, 1.75),
-      KY(a.vdvoe + .1, 560, 800, 1.18), KY(a.hol + .3, 578, 790, 1.2), KY(a.close + .05, 640, 1052, 2.2), KY(a.jCD, 640, 1055, 60)];   // столбики держим в кадре, пока второй не встал
+      KY(a.vdvoe + .1, 560, 800, 1.18), KY(a.hol + .3, 578, 790, 1.2), KY(a.jCD, 713, 919, .9)];   // держатель — того же размера и там же, где на подлокотнике
     NCD = { x: HC.x, y: HC.y - (HD.y - 960) * MCAR, m: MCAR };   // держатель в машине — (540, 1310), в MCAR раз меньше витринного (v21.1: был в пол-салона)
   }
   function lighter4(c, t) {   // зажигалка: хром в 3 тона, крышка на петле справа, колёсико, пламя
@@ -48,10 +48,10 @@
     const a = TC4, k1 = eo(at(t, a.vdvoe - .1, a.vdvoe + .4)), k2 = eo(at(t, a.hol - .15, a.hol + .3)), out = eio(at(t, a.close - .25, a.close + .05)); if (k1 <= 0 || out >= 1) return;
     const kv = [eo(at(FT, a.vdvoe - .1, a.vdvoe + .4)), eo(at(FT, a.hol - .15, a.hol + .3))];   // цифры — по времени кадра: в размытии не двоятся
     const base = 800, Hmax = 420;
-    [[440, 684, '#E2412F', TEXT.fire, k1, kv[0]], [700, 330, '#FF9A3A', TEXT.blade, k2, kv[1]]].forEach(([x, v, col, lab, k, kn]) => { if (k <= 0) return; const H = Hmax * v / 684 * k;
+    [[440, 684, '#E2412F', TEXT.fire, k1, kv[0]], [700, 330, '#FF9A3A', TEXT.blade, k2, kv[1]]].forEach(([x, v, col, lab, k, kn]) => { if (k <= 0) return; const H = Hmax * v / 684 * kn;
       c.save(); c.globalAlpha *= 1 - out; rr(c, x - 50, base - Hmax - 20, 100, Hmax + 20, 50); fill(c, 'rgba(238,241,248,.08)'); rr(c, x - 50, base - Hmax - 20, 100, Hmax + 20, 50); lnB(c, 3, 'rgba(238,241,248,.4)');
       rr(c, x - 38, base - H, 76, H, 38); cel(c, x - 38, base - H, 76, H, col, { sw: .3, hx: .14 }); circ(c, x, base + 20, 56, col);
-      tx(c, Math.round(v * kn) + '°', x, base - H - 46, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); tx(c, lab, x, base + 100, { f: 'M', w: 800, s: 28, c: '#F4F1EA', ls: 3 }); c.restore() });
+      const Hn = Hmax * v / 684 * kn; tx(c, Math.round(v * kn) + '°', x, base - Hn - 46, { f: 'M', w: 800, s: 54, c: '#F4F1EA' }); tx(c, lab, x, base + 100, { f: 'M', w: 800, s: 28, c: '#F4F1EA', ls: 3 }); c.restore() });   // v21.2: и число, и его место — по времени кадра
   }
   function storeC(c, t) {   // фон: графит, ряды коробок в глубине, стеклянная полка, луч сверху
     c.fillStyle = C4.graph; c.fillRect(-3000, -3000, 7000, 7000);
@@ -66,7 +66,7 @@
     heat4(c, HPACK.x, HPACK.y, 1, 0);
     const [sx, sy, sa, sk] = stickFly(t), inH = sk >= 1;
     const cut = eio(at(t, a.tab + .1, a.tab + .5)) * (1 - eio(at(t, a.close - .35, a.close))), kn = eio(at(t, a.nagr - .25, a.nagr + .3));
-    iqos4(c, HC.x, HC.y, HC.L, { left: true, stick: inH ? 1 : 0, name: true, cut: cut > .5, shadow: false });
+    if (!HIDE_H) iqos4(c, HC.x, HC.y, HC.L, { left: true, stick: inH ? 1 : 0, name: true, cut: cut > .5, shadow: false });
     if (cut > 0) { c.save(); c.globalAlpha *= Math.min(1, cut * 2); bladeIn(c, t, kn, 1, 1 - at(t, a.vdvoe - .35, a.vdvoe)); c.restore() }   // волны тепла гаснут, когда встают столбики
     if (!inH && sk > 0) { c.save(); c.translate(sx, sy); c.rotate(sa); rr(c, -71, -9, 142, 18, 4); fill(c, '#F7F4EC'); c.fillStyle = '#C9A266'; c.fillRect(-71, -9, 22, 18); c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(-71, 3, 142, 6); c.restore() }
     lighter4(c, t);
@@ -81,6 +81,18 @@
 
   // ================= японское шоу (мир E): его показывает экран машины и телевизор в магазине =================
   // Студия: яркие полосы, лучи софитов, за столом два белых силуэта комиков, между ними на подставке IQOS; на «расхвалили» — звёздочки и смех.
+  function comic4(c, x, y, d, t, ks, lau, i) {   // комик за столом: плечи, голова, рука с микрофоном у рта, другая — жест (на «расхвалили» — к айкосу)
+    c.save(); c.translate(x, y); c.scale(d, 1); const W = '#FFFFFF', S = '#D9DCE6';
+    c.beginPath(); c.moveTo(-92, 150); c.quadraticCurveTo(-98, 30, -52, 8); c.quadraticCurveTo(0, -6, 52, 8); c.quadraticCurveTo(98, 30, 92, 150); c.closePath(); fill(c, W);   // плечи и грудь
+    c.save(); c.clip(); c.fillStyle = S; c.fillRect(40, -20, 80, 200); c.restore();
+    poly(c, [-14, 10, 14, 10, 0, 44]); fill(c, i ? '#E7A9B6' : '#8FC7F0');   // галстук-бабочка / ворот
+    rr(c, -14, -24, 28, 30, 10); fill(c, W); circ(c, 0, -62, 42, W); c.save(); c.beginPath(); c.arc(0, -62, 42, 0, TAU); c.clip(); c.fillStyle = S; c.fillRect(18, -110, 40, 100); c.restore();
+    const g = ks > 0 ? Math.sin(t * 7 + i) * .15 : Math.sin(t * 3 + i * 2) * .1;   // рука-жест: к центру стола (к айкосу)
+    c.save(); c.translate(60, 30); c.rotate(-.9 + g - .5 * ks); rr(c, -14, -14, 120, 28, 14); fill(c, W); c.translate(108, 0); c.rotate(-.7 + g); rr(c, -12, -12, 80, 24, 12); fill(c, W); circ(c, 76, 0, 17, W); c.restore();
+    c.save(); c.translate(-58, 34); c.rotate(-2.2 + .1 * Math.sin(t * 5 + i)); rr(c, -14, -14, 96, 28, 14); fill(c, S); c.translate(86, 0); c.rotate(1.9); rr(c, -12, -12, 70, 24, 12); fill(c, S); circ(c, 64, 0, 16, S);
+      c.translate(64, 0); c.rotate(-.5); rr(c, -6, -46, 12, 50, 5); fill(c, '#2B2F3A'); circ(c, 0, -52, 13, '#3A3F4C'); c.fillStyle = 'rgba(255,255,255,.3)'; c.fillRect(-6, -60, 4, 10); c.restore();   // микрофон
+    c.restore();
+  }
   function showDraw(c, t, cx, cy, w) {   // кадр шоу 16:9 с центром (cx, cy) шириной w
     const h = w * 9 / 16, s = w / 1080; c.save(); c.translate(cx - w / 2, cy - h / 2); c.scale(s, s);
     const H = 607.5; c.fillStyle = '#F2B84B'; c.fillRect(0, 0, 1080, H);
@@ -88,11 +100,11 @@
     c.fillStyle = '#E7A9B6'; c.fillRect(0, 0, 1080, 60); c.fillStyle = '#8FC7F0'; c.fillRect(0, 60, 1080, 18);
     for (const x of [120, 960]) beam(c, x, -40, x < 540 ? 300 : 780, 420, 8, 90, '#FFFFFF', .22);
     const ks = TD4 ? eo(at(t, TD4.rash - .05, TD4.rash + .4)) : 0, lau = TD4 ? at(t, TD4.kom - .1, TD4.kom + .3) : 0;
-    rr(c, 80, 420, 920, 190, 18); fill(c, '#2F6FD6'); c.fillStyle = '#1D3F8F'; c.fillRect(80, 520, 920, 90); c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(80, 430, 920, 10);   // стол
-    [[250, 1, true], [830, -1, false]].forEach(([x, d, m], i) => { const hop = lau > 0 ? Math.abs(Math.sin(t * 9 + i * 1.7)) * 16 * lau : 0; fig(c, x, 440 - hop, 1.45, { m: true, dir: d, col: '#FFFFFF', hat: false });
-      if (lau > 0) { c.strokeStyle = `rgba(29,63,143,${.9 * lau})`; c.lineWidth = 6; c.lineCap = 'round'; for (let k = 0; k < 3; k++) { const a = -2.2 + k * .5 + (d < 0 ? 1.6 : 0); c.beginPath(); c.moveTo(x + Math.cos(a) * 70, 160 - hop + Math.sin(a) * 70); c.lineTo(x + Math.cos(a) * 104, 160 - hop + Math.sin(a) * 104); c.stroke() } } });
-    rr(c, 470, 330, 140, 100, 10); fill(c, '#FFFFFF'); c.fillStyle = '#D9DCE3'; c.fillRect(470, 400, 140, 30);   // подставка
-    c.beginPath(); c.ellipse(540, 322, 110, 24, 0, 0, TAU); fill(c, '#C8102E');   // подушечка
+    [[250, 1], [830, -1]].forEach(([x, d], i) => { const hop = lau > 0 ? Math.abs(Math.sin(t * 9 + i * 1.7)) * 14 * lau : 0; comic4(c, x, 300 - hop, d, t, ks, lau, i);   // v21.2: комики — плечи, жесты, микрофоны
+      if (lau > 0) { c.strokeStyle = `rgba(29,63,143,${.9 * lau})`; c.lineWidth = 6; c.lineCap = 'round'; for (let k = 0; k < 3; k++) { const a = -2.2 + k * .5 + (d < 0 ? 1.6 : 0); c.beginPath(); c.moveTo(x + Math.cos(a) * 80, 160 - hop + Math.sin(a) * 80); c.lineTo(x + Math.cos(a) * 114, 160 - hop + Math.sin(a) * 114); c.stroke() } } });
+    rr(c, 80, 420, 920, 190, 18); fill(c, '#2F6FD6'); c.fillStyle = '#1D3F8F'; c.fillRect(80, 520, 920, 90); c.fillStyle = 'rgba(255,255,255,.25)'; c.fillRect(80, 430, 920, 10);   // стол — перед комиками
+    poly(c, [476, 420, 604, 420, 590, 344, 490, 344]); fill(c, '#FFFFFF'); c.fillStyle = '#D9DCE3'; c.fillRect(576, 344, 20, 76); rr(c, 466, 330, 148, 18, 6); fill(c, '#EDEFF4');   // подиум-витрина
+    beam(c, 540, -40, 540, 330, 6, 120, '#FFFFFF', .18);
     iqos4(c, 540, 300, 230, { name: true, glow: TD4 ? eo(at(t, TD4.aik - .05, TD4.aik + .3)) : 0, shadow: false });
     if (ks > 0) for (let i = 0; i < 7; i++) { const a = i * TAU / 7 + t * .8, r = 150 + 20 * Math.sin(t * 5 + i); star(c, 540 + Math.cos(a) * r, 290 + Math.sin(a) * r * .55, 18 * ks * (.7 + .3 * Math.sin(t * 9 + i)), '#FFFFFF') }
     c.restore();
@@ -107,7 +119,7 @@
     const w6 = (q, n) => Ws('s6', q, n), w7 = (q, n) => Ws('s7', q, n);
     TF = { j: TD4.jDF, aik2: w6('айкосы'), smel: w6('смели'), pol: w6('полок'), bez: w7('без'), vred: w7('вреда'), cherez: Ws('s8', 'через') };
     const a = TF; a.off = a.bez - .1; a.jFG = a.cherez + .12;
-    KF = [KY(a.j + .55, 420, 860, 1.6), KY(a.aik2 + .1, 610, 900, 1.06), KY(a.pol + .4, 690, 930, 1.1), KY(a.vred - .2, 760, 780, 1.75), KY(a.vred + .55, 760, 760, 2.45), KY(a.jFG, 760, 770, 2.6)];
+    KF = [KY(a.j + .1, 300, 822.7, 1080 / TVF.w), KY(a.j + .65, 420, 860, 1.6), KY(a.aik2 + .1, 610, 900, 1.06), KY(a.pol + .4, 690, 930, 1.1), KY(a.vred - .2, 760, 780, 1.75), KY(a.vred + .55, 760, 760, 2.45), KY(a.jFG, 760, 770, 2.6)];
     NFG = { x: HF.x, y: HF.y - 140, m: 1 };   // держатель в лаборатории — (540, 1100)
   }
   function crowdF(c, t) {   // поток белых фигурок слева направо: фронт — fx
@@ -127,12 +139,18 @@
     c.fillStyle = '#20232E'; c.fillRect(TVF.x - 14, TVF.y + TVF.w * 9 / 32, 28, 300); rr(c, TVF.x - 120, TVF.y + TVF.w * 9 / 32 + 290, 240, 20, 8); fill(c, '#20232E');   // стойка ТВ
     rr(c, TVF.x - TVF.w / 2 - 16, TVF.y - TVF.w * 9 / 32 - 16, TVF.w + 32, TVF.w * 9 / 16 + 32, 14); fill(c, '#16181F');
     c.save(); c.beginPath(); c.rect(TVF.x - TVF.w / 2, TVF.y - TVF.w * 9 / 32, TVF.w, TVF.w * 9 / 16); c.clip(); showDraw(c, t, TVF.x, TVF.y, TVF.w); c.restore();
-    iqos4(c, HF.x, HF.y, HF.L, { name: false, shadow: false, leds: 0, stick: 1 });   // остался один держатель (со стиком — пар идёт из него)
-    crowdF(c, t);
-    const off = eio(at(t, a.off, a.off + .35)); spotScene(c, t, HF.x, HF.y, HF.L, off, a.vred, 1);
-    if (off < 1) qVapor2(c, t, vapX(HF.x, HF.L), HF.y, at(t, a.bez, a.bez + .4) * (1 - off), a.vred);
+    crowdF(c, t);   // v21.2: после «раскупили» полка пустая — держатель опускается в луч, когда гаснет свет (spotScene)
+    const off = at(t, a.off - .35, a.off + .65); spotScene(c, t, HF.x, HF.y, HF.L, off, a.vred, 1);
   }
   function storeFShot(c, t) {
+    const a0 = TF; if (t < a0.j + .1) {   // v21.2: экран машины = телевизор магазина; шоу стоит на месте, салон уезжает вниз, магазин приходит сверху — без рывка в айкос
+      const e = eio(at(t, a0.j - .35, a0.j + .1)), qd = camObj(camAt(KD, t)), qf = camObj(camAt(KF, t));
+      const yb = HH * e;   // шторка сверху вниз: выше границы — магазин, ниже — салон; оба мира стоят, телевизор магазина = экран машины на том же месте (без дублей)
+      c.save(); c.beginPath(); c.rect(0, 0, WW, yb); c.clip(); layer(c, qf, 1, cc => storeFWorld(cc, t, qf)); c.restore();
+      c.save(); c.beginPath(); c.rect(0, yb, WW, HH - yb); c.clip(); carWorld(c, t, qd); c.restore();
+      if (e > 0 && e < 1) { const g = c.createLinearGradient(0, yb - 14, 0, yb + 14); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.5, 'rgba(0,0,0,.4)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, yb - 14, WW, 28) }
+      const w = SCR.w * qd.z, cy = (SCR.y - qd.y) * qd.z + 960; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); c.rect(540 - w / 2, cy - w * 9 / 32, w, w * 9 / 16); c.clip(); showDraw(c, t, 540, cy, w); c.restore();
+      return }
     const q = camObj(camAt(KF, t)); layer(c, q, 1, cc => storeFWorld(cc, t, q));
     const a = TF; capS(c, TEXT.soldout, 540, 330, at(t, a.smel + .35, a.smel + .7) * (1 - at(t, a.bez - .3, a.bez)), { s: 58 });
     capS(c, TEXT.noharm, 540, 250, at(t, a.vred + .15, a.vred + .45) * (1 - at(t, a.jFG - .45, a.jFG - .15)), { s: 58 });   // выше «?» (v21.1)

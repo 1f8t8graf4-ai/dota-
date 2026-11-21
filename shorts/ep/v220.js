@@ -1634,13 +1634,14 @@
     if (o.label !== false) tx(c, TEXT[cd.bk], cd.x, cd.y + CH5 / 2 - 18, { f: 'M', w: 800, s: 18, c: '#475569', mw: CW5 - 24, a: o.label ?? 1 });
   }
   // маркер на фото 2022 (как в конце главы 4) — осыпается кусками: k 0 — целый, 1 — осыпался
-  function coverImg() { if (COVER) return COVER; COVER = mk(PS5, PS5); const g = COVER.getContext('2d'); rr(g, 0, 0, PS5, PS5, 2); fill(g, '#17171c'); marker5(g, PS5 / 2, PS5 / 2, PS5, C22.x); return COVER }
+  function coverImg() { if (COVER) return COVER; COVER = mk(PS5 * 3, PS5 * 3); const g = COVER.getContext('2d'); g.scale(3, 3); rr(g, 0, 0, PS5, PS5, 2); fill(g, '#17171c'); marker5(g, PS5 / 2, PS5 / 2, PS5, C22.x); return COVER }   // v22.1: в 3 раза чётче — на стыке камера близко
   function coverDraw(c, t, px, py, k) {
-    if (k <= 0) { c.drawImage(coverImg(), px - PS5 / 2, py - PS5 / 2); return } if (k >= 1) return;
+    if (k <= 0) { c.save(); c.beginPath(); c.rect(px - PS5 / 2, py - PS5 / 2, PS5, PS5); c.clip(); rr(c, px - PS5 / 2, py - PS5 / 2, PS5, PS5, 2); fill(c, '#17171c'); marker5(c, px, py, PS5, C22.x); c.restore(); return }   // целый — вектором, как в главе 4 (стык 4 → 5)
+    if (k >= 1) return;
     const im = coverImg(), n = 6, d = PS5 / n;
     for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { const s0 = .05 + .5 * H1(i * 7.1 + j * 3.3) * (1 - j / n * .5), u = cl((k - s0) / .45); if (u >= 1) continue;
       const x = px - PS5 / 2 + i * d, y = py - PS5 / 2 + j * d; c.save(); c.translate(x + d / 2 + (H1(i + j * 9) - .5) * 90 * u, y + d / 2 + 520 * u * u); c.rotate((H1(i * 3 + j) - .5) * 4 * u); c.globalAlpha *= 1 - at(u, .7, 1);
-      c.drawImage(im, i * d, j * d, d, d, -d / 2 - .5, -d / 2 - .5, d + 1, d + 1); c.restore() }
+      c.drawImage(im, i * d * 3, j * d * 3, d * 3, d * 3, -d / 2 - .5, -d / 2 - .5, d + 1, d + 1); c.restore() }
   }
   function boardWorld5(c, t, o = {}) {
     boardWall5(c, o.noWall);
@@ -1656,7 +1657,7 @@
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); c.rect(S.x - S.w / 2, S.y - S.h / 2, S.w, S.h); c.clip(); c.translate(S.x, S.y); c.scale(k, k); c.translate(-V.x, -V.y); oceanWorld(c, tO, Q0); c.restore();
   }
   // ---------- фильм: начало главы ----------
-  function boardStartInit() { KJ5 = [KY(-2.0, 562, 668, .965), KY(0, ...JCAM), KY(.55, 850, 762, 2.6), KY(1.15, 850, 760, 4.6)]; T0.j0 = 1.15 }
+  function boardStartInit() { KJ5 = [KY(-1.0, 330, 740, 1.35), KY(0, ...JCAM), KY(.55, 850, 762, 2.6), KY(1.15, 850, 760, 4.6)]; T0.j0 = 1.15 }   // v22.1: ключи — те же, что KS в конце главы 4 (ep/v210/80-board.js)
   function boardStartShot(c, t) {
     const q = camObj(camAt(KJ5, t)), cov = at(t, 0, .62);
     layer(c, q, 1, cc => boardWorld5(cc, t, { tO: t, cover: cov }));

@@ -8,20 +8,25 @@
   const CW4 = 270, CH4 = 330, PH4 = 240, photo4 = cd => [cd.x, cd.y - CH4 / 2 + 15 + PH4 / 2], pin4 = cd => [cd.x, cd.y - CH4 / 2 + 4], C2014 = CARDS4[2], C2022 = CARDS4[4];
   const PHC = { x: 610, y: 1340, s: 460 };   // фото 2014: квадрат кофейни с центром (610, 1340) стороной 460 — айкос у карты США на столе
   let KJ = null, CORK4 = null, CAFE_END = null;
+  // v21.2: доска — та же, что в начале главы 5 (ep/v220/80-board.js): компактная, на тёмной стене, 1924 — две пачки без HeatSticks.
+  // Хвост фильма — 2 с: кадр кофейни сжимается в фото 2014, нить тянется к закрытой 2022, камера едет по нити к карточке 2022.
+  // Последний кадр = кадр главы 5 за 1/30 с до её начала: ключи KS — общие с KJ5 главы 5 (время τ: 0 — начало главы 5).
+  const BRD4 = { x0: -40, y0: 120, x1: 1120, y1: 1160 }, KS = [[-1.0, 330, 740, 1.35], [0, 850, 770, 1.9], [.55, 850, 762, 2.6], [1.15, 850, 760, 4.6]];
   function boardInit() {
-    if (MODE !== 'y') return; const a = TM, j0 = a.jAJ, [px, py] = photo4(C2014);
+    if (MODE !== 'y') return; const a = TM, j0 = a.jAJ, [px, py] = photo4(C2014), T0 = TLX.endT + 1 / 30;
     CAFE_END = camObj(camAt(KAE, j0));   // кадр кофейни, который станет фото
-    KJ = [KY(j0, px, py, 860 / PH4), KY(j0 + 1.15, 300, 720, 1.6), KY(j0 + 2.0, 540, 660, 1.0), KY(TLX.endT + .3, 562, 668, .965)];
+    KJ = [KY(j0, px, py, 860 / PH4), ...KS.map(([t, x, y, z]) => KY(T0 + t, x, y, z))];
   }
   function corkImg4() { if (CORK4) return CORK4; CORK4 = mk(WW, 1400); const g = CORK4.getContext('2d'); g.fillStyle = '#b07a4a'; g.fillRect(0, 0, WW, 1400);
     for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < WW; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() } return CORK4 }
   function boardWall4(c) {
-    c.fillStyle = '#4a3220'; c.fillRect(-4000, -4000, 9000, 9000);
-    const X0 = -520, Y0 = -420, X1 = 1600, Y1 = 2300, im = corkImg4();
-    c.save(); rr(c, X0, Y0, X1 - X0, Y1 - Y0, 14); fill(c, '#5b3d26'); rr(c, X0 + 22, Y0 + 22, X1 - X0 - 44, Y1 - Y0 - 44, 8); c.clip();
-    for (let yy = Y0; yy < Y1; yy += 1400) for (let xx = X0; xx < X1; xx += 1080) c.drawImage(im, xx, yy); c.restore();
-    rr(c, X0 + 22, Y0 + 22, X1 - X0 - 44, Y1 - Y0 - 44, 8); lnS(c, 3, 'rgba(241,230,214,.4)');
-    c.save(); const g = c.createRadialGradient(540, 420, 120, 540, 700, 1500); g.addColorStop(0, 'rgba(255,236,190,.12)'); g.addColorStop(1, 'rgba(20,12,6,.38)'); c.fillStyle = g; c.fillRect(X0, Y0, X1 - X0, Y1 - Y0); c.restore();
+    c.fillStyle = '#2a1d14'; c.fillRect(-4000, -4000, 9000, 9000); c.fillStyle = 'rgba(255,255,255,.03)'; for (let x = -4000; x < 5000; x += 140) c.fillRect(x, -4000, 4, 9000);
+    const B = BRD4, im = corkImg4();
+    c.fillStyle = 'rgba(0,0,0,.45)'; c.fillRect(B.x0 + 18, B.y0 + 26, B.x1 - B.x0, B.y1 - B.y0);
+    c.save(); rr(c, B.x0, B.y0, B.x1 - B.x0, B.y1 - B.y0, 14); fill(c, '#5b3d26'); rr(c, B.x0 + 22, B.y0 + 22, B.x1 - B.x0 - 44, B.y1 - B.y0 - 44, 8); c.clip();
+    for (let yy = B.y0; yy < B.y1; yy += 1400) for (let xx = B.x0; xx < B.x1; xx += 1080) c.drawImage(im, xx, yy); c.restore();
+    rr(c, B.x0 + 22, B.y0 + 22, B.x1 - B.x0 - 44, B.y1 - B.y0 - 44, 8); lnS(c, 3, 'rgba(241,230,214,.4)');
+    c.save(); rr(c, B.x0 + 22, B.y0 + 22, B.x1 - B.x0 - 44, B.y1 - B.y0 - 44, 8); c.clip(); const g = c.createRadialGradient(540, 420, 120, 540, 700, 1100); g.addColorStop(0, 'rgba(255,236,190,.12)'); g.addColorStop(1, 'rgba(20,12,6,.38)'); c.fillStyle = g; c.fillRect(B.x0, B.y0, B.x1 - B.x0, B.y1 - B.y0); c.restore();
   }
   function marker4(c, x, y, s, seed) { c.save(); c.translate(x, y); c.lineCap = 'round';
     [[-1, -.62], [1, .55], [-1, .1]].forEach(([d, off], i) => { c.save(); c.rotate(d * .62 + (H1(seed + i) - .5) * .1); c.strokeStyle = 'rgba(10,10,12,.94)'; c.lineWidth = s * .2; c.beginPath(); c.moveTo(-s * .62, off * s * .25); c.lineTo(s * .62, off * s * .25); c.stroke(); c.restore() }); c.restore() }
@@ -33,11 +38,10 @@
     poly(c, [96, 30, 120, 8, 146, 26, 140, 58, 108, 60]); fill(c, '#F4F1EA'); poly(c, [120, 8, 146, 26, 128, 38]); fill(c, '#FFFFFF'); c.restore() }
   function photo2020(c, x, y, s) { c.fillStyle = '#1e2138'; c.fillRect(x - s / 2, y - s / 2, s, s); rr(c, x - s * .12, y - s * .32, s * .24, s * .64, s * .08); fill(c, B2.mango);
     poly(c, [x - s * .12, y + s * .02, x + s * .12, y - s * .1, x + s * .12, y + s * .32, x - s * .12, y + s * .32]); fill(c, B2.ice2); rr(c, x - s * .07, y - s * .42, s * .14, s * .12, 6); fill(c, '#2a2f55') }
-  function photo1924(c, x, y, s) {   // витрина главы 3: мягкая пачка 1920-х, Flip-Top, HeatSticks
+  function photo1924(c, x, y, s) {   // v21.2: две пачки главы 3 — мягкая 1920-х и Flip-Top 1950-х, без HeatSticks (как в главе 5)
     c.fillStyle = '#1b1f3a'; c.fillRect(x - s / 2, y - s / 2, s, s); beam(c, x, y - s / 2, x, y + s * .3, 10, s * .5, '#FFE6B8', .14);
     c.fillStyle = 'rgba(200,230,255,.25)'; c.fillRect(x - s / 2, y + s * .3, s, 4); c.fillStyle = '#14172E'; c.fillRect(x - s / 2, y + s * .3 + 4, s, s);
-    c.save(); c.translate(x, y); c.scale(s / 240, s / 240);
-    softPack(c, -104, -16, 56, 84, 10, { shadow: false }); mPack(c, -28, -20, 56, 88, 10, { shadow: false }); c.restore(); heat4(c, x + 76 * s / 240, y + s * .3, .5 * s / 240);
+    c.save(); c.translate(x, y); c.scale(s / 240, s / 240); softPack(c, -86, -16, 64, 96, 12, { shadow: false }); mPack(c, 10, -24, 64, 104, 12, { shadow: false }); c.restore();
   }
   function card4(c, t, cd) {
     const [px, py] = photo4(cd);
@@ -49,20 +53,20 @@
     if (!cd.open) { rr(c, px - PH4 / 2, py - PH4 / 2, PH4, PH4, 2); fill(c, '#17171c'); marker4(c, px, py, PH4, cd.x) }
     c.restore();
     tx(c, cd.a, cd.x, cd.y + CH4 / 2 - 46, { f: 'O', w: 700, s: 30, c: '#1e293b' });
-    if (cd.open) tx(c, TEXT[cd.bk], cd.x, cd.y + CH4 / 2 - 18, { f: 'M', w: 800, s: 18, c: '#475569', mw: CW4 - 24 });
+    tx(c, TEXT[cd.bk], cd.x, cd.y + CH4 / 2 - 18, { f: 'M', w: 800, s: 18, c: '#475569', mw: CW4 - 24 });   // v21.2: подпись у всех (у 2022 — «СНЮС», как в главе 5)
   }
   function boardWorld(c, t) {
     const a = TM; boardWall4(c);
     const [c79, c20, c14, c24, c22] = CARDS4; thread4(c, c79, c20); thread4(c, c20, c14); thread4(c, c20, c24); thread4(c, c20, c22); thread4(c, c24, c79); thread4(c, c24, c14);
-    thread4(c, c14, c22, eio(at(t, a.jAJ + 2.05, a.jAJ + 2.85)));   // нить к закрытой 2022
+    thread4(c, c14, c22, eio(at(t, a.jAJ + .45, a.jAJ + 1.15)));   // нить к закрытой 2022
     CARDS4.forEach(cd => card4(c, t, cd)); CARDS4.forEach(cd => pin4d(c, ...pin4(cd)));
   }
-  function photoOver(c, t, q) {   // кадр кофейни сжимается в фото карточки 2014: рамка кадра S и что в ней видно V — от «весь экран» до «фото на доске»
-    const a = TM, e = eio(at(t, a.jAJ, a.jAJ + 1.15)), [px, py] = photo4(C2014), P = { x: (px - q.x) * q.z + 540, y: (py - q.y) * q.z + 960, s: PH4 * q.z };
+  function photoOver(c, t, q) {   // кадр кофейни сжимается в фото карточки 2014 (v21.2: за 0,7 с)
+    const a = TM, e = eio(at(t, a.jAJ, a.jAJ + .7)), [px, py] = photo4(C2014), P = { x: (px - q.x) * q.z + 540, y: (py - q.y) * q.z + 960, s: PH4 * q.z };
     const S = { x: lp(540, P.x, e), y: lp(960, P.y, e), w: lp(WW, P.s, e), h: lp(HH, P.s, e) }, c0 = CAFE_END, Vh = lp(HH / c0.z, PHC.s, e), k = S.h / Vh;
     const V = { x: lp(c0.x, PHC.x, e), y: lp(c0.y, PHC.y, e) }, fw = 15 * q.z * Math.min(1, e * 3);
     if (e > 0) { c.save(); c.globalAlpha *= .35 * Math.min(1, e * 3) * (1 - at(e, .85, 1)); c.fillStyle = '#000'; c.fillRect(S.x - S.w / 2 - fw + 8 * q.z, S.y - S.h / 2 - fw + 12 * q.z, S.w + fw * 2, S.h + fw * 2); c.restore();
-      c.fillStyle = '#f5f0e6'; c.fillRect(S.x - S.w / 2 - fw, S.y - S.h / 2 - fw, S.w + fw * 2, S.h + fw * 2) }   // поле фотографии — как у карточки
+      c.fillStyle = '#f5f0e6'; c.fillRect(S.x - S.w / 2 - fw, S.y - S.h / 2 - fw, S.w + fw * 2, S.h + fw * 2) }
     c.save(); c.beginPath(); c.rect(S.x - S.w / 2, S.y - S.h / 2, S.w, S.h); c.clip(); c.translate(S.x - 540, S.y - 960);
     cafeShot(c, t, { x: V.x, y: V.y, z: k, r: 0 }, t - TL0, cafe2St(t)); c.restore();
   }

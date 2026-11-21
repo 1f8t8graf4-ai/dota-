@@ -42,7 +42,7 @@ def main():
                 tr.add(y, a, cut[sc], S)
 
     # ---- фильм ----
-    F = V.Track(); body(F, order[:15]); vend = F.t(); F.silence(3.8)   # v21.1: без строк 16–17 (переехали в начало главы 5) — после «как и вы» сразу доска
+    F = V.Track(); body(F, order[:15]); vend = F.t(); F.silence(2.0)   # v21.2: хвост 2 с (разбор Gemini: на стыке 4 → 5 была пауза 2,5 с)   # v21.1: без строк 16–17 (переехали в начало главы 5) — после «как и вы» сразу доска
     V.write('v210y-ru', F, {'vEnd': round(vend, 3), 'b0': round(vend - .1, 3)})
     # ---- шортс ----
     Sh = V.Track(); body(Sh, order[:15]); Sh.pad(room, .3); Sh.add(y, cut['s17'], cut['q'], S)

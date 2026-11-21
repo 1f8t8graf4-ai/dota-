@@ -64,9 +64,11 @@
   // плашка в экранных координатах (поверх кадра, пока камера едет)
   function capS(c, s, x, y, k, o) { if (k <= 0) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); cap4(c, s, x, y, k, o); c.restore() }
   // держатель IQOS 2014 года, горизонтально: центр (x, y), длина L; белый, скруглённый, бок темнее, блик; o.stick — стик торчит справа (0..1), o.cut — разрез (тонкие линии), o.ang — поворот
-  function iqos4(c, x, y, L, o = {}) {
-    const h = L * .2, r = h * .5; c.save(); c.translate(x, y); if (o.ang) c.rotate(o.ang);
-    if (o.shadow !== false) rasterPoly(c, [-L / 2 + 10, h / 2, L / 2, h / 2, L / 2 + h * .9, h * 1.15, -L / 2 + 10 + h * .9, h * 1.15], o.shc || 'rgba(6,8,24,.4)', 9, 2.3);
+  let HIDE_H = false;   // v21.2: на переезде витрина → машина держатель рисуется поверх кадра, в мирах — нет
+  function iqos4(c, x, y, L, o = {}) {   // v21.2: один держатель на весь ролик — объём цилиндра, металлический ободок у колпачка, IQOS по центру, огоньки у дальнего края
+    const h = L * .2, r = h * .5, lf = o.left ? -1 : 1; c.save(); c.translate(x, y); if (o.ang) c.rotate(o.ang);
+    if (o.shadow !== false) { rasterPoly(c, [-L / 2 + 10, h / 2, L / 2, h / 2, L / 2 + h * .9, h * 1.15, -L / 2 + 10 + h * .9, h * 1.15], o.shc || 'rgba(6,8,24,.4)', 9, 2.3);
+      c.beginPath(); c.ellipse(0, h * .5, L * .48, h * .16, 0, 0, TAU); fill(c, 'rgba(6,8,24,.35)') }   // тень касания — под корпусом
     const st = o.stick ?? 0;
     if (st > 0) {   // стик: бумага, табачный торец снаружи; o.left — стик торчит слева
       const sl = L * .34 * st, sx = o.left ? -L / 2 + 8 - sl : L / 2 - 8; rr(c, sx, -h * .2, sl, h * .4, 4); fill(c, '#F7F4EC'); c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(sx, h * .06, sl, h * .14);
@@ -76,23 +78,55 @@
     const body = cc => rr(cc, -L / 2, -h / 2, L, h, r);
     if (o.cut) { body(c); c.fillStyle = 'rgba(190,225,250,.13)'; c.fill(); body(c); lnB(c, 3, 'rgba(220,240,255,.9)'); rr(c, -L / 2 + 12, -h / 2 + 12, L - 24, h - 24, r - 10); lnB(c, 1.6, 'rgba(220,240,255,.45)') }
     else {
-      body(c); c.fillStyle = C4.iq; c.fill(); c.save(); body(c); c.clip();
-      c.fillStyle = C4.iqS; c.fillRect(-L / 2, h * .16, L, h); c.fillStyle = 'rgba(255,255,255,.75)'; c.fillRect(-L / 2 + r, -h * .36, L - r * 2, h * .12);
-      c.fillStyle = C4.iqCap; c.fillRect(o.left ? -L / 2 + L * .16 - 6 : L / 2 - L * .16, -h, 6, h * 2);   // шов колпачка
-      for (let i = 0; i < 3; i++) circ(c, (o.left ? L / 2 - L * .2 - i * 16 : -L / 2 + L * .2 + i * 16), -h * .05, 4, i < (o.leds ?? 3) ? '#CDEBFF' : '#8E95A6');   // огоньки заряда
+      body(c); const g = c.createLinearGradient(0, -h / 2, 0, h / 2); g.addColorStop(0, '#FFFFFF'); g.addColorStop(.3, C4.iq); g.addColorStop(.72, C4.iqS); g.addColorStop(1, C4.iqD); c.fillStyle = g; c.fill();
+      c.save(); body(c); c.clip();
+      rr(c, -L / 2 + r * .8, -h * .34, L - r * 1.6, h * .13, h * .06); fill(c, 'rgba(255,255,255,.85)');   // блик вдоль цилиндра
+      const cx0 = lf * (L / 2 - L * .17); c.fillStyle = 'rgba(40,44,58,.16)'; c.fillRect(lf > 0 ? cx0 : -L / 2, -h, L * .17, h * 2);   // колпачок чуть темнее
+      const mg = c.createLinearGradient(0, -h / 2, 0, h / 2); mg.addColorStop(0, '#E9ECF2'); mg.addColorStop(.45, '#8E95A6'); mg.addColorStop(.6, '#D8DCE5'); mg.addColorStop(1, '#6B7180');
+      c.fillStyle = mg; c.fillRect(cx0 - 4, -h, 8, h * 2);   // металлический ободок
+      for (let i = 0; i < 3; i++) circ(c, -lf * (L / 2 - L * .06 - i * L * .042), h * .05, Math.max(1.6, h * .06), i < (o.leds ?? 3) ? '#8FD3FF' : '#8E95A6');   // огоньки заряда — у дальнего края
       c.restore(); body(c); lnB(c, 2.5, 'rgba(20,23,51,.35)');
-      if (o.name) tx(c, OBJ.iqos, -L * .08, h * .02, { f: 'M', w: 800, s: h * .3, c: o.glow ? mixc('#7A7F8E', '#1B1A18', o.glow) : '#8A8F9C', ls: 4 });
+      if (o.name !== false) tx(c, OBJ.iqos, 0, h * .04, { f: 'M', w: 800, s: h * .3, c: o.glow ? mixc('#7A7F8E', '#1B1A18', o.glow) : '#7A7F8E', ls: Math.max(1, h * .06) });
     }
     c.restore();
   }
-  // пачка стиков Marlboro HeatSticks — эталон главы 3 (та же «крыша», ниже и уже обычной пачки)
-  function heat4(c, x, y, s, gl = 0) { c.save(); c.translate(x, y); c.scale(s, s); mPack(c, -60, -190, 120, 190, 22, { sub: 'HeatSticks', glow: gl, shc: 'rgba(0,0,0,.3)' }); c.restore() }
-  // коробка IQOS для полки
+  // v21.2: пачка Marlboro в объёме — лицо, крыша и бок в 3 тона (свет слева сверху), шов крышки Flip-Top, растровая тень 35°;
+  // (x, y) — левый верхний угол лица, w × h — лицо, o.d — глубина, o.lid 0..1 — крышка откинута назад (видно золотую фольгу и фильтры), o.glow — имя загорается
+  function pack3(c, x, y, w, h, o = {}) {
+    const T = C3, d = o.d ?? w * .4, a = (o.ang ?? 22) * Math.PI / 180, dx = d * Math.cos(a), dy = -d * Math.sin(a), cut = h * .27, lid = o.lid || 0;
+    if (o.shadow !== false) castDots(c, x + 6, y + h - 6, w + dx, 12, h * .55, { k: .9, col: o.shc || 'rgba(6,8,24,.5)' });
+    // бок (правый): верх — красная крышка, низ — белый в тени; шов крышки — наискосок
+    PL(c, [x + w, y + h, x + w + dx, y + h + dy, x + w + dx, y + dy + (lid ? cut : 0), x + w, y + (lid ? cut : 0)], '#C9C2B6');
+    if (!lid) { PL(c, [x + w, y, x + w + dx, y + dy, x + w + dx, y + dy + h * .36, x + w, y + h * .36], T.redD); SL(c, [x + w, y + cut, x + w + dx, y + dy + cut * .62], 'rgba(0,0,0,.35)', 1.5) }
+    // лицо
+    c.fillStyle = T.white; c.fillRect(x, y + (lid ? cut : 0), w, h - (lid ? cut : 0));
+    if (!lid) PL(c, [x, y, x + w, y, x + w, y + h * .36, x + w / 2, y + h * .13, x, y + h * .36], T.red);
+    else { c.save(); c.beginPath(); c.rect(x, y + cut, w, h); c.clip(); PL(c, [x, y, x + w, y, x + w, y + h * .36, x + w / 2, y + h * .13, x, y + h * .36], T.red); c.restore() }
+    const gx = x + w / 2, gy = y + h * .17;
+    if (!lid) { c.beginPath(); c.ellipse(gx, gy, w * .1, w * .12, 0, 0, TAU); fill(c, T.gold); c.beginPath(); c.ellipse(gx, gy, w * .065, w * .085, 0, 0, TAU); fill(c, T.white);
+      tx(c, 'PM', gx, gy + 1, { f: 'P', w: 700, s: Math.round(w * .07), c: T.red }) }
+    c.save(); c.translate(gx, y + h * .56); c.scale(1, 1.18); tx(c, 'Marlboro', 0, -h * .02, { f: 'P', w: 700, s: Math.round(w * .2), c: o.glow ? mixc(T.ink, T.red, o.glow) : T.ink }); c.restore();
+    tx(c, o.sub || 'FILTER CIGARETTES', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
+    if (o.glow) { c.fillStyle = rgba('#FFD27A', .55 * o.glow); c.fillRect(x + w * .1, y + h * .62, w * .8 * o.glow, 5) }
+    if (!lid) { SL(c, [x, y + cut, x + w, y + cut], 'rgba(0,0,0,.22)', 1.5);   // шов крышки Flip-Top
+      PL(c, [x, y, x + dx, y + dy, x + w + dx, y + dy, x + w, y], '#E0283F'); SL(c, [x + 4, y - 1, x + w - 2, y - 1], 'rgba(255,255,255,.55)', 2) }   // крыша
+    else {   // открыта: срез — золотая фольга и пробковые фильтры, крышка откинута назад
+      const y1 = y + cut; PL(c, [x, y1, x + dx, y1 + dy, x + w + dx, y1 + dy, x + w, y1], '#D9C27A');
+      for (let i = 0; i < 5; i++) { const fx = x + w * (.14 + i * .18) + dx * .45, fy = y1 + dy * .45; c.beginPath(); c.ellipse(fx, fy, w * .075, w * .075 * .5, 0, 0, TAU); fill(c, T.cork) }
+      const lh = cut * (1 - lid * .4); PL(c, [x + dx, y1 + dy, x + w + dx, y1 + dy, x + w + dx * 1.2, y1 + dy - lh, x + dx * 1.2, y1 + dy - lh], T.redD);
+      SL(c, [x, y1, x + w, y1], 'rgba(0,0,0,.25)', 1.5) }
+    SL(c, [x, y + 2, x, y + h - 2], 'rgba(255,255,255,.7)', 2);
+  }
+  // пачка стиков Marlboro HeatSticks (эталон главы 3) — v21.2: в объёме
+  function heat4(c, x, y, s, gl = 0) { c.save(); c.translate(x, y); c.scale(s, s); pack3(c, -60, -190, 120, 190, { sub: 'HeatSticks', glow: gl, shc: 'rgba(0,0,0,.3)', d: 40 }); c.restore() }
+  // коробка IQOS для полки — v21.2: в объёме (лицо, крыша, бок), растровая тень
   function box4(c, x, y, w, h, o = {}) {
-    rasterPoly(c, [x + w, y + h * .2, x + w + h * .22, y + h * .32, x + w + h * .22, y + h * 1.06, x + w * .25, y + h * 1.06, x, y + h], 'rgba(0,0,0,.28)', 8, 2);
-    PL(c, [x - w * .14, y + h * .05, x, y, x, y + h, x - w * .14, y + h - h * .05], '#C9CBD2');
-    c.fillStyle = '#F4F3EF'; c.fillRect(x, y, w, h); c.fillStyle = '#E3E4E8'; c.fillRect(x + w * .78, y, w * .22, h);
-    tx(c, OBJ.iqos, x + w * .45, y + h * .5, { f: 'M', w: 800, s: w * .2, c: '#3A3F4C', ls: 2 }); c.fillStyle = '#2F6FD6'; c.fillRect(x + w * .2, y + h * .72, w * .5, 4);
+    const d = w * .34, dx = d * .93, dy = -d * .37;
+    castDots(c, x + 4, y + h - 4, w + dx, 8, h * .45, { k: .8, col: 'rgba(0,0,0,.35)' });
+    PL(c, [x + w, y, x + w + dx, y + dy, x + w + dx, y + h + dy, x + w, y + h], '#C9CBD2');
+    c.fillStyle = '#F4F3EF'; c.fillRect(x, y, w, h); PL(c, [x, y, x + dx, y + dy, x + w + dx, y + dy, x + w, y], '#FFFFFF');
+    tx(c, OBJ.iqos, x + w * .5, y + h * .46, { f: 'M', w: 800, s: w * .2, c: '#3A3F4C', ls: 2 }); c.fillStyle = '#2F6FD6'; c.fillRect(x + w * .2, y + h * .7, w * .6, 4);
+    SL(c, [x, y + 1, x + w, y + 1], 'rgba(255,255,255,.8)', 1.5);
   }
   // барабанный счётчик (как в главе 3, #089): строка s в тёмной плашке, цифры в ровных клетках
   function drum4(c, s, x, y, k, o = {}) {

@@ -3,14 +3,14 @@
   // «прямо в машине» — белая фигурка за рулём, к потолку тает облачко пара (устройства у рта не показываем). За стеклом — ночной город и фары (#158).
   // «Это айкос…» — на экране машины идёт японское шоу; камера ныряет в экран — это телевизор в магазине (мир F).
   let TD4 = null, KD = null, NDF = null;
-  const MCAR = 1.6, HD = { x: 540, y: 1310 }, SCR = { x: 540, y: 860, w: 300 }, WSH = [70, 780, 1010, 780, 930, 170, 150, 170];
+  const MCAR = 1.6, HDA = -.1, HD = { x: 548, y: 1300 }, SCR = { x: 540, y: 860, w: 300 }, WSH = [70, 780, 1010, 780, 930, 170, 150, 170];
   function carInit() {
     const w5 = (q, n) => Ws('s5', q, n), w6 = (q, n) => Ws('s6', q, n);
     TD4 = { j: TC4.jCD, kurt: w5('куртка'), pep: w5('пепла'), zat: w5('затянуться'), mash: w5('машине'), aik: w6('айкос'), shest: w6('шестнадцатом'), rash: w6('расхвалили'),
       kom: w6('комики'), shou: w6('шоу') };
-    const a = TD4; a.jDF = a.kom + .95;
-    KD = [KY(a.kurt + .25, 610, 1230, 1.45), KY(a.pep + .25, 560, 1380, 1.55), KY(a.mash + .05, 400, 1040, 1.22), KY(a.aik + .25, 540, 905, 1.5), KY(a.shest + .55, 540, 862, 3.6),
-      KY(a.kom + .3, 540, 862, 4.3), KY(a.jDF, 540, 862, 12.5)];
+    const a = TD4; a.jDF = a.kom + .95; a.sl1 = a.j + .5;   // v21.2: держатель переезжает из витрины на подлокотник (без нырка в белое); экран машины = телевизор магазина — без рывка в айкос
+    KD = [KY(a.j, 610, 1230, 1.45), KY(a.kurt + .25, 612, 1232, 1.46), KY(a.pep + .25, 560, 1380, 1.55), KY(a.mash + .05, 400, 1040, 1.22), KY(a.aik + .25, 540, 905, 1.5), KY(a.shest + .55, 540, 862, 3.25),
+      KY(a.kom + .3, 540, 862, 3.55), KY(a.jDF - .35, 540, 862, 3.6)];
     const m = SCR.w / TVF.w; NDF = { x: SCR.x - (TVF.x - 540) * m, y: SCR.y - (TVF.y - 960) * m, m };   // телевизор магазина = экран машины
   }
   function cityFar(c, t) {   // ночной город за лобовым стеклом
@@ -45,19 +45,38 @@
   function seats(c, t) {
     rr(c, 80, 1180, 340, 520, 60); cel(c, 80, 1180, 340, 520, '#262A45', { sw: .22, ha: .12 }); rr(c, 150, 1150, 200, 70, 30); fill(c, '#262A45');   // спинка водителя
     rr(c, 660, 1080, 340, 620, 60); cel(c, 660, 1080, 340, 620, '#262A45', { sw: .22, ha: .12 }); rr(c, 760, 980, 150, 110, 30); cel(c, 760, 980, 150, 110, '#2C3150', { sw: .25, ha: .12 });   // спинка пассажира и подголовник
-    c.save(); c.translate(830, 1090); poly(c, [-200, -30, 190, -40, 210, 120, 150, 330, 60, 300, -40, 340, -140, 300, -210, 150]); cel(c, -210, -40, 420, 380, '#6B6A3E', { sw: .3, hx: .12 });   // куртка через спинку
-    poly(c, [-60, -34, 60, -38, 30, 30, -30, 30]); fill(c, '#55542F'); c.fillStyle = 'rgba(30,30,16,.35)'; c.fillRect(-4, 0, 8, 320); circ(c, -14, 80, 7, '#C9A24A'); circ(c, -14, 170, 7, '#C9A24A'); c.restore();
+    jacket4(c);   // v21.2: куртка на спинке — плечи, воротник с лацканами, свисающий рукав
   }
-  function console4(c, t) {
-    const a = TD4; rr(c, 330, 1240, 420, 460, 30); cel(c, 330, 1240, 420, 460, '#1E2138', { sw: .2, ha: .1 }); rr(c, 340, 1262, 400, 96, 22); fill(c, '#111326');   // подстаканник
-    iqos4(c, HD.x, HD.y, HC.L / MCAR, { left: true, stick: 1, name: true, shadow: false });
-    const op = eio(at(t, a.pep - .2, a.pep + .2)), ax = 540, ay = 1470;   // пепельница: крышка откидывается — внутри пусто и чисто
-    rr(c, ax - 110, ay - 50, 220, 100, 14); fill(c, '#0F1124'); rr(c, ax - 96, ay - 36, 192, 72, 10); cel(c, ax - 96, ay - 36, 192, 72, '#9AA1B3', { sw: .3, ha: .4 });
-    c.save(); c.translate(ax, ay - 50); c.scale(1, Math.cos(op * 2.4)); rr(c, -110, 0, 220, 100, 14); fill(c, op < .5 ? '#2A2E4A' : '#3A3F5E'); c.restore();
+  function jacket4(c) {   // куртка через спинку пассажирского сиденья
+    const O = '#6B6A3E', OD = '#55542F', OL = '#7E7D4A';
+    poly(c, [655, 1130, 700, 1112, 740, 1150, 712, 1560, 652, 1548]); cel(c, 652, 1112, 90, 450, OD, { sw: .35, ha: .18 });   // рукав свисает вдоль сиденья
+    rr(c, 648, 1520, 66, 40, 10); fill(c, '#47462A');   // манжета
+    poly(c, [690, 1118, 772, 1096, 830, 1142, 888, 1096, 972, 1118, 990, 1300, 984, 1490, 900, 1520, 830, 1508, 760, 1520, 676, 1490, 668, 1300]); cel(c, 668, 1096, 322, 424, O, { sw: .28, hx: .1, ha: .25 });   // плечи и полы
+    poly(c, [772, 1096, 830, 1142, 812, 1262, 768, 1176]); fill(c, OD); poly(c, [888, 1096, 830, 1142, 848, 1262, 892, 1176]); fill(c, shd(O, .2));   // лацканы
+    poly(c, [790, 1090, 830, 1128, 870, 1090, 830, 1080]); fill(c, OL);   // воротник
+    c.fillStyle = 'rgba(30,30,16,.35)'; c.fillRect(828, 1262, 6, 250); [1300, 1370, 1440].forEach(y => { circ(c, 846, y, 7, '#C9A24A'); circ(c, 844, y - 2, 2.5, '#FFE7A0') });
+    c.beginPath(); c.moveTo(700, 1118); c.quadraticCurveTo(735, 1104, 772, 1100); lnB(c, 3, 'rgba(255,255,230,.25)');
   }
-  function carPuff(c, t) {   // облачко пара тает под потолком
-    const a = TD4, k = at(t, a.mash - .35, a.mash + 1.4); if (k <= 0 || k >= 1) return; const y = lp(960, 560, eo(k)), r = lp(30, 120, eo(k)), al = .55 * Math.sin(Math.PI * k);
-    for (let i = 0; i < 5; i++) { const px = 250 + Math.sin(i * 2.1 + t) * r * .6, py = y - i * r * .25, rr0 = r * (.7 + H1(i) * .5), g = c.createRadialGradient(px, py, 0, px, py, rr0); g.addColorStop(0, `rgba(244,241,234,${al * .45})`); g.addColorStop(.6, `rgba(244,241,234,${al * .25})`); g.addColorStop(1, 'rgba(244,241,234,0)'); c.fillStyle = g; c.fillRect(px - rr0, py - rr0, rr0 * 2, rr0 * 2) }
+  function console4(c, t, hide) {   // подлокотник между сиденьями в перспективе; на нём держатель (с тенью касания), спереди — пепельница
+    const a = TD4; c.save();
+    poly(c, [400, 1250, 680, 1250, 742, 1362, 338, 1362]); lnB(c, 10, '#0A0B16'); poly(c, [338, 1362, 742, 1362, 742, 1720, 338, 1720]); lnB(c, 10, '#0A0B16');   // тёмный зазор — отделён от сидений
+    poly(c, [338, 1362, 742, 1362, 742, 1720, 338, 1720]); cel(c, 338, 1362, 404, 358, '#1A1D32', { sw: .2, ha: .08 });   // передняя стенка
+    poly(c, [400, 1250, 680, 1250, 742, 1362, 338, 1362]); fill(c, '#2C3150'); c.fillStyle = 'rgba(255,255,255,.06)'; poly(c, [400, 1250, 680, 1250, 690, 1268, 392, 1268]); c.fill();   // крышка подлокотника
+    c.beginPath(); c.moveTo(370, 1306); c.lineTo(710, 1306); c.setLineDash([10, 8]); lnB(c, 2, 'rgba(255,255,255,.12)'); c.setLineDash([]);   // строчка
+    c.beginPath(); c.ellipse(430, 1292, 36, 12, 0, 0, TAU); fill(c, '#111326');   // подстаканник
+    if (!hide) iqos4(c, HD.x, HD.y, HC.L / MCAR, { left: true, stick: 1, name: true, ang: HDA, shc: 'rgba(4,5,14,.5)' });
+    const op = eio(at(t, a.pep - .2, a.pep + .2)), ax = 540, ay = 1520;   // пепельница: крышка откидывается вверх — внутри пусто, чистый металл с бликом
+    rr(c, ax - 116, ay - 54, 232, 108, 14); fill(c, '#0F1124');
+    if (op > .05) { rr(c, ax - 100, ay - 40, 200, 80, 10); const g = c.createLinearGradient(0, ay - 40, 0, ay + 40); g.addColorStop(0, '#5E6578'); g.addColorStop(.5, '#C9CED9'); g.addColorStop(1, '#7A8194'); c.fillStyle = g; c.fill();
+      c.save(); rr(c, ax - 100, ay - 40, 200, 80, 10); c.clip(); c.globalAlpha *= op; poly(c, [ax - 70, ay + 40, ax - 40, ay + 40, ax + 10, ay - 40, ax - 20, ay - 40]); fill(c, 'rgba(255,255,255,.85)');
+        poly(c, [ax - 2, ay + 40, ax + 10, ay + 40, ax + 60, ay - 40, ax + 48, ay - 40]); fill(c, 'rgba(255,255,255,.55)'); c.restore();
+      rr(c, ax - 100, ay - 40, 200, 80, 10); lnB(c, 2, 'rgba(238,241,248,.6)') }
+    c.save(); c.translate(ax, ay - 54); c.scale(1, Math.cos(op * 2.6)); rr(c, -116, -4, 232, 108, 14); fill(c, op < .6 ? '#2A2E4A' : '#3A3F5E'); rr(c, -116, -4, 232, 108, 14); lnB(c, 2, 'rgba(160,170,210,.35)'); c.restore();
+    c.restore();
+  }
+  function carPuff(c, t) {   // v21.2: лёгкий пар — у самого водителя, тает над его головой
+    const a = TD4, k = at(t, a.mash - .35, a.mash + 1.3); if (k <= 0 || k >= 1) return; const y = lp(990, 800, eo(k)), r = lp(18, 70, eo(k)), al = .55 * Math.sin(Math.PI * k);
+    for (let i = 0; i < 5; i++) { const px = 318 + i * 9 + Math.sin(i * 2.1 + t) * r * .5, py = y - i * r * .3, rr0 = r * (.7 + H1(i) * .5), g = c.createRadialGradient(px, py, 0, px, py, rr0); g.addColorStop(0, `rgba(244,241,234,${al * .5})`); g.addColorStop(.6, `rgba(244,241,234,${al * .25})`); g.addColorStop(1, 'rgba(244,241,234,0)'); c.fillStyle = g; c.fillRect(px - rr0, py - rr0, rr0 * 2, rr0 * 2) }
   }
   function sweepLight(c, t) {   // свет фонарей пробегает по салону
     const u = (t * .42) % 1; if (u > .45) return; const x = lp(1500, -600, u / .45); c.save(); c.globalAlpha *= .07 * Math.sin(Math.PI * u / .45);
@@ -65,7 +84,19 @@
   }
   function carWorld(c, t, q) {
     layerRel(c, q, { x: 540, y: 960, z: 1, r: 0 }, .35, cc => cityFar(cc, t));
-    layer(c, q, 1, cc => { carInterior(cc, t); driver(cc, t); seats(cc, t); console4(cc, t); carPuff(cc, t) });
+    layer(c, q, 1, cc => { carInterior(cc, t); driver(cc, t); seats(cc, t); console4(cc, t, HIDE_H); carPuff(cc, t) });
     layerRel(c, q, { x: 540, y: 960, z: 1, r: 0 }, 1.2, cc => A(cc, 1 - at(Math.log(q.z), .7, 1.3), () => sweepLight(cc, t)));   // при нырке в экран свет фонарей не бежит
   }
-  function carShot(c, t) { const q = camObj(camAt(KD, t)); carWorld(c, t, q) }
+  function carShot(c, t) {
+    const a = TD4;
+    if (t < a.sl1) {   // v21.2: переезд — витрина уходит вверх, салон приходит снизу, держатель по экрану переезжает на подлокотник и поворачивается
+      const e = eio(at(t, a.j, a.sl1)), qs = camObj(camAt(KC, t)), qd = camObj(camAt(KD, t));
+      const yb = HH * (1 - e);   // граница шторки: выше — витрина, ниже — салон (каждый мир только в своей полосе — не наслаиваются)
+      HIDE_H = true; c.save(); c.beginPath(); c.rect(0, 0, WW, yb); c.clip(); c.translate(0, -HH * e); storeShot(c, t); c.restore();
+      c.save(); c.beginPath(); c.rect(0, yb, WW, HH - yb); c.clip(); c.translate(0, yb); carWorld(c, t, qd); c.restore(); HIDE_H = false;
+      if (e > 0 && e < 1) { const g = c.createLinearGradient(0, yb - 14, 0, yb + 14); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.5, 'rgba(0,0,0,.4)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, yb - 14, WW, 28) }
+      const s0 = [(HC.x - qs.x) * qs.z + 540, (HC.y - qs.y) * qs.z + 960, HC.L * qs.z, 0], s1 = [(HD.x - qd.x) * qd.z + 540, (HD.y - qd.y) * qd.z + 960, HC.L / MCAR * qd.z, HDA];
+      c.save(); c.setTransform(1, 0, 0, 1, 0, 0); iqos4(c, lp(s0[0], s1[0], e), lp(s0[1], s1[1], e) - 70 * Math.sin(Math.PI * e), lp(s0[2], s1[2], e), { left: true, stick: 1, name: true, ang: lp(0, HDA, e), shadow: e > .85, shc: 'rgba(4,5,14,.5)' }); c.restore();
+      return }
+    const q = camObj(camAt(KD, t)); carWorld(c, t, q);
+  }

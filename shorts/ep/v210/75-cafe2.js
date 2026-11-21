@@ -11,7 +11,7 @@
     const a = TM; a.jHA = TH.jHA; a.roll0 = a.jHA + .3; a.rest = a.roll0 + 1.6; a.edge = a.brosaj + .8; a.inBin = a.edge + .48;
     TL0 = TLX.endT + 1 / 30;
     KA2 = [KY(a.jHA + .95, 640, 1300, 1.7), KY(a.chet + .3, 470, 1195, 1.18), KY(a.tri + .4, 390, 1150, 1.1), KY(a.sig + .5, 330, 1060, 1.0), KY(a.shest + .6, 350, 1000, .95),
-      KY(a.bol + .3, 390, 1060, 1.0), KY(a.brosaj + .3, 830, 1440, 1.15), KY(a.rovno + .25, 1070, 1610, 1.35), KY(a.vy + .35, 470, 1350, 1.18)];
+      KY(a.bol + .3, 390, 1060, 1.0), KY(a.brosaj + .3, 830, 1440, 1.15), KY(a.rovno + .25, 1070, 1610, 1.35), KY(a.vy + .35, 470, 1220, 1.0)];   // v21.2: на «как и вы» — общий план стола: башня пачек и толпа ниже плашки года
     if (MODE === 'y') KAE = KA2.slice();   // v21.1: фильм кончается на «как и вы» — дальше кадр кофейни становится фото карточки 2014 на доске (80-board.js)
     else {
       const [qx, qy] = Hc(QM[0], QM[1]);
@@ -43,7 +43,7 @@
     const k2 = at(t, a.sig - .05, a.sig + .25) * (1 - at(t, a.brosaj - .45, a.brosaj - .15)); if (k2 > 0) S(() => { const v = Math.round(617 * eio(at(FT, a.sig + .15, a.shest + .9))); drum4(c, TEXT.fCigs(v), 540, 330, k2, { s: 72, w: 470, lab: TEXT.cigsL }) });
     const k3 = at(t, a.bol - .1, a.bol + .2) * (1 - at(t, a.brosaj - .45, a.brosaj - .15)); if (k3 > 0) S(() => { const s = bo(k3); c.save(); c.translate(430, 500); c.scale(s, s);
       poly(c, [0, -46, 30, -8, 12, -8, 12, 40, -12, 40, -12, -8, -30, -8]); fill(c, C4.red); c.restore(); plate(c, TEXT.pct, 590, 500, s, { s: 50, bg: '#F4F1EA', c: C4.red, ls: 2 }); plate(c, TEXT.pctL, 590, 578, s, { s: 26, bg: '#141733', c: '#F4F1EA', ls: 3 }) });   // v21.1: «за год»
-    if (a.amerQ) { const kp = at(t, a.amerQ - .12, a.amerQ + .15), out = ei(at(t, TL0 - 1.2, TL0 - .75)); if (kp > 0 && out < 1) S(() => plate(c, TEXT.part5, 540, 330 - 460 * out, bo(kp), { s: 58, bg: C4.red, c: '#FFFFFF', ls: 2 })) }
+    if (a.amerQ) { const kp = at(t, a.amerQ - .12, a.amerQ + .15), out = ei(at(t, TL0 - 1.2, TL0 - .75)); if (kp > 0 && out < 1) S(() => plate(c, TEXT.part5, 330, 520 - 680 * out, bo(kp), { s: 58, bg: C4.red, c: '#FFFFFF', ls: 2 })) }   // v21.2: «Часть 5 →» ниже и левее — не закрывает циферблат Биг-Бена
     if (a.shestn) { const kd = at(t, a.shestn - .1, a.shestn + .2) * (1 - at(t, a.net - .3, a.net)); if (kd > 0) S(() => { const v = Math.round(16 * eio(at(t, a.shestn, a.shestn + .9))); drum4(c, v >= 16 ? TEXT.price : '$' + v + ' МЛРД', 540, 330, kd, { s: 72, w: 440 }) });
       capS(c, TEXT.notob, 540, 330, at(t, a.tab + .05, a.tab + .3) * (1 - at(t, a.jAJ - .32, a.jAJ - .08)), { s: 56 }) }
   }

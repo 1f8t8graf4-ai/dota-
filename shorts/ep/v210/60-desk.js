@@ -149,10 +149,11 @@
   }
   const memoPin = P => [P.x + (Math.cos(P.r) * 320 + Math.sin(P.r) * 120) * P.s, P.y + (Math.sin(P.r) * 320 - Math.cos(P.r) * 120) * P.s];   // правый край записки — к нему привязана нить
   // ---------- Premier: пачка, сигарета с угольком, доллары, пепел, счётчик ----------
-  function premier4(c, x, y, s = 1) {
-    const w = 110 * s, h = 165 * s; c.save(); c.translate(x - w / 2, y - h / 2);
-    rasterPoly(c, [w, h * .1, w + h * .15, h * .2, w + h * .15, h * 1.06, w * .2, h * 1.06, 0, h], 'rgba(0,0,0,.32)', 8, 2.2);
-    PL(c, [-w * .16, h * .04, 0, 0, 0, h, -w * .16, h - h * .04], '#C3C9D4'); c.fillStyle = '#F7F7F4'; c.fillRect(0, 0, w, h);
+  function premier4(c, x, y, s = 1) {   // v21.2: пачка Premier в объёме — лицо, крыша, бок, растровая тень 35°
+    const w = 110 * s, h = 165 * s, d = w * .4, dx = d * .93, dy = -d * .37; c.save(); c.translate(x - w / 2, y - h / 2);
+    castDots(c, 4, h - 6, w + dx, 10, h * .55, { k: .9, col: 'rgba(0,0,0,.4)' });
+    PL(c, [w, 0, w + dx, dy, w + dx, h + dy, w, h], '#C3C9D4'); PL(c, [w, h * .3, w + dx, h * .3 + dy, w + dx, h * .51 + dy, w, h * .51], '#162C5E');
+    PL(c, [0, 0, dx, dy, w + dx, dy, w, 0], '#FFFFFF'); SL(c, [2, 0, w - 2, 0], 'rgba(0,0,0,.18)', 1.5); c.fillStyle = '#F7F7F4'; c.fillRect(0, 0, w, h);
     c.fillStyle = '#1E3A7A'; c.fillRect(0, h * .3, w, h * .21); c.fillStyle = '#C9A24A'; c.fillRect(0, h * .51, w, h * .025);
     tx(c, OBJ.premier, w / 2, h * .405, { f: 'P', w: 700, st: 'italic', s: w * .25, c: '#FFFFFF' }); tx(c, OBJ.rjs, w / 2, h * .74, { f: 'M', w: 800, s: w * .085, c: '#1E3A7A', mw: w * .84 });
     c.fillStyle = 'rgba(255,255,255,.7)'; c.fillRect(1, 2, 2, h - 4); c.restore();
@@ -177,9 +178,7 @@
     if (kb > 0 && burn < 1) { c.save(); c.translate(BILLH.x, BILLH.y); c.scale(bo(kb), bo(kb)); c.translate(-BILLH.x, -BILLH.y);
       c.beginPath(); c.ellipse(BILLH.x + 8, BILLH.y + 26, 90, 16, 0, 0, TAU); fill(c, 'rgba(6,8,20,.3)'); bills4(c, BILLH.x, BILLH.y, BILLH.w, BILLH.n, burn); c.restore();
       if (burn > 0) for (let i = 0; i < 3; i++) smokeLine(c, [BILLH.x - 40 + i * 40, BILLH.y - 60 + burn * 50, BILLH.x - 30 + i * 40 + Math.sin(t * 2 + i) * 14, BILLH.y - 150, BILLH.x - 50 + i * 40, BILLH.y - 250], 7, '#B9B6C4', .5 * Math.sin(Math.PI * burn)) }
-    ash4(c, BILLH.x, BILLH.y + 12, eo(at(t, a.sela + .3, a.doll + .1)) * (1 - eio(at(t, a.pat - .05, a.pat + .5))));
-    const kd = at(t, a.sela - .1, a.sela + .2) * (1 - at(t, a.pat - .3, a.pat)), v = Math.round(300 * eio(at(FT, a.sela, a.doll - .05)));
-    if (kd > 0) drum4(c, TEXT.fPrem(v), DRUMH.x, DRUMH.y, kd, { s: 56, w: 330, bg: '#141733' });
+    ash4(c, BILLH.x + BILLH.w * .42, BILLH.y + 20, eo(at(t, a.sela + .1, a.doll + .1)) * (1 - eio(at(t, a.pat - .05, a.pat + .5))));   // v21.2: пепел на столе — у обгоревшего края, не «аквариум» поверх купюр
   }
   // ---------- синий чертёж PATENT · R.J. Reynolds (без года) ----------
   const PBL = [-46, 8];   // лезвие нагревателя на чертеже (координаты листа)
@@ -211,18 +210,24 @@
     iqos4(c, IQH.x, IQH.y, IQH.L, { stick: 1, name: true, brand: true });
     journal4(c, t, JRH.x, JRH.y, 1, 1 - at(t, a.j + .3, a.reg));
     const kf = at(t, a.form - .05, a.form + .4), thin = eio(at(t, a.pomn - .1, a.pomn + .3));
-    if (kf > 0) { const f = eo(kf); c.save(); c.globalAlpha *= Math.min(1, kf * 3); formH(c, t, FORM.x + 40 * (1 - f), FORM.y - 220 * (1 - f), FORM.r - .25 * (1 - f), lp(1.3, 1, f), thin); c.restore() }
+    const fo = eio(at(t, a.reyn + .2, a.reyn + .95));   // v21.2: бланк FDA уезжает за край кадра — не лежит рядом с запиской и Premier
+    if (kf > 0 && fo < 1) { const f = eo(kf); c.save(); c.globalAlpha *= Math.min(1, kf * 3); formH(c, t, FORM.x + 40 * (1 - f) - 1100 * fo, FORM.y - 220 * (1 - f) + 160 * fo, FORM.r - .25 * (1 - f) - .35 * fo, lp(1.3, 1, f), thin); c.restore() }
     const kt = at(t, a.pomn - .05, a.pomn + .45), ko = 1 - at(t, a.svoi - .2, a.svoi + .3);   // красная нить от планки к записке, тянет её вправо
-    if (kt > 0 && ko > 0) { const P = memoPose(t), [mx, my] = memoPin(P), e = eio(kt), r = eio(at(t, a.reyn + .35, a.reyn + .85)), lx = lp(FORM.x - 180, mx, e), ly = lp(FORM.y + ROW2, my, e), rx = lp(lp(FORM.x + 190, 1500, e), mx, r), ry = lp(lp(FORM.y + ROW2, my - 160, e), my, r);   // v21.1: хвост нити втягивается в записку — нить не уходит в пустоту
+    if (kt > 0 && ko > 0) { const P = memoPose(t), [mx, my] = memoPin(P), e = eio(kt), r = eio(at(t, a.reyn + .35, a.reyn + .85)), rl = eio(at(t, a.reyn - .05, a.reyn + .4)), lx = lp(lp(FORM.x - 180, mx, e), mx, rl), ly = lp(lp(FORM.y + ROW2, my, e), my, rl), rx = lp(lp(FORM.x + 190, 1500, e), mx, r), ry = lp(lp(FORM.y + ROW2, my - 160, e), my, r);   // v21.1: хвост нити втягивается в записку; v21.2: левый конец тоже уходит в записку — обрубка нет
       c.save(); c.globalAlpha *= ko; c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 5; c.beginPath(); c.moveTo(lx + 3, ly + 6); c.lineTo(rx + 3, ry + 6); c.stroke(); c.strokeStyle = '#dc2626'; c.lineWidth = 5; c.beginPath(); c.moveTo(lx, ly); c.lineTo(rx, ry); c.stroke();
-      if (e > .6) circ(c, lx, ly, 7, '#dc2626'); c.restore() }
+      if (e > .6 && rl < .9) circ(c, lx, ly, 7, '#dc2626'); c.restore() }
     premierScene(c, t);
     lampH(c);
+  }
+  function deskPlates(c, t) {   // v21.2: счётчик −$… МЛН — по экрану, как счётчики строки 14: цифры по времени кадра, без размытия
+    const a = TH, kd = at(t, a.sela - .1, a.sela + .2) * (1 - at(t, a.pat - .3, a.pat)), v = Math.round(300 * eio(at(FT, a.sela, a.doll - .05)));
+    if (kd > 0) { c.save(); c.setTransform(1, 0, 0, 1, 0, 0); drum4(c, TEXT.fPrem(v), 540, 1430, kd, { s: 64, w: 400, bg: '#141733' }); c.restore() }
   }
   function deskShot(c, t) {
     const q = camObj(camAt(KH, t));
     layerRel(c, q, RH, .38, cc => fdaFar(cc, t));
     layer(c, q, 1, cc => { deskWorld(cc, t, q); usMapWorld(cc, t, true) });
     layerRel(c, q, RH, 1.12, cc => A(cc, 1 - at(Math.log(q.z), .5, .9), () => lampBeam(cc, t)));
+    deskPlates(c, t);
     return q;
   }
