@@ -56,10 +56,19 @@
     for (const ch of s) { const w = cw(ch); if (ch !== ' ') c.fillText(ch, px + w / 2, y); pos.push(px + w / 2); px += w }
     c.restore(); return pos;
   }
+  // 22.11: перевод длиннее русского — плашка не вылезает за край кадра (у края держится так же, как русская; русский ролик не меняется)
+  function l10nNudge(c, s, to, fs, x, y, w, h, r, k) {
+    const L = window.L10N; if (!L || L.lang === 'ru' || c.canvas.width !== WW || c.canvas.height !== HH) return 0;
+    L.off = 1; const w0 = tw(c, s, to) + fs * 1.3; L.off = 0; if (w <= w0 + .5) return 0;
+    const m = c.getTransform(), sc = Math.hypot(m.a, m.b) || 1, sx = m.a * x + m.c * y + m.e, cr = Math.abs(Math.cos(r)), sr = Math.abs(Math.sin(r));
+    const hw = (w / 2 * cr + h / 2 * sr) * sc * k, hw0 = (w0 / 2 * cr + h / 2 * sr) * sc * k, M = 40, R = Math.max(WW - M, sx + hw0), Lf = Math.min(M, sx - hw0);
+    let d = 0; if (sx + hw > R) d = R - (sx + hw); else if (sx - hw < Lf) d = Lf - (sx - hw);
+    return d / sc;
+  }
   function plate(c, s, x, y, k, o = {}) {   // плашка по тексту
     if (k <= 0) return;
     const fs = o.s || 34, to = { s: fs, ls: o.ls ?? 2, w: o.w || 800, f: o.f || 'M' }, w = tw(c, s, to) + fs * 1.3, h = fs * 1.9;
-    c.save(); c.translate(x, y); if (o.r) c.rotate(o.r); c.scale(k, k); c.globalAlpha *= o.a ?? 1;
+    c.save(); c.translate(x + l10nNudge(c, s, to, fs, x, y, w, h, o.r || 0, k), y); if (o.r) c.rotate(o.r); c.scale(k, k); c.globalAlpha *= o.a ?? 1;
     if (o.sh !== false) { rr(c, -w / 2 + 6, -h / 2 + 9, w, h, o.rad ?? h * .24); fill(c, 'rgba(0,0,0,.28)') }
     rr(c, -w / 2, -h / 2, w, h, o.rad ?? h * .24); fill(c, o.bg || '#fff');
     if (o.bd) { rr(c, -w / 2, -h / 2, w, h, o.rad ?? h * .24); stroke(c, o.bd, 3) }

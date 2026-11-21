@@ -155,17 +155,80 @@ def build_dict():
 
 
 def build_md():
-    names = {'v170a': 'Глава 1 «Боб» — шортс', 'v170e': 'Глава 1 «Боб» — фильм (мостик в главу 2)', 'v191s': 'Глава 2 «Лёд» — шортс',
-             'v191y': 'Глава 2 «Лёд» — фильм (мостик в главу 3)', 'v200s': 'Глава 3 «Мальборо» — шортс', 'v200y': 'Глава 3 «Мальборо» — фильм'}
-    L = ['# Главы 1–3 на английском и немецком — тексты', '', 'Собрано `python3 l10n/build.py` из `l10n/data.py`. Годятся и для озвучки, и для проверки.', '']
-    for ep in EPS:
-        T = json.load(open(os.path.join(ROOT, 'tl', ep + '-ru.json')))
-        L += ['## ' + names[ep], '']
-        for lang, col in (('en', 0), ('de', 1)):
-            L += ['**' + lang.upper() + '**', '']
-            L += ['- ' + SENT[s['text']][col].replace(' | ', ' ').replace('|', '') for s in T['sent']]
-            L.append('')
+    """22.11: один файл на проверку — текст диктора глав 1–5 и финала (RU / EN / DE по строкам) и все надписи в кадре по главам"""
+    import subprocess
+    from data45 import CH3_Q, CH4, CH5, FIN
+    tl = lambda ep: json.load(open(os.path.join(ROOT, 'tl', ep + '-ru.json')))['sent']
+    def rows(ep, drop=(), only=None, tr=None):
+        out = []
+        for s_ in tl(ep):
+            sc = s_['scene']
+            if sc in drop or (only and sc not in only): continue
+            en, de = (tr[sc] if tr else SENT[s_['text']])
+            out.append((s_['text'], en.replace(' | ', ' ').replace('|', ''), de.replace(' | ', ' ').replace('|', '')))
+        return out
+    CH = [
+        ('Глава 1 «Боб» · 1979 · Соль', rows('v170e'), rows('v170a'), ''),
+        ('Глава 2 «Лёд» · 2020 · Лазейка одноразок', rows('v191y'), rows('v191s'), ''),
+        ('Глава 3 «Мальборо» · 1924', rows('v200y', drop=('s13', 's14')), rows('v200s', drop=('s13', 's14', 'q')) + [(CH3_Q[0],) + CH3_Q[1]],
+         'Новая концовка (22.11): строк 13–14 про «третью жизнь» и нагреватель больше нет — фильм кончается строкой 12 и уходит на доску к карточке 2014, '
+         'шортс — вопросом про обещание (голос уже записан). Ролики главы 3 (RU, EN, DE) под новую концовку ещё не пересобраны.'),
+        ('Глава 4 «Айкос» · 2014 · Нагреватели', rows('v210y', tr=CH4), rows('v210s', tr=CH4), ''),
+        ('Глава 5 «Снюс» · 2022', rows('v220y', drop=('f1', 'f2', 'f3', 'f4'), tr=CH5), rows('v220s', tr=CH5),
+         'Строка 3 адаптирована: «у нас» (в России) → «многие».'),
+    ]
+    L = ['# Главы 1–5 и финал на английском и немецком — тексты на проверку', '',
+         'Собрано `python3 l10n/build.py`: голос глав 1–3 — `l10n/data.py`, глав 4–5 и финала — `l10n/data45.py`, надписи — словари роликов.',
+         'Голос EN и DE ещё не записан: сначала проверка.', '',
+         '- **Часть 1** — текст диктора: фильм целиком по строкам (RU → EN → DE), у шортса — только то, чем он отличается.',
+         '- **Часть 2** — все надписи в кадре по главам: RU → EN → DE.',
+         '- Немецкий — на «ihr», кавычки „…“, тире –. Правки проверки 22.11 внесены, Kartusche → Pod.', '',
+         '# Часть 1. Текст диктора', '']
+    def block(n, r):
+        return ['**%s.** %s' % (n, r[0]), '', '- EN: ' + r[1], '- DE: ' + r[2], '']
+    for name, film, short, note in CH:
+        L += ['## ' + name, '']
+        if note: L += ['> ' + note, '']
+        L += ['### Фильм', '']
+        fset = {r[0] for r in film}; sset = {r[0] for r in short}
+        for n, r in enumerate(film, 1):
+            b = block(n, r)
+            if r[0] not in sset: b[0] += ' *(только в фильме)*'
+            L += b
+        common = [i for i, r in enumerate(short) if r[0] in fset]
+        head = [r for i, r in enumerate(short) if r[0] not in fset and (not common or i < common[0])]
+        tail = [r for i, r in enumerate(short) if r[0] not in fset and common and i > common[-1]]
+        L += ['### Шортс — отличия от фильма', '']
+        if not head and not tail: L += ['Тот же текст, что в фильме, без строк *только в фильме*.', '']
+        if head:
+            L += ['**Начало шортса:**', '']
+            for n, r in enumerate(head, 1): L += block('Ш' + str(n), r)
+        if tail:
+            L += ['**Концовка шортса** (после строки «%s»):' % short[common[-1]][0], '']
+            for n, r in enumerate(tail, 1): L += block('Ш' + str(len(head) + n), r)
+    L += ['## Финал фильма (после главы 5)', '']
+    for n, r in enumerate(rows('v220y', only=('f1', 'f2', 'f3', 'f4'), tr=FIN), 1): L += block(n, r)
+    # ---------- надписи ----------
+    L += ['# Часть 2. Надписи в кадре', '', 'Названия марок и изданий (Marlboro, Philip Morris, JUUL, IQOS, ZYN, FDA, The Times…) — латиницей во всех языках, их тут нет.', '']
+    def table(rs):
+        return ['| RU | EN | DE |', '|---|---|---|'] + ['| %s | %s | %s |' % tuple(x.replace('|', '/') for x in r) for r in rs] + ['']
+    seen = set()
+    for name, eps in (('Глава 1 «Боб»', ['v170e']), ('Глава 2 «Лёд»', ['v191s', 'v191y']), ('Глава 3 «Мальборо»', ['v200s', 'v200y'])):
+        rs = []
+        for ep in eps:
+            pth = os.path.join(ROOT, 'out', ep + '-en', 'texts.json')
+            if not os.path.exists(pth): continue
+            for k in json.load(open(pth)):
+                if k in STR and k not in seen and STR[k][0] is not None: seen.add(k); rs.append((k,) + tuple(STR[k]))
+        L += ['## ' + name, '', 'Повторы из прошлых глав не дублирую.', ''] + table(rs)
+    D = json.loads(subprocess.check_output(['node', os.path.join(HERE, 'dicts45.js')]))
+    for name, ch in (('Глава 4 «Айкос»', 'ch4'), ('Глава 5 «Снюс» и финал', 'ch5')):
+        t = [(r['ru'], r['en'], r['de']) for r in D[ch]['rows'] if r['src'] == 'TEXT']
+        o = [(r['ru'], r['en'], r['de']) for r in D[ch]['rows'] if r['src'] == 'OBJ']
+        L += ['## ' + name, '', '**Плашки и подписи:**', ''] + table(t)
+        if o: L += ['**Надписи на предметах** (газета, журнал, патент, карта):', ''] + table(o)
     open(os.path.join(HERE, 'тексты-EN-DE.md'), 'w').write('\n'.join(L))
+    print('l10n/тексты-EN-DE.md: строк', len(L))
 
 
 def build_srt():

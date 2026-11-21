@@ -10,7 +10,7 @@
   const CYR = /[А-Яа-яЁё]/;
   const norm = s => s.replace(/ /g, ' ').replace(/\s+/g, ' ').trim();
   window.L10N = {
-    lang: 'ru',
+    lang: 'ru', off: 0,   // off — на время замера русской строки (плашка держится у края кадра так же, как русская)
     tr: s => s,
     install(lang) {
       const D = (window.L10N_DICT || {})[lang]; if (!D || this.lang === lang) return !!D;
@@ -22,8 +22,8 @@
       const NUMF = { en: x => x.replace(/(\d),(\d)/g, '$1.$2').replace(/(\d) %/g, '$1%').replace(/(\d) (?=\d{3}(?!\d))/g, '$1,'),
         de: x => x.replace(/(\d) (?=\d{3}(?!\d))/g, '$1.') }[lang] || (x => x);
       const tr = s => {
-        if (typeof s !== 'string') return s;
-        if (!CYR.test(s)) return /\d/.test(s) ? NUMF(s) : s;
+        if (typeof s !== 'string' || this.off) return s;
+        if (!CYR.test(s)) { const n0 = norm(s); if (exact.has(n0)) return s.match(/^\s*/)[0] + exact.get(n0) + s.match(/\s*$/)[0]; return /\d/.test(s) ? NUMF(s) : s }   // 22.11: латинские штампы тоже по словарю (SECRET → GEHEIM)
         const hit = cache.get(s); if (hit !== undefined) return hit;
         const n = norm(s), lead = s.match(/^\s*/)[0], tail = s.match(/\s*$/)[0];
         let out = exact.has(n) ? exact.get(n) : null;

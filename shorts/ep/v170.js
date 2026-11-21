@@ -174,10 +174,19 @@
   }
   const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   // плашка: ширина по тексту + поля, текст никогда не режется
+  // 22.11: перевод длиннее русского — плашка не вылезает за край кадра (у края держится так же, как русская; русский ролик не меняется)
+  function l10nNudge(c, s, to, fs, x, y, w, h, r, k) {
+    const L = window.L10N; if (!L || L.lang === 'ru' || c.canvas.width !== WW || c.canvas.height !== HH) return 0;
+    L.off = 1; const w0 = tw(c, s, to) + fs * 1.3; L.off = 0; if (w <= w0 + .5) return 0;
+    const m = c.getTransform(), sc = Math.hypot(m.a, m.b) || 1, sx = m.a * x + m.c * y + m.e, cr = Math.abs(Math.cos(r)), sr = Math.abs(Math.sin(r));
+    const hw = (w / 2 * cr + h / 2 * sr) * sc * k, hw0 = (w0 / 2 * cr + h / 2 * sr) * sc * k, M = 40, R = Math.max(WW - M, sx + hw0), Lf = Math.min(M, sx - hw0);
+    let d = 0; if (sx + hw > R) d = R - (sx + hw); else if (sx - hw < Lf) d = Lf - (sx - hw);
+    return d / sc;
+  }
   function plate(c, s, x, y, k, o = {}) {
     if (k <= 0) return;
     const fs = o.s || 34, to = { s: fs, ls: o.ls ?? 4, w: o.w || 800, f: o.f || 'M' }, w = tw(c, s, to) + fs * 1.3, h = fs * 1.9;
-    c.save(); c.translate(x, y); if (o.r) c.rotate(o.r); c.scale(k, k);
+    c.save(); c.translate(x + l10nNudge(c, s, to, fs, x, y, w, h, o.r || 0, k), y); if (o.r) c.rotate(o.r); c.scale(k, k);
     if (o.sh !== false) { rr(c, -w / 2 + 8, -h / 2 + 10, w, h, o.rad ?? h * .22); fill(c, o.shc || 'rgba(20,25,53,.28)') }
     rr(c, -w / 2, -h / 2, w, h, o.rad ?? h * .22); fill(c, o.bg || C.white);
     tx(c, s, 0, fs * .04, { ...to, c: o.c || C.ink });
@@ -6995,7 +7004,7 @@
       if (!document.getElementById('v162')) { const st = document.createElement('style'); st.id = 'v162'; st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join(''); document.head.appendChild(st) }
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
       X = cv.getContext('2d'); MA = MB = null; CORK = null; OFF = null; for (const k in BLUR) delete BLUR[k];
-      if (BRIDGE && !IMG18) { IMG18 = new Image(); IMG18.src = 'ep/v190-f0.png' }   // v19.0 (17.11): кадр 0 выпуска 2 v19.0 «Боб 2.0» (глыба льда, без плашки года); было ep/v180-f0.png (v18.1) — снять заново, если выпуск 2 поменялся: node v170tools/frame.mjs v180s-ru 0 ep/v180-f0.png
+      if (BRIDGE && !IMG18) { IMG18 = new Image(); IMG18.src = 'ep/v190-f0' + (LANG !== 'ru' ? '-' + LANG : '') + '.png' }   // 22.11: у EN/DE — свой кадр 0 главы 2 (надписи по языку): node v170tools/frame.mjs v191y-de 0 ep/v190-f0-de.png   // v19.0 (17.11): кадр 0 выпуска 2 v19.0 «Боб 2.0» (глыба льда, без плашки года); было ep/v180-f0.png (v18.1) — снять заново, если выпуск 2 поменялся: node v170tools/frame.mjs v180s-ru 0 ep/v180-f0.png
       return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px "Liberation Serif"'].map(f => document.fonts.load(f, 'АЯaz09')).concat(BRIDGE ? [IMG18.decode()] : [])).then(() => { qLayout(X); return 0 });
     },
   };
