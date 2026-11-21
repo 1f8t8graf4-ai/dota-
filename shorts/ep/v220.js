@@ -2052,7 +2052,7 @@
     const a = T8; a.flip0 = a.perev - .1; a.flip1 = a.dosku + .9; a.fade0 = a.vEnd + .05; a.fade1 = a.vEnd + 1.1;
     const k7 = K7[K7.length - 1];
     KF = [k7, KY(a.tak, 540, 565, .87), KY(a.bros + .3, 540, 620, .97), KY(a.flip0, 540, 640, .92), KY(a.flip1, 540, 700, .88), KY(a.gig + .3, 540, 1040, .9),
-      KY(a.zmeya + .1, 540, 1110, .88), KY(a.hvost + .4, 540, TC.y, .85), KY(a.end, 540, TC.y, .85)];
+      KY(a.zmeya + .1, 540, 1110, .88), KY(a.hvost + .4, 540, TC.y - 10, .86), KY(a.vEnd, 540, TC.y - 55, .93), KY(a.end, 540, TC.y - 90, 1.02)];   // до конца медленный наезд на змею — кадр не стоит
   }
   function titleStrip5(c, t, k, a = 1) {   // тёмная полоса над доской, маркер пишет название
     if (k <= 0 && a >= 1) { } const w = 1060, x0 = 540 - w / 2, y0 = -90;
