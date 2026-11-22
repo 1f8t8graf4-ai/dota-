@@ -6,7 +6,8 @@
   };
   const LAB_L = { ru: ['УПАКОВКА', 'ВКУС', 'ОБЕЩАНИЯ'], en: ['PACKAGING', 'FLAVORS', 'PROMISES'], de: ['VERPACKUNG', 'GESCHMACK', 'VERSPRECHEN'] };
   const STAMP_L = { ru: 'СПОСОБ БРОСИТЬ', en: 'A WAY TO QUIT', de: 'ZUM AUFHÖREN' };
-  let VAR = 'A';
+  let VAR = 'A', FILM = false;   // v23.4: FILM — пролог для фильма на YouTube (v231f): без корпуса одноразки и без кадра главы 1 в конце
+  const TTL_L = { ru: ['01', 'ОДНОРАЗКИ'], en: ['01', 'DISPOSABLES'], de: ['01', 'EINWEG-VAPES'] };
   const ORDA = ['cig', 'pod', 'heat', 'ice', 'tin'];   // v23.2: A — сигареты · «Джул» · айкос · одноразки · снюс (как карточки доски: 1924 · 1979 · 2014 · 2020 · 2022)
   // [фраза, № слова] — A: см. ниже;
   //                     B: «Сигареты. «Джул». Одноразки. Айкос. Снюс.» / «И каждый раз — «способ бросить».» / «Угадаете, кто стоит за всеми пятью?»
@@ -29,5 +30,10 @@
     }
     k.dive0 = Math.max(k.zip + .95, TE - 1.05); k.dive1 = k.TE1;     // нырок кончается ровно на последнем кадре
     k.suck0 = k.grow + .35; k.suck1 = Math.max(k.suck0 + .4, Math.min(k.zip + .3, k.dive0 - .3));   // v23.3: капля поднимается к щели окна и втягивается (окно не открываем)
+    if (FILM) {   // v23.4: капля → золотая точка → титр «01 · ОДНОРАЗКИ», бит гаснет на низком ударе, темнота, дальше — ночной город главы 1 (наплывом при склейке)
+      const s5 = TLS.find(x => x.scene === 's5'), wl = s5.words[s5.words.length - 1];
+      k.dive0 = 1e9; k.TE1 = TE + 1; k.suck0 = k.grow + .9; k.suck1 = k.grow + 1.3;
+      k.ttl = WA(['s5', 3]) - .15; k.hit = wl.b + .07; k.tOut = TE - .95; k.blk = [TE - .8, TE - .4];
+    }
     return k;
   }

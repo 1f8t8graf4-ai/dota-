@@ -304,10 +304,41 @@
     const r = CORE_R * (1 - .3 * eo(at(t, K.grow - .05, K.grow + .2))) * (1 - eio(at(t, K.suck1 - .24, K.suck1)));
     if (r > .4) { c.save(); c.translate(DEV0.x, y); c.scale(1 - .16 * sp, 1 + .34 * sp); drop(c, 0, 0, r, hb, 0, 0); c.restore() }   // тянется вверх кончиком
   }
+  // ---------- v23.4, фильм на YouTube: капля выдыхает пар и сжимается в золотую точку — это точка в титре «01 · ОДНОРАЗКИ»; дымка, темнота ----------
+  function vapor(c, t, x, y) {   // пар уходит вверх от капли, пока она сжимается; потом — тонкая дымка поперёк кадра
+    for (let i = 0; i < 11; i++) {   // много слабых клубов — тянутся вверх и расходятся (один яркий читался серым шаром)
+      const t0 = K.grow + .05 + i * .08, u = (t - t0) / 2.3; if (u <= 0 || u >= 1) continue;
+      const e = eo(u), px = x + (i % 2 ? 1 : -1) * (20 + 9 * i) * e + 26 * Math.sin(i * 1.7 + u * 3), py = y - 20 - (260 + 14 * i) * e;
+      glow(c, px, py, 30 + (150 + 8 * i) * e, '#dfe7f2', .055 * Math.sin(Math.PI * Math.min(1, u * 1.4)) * (1 - u));
+    }
+    const hz = at(t, K.ttl, K.ttl + 1.2); if (hz <= 0) return;
+    for (let i = 0; i < 5; i++) {   // дымка едет вбок — её подхватит наплыв в ночной город
+      const xx = 540 + ((i * 260 + 70 * t + i * i * 40) % 1400) - 700, yy = 760 + 170 * i + 30 * Math.sin(t * .7 + i);
+      glow(c, xx, yy, 300 + 60 * (i % 3), '#cfd9e8', .055 * hz);
+    }
+  }
+  function filmEnd(c, t, hb) {
+    const L = TTL_L[LANG] || TTL_L.ru, o = { f: 'M', w: 700, s: 58, ls: 13 };
+    const sh = eio(at(t, K.grow, K.grow + .85)), e = eo(at(t, K.ttl, K.ttl + .75)), out = 1 - eio(at(t, K.tOut, K.tOut + .45));
+    const wl = tw(c, L[0], o), wr = tw(c, L[1], o), gap = 44, cx = 540 + lp(0, (wl - wr) / 2, e), cy = 980 + 4 * Math.sin(TAU * t / 3.3) * (1 - sh);
+    vapor(c, t, cx, cy);
+    if (out <= 0) return;
+    c.save(); c.globalAlpha *= out;
+    const r = CORE_R * lp(1, .24, sh);   // капля сжимается в точку — свет её тоже уходит
+    drop(c, cx, cy, r, hb * (1 - sh), 0, 1 - sh);
+    if (e > 0) {   // «01» выходит из точки влево, «ОДНОРАЗКИ» — вправо
+      const xl = cx - lp(0, gap + wl / 2, e), xr = cx + lp(0, gap + wr / 2, e);
+      tx(c, L[0], xl, cy + 2, { ...o, c: '#F4F1EA', a: e });
+      tx(c, L[1], xr, cy + 2, { ...o, c: '#F4F1EA', a: e });
+      const lw = (wl + wr + 2 * gap) * eo(at(t, K.ttl + .35, K.ttl + 1.1));   // тонкая золотая черта под титром
+      if (lw > 1) { const mx = cx - (wl - wr) / 2; c.beginPath(); c.moveTo(mx - lw / 2, cy + 58); c.lineTo(mx + lw / 2, cy + 58); lnB(c, 2, 'rgba(234,194,122,.75)') }
+    }
+    c.restore();
+  }
   // ---------- камера (как v23.0): медленный наезд, в конце — нырок в корпус = кадр главы 1 ----------
   const ZS1 = 1 / S0, P1 = { x: DEV0.x + S0 * (CX - DEVC.x), y: DEV0.y + S0 * (CY - DEVC.y) };
   const FZ = { x: (CX - ZS1 * P1.x) / (1 - ZS1), y: (CY - ZS1 * P1.y) / (1 - ZS1) }, VS = .004;
-  function camZ(t) { return VS * t + (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1)) }
+  function camZ(t) { return VS * t + (FILM ? 0 : (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1))) }
   function shutters() {   // окна размытия движения: въезды и падения предметов, ряд, стягивание в каплю
     const o = [];
     if (VAR === 'A') { o.push([0, .45]); K.form.forEach(tf => o.push([tf - .16, tf + .32])); o.push([K.row - .1, K.row + .35]) }
@@ -320,7 +351,7 @@
     c.save(); liveCam1(c, t1);
     c.save(); cam(c, s, px, py);
     if (VAR === 'A') sceneA(c, t, hb, fl); else sceneB(c, t, hb, fl);
-    if (t >= K.grow - .06) deviceShot(c, t, t1, hb);
+    if (t >= K.grow - .06) { if (FILM) filmEnd(c, t, hb); else deviceShot(c, t, t1, hb) }
     c.restore();
     title(c, t, [-1], VAR === 'A' ? K.s2 : K.back);   // титул чёткий с первого кадра (ТЗ: «без чёрного экрана с точкой» — сразу крючок)
     c.restore();

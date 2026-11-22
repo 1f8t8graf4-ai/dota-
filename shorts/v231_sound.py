@@ -15,19 +15,20 @@ from v180_sound import sfx_track
 import mix193 as M, v210_sound as V2, bedfill
 SR = V.SR
 C1 = os.path.join(HERE, 'out', 'v170e-ru')
+TAILF, XF = 1.5, .5   # v23.4, фильм: хвост звука пролога под главу 1; наплыв картинки
 
 
-def ch1_gains():   # → (подложка главы 1 на старте / нарезанный грув, множитель громкости её финала — mix193.final)
+def ch1_gains(bedf='bed226.wav'):   # → (подложка главы 1 на старте / нарезанный грув, множитель громкости её финала — mix193.final); фильм — bed234f.wav
     T = json.load(open(os.path.join(C1, 'timeline.json'))); dur = np.ceil(T['dur'] * 30) / 30
     seq = list(range(40))
     while len(seq) < int(np.ceil(dur / M.BAR)) + 1: seq += list(range(20, 40))
     raw = bedfill.fill(V2.bed_from(V2.old_bed(), dur, 1.4, seq), SR)
-    bed, _ = sf.read(os.path.join(C1, 'bed226.wav'), dtype='float64'); w = slice(int(.02 * SR), int(.2 * SR))
-    k_bed = np.sqrt((bed[w] ** 2).mean() / (raw[w] ** 2).mean())
+    bed, _ = sf.read(os.path.join(C1, bedf), dtype='float64'); w = slice(int(.02 * SR), int(.2 * SR))
+    k_bed = np.sqrt((bed[w] ** 2).mean() / max(1e-12, (raw[w] ** 2).mean()))
     tmp = os.path.join(C1, 'raw_probe.wav')
     f = ['[0:a]aresample=48000,aformat=channel_layouts=stereo,acompressor=threshold=0.06:ratio=3.5:attack=4:release=120:makeup=2.5,treble=g=-3:f=7000[voc]',
          '[1:a]aformat=channel_layouts=stereo,highpass=f=35[md]', '[2:a]lowpass=f=7500,highpass=f=40[sx]', f'[voc][md][sx]amix=inputs=3:normalize=0,apad,atrim=0:{dur:.3f}[m]']
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(C1, 'voice.wav'), '-i', os.path.join(C1, 'bed226.wav'), '-i', os.path.join(C1, 'sfx226.wav'),
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(C1, 'voice.wav'), '-i', os.path.join(C1, bedf), '-i', os.path.join(C1, 'sfx226.wav'),
                     '-filter_complex', ';'.join(f), '-map', '[m]', '-ar', '48000', '-c:a', 'pcm_s16le', tmp], check=True)
     L, _ = tt_audio._lufs(tmp); os.remove(tmp)
     return k_bed, 10 ** ((-12.5 - L) / 20)
@@ -56,7 +57,27 @@ def speech_rms(y, sr):   # громкость речи (окна по 50 мс, �
     h = int(.05 * sr); n = len(y) // h; e = np.sqrt((y[:n * h].reshape(n, h) ** 2).mean(1)); e = np.sort(e)[int(n * .4):]; return np.sqrt((e ** 2).mean())
 
 
-def voice(o, n):   # голос пролога → как голос главы 1 в её финале (уровень речи, компрессор, тембр, множитель громкости)
+def preroll_film(n, K):   # v23.4, фильм: тот же грув пролога раскрывается с «Начнём», на низком ударе (K['hit'], сильная доля такта) гаснет за ~1,3 с
+    g = ch1_gain(); src = V2.old_bed(); B = M.BAR
+    seg = bedfill.fill(V2.bed_from(src, 3 * B + .01, .002, [17, 18, 19]), SR) * g
+    i0 = int(round((K['hit'] - 2 * B) * SR)); t = (np.arange(len(seg)) + i0) / SR; h = K['hit']
+    k = np.clip((t - (K['grow'] - .15)) / (h - (K['grow'] - .15)), 0, 1); d = np.clip((t - h) / 1.25, 0, 1)
+    fc = np.where(t < h, 180 * (18000 / 180) ** (k ** 1.6), 18000 * (260 / 18000) ** d)
+    gain = np.where(t < h, k ** 1.8, np.exp(-(t - h) / .42) * (1 - d))
+    y = V.lowpass_tv(seg, fc) * gain[:, None]
+    out = np.zeros((n, 2)); j0, j1 = max(0, i0), min(n, i0 + len(y)); out[j0:j1] = y[j0 - i0:j1 - i0]; return out
+
+
+def rain(L, rise=1.0, fall=1.3, db=-31.):   # мягкий дождь: шум 900–7000 Гц и редкие капли; вступает за rise с, к концу гаснет за fall с
+    rng = np.random.default_rng(234); t = np.arange(L) / SR; z = rng.standard_normal((L, 2))
+    F = np.fft.rfft(z, axis=0); fr = np.fft.rfftfreq(L, 1 / SR)[:, None]; F *= np.exp(-((np.log(fr + 1) - np.log(2600)) ** 2) / .9); x = np.fft.irfft(F, L, axis=0)
+    x /= np.sqrt((x ** 2).mean()); x *= 10 ** (db / 20) * (1 + .15 * np.sin(2 * np.pi * .7 * t))[:, None]
+    for _ in range(int(L / SR * 9)):   # капли
+        i = rng.integers(0, L - 2000); d = V.click(.004, .7) * rng.uniform(.004, .012); x[i:i + len(d), rng.integers(0, 2)] += d
+    env = np.minimum(1, t / rise) * np.clip((t[-1] - t) / fall, 0, 1); return x * env[:, None]
+
+
+def voice(o, n, bedf='bed226.wav'):   # голос пролога → как голос главы 1 в её финале (уровень речи, компрессор, тембр, множитель громкости)
     vp = os.path.join(o, 'voice.wav')
     if not os.path.exists(vp): return np.zeros((n, 2)), np.zeros(n)
     y, sr = sf.read(vp, dtype='float64'); y = y if y.ndim == 1 else y.mean(1); c, sr1 = sf.read(os.path.join(C1, 'voice.wav'), dtype='float64'); c = c if c.ndim == 1 else c.mean(1)
@@ -64,7 +85,7 @@ def voice(o, n):   # голос пролога → как голос главы 
     pr = os.path.join(o, 'snd', 'voice_pr.wav')
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', tmp, '-af', 'aresample=48000,aformat=channel_layouts=stereo,acompressor=threshold=0.06:ratio=3.5:attack=4:release=120:makeup=2.5,treble=g=-3:f=7000',
                     '-c:a', 'pcm_f32le', pr], check=True)
-    v, _ = sf.read(pr, dtype='float64'); os.remove(tmp); v = np.concatenate([v, np.zeros((max(0, n - len(v)), 2))])[:n] * ch1_gains()[1]
+    v, _ = sf.read(pr, dtype='float64'); os.remove(tmp); v = np.concatenate([v, np.zeros((max(0, n - len(v)), 2))])[:n] * ch1_gains(bedf)[1]
     h = int(.02 * SR); m = len(v) // h; e = np.sqrt((v[:m * h].reshape(m, h, 2) ** 2).mean(axis=(1, 2)))
     act = np.repeat((e > .02).astype(float), h); act = np.concatenate([act, np.zeros(n - len(act))])
     k = np.exp(-1 / (.18 * SR)); a = np.copy(act)   # плавно: подъём и спад ≈ 0,2 с
@@ -96,29 +117,48 @@ def styk(o, TE, mw, sec):   # пролог + первые sec с главы 1 (�
 
 def build(ep):
     o = os.path.join(HERE, 'out', ep); od = os.path.join(o, 'snd'); os.makedirs(od, exist_ok=True)
-    T = json.load(open(os.path.join(o, 'timeline.json'))); TE = T['dur']; n = int(round(TE * SR))
+    T = json.load(open(os.path.join(o, 'timeline.json'))); TE = T['dur']; FILM = ep.startswith('v231f')
+    n = int(round((TE + (TAILF if FILM else 0)) * SR))   # фильм: хвост удара и дождь заходят под наплыв в главу 1
     C = json.load(open(os.path.join(o, 'cues.json')))
     fl = next(c[0] for c in C if c[1] == 'drop') + .03
     K = {'TE': TE, 'crack': fl - .5, 'flare': fl, 'grow': next(c[0] for c in C if c[1] == 'sub') + .06}
+    if FILM: K['hit'] = next(c[0] for c in C if c[1] == 'hit')
     buf = np.zeros((n + SR, 2))
-    V.put(buf, V.drone(n, K), 0, .2)
+    V.put(buf, V.drone(int(round(TE * SR)), K), 0, .2)
     for t0, nm, g0, pan in C:
         if nm == 'hb': V.put(buf, V.thump(92, 46, .32, .11), t0, .5 * g0); V.put(buf, .55 * V.thump(80, 44, .3, .1), t0 + .19, .5 * g0); V.put(buf, V.click(.003), t0, .07 * g0)
         elif nm == 'drop': V.put(buf, V.thump(120, 31, 1.8, .75), t0, .75); V.put(buf, V.click(.02, .3), t0, .16)
         elif nm == 'land': V.put(buf, V.thump(78, 40, .55, .14), t0, .55 * g0)
-        elif nm == 'sub': ts = next(c[0] for c in C if c[1] == 'steam'); V.put(buf, sub_rise(ts - t0), t0, .42 * g0)
+        elif nm == 'sub': ts = next(c[0] for c in C if c[1] == 'steam' and c[0] > t0 + .5); V.put(buf, sub_rise(ts - t0), t0, .42 * g0)
+        elif nm == 'hit': V.put(buf, V.thump(66, 28, 2.6, .75), t0, .85 * g0); V.put(buf, V.click(.02, .3), t0, .08)   # низкий удар — бит на нём гаснет
+        elif nm == 'rain': r = rain(n - int(t0 * SR)); buf[int(t0 * SR):int(t0 * SR) + len(r)] += r * g0
         elif nm == 'steam': V.put(buf, steam(), t0, .1 * g0, .05)
-    SYN = ('hb', 'drop', 'land', 'sub', 'steam')
+    SYN = ('hb', 'drop', 'land', 'sub', 'steam', 'hit', 'rain')
     sfx = sfx_track([c for c in C if c[1] not in SYN], TE + 1); buf[:len(sfx)] += 1.7 * sfx[:len(buf)]
-    v, act = voice(o, n)
+    v, act = voice(o, n, 'bed234f.wav' if FILM else 'bed226.wav')
     x = np.tanh(buf[:n] * 1.4) / 1.4 * (1 - .29 * act)[:, None] + v   # гул и звуки под голосом — на 3 дБ тише
-    x += preroll(n, K) + riser(n)
+    x += preroll_film(n, K) if FILM else preroll(n, K) + riser(n)
     f = int(.003 * SR); x[-f:] *= np.linspace(1, 0, f)[:, None]
     mw = os.path.join(od, 'mix.wav'); sf.write(mw, x.astype(np.float32), SR, subtype='PCM_16')
     print(os.path.basename(mw), tt_audio.report(mw), 'пик %.2f' % np.abs(x).max())
     fin = os.path.join(o, 'final.mp4')
+    if FILM: film(o, TE, mw); return o, TE, mw
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(o, 'video.mp4'), '-i', mw, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', fin], check=True)
     return o, TE, mw
+
+
+def film(o, TE, mw):   # v23.4: пролог фильма + глава 1 для фильма (с ночного города, film234.mp4) — наплыв XF с через темноту; звук внахлёст
+    ch = os.path.join(C1, 'film234.mp4'); cw = os.path.join(C1, 'mix234f.wav'); CUT = 2.20
+    a, _ = sf.read(mw, dtype='float64'); b, _ = sf.read(cw, dtype='float64'); b = b[int(round(CUT * SR)):]
+    i = int(round((TE - XF) * SR)); x = np.zeros((max(len(a), i + len(b)), 2)); x[:len(a)] += a; x[i:i + len(b)] += b
+    pk = np.abs(x).max(); x = x / max(1, pk / .97)
+    aw = os.path.join(o, 'snd', 'film.wav'); sf.write(aw, x.astype(np.float32), SR, subtype='PCM_16')
+    for nm, sec in (('film_styk.mp4', 10.0), ('film_ch1.mp4', None)):
+        out = os.path.join(o, nm); dur = [] if sec is None else ['-t', f'{TE - XF + sec:.3f}']
+        subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(o, 'video.mp4'), '-i', ch, '-i', aw,
+                        '-filter_complex', f'[0:v]settb=1/30,setpts=PTS-STARTPTS[a];[1:v]settb=1/30,setpts=PTS-STARTPTS[b];[a][b]xfade=transition=fade:duration={XF}:offset={TE - XF:.4f},format=yuv420p[v]',
+                        '-map', '[v]', '-map', '2:a', '-c:v', 'libx264', '-crf', '17', '-preset', 'medium', '-c:a', 'aac', '-b:a', '192k', '-shortest', *dur, '-movflags', '+faststart', out], check=True)
+        print(out, tt_audio.report(aw) if sec is None else '')
 
 
 if __name__ == '__main__':

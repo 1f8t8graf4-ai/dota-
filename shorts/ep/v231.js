@@ -255,7 +255,8 @@
   };
   const LAB_L = { ru: ['УПАКОВКА', 'ВКУС', 'ОБЕЩАНИЯ'], en: ['PACKAGING', 'FLAVORS', 'PROMISES'], de: ['VERPACKUNG', 'GESCHMACK', 'VERSPRECHEN'] };
   const STAMP_L = { ru: 'СПОСОБ БРОСИТЬ', en: 'A WAY TO QUIT', de: 'ZUM AUFHÖREN' };
-  let VAR = 'A';
+  let VAR = 'A', FILM = false;   // v23.4: FILM — пролог для фильма на YouTube (v231f): без корпуса одноразки и без кадра главы 1 в конце
+  const TTL_L = { ru: ['01', 'ОДНОРАЗКИ'], en: ['01', 'DISPOSABLES'], de: ['01', 'EINWEG-VAPES'] };
   const ORDA = ['cig', 'pod', 'heat', 'ice', 'tin'];   // v23.2: A — сигареты · «Джул» · айкос · одноразки · снюс (как карточки доски: 1924 · 1979 · 2014 · 2020 · 2022)
   // [фраза, № слова] — A: см. ниже;
   //                     B: «Сигареты. «Джул». Одноразки. Айкос. Снюс.» / «И каждый раз — «способ бросить».» / «Угадаете, кто стоит за всеми пятью?»
@@ -278,6 +279,11 @@
     }
     k.dive0 = Math.max(k.zip + .95, TE - 1.05); k.dive1 = k.TE1;     // нырок кончается ровно на последнем кадре
     k.suck0 = k.grow + .35; k.suck1 = Math.max(k.suck0 + .4, Math.min(k.zip + .3, k.dive0 - .3));   // v23.3: капля поднимается к щели окна и втягивается (окно не открываем)
+    if (FILM) {   // v23.4: капля → золотая точка → титр «01 · ОДНОРАЗКИ», бит гаснет на низком ударе, темнота, дальше — ночной город главы 1 (наплывом при склейке)
+      const s5 = TLS.find(x => x.scene === 's5'), wl = s5.words[s5.words.length - 1];
+      k.dive0 = 1e9; k.TE1 = TE + 1; k.suck0 = k.grow + .9; k.suck1 = k.grow + 1.3;
+      k.ttl = WA(['s5', 3]) - .15; k.hit = wl.b + .07; k.tOut = TE - .95; k.blk = [TE - .8, TE - .4];
+    }
     return k;
   }
   // ================= кадр 0 главы 1 — её же рисовка, перенесена слово в слово из ep/v170.js (мостик выпуска 1, v170e) =================
@@ -672,10 +678,41 @@
     const r = CORE_R * (1 - .3 * eo(at(t, K.grow - .05, K.grow + .2))) * (1 - eio(at(t, K.suck1 - .24, K.suck1)));
     if (r > .4) { c.save(); c.translate(DEV0.x, y); c.scale(1 - .16 * sp, 1 + .34 * sp); drop(c, 0, 0, r, hb, 0, 0); c.restore() }   // тянется вверх кончиком
   }
+  // ---------- v23.4, фильм на YouTube: капля выдыхает пар и сжимается в золотую точку — это точка в титре «01 · ОДНОРАЗКИ»; дымка, темнота ----------
+  function vapor(c, t, x, y) {   // пар уходит вверх от капли, пока она сжимается; потом — тонкая дымка поперёк кадра
+    for (let i = 0; i < 11; i++) {   // много слабых клубов — тянутся вверх и расходятся (один яркий читался серым шаром)
+      const t0 = K.grow + .05 + i * .08, u = (t - t0) / 2.3; if (u <= 0 || u >= 1) continue;
+      const e = eo(u), px = x + (i % 2 ? 1 : -1) * (20 + 9 * i) * e + 26 * Math.sin(i * 1.7 + u * 3), py = y - 20 - (260 + 14 * i) * e;
+      glow(c, px, py, 30 + (150 + 8 * i) * e, '#dfe7f2', .055 * Math.sin(Math.PI * Math.min(1, u * 1.4)) * (1 - u));
+    }
+    const hz = at(t, K.ttl, K.ttl + 1.2); if (hz <= 0) return;
+    for (let i = 0; i < 5; i++) {   // дымка едет вбок — её подхватит наплыв в ночной город
+      const xx = 540 + ((i * 260 + 70 * t + i * i * 40) % 1400) - 700, yy = 760 + 170 * i + 30 * Math.sin(t * .7 + i);
+      glow(c, xx, yy, 300 + 60 * (i % 3), '#cfd9e8', .055 * hz);
+    }
+  }
+  function filmEnd(c, t, hb) {
+    const L = TTL_L[LANG] || TTL_L.ru, o = { f: 'M', w: 700, s: 58, ls: 13 };
+    const sh = eio(at(t, K.grow, K.grow + .85)), e = eo(at(t, K.ttl, K.ttl + .75)), out = 1 - eio(at(t, K.tOut, K.tOut + .45));
+    const wl = tw(c, L[0], o), wr = tw(c, L[1], o), gap = 44, cx = 540 + lp(0, (wl - wr) / 2, e), cy = 980 + 4 * Math.sin(TAU * t / 3.3) * (1 - sh);
+    vapor(c, t, cx, cy);
+    if (out <= 0) return;
+    c.save(); c.globalAlpha *= out;
+    const r = CORE_R * lp(1, .24, sh);   // капля сжимается в точку — свет её тоже уходит
+    drop(c, cx, cy, r, hb * (1 - sh), 0, 1 - sh);
+    if (e > 0) {   // «01» выходит из точки влево, «ОДНОРАЗКИ» — вправо
+      const xl = cx - lp(0, gap + wl / 2, e), xr = cx + lp(0, gap + wr / 2, e);
+      tx(c, L[0], xl, cy + 2, { ...o, c: '#F4F1EA', a: e });
+      tx(c, L[1], xr, cy + 2, { ...o, c: '#F4F1EA', a: e });
+      const lw = (wl + wr + 2 * gap) * eo(at(t, K.ttl + .35, K.ttl + 1.1));   // тонкая золотая черта под титром
+      if (lw > 1) { const mx = cx - (wl - wr) / 2; c.beginPath(); c.moveTo(mx - lw / 2, cy + 58); c.lineTo(mx + lw / 2, cy + 58); lnB(c, 2, 'rgba(234,194,122,.75)') }
+    }
+    c.restore();
+  }
   // ---------- камера (как v23.0): медленный наезд, в конце — нырок в корпус = кадр главы 1 ----------
   const ZS1 = 1 / S0, P1 = { x: DEV0.x + S0 * (CX - DEVC.x), y: DEV0.y + S0 * (CY - DEVC.y) };
   const FZ = { x: (CX - ZS1 * P1.x) / (1 - ZS1), y: (CY - ZS1 * P1.y) / (1 - ZS1) }, VS = .004;
-  function camZ(t) { return VS * t + (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1)) }
+  function camZ(t) { return VS * t + (FILM ? 0 : (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1))) }
   function shutters() {   // окна размытия движения: въезды и падения предметов, ряд, стягивание в каплю
     const o = [];
     if (VAR === 'A') { o.push([0, .45]); K.form.forEach(tf => o.push([tf - .16, tf + .32])); o.push([K.row - .1, K.row + .35]) }
@@ -688,7 +725,7 @@
     c.save(); liveCam1(c, t1);
     c.save(); cam(c, s, px, py);
     if (VAR === 'A') sceneA(c, t, hb, fl); else sceneB(c, t, hb, fl);
-    if (t >= K.grow - .06) deviceShot(c, t, t1, hb);
+    if (t >= K.grow - .06) { if (FILM) filmEnd(c, t, hb); else deviceShot(c, t, t1, hb) }
     c.restore();
     title(c, t, [-1], VAR === 'A' ? K.s2 : K.back);   // титул чёткий с первого кадра (ТЗ: «без чёрного экрана с точкой» — сразу крючок)
     c.restore();
@@ -713,7 +750,8 @@
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (!window.NOMB && SHUT.some(([a, b]) => t > a && t < b)) sceneMB(c, t); else scene(c, t);
     c.setTransform(1, 0, 0, 1, 0, 0); liveCam1(c, t1); post1(c, t1);   // обработка главы 1 на весь пролог: в конце она та же, что у её кадра
-    c.setTransform(1, 0, 0, 1, 0, 0); if (VAR === 'A') label(c, t); subs(c, t);   // v23.3: плашка врезки — в кадре экрана, как субтитры
+    c.setTransform(1, 0, 0, 1, 0, 0); if (VAR === 'A') label(c, t); subs(c, t);
+    if (FILM) { const k = eio(at(t, K.blk[0], K.blk[1])); if (k > 0) { c.fillStyle = `rgba(2,3,6,${.88 * k})`; c.fillRect(0, 0, WW, HH) } }   // v23.4: в темноту — дальше наплыв в ночной город главы 1   // v23.3: плашка врезки — в кадре экрана, как субтитры
   }
   function cues() {   // hb, drop, land, sub, steam — синтез в v231_sound.py (как в v230_sound.py), остальное — файлы sfx*; tick и swish под запретом
     const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
@@ -730,15 +768,16 @@
       Q(K.back - .05, 'deep', .9); Q(K.pull - .05, 'whoosh', 1.2);
     }
     Q(K.flare - .03, 'drop', 1); Q(K.flare - .02, 'boom', .7);
-    Q(K.grow - .06, 'sub', 1); Q(K.suck1 - .04, 'steam', 1);   // v23.3: без «бульканья» и шипения молнии — мягкий саб-подъём (синтез, до втягивания капли) и лёгкий выдох пара
-    Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1);
+    if (FILM) { Q(K.grow - .06, 'sub', .8); Q(K.hit, 'steam', .8); Q(K.hit, 'hit', 1); Q(K.hit - .5, 'rain', 1); Q(K.grow + .1, 'steam', .5); Q(K.ttl + .05, 'shimmer', .3) }
+    else { Q(K.grow - .06, 'sub', 1); Q(K.suck1 - .04, 'steam', 1) }   // v23.3: без «бульканья» и шипения молнии — мягкий саб-подъём (синтез, до втягивания капли) и лёгкий выдох пара
+    if (!FILM) { Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1) }
   }
   window.EP = {
     P: { bg: '#0A0D13', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f2a33a', a2: '#ef5668' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
     init(tl, SC) {
-      TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; LANG = tl.lang || 'ru'; MODE = 'y'; VAR = /^v232/.test(tl.ep || '') ? 'B' : 'A';
+      TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; LANG = tl.lang || 'ru'; MODE = 'y'; VAR = /^v232/.test(tl.ep || '') ? 'B' : 'A'; FILM = /^v231f/.test(tl.ep || '');
       TLX = { endT: tl.endT || tl.dur }; K = keys(); window.__K = K; CHUNKS = buildChunks();
-      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4], [K.dive0 + .05, K.TE1 - .2]);
+      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4]); if (!FILM) SHUT.push([K.dive0 + .05, K.TE1 - .2]);
       for (const k in CUES) delete CUES[k]; cues(); window.CUES_READY = 1;
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));

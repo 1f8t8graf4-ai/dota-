@@ -18,7 +18,8 @@
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (!window.NOMB && SHUT.some(([a, b]) => t > a && t < b)) sceneMB(c, t); else scene(c, t);
     c.setTransform(1, 0, 0, 1, 0, 0); liveCam1(c, t1); post1(c, t1);   // обработка главы 1 на весь пролог: в конце она та же, что у её кадра
-    c.setTransform(1, 0, 0, 1, 0, 0); if (VAR === 'A') label(c, t); subs(c, t);   // v23.3: плашка врезки — в кадре экрана, как субтитры
+    c.setTransform(1, 0, 0, 1, 0, 0); if (VAR === 'A') label(c, t); subs(c, t);
+    if (FILM) { const k = eio(at(t, K.blk[0], K.blk[1])); if (k > 0) { c.fillStyle = `rgba(2,3,6,${.88 * k})`; c.fillRect(0, 0, WW, HH) } }   // v23.4: в темноту — дальше наплыв в ночной город главы 1   // v23.3: плашка врезки — в кадре экрана, как субтитры
   }
   function cues() {   // hb, drop, land, sub, steam — синтез в v231_sound.py (как в v230_sound.py), остальное — файлы sfx*; tick и swish под запретом
     const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
@@ -35,15 +36,16 @@
       Q(K.back - .05, 'deep', .9); Q(K.pull - .05, 'whoosh', 1.2);
     }
     Q(K.flare - .03, 'drop', 1); Q(K.flare - .02, 'boom', .7);
-    Q(K.grow - .06, 'sub', 1); Q(K.suck1 - .04, 'steam', 1);   // v23.3: без «бульканья» и шипения молнии — мягкий саб-подъём (синтез, до втягивания капли) и лёгкий выдох пара
-    Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1);
+    if (FILM) { Q(K.grow - .06, 'sub', .8); Q(K.hit, 'steam', .8); Q(K.hit, 'hit', 1); Q(K.hit - .5, 'rain', 1); Q(K.grow + .1, 'steam', .5); Q(K.ttl + .05, 'shimmer', .3) }
+    else { Q(K.grow - .06, 'sub', 1); Q(K.suck1 - .04, 'steam', 1) }   // v23.3: без «бульканья» и шипения молнии — мягкий саб-подъём (синтез, до втягивания капли) и лёгкий выдох пара
+    if (!FILM) { Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1) }
   }
   window.EP = {
     P: { bg: '#0A0D13', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f2a33a', a2: '#ef5668' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
     init(tl, SC) {
-      TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; LANG = tl.lang || 'ru'; MODE = 'y'; VAR = /^v232/.test(tl.ep || '') ? 'B' : 'A';
+      TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; LANG = tl.lang || 'ru'; MODE = 'y'; VAR = /^v232/.test(tl.ep || '') ? 'B' : 'A'; FILM = /^v231f/.test(tl.ep || '');
       TLX = { endT: tl.endT || tl.dur }; K = keys(); window.__K = K; CHUNKS = buildChunks();
-      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4], [K.dive0 + .05, K.TE1 - .2]);
+      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4]); if (!FILM) SHUT.push([K.dive0 + .05, K.TE1 - .2]);
       for (const k in CUES) delete CUES[k]; cues(); window.CUES_READY = 1;
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
