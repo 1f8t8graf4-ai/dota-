@@ -5,13 +5,16 @@
 (огибающая заново по его голосу) и подъём после голоса; такт j там начинается ровно в j·BAR, его исходный такт — bars_of(ORDER[:11], END_Y)[j].
 Дальше такты встают подряд, на стыках — наплыв равной мощности 40 мс, кончается за 5 мс до сильной доли.
 Под голосом музыка проседает на 4 дБ, в паузах — на 5,5 дБ тише голоса; в фильме после голоса поднимается на 4 дБ и держит доску.
+v22.6 (22.11, Андрей: «музыка должна играть всегда, просто где-то тише, где-то громче»): дыры грува в конце такта залиты звуком самого трека
+(bedfill.py); в паузах музыка на 3,5 дБ тише голоса (было 5,5), под голосом проседает на 5,5 дБ — тише под словами, громче между ними.
+Прежнее сведение — snd/*.v225.wav рядом (один раз).
    python3 v210_sound.py v210y-ru|v210s-ru [трек.mp3]  → out/<ролик>/snd/mix.wav, out/<ролик>/final.mp4"""
 import json, os, subprocess, sys
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(HERE, '..', 'tools'))
 import mix193 as M
 import v165_sound as VS
-import tt_audio
+import tt_audio, bedfill, shutil
 from v180_sound import sfx_track
 SR, BAR = M.SR, M.BAR
 SEQ = {'y': list(range(40)) + list(range(20, 28)), 's': list(range(40)) + list(range(20, 28))}   # фильм главы 4 длиннее (1:44): ещё 4 такта фразы 37   # такты подложки «Льда»: 0–39 — фразы 9 13 17 21 33 37 13 17 21 33; 20–23 — фраза 37
@@ -54,8 +57,12 @@ if __name__ == '__main__':
         seq = SEQ['s' if sh else 'y']
         while len(seq) < int(np.ceil(dur / BAR)) + 1: seq = seq + list(range(20, 40))   # 21.11: озвучка EN/DE длиннее русской — такты фраз 33 и 37 по кругу
         b = bed_from(old_bed(), dur, tail, seq)
+    b = bedfill.fill(b, SR)   # v22.6: без дыр в конце такта
+    for f in ('bed', 'mix', 'sfx'):
+        p0 = os.path.join(od, f + '.wav')
+        if os.path.exists(p0) and not os.path.exists(p0[:-4] + '.v225.wav'): shutil.copy(p0, p0[:-4] + '.v225.wav')
     tmp = os.path.join(od, 'bed_raw.wav'); VS.wav(b, tmp); Lv, _ = tt_audio._lufs(voice); Lm, _ = tt_audio._lufs(tmp); os.remove(tmp)
-    env, sp, last = M.duck(voice, n); b = b * 10 ** ((Lv - 5.5 - Lm) / 20) * env
+    env, sp, last = M.duck(voice, n, db=-5.5); b = b * 10 ** ((Lv - 3.5 - Lm) / 20) * env
     if not sh: b *= 10 ** (4 * np.clip((np.arange(n) / SR - last) / .5, 0, 1) / 20)[:, None]
     bw = os.path.join(od, 'bed.wav'); VS.wav(b, bw); print(f'{ep}: речь {sp * 100:.0f} % времени, подложка {"из трека" if track else "из «Льда»"}')
     M.final(voice, sw, bw, os.path.join(od, 'mix.wav'), dur)
