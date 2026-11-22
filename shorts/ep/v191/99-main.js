@@ -3,7 +3,7 @@
     const w = Wd, k = {};
     k.s8 = w('запретом');
     k.b0 = TLX.b0 - .4; k.endT = TLX.endT;   // v19.0: отъезд в карточку 2020 на 0,4 с раньше
-    if (MODE === 's') { k.rest = w('остальных'); k.yt = w('youtube'); k.zo1 = k.b0 + 3.9; k.hl0 = w('открыла'); k.th0 = k.zo1 + .2; k.stamp = k.yt - 1; k.down0 = k.yt + .5; k.down1 = k.down0 + 1.6; k.zA0 = k.down1 + .08 }
+    if (MODE === 's') { k.rest = w('остальных'); k.yt = w('youtube'); k.zo1 = k.b0 + 3.9; k.hl0 = w('второй'); k.th0 = k.zo1 + .2; k.stamp = k.yt - 1; k.thd = Math.min(1.2, Math.max(.6, (k.stamp - .3 - k.th0 - .9) / 2)); k.down0 = k.yt + .5; k.down1 = k.down0 + 1.6; k.zA0 = k.down1 + .08 }   // v22.5: «стала второй из пяти улик» — короче прежней строки: нити к остальным трём — чаще (thd), штамп — после них
     else { k.zo1 = k.b0 + 1.75; k.rules = w('правила'); k.vperv = w('впервой'); k.brut = w('брутальности'); k.vek = w('век'); k.vyv = w('выводили'); k.nezh = w('нежные'); k.ledi = w('леди'); k.ts = k.endT + 1 / 30;
       const after = (q, t0) => { for (const x of TLW) if (nw(x.d) === q && x.a > t0) return x.a; return null }, kak = after('как', WdB('рынок')), sig = after('сигареты', kak);   // v22.4: помада — «как нежные сигареты», ≈0,25 с фиксации, нырок
       k.L0 = kak - .15; k.L1 = Math.max(k.L0 + .7, sig + .1); k.d0 = Math.max(k.ledi + .2, k.L1 + .9) }   // v19.4: d0 — начало нырка в кадр 0 главы 3, ts — её кадр 0 (следующий после последнего кадра мостика)
@@ -72,7 +72,7 @@
     const g = T6; Q(g.a, 'whoosh', .5); Q(g.obo, 'leaves', .4); Q(g.prob - .05, 'glassbulb', .6); Q(g.bez - .05, 'stamp', .7); Q(g.list, 'leaves', .5); Q(g.kogda - .3, 'pour', .5); Q(g.kogda + .4, 'bubble', .4);
     Q(g.mlrd - .4, 'conveyor', .5); Q(g.mlrd - .05, 'register', 1); Q(g.mlrd + .05, 'counter', .8); Q(g.doll, 'coins', .5); Q(g.rynok - .05, 'boom', .35); Q(g.corp - .2, 'boom', .35); Q(g.end - .3, 'plop', .5);
     Q(K.s8 - .57, 'whoosh', .7); Q(K.s8 + .4, 'city', .6); Q(K.s8 + .9, 'thud', .5); Q(K.s8 + .95, 'marker', .5); { const W = w8(); Q(W.pod - .2, 'scroll', .7); Q(W.pod, 'neon', .7); Q(W.led - .3, 'icecrack', .7); Q(W.gig - .3, 'pour', .6); Q(W.nik - .3, 'glassbulb', .6); Q(W.nik + .1, 'plop', .5) } Q(K.b0, 'whoosh', .6);
-    if (MODE === 's') { for (let i = 0; i < 3; i++) Q(K.th0 + i * 1.2, 'papers', .3, -.3 + i * .3); Q(K.stamp, 'stamp', 1); Q(K.stamp + .02, 'impact', .5); Q(K.down0, 'whoosh', .6); Q(K.zA0 + .3, 'dive', .7) }
+    if (MODE === 's') { for (let i = 0; i < 3; i++) Q(K.th0 + i * K.thd, 'papers', .3, -.3 + i * .3); Q(K.stamp, 'stamp', 1); Q(K.stamp + .02, 'impact', .5); Q(K.down0, 'whoosh', .6); Q(K.zA0 + .3, 'dive', .7) }
     else { Q(K.zo1 + .1, 'whoosh', .6); Q(K.rules - .1, 'whip', .3, .2); Q(K.vperv + .03, 'plop', .5); Q(K.brut - .12, 'shimmer', .4); Q(K.L0 - .05, 'whoosh', .45, -.3); Q(K.L0 + .12, 'lipstick', .5); Q(K.L1 - .15, 'shimmer', .35, .3); Q(K.L1 + .1, 'leaves', .4); Q(K.d0 + .1, 'whoosh', .35); Q(K.ts - 1.2, 'dive', .55) }   // v19.4: ветер треплет угол плаката, нырок в кадр 0 главы 3
   }
   window.EP = {

@@ -88,7 +88,7 @@
     for (let r = 0; r < 2; r++) for (let q = 0; q < 5; q++) { rr(c, -200 + q * 82, -40 + r * 76, 60, 50, 10); fill(c, '#e9e3ff'); lnB(c, 3, B2.ink) }
     c.beginPath(); c.moveTo(-40, -80); c.lineTo(-40, -170); c.moveTo(40, -80); c.lineTo(40, -170); lnB(c, 16, '#3b3166');
     rr(c, -360, -400, 720, 240, 26); fill(c, B2.ink); rr(c, -360, -400, 720, 240, 26); lnB(c, 6);
-    const v = 3e9 * eio(at(Math.round(t * 30) / 30, T6.mlrd, T6.doll + .4)); c.save(); rr(c, -340, -380, 680, 150, 16); c.clip(); num(c, window.L10N && window.L10N.lang === 'de' ? fmt3(Math.round(v / 1e7) * 1e7) + ' $' : '$' + fmt3(Math.round(v / 1e7) * 1e7), 0, -306, { f: 'J', w: 700, s: 60, c: '#7ee787' });   // v22.4: в немецком — 3.000.000.000 $ c.restore();   // по кадру — без двоения цифр
+    const v = 3e9 * eio(at(Math.round(t * 30) / 30, T6.mlrd, T6.doll + .4)); c.save(); rr(c, -340, -380, 680, 150, 16); c.clip(); num(c, window.L10N && window.L10N.lang === 'de' ? fmt3(Math.round(v / 1e7) * 1e7) + ' $' : '$' + fmt3(Math.round(v / 1e7) * 1e7), 0, -306, { f: 'J', w: 700, s: 60, c: '#7ee787' }); c.restore();   // по кадру — без двоения цифр; v22.4: в немецком — 3.000.000.000 $
     const kg = bo(at(t, T6.god - .1, T6.god + .3)); if (kg > 0) { c.save(); c.translate(0, -200); c.scale(kg, kg); tx(c, 'В ГОД', 0, 0, { f: 'U', w: 800, s: 40, c: B2.gold }); c.restore() }
     const kt = eo(at(t, T6.mlrd, T6.corp)); if (kt > 0) {   // v19.1: чек — бумажная лента из щели кассы (Starbucks #012), а не кривая палка
       const L = 460 * kt; c.save(); c.translate(258, 30); c.rotate(-.42); rr(c, -6, -10, 12, 20, 4); fill(c, '#2d3142');

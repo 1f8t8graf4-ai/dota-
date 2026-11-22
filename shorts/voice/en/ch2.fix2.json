@@ -1,0 +1,20 @@
+{
+ "voice": "lWDDHwXsJXJM7nv2YgHY",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "So the 2020 loophole became the second of five clues. The breakdown of the other three is already waiting for you on YouTube.",
+ "items": [
+  {
+   "key": "Так лазейка две тысячи двадцатого года стала второй из пяти улик. А разбор остальных трёх уже ждёт вас на YouTube.",
+   "scene": "board",
+   "text": "So the 2020 loophole became the second of five clues. The breakdown of the other three is already waiting for you on YouTube.",
+   "off": 0,
+   "len": 125
+  }
+ ]
+}

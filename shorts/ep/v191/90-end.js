@@ -114,8 +114,8 @@
   }
   function boardS(t) {   // шортс: нити рисуются по очереди, карточка качается на кнопке, вспыхивает золотой «?»
     const th = [], wob = [], q = {};
-    ['2014', '1924', '2022'].forEach((id, i) => { const t0 = K.th0 + i * 1.2; th.push(at(t, t0, t0 + .9)); const d = t - t0 - .9; wob.push(d > 0 ? .1 * Math.sin(d * 9) * Math.exp(-d * 2.2) : 0); q[id] = bo(at(t, t0 + .85, t0 + 1.25)) });
-    return { th, wob, q, hl: at(t, K.hl0, K.hl0 + .3) * (1 - at(t, K.th0 + 2.2, K.th0 + 2.6)) * (.75 + .25 * Math.sin(t * 6)) };
+    ['2014', '1924', '2022'].forEach((id, i) => { const t0 = K.th0 + i * K.thd; th.push(at(t, t0, t0 + .9)); const d = t - t0 - .9; wob.push(d > 0 ? .1 * Math.sin(d * 9) * Math.exp(-d * 2.2) : 0); q[id] = bo(at(t, t0 + .85, t0 + 1.25)) });
+    return { th, wob, q, hl: at(t, K.hl0, K.hl0 + .3) * (1 - at(t, K.th0 + 2 * K.thd - .2, K.th0 + 2 * K.thd + .2)) * (.75 + .25 * Math.sin(t * 6)) };
   }
   // ---------- переход от общежития к карточке 2020 (отъезд камеры) ----------
   function zoomOutTo2020(c, t, drawBoard) {

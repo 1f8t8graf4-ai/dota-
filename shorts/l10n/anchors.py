@@ -7,6 +7,7 @@ A[язык][рисовка главы][фраза] = 'русское=перев�
 A = {'en': {}, 'de': {}}
 
 A['en']['v220'] = {
+    'b0': 'Но=But после=after айкосом=setback сделали=made ход=smarter',   # v22.4: мостик 4 → 5 (волна встаёт на «smarter move»)
     'b1': 'Филип=Philip через=a запрета=ban маленькой=small за=a шестнадцать=sixteen',
     'b2': 'нет=isn’t даже=even табака=tobacco',
     's1': 'видно=see слышно=hear пахнут=smell пакетик=pouch губу=lip всё=that’s',
@@ -21,12 +22,11 @@ A['en']['v220'] = {
           'сигарет=cigarettes ниже=lower рта=mouth лёгких=lung сердца=heart инсульта=stroke',
     's10': 'американские=American школьники=teens курят=smoke снюс=pouches уже=already обогнал=overtaken сигареты=cigarettes',
     's11': 'месяца=months разрешили=stronger покрепче=approved девять=nine одиннадцать=eleven миллиграммов=milligrams вместо=instead трёх=three шести=six',
-    's12': 'карточка=card доске=board новый=new бросить=quit Осталось=left перевернуть=flip доску=board',
     'f1': 'никотине=nicotine',
     'f2': 'курят=smoked греют=heated парят=vaped кладут=tucked губу=lip продают=sold бросить=quit',
-    'f3': 'доску=board все=all пять=five нитей=threads тянутся=lead гигантам=giants',
-    'f4': 'Змея=snake кусает=bites хвост=tail вы=you бросаете=quit одно=one продают=sell следующее=next',
-    'q': 'Угадаете=guess обороте=back доски=board',
+    'f3': 'Потяните=Pull нить=thread все=all пять=five ведут=lead табачным=tobacco гигантам=giants',   # v22.4
+    'f4': 'Вы=You бросаете=quit одно=one продают=sell следующее=next',   # v22.4: без «Змея кусает свой хвост»
+    'q': 'Угадаете=guess кто=who’s стоит=behind сигаретами=cigarettes вейпами=vapes снюсом=pouches',   # v22.4
 }
 
 A['en']['v210'] = {
@@ -73,7 +73,7 @@ A['en']['v170'] = {   # глава 1 «Боб»: фраза — по первы�
     'старый план сработал': 'Старый=old план=plan сработал=worked идеально=perfectly',
     'бумажная сигарета ушла': 'Бумажная=paper сигарета=cigarette прошлое=past табачная=tobacco империя=empire сорвала=hit большой=biggest куш=jackpot истории=history',
     'признайтесь вам ведь': 'сейчас=now захотелось=want затянуться=puff',
-    'но джул только': 'Джул=JUUL первая=first карточка=card доске=board Дальше=From история=story холоднее=colder',
+    'но джул только': 'Джул=JUUL первая=first пяти=five улик=clues Дальше=From история=story холоднее=colder',   # v22.5
     'захотите бросить вам': 'бросить=quit продадут=sell Причём=And одни=same люди=people кто=who именно=exactly смотрите=watch YouTube=YouTube',
     'так о чем': 'чём=where А=Oh',
 }
@@ -101,8 +101,7 @@ A['en']['v191'] = {   # глава 2 «Лёд»
     'запретом хотели отнять': 'Запретом=ban хотели=meant отнять=take вкус=flavor подарили=gave ледяной=icy пар=vapor гигантские=giant баки=tanks никотин=test-tube',
     'но менять правила': 'менять=changing правила=rules игры=game впервой=new',
     'ведь главный символ': 'главный=ultimate символ=symbol мужской=rugged брутальности=masculinity век=century нежные=delicate сигареты=cigarettes леди=ladies',
-    'так лазейка две': '2020=2020 открыла=opened вторую=second карточку=card доске=board разбор=breakdown остальных=other трёх=three табачных=tobacco '
-                        'афер=schemes ждёт=waiting YouTube=YouTube',
+    'так лазейка две': '2020=2020 стала=became второй=second пяти=five улик=clues разбор=breakdown остальных=other трёх=three ждёт=waiting YouTube=YouTube',   # v22.5
     'так что в': 'следующий=next раз=time затяжку=puff просто=just спросите=ask себя=yourself',
 }
 

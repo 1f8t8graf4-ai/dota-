@@ -1,7 +1,7 @@
 # Главы 1–5 и финал на английском и немецком — тексты на проверку
 
 Собрано `python3 l10n/build.py`: голос глав 1–3 — `l10n/data.py`, глав 4–5 и финала — `l10n/data45.py`, надписи — словари роликов.
-Английский голос записан (Nathan, 21.11), кроме четырёх новых строк финального ТЗ: мостик главы 5, строка 3 финала, строка 4 финала без «Змея кусает свой хвост» и вопрос шортса главы 5. Немецкий — ждёт выбора голоса.
+Английский голос записан целиком (Nathan): главы 1–5 — 21.11, новые строки финального ТЗ и две строки без «доски» и «карточки» (конец главы 1 в фильме, конец шортса главы 2) — 22.11; строка 4 финала — вырезка из записанной, без «The snake bites its own tail». Немецкий — ждёт выбора голоса.
 
 - **Часть 1** — текст диктора: фильм целиком по строкам (RU → EN → DE), у шортса — только то, чем он отличается.
 - **Часть 2** — все надписи в кадре по главам: RU → EN → DE.
@@ -93,10 +93,10 @@
 - EN: Admit it… right now, you want to… take a puff, don’t you?
 - DE: Gebt es zu… gerade jetzt hättet ihr Lust… auf einen Zug, oder?
 
-**17.** Но «Джул» — только первая карточка на этой доске. Дальше история становится... холоднее. *(только в фильме)*
+**17.** Но «Джул» — только первая из пяти улик. Дальше история становится... холоднее. *(только в фильме)*
 
-- EN: But JUUL is only the first card on this board. From here, the story gets… colder.
-- DE: Aber JUUL ist nur die erste Karte an dieser Pinnwand. Ab hier wird die Geschichte… kälter.
+- EN: But JUUL is only the first of five clues. From here, the story gets… colder.
+- DE: Aber JUUL ist nur das erste von fünf Indizien. Ab hier wird die Geschichte… kälter.
 
 ### Шортс — отличия от фильма
 
@@ -210,10 +210,10 @@
 
 **Концовка шортса** (после строки «Запретом хотели отнять у школьников вкус — а подарили ледяной пар, гигантские баки и никотин из пробирки.»):
 
-**Ш1.** Так лазейка две тысячи двадцатого года открыла вторую карточку на нашей доске. А разбор остальных трёх табачных афер уже ждёт вас на YouTube.
+**Ш1.** Так лазейка две тысячи двадцатого года стала второй из пяти улик. А разбор остальных трёх уже ждёт вас на YouTube.
 
-- EN: That’s how the 2020 loophole opened the second card on our board. The breakdown of the other three tobacco schemes is already waiting for you on YouTube.
-- DE: So öffnete das Schlupfloch von 2020 die zweite Karte an unserer Pinnwand. Die anderen drei Tabak-Tricks warten schon auf YouTube auf euch.
+- EN: So the 2020 loophole became the second of five clues. The breakdown of the other three is already waiting for you on YouTube.
+- DE: So wurde das Schlupfloch von 2020 zum zweiten von fünf Indizien. Die anderen drei warten schon auf YouTube auf euch.
 
 **Ш2.** Так что в следующий раз, делая затяжку, просто спросите себя...
 

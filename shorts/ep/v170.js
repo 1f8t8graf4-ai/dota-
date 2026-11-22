@@ -5337,7 +5337,7 @@
     c.globalCompositeOperation = 'multiply';
     c.beginPath(); c.arc(0, 0, r, 0, TAU); c.lineWidth = 12; c.strokeStyle = '#d8303f'; c.stroke();
     c.beginPath(); c.arc(0, 0, r - 26, 0, TAU); c.lineWidth = 4; c.stroke();
-    const txt0 = 'СЕКРЕТНО · R.J. REYNOLDS · 1973 · ', txt = window.L10N ? window.L10N.tr(txt0) : txt0, n = txt.length;   // 21.11: по кругу — переведённая строка c.font = FNT({ s: 22, w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    const txt0 = 'СЕКРЕТНО · R.J. REYNOLDS · 1973 · ', txt = window.L10N ? window.L10N.tr(txt0) : txt0, n = txt.length; c.font = FNT({ s: 22, w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';   // 21.11: по кругу — переведённая строка (22.11: комментарий съел шрифт и цвет — вернул)
     for (let q = 0; q < n; q++) { const an = -Math.PI / 2 + q / n * TAU; c.save(); c.rotate(an + Math.PI / 2); c.fillText(txt[q], 0, -(r - 13)); c.restore() }
     tx(c, 'СЕКРЕТНО', 0, 2, { s: 30, w: 800, ls: 2, c: '#d8303f' });
     c.globalCompositeOperation = 'source-over';
@@ -5593,7 +5593,7 @@
     c.save(); c.translate(x, y); c.rotate(-.12); c.globalAlpha *= a; c.globalCompositeOperation = 'multiply';
     c.beginPath(); c.arc(0, 0, r, 0, TAU); c.lineWidth = r * .107; c.strokeStyle = '#d8303f'; c.stroke();
     c.beginPath(); c.arc(0, 0, r * .77, 0, TAU); c.lineWidth = r * .036; c.stroke();
-    const s0 = 'СЕКРЕТНО · ПРОЕКТ · 1979 · ', s = window.L10N ? window.L10N.tr(s0) : s0, n = s.length;   // 21.11: по кругу — переведённая строка (буквы рисуются по одной) c.font = FNT({ s: Math.round(r * .196), w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    const s0 = 'СЕКРЕТНО · ПРОЕКТ · 1979 · ', s = window.L10N ? window.L10N.tr(s0) : s0, n = s.length; c.font = FNT({ s: Math.round(r * .196), w: 800 }); c.fillStyle = '#d8303f'; c.textAlign = 'center'; c.textBaseline = 'middle';   // 21.11: по кругу — переведённая строка, буквы по одной (22.11: комментарий съел шрифт и цвет — вернул)
     for (let q = 0; q < n; q++) { c.save(); c.rotate(q / n * TAU); c.fillText(s[q], 0, -r * .884); c.restore() }
     tx(c, 'СЕКРЕТНО', 0, 2, { s: Math.round(r * .27), w: 800, ls: 2, c: '#d8303f' });
     c.restore();

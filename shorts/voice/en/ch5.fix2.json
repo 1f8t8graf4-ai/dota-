@@ -1,0 +1,21 @@
+{
+ "voice": "lWDDHwXsJXJM7nv2YgHY",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "You quit one thing — they sell you the next.",
+ "items": [
+  {
+   "key": "f4",
+   "scene": "f4",
+   "text": "You quit one thing — they sell you the next.",
+   "off": 0,
+   "len": 44
+  }
+ ],
+ "cut": "вырезано из ch5.mp3 130.045–132.910 (без «The snake bites its own tail:»), не записывалось"
+}

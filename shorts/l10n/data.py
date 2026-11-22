@@ -65,9 +65,9 @@ SENT = {
     'Так... о чём это я? А, точно!': (
         'So… where was I? Oh, right!',
         'Also… wo war ich? Ach ja!'),
-    'Но «Джул» — только первая карточка на этой доске. Дальше история становится... холоднее.': (
-        'But JUUL is only the first card on this board. From here, the story gets… colder.',
-        'Aber JUUL ist nur die erste Karte an dieser Pinnwand. Ab hier wird die Geschichte… kälter.'),
+    'Но «Джул» — только первая из пяти улик. Дальше история становится... холоднее.': (   # v22.5 (22.11): без «карточки» и «доски» (правило финального ТЗ)
+        'But JUUL is only the first of five clues. From here, the story gets… colder.',
+        'Aber JUUL ist nur das erste von fünf Indizien. Ab hier wird die Geschichte… kälter.'),
 
     # ===================== Глава 2 «Лёд» (2020 · Лазейка одноразок) =====================
     'Почему ваша одноразка такая ледяная? И почему её вообще продают, если вейпы со вкусами в Америке запретили ещё в две тысячи двадцатом году?': (
@@ -118,9 +118,9 @@ SENT = {
     'Запретом хотели отнять у школьников вкус — а подарили ледяной пар, гигантские баки и никотин из пробирки.': (
         'The ban was meant to take flavor away from teens — instead it gave them icy vapor, giant tanks, and test-tube nicotine.',
         'Das Verbot sollte Schülern den Geschmack nehmen – stattdessen bekamen sie eisigen Dampf, riesige Tanks und Nikotin aus dem Reagenzglas.'),
-    'Так лазейка две тысячи двадцатого года открыла вторую карточку на нашей доске. А разбор остальных трёх табачных афер уже ждёт вас на YouTube.': (
-        'That’s how the 2020 loophole opened the second card on our board. The breakdown of the other three tobacco schemes is already waiting for you on YouTube.',
-        'So öffnete das Schlupfloch von 2020 die zweite Karte an unserer Pinnwand. Die anderen drei Tabak-Tricks warten schon auf YouTube auf euch.'),
+    'Так лазейка две тысячи двадцатого года стала второй из пяти улик. А разбор остальных трёх уже ждёт вас на YouTube.': (   # v22.5 (22.11): без «карточки» и «доски»
+        'So the 2020 loophole became the second of five clues. The breakdown of the other three is already waiting for you on YouTube.',
+        'So wurde das Schlupfloch von 2020 zum zweiten von fünf Indizien. Die anderen drei warten schon auf YouTube auf euch.'),
     'Так что в следующий раз, делая затяжку, просто спросите себя...': (
         'So next time you take a puff, just ask yourself…',
         'Also, wenn ihr das nächste Mal einen Zug nehmt, fragt euch einfach…'),
