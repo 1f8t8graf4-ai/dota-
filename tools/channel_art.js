@@ -1,13 +1,15 @@
 // Оформление YouTube-канала NightFabel (22.11): шапка RU / EN / DE, аватарка, водяной знак, превью «как видно на устройствах».
 // Знак канала — «стебель и янтарная точка»: точка над «ı» в NightFabel и над правой ножкой «N» — то же янтарное ядро, что в прологе фильма.
 // Шрифты — свои (shorts/fonts, OFL): Manrope 800 (как титул фильма), Playfair Display italic (слоган).
-//   node tools/channel_art.js [папка]        → shorts/out/channel/: banner-ru|en|de.png, avatar.png, watermark.png, preview.png
+//   node tools/channel_art.js [папка] [--bg фон.png] → shorts/out/channel/: banner-ru|en|de.png, avatar.png, watermark.png, preview.png
+//   --bg — шапка на готовом фоне (картинка из Gemini), иначе фон рисуется кодом
 // Размеры — по справке YouTube: шапка 2048×1152, всё важное в середине 1235×338 (только её видно на телефоне), до 6 МБ;
 // аватарка 800×800 (обрежется в круг); водяной знак 150×150, прозрачный фон.
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..'), FONTS = 'file://' + path.join(ROOT, 'shorts', 'fonts') + '/';
-const OUT = path.resolve(process.argv[2] || path.join(ROOT, 'shorts', 'out', 'channel'));
+const ARGS = process.argv.slice(2), BGI = ARGS.indexOf('--bg'), BG_SRC = BGI >= 0 ? path.resolve(ARGS[BGI + 1]) : null;
+const OUT = path.resolve(ARGS.filter((a, i) => a !== '--bg' && i !== BGI + 1)[0] || path.join(ROOT, 'shorts', 'out', 'channel'));
 fs.mkdirSync(OUT, { recursive: true });
 
 const SLOGAN = {
@@ -70,6 +72,22 @@ function bannerHTML(lang) {
   <script>${layersJS(W, H, 260, 1150, 900, 260, 20261122)}</script>`;
 }
 
+// шапка на готовом фоне (22.11, фон нарисовал Gemini по нашему промту: луч сверху, янтарный шар в центре, по краям плёнка, кружка, книга, телефон):
+// шар — знак канала, поэтому название встаёт над ним, слоган — под ним; всё в полосе 1235×338 по центру. Фон — 2048×1152 «cover» ×1,09 (Lanczos, python/PIL): кружка и книга уходят ниже слогана.
+function bannerBgHTML(lang, bg) {
+  const W = 2048, H = 1152;
+  return `<!doctype html><meta charset=utf-8><style>${fontsCSS}
+  html,body{margin:0;width:${W}px;height:${H}px;background:${C.bg} url(${bg}) center/cover no-repeat;overflow:hidden}
+  canvas{position:absolute;inset:0} #gr{opacity:.035;mix-blend-mode:overlay}
+  .t{position:absolute;left:0;right:0;text-align:center;color:${C.ink};font:800 104px/1 M,sans-serif;letter-spacing:-.01em;top:410px;
+     text-shadow:0 2px 26px rgba(0,0,0,.6),0 0 3px rgba(0,0,0,.35)}
+  .s{position:absolute;left:0;right:0;text-align:center;color:#ddd5c6;font:italic 400 42px/1.2 P,serif;top:650px;
+     text-shadow:0 2px 18px rgba(0,0,0,.75),0 0 2px rgba(0,0,0,.4)}
+  </style><div class=t>NightFabel</div><div class=s>${SLOGAN[lang]}</div><canvas id=gr></canvas>
+  <script>(function(){let s=11;const R=()=>(s=(s*16807)%2147483647)/2147483647;const g=document.getElementById('gr'),q=g.getContext('2d');g.width=${W};g.height=${H};
+  const im=q.createImageData(${W},${H}),d=im.data;for(let i=0;i<d.length;i+=4){const n=(R()-.5)*255;d[i]=d[i+1]=d[i+2]=128+n;d[i+3]=255}q.putImageData(im,0,0)})();</script>`;
+}
+
 // монограмма: «N» и янтарная точка над правой ножкой — тот же приём, что точка над «ı»
 function monoCSS(size) {
   return `.n{position:relative;display:inline-block;font:800 ${size}px/1 M, sans-serif;color:${C.ink};letter-spacing:0}
@@ -111,7 +129,17 @@ function watermarkHTML() {   // прозрачный фон; лёгкая тен
     fs.unlinkSync(f);
     console.log(file, (fs.statSync(path.join(OUT, file)).size / 1048576).toFixed(2) + ' МБ');
   }
-  for (const L of ['ru', 'en', 'de']) await shot(bannerHTML(L), 2048, 1152, `banner-${L}.png`);
+  let bgUrl = null;
+  if (BG_SRC) {   // фон «cover» 2048×1152, Lanczos — браузер увеличивает мягче
+    const dst = path.join(OUT, '_bg2048.png');
+    require('child_process').execFileSync('python3', ['-c', `import sys
+from PIL import Image
+im=Image.open(sys.argv[1]).convert('RGB'); W,H=2048,1152; k=max(W/im.width,H/im.height)*1.09
+im=im.resize((round(im.width*k),round(im.height*k)),Image.LANCZOS); x=(im.width-W)//2; y=(im.height-H)//2
+im.crop((x,y,x+W,y+H)).save(sys.argv[2])`, BG_SRC, dst]);
+    bgUrl = 'file://' + dst;
+  }
+  for (const L of ['ru', 'en', 'de']) await shot(bgUrl ? bannerBgHTML(L, bgUrl) : bannerHTML(L), 2048, 1152, `banner-${L}.png`);
   await shot(avatarHTML(), 800, 800, 'avatar.png');
   await shot(watermarkHTML(), 150, 150, 'watermark.png', true);
 
