@@ -261,7 +261,7 @@
   //                     B: «Сигареты. «Джул». Одноразки. Айкос. Снюс.» / «И каждый раз — «способ бросить».» / «Угадаете, кто стоит за всеми пятью?»
   const ANCH = {
     // v23.2: A — «Что вы знаете о никотине? / За сто лет он менял форму пять раз: / Сигареты. «Джул». Айкос. Одноразки. Снюс. / Менялись упаковка, вкус и обещания — но не суть. / Начнём…»
-    A: { ru: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], shp: [['s2', 4], ['s2', 7]], five: ['s2', 6], mac: [['s4', 1], ['s4', 2], ['s4', 4]], dark: ['s4', 5], flare: ['s4', 7], grow: ['s5', 0], zip: ['s5', 2] } },
+    A: { ru: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], five: ['s2', 6], mac: [['s4', 0], ['s4', 2], ['s4', 4]], dark: ['s4', 5], flare: ['s4', 7], grow: ['s5', 0], zip: ['s5', 2] } },
     B: { ru: { form: [['s1', 0], ['s1', 1], ['s1', 2], ['s1', 3], ['s1', 4]], stamp: ['s2', 1], quote: ['s2', 3], back: ['s3', 0], who: ['s3', 1], stand: ['s3', 2], pull: ['s3', 4], flare: ['s3', 5], grow: ['s4', 0], zip: ['s4', 2] } },
   };
   const WA = ([sc, i]) => { const s = TLS.find(x => x.scene === sc); if (!s) throw new Error('v231: нет фразы ' + sc); const w = s.words[Math.min(i, s.words.length - 1)]; return w.a };
@@ -269,16 +269,15 @@
     const A = ANCH[VAR][LANG] || ANCH[VAR].ru, TE = TLX.endT, s1 = TLS.find(x => x.scene === 's1');
     const k = { TE, TE1: TE - 1 / 30, s1a: s1.a, s1b: s1.b, s2: SA('s2'), s2b: SB('s2'), s3: SA('s3'), s3b: SB('s3'), s4: SA('s4'), form: A.form.map(WA), flare: WA(A.flare), grow: WA(A.grow), zip: WA(A.zip) };
     if (VAR === 'A') {
-      k.tw = s1.words.map(w => w.a); k.shp = A.shp.map(WA); k.five = WA(A.five); k.mac = A.mac.map(WA); k.dark = WA(A.dark);
-      k.row = Math.min(SB('s3') + .1, k.mac[0] - .9);   // после «Снюс» последний предмет садится в ряд — пятёрка стоит вся до «упаковка»
+      k.tw = s1.words.map(w => w.a); k.five = WA(A.five); k.mac = A.mac.map(WA); k.dark = WA(A.dark);
+      k.row = Math.min(k.form[4] + .45, k.mac[0] - .55);   // v23.3: «Снюс» крупно ≈ 0,45 с → весь ряд; врезка «упаковка» — ровно на «Менялись» (mac[0])
       k.beat0 = k.tw[k.tw.length - 1]; k.noSub = ch => ch.a < s1.b + .05;   // первая фраза — это титул, субтитром её не дублируем
     } else {
       k.stamp = WA(A.stamp); k.quote = WA(A.quote); k.back = WA(A.back); k.who = WA(A.who); k.stand = WA(A.stand); k.pull = WA(A.pull);
       k.dark = k.flare - .02; k.beat0 = k.flare + .25; k.noSub = () => false;
     }
     k.dive0 = Math.max(k.zip + .95, TE - 1.05); k.dive1 = k.TE1;     // нырок кончается ровно на последнем кадре
-    k.pour = [k.grow + .3, k.grow + .7];                              // капля стекает в капсулу
-    k.zipE = Math.min(k.zip + .62, k.dive0 - .2);                     // кольцо дошло до верха капсулы — это кадр 0 главы 1
+    k.suck0 = k.grow + .35; k.suck1 = Math.max(k.suck0 + .4, Math.min(k.zip + .3, k.dive0 - .3));   // v23.3: капля поднимается к щели окна и втягивается (окно не открываем)
     return k;
   }
   // ================= кадр 0 главы 1 — её же рисовка, перенесена слово в слово из ep/v170.js (мостик выпуска 1, v170e) =================
@@ -373,7 +372,13 @@
   // ---------- предметы глав картинками (node v231_spr.mjs) ----------
   const SPRN = ['cig', 'pod', 'ice', 'heat', 'tin'], SPRI = {};
   const SCORE = { cig: [.42, .62], pod: [.5, .1], ice: [.5, .62], heat: [.5, .16], tin: [.5, .42] };   // где внутри никотин (доли картинки): табак, под, жидкость, стик, пакетики
-  function sprLoad() { return Promise.all(SPRN.map(n => new Promise(r => { const im = new Image(); im.onload = () => { SPRI[n] = im; r() }; im.onerror = () => r(); im.src = 'ep/v231/spr/' + n + '.png' }))) }
+  // v23.3: обрезки картинок — у «Джула» снизу и у айкоса справа были растровые тени (предмет «висел», тень двоилась); pack — пачка без сигареты (врезка «упаковка»)
+  const CROP = { pod: ['pod', 0, 0, 266, 2116], heat: ['heat', 0, 0, 356, 2304], pack: ['cig', 335, 0, 1029, 1274] };
+  function sprLoad() {
+    return Promise.all(SPRN.map(n => new Promise(r => { const im = new Image(); im.onload = () => { SPRI[n] = im; r() }; im.onerror = () => r(); im.src = 'ep/v231/spr/' + n + '.png' }))).then(() => {
+      for (const k in CROP) { const [n, x, y, w, h] = CROP[k], im = SPRI[n]; if (!im) continue; const cv = mk(w, h); cv.getContext('2d').drawImage(im, x, y, w, h, 0, 0, w, h); SPRI[k] = cv }
+    });
+  }
   function fitWH(n, mw, mh) { const im = SPRI[n]; if (!im) return [mw, mh]; const k = Math.min(mw / im.width, mh / im.height); return [im.width * k, im.height * k] }
   let TMP = null;
   // предмет стоит на (x, yb); o: mw, mh — рамка; th — поворот вокруг вертикали (рад); sq — сплющивание (удар); dk — темнее; fl — проход блика 0..1; rim — янтарный контровой
@@ -387,7 +392,7 @@
     const dk = Math.min(.85, (o.dk || 0) + .55 * (1 - Math.abs(ct)));   // повёрнутый боком — темнее (объём)
     if (dk > 0) { g.fillStyle = `rgba(6,8,22,${dk})`; g.fillRect(0, 0, W, H) }
     if (o.xr > 0) { g.fillStyle = `rgba(150,190,255,${o.xr})`; g.fillRect(0, 0, W, H) }   // v23.2: оболочка «рентгеном»
-    if (o.fl > 0 && o.fl < 1) { const u = lp(-.4, 1.4, o.fl) * (W + H), gr = g.createLinearGradient(u - 110, 0, u + 110, H * .6); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,.5)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H) }   // блик проходит по предмету
+    if (o.fl > 0 && o.fl < 1) { const u = lp(-.4, 1.4, o.fl) * (W + H), gr = g.createLinearGradient(u - 110, 0, u + 110, H * .6); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, `rgba(255,255,255,${o.fa ?? .5})`); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H) }   // блик проходит по предмету
     if (o.rim > 0) { const gr = g.createLinearGradient(0, 0, W, 0); gr.addColorStop(0, `rgba(255,190,110,${.55 * o.rim})`); gr.addColorStop(.18, 'rgba(255,190,110,0)'); gr.addColorStop(.82, 'rgba(255,190,110,0)'); gr.addColorStop(1, `rgba(255,190,110,${.55 * o.rim})`); g.fillStyle = gr; g.fillRect(0, 0, W, H) }
     c.save(); c.globalAlpha *= a; c.translate(x, yb); c.scale(sx, sy); c.drawImage(TMP, 0, 0, W, H, -w / 2, -h, w, h); c.restore();
   }
@@ -433,7 +438,7 @@
     const b1 = ph < .045 ? ph / .045 : Math.exp(-(ph - .045) / .11), b2 = q < 0 ? 0 : q < .045 ? .55 * q / .045 : .55 * Math.exp(-(q - .045) / .12);
     return Math.max(b1, b2);
   }
-  function beats() { const o = []; for (let tb = K.beat0; tb < K.pour[0]; tb += BEAT) o.push(tb); return o }
+  function beats() { const o = []; for (let tb = K.beat0; tb < K.suck0; tb += BEAT) o.push(tb); return o }
   function dropPath(c, x, y, R) { c.beginPath(); c.moveTo(x, y - R * 1.95); c.bezierCurveTo(x + R * .35, y - R * 1.3, x + R, y - R * .75, x + R, y); c.arc(x, y, R, 0, Math.PI); c.bezierCurveTo(x - R, y - R * .75, x - R * .35, y - R * 1.3, x, y - R * 1.95); c.closePath() }
   function drop(c, x, y, r, hb, fl, gl = 1) {   // y — центр круглой части; gl — насколько видно стекло (блики, кромка)
     if (r <= .4) return; const R = r * (1 + .1 * hb + .25 * fl);
@@ -469,33 +474,41 @@
       c.restore();
     }
   }
-  function label(c, t) {   // плашка врезки (ТЗ: над субтитрами, выше 1480); v23.2: одна на все три — ширина постоянная, слово меняется на месте (не прыгает)
-    const M = K.mac, i = t < M[1] ? 0 : t < M[2] ? 1 : 2, k = spr(at(t, M[0] + .04, M[0] + .3)); if (k <= 0) return;
-    const L = LAB_L[LANG] || LAB_L.ru, o = { s: 46, ls: 6, w: 800, f: 'M' }, w = Math.max(...L.map(s => tw(c, s, o))) + o.s * 1.3, h = o.s * 1.9, sw = i ? eo(at(t, M[i], M[i] + .16)) : 1;
-    c.save(); c.translate(540, 1392); c.scale(k, k);
-    rr(c, -w / 2 + 6, -h / 2 + 9, w, h, h * .24); fill(c, 'rgba(0,0,0,.28)'); rr(c, -w / 2, -h / 2, w, h, h * .24); fill(c, '#F4F1EA');
-    tx(c, L[i], 0, o.s * .04 + 10 * (1 - sw), { ...o, c: '#141010', a: sw });
+  function label(c, t) {   // плашка врезки; v23.3: в кадре экрана (не едет с наездом), строго по центру на одной высоте — под предметом, над субтитрами;
+    // тёмная полупрозрачная с тонкой золотой обводкой и белым текстом — не сливается ни с пачкой, ни с листом; ширина одна на все три слова
+    const M = K.mac; if (t < M[0] || t >= K.dark) return;
+    const i = t < M[1] ? 0 : t < M[2] ? 1 : 2, k = spr(at(t, M[0] + .04, M[0] + .3)), out = 1 - at(t, K.dark - .12, K.dark); if (k <= 0 || out <= 0) return;
+    const L = LAB_L[LANG] || LAB_L.ru, o = { s: 44, ls: 6, w: 800, f: 'M' }, w = Math.max(...L.map(s => tw(c, s, o))) + o.s * 1.6, h = o.s * 1.85, sw = i ? eo(at(t, M[i], M[i] + .18)) : 1;
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = out; c.translate(CX, LABY); c.scale(k, k);
+    rr(c, -w / 2, -h / 2, w, h, h * .28); fill(c, 'rgba(8,10,18,.66)'); rr(c, -w / 2 + 1, -h / 2 + 1, w - 2, h - 2, h * .28); lnB(c, 2, 'rgba(234,194,122,.9)');
+    if (i && sw < 1) tx(c, L[i - 1], 0, o.s * .04 - 14 * sw, { ...o, c: '#fff', a: 1 - sw });
+    tx(c, L[i], 0, o.s * .04 + 14 * (1 - sw), { ...o, c: '#fff', a: sw });
     c.restore();
   }
+  const LABY = 1560;   // центр плашки: низ предметов врезок — до ~1420, плашка субтитров — 1678–1762
   // ================= A: по ТЗ Gemini + список (v23.2) =================
   const SLOT = i => 152 + 194 * i, LW = 178, LH = 380, LWT = 214;   // ряд из пяти (B — весь ролик)
-  const AW = 184, AH = 440, AWT = 220;                               // v23.2: в A ряд крупнее (Gemini: «на телефоне мелковато»)
-  const sideA = i => i % 2 ? 1 : -1;                                // откуда въезжает: −1 слева, +1 справа
-  // предмет i: на своё слово въезжает крупно в центр (поворот, блик) → на слово следующего садится в своё место ряда; последний — после «Снюс»
-  function itemA(t, i) {
-    const tf = K.form[i], tn = i < 4 ? K.form[i + 1] : K.row, s = sideA(i), n = ORDA[i];
-    const u = at(t, tf - .14, tf + .42), v = eio(at(t, tn - .1, tn + .32));
-    const x0 = 540 + s * 1150 * (1 - bo(u)), th0 = s * 1.35 * (1 - eo(at(t, tf - .14, tf + .3)));
-    return { i, n, tf, tn, x: lp(x0, SLOT(i), v), th: lp(th0, 0, v), mw: lp(600, n === 'tin' ? AWT : AW, v), mh: lp(560, AH, v), yb: lp(PY + 26, PY, v), v };
+  const AW = 184, AH = 440, AWT = 220;                               // A: рамка предмета в ряду
+  // v23.3: ряд в A собирается слева направо и всегда стоит по центру: новый предмет выходит крупно справа от уже стоящих, они уступают ему место
+  // (крупный никого не накрывает); в конце — все пять в ряд, на 10 % мельче и плотнее (с полями ≥ 100 px)
+  const RS = .9, RG = 44, RM = 80;
+  function lay(k, big) {   // k предметов (0…k−1), big — какой из них крупно (−1 — никакой) → [{x, mw, mh, yb}]
+    const fr = [], ws = [];
+    for (let j = 0; j < k; j++) { fr.push(j === big ? null : [(ORDA[j] === 'tin' ? AWT : AW) * RS, AH * RS]); ws.push(fr[j] ? fitWH(ORDA[j], fr[j][0], fr[j][1])[0] : 0) }
+    if (big >= 0) { const used = ws.reduce((a, b) => a + b, 0) + RG * (k - 1), mw = Math.min(600, WW - 2 * RM - used); fr[big] = [mw, 560]; ws[big] = fitWH(ORDA[big], mw, 560)[0] }
+    const tot = ws.reduce((a, b) => a + b, 0) + RG * (k - 1); let x = CX - tot / 2;
+    return ws.map((w, j) => { const o = { x: x + w / 2, mw: fr[j][0], mh: fr[j][1], yb: j === big ? PY + 26 : PY }; x += w + RG; return o });
   }
-  // «менял форму пять раз»: вокруг капли по очереди проступают пять оболочек «рентгеном» (ядро — то же)
-  function shpW() { return [K.shp[0] - .06, K.shp[1] + .3] }
-  function shpT() { const [a, b] = shpW(), d = (b - a) / 5; return [0, 1, 2, 3, 4].map(i => a + i * d) }
-  function shells(c, t, dy) {
-    const [a, b] = shpW(); if (t < a || t > b) return; const d = (b - a) / 5, i = Math.min(4, Math.floor((t - a) / d)), u = (t - a - i * d) / d, n = ORDA[i];
-    const al = at(u, 0, .18) * (i < 4 ? 1 - at(u, .82, 1) : 1 - at(u, .6, 1)), pop = 1 + .08 * (1 - eo(at(u, 0, .35)));
-    const [w, h] = fitWH(n, 330 * pop, 430 * pop), q = SCORE[n], x = 540 - (q[0] - .5) * w, yb = 1000 + dy + h - q[1] * h;   // ядро предмета — ровно на капле
-    obj(c, n, x, yb, { mw: 330 * pop, mh: 430 * pop, xr: .7, rim: 1, sh: false, a: .8 * al });
+  const LAY = {}; const layC = (k, big) => LAY[k + ':' + big] || (LAY[k + ':' + big] = lay(k, big));
+  const L5 = (a, b, v) => ({ x: lp(a.x, b.x, v), mw: lp(a.mw, b.mw, v), mh: lp(a.mh, b.mh, v), yb: lp(a.yb, b.yb, v) });
+  // предмет i в момент t: на своё слово въезжает справа крупно; на слово следующего уменьшается и сдвигается влево; после «Снюс» — весь ряд мелко
+  function itemA(t, i) {
+    const n = ORDA[i], tf = K.form[i], u = at(t, tf - .14, tf + .42);
+    const seg = j => eio(at(t, (j < 5 ? K.form[j] : K.row) - .2, (j < 5 ? K.form[j] : K.row) + .22));   // переход к раскладке j-го шага (5 — весь ряд): прежний уступает место чуть раньше
+    let P = layC(i + 1, i)[i];
+    for (let j = i + 1; j <= 5; j++) { const v = seg(j); if (v <= 0) break; P = L5(P, j < 5 ? layC(j + 1, j)[i] : layC(5, -1)[i], v) }
+    const e = 1 - Math.pow(1 - u, 4), th = 1.35 * (1 - eo(at(t, tf - .14, tf + .3))), x = P.x + 1250 * (1 - e);   // без перелёта за место — не заезжает на соседа
+    return { i, n, tf, x, th, mw: P.mw, mh: P.mh, yb: P.yb, v: i < 4 ? seg(i + 1) : seg(5) };
   }
   function dropInA(t) {   // капля падает в луч с первого кадра и садится с отскоком
     if (t < .42) { const k = at(t, 0, .42); return lp(760, 1000, k * k) - 1000 }
@@ -508,14 +521,12 @@
       studio(c, t, { rx: lp(360, 480, W5), boost: hb * .5 });
       // капля: в луче с первого кадра; на «Сигареты» уходит — дальше её свет только в контровом у предметов (за предметами не торчит)
       const dy = dropInA(t) + 6 * Math.sin(TAU * t / 3.3), dA = 1 - eio(at(t, K.form[0] - .25, K.form[0] + .05));
-      shells(c, t, dy);
       if (dA > 0) drop(c, 540, 1000 + dy, 72 * dA * (1 + .25 * Math.exp(-Math.max(0, t - .42) / .12) * at(t, .4, .43)), hb, 0, 1);
       const lu = (t - .42) / .5; if (lu > 0 && lu < 1) ring(c, 540, 1000, 60 + 260 * eo(lu), `rgba(255,214,150,${.5 * (1 - lu)})`, 5 - 3 * lu);   // волна, когда капля села
-      const IT = []; for (let i = 0; i < 5; i++) if (t > K.form[i] - .16) IT.push(itemA(t, i));
-      IT.sort((p, q) => q.v - p.v);   // сначала те, что уже в ряду, крупный — поверх
-      for (const o of IT) {
-        const land = Math.sin(Math.PI * at(t, o.tn + .1, o.tn + .7)), all = Math.sin(Math.PI * at(t, K.row + .1, K.row + .9));
-        slotSpot(c, SLOT(o.i), Math.max(land * o.v, all));
+      const IT = []; for (let i = 0; i < 5; i++) if (t > K.form[i] - .14) IT.push(itemA(t, i));
+      const all = Math.sin(Math.PI * at(t, K.row + .1, K.row + .9));
+      for (const o of IT) {   // слева направо — новый (крупный, справа) поверх соседей
+        slotSpot(c, o.x, o.i === IT.length - 1 && t < K.row ? Math.sin(Math.PI * at(t, o.tf, o.tf + .9)) : all);
         const f1 = at(t, o.tf + .12, o.tf + .55), f2 = at(t, K.row + .15 + o.i * .08, K.row + .55 + o.i * .08);
         obj(c, o.n, o.x, o.yb, { mw: o.mw, mh: o.mh, th: o.th, fl: f2 > 0 ? f2 : f1, rim: lp(1, .6, o.v) });
       }
@@ -554,7 +565,7 @@
     if (i === 0) {
       c.fillStyle = '#150709'; c.fillRect(-500, -500, 2080, 2920); glow(c, 540, 700, 900, '#7a1222', .55);
       const sn = 1 - spr(at(t, t0, t0 + .35)); c.save(); c.translate(540, 960); c.rotate(-.06 * sn); c.scale(1 + .05 * sn, 1 + .05 * sn); c.translate(-540, -960);
-      obj(c, 'cig', 620, 1760, { mw: 1600, mh: 1380, fl: lp(.2, 1, at(t, t0 + .15, t0 + .75)), sh: false }); c.restore();
+      obj(c, 'pack', 540, 1320, { mw: 600, mh: 740, fl: lp(.2, 1, at(t, t0 + .15, t0 + .85)), fa: .13, sh: false }); c.restore();   // v23.3: пачка без сигареты, по центру, блик слабый (не засвечивает «PM» и надпись)
     } else if (i === 1) {
       c.fillStyle = '#0f1408'; c.fillRect(-500, -500, 2080, 2920); glow(c, 540, 900, 900, '#4a5a18', .5); glow(c, 380, 800, 520, '#a2560e', .45);
       flavors(c, t, t0);
@@ -563,7 +574,6 @@
       promise(c, t, t0);
     }
     c.restore();
-    label(c, t);
   }
   function popK(t, t0) { return spr(at(t, t0, t0 + .32)) }
   function flavors(c, t, t0) {
@@ -647,20 +657,20 @@
     c.restore();
   }
   // ---------- конец обоих: вокруг капли вырастает корпус одноразки = кадр 0 главы 1 в миниатюре (как v23.0) ----------
-  function puff(c, t) {
-    const u = t - K.zipE - .04; if (u <= 0 || u > 1) return;
-    for (let i = 0; i < 4; i++) { const v = u - i * .07; if (v <= 0) continue; const e = eo(v / .9); glow(c, 540 + (i - 1.5) * 60 * v, -560 - 760 * e, 70 + 280 * e, i % 2 ? '#eef7ff' : '#e6fff3', .32 * (1 - v / .9)) }   // v23.2: светлый пар (было бурое пятно)
-  }
+  // v23.3: корпус одноразки выпрыгивает вокруг капли сразу целиком — с мундштуком нужной высоты (без «роста» мундштука); окно капсулы уже закрыто
+  // кольцом, как в кадре 0 главы 1 (видна только тёмная щель с кольцом); капля сама поднимается к щели и втягивается в неё — диод вспыхивает (затяжка);
+  // окно не открывается и не схлопывается: открывает его уже глава 1
+  const SLIT = () => DEV0.y + S0 * (V1RY0 - DEVC.y);
   function deviceShot(c, t, t1, hb) {
-    const pop = lp(.12, 1, spr(at(t, K.grow - .06, K.grow + .32))), g = eio(at(t, K.grow + .08, K.grow + .55)), m = eo(at(t, K.grow + .38, K.grow + .7));
-    const lv = lp(1.06, .15, eio(at(t, K.pour[0], K.pour[1]))), zk = at(t, K.zip, K.zipE), ry = zk > 0 ? lp(V1Z.bot, V1RY0, eio(zk)) : V1Z.bot;
-    const rs = spr(at(t, K.zip - .08, K.zip + .22)) * (1 + .3 * Math.sin(Math.PI * at(t, K.zipE, K.zipE + .25))), fl = Math.sin(Math.PI * at(t, K.zipE - .02, K.zipE + .45));
+    const pop = lp(.12, 1, spr(at(t, K.grow - .06, K.grow + .32)));
+    const rs = 1 + .3 * Math.sin(Math.PI * at(t, K.suck1 - .05, K.suck1 + .22)), fl = Math.sin(Math.PI * at(t, K.suck1 - .04, K.suck1 + .5));
     c.save(); c.translate(DEV0.x, DEV0.y); c.scale(S0, S0); c.translate(-DEVC.x, -DEVC.y);
     if (pop < 1) { c.translate(DEVC.x, DEVC.y); c.scale(pop, pop); c.translate(-DEVC.x, -DEVC.y) }
-    device1(c, t1, { g, m, lv, rev: zk > 0 ? ry + 4 : 1e4, ry, rs, ra: t >= K.zip - .08 ? 1 : 0, fl });   // v23.2: без облачка пара над корпусом (Gemini: «мутный дымок») — затяжку показывает диод
+    device1(c, t1, { g: 1, m: 1, lv: .15, rev: V1RY0 + 4, ry: V1RY0, rs, ra: 1, fl });
     c.restore();
-    const r = CORE_R * (1 - .3 * eo(at(t, K.grow - .05, K.grow + .2))) * (1 - eio(at(t, K.pour[0], K.pour[1])));   // капля стекает в капсулу
-    if (r > .4) drop(c, DEV0.x, DEV0.y, r, hb, 0, 0);
+    const u = eio(at(t, K.suck0, K.suck1)), y = lp(DEV0.y, SLIT(), u), sp = Math.sin(Math.PI * at(t, K.suck0, K.suck1));
+    const r = CORE_R * (1 - .3 * eo(at(t, K.grow - .05, K.grow + .2))) * (1 - eio(at(t, K.suck1 - .24, K.suck1)));
+    if (r > .4) { c.save(); c.translate(DEV0.x, y); c.scale(1 - .16 * sp, 1 + .34 * sp); drop(c, 0, 0, r, hb, 0, 0); c.restore() }   // тянется вверх кончиком
   }
   // ---------- камера (как v23.0): медленный наезд, в конце — нырок в корпус = кадр главы 1 ----------
   const ZS1 = 1 / S0, P1 = { x: DEV0.x + S0 * (CX - DEVC.x), y: DEV0.y + S0 * (CY - DEVC.y) };
@@ -698,20 +708,19 @@
   function frame(t) { frameTo(X, t) }
   function frameTo(c, t) {
     c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over'; FT = t;
-    const t1 = t - K.TE;
+    const t1 = Math.round((t - K.TE) * 3e5) / 3e5;   // v23.3: без хвоста округления — иначе зерно главы 1 (floor(t·30)) на последнем кадре берёт соседний кадр
     if (t >= K.TE1 - 1e-6) { ch1Frame(c, t1); return }   // последний кадр пролога — кадр главы 1 за 1/30 с до её кадра 0 (её рисовка и обработка, без субтитров)
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (!window.NOMB && SHUT.some(([a, b]) => t > a && t < b)) sceneMB(c, t); else scene(c, t);
     c.setTransform(1, 0, 0, 1, 0, 0); liveCam1(c, t1); post1(c, t1);   // обработка главы 1 на весь пролог: в конце она та же, что у её кадра
-    c.setTransform(1, 0, 0, 1, 0, 0); subs(c, t);
+    c.setTransform(1, 0, 0, 1, 0, 0); if (VAR === 'A') label(c, t); subs(c, t);   // v23.3: плашка врезки — в кадре экрана, как субтитры
   }
-  function cues() {   // hb, drop, zip, zipend — синтез в v231_sound.py (как в v230_sound.py), остальное — файлы sfx*; tick и swish под запретом
+  function cues() {   // hb, drop, land, sub, steam — синтез в v231_sound.py (как в v230_sound.py), остальное — файлы sfx*; tick и swish под запретом
     const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
     beats().forEach((tb, i) => Q(tb, 'hb', i ? .9 : 1.1));
     if (VAR === 'A') {   // v23.2: капля падает в луч, оболочки вокруг неё, предметы на свои слова, ряд, врезки (без «бульканья»)
-      Q(.02, 'whoosh', .5); Q(.42, 'plop', .7); Q(.45, 'shimmer', .25);
-      shpT().forEach((ts, i) => Q(ts + .02, 'glass', .32, (i - 2) * .3));
-      K.form.forEach((tf, i) => { Q(tf - .1, 'whoosh', .75, i % 2 ? .4 : -.4); Q(tf + .2, 'glass', .55, (i - 2) * .3); if (i) Q(tf + .06, 'thud', .4, (i - 3) * .3) });
+      Q(.02, 'whoosh', .5); Q(.42, 'land', 1); Q(.45, 'shimmer', .25);   // v23.3: капля садится мягким ударом (синтез), без «плюх»
+      K.form.forEach((tf, i) => { Q(tf - .1, 'whoosh', .75, .4); Q(tf + .2, 'glass', .55, (i - 2) * .3); if (i) Q(tf + .06, 'thud', .4, (i - 3) * .3) });   // v23.3: все въезжают справа
       Q(K.row + .06, 'thud', .45, .6); Q(K.row + .15, 'shimmer', .4);
       Q(K.mac[0], 'seal', 1); Q(K.mac[0] + .03, 'thud', .6); Q(K.mac[1], 'splash', .55); Q(K.mac[2], 'stamp', .9); Q(K.mac[2] + .25, 'shimmer', .35);
       Q(K.dark, 'deep', .8);
@@ -721,8 +730,7 @@
       Q(K.back - .05, 'deep', .9); Q(K.pull - .05, 'whoosh', 1.2);
     }
     Q(K.flare - .03, 'drop', 1); Q(K.flare - .02, 'boom', .7);
-    Q(K.grow - .04, 'plop', .8); Q(K.pour[0], 'pour', .5);   // v23.2: без «бульканья» (Gemini)
-    Q(K.zip - .06, 'zip', 1); Q(K.zipE, 'zipend', 1);
+    Q(K.grow - .06, 'sub', 1); Q(K.suck1 - .04, 'steam', 1);   // v23.3: без «бульканья» и шипения молнии — мягкий саб-подъём (синтез, до втягивания капли) и лёгкий выдох пара
     Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1);
   }
   window.EP = {
@@ -730,7 +738,7 @@
     init(tl, SC) {
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; LANG = tl.lang || 'ru'; MODE = 'y'; VAR = /^v232/.test(tl.ep || '') ? 'B' : 'A';
       TLX = { endT: tl.endT || tl.dur }; K = keys(); window.__K = K; CHUNKS = buildChunks();
-      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .5], [K.dive0 + .05, K.TE1 - .2]);
+      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4], [K.dive0 + .05, K.TE1 - .2]);
       for (const k in CUES) delete CUES[k]; cues(); window.CUES_READY = 1;
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));

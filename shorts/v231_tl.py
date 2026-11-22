@@ -31,7 +31,9 @@ def build(ep, lang):
 
 
 if __name__ == '__main__':
+    import sys
     for ep in TXT:
+        if ep == 'v231y' and '--draft' not in sys.argv: continue   # v23.3: у A таймлайн по голосу — v233_tl.py
         for lang in ('ru',):
             R = build(ep, lang); p = os.path.join(HERE, 'tl', f'{ep}-{lang}.json'); json.dump(R, open(p, 'w'), ensure_ascii=False, indent=1)
             print(f"{p}: {R['dur']:.3f} с, {R['frames']} кадров; фразы " + ', '.join(f"{s['a']:.2f}–{s['b']:.2f}" for s in R['sent']))
