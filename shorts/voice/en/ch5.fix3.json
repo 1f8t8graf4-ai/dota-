@@ -1,0 +1,21 @@
+{
+ "voice": "lWDDHwXsJXJM7nv2YgHY",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "After the IQOS setback, they made an even smarter move.",
+ "cut": "вырезано из ch5.fix1.mp3 0.158–4.200 (без «But» в начале: следующая фраза b1 сама начинается с «But»), не записывалось",
+ "items": [
+  {
+   "key": "b0",
+   "scene": "b0",
+   "text": "After the IQOS setback, they made an even smarter move.",
+   "off": 0,
+   "len": 55
+  }
+ ]
+}

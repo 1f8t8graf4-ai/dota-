@@ -7,7 +7,7 @@ A[язык][рисовка главы][фраза] = 'русское=перев�
 A = {'en': {}, 'de': {}}
 
 A['en']['v220'] = {
-    'b0': 'Но=But после=after айкосом=setback сделали=made ход=smarter',   # v22.4: мостик 4 → 5 (волна встаёт на «smarter move»)
+    'b0': 'после=after айкосом=setback сделали=made ход=smarter',   # v23.5: «But» вырезано (voice/en/ch5.fix3)   # v22.4: мостик 4 → 5 (волна встаёт на «smarter move»)
     'b1': 'Филип=Philip через=a запрета=ban маленькой=small за=a шестнадцать=sixteen',
     'b2': 'нет=isn’t даже=even табака=tobacco',
     's1': 'видно=see слышно=hear пахнут=smell пакетик=pouch губу=lip всё=that’s',

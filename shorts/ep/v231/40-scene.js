@@ -317,21 +317,23 @@
       glow(c, xx, yy, 300 + 60 * (i % 3), '#cfd9e8', .055 * hz);
     }
   }
-  function filmEnd(c, t, hb) {
+  function filmEnd(c, t, hb) {   // v23.5: титр проявляется на месте (прозрачность + лёгкий зум), без разъезда из точки — «01» не наезжает на «ОД»
     const L = TTL_L[LANG] || TTL_L.ru, o = { f: 'M', w: 700, s: 58, ls: 13 };
-    const sh = eio(at(t, K.grow, K.grow + .85)), e = eo(at(t, K.ttl, K.ttl + .75)), out = 1 - eio(at(t, K.tOut, K.tOut + .45));
-    const wl = tw(c, L[0], o), wr = tw(c, L[1], o), gap = 44, cx = 540 + lp(0, (wl - wr) / 2, e), cy = 980 + 4 * Math.sin(TAU * t / 3.3) * (1 - sh);
+    const sh = eio(at(t, K.grow, K.grow + .85)), a = eio(at(t, K.ttl, K.ttl + .6)), z = eo(at(t, K.ttl, K.ttl + 1.1)), out = 1 - eio(at(t, K.tOut, K.tOut + .45));
+    const wl = tw(c, L[0], o), wr = tw(c, L[1], o), gap = 44, cx = 540 + lp(0, (wl - wr) / 2, sh), cy = 980 + 4 * Math.sin(TAU * t / 3.3) * (1 - sh);
     vapor(c, t, cx, cy);
     if (out <= 0) return;
     c.save(); c.globalAlpha *= out;
-    const r = CORE_R * lp(1, .24, sh);   // капля сжимается в точку — свет её тоже уходит
+    const r = CORE_R * lp(1, .24, sh);   // капля сжимается в точку и встаёт между «01» и «ОДНОРАЗКИ»
     drop(c, cx, cy, r, hb * (1 - sh), 0, 1 - sh);
-    if (e > 0) {   // «01» выходит из точки влево, «ОДНОРАЗКИ» — вправо
-      const xl = cx - lp(0, gap + wl / 2, e), xr = cx + lp(0, gap + wr / 2, e);
-      tx(c, L[0], xl, cy + 2, { ...o, c: '#F4F1EA', a: e });
-      tx(c, L[1], xr, cy + 2, { ...o, c: '#F4F1EA', a: e });
-      const lw = (wl + wr + 2 * gap) * eo(at(t, K.ttl + .35, K.ttl + 1.1));   // тонкая золотая черта под титром
-      if (lw > 1) { const mx = cx - (wl - wr) / 2; c.beginPath(); c.moveTo(mx - lw / 2, cy + 58); c.lineTo(mx + lw / 2, cy + 58); lnB(c, 2, 'rgba(234,194,122,.75)') }
+    if (a > 0) {
+      const mx = cx - (wl - wr) / 2, s = lp(1.06, 1, z);
+      c.save(); c.translate(mx, cy); c.scale(s, s); c.translate(-mx, -cy);
+      tx(c, L[0], cx - gap - wl / 2, cy + 2, { ...o, c: '#F4F1EA', a });
+      tx(c, L[1], cx + gap + wr / 2, cy + 2, { ...o, c: '#F4F1EA', a });
+      const lw = wl + wr + 2 * gap, la = .75 * eio(at(t, K.ttl + .25, K.ttl + .95));   // тонкая золотая черта — тоже проявляется
+      if (la > 0) { c.beginPath(); c.moveTo(mx - lw / 2, cy + 58); c.lineTo(mx + lw / 2, cy + 58); lnB(c, 2, `rgba(234,194,122,${la.toFixed(3)})`) }
+      c.restore();
     }
     c.restore();
   }

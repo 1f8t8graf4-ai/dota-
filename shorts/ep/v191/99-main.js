@@ -6,7 +6,7 @@
     if (MODE === 's') { k.rest = w('остальных'); k.yt = w('youtube'); k.zo1 = k.b0 + 3.9; k.hl0 = w('второй'); k.th0 = k.zo1 + .2; k.stamp = k.yt - 1; k.thd = Math.min(1.2, Math.max(.6, (k.stamp - .3 - k.th0 - .9) / 2)); k.down0 = k.yt + .5; k.down1 = k.down0 + 1.6; k.zA0 = k.down1 + .08 }   // v22.5: «стала второй из пяти улик» — короче прежней строки: нити к остальным трём — чаще (thd), штамп — после них
     else { k.zo1 = k.b0 + 1.75; k.rules = w('правила'); k.vperv = w('впервой'); k.brut = w('брутальности'); k.vek = w('век'); k.vyv = w('выводили'); k.nezh = w('нежные'); k.ledi = w('леди'); k.ts = k.endT + 1 / 30;
       const after = (q, t0) => { for (const x of TLW) if (nw(x.d) === q && x.a > t0) return x.a; return null }, kak = after('как', WdB('рынок')), sig = after('сигареты', kak);   // v22.4: помада — «как нежные сигареты», ≈0,25 с фиксации, нырок
-      k.L0 = kak - .15; k.L1 = Math.max(k.L0 + .7, sig + .1); k.d0 = Math.max(k.ledi + .2, k.L1 + .9) }   // v19.4: d0 — начало нырка в кадр 0 главы 3, ts — её кадр 0 (следующий после последнего кадра мостика)
+      k.L0 = kak - .15; k.L1 = Math.max(k.L0 + .7, sig + .1); k.d0 = k.L1 + .05 }   // v23.5: нырок начинается сразу из мазка (без паузы после него)   // v19.4: d0 — начало нырка в кадр 0 главы 3, ts — её кадр 0 (следующий после последнего кадра мостика)
     return k;
   }
   function allInit() { if (!T1) b1Init(); if (!T2) b2Init(); if (!T5) b5Init(); if (!T6) b6Init() }

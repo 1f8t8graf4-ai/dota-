@@ -205,7 +205,7 @@
   // дамская реклама), подпись «МАЛЬБОРО»: МЯГКИЕ, КАК МАЙ; ≈ 0,25 с — и камера ныряет в фото: кадр 0 главы 3.
   let KB2 = null;
   const LIPD = 150;   // путь кончика помады по диагонали фото: от (−LIPD, −LIPD) до (LIPD, LIPD) от центра фото
-  function lipState(t) { return { hat: eo(at(t, K.brut - .15, K.brut + .45)), s: at(t, K.L0, K.L1), e: at(t, K.L1 - .25, K.L1 + .35), r: 1 - at(t, K.L1 + .15, K.L1 + .6) } }
+  function lipState(t) { return { hat: eo(at(t, K.brut - .15, K.brut + .45)), s: at(t, K.L0, K.L1), e: at(t, K.L1 - .25, K.L1 + .35), r: 1 - at(t, K.L1 + .35, K.L1 + 1.05) } }   // v23.5: мазок тает уже на наезде
   function lipTip(u) { const d = lp(-LIPD, LIPD, eio(u)); return [d, d] }
   function lipBand(c, x0, y0, x1, y1, hw, rough, seed, cont) {   // полоса вдоль отрезка с неровной кромкой (контур — путь; cont — дописать к текущему пути)
     const L = Math.hypot(x1 - x0, y1 - y0) || 1, dx = (x1 - x0) / L, dy = (y1 - y0) / L, nx = -dy, ny = dx, n = Math.max(6, Math.ceil(L / 7)), ext = hw * .55;

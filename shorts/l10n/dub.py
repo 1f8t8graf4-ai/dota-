@@ -19,7 +19,8 @@ import data, data45
 import v200_tl as V
 
 API = 'https://api.elevenlabs.io'; H = {'xi-api-key': 'proxy-injected'}   # ключ подставляет прокси окружения
-VOICE = {'en': 'lWDDHwXsJXJM7nv2YgHY'}   # Nathan — Natural Narrator (Андрей, 21.11: «англ 100%»); немецкий — ждёт выбора Андрея
+VOICE = {'en': 'lWDDHwXsJXJM7nv2YgHY',   # Nathan — Natural Narrator (Андрей, 21.11: «англ 100%»)
+         'de': 'kkJxCnlRCckmfFvzDW5Q'}  # Alexander — пробник №3 (Андрей, 22.11: «немецкий беру 3»); записывать — только после его «да» с суммой
 MODEL = 'eleven_v4'; VSET = {'stability': .4, 'similarity_boost': .75, 'style': .25, 'speed': 1.0}   # как у Макса
 CH = {1: ['v170e', 'v170a'], 2: ['v191y', 'v191s'], 3: ['v200y', 'v200s'], 4: ['v210y', 'v210s'], 5: ['v220y', 'v220s']}
 CH_OF = {ep: c for c, eps in CH.items() for ep in eps}

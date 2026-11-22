@@ -371,7 +371,7 @@
 - EN: But their old patents survived: in 2021, the US International Trade Commission ruled that IQOS infringed them — and kicked it out of America.
 - DE: Dafür überlebten ihre alten Patente: 2021 entschied die US-Handelskommission, dass IQOS sie verletzt – und warf es aus Amerika raus.
 
-**14.** А обещание бросить? В двадцать четвёртом у айкоса тридцать два миллиона пользователей, а сигарет компания продала шестьсот семнадцать миллиардов — больше, чем годом раньше.
+**14.** Ну а как же обещание бросить? В двадцать четвёртом у айкоса тридцать два миллиона пользователей, а сигарет компания продала шестьсот семнадцать миллиардов — больше, чем годом раньше.
 
 - EN: And the promise to quit? In 2024, IQOS had thirty-two million users — and the company sold six hundred seventeen billion cigarettes, more than the year before.
 - DE: Und das Versprechen, aufzuhören? 2024 hatte IQOS zweiunddreißig Millionen Nutzer – und der Konzern verkaufte sechshundertsiebzehn Milliarden Zigaretten, mehr als im Jahr davor.
@@ -398,8 +398,8 @@
 
 **1.** Но после провала с айкосом они сделали ход ещё хитрее. *(только в фильме)*
 
-- EN: But after the IQOS setback, they made an even smarter move.
-- DE: Doch nach dem IQOS-Rückschlag machten sie einen noch schlaueren Zug.
+- EN: After the IQOS setback, they made an even smarter move.
+- DE: Nach dem IQOS-Rückschlag machten sie einen noch schlaueren Zug.
 
 **2.** А в Америку «Филип Моррис» всё-таки вернулся — через год после запрета, с маленькой белой баночкой за шестнадцать миллиардов.
 

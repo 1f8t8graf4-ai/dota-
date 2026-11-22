@@ -169,8 +169,8 @@
     for (let i = 0; i < 26; i++) { const an = -Math.PI * .1 - Math.PI * .75 * H1(i * 5.1), v = (500 + 900 * H1(i * 2.7)) * tau, x = X - S0 * .45 + Math.cos(an) * v, y = Y + Math.sin(an) * v + 1400 * tau * tau;
       circ(c, x, y, (4 + 7 * H1(i + 3)) * (1 - at(tau, .2, .7)), rgba('#E6F0FF', .9 * (1 - at(tau, .25, .7)))) }
     const a = 1 - at(tau, .42, .62); if (a <= 0) return;
-    c.save(); c.globalAlpha *= a; c.translate(X + 1150 * tau + 500 * tau * tau, Y - 980 * tau + 420 * tau * tau); c.rotate(2.4 * tau); const k = 1 - .3 * at(tau, 0, .7), fy = Math.cos(5.2 * tau);   // кувырок: переворачивается через край
-    c.scale(1, Math.max(.06, Math.abs(fy))); if (fy > 0) c.drawImage(coverImg(), -S0 * k / 2, -S0 * k / 2, S0 * k, S0 * k); else { rr(c, -S0 * k / 2, -S0 * k / 2, S0 * k, S0 * k, 4); fill(c, '#2A2A33') } c.restore();
+    c.save(); c.globalAlpha *= a; c.translate(X + 1150 * tau + 500 * tau * tau, Y - 980 * tau + 420 * tau * tau); c.rotate(2.4 * tau); const k = 1 - .3 * at(tau, 0, .7), fy = .62 + .38 * Math.cos(5.2 * tau);   // v23.5: кувырок без ребра — не сжимается в чёрную полоску
+    c.scale(1, fy); c.drawImage(coverImg(), -S0 * k / 2, -S0 * k / 2, S0 * k, S0 * k); c.restore();
   }
   function surface5(c, t, J) {   // вода уходит вниз: над ней ночной океан (кадр 0), баночка всплывает; линия воды ложится на передний вал кадра 0
     const k = at(t, J.cov, J.j0); if (k <= 0) return; const e = eo(k), base = lp(-170, 1330, e), L = x => base + 30 * Math.sin(x / 160 + t * 1.7);

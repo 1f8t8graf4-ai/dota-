@@ -47,8 +47,8 @@ CH4 = {   # глава 4 «2014 · Нагреватели»: фильм — s1�
 }
 
 CH5 = {   # глава 5 «2022 · Снюс»: фильм — мостик b0, b1–b2, s1–s11 (+ финал), шортс — b1–b2, s1–s11 и вопрос q (v22.4: s12 вырезана, b0 и q — ФИНАЛЬНОЕ ТЗ мейн)
-    'b0': ('But after the IQOS setback, they made an even smarter move.',
-           'Doch nach dem IQOS-Rückschlag machten sie einen noch schlaueren Zug.'),
+    'b0': ('After the IQOS setback, they made an even smarter move.',   # v23.5: без «But / Doch» — b1 сам начинается с «But / Doch» (в шортсе b1 — первая фраза)
+           'Nach dem IQOS-Rückschlag machten sie einen noch schlaueren Zug.'),
     'b1': ('But Philip Morris did make it back to America — a year after the ban, with a small white can — a sixteen-billion-dollar deal.',
            'Doch Philip Morris kam nach Amerika zurück – ein Jahr nach dem Verbot, mit einer kleinen weißen Dose für sechzehn Milliarden.'),
     'b2': ('There isn’t even any… tobacco in it.',
