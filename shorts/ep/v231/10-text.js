@@ -7,10 +7,12 @@
   const LAB_L = { ru: ['УПАКОВКА', 'ВКУС', 'ОБЕЩАНИЯ'], en: ['PACKAGING', 'FLAVORS', 'PROMISES'], de: ['VERPACKUNG', 'GESCHMACK', 'VERSPRECHEN'] };
   const STAMP_L = { ru: 'СПОСОБ БРОСИТЬ', en: 'A WAY TO QUIT', de: 'ZUM AUFHÖREN' };
   let VAR = 'A';
-  // [фраза, № слова] — A: «За сто лет он менял форму пять раз — от сигарет до белых пакетиков» / «Менялись упаковка, вкус и обещания — но не суть»;
+  const ORDA = ['cig', 'pod', 'heat', 'ice', 'tin'];   // v23.2: A — сигареты · «Джул» · айкос · одноразки · снюс (как карточки доски: 1924 · 1979 · 2014 · 2020 · 2022)
+  // [фраза, № слова] — A: см. ниже;
   //                     B: «Сигареты. «Джул». Одноразки. Айкос. Снюс.» / «И каждый раз — «способ бросить».» / «Угадаете, кто стоит за всеми пятью?»
   const ANCH = {
-    A: { ru: { form: [['s2', 0], ['s2', 3], ['s2', 5], ['s2', 7], ['s2', 11]], line: ['s2', 8], hi: [['s2', 9]], mac: [['s3', 1], ['s3', 2], ['s3', 4]], dark: ['s3', 5], flare: ['s3', 7], grow: ['s4', 0], zip: ['s4', 2] } },
+    // v23.2: A — «Что вы знаете о никотине? / За сто лет он менял форму пять раз: / Сигареты. «Джул». Айкос. Одноразки. Снюс. / Менялись упаковка, вкус и обещания — но не суть. / Начнём…»
+    A: { ru: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], shp: [['s2', 4], ['s2', 7]], five: ['s2', 6], mac: [['s4', 1], ['s4', 2], ['s4', 4]], dark: ['s4', 5], flare: ['s4', 7], grow: ['s5', 0], zip: ['s5', 2] } },
     B: { ru: { form: [['s1', 0], ['s1', 1], ['s1', 2], ['s1', 3], ['s1', 4]], stamp: ['s2', 1], quote: ['s2', 3], back: ['s3', 0], who: ['s3', 1], stand: ['s3', 2], pull: ['s3', 4], flare: ['s3', 5], grow: ['s4', 0], zip: ['s4', 2] } },
   };
   const WA = ([sc, i]) => { const s = TLS.find(x => x.scene === sc); if (!s) throw new Error('v231: нет фразы ' + sc); const w = s.words[Math.min(i, s.words.length - 1)]; return w.a };
@@ -18,7 +20,8 @@
     const A = ANCH[VAR][LANG] || ANCH[VAR].ru, TE = TLX.endT, s1 = TLS.find(x => x.scene === 's1');
     const k = { TE, TE1: TE - 1 / 30, s1a: s1.a, s1b: s1.b, s2: SA('s2'), s2b: SB('s2'), s3: SA('s3'), s3b: SB('s3'), s4: SA('s4'), form: A.form.map(WA), flare: WA(A.flare), grow: WA(A.grow), zip: WA(A.zip) };
     if (VAR === 'A') {
-      k.tw = s1.words.map(w => w.a); k.line = WA(A.line); k.hi = A.hi.map(WA); k.mac = A.mac.map(WA); k.dark = WA(A.dark);
+      k.tw = s1.words.map(w => w.a); k.shp = A.shp.map(WA); k.five = WA(A.five); k.mac = A.mac.map(WA); k.dark = WA(A.dark);
+      k.row = Math.min(SB('s3') + .1, k.mac[0] - .9);   // после «Снюс» последний предмет садится в ряд — пятёрка стоит вся до «упаковка»
       k.beat0 = k.tw[k.tw.length - 1]; k.noSub = ch => ch.a < s1.b + .05;   // первая фраза — это титул, субтитром её не дублируем
     } else {
       k.stamp = WA(A.stamp); k.quote = WA(A.quote); k.back = WA(A.back); k.who = WA(A.who); k.stand = WA(A.stand); k.pull = WA(A.pull);

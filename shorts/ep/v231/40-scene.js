@@ -17,6 +17,7 @@
     g.globalCompositeOperation = 'source-atop';
     const dk = Math.min(.85, (o.dk || 0) + .55 * (1 - Math.abs(ct)));   // повёрнутый боком — темнее (объём)
     if (dk > 0) { g.fillStyle = `rgba(6,8,22,${dk})`; g.fillRect(0, 0, W, H) }
+    if (o.xr > 0) { g.fillStyle = `rgba(150,190,255,${o.xr})`; g.fillRect(0, 0, W, H) }   // v23.2: оболочка «рентгеном»
     if (o.fl > 0 && o.fl < 1) { const u = lp(-.4, 1.4, o.fl) * (W + H), gr = g.createLinearGradient(u - 110, 0, u + 110, H * .6); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,.5)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H) }   // блик проходит по предмету
     if (o.rim > 0) { const gr = g.createLinearGradient(0, 0, W, 0); gr.addColorStop(0, `rgba(255,190,110,${.55 * o.rim})`); gr.addColorStop(.18, 'rgba(255,190,110,0)'); gr.addColorStop(.82, 'rgba(255,190,110,0)'); gr.addColorStop(1, `rgba(255,190,110,${.55 * o.rim})`); g.fillStyle = gr; g.fillRect(0, 0, W, H) }
     c.save(); c.globalAlpha *= a; c.translate(x, yb); c.scale(sx, sy); c.drawImage(TMP, 0, 0, W, H, -w / 2, -h, w, h); c.restore();
@@ -91,7 +92,7 @@
   function dots(c, t, n, a) {   // шкала из пяти точек (ТЗ: y ≈ 1340) — без цифр и лет
     if (a <= 0) return;
     for (let i = 0; i < 5; i++) {
-      const x = 540 + (i - 2) * 58, y = 1378, ap = spr(at(t, K.form[0] - .2 + i * .05, K.form[0] + .25 + i * .05)) * a; if (ap <= 0) continue;
+      const t5 = K.five ?? K.form[0] - .2, x = 540 + (i - 2) * 58, y = 1378, ap = spr(at(t, t5 + i * .05, t5 + .45 + i * .05)) * a; if (ap <= 0) continue;
       const on = at(t, K.form[i] + .15, K.form[i] + .3), pg = t - (K.form[i] + .15);
       c.save(); c.globalAlpha *= a; ring(c, x, y, 10 * ap, 'rgba(238,241,248,.45)', 2.5);
       if (on > 0) { glow(c, x, y, 36, '#f2a33a', .5 * on); circ(c, x, y, 10 * spr(on), '#f2a33a') }
@@ -99,42 +100,55 @@
       c.restore();
     }
   }
-  function label(c, s, t0, t) {   // плашка врезки (ТЗ: над субтитрами, выше 1480)
-    const k = spr(at(t, t0 + .04, t0 + .3)); if (k <= 0) return;
-    plate(c, s, 540, 1392, k, { s: 46, ls: 6, bg: '#F4F1EA', c: '#141010' });
+  function label(c, t) {   // плашка врезки (ТЗ: над субтитрами, выше 1480); v23.2: одна на все три — ширина постоянная, слово меняется на месте (не прыгает)
+    const M = K.mac, i = t < M[1] ? 0 : t < M[2] ? 1 : 2, k = spr(at(t, M[0] + .04, M[0] + .3)); if (k <= 0) return;
+    const L = LAB_L[LANG] || LAB_L.ru, o = { s: 46, ls: 6, w: 800, f: 'M' }, w = Math.max(...L.map(s => tw(c, s, o))) + o.s * 1.3, h = o.s * 1.9, sw = i ? eo(at(t, M[i], M[i] + .16)) : 1;
+    c.save(); c.translate(540, 1392); c.scale(k, k);
+    rr(c, -w / 2 + 6, -h / 2 + 9, w, h, h * .24); fill(c, 'rgba(0,0,0,.28)'); rr(c, -w / 2, -h / 2, w, h, h * .24); fill(c, '#F4F1EA');
+    tx(c, L[i], 0, o.s * .04 + 10 * (1 - sw), { ...o, c: '#141010', a: sw });
+    c.restore();
   }
-  // ================= A: по ТЗ Gemini =================
-  const SLOT = i => 152 + 194 * i, LW = 178, LH = 380, LWT = 214;   // ряд из пяти (A — «от сигарет до белых пакетиков», B — весь ролик)
+  // ================= A: по ТЗ Gemini + список (v23.2) =================
+  const SLOT = i => 152 + 194 * i, LW = 178, LH = 380, LWT = 214;   // ряд из пяти (B — весь ролик)
+  const AW = 184, AH = 440, AWT = 220;                               // v23.2: в A ряд крупнее (Gemini: «на телефоне мелковато»)
   const sideA = i => i % 2 ? 1 : -1;                                // откуда въезжает: −1 слева, +1 справа
-  function soloA(t, i) {   // [x, поворот, видно] предмета i, пока он один на подиуме
-    const tf = K.form[i], u = at(t, tf - .14, tf + .5), s = sideA(i);
-    let x = 540 + s * 1150 * (1 - bo(u)), th = s * 1.35 * (1 - eo(at(t, tf - .14, tf + .3)));
-    if (i < 3) { const tn = K.form[i + 1], v = ei(at(t, tn - .16, tn + .1)), s2 = -sideA(i + 1); x += s2 * 1150 * v; th += s2 * 1.2 * v }   // следующий выталкивает его в другую сторону
-    return [x, th, t > tf - .16];
+  // предмет i: на своё слово въезжает крупно в центр (поворот, блик) → на слово следующего садится в своё место ряда; последний — после «Снюс»
+  function itemA(t, i) {
+    const tf = K.form[i], tn = i < 4 ? K.form[i + 1] : K.row, s = sideA(i), n = ORDA[i];
+    const u = at(t, tf - .14, tf + .42), v = eio(at(t, tn - .1, tn + .32));
+    const x0 = 540 + s * 1150 * (1 - bo(u)), th0 = s * 1.35 * (1 - eo(at(t, tf - .14, tf + .3)));
+    return { i, n, tf, tn, x: lp(x0, SLOT(i), v), th: lp(th0, 0, v), mw: lp(600, n === 'tin' ? AWT : AW, v), mh: lp(560, AH, v), yb: lp(PY + 26, PY, v), v };
   }
-  function lineA(t) { return eio(at(t, K.line - .06, K.line + .42)) }
+  // «менял форму пять раз»: вокруг капли по очереди проступают пять оболочек «рентгеном» (ядро — то же)
+  function shpW() { return [K.shp[0] - .06, K.shp[1] + .3] }
+  function shpT() { const [a, b] = shpW(), d = (b - a) / 5; return [0, 1, 2, 3, 4].map(i => a + i * d) }
+  function shells(c, t, dy) {
+    const [a, b] = shpW(); if (t < a || t > b) return; const d = (b - a) / 5, i = Math.min(4, Math.floor((t - a) / d)), u = (t - a - i * d) / d, n = ORDA[i];
+    const al = at(u, 0, .18) * (i < 4 ? 1 - at(u, .82, 1) : 1 - at(u, .6, 1)), pop = 1 + .08 * (1 - eo(at(u, 0, .35)));
+    const [w, h] = fitWH(n, 330 * pop, 430 * pop), q = SCORE[n], x = 540 - (q[0] - .5) * w, yb = 1000 + dy + h - q[1] * h;   // ядро предмета — ровно на капле
+    obj(c, n, x, yb, { mw: 330 * pop, mh: 430 * pop, xr: .7, rim: 1, sh: false, a: .8 * al });
+  }
+  function dropInA(t) {   // капля падает в луч с первого кадра и садится с отскоком
+    if (t < .42) { const k = at(t, 0, .42); return lp(760, 1000, k * k) - 1000 }
+    return 30 * Math.exp(-(t - .42) / .1) * Math.sin((t - .42) * 26);
+  }
   function sceneA(c, t, hb, fl) {
-    const pre = t < K.mac[0], L = lineA(t);
+    const pre = t < K.mac[0];
     if (pre) {
-      studio(c, t, { rx: lp(360, 480, L), boost: hb * .5 });
-      // капля: с первого кадра в луче; пока предметы — за ними (их янтарный контровой свет)
-      const dy = 6 * Math.sin(TAU * t / 3.3), dr = lp(72, 40, eio(at(t, K.form[0] - .3, K.form[0] + .3)));
-      const dA = 1 - L;   // в ряду капля гаснет — главное ряд
-      A(c, dA, () => drop(c, 540, 1000 + dy, dr, hb, 0, 1));
-      for (let i = 0; i < 5; i++) {
-        const tf = K.form[i]; if (t < tf - .2) continue;
-        let x, th, yb = PY, mw = 600, mh = 560, rim = 1, a = 1;
-        if (i < 4) {
-          const [sx, sth, vis] = soloA(t, i); if (!vis && L <= 0) continue;
-          const back = i < 3 ? eo(at(t, K.line + i * .05 - .02, K.line + i * .05 + .42)) : L;   // в ряд: первые три влетают обратно, четвёртый сжимается в своё место
-          x = lp(sx, SLOT(i), back); th = lp(sth, 0, back); mw = lp(600, LW, back); mh = lp(560, LH, back);
-          if (i < 3 && L > 0 && back <= 0) continue;
-        } else {   // баночка: въезжает справа прямо в пятое место на «белых пакетиков»
-          const u = at(t, tf - .14, tf + .5); x = SLOT(4) + 900 * (1 - spr(u)); th = 1.3 * (1 - eo(at(t, tf - .14, tf + .3))); mw = LWT; mh = LH;
-        }
-        const fl = at(t, tf + .15, tf + .6), hi = i === 0 ? Math.sin(Math.PI * at(t, K.hi[0], K.hi[0] + .7)) : 0;
-        if (L > .5) slotSpot(c, SLOT(i), Math.max(i === 0 ? hi : 0, i === 4 ? Math.sin(Math.PI * at(t, tf + .1, tf + .9)) : 0));
-        obj(c, SPRN[i], x, yb, { mw, mh, th, fl: hi > 0 ? at(t, K.hi[0], K.hi[0] + .55) : fl, rim, a });
+      const W5 = eio(at(t, K.form[0] - .3, K.form[0] + .2));
+      studio(c, t, { rx: lp(360, 480, W5), boost: hb * .5 });
+      // капля: в луче с первого кадра; на «Сигареты» уходит — дальше её свет только в контровом у предметов (за предметами не торчит)
+      const dy = dropInA(t) + 6 * Math.sin(TAU * t / 3.3), dA = 1 - eio(at(t, K.form[0] - .25, K.form[0] + .05));
+      shells(c, t, dy);
+      if (dA > 0) drop(c, 540, 1000 + dy, 72 * dA * (1 + .25 * Math.exp(-Math.max(0, t - .42) / .12) * at(t, .4, .43)), hb, 0, 1);
+      const lu = (t - .42) / .5; if (lu > 0 && lu < 1) ring(c, 540, 1000, 60 + 260 * eo(lu), `rgba(255,214,150,${.5 * (1 - lu)})`, 5 - 3 * lu);   // волна, когда капля села
+      const IT = []; for (let i = 0; i < 5; i++) if (t > K.form[i] - .16) IT.push(itemA(t, i));
+      IT.sort((p, q) => q.v - p.v);   // сначала те, что уже в ряду, крупный — поверх
+      for (const o of IT) {
+        const land = Math.sin(Math.PI * at(t, o.tn + .1, o.tn + .7)), all = Math.sin(Math.PI * at(t, K.row + .1, K.row + .9));
+        slotSpot(c, SLOT(o.i), Math.max(land * o.v, all));
+        const f1 = at(t, o.tf + .12, o.tf + .55), f2 = at(t, K.row + .15 + o.i * .08, K.row + .55 + o.i * .08);
+        obj(c, o.n, o.x, o.yb, { mw: o.mw, mh: o.mh, th: o.th, fl: f2 > 0 ? f2 : f1, rim: lp(1, .6, o.v) });
       }
       dots(c, t, 5, 1 - at(t, K.mac[0] - .2, K.mac[0]));
       return;
@@ -166,13 +180,12 @@
   }
   // три врезки крупным планом: упаковка (крышка пачки щёлкает, золотой блик), вкус (манго, мята, лёд), обещания (бланк, зелёная галочка, печать с бликом)
   function macro(c, t) {
-    const M = K.mac, i = t < M[1] ? 0 : t < M[2] ? 1 : 2, t0 = M[i], u = t - t0, z = 1 + .06 * u;
+    const M = K.mac, i = t < M[1] ? 0 : t < M[2] ? 1 : 2, t0 = M[i], u = t - t0, z = 1 + .06 * u + .07 * (1 - eo(at(t, t0, t0 + .28)));   // v23.2: вход — короткий наезд вместо белой вспышки
     c.save(); c.translate(540, 900); c.scale(z, z); c.translate(-540, -900);
     if (i === 0) {
       c.fillStyle = '#150709'; c.fillRect(-500, -500, 2080, 2920); glow(c, 540, 700, 900, '#7a1222', .55);
       const sn = 1 - spr(at(t, t0, t0 + .35)); c.save(); c.translate(540, 960); c.rotate(-.06 * sn); c.scale(1 + .05 * sn, 1 + .05 * sn); c.translate(-540, -960);
       obj(c, 'cig', 620, 1760, { mw: 1600, mh: 1380, fl: lp(.2, 1, at(t, t0 + .15, t0 + .75)), sh: false }); c.restore();
-      if (u < .08) { c.fillStyle = `rgba(255,240,220,${.5 * (1 - u / .08)})`; c.fillRect(-500, -500, 2080, 2920) }
     } else if (i === 1) {
       c.fillStyle = '#0f1408'; c.fillRect(-500, -500, 2080, 2920); glow(c, 540, 900, 900, '#4a5a18', .5); glow(c, 380, 800, 520, '#a2560e', .45);
       flavors(c, t, t0);
@@ -181,17 +194,19 @@
       promise(c, t, t0);
     }
     c.restore();
-    label(c, (LAB_L[LANG] || LAB_L.ru)[i], t0, t);
+    label(c, t);
   }
   function popK(t, t0) { return spr(at(t, t0, t0 + .32)) }
   function flavors(c, t, t0) {
     // манго «ёжиком», два листа мяты, кубик льда — 3 тона, как предметы глав
     const k1 = popK(t, t0), k2 = popK(t, t0 + .07), k3 = popK(t, t0 + .14);
-    if (k1 > 0) { c.save(); c.translate(380, 960); c.scale(k1, k1); c.rotate(-.18);   // манго
-      c.beginPath(); c.ellipse(0, 40, 250, 150, 0, Math.PI, 0); c.closePath(); fill(c, '#3f7a2a'); c.beginPath(); c.ellipse(0, 30, 236, 134, 0, Math.PI, 0); c.closePath(); fill(c, '#f6a03a');
-      c.save(); c.beginPath(); c.ellipse(0, 30, 236, 134, 0, Math.PI, 0); c.closePath(); c.clip();
-      for (let r = 0; r < 4; r++) for (let q = -5; q <= 5; q++) { const x = q * 46 + (r % 2) * 23, y = 6 - r * 40; rr(c, x - 19, y - 17, 38, 34, 8); fill(c, r % 2 ? '#ffb24a' : '#f7a23c'); c.fillStyle = 'rgba(160,70,0,.25)'; c.fillRect(x + 6, y - 17, 13, 34) }
-      c.restore(); c.restore() }
+    if (k1 > 0) { c.save(); c.translate(390, 960); c.scale(k1, k1); c.rotate(-.28);   // v23.2: манго — целый плод (Gemini: «ёжик» читался как вафля), 3 тона, черенок и лист
+      const body = () => { c.beginPath(); c.moveTo(-40, -190); c.bezierCurveTo(120, -210, 220, -60, 200, 60); c.bezierCurveTo(180, 180, 40, 230, -60, 190); c.bezierCurveTo(-170, 150, -200, 20, -160, -80); c.bezierCurveTo(-140, -150, -100, -185, -40, -190); c.closePath() };
+      body(); const gm = c.createLinearGradient(-180, -180, 200, 200); gm.addColorStop(0, '#86c34a'); gm.addColorStop(.42, '#f6c33a'); gm.addColorStop(1, '#ee6a2a'); c.fillStyle = gm; c.fill();
+      c.save(); body(); c.clip(); c.beginPath(); c.ellipse(130, 120, 210, 170, -.5, 0, TAU); fill(c, 'rgba(160,45,8,.3)'); c.beginPath(); c.ellipse(-92, -78, 46, 104, -.6, 0, TAU); fill(c, 'rgba(255,255,235,.4)'); c.restore();
+      c.beginPath(); c.moveTo(-46, -186); c.lineTo(-56, -228); lnB(c, 10, '#5a3a1c');
+      c.beginPath(); c.moveTo(-56, -224); c.quadraticCurveTo(14, -306, 118, -262); c.quadraticCurveTo(24, -226, -56, -224); c.closePath(); fill(c, '#3f9a4a'); c.beginPath(); c.moveTo(-50, -226); c.quadraticCurveTo(30, -262, 110, -262); lnB(c, 3, 'rgba(220,255,220,.6)');
+      c.restore() }
     if (k2 > 0) for (const [x, y, r, s] of [[690, 820, -.6, 1], [770, 960, .35, .8]]) { c.save(); c.translate(x, y); c.scale(k2 * s, k2 * s); c.rotate(r);   // мята
       c.beginPath(); c.moveTo(-150, 0); c.quadraticCurveTo(-40, -110, 150, 0); c.quadraticCurveTo(-40, 110, -150, 0); c.closePath(); fill(c, '#5ed39b');
       c.save(); c.clip(); c.fillStyle = '#3ba873'; c.fillRect(-160, 8, 320, 120); c.restore(); c.beginPath(); c.moveTo(-150, 0); c.lineTo(140, 0); for (let j = -3; j <= 3; j++) { c.moveTo(j * 36, 0); c.lineTo(j * 36 + 34, j % 2 ? 40 : -40) } lnB(c, 3, 'rgba(230,255,240,.7)'); c.restore() }
@@ -265,7 +280,7 @@
   // ---------- конец обоих: вокруг капли вырастает корпус одноразки = кадр 0 главы 1 в миниатюре (как v23.0) ----------
   function puff(c, t) {
     const u = t - K.zipE - .04; if (u <= 0 || u > 1) return;
-    for (let i = 0; i < 4; i++) { const v = u - i * .07; if (v <= 0) continue; const e = eo(v / .9); glow(c, 540 + (i - 1.5) * 60 * v, -560 - 760 * e, 70 + 280 * e, i % 2 ? '#c8f3e0' : '#ffd9a8', .55 * (1 - v / .9)) }
+    for (let i = 0; i < 4; i++) { const v = u - i * .07; if (v <= 0) continue; const e = eo(v / .9); glow(c, 540 + (i - 1.5) * 60 * v, -560 - 760 * e, 70 + 280 * e, i % 2 ? '#eef7ff' : '#e6fff3', .32 * (1 - v / .9)) }   // v23.2: светлый пар (было бурое пятно)
   }
   function deviceShot(c, t, t1, hb) {
     const pop = lp(.12, 1, spr(at(t, K.grow - .06, K.grow + .32))), g = eio(at(t, K.grow + .08, K.grow + .55)), m = eo(at(t, K.grow + .38, K.grow + .7));
@@ -273,8 +288,7 @@
     const rs = spr(at(t, K.zip - .08, K.zip + .22)) * (1 + .3 * Math.sin(Math.PI * at(t, K.zipE, K.zipE + .25))), fl = Math.sin(Math.PI * at(t, K.zipE - .02, K.zipE + .45));
     c.save(); c.translate(DEV0.x, DEV0.y); c.scale(S0, S0); c.translate(-DEVC.x, -DEVC.y);
     if (pop < 1) { c.translate(DEVC.x, DEVC.y); c.scale(pop, pop); c.translate(-DEVC.x, -DEVC.y) }
-    device1(c, t1, { g, m, lv, rev: zk > 0 ? ry + 4 : 1e4, ry, rs, ra: t >= K.zip - .08 ? 1 : 0, fl });
-    puff(c, t);
+    device1(c, t1, { g, m, lv, rev: zk > 0 ? ry + 4 : 1e4, ry, rs, ra: t >= K.zip - .08 ? 1 : 0, fl });   // v23.2: без облачка пара над корпусом (Gemini: «мутный дымок») — затяжку показывает диод
     c.restore();
     const r = CORE_R * (1 - .3 * eo(at(t, K.grow - .05, K.grow + .2))) * (1 - eio(at(t, K.pour[0], K.pour[1])));   // капля стекает в капсулу
     if (r > .4) drop(c, DEV0.x, DEV0.y, r, hb, 0, 0);
@@ -285,7 +299,7 @@
   function camZ(t) { return VS * t + (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1)) }
   function shutters() {   // окна размытия движения: въезды и падения предметов, ряд, стягивание в каплю
     const o = [];
-    if (VAR === 'A') { K.form.forEach(tf => o.push([tf - .16, tf + .32])); o.push([K.line - .08, K.line + .45]) }
+    if (VAR === 'A') { o.push([0, .45]); K.form.forEach(tf => o.push([tf - .16, tf + .32])); o.push([K.row - .1, K.row + .35]) }
     else { K.form.forEach(tf => o.push([tf - .2, tf + .06])); o.push([K.pull - .05, K.flare + .05]) }
     return o;
   }

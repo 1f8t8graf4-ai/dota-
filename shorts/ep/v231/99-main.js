@@ -23,11 +23,12 @@
   function cues() {   // hb, drop, zip, zipend — синтез в v231_sound.py (как в v230_sound.py), остальное — файлы sfx*; tick и swish под запретом
     const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
     beats().forEach((tb, i) => Q(tb, 'hb', i ? .9 : 1.1));
-    if (VAR === 'A') {
-      Q(.05, 'shimmer', .22);
-      K.form.forEach((tf, i) => { Q(tf - .1, 'whoosh', .75, i % 2 ? .4 : -.4); Q(tf + .2, 'glass', .55, (i - 2) * .3) });
-      Q(K.line - .05, 'whoosh', .9); K.hi.forEach(th => Q(th, 'zap', .35));
-      Q(K.mac[0], 'seal', 1); Q(K.mac[0] + .03, 'thud', .6); Q(K.mac[1], 'splash', .55); Q(K.mac[1] + .05, 'bubble', .7); Q(K.mac[2], 'stamp', .9); Q(K.mac[2] + .25, 'shimmer', .35);
+    if (VAR === 'A') {   // v23.2: капля падает в луч, оболочки вокруг неё, предметы на свои слова, ряд, врезки (без «бульканья»)
+      Q(.02, 'whoosh', .5); Q(.42, 'plop', .7); Q(.45, 'shimmer', .25);
+      shpT().forEach((ts, i) => Q(ts + .02, 'glass', .32, (i - 2) * .3));
+      K.form.forEach((tf, i) => { Q(tf - .1, 'whoosh', .75, i % 2 ? .4 : -.4); Q(tf + .2, 'glass', .55, (i - 2) * .3); if (i) Q(tf + .06, 'thud', .4, (i - 3) * .3) });
+      Q(K.row + .06, 'thud', .45, .6); Q(K.row + .15, 'shimmer', .4);
+      Q(K.mac[0], 'seal', 1); Q(K.mac[0] + .03, 'thud', .6); Q(K.mac[1], 'splash', .55); Q(K.mac[2], 'stamp', .9); Q(K.mac[2] + .25, 'shimmer', .35);
       Q(K.dark, 'deep', .8);
     } else {
       K.form.forEach((tf, i) => { Q(tf - .14, 'whoosh', .5, (i - 2) * .35); Q(tf + .02, 'thud', 1.1, (i - 2) * .35); Q(tf + .03, 'impact', .55, (i - 2) * .35) });
@@ -35,8 +36,8 @@
       Q(K.back - .05, 'deep', .9); Q(K.pull - .05, 'whoosh', 1.2);
     }
     Q(K.flare - .03, 'drop', 1); Q(K.flare - .02, 'boom', .7);
-    Q(K.grow - .04, 'plop', .8); Q(K.pour[0], 'pour', 1); Q(K.pour[0] + .12, 'bubble', .7);
-    Q(K.zip - .06, 'zip', 1); Q(K.zipE, 'zipend', 1); Q(K.zipE + .03, 'vape', .85);
+    Q(K.grow - .04, 'plop', .8); Q(K.pour[0], 'pour', .5);   // v23.2: без «бульканья» (Gemini)
+    Q(K.zip - .06, 'zip', 1); Q(K.zipE, 'zipend', 1);
     Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1);
   }
   window.EP = {

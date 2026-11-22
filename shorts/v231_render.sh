@@ -28,7 +28,7 @@ PY
 fi
 for EP in ${@:-v231y-ru v232y-ru}; do
   tl $EP; D=out/$EP/parts; mkdir -p $D
-  DUR=$(python3 -c "import json,math;print(math.ceil(json.load(open('tl/$EP.json'))['dur']*30-1e-6)/30)")
+  DUR=$(python3 -c "import json,math;print(math.ceil(json.load(open('tl/$EP.json'))['dur']*30-1e-3)/30)")
   N=$(python3 -c "import math;print(math.ceil($DUR/12))")
   for ((k=0; k<N; k++)); do
     [ -f $D/p$k.done ] && continue
