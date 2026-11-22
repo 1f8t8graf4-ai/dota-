@@ -1,167 +1,186 @@
-// Оформление YouTube-канала NightFabel (22.11): шапка RU / EN / DE, аватарка, водяной знак, превью «как видно на устройствах».
-// Знак канала — «стебель и янтарная точка»: точка над «ı» в NightFabel и над правой ножкой «N» — то же янтарное ядро, что в прологе фильма.
-// Шрифты — свои (shorts/fonts, OFL): Manrope 800 (как титул фильма), Playfair Display italic (слоган).
-//   node tools/channel_art.js [папка] [--bg фон.png] → shorts/out/channel/: banner-ru|en|de.png, avatar.png, watermark.png, preview.png
-//   --bg — шапка на готовом фоне (картинка из Gemini), иначе фон рисуется кодом
-// Размеры — по справке YouTube: шапка 2048×1152, всё важное в середине 1235×338 (только её видно на телефоне), до 6 МБ;
-// аватарка 800×800 (обрежется в круг); водяной знак 150×150, прозрачный фон.
+// Фирменный пакет NightFabel для YouTube и TikTok (22.11, ТЗ Андрея: «как дорогая документальная студия — Fern / Lemmino / Vox»):
+// только типографика, фактура, свет и микро-геометрия — без нейрокартинок, шаров, лучей-конусов и реквизита.
+//   node tools/channel_art.js [папка] → shorts/out/channel/ (в git нет):
+//   avatar_EN|DE|RU.png 800×800 (YouTube и TikTok) · watermark_EN|DE|RU.png 150×150 · banner_EN|DE|RU.png 2560×1440 · preview.png
+// Шрифт — Manrope variable (OFL, shorts/fonts/manrope-var-*.woff2: латиница с ü/ß, кириллица), веса 500 / 700 / 800.
+// Акцент языка — фирменная точка и оттенок верхнего свечения: EN янтарь, DE стальной синий, RU приглушённый алый.
+// Знак — «N.»: N и круглая точка в цвете языка (у Manrope точка квадратная, поэтому круг того же размера рисуем сами);
+// в названии точка над «ı» — та же, на месте настоящей точки буквы i (положение меряется по пикселям шрифта).
+// Шапка: всё, что видно, — внутри 1546×423 по центру (только её видно на телефоне), угловые метки — по 1420×340.
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..'), FONTS = 'file://' + path.join(ROOT, 'shorts', 'fonts') + '/';
-const ARGS = process.argv.slice(2), BGI = ARGS.indexOf('--bg'), BG_SRC = BGI >= 0 ? path.resolve(ARGS[BGI + 1]) : null;
-const OUT = path.resolve(ARGS.filter((a, i) => a !== '--bg' && i !== BGI + 1)[0] || path.join(ROOT, 'shorts', 'out', 'channel'));
+const OUT = path.resolve(process.argv[2] || path.join(ROOT, 'shorts', 'out', 'channel'));
 fs.mkdirSync(OUT, { recursive: true });
 
-const SLOGAN = {
-  ru: 'Истории о том, что вы, кажется, знаете',
-  en: 'Stories about things you think you know',
-  de: 'Geschichten über Dinge, die ihr zu kennen glaubt',
+const INK = '#F3F4F6';
+const LANG = {
+  EN: { acc: '#F59E0B', slogan: 'STORIES ABOUT THINGS YOU THINK YOU KNOW' },
+  DE: { acc: '#38BDF8', slogan: 'GESCHICHTEN ÜBER DINGE, DIE IHR ZU KENNEN GLAUBT' },
+  RU: { acc: '#EF4444', slogan: 'ИСТОРИИ О ТОМ, ЧТО ВЫ, КАЖЕТСЯ, ЗНАЕТЕ' },
 };
-const C = { bg: '#0b0d12', ink: '#f3efe6', sub: '#c8c1b3', amber: '#f2a33a', glow: '#ffc46a' };
+const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(',');
 
-const fontsCSS = ['latin', 'cyrillic'].map(s => `
-  @font-face{font-family:M;font-weight:800;src:url(${FONTS}manrope-${s}-800-normal.woff2) format('woff2')}
-  @font-face{font-family:M;font-weight:600;src:url(${FONTS}manrope-${s}-600-normal.woff2) format('woff2')}
-  @font-face{font-family:P;font-style:italic;font-weight:400;src:url(${FONTS}playfair-${s}-400-italic.woff2) format('woff2')}`).join('');
+const FONT_CSS = [
+  ['latin', 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD'],
+  ['latin-ext', 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF'],
+  ['cyrillic', 'U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116'],
+].map(([s, r]) => `@font-face{font-family:MV;font-style:normal;font-weight:200 800;font-display:block;src:url(${FONTS}manrope-var-${s}.woff2) format('woff2');unicode-range:${r}}`).join('');
 
-// общие слои: луч сверху, пылинки в луче, зерно (без него на тёмном градиенте видны полосы)
-const layersJS = (W, H, beamTop, beamBot, beamH, dust, seed) => `
-  (function(){
-    let s=${seed}; const R=()=>(s=(s*16807)%2147483647)/2147483647;
-    const cv=document.getElementById('fx'), c=cv.getContext('2d'); cv.width=${W}; cv.height=${H};
-    // луч: трапеция от верхнего края, мягкие края — размытием
-    const cx=${W}/2, t=${beamTop}, b=${beamBot}, h=${beamH};
-    c.save(); c.filter='blur(${Math.round(W / 90)}px)';
-    const g=c.createLinearGradient(0,0,0,h); g.addColorStop(0,'rgba(255,236,205,.20)'); g.addColorStop(.55,'rgba(255,230,190,.07)'); g.addColorStop(1,'rgba(255,230,190,0)');
-    c.fillStyle=g; c.beginPath(); c.moveTo(cx-t/2,-20); c.lineTo(cx+t/2,-20); c.lineTo(cx+b/2,h); c.lineTo(cx-b/2,h); c.closePath(); c.fill(); c.restore();
-    // пылинки: гуще в луче, у его оси ярче
-    for(let i=0;i<${dust};i++){
-      const v=R(), y=Math.pow(R(),1.25)*h*.95, half=(t+(b-t)*y/h)/2, x=cx+(R()*2-1)*half*.92;
-      const r=(R()<.07? 2.2+R()*3.2 : .7+R()*1.5)*${W / 2048}, a=(.12+.55*R())*(1-y/h*.85)*(1-Math.abs(x-cx)/half*.6);
-      c.beginPath(); c.arc(x,y,r,0,Math.PI*2); c.fillStyle='rgba(255,240,215,'+a.toFixed(3)+')'; c.fill();
-    }
-    // зерно
-    const gn=document.getElementById('gr'), q=gn.getContext('2d'); gn.width=${W}; gn.height=${H};
-    const im=q.createImageData(${W},${H}), d=im.data;
-    for(let i=0;i<d.length;i+=4){ const n=(R()-.5)*255; d[i]=d[i+1]=d[i+2]=128+n; d[i+3]=255 }
-    q.putImageData(im,0,0);
-  })();`;
-
-function bannerHTML(lang) {
-  const W = 2048, H = 1152;
-  return `<!doctype html><meta charset=utf-8><style>${fontsCSS}
-  html,body{margin:0;width:${W}px;height:${H}px;background:${C.bg};overflow:hidden}
-  .base{position:absolute;inset:0;background:
-     radial-gradient(1100px 520px at 50% 52%, #171b28 0%, #10131c 45%, rgba(11,13,18,0) 75%),
-     radial-gradient(1500px 900px at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%), ${C.bg}}
-  canvas{position:absolute;inset:0}
-  #gr{opacity:.045;mix-blend-mode:overlay}
-  .floor{position:absolute;left:50%;top:640px;width:900px;height:140px;margin-left:-450px;border-radius:50%;
-     background:radial-gradient(closest-side, rgba(242,163,58,.10), rgba(242,163,58,0))}
-  .mark{position:absolute;left:0;right:0;top:${H / 2}px;transform:translateY(-50%);text-align:center}
-  .w{font:800 158px/1 M, sans-serif;color:${C.ink};letter-spacing:-.012em;display:inline-block;position:relative}
-  .i{position:relative;display:inline-block}
-  .i:after{content:'';position:absolute;left:50%;top:-.025em;width:.19em;height:.19em;margin-left:-.095em;border-radius:50%;
-     background:radial-gradient(circle at 38% 34%, #ffe0a8 0%, ${C.glow} 30%, ${C.amber} 70%, #d97a06 100%);
-     box-shadow:0 0 .12em ${C.glow}, 0 0 .45em rgba(255,180,74,.75), 0 0 1.2em rgba(242,163,58,.45)}
-  .s{font:italic 400 54px/1.2 P, serif;color:${C.sub};margin-top:30px;letter-spacing:.005em}
-  </style>
-  <div class=base></div><canvas id=fx></canvas><div class=floor></div>
-  <div class=mark><div class=w>N<span class=i>ı</span>ghtFabel</div><div class=s>${SLOGAN[lang]}</div></div>
-  <canvas id=gr></canvas>
-  <script>${layersJS(W, H, 260, 1150, 900, 260, 20261122)}</script>`;
+// фон: матовый графит #07090D, к центру сверху — #0F141E, сверху мягкое рассеянное свечение (чуть в цвет языка), SVG-зерно .035.
+// Градиенты — с частыми плавными остановками, шум зерна растянут на весь диапазон: на тёмном не видно колец-ступенек.
+const EASE = [[1, 0], [.95, 10], [.84, 22], [.68, 34], [.5, 46], [.32, 58], [.17, 70], [.07, 81], [.02, 90], [.003, 96], [0, 100]];
+function bgHTML(W, H, acc) {
+  const u = Math.min(W, H);
+  return `<div style="position:absolute;inset:0;background:#07090D;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse ${Math.round(W * .62)}px ${Math.round(H * .66)}px at 50% 30%, #0F141E 0%, rgba(15,20,30,.86) 18%, rgba(15,20,30,.62) 36%, rgba(15,20,30,.38) 54%, rgba(15,20,30,.18) 70%, rgba(15,20,30,.06) 85%, rgba(15,20,30,0) 100%)"></div>
+  <div style="position:absolute;inset:0;background:
+     radial-gradient(ellipse ${Math.round(W * .52)}px ${Math.round(H * .9)}px at 50% -14%, ${EASE.map(([a, p]) => `rgba(${rgb(acc)},${(a * .12).toFixed(4)}) ${p}%`).join(',')}),
+     radial-gradient(ellipse ${Math.round(W * .62)}px ${Math.round(H * .95)}px at 50% -16%, ${EASE.map(([a, p]) => `rgba(226,232,240,${(a * .07).toFixed(4)}) ${p}%`).join(',')})"></div>
+  <svg width="${W}" height="${H}" style="position:absolute;left:0;top:0"><filter id="g" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="11" stitchTiles="stitch"/>
+    <feColorMatrix type="matrix" values=".33 .33 .33 0 0  .33 .33 .33 0 0  .33 .33 .33 0 0  0 0 0 0 1"/>
+    <feComponentTransfer><feFuncR type="linear" slope="3.2" intercept="-1.1"/><feFuncG type="linear" slope="3.2" intercept="-1.1"/><feFuncB type="linear" slope="3.2" intercept="-1.1"/></feComponentTransfer></filter>
+    <rect width="100%" height="100%" filter="url(#g)" opacity=".035"/></svg></div>`;
 }
 
-// шапка на готовом фоне (22.11, фон нарисовал Gemini по нашему промту: луч сверху, янтарный шар в центре, по краям плёнка, кружка, книга, телефон):
-// шар — знак канала, поэтому название встаёт над ним, слоган — под ним; всё в полосе 1235×338 по центру. Фон — 2048×1152 «cover» ×1,09 (Lanczos, python/PIL): кружка и книга уходят ниже слогана.
-function bannerBgHTML(lang, bg) {
-  const W = 2048, H = 1152;
-  return `<!doctype html><meta charset=utf-8><style>${fontsCSS}
-  html,body{margin:0;width:${W}px;height:${H}px;background:${C.bg} url(${bg}) center/cover no-repeat;overflow:hidden}
-  canvas{position:absolute;inset:0} #gr{opacity:.035;mix-blend-mode:overlay}
-  .t{position:absolute;left:0;right:0;text-align:center;color:${C.ink};font:800 104px/1 M,sans-serif;letter-spacing:-.01em;top:410px;
-     text-shadow:0 2px 26px rgba(0,0,0,.6),0 0 3px rgba(0,0,0,.35)}
-  .s{position:absolute;left:0;right:0;text-align:center;color:#ddd5c6;font:italic 400 42px/1.2 P,serif;top:650px;
-     text-shadow:0 2px 18px rgba(0,0,0,.75),0 0 2px rgba(0,0,0,.4)}
-  </style><div class=t>NightFabel</div><div class=s>${SLOGAN[lang]}</div><canvas id=gr></canvas>
-  <script>(function(){let s=11;const R=()=>(s=(s*16807)%2147483647)/2147483647;const g=document.getElementById('gr'),q=g.getContext('2d');g.width=${W};g.height=${H};
-  const im=q.createImageData(${W},${H}),d=im.data;for(let i=0;i<d.length;i+=4){const n=(R()-.5)*255;d[i]=d[i+1]=d[i+2]=128+n;d[i+3]=255}q.putImageData(im,0,0)})();</script>`;
+// общий скрипт страницы: знак рисуется на canvas поверх фона; все размеры — по пикселям шрифта (чернила), а не по коробке строки
+const PAGE_JS = `
+const INK='${INK}';
+function inkBox(w,h,draw){ // рамка «чернил» (альфа > 110) того, что нарисовал draw
+  const c=document.createElement('canvas'); c.width=w; c.height=h; const x=c.getContext('2d'); x.textBaseline='alphabetic'; draw(x);
+  const d=x.getImageData(0,0,w,h).data; let x0=w,y0=h,x1=-1,y1=-1;
+  for(let y=0;y<h;y++) for(let i=0;i<w;i++) if(d[(y*w+i)*4+3]>110){ if(i<x0)x0=i; if(i>x1)x1=i; if(y<y0)y0=y; if(y>y1)y1=y; }
+  return {x0,y0,x1:x1+1,y1:y1+1,w:x1+1-x0,h:y1+1-y0,c};
+}
+function dotOfI(F,weight){ // точка буквы i: центр — от начала буквы и от базовой линии, диаметр
+  const P=Math.ceil(F*.5), B=Math.ceil(F*1.2), w=Math.ceil(F*1.2), h=Math.ceil(F*1.6);
+  const stem=inkBox(w,h,x=>{x.font=weight+' '+F+'px MV';x.fillText('ı',P,B)});
+  const t=inkBox(w,stem.y0-1,x=>{x.font=weight+' '+F+'px MV';x.fillText('i',P,B)}); // всё, что выше ножки, — точка
+  return {cx:(t.x0+t.x1)/2-P, cy:(t.y0+t.y1)/2-B, d:Math.max(t.w,t.h)};
+}
+function dot(x,cx,cy,d,acc,glow){ // круглая точка в цвете языка с тонким мягким ореолом
+  x.save(); x.fillStyle=acc;
+  if(glow){ x.shadowColor='rgba('+glow.rgb+','+glow.a1+')'; x.shadowBlur=glow.b1; x.beginPath(); x.arc(cx,cy,d/2,0,7); x.fill();
+            x.shadowColor='rgba('+glow.rgb+','+glow.a2+')'; x.shadowBlur=glow.b2; x.beginPath(); x.arc(cx,cy,d/2,0,7); x.fill(); }
+  x.shadowColor='transparent'; x.shadowBlur=0; x.beginPath(); x.arc(cx,cy,d/2,0,7); x.fill(); x.restore();
+}
+// знак «N.»: N (800) и круглая точка на месте точки-знака препинания; группа вписана в box×box, стоит строго по центру (cx, cy)
+function markN(x,cx,cy,box,acc,rgbs,glowK){
+  const F0=400, W0=900, H0=700, P=150, B=560, f='800 '+F0+'px MV';
+  const n=inkBox(W0,H0,c=>{c.font=f;c.fillText('N',P,B)});
+  const pb=inkBox(W0,H0,c=>{c.font=f;c.fillText('N.',P,B);c.clearRect(0,0,n.x1+2,H0)}); // точка — всё правее N
+  const d0=pb.w*1.08, dcx0=(pb.x0+pb.x1)/2, dcy0=B-d0/2+F0*.004;   // круг чуть крупнее квадрата, стоит на базовой линии
+  const gx0=n.x0, gx1=Math.max(n.x1,dcx0+d0/2), gy0=n.y0, gy1=B;
+  const k=box/Math.max(gx1-gx0,gy1-gy0), F=F0*k;
+  const ox=cx-((gx0+gx1)/2-P)*k, by=cy+(gy1-gy0)*k/2;               // начало строки и базовая линия
+  x.save(); x.font='800 '+F+'px MV'; x.fillStyle=INK; x.fillText('N',ox,by); x.restore();
+  const d=d0*k; dot(x,ox+(dcx0-P)*k,by+(dcy0-B)*k,d,acc,glowK?{rgb:rgbs,a1:.55,b1:d*glowK,a2:.22,b2:d*glowK*3.2}:null);
+  return {F:+F.toFixed(1),dot:+d.toFixed(1),box:[Math.round(cx-(gx1-gx0)*k/2),Math.round(cy-(gy1-gy0)*k/2),Math.round((gx1-gx0)*k),Math.round((gy1-gy0)*k)]};
+}
+`;
+
+function pageHTML(W, H, acc, body, noBg) {
+  return `<!doctype html><meta charset=utf-8><style>${FONT_CSS}
+  html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:transparent}
+  canvas#c{position:absolute;left:0;top:0}</style>
+  ${noBg ? '' : bgHTML(W, H, acc)}<canvas id=c width=${W} height=${H}></canvas>
+  <script>${PAGE_JS}
+  window.__draw=async function(){
+    await Promise.all(['500','700','800'].map(w=>document.fonts.load(w+' 40px MV','NıghtFabel ÜÄß ИСТОРИИ')));
+    const x=document.getElementById('c').getContext('2d'); x.textBaseline='alphabetic';
+    ${body}
+  }</script>`;
 }
 
-// монограмма: «N» и янтарная точка над правой ножкой — тот же приём, что точка над «ı»
-function monoCSS(size) {
-  return `.n{position:relative;display:inline-block;font:800 ${size}px/1 M, sans-serif;color:${C.ink};letter-spacing:0}
-  .n:after{content:'';position:absolute;right:.035em;top:-.29em;width:.205em;height:.205em;border-radius:50%;
-     background:radial-gradient(circle at 38% 34%, #ffe0a8 0%, ${C.glow} 30%, ${C.amber} 70%, #d97a06 100%);
-     box-shadow:0 0 .1em ${C.glow}, 0 0 .38em rgba(255,180,74,.8), 0 0 1em rgba(242,163,58,.45)}`;
-}
+// 1. аватарка 800×800: «N.» по центру, группа — 50 % стороны (поля ≥ 24 % со всех сторон: круг YouTube и TikTok ничего не срежет)
+const avatarHTML = L => pageHTML(800, 800, LANG[L].acc, `window.__info=markN(x,400,400,400,'${LANG[L].acc}','${rgb(LANG[L].acc)}',.55);`);
 
-function avatarHTML() {
-  const W = 800, H = 800;
-  return `<!doctype html><meta charset=utf-8><style>${fontsCSS}${monoCSS(430)}
-  html,body{margin:0;width:${W}px;height:${H}px;background:${C.bg};overflow:hidden}
-  .base{position:absolute;inset:0;background:radial-gradient(520px 520px at 50% 56%, #1a1f2d 0%, #10131c 55%, ${C.bg} 100%)}
-  canvas{position:absolute;inset:0} #gr{opacity:.05;mix-blend-mode:overlay}
-  .wrap{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;padding-top:66px;box-sizing:border-box}
-  </style><div class=base></div><canvas id=fx></canvas>
-  <div class=wrap><div class=n>N</div></div><canvas id=gr></canvas>
-  <script>${layersJS(W, H, 120, 520, 620, 70, 7)}</script>`;
-}
+// водяной знак 150×150: тот же «N.» на полупрозрачном тёмном скруглённом квадрате (как кнопка подписки)
+const watermarkHTML = L => pageHTML(150, 150, LANG[L].acc, `
+  x.fillStyle='rgba(7,9,13,.78)'; x.beginPath(); x.roundRect(0,0,150,150,30); x.fill();
+  x.strokeStyle='rgba(255,255,255,.07)'; x.lineWidth=1; x.beginPath(); x.roundRect(.5,.5,149,149,29.5); x.stroke();
+  window.__info=markN(x,75,75,74,'${LANG[L].acc}','${rgb(LANG[L].acc)}',.45);`, true);
 
-function watermarkHTML() {   // прозрачный фон; лёгкая тень — чтобы знак читался и на светлом кадре
-  return `<!doctype html><meta charset=utf-8><style>${fontsCSS}${monoCSS(92)}
-  html,body{margin:0;width:150px;height:150px;background:transparent;overflow:hidden}
-  .wrap{width:150px;height:150px;display:flex;align-items:center;justify-content:center;padding-top:20px;box-sizing:border-box}
-  .n{text-shadow:0 2px 10px rgba(0,0,0,.55)}
-  </style><div class=wrap><div class=n>N</div></div>`;
+// 2. шапка 2560×1440: NightFabel (700, −0.02em, точка над ı в цвете языка) · линия 48×1 цвета языка (.5) · слоган капсом (500, .22em, .58)
+function bannerHTML(L) {
+  const { acc, slogan } = LANG[L], W = 2560, H = 1440;
+  return pageHTML(W, H, acc, `
+    const F=196, cx=${W / 2}, cy=${H / 2};
+    // название: «NıghtFabel» (ı без точки), чернила — ровно по центру
+    const P=Math.ceil(F*.6), B=Math.ceil(F*1.25), CW=Math.ceil(F*7.2), CH=Math.ceil(F*1.8);
+    const lf=c=>{c.font='700 '+F+'px MV'; c.letterSpacing=(-.02*F)+'px'; c.fontKerning='normal'};
+    const lb=inkBox(CW,CH,c=>{lf(c); c.fillStyle=INK; c.fillText('NıghtFabel',P,B)});
+    const ox=cx-(lb.x0+lb.x1)/2+P;
+    // слоган: кегль — чтобы был чуть шире названия (×1,04), но не мельче 26 px и не шире 1400
+    const SL=${JSON.stringify(slogan)};
+    const sl=S=>c=>{c.font='500 '+S+'px MV'; c.letterSpacing=(.22*S)+'px'; c.fontKerning='normal'; c.fillStyle='rgba(243,244,246,.58)'; c.fillText(SL,Math.ceil(S),Math.ceil(S*1.6))};
+    const s100=inkBox(Math.ceil(100*SL.length)+400,260,sl(100));
+    let S=Math.max(26,Math.min(42,lb.w*1.04/s100.w*100)); if(s100.w*S/100>1400) S=1400/s100.w*100;
+    const sb=inkBox(Math.ceil(S*SL.length)+4*Math.ceil(S),Math.ceil(S*2.6),sl(S));
+    const capS=inkBox(Math.ceil(S*3),Math.ceil(S*2.6),c=>{c.font='500 '+S+'px MV';c.fillText('H',Math.ceil(S),Math.ceil(S*1.6))}).h;
+    // вертикаль: блок [верх названия … низ заглавных слогана] — по центру; линия — под хвостом «g», с воздухом
+    const asc=B-lb.y0, desc=lb.y1-B, gR=desc+Math.round(F*.17), gS=Math.round(F*.17);
+    const top=-asc, bot=gR+gS+capS, by=Math.round(cy-(top+bot)/2);
+    x.drawImage(lb.c,ox-P,by-B);
+    const m=document.createElement('canvas').getContext('2d'); lf(m);
+    const t=dotOfI(F,700), iX=ox+m.measureText('Nı').width-m.measureText('ı').width;   // где начинается «ı»
+    dot(x,iX+t.cx,by+t.cy,t.d*1.04,'${acc}',{rgb:'${rgb(acc)}',a1:.6,b1:t.d*.5,a2:.22,b2:t.d*1.8});
+    x.fillStyle='rgba(${rgb(acc)},.5)'; x.fillRect(cx-24,by+gR,48,1);
+    const sBase=by+gR+gS+capS;                              // заглавные слогана стоят на этой линии
+    x.drawImage(sb.c,Math.round(cx-(sb.x0+sb.x1)/2),Math.round(sBase-Math.ceil(S*1.6)));
+    // угловые метки видоискателя: 1 px, белый .12, по углам 1420×340
+    x.fillStyle='rgba(255,255,255,.12)'; const mw=1420,mh=340,a=26,X0=cx-mw/2,X1=cx+mw/2-1,Y0=cy-mh/2,Y1=cy+mh/2-1;
+    for(const [px,py,sx,sy] of [[X0,Y0,1,1],[X1,Y0,-1,1],[X0,Y1,1,-1],[X1,Y1,-1,-1]]){ x.fillRect(sx>0?px:px-a+1,py,a,1); x.fillRect(px,sy>0?py:py-a+1,1,a); }
+    window.__info={F,S:+S.toFixed(1),logo:[Math.round(cx-lb.w/2),by-asc,lb.w,asc+desc],slogan:[Math.round(cx-sb.w/2),sBase-capS,sb.w,capS],dot:+t.d.toFixed(1)};`);
 }
 
 (async () => {
   const b = await chromium.launch();
   const page = await b.newPage({ deviceScaleFactor: 1 });
-  async function shot(html, W, H, file, transparent) {
+  async function shot(html, W, H, file) {
     const f = path.join(OUT, '_' + path.basename(file, '.png') + '.html'); fs.writeFileSync(f, html);
     await page.setViewportSize({ width: W, height: H });
-    await page.goto('file://' + f); await page.evaluate(() => document.fonts.ready);
-    const fam = await page.evaluate(() => [...document.fonts].filter(x => x.status === 'loaded').map(x => x.family + ' ' + x.weight + ' ' + x.style));
-    if (!fam.some(x => x.startsWith('M '))) throw new Error('Manrope не загрузился: ' + fam.join(', '));
-    await page.screenshot({ path: path.join(OUT, file), omitBackground: !!transparent });
+    await page.goto('file://' + f); await page.evaluate(() => window.__draw());
+    const ok = await page.evaluate(() => [...document.fonts].filter(x => x.family === 'MV' && x.status === 'loaded').length);
+    if (!ok) throw new Error('Manrope не загрузился');
+    await page.screenshot({ path: path.join(OUT, file), omitBackground: true });
+    const info = await page.evaluate(() => window.__info || '');
     fs.unlinkSync(f);
-    console.log(file, (fs.statSync(path.join(OUT, file)).size / 1048576).toFixed(2) + ' МБ');
+    console.log(file, (fs.statSync(path.join(OUT, file)).size / 1048576).toFixed(2) + ' МБ', info ? JSON.stringify(info) : '');
   }
-  let bgUrl = null;
-  if (BG_SRC) {   // фон «cover» 2048×1152, Lanczos — браузер увеличивает мягче
-    const dst = path.join(OUT, '_bg2048.png');
-    require('child_process').execFileSync('python3', ['-c', `import sys
-from PIL import Image
-im=Image.open(sys.argv[1]).convert('RGB'); W,H=2048,1152; k=max(W/im.width,H/im.height)*1.09
-im=im.resize((round(im.width*k),round(im.height*k)),Image.LANCZOS); x=(im.width-W)//2; y=(im.height-H)//2
-im.crop((x,y,x+W,y+H)).save(sys.argv[2])`, BG_SRC, dst]);
-    bgUrl = 'file://' + dst;
+  for (const L of Object.keys(LANG)) {
+    await shot(avatarHTML(L), 800, 800, `avatar_${L}.png`);
+    await shot(watermarkHTML(L), 150, 150, `watermark_${L}.png`);
+    await shot(bannerHTML(L), 2560, 1440, `banner_${L}.png`);
   }
-  for (const L of ['ru', 'en', 'de']) await shot(bgUrl ? bannerBgHTML(L, bgUrl) : bannerHTML(L), 2048, 1152, `banner-${L}.png`);
-  await shot(avatarHTML(), 800, 800, 'avatar.png');
-  await shot(watermarkHTML(), 150, 150, 'watermark.png', true);
 
-  // превью: ТВ (весь кадр), ПК (полоса 2048×338 по центру), телефон (1235×338), аватарка кругом
+  // превью: аватарки кругом (как на YouTube) в 4 размерах, водяные знаки, шапки целиком с пунктиром мобильной зоны 1546×423
   const im = f => 'data:image/png;base64,' + fs.readFileSync(path.join(OUT, f)).toString('base64');
-  const prev = `<!doctype html><meta charset=utf-8><style>${fontsCSS}
-  body{margin:0;background:#1c1f26;color:#ddd;font:600 22px/1.3 M,sans-serif;width:1600px;padding:28px;box-sizing:border-box}
-  h3{margin:18px 0 8px;font-size:22px;color:#aab}
-  .tv{width:1544px;height:868px;background:url(${im('banner-ru.png')}) center/cover;border-radius:8px}
-  .pc{width:1544px;height:${Math.round(1544 * 338 / 2048)}px;background:url(${im('banner-ru.png')}) center/2048px 1152px;background-size:1544px ${Math.round(1544 * 1152 / 2048)}px;border-radius:6px}
-  .row{display:flex;gap:28px;align-items:center}
-  .ph{width:600px;height:${Math.round(600 * 338 / 1235)}px;background:url(${im('banner-ru.png')}) center;background-size:${Math.round(600 * 2048 / 1235)}px ${Math.round(600 * 1152 / 1235)}px;border-radius:6px}
-  .av{width:180px;height:180px;border-radius:50%;background:url(${im('avatar.png')}) center/cover}
-  .av2{width:48px;height:48px;border-radius:50%;background:url(${im('avatar.png')}) center/cover}
-  .wm{width:150px;height:150px;background:url(${im('watermark.png')}),linear-gradient(135deg,#7d8796,#c9ced6)}
-  </style>
-  <h3>Телевизор — весь кадр</h3><div class=tv></div>
-  <h3>Компьютер — полоса по центру</h3><div class=pc></div>
-  <h3>Телефон — середина 1235×338 · аватарка · водяной знак на светлом кадре</h3>
-  <div class=row><div class=ph></div><div class=av></div><div class=av2></div><div class=wm></div></div>`;
+  const BW = 1800, k = BW / 2560;
+  const prev = `<!doctype html><meta charset=utf-8><style>${FONT_CSS}
+  body{margin:0;background:#15181e;color:#cfd3da;font:500 22px/1.35 MV,sans-serif;width:${BW + 120}px;padding:40px 60px 60px;box-sizing:border-box}
+  h2{font:700 30px/1.2 MV;color:#F3F4F6;margin:0 0 26px;letter-spacing:-.01em} h3{font:600 21px/1.3 MV;color:#9aa1ad;margin:34px 0 12px}
+  .avs{display:flex;gap:56px} .av{display:flex;align-items:flex-end;gap:18px}
+  .c{border-radius:50%;background-size:cover;background-position:center;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+  .lb{font:700 20px MV;color:#F3F4F6;margin-bottom:10px} .lb i{font-style:normal;font-weight:500;color:#8b93a1;margin-left:8px}
+  .wm{width:150px;height:150px}
+  .bn{position:relative;width:${BW}px;height:${Math.round(1440 * k)}px;background-size:cover;border-radius:6px;overflow:hidden}
+  .z{position:absolute;left:${((2560 - 1546) / 2 * k).toFixed(1)}px;top:${((1440 - 423) / 2 * k).toFixed(1)}px;width:${(1546 * k).toFixed(1)}px;height:${(423 * k).toFixed(1)}px;
+     box-sizing:border-box;border:2px dashed rgba(255,255,255,.5)}
+  .z b{position:absolute;left:0;top:-30px;font:600 17px MV;color:rgba(255,255,255,.7);white-space:nowrap}
+  </style><h2>NightFabel · YouTube и TikTok</h2>
+  <h3>Аватарки в круге, как на YouTube и TikTok — 240 · 88 · 48 · 32 px</h3>
+  <div class=avs>${Object.keys(LANG).map(L => `<div><div class=lb>${L}<i>${LANG[L].acc}</i></div><div class=av>
+    ${[240, 88, 48, 32].map(s => `<div class=c style="width:${s}px;height:${s}px;background-image:url(${im(`avatar_${L}.png`)})"></div>`).join('')}</div></div>`).join('')}</div>
+  <h3>Водяные знаки 150×150 на светлом и тёмном кадре</h3>
+  <div class=avs>${Object.keys(LANG).map(L => `<div style="display:flex;gap:18px">
+    <div class=wm style="background:url(${im(`watermark_${L}.png`)}),linear-gradient(135deg,#8a95a3,#e3e7ec)"></div>
+    <div class=wm style="background:url(${im(`watermark_${L}.png`)}),linear-gradient(135deg,#1d2430,#3a4252)"></div></div>`).join('')}</div>
+  ${Object.keys(LANG).map(L => `<h3>Шапка ${L} · 2560×1440 — пунктир: мобильная зона 1546×423, всё внутри</h3>
+    <div class=bn style="background-image:url(${im(`banner_${L}.png`)})"><div class=z><b>1546×423</b></div></div>`).join('')}`;
   const pf = path.join(OUT, '_preview.html'); fs.writeFileSync(pf, prev);
-  await page.setViewportSize({ width: 1600, height: 900 }); await page.goto('file://' + pf); await page.evaluate(() => document.fonts.ready);
+  await page.setViewportSize({ width: BW + 120, height: 900 }); await page.goto('file://' + pf); await page.evaluate(() => document.fonts.ready);
   await page.screenshot({ path: path.join(OUT, 'preview.png'), fullPage: true }); fs.unlinkSync(pf);
   console.log('preview.png'); await b.close();
 })().catch(e => { console.error(e); process.exit(1) });
