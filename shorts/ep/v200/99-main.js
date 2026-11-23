@@ -53,12 +53,12 @@
   }
   let MBC = null; const SHUT = [];   // окна короткой выдержки — заполняются в allInit по быстрым проездам камеры
   function sceneMB(c, t) {   // затвор 180° — среднее 4 моментов за полкадра
-    const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
+    const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = wideCanvas(mk, WW, HH); const g = MBC.getContext('2d');
     for (let j = 0; j < n; j++) {
       const tj = t + (j / (n - 1) - .5) * sh;
       if (j === 0) { scene(c, tj); continue }
       g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, WW, HH); scene(g, tj);
-      c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
+      if (window.WIDE) wideRaw(c); else c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
     }
   }
   function frame(t) { frameTo(X, t) }
@@ -67,7 +67,10 @@
     c.fillStyle = '#000'; c.fillRect(0, 0, WW, HH);
     if (window.NOMB) scene(c, t); else sceneMB(c, t);
     c.setTransform(1, 0, 0, 1, 0, 0); hud(c, t); names(c, t); if (T12) drum12(c, t); subs(c, t);
+    if (window.WIDE && MODE === 'y' && c === X) wideSeam(c, t, TLX.endT, WSRC4());   // 23.11: 16:9 — бока стыка с главой 4
   }
+  const LANG3 = () => (window.L10N && window.L10N.lang) || 'ru';
+  const WSRC4 = () => 'ep/wide/v200-ch4f0' + (LANG3() !== 'ru' ? '-' + LANG3() : '') + '.png';
   function cues() {   // звуки по событиям сцен (мягкие)
     allInit(); const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
     const a = T1; if (a.hk) { Q(.05, 'leaves', .35); Q(a.brut, 'whoosh', .35); Q(a.ledi - .1, 'pageflip', .5) } Q(a.marl, 'whoosh', .3); Q(a.do, 'pageflip', .8); Q(a.do + .5, 'papers', .4); Q(a.zh - .2, 'whoosh', .6);
@@ -88,7 +91,7 @@
       Q(k.qEnd + .05, 'whoosh', .55); Q(k.ts - .12, 'deep', .5); Q(k.ts + .1, 'leaves', .35) }   // нырок в пачку → щит у трассы
   }
   window.EP = {
-    P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
+    P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: window.WIDE ? [WIDE.W, WIDE.H] : [WW, HH],
     // v20.1: глава внутри другого ролика (мостик «Льда» ныряет в её кадр 0): sub.init(таймлайн главы) — без своего холста и звуков,
     // sub.scene(c, t) — мир главы в текущих координатах, sub.frameTo(c, t) — кадр целиком, sub.pre(камера до кадра 0, порыв ветра на плакате)
     sub: { init: null, scene: (c, t) => scene(c, t), frameTo: (c, t) => frameTo(c, t), pre(cam, peel) { W1PRE = cam; W1PEEL = peel } },
@@ -103,10 +106,10 @@
         st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join('')
           + ['latin', 'cyrillic'].map(sub => `@font-face{font-family:P;font-weight:700;font-style:normal;src:url(fonts/playfair-${sub}-700-normal.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}@font-face{font-family:P;font-weight:400 700;font-style:italic;src:url(fonts/playfair-${sub}-700-italic.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}`).join('');
         document.head.appendChild(st) }
-      cv = mk(WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
+      cv = wideCanvas(mk, WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${cv.width}px;height:${cv.height}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
       X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
       const img4 = new Promise(r => { if (IMG4) return r(); IMG4 = new Image(); IMG4.onload = IMG4.onerror = () => r(); IMG4.src = 'ep/v200-ch4f0.png' });   // v20.6: кадр главы 4 — фото карточки 2014
-      return Promise.all([img4, ...['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$'))]).then(() => 0);
+      return Promise.all([img4, ...(window.WIDE && MODE === 'y' && !sub ? [wideSeamLoad(WSRC4())] : []), ...['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$'))]).then(() => 0);
     },
   };
   { const ep = window.EP; ep.sub.init = tl => ep.init(tl, [], true) }

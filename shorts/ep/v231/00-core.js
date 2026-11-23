@@ -114,7 +114,7 @@
     if (a <= 0) return;
     const o = { f: 'M', w: 800, s: 54, ls: 0 }; let w = tw(c, ch.s, o); if (w > 840) { o.s *= 840 / w; w = 840 }
     w += 64; const h = 84;
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.translate(0, (1 - a) * 10);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); if (window.WIDE) { c.translate(CX, SUBY); c.scale(1.3, 1.3); c.translate(-CX, -SUBY) } c.globalAlpha = a; c.translate(0, (1 - a) * 10);
     const sy = SUBY;
     rr(c, CX - w / 2, sy - h / 2, w, h, 20); fill(c, 'rgba(11,16,48,.86)');
     tx(c, ch.s, CX, sy + 2, { ...o, c: '#fff' }); c.restore();

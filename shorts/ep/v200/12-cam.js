@@ -26,21 +26,21 @@
   }
   // прямоугольник, который видит камера (в координатах мира, с запасом на поворот)
   function viewRect(cam) {
-    const hw = 540 / cam.z, hh = 960 / cam.z, cs = Math.abs(Math.cos(cam.r)), sn = Math.abs(Math.sin(cam.r));
+    const hw = (window.WIDE ? WIDE.hw : 540) / cam.z, hh = 960 / cam.z, cs = Math.abs(Math.cos(cam.r)), sn = Math.abs(Math.sin(cam.r));
     const ex = hw * cs + hh * sn, ey = hw * sn + hh * cs; return { x0: cam.x - ex, x1: cam.x + ex, y0: cam.y - ey, y1: cam.y + ey };
   }
   // частицы переднего плана (снег, пыль) на слое глубины p: поле повторяется плиткой T, видны всегда, при наезде разлетаются
   function fieldLayer(c, cam, p, n, seed, T, drawOne, t) {
-    const s = Math.pow(cam.z, p), lx = cam.x * p, ly = cam.y * p, hw = 560 / s, hh = 980 / s;
+    const s = Math.pow(cam.z, p), lx = cam.x * p, ly = cam.y * p, HW = window.WIDE ? WIDE.hw + 20 : 560, hw = HW / s, hh = 980 / s;
     c.save(); c.translate(540, 960); c.rotate(cam.r * p);
     for (let i = 0; i < n; i++) {
       const bx = H1(seed + i * 7.13) * T, by = H1(seed + i * 3.71 + 9) * T;
       const fx = bx + Math.sin(t * (.5 + H1(i + seed) * .6) + i) * 12, fy = by + t * (26 + H1(i * 2.3 + seed) * 34);
       const x0 = Math.floor((lx - hw - fx) / T), x1 = Math.floor((lx + hw - fx) / T), y0 = Math.floor((ly - hh - fy) / T), y1 = Math.floor((ly + hh - fy) / T);
-      if ((x1 - x0 + 1) * (y1 - y0 + 1) > 40) continue;
+      if ((x1 - x0 + 1) * (y1 - y0 + 1) > (window.WIDE ? 120 : 40)) continue;
       for (let a = x0; a <= x1 + 1; a++) for (let b = y0; b <= y1 + 1; b++) {
         const X = (fx + a * T - lx) * s, Y = (fy + b * T - ly) * s;
-        if (X < -560 || X > 560 || Y < -980 || Y > 980) continue;
+        if (X < -HW || X > HW || Y < -980 || Y > 980) continue;
         drawOne(c, X, Y, s, i);
       }
     }
@@ -70,7 +70,8 @@
   // общее звёздное небо в координатах экрана: одно и то же в любом мире — на стыках «небо + звёзды» миры совпадают
   function starsS(c, t, a = 1, seed = 5) {
     if (a <= 0) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha *= a;
-    for (let i = 0; i < 90; i++) { const x = H1(seed + i * 3.1) * WW, y = H1(seed + i * 7.7) * HH, r = .9 + H1(i * 1.3 + seed) * 2.2, tw = .55 + .45 * Math.sin(t * (1.3 + H1(i) * 2) + i);
+    const SX0 = window.WIDE ? WIDE.X0 : 0, SXW = window.WIDE ? WIDE.X1 - WIDE.X0 : WW, SN = window.WIDE ? 285 : 90;
+    for (let i = 0; i < SN; i++) { const x = SX0 + H1(seed + i * 3.1) * SXW, y = H1(seed + i * 7.7) * HH, r = .9 + H1(i * 1.3 + seed) * 2.2, tw = .55 + .45 * Math.sin(t * (1.3 + H1(i) * 2) + i);
       c.fillStyle = `rgba(238,241,248,${.85 * tw})`; c.fillRect(x - r, y - r, r * 2, r * 2) }
     c.restore();
   }

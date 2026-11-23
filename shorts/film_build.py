@@ -39,7 +39,7 @@ def frames(p):
 
 
 def grab(p, idx, tmp):   # кадр № idx, 270×480
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', p, '-vf', f'select=eq(n\\,{idx}),scale=270:480', '-vsync', '0', '-frames:v', '1', tmp], check=True)
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', p, '-vf', f'select=eq(n\\,{idx}),scale=iw/4:ih/4', '-vsync', '0', '-frames:v', '1', tmp], check=True)
     from PIL import Image
     return np.asarray(Image.open(tmp).convert('RGB'), float)
 
@@ -74,7 +74,7 @@ def calm(b, od):   # грув → «из-за стены», как в главе
 
 def main(lang):
     S = segs(lang); o = os.path.join(HERE, 'out', f'film-{lang}'); os.makedirs(o, exist_ok=True); tmpf = os.path.join(o, 'f.png')
-    V = [os.path.join(HERE, 'out', e, 'video.mp4') for e, _, _ in S]; N = [frames(p) for p in V]
+    V = [os.path.join(HERE, 'out', e, os.environ.get('FB_VIDEO', 'video.mp4')) for e, _, _ in S]; N = [frames(p) for p in V]   # 23.11: FB_VIDEO=video_w.mp4 — фильм 16:9 (wide_render.py)
     keep = list(N)   # сколько кадров главы берём
     for i in range(len(S) - 1):   # стык: повтор кадра — выкидываем последний кадр главы
         a = grab(V[i], N[i] - 1, tmpf); b = grab(V[i + 1], 0, tmpf); d = np.abs(a - b).mean()
@@ -120,7 +120,7 @@ def main(lang):
     for i, p in enumerate(V):
         inp += ['-i', p]; fl.append(f'[{i}:v]settb=1/30,setpts=PTS-STARTPTS,trim=end_frame={keep[i]},setpts=PTS-STARTPTS[v{i}]')
     fl.append(''.join(f'[v{i}]' for i in range(len(V))) + f'concat=n={len(V)}:v=1:a=0,format=yuv420p[v]')
-    out = os.path.join(o, 'film.mp4')
+    out = os.path.join(o, os.environ.get('FB_OUT', 'film.mp4'))
     subprocess.run(['ffmpeg', '-y', '-v', 'error', *inp, '-i', mw, '-filter_complex', ';'.join(fl), '-map', '[v]', '-map', f'{len(V)}:a',
                     '-c:v', 'libx264', '-crf', '18', '-preset', os.environ.get('FB_PRESET', 'medium'), '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], check=True)   # FB_PRESET=veryfast — быстрее (фильм всё равно пережимается для отправки)
     json.dump({'seg': [e for e, _, _ in S], 'frames': keep, 'off': [round(float(v), 4) for v in off]}, open(os.path.join(o, 'film.json'), 'w'), indent=1)

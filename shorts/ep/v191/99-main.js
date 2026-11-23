@@ -29,21 +29,21 @@
   function firstFrame(c) { b1Shot(c, 0) }   // кадр 0 — без субтитров и без плашки
   let MBC = null; const SHUT = [[15.1, 16.1], [29.3, 29.9], [42.95, 43.5], [48.4, 50.6], [53.05, 53.6], [69.8, 71.9], [75.75, 76.25]];   // v19.2: + 0:29, 0:43, 0:53, 1:16 — надписи двоились в размытии   // v19.1: на быстрых проездах камеры затвор короче — без смаза и двоения цифр
   function sceneMB(c, t) {   // v19.0: затвор 180° — среднее 4 моментов за полкадра
-    const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
+    const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = wideCanvas(mk, WW, HH); const g = MBC.getContext('2d');
     for (let j = 0; j < n; j++) {
       const tj = t + (j / (n - 1) - .5) * sh;
       if (j === 0) { scene(c, tj); continue }
       g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, WW, HH); scene(g, tj);
-      c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
+      if (window.WIDE) wideRaw(c); else c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
     }
   }
   function mbDo(c, t, fn) {   // v19.4: затвор 180° для любой функции кадра (как sceneMB)
-    const n = 4, sh = 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
+    const n = 4, sh = 1 / 60; if (!MBC) MBC = wideCanvas(mk, WW, HH); const g = MBC.getContext('2d');
     for (let j = 0; j < n; j++) {
       const tj = t + (j / (n - 1) - .5) * sh;
       if (j === 0) { fn(c, tj); continue }
       g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, WW, HH); fn(g, tj);
-      c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
+      if (window.WIDE) wideRaw(c); else c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
     }
   }
   function frame(t) {
@@ -76,7 +76,7 @@
     else { Q(K.zo1 + .1, 'whoosh', .6); Q(K.rules - .1, 'whip', .3, .2); Q(K.vperv + .03, 'plop', .5); Q(K.brut - .12, 'shimmer', .4); Q(K.L0 - .05, 'whoosh', .45, -.3); Q(K.L0 + .12, 'lipstick', .5); Q(K.L1 - .15, 'shimmer', .35, .3); Q(K.L1 + .1, 'leaves', .4); Q(K.d0 + .1, 'whoosh', .35); Q(K.ts - 1.2, 'dive', .55) }   // v19.4: ветер треплет угол плаката, нырок в кадр 0 главы 3
   }
   window.EP = {
-    P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
+    P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: window.WIDE ? [WIDE.W, WIDE.H] : [WW, HH],
     init(tl, SC) {
       TLW = tl.sent.flatMap(s => s.words); const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
       MODE = /y$/.test(ep) ? 'y' : 's';
@@ -84,7 +84,7 @@
       K = keys(); window.__K = K; cues(); CHUNKS = buildChunks(tl.subs);
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       if (!document.getElementById('v180f')) { const st = document.createElement('style'); st.id = 'v180f'; st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join(''); document.head.appendChild(st) }
-      cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
+      cv = wideCanvas(mk, WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${cv.width}px;height:${cv.height}px`; document.body.insertBefore(cv, document.getElementById('grain'));
       X = cv.getContext('2d'); CORK = null; T1 = T2 = T3 = T4 = T5 = T6 = null; for (const k in BLUR) delete BLUR[k];
       // v19.4: мостик фильма ныряет в кадр 0 главы 3 — её рисовку грузит stage.html (window.EP3 = ep/v200.js, window.TL200 — таймлайн главы)
       const E3 = MODE === 'y' && window.EP3 && window.EP3.sub && window.TL200 ? window.EP3 : null; CH3OK = false;

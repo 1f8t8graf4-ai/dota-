@@ -2,12 +2,12 @@
   const SHUT = [];   // окна размытия движения (затвор 180°, 8 моментов за полкадра): превращения, падение половинок, нырок
   let MBC = null;
   function sceneMB(c, t) {
-    const n = 8, sh = 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext("2d");
+    const n = 8, sh = 1 / 60; if (!MBC) MBC = wideCanvas(mk, WW, HH); const g = MBC.getContext("2d");
     for (let j = 0; j < n; j++) {
       const tj = t + (j / (n - 1) - .5) * sh;
       if (j === 0) { scene(c, tj); continue }
       g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, WW, HH); scene(g, tj);
-      c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
+      if (window.WIDE) wideRaw(c); else c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
     }
   }
   function frame(t) { frameTo(X, t) }
@@ -41,14 +41,14 @@
     if (FILM) { Q(K.hit, 'hit', 1); Q(K.hit - .5, 'rain', 1) }   // v23.7, фильм: низкий удар — на нём гаснет грув пролога; дождь заходит под главу 1
   }
   window.EP = {
-    P: { bg: '#0A0D13', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f2a33a', a2: '#ef5668' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
+    P: { bg: '#0A0D13', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f2a33a', a2: '#ef5668' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: window.WIDE ? [WIDE.W, WIDE.H] : [WW, HH],
     init(tl, SC) {
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; LANG = tl.lang || 'ru'; MODE = 'y'; VAR = /^v232/.test(tl.ep || '') ? 'B' : 'A'; FILM = /^v231f/.test(tl.ep || '');
       TLX = { endT: tl.endT || tl.dur }; K = keys(); window.__K = K; CHUNKS = buildChunks();
       SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4]); SHUT.push([K.dive0 + .05, K.TE1 - .2]);
       for (const k in CUES) delete CUES[k]; cues(); window.CUES_READY = 1;
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
-      cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
+      cv = wideCanvas(mk, WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${cv.width}px;height:${cv.height}px`; document.body.insertBefore(cv, document.getElementById('grain'));
       X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
       return Promise.all([...['600 20px M', '800 20px M'].map(f => document.fonts.load(f, 'АЯaz09ÜÄ?')), sprLoad()]).then(() => 0);
     },

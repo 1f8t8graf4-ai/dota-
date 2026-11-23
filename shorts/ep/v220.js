@@ -86,7 +86,7 @@
   // ---------- плашка года (ТЗ: x 70, y 80, 180×68, без обводки) ----------
   function yearPill(c, y0, y1, k, a = 1, local = false) {   // y0 → y1: старое число уходит вверх, новое въезжает снизу
     if (a <= 0) return;
-    c.save(); if (!local) c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha *= a;
+    c.save(); if (!local) c.setTransform(1, 0, 0, 1, 0, 0); if (window.WIDE) c.translate(WIDE.X0 + 30, 0); c.globalAlpha *= a;
     rr(c, 70, 80, 180, 68, 18); fill(c, 'rgba(15,23,42,0.88)');
     c.save(); rr(c, 70, 80, 180, 68, 18); c.clip();
     if (k <= 0 || y0 === y1) tx(c, String(k >= 1 ? y1 : y0), 160, 116, { s: 38, w: 800, c: '#fff' });
@@ -115,7 +115,7 @@
     if (a <= 0) return;
     const o = { f: 'M', w: 800, s: 54, ls: 0 }; let w = tw(c, ch.s, o); if (w > 840) { o.s *= 840 / w; w = 840 }
     w += 64; const h = 84;
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.translate(0, (1 - a) * 10);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); if (window.WIDE) { c.translate(CX, SUBY); c.scale(1.3, 1.3); c.translate(-CX, -SUBY) } c.globalAlpha = a; c.translate(0, (1 - a) * 10);
     const sy = SUBY;
     rr(c, CX - w / 2, sy - h / 2, w, h, 20); fill(c, 'rgba(11,16,48,.86)');
     tx(c, ch.s, CX, sy + 2, { ...o, c: '#fff' }); c.restore();
@@ -276,21 +276,21 @@
   }
   // прямоугольник, который видит камера (в координатах мира, с запасом на поворот)
   function viewRect(cam) {
-    const hw = 540 / cam.z, hh = 960 / cam.z, cs = Math.abs(Math.cos(cam.r)), sn = Math.abs(Math.sin(cam.r));
+    const hw = (window.WIDE ? WIDE.hw : 540) / cam.z, hh = 960 / cam.z, cs = Math.abs(Math.cos(cam.r)), sn = Math.abs(Math.sin(cam.r));
     const ex = hw * cs + hh * sn, ey = hw * sn + hh * cs; return { x0: cam.x - ex, x1: cam.x + ex, y0: cam.y - ey, y1: cam.y + ey };
   }
   // частицы переднего плана (снег, пыль) на слое глубины p: поле повторяется плиткой T, видны всегда, при наезде разлетаются
   function fieldLayer(c, cam, p, n, seed, T, drawOne, t) {
-    const s = Math.pow(cam.z, p), lx = cam.x * p, ly = cam.y * p, hw = 560 / s, hh = 980 / s;
+    const s = Math.pow(cam.z, p), lx = cam.x * p, ly = cam.y * p, HW = window.WIDE ? WIDE.hw + 20 : 560, hw = HW / s, hh = 980 / s;
     c.save(); c.translate(540, 960); c.rotate(cam.r * p);
     for (let i = 0; i < n; i++) {
       const bx = H1(seed + i * 7.13) * T, by = H1(seed + i * 3.71 + 9) * T;
       const fx = bx + Math.sin(t * (.5 + H1(i + seed) * .6) + i) * 12, fy = by + t * (26 + H1(i * 2.3 + seed) * 34);
       const x0 = Math.floor((lx - hw - fx) / T), x1 = Math.floor((lx + hw - fx) / T), y0 = Math.floor((ly - hh - fy) / T), y1 = Math.floor((ly + hh - fy) / T);
-      if ((x1 - x0 + 1) * (y1 - y0 + 1) > 40) continue;
+      if ((x1 - x0 + 1) * (y1 - y0 + 1) > (window.WIDE ? 120 : 40)) continue;
       for (let a = x0; a <= x1 + 1; a++) for (let b = y0; b <= y1 + 1; b++) {
         const X = (fx + a * T - lx) * s, Y = (fy + b * T - ly) * s;
-        if (X < -560 || X > 560 || Y < -980 || Y > 980) continue;
+        if (X < -HW || X > HW || Y < -980 || Y > 980) continue;
         drawOne(c, X, Y, s, i);
       }
     }
@@ -320,7 +320,8 @@
   // общее звёздное небо в координатах экрана: одно и то же в любом мире — на стыках «небо + звёзды» миры совпадают
   function starsS(c, t, a = 1, seed = 5) {
     if (a <= 0) return; c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha *= a;
-    for (let i = 0; i < 90; i++) { const x = H1(seed + i * 3.1) * WW, y = H1(seed + i * 7.7) * HH, r = .9 + H1(i * 1.3 + seed) * 2.2, tw = .55 + .45 * Math.sin(t * (1.3 + H1(i) * 2) + i);
+    const SX0 = window.WIDE ? WIDE.X0 : 0, SXW = window.WIDE ? WIDE.X1 - WIDE.X0 : WW, SN = window.WIDE ? 285 : 90;
+    for (let i = 0; i < SN; i++) { const x = SX0 + H1(seed + i * 3.1) * SXW, y = H1(seed + i * 7.7) * HH, r = .9 + H1(i * 1.3 + seed) * 2.2, tw = .55 + .45 * Math.sin(t * (1.3 + H1(i) * 2) + i);
       c.fillStyle = `rgba(238,241,248,${.85 * tw})`; c.fillRect(x - r, y - r, r * 2, r * 2) }
     c.restore();
   }
@@ -2313,12 +2314,12 @@
   }
   let MBC = null; const SHUT = [];   // окна короткой выдержки — на быстрых нырках и проездах
   function sceneMB(c, t) {   // затвор 180° — среднее 4 моментов за полкадра
-    const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = mk(WW, HH); const g = MBC.getContext('2d');
+    const n = 4, sh = SHUT.some(([a, b]) => t > a && t < b) ? 1 / 240 : 1 / 60; if (!MBC) MBC = wideCanvas(mk, WW, HH); const g = MBC.getContext('2d');
     for (let j = 0; j < n; j++) {
       const tj = t + (j / (n - 1) - .5) * sh;
       if (j === 0) { scene(c, tj); continue }
       g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#000'; g.fillRect(0, 0, WW, HH); scene(g, tj);
-      c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
+      if (window.WIDE) wideRaw(c); else c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1 / (j + 1); c.drawImage(MBC, 0, 0); c.globalAlpha = 1;
     }
   }
   function frame(t) { frameTo(X, t) }
@@ -2341,7 +2342,7 @@
     if (typeof fdaCues === 'function') fdaCues(Q); if (typeof schoolCues === 'function') schoolCues(Q); if (typeof boardCues5 === 'function') boardCues5(Q); if (MODE === 'y' && typeof finalCues === 'function') finalCues(Q); if (MODE === 'y' && typeof boardStartCues === 'function') boardStartCues(Q);
   }
   window.EP = {
-    P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
+    P: { bg: '#0f172a', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f59e0b', a2: '#ef4444' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: window.WIDE ? [WIDE.W, WIDE.H] : [WW, HH],
     sub: { init: null, scene: (c, t) => scene(c, t), frameTo: (c, t) => frameTo(c, t) },
     init(tl, SC, sub) {
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');
@@ -2355,7 +2356,7 @@
         st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join('')
           + ['latin', 'cyrillic'].map(sub => `@font-face{font-family:P;font-weight:700;font-style:normal;src:url(fonts/playfair-${sub}-700-normal.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}@font-face{font-family:P;font-weight:400 700;font-style:italic;src:url(fonts/playfair-${sub}-700-italic.woff2)${sub === 'cyrillic' ? ';unicode-range:U+0400-04FF' : ''}}`).join('');
         document.head.appendChild(st) }
-      cv = mk(WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
+      cv = wideCanvas(mk, WW, HH); if (!sub) { cv.style.cssText = `position:absolute;left:0;top:0;width:${cv.width}px;height:${cv.height}px`; document.body.insertBefore(cv, document.getElementById('grain')) }
       X = cv.getContext('2d'); for (const k in BLUR) delete BLUR[k];
       if (!IMG14 || IMG14.dataset.l !== LANG) { IMG14 = new Image(); IMG14.dataset.l = LANG; IMG14.src = 'ep/v210-ph2014' + (LANG === 'ru' ? '' : '-' + LANG) + '.png' }   // v22.4: фото по языку ролика (надписи на карте — ЗАПРЕТ, США…)   // v22.2: фото карточки 2014 из последнего кадра главы 4 (node v170tools/ph14.mjs v210y-ru 720 ep/v210-ph2014.png)
       return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px P', 'italic 700 20px P', 'italic 400 20px P'].map(f => document.fonts.load(f, 'АЯaz09$')).concat([IMG14.decode().catch(() => 0)])).then(() => 0);

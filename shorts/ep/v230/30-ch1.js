@@ -47,7 +47,7 @@
   let RG1 = null, RGR1 = null;
   function post1(c, t) {   // Rpost при STY 'cine' (у главы 1 LUX): контраст 1,1, насыщенность 1,06, мягкое зерно 0,05, виньетка 0,36 — в той же живой камере
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    if (!RG1) RG1 = mk(WW, HH); const g = RG1.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'copy'; g.drawImage(c.canvas, 0, 0);
+    if (!RG1) RG1 = mk(c.canvas.width, c.canvas.height); const g = RG1.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'copy'; g.drawImage(c.canvas, 0, 0);
     c.globalCompositeOperation = 'copy'; c.filter = 'brightness(1.0) contrast(1.1) saturate(1.06)'; c.drawImage(RG1, 0, 0); c.filter = 'none'; c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1;
     if (!RGR1) { RGR1 = mk(256, 256); const x = RGR1.getContext('2d'), im = x.createImageData(256, 256), d = im.data; for (let i = 0; i < 65536; i++) { const v = 128 + (H1(i * 1.37 + 5) - .5) * 200; d[4 * i] = d[4 * i + 1] = d[4 * i + 2] = v; d[4 * i + 3] = 255 } x.putImageData(im, 0, 0) }
     const f = Math.floor(t * 30), ox = Math.floor(H1(f * 3.1) * 256), oy = Math.floor(H1(f * 7.7) * 256);

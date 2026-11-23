@@ -3490,7 +3490,7 @@
     if (window.__POSTOFF) return;
     const pa = BRIDGE && MODE === 'main' ? 1 - ss(K.cold + .3, K.endT - .15, t) : 1; if (pa <= 0) return;   // v18: мостик — последний кадр без своей обработки (кадр 0 выпуска 2 уже обработан)
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    if (!RG) RG = mk(WW, HH); const g = RG.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'copy'; g.drawImage(c.canvas, 0, 0);
+    if (!RG) RG = mk(c.canvas.width, c.canvas.height); const g = RG.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'copy'; g.drawImage(c.canvas, 0, 0);
     if (pa < 1) { c.globalCompositeOperation = 'source-over'; c.globalAlpha = pa } else c.globalCompositeOperation = 'copy'; c.filter = STY === 'neon' ? 'brightness(.96) contrast(1.14) saturate(1.22)' : STY === 'cine' ? 'brightness(1.0) contrast(1.1) saturate(1.06)' : STY === 'dark' ? 'brightness(.9) contrast(1.18) saturate(.9)' : STY === 'bright' ? 'brightness(1.05) contrast(1.08) saturate(1.14)' : 'brightness(1.03) contrast(1.06) saturate(1.08)'; c.drawImage(RG, 0, 0); c.filter = 'none'; c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1;
     if (LUX()) {   // v16.5 вечер: версии 2–4 — только мягкое зерно и виньетка (без облачной фактуры поверх всего кадра)
       if (!RGR) { RGR = mk(256, 256); const x = RGR.getContext('2d'), im = x.createImageData(256, 256), d = im.data; for (let i = 0; i < 65536; i++) { const v = 128 + (H1(i * 1.37 + 5) - .5) * 200; d[4 * i] = d[4 * i + 1] = d[4 * i + 2] = v; d[4 * i + 3] = 255 } x.putImageData(im, 0, 0) }
@@ -4739,18 +4739,18 @@
   // v16.5 (правка Андрея): за диаграммой — детальный фон: ночная переговорная, окна во всю стену, огни города, край стола
   function boardroomV(c, t) {
     const bg = c.createLinearGradient(0, 0, 0, HH); bg.addColorStop(0, '#120d26'); bg.addColorStop(1, '#05040b'); c.fillStyle = bg; c.fillRect(-400, -400, WW + 800, HH + 800);
-    const wy0 = 150, wy1 = 1180;
-    c.fillStyle = '#0d1430'; c.fillRect(-60, wy0, WW + 120, wy1 - wy0);
-    for (let i = 0; i < 16; i++) {
+    const wy0 = 150, wy1 = 1180, WX0 = window.WIDE ? WIDE.X0 : 0, WX1 = window.WIDE ? WIDE.X1 : WW;   // 23.11: в 16:9 окно и стол — на всю ширину
+    c.fillStyle = '#0d1430'; c.fillRect(WX0 - 60, wy0, WX1 - WX0 + 120, wy1 - wy0);
+    for (let i = window.WIDE ? -Math.ceil(-WX0 / 76) : 0, n = Math.ceil((WX1 + 60) / 76); i < n; i++) {
       const bx = -60 + i * 76, bh = 260 + 420 * H1(i * 4.1 + 2), by = wy1 - bh;
       c.fillStyle = mixc('#1a2148', '#232b5c', H1(i * 7.3)); c.fillRect(bx, by, 68, bh);
       c.fillStyle = 'rgba(255,214,140,.5)'; for (let r = 0; r < bh / 34 - 1; r++) for (let q = 0; q < 3; q++) if (H1(i * 31 + r * 7 + q) > .62) c.fillRect(bx + 8 + q * 20, by + 14 + r * 34, 10, 14);
     }
     for (let i = 0; i < 22; i++) { const x = H1(i * 2.7) * WW, y = wy0 + H1(i * 5.3) * (wy1 - wy0); c.save(); c.globalAlpha = .16 + .1 * Math.sin(t * .8 + i); circ(c, x, y, 10 + 22 * H1(i * 1.9), i % 3 ? '#ffcf7a' : '#ff6a6a'); c.restore() }
-    c.fillStyle = '#06050d'; for (const x of [-20, 340, 720, 1100]) c.fillRect(x - 14, wy0, 28, wy1 - wy0); c.fillRect(-60, wy0 - 20, WW + 120, 26); c.fillRect(-60, wy1 - 6, WW + 120, 30);
+    c.fillStyle = '#06050d'; for (const x of [-20, 340, 720, 1100, ...(window.WIDE ? [-400, -780, -1160, 1480, 1860, 2240] : [])]) c.fillRect(x - 14, wy0, 28, wy1 - wy0); c.fillRect(WX0 - 60, wy0 - 20, WX1 - WX0 + 120, 26); c.fillRect(WX0 - 60, wy1 - 6, WX1 - WX0 + 120, 30);
     c.save(); c.globalAlpha = .06; poly(c, [80, wy0, 260, wy0, 120, wy1, -60, wy1]); fill(c, '#ffffff'); poly(c, [760, wy0, 830, wy0, 690, wy1, 620, wy1]); fill(c, '#ffffff'); c.restore();
-    const tg = c.createLinearGradient(0, 1190, 0, HH); tg.addColorStop(0, '#2a1a14'); tg.addColorStop(.15, '#1a100c'); tg.addColorStop(1, '#0a0605'); c.fillStyle = tg; c.fillRect(-60, 1196, WW + 120, HH);
-    c.fillStyle = 'rgba(255,220,180,.18)'; c.fillRect(-60, 1196, WW + 120, 4);
+    const tg = c.createLinearGradient(0, 1190, 0, HH); tg.addColorStop(0, '#2a1a14'); tg.addColorStop(.15, '#1a100c'); tg.addColorStop(1, '#0a0605'); c.fillStyle = tg; c.fillRect(WX0 - 60, 1196, WX1 - WX0 + 120, HH);
+    c.fillStyle = 'rgba(255,220,180,.18)'; c.fillRect(WX0 - 60, 1196, WX1 - WX0 + 120, 4);
     const v = c.createRadialGradient(PIEV.x, PIEV.y, 120, PIEV.x, PIEV.y, 780); v.addColorStop(0, 'rgba(5,4,11,.74)'); v.addColorStop(1, 'rgba(5,4,11,.12)'); c.fillStyle = v; c.fillRect(-400, -400, WW + 800, HH + 800);
   }
   function vS13(c, t) {
@@ -6984,9 +6984,11 @@
     if (MODE === 'end') shotEnd(c, t); else if (MODE === 'tail') tailFrame(c, t); else { frameV(c, t); tagV(c, t) }   // v16.5: вертикаль
     if (STY !== 'bob') Rpost(c, t);   // v16.5: версии 2–3 — тонировка, зерно, виньетка
     if (SUBS) subsV(c, t);
+    if (window.WIDE && BRIDGE && MODE === 'main') wideSeam(c, t, K.endT, WSRC1());   // 23.11: 16:9 — бока стыка с главой 2
   }
+  const WSRC1 = () => 'ep/wide/v190-f0' + (LANG !== 'ru' ? '-' + LANG : '') + '.png';
   window.EP = {
-    P: { bg: C.deep, paper: C.wh, ink: C.n0, line: C.wh, a1: C.am, a2: C.red }, D, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
+    P: { bg: C.deep, paper: C.wh, ink: C.n0, line: C.wh, a1: C.am, a2: C.red }, D, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: window.WIDE ? [WIDE.W, WIDE.H] : [WW, HH],
     init(tl, SC) {
       TLW = tl.sent.flatMap(s => s.words); LANG = tl.lang || 'ru'; TLX = { b0: tl.b0, endT: tl.endT, dragE: tl.dragE };
       const ep = String(tl.ep || '').replace(/-(ru|en|de)$/, '');   // v162 — ролик, v162a — концовка A, v162b — хвост B; v161e1/e2 — старые концовки
@@ -7002,10 +7004,10 @@
       if (MODE === 'main' && !TLX.endT) CHUNKS.push({ a: K.l1, e: K.l2 - .12, s: 'Захотите бросить — вам и это продадут' }, { a: K.l2, e: K.l3 - .12, s: 'Причём одни и те же люди…' }, { a: K.l3, e: K.q1 - .15, s: 'А вот кто именно — смотрите на YouTube' }, { a: K.q1, e: K.q2 - .05, s: 'Так… о чём это я?' }, { a: K.q2, e: K.whip + .1, s: 'А, точно!' });   // v16.3: голоса доски ещё нет
       SC.forEach(S => { D[S.key] = t => { frame(t); return '' } });
       if (!document.getElementById('v162')) { const st = document.createElement('style'); st.id = 'v162'; st.textContent = [500, 700].map(w => `@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-latin-${w}-normal.woff2)}@font-face{font-family:J;font-weight:${w};src:url(fonts/jetbrains-mono-cyrillic-${w}-normal.woff2);unicode-range:U+0400-04FF,U+2116}`).join(''); document.head.appendChild(st) }
-      cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));
+      cv = wideCanvas(mk, WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${cv.width}px;height:${cv.height}px`; document.body.insertBefore(cv, document.getElementById('grain'));
       X = cv.getContext('2d'); MA = MB = null; CORK = null; OFF = null; for (const k in BLUR) delete BLUR[k];
       if (BRIDGE && !IMG18) { IMG18 = new Image(); IMG18.src = 'ep/v190-f0' + (LANG !== 'ru' ? '-' + LANG : '') + '.png' }   // 22.11: у EN/DE — свой кадр 0 главы 2 (надписи по языку): node v170tools/frame.mjs v191y-de 0 ep/v190-f0-de.png   // v19.0 (17.11): кадр 0 выпуска 2 v19.0 «Боб 2.0» (глыба льда, без плашки года); было ep/v180-f0.png (v18.1) — снять заново, если выпуск 2 поменялся: node v170tools/frame.mjs v180s-ru 0 ep/v180-f0.png
-      return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px "Liberation Serif"'].map(f => document.fonts.load(f, 'АЯaz09')).concat(BRIDGE ? [IMG18.decode()] : [])).then(() => { qLayout(X); return 0 });
+      return Promise.all(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U', '700 20px "Liberation Serif"'].map(f => document.fonts.load(f, 'АЯaz09')).concat(BRIDGE ? [IMG18.decode()] : []).concat(window.WIDE && BRIDGE ? [wideSeamLoad(WSRC1())] : [])).then(() => { qLayout(X); return 0 });
     },
   };
 })();
