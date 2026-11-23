@@ -36,7 +36,7 @@
       Q(K.back - .05, 'deep', .9); Q(K.pull - .05, 'whoosh', 1.2);
     }
     Q(K.flare - .03, 'drop', 1); Q(K.flare - .02, 'boom', .7);
-    if (FILM) { Q(K.grow - .06, 'sub', .8); Q(K.hit, 'steam', .8); Q(K.hit, 'hit', 1); Q(K.hit - .5, 'rain', 1); Q(K.grow + .1, 'steam', .5); Q(K.ttl + .05, 'shimmer', .3) }
+    if (FILM) { Q(K.grow - .06, 'sub', .8); Q(K.hit, 'steam', .8); Q(K.hit, 'hit', 1); Q(K.hit - .5, 'rain', 1); Q(K.grow + .1, 'steam', .5); Q(K.mor0 + .05, 'whoosh', .35); Q(K.ir0 + .02, 'shimmer', .3) }   // v23.6: капля летит в капсулу, розовый растекается
     else { Q(K.grow - .06, 'sub', 1); Q(K.suck1 - .04, 'steam', 1) }   // v23.3: без «бульканья» и шипения молнии — мягкий саб-подъём (синтез, до втягивания капли) и лёгкий выдох пара
     if (!FILM) { Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1) }
   }
@@ -45,7 +45,7 @@
     init(tl, SC) {
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; LANG = tl.lang || 'ru'; MODE = 'y'; VAR = /^v232/.test(tl.ep || '') ? 'B' : 'A'; FILM = /^v231f/.test(tl.ep || '');
       TLX = { endT: tl.endT || tl.dur }; K = keys(); window.__K = K; CHUNKS = buildChunks();
-      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4]); if (!FILM) SHUT.push([K.dive0 + .05, K.TE1 - .2]);
+      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4]); if (!FILM) SHUT.push([K.dive0 + .05, K.TE1 - .2]); else SHUT.push([K.mor0 + .05, K.mor1 + .1]);
       for (const k in CUES) delete CUES[k]; cues(); window.CUES_READY = 1;
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));

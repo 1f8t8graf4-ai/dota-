@@ -1997,14 +1997,18 @@
     c.save(); c.globalAlpha *= a; c.translate(X + 1150 * tau + 500 * tau * tau, Y - 980 * tau + 420 * tau * tau); c.rotate(2.4 * tau); const k = 1 - .3 * at(tau, 0, .7), fy = .62 + .38 * Math.cos(5.2 * tau);   // v23.5: кувырок без ребра — не сжимается в чёрную полоску
     c.scale(1, fy); c.drawImage(coverImg(), -S0 * k / 2, -S0 * k / 2, S0 * k, S0 * k); c.restore();
   }
-  function surface5(c, t, J) {   // вода уходит вниз: над ней ночной океан (кадр 0), баночка всплывает; линия воды ложится на передний вал кадра 0
-    const k = at(t, J.cov, J.j0); if (k <= 0) return; const e = eo(k), base = lp(-170, 1330, e), L = x => base + 30 * Math.sin(x / 160 + t * 1.7);
+  function surface5(c, t, J) {   // v23.6: камера выныривает — линия воды уходит вниз, и ночной океан (кадр 0) едет вниз вместе с ней: баночка выплывает на волне, а не вырезается шторкой
+    const k = at(t, J.cov - .12, J.j0); if (k <= 0) return; const e = k * k * (3 - 2 * k) * .35 + (1 - (1 - k) * (1 - k)) * .65, base = lp(-170, 1330, e), amp = lp(58, 30, e), L = x => base + amp * Math.sin(x / 160 + t * 1.7) + 9 * (1 - e) * Math.sin(x / 47 - t * 3.1);
+    const dy = base - 1330, sc = lp(1.07, 1, e);   // мир над водой — на месте относительно своей линии воды (передний вал кадра 0 = линия воды)
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    c.save(); c.beginPath(); c.moveTo(-100, -100); c.lineTo(1180, -100); for (let x = 1180; x >= -100; x -= 20) c.lineTo(x, L(x)); c.closePath(); c.clip(); oceanWorld(c, t, Q0); c.restore();
+    c.save(); c.beginPath(); c.moveTo(-100, -100); c.lineTo(1180, -100); for (let x = 1180; x >= -100; x -= 20) c.lineTo(x, L(x)); c.closePath(); c.clip();
+    c.translate(540, base); c.scale(sc, sc); c.translate(-540, -1330); oceanWorld(c, t, Q0); c.restore();
     c.beginPath(); c.moveTo(-700, 2400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, L(x)); c.lineTo(1800, 2400); c.closePath(); fill(c, C5.sea0);
+    c.save(); c.beginPath(); c.moveTo(-700, 2400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, L(x)); c.lineTo(1800, 2400); c.closePath(); c.clip();   // под водой: светлая полоса у поверхности
+    const g = c.createLinearGradient(0, base - 40, 0, base + 260); g.addColorStop(0, 'rgba(120,170,220,.38)'); g.addColorStop(1, 'rgba(120,170,220,0)'); c.fillStyle = g; c.fillRect(-100, base - 60, 1280, 340); c.restore();
     for (let i = 0; i < 16; i++) { const bx = 60 + 960 * H1(i * 7.7), by = lp(1900, base + 40, (t * .9 + H1(i * 1.9)) % 1); if (by > L(bx) + 20) circ(c, bx + 8 * Math.sin(t * 6 + i), by, (5 + 9 * H1(i + 2)) * (1 - k * .6), 'rgba(201,220,242,.22)') }   // пузыри
     c.beginPath(); for (let x = -700; x <= 1800; x += 20) { const y = L(x); x === -700 ? c.moveTo(x, y) : c.lineTo(x, y) } lnB(c, 5, 'rgba(201,220,242,.55)');
-    const fo = 1 - at(k, .5, 1); if (fo > 0) foamCap(c, x => L(x) - 2, -40, 1120, x => (5 + 5 * Math.sin(x / 37 + 1.3)) * fo + 2 * fo, t, 3);   // пена на кромке тает к кадру 0
+    const fo = 1 - at(k, .55, 1); if (fo > 0) foamCap(c, x => L(x) - 2, -40, 1120, x => (5 + 5 * Math.sin(x / 37 + 1.3)) * fo + 2 * fo, t, 3);   // пена на кромке тает к кадру 0
     c.restore();
   }
   function boardStartShot(c, t) {
@@ -2014,7 +2018,7 @@
   }
   function boardStartCues(Q) {
     const J = J5; Q(J.th0, 'whip', .28, -.4); Q(J.th1 - .05, 'plop', .3, .3); Q(J.th1, 'whip', .22, .3);
-    Q(J.w0 - .15, 'wave', .55, -.5); Q(J.hitT, 'splash', .55, .1); Q(J.hitT + .02, 'papers', .3, .4); Q(J.cov - .25, 'wave', .45); Q(J.cov, 'deep', .4); Q(J.j0 - .2, 'splash', .35);
+    Q(J.w0 - .15, 'wave', .36, -.5); Q(J.hitT, 'splash', .38, .1); Q(J.hitT + .02, 'papers', .25, .4); Q(J.cov - .25, 'wave', .28); Q(J.cov, 'deep', .32); Q(J.j0 - .2, 'splash', .22);   // v23.6: вода тише (пик шума волны резал)
   }
   // ---------- вода поднимается (конец строки 11): за ней — тот же ночной океан ----------
   function flood5(c, t, k, tO) {

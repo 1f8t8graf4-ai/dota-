@@ -15,7 +15,7 @@ from v180_sound import sfx_track
 import mix193 as M, v210_sound as V2, bedfill
 SR = V.SR
 C1 = os.path.join(HERE, 'out', 'v170e-ru')
-TAILF, XF = 1.5, .5   # v23.4, фильм: хвост звука пролога под главу 1; наплыв картинки
+TAILF, XF = 1.5, 0.   # v23.6, фильм: хвост звука пролога под главу 1; картинка — встык: последний кадр пролога = кадр главы 1 за 1/30 с до её кадра 0
 
 
 def ch1_gains(bedf='bed226.wav'):   # → (подложка главы 1 на старте / нарезанный грув, множитель громкости её финала — mix193.final); фильм — bed234f.wav
@@ -115,6 +115,19 @@ def styk(o, TE, mw, sec):   # пролог + первые sec с главы 1 (�
     print(out, tt_audio.report(aw))
 
 
+def limit(x, ceil=.95):   # огибающая усиления только у пиков выше ceil: атака ~8 мс, отпускание ~60 мс (без scipy)
+    a = np.abs(x).max(1); g = np.ones(len(a)); W = int(.008 * SR)
+    for i in np.where(a > ceil)[0]: g[max(0, i - W):i + W] = np.minimum(g[max(0, i - W):i + W], ceil / a[i])
+    if g.min() >= 1: return g
+    r = np.exp(-1 / (.06 * SR)); out = g.copy(); idx = np.where(g < 1)[0]
+    for k in range(idx[0], min(len(out), idx[-1] + int(.5 * SR))):
+        if k: out[k] = min(g[k], r * out[k - 1] + (1 - r))
+    ra = np.exp(-1 / (.003 * SR))   # и атака — плавным спуском заранее, без ступеньки
+    for k in range(min(len(out), idx[-1] + int(.5 * SR)) - 2, max(0, idx[0] - int(.05 * SR)) - 1, -1):
+        out[k] = min(out[k], ra * out[k + 1] + (1 - ra))
+    return out
+
+
 def build(ep):
     o = os.path.join(HERE, 'out', ep); od = os.path.join(o, 'snd'); os.makedirs(od, exist_ok=True)
     T = json.load(open(os.path.join(o, 'timeline.json'))); TE = T['dur']; FILM = ep.startswith('v231f')
@@ -139,6 +152,7 @@ def build(ep):
     x = np.tanh(buf[:n] * 1.4) / 1.4 * (1 - .29 * act)[:, None] + v   # гул и звуки под голосом — на 3 дБ тише
     x += preroll_film(n, K) if FILM else preroll(n, K) + riser(n)
     f = int(.003 * SR); x[-f:] *= np.linspace(1, 0, f)[:, None]
+    x *= limit(x)[:, None]   # v23.6: у немецкого голоса пики выше 1 — мягкий лимитер вместо среза в PCM_16
     mw = os.path.join(od, 'mix.wav'); sf.write(mw, x.astype(np.float32), SR, subtype='PCM_16')
     print(os.path.basename(mw), tt_audio.report(mw), 'пик %.2f' % np.abs(x).max())
     fin = os.path.join(o, 'final.mp4')
@@ -148,7 +162,7 @@ def build(ep):
 
 
 def film(o, TE, mw):   # v23.4: пролог фильма + глава 1 для фильма (с ночного города, film234.mp4) — наплыв XF с через темноту; звук внахлёст
-    ch = os.path.join(C1, 'film234.mp4'); cw = os.path.join(C1, 'mix234f.wav'); CUT = 2.20
+    ch = os.path.join(C1, 'film234.mp4'); cw = os.path.join(C1, 'mix234f.wav'); CUT = 0.0   # v23.6: глава с начала
     a, _ = sf.read(mw, dtype='float64'); b, _ = sf.read(cw, dtype='float64'); b = b[int(round(CUT * SR)):]
     i = int(round((TE - XF) * SR)); x = np.zeros((max(len(a), i + len(b)), 2)); x[:len(a)] += a; x[i:i + len(b)] += b
     pk = np.abs(x).max(); x = x / max(1, pk / .97)
@@ -156,7 +170,7 @@ def film(o, TE, mw):   # v23.4: пролог фильма + глава 1 для 
     for nm, sec in (('film_styk.mp4', 10.0), ('film_ch1.mp4', None)):
         out = os.path.join(o, nm); dur = [] if sec is None else ['-t', f'{TE - XF + sec:.3f}']
         subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(o, 'video.mp4'), '-i', ch, '-i', aw,
-                        '-filter_complex', f'[0:v]settb=1/30,setpts=PTS-STARTPTS[a];[1:v]settb=1/30,setpts=PTS-STARTPTS[b];[a][b]xfade=transition=fade:duration={XF}:offset={TE - XF:.4f},format=yuv420p[v]',
+                        '-filter_complex', f'[0:v]settb=1/30,setpts=PTS-STARTPTS[a];[1:v]settb=1/30,setpts=PTS-STARTPTS[b];' + (f'[a][b]xfade=transition=fade:duration={XF}:offset={TE - XF:.4f},format=yuv420p[v]' if XF else '[a][b]concat=n=2:v=1:a=0,format=yuv420p[v]'),
                         '-map', '[v]', '-map', '2:a', '-c:v', 'libx264', '-crf', '17', '-preset', 'medium', '-c:a', 'aac', '-b:a', '192k', '-shortest', *dur, '-movflags', '+faststart', out], check=True)
         print(out, tt_audio.report(aw) if sec is None else '')
 

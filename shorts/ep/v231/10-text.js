@@ -13,7 +13,9 @@
   //                     B: «Сигареты. «Джул». Одноразки. Айкос. Снюс.» / «И каждый раз — «способ бросить».» / «Угадаете, кто стоит за всеми пятью?»
   const ANCH = {
     // v23.2: A — «Что вы знаете о никотине? / За сто лет он менял форму пять раз: / Сигареты. «Джул». Айкос. Одноразки. Снюс. / Менялись упаковка, вкус и обещания — но не суть. / Начнём…»
-    A: { ru: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], five: ['s2', 6], mac: [['s4', 0], ['s4', 2], ['s4', 4]], dark: ['s4', 5], flare: ['s4', 7], grow: ['s5', 0], zip: ['s5', 2] } },
+    A: { ru: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], five: ['s2', 6], mac: [['s4', 0], ['s4', 2], ['s4', 4]], dark: ['s4', 5], flare: ['s4', 7], grow: ['s5', 0], zip: ['s5', 2] },
+         // v23.6: «In hundert Jahren hat es fünfmal…» / «Verpackung, Geschmack und Versprechen änderten sich – der Kern blieb.» / «Fangen wir mit dem an, das jeder kennt…»
+         de: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], five: ['s2', 5], mac: [['s4', 0], ['s4', 1], ['s4', 3]], dark: ['s4', 6], flare: ['s4', 7], grow: ['s5', 0], zip: ['s5', 4] } },
     B: { ru: { form: [['s1', 0], ['s1', 1], ['s1', 2], ['s1', 3], ['s1', 4]], stamp: ['s2', 1], quote: ['s2', 3], back: ['s3', 0], who: ['s3', 1], stand: ['s3', 2], pull: ['s3', 4], flare: ['s3', 5], grow: ['s4', 0], zip: ['s4', 2] } },
   };
   const WA = ([sc, i]) => { const s = TLS.find(x => x.scene === sc); if (!s) throw new Error('v231: нет фразы ' + sc); const w = s.words[Math.min(i, s.words.length - 1)]; return w.a };
@@ -30,10 +32,10 @@
     }
     k.dive0 = Math.max(k.zip + .95, TE - 1.05); k.dive1 = k.TE1;     // нырок кончается ровно на последнем кадре
     k.suck0 = k.grow + .35; k.suck1 = Math.max(k.suck0 + .4, Math.min(k.zip + .3, k.dive0 - .3));   // v23.3: капля поднимается к щели окна и втягивается (окно не открываем)
-    if (FILM) {   // v23.4: капля → золотая точка → титр «01 · ОДНОРАЗКИ», бит гаснет на низком ударе, темнота, дальше — ночной город главы 1 (наплывом при склейке)
+    if (FILM) {   // v23.6: капля летит в капсулу главы 1 и втягивается на низком ударе, из капсулы — розовый фон главы; последний кадр = её кадр (как у шортса)
       const s5 = TLS.find(x => x.scene === 's5'), wl = s5.words[s5.words.length - 1];
-      k.dive0 = 1e9; k.TE1 = TE + 1; k.suck0 = k.grow + .9; k.suck1 = k.grow + 1.3;
-      k.ttl = WA(['s5', 3]) - .15; k.hit = wl.b + .07; k.tOut = TE - .95; k.blk = [TE - .8, TE - .4];
+      k.dive0 = 1e9; k.suck0 = k.grow + .9; k.suck1 = k.grow + 1.3; k.ttl = 1e9; k.blk = [1e9, 1e9 + 1];
+      k.hit = wl.b + .07; k.mor0 = wl.a; k.mor1 = Math.max(k.mor0 + .55, k.hit); k.ir0 = k.mor1 - .06;
     }
     return k;
   }

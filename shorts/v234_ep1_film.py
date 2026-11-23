@@ -10,7 +10,7 @@ import numpy as np, soundfile as sf
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(HERE, '..', 'tools'))
 import mix193 as M, v165_sound as VS, tt_audio, bedfill, v210_sound as V2
 O = os.path.join(HERE, 'out', 'v170e-ru'); SR = M.SR
-CUT = 2.20          # с этого места — ночной город, голос молчит 2,16–2,33 с (перед «Что это…»)
+CUT = 0.0           # v23.6: глава в фильме снова с начала — с «Что вы знаете об одноразках?» (Андрей: «верни то начало»); было 2,20 — с ночного города
 FADE = 1.0          # вступление подложки
 LP = 'lowpass=f=620:p=2,lowpass=f=900:p=2,bass=g=2:f=90'   # «за стеной»: без тарелок и верхов грува
 QUIET = 6.0         # в паузах подложка на столько дБ тише голоса

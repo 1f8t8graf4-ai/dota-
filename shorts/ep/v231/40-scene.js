@@ -317,25 +317,36 @@
       glow(c, xx, yy, 300 + 60 * (i % 3), '#cfd9e8', .055 * hz);
     }
   }
-  function filmEnd(c, t, hb) {   // v23.5: титр проявляется на месте (прозрачность + лёгкий зум), без разъезда из точки — «01» не наезжает на «ОД»
-    const L = TTL_L[LANG] || TTL_L.ru, o = { f: 'M', w: 700, s: 58, ls: 13 };
-    const sh = eio(at(t, K.grow, K.grow + .85)), a = eio(at(t, K.ttl, K.ttl + .6)), z = eo(at(t, K.ttl, K.ttl + 1.1)), out = 1 - eio(at(t, K.tOut, K.tOut + .45));
-    const wl = tw(c, L[0], o), wr = tw(c, L[1], o), gap = 44, cx = 540 + lp(0, (wl - wr) / 2, sh), cy = 980 + 4 * Math.sin(TAU * t / 3.3) * (1 - sh);
-    vapor(c, t, cx, cy);
-    if (out <= 0) return;
-    c.save(); c.globalAlpha *= out;
-    const r = CORE_R * lp(1, .24, sh);   // капля сжимается в точку и встаёт между «01» и «ОДНОРАЗКИ»
-    drop(c, cx, cy, r, hb * (1 - sh), 0, 1 - sh);
-    if (a > 0) {
-      const mx = cx - (wl - wr) / 2, s = lp(1.06, 1, z);
-      c.save(); c.translate(mx, cy); c.scale(s, s); c.translate(-mx, -cy);
-      tx(c, L[0], cx - gap - wl / 2, cy + 2, { ...o, c: '#F4F1EA', a });
-      tx(c, L[1], cx + gap + wr / 2, cy + 2, { ...o, c: '#F4F1EA', a });
-      const lw = wl + wr + 2 * gap, la = .75 * eio(at(t, K.ttl + .25, K.ttl + .95));   // тонкая золотая черта — тоже проявляется
-      if (la > 0) { c.beginPath(); c.moveTo(mx - lw / 2, cy + 58); c.lineTo(mx + lw / 2, cy + 58); lnB(c, 2, `rgba(234,194,122,${la.toFixed(3)})`) }
+  // v23.6, фильм на YouTube (Андрей: «верни начало „Что вы знаете об одноразках?“»; Gemini: капля не исчезает, а заливается в окошко вейпа):
+  // на «знакомого…» капля летит вверх в капсулу главы 1 и на низком ударе втягивается в неё; из капсулы растекается розовый фон главы —
+  // последний кадр = кадр главы 1 за 1/30 с до её кадра 0 (её рисовка, ch1Frame), дальше сразу её вопрос. Без черноты и титра.
+  let SC_L1 = null;   // преобразование живой камеры главы 1 (ставит scene) — в нём координаты кадра главы 1
+  const CAPC = { x: V1Z.x, y: V1Z.top + 26 };   // середина видимой верхушки капсулы в кадре 0 главы 1
+  function filmEnd(c, t, hb) {   // внутри камеры пролога: пар и капля до вылета; дальше каплю ведёт filmIris (в координатах главы 1)
+    const cy = 980 + 4 * Math.sin(TAU * t / 3.3);
+    vapor(c, t, 540, cy);
+    if (t >= K.mor0 || !SC_L1) { if (SC_L1) { const M = SC_L1.inverse().multiply(c.getTransform()), p = M.transformPoint(new DOMPoint(540, cy)); DROPS = { x: p.x, y: p.y, s: Math.hypot(M.a, M.b) } } return }
+    drop(c, 540, cy, CORE_R, hb, 0, 1);
+  }
+  let DROPS = { x: 540, y: 980, s: 1 };
+  function filmIris(c, t, hb) {   // в координатах кадра главы 1 (после liveCam1, до камеры пролога)
+    const u = at(t, K.mor0, K.mor1), e = u * u * (3 - 2 * u), q = eio(at(t, K.ir0, K.TE1)), wob = t * 1.6;
+    if (q > 0) {   // розовый фон главы растекается из капсулы мягкой «жидкой» кромкой
+      const R = lp(30, 1900, q);
+      c.save(); c.beginPath();
+      for (let i = 0; i <= 64; i++) { const a = i / 64 * TAU, rr = R * (1 + (.03 * Math.sin(a * 3 + wob) + .018 * Math.sin(a * 5 - wob * 1.3)) * (1 - q)); i ? c.lineTo(CAPC.x + Math.cos(a) * rr, CAPC.y + Math.sin(a) * rr) : c.moveTo(CAPC.x + Math.cos(a) * rr, CAPC.y + Math.sin(a) * rr) }
+      c.closePath(); c.clip();
+      band1(c); capsule1(c, t - K.TE, V1Z.x, V1Z.top, V1Z.bot, V1Z.w, V1RY0 + 4, 1, V1Z.w / 2, 0);
       c.restore();
     }
-    c.restore();
+    const ca = eio(at(t, K.mor1 - .35, K.mor1));   // капсула проступает там, куда летит капля (на тёмном — до розового)
+    if (ca > 0 && q < 1) { c.save(); c.globalAlpha *= ca * (1 - q); capsule1(c, t - K.TE, V1Z.x, V1Z.top, V1Z.bot, V1Z.w, V1RY0 + 4, 1, V1Z.w / 2, 0); c.restore() }
+    if (t >= K.ir0) ring1(c, V1Z.x, V1RY0, 24, eio(at(t, K.ir0, K.ir0 + .25)), 8);   // кольцо-застёжка, как в кадре 0 главы
+    if (u <= 0 || t >= K.mor1 + .12) return;
+    const x = lp(DROPS.x, CAPC.x, e), y = lp(DROPS.y, CAPC.y + 6, e) - 120 * Math.sin(Math.PI * u) * (1 - u);   // по дуге вверх
+    const r = CORE_R * DROPS.s * lp(1, .55, e) * (1 - eio(at(t, K.mor1 - .1, K.mor1 + .1)));   // у капсулы втягивается
+    const st = Math.sin(Math.PI * u);
+    if (r > .4) { c.save(); c.translate(x, y); c.scale(1 - .14 * st, 1 + .3 * st); drop(c, 0, 0, r, hb, 0, 1 - .5 * e); c.restore() }   // тянется кончиком вверх по ходу
   }
   // ---------- камера (как v23.0): медленный наезд, в конце — нырок в корпус = кадр главы 1 ----------
   const ZS1 = 1 / S0, P1 = { x: DEV0.x + S0 * (CX - DEVC.x), y: DEV0.y + S0 * (CY - DEVC.y) };
@@ -350,11 +361,12 @@
   function scene(c, t) {
     const t1 = t - K.TE, hb = beatAt(t), fl = t > K.flare - .02 ? Math.exp(-Math.max(0, t - K.flare) / .3) * at(t, K.flare - .02, K.flare + .05) : 0;
     const s = Math.exp(camZ(t)), px = FZ.x - (FZ.x - CX) / s, py = FZ.y - (FZ.y - CY) / s;
-    c.save(); liveCam1(c, t1);
+    c.save(); liveCam1(c, t1); SC_L1 = c.getTransform();
     c.save(); cam(c, s, px, py);
     if (VAR === 'A') sceneA(c, t, hb, fl); else sceneB(c, t, hb, fl);
     if (t >= K.grow - .06) { if (FILM) filmEnd(c, t, hb); else deviceShot(c, t, t1, hb) }
     c.restore();
+    if (FILM && t >= K.mor0) filmIris(c, t, hb);
     title(c, t, [-1], VAR === 'A' ? K.s2 : K.back);   // титул чёткий с первого кадра (ТЗ: «без чёрного экрана с точкой» — сразу крючок)
     c.restore();
   }

@@ -1,0 +1,153 @@
+{
+ "voice": "kkJxCnlRCckmfFvzDW5Q",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "Warum ist eure Einweg-Vape so eisig? Und warum wird sie überhaupt verkauft, wenn Vapes mit Geschmack in Amerika schon 2020 verboten wurden?\n\nAlles wegen eines einzigen Wortes, das man vergessen hat, ins Gesetz zu schreiben.\n\nJanuar 2020: Nach dem JUUL-Skandal kommen in den USA Vapes mit Geschmack – Mango, Frucht, Dessert, Minze – unters Fallbeil.\n\nAber schaut ins Dokument selbst: Das Verbot galt nur für Vapes mit wechselbaren Pods.\n\nUnd Einweg-Geräte aus einem Stück… werden darin schlicht nicht erwähnt.\n\nWährend JUUL seine Geschmacksrichtungen aus den Regalen nahm, liefen in Shenzhen schon die Fließbänder an.\n\nPuff Bar, HQD und dann Elf Bar – Einweg-Vapes überrollten Amerika wie eine Welle.\n\nIn nur einem Jahr stieg ihr Anteil bei dampfenden Highschool-Schülern um das Elffache.\n\nUnd es ging längst nicht mehr nur um Geschmack.\n\nIn die Flüssigkeit kam ein synthetischer Kühlstoff, WS-23 – er täuscht die Rezeptoren: Der Hals spürt nur Eis – statt des Nikotin-Kratzens.\n\nWisst ihr noch: Ein Pod ersetzte eine Schachtel?\n\nDann wurden Einweg-Vapes immer größer: dreizehn Milliliter, Doppel-Mesh-Coil und Tausende Züge.\n\nBeim Nikotin – wie sechzehn Pods.\n\nUnd um die Regeln zu umgehen, brauten sie Nikotin direkt im Reagenzglas – ohne ein einziges Tabakblatt.\n\nUnd als Einweg-Vapes Milliarden Dollar im Jahr einbrachten, stiegen auch die alten Tabakkonzerne selbst in den Markt ein.\n\nDas Verbot sollte Schülern den Geschmack nehmen – stattdessen bekamen sie eisigen Dampf, riesige Tanks und Nikotin aus dem Reagenzglas.\n\nAber die Spielregeln zu ändern, ist für die Tabakkonzerne nichts Neues.\n\nDenn das größte Symbol rauer Männlichkeit kam vor hundert Jahren auf den Markt… als zarte Zigaretten für Damen.\n\nSo wurde das Schlupfloch von 2020 zum zweiten von fünf Indizien. Die anderen drei warten schon auf YouTube auf euch.\n\nAlso, wenn ihr das nächste Mal einen Zug nehmt, fragt euch einfach…",
+ "items": [
+  {
+   "key": "Почему ваша одноразка такая ледяная? И почему её вообще продают, если вейпы со вкусами в Америке запретили ещё в две тысячи двадцатом году?",
+   "scene": "s1",
+   "text": "Warum ist eure Einweg-Vape so eisig? Und warum wird sie überhaupt verkauft, wenn Vapes mit Geschmack in Amerika schon 2020 verboten wurden?",
+   "off": 0,
+   "len": 139
+  },
+  {
+   "key": "Всё из-за одного слова, которое забыли вписать в закон.",
+   "scene": "s2",
+   "text": "Alles wegen eines einzigen Wortes, das man vergessen hat, ins Gesetz zu schreiben.",
+   "off": 141,
+   "len": 82
+  },
+  {
+   "key": "Январь две тысячи двадцатого года: после скандала с «Джулом» власти США рубят вейпы со вкусами — манго, фрукты, десерты, мята — под нож.",
+   "scene": "s2",
+   "text": "Januar 2020: Nach dem JUUL-Skandal kommen in den USA Vapes mit Geschmack – Mango, Frucht, Dessert, Minze – unters Fallbeil.",
+   "off": 225,
+   "len": 123
+  },
+  {
+   "key": "Но разверните сам документ: запрет прописали только для вейпов со сменными картриджами.",
+   "scene": "s3",
+   "text": "Aber schaut ins Dokument selbst: Das Verbot galt nur für Vapes mit wechselbaren Pods.",
+   "off": 350,
+   "len": 85
+  },
+  {
+   "key": "А цельные одноразовые там... просто не упомянуты.",
+   "scene": "s3",
+   "text": "Und Einweg-Geräte aus einem Stück… werden darin schlicht nicht erwähnt.",
+   "off": 437,
+   "len": 71
+  },
+  {
+   "key": "Пока «Джул» убирал вкусы с полок, в Шэньчжэне уже запускали конвейеры.",
+   "scene": "s3",
+   "text": "Während JUUL seine Geschmacksrichtungen aus den Regalen nahm, liefen in Shenzhen schon die Fließbänder an.",
+   "off": 510,
+   "len": 106
+  },
+  {
+   "key": "Пафф Бар, эйч-кью-ди, а потом Эльф Бар — одноразки накрыли Америку волной.",
+   "scene": "s4",
+   "text": "Puff Bar, HQD und dann Elf Bar – Einweg-Vapes überrollten Amerika wie eine Welle.",
+   "off": 618,
+   "len": 81
+  },
+  {
+   "key": "Всего за год их доля у парящих старшеклассников выросла в одиннадцать раз.",
+   "scene": "s4",
+   "text": "In nur einem Jahr stieg ihr Anteil bei dampfenden Highschool-Schülern um das Elffache.",
+   "off": 701,
+   "len": 86
+  },
+  {
+   "key": "И это были уже не просто вкусы.",
+   "scene": "s5",
+   "text": "Und es ging längst nicht mehr nur um Geschmack.",
+   "off": 789,
+   "len": 47
+  },
+  {
+   "key": "В жидкость добавили синтетический холодок вэ-эс двадцать три — он обманывает рецепторы: горло чувствует лёд, а не то, как дерёт никотин.",
+   "scene": "s5",
+   "text": "In die Flüssigkeit kam ein synthetischer Kühlstoff, WS-23 – er täuscht die Rezeptoren: Der Hals spürt nur Eis – statt des Nikotin-Kratzens.",
+   "off": 838,
+   "len": 139
+  },
+  {
+   "key": "Помните, один картридж заменял пачку?",
+   "scene": "s6",
+   "text": "Wisst ihr noch: Ein Pod ersetzte eine Schachtel?",
+   "off": 979,
+   "len": 48
+  },
+  {
+   "key": "А потом одноразки разрослись: тринадцать миллилитров, двойная сетка и тысячи затяжек.",
+   "scene": "s6",
+   "text": "Dann wurden Einweg-Vapes immer größer: dreizehn Milliliter, Doppel-Mesh-Coil und Tausende Züge.",
+   "off": 1029,
+   "len": 95
+  },
+  {
+   "key": "По никотину — как шестнадцать картриджей.",
+   "scene": "s6",
+   "text": "Beim Nikotin – wie sechzehn Pods.",
+   "off": 1126,
+   "len": 33
+  },
+  {
+   "key": "А чтобы обойти проверки, никотин начали варить прямо в пробирке — без единого листа табака.",
+   "scene": "s7",
+   "text": "Und um die Regeln zu umgehen, brauten sie Nikotin direkt im Reagenzglas – ohne ein einziges Tabakblatt.",
+   "off": 1161,
+   "len": 103
+  },
+  {
+   "key": "И когда одноразки стали приносить миллиарды долларов в год, на этот рынок зашли и сами старые табачные корпорации.",
+   "scene": "s7",
+   "text": "Und als Einweg-Vapes Milliarden Dollar im Jahr einbrachten, stiegen auch die alten Tabakkonzerne selbst in den Markt ein.",
+   "off": 1266,
+   "len": 121
+  },
+  {
+   "key": "Запретом хотели отнять у школьников вкус — а подарили ледяной пар, гигантские баки и никотин из пробирки.",
+   "scene": "s8",
+   "text": "Das Verbot sollte Schülern den Geschmack nehmen – stattdessen bekamen sie eisigen Dampf, riesige Tanks und Nikotin aus dem Reagenzglas.",
+   "off": 1389,
+   "len": 135
+  },
+  {
+   "key": "Но менять правила игры табачникам не впервой.",
+   "scene": "bridge",
+   "text": "Aber die Spielregeln zu ändern, ist für die Tabakkonzerne nichts Neues.",
+   "off": 1526,
+   "len": 71
+  },
+  {
+   "key": "Ведь главный символ мужской брутальности век назад выводили на рынок... как нежные сигареты для леди.",
+   "scene": "bridge",
+   "text": "Denn das größte Symbol rauer Männlichkeit kam vor hundert Jahren auf den Markt… als zarte Zigaretten für Damen.",
+   "off": 1599,
+   "len": 111
+  },
+  {
+   "key": "Так лазейка две тысячи двадцатого года стала второй из пяти улик. А разбор остальных трёх уже ждёт вас на YouTube.",
+   "scene": "board",
+   "text": "So wurde das Schlupfloch von 2020 zum zweiten von fünf Indizien. Die anderen drei warten schon auf YouTube auf euch.",
+   "off": 1712,
+   "len": 116
+  },
+  {
+   "key": "Так что в следующий раз, делая затяжку, просто спросите себя...",
+   "scene": "tail",
+   "text": "Also, wenn ihr das nächste Mal einen Zug nehmt, fragt euch einfach…",
+   "off": 1830,
+   "len": 67
+  }
+ ]
+}

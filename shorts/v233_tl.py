@@ -9,11 +9,13 @@
 import json, math, os
 import numpy as np, soundfile as sf
 HERE = os.path.dirname(os.path.abspath(__file__)); SR = 44100
-SRC = os.path.join(HERE, 'out', 'v233-ru')
+SRC = os.path.join(HERE, 'out', 'v233-ru')   # v23.6: немецкий — out/v233-de (v236_de_prolog.py, голос Alexander)
 LEAD = .5                                  # где начинается «Что»
 ADD = {('s3', 4): .38, ('s4', 7): .36}     # (фраза, № слова) → сколько добавить к паузе после него
+ADD_L = {'ru': ADD, 'de': {('s3', 4): .38, ('s4', 8): .36}}   # de: после «Nikotinbeutel.» и «blieb.»
+DASH = {'ru': ('обещания', '—'), 'de': ('sich', '–')}   # тире — к слову (на нём субтитр кончается)
 TAIL = .55                                 # от конца «знакомого…» до кадра 0 главы 1
-FILM_TAIL = 1.47                           # v23.4, фильм на YouTube: титр «01 · ОДНОРАЗКИ», бит гаснет, темнота → наплыв в ночной город главы 1
+FILM_TAIL = .75                            # v23.6, фильм на YouTube: капля влетает в капсулу главы 1, розовый растекается — дальше её кадр 0 (было 1,47: титр и темнота)
 
 
 def env_db(y, hop):
@@ -41,7 +43,9 @@ def room(y, a, b, n):   # шум записи из тихого места па�
     return out[:n]
 
 
-def main():
+def main(lang='ru'):
+    global SRC, ADD
+    SRC = os.path.join(HERE, 'out', f'v233-{lang}'); ADD = ADD_L[lang]
     y, sr = sf.read(os.path.join(SRC, 'voice.wav'), dtype='float32'); assert sr == SR; y = y if y.ndim == 1 else y.mean(1)
     T = json.load(open(os.path.join(SRC, 'timeline.json'))); S = T['sent']
     sil = silences(y); on = [b for a, b in sil]; off = [a for a, b in sil]
@@ -78,26 +82,27 @@ def main():
         w['a'], w['b'] = round(w['a'] + d, 3), round(w['b'] + d, 3)
     f = int(.04 * SR); v[-f:] *= np.linspace(1, 0, f)
     v0 = v
-    for ep, tail in (('v231y-ru', TAIL), ('v231f-ru', FILM_TAIL)):   # v23.4: v231f — пролог для фильма на YouTube (дольше: титр, дымка, темнота)
+    for ep, tail in ((f'v231y-{lang}', TAIL), (f'v231f-{lang}', FILM_TAIL)):   # v23.4: v231f — пролог для фильма на YouTube (дольше: титр, дымка, темнота)
         N = math.ceil((W[-1][2]['b'] + tail) * 30); dur = N / 30
         v = np.concatenate([v0, np.zeros(max(0, int(round(dur * SR)) - len(v0)))])[:int(round(dur * SR))]
         o = os.path.join(HERE, 'out', ep); os.makedirs(o, exist_ok=True); sf.write(os.path.join(o, 'voice.wav'), v.astype(np.float32), SR)
-        write(ep, S, N, dur)
+        write(ep, S, N, dur, lang)
 
 
-def write(ep, S, N, dur):
+def write(ep, S, N, dur, lang='ru'):
     sent = []
     for s in S:
         ws = [dict(d=w['d'], a=w['a'], b=w['b'], c='') for w in s['words']]
         if s['scene'] == 's4':   # тире — к слову (на нём субтитр кончается, buildChunks)
-            k = next(i for i, w in enumerate(ws) if w['d'].startswith('обещания')); ws[k]['d'] += '—'
+            dw, dc = DASH[lang]; k = next(i for i, w in enumerate(ws) if w['d'].startswith(dw)); ws[k]['d'] += dc
         sent.append({'i': s['i'], 'scene': s['scene'], 'a': round(ws[0]['a'] - .03, 3), 'b': round(ws[-1]['b'] + .03, 3), 'text': s['text'], 'words': ws})
-    R = {'ep': ep, 'lang': 'ru', 'dur': round(dur, 6), 'fps': 30, 'voice': 'v233', 'natural': True, 'endT': round(dur, 6), 'frames': N, 'sent': sent}
+    R = {'ep': ep, 'lang': lang, 'dur': round(dur, 6), 'fps': 30, 'voice': 'v233' if lang == 'ru' else 'de/prolog', 'natural': True, 'endT': round(dur, 6), 'frames': N, 'sent': sent}
     json.dump(R, open(os.path.join(HERE, 'tl', ep + '.json'), 'w'), ensure_ascii=False, indent=1)
-    if ep == 'v231y-ru':
+    if ep.startswith('v231y'):
         for s in sent: print(s['scene'], ' '.join(f"{w['d']}@{w['a']:.2f}-{w['b']:.2f}" for w in s['words']))
     print(f'{ep}: {dur:.3f} с, {N} кадров')
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    main(sys.argv[1] if len(sys.argv) > 1 else 'ru')
