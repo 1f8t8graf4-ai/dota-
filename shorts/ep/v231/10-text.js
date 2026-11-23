@@ -15,6 +15,8 @@
     // v23.2: A — «Что вы знаете о никотине? / За сто лет он менял форму пять раз: / Сигареты. «Джул». Айкос. Одноразки. Снюс. / Менялись упаковка, вкус и обещания — но не суть. / Начнём…»
     A: { ru: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], five: ['s2', 6], mac: [['s4', 0], ['s4', 2], ['s4', 4]], dark: ['s4', 5], flare: ['s4', 7], grow: ['s5', 0], zip: ['s5', 2] },
          // v23.6: «In hundert Jahren hat es fünfmal…» / «Verpackung, Geschmack und Versprechen änderten sich – der Kern blieb.» / «Fangen wir mit dem an, das jeder kennt…»
+         // v23.6: «Over a century, it changed shape five times:» / «The packaging, the flavors, and the promises changed — the hook never did.» / «Let’s start with the one you know best…»
+         en: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], five: ['s2', 6], mac: [['s4', 1], ['s4', 3], ['s4', 6]], dark: ['s4', 8], flare: ['s4', 9], grow: ['s5', 0], zip: ['s5', 4] },
          de: { form: [['s3', 0], ['s3', 1], ['s3', 2], ['s3', 3], ['s3', 4]], five: ['s2', 5], mac: [['s4', 0], ['s4', 1], ['s4', 3]], dark: ['s4', 6], flare: ['s4', 7], grow: ['s5', 0], zip: ['s5', 4] } },
     B: { ru: { form: [['s1', 0], ['s1', 1], ['s1', 2], ['s1', 3], ['s1', 4]], stamp: ['s2', 1], quote: ['s2', 3], back: ['s3', 0], who: ['s3', 1], stand: ['s3', 2], pull: ['s3', 4], flare: ['s3', 5], grow: ['s4', 0], zip: ['s4', 2] } },
   };

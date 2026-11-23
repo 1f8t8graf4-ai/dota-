@@ -12,8 +12,8 @@ HERE = os.path.dirname(os.path.abspath(__file__)); SR = 44100
 SRC = os.path.join(HERE, 'out', 'v233-ru')   # v23.6: немецкий — out/v233-de (v236_de_prolog.py, голос Alexander)
 LEAD = .5                                  # где начинается «Что»
 ADD = {('s3', 4): .38, ('s4', 7): .36}     # (фраза, № слова) → сколько добавить к паузе после него
-ADD_L = {'ru': ADD, 'de': {('s3', 4): .38, ('s4', 8): .36}}   # de: после «Nikotinbeutel.» и «blieb.»
-DASH = {'ru': ('обещания', '—'), 'de': ('sich', '–')}   # тире — к слову (на нём субтитр кончается)
+ADD_L = {'ru': ADD, 'de': {('s3', 4): .38, ('s4', 8): .36}, 'en': {('s3', 4): .38, ('s4', 11): .36}}   # de: после «Nikotinbeutel.» и «blieb.»; en: «Pouches.» и «did.»
+DASH = {'ru': ('обещания', '—'), 'de': ('sich', '–'), 'en': ('changed', '—')}   # тире — к слову (на нём субтитр кончается)
 TAIL = .55                                 # от конца «знакомого…» до кадра 0 главы 1
 FILM_TAIL = .75                            # v23.6, фильм на YouTube: капля влетает в капсулу главы 1, розовый растекается — дальше её кадр 0 (было 1,47: титр и темнота)
 
@@ -96,7 +96,7 @@ def write(ep, S, N, dur, lang='ru'):
         if s['scene'] == 's4':   # тире — к слову (на нём субтитр кончается, buildChunks)
             dw, dc = DASH[lang]; k = next(i for i, w in enumerate(ws) if w['d'].startswith(dw)); ws[k]['d'] += dc
         sent.append({'i': s['i'], 'scene': s['scene'], 'a': round(ws[0]['a'] - .03, 3), 'b': round(ws[-1]['b'] + .03, 3), 'text': s['text'], 'words': ws})
-    R = {'ep': ep, 'lang': lang, 'dur': round(dur, 6), 'fps': 30, 'voice': 'v233' if lang == 'ru' else 'de/prolog', 'natural': True, 'endT': round(dur, 6), 'frames': N, 'sent': sent}
+    R = {'ep': ep, 'lang': lang, 'dur': round(dur, 6), 'fps': 30, 'voice': 'v233' if lang == 'ru' else f'{lang}/prolog', 'natural': True, 'endT': round(dur, 6), 'frames': N, 'sent': sent}
     json.dump(R, open(os.path.join(HERE, 'tl', ep + '.json'), 'w'), ensure_ascii=False, indent=1)
     if ep.startswith('v231y'):
         for s in sent: print(s['scene'], ' '.join(f"{w['d']}@{w['a']:.2f}-{w['b']:.2f}" for w in s['words']))

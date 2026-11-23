@@ -29,7 +29,7 @@ def v191s():
     L0, _ = tt_audio._lufs(v0); L1, _ = tt_audio._lufs(v1)
     raw = (b / e0)[:n] * 10 ** ((L1 - L0) / 20)   # без прежнего проседания, громкость — под новый голос (в mix193: Lv − 5,5 − Lm)
     m = int(.25 * M.SR); raw[-m:] *= np.linspace(1, 0, m)[:, None]
-    bw = os.path.join(od, 'bed.wav'); VS.wav(raw * e1, bw)
+    import loopfix; bw = os.path.join(od, 'bed.wav'); VS.wav(loopfix.fix_start(raw * e1, M.dec(v1), M.SR), bw)   # v23.6: без «удара» музыки в начале петли
     sw = os.path.join(od, 'sfx.wav'); VS.wav(sfx_track(json.load(open(os.path.join(o, 'cues.json'))), dur), sw)
     M.final(v1, sw, bw, os.path.join(od, 'mix.wav'), dur)
     print(f'v191s: подложка {dur0:.3f} → {dur:.3f} с, голос {L0:.1f} → {L1:.1f} LUFS, речь {sp * 100:.0f} % времени')

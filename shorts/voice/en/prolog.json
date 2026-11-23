@@ -1,0 +1,18 @@
+{
+ "voice": "lWDDHwXsJXJM7nv2YgHY",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "What do you know about nicotine?\n\nOver a century, it changed shape five times:\n\nCigarettes. JUUL. IQOS. Disposables. Pouches.\n\nThe packaging, the flavors, and the promises changed — the hook never did.\n\nLet’s start with the one you know best…",
+ "sent": [
+  "What do you know about nicotine?",
+  "Over a century, it changed shape five times:",
+  "Cigarettes. JUUL. IQOS. Disposables. Pouches.",
+  "The packaging, the flavors, and the promises changed — the hook never did.",
+  "Let’s start with the one you know best…"
+ ]
+}

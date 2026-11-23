@@ -346,6 +346,7 @@ def sound(name, ep):
     tmp = os.path.join(od, 'bed_raw.wav'); VS.wav(b, tmp); Lv, _ = tt_audio._lufs(voice); Lm, _ = tt_audio._lufs(tmp); os.remove(tmp)
     env, sp, last = M.duck(voice, n); b = b * 10 ** ((Lv - 5.5 - Lm) / 20) * env
     if not sh: b *= 10 ** (4 * np.clip((np.arange(n) / M.SR - last) / .5, 0, 1) / 20)[:, None]
+    else: import loopfix; b = loopfix.fix_start(b, M.dec(voice), M.SR)   # v23.6: шортс — без «удара» музыки до первого слова (петля)
     bw = os.path.join(od, 'bed.wav'); VS.wav(b, bw); M.final(voice, sw, bw, os.path.join(od, 'mix.wav'), dur)
     subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(o, 'video.mp4'), '-i', os.path.join(od, 'mix.wav'), '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac',
                     '-b:a', '192k', '-t', f'{dur:.4f}', '-movflags', '+faststart', os.path.join(o, 'final.mp4')], check=True)

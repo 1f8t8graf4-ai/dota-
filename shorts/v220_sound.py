@@ -11,7 +11,7 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(HERE, '..', 'tools'))
 import mix193 as M
 import v165_sound as VS
-import tt_audio
+import loopfix, tt_audio
 from v180_sound import sfx_track
 SR, BAR = M.SR, M.BAR
 SEQ = {'y': list(range(40)) + list(range(20, 33)), 's': list(range(40)) + list(range(20, 28))}   # фильм главы 4 длиннее (1:44): ещё 4 такта фразы 37   # такты подложки «Льда»: 0–39 — фразы 9 13 17 21 33 37 13 17 21 33; 20–23 — фраза 37
@@ -57,6 +57,7 @@ if __name__ == '__main__':
     tmp = os.path.join(od, 'bed_raw.wav'); VS.wav(b, tmp); Lv, _ = tt_audio._lufs(voice); Lm, _ = tt_audio._lufs(tmp); os.remove(tmp)
     env, sp, last = M.duck(voice, n); b = b * 10 ** ((Lv - 5.5 - Lm) / 20) * env
     if not sh: b *= 10 ** (4 * np.clip((np.arange(n) / SR - last) / .5, 0, 1) / 20)[:, None]
+    else: b = loopfix.fix_start(b, M.dec(voice), SR)   # v23.6: шортс — без «удара» музыки до первого слова (петля)
     bw = os.path.join(od, 'bed.wav'); VS.wav(b, bw); print(f'{ep}: речь {sp * 100:.0f} % времени, подложка {"из трека" if track else "из «Льда»"}')
     M.final(voice, sw, bw, os.path.join(od, 'mix.wav'), dur)
     fin = os.path.join(o, 'final.mp4')
