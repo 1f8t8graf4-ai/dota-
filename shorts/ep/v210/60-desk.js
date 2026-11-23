@@ -21,7 +21,8 @@
       pat: w13('патенты'), vyzh: w13('выжили'), perv: w13('первом'), kom: w13('комиссия'), narush: w13('нарушает'), vygn: w13('выгнала'), amer: w13('америки'),
       obesch: Ws('s14', 'обещание') };
     const a = TH; a.jHA = a.obesch + .15; a.form = a.reg + .05; a.land = a.perv + .02;
-    KH = [KY(a.j + .6, 452, 1150, 2.6), KY(a.reg + .45, 530, 985, 1.16), KY(a.vesch, 470, 1120, 1.42), KY(a.mensh + .1, 430, 1188, 1.72), KY(a.vreda + .3, 420, 1205, 1.86),
+    KH = [KY(a.j + .6, 452, 1150, 2.6), KY(a.reg + .45, window.WIDE ? 560 : 530, window.WIDE ? 1010 : 985, window.WIDE ? 1.5 : 1.16), KY(a.vesch, 470, 1120, window.WIDE ? 1.62 : 1.42),   // 24.11: в 16:9 ближе — справа нет пустого стола
+       KY(a.mensh + .1, 430, 1188, 1.72), KY(a.vreda + .3, 420, 1205, 1.86),
       KY(a.razresh + .5, 450, 1180, 1.62), KY(a.pomn + .3, 600, 1130, 1.34), KY(a.reyn + .45, 650, 1000, 1.14), KY(a.sem + .05, 790, 1258, 2.0), KY(a.podr + .3, 800, 1300, 2.2),
       KY(a.svoi + .35, 790, 1332, 1.85), KY(a.prizh + .2, 800, 1362, 2.0), KY(a.ugol + .25, 845, 1392, 1.98), KY(a.sela + .7, 890, 1432, 1.92), KY(a.doll + .25, 910, 1452, 1.9),
       KY(a.pat + .25, 1010, 1412, 1.62), KY(a.perv - .25, 1300, 1430, 1.55), KY(a.perv + .45, 1470, 1480, 1.82), KY(a.kom + .4, 1500, 1470, 1.9), KY(a.narush + .1, 1470, 1500, 2.05),
@@ -226,7 +227,9 @@
   function deskShot(c, t) {
     const q = camObj(camAt(KH, t));
     layerRel(c, q, RH, .38, cc => fdaFar(cc, t));
-    layer(c, q, 1, cc => { deskWorld(cc, t, q); usMapWorld(cc, t, true) });
+    // 24.11 (ТЗ 16:9): в широком кадре карта не торчит краем, пока говорим о бланке FDA, — её кладут на стол на «Помните „Рейнольдс“»
+    const km = window.WIDE ? eio(at(t, TH.pomn - .25, TH.pomn + .55)) : 1;
+    layer(c, q, 1, cc => { deskWorld(cc, t, q); if (km > 0) { cc.save(); cc.translate(900 * (1 - km), 60 * (1 - km)); cc.rotate(.08 * (1 - km)); cc.globalAlpha *= km; usMapWorld(cc, t, true); cc.restore() } });
     layerRel(c, q, RH, 1.12, cc => A(cc, 1 - at(Math.log(q.z), .5, .9), () => lampBeam(cc, t)));
     deskPlates(c, t);
     return q;

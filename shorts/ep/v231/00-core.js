@@ -65,7 +65,7 @@
     c.restore(); return pos;
   }
   function plate(c, s, x, y, k, o = {}) {   // плашка по тексту
-    if (k <= 0) return;
+    if (k <= 0) return; if (window.WIDE) k *= 1.15;   // 24.11: подписи в 16:9 крупнее (с камерой ×1,3 — ×1,5)
     const fs = o.s || 34, to = { s: fs, ls: o.ls ?? 2, w: o.w || 800, f: o.f || 'M' }, w = tw(c, s, to) + fs * 1.3, h = fs * 1.9;
     c.save(); c.translate(x, y); if (o.r) c.rotate(o.r); c.scale(k, k); c.globalAlpha *= o.a ?? 1;
     if (o.sh !== false) { rr(c, -w / 2 + 6, -h / 2 + 9, w, h, o.rad ?? h * .24); fill(c, 'rgba(0,0,0,.28)') }
@@ -108,13 +108,14 @@
     return out.filter(ch => ch.s);
   }
   function subs(c, t) {
+    if (window.WIDE) return;   // 24.11: в 16:9 для YouTube вшитых субтитров нет — отдельный .srt
     const ch = CHUNKS.find(x => t >= x.a - .05 && t < x.e); if (!ch) return;
     if (K && K.noSub && K.noSub(ch)) return;   // v23.0: первая фраза — это титул, субтитром её не дублируем
     let a = eo(at(t, ch.a - .05, ch.a + .1)) * (1 - at(t, ch.e - .12, ch.e));
     if (a <= 0) return;
     const o = { f: 'M', w: 800, s: 54, ls: 0 }; let w = tw(c, ch.s, o); if (w > 840) { o.s *= 840 / w; w = 840 }
     w += 64; const h = 84;
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); if (window.WIDE) { c.translate(CX, SUBY); c.scale(1.3, 1.3); c.translate(-CX, -SUBY) } c.globalAlpha = a; c.translate(0, (1 - a) * 10);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.translate(0, (1 - a) * 10);
     const sy = SUBY;
     rr(c, CX - w / 2, sy - h / 2, w, h, 20); fill(c, 'rgba(11,16,48,.86)');
     tx(c, ch.s, CX, sy + 2, { ...o, c: '#fff' }); c.restore();

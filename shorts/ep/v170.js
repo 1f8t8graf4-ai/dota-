@@ -2868,6 +2868,7 @@
     return out.filter(ch => ch.s);
   }
   function subs(c, t) {
+    if (window.WIDE) return;   // 24.11: в 16:9 для YouTube вшитых субтитров нет — отдельный .srt
     if (MODE === 'main' && t < K.tw[0] - .12) return;   // v16.4: заголовка-плашки нет — субтитры с первого слова
     if (MODE === 'main' && t > K.qt[0] - .15 && t < K.qEnd + .35) return;   // v16.4: цитата печатается на бумаге — субтитр её не повторяет
     if (MODE === 'main' && t > K.whip - .02) return;
@@ -4958,6 +4959,7 @@
   }
   // ---------- кадр, субтитры, метка года (вертикаль) ----------
   function subsV(c, t) {
+    if (window.WIDE) return;   // 24.11: в 16:9 для YouTube вшитых субтитров нет — отдельный .srt
     if (t < K.tw[0] - .12) return;
     if (VARIANT === 1 && t < V1I[1] + .1) return;   // вариант 1: на заставке те же слова — крупным титром
     if (VARIANT === 2 && t < 2.45) return;   // вариант 2: «Что вы знаете об одноразках?» — на ленте
@@ -4974,7 +4976,11 @@
     c.restore();
   }
   // метка года: 1973 приезжает из барабана (без второго «выскока»), 1973 → 1979 в лаборатории, 1979 → 1998 у суда (уходит под счётчик документов), 2015 → 2019
-  function tagV(c, t) {
+  function tagV(c, t) {   // 24.11: в 16:9 метка года — в левом верхнем углу кадра и в 1,5 раза крупнее
+    if (!window.WIDE) return tagV0(c, t);
+    c.save(); c.translate(WIDE.X0 + 175 - TAGX * 1.5, WIDE.Y0 + 85 - TAGY * 1.5); c.scale(1.5, 1.5); tagV0(c, t); c.restore();
+  }
+  function tagV0(c, t) {
     if (t >= (VARIANT === 1 ? v1TN() + .5 : K.y73go + .45) && t < (VARIANT === 1 ? K.teens + .1 : K.chemPan)) tagDraw(c, t, [1973], [0], TAGX, TAGY, VARIANT === 1 ? .38 : .38 * (1 - ss(K.goal - .15, K.goal + .2, t) * (1 - ss(K.prob + .42, K.prob + .7, t))));   // вариант 1 (Gemini): метка стоит в углу, вне камеры   // v16.5 вечер (правка 8): на наезде на записку метки нет
     else if (VARIANT === 1 && t >= K.teens + .1 && t < K.y98go) tagDraw(c, t, [1973, 1979], [0, K.teens + .62], TAGX, TAGY, .38);   // v17.2: 1979 — когда проступает лаборатория (≈ 0:32,0)   // v17.1: 1979 уже горит, когда появляется лаборатория
     else if (t >= K.chemPan && t < K.y98go) tagDraw(c, t, [1973, 1979], [0, K.chem + .05], TAGX, TAGY, .38);

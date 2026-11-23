@@ -31,7 +31,7 @@ async function page() {
   p.on('pageerror', e => errs.push(String(e))); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()) });
   await p.goto(url.pathToFileURL(path.join(here, 'stage.html')).href);
   await p.evaluate(f => { window.FMT = f }, process.env.FMT || '');   // формат кадра: FMT=9x16 — вертикаль, иначе как задано в ролике
-  if (process.env.WIDE) await p.evaluate(() => window.wideInit());   // 23.11: фильм 16:9 — кадр 2560×1440 (ep/wide.js)
+  if (process.env.WIDE) await p.evaluate(a => window.wideInit(1920, 1080, a[0], a[1]), [+(process.env.WZ || 1.3), +(process.env.WCY || 900)]);   // 23.11: фильм 16:9 — кадр 2560×1440 (ep/wide.js)
   await p.evaluate(ep => window.loadEp(ep), ep.replace(/-(en|ru|de)(-vo)?$/, ''));   // 21.11: и немецкие версии (-de); -vo — озвучка на языке ролика (l10n/dub.py)
   await p.evaluate(async () => {
     for (const f of ['600 10px M', '800 10px M', '500 10px O', '700 10px O', '700 10px U', '800 10px U']) { await document.fonts.load(f, 'aя'); }

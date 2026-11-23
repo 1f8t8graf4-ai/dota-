@@ -116,7 +116,9 @@
   // ---------- волна (экранные координаты): три слоя — дальние светлее и выше-левее, ближний тёмный с пеной, губой и баночкой;
   // гребень идёт по кривой из левого нижнего угла вверх-вправо, позади гребня вода поднимается до его высоты — к J.cov весь кадр под водой ----------
   const WV = [[-240, 1680], [140, 1080], [640, 760], [1360, -280]], WCOL = [C5.sea2, C5.sea1, C5.sea0];
-  function waveCrest(ue) { const a = 1 - ue; return [0, 1].map(i => a * a * a * WV[0][i] + 3 * a * a * ue * WV[1][i] + 3 * a * ue * ue * WV[2][i] + ue * ue * ue * WV[3][i]) }
+  function waveCrest(ue) { const a = 1 - ue, p = [0, 1].map(i => a * a * a * WV[0][i] + 3 * a * a * ue * WV[1][i] + 3 * a * ue * ue * WV[2][i] + ue * ue * ue * WV[3][i]);
+    if (window.WIDE) p[0] = lp(WIDE.X0 + (p[0] - WV[0][0]) * .6, p[0] + (WIDE.X1 - 1080) + 260 * ue, ss(.15, .85, ue));   // 16:9: волна идёт от левого края кадра и гребнем уходит за правый
+    return p }
   function waveSurf(x, cx, cy, s, ue, t) {
     if (x >= cx) { const d = (x - cx) / (290 * s); return cy + 940 * s * d * d }   // передний склон — вогнутый, книзу круче
     const d = (cx - x) / (1000 * s), hb = lp(430, 0, ss(.3, 1, ue)) * s;   // задний склон — пологий: вода за гребнем поднимается до его высоты
@@ -138,17 +140,19 @@
     c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); for (let i = bot.length - 1; i >= 0; i--) c.lineTo(bot[i][0], bot[i][1]); c.closePath(); fill(c, C5.foam);
     c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y + 2) : c.moveTo(x, y + 2)); lnB(c, 3, '#FFFFFF');
   }
+  // 24.11 (ТЗ 16:9): волна, откат и потоп — на всю ширину широкого кадра (были столбиком по центру)
+  const WVX0 = () => window.WIDE ? WIDE.X0 - 80 : -140, WVX1 = () => window.WIDE ? WIDE.X1 + 80 : 1220;
   function waveIn5(c, t, J, q) {
     const u = at(t, J.w0, J.cov); if (u <= 0) return; const ue = u * u * (3 - 2 * u), [cx, cy] = waveCrest(ue), s = lp(1, 1.7, ue);
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0);   // v23.7: баночки на гребне больше нет (Андрей: «убери приклеенную к гребню банку») — она всплывает уже в океане (tinPos0)
     const bf = 1 - at(t, J.j0 - .35, J.j0);   // пузыри в толще воды тают за 0,35 с до кадра 0 океана
     for (let L = 0; L < 3; L++) {   // слои: 0 — дальний (светлее, выше-левее), 2 — ближний
       const ox = (L - 2) * 58 * s * (1 - at(ue, .8, 1)), oy = (L - 2) * 50 * s * (1 - at(ue, .8, 1)), S = x => waveSurf(x - ox, cx, cy, s, ue, t + L * .7) + oy;
-      const path = () => { c.beginPath(); c.moveTo(-140, 2300); for (let x = -140; x <= 1220; x += 8) c.lineTo(x, S(x)); c.lineTo(1220, 2300); c.closePath() };
-      const surf = () => { c.beginPath(); for (let x = -140; x <= 1220; x += 8) { const y = S(x); x === -140 ? c.moveTo(x, y) : c.lineTo(x, y) } };
+      const X0 = WVX0(), X1 = WVX1(), path = () => { c.beginPath(); c.moveTo(X0, 2300); for (let x = X0; x <= X1; x += 8) c.lineTo(x, S(x)); c.lineTo(X1, 2300); c.closePath() };
+      const surf = () => { c.beginPath(); for (let x = X0; x <= X1; x += 8) { const y = S(x); x === X0 ? c.moveTo(x, y) : c.lineTo(x, y) } };
       path(); fill(c, WCOL[L]);
       if (L === 2) { c.save(); path(); c.clip(); surf(); lnB(c, 150 * s, C5.sea1); surf(); lnB(c, 52 * s, C5.sea2);
-        for (let i = 0; i < 14; i++) { const bx = -40 + 1160 * H1(i * 5.3), by = S(bx) + 60 * s + lp(900, 0, (t * .8 + H1(i * 2.1)) % 1) * s; if (bf > 0) circ(c, bx + 6 * Math.sin(t * 5 + i), by, (4 + 7 * H1(i + 6)) * s, `rgba(201,220,242,${.18 * bf})`) }   // пузыри в толще воды
+        for (let i = 0; i < (window.WIDE ? 30 : 14); i++) { const bx = X0 + 100 + (X1 - X0 - 200) * H1(i * 5.3), by = S(bx) + 60 * s + lp(900, 0, (t * .8 + H1(i * 2.1)) % 1) * s; if (bf > 0) circ(c, bx + 6 * Math.sin(t * 5 + i), by, (4 + 7 * H1(i + 6)) * s, `rgba(201,220,242,${.18 * bf})`) }   // пузыри в толще воды
         c.restore() }
       const fx0 = cx + ox, nF = L === 2 ? 1 : .55;   // пена на гребне слоя
       foamCap(c, S, fx0 - 380 * s * nF, fx0 + 8 * s, x => (2 + 13 * Math.pow(cl(1 - (fx0 - x) / (380 * s * nF)), .8)) * s * nF, t, L);
@@ -175,12 +179,12 @@
     const k = at(t, J.cov - .3, J.j0); if (k <= 0) return; const e = k * k * (3 - 2 * k), base = lp(-170, 1330, e), amp = lp(58, 30, e), L = x => base + amp * Math.sin(x / 160 + t * 1.7) + 9 * (1 - e) * Math.sin(x / 47 - t * 3.1);
     const fo = 1 - at(t, J.j0 - .35, J.j0), sc = lp(1.05, 1, e);
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    c.save(); c.beginPath(); c.moveTo(-100, -100); c.lineTo(1180, -100); for (let x = 1180; x >= -100; x -= 20) c.lineTo(x, L(x)); c.closePath(); c.clip();
+    const X0 = WVX0(), X1 = WVX1(); c.save(); c.beginPath(); c.moveTo(X0, -400); c.lineTo(X1, -400); for (let x = X1; x >= X0; x -= 20) c.lineTo(x, L(x)); c.closePath(); c.clip();
     c.translate(540, 960); c.scale(sc, sc); c.translate(-540, -960); oceanWorld(c, t, Q0); c.restore();
-    if (fo > 0) { c.save(); c.beginPath(); c.moveTo(-700, 2400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, L(x)); c.lineTo(1800, 2400); c.closePath(); c.clip();   // под водой: светлая полоса у поверхности
-      const g = c.createLinearGradient(0, base - 40, 0, base + 260); g.addColorStop(0, `rgba(120,170,220,${.38 * fo})`); g.addColorStop(1, 'rgba(120,170,220,0)'); c.fillStyle = g; c.fillRect(-100, base - 60, 1280, 340); c.restore() }
-    c.beginPath(); for (let x = -700; x <= 1800; x += 20) { const y = L(x); x === -700 ? c.moveTo(x, y) : c.lineTo(x, y) } lnB(c, 5, 'rgba(201,220,242,.55)');   // кромка — как у переднего вала океана
-    if (fo > 0) foamCap(c, x => L(x) - 2, -40, 1120, x => (7 + 5 * Math.sin(x / 37 + 1.3)) * fo, t, 3);   // пена на кромке тает к кадру 0
+    if (fo > 0) { c.save(); c.beginPath(); c.moveTo(X0, 2400); for (let x = X0; x <= X1; x += 20) c.lineTo(x, L(x)); c.lineTo(X1, 2400); c.closePath(); c.clip();   // под водой: светлая полоса у поверхности
+      const g = c.createLinearGradient(0, base - 40, 0, base + 260); g.addColorStop(0, `rgba(120,170,220,${.38 * fo})`); g.addColorStop(1, 'rgba(120,170,220,0)'); c.fillStyle = g; c.fillRect(X0, base - 60, X1 - X0, 340); c.restore() }
+    c.beginPath(); for (let x = X0; x <= X1; x += 20) { const y = L(x); x === X0 ? c.moveTo(x, y) : c.lineTo(x, y) } lnB(c, 5, 'rgba(201,220,242,.55)');   // кромка — как у переднего вала океана
+    if (fo > 0) foamCap(c, x => L(x) - 2, X0 + 100, X1 - 100, x => (7 + 5 * Math.sin(x / 37 + 1.3)) * fo, t, 3);   // пена на кромке тает к кадру 0
     c.restore();
   }
   function boardStartShot(c, t) {
@@ -195,9 +199,10 @@
   // ---------- вода поднимается (конец строки 11): за ней — тот же ночной океан ----------
   function flood5(c, t, k, tO) {
     if (k <= 0) return; const e = eio(k), fy = lp(HH + 80, -120, e), wv = x => fy + 26 * Math.sin(x / 120 + t * 4) + 14 * Math.sin(x / 47 - t * 3);
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); c.moveTo(0, HH + 200); for (let x = 0; x <= WW; x += 20) c.lineTo(x, wv(x)); c.lineTo(WW, HH + 200); c.closePath(); c.clip();
+    const F0 = window.WIDE ? Math.floor(WIDE.X0 / 20) * 20 - 40 : 0, F1 = window.WIDE ? WIDE.X1 + 40 : WW;
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); c.moveTo(F0, HH + 200); for (let x = F0; x <= F1; x += 20) c.lineTo(x, wv(x)); c.lineTo(F1, HH + 200); c.closePath(); c.clip();
     oceanWorld(c, tO, Q0); c.restore();
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); for (let x = 0; x <= WW; x += 20) { const y = wv(x); x ? c.lineTo(x, y) : c.moveTo(x, y) } lnB(c, 10, 'rgba(201,220,242,.85)'); c.restore();
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); for (let x = F0; x <= F1; x += 20) { const y = wv(x); x > F0 ? c.lineTo(x, y) : c.moveTo(x, y) } lnB(c, 10, 'rgba(201,220,242,.85)'); c.restore();
   }
   // ---------- строка 12 (фильм) и концовка шортса ----------
   function boardInit5() {

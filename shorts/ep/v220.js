@@ -56,7 +56,7 @@
     c.restore(); return pos;
   }
   function plate(c, s, x, y, k, o = {}) {   // плашка по тексту
-    if (k <= 0) return;
+    if (k <= 0) return; if (window.WIDE) k *= 1.15;   // 24.11: подписи в 16:9 крупнее (с камерой ×1,3 — ×1,5)
     const fs = o.s || 34, to = { s: fs, ls: o.ls ?? 2, w: o.w || 800, f: o.f || 'M' }, w = tw(c, s, to) + fs * 1.3, h = fs * 1.9;
     c.save(); c.translate(x, y); if (o.r) c.rotate(o.r); c.scale(k, k); c.globalAlpha *= o.a ?? 1;
     if (o.sh !== false) { rr(c, -w / 2 + 6, -h / 2 + 9, w, h, o.rad ?? h * .24); fill(c, 'rgba(0,0,0,.28)') }
@@ -86,7 +86,7 @@
   // ---------- плашка года (ТЗ: x 70, y 80, 180×68, без обводки) ----------
   function yearPill(c, y0, y1, k, a = 1, local = false) {   // y0 → y1: старое число уходит вверх, новое въезжает снизу
     if (a <= 0) return;
-    c.save(); if (!local) c.setTransform(1, 0, 0, 1, 0, 0); if (window.WIDE) c.translate(WIDE.X0 + 30, 0); c.globalAlpha *= a;
+    c.save(); if (!local) c.setTransform(1, 0, 0, 1, 0, 0); if (window.WIDE) widePill(c); c.globalAlpha *= a;
     rr(c, 70, 80, 180, 68, 18); fill(c, 'rgba(15,23,42,0.88)');
     c.save(); rr(c, 70, 80, 180, 68, 18); c.clip();
     if (k <= 0 || y0 === y1) tx(c, String(k >= 1 ? y1 : y0), 160, 116, { s: 38, w: 800, c: '#fff' });
@@ -109,13 +109,14 @@
     return out.filter(ch => ch.s);
   }
   function subs(c, t) {
+    if (window.WIDE) return;   // 24.11: в 16:9 для YouTube вшитых субтитров нет — отдельный .srt
     const ch = CHUNKS.find(x => t >= x.a - .05 && t < x.e); if (!ch) return;
     let a = eo(at(t, ch.a - .05, ch.a + .1));
     if (MODE === 's') a *= 1 - at(t, K.endT - .75, K.endT - .45);   // петля: на последних кадрах (и в кадре 0) субтитра нет
     if (a <= 0) return;
     const o = { f: 'M', w: 800, s: 54, ls: 0 }; let w = tw(c, ch.s, o); if (w > 840) { o.s *= 840 / w; w = 840 }
     w += 64; const h = 84;
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); if (window.WIDE) { c.translate(CX, SUBY); c.scale(1.3, 1.3); c.translate(-CX, -SUBY) } c.globalAlpha = a; c.translate(0, (1 - a) * 10);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.translate(0, (1 - a) * 10);
     const sy = SUBY;
     rr(c, CX - w / 2, sy - h / 2, w, h, 20); fill(c, 'rgba(11,16,48,.86)');
     tx(c, ch.s, CX, sy + 2, { ...o, c: '#fff' }); c.restore();
@@ -928,9 +929,11 @@
     else tx(c, '$ —', -14, 22, { f: 'M', w: 800, s: 30, c: 'rgba(58,42,26,.4)' });
     c.restore();
   }
+  // 24.11 (ТЗ 16:9): небо, берег и море — на всю ширину широкого кадра (раньше по краям были чёрные полосы)
+  const WD5 = !!window.WIDE, XL = WD5 ? -1800 : -700, XR = WD5 ? 2900 : 1800;
   function oceanSky(c, t) {
-    vgrad(c, -600, -900, 2300, 1720, [C5.sky0, C5.sky1, C5.sky2]);
-    for (let i = 0; i < 70; i++) { const x = -400 + H1(i * 3.1) * 1900, y = -700 + H1(i * 5.7) * 1380, a = .35 + .5 * Math.abs(Math.sin(t * (.8 + H1(i)) + i)); circ(c, x, y, 1.6 + H1(i * 9) * 1.8, `rgba(255,248,225,${a})`) }
+    vgrad(c, XL, -900, XR - XL + 500, 1720, [C5.sky0, C5.sky1, C5.sky2]);
+    for (let i = 0; i < (WD5 ? 160 : 70); i++) { const x = (WD5 ? XL : -400) + H1(i * 3.1) * (WD5 ? XR - XL : 1900), y = -700 + H1(i * 5.7) * 1380, a = .35 + .5 * Math.abs(Math.sin(t * (.8 + H1(i)) + i)); circ(c, x, y, 1.6 + H1(i * 9) * 1.8, `rgba(255,248,225,${a})`) }
     glow(c, 820, 330, 260, '#F4EBD0', .22); circ(c, 820, 330, 70, C5.moon); circ(c, 800, 312, 70, 'rgba(255,255,255,.18)'); circ(c, 842, 352, 14, 'rgba(160,150,120,.25)'); circ(c, 800, 360, 9, 'rgba(160,150,120,.22)');
   }
   // v22.2: берег США вместо «гор-треугольников» — город с огнями на горизонте (два ряда домов разной высоты, окна, красные огни на крышах, маяк)
@@ -938,12 +941,15 @@
   function skyline5() {
     if (SKY5) return SKY5; const B = [];
     for (const [row, y0, hMin, hMax, wMin, wMax, col] of [[0, 812, 50, 200, 46, 120, '#1A2452'], [1, 816, 14, 74, 30, 86, '#0E1430']]) {
-      let x = -460, k = 0; while (x < 1600) { const w = wMin + H1(k * 3.7 + row * 11) * (wMax - wMin), h = hMin + Math.pow(H1(k * 5.1 + row * 7), 1.6) * (hMax - hMin);
+      let x = -460, k = 0; while (x < (WD5 ? 2800 : 1600)) { const w = wMin + H1(k * 3.7 + row * 11) * (wMax - wMin), h = hMin + Math.pow(H1(k * 5.1 + row * 7), 1.6) * (hMax - hMin);
         B.push({ row, x, w, h, y0, col, seed: k * 13 + row * 97 }); x += w + (row ? 2 : 8 + H1(k) * 30); k++ } }
+    if (WD5) for (const [row, y0, hMin, hMax, wMin, wMax, col] of [[0, 812, 50, 200, 46, 120, '#1A2452'], [1, 816, 14, 74, 30, 86, '#0E1430']]) {   // 16:9: дома левее
+      let x = -1750, k = 300; while (x < -470) { const w = wMin + H1(k * 3.7 + row * 11) * (wMax - wMin), h = hMin + Math.pow(H1(k * 5.1 + row * 7), 1.6) * (hMax - hMin);
+        B.push({ row, x, w: Math.min(w, -460 - x), h, y0, col, seed: k * 13 + row * 97 }); x += w + (row ? 2 : 8 + H1(k) * 30); k++ } }
     return (SKY5 = B);
   }
   function oceanShore(c, t) {   // горизонт y 812: дома, окна, огни на крышах; под берегом — дрожащие отражения огней
-    c.fillStyle = '#10163A'; c.fillRect(-700, 806, 2600, 40);
+    c.fillStyle = '#10163A'; c.fillRect(XL, 806, XR - XL, 40);
     for (const b of skyline5()) { c.fillStyle = b.col; c.fillRect(b.x, b.y0 - b.h, b.w, b.h + 30);
       if (b.row === 0) { c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(b.x + b.w * .7, b.y0 - b.h, b.w * .3, b.h) }
       for (let yy = b.y0 - b.h + 8; yy < b.y0 - 6; yy += 11) for (let xx = b.x + 5; xx < b.x + b.w - 6; xx += 9) { const r = H1(b.seed + xx * .37 + yy * 1.13); if (r > (b.row ? .3 : .38)) continue;
@@ -985,15 +991,15 @@
   }
   function seaRows(c, t, y0, y1, n, zone) {   // волны рядами: дальние светлее и мельче
     for (let i = 0; i < n; i++) { const u = i / (n - 1), y = lp(y0, y1, Math.pow(u, 1.6)), A = lp(4, 26, u), Lw = lp(60, 260, u), sp = lp(.6, 1.6, u), col = mixc(C5.sea2, C5.sea0, u);
-      c.beginPath(); c.moveTo(-700, y + 400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, y + A * Math.sin(x / Lw * TAU * .5 + t * sp + i * 1.3)); c.lineTo(1800, y + 400); c.closePath(); fill(c, col);
-      c.beginPath(); for (let x = -700; x <= 1800; x += 20) { const yy = y + A * Math.sin(x / Lw * TAU * .5 + t * sp + i * 1.3); x === -700 ? c.moveTo(x, yy) : c.lineTo(x, yy) } lnB(c, lp(1.2, 3, u), `rgba(201,220,242,${lp(.18, .45, u)})`);
+      c.beginPath(); c.moveTo(XL, y + 400); for (let x = XL; x <= XR; x += 20) c.lineTo(x, y + A * Math.sin(x / Lw * TAU * .5 + t * sp + i * 1.3)); c.lineTo(XR, y + 400); c.closePath(); fill(c, col);
+      c.beginPath(); for (let x = XL; x <= XR; x += 20) { const yy = y + A * Math.sin(x / Lw * TAU * .5 + t * sp + i * 1.3); x === XL ? c.moveTo(x, yy) : c.lineTo(x, yy) } lnB(c, lp(1.2, 3, u), `rgba(201,220,242,${lp(.18, .45, u)})`);
       if (zone && u > .2) for (let j = 0; j < 6; j++) { const x = 820 + (H1(i * 7 + j) - .5) * lp(40, 220, u), w = lp(10, 46, u); c.fillStyle = `rgba(255,236,190,${.25 + .35 * Math.abs(Math.sin(t * 3 + i + j))})`; c.fillRect(x - w / 2, y - 2, w, 3) } }
   }
   function sand(c, t, k) {   // мокрый песок поднимается снизу, пена кромкой
     if (k <= 0) return; const y = lp(2100, 1330, eio(k));
-    c.beginPath(); c.moveTo(-700, y); for (let x = -700; x <= 1800; x += 30) c.lineTo(x, y + 18 * Math.sin(x / 140 + t * 1.2)); c.lineTo(1800, 2600); c.lineTo(-700, 2600); c.closePath(); fill(c, C5.sand);
-    c.beginPath(); for (let x = -700; x <= 1800; x += 30) { const yy = y + 18 * Math.sin(x / 140 + t * 1.2); x === -700 ? c.moveTo(x, yy) : c.lineTo(x, yy) } lnB(c, 8, 'rgba(201,220,242,.7)');
-    c.fillStyle = 'rgba(255,236,190,.08)'; c.fillRect(-700, y + 30, 2500, 60);
+    c.beginPath(); c.moveTo(XL, y); for (let x = XL; x <= XR; x += 30) c.lineTo(x, y + 18 * Math.sin(x / 140 + t * 1.2)); c.lineTo(XR, 2600); c.lineTo(XL, 2600); c.closePath(); fill(c, C5.sand);
+    c.beginPath(); for (let x = XL; x <= XR; x += 30) { const yy = y + 18 * Math.sin(x / 140 + t * 1.2); x === XL ? c.moveTo(x, yy) : c.lineTo(x, yy) } lnB(c, 8, 'rgba(201,220,242,.7)');
+    c.fillStyle = 'rgba(255,236,190,.08)'; c.fillRect(XL, y + 30, XR - XL, 60);
   }
   function tinUp(t) {   // v23.7, фильм: после волны баночка спокойно всплывает из-под переднего вала (1 — под водой, 0 — качается на месте); в фото на доске и в шортсе — на месте
     const a = T0; return MODE === 'y' && t > a.j0 - 1 && t < a.j0 + 1.3 ? 1 - eo(at(t, a.j0, a.j0 + 1.2)) : 0;
@@ -1015,9 +1021,9 @@
     layer(c, q, 1, cc => { const p = tinPos0(t);
       if (!o.noTin) { cc.save(); cc.translate(p.x, p.y); cc.rotate(p.r); tin5(cc, 0, 0, p.R, p.ty, p.lid, { skip: t > a.fly ? 1 : -1, shc: 'rgba(4,8,26,.4)' }); cc.restore() }
       // волна перед баночкой — пока её не вынесло на песок
-      const wet = 1 - at(t, a.zap + .2, a.zap + 1.2); if (wet > 0) { cc.save(); cc.globalAlpha *= wet; cc.beginPath(); cc.moveTo(-700, 2400);
-        for (let x = -700; x <= 1800; x += 20) cc.lineTo(x, 1330 + 30 * Math.sin(x / 160 + t * 1.7)); cc.lineTo(1800, 2400); cc.closePath(); fill(cc, C5.sea0);
-        cc.beginPath(); for (let x = -700; x <= 1800; x += 20) { const yy = 1330 + 30 * Math.sin(x / 160 + t * 1.7); x === -700 ? cc.moveTo(x, yy) : cc.lineTo(x, yy) } lnB(cc, 5, 'rgba(201,220,242,.55)'); cc.restore() }
+      const wet = 1 - at(t, a.zap + .2, a.zap + 1.2); if (wet > 0) { cc.save(); cc.globalAlpha *= wet; cc.beginPath(); cc.moveTo(XL, 2400);
+        for (let x = XL; x <= XR; x += 20) cc.lineTo(x, 1330 + 30 * Math.sin(x / 160 + t * 1.7)); cc.lineTo(XR, 2400); cc.closePath(); fill(cc, C5.sea0);
+        cc.beginPath(); for (let x = XL; x <= XR; x += 20) { const yy = 1330 + 30 * Math.sin(x / 160 + t * 1.7); x === XL ? cc.moveTo(x, yy) : cc.lineTo(x, yy) } lnB(cc, 5, 'rgba(201,220,242,.55)'); cc.restore() }
       if (MODE === 'y' && t > a.j0 && t < a.j0 + 1.6) for (let i = 0; i < 2; i++) {   // v23.7: баночка прорезала воду — два тихих круга расходятся по переднему валу и тают
         const u = at(t, a.j0 + .12 + i * .25, a.j0 + 1.25 + i * .25); if (u <= 0 || u >= 1) continue; const rx = p.R * lp(.95, 1.9, eo(u)), wy = 1330 + 30 * Math.sin(p.x / 160 + t * 1.7) + 6;
         cc.beginPath(); cc.ellipse(p.x, wy, rx, rx * .16, 0, 0, TAU); lnB(cc, 4, `rgba(201,220,242,${.4 * (1 - u)})`) }
@@ -1948,7 +1954,9 @@
   // ---------- волна (экранные координаты): три слоя — дальние светлее и выше-левее, ближний тёмный с пеной, губой и баночкой;
   // гребень идёт по кривой из левого нижнего угла вверх-вправо, позади гребня вода поднимается до его высоты — к J.cov весь кадр под водой ----------
   const WV = [[-240, 1680], [140, 1080], [640, 760], [1360, -280]], WCOL = [C5.sea2, C5.sea1, C5.sea0];
-  function waveCrest(ue) { const a = 1 - ue; return [0, 1].map(i => a * a * a * WV[0][i] + 3 * a * a * ue * WV[1][i] + 3 * a * ue * ue * WV[2][i] + ue * ue * ue * WV[3][i]) }
+  function waveCrest(ue) { const a = 1 - ue, p = [0, 1].map(i => a * a * a * WV[0][i] + 3 * a * a * ue * WV[1][i] + 3 * a * ue * ue * WV[2][i] + ue * ue * ue * WV[3][i]);
+    if (window.WIDE) p[0] = lp(WIDE.X0 + (p[0] - WV[0][0]) * .6, p[0] + (WIDE.X1 - 1080) + 260 * ue, ss(.15, .85, ue));   // 16:9: волна идёт от левого края кадра и гребнем уходит за правый
+    return p }
   function waveSurf(x, cx, cy, s, ue, t) {
     if (x >= cx) { const d = (x - cx) / (290 * s); return cy + 940 * s * d * d }   // передний склон — вогнутый, книзу круче
     const d = (cx - x) / (1000 * s), hb = lp(430, 0, ss(.3, 1, ue)) * s;   // задний склон — пологий: вода за гребнем поднимается до его высоты
@@ -1970,17 +1978,19 @@
     c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); for (let i = bot.length - 1; i >= 0; i--) c.lineTo(bot[i][0], bot[i][1]); c.closePath(); fill(c, C5.foam);
     c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y + 2) : c.moveTo(x, y + 2)); lnB(c, 3, '#FFFFFF');
   }
+  // 24.11 (ТЗ 16:9): волна, откат и потоп — на всю ширину широкого кадра (были столбиком по центру)
+  const WVX0 = () => window.WIDE ? WIDE.X0 - 80 : -140, WVX1 = () => window.WIDE ? WIDE.X1 + 80 : 1220;
   function waveIn5(c, t, J, q) {
     const u = at(t, J.w0, J.cov); if (u <= 0) return; const ue = u * u * (3 - 2 * u), [cx, cy] = waveCrest(ue), s = lp(1, 1.7, ue);
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0);   // v23.7: баночки на гребне больше нет (Андрей: «убери приклеенную к гребню банку») — она всплывает уже в океане (tinPos0)
     const bf = 1 - at(t, J.j0 - .35, J.j0);   // пузыри в толще воды тают за 0,35 с до кадра 0 океана
     for (let L = 0; L < 3; L++) {   // слои: 0 — дальний (светлее, выше-левее), 2 — ближний
       const ox = (L - 2) * 58 * s * (1 - at(ue, .8, 1)), oy = (L - 2) * 50 * s * (1 - at(ue, .8, 1)), S = x => waveSurf(x - ox, cx, cy, s, ue, t + L * .7) + oy;
-      const path = () => { c.beginPath(); c.moveTo(-140, 2300); for (let x = -140; x <= 1220; x += 8) c.lineTo(x, S(x)); c.lineTo(1220, 2300); c.closePath() };
-      const surf = () => { c.beginPath(); for (let x = -140; x <= 1220; x += 8) { const y = S(x); x === -140 ? c.moveTo(x, y) : c.lineTo(x, y) } };
+      const X0 = WVX0(), X1 = WVX1(), path = () => { c.beginPath(); c.moveTo(X0, 2300); for (let x = X0; x <= X1; x += 8) c.lineTo(x, S(x)); c.lineTo(X1, 2300); c.closePath() };
+      const surf = () => { c.beginPath(); for (let x = X0; x <= X1; x += 8) { const y = S(x); x === X0 ? c.moveTo(x, y) : c.lineTo(x, y) } };
       path(); fill(c, WCOL[L]);
       if (L === 2) { c.save(); path(); c.clip(); surf(); lnB(c, 150 * s, C5.sea1); surf(); lnB(c, 52 * s, C5.sea2);
-        for (let i = 0; i < 14; i++) { const bx = -40 + 1160 * H1(i * 5.3), by = S(bx) + 60 * s + lp(900, 0, (t * .8 + H1(i * 2.1)) % 1) * s; if (bf > 0) circ(c, bx + 6 * Math.sin(t * 5 + i), by, (4 + 7 * H1(i + 6)) * s, `rgba(201,220,242,${.18 * bf})`) }   // пузыри в толще воды
+        for (let i = 0; i < (window.WIDE ? 30 : 14); i++) { const bx = X0 + 100 + (X1 - X0 - 200) * H1(i * 5.3), by = S(bx) + 60 * s + lp(900, 0, (t * .8 + H1(i * 2.1)) % 1) * s; if (bf > 0) circ(c, bx + 6 * Math.sin(t * 5 + i), by, (4 + 7 * H1(i + 6)) * s, `rgba(201,220,242,${.18 * bf})`) }   // пузыри в толще воды
         c.restore() }
       const fx0 = cx + ox, nF = L === 2 ? 1 : .55;   // пена на гребне слоя
       foamCap(c, S, fx0 - 380 * s * nF, fx0 + 8 * s, x => (2 + 13 * Math.pow(cl(1 - (fx0 - x) / (380 * s * nF)), .8)) * s * nF, t, L);
@@ -2007,12 +2017,12 @@
     const k = at(t, J.cov - .3, J.j0); if (k <= 0) return; const e = k * k * (3 - 2 * k), base = lp(-170, 1330, e), amp = lp(58, 30, e), L = x => base + amp * Math.sin(x / 160 + t * 1.7) + 9 * (1 - e) * Math.sin(x / 47 - t * 3.1);
     const fo = 1 - at(t, J.j0 - .35, J.j0), sc = lp(1.05, 1, e);
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    c.save(); c.beginPath(); c.moveTo(-100, -100); c.lineTo(1180, -100); for (let x = 1180; x >= -100; x -= 20) c.lineTo(x, L(x)); c.closePath(); c.clip();
+    const X0 = WVX0(), X1 = WVX1(); c.save(); c.beginPath(); c.moveTo(X0, -400); c.lineTo(X1, -400); for (let x = X1; x >= X0; x -= 20) c.lineTo(x, L(x)); c.closePath(); c.clip();
     c.translate(540, 960); c.scale(sc, sc); c.translate(-540, -960); oceanWorld(c, t, Q0); c.restore();
-    if (fo > 0) { c.save(); c.beginPath(); c.moveTo(-700, 2400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, L(x)); c.lineTo(1800, 2400); c.closePath(); c.clip();   // под водой: светлая полоса у поверхности
-      const g = c.createLinearGradient(0, base - 40, 0, base + 260); g.addColorStop(0, `rgba(120,170,220,${.38 * fo})`); g.addColorStop(1, 'rgba(120,170,220,0)'); c.fillStyle = g; c.fillRect(-100, base - 60, 1280, 340); c.restore() }
-    c.beginPath(); for (let x = -700; x <= 1800; x += 20) { const y = L(x); x === -700 ? c.moveTo(x, y) : c.lineTo(x, y) } lnB(c, 5, 'rgba(201,220,242,.55)');   // кромка — как у переднего вала океана
-    if (fo > 0) foamCap(c, x => L(x) - 2, -40, 1120, x => (7 + 5 * Math.sin(x / 37 + 1.3)) * fo, t, 3);   // пена на кромке тает к кадру 0
+    if (fo > 0) { c.save(); c.beginPath(); c.moveTo(X0, 2400); for (let x = X0; x <= X1; x += 20) c.lineTo(x, L(x)); c.lineTo(X1, 2400); c.closePath(); c.clip();   // под водой: светлая полоса у поверхности
+      const g = c.createLinearGradient(0, base - 40, 0, base + 260); g.addColorStop(0, `rgba(120,170,220,${.38 * fo})`); g.addColorStop(1, 'rgba(120,170,220,0)'); c.fillStyle = g; c.fillRect(X0, base - 60, X1 - X0, 340); c.restore() }
+    c.beginPath(); for (let x = X0; x <= X1; x += 20) { const y = L(x); x === X0 ? c.moveTo(x, y) : c.lineTo(x, y) } lnB(c, 5, 'rgba(201,220,242,.55)');   // кромка — как у переднего вала океана
+    if (fo > 0) foamCap(c, x => L(x) - 2, X0 + 100, X1 - 100, x => (7 + 5 * Math.sin(x / 37 + 1.3)) * fo, t, 3);   // пена на кромке тает к кадру 0
     c.restore();
   }
   function boardStartShot(c, t) {
@@ -2027,9 +2037,10 @@
   // ---------- вода поднимается (конец строки 11): за ней — тот же ночной океан ----------
   function flood5(c, t, k, tO) {
     if (k <= 0) return; const e = eio(k), fy = lp(HH + 80, -120, e), wv = x => fy + 26 * Math.sin(x / 120 + t * 4) + 14 * Math.sin(x / 47 - t * 3);
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); c.moveTo(0, HH + 200); for (let x = 0; x <= WW; x += 20) c.lineTo(x, wv(x)); c.lineTo(WW, HH + 200); c.closePath(); c.clip();
+    const F0 = window.WIDE ? Math.floor(WIDE.X0 / 20) * 20 - 40 : 0, F1 = window.WIDE ? WIDE.X1 + 40 : WW;
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); c.moveTo(F0, HH + 200); for (let x = F0; x <= F1; x += 20) c.lineTo(x, wv(x)); c.lineTo(F1, HH + 200); c.closePath(); c.clip();
     oceanWorld(c, tO, Q0); c.restore();
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); for (let x = 0; x <= WW; x += 20) { const y = wv(x); x ? c.lineTo(x, y) : c.moveTo(x, y) } lnB(c, 10, 'rgba(201,220,242,.85)'); c.restore();
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.beginPath(); for (let x = F0; x <= F1; x += 20) { const y = wv(x); x > F0 ? c.lineTo(x, y) : c.moveTo(x, y) } lnB(c, 10, 'rgba(201,220,242,.85)'); c.restore();
   }
   // ---------- строка 12 (фильм) и концовка шортса ----------
   function boardInit5() {

@@ -1,5 +1,5 @@
 // 23.11: фильм для YouTube в 16:9 (Андрей: «должен открываться как видос на ютубе, а не шортс»).
-// Включается в capture.mjs переменной WIDE=1 (window.wideInit() до загрузки главы). Кадр — 2560×1440.
+// Включается в capture.mjs переменной WIDE=1 (window.wideInit() до загрузки главы). Кадр — 1920×1080 (24.11; было 2560×1440).
 // Рисовка глав — как была, в единицах вертикального кадра 1080×1920: он стоит по центру во всю высоту (масштаб 0,75),
 // а камера и фоны видят мир шире — x от WIDE.X0 до WIDE.X1 (≈ −1167 … 2247).
 // wideCtx(c): у контекста кадра setTransform/resetTransform/getTransform — в единицах рисовки (базовый сдвиг и масштаб спрятаны),
@@ -9,13 +9,17 @@
   'use strict';
   const P = CanvasRenderingContext2D.prototype;
   window.WIDE = window.WIDE || null;
-  window.wideInit = function (w = 2560, h = 1440) {
-    const s = h / 1920, ox = (w / s - 1080) / 2;
-    window.WIDE = { W: w, H: h, s, ox, X0: -ox, X1: 1080 + ox, hw: 540 + ox };
+  // 24.11 (ТЗ Андрея): кадр рисуется в 1920×1080 (в 2560×1440 — апскейлом при сборке), камера ближе в z раз (1,25–1,35):
+  // по высоте видно 1920/z единиц рисовки вокруг cy, по ширине — сколько влезет
+  window.wideInit = function (w = 1920, h = 1080, z = 1.3, cy = 900) {
+    const s = z * h / 1920, ox = (w / s - 1080) / 2, vh = h / s, oy = cy - vh / 2;
+    window.WIDE = { W: w, H: h, s, z, ox, oy, X0: -ox, X1: 1080 + ox, Y0: oy, Y1: oy + vh, hw: 540 + ox };
   };
+  // плашка года в 16:9 — в левом верхнем углу кадра и в 1,5 раза крупнее; (70, 80) — её угол в вертикальном кадре
+  window.widePill = function (c) { const w = window.WIDE; c.translate(w.X0 + 40, w.Y0 + 34); c.scale(1.5, 1.5); c.translate(-70, -80) };
   window.wideCtx = function (c) {
     const w = window.WIDE; if (!w || !c || c.__wide) return c;
-    const B = new DOMMatrix([w.s, 0, 0, w.s, w.s * w.ox, 0]), Bi = B.inverse();
+    const B = new DOMMatrix([w.s, 0, 0, w.s, w.s * w.ox, -w.s * w.oy]), Bi = B.inverse();
     c.__wide = 1;
     c.setTransform = function (a, b, cc, d, e, f) {
       const m = typeof a === 'object' ? DOMMatrix.fromMatrix(a) : new DOMMatrix([a, b, cc, d, e, f]);
@@ -36,7 +40,7 @@
       const rx0 = Math.min(x, x + ww), rx1 = Math.max(x, x + ww), ry0 = Math.min(y, y + hh), ry1 = Math.max(y, y + hh);
       const inR = p => p[0] >= rx0 - .5 && p[0] <= rx1 + .5 && p[1] >= ry0 - .5 && p[1] <= ry1 + .5;
       if (![[0, 0], [1080, 0], [0, 1920], [1080, 1920]].every(q => inR(L(q[0], q[1])))) return false;
-      const wc = [[w.X0 - 4, -4], [w.X1 + 4, -4], [w.X0 - 4, 1924], [w.X1 + 4, 1924]].map(q => L(q[0], q[1]));
+      const wc = [[w.X0 - 4, Math.min(-4, w.Y0 - 4)], [w.X1 + 4, Math.min(-4, w.Y0 - 4)], [w.X0 - 4, Math.max(1924, w.Y1 + 4)], [w.X1 + 4, Math.max(1924, w.Y1 + 4)]].map(q => L(q[0], q[1]));
       const xs = [rx0, rx1, ...wc.map(p => p[0])], ys = [ry0, ry1, ...wc.map(p => p[1])], nx = Math.min(...xs), ny = Math.min(...ys);
       f.call(ctx, nx, ny, Math.max(...xs) - nx, Math.max(...ys) - ny); return true;
     };

@@ -114,28 +114,30 @@
   // Шоу идёт на телевизоре у входа; рядом полки с рядами коробок IQOS. «смели с полок» — поток белых фигурок (#103), коробки исчезают волной.
   // «Без огня — значит, без вреда?»: свет гаснет, луч сверху — на полке один держатель, пар над ним загибается в «?» (#009).
   let TF = null, KF = null, NFG = null;
-  const TVF = { x: 300, y: 820, w: 420 }, HF = { x: 760, y: 802, L: 180 }, SHELVES = [560, 820, 1080];
+  // 24.11 (ТЗ 16:9): в широком кадре телевизор левее, полки с коробками — во всю правую часть
+  const WDF = !!window.WIDE, SHX = WDF ? 300 : 490, SHW = WDF ? 1640 : 590, SHN = WDF ? 20 : 7;
+  const TVF = { x: WDF ? -260 : 300, y: 820, w: 420 }, HF = { x: 760, y: 802, L: 180 }, SHELVES = [560, 820, 1080];
   function storeFInit() {
     const w6 = (q, n) => Ws('s6', q, n), w7 = (q, n) => Ws('s7', q, n);
     TF = { j: TD4.jDF, aik2: w6('айкосы'), smel: w6('смели'), pol: w6('полок'), bez: w7('без'), vred: w7('вреда'), cherez: Ws('s8', 'через') };
     const a = TF; a.off = a.bez - .1; a.jFG = a.cherez + .12;
-    KF = [KY(a.j + .1, 300, 822.7, 1080 / TVF.w), KY(a.j + .65, 420, 860, 1.6), KY(a.aik2 + .1, 610, 900, 1.06), KY(a.pol + .4, 690, 930, 1.1), KY(a.vred - .2, 760, 780, 1.75), KY(a.vred + .55, 760, 760, 2.45), KY(a.jFG, 760, 770, 2.6)];
+    KF = [KY(a.j + .1, TVF.x, 822.7, 1080 / TVF.w), KY(a.j + .65, TVF.x + 120, 860, 1.6), KY(a.aik2 + .1, 610, 900, 1.06), KY(a.pol + .4, 690, 930, 1.1), KY(a.vred - .2, 760, 780, 1.75), KY(a.vred + .55, 760, 760, 2.45), KY(a.jFG, 760, 770, 2.6)];
     NFG = { x: HF.x, y: HF.y - 140, m: 1 };   // держатель в лаборатории — (540, 1100)
   }
   function crowdF(c, t) {   // поток белых фигурок слева направо: фронт — fx
     const a = TF, k = at(t, a.smel - .25, a.smel + 1.05); if (k <= 0 || k >= 1) return;
-    for (let i = 0; i < 16; i++) { const x = lp(-500, 1700, k) - i * 95 - (i % 3) * 30, bob = Math.abs(Math.sin(t * 12 + i)) * 10, m = i % 2 === 0;
-      if (x < -200 || x > 1350) continue; fig(c, x, 1440 - bob - (i % 2) * 18, 1.65, { m, col: '#F4F1EA', hat: i % 5 === 2 }) }
+    for (let i = 0; i < (WDF ? 26 : 16); i++) { const x = lp(WDF ? -900 : -500, WDF ? 3300 : 1700, k) - i * 95 - (i % 3) * 30, bob = Math.abs(Math.sin(t * 12 + i)) * 10, m = i % 2 === 0;
+      if (x < (WDF ? -1000 : -200) || x > (WDF ? 2500 : 1350)) continue; fig(c, x, 1440 - bob - (i % 2) * 18, 1.65, { m, col: '#F4F1EA', hat: i % 5 === 2 }) }
   }
-  const crowdFront = t => TF ? lp(-500, 1700, at(t, TF.smel - .25, TF.smel + 1.05)) : -1e9;
+  const crowdFront = t => TF ? lp(WDF ? -900 : -500, WDF ? 3300 : 1700, at(t, TF.smel - .25, TF.smel + 1.05)) : -1e9;
   function storeFWorld(c, t, q) {
     const a = TF; c.fillStyle = '#E9E1D2'; c.fillRect(-3000, -3000, 7000, 7000);
     c.fillStyle = '#D9CFBD'; for (let x = -1000; x < 2400; x += 160) c.fillRect(x, 0, 6, 1350);
-    c.fillStyle = '#F7F4EC'; for (let i = 0; i < 6; i++) { rr(c, -200 + i * 290, 90, 220, 26, 13); c.fill() }   // лампы дневного света
+    c.fillStyle = '#F7F4EC'; for (let i = WDF ? -4 : 0; i < (WDF ? 9 : 6); i++) { rr(c, -200 + i * 290, 90, 220, 26, 13); c.fill() }   // лампы дневного света
     c.fillStyle = '#C9C2B4'; c.fillRect(-3000, 1350, 7000, 3000); c.fillStyle = '#B9B1A2'; c.fillRect(-3000, 1350, 7000, 10);
     const front = crowdFront(t);
-    SHELVES.forEach((y, r) => { c.fillStyle = '#8A8F9C'; c.fillRect(500, y - 230, 10, 240); c.fillStyle = '#D8D4CC'; c.fillRect(490, y, 590, 22); c.fillStyle = '#B9B5AD'; c.fillRect(490, y + 22, 590, 8);
-      for (let i = 0; i < 7; i++) { const bx = 520 + i * 78; if (front > bx + 60 + r * 20) continue; if (r === 1 && i === 3) continue; box4(c, bx, y - 96, 62, 96) } });
+    SHELVES.forEach((y, r) => { c.fillStyle = '#8A8F9C'; c.fillRect(SHX + 10, y - 230, 10, 240); if (WDF) c.fillRect(SHX + SHW - 20, y - 230, 10, 240); c.fillStyle = '#D8D4CC'; c.fillRect(SHX, y, SHW, 22); c.fillStyle = '#B9B5AD'; c.fillRect(SHX, y + 22, SHW, 8);
+      for (let i = 0; i < SHN; i++) { const bx = SHX + 30 + i * 78; if (front > bx + 60 + r * 20) continue; if (r === 1 && Math.abs(bx + 31 - HF.x) < 39) continue; box4(c, bx, y - 96, 62, 96) } });
     c.fillStyle = '#20232E'; c.fillRect(TVF.x - 14, TVF.y + TVF.w * 9 / 32, 28, 300); rr(c, TVF.x - 120, TVF.y + TVF.w * 9 / 32 + 290, 240, 20, 8); fill(c, '#20232E');   // стойка ТВ
     rr(c, TVF.x - TVF.w / 2 - 16, TVF.y - TVF.w * 9 / 32 - 16, TVF.w + 32, TVF.w * 9 / 16 + 32, 14); fill(c, '#16181F');
     c.save(); c.beginPath(); c.rect(TVF.x - TVF.w / 2, TVF.y - TVF.w * 9 / 32, TVF.w, TVF.w * 9 / 16); c.clip(); showDraw(c, t, TVF.x, TVF.y, TVF.w); c.restore();

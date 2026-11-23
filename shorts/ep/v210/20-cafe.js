@@ -6,9 +6,11 @@
   // Строка 15: комок падает в урну, полную таких же комков; на столе — IQOS и пачка Marlboro. Шортс: на стол ложится свежая газета — кадр 0.
   let TA = null, KA1 = null, KA2 = null, KAL = null;
   const RA = { x: 540, y: 1000, z: 1, r: 0 };   // опорная камера параллакса
-  const WIN = { x0: 150, x1: 930, y0: 170, y1: 880 }, TOPY4 = 1060, EDGEY = 1590, FLOORY = 1650, TEND = 1130;
+  // 24.11 (ТЗ 16:9): в широком кадре окно — панорама, стол — во всю ширину, пачка и чашка — шире по столу, урна — у нового края
+  const WDE = !!window.WIDE;
+  const WIN = WDE ? { x0: -900, x1: 1980, y0: 170, y1: 880 } : { x0: 150, x1: 930, y0: 170, y1: 880 }, TOPY4 = 1060, EDGEY = 1590, FLOORY = 1650, TEND = WDE ? 1900 : 1130;
   const PG = { w: 300, h: 420, sx: 540, y: 1140 };   // страницы разворота: левая [240..540], правая [540..840]
-  const PACK0 = { x: 120, y: 1290, w: 110, h: 163 }, CUP = { x: 930, y: 1215 }, BIN = { x: 1265, y: 1905, w: 190, h: 255 };
+  const PACK0 = { x: WDE ? -120 : 120, y: 1290, w: 110, h: 163 }, CUP = { x: WDE ? 1260 : 930, y: 1215 }, BIN = { x: TEND + 135, y: 1905, w: 190, h: 255 };
   const MAPA = { x: 690, y: 1350, w: 290, h: 330 };   // карта США (мир I) лежит на столе — в строке 14 и дальше
   const BALL_R = 44, FLOORC = '#3A2B2E';   // v21.2: пол светлее — урна стоит на полу, а не в темноте
   function cafeInit() {
@@ -137,14 +139,14 @@
     c.fillRect(bx - 34, by - 440, 68, 440); c.fillRect(bx - 44, by - 470, 88, 60); poly(c, [bx - 44, by - 470, bx + 44, by - 470, bx + 26, by - 540, bx - 26, by - 540]); fill(c, C4.ben);
     poly(c, [bx - 12, by - 540, bx + 12, by - 540, bx, by - 640]); fill(c, C4.ben); circ(c, bx, by - 405, 26, '#E9C88A'); circ(c, bx, by - 405, 21, '#F6E2B4');
     c.strokeStyle = C4.ben; c.lineWidth = 3; c.beginPath(); c.moveTo(bx, by - 405); c.lineTo(bx, by - 421); c.moveTo(bx, by - 405); c.lineTo(bx + 11, by - 401); c.stroke();
-    poly(c, [-400, by, -400, by - 90, 90, by - 90, 110, by - 130, 160, by - 130, 180, by - 100, 470, by - 100, 490, by - 150, 520, by - 150, 540, by - 110, 690, by - 110, 690, by - 150, 790, by - 150, 790, by - 120, 1000, by - 120, 1020, by - 160, 1060, by - 160, 1080, by - 95, 1500, by - 95, 1500, by]); fill(c, C4.roofs);
-    c.fillStyle = 'rgba(247,203,120,.55)'; for (let i = 0; i < 16; i++) { const wx = -200 + i * 105 + (i % 3) * 14, wy = by - 70 + (i % 2) * 22; if (H1(i * 3.3) > .45) c.fillRect(wx, wy, 10, 14) }
+    poly(c, [-1600, by, -1600, by - 90, -1100, by - 90, -1080, by - 140, -1010, by - 140, -990, by - 90, -620, by - 90, -600, by - 125, -540, by - 125, -520, by - 90, -400, by - 90, 90, by - 90, 110, by - 130, 160, by - 130, 180, by - 100, 470, by - 100, 490, by - 150, 520, by - 150, 540, by - 110, 690, by - 110, 690, by - 150, 790, by - 150, 790, by - 120, 1000, by - 120, 1020, by - 160, 1060, by - 160, 1080, by - 95, 1500, by - 95, 1520, by - 135, 1600, by - 135, 1620, by - 95, 2000, by - 95, 2020, by - 150, 2080, by - 150, 2100, by - 95, 2700, by - 95, 2700, by]); fill(c, C4.roofs);
+    c.fillStyle = 'rgba(247,203,120,.55)'; for (let i = WDE ? -12 : 0; i < (WDE ? 28 : 16); i++) { const wx = -200 + i * 105 + (i % 3) * 14, wy = by - 70 + (i % 2) * 22; if (H1(i * 3.3) > .45) c.fillRect(wx, wy, 10, 14) }
   }
   function cafeWall(c, t) {
     c.save(); c.beginPath(); c.rect(-3000, -2000, 7000, TOPY4 + 2000); c.rect(WIN.x0, WIN.y0, WIN.x1 - WIN.x0, WIN.y1 - WIN.y0); c.fillStyle = C4.wall; c.fill('evenodd'); c.restore();
     c.fillStyle = C4.wallD; c.fillRect(-3000, 930, 7000, TOPY4 - 930); c.fillStyle = 'rgba(255,255,255,.04)'; for (let x = -2900; x < 4000; x += 120) c.fillRect(x, 940, 4, TOPY4 - 950);   // панели под окном
     const f = 22; c.fillStyle = C4.woodE; c.fillRect(WIN.x0 - f, WIN.y0 - f, WIN.x1 - WIN.x0 + f * 2, f); c.fillRect(WIN.x0 - f, WIN.y0, f, WIN.y1 - WIN.y0); c.fillRect(WIN.x1, WIN.y0, f, WIN.y1 - WIN.y0);
-    c.fillStyle = C4.woodE; c.fillRect(538 - 6, WIN.y0, 12, WIN.y1 - WIN.y0); c.fillRect(WIN.x0, 520, WIN.x1 - WIN.x0, 10);
+    c.fillStyle = C4.woodE; for (const mx of WDE ? [-420, 60, 538, 1020, 1500] : [538]) c.fillRect(mx - 6, WIN.y0, 12, WIN.y1 - WIN.y0); c.fillRect(WIN.x0, 520, WIN.x1 - WIN.x0, 10);
     c.fillStyle = C4.woodD; c.fillRect(WIN.x0 - 40, WIN.y1, WIN.x1 - WIN.x0 + 80, 34); c.fillStyle = C4.woodL; c.fillRect(WIN.x0 - 40, WIN.y1, WIN.x1 - WIN.x0 + 80, 6);
     c.save(); c.beginPath(); c.rect(WIN.x0, WIN.y0, WIN.x1 - WIN.x0, WIN.y1 - WIN.y0); c.clip(); glint(c, WIN.x0, WIN.y0, WIN.x1 - WIN.x0, WIN.y1 - WIN.y0, .06); c.restore();
   }
@@ -175,7 +177,7 @@
     rr(c, x - w / 2 - 8, top - 10, w + 16, 22, 10); fill(c, '#7A8096'); rr(c, x - w / 2 - 8, top - 10, w + 16, 22, 10); lnB(c, 2.5, 'rgba(238,241,248,.4)');
   }
   function beamA(c, t, tau) {   // косой луч из окна и пылинки в нём (передний план)
-    c.save(); poly(c, [WIN.x0 + 40, WIN.y1 - 120, 520, WIN.y1 - 120, 1150, FLOORY, 300, FLOORY]); c.fillStyle = 'rgba(255,214,150,.06)'; c.fill(); c.clip();
+    c.save(); poly(c, [190, WIN.y1 - 120, 520, WIN.y1 - 120, 1150, FLOORY, 300, FLOORY]); c.fillStyle = 'rgba(255,214,150,.06)'; c.fill(); c.clip();
     for (let i = 0; i < 26; i++) { const px = 200 + H1(i * 3.7) * 900 + Math.sin(tau * .3 + i) * 30, py = 700 + ((H1(i * 5.1) * 1000 + tau * (12 + H1(i) * 14)) % 1000); circ(c, px, py, 1.5 + H1(i * 2) * 1.8, `rgba(255,236,200,${.2 + .16 * Math.sin(tau + i)})`) }
     c.restore();
   }

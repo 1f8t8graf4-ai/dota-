@@ -5,13 +5,15 @@
   // «Статью они так и назвали» — журнал на столе, наклейка «ПАР» отклеивается — под ней «ДЫМ» (#088), из-под заголовка выползает дым (#141).
   let TG = null, KG = null, NGH = null;
   const HG = { x: 540, y: 1100, L: 180 }, BENCH = 1118, BENCHF = 1420, JRN = { x: 560, y: 1300, w: 470, h: 300 }, JAR = { x: 540, w: 300, h: 380 };
+  // 24.11 (ТЗ 16:9): в широком кадре доска с графиком — слева от колпака, окно с Альпами — справа (не друг под другом)
+  const WDG = !!window.WIDE, BDX = WDG ? -855 : 0, BDY = WDG ? 330 : 0, WNX = WDG ? 790 : 0, WNY = WDG ? 200 : 0;
   const BARS4 = [[230, 70], [270, 90], [210, 50], [250, 320], [190, 80]];   // [дым, пар]; четвёртый «пар» — выше дыма
   function labInit() {
     const w8 = (q, n) => Ws('s8', q, n), w9 = (q, n) => Ws('s9', q, n);
     TG = { j: TF.jFG, poim: w8('поймали'), yady: w8('яды'), mnog: w8('многих'), odn: w8('одного'), bol: w8('больше'), nik: w8('никотина'), stat: w9('статью'), dym: w9('дым'), imen: w9('именем'), dvadc: Ws('s10', 'двадцатом') };
     const a = TG; a.on = a.j + .1; a.jGH = a.dvadc + .45;
-    KG = [KY(a.on + .55, 540, 1010, 1.32), KY(a.poim + .45, 540, 1010, 1.42), KY(a.yady + .3, 430, 1060, 1.28), KY(a.mnog + .35, 780, 600, 1.32), KY(a.bol + .3, 820, 560, 1.6),
-      KY(a.nik + .7, 790, 520, 1.5), KY(a.stat - .3, 420, 760, 1.12), KY(a.stat + .45, 560, 1180, 1.42), KY(a.dym + .35, 520, 1160, 1.55), KY(a.imen + .4, 470, 1230, 1.72),
+    KG = [KY(a.on + .55, 540, 1010, 1.32), KY(a.poim + .45, 540, 1010, 1.42), KY(a.yady + .3, 430, 1060, 1.28), KY(a.mnog + .35, WDG ? 210 : 780, WDG ? 860 : 600, WDG ? 1.55 : 1.32), KY(a.bol + .3, WDG ? 120 : 820, WDG ? 850 : 560, WDG ? 1.72 : 1.6),
+      KY(a.nik + .7, WDG ? 160 : 790, WDG ? 850 : 520, WDG ? 1.62 : 1.5), KY(a.stat - .3, 420, 760, 1.12), KY(a.stat + .45, 560, 1180, 1.42), KY(a.dym + .35, 520, 1160, 1.55), KY(a.imen + .4, 470, 1230, 1.72),
       KY(a.jGH - .3, 452, 1292, 4.2), KY(a.jGH, JRN.x - 118, JRN.y, 6.6)];   // v21.1: наезд на заголовок статьи — страница во весь экран; это же журнал на столе FDA (стык без белого)
     NGH = { x: JRN.x - (JRH.x - 540), y: JRN.y - (JRH.y - 960), m: 1 };   // журнал на столе FDA (мир H)
   }
@@ -39,12 +41,12 @@
     c.fillStyle = C4.lab; c.fillRect(-3000, -3000, 7000, BENCH + 3000);
     c.strokeStyle = 'rgba(126,214,210,.08)'; c.lineWidth = 2; c.beginPath(); for (let x = -1200; x < 2400; x += 80) { c.moveTo(x, -400); c.lineTo(x, BENCH) } for (let y = -400; y < BENCH; y += 80) { c.moveTo(-1200, y); c.lineTo(2400, y) } c.stroke();
     for (const lx of [300, 800]) { rr(c, lx - 70, 100, 140, 34, 8); fill(c, '#0E2B2E'); c.fillStyle = '#CFF6F2'; c.fillRect(lx - 56, 128, 112, 9); beam(c, lx, 140, lx + 40, BENCH, 50, 320, '#CFF6F2', .06) }
-    c.fillStyle = '#E6EEF2'; c.fillRect(90, 240, 380, 460); ['#BFD5E8', '#A9C6E0', '#93B6D6'].forEach((col, i) => { c.fillStyle = col; c.fillRect(90, 240 + i * 60, 380, 62) });   // окно: небо и Альпы
+    c.save(); c.translate(WNX, WNY); c.fillStyle = '#E6EEF2'; c.fillRect(90, 240, 380, 460); ['#BFD5E8', '#A9C6E0', '#93B6D6'].forEach((col, i) => { c.fillStyle = col; c.fillRect(90, 240 + i * 60, 380, 62) });   // окно: небо и Альпы
     poly(c, [90, 620, 150, 470, 210, 540, 290, 400, 370, 520, 420, 470, 470, 560, 470, 700, 90, 700]); fill(c, '#5E7AA0'); poly(c, [260, 440, 290, 400, 322, 446, 300, 438, 284, 452]); fill(c, '#FFFFFF'); poly(c, [130, 520, 150, 470, 170, 516]); fill(c, '#FFFFFF');
     c.fillStyle = '#7E9A6E'; c.fillRect(90, 660, 380, 40); rr(c, 90, 240, 380, 460, 4); lnB(c, 14, '#0B2427'); c.fillStyle = '#0B2427'; c.fillRect(276, 240, 10, 460);
-    rr(c, 380, 420, 64, 64, 6); fill(c, '#D52B1E'); c.fillStyle = '#FFFFFF'; c.fillRect(405, 432, 14, 40); c.fillRect(392, 445, 40, 14);   // v21.2: швейцарский флажок на правом стекле — в кадре с первой секунды и не под плашкой года
-    rr(c, 560, 230, 470, 540, 10); fill(c, '#F4F6F2'); rr(c, 560, 230, 470, 540, 10); lnB(c, 8, '#9AA6A8');   // доска
-    [[-1300, 380], [1120, 320]].forEach(([sx, sy], i) => { c.fillStyle = '#0B2427'; c.fillRect(sx, sy, 420, 16); for (let k = 0; k < 4; k++) { const fx = sx + 40 + k * 100, h = 70 + H1(i * 4 + k) * 70, col = ['#3FB6A8', '#7ED6CF', '#E7A9B6', '#F2B84B'][(i + k) % 4];
+    rr(c, 380, 420, 64, 64, 6); fill(c, '#D52B1E'); c.fillStyle = '#FFFFFF'; c.fillRect(405, 432, 14, 40); c.fillRect(392, 445, 40, 14); c.restore();   // v21.2: швейцарский флажок на правом стекле — в кадре с первой секунды и не под плашкой года
+    rr(c, 560 + BDX, 230 + BDY, 470, 540, 10); fill(c, '#F4F6F2'); rr(c, 560 + BDX, 230 + BDY, 470, 540, 10); lnB(c, 8, '#9AA6A8');   // доска
+    [[-1300, 380], [WDG ? 1420 : 1120, 320]].forEach(([sx, sy], i) => { c.fillStyle = '#0B2427'; c.fillRect(sx, sy, 420, 16); for (let k = 0; k < 4; k++) { const fx = sx + 40 + k * 100, h = 70 + H1(i * 4 + k) * 70, col = ['#3FB6A8', '#7ED6CF', '#E7A9B6', '#F2B84B'][(i + k) % 4];
       c.beginPath(); c.moveTo(fx, sy); c.lineTo(fx, sy - h * .55); c.lineTo(fx + 12, sy - h * .55); c.lineTo(fx + 12, sy - h); c.lineTo(fx + 30, sy - h); c.lineTo(fx + 30, sy - h * .55); c.lineTo(fx + 42, sy - h * .55); c.lineTo(fx + 42, sy); c.closePath(); fill(c, rgba(col, .75)); lnB(c, 2.5, 'rgba(230,250,248,.5)') } });
     c.fillStyle = '#D8D4CC'; c.fillRect(-3000, BENCH, 7000, BENCHF - BENCH); c.fillStyle = 'rgba(0,0,0,.05)'; c.fillRect(-3000, BENCH, 7000, 40);
     c.fillStyle = '#B9B5AD'; c.fillRect(-3000, BENCHF, 7000, 32); c.fillStyle = C4.labD; c.fillRect(-3000, BENCHF + 32, 7000, 3000);
@@ -71,7 +73,7 @@
     c.restore();
   }
   function bars4(c, t) {   // пары столбиков на доске: серый — дым, белый — пар; четвёртый белый — выше и краснеет
-    const a = TG, base = 700, x0 = 610, ko = 1 - at(t, a.nik - .2, a.nik + .1); if (ko <= 0) return; c.save(); c.globalAlpha *= ko;
+    const a = TG, base = 700, x0 = 610, ko = 1 - at(t, a.nik - .2, a.nik + .1); if (ko <= 0) return; c.save(); c.translate(BDX, BDY); c.globalAlpha *= ko;
     c.fillStyle = '#2B2F55'; c.fillRect(x0 - 10, base, 410, 4); c.fillRect(x0 - 10, 300, 4, base - 296);   // оси — видны сразу, доска не пустая
     rr(c, x0, 260, 22, 22, 3); fill(c, '#8C8FA0'); tx(c, TEXT.smoke, x0 + 32, 272, { f: 'M', w: 800, s: 22, c: '#2B2F55', al: 'left' });
     rr(c, x0 + 120, 260, 22, 22, 3); fill(c, '#FFFFFF'); rr(c, x0 + 120, 260, 22, 22, 3); lnB(c, 2, '#2B2F55'); tx(c, TEXT.vapor, x0 + 152, 272, { f: 'M', w: 800, s: 22, c: '#2B2F55', al: 'left' });
@@ -81,7 +83,7 @@
     c.restore();
   }
   function gauge4(c, t) {   // никотин: 84 % от сигареты (#120) — на той же доске, вместо столбиков (v21.1: был над окном с Альпами и уезжал под плашку года)
-    const a = TG, k = eo(at(t, a.nik - .05, a.nik + .35)); if (k <= 0) return; const x = 795, y = 500, R = 150, f = .84 * eio(at(t, a.nik + .1, a.nik + 1.3)), fv = .84 * eio(at(FT, a.nik + .1, a.nik + 1.3)), s = bo(k);
+    const a = TG, k = eo(at(t, a.nik - .05, a.nik + .35)); if (k <= 0) return; const x = 795 + BDX, y = 500 + BDY, R = 150, f = .84 * eio(at(t, a.nik + .1, a.nik + 1.3)), fv = .84 * eio(at(FT, a.nik + .1, a.nik + 1.3)), s = bo(k);
     c.save(); c.translate(x, y); c.scale(s, s); circ(c, 8, 12, R + 30, 'rgba(0,0,0,.18)'); circ(c, 0, 0, R + 30, '#F4F1EA');
     c.beginPath(); c.arc(0, 0, R - 10, 0, TAU); lnB(c, 40, '#D9D3C6'); c.beginPath(); c.arc(0, 0, R - 10, -Math.PI / 2, -Math.PI / 2 + TAU * f); lnB(c, 40, '#E2412F');
     tx(c, TEXT.fPctN(Math.round(fv * 100)), 0, -6, { f: 'M', w: 800, s: 66, c: '#141010' }); tx(c, TEXT.nicL, 0, 50, { f: 'M', w: 800, s: 26, c: '#141010', ls: 3 }); c.restore();
