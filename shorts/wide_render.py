@@ -36,8 +36,9 @@ def render(ep):
         subprocess.run(['node', 'capture.mjs', ep, 'video', '30', '3'], cwd=HERE, env=e2, check=True)
         open(os.path.join(d, f'p{k}.done'), 'w').close()
     open(os.path.join(d, 'list.txt'), 'w').write(''.join(f"file 'p{k}.mp4'\n" for k in range(n)))
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', os.path.join(d, 'list.txt'), '-c', 'copy', os.path.join(o, 'video_w.mp4')], check=True)
-    print(ep, 'video_w.mp4 готов')
+    if os.environ.get('WR_CAT', '1') != '0':   # WR_CAT=0 — не склеивать (склеит wide_fix.py после правок; место на диске)
+        subprocess.run(['ffmpeg', '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', os.path.join(d, 'list.txt'), '-c', 'copy', os.path.join(o, 'video_w.mp4')], check=True)
+    print(ep, 'куски готовы')
 
 
 if __name__ == '__main__':

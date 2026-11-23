@@ -4741,7 +4741,7 @@
     const bg = c.createLinearGradient(0, 0, 0, HH); bg.addColorStop(0, '#120d26'); bg.addColorStop(1, '#05040b'); c.fillStyle = bg; c.fillRect(-400, -400, WW + 800, HH + 800);
     const wy0 = 150, wy1 = 1180, WX0 = window.WIDE ? WIDE.X0 : 0, WX1 = window.WIDE ? WIDE.X1 : WW;   // 23.11: в 16:9 окно и стол — на всю ширину
     c.fillStyle = '#0d1430'; c.fillRect(WX0 - 60, wy0, WX1 - WX0 + 120, wy1 - wy0);
-    for (let i = window.WIDE ? -Math.ceil(-WX0 / 76) : 0, n = Math.ceil((WX1 + 60) / 76); i < n; i++) {
+    for (let i = window.WIDE ? -Math.ceil(-WX0 / 76) : 0, n = window.WIDE ? Math.ceil((WX1 + 60) / 76) : 16; i < n; i++) {
       const bx = -60 + i * 76, bh = 260 + 420 * H1(i * 4.1 + 2), by = wy1 - bh;
       c.fillStyle = mixc('#1a2148', '#232b5c', H1(i * 7.3)); c.fillRect(bx, by, 68, bh);
       c.fillStyle = 'rgba(255,214,140,.5)'; for (let r = 0; r < bh / 34 - 1; r++) for (let q = 0; q < 3; q++) if (H1(i * 31 + r * 7 + q) > .62) c.fillRect(bx + 8 + q * 20, by + 14 + r * 34, 10, 14);
