@@ -122,7 +122,7 @@ def main(lang):
     fl.append(''.join(f'[v{i}]' for i in range(len(V))) + f'concat=n={len(V)}:v=1:a=0,format=yuv420p[v]')
     out = os.path.join(o, os.environ.get('FB_OUT', 'film.mp4'))
     subprocess.run(['ffmpeg', '-y', '-v', 'error', *inp, '-i', mw, '-filter_complex', ';'.join(fl), '-map', '[v]', '-map', f'{len(V)}:a',
-                    '-c:v', 'libx264', '-crf', '18', '-preset', os.environ.get('FB_PRESET', 'medium'), '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], check=True)   # FB_PRESET=veryfast — быстрее (фильм всё равно пережимается для отправки)
+                    '-c:v', 'libx264', '-crf', os.environ.get('FB_CRF', '18'), '-preset', os.environ.get('FB_PRESET', 'medium'), '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], check=True)   # FB_PRESET=veryfast — быстрее (фильм всё равно пережимается для отправки)
     json.dump({'seg': [e for e, _, _ in S], 'frames': keep, 'off': [round(float(v), 4) for v in off]}, open(os.path.join(o, 'film.json'), 'w'), indent=1)
     print(out, f'{frames(out)} кадров')
     os.remove(tmpf)
