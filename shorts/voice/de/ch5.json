@@ -1,0 +1,146 @@
+{
+ "voice": "kkJxCnlRCckmfFvzDW5Q",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "Nach dem IQOS-Rückschlag machten sie einen noch schlaueren Zug.\n\nDoch Philip Morris kam nach Amerika zurück – ein Jahr nach dem Verbot, mit einer kleinen weißen Dose für sechzehn Milliarden.\n\nDarin ist nicht mal… Tabak.\n\nMan sieht sie nicht, man hört sie nicht, und sie riechen nach nichts: Ein kleiner weißer Beutel kommt unter die Oberlippe – fertig.\n\nErst brennt es am Zahnfleisch, das Nikotin geht direkt darüber ins Blut, und von außen merkt man nichts: kein Rauch, kein Dampf – ob im Meeting oder im Flugzeug.\n\nViele nennen solche Beutel Snus – dabei ist echter schwedischer Snus Tabak.\n\nHier ist kein Tabak drin – dafür Nikotin, und das wird gewonnen… aus Tabak.\n\nErfunden haben sie die Schweden – und der Marlboro-Hersteller kaufte die schwedische Firma komplett, samt amerikanischem Werk in Kentucky.\n\nZwei Jahre später waren die Beutel in ganz Amerika ausverkauft – wie einst IQOS in Japan: Allein 2024 wurden dort fast sechshundert Millionen Dosen verkauft.\n\n2025 ließ die US-Behörde sie zu – als allererste Nikotinbeutel, und gleich mit Geschmack: Minze, Zitrus, Kaffee, Zimt.\n\nFünf Jahre zuvor wurden JUUL genau solche Geschmacksrichtungen verboten.\n\nUnd 2026 durfte ZYN etwas, das IQOS bis heute verwehrt bleibt – über das Risiko sprechen: „ZYN statt Zigaretten – geringeres Risiko für Mund- und Lungenkrebs, Herzkrankheiten und Schlaganfall.“\n\nNur: Amerikanische Schüler rauchen kaum noch Zigaretten – und bei ihnen haben die Beutel die Zigaretten schon überholt.\n\nUnd keine zwei Monate später wurden stärkere Beutel zugelassen: neun und elf Milligramm statt drei und sechs.\n\nAlso – was wisst ihr über Nikotin?\n\nDass man es raucht, erhitzt, dampft und unter die Lippe legt – und es jedes Mal als Weg zum Aufhören verkauft wird.\n\nZieht an irgendeinem Faden – alle fünf führen zurück zu denselben Tabakriesen.\n\nIhr hört mit einem auf – und sie verkaufen euch das nächste.\n\nRatet mal, wer wirklich hinter Zigaretten, Vapes und Nikotinbeuteln steckt?",
+ "items": [
+  {
+   "key": "b0",
+   "scene": "b0",
+   "text": "Nach dem IQOS-Rückschlag machten sie einen noch schlaueren Zug.",
+   "off": 0,
+   "len": 63
+  },
+  {
+   "key": "b1",
+   "scene": "b1",
+   "text": "Doch Philip Morris kam nach Amerika zurück – ein Jahr nach dem Verbot, mit einer kleinen weißen Dose für sechzehn Milliarden.",
+   "off": 65,
+   "len": 125
+  },
+  {
+   "key": "b2",
+   "scene": "b2",
+   "text": "Darin ist nicht mal… Tabak.",
+   "off": 192,
+   "len": 27
+  },
+  {
+   "key": "s1",
+   "scene": "s1",
+   "text": "Man sieht sie nicht, man hört sie nicht, und sie riechen nach nichts: Ein kleiner weißer Beutel kommt unter die Oberlippe – fertig.",
+   "off": 221,
+   "len": 131
+  },
+  {
+   "key": "s2",
+   "scene": "s2",
+   "text": "Erst brennt es am Zahnfleisch, das Nikotin geht direkt darüber ins Blut, und von außen merkt man nichts: kein Rauch, kein Dampf – ob im Meeting oder im Flugzeug.",
+   "off": 354,
+   "len": 161
+  },
+  {
+   "key": "s3",
+   "scene": "s3",
+   "text": "Viele nennen solche Beutel Snus – dabei ist echter schwedischer Snus Tabak.",
+   "off": 517,
+   "len": 75
+  },
+  {
+   "key": "s4",
+   "scene": "s4",
+   "text": "Hier ist kein Tabak drin – dafür Nikotin, und das wird gewonnen… aus Tabak.",
+   "off": 594,
+   "len": 75
+  },
+  {
+   "key": "s5",
+   "scene": "s5",
+   "text": "Erfunden haben sie die Schweden – und der Marlboro-Hersteller kaufte die schwedische Firma komplett, samt amerikanischem Werk in Kentucky.",
+   "off": 671,
+   "len": 138
+  },
+  {
+   "key": "s6",
+   "scene": "s6",
+   "text": "Zwei Jahre später waren die Beutel in ganz Amerika ausverkauft – wie einst IQOS in Japan: Allein 2024 wurden dort fast sechshundert Millionen Dosen verkauft.",
+   "off": 811,
+   "len": 157
+  },
+  {
+   "key": "s7",
+   "scene": "s7",
+   "text": "2025 ließ die US-Behörde sie zu – als allererste Nikotinbeutel, und gleich mit Geschmack: Minze, Zitrus, Kaffee, Zimt.",
+   "off": 970,
+   "len": 118
+  },
+  {
+   "key": "s8",
+   "scene": "s8",
+   "text": "Fünf Jahre zuvor wurden JUUL genau solche Geschmacksrichtungen verboten.",
+   "off": 1090,
+   "len": 72
+  },
+  {
+   "key": "s9",
+   "scene": "s9",
+   "text": "Und 2026 durfte ZYN etwas, das IQOS bis heute verwehrt bleibt – über das Risiko sprechen: „ZYN statt Zigaretten – geringeres Risiko für Mund- und Lungenkrebs, Herzkrankheiten und Schlaganfall.“",
+   "off": 1164,
+   "len": 193
+  },
+  {
+   "key": "s10",
+   "scene": "s10",
+   "text": "Nur: Amerikanische Schüler rauchen kaum noch Zigaretten – und bei ihnen haben die Beutel die Zigaretten schon überholt.",
+   "off": 1359,
+   "len": 119
+  },
+  {
+   "key": "s11",
+   "scene": "s11",
+   "text": "Und keine zwei Monate später wurden stärkere Beutel zugelassen: neun und elf Milligramm statt drei und sechs.",
+   "off": 1480,
+   "len": 109
+  },
+  {
+   "key": "f1",
+   "scene": "f1",
+   "text": "Also – was wisst ihr über Nikotin?",
+   "off": 1591,
+   "len": 34
+  },
+  {
+   "key": "f2",
+   "scene": "f2",
+   "text": "Dass man es raucht, erhitzt, dampft und unter die Lippe legt – und es jedes Mal als Weg zum Aufhören verkauft wird.",
+   "off": 1627,
+   "len": 115
+  },
+  {
+   "key": "f3",
+   "scene": "f3",
+   "text": "Zieht an irgendeinem Faden – alle fünf führen zurück zu denselben Tabakriesen.",
+   "off": 1744,
+   "len": 78
+  },
+  {
+   "key": "f4",
+   "scene": "f4",
+   "text": "Ihr hört mit einem auf – und sie verkaufen euch das nächste.",
+   "off": 1824,
+   "len": 60
+  },
+  {
+   "key": "q",
+   "scene": "q",
+   "text": "Ratet mal, wer wirklich hinter Zigaretten, Vapes und Nikotinbeuteln steckt?",
+   "off": 1886,
+   "len": 75
+  }
+ ]
+}

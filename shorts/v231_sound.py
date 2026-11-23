@@ -15,7 +15,7 @@ from v180_sound import sfx_track
 import mix193 as M, v210_sound as V2, bedfill
 SR = V.SR
 C1 = os.path.join(HERE, 'out', 'v170e-ru')
-TAILF, XF = 1.5, .5   # v23.4, фильм: хвост звука пролога под главу 1; наплыв картинки
+TAILF, XF = 1.5, 0.   # v23.6, фильм: хвост звука пролога под главу 1; картинка — встык: последний кадр пролога = кадр главы 1 за 1/30 с до её кадра 0
 
 
 def ch1_gains(bedf='bed226.wav'):   # → (подложка главы 1 на старте / нарезанный грув, множитель громкости её финала — mix193.final); фильм — bed234f.wav
@@ -148,7 +148,7 @@ def build(ep):
 
 
 def film(o, TE, mw):   # v23.4: пролог фильма + глава 1 для фильма (с ночного города, film234.mp4) — наплыв XF с через темноту; звук внахлёст
-    ch = os.path.join(C1, 'film234.mp4'); cw = os.path.join(C1, 'mix234f.wav'); CUT = 2.20
+    ch = os.path.join(C1, 'film234.mp4'); cw = os.path.join(C1, 'mix234f.wav'); CUT = 0.0   # v23.6: глава с начала
     a, _ = sf.read(mw, dtype='float64'); b, _ = sf.read(cw, dtype='float64'); b = b[int(round(CUT * SR)):]
     i = int(round((TE - XF) * SR)); x = np.zeros((max(len(a), i + len(b)), 2)); x[:len(a)] += a; x[i:i + len(b)] += b
     pk = np.abs(x).max(); x = x / max(1, pk / .97)
@@ -156,7 +156,7 @@ def film(o, TE, mw):   # v23.4: пролог фильма + глава 1 для 
     for nm, sec in (('film_styk.mp4', 10.0), ('film_ch1.mp4', None)):
         out = os.path.join(o, nm); dur = [] if sec is None else ['-t', f'{TE - XF + sec:.3f}']
         subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', os.path.join(o, 'video.mp4'), '-i', ch, '-i', aw,
-                        '-filter_complex', f'[0:v]settb=1/30,setpts=PTS-STARTPTS[a];[1:v]settb=1/30,setpts=PTS-STARTPTS[b];[a][b]xfade=transition=fade:duration={XF}:offset={TE - XF:.4f},format=yuv420p[v]',
+                        '-filter_complex', f'[0:v]settb=1/30,setpts=PTS-STARTPTS[a];[1:v]settb=1/30,setpts=PTS-STARTPTS[b];' + (f'[a][b]xfade=transition=fade:duration={XF}:offset={TE - XF:.4f},format=yuv420p[v]' if XF else '[a][b]concat=n=2:v=1:a=0,format=yuv420p[v]'),
                         '-map', '[v]', '-map', '2:a', '-c:v', 'libx264', '-crf', '17', '-preset', 'medium', '-c:a', 'aac', '-b:a', '192k', '-shortest', *dur, '-movflags', '+faststart', out], check=True)
         print(out, tt_audio.report(aw) if sec is None else '')
 

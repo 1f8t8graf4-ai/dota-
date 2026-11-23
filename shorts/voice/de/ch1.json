@@ -1,0 +1,146 @@
+{
+ "voice": "kkJxCnlRCckmfFvzDW5Q",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "Was wisst ihr über Einweg-Vapes? Dass sie ein angesagter Zigarettenersatz sind – mit harmlosem Dampf nach Mango und Minze?\n\nAber wusstet ihr, dass die Flüssigkeit darin schon vor fünfzig Jahren von Tabakriesen erfunden wurde?\n\nZurück ins Jahr 1973. Das Tabakimperium R.J. Reynolds, Hersteller von Camel und Winston, bereitet einen geheimen Bericht vor.\n\nDas Hauptziel des Dokuments stand ganz offen drin:\n\n„Wir müssen uns unseren Anteil am Jugendmarkt sichern.“\n\nDoch es gab ein Problem: Normaler Tabakrauch ist zu scharf und kratzt Jugendlichen heftig im Hals.\n\nAlso mischten Chemiker Nikotin mit einer speziellen Säure und erhielten Nikotinsalz – das sich selbst in brutaler Dosis sanft inhalieren lässt.\n\nAber E-Zigaretten gab es damals noch nicht – man hatte nichts, wo man die Flüssigkeit einfüllen konnte. Also landete die geheime Formel im Archiv.\n\n1998 zwang ein Gericht die Tabakkonzerne, ihre Geheimnisse offenzulegen – und vierzehn Millionen geheime Dokumente wurden in Kalifornien veröffentlicht.\n\nWie der Zufall es wollte, gleich neben der Stanford University – wo zwei Studenten diese Papiere bald entdecken.\n\nSpäter bauen sie eine E-Zigarette, die wie ein USB-Stick aussieht – und in ihr erwacht genau dieses Salz zum Leben.\n\nEin Pod ersetzte eine ganze Schachtel Zigaretten, und weil der sanfte Dampf nicht mehr im Hals brannte, zogen Schüler ohne Pause und wurden um ein Vielfaches schneller süchtig.\n\nSchon vier Jahre später dampfte in den USA jeder vierte Highschool-Schüler – und der Hersteller von Marlboro kaufte ein Drittel der neuen Firma für dreizehn Milliarden Dollar.\n\nDer alte Plan ging perfekt auf.\n\nDie Papierzigarette wurde Geschichte, und das Tabakimperium räumte den größten Jackpot seiner Geschichte ab.\n\nGebt es zu… gerade jetzt hättet ihr Lust… auf einen Zug, oder?\n\nAber JUUL ist nur das erste von fünf Indizien. Ab hier wird die Geschichte… kälter.\n\nWollt ihr aufhören? Auch das verkauft man euch. Und zwar dieselben Leute… Wer genau – seht ihr auf YouTube.\n\nAlso… wo war ich? Ach ja!",
+ "items": [
+  {
+   "key": "Что вы знаете об одноразках? Что это модная замена сигаретам с безобидным паром со вкусом манго и мяты?",
+   "scene": "s1",
+   "text": "Was wisst ihr über Einweg-Vapes? Dass sie ein angesagter Zigarettenersatz sind – mit harmlosem Dampf nach Mango und Minze?",
+   "off": 0,
+   "len": 122
+  },
+  {
+   "key": "А знаете ли вы, что жидкость внутри них изобрели табачные гиганты ещё пятьдесят лет назад?",
+   "scene": "s1",
+   "text": "Aber wusstet ihr, dass die Flüssigkeit darin schon vor fünfzig Jahren von Tabakriesen erfunden wurde?",
+   "off": 124,
+   "len": 101
+  },
+  {
+   "key": "Вернёмся в 1973 год. Табачная империя «Рейнольдс», создатель сигарет Camel и Winston, готовит секретный отчёт.",
+   "scene": "s2",
+   "text": "Zurück ins Jahr 1973. Das Tabakimperium R.J. Reynolds, Hersteller von Camel und Winston, bereitet einen geheimen Bericht vor.",
+   "off": 227,
+   "len": 125
+  },
+  {
+   "key": "Главная цель документа звучала прямо:",
+   "scene": "s2",
+   "text": "Das Hauptziel des Dokuments stand ganz offen drin:",
+   "off": 354,
+   "len": 50
+  },
+  {
+   "key": "«Мы должны получить свою долю молодёжного рынка».",
+   "scene": "s2",
+   "text": "„Wir müssen uns unseren Anteil am Jugendmarkt sichern.“",
+   "off": 406,
+   "len": 55
+  },
+  {
+   "key": "Но вот проблема: обычный табачный дым слишком едкий и сильно дерёт горло подросткам.",
+   "scene": "s3",
+   "text": "Doch es gab ein Problem: Normaler Tabakrauch ist zu scharf und kratzt Jugendlichen heftig im Hals.",
+   "off": 463,
+   "len": 98
+  },
+  {
+   "key": "Тогда химики смешали никотин с особой кислотой и получили никотиновую соль, которая заходит мягко даже в убойной дозе.",
+   "scene": "s3",
+   "text": "Also mischten Chemiker Nikotin mit einer speziellen Säure und erhielten Nikotinsalz – das sich selbst in brutaler Dosis sanft inhalieren lässt.",
+   "off": 563,
+   "len": 143
+  },
+  {
+   "key": "Но электронных сигарет тогда ещё не продавали заливать эту жидкость было не во что. И секретную формулу спрятали в архив.",
+   "scene": "s4",
+   "text": "Aber E-Zigaretten gab es damals noch nicht – man hatte nichts, wo man die Flüssigkeit einfüllen konnte. Also landete die geheime Formel im Archiv.",
+   "off": 708,
+   "len": 146
+  },
+  {
+   "key": "В 1998 году суд заставил табачников раскрыть свои тайны, и четырнадцать миллионов секретных документов опубликовали в Калифорнии.",
+   "scene": "s4",
+   "text": "1998 zwang ein Gericht die Tabakkonzerne, ihre Geheimnisse offenzulegen – und vierzehn Millionen geheime Dokumente wurden in Kalifornien veröffentlicht.",
+   "off": 856,
+   "len": 152
+  },
+  {
+   "key": "По странному стечению обстоятельств прямо по соседству со Стэнфордским университетом, где эти бумаги вскоре находят два студента.",
+   "scene": "s5",
+   "text": "Wie der Zufall es wollte, gleich neben der Stanford University – wo zwei Studenten diese Papiere bald entdecken.",
+   "off": 1010,
+   "len": 112
+  },
+  {
+   "key": "Позже они создают электронную сигарету, похожую на флешку, внутри которой оживает та самая соль.",
+   "scene": "s5",
+   "text": "Später bauen sie eine E-Zigarette, die wie ein USB-Stick aussieht – und in ihr erwacht genau dieses Salz zum Leben.",
+   "off": 1124,
+   "len": 115
+  },
+  {
+   "key": "Один картридж заменял целую пачку сигарет, а раз мягкий пар больше не обжигал горло, школьники тянули его без остановки и подсаживались в разы быстрее.",
+   "scene": "s6",
+   "text": "Ein Pod ersetzte eine ganze Schachtel Zigaretten, und weil der sanfte Dampf nicht mehr im Hals brannte, zogen Schüler ohne Pause und wurden um ein Vielfaches schneller süchtig.",
+   "off": 1241,
+   "len": 176
+  },
+  {
+   "key": "Уже через четыре года в США парил каждый четвёртый старшеклассник, а треть новой компании за тринадцать миллиардов долларов выкупил производитель «Мальборо».",
+   "scene": "s7",
+   "text": "Schon vier Jahre später dampfte in den USA jeder vierte Highschool-Schüler – und der Hersteller von Marlboro kaufte ein Drittel der neuen Firma für dreizehn Milliarden Dollar.",
+   "off": 1419,
+   "len": 175
+  },
+  {
+   "key": "Старый план сработал идеально.",
+   "scene": "s8",
+   "text": "Der alte Plan ging perfekt auf.",
+   "off": 1596,
+   "len": 31
+  },
+  {
+   "key": "Бумажная сигарета ушла в прошлое, а табачная империя сорвала самый большой куш в своей истории.",
+   "scene": "s8",
+   "text": "Die Papierzigarette wurde Geschichte, und das Tabakimperium räumte den größten Jackpot seiner Geschichte ab.",
+   "off": 1629,
+   "len": 108
+  },
+  {
+   "key": "Признайтесь... вам ведь и сейчас захотелось... затянуться?",
+   "scene": "s8",
+   "text": "Gebt es zu… gerade jetzt hättet ihr Lust… auf einen Zug, oder?",
+   "off": 1739,
+   "len": 62
+  },
+  {
+   "key": "Но «Джул» — только первая из пяти улик. Дальше история становится... холоднее.",
+   "scene": "bridge",
+   "text": "Aber JUUL ist nur das erste von fünf Indizien. Ab hier wird die Geschichte… kälter.",
+   "off": 1803,
+   "len": 83
+  },
+  {
+   "key": "Захотите бросить вам и это продадут. Причём одни и те же люди... А вот кто именно смотрите на YouTube.",
+   "scene": "board",
+   "text": "Wollt ihr aufhören? Auch das verkauft man euch. Und zwar dieselben Leute… Wer genau – seht ihr auf YouTube.",
+   "off": 1888,
+   "len": 107
+  },
+  {
+   "key": "Так... о чём это я? А, точно!",
+   "scene": "tail",
+   "text": "Also… wo war ich? Ach ja!",
+   "off": 1997,
+   "len": 25
+  }
+ ]
+}

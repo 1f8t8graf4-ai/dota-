@@ -1,0 +1,125 @@
+{
+ "voice": "kkJxCnlRCckmfFvzDW5Q",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "Der Marlboro-Hersteller hat einmal versprochen, Zigaretten aufzugeben.\n\nEr kaufte ganze Seiten in britischen Zeitungen: „Unser Neujahrsvorsatz: Wir versuchen, Zigaretten aufzugeben.“\n\nSein Wort hat er, gelinde gesagt, nicht gehalten.\n\nMit dem Aufhören fing er schon früher an: 2014 tauchte im japanischen Nagoya und im italienischen Mailand eine Zigarette auf, die man nicht anzünden kann.\n\nDen Tabak darin erhitzt ein Heizelement – nur halb so heiß wie eine Flamme: Die Jacke riecht nicht, es gibt keine Asche, und ziehen kann man sogar im Auto.\n\nDas ist IQOS – und als 2016 Comedians in einer beliebten japanischen Show davon schwärmten, war IQOS überall ausverkauft.\n\nKein Feuer – also harmlos?\n\nEin Jahr später fingen Schweizer Forscher diesen „Dampf“ ein und fanden dieselben Giftstoffe wie im Rauch. Von vielen weniger, von einem sogar mehr – und beim Nikotin vierundachtzig Prozent einer Zigarette.\n\nIhre Studie nannten sie schlicht: „Rauch unter anderem Namen“.\n\n2020 erlaubte die US-Behörde den Hinweis, dass IQOS weniger Schadstoffe enthält – aber „weniger schädlich“ dürfen sie bis heute nicht sagen.\n\nErinnert ihr euch an R.J. Reynolds – die 1973 nach Wegen suchten, Jugendliche süchtig zu machen?\n\nIhre eigenen Zigaretten ohne Feuer setzten sich nicht durch: Eine mit glühender Kohlespitze verschlang über dreihundert Millionen Dollar.\n\nDafür überlebten ihre alten Patente: 2021 entschied die US-Handelskommission, dass IQOS sie verletzt – und warf es aus Amerika raus.\n\nUnd das Versprechen, aufzuhören? 2024 hatte IQOS zweiunddreißig Millionen Nutzer – und der Konzern verkaufte sechshundertsiebzehn Milliarden Zigaretten, mehr als im Jahr davor.\n\nSie hören genauso auf wie ihr.\n\nRatet mal, womit sie doch noch nach Amerika zurückkamen?",
+ "items": [
+  {
+   "key": "s1",
+   "scene": "s1",
+   "text": "Der Marlboro-Hersteller hat einmal versprochen, Zigaretten aufzugeben.",
+   "off": 0,
+   "len": 70
+  },
+  {
+   "key": "s2",
+   "scene": "s2",
+   "text": "Er kaufte ganze Seiten in britischen Zeitungen: „Unser Neujahrsvorsatz: Wir versuchen, Zigaretten aufzugeben.“",
+   "off": 72,
+   "len": 110
+  },
+  {
+   "key": "s3",
+   "scene": "s3",
+   "text": "Sein Wort hat er, gelinde gesagt, nicht gehalten.",
+   "off": 184,
+   "len": 49
+  },
+  {
+   "key": "s4",
+   "scene": "s4",
+   "text": "Mit dem Aufhören fing er schon früher an: 2014 tauchte im japanischen Nagoya und im italienischen Mailand eine Zigarette auf, die man nicht anzünden kann.",
+   "off": 235,
+   "len": 154
+  },
+  {
+   "key": "s5",
+   "scene": "s5",
+   "text": "Den Tabak darin erhitzt ein Heizelement – nur halb so heiß wie eine Flamme: Die Jacke riecht nicht, es gibt keine Asche, und ziehen kann man sogar im Auto.",
+   "off": 391,
+   "len": 155
+  },
+  {
+   "key": "s6",
+   "scene": "s6",
+   "text": "Das ist IQOS – und als 2016 Comedians in einer beliebten japanischen Show davon schwärmten, war IQOS überall ausverkauft.",
+   "off": 548,
+   "len": 121
+  },
+  {
+   "key": "s7",
+   "scene": "s7",
+   "text": "Kein Feuer – also harmlos?",
+   "off": 671,
+   "len": 26
+  },
+  {
+   "key": "s8",
+   "scene": "s8",
+   "text": "Ein Jahr später fingen Schweizer Forscher diesen „Dampf“ ein und fanden dieselben Giftstoffe wie im Rauch. Von vielen weniger, von einem sogar mehr – und beim Nikotin vierundachtzig Prozent einer Zigarette.",
+   "off": 699,
+   "len": 206
+  },
+  {
+   "key": "s9",
+   "scene": "s9",
+   "text": "Ihre Studie nannten sie schlicht: „Rauch unter anderem Namen“.",
+   "off": 907,
+   "len": 62
+  },
+  {
+   "key": "s10",
+   "scene": "s10",
+   "text": "2020 erlaubte die US-Behörde den Hinweis, dass IQOS weniger Schadstoffe enthält – aber „weniger schädlich“ dürfen sie bis heute nicht sagen.",
+   "off": 971,
+   "len": 140
+  },
+  {
+   "key": "s11",
+   "scene": "s11",
+   "text": "Erinnert ihr euch an R.J. Reynolds – die 1973 nach Wegen suchten, Jugendliche süchtig zu machen?",
+   "off": 1113,
+   "len": 96
+  },
+  {
+   "key": "s12",
+   "scene": "s12",
+   "text": "Ihre eigenen Zigaretten ohne Feuer setzten sich nicht durch: Eine mit glühender Kohlespitze verschlang über dreihundert Millionen Dollar.",
+   "off": 1211,
+   "len": 137
+  },
+  {
+   "key": "s13",
+   "scene": "s13",
+   "text": "Dafür überlebten ihre alten Patente: 2021 entschied die US-Handelskommission, dass IQOS sie verletzt – und warf es aus Amerika raus.",
+   "off": 1350,
+   "len": 132
+  },
+  {
+   "key": "s14",
+   "scene": "s14",
+   "text": "Und das Versprechen, aufzuhören? 2024 hatte IQOS zweiunddreißig Millionen Nutzer – und der Konzern verkaufte sechshundertsiebzehn Milliarden Zigaretten, mehr als im Jahr davor.",
+   "off": 1484,
+   "len": 176
+  },
+  {
+   "key": "s15",
+   "scene": "s15",
+   "text": "Sie hören genauso auf wie ihr.",
+   "off": 1662,
+   "len": 30
+  },
+  {
+   "key": "q",
+   "scene": "q",
+   "text": "Ratet mal, womit sie doch noch nach Amerika zurückkamen?",
+   "off": 1694,
+   "len": 56
+  }
+ ]
+}

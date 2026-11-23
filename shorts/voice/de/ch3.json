@@ -1,0 +1,111 @@
+{
+ "voice": "kkJxCnlRCckmfFvzDW5Q",
+ "model": "eleven_v4",
+ "settings": {
+  "stability": 0.4,
+  "similarity_boost": 0.75,
+  "style": 0.25,
+  "speed": 1.0
+ },
+ "text": "Das ist Marlboro – und vor dem Cowboy-Ruhm hatte diese Marke schon ein ganzes Leben hinter sich.\n\nDie ersten dreißig Jahre war sie eine Damenmarke: der Slogan „Mild as May“, elegante Anzeigen in Magazinen und ein rotes Mundstück, auf dem man keinen Lippenstift sah.\n\nBis 1954 rauchte sie nur noch eine Handvoll Frauen – ein Viertelprozent des Marktes. Die Marke war fast tot.\n\nGerettet hat sie die Angst. Forscher bestrichen Mäuse mit Tabakteer, die Mäuse bekamen Tumore – und Amerika rauchte zum ersten Mal seit der Großen Depression weniger.\n\nRaucher stürzten sich auf Filterzigaretten – nur Männer schämten sich dafür: Filter waren was für Weicheier.\n\nUnd Philip Morris schenkt derselben Marke ein zweites Leben: einen Filter, eine harte Schachtel, die man vor allen mit einem Klick öffnet, und den Chicagoer Werber Leo Burnett.\n\nBurnett setzt in der Werbung auf einen Cowboy – nach seinen Worten das unverkennbarste Symbol für einen Mann in Amerika.\n\nEin Jahr später ist die einstige Damenmarke schon die Nummer vier im Land – und 1972 die Nummer eins der Welt.\n\nNur: Die Cowboys aus der Werbung rauchten wirklich.\n\nWayne McLaren rauchte anderthalb Schachteln am Tag. 1990 wurde bei ihm Lungenkrebs festgestellt, im letzten Lebensjahr drehte er Anti-Raucher-Spots – und starb mit einundfünfzig.\n\nInsgesamt starben mindestens vier Marlboro-Cowboys an Lungenkrankheiten.\n\nErinnert ihr euch an die dreizehn Milliarden, die der Marlboro-Hersteller für ein Drittel von JUUL zahlte? Fast alles hat er später verloren – und es locker verkraftet: Die rot-weiße Schachtel ernährt ihn bis heute.\n\nDas größte Symbol rauer Männlichkeit kam vor hundert Jahren auf den Markt… als zarte Zigaretten für Damen.\n\nUnd wisst ihr, was der Marlboro-Hersteller einmal versprochen hat?",
+ "items": [
+  {
+   "key": "Это «Мальборо», и до ковбойской славы эта марка успела прожить целую жизнь.",
+   "scene": "s1",
+   "text": "Das ist Marlboro – und vor dem Cowboy-Ruhm hatte diese Marke schon ein ganzes Leben hinter sich.",
+   "off": 0,
+   "len": 96
+  },
+  {
+   "key": "Первые тридцать лет она была дамской: слоган «мягкие, как май», изящная реклама в журналах и красный кончик, на котором не видно помады.",
+   "scene": "s2",
+   "text": "Die ersten dreißig Jahre war sie eine Damenmarke: der Slogan „Mild as May“, elegante Anzeigen in Magazinen und ein rotes Mundstück, auf dem man keinen Lippenstift sah.",
+   "off": 98,
+   "len": 167
+  },
+  {
+   "key": "К пятьдесят четвёртому году её курила горстка женщин — четверть процента рынка, марка почти умерла.",
+   "scene": "s3",
+   "text": "Bis 1954 rauchte sie nur noch eine Handvoll Frauen – ein Viertelprozent des Marktes. Die Marke war fast tot.",
+   "off": 267,
+   "len": 108
+  },
+  {
+   "key": "Спас её страх. Учёные намазали мышей табачной смолой, у мышей выросли опухоли, и Америка впервые со времён Великой депрессии стала курить меньше.",
+   "scene": "s4",
+   "text": "Gerettet hat sie die Angst. Forscher bestrichen Mäuse mit Tabakteer, die Mäuse bekamen Tumore – und Amerika rauchte zum ersten Mal seit der Großen Depression weniger.",
+   "off": 377,
+   "len": 166
+  },
+  {
+   "key": "Курильщики бросились к сигаретам с фильтром, только мужчины их стеснялись: это считалось куревом для неженок.",
+   "scene": "s5",
+   "text": "Raucher stürzten sich auf Filterzigaretten – nur Männer schämten sich dafür: Filter waren was für Weicheier.",
+   "off": 545,
+   "len": 108
+  },
+  {
+   "key": "И «Филип Моррис» дарит той же марке вторую жизнь: фильтр, жёсткую пачку, которую открывают со щелчком у всех на виду, и чикагского рекламщика Лео Бёрнетта.",
+   "scene": "s6",
+   "text": "Und Philip Morris schenkt derselben Marke ein zweites Leben: einen Filter, eine harte Schachtel, die man vor allen mit einem Klick öffnet, und den Chicagoer Werber Leo Burnett.",
+   "off": 655,
+   "len": 176
+  },
+  {
+   "key": "Бёрнетт ставит на рекламу ковбоя — по его словам, самый понятный в Америке символ мужчины.",
+   "scene": "s7",
+   "text": "Burnett setzt in der Werbung auf einen Cowboy – nach seinen Worten das unverkennbarste Symbol für einen Mann in Amerika.",
+   "off": 833,
+   "len": 120
+  },
+  {
+   "key": "Через год бывшая дамская марка уже четвёртая в стране, а в семьдесят втором — первая в мире.",
+   "scene": "s8",
+   "text": "Ein Jahr später ist die einstige Damenmarke schon die Nummer vier im Land – und 1972 die Nummer eins der Welt.",
+   "off": 955,
+   "len": 110
+  },
+  {
+   "key": "Вот только ковбои с рекламы курили по-настоящему.",
+   "scene": "s9",
+   "text": "Nur: Die Cowboys aus der Werbung rauchten wirklich.",
+   "off": 1067,
+   "len": 51
+  },
+  {
+   "key": "Уэйн Макларен выкуривал по полторы пачки в день, в девяностом у него нашли рак лёгких, в последний год жизни он снимался в рекламе против курения и умер в пятьдесят один.",
+   "scene": "s10",
+   "text": "Wayne McLaren rauchte anderthalb Schachteln am Tag. 1990 wurde bei ihm Lungenkrebs festgestellt, im letzten Lebensjahr drehte er Anti-Raucher-Spots – und starb mit einundfünfzig.",
+   "off": 1120,
+   "len": 178
+  },
+  {
+   "key": "Всего от болезней лёгких умерли как минимум четверо ковбоев «Мальборо».",
+   "scene": "s11",
+   "text": "Insgesamt starben mindestens vier Marlboro-Cowboys an Lungenkrankheiten.",
+   "off": 1300,
+   "len": 72
+  },
+  {
+   "key": "Помните тринадцать миллиардов, которые производитель «Мальборо» отдал за треть «Джула»? Почти все он потом потерял — и спокойно пережил: красно-белая пачка кормит его до сих пор.",
+   "scene": "s12",
+   "text": "Erinnert ihr euch an die dreizehn Milliarden, die der Marlboro-Hersteller für ein Drittel von JUUL zahlte? Fast alles hat er später verloren – und es locker verkraftet: Die rot-weiße Schachtel ernährt ihn bis heute.",
+   "off": 1374,
+   "len": 215
+  },
+  {
+   "key": "Главный символ мужской брутальности век назад выводили на рынок... как нежные сигареты для леди.",
+   "scene": "hook",
+   "text": "Das größte Symbol rauer Männlichkeit kam vor hundert Jahren auf den Markt… als zarte Zigaretten für Damen.",
+   "off": 1591,
+   "len": 106
+  },
+  {
+   "key": "А знаете, что производитель «Мальборо» однажды пообещал?",
+   "scene": "q3",
+   "text": "Und wisst ihr, was der Marlboro-Hersteller einmal versprochen hat?",
+   "off": 1699,
+   "len": 66
+  }
+ ]
+}
