@@ -226,7 +226,7 @@ STR = {
     '$12,8 МЛРД': ('$12.8B', '12,8 MRD. $'),
     'ЧЕРТЁЖ · 2015': ('BLUEPRINT · 2015', 'BAUPLAN · 2015'), 'СТОЛ · 2015': ('DESK · 2015', 'SCHREIBTISCH · 2015'), 'СНИМОК · ПАР': ('X-RAY · VAPOR', 'RÖNTGEN · DAMPF'),
     'ШКОЛА · США · 2019': ('SCHOOL · USA · 2019', 'SCHULE · USA · 2019'), 'СДЕЛКА · 2018': ('DEAL · 2018', 'DEAL · 2018'), 'ПЛАН · 1973': ('PLAN · 1973', 'PLAN · 1973'),
-    'ДЕЛО ОТКРЫТО': ('CASE OPEN', 'FALL ERÖFFNET'), '▶ ТОЛЬКО НА YOUTUBE': ('▶ ONLY ON YOUTUBE', '▶ NUR AUF YOUTUBE'),
+    'ДЕЛО ОТКРЫТО': ('CASE OPEN', 'FALL ERÖFFNET'), '▶ ТОЛЬКО НА YOUTUBE': ('▶ ONLY ON YOUTUBE', '▶ NUR AUF YOUTUBE'), 'ТОЛЬКО НА YOUTUBE': ('ONLY ON YOUTUBE', 'NUR AUF YOUTUBE'),   # v23.6: штамп шортса главы 1 (без ▶)
     # ---------- глава 2 «Лёд» ----------
     'МАНГО-ЛЁД': ('MANGO ICE', 'MANGO-EIS'), 'ВЕЙПЫ 24/7': ('VAPES 24/7', 'VAPES 24/7'), 'ЗАКОН': ('LAW', 'GESETZ'),
     'ДЕКАБРЬ': ('DECEMBER', 'DEZEMBER'), 'ЯНВАРЬ': ('JANUARY', 'JANUAR'), 'СКАНДАЛ': ('SCANDAL', 'SKANDAL'),
