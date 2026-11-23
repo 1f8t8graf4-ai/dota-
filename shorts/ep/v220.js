@@ -994,10 +994,13 @@
     c.beginPath(); for (let x = -700; x <= 1800; x += 30) { const yy = y + 18 * Math.sin(x / 140 + t * 1.2); x === -700 ? c.moveTo(x, yy) : c.lineTo(x, yy) } lnB(c, 8, 'rgba(201,220,242,.7)');
     c.fillStyle = 'rgba(255,236,190,.08)'; c.fillRect(-700, y + 30, 2500, 60);
   }
+  function tinUp(t) {   // v23.7, фильм: после волны баночка спокойно всплывает из-под переднего вала (1 — под водой, 0 — качается на месте); в фото на доске и в шортсе — на месте
+    const a = T0; return MODE === 'y' && t > a.j0 - 1 && t < a.j0 + 1.3 ? 1 - eo(at(t, a.j0, a.j0 + 1.2)) : 0;
+  }
   function tinPos0(t) {   // баночка: качается на волне, на «запрета» её выносит на песок; b2 — поворачивается крышкой к нам
-    const a = T0, k = eio(at(t, a.zap - .1, a.zap + 1.5)), wet = 1 - k, turn = eio(at(t, a.net - .25, a.dazhe + .3));
-    const x = lp(540, 556, k) + Math.sin(t * 1.1) * 10 * wet, y = lp(1180, 1236, k) + Math.sin(t * 1.7) * 16 * wet - 20 * turn;
-    return { x, y, R: lp(lp(210, 222, k), 236, turn), ty: lp(.46 + .06 * Math.sin(t * 1.7) * wet, .9, turn), r: Math.sin(t * 1.3) * .07 * wet, lid: eio(at(t, a.dazhe + .05, a.tab - .1)) };
+    const a = T0, k = eio(at(t, a.zap - .1, a.zap + 1.5)), wet = 1 - k, turn = eio(at(t, a.net - .25, a.dazhe + .3)), up = tinUp(t);
+    const x = lp(540, 556, k) + Math.sin(t * 1.1) * 10 * wet, y = lp(1180, 1236, k) + Math.sin(t * 1.7) * 16 * wet - 20 * turn + 320 * up;
+    return { x, y, R: lp(lp(210, 222, k), 236, turn), ty: lp(.46 + .06 * Math.sin(t * 1.7) * wet, .9, turn), r: Math.sin(t * 1.3) * .07 * wet + .1 * up, lid: eio(at(t, a.dazhe + .05, a.tab - .1)) };
   }
   function oceanWorld(c, t, q, o = {}) {   // o.noTin — без баночки (v22.4: в фото 2022 на доске, пока баночка едет на гребне волны)
     const a = T0, up = eio(at(t, a.zap - .05, a.zap + .7));
@@ -1014,6 +1017,9 @@
       const wet = 1 - at(t, a.zap + .2, a.zap + 1.2); if (wet > 0) { cc.save(); cc.globalAlpha *= wet; cc.beginPath(); cc.moveTo(-700, 2400);
         for (let x = -700; x <= 1800; x += 20) cc.lineTo(x, 1330 + 30 * Math.sin(x / 160 + t * 1.7)); cc.lineTo(1800, 2400); cc.closePath(); fill(cc, C5.sea0);
         cc.beginPath(); for (let x = -700; x <= 1800; x += 20) { const yy = 1330 + 30 * Math.sin(x / 160 + t * 1.7); x === -700 ? cc.moveTo(x, yy) : cc.lineTo(x, yy) } lnB(cc, 5, 'rgba(201,220,242,.55)'); cc.restore() }
+      if (MODE === 'y' && t > a.j0 && t < a.j0 + 1.6) for (let i = 0; i < 2; i++) {   // v23.7: баночка прорезала воду — два тихих круга расходятся по переднему валу и тают
+        const u = at(t, a.j0 + .12 + i * .25, a.j0 + 1.25 + i * .25); if (u <= 0 || u >= 1) continue; const rx = p.R * lp(.95, 1.9, eo(u)), wy = 1330 + 30 * Math.sin(p.x / 160 + t * 1.7) + 6;
+        cc.beginPath(); cc.ellipse(p.x, wy, rx, rx * .16, 0, 0, TAU); lnB(cc, 4, `rgba(201,220,242,${.4 * (1 - u)})`) }
       // ценник лёг на баночку: барабан до $16 млрд — досчитывает к «миллиардов» (по времени кадра FT)
       if (t >= a.shest - .35) { const k = eo(at(t, a.shest - .35, a.shest + .1)), out = at(t, a.dazhe - .3, a.dazhe + .1); if (out < 1) { cc.save(); cc.globalAlpha *= 1 - out;
         priceTag(cc, p.x + lp(120, 40, k), p.y + lp(-420, -150, k), lp(.62, 1, k), 1, eo(at(FT, a.za - .05, a.mlrdA))); cc.restore() } }
@@ -1957,10 +1963,6 @@
     for (let i = 0; i < 7; i++) circ(c, 172 - i * 6 + (i % 2) * 10, 30 + i * 12, 9 - i * .8, C5.foam);   // пена срывается с кончика губы
     c.restore();
   }
-  function crestTin(c, t, cx, cy, s, sink) {   // белая баночка на гребне: качается, потом гребень уходит вперёд и её затягивает под воду
-    const R = 112 * s, x = cx - 34 * s - sink * 90 * s, y = cy - 76 * s + sink * 360 * s, r = .22 * Math.sin(t * 7.4) - .1;
-    c.save(); c.translate(x, y); c.rotate(r); tin5(c, 0, 0, R, .48 + .07 * Math.sin(t * 5.1), 0, { shc: 'rgba(4,8,26,.35)' }); c.restore();
-  }
   function foamCap(c, S, x0, x1, w, t, ph) {   // сплошная пенная шапка вдоль поверхности S на [x0, x1]: толщина w(x), неровный верх, белая кромка
     if (x1 <= x0) return; const n = Math.max(8, Math.ceil((x1 - x0) / 7)), top = [], bot = [];
     for (let i = 0; i <= n; i++) { const x = lp(x0, x1, i / n), r = w(x), y = S(x); top.push([x, y - r * (1 + .3 * Math.sin(x / 9 + t * 8 + ph * 1.7))]); bot.push([x, y + r * .45]) }
@@ -1968,22 +1970,21 @@
     c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y + 2) : c.moveTo(x, y + 2)); lnB(c, 3, '#FFFFFF');
   }
   function waveIn5(c, t, J, q) {
-    const u = at(t, J.w0, J.cov); if (u <= 0) return; const ue = u * u * (3 - 2 * u), [cx, cy] = waveCrest(ue), s = lp(1, 1.7, ue), sink = at(ue, .6, .8);
-    c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
-    if (sink > 0) crestTin(c, t, cx, cy, s, sink);   // уже под водой
+    const u = at(t, J.w0, J.cov); if (u <= 0) return; const ue = u * u * (3 - 2 * u), [cx, cy] = waveCrest(ue), s = lp(1, 1.7, ue);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0);   // v23.7: баночки на гребне больше нет (Андрей: «убери приклеенную к гребню банку») — она всплывает уже в океане (tinPos0)
+    const bf = 1 - at(t, J.j0 - .35, J.j0);   // пузыри в толще воды тают за 0,35 с до кадра 0 океана
     for (let L = 0; L < 3; L++) {   // слои: 0 — дальний (светлее, выше-левее), 2 — ближний
       const ox = (L - 2) * 58 * s * (1 - at(ue, .8, 1)), oy = (L - 2) * 50 * s * (1 - at(ue, .8, 1)), S = x => waveSurf(x - ox, cx, cy, s, ue, t + L * .7) + oy;
       const path = () => { c.beginPath(); c.moveTo(-140, 2300); for (let x = -140; x <= 1220; x += 8) c.lineTo(x, S(x)); c.lineTo(1220, 2300); c.closePath() };
       const surf = () => { c.beginPath(); for (let x = -140; x <= 1220; x += 8) { const y = S(x); x === -140 ? c.moveTo(x, y) : c.lineTo(x, y) } };
       path(); fill(c, WCOL[L]);
       if (L === 2) { c.save(); path(); c.clip(); surf(); lnB(c, 150 * s, C5.sea1); surf(); lnB(c, 52 * s, C5.sea2);
-        for (let i = 0; i < 14; i++) { const bx = -40 + 1160 * H1(i * 5.3), by = S(bx) + 60 * s + lp(900, 0, (t * .8 + H1(i * 2.1)) % 1) * s; circ(c, bx + 6 * Math.sin(t * 5 + i), by, (4 + 7 * H1(i + 6)) * s, 'rgba(201,220,242,.18)') }   // пузыри в толще воды
+        for (let i = 0; i < 14; i++) { const bx = -40 + 1160 * H1(i * 5.3), by = S(bx) + 60 * s + lp(900, 0, (t * .8 + H1(i * 2.1)) % 1) * s; if (bf > 0) circ(c, bx + 6 * Math.sin(t * 5 + i), by, (4 + 7 * H1(i + 6)) * s, `rgba(201,220,242,${.18 * bf})`) }   // пузыри в толще воды
         c.restore() }
       const fx0 = cx + ox, nF = L === 2 ? 1 : .55;   // пена на гребне слоя
       foamCap(c, S, fx0 - 380 * s * nF, fx0 + 8 * s, x => (2 + 13 * Math.pow(cl(1 - (fx0 - x) / (380 * s * nF)), .8)) * s * nF, t, L);
     }
     lip5(c, cx, cy, s);
-    if (sink <= 0) crestTin(c, t, cx, cy, s, 0);
     for (let i = 0; i < 24; i++) { const f = (t * 1.9 + H1(i * 3.3)) % 1, bx = cx + (50 + 180 * H1(i)) * s, by = cy - (10 + 130 * H1(i + 4)) * s;   // брызги впереди гребня
       circ(c, bx + 80 * s * f, by - 130 * s * f + 100 * s * f * f, (3 + 5 * H1(i + 9)) * s, rgba('#E6F0FF', .85 * (1 - f))) }
     coverFly5(c, t, J, q);
@@ -1997,18 +1998,20 @@
     c.save(); c.globalAlpha *= a; c.translate(X + 1150 * tau + 500 * tau * tau, Y - 980 * tau + 420 * tau * tau); c.rotate(2.4 * tau); const k = 1 - .3 * at(tau, 0, .7), fy = .62 + .38 * Math.cos(5.2 * tau);   // v23.5: кувырок без ребра — не сжимается в чёрную полоску
     c.scale(1, fy); c.drawImage(coverImg(), -S0 * k / 2, -S0 * k / 2, S0 * k, S0 * k); c.restore();
   }
-  function surface5(c, t, J) {   // v23.6: камера выныривает — линия воды уходит вниз, и ночной океан (кадр 0) едет вниз вместе с ней: баночка выплывает на волне, а не вырезается шторкой
-    const k = at(t, J.cov - .12, J.j0); if (k <= 0) return; const e = k * k * (3 - 2 * k) * .35 + (1 - (1 - k) * (1 - k)) * .65, base = lp(-170, 1330, e), amp = lp(58, 30, e), L = x => base + amp * Math.sin(x / 160 + t * 1.7) + 9 * (1 - e) * Math.sin(x / 47 - t * 3.1);
-    const dy = base - 1330, sc = lp(1.07, 1, e);   // мир над водой — на месте относительно своей линии воды (передний вал кадра 0 = линия воды)
+  function surface5(c, t, J) {   // v23.7 (Андрей: «волна на откате = передний слой моря 5-й главы, пена и пузырьки растворяются за 0,35 с, банка спокойно выныривает
+    // уже в воде, без скачка»): линия воды плавно опускается и ложится ровно на передний вал кадра 0 (1330, та же синусоида); мир над водой стоит на месте
+    // (было: ехал вниз вместе с линией — баночка выскакивала сверху), только чуть отъезжает (1,05 → 1); под линией — вода самой волны (waveIn5);
+    // пена на кромке, светлая полоса под ней и пузыри тают за 0,35 с до кадра 0; баночка всплывает уже в океане (tinPos0). Откат — 0,6 с (с J.cov − 0,3:
+    // линия входит в кадр, когда гребень уже ушёл вверх)
+    const k = at(t, J.cov - .3, J.j0); if (k <= 0) return; const e = k * k * (3 - 2 * k), base = lp(-170, 1330, e), amp = lp(58, 30, e), L = x => base + amp * Math.sin(x / 160 + t * 1.7) + 9 * (1 - e) * Math.sin(x / 47 - t * 3.1);
+    const fo = 1 - at(t, J.j0 - .35, J.j0), sc = lp(1.05, 1, e);
     c.save(); c.setTransform(1, 0, 0, 1, 0, 0);
     c.save(); c.beginPath(); c.moveTo(-100, -100); c.lineTo(1180, -100); for (let x = 1180; x >= -100; x -= 20) c.lineTo(x, L(x)); c.closePath(); c.clip();
-    c.translate(540, base); c.scale(sc, sc); c.translate(-540, -1330); oceanWorld(c, t, Q0); c.restore();
-    c.beginPath(); c.moveTo(-700, 2400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, L(x)); c.lineTo(1800, 2400); c.closePath(); fill(c, C5.sea0);
-    c.save(); c.beginPath(); c.moveTo(-700, 2400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, L(x)); c.lineTo(1800, 2400); c.closePath(); c.clip();   // под водой: светлая полоса у поверхности
-    const g = c.createLinearGradient(0, base - 40, 0, base + 260); g.addColorStop(0, 'rgba(120,170,220,.38)'); g.addColorStop(1, 'rgba(120,170,220,0)'); c.fillStyle = g; c.fillRect(-100, base - 60, 1280, 340); c.restore();
-    for (let i = 0; i < 16; i++) { const bx = 60 + 960 * H1(i * 7.7), by = lp(1900, base + 40, (t * .9 + H1(i * 1.9)) % 1); if (by > L(bx) + 20) circ(c, bx + 8 * Math.sin(t * 6 + i), by, (5 + 9 * H1(i + 2)) * (1 - k * .6), 'rgba(201,220,242,.22)') }   // пузыри
-    c.beginPath(); for (let x = -700; x <= 1800; x += 20) { const y = L(x); x === -700 ? c.moveTo(x, y) : c.lineTo(x, y) } lnB(c, 5, 'rgba(201,220,242,.55)');
-    const fo = 1 - at(k, .55, 1); if (fo > 0) foamCap(c, x => L(x) - 2, -40, 1120, x => (5 + 5 * Math.sin(x / 37 + 1.3)) * fo + 2 * fo, t, 3);   // пена на кромке тает к кадру 0
+    c.translate(540, 960); c.scale(sc, sc); c.translate(-540, -960); oceanWorld(c, t, Q0); c.restore();
+    if (fo > 0) { c.save(); c.beginPath(); c.moveTo(-700, 2400); for (let x = -700; x <= 1800; x += 20) c.lineTo(x, L(x)); c.lineTo(1800, 2400); c.closePath(); c.clip();   // под водой: светлая полоса у поверхности
+      const g = c.createLinearGradient(0, base - 40, 0, base + 260); g.addColorStop(0, `rgba(120,170,220,${.38 * fo})`); g.addColorStop(1, 'rgba(120,170,220,0)'); c.fillStyle = g; c.fillRect(-100, base - 60, 1280, 340); c.restore() }
+    c.beginPath(); for (let x = -700; x <= 1800; x += 20) { const y = L(x); x === -700 ? c.moveTo(x, y) : c.lineTo(x, y) } lnB(c, 5, 'rgba(201,220,242,.55)');   // кромка — как у переднего вала океана
+    if (fo > 0) foamCap(c, x => L(x) - 2, -40, 1120, x => (7 + 5 * Math.sin(x / 37 + 1.3)) * fo, t, 3);   // пена на кромке тает к кадру 0
     c.restore();
   }
   function boardStartShot(c, t) {
@@ -2018,7 +2021,7 @@
   }
   function boardStartCues(Q) {
     const J = J5; Q(J.th0, 'whip', .28, -.4); Q(J.th1 - .05, 'plop', .3, .3); Q(J.th1, 'whip', .22, .3);
-    Q(J.w0 - .15, 'wave', .36, -.5); Q(J.hitT, 'splash', .38, .1); Q(J.hitT + .02, 'papers', .25, .4); Q(J.cov - .25, 'wave', .28); Q(J.cov, 'deep', .32); Q(J.j0 - .2, 'splash', .22);   // v23.6: вода тише (пик шума волны резал)
+    Q(J.w0 - .15, 'surf0', 1, -.2); Q(J.j0, 'surf1', 1); Q(J.hitT, 'splash', .25, .1); Q(J.hitT + .02, 'papers', .25, .4);   // v23.7: вместо хрипящего сэмпла wave и deep — мягкий низкий прибой до кадра 0 океана, дальше затухает 0,45 с
   }
   // ---------- вода поднимается (конец строки 11): за ней — тот же ночной океан ----------
   function flood5(c, t, k, tO) {
@@ -2138,9 +2141,9 @@
     poly(c, [x - L, y, x - L * 1.02, y - L * 1.02, x, y - L]); lnB(c, 3, 'rgba(255,236,190,.35)'); c.restore();
   }
   function boardCues5(Q) {
-    const a = T7; Q(a.j + .05, 'wave', .5); Q(a.j + .3, 'splash', .45); Q(a.fl1 + .1, 'whoosh', .4); Q(a.sh1 - .1, 'papers', .3); Q(a.sh1, 'plop', .3);
+    const a = T7; Q(a.j + .05, 'surf0', 1.4); Q(a.fl1 + .1, 'surf1', 1); Q(a.fl1 + .1, 'whoosh', .4);   // v23.7: вода поднимается — мягкий прибой вместо wave + splash Q(a.sh1 - .1, 'papers', .3); Q(a.sh1, 'plop', .3);
     if (MODE === 'y') Q(a.sh1 + .1, 'whoosh', .3);
-    else { for (let i = 0; i < 5; i++) Q(a.ugad - .1 + i * .12, 'plop', .25, -.4 + i * .2); Q(a.ugad + .8, 'chain', .35); Q(a.obor - .3, 'whoosh', .45); Q(a.obor + .2, 'deep', .35); Q(a.obor + .8, 'whoosh', .35); Q(a.vEnd, 'stamp', .55); Q(a.end - .6, 'dive', .5); Q(a.end - .2, 'wave', .35) }
+    else { for (let i = 0; i < 5; i++) Q(a.ugad - .1 + i * .12, 'plop', .25, -.4 + i * .2); Q(a.ugad + .8, 'chain', .35); Q(a.obor - .3, 'whoosh', .45); Q(a.obor + .2, 'deep', .35); Q(a.obor + .8, 'whoosh', .35); Q(a.vEnd, 'stamp', .55); Q(a.end - .6, 'dive', .5); Q(a.end - .8, 'surf0', 1); Q(a.end - .5, 'surf1', 1) }   // v23.7: прибой гаснет до шва петли
   }
   // ================= финал фильма (финал Б, f1–f4) — v22.2: собран заново по ТЗ Gemini =================
   // f1 «Так что вы знаете о никотине?» — свет гаснет до луча на доске, маркер пишет название на тёмной полосе над доской.
@@ -2327,7 +2330,7 @@
   }
   function cues() {   // звуки по событиям (мягкие)
     allInit(); const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
-    const o = T0; Q(Math.max(.05, o.fil - 1.2), 'wave', .35); Q(o.fil, 'plop', .3, .3); Q(o.cher, 'shimmer', .2); Q(o.zap, 'chain', .35, .3); Q(o.zap + .5, 'splash', .4); Q(o.shest, 'counter', .45); Q(o.dazhe, 'drawer', .3); Q(o.tab, 'marker', .35);
+    const o = T0; if (MODE !== 'y') { Q(.05, 'surf0', 1); Q(Math.max(.5, o.fil - .4), 'surf1', 1) }   // v23.7: океан — мягкий прибой вместо хрипящего wave (в фильме звук волны — у стыка, 80-board.js) Q(o.fil, 'plop', .3, .3); Q(o.cher, 'shimmer', .2); Q(o.zap, 'chain', .35, .3); Q(o.zap + .5, 'splash', .4); Q(o.shest, 'counter', .45); Q(o.dazhe, 'drawer', .3); Q(o.tab, 'marker', .35);
     Q(o.fly, 'whoosh', .45); Q(o.sw + .2, 'papers', .35);
     const f = T1; Q(f.vid, 'plop', .25, -.2); Q(f.sly, 'plop', .25); Q(f.pah, 'plop', .25, .2); Q(f.gub - .2, 'xray', .4); Q(f.shch, 'glassbulb', .35); Q(f.krov, 'shimmer', .25);
     Q(f.dym, 'puff', .25, -.3); Q(f.par, 'puff', .25, .3); Q(f.cab0, 'whoosh', .35); Q(f.sam, 'bell', .25); Q(f.dive - .2, 'dive', .5);

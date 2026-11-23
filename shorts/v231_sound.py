@@ -163,6 +163,7 @@ def build(ep):
 
 def film(o, TE, mw):   # v23.4: пролог фильма + глава 1 для фильма (с ночного города, film234.mp4) — наплыв XF с через темноту; звук внахлёст
     ch = os.path.join(C1, 'film234.mp4'); cw = os.path.join(C1, 'mix234f.wav'); CUT = 0.0   # v23.6: глава с начала
+    if not (os.path.exists(ch) and os.path.exists(cw)): print('проба стыка с главой 1 пропущена: нет', ch, '(python3 v234_ep1_film.py после рендера v170e-ru)'); return   # film_build берёт только video.mp4 и snd/mix.wav
     a, _ = sf.read(mw, dtype='float64'); b, _ = sf.read(cw, dtype='float64'); b = b[int(round(CUT * SR)):]
     i = int(round((TE - XF) * SR)); x = np.zeros((max(len(a), i + len(b)), 2)); x[:len(a)] += a; x[i:i + len(b)] += b
     pk = np.abs(x).max(); x = x / max(1, pk / .97)

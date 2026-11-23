@@ -53,7 +53,7 @@
   }
   function cues() {   // звуки по событиям (мягкие)
     allInit(); const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p);
-    const o = T0; Q(Math.max(.05, o.fil - 1.2), 'wave', .35); Q(o.fil, 'plop', .3, .3); Q(o.cher, 'shimmer', .2); Q(o.zap, 'chain', .35, .3); Q(o.zap + .5, 'splash', .4); Q(o.shest, 'counter', .45); Q(o.dazhe, 'drawer', .3); Q(o.tab, 'marker', .35);
+    const o = T0; if (MODE !== 'y') { Q(.05, 'surf0', 1); Q(Math.max(.5, o.fil - .4), 'surf1', 1) }   // v23.7: океан — мягкий прибой вместо хрипящего wave (в фильме звук волны — у стыка, 80-board.js) Q(o.fil, 'plop', .3, .3); Q(o.cher, 'shimmer', .2); Q(o.zap, 'chain', .35, .3); Q(o.zap + .5, 'splash', .4); Q(o.shest, 'counter', .45); Q(o.dazhe, 'drawer', .3); Q(o.tab, 'marker', .35);
     Q(o.fly, 'whoosh', .45); Q(o.sw + .2, 'papers', .35);
     const f = T1; Q(f.vid, 'plop', .25, -.2); Q(f.sly, 'plop', .25); Q(f.pah, 'plop', .25, .2); Q(f.gub - .2, 'xray', .4); Q(f.shch, 'glassbulb', .35); Q(f.krov, 'shimmer', .25);
     Q(f.dym, 'puff', .25, -.3); Q(f.par, 'puff', .25, .3); Q(f.cab0, 'whoosh', .35); Q(f.sam, 'bell', .25); Q(f.dive - .2, 'dive', .5);

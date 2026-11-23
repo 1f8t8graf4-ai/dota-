@@ -351,7 +351,7 @@
   // ---------- камера (как v23.0): медленный наезд, в конце — нырок в корпус = кадр главы 1 ----------
   const ZS1 = 1 / S0, P1 = { x: DEV0.x + S0 * (CX - DEVC.x), y: DEV0.y + S0 * (CY - DEVC.y) };
   const FZ = { x: (CX - ZS1 * P1.x) / (1 - ZS1), y: (CY - ZS1 * P1.y) / (1 - ZS1) }, VS = .004;
-  function camZ(t) { return VS * t + (FILM ? 0 : (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1))) }
+  function camZ(t) { return VS * t + (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1)) }   // v23.7: и в фильме — нырок в корпус
   function shutters() {   // окна размытия движения: въезды и падения предметов, ряд, стягивание в каплю
     const o = [];
     if (VAR === 'A') { o.push([0, .45]); K.form.forEach(tf => o.push([tf - .16, tf + .32])); o.push([K.row - .1, K.row + .35]) }
@@ -364,9 +364,8 @@
     c.save(); liveCam1(c, t1); SC_L1 = c.getTransform();
     c.save(); cam(c, s, px, py);
     if (VAR === 'A') sceneA(c, t, hb, fl); else sceneB(c, t, hb, fl);
-    if (t >= K.grow - .06) { if (FILM) filmEnd(c, t, hb); else deviceShot(c, t, t1, hb) }
+    if (t >= K.grow - .06) deviceShot(c, t, t1, hb);   // v23.7: и в фильме (Андрей: «верни 1 в 1 связку из утверждённого RU-интро»); filmEnd / filmIris (v23.4–23.6) не зовутся
     c.restore();
-    if (FILM && t >= K.mor0) filmIris(c, t, hb);
     title(c, t, [-1], VAR === 'A' ? K.s2 : K.back);   // титул чёткий с первого кадра (ТЗ: «без чёрного экрана с точкой» — сразу крючок)
     c.restore();
   }

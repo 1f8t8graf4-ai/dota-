@@ -1,12 +1,12 @@
 {
  "ep": "v231f-ru",
  "lang": "ru",
- "dur": 16.7,
+ "dur": 16.5,
  "fps": 30,
  "voice": "v233",
  "natural": true,
- "endT": 16.7,
- "frames": 501,
+ "endT": 16.5,
+ "frames": 495,
  "sent": [
   {
    "i": 0,

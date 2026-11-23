@@ -6,7 +6,7 @@
   };
   const LAB_L = { ru: ['УПАКОВКА', 'ВКУС', 'ОБЕЩАНИЯ'], en: ['PACKAGING', 'FLAVORS', 'PROMISES'], de: ['VERPACKUNG', 'GESCHMACK', 'VERSPRECHEN'] };
   const STAMP_L = { ru: 'СПОСОБ БРОСИТЬ', en: 'A WAY TO QUIT', de: 'ZUM AUFHÖREN' };
-  let VAR = 'A', FILM = false;   // v23.4: FILM — пролог для фильма на YouTube (v231f): без корпуса одноразки и без кадра главы 1 в конце
+  let VAR = 'A', FILM = false;   // FILM — пролог для фильма на YouTube (v231f); с v23.7 картинка как у v231y, свой только звук
   const TTL_L = { ru: ['01', 'ОДНОРАЗКИ'], en: ['01', 'DISPOSABLES'], de: ['01', 'EINWEG-VAPES'] };
   const ORDA = ['cig', 'pod', 'heat', 'ice', 'tin'];   // v23.2: A — сигареты · «Джул» · айкос · одноразки · снюс (как карточки доски: 1924 · 1979 · 2014 · 2020 · 2022)
   // [фраза, № слова] — A: см. ниже;
@@ -34,10 +34,10 @@
     }
     k.dive0 = Math.max(k.zip + .95, TE - 1.05); k.dive1 = k.TE1;     // нырок кончается ровно на последнем кадре
     k.suck0 = k.grow + .35; k.suck1 = Math.max(k.suck0 + .4, Math.min(k.zip + .3, k.dive0 - .3));   // v23.3: капля поднимается к щели окна и втягивается (окно не открываем)
-    if (FILM) {   // v23.6: капля летит в капсулу главы 1 и втягивается на низком ударе, из капсулы — розовый фон главы; последний кадр = её кадр (как у шортса)
+    if (FILM) {   // v23.7 (23.11): конец — 1 в 1 как у утверждённого v231y (корпус вейпа, капля в окошко, вспышка, нырок в корпус = кадр 0 главы 1);
+      // от фильма остался только звук: грув пролога гаснет на низком ударе после последнего слова (K.hit), дальше — спокойная музыка глав
       const s5 = TLS.find(x => x.scene === 's5'), wl = s5.words[s5.words.length - 1];
-      k.dive0 = 1e9; k.suck0 = k.grow + .9; k.suck1 = k.grow + 1.3; k.ttl = 1e9; k.blk = [1e9, 1e9 + 1];
-      k.hit = wl.b + .07; k.mor0 = wl.a; k.mor1 = Math.max(k.mor0 + .55, k.hit); k.ir0 = k.mor1 - .06;
+      k.hit = wl.b + .07; k.ttl = 1e9; k.blk = [1e9, 1e9 + 1];
     }
     return k;
   }

@@ -178,10 +178,13 @@
     c.beginPath(); for (let x = -700; x <= 1800; x += 30) { const yy = y + 18 * Math.sin(x / 140 + t * 1.2); x === -700 ? c.moveTo(x, yy) : c.lineTo(x, yy) } lnB(c, 8, 'rgba(201,220,242,.7)');
     c.fillStyle = 'rgba(255,236,190,.08)'; c.fillRect(-700, y + 30, 2500, 60);
   }
+  function tinUp(t) {   // v23.7, фильм: после волны баночка спокойно всплывает из-под переднего вала (1 — под водой, 0 — качается на месте); в фото на доске и в шортсе — на месте
+    const a = T0; return MODE === 'y' && t > a.j0 - 1 && t < a.j0 + 1.3 ? 1 - eo(at(t, a.j0, a.j0 + 1.2)) : 0;
+  }
   function tinPos0(t) {   // баночка: качается на волне, на «запрета» её выносит на песок; b2 — поворачивается крышкой к нам
-    const a = T0, k = eio(at(t, a.zap - .1, a.zap + 1.5)), wet = 1 - k, turn = eio(at(t, a.net - .25, a.dazhe + .3));
-    const x = lp(540, 556, k) + Math.sin(t * 1.1) * 10 * wet, y = lp(1180, 1236, k) + Math.sin(t * 1.7) * 16 * wet - 20 * turn;
-    return { x, y, R: lp(lp(210, 222, k), 236, turn), ty: lp(.46 + .06 * Math.sin(t * 1.7) * wet, .9, turn), r: Math.sin(t * 1.3) * .07 * wet, lid: eio(at(t, a.dazhe + .05, a.tab - .1)) };
+    const a = T0, k = eio(at(t, a.zap - .1, a.zap + 1.5)), wet = 1 - k, turn = eio(at(t, a.net - .25, a.dazhe + .3)), up = tinUp(t);
+    const x = lp(540, 556, k) + Math.sin(t * 1.1) * 10 * wet, y = lp(1180, 1236, k) + Math.sin(t * 1.7) * 16 * wet - 20 * turn + 320 * up;
+    return { x, y, R: lp(lp(210, 222, k), 236, turn), ty: lp(.46 + .06 * Math.sin(t * 1.7) * wet, .9, turn), r: Math.sin(t * 1.3) * .07 * wet + .1 * up, lid: eio(at(t, a.dazhe + .05, a.tab - .1)) };
   }
   function oceanWorld(c, t, q, o = {}) {   // o.noTin — без баночки (v22.4: в фото 2022 на доске, пока баночка едет на гребне волны)
     const a = T0, up = eio(at(t, a.zap - .05, a.zap + .7));
@@ -198,6 +201,9 @@
       const wet = 1 - at(t, a.zap + .2, a.zap + 1.2); if (wet > 0) { cc.save(); cc.globalAlpha *= wet; cc.beginPath(); cc.moveTo(-700, 2400);
         for (let x = -700; x <= 1800; x += 20) cc.lineTo(x, 1330 + 30 * Math.sin(x / 160 + t * 1.7)); cc.lineTo(1800, 2400); cc.closePath(); fill(cc, C5.sea0);
         cc.beginPath(); for (let x = -700; x <= 1800; x += 20) { const yy = 1330 + 30 * Math.sin(x / 160 + t * 1.7); x === -700 ? cc.moveTo(x, yy) : cc.lineTo(x, yy) } lnB(cc, 5, 'rgba(201,220,242,.55)'); cc.restore() }
+      if (MODE === 'y' && t > a.j0 && t < a.j0 + 1.6) for (let i = 0; i < 2; i++) {   // v23.7: баночка прорезала воду — два тихих круга расходятся по переднему валу и тают
+        const u = at(t, a.j0 + .12 + i * .25, a.j0 + 1.25 + i * .25); if (u <= 0 || u >= 1) continue; const rx = p.R * lp(.95, 1.9, eo(u)), wy = 1330 + 30 * Math.sin(p.x / 160 + t * 1.7) + 6;
+        cc.beginPath(); cc.ellipse(p.x, wy, rx, rx * .16, 0, 0, TAU); lnB(cc, 4, `rgba(201,220,242,${.4 * (1 - u)})`) }
       // ценник лёг на баночку: барабан до $16 млрд — досчитывает к «миллиардов» (по времени кадра FT)
       if (t >= a.shest - .35) { const k = eo(at(t, a.shest - .35, a.shest + .1)), out = at(t, a.dazhe - .3, a.dazhe + .1); if (out < 1) { cc.save(); cc.globalAlpha *= 1 - out;
         priceTag(cc, p.x + lp(120, 40, k), p.y + lp(-420, -150, k), lp(.62, 1, k), 1, eo(at(FT, a.za - .05, a.mlrdA))); cc.restore() } }

@@ -1,12 +1,12 @@
 {
  "ep": "v231f-de",
  "lang": "de",
- "dur": 19.1,
+ "dur": 18.9,
  "fps": 30,
  "voice": "de/prolog",
  "natural": true,
- "endT": 19.1,
- "frames": 573,
+ "endT": 18.9,
+ "frames": 567,
  "sent": [
   {
    "i": 0,

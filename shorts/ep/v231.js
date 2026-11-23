@@ -255,7 +255,7 @@
   };
   const LAB_L = { ru: ['УПАКОВКА', 'ВКУС', 'ОБЕЩАНИЯ'], en: ['PACKAGING', 'FLAVORS', 'PROMISES'], de: ['VERPACKUNG', 'GESCHMACK', 'VERSPRECHEN'] };
   const STAMP_L = { ru: 'СПОСОБ БРОСИТЬ', en: 'A WAY TO QUIT', de: 'ZUM AUFHÖREN' };
-  let VAR = 'A', FILM = false;   // v23.4: FILM — пролог для фильма на YouTube (v231f): без корпуса одноразки и без кадра главы 1 в конце
+  let VAR = 'A', FILM = false;   // FILM — пролог для фильма на YouTube (v231f); с v23.7 картинка как у v231y, свой только звук
   const TTL_L = { ru: ['01', 'ОДНОРАЗКИ'], en: ['01', 'DISPOSABLES'], de: ['01', 'EINWEG-VAPES'] };
   const ORDA = ['cig', 'pod', 'heat', 'ice', 'tin'];   // v23.2: A — сигареты · «Джул» · айкос · одноразки · снюс (как карточки доски: 1924 · 1979 · 2014 · 2020 · 2022)
   // [фраза, № слова] — A: см. ниже;
@@ -283,10 +283,10 @@
     }
     k.dive0 = Math.max(k.zip + .95, TE - 1.05); k.dive1 = k.TE1;     // нырок кончается ровно на последнем кадре
     k.suck0 = k.grow + .35; k.suck1 = Math.max(k.suck0 + .4, Math.min(k.zip + .3, k.dive0 - .3));   // v23.3: капля поднимается к щели окна и втягивается (окно не открываем)
-    if (FILM) {   // v23.6: капля летит в капсулу главы 1 и втягивается на низком ударе, из капсулы — розовый фон главы; последний кадр = её кадр (как у шортса)
+    if (FILM) {   // v23.7 (23.11): конец — 1 в 1 как у утверждённого v231y (корпус вейпа, капля в окошко, вспышка, нырок в корпус = кадр 0 главы 1);
+      // от фильма остался только звук: грув пролога гаснет на низком ударе после последнего слова (K.hit), дальше — спокойная музыка глав
       const s5 = TLS.find(x => x.scene === 's5'), wl = s5.words[s5.words.length - 1];
-      k.dive0 = 1e9; k.suck0 = k.grow + .9; k.suck1 = k.grow + 1.3; k.ttl = 1e9; k.blk = [1e9, 1e9 + 1];
-      k.hit = wl.b + .07; k.mor0 = wl.a; k.mor1 = Math.max(k.mor0 + .55, k.hit); k.ir0 = k.mor1 - .06;
+      k.hit = wl.b + .07; k.ttl = 1e9; k.blk = [1e9, 1e9 + 1];
     }
     return k;
   }
@@ -729,7 +729,7 @@
   // ---------- камера (как v23.0): медленный наезд, в конце — нырок в корпус = кадр главы 1 ----------
   const ZS1 = 1 / S0, P1 = { x: DEV0.x + S0 * (CX - DEVC.x), y: DEV0.y + S0 * (CY - DEVC.y) };
   const FZ = { x: (CX - ZS1 * P1.x) / (1 - ZS1), y: (CY - ZS1 * P1.y) / (1 - ZS1) }, VS = .004;
-  function camZ(t) { return VS * t + (FILM ? 0 : (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1))) }
+  function camZ(t) { return VS * t + (Math.log(ZS1) - VS * K.TE1) * eio(at(t, K.dive0, K.TE1)) }   // v23.7: и в фильме — нырок в корпус
   function shutters() {   // окна размытия движения: въезды и падения предметов, ряд, стягивание в каплю
     const o = [];
     if (VAR === 'A') { o.push([0, .45]); K.form.forEach(tf => o.push([tf - .16, tf + .32])); o.push([K.row - .1, K.row + .35]) }
@@ -742,9 +742,8 @@
     c.save(); liveCam1(c, t1); SC_L1 = c.getTransform();
     c.save(); cam(c, s, px, py);
     if (VAR === 'A') sceneA(c, t, hb, fl); else sceneB(c, t, hb, fl);
-    if (t >= K.grow - .06) { if (FILM) filmEnd(c, t, hb); else deviceShot(c, t, t1, hb) }
+    if (t >= K.grow - .06) deviceShot(c, t, t1, hb);   // v23.7: и в фильме (Андрей: «верни 1 в 1 связку из утверждённого RU-интро»); filmEnd / filmIris (v23.4–23.6) не зовутся
     c.restore();
-    if (FILM && t >= K.mor0) filmIris(c, t, hb);
     title(c, t, [-1], VAR === 'A' ? K.s2 : K.back);   // титул чёткий с первого кадра (ТЗ: «без чёрного экрана с точкой» — сразу крючок)
     c.restore();
   }
@@ -786,16 +785,16 @@
       Q(K.back - .05, 'deep', .9); Q(K.pull - .05, 'whoosh', 1.2);
     }
     Q(K.flare - .03, 'drop', 1); Q(K.flare - .02, 'boom', .7);
-    if (FILM) { Q(K.grow - .06, 'sub', .8); Q(K.hit, 'steam', .8); Q(K.hit, 'hit', 1); Q(K.hit - .5, 'rain', 1); Q(K.grow + .1, 'steam', .5); Q(K.mor0 + .05, 'whoosh', .35); Q(K.ir0 + .02, 'shimmer', .3) }   // v23.6: капля летит в капсулу, розовый растекается
-    else { Q(K.grow - .06, 'sub', 1); Q(K.suck1 - .04, 'steam', 1) }   // v23.3: без «бульканья» и шипения молнии — мягкий саб-подъём (синтез, до втягивания капли) и лёгкий выдох пара
-    if (!FILM) { Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1) }
+    Q(K.grow - .06, 'sub', 1); Q(K.suck1 - .04, 'steam', 1);   // v23.3: без «бульканья» и шипения молнии — мягкий саб-подъём (синтез, до втягивания капли) и лёгкий выдох пара
+    Q(K.dive0 + .05, 'whoosh', 1.4); Q(K.dive0 + .18, 'dive', 1.1);
+    if (FILM) { Q(K.hit, 'hit', 1); Q(K.hit - .5, 'rain', 1) }   // v23.7, фильм: низкий удар — на нём гаснет грув пролога; дождь заходит под главу 1
   }
   window.EP = {
     P: { bg: '#0A0D13', paper: '#fff', ink: '#0f172a', line: '#fff', a1: '#f2a33a', a2: '#ef5668' }, D: {}, clean: true, noCap: true, lead: 0, tr: {}, trDef: 'cut', size: [WW, HH],
     init(tl, SC) {
       TLW = tl.sent.flatMap(s => s.words); TLS = tl.sent; LANG = tl.lang || 'ru'; MODE = 'y'; VAR = /^v232/.test(tl.ep || '') ? 'B' : 'A'; FILM = /^v231f/.test(tl.ep || '');
       TLX = { endT: tl.endT || tl.dur }; K = keys(); window.__K = K; CHUNKS = buildChunks();
-      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4]); if (!FILM) SHUT.push([K.dive0 + .05, K.TE1 - .2]); else SHUT.push([K.mor0 + .05, K.mor1 + .1]);
+      SHUT.length = 0; shutters().forEach(w => SHUT.push(w)); SHUT.push([K.grow - .08, K.grow + .4]); SHUT.push([K.dive0 + .05, K.TE1 - .2]);
       for (const k in CUES) delete CUES[k]; cues(); window.CUES_READY = 1;
       SC.forEach(S => { this.D[S.key] = t => { frame(t); return '' } });
       cv = mk(WW, HH); cv.style.cssText = `position:absolute;left:0;top:0;width:${WW}px;height:${HH}px`; document.body.insertBefore(cv, document.getElementById('grain'));

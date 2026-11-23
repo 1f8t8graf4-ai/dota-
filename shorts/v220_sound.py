@@ -17,6 +17,31 @@ SR, BAR = M.SR, M.BAR
 SEQ = {'y': list(range(40)) + list(range(20, 33)), 's': list(range(40)) + list(range(20, 28))}   # фильм главы 4 длиннее (1:44): ещё 4 такта фразы 37   # такты подложки «Льда»: 0–39 — фразы 9 13 17 21 33 37 13 17 21 33; 20–23 — фраза 37
 
 
+def surf(D, g=1., seed=7, fade=.45):   # v23.7: мягкий низкий прибой вместо хрипящего сэмпла wave (пик 1,35 — клиппинг, «центр» спектра 3,3 кГц)
+    """шум под фильтром 200 → 650 → 260 Гц (волна поднимается и уходит) + мягкий удар массы воды 68 → 44 Гц; без верхов и щелчков.
+    D — от начала до кадра, где волна кончилась; дальше затухание fade с (поверх следующего кадра — звук не обрывается). Моно, громкость — на 7 дБ
+    тише прежней волны по громкости (LUFS) при том же g."""
+    import v230_sound as V
+    n = int(round((D + fade) * SR)); t = np.arange(n) / SR; rng = np.random.default_rng(seed)
+    sw = np.sin(np.pi * np.clip(t / max(D, .35), 0, 1)) ** 1.3
+    fc = 200 + 450 * sw; body = V.lowpass_tv(V.lowpass_tv(rng.standard_normal((n, 1)), fc), fc * 1.6)[:, 0]   # 4 полюса — верхов почти нет
+    body = body - V.lowpass_tv(body[:, None], np.full(n, 35.))[:, 0]   # без гула ниже 35 Гц
+    a = min(.45, .38 * D); env = np.sin(np.pi / 2 * np.clip(t / a, 0, 1)) ** 2 * (.7 + .3 * sw)
+    env *= np.where(t < D, 1., np.cos(np.pi / 2 * np.clip((t - D) / fade, 0, 1)) ** 2)   # afade=out за fade с
+    body *= env; m = t < D; body *= .021 / max(1e-9, np.sqrt((body[m] ** 2).mean()))
+    f = 68 * (44 / 68) ** np.clip(t / .5, 0, 1); ph = 2 * np.pi * np.cumsum(f) / SR
+    whomp = np.sin(ph) * np.exp(-t / .32) * np.sin(np.pi / 2 * np.clip(t / .06, 0, 1)) * .04   # удар массы воды — мягкий, без щелчка
+    return (body + whomp) * g
+
+
+def add_surf(buf, C):   # пары surf0 … surf1 из cues.json → прибой от surf0 до surf1 и затухание после
+    S1 = sorted(c[0] for c in C if c[1] == 'surf1')
+    for t0, nm, g0, pan in sorted(C):
+        if nm != 'surf0': continue
+        t1 = next((x for x in S1 if x > t0 + .1), t0 + 1.2); VS.put(buf, surf(t1 - t0, g0, seed=int(t0 * 10)), t0, 1., pan * .4)
+    return buf
+
+
 def old_bed():
     o = os.path.join(HERE, 'out', 'v191y-ru'); T = json.load(open(os.path.join(o, 'timeline.json'))); dur = np.ceil(T['dur'] * 30) / 30; n = int(round(dur * SR))
     b = M.dec(os.path.join(o, 'snd', 'bed.wav'))[:n]; env, _, last = M.duck(os.path.join(o, 'voice.wav'), n)
@@ -47,7 +72,7 @@ if __name__ == '__main__':
     ep = sys.argv[1]; track = sys.argv[2] if len(sys.argv) > 2 else None; sh = ep.startswith('v220s')
     o = os.path.join(HERE, 'out', ep); od = os.path.join(o, 'snd'); os.makedirs(od, exist_ok=True)
     T = json.load(open(os.path.join(o, 'timeline.json'))); dur = np.ceil(T['dur'] * 30) / 30; n = int(round(dur * SR)); voice = os.path.join(o, 'voice.wav')
-    sw = os.path.join(od, 'sfx.wav'); VS.wav(sfx_track(json.load(open(os.path.join(o, 'cues.json'))), dur), sw)
+    C = json.load(open(os.path.join(o, 'cues.json'))); sw = os.path.join(od, 'sfx.wav'); VS.wav(add_surf(sfx_track(C, dur), C), sw)   # v23.7: + мягкий прибой (surf0 … surf1)
     tail = .25 if sh else 1.4
     if track: b = M.bed(track, dur, tail, M.bars_of(M.ORDER))
     else:

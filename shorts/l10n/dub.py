@@ -227,7 +227,9 @@ def pairs(ep, lang):
 class Track(V.Track):
     def put(self, y, t0, t1):
         """кусок записи [t0, t1) в конец дорожки; вернуть сдвиг «время записи → время ролика»"""
+        t0 = max(0.0, t0)   # отрицательное начало даёт пустой срез — фраза пропадает молча
         seg = y[int(t0 * SR):int(t1 * SR)].copy(); off = self.t() - t0
+        if len(seg) < SR * .2: raise SystemExit(f'пустой кусок записи {t0:.2f}–{t1:.2f} с')
         if len(self.y) >= XF and len(seg) >= XF:
             k = np.linspace(0, np.pi / 2, XF); self.y[-XF:] = self.y[-XF:] * np.cos(k) + seg[:XF] * np.sin(k); seg = seg[XF:]; off -= XF / SR
         self.y = np.concatenate([self.y, seg]); return off
@@ -262,7 +264,8 @@ def build(ep, lang):
         want = ru[0]['a'] if not i else prev_out + (ru[0]['a'] - prev_ru) if ch in WARP else max(prev_out + (ru[0]['a'] - prev_ru),
                                             prev_la + (ru[0]['a'] - prev_rla), prev_out + (ru[-1]['b'] - prev_ru) - dur_en)
         c0, c1 = x['c0'], x['c1']; lead = W[0]['a'] - c0
-        if want - lead < tr.t(): c0 = min(W[0]['a'] - .03, c0 + (tr.t() - (want - lead))); lead = W[0]['a'] - c0
+        # 23.11: у дозаписей первое слово размечено с 0,0 с — срез не раньше начала записи (было −0,03 → пустой срез, голоса нет)
+        if want - lead < tr.t(): c0 = max(0.0, min(W[0]['a'] - .03, c0 + (tr.t() - (want - lead)))); lead = W[0]['a'] - c0
         pad = want - lead - tr.t()
         if pad > .03: tr.pad(room, pad)   # меньше 30 мс — без паузы (наплыв склейки 15 мс)
         off = tr.put(x['y'], c0, c1)
