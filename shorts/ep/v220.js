@@ -1072,12 +1072,12 @@
   const tableShape = () => { const o = []; const P = TABLE1; for (let s = 0; s < 4; s++) { const A0 = P[s], B0 = P[(s + 1) % 4]; for (let i = 0; i < 30; i++) o.push([lp(A0[0], B0[0], i / 30), lp(A0[1], B0[1], i / 30)]) } return o };
   let TBL = null;
   function officeWall(c, t, kc) {
-    c.fillStyle = mixc(C5.office, C5.cabin, kc); c.fillRect(-900, -1200, 2900, 2500);
-    c.fillStyle = mixc(C5.officeD, '#8E8A9C', kc); c.fillRect(-900, 1300, 2900, 1400);   // пол
-    c.fillStyle = 'rgba(0,0,0,.05)'; for (let x = -900; x < 2000; x += 240) c.fillRect(x, -1200, 6, 2500);
+    c.fillStyle = mixc(C5.office, C5.cabin, kc); c.fillRect(-3200, -1200, 7400, 2500);
+    c.fillStyle = mixc(C5.officeD, '#8E8A9C', kc); c.fillRect(-3200, 1300, 7400, 1400);   // пол
+    c.fillStyle = 'rgba(0,0,0,.05)'; for (let x = -3060; x < 4200; x += 240) c.fillRect(x, -1200, 6, 2500);
     if (kc > 0) {   // салон: потолочные панели и полоса багажных полок
-      c.save(); c.globalAlpha *= kc; c.fillStyle = '#C9C4BA'; c.fillRect(-900, 260, 2900, 120); c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(-900, 372, 2900, 6);
-      for (let x = -900; x < 2000; x += 300) { c.fillStyle = 'rgba(0,0,0,.08)'; c.fillRect(x, 260, 4, 120) } c.restore() }
+      c.save(); c.globalAlpha *= kc; c.fillStyle = '#C9C4BA'; c.fillRect(-3200, 260, 7400, 120); c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(-3200, 372, 7400, 6);
+      for (let x = -3000; x < 4200; x += 300) { c.fillStyle = 'rgba(0,0,0,.08)'; c.fillRect(x, 260, 4, 120) } c.restore() }
   }
   function cityView(c, t, dy) {   // вид из окна переговорной: дневной город (уезжает вниз, когда «самолёт» взлетает)
     c.save(); c.translate(0, dy); vgrad(c, 300, 200, 900, 800, ['#BFD9EE', '#E4EFF7']);
