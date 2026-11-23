@@ -6,7 +6,7 @@
 // Акцент языка — фирменная точка и оттенок верхнего свечения: EN янтарь, DE стальной синий, RU приглушённый алый.
 // Знак — «N.»: N и круглая точка в цвете языка (у Manrope точка квадратная, поэтому круг того же размера рисуем сами);
 // в названии точка над «ı» — та же, на месте настоящей точки буквы i (положение меряется по пикселям шрифта).
-// Шапка: всё, что видно, — внутри 1546×423 по центру (только её видно на телефоне), угловые метки — по 1420×340.
+// Шапка: только название и угловые метки (1420×340); всё видимое — внутри 1546×423 по центру (только её видно на телефоне).
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..'), FONTS = 'file://' + path.join(ROOT, 'shorts', 'fonts') + '/';
@@ -14,11 +14,7 @@ const OUT = path.resolve(process.argv[2] || path.join(ROOT, 'shorts', 'out', 'ch
 fs.mkdirSync(OUT, { recursive: true });
 
 const INK = '#F3F4F6';
-const LANG = {
-  EN: { acc: '#F59E0B', slogan: 'STORIES ABOUT THINGS YOU THINK YOU KNOW' },
-  DE: { acc: '#38BDF8', slogan: 'GESCHICHTEN ÜBER DINGE, DIE IHR ZU KENNEN GLAUBT' },
-  RU: { acc: '#EF4444', slogan: 'ИСТОРИИ О ТОМ, ЧТО ВЫ, КАЖЕТСЯ, ЗНАЕТЕ' },
-};
+const LANG = { EN: { acc: '#F59E0B' }, DE: { acc: '#38BDF8' }, RU: { acc: '#EF4444' } };
 const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(',');
 
 const FONT_CSS = [
@@ -102,37 +98,26 @@ const watermarkHTML = L => pageHTML(150, 150, LANG[L].acc, `
   x.strokeStyle='rgba(255,255,255,.07)'; x.lineWidth=1; x.beginPath(); x.roundRect(.5,.5,149,149,29.5); x.stroke();
   window.__info=markN(x,75,75,74,'${LANG[L].acc}','${rgb(LANG[L].acc)}',.45);`, true);
 
-// 2. шапка 2560×1440: NightFabel (700, −0.02em, точка над ı в цвете языка) · линия 48×1 цвета языка (.5) · слоган капсом (500, .22em, .58)
+// 2. шапка 2560×1440: только NightFabel (700, −0.02em, точка над ı в цвете языка) и угловые метки. Слогана нет (Андрей, 23.11: «бред»).
 function bannerHTML(L) {
-  const { acc, slogan } = LANG[L], W = 2560, H = 1440;
+  const { acc } = LANG[L], W = 2560, H = 1440;
   return pageHTML(W, H, acc, `
-    const F=196, cx=${W / 2}, cy=${H / 2};
+    const F=228, cx=${W / 2}, cy=${H / 2};
     // название: «NıghtFabel» (ı без точки), чернила — ровно по центру
     const P=Math.ceil(F*.6), B=Math.ceil(F*1.25), CW=Math.ceil(F*7.2), CH=Math.ceil(F*1.8);
     const lf=c=>{c.font='700 '+F+'px MV'; c.letterSpacing=(-.02*F)+'px'; c.fontKerning='normal'};
     const lb=inkBox(CW,CH,c=>{lf(c); c.fillStyle=INK; c.fillText('NıghtFabel',P,B)});
     const ox=cx-(lb.x0+lb.x1)/2+P;
-    // слоган: кегль — чтобы был чуть шире названия (×1,04), но не мельче 26 px и не шире 1400
-    const SL=${JSON.stringify(slogan)};
-    const sl=S=>c=>{c.font='500 '+S+'px MV'; c.letterSpacing=(.22*S)+'px'; c.fontKerning='normal'; c.fillStyle='rgba(243,244,246,.58)'; c.fillText(SL,Math.ceil(S),Math.ceil(S*1.6))};
-    const s100=inkBox(Math.ceil(100*SL.length)+400,260,sl(100));
-    let S=Math.max(26,Math.min(42,lb.w*1.04/s100.w*100)); if(s100.w*S/100>1400) S=1400/s100.w*100;
-    const sb=inkBox(Math.ceil(S*SL.length)+4*Math.ceil(S),Math.ceil(S*2.6),sl(S));
-    const capS=inkBox(Math.ceil(S*3),Math.ceil(S*2.6),c=>{c.font='500 '+S+'px MV';c.fillText('H',Math.ceil(S),Math.ceil(S*1.6))}).h;
-    // вертикаль: блок [верх названия … низ заглавных слогана] — по центру; линия — под хвостом «g», с воздухом
-    const asc=B-lb.y0, desc=lb.y1-B, gR=desc+Math.round(F*.17), gS=Math.round(F*.17);
-    const top=-asc, bot=gR+gS+capS, by=Math.round(cy-(top+bot)/2);
+    // вертикаль: по центру — заглавные и четверть хвоста «g» (иначе слово кажется ниже середины)
+    const asc=B-lb.y0, desc=lb.y1-B, by=Math.round(cy+asc/2-desc*.175);
     x.drawImage(lb.c,ox-P,by-B);
     const m=document.createElement('canvas').getContext('2d'); lf(m);
     const t=dotOfI(F,700), iX=ox+m.measureText('Nı').width-m.measureText('ı').width;   // где начинается «ı»
     dot(x,iX+t.cx,by+t.cy,t.d*1.04,'${acc}',{rgb:'${rgb(acc)}',a1:.6,b1:t.d*.5,a2:.22,b2:t.d*1.8});
-    x.fillStyle='rgba(${rgb(acc)},.5)'; x.fillRect(cx-24,by+gR,48,1);
-    const sBase=by+gR+gS+capS;                              // заглавные слогана стоят на этой линии
-    x.drawImage(sb.c,Math.round(cx-(sb.x0+sb.x1)/2),Math.round(sBase-Math.ceil(S*1.6)));
     // угловые метки видоискателя: 1 px, белый .12, по углам 1420×340
     x.fillStyle='rgba(255,255,255,.12)'; const mw=1420,mh=340,a=26,X0=cx-mw/2,X1=cx+mw/2-1,Y0=cy-mh/2,Y1=cy+mh/2-1;
     for(const [px,py,sx,sy] of [[X0,Y0,1,1],[X1,Y0,-1,1],[X0,Y1,1,-1],[X1,Y1,-1,-1]]){ x.fillRect(sx>0?px:px-a+1,py,a,1); x.fillRect(px,sy>0?py:py-a+1,1,a); }
-    window.__info={F,S:+S.toFixed(1),logo:[Math.round(cx-lb.w/2),by-asc,lb.w,asc+desc],slogan:[Math.round(cx-sb.w/2),sBase-capS,sb.w,capS],dot:+t.d.toFixed(1)};`);
+    window.__info={F,logo:[Math.round(cx-lb.w/2),by-asc,lb.w,asc+desc],dot:+t.d.toFixed(1)};`);
 }
 
 (async () => {
