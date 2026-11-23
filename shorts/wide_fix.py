@@ -6,7 +6,9 @@
   python3 wide_fix.py <ролик> [<ролик> …]   (WF_KEEP=1 — не удалять куски)"""
 import os, subprocess, sys
 import numpy as np
-HERE = os.path.dirname(os.path.abspath(__file__)); W, H = 2560, 1440; CX0, CX1 = 875, 1685; NW = 8   # ±8 кадров
+HERE = os.path.dirname(os.path.abspath(__file__)); NW = 8   # ±8 кадров
+W, H = [int(v) for v in os.environ.get('WF_SIZE', '1920x1080').split('x')]; Z = float(os.environ.get('WZ', '1.3'))   # 24.11: кадр 1920×1080, камера ×1,3 (как в ep/wide.js)
+_s = Z * H / 1920; _ox = (W / _s - 1080) / 2; CX0, CX1 = round(_s * _ox), round(_s * (_ox + 1080))   # вертикальный кадр в пикселях широкого
 FF = os.environ.get('FFMPEG', 'ffmpeg')
 
 

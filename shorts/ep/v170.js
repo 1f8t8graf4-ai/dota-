@@ -4643,16 +4643,18 @@
     miniFlag(c, x - W / 2 + 26, y - fw * .29, fw);
     tx(c, s, x - W / 2 + 26 + fw + gap + w0 / 2, y + 3, o);
   }
-  function schoolCorrV(c, t) {
-    c.fillStyle = '#ffe9b0'; c.fillRect(-400, -400, WW + 800, 1410);
-    c.fillStyle = '#f6d896'; c.fillRect(-400, -400, WW + 800, 640);   // потолок
-    for (let i = 0; i < 3; i++) { const lx = 180 + i * 360; rr(c, lx - 110, 222, 220, 22, 11); fill(c, C.white); c.save(); c.globalAlpha = .16; poly(c, [lx - 100, 244, lx + 100, 244, lx + 210, 560, lx - 210, 560]); fill(c, C.white); c.restore() }
-    c.fillStyle = '#f2b84a'; c.fillRect(-400, 528, WW + 800, 14);
+  function schoolCorrV(c, t) {   // 24.11 (ТЗ 16:9): в широком кадре коридор, лампы, плитка и шкафчики — на всю ширину
+    const SX = window.WIDE ? -2400 : -400, SW = window.WIDE ? 5900 : WW + 800, WD1 = !!window.WIDE;
+    c.fillStyle = '#ffe9b0'; c.fillRect(SX, -400, SW, 1410);
+    c.fillStyle = '#f6d896'; c.fillRect(SX, -400, SW, 640);   // потолок
+    for (let i = WD1 ? -5 : 0; i < (WD1 ? 8 : 3); i++) { const lx = 180 + i * 360; rr(c, lx - 110, 222, 220, 22, 11); fill(c, C.white); c.save(); c.globalAlpha = .16; poly(c, [lx - 100, 244, lx + 100, 244, lx + 210, 560, lx - 210, 560]); fill(c, C.white); c.restore() }
+    c.fillStyle = '#f2b84a'; c.fillRect(SX, 528, SW, 14);
     { const ka = VARIANT === 1 ? 1 - eio(at(t, K.hooked - .15, K.hooked + .2)) : 1; if (ka > 0) { c.save(); c.globalAlpha *= ka; schoolSignV(c, 610, 330); c.restore() } }   // вариант 1: место — отчёту
     // пол: плитка, к нам — крупнее
-    c.fillStyle = '#d9e2ef'; c.fillRect(-400, LKV.y, WW + 800, 1400);
-    let y = LKV.y + 8, h = 46; for (let j = 0; j < 12 && y < HH + 200; j++) { const w = h * 1.7; for (let i = -2; i * w < WW + 2 * w; i++) if ((i + j) % 2) { c.fillStyle = '#c3cfe0'; c.fillRect(CX + (i - 6) * w + (j % 2) * w * .5 - w * .5, y, w, h) } y += h; h *= 1.18 }
-    c.fillStyle = '#9fb0c8'; c.fillRect(-400, LKV.y - 6, WW + 800, 14);
+    c.fillStyle = '#d9e2ef'; c.fillRect(SX, LKV.y, SW, 1400);
+    let y = LKV.y + 8, h = 46; for (let j = 0; j < 12 && y < HH + 200; j++) { const w = h * 1.7; for (let i = WD1 ? -40 : -2; i * w < WW + (WD1 ? 46 : 2) * w; i++) if ((i + j) % 2) { c.fillStyle = '#c3cfe0'; c.fillRect(CX + (i - 6) * w + (j % 2) * w * .5 - w * .5, y, w, h) } y += h; h *= 1.18 }
+    c.fillStyle = '#9fb0c8'; c.fillRect(SX, LKV.y - 6, SW, 14);
+    if (WD1) for (const i of [-8, -7, -6, -5, -4, -3, -2, -1, 7, 8, 9, 10, 11, 12, 13, 14]) lockerV(c, 90 + i * 150, { col: '#3d74b0', dk: '#2a5690', n: 201 + i });   // 16:9: ещё шкафчики по бокам
     LKXV.forEach((x, i) => lockerV(c, x, { col: '#3d74b0', dk: '#2a5690', n: 201 + i }));
   }
   // подросток со спины (как в v16.4), но без руки и кисти; дыхание — грудь/плечи чуть поднимаются, рукава покачиваются
@@ -4978,7 +4980,7 @@
   // метка года: 1973 приезжает из барабана (без второго «выскока»), 1973 → 1979 в лаборатории, 1979 → 1998 у суда (уходит под счётчик документов), 2015 → 2019
   function tagV(c, t) {   // 24.11: в 16:9 метка года — в левом верхнем углу кадра и в 1,5 раза крупнее
     if (!window.WIDE) return tagV0(c, t);
-    c.save(); c.translate(WIDE.X0 + 175 - TAGX * 1.5, WIDE.Y0 + 85 - TAGY * 1.5); c.scale(1.5, 1.5); tagV0(c, t); c.restore();
+    c.save(); c.translate(WIDE.X0 + 230 - TAGX * 1.5, WIDE.Y0 + 130 - TAGY * 1.5); c.scale(1.5, 1.5); tagV0(c, t); c.restore();
   }
   function tagV0(c, t) {
     if (t >= (VARIANT === 1 ? v1TN() + .5 : K.y73go + .45) && t < (VARIANT === 1 ? K.teens + .1 : K.chemPan)) tagDraw(c, t, [1973], [0], TAGX, TAGY, VARIANT === 1 ? .38 : .38 * (1 - ss(K.goal - .15, K.goal + .2, t) * (1 - ss(K.prob + .42, K.prob + .7, t))));   // вариант 1 (Gemini): метка стоит в углу, вне камеры   // v16.5 вечер (правка 8): на наезде на записку метки нет

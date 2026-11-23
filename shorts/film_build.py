@@ -114,15 +114,23 @@ def main(lang):
         x[:len(p)] += p
     x = x[:n]; pk = np.abs(x).max(); x = x / max(1, pk / .97)
     mw = os.path.join(o, 'mix.wav'); sf.write(mw, x.astype(np.float32), SR, subtype='PCM_16')
+    if os.environ.get('FB_LN'):   # 24.11 (ТЗ YouTube): громкость −14 LUFS, пик не выше −1,5 dBTP — loudnorm в два прохода, линейно (без компрессии)
+        I, TP = os.environ.get('FB_LN'), os.environ.get('FB_TP', '-1.5')
+        js = subprocess.run(['ffmpeg', '-hide_banner', '-i', mw, '-af', f'loudnorm=I={I}:TP={TP}:LRA=11:print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
+        J = json.loads(js[js.rindex('{'):js.rindex('}') + 1]); ln = mw[:-4] + '_ln.wav'
+        subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', mw, '-af', f"loudnorm=I={I}:TP={TP}:LRA=11:measured_I={J['input_i']}:measured_TP={J['input_tp']}:measured_LRA={J['input_lra']}:measured_thresh={J['input_thresh']}:offset={J['target_offset']}:linear=true,aresample=48000",
+                        '-ar', '48000', '-c:a', 'pcm_s24le', ln], check=True); os.replace(ln, mw)
+        print('loudnorm:', J['input_i'], '→', I, 'LUFS;', tt_audio.report(mw))
     print('звук фильма:', tt_audio.report(mw), f'речь {spr * 100:.0f} %', f'длина {total:.2f} с')
     # картинка встык
     inp, fl = [], []
     for i, p in enumerate(V):
         inp += ['-i', p]; fl.append(f'[{i}:v]settb=1/30,setpts=PTS-STARTPTS,trim=end_frame={keep[i]},setpts=PTS-STARTPTS[v{i}]')
-    fl.append(''.join(f'[v{i}]' for i in range(len(V))) + f'concat=n={len(V)}:v=1:a=0,format=yuv420p[v]')
+    up = f",scale={os.environ['FB_SCALE']}:flags=lanczos" if os.environ.get('FB_SCALE') else ''   # 24.11: 1920×1080 → 2560×1440 (YouTube отдаёт VP9 — вектор не мылится)
+    fl.append(''.join(f'[v{i}]' for i in range(len(V))) + f'concat=n={len(V)}:v=1:a=0{up},format=yuv420p[v]')
     out = os.path.join(o, os.environ.get('FB_OUT', 'film.mp4'))
     subprocess.run(['ffmpeg', '-y', '-v', 'error', *inp, '-i', mw, '-filter_complex', ';'.join(fl), '-map', '[v]', '-map', f'{len(V)}:a',
-                    '-c:v', 'libx264', '-crf', os.environ.get('FB_CRF', '18'), '-preset', os.environ.get('FB_PRESET', 'medium'), '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], check=True)   # FB_PRESET=veryfast — быстрее (фильм всё равно пережимается для отправки)
+                    '-c:v', 'libx264', '-crf', os.environ.get('FB_CRF', '18'), '-preset', os.environ.get('FB_PRESET', 'medium'), '-c:a', 'aac', '-b:a', os.environ.get('FB_AB', '192k'), '-ar', '48000', '-shortest', '-movflags', '+faststart', out], check=True)   # FB_PRESET=veryfast — быстрее (фильм всё равно пережимается для отправки)
     json.dump({'seg': [e for e, _, _ in S], 'frames': keep, 'off': [round(float(v), 4) for v in off]}, open(os.path.join(o, 'film.json'), 'w'), indent=1)
     print(out, f'{frames(out)} кадров')
     os.remove(tmpf)
