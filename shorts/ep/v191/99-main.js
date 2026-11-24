@@ -52,7 +52,9 @@
     if (t >= K.b0) { if (MODE === 's') endA(c, t); else if (t >= K.d0 && !window.NOMB) mbDo(c, t, endB); else endB(c, t) }   // v19.4: нырок — с затвором, как у главы 3 (стык без смены резкости); плашки 1924 нет — в кадре 0 главы её нет
     else { sceneMB(c, t); hud(c, t) }
     subs(c, t);
+    if (window.WIDE && MODE === 'y') wideSeam(c, t, K.endT, WSRC3);   // 24.11: 16:9 — бока стыка с главой 3 (фото на доске → широкое небо её кадра 0)
   }
+  const WSRC3 = 'ep/wide/v200-f0.png';
   // ================= звуки (мягкие) по событиям блоков =================
   function cues() {
     const Q = (t0, n, g = 1, p = 0) => cue(t0, n, g, p); allInit();
@@ -89,7 +91,7 @@
       // v19.4: мостик фильма ныряет в кадр 0 главы 3 — её рисовку грузит stage.html (window.EP3 = ep/v200.js, window.TL200 — таймлайн главы)
       const E3 = MODE === 'y' && window.EP3 && window.EP3.sub && window.TL200 ? window.EP3 : null; CH3OK = false;
       const p3 = E3 ? Promise.resolve(E3.sub.init(window.TL200)).then(() => { E3.sub.pre(tau => -DVL * (1 - DV(tau + K.ts).g), tau => GUST(tau + K.ts)); CH3OK = true }) : 0;
-      return Promise.all([p3].concat(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U'].map(f => document.fonts.load(f, 'АЯaz09$')))).then(() => 0);
+      return Promise.all([p3, ...(window.WIDE && MODE === 'y' ? [wideSeamLoad(WSRC3)] : [])].concat(['500 20px J', '700 20px J', '600 20px M', '800 20px M', '500 20px O', '700 20px O', '700 20px U', '800 20px U'].map(f => document.fonts.load(f, 'АЯaz09$')))).then(() => 0);
     },
   };
 })();

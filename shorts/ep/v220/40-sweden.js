@@ -11,7 +11,7 @@
   function cloud5(c, x, y, s, a = 1) { if (a <= 0) return; c.save(); c.globalAlpha *= a; c.translate(x, y); c.scale(s, s);
     [[-90, 10, 70], [-30, -20, 90], [50, -5, 80], [110, 20, 55], [0, 30, 80]].forEach(([dx, dy, r]) => circ(c, dx + 6, dy + 14, r, 'rgba(120,150,190,.35)'));
     [[-90, 10, 70], [-30, -20, 90], [50, -5, 80], [110, 20, 55], [0, 30, 80]].forEach(([dx, dy, r]) => circ(c, dx, dy, r, '#FFFFFF'));
-    c.fillStyle = 'rgba(200,220,240,.6)'; c.fillRect(-160, 40, 320, 50); c.restore() }
+    c.fillStyle = 'rgba(200,220,240,.6)'; c.beginPath(); c.roundRect(-160, 40, 320, 50, 25); c.fill(); c.restore() }   // 24.11: скруглённое основание путём, не fillRect — в 16:9 крупная тень облака растягивалась на весь кадр (wide.js), а прямые углы торчали брусками
   function tree5(c, x, y, s, dark) { poly(c, [x, y - 34 * s, x - 14 * s, y, x + 14 * s, y]); fill(c, dark ? C5.forestD : C5.forest); c.fillStyle = 'rgba(0,0,0,.18)'; poly(c, [x, y - 34 * s, x + 3 * s, y, x + 14 * s, y]); c.fill() }
   function house5(c, x, y, s, lit) {
     c.save(); c.translate(x, y); c.scale(s, s);
