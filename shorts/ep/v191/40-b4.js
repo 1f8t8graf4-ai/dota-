@@ -55,7 +55,7 @@
     if (t < T4.dive - .2) return;
     // рельс и пакеты (Instagram #054): въезжают слева, качаются
     const kr = eio(at(t, T4.zh - .35, T4.zh + .6));
-    if (kr > 0) { c.fillStyle = '#2c3048'; c.fillRect(-600, 120, 2300, 26); c.beginPath(); c.moveTo(-600, 120); c.lineTo(1700, 120); c.moveTo(-600, 146); c.lineTo(1700, 146); lnB(c, 3);
+    if (kr > 0) { const ra = WD ? -2400 : -600, rb = WD ? 3500 : 1700; c.fillStyle = '#2c3048'; c.fillRect(ra, 120, rb - ra, 26); c.beginPath(); c.moveTo(ra, 120); c.lineTo(rb, 120); c.moveTo(ra, 146); c.lineTo(rb, 146); lnB(c, 3);
       BAG4.forEach(([lab, col], i) => bag4(c, 160 + i * 190 + (kr - 1) * 1400 + 1500 * ei(at(t, T4.obm + .3, T4.obm + 1.1)), 186, lab, col, t, i)) }
     // кристалл WS-23 падает из центрального пакета
     const kc = at(t, T4.ws - .25, T4.ws + .25); if (kc > 0 && t < T4.ws + .9) { const x = 540, y = 470 + 560 * ei(kc), r = t > T4.ws + .25 ? 0 : 1;

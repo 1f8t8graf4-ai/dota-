@@ -11,11 +11,12 @@ await p.goto(url.pathToFileURL(path.join(here, 'stage.html')).href);
 await p.addScriptTag({ path: path.join(here, 'vendor/flubber-0.4.2.min.js') }); await p.addScriptTag({ path: path.join(here, 'ep/v231spr.js') });
 await p.evaluate(() => Promise.all(['700 20px P', '800 20px M', '600 20px M', 'italic 700 20px P'].map(f => document.fonts.load(f, 'MarlboroIQOS'))));
 const names = await p.evaluate(() => window.SPR ? SPR.list : null); if (!names) { console.log('нет SPR', errs); process.exit(1) }
-fs.mkdirSync(path.join(here, 'ep/v231/spr'), { recursive: true });
+const OUTD = process.env.SPR_OUT || 'ep/v231/spr';   // 24.11: SPR_OUT=ep/v231/spr-ru — надписи на предметах по-русски (пролог RU)
+fs.mkdirSync(path.join(here, OUTD), { recursive: true });
 for (const n of names) {
   const d = await p.evaluate(n => { const u = SPR.draw(n), im = new Image(); return new Promise(r => { im.onload = () => { const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0);
     const a = g.getImageData(0, 0, c.width, c.height).data; let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0; for (let y = 0; y < c.height; y++) for (let x = 0; x < c.width; x++) if (a[(y * c.width + x) * 4 + 3] > 8) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y }
     const m = 8, o = document.createElement('canvas'); o.width = x1 - x0 + 1 + 2 * m; o.height = y1 - y0 + 1 + 2 * m; o.getContext('2d').drawImage(c, x0 - m, y0 - m, o.width, o.height, 0, 0, o.width, o.height); r(o.toDataURL('image/png')) }; im.src = u }) }, n);
-  fs.writeFileSync(path.join(here, `ep/v231/spr/${n}.png`), Buffer.from(d.split(',')[1], 'base64')); console.log(n, 'ok');
+  fs.writeFileSync(path.join(here, `${OUTD}/${n}.png`), Buffer.from(d.split(',')[1], 'base64')); console.log(n, 'ok');
 }
 if (errs.length) console.log('ОШИБКИ:', errs.slice(0, 5)); await br.close();

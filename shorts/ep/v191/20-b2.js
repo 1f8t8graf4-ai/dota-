@@ -1,7 +1,7 @@
   // ================= блок 2 (7,5–20,9 с): эмблема раскрывается в Капитолий → влёт в окно → кабинет, лист закона с пустой клеткой «ОДНОРАЗОВЫЕ ?» →
   // календарь «январь 2020» → газета СКАНДАЛ, стик «Джула» взлетает и становится косым лезвием на цепях (Соболев #127) → рубит вкусы, ТАБАК и МЕНТОЛ остаются =================
   // Мир C — Капитолий (координаты экрана в 7,5 с), мир O — кабинет за окном: точка O (x, y) = C (OX + x·OS, OY + y·OS).
-  const WIN2 = { x: 504, y: 1226, w: 72, h: 128 }, OS2 = 72 / 1080, OX2 = 504, OY2 = 1226;
+  const WIN2 = WD ? { x: 426, y: 1218, w: 228, h: 144 } : { x: 504, y: 1226, w: 72, h: 128 }, OS2 = 72 / 1080, OX2 = 504, OY2 = 1226;   // 24.11: в 16:9 окно шире — камера целиком влетает в него, за окном кабинет вширь
   const CRT2 = [['ТАБАК', '#9a6a44'], ['МАНГО', '#f6a03a'], ['ФРУКТЫ', '#e2504f'], ['ДЕСЕРТЫ', '#f19ac2'], ['МЯТА', '#5ed39b'], ['МЕНТОЛ', '#9fdcf2']];
   const CX2 = [190, 330, 470, 610, 750, 890], STK2 = { y: 1400, top: 1140, cut: 1290 }, BLD2 = { x0: 262, x1: 818, top: 620, bl: 870, br: 795 };   // v19.1: гильотина собирается на месте листа — без рывка камеры вверх
   const POST2 = { l: 70, r: 1010, top: 300, w: 44 };
@@ -12,7 +12,7 @@
       posle: w('после'), sk: w('скандала'), juul: w('джулом'), lift: 15.2, vl: w('власти'), usa: w('сша'), rub: w('рубят'), vk: w('вкусами'),
       fl: [w('манго'), w('фрукты'), w('десерты'), w('мята')], pod: w('под'), end: 20.95 };
     T2.chop = T2.pod; T2.drop = T2.chop - .17;
-    K2 = [KY(T2.a, 540, 960, 1), KY(T2.fly, 540, 1010, 1.04), KY(8.55, 540, 1210, 4.2), KO2(9.0, 540, 960, 1.0), KO2(9.6, 560, 1020, 1.5), KO2(10.9, 556, 1005, 1.62),
+    K2 = [KY(T2.a, 540, 960, 1), KY(T2.fly, 540, 1010, 1.04), KY(8.55, 540, 1210, 4.2), KO2(9.0, 540, 960, 1.0), KO2(9.6, 560, WD ? 1075 : 1020, WD ? 1.1 : 1.5), KO2(10.9, 556, WD ? 1070 : 1005, WD ? 1.14 : 1.62),
       KO2(T2.zak - .15, 540, 960, 1.06), KO2(T2.zak + .25, 540, 960, 1.06), KO2(12.7, 520, 1040, 1.0), KO2(14.6, 548, 1080, 1.0), KO2(15.15, 552, 1090, 1.0),
       KO2(16.0, 540, 1000, .96), KO2(T2.chop, 540, 1010, 1.0), KO2(T2.chop + .22, 540, 1010, 1.0), KO2(T2.end, 540, 1030, 1.0)]; if (typeof b3Keys === 'function') { K2.pop(); K2.push(...b3Keys()) }
     TIN2 = 99; for (let f = Math.floor(8 * 30); f < 10 * 30; f++) { const v = viewRect(camObj(camAt(K2, f / 30))); if (v.x0 > WIN2.x && v.x1 < WIN2.x + WIN2.w && v.y0 > WIN2.y && v.y1 < WIN2.y + WIN2.h) { TIN2 = f / 30; break } }
@@ -161,9 +161,9 @@
   }
   function office(c, t) {
     c.fillStyle = B2.bg2; c.fillRect(-1600, -3000, 9000, 6000);
-    c.save(); c.globalAlpha *= .9; for (let i = 0; i < 7; i++) { c.fillStyle = i % 2 ? '#2b2f50' : '#272b49'; c.fillRect(-1600, -2400 + i * 520, 4300, 520) } c.restore();
+    c.save(); c.globalAlpha *= .9; for (let i = 0; i < 7; i++) { c.fillStyle = i % 2 ? '#2b2f50' : '#272b49'; c.fillRect(WD ? -3200 : -1600, -2400 + i * 520, WD ? 7500 : 4300, 520) } c.restore();
     beam(c, 540, -40, 540, 1500, 60, 520, '#fde68a', .1);
-    c.fillStyle = '#3a2a22'; c.fillRect(-1600, 1640, 3100, 1400); c.beginPath(); c.moveTo(-1600, 1640); c.lineTo(1500, 1640); lnB(c, 4, '#c9a27e');
+    c.fillStyle = '#3a2a22'; c.fillRect(-1600 - (WD ? 1600 : 0), 1640, 3100 + (WD ? 4400 : 0), 1400); c.beginPath(); c.moveTo(WD ? -3200 : -1600, 1640); c.lineTo(WD ? 4300 : 1500, 1640); lnB(c, 4, '#c9a27e');
     sheet2(c, t); calendar2(c, t); paper2(c, t);
     // гильотина собирается на месте листа
     frame2(c, t); stock2(c, t);
@@ -176,7 +176,7 @@
     if (t < TIN2) {
       const kr = eio(at(t, T2.a, T2.rev));
       if (kr < 1) { b1Shot(c, T1.end - .001) }
-      const R = lp(EM.r, 1400, kr);
+      const R = lp(EM.r, WD ? 1800 : 1400, kr);
       c.save(); c.beginPath(); c.arc(EM.x, EM.y, R, 0, TAU); c.clip(); c.translate(540, 960); c.scale(q.z, q.z); c.translate(-q.x, -q.y); capitol(c, t); c.restore();
       if (kr < 1) { const k = R / 95; ring(c, EM.x, EM.y, 87 * k, B2.red, 7 * k * (1 - kr)); ring(c, EM.x, EM.y, 78 * k, B2.red, 2.5 * k * (1 - kr)); ring(c, EM.x, EM.y, R, B2.ln, 3 * k * (1 - kr) + 1) }
     } else if (t >= THIN3) { const h = camH(camO2(q)); c.save(); c.translate(540, 960); c.rotate(h.r); c.scale(h.z, h.z); c.translate(-h.x, -h.y); innerW(c, t); c.restore();

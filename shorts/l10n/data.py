@@ -185,6 +185,11 @@ SENT = {
 # надписи в кадре: как их рисует глава (fillText). Ключи — точные строки (собраны прогоном `node capture.mjs <ролик>-en texts`).
 # Двухстрочные надписи, которые глава рисует по словам, переведены по строкам (порядок чтения сохранён: «СУД / МИННЕСОТЫ» → «MINNESOTA / COURT»).
 STR = {
+    # 24.11: в русской версии фильма 16:9 английских слов нет — в EN/DE те же надписи как раньше
+    'СИГАРЕТЫ С ФИЛЬТРОМ': ('FILTER CIGARETTES', 'FILTERZIGARETTEN'), 'ТУРЕЦКИЙ ТАБАК': ('TURKISH & DOMESTIC BLEND', 'TÜRKISCHER TABAK'),
+    '20 СИГАРЕТ': ('20 CLASS A CIGARETTES', '20 ZIGARETTEN'), 'R.J. REYNOLDS · ТАБАЧНАЯ КОМПАНИЯ': ('R.J. REYNOLDS TOBACCO COMPANY', 'R.J. REYNOLDS TOBACCO COMPANY'),
+    'никотиновая соль 1979': ('nicotine salt 1979', 'Nikotinsalz 1979'), 'ДОЛЯ В «ДЖУЛ»': ('STAKE IN JUUL', 'ANTEIL AN JUUL'),
+    'МАЛЬБОРО': ('MARLBORO', 'MARLBORO'), 'МАЛЬБОРО × ДЖУЛ': ('MARLBORO × JUUL', 'MARLBORO × JUUL'), 'ДЖУЛ': ('JUUL', 'JUUL'),
     # ---------- глава 1 «Боб» ----------
     'ЧТО ВЫ': ('WHAT DO', 'WAS WISST'), 'ЗНАЕТЕ': ('YOU KNOW', 'IHR'), 'ОБ': ('ABOUT', 'ÜBER'), 'ОДНОРАЗКАХ?': ('DISPOSABLES?', 'EINWEG-VAPES?'),
     'ЧТО': ('WHAT', 'WAS'), 'ВЫ': ('YOU', 'IHR'),

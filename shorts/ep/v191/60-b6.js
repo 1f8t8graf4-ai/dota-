@@ -16,18 +16,19 @@
   }
   function pathAt(u) { const P = PATH6, d = u * P.L; let i = 1; while (i < P.length - 1 && P[i][2] < d) i++; const a = P[i - 1], b = P[i], k = (d - a[2]) / Math.max(1e-6, b[2] - a[2]); return [lp(a[0], b[0], k), lp(a[1], b[1], k)] }
   function pathStroke(c, u0, u1) { const P = PATH6; c.beginPath(); let st = false; for (const p of P) { const u = p[2] / P.L; if (u < u0 || u > u1) continue; if (!st) { c.moveTo(p[0], p[1]); st = true } else c.lineTo(p[0], p[1]) } }
-  function hill6(c, t) {   // торец-круг → белый холм; v19.3 (Gemini, 1:04 — «фиолетовая шляпа»): земля лежит внизу с самого начала,
+  function hill6(c, t) {
+    const HX0 = WD ? -3200 : -1900, HXW = WD ? 7500 : 4900;   // 24.11: в 16:9 земля на всю ширину   // торец-круг → белый холм; v19.3 (Gemini, 1:04 — «фиолетовая шляпа»): земля лежит внизу с самого начала,
     // круг за 0,15 с светлеет до цвета земли, тёмная середина и точки исчезают, круг опускается на землю и расплывается холмом
     const k = eio(at(t, T6.a, T6.a + 1.1)), cx = 540, cy = lp(ORB.y, HILL.y, k)
     , rx = lp(ORB.R, HILL.rx, k), ry = lp(ORB.R, HILL.ry, k), col = mixc(lit(B2.ind, .25), B2.cream, ss(0, .15, k)), G0 = HILL.y + 600 * (1 - ss(0, .7, k)), G1 = G0 + 400;   // земля поднимается из-под кадра и встречает круг
     if (k < .1) castCirc(c, cx, cy, rx, 520 * (1 - k / .1), { st: 17 });
-    c.fillStyle = B2.cream; c.fillRect(-1900, G0, 4900, G1 - G0);
+    c.fillStyle = B2.cream; c.fillRect(HX0, G0, HXW, G1 - G0);
     c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); fill(c, col);
-    c.save(); c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); c.rect(-1900, G0, 4900, G1 - G0); c.clip(); grain(c, -1900, cy - ry - 10, 4900, G1 - cy + ry + 10, .12 * Math.max(k, .3)); c.fillStyle = 'rgba(20,23,51,.12)'; c.fillRect(cx + rx * .45, cy - ry, 2400, 1200); c.restore();
-    c.beginPath(); c.moveTo(-1900, G1); c.lineTo(3000, G1); lnB(c, 5);
+    c.save(); c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); c.rect(HX0, G0, HXW, G1 - G0); c.clip(); grain(c, HX0, cy - ry - 10, HXW, G1 - cy + ry + 10, .12 * Math.max(k, .3)); c.fillStyle = 'rgba(20,23,51,.12)'; c.fillRect(cx + rx * .45, cy - ry, 2400, 1200); c.restore();
+    c.beginPath(); c.moveTo(HX0, G1); c.lineTo(HX0 + HXW, G1); lnB(c, 5);
     c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, Math.PI, 0); lnB(c, 5);
     if (k < .1) { c.save(); c.globalAlpha *= 1 - k / .1; c.beginPath(); c.ellipse(cx, cy, rx * .55, ry * .55, 0, 0, TAU); fill(c, '#2d3142'); lnB(c, 4); c.beginPath(); c.ellipse(cx, cy, rx * .2, ry * .2, 0, 0, TAU); fill(c, B2.mango); c.restore() }   // как торец в блоке 5 — стык без скачка
-    const kn = at(t, T6.corp - .9, T6.corp - .2); if (kn > 0) { c.fillStyle = rgba(B2.navy, kn); c.fillRect(-1950, cy - ry - 20, 5000, ry + 470) }   // v19.3: к «корпорациям» полоса земли вверху кадра уходит в ночь — на шторке 1:16 нет светлой стены
+    const kn = at(t, T6.corp - .9, T6.corp - .2); if (kn > 0) { c.fillStyle = rgba(B2.navy, kn); c.fillRect(HX0 - 50, cy - ry - 20, HXW + 100, ry + 470) }   // v19.3: к «корпорациям» полоса земли вверху кадра уходит в ночь — на шторке 1:16 нет светлой стены
   }
   const hillTop = x => HILL.y - HILL.ry * Math.sqrt(Math.max(0, 1 - Math.pow((x - 540) / HILL.rx, 2)));
   function leaf(c, x, y, s, a, col = B2.mint) { c.save(); c.translate(x, y); c.rotate(a); c.scale(s, s); c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(30, -40, 110, -40, 140, 0); c.bezierCurveTo(110, 30, 30, 30, 0, 0); c.closePath(); cel(c, 0, -40, 140, 70, col, { hw: .1, sw: .35 }); c.beginPath(); c.moveTo(4, 0); c.lineTo(130, 0); lnB(c, 3, '#2f7d5a'); c.restore() }
@@ -67,13 +68,13 @@
   }
   function conveyor6(c, t) {
     if (t < T6.kogda) return; const y = 2120;
-    c.beginPath(); c.moveTo(80, y); c.lineTo(1100, y); lnB(c, 10, B2.ln); for (let x = 120; x < 1100; x += 110) { circ(c, x, y + 36, 24, '#3a3f66'); ring(c, x, y + 36, 24, B2.ln, 3) }
-    for (let i = 0; i < 8; i++) { const x = 60 + ((t - T6.kogda) * 160 + i * 150) % 1200, fil = x > 860 ? 1 : 0;
+    const ya = WD ? -1500 : 80, yb = WD ? 2600 : 1100; c.beginPath(); c.moveTo(ya, y); c.lineTo(yb, y); lnB(c, 10, B2.ln); for (let x = ya + 40; x < yb; x += 110) { circ(c, x, y + 36, 24, '#3a3f66'); ring(c, x, y + 36, 24, B2.ln, 3) }   // 24.11: в 16:9 лента на всю ширину
+    for (let i = 0; i < (WD ? 27 : 8); i++) { const x = (WD ? -1520 : 60) + ((t - T6.kogda) * 160 + i * 150) % (WD ? 4050 : 1200), fil = x > 860 ? 1 : 0;
       rr(c, x - 28, y - 130, 56, 130, 14); cel(c, x - 28, y - 130, 56, 130, B2.ind, { hw: .14 }); if (fil) { rr(c, x - 18, y - 100, 36, 60, 8); fill(c, '#f2b84b') } rr(c, x - 28, y - 130, 56, 130, 14); lnB(c, 3) }
     if (t > T6.mlrd - .3) for (let i = 0; i < 3; i++) { const u = (t * 2 + i / 3) % 1; drop(c, 860, lp(1985, 2000, 0) + u * 80, 9, '#f2b84b') }
   }
   function towers6(c, t) {   // башни табачных корпораций растут сзади
-    [[-40, 900, 220, 0], [150, 1050, 200, 'ALTRIA'], [930, 1000, 210, 'BAT'], [1120, 850, 220, 0], [545, 1080, 300, 0]].forEach(([x, h, w, lab], i) => {
+    [[-40, 900, 220, 0], [150, 1050, 200, 'ALTRIA'], [930, 1000, 210, 'BAT'], [1120, 850, 220, 0], [545, 1080, 300, 0], ...(WD ? [[-260, 760, 200, 0], [1340, 780, 210, 0], [-480, 980, 230, 0], [1560, 940, 220, 0], [-700, 700, 200, 0], [1780, 720, 210, 0], [-920, 860, 220, 0], [2000, 840, 220, 0], [-1140, 640, 200, 0], [2220, 660, 200, 0]] : [])].forEach(([x, h, w, lab], i) => {   // 24.11: в 16:9 город корпораций на всю ширину
       const k = spr(at(t, T6.rynok + i * .14, T6.rynok + .7 + i * .14)); if (k <= 0) return; const g = 3560, top = g - h * k;
       rr(c, x - w / 2, top, w, g - top, 4); cel(c, x - w / 2, top, w, g - top, i % 2 ? '#3d3f6e' : '#34376a', { hw: .06, sw: .3 }); rr(c, x - w / 2, top, w, g - top, 4); lnB(c, 3);
       for (let r = 0; r < Math.floor(h * k / 70); r++) for (let q = 0; q < Math.floor((w - 30) / 40); q++) if (H1(i * 31 + r * 7 + q) < .45) { c.fillStyle = H1(r + q * 3 + i) > .5 ? '#f4a261' : '#fde68a'; c.fillRect(x - w / 2 + 20 + q * 40, top + 40 + r * 70, 18, 28) }

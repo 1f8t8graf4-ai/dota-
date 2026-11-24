@@ -11,6 +11,8 @@
 (function () {
   'use strict';
   const WW = 1080, HH = 1920, CX = WW / 2, CY = HH / 2, TAU = Math.PI * 2, SUBY = 1720;
+  const WD = !!window.WIDE; if (WD) window.WIDE.wm = 110;   // 24.11: фильм 16:9 — сцены вширь (правки по сценам); фоном считается только заливка с запасом 110 за краями вертикального кадра
+  const WL = WD ? -2600 : -400, WR = WD ? 3700 : WW + 400;
   let cv = null, X = null, K = null, TLW = [], TLX = {}, MODE = 's', CHUNKS = [];
   window.CUES = window.CUES || {};
   const cue = (t0, name, gain = 1, pan = 0) => { if (!(t0 >= 0) || !name) return; const k = name + '@' + Math.round(t0 * 40); if (!(k in CUES)) CUES[k] = [Math.round(t0 * 1000) / 1000, name, Math.round(gain * 100) / 100, pan] };
@@ -445,21 +447,21 @@
   }
   // прямоугольник, который видит камера (в координатах мира, с запасом на поворот)
   function viewRect(cam) {
-    const hw = 540 / cam.z, hh = 960 / cam.z, cs = Math.abs(Math.cos(cam.r)), sn = Math.abs(Math.sin(cam.r));
+    const hw = (WD ? WIDE.hw : 540) / cam.z, hh = 960 / cam.z, cs = Math.abs(Math.cos(cam.r)), sn = Math.abs(Math.sin(cam.r));
     const ex = hw * cs + hh * sn, ey = hw * sn + hh * cs; return { x0: cam.x - ex, x1: cam.x + ex, y0: cam.y - ey, y1: cam.y + ey };
   }
   // частицы переднего плана (снег, пыль) на слое глубины p: поле повторяется плиткой T, видны всегда, при наезде разлетаются
   function fieldLayer(c, cam, p, n, seed, T, drawOne, t) {
-    const s = Math.pow(cam.z, p), lx = cam.x * p, ly = cam.y * p, hw = 560 / s, hh = 980 / s;
+    const s = Math.pow(cam.z, p), lx = cam.x * p, ly = cam.y * p, HW = WD ? WIDE.hw + 20 : 560, hw = HW / s, hh = 980 / s;
     c.save(); c.translate(540, 960); c.rotate(cam.r * p);
     for (let i = 0; i < n; i++) {
       const bx = H1(seed + i * 7.13) * T, by = H1(seed + i * 3.71 + 9) * T;
       const fx = bx + Math.sin(t * (.5 + H1(i + seed) * .6) + i) * 12, fy = by + t * (26 + H1(i * 2.3 + seed) * 34);
       const x0 = Math.floor((lx - hw - fx) / T), x1 = Math.floor((lx + hw - fx) / T), y0 = Math.floor((ly - hh - fy) / T), y1 = Math.floor((ly + hh - fy) / T);
-      if ((x1 - x0 + 1) * (y1 - y0 + 1) > 40) continue;
+      if ((x1 - x0 + 1) * (y1 - y0 + 1) > (WD ? 120 : 40)) continue;
       for (let a = x0; a <= x1 + 1; a++) for (let b = y0; b <= y1 + 1; b++) {
         const X = (fx + a * T - lx) * s, Y = (fy + b * T - ly) * s;
-        if (X < -560 || X > 560 || Y < -980 || Y > 980) continue;
+        if (X < -HW || X > HW || Y < -980 || Y > 980) continue;
         drawOne(c, X, Y, s, i);
       }
     }
@@ -474,7 +476,7 @@
   // ================= блок 2 (7,5–20,9 с): эмблема раскрывается в Капитолий → влёт в окно → кабинет, лист закона с пустой клеткой «ОДНОРАЗОВЫЕ ?» →
   // календарь «январь 2020» → газета СКАНДАЛ, стик «Джула» взлетает и становится косым лезвием на цепях (Соболев #127) → рубит вкусы, ТАБАК и МЕНТОЛ остаются =================
   // Мир C — Капитолий (координаты экрана в 7,5 с), мир O — кабинет за окном: точка O (x, y) = C (OX + x·OS, OY + y·OS).
-  const WIN2 = { x: 504, y: 1226, w: 72, h: 128 }, OS2 = 72 / 1080, OX2 = 504, OY2 = 1226;
+  const WIN2 = WD ? { x: 426, y: 1218, w: 228, h: 144 } : { x: 504, y: 1226, w: 72, h: 128 }, OS2 = 72 / 1080, OX2 = 504, OY2 = 1226;   // 24.11: в 16:9 окно шире — камера целиком влетает в него, за окном кабинет вширь
   const CRT2 = [['ТАБАК', '#9a6a44'], ['МАНГО', '#f6a03a'], ['ФРУКТЫ', '#e2504f'], ['ДЕСЕРТЫ', '#f19ac2'], ['МЯТА', '#5ed39b'], ['МЕНТОЛ', '#9fdcf2']];
   const CX2 = [190, 330, 470, 610, 750, 890], STK2 = { y: 1400, top: 1140, cut: 1290 }, BLD2 = { x0: 262, x1: 818, top: 620, bl: 870, br: 795 };   // v19.1: гильотина собирается на месте листа — без рывка камеры вверх
   const POST2 = { l: 70, r: 1010, top: 300, w: 44 };
@@ -485,7 +487,7 @@
       posle: w('после'), sk: w('скандала'), juul: w('джулом'), lift: 15.2, vl: w('власти'), usa: w('сша'), rub: w('рубят'), vk: w('вкусами'),
       fl: [w('манго'), w('фрукты'), w('десерты'), w('мята')], pod: w('под'), end: 20.95 };
     T2.chop = T2.pod; T2.drop = T2.chop - .17;
-    K2 = [KY(T2.a, 540, 960, 1), KY(T2.fly, 540, 1010, 1.04), KY(8.55, 540, 1210, 4.2), KO2(9.0, 540, 960, 1.0), KO2(9.6, 560, 1020, 1.5), KO2(10.9, 556, 1005, 1.62),
+    K2 = [KY(T2.a, 540, 960, 1), KY(T2.fly, 540, 1010, 1.04), KY(8.55, 540, 1210, 4.2), KO2(9.0, 540, 960, 1.0), KO2(9.6, 560, WD ? 1075 : 1020, WD ? 1.1 : 1.5), KO2(10.9, 556, WD ? 1070 : 1005, WD ? 1.14 : 1.62),
       KO2(T2.zak - .15, 540, 960, 1.06), KO2(T2.zak + .25, 540, 960, 1.06), KO2(12.7, 520, 1040, 1.0), KO2(14.6, 548, 1080, 1.0), KO2(15.15, 552, 1090, 1.0),
       KO2(16.0, 540, 1000, .96), KO2(T2.chop, 540, 1010, 1.0), KO2(T2.chop + .22, 540, 1010, 1.0), KO2(T2.end, 540, 1030, 1.0)]; if (typeof b3Keys === 'function') { K2.pop(); K2.push(...b3Keys()) }
     TIN2 = 99; for (let f = Math.floor(8 * 30); f < 10 * 30; f++) { const v = viewRect(camObj(camAt(K2, f / 30))); if (v.x0 > WIN2.x && v.x1 < WIN2.x + WIN2.w && v.y0 > WIN2.y && v.y1 < WIN2.y + WIN2.h) { TIN2 = f / 30; break } }
@@ -634,9 +636,9 @@
   }
   function office(c, t) {
     c.fillStyle = B2.bg2; c.fillRect(-1600, -3000, 9000, 6000);
-    c.save(); c.globalAlpha *= .9; for (let i = 0; i < 7; i++) { c.fillStyle = i % 2 ? '#2b2f50' : '#272b49'; c.fillRect(-1600, -2400 + i * 520, 4300, 520) } c.restore();
+    c.save(); c.globalAlpha *= .9; for (let i = 0; i < 7; i++) { c.fillStyle = i % 2 ? '#2b2f50' : '#272b49'; c.fillRect(WD ? -3200 : -1600, -2400 + i * 520, WD ? 7500 : 4300, 520) } c.restore();
     beam(c, 540, -40, 540, 1500, 60, 520, '#fde68a', .1);
-    c.fillStyle = '#3a2a22'; c.fillRect(-1600, 1640, 3100, 1400); c.beginPath(); c.moveTo(-1600, 1640); c.lineTo(1500, 1640); lnB(c, 4, '#c9a27e');
+    c.fillStyle = '#3a2a22'; c.fillRect(-1600 - (WD ? 1600 : 0), 1640, 3100 + (WD ? 4400 : 0), 1400); c.beginPath(); c.moveTo(WD ? -3200 : -1600, 1640); c.lineTo(WD ? 4300 : 1500, 1640); lnB(c, 4, '#c9a27e');
     sheet2(c, t); calendar2(c, t); paper2(c, t);
     // гильотина собирается на месте листа
     frame2(c, t); stock2(c, t);
@@ -649,7 +651,7 @@
     if (t < TIN2) {
       const kr = eio(at(t, T2.a, T2.rev));
       if (kr < 1) { b1Shot(c, T1.end - .001) }
-      const R = lp(EM.r, 1400, kr);
+      const R = lp(EM.r, WD ? 1800 : 1400, kr);
       c.save(); c.beginPath(); c.arc(EM.x, EM.y, R, 0, TAU); c.clip(); c.translate(540, 960); c.scale(q.z, q.z); c.translate(-q.x, -q.y); capitol(c, t); c.restore();
       if (kr < 1) { const k = R / 95; ring(c, EM.x, EM.y, 87 * k, B2.red, 7 * k * (1 - kr)); ring(c, EM.x, EM.y, 78 * k, B2.red, 2.5 * k * (1 - kr)); ring(c, EM.x, EM.y, R, B2.ln, 3 * k * (1 - kr) + 1) }
     } else if (t >= THIN3) { const h = camH(camO2(q)); c.save(); c.translate(540, 960); c.rotate(h.r); c.scale(h.z, h.z); c.translate(-h.x, -h.y); innerW(c, t); c.restore();
@@ -754,7 +756,13 @@
     rr(c, x - 30, y - 100, 60, 100, 12); cel(c, x - 30, y - 100, 60, 100, col, { hw: .14 }); rr(c, x - 30, y - 100, 60, 34, 12); fill(c, '#2d3142'); rr(c, x - 30, y - 100, 60, 100, 12); lnB(c, 3);
     if (lab) { rr(c, x - 50, y + 10, 100, 34, 6); fill(c, B2.cream); tx(c, lab, x, y + 28, { f: 'M', w: 800, s: 20, c: B2.ink, mw: 92 }) }
   }
+  function sideShelf(c, x0, x1) {   // 24.11: соседний стеллаж в 16:9 — тёмный, с картриджами, без надписей
+    c.save(); c.globalAlpha *= .5; c.fillStyle = '#262a4b'; c.fillRect(x0, 240, x1 - x0, 1720);
+    [700, 1010, 1320, 1680].forEach((y, r) => { const n = Math.floor((x1 - x0 - 100) / 80); for (let i = 0; i < n; i++) if (H1(x0 + r * 31 + i * 7) > .25) pod3(c, x0 + 90 + i * 80, y, PODC[(i * 3 + r + Math.floor(x0 / 7)) % 8]); rr(c, x0 + 40, y, x1 - x0 - 80, 34, 6); fill(c, B2.wood) });
+    c.beginPath(); c.rect(x0 + 10, 260, x1 - x0 - 20, 1680); lnB(c, 6, '#4a4f7d'); c.restore();
+  }
   function shelfFront(c, t, skip) {
+    if (WD) { sideShelf(c, 820, 1960); sideShelf(c, 3440, 4580) }
     const { x0, x1, y0, y1 } = SHF; c.fillStyle = '#2d3156'; c.fillRect(x0, y0, x1 - x0, y1 - y0);
     for (let i = 0; i < 9; i++) { c.fillStyle = i % 2 ? 'rgba(255,255,255,.03)' : 'rgba(0,0,0,.05)'; c.fillRect(x0 + i * 115, y0, 115, y1 - y0) }
     rr(c, 2380, 450, 640, 110, 12); fill(c, B2.ink); rr(c, 2380, 450, 640, 110, 12); lnB(c, 4); tx(c, '«ДЖУЛ» · ВКУСЫ', 2700, 508, { f: 'U', w: 800, s: 52, c: B2.cream, ls: 2 });
@@ -777,24 +785,24 @@
   }
   function beltY(x, t) { const A = 70 * eo(at(t, T3.wave, T3.wave + .45)); return BELT + A * Math.sin((x - 2000) / 150 - (t - T3.wave) * 7) }
   function factory(c, t, kc = 1) {
-    c.fillStyle = '#1b1f3a'; c.fillRect(1500, -600, 4200, 3200);
+    c.fillStyle = '#1b1f3a'; c.fillRect(WD ? -400 : 1500, -600, WD ? 6100 : 4200, 3200);   // 24.11: в 16:9 цех на всю ширину
     poly(c, [1500, 1700, 2600, -600, 3300, -600, 2200, 1700]); fill(c, '#21264a');
     // США справа: ночное небо через косой разрез
     poly(c, [3500, 2600, 3900, -600, 5800, -600, 5800, 2600]); fill(c, '#151a36');
     for (let i = 0; i < 26; i++) circ(c, 3950 + H1(i * 4.4) * 1500, -300 + H1(i * 6.6) * 900, 2 + H1(i) * 2, rgba('#e2e8f0', .35 + .25 * Math.sin(t * 1.7 + i)));
     usStore(c, t);
     // балка с лебёдками (Кола #067)
-    c.fillStyle = '#f2b84b'; c.fillRect(1700, 470, 1900, 50); c.save(); c.beginPath(); c.rect(1700, 470, 1900, 50); c.clip(); for (let i = 0; i < 40; i++) { poly(c, [1700 + i * 60, 520, 1730 + i * 60, 520, 1760 + i * 60, 470, 1730 + i * 60, 470]); fill(c, B2.ink) } c.restore();
-    c.beginPath(); c.rect(1700, 470, 1900, 50); lnB(c, 3);
+    const RX0 = WD ? 300 : 1700, RW = 3600 - RX0; c.fillStyle = '#f2b84b'; c.fillRect(RX0, 470, RW, 50); c.save(); c.beginPath(); c.rect(RX0, 470, RW, 50); c.clip(); for (let i = 0; i < 70; i++) { poly(c, [RX0 + i * 60, 520, RX0 + 30 + i * 60, 520, RX0 + 60 + i * 60, 470, RX0 + 30 + i * 60, 470]); fill(c, B2.ink) } c.restore();
+    c.beginPath(); c.rect(RX0, 470, RW, 50); lnB(c, 3);
     for (let j = 0; j < 3; j++) { const x = 1900 + ((t * 120 + j * 520) % 1560), cy = 760 + 60 * Math.sin(t * 1.3 + j);
       c.fillStyle = '#2c3048'; c.fillRect(x - 40, 515, 80, 40); c.beginPath(); c.moveTo(x - 20, 555); c.lineTo(x - 50, cy); c.moveTo(x + 20, 555); c.lineTo(x + 50, cy); lnB(c, 4, B2.steel);
       box3(c, x, cy + 130, .55, ['#b65bd6', '#2f80ed', '#16c09a'][j], ['PUFF', 'HQD', 'ELF'][j]) }
     A(c, 1 - at(t, T3.wave + .05, T3.wave + .4), () => neonTxt(c, 'ШЭНЬЧЖЭНЬ', 2620, 650, t, T3.shen));   // v19.3: вывеска гаснет до того, как камера срежет её краем кадра (0:36)
     // конвейер: лента — линия, которая на «волной» изгибается
-    const x0 = 1700, x1 = T3 && t > T3.wave ? 6000 : 3500;
-    if (kc >= 1) for (let x = 1760; x < 3500; x += 120) { const y = beltY(x, t); circ(c, x, y + 40, 26, '#3a3f66'); ring(c, x, y + 40, 26, B2.ln, 3); c.save(); c.translate(x, y + 40); c.rotate(t * 6); c.beginPath(); c.moveTo(-20, 0); c.lineTo(20, 0); lnB(c, 3); c.restore() }
+    const x0 = WD ? 300 : 1700, x1 = T3 && t > T3.wave ? 6000 : 3500;
+    if (kc >= 1) for (let x = WD ? 360 : 1760; x < 3500; x += 120) { const y = beltY(x, t); circ(c, x, y + 40, 26, '#3a3f66'); ring(c, x, y + 40, 26, B2.ln, 3); c.save(); c.translate(x, y + 40); c.rotate(t * 6); c.beginPath(); c.moveTo(-20, 0); c.lineTo(20, 0); lnB(c, 3); c.restore() }
     if (kc >= 1) { c.beginPath(); for (let x = x0; x <= Math.min(x1, 3500); x += 20) c.lineTo(x, beltY(x, t)); lnB(c, 10, B2.ln) }
-    if (kc >= 1) for (let i = 0; i < 9; i++) { const x = 1760 + ((t - 30) * 140 + i * 200) % 1700; if (x > 3450) continue; c.save(); c.translate(x, beltY(x, t)); c.rotate(Math.atan(Math.cos((x - 2000) / 150 - (t - T3.wave) * 7) * 70 * eo(at(t, T3.wave, T3.wave + .45)) / 150)); rr(c, -30, -50, 60, 50, 6); cel(c, -30, -50, 60, 50, '#8d94b8', { hw: .1 }); rr(c, -30, -50, 60, 50, 6); lnB(c, 2.5); c.restore() }
+    if (kc >= 1) for (let i = 0; i < (WD ? 16 : 9); i++) { const x = (WD ? 360 : 1760) + ((t - 30) * 140 + i * 200) % (WD ? 3100 : 1700); if (x > 3450) continue; c.save(); c.translate(x, beltY(x, t)); c.rotate(Math.atan(Math.cos((x - 2000) / 150 - (t - T3.wave) * 7) * 70 * eo(at(t, T3.wave, T3.wave + .45)) / 150)); rr(c, -30, -50, 60, 50, 6); cel(c, -30, -50, 60, 50, '#8d94b8', { hw: .1 }); rr(c, -30, -50, 60, 50, 6); lnB(c, 2.5); c.restore() }
     BOX3.forEach(([lab, col, x], i) => { const tb = T3.box[i]; if (t < tb - .32) return; const kk = cl((t - tb + .32) / .32), sq = t > tb ? .14 * Math.sin(Math.PI * cl((t - tb) / .28)) : 0, by = beltY(x, t);   // v19.1: коробки падают сверху на ленту
       c.save(); c.translate(x, by - 1100 + 1100 * kk * kk); c.scale(1 + sq, 1 - sq);
       castDots(c, -90, -180, 180, 180, 90, { st: 13 }); box3(c, 0, 0, 1, col, lab, .06 * Math.sin(t * 3 + i)); c.restore() });
@@ -818,10 +826,10 @@
   function wave3(c, t) {
     const kz = eio(at(t, T3.end - .3, T3.end + .7)), kh = eio(at(t, T3.wave + .3, T3.wave + 1.0)) * (1 - .8 * kz), front = lp(3400, 5300, eio(at(t, T3.wave + .35, T3.voln + .2))) + 900 * kz, lvl = lp(lp(BELT, 760, eio(at(t, T3.wave + .3, T3.wave + 1.0))), LVL4 - 20, kz);
     const top = x => lp(lvl - 110 * Math.exp(-Math.pow((front - 520 - x) / 260, 2)) * kh, 2700, ss(front - 480, front, x)) + 34 * Math.sin(x / 120 - t * 4) * kh;
-    const P = []; for (let x = 1600; x <= front + 20; x += 20) P.push(x, x > 3500 ? top(x) : Math.min(beltY(x, t), top(x)));
-    const body = (dy, col) => { c.beginPath(); c.moveTo(1600, 2600); for (let i = 0; i < P.length; i += 2) c.lineTo(P[i], P[i + 1] + dy); c.lineTo(front + 40, 2600); c.closePath(); fill(c, col) };
+    const WX = WD ? 300 : 1600, P = []; for (let x = WX; x <= front + 20; x += 20) P.push(x, x > 3500 ? top(x) : Math.min(beltY(x, t), top(x)));
+    const body = (dy, col) => { c.beginPath(); c.moveTo(WX, 2600); for (let i = 0; i < P.length; i += 2) c.lineTo(P[i], P[i + 1] + dy); c.lineTo(front + 40, 2600); c.closePath(); fill(c, col) };
     body(0, B2.red); body(46, B2.cream); body(80, B2.blue); body(240, '#1f4fa8'); body(520, B2.navy);
-    c.save(); c.beginPath(); c.moveTo(1600, 2600); for (let i = 0; i < P.length; i += 2) c.lineTo(P[i], P[i + 1] + 240); c.lineTo(front + 40, 2600); c.closePath(); c.clip(); dotsField(c, 1600, lvl + 200, front - 1500, 900, 22, 'rgba(255,255,255,.12)', 2); c.restore();
+    c.save(); c.beginPath(); c.moveTo(WX, 2600); for (let i = 0; i < P.length; i += 2) c.lineTo(P[i], P[i + 1] + 240); c.lineTo(front + 40, 2600); c.closePath(); c.clip(); dotsField(c, WX, lvl + 200, front - WX + 100, 900, 22, 'rgba(255,255,255,.12)', 2); c.restore();
     const fx = front - 520, fy = top(fx); for (let i = 0; i < 12; i++) { const u = ((t * 1.3 + i / 12) % 1); circ(c, fx - 160 + H1(i) * 360, fy - 30 - u * 150, (8 + H1(i * 3) * 10) * (1 - u), B2.cream) }   // брызги над гребнем
     BOX3.forEach(([lab, col], i) => { const x = lp(2440 + i * 260, front - 300 - i * 260, eio(at(t, T3.wave + .4, T3.voln))); c.save(); c.translate(x, top(x) - 10); c.rotate(.12 * Math.sin(t * 3 + i)); box3(c, 0, 0, .9, col, lab); c.restore() });
   }
@@ -883,7 +891,7 @@
     if (t < T4.dive - .2) return;
     // рельс и пакеты (Instagram #054): въезжают слева, качаются
     const kr = eio(at(t, T4.zh - .35, T4.zh + .6));
-    if (kr > 0) { c.fillStyle = '#2c3048'; c.fillRect(-600, 120, 2300, 26); c.beginPath(); c.moveTo(-600, 120); c.lineTo(1700, 120); c.moveTo(-600, 146); c.lineTo(1700, 146); lnB(c, 3);
+    if (kr > 0) { const ra = WD ? -2400 : -600, rb = WD ? 3500 : 1700; c.fillStyle = '#2c3048'; c.fillRect(ra, 120, rb - ra, 26); c.beginPath(); c.moveTo(ra, 120); c.lineTo(rb, 120); c.moveTo(ra, 146); c.lineTo(rb, 146); lnB(c, 3);
       BAG4.forEach(([lab, col], i) => bag4(c, 160 + i * 190 + (kr - 1) * 1400 + 1500 * ei(at(t, T4.obm + .3, T4.obm + 1.1)), 186, lab, col, t, i)) }
     // кристалл WS-23 падает из центрального пакета
     const kc = at(t, T4.ws - .25, T4.ws + .25); if (kc > 0 && t < T4.ws + .9) { const x = 540, y = 470 + 560 * ei(kc), r = t > T4.ws + .25 ? 0 : 1;
@@ -960,8 +968,8 @@
     c.restore();
   }
   function cranes5(c, t) {   // балка с лебёдками и паллетами одноразок (#067)
-    c.fillStyle = '#f2b84b'; c.fillRect(-400, 230, 1900, 48); c.save(); c.beginPath(); c.rect(-400, 230, 1900, 48); c.clip(); for (let i = 0; i < 50; i++) { poly(c, [-400 + i * 60, 278, -370 + i * 60, 278, -340 + i * 60, 230, -370 + i * 60, 230]); fill(c, B2.ink) } c.restore();
-    for (let j = 0; j < 3; j++) { const x = -250 + ((t - T5.wipe) * 150 + j * 560) % 1680, sw = Math.sin(t * 2 + j) * 8;
+    const ca = WD ? -2400 : -400, cw = WD ? 5900 : 1900; c.fillStyle = '#f2b84b'; c.fillRect(ca, 230, cw, 48); c.save(); c.beginPath(); c.rect(ca, 230, cw, 48); c.clip(); for (let i = 0; i < (WD ? 100 : 50); i++) { poly(c, [ca + i * 60, 278, ca + 30 + i * 60, 278, ca + 60 + i * 60, 230, ca + 30 + i * 60, 230]); fill(c, B2.ink) } c.restore();   // 24.11: в 16:9 балка на всю ширину
+    for (let j = 0; j < (WD ? 6 : 3); j++) { const x = (WD ? -1450 : -250) + ((t - T5.wipe) * 150 + j * 560) % (WD ? 3360 : 1680), sw = Math.sin(t * 2 + j) * 8;
       c.fillStyle = '#2c3048'; c.fillRect(x - 40, 274, 80, 34); for (let i = 0; i < 4; i++) { c.beginPath(); c.ellipse(x - 30 + sw * i / 4, 330 + i * 30, 6, 13, 0, 0, TAU); c.ellipse(x + 30 + sw * i / 4, 330 + i * 30, 6, 13, 0, 0, TAU); lnB(c, 4, B2.steel) }
       c.save(); c.translate(x + sw, 450); rr(c, -90, 0, 180, 20, 4); fill(c, '#8a6a4a'); for (let i = 0; i < 5; i++) { rr(c, -80 + i * 34, -60, 26, 60, 8); fill(c, [B2.mango, B2.ice2, B2.teal, B2.coral, '#b65bd6'][(i + j) % 5]); lnB(c, 2) } c.restore() }
   }
@@ -1045,18 +1053,19 @@
   }
   function pathAt(u) { const P = PATH6, d = u * P.L; let i = 1; while (i < P.length - 1 && P[i][2] < d) i++; const a = P[i - 1], b = P[i], k = (d - a[2]) / Math.max(1e-6, b[2] - a[2]); return [lp(a[0], b[0], k), lp(a[1], b[1], k)] }
   function pathStroke(c, u0, u1) { const P = PATH6; c.beginPath(); let st = false; for (const p of P) { const u = p[2] / P.L; if (u < u0 || u > u1) continue; if (!st) { c.moveTo(p[0], p[1]); st = true } else c.lineTo(p[0], p[1]) } }
-  function hill6(c, t) {   // торец-круг → белый холм; v19.3 (Gemini, 1:04 — «фиолетовая шляпа»): земля лежит внизу с самого начала,
+  function hill6(c, t) {
+    const HX0 = WD ? -3200 : -1900, HXW = WD ? 7500 : 4900;   // 24.11: в 16:9 земля на всю ширину   // торец-круг → белый холм; v19.3 (Gemini, 1:04 — «фиолетовая шляпа»): земля лежит внизу с самого начала,
     // круг за 0,15 с светлеет до цвета земли, тёмная середина и точки исчезают, круг опускается на землю и расплывается холмом
     const k = eio(at(t, T6.a, T6.a + 1.1)), cx = 540, cy = lp(ORB.y, HILL.y, k)
     , rx = lp(ORB.R, HILL.rx, k), ry = lp(ORB.R, HILL.ry, k), col = mixc(lit(B2.ind, .25), B2.cream, ss(0, .15, k)), G0 = HILL.y + 600 * (1 - ss(0, .7, k)), G1 = G0 + 400;   // земля поднимается из-под кадра и встречает круг
     if (k < .1) castCirc(c, cx, cy, rx, 520 * (1 - k / .1), { st: 17 });
-    c.fillStyle = B2.cream; c.fillRect(-1900, G0, 4900, G1 - G0);
+    c.fillStyle = B2.cream; c.fillRect(HX0, G0, HXW, G1 - G0);
     c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); fill(c, col);
-    c.save(); c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); c.rect(-1900, G0, 4900, G1 - G0); c.clip(); grain(c, -1900, cy - ry - 10, 4900, G1 - cy + ry + 10, .12 * Math.max(k, .3)); c.fillStyle = 'rgba(20,23,51,.12)'; c.fillRect(cx + rx * .45, cy - ry, 2400, 1200); c.restore();
-    c.beginPath(); c.moveTo(-1900, G1); c.lineTo(3000, G1); lnB(c, 5);
+    c.save(); c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, TAU); c.rect(HX0, G0, HXW, G1 - G0); c.clip(); grain(c, HX0, cy - ry - 10, HXW, G1 - cy + ry + 10, .12 * Math.max(k, .3)); c.fillStyle = 'rgba(20,23,51,.12)'; c.fillRect(cx + rx * .45, cy - ry, 2400, 1200); c.restore();
+    c.beginPath(); c.moveTo(HX0, G1); c.lineTo(HX0 + HXW, G1); lnB(c, 5);
     c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, Math.PI, 0); lnB(c, 5);
     if (k < .1) { c.save(); c.globalAlpha *= 1 - k / .1; c.beginPath(); c.ellipse(cx, cy, rx * .55, ry * .55, 0, 0, TAU); fill(c, '#2d3142'); lnB(c, 4); c.beginPath(); c.ellipse(cx, cy, rx * .2, ry * .2, 0, 0, TAU); fill(c, B2.mango); c.restore() }   // как торец в блоке 5 — стык без скачка
-    const kn = at(t, T6.corp - .9, T6.corp - .2); if (kn > 0) { c.fillStyle = rgba(B2.navy, kn); c.fillRect(-1950, cy - ry - 20, 5000, ry + 470) }   // v19.3: к «корпорациям» полоса земли вверху кадра уходит в ночь — на шторке 1:16 нет светлой стены
+    const kn = at(t, T6.corp - .9, T6.corp - .2); if (kn > 0) { c.fillStyle = rgba(B2.navy, kn); c.fillRect(HX0 - 50, cy - ry - 20, HXW + 100, ry + 470) }   // v19.3: к «корпорациям» полоса земли вверху кадра уходит в ночь — на шторке 1:16 нет светлой стены
   }
   const hillTop = x => HILL.y - HILL.ry * Math.sqrt(Math.max(0, 1 - Math.pow((x - 540) / HILL.rx, 2)));
   function leaf(c, x, y, s, a, col = B2.mint) { c.save(); c.translate(x, y); c.rotate(a); c.scale(s, s); c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(30, -40, 110, -40, 140, 0); c.bezierCurveTo(110, 30, 30, 30, 0, 0); c.closePath(); cel(c, 0, -40, 140, 70, col, { hw: .1, sw: .35 }); c.beginPath(); c.moveTo(4, 0); c.lineTo(130, 0); lnB(c, 3, '#2f7d5a'); c.restore() }
@@ -1096,13 +1105,13 @@
   }
   function conveyor6(c, t) {
     if (t < T6.kogda) return; const y = 2120;
-    c.beginPath(); c.moveTo(80, y); c.lineTo(1100, y); lnB(c, 10, B2.ln); for (let x = 120; x < 1100; x += 110) { circ(c, x, y + 36, 24, '#3a3f66'); ring(c, x, y + 36, 24, B2.ln, 3) }
-    for (let i = 0; i < 8; i++) { const x = 60 + ((t - T6.kogda) * 160 + i * 150) % 1200, fil = x > 860 ? 1 : 0;
+    const ya = WD ? -1500 : 80, yb = WD ? 2600 : 1100; c.beginPath(); c.moveTo(ya, y); c.lineTo(yb, y); lnB(c, 10, B2.ln); for (let x = ya + 40; x < yb; x += 110) { circ(c, x, y + 36, 24, '#3a3f66'); ring(c, x, y + 36, 24, B2.ln, 3) }   // 24.11: в 16:9 лента на всю ширину
+    for (let i = 0; i < (WD ? 27 : 8); i++) { const x = (WD ? -1520 : 60) + ((t - T6.kogda) * 160 + i * 150) % (WD ? 4050 : 1200), fil = x > 860 ? 1 : 0;
       rr(c, x - 28, y - 130, 56, 130, 14); cel(c, x - 28, y - 130, 56, 130, B2.ind, { hw: .14 }); if (fil) { rr(c, x - 18, y - 100, 36, 60, 8); fill(c, '#f2b84b') } rr(c, x - 28, y - 130, 56, 130, 14); lnB(c, 3) }
     if (t > T6.mlrd - .3) for (let i = 0; i < 3; i++) { const u = (t * 2 + i / 3) % 1; drop(c, 860, lp(1985, 2000, 0) + u * 80, 9, '#f2b84b') }
   }
   function towers6(c, t) {   // башни табачных корпораций растут сзади
-    [[-40, 900, 220, 0], [150, 1050, 200, 'ALTRIA'], [930, 1000, 210, 'BAT'], [1120, 850, 220, 0], [545, 1080, 300, 0]].forEach(([x, h, w, lab], i) => {
+    [[-40, 900, 220, 0], [150, 1050, 200, 'ALTRIA'], [930, 1000, 210, 'BAT'], [1120, 850, 220, 0], [545, 1080, 300, 0], ...(WD ? [[-260, 760, 200, 0], [1340, 780, 210, 0], [-480, 980, 230, 0], [1560, 940, 220, 0], [-700, 700, 200, 0], [1780, 720, 210, 0], [-920, 860, 220, 0], [2000, 840, 220, 0], [-1140, 640, 200, 0], [2220, 660, 200, 0]] : [])].forEach(([x, h, w, lab], i) => {   // 24.11: в 16:9 город корпораций на всю ширину
       const k = spr(at(t, T6.rynok + i * .14, T6.rynok + .7 + i * .14)); if (k <= 0) return; const g = 3560, top = g - h * k;
       rr(c, x - w / 2, top, w, g - top, 4); cel(c, x - w / 2, top, w, g - top, i % 2 ? '#3d3f6e' : '#34376a', { hw: .06, sw: .3 }); rr(c, x - w / 2, top, w, g - top, 4); lnB(c, 3);
       for (let r = 0; r < Math.floor(h * k / 70); r++) for (let q = 0; q < Math.floor((w - 30) / 40); q++) if (H1(i * 31 + r * 7 + q) < .45) { c.fillStyle = H1(r + q * 3 + i) > .5 ? '#f4a261' : '#fde68a'; c.fillRect(x - w / 2 + 20 + q * 40, top + 40 + r * 70, 18, 28) }
@@ -1148,8 +1157,8 @@
   const S8 = { bg: '#26223a', b1: '#332e4a', b2: '#3f3958', b3: '#4c4667', win: '#f4a261', ln: '#f1f5f9', slab: '#d6d1e0', inside: '#2b2638', room: '#38314c', sil: '#15121c' };
   const DM = { w: 640, top: 360, bot: 1400 };   // здание: 4 этажа по 260
   function cityRow(c, seed, base, hMin, hMax, col, winA, t) {   // ряд домов: прямоугольники, ступени крыш, окна полосками
-    let x = -60, i = 0;
-    while (x < WW + 60) {
+    let x = WD ? -1700 : -60, i = 0;   // 24.11: в 16:9 город на всю ширину
+    while (x < WW + (WD ? 1700 : 60)) {
       const w = 70 + H1(seed + i * 3.1) * 90, h = hMin + H1(seed + i * 5.7) * (hMax - hMin), top = base - h;
       c.fillStyle = col; c.fillRect(x, top, w + 1, h + 400);
       if (H1(seed + i * 8.3) > .6) { c.fillRect(x + w * .3, top - 40, w * .4, 42); if (H1(seed + i * 2.2) > .5) c.fillRect(x + w * .48, top - 90, 6, 52) }
@@ -1234,15 +1243,15 @@
     const kc = eo(at(t, K.s8 - .2, K.s8 + .8)), kc2 = eo(at(t, K.s8 + .05, K.s8 + 1));
     c.save(); c.translate(600, 900); c.scale(kp, kp); c.translate(-600, -900);
     c.fillStyle = S8.bg; c.fillRect(-500, -500, WW + 1000, HH + 1000);
-    for (let i = 0; i < 26; i++) circ(c, H1(i * 4.4) * WW, H1(i * 6.6) * 900, 2 + H1(i) * 2, rgba('#e2e8f0', .35 + .25 * Math.sin(t * 1.7 + i)));
+    for (let i = 0; i < (WD ? 70 : 26); i++) circ(c, WD ? -1100 + H1(i * 4.4) * 3300 : H1(i * 4.4) * WW, H1(i * 6.6) * 900, 2 + H1(i) * 2, rgba('#e2e8f0', .35 + .25 * Math.sin(t * 1.7 + i)));
     if (p >= 1) moon8(c, MOON.x, MOON.y, MOON.r);
     c.save(); c.translate(0, 900 * (1 - kc)); cityRow(c, 21, 1420, 260, 640, S8.b1, .25, t); spire(c, 250, 1420); c.restore();
     c.save(); c.translate(0, 900 * (1 - kc2)); cityRow(c, 7, 1420, 160, 420, S8.b2, .35, t); c.restore();
-    c.fillStyle = '#1d1a2b'; c.fillRect(-500, 1400, WW + 1000, 900); c.beginPath(); c.moveTo(-500, 1400); c.lineTo(WW + 500, 1400); lnS(c, 4, S8.slab);
+    c.fillStyle = '#1d1a2b'; c.fillRect(WL, 1400, WR - WL, 900); c.beginPath(); c.moveTo(WL, 1400); c.lineTo(WR, 1400); lnS(c, 4, S8.slab);
     const kd = bo(at(t, K.s8 + .3, K.s8 + 1.1)); if (kd > 0) vitrine(c, t, kd);
     c.restore();
     if (p < 1) {   // касса уезжает вниз целиком (без растворения), монета летит в Луну
-      c.save(); c.translate(0, 1950 * p); c.beginPath(); c.rect(0, 0, WW, HH); c.clip(); b6Shot(c, t); c.restore();   // v19.3: уезжает ровно кадр — без полосы сверху (1:16)
+      c.save(); c.translate(0, 1950 * p); c.beginPath(); if (WD) c.rect(WIDE.X0 - 4, WIDE.Y0 - 4, WIDE.X1 - WIDE.X0 + 8, WIDE.Y1 - WIDE.Y0 + 8); else c.rect(0, 0, WW, HH); c.clip(); b6Shot(c, t); c.restore();   // v19.3: уезжает ровно кадр — без полосы сверху (1:16)
       const x = lp(540, MOON.x, p), y = lp(850, MOON.y, p) - Math.sin(Math.PI * p) * 140, r = lp(36, MOON.r, p);
       if (p > .6) moon8(c, x, y, r, mixc('#f59e0b', '#f8fafc', ss(.6, 1, p))); else { circ(c, x, y, r, mixc('#f59e0b', '#f8fafc', p)); ring(c, x, y, r * .76, rgba('#b45309', 1 - p), 4) }
     }
@@ -1258,17 +1267,17 @@
   const CW = 270, CH = 330, PH = 240;
   const photoC = cd => [cd.x, cd.y - CH / 2 + 15 + PH / 2];
   const pinP = cd => [cd.x, cd.y - CH / 2 + 4];
-  let CORK = null;
+  let CORK = null; const BWX0 = WD ? -640 : 0, BWX1 = WD ? WW + 640 : WW;
   function corkImg() {   // v18.4: пробка ровным цветом, редкие точки — как растр у Боба
-    if (CORK) return CORK; CORK = mk(WW, 1400); const g = CORK.getContext('2d');
-    g.fillStyle = '#b07a4a'; g.fillRect(0, 0, WW, 1400);
-    for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < WW; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() }
+    const CWd = WD ? BWX1 - BWX0 : WW; if (CORK) return CORK; CORK = mk(CWd, 1400); const g = CORK.getContext('2d');
+    g.fillStyle = '#b07a4a'; g.fillRect(0, 0, CWd, 1400);
+    for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < CWd; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() }
     return CORK;
   }
   function boardWall(c, t) {   // v18.4: ровная стена, рама контуром, плоский конус света от качающейся лампы
     c.fillStyle = '#1f1b2b'; c.fillRect(-1200, -1200, WW + 2400, 5200);
-    c.save(); rr(c, 30, 150, WW - 60, 1050, 14); fill(c, '#5b3d26'); rr(c, 52, 172, WW - 104, 1006, 8); c.clip(); c.drawImage(corkImg(), 0, 0); c.restore();
-    rr(c, 30, 150, WW - 60, 1050, 14); lnS(c, 5, '#f1e6d6'); rr(c, 52, 172, WW - 104, 1006, 8); lnS(c, 3, 'rgba(241,230,214,.5)');
+    c.save(); rr(c, BWX0 + 30, 150, BWX1 - BWX0 - 60, 1050, 14); fill(c, '#5b3d26'); rr(c, BWX0 + 52, 172, BWX1 - BWX0 - 104, 1006, 8); c.clip(); c.drawImage(corkImg(), BWX0, 0); c.restore();   // 24.11: в 16:9 доска шире
+    rr(c, BWX0 + 30, 150, BWX1 - BWX0 - 60, 1050, 14); lnS(c, 5, '#f1e6d6'); rr(c, BWX0 + 52, 172, BWX1 - BWX0 - 104, 1006, 8); lnS(c, 3, 'rgba(241,230,214,.5)');
     const sw = Math.sin(t * 1.25) * .2, bx = 540 + Math.sin(sw) * 1300;
     c.beginPath(); c.moveTo(540, -400); c.lineTo(540, 40); lnS(c, 3, '#f1e6d6');
     c.save(); c.translate(540, 40); c.rotate(-sw * .25); c.beginPath(); c.arc(0, 30, 44, Math.PI, 0); c.closePath(); fill(c, '#2b2638'); c.beginPath(); c.arc(0, 30, 44, Math.PI, 0); c.closePath(); lnS(c, 4, '#f1e6d6'); circ(c, 0, 34, 10, '#fde68a'); c.restore();

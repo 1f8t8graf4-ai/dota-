@@ -5,8 +5,8 @@
   const S8 = { bg: '#26223a', b1: '#332e4a', b2: '#3f3958', b3: '#4c4667', win: '#f4a261', ln: '#f1f5f9', slab: '#d6d1e0', inside: '#2b2638', room: '#38314c', sil: '#15121c' };
   const DM = { w: 640, top: 360, bot: 1400 };   // здание: 4 этажа по 260
   function cityRow(c, seed, base, hMin, hMax, col, winA, t) {   // ряд домов: прямоугольники, ступени крыш, окна полосками
-    let x = -60, i = 0;
-    while (x < WW + 60) {
+    let x = WD ? -1700 : -60, i = 0;   // 24.11: в 16:9 город на всю ширину
+    while (x < WW + (WD ? 1700 : 60)) {
       const w = 70 + H1(seed + i * 3.1) * 90, h = hMin + H1(seed + i * 5.7) * (hMax - hMin), top = base - h;
       c.fillStyle = col; c.fillRect(x, top, w + 1, h + 400);
       if (H1(seed + i * 8.3) > .6) { c.fillRect(x + w * .3, top - 40, w * .4, 42); if (H1(seed + i * 2.2) > .5) c.fillRect(x + w * .48, top - 90, 6, 52) }
@@ -91,15 +91,15 @@
     const kc = eo(at(t, K.s8 - .2, K.s8 + .8)), kc2 = eo(at(t, K.s8 + .05, K.s8 + 1));
     c.save(); c.translate(600, 900); c.scale(kp, kp); c.translate(-600, -900);
     c.fillStyle = S8.bg; c.fillRect(-500, -500, WW + 1000, HH + 1000);
-    for (let i = 0; i < 26; i++) circ(c, H1(i * 4.4) * WW, H1(i * 6.6) * 900, 2 + H1(i) * 2, rgba('#e2e8f0', .35 + .25 * Math.sin(t * 1.7 + i)));
+    for (let i = 0; i < (WD ? 70 : 26); i++) circ(c, WD ? -1100 + H1(i * 4.4) * 3300 : H1(i * 4.4) * WW, H1(i * 6.6) * 900, 2 + H1(i) * 2, rgba('#e2e8f0', .35 + .25 * Math.sin(t * 1.7 + i)));
     if (p >= 1) moon8(c, MOON.x, MOON.y, MOON.r);
     c.save(); c.translate(0, 900 * (1 - kc)); cityRow(c, 21, 1420, 260, 640, S8.b1, .25, t); spire(c, 250, 1420); c.restore();
     c.save(); c.translate(0, 900 * (1 - kc2)); cityRow(c, 7, 1420, 160, 420, S8.b2, .35, t); c.restore();
-    c.fillStyle = '#1d1a2b'; c.fillRect(-500, 1400, WW + 1000, 900); c.beginPath(); c.moveTo(-500, 1400); c.lineTo(WW + 500, 1400); lnS(c, 4, S8.slab);
+    c.fillStyle = '#1d1a2b'; c.fillRect(WL, 1400, WR - WL, 900); c.beginPath(); c.moveTo(WL, 1400); c.lineTo(WR, 1400); lnS(c, 4, S8.slab);
     const kd = bo(at(t, K.s8 + .3, K.s8 + 1.1)); if (kd > 0) vitrine(c, t, kd);
     c.restore();
     if (p < 1) {   // касса уезжает вниз целиком (без растворения), монета летит в Луну
-      c.save(); c.translate(0, 1950 * p); c.beginPath(); c.rect(0, 0, WW, HH); c.clip(); b6Shot(c, t); c.restore();   // v19.3: уезжает ровно кадр — без полосы сверху (1:16)
+      c.save(); c.translate(0, 1950 * p); c.beginPath(); if (WD) c.rect(WIDE.X0 - 4, WIDE.Y0 - 4, WIDE.X1 - WIDE.X0 + 8, WIDE.Y1 - WIDE.Y0 + 8); else c.rect(0, 0, WW, HH); c.clip(); b6Shot(c, t); c.restore();   // v19.3: уезжает ровно кадр — без полосы сверху (1:16)
       const x = lp(540, MOON.x, p), y = lp(850, MOON.y, p) - Math.sin(Math.PI * p) * 140, r = lp(36, MOON.r, p);
       if (p > .6) moon8(c, x, y, r, mixc('#f59e0b', '#f8fafc', ss(.6, 1, p))); else { circ(c, x, y, r, mixc('#f59e0b', '#f8fafc', p)); ring(c, x, y, r * .76, rgba('#b45309', 1 - p), 4) }
     }

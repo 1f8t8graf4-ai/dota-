@@ -434,7 +434,7 @@
     tx(c, 'PM', gx, gy + 1, { f: 'P', w: 700, s: Math.round(w * .07), c: T.red });
     SL(c, [gx - w * .12, gy + w * .05, gx - w * .17, gy - w * .06], T.gold, 3); SL(c, [gx + w * .12, gy + w * .05, gx + w * .17, gy - w * .06], T.gold, 3);
     c.save(); c.translate(gx, y + h * .56); c.scale(1, 1.18); tx(c, 'Marlboro', 0, -h * .02, { f: 'P', w: 700, s: Math.round(w * .2), c: o.glow ? mixc(T.ink, T.red, o.glow) : T.ink }); c.restore();
-    tx(c, o.sub || 'FILTER CIGARETTES', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
+    tx(c, o.sub || 'СИГАРЕТЫ С ФИЛЬТРОМ', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
     if (o.glow) { c.fillStyle = rgba('#FFD27A', .55 * o.glow); c.fillRect(x + w * .1, y + h * .62, w * .8 * o.glow, 5) }   // имя загорается: цвет и черта, без свечения
     SL(c, [x, y + 2, x, y + h - 2], 'rgba(255,255,255,.7)', 2);
   }
@@ -631,7 +631,7 @@
   let LANG = 'ru';
   function setLang(l) {
     LANG = TEXT_L[l] ? l : 'ru'; for (const o of [TEXT, OBJ]) for (const k in o) delete o[k];
-    Object.assign(TEXT, TEXT_L[LANG]); Object.assign(OBJ, OBJ_NAMES);
+    Object.assign(TEXT, TEXT_L[LANG]); Object.assign(OBJ, OBJ_NAMES, LANG === 'ru' ? { snus: 'СНЮС' } : {});   // 24.11: в русской версии — без английских слов
   }
   setLang('ru');
   // палитра главы 5 (основа — набор Боба B2; C4 — имена, которыми пользуются помощники из главы 4)
@@ -689,7 +689,7 @@
     if (!lid) { c.beginPath(); c.ellipse(gx, gy, w * .1, w * .12, 0, 0, TAU); fill(c, T.gold); c.beginPath(); c.ellipse(gx, gy, w * .065, w * .085, 0, 0, TAU); fill(c, T.white);
       tx(c, 'PM', gx, gy + 1, { f: 'P', w: 700, s: Math.round(w * .07), c: T.red }) }
     c.save(); c.translate(gx, y + h * .56); c.scale(1, 1.18); tx(c, 'Marlboro', 0, -h * .02, { f: 'P', w: 700, s: Math.round(w * .2), c: o.glow ? mixc(T.ink, T.red, o.glow) : T.ink }); c.restore();
-    tx(c, o.sub || 'FILTER CIGARETTES', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
+    tx(c, o.sub || (LANG === 'ru' ? 'СИГАРЕТЫ С ФИЛЬТРОМ' : 'FILTER CIGARETTES'), gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
     if (o.glow) { c.fillStyle = rgba('#FFD27A', .55 * o.glow); c.fillRect(x + w * .1, y + h * .62, w * .8 * o.glow, 5) }
     if (!lid) { SL(c, [x, y + cut, x + w, y + cut], 'rgba(0,0,0,.22)', 1.5);   // шов крышки Flip-Top
       PL(c, [x, y, x + dx, y + dy, x + w + dx, y + dy, x + w, y], '#E0283F'); SL(c, [x + 4, y - 1, x + w - 2, y - 1], 'rgba(255,255,255,.55)', 2) }   // крыша
@@ -1757,7 +1757,7 @@
     const a = T6; a.split0 = a.razr - .35; a.split1 = a.razr + .45; a.jout = a.shB + .35;   // после строки 11 — вода поднимается (мир доски)
     // v22.2: строка 10 — коридор и лист с графиком (камера в движении); строка 11 — камера уезжает вправо к тёмной витрине с двумя банками ZYN
     // («КРЕПОСТЬ»): заголовка «ШКОЛЬНИКИ США» в кадре нет — крепкий снюс не читается как разрешённый школьникам
-    K6 = [KY(a.j + .35, 560, 1010, 1.06), KY(a.shk + .2, 640, 1000, 1.02), KY(a.sig + .1, 575, 955, 1.5), KY(a.ob, 548, 945, 1.6), KY(a.s11 + .2, 600, 950, 1.5), KY(a.razr - .1, 1600, 1000, 1.3),
+    K6 = [KY(a.j + .35, 560, 1010, 1.06), KY(a.shk + .2, 640, 1000, 1.02), ...(window.WIDE ? [KY(a.sig + .1, 575, 1030, 1.2), KY(a.ob, 548, 1025, 1.26), KY(a.s11 + .2, 600, 1030, 1.2)] : [KY(a.sig + .1, 575, 955, 1.5), KY(a.ob, 548, 945, 1.6), KY(a.s11 + .2, 600, 950, 1.5)]),   // 24.11: в 16:9 школьники в кадре по пояс, а не одними макушками KY(a.razr - .1, 1600, 1000, 1.3),
       KY(a.kr + .2, 1630, 985, 1.38), KY(a.shB, 1640, 975, 1.5), KY(a.jout + .62, 1640, 970, 1.6)];   // до самой воды камера не встаёт
     linkK(K5, K6, N6, true);
   }
@@ -1846,7 +1846,7 @@
   // с красным кольцом змеи) и возвращается, штамп «ЦЕЛИКОМ — НА YOUTUBE», нырок в фото 2022 — кадр 0 (петля).
   const CARDS5 = [{ id: '1979', x: 340, y: 400, a: '1979', bk: 'card79b' }, { id: '2020', x: 740, y: 400, a: '2020', bk: 'card20b' },
     { id: '2014', x: 230, y: 790, a: '2014', bk: 'card14b' }, { id: '1924', x: 540, y: 850, a: '1924', bk: 'card24b' }, { id: '2022', x: 850, y: 790, a: '2022', bk: 'card22b' }];
-  const CW5 = 270, CH5 = 330, PS5 = 240, BRD5 = { x0: -40, y0: 120, x1: 1120, y1: 1160 }, C22 = CARDS5[4];
+  const CW5 = 270, CH5 = 330, PS5 = 240, BRD5 = window.WIDE ? { x0: -660, y0: 120, x1: 1740, y1: 1160 } : { x0: -40, y0: 120, x1: 1120, y1: 1160 }, C22 = CARDS5[4];
   const THR5 = [[0, 1], [1, 2], [1, 3], [1, 4], [3, 0], [3, 2], [2, 4]];   // как в главе 4: 79–20, 20–14, 20–24, 20–22, 24–79, 24–14, 14–22
   const photo5 = cd => [cd.x, cd.y - CH5 / 2 + 15 + PS5 / 2], pin5 = cd => [cd.x, cd.y - CH5 / 2 + 4];
   const PHC5 = { x: 560, y: 860, s: 1200 }, Q0 = { x: 540, y: 960, z: 1, r: 0 };   // какой квадрат кадра океана видно в фото 2022

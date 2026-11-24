@@ -33,8 +33,8 @@
     c.restore();
   }
   function cranes5(c, t) {   // балка с лебёдками и паллетами одноразок (#067)
-    c.fillStyle = '#f2b84b'; c.fillRect(-400, 230, 1900, 48); c.save(); c.beginPath(); c.rect(-400, 230, 1900, 48); c.clip(); for (let i = 0; i < 50; i++) { poly(c, [-400 + i * 60, 278, -370 + i * 60, 278, -340 + i * 60, 230, -370 + i * 60, 230]); fill(c, B2.ink) } c.restore();
-    for (let j = 0; j < 3; j++) { const x = -250 + ((t - T5.wipe) * 150 + j * 560) % 1680, sw = Math.sin(t * 2 + j) * 8;
+    const ca = WD ? -2400 : -400, cw = WD ? 5900 : 1900; c.fillStyle = '#f2b84b'; c.fillRect(ca, 230, cw, 48); c.save(); c.beginPath(); c.rect(ca, 230, cw, 48); c.clip(); for (let i = 0; i < (WD ? 100 : 50); i++) { poly(c, [ca + i * 60, 278, ca + 30 + i * 60, 278, ca + 60 + i * 60, 230, ca + 30 + i * 60, 230]); fill(c, B2.ink) } c.restore();   // 24.11: в 16:9 балка на всю ширину
+    for (let j = 0; j < (WD ? 6 : 3); j++) { const x = (WD ? -1450 : -250) + ((t - T5.wipe) * 150 + j * 560) % (WD ? 3360 : 1680), sw = Math.sin(t * 2 + j) * 8;
       c.fillStyle = '#2c3048'; c.fillRect(x - 40, 274, 80, 34); for (let i = 0; i < 4; i++) { c.beginPath(); c.ellipse(x - 30 + sw * i / 4, 330 + i * 30, 6, 13, 0, 0, TAU); c.ellipse(x + 30 + sw * i / 4, 330 + i * 30, 6, 13, 0, 0, TAU); lnB(c, 4, B2.steel) }
       c.save(); c.translate(x + sw, 450); rr(c, -90, 0, 180, 20, 4); fill(c, '#8a6a4a'); for (let i = 0; i < 5; i++) { rr(c, -80 + i * 34, -60, 26, 60, 8); fill(c, [B2.mango, B2.ice2, B2.teal, B2.coral, '#b65bd6'][(i + j) % 5]); lnB(c, 2) } c.restore() }
   }

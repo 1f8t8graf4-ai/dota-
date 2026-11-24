@@ -11,6 +11,8 @@
 (function () {
   'use strict';
   const WW = 1080, HH = 1920, CX = WW / 2, CY = HH / 2, TAU = Math.PI * 2, SUBY = 1720;
+  const WD = !!window.WIDE; if (WD) window.WIDE.wm = 110;   // 24.11: фильм 16:9 — сцены вширь (правки по сценам); фоном считается только заливка с запасом 110 за краями вертикального кадра
+  const WL = WD ? -2600 : -400, WR = WD ? 3700 : WW + 400;
   let cv = null, X = null, K = null, TLW = [], TLX = {}, MODE = 's', CHUNKS = [];
   window.CUES = window.CUES || {};
   const cue = (t0, name, gain = 1, pan = 0) => { if (!(t0 >= 0) || !name) return; const k = name + '@' + Math.round(t0 * 40); if (!(k in CUES)) CUES[k] = [Math.round(t0 * 1000) / 1000, name, Math.round(gain * 100) / 100, pan] };

@@ -95,7 +95,13 @@
     rr(c, x - 30, y - 100, 60, 100, 12); cel(c, x - 30, y - 100, 60, 100, col, { hw: .14 }); rr(c, x - 30, y - 100, 60, 34, 12); fill(c, '#2d3142'); rr(c, x - 30, y - 100, 60, 100, 12); lnB(c, 3);
     if (lab) { rr(c, x - 50, y + 10, 100, 34, 6); fill(c, B2.cream); tx(c, lab, x, y + 28, { f: 'M', w: 800, s: 20, c: B2.ink, mw: 92 }) }
   }
+  function sideShelf(c, x0, x1) {   // 24.11: соседний стеллаж в 16:9 — тёмный, с картриджами, без надписей
+    c.save(); c.globalAlpha *= .5; c.fillStyle = '#262a4b'; c.fillRect(x0, 240, x1 - x0, 1720);
+    [700, 1010, 1320, 1680].forEach((y, r) => { const n = Math.floor((x1 - x0 - 100) / 80); for (let i = 0; i < n; i++) if (H1(x0 + r * 31 + i * 7) > .25) pod3(c, x0 + 90 + i * 80, y, PODC[(i * 3 + r + Math.floor(x0 / 7)) % 8]); rr(c, x0 + 40, y, x1 - x0 - 80, 34, 6); fill(c, B2.wood) });
+    c.beginPath(); c.rect(x0 + 10, 260, x1 - x0 - 20, 1680); lnB(c, 6, '#4a4f7d'); c.restore();
+  }
   function shelfFront(c, t, skip) {
+    if (WD) { sideShelf(c, 820, 1960); sideShelf(c, 3440, 4580) }
     const { x0, x1, y0, y1 } = SHF; c.fillStyle = '#2d3156'; c.fillRect(x0, y0, x1 - x0, y1 - y0);
     for (let i = 0; i < 9; i++) { c.fillStyle = i % 2 ? 'rgba(255,255,255,.03)' : 'rgba(0,0,0,.05)'; c.fillRect(x0 + i * 115, y0, 115, y1 - y0) }
     rr(c, 2380, 450, 640, 110, 12); fill(c, B2.ink); rr(c, 2380, 450, 640, 110, 12); lnB(c, 4); tx(c, '«ДЖУЛ» · ВКУСЫ', 2700, 508, { f: 'U', w: 800, s: 52, c: B2.cream, ls: 2 });
@@ -118,24 +124,24 @@
   }
   function beltY(x, t) { const A = 70 * eo(at(t, T3.wave, T3.wave + .45)); return BELT + A * Math.sin((x - 2000) / 150 - (t - T3.wave) * 7) }
   function factory(c, t, kc = 1) {
-    c.fillStyle = '#1b1f3a'; c.fillRect(1500, -600, 4200, 3200);
+    c.fillStyle = '#1b1f3a'; c.fillRect(WD ? -400 : 1500, -600, WD ? 6100 : 4200, 3200);   // 24.11: в 16:9 цех на всю ширину
     poly(c, [1500, 1700, 2600, -600, 3300, -600, 2200, 1700]); fill(c, '#21264a');
     // США справа: ночное небо через косой разрез
     poly(c, [3500, 2600, 3900, -600, 5800, -600, 5800, 2600]); fill(c, '#151a36');
     for (let i = 0; i < 26; i++) circ(c, 3950 + H1(i * 4.4) * 1500, -300 + H1(i * 6.6) * 900, 2 + H1(i) * 2, rgba('#e2e8f0', .35 + .25 * Math.sin(t * 1.7 + i)));
     usStore(c, t);
     // балка с лебёдками (Кола #067)
-    c.fillStyle = '#f2b84b'; c.fillRect(1700, 470, 1900, 50); c.save(); c.beginPath(); c.rect(1700, 470, 1900, 50); c.clip(); for (let i = 0; i < 40; i++) { poly(c, [1700 + i * 60, 520, 1730 + i * 60, 520, 1760 + i * 60, 470, 1730 + i * 60, 470]); fill(c, B2.ink) } c.restore();
-    c.beginPath(); c.rect(1700, 470, 1900, 50); lnB(c, 3);
+    const RX0 = WD ? 300 : 1700, RW = 3600 - RX0; c.fillStyle = '#f2b84b'; c.fillRect(RX0, 470, RW, 50); c.save(); c.beginPath(); c.rect(RX0, 470, RW, 50); c.clip(); for (let i = 0; i < 70; i++) { poly(c, [RX0 + i * 60, 520, RX0 + 30 + i * 60, 520, RX0 + 60 + i * 60, 470, RX0 + 30 + i * 60, 470]); fill(c, B2.ink) } c.restore();
+    c.beginPath(); c.rect(RX0, 470, RW, 50); lnB(c, 3);
     for (let j = 0; j < 3; j++) { const x = 1900 + ((t * 120 + j * 520) % 1560), cy = 760 + 60 * Math.sin(t * 1.3 + j);
       c.fillStyle = '#2c3048'; c.fillRect(x - 40, 515, 80, 40); c.beginPath(); c.moveTo(x - 20, 555); c.lineTo(x - 50, cy); c.moveTo(x + 20, 555); c.lineTo(x + 50, cy); lnB(c, 4, B2.steel);
       box3(c, x, cy + 130, .55, ['#b65bd6', '#2f80ed', '#16c09a'][j], ['PUFF', 'HQD', 'ELF'][j]) }
     A(c, 1 - at(t, T3.wave + .05, T3.wave + .4), () => neonTxt(c, 'ШЭНЬЧЖЭНЬ', 2620, 650, t, T3.shen));   // v19.3: вывеска гаснет до того, как камера срежет её краем кадра (0:36)
     // конвейер: лента — линия, которая на «волной» изгибается
-    const x0 = 1700, x1 = T3 && t > T3.wave ? 6000 : 3500;
-    if (kc >= 1) for (let x = 1760; x < 3500; x += 120) { const y = beltY(x, t); circ(c, x, y + 40, 26, '#3a3f66'); ring(c, x, y + 40, 26, B2.ln, 3); c.save(); c.translate(x, y + 40); c.rotate(t * 6); c.beginPath(); c.moveTo(-20, 0); c.lineTo(20, 0); lnB(c, 3); c.restore() }
+    const x0 = WD ? 300 : 1700, x1 = T3 && t > T3.wave ? 6000 : 3500;
+    if (kc >= 1) for (let x = WD ? 360 : 1760; x < 3500; x += 120) { const y = beltY(x, t); circ(c, x, y + 40, 26, '#3a3f66'); ring(c, x, y + 40, 26, B2.ln, 3); c.save(); c.translate(x, y + 40); c.rotate(t * 6); c.beginPath(); c.moveTo(-20, 0); c.lineTo(20, 0); lnB(c, 3); c.restore() }
     if (kc >= 1) { c.beginPath(); for (let x = x0; x <= Math.min(x1, 3500); x += 20) c.lineTo(x, beltY(x, t)); lnB(c, 10, B2.ln) }
-    if (kc >= 1) for (let i = 0; i < 9; i++) { const x = 1760 + ((t - 30) * 140 + i * 200) % 1700; if (x > 3450) continue; c.save(); c.translate(x, beltY(x, t)); c.rotate(Math.atan(Math.cos((x - 2000) / 150 - (t - T3.wave) * 7) * 70 * eo(at(t, T3.wave, T3.wave + .45)) / 150)); rr(c, -30, -50, 60, 50, 6); cel(c, -30, -50, 60, 50, '#8d94b8', { hw: .1 }); rr(c, -30, -50, 60, 50, 6); lnB(c, 2.5); c.restore() }
+    if (kc >= 1) for (let i = 0; i < (WD ? 16 : 9); i++) { const x = (WD ? 360 : 1760) + ((t - 30) * 140 + i * 200) % (WD ? 3100 : 1700); if (x > 3450) continue; c.save(); c.translate(x, beltY(x, t)); c.rotate(Math.atan(Math.cos((x - 2000) / 150 - (t - T3.wave) * 7) * 70 * eo(at(t, T3.wave, T3.wave + .45)) / 150)); rr(c, -30, -50, 60, 50, 6); cel(c, -30, -50, 60, 50, '#8d94b8', { hw: .1 }); rr(c, -30, -50, 60, 50, 6); lnB(c, 2.5); c.restore() }
     BOX3.forEach(([lab, col, x], i) => { const tb = T3.box[i]; if (t < tb - .32) return; const kk = cl((t - tb + .32) / .32), sq = t > tb ? .14 * Math.sin(Math.PI * cl((t - tb) / .28)) : 0, by = beltY(x, t);   // v19.1: коробки падают сверху на ленту
       c.save(); c.translate(x, by - 1100 + 1100 * kk * kk); c.scale(1 + sq, 1 - sq);
       castDots(c, -90, -180, 180, 180, 90, { st: 13 }); box3(c, 0, 0, 1, col, lab, .06 * Math.sin(t * 3 + i)); c.restore() });
@@ -159,10 +165,10 @@
   function wave3(c, t) {
     const kz = eio(at(t, T3.end - .3, T3.end + .7)), kh = eio(at(t, T3.wave + .3, T3.wave + 1.0)) * (1 - .8 * kz), front = lp(3400, 5300, eio(at(t, T3.wave + .35, T3.voln + .2))) + 900 * kz, lvl = lp(lp(BELT, 760, eio(at(t, T3.wave + .3, T3.wave + 1.0))), LVL4 - 20, kz);
     const top = x => lp(lvl - 110 * Math.exp(-Math.pow((front - 520 - x) / 260, 2)) * kh, 2700, ss(front - 480, front, x)) + 34 * Math.sin(x / 120 - t * 4) * kh;
-    const P = []; for (let x = 1600; x <= front + 20; x += 20) P.push(x, x > 3500 ? top(x) : Math.min(beltY(x, t), top(x)));
-    const body = (dy, col) => { c.beginPath(); c.moveTo(1600, 2600); for (let i = 0; i < P.length; i += 2) c.lineTo(P[i], P[i + 1] + dy); c.lineTo(front + 40, 2600); c.closePath(); fill(c, col) };
+    const WX = WD ? 300 : 1600, P = []; for (let x = WX; x <= front + 20; x += 20) P.push(x, x > 3500 ? top(x) : Math.min(beltY(x, t), top(x)));
+    const body = (dy, col) => { c.beginPath(); c.moveTo(WX, 2600); for (let i = 0; i < P.length; i += 2) c.lineTo(P[i], P[i + 1] + dy); c.lineTo(front + 40, 2600); c.closePath(); fill(c, col) };
     body(0, B2.red); body(46, B2.cream); body(80, B2.blue); body(240, '#1f4fa8'); body(520, B2.navy);
-    c.save(); c.beginPath(); c.moveTo(1600, 2600); for (let i = 0; i < P.length; i += 2) c.lineTo(P[i], P[i + 1] + 240); c.lineTo(front + 40, 2600); c.closePath(); c.clip(); dotsField(c, 1600, lvl + 200, front - 1500, 900, 22, 'rgba(255,255,255,.12)', 2); c.restore();
+    c.save(); c.beginPath(); c.moveTo(WX, 2600); for (let i = 0; i < P.length; i += 2) c.lineTo(P[i], P[i + 1] + 240); c.lineTo(front + 40, 2600); c.closePath(); c.clip(); dotsField(c, WX, lvl + 200, front - WX + 100, 900, 22, 'rgba(255,255,255,.12)', 2); c.restore();
     const fx = front - 520, fy = top(fx); for (let i = 0; i < 12; i++) { const u = ((t * 1.3 + i / 12) % 1); circ(c, fx - 160 + H1(i) * 360, fy - 30 - u * 150, (8 + H1(i * 3) * 10) * (1 - u), B2.cream) }   // брызги над гребнем
     BOX3.forEach(([lab, col], i) => { const x = lp(2440 + i * 260, front - 300 - i * 260, eio(at(t, T3.wave + .4, T3.voln))); c.save(); c.translate(x, top(x) - 10); c.rotate(.12 * Math.sin(t * 3 + i)); box3(c, 0, 0, .9, col, lab); c.restore() });
   }

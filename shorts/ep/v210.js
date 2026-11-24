@@ -435,7 +435,7 @@
     tx(c, 'PM', gx, gy + 1, { f: 'P', w: 700, s: Math.round(w * .07), c: T.red });
     SL(c, [gx - w * .12, gy + w * .05, gx - w * .17, gy - w * .06], T.gold, 3); SL(c, [gx + w * .12, gy + w * .05, gx + w * .17, gy - w * .06], T.gold, 3);
     c.save(); c.translate(gx, y + h * .56); c.scale(1, 1.18); tx(c, 'Marlboro', 0, -h * .02, { f: 'P', w: 700, s: Math.round(w * .2), c: o.glow ? mixc(T.ink, T.red, o.glow) : T.ink }); c.restore();
-    tx(c, o.sub || 'FILTER CIGARETTES', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
+    tx(c, o.sub || 'СИГАРЕТЫ С ФИЛЬТРОМ', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
     if (o.glow) { c.fillStyle = rgba('#FFD27A', .55 * o.glow); c.fillRect(x + w * .1, y + h * .62, w * .8 * o.glow, 5) }   // имя загорается: цвет и черта, без свечения
     SL(c, [x, y + 2, x, y + h - 2], 'rgba(255,255,255,.7)', 2);
   }
@@ -641,7 +641,7 @@
     premier: 'Premier', rjs: 'R.J. Reynolds', iqos: 'IQOS' };
   const OBJ_L = {   // текст рекламы — как в газетах 2018 года (Our New Year’s resolution. We’re trying to give up cigarettes.), переведён
     ru: { ad1L: ['Наше новогоднее', 'обещание'], ad2L: ['Мы пытаемся бросить', 'сигареты.'], news: 'НОВОСТИ', jtitle1: 'Табачные нагреватели:', jtitle2: 'дым под другим именем',
-      patent: 'ПАТЕНТ', fig: 'РИС. 1', mapUS: 'США', mapOcean: ['АТЛАНТИЧЕСКИЙ', 'ОКЕАН'] },
+      patent: 'ПАТЕНТ', fig: 'РИС. 1', mapUS: 'США', mapOcean: ['АТЛАНТИЧЕСКИЙ', 'ОКЕАН'], journal: 'JAMA', rj: 'R.J. REYNOLDS · ТАБАЧНАЯ КОМПАНИЯ' },
     en: { ad1L: ['Our New', 'Year’s resolution'], ad2L: ['We’re trying to', 'give up cigarettes.'], news: 'NEWS', jtitle1: 'Heat-Not-Burn Tobacco Cigarettes:', jtitle2: 'Smoke by Any Other Name',
       patent: 'PATENT', fig: 'FIG. 1', mapUS: 'USA', mapOcean: ['ATLANTIC', 'OCEAN'] },
     de: { ad1L: ['Unser', 'Neujahrsvorsatz'], ad2L: ['Wir versuchen,', 'Zigaretten aufzugeben.'], news: 'NACHRICHTEN', jtitle1: 'Tabakerhitzer:', jtitle2: 'Rauch unter anderem Namen',
@@ -710,7 +710,7 @@
     if (!lid) { c.beginPath(); c.ellipse(gx, gy, w * .1, w * .12, 0, 0, TAU); fill(c, T.gold); c.beginPath(); c.ellipse(gx, gy, w * .065, w * .085, 0, 0, TAU); fill(c, T.white);
       tx(c, 'PM', gx, gy + 1, { f: 'P', w: 700, s: Math.round(w * .07), c: T.red }) }
     c.save(); c.translate(gx, y + h * .56); c.scale(1, 1.18); tx(c, 'Marlboro', 0, -h * .02, { f: 'P', w: 700, s: Math.round(w * .2), c: o.glow ? mixc(T.ink, T.red, o.glow) : T.ink }); c.restore();
-    tx(c, o.sub || 'FILTER CIGARETTES', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
+    tx(c, o.sub || (LANG === 'ru' ? 'СИГАРЕТЫ С ФИЛЬТРОМ' : 'FILTER CIGARETTES'), gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
     if (o.glow) { c.fillStyle = rgba('#FFD27A', .55 * o.glow); c.fillRect(x + w * .1, y + h * .62, w * .8 * o.glow, 5) }
     if (!lid) { SL(c, [x, y + cut, x + w, y + cut], 'rgba(0,0,0,.22)', 1.5);   // шов крышки Flip-Top
       PL(c, [x, y, x + dx, y + dy, x + w + dx, y + dy, x + w, y], '#E0283F'); SL(c, [x + 4, y - 1, x + w - 2, y - 1], 'rgba(255,255,255,.55)', 2) }   // крыша
@@ -1953,7 +1953,8 @@
   // Последний кадр = кадр главы 5 за 1/30 с до её начала: ключи KS — общие с KJ5 главы 5 (время τ: 0 — начало главы 5).
   // v22.4 (ФИНАЛЬНОЕ ТЗ мейн): хвост 1,4 с — кадр кофейни сжимается в фото 2014, камера отъезжает вправо; нить к 2022 в главе 4 не тянется:
   // её в реальном времени тянет начало главы 5 под голосовой мостик (ep/v220/80-board.js, KS5 — те же ключи).
-  const BRD4 = { x0: -40, y0: 120, x1: 1120, y1: 1160 }, KS = [[-1.2, 230, 760, 860 / 240], [-.55, 290, 742, 2.05], [0, 360, 724, 1.62], [.6, 455, 716, 1.5]];
+  const BRD4 = window.WIDE ? { x0: -660, y0: 120, x1: 1740, y1: 1160 } : { x0: -40, y0: 120, x1: 1120, y1: 1160 },   // 24.11: в 16:9 доска шире (как в главе 5)
+    KS = [[-1.2, 230, 760, 860 / 240], [-.55, 290, 742, 2.05], [0, 360, 724, 1.62], [.6, 455, 716, 1.5]];
   function boardInit() {
     if (MODE !== 'y') return; const a = TM, j0 = a.jAJ, [px, py] = photo4(C2014), T0 = TLX.endT + 1 / 30;
     CAFE_END = camObj(camAt(KAE, j0));   // кадр кофейни, который станет фото

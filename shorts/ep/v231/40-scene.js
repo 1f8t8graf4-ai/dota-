@@ -7,7 +7,7 @@
   // v23.3: обрезки картинок — у «Джула» снизу и у айкоса справа были растровые тени (предмет «висел», тень двоилась); pack — пачка без сигареты (врезка «упаковка»)
   const CROP = { pod: ['pod', 0, 0, 266, 2116], heat: ['heat', 0, 0, 356, 2304], pack: ['cig', 335, 0, 1029, 1274] };
   function sprLoad() {
-    return Promise.all(SPRN.map(n => new Promise(r => { const im = new Image(); im.onload = () => { SPRI[n] = im; r() }; im.onerror = () => r(); im.src = 'ep/v231/spr/' + n + '.png' }))).then(() => {
+    return Promise.all(SPRN.map(n => new Promise(r => { const im = new Image(); im.onload = () => { SPRI[n] = im; r() }; im.onerror = () => { if (LANG === 'ru' && !im.__f) { im.__f = 1; im.src = 'ep/v231/spr/' + n + '.png' } else r() }; im.src = (LANG === 'ru' ? 'ep/v231/spr-ru/' : 'ep/v231/spr/') + n + '.png' }))).then(() => {   // 24.11: у русского пролога надписи на предметах по-русски
       for (const k in CROP) { const [n, x, y, w, h] = CROP[k], im = SPRI[n]; if (!im) continue; const cv = mk(w, h); cv.getContext('2d').drawImage(im, x, y, w, h, 0, 0, w, h); SPRI[k] = cv }
     });
   }
@@ -36,7 +36,8 @@
     if (a <= 0) return; const F = fogTex();
     for (const [y, s, v, al] of [[880, 2.3, 11, .12], [1200, 2.8, -7, .2]]) {
       const w = 720 * s, off = ((t * v) % w + w) % w; c.save(); c.globalAlpha *= a * al;
-      for (let k = -1; k <= 1; k++) c.drawImage(F, -w + off + k * w + 540 - w / 2, y - 320 * s * .5, w, 640 * s * .5); c.restore();
+      if (window.WIDE) { c.globalAlpha *= .5; for (let k = -2; k <= 2; k++) for (const h of [0, .5]) c.drawImage(F, -w + off + (k + h) * w + 540 - w / 2, y - 320 * s * .5, w, 640 * s * .5) }   // 24.11: в 16:9 плитки тумана внахлёст — без тёмных полос на стыках
+      else for (let k = -1; k <= 1; k++) c.drawImage(F, -w + off + k * w + 540 - w / 2, y - 320 * s * .5, w, 640 * s * .5); c.restore();
     }
   }
   function podium(c, rx, lit) {
@@ -117,7 +118,7 @@
     tx(c, L[i], 0, o.s * .04 + 14 * (1 - sw), { ...o, c: '#fff', a: sw });
     c.restore();
   }
-  const LABY = 1560;   // центр плашки: низ предметов врезок — до ~1420, плашка субтитров — 1678–1762
+  const LABY = window.WIDE ? 1488 : 1560;   // 24.11: в 16:9 плашка выше — не прижата к низу кадра   // центр плашки: низ предметов врезок — до ~1420, плашка субтитров — 1678–1762
   // ================= A: по ТЗ Gemini + список (v23.2) =================
   const SLOT = i => 152 + 194 * i, LW = 178, LH = 380, LWT = 214;   // ряд из пяти (B — весь ролик)
   const AW = 184, AH = 440, AWT = 220;                               // A: рамка предмета в ряду

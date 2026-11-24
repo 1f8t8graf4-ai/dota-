@@ -14,7 +14,7 @@
       fil: w('s6', 'филип'), dar: w('s6', 'дарит'), vtor: w('s6', 'вторую'), zhizn: w('s6', 'жизнь'), filtr: w('s6', 'фильтр'), zhest: w('s6', 'жёсткую'), pach: w('s6', 'пачку'), otkr: w('s6', 'открывают'), shch: w('s6', 'щелчком'),
       vseh: w('s6', 'всех'), vidu: w('s6', 'виду'), chik: w('s6', 'чикагского'), rekl: w('s6', 'рекламщика'), leo: w('s6', 'лео'), bern: w('s6', 'бёрнетта'), end: SA('s7') - .02 };
     const a = TC;
-    KC = [KY(a.pyat + .45, 540, 880, .96), KY(a.gor + .1, 540, 850, 1.0), KY(a.gor + .95, 546, 650, 1.38), KY(a.proc + .35, 545, 690, 1.24), KY(a.umer + .05, 548, 600, 1.3),
+    KC = [KY(a.pyat + .45, 540, 880, .96), KY(a.gor + .1, 540, 850, 1.0), ...(window.WIDE ? [KY(a.gor + .95, 546, 920, 1.3), KY(a.proc + .35, 545, 930, 1.22), KY(a.umer + .05, 548, 880, 1.24)] : [KY(a.gor + .95, 546, 650, 1.38), KY(a.proc + .35, 545, 690, 1.24), KY(a.umer + .05, 548, 600, 1.3)]),   // 24.11: в 16:9 круг рынка целиком в кадре
       KY(a.spas + .12, 552, 330, 1.22), KY(a.strah + .05, 575, -960, 1.1), KY(a.nam + .1, 430, -1060, 1.42), KY(a.smol + .2, 425, -1080, 1.55), KY(a.op + .25, 420, -1086, 1.64),
       KY(a.amer + .6, 780, -1080, .92), KY(a.men + .15, 960, -1100, .8), KY(a.bros + .45, 1650, -1160, .72), KY(a.filt + .35, 2350, -1110, .7), KY(a.muzh + .45, 2700, -1120, .74),
       KY(a.nezh - .45, 3010, -1080, 1.12), KY(a.nezh + .35, 3040, -1110, 1.32), KY(a.fil + .35, 3170, -1090, 1.14), KY(a.zhest + .05, 3200, -1080, 1.24),
@@ -310,7 +310,7 @@
     c.fillStyle = '#5A3A26'; c.fillRect(-1600, 1500, SHOPX + 3200, 220); c.fillStyle = '#7A5135'; c.fillRect(-1600, 1500, SHOPX + 3200, 10); c.fillStyle = '#1A1420'; c.fillRect(-1600, 1720, SHOPX + 3200, 2000);
     if (md < 1) marketDisc(c, t);
     const kr = at(t, a.proc + .1, a.proc + .45) * (1 - at(t, a.spas - .3, a.spas + .1));
-    if (kr > 0) { const T = c.getTransform(), k = bo(kr), py = Math.min(1040, (1600 - T.f) / T.d - 70 * k); plate(c, '0,25 % РЫНКА', 540, py, k, { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 }) }   // v20.5: камера уходит вверх за дымом — плашка остаётся над субтитром (низ не ниже 1600 px), а не съезжает под него
+    if (kr > 0) { const T = c.getTransform(), k = bo(kr), py = Math.min(1040, ((window.WIDE ? 1520 : 1600) - T.f) / T.d - 70 * k); plate(c, '0,25 % РЫНКА', 540, py, k, { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 }) }   // v20.5: камера уходит вверх за дымом — плашка остаётся над субтитром (низ не ниже 1600 px), а не съезжает под него
     if (md > 0) { const v = viewRect(q); if (v.y1 > SLAB[1]) { const g = c.createLinearGradient(0, SLAB[1], 0, SLAB[1] + 1100); g.addColorStop(0, `rgba(22,19,28,${md})`); g.addColorStop(1, `rgba(8,7,11,${md})`);
       c.fillStyle = g; c.fillRect(v.x0 - 50, SLAB[1], v.x1 - v.x0 + 100, v.y1 - SLAB[1] + 50) } }
     smokeRise(c, t);   // v20.4: лента дыма — за перекрытием, полом и тумбой стола

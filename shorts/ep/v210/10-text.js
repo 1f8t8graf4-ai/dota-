@@ -37,7 +37,7 @@
     premier: 'Premier', rjs: 'R.J. Reynolds', iqos: 'IQOS' };
   const OBJ_L = {   // текст рекламы — как в газетах 2018 года (Our New Year’s resolution. We’re trying to give up cigarettes.), переведён
     ru: { ad1L: ['Наше новогоднее', 'обещание'], ad2L: ['Мы пытаемся бросить', 'сигареты.'], news: 'НОВОСТИ', jtitle1: 'Табачные нагреватели:', jtitle2: 'дым под другим именем',
-      patent: 'ПАТЕНТ', fig: 'РИС. 1', mapUS: 'США', mapOcean: ['АТЛАНТИЧЕСКИЙ', 'ОКЕАН'] },
+      patent: 'ПАТЕНТ', fig: 'РИС. 1', mapUS: 'США', mapOcean: ['АТЛАНТИЧЕСКИЙ', 'ОКЕАН'], journal: 'JAMA', rj: 'R.J. REYNOLDS · ТАБАЧНАЯ КОМПАНИЯ' },
     en: { ad1L: ['Our New', 'Year’s resolution'], ad2L: ['We’re trying to', 'give up cigarettes.'], news: 'NEWS', jtitle1: 'Heat-Not-Burn Tobacco Cigarettes:', jtitle2: 'Smoke by Any Other Name',
       patent: 'PATENT', fig: 'FIG. 1', mapUS: 'USA', mapOcean: ['ATLANTIC', 'OCEAN'] },
     de: { ad1L: ['Unser', 'Neujahrsvorsatz'], ad2L: ['Wir versuchen,', 'Zigaretten aufzugeben.'], news: 'NACHRICHTEN', jtitle1: 'Tabakerhitzer:', jtitle2: 'Rauch unter anderem Namen',
@@ -106,7 +106,7 @@
     if (!lid) { c.beginPath(); c.ellipse(gx, gy, w * .1, w * .12, 0, 0, TAU); fill(c, T.gold); c.beginPath(); c.ellipse(gx, gy, w * .065, w * .085, 0, 0, TAU); fill(c, T.white);
       tx(c, 'PM', gx, gy + 1, { f: 'P', w: 700, s: Math.round(w * .07), c: T.red }) }
     c.save(); c.translate(gx, y + h * .56); c.scale(1, 1.18); tx(c, 'Marlboro', 0, -h * .02, { f: 'P', w: 700, s: Math.round(w * .2), c: o.glow ? mixc(T.ink, T.red, o.glow) : T.ink }); c.restore();
-    tx(c, o.sub || 'FILTER CIGARETTES', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
+    tx(c, o.sub || (LANG === 'ru' ? 'СИГАРЕТЫ С ФИЛЬТРОМ' : 'FILTER CIGARETTES'), gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
     if (o.glow) { c.fillStyle = rgba('#FFD27A', .55 * o.glow); c.fillRect(x + w * .1, y + h * .62, w * .8 * o.glow, 5) }
     if (!lid) { SL(c, [x, y + cut, x + w, y + cut], 'rgba(0,0,0,.22)', 1.5);   // шов крышки Flip-Top
       PL(c, [x, y, x + dx, y + dy, x + w + dx, y + dy, x + w, y], '#E0283F'); SL(c, [x + 4, y - 1, x + w - 2, y - 1], 'rgba(255,255,255,.55)', 2) }   // крыша

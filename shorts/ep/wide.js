@@ -40,12 +40,28 @@
       const rx0 = Math.min(x, x + ww), rx1 = Math.max(x, x + ww), ry0 = Math.min(y, y + hh), ry1 = Math.max(y, y + hh);
       const inR = p => p[0] >= rx0 - .5 && p[0] <= rx1 + .5 && p[1] >= ry0 - .5 && p[1] <= ry1 + .5;
       if (![[0, 0], [1080, 0], [0, 1920], [1080, 1920]].every(q => inR(L(q[0], q[1])))) return false;
+      // 24.11: глава может потребовать запас (WIDE.wm): предмет, который при наезде случайно закрыл вертикальный кадр (полка, лист),
+      // — не фон; фоновая заливка шире кадра с запасом или нарисована без камеры
+      if (w.wm && !(Math.abs(m.a - 1) < .02 && Math.abs(m.b) < .02 && Math.abs(m.d - 1) < .02) && ![[-w.wm, -w.wm], [1080 + w.wm, -w.wm], [-w.wm, 1920 + w.wm], [1080 + w.wm, 1920 + w.wm]].every(q => inR(L(q[0], q[1])))) return false;
       const wc = [[w.X0 - 4, Math.min(-4, w.Y0 - 4)], [w.X1 + 4, Math.min(-4, w.Y0 - 4)], [w.X0 - 4, Math.max(1924, w.Y1 + 4)], [w.X1 + 4, Math.max(1924, w.Y1 + 4)]].map(q => L(q[0], q[1]));
       const xs = [rx0, rx1, ...wc.map(p => p[0])], ys = [ry0, ry1, ...wc.map(p => p[1])], nx = Math.min(...xs), ny = Math.min(...ys);
       f.call(ctx, nx, ny, Math.max(...xs) - nx, Math.max(...ys) - ny); return true;
     };
     const isId = m => Math.abs(m.a - 1) < 1e-6 && Math.abs(m.b) < 1e-6 && Math.abs(m.c) < 1e-6 && Math.abs(m.d - 1) < 1e-6 && Math.abs(m.e) < 1e-3 && Math.abs(m.f) < 1e-3;
-    c.fillRect = function (x, y, ww, hh) { if (!widen(this, x, y, ww, hh, P.fillRect)) P.fillRect.call(this, x, y, ww, hh) };
+    // 24.11 (ТЗ Андрея: «никаких столбиков по центру»): горизонтальная полоса (пол, дорога, столешница, стена), которая на экране
+    // закрывает всю ширину вертикального кадра, — до краёв широкого кадра. Только у глав, где включено WIDE.band, и без заметного поворота.
+    const band = (ctx, x, y, ww, hh, f) => {
+      if (!w.band || ctx.__noband) return false;
+      const m = ctx.getTransform(); if (Math.abs(m.a) < 1e-6 || Math.abs(m.b) > .06 * Math.abs(m.a)) return false;
+      const rx0 = Math.min(x, x + ww), rx1 = Math.max(x, x + ww), ys = [Math.min(y, y + hh), Math.max(y, y + hh)];
+      const sx = (lx, ly) => m.a * lx + m.c * ly + m.e;
+      const L = ys.map(ly => sx(m.a > 0 ? rx0 : rx1, ly)), R = ys.map(ly => sx(m.a > 0 ? rx1 : rx0, ly));
+      if (Math.max(...L) > 1.5 || Math.min(...R) < 1078.5) return false;
+      const lx = (X, ly) => (X - m.c * ly - m.e) / m.a, ex = ys.flatMap(ly => [lx(w.X0 - 8, ly), lx(w.X1 + 8, ly)]);
+      const nx0 = Math.min(rx0, ...ex), nx1 = Math.max(rx1, ...ex); if (nx0 >= rx0 - .5 && nx1 <= rx1 + .5) return false;
+      f.call(ctx, nx0, ys[0], nx1 - nx0, ys[1] - ys[0]); return true;
+    };
+    c.fillRect = function (x, y, ww, hh) { if (!widen(this, x, y, ww, hh, P.fillRect) && !band(this, x, y, ww, hh, P.fillRect)) P.fillRect.call(this, x, y, ww, hh) };
     c.clearRect = function (x, y, ww, hh) { if (!widen(this, x, y, ww, hh, P.clearRect)) P.clearRect.call(this, x, y, ww, hh) };
     // готовый кадр того же размера, что холст, в (0, 0) при единичной матрице — накладывается пиксель в пиксель
     c.drawImage = function (img, ...a) {

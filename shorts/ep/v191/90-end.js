@@ -9,17 +9,17 @@
   const CW = 270, CH = 330, PH = 240;
   const photoC = cd => [cd.x, cd.y - CH / 2 + 15 + PH / 2];
   const pinP = cd => [cd.x, cd.y - CH / 2 + 4];
-  let CORK = null;
+  let CORK = null; const BWX0 = WD ? -640 : 0, BWX1 = WD ? WW + 640 : WW;
   function corkImg() {   // v18.4: пробка ровным цветом, редкие точки — как растр у Боба
-    if (CORK) return CORK; CORK = mk(WW, 1400); const g = CORK.getContext('2d');
-    g.fillStyle = '#b07a4a'; g.fillRect(0, 0, WW, 1400);
-    for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < WW; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() }
+    const CWd = WD ? BWX1 - BWX0 : WW; if (CORK) return CORK; CORK = mk(CWd, 1400); const g = CORK.getContext('2d');
+    g.fillStyle = '#b07a4a'; g.fillRect(0, 0, CWd, 1400);
+    for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < CWd; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() }
     return CORK;
   }
   function boardWall(c, t) {   // v18.4: ровная стена, рама контуром, плоский конус света от качающейся лампы
     c.fillStyle = '#1f1b2b'; c.fillRect(-1200, -1200, WW + 2400, 5200);
-    c.save(); rr(c, 30, 150, WW - 60, 1050, 14); fill(c, '#5b3d26'); rr(c, 52, 172, WW - 104, 1006, 8); c.clip(); c.drawImage(corkImg(), 0, 0); c.restore();
-    rr(c, 30, 150, WW - 60, 1050, 14); lnS(c, 5, '#f1e6d6'); rr(c, 52, 172, WW - 104, 1006, 8); lnS(c, 3, 'rgba(241,230,214,.5)');
+    c.save(); rr(c, BWX0 + 30, 150, BWX1 - BWX0 - 60, 1050, 14); fill(c, '#5b3d26'); rr(c, BWX0 + 52, 172, BWX1 - BWX0 - 104, 1006, 8); c.clip(); c.drawImage(corkImg(), BWX0, 0); c.restore();   // 24.11: в 16:9 доска шире
+    rr(c, BWX0 + 30, 150, BWX1 - BWX0 - 60, 1050, 14); lnS(c, 5, '#f1e6d6'); rr(c, BWX0 + 52, 172, BWX1 - BWX0 - 104, 1006, 8); lnS(c, 3, 'rgba(241,230,214,.5)');
     const sw = Math.sin(t * 1.25) * .2, bx = 540 + Math.sin(sw) * 1300;
     c.beginPath(); c.moveTo(540, -400); c.lineTo(540, 40); lnS(c, 3, '#f1e6d6');
     c.save(); c.translate(540, 40); c.rotate(-sw * .25); c.beginPath(); c.arc(0, 30, 44, Math.PI, 0); c.closePath(); fill(c, '#2b2638'); c.beginPath(); c.arc(0, 30, 44, Math.PI, 0); c.closePath(); lnS(c, 4, '#f1e6d6'); circ(c, 0, 34, 10, '#fde68a'); c.restore();

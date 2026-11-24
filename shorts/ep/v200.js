@@ -444,7 +444,7 @@
     tx(c, 'PM', gx, gy + 1, { f: 'P', w: 700, s: Math.round(w * .07), c: T.red });
     SL(c, [gx - w * .12, gy + w * .05, gx - w * .17, gy - w * .06], T.gold, 3); SL(c, [gx + w * .12, gy + w * .05, gx + w * .17, gy - w * .06], T.gold, 3);
     c.save(); c.translate(gx, y + h * .56); c.scale(1, 1.18); tx(c, 'Marlboro', 0, -h * .02, { f: 'P', w: 700, s: Math.round(w * .2), c: o.glow ? mixc(T.ink, T.red, o.glow) : T.ink }); c.restore();
-    tx(c, o.sub || 'FILTER CIGARETTES', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
+    tx(c, o.sub || 'СИГАРЕТЫ С ФИЛЬТРОМ', gx, y + h * .67, { f: 'M', w: 800, s: Math.round(w * .055), c: T.ink, mw: w * .86 });
     if (o.glow) { c.fillStyle = rgba('#FFD27A', .55 * o.glow); c.fillRect(x + w * .1, y + h * .62, w * .8 * o.glow, 5) }   // имя загорается: цвет и черта, без свечения
     SL(c, [x, y + 2, x, y + h - 2], 'rgba(255,255,255,.7)', 2);
   }
@@ -785,7 +785,7 @@
       fil: w('s6', 'филип'), dar: w('s6', 'дарит'), vtor: w('s6', 'вторую'), zhizn: w('s6', 'жизнь'), filtr: w('s6', 'фильтр'), zhest: w('s6', 'жёсткую'), pach: w('s6', 'пачку'), otkr: w('s6', 'открывают'), shch: w('s6', 'щелчком'),
       vseh: w('s6', 'всех'), vidu: w('s6', 'виду'), chik: w('s6', 'чикагского'), rekl: w('s6', 'рекламщика'), leo: w('s6', 'лео'), bern: w('s6', 'бёрнетта'), end: SA('s7') - .02 };
     const a = TC;
-    KC = [KY(a.pyat + .45, 540, 880, .96), KY(a.gor + .1, 540, 850, 1.0), KY(a.gor + .95, 546, 650, 1.38), KY(a.proc + .35, 545, 690, 1.24), KY(a.umer + .05, 548, 600, 1.3),
+    KC = [KY(a.pyat + .45, 540, 880, .96), KY(a.gor + .1, 540, 850, 1.0), ...(window.WIDE ? [KY(a.gor + .95, 546, 920, 1.3), KY(a.proc + .35, 545, 930, 1.22), KY(a.umer + .05, 548, 880, 1.24)] : [KY(a.gor + .95, 546, 650, 1.38), KY(a.proc + .35, 545, 690, 1.24), KY(a.umer + .05, 548, 600, 1.3)]),   // 24.11: в 16:9 круг рынка целиком в кадре
       KY(a.spas + .12, 552, 330, 1.22), KY(a.strah + .05, 575, -960, 1.1), KY(a.nam + .1, 430, -1060, 1.42), KY(a.smol + .2, 425, -1080, 1.55), KY(a.op + .25, 420, -1086, 1.64),
       KY(a.amer + .6, 780, -1080, .92), KY(a.men + .15, 960, -1100, .8), KY(a.bros + .45, 1650, -1160, .72), KY(a.filt + .35, 2350, -1110, .7), KY(a.muzh + .45, 2700, -1120, .74),
       KY(a.nezh - .45, 3010, -1080, 1.12), KY(a.nezh + .35, 3040, -1110, 1.32), KY(a.fil + .35, 3170, -1090, 1.14), KY(a.zhest + .05, 3200, -1080, 1.24),
@@ -1081,7 +1081,7 @@
     c.fillStyle = '#5A3A26'; c.fillRect(-1600, 1500, SHOPX + 3200, 220); c.fillStyle = '#7A5135'; c.fillRect(-1600, 1500, SHOPX + 3200, 10); c.fillStyle = '#1A1420'; c.fillRect(-1600, 1720, SHOPX + 3200, 2000);
     if (md < 1) marketDisc(c, t);
     const kr = at(t, a.proc + .1, a.proc + .45) * (1 - at(t, a.spas - .3, a.spas + .1));
-    if (kr > 0) { const T = c.getTransform(), k = bo(kr), py = Math.min(1040, (1600 - T.f) / T.d - 70 * k); plate(c, '0,25 % РЫНКА', 540, py, k, { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 }) }   // v20.5: камера уходит вверх за дымом — плашка остаётся над субтитром (низ не ниже 1600 px), а не съезжает под него
+    if (kr > 0) { const T = c.getTransform(), k = bo(kr), py = Math.min(1040, ((window.WIDE ? 1520 : 1600) - T.f) / T.d - 70 * k); plate(c, '0,25 % РЫНКА', 540, py, k, { s: 62, bg: '#F4F1EA', c: '#141010', ls: 2 }) }   // v20.5: камера уходит вверх за дымом — плашка остаётся над субтитром (низ не ниже 1600 px), а не съезжает под него
     if (md > 0) { const v = viewRect(q); if (v.y1 > SLAB[1]) { const g = c.createLinearGradient(0, SLAB[1], 0, SLAB[1] + 1100); g.addColorStop(0, `rgba(22,19,28,${md})`); g.addColorStop(1, `rgba(8,7,11,${md})`);
       c.fillStyle = g; c.fillRect(v.x0 - 50, SLAB[1], v.x1 - v.x0 + 100, v.y1 - SLAB[1] + 50) } }
     smokeRise(c, t);   // v20.4: лента дыма — за перекрытием, полом и тумбой стола
@@ -1521,7 +1521,7 @@
     for (let y = 10, r = 0; y < 1400; y += 22, r++) for (let x = (r % 2) * 11; x < WW; x += 22) { if (H1(x * .37 + y * 1.13) > .55) continue; g.fillStyle = 'rgba(120,72,35,.35)'; g.beginPath(); g.arc(x, y, 2.4, 0, TAU); g.fill() } return CORK3 }
   function boardWall3(c, t) {   // v20.2: пробка во весь кадр (без тёмной стены снизу): доска шире любого кадра камеры
     c.fillStyle = '#4a3220'; c.fillRect(-4000, -4000, 9000, 9000);
-    const X0 = -520, Y0 = -420, X1 = 1600, Y1 = 2300, im = corkImg3();
+    const X0 = window.WIDE ? -1500 : -520, Y0 = -420, X1 = window.WIDE ? 2580 : 1600, Y1 = 2300, im = corkImg3();   // 24.11: в 16:9 доска шире
     c.save(); rr(c, X0, Y0, X1 - X0, Y1 - Y0, 14); fill(c, '#5b3d26'); rr(c, X0 + 22, Y0 + 22, X1 - X0 - 44, Y1 - Y0 - 44, 8); c.clip();
     for (let yy = Y0; yy < Y1; yy += 1400) for (let xx = X0; xx < X1; xx += 1080) c.drawImage(im, xx, yy); c.restore();
     rr(c, X0 + 22, Y0 + 22, X1 - X0 - 44, Y1 - Y0 - 44, 8); lnS(c, 3, 'rgba(241,230,214,.4)');
@@ -1537,7 +1537,7 @@
     if (k < 1) { c.save(); c.translate(x - s * .12, y + s * .08); c.scale(s / 240, s / 240); poly(c, [-38, 20, 38, 20, 56, 56, -56, 56]); fill(c, '#38bdf8'); poly(c, [-14, -80, 14, -80, 14, -30, 60, 60, -60, 60, -14, -30]); c.strokeStyle = '#e0f2fe'; c.lineWidth = 5; c.stroke(); c.restore() }
     if (k > 0) { const R = s * .34 * k, cx = x, cy = y - s * .06, pale = a ? eio(at(t, a.pochti, a.poter + .4)) : 0;
       c.fillStyle = '#1b2142'; c.fillRect(x - s / 2, y - s / 2, s, s); circ(c, cx, cy, R, '#3A3E4C'); c.beginPath(); c.moveTo(cx, cy); c.arc(cx, cy, R, -Math.PI / 2, -Math.PI / 2 + TAU * .35); c.closePath(); fill(c, mixc(C3.red, '#6A6E7C', pale * .85));
-      circ(c, cx, cy, R * .42, '#1b2142'); tx(c, 'JUUL', cx, cy + 2, { f: 'M', w: 800, s: Math.round(s * .1), c: '#F4F1EA' }); tx(c, '35 %', cx + R * .62, cy - R * .2, { f: 'M', w: 800, s: Math.round(s * .07), c: '#fff', a: k }) }
+      circ(c, cx, cy, R * .42, '#1b2142'); tx(c, 'ДЖУЛ', cx, cy + 2, { f: 'M', w: 800, s: Math.round(s * .1), c: '#F4F1EA' }); tx(c, '35 %', cx + R * .62, cy - R * .2, { f: 'M', w: 800, s: Math.round(s * .07), c: '#fff', a: k }) }
   }
   function photo2020(c, t, x, y, s) { c.fillStyle = '#1e2138'; c.fillRect(x - s / 2, y - s / 2, s, s); rr(c, x - s * .12, y - s * .32, s * .24, s * .64, s * .08); fill(c, B2.mango); poly(c, [x - s * .12, y + s * .02, x + s * .12, y - s * .1, x + s * .12, y + s * .32, x - s * .12, y + s * .32]); fill(c, B2.ice2); rr(c, x - s * .07, y - s * .42, s * .14, s * .12, 6); fill(c, '#2a2f55') }
   function card3(c, t, cd, inner) {

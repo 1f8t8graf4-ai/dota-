@@ -25,21 +25,21 @@
   }
   // прямоугольник, который видит камера (в координатах мира, с запасом на поворот)
   function viewRect(cam) {
-    const hw = 540 / cam.z, hh = 960 / cam.z, cs = Math.abs(Math.cos(cam.r)), sn = Math.abs(Math.sin(cam.r));
+    const hw = (WD ? WIDE.hw : 540) / cam.z, hh = 960 / cam.z, cs = Math.abs(Math.cos(cam.r)), sn = Math.abs(Math.sin(cam.r));
     const ex = hw * cs + hh * sn, ey = hw * sn + hh * cs; return { x0: cam.x - ex, x1: cam.x + ex, y0: cam.y - ey, y1: cam.y + ey };
   }
   // частицы переднего плана (снег, пыль) на слое глубины p: поле повторяется плиткой T, видны всегда, при наезде разлетаются
   function fieldLayer(c, cam, p, n, seed, T, drawOne, t) {
-    const s = Math.pow(cam.z, p), lx = cam.x * p, ly = cam.y * p, hw = 560 / s, hh = 980 / s;
+    const s = Math.pow(cam.z, p), lx = cam.x * p, ly = cam.y * p, HW = WD ? WIDE.hw + 20 : 560, hw = HW / s, hh = 980 / s;
     c.save(); c.translate(540, 960); c.rotate(cam.r * p);
     for (let i = 0; i < n; i++) {
       const bx = H1(seed + i * 7.13) * T, by = H1(seed + i * 3.71 + 9) * T;
       const fx = bx + Math.sin(t * (.5 + H1(i + seed) * .6) + i) * 12, fy = by + t * (26 + H1(i * 2.3 + seed) * 34);
       const x0 = Math.floor((lx - hw - fx) / T), x1 = Math.floor((lx + hw - fx) / T), y0 = Math.floor((ly - hh - fy) / T), y1 = Math.floor((ly + hh - fy) / T);
-      if ((x1 - x0 + 1) * (y1 - y0 + 1) > 40) continue;
+      if ((x1 - x0 + 1) * (y1 - y0 + 1) > (WD ? 120 : 40)) continue;
       for (let a = x0; a <= x1 + 1; a++) for (let b = y0; b <= y1 + 1; b++) {
         const X = (fx + a * T - lx) * s, Y = (fy + b * T - ly) * s;
-        if (X < -560 || X > 560 || Y < -980 || Y > 980) continue;
+        if (X < -HW || X > HW || Y < -980 || Y > 980) continue;
         drawOne(c, X, Y, s, i);
       }
     }
