@@ -2,6 +2,15 @@
 window.L10N_DICT = {
 "en": {
 "strings": {
+"СИГАРЕТЫ С ФИЛЬТРОМ": "FILTER CIGARETTES",
+"ТУРЕЦКИЙ ТАБАК": "TURKISH & DOMESTIC BLEND",
+"20 СИГАРЕТ": "20 CIGARETTES",
+"R.J. REYNOLDS · ТАБАЧНАЯ КОМПАНИЯ": "R.J. REYNOLDS TOBACCO COMPANY",
+"никотиновая соль 1979": "nicotine salt 1979",
+"ДОЛЯ В «ДЖУЛ»": "STAKE IN JUUL",
+"МАЛЬБОРО": "MARLBORO",
+"МАЛЬБОРО × ДЖУЛ": "MARLBORO × JUUL",
+"ДЖУЛ": "JUUL",
 "ЧТО ВЫ": "WHAT DO",
 "ЗНАЕТЕ": "YOU KNOW",
 "ОБ": "ABOUT",
@@ -131,7 +140,6 @@ window.L10N_DICT = {
 "СПАЗМ": "SPASM",
 "ХОЛОД": "COLD",
 "ЖЖЕНИЕ": "BURN",
-"20 СИГАРЕТ": "20 CIGARETTES",
 "БАК": "TANK",
 "13 МЛ": "13 ML",
 "2 СЕТКИ": "2 MESH",
@@ -175,6 +183,15 @@ window.L10N_DICT = {
 },
 "de": {
 "strings": {
+"СИГАРЕТЫ С ФИЛЬТРОМ": "FILTERZIGARETTEN",
+"ТУРЕЦКИЙ ТАБАК": "TÜRKISCHER TABAK",
+"20 СИГАРЕТ": "20 ZIGARETTEN",
+"R.J. REYNOLDS · ТАБАЧНАЯ КОМПАНИЯ": "R.J. REYNOLDS TOBACCO COMPANY",
+"никотиновая соль 1979": "Nikotinsalz 1979",
+"ДОЛЯ В «ДЖУЛ»": "ANTEIL AN JUUL",
+"МАЛЬБОРО": "MARLBORO",
+"МАЛЬБОРО × ДЖУЛ": "MARLBORO × JUUL",
+"ДЖУЛ": "JUUL",
 "ЧТО ВЫ": "WAS WISST",
 "ЗНАЕТЕ": "IHR",
 "ОБ": "ÜBER",
@@ -304,7 +321,6 @@ window.L10N_DICT = {
 "СПАЗМ": "KRAMPF",
 "ХОЛОД": "KÄLTE",
 "ЖЖЕНИЕ": "BRENNEN",
-"20 СИГАРЕТ": "20 ZIGARETTEN",
 "БАК": "TANK",
 "13 МЛ": "13 ML",
 "2 СЕТКИ": "2 MESH-",

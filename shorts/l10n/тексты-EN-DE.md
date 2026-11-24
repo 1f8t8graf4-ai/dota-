@@ -509,82 +509,6 @@
 
 | RU | EN | DE |
 |---|---|---|
-| ЧТО ВЫ | WHAT DO | WAS WISST |
-| ЗНАЕТЕ | YOU KNOW | IHR |
-| ОБ | ABOUT | ÜBER |
-| ОДНОРАЗКАХ? | DISPOSABLES? | EINWEG-VAPES? |
-| МАНГО | MANGO | MANGO |
-| МЯТА | MINT | MINZE |
-| КОЛА | COLA | COLA |
-| СЕЙЧАС | NOW | JETZT |
-| СУД · АРХИВ | COURT · ARCHIVE | GERICHT · ARCHIV |
-| СОЛЬ НИКОТИНА | NICOTINE SALT | NIKOTINSALZ |
-| ЗАПИСКА | MEMO | MEMO |
-| МЕМОРАНДУМ | MEMORANDUM | MEMORANDUM |
-| 2 ФЕВРАЛЯ 1973 | FEBRUARY 2, 1973 | 2. FEBRUAR 1973 |
-| ТЕМА: НОВЫЕ МАРКИ СИГАРЕТ ДЛЯ | RE: NEW CIGARETTE BRANDS FOR | BETREFF: NEUE ZIGARETTENMARKEN |
-| МОЛОДЁЖНОГО РЫНКА | THE YOUTH MARKET | FÜR DEN JUGENDMARKT |
-| Реалистично, если наша компания | Realistically, if our Company | Realistisch: Wenn unsere Firma |
-| хочет выжить и процветать | is to survive and prosper, | überleben und gedeihen will, |
-| в долгосрочной перспективе, | over the long term, | muss sie langfristig |
-| К. ТИГ · ОТДЕЛ ИССЛЕДОВАНИЙ | C. TEAGUE · RESEARCH DEPT. | C. TEAGUE · FORSCHUNG |
-| ДОСЬЕ №1 | FILE NO. 1 | AKTE NR. 1 |
-| К. Э. ТИГ | C. E. TEAGUE | C. E. TEAGUE |
-| МЫ ДОЛЖНЫ ПОЛУЧИТЬ | WE MUST GET OUR | WIR MÜSSEN UNS |
-| СВОЮ ДОЛЮ | SHARE OF THE | UNSEREN ANTEIL AM |
-| МОЛОДЁЖНОГО РЫНКА. | YOUTH MARKET. | JUGENDMARKT SICHERN. |
-| СЕКРЕТНО | SECRET | GEHEIM |
-| СНИМОК · ГОРЛО | X-RAY · THROAT | RÖNTGEN · HALS |
-| ПАЦИЕНТ | PATIENT | PATIENT |
-| 16 ЛЕТ | AGE 16 | 16 JAHRE |
-| ДЕРЁТ ГОРЛО | THROAT BURN | KRATZT IM HALS |
-| НИКОТИН | NICOTINE | NIKOTIN |
-| КИСЛОТА | ACID | SÄURE |
-| НИКОТИНОВАЯ СОЛЬ | NICOTINE SALT | NIKOTINSALZ |
-| ДОЗА НИКОТИНА | NICOTINE DOSE | NIKOTINDOSIS |
-| МЯГКИЙ ПАР | SMOOTH VAPOR | SANFTER DAMPF |
-| БЕЗ КАШЛЯ | NO COUGHING | KEIN HUSTEN |
-| НИКОТИНОВАЯ | NICOTINE | NIKOTIN- |
-| СОЛЬ | SALT | SALZ |
-| SECRET | SECRET | GEHEIM |
-| СУД МИННЕСОТЫ · 1998 | MINNESOTA COURT · 1998 | GERICHT MINNESOTA · 1998 |
-| ВЕСТНИК · 1998 | THE HERALD · 1998 | DER KURIER · 1998 |
-| СУД | MINNESOTA | GERICHT |
-| МИННЕСОТЫ | COURT | MINNESOTA |
-| ДОКУМЕНТОВ | DOCUMENTS | DOKUMENTE |
-| АРХИВ | ARCHIVE | ARCHIV |
-| ВСКРЫТ | OPENED | GEÖFFNET |
-| НИКОТИНОВАЯ СОЛЬ · 1979 | NICOTINE SALT · 1979 | NIKOTINSALZ · 1979 |
-| ЗОЛОТЫЕ ВОРОТА | GOLDEN GATE | GOLDEN GATE |
-| ТИХИЙ ОКЕАН | PACIFIC OCEAN | PAZIFIK |
-| ЗАЛИВ САН-ФРАНЦИСКО | SAN FRANCISCO BAY | BUCHT VON SAN FRANCISCO |
-| ОКЛЕНД | OAKLAND | OAKLAND |
-| КАЛИФОРНИЯ | CALIFORNIA | KALIFORNIEN |
-| АРХИВ UCSF | UCSF ARCHIVE | UCSF-ARCHIV |
-| ПО СОСЕДСТВУ | RIGHT NEXT DOOR | GLEICH NEBENAN |
-| 20–30 МИН НА МАШИНЕ | 20–30 MIN BY CAR | 20–30 MIN. MIT DEM AUTO |
-| СТЭНФОРД | STANFORD | STANFORD |
-| АРХИВ ДОКУМЕНТОВ ТАБАЧНЫХ КОМПАНИЙ | TRUTH TOBACCO INDUSTRY DOCUMENTS | ARCHIV DER TABAKINDUSTRIE |
-| НАЙТИ | SEARCH | SUCHEN |
-| R.J. REYNOLDS · 1979 · НИКОТИНОВАЯ СОЛЬ | R.J. REYNOLDS · 1979 · NICOTINE SALT | R.J. REYNOLDS · 1979 · NIKOTINSALZ |
-| НАЙДЕНО | FOUND | GEFUNDEN |
-| 9,5 СМ | 9.5 CM | 9,5 CM |
-| КАРТРИДЖ | POD | POD |
-| НАГРЕВАТЕЛЬ | HEATER | HEIZELEMENT |
-| АККУМУЛЯТОР | BATTERY | AKKU |
-| ИНДИКАТОР | INDICATOR | ANZEIGE |
-| ЛИСТ 1 | SHEET 1 | BLATT 1 |
-| ФЛЕШКА | USB STICK | USB-STICK |
-| СОЛЬ · 1979 | SALT · 1979 | SALZ · 1979 |
-| 1 КАРТРИДЖ | 1 POD | 1 POD |
-| 20 СИГАРЕТ = ПАЧКА | 20 CIGARETTES = 1 PACK | 20 ZIGARETTEN = 1 SCHACHTEL |
-| НЕ ДЕРЁТ ГОРЛО | NO THROAT BURN | KRATZT NICHT IM HALS |
-| ЗАВИСИМОСТЬ | ADDICTION | SUCHT |
-| СТАРШЕКЛАССНИКИ США · % | US HIGH SCHOOLERS · % | US-HIGHSCHOOL-SCHÜLER · % |
-| КАЖДЫЙ 4-Й | 1 IN 4 | JEDER 4. |
-| ДОЛЯ В JUUL | STAKE IN JUUL | ANTEIL AN JUUL |
-| ПЛАН ВЫПОЛНЕН | PLAN COMPLETE | PLAN ERFÜLLT |
-| ЛАЗЕЙКА ОДНОРАЗОК | THE DISPOSABLE LOOPHOLE | DIE EINWEG-LÜCKE |
 
 ## Глава 2 «Лёд»
 
@@ -592,59 +516,6 @@
 
 | RU | EN | DE |
 |---|---|---|
-| МАНГО-ЛЁД | MANGO ICE | MANGO-EIS |
-| ВЕЙПЫ 24/7 | VAPES 24/7 | VAPES 24/7 |
-| ЗАПРЕТ ВКУСОВ | FLAVOR BAN | AROMENVERBOT |
-| FDA · США · 2020 | FDA · USA · 2020 | FDA · USA · 2020 |
-| КАРТРИДЖНЫЕ | CARTRIDGES | PODS |
-| ЗАПРЕЩЕНЫ | BANNED | VERBOTEN |
-| ТАБАК · МЕНТОЛ | TOBACCO · MENTHOL | TABAK · MENTHOL |
-| МОЖНО | ALLOWED | ERLAUBT |
-| ОДНОРАЗОВЫЕ ? | DISPOSABLES ? | EINWEG-VAPES ? |
-| ЗАКОН | LAW | GESETZ |
-| ЯНВАРЬ | JANUARY | JANUAR |
-| ДЕКАБРЬ | DECEMBER | DEZEMBER |
-| СКАНДАЛ | SCANDAL | SKANDAL |
-| ТАБАК | TOBACCO | TABAK |
-| ФРУКТЫ | FRUIT | FRUCHT |
-| ДЕСЕРТЫ | DESSERTS | DESSERTS |
-| МЕНТОЛ | MENTHOL | MENTHOL |
-| FDA · США | FDA · USA | FDA · USA |
-| ЗАПРЕТ — ТОЛЬКО ДЛЯ: | BAN — ONLY FOR: | VERBOT – NUR FÜR: |
-| ВЕЙПОВ СО СМЕННЫМИ | VAPES WITH REPLACEABLE | VAPES MIT WECHSELBAREN |
-| КАРТРИДЖАМИ | CARTRIDGES | PODS |
-| ЦЕЛЬНЫЕ | ALL-IN-ONE | EINTEILIGE |
-| ОДНОРАЗОВЫЕ | DISPOSABLES | EINWEG-VAPES |
-| НЕ УПОМЯНУТЫ | NOT MENTIONED | NICHT ERWÄHNT |
-| «ДЖУЛ» · ВКУСЫ | JUUL · FLAVORS | JUUL · AROMEN |
-| НЕТ | GONE | WEG |
-| ВЕЙПЫ · США | VAPES · USA | VAPES · USA |
-| ШЭНЬЧЖЭНЬ | SHENZHEN | SHENZHEN |
-| ДОЛЯ ОДНОРАЗОК У ПАРЯЩИХ | DISPOSABLES’ SHARE AMONG | ANTEIL DER EINWEG-VAPES |
-| ШКОЛЬНИКОВ США | US TEEN VAPERS | BEI US-SCHÜLERN |
-| АРОМАТ | FLAVOR | AROMA |
-| ГЛИЦЕРИН | GLYCERIN | GLYZERIN |
-| ХЛАДАГЕНТ | COOLANT | KÜHLSTOFF |
-| ПГ | PG | PG |
-| синтетический холодок | synthetic coolant | synthetischer Kühlstoff |
-| РЕЦЕПТОРЫ ГОРЛА | THROAT RECEPTORS | HALSREZEPTOREN |
-| СПАЗМ | SPASM | KRAMPF |
-| ХОЛОД | COLD | KÄLTE |
-| ЖЖЕНИЕ | BURN | BRENNEN |
-| 20 СИГАРЕТ | 20 CIGARETTES | 20 ZIGARETTEN |
-| 13 МЛ | 13 ML | 13 ML |
-| БАК | TANK | TANK |
-| 2 СЕТКИ | 2 MESH | 2 MESH- |
-| НАГРЕВА | COILS | COILS |
-| ЗАТЯЖЕК | PUFFS | ZÜGE |
-| = 16 КАРТРИДЖЕЙ | = 16 PODS | = 16 PODS |
-| БЕЗ ТАБАКА | NO TOBACCO | OHNE TABAK |
-| В ГОД | A YEAR | PRO JAHR |
-| ЛАЗЕЙКА | LOOPHOLE | SCHLUPFLOCH |
-| СИНТЕТИЧЕСКИЙ ЛЁД | SYNTHETIC ICE | SYNTHETISCHES EIS |
-| 5 000 ЗАТЯЖЕК | 5,000 PUFFS | 5.000 ZÜGE |
-| ▶ ТОЛЬКО НА YOUTUBE | ▶ ONLY ON YOUTUBE | ▶ NUR AUF YOUTUBE |
-| «МАЛЬБОРО»: МЯГКИЕ, КАК МАЙ | MARLBORO: MILD AS MAY | MARLBORO: MILD AS MAY |
 
 ## Глава 3 «Мальборо»
 
@@ -652,26 +523,6 @@
 
 | RU | EN | DE |
 |---|---|---|
-| МЯГКИЕ, КАК МАЙ | MILD AS MAY | MILD AS MAY |
-| СМОЛА | TAR | TEER |
-| 0,25 % РЫНКА | 0.25% OF THE MARKET | 0,25 % DES MARKTES |
-| КУРЯТ МЕНЬШЕ ↓ | SMOKING LESS ↓ | WENIGER RAUCHEN ↓ |
-| ДЛЯ НЕЖЕНОК | FOR SISSIES | FÜR WEICHEIER |
-| ФИЛЬТР | FILTER | FILTER |
-| ЛЕО БЁРНЕТТ | LEO BURNETT | LEO BURNETT |
-| РЕКЛАМЩИК, ЧИКАГО | AD MAN, CHICAGO | WERBER, CHICAGO |
-| № 4 В США | #4 IN THE US | NR. 4 DER USA |
-| № 1 В МИРЕ | #1 IN THE WORLD | NR. 1 DER WELT |
-| ПО-НАСТОЯЩЕМУ | FOR REAL | WIRKLICH |
-| УЭЙН МАКЛАРЕН | WAYNE McLAREN | WAYNE McLAREN |
-| КОВБОЙ С РЕКЛАМЫ | COWBOY FROM THE ADS | COWBOY AUS DER WERBUNG |
-| 1,5 ПАЧКИ В ДЕНЬ | 1.5 PACKS A DAY | 1,5 SCHACHTELN AM TAG |
-| КАК МИНИМУМ 4 | AT LEAST 4 | MINDESTENS 4 |
-| БЕЗ ОГНЯ | NO FIRE | OHNE FEUER |
-| Без огня — без вреда? | No fire — no harm? | Kein Feuer – also harmlos? |
-| Часть 4 → | Part 4 → | Teil 4 → |
-| «МАЛЬБОРО» | “MARLBORO” | „MARLBORO“ |
-| МЛРД | B | MRD. |
 
 ## Глава 4 «Айкос»
 
@@ -737,6 +588,8 @@
 | РИС. 1 | FIG. 1 | ABB. 1 |
 | США | USA | USA |
 | АТЛАНТИЧЕСКИЙ / ОКЕАН | ATLANTIC / OCEAN | ATLANTISCHER / OZEAN |
+| JAMA | undefined | undefined |
+| R.J. REYNOLDS · ТАБАЧНАЯ КОМПАНИЯ | undefined | undefined |
 
 ## Глава 5 «Снюс» и финал
 

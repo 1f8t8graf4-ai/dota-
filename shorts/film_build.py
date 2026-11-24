@@ -73,7 +73,9 @@ def calm(b, od):   # грув → «из-за стены», как в главе
 
 
 def main(lang):
-    S = segs(lang); o = os.path.join(HERE, 'out', f'film-{lang}'); os.makedirs(o, exist_ok=True); tmpf = os.path.join(o, 'f.png')
+    S = segs(lang)
+    if os.environ.get('FB_SEGS'): S = S[:int(os.environ['FB_SEGS'])]   # 24.11: часть фильма — первые N кусков (пролог + главы), например EN пролог + главы 1–3: FB_SEGS=4
+    o = os.path.join(HERE, 'out', f'film-{lang}'); os.makedirs(o, exist_ok=True); tmpf = os.path.join(o, 'f.png')
     V = [os.path.join(HERE, 'out', e, os.environ.get('FB_VIDEO', 'video.mp4')) for e, _, _ in S]; N = [frames(p) for p in V]   # 23.11: FB_VIDEO=video_w.mp4 — фильм 16:9 (wide_render.py)
     keep = list(N)   # сколько кадров главы берём
     for i in range(len(S) - 1):   # стык: повтор кадра — выкидываем последний кадр главы
