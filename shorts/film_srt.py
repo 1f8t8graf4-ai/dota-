@@ -29,11 +29,40 @@ def chunks(words):
     return [c for c in out if c]
 
 
+def dub_sents(ep, T):
+    """24.11: у глав EN/DE в sent — русские слова (по ним встаёт картинка), текст озвучки — в subs (куски по 1–4 слова со временем
+    голоса). Фразы озвучки собираются заново: текст — из записи (voice/<язык>/ch*.json, со знаками препинания), время — из subs;
+    у глав 1–2 (warp) время subs — русское, в время ролика переводит обратный tmap.json."""
+    import numpy as np
+    sys.path.insert(0, os.path.join(HERE, 'l10n')); import dub; from build import chunks as cks
+    lang = T['lang']; base = ep[:-len('-' + lang + '-vo')]; ch = dub.CH_OF[base]; R = dub.tl_ru(base); _, _, by, _ = dub.rec_load(ch, lang)
+    sub = T['subs']; k = 0; out = []
+    if T.get('warp'):
+        tm = np.maximum.accumulate(np.array(json.load(open(os.path.join(HERE, 'out', ep, 'tmap.json')))))
+        back = lambda t: float(np.interp(t, tm, np.arange(len(tm)) / 30))
+    else: back = lambda t: t
+    for s in R['sent']:
+        x = by[dub.key_of(ch, s)]; cs = [c for c in cks(x['text'], lang) if any(dub.norm(w) for w in c.split())]
+        toks = x['text'].split(); p = 0; ws = []
+        for c in cs:
+            if sub[k]['s'] != c: raise SystemExit(f'{ep}: кусок {k} «{sub[k]["s"]}» ≠ «{c}»')
+            tg = ''.join(dub.norm(w) for w in c.split()); acc, got = '', []
+            while p < len(toks) and (acc != tg or not dub.norm(toks[p])):
+                if acc == tg and dub.norm(toks[p]): break
+                acc += dub.norm(toks[p]); got.append(toks[p]); p += 1
+                if len(acc) > len(tg) and not tg.startswith(acc): raise SystemExit(f'{ep}: «{c}» не нашёлся в «{x["text"]}»')
+            ws.append({'d': ' '.join(got), 'a': back(sub[k]['a']), 'b': back(sub[k]['b'])}); k += 1
+        if p < len(toks): ws[-1]['d'] += ' ' + ' '.join(toks[p:])
+        out.append({'words': ws})
+    if k != len(sub): raise SystemExit(f'{ep}: кусков субтитров {len(sub)}, собрано {k}')
+    return out
+
+
 def main(lang):
     F = os.path.join(HERE, 'out', f'film-{lang}'); J = json.load(open(os.path.join(F, 'film.json'))); S = []
     for ep, off in zip(J['seg'], J['off']):
         T = json.load(open(os.path.join(HERE, 'out', ep, 'timeline.json')))
-        for s in T.get('sent', []):
+        for s in (dub_sents(ep, T) if lang != 'ru' and T.get('subs') else T.get('sent', [])):
             ws = [w for w in s.get('words', []) if w.get('d')]
             if not ws: continue
             for c in chunks(ws): S.append([off + c[0]['a'], off + c[-1]['b'], re.sub(r'(?<=\w)—', ' —', ' '.join(w['d'] for w in c))])
