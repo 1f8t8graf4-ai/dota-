@@ -124,6 +124,23 @@ NODE_PATH=/opt/node-tools/node_modules node tt_cover.mjs dir en,ru,de   # → di
 - Текст стоит в центральной 3:4 зоне (y 255–600): его не режет сетка профиля TikTok и не закрывают кнопки ленты.
 - `yt_cover16x9.mjs` — то же для 16:9 (кадры `row.png` 12 с, `memo.png` 117,5 с, `ring.png` 593,5 с из EN-фильма; для RU/DE — свои секунды по `film.json`).
 
+## 6б. Крючок на первые 3 секунды (TikTok, Shorts)
+
+- **Зачем:** у EN Части 1 в TikTok почти все листали дальше на 0:01 — первый кадр шортса пустой (красный экран), голос не успевает. Теперь с кадра 0 — крупный текст-крючок в тёмной плашке, «PART N/5» жёлтым; гаснет на 2,6–3,0 с, дальше ролик как был.
+- Андрею руками в редакторе TikTok («Text») это не делать — вшиваем сами.
+- Тексты (`H` в `tt_hook.mjs`, факты — как у названий шортсов):
+  - EN: What's really in your vape? · The loophole behind the vape boom · Marlboro was made for women · The tobacco giant that "quit" cigarettes · A tiny pouch worth $16 billion
+  - DE: Was steckt wirklich in deiner Einweg-Vape? · Die Lücke hinter dem Vape-Boom · Marlboro war für Frauen gedacht · Der Tabakriese, der „aufhörte" · Ein Beutel für 16 Milliarden Dollar
+  - RU: Что на самом деле в твоей одноразке? · Лазейка, из-за которой одноразки повсюду · «Мальборо» делали для женщин · Табачный гигант, который «бросил курить» · Пакетик за 16 миллиардов долларов
+- Сборка:
+  ```
+  NODE_PATH=/opt/node-tools/node_modules node tt_hook.mjs png      # 15 прозрачных PNG 1080×1920
+  ./tt_hook.sh png out en "1 2 3 4 5"                               # → out/EN_PartN_hook.mp4 (DE_TeilN_hook, RU_ChastN_hook)
+  ```
+  Источник — `out/<ролик>/final.mp4`, если нет — `video.mp4` + `snd/mix.wav` (громкость та же, −12,6 LUFS). crf 20, ≈ 35 МБ на часть, ≈ 1 мин на часть. Диск в контейнере почти полный — делать пачками и удалять отправленное.
+- Части: 1 — `v170a`, 2 — `v191s`, 3 — `v200s`, 4 — `v210s`, 5 — `v220s` (EN `-en-vo`, DE `-de-vo`, RU `-ru`).
+- EN Часть 1 в TikTok уже вышла без крючка — перезалить версию с крючком через пару дней.
+
 ## 7. Что выложено (24.11, вечер)
 
 - **EN:** фильм опубликован — https://youtu.be/XD6jPpkXK_Y (A/B названий Smoking / Nicotine идёт). Шортсы и TikTok — Андрей выкладывал Часть 1, Часть 4 стояла «Отложенной публикацией»; сверить в Studio, что Части 2–5 идут по дню.
