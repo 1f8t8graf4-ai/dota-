@@ -151,7 +151,7 @@ function tiles(c,x0,y0,x1,y1,o={}){c.fillStyle=o.base||'#d9dde0';c.fillRect(x0,y
   c.strokeStyle=o.grout||'rgba(60,70,75,.55)';c.lineWidth=3;for(let j=0;y0+j*th<y1;j++){const off=(j%2)*tw/2;c.beginPath();c.moveTo(x0,y0+j*th);c.lineTo(x1,y0+j*th);c.stroke();
     for(let i=-1;x0+i*tw+off<x1;i++){c.beginPath();c.moveTo(x0+i*tw+off,y0+j*th);c.lineTo(x0+i*tw+off,y0+(j+1)*th);c.stroke();
       if(H2(i+11,j)>.82){c.fillStyle=`rgba(${o.dirt||'90,80,60'},${.08+.12*H2(i,j)})`;c.fillRect(x0+i*tw+off+3,y0+j*th+3,tw-6,th-6);}}}}
-SC.a2=(c,t)=>{
+function toiletScene(c,o={}){
   // стена с плиткой, холодный свет
   tiles(c,0,0,WW,HH,{base:'#c9d2d8'});
   c.fillStyle=LG(c,0,0,0,HH,[[0,'rgba(10,20,30,.15)'],[.5,'rgba(10,20,30,.35)'],[1,'rgba(5,8,12,.8)']]);c.fillRect(0,0,WW,HH);
@@ -181,6 +181,8 @@ SC.a2=(c,t)=>{
   // чёрная карта на мраморе
   c.save();c.translate(830,1460);c.rotate(-.18);c.fillStyle='#08080a';rr(c,-95,-58,190,116,12);c.fill();c.fillStyle='rgba(255,255,255,.12)';c.fillRect(-80,-20,50,30);tx(c,'MEGAPOLIS',30,40,{f:'M',w:700,s:14,ls:3,c:'rgba(210,210,215,.6)'});c.restore();
   c.fillStyle=LG(c,0,1540,0,HH,[[0,'#0b0d10'],[1,'#030405']]);c.fillRect(0,1540,WW,HH-1540);
+}
+SC.a2=(c,t)=>{toiletScene(c);
   fin(c,0,{warm:'#cfe6ff',cool:'#203040',ga:.18,vig:.75,gr:.07});corners(c,.3);
   hudTop(c,'КЛУБ · ТУАЛЕТ','03:12',{rs:30});
   subLine(c,[['ТЫ',0],['ПОДНИМАЕШЬ',0],['ГЛАЗА…',1]],{y:1690,s:92});
@@ -537,4 +539,137 @@ SC.g4b=(c,t)=>{
   filmDirt(c,9);grain(c,0,.16);vignette(c,.85);
   hudTaxi(c,'МАНХЭТТЕН · 04:40','БЕССОННИЦА: 75 ЧАСОВ');
   subType(c,['Однажды пойдёт настоящий дождь','и смоет всю эту грязь.'],{y:1560});
+};
+
+/* ================= ТЗ Gemini v2: все 4 стиля — только «Духless» ================= */
+/* ---- 2. «Чистая Династия» · кольцо с перемоткой ---- */
+function hudDyn(c){hudTop(c,'ГЛАВА 01 · МОСКВА, 2012','');c.save();c.shadowColor='rgba(0,0,0,.8)';c.shadowBlur=10;tx(c,'БАЛАНС: €100 000+',WW-66,160,{f:'J',w:700,s:26,ls:2,al:'right',c:'#f5a623'});c.restore();}
+SC.h2a=(c,t)=>{clubHall(c,{ac:'#f5a623',ac2:'#4a8dff'});
+  // фермы под потолком
+  c.strokeStyle='#1a2233';c.lineWidth=6;for(const y of [160,220]){c.beginPath();c.moveTo(0,y);c.lineTo(WW,y);c.stroke();}
+  c.lineWidth=3;for(let x=0;x<WW;x+=60){c.beginPath();c.moveTo(x,160);c.lineTo(x+60,220);c.moveTo(x+60,160);c.lineTo(x,220);c.stroke();}
+  // Макс в центре толпы — в золотом контровом
+  glowDot(c,540,1000,360,'#f5a623',.45);
+  person(c,{x:540,y:1010,s:.78,skin:SKINS.b,hairC:'#1d140f',beard:1,L:-1,look:[0,.1],suit:'#0b0d13',open:true,skinC:SKINS.b.b,mouth:'smile',rim:'#f5a623',R:1,rimA:1});
+  c.save();c.translate(540,1010);c.scale(.78,.78);rimStroke(c,[headPath({})],'#4a8dff',.8,7,-1,90);c.restore();
+  // передний план: спины толпы
+  blurred(c,4,g=>{for(let i=0;i<6;i++){const x=60+i*195+(H1(i*13)-.5)*40;sil(g,x,1420+(H1(i*7)-.5)*60,1.05,{col:'#05060a',up:i===1||i===4?.9:0,both:i===4,side:i===1?1:-1,rim:i%2?'#f5a623':'#4a8dff',ra:.8});}});
+  fin(c,0,{warm:'#f5a623',cool:'#0b1a3a',ga:.2,vig:.65});corners(c,.3);hudDyn(c);
+  subLine(c,[['ТЫ',0],['ВЗЛОМАЛ',1],['ЭТУ',0],['ЖИЗНЬ',1]],{y:1640,s:100,acc:'#f5a623'});
+  hudBot(c,'01 / 07 · ВЗЛЁТ',.2,'00:00:16',{col:'#f5a623'});
+};
+SC.h2b=(c,t)=>{
+  c.fillStyle=LG(c,0,0,0,1300,[[0,'#060b1c'],[.5,'#13204a'],[.85,'#4a2f50'],[1,'#c0623a']]);c.fillRect(0,0,WW,1300);
+  for(let i=0;i<60;i++){c.fillStyle=`rgba(255,255,255,${.2+.5*H1(i*7.1)})`;c.fillRect(H1(i*3.3)*WW,H1(i*5.9)*500,2,2);}
+  // три плана с дымкой
+  cityFar(c,1060,{col:'#2a2546',h:70,n:200,seed:3});c.fillStyle='rgba(120,90,140,.28)';c.fillRect(0,900,WW,200);
+  stalinka(c,840,1120,.55,'#3c3352');moscowCity(c,330,1140,.8,{lite:.45});
+  c.fillStyle='rgba(60,50,90,.25)';c.fillRect(0,950,WW,260);
+  cityFar(c,1200,{col:'#0c0e1a',h:46,n:260,seed:17});river(c,1200,1330,{});cars(c,1196,{n:50});
+  c.fillStyle=LG(c,0,1330,0,HH,[[0,'#0a0d18'],[1,'#04050a']]);c.fillRect(0,1330,WW,HH-1330);
+  fog(c,0,1150,{n:12,sp:0,h:120,r:520,a:.2,seed:5});
+  bigNum(c,'h2b','2012',540,560,{s:330,d:26});
+  tag(c,'◀◀  ПЕРЕМОТКА',540,760,{bc:'rgba(245,166,35,.85)'});
+  fin(c,0,{warm:'#f5a623',cool:'#0b1a3a',ga:.2,vig:.65});corners(c,.3);hudDyn(c);
+  subLine(c,[['МОСКВА',0],['У',0],['ТВОИХ',1],['НОГ',1]],{y:1560,s:104,acc:'#f5a623'});
+  hudBot(c,'01 / 07 · ВЗЛЁТ',.08,'00:00:10',{col:'#f5a623'});
+};
+
+/* ---- 3. «Взрослая Династия» · корпоративный триллер ---- */
+function hudCorp(c,k){c.save();c.shadowColor='rgba(0,0,0,.8)';c.shadowBlur=8;tx(c,'МОСКВА · БАНК «МЕГАПОЛИС»',70,118,{f:'M',w:700,s:24,ls:4,al:'left',c:'#cfd8e2'});
+  tx(c,`КОНТРОЛЬ: ${Math.round(k*100)}%`,WW-70,118,{f:'M',w:800,s:26,ls:3,al:'right',c:k<.7?'#e0485a':'#c9963b'});c.fillStyle='rgba(255,255,255,.15)';c.fillRect(WW-300,134,230,5);c.fillStyle=k<.7?'#9c2a38':'#c9963b';c.fillRect(WW-300,134,230*k,5);c.restore();}
+function steelOffice(c){
+  // стеклянная стена: Сити днём, холодно
+  c.fillStyle=LG(c,0,0,0,1150,[[0,'#56677a'],[1,'#a8b6c4']]);c.fillRect(0,0,WW,1150);
+  cityFar(c,1000,{col:'#6c7c8e',h:60,n:0});moscowCity(c,700,1050,.75,{lite:0});
+  c.fillStyle='rgba(20,30,40,.35)';c.fillRect(0,0,WW,1150);
+  // жалюзи наполовину опущены
+  for(let i=0;i<20;i++){c.fillStyle='#1f2a36';c.fillRect(0,i*24,WW,14);}
+  c.fillStyle='#0d1014';for(const x of [0,360,720,1066])c.fillRect(x-7,0,14,1150);c.fillRect(0,1140,WW,14);
+  // пол, полосы света
+  c.fillStyle=LG(c,0,1150,0,HH,[[0,'#1a2129'],[1,'#07090c']]);c.fillRect(0,1150,WW,HH-1150);
+  c.save();c.globalCompositeOperation='overlay';for(let i=0;i<12;i++){c.fillStyle='rgba(200,220,240,.25)';c.beginPath();const y=1160+i*52;c.moveTo(0,y);c.lineTo(WW,y+120);c.lineTo(WW,y+142);c.lineTo(0,y+22);c.closePath();c.fill();}c.restore();}
+function contract(c,x,y,a,s,title){c.save();c.translate(x,y);c.rotate(a);c.scale(s,s);c.fillStyle='rgba(0,0,0,.45)';c.fillRect(-150,-190,320,400);
+  c.fillStyle='#e9e6df';c.fillRect(-160,-200,320,400);c.fillStyle='rgba(0,0,0,.08)';c.fillRect(-160,-200,320,40);
+  tx(c,'КРЕДИТНЫЙ ДОГОВОР',0,-150,{f:'M',w:800,s:18,ls:2,c:'#1b1f26'});tx(c,title,0,-118,{f:'P',w:700,s:24,c:'#1b1f26'});
+  for(let k=0;k<11;k++){c.fillStyle='rgba(30,34,40,.28)';c.fillRect(-130,-80+k*20,260-(k%3)*40,5);}
+  tx(c,'€',90,150,{f:'M',w:800,s:26,c:'#c9963b'});c.strokeStyle='#1b1f26';c.lineWidth=1.5;c.beginPath();c.moveTo(-130,170);c.lineTo(20,170);c.stroke();
+  c.strokeStyle='#1f3b8a';c.lineWidth=3;c.beginPath();c.moveTo(-120,166);c.bezierCurveTo(-90,140,-70,190,-40,160);c.bezierCurveTo(-20,145,0,175,14,158);c.stroke();c.restore();}
+SC.h3a=(c,t)=>{steelOffice(c);
+  // Макс за столом: половина лица в тени
+  noirPerson(c,{x:520,y:860,s:1.0,skin:SKINS.b,hairC:'#1d140f',beard:1,L:-1,turn:.12,look:[0,.9],suit:'#14181e',shirt:'#dfe3e8',tie:'#3a1a22',mouth:'flat',brow:'flat',rim:'#c9963b',R:-1,rimA:.9},
+    [[525,520],[1080,520],[1080,1600],[560,1600],[548,1060],[532,940],[538,840]]);
+  // стол: большая плита в перспективе
+  c.fillStyle=LG(c,0,1110,0,1500,[[0,'#2a3948'],[1,'#121820']]);c.beginPath();c.moveTo(120,1110);c.lineTo(960,1100);c.lineTo(1180,1500);c.lineTo(-100,1520);c.closePath();c.fill();
+  c.fillStyle='rgba(201,150,59,.55)';c.beginPath();c.moveTo(120,1110);c.lineTo(960,1100);c.lineTo(962,1105);c.lineTo(118,1115);c.closePath();c.fill();
+  c.fillStyle='#0b0e12';c.beginPath();c.moveTo(-100,1520);c.lineTo(1180,1500);c.lineTo(1180,1560);c.lineTo(-100,1580);c.closePath();c.fill();
+  // договор лежит на столе
+  c.save();c.translate(540,1300);c.scale(1,.52);contract(c,0,0,-.12,.78,'«РАЙ МИЛЛИОНЕРОВ»');c.restore();
+  c.save();c.translate(690,1330);c.rotate(-1.15);c.fillStyle='rgba(0,0,0,.4)';c.fillRect(-4,-96,12,200);c.fillStyle='#0b0b0d';c.fillRect(-7,-100,13,200);c.fillStyle='#c9963b';c.fillRect(-7,-100,13,24);c.restore();
+  c.save();c.translate(230,1180);c.scale(1,.7);c.fillStyle='#1a1f26';rr(c,-90,-24,180,48,6);c.fill();c.restore();tx(c,'М. АНДРЕЕВ',230,1188,{f:'M',w:700,s:16,ls:2,c:'#c9963b'});
+  // передний план: угол монитора и рама — размыто
+  blurred(c,12,g=>{g.fillStyle='#07090c';g.beginPath();g.moveTo(880,1000);g.lineTo(WW+40,960);g.lineTo(WW+40,1500);g.lineTo(860,1480);g.closePath();g.fill();g.fillStyle='rgba(120,170,220,.25)';g.fillRect(900,1010,200,10);g.fillStyle='#0a0c10';g.fillRect(-40,0,90,HH);});
+  texOver(c,.16,'nzc');fin(c,0,{warm:'#c9963b',cool:'#1a2a3a',ga:.25,vig:.8,gr:.1});hudCorp(c,.94);
+  subSerif(c,['Ты подписываешь,','не открывая вторую страницу.'],{y:1620,s:54,col:'#e6ebf0'});
+};
+SC.h3b=(c,t)=>{
+  // стол сверху-наискосок, комната за ним размыта
+  blurred(c,8,g=>{steelOffice(g);g.fillStyle='#0e1217';g.fillRect(380,700,320,500);g.fillStyle='#1a222b';rr(g,360,640,360,140,40);g.fill();});
+  c.fillStyle=LG(c,0,900,0,HH,[[0,'#2a3948'],[1,'#10151b']]);c.beginPath();c.moveTo(0,980);c.lineTo(WW,940);c.lineTo(WW,HH);c.lineTo(0,HH);c.closePath();c.fill();
+  c.fillStyle='rgba(201,150,59,.5)';c.fillRect(0,972,WW,5);
+  // папка с картой и штампом
+  c.save();c.translate(540,1330);c.rotate(.05);c.fillStyle='rgba(0,0,0,.5)';c.fillRect(-400,-300,820,620);c.fillStyle='#3a2f22';c.fillRect(-420,-320,840,640);
+  c.fillStyle='#d9d4c4';c.fillRect(-390,-290,780,580);
+  // карта: рельеф, изолинии, дорога, речка
+  c.save();c.beginPath();c.rect(-390,-290,780,580);c.clip();c.fillStyle='#c4ccb0';c.fillRect(-390,-290,780,580);
+  c.strokeStyle='rgba(90,100,70,.45)';c.lineWidth=2;for(let k=0;k<14;k++){c.beginPath();for(let a=0;a<=TAU+.1;a+=.2){const r=40+k*26+Math.sin(a*3+k)*10;const px=60+Math.cos(a)*r*1.3,py=20+Math.sin(a)*r*.8;a===0?c.moveTo(px,py):c.lineTo(px,py);}c.stroke();}
+  c.strokeStyle='#6a8db0';c.lineWidth=6;c.beginPath();c.moveTo(-390,200);c.bezierCurveTo(-200,120,-100,260,120,200);c.bezierCurveTo(260,160,300,260,390,220);c.stroke();
+  c.strokeStyle='#8a6a3a';c.lineWidth=5;c.setLineDash([16,10]);c.beginPath();c.moveTo(-390,-200);c.lineTo(390,-120);c.stroke();c.setLineDash([]);
+  // участок посёлка — красный контур
+  c.strokeStyle='#b8202e';c.lineWidth=5;c.setLineDash([12,8]);c.beginPath();c.moveTo(-120,-120);c.lineTo(220,-150);c.lineTo(260,110);c.lineTo(-90,140);c.closePath();c.stroke();c.setLineDash([]);
+  c.fillStyle='rgba(184,32,46,.12)';c.fill();
+  tx(c,'РАЙ МИЛЛИОНЕРОВ',70,-160,{f:'M',w:800,s:20,ls:2,c:'#1b1f26'});c.restore();
+  // штамп
+  c.save();c.translate(-130,170);c.rotate(-.18);c.strokeStyle='rgba(176,24,36,.92)';c.lineWidth=7;rr(c,-210,-62,420,124,10);c.stroke();c.lineWidth=2.5;rr(c,-196,-50,392,100,8);c.stroke();
+  tx(c,'СЕКРЕТНО · 1930-е',0,-14,{f:'M',w:800,s:22,ls:3,c:'rgba(176,24,36,.92)'});tx(c,'ПОЛИГОН ХИМОРУЖИЯ',0,26,{f:'M',w:800,s:30,ls:1,c:'rgba(176,24,36,.95)'});c.restore();
+  c.restore();
+  contract(c,860,1010,.35,.42,'«РАЙ МИЛЛИОНЕРОВ»');
+  // полосы жалюзи по столу
+  c.save();c.globalCompositeOperation='overlay';for(let i=0;i<14;i++){c.fillStyle='rgba(220,230,245,.35)';c.beginPath();const y=960+i*70;c.moveTo(0,y);c.lineTo(WW,y-90);c.lineTo(WW,y-64);c.lineTo(0,y+26);c.closePath();c.fill();}c.restore();
+  texOver(c,.18,'nzd');fin(c,0,{warm:'#c9963b',cool:'#1a2a3a',ga:.25,vig:.8,gr:.1});hudCorp(c,.61);
+  subSerif(c,['Под «Раем миллионеров» —','полигон химических боеприпасов.'],{y:500,s:52,col:'#f0e6d6'});
+};
+
+/* ---- 4. «Грязный 35 мм» · мёртвый внутри / Юля ---- */
+function hudPulse(c,time){c.save();c.shadowColor='rgba(0,0,0,.9)';c.shadowBlur=8;tx(c,`МОСКВА · ${time}`,70,118,{f:'J',w:700,s:26,ls:3,al:'left',c:'#e9e9e9'});tx(c,'ПУЛЬС: 52',WW-70,118,{f:'J',w:700,s:28,ls:2,al:'right',c:'#ff1e32',glow:'#ff1e32'});c.restore();}
+SC.h4a=(c,t)=>{
+  mono(c,g=>toiletScene(g),r=>{ // алая полоса неона из-за двери в отражении и на мраморе
+    r.save();r.beginPath();r.rect(150,300,780,930);r.clip();r.fillStyle='#ff1e32';r.fillRect(722,560,14,640);glowDot(r,729,880,220,'#ff1e32',.7);r.restore();
+    r.fillStyle=LG(r,0,1280,0,1520,[[0,'rgba(255,30,50,.4)'],[1,'rgba(255,30,50,0)']]);r.fillRect(700,1280,60,240);},{ct:1.6,br:.9});
+  filmDirt(c,5);grain(c,0,.17);vignette(c,.85);hudPulse(c,'04:15');
+  subType(c,['Каждое утро ты не узнаёшь','человека напротив.'],{y:1680});
+};
+SC.h4b=(c,t)=>{const HZ=820;
+  mono(c,g=>{g.fillStyle=LG(g,0,0,0,HZ,[[0,'#9aa0a8'],[1,'#c8ccd2']]);g.fillRect(0,0,WW,HZ);
+    // сталинские дома вдоль улицы
+    for(const sd of [-1,1])for(let k=0;k<6;k++){const z0=1+k*.85,z1=z0+.75,x0=540+sd*300/z0*1.9,x1=540+sd*300/z1*1.9,ht=1600+H1(k+sd)*500,y0=HZ+160/z0,y1=HZ+160/z1;
+      g.fillStyle=`rgb(${78+k*14},${80+k*14},${86+k*14})`;g.beginPath();g.moveTo(x0,y0);g.lineTo(x0,y0-ht/z0);g.lineTo(x1,y1-ht/z1);g.lineTo(x1,y1);g.closePath();g.fill();
+      for(let w=0;w<10;w++)for(let f=0;f<9;f++){const u=(w+.3)/10,zz=lp(z0,z1,u),xx=540+sd*300/zz*1.9,yy=HZ+160/zz-(f*150+120)/zz;g.fillStyle='rgba(30,32,36,.75)';g.fillRect(xx-sd*8/zz,yy,Math.max(2,20/zz),Math.max(3,36/zz));}}
+    stalinka(g,540,HZ+30,.5,'#8a8e96');
+    g.fillStyle=LG(g,0,HZ,0,HH,[[0,'#6a6e75'],[1,'#2a2c30']]);g.fillRect(0,HZ,WW,HH-HZ);
+    fog(g,0,HZ,{n:10,sp:0,h:140,r:480,a:.35,seed:41});
+    // серая толпа: силуэты в 3 плана
+    for(let row=0;row<3;row++){const y=HZ+140+row*260,s=.45+row*.32;for(let i=0;i<9;i++){if(row===1&&(i===4))continue;const x=(i+.5)*WW/9+(H1(i*3+row*7)-.5)*70;
+      g.save();g.globalAlpha=.95;sil(g,x,y+(H1(i*5+row)-.5)*40,s,{col:`rgb(${40+row*-8},${42+row*-8},${46+row*-8})`});g.restore();}}
+    // Юля в середине — та же серая, цвет добавим отдельно
+    person(g,{x:540,y:1090,s:.62,skin:SKINS.a,hair:'long',hairC:'#3a2416',L:-1,look:[0,0],suit:'#8a1d26',shirt:'#e9e4dc',mouth:'neutral',rimA:0});
+    for(let i=0;i<5;i++){const x=80+i*230+(H1(i*17)-.5)*40;sil(g,x,1600+(H1(i*9)-.5)*60,1.2,{col:'#16171a'});}},
+  r=>{});
+  // куртка Юли — единственный цвет
+  {const g=REDL.getContext('2d');reset(g);g.clearRect(0,0,WW,HH);bust(g,{x:540,y:1090,s:.62,suit:'#d8202e',shirt:'#d8202e',L:-1,rimA:0});
+   g.globalCompositeOperation='destination-out';g.save();g.translate(540,1090);g.scale(.62,.62);g.fillStyle='#000';g.beginPath();g.moveTo(-36,90);g.lineTo(0,170);g.lineTo(36,90);g.closePath();g.fill();g.restore();
+   for(let i=0;i<5;i++){const x=80+i*230+(H1(i*17)-.5)*40;sil(g,x,1600+(H1(i*9)-.5)*60,1.2,{col:'#000'});}
+   c.save();c.globalAlpha=.92;c.drawImage(REDL,0,0);c.restore();glowDot(c,540,1260,160,'#ff1e32',.25);}
+  filmDirt(c,13);grain(c,0,.17);vignette(c,.8);hudPulse(c,'13:20');
+  subType(c,['Ей девятнадцать. Она верит,','что может сделать мир лучше.'],{y:1700});
 };
