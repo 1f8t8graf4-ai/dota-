@@ -1033,6 +1033,8 @@ Telegram Mini App + бот для изучения **английского (и 
 | Код | GitHub `1f8t8graf4-ai/dota-` → GitHub Pages `https://1f8t8graf4-ai.github.io/dota-/` | файлы в **корень** репо с заменой |
 | Видео/обложки/музыка | **Cloudflare R2** (бакет `kino-media`) → воркер: `https://dota.1f8t8graf4.workers.dev/m/scenes/<id>/01.mp4`. Исходники и склад Андрея — репо `1f8t8graf4-ai/scenes` | папки сцен — пуш в `scenes` **и** `python3 tools/r2_up.py <папка>` (без заливки в R2 приложение файл не увидит) |
 | Бот | Cloudflare Worker **`bot/worker.js`** (один на всё: бот, онлайн-игры, админка, статистика, напоминания, дуэли по сценам `/api/pvp`) + D1, cron `0 * * * *` | Dashboard → Workers → Edit code → вставить файл целиком → Deploy → открыть `/setup?secret=…` |
+| Супер-пульт (26.11) | https://claude.ai/artifact/6zC9afRinD6tGydLhVQetA — вкладки: Боб, скиллы и плагины, 99 стилей lemo, каталог skillry, 703 референса. **Отметки Андрея** (S/A/B/C/✕, теги, заметки) — база артефакта, коллекция `hub` (читать через ArtifactData); приёмы Боба — `fx` | данные — `hub/*.json` рядом со страницей |
+| Склад скиллов | **приватный** репо `1f8t8graf4-ai/my-skills`, ветка `claude/brave-brown-mf8uq9`: `skillry/<slug>` (Pro до 26.12, по 50 в сутки, `tools/skillry_day.py`). В `dota-` (публичный) файлы skillry не класть | нужен скилл — скопировать папку в `~/.claude/skills/` на время работы |
 
 - `window.ASSET_BASE='https://dota.1f8t8graf4.workers.dev/m'` в `index.html` (до 13.9 — `https://1f8t8graf4-ai.github.io`, GitHub Pages репо `scenes`). Код просит `ASSET_BASE + '/scenes/<id>/<файл>'`. **Не дописывать `/scenes` в ASSET_BASE.**
 - 13.9: медиа переехали в Cloudflare R2 (раздел «13.9» внизу). Откат, пока `scenes` публичный: вернуть старый `ASSET_BASE`.
