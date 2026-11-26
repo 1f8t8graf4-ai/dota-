@@ -23,5 +23,5 @@ const DC=(function(){
   async function init(){PH[0]=await loadImg('/s/proba/dl_open/_media/p1.webp');PH[1]=await loadImg('/s/proba/dl_open/_media/p2.webp');
     const L=await Promise.all(Array.from({length:NV},(_,i)=>loadImg(`/a/mv/v${String(i+1).padStart(3,'0')}.jpg`)));L.forEach((im,i)=>VF[i]=im);
     if(VF.some(v=>!v))throw new Error('нет кадров клипа /a/mv');}
-  return {init,draw,video,dots,T0,VEND,zpt:()=>[330*W/576,VY+330*VH/CROP],map:t=>3.5+(t-T0)*6.5/(10-T0)};
+  return {CAP,init,draw,video,dots,T0,VEND,zpt:()=>[330*W/576,VY+330*VH/CROP],map:t=>3.5+(t-T0)*6.5/(10-T0)};
 })();
