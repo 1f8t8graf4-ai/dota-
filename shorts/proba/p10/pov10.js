@@ -384,7 +384,7 @@ W8.p_far=(c,t,o)=>{fillG(c,0,0,WW,HH,[[0,'#04050a'],[1,'#020203']]);const k=o.k|
 W8.p_bag=(c,t,o)=>{fillG(c,0,0,WW,HH,[[0,'#121218'],[1,'#050507']]);c.fillStyle='#1e1e24';RR(c,-60,700,1200,1400,120);c.fill();for(let i=0;i<6;i++){c.fillStyle='rgba(0,0,0,.3)';c.fillRect(0,800+i*180,WW,6);}
   moneyBag(c,540,1250,1.4,1);
   const sw=((t*.6)%1);c.save();c.globalCompositeOperation='screen';c.fillStyle=LG(c,lp(-600,1600,sw),0,lp(-200,2000,sw),0,[[0,'rgba(255,190,110,0)'],[.5,'rgba(255,190,110,.35)'],[1,'rgba(255,190,110,0)']]);c.fillRect(0,0,WW,HH);c.restore();
-  if(o.mem>0){c.save();c.globalAlpha=o.mem;c.fillStyle='rgba(240,236,230,.85)';c.fillRect(0,0,WW,HH);personA(c,{x:540,y:820,s:1.8,f:'lyosha',e:'smile',light:'#ffffff',la:.1,L:-1,cloth:{k:'flannel'},sw:96,bt:520});c.restore();}
+  if(o.mem>0){c.save();c.globalAlpha=cl(o.mem*3);c.fillStyle=RG(c,540,900,100,1300,[[0,'#f4efe6'],[1,'#b9b0a2']]);c.fillRect(0,0,WW,HH);personA(c,{x:540,y:860,s:2.3,f:'lyosha',e:'smile',light:'#ffffff',la:.1,L:-1,cloth:{k:'flannel'},sw:150,bt:420});c.fillStyle=RG(c,540,960,500,1150,[[0,'rgba(255,250,240,0)'],[1,'rgba(255,250,240,.85)']]);c.fillRect(0,0,WW,HH);c.restore();}
 };
 /* 22. ночь длиннее: дорожки, чужие лица, провал */
 W8.p_night=(c,t,o)=>{clubBG(c,t,'#ff2f8e','#8a5aff');const k=o.k||0;
