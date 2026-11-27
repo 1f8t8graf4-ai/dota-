@@ -4,7 +4,7 @@
 CLIP.fonts=['700 40px Osw','500 40px Osw','500 40px JBM','600 40px Man','800 40px Man'];
 const SC9={};let TXT={};
 const [SCN,LANG]=(Q.get('style')||'cast').split('-');
-CLIP.init=async()=>{TXT=await (await fetch(`pov9/${LANG||'ru'}.json?`+Date.now())).json();if(SCN==='face'||SCN==='face2')KZ=await loadImg('/a/kz.jpg');};
+CLIP.init=async()=>{TXT=await (await fetch(`pov9/${LANG||'ru'}.json?`+Date.now())).json();if(SCN==='face'||SCN==='face2')KZ=await loadImg('/a/kz.jpg');if(SCN==='alex')KZ=await loadImg('/a/kz_office.jpg');};
 CLIP.draw=(c,t,i)=>{const f=SC9[SCN];if(f)f(c,t,i);};
 
 SC9.cast=(c,t)=>{c.fillStyle=LG(c,0,0,0,HH,[[0,'#2a3140'],[1,'#10131a']]);c.fillRect(0,0,WW,HH);
@@ -326,3 +326,18 @@ SC9.dyn=(c,t)=>{const cell=(x,y,w,h,bg)=>{c.fillStyle=LG(c,x,y,x,y+h,[[0,tk(bg,.
     personD(c,{x:x+135,y:y+300,s:f==='lyosha'?1.25:1.18,f,e,light:lc,L:-1,cloth:cl,bt:420,sw:f==='lyosha'?92:112});c.restore();
     c.fillStyle='rgba(0,0,0,.5)';c.fillRect(x,y+616,270,54);tx(c,n,x+135,y+650,{f:'J',w:500,s:18,ls:2,c:'rgba(255,255,255,.9)'});});
   c.fillStyle='#000';c.fillRect(0,1240,WW,10);c.fillRect(538,0,4,1240);for(const x of [268,538,808])c.fillRect(x,1250,4,670);};
+
+/* лист «как Династия про Александра»: фото Макса и наш Макс, эмоции, остальные */
+SC9.alex=(c,t)=>{const cell=(x,y,w,h,bg,lc)=>{c.fillStyle=LG(c,x,y,x,y+h,[[0,tk(bg,.12)],[1,tk(bg,-.5)]]);c.fillRect(x,y,w,h);c.fillStyle=RG(c,x+w*.3,y+h*.3,10,w,[[0,rgba(lc,.25)],[1,rgba(lc,0)]]);c.fillRect(x,y,w,h);};
+  const lab=(s,x,y,w)=>{c.fillStyle='rgba(0,0,0,.55)';c.fillRect(x,y-34,w,46);tx(c,s,x+w/2,y-4,{f:'J',w:500,s:20,ls:3,c:'rgba(255,255,255,.92)'});};
+  cell(0,0,540,720,'#25303e','#9fc8ff');if(KZ){c.save();c.beginPath();c.rect(0,0,540,720);c.clip();const sw=250,sh=sw*720/540;c.drawImage(KZ,0,0,sw,sh,0,0,540,720);c.restore();}lab('КАДР ИЗ ФИЛЬМА',0,716,540);
+  cell(540,0,540,720,'#25303e','#9fc8ff');c.save();c.beginPath();c.rect(540,0,540,720);c.clip();
+  personA(c,{x:810,y:330,s:2.05,f:'max',e:'neutral',light:'#9fc8ff',la:.12,L:-1,cloth:{k:'suit',jacket:'#1e2430',shirt:'#eef0f2',tie:'#1f2c48'},sw:118});c.restore();lab('МАКС',540,716,540);
+  const em=[['smirk','ДОВОЛЕН','#2a1430','#ff6a9a',-1],['tired','УТРО','#10232a','#62d6c2',1],['shout','СРЫВАЕТСЯ','#2a1018','#ff5a4a',-1],['sad','ОПОЗДАЛ','#141a30','#8ea8ff',1]];
+  em.forEach(([e,n,bg,lc,L],i)=>{const x=i*270,y=724;cell(x,y,270,580,bg,lc);c.save();c.beginPath();c.rect(x,y,270,580);c.clip();
+    personA(c,{x:x+135,y:y+250,s:1.22,f:i===1?'maxMessy':'max',e,light:lc,la:.2,L,cloth:{k:'suit',jacket:'#1e2430',shirt:'#eef0f2',open:true},sw:112});c.restore();lab(n,x,y+576,270);});
+  const bot=[['clown','smile','#2a2a14','#ffd36a',{k:'clown'},'КЛОУН'],['lyosha','neutral','#16222c','#9fd0ff',{k:'flannel'},'ЛЁША'],
+    ['boss','neutral','#1d1d26','#ffcf9a',{k:'suit',jacket:'#2f323a',shirt:'#e8eaee',tie:'#6a1f2a'},'ШЕФ'],['yulia','smile','#14281e','#7be0a0',{k:'parka'},'ЮЛЯ']];
+  bot.forEach(([f,e,bg,lc,cl,n],i)=>{const x=i*270,y=1308;cell(x,y,270,612,bg,lc);c.save();c.beginPath();c.rect(x,y,270,612);c.clip();
+    personA(c,{x:x+135,y:y+260,s:f==='lyosha'?1.22:1.15,f,e,light:lc,la:.2,L:-1,cloth:cl,sw:f==='lyosha'?92:112});c.restore();lab(n,x,y+608,270);});
+  c.fillStyle='#000';c.fillRect(538,0,4,720);c.fillRect(0,720,WW,4);c.fillRect(0,1304,WW,4);for(const x of [268,538,808]){c.fillRect(x,724,4,580);c.fillRect(x,1308,4,612);}};
