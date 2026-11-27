@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+"""Духless RU, 3 ролика (27.11): голос ElevenLabs с временем букв.
+  python3 vo.py rec <ролик>   → <папка>/<ролик>.mp3 + .align.json (платно: один дубль)
+  python3 vo.py build <ролик> → <папка>/<ролик>.wav (паузы ≤ PAUSE) + <ролик>.words.json
+Папка — VO=<папка> (по умолчанию ./vo). Ключ подставляет прокси."""
+import base64, json, os, subprocess, sys
+import numpy as np, requests, soundfile as sf
+API = 'https://api.elevenlabs.io'; H = {'xi-api-key': 'proxy-injected'}
+OUT = os.environ.get('VO', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vo'))
+V = {
+ 'dina': ('cPoqAvGWCPfCfyPMwe4z',  # Victor
+  'Представь: тебе двадцать девять, и ты уже хозяин жизни. Лучший менеджер кредитного отдела банка «Мегаполис». '
+  'Доход — сумма с пятью нулями. В евро. Днём ты улыбаешься начальству. Ночью — клубы, шампанское и девушки с обложек. '
+  'А утром шеф говорит: последний проект перед пенсией. Посёлок «Рай миллионеров». Нужен кредит. '
+  'А ночью старый друг Миша зовёт тебя в долю. Партнёр снял у него шестьсот тысяч долларов. За месяц до открытия клуба. '
+  'И ты уже знаешь, что ответишь…'),
+ 'pov': ('NCdPEnWxp9Z5u5FCMZUA',   # васян
+  'Ты открываешь глаза — а все вокруг уже чего-то от тебя хотят. Шеф. Последний проект перед пенсией. '
+  'Посёлок «Рай миллионеров». Нужен кредит. Ты киваешь. Двадцать девять лет, лучший в кредитном отделе, доход — пять нулей в евро. '
+  'Ночь. Клуб. Толпа расступается сама. Миша. Старый друг. Месяц до открытия своего клуба — а партнёр снял все деньги. Шестьсот тысяч. '
+  'Туалет. Кафель, мигает лампа, бас через стену. Ты поднимаешь глаза на зеркало…'),
+ 'nonstop': ('zfc8CJQpe8Kqyl0vvCzo',  # Mike
+  'Твоя жизнь не останавливается. Ни на секунду. Двадцать девять лет. Лучший кредитный менеджер «Мегаполиса». '
+  'Пять нулей в евро. Ты подписываешь, не читая. Шеф хочет посёлок «Рай миллионеров». Значит, будет посёлок. '
+  'Вниз. Тверская. Клуб. В вип-зоне ждёт Миша. Месяц до открытия своего клуба — и дыра в шестьсот тысяч. '
+  'Он ещё ничего не сказал. А ты уже тянешься за ручкой…'),
+ 'g1': ('zfc8CJQpe8Kqyl0vvCzo',  # Mike · реализм
+  'Три часа ночи. Холодная лампа клубного туалета режет глаза. Карта ложится на чёрный мрамор, рядом две ровные дорожки. '
+  'За дверью давит бас. Ты толкаешь её плечом — толпа расступается, охрана просто кивает. '
+  'Тебе двадцать девять. Кабинет в «Мегаполисе», пять нулей в евро и ночная Москва за стеклом. '
+  'Кажется, ты держишь этот город на поводке. Но однажды утром шеф кладёт на твой стол папку с проектом «Рай миллионеров»…'),
+ 'g2': ('NCdPEnWxp9Z5u5FCMZUA',  # васян · Династия
+  'Представь. Серое утро. Ты без работы, без статуса, и никто из старых друзей не берёт трубку. '
+  'Только что в кабинете прозвучали три слова: «Вы уволены, Макс». А ведь ещё недавно… '
+  'Москва две тысячи двенадцатого года лежала у твоих ног. Топ-менеджер банка «Мегаполис», доход с пятью нулями в евро. '
+  'Закрытые вечеринки, дорогие столы, вспышки камер. Ты был уверен, что взломал эту жизнь. '
+  'Всё рухнуло не за один день. Трещина пошла в тот день, когда ты подписал одну бумагу — слишком быстро…'),
+ 'g3': ('NCdPEnWxp9Z5u5FCMZUA',  # васян · нуар
+  'Ты уверен, что ты главный хищник в этой комнате. Стеклянный кабинет в «Мегаполисе», доход — пять нулей в евро. '
+  'Ты ставишь подпись под проектом «Рай миллионеров», даже не открывая вторую страницу. Зачем тратить время на мелочи? '
+  'Руководство улыбается и хлопает по плечу. Вечером шампанское в клубе, вокруг десятки людей, которым ты якобы нужен. '
+  'Ты ещё не знаешь, что под землёй этого посёлка — старый полигон химоружия. И крайним уже назначили тебя…'),
+ 'g4': ('zfc8CJQpe8Kqyl0vvCzo',  # Mike · 35 мм
+  'Четыре утра. Клуб орёт, свет бьёт в глаза, бокал пуст. А внутри — вообще ничего. '
+  'Пять нулей в евро, дорогие костюмы, чужие улыбки, полоски на тёмном столе. Ты перепробовал всё, что продаёт эта Москва. '
+  'Но каждое утро ты смотришь в зеркало и не узнаёшь человека напротив. Ни злости. Ни радости. Просто шум. '
+  'Ты уже привык быть мёртвым при жизни. Пока однажды не встречаешь девчонку. Ей девятнадцать, и она верит, что может сделать мир лучше…'),
+}
+PAUSE = float(os.environ.get('PAUSE', '.24'))
+TEMPO = {'dina': 1.15, 'pov': 1.1, 'nonstop': 1.1, 'g1': 1.1, 'g2': 1.1, 'g3': 1.1, 'g4': 1.1}   # голоса читают медленнее Дины (2,5–2,9 слова/с)
+
+def rec(k):
+    vid, text = V[k]; os.makedirs(OUT, exist_ok=True)
+    body = {'text': text, 'model_id': 'eleven_v4', 'voice_settings': {'stability': .35, 'similarity_boost': .75}}
+    print(k, 'знаков', len(text), vid)
+    r = requests.post(f'{API}/v1/text-to-speech/{vid}/with-timestamps?output_format=mp3_44100_192', headers=H, json=body, timeout=600)
+    print('ответ', r.status_code, {a: b for a, b in r.headers.items() if 'char' in a.lower() or 'cost' in a.lower()})
+    if r.status_code != 200: sys.exit(r.text[:500])
+    j = r.json(); open(f'{OUT}/{k}.mp3', 'wb').write(base64.b64decode(j['audio_base64']))
+    json.dump(j['alignment'], open(f'{OUT}/{k}.align.json', 'w'), ensure_ascii=False)
+
+def words(al):
+    W, cur = [], None
+    for ch, a, b in list(zip(al['characters'], al['character_start_times_seconds'], al['character_end_times_seconds'])) + [(' ', 0, 0)]:
+        if ch.isspace():
+            if cur and any(x.isalnum() for x in cur[2]): W.append(cur)
+            cur = None
+        else: cur = [cur[0], b, cur[2] + ch] if cur else [a, b, ch]
+    return W
+
+def build(k):
+    SR = 44100; al = json.load(open(f'{OUT}/{k}.align.json')); W = words(al)
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', f'{OUT}/{k}.mp3', '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True, check=True).stdout
+    y = np.frombuffer(raw, np.float32).copy()
+    # тишина между словами длиннее PAUSE — ужимаем (режем середину паузы)
+    cuts = []; prev = 0.0
+    for i, w in enumerate(W):
+        gap = w[0] - prev
+        if i and gap > PAUSE + .02: cuts.append((prev + PAUSE / 2, w[0] - PAUSE / 2))
+        prev = w[1]
+    lead = W[0][0]; cuts.insert(0, (0, max(0, lead - .12)))
+    keep, t = [], 0.0
+    for a, b in cuts:
+        if b > a: keep.append((t, a)); t = b
+    keep.append((t, len(y) / SR))
+    def mapt(x):
+        acc = 0.0
+        for a, b in keep:
+            if x <= b: return acc + max(0, x - a)
+            acc += b - a
+        return acc
+    seg = []
+    for a, b in keep:
+        s = y[int(a * SR):int(b * SR)].copy(); n = min(len(s) // 2, int(.006 * SR))
+        if n: s[:n] *= np.linspace(0, 1, n); s[-n:] *= np.linspace(1, 0, n)
+        seg.append(s)
+    z = np.concatenate(seg); z = z / (np.max(np.abs(z)) or 1) * .9
+    z = np.concatenate([z, np.zeros(int(.4 * SR), np.float32)])
+    T = float(TEMPO.get(k, 1.0)); sf.write(f'{OUT}/{k}.raw.wav', z, SR)
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', f'{OUT}/{k}.raw.wav', '-af', f'atempo={T}', '-ar', str(SR), f'{OUT}/{k}.wav'], check=True)
+    z = sf.read(f'{OUT}/{k}.wav')[0]
+    out = [{'a': round(mapt(w[0]) / T, 3), 'b': round(mapt(w[1]) / T, 3), 'w': w[2]} for w in W]
+    json.dump({'dur': round(len(z) / SR, 3), 'words': out}, open(f'{OUT}/{k}.words.json', 'w'), ensure_ascii=False, indent=0)
+    span = out[-1]['b'] - out[0]['a']
+    print(k, 'слов', len(out), 'длина', round(len(z) / SR, 2), 'с; темп', round(len(out) / span, 2), 'слова/с; исходник', round(len(y) / SR, 2))
+
+if __name__ == '__main__':
+    cmd, k = sys.argv[1], sys.argv[2]
+    {'rec': rec, 'build': build}[cmd](k)
