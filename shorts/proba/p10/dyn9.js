@@ -3,7 +3,7 @@
    нос — тонкая линия, сторона лица подсвечена цветом сцены. Координаты: центр лица (0,0), подбородок ≈ +92. */
 
 const DY={
-  max:{skin:'#efdcd2',sh:'#cdb8b8',w:56,jw:50,jy:50,cw:20,cy:92,hair:'maxD',hairC:'#16131a',iris:'#5a4636',bags:.5,brow:'#16131a',browT:8,nose:'max',stub:.10,ear:1},
+  max:{skin:'#efd6c6',sh:'#c9a99f',w:56,jw:50,jy:50,cw:20,cy:92,hair:'maxD',hairC:'#16131a',iris:'#6b5a3a',bags:.5,brow:'#16131a',browT:8,nose:'max',stub:.10,ear:1},
   lyosha:{skin:'#f1e1db',sh:'#d3c0c2',w:58,jw:46,jy:44,cw:22,cy:84,hair:'bald',iris:'#6d8299',bags:.75,brow:'#bfa79b',browT:3,nose:'kid',kid:1,mask:1},
   boss:{skin:'#ecd5c8',sh:'#c9b0ab',w:60,jw:56,jy:56,cw:24,cy:94,hair:'greyD',hairC:'#c7c3c9',iris:'#4b4640',bags:.35,brow:'#a59fa6',browT:7,nose:'big',glasses:1},
   yulia:{skin:'#f2ddd3',sh:'#d2bbb8',w:52,jw:42,jy:48,cw:18,cy:88,hair:'yuliaD',hairC:'#2b1a14',iris:'#4d3b30',bags:.25,brow:'#2b1a14',browT:4,nose:'small',lashes:1},
@@ -35,6 +35,7 @@ function headD(c,o){const F=typeof o.f==='string'?DY[o.f]:o.f,e=o.e||'neutral',L
   // уши
   if(!F.paint||true){for(const sd of [-1,1]){c.fillStyle=F.skin;c.beginPath();c.ellipse(sd*(F.w+2),2,8,13,0,0,TAU);c.fill();c.fillStyle=F.sh;c.beginPath();c.ellipse(sd*(F.w+3),3,3.5,7,0,0,TAU);c.fill();}}
   c.fillStyle=skin;c.fill(fp);c.save();c.clip(fp);
+  c.fillStyle=RG(c,0,-10,10,F.w*1.25,[[0,'rgba(255,250,245,.22)'],[.6,'rgba(255,255,255,0)'],[1,rgba(F.sh,.55)]]);c.fillRect(-120,-140,240,260);
   // свет сцены — жёсткой полосой по одной стороне лица
   const S=-L;c.fillStyle=rgba(lc,.5);c.beginPath();c.moveTo(S*F.w*.52,-120);c.lineTo(S*F.w*.46,120);c.lineTo(S*(F.w+40),120);c.lineTo(S*(F.w+40),-120);c.closePath();c.fill();
   // тень от чёлки и под подбородком
@@ -45,12 +46,13 @@ function headD(c,o){const F=typeof o.f==='string'?DY[o.f]:o.f,e=o.e||'neutral',L
   const ey=F.kid?6:-6,ex=F.kid?23:22;
   for(const sd of [-1,1]){c.save();c.filter='blur(3px)';c.fillStyle=`rgba(120,96,150,${F.bags*.6})`;c.beginPath();c.ellipse(sd*ex,ey+13,15,6,0,0,TAU);c.fill();
     if(e==='shout'||e==='smile'||e==='shock'||o.blush){c.fillStyle='rgba(235,110,120,.42)';c.beginPath();c.ellipse(sd*(ex+8),ey+30,14,8,0,0,TAU);c.fill();}c.restore();}
+  if(o.sweat){c.fillStyle='rgba(200,230,255,.9)';c.beginPath();c.moveTo(-F.w*.72,-46);c.quadraticCurveTo(-F.w*.62,-30,-F.w*.72,-24);c.quadraticCurveTo(-F.w*.82,-30,-F.w*.72,-46);c.fill();}
   // клоунский грим: чёрные полосы через глаза
   if(F.paint){c.strokeStyle='#1a1416';c.lineWidth=3;c.lineCap='round';for(const sd of [-1,1]){c.beginPath();c.moveTo(sd*ex,ey-36);c.lineTo(sd*ex,ey-12);c.moveTo(sd*ex,ey+8);c.lineTo(sd*(ex+1),ey+34);c.stroke();}}
   c.restore();
   // глаза
   const lk=o.look||[0,0];
-  const EK=F.kid?1.12:1.22;for(const sd of [-1,1]){const x=sd*ex+lk[0]*2,y=ey+lk[1]*2;c.save();c.translate(x,y);c.scale(EK,EK);c.translate(-x,-y);
+  const EK=F.kid?1.15:1.32;for(const sd of [-1,1]){const x=sd*ex+lk[0]*2,y=ey+lk[1]*2;c.save();c.translate(x,y);c.scale(EK,EK);c.translate(-x,-y);
     let lid=e==='tired'||e==='sad'?.55:e==='smirk'?.45:e==='shout'||e==='shock'?-.1:.3;   // сколько радужки закрыто веком
     const open=e==='shock'?9:e==='shout'?8:7.5;
     c.save();c.beginPath();c.ellipse(x,y,12,open,0,0,TAU);c.clip();
@@ -66,12 +68,16 @@ function headD(c,o){const F=typeof o.f==='string'?DY[o.f]:o.f,e=o.e||'neutral',L
     // брови (под чёлкой видны краем)
     const by=ey-20+(e==='shout'?4:e==='sad'?-2:0),tilt=e==='shout'?-.3:e==='sad'?.28:e==='smirk'?-.1:0;
     c.save();c.translate(x,by);c.rotate(sd*tilt);c.fillStyle=F.brow;c.beginPath();c.moveTo(-13,F.browT*.5);c.lineTo(13,F.browT*.2);c.lineTo(12,-F.browT*.5);c.lineTo(-13,-F.browT*.4);c.closePath();c.fill();c.restore();c.restore();}
+  // нос — мягкая тень по центру + «( )»
+  if(o.noseStyle!=='hook'&&!F.kid){c.save();c.filter='blur(4px)';c.fillStyle=rgba(F.sh,.55);RR(c,-8-L*2,ey-6,16,ey+40-(ey-6),8);c.fill();c.restore();
+    c.strokeStyle=rgba('#6a4a50',.75);c.lineWidth=2.4;c.lineCap='round';c.beginPath();c.arc(-3,ey+34,6.5,Math.PI*.72,Math.PI*1.22);c.stroke();c.beginPath();c.arc(3,ey+34,6.5,-Math.PI*.22,Math.PI*.28);c.stroke();}
+  else{
   // нос — линия-крючок
   c.strokeStyle=rgba('#5a4048',.8);c.lineWidth=2.6;c.lineCap='round';c.lineJoin='round';c.beginPath();
   if(F.nose==='kid'){c.arc(-L*2,ey+20,4,.3,2.6);}
   else if(F.nose==='small'){c.moveTo(-L*3,ey+6);c.quadraticCurveTo(-L*7,ey+22,-L*2,ey+26);c.lineTo(L*2,ey+25);}
   else{const k=F.nose==='big'?1.2:1;c.moveTo(-L*2,ey+2);c.quadraticCurveTo(-L*7*k,ey+26,-L*7*k,ey+30);c.quadraticCurveTo(-L*5,ey+36,0,ey+35);c.quadraticCurveTo(L*4,ey+36,L*6,ey+32);}
-  c.stroke();
+  c.stroke();}
   if(F.paint){c.fillStyle='#e8262f';c.beginPath();c.arc(0,ey+30,10,0,TAU);c.fill();c.fillStyle='rgba(255,255,255,.7)';c.beginPath();c.arc(-3,ey+26,3,0,TAU);c.fill();}
   // рот
   const my=F.kid?54:58;c.strokeStyle='#4a2a30';c.lineWidth=3.4;c.beginPath();

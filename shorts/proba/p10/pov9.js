@@ -318,7 +318,7 @@ SC9.soft=(c,t)=>{c.fillStyle=LG(c,0,0,0,HH,[[0,'#2a3242'],[1,'#151a23']]);c.fill
 SC9.dyn=(c,t)=>{const cell=(x,y,w,h,bg)=>{c.fillStyle=LG(c,x,y,x,y+h,[[0,tk(bg,.1)],[1,tk(bg,-.45)]]);c.fillRect(x,y,w,h);};
   const top=[['smirk','ДОВОЛЕН СОБОЙ','#2a1430','#ff5a8a',-1],['tired','УТРО ПОСЛЕ КЛУБА','#10202a','#62d6c2',1],['shout','СРЫВАЕТСЯ','#2a1018','#ff4a4a',-1],['sad','ОПОЗДАЛ','#141a30','#8ea8ff',1]];
   top.forEach(([e,n,bg,lc,L],i)=>{const x=(i%2)*540,y=Math.floor(i/2)*620;cell(x,y,540,620,bg);c.save();c.beginPath();c.rect(x,y,540,620);c.clip();
-    personD(c,{x:x+270,y:y+300,s:1.75,f:'max',e,light:lc,L,cloth:{k:'suit',jacket:'#20222a',shirt:'#eef0f2',open:true},bt:420,sw:112});c.restore();
+    personD(c,{x:x+270,y:y+300,s:1.75,f:'max',e,light:lc,L,sweat:e==='shout',cloth:{k:'suit',jacket:'#20222a',shirt:'#eef0f2',open:true},bt:420,sw:112});c.restore();
     c.fillStyle='rgba(0,0,0,.5)';c.fillRect(x,y+566,540,54);tx(c,n,x+270,y+600,{f:'J',w:500,s:22,ls:3,c:'rgba(255,255,255,.9)'});});
   const bot=[['clown','smile','#2a2a14','#ffd36a',{k:'clown'},'МАКС-КЛОУН'],['lyosha','neutral','#16222c','#9fd0ff',{k:'flannel'},'ЛЁША'],
     ['boss','neutral','#1d1d26','#ffcf9a',{k:'suit',jacket:'#2f323a',shirt:'#e8eaee',tie:'#6a1f2a'},'ШЕФ'],['yulia','smile','#14281e','#7be0a0',{k:'parka'},'ЮЛЯ']];
