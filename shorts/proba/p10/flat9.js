@@ -4,8 +4,8 @@
    Координаты: центр лица (0,0), макушка ≈ −110, подбородок ≈ +96. Свет слева — тень справа. */
 
 const FL={
-  max:{skin:'#e2aa88',sh:'#bf8466',w:60,jw:55,jy:58,cw:24,cy:96,top:-108,eye:'lid',eyeY:-4,eyeX:24,brow:'max',browC:'#2a1a12',browY:-17,
-    nose:'long',mouth:'max',mouthY:60,stub:1,hair:'max',hairC:'#2b1c14',hairS:'#1a100b',hairL:'#4a3326',nw:31},
+  max:{skin:'#dfa98a',sh:'#bb8467',w:67,jw:62,jy:56,cw:32,cy:95,top:-104,shx:.62,eye:'deep',eyeY:-4,eyeX:26,brow:'maxs',browC:'#24170f',browY:-19,
+    nose:'broad',mouth:'lips',mouthY:57,lip:'#b9786b',stub:0,hair:'max2',hairC:'#2a1b13',hairS:'#1a100a',hairL:'#43301f',nw:37,eyeK:1.2},
   lyosha:{skin:'#f2d6c7',sh:'#d8b2a2',w:62,jw:50,jy:46,cw:28,cy:84,top:-112,eye:'round',eyeY:6,eyeX:23,brow:'light',browC:'#d2b09a',browY:-12,
     nose:'kid',mouth:'kid',mouthY:50,hair:'bald',kid:1,nw:22,mask:1},
   boss:{skin:'#e0ac92',sh:'#bd876e',w:64,jw:60,jy:62,cw:28,cy:98,top:-104,eye:'small',eyeY:-2,eyeX:25,brow:'bushy',browC:'#9d968e',browY:-18,
@@ -31,6 +31,10 @@ function fhair(F){const p=new Path2D(),w=F.w+4,t=F.top;
   case'max':p.moveTo(-w+2,-8);p.bezierCurveTo(-w-4,-50,-w+6,t-8,-w*.35,t-10);p.bezierCurveTo(w*.2,t-20,w*.85,t-4,w,-40);p.lineTo(w-2,-8);p.lineTo(w-8,-30);
     // чёлка: три крупные пряди вниз-влево
     p.lineTo(w*.55,-44);p.lineTo(w*.42,-32);p.lineTo(w*.18,-48);p.lineTo(w*.02,-30);p.lineTo(-w*.24,-46);p.lineTo(-w*.42,-30);p.lineTo(-w*.6,-50);p.lineTo(-w+8,-30);p.closePath();return p;
+  case'max2':p.moveTo(-w+2,-4);p.bezierCurveTo(-w-10,-48,-w*.7,t+2,0,t-2);p.bezierCurveTo(w*.7,t+2,w+10,-50,w+1,-4);p.lineTo(w-6,-10);p.lineTo(w-8,-24);
+    p.quadraticCurveTo(w*.74,-22,w*.6,-23);p.quadraticCurveTo(w*.58,-32,w*.46,-35);p.quadraticCurveTo(w*.38,-25,w*.26,-24);p.quadraticCurveTo(w*.22,-34,w*.08,-38);
+    p.quadraticCurveTo(-w*.02,-28,-w*.16,-27);p.quadraticCurveTo(-w*.2,-37,-w*.34,-40);p.quadraticCurveTo(-w*.44,-30,-w*.58,-30);p.quadraticCurveTo(-w*.64,-40,-w*.78,-42);
+    p.quadraticCurveTo(-w+6,-38,-w+8,-26);p.lineTo(-w+8,-6);p.closePath();return p;
   case'grey':p.moveTo(-w,-6);p.quadraticCurveTo(-w-4,-56,-w+16,-74);p.lineTo(-w+26,-62);p.quadraticCurveTo(-w+12,-40,-w+10,-6);p.closePath();
     p.moveTo(w,-6);p.quadraticCurveTo(w+4,-56,w-16,-74);p.lineTo(w-26,-62);p.quadraticCurveTo(w-12,-40,w-10,-6);p.closePath();
     p.moveTo(-w*.5,-92);p.quadraticCurveTo(0,t-10,w*.5,-92);p.quadraticCurveTo(0,-98,-w*.5,-92);p.closePath();return p;
@@ -54,7 +58,7 @@ function headF(c,o){const F=typeof o.f==='string'?FL[o.f]:o.f,L=o.L??-1;
   c.fillStyle=F.skin;c.fill(fp);
   c.save();c.clip(fp);
   // жёсткая тень сбоку (свет слева)
-  const S=-L,sp=new Path2D(),w=F.w;sp.moveTo(S*w*.42,F.top-10);sp.bezierCurveTo(S*w*.62,-40,S*w*.62,10,S*F.jw*.68,F.jy);sp.lineTo(S*F.cw*.5,F.cy+10);sp.lineTo(S*(w+30),F.cy+10);sp.lineTo(S*(w+30),F.top-10);sp.closePath();
+  const S=-L,sp=new Path2D(),w=F.w,sx=F.shx||.42;sp.moveTo(S*w*sx,F.top-10);sp.bezierCurveTo(S*w*(sx+.2),-40,S*w*(sx+.2),10,S*F.jw*(sx+.26),F.jy);sp.lineTo(S*F.cw*.5,F.cy+10);sp.lineTo(S*(w+30),F.cy+10);sp.lineTo(S*(w+30),F.top-10);sp.closePath();
   c.fillStyle=F.sh;c.fill(sp);
   // щетина / борода — плоское пятно
   if(F.stub||F.beard){const b=new Path2D(),y0=F.beard?8:34;b.moveTo(-F.w,y0);b.quadraticCurveTo(-F.jw,F.jy+10,-F.cw,F.cy);b.lineTo(F.cw,F.cy);b.quadraticCurveTo(F.jw,F.jy+10,F.w,y0);b.quadraticCurveTo(F.w*.5,y0+30,22,F.mouthY-6);
@@ -65,20 +69,27 @@ function headF(c,o){const F=typeof o.f==='string'?FL[o.f]:o.f,L=o.L??-1;
   c.restore();
   // нос
   const ns=F.nose;c.fillStyle=F.sh;
-  if(ns==='long'||ns==='big'){const k=ns==='big'?1.2:1;c.beginPath();c.moveTo(S*2,-8);c.lineTo(S*9*k,30);c.quadraticCurveTo(S*10*k,40,S*1,40);c.lineTo(-S*6*k,39);c.quadraticCurveTo(-S*2,36,S*1,32);c.closePath();c.fill();}
+  if(ns==='broad'){c.beginPath();c.moveTo(S*4,2);c.lineTo(S*11,26);c.quadraticCurveTo(S*15,34,S*9,38);c.lineTo(S*3,34);c.quadraticCurveTo(S*2,22,S*3,2);c.closePath();c.fill();
+    c.beginPath();c.moveTo(-15,33);c.quadraticCurveTo(-12,42,-4,41);c.quadraticCurveTo(0,44,4,41);c.quadraticCurveTo(12,42,15,33);c.quadraticCurveTo(8,38,0,37);c.quadraticCurveTo(-8,38,-15,33);c.fill();}
+  else if(ns==='long'||ns==='big'){const k=ns==='big'?1.2:1;c.beginPath();c.moveTo(S*2,-8);c.lineTo(S*9*k,30);c.quadraticCurveTo(S*10*k,40,S*1,40);c.lineTo(-S*6*k,39);c.quadraticCurveTo(-S*2,36,S*1,32);c.closePath();c.fill();}
   else if(ns==='small'){c.beginPath();c.moveTo(S*3,8);c.lineTo(S*8,30);c.quadraticCurveTo(S*4,36,-S*5,33);c.closePath();c.fill();}
   else if(ns==='kid'){c.beginPath();c.ellipse(S*2,30,7,5,0,0,TAU);c.fill();}
   else if(ns==='clown'){c.fillStyle='#e8262f';c.beginPath();c.arc(0,28,13,0,TAU);c.fill();c.fillStyle='#b8141d';c.beginPath();c.arc(S*4,31,9,-.4,2.2);c.lineTo(S*4,31);c.fill();c.fillStyle='rgba(255,255,255,.75)';c.beginPath();c.arc(-S*4,23,3.4,0,TAU);c.fill();}
   // глаза
   const lk=o.look||[0,0];for(const sd of [-1,1]){const ex=sd*F.eyeX+lk[0]*3,ey=F.eyeY+lk[1]*2;c.fillStyle='#1e1410';
-    if(F.eye==='lid'){c.beginPath();c.moveTo(ex-9,ey-1.5);c.quadraticCurveTo(ex,ey-4,ex+9,ey-1.5);c.quadraticCurveTo(ex+6,ey+6,ex,ey+6);c.quadraticCurveTo(ex-6,ey+6,ex-9,ey-1.5);c.fill();}
+    if(F.eye==='deep'){c.save();const K=F.eyeK||1;c.translate(ex,ey);c.scale(K,K);c.translate(-ex,-ey);c.fillStyle=F.sh;c.beginPath();c.ellipse(ex+sd*1,ey-5,15,9,0,0,TAU);c.fill();
+      const e=new Path2D();e.moveTo(ex-sd*11,ey);e.quadraticCurveTo(ex,ey-6.5,ex+sd*11,ey+1);e.quadraticCurveTo(ex,ey+6,ex-sd*11,ey);e.closePath();c.fillStyle='#efe9e2';c.fill(e);c.clip(e);
+      c.fillStyle='#3b2618';c.beginPath();c.arc(ex+lk[0]*3,ey+.5,5.6,0,TAU);c.fill();c.fillStyle='#120b07';c.beginPath();c.arc(ex+lk[0]*3,ey+.5,2.6,0,TAU);c.fill();c.restore();
+      c.save();c.translate(ex,ey);c.scale(K,K);c.translate(-ex,-ey);c.strokeStyle='#1e130d';c.lineWidth=3.2;c.lineCap='round';c.beginPath();c.moveTo(ex-sd*12,ey+.5);c.quadraticCurveTo(ex,ey-7,ex+sd*12,ey+1.5);c.stroke();c.restore();}
+    else if(F.eye==='lid'){c.beginPath();c.moveTo(ex-9,ey-1.5);c.quadraticCurveTo(ex,ey-4,ex+9,ey-1.5);c.quadraticCurveTo(ex+6,ey+6,ex,ey+6);c.quadraticCurveTo(ex-6,ey+6,ex-9,ey-1.5);c.fill();}
     else if(F.eye==='round'){c.beginPath();c.ellipse(ex,ey,7.5,9,0,0,TAU);c.fill();c.fillStyle='#ffffff';c.beginPath();c.arc(ex-2.5*S,ey-3,2.4,0,TAU);c.fill();}
     else if(F.eye==='almond'){c.beginPath();c.ellipse(ex,ey,7,6,0,0,TAU);c.fill();c.strokeStyle='#1e1410';c.lineWidth=2.4;c.lineCap='round';c.beginPath();c.moveTo(ex+sd*6,ey-4);c.lineTo(ex+sd*11,ey-7);c.stroke();}
     else if(F.eye==='small'){c.beginPath();c.ellipse(ex,ey,5,4.5,0,0,TAU);c.fill();}
     else{c.beginPath();c.ellipse(ex,ey,5.5,6,0,0,TAU);c.fill();}}
   // брови
   for(const sd of [-1,1]){const ex=sd*F.eyeX,by=F.browY-(o.expr&&o.expr.brow||0);c.fillStyle=F.browC;c.beginPath();
-    if(F.brow==='max'){c.moveTo(ex-sd*13,by+3);c.lineTo(ex+sd*15,by-2);c.lineTo(ex+sd*14,by-8);c.lineTo(ex-sd*13,by-5);}
+    if(F.brow==='maxs'){c.moveTo(ex-sd*14,by+1);c.lineTo(ex+sd*8,by-1);c.quadraticCurveTo(ex+sd*14,by,ex+sd*17,by+4);c.lineTo(ex+sd*15,by-5);c.quadraticCurveTo(ex+sd*10,by-9,ex-sd*14,by-7);}
+    else if(F.brow==='max'){c.moveTo(ex-sd*13,by+3);c.lineTo(ex+sd*15,by-2);c.lineTo(ex+sd*14,by-8);c.lineTo(ex-sd*13,by-5);}
     else if(F.brow==='bushy'){c.moveTo(ex-sd*13,by);c.lineTo(ex+sd*15,by+2);c.lineTo(ex+sd*14,by-8);c.lineTo(ex-sd*12,by-9);}
     else if(F.brow==='thin'){c.moveTo(ex-sd*11,by+1);c.quadraticCurveTo(ex,by-6,ex+sd*13,by);c.lineTo(ex+sd*12,by-2);c.quadraticCurveTo(ex,by-9,ex-sd*11,by-2);}
     else if(F.brow==='light'){c.moveTo(ex-sd*10,by+1);c.quadraticCurveTo(ex,by-5,ex+sd*11,by+1);c.lineTo(ex+sd*10,by-2);c.quadraticCurveTo(ex,by-8,ex-sd*10,by-2);}
@@ -87,6 +98,7 @@ function headF(c,o){const F=typeof o.f==='string'?FL[o.f]:o.f,L=o.L??-1;
   // рот
   const my=F.mouthY,sm=(o.expr&&o.expr.smile)||0;c.lineCap='round';c.strokeStyle=F.paint?'#7a2a24':'#7a3a30';c.lineWidth=4;c.beginPath();
   switch(F.mouth){
+  case'lips':break;
   case'max':c.moveTo(-17,my);c.quadraticCurveTo(0,my+1+sm*2,17,my-1-sm*5);break;
   case'kid':c.moveTo(-10,my);c.quadraticCurveTo(0,my+5,11,my-1);break;
   case'flat':c.moveTo(-17,my+1);c.lineTo(17,my+1);break;
@@ -95,10 +107,16 @@ function headF(c,o){const F=typeof o.f==='string'?FL[o.f]:o.f,L=o.L??-1;
   case'smile':c.moveTo(-15,my-2);c.quadraticCurveTo(0,my+7,15,my-2);break;
   case'clown':c.strokeStyle='#e8262f';c.lineWidth=7;c.moveTo(-27,my-8);c.quadraticCurveTo(0,my+14,27,my-8);break;}
   c.stroke();
+  if(F.mouth==='lips'){c.fillStyle=tk(F.lip,-.12);c.beginPath();c.moveTo(-24,my);c.quadraticCurveTo(-12,my-8,-3,my-6);c.quadraticCurveTo(0,my-4,3,my-6);c.quadraticCurveTo(12,my-8,24,my);c.quadraticCurveTo(0,my+1,-24,my);c.fill();
+    c.fillStyle=F.lip;c.beginPath();c.moveTo(-20,my+.5);c.quadraticCurveTo(0,my+16,20,my+.5);c.quadraticCurveTo(0,my+2,-20,my+.5);c.fill();
+    c.strokeStyle='#6e3329';c.lineWidth=2.6;c.beginPath();c.moveTo(-24,my);c.quadraticCurveTo(0,my+2,24,my);c.stroke();
+    c.fillStyle=F.sh;c.beginPath();c.ellipse(0,my+20,10,3,0,0,TAU);c.fill();
+    if(F.cleft){c.strokeStyle=F.sh;c.lineWidth=3;c.beginPath();c.moveTo(0,F.cy-16);c.lineTo(0,F.cy-6);c.stroke();}}
   if(F.mouth==='max'||F.mouth==='flat'){c.strokeStyle=F.sh;c.lineWidth=5;c.beginPath();c.moveTo(-7,my+10);c.lineTo(8,my+10);c.stroke();}
   if(F.mouth==='clown'){c.fillStyle='#e8262f';for(const sd of [-1,1]){c.beginPath();c.arc(sd*28,my-9,4,0,TAU);c.fill();}}
   // волосы: тон + тень справа + светлая прядь
   if(hp){c.fillStyle=F.hairC;c.fill(hp);c.save();c.clip(hp);c.fillStyle=F.hairS;c.beginPath();c.moveTo(S*F.w*.3,F.top-30);c.bezierCurveTo(S*F.w*.62,-60,S*F.w*.66,-20,S*F.w*.6,40);c.lineTo(S*F.w*2,40);c.lineTo(S*F.w*2,F.top-30);c.closePath();c.fill();
+    if(F.hair==='max2'){c.fillStyle=F.hairS;for(const [x,d] of [[-.5,1],[-.1,1.1],[.28,.95]]){c.beginPath();c.moveTo(F.w*x+8,F.top+4);c.quadraticCurveTo(F.w*x-2,F.top+40,F.w*x-14*d,-34);c.quadraticCurveTo(F.w*x+4,F.top+44,F.w*x+16,F.top+6);c.closePath();c.fill();}}
     c.fillStyle=F.hairL;c.beginPath();c.moveTo(-F.w*.55,F.top+6);c.quadraticCurveTo(-F.w*.1,F.top-6,F.w*.3,F.top+2);c.quadraticCurveTo(-F.w*.1,F.top+4,-F.w*.5,F.top+14);c.closePath();c.fill();c.restore();}
   if(F.hair==='bald'){c.save();c.clip(fp);c.fillStyle='rgba(255,255,255,.4)';c.beginPath();c.ellipse(-F.w*.35,F.top+26,18,9,-.5,0,TAU);c.fill();c.restore();}
   if(F.mask){c.save();c.fillStyle='#a9d7e8';RR(c,-34,F.cy-14,68,34,10);c.fill();c.fillStyle='#86bdd2';c.fillRect(S>0?4:-34,F.cy-14,30,34);

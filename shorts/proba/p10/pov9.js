@@ -4,7 +4,7 @@
 CLIP.fonts=['700 40px Osw','500 40px Osw','500 40px JBM','600 40px Man','800 40px Man'];
 const SC9={};let TXT={};
 const [SCN,LANG]=(Q.get('style')||'cast').split('-');
-CLIP.init=async()=>{TXT=await (await fetch(`pov9/${LANG||'ru'}.json?`+Date.now())).json();if(SCN==='face')KZ=await loadImg('/a/kz.jpg');};
+CLIP.init=async()=>{TXT=await (await fetch(`pov9/${LANG||'ru'}.json?`+Date.now())).json();if(SCN==='face'||SCN==='face2')KZ=await loadImg('/a/kz.jpg');};
 CLIP.draw=(c,t,i)=>{const f=SC9[SCN];if(f)f(c,t,i);};
 
 SC9.cast=(c,t)=>{c.fillStyle=LG(c,0,0,0,HH,[[0,'#2a3140'],[1,'#10131a']]);c.fillRect(0,0,WW,HH);
@@ -301,3 +301,7 @@ SC9.sheet=(c,t)=>{c.fillStyle='#232a36';c.fillRect(0,0,WW,HH);c.fillStyle='#2b33
     {x:945,f:'vadim',cloth:{k:'sweater',col:'#7c8794',collar:'#e9e6df'},n:'ВАДИМ',sw:128}];
   for(const p of bot){personF(c,{y:1360,s:1.02,L:-1,bt:430,sw:118,...p});tx(c,p.n,p.x,1880,{f:'J',w:500,s:24,ls:3,c:'rgba(255,255,255,.7)'});}
 };
+SC9.face2=(c,t)=>{c.fillStyle='#232a36';c.fillRect(0,0,WW,HH);if(KZ)c.drawImage(KZ,0,0,540,720);
+  personF(c,{x:810,y:330,s:2.05,f:'max',cloth:{k:'suit',jacket:'#22252d',shirt:'#eef0f2',open:true},L:-1,bt:330,sw:122});
+  personF(c,{x:270,y:1150,s:1.4,f:'max',cloth:{k:'suit',jacket:'#22252d',shirt:'#eef0f2',open:true},L:1,bt:500,sw:122});
+  personF(c,{x:810,y:1150,s:1.4,f:'clown',cloth:{k:'clown'},L:-1,bt:500,sw:122});};
