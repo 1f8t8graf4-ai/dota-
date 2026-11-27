@@ -496,7 +496,8 @@ function camAt(si,t){const S=SHOTS[si],u=(t-S.a)/(S.b-S.a),K=keyCam(S.cam||[[0,5
     else if(S.tin==='whipv')y-=(1-E.outQ(k))*HH*.15;
     else if(S.tin==='dive')z*=1+.7*(1-E.outC(k));
     else if(S.tin==='push')z*=1+.3*(1-E.outC(k));}}
-  return [x,y,Math.max(z,1),r];}
+  z=Math.max(z,1);const hw=540/z,hh=960/z;x=cl(x,hw,WW-hw);y=cl(y,hh,HH-hh);
+  return [x,y,z,r];}
 function smearAt(si,t){const S=SHOTS[si],N=SHOTS[si+1];let a=0,ax=0;
   if(N&&(N.tin==='whip'||N.tin==='whipv')){const k=(t-(N.a-TD[N.tin]))/TD[N.tin];if(k>0){a=E.inQ(k);ax=N.tin==='whipv'?1:0;}}
   if(S.tin==='whip'||S.tin==='whipv'){const k=(t-S.a)/TD[S.tin];if(k<1){a=Math.max(a,1-E.outQ(k));ax=S.tin==='whipv'?1:0;}}
