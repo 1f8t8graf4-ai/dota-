@@ -313,3 +313,16 @@ SC9.soft=(c,t)=>{c.fillStyle=LG(c,0,0,0,HH,[[0,'#2a3242'],[1,'#151a23']]);c.fill
   const bot=[{x:135,f:'boss',cloth:{k:'suit',jacket:'#2f323a',shirt:'#e8eaee',tie:'#6a1f2a'},n:'ШЕФ',sw:128},{x:405,f:'yulia',cloth:{k:'parka'},n:'ЮЛЯ',sw:104},
     {x:675,f:'misha',cloth:{k:'shirt',shirt:'#1d6f6a',pattern:'rgba(230,200,90,.55)',chain:1},n:'МИША',expr:{smile:1}},{x:945,f:'vadim',cloth:{k:'sweater',col:'#7c8794',collar:'#e9e6df'},n:'ВАДИМ',sw:128}];
   for(const p of bot){personF(c,{y:1360,s:1.02,L:-1,bt:430,sw:118,soft:1,rim:'#ffcf9a',...p});tx(c,p.n,p.x,1880,{f:'J',w:500,s:24,ls:3,c:'rgba(255,255,255,.7)'});}};
+
+/* лист «как у Династии»: Макс с эмоциями + клоун, Лёша, шеф, Юля */
+SC9.dyn=(c,t)=>{const cell=(x,y,w,h,bg)=>{c.fillStyle=LG(c,x,y,x,y+h,[[0,tk(bg,.1)],[1,tk(bg,-.45)]]);c.fillRect(x,y,w,h);};
+  const top=[['smirk','ДОВОЛЕН СОБОЙ','#2a1430','#ff5a8a',-1],['tired','УТРО ПОСЛЕ КЛУБА','#10202a','#62d6c2',1],['shout','СРЫВАЕТСЯ','#2a1018','#ff4a4a',-1],['sad','ОПОЗДАЛ','#141a30','#8ea8ff',1]];
+  top.forEach(([e,n,bg,lc,L],i)=>{const x=(i%2)*540,y=Math.floor(i/2)*620;cell(x,y,540,620,bg);c.save();c.beginPath();c.rect(x,y,540,620);c.clip();
+    personD(c,{x:x+270,y:y+300,s:1.75,f:'max',e,light:lc,L,cloth:{k:'suit',jacket:'#20222a',shirt:'#eef0f2',open:true},bt:420,sw:112});c.restore();
+    c.fillStyle='rgba(0,0,0,.5)';c.fillRect(x,y+566,540,54);tx(c,n,x+270,y+600,{f:'J',w:500,s:22,ls:3,c:'rgba(255,255,255,.9)'});});
+  const bot=[['clown','smile','#2a2a14','#ffd36a',{k:'clown'},'МАКС-КЛОУН'],['lyosha','neutral','#16222c','#9fd0ff',{k:'flannel'},'ЛЁША'],
+    ['boss','neutral','#1d1d26','#ffcf9a',{k:'suit',jacket:'#2f323a',shirt:'#e8eaee',tie:'#6a1f2a'},'ШЕФ'],['yulia','smile','#14281e','#7be0a0',{k:'parka'},'ЮЛЯ']];
+  bot.forEach(([f,e,bg,lc,cl,n],i)=>{const x=i*270,y=1250;cell(x,y,270,670,bg);c.save();c.beginPath();c.rect(x,y,270,670);c.clip();
+    personD(c,{x:x+135,y:y+300,s:f==='lyosha'?1.25:1.18,f,e,light:lc,L:-1,cloth:cl,bt:420,sw:f==='lyosha'?92:112});c.restore();
+    c.fillStyle='rgba(0,0,0,.5)';c.fillRect(x,y+616,270,54);tx(c,n,x+135,y+650,{f:'J',w:500,s:18,ls:2,c:'rgba(255,255,255,.9)'});});
+  c.fillStyle='#000';c.fillRect(0,1240,WW,10);c.fillRect(538,0,4,1240);for(const x of [268,538,808])c.fillRect(x,1250,4,670);};
