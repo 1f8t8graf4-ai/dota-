@@ -19,7 +19,7 @@ const N=+(process.env.N||300),NW=+(process.env.NW||4);
 const br=await chromium.launch({args:['--disable-web-security']});
 async function page(){const pg=await br.newPage({viewport:{width:1080,height:1920},deviceScaleFactor:1});
   pg.on('console',m=>{if(m.type()==='error'||m.type()==='warning')console.log('console:',m.text());});pg.on('pageerror',e=>console.log('pageerror:',e.message));
-  await pg.goto(`http://127.0.0.1:${port}/stage.html?clip=${clip}&style=${style}`);
+  await pg.goto(`http://127.0.0.1:${port}/stage.html?clip=${clip}&style=${style}${process.env.QX||""}`);
   await pg.waitForFunction(()=>window.READY!==undefined,null,{timeout:180000});if(await pg.evaluate(()=>window.READY)!==true)throw new Error('клип не загрузился');return pg;}
 async function grab(pg,i,file){const d=await pg.evaluate(i=>{window.F(i);return document.getElementById('c').toDataURL('image/jpeg',0.95);},i);
   fs.writeFileSync(file,Buffer.from(d.split(',')[1],'base64'));}
