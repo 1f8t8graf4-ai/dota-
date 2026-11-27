@@ -305,3 +305,11 @@ SC9.face2=(c,t)=>{c.fillStyle='#232a36';c.fillRect(0,0,WW,HH);if(KZ)c.drawImage(
   personF(c,{x:810,y:330,s:2.05,f:'max',cloth:{k:'suit',jacket:'#22252d',shirt:'#eef0f2',open:true},L:-1,bt:330,sw:122});
   personF(c,{x:270,y:1150,s:1.4,f:'max',cloth:{k:'suit',jacket:'#22252d',shirt:'#eef0f2',open:true},L:1,bt:500,sw:122});
   personF(c,{x:810,y:1150,s:1.4,f:'clown',cloth:{k:'clown'},L:-1,bt:500,sw:122});};
+
+SC9.soft=(c,t)=>{c.fillStyle=LG(c,0,0,0,HH,[[0,'#2a3242'],[1,'#151a23']]);c.fillRect(0,0,WW,HH);
+  const top=[{x:185,f:'max',cloth:{k:'suit',jacket:'#2a2d36',shirt:'#eef0f2',open:true},n:'МАКС'},{x:540,f:'clown',cloth:{k:'clown'},n:'МАКС-КЛОУН'},
+    {x:895,f:'lyosha',cloth:{k:'flannel'},n:'ЛЁША',sw:96,s:1.3,y:430}];
+  for(const p of top){personF(c,{y:400,s:1.45,L:-1,bt:420,sw:122,soft:1,rim:'#8fc4ff',...p});tx(c,p.n,p.x,1050,{f:'J',w:500,s:26,ls:3,c:'rgba(255,255,255,.7)'});}
+  const bot=[{x:135,f:'boss',cloth:{k:'suit',jacket:'#2f323a',shirt:'#e8eaee',tie:'#6a1f2a'},n:'ШЕФ',sw:128},{x:405,f:'yulia',cloth:{k:'parka'},n:'ЮЛЯ',sw:104},
+    {x:675,f:'misha',cloth:{k:'shirt',shirt:'#1d6f6a',pattern:'rgba(230,200,90,.55)',chain:1},n:'МИША',expr:{smile:1}},{x:945,f:'vadim',cloth:{k:'sweater',col:'#7c8794',collar:'#e9e6df'},n:'ВАДИМ',sw:128}];
+  for(const p of bot){personF(c,{y:1360,s:1.02,L:-1,bt:430,sw:118,soft:1,rim:'#ffcf9a',...p});tx(c,p.n,p.x,1880,{f:'J',w:500,s:24,ls:3,c:'rgba(255,255,255,.7)'});}};
