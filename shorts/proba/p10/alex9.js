@@ -4,15 +4,15 @@
    Координаты: центр лица (0,0), подбородок ≈ +96. Цвет света сцены ложится на всю кожу (o.light, o.la). */
 
 const AX={
-  max:{skin:'#e2ad8c',w:58,jw:54,jy:50,cw:24,cy:94,top:-108,hair:'office',hairC:'#231915',iris:'#3a2a1e',brow:'#1d1410',browK:'flat',stub:.13,ex:24,ey:-6,eye:1,eyeH:.82,deep:1,browY:-15,mouth:'max',cleft:1,nose:1.1,cheek:1,sq:1,browIn:3,lips:1},
+  max:{skin:'#e0aa8a',w:58,jw:55,jy:52,cw:25,cy:95,top:-108,hair:'office',hairC:'#16100d',iris:'#3a2a1e',brow:'#1d1410',browK:'flat',stub:.13,ex:24,ey:-6,eye:1,eyeH:.82,deep:1,browY:-15,mouth:'max',cleft:1,nose:1.1,cheek:1,sq:1,browIn:3,lips:1},
   maxMessy:null,
   lyosha:{skin:'#eccabb',w:60,jw:48,jy:50,cw:24,cy:88,top:-118,hair:'bald',iris:'#4f6a86',brow:'#c9a58d',browK:'thin',ex:24,ey:4,eye:1.08,mouth:'kid',kid:1,mask:1,nose:.75,pale:1},
-  boss:{skin:'#dba68c',w:62,jw:60,jy:60,cw:30,cy:98,top:-106,hair:'grey',hairC:'#c9c4bd',iris:'#2e2620',brow:'#a39b92',browK:'bushy',ex:26,ey:-4,eye:.92,mouth:'flat',glasses:1,nose:1.25,jowl:1},
+  boss:{skin:'#d9a084',w:65,jw:64,jy:62,cw:34,cy:100,top:-104,hair:'side',hairC:'#c7c2ba',iris:'#2e2620',brow:'#9c958c',browK:'bushy',ex:26,ey:-4,eye:.88,eyeH:.85,mouth:'flat',glasses:0,nose:1.3,jowl:1,stub:.1},
   yulia:{skin:'#ecbfa3',w:54,jw:44,jy:52,cw:20,cy:90,top:-110,hair:'long',hairC:'#2c1b13',iris:'#3a271c',brow:'#2c1b13',browK:'arch',ex:23,ey:-4,eye:1.12,mouth:'soft',lashes:1,nose:.8},
 };
 AX.maxMessy={...AX.max,hair:'messy'};
-AX.misha={skin:'#dea585',w:62,jw:60,jy:56,cw:30,cy:96,top:-104,hair:'buzz',hairC:'#2a1d17',iris:'#3a2a1e',brow:'#2a1d17',browK:'bushy',stub:.42,ex:25,ey:-4,eye:.95,mouth:'max',nose:1.2,sq:1,lips:1};
-AX.vadim={skin:'#e6b598',w:60,jw:54,jy:56,cw:26,cy:96,top:-108,hair:'wavy',hairC:'#5a3a24',iris:'#4a5a3a',brow:'#4a2e1e',browK:'arch',stub:.26,ex:24,ey:-4,eye:1.02,mouth:'soft',nose:1,glasses:0};
+AX.misha={skin:'#e0a888',w:64,jw:58,jy:56,cw:30,cy:94,top:-116,hair:'bald',iris:'#3a2a1e',brow:'#9a7458',browK:'flat',stub:.16,ex:25,ey:-4,eye:.9,eyeH:.8,mouth:'max',nose:1.15,sq:1,lips:1,cheek:1};  // по кадру фильма: лысый, круглая голова, светлые брови, ухмылка
+AX.vadim={skin:'#e8b79a',w:65,jw:62,jy:60,cw:32,cy:98,top:-106,hair:'side',hairC:'#b48a58',iris:'#4a6a8a',brow:'#9a7656',browK:'arch',stub:.08,ex:25,ey:-3,eye:1,mouth:'soft',nose:.95,glasses:0,cheek:1};  // по кадру: круглое лицо, светлые волосы на пробор
 AX.woman={skin:'#e9bba0',w:54,jw:44,jy:52,cw:20,cy:90,top:-110,hair:'bun',hairC:'#6b4128',iris:'#3a271c',brow:'#4b2a1b',browK:'arch',ex:23,ey:-4,eye:1.08,mouth:'soft',lashes:1,nose:.8};
 AX.clerk={skin:'#d9a184',w:58,jw:54,jy:56,cw:26,cy:96,top:-106,hair:'side',hairC:'#3a2b22',iris:'#2e2620',brow:'#2e2018',browK:'flat',ex:24,ey:-4,eye:.95,mouth:'flat',nose:1.05,glasses:1};
 AX.guard={skin:'#cf9a7c',w:63,jw:62,jy:58,cw:32,cy:98,top:-100,hair:'buzz',hairC:'#1d1714',iris:'#2a2018',brow:'#1d1714',browK:'bushy',ex:26,ey:-2,eye:.85,mouth:'flat',nose:1.2,sq:1,stub:.2};
