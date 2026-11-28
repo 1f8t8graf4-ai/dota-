@@ -69,7 +69,7 @@ function pers3(c,x,y,h,o={}){const k=h/1000,col=o.col||'#07060a',rim=o.rim,sd=o.
   B.lineTo(-124,-640);B.lineTo(-140,-405);B.lineTo(-172,-420);B.lineTo(-158,-700);B.bezierCurveTo(-150,-770,-110,-790,-40,-800);B.closePath();
   c.fillStyle=col;c.fill(P);c.fill(B);
   if(o.up){c.strokeStyle=col;c.lineCap='round';c.lineWidth=62;for(const a of o.up){const sx=a<0?-1:1,q=Math.abs(a);c.beginPath();c.moveTo(sx*135,-720);c.quadraticCurveTo(sx*(200+40*q),-900,sx*(120+80*q),-1080-180*q);c.stroke();}}
-  if(rim){for(const S of [B,P]){c.save();c.clip(S);c.globalAlpha=o.ra??.75;c.fillStyle=rim;c.fill(S);c.globalAlpha=1;c.translate(-sd*14,7);c.fillStyle=col;c.fill(S);c.restore();}}
+  if(rim){for(const S of [B,P]){c.save();c.clip(S);c.globalAlpha=o.ra??.75;c.fillStyle=rim;c.fill(S);c.globalAlpha=1;c.translate(-sd*14,0);c.fillStyle=col;c.fill(S);c.restore();}}
   c.restore();}
 
 /* ================= ТУАЛЕТ КЛУБА ================= */
