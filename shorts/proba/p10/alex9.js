@@ -20,7 +20,9 @@ AX.nurse={skin:'#efc5ac',w:56,jw:48,jy:54,cw:22,cy:92,top:-110,hair:'bun',hairC:
 AX.st1={skin:'#d79a80',w:58,jw:50,jy:54,cw:24,cy:94,top:-108,hair:'long',hairC:'#d8b060',iris:'#2a4a6a',brow:'#9a7040',browK:'arch',ex:23,ey:-4,eye:1.15,mouth:'soft',lashes:1,nose:.8};
 AX.st2={skin:'#c98e70',w:60,jw:56,jy:56,cw:28,cy:96,top:-106,hair:'side',hairC:'#141010',iris:'#1a1410',brow:'#141010',browK:'flat',ex:25,ey:-4,eye:.9,mouth:'flat',nose:1.15,stub:.3};
 AX.clown={...AX.max,hair:'messy',paint:1,stub:0};
+AX.clownW={...AX.max,hair:'messy',paint:.5,stub:.1};  // грим наполовину смыт
 
+function mixA(a,b,k){const h=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16)),A=h(a),B=h(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*k).toString(16).padStart(2,'0')).join('');}
 function aFace(F){const p=new Path2D(),w=F.w,jw=F.jw,jy=F.jy,cw=F.cw,cy=F.cy,t=F.top;
   p.moveTo(0,t);p.bezierCurveTo(w*.78,t,w,t*.62,w,-28);
   if(F.sq){p.bezierCurveTo(w,6,jw+1,jy-24,jw,jy);p.bezierCurveTo(jw-4,jy+16,cw+10,cy-4,cw,cy-1);p.quadraticCurveTo(0,cy+3,-cw,cy-1);p.bezierCurveTo(-cw-10,cy-4,-jw+4,jy+16,-jw,jy);p.bezierCurveTo(-jw-1,jy-24,-w,6,-w,-28);}
@@ -52,7 +54,7 @@ function aHair(F){const p=new Path2D(),w=F.w+5,t=F.top;
 /* e: neutral | smirk | tired | shout | sad | scared | smile */
 function headA(c,o){const F=typeof o.f==='string'?AX[o.f]:o.f,e=o.e||'neutral',L=o.L??-1,S=-L,lc=o.light||'#ffb070',la=o.la??.18;
   c.save();c.translate(o.x,o.y);c.scale(o.s,o.s);
-  const skin=F.paint?'#f3efe9':F.skin,fp=aFace(F),w=F.w;
+  const skin=F.paint?(F.paint<1?mixA(F.skin,'#f3efe9',F.paint):'#f3efe9'):F.skin,fp=aFace(F),w=F.w;
   // уши
   for(const sd of [-1,1]){const g=c.createRadialGradient(sd*(w+2),0,1,sd*(w+2),0,16);g.addColorStop(0,tk(F.skin,sd===L?.05:-.12));g.addColorStop(1,tk(F.skin,sd===L?-.1:-.3));c.fillStyle=g;c.beginPath();c.ellipse(sd*(w+1),2,9,15,0,0,TAU);c.fill();}
   // кожа: мягкий свет с одной стороны, тень с другой
@@ -80,7 +82,7 @@ function headA(c,o){const F=typeof o.f==='string'?AX[o.f]:o.f,e=o.e||'neutral',L
   c.fillStyle='rgba(255,235,220,.35)';c.beginPath();c.ellipse(L*3,F.ey+18*nk,2.5,13*nk,0,0,TAU);c.fill();c.restore();
   if(F.cleft){c.strokeStyle='rgba(90,45,35,.35)';c.lineWidth=2.4;c.lineCap='round';c.beginPath();c.moveTo(0,F.cy-14);c.lineTo(0,F.cy-6);c.stroke();}
   // клоун: чёрные полосы через глаза
-  if(F.paint){c.strokeStyle='rgba(25,18,20,.9)';c.lineWidth=3;c.lineCap='round';for(const sd of [-1,1]){c.beginPath();c.moveTo(sd*F.ex,F.ey-34);c.lineTo(sd*F.ex,F.ey-12);c.moveTo(sd*F.ex,F.ey+10);c.lineTo(sd*(F.ex+1),F.ey+34);c.stroke();}}
+  if(F.paint){c.strokeStyle=`rgba(25,18,20,${.9*F.paint})`;c.lineWidth=3;c.lineCap='round';for(const sd of [-1,1]){c.beginPath();c.moveTo(sd*F.ex,F.ey-34);c.lineTo(sd*F.ex,F.ey-12);c.moveTo(sd*F.ex,F.ey+10);c.lineTo(sd*(F.ex+1),F.ey+34);c.stroke();}}
   c.restore();
   // глаза
   const lk=o.look||[0,0],K=F.eye||1;
@@ -105,7 +107,7 @@ function headA(c,o){const F=typeof o.f==='string'?AX[o.f]:o.f,e=o.e||'neutral',L
     c.closePath();c.fill();}
   // рот
   const my=F.ey+(F.kid?52:62);c.lineCap='round';
-  if(F.paint){c.save();c.filter='blur(1px)';c.strokeStyle='rgba(190,35,40,.85)';c.lineWidth=9;c.beginPath();c.moveTo(-24,my-4);c.quadraticCurveTo(0,my+14,26,my-9);c.stroke();c.restore();}
+  if(F.paint){c.save();c.filter='blur(1px)';c.strokeStyle=`rgba(190,35,40,${.85*Math.min(1,F.paint*1.3)})`;c.lineWidth=9;c.beginPath();c.moveTo(-24,my-4);c.quadraticCurveTo(0,my+14,26,my-9);c.stroke();c.restore();}
   const mo=o.mo||0;if(e==='shout'||e==='scared'||mo>.08){const h=e==='shout'?22:e==='scared'?10:3+13*mo,w2=e==='shout'?14:e==='scared'?8:8+4*mo;c.fillStyle='#4a141a';c.beginPath();c.moveTo(-w2,my-3);c.quadraticCurveTo(0,my-8,w2,my-3);c.quadraticCurveTo(w2+1,my+h,0,my+h+2);c.quadraticCurveTo(-w2-1,my+h,-w2,my-3);c.fill();
     c.fillStyle='#f7f3ef';c.beginPath();c.moveTo(-w2+2,my-3);c.quadraticCurveTo(0,my-7,w2-2,my-3);c.lineTo(w2-3,my+1);c.quadraticCurveTo(0,my-1,-w2+3,my+1);c.fill();}
   else{c.strokeStyle='#5a2a26';c.lineWidth=3.2;c.beginPath();
@@ -114,7 +116,7 @@ function headA(c,o){const F=typeof o.f==='string'?AX[o.f]:o.f,e=o.e||'neutral',L
     c.stroke();if(F.lips&&e!=='smile'){c.fillStyle=rgba(tk(F.skin,-.16),.9);c.beginPath();c.moveTo(-11,my+2);c.quadraticCurveTo(0,my+12,11,my+2);c.quadraticCurveTo(0,my+5,-11,my+2);c.fill();
       c.fillStyle=rgba(tk(F.skin,-.24),.8);c.beginPath();c.moveTo(-12,my);c.quadraticCurveTo(-5,my-5,0,my-3);c.quadraticCurveTo(5,my-5,12,my);c.quadraticCurveTo(0,my+1,-12,my);c.fill();}
     c.save();c.filter='blur(2px)';c.fillStyle=rgba(tk(F.skin,-.3),.55);c.beginPath();c.ellipse(0,my+(F.lips?14:9),9,3.5,0,0,TAU);c.fill();c.restore();}
-  if(F.paint){c.fillStyle='#e3242c';c.beginPath();c.arc(0,F.ey+34,10,0,TAU);c.fill();c.fillStyle='rgba(255,255,255,.65)';c.beginPath();c.arc(-3,F.ey+30,3,0,TAU);c.fill();}
+  if(F.paint>=.9){c.fillStyle='#e3242c';c.beginPath();c.arc(0,F.ey+34,10,0,TAU);c.fill();c.fillStyle='rgba(255,255,255,.65)';c.beginPath();c.arc(-3,F.ey+30,3,0,TAU);c.fill();}
   // волосы: градиент + мягкие пряди
   if(hp){c.save();c.clip(hp);c.fillStyle=LG(c,L*w,-100,S*w,0,[[0,tk(F.hairC,.22)],[.5,F.hairC],[1,tk(F.hairC,-.45)]]);c.fillRect(-w-30,F.top-60,2*w+60,260);
     c.strokeStyle=rgba(tk(F.hairC,.45),.35);c.lineWidth=2.4;c.lineCap='round';
